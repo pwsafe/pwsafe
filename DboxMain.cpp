@@ -661,6 +661,7 @@ DboxMain::OnEdit()
       dlg_edit.m_realpassword = item.GetPassword();
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = item.GetNotes();
+      dlg_edit.m_listindex = listindex;   // for future reference, this is not multi-user friendly
 
 	  app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
