@@ -38,6 +38,7 @@ protected:
 protected:
    // Generated message map functions
    //{{AFX_MSG(CPasskeyChangeDlg)
+   virtual BOOL OnInitDialog();
    virtual void OnOK();
    virtual void OnCancel();
    afx_msg void OnHelp();
