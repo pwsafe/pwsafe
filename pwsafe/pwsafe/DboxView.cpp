@@ -1194,7 +1194,13 @@ void
 DboxMain::OnTimer(UINT nIDEvent )
 {			
     if(nIDEvent==TIMER_CHECKLOCK){
-        if(IsWorkstationLocked()){
+      /*
+       * Since we clear the data, any unchanged changes will be lost,
+       * so we force a save if database is modified, and fail
+       * to lock if the save fails.
+       */
+        if(IsWorkstationLocked() &&
+	   (!m_core.IsChanged() || Save() == PWScore::SUCCESS)){
             TRACE("locking database\n");
             ClearData();
             if(IsWindowVisible()){
