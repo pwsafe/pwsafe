@@ -43,6 +43,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 #if defined(POCKET_PC)
 	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif
+	DDX_Check(pDX, IDC_DEFPWUSESYSTRAY, m_usesystemtray);
 	//}}AFX_DATA_MAP
 }
 
