@@ -12,6 +12,8 @@
 #endif
 #include <afxtempl.h>
 
+#include <htmlhelp.h>
+
 #include "MyString.h"
 
 //Don't show warning for automatic inline conversion
