@@ -102,6 +102,10 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent)
 {
+	//{{AFX_DATA_INIT(DboxMain)
+		// NOTE: the ClassWizard will add member initialization here
+	//}}AFX_DATA_INIT
+
    m_hIcon = app.LoadIcon(IDI_CORNERICON);
    m_pwlist.RemoveAll();
    // m_pwdb.Clear(); when the new backend is in...
@@ -149,10 +153,13 @@ void
 DboxMain::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(DboxMain)
+	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
+	//{{AFX_MSG_MAP(DboxMain)
 	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
 	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
 	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
@@ -194,6 +201,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
    ON_WM_SYSCOMMAND()
    ON_BN_CLICKED(IDOK, OnEdit)
+	//}}AFX_MSG_MAP
 
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
