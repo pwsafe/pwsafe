@@ -266,9 +266,10 @@ DboxMain::OnInitDialog()
 	m_iSortedColumn = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortedcolumn"), 0);
 	m_bSortAscending = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortascending"), 1)? true: false;
 
+#if 0 /* Not needed here, done 1st time in OnSize() */
 	// refresh list will add and size password column if necessary...
 	RefreshList();
-
+#endif
    ChangeOkUpdate();
 
    setupBars(); // Just to keep things a little bit cleaner
