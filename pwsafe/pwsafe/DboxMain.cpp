@@ -1143,19 +1143,20 @@ DboxMain::Save()
      CString OldName(m_core.GetCurFile());
      int dotIndex = OldName.ReverseFind(TCHAR('.'));
      if (dotIndex != -1)
-       OldName = OldName.Left(dotIndex-1);
+       OldName = OldName.Left(dotIndex);
      OldName += _T(".old");
 
 
-     CString msg = _T("The original database, ");
+     CString msg = _T("The original database, \"");
      msg += CString(m_core.GetCurFile());
-     msg += _T(", is in pre-2.0 format. It will be unchanged, and renamed to ");
+     msg += _T("\", is in pre-2.0 format."
+	       " It will be unchanged, and renamed to \"");
      msg += OldName;
-     msg += _T("Your changes will be written in the new"
+     msg += _T("\"\nYour changes will be written in the new"
 	       " format, which is unusable by old versions of PasswordSafe."
 	       " To save your changes in the old format, use the \"File->Export To"
 	       "-> Old (1.x) format\" command.\n\n"
-	       "Press OK to continue saving, Cancel to stop.");
+	       "Press OK to continue saving, or Cancel to stop.");
      if (MessageBox(msg, _T("File version warning"),
 		    MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
        return PWScore::USER_CANCEL;
@@ -1692,13 +1693,13 @@ DboxMain::SaveAs()
    CMyString newfile;
 
    if (m_core.GetReadFileVersion() == PWSfile::V17) {
-     CMyString msg = _T("The original database, ");
+     CMyString msg = _T("The original database, \"");
      msg += m_core.GetCurFile();
-     msg += _T(", is in pre-2.0 format. The data will now be written in the new"
+     msg += _T("\", is in pre-2.0 format. The data will now be written in the new"
 	       " format, which is unusable by old versions of PasswordSafe."
 	       " To save the data in the old format, use the \"File->Export To"
 	       "-> Old (1.x) format\" command.\n\n"
-	       "Press OK to continue saving, Cancel to stop.");
+	       "Press OK to continue saving, or Cancel to stop.");
      if (MessageBox(msg, _T("File version warning"),
 		    MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
        return PWScore::USER_CANCEL;
