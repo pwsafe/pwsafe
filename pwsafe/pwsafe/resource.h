@@ -132,6 +132,9 @@
 #define IDC_OVERRIDE_POLICY             1082
 #define IDC_DEFPWUSESYSTRAY             1083
 #define IDC_LOCKONSCREEN                1084
+#define IDC_SPIN2                       1085
+#define IDC_IDLE_TIMEOUT                1086
+#define IDC_LOCK_TIMER                  1087
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -186,7 +189,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        225
 #define _APS_NEXT_COMMAND_VALUE         32842
-#define _APS_NEXT_CONTROL_VALUE         1085
+#define _APS_NEXT_CONTROL_VALUE         1088
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

@@ -39,7 +39,7 @@ DboxMain::OnOptions()
    COptionsUsername        username;
    COptionsMisc            misc;
    PWSprefs               *prefs = PWSprefs::GetInstance();
-
+   BOOL                   prevLockOIT; // lock on idle timeout set?
    /*
    **  Initialize the property pages values.
    */
@@ -64,8 +64,11 @@ DboxMain::OnOptions()
    security.m_confirmcopy = prefs->
      GetPref(PWSprefs::BoolPrefs::DontAskQuestion) ? FALSE : TRUE;
    security.m_LockOnWindowLock = prefs->
-	   GetPref(PWSprefs::BoolPrefs::LockOnWindowLock) ? TRUE : FALSE;
-
+     GetPref(PWSprefs::BoolPrefs::LockOnWindowLock) ? TRUE : FALSE;
+   security.m_LockOnIdleTimeout = prevLockOIT = prefs->
+     GetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout) ? TRUE : FALSE;
+   security.m_IdleTimeOut = prefs->
+      GetPref(PWSprefs::IntPrefs::IdleTimeout);
 
     passwordpolicy.m_pwlendefault = prefs->
       GetPref(PWSprefs::IntPrefs::PWLenDefault);
@@ -133,9 +136,12 @@ DboxMain::OnOptions()
 		    security.m_confirmsaveonminimize == FALSE);
      prefs->SetPref(PWSprefs::BoolPrefs::DontAskQuestion,
 		    security.m_confirmcopy == FALSE);
-	 prefs->SetPref(PWSprefs::BoolPrefs::LockOnWindowLock,
-			security.m_LockOnWindowLock == TRUE);
-
+     prefs->SetPref(PWSprefs::BoolPrefs::LockOnWindowLock,
+		    security.m_LockOnWindowLock == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout,
+		    security.m_LockOnIdleTimeout == TRUE);
+     prefs->SetPref(PWSprefs::IntPrefs::IdleTimeout,
+		    security.m_IdleTimeOut);
 
      prefs->SetPref(PWSprefs::IntPrefs::PWLenDefault,
 		    passwordpolicy.m_pwlendefault);
@@ -195,6 +201,16 @@ DboxMain::OnOptions()
 		if (app.m_TrayIcon.Visible() == TRUE)
 			app.m_TrayIcon.HideIcon();
       }
+
+      // update idle timeout values, if changed
+      if (security.m_LockOnIdleTimeout != prevLockOIT)
+	if (security.m_LockOnIdleTimeout == TRUE) {
+	  const UINT MINUTE = 60*1000;
+	  SetTimer(TIMER_USERLOCK, MINUTE, NULL);
+	} else {
+	  KillTimer(TIMER_USERLOCK);
+	}
+      SetIdleLockCounter(security.m_IdleTimeOut);
 
       /*
        * Here are the old (pre 2.0) semantics:
