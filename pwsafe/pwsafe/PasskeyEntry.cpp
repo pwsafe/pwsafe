@@ -66,7 +66,13 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
    CDialog::DoDataExchange(pDX);
    DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
 
+   if ( m_first )
+	DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
+
    //{{AFX_DATA_MAP(CPasskeyEntry)
+	DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
+	DDX_Control(pDX, IDOK, m_ctlOK);
+	DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
    DDX_Text(pDX, IDC_MESSAGE, m_message);
 	//}}AFX_DATA_MAP
 }
@@ -89,9 +95,8 @@ CPasskeyEntry::OnInitDialog(void)
    if (("" == m_message)
        && m_first)
    {
-      //((CEdit*)GetDlgItem(IDC_PASSKEY))->SetReadOnly(TRUE);
-      GetDlgItem(IDC_PASSKEY)->EnableWindow(FALSE);
-      GetDlgItem(IDOK)->EnableWindow(FALSE);
+      m_ctlPasskey.EnableWindow(FALSE);
+      m_ctlOK.EnableWindow(FALSE);
       m_message = "[No current database]";
    }
 
@@ -102,22 +107,12 @@ CPasskeyEntry::OnInitDialog(void)
 
    if (m_first)
    {
-      m_Static.SubclassDlgItem(IDC_STATIC_ICON1, this);
-      m_Static.ReloadBitmap(IDB_PSLOGO);
-      m_Static2.SubclassDlgItem(IDC_STATIC_ICON2, this);
-      m_Static2.ReloadBitmap(IDB_CLOGO);
-
-#if 0 // this bitmap (funky "http://passwordsafe.sorcefourge.net") no longer displayed
-      m_Static3.SubclassDlgItem(IDC_STATIC_ICON3, this);
-      m_Static3.ReloadBitmap(IDB_CTEXT);
-
-#endif
+      m_ctlLogoText.ReloadBitmap(IDB_PSLOGO);
+      m_ctlLogo.ReloadBitmap(IDB_CLOGO);
    }
    else
    {
-      CWnd* pWnd = GetDlgItem(IDC_STATIC_ICON1);
-      m_Static.SubclassWindow(pWnd->m_hWnd);
-      m_Static.ReloadBitmap(IDB_CLOGO_SMALL);
+      m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
    }
    
    return TRUE;
@@ -163,7 +158,7 @@ CPasskeyEntry::OnOK()
    if (m_passkey == "")
    {
       AfxMessageBox("The combination cannot be blank.");
-      ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
+      m_ctlPasskey.SetFocus();
       return;
    }
 
@@ -190,8 +185,8 @@ CPasskeyEntry::OnOK()
       {
          m_tries++;
          AfxMessageBox("Incorrect passkey");
-         ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetSel(MAKEWORD(-1, 0));
-         ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
+         m_ctlPasskey.SetSel(MAKEWORD(-1, 0));
+         m_ctlPasskey.SetFocus();
       }
    }
    else

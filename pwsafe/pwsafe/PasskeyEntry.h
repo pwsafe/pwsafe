@@ -21,6 +21,10 @@ public:
    enum { IDD_BASIC = IDD_PASSKEYENTRY };
    //{{AFX_DATA(CPasskeyEntry)
 	enum { IDD = IDD_PASSKEYENTRY_FIRST };
+	CSysColStatic	m_ctlLogo;
+	CSysColStatic	m_ctlLogoText;
+	CButton	m_ctlOK;
+	CEdit	m_ctlPasskey;
    CMyString	m_passkey;
 	//}}AFX_DATA
    CString	m_message;
@@ -34,7 +38,6 @@ protected:
 
 // Implementation
 protected:
-   CSysColStatic m_Static,m_Static2;
    int m_tries;
    int m_status;
    bool m_first;

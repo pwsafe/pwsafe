@@ -77,11 +77,13 @@
 #define IDC_NEW                         1056
 #define IDC_STATIC_ICON1                1057
 #define IDC_STATIC_ICON2                1060
+#define IDC_STATIC_LOGO                 1060
 #define IDC_STATIC_ICON3                1061
 #define IDC_FIND_TEXT                   1062
 #define IDC_FIND_CS                     1063
 #define IDC_STATUS                      1064
 #define IDC_ALWAYSONTOP                 1065
+#define IDC_STATIC_LOGOTEXT             1066
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -120,7 +122,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        194
 #define _APS_NEXT_COMMAND_VALUE         32822
-#define _APS_NEXT_CONTROL_VALUE         1066
+#define _APS_NEXT_CONTROL_VALUE         1067
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
