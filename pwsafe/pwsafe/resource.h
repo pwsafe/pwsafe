@@ -51,6 +51,9 @@
 #define IDB_NODE                        199
 #define IDB_LEAF                        200
 #define IDD_EXPORT_TEXT                 204
+#define IDR_TOOLBAR1                    208
+#define IDB_TOOLBAR1                    208
+#define IDB_TOOLBAR2                    217
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -164,9 +167,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        207
-#define _APS_NEXT_COMMAND_VALUE         32829
-#define _APS_NEXT_CONTROL_VALUE         1083
+#define _APS_NEXT_RESOURCE_VALUE        218
+#define _APS_NEXT_COMMAND_VALUE         32830
+#define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

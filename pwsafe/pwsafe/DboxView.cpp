@@ -151,12 +151,34 @@ DboxMain::setupBars()
     }
 
   // Following code is needed to set toolbar to 24 bit colors. Ugh.
-  CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
+  CDC* pDC = this->GetDC();
+  UINT Flags = 0;
   CBitmap bmTemp; 
+  COLORREF Background = RGB(192, 192, 192);
+  if ( pDC )
+  {
+	  int NumBits = pDC->GetDeviceCaps(12);
+	  if ( NumBits == 32 )
+	  {
+		  bmTemp.LoadBitmap(IDR_MAINBAR);
+		  Flags =ILC_MASK | ILC_COLOR32;
+	  }
+	  else if ( NumBits == 16 )
+	  {
+		  bmTemp.LoadBitmap(IDB_TOOLBAR1);
+		  Flags =ILC_MASK | ILC_COLOR8;
+		  Background = RGB( 196,198,196 );
+	  }
+	  else
+	  {
+		  bmTemp.LoadBitmap(IDB_TOOLBAR2);
+		  Flags =ILC_MASK | ILC_COLOR8;
+	  }
+  }
+  CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
   CImageList ilTemp; 
-  bmTemp.LoadBitmap(IDR_MAINBAR);
-  ilTemp.Create(16, 16, ILC_MASK | ILC_COLOR24, 10, 0);
-  ilTemp.Add(&bmTemp, RGB(192, 192, 192));
+  ilTemp.Create(16, 16, Flags, 10, 10);
+  ilTemp.Add(&bmTemp, Background);
   tbcTemp.SetImageList(&ilTemp);
   ilTemp.Detach();
   bmTemp.Detach();
