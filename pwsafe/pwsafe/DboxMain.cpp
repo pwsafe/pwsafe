@@ -1783,6 +1783,15 @@ void DboxMain::ResetIdleLockCounter()
 
 bool DboxMain::DecrementAndTestIdleLockCounter()
 {
-  ASSERT(m_IdleLockCountDown > 0);
-  return (--m_IdleLockCountDown == 0);
+  if (m_IdleLockCountDown > 0)
+    return (--m_IdleLockCountDown == 0);
+  else
+    return false; // so we return true only once if idle
+}
+
+LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+  if (message != WM_TIMER)
+    ResetIdleLockCounter();
+  return CDialog::WindowProc(message, wParam, lParam);
 }
