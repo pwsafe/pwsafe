@@ -267,6 +267,19 @@ DboxMain::OnInitDialog()
      ResetIdleLockCounter();
    }
 
+   // Set Hotkey, if active
+   if (PWSprefs::GetInstance()->
+       GetPref(PWSprefs::BoolPrefs::HotKeyEnabled)) {
+     const DWORD value = DWORD(PWSprefs::GetInstance()->
+			       GetPref(PWSprefs::IntPrefs::HotKey));
+     // Following contortions needed 'cause MS couldn't get their
+     // act together and keep a consistent interface. Argh.
+     WORD v = WORD((value & 0xff) | ((value & 0xff0000) >> 8));
+     SendMessage(WM_SETHOTKEY, v);
+
+   }
+
+
    m_windowok = true;
 	
   // Set the icon for this dialog.  The framework does this automatically

@@ -1,17 +1,43 @@
 $Id$
 
-Password Safe 2.09 Release Note - February 2005
+Password Safe 2.10 Release Note - March 2005
 ===============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.09. For a short description of Password
+with Password Safe version 2.10. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-This is a maintenance release, adding automatic backups, and fixing a
+This is a maintenance release, adding XXX, and fixing a
 couple of bugs.
+
+Bugs fixed in 2.10:
+===================
+[1123373, 1075046] Uninstall will only remove installed files, and
+will delete the installation directory if and only if it's empty.
+[1151575, 1151581] Don't try to unlock empty filename in OnDestroy
+(ASSERT failed in debug version - potential problem in released
+version)
+[1076377] Entering the wrong password 3 times no longer allows you to
+create an empty database with the same name.
+[1108115] "Cancel" at "Safe Combination Entry" no longer opens blank
+database with name of existing database.
+[1145173, 947813] Main window will be visible even if resolution
+changes or multiple screens used between invocations.
+[1145747] The import delimiter is now changeable (Thanks to Roger
+Hakansson for the patch).
+[1162044]  URL "Browse to" feature now documented
+[ ] XXX TODO XXX add support for .pws suffix in addition to .dat,
+register former to application.
+
+New Features for 2.10:
+======================
+[1078901] Ctrl+L is now a shortcut for "Browse to URL".
+[1162048, 726521] Hotkey restore: A selectable hotkey combination will restore
+PasswordSafe from the system tray, if minimized, or bring it to the
+front, if obscured by other applications.
 
 Bugs fixed in 2.09:
 ===================
@@ -75,6 +101,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.18  2005/04/06 17:52:38  ronys
+[1162048, 726521] Hotkey restore
+
 Revision 1.17  2005/02/20 20:37:38  ronys
 Bumped release to 2.09
 
