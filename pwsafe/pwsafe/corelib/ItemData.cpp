@@ -6,8 +6,8 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ItemData.h"
-#include "util.h"
-#include "blowfish.h"
+#include "Util.h"
+#include "Blowfish.h"
 #include "sha1.h"
 
 #include <io.h>
@@ -19,12 +19,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-//Normal constructor
-CItemData::CItemData()
-{
-   InitStuff();
-}
-
+//-----------------------------------------------------------------------------
 //More complex constructor
 CItemData::CItemData(CMyString name,
                      CMyString password,
@@ -59,10 +54,12 @@ CItemData::CItemData(CItemData &stuffhere)
 }
 
 //Returns a plaintext name
-BOOL CItemData::GetName(CMyString &name)
+BOOL
+CItemData::GetName(CMyString &name)
 {
    return DecryptData(m_name, m_nLength, m_nameValid, &name);
 }
+
 CMyString
 CItemData::GetName()
 {
@@ -73,10 +70,12 @@ CItemData::GetName()
 
 
 //Returns a plaintext password
-BOOL CItemData::GetPassword(CMyString &password)
+BOOL
+CItemData::GetPassword(CMyString &password)
 {
    return DecryptData(m_password, m_pwLength, m_pwValid, &password);
 }
+
 CMyString
 CItemData::GetPassword()
 {
@@ -87,10 +86,12 @@ CItemData::GetPassword()
 
 
 //Returns a plaintext notes
-BOOL CItemData::GetNotes(CMyString &notes)
+BOOL
+CItemData::GetNotes(CMyString &notes)
 {
    return DecryptData(m_notes, m_notesLength, m_notesValid, &notes);
 }
+
 CMyString
 CItemData::GetNotes()
 {
@@ -101,19 +102,22 @@ CItemData::GetNotes()
 
 
 //Encrypts a plaintext name and stores it in m_name
-BOOL CItemData::SetName(CMyString name)
+BOOL
+CItemData::SetName(CMyString name)
 {
    return EncryptData(name, &m_name, &m_nLength, (BOOL*)&m_nameValid);
 }
 
 //Encrypts a plaintext password and stores it in m_password
-BOOL CItemData::SetPassword(CMyString password)
+BOOL
+CItemData::SetPassword(CMyString password)
 {
    return EncryptData(password, &m_password, &m_pwLength, (BOOL*)&m_pwValid);
 }
 
 //Encrypts plaintext notes and stores them in m_notes
-BOOL CItemData::SetNotes(CMyString notes)
+BOOL
+CItemData::SetNotes(CMyString notes)
 {
    return EncryptData(notes, &m_notes, &m_notesLength, (BOOL*)&m_notesValid);
 }
@@ -139,10 +143,11 @@ CItemData::~CItemData()
 }
 
 //Encrypts the thing in plain to the variable cipher - alloc'd here
-BOOL CItemData::EncryptData(CMyString plain,
-                            unsigned char **cipher,
-                            int *cLength,
-                            BOOL *valid)
+BOOL
+CItemData::EncryptData(CMyString plain,
+                       unsigned char **cipher,
+                       int *cLength,
+                       BOOL *valid)
 {
    int result = EncryptData((unsigned char*)plain.GetBuffer(plain.GetLength()),
                             plain.GetLength(),
@@ -153,11 +158,12 @@ BOOL CItemData::EncryptData(CMyString plain,
    return result;
 }
 
-BOOL CItemData::EncryptData(unsigned char *plain,
-                            int plainlength,
-                            unsigned char **cipher,
-                            int *cLength,
-                            BOOL *valid)
+BOOL
+CItemData::EncryptData(unsigned char *plain,
+                       int plainlength,
+                       unsigned char **cipher,
+                       int *cLength,
+                       BOOL *valid)
 {
    if (*valid == TRUE)
    {
@@ -201,11 +207,11 @@ BOOL CItemData::EncryptData(unsigned char *plain,
    memcpy((char*)tempmem, (char*)plain, plainlength);
 
    //Fill the unused characters in with random stuff
-   for (x=plainlength;x<BlockLength;x++)
+   for (x=plainlength; x<BlockLength; x++)
       tempmem[x] = newrand();
 
    //Do the actual encryption
-   for (x=0;x<BlockLength;x+=8)
+   for (x=0; x<BlockLength; x+=8)
       Algorithm.Encrypt(tempmem+x, *cipher+x);
 
    delete [] tempmem;
@@ -217,11 +223,12 @@ BOOL CItemData::EncryptData(unsigned char *plain,
 }
 
 //This is always used for preallocated data - not elegant, but who cares
-BOOL CItemData::DecryptData(unsigned char *cipher,
-                            int cLength,
-                            BOOL valid,
-                            unsigned char *plain,
-                            int plainlength)
+BOOL
+CItemData::DecryptData(unsigned char *cipher,
+                       int cLength,
+                       BOOL valid,
+                       unsigned char *plain,
+                       int plainlength)
 {
    int BlockLength = GetBlockSize(cLength);
 	
@@ -259,10 +266,11 @@ BOOL CItemData::DecryptData(unsigned char *cipher,
 }
 
 //Decrypts the thing pointed to by cipher into plain
-BOOL CItemData::DecryptData(unsigned char *cipher,
-                            int cLength,
-                            BOOL valid,
-                            CMyString *plain)
+BOOL
+CItemData::DecryptData(unsigned char *cipher,
+                       int cLength,
+                       BOOL valid,
+                       CMyString *plain)
 {
    int BlockLength = GetBlockSize(cLength);
 	
@@ -318,13 +326,16 @@ void CItemData::InitStuff()
    m_saltValid = FALSE;
 }
 
+
 //Returns the number of 8 byte blocks needed to store 'size' bytes
-int CItemData::GetBlockSize(int size)
+int
+CItemData::GetBlockSize(int size)
 {
    return (int)ceil((double)size/8.0) * 8;
 }
 
-CItemData& CItemData::operator=(const CItemData &second)
+CItemData&
+CItemData::operator=(const CItemData &second)
 {
    //Check for self-assignment
    if (&second != this)

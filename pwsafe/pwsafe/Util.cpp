@@ -26,13 +26,15 @@ trashMemory(unsigned char* buffer, long length)
    trashMemory(buffer, length, NumMem);
 }
 
+
 void
-trashMemory(SHA1_CTX &context)
+trashMemory(SHA1_CTX& context)
 {
    trashMemory((unsigned char*)context.state, sizeof context.state, NumMem);
    trashMemory((unsigned char*)context.count, sizeof context.count, NumMem);
    trashMemory((unsigned char*)context.buffer, sizeof context.buffer, NumMem);
 }
+
 
 void
 trashMemory(unsigned char* buffer, long length, int numiter)
@@ -45,13 +47,14 @@ trashMemory(unsigned char* buffer, long length, int numiter)
    }
 }
 
-//The CMyString version
+
 void trashMemory(CString &string)
 {
    trashMemory((unsigned char*)string.GetBuffer(string.GetLength()),
                string.GetLength());
    string.ReleaseBuffer();
 }
+
 
 //Complain if the file has not opened correctly
 void
@@ -77,34 +80,53 @@ ErrorMessages(CMyString fn, int fp)
    }
 }
 
+
 //Generates a passkey-based hash from stuff - used to validate the passkey
 void
-GenRandhash(CMyString passkey,
-            unsigned char* m_randstuff,
-            unsigned char* m_randhash)
+GenRandhash(CMyString a_passkey,
+            unsigned char* a_randstuff,
+            unsigned char* a_randhash)
 {
+   /*
+     I'm not quite sure what this is doing, so as I figure out each piece,
+     I'll add more comments {jpr}
+   */
+
+   /*
+     tempSalt <- H(a_randstuff + a_passkey)
+   */
    SHA1_CTX keyHash;
    SHA1Init(&keyHash);
-   SHA1Update(&keyHash, m_randstuff, StuffSize);
+   SHA1Update(&keyHash, a_randstuff, StuffSize);
    SHA1Update(&keyHash,
-              (unsigned char*)passkey.GetBuffer(passkey.GetLength()),
-              passkey.GetLength());
-   passkey.ReleaseBuffer();
+              (unsigned char*)a_passkey.GetBuffer(a_passkey.GetLength()),
+              a_passkey.GetLength());
+   a_passkey.ReleaseBuffer();
 
    unsigned char tempSalt[SaltSize];
    SHA1Final(tempSalt, &keyHash);
+
+   /*
+     tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
+   */
 	
    BlowFish Cipher(tempSalt, SaltSize);
 	
    unsigned char tempbuf[StuffSize];
-   memcpy((char*)tempbuf, (char*)m_randstuff, StuffSize);
-   for (int x=0;x<1000;x++)
+   memcpy((char*)tempbuf, (char*)a_randstuff, StuffSize);
+
+   for (int x=0; x<1000; x++)
       Cipher.Encrypt(tempbuf, tempbuf);
-	
+
+   /*
+     hmm - seems we're not done with this context
+     we throw the tempbuf into the hasher, and extract a_randhash
+   */
    SHA1Update(&keyHash, tempbuf, StuffSize);
-   SHA1Final(m_randhash, &keyHash);
+   SHA1Final(a_randhash, &keyHash);
    trashMemory(keyHash);
 }
+
 
 int
 not(int x)
@@ -113,6 +135,7 @@ not(int x)
    return 1-x;
 }
 
+
 unsigned char
 newrand()
 {
@@ -120,6 +143,7 @@ newrand()
    while ((r = rand()) % 257 == 256); // 257?!?
    return r;
 }
+
 
 BOOL
 FileExists(CMyString filename)
@@ -133,6 +157,7 @@ FileExists(CMyString filename)
       return TRUE;
    }
 }
+
 
 windows_t
 GetOSVersion()
@@ -169,6 +194,7 @@ GetOSVersion()
    return retval;
 }
 
+
 char
 GetRandAlphaNumChar()
 {
@@ -181,6 +207,7 @@ GetRandAlphaNumChar()
    else
       return ((newrand() % ('z'-'a')) + 'a');
 }
+
 
 int
 _writecbc(int fp,
@@ -259,6 +286,7 @@ _writecbc(int fp,
    return numWritten;
 }
 
+
 int
 _readcbc(int fp,
          unsigned char* buffer,
@@ -329,6 +357,7 @@ _readcbc(int fp,
 
    return numRead;
 }
+
 
 int
 _readcbc(int fp,
@@ -435,6 +464,7 @@ _writeFromCMyString(int fp, CMyString &source)
    return numRead;
 }
 #endif
+
 
 void
 _encryptFile(CString filepath)
@@ -546,6 +576,7 @@ _decryptFile(CString filepath)
    delete [] buf;
 }
 
+
 void
 convertToLongFilePath(CString &filepath)
 {
@@ -576,7 +607,7 @@ convertToLongFilePath(CString &filepath)
 
 
 void
-manageCmdLine(CString m_lpCmdLine)
+manageCmdLine(CString a_cmdline)
 {
    CString filepath;
    CString suffix;
@@ -584,13 +615,13 @@ manageCmdLine(CString m_lpCmdLine)
 
    while (len != -1)
    {
-      len = m_lpCmdLine.Find(' ');
+      len = a_cmdline.Find(' ');
       if (len == -1) // we've hit the NULL
-         filepath = m_lpCmdLine;
+         filepath = a_cmdline;
       else
       {
-         filepath = m_lpCmdLine.Left(len);
-         m_lpCmdLine = m_lpCmdLine.Right(m_lpCmdLine.GetLength() - len - 1);
+         filepath = a_cmdline.Left(len);
+         a_cmdline = a_cmdline.Right(a_cmdline.GetLength() - len - 1);
       }
       convertToLongFilePath(filepath);
 
@@ -668,6 +699,7 @@ SplitName(CMyString name, CMyString &title, CMyString &username)
    return pos;
 }
 
+
 void
 MakeName(CMyString& name, CMyString title, CMyString username)
 {
@@ -739,6 +771,7 @@ DropDefUsernames(CList<CItemData, CItemData>* plist, CMyString defusername)
    }
 }
 
+
 int
 CheckVersion(CList<CItemData, CItemData>* plist)
 {
@@ -756,6 +789,7 @@ CheckVersion(CList<CItemData, CItemData>* plist)
    
    return V10;
 }
+
 
 void
 SetBlankToDef(CList<CItemData, CItemData>* plist)
@@ -778,6 +812,7 @@ SetBlankToDef(CList<CItemData, CItemData>* plist)
    }
 }
 
+
 void
 SetBlankToName(CList<CItemData, CItemData>* plist, CMyString username)
 {
@@ -796,11 +831,13 @@ SetBlankToName(CList<CItemData, CItemData>* plist, CMyString username)
    }
 }
 
+
 BOOL
 CheckExtension(CMyString name, CMyString ext)
 {
    int pos = name.Find(ext);
    return (pos == name.GetLength() - ext.GetLength()); //Is this at the end??
 }
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

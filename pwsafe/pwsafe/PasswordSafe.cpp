@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "MainDlg.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -120,7 +119,7 @@ CPasswordSafeApp::InitInstance()
    }
    else
    {
-      m_maindlg = new CPasswordSafeDlg(NULL);
+      m_maindlg = new DboxMain(NULL);
       m_pMainWnd = m_maindlg;
 
       //Set up an Accelerator table

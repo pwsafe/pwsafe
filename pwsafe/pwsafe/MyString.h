@@ -10,8 +10,8 @@ class CMyString
 public:
    CMyString();
    CMyString(LPCSTR lpsz);
-   CMyString(const CMyString &stringSrc);
-   CMyString(const CString &stringSrc);
+   CMyString(const CMyString& stringSrc);
+   CMyString(const CString& stringSrc);
    ~CMyString();
 
    TCHAR operator[](int nIndex) const;

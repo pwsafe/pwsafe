@@ -3,7 +3,7 @@
 
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
-// Used by Password Safe.rc
+// Used by PasswordSafe.rc
 //
 #define ID_BROWSE                       3
 #define IDD_ABOUTBOX                    100
