@@ -1636,12 +1636,13 @@ void DboxMain::OnUnMinimize()
 void
 DboxMain::startLockCheckTimer(){
 	UINT nTimer;
+	const UINT INTERVAL = 5000; // every 5 seconds should suffice
 	TRACE("startLockCheckTimer\n");
 	if (PWSprefs::GetInstance()->
 	    GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE ){
 	
 		TRACE("Starting timer\n");
-		nTimer=SetTimer(TIMER_CHECKLOCK,100,NULL);
+		nTimer=SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
 		TRACE("Going %d\n",nTimer);
 	}
 	else
