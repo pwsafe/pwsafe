@@ -57,29 +57,31 @@ END_MESSAGE_MAP()
 void CImportDlg::OnOther() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(TRUE);
+  m_tab=2;
 }
 
 void CImportDlg::OnComma() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(FALSE);
-  m_Separator = _T(",");
+  m_tab=1;
 }
 
 void CImportDlg::OnTab() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(FALSE);
-  m_Separator = _T("\t");
+  m_tab=0;
 }
 
 void CImportDlg::OnNoGroup() 
 {
   GetDlgItem(IDC_GROUP_NAME)->EnableWindow(FALSE);
-  m_groupName = _T("");
+  m_group=0;
 }
 
 void CImportDlg::OnYesGroup() 
 {
   GetDlgItem(IDC_GROUP_NAME)->EnableWindow(TRUE);
+  m_group=1;
 }
 
 void CImportDlg::OnHelp() 
@@ -92,13 +94,17 @@ void CImportDlg::OnHelp()
 void CImportDlg::OnOK() 
 {
   switch (m_tab) {
-  case 0: m_Separator = _T("\t"); UpdateData(FALSE); break;
-  case 1: m_Separator = _T(","); UpdateData(FALSE); break;
-  default: break; // m_Separator will get value from edit control
+    case 0: m_Separator = _T("\t"); break;
+    case 1: m_Separator = _T(","); break;
+    case 2: GetDlgItemText(IDC_OTHER_SEPARATOR,m_Separator); break;
+    default: break; // m_Separator will get value from edit control
   }
 
   if (m_group == 0) {
     m_groupName = _T("");
+    UpdateData(FALSE);
+  } else {
+    GetDlgItemText(IDC_GROUP_NAME,m_groupName);
     UpdateData(FALSE);
   }
   
