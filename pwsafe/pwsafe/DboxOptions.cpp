@@ -169,16 +169,16 @@ DboxMain::OnOptions()
 	GetPref(PWSprefs::BoolPrefs::ShowPWInList);
 
       if (bOldShowPasswordInList != m_bShowPasswordInList)
-	RefreshList();
-#if 0
+		RefreshList();
+	
       if (display.m_usesystemtray == TRUE) {
-	if (m_TrayIcon.Visible() == FALSE)
-	  m_TrayIcon.ShowIcon();
-      } else { // user doesn't want to display
-	if (m_TrayIcon.Visible() == TRUE)
-	  m_TrayIcon.HideIcon();
+		if (app.m_TrayIcon.Visible() == FALSE)
+			app.m_TrayIcon.ShowIcon();
+	  } else { // user doesn't want to display
+		if (app.m_TrayIcon.Visible() == TRUE)
+			app.m_TrayIcon.HideIcon();
       }
-#endif
+
       /*
        * Here are the old (pre 2.0) semantics:
        * The username entered in this dialog box will be added to all the entries
