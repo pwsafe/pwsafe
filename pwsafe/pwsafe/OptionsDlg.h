@@ -20,6 +20,7 @@ public:
    BOOL		m_queryaddname;
    BOOL		m_saveimmediately;
    BOOL		m_alwaysontop;
+   CMyString	m_pwlendefault;
 
 protected:
    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

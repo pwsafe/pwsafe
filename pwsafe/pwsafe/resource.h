@@ -73,7 +73,9 @@
 #define IDC_CRYPTKEY2                   1046
 #define IDC_DEFUSERNAME                 1049
 #define IDC_STATIC_USERNAME             1050
+#define IDC_DEFPWLENGTH                 1051
 #define IDC_MESSAGE                     1052
+#define IDC_STATIC_DEFPWLENGTH          1052
 #define IDC_QUERYCHECK                  1053
 #define IDC_MAKEDEF                     1055
 #define IDC_NEW                         1056

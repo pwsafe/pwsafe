@@ -129,10 +129,8 @@ void CEditDlg::HidePassword(void)
 
 void CEditDlg::OnRandom() 
 {
-   CMyString temp;
-
-   for (int x=0; x<8; x++)
-      temp += GetRandAlphaNumChar();
+   UINT pwlen = app.GetProfileInt("", "pwlendefault", 8);
+   CMyString temp = GetAlphaNumPassword(pwlen);
 
    UpdateData(TRUE);
    CMyString msg;

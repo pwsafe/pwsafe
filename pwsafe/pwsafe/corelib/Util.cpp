@@ -139,7 +139,7 @@ const char* special_chars="+-=_@#$%^&;:,.<>/~";
 
 
 char
-GetRandAlphaNumChar()
+GetRandAlphaNumChar(void)
 {
    char char_pool[257];
    size_t poolLen;
@@ -155,7 +155,7 @@ GetRandAlphaNumChar()
 
 
 char
-GetRandAlphaNumSymbolChar()
+GetRandAlphaNumSymbolChar(void)
 {
    char char_pool[257];
    size_t poolLen;
@@ -168,6 +168,21 @@ GetRandAlphaNumSymbolChar()
    poolLen = strlen(char_pool);
 
    return(char_pool[RangeRand(poolLen)]);
+}
+
+
+CMyString
+GetAlphaNumPassword(UINT pwlen)
+{
+   char ch;
+   CMyString password = "";
+
+   for (UINT x = 0; x < pwlen; x++)
+   {
+      ch = GetRandAlphaNumChar();
+      password += ch;
+   }
+   return password;
 }
 
 

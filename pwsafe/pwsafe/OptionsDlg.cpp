@@ -47,6 +47,12 @@ COptionsDlg::COptionsDlg(CWnd* pParent)
       app.GetProfileInt("", "queryaddname", TRUE);
    m_saveimmediately =
       app.GetProfileInt("", "saveimmediately", TRUE);
+
+	CString temp;
+
+   UINT pwlen = app.GetProfileInt("", "pwlendefault", 8);
+   temp.Format("%d", pwlen);
+   m_pwlendefault = (CMyString)temp;
 }
 
 
@@ -67,6 +73,7 @@ COptionsDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Check(pDX, IDC_QUERYADDNAME, m_queryaddname);
    DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
    DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
+   DDX_Text(pDX, IDC_DEFPWLENGTH, (CString &)m_pwlendefault);
 }
 
 
@@ -103,6 +110,8 @@ COptionsDlg::OnOK()
    app.WriteProfileInt("", "queryaddname", m_queryaddname);
    app.WriteProfileInt("", "alwaysontop", m_alwaysontop);
    app.WriteProfileInt("", "saveimmediately", m_saveimmediately);
+   int pwlendefault = atoi(m_pwlendefault);
+   app.WriteProfileInt("", "pwlendefault", pwlendefault);
    app.m_pMainWnd = NULL;
 
    CDialog::OnOK();
