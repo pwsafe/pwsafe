@@ -1,24 +1,36 @@
 $Id$
 
-Password Safe 2.0 Release Note - February 2004
+Password Safe 2.01 Release Note - April 2004
 =================================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.0. For a short description of Password
+with Password Safe version 2.01. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
 
-This is the first non-beta release of version 2.0 of PasswordSafe. The
-first beta was released over two months ago, and while several minor
-issues have been found and fixed, there have been *no* reports of lost
-or corrupted data. Therefore, I think that 2.0 is ready for prime
-time.
+This is a maintenance release, fixing minor issues that have been
+found in 2.0.
 
-Thanks to all the brave souls who've downloaded the pre-2.0 releases,
-reported bugs and have patiently explained, duplicated, posted test
-data, suggested fixes and workarounds, and verified fixes. Without
-you, this release would not have been possible!
+Bugs fixed in 2.01:
+===================
+[902003, 905449] No longer crashes when last item is deleted.
+[923401] Combination (master password) wasn't checked for mixed-case.
+[917525] Right click when cursor isn't over an now entry handled
+correctly.
+[912293, 916587] Can now invoke edit dialog after in-line edit of tree-view
+entry. (also, no longer crashes upon delete of edited item)
+[912751] If the last database saved is no longer available, ask the
+user what to do, rather than force the creation of a new one.
+[908335, 913684] Icon display problem on XP fixed, thanks to Mike Batten.
+[xxxxxx] On XP, password no longer appears with vertical bars, thanks
+to DK.
+
+New Features for 2.01:
+======================
+[921859] URLs starting with "ftp://" are also right-clickable.
+[xxxxxx] Now possible to specify hexadecimal password generation in
+Manage->Options->Password Policy, thanks ot DK.
 
 New Features for 2.0:
 =====================
@@ -87,6 +99,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.6  2004/04/07 05:39:29  ronys
+Updated for 2.01
+
 Revision 1.5  2004/02/17 21:11:06  ronys
 Updated for 2.0
 
