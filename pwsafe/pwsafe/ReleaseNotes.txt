@@ -1,13 +1,44 @@
 $Id$
 
-Password Safe 1.92b Release Note - June 2003
-============================================
+Password Safe 1.92c Release Note - August 2003
+==============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 1.92b. For a short description of Password
+with Password Safe version 1.92c. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
+
+1.92c:
+======
+Release 1.92c is a maintenance release, fixing some minor issues:
+
+Bugfix [783314] Clearing the clipboard now properly trashes the
+password in process memory, as well as emptying the clipboard.
+
+Bugfix [760656] Passing a filename that contains spaces via the
+command line now works correctly. Previously, the quotation marks
+confused PasswordSafe.
+
+Bugfix [777367] The Edit/View Item dialog box's Help button now works
+correctly.
+
+RFE [772212] Pressing Cancel when prompted for the password when
+unminimizing the application no longer exits the program. (Would
+happen only if "Lock password database on minimize" is set)
+
+Bugfix [769820] Pressing Cancel in the Clear Clipboard dialog box will
+now prevent the passowrd from being copied to the clipboard.
+Previously, it was equivalent to pressing OK. (Would happen
+only if "Confirm item copy to clipboard" was selected)
+
+RFE [768870] Added a manifest file for native Windows XP theme
+support.
+
+RFE [754790] The option "Clear the clipboard when minimized" has been
+changed to "Clear clipboard upon minimize or exit". Previously, the
+clipboard was unconditionally cleared upon exit. This allows the user
+to change the behaviour.
 
 1.92b:
 ======
@@ -101,6 +132,9 @@ Known Problems:
 - The Help file is outdated for this release.
 
 $Log$
+Revision 1.2.2.4  2003/08/09 10:22:02  ronys
+updated for 1.92c
+
 Revision 1.2.2.3  2003/06/13 07:08:58  ronys
 Describe 1.92b
 
