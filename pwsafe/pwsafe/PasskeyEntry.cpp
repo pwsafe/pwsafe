@@ -47,9 +47,10 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
    m_passkey = "";
 
    if (a_filespec.GetLength() > FILE_DISP_LEN) {
-	   m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
-
-	   m_message.Insert(0, _T("..."));
+//	   m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
+//	   m_message.Insert(0, _T("..."));
+      // changed by karel@VanderGucht.de to see beginning + ending of 'a_filespec'
+      m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + " ... " + a_filespec.Right(FILE_DISP_LEN/2);
 
    }
 

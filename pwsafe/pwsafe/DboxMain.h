@@ -84,7 +84,8 @@ protected:
    bool m_bSortAscending;
    int m_iSortedColumn;
 
-	bool m_bShowPassword;
+	bool m_bShowPasswordInEdit;
+	bool m_bShowPasswordInList;
 	BOOL m_bAlwaysOnTop;
 
 	int insertItem(CItemData &itemData, int iIndex = -1);
@@ -163,6 +164,7 @@ protected:
    // Following moved from Util.{h,cpp} and constified
 public:
    void MakeName(CMyString&, const CMyString &, const CMyString &) const; // used also by AddDlg, hence public
+   CMyString GetPassword(void);
 
 private:
   int WriteCBC(int fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);

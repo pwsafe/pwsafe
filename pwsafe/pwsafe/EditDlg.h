@@ -20,6 +20,8 @@ public:
 
    CMyString m_realpassword;
 
+   POSITION  m_listindex;
+
    void  ShowPassword(void);
    void  HidePassword(void);
 
@@ -35,7 +37,7 @@ protected:
    virtual void OnCancel();
    virtual BOOL OnInitDialog();
    afx_msg void OnRandom();
-
+   afx_msg void OnHelp();
    DECLARE_MESSAGE_MAP()
 };
 //-----------------------------------------------------------------------------

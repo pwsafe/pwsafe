@@ -1,16 +1,54 @@
 $Id$
 
-Password Safe 1.91 Release Note - May 2003
-==========================================
+Password Safe 1.92b Release Note - June 2003
+============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 1.91. For a short description of Password
+with Password Safe version 1.92b. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
 
-New Features:
-=============
+1.92b:
+======
+Release 1.92b is a maintenance release, fixing a minor, but annoying, problem:
+
+Bugfix [746127] When starting PasswordSafe, the focus was not set to
+the first list entry (it appears in blue, but the dotted line is not
+on it). You need to press the down-button first. The bad thing about
+this is, that you can't type the first letter of the entry you want to
+jump to.
+
+1.92a:
+======
+Release 1.92a is a maintenance release that addresses the following
+two issues. If you didn't notice these bugs, then there's no reason to
+upgrade.
+
+Bugfix [738380]: Show Passwords in list wasn't kept correctly across
+application invokations. Selecting this option and exiting the
+application would cause the passwords no to be shown when the
+application was next run.
+
+Support request [736497] & Bugfix [589536]: It is now possible to read
+passwordsafe databases on multilingual systems, specifically Chinese XP.
+
+New Features for 1.92:
+======================
+[736391] Whan a new master passphrase ("Safe Combination") is defined, the
+user is warned if it is cryptographically weak.
+
+[732609] The Options dialog box has been tabified, hopefully making it
+less intimidating for non-technical users.
+
+[505540] It is now possible to change the default length of generated
+passwords.
+
+[541928] It is now possible to specify the "Password Policy" via the
+Options dialog box, i.e., only uppercase, with/without digits, etc.
+
+Features added in 1.91:
+=======================
 [728507] Password Safe now remembers the last ten databases that were
 opened, and displays them in the File drop-down menu.
 
@@ -37,15 +75,43 @@ default. Invoke by Edit->Find Entry or via Ctrl-F.
 [635048] The taskbar icons for "copy password" and "copy username"
 have been replaced by something more clearly distinguishable. 
 
-Bugs Fixed:
-===========
+Bugs Fixed in 1.92:
+===================
+[733361] The application is no longer "permanently minimized" if
+closed while minimized.
+
+[556365] Generated passwords now include 'z', 'Z', and '9'. The
+distribution of numbers and letters has also been corrected.
+
+Bugs Fixed in 1.91:
+===================
+[731709] "File open error Can't open database xxxxx.dat" is no longer
+displayed on the first run of a fresh install.
+
+[730661] Toolbar buttons would disappear under some circumstances.
+
 [591882] It is now possible to copy via Ctrl-C from the Title,
 Username and Notes fields in the Edit/View Entry window.
+
+[730640] Password changes not saved in Edit dialog when "show password
+by default" option enabled.
 
 Known Problems:
 ===============
 - The Help file is outdated for this release.
 
 $Log$
+Revision 1.2.2.3  2003/06/13 07:08:58  ronys
+Describe 1.92b
+
+Revision 1.2.2.2  2003/05/20 13:15:51  ronys
+1.92a maintenance release
+
+Revision 1.2.2.1  2003/05/13 13:40:13  ronys
+1.92 release
+
+Revision 1.2  2003/05/01 07:58:17  ronys
+Added fixed bug #730640
+
 Revision 1.1  2003/04/29 14:22:32  ronys
 First versions of README and Release Notes under CVS for 1.91

@@ -15,12 +15,11 @@
 #include "EditDlg.h"
 #include "FindDlg.h"
 #include "PasskeyChangeDlg.h"
-#include "OptionsDlg.h"
+//#include "OptionsDlg.h"
 #include "PasskeyEntry.h"
 #include "PasskeySetup.h"
 #include "RemindSaveDlg.h"
 #include "QuerySetDef.h"
-#include "QueryAddName.h"
 #include "UsernameEntry.h"
 #include "TryAgainDlg.h"
 
@@ -164,7 +163,9 @@ DboxMain::DboxMain(CWnd* pParent)
     * This will happen if a filename was given in the command line.
     */
    if (m_currfile.IsEmpty()) {
-     m_currfile = (CMyString) app.GetProfileString("", "currentfile", "xxxxx.dat");
+     // If there's no registry key, this is probably a fresh install.
+     // CheckPassword will catch this and handle it correctly
+     m_currfile = (CMyString) app.GetProfileString("", "currentfile");
    }
    m_currbackup =
       (CMyString) app.GetProfileString("", "currentbackup", NULL);
@@ -179,7 +180,8 @@ DboxMain::DboxMain(CWnd* pParent)
 
    m_toolbarsSetup = FALSE;
 
-   m_bShowPassword = false;
+   m_bShowPasswordInEdit = false;
+   m_bShowPasswordInList = false;
    m_bSortAscending = true;
    m_iSortedColumn = 0;
 }
@@ -275,7 +277,11 @@ DboxMain::OnInitDialog()
 	m_ctlItemList.InsertColumn(2, "Notes");
 
 	if (app.GetProfileInt("", "showpwdefault", FALSE)) {
-		m_bShowPassword = true;
+		m_bShowPasswordInEdit = true;
+	}
+
+	if (app.GetProfileInt("", "showpwinlist", FALSE)) {
+		m_bShowPasswordInList = true;
 	}
 
 	CRect rect;
@@ -427,7 +433,10 @@ DboxMain::setupBars()
    m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle()
                             | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-   // placement code moved to OnSize - eq
+   CRect rect;
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+   m_ctlItemList.MoveWindow(&rect, TRUE);
 
 	// Set flag
    m_toolbarsSetup = TRUE;
@@ -531,7 +540,14 @@ DboxMain::OnAdd()
       int newpos = insertItem(m_pwlist.GetAt(curPos));
       SelectEntry(newpos);
       m_ctlItemList.SetFocus();
-      m_changed = TRUE;
+      if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+      {
+         Save();
+      }
+      else
+      {
+         m_changed = TRUE;
+      }
       ChangeOkUpdate();
    }
    else if (rc == IDCANCEL)
@@ -548,48 +564,54 @@ DboxMain::OnListDoubleClick( NMHDR *, LRESULT *)
 void
 DboxMain::OnCopyPassword() 
 {
-   if (SelItemOk() == TRUE)
-   {
-      POSITION itemPos = Find(getSelectedItem());
-		
-      CMyString curPassString;
-      m_pwlist.GetAt(itemPos).GetPassword(curPassString);
+	bool	bCopyPassword = true;	// will get set to false if user hits cancel
 
-      uGlobalMemSize = curPassString.GetLength()+1;
-      hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-      char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
+	//Remind the user about clipboard security
+	CClearQuestionDlg clearDlg(this);
+	if (clearDlg.m_dontaskquestion == FALSE)
+	{
+		int rc = clearDlg.DoModal();
+		if (rc == IDOK)
+		{
+		}
+		else if (rc == IDCANCEL)
+		{
+			bCopyPassword = false;
+		}
+	}
 
-      memcpy(pGlobalLock, curPassString, curPassString.GetLength());
+	if ( !bCopyPassword )
+		return;
+
+	if (SelItemOk() == TRUE)
+	{
+		POSITION itemPos = Find(getSelectedItem());
 		
-      pGlobalLock[uGlobalMemSize-1] = '\0';
-      GlobalUnlock(hGlobalMemory);	
+		CMyString curPassString;
+		m_pwlist.GetAt(itemPos).GetPassword(curPassString);
 		
-      if (OpenClipboard() == TRUE)
-      {
-         if (EmptyClipboard()!=TRUE)
-            AfxMessageBox("The clipboard was not emptied correctly");
-         if (SetClipboardData(CF_TEXT, hGlobalMemory) == NULL)
-            AfxMessageBox("The data was not pasted into the clipboard "
-                          "correctly");
-         if (CloseClipboard() != TRUE)
-            AfxMessageBox("The clipboard could not be closed");
-      }
-      else
-         AfxMessageBox("The clipboard could not be opened correctly");
+		uGlobalMemSize = curPassString.GetLength()+1;
+		hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
+		char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
 		
-      //Remind the user about clipboard security
-      CClearQuestionDlg clearDlg(this);
-      if (clearDlg.m_dontaskquestion == FALSE)
-      {
-         int rc = clearDlg.DoModal();
-         if (rc == IDOK)
-         {
-         }
-         else if (rc == IDCANCEL)
-         {
-         }
-      }
-   }
+		memcpy(pGlobalLock, curPassString, curPassString.GetLength());
+		
+		pGlobalLock[uGlobalMemSize-1] = '\0';
+		GlobalUnlock(hGlobalMemory);	
+		
+		if (OpenClipboard() == TRUE)
+		{
+			if (EmptyClipboard()!=TRUE)
+				AfxMessageBox("The clipboard was not emptied correctly");
+			if (SetClipboardData(CF_TEXT, hGlobalMemory) == NULL)
+				AfxMessageBox("The data was not copied into the clipboard "
+				"correctly");
+			if (CloseClipboard() != TRUE)
+				AfxMessageBox("The clipboard could not be closed");
+		}
+		else
+			AfxMessageBox("The clipboard could not be opened correctly");
+	}
 }
 
 
@@ -657,6 +679,7 @@ DboxMain::OnEdit()
       dlg_edit.m_realpassword = item.GetPassword();
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = item.GetNotes();
+      dlg_edit.m_listindex = listindex;   // for future reference, this is not multi-user friendly
 
 	  app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
@@ -686,15 +709,23 @@ DboxMain::OnEdit()
          */
          m_pwlist.RemoveAt(listindex);
          POSITION curPos = m_pwlist.AddTail(item);
-		 m_ctlItemList.DeleteItem(curSel);
-		 insertItem(m_pwlist.GetAt(curPos));
-         m_changed = TRUE;
+		   m_ctlItemList.DeleteItem(curSel);
+		   insertItem(m_pwlist.GetAt(curPos));
+         if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+         {
+            Save();
+         }
+         else
+         {
+            m_changed = TRUE;
+         }
       }
 
-         rc = SelectEntry(curSel);
-         if (rc == LB_ERR) {
-	   SelectEntry(m_ctlItemList.GetItemCount() - 1);
-         }
+      rc = SelectEntry(curSel);
+      if (rc == LB_ERR)
+      {
+	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+      }
       m_ctlItemList.SetFocus();
       ChangeOkUpdate();
    }
@@ -720,13 +751,14 @@ DboxMain::OnOK()
 		}
 	}
 
-	CRect rect;
-	GetWindowRect(&rect);
-	app.WriteProfileInt("", "top", rect.top);
-	app.WriteProfileInt("", "bottom", rect.bottom);
-	app.WriteProfileInt("", "left", rect.left);
-	app.WriteProfileInt("", "right", rect.right);
-
+	if (!IsIconic()) {
+	  CRect rect;
+	  GetWindowRect(&rect);
+	  app.WriteProfileInt("", "top", rect.top);
+	  app.WriteProfileInt("", "bottom", rect.bottom);
+	  app.WriteProfileInt("", "left", rect.left);
+	  app.WriteProfileInt("", "right", rect.right);
+	}
 	app.WriteProfileInt("", "sortedcolumn", m_iSortedColumn);
 	app.WriteProfileInt("", "sortascending", m_bSortAscending);
 
@@ -751,7 +783,8 @@ DboxMain::OnOK()
    }
    else
    {
-      ClearClipboard();
+     if (app.GetProfileInt("", "dontaskminimizeclearyesno", FALSE) == TRUE)
+       ClearClipboard();
       app.m_pMainWnd = NULL;
    }
 
@@ -923,7 +956,7 @@ DboxMain::SelItemOk()
 BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 {
   BOOL retval;
-  retval = m_ctlItemList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+  retval = m_ctlItemList.SetItemState(i, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
   if (MakeVisible)
     m_ctlItemList.EnsureVisible(i, FALSE);
   return retval;
@@ -944,13 +977,13 @@ DboxMain::RefreshList()
 	lvColumn.mask = LVCF_WIDTH;
 
 	bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
-	if (m_bShowPassword && !bPasswordColumnShowing) {
+	if (m_bShowPasswordInList && !bPasswordColumnShowing) {
 		m_ctlItemList.InsertColumn(3, "Password");
 		CRect rect;
 		m_ctlItemList.GetClientRect(&rect);
 		m_ctlItemList.SetColumnWidth(3, app.GetProfileInt("", "column4width", rect.Width() / 4));
 	}
-	else if (!m_bShowPassword && bPasswordColumnShowing) {
+	else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
 		app.WriteProfileInt("", "column4width", lvColumn.cx);
 		m_ctlItemList.DeleteColumn(3);
 	}
@@ -1087,40 +1120,46 @@ DboxMain::OnSize(UINT nType,
    if (nType == SIZE_MINIMIZED)
    {
 	   m_ctlItemList.DeleteAllItems();
-      if (app.GetProfileInt("",
-                            "dontaskminimizeclearyesno",
-                            FALSE) == TRUE)
-      {
-         ClearClipboard();
-      }
-      if (app.GetProfileInt("", "databaseclear", FALSE) == TRUE)
-      {
-         BOOL dontask = app.GetProfileInt("",
-                                          "dontasksaveminimize",
-                                          FALSE);
-         BOOL doit = TRUE;
-         if ((m_changed == TRUE)
-             && (dontask == FALSE))
-         {
-            CRemindSaveDlg remindDlg(this);
 
-            int rc = remindDlg.DoModal();
-            if (rc == IDOK)
-            {
-            }
-            else if (rc == IDCANCEL)
-            {
-               doit = FALSE;
-            }
-         }
+	   // clear clipboard when minimized
+	   if (app.GetProfileInt("",
+		   "dontaskminimizeclearyesno",
+		   FALSE) == TRUE)
+	   {
+		   ClearClipboard();
+	   }
 
-         if ((doit == TRUE) && (m_existingrestore == FALSE)) 
-         {
-            OnSave();
-            ClearData();
-            m_needsreading = TRUE;
-         }
-      }
+	   // lock database when minimized
+	   if (app.GetProfileInt("", "databaseclear", FALSE) == TRUE)
+	   {
+		   // confirm save on minimize
+		   BOOL dontask = app.GetProfileInt("",
+			   "dontasksaveminimize",
+			   FALSE);
+		   BOOL doit = TRUE;
+		   if ((m_changed == TRUE)
+			   && (dontask == FALSE))
+		   {
+			   CRemindSaveDlg remindDlg(this);
+			   
+			   int rc = remindDlg.DoModal();
+			   if (rc == IDOK)
+			   {
+			   }
+			   else if (rc == IDCANCEL)
+			   {
+				   doit = FALSE;
+			   }
+		   }
+		   
+		   if ((doit == TRUE) && (m_existingrestore == FALSE)) 
+		   {
+			   if ( m_changed ) // only save if changed
+				   OnSave();
+			   ClearData();
+			   m_needsreading = TRUE;
+		   }
+	   }
    }
    else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
    {
@@ -1169,8 +1208,10 @@ DboxMain::OnSize(UINT nType,
          }
          else
          {
-            app.m_pMainWnd = NULL;
-            CDialog::OnCancel();
+            m_needsreading = TRUE;
+            m_existingrestore = FALSE;
+            ShowWindow( SW_MINIMIZE );
+            return;
          }
       }
       RefreshList();
@@ -1215,51 +1256,6 @@ DboxMain::Save()
    m_changed = FALSE;
    ChangeOkUpdate();
    return SUCCESS;
-}
-
-
-void
-DboxMain::OnOptions() 
-{
-   COptionsDlg optionsDlg(this);
-   BOOL currUseDefUser = optionsDlg.m_usedefuser;
-   CMyString currDefUsername = optionsDlg.m_defusername;
-
-   optionsDlg.m_alwaysontop = m_bAlwaysOnTop;
-
-   int rc = optionsDlg.DoModal();
-   if (rc == IDOK)
-   {
-	   m_bAlwaysOnTop = optionsDlg.m_alwaysontop;
-	   UpdateAlwaysOnTop();
-
-	   bool bOldShowPassword = m_bShowPassword;
-	   m_bShowPassword = app.GetProfileInt("", "showpwdefault", FALSE)? true: false;
-      if (currDefUsername != optionsDlg.m_defusername)
-      {
-         if (currUseDefUser == TRUE)
-            MakeFullNames(&m_pwlist, currDefUsername);
-         if (optionsDlg.m_usedefuser==TRUE)
-            DropDefUsernames(&m_pwlist, optionsDlg.m_defusername);
-
-         RefreshList();
-      }
-      else if (currUseDefUser != optionsDlg.m_usedefuser)
-      {
-         //Only check box has changed
-         if (currUseDefUser == TRUE)
-            MakeFullNames(&m_pwlist, currDefUsername);
-         else
-            DropDefUsernames(&m_pwlist, optionsDlg.m_defusername);
-         RefreshList();
-      }
-	  else if (bOldShowPassword + m_bShowPassword == 1) {
-         RefreshList();
-	  }
-   }
-   else if (rc == IDCANCEL)
-   {
-   }
 }
 
 
@@ -1543,7 +1539,7 @@ DboxMain::Open( const char* pszFilename )
 		int rc2;
 		
 		temp =
-			"Do you want to save changes to the password databse: "
+			"Do you want to save changes to the password database: "
 			+ m_currfile
 			+ "?";
 		rc = MessageBox(temp,
@@ -2083,38 +2079,6 @@ DboxMain::ReadFile(const CMyString &a_filename,
       DropDefUsernames(&m_pwlist, temp);
    }
 
-   //See if we should add usernames to an old version file
-   if (app.GetProfileInt("", "queryaddname", TRUE) == TRUE
-       && (CheckVersion(&m_pwlist) == V10))
-   {
-      //No splits and no defusers
-      CQueryAddName dlg(this);
-      int response = dlg.DoModal();
-      if (response == IDOK)
-      {
-         CUsernameEntry dlg2(this);
-         int response2 = dlg2.DoModal();
-         if (response2 == IDOK)
-         {
-            if (dlg2.m_makedefuser == TRUE)
-            {
-               //MakeLongNames if this changes a set default username
-               SetBlankToDef(&m_pwlist);
-            }
-            else
-            {
-               SetBlankToName(&m_pwlist, dlg2.m_username);
-            }
-            m_changed = TRUE;
-         }
-         else if (response2 == IDCANCEL)
-         {
-         }
-      }
-      else if (response == IDCANCEL)
-      {
-      }
-   }
    return SUCCESS;
 }
 
@@ -2516,7 +2480,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 	m_ctlItemList.SetItemText(iResult, 2, strNotes);
 	m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
 
-	if (m_bShowPassword) {
+	if (m_bShowPasswordInList) {
 		m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
 	}
 
@@ -2563,8 +2527,8 @@ DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start MakeFullName
-      int pos = temp.Find(SPLTCHR);
-      int pos2 = temp.Find(DEFUSERCHR);
+      int pos = temp.FindByte(SPLTCHR);
+      int pos2 = temp.FindByte(DEFUSERCHR);
       if (pos==-1 && pos2!=-1)
       {
          //Insert defusername if string contains defchr but not splitchr
@@ -2608,7 +2572,7 @@ DboxMain::CheckVersion(CList<CItemData, CItemData>* plist)
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
 
-      if (temp.Find(SPLTCHR) != -1)
+      if (temp.FindByte(SPLTCHR) != -1)
          return V15;
 
       plist->GetNext(listPos);
@@ -2629,8 +2593,8 @@ DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
       plist->GetAt(listPos).GetName(temp);
 
       //Start Check
-      if ((temp.Find(SPLTCHR) == -1)
-          && (temp.Find(DEFUSERCHR) == -1))
+      if ((temp.FindByte(SPLTCHR) == -1)
+          && (temp.FindByte(DEFUSERCHR) == -1))
       {
          plist->GetAt(listPos).SetName(temp + DEFUSERCHR);
       }
@@ -2650,7 +2614,7 @@ DboxMain::SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &us
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start Check
-      if ( (temp.Find(SPLTCHR) == -1) && (temp.Find(DEFUSERCHR) == -1) )
+      if ( (temp.FindByte(SPLTCHR) == -1) && (temp.FindByte(DEFUSERCHR) == -1) )
       {
          plist->GetAt(listPos).SetName(temp + SPLTSTR + username);
       }
@@ -2672,44 +2636,44 @@ int
 DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username)
 //Returns split position for a name that was split and -1 for non-split name
 {
-   int pos = name.Find(SPLTCHR);
-   if (pos==-1) //Not a split name
-   {
-      int pos2 = name.Find(DEFUSERCHR);
-      if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
-      {
-         title = name;
-      }
-      else
-      {
-         title = CMyString(name.Left(pos2));
-      }
-
-      if ((pos2 != -1)
-          && (app.GetProfileInt("", "usedefuser", FALSE)==TRUE))
-      {
-         username = CMyString(app.GetProfileString("", "defusername", ""));
-      }
-      else
-      {
-         username = "";
-      }
-   }
-   else
-   {
-      /*
-       * There should never ever be both a SPLITCHR and a DEFUSERCHR in
-       * the same string
-       */
-      CMyString temp;
-      temp = CMyString(name.Left(pos));
-      temp.TrimRight();
-      title = temp;
-      temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
-      temp.TrimLeft();
-      username = temp;
-   }
-   return pos;
+	int pos = name.FindByte(SPLTCHR);
+	if (pos==-1) //Not a split name
+	{
+		int pos2 = name.FindByte(DEFUSERCHR);
+		if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
+		{
+			title = name;
+		}
+		else
+		{
+			title = CMyString(name.Left(pos2));
+		}
+		
+		if ((pos2 != -1)
+			&& (app.GetProfileInt("", "usedefuser", FALSE)==TRUE))
+		{
+			username = CMyString(app.GetProfileString("", "defusername", ""));
+		}
+		else
+		{
+			username = "";
+		}
+	}
+	else
+	{
+	/*
+	* There should never ever be both a SPLITCHR and a DEFUSERCHR in
+	* the same string
+		*/
+		CMyString temp;
+		temp = CMyString(name.Left(pos));
+		temp.TrimRight();
+		title = temp;
+		temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
+		temp.TrimLeft();
+		username = temp;
+	}
+	return pos;
 }
 
 
