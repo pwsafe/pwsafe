@@ -58,6 +58,7 @@
 #define IDI_MBASKICON                   222
 #define IDI_MBWARNICON                  223
 #define IDI_MBINFOICON                  224
+#define IDD_IMPORT_TEXT                 225
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -138,6 +139,13 @@
 #define IDC_ESC_EXITS                   1088
 #define IDC_DOUBLE_CLICK_COPIES         1089
 #define IDC_DOUBLE_CLICK_EDITS          1090
+#define IDC_TAB                         1091
+#define IDC_COMMA                       1092
+#define IDC_OTHER                       1093
+#define IDC_OTHER_SEPARATOR             1094
+#define IDC_NO_GROUP                    1096
+#define IDC_YES_GROUP                   1097
+#define IDC_GROUP_NAME                  1098
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -191,9 +199,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        225
+#define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32843
-#define _APS_NEXT_CONTROL_VALUE         1091
+#define _APS_NEXT_CONTROL_VALUE         1100
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
