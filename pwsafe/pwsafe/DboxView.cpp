@@ -567,12 +567,9 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     ASSERT(di != NULL);
     ASSERT(di->list_index == i);
     retval = m_ctlItemTree.SelectItem(di->tree_item);
-    if (MakeVisible) {// Following needed to show selection when Find has focus. Ugh.
+    if (MakeVisible) {// Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(di->tree_item,
 				 TVIS_DROPHILITED | TVIS_SELECTED,
-				 TVIS_DROPHILITED | TVIS_SELECTED);
-      m_ctlItemTree.SetItemState(di->tree_item,
-				 TVIS_SELECTED,
 				 TVIS_DROPHILITED | TVIS_SELECTED);
     }
   }
