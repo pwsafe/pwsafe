@@ -791,6 +791,7 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
 	 ASSERT(di != NULL);
 	 ASSERT(di->tree_item == ti);
 	 item = di->list_index;
+	 m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one
        } else {
 	 // NODE selected Show popup
 	 if (menu.LoadMenu(IDR_POPGROUP)) {
