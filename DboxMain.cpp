@@ -136,8 +136,6 @@ DboxMain::DboxMain(CWnd* pParent)
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	//{{AFX_MSG_MAP(DboxMain)
    ON_WM_DESTROY()
-   ON_WM_PAINT()
-   ON_WM_QUERYDRAGICON()
    ON_WM_SIZE()
    ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
    ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
@@ -149,6 +147,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
 	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
 	ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
+   ON_COMMAND(ID_MENUITEM_BROWSE, OnBrowse)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
@@ -396,47 +395,6 @@ DboxMain::OnDestroy()
 }
 
 
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
-
-void
-DboxMain::OnPaint() 
-{
-   if (IsIconic())
-   {
-      CPaintDC dc(this); // device context for painting
-
-#if !defined(POCKET_PC)
-      SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
-#endif
-
-      // Center icon in client rectangle
-      int cxIcon = GetSystemMetrics(SM_CXICON);
-      int cyIcon = GetSystemMetrics(SM_CYICON);
-      CRect rect;
-      GetClientRect(&rect);
-      int x = (rect.Width() - cxIcon + 1) / 2;
-      int y = (rect.Height() - cyIcon + 1) / 2;
-
-      // Draw the icon
-      dc.DrawIcon(x, y, m_hIcon);
-   }
-   else
-   {
-      CDialog::OnPaint();
-   }
-}
-
-
-// The system calls this to obtain the cursor to display while the user drags
-//  the minimized window.
-HCURSOR
-DboxMain::OnQueryDragIcon()
-{
-   return (HCURSOR) m_hIcon;
-}
-
 
 void
 DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
@@ -453,6 +411,16 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 #else
 	OnCopyPassword();
 #endif
+}
+
+
+void DboxMain::OnBrowse()
+{
+  HINSTANCE stat = ::ShellExecute(NULL, NULL, m_BrowseURL,
+				  NULL, _T("."), SW_SHOWNORMAL);
+  if (int(stat) < 32) {
+    AfxMessageBox("oops");
+  }
 }
 
 void
@@ -603,7 +571,7 @@ DboxMain::OnExportV17()
                      "|",
                      this);
       fd.m_ofn.lpstrTitle =
-	"Please name the exported database";
+	_T("Please name the exported database");
       rc = fd.DoModal();
       if (rc == IDOK)
 	{
@@ -645,7 +613,7 @@ DboxMain::OnExportText()
 		       "|",
 		       this);
 	fd.m_ofn.lpstrTitle =
-	  "Please name the plaintext file";
+	  _T("Please name the plaintext file");
 	rc = fd.DoModal();
 	if (rc == IDOK) {
 	  newfile = (CMyString)fd.GetPathName();
@@ -760,7 +728,7 @@ DboxMain::OnCopyUsername()
    ASSERT(ci != NULL);
    CMyString username = ci->GetUser();
 
-   if (username.GetLength() == 0)
+   if (username.IsEmpty())
    {
       AfxMessageBox(_T("There is no username associated with this item."));
    }
@@ -905,9 +873,9 @@ DboxMain::Open( const CMyString &pszFilename )
 		int rc2;
 		
 		temp =
-			"Do you want to save changes to the password database: "
+		  _T("Do you want to save changes to the password database: ")
 		  + m_core.GetCurFile()
-			+ "?";
+			+ _T("?");
 		rc = MessageBox(temp,
 			AfxGetAppName(),
 			MB_ICONQUESTION|MB_YESNOCANCEL);
@@ -953,7 +921,7 @@ DboxMain::Open( const CMyString &pszFilename )
 	if (rc == PWScore::CANT_OPEN_FILE)
 	{
 		temp = pszFilename;
-		temp += "\n\nCould not open file for reading!";
+		temp += _T("\n\nCould not open file for reading!");
 		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
 		/*
 		Everything stays as is... Worst case,
@@ -964,7 +932,7 @@ DboxMain::Open( const CMyString &pszFilename )
 	
 	m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
-	m_title = "Password Safe - " + m_core.GetCurFile();
+	m_title = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
 	ChangeOkUpdate();
 	RefreshList();
@@ -987,9 +955,9 @@ DboxMain::New()
    if (m_core.IsChanged())
    {
       CMyString temp =
-         "Do you want to save changes to the password database: "
+	_T("Do you want to save changes to the password database: ")
 	+ m_core.GetCurFile()
-         + "?";
+         + _T("?");
 
       rc = MessageBox(temp,
                       AfxGetAppName(),
@@ -1022,7 +990,7 @@ DboxMain::New()
 
    m_core.SetCurFile(""); //Force a save as... 
 #if !defined(POCKET_PC)
-   m_title = "Password Safe - <Untitled>";
+   m_title = _T("Password Safe - <Untitled>");
 #endif
    ChangeOkUpdate();
 
@@ -1071,7 +1039,7 @@ DboxMain::Restore()
    case PWScore::CANT_OPEN_FILE:
       temp =
 	m_core.GetCurFile()
-	+ "\n\nCan't open file. Please choose another.";
+	+ _T("\n\nCan't open file. Please choose another.");
       MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
    case TAR_OPEN:
       return Open();
@@ -1089,8 +1057,8 @@ DboxMain::Restore()
    {
       int rc2;
 	
-      temp = "Do you want to save changes to the password list: "
-         + m_core.GetCurFile() + "?";
+      temp = _T("Do you want to save changes to the password list: ")
+         + m_core.GetCurFile() + _T("?");
 
       rc = MessageBox(temp,
                       AfxGetAppName(),
@@ -1114,7 +1082,7 @@ DboxMain::Restore()
    rc = m_core.ReadFile(newback, passkey);
    if (rc == PWScore::CANT_OPEN_FILE)
    {
-      temp = newback + "\n\nCould not open file for reading!";
+      temp = newback + _T("\n\nCould not open file for reading!");
       MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
       //Everything stays as is... Worst case, they saved their file....
       return PWScore::CANT_OPEN_FILE;
@@ -1123,7 +1091,7 @@ DboxMain::Restore()
    m_core.SetCurFile(""); //Force a save as...
    m_core.SetChanged(true); //So that the *.dat version of the file will be saved.
 #if !defined(POCKET_PC)
-   m_title = "Password Safe - <Untitled Restored Backup>";
+   m_title = _T("Password Safe - <Untitled Restored Backup>");
 #endif
    ChangeOkUpdate();
    RefreshList();
@@ -1188,14 +1156,14 @@ DboxMain::SaveAs()
    rc = m_core.WriteFile(newfile);
    if (rc == PWScore::CANT_OPEN_FILE)
    {
-      CMyString temp = newfile + "\n\nCould not open file for writing!";
+      CMyString temp = newfile + _T("\n\nCould not open file for writing!");
       MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return PWScore::CANT_OPEN_FILE;
    }
 
    m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
-   m_title = "Password Safe - " + m_core.GetCurFile();
+   m_title = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
    ChangeOkUpdate();
 

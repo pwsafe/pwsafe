@@ -70,11 +70,6 @@ DboxMain::OnOptions()
    optionsDlg.AddPage( &username );
    optionsDlg.AddPage( &misc );
 
-   /*
-   **  Save some values for use after the dialog completes.
-   */
-   BOOL      currUseDefUser = username.m_usedefuser;
-   CMyString currDefUsername = username.m_defusername;
 
    /*
    **  Remove the "Apply Now" button.
@@ -118,33 +113,33 @@ DboxMain::OnOptions()
       */
       m_bAlwaysOnTop = display.m_alwaysontop;
       UpdateAlwaysOnTop();
+      bool bOldShowPasswordInList = m_bShowPasswordInList;
+      m_bShowPasswordInList = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE)? true: false;
+
+      if (bOldShowPasswordInList != m_bShowPasswordInList)
+	RefreshList();
+
+      /*
+       * Here are the old (pre 2.0) semantics:
+       * The username entered in this dialog box will be added to all the entries
+       * in the username-less database that you just opened. Click Ok to add the
+       * username or Cancel to leave them as is.
+       *
+       * You can also set this username to be the default username by clicking the
+       * check box.  In this case, you will not see the username that you just added
+       * in the main dialog (though it is still part of the entries), and it will
+       * automatically be inserted in the Add dialog for new entries.
+       *
+       * To me (ronys), these seem too complicated, and not useful once password files
+       * have been converted to the old (username-less) format to 1.9 (with usernames).
+       * (Not to mention 2.0).
+       * Therefore, the username will now only be a default value to be used in new entries,
+       * and in converting pre-2.0 databases.
+       */
+
       m_core.SetDefUsername(username.m_defusername);
       m_core.SetUseDefUser(username.m_usedefuser == TRUE ? true : false);
 
-      bool bOldShowPasswordInList = m_bShowPasswordInList;
-      m_bShowPasswordInList = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE)? true: false;
-      if (currDefUsername != (CMyString)username.m_defusername)
-      {
-         if (TRUE == currUseDefUser)
-            m_core.MakeFullNames(currDefUsername);
-         if (TRUE == username.m_usedefuser)
-            m_core.DropDefUsernames(username.m_defusername);
-
-         RefreshList();
-      }
-      else if (currUseDefUser != username.m_usedefuser)
-      {
-         //Only check box has changed
-         if (TRUE == currUseDefUser)
-            m_core.MakeFullNames(currDefUsername);
-         else
-            m_core.DropDefUsernames(username.m_defusername);
-         RefreshList();
-      }
-      else if ((bOldShowPasswordInList + m_bShowPasswordInList) == 1)
-      {
-         RefreshList();
-      }
    }
    else if (rc == IDCANCEL)
    {

@@ -144,11 +144,10 @@ protected:
 	//{{AFX_MSG(DboxMain)
    virtual BOOL OnInitDialog();
    afx_msg void OnDestroy();
-   afx_msg void OnPaint();
-   afx_msg HCURSOR OnQueryDragIcon();
    virtual void OnCancel();
    afx_msg void OnSize(UINT nType, int cx, int cy);
    afx_msg void OnAbout();
+   afx_msg void OnBrowse();
    afx_msg void OnCopyUsername();
    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
    afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
@@ -202,6 +201,7 @@ protected:
 private:
   PWScore m_core;
   bool m_OnEditDisabled;
+  CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
 };
 
 // Following used to keep track of display vs data
