@@ -17,6 +17,7 @@ public:
    CMyString	m_defusername;
    BOOL		m_querysetdef;
    BOOL		m_queryaddname;
+   BOOL		m_alwaysontop;
 
 protected:
    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

@@ -60,6 +60,7 @@ COptionsDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_DEFUSERNAME, (CString &)m_defusername);
    DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
    DDX_Check(pDX, IDC_QUERYADDNAME, m_queryaddname);
+   DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
 }
 
 
@@ -93,6 +94,7 @@ COptionsDlg::OnOK()
    app.WriteProfileString("", "defusername", (CString &)m_defusername);
    app.WriteProfileInt("", "querysetdef", m_querysetdef);
    app.WriteProfileInt("", "queryaddname", m_queryaddname);
+   app.WriteProfileInt("", "alwaysontop", m_alwaysontop);
    app.m_pMainWnd = NULL;
 
    CDialog::OnOK();

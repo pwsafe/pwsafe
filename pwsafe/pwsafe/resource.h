@@ -8,10 +8,12 @@
 #define IDD_FIND                        101
 #define IDD_PASSWORDSAFE_DIALOG         102
 #define IDS_OUTPUTFILE                  102
+#define ID_SYSMENU_ALWAYSONTOP          102
 #define IDS_TEMPFILE                    103
 #define IDS_COMPANY                     104
 #define IDS_STATCOMPANY                 105
 #define IDS_STATMESSAGE                 106
+#define IDS_ALWAYSONTOP                 107
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128
 #define IDD_KEYCHANGE_DIALOG            131
@@ -79,6 +81,7 @@
 #define IDC_FIND_TEXT                   1062
 #define IDC_FIND_CS                     1063
 #define IDC_STATUS                      1064
+#define IDC_ALWAYSONTOP                 1065
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -115,7 +118,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        194
 #define _APS_NEXT_COMMAND_VALUE         32820
-#define _APS_NEXT_CONTROL_VALUE         1065
-#define _APS_NEXT_SYMED_VALUE           102
+#define _APS_NEXT_CONTROL_VALUE         1066
+#define _APS_NEXT_SYMED_VALUE           103
 #endif
 #endif
