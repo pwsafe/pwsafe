@@ -97,8 +97,12 @@ PWScore::ReadFile(const CMyString &a_filename,
    PWSfile in(a_filename, a_passkey);
 
   int status;
+  PWSfile::VERSION version = in.GetFileVersion();
 
-  status = in.OpenReadFile(PWSfile::V17);
+  if (version == PWSfile::UNKNOWN_VERSION)
+    return UNKNOWN_VERSION;
+
+  status = in.OpenReadFile(version);
 
   if (status != PWSfile::SUCCESS)
     return CANT_OPEN_FILE;

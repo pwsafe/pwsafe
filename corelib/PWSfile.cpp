@@ -204,9 +204,13 @@ int PWSfile::WriteRecord(const CItemData &item)
     return SUCCESS;
   }
   break;
-  case V20:
-    // TBD
-    return UNSUPPORTED_VERSION;
+  case V20: {
+    WriteCBC(item.GetTitle());
+    WriteCBC(item.GetUser());
+    WriteCBC(item.GetPassword());
+    WriteCBC(item.GetNotes());
+    return SUCCESS;
+  }
   default:
     ASSERT(0);
     return UNSUPPORTED_VERSION;
@@ -249,11 +253,11 @@ int PWSfile::ReadRecord(CItemData &item)
   ASSERT(m_fd != -1);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
+  CMyString tempdata;  
+  int numread = 0;
+
   switch (m_curversion) {
   case V17: {
-    CMyString tempdata;
-    
-    int numread = 0;
     numread += ReadCBC(tempdata);
     item.SetName(tempdata);
     numread += ReadCBC(tempdata);
@@ -263,9 +267,18 @@ int PWSfile::ReadRecord(CItemData &item)
 
     return (numread > 0) ? SUCCESS : END_OF_FILE;
   }
-  case V20:
-    // TBD
-    return UNSUPPORTED_VERSION;
+  case V20: {
+    numread += ReadCBC(tempdata);
+    item.SetTitle(tempdata);
+    numread += ReadCBC(tempdata);
+    item.SetUser(tempdata);
+    numread += ReadCBC(tempdata);
+    item.SetPassword(tempdata);
+    numread += ReadCBC(tempdata);
+    item.SetNotes(tempdata);
+
+    return (numread > 0) ? SUCCESS : END_OF_FILE;
+  }
   default:
     ASSERT(0);
     return UNSUPPORTED_VERSION;
