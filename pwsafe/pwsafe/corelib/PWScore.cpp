@@ -103,7 +103,7 @@ PWScore::WritePlaintextFile(const CMyString &filename)
   while (listPos != NULL)
     {
       temp = m_pwlist.GetAt(listPos);
-      of << temp.GetPlaintext('\t') << endl;
+      of << (const char *)temp.GetPlaintext('\t') << endl;
       m_pwlist.GetNext(listPos);
     }
   of.close();
