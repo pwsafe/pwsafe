@@ -252,6 +252,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_FIND, OnFind)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
+   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
+   ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
    ON_COMMAND(ID_FILE_EXPORTTO_OLD1XFORMAT, OnExportV17)
    ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
@@ -328,6 +330,18 @@ DboxMain::OnInitDialog()
 		m_bShowPasswordInList = true;
 
 	}
+
+	/*
+	 * XXX For now, default to starting list view.
+	 * XXX This should be a persistent user preference.
+	 */
+
+	CMenu* mmenu = GetMenu();
+	CMenu* submenu = mmenu->GetSubMenu(2);
+
+	submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
+	submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+
 
 	CRect rect;
 	m_ctlItemList.GetClientRect(&rect);
@@ -1219,6 +1233,58 @@ void
 DboxMain::OnSave() 
 {
    Save();
+}
+
+void
+DboxMain::OnListView() 
+{
+   CMenu* mmenu = GetMenu();
+   CMenu* submenu = mmenu->GetSubMenu(2);
+
+   UINT state = submenu->GetMenuState(ID_MENUITEM_LIST_VIEW, MF_BYCOMMAND);
+   ASSERT(state != 0xFFFFFFFF);
+
+   if (state & MF_CHECKED) {
+      submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_CHECKED | MF_BYCOMMAND);
+      SetTreeView();
+   } else {
+      submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+      SetListView();
+   }
+}
+
+void
+DboxMain::OnTreeView() 
+{
+   CMenu* mmenu = GetMenu();
+   CMenu* submenu = mmenu->GetSubMenu(2);
+
+   UINT state = submenu->GetMenuState(ID_MENUITEM_TREE_VIEW, MF_BYCOMMAND);
+   ASSERT(state != 0xFFFFFFFF);
+
+   if (state & MF_CHECKED) {
+      submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
+      SetListView();
+   } else {
+      submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_CHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+      SetTreeView();
+   }
+}
+
+void
+DboxMain::SetListView()
+{
+  m_ctlItemList.ShowWindow(SW_SHOW);
+}
+
+void
+DboxMain::SetTreeView()
+{
+  m_ctlItemList.ShowWindow(SW_HIDE);
 }
 
 void

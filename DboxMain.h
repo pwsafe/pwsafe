@@ -120,6 +120,9 @@ protected:
    void ClearData();
    int NewFile(void);
 
+   void SetListView();
+   void SetTreeView();
+
    //Version of message functions with return values
    int Save(void);
    int SaveAs(void);
@@ -147,6 +150,8 @@ protected:
    afx_msg void OnOpen();
    afx_msg void OnRestore();
    afx_msg void OnSaveAs();
+   afx_msg void OnListView();
+   afx_msg void OnTreeView();
    afx_msg void OnBackupSafe();
    afx_msg void OnPasswordChange();
    afx_msg void OnClearclipboard();
