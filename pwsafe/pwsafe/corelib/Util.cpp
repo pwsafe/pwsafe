@@ -167,7 +167,7 @@ BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
 int
 _writecbc(int fp,
           const unsigned char* buffer,
-          int length,
+          int length, unsigned char type,
 	  const unsigned char *pass, int passlen,
           const unsigned char* salt, int saltlen,
           unsigned char* cbcbuffer)
@@ -186,6 +186,10 @@ _writecbc(int fp,
    // XXX next line is a portability issue - what if file is read by a program
    // compiled with a different sizeof int or different endian-ness?
    memcpy(lengthblock, (unsigned char*)&length, sizeof length);
+
+   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
+   lengthblock[sizeof(length)] = type;
+
    xormem(lengthblock, cbcbuffer, 8); // do the CBC thing
    Algorithm->Encrypt(lengthblock, lengthblock);
    memcpy(cbcbuffer, lengthblock, 8); // update CBC for next round
@@ -232,7 +236,7 @@ _writecbc(int fp,
  */
 int
 _readcbc(int fp,
-         unsigned char* &buffer, unsigned int &buffer_len,
+         unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
 	 const unsigned char *pass, int passlen,
          const unsigned char* salt, int saltlen,
          unsigned char* cbcbuffer)
@@ -256,6 +260,9 @@ _readcbc(int fp,
 
    // portability issue - see comment in _writecbc
    int length = *((int*)lengthblock);
+
+   // new for 2.0 -- lengthblock[4..7] previously set to zero
+   type = lengthblock[sizeof(int)]; // type is first byte after the length
 
    trashMemory(lengthblock, 8);
    trashMemory(lcpy, 8);
