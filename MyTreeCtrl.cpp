@@ -33,7 +33,6 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	//{{AFX_MSG_MAP(CMyTreeCtrl)
 	ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
-	ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
 	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONUP()
@@ -66,6 +65,8 @@ void CMyTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
 
 void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
 {
+  // Starting with hItem, update the Group field of all of hItem's
+  // children. Called after a label has been edited.
   if (IsLeafNode(hItem)) {
     DWORD itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
@@ -84,10 +85,10 @@ void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  TV_DISPINFO     *ptvinfo;
+  TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
 
-  ptvinfo = (TV_DISPINFO *)pnmhdr;
   if (ptvinfo->item.pszText != NULL) {
+    DboxMain *parent = (DboxMain *)GetParent();
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     HTREEITEM ti = ptvinfo->item.hItem;
@@ -97,14 +98,11 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
       ci->SetTitle(ptvinfo->item.pszText);
-      DboxMain *parent = (DboxMain *)GetParent();
       // update corresponding List text
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       ASSERT(di != NULL);
       int lindex = di->list_index;
       parent->UpdateListItemTitle(lindex, ptvinfo->item.pszText);
-      // Mark database as modified
-      parent->SetChanged(true);
     } else {
       // Update all leaf chldren with new path element
       // prefix is path up to and NOT including renamed node
@@ -122,6 +120,9 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       } while (1);
       UpdateLeafsGroup(ti, prefix);
     }
+    // Mark database as modified
+    parent->SetChanged(true);
+    SortChildren(GetParentItem(ti));
   }
   *pLResult = TRUE;
 }
@@ -141,7 +142,6 @@ void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
       m_pimagelist->DragEnter(this, point);
     }
   }
-
   CTreeCtrl::OnMouseMove(nFlags, point);
 }
 
@@ -322,9 +322,7 @@ void CMyTreeCtrl::OnButtonUp()
 	DeleteItem(parent);
 	parent = grandParent;
       }
-    } else
-      MessageBeep(0);
-
+    }
     ReleaseCapture();
     m_bDragging = FALSE;
     SelectDropTarget(NULL);
