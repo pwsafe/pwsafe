@@ -2512,8 +2512,8 @@ DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start MakeFullName
-      int pos = temp.Find(SPLTCHR);
-      int pos2 = temp.Find(DEFUSERCHR);
+      int pos = temp.FindByte(SPLTCHR);
+      int pos2 = temp.FindByte(DEFUSERCHR);
       if (pos==-1 && pos2!=-1)
       {
          //Insert defusername if string contains defchr but not splitchr
@@ -2557,7 +2557,7 @@ DboxMain::CheckVersion(CList<CItemData, CItemData>* plist)
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
 
-      if (temp.Find(SPLTCHR) != -1)
+      if (temp.FindByte(SPLTCHR) != -1)
          return V15;
 
       plist->GetNext(listPos);
@@ -2578,8 +2578,8 @@ DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
       plist->GetAt(listPos).GetName(temp);
 
       //Start Check
-      if ((temp.Find(SPLTCHR) == -1)
-          && (temp.Find(DEFUSERCHR) == -1))
+      if ((temp.FindByte(SPLTCHR) == -1)
+          && (temp.FindByte(DEFUSERCHR) == -1))
       {
          plist->GetAt(listPos).SetName(temp + DEFUSERCHR);
       }
@@ -2599,7 +2599,7 @@ DboxMain::SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &us
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start Check
-      if ( (temp.Find(SPLTCHR) == -1) && (temp.Find(DEFUSERCHR) == -1) )
+      if ( (temp.FindByte(SPLTCHR) == -1) && (temp.FindByte(DEFUSERCHR) == -1) )
       {
          plist->GetAt(listPos).SetName(temp + SPLTSTR + username);
       }
@@ -2621,44 +2621,44 @@ int
 DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username)
 //Returns split position for a name that was split and -1 for non-split name
 {
-   int pos = name.Find(SPLTCHR);
-   if (pos==-1) //Not a split name
-   {
-      int pos2 = name.Find(DEFUSERCHR);
-      if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
-      {
-         title = name;
-      }
-      else
-      {
-         title = CMyString(name.Left(pos2));
-      }
-
-      if ((pos2 != -1)
-          && (app.GetProfileInt("", "usedefuser", FALSE)==TRUE))
-      {
-         username = CMyString(app.GetProfileString("", "defusername", ""));
-      }
-      else
-      {
-         username = "";
-      }
-   }
-   else
-   {
-      /*
-       * There should never ever be both a SPLITCHR and a DEFUSERCHR in
-       * the same string
-       */
-      CMyString temp;
-      temp = CMyString(name.Left(pos));
-      temp.TrimRight();
-      title = temp;
-      temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
-      temp.TrimLeft();
-      username = temp;
-   }
-   return pos;
+	int pos = name.FindByte(SPLTCHR);
+	if (pos==-1) //Not a split name
+	{
+		int pos2 = name.FindByte(DEFUSERCHR);
+		if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
+		{
+			title = name;
+		}
+		else
+		{
+			title = CMyString(name.Left(pos2));
+		}
+		
+		if ((pos2 != -1)
+			&& (app.GetProfileInt("", "usedefuser", FALSE)==TRUE))
+		{
+			username = CMyString(app.GetProfileString("", "defusername", ""));
+		}
+		else
+		{
+			username = "";
+		}
+	}
+	else
+	{
+	/*
+	* There should never ever be both a SPLITCHR and a DEFUSERCHR in
+	* the same string
+		*/
+		CMyString temp;
+		temp = CMyString(name.Left(pos));
+		temp.TrimRight();
+		title = temp;
+		temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
+		temp.TrimLeft();
+		username = temp;
+	}
+	return pos;
 }
 
 
