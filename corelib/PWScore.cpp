@@ -470,6 +470,8 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
 
   int pos = -1;
   for (;;) {
+    if (!ifs)
+      break;
     notes.erase();
 
     // this line should always be a title contained in []'s
