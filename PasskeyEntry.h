@@ -2,6 +2,7 @@
 //-----------------------------------------------------------------------------
 
 #include "SysColStatic.h"
+#include "MyString.h"
 
 //-----------------------------------------------------------------------------
 class CPasskeyEntry
@@ -11,13 +12,15 @@ class CPasskeyEntry
 public:
    CPasskeyEntry(CWnd* pParent,
                  const CString& a_filespec,
-                 BOOL first = FALSE); 
+                 bool first = false); 
 
-   int GetCancelReturnValue();
+   int GetStatus()
+   { return m_status; }
 
 // Dialog Data
    //{{AFX_DATA(CPasskeyEntry)
-   enum { IDD = IDD_PASSKEYENTRY, IDDFIRST = IDD_PASSKEYENTRY_FIRST };
+   enum { IDD = IDD_PASSKEYENTRY,
+          IDDFIRST = IDD_PASSKEYENTRY_FIRST };
    CMyString	m_passkey;
    //}}AFX_DATA
    CString	m_message;
@@ -26,15 +29,15 @@ public:
    // ClassWizard generated virtual function overrides
    //{{AFX_VIRTUAL(CPasskeyEntry)
 protected:
-   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+   virtual void DoDataExchange(CDataExchange* pDX);
    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
    CSysColStatic m_Static,m_Static2,m_Static3;
-   int numtimes;
-   int tryagainreturnval;
-   BOOL m_first;
+   int m_tries;
+   int m_status;
+   bool m_first;
 
    // Generated message map functions
    //{{AFX_MSG(CPasskeyEntry)
