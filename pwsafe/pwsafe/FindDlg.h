@@ -8,6 +8,7 @@
 //
 
 #include "corelib/PwsPlatform.h"
+#include "corelib/MyString.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PwsPopupDialog.h"
@@ -25,13 +26,13 @@ class CFindDlg : public SUPERCLASS
  public:
 	typedef SUPERCLASS		super;
 
-  static void Doit(CWnd* pParent = NULL); // implement Singleton pattern
+  static void Doit(CWnd* pParent, BOOL *isCS, CMyString *lastFind); // implement Singleton pattern
   ~CFindDlg();
   // Dialog Data
   //{{AFX_DATA(CFindDlg)
 	enum { IDD = IDD_FIND };
   BOOL	m_cs_search;
-  CString	m_search_text;
+  CMyString	m_search_text;
   CString	m_status;
 	//}}AFX_DATA
 
@@ -58,13 +59,16 @@ class CFindDlg : public SUPERCLASS
   DECLARE_MESSAGE_MAP()
 
  private:
-  CFindDlg(CWnd* pParent = NULL);   // standard constructor
+  CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind);
   static CFindDlg *self;
   int *m_indices; // array of found items
   int m_lastshown; // last index selected, -1 indicates no search done yet
   int m_numFound; // number of items that matched, as returned by DboxMain::FindAll
-  CString m_last_search_text;
+  CMyString m_last_search_text;
   BOOL m_last_cs_search;
+
+  CMyString *m_lastTextPtr;
+  BOOL *m_lastCSPtr;
 };
 
 #undef SUPERCLASS

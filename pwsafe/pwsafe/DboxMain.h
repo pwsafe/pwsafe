@@ -244,6 +244,8 @@ protected:
 private:
   PWScore  &m_core;
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
+  CMyString m_lastFindStr;
+  BOOL m_lastFindCS;
 
   BOOL IsWorkstationLocked();
   void startLockCheckTimer();

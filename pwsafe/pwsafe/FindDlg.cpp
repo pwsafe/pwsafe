@@ -23,10 +23,10 @@ static char THIS_FILE[] = __FILE__;
 
 CFindDlg *CFindDlg::self = NULL; // for Singleton pattern
 
-void CFindDlg::Doit(CWnd *pParent)
+void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
 {
   if (self == NULL) {
-    self = new CFindDlg(pParent);
+    self = new CFindDlg(pParent, isCS, lastFind);
     if (self != NULL)
       if (self->Create(CFindDlg::IDD)) {
 	RECT myRect, parentRect; 
@@ -46,7 +46,7 @@ void CFindDlg::Doit(CWnd *pParent)
 	  myRect.left = parentRect.left - (myRect.right - myRect.left);
 	  myRect.right = parentRect.left;
 	}
-	self-> MoveWindow(&myRect);
+	self->MoveWindow(&myRect);
 	self->ShowWindow(SW_SHOW);
       }
   } else {
@@ -54,14 +54,17 @@ void CFindDlg::Doit(CWnd *pParent)
   }
 }
 
-CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
+CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   : super(CFindDlg::IDD, pParent), m_indices(NULL),
     m_lastshown(-1), m_numFound(0),
-    m_last_search_text(_T("")), m_last_cs_search(FALSE)
+    m_last_search_text(_T("")), m_last_cs_search(FALSE),
+    m_lastCSPtr(isCS), m_lastTextPtr(lastFind)
 {
+  ASSERT(isCS !=NULL);
+  ASSERT(lastFind != NULL);
   //{{AFX_DATA_INIT(CFindDlg)
-  m_cs_search = FALSE;
-  m_search_text = _T("");
+  m_cs_search = *isCS;
+  m_search_text = *lastFind;
   m_status = _T("");
 	//}}AFX_DATA_INIT
 }
@@ -178,12 +181,19 @@ void CFindDlg::OnFind()
 #if defined(POCKET_PC)
 void CFindDlg::OnCancel()
 {
-	self = NULL;
-	super::DestroyWindow();
+  UpdateData(TRUE);
+  *m_lastTextPtr = m_search_text;
+  *m_lastCSPtr = m_cs_search;
+  self = NULL;
+  super::DestroyWindow();
 }
 #else
 void CFindDlg::OnClose() 
 {
+  UpdateData(TRUE);
+  *m_lastTextPtr = m_search_text;
+  *m_lastCSPtr = m_cs_search;
+
   self = NULL;
   super::OnCancel();
 }
