@@ -7,6 +7,7 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "AddDlg.h"
+#include "PwFont.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,6 +25,16 @@ CAddDlg::CAddDlg(CWnd* pParent)
    m_notes = "";
    m_username = "";
    m_title = "";
+}
+
+
+BOOL CAddDlg::OnInitDialog() 
+{
+   CDialog::OnInitDialog();
+ 
+   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
+
+   return TRUE;
 }
 
 

@@ -8,6 +8,7 @@
 #include "resource.h"
 
 #include "EditDlg.h"
+#include "PwFont.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -43,18 +44,12 @@ void CEditDlg::OnShowpassword()
 
    if (wndName == "&Show Password")
    {
-      m_password = m_realpassword;
-      GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Hide Password");
-      GetDlgItem(IDC_PASSWORD)->EnableWindow(TRUE);
-      m_isPwHidden = false;
+      ShowPassword();
    }
    else if (wndName == "&Hide Password")
    {
       m_realpassword = m_password;
-      m_password = GetAsterisk(m_realpassword);
-      GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Show Password");
-      GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
-      m_isPwHidden = true;
+      HidePassword();
    }
    else
       AfxMessageBox("Error in retrieving window text");
@@ -68,7 +63,8 @@ void CEditDlg::OnOK()
    UpdateData(TRUE);
 
    /*
-    * they may have changed the password
+    *  If the password is shown it may have been edited,
+    *  so save the current text.
     */
 
    if (! m_isPwHidden)
@@ -82,16 +78,6 @@ void CEditDlg::OnOK()
       return;
    }
 
-   // JPRFIXME - P2.4
-#if 0
-   if(m_password == "")
-   {
-      AfxMessageBox("This entry must have a password.");
-      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
-      return;
-   }
-#endif
-
    app.m_pMainWnd = NULL;
    CDialog::OnOK();
 }
@@ -104,28 +90,40 @@ void CEditDlg::OnCancel()
 }
 
 
-CMyString CEditDlg::GetAsterisk(CMyString base)
-{
-   CMyString temp;
-
-   for (int x=0; x<base.GetLength(); x++)
-      temp += "*";
-   return temp;
-}
-
-
 BOOL CEditDlg::OnInitDialog() 
 {
    CDialog::OnInitDialog();
  
+   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
+
    if (app.GetProfileInt("", "showpwdefault", FALSE) == TRUE)
    {
-      m_password = m_realpassword;
-      GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Hide Password");
-      GetDlgItem(IDC_PASSWORD)->EnableWindow(TRUE);
-      UpdateData(FALSE);
+      ShowPassword();
    }
+   else
+   {
+      HidePassword();
+   }
+   UpdateData(FALSE);
    return TRUE;
+}
+
+
+void CEditDlg::ShowPassword(void)
+{
+   m_password = m_realpassword;
+   m_isPwHidden = false;
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Hide Password");
+   GetDlgItem(IDC_PASSWORD)->EnableWindow(TRUE);
+}
+
+
+void CEditDlg::HidePassword(void)
+{
+   m_password = "**************";
+   m_isPwHidden = true;
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Show Password");
+   GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
 }
 
 
@@ -162,9 +160,13 @@ void CEditDlg::OnRandom()
       GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
 
       if (wndName == "&Show Password")
-         m_password = GetAsterisk(m_realpassword);
+      {
+         m_password = "**************";
+      }
       else if (wndName == "&Hide Password")
+      {
          m_password = m_realpassword;
+      }
       UpdateData(FALSE);
    }
    else if (nResponse == IDNO)

@@ -20,7 +20,8 @@ public:
 
    CMyString m_realpassword;
 
-   CMyString GetAsterisk(CMyString base);
+   void  ShowPassword(void);
+   void  HidePassword(void);
 
 private:
    bool m_isPwHidden;

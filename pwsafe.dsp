@@ -148,6 +148,10 @@ SOURCE=.\PasskeySetup.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PwFont.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\QueryAddName.cpp
 # End Source File
 # Begin Source File
@@ -257,6 +261,10 @@ SOURCE=.\PasswordDb.h
 # Begin Source File
 
 SOURCE=.\PasswordSafe.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PwFont.h
 # End Source File
 # Begin Source File
 
