@@ -1377,7 +1377,7 @@ void DboxMain::ExtractAutoTypeCmd(CMyString &str)
 {
   int left = str.Find(_T("autotype:"));
   if (left == -1) {
-    str = _T("");
+    str = _T("\\u\\t\\p\\n"); // default behaviour if keyword not found
   } else {
     CString tmp(str);
     tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
@@ -1386,8 +1386,8 @@ void DboxMain::ExtractAutoTypeCmd(CMyString &str)
       tmp = tmp.Left(right);
       str = CMyString(tmp);
     } else {
-		str=CMyString(tmp);
-	}
+      str=CMyString(tmp);
+    }
   }
 }
 
