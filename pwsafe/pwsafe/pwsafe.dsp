@@ -453,6 +453,22 @@ SOURCE=.\toolbar3.bmp
 
 SOURCE=.\tray.ico
 # End Source File
+# Begin Source File
+
+SOURCE=.\w95mbx01.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\w95mbx02.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\w95mbx03.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\w95mbx04.ico
+# End Source File
 # End Group
 # Begin Source File
 
