@@ -404,3 +404,128 @@ CMyString PWScore::GetPassKey() const
   }
   return retval;
 }
+
+/*
+  Thought this might be useful to others...
+  I made the mistake of using another password safe for a while...
+  Glad I came back before it was too late, but I still needed to bring in those passwords.
+  
+  The format of the source file is from doing an export to TXT file in keepass.
+  I tested it using my password DB from KeePass.
+
+  There are two small things: if you have a line that is enclosed by square brackets in the
+  notes, it will stop processing.  Also, it adds a single, extra newline character to any notes
+  that is imports.  Both are pretty easy things to live with.
+  
+  --jah
+*/
+
+int
+PWScore::ImportKeePassTextFile(const CMyString &filename)
+{
+  static const char *ImportedPrefix = { "ImportedKeePass" };
+  ifstream ifs(filename);
+
+  if (!ifs) {
+    return CANT_OPEN_FILE;
+  }
+
+  string linebuf;
+
+  string group;
+  string title;
+  string user;
+  string passwd;
+  string notes;
+
+  // read a single line.
+  if (!getline(ifs, linebuf, '\n') || linebuf.empty()) {
+    return INVALID_FORMAT;
+  }
+
+  // the first line of the keepass text file contains a few garbage characters
+  linebuf = linebuf.erase(0, linebuf.find("["));
+
+  int pos = -1;
+  for (;;) {
+    notes.erase();
+
+    // this line should always be a title contained in []'s
+    if (*(linebuf.begin()) != '[' || *(linebuf.end() - 1) != ']') {
+      return INVALID_FORMAT;
+    }
+
+    // set the title: line pattern: [<group>]
+    title = linebuf.substr(linebuf.find("[") + 1, linebuf.rfind("]") - 1).c_str();
+
+    // set the group: line pattern: Group: <user>
+    if (!getline(ifs, linebuf, '\n') || (pos = linebuf.find("Group: ")) == -1) {
+      return INVALID_FORMAT;
+    }
+    group = ImportedPrefix;
+    if (!linebuf.empty()) {
+      group.append(".");
+      group.append(linebuf.substr(pos + 7));
+    }
+
+    // set the user: line pattern: UserName: <user>
+    if (!getline(ifs, linebuf, '\n') || (pos = linebuf.find("UserName: ")) == -1) {
+      return INVALID_FORMAT;
+    }
+    user = linebuf.substr(pos + 10);
+
+    // set the url: line pattern: URL: <url>
+    if (!getline(ifs, linebuf, '\n') || (pos = linebuf.find("URL: ")) == -1) {
+      return INVALID_FORMAT;
+    }
+    if (!linebuf.substr(pos + 5).empty()) {
+      notes.append(linebuf.substr(pos + 5));
+      notes.append("\r\n\r\n");
+    }
+
+    // set the password: line pattern: Password: <passwd>
+    if (!getline(ifs, linebuf, '\n') || (pos = linebuf.find("Password: ")) == -1) {
+      return INVALID_FORMAT;
+    }
+    passwd = linebuf.substr(pos + 10);
+
+    // set the first line of notes: line pattern: Notes: <notes>
+    if (!getline(ifs, linebuf, '\n') || (pos = linebuf.find("Notes: ")) == -1) {
+      return INVALID_FORMAT;
+    }
+    notes.append(linebuf.substr(pos + 7));
+
+    // read in any remaining new notes and set up the next record
+    for (;;) {
+      // see if we hit the end of the file
+      if (!getline(ifs, linebuf, '\n')) {
+	break;
+      }
+
+      // see if we hit a new record
+      if (linebuf.find("[") == 0 && linebuf.rfind("]") == linebuf.length() - 1) {
+	break;
+      }
+
+      notes.append("\r\n");
+      notes.append(linebuf);
+    }
+
+    // Create & append the new record.
+    CItemData temp;
+    temp.CreateUUID();
+    temp.SetTitle(title.empty() ? group.c_str() : title.c_str());
+    temp.SetGroup(group.c_str());
+    temp.SetUser(user.empty() ? " " : user.c_str());
+    temp.SetPassword(passwd.empty() ? " " : passwd.c_str());
+    temp.SetNotes(notes.empty() ? "" : notes.c_str());
+
+    AddEntryToTail(temp);
+  }
+  ifs.close();
+
+  // TODO: maybe return an error if the full end of the file was not reached?
+
+  return SUCCESS;
+}
+
