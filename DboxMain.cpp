@@ -74,7 +74,7 @@ DboxMain::DboxMain(CWnd* pParent)
 
    //CString temp;
    //temp.LoadString(IDS_OUTPUTFILE);
-   //CString temp2 = app.m_curdir.m_mystring + temp;
+   //CString temp2 = app.m_curdir + temp;
    //m_deffile = (CMyString) ".\\pwsafe.dat"; //temp2;
 
    /*
@@ -392,16 +392,16 @@ DboxMain::OnAdd()
          CQuerySetDef defDlg(this);
          defDlg.m_message =
             "Would you like to set \""
-            + dataDlg.m_username.m_mystring
+            + (const CString&)dataDlg.m_username
             + "\" as your default username?\n\nIt would then automatically be "
-            + "put in the dialog each time you add a new item.  Also only"
-            + " non-default usernames will be displayed in the main window.";
+	        + "put in the dialog each time you add a new item.  Also only"
+	        + " non-default usernames will be displayed in the main window.";
          int rc2 = defDlg.DoModal();
          if (rc2 == IDOK)
          {
             app.WriteProfileInt("", "usedefuser", TRUE);
             app.WriteProfileString("", "defusername",
-                                   dataDlg.m_username.m_mystring);
+                                   dataDlg.m_username);
             DropDefUsernames(&m_pwlist, dataDlg.m_username);
             RefreshList();
          }
@@ -433,7 +433,7 @@ DboxMain::OnCopyPassword()
    {
       int curSel = m_listctrl->GetCurSel();
       CMyString curSelString;
-      m_listctrl->GetText(curSel, curSelString.m_mystring);
+      m_listctrl->GetText(curSel, curSelString);
       POSITION itemPos = Find(curSelString);
 		
       CMyString curPassString;
@@ -504,7 +504,7 @@ DboxMain::OnDelete()
          m_changed = TRUE;
          int curSel = m_listctrl->GetCurSel();
          CMyString curText;
-         m_listctrl->GetText(curSel, curText.m_mystring);
+         m_listctrl->GetText(curSel, curText);
          int ctrlindex = m_listctrl->FindStringExact(-1, (LPCTSTR)curText);
          m_listctrl->DeleteString(ctrlindex);
          POSITION listindex = Find(curText);
@@ -529,7 +529,7 @@ DboxMain::OnEdit()
       int curSel = m_listctrl->GetCurSel();
 		
       CMyString curText;
-      m_listctrl->GetText(curSel, curText.m_mystring);
+      m_listctrl->GetText(curSel, curText);
 
       int ctrlindex = m_listctrl->FindStringExact(-1, (LPCTSTR)curText);
 
@@ -619,12 +619,12 @@ DboxMain::OnOK()
 
    //Store current filename for next time...
    if (!m_currfile.IsEmpty())
-      app.WriteProfileString("", "currentfile", m_currfile.m_mystring);
+      app.WriteProfileString("", "currentfile", m_currfile);
    else
       app.WriteProfileString("", "currentfile", NULL);
 
    if (!m_currbackup.IsEmpty())
-      app.WriteProfileString("", "currentbackup", m_currbackup.m_mystring);
+      app.WriteProfileString("", "currentbackup", m_currbackup);
    else
       app.WriteProfileString("", "currentbackup", NULL);
 
@@ -693,7 +693,7 @@ DboxMain::SelItemOk()
    if (curSel != LB_ERR)
    {
       CMyString curText;
-      m_listctrl->GetText(curSel, curText.m_mystring);
+      m_listctrl->GetText(curSel, curText);
       int ctrlindex = m_listctrl->FindStringExact(-1, (LPCTSTR)curText);
       if (ctrlindex != LB_ERR)
       {
@@ -1027,7 +1027,7 @@ DboxMain::OnCopyUsername()
 
    int curSel = m_listctrl->GetCurSel();
    CMyString curSelString;
-   m_listctrl->GetText(curSel, curSelString.m_mystring);
+   m_listctrl->GetText(curSel, curSelString);
    POSITION itemPos = Find(curSelString);
 
    CMyString title, junk, username;
@@ -1626,7 +1626,7 @@ DboxMain::CheckPassword(const CMyString &filename,
             return CANT_OPEN_FILE;
 
 	  CString Errmess(_T("Can't open database "));
-	  Errmess += filename.m_mystring;
+	  Errmess += (const CString&)filename;
 	  MessageBox(Errmess, "File open error",
 		     MB_OK | MB_ICONWARNING);
 	}
@@ -1656,7 +1656,7 @@ DboxMain::CheckPassword(const CMyString &filename,
 
   CPasskeyEntry dbox_pkentry(this, filename, first);
   app.m_pMainWnd = &dbox_pkentry;
-  //dbox_pkentry->m_message = filename.m_mystring;
+  //dbox_pkentry->m_message = filename;
   int rc = dbox_pkentry.DoModal();
 
   if (rc == IDOK)
@@ -2352,7 +2352,7 @@ DboxMain::MakeName(CMyString& name, const CMyString &title, const CMyString &use
    if (username == "")
       name = title;
    else if (((app.GetProfileInt("", "usedefuser", FALSE))==TRUE)
-            && (username.m_mystring ==
+            && ((const CString &)username ==
                 app.GetProfileString("", "defusername", "")))
    {
       name = title + DEFUSERCHR;

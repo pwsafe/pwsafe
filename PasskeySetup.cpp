@@ -30,8 +30,8 @@ CPasskeySetup::CPasskeySetup(CWnd* pParent)
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_PASSKEY, m_passkey.m_mystring);
-   DDX_Text(pDX, IDC_VERIFY, m_verify.m_mystring);
+   DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
+   DDX_Text(pDX, IDC_VERIFY, (CString &)m_verify);
 }
 
 

@@ -57,7 +57,7 @@ COptionsDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Check(pDX, IDC_SAVEMINIMIZE, m_confirmsaveonminimize);
    DDX_Check(pDX, IDC_DEFPWSHOW, m_pwshow);
    DDX_Check(pDX, IDC_USEDEFUSER, m_usedefuser);
-   DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername.m_mystring);
+   DDX_Text(pDX, IDC_DEFUSERNAME, (CString &)m_defusername);
    DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
    DDX_Check(pDX, IDC_QUERYADDNAME, m_queryaddname);
 }
@@ -90,7 +90,7 @@ COptionsDlg::OnOK()
    app.WriteProfileInt("", "dontasksaveminimize", not(m_confirmsaveonminimize));
    app.WriteProfileInt("", "showpwdefault", m_pwshow);
    app.WriteProfileInt("", "usedefuser", m_usedefuser);
-   app.WriteProfileString("", "defusername", m_defusername.m_mystring);
+   app.WriteProfileString("", "defusername", (CString &)m_defusername);
    app.WriteProfileInt("", "querysetdef", m_querysetdef);
    app.WriteProfileInt("", "queryaddname", m_queryaddname);
    app.m_pMainWnd = NULL;

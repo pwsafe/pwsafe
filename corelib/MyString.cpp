@@ -191,6 +191,11 @@ CMyString::operator CString() const
    return m_mystring;
 }
 
+CMyString::operator CString&()
+{
+   return m_mystring;
+}
+
 CMyString::operator LPCTSTR() const
 {
    return (LPCTSTR)m_mystring;
@@ -238,37 +243,37 @@ CMyString::Right(int nCount) const
 bool
 operator==(const CMyString& s1, const CMyString& s2)
 {
-   return s1.m_mystring==s2.m_mystring;
+   return (const CString)s1 == (const CString)s2;
 }
 
 bool
 operator==(const CMyString& s1, LPCTSTR s2)
 {
-   return s1.m_mystring==s2;
+   return (const CString)s1==s2;
 }
 
 bool
 operator==(LPCTSTR s1, const CMyString& s2)
 {
-   return s1==s2.m_mystring;
+   return s1==(const CString)s2;
 }
 
 bool
 operator!=(const CMyString& s1, const CMyString& s2)
 {
-   return s1.m_mystring!=s2.m_mystring;
+   return (const CString)s1 != (const CString)s2;
 }
 
 bool
 operator!=(const CMyString& s1, LPCTSTR s2)
 {
-   return s1.m_mystring!=s2;
+   return (const CString)s1 != s2;
 }
 
 bool
 operator!=(LPCTSTR s1, const CMyString& s2)
 {
-   return s1!=s2.m_mystring;
+   return s1 != (const CString)s2;
 }
 
 //-----------------------------------------------------------------------------

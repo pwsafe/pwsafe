@@ -29,8 +29,8 @@ CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_CRYPTKEY1, m_cryptkey1.m_mystring);
-   DDX_Text(pDX, IDC_CRYPTKEY2, m_cryptkey2.m_mystring);
+   DDX_Text(pDX, IDC_CRYPTKEY1, (CString &)m_cryptkey1);
+   DDX_Text(pDX, IDC_CRYPTKEY2, (CString &)m_cryptkey2);
 }
 
 
