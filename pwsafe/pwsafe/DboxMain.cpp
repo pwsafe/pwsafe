@@ -82,29 +82,38 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 	// 1 - user name
 	// 2 - note
 	// 3 - password
-	CItemData *pLHS = (CItemData *)lParam1;
-	CItemData *pRHS = (CItemData *)lParam2;
-	CMyString title1, username1;
-	CMyString title2, username2;
+	const int	nRecurseFlag		= 500;		// added to the desired sort column when recursing
+	bool		bAlreadyRecursed	= false;
+	int			nSortColumn			= LOWORD(lParamSort);
+	CItemData*	pLHS				= (CItemData *)lParam1;
+	CItemData*	pRHS				= (CItemData *)lParam2;
+	CMyString	title1, username1;
+	CMyString	title2, username2;
 
+	// if the sort column is really big, then we must be being called via recursion
+	if ( nSortColumn >= nRecurseFlag )
+	{
+		bAlreadyRecursed = true;		// prevents further recursion
+		nSortColumn -= nRecurseFlag;	// normalizes sort column
+	}
 
 	int iResult;
-	switch(LOWORD(lParamSort)) {
+	switch(nSortColumn) {
 	case 0:
 		SplitName(pLHS->GetName(), title1, username1);
 		SplitName(pRHS->GetName(), title2, username2);
 		iResult = ((CString)title1).CompareNoCase(title2);
-		if (iResult == 0)
+		if (iResult == 0 && !bAlreadyRecursed)
 		  iResult = CompareFunc(lParam1, lParam2,
-					MAKELPARAM(1, HIWORD(lParamSort)));
+					MAKELPARAM(1 + nRecurseFlag, HIWORD(lParamSort)));	// making a recursed call, add nRecurseFlag
 		break;
 	case 1:
 		SplitName(pLHS->GetName(), title1, username1);
 		SplitName(pRHS->GetName(), title2, username2);
 		iResult = ((CString)username1).CompareNoCase(username2);
-		if (iResult == 0)
+		if (iResult == 0 && !bAlreadyRecursed)
 		  iResult = CompareFunc(lParam1, lParam2,
-					MAKELPARAM(0, HIWORD(lParamSort)));
+					MAKELPARAM(0 + nRecurseFlag, HIWORD(lParamSort)));	// making a recursed call, add nRecurseFlag
 		break;
 	case 2:
 		iResult = ((CString)pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
@@ -120,6 +129,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 	if (!bSortAscending) {
 		iResult *= -1;
 	}
+
 	return iResult;
 }
 
