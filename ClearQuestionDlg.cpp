@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+#include "corelib/PWSprefs.h"
 
 #include "ThisMfcApp.h"
 #include "ClearQuestionDlg.h"
@@ -17,15 +18,18 @@ static char THIS_FILE[] = __FILE__;
 CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
    : super(CClearQuestionDlg::IDD, pParent)
 {
-   m_dontaskquestion =
-      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), 0);
+  m_dontaskquestion =PWSprefs::GetInstance()->
+    GetPref(PWSprefs::BoolPrefs::DontAskQuestion);
 }
 
 
 void CClearQuestionDlg::DoDataExchange(CDataExchange* pDX)
 {
-   super::DoDataExchange(pDX);
-   DDX_Check(pDX, IDC_CLEARCHECK, m_dontaskquestion);
+  BOOL B_dontaskquestion = m_dontaskquestion ? TRUE : FALSE;
+
+  super::DoDataExchange(pDX);
+  DDX_Check(pDX, IDC_CLEARCHECK, B_dontaskquestion);
+  m_dontaskquestion = B_dontaskquestion == TRUE;
 }
 
 
@@ -45,7 +49,8 @@ CClearQuestionDlg::OnOK()
 {
    UpdateData(TRUE);
 
-   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), m_dontaskquestion);
+   PWSprefs::GetInstance()->
+     SetPref(PWSprefs::BoolPrefs::DontAskQuestion, m_dontaskquestion);
    app.m_pMainWnd = NULL;
    super::OnOK();
 }

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/PWSprefs.h"
 
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
@@ -45,7 +46,8 @@ END_MESSAGE_MAP()
 void CQuerySetDef::OnOK() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), m_querycheck ? 0 : 1);
+   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::QuerySetDef,
+				    m_querycheck == FALSE);
    super::OnOK();
 }
 
@@ -53,7 +55,8 @@ void CQuerySetDef::OnOK()
 void CQuerySetDef::OnCancel()
 {
    UpdateData(TRUE);
-   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), m_querycheck ? 0 : 1);
+   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::QuerySetDef,
+				    m_querycheck == FALSE);
    super::OnCancel();
 }
 //-----------------------------------------------------------------------------
