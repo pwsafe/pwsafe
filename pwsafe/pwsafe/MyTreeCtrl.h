@@ -21,6 +21,7 @@ public:
   HTREEITEM AddGroup(const CString &path);
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
+  afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
