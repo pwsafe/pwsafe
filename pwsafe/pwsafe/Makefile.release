@@ -9,9 +9,9 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 2.05
+RELEASENAME = 2.06
 
-RELEASEDIR = "/cygdrive/d/local/src/PasswordSafe/Releases"
+RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
 # Shouldn't need to change anything below this line
 
@@ -27,7 +27,7 @@ GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
 MD5SUM = /usr/bin/md5sum
 FTP_PUT = /usr/local/bin/ncftpput -v upload.sourceforge.net incoming
 
-MAKENSIS = /cygdrive/d/local/NSIS/makensis.exe
+MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 
 BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
 	ChangeLog.txt Release/pwsafe.exe pwsafe.chm
@@ -84,6 +84,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.9  2004/11/02 18:29:48  ronys
+# Updated for move to new machine
+#
 # Revision 1.8  2004/09/11 18:30:39  ronys
 # Added some convenient targets
 #
