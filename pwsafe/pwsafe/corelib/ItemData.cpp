@@ -110,21 +110,21 @@ CItemData::GetNotes() const
 BOOL
 CItemData::SetName(const CMyString &name)
 {
-   return EncryptData(name, &m_name, &m_nLength, (BOOL*)&m_nameValid);
+   return EncryptData(name, &m_name, &m_nLength, m_nameValid);
 }
 
 //Encrypts a plaintext password and stores it in m_password
 BOOL
 CItemData::SetPassword(const CMyString &password)
 {
-   return EncryptData(password, &m_password, &m_pwLength, (BOOL*)&m_pwValid);
+   return EncryptData(password, &m_password, &m_pwLength, m_pwValid);
 }
 
 //Encrypts plaintext notes and stores them in m_notes
 BOOL
 CItemData::SetNotes(const CMyString &notes)
 {
-   return EncryptData(notes, &m_notes, &m_notesLength, (BOOL*)&m_notesValid);
+   return EncryptData(notes, &m_notes, &m_notesLength, m_notesValid);
 }
 
 //Deletes stuff
@@ -152,7 +152,7 @@ BOOL
 CItemData::EncryptData(const CMyString &plain,
                        unsigned char **cipher,
                        int *cLength,
-                       BOOL *valid)
+                       BOOL &valid)
 {
   const LPCSTR plainstr = (const LPCSTR)plain; // use of CString::operator LPCSTR
   int result = EncryptData((const unsigned char*)plainstr,
@@ -181,15 +181,15 @@ CItemData::EncryptData(const unsigned char *plain,
                        int plainlength,
                        unsigned char **cipher,
                        int *cLength,
-                       BOOL *valid)
+                       BOOL &valid)
 {
   // Note that the m_salt member is set here, and read in DecryptData,
   // hence this can't be const, but DecryptData can
 
-   if (*valid == TRUE)
+   if (valid == TRUE)
    {
       delete [] *cipher;
-      *valid = FALSE;
+      valid = FALSE;
    }
 	
    //Figure out the length of the ciphertext (round for blocks)
@@ -199,7 +199,7 @@ CItemData::EncryptData(const unsigned char *plain,
    *cipher = new unsigned char[BlockLength];
    if (*cipher == NULL)
       return FALSE;
-   *valid = TRUE;
+   valid = TRUE;
    int x;
 
    if (m_saltValid == FALSE)
@@ -237,6 +237,9 @@ CItemData::DecryptData(const unsigned char *cipher,
                        unsigned char *plain,
                        int plainlength) const
 {
+  if (valid == FALSE) // check here once instead of in each caller to DecryptData
+    return FALSE;
+
    int BlockLength = GetBlockSize(cLength);
 
    BlowFish *Algorithm = MakeBlowFish();
@@ -265,6 +268,9 @@ CItemData::DecryptData(const unsigned char *cipher,
                        BOOL valid,
                        CMyString *plain) const
 {
+  if (valid == FALSE) // check here once instead of in each caller to DecryptData
+    return FALSE;
+
    int BlockLength = GetBlockSize(cLength);
 	
    unsigned char *plaintxt = (unsigned char*)plain->GetBuffer(BlockLength+1);

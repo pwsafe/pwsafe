@@ -358,7 +358,7 @@ BlowFish::InitializeBlowfish(unsigned char key[],
       temp.w.byte3 = key[(j+3)%keybytes];
       data = temp.word;
       bf_P[i] = bf_P[i] ^ data;
-      j = (j + 4) % keybytes;
+      j = short((j + 4) % keybytes);
    }
 
    datal = 0x00000000;
@@ -408,7 +408,7 @@ BlowFish::BlowFish(unsigned char *key,
       }
    }
 
-   InitializeBlowfish(key, keylen);
+   InitializeBlowfish(key, short(keylen));
 }
 
 BlowFish::~BlowFish()
