@@ -33,25 +33,31 @@ public:
 
    // CMytring operator+(LPCTSTR lpsz);
 
-   friend CMyString AFXAPI operator+(const CMyString& string1,const CMyString& string2);
-   friend CMyString AFXAPI operator+(const CMyString& string, TCHAR ch);
-   friend CMyString AFXAPI operator+(TCHAR ch, const CMyString& string);
-   friend CMyString AFXAPI operator+(const CMyString& string, LPCTSTR lpsz);
-   friend CMyString AFXAPI operator+(LPCTSTR lpsz, const CMyString& string);
+   friend CMyString AFXAPI operator+(const CMyString& string1,
+                                     const CMyString& string2);
+   friend CMyString AFXAPI operator+(const CMyString& string,
+                                     TCHAR ch);
+   friend CMyString AFXAPI operator+(TCHAR ch,
+                                     const CMyString& string);
+   friend CMyString AFXAPI operator+(const CMyString& string,
+                                     LPCTSTR lpsz);
+   friend CMyString AFXAPI operator+(LPCTSTR lpsz,
+                                     const CMyString& string);
+
    CMyString Mid(int nFirst, int nCount) const;
 
    LPTSTR GetBuffer(int nMinBufLength);
    void ReleaseBuffer(int nNewLength = -1);
    int GetLength() const;
 
-   int Find( TCHAR ch ) const;
-   int Find( LPCTSTR lpszSub ) const;
-   CString Left( int nCount ) const;
-   CString Right( int nCount ) const;
+   int Find(TCHAR ch) const;
+   int Find(LPCTSTR lpszSub) const;
+   CString Left(int nCount) const;
+   CString Right(int nCount) const;
 
    CString m_mystring;
-private:
 
+private:
    void trashstring();
 };
 //-----------------------------------------------------------------------------
