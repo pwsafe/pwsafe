@@ -111,6 +111,18 @@ bool CMyTreeCtrl::IsLeafNode(HTREEITEM hItem)
   return (i == LEAF);
 }
 
+void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
+{
+  // We don't want nodes that have no children to remain
+  HTREEITEM p;
+  do {
+    p = GetParentItem(hItem);
+    DeleteItem(hItem);
+    if (ItemHasChildren(p))
+      break;
+    hItem = p;
+  } while (p != TVI_ROOT);
+}
 
 bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
