@@ -150,6 +150,17 @@ DboxMain::setupBars()
       return;      // fail to create
     }
 
+  // Following code is needed to set toolbar to 24 bit colors. Ugh.
+  CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
+  CBitmap bmTemp; 
+  CImageList ilTemp; 
+  bmTemp.LoadBitmap(IDR_MAINBAR);
+  ilTemp.Create(16, 16, ILC_MASK | ILC_COLOR24, 10, 0);
+  ilTemp.Add(&bmTemp, RGB(192, 192, 192));
+  tbcTemp.SetImageList(&ilTemp);
+  ilTemp.Detach();
+  bmTemp.Detach();
+
   // TODO: Remove this if you don't want tool tips or a resizeable toolbar
   m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle()
 			   | CBRS_TOOLTIPS | CBRS_FLYBY);
