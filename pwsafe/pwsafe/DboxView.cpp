@@ -189,11 +189,10 @@ DboxMain::OnAdd()
 	{
 	  CQuerySetDef defDlg(this);
 	  defDlg.m_message =
-            "Would you like to set \""
+            _T("Would you like to set \"")
             + (const CString&)dataDlg.m_username
-            + "\" as your default username?\n\nIt would then automatically be "
-	    + "put in the dialog each time you add a new item.  Also only"
-	    + " non-default usernames will be displayed in the main window.";
+            + _T("\" as your default username?\n\nIt would then automatically be ")
+	    + _T("put in the dialog each time you add a new item.");
 	  int rc2 = defDlg.DoModal();
 	  if (rc2 == IDOK)
 	    {
@@ -202,7 +201,6 @@ DboxMain::OnAdd()
 				     dataDlg.m_username);
 	      m_core.SetUseDefUser(true);
 	      m_core.SetDefUsername(dataDlg.m_username);
-	      m_core.DropDefUsernames(dataDlg.m_username);
 	      RefreshList();
 	    }
 	}
@@ -579,74 +577,67 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 }
 
 
-//Updates m_listctrl from m_pwlist
-// {kjp} Updated for Pocket PC to stop it updating after each item is added
-// {kjp} and to do so only after they've all been added and the list sorted.
+//Updates m_ctlItemList and m_ctlItemTree from m_pwlist
+// updates of windows suspended untill all data is in.
 void
 DboxMain::RefreshList()
 {
-   if (! m_windowok)
-      return;
+  if (! m_windowok)
+    return;
 
 #if defined(POCKET_PC)
-	HCURSOR		waitCursor = app.LoadStandardCursor( IDC_WAIT );
+  HCURSOR		waitCursor = app.LoadStandardCursor( IDC_WAIT );
 #endif
 
-   //Copy the data
+  // can't use LockWindowUpdate 'cause only one window at a time can be locked
+  m_ctlItemList.SetRedraw( FALSE );
+  m_ctlItemTree.SetRedraw( FALSE );
+  m_ctlItemList.DeleteAllItems();
+  m_ctlItemTree.DeleteAllItems();
+
+  LVCOLUMN lvColumn;
+  lvColumn.mask = LVCF_WIDTH;
+
+  bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
+  if (m_bShowPasswordInList && !bPasswordColumnShowing) {
+    m_ctlItemList.InsertColumn(3, _T("Password"));
+    CRect rect;
+    m_ctlItemList.GetClientRect(&rect);
+    m_ctlItemList.SetColumnWidth(3, app.GetProfileInt(_T(PWS_REG_OPTIONS),
+						      _T("column4width"),
+						      rect.Width() / 4));
+  }
+  else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
+    app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("column4width"), lvColumn.cx);
+    m_ctlItemList.DeleteColumn(3);
+  }
+
+  POSITION listPos = m_core.GetFirstEntryPosition();
 #if defined(POCKET_PC)
-   m_ctlItemList.SetRedraw( FALSE );
-   m_ctlItemTree.SetRedraw( FALSE );
+  SetCursor( waitCursor );
 #endif
-   m_ctlItemList.DeleteAllItems();
-   m_ctlItemTree.DeleteAllItems();
+  while (listPos != NULL) {
+    CItemData &ci = m_core.GetEntryAt(listPos);
+    DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
+    if (di != NULL)
+      di->list_index = -1; // easier, but less efficient, to delete di
+    insertItem(ci);
+    m_core.GetNextEntry(listPos);
+  }
+
+  m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
 #if defined(POCKET_PC)
-   m_ctlItemList.SetRedraw( TRUE );
-   m_ctlItemTree.SetRedraw( TRUE );
+  SetCursor( NULL );
 #endif
+  // re-enable and force redraw!
+  m_ctlItemList.SetRedraw( TRUE ); m_ctlItemList.Invalidate();
+  m_ctlItemTree.SetRedraw( TRUE ); m_ctlItemTree.Invalidate();
 
-	LVCOLUMN lvColumn;
-	lvColumn.mask = LVCF_WIDTH;
-
-	bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
-	if (m_bShowPasswordInList && !bPasswordColumnShowing) {
-		m_ctlItemList.InsertColumn(3, _T("Password"));
-		CRect rect;
-		m_ctlItemList.GetClientRect(&rect);
-		m_ctlItemList.SetColumnWidth(3, app.GetProfileInt(_T(PWS_REG_OPTIONS),
-								  _T("column4width"),
-								  rect.Width() / 4));
-	}
-	else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
-		app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("column4width"), lvColumn.cx);
-		m_ctlItemList.DeleteColumn(3);
-	}
-
-   POSITION listPos = m_core.GetFirstEntryPosition();
-#if defined(POCKET_PC)
-   m_ctlItemList.SetRedraw( FALSE );
-   m_ctlItemTree.SetRedraw( FALSE );
-   SetCursor( waitCursor );
-#endif
-   while (listPos != NULL) {
-     CItemData &ci = m_core.GetEntryAt(listPos);
-     DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
-     if (di != NULL)
-       di->list_index = -1; // easier, but less efficient, to delete di
-     insertItem(ci);
-     m_core.GetNextEntry(listPos);
-   }
-
-   m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-#if defined(POCKET_PC)
-   SetCursor( NULL );
-   m_ctlItemList.SetRedraw( TRUE );
-   m_ctlItemTree.SetRedraw( TRUE );
-#endif
-   FixListIndexes(m_ctlItemList);
-   //Setup the selection
-   if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
-      SelectEntry(0);
-   }
+  FixListIndexes(m_ctlItemList);
+  //Setup the selection
+  if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
+    SelectEntry(0);
+  }
 }
 
 void
@@ -662,6 +653,7 @@ DboxMain::OnSize(UINT nType,
   if (nType == SIZE_MINIMIZED)
     {
       m_ctlItemList.DeleteAllItems();
+      m_ctlItemTree.DeleteAllItems();
       if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
                             _T("dontaskminimizeclearyesno"),
                             FALSE) == TRUE)
@@ -772,23 +764,50 @@ DboxMain::OnSize(UINT nType,
   m_bSizing = false;
 }
 
+static void ExtractURL(CMyString &str)
+{
+  // Extract first instance of http[s]://.[^ \t\r\n]+
+  int left = str.Find(_T("http://"));
+  if (left == -1)
+    left = str.Find(_T("https://"));
+  if (left == -1) {
+    str = _T("");
+  } else {
+    CString url(str);
+    url = url.Mid(left); // throw out everything left of URL
+    int right = url.FindOneOf(_T(" \t\r\n"));
+    if (right != -1) {
+      url = url.Left(right);
+      str = CMyString(url);
+    }
+  }
+}
+
 
 void
 DboxMain::OnContextMenu(CWnd *, CPoint point) 
 {
    CPoint local = point;
    int item = -1;
+   CItemData *itemData = NULL;
    CMenu menu;
+   CMyString itemURL;
 
    if (m_ctlItemList.IsWindowVisible()) {
      m_ctlItemList.ScreenToClient(&local);
      item = m_ctlItemList.HitTest(local);
+     itemData = (CItemData *)m_ctlItemList.GetItemData(item);
+     int rc = SelectEntry(item);
+     if (rc == LB_ERR) {
+       return; // ? is this possible ?
+     }
+     m_ctlItemList.SetFocus();
    } else { // currently in tree view
      ASSERT(m_ctlItemTree.IsWindowVisible());
      m_ctlItemTree.ScreenToClient(&local);
      HTREEITEM ti = m_ctlItemTree.HitTest(local);
      if (ti != NULL) {
-       CItemData *itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+       itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
        if (itemData != NULL) {
 	 DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
 	 ASSERT(di != NULL);
@@ -819,28 +838,30 @@ WCE_DEL TPM_LEFTALIGN | TPM_RIGHTBUTTON,
                                 this); // use this window for commands
       }
      }
+     m_ctlItemTree.SetFocus();
    } // tree view handling
 
-   if (item >= 0)
-   {
-     int rc = SelectEntry(item);
-     if (rc == LB_ERR) {
-       SelectEntry(m_ctlItemList.GetItemCount() - 1);
+   if (item >= 0) {
+     menu.LoadMenu(IDR_POPMENU);
+     CMenu* pPopup = menu.GetSubMenu(0);
+     ASSERT(pPopup != NULL);
+
+     ASSERT(itemData != NULL);
+     itemURL = itemData->GetNotes();
+     ExtractURL(itemURL);
+     if (itemURL.IsEmpty()) {
+       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
+     } else {
+       m_BrowseURL = itemURL;
+       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
      }
-     m_ctlItemList.SetFocus();
 
-      if (menu.LoadMenu(IDR_POPMENU))
-      {
-         CMenu* pPopup = menu.GetSubMenu(0);
-         ASSERT(pPopup != NULL);
-
-			pPopup->TrackPopupMenu(
+     pPopup->TrackPopupMenu(
 WCE_INS							TPM_LEFTALIGN,
 WCE_DEL							TPM_LEFTALIGN | TPM_RIGHTBUTTON,
                                 point.x, point.y,
                                 this); // use this window for commands
-      }
-   }
+   } // if (item >= 0)
 }
 
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {

@@ -155,6 +155,7 @@
 #define ID_MENUITEM_LIST_VIEW           32826
 #define ID_MENUITEM_TREE_VIEW           32827
 #define ID_MENUITEM_ADDGROUP            32829
+#define ID_MENUITEM_BROWSE              32830
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRY20             40020
 
