@@ -24,7 +24,7 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 
 PWSfile::PWSfile(const CMyString &filename, const CMyString &passkey)
   : m_filename(filename), m_passkey(passkey),  m_defusername(_T("")),
-    m_curversion(UNKNOWN_VERSION), m_fd(NULL)
+    m_curversion(UNKNOWN_VERSION), m_fd(NULL), m_prefString(_T(""))
 {
 }
 
@@ -38,7 +38,7 @@ static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
 				  "Please upgrade to PasswordSafe 2.0"
 				  " or later");
 // Used to specify the exact version
-static const CMyString VersionString("pre-2.0");
+static const CMyString VersionString("2.0");
 
 int PWSfile::WriteV2Header()
 {
@@ -46,6 +46,7 @@ int PWSfile::WriteV2Header()
   // Fill out with V2-specific info
   header.SetName(V2ItemName, _T(""));
   header.SetPassword(VersionString);
+  header.SetNotes(m_prefString);
   // need to fallback to V17, since the record
   // won't be readable otherwise!
   VERSION sv = m_curversion;
@@ -72,6 +73,8 @@ int PWSfile::ReadV2Header()
     // XXX as well, for inter-2.x version checks
     status = (name == V2ItemName) ? SUCCESS : WRONG_VERSION;
   }
+  if (status == SUCCESS)
+    m_prefString = header.GetNotes();
   return status;
 }
 

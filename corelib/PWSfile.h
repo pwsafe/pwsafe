@@ -32,6 +32,10 @@ class PWSfile {
   int WriteRecord(const CItemData &item);
   int ReadRecord(CItemData &item);
   void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
+  // The prefstring is read/written along with the rest of the file, see code for details on
+  // where it's kept.
+  void SetPrefString(const CMyString &prefStr) {m_prefString = prefStr;}
+  const CMyString &GetPrefString() const {return m_prefString;}
 
  private:
   const CMyString m_filename;
@@ -42,6 +46,7 @@ class PWSfile {
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];
   unsigned char m_ipthing[8]; // for CBC
+  CMyString m_prefString; // prefererences stored in the file
   int WriteCBC(unsigned char type, const CString &data);
   int WriteCBC(unsigned char type, const unsigned char *data, unsigned int length);
   int ReadCBC( unsigned char &type, CMyString &data);

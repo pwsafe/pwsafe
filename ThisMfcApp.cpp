@@ -418,9 +418,6 @@ ThisMfcApp::InitInstance()
 	if (!m_TrayIcon.Create(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
 			       stIcon, IDR_POPTRAY))
 	  return FALSE;
-	if (!PWSprefs::GetInstance()->
-	    GetPref(PWSprefs::BoolPrefs::UseSystemTray))
-	  m_TrayIcon.HideIcon();
 
 	// Set up an Accelerator table
 #if !defined(POCKET_PC)

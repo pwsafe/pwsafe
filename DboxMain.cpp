@@ -130,11 +130,6 @@ DboxMain::DboxMain(CWnd* pParent)
    m_toolbarsSetup = FALSE;
 #endif
 
-   m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::AlwaysOnTop);
-
-   m_currbackup = // ??? move to PWScore??
-     PWSprefs::GetInstance()->GetPref(PWSprefs::StringPrefs::CurrentBackup);
-
    m_bShowPasswordInEdit = false;
    m_bShowPasswordInList = false;
    m_bSortAscending = true;
@@ -232,12 +227,23 @@ DboxMain::OnInitDialog()
 
   CDialog::OnInitDialog();
 
-  UpdateAlwaysOnTop();
-
   if (OpenOnInit()==FALSE) // If this function fails, abort launch
     return TRUE;
 
-  m_windowok = true;
+  // AlwaysOnTop preference read from database, if possible, hence set after OpenOnInit
+  m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::AlwaysOnTop);
+  UpdateAlwaysOnTop();
+
+  // ditto for CurrentBackup...
+   m_currbackup =
+     PWSprefs::GetInstance()->GetPref(PWSprefs::StringPrefs::CurrentBackup);
+
+   // ... and for UseSystemTray
+   if (!PWSprefs::GetInstance()->
+       GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+     app.m_TrayIcon.HideIcon();
+
+   m_windowok = true;
 	
   // Set the icon for this dialog.  The framework does this automatically
   //  when the application's main window is not a dialog
