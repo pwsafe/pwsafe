@@ -28,24 +28,33 @@
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec,
                              bool first)
-   : CDialog(first ? CPasskeyEntry::IDDFIRST : CPasskeyEntry::IDD,
+   : CDialog(first ? CPasskeyEntry::IDD : CPasskeyEntry::IDD_BASIC,
              pParent),
      m_first(first),
      m_tries(0),
      m_status(TAR_INVALID)
 {
    const int FILE_DISP_LEN = 45;	
+
+	//{{AFX_DATA_INIT(CPasskeyEntry)
+	//}}AFX_DATA_INIT
+
    DBGMSG("CPasskeyEntry()\n");
    if (first) {
       DBGMSG("** FIRST **\n");
    }
 
    m_passkey = "";
+
    if (a_filespec.GetLength() > FILE_DISP_LEN) {
 	   m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
+
 	   m_message.Insert(0, _T("..."));
+
    }
+
    else
+
    {
 	   m_message = a_filespec;
    }
@@ -56,14 +65,19 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
    DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
+
+   //{{AFX_DATA_MAP(CPasskeyEntry)
    DDX_Text(pDX, IDC_MESSAGE, m_message);
+	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CDialog)
+	//{{AFX_MSG_MAP(CPasskeyEntry)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(ID_BROWSE, OnBrowse)
    ON_BN_CLICKED(ID_CREATE_DB, OnCreateDb)
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 
@@ -92,9 +106,11 @@ CPasskeyEntry::OnInitDialog(void)
       m_Static.ReloadBitmap(IDB_PSLOGO);
       m_Static2.SubclassDlgItem(IDC_STATIC_ICON2, this);
       m_Static2.ReloadBitmap(IDB_CLOGO);
+
 #if 0 // this bitmap (funky "http://passwordsafe.sorcefourge.net") no longer displayed
       m_Static3.SubclassDlgItem(IDC_STATIC_ICON3, this);
       m_Static3.ReloadBitmap(IDB_CTEXT);
+
 #endif
    }
    else
@@ -138,6 +154,7 @@ void
 CPasskeyEntry::OnOK() 
 {
    UpdateData(TRUE);
+
    unsigned char temphash[20]; // HashSize
    GenRandhash(m_passkey,
                app.m_randstuff,
