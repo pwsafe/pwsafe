@@ -44,7 +44,7 @@ protected:
    unsigned int uGlobalMemSize;
    HGLOBAL hGlobalMemory;
 
-   CMyString m_deffile; // default pw db filespec
+   //CMyString m_deffile; // default pw db filespec
    CMyString m_currfile; // current pw db filespec
    CMyString m_currbackup;
    CMyString m_title; // what's displayed in the title bar
@@ -68,7 +68,7 @@ protected:
    int NewFile(void);
    int WriteFile(CMyString filename);
    int CheckPassword(CMyString filename, CMyString& passkey,
-                     BOOL first=FALSE);
+                     bool first = false);
    int ReadFile(CMyString filename, CMyString passkey);
 
    //Version of message functions with return values
