@@ -170,10 +170,10 @@ DboxMain::setupBars()
       bmTemp.LoadBitmap(IDB_TOOLBAR2);
       Flags = ILC_MASK | ILC_COLOR8;
       oldMenu = true;
-    } else if ( NumBits == 32 ) {
+    } else if ( NumBits >= 32 ) {
       bmTemp.LoadBitmap(IDR_MAINBAR);
       Flags = ILC_MASK | ILC_COLOR32;
-    } else if ( NumBits == 16 ) {
+    } else { // between 16 to 31 bits per pixel
       bmTemp.LoadBitmap(IDB_TOOLBAR1);
       Flags = ILC_MASK | ILC_COLOR8;
       Background = RGB( 196,198,196 );
@@ -1203,10 +1203,10 @@ DboxMain::SetToolbar(int menuItem)
       if ( pDC )  {
 	NumBits = pDC->GetDeviceCaps(12);
       }
-      if (NumBits == 32) {
+      if (NumBits >= 32) {
 	bmTemp.LoadBitmap(IDR_MAINBAR);
 	Flags = ILC_MASK | ILC_COLOR32;
-      } else if (NumBits == 16) {
+      } else {
 	bmTemp.LoadBitmap(IDB_TOOLBAR1);
 	Flags = ILC_MASK | ILC_COLOR8;
 	Background = RGB( 196,198,196 );
