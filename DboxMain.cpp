@@ -1140,7 +1140,7 @@ DboxMain::Open( const CMyString &pszFilename )
 			return PWScore::USER_CANCEL;
 		case IDYES:
 			rc2 = Save();
-			// Make sure that writting the file was successful
+			// Make sure that file was successfully written
 			if (rc2 == PWScore::SUCCESS)
 				break;
 			else
@@ -1185,6 +1185,7 @@ DboxMain::Open( const CMyString &pszFilename )
 		return PWScore::CANT_OPEN_FILE;
 	}
 	
+	m_core.UnlockFile(m_core.GetCurFile());
 	m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
 	m_title = _T("Password Safe - ") + m_core.GetCurFile();
@@ -1647,8 +1648,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 			      CMyString& passkey,
 			      bool first)
 {
-  // Called for an existing database. prompt user
-  // for password, verify against file
+  // Called for an existing database. Prompt user
+  // for password, verify against file. Lock file to
+  // prevent multiple r/w access.
   int retval;
 
   if (!filename.IsEmpty())
