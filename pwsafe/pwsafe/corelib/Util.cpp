@@ -1,43 +1,56 @@
 /// \file Util.cpp
 //-----------------------------------------------------------------------------
 
+#include "PasswordSafe.h"
+
+/*
+  so far, this 'util' module is heavily dependent on the app object.
+  this is bad, and I will attempt to fix that - jpr
+*/
+#include "ThisMfcApp.h"
+
 #include "sha1.h"
 #include "resource.h"
-#include "stdafx.h"
-#include "PasswordSafe.h"
-#include "blowfish.h"
+#include "BlowFish.h"
 
 #include <fcntl.h>
 #include <errno.h>
 #include <io.h>
 #include <sys\stat.h>
 
+#include "Util.h"
+
+// for now
+#define String CString
+#define SecString CMyString
+
+
+static void ErrorMessages(String fn, int fp);
+static void xormem(unsigned char* mem1, unsigned char* mem2, int length);
+
+//-----------------------------------------------------------------------------
 /*
   Note: A bunch of the encryption-related routines may not be Unicode
   compliant.  Which really isn't a huge problem, since they are actually
   using MFC routines anyway
 */
 
-
+//-----------------------------------------------------------------------------
 //Overwrite the memory
-void
-trashMemory(unsigned char* buffer, long length)
-{
-   trashMemory(buffer, length, NumMem);
-}
-
 
 void
 trashMemory(SHA1_CTX& context)
 {
-   trashMemory((unsigned char*)context.state, sizeof context.state, NumMem);
-   trashMemory((unsigned char*)context.count, sizeof context.count, NumMem);
-   trashMemory((unsigned char*)context.buffer, sizeof context.buffer, NumMem);
+   trashMemory((unsigned char*)context.state, sizeof context.state);
+   trashMemory((unsigned char*)context.count, sizeof context.count);
+   trashMemory((unsigned char*)context.buffer, sizeof context.buffer);
 }
 
 
 void
-trashMemory(unsigned char* buffer, long length, int numiter)
+trashMemory(unsigned char* buffer,
+            long length,
+            int numiter) // default 30
 {
    for (int x=0; x<numiter; x++)
    {
@@ -56,30 +69,6 @@ void trashMemory(CString &string)
 }
 
 
-//Complain if the file has not opened correctly
-void
-ErrorMessages(CMyString fn, int fp)
-{
-   if (fp==-1)
-   {
-      CMyString text, title;
-      text = "A fatal error occured: ";
-      if (errno==EACCES)
-         text += "Given path is a directory or file is read-only";
-      else if (errno==EEXIST)
-         text += "The filename already exists.";
-      else if (errno==EINVAL)
-         text += "Invalid oflag or shflag argument.";
-      else if (errno==EMFILE)
-         text += "No more file handles available.";
-      else if (errno==ENOENT)
-         text += "File or path not found.";
-      text += "\nProgram will terminate.";
-      title = "Password Safe - " + fn;
-      AfxGetMainWnd()->MessageBox(text, title, MB_ICONEXCLAMATION|MB_OK);
-   }
-}
-
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
 void
@@ -97,23 +86,23 @@ GenRandhash(CMyString a_passkey,
    */
    SHA1_CTX keyHash;
    SHA1Init(&keyHash);
-   SHA1Update(&keyHash, a_randstuff, StuffSize);
+   SHA1Update(&keyHash, a_randstuff, 10); // StuffSize
    SHA1Update(&keyHash,
               (unsigned char*)a_passkey.GetBuffer(a_passkey.GetLength()),
               a_passkey.GetLength());
    a_passkey.ReleaseBuffer();
 
-   unsigned char tempSalt[SaltSize];
+   unsigned char tempSalt[20]; // HashSize
    SHA1Final(tempSalt, &keyHash);
 
    /*
      tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
    */
 	
-   BlowFish Cipher(tempSalt, SaltSize);
+   BlowFish Cipher(tempSalt, 20); // HashSize
 	
-   unsigned char tempbuf[StuffSize];
-   memcpy((char*)tempbuf, (char*)a_randstuff, StuffSize);
+   unsigned char tempbuf[10]; // StuffSize
+   memcpy((char*)tempbuf, (char*)a_randstuff, 10); // StuffSize
 
    for (int x=0; x<1000; x++)
       Cipher.Encrypt(tempbuf, tempbuf);
@@ -122,31 +111,35 @@ GenRandhash(CMyString a_passkey,
      hmm - seems we're not done with this context
      we throw the tempbuf into the hasher, and extract a_randhash
    */
-   SHA1Update(&keyHash, tempbuf, StuffSize);
+   SHA1Update(&keyHash, tempbuf, 10); // StuffSize
    SHA1Final(a_randhash, &keyHash);
    trashMemory(keyHash);
 }
 
 
+#if 0
 int
 not(int x)
 {
    ASSERT((x>=0) && (x<=1));
    return 1-x;
 }
+#endif
 
 
 unsigned char
 newrand()
 {
    int	r;
-   while ((r = rand()) % 257 == 256); // 257?!?
+   while ((r = rand()) % 257 == 256)
+      ; // 257?!?
    return r;
 }
 
 
+#if 0
 BOOL
-FileExists(CMyString filename)
+FileExists(String filename)
 {
    int fp = _open(filename, _O_RDONLY);
    if (fp == -1)
@@ -157,8 +150,10 @@ FileExists(CMyString filename)
       return TRUE;
    }
 }
+#endif
 
 
+#if 0
 windows_t
 GetOSVersion()
 {
@@ -193,6 +188,7 @@ GetOSVersion()
 
    return retval;
 }
+#endif
 
 
 char
@@ -466,182 +462,8 @@ _writeFromCMyString(int fp, CMyString &source)
 #endif
 
 
-void
-_encryptFile(CString filepath)
-{
-   CString out_filepath;
-   int len;
-   unsigned char* buf;
-
-   int in = _open(filepath,
-                  _O_BINARY|_O_RDONLY|_O_SEQUENTIAL,
-                  S_IREAD | _S_IWRITE);
-   if (in != -1)
-   {
-      len = _filelength(in);
-      buf = new unsigned char[len];
-
-      _read(in, buf, len);
-
-      _close(in);
-   }
-   else
-   {
-      ErrorMessages(filepath, in);
-      return;
-   }
-
-   out_filepath = filepath;
-   out_filepath += CIPHERTEXT_SUFFIX;
-
-   int out = _open(out_filepath,
-                   _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
-                   _S_IREAD | _S_IWRITE);
-   if (out != -1)
-   {
-      _write(out, &len, sizeof(len));
-		
-      unsigned char* thesalt = new unsigned char[SaltLength];
-      for (int x=0;x<SaltLength;x++)
-         thesalt[x] = newrand();
-      _write(out, thesalt, SaltLength);
-		
-      unsigned char ipthing[8];
-      for (x=0;x<8;x++)
-         ipthing[x] = newrand();
-      _write(out, ipthing, 8);
-
-      _writecbc(out, buf, len, thesalt, ipthing);
-		
-      _close(out);
-
-      delete [] thesalt;
-   }
-   else
-      ErrorMessages(out_filepath, out);
-
-   delete [] buf;
-}
-
-
-void
-_decryptFile(CString filepath)
-{
-   CString out_filepath;
-   int len;
-   unsigned char* buf;
-
-   int in = _open(filepath,
-                  _O_BINARY|_O_RDONLY|_O_SEQUENTIAL,
-                  S_IREAD | _S_IWRITE);
-   if (in != -1)
-   {
-      unsigned char* salt = new unsigned char[SaltLength];
-      unsigned char ipthing[8];
-
-      _read(in, &len, sizeof(len));
-      buf = new unsigned char[len];
-
-      _read(in, salt, SaltLength);
-      _read(in, ipthing, 8);
-      _readcbc(in, buf, len, salt, ipthing);
-		
-      delete [] salt;
-      _close(in);
-   }
-   else
-   {
-      ErrorMessages(filepath, in);
-      return;
-   }
-
-   int suffix_len = strlen(CIPHERTEXT_SUFFIX);
-   int filepath_len = strlen(filepath);
-
-   out_filepath = filepath;
-   out_filepath = out_filepath.Left(filepath_len - suffix_len);
-
-   int out = _open(out_filepath,
-                   _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
-                   _S_IREAD | _S_IWRITE);
-   if (out != -1)
-   {
-      _write(out, buf, len);
-		
-      _close(out);
-   }
-   else
-      ErrorMessages(out_filepath, out);
-
-   delete [] buf;
-}
-
-
-void
-convertToLongFilePath(CString &filepath)
-{
-   // find the length of the filename
-   CFile fTmp(filepath, CFile::typeBinary);
-   int len_filename = strlen(fTmp.GetFileName());
-
-   //Preserve the extension
-   int extlength =
-      fTmp.GetFileName().GetLength() - fTmp.GetFileTitle().GetLength();
-   CString ext = fTmp.GetFileName().Right(extlength);
-
-   // find the long filename
-   SHFILEINFO tempSHFileInfo;
-   SHGetFileInfo(filepath, 0, &tempSHFileInfo,
-                 sizeof(tempSHFileInfo), SHGFI_DISPLAYNAME);
-
-   // strip off the short filename
-   filepath = filepath.Left(filepath.GetLength() - len_filename);
-
-   // append the long filename to the path
-   filepath += tempSHFileInfo.szDisplayName;
-
-   //Readd the extension if necessary
-   if (filepath.Right(extlength) != ext)
-      filepath += ext;
-}
-
-
-void
-manageCmdLine(CString a_cmdline)
-{
-   CString filepath;
-   CString suffix;
-   int len = 0;
-
-   while (len != -1)
-   {
-      len = a_cmdline.Find(' ');
-      if (len == -1) // we've hit the NULL
-         filepath = a_cmdline;
-      else
-      {
-         filepath = a_cmdline.Left(len);
-         a_cmdline = a_cmdline.Right(a_cmdline.GetLength() - len - 1);
-      }
-      convertToLongFilePath(filepath);
-
-      suffix = filepath.Right(strlen(CIPHERTEXT_SUFFIX));
-		
-      if (suffix == CIPHERTEXT_SUFFIX)
-      {
-         //MessageBox(filepath, "Decrypting File...", MB_ICONINFORMATION);
-         _decryptFile(filepath);
-      }
-      else
-      {
-         //MessageBox(filepath, "Encrypting File...", MB_ICONINFORMATION);
-         _encryptFile(filepath);
-      }
-   }
-}
-
-
-void
+// I think this is only for the CBC routines...
+static void
 xormem(unsigned char* mem1, unsigned char* mem2, int length)
 {
    for (int x=0;x<length;x++)
@@ -839,5 +661,213 @@ CheckExtension(CMyString name, CMyString ext)
    return (pos == name.GetLength() - ext.GetLength()); //Is this at the end??
 }
 
+//-----------------------------------------------------------------------------
+
+//Complain if the file has not opened correctly
+
+static void
+ErrorMessages(String fn, int fp)
+{
+   if (fp==-1)
+   {
+      String text;
+      text = "A fatal error occured: ";
+
+      if (errno==EACCES)
+         text += "Given path is a directory or file is read-only";
+      else if (errno==EEXIST)
+         text += "The filename already exists.";
+      else if (errno==EINVAL)
+         text += "Invalid oflag or shflag argument.";
+      else if (errno==EMFILE)
+         text += "No more file handles available.";
+      else if (errno==ENOENT)
+         text += "File or path not found.";
+      text += "\nProgram will terminate.";
+
+      String title = "Password Safe - " + fn;
+      AfxGetMainWnd()->MessageBox(text, title, MB_ICONEXCLAMATION|MB_OK);
+   }
+}
+
+//-----------------------------------------------------------------------------
+#if defined(WITH_LEGACY_CMDLINE)
+
+static void
+_encryptFile(CString filepath)
+{
+   CString out_filepath;
+   int len;
+   unsigned char* buf;
+
+   int in = _open(filepath,
+                  _O_BINARY|_O_RDONLY|_O_SEQUENTIAL,
+                  S_IREAD | _S_IWRITE);
+   if (in != -1)
+   {
+      len = _filelength(in);
+      buf = new unsigned char[len];
+
+      _read(in, buf, len);
+
+      _close(in);
+   }
+   else
+   {
+      ErrorMessages(filepath, in);
+      return;
+   }
+
+   out_filepath = filepath;
+   out_filepath += CIPHERTEXT_SUFFIX;
+
+   int out = _open(out_filepath,
+                   _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
+                   _S_IREAD | _S_IWRITE);
+   if (out != -1)
+   {
+      _write(out, &len, sizeof(len));
+		
+      unsigned char* thesalt = new unsigned char[SaltLength];
+      for (int x=0;x<SaltLength;x++)
+         thesalt[x] = newrand();
+      _write(out, thesalt, SaltLength);
+		
+      unsigned char ipthing[8];
+      for (x=0;x<8;x++)
+         ipthing[x] = newrand();
+      _write(out, ipthing, 8);
+
+      _writecbc(out, buf, len, thesalt, ipthing);
+		
+      _close(out);
+
+      delete [] thesalt;
+   }
+   else
+      ErrorMessages(out_filepath, out);
+
+   delete [] buf;
+}
+
+
+static void
+_decryptFile(CString filepath)
+{
+   CString out_filepath;
+   int len;
+   unsigned char* buf;
+
+   int in = _open(filepath,
+                  _O_BINARY|_O_RDONLY|_O_SEQUENTIAL,
+                  S_IREAD | _S_IWRITE);
+   if (in != -1)
+   {
+      unsigned char* salt = new unsigned char[SaltLength];
+      unsigned char ipthing[8];
+
+      _read(in, &len, sizeof(len));
+      buf = new unsigned char[len];
+
+      _read(in, salt, SaltLength);
+      _read(in, ipthing, 8);
+      _readcbc(in, buf, len, salt, ipthing);
+		
+      delete [] salt;
+      _close(in);
+   }
+   else
+   {
+      ErrorMessages(filepath, in);
+      return;
+   }
+
+   int suffix_len = strlen(CIPHERTEXT_SUFFIX);
+   int filepath_len = strlen(filepath);
+
+   out_filepath = filepath;
+   out_filepath = out_filepath.Left(filepath_len - suffix_len);
+
+   int out = _open(out_filepath,
+                   _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
+                   _S_IREAD | _S_IWRITE);
+   if (out != -1)
+   {
+      _write(out, buf, len);
+		
+      _close(out);
+   }
+   else
+      ErrorMessages(out_filepath, out);
+
+   delete [] buf;
+}
+
+
+static void
+convertToLongFilePath(CString &filepath)
+{
+   // find the length of the filename
+   CFile fTmp(filepath, CFile::typeBinary);
+   int len_filename = strlen(fTmp.GetFileName());
+
+   //Preserve the extension
+   int extlength =
+      fTmp.GetFileName().GetLength() - fTmp.GetFileTitle().GetLength();
+   CString ext = fTmp.GetFileName().Right(extlength);
+
+   // find the long filename
+   SHFILEINFO tempSHFileInfo;
+   SHGetFileInfo(filepath, 0, &tempSHFileInfo,
+                 sizeof(tempSHFileInfo), SHGFI_DISPLAYNAME);
+
+   // strip off the short filename
+   filepath = filepath.Left(filepath.GetLength() - len_filename);
+
+   // append the long filename to the path
+   filepath += tempSHFileInfo.szDisplayName;
+
+   //Readd the extension if necessary
+   if (filepath.Right(extlength) != ext)
+      filepath += ext;
+}
+
+
+void
+manageCmdLine(CString a_cmdline)
+{
+   CString filepath;
+   CString suffix;
+   int len = 0;
+
+   while (len != -1)
+   {
+      len = a_cmdline.Find(' ');
+      if (len == -1) // we've hit the NULL
+         filepath = a_cmdline;
+      else
+      {
+         filepath = a_cmdline.Left(len);
+         a_cmdline = a_cmdline.Right(a_cmdline.GetLength() - len - 1);
+      }
+      convertToLongFilePath(filepath);
+
+      suffix = filepath.Right(strlen(CIPHERTEXT_SUFFIX));
+		
+      if (suffix == CIPHERTEXT_SUFFIX)
+      {
+         //MessageBox(filepath, "Decrypting File...", MB_ICONINFORMATION);
+         _decryptFile(filepath);
+      }
+      else
+      {
+         //MessageBox(filepath, "Encrypting File...", MB_ICONINFORMATION);
+         _encryptFile(filepath);
+      }
+   }
+}
+
+
+#endif // WITH_LEGACY_CMDLINE
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
