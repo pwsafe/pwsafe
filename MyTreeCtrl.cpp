@@ -115,7 +115,7 @@ void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
   }
 }
 
-void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
+void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR , LRESULT *pLResult)
 {
   //TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
   *pLResult = FALSE; // TRUE cancels label editing
