@@ -12,18 +12,23 @@ static char THIS_FILE[] = __FILE__;
 #include "corelib/PwsPlatform.h"
 #include "corelib/Util.h"
 
-// Select the font style and size for the password box
-#if !defined(POCKET_PC)
-  #define FONT_NAME	_T("Courier")
-  #define FONT_SIZE	14
-#endif
-
 void
 SetPasswordFont(CWnd* pDlgItem)
 {
 #if !defined(POCKET_PC)
 	// for now, this keeps the leak down to just one
-	static HFONT hfont		= NULL;
+	static HFONT hfont = NULL;
+	static TCHAR* FONT_NAME;
+	static const int FONT_SIZE = 14;
+
+	if ( _winmajor == 5 && _winminor != 0 ) // Windows XP default font = Tahoma
+	{
+		FONT_NAME = _T("Tahoma");
+	}
+	else
+	{
+		FONT_NAME = _T("Courier");
+	}
 
 	if ( hfont == NULL )
 	{
@@ -31,10 +36,10 @@ SetPasswordFont(CWnd* pDlgItem)
 		// in a LOGFONT structure.
 
 		LOGFONT lf;
-		memset(&lf, 0, sizeof(LOGFONT));		  // clear out structure
-		lf.lfHeight = FONT_SIZE;				  // request a 14-pixel-height font
+		memset(&lf, 0, sizeof(LOGFONT));	  // clear out structure
+		lf.lfHeight = FONT_SIZE;		  // request a 14-pixel-height font
 		strCopy( lf.lfFaceName, FONT_NAME );      // UNICODE safe string copy
-		hfont = ::CreateFontIndirect(&lf);		  // create the font (must be deleted with ::DeleteObject()
+		hfont = ::CreateFontIndirect(&lf);	  // create the font (must be deleted with ::DeleteObject()
 	}
 
 	if (hfont != NULL)

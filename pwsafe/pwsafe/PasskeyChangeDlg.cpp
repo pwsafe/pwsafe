@@ -14,6 +14,7 @@
 #endif
 
 #include "PasskeyChangeDlg.h"
+#include "PwFont.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,6 +30,9 @@ CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
    m_confirmnew = _T("");
    m_newpasskey = _T("");
    m_oldpasskey = _T("");
+   SetPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
+   SetPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
+   SetPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
 }
 
 

@@ -18,6 +18,7 @@ DboxMain::GetPassword(void) const
 			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE),
 			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE),
 			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE),
+			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusehexdigits"), FALSE),
 			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE));
 
   return pwchars.MakePassword();
