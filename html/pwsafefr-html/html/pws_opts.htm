@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- Translation by Laurent Masson -->
+
+<html><head><title>>Password Safe Options</title>
+    
+ <link rel="stylesheet" type="text/css" href="style.css"></head>
+  <body bgcolor="#ffffff" text="#000000">
+
+<h1><font size="+2">Options de Password Safe</font></h1>
+
+    <p>Les options configurables sont organisées dans les catégories suivantes :<br>
+<a href="#display">Display (Affichage)</a> - options qui affectent comment PasswordSafe est affiché<br>
+
+<a href="#security">Security (Sécurité)</a> - options concernant la sécurité de l'application<br>
+
+<a href="#PasswordPolicy">Password Policy (Politique de Mot de passe)</a> - Définition des propriété des mots de passe générés automatiquement<br>
+
+<a href="#username">Username (Nom d'Utilisateur)</a> - Définition de l'Utilisateur par défaut pour les nouveaux enregistrements<br>
+
+<a href="#misc">Misc (Divers)</a> - Différents paramètres<br>
+</p>
+<h2><a name="display"></a>Display (Affichage)</h2>
+
+<p><span style="font-weight: bold;">Always keep PasswordSafe on top<br>(Toujours conserver Password Safe au dessus)</span> - Lorsque cette option est sélectionnée, PasswordSafe sera toujours visible.<br></p>
+
+<p><span style="font-weight: bold;">Show Password in display list<br>(Afficher les mots de passe)</span> - Lorsque cette option est sélectionnée, une colonne est ajoutée dans la vue liste, affichant le mot de passe de chaque enregistrement. <span style="font-style: italic; color: red;">Cette option n'est pas recommandée, car elle ouvre une brèche dans la sécurité.</span><br></p>
+
+<p><span style="font-weight: bold;">Show password by default in edit mode<br>(Affichage par défaut du mot de passe en mode édition)</span> - Sélectionner cette option pour afficher les mots de passe dans la fenêtre <a href="pws_edit.htm">Edit/View Entry</a>. Par défaut, une ligne d'astérisques (*****) est affichée sauf si le bouton  <span style="font-style: italic;">Show Password</span> est activé.<br></p>
+
+<h2><b><a name="security"></a>Security (Sécurité)</b></h2>
+  
+<p><b>Clear the clipboard upon minimize or exit<br>(Effacer le Presse Papier lors de Quitter et Minimiser) - </b>Si vous activez cette option, le Presse papier sera effacé lorsque vous quittez ou minimisez PasswordSafe.</p>
+
+<p><b>Lock password database on minimize<br>(Fermer la base lors de Minimiser)</b>- Si vous activez cette 
+, des information sensibles telles que votre combinaison de coffre et le nom des enregistrements seront effacé de la mémoire lorsque Password Safe est minimisé. Lorsque Password Safe est rétabli, votre combinaison de coffre vous sera demandée.</p>
+
+    <p><b>Confirm password database save on minimize<br>(Confirmer la sauvegarde lors de Minimiser)- </b>Si vous activez cette option, Password Safe vous rappellera automatiquement lorsqu'il sauve la base lorsque vous le minimiser. Désactivée, et la base sera automatiquement sauvegardée sans avertissement.</p>
+
+
+    <p><b>Confirm item copy to clipboard<br>(Confirmation de copie vers le Presse papier)</b>- Si
+vous activez cette option, Password Safe vous préviendra lorsqu'un mot de passe est copié vers le Presse papier. Lorsque vous êtes habitués à Password Safe, vous désactiverez probablement cette option.<br>
+</p>
+
+<h2><a name="PasswordPolicy"></a>Password Policy (Politique de Mot de Passe)</h2>
+
+    <p><b>Default password length<br>(Longueur par défaut)</b>- Ce champ détermine la longueur des mots de passe
+    générés automatiquement par le bouton <span style="font-style: italic;">Generate Random Password</span>
+    dans les fenêtres <a href="pws_edit.htm">Edit/View Entry</a> et <a
+    href="pws_add_data.htm">Add Entry</a>. La longueur minimum
+    est de 4 caractères, et le maximum de 1024.  Remarque : Si vous voulez générez des mots de passe hexadécimaux,
+    alors ce chiffre <u>doit être</u> pair.</p>
+
+<p><b>Use lowercase letters<br>(Utiliser des lettres minuscules)</b>- Sélectionner cette option si vous souhaitez générer des mots de passe avec des lettres en minuscule.</p>
+
+<p><b>Use UPPERCASE letters<br>(Utiliser des lettre majuscules)</b>- Sélectionner cette option si vous souhaitez générer des mots de passe avec des lettres en majuscule.</p>
+
+<p><b>Use digits<br>(Utiliser des chiffres)</b>- Sélectionner cette option si vous souhaitez générer des mots de passe avec des nombres (0-9).</p>
+
+<p><b>Use symbols (i.e., ,%,$, etc.)<br>Utiliser des symboles -exemple: %,$, etc.-)</b>- Sélectionner cette option si vous souhaitez générer des mots de passe avec des caractères autres que des lettres et chiffres.</p>
+
+<p><b>Use only easy-to-read characters (i.e., without "0" and "O")<br>(Utiliser uniquement des caractères faciles à lire -i.e. sans "0" et "O"-)</b>-
+Sélectionner cette option permet de générer des mots de passe sans caractères qui sont visuellement semblables, tels que le chiffre zéro et la majuscule O, un et la minuscule l, etc. Ceci est spécialement utile si vous
+ne copiez pas les mots de passe, mais vous les affichez et ensuite les copiez manuellement.</p>
+
+<p><b>Use hexadecimal digits only (0-9, a-f)<br>Utiliser uniquement des caractères hexadécimaux (0-9, a-f)</b>- Sélectionner cette option 
+si vous souhaitez générer des mots de passe qui contiennent uniquement des caractères hexadécimaux
+.  La longueur des mots de passe doit être un chiffre pair. Cette option peut être activée si <u>aucune autre option</u> n'est sélectionnée. De même, lorsque elle est sélectionnée, cette option désactive les autres.</p>
+<h2><a name="username"></a>Username (Nom de l'Utilisateur)</h2>
+
+    <p><b>Use a default username<br>(Utiliser un Nom d'Utilisateur par défaut)</b>- Si cette option est activée,
+le nom de l'utilisateur entré dans le champ en dessous sera automatiquement inséré dans le champ <span style="font-style: italic;">username</span> de la fenêtre <span style="font-style: italic;">Add dialog box</span>. De plus, si le champ <span style="font-style: italic;">username</span> est vide, le nom par défaut sera ajouté.</p>
+
+    <p><b>Query user to set username as default<br>(Demande de définir l'utilisateur par défaut)</b>- Si
+cette option est activée, dès que vous entrez un utilisateur dans un nouvel enregistrement
+et qu'il n'y pas d'utilisateur par défaut, Password Safe vous demandera de définir un utilisateur par défaut si besoin. Voir les instructions si dessus pour plus d'information à propos de l'Utilisateur par défaut.</p>
+
+<h2><span style="font-weight: bold;"><a name="misc"></a>Misc (Divers)</span></h2>
+
+<b>Confirm deletion of items><br>(Confirmer la suppression des enregistrements)</b>- Lorsque vous activez cette option,
+PasswordSafe vous demandera de confirmer la chaque suppression d'un enregistrement sélectionné lorsque vous utilisez la commande <span style="font-style: italic;">Delete</span>.<br>
+<br>
+
+<span style="font-weight: bold;">Save database immediately after Edit or Add<br>(Sauvegarder la base de données immédiatement après Edition ou Ajout)</span>-
+En activant cette option, PasswordSafe écriera automatiquement tout changement dans la base de mots de passe, au lieu  d'attendre explicitement les commandes <span style="font-style: italic;">Save</span> ou <span style="font-style: italic;">Save As</span>.<br>
+</body></html>
