@@ -1,7 +1,7 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
 
-#if (defined(_MSC_VER) && (_MSC_VER >= 13))
+#if (defined(_MSC_VER) && (_MSC_VER >= 1300))
 #include <fstream>
 using namespace std;
 #else
