@@ -143,7 +143,10 @@ protected:
 	//}}AFX_MSG
 
    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnOpenMRU(UINT nID);
+   afx_msg void OnOpenMRU(UINT nID);
+   afx_msg void OnExportV17();
+   afx_msg void OnExportText();
+
    DECLARE_MESSAGE_MAP()
 
   BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
