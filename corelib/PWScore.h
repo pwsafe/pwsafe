@@ -53,9 +53,9 @@ class PWScore {
   int RenameCurFile(const CMyString &newSuffix);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
-  bool LockFile(const CMyString &filename, CMyString &locker) const;
+  bool LockFile(const CMyString &filename, CMyString &locker);
   bool IsLockedFile(const CMyString &filename) const;
-  void UnlockFile(const CMyString &filename) const;
+  void UnlockFile(const CMyString &filename);
   
   POSITION GetFirstEntryPosition() const
     {return m_pwlist.GetHeadPosition();}
@@ -102,6 +102,7 @@ class PWScore {
   CList<CItemData,CItemData> m_pwlist;
 
   bool m_changed;
+  HANDLE m_lockFileHandle;
 };
 
 #endif // PWScore_h
