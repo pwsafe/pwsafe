@@ -12,6 +12,12 @@
 class DboxMain
    : public CDialog
 {
+
+// static methods
+private:
+	static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+	static int SplitName(const CMyString &name , CMyString &title, CMyString &username);
+
 public:
    // default constructor
    DboxMain(CWnd* pParent = NULL);
@@ -41,7 +47,7 @@ protected:
 
 protected:
    HICON m_hIcon;
-   CListBox* m_listctrl;
+   CListCtrl* m_listctrl;
 
    unsigned int uGlobalMemSize;
    HGLOBAL hGlobalMemory;
@@ -58,6 +64,14 @@ protected:
    BOOL m_needsreading;
    bool m_windowok;
    BOOL m_existingrestore;
+
+   bool m_bSortAscending;
+   int m_iSortedColumn;
+
+	bool m_bShowPassword;
+
+	int insertItem(CItemData &itemData, int iIndex = -1);
+	int getSelectedItem();
 
    void ChangeOkUpdate();
    BOOL SelItemOk();
@@ -90,7 +104,8 @@ protected:
    afx_msg void OnAbout();
    afx_msg void OnCopyUsername();
    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-   afx_msg int OnVKeyToItem(UINT nKey, CListBox* pListBox, UINT nIndex);
+//   afx_msg int OnVKeyToItem(UINT nKey, CListBox* pListBox, UINT nIndex);
+	afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnCopyPassword();
    afx_msg void OnNew();
    afx_msg void OnOpen();
@@ -110,6 +125,7 @@ protected:
    afx_msg void OnKillfocusItemlist();
    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnDropFiles(HDROP hDrop);
+	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 
    DECLARE_MESSAGE_MAP()
 
@@ -128,7 +144,6 @@ private:
   void SetBlankToDef(CList<CItemData, CItemData>* plist);
   void SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &username);
   BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
-  int SplitName(const CMyString &name , CMyString &title, CMyString &username) const;
 };
 
 //-----------------------------------------------------------------------------

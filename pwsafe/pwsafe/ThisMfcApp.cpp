@@ -246,6 +246,7 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 BOOL
 ThisMfcApp::InitInstance()
 {
+
    /*
     * It's always best to start at the beginning.  [Glinda, Witch of the North]
     */
