@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="PasswordSafeLib" default="help">
+
+	<property name="srcdir" location="src" />
+	<property name="bindir" location="bin" />
+	<property name="docdir" location="doc" />
+	<property name="resourcedir" location="resources" />
+
+	<property name="jar.doc" value="passwordsafe-doc.zip" />
+	<property name="jar.bin" value="passwordsafe-lib.jar" />
+
+	<path id="project.class.path">
+		<pathelement path="${java.class.path}" />
+		<pathelement location="../BlowfishJ/bin" />
+		<pathelement location="C:\Java\jakarta-log4j-1.2.8\dist\lib\log4j-1.2.8.jar" />
+		<pathelement location="C:\Java\junit3.8.1\junit.jar" />
+	</path>
+
+	<fileset id="resources-1" dir="${resourcedir}">
+		<include name="**" />
+	</fileset>
+
+	<fileset id="resources-2" dir="${basedir}">
+		<include name="LICENSE" />
+		<include name="log-config.xml" />
+	</fileset>
+
+	<fileset id="jarfiles" dir="${basedir}">
+		<include name="${jar.doc}" />
+		<include name="${jar.bin}" />
+	</fileset>
+
+	<target name="help">
+		<echo>Targets:
+--------
+
+buildall    - Cleans the output directories and rebuilds everything.
+clean       - Cleans the bin and doc directories.
+cleanbin    - Cleans only the bin directory.
+cleandoc    - Cleans only the doc directory.
+compile     - Recompiles the Java files only.
+javadoc     - Rebuilds the javadocs only.
+makejars    - Rebuilds the jar files only.
+		</echo>
+	</target>
+
+	<target name="buildall" depends="clean, compile, javadoc, makejars">
+	</target>
+
+	<target name="clean" depends="cleanbin, cleandoc, cleanjars" />
+
+	<target name="cleanbin">
+		<delete dir="${bindir}" />
+		<mkdir dir="${bindir}" />
+	</target>
+
+	<target name="cleandoc">
+		<delete dir="${docdir}" />
+		<mkdir dir="${docdir}" />
+	</target>
+
+	<target name="cleanjars">
+		<delete>
+			<fileset refid="jarfiles" />
+		</delete>
+	</target>
+
+	<target name="compile" depends="cleanbin">
+		<javac srcdir="${srcdir}" destdir="${bindir}" deprecation="on">
+			<classpath refid="project.class.path" />
+		</javac>
+		<copy todir="${bindir}">
+			<fileset refid="resources-1" />
+			<fileset refid="resources-2" />
+		</copy>
+	</target>
+
+	<target name="javadoc" depends="cleandoc">
+		<javadoc destdir="${docdir}" access="private" use="true" notree="false" nonavbar="false" noindex="false" splitindex="true" author="true" version="true" nodeprecatedlist="false" nodeprecated="false" packagenames="org.pwsafe.lib.exception,org.pwsafe.lib.file,org.pwsafe.lib.crypto,org.pwsafe.test,org.pwsafe.lib" sourcepath="src;resources" classpath="bin;C:\Java\jakarta-log4j-1.2.8\dist\lib\log4j-1.2.8.jar;D:\Projects\Java\BlowfishJ\bin;C:\Java\junit3.8.1\junit.jar;C:\Java\eclipse-3.0M6\plugins\org.junit_3.8.1\junit.jar"/>
+	</target>
+
+	<target name="makejars">
+		<zip  destfile="${jar.doc}" basedir="${docdir}" />
+		<jar destfile="${jar.bin}" basedir="${bindir}" />
+	</target>
+
+</project>
