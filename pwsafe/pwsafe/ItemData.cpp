@@ -5,13 +5,18 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "ItemData.h"
+
+#include <io.h>
+#include <math.h>
+
 #include "Util.h"
 #include "Blowfish.h"
 #include "sha1.h"
 
-#include <io.h>
-#include <math.h>
+#include "ThisMfcApp.h"
+
+#include "ItemData.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -215,9 +220,9 @@ CItemData::EncryptData(unsigned char *plain,
       Algorithm.Encrypt(tempmem+x, *cipher+x);
 
    delete [] tempmem;
-   trashMemory(passkey, 20);
+   trashMemory(passkey, 20L);
    trashMemory(context);
-   VirtualUnlock(passkey, 20);
+   VirtualUnlock(passkey, 20L);
 
    return TRUE;
 }
