@@ -9,7 +9,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 2.02
+RELEASENAME = 2.03
 
 RELEASEDIR = "/cygdrive/d/local/src/PasswordSafe/Releases"
 
@@ -22,10 +22,16 @@ RM = /usr/bin/rm
 CP = /usr/bin/cp
 MV = /usr/bin/mv
 
+MAKENSIS = /cygdrive/d/local/NSIS/makensis.exe
+
 BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
 	Release/pwsafe.exe pwsafe.chm
 
-.PHONY: release bin-release src-release
+.PHONY: release bin-release src-release installable
+
+installable:
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) pwsafe.nsi
+	$(MV) pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 release: bin-release src-release
 
@@ -53,6 +59,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.3  2004/06/06 05:32:39  ronys
+# release 2.03
+#
 # Revision 1.2  2004/06/03 20:29:09  ronys
 # Copied from 1.92 branch.
 #
