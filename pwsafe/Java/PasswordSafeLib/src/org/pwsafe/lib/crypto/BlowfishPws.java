@@ -55,8 +55,6 @@ public class BlowfishPws extends BlowfishCBC
 	 * Decrypts <code>buffer</code> in place.
 	 * 
 	 * @param buffer the buffer to be decrypted.
-	 * 
-	 * @see BlowfishJ.BlowfishCBC#decrypt
 	 */
 	public void decrypt( byte[] buffer )
 	{
@@ -65,25 +63,10 @@ public class BlowfishPws extends BlowfishCBC
 		Util.bytesToLittleEndian( buffer );
 	}
 
-//	/**
-//	 * Decrypts the data in <code>inbuffer</code> putting the decrypted data into
-//	 * <code>outbuffer</code>.
-//	 * <p />
-//	 * @param inbuffer  the buffer containing the encrypted data.
-//	 * @param outbuffer the buffer to receive the decrypted data.
-//	 */
-//	public void decrypt( byte[] inbuffer, byte [] outbuffer )
-//	{
-//		System.arraycopy( inbuffer, 0, outbuffer, 0, inbuffer.length );
-//		this.decrypt( outbuffer );
-//	}
-
 	/**
 	 * Encrypts <code>buffer</code> in place.
 	 * 
 	 * @param buffer the buffer to be encrypted.
-	 * 
-	 * @see BlowfishJ.BlowfishCBC#encrypt(byte[])
 	 */
 	public void encrypt( byte[] buffer )
 	{
