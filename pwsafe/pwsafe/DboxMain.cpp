@@ -442,7 +442,9 @@ void DboxMain::OnBrowse()
   HINSTANCE stat = ::ShellExecute(NULL, NULL, m_BrowseURL,
 				  NULL, _T("."), SW_SHOWNORMAL);
   if (int(stat) < 32) {
+#ifdef _DEBUG
     AfxMessageBox("oops");
+#endif
   }
 }
 
@@ -761,7 +763,9 @@ void DboxMain::OnPasswordSafeWebsite()
   HINSTANCE stat = ::ShellExecute(NULL, NULL, "http://passwordsafe.sourceforge.net/",
 				  NULL, _T("."), SW_SHOWNORMAL);
   if (int(stat) < 32) {
+#ifdef _DEBUG
     AfxMessageBox("oops");
+#endif
   }
 
 }
@@ -1608,7 +1612,7 @@ void DboxMain::OnShowPassword()
 }
 #endif
 
-LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
+LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 {
 #if 0
   return m_TrayIcon.OnTrayNotification(wParam, lParam);
