@@ -794,6 +794,9 @@ DboxMain::OnSize(UINT nType,
 	    case PWScore::WRONG_PASSWORD:
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;
+	    case PWScore::USER_CANCEL: // cancel exits program, no ifs or buts
+	      PostMessage(WM_CLOSE);
+	      return;
 	    default:
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;
@@ -1284,7 +1287,6 @@ DboxMain::OnAutoType()
       char curChar;
       const int N = AutoCmd.GetLength();
       CKeySend ks;
-	  ks.BlockUserInput();
 	  ks.ResetKeyboardState();
 
       for(int n=0; n<N;n++){
@@ -1347,8 +1349,7 @@ DboxMain::OnAutoType()
       // since that will clear the data [Bugs item #1026630]
       ShowWindow(SW_MINIMIZE);
       ks.SendString(tmp);
-	  	ks.UnBlockUserInput();
-    }
+  }
 
 		
 }
