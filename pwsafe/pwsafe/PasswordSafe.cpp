@@ -30,7 +30,8 @@ CPasswordSafeApp app;
 //-----------------------------------------------------------------------------
 
 BEGIN_MESSAGE_MAP(CPasswordSafeApp, CWinApp)
-   ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+//   ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+   ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
 
@@ -42,22 +43,31 @@ CPasswordSafeApp::CPasswordSafeApp()
 
 CPasswordSafeApp::~CPasswordSafeApp()
 {
+#if !defined(WITH_BACKEND)
    //We no longer need the global bf_P and bf_S variables, so trash them
    trashMemory((unsigned char*)tempbf_P, 18*4);
    trashMemory((unsigned char*)tempbf_S, 256*4);
    trashMemory((unsigned char*)bf_P, 18*4);
    trashMemory((unsigned char*)bf_S, 256*4);
+#endif
+
+   /*
+     apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
+     to see the docs, someday.  In the meantime, force with :: syntax
+   */
+
+   ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 }
 
 
 BOOL
 CPasswordSafeApp::InitInstance()
 {
-   // Standard initialization
-   // If you are not using these features and wish to reduce the size
-   //  of your final executable, you should remove from the following
-   //  the specific initialization routines you do not need.
+   /*
+    * It's always best to start at the beginning.  [Glinda, Witch of the North]
+    */
 
+   // these 3d enables are signalled as deprecated by VC7...
 #ifdef _AFXDLL
    Enable3dControls();          // Call this when using MFC in a shared DLL
 #else
@@ -116,29 +126,43 @@ CPasswordSafeApp::InitInstance()
          m_passkey = dlg.m_cryptkey1;
          manageCmdLine(m_lpCmdLine);
       }
-   }
-   else
-   {
-      m_maindlg = new DboxMain(NULL);
-      m_pMainWnd = m_maindlg;
-
-      //Set up an Accelerator table
-      m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
-                                        MAKEINTRESOURCE(IDR_ACCS));
-
-      //Run dialog
-      //int rc  = m_maindlg->DoModal();
-      (void) m_maindlg->DoModal();
-
       /*
-        note that we don't particularly care what the response was
-      */
-
-      delete m_maindlg;
+       * we're done with the 'commandline version' - exit the app
+       */
+      return FALSE;
    }
+
+   /*
+    * normal startup
+    */
+
+   /*
+    * here's where PWS currently does DboxMain, which in turn will do
+    * the initial PasskeyEntry.  This makes things very hard to control.
+    * The app object (here) should instead do the initial PasskeyEntry,
+    * and, if successful, move on to DboxMain.  I think. {jpr}
+    */
+
+   m_maindlg = new DboxMain(NULL);
+   m_pMainWnd = m_maindlg;
+
+   //Set up an Accelerator table
+   m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
+                                     MAKEINTRESOURCE(IDR_ACCS));
+
+   //Run dialog
+   //int rc  = m_maindlg->DoModal();
+   (void) m_maindlg->DoModal();
+
+   /*
+     note that we don't particularly care what the response was
+   */
+
+   delete m_maindlg;
 
    // Since the dialog has been closed, return FALSE so that we exit the
    //  application, rather than start the application's message pump.
+
    return FALSE;
 }
 
@@ -158,6 +182,15 @@ CPasswordSafeApp::ProcessMessageFilter(int code,
          return TRUE;
    }
    return CWinApp::ProcessMessageFilter(code, lpMsg);
+}
+
+
+void
+CPasswordSafeApp::OnHelp()
+{
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_intro.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
