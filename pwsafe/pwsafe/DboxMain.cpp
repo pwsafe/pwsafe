@@ -1119,40 +1119,46 @@ DboxMain::OnSize(UINT nType,
    if (nType == SIZE_MINIMIZED)
    {
 	   m_ctlItemList.DeleteAllItems();
-      if (app.GetProfileInt("",
-                            "dontaskminimizeclearyesno",
-                            FALSE) == TRUE)
-      {
-         ClearClipboard();
-      }
-      if (app.GetProfileInt("", "databaseclear", FALSE) == TRUE)
-      {
-         BOOL dontask = app.GetProfileInt("",
-                                          "dontasksaveminimize",
-                                          FALSE);
-         BOOL doit = TRUE;
-         if ((m_changed == TRUE)
-             && (dontask == FALSE))
-         {
-            CRemindSaveDlg remindDlg(this);
 
-            int rc = remindDlg.DoModal();
-            if (rc == IDOK)
-            {
-            }
-            else if (rc == IDCANCEL)
-            {
-               doit = FALSE;
-            }
-         }
+	   // clear clipboard when minimized
+	   if (app.GetProfileInt("",
+		   "dontaskminimizeclearyesno",
+		   FALSE) == TRUE)
+	   {
+		   ClearClipboard();
+	   }
 
-         if ((doit == TRUE) && (m_existingrestore == FALSE)) 
-         {
-            OnSave();
-            ClearData();
-            m_needsreading = TRUE;
-         }
-      }
+	   // lock database when minimized
+	   if (app.GetProfileInt("", "databaseclear", FALSE) == TRUE)
+	   {
+		   // confirm save on minimize
+		   BOOL dontask = app.GetProfileInt("",
+			   "dontasksaveminimize",
+			   FALSE);
+		   BOOL doit = TRUE;
+		   if ((m_changed == TRUE)
+			   && (dontask == FALSE))
+		   {
+			   CRemindSaveDlg remindDlg(this);
+			   
+			   int rc = remindDlg.DoModal();
+			   if (rc == IDOK)
+			   {
+			   }
+			   else if (rc == IDCANCEL)
+			   {
+				   doit = FALSE;
+			   }
+		   }
+		   
+		   if ((doit == TRUE) && (m_existingrestore == FALSE)) 
+		   {
+			   if ( m_changed ) // only save if changed
+				   OnSave();
+			   ClearData();
+			   m_needsreading = TRUE;
+		   }
+	   }
    }
    else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
    {
@@ -1201,8 +1207,10 @@ DboxMain::OnSize(UINT nType,
          }
          else
          {
-            app.m_pMainWnd = NULL;
-            CDialog::OnCancel();
+            m_needsreading = TRUE;
+            m_existingrestore = FALSE;
+            ShowWindow( SW_MINIMIZE );
+            return;
          }
       }
       RefreshList();
