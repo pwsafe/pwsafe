@@ -42,10 +42,15 @@ public:
       SUCCESS = 0
    };
 
+	//{{AFX_DATA(DboxMain)
    enum { IDD = IDD_PASSWORDSAFE_DIALOG };
+	//}}AFX_DATA
 
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(DboxMain)
 protected:
    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	//}}AFX_VIRTUAL
 
 protected:
    HICON m_hIcon;
@@ -107,6 +112,7 @@ protected:
    int Restore(void);
 
    // Generated message map functions
+	//{{AFX_MSG(DboxMain)
    virtual BOOL OnInitDialog();
    afx_msg void OnDestroy();
    afx_msg void OnPaint();
@@ -140,6 +146,7 @@ protected:
    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnDropFiles(HDROP hDrop);
 	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
+	//}}AFX_MSG
 
    DECLARE_MESSAGE_MAP()
 
