@@ -1,11 +1,10 @@
-// resource.h
-//-----------------------------------------------------------------------------
-
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by PasswordSafe.rc
 //
 #define ID_BROWSE                       3
+#define ID_BROWSE2                      4
+#define ID_CREATE_DB                    4
 #define IDD_ABOUTBOX                    100
 #define IDD_PASSWORDSAFE_DIALOG         102
 #define IDS_OUTPUTFILE                  102
@@ -115,7 +114,3 @@
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
-//-----------------------------------------------------------------------------
-// Local variables:
-// mode: c++
-// End:
