@@ -39,6 +39,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("UseNewToolbar"), true, true},
   {_T("UseSystemTray"), true, true},
   {_T("LockOnWindowLock"), true, true},
+  {_T("LockOnIdleTimeout"), true, true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
@@ -49,6 +50,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("sortedcolumn"), 0, true},
   {_T("pwlendefault"), 8, true},
   {_T("maxmruitems"), 4, true},
+  {_T("IdleTimeout"), 5, true},
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

@@ -37,9 +37,9 @@ class PWSprefs {
 		   DontAskMinimizeClearYesNo, DatabaseClear,
 		   DontAskSaveMinimize, QuerySetDef,
 		   UseNewToolbar, UseSystemTray, 
-		   LockOnWindowLock, NumBoolPrefs};
+		   LockOnWindowLock, LockOnIdleTimeout, NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
-		  SortedColumn, PWLenDefault, MaxMRUItems,
+		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
 		  NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		     NumStringPrefs};

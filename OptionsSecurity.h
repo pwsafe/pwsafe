@@ -27,6 +27,8 @@ public:
 	BOOL	m_confirmsaveonminimize;
 	BOOL	m_confirmcopy;
 	BOOL	m_LockOnWindowLock;
+	BOOL	m_LockOnIdleTimeout;
+	UINT    m_IdleTimeOut;
 	//}}AFX_DATA
 
 
