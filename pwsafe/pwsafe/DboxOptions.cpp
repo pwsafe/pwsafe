@@ -10,6 +10,8 @@
   #include "resource.h"
 #endif
 
+#include "corelib/PWSprefs.h"
+
 // dialog boxen
 #include "DboxMain.h"
 #include "OptionsSecurity.h"
@@ -22,48 +24,65 @@
 #include <afxpriv.h>
 
 
-#define not(x) ((x) ? 0 : 1)
-
 void
 DboxMain::OnOptions() 
 {
    CPropertySheet optionsDlg(_T("Options"), this);
-
    COptionsDisplay         display;
    COptionsSecurity        security;
    COptionsPasswordPolicy  passwordpolicy;
    COptionsUsername        username;
    COptionsMisc            misc;
+   PWSprefs               *prefs = PWSprefs::GetInstance();
 
    /*
    **  Initialize the property pages values.
    */
    display.m_alwaysontop = m_bAlwaysOnTop;
-   display.m_pwshowinedit = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE);
-   display.m_pwshowinlist = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE);
+   display.m_pwshowinedit = prefs->
+     GetPref(PWSprefs::BoolPrefs::ShowPWDefault) ? TRUE : FALSE;
+   display.m_pwshowinlist = prefs->
+     GetPref(PWSprefs::BoolPrefs::ShowPWInList) ? TRUE : FALSE;
 #if defined(POCKET_PC)
-   display.m_dcshowspassword = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE);
+   display.m_dcshowspassword = prefs->
+     GetPref(PWSprefs::BoolPrefs::DCShowsPassword) ? TRUE : FALSE;
 #endif
 
-   security.m_clearclipboard = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskminimizeclearyesno"), FALSE));
-   security.m_lockdatabase = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE));
-   security.m_confirmsaveonminimize = not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), FALSE));
-   security.m_confirmcopy = not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), FALSE));
+   security.m_clearclipboard = prefs->
+     GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
+   security.m_lockdatabase = prefs->
+     GetPref(PWSprefs::BoolPrefs::DatabaseClear) ? TRUE : FALSE;
+   security.m_confirmsaveonminimize = prefs->
+     GetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize) ? FALSE : TRUE;
+   security.m_confirmcopy = prefs->
+     GetPref(PWSprefs::BoolPrefs::DontAskQuestion) ? FALSE : TRUE;
 
-   passwordpolicy.m_pwlendefault = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), 8);
-   passwordpolicy.m_pwuselowercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuselowercase"), TRUE);
-   passwordpolicy.m_pwuseuppercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE);
-   passwordpolicy.m_pwusedigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE);
-   passwordpolicy.m_pwusesymbols = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE);
-   passwordpolicy.m_pwusehexdigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusehexdigits"), FALSE);
-   passwordpolicy.m_pweasyvision = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE);
+    passwordpolicy.m_pwlendefault = prefs->
+      GetPref(PWSprefs::IntPrefs::PWLenDefault);
+    passwordpolicy.m_pwuselowercase = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseLowercase);
+    passwordpolicy.m_pwuseuppercase = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseUppercase);
+    passwordpolicy.m_pwusedigits = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseDigits);
+    passwordpolicy.m_pwusesymbols = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseSymbols);
+    passwordpolicy.m_pwusehexdigits = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseHexDigits);
+    passwordpolicy.m_pweasyvision = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWEasyVision);
 
-   username.m_usedefuser = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
-   username.m_defusername = app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T(""));
-   username.m_querysetdef = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), TRUE);
+   username.m_usedefuser = prefs->
+     GetPref(PWSprefs::BoolPrefs::UseDefUser);
+   username.m_defusername = CString(prefs->
+				    GetPref(PWSprefs::StringPrefs::DefUserName));
+   username.m_querysetdef = prefs->
+     GetPref(PWSprefs::BoolPrefs::QuerySetDef);
 
-   misc.m_confirmdelete = not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), FALSE));
-   misc.m_saveimmediately = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), TRUE);
+   misc.m_confirmdelete = prefs->
+     GetPref(PWSprefs::BoolPrefs::DeleteQuestion) ? FALSE : TRUE;
+   misc.m_saveimmediately = prefs->
+     GetPref(PWSprefs::BoolPrefs::SaveImmediately) ? TRUE : FALSE;
 
    optionsDlg.AddPage( &display );
    optionsDlg.AddPage( &security );
@@ -83,40 +102,61 @@ DboxMain::OnOptions()
       /*
       **  First save all the options.
       */
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("alwaysontop"),     display.m_alwaysontop);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwdefault"),   display.m_pwshowinedit);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwinlist"),    display.m_pwshowinlist);
+     prefs->SetPref(PWSprefs::BoolPrefs::AlwaysOnTop,
+		    display.m_alwaysontop == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::ShowPWDefault,
+		    display.m_pwshowinedit == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::ShowPWInList,
+		    display.m_pwshowinlist == TRUE);
 #if defined(POCKET_PC)
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dcshowspassword"), display.m_dcshowspassword);
+     prefs->SetPref(PWSprefs::BoolPrefs::DCShowsPassword,
+		    display.m_dcshowspassword == TRUE);
 #endif
 
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontaskminimizeclearyesno"),  security.m_clearclipboard);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("databaseclear"),              security.m_lockdatabase);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontasksaveminimize"),    not(security.m_confirmsaveonminimize));
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontaskquestion"),        not(security.m_confirmcopy));
+     prefs->SetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo,
+		    security.m_clearclipboard == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::DatabaseClear,
+		    security.m_lockdatabase == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize,
+		    security.m_confirmsaveonminimize == FALSE);
+     prefs->SetPref(PWSprefs::BoolPrefs::DontAskQuestion,
+		    security.m_confirmcopy == FALSE);
 
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwlendefault"),    passwordpolicy.m_pwlendefault);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuselowercase"),  passwordpolicy.m_pwuselowercase);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuseuppercase"),  passwordpolicy.m_pwuseuppercase);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusedigits"),     passwordpolicy.m_pwusedigits);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusesymbols"),    passwordpolicy.m_pwusesymbols);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusehexdigits"),  passwordpolicy.m_pwusehexdigits);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pweasyvision"),    passwordpolicy.m_pweasyvision);
+     prefs->SetPref(PWSprefs::IntPrefs::PWLenDefault,
+		    passwordpolicy.m_pwlendefault);
+     prefs->SetPref(PWSprefs::BoolPrefs::PWUseLowercase,
+		    passwordpolicy.m_pwuselowercase == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::PWUseUppercase,
+		    passwordpolicy.m_pwuseuppercase == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::PWUseDigits,
+		    passwordpolicy.m_pwusedigits == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::PWUseSymbols,
+		    passwordpolicy.m_pwusesymbols == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::PWUseHexDigits,
+		    passwordpolicy.m_pwusehexdigits == TRUE);
+     prefs-> SetPref(PWSprefs::BoolPrefs::PWEasyVision,
+		     passwordpolicy.m_pweasyvision == TRUE);
 
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("usedefuser"),      username.m_usedefuser);
-      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"),   username.m_defusername);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("querysetdef"),     username.m_querysetdef);
+     prefs->SetPref(PWSprefs::BoolPrefs::UseDefUser,
+		    username.m_usedefuser == TRUE);
+     prefs->SetPref(PWSprefs::StringPrefs::DefUserName,
+		    username.m_defusername);
+     prefs->SetPref(PWSprefs::BoolPrefs::QuerySetDef,
+		    username.m_querysetdef == TRUE);
 
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("deletequestion"),  not(misc.m_confirmdelete));
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("saveimmediately"),     misc.m_saveimmediately);
+     prefs->SetPref(PWSprefs::BoolPrefs::DeleteQuestion,
+		    misc.m_confirmdelete == FALSE);
+     prefs->SetPref(PWSprefs::BoolPrefs::SaveImmediately,
+		    misc.m_saveimmediately == TRUE);
 
       /*
       **  Now update the application according to the options.
       */
-      m_bAlwaysOnTop = display.m_alwaysontop;
+      m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
       UpdateAlwaysOnTop();
       bool bOldShowPasswordInList = m_bShowPasswordInList;
-      m_bShowPasswordInList = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE)? true: false;
+      m_bShowPasswordInList = prefs->
+	GetPref(PWSprefs::BoolPrefs::ShowPWInList);
 
       if (bOldShowPasswordInList != m_bShowPasswordInList)
 	RefreshList();

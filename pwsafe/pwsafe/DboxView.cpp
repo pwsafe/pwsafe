@@ -22,6 +22,8 @@
 #include "RemindSaveDlg.h"
 #include "TryAgainDlg.h"
 
+#include "corelib/pwsprefs.h"
+
 static void FixListIndexes(CListCtrl &clist)
 {
   int N = clist.GetItemCount();
@@ -215,10 +217,11 @@ DboxMain::OnAdd()
 	
   if (rc == IDOK)
     {
+      PWSprefs *prefs = PWSprefs::GetInstance();
       //Check if they wish to set a default username
       if (!m_core.GetUseDefUser()
-          && (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), TRUE) == TRUE)
-          && (dataDlg.m_username != ""))
+	  && (prefs->GetPref(PWSprefs::BoolPrefs::QuerySetDef))
+          && (!dataDlg.m_username.IsEmpty()))
 	{
 	  CQuerySetDef defDlg(this);
 	  defDlg.m_message =
@@ -229,9 +232,9 @@ DboxMain::OnAdd()
 	  int rc2 = defDlg.DoModal();
 	  if (rc2 == IDOK)
 	    {
-	      app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), TRUE);
-	      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"),
-				     dataDlg.m_username);
+	      prefs->SetPref(PWSprefs::BoolPrefs::UseDefUser, true);
+	      prefs->SetPref(PWSprefs::StringPrefs::DefUserName,
+			     dataDlg.m_username);
 	      m_core.SetUseDefUser(true);
 	      m_core.SetDefUsername(dataDlg.m_username);
 	      RefreshList();
@@ -255,7 +258,7 @@ DboxMain::OnAdd()
       SelectEntry(newpos);
       FixListIndexes(m_ctlItemList);
       m_ctlItemList.SetFocus();
-      if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), FALSE) == TRUE)
+      if (prefs->GetPref(PWSprefs::BoolPrefs::SaveImmediately))
 	{
 	  Save();
 	}
@@ -384,8 +387,8 @@ DboxMain::OnEdit()
 	  di->list_index = -1; // so that insertItem will set new values
 	  insertItem(m_core.GetTailEntry());
 	  FixListIndexes(m_ctlItemList);
-	  if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
-				_T("saveimmediately"), FALSE) == TRUE)
+	  if (PWSprefs::GetInstance()->
+	      GetPref(PWSprefs::BoolPrefs::SaveImmediately))
 	    {
 	      Save();
 	    }
@@ -404,32 +407,31 @@ DboxMain::OnOK()
 {
   int rc, rc2;
 
-  char *ppszAttributeNames[] = {
-    "column1width",
-    "column2width",
-    "column3width",
-    "column4width"
+  PWSprefs::IntPrefs WidthPrefs[] = {
+    PWSprefs::IntPrefs::Column1Width,
+    PWSprefs::IntPrefs::Column2Width,
+    PWSprefs::IntPrefs::Column3Width,
+    PWSprefs::IntPrefs::Column4Width,
   };
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
   LVCOLUMN lvColumn;
   lvColumn.mask = LVCF_WIDTH;
   for (int i = 0; i < 4; i++) {
     if (m_ctlItemList.GetColumn(i, &lvColumn)) {
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS), (LPCTSTR) ppszAttributeNames[i], lvColumn.cx);
+      prefs->SetPref(WidthPrefs[i], lvColumn.cx);
     }
   }
 
+#if !defined(POCKET_PC)
   if (!IsIconic()) {
     CRect rect;
     GetWindowRect(&rect);
-#if !defined(POCKET_PC)
-    app.WriteProfileInt(_T(PWS_REG_POSITION), _T("top"), rect.top);
-    app.WriteProfileInt(_T(PWS_REG_POSITION), _T("bottom"), rect.bottom);
-    app.WriteProfileInt(_T(PWS_REG_POSITION), _T("left"), rect.left);
-    app.WriteProfileInt(_T(PWS_REG_POSITION), _T("right"), rect.right);
-#endif
+    prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
   }
-  app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("sortedcolumn"), m_iSortedColumn);
-  app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("sortascending"), m_bSortAscending);
+#endif
+  prefs->SetPref(PWSprefs::IntPrefs::SortedColumn, m_iSortedColumn);
+  prefs->SetPref(PWSprefs::BoolPrefs::SortAscending, m_bSortAscending);
 
   if (m_core.IsChanged())
     {
@@ -452,7 +454,7 @@ DboxMain::OnOK()
     }
   else
     {
-      if (app.GetProfileInt(_T(""), _T("dontaskminimizeclearyesno"), FALSE) == TRUE)
+      if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
 	ClearClipboard();
       app.m_pMainWnd = NULL;
     }
@@ -460,15 +462,9 @@ DboxMain::OnOK()
   ClearData();
 
   //Store current filename for next time...
-  if (!m_core.GetCurFile().IsEmpty())
-    app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentfile"), m_core.GetCurFile());
-  else
-    app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentfile"), NULL);
+  prefs->SetPref(PWSprefs::StringPrefs::CurrentFile, m_core.GetCurFile());
 
-  if (!m_currbackup.IsEmpty())
-    app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentbackup"), m_currbackup);
-  else
-    app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentbackup"), NULL);
+  prefs->SetPref(PWSprefs::StringPrefs::CurrentBackup, m_currbackup);
 
   CDialog::OnOK();
 }
@@ -641,12 +637,14 @@ DboxMain::RefreshList()
     m_ctlItemList.InsertColumn(3, _T("Password"));
     CRect rect;
     m_ctlItemList.GetClientRect(&rect);
-    m_ctlItemList.SetColumnWidth(3, app.GetProfileInt(_T(PWS_REG_OPTIONS),
-						      _T("column4width"),
-						      rect.Width() / 4));
+    m_ctlItemList.SetColumnWidth(3,
+				 PWSprefs::GetInstance()->
+				 GetPref(PWSprefs::IntPrefs::Column4Width,
+					 rect.Width() / 4));
   }
   else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
-    app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("column4width"), lvColumn.cx);
+    PWSprefs::GetInstance()->SetPref(PWSprefs::IntPrefs::Column4Width,
+				     lvColumn.cx);
     m_ctlItemList.DeleteColumn(3);
   }
 
@@ -690,23 +688,16 @@ DboxMain::OnSize(UINT nType,
 #if !defined(POCKET_PC)
   if (nType == SIZE_MINIMIZED)
     {
+      PWSprefs *prefs = PWSprefs::GetInstance();
+
       m_ctlItemList.DeleteAllItems();
       m_ctlItemTree.DeleteAllItems();
-      if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
-                            _T("dontaskminimizeclearyesno"),
-                            FALSE) == TRUE)
-	{
-	  ClearClipboard();
-	}
-      if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE) == TRUE)
-	{
-	  BOOL dontask = app.GetProfileInt(_T(PWS_REG_OPTIONS),
-					   _T("dontasksaveminimize"),
-					   FALSE);
-	  BOOL doit = TRUE;
-	  if ((m_core.IsChanged())
-	      && (dontask == FALSE))
-	    {
+      if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
+	ClearClipboard();
+      if (prefs->GetPref(PWSprefs::BoolPrefs::DatabaseClear)) {
+	bool dontask = prefs->GetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize);
+	bool doit = true;
+	  if ((m_core.IsChanged()) && !dontask) {
 	      CRemindSaveDlg remindDlg(this);
 
 	      int rc = remindDlg.DoModal();
@@ -719,7 +710,7 @@ DboxMain::OnSize(UINT nType,
 		}
 	    }
 
-	  if ((doit == TRUE) && (m_existingrestore == FALSE)) 
+	  if (doit && (m_existingrestore == FALSE)) 
 	    {
 	      if ( m_core.IsChanged() ) // only save if changed
                 OnSave();
@@ -1128,7 +1119,8 @@ DboxMain::SetListView()
 {
   m_ctlItemTree.ShowWindow(SW_HIDE);
   m_ctlItemList.ShowWindow(SW_SHOW);
-  app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("lastview"), _T("list"));
+  PWSprefs::GetInstance()->SetPref(PWSprefs::StringPrefs::LastView,
+				   _T("list"));
 }
 
 void
@@ -1136,6 +1128,7 @@ DboxMain::SetTreeView()
 {
   m_ctlItemList.ShowWindow(SW_HIDE);
   m_ctlItemTree.ShowWindow(SW_SHOW);
-  app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("lastview"), _T("tree"));
+  PWSprefs::GetInstance()->SetPref(PWSprefs::StringPrefs::LastView,
+				   _T("tree"));
 }
 

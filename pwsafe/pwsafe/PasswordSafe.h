@@ -25,14 +25,6 @@
 #endif
 #endif
 
-#if defined(POCKET_PC)
-  #define PWS_REG_POSITION	"Position"
-  #define PWS_REG_OPTIONS	"Options"
-#else
-  #define PWS_REG_POSITION	""
-  #define PWS_REG_OPTIONS	""
-#endif
-
 /*
   jpr debug stuff
 */

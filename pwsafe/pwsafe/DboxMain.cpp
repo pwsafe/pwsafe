@@ -7,6 +7,8 @@
 
 #include "ThisMfcApp.h"
 
+#include "corelib/PWSprefs.h"
+
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
 #else
@@ -110,21 +112,20 @@ DboxMain::DboxMain(CWnd* pParent)
     * This will happen if a filename was given in the command line.
     */
    if (m_core.GetCurFile().IsEmpty()) {
-     // If there's no registry key, this is probably a fresh install.
+     // If there's no stored preference, this is probably a fresh install.
      // CheckPassword will catch this and handle it correctly
-     m_core.SetCurFile((CMyString) app.GetProfileString(_T(PWS_REG_OPTIONS),
-							_T("currentfile")));
+     m_core.SetCurFile(PWSprefs::GetInstance()->
+		       GetPref(PWSprefs::StringPrefs::CurrentFile));
    }
 #if !defined(POCKET_PC)
    m_title = _T("");
    m_toolbarsSetup = FALSE;
 #endif
 
-   m_bAlwaysOnTop = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("alwaysontop"), FALSE);
+   m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::AlwaysOnTop);
 
    m_currbackup = // ??? move to PWScore??
-      (CMyString) app.GetProfileString(_T(PWS_REG_OPTIONS),
-				       _T("currentbackup"), NULL);
+     PWSprefs::GetInstance()->GetPref(PWSprefs::StringPrefs::CurrentBackup);
 
    m_bShowPasswordInEdit = false;
    m_bShowPasswordInList = false;
@@ -207,118 +208,112 @@ END_MESSAGE_MAP()
 BOOL
 DboxMain::OnInitDialog()
 {
-   ConfigureSystemMenu();
+  ConfigureSystemMenu();
 
-   CDialog::OnInitDialog();
+  CDialog::OnInitDialog();
 
-   UpdateAlwaysOnTop();
+  UpdateAlwaysOnTop();
 
-   if (OpenOnInit()==FALSE) // If this function fails, abort launch
-      return TRUE;
+  if (OpenOnInit()==FALSE) // If this function fails, abort launch
+    return TRUE;
 
-   m_windowok = true;
+  m_windowok = true;
 	
-   // Set the icon for this dialog.  The framework does this automatically
-   //  when the application's main window is not a dialog
+  // Set the icon for this dialog.  The framework does this automatically
+  //  when the application's main window is not a dialog
 
-   SetIcon(m_hIcon, TRUE);  // Set big icon
-   SetIcon(m_hIcon, FALSE); // Set small icon
+  SetIcon(m_hIcon, TRUE);  // Set big icon
+  SetIcon(m_hIcon, FALSE); // Set small icon
 
-   // Init stuff for tree view
-   CImageList *pImageList = new CImageList();
-   BOOL status = pImageList->Create(9, 9, ILC_COLOR, 2, 0);
-   ASSERT(status != 0);
-   CBitmap bitmap;
+  // Init stuff for tree view
+  CImageList *pImageList = new CImageList();
+  BOOL status = pImageList->Create(9, 9, ILC_COLOR, 2, 0);
+  ASSERT(status != 0);
+  CBitmap bitmap;
 
-   // Order of LoadBitmap() calls matches CMyTreeCtrl public enum
-   bitmap.LoadBitmap(IDB_NODE);
-   pImageList->Add(&bitmap, (COLORREF)0x0);
-   bitmap.DeleteObject();
-   bitmap.LoadBitmap(IDB_LEAF);
-   pImageList->Add(&bitmap, (COLORREF)0x0);
-   bitmap.DeleteObject();
-   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
+  // Order of LoadBitmap() calls matches CMyTreeCtrl public enum
+  bitmap.LoadBitmap(IDB_NODE);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
 
-   // Init stuff for list view
-   m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-   int iColumnCount = 3;
-   m_ctlItemList.InsertColumn(0, _T("Title"));
-   m_ctlItemList.InsertColumn(1, _T("User Name"));
-   m_ctlItemList.InsertColumn(2, _T("Notes"));
+  // Init stuff for list view
+  m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+  int iColumnCount = 3;
+  m_ctlItemList.InsertColumn(0, _T("Title"));
+  m_ctlItemList.InsertColumn(1, _T("User Name"));
+  m_ctlItemList.InsertColumn(2, _T("Notes"));
 
-	if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
-			      _T("showpwdefault"), FALSE)) {
-		m_bShowPasswordInEdit = true;
-	}
+  m_bShowPasswordInEdit = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::BoolPrefs::ShowPWDefault);
 
-	if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
-			      _T("showpwinlist"), FALSE)) {
-		m_bShowPasswordInList = true;
+  m_bShowPasswordInList = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::BoolPrefs::ShowPWInList);
 
-	}
+  CMenu* mmenu = GetMenu();
+  CMenu* submenu = mmenu->GetSubMenu(2);
 
-	CMenu* mmenu = GetMenu();
-	CMenu* submenu = mmenu->GetSubMenu(2);
+  const CString lastView = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::StringPrefs::LastView);
 
-	CString lastView = app.GetProfileString(_T(PWS_REG_OPTIONS), _T("lastview"),
-						_T("list"));
-	if (lastView == _T("list")) {
-	  submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
-	  submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
-	} else {
-	  submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
-	  submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_CHECKED | MF_BYCOMMAND);
-	  m_ctlItemList.ShowWindow(SW_HIDE);
-	  m_ctlItemTree.ShowWindow(SW_SHOW);
-	}
+  if (lastView == _T("list")) {
+    submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
+    submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+  } else {
+    submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+    submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_CHECKED | MF_BYCOMMAND);
+    m_ctlItemList.ShowWindow(SW_HIDE);
+    m_ctlItemTree.ShowWindow(SW_SHOW);
+  }
 
-	CRect rect;
-	m_ctlItemList.GetClientRect(&rect);
-	int i1stWidth = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column1width"),
-					  rect.Width() / iColumnCount + rect.Width() % iColumnCount);
-	int i2ndWidth = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column2width"),
-					  rect.Width() / iColumnCount);
-	int i3rdWidth = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column3width"),
-					  rect.Width() / iColumnCount);
+  CRect rect;
+  m_ctlItemList.GetClientRect(&rect);
+  int i1stWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::Column1Width,
+						   (rect.Width() / iColumnCount +
+						    rect.Width() % iColumnCount));
+  int i2ndWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::Column2Width,
+						   rect.Width() / iColumnCount);
+  int i3rdWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::Column3Width,
+						   rect.Width() / iColumnCount);
 
-	m_ctlItemList.SetColumnWidth(0, i1stWidth);
-	m_ctlItemList.SetColumnWidth(1, i2ndWidth);
-	m_ctlItemList.SetColumnWidth(2, i3rdWidth);
+  m_ctlItemList.SetColumnWidth(0, i1stWidth);
+  m_ctlItemList.SetColumnWidth(1, i2ndWidth);
+  m_ctlItemList.SetColumnWidth(2, i3rdWidth);
 
-	m_iSortedColumn = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortedcolumn"), 0);
-	m_bSortAscending = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortascending"), 1)? true: false;
+  m_iSortedColumn = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::SortedColumn);
+  m_bSortAscending = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::BoolPrefs::SortAscending);
 
-   // refresh list will add and size password column if necessary...
-   RefreshList();
-   ChangeOkUpdate();
+  // refresh list will add and size password column if necessary...
+  RefreshList();
+  ChangeOkUpdate();
 
-   setupBars(); // Just to keep things a little bit cleaner
+  setupBars(); // Just to keep things a little bit cleaner
 
 #if !defined(POCKET_PC)
-   // {kjp} Can't drag and drop files onto an application in PocketPC
-   DragAcceptFiles(TRUE);
+  // {kjp} Can't drag and drop files onto an application in PocketPC
+  DragAcceptFiles(TRUE);
 
-   // TODO: kinda hideous in the registry, encode as single string maybe?
-   // {kjp} meaningless when target is a PocketPC device.
-   rect.top = app.GetProfileInt(_T(PWS_REG_POSITION), _T("top"), -1);
-   rect.bottom = app.GetProfileInt(_T(PWS_REG_POSITION), _T("bottom"), -1);
-   rect.left = app.GetProfileInt(_T(PWS_REG_POSITION), _T("left"), -1);
-   rect.right = app.GetProfileInt(_T(PWS_REG_POSITION), _T("right"), -1);
+  // {kjp} meaningless when target is a PocketPC device.
+  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
-   if (rect.top == -1 || rect.bottom == -1 || rect.left == -1 || rect.right == -1) {
-	   GetWindowRect(&rect);
-	   SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
-   } else {
-		MoveWindow(&rect, TRUE);
-   }
+  if (rect.top == -1 || rect.bottom == -1 || rect.left == -1 || rect.right == -1) {
+    GetWindowRect(&rect);
+    SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
+  } else {
+    MoveWindow(&rect, TRUE);
+  }
 #endif
 
-   UINT usedefuser = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
-   m_core.SetUseDefUser(usedefuser == TRUE); // plain usedefuser generates bogus compiler warning. grrrr
-   m_core.SetDefUsername(app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"),
-					      _T("")));
+  m_core.SetUseDefUser(PWSprefs::GetInstance()->
+		       GetPref(PWSprefs::BoolPrefs::UseDefUser));
+  m_core.SetDefUsername(PWSprefs::GetInstance()->
+		       GetPref(PWSprefs::StringPrefs::DefUserName));
 
-   return TRUE;  // return TRUE unless you set the focus to a control
+  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 
@@ -657,8 +652,7 @@ DboxMain::OnExportText()
 
 void DboxMain::SetChanged(bool changed) // for MyTreeCtrl
 {
-  if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
-			_T("saveimmediately"), FALSE) == TRUE) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::SaveImmediately)) {
     Save();
   } else {
     m_core.SetChanged(changed);
@@ -1404,11 +1398,10 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 
 	if ( ID_SYSMENU_ALWAYSONTOP == nID )
 	{
-		m_bAlwaysOnTop = !m_bAlwaysOnTop;
-
-		app.WriteProfileInt( _T(PWS_REG_OPTIONS), _T("alwaysontop"), m_bAlwaysOnTop );
-
-		UpdateAlwaysOnTop();
+	  m_bAlwaysOnTop = !m_bAlwaysOnTop;
+	  PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::AlwaysOnTop,
+					   m_bAlwaysOnTop);
+	  UpdateAlwaysOnTop();
 	}
 #endif
 }

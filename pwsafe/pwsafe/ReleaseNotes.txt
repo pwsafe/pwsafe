@@ -19,8 +19,8 @@ master password ("combination") - bug introduced in 2.01
 
 New Features for 2.02:
 ======================
-[789030, 932445] It's now possible to override the random password genration
-policy for a single password in the add and edit entry dialog boxes.
+[789030, 932445] It's now possible to override the random password
+generation policy for a single password in the add and edit entry dialog boxes.
 
 Bugs fixed in 2.01:
 ===================
@@ -109,6 +109,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.8  2004/05/23 19:30:51  ronys
+Moved from registry to PWSprefs class. Will evolve into file-stored preferences.
+
 Revision 1.7  2004/04/30 04:09:56  ronys
 Updated for 2.02
 

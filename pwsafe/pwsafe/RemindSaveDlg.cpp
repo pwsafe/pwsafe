@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
+
+#include "corelib/PWSprefs.h"
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)
@@ -25,7 +27,8 @@ static char THIS_FILE[] = __FILE__;
 CRemindSaveDlg::CRemindSaveDlg(CWnd* pParent)
    : CDialog(CRemindSaveDlg::IDD, pParent)
 {
-   m_dontask = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), FALSE);
+  m_dontask = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize) ? TRUE : FALSE;
 }
 
 
@@ -43,7 +46,8 @@ END_MESSAGE_MAP()
 void CRemindSaveDlg::OnCancel() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), m_dontask);
+   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize,
+				    m_dontask == TRUE);
    CDialog::OnCancel();
 }
 
@@ -51,7 +55,8 @@ void CRemindSaveDlg::OnCancel()
 void CRemindSaveDlg::OnOK() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), m_dontask);
+   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize,
+				    m_dontask == TRUE);
    CDialog::OnOK();
 }
 //-----------------------------------------------------------------------------

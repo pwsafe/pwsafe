@@ -22,7 +22,7 @@ public:
 // Dialog Data
    //{{AFX_DATA(CConfirmDeleteDlg)
    enum { IDD = IDD_CONFIRMDELETE_DIALOG };
-   BOOL	m_dontaskquestion;
+   bool	m_dontaskquestion;
    //}}AFX_DATA
 
 

@@ -10,7 +10,6 @@
 #define IDS_OUTPUTFILE                  102
 #define ID_SYSMENU_ALWAYSONTOP          102
 #define IDS_TEMPFILE                    103
-#define IDS_COMPANY                     104
 #define IDS_STATCOMPANY                 105
 #define IDS_STATMESSAGE                 106
 #define IDS_ALWAYSONTOP                 107

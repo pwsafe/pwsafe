@@ -4,6 +4,7 @@
 
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/PWSprefs.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -297,28 +298,28 @@ ThisMfcApp::InitInstance()
     * It's always best to start at the beginning.  [Glinda, Witch of the North]
 	*/
 	
-	/*
-	this pulls 'Counterpane Systems' out of the string table, verifies
-	that it exists (actually, only verifies that *some* IDS_COMPANY
-	string exists -- it could be 'Microsoft' for all we know), and then
-	instructs the app to use the registry instead of .ini files.  The
-	path ends up being
-	
-	  HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
-	  
-		Assuming the open-source version of this is going to become less
-		Counterpane-centric, I expect this may change, but if it does, an
-		automagic migration ought to happen. -- {jpr}
-	*/
 #if defined(POCKET_PC)
 	SHInitExtraControls();
 #endif
 
-	CString companyname;
-	VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
-	SetRegistryKey(companyname);
+  /*
+    this instructs the app to use the registry instead of .ini files.  The
+    path ends up being
 	
-   int	nMRUItems = GetProfileInt(_T(PWS_REG_OPTIONS), _T("maxmruitems"), 4);
+    HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+	  
+    Assuming the open-source version of this is going to become less
+    Counterpane-centric, I expect this may change, but if it does, an
+    automagic migration ought to happen. -- {jpr}
+
+    Of course, this is legacy, and will go away once the registry is fully replaced
+    by the in-database preference storage. -- ronys
+  */
+   CString companyname("Counterpane Systems");
+   SetRegistryKey(companyname);
+
+   int	nMRUItems = PWSprefs::GetInstance()->
+     GetPref(PWSprefs::IntPrefs::MaxMRUItems);
    m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );;
 	m_pMRU->ReadList();
 	

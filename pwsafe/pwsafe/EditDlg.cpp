@@ -11,6 +11,7 @@
 #include "OptionsPasswordPolicy.h"
 #include "corelib/PWCharPool.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/PWSprefs.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -146,8 +147,7 @@ BOOL CEditDlg::OnInitDialog()
  
    SetPasswordFont(GetDlgItem(IDC_PASSWORD));
 
-   if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
-			 _T("showpwdefault"), FALSE) == TRUE)
+   if (PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::ShowPWDefault))
    {
       ShowPassword();
    }
@@ -189,14 +189,22 @@ void CEditDlg::OnRandom()
     // Start with existing password policy
     CPropertySheet optionsDlg(_T("Password Policy Override"), this);
     COptionsPasswordPolicy  passwordpolicy;
+    PWSprefs *prefs = PWSprefs::GetInstance();
 
-    passwordpolicy.m_pwlendefault = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), 8);
-    passwordpolicy.m_pwuselowercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuselowercase"), TRUE);
-    passwordpolicy.m_pwuseuppercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE);
-    passwordpolicy.m_pwusedigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE);
-    passwordpolicy.m_pwusesymbols = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE);
-    passwordpolicy.m_pwusehexdigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusehexdigits"), FALSE);
-    passwordpolicy.m_pweasyvision = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE);
+    passwordpolicy.m_pwlendefault = prefs->
+      GetPref(PWSprefs::IntPrefs::PWLenDefault);
+    passwordpolicy.m_pwuselowercase = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseLowercase);
+    passwordpolicy.m_pwuseuppercase = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseUppercase);
+    passwordpolicy.m_pwusedigits = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseDigits);
+    passwordpolicy.m_pwusesymbols = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseSymbols);
+    passwordpolicy.m_pwusehexdigits = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWUseHexDigits);
+    passwordpolicy.m_pweasyvision = prefs->
+      GetPref(PWSprefs::BoolPrefs::PWEasyVision);
 
     // Display COptionsPasswordPolicy page
     optionsDlg.AddPage(&passwordpolicy);

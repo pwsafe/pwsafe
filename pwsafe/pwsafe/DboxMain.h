@@ -104,9 +104,9 @@ protected:
    bool m_bSortAscending;
    int m_iSortedColumn;
 
-	bool m_bShowPasswordInEdit;
-	bool m_bShowPasswordInList;
-	BOOL m_bAlwaysOnTop;
+  bool m_bShowPasswordInEdit;
+  bool m_bShowPasswordInList;
+  bool m_bAlwaysOnTop;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
