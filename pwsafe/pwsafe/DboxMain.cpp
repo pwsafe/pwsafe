@@ -1013,7 +1013,8 @@ DboxMain::OnSize(UINT nType,
 
          if ((doit == TRUE) && (m_existingrestore == FALSE)) 
          {
-            OnSave();
+            if ( m_core.IsChanged() ) // only save if changed
+                OnSave();
             ClearData();
             m_needsreading = true;
          }
@@ -1066,8 +1067,10 @@ DboxMain::OnSize(UINT nType,
          }
          else
          {
-            app.m_pMainWnd = NULL;
-            CDialog::OnCancel();
+            m_needsreading = TRUE;
+            m_existingrestore = FALSE;
+            ShowWindow( SW_MINIMIZE );
+            return;
          }
       }
       RefreshList();
