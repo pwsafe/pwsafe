@@ -58,6 +58,15 @@ protected:
 BEGIN_MESSAGE_MAP(DboxAbout, CDialog)
 END_MESSAGE_MAP()
 
+  /*
+   * Compare function used by m_ctlItemList.SortItems()
+   * "The comparison function must return a negative value if the first item should precede 
+   * the second, a positive value if the first item should follow the second, or zero if
+   * the two items are equivalent."
+   *
+   * If sorting is by title (username) , username (title) is the secondary field if the
+   * primary fields are identical.
+   */
 int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {
 	// lParamSort determines which column is getting sorted:
 	// 0 - title
@@ -76,11 +85,17 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 		SplitName(pLHS->GetName(), title1, username1);
 		SplitName(pRHS->GetName(), title2, username2);
 		iResult = ((CString)title1).CompareNoCase(title2);
+		if (iResult == 0)
+		  iResult = CompareFunc(lParam1, lParam2,
+					MAKELPARAM(1, HIWORD(lParamSort)));
 		break;
 	case 1:
 		SplitName(pLHS->GetName(), title1, username1);
 		SplitName(pRHS->GetName(), title2, username2);
 		iResult = ((CString)username1).CompareNoCase(username2);
+		if (iResult == 0)
+		  iResult = CompareFunc(lParam1, lParam2,
+					MAKELPARAM(0, HIWORD(lParamSort)));
 		break;
 	case 2:
 		iResult = ((CString)pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
@@ -514,9 +529,7 @@ DboxMain::OnCopyPassword()
 {
    if (SelItemOk() == TRUE)
    {
-      int curSel = getSelectedItem();
-      CMyString curSelString = m_ctlItemList.GetItemText(curSel, 0);
-      POSITION itemPos = Find(curSelString);
+      POSITION itemPos = Find(getSelectedItem());
 		
       CMyString curPassString;
       m_pwlist.GetAt(itemPos).GetPassword(curPassString);
@@ -585,9 +598,8 @@ DboxMain::OnDelete()
       {
          m_changed = TRUE;
          int curSel = getSelectedItem();
-         CMyString curText = m_ctlItemList.GetItemText(curSel, 0);
-		 m_ctlItemList.DeleteItem(curSel);
-         POSITION listindex = Find(curText);
+         POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
+	 m_ctlItemList.DeleteItem(curSel);
          m_pwlist.RemoveAt(listindex);
          int rc = SelectEntry(curSel);
          if (rc == LB_ERR) {
@@ -613,9 +625,7 @@ DboxMain::OnEdit()
    {
       int curSel = getSelectedItem();
 		
-         CMyString curText = m_ctlItemList.GetItemText(curSel, 0);
-
-      POSITION listindex = Find(curText);
+      POSITION listindex = Find(curSel);
       CItemData item = m_pwlist.GetAt(listindex);
       //CMyString item_name;
       //item.GetName(item_name);
@@ -777,7 +787,7 @@ DboxMain::ClearClipboard()
 
 //Finds stuff based on the .GetName() part not the entire object
 POSITION
-DboxMain::Find(const CMyString &str)
+DboxMain::Find(const CMyString &a_title, const CMyString &a_user)
 {
    POSITION listPos = m_pwlist.GetHeadPosition();
    CMyString curthing;
@@ -785,9 +795,9 @@ DboxMain::Find(const CMyString &str)
    while (listPos != NULL)
    {
       m_pwlist.GetAt(listPos).GetName(curthing);
-	  CMyString title, username;
-	  SplitName(curthing, title, username);
-      if (title == str)
+	  CMyString title, user;
+	  SplitName(curthing, title, user);
+      if (title == a_title && user == a_user)
          break;
       else
          m_pwlist.GetNext(listPos);
@@ -795,6 +805,15 @@ DboxMain::Find(const CMyString &str)
 
    return listPos;
 }
+
+ // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
+POSITION DboxMain::Find(int i)
+{
+  const CMyString curTitle = m_ctlItemList.GetItemText(i, 0);
+  const CMyString curUser = m_ctlItemList.GetItemText(i, 1);
+  return Find(curTitle, curUser);
+}
+
 
 // for qsort in FindAll
 static int compint(const void *a1, const void *a2)
@@ -875,8 +894,7 @@ DboxMain::SelItemOk()
    int curSel = getSelectedItem();
    if (curSel != LB_ERR)
    {
-         CMyString curText = m_ctlItemList.GetItemText(curSel, 0);
-         POSITION listindex = Find(curText);
+     POSITION listindex = Find(curSel);
          if (listindex != NULL)
             return TRUE;
    }
@@ -1248,9 +1266,7 @@ DboxMain::OnCopyUsername()
    if (SelItemOk() != TRUE)
       return;
 
-   int curSel = getSelectedItem();
-   CMyString curSelString = m_ctlItemList.GetItemText(curSel, 0);
-   POSITION itemPos = Find(curSelString);
+   POSITION itemPos = Find(getSelectedItem());
 
    CMyString title, junk, username;
    m_pwlist.GetAt(itemPos).GetName(title);
