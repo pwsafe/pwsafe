@@ -4,14 +4,26 @@
 #ifndef _ITEMDATA_H_
 #define _ITEMDATA_H_
 
-#include "util.h"
+#include "Util.h"
 
 //-----------------------------------------------------------------------------
 class CItemData
 {
 public:
    //Construction
-   CItemData();
+   CItemData()
+      : m_nLength(0),
+        m_pwLength(0),
+        m_notesLength(0),
+        m_name(NULL),
+        m_nameValid(FALSE),
+        m_password(NULL),
+        m_pwValid(FALSE),
+        m_notes(NULL),
+        m_notesValid(FALSE),
+        m_saltValid(FALSE)
+   {}
+
    CItemData(CMyString name, CMyString password, CMyString notes);
    CItemData(CItemData& stuffhere);
 
@@ -41,7 +53,7 @@ public:
    //Destructor
    ~CItemData();
 
-protected:
+private:
    //Actual encryption/decryption
    BOOL EncryptData(CMyString plain,
                     unsigned char** cipher, int* cLength,
@@ -75,7 +87,6 @@ protected:
    //Determine if the salt is valid
    BOOL m_saltValid;
 
-private:
    //Local initialization
    void InitStuff();
 };

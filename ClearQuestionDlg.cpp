@@ -11,7 +11,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
 CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
    : CDialog(CClearQuestionDlg::IDD, pParent)

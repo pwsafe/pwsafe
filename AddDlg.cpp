@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "MainDlg.h"
+#include "DboxMain.h"
 #include "AddDlg.h"
 
 #ifdef _DEBUG
@@ -69,7 +69,7 @@ CAddDlg::OnOK()
 
    CMyString temptitle;
    MakeName(temptitle, m_title, m_username);
-   CPasswordSafeDlg *pParent = (CPasswordSafeDlg*)GetParent();
+   DboxMain* pParent = (DboxMain*) GetParent();
    ASSERT(pParent != NULL);
    if (pParent->Find(temptitle) != NULL)
    {

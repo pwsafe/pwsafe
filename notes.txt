@@ -4,7 +4,7 @@ HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/
 
 HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/Backup/
 
-bug P1.2
+bug P1.2 - FIXED
 EditDlg:
 current password 'nostaryet'
 actions
@@ -12,5 +12,35 @@ button - showpassword
 change password to 'endswith*'
 button - ok (should save)
 *** doesn't save password ***
+
+
+Security issues
+MainDlg::OnPasswordChange
+- I see that the main-passkey is constantly in memory.  This seems like
+trouble.  Are we directly encrypting using the main-passkey?  We should
+be just as secure by hashing the main-passkey on entry, keeping *that*
+in memory, and tossing the entered password into the Gutmann Void.
+
+It seems that the biggest problem is the overuse of the secured 'CMyString' 
+class.  This class is intended to securely delete the memory used upon
+destruction, but it has automatic conversion constructors for CStrings and
+'C' strings.  If you've spent any time reading things like 'Efficient C++', 
+you know that C++ spends half its time creating temporary copies of objects,
+mostly during automatic type conversions.  I think that it is too hard a 
+job to keep track of all these, so I propose a new secure string class with 
+no automatic conversions whatsoever.  It will be much less convenient to
+work with, and that is by design.  Most of the strings in this program have
+no need to be secured, so let's just concentrate on the ones that do.
+
+Devel issues
+New objects to be created:
+   PasswordDb
+   App
+
+Bugs
+Save as... doesn't ask for new password - should it?
+
+The 'press first letter' jump works, kinda.  Sometimes it jumps home instead. 
+Seems to work okay every time after PgDn pressed.
 
 

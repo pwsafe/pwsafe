@@ -7,8 +7,8 @@
 #endif
 
 #include "resource.h"  // main symbols
-#include "util.h"      // for StuffSize
-#include "MainDlg.h"
+#include "Util.h"      // for StuffSize
+#include "DboxMain.h"
 
 //-----------------------------------------------------------------------------
 class CPasswordSafeApp
@@ -18,13 +18,14 @@ public:
    CPasswordSafeApp();
    ~CPasswordSafeApp();
    
-   CMyString m_passkey;
-   CMyString m_curdir;
+   CMyString m_passkey; // the main one, in memory?!? yikes {jpr}
+   CMyString m_curdir; /* only used once, in DboxMain constructor,
+                          to make m_deffile */
 
    unsigned char m_randstuff[StuffSize];
    unsigned char m_randhash[SaltSize];
 
-   CPasswordSafeDlg* m_maindlg;
+   DboxMain* m_maindlg;
 
    HACCEL m_ghAccelTable;
 
