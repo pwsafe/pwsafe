@@ -433,6 +433,14 @@ SOURCE=.\psafetxt.bmp
 
 SOURCE=.\toolbar1.bmp
 # End Source File
+# Begin Source File
+
+SOURCE=.\toolbar2.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\toolbar3.bmp
+# End Source File
 # End Group
 # Begin Source File
 
