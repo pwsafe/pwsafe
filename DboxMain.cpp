@@ -447,6 +447,9 @@ DboxMain::OnCopyPassword()
 {
 	bool	bCopyPassword = true;	// will get set to false if user hits cancel
 
+	if (!SelItemOk()) 
+		return;
+
 	//Remind the user about clipboard security
 	CClearQuestionDlg clearDlg(this);
 	if (clearDlg.m_dontaskquestion == FALSE)
@@ -464,14 +467,9 @@ DboxMain::OnCopyPassword()
 	if ( !bCopyPassword )
 		return;
 
-   if (SelItemOk() == TRUE)
-   {
-      CItemData *ci = getSelectedItem();
-      ASSERT(ci != NULL);
-      CMyString curPassString = ci->GetPassword();
-
-	if ( !bCopyPassword )
-		return;
+	CItemData *ci = getSelectedItem();
+	ASSERT(ci != NULL);
+	CMyString curPassString = ci->GetPassword();
 
 		
 	uGlobalMemSize = (curPassString.GetLength() + 1) * sizeof(TCHAR);
@@ -484,15 +482,15 @@ DboxMain::OnCopyPassword()
 	GlobalUnlock(hGlobalMemory);	
 		
 	if (OpenClipboard() == TRUE) {
-	  if (EmptyClipboard()!=TRUE)
-            AfxMessageBox(_T("The clipboard was not emptied correctly"));
-	  if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL)
-            AfxMessageBox(_T("The data was not pasted into the clipboard correctly"));
-	  if (CloseClipboard() != TRUE)
-            AfxMessageBox(_T("The clipboard could not be closed"));
-	} else
-	  AfxMessageBox(_T("The clipboard could not be opened correctly"));
-   }
+		if (EmptyClipboard()!=TRUE)
+			AfxMessageBox(_T("The clipboard was not emptied correctly"));
+		if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL)
+			AfxMessageBox(_T("The data was not pasted into the clipboard correctly"));
+		if (CloseClipboard() != TRUE)
+			AfxMessageBox(_T("The clipboard could not be closed"));
+	} else {
+		AfxMessageBox(_T("The clipboard could not be opened correctly"));
+	}
 }
 
 void
