@@ -29,9 +29,8 @@ public:
    void Decrypt(const block in, block out);
   enum {bf_N = 16};
 private:
-  // Following are global supposedly for performance reasons. TBV...
-  static unsigned long bf_S[4][256];
-  static unsigned long bf_P[bf_N + 2];
+  unsigned long bf_S[4][256];
+  unsigned long bf_P[bf_N + 2];
   const static unsigned long tempbf_S[4][256];
   const static unsigned long tempbf_P[bf_N + 2];
   void Blowfish_encipher(unsigned long* xl, unsigned long* xr);
