@@ -351,15 +351,13 @@ DboxMain::OnEdit()
 	    {
 	      Save();
 	    }
-	}
-
-      rc = SelectEntry(di->list_index);
-      if (rc == LB_ERR)
-	{
-	  SelectEntry(m_ctlItemList.GetItemCount() - 1);
-	}
-      m_ctlItemList.SetFocus();
-      ChangeOkUpdate();
+	  rc = SelectEntry(di->list_index);
+	  if (rc == LB_ERR)
+	    {
+	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+	    }
+	  ChangeOkUpdate();
+	} // rc == IDOK
     }
 }
 
@@ -569,9 +567,14 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     ASSERT(di != NULL);
     ASSERT(di->list_index == i);
     retval = m_ctlItemTree.SelectItem(di->tree_item);
-    m_ctlItemTree.SetItemState(di->tree_item,
-			       TVIS_DROPHILITED | TVIS_SELECTED,
-			       TVIS_DROPHILITED | TVIS_SELECTED);
+    if (MakeVisible) {// Following needed to show selection when Find has focus. Ugh.
+      m_ctlItemTree.SetItemState(di->tree_item,
+				 TVIS_DROPHILITED | TVIS_SELECTED,
+				 TVIS_DROPHILITED | TVIS_SELECTED);
+      m_ctlItemTree.SetItemState(di->tree_item,
+				 TVIS_SELECTED,
+				 TVIS_DROPHILITED | TVIS_SELECTED);
+    }
   }
   return retval;
 }

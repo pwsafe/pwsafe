@@ -480,6 +480,14 @@ void
 DboxMain::OnFind() 
 {
   CFindDlg::Doit(this); // create modeless or popup existing
+  // XXX Gross hack to fix aesthetic bug in tree view
+  // without this, multiple "selected" displayed
+  // if treeview && there's a selected item, then
+#if 0
+      m_ctlItemTree.SetItemState(di->tree_item,
+				 TVIS_SELECTED,
+				 TVIS_DROPHILITED | TVIS_SELECTED);
+#endif
 }
 
 
