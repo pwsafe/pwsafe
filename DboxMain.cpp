@@ -156,7 +156,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
 	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
 	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
-	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnCopyPassword)
+	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
 
    ON_WM_DESTROY()
@@ -492,6 +492,11 @@ DboxMain::OnAdd()
    }
 }
 
+void
+DboxMain::OnListDoubleClick( NMHDR * pNotifyStruct, LRESULT * result )
+{
+	OnCopyPassword();
+}
 
 void
 DboxMain::OnCopyPassword() 

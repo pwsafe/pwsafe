@@ -118,6 +118,7 @@ protected:
    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 //   afx_msg int OnVKeyToItem(UINT nKey, CListBox* pListBox, UINT nIndex);
 	afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
+   afx_msg void OnListDoubleClick( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnCopyPassword();
    afx_msg void OnNew();
    afx_msg void OnOpen();
