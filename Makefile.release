@@ -1,0 +1,64 @@
+# $Id$
+# This makefile automates the build of releases for sourceforge
+# The RELEASENAME should be changed per release
+# The RELEASEDIR should be set to whatever works for you.
+#
+# 'make -f Makefile.release' or 'make -f Makefile.release release'
+# will build both binary and source zipfiles.
+# bin-release or src-release will build only what their names imply.
+#
+# Oh, this works with GNU make under Cygwin. YMMV on other makes...
+
+RELEASENAME = 2.02
+
+RELEASEDIR = "/cygdrive/d/local/src/PasswordSafe/Releases"
+
+# Shouldn't need to change anything below this line
+
+BINRELNAME = pwsafe-$(RELEASENAME)-bin
+SRCRELNAME = pwsafe-$(RELEASENAME)-src
+
+RM = /usr/bin/rm
+CP = /usr/bin/cp
+MV = /usr/bin/mv
+
+BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
+	Release/pwsafe.exe pwsafe.chm
+
+.PHONY: release bin-release src-release
+
+release: bin-release src-release
+
+bin-release:
+	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
+	$(CP) $(BIN_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
+	(cd $(RELEASEDIR); zip -9 -r  foo ./$(BINRELNAME); \
+	$(MV) foo.zip $(BINRELNAME).zip)
+	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
+
+src-release:
+	@-mkdir $(RELEASEDIR)/$(SRCRELNAME)
+	@$(CP) -R . $(RELEASEDIR)/$(SRCRELNAME)
+	(cd $(RELEASEDIR)/$(SRCRELNAME); \
+	 $(RM) -f Release/* Debug/*; \
+	 find . \( -name '*~' -o -name '*.bak' -o \
+		   -name '*.plg' -o -name '*.ncb' -o -name '*.opt -o \
+                   -name '*.sav' -o -name '*.old' \) | xargs $(RM) -f; \
+	 $(RM) -f Release/* Debug/* *~ *.bak *.sav *.old .#*; \
+	 $(RM) -f corelib/Release/* corelib/Debug/* test/Debug/*; \
+	 find . -type d -name CVS | xargs $(RM) -rf; \
+	 $(RM) *.ncb *.aps *.opt)
+	(cd $(RELEASEDIR); zip -9 -r  bar ./$(SRCRELNAME); \
+	$(MV) bar.zip $(SRCRELNAME).zip)
+	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
+
+# $Log$
+# Revision 1.2  2004/06/03 20:29:09  ronys
+# Copied from 1.92 branch.
+#
+# Revision 1.1.2.2  2003/08/29 06:17:25  ronys
+# Removed winXP manifest file from the deliverable. I'm told that it's part of the executable...
+#
+# Revision 1.1.2.1  2003/08/09 11:05:41  ronys
+# Added makefile to automate the building of src and binary releases (about time!)
+#
