@@ -1,4 +1,11 @@
+$Id$
+Build Environment:
+==================
+The current (April 2003, v1.91) build environment is MSVC++ 6.0, along
+with the HTML Help Workshop (downloadable from Microsoft's web site).
+
 File format:
+============
 Currently (v1.9) the file is layed out as follows:
 
 RND|H(RND)|SALT|IP|Name1|Password1|Notes1|...|NameN|PasswordN|NotesN
@@ -30,8 +37,8 @@ replaced by the user's "default user name", as specified in
 options. It works, but is not a pretty sight.
 
 
-Registry
-
+Registry:
+=========
 HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/
 
 HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/Backup/
@@ -46,7 +53,8 @@ button - ok (should save)
 *** doesn't save password ***
 
 
-Security issues
+Security issues:
+================
 MainDlg::OnPasswordChange
 - I [Jim Russell] see that the main-passkey is constantly in memory.
 This seems like trouble.  Are we directly encrypting using the
@@ -74,13 +82,20 @@ to keeping everyone happy. CMyString has been tweaked to make the
 underlying CString m_mystring private, paving the way to replacing it
 with an STL string, if/when we get to porting to a non-MS platform.
 
-Devel issues
+Devel issues:
+=============
 New objects to be created:
    PasswordDb
    App
 
-Bugs
+Bugs:
+=====
 Save as... doesn't ask for new password - should it?
 
 The 'press first letter' jump works, kinda.  Sometimes it jumps home instead. 
 Seems to work okay every time after PgDn pressed.
+
+$Log$
+Revision 1.4  2003/04/30 13:02:59  ronys
+Added note re required build environment
+
