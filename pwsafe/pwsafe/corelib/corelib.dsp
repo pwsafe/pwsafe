@@ -107,6 +107,10 @@ SOURCE=.\PWScore.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PWSfile.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sha1.cpp
 # End Source File
 # Begin Source File
@@ -136,6 +140,10 @@ SOURCE=.\PWCharPool.h
 # Begin Source File
 
 SOURCE=.\PWScore.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PWSfile.h
 # End Source File
 # Begin Source File
 
