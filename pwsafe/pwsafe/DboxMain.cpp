@@ -93,7 +93,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bSizing( false ), m_needsreading(true), m_windowok(false),
      m_existingrestore(FALSE), m_toolbarsSetup(FALSE),
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
-     m_bSortAscending(true), m_iSortedColumn(0)
+     m_bSortAscending(true), m_iSortedColumn(0),
+     m_OnEditDisabled(false)
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
