@@ -25,7 +25,9 @@ public:
 	BOOL	m_alwaysontop;
 	BOOL	m_pwshowinlist;
 	BOOL	m_pwshowinedit;
+#if defined(POCKET_PC)
 	BOOL	m_dcshowspassword;
+#endif
 	//}}AFX_DATA
 
 

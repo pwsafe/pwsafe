@@ -41,7 +41,9 @@ DboxMain::OnOptions()
    display.m_alwaysontop = m_bAlwaysOnTop;
    display.m_pwshowinedit = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE);
    display.m_pwshowinlist = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE);
+#if defined(POCKET_PC)
    display.m_dcshowspassword = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE);
+#endif
 
    security.m_clearclipboard = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskminimizeclearyesno"), FALSE));
    security.m_lockdatabase = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE));
@@ -88,7 +90,9 @@ DboxMain::OnOptions()
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("alwaysontop"),     display.m_alwaysontop);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwdefault"),   display.m_pwshowinedit);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwinlist"),    display.m_pwshowinlist);
+#if defined(POCKET_PC)
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dcshowspassword"), display.m_dcshowspassword);
+#endif
 
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontaskminimizeclearyesno"),  security.m_clearclipboard);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("databaseclear"),              security.m_lockdatabase);
