@@ -325,7 +325,7 @@ DboxMain::OnEdit()
 	  m_ctlItemList.DeleteItem(di->list_index);
 	  m_ctlItemTree.DeleteWithParents(di->tree_item);
 	  di->list_index = -1; // so that insertItem will set new values
-	  insertItem(editedItem);
+	  insertItem(m_core.GetTailEntry());
 	  FixListIndexes(m_ctlItemList);
 	  if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
 				_T("saveimmediately"), FALSE) == TRUE)
