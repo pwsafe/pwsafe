@@ -18,6 +18,9 @@ Schneier - 'nuff said.
 3. Open Source: The source code for the project is available for
 inspection. For more information, see http://passwordsafe.sourceforge.net
 
+Password Safe currently runs on Windows 95, 98, ME, NT4, 2000 and
+XP. Support for additional platforms is planned for future releases.
+
 Downloading:
 ============
 The latest & greatest version of Password Safe may be downloaded from
@@ -74,5 +77,8 @@ Edward Quackenbush, Gregg Conklin, Graham Ullrich, and Rony Shapiro.
 project.
 
 $Log$
+Revision 1.2  2003/04/30 13:20:14  ronys
+Listed supported platforms
+
 Revision 1.1  2003/04/29 14:22:32  ronys
 First versions of README and Release Notes under CVS for 1.91
