@@ -78,7 +78,7 @@
       #elif defined(MIPS) || defined(_MIPS)
         #define BIG_ENDIAN
       #elif defined(SH3) || defined(_SH3)
-        #define BIG_ENDIAN
+        #define LITTLE_ENDIAN
       #elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
         #define LITTLE_ENDIAN
       #endif
