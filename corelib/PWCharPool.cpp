@@ -21,6 +21,10 @@ _T("0123456789");
 const size_t
 CPasswordCharPool::std_digit_len = LENGTH(std_digit_chars);
 const TCHAR
+CPasswordCharPool::std_hexdigit_chars[] = _T("0123456789abcdef");
+const size_t
+CPasswordCharPool::std_hexdigit_len = LENGTH(std_hexdigit_chars);
+const TCHAR
 CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~\\[](){}?!|");
 const size_t
 CPasswordCharPool::std_symbol_len = LENGTH(std_symbol_chars);
@@ -40,37 +44,45 @@ const TCHAR
 CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&<>/~\\?");
 const size_t
 CPasswordCharPool::easyvision_symbol_len = LENGTH(easyvision_symbol_chars);
+const TCHAR
+CPasswordCharPool::easyvision_hexdigit_chars[] = _T("0123456789abcdef");
+const size_t
+CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexdigit_chars);
 
 //-----------------------------------------------------------------------------
 
 CPasswordCharPool::CPasswordCharPool(UINT pwlen,
 				     BOOL uselowercase, BOOL useuppercase,
-				     BOOL usedigits, BOOL usesymbols,
+				     BOOL usedigits, BOOL usesymbols, BOOL usehexdigits,
 				     BOOL easyvision) :
   m_pwlen(pwlen), m_uselowercase(uselowercase), m_useuppercase(useuppercase),
-  m_usedigits(usedigits), m_usesymbols(usesymbols)
+  m_usedigits(usedigits), m_usesymbols(usesymbols), m_usehexdigits(usehexdigits)
 {
   ASSERT(m_pwlen > 0);
-  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols);
+  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
 
   if (easyvision) {
     m_char_arrays[LOWERCASE] = (TCHAR *)easyvision_lowercase_chars;
     m_char_arrays[UPPERCASE] = (TCHAR *)easyvision_uppercase_chars;
     m_char_arrays[DIGIT] = (TCHAR *)easyvision_digit_chars;
     m_char_arrays[SYMBOL] = (TCHAR *)easyvision_symbol_chars;
+	m_char_arrays[HEXDIGIT] = (TCHAR *)easyvision_hexdigit_chars;
     m_lengths[LOWERCASE] = uselowercase ? easyvision_lowercase_len : 0;
     m_lengths[UPPERCASE] = useuppercase ? easyvision_uppercase_len : 0;
     m_lengths[DIGIT] = usedigits ? easyvision_digit_len : 0;
     m_lengths[SYMBOL] = usesymbols ? easyvision_symbol_len : 0;
+	m_lengths[HEXDIGIT] = usehexdigits ? easyvision_hexdigit_len : 0;
   } else { // !easyvision
     m_char_arrays[LOWERCASE] = (TCHAR *)std_lowercase_chars;
     m_char_arrays[UPPERCASE] = (TCHAR *)std_uppercase_chars;
     m_char_arrays[DIGIT] = (TCHAR *)std_digit_chars;
     m_char_arrays[SYMBOL] = (TCHAR *)std_symbol_chars;
+	m_char_arrays[HEXDIGIT] = (TCHAR *)std_hexdigit_chars;
     m_lengths[LOWERCASE] = uselowercase ? std_lowercase_len : 0;
     m_lengths[UPPERCASE] = useuppercase ? std_uppercase_len : 0;
     m_lengths[DIGIT] = usedigits ? std_digit_len : 0;
     m_lengths[SYMBOL] = usesymbols ? std_symbol_len : 0;
+	m_lengths[HEXDIGIT] = usehexdigits ? std_hexdigit_len : 0;
   }
 
   // See GetRandomCharType to understand what this does and why
@@ -123,12 +135,13 @@ CMyString
 CPasswordCharPool::MakePassword() const
 {
   ASSERT(m_pwlen > 0);
-  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols);
+  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
 
   int lowercaseneeded;
   int uppercaseneeded;
   int digitsneeded;
   int symbolsneeded;
+  int hexdigitsneeded;
 
   CMyString password = "";
 
@@ -144,10 +157,11 @@ CPasswordCharPool::MakePassword() const
       uppercaseneeded = (m_useuppercase) ? 1 : 0;
       digitsneeded = (m_usedigits) ? 1 : 0;
       symbolsneeded = (m_usesymbols) ? 1 : 0;
+	  hexdigitsneeded = (m_usehexdigits) ? 1 : 0;
 
       // If following assertion doesn't hold, we'll never exit the do loop!
       ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
-	     digitsneeded + symbolsneeded);
+	     digitsneeded + symbolsneeded + hexdigitsneeded);
 
       temp = "";    // empty the password string
 
@@ -182,6 +196,10 @@ CPasswordCharPool::MakePassword() const
 	      symbolsneeded--;
                break;
 
+			case HEXDIGIT:
+				hexdigitsneeded--;
+               break;
+
             default:
 	      ASSERT(0); // should never happen!
                break;
@@ -194,7 +212,7 @@ CPasswordCharPool::MakePassword() const
        * been more elegant than a do loop, but this takes less stack...
        */
       pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
-		    digitsneeded <= 0 && symbolsneeded <= 0);
+		    digitsneeded <= 0 && symbolsneeded <= 0 && hexdigitsneeded <= 0);
 
       if (pwRulesMet)
       {
