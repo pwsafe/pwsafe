@@ -68,12 +68,23 @@ DboxMain::DboxMain(CWnd* pParent)
 {
    m_hIcon = app.LoadIcon(IDI_CORNERICON);
    m_pwlist.RemoveAll();
-   // m_pwdb.Clear();
+   // m_pwdb.Clear(); when the new backend is in...
+
+   /*
+     currently - there's a string in the resource string table, with the
+     name of the default output file.  We pull it and concatenate the 
+     current directory to make a default password database filename
+     (which I think is the only usage of m_curdir) {jpr}
+   */
 
    CString temp;
    temp.LoadString(IDS_OUTPUTFILE);
    CString temp2 = app.m_curdir.m_mystring + temp;
    m_deffile = (CMyString) temp2;
+
+   /*
+     current file and current backup file specs are stored in registry
+   */
    m_currfile =
       (CMyString)(app.GetProfileString("", "currentfile", temp2));
    m_currbackup =
@@ -200,11 +211,25 @@ DboxMain::OpenOnInit(void)
             + "\nA new database will be created.";
          MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
       }
+      else
+      {
+         // of course, this will be easier under DboxPasskeyFirst's control...
+
+         //GetDlgItem(IDC_PASSKEY)
+
+         // here's where I'll grey out the db entry, and make them hit the
+         // button instead - this is for bug #3
+      }
+      // currently falls thru to...
    case TAR_NEW:
       rc2 = New();
+      if (USER_CANCEL == rc2)
+         ; // somehow, get DboxPasskeyEntryFirst redisplayed...
       break;
    case TAR_OPEN:
       rc2 = Open();
+      if (USER_CANCEL == rc2)
+         ; // somehow, get DboxPasskeyEntryFirst redisplayed...
       break;
    case WRONG_PASSWORD:
       rc2 = NOT_SUCCESS;
@@ -1054,7 +1079,7 @@ DboxMain::OnCopyUsername()
 
 void
 DboxMain::OnContextMenu(CWnd* pWnd,
-                                CPoint point) 
+                        CPoint point) 
 {
    CPoint local = point;
    m_listctrl->ScreenToClient(&local);
@@ -1097,11 +1122,13 @@ DboxMain::OnVKeyToItem(UINT nKey,
       return -2;
    // JPRFIXME P1.8
    case VK_PRIOR:  //Page up
+      return -1; //do default
    case VK_HOME:
       m_listctrl->SetCurSel(0);
       m_listctrl->SetFocus();
       return -2;
    case VK_NEXT:   //Page Down
+      return -1; // do default;
    case VK_END:
       m_listctrl->SetCurSel(m_listctrl->GetCount()-1);
       m_listctrl->SetFocus();
@@ -1573,31 +1600,48 @@ DboxMain::CheckPassword(CMyString filename,
    unsigned char temprandstuff[8];
    unsigned char temprandhash[20];
    int retval;
+   bool saved_stuff = false;
 
-   int in = _open((LPCTSTR) filename,
-                  _O_BINARY | _O_RDONLY | _O_SEQUENTIAL,
-                  S_IREAD | _S_IWRITE);
-	
-   if (in == -1)
-      return CANT_OPEN_FILE;
-					
-   //Preserve the current randstuff and hash
-   memcpy(temprandstuff, app.m_randstuff, 8);
-   memcpy(temprandhash, app.m_randhash, 20);
+   if (filename != "")
+   {
+      int in = _open((LPCTSTR) filename,
+                     _O_BINARY | _O_RDONLY | _O_SEQUENTIAL,
+                     S_IREAD | _S_IWRITE);
+
+      if (in == -1)
+      {
+         if (TRUE != first)
+            return CANT_OPEN_FILE;
+
+         MessageBox("Can't open current database", "File open error",
+                    MB_OK | MB_ICONWARNING);
+         filename = "";
+      }
+      else
+      {
+         //Preserve the current randstuff and hash
+         memcpy(temprandstuff, app.m_randstuff, 8);
+         memcpy(temprandhash, app.m_randhash, 20);
+         saved_stuff = true;
+
+         /*
+           Seems that the beginning of the database file is
+           8 bytes of randomness and a SHA1 hash {jpr}
+         */
+         _read(in, app.m_randstuff, 8);
+         _read(in, app.m_randhash, 20);
+         _close(in);
+      }
+   }
 
    /*
-     Seems that the beginning of the database file is
-     8 bytes of randomness and a SHA1 hash {jpr}
-   */
-   _read(in, app.m_randstuff, 8);
-   _read(in, app.m_randhash, 20);
-   _close(in);
-	
-   //The file might be deleted in CPasskeyEntry. hrrm
+    * with my unsightly hacks of PasskeyEntry, it should now accept
+    * a blank filename, which will disable passkey entry and the OK button
+    */
 
-   CPasskeyEntry* dbox_pkentry =  new CPasskeyEntry(this, first);
+   CPasskeyEntry* dbox_pkentry =  new CPasskeyEntry(this, filename, first);
    app.m_pMainWnd = dbox_pkentry;
-   dbox_pkentry->m_message = filename.m_mystring;
+   //dbox_pkentry->m_message = filename.m_mystring;
    int rc = dbox_pkentry->DoModal();
 
    if (rc == IDOK)
@@ -1621,10 +1665,14 @@ DboxMain::CheckPassword(CMyString filename,
    }
 
    //Restore the current randstuff and hash
-   memcpy(app.m_randstuff, temprandstuff, 8);
-   memcpy(app.m_randhash, temprandhash, 20);
-   trashMemory(temprandstuff, 8);
-   trashMemory(temprandhash, 20);
+   if (saved_stuff)
+   {
+      memcpy(app.m_randstuff, temprandstuff, 8);
+      memcpy(app.m_randhash, temprandhash, 20);
+      trashMemory(temprandstuff, 8);
+      trashMemory(temprandhash, 20);
+   }
+
    delete dbox_pkentry;
 
    return retval;
