@@ -139,6 +139,10 @@ SOURCE=.\FindDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\KeySend.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\main.cpp
 # End Source File
 # Begin Source File
