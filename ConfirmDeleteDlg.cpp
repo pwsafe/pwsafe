@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
 #include "ConfirmDeleteDlg.h"
 
 #ifdef _DEBUG
