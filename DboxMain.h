@@ -18,6 +18,7 @@
 DECLARE_HANDLE(HDROP);
 #endif
 
+// custom message event used for system tray handling.
 #define WM_ICON_NOTIFY (WM_APP + 10)
 
 // timer event number used to check if the workstation is locked
@@ -34,35 +35,42 @@ friend class CMyListCtrl;
 
 // static methods
 private:
-	static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+    static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
 public:
-   // default constructor
-   DboxMain(CWnd* pParent = NULL);
+    // default constructor
+    DboxMain(CWnd* pParent = NULL);
 
-  CMyString GetPassword(void) const;
+    // Generate a new random password.
+    CMyString GetPassword(void) const;
 
- // Find in core by title and user name, exact match
-  POSITION Find(const CMyString &a_title, const CMyString &a_user)
-  {return m_core.Find(a_title, a_user);}
- // Find  entry in core with same title and user name as the i'th entry in m_ctlItemList
-  POSITION Find(int i);
-  // FindAll is used by CFindDlg, returns # of finds.
-  // indices allocated by caller
-  int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
-  int GetNumEntries() const {return m_core.GetNumEntries();}
-  BOOL SelectEntry(int i, BOOL MakeVisible = FALSE); // MakeVisible will scroll list, if needed
-   void RefreshList();
+    // Find in core by title and user name, exact match
+    POSITION Find(const CMyString &a_title, const CMyString &a_user)
+        {return m_core.Find(a_title, a_user);}
 
-  void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
+    // Find  entry in core with same title and user name as the i'th entry in m_ctlItemList
+    POSITION Find(int i);
 
-  int CheckPassword(const CMyString &filename, CMyString &passkey)
-  {return m_core.CheckPassword(filename, passkey);}
-  void SetChanged(bool changed); // for MyTreeCtrl
-  void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
-  void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
+    // FindAll is used by CFindDlg, returns # of finds.
+    // indices allocated by caller
+    int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
 
-	//{{AFX_DATA(DboxMain)
+    // Count the number of total entries.
+    int GetNumEntries() const {return m_core.GetNumEntries();}
+
+    // Set the section to the entry.  MakeVisible will scroll list, if needed.
+    BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
+    void RefreshList();
+
+    void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
+
+    int CheckPassword(const CMyString &filename, CMyString &passkey)
+        {return m_core.CheckPassword(filename, passkey);}
+    void SetChanged(bool changed); // for MyTreeCtrl
+    void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
+    void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
+
+    //{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
 	CMyListCtrl	m_ctlItemList;
@@ -173,7 +181,7 @@ protected:
    afx_msg void OnTreeView();
    afx_msg void OnBackupSafe();
    afx_msg void OnPasswordChange();
-   afx_msg void OnClearclipboard();
+   afx_msg void OnClearClipboard();
    afx_msg void OnDelete();
    afx_msg void OnEdit();
    afx_msg void OnRename();
@@ -196,21 +204,21 @@ protected:
    afx_msg void OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnDropFiles(HDROP hDrop);
 #endif
-	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
-        afx_msg void OnInitMenu(CMenu* pMenu);
-	afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
-	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
-	//}}AFX_MSG
+    afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
+    afx_msg void OnInitMenu(CMenu* pMenu);
+    afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
+    afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
+    //}}AFX_MSG
 
-   afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
-   afx_msg void OnExportV17();
-   afx_msg void OnExportText();
+    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnExportV17();
+    afx_msg void OnExportText();
 
 #if _MFC_VER > 1200
-	afx_msg BOOL OnOpenMRU(UINT nID);
+    afx_msg BOOL OnOpenMRU(UINT nID);
 #else
-	afx_msg void OnOpenMRU(UINT nID);
+    afx_msg void OnOpenMRU(UINT nID);
 #endif
 
    DECLARE_MESSAGE_MAP()

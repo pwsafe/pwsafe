@@ -164,7 +164,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUTIME_SAVEAS, OnSaveAs)
    ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
    ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
-   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearclipboard)
+   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
    ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
    ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
    ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
@@ -199,7 +199,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
-   ON_COMMAND(ID_TOOLBUTTON_CLEARCLIPBOARD, OnClearclipboard)
+   ON_COMMAND(ID_TOOLBUTTON_CLEARCLIPBOARD, OnClearClipboard)
    ON_COMMAND(ID_TOOLBUTTON_DELETE, OnDelete)
    ON_COMMAND(ID_TOOLBUTTON_EDIT, OnEdit)
    ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
@@ -429,15 +429,17 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 #endif
 }
 
-
+// Called to open a web browser to the URL associated with an entry.
 void DboxMain::OnBrowse()
 {
-  HINSTANCE stat = ::ShellExecute(NULL, NULL, m_BrowseURL,
-				  NULL, _T("."), SW_SHOWNORMAL);
-  if (int(stat) < 32) {
-#ifdef _DEBUG
-    AfxMessageBox("oops");
-#endif
+  if (!m_BrowseURL.IsEmpty()) {
+    HINSTANCE stat = ::ShellExecute(NULL, NULL, m_BrowseURL,
+				    NULL, _T("."), SW_SHOWNORMAL);
+    if (int(stat) < 32) {
+    #ifdef _DEBUG
+        AfxMessageBox("oops");
+    #endif
+    }
   }
 }
 
@@ -534,6 +536,7 @@ DboxMain::ClearClipboard()
 }
 
 
+// Change the master password for the database.
 void
 DboxMain::OnPasswordChange() 
 {
@@ -550,7 +553,7 @@ DboxMain::OnPasswordChange()
 
 
 void
-DboxMain::OnClearclipboard() 
+DboxMain::OnClearClipboard() 
 {
    ClearClipboard();
 }
@@ -1532,107 +1535,83 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
 void
 DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL) 
 {
-	// http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
-	// This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
-	ASSERT(pPopupMenu != NULL);
-	CCmdUI state; // Check the enabled state of various menu items
-	state.m_pMenu = pPopupMenu;
-	ASSERT(state.m_pOther == NULL);
-	ASSERT(state.m_pParentMenu == NULL);
-	
-	// Is the menu in question a popup in the top-level menu? If so, set m_pOther
-	// to this menu. Note that m_pParentMenu == NULL indicates that the menu is a
-	// secondary popup.
-	
-#ifdef POCKET_PC
-	CMenu *hParentMenu;
-#else
-	HMENU hParentMenu;
-#endif
-	if(AfxGetThreadState()->m_hTrackingMenu == pPopupMenu->m_hMenu)
-		state.m_pParentMenu = pPopupMenu; // Parent == child for tracking popup.
-#ifdef POCKET_PC
-	else if((hParentMenu = this->GetMenu()) != NULL)
-#else
-	else if((hParentMenu = ::GetMenu(m_hWnd)) != NULL)
-#endif
-	{
-		CWnd* pParent = this;
-		// Child windows don't have menus--need to go to the top!
-#ifdef POCKET_PC
-		if(pParent != NULL && (hParentMenu = pParent->GetMenu()) != NULL)
-#else
-		if(pParent != NULL && (hParentMenu = ::GetMenu(pParent->m_hWnd)) != NULL)
-#endif
-		{
-#ifdef POCKET_PC
-			int nIndexMax = hParentMenu->GetMenuItemCount();
-#else
-			int nIndexMax = ::GetMenuItemCount(hParentMenu);
-#endif
-			for (int nIndex = 0; nIndex < nIndexMax; nIndex++)
-			{
-#ifdef POCKET_PC
-				if(::GetSubMenu(hParentMenu->GetSafeHmenu(), nIndex) == pPopupMenu->m_hMenu)
-				{
-					// When popup is found, m_pParentMenu is containing menu.
-					state.m_pParentMenu = CMenu::FromHandle(hParentMenu->GetSafeHmenu());
-					break;
-				}
-#else
-				if(::GetSubMenu(hParentMenu, nIndex) == pPopupMenu->m_hMenu)
-				{
-					// When popup is found, m_pParentMenu is containing menu.
-					state.m_pParentMenu = CMenu::FromHandle(hParentMenu);
-					break;
-				}
-#endif
-			}
-		}
-	}
-	
-	state.m_nIndexMax = pPopupMenu->GetMenuItemCount();
-	for(state.m_nIndex = 0; state.m_nIndex < state.m_nIndexMax; state.m_nIndex++)
-	{
-		state.m_nID = pPopupMenu->GetMenuItemID(state.m_nIndex);
-		if(state.m_nID == 0)
-			continue; // Menu separator or invalid cmd - ignore it.
-		ASSERT(state.m_pOther == NULL);
-		ASSERT(state.m_pMenu != NULL);
-		if(state.m_nID == (UINT)-1)
-		{
-			// Possibly a popup menu, route to first item of that popup.
-			state.m_pSubMenu = pPopupMenu->GetSubMenu(state.m_nIndex);
-			if(state.m_pSubMenu == NULL ||
-				(state.m_nID = state.m_pSubMenu->GetMenuItemID(0)) == 0 ||
-				state.m_nID == (UINT)-1)
-			{
-				continue; // First item of popup can't be routed to.
-			}
-			state.DoUpdate(this, TRUE); // Popups are never auto disabled.
-		}
-		else
-		{
-			// Normal menu item.
-			// Auto enable/disable if frame window has m_bAutoMenuEnable
-			// set and command is _not_ a system command.
-			state.m_pSubMenu = NULL;
-			state.DoUpdate(this, FALSE);
-		}
-		
-		// Adjust for menu deletions and additions.
-		UINT nCount = pPopupMenu->GetMenuItemCount();
-		if(nCount < state.m_nIndexMax)
-		{
-			state.m_nIndex -= (state.m_nIndexMax - nCount);
-			while(state.m_nIndex < nCount &&
-				pPopupMenu->GetMenuItemID(state.m_nIndex) == state.m_nID)
-			{
-				state.m_nIndex++;
-			}
-		}
-		state.m_nIndexMax = nCount;
-	}
+    // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
+    // This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
+    ASSERT(pPopupMenu != NULL);
+    CCmdUI state; // Check the enabled state of various menu items
+    state.m_pMenu = pPopupMenu;
+    ASSERT(state.m_pOther == NULL);
+    ASSERT(state.m_pParentMenu == NULL);
+    
+    // Is the menu in question a popup in the top-level menu? If so, set m_pOther
+    // to this menu. Note that m_pParentMenu == NULL indicates that the menu is a
+    // secondary popup.
+    CMenu *hParentMenu;
+    if(AfxGetThreadState()->m_hTrackingMenu == pPopupMenu->m_hMenu) {
+        state.m_pParentMenu = pPopupMenu; // Parent == child for tracking popup.
+    }
+    else if((hParentMenu = this->GetMenu()) != NULL)
+    {
+        CWnd* pParent = this;
+        // Child windows don't have menus--need to go to the top!
+        if(pParent != NULL && (hParentMenu = pParent->GetMenu()) != NULL)
+        {
+            int nIndexMax = hParentMenu->GetMenuItemCount();
+            for (int nIndex = 0; nIndex < nIndexMax; nIndex++)
+            {
+                CMenu *submenu = hParentMenu->GetSubMenu(nIndex);
+                if(submenu != NULL && submenu->m_hMenu == pPopupMenu->m_hMenu)
+                {
+                    // When popup is found, m_pParentMenu is containing menu.
+                    state.m_pParentMenu = CMenu::FromHandle(hParentMenu->GetSafeHmenu());
+                    break;
+                }
+            }
+        }
+    }
+    
+    state.m_nIndexMax = pPopupMenu->GetMenuItemCount();
+    for(state.m_nIndex = 0; state.m_nIndex < state.m_nIndexMax; state.m_nIndex++)
+    {
+        state.m_nID = pPopupMenu->GetMenuItemID(state.m_nIndex);
+        if(state.m_nID == 0)
+            continue; // Menu separator or invalid cmd - ignore it.
+        ASSERT(state.m_pOther == NULL);
+        ASSERT(state.m_pMenu != NULL);
+        if(state.m_nID == (UINT)-1)
+        {
+            // Possibly a popup menu, route to first item of that popup.
+            state.m_pSubMenu = pPopupMenu->GetSubMenu(state.m_nIndex);
+            if(state.m_pSubMenu == NULL ||
+                (state.m_nID = state.m_pSubMenu->GetMenuItemID(0)) == 0 ||
+                state.m_nID == (UINT)-1)
+            {
+                continue; // First item of popup can't be routed to.
+            }
+            state.DoUpdate(this, TRUE); // Popups are never auto disabled.
+        }
+        else
+        {
+            // Normal menu item.
+            // Auto enable/disable if frame window has m_bAutoMenuEnable
+            // set and command is _not_ a system command.
+            state.m_pSubMenu = NULL;
+            state.DoUpdate(this, FALSE);
+        }
+
+        // Adjust for menu deletions and additions.
+        UINT nCount = pPopupMenu->GetMenuItemCount();
+        if(nCount < state.m_nIndexMax)
+        {
+            state.m_nIndex -= (state.m_nIndexMax - nCount);
+            while(state.m_nIndex < nCount &&
+                pPopupMenu->GetMenuItemID(state.m_nIndex) == state.m_nID)
+            {
+                state.m_nIndex++;
+            }
+        }
+        state.m_nIndexMax = nCount;
+    }
 }
 
 #if defined(POCKET_PC)
