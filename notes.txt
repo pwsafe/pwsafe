@@ -1,0 +1,16 @@
+Registry
+
+HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/
+
+HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/Backup/
+
+bug P1.2
+EditDlg:
+current password 'nostaryet'
+actions
+button - showpassword
+change password to 'endswith*'
+button - ok (should save)
+*** doesn't save password ***
+
+
