@@ -225,6 +225,18 @@ int PWSfile::WriteCBC(unsigned char type, const CString &data)
 		   m_salt, SaltLength, m_ipthing);
 }
 
+int PWSfile::WriteCBC(unsigned char type, const unsigned char *data, unsigned int length)
+{
+  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
+  // to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR passstr = LPCSTR(m_passkey);
+
+  return _writecbc(m_fd, data, length, type,
+		   (const unsigned char *)passstr, m_passkey.GetLength(),
+		   m_salt, SaltLength, m_ipthing);
+}
+
 
 int PWSfile::WriteRecord(const CItemData &item)
 {
@@ -242,6 +254,11 @@ int PWSfile::WriteRecord(const CItemData &item)
   }
   break;
   case V20: {
+    {
+      uuid_array_t uuid_array;
+      item.GetUUID(uuid_array);
+      WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+    }
     WriteCBC(CItemData::TITLE, item.GetTitle());
     WriteCBC(CItemData::USER, item.GetUser());
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
@@ -304,7 +321,8 @@ int PWSfile::ReadRecord(CItemData &item)
     item.SetPassword(tempdata);
     numread += ReadCBC(type, tempdata);
     item.SetNotes(tempdata);
-
+    // No UUID, so we create one here
+    item.CreateUUID();
     return (numread > 0) ? SUCCESS : END_OF_FILE;
   }
   case V20: {
@@ -326,9 +344,15 @@ int PWSfile::ReadRecord(CItemData &item)
 	  item.SetNotes(tempdata); break;
 	case CItemData::END:
 	  endFound = true; break;
+	case CItemData::UUID: {
+	  LPCSTR ptr = LPCSTR(tempdata);
+	  uuid_array_t uuid_array;
+	  for (int i = 0; i < sizeof(uuid_array); i++)
+	    uuid_array[i] = ptr[i];
+	  item.SetUUID(uuid_array); break;
+	}
 	  // just silently ignore fields we don't support.
 	  // this is forward compatability...
-	case CItemData::GUID:
 	case CItemData::GROUP:
 	case CItemData::CTIME:
 	case CItemData::MTIME:

@@ -71,7 +71,7 @@ shortcomings:
 
    Name			      Type byte value	Type     Comments
    --------------------------------------------------------------
-   GUID			      0x1		GUID	 [1]
+   UUID			      0x1		UUID	 [1]
    Group		      0x2		Text     [2]
    Title		      0x3		Text
    Username		      0x4		Text
@@ -84,11 +84,10 @@ shortcomings:
    Password Policy	      0xb		4 bytes [5]
    End of Entry		      0xff		[empty] [6]
 
-[1] A globally unique identifier is needed in order to synchronize
-databases, i.e., between a handheld pocketPC device and a PC. The GUID
-data type is 16 bytes long. A bit of an overkill, perhaps, but I
-understand that there's a standard API for synchronization that uses
-this datatype.
+[1] A universally unique identifier is needed in order to synchronize
+databases, i.e., between a handheld pocketPC device and a PC. The UUID
+data type is 16 bytes long. Windows has functions for this, and for
+other platforms, it's possible to use code from the OSF.
 [2] The "Group" is meant to support displaying the entries in a
 tree-like manner. Groups can be heirarchical, with elements separated
 by a period, supporting groups such as "Finance.credit cards.Visa",
@@ -110,9 +109,9 @@ sense, however, to want to control this on a per-entry basis. Four
 bytes seems sufficient to store the policy. Exact encoding TBD.
 [6] An explicit end of entry field is needed so that 2.x programs
 won't break when reading 2.y files where x != y. Alternately, we could
-have relied on the GUID field being the first, but this would have
+have relied on the UUID field being the first, but this would have
 been a bit less elegant to parse, as well as less robust (suppose we
-decide to drop the GUID, or move it to the last field?).
+decide to drop the UUID, or move it to the last field?).
 
 6. Conversion from 1.x databases to 2.x should be automatic. The user
    should be notified that the 1.x database will be renamed with a
@@ -120,6 +119,9 @@ decide to drop the GUID, or move it to the last field?).
    name.
 
 $Log$
+Revision 1.5  2003/10/05 10:42:51  ronys
+Support for UUID as part of V2 file format.
+
 Revision 1.4  2003/07/17 04:16:06  ronys
 Added END field type
 

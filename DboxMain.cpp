@@ -575,6 +575,7 @@ DboxMain::OnAdd()
       CItemData temp;
       CMyString temptitle;
       m_core.MakeName(temptitle, dataDlg.m_title, dataDlg.m_username);
+      temp.CreateUUID();
       temp.SetName(temptitle);
       temp.SetPassword(dataDlg.m_password);
       temp.SetNotes(dataDlg.m_notes);

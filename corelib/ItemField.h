@@ -26,8 +26,10 @@ class CItemField {
   CItemField &operator=(const CItemField &that);
 
   void Set(const CMyString &value, BlowFish *bf);
+  void Set(const unsigned char* value, unsigned int length, BlowFish *bf);
 
   void Get(CMyString &value, BlowFish *bf) const;
+  void Get(unsigned char *value, unsigned int &length, BlowFish *bf) const;
   unsigned char GetType() const {return m_Type;}
 
  private:

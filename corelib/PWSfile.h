@@ -8,6 +8,7 @@
 
 #include "ItemData.h"
 #include "MyString.h"
+#include "UUIDGen.h"
 
 class PWSfile {
  public:
@@ -40,6 +41,7 @@ class PWSfile {
   unsigned char m_salt[SaltLength];
   unsigned char m_ipthing[8]; // for CBC
   int WriteCBC(unsigned char type, const CString &data);
+  int WriteCBC(unsigned char type, const unsigned char *data, unsigned int length);
   int ReadCBC( unsigned char &type, CMyString &data);
   int WriteV2Header();
   int ReadV2Header();
