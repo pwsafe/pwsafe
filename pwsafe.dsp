@@ -203,6 +203,10 @@ SOURCE=.\SysColStatic.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SystemTray.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ThisMfcApp.cpp
 # End Source File
 # Begin Source File
@@ -363,6 +367,10 @@ SOURCE=.\SysColStatic.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\SystemTray.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ThisMfcApp.h
 # End Source File
 # Begin Source File
@@ -440,6 +448,10 @@ SOURCE=.\toolbar2.bmp
 # Begin Source File
 
 SOURCE=.\toolbar3.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tray.ico
 # End Source File
 # End Group
 # Begin Source File
