@@ -26,6 +26,7 @@ public:
 	BOOL	m_lockdatabase;
 	BOOL	m_confirmsaveonminimize;
 	BOOL	m_confirmcopy;
+	BOOL	m_LockOnWindowLock;
 	//}}AFX_DATA
 
 

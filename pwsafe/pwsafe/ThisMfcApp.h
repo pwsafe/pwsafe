@@ -22,6 +22,7 @@ public:
   HACCEL m_ghAccelTable;
 
   CRecentFileList*	GetMRU()			{ return m_pMRU; }
+	CSystemTray m_TrayIcon;
 
 public:
   DboxMain* m_maindlg;
@@ -37,11 +38,11 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
   static void	StripFileQuotes( CString& strFilename );
   DECLARE_MESSAGE_MAP()
+  
 
 protected:
   CRecentFileList*		m_pMRU;
   bool					m_bUseAccelerator;
-  CSystemTray m_TrayIcon;
 };
 
 //-----------------------------------------------------------------------------

@@ -58,6 +58,9 @@ DboxMain::OnOptions()
      GetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize) ? FALSE : TRUE;
    security.m_confirmcopy = prefs->
      GetPref(PWSprefs::BoolPrefs::DontAskQuestion) ? FALSE : TRUE;
+   security.m_LockOnWindowLock = prefs->
+	   GetPref(PWSprefs::BoolPrefs::LockOnWindowLock) ? TRUE : FALSE;
+
 
     passwordpolicy.m_pwlendefault = prefs->
       GetPref(PWSprefs::IntPrefs::PWLenDefault);
@@ -125,6 +128,9 @@ DboxMain::OnOptions()
 		    security.m_confirmsaveonminimize == FALSE);
      prefs->SetPref(PWSprefs::BoolPrefs::DontAskQuestion,
 		    security.m_confirmcopy == FALSE);
+	 prefs->SetPref(PWSprefs::BoolPrefs::LockOnWindowLock,
+			security.m_LockOnWindowLock == TRUE);
+
 
      prefs->SetPref(PWSprefs::IntPrefs::PWLenDefault,
 		    passwordpolicy.m_pwlendefault);
