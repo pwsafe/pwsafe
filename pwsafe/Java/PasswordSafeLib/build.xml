@@ -27,6 +27,7 @@
 	<path id="project.class.path">
 		<pathelement path="${java.class.path}" />
 		<pathelement location="../BlowfishJ/bin" />
+		<pathelement location="bin" />
 		<!--
 		<pathelement location="=== path to log4j ===" />
 		<pathelement location="=== path to JUnit ===" />
@@ -108,12 +109,9 @@ runtests   - Runs the JUnit tests.
 		<junit>
 			<formatter type="plain" usefile="false" />
 
-			<classpath>
-				<pathelement location="passwordsafe-lib.jar" />
-				<pathelement path="${project.class.path}"/>
-			</classpath>
+			<classpath refid="project.class.path" />
 
-			<test name="org.pwsafe.test.UtilTest" />
+			<test name="org.pwsafe.test.AllTests" />
 		</junit>
 	</target>
 
