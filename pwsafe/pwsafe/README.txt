@@ -27,6 +27,8 @@ Downloading:
 The latest & greatest version of Password Safe may be downloaded from
 https://sourceforge.net/project/showfiles.php?group_id=41019
 
+Non-English Versions:
+=====================
 A French version of the help file may be found in
 http://passwordsafe.sourceforge.net/pwsafefr.zip (Thanks to Laurent
 Masson).
@@ -39,9 +41,14 @@ A German version of the help file may be found in
 http://passwordsafe.sourceforge.net/pwsafege.zip (Thanks to Sebastian
 Juergens).
 
-An Italian version of the help file may be found inhttp://home.datacomm.ch/winzozz/passwordsafe.htm
- (Thanks to Sebastian
-Juergens).
+An Italian version of the help file may be found in
+http://home.datacomm.ch/winzozz/passwordsafe.htm (Thanks to Stefano)
+
+Kimmo 'Yodakoski' Koskinen has translated both the help file and the
+entire PasswordSafe (version 2.07) application to Finnish! These may
+be downloaded from http://tinyurl.com/7yqdv and
+http://tinyurl.com/5z3h3, respectively. The source files are available
+from http://tinyurl.com/5wt66. 
 
 If anyone is interested in doing such work in other
 languages, please let me (https://sourceforge.net/users/ronys) know.
@@ -84,6 +91,14 @@ New releases are announced on the passwordsafe-announce mailing list:
 
 http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce)
 
+Last but not least: PasswordSafe is and will always remain an open
+source project, free for and redistribution. However, donations to the
+project will help me justify the time and effort I spend in
+maintaining and improving this utility. In addtion, donations to the
+project help maintain SourceForge, the hosting site. If you wish to
+donate, please follow this link:
+https://sourceforge.net/donate/index.php?group_id=41019
+
 Release Notes:
 ==============
 For information on the latest features, bugfixes and known problems,
@@ -109,6 +124,9 @@ password policy code and some GUI improvements for 1.92.
 project.
 
 $Log$
+Revision 1.9  2005/01/15 11:07:14  ronys
+Update non-English list, add reference to donations.
+
 Revision 1.8  2004/11/24 16:21:13  ronys
 Added link to Italian help, plus unix2dos'ed
 
