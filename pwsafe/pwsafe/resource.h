@@ -160,6 +160,8 @@
 #define ID_MENUITEM_TREE_VIEW           32827
 #define ID_MENUITEM_ADDGROUP            32829
 #define ID_MENUITEM_BROWSE              32830
+#define ID_MENUITEM_NEW_TOOLBAR         32831
+#define ID_MENUITEM_OLD_TOOLBAR         32832
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRY20             40020
 
@@ -168,7 +170,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        218
-#define _APS_NEXT_COMMAND_VALUE         32830
+#define _APS_NEXT_COMMAND_VALUE         32833
 #define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           105
 #endif

@@ -130,6 +130,7 @@ protected:
 
    void SetListView();
    void SetTreeView();
+   void SetToolbar(int menuItem);
 
    //Version of message functions with return values
    int Save(void);
@@ -170,6 +171,8 @@ protected:
    afx_msg void OnAdd();
    afx_msg void OnAddGroup();
    afx_msg void OnOK();
+   afx_msg void OnOldToolbar();
+   afx_msg void OnNewToolbar();
 #if defined(POCKET_PC)
    afx_msg void OnShowPassword();
 #else

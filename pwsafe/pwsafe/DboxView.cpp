@@ -152,31 +152,47 @@ DboxMain::setupBars()
       return;      // fail to create
     }
 
-  // Following code is needed to set toolbar to 24 bit colors. Ugh.
+  // Set toolbar according to graphic capabilities, overridable by user choice.
   CDC* pDC = this->GetDC();
   UINT Flags = 0;
   CBitmap bmTemp; 
   COLORREF Background = RGB(192, 192, 192);
-  if ( pDC )
-  {
-	  int NumBits = pDC->GetDeviceCaps(12);
-	  if ( NumBits == 32 )
-	  {
-		  bmTemp.LoadBitmap(IDR_MAINBAR);
-		  Flags =ILC_MASK | ILC_COLOR32;
-	  }
-	  else if ( NumBits == 16 )
-	  {
-		  bmTemp.LoadBitmap(IDB_TOOLBAR1);
-		  Flags =ILC_MASK | ILC_COLOR8;
-		  Background = RGB( 196,198,196 );
-	  }
-	  else
-	  {
-		  bmTemp.LoadBitmap(IDB_TOOLBAR2);
-		  Flags =ILC_MASK | ILC_COLOR8;
-	  }
+  CMenu* mmenu = GetMenu();
+  CMenu* submenu = mmenu->GetSubMenu(2);
+  bool oldMenu = false;
+  int NumBits = 32;
+
+  if ( pDC )  {
+    NumBits = pDC->GetDeviceCaps(12);
+
+    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseNewToolbar) ||
+	NumBits < 16) {
+      bmTemp.LoadBitmap(IDB_TOOLBAR2);
+      Flags = ILC_MASK | ILC_COLOR8;
+      oldMenu = true;
+    } else if ( NumBits == 32 ) {
+      bmTemp.LoadBitmap(IDR_MAINBAR);
+      Flags = ILC_MASK | ILC_COLOR32;
+    } else if ( NumBits == 16 ) {
+      bmTemp.LoadBitmap(IDB_TOOLBAR1);
+      Flags = ILC_MASK | ILC_COLOR8;
+      Background = RGB( 196,198,196 );
+    }
   }
+
+  if (oldMenu) {
+    submenu->CheckMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_UNCHECKED | MF_BYCOMMAND);
+    submenu->CheckMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_CHECKED | MF_BYCOMMAND);
+    if (NumBits < 16) {
+      // Less that 16 color bits available, no choice, disable menu items
+      submenu->EnableMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_GRAYED | MF_BYCOMMAND);
+      submenu->EnableMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_GRAYED | MF_BYCOMMAND);
+    }
+  } else{
+    submenu->CheckMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_CHECKED | MF_BYCOMMAND);
+    submenu->CheckMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_UNCHECKED | MF_BYCOMMAND);
+  }
+
   CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
   CImageList ilTemp; 
   ilTemp.Create(16, 16, Flags, 10, 10);
@@ -193,6 +209,7 @@ DboxMain::setupBars()
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
   m_ctlItemList.MoveWindow(&rect, TRUE);
+  m_ctlItemTree.MoveWindow(&rect, TRUE); // Fix Bug 940585
 
   // Set flag
   m_toolbarsSetup = TRUE;
@@ -1080,7 +1097,7 @@ DboxMain::OnListView()
    CMenu* mmenu = GetMenu();
    CMenu* submenu = mmenu->GetSubMenu(2);
 
-   UINT state = submenu->GetMenuState(ID_MENUITEM_LIST_VIEW, MF_BYCOMMAND);
+   UINT state = submenu->GetMenuState(ID_MENUITEM_NEW_TOOLBAR, MF_BYCOMMAND);
    ASSERT(state != 0xFFFFFFFF);
 
    if (state & MF_CHECKED) {
@@ -1132,3 +1149,92 @@ DboxMain::SetTreeView()
 				   _T("tree"));
 }
 
+void
+DboxMain::OnOldToolbar() 
+{
+   CMenu* mmenu = GetMenu();
+   CMenu* submenu = mmenu->GetSubMenu(2);
+
+   UINT state = submenu->GetMenuState(ID_MENUITEM_OLD_TOOLBAR, MF_BYCOMMAND);
+   ASSERT(state != 0xFFFFFFFF);
+
+   if (state & MF_CHECKED) {
+      submenu->CheckMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_UNCHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_CHECKED | MF_BYCOMMAND);
+      SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
+   } else {
+      submenu->CheckMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_CHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_UNCHECKED | MF_BYCOMMAND);
+      SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
+   }
+}
+
+void
+DboxMain::OnNewToolbar() 
+{
+   CMenu* mmenu = GetMenu();
+   CMenu* submenu = mmenu->GetSubMenu(2);
+
+   UINT state = submenu->GetMenuState(ID_MENUITEM_NEW_TOOLBAR, MF_BYCOMMAND);
+   ASSERT(state != 0xFFFFFFFF);
+
+   if (state & MF_CHECKED) {
+      submenu->CheckMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_UNCHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_CHECKED | MF_BYCOMMAND);
+      SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
+   } else {
+      submenu->CheckMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_CHECKED | MF_BYCOMMAND);
+      submenu->CheckMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_UNCHECKED | MF_BYCOMMAND);
+      SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
+   }
+}
+
+void
+DboxMain::SetToolbar(int menuItem)
+{
+  UINT Flags = 0;
+  CBitmap bmTemp; 
+  COLORREF Background = RGB(192, 192, 192);
+
+  switch (menuItem) {
+  case ID_MENUITEM_NEW_TOOLBAR:
+    PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::UseNewToolbar, true);
+    {
+      int NumBits = 32;
+      CDC* pDC = this->GetDC();
+      if ( pDC )  {
+	NumBits = pDC->GetDeviceCaps(12);
+      }
+      if (NumBits == 32) {
+	bmTemp.LoadBitmap(IDR_MAINBAR);
+	Flags = ILC_MASK | ILC_COLOR32;
+      } else if (NumBits == 16) {
+	bmTemp.LoadBitmap(IDB_TOOLBAR1);
+	Flags = ILC_MASK | ILC_COLOR8;
+	Background = RGB( 196,198,196 );
+      }
+    }
+    break;
+  case ID_MENUITEM_OLD_TOOLBAR:
+    PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::UseNewToolbar, false);
+    bmTemp.LoadBitmap(IDB_TOOLBAR2);
+    Flags = ILC_MASK | ILC_COLOR8;
+    break;
+  default:
+    ASSERT(false);
+  }
+  CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
+  CImageList ilTemp; 
+  ilTemp.Create(16, 16, Flags, 10, 10);
+  ilTemp.Add(&bmTemp, Background);
+  tbcTemp.SetImageList(&ilTemp);
+  ilTemp.Detach();
+  bmTemp.Detach();
+
+  m_wndToolBar.Invalidate();
+
+  CRect rect;
+  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+  m_ctlItemList.MoveWindow(&rect, TRUE);
+}
