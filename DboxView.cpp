@@ -911,9 +911,10 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
   di->list_index = iResult;
   {
     HTREEITEM ti;
+    CMyString treeDispString = title;
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
-    ti = m_ctlItemTree.InsertItem(title, ti, TVI_SORT);
+    ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
     m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
     m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     di->tree_item = ti;

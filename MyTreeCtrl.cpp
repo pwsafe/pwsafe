@@ -31,6 +31,7 @@ CMyTreeCtrl::~CMyTreeCtrl()
 
 BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	//{{AFX_MSG_MAP(CMyTreeCtrl)
+	ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
 	ON_WM_MOUSEMOVE()
@@ -81,6 +82,11 @@ void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
       UpdateLeafsGroup(child, prefix);
     }
   }
+}
+
+void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR, LRESULT *pLResult)
+{
+  *pLResult = FALSE; // TRUE cancels label editing
 }
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
