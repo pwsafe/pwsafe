@@ -297,6 +297,7 @@ ThisMfcApp::InitInstance()
      CString args = m_lpCmdLine;
 
      if (args[0] != _T('-')) {
+			StripFileQuotes( args );
 
        if (CheckFile(args)) {
 	 dbox.SetCurFile(args);
@@ -307,6 +308,9 @@ ThisMfcApp::InitInstance()
        // first, let's check that there's a second arg
        CString fn = args.Right(args.GetLength()-2);
        fn.TrimLeft();
+
+			StripFileQuotes( fn );
+
        if (fn.IsEmpty() || !CheckFile(fn)) {
 	 Usage();
 	 return FALSE;
@@ -379,6 +383,28 @@ ThisMfcApp::InitInstance()
    return FALSE;
 }
 
+// Removes quotation marks from file name parameters
+// as in "file with spaces.dat"
+void
+ThisMfcApp::StripFileQuotes( CString& strFilename )
+{
+	const char* szFilename	= strFilename;
+	int			nLen		= strFilename.GetLength();
+
+	// if the filenames starts with a quote...
+	if ( *szFilename == '\"' )
+	{
+		// remove leading quote
+		++szFilename;
+		--nLen;
+
+		// trailing quote is optional, remove if present
+		if ( szFilename[nLen - 1] == '\"' )
+			--nLen;
+
+		strFilename = CString( szFilename, nLen );
+	}
+}
 
 //Copied from Knowledge Base article Q100770
 BOOL
