@@ -111,6 +111,7 @@ LDSPECS += oleaut32.lib
 LDSPECS += uuid.lib
 LDSPECS += odbc32.lib
 LDSPECS += odbccp32.lib
+LDSPECS += htmlhelp.lib
 
 #LDOPTIONS+=/subsystem:console 
 LDOPTIONS+=/subsystem:windows
