@@ -137,19 +137,19 @@ public class PwsFileHeader
 
 		for ( int ii = 0; ii < RandStuff.length; ++ii )
 		{
-			RandStuff[ii] = Util.newrand();
+			RandStuff[ii] = Util.newRand();
 		}
 		temp		= Util.cloneByteArray( RandStuff, 10 );
 		RandHash	= PwsFileFactory.genRandHash( passphrase, temp );
 		
 		for ( int ii = 0; ii < Salt.length; ++ii )
 		{
-			Salt[ii] = Util.newrand();
+			Salt[ii] = Util.newRand();
 		}
 		
 		for ( int ii = 0; ii < IpThing.length; ++ii )
 		{
-			IpThing[ii] = Util.newrand();
+			IpThing[ii] = Util.newRand();
 		}
 
 		LOG.leaveMethod( "PwsFileHeader.update" );

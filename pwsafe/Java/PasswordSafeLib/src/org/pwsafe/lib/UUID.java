@@ -40,17 +40,17 @@ public class UUID implements Comparable
 		Util.putIntToByteArray( TheUUID, time_lo, 0 );
 		Util.putIntToByteArray( TheUUID, time_hi, 4 );
 		
-		TheUUID[0]	= Util.newrand();
-		TheUUID[1]	= Util.newrand();
-		TheUUID[2]	= (byte)(Util.newrand() & 0x07);
-		TheUUID[8]	= (byte)(Util.newrand() & 0x3f);
-		TheUUID[9]	= Util.newrand();
-		TheUUID[10]	= Util.newrand();
-		TheUUID[11]	= Util.newrand();
-		TheUUID[12]	= Util.newrand();
-		TheUUID[13]	= Util.newrand();
-		TheUUID[14]	= Util.newrand();
-		TheUUID[15]	= Util.newrand();
+		TheUUID[0]	= Util.newRand();
+		TheUUID[1]	= Util.newRand();
+		TheUUID[2]	= (byte)(Util.newRand() & 0x07);
+		TheUUID[8]	= (byte)(Util.newRand() & 0x3f);
+		TheUUID[9]	= Util.newRand();
+		TheUUID[10]	= Util.newRand();
+		TheUUID[11]	= Util.newRand();
+		TheUUID[12]	= Util.newRand();
+		TheUUID[13]	= Util.newRand();
+		TheUUID[14]	= Util.newRand();
+		TheUUID[15]	= Util.newRand();
 	}
 
 	/**
