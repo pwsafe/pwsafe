@@ -671,8 +671,7 @@ DboxMain::OnExportText()
 void
 DboxMain::OnExportXML()
 {
-    // TODO
-    MessageBox(_T("Not yet implemented"), _T("Error"), MB_OK|MB_ICONERROR);
+    // TODO - currently disabled in menubar
 }
 
 void
@@ -706,8 +705,7 @@ DboxMain::OnImportText()
 void
 DboxMain::OnImportXML()
 {
-    // TODO
-    MessageBox(_T("Not yet implemented"), _T("Error"), MB_OK|MB_ICONERROR);
+    // TODO - currently disabled in menubar
 }
 
 

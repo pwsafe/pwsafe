@@ -85,11 +85,12 @@ CAddDlg::OnOK()
    DboxMain* pParent = (DboxMain*) GetParent();
    ASSERT(pParent != NULL);
 
-   if (pParent->Find(m_title, m_username) != NULL)
+   if (pParent->Find(m_group, m_title, m_username) != NULL)
    {
       CMyString temp =
-         "An item with Title \""
-         + m_title + "\" and User Name \"" + m_username
+         "An item with Group \"" + m_group
+	 + "\", Title \"" + m_title 
+	 + "\" and User Name \"" + m_username
          + "\" already exists.";
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
