@@ -7,13 +7,24 @@
 // FindDlg.h : header file
 //
 
+#include "PwsPlatform.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/PwsPopupDialog.h"
+  #define SUPERCLASS	CPwsPopupDialog
+#else
+  #define SUPERCLASS	CDialog
+#endif
+
 /////////////////////////////////////////////////////////////////////////////
 // CFindDlg dialog
 
-class CFindDlg : public CDialog
+class CFindDlg : public SUPERCLASS
 {
   // Construction
  public:
+	typedef SUPERCLASS		super;
+
   static void Doit(CWnd* pParent = NULL); // implement Singleton pattern
   ~CFindDlg();
   // Dialog Data
@@ -38,9 +49,14 @@ class CFindDlg : public CDialog
   // Generated message map functions
   //{{AFX_MSG(CFindDlg)
   afx_msg void OnFind();
+#if defined(POCKET_PC)
+	afx_msg void OnCancel();
+#else
 	afx_msg void OnClose();
+#endif
 	//}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+
  private:
   CFindDlg(CWnd* pParent = NULL);   // standard constructor
   static CFindDlg *self;
@@ -50,6 +66,8 @@ class CFindDlg : public CDialog
   CString m_last_search_text;
   BOOL m_last_cs_search;
 };
+
+#undef SUPERCLASS
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

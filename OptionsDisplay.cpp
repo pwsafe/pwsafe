@@ -3,7 +3,13 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "resource.h"
+#include "PwsPlatform.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 #include "OptionsDisplay.h"
 
 #ifdef _DEBUG
@@ -34,6 +40,9 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
 	DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_pwshowinlist);
 	DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
+#if defined(POCKET_PC)
+	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
+#endif
 	//}}AFX_DATA_MAP
 }
 

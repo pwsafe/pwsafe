@@ -15,7 +15,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "corelibtest"=".\corelib\corelibtest.dsp" - Package Owner=<4>
+Project: "corelibtest"=".\test\corelibtest.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -23,6 +23,9 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name corelib
+    End Project Dependency
 }}}
 
 ###############################################################################

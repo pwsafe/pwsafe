@@ -9,10 +9,19 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#include "PwsPlatform.h"
+#include "corelib/Util.h"
+
+// Select the font style and size for the password box
+#if !defined(POCKET_PC)
+  #define FONT_NAME	_T("Courier")
+  #define FONT_SIZE	14
+#endif
 
 void
 SetPasswordFont(CWnd* pDlgItem)
 {
+#if !defined(POCKET_PC)
 	// for now, this keeps the leak down to just one
 	static HFONT hfont		= NULL;
 
@@ -23,8 +32,8 @@ SetPasswordFont(CWnd* pDlgItem)
 
 		LOGFONT lf;
 		memset(&lf, 0, sizeof(LOGFONT));		  // clear out structure
-		lf.lfHeight = 14;						  // request a 14-pixel-height font
-		strcpy(lf.lfFaceName, "Courier");		  // request a face name "Courier"
+		lf.lfHeight = FONT_SIZE;				  // request a 14-pixel-height font
+		strCopy( lf.lfFaceName, FONT_NAME );      // UNICODE safe string copy
 		hfont = ::CreateFontIndirect(&lf);		  // create the font (must be deleted with ::DeleteObject()
 	}
 
@@ -35,6 +44,7 @@ SetPasswordFont(CWnd* pDlgItem)
 		if (pfont != NULL)
 			pDlgItem->SetFont(pfont);
 	}
+#endif
 }
 
 //-----------------------------------------------------------------------------

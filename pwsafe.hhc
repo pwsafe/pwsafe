@@ -8,45 +8,5 @@
 	<param name="Auto Generated" value="Yes">
 </OBJECT>
 <UL>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Password Safe Main Window">
-		<param name="Local" value="html/pws_main.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Edit/View Data">
-		<param name="Local" value="html/pws_edit.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Introduction">
-		<param name="Local" value="html/pws_intro.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Getting Started">
-		<param name="Local" value="html/pws_intro.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Safe Combination Entry Error">
-		<param name="Local" value="html/pws_combo_err.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Password Safe Options">
-		<param name="Local" value="html/pws_opts.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Copy Password to Clipboard Dialog">
-		<param name="Local" value="html/pws_copy_to_clip.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Set Default Username?">
-		<param name="Local" value="html/pws_set_dflt_uname.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Add a Username to All Entries?">
-		<param name="Local" value="html/pws_add_uname.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Username Entry Dialog">
-		<param name="Local" value="html/pws_uname_entry.htm">
-		</OBJECT>
 </UL>
 </BODY></HTML>

@@ -7,6 +7,32 @@
 #include "stdafx.h"
 #endif
 
+#include "PwsPlatform.h"
+
+#if !defined(WCE_INS)
+#if defined(POCKET_PC)
+#define WCE_INS
+#else
+#define WCE_INS /##/
+#endif
+#endif
+
+#if !defined(WCE_DEL)
+#if defined(POCKET_PC)
+#define WCE_DEL /##/
+#else
+#define WCE_DEL
+#endif
+#endif
+
+#if defined(POCKET_PC)
+  #define PWS_REG_POSITION	"Position"
+  #define PWS_REG_OPTIONS	"Options"
+#else
+  #define PWS_REG_POSITION	""
+  #define PWS_REG_OPTIONS	""
+#endif
+
 /*
   jpr debug stuff
 */

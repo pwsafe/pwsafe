@@ -1,10 +1,21 @@
 // PasskeySetup.h
 //-----------------------------------------------------------------------------
 
-class CPasskeySetup : public CDialog
+#include "PwsPlatform.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/PwsPopupDialog.h"
+  #define SUPERCLASS	CPwsPopupDialog
+#else
+  #define SUPERCLASS	CDialog
+#endif
+
+class CPasskeySetup : public SUPERCLASS
 {
 // Construction
 public:
+	typedef SUPERCLASS	super;
+
    CPasskeySetup(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
@@ -31,9 +42,15 @@ protected:
    virtual void OnCancel();
    virtual void OnOK();
    afx_msg void OnHelp();
+#if defined(POCKET_PC)
+   afx_msg void OnPasskeySetfocus();
+   afx_msg void OnPasskeyKillfocus();
+#endif
    //}}AFX_MSG
    DECLARE_MESSAGE_MAP()
 };
+
+#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

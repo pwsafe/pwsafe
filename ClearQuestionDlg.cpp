@@ -15,21 +15,21 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
-   : CDialog(CClearQuestionDlg::IDD, pParent)
+   : super(CClearQuestionDlg::IDD, pParent)
 {
    m_dontaskquestion =
-      app.GetProfileInt("", "dontaskquestion", 0);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), 0);
 }
 
 
 void CClearQuestionDlg::DoDataExchange(CDataExchange* pDX)
 {
-   CDialog::DoDataExchange(pDX);
+   super::DoDataExchange(pDX);
    DDX_Check(pDX, IDC_CLEARCHECK, m_dontaskquestion);
 }
 
 
-BEGIN_MESSAGE_MAP(CClearQuestionDlg, CDialog)
+BEGIN_MESSAGE_MAP(CClearQuestionDlg, super)
 END_MESSAGE_MAP()
 
 
@@ -37,7 +37,7 @@ void
 CClearQuestionDlg::OnCancel() 
 {
    app.m_pMainWnd = NULL;
-   CDialog::OnCancel();
+   super::OnCancel();
 }
 
 void
@@ -45,9 +45,9 @@ CClearQuestionDlg::OnOK()
 {
    UpdateData(TRUE);
 
-   app.WriteProfileInt("", "dontaskquestion", m_dontaskquestion);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), m_dontaskquestion);
    app.m_pMainWnd = NULL;
-   CDialog::OnOK();
+   super::OnOK();
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

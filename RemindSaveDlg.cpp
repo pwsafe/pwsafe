@@ -3,9 +3,14 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-
+#include "PwsPlatform.h"
 #include "ThisMfcApp.h"
-#include "resource.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 
 #include "RemindSaveDlg.h"
 
@@ -20,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 CRemindSaveDlg::CRemindSaveDlg(CWnd* pParent)
    : CDialog(CRemindSaveDlg::IDD, pParent)
 {
-   m_dontask = app.GetProfileInt("", "dontasksaveminimize", FALSE);
+   m_dontask = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), FALSE);
 }
 
 
@@ -38,7 +43,7 @@ END_MESSAGE_MAP()
 void CRemindSaveDlg::OnCancel() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "dontasksaveminimize", m_dontask);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), m_dontask);
    CDialog::OnCancel();
 }
 
@@ -46,7 +51,7 @@ void CRemindSaveDlg::OnCancel()
 void CRemindSaveDlg::OnOK() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "dontasksaveminimize", m_dontask);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), m_dontask);
    CDialog::OnOK();
 }
 //-----------------------------------------------------------------------------

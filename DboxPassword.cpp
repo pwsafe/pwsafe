@@ -13,12 +13,12 @@
 CMyString
 DboxMain::GetPassword(void) const
 {
-  CPasswordCharPool pwchars(app.GetProfileInt("", "pwlendefault", 8),
-			    app.GetProfileInt("", "pwuselowercase", TRUE),
-			    app.GetProfileInt("", "pwuseuppercase", TRUE),
-			    app.GetProfileInt("", "pwusedigits", TRUE),
-			    app.GetProfileInt("", "pwusesymbols", FALSE),
-			    app.GetProfileInt("", "pweasyvision", FALSE));
+  CPasswordCharPool pwchars(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), 8),
+			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuselowercase"), TRUE),
+			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE),
+			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE),
+			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE),
+			    app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE));
 
   return pwchars.MakePassword();
 }
