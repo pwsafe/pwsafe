@@ -18,7 +18,6 @@
 #define IDD_KEYCHANGE_DIALOG            131
 #define IDD_PASSKEYSETUP                132
 #define IDD_SECURECLEAR                 133
-#define IDI_IBUBBLE                     134
 #define IDD_PASSKEYENTRY_FIRST          135
 #define IDD_CONFIRMDELETE_DIALOG        136
 #define IDD_OPTIONS                     137
