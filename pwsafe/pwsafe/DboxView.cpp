@@ -974,9 +974,13 @@ DboxMain::ClearData(void)
   m_core.ClearData();
   //Because GetText returns a copy, we cannot do anything about the names
   if (m_windowok) {
-    //Have to make sure this doesn't cause an access violation
+    // For long lists, this is painful, so we disable updates
+    m_ctlItemList.LockWindowUpdate();
     m_ctlItemList.DeleteAllItems();
+    m_ctlItemList.UnlockWindowUpdate();
+    m_ctlItemTree.LockWindowUpdate();
     m_ctlItemTree.DeleteAllItems();
+    m_ctlItemTree.UnlockWindowUpdate();
   }
 }
 
