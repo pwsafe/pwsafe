@@ -268,7 +268,7 @@ ThisMfcApp::InitInstance()
      automagic migration ought to happen. -- {jpr}
    */
 
-   CMyString companyname;
+   CString companyname;
    VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
    SetRegistryKey(companyname);
 

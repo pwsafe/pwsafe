@@ -19,11 +19,11 @@ CMyString::CMyString() : m_mystring("")
 {
 }
 
-CMyString::CMyString(LPCSTR lpsz) : m_mystring(lpsz)
+CMyString::CMyString(LPCTSTR lpsz) : m_mystring(lpsz)
 {
 }
 
-CMyString::CMyString(LPCSTR lpsz, int nLength) : m_mystring(lpsz, nLength)
+CMyString::CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength)
 {
 }
 
@@ -84,15 +84,7 @@ CMyString::operator=(TCHAR ch)
 }
 
 const CMyString&
-CMyString::operator=(LPCSTR lpsz)
-{
-   trashstring();
-   m_mystring = lpsz;
-   return *this;
-}
-
-const CMyString&
-CMyString::operator=(LPCWSTR lpsz)
+CMyString::operator=(LPCTSTR lpsz)
 {
    trashstring();
    m_mystring = lpsz;
@@ -205,12 +197,6 @@ BOOL
 CMyString::IsEmpty() const
 {
    return m_mystring.IsEmpty();
-}
-
-BOOL
-CMyString::LoadString(UINT nID)
-{
-   return m_mystring.LoadString(nID);
 }
 
 
