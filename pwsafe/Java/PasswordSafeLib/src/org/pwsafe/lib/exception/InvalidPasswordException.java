@@ -1,16 +1,15 @@
 /*
- * Created on Dec 13, 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
  */
 package org.pwsafe.lib.exception;
 
 /**
- * @author Kevin
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * An exception to indicate that the password given for a file is incorrect.
+ * 
+ * @author Kevin Preece
  */
 public class InvalidPasswordException extends Exception
 {

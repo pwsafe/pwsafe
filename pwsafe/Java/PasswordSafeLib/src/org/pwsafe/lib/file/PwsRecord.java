@@ -1,3 +1,9 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.file;
 
 import java.io.IOException;
@@ -13,14 +19,14 @@ import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
 /**
  * This abstract class implements the common features of PasswordSafe records.
- * <p />
- * When a record is added to a file it becoms "owned" by that file.  Records can only be owned by
+ * </p><p>
+ * When a record is added to a file it becomes "owned" by that file.  Records can only be owned by
  * one file at a time and an exception will be thrown if an attempt is made to add it to another
  * file.  If a record needs to be added to more than one file, call the {link clone} method on
  * the original record and add the clone to the other file.  For example:
- * <p />
+ * </p><p>
  * <tt>
- * <pre>PwsFile file1;
+ * <pre> PwsFile file1;
  * PwsFile file2;
  * PwsFile file3;
  * RwsRecord rec;
@@ -29,9 +35,15 @@ import org.pwsafe.lib.exception.UnsupportedFileVersionException;
  * file2.add( (PwsRecord) rec.clone() );
  * file3.add( (PwsRecord) rec.clone() );</pre>
  * </tt>
+ * </p>
+ * 
+ * @author Kevin Preece
  */
 public abstract class PwsRecord implements Comparable
 {
+	/**
+	 * The default character set used for <code>byte[]</code> to <code>String</code> conversions.
+	 */
 	public static final String	DEFAULT_CHARSET	= "ISO-8859-1";
 
 	private boolean		Modified		= false;
@@ -40,34 +52,55 @@ public abstract class PwsRecord implements Comparable
 	private HashMap		Attributes		= new HashMap();
 	private int			ValidTypes []	= null;
 
-	private class Item
+	/**
+	 * A holder class for all the data about a single field.  It holds the field's length,
+	 * data and, for those formats that use it, the field's type.
+	 */
+	protected class Item
 	{
-		protected byte []	RawData;
-		protected byte []	Data;
-		protected int		Length;
-		protected int		Type;
+		private byte []	RawData;
+		private byte []	Data;
+		private int		Length;
+		private int		Type;
 
 		/**
 		 * Reads a single item of data from the file.
-		 */
-		public Item()
-		{
-		}
-
-		/**
-		 * Gets this items data as a string.
 		 * 
-		 * @return
+		 * @param file the file the data should be read from.
+		 * 
+		 * @throws EndOfFileException
+		 * @throws IOException
+		 */
+		public Item( PwsFile file )
+		throws EndOfFileException, IOException
+		{
+			RawData = file.readBlock();
+			Length	= Util.getIntFromByteArray( RawData, 0 );
+			Type	= Util.getIntFromByteArray( RawData, 4 );
+			Data	= PwsFile.allocateBuffer( Length );
+			
+			file.readDecryptedBytes( Data );
+		}
+		
+		/**
+		 * Gets this items data as an array of bytes.
+		 * 
+		 * @return This items data as an array of bytes.
 		 */
 		public byte [] getByteData()
 		{
+			if ( Length != Data.length )
+			{
+				return Util.cloneByteArray( Data, Length );
+			}
 			return Data;
 		}
 
 		/**
-		 * Gets this items data as a string.
+		 * Gets this items data as a <code>String</code>.  The byte array is converted
+		 * to a <code>String</code> using {@link #DEFAULT_CHARSET} as the encoding.
 		 * 
-		 * @return
+		 * @return The item data as a <code>String</code>.
 		 */
 		public String getData()
 		{
@@ -97,6 +130,11 @@ public abstract class PwsRecord implements Comparable
 			return Type;
 		}
 
+		/**
+		 * Returns details about this field as a <code>String</code> suitable for dubugging.
+		 * 
+		 * @return A <code>String</code> representation of this object.
+		 */
 		public String toString()
 		{
 			StringBuffer	sb;
@@ -112,32 +150,12 @@ public abstract class PwsRecord implements Comparable
 		}
 	}
 
-	class ReadItem extends Item
-	{
-		/**
-		 * Reads a single item of data from the file.
-		 * 
-		 * @param file
-		 * 
-		 * @throws IOException
-		 */
-		public ReadItem( PwsFile file )
-		throws EndOfFileException, IOException
-		{
-			RawData = file.readBlock();
-			Length	= Util.getIntFromByteArray( RawData, 0 );
-			Type	= Util.getIntFromByteArray( RawData, 4 );
-			Data	= PwsFile.allocateBuffer( Length );
-			
-			file.readDecryptedBytes( Data );
-		}
-	}
-
 	/**
-	 * No-argument constructor.  Used when creating a new record to add to a file.
-	 *
+	 * Simple constructor.  Used when creating a new record to add to a file.
+	 * 
+	 * @param validTypes an array of valid field types.
 	 */
-	public PwsRecord( int [] validTypes )
+	PwsRecord( int [] validTypes )
 	{
 		super();
 
@@ -145,7 +163,13 @@ public abstract class PwsRecord implements Comparable
 	}
 
 	/**
+	 * This constructor is called when a record is to be read from the database.
 	 * 
+	 * @param owner      the file that data is to be read from and which "owns" this record. 
+	 * @param validTypes an array of valid field types.
+	 * 
+	 * @throws EndOfFileException
+	 * @throws IOException
 	 */
 	PwsRecord( PwsFile owner, int [] validTypes )
 	throws EndOfFileException, IOException
@@ -180,18 +204,56 @@ public abstract class PwsRecord implements Comparable
 	//* Abstract methods
 	//*************************************************************************
 
+	/**
+	 * Returns a clone of this record that is a deep copy of it.
+	 * 
+	 * @return A clone of this record.
+	 * 
+	 * @throws CloneNotSupportedException
+	 */
 	public abstract Object clone() throws CloneNotSupportedException;
 
-	public abstract int compareTo( Object ob );
+	/**
+	 * Compares this record to another returning a value that is less than zero if
+	 * this record is "less than" <code>other</code>, zero if they are "equal", or
+	 * greater than zero if this record is "greater than" <code>other</code>. 
+	 * 
+	 * @param other the record to compare this record to.
+	 * 
+	 * @return A value &lt; zero if this record is "less than" <code>other</code>,
+	 *         zero if they're equal and &gt; zero if this record is "greater than"
+	 *         <code>other</code>.
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public abstract int compareTo( Object other );
 
-	public abstract boolean equals( Object arg0 );
+	/**
+	 * Compares this record to another returning <code>true</code> if they're equal
+	 * and <code>false</code> if they're unequal.
+	 * 
+	 * @param other the record this one is compared to.
+	 * 
+	 * @return <code>true</code> if the records are equal, <code>false</code> if 
+	 *         they're unequal.
+	 */
+	public abstract boolean equals( Object other );
 
+	/**
+	 * Validates the record, returning <code>true</code> if it's valid or <code>false</code>
+	 * if unequal.
+	 * 
+	 * @return <code>true</code> if it's valid or <code>false</code> if unequal.
+	 */
 	protected abstract boolean isValid();
 	
 	/**
 	 * Loads this record from <code>file</code>.
 	 * 
 	 * @param file the file to load the record from.
+	 * 
+	 * @throws EndOfFileException
+	 * @throws IOException
 	 */
 	protected abstract void loadRecord( PwsFile file ) throws EndOfFileException, IOException;
 
@@ -199,6 +261,8 @@ public abstract class PwsRecord implements Comparable
 	 * Saves this record to <code>file</code>.
 	 * 
 	 * @param file the file to save the record to.
+	 * 
+	 * @throws IOException
 	 */
 	protected abstract void saveRecord( PwsFile file ) throws IOException;
 
@@ -227,7 +291,7 @@ public abstract class PwsRecord implements Comparable
 	 */
 	public PwsField getField( int type )
 	{
-		return (PwsField) Attributes.get( new Integer(type) );
+		return getField( new Integer(type) );
 	}
 
 	/**
@@ -240,7 +304,7 @@ public abstract class PwsRecord implements Comparable
 	 */
 	public PwsField getField( Integer type )
 	{
-		return getField( type.intValue() );
+		return (PwsField) Attributes.get( type );
 	}
 
 	/**
@@ -248,7 +312,7 @@ public abstract class PwsRecord implements Comparable
 	 * have been stored.  Use one of the <code>getField</code> methods to get the value.  The
 	 * iterators <code>next()</code> method returns an <code>Integer</code>
 	 * 
-	 * @return An iterator over the stored field codes.
+	 * @return An <code>Iterator</code> over the stored field codes.
 	 */
 	public Iterator getFields()
 	{
@@ -258,7 +322,7 @@ public abstract class PwsRecord implements Comparable
 	/**
 	 * Returns <code>true</code> if the record has been modified or <code>false</code> if not.
 	 * 
-	 * @return
+	 * @return <code>true</code> if the record has been modified or <code>false</code> if not.
 	 */
 	public boolean isModified()
 	{
@@ -272,6 +336,8 @@ public abstract class PwsRecord implements Comparable
 	 * 
 	 * @return The record that was read.
 	 * 
+	 * @throws EndOfFileException
+	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 */
 	public static PwsRecord read( PwsFile file )
@@ -279,11 +345,11 @@ public abstract class PwsRecord implements Comparable
 	{
 		switch ( file.getFileVersionMajor() )
 		{
-		case PwsFileV1.VERSION :
-			return new PwsRecordV1( file );
-
-		case PwsFileV2.VERSION :
-			return new PwsRecordV2( file );
+			case PwsFileV1.VERSION :
+				return new PwsRecordV1( file );
+	
+			case PwsFileV2.VERSION :
+				return new PwsRecordV2( file );
 		}
 		throw new UnsupportedFileVersionException();
 	}
@@ -297,18 +363,21 @@ public abstract class PwsRecord implements Comparable
 	}
 
 	/**
+	 * Sets a field on this record from <code>item</code>.
 	 * 
-	 * @param item
+	 * @param item the <code>Item</code> containg the field's data.
 	 */
-	public void setField( ReadItem item )
+	public void setField( Item item )
 	{
 		setField( new PwsStringField( item.getType(), item.getData() ) );
 	}
 
 	/**
+	 * Sets a field on this record from <code>value</code>.
 	 * 
-	 * @param type
-	 * @param value
+	 * @param value the field to set
+	 * 
+	 * @throws IllegalArgumentException if value is not the correct type for the file.
 	 */
 	public void setField( PwsField value )
 	{
@@ -320,6 +389,10 @@ public abstract class PwsRecord implements Comparable
 		{
 			if ( ValidTypes[ii] == type )
 			{
+				// TODO also check that value is the correct subclass for type
+				// e.g. if type shows that value is an integer then value must
+				// be a PwsIntegerField.  Best done with reflection.
+
 				Attributes.put( new Integer(type), value );
 				setModified();
 				return;
@@ -341,9 +414,12 @@ public abstract class PwsRecord implements Comparable
 	}
 
 	/**
+	 * Sets <code>file</code> as the owner of this record, i.e., the file it was read from 
+	 * or will be written to.
 	 * 
-	 * @param owner
-	 * @throws PasswordSafeException
+	 * @param owner the <code>PwsFile</code> that owns this record.
+	 * 
+	 * @throws PasswordSafeException if this record is already owned by a file.
 	 */
 	void setOwner( PwsFile owner )
 	throws PasswordSafeException
@@ -355,6 +431,15 @@ public abstract class PwsRecord implements Comparable
 		OwningFile = owner;
 	}
 
+	/**
+	 * Writes a single field to the file.
+	 * 
+	 * @param file  the file to write the field to.
+	 * @param field the field to be written.
+	 * @param type  the type to write to the file instead of <code>field.getType()</code> 
+	 * 
+	 * @throws IOException
+	 */
 	protected void writeField( PwsFile file, PwsField field, int type )
 	throws IOException
 	{
@@ -373,6 +458,14 @@ public abstract class PwsRecord implements Comparable
 		file.writeEncryptedBytes( dataBlock );
 	}
 
+	/**
+	 * Writes a single field to the file.
+	 * 
+	 * @param file  the file to write the field to.
+	 * @param field the field to be written.
+	 * 
+	 * @throws IOException
+	 */
 	protected void writeField( PwsFile file, PwsField field )
 	throws IOException
 	{

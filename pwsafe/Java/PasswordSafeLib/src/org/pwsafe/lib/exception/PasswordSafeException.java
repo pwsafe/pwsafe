@@ -1,6 +1,15 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.exception;
 
 /**
+ * A generic exception.
+ * 
+ * @author Kevin Preece
  */
 public class PasswordSafeException extends Exception
 {

@@ -1,13 +1,21 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib;
 
 /**
  * This class exposes various utilty methods.
+ * 
+ * @author Kevin Preece
  */
 public class Util
 {
 	private static final Log LOG = Log.getInstance(Util.class.getPackage().getName());
 
-	public static final char	HEX_CHARS[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	private static final char	HEX_CHARS[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
 	/**
 	 * Private to prevent instatiation.
@@ -19,9 +27,9 @@ public class Util
 	/**
 	 * Allocates a byte array with a length of <code>length</code> and fills it with
 	 * random data.
-	 * <p />
+	 * 
 	 * @param length the length of the array.
-	 * <p />
+	 * 
 	 * @return A byte array initialised with random data.
 	 */
 	public static byte [] allocateByteArray( int length )
@@ -40,10 +48,10 @@ public class Util
 	/**
 	 * Compares two byte arrays returning <code>true</code> if they're equal in length and
 	 * content <code>false</code> if they're not.
-	 * <p />
+	 * 
 	 * @param b1 the first byte array.
 	 * @param b2 the seconf byte array.
-	 * <p />
+	 * 
 	 * @return <code>true</code> if the arrays are equal, <code>false</code> if they are not.
 	 */
 	public static boolean bytesAreEqual( byte [] b1, byte [] b2 )
@@ -128,7 +136,7 @@ public class Util
 			throw new IllegalArgumentException( "Lengh must be not be negative." );
 		}
 
-		sb = new StringBuffer();
+		sb = new StringBuffer( length << 1 );
 		
 		for ( int ii = offset; ii < (offset + length); ++ii )
 		{
@@ -144,9 +152,9 @@ public class Util
 
 	/**
 	 * Produces a string prepresentation of the byte array.
-	 * <p />
+	 * 
 	 * @param b the array to be processed.
-	 * <p />
+	 * 
 	 * @return A string representation of the byte array.
 	 */
 	public static String bytesToString( byte [] b )
@@ -261,7 +269,8 @@ public class Util
 	 * Extracts an int from a byte array.  The value is four bytes in little-endian order starting
 	 * at <code>offset</code>.
 	 * 
-	 * @param buff the array to extract the int from
+	 * @param buff   the array to extract the int from.
+	 * @param offset the offset to start reading from. 
 	 * 
 	 * @return The value extracted.
 	 * 
@@ -273,14 +282,27 @@ public class Util
 
 		int result;
 
-		result = ((int) buff[offset+0] & 0x0ff) 
-			| (((int) buff[offset+1] & 0x0ff) << 8 )
-			| (((int) buff[offset+2] & 0x0ff) << 16 )
-			| (((int) buff[offset+3] & 0x0ff) << 24 );
+		result = (buff[offset+0] & 0x000000ff) 
+			| ((buff[offset+1] & 0x000000ff) << 8 )
+			| ((buff[offset+2] & 0x000000ff) << 16 )
+			| ((buff[offset+3] & 0x000000ff) << 24 );
 
 		LOG.leaveMethod( "Util.cloneByteArray(byte[],int)" );
 		
 		return result;
+	}
+
+	/**
+	 * Returns a random byte in the range -128 to +127.
+	 * 
+	 * @return A random byte.
+	 */
+	public static byte newrand()
+	{
+		int rand;
+		
+		while ( (rand = (int)(Math.random() * Integer.MAX_VALUE) % 257) == 256);
+		return (byte) rand;
 	}
 
 	/**
@@ -301,18 +323,5 @@ public class Util
 		buff[offset+3]	= (byte)((value & 0xff000000) >>> 24);
 		
 		LOG.leaveMethod( "Util.putIntToByteArray" );
-	}
-
-	/**
-	 * Returns a random byte in the range -128 to +127.
-	 * 
-	 * @return A random byte.
-	 */
-	public static byte newrand()
-	{
-		int rand;
-		
-		while ( (rand = (int)(Math.random() * (double)Integer.MAX_VALUE) % 257) == 256);
-		return (byte) rand;
 	}
 }

@@ -1,15 +1,22 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.file;
 
 import java.io.IOException;
 
+import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
 import org.pwsafe.lib.exception.EndOfFileException;
 
 /**
  * This class encapsulates the header fields of a PasswordSafe database.  The header comprises:
- * <p />
+ * </p><p>
  * <tt>
- * <pre>+--------+-----------+-----------------------------------------------+
+ * <pre> +--------+-----------+-----------------------------------------------+
  * | Length | Name      | Description                                   |
  * +--------+-----------+-----------------------------------------------+
  * |      8 | RandStuff | Random bytes                                  |
@@ -17,10 +24,15 @@ import org.pwsafe.lib.exception.EndOfFileException;
  * |     20 | Salt      | Salt                                          |
  * |      8 | IpThing   | Initial vector for decryption                 |
  * +--------+-----------+-----------------------------------------------+</pre>
- * </tt><p />
+ * </tt>
+ * </p>
+ * 
+ * @author Kevin Preece
  */
 public class PwsFileHeader
 {
+	private static final Log LOG = Log.getInstance(PwsFileHeader.class.getPackage().getName());
+
 	private byte []	RandStuff	= new byte[8];
 	private byte []	RandHash	= new byte[20];
 	private byte [] Salt		= new byte[20];
@@ -76,7 +88,7 @@ public class PwsFileHeader
 	/**
 	 * Gets a copy of Salt.
 	 * 
-	 * @return
+	 * @return a copy of Salt.
 	 */
 	public byte [] getSalt()
 	{
@@ -87,6 +99,8 @@ public class PwsFileHeader
 	 * Write the header to the file.
 	 * 
 	 * @param file the file to write the header to.
+	 * 
+	 * @throws IOException
 	 */
 	public void save( PwsFile file )
 	throws IOException
@@ -101,6 +115,8 @@ public class PwsFileHeader
 
 	/**
 	 * Updates the header ready for saving.
+	 * 
+	 * @param password the password to be used to encrypt the database.
 	 */
 	private void update( String password )
 	{

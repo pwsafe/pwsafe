@@ -1,3 +1,9 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.file;
 
 import java.util.Date;
@@ -10,13 +16,23 @@ import org.pwsafe.lib.Util;
 public class PwsTimeField extends PwsField
 {
 	/**
-	 * @param value
+	 * Constructor
+	 * 
+	 * @param type  the field's type.
+	 * @param value the field's value.
 	 */
 	public PwsTimeField( int type, byte [] value )
 	{
-		super( type, new Date( (long) Util.getIntFromByteArray(value, 0) ) );
+		super( type, new Date( Util.getIntFromByteArray(value, 0) ) );
 	}
 
+	/**
+	 * Returns the field's value as a byte array.
+	 * 
+	 * @return A byte array containing the field's data.
+	 * 
+	 * @see org.pwsafe.lib.file.PwsField#getBytes()
+	 */
 	public byte[] getBytes()
 	{
 		int		value;
@@ -30,11 +46,30 @@ public class PwsTimeField extends PwsField
 		return retval;
 	}
 
+	/**
+	 * Compares this <code>PwsTimeField</code> to another returning a value less than zero if
+	 * <code>this</code> is "less than" <code>that</code>, zero if they're equal and greater
+	 * than zero if <code>this</code> is "greater than" <code>that</code>.
+	 * 
+	 * @param that the other field to compare to. 
+	 * 
+	 * @return A value less than zero if <code>this</code> is "less than" <code>that</code>,
+	 *         zero if they're equal and greater than zero if <code>this</code> is "greater
+	 *         than" <code>that</code>.
+	 */
 	public int compareTo( Object that )
 	{
 		return ((Date) this.getValue()).compareTo((Date) ((PwsTimeField) that).getValue());
 	}
 
+	/**
+	 * Compares this object to another <code>PwsTimeField</code> or <code>java.util.Date</code> returning
+	 * <code>true</code> if they're equal or <code>false</code> otherwise.
+	 * 
+	 * @param arg0 the other object to compare to.
+	 * 
+	 * @return <code>true</code> if they're equal or <code>false</code> otherwise.
+	 */
 	public boolean equals( Object arg0 )
 	{
 		if ( arg0 instanceof PwsTimeField )
@@ -48,11 +83,27 @@ public class PwsTimeField extends PwsField
 		throw new ClassCastException();
 	}
 
+	/**
+	 * Compares this object to another <code>PwsTimeField</code> returning
+	 * <code>true</code> if they're equal or <code>false</code> otherwise.
+	 * 
+	 * @param arg0 the other object to compare to.
+	 * 
+	 * @return <code>true</code> if they're equal or <code>false</code> otherwise.
+	 */
 	public boolean equals( PwsTimeField arg0 )
 	{
 		return ((Date) getValue()).equals(arg0.getValue());
 	}
 
+	/**
+	 * Compares this object to a <code>java.util.Date</code> returning <code>true</code> 
+	 * if they're equal or <code>false</code> otherwise.
+	 * 
+	 * @param arg0 the other object to compare to.
+	 * 
+	 * @return <code>true</code> if they're equal or <code>false</code> otherwise.
+	 */
 	public boolean equals( Date arg0 )
 	{
 		return ((Date) getValue()).equals(arg0);

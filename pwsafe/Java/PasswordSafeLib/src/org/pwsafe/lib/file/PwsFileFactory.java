@@ -1,3 +1,9 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.file;
 
 import java.io.FileInputStream;
@@ -15,30 +21,36 @@ import BlowfishJ.BlowfishECB;
 import BlowfishJ.SHA1;
 
 /**
- * This is a factory class that is used to load a PasswordSafe file.
+ * This is a singleton factory class used to load a PasswordSafe file.  It is able to
+ * determine which version of the file format the file has and returns the correct
+ * subclass of {@link PwsFile}
+ * 
+ * @author Kevin Preece
  */
 public class PwsFileFactory
 {
 	private static final Log LOG = Log.getInstance(PwsFileFactory.class.getPackage().getName());
 
 	/**
-	 * Private to prevent instatiation.
+	 * Private for the singleton pattern.
 	 */
 	private PwsFileFactory()
 	{
 	}
 
 	/**
-	 * Verifies that the given password is actually the password for the file.
-	 * <p />
+	 * Verifies that <code>password</code> is actually the password for the file.  It returns
+	 * normally if everything is OK or {@link InvalidPasswordException} if the password is
+	 * incorrect.
+	 * 
 	 * @param filename the name of the file to be opened.
-	 * @param password the password for the file
-	 * <p />
-	 * @throws InvalidPasswordException If the password is not the correct password for the file.
+	 * @param password the file's password.
+	 * 
+	 * @throws InvalidPasswordException If the password is not the correct one for the file.
 	 * @throws FileNotFoundException    If the given file does not exist.
 	 * @throws IOException              If an error occurs whilst reading from the file.
 	 */
-	private static void checkPassword( String filename, String password )
+	private static final void checkPassword( String filename, String password )
 	throws InvalidPasswordException, FileNotFoundException, IOException 
 	{
 		LOG.enterMethod( "PwsFileFactory.checkPassword" );
@@ -118,13 +130,13 @@ public class PwsFileFactory
 
 	/**
 	 * Generates a checksum from the password and some random bytes.
-	 * <p /> 
+	 * 
 	 * @param  password  the password.
 	 * @param  stuff     the random bytes.
-	 * <p />
+	 * 
 	 * @return the generated checksum.
 	 */
-	static byte [] genRandHash( String password, byte [] stuff )
+	static final byte [] genRandHash( String password, byte [] stuff )
 	{
 		LOG.enterMethod( "PwsFileFactory.genRandHash" );
 
@@ -177,7 +189,7 @@ public class PwsFileFactory
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 */
-	public static PwsFile loadFile( String filename, String password )
+	public static final PwsFile loadFile( String filename, String password )
 	throws EndOfFileException, FileNotFoundException, InvalidPasswordException, IOException, UnsupportedFileVersionException
 	{
 		LOG.enterMethod( "PwsFileFactory.loadFile" );
@@ -187,13 +199,13 @@ public class PwsFileFactory
 
 		checkPassword( filename, password );
 
-		file = new PwsFileV1( filename, password );
-		rec = (PwsRecordV1) file.readRecord();
+		file	= new PwsFileV1( filename, password );
+		rec		= (PwsRecordV1) file.readRecord();
 
 		file.close();
 
 		// TODO what can we do about this?
-		// it will be fooled if someone is daft enough to create a V1 file with the
+		// it will probably be fooled if someone is daft enough to create a V1 file with the
 		// title of the first record set to the value of PwsFileV2.ID_STRING!
 
 		if ( rec.getField(PwsRecordV1.TITLE).equals(PwsFileV2.ID_STRING) )

@@ -1,3 +1,9 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.file;
 
 import java.io.File;
@@ -21,9 +27,9 @@ import BlowfishJ.SHA1;
 
 /**
  * This is the base class for all variations of the PasswordSafe file format.
- * <p />
+ * <p>
  * <tt>
- * <pre>+--------------+-----------+----------------------------------------------------+
+ * <pre> +--------------+-----------+----------------------------------------------------+
  * |       Length | Name      | Description                                        |
  * +--------------+-----------+----------------------------------------------------+
  * |            8 | RandStuff | Random bytes                                       |
@@ -32,23 +38,37 @@ import BlowfishJ.SHA1;
  * |            8 | IpThing   | Initial vector for decryption                      |
  * +--------------+-----------+----------------------------------------------------+</pre>
  * </tt>
- * <p />
+ * </p><p>
  * The records follow immediately after the header.  Each record has the same
  * layout:
+ * </p><p>
  * <tt>
- * <pre>+--------------+-----------+----------------------------------------------------+
+ * <pre> +--------------+-----------+----------------------------------------------------+
  * |  BLOCK_LENGTH| RecLen    | Actual length of the data that follows (encrypted) |
  * |n*BLOCK_LENGTH| RecData   | The encrypted data.  The length is RecLen rounded  |
  * |              |           | up to be a multiple of BLOCK_LENGTH                |
  * +--------------+-----------+----------------------------------------------------+</pre>
- * </tt><p />
+ * </tt>
+ * </p>
  */
 public abstract class PwsFile
 {
 	private static final Log LOG = Log.getInstance(PwsFile.class.getPackage().getName());
 
+	/**
+	 * Length of RandStuff in bytes.
+	 */
 	public static final int	STUFF_LENGTH	= 8;
+
+	/**
+	 * Length of RandHash in bytes.
+	 */
 	public static final int	HASH_LENGTH		= 20;
+
+	/**
+	 * Block length - the minimum size of a data block.  All data written to the database is
+	 * in blocks that are an integer multiple of <code>BLOCK_LENGTH</code> in size. 
+	 */
 	public static final int BLOCK_LENGTH	= 8;
 
 	/**
@@ -62,6 +82,13 @@ public abstract class PwsFile
 		private PwsFile		TheFile;
 		private Iterator	TheIterator;
 
+		/**
+		 * Construct the <code>Iterator</code> linking it to the given PasswordSafe
+		 * file.
+		 * 
+		 * @param file the file this iterator is linked to.
+		 * @param iter the <code>Iterator</code> over the records.
+		 */
 		public FileIterator( PwsFile file, Iterator iter )
 		{
 			LOG.enterMethod( "PwsFile$FileIterator" );
@@ -86,7 +113,8 @@ public abstract class PwsFile
 		}
 
 		/**
-		 * Returns the next element in the iteration.
+		 * Returns the next PasswordSafe record in the iteration.  The object returned will
+		 * be a subclass of {@link PwsRecord}
 		 * 
 		 * @return the next element in the iteration.
 		 * 
@@ -97,7 +125,10 @@ public abstract class PwsFile
 			return TheIterator.next();
 		}
 
-		/* (non-Javadoc)
+		/**
+		 * Removes the last record returned by {@link #next} from the PasswordSafe
+		 * file and marks the file as modified.
+		 * 
 		 * @see java.util.Iterator#remove()
 		 */
 		public void remove()
@@ -162,15 +193,16 @@ public abstract class PwsFile
 
 	/**
 	 * Construct the PasswordSafe file by reading it from the file.
-	 * <p />
+	 * 
 	 * @param filename 
 	 * @param password
-	 * <p />
+	 * 
 	 * @throws EndOfFileException
 	 * @throws IOException
+	 * @throws UnsupportedFileVersionException
 	 */
 	public PwsFile( String filename, String password )
-	throws EndOfFileException, IOException
+	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
 		LOG.enterMethod( "PwsFile.PwsFile( String )" );
 
@@ -181,9 +213,9 @@ public abstract class PwsFile
 
 	/**
 	 * Adds a record to the file.
-	 * <p />
+	 * 
 	 * @param rec the record to be added.
-	 * <p />
+	 * 
 	 * @throws PasswordSafeException if the record has already been added to another file. 
 	 */
 	public void add( PwsRecord rec )
@@ -202,9 +234,9 @@ public abstract class PwsFile
 	/**
 	 * Allocates a byte array at least <code>length</code> bytes in length and which is an integer multiple
 	 * of <code>BLOCK_LENGTH</code>.
-	 * <p />
+	 * 
 	 * @param length the number of bytes the array must hold.
-	 * <p />
+	 * 
 	 * @return A byte array of the correct length.
 	 */
 	static byte [] allocateBuffer( int length )
@@ -222,9 +254,9 @@ public abstract class PwsFile
 
 	/**
 	 * Calculates the next integer multiple of <code>BLOCK_LENGTH</code> &gt;= <code>length</code>.
-	 * <p />
+	 * 
 	 * @param length 
-	 * <p />
+	 * 
 	 * @return <code>length</code> rounded up to the next multiple of <code>BLOCK_LENGTH</code>. 
 	 */
 	static int calcBlockLength( int length )
@@ -249,9 +281,9 @@ public abstract class PwsFile
 	}
 
 	/**
-	 * Closes the file.
-	 * <p />
-	 * @throws IOException
+	 * Attempts to close the file.
+	 * 
+	 * @throws IOException If the attempt fails.
 	 */
 	void close()
 	throws IOException
@@ -271,14 +303,14 @@ public abstract class PwsFile
 
 	/**
 	 * Returns the major version number for the file.
-	 * <p />
-	 * @return
+	 * 
+	 * @return The major version number for the file.
 	 */
 	public abstract int getFileVersionMajor();
 
 	/**
 	 * Returns the file header.
-	 * <p />
+	 * 
 	 * @return The file header.
 	 */
 	PwsFileHeader getHeader()
@@ -288,7 +320,7 @@ public abstract class PwsFile
 
 	/**
 	 * Returns the password used to open the file.
-	 * <p />
+	 * 
 	 * @return The file's password.
 	 */
 	String getPassword()
@@ -298,7 +330,7 @@ public abstract class PwsFile
 
 	/**
 	 * Returns the number of records in the file.
-	 * <p />
+	 * 
 	 * @return The number of records in the file.
 	 */
 	public int getRecordCount()
@@ -315,8 +347,8 @@ public abstract class PwsFile
 	/**
 	 * Returns an iterator over the records.  Records may be deleted from the file by
 	 * calling the <code>remove()</code> method on the iterator.
-	 * <p />
-	 * @return
+	 * 
+	 * @return An <code>Iterator</code> over the records.
 	 */
 	public Iterator getRecords()
 	{
@@ -325,8 +357,8 @@ public abstract class PwsFile
 
 	/**
 	 * Returns an flag as to whether this file or any of its records have been modified.
-	 * <p />
-	 * @return
+	 * 
+	 * @return <code>true</code> if the file has been modified, <code>false</code> if it hasn't.
 	 */
 	public boolean isModified()
 	{
@@ -336,9 +368,9 @@ public abstract class PwsFile
 	/**
 	 * Constructs and initialises the blowfish encryption routines ready to decrypt or
 	 * encrypt data.
-	 * <p />
+	 * 
 	 * @param password
-	 * <p />
+	 * 
 	 * @return A properly initialised {@link BlowfishPws} object.
 	 */
 	private BlowfishPws makeBlowfish( byte [] password )
@@ -358,15 +390,16 @@ public abstract class PwsFile
 
 	/**
 	 * Opens the file.
-	 * <p />
+	 * 
 	 * @param file
 	 * @param password
-	 * <p />
+	 * 
 	 * @throws EndOfFileException
 	 * @throws IOException
+	 * @throws UnsupportedFileVersionException
 	 */
 	private void open( File file, String password )
-	throws EndOfFileException, IOException
+	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
 		LOG.enterMethod( "PwsFile.init" );
 
@@ -386,7 +419,7 @@ public abstract class PwsFile
 
 	/**
 	 * Reads all records from the file.
-	 * <p />
+	 * 
 	 * @throws IOException  If an error occurs reading from the file.
 	 * @throws UnsupportedFileVersionException  If the file is an unsupported version
 	 */
@@ -409,8 +442,11 @@ public abstract class PwsFile
 	/**
 	 * Allocates a block of <code>BLOCK_LENGTH</code> bytes then reads and decrypts this many
 	 * bytes from the file.
-	 * <p />
-	 * @throws IOException              if an error occurs whilst reading the file.
+	 * 
+	 * @return A byte array containing the decrypted data.
+	 * 
+	 * @throws EndOfFileException If end of file occurs whilst reading the data.
+	 * @throws IOException        If an error occurs whilst reading the file.
 	 */
 	protected byte [] readBlock()
 	throws EndOfFileException, IOException
@@ -426,8 +462,11 @@ public abstract class PwsFile
 	/**
 	 * Reads raw (undecrypted) bytes from the file.  The method attepts to read
 	 * <code>bytes.length</code> bytes from the file.
-	 * <p />
+	 * 
 	 * @param bytes the array to be filled from the file.
+	 * 
+	 * @throws EndOfFileException If end of file occurs whilst reading the data.
+	 * @throws IOException        If an error occurs whilst reading the file.
 	 */
 	protected void readBytes( byte [] bytes )
 	throws IOException, EndOfFileException
@@ -452,9 +491,9 @@ public abstract class PwsFile
 	/**
 	 * Reads bytes from the file and decryps them.  <code>buff</code> may be any length provided
 	 * that is a multiple of <code>BLOCK_LENGTH</code> bytes in length.
-	 * <p />
+	 * 
 	 * @param buff the buffer to read the bytes into.
-	 * <p />
+	 * 
 	 * @throws EndOfFileException If end of file has been reached.
 	 * @throws IOException If a read error occurs.
 	 * @throws IllegalArgumentException If <code>buff.length</code> is not an integral multiple of <code>BLOCK_LENGTH</code>.
@@ -473,23 +512,24 @@ public abstract class PwsFile
 	/**
 	 * Reads any additional header from the file.  Subclasses should override this a necessary
 	 * as the default implementation does nothing.
-	 * <p />
+	 * 
 	 * @param file the {@link PwsFile} instance to read the header from.
-	 * <p />
-	 * @throws EndOfFileException If end of file is reached.
-	 * @throws IOException        If an error occurs while reading the file.
+	 * 
+	 * @throws EndOfFileException              If end of file is reached.
+	 * @throws IOException                     If an error occurs while reading the file.
+	 * @throws UnsupportedFileVersionException If the file's version is unsupported.
 	 */
 	protected void readExtraHeader( PwsFile file )
-	throws EndOfFileException, IOException
+	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
 	}
 
 	/**
 	 * Reads a single record from the file.  The correct subclass of PwsRecord is
 	 * returned depending on the version of the file.
-	 * <p />
+	 * 
 	 * @return The record read from the file.
-	 * <p />
+	 * 
 	 * @throws EndOfFileException When end-of-file is reached.
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException If this version of the file cannot be handled.
@@ -511,7 +551,7 @@ public abstract class PwsFile
 
 	/**
 	 * Deletes the given record from the file.
-	 * <p />
+	 * 
 	 * @param rec the record to be deleted.
 	 */
 	void removeRecord( PwsRecord rec )
@@ -533,8 +573,10 @@ public abstract class PwsFile
 	}
 
 	/**
-	 * Writes this file back to the filesystem.  The modified flag is also reset on the file 
-	 * and all records.
+	 * Writes this file back to the filesystem.  If successful the modified flag is also 
+	 * reset on the file and all records.
+	 * 
+	 * @throws IOException if the attempt fails.
 	 */
 	public void save()
 	throws IOException
@@ -545,7 +587,7 @@ public abstract class PwsFile
 		File		bakFile;
 
 		// For safety we'll write to a temporary file which will be renamed to the
-		// real name if we manage to wite it successfully.
+		// real name if we manage to write it successfully.
 
 		tempFile	= File.createTempFile( "pwsafe", null, new File(FilePath) );
 		OutStream	= new FileOutputStream( tempFile );
@@ -565,19 +607,23 @@ public abstract class PwsFile
 				rec = (PwsRecord) iter.next();
 	
 				rec.saveRecord( this );
-				rec.resetModified();
 			}
 	
 			OutStream.close();
 	
-			Modified	= false;
 			oldFile		= new File( FilePath, FileName );
 			bakFile		= new File( FilePath, FileName + "~" );
 
-			// TODO improve error handling here
-			// - what if we write the file OK but can't rename the original, e.g. because it's in use.
+			if ( bakFile.exists() )
+			{	
+				if ( !bakFile.delete() )
+				{
+					LOG.error( I18nHelper.formatMessage("E00012", new Object [] { bakFile.getCanonicalPath() } ) );
+					// TODO Throw an exception here
+					return;
+				}
+			}
 
-			bakFile.delete();
 			if ( oldFile.exists() )
 			{
 				if ( !oldFile.renameTo( bakFile ) )
@@ -588,9 +634,18 @@ public abstract class PwsFile
 				}
 				LOG.debug1( "Old file successfully renamed to " + bakFile.getCanonicalPath() );
 			}
+
 			if ( tempFile.renameTo( oldFile ) )
 			{
 				LOG.debug1( "Temp file successfully renamed to " + oldFile.getCanonicalPath() );
+
+				for ( Iterator iter = getRecords(); iter.hasNext(); )
+				{
+					rec = (PwsRecord) iter.next();
+
+					rec.resetModified();
+				}
+				Modified = false;
 			}
 			else
 			{
@@ -620,9 +675,9 @@ public abstract class PwsFile
 
 	/**
 	 * Sets the name of the file that this file will be saved to.
-	 * <p />
+	 * 
 	 * @param newname the new name for the file.
-	 * <p />
+	 * 
 	 * @throws IOException
 	 */
 	public void setFilename( String newname )
@@ -637,16 +692,15 @@ public abstract class PwsFile
 
 	/**
 	 * Sets the name of the file that this file will be saved to.
-	 * <p />
+	 * 
 	 * @param file the <code>File</code> object representing the new file name.
-	 * <p />
+	 * 
 	 * @throws IOException
 	 */
 	private void setFilename( File file )
 	throws IOException
 	{
 		String	fname;
-		int		pos;
 		File	file2;
 
 		fname		= file.getCanonicalPath();
@@ -674,9 +728,9 @@ public abstract class PwsFile
 
 	/**
 	 * Writes unencrypted bytes to the file.
-	 * <p />
+	 * 
 	 * @param buffer the data to be written.
-	 * <p />
+	 * 
 	 * @throws IOException
 	 */
 	void writeBytes( byte [] buffer )
@@ -688,9 +742,9 @@ public abstract class PwsFile
 
 	/**
 	 * Encrypts then writes the contents of <code>buff</code> to the file.
-	 * <p />
+	 * 
 	 * @param buff the data to be written.
-	 * <p />
+	 * 
 	 * @throws IOException
 	 */
 	protected void writeEncryptedBytes( byte [] buff )
@@ -709,8 +763,10 @@ public abstract class PwsFile
 	/**
 	 * Writes any additional header.  This default implementation does nothing.  Subclasses 
 	 * should override this as necessary. 
-	 * <p />
+	 * 
 	 * @param file
+	 * 
+	 * @throws IOException
 	 */
 	protected void writeExtraHeader( PwsFile file )
 	throws IOException

@@ -1,3 +1,9 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.file;
 
 import java.io.IOException;
@@ -10,28 +16,79 @@ import org.pwsafe.lib.exception.UnimplementedConversionException;
 
 /**
  * @author Kevin
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class PwsRecordV2 extends PwsRecord
 {
 	private static final Log LOG = Log.getInstance(PwsRecordV2.class.getPackage().getName());
 
+	/**
+	 * Constant for the version 2 ID string field.
+	 */
 	public static final int		V2_ID_STRING		= 0;
+
+	/**
+	 * Constant for the Universally Unique ID (UUID) field. 
+	 */
 	public static final int		UUID				= 1;
+
+	/**
+	 * Constant for the group field.
+	 */
 	public static final int		GROUP				= 2;
+
+	/**
+	 * Constant for the title field.
+	 */
 	public static final int		TITLE				= 3;
+
+	/**
+	 * Constant for the username field.
+	 */
 	public static final int		USERNAME			= 4;
+
+	/**
+	 * Constant for the notes field.
+	 */
 	public static final int		NOTES				= 5;
+
+	/**
+	 * Constant for the password field.
+	 */
 	public static final int		PASSWORD			= 6;
+
+	/**
+	 * Constant for the creation date field.
+	 */
 	public static final int		CREATION_TIME		= 7;
+
+	/**
+	 * Constant for the password modification time field.
+	 */
 	public static final int		PASSWORD_MOD_TIME	= 8;
+
+	/**
+	 * Constant for the last access time field.
+	 */
 	public static final int		LAST_ACCESS_TIME	= 9;
+
+	/**
+	 * Constant for the password lifetime field.
+	 */
 	public static final int		PASSWORD_LIFETIME	= 10;
+
+	/**
+	 * Constant for the password policy field.
+	 */
 	public static final int		PASSWORD_POLICY		= 11;
+
+	/**
+	 * Constant for the end of record marker field.
+	 */
 	public static final int		END_OF_RECORD		= 255;
-	
+
+	/**
+	 * All the type codes that may be stored in a record.
+	 */
 	private static final int []	VALID_TYPES	= new int [] {
 		V2_ID_STRING,
 		UUID,
@@ -63,13 +120,25 @@ public class PwsRecordV2 extends PwsRecord
 		};
 
 	/**
-	 * 
+	 * Create a new record with all mandatory fields given their default value.
 	 */
 	public PwsRecordV2()
 	{
 		super( VALID_TYPES );
+
+		setField( new PwsUUIDField(UUID, new UUID()) );
+		setField( new PwsStringField(TITLE,    "") );
+		setField( new PwsStringField(PASSWORD, "") );
 	}
 	
+	/**
+	 * Create a new record by reading it from <code>file</code>.
+	 * 
+	 * @param file the file to read data from.
+	 * 
+	 * @throws EndOfFileException If end of file is reached
+	 * @throws IOException        If a read error occurs.
+	 */
 	PwsRecordV2( PwsFile file )
 	throws EndOfFileException, IOException
 	{
@@ -77,7 +146,9 @@ public class PwsRecordV2 extends PwsRecord
 	}
 
 	/**
-	 * @param base
+	 * Creates a new record that is a copy <code>base</code>.
+	 * 
+	 * @param base the record to copy.
 	 */
 	PwsRecordV2( PwsRecord base )
 	{
@@ -85,7 +156,11 @@ public class PwsRecordV2 extends PwsRecord
 	}
 
 	/**
-	 * Returns a clone of this record.
+	 * Creates a deep clone of this record.
+	 * 
+	 * @return the new record.
+	 * 
+	 * @throws CloneNotSupportedException Never thrown - a clone will always be created.
 	 */
 	public Object clone()
 	throws CloneNotSupportedException
@@ -93,12 +168,38 @@ public class PwsRecordV2 extends PwsRecord
 		return new PwsRecordV2( this );
 	}
 
-	public int compareTo(Object ob)
+	/**
+	 * Compares this record to another returning a value that is less than zero if
+	 * this record is "less than" <code>other</code>, zero if they are "equal", or
+	 * greater than zero if this record is "greater than" <code>other</code>. 
+	 * 
+	 * @param other the record to compare this record to.
+	 * 
+	 * @return A value &lt; zero if this record is "less than" <code>other</code>,
+	 *         zero if they're equal and &gt; zero if this record is "greater than"
+	 *         <code>other</code>.
+	 * 
+	 * @throws ClassCastExcepton If <code>other</code> is not a <code>PwsRecordV1</code>.
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public int compareTo( Object other )
 	{
 		// TODO Implement me
 		return 0;
 	}
 
+	/**
+	 * Compares this record to another returning <code>true</code> if they're equal
+	 * and <code>false</code> if they're unequal.
+	 * 
+	 * @param that the record this one is compared to.
+	 * 
+	 * @return <code>true</code> if the records are equal, <code>false</code> if 
+	 *         they're unequal.
+	 * 
+	 * @throws ClassCastException if <code>that</code> is not a <code>PwsRecordV1</code>.
+	 */
 	public boolean equals( Object that )
 	{
 		UUID	thisUUID;
@@ -110,6 +211,12 @@ public class PwsRecordV2 extends PwsRecord
 		return thisUUID.equals( thatUUID );
 	}
 
+	/**
+	 * Validates the record, returning <code>true</code> if it's valid or <code>false</code>
+	 * if unequal.
+	 * 
+	 * @return <code>true</code> if it's valid or <code>false</code> if unequal.
+	 */
 	protected boolean isValid()
 	{
 		PwsStringField	title;
@@ -123,17 +230,19 @@ public class PwsRecordV2 extends PwsRecord
 	}
 	
 	/**
-	 * Initialises this record from the the given file.
+	 * Initialises this record by reading its data from <code>file</code>.
+	 * 
+	 * @param file the file to read the data from.
 	 */
-	protected void loadRecord(PwsFile file)
+	protected void loadRecord( PwsFile file )
 	throws EndOfFileException, IOException
 	{
-		ReadItem	item;
+		Item		item;
 		PwsField	itemVal	= null;
 		
 		for ( ;; )
 		{
-			item = new ReadItem( file );
+			item = new Item( file );
 
 			if ( item.getType() == END_OF_RECORD )
 			{
@@ -177,6 +286,12 @@ public class PwsRecordV2 extends PwsRecord
 	}
 
 	/**
+	 * Saves this record to <code>file</code>.
+	 * 
+	 * @param file the file that the record will be written to.
+	 * 
+	 * @throws IOException if a write error occurs.
+	 * 
 	 * @see org.pwsafe.lib.file.PwsRecord#saveRecord(org.pwsafe.lib.file.PwsFile)
 	 */
 	protected void saveRecord(PwsFile file)
@@ -200,7 +315,9 @@ public class PwsRecordV2 extends PwsRecord
 	}
 
 	/**
+	 * Returns a string representation of this record.
 	 * 
+	 * @return A string representation of this object.
 	 */
 	public String toString()
 	{

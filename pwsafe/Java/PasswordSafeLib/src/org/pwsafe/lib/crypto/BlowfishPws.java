@@ -1,3 +1,9 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.crypto;
 
 import org.pwsafe.lib.Util;
@@ -7,6 +13,8 @@ import BlowfishJ.BlowfishCBC;
 /**
  * An extension to the BlowfishJ.BlowfishCBC to allow it to be used for PasswordSafe. Byte 
  * order differences prevent BlowfishCBC being used directly.
+ * 
+ * @author Kevin Preece
  */
 public class BlowfishPws extends BlowfishCBC
 {
@@ -86,6 +94,8 @@ public class BlowfishPws extends BlowfishCBC
 
 	/**
 	 * Sets the initial vector.
+	 * 
+	 * @param newCBCIV the new value for the initial vector.
 	 */
 	public void setCBCIV( byte[] newCBCIV )
 	{

@@ -1,7 +1,15 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.lib.exception;
 
 /**
+ * An exception class to indicate when end-of-file is reached.
  * 
+ * @author Kevin Preece 
  */
 public class EndOfFileException extends Exception
 {
