@@ -24,15 +24,19 @@ PWSfile::~PWSfile()
   CloseFile(); // idempotent
 }
 
+// Used to warn pre-2.0 users, and to identify the database as 2.x:
 static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
 				  "Please upgrade to PasswordSafe 2.0"
 				  " or later");
+// Used to specify the exact version
+static const CMyString VersionString("pre-2.0");
 
 int PWSfile::WriteV2Header()
 {
   CItemData header;
   // Fill out with V2-specific info
   header.SetName(V2ItemName);
+  header.SetPassword(VersionString);
   // need to fallback to V17, since the record
   // won't be readable otherwise!
   VERSION sv = m_curversion;
@@ -55,6 +59,8 @@ int PWSfile::ReadV2Header()
   m_curversion = sv;
   if (status == SUCCESS) {
     const CMyString name = header.GetName();
+    // XXX Need to compare header.GetPassword() against VersionString
+    // XXX as well, for inter-2.x version checks
     status = (name == V2ItemName) ? SUCCESS : WRONG_VERSION;
   }
   return status;
