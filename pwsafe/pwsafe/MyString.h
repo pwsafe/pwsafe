@@ -55,6 +55,7 @@ public:
    void ReleaseBuffer(int nNewLength = -1);
    int GetLength() const;
 
+   int FindByte( char ch ) const;
    int Find(TCHAR ch) const;
    int Find(LPCTSTR lpszSub) const;
    CString Left(int nCount) const;
