@@ -184,48 +184,6 @@ void PWScore::ChangePassword(const CMyString &newPassword)
   //Changes the global password. Eck.
   global.m_passkey = newPassword;
   m_changed = TRUE;
-#if 0  
-	
-  //Copies the list into a plaintext list of CMyStrings
-  CList<CMyString, CMyString> tempList;
-  tempList.RemoveAll();
-  POSITION listPos = m_pwlist.GetHeadPosition();
-  CItemData temp;
-  CMyString str;
-  while (listPos != NULL)
-    {
-      temp = m_pwlist.GetAt(listPos);
-      str = temp.GetName();
-      tempList.AddTail(str);
-      str = temp.GetPassword();
-      tempList.AddTail(str);
-      str = temp.GetNotes();
-      tempList.AddTail(str);
-      m_pwlist.GetNext(listPos);
-    }
-  m_pwlist.RemoveAll();
-  listPos = tempList.GetHeadPosition();
-
-  //Changes the global password. Eck.
-  global.m_passkey = newPassword;
-		
-  //Puts the list of CMyStrings back into CItemData
-  while (listPos != NULL)
-    {
-			
-      temp.SetName(tempList.GetAt(listPos));
-      tempList.GetNext(listPos);
-			
-      temp.SetPassword(tempList.GetAt(listPos));
-      tempList.GetNext(listPos);
-
-      temp.SetNotes(tempList.GetAt(listPos));
-      tempList.GetNext(listPos);
-
-      m_pwlist.AddTail(temp);
-    }
-  m_changed = TRUE;
-#endif
 }
 
 
