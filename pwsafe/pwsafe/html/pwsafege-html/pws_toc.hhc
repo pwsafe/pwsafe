@@ -1,52 +1,71 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <HTML>
-
 <HEAD>
 <meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
 <!-- Sitemap 1.0 -->
-</HEAD>
-
-<BODY>
-
+</HEAD><BODY>
 <OBJECT type="text/site properties">
-	<param name="ImageType" value="Folder">
+	<param name="Window Styles" value="0x800025">
 </OBJECT>
-
 <UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Einführung">
-		<param name="Local" value="html\pws_intro.htm">
+		<param name="Name" value="Hilfedatei installieren">
+		<param name="Local" value="html\pws_install_help.htm">
+		<param name="ImageNumber" value="17">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Überblick">
-		<param name="Local" value="html\pws_main.htm">
+		<param name="Name" value="&Uuml;bersicht">
+		<param name="Local" value="html\pws_empty.htm">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Was ist Password Safe?">
+			<param name="Local" value="html\pws_intro.htm">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Datenbank-Passwort eingeben">
-		<param name="Local" value="html\pws_combo_entry.htm">
+		<param name="Name" value="Hilfethemen">
+		<param name="Local" value="html\pws_empty.htm">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Das Programmfenster">
+			<param name="Local" value="html\pws_main.htm">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Programmeinstellungen">
+			<param name="Local" value="html\pws_opts.htm">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Datenbank-Passwort ändern">
-		<param name="Local" value="html\pws_combo_chg.htm">
+		<param name="Name" value="Direkthilfe">
+		<param name="Local" value="html\pws_context_help.htm">
+		<param name="ImageNumber" value="1">
 		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Falsches Datenbank-Passwort">
-		<param name="Local" value="html\pws_combo_err.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Datenbank-Eintrag hinzufügen">
-		<param name="Local" value="html\pws_add_data.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Datenbank-Eintrag bearbeiten/anzeigen">
-		<param name="Local" value="html\pws_edit.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Programmeinstellungen">
-		<param name="Local" value="html\pws_opts.htm">
-		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Datenbank-Passwort &auml;ndern">
+			<param name="Local" value="html\pws_combo_chg.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Datenbank-Passwort eingeben">
+			<param name="Local" value="html\pws_combo_entry.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Falsches Datenbank-Passwort">
+			<param name="Local" value="html\pws_combo_err.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Eintrag bearbeiten/anzeigen">
+			<param name="Local" value="html\pws_edit.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Eintrag hinzuf&uuml;gen">
+			<param name="Local" value="html\pws_add_data.htm">
+			</OBJECT>
+	</UL>
 </UL>
-
-</BODY>
-</HTML>
+</BODY></HTML>
