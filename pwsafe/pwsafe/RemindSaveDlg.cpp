@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+
 #include "RemindSaveDlg.h"
 
 #ifdef _DEBUG
