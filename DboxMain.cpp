@@ -243,6 +243,15 @@ DboxMain::OnInitDialog()
        GetPref(PWSprefs::BoolPrefs::UseSystemTray))
      app.m_TrayIcon.HideIcon();
 
+   // Set timer for user-defined lockout, if selected
+   if (PWSprefs::GetInstance()->
+       GetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout)) {
+     const UINT MINUTE = 60*1000;
+     TRACE("Starting Idle time lock timer");
+     SetTimer(TIMER_USERLOCK, MINUTE, NULL);
+     ResetIdleLockCounter();
+   }
+
    m_windowok = true;
 	
   // Set the icon for this dialog.  The framework does this automatically
@@ -1743,18 +1752,15 @@ void DboxMain::OnUnMinimize()
 
 void
 DboxMain::startLockCheckTimer(){
-	UINT nTimer;
-	const UINT INTERVAL = 5000; // every 5 seconds should suffice
-	TRACE("startLockCheckTimer\n");
-	if (PWSprefs::GetInstance()->
-	    GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE ){
-	
-		TRACE("Starting timer\n");
-		nTimer=SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
-		TRACE("Going %d\n",nTimer);
-	}
-	else
-		TRACE("Not Starting\n");
+  const UINT INTERVAL = 5000; // every 5 seconds should suffice
+
+  if (PWSprefs::GetInstance()->
+      GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE ){
+    TRACE("startLockCheckTimer: Starting timer\n");	
+    SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
+  }
+  else
+    TRACE("Not Starting\n");
 }
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
@@ -1766,4 +1772,17 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
     }
 
     return CDialog::PreTranslateMessage(pMsg);
+}
+
+void DboxMain::ResetIdleLockCounter()
+{
+  m_IdleLockCountDown = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::IntPrefs::IdleTimeout);
+
+}
+
+bool DboxMain::DecrementAndTestIdleLockCounter()
+{
+  ASSERT(m_IdleLockCountDown > 0);
+  return (--m_IdleLockCountDown == 0);
 }

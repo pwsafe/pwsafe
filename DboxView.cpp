@@ -1218,26 +1218,34 @@ DboxMain::SetToolbar(int menuItem)
 void
 DboxMain::OnTimer(UINT nIDEvent )
 {			
-    if(nIDEvent==TIMER_CHECKLOCK){
-      /*
-       * Since we clear the data, any unchanged changes will be lost,
-       * so we force a save if database is modified, and fail
-       * to lock if the save fails.
-       * Also, if m_LockDisabled is set, do nothing - this is set when
-       * a dialog box is open.
-       */
-        if(IsWorkstationLocked() &&
-	   (!m_core.IsChanged() || Save() == PWScore::SUCCESS) &&
-	   !m_LockDisabled){
-            TRACE("locking database\n");
-            ClearData();
-            if(IsWindowVisible()){
-                ShowWindow(SW_MINIMIZE);
-            }
-            m_needsreading = true;
-            KillTimer(TIMER_CHECKLOCK);
-        }
+  if(nIDEvent==TIMER_CHECKLOCK){
+    /*
+     * Since we clear the data, any unchanged changes will be lost,
+     * so we force a save if database is modified, and fail
+     * to lock if the save fails.
+     * Also, if m_LockDisabled is set, do nothing - this is set when
+     * a dialog box is open.
+     */
+    if(IsWorkstationLocked() &&
+       (!m_core.IsChanged() || Save() == PWScore::SUCCESS) &&
+       !m_LockDisabled){
+      TRACE("locking database\n");
+      ClearData();
+      if(IsWindowVisible()){
+	ShowWindow(SW_MINIMIZE);
+      }
+      m_needsreading = true;
+      KillTimer(TIMER_CHECKLOCK);
     }
+  } else if (nIDEvent == TIMER_USERLOCK) {
+    // We're here iff user wants to lock after given idle time
+    ASSERT(PWSprefs::GetInstance()->
+	   GetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout));
+    // start work only if we're unlocked
+    if (IsWindowVisible()) {
+      // XXX fill in logic
+    }
+  }
 }
 
 // This function determines if the workstation is locked.
