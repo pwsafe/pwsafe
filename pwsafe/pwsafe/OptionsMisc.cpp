@@ -3,7 +3,13 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "resource.h"
+#include "PwsPlatform.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 #include "OptionsMisc.h"
 
 #ifdef _DEBUG

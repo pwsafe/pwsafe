@@ -70,13 +70,13 @@ CAddDlg::OnOK()
    //Check that data is valid
    if (m_title == "")
    {
-      AfxMessageBox("This entry must have a title.");
+      AfxMessageBox(_T("This entry must have a title."));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       return;
    }
    if (m_password == "")
    {
-      AfxMessageBox("This entry must have a password.");
+      AfxMessageBox(_T("This entry must have a password."));
       ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
       return;
    }
@@ -105,10 +105,14 @@ CAddDlg::OnOK()
 
 void CAddDlg::OnHelp() 
 {
+#if defined(POCKET_PC)
+	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#adddata"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+#else
    //WinHelp(0x2008E, HELP_CONTEXT);
    ::HtmlHelp(NULL,
               "pwsafe.chm::/html/pws_add_data.htm",
               HH_DISPLAY_TOPIC, 0);
+#endif
 }
 
 

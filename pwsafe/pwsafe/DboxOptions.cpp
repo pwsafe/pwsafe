@@ -2,9 +2,13 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-
+#include "PwsPlatform.h"
 #include "ThisMfcApp.h"
-#include "resource.h"
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 
 // dialog boxen
 #include "DboxMain.h"
@@ -14,10 +18,7 @@
 #include "OptionsPasswordPolicy.h"
 #include "OptionsMisc.h"
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
+
 #include <afxpriv.h>
 
 
@@ -26,7 +27,7 @@
 void
 DboxMain::OnOptions() 
 {
-   CPropertySheet optionsDlg("Options", this);
+   CPropertySheet optionsDlg(_T("Options"), this);
 
    COptionsDisplay         display;
    COptionsSecurity        security;
@@ -38,27 +39,30 @@ DboxMain::OnOptions()
    **  Initialize the property pages values.
    */
    display.m_alwaysontop = m_bAlwaysOnTop;
-   display.m_pwshowinedit = app.GetProfileInt("", "showpwdefault", FALSE);
-   display.m_pwshowinlist = app.GetProfileInt("", "showpwinlist", FALSE);
+   display.m_pwshowinedit = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE);
+   display.m_pwshowinlist = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE);
+#if defined(POCKET_PC)
+   display.m_dcshowspassword = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE);
+#endif
 
-   security.m_clearclipboard = (app.GetProfileInt("", "dontaskminimizeclearyesno", FALSE));
-   security.m_lockdatabase = (app.GetProfileInt("", "databaseclear", FALSE));
-   security.m_confirmsaveonminimize = not(app.GetProfileInt("", "dontasksaveminimize", FALSE));
-   security.m_confirmcopy = not(app.GetProfileInt("", "dontaskquestion", FALSE));
+   security.m_clearclipboard = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskminimizeclearyesno"), FALSE));
+   security.m_lockdatabase = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE));
+   security.m_confirmsaveonminimize = not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), FALSE));
+   security.m_confirmcopy = not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), FALSE));
 
-   passwordpolicy.m_pwlendefault = app.GetProfileInt("", "pwlendefault", 8);
-   passwordpolicy.m_pwuselowercase = app.GetProfileInt("", "pwuselowercase", TRUE);
-   passwordpolicy.m_pwuseuppercase = app.GetProfileInt("", "pwuseuppercase", TRUE);
-   passwordpolicy.m_pwusedigits = app.GetProfileInt("", "pwusedigits", TRUE);
-   passwordpolicy.m_pwusesymbols = app.GetProfileInt("", "pwusesymbols", FALSE);
-   passwordpolicy.m_pweasyvision = app.GetProfileInt("", "pweasyvision", FALSE);
+   passwordpolicy.m_pwlendefault = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), 8);
+   passwordpolicy.m_pwuselowercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuselowercase"), TRUE);
+   passwordpolicy.m_pwuseuppercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE);
+   passwordpolicy.m_pwusedigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE);
+   passwordpolicy.m_pwusesymbols = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE);
+   passwordpolicy.m_pweasyvision = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE);
 
-   username.m_usedefuser = app.GetProfileInt("", "usedefuser", FALSE);
-   username.m_defusername = app.GetProfileString("", "defusername", "");
-   username.m_querysetdef = app.GetProfileInt("", "querysetdef", TRUE);
+   username.m_usedefuser = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
+   username.m_defusername = app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T(""));
+   username.m_querysetdef = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), TRUE);
 
-   misc.m_confirmdelete = not(app.GetProfileInt("", "deletequestion", FALSE));
-   misc.m_saveimmediately = app.GetProfileInt("", "saveimmediately", TRUE);
+   misc.m_confirmdelete = not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), FALSE));
+   misc.m_saveimmediately = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), TRUE);
 
    optionsDlg.AddPage( &display );
    optionsDlg.AddPage( &security );
@@ -83,28 +87,31 @@ DboxMain::OnOptions()
       /*
       **  First save all the options.
       */
-      app.WriteProfileInt("", "alwaysontop",    display.m_alwaysontop);
-      app.WriteProfileInt("", "showpwdefault",  display.m_pwshowinedit);
-      app.WriteProfileInt("", "showpwinlist",   display.m_pwshowinlist);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("alwaysontop"),     display.m_alwaysontop);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwdefault"),   display.m_pwshowinedit);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwinlist"),    display.m_pwshowinlist);
+#if defined(POCKET_PC)
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dcshowspassword"), display.m_dcshowspassword);
+#endif
 
-      app.WriteProfileInt("", "dontaskminimizeclearyesno",  security.m_clearclipboard);
-      app.WriteProfileInt("", "databaseclear",              security.m_lockdatabase);
-      app.WriteProfileInt("", "dontasksaveminimize",    not(security.m_confirmsaveonminimize));
-      app.WriteProfileInt("", "dontaskquestion",        not(security.m_confirmcopy));
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontaskminimizeclearyesno"),  security.m_clearclipboard);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("databaseclear"),              security.m_lockdatabase);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontasksaveminimize"),    not(security.m_confirmsaveonminimize));
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontaskquestion"),        not(security.m_confirmcopy));
 
-      app.WriteProfileInt("", "pwlendefault",   passwordpolicy.m_pwlendefault);
-      app.WriteProfileInt("", "pwuselowercase", passwordpolicy.m_pwuselowercase);
-      app.WriteProfileInt("", "pwuseuppercase", passwordpolicy.m_pwuseuppercase);
-      app.WriteProfileInt("", "pwusedigits",    passwordpolicy.m_pwusedigits);
-      app.WriteProfileInt("", "pwusesymbols",   passwordpolicy.m_pwusesymbols);
-      app.WriteProfileInt("", "pweasyvision",   passwordpolicy.m_pweasyvision);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwlendefault"),    passwordpolicy.m_pwlendefault);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuselowercase"),  passwordpolicy.m_pwuselowercase);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuseuppercase"),  passwordpolicy.m_pwuseuppercase);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusedigits"),     passwordpolicy.m_pwusedigits);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusesymbols"),    passwordpolicy.m_pwusesymbols);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pweasyvision"),    passwordpolicy.m_pweasyvision);
 
-      app.WriteProfileInt("", "usedefuser",     username.m_usedefuser);
-      app.WriteProfileString("", "defusername", username.m_defusername);
-      app.WriteProfileInt("", "querysetdef",    username.m_querysetdef);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("usedefuser"),      username.m_usedefuser);
+      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"),   username.m_defusername);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("querysetdef"),     username.m_querysetdef);
 
-      app.WriteProfileInt("", "deletequestion",   not(misc.m_confirmdelete));
-      app.WriteProfileInt("", "saveimmediately",      misc.m_saveimmediately);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("deletequestion"),  not(misc.m_confirmdelete));
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("saveimmediately"),     misc.m_saveimmediately);
 
       /*
       **  Now update the application according to the options.
@@ -115,7 +122,7 @@ DboxMain::OnOptions()
       m_core.SetUseDefUser(username.m_usedefuser == TRUE ? true : false);
 
       bool bOldShowPasswordInList = m_bShowPasswordInList;
-      m_bShowPasswordInList = app.GetProfileInt("", "showpwinlist", FALSE)? true: false;
+      m_bShowPasswordInList = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE)? true: false;
       if (currDefUsername != (CMyString)username.m_defusername)
       {
          if (TRUE == currUseDefUser)

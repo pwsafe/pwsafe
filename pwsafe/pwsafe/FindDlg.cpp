@@ -3,7 +3,12 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "resource.h"
+#include "PwsPlatform.h"
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 #include "FindDlg.h"
 #include "DboxMain.h"
 
@@ -31,7 +36,7 @@ void CFindDlg::Doit(CWnd *pParent)
 }
 
 CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
-  : CDialog(CFindDlg::IDD, pParent), m_indices(NULL),
+  : super(CFindDlg::IDD, pParent), m_indices(NULL),
     m_lastshown(-1), m_numFound(0),
     m_last_search_text(_T("")), m_last_cs_search(FALSE)
 {
@@ -50,19 +55,25 @@ CFindDlg::~CFindDlg()
 
 void CFindDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	super::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CFindDlg)
 	DDX_Check(pDX, IDC_FIND_CS, m_cs_search);
 	DDX_Text(pDX, IDC_FIND_TEXT, m_search_text);
+#if !defined(POCKET_PC)
 	DDX_Text(pDX, IDC_STATUS, m_status);
+#endif
 	//}}AFX_DATA_MAP
 }
 
 
-BEGIN_MESSAGE_MAP(CFindDlg, CDialog)
+BEGIN_MESSAGE_MAP(CFindDlg, super)
 	//{{AFX_MSG_MAP(CFindDlg)
 	ON_BN_CLICKED(IDOK, OnFind)
+#if defined(POCKET_PC)
+	ON_BN_CLICKED(IDCANCEL, OnCancel)
+#else
 	ON_BN_CLICKED(IDCANCEL, OnClose)
+#endif
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -74,7 +85,7 @@ void CFindDlg::OnFind()
 
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
-  
+
   const int numEntries = pParent->GetNumEntries();
 
   if (numEntries == 0) {
@@ -119,14 +130,22 @@ void CFindDlg::OnFind()
       m_status = _T("Found 1 match.");
       break;
     default:
+      // {kjp} this kludge is needed because the declaration of CString in <afx.h> defines
+      // {kjp} FormatMessage as implemented, but if you take a look at the source for 
+      // {kjp} CString in strex.cpp you'll see that it's only actully implemented if the
+      // {kjp} platform is not WinCE.  Methinks this is a bug in afx.h
+#if defined(POCKET_PC)
+      m_status.Format( _T("Found %d matches."), m_numFound );
+#else
       m_status.FormatMessage(_T("Found %1!d! matches."), m_numFound);
+#endif
       break;
     }
     UpdateData(FALSE);
   } // m_lastshown == -1
 
   // OK, so now we have a (possibly empty) list of items to select.
-  
+
   if (m_numFound > 0) {
     m_lastshown = (m_lastshown + 1) % m_numFound; //from -1 to 0, cycle afterwards
     pParent->SelectEntry(m_indices[m_lastshown], TRUE);
@@ -134,11 +153,19 @@ void CFindDlg::OnFind()
   if (m_numFound > 1) {
       SetDlgItemText(IDOK, _T("Find Next"));
   }
-  // don't call CDialog::OnOK - user will Cancel() to close dbox
+  // don't call super::OnOK - user will Cancel() to close dbox
 }
 
+#if defined(POCKET_PC)
+void CFindDlg::OnCancel()
+{
+	self = NULL;
+	super::DestroyWindow();
+}
+#else
 void CFindDlg::OnClose() 
 {
   self = NULL;
-  CDialog::OnCancel();
+  super::OnCancel();
 }
+#endif

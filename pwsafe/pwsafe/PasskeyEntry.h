@@ -3,13 +3,25 @@
 
 #include "SysColStatic.h"
 #include "corelib/MyString.h"
-#include "resource.h" // ronys
+#include "PwsPlatform.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+  #include "pocketpc/PwsPopupDialog.h"
+  #define SUPERCLASS	CPwsPopupDialog
+#else
+  #include "resource.h" //ronys
+  #define SUPERCLASS	CDialog
+#endif
+
 //-----------------------------------------------------------------------------
 class CPasskeyEntry
-   : public CDialog
+   : public SUPERCLASS
 {
 // Construction
 public:
+	typedef	SUPERCLASS	super;
+
    CPasskeyEntry(CWnd* pParent,
                  const CString& a_filespec,
                  bool first = false); 
@@ -22,9 +34,11 @@ private:
    enum { IDD_BASIC = IDD_PASSKEYENTRY };
    //{{AFX_DATA(CPasskeyEntry)
 	enum { IDD = IDD_PASSKEYENTRY_FIRST };
+#if !defined(POCKET_PC)
 	CSysColStatic	m_ctlLogo;
 	CSysColStatic	m_ctlLogoText;
 	CButton	m_ctlOK;
+#endif
 	CEdit	m_ctlPasskey;
   CMyString	m_passkey;
 	//}}AFX_DATA
@@ -50,12 +64,18 @@ protected:
    virtual void OnCancel();
    virtual void OnOK();
    afx_msg void OnHelp();
+#if defined(POCKET_PC)
+   afx_msg void OnPasskeySetfocus();
+   afx_msg void OnPasskeyKillfocus();
+#endif
    //}}AFX_MSG
    afx_msg void OnBrowse();
    afx_msg void OnCreateDb();
 
    DECLARE_MESSAGE_MAP()
 };
+
+#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

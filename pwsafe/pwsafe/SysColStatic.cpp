@@ -8,6 +8,10 @@
 
 #include "stdafx.h"
 #include "SysColStatic.h"
+#if defined(POCKET_PC)
+#include "pocketpc/PocketPC.h"
+#endif
+#include "PasswordSafe.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,7 +41,8 @@ void CSysColStatic::ReloadBitmap(int nImageID)
                                        MAKEINTRESOURCE(m_nImageID),
                                        IMAGE_BITMAP,
                                        0, 0,
-                                       LR_LOADMAP3DCOLORS);
+WCE_INS                                0);							// WinCE only {kjp}
+WCE_DEL                                LR_LOADMAP3DCOLORS);			// not WinCE {kjp}
 
    if (hBmp == NULL)
       return;

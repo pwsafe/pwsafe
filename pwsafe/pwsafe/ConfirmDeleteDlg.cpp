@@ -6,6 +6,11 @@
 
 #include "ThisMfcApp.h"
 #include "ConfirmDeleteDlg.h"
+#include "PwsPlatform.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/PocketPC.h"
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,21 +20,21 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CConfirmDeleteDlg::CConfirmDeleteDlg(CWnd* pParent)
-   : CDialog(CConfirmDeleteDlg::IDD, pParent)
+   : super(CConfirmDeleteDlg::IDD, pParent)
 {
    m_dontaskquestion =
-      app.GetProfileInt("", "deletequestion", FALSE);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), FALSE);
 }
 
 
 void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
 {
-   CDialog::DoDataExchange(pDX);
+   super::DoDataExchange(pDX);
    DDX_Check(pDX, IDC_CLEARCHECK, m_dontaskquestion);
 }
 
 
-BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, CDialog)
+BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, super)
 END_MESSAGE_MAP()
 
 
@@ -37,7 +42,7 @@ void
 CConfirmDeleteDlg::OnCancel() 
 {
    app.m_pMainWnd = NULL;
-   CDialog::OnCancel();
+   super::OnCancel();
 }
 
 
@@ -45,9 +50,9 @@ void
 CConfirmDeleteDlg::OnOK() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "deletequestion", m_dontaskquestion);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), m_dontaskquestion);
    app.m_pMainWnd = NULL;
-   CDialog::OnOK();
+   super::OnOK();
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
