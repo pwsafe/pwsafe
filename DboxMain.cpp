@@ -175,6 +175,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
    ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
+   ON_WM_TIMER()
+   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
 #if defined(POCKET_PC)
    ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
 #else
@@ -392,6 +394,7 @@ DboxMain::OpenOnInit(void)
    {
       m_existingrestore = FALSE;
       m_needsreading = false;
+	  startLockCheckTimer();
       return TRUE;
    }
    else
@@ -1273,6 +1276,7 @@ DboxMain::NewFile(void)
    ClearData();
    m_core.NewFile(dbox_pksetup.m_passkey);
    m_needsreading = false;
+   startLockCheckTimer();
    return PWScore::SUCCESS;
 }
 
@@ -1612,3 +1616,17 @@ void DboxMain::OnUnMinimize()
 }
 
 
+void
+DboxMain::startLockCheckTimer(){
+	UINT nTimer;
+	TRACE("startLockCheckTimer\n");
+	if (PWSprefs::GetInstance()->
+	    GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE ){
+	
+		TRACE("Starting timer\n");
+		nTimer=SetTimer(TIMER_CHECKLOCK,100,NULL);
+		TRACE("Going %d\n",nTimer);
+	}
+	else
+		TRACE("Not Starting\n");
+}

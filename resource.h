@@ -127,6 +127,7 @@
 #define IDC_USEHEXDIGITS                1082
 #define IDC_OVERRIDE_POLICY             1082
 #define IDC_DEFPWUSESYSTRAY             1083
+#define IDC_LOCKONSCREEN                1084
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -166,6 +167,7 @@
 #define ID_MENUITEM_OLD_TOOLBAR         32832
 #define ID_MENUITEM_MINIMIZE            32833
 #define ID_MENUITEM_UNMINIMIZE          32834
+#define ID_MENUITEM_AUTOTYPE            32835
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRY20             40020
 
@@ -174,8 +176,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        220
-#define _APS_NEXT_COMMAND_VALUE         32835
-#define _APS_NEXT_CONTROL_VALUE         1084
+#define _APS_NEXT_COMMAND_VALUE         32836
+#define _APS_NEXT_CONTROL_VALUE         1085
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

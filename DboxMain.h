@@ -19,6 +19,11 @@ DECLARE_HANDLE(HDROP);
 #endif
 
 #define WM_ICON_NOTIFY (WM_APP + 10)
+
+// timer event number used to check if the workstation is locked
+#define TIMER_CHECKLOCK 0x04
+
+
 //-----------------------------------------------------------------------------
 class DboxMain
    : public CDialog
@@ -177,6 +182,8 @@ protected:
    afx_msg void OnNewToolbar();
    afx_msg void OnMinimize();
    afx_msg void OnUnMinimize();
+   afx_msg void OnTimer(UINT nIDEvent);
+   afx_msg void OnAutoType();
 #if defined(POCKET_PC)
    afx_msg void OnShowPassword();
 #else
@@ -210,6 +217,15 @@ private:
   PWScore  &m_core;
   bool m_OnEditDisabled;
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
+
+  BOOL IsWorkstationLocked();
+  void startLockCheckTimer();
+  void ResetKeyboardState();
+  void SendString(CMyString data);
+  void ExtractAutoTypeCmd(CMyString &str);
+
+
+
 };
 
 // Following used to keep track of display vs data

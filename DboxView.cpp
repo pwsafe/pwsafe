@@ -739,13 +739,19 @@ DboxMain::OnSize(UINT nType,
 	      m_needsreading = true;
 	    }
 	}
-#if 0
-      m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE, FALSE);
-#endif 
+	 if (PWSprefs::GetInstance()->
+	    GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+	  {      
+		  app.m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE, FALSE);
+		  ShowWindow(SW_HIDE);
+	  }
+ 
     }
   else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
     {
 #endif
+
+	  app.m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE, FALSE);
 
       if ((m_needsreading)
           && (m_existingrestore == FALSE)
@@ -790,6 +796,7 @@ DboxMain::OnSize(UINT nType,
 	    {
 	      m_needsreading = false;
 	      m_existingrestore = FALSE;
+		  startLockCheckTimer();
 	      RefreshList();
 	    }
 	  else
@@ -1244,4 +1251,183 @@ DboxMain::SetToolbar(int menuItem)
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
   m_ctlItemList.MoveWindow(&rect, TRUE);
+}
+
+
+void
+DboxMain::OnTimer(UINT nIDEvent ){
+	TRACE("Timer\n");
+			
+	if(nIDEvent==TIMER_CHECKLOCK){
+		if(IsWorkstationLocked()){
+			TRACE("lockin\n");
+			ClearData();
+			ShowWindow(SW_MINIMIZE);
+			m_needsreading = true;
+			KillTimer(TIMER_CHECKLOCK);
+		}
+	}
+}
+
+// This function determines if the workstation is locked.
+
+BOOL DboxMain::IsWorkstationLocked()
+{
+	HDESK hDesktop;
+ 
+    BOOL Result = false;
+
+    hDesktop = OpenDesktop("default", 0, false, DESKTOP_SWITCHDESKTOP);
+    if( hDesktop != 0 ){
+		// SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
+        Result = ! SwitchDesktop(hDesktop);
+        CloseDesktop(hDesktop);
+    }
+	return Result;
+}
+
+// onAutoType handles menu item ID_MENUITEM_AUTOTYPE
+
+void
+DboxMain::OnAutoType()
+{
+	if (SelItemOk() == TRUE)
+	{
+		CItemData *ci = getSelectedItem();
+		ASSERT(ci != NULL);
+		CMyString AutoCmd = ci->GetNotes();
+		// get the notes and then extract te autotype command	
+		ExtractAutoTypeCmd(AutoCmd);
+		
+		CMyString tmp;
+		
+		char curChar;
+		
+		for(int n=0; n<AutoCmd.GetLength();n++){
+			curChar=AutoCmd[n];
+			if(curChar=='\\'){
+				n++;
+				if(n<AutoCmd.GetLength())
+					curChar=AutoCmd[n];
+					switch(curChar){
+					case '\\':
+						tmp+='\\';
+						break;
+					case 'n':case 'r':
+						tmp+='\r';
+						break;
+					case 't':
+						tmp+='\t';
+						break;
+					case 'u':
+						tmp+= ci->GetUser();
+						break;
+					case 'p':
+						tmp+=ci->GetPassword();
+						break;
+					default:
+
+						break;
+					}
+			}
+			else
+				tmp+=curChar;
+		}
+		
+		
+
+		ResetKeyboardState();
+
+		ShowWindow(SW_MINIMIZE);
+
+		SendString(tmp);
+	}
+}
+
+void DboxMain::ExtractAutoTypeCmd(CMyString &str)
+{
+  int left = str.Find(_T("autotype:"));
+  if (left == -1) {
+    str = _T("");
+  } else {
+    CString tmp(str);
+    tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
+    int right = tmp.FindOneOf(_T("\r\n"));
+    if (right != -1) {
+      tmp = tmp.Left(right);
+      str = CMyString(tmp);
+    } else {
+		str=CMyString(tmp);
+	}
+  }
+}
+
+
+//this function take a string and generates keyboard events which will be processed by the foreground window
+//This function has currently only been tested on 101/102 US keyboard
+void DboxMain::SendString(CMyString data)
+{
+	
+	BOOL shiftDown=false; //assume shift key is up
+
+	for(int n=0;n<data.GetLength();n++){
+
+			SHORT keyScanCode=VkKeyScan(data[n]);
+			// high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
+			// We only process the shift key at this stage
+			if(keyScanCode & 0x100){
+				shiftDown=true;	
+				//send a shift down
+				keybd_event(VK_SHIFT,  (BYTE) MapVirtualKey(VK_SHIFT, 0), KEYEVENTF_EXTENDEDKEY, 0);	
+				
+			} 
+			// the lower order byte has the key scan code we need.
+			keyScanCode =(SHORT)( keyScanCode & 0xFF);
+
+			keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKey(keyScanCode, 0), 0, 0);	
+			keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKey(keyScanCode, 0), KEYEVENTF_KEYUP, 0);	
+
+			if(shiftDown){
+				//send a shift up
+				keybd_event(VK_SHIFT,  (BYTE) MapVirtualKey(VK_SHIFT, 0), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0);	
+				shiftDown=false;
+			}
+
+		
+		}
+	
+}
+
+void DboxMain::ResetKeyboardState()
+{
+	// We need to make sure that the Control Key is still not down. 
+	// It will be down while the user presses ctrl-T the shortcut for autotype.
+	
+	BYTE keys[256];
+	
+	GetKeyboardState((LPBYTE)&keys);
+	
+	while((keys[VK_CONTROL] & 0x80)!=0){
+		// VK_CONTROL is down so send a down and an up...
+
+		keybd_event(VK_CONTROL, (BYTE)MapVirtualKey(VK_CONTROL, 0), KEYEVENTF_EXTENDEDKEY, 0);	
+		
+		keybd_event(VK_CONTROL,  (BYTE) MapVirtualKey(VK_CONTROL, 0), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);	
+		
+		//now we let the messages be processed by the applications to set the keyboard state
+		MSG msg;
+		//BOOL m_bCancel=false;
+		while (::PeekMessage(&msg,NULL,0,0,PM_NOREMOVE) )
+		{
+			// so there is a message process it.
+			if (!AfxGetThread()->PumpMessage())
+				break;
+		}
+		
+		
+		Sleep(10);
+		memset((void*)&keys,0,256);
+		GetKeyboardState((LPBYTE)&keys);
+	}
+
 }

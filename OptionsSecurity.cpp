@@ -5,6 +5,7 @@
 #include "passwordsafe.h"
 #include "corelib/PwsPlatform.h"
 
+
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
 #else
@@ -41,6 +42,7 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LOCKBASE, m_lockdatabase);
 	DDX_Check(pDX, IDC_SAVEMINIMIZE, m_confirmsaveonminimize);
 	DDX_Check(pDX, IDC_CONFIRMCOPY, m_confirmcopy);
+	DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
 	//}}AFX_DATA_MAP
 }
 
