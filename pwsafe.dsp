@@ -405,6 +405,10 @@ SOURCE=.\ibubble.ico
 # End Source File
 # Begin Source File
 
+SOURCE=.\leaf.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\node.bmp
 # End Source File
 # Begin Source File
