@@ -17,6 +17,7 @@ public:
    CMyString m_password;
    CMyString m_username;
    CMyString m_title;
+   CMyString m_group;
 
    CMyString m_realpassword;
 

@@ -14,6 +14,7 @@ public:
    CMyString	m_notes;
    CMyString	m_username;
    CMyString	m_title;
+   CMyString	m_group;
    //}}AFX_DATA
 
 // Overrides
