@@ -4,18 +4,22 @@ Compiled file=pwsafege.chm
 Contents file=pws_toc.hhc
 Default topic=html\pws_intro.htm
 Display compile progress=No
-Language=0x407 German (Germany)
-
+Language=0x407 Deutsch (Deutschland)
+Title=Password Safe - Deutsche Hilfe für Version 2.06
 
 [FILES]
-html\pws_opts.htm
+html\pws_add_data.htm
 html\pws_combo_chg.htm
 html\pws_combo_entry.htm
 html\pws_combo_err.htm
+html\pws_context_help.htm
 html\pws_edit.htm
+html\pws_empty.htm
+html\pws_install_help.htm
 html\pws_intro.htm
 html\pws_main.htm
-html\pws_add_data.htm
+html\pws_opts.htm
+
 
 [INFOTYPES]
 
