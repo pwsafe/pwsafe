@@ -67,7 +67,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     DropDefUsernames(GetDefUsername());
 
   m_changed = FALSE;
-
+  m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
   return SUCCESS;
 }
 
