@@ -97,7 +97,7 @@ public class PassphraseUtils
 
 		if ( !policy.isValid() )
 		{
-			LOG.info( I18nHelper.formatMessage("I0004", new Object [] { policy.toString() } ) );
+			LOG.info( I18nHelper.getInstance().formatMessage("I0004", new Object [] { policy.toString() } ) );
 			throw new InvalidPassphrasePolicy();
 		}
 

@@ -282,9 +282,9 @@ public abstract class PwsFile
 
 		if ( length < 0 )
 		{
-			LOG.error( I18nHelper.formatMessage("E00004") );
+			LOG.error( I18nHelper.getInstance().formatMessage("E00004") );
 			LOG.leaveMethod( "PwsFile.calcBlockLength" );
-			throw new IllegalArgumentException( I18nHelper.formatMessage("E00004") );
+			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00004") );
 		}
 		result = ( length == 0 ) ? BLOCK_LENGTH : ( (length + (BLOCK_LENGTH - 1)) / BLOCK_LENGTH ) * BLOCK_LENGTH;
 		
@@ -513,8 +513,8 @@ public abstract class PwsFile
 		}
 		else if ( count < bytes.length )
 		{
-			LOG.info( I18nHelper.formatMessage("I00003", new Object [] { new Integer(bytes.length), new Integer(count) } ) );
-			throw new IOException( I18nHelper.formatMessage("E00006") );
+			LOG.info( I18nHelper.getInstance().formatMessage("I00003", new Object [] { new Integer(bytes.length), new Integer(count) } ) );
+			throw new IOException( I18nHelper.getInstance().formatMessage("E00006") );
 		}
 		LOG.debug1( "Read " + count + " bytes" );
 	}
@@ -534,7 +534,7 @@ public abstract class PwsFile
 	{
 		if ( (buff.length == 0) || ((buff.length % BLOCK_LENGTH) != 0) )
 		{
-			throw new IllegalArgumentException( I18nHelper.formatMessage("E00001") );
+			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
 		}
 		readBytes( buff );
 		Algorithm.decrypt( buff );
@@ -649,7 +649,7 @@ public abstract class PwsFile
 			{	
 				if ( !bakFile.delete() )
 				{
-					LOG.error( I18nHelper.formatMessage("E00012", new Object [] { bakFile.getCanonicalPath() } ) );
+					LOG.error( I18nHelper.getInstance().formatMessage("E00012", new Object [] { bakFile.getCanonicalPath() } ) );
 					// TODO Throw an exception here
 					return;
 				}
@@ -659,7 +659,7 @@ public abstract class PwsFile
 			{
 				if ( !oldFile.renameTo( bakFile ) )
 				{
-					LOG.error( I18nHelper.formatMessage("E00011", new Object [] { tempFile.getCanonicalPath() } ) );
+					LOG.error( I18nHelper.getInstance().formatMessage("E00011", new Object [] { tempFile.getCanonicalPath() } ) );
 					// TODO Throw an exception here?
 					return;
 				}
@@ -680,7 +680,7 @@ public abstract class PwsFile
 			}
 			else
 			{
-				LOG.error( I18nHelper.formatMessage("E00010", new Object [] { tempFile.getCanonicalPath() } ) );
+				LOG.error( I18nHelper.getInstance().formatMessage("E00010", new Object [] { tempFile.getCanonicalPath() } ) );
 				// TODO Throw an exception here?
 				return;
 			}
@@ -793,7 +793,7 @@ public abstract class PwsFile
 	{
 		if ( (buff.length == 0) || ((buff.length % BLOCK_LENGTH) != 0) )
 		{
-			throw new IllegalArgumentException( I18nHelper.formatMessage("E00001") );
+			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
 		}
 		
 		byte [] temp = Util.cloneByteArray( buff );

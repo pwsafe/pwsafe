@@ -112,7 +112,6 @@ public class PwsFileV2 extends PwsFile
 	protected void writeExtraHeader( PwsFile file )
 	throws IOException
 	{
-		// TODO Create dummy V1 record with title set to ID_STRING
 		PwsRecordV1	hdr;
 
 		hdr = new PwsRecordV1();

@@ -131,7 +131,7 @@ public class Util
 
 		if ( length < 0 )
 		{
-			LOG.error( I18nHelper.formatMessage("E00008", new Object [] { new Integer(length) } ) );
+			LOG.error( I18nHelper.getInstance().formatMessage("E00008", new Object [] { new Integer(length) } ) );
 			LOG.leaveMethod( "Util.bytesToHex(byte[],int,int) - (by throwing IllegalArgumentException)" );
 			throw new IllegalArgumentException( "Lengh must be not be negative." );
 		}
@@ -195,7 +195,7 @@ public class Util
 		{
 			String	msg;
 
-			msg = I18nHelper.formatMessage( "E00009", new Object [] { new Integer(src.length) } );
+			msg = I18nHelper.getInstance().formatMessage( "E00009", new Object [] { new Integer(src.length) } );
 
 			LOG.error( msg );
 			LOG.leaveMethod( "Util.bytesToLittleEndian(byte[]) - by throwing IllegalArgumentException" );

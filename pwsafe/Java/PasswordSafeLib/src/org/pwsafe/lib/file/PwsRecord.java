@@ -403,7 +403,7 @@ public abstract class PwsRecord implements Comparable
 				}
 			}
 		}
-		throw new IllegalArgumentException( I18nHelper.formatMessage("E00003", new Object [] { new Integer(type) } ) );
+		throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00003", new Object [] { new Integer(type) } ) );
 	}
 
 	/**
@@ -431,7 +431,7 @@ public abstract class PwsRecord implements Comparable
 	{
 		if ( OwningFile != null )
 		{
-			throw new PasswordSafeException( I18nHelper.formatMessage("E00005") );
+			throw new PasswordSafeException( I18nHelper.getInstance().formatMessage("E00005") );
 		}
 		OwningFile = owner;
 	}

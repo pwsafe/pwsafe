@@ -15,6 +15,7 @@ import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
 import org.pwsafe.lib.exception.EndOfFileException;
 import org.pwsafe.lib.exception.InvalidPassphraseException;
+import org.pwsafe.lib.exception.PasswordSafeException;
 import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
 import BlowfishJ.BlowfishECB;
@@ -90,7 +91,7 @@ public class PwsFileFactory
 		catch ( IOException e )
 		{
 			handlingError = true;
-			LOG.error( I18nHelper.formatMessage("E00007", new Object [] { e.getClass().getName() } ), e );
+			LOG.error( I18nHelper.getInstance().formatMessage("E00007", new Object [] { e.getClass().getName() } ), e );
 			LOG.info( "I00001" );
 			LOG.leaveMethod( "PwsFileFactory.checkPassword" );
 			throw e;
@@ -109,15 +110,15 @@ public class PwsFileFactory
 				catch ( IOException e )
 				{
 					// log the exception then decide what we're going to do with it
-					LOG.error( I18nHelper.formatMessage("E00007", new Object [] { e.getClass().getName() } ), e );
+					LOG.error( I18nHelper.getInstance().formatMessage("E00007", new Object [] { e.getClass().getName() } ), e );
 					if ( handlingError )
 					{
 						// ignore the error
-						LOG.info( I18nHelper.formatMessage( "I00002" ) );
+						LOG.info( I18nHelper.getInstance().formatMessage( "I00002" ) );
 					}
 					else
 					{	
-						LOG.info( I18nHelper.formatMessage( "I00001" ) );
+						LOG.info( I18nHelper.getInstance().formatMessage( "I00001" ) );
 						throw e;
 					}
 				}
@@ -235,5 +236,67 @@ public class PwsFileFactory
 	public static final PwsFile newFile()
 	{
 		return new PwsFileV2();
+	}
+
+	/**
+	 * Creates a simple test file
+	 * 
+	 * @return
+	 * 
+	 * @throws PasswordSafeException
+	 */
+	public static final PwsFile testFile()
+	throws PasswordSafeException
+	{
+		PwsFileV2	file;
+		PwsRecordV2	rec;
+
+		file	= new PwsFileV2();
+		rec		= (PwsRecordV2) file.newRecord();
+
+		rec.setField( new PwsStringField( PwsRecordV2.USERNAME, "User 1") );
+		rec.setField( new PwsStringField( PwsRecordV2.PASSWORD, "Pass 1") );
+		rec.setField( new PwsStringField( PwsRecordV2.TITLE, "Online Bank 1") );
+		rec.setField( new PwsStringField( PwsRecordV2.GROUP, "bank.online") );
+		
+		file.add( rec );
+
+		rec		= (PwsRecordV2) file.newRecord();
+
+		rec.setField( new PwsStringField( PwsRecordV2.USERNAME, "User 2") );
+		rec.setField( new PwsStringField( PwsRecordV2.PASSWORD, "Pass 2") );
+		rec.setField( new PwsStringField( PwsRecordV2.TITLE, "Online Bank 2") );
+		rec.setField( new PwsStringField( PwsRecordV2.GROUP, "bank.online") );
+		
+		file.add( rec );
+
+		rec		= (PwsRecordV2) file.newRecord();
+
+		rec.setField( new PwsStringField( PwsRecordV2.USERNAME, "User 3") );
+		rec.setField( new PwsStringField( PwsRecordV2.PASSWORD, "Pass 3") );
+		rec.setField( new PwsStringField( PwsRecordV2.TITLE, "Lone entry") );
+		rec.setField( new PwsStringField( PwsRecordV2.GROUP, "bank") );
+		
+		file.add( rec );
+
+		rec		= (PwsRecordV2) file.newRecord();
+
+		rec.setField( new PwsStringField( PwsRecordV2.USERNAME, "User 4") );
+		rec.setField( new PwsStringField( PwsRecordV2.PASSWORD, "Pass 4") );
+		rec.setField( new PwsStringField( PwsRecordV2.TITLE, "Telephone Bank 1") );
+		rec.setField( new PwsStringField( PwsRecordV2.GROUP, "bank.telephone") );
+		
+		file.add( rec );
+
+		rec		= (PwsRecordV2) file.newRecord();
+
+		rec.setField( new PwsStringField( PwsRecordV2.USERNAME, "User 5") );
+		rec.setField( new PwsStringField( PwsRecordV2.PASSWORD, "Pass 5") );
+		rec.setField( new PwsStringField( PwsRecordV2.TITLE, "Some Online Store") );
+		rec.setField( new PwsStringField( PwsRecordV2.GROUP, "websites") );
+		
+		file.add( rec );
+
+		return file;
 	}
 }
