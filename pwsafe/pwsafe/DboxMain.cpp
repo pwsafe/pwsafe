@@ -1728,6 +1728,7 @@ DboxMain::NewFile(void)
    if (rc == IDCANCEL)
       return PWScore::USER_CANCEL;  //User cancelled password entry
 
+   ClearData();
    m_core.NewFile(dbox_pksetup.m_passkey);
    m_needsreading = false;
    return PWScore::SUCCESS;
