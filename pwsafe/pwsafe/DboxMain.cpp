@@ -564,48 +564,54 @@ DboxMain::OnListDoubleClick( NMHDR *, LRESULT *)
 void
 DboxMain::OnCopyPassword() 
 {
-   if (SelItemOk() == TRUE)
-   {
-      POSITION itemPos = Find(getSelectedItem());
-		
-      CMyString curPassString;
-      m_pwlist.GetAt(itemPos).GetPassword(curPassString);
+	bool	bCopyPassword = true;	// will get set to false if user hits cancel
 
-      uGlobalMemSize = curPassString.GetLength()+1;
-      hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-      char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
+	//Remind the user about clipboard security
+	CClearQuestionDlg clearDlg(this);
+	if (clearDlg.m_dontaskquestion == FALSE)
+	{
+		int rc = clearDlg.DoModal();
+		if (rc == IDOK)
+		{
+		}
+		else if (rc == IDCANCEL)
+		{
+			bCopyPassword = false;
+		}
+	}
 
-      memcpy(pGlobalLock, curPassString, curPassString.GetLength());
+	if ( !bCopyPassword )
+		return;
+
+	if (SelItemOk() == TRUE)
+	{
+		POSITION itemPos = Find(getSelectedItem());
 		
-      pGlobalLock[uGlobalMemSize-1] = '\0';
-      GlobalUnlock(hGlobalMemory);	
+		CMyString curPassString;
+		m_pwlist.GetAt(itemPos).GetPassword(curPassString);
 		
-      if (OpenClipboard() == TRUE)
-      {
-         if (EmptyClipboard()!=TRUE)
-            AfxMessageBox("The clipboard was not emptied correctly");
-         if (SetClipboardData(CF_TEXT, hGlobalMemory) == NULL)
-            AfxMessageBox("The data was not pasted into the clipboard "
-                          "correctly");
-         if (CloseClipboard() != TRUE)
-            AfxMessageBox("The clipboard could not be closed");
-      }
-      else
-         AfxMessageBox("The clipboard could not be opened correctly");
+		uGlobalMemSize = curPassString.GetLength()+1;
+		hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
+		char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
 		
-      //Remind the user about clipboard security
-      CClearQuestionDlg clearDlg(this);
-      if (clearDlg.m_dontaskquestion == FALSE)
-      {
-         int rc = clearDlg.DoModal();
-         if (rc == IDOK)
-         {
-         }
-         else if (rc == IDCANCEL)
-         {
-         }
-      }
-   }
+		memcpy(pGlobalLock, curPassString, curPassString.GetLength());
+		
+		pGlobalLock[uGlobalMemSize-1] = '\0';
+		GlobalUnlock(hGlobalMemory);	
+		
+		if (OpenClipboard() == TRUE)
+		{
+			if (EmptyClipboard()!=TRUE)
+				AfxMessageBox("The clipboard was not emptied correctly");
+			if (SetClipboardData(CF_TEXT, hGlobalMemory) == NULL)
+				AfxMessageBox("The data was not copied into the clipboard "
+				"correctly");
+			if (CloseClipboard() != TRUE)
+				AfxMessageBox("The clipboard could not be closed");
+		}
+		else
+			AfxMessageBox("The clipboard could not be opened correctly");
+	}
 }
 
 
