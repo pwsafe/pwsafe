@@ -31,6 +31,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("DatabaseClear"), false},
   {_T("DontAskSaveMinimize"), false},
   {_T("QuerySetDef"), true},
+  {_T("UseNewToolbar"), true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
