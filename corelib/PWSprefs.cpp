@@ -41,6 +41,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("LockOnWindowLock"), true, true},
   {_T("LockOnIdleTimeout"), true, true},
   {_T("EscExits"), true, true},
+  {_T("IsUTF8"), false, true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
