@@ -156,83 +156,105 @@ PWScore::WriteXMLFile(const CMyString &filename)
 */
 
 int
-PWScore::ImportPlaintextFile(const CMyString &filename)
+PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
+			     TCHAR fieldSeparator, int &numImported, int &numSkipped)
 {
-    static const char *ImportedPrefix = { "Imported" };
-    ifstream ifs(filename);
+  ifstream ifs(filename);
+  numImported = numSkipped = 0;
 
-    if (!ifs)
-        return CANT_OPEN_FILE;
+  if (!ifs)
+    return CANT_OPEN_FILE;
 
-    for (;;)
+  for (;;)
     {
-        // read a single line.
-        string linebuf;
-        if (!getline(ifs, linebuf, '\n')) break;
+      // read a single line.
+      string linebuf;
+      if (!getline(ifs, linebuf, '\n')) break;
 
-        // remove MS-DOS linebreaks, if needed.
-        if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
-            linebuf.resize(linebuf.size() - 1);
-        }
+      // remove MS-DOS linebreaks, if needed.
+      if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
+	linebuf.resize(linebuf.size() - 1);
+      }
 
-        // tokenize into separate elements
-        vector<string> tokens;
-        for (int startpos = 0; ; ) {
-            int nextchar = linebuf.find_first_of('\t', startpos);
-            if (nextchar >= 0 && tokens.size() < 3) {
-                tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
-                startpos = nextchar + 1;
-            } else {
-                tokens.push_back(linebuf.substr(startpos));
-                break;
-            }
-        }
-        if (tokens.size() != 4) {
-            ASSERT(0 && "did not find expected number of tokens");
-            break;
-        }
+      // tokenize into separate elements
+      vector<string> tokens;
+      for (int startpos = 0; ; ) {
+	int nextchar = linebuf.find_first_of('\t', startpos);
+	if (nextchar >= 0 && tokens.size() < 3) {
+	  tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
+	  startpos = nextchar + 1;
+	} else {
+	  // Here for last field, which is Notes. Notes may be double-quoted, and
+	  // if they are, they may span more than one line.
+	  string note(linebuf.substr(startpos));
+	  unsigned int first_quote = note.find_first_of('\"');
+	  unsigned int last_quote = note.find_last_of('\"');
+	  if (first_quote == last_quote && first_quote != string::npos) {
+	    //there was exactly one quote, meaning that we've a multi-line Note
+	    bool noteClosed = false;
+	    do {
+	      if (!getline(ifs, linebuf, '\n')) {
+		  ifs.close(); // file ends before note closes
+		  return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
+	      }
+	      // remove MS-DOS linebreaks, if needed.
+	      if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
+		linebuf.resize(linebuf.size() - 1);
+	      }
+	      note += "\r\n";
+	      note += linebuf;
+	      unsigned int fq = linebuf.find_first_of('\"');
+	      unsigned int lq = linebuf.find_last_of('\"');
+	      noteClosed = (fq == lq && fq != string::npos);
+	    } while (!noteClosed);
+	  } // multiline note processed
+	  tokens.push_back(note);
+	  break;
+	}
+      }
+      if (tokens.size() != 4) {
+	numSkipped++; // malformed entry
+	continue; // try to process next records
+      }
 
 
+      // Start initializing the new record.
+      CItemData temp;
+      temp.CreateUUID();
+      temp.SetUser(CMyString(tokens[1].c_str()));
+      temp.SetPassword(CMyString(tokens[2].c_str()));
 
-        // Start initializing the new record.
-        CItemData temp;
-        temp.CreateUUID();
-        temp.SetUser(CMyString(tokens[1].c_str()));
-        temp.SetPassword(CMyString(tokens[2].c_str()));
+      // The group and title field are concatenated.
+      const string &grouptitle = tokens[0];
+      int lastdot = grouptitle.find_last_of('.');
+      if (lastdot > 0) {
+	CMyString newgroup(ImportedPrefix);
+	newgroup += ".";
+	newgroup += grouptitle.substr(0, lastdot).c_str();
+	temp.SetGroup(newgroup);
+	temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
+      } else {
+	temp.SetGroup(ImportedPrefix);
+	temp.SetTitle(grouptitle.c_str());
+      }
 
-        // The group and title field are concatenated.
-        const string &grouptitle = tokens[0];
-        int lastdot = grouptitle.find_last_of('.');
-        if (lastdot > 0) {
-            CMyString newgroup(ImportedPrefix);
-            newgroup += ".";
-            newgroup += grouptitle.substr(0, lastdot).c_str();
-            temp.SetGroup(newgroup);
-            temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
-        } else {
-            temp.SetGroup(ImportedPrefix);
-            temp.SetTitle(grouptitle.c_str());
-        }
-
-
-        // The notes field begins and ends with a double-quote, with
-        // no special escaping of any other internal characters.
-        string quotedNotes = tokens[3];
-        if (!quotedNotes.empty() &&
-            *quotedNotes.begin() == '\"' && 
-            *(quotedNotes.end() - 1) == '\"')
+      // The notes field begins and ends with a double-quote, with
+      // no special escaping of any other internal characters.
+      string quotedNotes = tokens[3];
+      if (!quotedNotes.empty() &&
+	  *quotedNotes.begin() == '\"' && 
+	  *(quotedNotes.end() - 1) == '\"')
         {
-            quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
-            temp.SetNotes(CMyString(quotedNotes.c_str()));
+	  quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
+	  temp.SetNotes(CMyString(quotedNotes.c_str()));
         }
 
-        AddEntryToTail(temp);
-    }
-    ifs.close();
+      AddEntryToTail(temp);
+      numImported++;
+    } // file processing for (;;) loop
+  ifs.close();
 
-    // TODO: maybe return an error if the full end of the file was not reached?
-
-    return SUCCESS;
+  return SUCCESS;
 }
 
 
