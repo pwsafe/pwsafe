@@ -4,11 +4,15 @@
 #include "SysColStatic.h"
 
 //-----------------------------------------------------------------------------
-class CPasskeyEntry : public CDialog
+class CPasskeyEntry
+   : public CDialog
 {
 // Construction
 public:
-   CPasskeyEntry(CWnd* pParent = NULL,BOOL first = FALSE); 
+   CPasskeyEntry(CWnd* pParent,
+                 const CString& a_filespec,
+                 BOOL first = FALSE); 
+
    int GetCancelReturnValue();
 
 // Dialog Data
@@ -40,6 +44,8 @@ protected:
    afx_msg void OnHelp();
    //}}AFX_MSG
    afx_msg void OnBrowse();
+   afx_msg void OnCreateDb();
+
    DECLARE_MESSAGE_MAP()
 };
 //-----------------------------------------------------------------------------
