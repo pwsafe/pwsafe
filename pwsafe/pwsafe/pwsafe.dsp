@@ -120,6 +120,10 @@ SOURCE=.\DboxOptions.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DboxPassword.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\EditDlg.cpp
 # End Source File
 # Begin Source File
@@ -168,7 +172,15 @@ SOURCE=.\PasskeySetup.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PWCharPool.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\PwFont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\QueryAddName.cpp
 # End Source File
 # Begin Source File
 
@@ -244,6 +256,10 @@ SOURCE=.\FindDlg.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\global.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ItemData.h
 # End Source File
 # Begin Source File
@@ -296,11 +312,19 @@ SOURCE=.\PasswordSafe.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\PWCharPool.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\PwFont.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\PwsBackend.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\QueryAddName.h
 # End Source File
 # Begin Source File
 
@@ -341,6 +365,10 @@ SOURCE=.\UsernameEntry.h
 # Begin Source File
 
 SOURCE=.\Util.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\view.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"
