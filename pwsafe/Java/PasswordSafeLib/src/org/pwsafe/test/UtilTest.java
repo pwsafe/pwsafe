@@ -1,3 +1,9 @@
+/*
+ * $Id$
+ * 
+ * This file is provided under the standard terms of the Artistic Licence.  See the
+ * LICENSE file that comes with this package for details.
+ */
 package org.pwsafe.test;
 
 import org.pwsafe.lib.Util;
@@ -9,6 +15,16 @@ import junit.framework.TestCase;
  */
 public class UtilTest extends TestCase
 {
+	/**
+	 * Default constructor
+	 */
+	public UtilTest()
+	{
+	}
+
+	/**
+	 * Unit test for {@link Util#bytesAreEqual(byte[], byte[])}.
+	 */
 	public final void testBytesAreEqual()
 	{
 		assertTrue(
@@ -30,6 +46,9 @@ public class UtilTest extends TestCase
 			) );
 	}
 
+	/**
+	 * Unit test for {@link Util#byteToHex(byte)} for a single byte.
+	 */
 	public final void testByteToHex1()
 	{
 		byte	b = -92;
@@ -37,6 +56,9 @@ public class UtilTest extends TestCase
 		assertEquals( Util.byteToHex(b), "a4" );
 	}
 	
+	/**
+	 * Unit test for {@link Util#bytesToHex(byte[])} for a byte array.
+	 */
 	public final void testByteToHex2()
 	{
 		byte	b[] = new byte [] { -92, 0, -1, 1, 127, -128 };
@@ -44,6 +66,9 @@ public class UtilTest extends TestCase
 		assertEquals( Util.bytesToHex(b), "a400ff017f80" );
 	}
 	
+	/**
+	 * Unit test for {@link Util#bytesToHex(byte[], int, int)} for a byte array with offset and length.
+	 */
 	public final void testByteToHex3()
 	{
 		byte	b[] = new byte [] { -92, 0, -1, 1, 127, -128 };
@@ -51,6 +76,9 @@ public class UtilTest extends TestCase
 		assertEquals( Util.bytesToHex(b,2,4), "ff017f80" );
 	}
 	
+	/**
+	 * Unit test for {@link Util#bytesToHex(byte[], int, int)} array index goes out of bounds.
+	 */
 	public final void testByteToHex4()
 	{
 		byte	b[] = new byte [] { -92, 0, -1, 1, 127, -128 };
@@ -65,6 +93,9 @@ public class UtilTest extends TestCase
 		}
 	}
 	
+	/**
+	 * Unit test for {@link Util#bytesToHex(byte[], int, int)} invalid length.
+	 */
 	public final void testByteToHex5()
 	{
 		byte	b[] = new byte [] { -92, 0, -1, 1, 127, -128 };
@@ -79,6 +110,9 @@ public class UtilTest extends TestCase
 		}
 	}
 	
+	/**
+	 * Unit test for {@link Util#bytesToHex(byte[], int, int)} length is zero.
+	 */
 	public final void testByteToHex6()
 	{
 		byte	b[] = new byte [] { -92, 0, -1, 1, 127, -128 };
@@ -86,6 +120,9 @@ public class UtilTest extends TestCase
 		assertEquals( Util.bytesToHex(b,2,0), "" );
 	}
 	
+	/**
+	 * Unit test for {@link Util#cloneByteArray(byte[])}.
+	 */
 	public final void testCloneByteArray1()
 	{
 		byte	b[] = new byte[] { 1, 2, 3, 4, 5, 6, -1 };
@@ -102,6 +139,10 @@ public class UtilTest extends TestCase
 		}
 	}
 	
+	/**
+	 * Unit test for {@link Util#cloneByteArray(byte[], int)} length of clone is &lt; length of
+	 * the original byte array.
+	 */
 	public final void testCloneByteArray2()
 	{
 		byte	b[] = new byte[] { 1, 2, 3, 4, 5, 6, -1 };
@@ -118,6 +159,10 @@ public class UtilTest extends TestCase
 		}
 	}
 	
+	/**
+	 * Unit test for {@link Util#cloneByteArray(byte[], int)} - clone is longer than the
+	 * original array.
+	 */
 	public final void testCloneByteArray3()
 	{
 		byte	b[] = new byte[] { 1, 2, 3, 4, 5, 6, -1 };
@@ -141,12 +186,18 @@ public class UtilTest extends TestCase
 		}
 	}
 	
+	/**
+	 * Unit test for {@link Util#getIntFromByteArray(byte[], int)}.
+	 */
 	public final void testGetIntFromByteArray()
 	{
 		assertTrue( Util.getIntFromByteArray( new byte [] { 4, 0, 0, 0 }, 0 ) == 4 );
 		assertTrue( Util.getIntFromByteArray( new byte [] { 120, 86, 52, 18 }, 0 ) == 0x12345678 );
 	}
 	
+	/**
+	 * Unit test for {@link Util#bytesToLittleEndian(byte[])}.
+	 */
 	public final void testBytesToLittleEndian()
 	{
 		byte	b1[] = new byte [] { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -163,6 +214,9 @@ public class UtilTest extends TestCase
 		}
 	}
 
+	/**
+	 * Unit test for {@link Util#bytesToString(byte[])}.
+	 */
 	public final void testBytesToString()
 	{
 		byte	b[]	= new byte [] { 1, 127, -128, -1 };
