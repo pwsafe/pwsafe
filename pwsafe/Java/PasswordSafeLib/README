@@ -20,23 +20,21 @@ that:
 4.  Writing files has not been tested thouroughly, in fact it's hardly been
     tested at all so use at your own risk.
 
-5.  It's not possible to create a new file from scratch yet.
-
-6.  This is the most insecure version of Password Safe there is.  When a
+5.  This is the most insecure version of Password Safe there is.  When a
     file is read it is stored in memory in plain text format.  And so is the
     file's password.  I hope to rectify this sometime but not in the immediate
     future.  I'm actually not sure whether anything I do is going to be
     effective since I have practically no control over object creation,
     deletion, garbage collection, cloning, etc.
 
-7.  The areas of the API that deal with modifying and creating files are
+6.  The areas of the API that deal with modifying and creating files are
     volatile and are likely to change.  You'll almost certainly need to
     rewrite bits of your code if you use tham as they stand right now.
 
-8.  The Javadocs are far from complete and might be wildly inaccurate in
+7.  The Javadocs are far from complete and might be wildly inaccurate in
     places.
 
-9.  There's no UI yet - this just allows you to read and write files.
+8.  There's no UI yet - this just allows you to read and write files.
 
 With all that said I hope that this library is of use and welcome any feedback
 you have through the normal passwordsafe developer lists.
@@ -100,3 +98,15 @@ in forthcoming releases:
 
 Kevin.
 (preecek at users dot sourceforge dot net)
+
+UPDATES
+=======
+
+25/02/2004
+- It's now possible to create new files, both V1 and V2.
+
+27/02/2004
+- Added helper classes to generate random passphrases and check for weak
+  passphrases.
+- Fixed junit tests in ant build script, added more test cases, and added test
+  suite.
