@@ -151,9 +151,6 @@ void CItemData::ChangePassKey(const CMyString &oldKey, const CMyString &newKey)
 void CItemData::SplitName(const CMyString &name,
 		   CMyString &title, CMyString &username)
 {
-  // XXX TBD - punt Default Name handling to upper layer - just split
-  // the damn thing here!
-
   int pos = name.FindByte(SPLTCHR);
   if (pos==-1) {//Not a split name
     int pos2 = name.FindByte(DEFUSERCHR);
@@ -162,15 +159,6 @@ void CItemData::SplitName(const CMyString &name,
     } else {
 	title = CMyString(name.Left(pos2));
     }
-#if 0 // XXX Handle elsewhere
-    if ((pos2 != -1)
-	&& GetUseDefUser())
-      {
-	username = GetDefUsername();
-      } else {
-	username = _T("");
-      }
-#endif
   } else {
     /*
      * There should never ever be both a SPLITCHR and a DEFUSERCHR in
@@ -211,15 +199,22 @@ void CItemData::CreateUUID()
   SetUUID(uuid_array);
 }
 
+
 void
-CItemData::SetName(const CMyString &name)
+CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
 {
   // the m_name is from pre-2.0 versions, and may contain the title and user
-  // separated by SPLTCHR. Here we fill the title and user fields so that
+  // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
+  // Here we fill the title and user fields so that
   // the application can ignore this difference after an ItemData record
   // has been created
   CMyString title, user;
-  SplitName(name, title, user);
+  int pos = name.FindByte(DEFUSERCHR);
+  if (pos != -1) {
+    title = CMyString(name.Left(pos));
+    user = defaultUsername;
+  } else
+    SplitName(name, title, user);
   // In order to avoid unecessary BlowFish construction/deletion,
   // we forego SetField here...
   BlowFish *bf = MakeBlowFish();

@@ -47,10 +47,6 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   if (status != PWSfile::SUCCESS)
     return CANT_OPEN_FILE;
 
-  //Write out full names
-  if (GetUseDefUser())
-    MakeFullNames(GetDefUsername());
-
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
   while (listPos != NULL)
@@ -61,13 +57,9 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     }
   out.CloseFile();
 
-
-  //Restore shortened names if necessary
-  if (GetUseDefUser())
-    DropDefUsernames(GetDefUsername());
-
   m_changed = FALSE;
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
+
   return SUCCESS;
 }
 
@@ -79,10 +71,6 @@ PWScore::WritePlaintextFile(const CMyString &filename)
   if (!of)
     return CANT_OPEN_FILE;
 
-  //Write out full names
-  if (GetUseDefUser())
-    MakeFullNames(GetDefUsername());
-
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
   while (listPos != NULL)
@@ -92,11 +80,6 @@ PWScore::WritePlaintextFile(const CMyString &filename)
       m_pwlist.GetNext(listPos);
     }
   of.close();
-
-
-  //Restore shortened names if necessary
-  if (GetUseDefUser())
-    DropDefUsernames(GetDefUsername());
 
   return SUCCESS;
 }
@@ -140,6 +123,10 @@ PWScore::ReadFile(const CMyString &a_filename,
 
   if (status != PWSfile::SUCCESS)
     return CANT_OPEN_FILE;
+  
+  // prepare handling of pre-2.0 DEFUSERCHR conversion
+  if (m_ReadFileVersion == PWSfile::V17)
+    in.SetDefUsername(m_defusername);
 
    ClearData(); //Before overwriting old data, but after opening the file... 
 
@@ -156,12 +143,6 @@ PWScore::ReadFile(const CMyString &a_filename,
    }
 
    in.CloseFile();
-
-   //Shorten names if necessary
-   if (GetUseDefUser())
-   {
-      DropDefUsernames(GetDefUsername());
-   }
 
    return SUCCESS;
 }
@@ -205,121 +186,4 @@ PWScore::Find(const CMyString &a_title, const CMyString &a_user)
    }
 
    return listPos;
-}
-
-
-/*
-  The following two functions are for use when switching default
-  username states.
-
-  Should be run only if m_usedefuser == TRUE
-*/
-void
-PWScore::MakeFullNames(const CMyString &defusername)
-{
-  POSITION listPos = m_pwlist.GetHeadPosition();
-  CMyString temp;
-  while (listPos != NULL)
-    {
-      temp = m_pwlist.GetAt(listPos).GetName();
-      //Start MakeFullName
-      int pos = temp.FindByte(SPLTCHR);
-      int pos2 = temp.FindByte(DEFUSERCHR);
-      if (pos==-1 && pos2!=-1)
-	{
-	  //Insert defusername if string contains defchr but not splitchr
-	  m_pwlist.GetAt(listPos).SetName((CMyString)temp.Left(pos2)
-					  + SPLTSTR + defusername);
-	}
-      // End MakeFullName
-      m_pwlist.GetNext(listPos);
-    }
-}
-
-//Should only be run on full names...
-void
-PWScore::DropDefUsernames(const CMyString &defusername)
-{
-  POSITION listPos = m_pwlist.GetHeadPosition();
-  CMyString temp;
-  while (listPos != NULL)
-    {
-      temp = m_pwlist.GetAt(listPos).GetName();
-      //Start DropDefUsername
-      CMyString temptitle, tempusername;
-      int pos = SplitName(temp, temptitle, tempusername);
-      if ((pos!=-1) && (tempusername == defusername))
-	{
-	  //If name is splitable and username is default
-	  m_pwlist.GetAt(listPos).SetName(temptitle + DEFUSERCHR);
-	}
-      //End DropDefUsername
-      m_pwlist.GetNext(listPos);
-    }
-}
-
-
-// XXX these should be moved to ItemData - except for Default Name handling!
-
-int
-PWScore::SplitName(const CMyString &name,
-		   CMyString &title, CMyString &username)
-//Returns split position for a name that was split and -1 for non-split name
-{
-   int pos = name.FindByte(SPLTCHR);
-   if (pos==-1) //Not a split name
-   {
-      int pos2 = name.FindByte(DEFUSERCHR);
-      if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
-      {
-         title = name;
-      }
-      else
-      {
-         title = CMyString(name.Left(pos2));
-      }
-
-      if ((pos2 != -1)
-          && GetUseDefUser())
-      {
-         username = GetDefUsername();
-      }
-      else
-      {
-         username = _T("");
-      }
-   }
-   else
-   {
-      /*
-       * There should never ever be both a SPLITCHR and a DEFUSERCHR in
-       * the same string
-       */
-      CMyString temp;
-      temp = CMyString(name.Left(pos));
-      temp.TrimRight();
-      title = temp;
-      temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
-      temp.TrimLeft();
-      username = temp;
-   }
-   return pos;
-}
-
-
-void
-PWScore::MakeName(CMyString& name,
-		  const CMyString &title, const CMyString &username) const
-{
-   if (username == "")
-      name = title;
-   else if (GetUseDefUser()
-	    && (username == GetDefUsername()))
-   {
-      name = title + DEFUSERCHR;
-   }
-   else 
-   {
-      name = title + SPLTSTR + username;
-   }
 }
