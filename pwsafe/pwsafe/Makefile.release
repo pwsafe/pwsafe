@@ -23,8 +23,7 @@ CP = /usr/bin/cp
 MV = /usr/bin/mv
 
 BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
-	Release/pwsafe.exe pwsafe.chm \
-	PasswordSafe.exe.manifest
+	Release/pwsafe.exe pwsafe.chm
 
 .PHONY: release bin-release src-release
 
@@ -52,6 +51,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.1.2.2  2003/08/29 06:17:25  ronys
+# Removed winXP manifest file from the deliverable. I'm told that it's part of the executable...
+#
 # Revision 1.1.2.1  2003/08/09 11:05:41  ronys
 # Added makefile to automate the building of src and binary releases (about time!)
 #
