@@ -58,6 +58,8 @@ protected:
    int m_status;
    bool m_first;
 
+   HICON m_hIcon;
+
    // Generated message map functions
    //{{AFX_MSG(CPasskeyEntry)
    virtual BOOL OnInitDialog();
