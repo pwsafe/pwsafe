@@ -1,30 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<HTML>
-  <HEAD>
-    <META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
-    <TITLE>Add Data Window</TITLE>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Add Data Window</title>
+    
 
- <LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+ <link rel="stylesheet" type="text/css" href="style.css"></head>
 
-  </HEAD>
-
-  <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+  <body bgcolor="#ffffff" text="#000000">
 
     
 
-    <font size=+2>Add Data</font>
+    
+<h1><font size="+2">Add Entry</font></h1>
 
-    <P>
-In this window, you can add a new entry to the current database. Enter the name of the service this password is for in the box marked "Title" and your username on this service (if any) in the box marked "Username."  If you have entered a default username, it username will be automatically entered in this field.  Then enter the password itself in the box marked "Password." You can use the "Notes" field for any other information you need to remember about this item -- such as a URL or phone number.
-    </P>
 
-    <P>
-You can leave the username and notes fields blank, but you must enter data in the title and password fields.
-    </P>
-
-    <P>
-Note that the entry for this item in the list in the main dialog with be the service name and user name separated by a dash.
-    </P>
-
-  </BODY>
-</HTML>
+    <p>
+In this window, you can add a new entry to the current database. The fields in this window are as follows:<br>
+</p>
+<p>&nbsp;The <span style="font-weight: bold;">Group</span> field allows
+you to organize your entries into logical groups. All entries with the
+same group value will appear under the group in the Tree view of the
+main window. Note that a heirarchy of groups can be defined, with
+sub-groups separated by periods. For example, "Finance.Banks" will
+place an entry in the Banks subgroup of the Finance group. This field
+is optional, and leaving it empty will place the item in the top-level
+group.<br>
+The <span style="font-weight: bold;">Title </span>field is the name by which the entry will be displayed. This field cannot be blank.<br>
+The <span style="font-weight: bold;">Username </span>field is used to store the username associated with this entry. If you've set a <a href="pws_opts.htm#username">default username</a> in the Options dialog box, this will appear here. Later, you can copy the username to the clipboard.<br>
+The <span style="font-weight: bold;">Password</span> field is where the
+password defined for this entry is set. If you press the "Generate
+Random Password" button, this field will be filled with a password that
+is randomly generated according to the rules set in the <a href="pws_opts.htm#PasswordPolicy">Password Policy</a> Options. This field cannot be blank.<br>
+You can use the <span style="font-weight: bold;">Notes</span> field for
+any other information you need to remember about this item -- such as a
+URL or phone number. If you enter a URL beginning with "http://" or
+"https://", then you will be able to browse to this URL directly by
+right-clicking on the entry from the main window. </p>
+</body></html>
