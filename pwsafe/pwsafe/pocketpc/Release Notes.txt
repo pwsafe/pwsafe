@@ -1,0 +1,162 @@
+Password Safe for Pocket PC - Release Notes
+===========================================
+
+Version 1.92c.1
+---------------
+
+These bugs have, I believe, been fixed:
+
+-  787325 (Endianness of the MIPS processor is wrong)
+-  791417 & 792555 (Passwords are saved by the Pocket PC autocomplete feature)
+-  791423 (Multiline notes are displayed incorrectly in the edit dialog)
+
+The following new features have been added:
+
+-  There is a new check box option ("Double-click shows password") in
+   Options/Display that changes the behaviour of a double click on a password
+   entry.  Then checked, double clicks present a dialogue box showing the
+   password.  When unchecked the password is copied to the clipboard as normal.
+
+
+Version 1.92c
+-------------
+
+Installation is still manual for now, see below for details.  If you're
+upgrading from an earlier release simple copy the appropriate file from this
+release over the existing file.  Obviously you'll want to back up your device
+first, though!
+
+This release:
+
+1. Integrates the latest bug fixes from the desktop release.
+2. Fixes the endianness of devices built around the SH3 CPU.
+
+
+Version 1.92b
+-------------
+
+This is the first release for the Pocket PC and supports Pocket PC 2000 (ARM,
+MIPS and SH3) and 2002 or later (ARM only).  Context help is available in the
+usual way - while Password Safe is the foreground application, go to the start
+menu and select "Help".
+
+On the whole this release is the same as the desktop version, except for the
+bug fixes and differences noted below.
+
+To compile these sources for the Pocket PC you need:
+
+-  Embedded Visual C++ 3.0 (eVC++ 3.0) for Pocket PC 2000 or 2002 targets.
+-  Embedded Visual C++ 4.0 (eVC++ 4.0) for Pocket PC 2003 targets.
+-  Pocket PC 2000 SDK (eVC++ 3.0 only)
+-  Pocket PC 2002 SDK (eVC++ 3.0 only)
+-  Pocket PC 2003 SDK (eVC++ 4.0 only)
+-  eVC++ 4.0 Service Pack 2
+-  Pocket PC 2003 Emulator Images (eVC++ 4.0 only)
+-  Lots and lots of free disk space!
+
+All of these are avalailable as free downloads from Microsoft's MSDN site but
+they're not all easy to find.  Obviously if you don't want to target Pocket PC
+2003/Windows CE .NET devices you don't need the eVC++ 4.0 components!
+
+Installing
+----------
+
+I don't have all possible devices to test on - I have the emulator that comes
+with eVC++ and an ARM based Pocket PC 2002.  Other CPUs are untested on real
+devices and Pocket PC versions other than 2002 have only been tested under the
+emulator.  Therefore it would be good if people would run the debug versions of
+the MIPS and SH3 programs and report back whether they get a message on
+launching the application that the endianness is wrong.
+
+There's no installer yet - this will be added to a later release.  In the
+meantime to install simply:
+
+1. Copy pws_ce_help.html to \Windows
+2. Create the directory \Program Files\Password Safe
+3. Copy the debug or release version of the program appropriate to your devices
+   CPU to \Program Files\Password Safe.
+4. Create a shortcut to the program in \Windows\Start Menu\Programs
+5. If you want Password Safe on your Start menu create a shortcut to it in
+   \Windows\StartMenu
+
+Major Bug Fixes
+---------------
+
+ 1. Assumptions that a TCHAR is really a char have been removed.  There were
+    several cases where a TCHAR was assumed to be 1 byte long.  These have been
+    fixed so that they multiply sizes by sizeof(TCHAR).
+
+ 2. Calls to CMyString::FindByte() replaced by calls to CMyString::Find()
+    because FindByte doesn't work reliably when CString wraps a unicode string.
+
+ 3. A few very minor fixes to allow clean compilation with Visual Studio .Net
+    2003.
+
+ 4. Password Safe used to decrypt strings directly into the buffer obtained by
+    calling CString::GetBuffer().  Very bad practice.  You can get away with
+    it when CString wraps 1-byte character strings.  But all you get is garbage
+    when you try it on a system where CString wraps 2-byte character strings.
+    So it now decrypts to a temporary buffer then assigns the plaintext string
+    to the CString so that proper type conversion takes place.
+
+Major Differences from the Desktop Version:
+-------------------------------------------
+
+ 1. Popup dialogues (such as the About dialogue) are derived from CPwsPopupDialog
+    (which is in turn derived from CDialog) so that some of the idiosyncrasies
+    of MFC on the Pocket PC can be undone.  Developer note: where the base class
+    has been changed, conditional compilation is used to keep CDialog as the base
+    class when targeting desktop versions of Windows.  A typedef called "super"
+    (in the manner of java) is declared as a synonym for the actual base class.
+    See ConfirmDeleteDlg.h and ConfirmDeleteDlg.cpp for an example.
+
+ 2. The user interface has been redone for the Pocket PC's smaller screen size,
+    The dialogues are smaller, some of the text is reworded to make it fit, the
+    toolbar is gone and in line with Pocket PC development guidelines, accelerators
+    are removed.
+
+ 3. The list control in the main window is derived from CMyListCtrl (derived
+    from CListCtrl) for the popup menu to work.  In a future release I may
+    get rid of the annoying double red dots "feature" (I call it a bug myself)
+    of MFC tap-and-hold processing in Pocket PC 2002 (note Pocket PC 2000 doesn't
+    use the red dots and Pocket PC 2003 fixes the bug).
+
+ 4. Wide string (unicode) support added throughout, including overloaded
+    replacements for strcpy, strlen and strstr (strCopy, strLength and strFind
+    respectively in Util.cpp).
+
+ 5. Preliminary support for platforms other than Win32 including fixes for
+    portability issues when reading/writing files.
+
+ 6. File I/O uses fopen, fclose, fread and fwrite (or the unicode equivalent)
+    rather than _open, _close, _read and _write which aren't supported on
+    Pocket PC.
+
+ 7. Features of desktop versions of Windows that are not implemented in Pocket
+    PC are conditionally compiled out.
+
+ 8. Usernames and passwords are copied to the clipboard as unicode strings.
+
+ 9. A wait cursor has been addded for operations that (potentially) take a long
+    time.
+
+10. In line with Pocket PC development guidelines the name of the currently open
+    password database has been removed from the title bar.
+
+11. Enhancements to CMyString to support c-style (i.e. char*) strings on unicode
+    systems.  These are needed so that the current file format isn't broken when
+    the underlying operating system is unicode.
+
+12. Encrypting files from the command line has been removed, but MAY be reinstated
+    at a later date.
+
+Known Issues
+------------
+
+ 1. Tap-and-hold on a listview item causes two sets of red dots to appear when
+    running Password Safe under Pocket PC 2002.  This is a "feature" of the
+    operating system and I've not yet found a reliable way of stopping it.
+    The feature is not present when running under Pocket PC 2000 or 2003.
+
+
+

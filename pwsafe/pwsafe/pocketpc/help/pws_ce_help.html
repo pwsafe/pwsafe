@@ -1,0 +1,354 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+    <TITLE>Password Safe Introduction</TITLE>
+  </HEAD>
+
+  <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!-- PegHelp -->
+
+    <a name="mainhelp"></a><b>Password Safe V1.92c.1</b><p>
+    <a href="pws_ce_help.html#intro">Introduction</a><br>
+    <a href="pws_ce_help.html#main">Main Window</a>
+    <menu>
+      <a href="pws_ce_help.html#filemenu">File Menu</a><br>
+      <a href="pws_ce_help.html#editmenu">Edit Menu</a><br>
+      <a href="pws_ce_help.html#managemenu">Manage Menu</a><br>
+      <a href="pws_ce_help.html#helpmenu">Help Menu</a>
+    </menu>
+    <p>Other Dialogs
+    <menu>
+      <a href="pws_ce_help.html#adddata">Add Entry</a><br>
+      <a href="pws_ce_help.html#editview">Edit/View Entry</a><br>
+      <a href="pws_ce_help.html#copyclip">Copy to Clipboard</a><br>
+      <a href="pws_ce_help.html#changecombo">Change Safe Combination</a><br>
+      <a href="pws_ce_help.html#options">Password Safe Options</a><br>
+      <a href="pws_ce_help.html#confirmdel">Confirm Delete</a><br>
+    </menu>
+    <a href="pws_ce_help.html#counterpane">About Counterpane</a>
+    <p>
+
+
+<!-- PegHelp -->
+
+    <a name="intro"></a><b>Introduction</b>
+    <P>How many passwords and user names do you have to keep track of?  Chances are that the answer is "lots."  It was bad enough when you only needed a password to access your network or shell account; now many websites want passwords too.  Most people resort to keeping a written list of passwords (unsafe) or using the same password on many systems (very unsafe).  Now, with Password Safe, you can keep a master list of passwords securely encrypted on your computer. A single Safe Combination unlocks them all.</P>
+    <P>Password Safe protects your passwords with Bruce Schneier's Blowfish algorithm, a fast, free alternative to DES and IDEA.  Details on the Blowfish algorithm, including speed comparisons and an extensive list of products that use Blowfish, are available at <a href="http://www.counterpane.com/blowfish.html">http://www.counterpane.com/blowfish.html</a></P>
+    <P></P>
+    <P>Password Safe allows you to have any number of different password databases.  For example, you can store your website passwords in one, your Unix account passwords in another, etc.  Don't forget to backup your various databases often. If you wish to have only one database, no problem.  Password Safe will take care of all the detail for you and you don't need to bother with any of the file handling commands.</P>
+
+    <p><b>Getting Started</b></p>
+    <P>You can start protecting your passwords with Password Safe in three easy steps.</P>
+
+	<ol>
+      <li><i>Creating a Safe Combination</i>
+      <P>When you first start up Password Safe, it will ask you to create a combination. The combination is just like a password; it can include letters and punctuation as well as numbers.  Your safe combination keeps all your other passwords safe, so don't use something that's easy to guess -- especially if someone else could get access to your computer. Safe combinations are case sensitive; &quote;hello&quote; is different from &quote;HELLO&quote;.</P>
+      <P>When you've chosen your combination, type it in the box marked "Safe Combination," then again in the box marked "verify."  Then click OK.  The OK button will only be activated if you typed the same Safe Combination both times.</P>
+      <P>Whenever you start up Password Safe, it will reopen (with the proper password, of course) the last open password database.  If this database cannot be found, you will be able to browse for another one or create a new blank database.</P>
+
+      <li><i>Entering Passwords</i>
+      <P>After you've created your combination, you can start entering passwords.  Just select the menu item titled <A HREF="pws_ce_help.html#adddata">Add Entry</A> or click the toolbar button. Enter the name of the service this password is for, your username on that service (if any), and then the password itself. You can also set a default username in the <A HREF="pws_ce_help.html#options">Options</A> dialog box.</P>
+      <P>You can use the "Notes" field to enter any other information you need to remember about the service -- phone numbers, URLs, etc.</P>
+
+      <li><i>Retrieving Passwords</i>
+      <P>To copy a password to the Windows clipboard, just double-click on the desired title. Or you can highlight the tile and select the Copy Password to Clipboard menu item. You can then paste the password into whichever Windows application requires it.  (If the application does not provide a Copy command on its menu, you can still paste by hitting Control-V or Shift-Insert.)</P>
+      <P>The clipboard will be cleared when you close Password Safe.</P>
+    </ol>
+
+<!-- PegHelp -->
+
+    <a name="main"></a><b>Password Safe Main Window</b>
+
+    <p>
+    Password Safes main window shows the entries in a list.  The first time this list is shown there will be columns for the title, username and notes although the password can also be shown if desired by setting an option.
+    <p>
+    The menu bar options are described in the following sections:
+    <menu>
+      <a href="pws_ce_help.html#filemenu">File Menu</a><br>
+      <a href="pws_ce_help.html#editmenu">Edit Menu</a><br>
+      <a href="pws_ce_help.html#managemenu">Manage Menu</a><br>
+      <a href="pws_ce_help.html#helpmenu">Help Menu</a><br>
+    </menu>
+
+<!-- PegHelp -->
+
+    <a name="filemenu"></a><B>File Menu</B></P>
+
+    <P><i>New...</i></P>
+    <P>This option allows you to create a new password database.</P>
+
+    <P><I>Open...</I></P>
+    <P>Select this menu item open a different password database. You will be prompted to save the current database if necessary/desired.  You can see the name of the current database at the top of the main window.</P>
+
+    <P><i>Recent files</i></P>
+    <P>Password safe remembers the four most recently opened password databases, these are available for selection here.  If you choose one of these files you will be prompted for its password, and if entered correctly the current database will be closed, after saving it if necessary, and the new database will be displayed.</P>
+
+    <P><I>Save </I></P>
+    <P>Select this menu item to  save the current password database.</P>
+    <P></P>
+
+    <P><I>Save As...</I></P>
+    <P>Select this item to save the current password database under a different name.  A version under the old name (without the most recent changes) will still exist.</P>
+
+    <P><i>Exit</i></P>
+    <P>Exits Password Safe.  You will be prompted to save the current database if necessary</P>
+
+<!-- PegHelp -->
+
+    <a name="editmenu"></a><P><B>Edit Menu</B></P>
+
+    <P><I><a href="pws_ce_help.html#adddata">Add Entry</a></I></P>
+    <P>Select this menu item to add a password to the current database.</P>
+
+    <P><I><a href="pws_ce_help.html#editview">Edit/View Entry</a></I></P>
+    <P>Select this menu item to view or change a password you've entered.</P>
+
+    <P><I>Delete Entry</I></P>
+    <P>To delete an item, highlight its title and select this menu item.  You will be asked to <a href="pws_ce_help.html#confirmdel">confirm deletion</a> of the item if the <a href="pws_ce_help.html#misctab">Confirm deletion of items</a> option is checked.</P>
+
+    <P><I>Find Entry</I></P>
+    <P>To search for an entry that contains the given text in any field except the password.</P>
+
+    <P><I>Copy Password to Clipboard</I></P>
+    <P>To copy a password to the Windows clipboard, just double-click on the desired title. Or, you can highlight the title and select the Copy Password to Clipboard menu item. You can then paste the password into whichever Windows application requires it. (If the application does not provide a Copy command on its menu, you can still paste by hitting Control-V or Shift-Insert.)</P>
+    <P>The clipboard will be cleared when you close Password Safe.</P>
+
+    <P><I>Copy Username to Clipboard</I></P>
+    <P>To copy a username to the Windows clipboard, highlight the title and select the Copy Username to Clipboard menu item. You can then paste the password into whichever Windows application requires it. (If the application does not provide a Copy command on its menu, you can still paste by hitting Control-V or Shift-Insert.)</P>
+    <P>The clipboard will be cleared when you close Password Safe.</P>
+
+    <P><I>Clear Clipboard</I></P>
+    <P>To securely clear a password from the Windows clipboard, select the Clear Clipboard menu item. If another application has copied data to the clipboard, the clipboard will not be cleared.</P>
+
+<!-- PegHelp -->
+
+    <a name="managemenu"></a><P><B>Manage Menu</B></P>
+
+    <P><I>Change Safe Combination</I></P>
+    <P>Select this menu item to change the Password Safe combination for the current database. Type the combination in the box marked "Safe Combination," then again in the box marked "verify." Then click OK. The OK button will only be activated if you typed the same Safe Combination in the same case both times.</P>
+
+    <P><I>Make Backup</I></P>
+    <P>Choose this item to make a backup of the current password database. </P>
+
+    <P><I>Restore from Backup </I></P>
+    <P>Select this menu item to restore a previously made backup of a database.  The restored version will be unnamed.  You will have to give it a name in the Save As dialog if you wish to keep it.</P>
+
+    <P><I>Update V1.1 Backups</I></P>
+    <P>Choose this item to convert Version1.1 backup files to the new format.  This simply adds a .bak extension to the file if it does not already have it.  A list of altered backups and their location will be displayed, and you will have the option of saving this list to disk. Password Safe will also delete references to backups that no longer exist.</P>
+
+    <P><I>Options</I></P>
+    <P>Select this menu item to set <a href="pws_ce_help.html#options">these options</a>.</P>
+
+<!-- PegHelp -->
+
+    <a name="helpmenu"></a><P><B>Help Menu</B></P>
+
+    <P><I>Get Help</I></P>
+    <P>Shows this help file.</P>
+
+    <P><I>About Password Safe</I></P>
+    <P>Shows brief details about Password Safe.</P>
+
+<!-- PegHelp -->
+
+    <a name="options"></a><P><B>Options Dialog</B></P>
+    <p>The options dialog allows you to customise the way that Password Safe works.  There are five tabs of related options that are described in the following sections:
+    <menu>
+      <a href="pws_ce_help.html#displaytab">Display Tab</a><br>
+      <a href="pws_ce_help.html#securitytab">Security Tab</a><br>
+      <a href="pws_ce_help.html#pwdpolicytab">Password Policy Tab</a><br>
+      <a href="pws_ce_help.html#usernametab">Username Tab</a><br>
+      <a href="pws_ce_help.html#misctab">Misc Tab</a><br>
+    </menu>
+
+<!-- PegHelp -->
+
+    <a name="displaytab"></a><P><B>Display Tab</B></P>
+
+    <P><I>Always keep Password Safe on top</I></P>
+    <P>If this option is checked, Password Safe will be kept on top of all other windows.  This option is disabled on Pocket PC.</P>
+
+    <P><I>Show password in display list</I></P>
+    <P>If this option is checked, an extra column will be added to the main display to show the password.</P>
+
+    <P><I>Show password by default in edit mode</I></P>
+    <P>If this option is checked, the password will not be initially obscured by asterisks in the Edit/View window.</P>
+
+	<P><I>Double-click shows password</I></P>
+	<P>This option controls what happens when an item in the password list is double-clicked. If checked then a dialog will be displayed showing the password for the item. If unchecked the password will copied to the clipboard.</P>
+
+<!-- PegHelp -->
+
+    <a name="securitytab"></a><P><B>Security Tab</B></P>
+
+    <P><I>Clear the clipboard when minimized</I></P>
+    <P>If you check this option, the clipboard will be cleared when you minimize Password Safe.</P>
+
+    <P><I>Lock password database on minimize and prompt on restore</I></P>
+    <P>If you check this option, sensitive information such as your safe combination and the names of the items will be cleared from memory when Password Safe is minimized. When Password Safe is restored, you will be prompted for the Safe Combination.</P>
+
+    <P><I>Confirm password database save on minimize</I></P>
+    <P>If you check this option, Password Safe will remind you when it automatically saves the password database on minimize. Unchecked, the password database will be automatically saved.</P>
+
+    <P><I>Confirm item copy to clipboard</I></P>
+    <P>If you check this option, Password Safe will notify you when a password is copied to the clipboard. Once you've gotten used to how Password Safe works, you will probably want to uncheck this option.</P>
+
+<!-- PegHelp -->
+
+    <a name="pwdpolicytab"></a><P><B>Password Policy Tab</B></P>
+
+    <P><I>Default password length</I></P>
+    <P>This option sets the number of characters that will be generated when a random password is generated in the Add or Edit entry dialogs.</P>
+
+    <P><I>Use lowercase letters</I></P>
+    <P>If this option is checked, lower case letters will be used in the generated password.</P>
+
+    <P><I>Use uppercase letters</I></P>
+    <P>If this option is checked, upper case letters will be used in the generated password.</P>
+
+    <P><I>Use digits</I></P>
+    <P>If this option is checked, digit characters will be used in the generated password.</P>
+
+    <P><I>Use symbols</I></P>
+    <P>If this option is checked, certain symbol characters, such as &amp;, %, $ and so forth, will be used in the generated password.</P>
+
+    <P><I>Use only easy-to-read characters</I></P>
+    <P>If this option is checked then certain characters such as O (oh) and 0 (zero) will be omitted from the generated password.</P>
+
+<!-- PegHelp -->
+
+    <a name="usernametab"></a><P><B>Username Tab</B></P>
+
+    <P><i>Use default username</I></P>
+    <P>If this option is checked, the username entered in the field below will not be displayed in the main list box, and will automatically be inserted into the username field in the Add dialog box.</P>
+
+    <P><I>Query user to set default username</I></P>
+    <P>If this option is checked, whenever you enter a username for a new item and there is no default username, you will be prompted to set it as the default username if desired. See above for  more information about default usernames. </P>
+
+<!-- PegHelp -->
+
+    <a name="misctab"></a><P><B>Misc Tab</B></P>
+
+    <P><I>Confirm deletion of items</I></P>
+    <P>When this option is checked, Password Safe will confirm that you want to remove the selected item when you issue the Delete command.</P>
+
+    <P><I>Save database immediately after Edit or Add</I></P>
+    <P>If this option is checked, Password Safe will automatically save the password database whenever an entry is added or changed.</P>
+
+<!-- PegHelp -->
+
+    <a name="adddata"></a><b>Add Data</b>
+    <P>In this window, you can add a new entry to the current database. Enter the name of the service this password is for in the box marked "Title" and your username on this service (if any) in the box marked "Username."  If you have entered a default username, it username will be automatically entered in this field.  Then enter the password itself in the box marked "Password." You can use the "Notes" field for any other information you need to remember about this item -- such as a URL or phone number.</P>
+    <P>You can leave the username and notes fields blank, but you must enter data in the title and password fields.</P>
+    <P>Note that the entry for this item in the list in the main dialog with be the service name and user name separated by a dash.</P>
+
+<!-- PegHelp -->
+
+    <a name="editview"></a><b>Edit/View Data</b>
+    <P>In this window, you can change the information you've stored for an entry.  By default, the password will be replaced with a line of asterisks.  To view your existing password, hit "Show Password."</P>
+    <P>If you make a mistake and want to leave this window without saving your changes, hit "Cancel."  To save changes, click the "OK" button.</P>
+
+<!-- PegHelp -->
+
+    <a name="copyclip"></a><b>Copy Password to Clipboard</b>
+    <P>This dialog lets you know that the password you've selected has been copied to the clipboard. You can now paste it directly into the application, dialog, or Web form that needs a password.</P>
+    <P>If you're pasting the password into a dialog, you probably won't have a Paste command available, but you can still paste using the keyboard shortcuts control-V or shift-insert.</P>
+
+<!-- PegHelp -->
+
+    <a name="changecombo"></a><b>Safe Combination Change</b>
+    <P>Use this window to change your Safe Combination for the current database. You will need to enter the old Safe Combination, then enter the new combination twice. The combinations will be masked by asterisks. The combinations are case sensitive; the safe combination &quote;hello&quote; is different from &quote;HELLO&quote;.</P>
+
+<!-- PegHelp -->
+
+    <a name="comboentry"></a><b>Safe Combination Entry</b>
+    <P>This window appears when you start up Password Safe and whenever you open a different database or restore a backup.  Enter your safe combination and click OK. Safe combinations are case sensitive; &quot;hello&quot; is different from &quot;HELLO&quot;.</P>
+    <P>If you enter the safe combination incorrectly three times, the <a href="pws_ce_help.html#comboerror">Safe Combination Entry Error</a> window will appear. This window lets you try to open another database or start a new one.</P>
+
+<!-- PegHelp -->
+
+    <a name="comboerror"></a><b>Safe Combination Entry Error</b>
+    <P>This window appears if the Safe Combination has been entered incorrectly three times.  If you just mistyped your safe combination, you can choose to try again. You can also choose to browse for another database to open or to create another, completely new, database.</P>
+    <P>If you've forgotten your safe combination, just leave that database for now.  You'll be able to reopen this database later if you remember your combination.  Unfortunately, nothing can be done if you forget your password entirely.  The security of this system rests on the fact that the database cannot be recovered without the password.</P>
+
+<!-- PegHelp -->
+
+    <a name="confirmdel"></a><b>Delete Confirmation Dialog</b>
+    <P>Click yes to delete the selected entry.  Click no if you don't want to delete it.</P>
+
+<!-- PegHelp -->
+
+    <a name="newdatabase"></a><b>Safe Combination Entry</b>
+    <P>This window appears when you create a new database, either from the initial dialog when you start Password Safe, or when you select <a href="">New...</a> from the file menu</P>
+    <P>Enter the combination for the new database and in the confirmation box.  You will be warned if the two passwords do not match or if the password is cryptographically weak.</P>
+
+<!-- PegHelp -->
+
+    <a name="usernamentry"></a><b>Username Entry Dialog</b>
+    <P>The username entered in this dialog box will be added to all the entries in the username-less database that you just opened. Click Ok to add the username or Cancel to leave them as is.</P>
+    <P>You can also set this username to be the default username by clicking the check box.  In this case, you will not see the username that you just added in the main dialog (though it is still part of the entries), and it will automatically be inserted in the Add dialog for new entries.</P>
+
+<!-- PegHelp -->
+
+    <a name="defaultusername"><b>Set Default Username?</b>
+    <P>This dialog lets you set the username that you just entered as the default username.  The default username is not displayed in the main dialog and will be automatically inserted in the Add dialog box.</P>
+    <P>You can adjust the current default username setting in the <A HREF="pws_ce_help.html#options">Options </A> dialog box.</P>
+
+<!-- PegHelp -->
+
+    <b>Add a Username to All Entries?</b>
+    <P>This dialog appears when you open a password database without any usernames in the entries.</P>
+    <P>Click Yes to get a dialog box that will allow you to enter a single username that will be added to all the entries.  Click No to leave the database as it is.</P>
+
+<!-- PegHelp -->
+
+    <A NAME="counterpane"></A><b>About Counterpane</b>
+    <P><a href="http://www.counterpane.com">http://www.counterpane.com</a></P>
+    <P><B>Company Information</B></P>
+    <P><I>Counterpane Systems</I> is a cryptography and computer security consulting firm. We are a virtual company based in Minneapolis, with three full-time employees and six part-time contractors. Counterpane provides expert consulting in the following areas:</P>
+    <P>Design and Analysis. This is the majority of Counterpane's work: making and breaking commercial cryptographic systems and system designs. We can analyze all aspects of a security system, from the threat model to the cryptographic algorithms, and from the protocols to the implementation and procedures. Our detailed reports provide clients with information on security problems as well as suggested fixes.</P>
+    <P>Counterpane Systems has worked in areas such as:</P>
+    <sl>
+    <li>Hard disk and file encryption</li>
+    <li>E-mail encryption and authentication</li>
+    <li>Emergency password and data recovery</li>
+    <li>Software and information piracy prevention</li>
+    <li>Virtual private networks</li>
+    <li>Certificate Authority systems</li>
+    <li>Digital timestamping</li>
+    <li>Digital telecommunications security</li>
+    <li>Biometric security applications</li>
+    <li>Java security</li>
+    <li>Electronic commerce systems</li>
+    <li>Stored-value card security</li>
+    <li>Secure audit logs</li>
+    </sl>
+    <P><B>Implementation and Testing</B>. Counterpane Systems also turns designs into commercial programs. We have implemented and tested many cryptographic systems, both from our own designs and from industry standards such as SET, S/MIME, and SSL. Counterpane also performs security testing and verification of software implementations and products.</P>
+    <P><B>Threat Modeling</B>. Using attack tree analysis, Counterpane Systems provides a comprehensive threat analysis of systems and products. This kind of analysis can determine a system's vulnerability and the avenues of attack most likely to succeed. We can calculate the time, money, and resources necessary to attack a system, determine the security effects of different business decisions, and list the security assumptions a system is based on. Attack trees can compare attacks and countermeasures, and isolate areas where security can most profitably be improved--or most profitably be attacked.</P>
+    <P><B>Product Research and Forecasting</B>. Counterpane Systems assesses potential product ideas, and gives opinions on their viability in the marketplace. We also maintain a large database of competitive information, and can provide information on existing security-related products. We publish occasional reports on different areas of commercial cryptography--electronic commerce, Internet security, public-key infrastructure, secure tokens--and make these reports available to clients.</P>
+    <P><B>Classes and Training</B>. Counterpane Systems provides a wide variety of training services, from hour-long tutorials on the basics of computer security to week-long classes on the mathematics of cryptography or the philosophy of secure system design. Other classes include advanced protocol design and analysis, Internet security protocols, public-key infrastructure, and electronic commerce security. Classes can be tailored to suit individual needs.</P>
+    <P><B>Intellectual Property</B>. Counterpane Systems has considerable experience writing patent disclosures for cryptographic inventions. We provide opinions on patentability and prior art, and can help clients find new ways to implement systems which avoid infringing on existing patents. We maintain a database of more than 1000 cryptography-related patents.</P>
+    <P><B>Export Consulting</B>. Counterpane Systems can help clients go through the process of receiving Commodity Jurisdictions from the U.S. Department of State, and get their products approved for export from the U.S. Department of Commerce.</P>
+    <P><B>Theoretical and Applied Cryptographic Research</B>. Counterpane Systems continually pursues cryptographic research. By publishing papers at international academic conferences, we maintain our state-of-the-art knowledge and experience in cryptography.</P>
+    <P><B>Clients</B>. Counterpane Systems has provided consulting services for clients on five continents, including American Express, Canon, Citibank, Compaq, Dallas Semiconductor, Disney, Hughes Data Systems, Intel, Intuit, MCI, Merrill Lynch, Microsoft, Mitsubishi, National Semiconductor, Netscape, NSA, Oracle, Security Dynamics, Silicon Graphics, Stac Electronics, Veridicom, Visa, and Xerox. Contracts range from short-term expert opinions and design evaluations to multi-year design and development efforts.</P>
+    <P><B>COUNTERPANE SYSTEMS PERSONNEL</B></P>
+    <P><B>BRUCE SCHNEIER</B> is president of Counterpane Systems. He is the author of Applied Cryptography (John Wiley &amp; Sons, 1994 &amp; 1996), the seminal work in its field. Now in its second edition, Applied Cryptography has sold over 80,000 copies world-wide and has been translated into four languages. His papers have appeared at international conferences, and he has written dozens of articles on cryptography for major magazines. He is a contributing editor to Dr. Dobb's Journal, where he edited the "Algorithms Alley" column, and has been a contributing editor to Computer and Communications Security Reviews. He designed the popular Blowfish encryption algorithm, still unbroken after years of cryptanalysis.</P>
+    <P>Schneier served on the Board of Directors of the International Association for Cryptologic Research, is a member of the Advisory Board for the Electronic Privacy Information Center, and is on the Board of Directors of the Voter's Telcom Watch. Schneier has an M.S. in Computer Science from American University and a B.S. in Physics from the University of Rochester. He is a frequent writer and lecturer on the topics of cryptography, computer security, and privacy.</P>
+    <P><B>JOHN KELSEY</B> is an experienced cryptographer, cryptanalyst, and programmer who has designed several algorithms and protocols. He pioneered research on secure random number generators, differential related-key cryptanalysis on block ciphers, and the chosen-protocol attack against cryptographic protocols. His research has been presented at several international conferences, and he has broken many proposed commercial cryptographic algorithm, protocol, and system designs. He has a degree in economics and computer science from the University of Missouri in Columbia.</P>
+    <P><B>CHRIS HALL</B> is experienced in mathematical cryptography (including elliptic curves), protocol design and analysis, and source-code security verification. He helped build various PGP products, including some cryptographic protocols and software in PGPfone. He discovered a major weaknesses in two different X Windows authentication schemes (the attacks and fixes weren't announced for six months so that major vendors could fix their software). Hall has a B.S. in Computer Science and Mathematics at the University of Colorado in Boulder.</P>
+    <P><B>DAVID WAGNER</B> is a graduate student in cryptography at the University of California Berkeley. His cryptographic expertise includes both algorithms and protocols. He has publicly cryptanalyzed the Netscape random number generator, SSL 3.0, and the U.S. digital cellular encryption standard.</P>
+    <P><B>CONTACT INFORMATION</B></P><p></p>
+    Counterpane Systems<br>
+    101 E Minnehaha Parkway<br>
+    Minneapolis, MN 55419<br>
+    phone: (612) 823-1098 or (708) 524-9461<br>
+    fax: (612) 823-1590<br>
+    email: info@counterpane.com<br>
+    web: <a href="http://www.counterpane.com">http://www.counterpane.com</a><br>
+
+<!-- PegHelp -->
+
+  </BODY>
+</HTML>
