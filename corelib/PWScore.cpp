@@ -334,6 +334,18 @@ int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
 }
 
 
+int PWScore::RenameCurFile(const CMyString &newSuffix)
+{
+  CString newname(GetCurFile());
+     int dotIndex = newname.ReverseFind(TCHAR('.'));
+     if (dotIndex != -1)
+       newname = newname.Left(dotIndex);
+     newname += TCHAR('.'); // cover both cases: name with/without .
+     newname += CString(newSuffix);
+  return PWSfile::RenameFile(GetCurFile(), newname);
+}
+
+
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
  

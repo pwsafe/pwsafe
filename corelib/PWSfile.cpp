@@ -16,6 +16,7 @@ bool PWSfile::FileExists(const CMyString &filename)
 
 int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 {
+  _tremove(newname); // otherwise rename will fail if newname exists
   int status = _trename(oldname, newname);
 
   return (status == 0) ? SUCCESS : FAILURE;

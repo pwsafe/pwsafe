@@ -50,6 +50,7 @@ class PWScore {
   int ReadFile(const CMyString &filename, const CMyString &passkey);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   int RenameFile(const CMyString &oldname, const CMyString &newname);
+  int RenameCurFile(const CMyString &newSuffix);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
   bool LockFile(const CMyString &filename, CMyString &locker) const;

@@ -903,7 +903,7 @@ DboxMain::Save()
        return PWScore::CANT_OPEN_FILE;
      }
    }
-
+   m_core.RenameCurFile(_T("dat~")); // try to save previous version
    rc = m_core.WriteCurFile();
 
    if (rc == PWScore::CANT_OPEN_FILE)

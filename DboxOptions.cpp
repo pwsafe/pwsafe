@@ -189,6 +189,7 @@ DboxMain::OnOptions()
        // save changed preferences to file
        // Note that we currently can only write the entire file, so any changes
        // the user made to the database are also saved here
+       m_core.RenameCurFile(_T("dat~")); // try to save previous version
        if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
 	 MessageBox(_T("Failed to save changed preferences"), AfxGetAppName());
        else
