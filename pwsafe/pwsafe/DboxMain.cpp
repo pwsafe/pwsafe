@@ -24,6 +24,7 @@
 #include "PasskeySetup.h"
 #include "UsernameEntry.h"
 #include "TryAgainDlg.h"
+#include "ExportText.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -615,7 +616,7 @@ DboxMain::OnExportV17()
   rc = m_core.WriteV17File(newfile);
   if (rc == PWScore::CANT_OPEN_FILE)
     {
-      CMyString temp = newfile + "\n\nCould not open file for writing!";
+      CMyString temp = newfile + _T("\n\nCould not open file for writing!");
       MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
     }
 }
@@ -623,8 +624,45 @@ DboxMain::OnExportV17()
 void
 DboxMain::OnExportText()
 {
-  //TBD
-  // Insert BIG FAT warning about shooting security down the drain
+  CExportTextDlg et;
+  int rc = et.DoModal();
+  if (rc == IDOK) {
+    CMyString newfile;
+    CMyString pw(et.m_exportTextPassword);
+    if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
+      // do the export
+      //SaveAs-type dialog box
+      while (1) {
+	CFileDialog fd(FALSE,
+		       "txt",
+		       "",
+		       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+		       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+		       "Text files (*.txt)|*.txt|"
+		       "CSV files (*.csv)|*.csv|"
+		       "All files (*.*)|*.*|"
+		       "|",
+		       this);
+	fd.m_ofn.lpstrTitle =
+	  "Please name the plaintext file";
+	rc = fd.DoModal();
+	if (rc == IDOK) {
+	  newfile = (CMyString)fd.GetPathName();
+	  break;
+	} else
+	  return;
+      } // while (1)
+      rc = m_core.WritePlaintextFile(newfile);
+      if (rc == PWScore::CANT_OPEN_FILE)
+	{
+	  CMyString temp = newfile + _T("\n\nCould not open file for writing!");
+	  MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+	}
+    } else {
+      MessageBox(_T("Passkey incorrect"), _T("Error"));
+      Sleep(3000); // protect against automatic attacks
+    }
+  }
 }
 
 

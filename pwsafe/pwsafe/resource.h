@@ -50,6 +50,7 @@
 #define IDD_PS_MISC                     198
 #define IDB_NODE                        199
 #define IDB_LEAF                        200
+#define IDD_EXPORT_TEXT                 204
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -119,6 +120,7 @@
 #define IDC_EASYVISION                  1077
 #define IDC_ITEMTREE                    1078
 #define IDC_GROUP                       1079
+#define IDC_EXPORT_TEXT_PASSWORD        1081
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -160,9 +162,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        204
+#define _APS_NEXT_RESOURCE_VALUE        205
 #define _APS_NEXT_COMMAND_VALUE         32828
-#define _APS_NEXT_CONTROL_VALUE         1081
+#define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
