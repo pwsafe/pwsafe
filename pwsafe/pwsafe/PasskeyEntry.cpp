@@ -202,6 +202,7 @@ void
 CPasskeyEntry::OnCancel() 
 {
    app.m_pMainWnd = NULL;
+   m_status = TAR_CANCEL;
    super::OnCancel();
 }
 
