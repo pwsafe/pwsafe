@@ -86,6 +86,7 @@
 #define IDC_STATUS                      1064
 #define IDC_ALWAYSONTOP                 1065
 #define IDC_STATIC_LOGOTEXT             1066
+#define IDC_SAVEIMMEDIATELY             1066
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773

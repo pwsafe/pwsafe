@@ -18,6 +18,7 @@ public:
    CMyString	m_defusername;
    BOOL		m_querysetdef;
    BOOL		m_queryaddname;
+   BOOL		m_saveimmediately;
    BOOL		m_alwaysontop;
 
 protected:

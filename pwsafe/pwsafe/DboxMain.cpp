@@ -536,7 +536,14 @@ DboxMain::OnAdd()
       int newpos = insertItem(m_pwlist.GetAt(curPos));
       SelectEntry(newpos);
       m_ctlItemList.SetFocus();
-      m_changed = TRUE;
+      if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+      {
+         Save();
+      }
+      else
+      {
+         m_changed = TRUE;
+      }
       ChangeOkUpdate();
    }
    else if (rc == IDCANCEL)
@@ -691,15 +698,23 @@ DboxMain::OnEdit()
          */
          m_pwlist.RemoveAt(listindex);
          POSITION curPos = m_pwlist.AddTail(item);
-		 m_ctlItemList.DeleteItem(curSel);
-		 insertItem(m_pwlist.GetAt(curPos));
-         m_changed = TRUE;
+		   m_ctlItemList.DeleteItem(curSel);
+		   insertItem(m_pwlist.GetAt(curPos));
+         if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+         {
+            Save();
+         }
+         else
+         {
+            m_changed = TRUE;
+         }
       }
 
-         rc = SelectEntry(curSel);
-         if (rc == LB_ERR) {
-	   SelectEntry(m_ctlItemList.GetItemCount() - 1);
-         }
+      rc = SelectEntry(curSel);
+      if (rc == LB_ERR)
+      {
+	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+      }
       m_ctlItemList.SetFocus();
       ChangeOkUpdate();
    }
