@@ -19,6 +19,9 @@ import junit.framework.TestCase;
  */
 public class FileTest extends TestCase
 {
+	/**
+	 * Tests that the library can create a version 1 database.
+	 */
 	public void testCreateV1File()
 	{
 		try
