@@ -25,7 +25,7 @@ MV = /usr/bin/mv
 MAKENSIS = /cygdrive/d/local/NSIS/makensis.exe
 
 BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
-	Release/pwsafe.exe pwsafe.chm
+	ChangeLog.txt Release/pwsafe.exe pwsafe.chm
 
 .PHONY: all release bin-release src-release installable
 
@@ -60,6 +60,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.5  2004/06/11 03:57:30  ronys
+# Moved older changes from ReleaseNotes to ChangeLog.
+#
 # Revision 1.4  2004/06/08 03:34:29  ronys
 # silly mistakes
 #

@@ -1,16 +1,25 @@
 $Id$
 
-Password Safe 2.03 Release Note - June 2004
+Password Safe 2.04 Release Note - ??? 2004
 ===========================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.03. For a short description of Password
+with Password Safe version 2.04. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
-http://passwordsafe.sourceforge.net
+http://passwordsafe.sourceforge.net. Details about changes to previous
+releases may be found in the file ChangeLog.txt.
 
 This is a maintenance release, adding a couple of minor features,
 fixing a couple of bugs.
+
+Bugs fixed in 2.04:
+===================
+[970036] 24 bit displays now display toolbar correctly
+
+New Features for 2.04:
+======================
+[] 
 
 Bugs fixed in 2.03:
 ===================
@@ -28,94 +37,6 @@ only the simple toolbar is enabled.
 [940000] The Notes section now has a scrollbar, making it easier to
 view long notes entries.
 
-Bugs fixed in 2.02:
-===================
-[931119, 934192, 938393] No longer crashes when trying to change
-master password ("combination") - bug introduced in 2.01
-
-New Features for 2.02:
-======================
-[789030, 932445] It's now possible to override the random password
-generation policy for a single password in the add and edit entry dialog boxes.
-
-Bugs fixed in 2.01:
-===================
-[902003, 905449] No longer crashes when last item is deleted.
-[923401] Combination (master password) wasn't checked for mixed-case.
-[917525] Right click when cursor isn't over an now entry handled
-correctly.
-[912293, 916587] Can now invoke edit dialog after in-line edit of tree-view
-entry. (also, no longer crashes upon delete of edited item)
-[912751] If the last database saved is no longer available, ask the
-user what to do, rather than force the creation of a new one.
-[908335, 913684] Icon display problem on XP fixed, thanks to Mike Batten.
-[xxxxxx] On XP, password no longer appears with vertical bars, thanks
-to DK.
-
-New Features for 2.01:
-======================
-[921859] URLs starting with "ftp://" are also right-clickable.
-[xxxxxx] Now possible to specify hexadecimal password generation in
-Manage->Options->Password Policy, thanks ot DK.
-
-New Features for 2.0:
-=====================
-Two major new features in this release: A new database format, and a
-new tree view. The former should be invisible to users, the latter
-quite useful.
-
-The application imports old database files transparently, and warns
-the user upon saving that the new format is incompatible with old
-versions of the program.
-
-Also, the first URL in the Notes field (starting with http: or https:)
-will be added to the popup (right-click) menu for that entry. 
-Selecting it will invoke the default browser on that URL.
-
-A Russian version of the help file may be found in
-http://passwordsafe.sourceforge.net/pwsaferu.zip (Thanks to Maxim 
-Tikhonov). If anyone is interested in doing such work in other
-languages, please let me (https://sourceforge.net/users/ronys) know.
-
-Finally, the graphics have been spruced up a bit - thanks to Emilijan
-Mirceski for his patient work on the new logo and toolbar!
-
-Bugs Fixed in 2.0:
-==================
-[871893] Saving a converted (from old format) database second time now
-succeeds.
-[875288,893513] Change safe combination works again.
-[unreported] Find now selects items in tree view as well as list view.
-[878768] Online help updated and functional.
-[870756,886601] On XP, data would be invisible until minimize/maximize.
-[862504,878768] The help file now works and is updated.
-[895062,871893] Multiple saves after editing a converted (from old
-format) database now work correctly.
-[821837,777937] PasswordSafe is visible in taskbar and task switcher
-even when only the login window is displayed.
-
-New Features for 2.0pre2:
-=========================
-[RFE 504086] It is now possible to export the password database into a
-plain ASCII file. Fields are separated by a tab character. Note that
-this is a VERY large security risk if used carelessly.
-
-
-Bugs Fixed in 2.0pre2:
-======================
-[859798, 859565] Debug libraries are no longer required.
-
-- Export to v1.7 format fixed.
-
-[777937] Safe combination dialog box now appears in taskbar and
-switcher
-
-New Features for 2.0pre1:
-=========================
-[RFE 782508, 829563, 815350, 555440] Tree, or heirarchical, view of
-entries now supported. This allows the user to define categories,
-sub-categories, etc.
-
 Known Problems:
 ===============
 [879400] A category cannot be dragged to the top level. Workaround:
@@ -125,6 +46,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.10  2004/06/11 03:57:30  ronys
+Moved older changes from ReleaseNotes to ChangeLog.
+
 Revision 1.9  2004/06/06 05:32:39  ronys
 release 2.03
 
