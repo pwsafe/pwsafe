@@ -132,7 +132,7 @@ PWScore::ReadFile(const CMyString &a_filename,
    return SUCCESS;
 }
 
-void PWScore::ChangePassword(const CMyString &newPassword)
+void PWScore::ChangePassword(const CMyString &/*newPassword*/)
 {
   /*
    * To change passkeys, the data is copied into a list of CMyStrings
@@ -152,6 +152,16 @@ void PWScore::ChangePassword(const CMyString &newPassword)
    * item, which would be really slow. Which is why I think that we should
    * leave well enough alone. I mean, this function does work in the end.
    */
+
+  /*
+   * OTOH, changing the password this way has the overhead of doubling the
+   * memory required at runtime, since we're holding the entire database
+   * in memory again (in cleartext!). Also, this requires an intimate
+   * knowledge of the CItemData's field, which is undergoing change.
+   * XXX For now, I'm marking this as broken. 
+   */
+ 
+#if 0  
 	
   //Copies the list into a plaintext list of CMyStrings
   CList<CMyString, CMyString> tempList;
@@ -192,21 +202,21 @@ void PWScore::ChangePassword(const CMyString &newPassword)
       m_pwlist.AddTail(temp);
     }
   m_changed = TRUE;
+#endif
 }
 
 
-//Finds stuff based on the .GetName() part not the entire object
+// Finds stuff based on title & user fields only
 POSITION
 PWScore::Find(const CMyString &a_title, const CMyString &a_user)
 {
    POSITION listPos = m_pwlist.GetHeadPosition();
-   CMyString curthing;
+   CMyString title, user;
 
    while (listPos != NULL)
    {
-      curthing = m_pwlist.GetAt(listPos).GetName();
-      CMyString title, user;
-      SplitName(curthing, title, user);
+      title = m_pwlist.GetAt(listPos).GetTitle();
+      user = m_pwlist.GetAt(listPos).GetUser();
       if (title == a_title && user == a_user)
          break;
       else
