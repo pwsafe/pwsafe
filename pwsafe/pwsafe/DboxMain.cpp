@@ -38,6 +38,7 @@
 
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
+#include <strstrea.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -711,30 +712,57 @@ DboxMain::OnExportXML()
 void
 DboxMain::OnImportText()
 {
-    // TODO
-    CFileDialog fd(TRUE,
-        _T("txt"),
-        NULL,
-        OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-        _T("Text files (*.txt)|*.txt|")
-        _T("CSV files (*.csv)|*.csv|")
-        _T("All files (*.*)|*.*|")
-        _T("|"),
-        this);
-    fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import:");
-    m_LockDisabled = true;
-    int rc = fd.DoModal();
-    m_LockDisabled = false;
-    if (rc == IDOK)
+  CMyString ImportedPrefix(_T("Imported"));
+  TCHAR fieldSeparator = TCHAR('\t');
+  CFileDialog fd(TRUE,
+		 _T("txt"),
+		 NULL,
+		 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+		 _T("Text files (*.txt)|*.txt|")
+		 _T("CSV files (*.csv)|*.csv|")
+		 _T("All files (*.*)|*.*|")
+		 _T("|"),
+		 this);
+  fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import:");
+  m_LockDisabled = true;
+  int rc = fd.DoModal();
+  m_LockDisabled = false;
+  if (rc == IDOK)
     {
-        CMyString newfile = (CMyString)fd.GetPathName();
-        rc = m_core.ImportPlaintextFile(newfile);
-        if (rc == PWScore::CANT_OPEN_FILE) {
-	    CMyString temp = newfile + _T("\n\nCould not open file for reading!");
-            MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-        }
-        RefreshList();
-        
+      CMyString newfile = (CMyString)fd.GetPathName();
+      int numImported = 0, numSkipped = 0;
+      rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, fieldSeparator,
+				      numImported, numSkipped);
+      switch (rc) {
+      case PWScore::CANT_OPEN_FILE:
+	{
+	  CMyString temp = newfile + _T("\n\nCould not open file for reading!");
+	  MessageBox(temp, _T("File open error"), MB_OK|MB_ICONWARNING);
+	}
+	break;
+      case PWScore::INVALID_FORMAT:
+	{
+	  CMyString temp = newfile + _T("\n\nInvalid format");
+	  MessageBox(temp, _T("File read error"), MB_OK|MB_ICONWARNING);
+	}
+	break;
+      case PWScore::SUCCESS:
+      default:
+	{
+	  ostrstream os;
+	  os << "Read " << numImported << " record";
+	  if (numImported != 1) os << "s";
+	  if (numSkipped != 0) {
+	    os << "\nCouldn't read " << numSkipped << " record";
+	    if (numSkipped > 1) os << "s";
+	  }
+	  os << ends;
+	  CMyString temp(os.str());
+	  MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
+	}
+	RefreshList();
+	break;
+      } // switch
     }
 }
 
