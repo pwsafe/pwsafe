@@ -39,7 +39,8 @@ public:
       USER_CANCEL,
       WRONG_PASSWORD,
       NOT_SUCCESS,
-      SUCCESS = 0
+	  ALREADY_OPEN,
+      SUCCESS = 0,
    };
 
 	//{{AFX_DATA(DboxMain)
@@ -107,6 +108,7 @@ protected:
    int Save(void);
    int SaveAs(void);
    int Open(void);
+   int Open( const char* pszFilename );
    int BackupSafe(void);
    int New(void);
    int Restore(void);
@@ -122,7 +124,6 @@ protected:
    afx_msg void OnAbout();
    afx_msg void OnCopyUsername();
    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-//   afx_msg int OnVKeyToItem(UINT nKey, CListBox* pListBox, UINT nIndex);
 	afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnListDoubleClick( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnCopyPassword();
@@ -146,6 +147,9 @@ protected:
    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnDropFiles(HDROP hDrop);
 	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
+	afx_msg void OnOpenMRU(UINT nID);
+	afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
 	//}}AFX_MSG
 
    DECLARE_MESSAGE_MAP()

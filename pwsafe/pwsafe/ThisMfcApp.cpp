@@ -34,7 +34,8 @@ END_MESSAGE_MAP()
 
 
 ThisMfcApp::ThisMfcApp() :
-	m_bUseAccelerator( true )
+	m_bUseAccelerator( true ),
+	m_pMRU( NULL )
 {
    srand((unsigned)time(NULL));
 }
@@ -42,6 +43,8 @@ ThisMfcApp::ThisMfcApp() :
 
 ThisMfcApp::~ThisMfcApp()
 {
+	if ( m_pMRU )
+		m_pMRU->WriteList();
 
    /*
      apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
@@ -271,6 +274,10 @@ ThisMfcApp::InitInstance()
    CMyString companyname;
    VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
    SetRegistryKey(companyname);
+
+   int	nMRUItems = GetProfileInt("", "mruitems", 4);
+   m_pMRU = new CRecentFileList( 0, "MRU", "Safe%d", nMRUItems );;
+   m_pMRU->ReadList();
 
    DboxMain dbox(NULL);
 

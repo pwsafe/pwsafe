@@ -24,6 +24,8 @@ public:
 
   HACCEL m_ghAccelTable;
 
+  CRecentFileList*	GetMRU()			{ return m_pMRU; }
+
 public:
   DboxMain* m_maindlg;
 
@@ -38,7 +40,8 @@ public:
   DECLARE_MESSAGE_MAP()
 
 protected:
-	bool		m_bUseAccelerator;
+	CRecentFileList*		m_pMRU;
+	bool					m_bUseAccelerator;
     };
 
 //-----------------------------------------------------------------------------

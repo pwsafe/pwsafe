@@ -15,6 +15,7 @@
 #include <afxcmn.h>         // MFC support for Windows Common Controls
 #endif
 #include <afxtempl.h>
+#include <afxpriv.h>
 
 #include <htmlhelp.h>
 
