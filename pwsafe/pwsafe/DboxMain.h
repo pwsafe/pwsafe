@@ -214,6 +214,9 @@ protected:
     afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnExportV17();
     afx_msg void OnExportText();
+    afx_msg void OnExportXML();
+    afx_msg void OnImportText();
+    afx_msg void OnImportXML();
 
 #if _MFC_VER > 1200
     afx_msg BOOL OnOpenMRU(UINT nID);
