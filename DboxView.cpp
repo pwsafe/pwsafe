@@ -22,12 +22,6 @@
 #include "RemindSaveDlg.h"
 #include "TryAgainDlg.h"
 
-// Following used to keep track of display vs data
-struct DisplayInfo {
-  int list_index;
-  HTREEITEM tree_item;
-};
-
 static void FixListIndexes(CListCtrl &clist)
 {
   int N = clist.GetItemCount();
@@ -749,9 +743,27 @@ void
 DboxMain::OnContextMenu(CWnd *, CPoint point) 
 {
    CPoint local = point;
-   m_ctlItemList.ScreenToClient(&local);
+   int item = -1;
 
-   int item = m_ctlItemList.HitTest(local);
+   if (m_ctlItemList.IsWindowVisible()) {
+     m_ctlItemList.ScreenToClient(&local);
+     item = m_ctlItemList.HitTest(local);
+   } else { // currently in tree view
+     ASSERT(m_ctlItemTree.IsWindowVisible());
+     m_ctlItemTree.ScreenToClient(&local);
+     HTREEITEM ti = m_ctlItemTree.HitTest(local);
+     if (ti != NULL) {
+       CItemData *itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+       if (itemData != NULL) {
+	 DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
+	 ASSERT(di != NULL);
+	 ASSERT(di->tree_item == ti);
+	 item = di->list_index;
+       } else {
+	 // NODE selected - handle with another popup?
+       }
+     } // ti != NULL
+   } // tree view handling
 
    if (item >= 0)
    {

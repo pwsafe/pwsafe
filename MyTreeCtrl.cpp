@@ -7,6 +7,9 @@
 
 #include "stdafx.h"
 #include "MyTreeCtrl.h"
+#include "DboxMain.h"
+#include "corelib/ItemData.h"
+#include "corelib/MyString.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -126,12 +129,13 @@ void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   TV_INSERTSTRUCT     tvstruct;
-  TCHAR               sztBuffer[50];
+  TCHAR               sztBuffer[128];
   HTREEITEM           hNewItem, hFirstChild;
+  DWORD itemData = GetItemData(hitemDrag);
 
-  // avoid an infinite recursion situation
+  // avoid an infinite recursion
   tvstruct.item.hItem = hitemDrag;
-  tvstruct.item.cchTextMax = 49;
+  tvstruct.item.cchTextMax = sizeof(sztBuffer)/sizeof(TCHAR) - 1;
   tvstruct.item.pszText = sztBuffer;
   tvstruct.item.mask = (TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE
 			| TVIF_SELECTEDIMAGE | TVIF_TEXT);
@@ -140,10 +144,35 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   tvstruct.hInsertAfter = TVI_SORT;
   tvstruct.item.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
   hNewItem = InsertItem(&tvstruct);
+  if (itemData != 0) { // Non-NULL itemData implies Leaf
+    CItemData *ci = (CItemData *)itemData;
+    // Update Group
+    CMyString path, elem;
+    HTREEITEM p, q = hNewItem;
+    do {
+      p = GetParentItem(q);
+      if (p != NULL) {
+	elem = CMyString(GetItemText(p));
+	if (!path.IsEmpty())
+	  elem += _T(".");
+	path = elem + path;
+	q = p;
+      } else
+	break;
+    } while (1);
+    ci->SetGroup(path);
+    // Mark database as modified!
+    ((DboxMain *)GetParent())->SetChanged(true);
+    // Update DisplayInfo record associated with ItemData
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    di->tree_item = hNewItem;
+  }
+  SetItemData(hNewItem, itemData);
 
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
     TransferItem(hFirstChild, hNewItem);  // recursively transfer all the items
-    DeleteItem(hFirstChild);        // delete the first child and all its children
+    DeleteItem(hFirstChild);
   }
   return true;
 }
@@ -156,13 +185,16 @@ void CMyTreeCtrl::OnButtonUp()
     m_pimagelist->EndDrag();
     delete m_pimagelist;
     m_pimagelist = NULL;
+    HTREEITEM parent = GetParentItem(m_hitemDrag);
 
     if (m_hitemDrag != m_hitemDrop &&
 	!IsLeafNode(m_hitemDrop) &&
 	!IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
-	GetParentItem(m_hitemDrag) != m_hitemDrop) {
+	parent != m_hitemDrop) {
       TransferItem(m_hitemDrag, m_hitemDrop);
       DeleteItem(m_hitemDrag);
+      if (parent != NULL && !ItemHasChildren(parent))
+	DeleteItem(parent);
     } else
       MessageBeep(0);
 

@@ -52,6 +52,7 @@ public:
 
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}
+  void SetChanged(bool changed) {m_core.SetChanged(changed);} // for MyTreeCtrl
 
 	//{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -195,6 +196,15 @@ protected:
 private:
   PWScore m_core;
 };
+
+// Following used to keep track of display vs data
+// stored as opaque data in CItemData.{Get,Set}DisplayInfo()
+// Exposed here because MyTreeCtrl needs to update it after drag&drop
+struct DisplayInfo {
+  int list_index;
+  HTREEITEM tree_item;
+};
+
 
 //-----------------------------------------------------------------------------
 #endif // DboxMain_h
