@@ -177,6 +177,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
    ON_COMMAND(ID_FILE_EXPORTTO_XML, OnExportXML)
    ON_COMMAND(ID_FILE_IMPORT_PLAINTEXT, OnImportText)
+   ON_COMMAND(ID_FILE_IMPORT_KEEPASS, OnImportKeePass)
    ON_COMMAND(ID_FILE_IMPORT_XML, OnImportXML)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
    ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
@@ -767,6 +768,47 @@ DboxMain::OnImportText()
 	  CMyString temp(os.str());
 	  MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
 	}
+	RefreshList();
+	break;
+      } // switch
+    }
+}
+
+void
+DboxMain::OnImportKeePass()
+{
+  CFileDialog fd(TRUE,
+		 _T("txt"),
+		 NULL,
+		 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+		 _T("Text files (*.txt)|*.txt|")
+		 _T("CSV files (*.csv)|*.csv|")
+		 _T("All files (*.*)|*.*|")
+		 _T("|"),
+		 this);
+  fd.m_ofn.lpstrTitle = _T("Please Choose a KeePass Text File to Import");
+  m_LockDisabled = true;
+  int rc = fd.DoModal();
+  m_LockDisabled = false;
+  if (rc == IDOK)
+    {
+      CMyString newfile = (CMyString)fd.GetPathName();
+      rc = m_core.ImportKeePassTextFile(newfile);
+      switch (rc) {
+      case PWScore::CANT_OPEN_FILE:
+	{
+	  CMyString temp = newfile + _T("\n\nCould not open file for reading!");
+	  MessageBox(temp, _T("File open error"), MB_OK|MB_ICONWARNING);
+	}
+	break;
+      case PWScore::INVALID_FORMAT:
+	{
+	  CMyString temp = newfile + _T("\n\nInvalid format");
+	  MessageBox(temp, _T("File read error"), MB_OK|MB_ICONWARNING);
+	}
+	break;
+      case PWScore::SUCCESS:
+      default:
 	RefreshList();
 	break;
       } // switch

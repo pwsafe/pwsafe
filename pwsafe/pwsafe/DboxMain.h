@@ -226,6 +226,7 @@ protected:
     afx_msg void OnExportText();
     afx_msg void OnExportXML();
     afx_msg void OnImportText();
+    afx_msg void OnImportKeePass();
     afx_msg void OnImportXML();
 
 #if _MFC_VER > 1200
