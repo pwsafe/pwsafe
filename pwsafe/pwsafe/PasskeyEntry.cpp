@@ -26,13 +26,14 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
+                             const CString& a_filespec,
                              BOOL first)
    :CDialog(first ? CPasskeyEntry::IDDFIRST : CPasskeyEntry::IDD,
             pParent)
 {
    m_first = first;
    m_passkey = "";
-   m_message = "";
+   m_message = a_filespec;
    numtimes = 0;
    tryagainreturnval = TAR_INVALID;
 }
@@ -49,6 +50,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(ID_BROWSE, OnBrowse)
+   ON_BN_CLICKED(ID_CREATE_DB, OnCreateDb)
 END_MESSAGE_MAP()
 
 
@@ -56,6 +58,20 @@ BOOL
 CPasskeyEntry::OnInitDialog(void)
 {
    CDialog::OnInitDialog();
+
+   if (("" == m_message)
+       && (TRUE == m_first))
+   {
+      //((CEdit*)GetDlgItem(IDC_PASSKEY))->SetReadOnly(TRUE);
+      GetDlgItem(IDC_PASSKEY)->EnableWindow(FALSE);
+      GetDlgItem(IDOK)->EnableWindow(FALSE);
+      m_message = "[No current database]";
+   }
+
+   /*
+    * this bit makes the background come out right on
+    * the bitmaps
+    */
 
    if (m_first==TRUE)
    {
@@ -84,6 +100,16 @@ CPasskeyEntry::OnBrowse()
    app.m_pMainWnd = NULL;
    CDialog::OnCancel();
 }
+
+
+void
+CPasskeyEntry::OnCreateDb()
+{
+   tryagainreturnval = TAR_NEW;
+   app.m_pMainWnd = NULL;
+   CDialog::OnCancel();
+}
+
 
 void
 CPasskeyEntry::OnCancel() 
