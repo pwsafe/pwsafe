@@ -136,6 +136,9 @@ protected:
    void ClearClipboard();
    void setupBars();
    BOOL OpenOnInit();
+   // override following to reset idle timeout on any event
+   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+
 
    void ConfigureSystemMenu();
    void OnSysAlwaysOnTop();
