@@ -32,10 +32,16 @@ CPasskeySetup::CPasskeySetup(CWnd* pParent)
 {
    m_passkey = _T("");
    m_verify = _T("");
-   SetPasswordFont(GetDlgItem(IDC_PASSKEY));
-   SetPasswordFont(GetDlgItem(IDC_VERIFY));
 }
 
+BOOL CPasskeySetup::OnInitDialog() 
+{
+   CDialog::OnInitDialog();
+   SetPasswordFont(GetDlgItem(IDC_PASSKEY));
+   SetPasswordFont(GetDlgItem(IDC_VERIFY));
+
+   return TRUE;
+}
 
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 {

@@ -26,10 +26,9 @@ public:
    //}}AFX_DATA
 
 
-// Overrides
-   // ClassWizard generated virtual function overrides
-   //{{AFX_VIRTUAL(CPasskeySetup)
 protected:
+   virtual BOOL OnInitDialog();
+   //{{AFX_VIRTUAL(CPasskeySetup)
    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
    //}}AFX_VIRTUAL
 
