@@ -1290,7 +1290,9 @@ DboxMain::OnTimer(UINT nIDEvent ){
 		if(IsWorkstationLocked()){
 			TRACE("locking database\n");
 			ClearData();
-			ShowWindow(SW_MINIMIZE);
+			if(IsWindowVisible()){
+				ShowWindow(SW_MINIMIZE);
+			}
 			m_needsreading = true;
 			KillTimer(TIMER_CHECKLOCK);
 		}
