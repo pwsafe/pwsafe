@@ -1235,7 +1235,8 @@ DboxMain::OnTimer(UINT nIDEvent )
 	ShowWindow(SW_MINIMIZE);
       }
       m_needsreading = true;
-      KillTimer(TIMER_CHECKLOCK);
+      if (nIDEvent == TIMER_CHECKLOCK)
+	KillTimer(TIMER_CHECKLOCK);
     }
   }
 }
