@@ -1,0 +1,51 @@
+$Id$
+
+Password Safe 1.91 Release Note - May 2003
+==========================================
+
+This note describe the new features, fixed bugs and known problems
+with Password Safe version 1.91. For a short description of Password
+Safe, please see the accompanying README.txt file. For more
+information on the product and the project, please visit
+http://passwordsafe.sourceforge.net
+
+New Features:
+=============
+[728507] Password Safe now remembers the last ten databases that were
+opened, and displays them in the File drop-down menu.
+
+[726583] Password Safe can now be set to be "always on top" via
+options or system menu.
+
+[726482] Password Safe now accepts the name of a database as an
+optional command line arugement, opening the database instead of the
+last one opened.
+
+[726481] Title, username, notes and optionally the passwords (strongly
+discouraged), are now displayed in the main window as separate
+columns. It is possible to sort by a column by double-clicking the
+column's name. Double-clicking the same column again will reverse the
+order of the sort.
+
+[726476] It is now possible to resize the main window. Password Safe
+will remember the size and location of the last invocation.
+
+[639439] Searching the database for a given text is now supported. All
+fields except the password are scanned, case insensitive by
+default. Invoke by Edit->Find Entry or via Ctrl-F.
+
+[635048] The taskbar icons for "copy password" and "copy username"
+have been replaced by something more clearly distinguishable. 
+
+Bugs Fixed:
+===========
+[591882] It is now possible to copy via Ctrl-C from the Title,
+Username and Notes fields in the Edit/View Entry window.
+
+Known Problems:
+===============
+- The Help file is outdated for this release.
+
+$Log$
+Revision 1.1  2003/04/29 14:22:32  ronys
+First versions of README and Release Notes under CVS for 1.91
