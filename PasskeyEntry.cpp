@@ -36,8 +36,9 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
 {
    const int FILE_DISP_LEN = 45;	
    DBGMSG("CPasskeyEntry()\n");
-   if (first)
+   if (first) {
       DBGMSG("** FIRST **\n");
+   }
 
    m_passkey = "";
    if (a_filespec.GetLength() > FILE_DISP_LEN) {
