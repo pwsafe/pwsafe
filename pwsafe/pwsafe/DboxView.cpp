@@ -24,6 +24,12 @@
 
 #include "corelib/pwsprefs.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 static void FixListIndexes(CListCtrl &clist)
 {
   int N = clist.GetItemCount();
@@ -733,6 +739,7 @@ DboxMain::OnSize(UINT nType,
 	      m_needsreading = true;
 	    }
 	}
+      m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE, FALSE);
     }
   else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
     {
@@ -803,6 +810,7 @@ DboxMain::OnSize(UINT nType,
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
     m_ctlItemList.MoveWindow(&rect, TRUE);
     m_ctlItemTree.MoveWindow(&rect, TRUE);
+    m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE, FALSE);
   }
 
   m_bSizing = false;

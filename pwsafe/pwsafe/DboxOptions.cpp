@@ -47,6 +47,8 @@ DboxMain::OnOptions()
    display.m_dcshowspassword = prefs->
      GetPref(PWSprefs::BoolPrefs::DCShowsPassword) ? TRUE : FALSE;
 #endif
+   display.m_usesystemtray = prefs->
+     GetPref(PWSprefs::BoolPrefs::UseSystemTray) ? TRUE : FALSE;
 
    security.m_clearclipboard = prefs->
      GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
@@ -112,6 +114,8 @@ DboxMain::OnOptions()
      prefs->SetPref(PWSprefs::BoolPrefs::DCShowsPassword,
 		    display.m_dcshowspassword == TRUE);
 #endif
+     prefs->SetPref(PWSprefs::BoolPrefs::UseSystemTray,
+		    display.m_usesystemtray == TRUE);
 
      prefs->SetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo,
 		    security.m_clearclipboard == TRUE);
@@ -160,6 +164,14 @@ DboxMain::OnOptions()
 
       if (bOldShowPasswordInList != m_bShowPasswordInList)
 	RefreshList();
+
+      if (display.m_usesystemtray == TRUE) {
+	if (m_TrayIcon.Visible() == FALSE)
+	  m_TrayIcon.ShowIcon();
+      } else { // user doesn't want to display
+	if (m_TrayIcon.Visible() == TRUE)
+	  m_TrayIcon.HideIcon();
+      }
 
       /*
        * Here are the old (pre 2.0) semantics:

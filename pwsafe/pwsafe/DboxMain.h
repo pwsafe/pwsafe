@@ -13,6 +13,7 @@
   #include "resource.h"
 #endif
 #include "MyTreeCtrl.h"
+#include "SystemTray.h"
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -121,7 +122,8 @@ protected:
 
    void ConfigureSystemMenu();
    void OnSysAlwaysOnTop();
-	afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
+   afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
+   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
    void UpdateAlwaysOnTop();
 
@@ -173,6 +175,8 @@ protected:
    afx_msg void OnOK();
    afx_msg void OnOldToolbar();
    afx_msg void OnNewToolbar();
+   afx_msg void OnMinimize();
+   afx_msg void OnUnMinimize();
 #if defined(POCKET_PC)
    afx_msg void OnShowPassword();
 #else
@@ -195,6 +199,7 @@ protected:
 #else
 	afx_msg void OnOpenMRU(UINT nID);
 #endif
+
    DECLARE_MESSAGE_MAP()
 
   BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
@@ -205,6 +210,7 @@ private:
   PWScore m_core;
   bool m_OnEditDisabled;
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
+  CSystemTray m_TrayIcon;
 };
 
 // Following used to keep track of display vs data

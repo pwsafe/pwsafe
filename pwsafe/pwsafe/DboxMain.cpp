@@ -39,6 +39,12 @@
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 #if defined(UNICODE)
   #define CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
 #else
@@ -133,6 +139,7 @@ DboxMain::DboxMain(CWnd* pParent)
    m_iSortedColumn = 0;
 }
 
+#define WM_ICON_NOTIFY (WM_APP + 10)
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	//{{AFX_MSG_MAP(DboxMain)
@@ -181,6 +188,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
 	ON_WM_INITMENUPOPUP()
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
+  ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
+  ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
 #if !defined(POCKET_PC)
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
@@ -195,8 +204,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_SYSCOMMAND()
 #if !defined(POCKET_PC)
    ON_BN_CLICKED(IDOK, OnEdit)
-	ON_WM_SIZING()
+   ON_WM_SIZING()
 #endif
+   ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRY20, OnOpenMRU)
@@ -226,6 +236,16 @@ DboxMain::OnInitDialog()
 
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIcon, FALSE); // Set small icon
+
+  HICON stIcon = app.LoadIcon(IDI_TRAY);
+  ASSERT(stIcon != NULL);
+  m_TrayIcon.SetTarget(this);
+  if (!m_TrayIcon.Create(this, WM_ICON_NOTIFY, _T("PasswordSafe"),
+			 stIcon, IDR_POPTRAY))
+    return FALSE;
+  if (!PWSprefs::GetInstance()->
+      GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+    m_TrayIcon.HideIcon();
 
   // Init stuff for tree view
   CImageList *pImageList = new CImageList();
@@ -1584,3 +1604,21 @@ void DboxMain::OnShowPassword()
 	}
 }
 #endif
+
+LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
+{
+  return m_TrayIcon.OnTrayNotification(wParam, lParam);
+}
+
+
+void DboxMain::OnMinimize()
+{
+  ShowWindow(SW_MINIMIZE);
+}
+
+void DboxMain::OnUnMinimize()
+{
+  ShowWindow(SW_RESTORE);
+}
+
+
