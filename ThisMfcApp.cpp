@@ -483,11 +483,31 @@ void
 ThisMfcApp::OnHelp()
 {
 #if defined(POCKET_PC)
-	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#mainhelp"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#mainhelp"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
-   ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/pws_intro.htm",
-              HH_DISPLAY_TOPIC, 0);
+  /*
+   * Following mess because CPropertySheet is too smart for its own
+   * good. The "Help" button there is mapped to the App framework,
+   * and that's that...
+   */
+  CString title;
+  CWnd *wnd = CWnd::GetCapture();
+  if (wnd == NULL)
+    wnd = CWnd::GetFocus();
+  if (wnd != NULL)
+    wnd = wnd->GetParent();
+  if (wnd != NULL) {
+    wnd->GetWindowText(title);
+  }
+  if (title != _T("Options"))
+    ::HtmlHelp(NULL,
+	       "pwsafe.chm::/html/pws_main.htm",
+	       HH_DISPLAY_TOPIC, 0);
+  else
+    ::HtmlHelp(NULL,
+	       "pwsafe.chm::/html/pws_opts.htm",
+	       HH_DISPLAY_TOPIC, 0);
+
 #endif
 }
 //-----------------------------------------------------------------------------
