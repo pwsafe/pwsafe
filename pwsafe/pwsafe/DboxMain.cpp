@@ -15,12 +15,11 @@
 #include "EditDlg.h"
 #include "FindDlg.h"
 #include "PasskeyChangeDlg.h"
-#include "OptionsDlg.h"
+//#include "OptionsDlg.h"
 #include "PasskeyEntry.h"
 #include "PasskeySetup.h"
 #include "RemindSaveDlg.h"
 #include "QuerySetDef.h"
-#include "QueryAddName.h"
 #include "UsernameEntry.h"
 #include "TryAgainDlg.h"
 
@@ -1245,51 +1244,6 @@ DboxMain::Save()
 
 
 void
-DboxMain::OnOptions() 
-{
-   COptionsDlg optionsDlg(this);
-   BOOL currUseDefUser = optionsDlg.m_usedefuser;
-   CMyString currDefUsername = optionsDlg.m_defusername;
-
-   optionsDlg.m_alwaysontop = m_bAlwaysOnTop;
-
-   int rc = optionsDlg.DoModal();
-   if (rc == IDOK)
-   {
-	   m_bAlwaysOnTop = optionsDlg.m_alwaysontop;
-	   UpdateAlwaysOnTop();
-
-	   bool bOldShowPasswordInList = m_bShowPasswordInList;
-	   m_bShowPasswordInList = app.GetProfileInt("", "showpwinlistdefault", FALSE)? true: false;
-      if (currDefUsername != optionsDlg.m_defusername)
-      {
-         if (currUseDefUser == TRUE)
-            MakeFullNames(&m_pwlist, currDefUsername);
-         if (optionsDlg.m_usedefuser==TRUE)
-            DropDefUsernames(&m_pwlist, optionsDlg.m_defusername);
-
-         RefreshList();
-      }
-      else if (currUseDefUser != optionsDlg.m_usedefuser)
-      {
-         //Only check box has changed
-         if (currUseDefUser == TRUE)
-            MakeFullNames(&m_pwlist, currDefUsername);
-         else
-            DropDefUsernames(&m_pwlist, optionsDlg.m_defusername);
-         RefreshList();
-      }
-	  else if (bOldShowPasswordInList + m_bShowPasswordInList == 1) {
-         RefreshList();
-	  }
-   }
-   else if (rc == IDCANCEL)
-   {
-   }
-}
-
-
-void
 DboxMain::ChangeOkUpdate()
 {
    if (! m_windowok)
@@ -2109,38 +2063,6 @@ DboxMain::ReadFile(const CMyString &a_filename,
       DropDefUsernames(&m_pwlist, temp);
    }
 
-   //See if we should add usernames to an old version file
-   if (app.GetProfileInt("", "queryaddname", TRUE) == TRUE
-       && (CheckVersion(&m_pwlist) == V10))
-   {
-      //No splits and no defusers
-      CQueryAddName dlg(this);
-      int response = dlg.DoModal();
-      if (response == IDOK)
-      {
-         CUsernameEntry dlg2(this);
-         int response2 = dlg2.DoModal();
-         if (response2 == IDOK)
-         {
-            if (dlg2.m_makedefuser == TRUE)
-            {
-               //MakeLongNames if this changes a set default username
-               SetBlankToDef(&m_pwlist);
-            }
-            else
-            {
-               SetBlankToName(&m_pwlist, dlg2.m_username);
-            }
-            m_changed = TRUE;
-         }
-         else if (response2 == IDCANCEL)
-         {
-         }
-      }
-      else if (response == IDCANCEL)
-      {
-      }
-   }
    return SUCCESS;
 }
 

@@ -41,6 +41,11 @@
 #define IDR_MAINBAR                     187
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
+#define IDD_PS_SECURITY                 194
+#define IDD_PS_DISPLAY                  195
+#define IDD_PS_USERNAME                 196
+#define IDD_PS_PASSWORDPOLICY           197
+#define IDD_PS_MISC                     198
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -89,6 +94,7 @@
 #define IDC_ALWAYSONTOP                 1065
 #define IDC_STATIC_LOGOTEXT             1066
 #define IDC_SAVEIMMEDIATELY             1066
+#define IDC_SPIN1                       1068
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -125,9 +131,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        194
+#define _APS_NEXT_RESOURCE_VALUE        199
 #define _APS_NEXT_COMMAND_VALUE         32822
-#define _APS_NEXT_CONTROL_VALUE         1067
+#define _APS_NEXT_CONTROL_VALUE         1069
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
