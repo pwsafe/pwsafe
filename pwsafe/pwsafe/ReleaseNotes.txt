@@ -1,13 +1,23 @@
 $Id$
 
-Password Safe 1.92a Release Note - May 2003
-==========================================
+Password Safe 1.92b Release Note - June 2003
+============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 1.92a. For a short description of Password
+with Password Safe version 1.92b. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
+
+1.92b:
+======
+Release 1.92b is a maintenance release, fixing a minor, but annoying, problem:
+
+Bugfix [746127] When starting PasswordSafe, the focus was not set to
+the first list entry (it appears in blue, but the dotted line is not
+on it). You need to press the down-button first. The bad thing about
+this is, that you can't type the first letter of the entry you want to
+jump to.
 
 1.92a:
 ======
@@ -91,6 +101,9 @@ Known Problems:
 - The Help file is outdated for this release.
 
 $Log$
+Revision 1.2.2.3  2003/06/13 07:08:58  ronys
+Describe 1.92b
+
 Revision 1.2.2.2  2003/05/20 13:15:51  ronys
 1.92a maintenance release
 
