@@ -1,10 +1,10 @@
 $Id$
 
-Password Safe 2.04 Release Note - July 2004
-===========================================
+Password Safe 2.05 Release Note - August 2004
+=============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.04. For a short description of Password
+with Password Safe version 2.05. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
@@ -12,6 +12,23 @@ releases may be found in the file ChangeLog.txt.
 
 This is a maintenance release, adding a couple of minor features,
 fixing a couple of bugs.
+
+Bugs fixed in 2.05:
+===================
+[1007283] Database no longer accidentally erased if modified and then
+screen lock kicks in before save.
+[1022367] Screen lock is disabled if a dialog box is open, such as
+when editing an exiting entry, adding an entry, etc.
+[992178] ESC no longer exits the application.
+[998745, 1003780] Autotype feature now works for non-US keyboards
+[987618] The group field of an entry is now also taken into account
+when checking for uniqueness.
+
+New Features for 2.05:
+======================
+[917795] Import from plain text file supported
+[951317] Preferences stored in password database as well as registry -
+useful for users who access the same database on several computers.
 
 Bugs fixed in 2.04:
 ===================
@@ -75,6 +92,9 @@ do nothing).
 
 
 $Log$
+Revision 1.13  2004/09/10 11:11:58  ronys
+Update for 2.05
+
 Revision 1.12  2004/07/22 03:59:02  ronys
 Update for 2.04 (again)
 
