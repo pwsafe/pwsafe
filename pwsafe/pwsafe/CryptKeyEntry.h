@@ -1,7 +1,7 @@
 // CryptKeyEntry.h
 //-----------------------------------------------------------------------------
 
-#include "MyString.h"
+#include "corelib/MyString.h"
 
 
 class CCryptKeyEntry : public CDialog

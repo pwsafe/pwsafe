@@ -22,4 +22,6 @@ public:
 
 };
 
+extern Global global; // XXX should this be a Singleton?
+
 #endif  //  GLOBAL_H

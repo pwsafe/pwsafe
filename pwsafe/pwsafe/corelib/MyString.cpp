@@ -1,9 +1,6 @@
 /// \file MyString.cpp
 //-----------------------------------------------------------------------------
 
-#include "stdafx.h"
-#include "PasswordSafe.h"
-
 #include "Util.h"
 
 #include "MyString.h"

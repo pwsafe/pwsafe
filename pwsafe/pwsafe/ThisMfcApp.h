@@ -5,8 +5,8 @@
 #define ThisMfcApp_h
 
 #include "stdafx.h"
-#include "MyString.h"
-#include "Util.h"
+#include "corelib/MyString.h"
+#include "corelib/Util.h"
 //-----------------------------------------------------------------------------
 class DboxMain;
 
