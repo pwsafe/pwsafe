@@ -22,14 +22,9 @@ public:
 	void SendChar(TCHAR c);
 	void SetDelay(int d);
 	void SetAndDelay(int d);
-
-	// functions to prevent users from moving windows etc while passwords are being typed.
-	void BlockUserInput();
-	void UnBlockUserInput();
 private:
 	int m_delay;
 	HKL m_hlocale;
-	bool m_bIsKeyboardLocked;
 };
 
 #endif
