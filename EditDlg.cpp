@@ -8,7 +8,7 @@
 #include "DboxMain.h"
 #include "EditDlg.h"
 #include "PwFont.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
