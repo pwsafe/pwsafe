@@ -4,10 +4,7 @@
 #include "sha1.h"
 #include "BlowFish.h"
 
-#include <fcntl.h>
-#include <errno.h>
 #include <io.h>
-#include <sys\stat.h>
 
 #include "Util.h"
 
