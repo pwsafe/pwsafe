@@ -280,7 +280,7 @@ DboxMain::OnInitDialog()
 		m_bShowPasswordInEdit = true;
 	}
 
-	if (app.GetProfileInt("", "showpwinlistdefault", FALSE)) {
+	if (app.GetProfileInt("", "showpwinlist", FALSE)) {
 		m_bShowPasswordInList = true;
 	}
 
