@@ -34,6 +34,8 @@ public:
   enum {NAME=0, UUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
 	PASSWORD = 0x6, CTIME = 0x7, MTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
 	POLICY = 0xb, END = 0xff}; // field types, per formatV2.txt
+
+  static void SetSessionKey(); // call exactly once per session
    //Construction
   CItemData();
 
@@ -72,6 +74,11 @@ private:
   CItemField m_Notes;
   CItemField m_UUID;
   CItemField m_Group;
+
+  // random key for storing stuff in memory, just to remove dependence
+  // on passphrase
+  static bool IsSessionKeySet;
+  static unsigned char SessionKey[64];
   //The salt value
   unsigned char m_salt[SaltLength];
   // Following used by display methods - we just keep it handy

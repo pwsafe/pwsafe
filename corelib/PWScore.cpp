@@ -10,6 +10,7 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 		     m_usedefuser(false), m_defusername(_T("")),
 		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION)
 {
+  CItemData::SetSessionKey(); // per-session initialization
 }
 
 PWScore::~PWScore()
