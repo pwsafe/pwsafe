@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
-    m_Notes(NOTES), m_UUID(UUID), m_display_info(NULL)
+    m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP), m_display_info(NULL)
 {
   for (int x = 0; x < SaltLength; x++)
     m_salt[x] = newrand();
@@ -26,7 +26,7 @@ CItemData::CItemData()
 CItemData::CItemData(const CItemData &that) :
   m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
-  m_display_info(that.m_display_info)
+  m_Group(that.m_Group), m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
 }
@@ -88,6 +88,14 @@ CItemData::GetNotes() const
 {
    CMyString ret;
    GetField(m_Notes, ret);
+   return ret;
+}
+
+CMyString
+CItemData::GetGroup() const
+{
+   CMyString ret;
+   GetField(m_Group, ret);
    return ret;
 }
 
@@ -203,6 +211,12 @@ CItemData::SetNotes(const CMyString &notes)
 }
 
 void
+CItemData::SetGroup(const CMyString &title)
+{
+  SetField(m_Group, title);
+}
+
+void
 CItemData::SetUUID(const uuid_array_t &UUID)
 {
   SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
@@ -232,9 +246,10 @@ CItemData::operator=(const CItemData &that)
      m_User = that.m_User;
      m_Password = that.m_Password;
      m_Notes = that.m_Notes;
+     m_Group = that.m_Group;
      m_display_info = that.m_display_info;
 
-      memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
+     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
    }
 
    return *this;
