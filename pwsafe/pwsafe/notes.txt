@@ -1,3 +1,35 @@
+File format:
+Currently (v1.9) the file is layed out as follows:
+
+RND|H(RND)|SALT|IP|Name1|Password1|Notes1|...|NameN|PasswordN|NotesN
+
+Where:
+
+RND is an 8 byte random value, used along with H(RND) to quickly
+verify the password.
+
+H(RND) is SHA1(tempSalt|Cipher(RND)); tempSalt = SHA1(RND|password);
+       Cipher(RND) is 1000 encryptions of RND, with tempSalt as the
+       encryption key. In short, a kind of HMAC dependant on the
+       password. Must ask Schneier what's wrong with HMAC as defined
+       in the RFC?
+
+SALT is the salt used for encrypting the data (you know, to protect
+against dictionary attacks)
+
+IP is the initial initialization vector value
+
+Name, Password & Notes are stored sequentially as 8 byte blocks, with
+the first block holding an int with the length (in bytes) of the
+actual value, which follows immediately.
+
+Apparently as a hack to upgrade from previous versions, the Name field
+is actually two fields, "Title" and "Username", separated by
+SPLTCHR. Furthermore, if the Username is DEFUSERCHR, then it is
+replaced by the user's "default user name", as specified in
+options. It works, but is not a pretty sight.
+
+
 Registry
 
 HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/
@@ -16,21 +48,31 @@ button - ok (should save)
 
 Security issues
 MainDlg::OnPasswordChange
-- I see that the main-passkey is constantly in memory.  This seems like
-trouble.  Are we directly encrypting using the main-passkey?  We should
-be just as secure by hashing the main-passkey on entry, keeping *that*
-in memory, and tossing the entered password into the Gutmann Void.
+- I [Jim Russell] see that the main-passkey is constantly in memory.
+This seems like trouble.  Are we directly encrypting using the
+main-passkey?  We should be just as secure by hashing the main-passkey
+on entry, keeping *that* in memory, and tossing the entered password
+into the Gutmann Void.
 
 It seems that the biggest problem is the overuse of the secured 'CMyString' 
 class.  This class is intended to securely delete the memory used upon
 destruction, but it has automatic conversion constructors for CStrings and
 'C' strings.  If you've spent any time reading things like 'Efficient C++', 
 you know that C++ spends half its time creating temporary copies of objects,
-mostly during automatic type conversions.  I think that it is too hard a 
-job to keep track of all these, so I propose a new secure string class with 
-no automatic conversions whatsoever.  It will be much less convenient to
-work with, and that is by design.  Most of the strings in this program have
-no need to be secured, so let's just concentrate on the ones that do.
+mostly during automatic type conversions.  I [Jim Russell] think that
+it is too hard a job to keep track of all these, so I propose a new
+secure string class with no automatic conversions whatsoever.  It will
+be much less convenient to work with, and that is by design.  Most of
+the strings in this program have no need to be secured, so let's just
+concentrate on the ones that do.
+
+I [Rony Shapiro], OTOH, think that CMyString is just fine, as long as
+function parameters are declared as const CMyString & instead of plain
+CMyString - this way, we avoid unnecessary object
+contruction. Declaring a couple of cast operators also goes a long way
+to keeping everyone happy. CMyString has been tweaked to make the
+underlying CString m_mystring private, paving the way to replacing it
+with an STL string, if/when we get to porting to a non-MS platform.
 
 Devel issues
 New objects to be created:
@@ -42,5 +84,3 @@ Save as... doesn't ask for new password - should it?
 
 The 'press first letter' jump works, kinda.  Sometimes it jumps home instead. 
 Seems to work okay every time after PgDn pressed.
-
-
