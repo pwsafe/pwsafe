@@ -1,8 +1,10 @@
 /// \file DboxMain.cpp
 //-----------------------------------------------------------------------------
 
-#include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
 
 // dialog boxen
 #include "DboxMain.h"
@@ -19,7 +21,7 @@
 #include "QuerySetDef.h"
 #include "QueryAddName.h"
 #include "UsernameEntry.h"
-#include "FileDialogExt.h"
+//#include "FileDialogExt.h"
 #include "TryAgainDlg.h"
 
 // widget override?
@@ -30,12 +32,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <afxpriv.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 //-----------------------------------------------------------------------------
 class DboxAbout
@@ -77,18 +73,18 @@ DboxMain::DboxMain(CWnd* pParent)
      (which I think is the only usage of m_curdir) {jpr}
    */
 
-   CString temp;
-   temp.LoadString(IDS_OUTPUTFILE);
-   CString temp2 = app.m_curdir.m_mystring + temp;
-   m_deffile = (CMyString) temp2;
+   //CString temp;
+   //temp.LoadString(IDS_OUTPUTFILE);
+   //CString temp2 = app.m_curdir.m_mystring + temp;
+   //m_deffile = (CMyString) ".\\pwsafe.dat"; //temp2;
 
    /*
      current file and current backup file specs are stored in registry
    */
    m_currfile =
-      (CMyString)(app.GetProfileString("", "currentfile", temp2));
+      (CMyString) app.GetProfileString("", "currentfile", "xxxxx.dat");
    m_currbackup =
-      (CMyString)(app.GetProfileString("", "currentbackup", NULL));
+      (CMyString) app.GetProfileString("", "currentbackup", NULL);
    m_title = "";
 
    m_changed = FALSE;
@@ -195,7 +191,7 @@ DboxMain::OpenOnInit(void)
    int rc;
    int rc2;
 
-   rc = CheckPassword(m_currfile, passkey, TRUE);
+   rc = CheckPassword(m_currfile, passkey, true);
    switch (rc)
    {
    case SUCCESS:
@@ -207,6 +203,7 @@ DboxMain::OpenOnInit(void)
        * If it is the default filename, assume that this is the first time
        * that they are starting Password Safe and don't confusing them.
        */
+#if 0
       if (m_currfile != m_deffile)
       {
          CMyString temp = m_currfile
@@ -223,6 +220,7 @@ DboxMain::OpenOnInit(void)
          // here's where I'll grey out the db entry, and make them hit the
          // button instead - this is for bug #3
       }
+#endif
       // currently falls thru to...
    case TAR_NEW:
       rc2 = New();
@@ -326,7 +324,7 @@ DboxMain::setupBars()
 void
 DboxMain::OnDestroy()
 {
-   WinHelp(0L, HELP_QUIT);
+   //WinHelp(0L, HELP_QUIT);
    CDialog::OnDestroy();
 }
 
@@ -1171,13 +1169,13 @@ DboxMain::BackupSafe()
    //SaveAs-type dialog box
    while (1)
    {
-      CFileDialogExt fd(FALSE,
-                        "bak",
-                        m_currbackup,
-                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                        | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                        "Password Safe Backups (*.bak)|*.bak||",
-                        this);
+      CFileDialog fd(FALSE,
+                     "bak",
+                     m_currbackup,
+                     OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                     | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                     "Password Safe Backups (*.bak)|*.bak||",
+                     this);
       fd.m_ofn.lpstrTitle = "Please Choose a Name for this Backup:";
 
       rc = fd.DoModal();
@@ -1219,15 +1217,15 @@ DboxMain::Open()
    //Open-type dialog box
    while (1)
    {
-      CFileDialogExt fd(TRUE,
-                        "dat",
-                        NULL,
-                        OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                        "Password Safe Databases (*.dat)|*.dat|"
-                        "Password Safe Backups (*.bak)|*.bak|"
-                        "All files (*.*)|*.*|"
-                        "|",
-                        this);
+      CFileDialog fd(TRUE,
+                     "dat",
+                     NULL,
+                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                     "Password Safe Databases (*.dat)|*.dat|"
+                     "Password Safe Backups (*.bak)|*.bak|"
+                     "All files (*.*)|*.*|"
+                     "|",
+                     this);
       fd.m_ofn.lpstrTitle = "Please Choose a Database to Open:";
       rc = fd.DoModal();
       if (rc == IDOK)
@@ -1390,12 +1388,12 @@ DboxMain::Restore()
    //Open-type dialog box
    while (1)
    {
-      CFileDialogExt fd(TRUE,
-                        "bak",
-                        m_currbackup,
-                        OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                        "Password Safe Backups (*.bak)|*.bak||",
-                        this);
+      CFileDialog fd(TRUE,
+                     "bak",
+                     m_currbackup,
+                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                     "Password Safe Backups (*.bak)|*.bak||",
+                     this);
       fd.m_ofn.lpstrTitle = "Please Choose a Backup to Restore:";
       rc = fd.DoModal();
       if (rc == IDOK)
@@ -1490,13 +1488,15 @@ DboxMain::SaveAs()
    //SaveAs-type dialog box
    while (1)
    {
-      CFileDialogExt fd(FALSE,
-                        "dat",
-                        m_currfile,
-                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                        "Password Safe Databases (*.dat)|*.dat||",
-                        this);
+      CFileDialog fd(FALSE,
+                     "dat",
+                     m_currfile,
+                     OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                     |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                     "Password Safe Databases (*.dat)|*.dat|"
+                     "All files (*.*)|*.*|"
+                     "|",
+                     this);
       if (m_currfile == "")
          fd.m_ofn.lpstrTitle =
             "Please Choose a Name for the Current (Untitled) Database:";
@@ -1516,7 +1516,7 @@ DboxMain::SaveAs()
    rc = WriteFile(newfile);
    if (rc == CANT_OPEN_FILE)
    {
-      CMyString temp = newfile + "\n\nCould not open file for writting!";
+      CMyString temp = newfile + "\n\nCould not open file for writing!";
       MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
       return CANT_OPEN_FILE;
    }
@@ -1598,8 +1598,10 @@ DboxMain::WriteFile(CMyString filename)
 int
 DboxMain::CheckPassword(CMyString filename,
                         CMyString& passkey,
-                        BOOL first)
+                        bool first)
 {
+   DBGMSG("DboxMain::CheckPassword()\n");
+
    unsigned char temprandstuff[8];
    unsigned char temprandhash[20];
    int retval;
@@ -1607,13 +1609,17 @@ DboxMain::CheckPassword(CMyString filename,
 
    if (filename != "")
    {
+      DBGMSG("filename not blank\n");
+
       int in = _open((LPCTSTR) filename,
                      _O_BINARY | _O_RDONLY | _O_SEQUENTIAL,
                      S_IREAD | _S_IWRITE);
 
       if (in == -1)
       {
-         if (TRUE != first)
+         DBGMSG("open return -1\n");
+
+         if (! first)
             return CANT_OPEN_FILE;
 
          MessageBox("Can't open current database", "File open error",
@@ -1622,6 +1628,8 @@ DboxMain::CheckPassword(CMyString filename,
       }
       else
       {
+         DBGMSG("hashstuff\n");
+
          //Preserve the current randstuff and hash
          memcpy(temprandstuff, app.m_randstuff, 8);
          memcpy(temprandhash, app.m_randhash, 20);
@@ -1649,19 +1657,22 @@ DboxMain::CheckPassword(CMyString filename,
 
    if (rc == IDOK)
    {
+      DBGMSG("PasskeyEntry returns IDOK\n");
       passkey = dbox_pkentry->m_passkey;
       retval = SUCCESS;
    }
    else /*if (rc==IDCANCEL) */ //Determine reason for cancel
    {
-      int cancelreturn = dbox_pkentry->GetCancelReturnValue();
+      int cancelreturn = dbox_pkentry->GetStatus();
       switch (cancelreturn)
       {
       case TAR_OPEN:
       case TAR_NEW:
+         DBGMSG("PasskeyEntry TAR_OPEN or TAR_NEW\n");
          retval = cancelreturn;		//Return either open or new flag... 
          break;
       default:
+         DBGMSG("Default to WRONG_PASSWORD\n");
          retval = WRONG_PASSWORD;	//Just a normal cancel
          break;
       }
