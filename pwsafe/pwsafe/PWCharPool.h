@@ -48,8 +48,8 @@ public:
 private:
    enum CharType {LOWERCASE = 0, UPPERCASE = 1,
 		  DIGIT = 2, SYMBOL = 3, NUMTYPES = 4};
-   CharType GetRandomCharType() const; // select a chartype with weighted probability
-   TCHAR GetRandomChar(CharType t) const;
+   CharType GetRandomCharType(size_t rand) const; // select a chartype with weighted probability
+   TCHAR GetRandomChar(CharType t, size_t rand) const;
 
    // here are all the character types, in both full and "easyvision" versions
    static const TCHAR std_lowercase_chars[];

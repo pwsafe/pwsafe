@@ -73,6 +73,7 @@ CPasswordCharPool::CPasswordCharPool(UINT pwlen,
     m_lengths[SYMBOL] = usesymbols ? std_symbol_len : 0;
   }
 
+  // See GetRandomCharType to understand what this does and why
   m_x[0] = 0;
   m_sumlengths = 0;
   for (int i = 0; i< NUMTYPES; i++) {
@@ -82,10 +83,20 @@ CPasswordCharPool::CPasswordCharPool(UINT pwlen,
   ASSERT(m_sumlengths > 0);
 }
 
-CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType() const
+CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(size_t rand) const
 {
-  // select a chartype with weighted probability
-   size_t rand = RangeRand(m_sumlengths);
+  /*
+   * Following is needed in order to choose a char type with a probability
+   * in proportion to its relative size, i.e., if chartype 'A' has 20 characters,
+   * and chartype 'B' has 10, then the generated password will have twice as
+   * many chars from 'A' than as from 'B'.
+   * Think of m_x as the number axis. We treat the chartypes as intervals which
+   * are laid out successively along the axis. Each number in m_x[] specifies
+   * where one interval ends and the other begins. Choosing a chartype is then
+   * reduced to seeing in which interval a random number falls.
+   * The nice part is that this works correctly for non-selected chartypes
+   * without any special logic.
+   */
    int i;
    for (i = 0; i < NUMTYPES; i++) {
      if (rand < m_x[i+1]) {
@@ -98,11 +109,11 @@ CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType() const
 }
 
 
-TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t) const
+TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, size_t rand) const
 {
   ASSERT(t < NUMTYPES);
   ASSERT(m_lengths[t] > 0);
-  size_t rand = RangeRand(m_lengths[t]);
+  rand %= m_lengths[t];
 
   TCHAR retval = m_char_arrays[t][rand];
   return retval;
@@ -142,8 +153,13 @@ CPasswordCharPool::MakePassword() const
 
       for (UINT x = 0; x < m_pwlen; x++)
       {
-	 type = GetRandomCharType();
-         ch = GetRandomChar(type);
+	 size_t rand = RangeRand(m_sumlengths);
+	 // The only reason for passing rand as a parameter is to
+	 // avoid having to generate two random numbers for each
+	 // character. Alternately, we could have had a m_rand
+	 // data member. Which solution is uglier is debatable.
+	 type = GetRandomCharType(rand);
+         ch = GetRandomChar(type, rand);
          temp += ch;
          /*
          **  Decrement the appropriate needed character type count.
