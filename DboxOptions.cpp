@@ -96,6 +96,8 @@ DboxMain::OnOptions()
      GetPref(PWSprefs::BoolPrefs::DeleteQuestion) ? FALSE : TRUE;
    misc.m_saveimmediately = prefs->
      GetPref(PWSprefs::BoolPrefs::SaveImmediately) ? TRUE : FALSE;
+   misc.m_escexits = prefs->
+     GetPref(PWSprefs::BoolPrefs::EscExits) ? TRUE : FALSE;
 
    optionsDlg.AddPage( &display );
    optionsDlg.AddPage( &security );
@@ -169,6 +171,8 @@ DboxMain::OnOptions()
 		    misc.m_confirmdelete == FALSE);
      prefs->SetPref(PWSprefs::BoolPrefs::SaveImmediately,
 		    misc.m_saveimmediately == TRUE);
+     prefs->SetPref(PWSprefs::BoolPrefs::EscExits,
+		    misc.m_escexits == TRUE);
 
      /*
      ** Update string in database, if necessary

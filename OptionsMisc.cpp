@@ -39,6 +39,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(COptionsMisc)
 	DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
 	DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
+	DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
 	//}}AFX_DATA_MAP
 }
 

@@ -24,6 +24,7 @@ public:
 	enum { IDD = IDD_PS_MISC };
 	BOOL	m_confirmdelete;
 	BOOL	m_saveimmediately;
+	BOOL	m_escexits;
 	//}}AFX_DATA
 
 
