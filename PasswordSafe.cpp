@@ -74,6 +74,10 @@ CPasswordSafeApp::InitInstance()
       exit(20);
    }
 
+   /*
+     save the current directory in a data member - I wonder why {jpr}
+   */
+
    char fn[_MAX_PATH];
    int result = GetCurrentDirectory(_MAX_PATH, fn);
    if ((result == 0) || (result > _MAX_PATH))
@@ -81,9 +85,27 @@ CPasswordSafeApp::InitInstance()
    else
       m_curdir = (CMyString)fn + (CMyString) "\\";
 
+   /*
+     this pulls 'Counterpane Systems' out of the string table, verifies
+     that it exists (actually, only verifies that *some* IDS_COMPANY
+     string exists -- it could be 'Microsoft' for all we know), and then
+     instructs the app to use the registry instead of .ini files.  The
+     path ends up being
+
+     HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+
+     Assuming the open-source version of this is going to become less
+     Counterpane-centric, I expect this may change, but if it does, an
+     automagic migration ought to happen. -- {jpr}
+   */
+
    CMyString companyname;
    VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
    SetRegistryKey(companyname);
+
+   /*
+     Command line processing or main dialog box?
+   */
 
    if (m_lpCmdLine[0] != '\0')
    {
@@ -106,14 +128,13 @@ CPasswordSafeApp::InitInstance()
                                         MAKEINTRESOURCE(IDR_ACCS));
 
       //Run dialog
-      int nResponse = m_maindlg->DoModal();
-      if (nResponse == IDOK)
-      {
-         //Writing done in dialog
-      }
-      else if (nResponse == IDCANCEL)
-      {
-      }
+      //int rc  = m_maindlg->DoModal();
+      (void) m_maindlg->DoModal();
+
+      /*
+        note that we don't particularly care what the response was
+      */
+
       delete m_maindlg;
    }
 
