@@ -80,7 +80,6 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   // 2 - note
   // 3 - password
   // m_bSortAscending to determine the direction of the sort (duh)
-  // m_core.SplitName()
 
   DboxMain *self = (DboxMain*)closure;
 	const int	nRecurseFlag		= 500; // added to the desired sort column when recursing
@@ -101,8 +100,8 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 	int iResult;
 	switch(nSortColumn) {
 	case 0:
-		self->m_core.SplitName(pLHS->GetName(), title1, username1);
-		self->m_core.SplitName(pRHS->GetName(), title2, username2);
+		title1 = pLHS->GetTitle();
+		title2 = pRHS->GetTitle();
 		iResult = ((CString)title1).CompareNoCase(title2);
 		if (iResult == 0 && !bAlreadyRecursed) {
 		  // making a recursed call, add nRecurseFlag
@@ -113,8 +112,8 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 		}
 		break;
 	case 1:
-		self->m_core.SplitName(pLHS->GetName(), title1, username1);
-		self->m_core.SplitName(pRHS->GetName(), title2, username2);
+		username1 = pLHS->GetUser();
+		username2 = pRHS->GetUser();
 		iResult = ((CString)username1).CompareNoCase(username2);
 		if (iResult == 0 && !bAlreadyRecursed) {
 		  // making a recursed call, add nRecurseFlag
@@ -636,8 +635,8 @@ DboxMain::OnEdit()
       CItemData item = m_core.GetEntryAt(listindex);
 
       CEditDlg dlg_edit(this);
-      m_core.SplitName(item.GetName(),
-		       dlg_edit.m_title, dlg_edit.m_username);
+      dlg_edit.m_title = item.GetTitle();
+      dlg_edit.m_username = item.GetUser();
       dlg_edit.m_realpassword = item.GetPassword();
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = item.GetNotes();
@@ -817,7 +816,8 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   ASSERT(indices != NULL);
 
   POSITION listPos = m_core.GetFirstEntryPosition();
-  CMyString curname, savecurname, curnotes;
+  CMyString curtitle, curuser, curnotes, savetitle;
+  CMyString listTitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   const int NumEntries = m_core.GetNumEntries();
   bool *matchVector = new bool[NumEntries];
@@ -830,24 +830,29 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   for (i = 0; i < NumEntries; i++)
     matchVector[i] = false;
 
+  // XXX Come to think of it, why are we searching twice, once
+  // XXX in the data structure and once in the display list?
+  // XXX Change to search only the latter!
+
   while (listPos != NULL)
   {
-      curname = m_core.GetEntryAt(listPos).GetName();
-      savecurname = curname; // keep original for finding in m_listctrl
-      curnotes = m_core.GetEntryAt(listPos).GetNotes();
+      const CItemData &curitem = m_core.GetEntryAt(listPos);
+      savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+      curuser =  curitem.GetUser();
+      curnotes = curitem.GetNotes();
 
       if (!CaseSensitive) {
-          curname.MakeLower();
+          curtitle.MakeLower();
+          curuser.MakeLower();
           curnotes.MakeLower();
       }
-      if (::strstr(curname, searchstr) || ::strstr(curnotes, searchstr)) {
-	// Find index in m_listctl
-	CMyString listTitle;
-	CMyString title, username;
-	m_core.SplitName(savecurname, title, username);
+      if (::strstr(curtitle, searchstr) ||
+	  ::strstr(curuser, searchstr) ||
+	  ::strstr(curnotes, searchstr)) {
+	// Find index in displayed list
 	for (i = 0; i < NumEntries; i++) {
 	  listTitle = CMyString(m_ctlItemList.GetItemText(i, 0));
-	  if (listTitle == title && !matchVector[i]) {
+	  if (listTitle == savetitle && !matchVector[i]) {
 	    // add to indices, bump retval
 	    indices[retval++] = i;
 	    matchVector[i] = true; // needed because titles are not unique
@@ -1083,7 +1088,39 @@ DboxMain::OnSave()
 void
 DboxMain::OnExportV17()
 {
-  // TBD
+  int rc;
+  CMyString newfile;
+
+  //SaveAs-type dialog box
+  while (1)
+    {
+      CFileDialog fd(FALSE,
+                     "dat",
+                     m_core.GetCurFile(),
+                     OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                     |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                     "Password Safe Databases (*.dat)|*.dat|"
+                     "All files (*.*)|*.*|"
+                     "|",
+                     this);
+      fd.m_ofn.lpstrTitle =
+	"Please name the exported database";
+      rc = fd.DoModal();
+      if (rc == IDOK)
+	{
+	  newfile = (CMyString)fd.GetPathName();
+	  break;
+	}
+      else
+	return;
+    }
+
+  rc = m_core.WriteV17File(newfile);
+  if (rc == PWScore::CANT_OPEN_FILE)
+    {
+      CMyString temp = newfile + "\n\nCould not open file for writing!";
+      MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
+    }
 }
 
 void
@@ -1149,9 +1186,7 @@ DboxMain::OnCopyUsername()
 
    POSITION itemPos = Find(getSelectedItem());
 
-   CMyString title, junk, username;
-   title = m_core.GetEntryAt(itemPos).GetName();
-   m_core.SplitName(title, junk, username);
+   CMyString username = m_core.GetEntryAt(itemPos).GetUser();
 
    if (username.GetLength() == 0)
    {
@@ -1889,8 +1924,8 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 		iResult = m_ctlItemList.GetItemCount();
 	}
 
-	CMyString title, username;
-	m_core.SplitName(itemData.GetName(), title, username);
+	CMyString title = itemData.GetTitle();
+	CMyString username = itemData.GetUser();
 
 	iResult = m_ctlItemList.InsertItem(iResult, title);
 	if (iResult < 0) {

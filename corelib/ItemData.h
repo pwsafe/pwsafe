@@ -12,13 +12,13 @@
  * CItemData is a class that contains the data present in a password entry
  *
  * 'Name' is the pre-2.x field, that had both the entry title and the username rolled-in
- * together, separated by SPLTCHR (defined in util.h). In 2.0 and later, this filed is unused,
- * and the tile and username are stored in separate fields.
+ * together, separated by SPLTCHR (defined in util.h). In 2.0 and later, this field
+ * is unused, and the tile and username are stored in separate fields.
  *
  * What makes this class interesting is that all fields are kept encrypted from the moment
  * of construction, and are decrypted by the appropriate accessor (Get* member function).
  *
- * Of course, all this is to protect the data in memory, and has nothing to do with how the
+ * All this is to protect the data in memory, and has nothing to do with how the
  * records are written to disk.
  */
 
@@ -109,6 +109,9 @@ private:
 
    //Local initialization
    void InitStuff();
+  // move from pre-2.0 name to post-2.0 title+user
+  void SplitName(const CMyString &name,
+		 CMyString &title, CMyString &username);
 
   // Create local Encryption/Decryption object
   BlowFish *MakeBlowFish() const;
