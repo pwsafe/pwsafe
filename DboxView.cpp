@@ -1285,11 +1285,10 @@ DboxMain::SetToolbar(int menuItem)
 
 void
 DboxMain::OnTimer(UINT nIDEvent ){
-	TRACE("Timer\n");
 			
 	if(nIDEvent==TIMER_CHECKLOCK){
 		if(IsWorkstationLocked()){
-			TRACE("lockin\n");
+			TRACE("locking database\n");
 			ClearData();
 			ShowWindow(SW_MINIMIZE);
 			m_needsreading = true;
@@ -1327,6 +1326,17 @@ DboxMain::OnAutoType()
 		CMyString AutoCmd = ci->GetNotes();
 		// get the notes and then extract te autotype command	
 		ExtractAutoTypeCmd(AutoCmd);
+		
+		if(AutoCmd.IsEmpty()){
+ 			// checking for user and password for default settings
+ 			if(!ci->GetPassword().IsEmpty()){
+ 				if(!ci->GetUser().IsEmpty())
+ 					AutoCmd="\\u\\t\\p\\n";
+ 				else
+ 					AutoCmd="\\p\\n";
+ 			}
+ 			
+		}
 		
 		CMyString tmp;
 		
@@ -1377,7 +1387,7 @@ void DboxMain::ExtractAutoTypeCmd(CMyString &str)
 {
   int left = str.Find(_T("autotype:"));
   if (left == -1) {
-    str = _T("\\u\\t\\p\\n"); // default behaviour if keyword not found
+    str = _T(""); 
   } else {
     CString tmp(str);
     tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
