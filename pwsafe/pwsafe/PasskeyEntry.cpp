@@ -6,36 +6,40 @@
   down the streetsky.  [Groucho Marx]
 */
 
-#include "stdafx.h"
-#include "SysColStatic.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+
+#include "MyString.h"
+
+#include "SysColStatic.h"
+
 #include "PasskeyEntry.h"
 #include "TryAgainDlg.h"
+
 #include "util.h"
 
 #include <io.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec,
-                             BOOL first)
-   :CDialog(first ? CPasskeyEntry::IDDFIRST : CPasskeyEntry::IDD,
-            pParent)
+                             bool first)
+   : CDialog(first ? CPasskeyEntry::IDDFIRST : CPasskeyEntry::IDD,
+             pParent),
+     m_first(first),
+     m_tries(0),
+     m_status(TAR_INVALID)
 {
-   m_first = first;
+   DBGMSG("CPasskeyEntry()\n");
+   if (first)
+      DBGMSG("** FIRST **\n");
+
    m_passkey = "";
    m_message = a_filespec;
-   numtimes = 0;
-   tryagainreturnval = TAR_INVALID;
 }
 
 
@@ -60,7 +64,7 @@ CPasskeyEntry::OnInitDialog(void)
    CDialog::OnInitDialog();
 
    if (("" == m_message)
-       && (TRUE == m_first))
+       && m_first)
    {
       //((CEdit*)GetDlgItem(IDC_PASSKEY))->SetReadOnly(TRUE);
       GetDlgItem(IDC_PASSKEY)->EnableWindow(FALSE);
@@ -73,7 +77,7 @@ CPasskeyEntry::OnInitDialog(void)
     * the bitmaps
     */
 
-   if (m_first==TRUE)
+   if (m_first)
    {
       m_Static.SubclassDlgItem(IDC_STATIC_ICON1, this);
       m_Static.ReloadBitmap(IDB_PSLOGO);
@@ -96,7 +100,7 @@ CPasskeyEntry::OnInitDialog(void)
 void
 CPasskeyEntry::OnBrowse()
 {
-   tryagainreturnval = TAR_OPEN;
+   m_status = TAR_OPEN;
    app.m_pMainWnd = NULL;
    CDialog::OnCancel();
 }
@@ -105,7 +109,7 @@ CPasskeyEntry::OnBrowse()
 void
 CPasskeyEntry::OnCreateDb()
 {
-   tryagainreturnval = TAR_NEW;
+   m_status = TAR_NEW;
    app.m_pMainWnd = NULL;
    CDialog::OnCancel();
 }
@@ -123,7 +127,7 @@ void
 CPasskeyEntry::OnOK() 
 {
    UpdateData(TRUE);
-   unsigned char temphash[SaltSize];
+   unsigned char temphash[20]; // HashSize
    GenRandhash(m_passkey,
                app.m_randstuff,
                temphash);
@@ -137,9 +141,9 @@ CPasskeyEntry::OnOK()
 
    if (0 != memcmp((char*)app.m_randhash,
                    (char*)temphash,
-                   SaltSize))
+                   20)) // HashSize
    {
-      if (numtimes >= 2)
+      if (m_tries >= 2)
       {
          CTryAgainDlg errorDlg(this);
 
@@ -149,14 +153,14 @@ CPasskeyEntry::OnOK()
          }
          else if (nResponse == IDCANCEL)
          {
-            tryagainreturnval = errorDlg.GetCancelReturnValue();
+            m_status = errorDlg.GetCancelReturnValue();
             app.m_pMainWnd = NULL;
             CDialog::OnCancel();
          }
       }
       else
       {
-         numtimes++;
+         m_tries++;
          AfxMessageBox("Incorrect passkey");
          ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetSel(MAKEWORD(-1, 0));
          ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
@@ -173,14 +177,20 @@ CPasskeyEntry::OnOK()
 void
 CPasskeyEntry::OnHelp() 
 {
-   WinHelp(0x200B9, HELP_CONTEXT);
+   //WinHelp(0x200B9, HELP_CONTEXT);
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_combo_entry.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 
 
+#if 0
 int
 CPasskeyEntry::GetCancelReturnValue()
 {
    return tryagainreturnval;
 }
+#endif
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
