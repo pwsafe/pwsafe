@@ -225,6 +225,7 @@ CItemData::operator=(const CItemData &that)
    //Check for self-assignment
    if (this != &that)
    {
+     m_UUID = that.m_UUID;
      m_Name = that.m_Name;
      m_Title = that.m_Title;
      m_User = that.m_User;
