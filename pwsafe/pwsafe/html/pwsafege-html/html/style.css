@@ -1,76 +1,98 @@
+/* ----------------------------------------------------- */
 
+body	{
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 10pt;
+	line-height: 14pt;
+	color: #000000;
+	background-color: #FFFFFF;
+	margin-top: 0;
+	margin-bottom: 20pt;
+	margin-left: 10pt;
+	margin-right: 15pt;
+        text-align: left
+	}
 
-BODY	{
-	font-family:"Trebuchet MS",verdana,arial,helvetica,tahoma;
-	color:black;
-	font-size="small";
-	background-color: white;
+/* ----------------------------------------------------- */
 
+h1	{
+	font-size: 28pt;
+        font-weight: normal;
+	line-height: 28pt;
+	margin-top: 20pt;
+	margin-bottom: 5pt
 	}
 
 
-A:link {color: #0069CE; text-decoration: none;} 
-A:visited {color: #0069CE; text-decoration: none;}
-A:active {color: #B22222; text-decoration: none;}
-A:hover { Color: maroon; text-decoration: underline;}
-}
-
- DD {
-          text-indent: 10%;
-     }
-
-li p
-	{
-	margin-top: .75em;
-	margin-bottom: 1.25em;	
-	}	
-
-li
-	{
-	margin-left: .15in;
-	}	 
-
-ol li	
-	{
-	margin-left: .10in;
-	} 
-
-ul
-	{
-	list-style: disc;
+h2	{
+	font-size: 14pt;
+	color: #000000;
+	font-weight: normal;
+	margin-top: 10pt;
+	margin-bottom: 10pt
 	}
 
-ul.onestep
-	{
-	list-style: disc;
+h3	{
+	font-size: 11pt;
+	color: #000000;
+	font-weight: bold;
+	margin-top: 15pt;
+	margin-bottom: -5pt
 	}
 
+h4	{
+	font-size: 10pt;
+	color: #000000;
+	font-weight: bold;
+	margin-top: 15pt;
+	margin-bottom: -5pt
+	}
 
+/* ----------------------------------------------------- */
 
+a:link	{
+	color: #0069CE;
+	text-decoration: none;
+	}
 
+a:visited
+	{
+	color: #0069CE;
+	text-decoration: none;
+	}
 
-/* tables */
+a:active
+	{
+	color: #B22222;
+	text-decoration: none;
+	}
 
+a:hover	{
+	color: maroon;
+	text-decoration: underline;
+	}
 
-table 	{ font-size: 100%;
-		text-align: left;
-		margin-top: 0em;
-		}
+a.headline
+	{
+	color: #000000;
+	text-decoration: none;
+	}
 
-tr		{ margin: .25em;
-		vertical-align: top;
-		}
-			
-th 		{ text-align: left;
-		margin: .25em;
-		vertical-align: top;
-		background: #ffffff;
-		}
-						
-td		{ margin: .25em;
-		
-		vertical-align: top;
-		padding: 0;
-		}
+a.headline:visited
+	{
+	color: #000000;
+	text-decoration: none;
+	}
 
+a.headline:active
+	{
+	color: #000000;
+	text-decoration: none;
+	}
+
+a.headline:hover
+	{
+	color: #990000;
+	text-decoration: none;
+	}
 
