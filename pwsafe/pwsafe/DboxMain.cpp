@@ -345,6 +345,15 @@ DboxMain::OnInitDialog()
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
   } else {
+    // Sanity checks on stored rect - displays change...
+    const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    const int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    if (rect.right > screenWidth || rect.bottom > screenHeight ||
+	rect.left > screenWidth || rect.top > screenHeight) {
+      // if any corner is out of screen, fallback to sane values
+      rect.top = rect.left = 10;
+      rect.bottom = 320; rect.right = 230;
+    }
     MoveWindow(&rect, TRUE);
   }
 #endif
