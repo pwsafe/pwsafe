@@ -481,8 +481,8 @@ DboxMain::OnAdd()
       temp.SetPassword(dataDlg.m_password);
       temp.SetNotes(dataDlg.m_notes);
       POSITION curPos = m_pwlist.AddTail(temp);
-	  int newpos = insertItem(m_pwlist.GetAt(curPos));
-	  m_listctrl->SetItemState(newpos, LVIS_SELECTED, LVIS_SELECTED);
+      int newpos = insertItem(m_pwlist.GetAt(curPos));
+      SelectEntry(newpos);
       m_listctrl->SetFocus();
       m_changed = TRUE;
       ChangeOkUpdate();
@@ -573,9 +573,9 @@ DboxMain::OnDelete()
 		 m_listctrl->DeleteItem(curSel);
          POSITION listindex = Find(curText);
          m_pwlist.RemoveAt(listindex);
-         int rc = m_listctrl->SetItemState(curSel, LVIS_SELECTED, LVIS_SELECTED);
+         int rc = SelectEntry(curSel);
          if (rc == LB_ERR) {
-			m_listctrl->SetItemState(m_listctrl->GetItemCount() - 1, LVIS_SELECTED, LVIS_SELECTED);
+	   SelectEntry(m_listctrl->GetItemCount() - 1);
          }
          m_listctrl->SetFocus();
          ChangeOkUpdate();
@@ -646,9 +646,9 @@ DboxMain::OnEdit()
          m_changed = TRUE;
       }
 
-         rc = m_listctrl->SetItemState(curSel, LVIS_SELECTED, LVIS_SELECTED);
+         rc = SelectEntry(curSel);
          if (rc == LB_ERR) {
-			m_listctrl->SetItemState(m_listctrl->GetItemCount() - 1, LVIS_SELECTED, LVIS_SELECTED);
+	   SelectEntry(m_listctrl->GetItemCount() - 1);
          }
       m_listctrl->SetFocus();
       ChangeOkUpdate();
@@ -867,6 +867,15 @@ DboxMain::SelItemOk()
    return FALSE;
 }
 
+BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
+{
+  BOOL retval;
+  retval = m_listctrl->SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+  if (MakeVisible)
+    m_listctrl->EnsureVisible(i, FALSE);
+  return retval;
+}
+
 
 //Updates m_listctrl from m_pwlist
 void
@@ -904,7 +913,7 @@ DboxMain::RefreshList()
 
    //Setup the selection
    if (m_listctrl->GetItemCount() > 0 && getSelectedItem() < 0) {
-      m_listctrl->SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
+      SelectEntry(0);
    }
 }
 
@@ -1277,11 +1286,11 @@ DboxMain::OnContextMenu(CWnd* pWnd,
    int item = m_listctrl->HitTest(local);
    if (item >= 0)
    {
-         int rc = m_listctrl->SetItemState(item, LVIS_SELECTED, LVIS_SELECTED);
-         if (rc == LB_ERR) {
-			m_listctrl->SetItemState(m_listctrl->GetItemCount() - 1, LVIS_SELECTED, LVIS_SELECTED);
-         }
-      m_listctrl->SetFocus();
+     int rc = SelectEntry(item);
+     if (rc == LB_ERR) {
+       SelectEntry(m_listctrl->GetItemCount() - 1);
+     }
+     m_listctrl->SetFocus();
 
       CMenu menu;
       if (menu.LoadMenu(IDR_POPMENU))

@@ -28,7 +28,7 @@ public:
   // indices allocated by caller
   int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
   int GetNumEntries() const {return m_pwlist.GetCount();}
-  BOOL SelectEntry(int i) {return m_listctrl->SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);}
+  BOOL SelectEntry(int i, BOOL MakeVisible = FALSE); // MakeVisible will scroll list, if needed
    void RefreshList();
 
   void SetCurFile(const CString &arg) {m_currfile = CMyString(arg);} // set to argv

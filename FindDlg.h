@@ -18,11 +18,11 @@ class CFindDlg : public CDialog
   ~CFindDlg();
   // Dialog Data
   //{{AFX_DATA(CFindDlg)
-  enum { IDD = IDD_FIND };
+	enum { IDD = IDD_FIND };
   BOOL	m_cs_search;
   CString	m_search_text;
   CString	m_status;
-  //}}AFX_DATA
+	//}}AFX_DATA
 
 
   // Overrides

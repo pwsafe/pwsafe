@@ -39,7 +39,7 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
   m_cs_search = FALSE;
   m_search_text = _T("");
   m_status = _T("");
-  //}}AFX_DATA_INIT
+	//}}AFX_DATA_INIT
 }
 
 CFindDlg::~CFindDlg()
@@ -129,7 +129,10 @@ void CFindDlg::OnFind()
   
   if (m_numFound > 0) {
     m_lastshown = (m_lastshown + 1) % m_numFound; //from -1 to 0, cycle afterwards
-    pParent->SelectEntry(m_indices[m_lastshown]);
+    pParent->SelectEntry(m_indices[m_lastshown], TRUE);
+  }
+  if (m_numFound > 1) {
+      SetDlgItemText(IDOK, _T("Find Next"));
   }
   // don't call CDialog::OnOK - user will Cancel() to close dbox
 }
