@@ -27,6 +27,13 @@
 class ThisMfcApp;
 extern ThisMfcApp app;
 
+/*
+ * This is the string to be displayed instead of the actual password, unless
+ * the user chooses to see the password:
+ */
+
+extern const TCHAR *HIDDEN_PASSWORD;
+
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++
