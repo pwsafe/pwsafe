@@ -27,6 +27,10 @@ Downloading:
 The latest & greatest version of Password Safe may be downloaded from
 https://sourceforge.net/project/showfiles.php?group_id=41019
 
+A French version of the help file may be found in
+http://passwordsafe.sourceforge.net/pwsafefr.zip (Thanks to Laurent
+Masson).
+
 A Russian version of the help file may be found in
 http://passwordsafe.sourceforge.net/pwsaferu.zip (Thanks to Maxim
 Tikhonov). 
@@ -101,6 +105,9 @@ password policy code and some GUI improvements for 1.92.
 project.
 
 $Log$
+Revision 1.7  2004/09/25 08:04:31  ronys
+Added pointer to French help file.
+
 Revision 1.6  2004/03/31 04:44:31  ronys
 Announce availability of German version of online help
 
