@@ -150,7 +150,7 @@ protected:
    afx_msg void OnCopyUsername();
    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
    afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
-   afx_msg void OnListDoubleClick( NMHDR * pNotifyStruct, LRESULT * result );
+   afx_msg void OnItemDoubleClick( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnCopyPassword();
    afx_msg void OnNew();
    afx_msg void OnOpen();

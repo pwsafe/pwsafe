@@ -145,7 +145,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_CONTEXTMENU()
 #endif
 	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
-	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
+	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
+	ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
@@ -436,7 +437,7 @@ DboxMain::OnQueryDragIcon()
 
 
 void
-DboxMain::OnListDoubleClick( NMHDR *, LRESULT *)
+DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 {
 #if defined(POCKET_PC)
 	if ( app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE) == FALSE )
