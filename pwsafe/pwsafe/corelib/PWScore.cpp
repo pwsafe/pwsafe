@@ -33,9 +33,13 @@ PWScore::~PWScore()
 void
 PWScore::ClearData(void)
 {
-   //Composed of ciphertext, so doesn't need to be overwritten
-   m_pwlist.RemoveAll();
-	
+  if (m_passkey_len > 0) {
+    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    delete[] m_passkey;
+    m_passkey_len = 0;
+  }
+  //Composed of ciphertext, so doesn't need to be overwritten
+  m_pwlist.RemoveAll();
 }
 
 void
