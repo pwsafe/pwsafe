@@ -1,5 +1,6 @@
 // ConfirmDeleteDlg.h
 //-----------------------------------------------------------------------------
+#include "resource.h"
 
 class CConfirmDeleteDlg : public CDialog
 {

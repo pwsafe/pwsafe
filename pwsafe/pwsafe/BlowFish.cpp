@@ -3,15 +3,19 @@
 
 #include "BlowFish.h"
 
+#include "Util.h" // for trashMemory
+
+
+
 #define S(x, i) (bf_S[i][x.w.byte##i])
 #define bf_F(x) (((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3))
 #define ROUND(a, b, n) (a.word ^= bf_F(b) ^ bf_P[n])
 
 
-unsigned long bf_S[4][256];
-unsigned long bf_P[bf_N + 2];
+unsigned long BlowFish::bf_S[4][256];
+unsigned long BlowFish::bf_P[BlowFish::bf_N + 2];
 
-unsigned long tempbf_P[bf_N + 2] =
+const unsigned long BlowFish::tempbf_P[BlowFish::bf_N + 2] =
 {
    0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
    0xa4093822, 0x299f31d0, 0x082efa98, 0xec4e6c89,
@@ -20,7 +24,7 @@ unsigned long tempbf_P[bf_N + 2] =
    0x9216d5d9, 0x8979fb1b,
 };
 
-unsigned long tempbf_S[4][256] =
+const unsigned long BlowFish::tempbf_S[4][256] =
 {
    0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7,
    0xb8e1afed, 0x6a267e96, 0xba7c9045, 0xf12c7f99,
@@ -388,8 +392,9 @@ BlowFish::BlowFish(unsigned char *key,
      bf_P and bf_S, for speed reasons, are static global variables.
      the temp... versions never are changed and are copied to the 
      real" ones used by the actual algorithm. These can change, as
-     they are dependent on passkeys. The "real" and the temp are trashed
-     in ~CPasswordSafeApp(), because after that they are surely not needed.
+     they are dependent on passkeys. The "real" (and the temp - why??
+     - stopped for now) are trashed in ~BlowFish(), because after that
+     they are surely not needed.
    */
 
    int x, y;
@@ -406,9 +411,16 @@ BlowFish::BlowFish(unsigned char *key,
    InitializeBlowfish(key, keylen);
 }
 
+BlowFish::~BlowFish()
+{
+  //  trashMemory((unsigned char*)tempbf_P, 18*4);
+  // trashMemory((unsigned char*)tempbf_S, 256*4);
+  trashMemory((unsigned char*)bf_P, 18*4);
+  trashMemory((unsigned char*)bf_S, 256*4);
+}
 
 void
-BlowFish::Encrypt(block in, block out)
+BlowFish::Encrypt(const block in, block out)
 {
    for (int x=0; x<8; x++)
       out[x] = in[x];
@@ -419,7 +431,7 @@ BlowFish::Encrypt(block in, block out)
 
 
 void
-BlowFish::Decrypt(block in, block out)
+BlowFish::Decrypt(const block in, block out)
 {
    for (int x=0; x<8; x++)
       out[x] = in[x];

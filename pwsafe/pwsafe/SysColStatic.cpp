@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 CSysColStatic::CSysColStatic()
 {
-   m_nImageID == -1;
+   m_nImageID = -1;
 }
 
 CSysColStatic::~CSysColStatic()

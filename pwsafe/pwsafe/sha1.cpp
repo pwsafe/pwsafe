@@ -34,7 +34,7 @@
 
 /* Hash a single 512-bit block. This is the core of the algorithm. */
 
-void SHA1Transform(unsigned long state[5], unsigned char buffer[64])
+void SHA1Transform(unsigned long state[5], const unsigned char buffer[64])
 {
 unsigned long a, b, c, d, e;
 typedef union {
@@ -103,7 +103,7 @@ void SHA1Init(SHA1_CTX* context)
 
 /* Run your data through this. */
 
-void SHA1Update(SHA1_CTX* context, unsigned char* data, unsigned int len)
+void SHA1Update(SHA1_CTX* context, const unsigned char* data, unsigned int len)
 {
 unsigned int i, j;
 

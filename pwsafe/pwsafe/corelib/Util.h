@@ -9,6 +9,8 @@
 #include "sha1.h"
 
 #define SaltLength 20
+#define SaltSize 20
+#define StuffSize 10
 
 // this is for the undocumented 'command line file encryption'
 #define CIPHERTEXT_SUFFIX ".PSF"
@@ -21,8 +23,6 @@
 //Version defines
 #define V10 0
 #define V15 1
-
-enum windows_t {Win32s, Win95, WinNT};
 
 //Some extra typedefs -- I'm addicted to typedefs
 typedef char    int8;
@@ -37,43 +37,29 @@ typedef unsigned __int64 uint64;
 
 
 extern void trashMemory(SHA1_CTX& context);
-#if 0
-extern void trashMemory(unsigned char* buffer, 
-                        long length);
-#endif
 extern void trashMemory(unsigned char* buffer,
                         long length,
                         int numiter = 30);
-extern void trashMemory(CString& string);
-#if 0
-extern void ErrorMessages(CMyString fn, int fp);
-#endif
-extern void GenRandhash(CMyString passkey,
-                        unsigned char* m_randstuff,
+extern void GenRandhash(const CMyString &passkey,
+                        const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
-#if 0
-extern int not(int x);
-#endif
-
 extern unsigned char newrand();
-#if 0
-extern BOOL FileExists(CMyString filename);
-#endif
-
-#if 0
-extern windows_t GetOSVersion();
-#endif 
 
 extern char GetRandAlphaNumChar();
 
-int _readcbc(int fp, unsigned char* buffer, unsigned int buffer_len,
-             unsigned char* salt, unsigned char* cbcbuffer);
-int _readcbc(int fp, CMyString& deststring, unsigned char* salt,
-             unsigned char* cbcbuffer);
-int _writecbc(int fp, unsigned char* buffer, int length,
-              unsigned char* salt, unsigned char* cbcbuffer);
-int _writecbc(int fp, CMyString string, unsigned char* salt,
-              unsigned char* cbcbuffer);
+class BlowFish;
+extern BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
+			      const unsigned char *salt, int saltlen);
+
+// buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
+extern int _readcbc(int fp, unsigned char* &buffer, unsigned int &buffer_len,
+		    const unsigned char *pass, int passlen,
+		    const unsigned char* salt, int saltlen,
+		    unsigned char* cbcbuffer);
+extern int _writecbc(int fp, const unsigned char* buffer, int length,
+		     const unsigned char *pass, int passlen,
+		     const unsigned char* salt, int saltlen,
+		     unsigned char* cbcbuffer);
 
 #if defined(WITH_LEGACY_CMDLINE)
 //void _encryptFile(CString filepath);
@@ -82,18 +68,6 @@ int _writecbc(int fp, CMyString string, unsigned char* salt,
 void manageCmdLine(CString m_lpCmdLine);
 #endif
 
-int SplitName(CMyString, CMyString&, CMyString&);
-void MakeName(CMyString&, CMyString, CMyString);
-
-class CItemData;
-void MakeFullNames(CList<CItemData, CItemData>* plist,
-                   CMyString defusername);
-void DropDefUsernames(CList<CItemData, CItemData>* plist,
-                      CMyString defusername);
-int CheckVersion(CList<CItemData, CItemData>* plist);
-void SetBlankToDef(CList<CItemData, CItemData>* plist);
-void SetBlankToName(CList<CItemData, CItemData>* plist, CMyString username);
-BOOL CheckExtension(CMyString name, CMyString ext);
 
 #endif // Util_h
 //-----------------------------------------------------------------------------

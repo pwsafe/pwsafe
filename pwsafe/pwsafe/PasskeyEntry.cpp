@@ -34,12 +34,20 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
      m_tries(0),
      m_status(TAR_INVALID)
 {
+   const int FILE_DISP_LEN = 45;	
    DBGMSG("CPasskeyEntry()\n");
    if (first)
       DBGMSG("** FIRST **\n");
 
    m_passkey = "";
-   m_message = a_filespec;
+   if (a_filespec.GetLength() > FILE_DISP_LEN) {
+	   m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
+	   m_message.Insert(0, _T("..."));
+   }
+   else
+   {
+	   m_message = a_filespec;
+   }
 }
 
 
@@ -83,8 +91,10 @@ CPasskeyEntry::OnInitDialog(void)
       m_Static.ReloadBitmap(IDB_PSLOGO);
       m_Static2.SubclassDlgItem(IDC_STATIC_ICON2, this);
       m_Static2.ReloadBitmap(IDB_CLOGO);
+#if 0 // this bitmap (funky "http://passwordsafe.sorcefourge.net") no longer displayed
       m_Static3.SubclassDlgItem(IDC_STATIC_ICON3, this);
       m_Static3.ReloadBitmap(IDB_CTEXT);
+#endif
    }
    else
    {

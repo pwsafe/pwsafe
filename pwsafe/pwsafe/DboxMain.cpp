@@ -21,7 +21,6 @@
 #include "QuerySetDef.h"
 #include "QueryAddName.h"
 #include "UsernameEntry.h"
-//#include "FileDialogExt.h"
 #include "TryAgainDlg.h"
 
 // widget override?
@@ -79,10 +78,13 @@ DboxMain::DboxMain(CWnd* pParent)
    //m_deffile = (CMyString) ".\\pwsafe.dat"; //temp2;
 
    /*
-     current file and current backup file specs are stored in registry
-   */
-   m_currfile =
-      (CMyString) app.GetProfileString("", "currentfile", "xxxxx.dat");
+    * current file and current backup file specs are stored in registry
+    * Note that if m_currfile is non-empty, we will not read the registry value.
+    * This will happen if a filename was given in the command line.
+    */
+   if (m_currfile.IsEmpty()) {
+     m_currfile = (CMyString) app.GetProfileString("", "currentfile", "xxxxx.dat");
+   }
    m_currbackup =
       (CMyString) app.GetProfileString("", "currentbackup", NULL);
    m_title = "";
@@ -376,9 +378,7 @@ DboxMain::OnAdd()
    CAddDlg dataDlg(this);
    if (app.GetProfileInt("", "usedefuser", FALSE) == TRUE)
    {
-      CString temp = app.GetProfileString("", "defusername", "");
-      dataDlg.m_username = (CMyString)temp;
-      trashMemory(temp);
+      dataDlg.m_username = CMyString(app.GetProfileString("", "defusername", ""));
    }
    int rc = dataDlg.DoModal();
 	
@@ -433,10 +433,7 @@ DboxMain::OnCopyPassword()
    {
       int curSel = m_listctrl->GetCurSel();
       CMyString curSelString;
-      CString temp;
-      m_listctrl->GetText(curSel, temp);
-      curSelString = (CMyString)temp;
-      trashMemory(temp);
+      m_listctrl->GetText(curSel, curSelString.m_mystring);
       POSITION itemPos = Find(curSelString);
 		
       CMyString curPassString;
@@ -507,10 +504,7 @@ DboxMain::OnDelete()
          m_changed = TRUE;
          int curSel = m_listctrl->GetCurSel();
          CMyString curText;
-         CString temp;
-         m_listctrl->GetText(curSel, temp);
-         curText = (CMyString)temp;
-         trashMemory(temp);
+         m_listctrl->GetText(curSel, curText.m_mystring);
          int ctrlindex = m_listctrl->FindStringExact(-1, (LPCTSTR)curText);
          m_listctrl->DeleteString(ctrlindex);
          POSITION listindex = Find(curText);
@@ -535,10 +529,7 @@ DboxMain::OnEdit()
       int curSel = m_listctrl->GetCurSel();
 		
       CMyString curText;
-      CString temp1;
-      m_listctrl->GetText(curSel, temp1);
-      curText = (CMyString)temp1;
-      trashMemory(temp1);
+      m_listctrl->GetText(curSel, curText.m_mystring);
 
       int ctrlindex = m_listctrl->FindStringExact(-1, (LPCTSTR)curText);
 
@@ -627,12 +618,12 @@ DboxMain::OnOK()
    ClearData();
 
    //Store current filename for next time...
-   if (m_currfile!="")
+   if (!m_currfile.IsEmpty())
       app.WriteProfileString("", "currentfile", m_currfile.m_mystring);
    else
       app.WriteProfileString("", "currentfile", NULL);
 
-   if (m_currbackup!="")
+   if (!m_currbackup.IsEmpty())
       app.WriteProfileString("", "currentbackup", m_currbackup.m_mystring);
    else
       app.WriteProfileString("", "currentbackup", NULL);
@@ -676,7 +667,7 @@ DboxMain::ClearClipboard()
 
 //Finds stuff based on the .GetName() part not the entire object
 POSITION
-DboxMain::Find(CMyString lpszString)
+DboxMain::Find(const CMyString &lpszString)
 {
    POSITION listPos = m_pwlist.GetHeadPosition();
    CMyString curthing;
@@ -702,10 +693,7 @@ DboxMain::SelItemOk()
    if (curSel != LB_ERR)
    {
       CMyString curText;
-      CString temp;
-      m_listctrl->GetText(curSel, temp);
-      curText = (CMyString)temp;
-      trashMemory(temp);
+      m_listctrl->GetText(curSel, curText.m_mystring);
       int ctrlindex = m_listctrl->FindStringExact(-1, (LPCTSTR)curText);
       if (ctrlindex != LB_ERR)
       {
@@ -793,8 +781,15 @@ DboxMain::OnPasswordChange()
       app.m_passkey = changeDlg.m_newpasskey;
 		
       //Gets a new random value used for password authentication
-      for (int x=0; x<8; x++)
+      for (int x=0; x < 8; x++)
          app.m_randstuff[x] = newrand();
+      /*
+       * We generate 8 bytes of randomness, but m_randstuff
+       * is larger: StuffSize bytes. This appears to be a bug,
+       * let's at least explicitly zero the extra 2 bytes, since redefining
+       * StuffSize to 8 would break every existing database...
+       */
+      app.m_randstuff[8] = app.m_randstuff[9] = '\0';
 
       GenRandhash(changeDlg.m_newpasskey,
                   app.m_randstuff,
@@ -944,7 +939,7 @@ DboxMain::Save()
 {
    int rc;
 
-   if (m_currfile == "")
+   if (m_currfile.IsEmpty())
       return SaveAs();
 
    rc = WriteFile(m_currfile);
@@ -1032,10 +1027,7 @@ DboxMain::OnCopyUsername()
 
    int curSel = m_listctrl->GetCurSel();
    CMyString curSelString;
-   CString temp;
-   m_listctrl->GetText(curSel, temp);
-   curSelString = (CMyString)temp;
-   trashMemory(temp);
+   m_listctrl->GetText(curSel, curSelString.m_mystring);
    POSITION itemPos = Find(curSelString);
 
    CMyString title, junk, username;
@@ -1232,7 +1224,7 @@ DboxMain::Open()
       {
          //Check that this file isn't already open
          newfile = (CMyString)fd.GetPathName();
-         if (newfile == m_currfile)
+         if (newfile == m_currfile && !m_needsreading)
          {
             //It is the same damn file
             MessageBox("That file is already open.",
@@ -1497,7 +1489,7 @@ DboxMain::SaveAs()
                      "All files (*.*)|*.*|"
                      "|",
                      this);
-      if (m_currfile == "")
+      if (m_currfile.IsEmpty())
          fd.m_ofn.lpstrTitle =
             "Please Choose a Name for the Current (Untitled) Database:";
       else
@@ -1529,9 +1521,22 @@ DboxMain::SaveAs()
    return SUCCESS;
 }
 
+int DboxMain::WriteCBC(int fp, const CString &data, const unsigned char *salt,
+		       unsigned char *ipthing)
+{
+  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
+  // to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR passstr = LPCSTR(app.m_passkey);
+  LPCSTR datastr = LPCSTR(data);
+
+  return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
+		   (const unsigned char *)passstr, app.m_passkey.GetLength(),
+		   salt, SaltLength, ipthing);
+}
 
 int
-DboxMain::WriteFile(CMyString filename)
+DboxMain::WriteFile(const CMyString &filename)
 {
    int out = _open((LPCTSTR)filename,
                    _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
@@ -1560,7 +1565,7 @@ DboxMain::WriteFile(CMyString filename)
 
    //Write out full names
    BOOL needexpand = app.GetProfileInt("", "usedefuser", FALSE);
-   CString defusername = app.GetProfileString("", "defusername", "");
+   CMyString defusername = app.GetProfileString("", "defusername", "");
    if (needexpand==TRUE)
       MakeFullNames(&m_pwlist, defusername);
 
@@ -1571,11 +1576,11 @@ DboxMain::WriteFile(CMyString filename)
    {
       temp = m_pwlist.GetAt(listPos);
       temp.GetName(tempdata);
-      _writecbc(out, tempdata, thesalt, ipthing);
+      WriteCBC(out, tempdata, thesalt, ipthing);
       temp.GetPassword(tempdata);
-      _writecbc(out, tempdata, thesalt, ipthing);
+      WriteCBC(out, tempdata, thesalt, ipthing);
       temp.GetNotes(tempdata);
-      _writecbc(out, tempdata, thesalt, ipthing);
+      WriteCBC(out, tempdata, thesalt, ipthing);
       m_pwlist.GetNext(listPos);
    }
    _close(out);
@@ -1586,8 +1591,6 @@ DboxMain::WriteFile(CMyString filename)
    if (needexpand)
       DropDefUsernames(&m_pwlist, defusername);
 
-   trashMemory(defusername);
-
    m_changed = FALSE;
    ChangeOkUpdate();
 
@@ -1596,19 +1599,19 @@ DboxMain::WriteFile(CMyString filename)
 
 
 int
-DboxMain::CheckPassword(CMyString filename,
+DboxMain::CheckPassword(const CMyString &filename,
                         CMyString& passkey,
                         bool first)
 {
-   DBGMSG("DboxMain::CheckPassword()\n");
+  DBGMSG("DboxMain::CheckPassword()\n");
 
-   unsigned char temprandstuff[8];
-   unsigned char temprandhash[20];
-   int retval;
-   bool saved_stuff = false;
+  unsigned char temprandstuff[8];
+  unsigned char temprandhash[20];
+  int retval;
+  bool saved_stuff = false;
 
-   if (filename != "")
-   {
+  if (filename != "")
+    {
       DBGMSG("filename not blank\n");
 
       int in = _open((LPCTSTR) filename,
@@ -1616,86 +1619,114 @@ DboxMain::CheckPassword(CMyString filename,
                      S_IREAD | _S_IWRITE);
 
       if (in == -1)
-      {
-         DBGMSG("open return -1\n");
+	{
+	  DBGMSG("open return -1\n");
 
-         if (! first)
+	  if (! first)
             return CANT_OPEN_FILE;
 
-         MessageBox("Can't open current database", "File open error",
-                    MB_OK | MB_ICONWARNING);
-         filename = "";
-      }
+	  CString Errmess(_T("Can't open database "));
+	  Errmess += filename.m_mystring;
+	  MessageBox(Errmess, "File open error",
+		     MB_OK | MB_ICONWARNING);
+	}
       else
-      {
-         DBGMSG("hashstuff\n");
+	{
+	  DBGMSG("hashstuff\n");
 
-         //Preserve the current randstuff and hash
-         memcpy(temprandstuff, app.m_randstuff, 8);
-         memcpy(temprandhash, app.m_randhash, 20);
-         saved_stuff = true;
+	  //Preserve the current randstuff and hash
+	  memcpy(temprandstuff, app.m_randstuff, 8);
+	  memcpy(temprandhash, app.m_randhash, 20);
+	  saved_stuff = true;
 
-         /*
-           Seems that the beginning of the database file is
-           8 bytes of randomness and a SHA1 hash {jpr}
-         */
-         _read(in, app.m_randstuff, 8);
-         _read(in, app.m_randhash, 20);
-         _close(in);
-      }
-   }
+	  /*
+	    The beginning of the database file is
+	    8 bytes of randomness and a SHA1 hash {jpr}
+	  */
+	  _read(in, app.m_randstuff, 8);
+	  _read(in, app.m_randhash, 20);
+	  _close(in);
+	}
+    }
 
-   /*
-    * with my unsightly hacks of PasskeyEntry, it should now accept
-    * a blank filename, which will disable passkey entry and the OK button
-    */
+  /*
+   * with my unsightly hacks of PasskeyEntry, it should now accept
+   * a blank filename, which will disable passkey entry and the OK button
+   */
 
-   CPasskeyEntry* dbox_pkentry =  new CPasskeyEntry(this, filename, first);
-   app.m_pMainWnd = dbox_pkentry;
-   //dbox_pkentry->m_message = filename.m_mystring;
-   int rc = dbox_pkentry->DoModal();
+  CPasskeyEntry dbox_pkentry(this, filename, first);
+  app.m_pMainWnd = &dbox_pkentry;
+  //dbox_pkentry->m_message = filename.m_mystring;
+  int rc = dbox_pkentry.DoModal();
 
-   if (rc == IDOK)
-   {
+  if (rc == IDOK)
+    {
       DBGMSG("PasskeyEntry returns IDOK\n");
-      passkey = dbox_pkentry->m_passkey;
+      passkey = dbox_pkentry.m_passkey;
       retval = SUCCESS;
-   }
-   else /*if (rc==IDCANCEL) */ //Determine reason for cancel
-   {
-      int cancelreturn = dbox_pkentry->GetStatus();
+    }
+  else /*if (rc==IDCANCEL) */ //Determine reason for cancel
+    {
+      int cancelreturn = dbox_pkentry.GetStatus();
       switch (cancelreturn)
-      {
-      case TAR_OPEN:
-      case TAR_NEW:
-         DBGMSG("PasskeyEntry TAR_OPEN or TAR_NEW\n");
-         retval = cancelreturn;		//Return either open or new flag... 
-         break;
-      default:
-         DBGMSG("Default to WRONG_PASSWORD\n");
-         retval = WRONG_PASSWORD;	//Just a normal cancel
-         break;
-      }
-   }
+	{
+	case TAR_OPEN:
+	case TAR_NEW:
+	  DBGMSG("PasskeyEntry TAR_OPEN or TAR_NEW\n");
+	  retval = cancelreturn;		//Return either open or new flag... 
+	  break;
+	default:
+	  DBGMSG("Default to WRONG_PASSWORD\n");
+	  retval = WRONG_PASSWORD;	//Just a normal cancel
+	  break;
+	}
+    }
 
-   //Restore the current randstuff and hash
-   if (saved_stuff)
-   {
+  //Restore the current randstuff and hash
+  if (saved_stuff)
+    {
       memcpy(app.m_randstuff, temprandstuff, 8);
       memcpy(app.m_randhash, temprandhash, 20);
       trashMemory(temprandstuff, 8);
       trashMemory(temprandhash, 20);
-   }
+    }
 
-   delete dbox_pkentry;
+  app.m_pMainWnd = NULL; // done with dbox_pkentry
 
-   return retval;
+  return retval;
+}
+
+int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
+		       unsigned char *ipthing)
+{
+  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
+  // to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR passstr = LPCSTR(app.m_passkey);
+  LPCSTR datastr = LPCSTR(data);
+
+  unsigned char *buffer = NULL;
+  unsigned int buffer_len = 0;
+  int retval;
+
+  retval = _readcbc(fp, buffer, buffer_len,
+		   (const unsigned char *)passstr, app.m_passkey.GetLength(),
+		   salt, SaltLength, ipthing);
+  if (buffer_len > 0) {
+    CMyString str(LPCSTR(buffer), buffer_len);
+    data = str;
+    trashMemory(buffer, buffer_len);
+    delete[] buffer;
+  } else {
+    data = "";
+  }
+  return retval;
 }
 
 
 int
-DboxMain::ReadFile(CMyString a_filename,
-                   CMyString a_passkey)
+DboxMain::ReadFile(const CMyString &a_filename,
+                   const CMyString &a_passkey)
 {	
    //That passkey had better be the same one that came from CheckPassword(...)
 
@@ -1722,21 +1753,21 @@ DboxMain::ReadFile(CMyString a_filename,
    CMyString tempdata;
 
    int numread = 0;
-   numread += _readcbc(in, tempdata, salt, ipthing);
+   numread += ReadCBC(in, tempdata, salt, ipthing);
    temp.SetName(tempdata);
-   numread += _readcbc(in, tempdata, salt, ipthing);
+   numread += ReadCBC(in, tempdata, salt, ipthing);
    temp.SetPassword(tempdata);
-   numread += _readcbc(in, tempdata, salt, ipthing);
+   numread += ReadCBC(in, tempdata, salt, ipthing);
    temp.SetNotes(tempdata);
    while (numread > 0)
    {
       m_pwlist.AddTail(temp);
       numread = 0;
-      numread += _readcbc(in, tempdata, salt, ipthing);
+      numread += ReadCBC(in, tempdata, salt, ipthing);
       temp.SetName(tempdata);
-      numread += _readcbc(in, tempdata, salt, ipthing);
+      numread += ReadCBC(in, tempdata, salt, ipthing);
       temp.SetPassword(tempdata);
-      numread += _readcbc(in, tempdata, salt, ipthing);
+      numread += ReadCBC(in, tempdata, salt, ipthing);
       temp.SetNotes(tempdata);
    }
 
@@ -1746,9 +1777,8 @@ DboxMain::ReadFile(CMyString a_filename,
    //Shorten names if necessary
    if (app.GetProfileInt("", "usedefuser", FALSE) == TRUE)
    {
-      CString temp = app.GetProfileString("", "defusername", "");
-      DropDefUsernames(&m_pwlist, (CMyString)temp);
-      trashMemory(temp);
+      CMyString temp = app.GetProfileString("", "defusername", "");
+      DropDefUsernames(&m_pwlist, temp);
    }
 
    //See if we should add usernames to an old version file
@@ -1803,7 +1833,7 @@ DboxMain::NewFile(void)
 
    for (int x=0; x<8; x++)
       app.m_randstuff[x] = newrand();
-
+   app.m_randstuff[8] = app.m_randstuff[9] = '\0';
    GenRandhash(app.m_passkey, app.m_randstuff, app.m_randhash);
 
    return SUCCESS;
@@ -1813,7 +1843,7 @@ DboxMain::NewFile(void)
 void
 DboxMain::ClearData(void)
 {
-   trashMemory(app.m_passkey.m_mystring);
+  app.m_passkey.Trash();
 
    //Composed of ciphertext, so doesn't need to be overwritten
    m_pwlist.RemoveAll();
@@ -2148,6 +2178,191 @@ DboxMain::OnDropFiles(HDROP hDrop)
 
    DragFinish(hDrop);
 } 
+
+
+/*
+  The following two functions are for use when switching default
+  username states.
+
+  Should be run only if usedefuser == TRUE
+*/
+void
+DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
+			const CMyString &defusername)
+{
+   POSITION listPos = plist->GetHeadPosition();
+   while (listPos != NULL)
+   {
+      CMyString temp;
+      plist->GetAt(listPos).GetName(temp);
+      //Start MakeFullName
+      int pos = temp.Find(SPLTCHR);
+      int pos2 = temp.Find(DEFUSERCHR);
+      if (pos==-1 && pos2!=-1)
+      {
+         //Insert defusername if string contains defchr but not splitchr
+         plist->GetAt(listPos).SetName(
+            (CMyString)temp.Left(pos2) + SPLTSTR + defusername);
+      }
+      // End MakeFullName
+      plist->GetNext(listPos);
+   }
+}
+
+
+//Should only be run on full names...
+void
+DboxMain::DropDefUsernames(CList<CItemData, CItemData>* plist, const CMyString &defusername)
+{
+   POSITION listPos = plist->GetHeadPosition();
+   while (listPos != NULL)
+   {
+      CMyString temp;
+      plist->GetAt(listPos).GetName(temp);
+      //Start DropDefUsername
+      CMyString temptitle, tempusername;
+      int pos = SplitName(temp, temptitle, tempusername);
+      if ((pos!=-1) && (tempusername == defusername))
+      {
+         //If name is splitable and username is default
+         plist->GetAt(listPos).SetName(temptitle + DEFUSERCHR);
+      }
+      //End DropDefUsername
+      plist->GetNext(listPos);
+   }
+}
+
+int
+DboxMain::CheckVersion(CList<CItemData, CItemData>* plist)
+{
+   POSITION listPos = plist->GetHeadPosition();
+   while (listPos != NULL)
+   {
+      CMyString temp;
+      plist->GetAt(listPos).GetName(temp);
+
+      if (temp.Find(SPLTCHR) != -1)
+         return V15;
+
+      plist->GetNext(listPos);
+   }
+   
+   return V10;
+}
+
+
+
+void
+DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
+{
+   POSITION listPos = plist->GetHeadPosition();
+   while (listPos != NULL)
+   {
+      CMyString temp;
+      plist->GetAt(listPos).GetName(temp);
+
+      //Start Check
+      if ((temp.Find(SPLTCHR) == -1)
+          && (temp.Find(DEFUSERCHR) == -1))
+      {
+         plist->GetAt(listPos).SetName(temp + DEFUSERCHR);
+      }
+      //End Check
+
+      plist->GetNext(listPos);
+   }
+}
+
+
+void
+DboxMain::SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &username)
+{
+   POSITION listPos = plist->GetHeadPosition();
+   while (listPos != NULL)
+   {
+      CMyString temp;
+      plist->GetAt(listPos).GetName(temp);
+      //Start Check
+      if ( (temp.Find(SPLTCHR) == -1) && (temp.Find(DEFUSERCHR) == -1) )
+      {
+         plist->GetAt(listPos).SetName(temp + SPLTSTR + username);
+      }
+      //End Check
+      plist->GetNext(listPos);
+   }
+}
+
+
+BOOL
+DboxMain::CheckExtension(const CMyString &name, const CMyString &ext) const
+{
+   int pos = name.Find(ext);
+   return (pos == name.GetLength() - ext.GetLength()); //Is this at the end??
+}
+
+
+int
+DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username) const
+//Returns split position for a name that was split and -1 for non-split name
+{
+   int pos = name.Find(SPLTCHR);
+   if (pos==-1) //Not a split name
+   {
+      int pos2 = name.Find(DEFUSERCHR);
+      if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
+      {
+         title = name;
+      }
+      else
+      {
+         title = CMyString(name.Left(pos2));
+      }
+
+      if ((pos2 != -1)
+          && (app.GetProfileInt("", "usedefuser", FALSE)==TRUE))
+      {
+         username = CMyString(app.GetProfileString("", "defusername", ""));
+      }
+      else
+      {
+         username = "";
+      }
+   }
+   else
+   {
+      /*
+       * There should never ever be both a SPLITCHR and a DEFUSERCHR in
+       * the same string
+       */
+      CMyString temp;
+      temp = CMyString(name.Left(pos));
+      temp.TrimRight();
+      title = temp;
+      temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
+      temp.TrimLeft();
+      username = temp;
+   }
+   return pos;
+}
+
+
+void
+DboxMain::MakeName(CMyString& name, const CMyString &title, const CMyString &username) const
+{
+   if (username == "")
+      name = title;
+   else if (((app.GetProfileInt("", "usedefuser", FALSE))==TRUE)
+            && (username.m_mystring ==
+                app.GetProfileString("", "defusername", "")))
+   {
+      name = title + DEFUSERCHR;
+   }
+   else 
+   {
+      name = title + SPLTSTR + username;
+   }
+}
+
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

@@ -7,6 +7,21 @@
 #include "Util.h"
 
 //-----------------------------------------------------------------------------
+
+/*
+ * CItemData is a class that contains the data present in a password entry: The name
+ * of the entry, the password, and the notes.
+ * (I assume that the 'username' field is a later add-on, and is tacked on somehow to the name)
+ *
+ * What makes this class interesting is that all fields are kept encrypted from the moment
+ * of construction, and are decrypted by the appropriate accessor (Get* member function).
+ *
+ * Of course, all this is to protect the data in memory, and has nothing to do with how the
+ * records are written to disk (I think).
+ */
+
+class BlowFish;
+
 class CItemData
 {
 public:
@@ -24,22 +39,22 @@ public:
         m_saltValid(FALSE)
    {}
 
-   CItemData(CMyString name, CMyString password, CMyString notes);
-   CItemData(CItemData& stuffhere);
+   CItemData(const CMyString &name, const CMyString &password, const CMyString &notes);
+   CItemData(const CItemData& stuffhere);
 
    //Data retrieval
-   BOOL GetName(CMyString& name);
-   BOOL GetPassword(CMyString& password);
-   BOOL GetNotes(CMyString& notes);
+   BOOL GetName(CMyString& name) const;
+   BOOL GetPassword(CMyString& passwd) const;
+   BOOL GetNotes(CMyString& notes) const;
 
    // jpr - new data retrieval
-   CMyString GetName();
-   CMyString GetPassword();
-   CMyString GetNotes();
+   CMyString GetName() const;
+   CMyString GetPassword() const;
+   CMyString GetNotes() const;
 
-   BOOL SetName(CMyString name);
-   BOOL SetPassword(CMyString password);
-   BOOL SetNotes(CMyString notes);
+   BOOL SetName(const CMyString &name);
+   BOOL SetPassword(const CMyString &password);
+   BOOL SetNotes(const CMyString &notes);
 
    //Copies contents of pointers too
    CItemData& operator=(const CItemData& second);
@@ -55,21 +70,21 @@ public:
 
 private:
    //Actual encryption/decryption
-   BOOL EncryptData(CMyString plain,
+   BOOL EncryptData(const CMyString &plain,
                     unsigned char** cipher, int* cLength,
                     BOOL* valid);
-   BOOL EncryptData(unsigned char* plain, int plainlength,
+   BOOL EncryptData(const unsigned char* plain, int plainlength,
                     unsigned char** cipher, int* cLength,
                     BOOL* valid);
-   BOOL DecryptData(unsigned char* cipher, int cLength,
+   BOOL DecryptData(const unsigned char* cipher, int cLength,
                     BOOL valid,
-                    unsigned char* plain, int plainlength);
-   BOOL DecryptData(unsigned char* cipher, int cLength,
+                    unsigned char* plain, int plainlength) const;
+   BOOL DecryptData(const unsigned char* cipher, int cLength,
                     BOOL valid,
-                    CMyString* plain);
+                    CMyString* plain) const;
 
    //Number of 8 byte blocks needed for size
-   int GetBlockSize(int size);
+   int GetBlockSize(int size) const;
 	
    //Length (real, not block) of m_name and m_password
    int m_nLength;
@@ -89,6 +104,9 @@ private:
 
    //Local initialization
    void InitStuff();
+
+  // Create local Encryption/Decryption object
+  BlowFish *MakeBlowFish() const;
 };
 
 #endif

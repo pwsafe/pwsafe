@@ -19,9 +19,11 @@ public:
    // the password database
    CList<CItemData,CItemData> m_pwlist;
 
-   POSITION Find(CMyString lpszString);
+   POSITION Find(const CMyString &lpszString);
 
    void RefreshList();
+
+  void SetCurFile(const CString &arg) {m_currfile = CMyString(arg);} // set to argv
 
    enum retvals
    {
@@ -44,7 +46,6 @@ protected:
    unsigned int uGlobalMemSize;
    HGLOBAL hGlobalMemory;
 
-   //CMyString m_deffile; // default pw db filespec
    CMyString m_currfile; // current pw db filespec
    CMyString m_currbackup;
    CMyString m_title; // what's displayed in the title bar
@@ -66,10 +67,10 @@ protected:
 
    void ClearData();
    int NewFile(void);
-   int WriteFile(CMyString filename);
-   int CheckPassword(CMyString filename, CMyString& passkey,
+   int WriteFile(const CMyString &filename);
+   int CheckPassword(const CMyString &filename, CMyString &passkey,
                      bool first = false);
-   int ReadFile(CMyString filename, CMyString passkey);
+   int ReadFile(const CMyString &filename, const CMyString &passkey);
 
    //Version of message functions with return values
    int Save(void);
@@ -112,6 +113,22 @@ protected:
 
    DECLARE_MESSAGE_MAP()
 
+   // Following moved from Util.{h,cpp} and constified
+public:
+   void MakeName(CMyString&, const CMyString &, const CMyString &) const; // used also by AddDlg, hence public
+
+private:
+  int WriteCBC(int fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);
+  int ReadCBC(int fp, CMyString &data, const unsigned char *salt, unsigned char *ipthing);
+  void MakeFullNames(CList<CItemData, CItemData>* plist,
+		     const CMyString &defusername);
+  void DropDefUsernames(CList<CItemData, CItemData>* plist,
+			const CMyString &defusername);
+  int CheckVersion(CList<CItemData, CItemData>* plist);
+  void SetBlankToDef(CList<CItemData, CItemData>* plist);
+  void SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &username);
+  BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
+  int SplitName(const CMyString &name , CMyString &title, CMyString &username) const;
 };
 
 //-----------------------------------------------------------------------------

@@ -37,15 +37,12 @@ COptionsDlg::COptionsDlg(CWnd* pParent)
    m_usedefuser =
       app.GetProfileInt("", "usedefuser", FALSE);
 
-   CString temp = app.GetProfileString("", "defusername", "");
-   m_defusername = (CMyString)temp;
+   m_defusername = CMyString(app.GetProfileString("", "defusername", ""));
 
    m_querysetdef =
       app.GetProfileInt("", "querysetdef", TRUE);
    m_queryaddname =
       app.GetProfileInt("", "queryaddname", TRUE);
-
-   trashMemory(temp);
 }
 
 

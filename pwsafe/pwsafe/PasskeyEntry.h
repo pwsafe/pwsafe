@@ -3,7 +3,7 @@
 
 #include "SysColStatic.h"
 #include "MyString.h"
-
+#include "resource.h" // ronys
 //-----------------------------------------------------------------------------
 class CPasskeyEntry
    : public CDialog
@@ -34,7 +34,7 @@ protected:
 
 // Implementation
 protected:
-   CSysColStatic m_Static,m_Static2,m_Static3;
+   CSysColStatic m_Static,m_Static2;
    int m_tries;
    int m_status;
    bool m_first;

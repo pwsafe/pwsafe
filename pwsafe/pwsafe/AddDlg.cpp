@@ -72,9 +72,10 @@ CAddDlg::OnOK()
    //End check
 
    CMyString temptitle;
-   MakeName(temptitle, m_title, m_username);
    DboxMain* pParent = (DboxMain*) GetParent();
    ASSERT(pParent != NULL);
+   pParent->MakeName(temptitle, m_title, m_username);
+
    if (pParent->Find(temptitle) != NULL)
    {
       CMyString temp =

@@ -15,24 +15,24 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-CMyString::CMyString()
+CMyString::CMyString() : m_mystring("")
 {
-   m_mystring = "";
 }
 
-CMyString::CMyString(LPCSTR lpsz)
+CMyString::CMyString(LPCSTR lpsz) : m_mystring(lpsz)
 {
-   m_mystring = lpsz;
 }
 
-CMyString::CMyString(const CMyString& stringSrc)
+CMyString::CMyString(LPCSTR lpsz, int nLength) : m_mystring(lpsz, nLength)
 {
-   m_mystring = stringSrc.m_mystring;
 }
 
-CMyString::CMyString(const CString& stringSrc)
+CMyString::CMyString(const CMyString& stringSrc) : m_mystring(stringSrc.m_mystring)
 {
-   m_mystring = stringSrc;
+}
+
+CMyString::CMyString(const CString& stringSrc) : m_mystring(stringSrc)
+{
 }
 
 CMyString::~CMyString()
