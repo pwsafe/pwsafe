@@ -1,7 +1,12 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
 
+#if (defined(_MSC_VER) && (_MSC_VER >= 13))
+#include <fstream>
+using namespace std;
+#else
 #include <fstream.h> // for WritePlaintextFile
+#endif
 
 #include "PWScore.h"
 #include "BlowFish.h"
