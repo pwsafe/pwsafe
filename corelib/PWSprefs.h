@@ -32,7 +32,8 @@ class PWSprefs {
 		   PWUseDigits, PWUseSymbols, PWUseHexDigits, PWEasyVision,
 		   DontAskQuestion, DeleteQuestion, DCShowsPassword,
 		   DontAskMinimizeClearYesNo, DatabaseClear,
-		   DontAskSaveMinimize, QuerySetDef, UseNewToolbar,
+		   DontAskSaveMinimize, QuerySetDef,
+		   UseNewToolbar, UseSystemTray, 
 		   NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems,
