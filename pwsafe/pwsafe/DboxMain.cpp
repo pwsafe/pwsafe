@@ -432,7 +432,10 @@ DboxMain::setupBars()
    m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle()
                             | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-   // placement code moved to OnSize - eq
+   CRect rect;
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+   m_ctlItemList.MoveWindow(&rect, TRUE);
 
 	// Set flag
    m_toolbarsSetup = TRUE;
@@ -669,6 +672,7 @@ DboxMain::OnEdit()
       dlg_edit.m_realpassword = item.GetPassword();
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = item.GetNotes();
+      dlg_edit.m_listindex = listindex;   // for future reference, this is not multi-user friendly
 
 	  app.DisableAccelerator();
       int rc = dlg_edit.DoModal();

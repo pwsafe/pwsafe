@@ -20,6 +20,8 @@ public:
 
    CMyString m_realpassword;
 
+   POSITION  m_listindex;
+
    void  ShowPassword(void);
    void  HidePassword(void);
 
