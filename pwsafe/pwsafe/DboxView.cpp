@@ -22,6 +22,12 @@
 #include "RemindSaveDlg.h"
 #include "TryAgainDlg.h"
 
+// Following used to keep track of display vs data
+struct DisplayInfo {
+  int list_index;
+  HTREEITEM tree_item;
+};
+
 //-----------------------------------------------------------------------------
 
   /*
@@ -241,6 +247,7 @@ DboxMain::OnDelete()
 	  int curSel = getSelectedItem();
 	  POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 	  m_ctlItemList.DeleteItem(curSel);
+	  delete m_core.GetEntryAt(listindex).GetDisplayInfo();
 	  m_core.RemoveEntryAt(listindex);
 	  int rc = SelectEntry(curSel);
 	  if (rc == LB_ERR) {
@@ -526,10 +533,13 @@ DboxMain::RefreshList()
    //Copy the data
 #if defined(POCKET_PC)
    m_ctlItemList.SetRedraw( FALSE );
+   m_ctlItemTree.SetRedraw( FALSE );
 #endif
    m_ctlItemList.DeleteAllItems();
+   m_ctlItemTree.DeleteAllItems();
 #if defined(POCKET_PC)
    m_ctlItemList.SetRedraw( TRUE );
+   m_ctlItemTree.SetRedraw( TRUE );
 #endif
 
 	LVCOLUMN lvColumn;
@@ -552,11 +562,15 @@ DboxMain::RefreshList()
    POSITION listPos = m_core.GetFirstEntryPosition();
 #if defined(POCKET_PC)
    m_ctlItemList.SetRedraw( FALSE );
+   m_ctlItemTree.SetRedraw( FALSE );
    SetCursor( waitCursor );
 #endif
-   while (listPos != NULL)
-   {
-     insertItem(m_core.GetEntryAt(listPos));
+   while (listPos != NULL) {
+     CItemData &ci = m_core.GetEntryAt(listPos);
+     DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
+     if (di != NULL)
+       di->list_index = -1; // easier, but less efficient, to delete di
+     insertItem(ci);
      m_core.GetNextEntry(listPos);
    }
 
@@ -564,6 +578,7 @@ DboxMain::RefreshList()
 #if defined(POCKET_PC)
    SetCursor( NULL );
    m_ctlItemList.SetRedraw( TRUE );
+   m_ctlItemTree.SetRedraw( TRUE );
 #endif
 
    //Setup the selection
@@ -689,6 +704,7 @@ DboxMain::OnSize(UINT nType,
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
     m_ctlItemList.MoveWindow(&rect, TRUE);
+    m_ctlItemTree.MoveWindow(&rect, TRUE);
   }
 
   m_bSizing = false;
@@ -779,51 +795,86 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
 // {kjp} temporary objects created and copied.
 //
 int DboxMain::insertItem(CItemData &itemData, int iIndex) {
-	// TODO: sorted insert?
-	int iResult = iIndex;
-	if (iResult < 0) {
-		iResult = m_ctlItemList.GetItemCount();
-	}
+  if (itemData.GetDisplayInfo() != NULL &&
+      ((DisplayInfo *)itemData.GetDisplayInfo())->list_index != -1) {
+    // true iff item already displayed
+    return iIndex;
+  }
 
-	CMyString title = itemData.GetTitle();
-	CMyString username = itemData.GetUser();
+  int iResult = iIndex;
+  if (iResult < 0) {
+    iResult = m_ctlItemList.GetItemCount();
+  }
 
-	iResult = m_ctlItemList.InsertItem(iResult, title);
-	if (iResult < 0) {
-		// TODO: issue error here...
-		return iResult;
-	}
+  CMyString title = itemData.GetTitle();
+  CMyString username = itemData.GetUser();
 
-	// get only the first line for display
-	CMyString strNotes = itemData.GetNotes();
-	int iEOL = strNotes.Find('\r');
-	if (iEOL >= 0 && iEOL < strNotes.GetLength()) {
-		CMyString strTemp = strNotes.Left(iEOL);
-		strNotes = strTemp;
-	}
+  iResult = m_ctlItemList.InsertItem(iResult, title);
+  if (iResult < 0) {
+    // TODO: issue error here...
+    return iResult;
+  }
+  DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
+  if (di == NULL)
+    di = new DisplayInfo;
+  di->list_index = iResult;
+  {
+    HTREEITEM ti;
+    // XXX get path, create if necessary, add title as last node
+    ti = TVI_ROOT;
+    ti = m_ctlItemTree.InsertItem(title, ti, TVI_SORT);
+    m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
+    di->tree_item = ti;
+  }
 
-	m_ctlItemList.SetItemText(iResult, 1, username);
-	m_ctlItemList.SetItemText(iResult, 2, strNotes);
-	m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
+  itemData.SetDisplayInfo((void *)di);
+  // get only the first line for display
+  CMyString strNotes = itemData.GetNotes();
+  int iEOL = strNotes.Find('\r');
+  if (iEOL >= 0 && iEOL < strNotes.GetLength()) {
+    CMyString strTemp = strNotes.Left(iEOL);
+    strNotes = strTemp;
+  }
 
-	if (m_bShowPasswordInList) {
-		m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
-	}
+  m_ctlItemList.SetItemText(iResult, 1, username);
+  m_ctlItemList.SetItemText(iResult, 2, strNotes);
+  m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
 
-	return iResult;
+  if (m_bShowPasswordInList) {
+    m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
+  }
+
+  return iResult;
 }
 
 int DboxMain::getSelectedItem() {
-  POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
-  if (p) {
-    return m_ctlItemList.GetNextSelectedItem(p);
+  /*
+   * Works with list in the trivial way
+   * For tree, use the fact that each item has a corresponding list entry.
+   * feh.
+   */
+  if (m_ctlItemList.IsWindowVisible()) {
+    POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
+    if (p) {
+      return m_ctlItemList.GetNextSelectedItem(p);
+    }
+  } else { // tree control visible, go from HTREEITEM to index
+    HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+    if (ti != NULL) {
+      CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+      ASSERT(ci != NULL);
+      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+      ASSERT(di != NULL);
+      return di->list_index;
+    }    
   }
-  return -1;
+    return -1;
 }
 
 void
 DboxMain::ClearData(void)
 {
+  // XXX Iterate over item list, delete DisplayInfo
   m_core.ClearData();
    //Because GetText returns a copy, we cannot do anything about the names
    if (m_windowok)
