@@ -1,3 +1,5 @@
+; $Id$
+;
 ; Password Safe Installation Script
 ;
 ;
@@ -94,7 +96,9 @@
 ; the installer.  It can be placed, by itself, on a publicly available
 ; location.
 
-
+;-----------------------------------------
+; Set verbosity appropriate for a Makefile
+!verbose 2
 
 ;--------------------------------
 ; Include Modern UI
@@ -113,7 +117,7 @@
 ; where X.XX is the version number of Password Safe.
 
   !ifndef VERSION
-    !define VERSION "2.02"
+    !error "VERSION undefined. Usage: makensis.exe /DVERSION=X.XX pwsafe.nsi"
   !endif
 
 
@@ -266,3 +270,8 @@ Section "Uninstall"
   DeleteRegKey HKCU "Software\Counterpane Systems\Password Safe"
 
 SectionEnd
+;
+; $Log$
+; Revision 1.2  2004/06/06 05:32:39  ronys
+; release 2.03
+;

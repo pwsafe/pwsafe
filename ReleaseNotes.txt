@@ -1,16 +1,32 @@
 $Id$
 
-Password Safe 2.02 Release Note - April 2004
-=================================================
+Password Safe 2.03 Release Note - June 2004
+===========================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.02. For a short description of Password
+with Password Safe version 2.03. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
 
-This is a maintenance release, fixing minor issues that have been
-found in 2.01.
+This is a maintenance release, adding a couple of minor features,
+fixing a couple of bugs.
+
+Bugs fixed in 2.03:
+===================
+[940585] On Windows XP, the toolbar would sometimes be invisible with
+the tree view active.
+[957957, 900331] No longer crashes when deleting certain items in tree view.
+
+New Features for 2.03:
+======================
+[847769] An "installer" version is now available! Thanks to David Lacy
+Kusters and Andrew Mill.
+[912799, 947146] If the display supports more than 256 colors, the user can choose
+between two styles of toolbar icons via the View menu. If not, then
+only the simple toolbar is enabled.
+[940000] The Notes section now has a scrollbar, making it easier to
+view long notes entries.
 
 Bugs fixed in 2.02:
 ===================
@@ -109,6 +125,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.9  2004/06/06 05:32:39  ronys
+release 2.03
+
 Revision 1.8  2004/05/23 19:30:51  ronys
 Moved from registry to PWSprefs class. Will evolve into file-stored preferences.
 
