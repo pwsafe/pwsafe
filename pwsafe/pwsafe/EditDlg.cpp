@@ -120,7 +120,7 @@ void CEditDlg::ShowPassword(void)
 
 void CEditDlg::HidePassword(void)
 {
-   m_password = "**************";
+   m_password = HIDDEN_PASSWORD;
    m_isPwHidden = true;
    GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Show Password");
    GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
@@ -161,7 +161,7 @@ void CEditDlg::OnRandom()
 
       if (wndName == "&Show Password")
       {
-         m_password = "**************";
+	m_password = HIDDEN_PASSWORD;
       }
       else if (wndName == "&Hide Password")
       {

@@ -33,6 +33,15 @@
 #include <errno.h>
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
+
+/*
+ * This is the string to be displayed instead of the actual password, unless
+ * the user chooses to see the password:
+ */
+
+const TCHAR *HIDDEN_PASSWORD = _T("**************");
+
+
 //-----------------------------------------------------------------------------
 class DboxAbout
    : public CDialog
@@ -634,7 +643,7 @@ DboxMain::OnEdit()
       SplitName(item.GetName(),
                 dlg_edit.m_title, dlg_edit.m_username);
       dlg_edit.m_realpassword = item.GetPassword();
-      dlg_edit.m_password = "**************";
+      dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = item.GetNotes();
 
 	  app.DisableAccelerator();
