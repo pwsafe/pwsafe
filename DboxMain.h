@@ -45,8 +45,9 @@ public:
     CMyString GetPassword(void) const;
 
     // Find in core by title and user name, exact match
-    POSITION Find(const CMyString &a_title, const CMyString &a_user)
-        {return m_core.Find(a_title, a_user);}
+    POSITION Find(const CMyString &a_group,
+		  const CMyString &a_title, const CMyString &a_user)
+        {return m_core.Find(a_group, a_title, a_user);}
 
     // Find  entry in core with same title and user name as the i'th entry in m_ctlItemList
     POSITION Find(int i);

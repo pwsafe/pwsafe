@@ -109,7 +109,7 @@ CEditDlg::OnOK()
    DboxMain* pParent = (DboxMain*) GetParent();
    ASSERT(pParent != NULL);
 
-   POSITION listindex = pParent->Find(m_title, m_username);
+   POSITION listindex = pParent->Find(m_group, m_title, m_username);
    /*
     *  If there is a matching entry in our list, and that
     *  entry is not the same one we started editing, tell the
@@ -119,8 +119,9 @@ CEditDlg::OnOK()
        (m_listindex != listindex))
    {
       CMyString temp =
-         "An item with Title \""
-         + m_title + "\" and User Name \"" + m_username
+         "An item with Group \"" + m_group
+	 + "\", Title \"" + m_title 
+	 + "\" and User Name \"" + m_username
          + "\" already exists.";
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));

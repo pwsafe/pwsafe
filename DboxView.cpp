@@ -491,9 +491,12 @@ void DboxMain::UpdateListItemUser(int lindex, const CString &newName)
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
 POSITION DboxMain::Find(int i)
 {
+  CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
+  ASSERT(ci != NULL);
+  const CMyString curGroup = ci->GetGroup();
   const CMyString curTitle = m_ctlItemList.GetItemText(i, 0);
   const CMyString curUser = m_ctlItemList.GetItemText(i, 1);
-  return Find(curTitle, curUser);
+  return Find(curGroup, curTitle, curUser);
 }
 
 

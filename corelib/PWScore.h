@@ -68,7 +68,8 @@ class PWScore {
   void RemoveEntryAt(POSITION pos)
     {m_changed = true; m_pwlist.RemoveAt(pos);}
  // Find in m_pwlist by title and user name, exact match
-  POSITION Find(const CMyString &a_title, const CMyString &a_user);
+  POSITION Find(const CMyString &a_group,
+		const CMyString &a_title, const CMyString &a_user);
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...

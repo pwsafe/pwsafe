@@ -307,16 +307,18 @@ void PWScore::ChangePassword(const CMyString &newPassword)
 
 // Finds stuff based on title & user fields only
 POSITION
-PWScore::Find(const CMyString &a_title, const CMyString &a_user)
+PWScore::Find(const CMyString &a_group,const CMyString &a_title, const CMyString &a_user)
 {
    POSITION listPos = m_pwlist.GetHeadPosition();
-   CMyString title, user;
+   CMyString group, title, user;
 
    while (listPos != NULL)
    {
-      title = m_pwlist.GetAt(listPos).GetTitle();
-      user = m_pwlist.GetAt(listPos).GetUser();
-      if (title == a_title && user == a_user)
+     const CItemData &item = m_pwlist.GetAt(listPos);
+      group = item.GetGroup();
+      title = item.GetTitle();
+      user = item.GetUser();
+      if (group == a_group && title == a_title && user == a_user)
          break;
       else
          m_pwlist.GetNext(listPos);
