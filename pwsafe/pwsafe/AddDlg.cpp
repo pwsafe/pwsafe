@@ -128,7 +128,7 @@ void CAddDlg::OnRandom()
       CMyString msg;
       msg = "The randomly generated password is: \""
          + temp
-         + "\" (without\nthe quotes). Would you like to use it?";
+         + "\" \n(without the quotes). Would you like to use it?";
       nResponse = MessageBox(msg, AfxGetAppName(),
                              MB_ICONEXCLAMATION|MB_YESNO);
    }

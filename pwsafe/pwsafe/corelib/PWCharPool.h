@@ -29,6 +29,9 @@
  * The usage scenario is something like:
  * CPasswordCharPool pwgen(-policy-);
  * CMyString pwd = pwgen.MakePassword();
+ *
+ * CheckPassword() is used to verify the strength of existing passwords, i.e., the password
+ * used to protect the database.
  */
 
 class CPasswordCharPool
@@ -40,6 +43,7 @@ public:
 					BOOL easyvision);
    CMyString MakePassword() const;
 
+   static bool CheckPassword(const CMyString &pwd, CMyString &error);
 
 private:
    enum CharType {LOWERCASE = 0, UPPERCASE = 1,

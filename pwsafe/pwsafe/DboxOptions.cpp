@@ -106,6 +106,9 @@ DboxMain::OnOptions()
       app.WriteProfileInt("", "deletequestion",   not(misc.m_confirmdelete));
       app.WriteProfileInt("", "saveimmediately",      misc.m_saveimmediately);
 
+      /*
+      **  Now update the application according to the options.
+      */
       m_bAlwaysOnTop = display.m_alwaysontop;
       UpdateAlwaysOnTop();
 

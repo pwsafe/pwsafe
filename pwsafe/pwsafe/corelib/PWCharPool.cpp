@@ -189,3 +189,32 @@ CPasswordCharPool::MakePassword() const
    ASSERT(password.GetLength() == int(m_pwlen));
    return password;
 }
+
+bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
+{
+  const int MinLength = 4;
+  int length = pwd.GetLength();
+  // check for minimun length
+  if (length < MinLength) {
+    error = _T("Password is too short");
+    return false;
+  }
+
+  // check for at least one  uppercase and lowercase and  digit or other
+  bool has_uc = false, has_lc = false, has_digit = false, has_other = false;
+
+  for (int i = 0; i < length; i++) {
+    TCHAR c = pwd[i];
+    if (_istlower(c)) has_lc = true;
+    else if (_istupper(c)) has_uc = true;
+    else if (_istdigit(c)) has_digit = true;
+    else has_other = true;
+  }
+  
+  if (has_lc && has_lc && (has_digit || has_other)) {
+    return true;
+  } else {
+    error = _T("Password should be mixed case, with at least one digit or punctuation character");
+    return false;
+  }
+}
