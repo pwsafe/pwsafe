@@ -48,132 +48,64 @@ CPasswordCharPool::CPasswordCharPool(UINT pwlen,
 				     BOOL usedigits, BOOL usesymbols,
 				     BOOL easyvision) :
   m_pwlen(pwlen), m_uselowercase(uselowercase), m_useuppercase(useuppercase),
-  m_usedigits(usedigits), m_usesymbols(usesymbols), m_length(0)
+  m_usedigits(usedigits), m_usesymbols(usesymbols)
 {
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols);
 
-   if (uselowercase)
-   {
-      CPasswordCharBlock block;
-      if (easyvision)
-      {
-         block.SetStr(easyvision_lowercase_chars);
-         block.SetLength(easyvision_lowercase_len);
-      }
-      else
-      {
-         block.SetStr(std_lowercase_chars);
-         block.SetLength(std_lowercase_len);
-      }
-      block.SetType(PWC_LOWER);
-      m_pool.AddTail(block);
+  if (easyvision) {
+    m_char_arrays[LOWERCASE] = (TCHAR *)easyvision_lowercase_chars;
+    m_char_arrays[UPPERCASE] = (TCHAR *)easyvision_uppercase_chars;
+    m_char_arrays[DIGIT] = (TCHAR *)easyvision_digit_chars;
+    m_char_arrays[SYMBOL] = (TCHAR *)easyvision_symbol_chars;
+    m_lengths[LOWERCASE] = uselowercase ? easyvision_lowercase_len : 0;
+    m_lengths[UPPERCASE] = useuppercase ? easyvision_uppercase_len : 0;
+    m_lengths[DIGIT] = usedigits ? easyvision_digit_len : 0;
+    m_lengths[SYMBOL] = usesymbols ? easyvision_symbol_len : 0;
+  } else { // !easyvision
+    m_char_arrays[LOWERCASE] = (TCHAR *)std_lowercase_chars;
+    m_char_arrays[UPPERCASE] = (TCHAR *)std_uppercase_chars;
+    m_char_arrays[DIGIT] = (TCHAR *)std_digit_chars;
+    m_char_arrays[SYMBOL] = (TCHAR *)std_symbol_chars;
+    m_lengths[LOWERCASE] = uselowercase ? std_lowercase_len : 0;
+    m_lengths[UPPERCASE] = useuppercase ? std_uppercase_len : 0;
+    m_lengths[DIGIT] = usedigits ? std_digit_len : 0;
+    m_lengths[SYMBOL] = usesymbols ? std_symbol_len : 0;
+  }
+
+  m_x[0] = 0;
+  m_sumlengths = 0;
+  for (int i = 0; i< NUMTYPES; i++) {
+    m_x[i+1] = m_x[i] + m_lengths[i];
+    m_sumlengths += m_lengths[i];
+  }
+  ASSERT(m_sumlengths > 0);
+}
+
+CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType() const
+{
+  // select a chartype with weighted probability
+   size_t rand = RangeRand(m_sumlengths);
+   int i;
+   for (i = 0; i < NUMTYPES; i++) {
+     if (rand < m_x[i+1]) {
+       break;
+     }
    }
 
-   if (useuppercase)
-   {
-      CPasswordCharBlock block;
-      if (easyvision)
-      {
-         block.SetStr(easyvision_uppercase_chars);
-         block.SetLength(easyvision_uppercase_len);
-      }
-      else
-      {
-         block.SetStr(std_uppercase_chars);
-         block.SetLength(std_uppercase_len);
-      }
-      block.SetType(PWC_UPPER);
-      m_pool.AddTail(block);
-   }
-
-   if (usedigits)
-   {
-      CPasswordCharBlock block;
-      if (easyvision)
-      {
-         block.SetStr(easyvision_digit_chars);
-         block.SetLength(easyvision_digit_len);
-      }
-      else
-      {
-         block.SetStr(std_digit_chars);
-         block.SetLength(std_digit_len);
-      }
-      block.SetType(PWC_DIGIT);
-      m_pool.AddTail(block);
-   }
-
-   if (usesymbols)
-   {
-      CPasswordCharBlock block;
-      if (easyvision)
-      {
-         block.SetStr(easyvision_symbol_chars);
-         block.SetLength(easyvision_symbol_len);
-      }
-      else
-      {
-         block.SetStr(std_symbol_chars);
-         block.SetLength(std_symbol_len);
-      }
-      block.SetType(PWC_SYMBOL);
-      m_pool.AddTail(block);
-   }
-
-   m_length = GetLength();
+   ASSERT(m_lengths[i] > 0 && i < NUMTYPES);
+   return CharType(i);
 }
 
 
-size_t
-CPasswordCharPool::GetLength(void) const
+TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t) const
 {
-   POSITION listPos = m_pool.GetHeadPosition();
-   size_t len = 0;
+  ASSERT(t < NUMTYPES);
+  ASSERT(m_lengths[t] > 0);
+  size_t rand = RangeRand(m_lengths[t]);
 
-   while (listPos != NULL)
-   {
-      len += m_pool.GetAt(listPos).GetLength();
-      m_pool.GetNext(listPos);
-   }
-   return len;
-}
-
-
-char
-CPasswordCharPool::GetRandomChar(PWCHARTYPE& type) const
-{
-   char ch = ' ';
-   type = PWC_UNKNOWN;
-
-   size_t rand = RangeRand(m_length);
-
-   /*
-   **  Iterate through the list of password character blocks
-   **  to find the correct character.
-   */
-   POSITION listPos = m_pool.GetHeadPosition();
-   size_t len;
-   const TCHAR* str;
-
-   while (listPos != NULL)
-   {
-      len = m_pool.GetAt(listPos).GetLength();
-      if (rand < len)
-      {
-         type = m_pool.GetAt(listPos).GetType();
-         str = m_pool.GetAt(listPos).GetStr();
-         ch = str[rand];
-         break;
-      }
-      else
-      {
-         rand -= len;
-      }
-
-      m_pool.GetNext(listPos);
-   }
-   return ch;
+  TCHAR retval = m_char_arrays[t][rand];
+  return retval;
 }
 
 CMyString
@@ -189,11 +121,13 @@ CPasswordCharPool::MakePassword() const
 
   CMyString password = "";
 
-  BOOL pwRulesMet;
+  bool pwRulesMet;
+  CMyString temp;
 
    do
    {
       TCHAR ch;
+      CharType type;
 
       lowercaseneeded = (m_uselowercase) ? 1 : 0;
       uppercaseneeded = (m_useuppercase) ? 1 : 0;
@@ -204,11 +138,11 @@ CPasswordCharPool::MakePassword() const
       ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
 	     digitsneeded + symbolsneeded);
 
-      CMyString temp = "";    // empty the password string
-      PWCHARTYPE type;
+      temp = "";    // empty the password string
 
       for (UINT x = 0; x < m_pwlen; x++)
       {
+	 type = GetRandomCharType();
          ch = GetRandomChar(type);
          temp += ch;
          /*
@@ -216,19 +150,19 @@ CPasswordCharPool::MakePassword() const
          */
          switch (type)
          {
-            case PWC_LOWER:
+	    case LOWERCASE:
 	      lowercaseneeded--;
                break;
 
-            case PWC_UPPER:
+            case UPPERCASE:
 	      uppercaseneeded--;
                break;
 
-            case PWC_DIGIT:
+            case DIGIT:
 	      digitsneeded--;
                break;
 
-            case PWC_SYMBOL:
+            case SYMBOL:
 	      symbolsneeded--;
                break;
 
@@ -255,67 +189,3 @@ CPasswordCharPool::MakePassword() const
    ASSERT(password.GetLength() == int(m_pwlen));
    return password;
 }
-
-
-//-----------------------------------------------------------------------------
-
-CPasswordCharBlock::CPasswordCharBlock() : m_type(PWC_UNKNOWN),
-					   m_length(0), m_str(NULL)
-{
-}
-
-CPasswordCharBlock::CPasswordCharBlock(const CPasswordCharBlock &that)
-  : m_type(that.m_type), m_length(that.m_length), m_str(that.m_str)
-{
-}
-
-void
-CPasswordCharBlock::SetStr(const TCHAR* str)
-{
-   m_str = str;
-}
-
-void
-CPasswordCharBlock::SetLength(size_t len)
-{
-   m_length = len;
-}
-
-void
-CPasswordCharBlock::SetType(PWCHARTYPE type)
-{
-   m_type = type;
-}
-
-const TCHAR*
-CPasswordCharBlock::GetStr(void) const
-{
-   return m_str;
-}
-
-PWCHARTYPE
-CPasswordCharBlock::GetType(void) const
-{
-   return m_type;
-}
-
-size_t
-CPasswordCharBlock::GetLength(void) const
-{
-   return m_length;
-}
-
-CPasswordCharBlock&
-CPasswordCharBlock::operator=(const CPasswordCharBlock &second)
-{
-   //Check for self-assignment
-   if (&second != this)
-   {
-      m_type = second.m_type;
-      m_length = second.m_length;
-      m_str = second.m_str;
-   }
-
-   return *this;
-}
-
