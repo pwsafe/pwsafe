@@ -535,6 +535,25 @@ DboxMain::OnListDoubleClick( NMHDR *, LRESULT *)
 void
 DboxMain::OnCopyPassword() 
 {
+	bool	bCopyPassword = true;	// will get set to false if user hits cancel
+
+	//Remind the user about clipboard security
+	CClearQuestionDlg clearDlg(this);
+	if (clearDlg.m_dontaskquestion == FALSE)
+	{
+		int rc = clearDlg.DoModal();
+		if (rc == IDOK)
+		{
+		}
+		else if (rc == IDCANCEL)
+		{
+			bCopyPassword = false;
+		}
+	}
+
+	if ( !bCopyPassword )
+		return;
+
    if (SelItemOk() == TRUE)
    {
       POSITION itemPos = Find(getSelectedItem());
@@ -555,26 +574,13 @@ DboxMain::OnCopyPassword()
          if (EmptyClipboard()!=TRUE)
             AfxMessageBox("The clipboard was not emptied correctly");
          if (SetClipboardData(CF_TEXT, hGlobalMemory) == NULL)
-            AfxMessageBox("The data was not pasted into the clipboard "
+				AfxMessageBox("The data was not copied into the clipboard "
                           "correctly");
          if (CloseClipboard() != TRUE)
             AfxMessageBox("The clipboard could not be closed");
       }
       else
          AfxMessageBox("The clipboard could not be opened correctly");
-		
-      //Remind the user about clipboard security
-      CClearQuestionDlg clearDlg(this);
-      if (clearDlg.m_dontaskquestion == FALSE)
-      {
-         int rc = clearDlg.DoModal();
-         if (rc == IDOK)
-         {
-         }
-         else if (rc == IDCANCEL)
-         {
-         }
-      }
    }
 }
 
