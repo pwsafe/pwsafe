@@ -456,9 +456,9 @@ DboxMain::OnCopyPassword()
 
    if (SelItemOk() == TRUE)
    {
-      POSITION itemPos = Find(getSelectedItem());
-		
-      CMyString curPassString = m_core.GetEntryAt(itemPos).GetPassword();
+      CItemData *ci = getSelectedItem();
+      ASSERT(ci != NULL);
+      CMyString curPassString = ci->GetPassword();
 
 	if ( !bCopyPassword )
 		return;
@@ -696,9 +696,9 @@ DboxMain::OnCopyUsername()
    if (SelItemOk() != TRUE)
       return;
 
-   POSITION itemPos = Find(getSelectedItem());
-
-   CMyString username = m_core.GetEntryAt(itemPos).GetUser();
+   CItemData *ci = getSelectedItem();
+   ASSERT(ci != NULL);
+   CMyString username = ci->GetUser();
 
    if (username.GetLength() == 0)
    {

@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
-    m_Notes(NOTES), m_UUID(UUID)
+    m_Notes(NOTES), m_UUID(UUID), m_display_info(NULL)
 {
   for (int x = 0; x < SaltLength; x++)
     m_salt[x] = newrand();
@@ -25,7 +25,8 @@ CItemData::CItemData()
 
 CItemData::CItemData(const CItemData &that) :
   m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
-  m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID)
+  m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
+  m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
 }
@@ -231,6 +232,7 @@ CItemData::operator=(const CItemData &that)
      m_User = that.m_User;
      m_Password = that.m_Password;
      m_Notes = that.m_Notes;
+     m_display_info = that.m_display_info;
 
       memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
    }

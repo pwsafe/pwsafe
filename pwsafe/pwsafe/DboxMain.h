@@ -58,8 +58,8 @@ public:
 	CMyListCtrl	m_ctlItemList;
 #else
 	CListCtrl	m_ctlItemList;
-        CTreeCtrl       m_ctlItemTree;
 #endif
+        CTreeCtrl       m_ctlItemTree;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -104,7 +104,7 @@ protected:
 	BOOL m_bAlwaysOnTop;
 
 	int insertItem(CItemData &itemData, int iIndex = -1);
-	int getSelectedItem();
+   CItemData *getSelectedItem();
 
    void ChangeOkUpdate();
    BOOL SelItemOk();

@@ -55,6 +55,9 @@ public:
    void SetNotes(const CMyString &notes);
    void SetUUID(const uuid_array_t &UUID);
    CItemData& operator=(const CItemData& second);
+  // Following used by display methods - we just keep it handy
+  void *GetDisplayInfo() const {return m_display_info;}
+  void SetDisplayInfo(void *di) {m_display_info = di;}
 
 private:
   CItemField m_Name;
@@ -63,10 +66,11 @@ private:
   CItemField m_Password;
   CItemField m_Notes;
   CItemField m_UUID;
-
   //The salt value
   unsigned char m_salt[SaltLength];
-	
+  // Following used by display methods - we just keep it handy
+  void *m_display_info;
+
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const CMyString &name,
 		 CMyString &title, CMyString &username);
