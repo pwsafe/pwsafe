@@ -21,7 +21,7 @@ _T("0123456789");
 const size_t
 CPasswordCharPool::std_digit_len = LENGTH(std_digit_chars);
 const TCHAR
-CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~");
+CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~\\[](){}?!|");
 const size_t
 CPasswordCharPool::std_symbol_len = LENGTH(std_symbol_chars);
 const TCHAR
@@ -29,7 +29,7 @@ CPasswordCharPool::easyvision_lowercase_chars[] = _T("abcdefghijkmnopqrstuvwxyz"
 const size_t
 CPasswordCharPool::easyvision_lowercase_len = LENGTH(easyvision_lowercase_chars);
 const TCHAR
-CPasswordCharPool::easyvision_uppercase_chars[] = _T("ABCDEFGHIJKLMNPQRTUVWXY");
+CPasswordCharPool::easyvision_uppercase_chars[] = _T("ABCDEFGHJKLMNPQRTUVWXY");
 const size_t
 CPasswordCharPool::easyvision_uppercase_len = LENGTH(easyvision_uppercase_chars);
 const TCHAR
@@ -37,25 +37,23 @@ CPasswordCharPool::easyvision_digit_chars[] = _T("346789");
 const size_t
 CPasswordCharPool::easyvision_digit_len = LENGTH(easyvision_digit_chars);
 const TCHAR
-CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~");
+CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&<>/~\\?");
 const size_t
 CPasswordCharPool::easyvision_symbol_len = LENGTH(easyvision_symbol_chars);
 
 //-----------------------------------------------------------------------------
-CPasswordCharPool::CPasswordCharPool()
+
+CPasswordCharPool::CPasswordCharPool(UINT pwlen,
+				     BOOL uselowercase, BOOL useuppercase,
+				     BOOL usedigits, BOOL usesymbols,
+				     BOOL easyvision) :
+  m_pwlen(pwlen), m_uselowercase(uselowercase), m_useuppercase(useuppercase),
+  m_usedigits(usedigits), m_usesymbols(usesymbols), m_length(0)
 {
-   m_pool.RemoveAll();
-   m_length = 0;
-}
+  ASSERT(m_pwlen > 0);
+  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols);
 
-
-void
-CPasswordCharPool::SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL usedigits, BOOL usesymbols)
-{
-   m_pool.RemoveAll();
-   m_length = 0;
-
-   if (uselower)
+   if (uselowercase)
    {
       CPasswordCharBlock block;
       if (easyvision)
@@ -72,7 +70,7 @@ CPasswordCharPool::SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL u
       m_pool.AddTail(block);
    }
 
-   if (useupper)
+   if (useuppercase)
    {
       CPasswordCharBlock block;
       if (easyvision)
@@ -128,7 +126,7 @@ CPasswordCharPool::SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL u
 
 
 size_t
-CPasswordCharPool::GetLength(void)
+CPasswordCharPool::GetLength(void) const
 {
    POSITION listPos = m_pool.GetHeadPosition();
    size_t len = 0;
@@ -143,10 +141,10 @@ CPasswordCharPool::GetLength(void)
 
 
 char
-CPasswordCharPool::GetRandomChar(PWCHARTYPE* type)
+CPasswordCharPool::GetRandomChar(PWCHARTYPE& type) const
 {
    char ch = ' ';
-   *type = PWC_UNKNOWN;
+   type = PWC_UNKNOWN;
 
    size_t rand = RangeRand(m_length);
 
@@ -163,7 +161,7 @@ CPasswordCharPool::GetRandomChar(PWCHARTYPE* type)
       len = m_pool.GetAt(listPos).GetLength();
       if (rand < len)
       {
-         *type = m_pool.GetAt(listPos).GetType();
+         type = m_pool.GetAt(listPos).GetType();
          str = m_pool.GetAt(listPos).GetStr();
          ch = str[rand];
          break;
@@ -177,6 +175,87 @@ CPasswordCharPool::GetRandomChar(PWCHARTYPE* type)
    }
    return ch;
 }
+
+CMyString
+CPasswordCharPool::MakePassword() const
+{
+  ASSERT(m_pwlen > 0);
+  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols);
+
+  int lowercaseneeded;
+  int uppercaseneeded;
+  int digitsneeded;
+  int symbolsneeded;
+
+  CMyString password = "";
+
+  BOOL pwRulesMet;
+
+   do
+   {
+      TCHAR ch;
+
+      lowercaseneeded = (m_uselowercase) ? 1 : 0;
+      uppercaseneeded = (m_useuppercase) ? 1 : 0;
+      digitsneeded = (m_usedigits) ? 1 : 0;
+      symbolsneeded = (m_usesymbols) ? 1 : 0;
+
+      // If following assertion doesn't hold, we'll never exit the do loop!
+      ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
+	     digitsneeded + symbolsneeded);
+
+      CMyString temp = "";    // empty the password string
+      PWCHARTYPE type;
+
+      for (UINT x = 0; x < m_pwlen; x++)
+      {
+         ch = GetRandomChar(type);
+         temp += ch;
+         /*
+         **  Decrement the appropriate needed character type count.
+         */
+         switch (type)
+         {
+            case PWC_LOWER:
+	      lowercaseneeded--;
+               break;
+
+            case PWC_UPPER:
+	      uppercaseneeded--;
+               break;
+
+            case PWC_DIGIT:
+	      digitsneeded--;
+               break;
+
+            case PWC_SYMBOL:
+	      symbolsneeded--;
+               break;
+
+            default:
+	      ASSERT(0); // should never happen!
+               break;
+         }
+      } // for
+
+      /*
+       * Make sure we have at least one representative of each required type
+       * after the for loop. If not, try again. Arguably, recursion would have
+       * been more elegant than a do loop, but this takes less stack...
+       */
+      pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
+		    digitsneeded <= 0 && symbolsneeded <= 0);
+
+      if (pwRulesMet)
+      {
+         password = temp;
+      }
+      // Otherwise, do not exit, do not collect $200, try again...
+   } while (!pwRulesMet);
+   ASSERT(password.GetLength() == int(m_pwlen));
+   return password;
+}
+
 
 //-----------------------------------------------------------------------------
 

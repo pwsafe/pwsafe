@@ -7,7 +7,6 @@
 #include "ItemData.h"
 #include "util.h"
 #include "resource.h"
-#include "PWCharPool.h"
 
 //-----------------------------------------------------------------------------
 class DboxMain
@@ -89,8 +88,6 @@ protected:
 	bool m_bShowPasswordInList;
 	BOOL m_bAlwaysOnTop;
 
-   CPasswordCharPool pwchars;
-
 	int insertItem(CItemData &itemData, int iIndex = -1);
 	int getSelectedItem();
 
@@ -168,8 +165,6 @@ protected:
 public:
    void MakeName(CMyString&, const CMyString &, const CMyString &) const; // used also by AddDlg, hence public
    CMyString GetPassword(void);
-   CMyString GetPassword( UINT pwlen, BOOL uselowercase, BOOL useuppercase,
-			  BOOL usedigits, BOOL usesymbols);
 
 private:
   int WriteCBC(int fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);

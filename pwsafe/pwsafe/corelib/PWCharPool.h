@@ -4,11 +4,8 @@
 #ifndef PWCharPool_h
 #define PWCharPool_h
 
-#include "PasswordSafe.h"
-
-#include "ThisMfcApp.h"
-#include "resource.h"
-
+#include <afxtempl.h> // for CList
+#include "MyString.h"
 
 //-----------------------------------------------------------------------------
 
@@ -48,10 +45,13 @@ protected:
 class CPasswordCharPool
 {
 public:
-   CPasswordCharPool::CPasswordCharPool();
-   void     SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL usedigits, BOOL usesymbols);
-   char     GetRandomChar(PWCHARTYPE* type);
-   size_t   GetLength(void);
+   CPasswordCharPool::CPasswordCharPool(UINT pwlen,
+					BOOL uselowercase, BOOL useuppercase,
+					BOOL usedigits, BOOL usesymbols,
+					BOOL easyvision);
+   char     GetRandomChar(PWCHARTYPE& type) const;
+   size_t   GetLength(void) const;
+   CMyString MakePassword() const;
 
 
 private:
@@ -75,6 +75,12 @@ private:
 
    CList<CPasswordCharBlock,CPasswordCharBlock> m_pool;
    UINT m_length;
+   // Following state vars set by ctor, used by MakePassword()
+   const UINT m_pwlen;
+   const BOOL m_uselowercase;
+   const BOOL m_useuppercase;
+   const BOOL m_usedigits;
+   const BOOL m_usesymbols;
 };
 
 #endif

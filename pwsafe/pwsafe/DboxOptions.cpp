@@ -50,7 +50,7 @@ DboxMain::OnOptions()
    passwordpolicy.m_pwuselowercase = app.GetProfileInt("", "pwuselowercase", TRUE);
    passwordpolicy.m_pwuseuppercase = app.GetProfileInt("", "pwuseuppercase", TRUE);
    passwordpolicy.m_pwusedigits = app.GetProfileInt("", "pwusedigits", TRUE);
-   passwordpolicy.m_pwusesymbols = app.GetProfileInt("", "pwusesymbols", TRUE);
+   passwordpolicy.m_pwusesymbols = app.GetProfileInt("", "pwusesymbols", FALSE);
    passwordpolicy.m_pweasyvision = app.GetProfileInt("", "pweasyvision", FALSE);
 
    username.m_usedefuser = app.GetProfileInt("", "usedefuser", FALSE);
@@ -105,15 +105,6 @@ DboxMain::OnOptions()
 
       app.WriteProfileInt("", "deletequestion",   not(misc.m_confirmdelete));
       app.WriteProfileInt("", "saveimmediately",      misc.m_saveimmediately);
-
-      /*
-      **  Now update the application according to the options.
-      */
-      pwchars.SetPool(passwordpolicy.m_pweasyvision,
-                      passwordpolicy.m_pwuselowercase,
-                      passwordpolicy.m_pwuseuppercase,
-                      passwordpolicy.m_pwusedigits,
-                      passwordpolicy.m_pwusesymbols);
 
       m_bAlwaysOnTop = display.m_alwaysontop;
       UpdateAlwaysOnTop();

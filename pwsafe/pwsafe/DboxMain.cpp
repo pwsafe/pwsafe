@@ -323,15 +323,6 @@ DboxMain::OnInitDialog()
 		MoveWindow(&rect, TRUE);
    }
 
-   /*
-   **  Set the password character pool.
-   */
-   pwchars.SetPool(app.GetProfileInt("", "pweasyvision", FALSE),
-                   app.GetProfileInt("", "pwuselowercase", TRUE),
-                   app.GetProfileInt("", "pwuseuppercase", TRUE),
-                   app.GetProfileInt("", "pwusedigits", TRUE),
-                   app.GetProfileInt("", "pwusesymbols", TRUE));
-
    return TRUE;  // return TRUE unless you set the focus to a control
 }
 
