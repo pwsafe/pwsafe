@@ -174,6 +174,8 @@ DboxMain::OnAdd()
       dataDlg.m_username = m_core.GetDefUsername();
     }
 
+  dataDlg.m_group = m_TreeViewGroup;
+  m_TreeViewGroup = _T(""); // for next time
   app.DisableAccelerator();
   int rc = dataDlg.DoModal();
   app.EnableAccelerator();
@@ -231,6 +233,19 @@ DboxMain::OnAdd()
   else if (rc == IDCANCEL)
     {
     }
+}
+
+//Add a group (tree view only)
+void
+DboxMain::OnAddGroup()
+{
+  // This can be reached by right clicking over an existing group node
+  // or by clicking over "whitespace".
+  // If the former, add a child node to the current one
+  // If the latter, add to root.
+  m_TreeViewGroup += _T(".New Group");
+  m_ctlItemTree.AddGroup(m_TreeViewGroup);
+  m_TreeViewGroup = _T(""); // for next time
 }
 
 void
@@ -423,6 +438,11 @@ void
 DboxMain::OnCancel()
 {
    OnOK();
+}
+
+void DboxMain::UpdateListItemTitle(int lindex, LPTSTR lpszText)
+{
+  m_ctlItemList.SetItemText(lindex, 0, lpszText);
 }
 
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -744,6 +764,7 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
 {
    CPoint local = point;
    int item = -1;
+   CMenu menu;
 
    if (m_ctlItemList.IsWindowVisible()) {
      m_ctlItemList.ScreenToClient(&local);
@@ -760,9 +781,29 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
 	 ASSERT(di->tree_item == ti);
 	 item = di->list_index;
        } else {
-	 // NODE selected - handle with another popup?
+	 // NODE selected Show popup
+	 if (menu.LoadMenu(IDR_POPGROUP)) {
+	   CMenu* pPopup = menu.GetSubMenu(0);
+	   ASSERT(pPopup != NULL);
+	   m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
+	   pPopup->TrackPopupMenu(
+WCE_INS TPM_LEFTALIGN,
+WCE_DEL TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+                                point.x, point.y,
+                                this); // use this window for commands
+	 }
        }
-     } // ti != NULL
+     } else { // not over anything
+      if (menu.LoadMenu(IDR_POPTREE)) {
+	CMenu* pPopup = menu.GetSubMenu(0);
+	ASSERT(pPopup != NULL);
+	pPopup->TrackPopupMenu(
+WCE_INS TPM_LEFTALIGN,
+WCE_DEL TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+                                point.x, point.y,
+                                this); // use this window for commands
+      }
+     }
    } // tree view handling
 
    if (item >= 0)
@@ -773,7 +814,6 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
      }
      m_ctlItemList.SetFocus();
 
-      CMenu menu;
       if (menu.LoadMenu(IDR_POPMENU))
       {
          CMenu* pPopup = menu.GetSubMenu(0);
@@ -831,63 +871,6 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
 }
 #endif
 
-static const TCHAR GROUP_SEP = TCHAR('.');
-
-static CMyString GetPathElem(CMyString &path)
-{
-  // Get first path element and chop it off, i.e., if
-  // path = "a.b.c.d"
-  // will return "a" and path will be "b.c.d"
-  // (assuming GROUP_SEP is '.')
-
-  CMyString retval;
-  int N = path.Find(GROUP_SEP);
-  if (N == -1) {
-    retval = path;
-    path = _T("");
-  } else {
-    const int Len = path.GetLength();
-    retval = CMyString(path.Left(N));
-    path = CMyString(path.Right(Len - N - 1));
-  }
-  return retval;
-}
-
-static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
-			 const CMyString &s, HTREEITEM &si)
-{
-  // returns true iff s is a direct descendant of node
-  HTREEITEM ti = Tree.GetChildItem(node);
-  
-  while (ti != NULL) {
-    const CMyString itemText = Tree.GetItemText(ti);
-    if (itemText == s) {
-      si = ti;
-      return true;
-    }
-    ti = Tree.GetNextItem(ti, TVGN_NEXT);
-  }
-  return false;
-}
-
-static HTREEITEM InsertGroup(CTreeCtrl &Tree, const CMyString &group)
-{
-  HTREEITEM ti = TVI_ROOT;
-  HTREEITEM si;
-  if (!group.IsEmpty()) {
-    CMyString path = group;
-    CMyString s;
-    do {
-      s = GetPathElem(path);
-      if (!ExistsInTree(Tree, ti, s, si)) {
-	ti = Tree.InsertItem(s, ti, TVI_SORT);
-	Tree.SetItemImage(ti, CMyTreeCtrl::NODE, CMyTreeCtrl::NODE);
-      } else
-	ti = si;
-    } while (!path.IsEmpty());
-  }
-  return ti;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
@@ -925,7 +908,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
   {
     HTREEITEM ti;
     // get path, create if necessary, add title as last node
-    ti = InsertGroup(m_ctlItemTree, itemData.GetGroup());
+    ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     ti = m_ctlItemTree.InsertItem(title, ti, TVI_SORT);
     m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
     m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);

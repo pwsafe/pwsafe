@@ -35,6 +35,8 @@
 #define IDR_MAINMENU                    162
 #define IDR_POPMENU                     166
 #define IDD_QUERYSETDEF                 167
+#define IDR_POPGROUP                    168
+#define IDR_POPTREE                     169
 #define IDD_QUERYADDNAME                183
 #define IDD_USERNAMEENTRY               184
 #define IDD_PASSKEYENTRY                185
@@ -150,6 +152,7 @@
 #define ID_FILE_EXPORTTO_PLAINTEXT      32825
 #define ID_MENUITEM_LIST_VIEW           32826
 #define ID_MENUITEM_TREE_VIEW           32827
+#define ID_MENUITEM_ADDGROUP            32829
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRY20             40020
 
@@ -157,7 +160,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        201
+#define _APS_NEXT_RESOURCE_VALUE        204
 #define _APS_NEXT_COMMAND_VALUE         32828
 #define _APS_NEXT_CONTROL_VALUE         1081
 #define _APS_NEXT_SYMED_VALUE           105

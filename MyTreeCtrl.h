@@ -17,7 +17,8 @@ public:
   enum {NODE=0, LEAF=1}; // indices of bitmaps in ImageList
 
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
-
+  CString GetGroup(HTREEITEM hItem); // get group path to hItem
+  HTREEITEM AddGroup(const CString &path);
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
@@ -42,6 +43,7 @@ private:
   void OnButtonUp(void);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   bool IsLeafNode(HTREEITEM hItem);
+  void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
 };
 
 
