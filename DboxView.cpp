@@ -28,6 +28,19 @@ struct DisplayInfo {
   HTREEITEM tree_item;
 };
 
+static void FixListIndexes(CListCtrl &clist)
+{
+  int N = clist.GetItemCount();
+  for (int i = 0; i < N; i++) {
+    CItemData *ci = (CItemData *)clist.GetItemData(i);
+    ASSERT(ci != NULL);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    if (di->list_index != i)
+      di->list_index = i;
+  }
+}
+
 //-----------------------------------------------------------------------------
 
   /*
@@ -206,8 +219,9 @@ DboxMain::OnAdd()
       temp.SetPassword(dataDlg.m_password);
       temp.SetNotes(dataDlg.m_notes);
       m_core.AddEntryToTail(temp);
-      int newpos = insertItem(temp);
+      int newpos = insertItem(m_core.GetTailEntry());
       SelectEntry(newpos);
+      FixListIndexes(m_ctlItemList);
       m_ctlItemList.SetFocus();
       if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), FALSE) == TRUE)
 	{
@@ -244,11 +258,17 @@ DboxMain::OnDelete()
 
       if (dodelete == TRUE)
 	{
-	  int curSel = getSelectedItem();
+	  CItemData *ci = getSelectedItem();
+	  ASSERT(ci != NULL);
+	  DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+	  ASSERT(di != NULL);
+	  int curSel = di->list_index;
 	  POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 	  m_ctlItemList.DeleteItem(curSel);
-	  delete m_core.GetEntryAt(listindex).GetDisplayInfo();
+	  m_ctlItemTree.DeleteItem(di->tree_item);
+	  delete di;
 	  m_core.RemoveEntryAt(listindex);
+	  FixListIndexes(m_ctlItemList);
 	  int rc = SelectEntry(curSel);
 	  if (rc == LB_ERR) {
 	    SelectEntry(m_ctlItemList.GetItemCount() - 1);
@@ -264,18 +284,19 @@ DboxMain::OnEdit()
 {
   if (SelItemOk() == TRUE)
     {
-      int curSel = getSelectedItem();
-		
-      POSITION listindex = Find(curSel);
-      CItemData item = m_core.GetEntryAt(listindex);
+      CItemData *ci = getSelectedItem();
+      ASSERT(ci != NULL);
+      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+      ASSERT(di != NULL);
+      POSITION listpos = Find(di->list_index);
 
       CEditDlg dlg_edit(this);
-      dlg_edit.m_title = item.GetTitle();
-      dlg_edit.m_username = item.GetUser();
-      dlg_edit.m_realpassword = item.GetPassword();
+      dlg_edit.m_title = ci->GetTitle();
+      dlg_edit.m_username = ci->GetUser();
+      dlg_edit.m_realpassword = ci->GetPassword();
       dlg_edit.m_password = HIDDEN_PASSWORD;
-      dlg_edit.m_notes = item.GetNotes();
-      dlg_edit.m_listindex = listindex;   // for future reference, this is not multi-user friendly
+      dlg_edit.m_notes = ci->GetNotes();
+      dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
 
       app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
@@ -285,25 +306,29 @@ DboxMain::OnEdit()
 	{
 	  CMyString temptitle;
 	  m_core.MakeName(temptitle, dlg_edit.m_title, dlg_edit.m_username);
-	  item.SetName(temptitle);
+	  ci->SetName(temptitle);
 
-	  item.SetPassword(dlg_edit.m_realpassword);
-	  item.SetNotes(dlg_edit.m_notes);
+	  ci->SetPassword(dlg_edit.m_realpassword);
+	  ci->SetNotes(dlg_edit.m_notes);
 
 	  /*
 	    Out with the old, in with the new
 	  */
-	  m_core.RemoveEntryAt(listindex);
-	  m_core.AddEntryToTail(item);
-	  m_ctlItemList.DeleteItem(curSel);
-	  insertItem(item);
+	  CItemData editedItem(*ci); // 'cause next line deletes *ci
+	  m_core.RemoveEntryAt(listpos);
+	  m_core.AddEntryToTail(editedItem);
+	  m_ctlItemList.DeleteItem(di->list_index);
+	  m_ctlItemTree.DeleteItem(di->tree_item);
+	  di->list_index = -1; // so that insertItem will set new values
+	  insertItem(editedItem);
+	  FixListIndexes(m_ctlItemList);
 	  if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), FALSE) == TRUE)
 	    {
 	      Save();
 	    }
 	}
 
-      rc = SelectEntry(curSel);
+      rc = SelectEntry(di->list_index);
       if (rc == LB_ERR)
 	{
 	  SelectEntry(m_ctlItemList.GetItemCount() - 1);
@@ -497,14 +522,11 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 BOOL
 DboxMain::SelItemOk()
 {
-   int curSel = getSelectedItem();
-   if (curSel != LB_ERR)
-   {
-     POSITION listindex = Find(curSel);
-         if (listindex != NULL)
-            return TRUE;
-   }
-   return FALSE;
+   CItemData *ci = getSelectedItem();
+   if (ci == NULL)
+     return FALSE;
+   else
+     return TRUE;
 }
 
 BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
@@ -580,7 +602,7 @@ DboxMain::RefreshList()
    m_ctlItemList.SetRedraw( TRUE );
    m_ctlItemTree.SetRedraw( TRUE );
 #endif
-
+   FixListIndexes(m_ctlItemList);
    //Setup the selection
    if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
       SelectEntry(0);
@@ -843,43 +865,49 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
   if (m_bShowPasswordInList) {
     m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
   }
-
   return iResult;
 }
 
-int DboxMain::getSelectedItem() {
-  /*
-   * Works with list in the trivial way
-   * For tree, use the fact that each item has a corresponding list entry.
-   * feh.
-   */
+CItemData *DboxMain::getSelectedItem() {
+  CItemData *retval = NULL;
   if (m_ctlItemList.IsWindowVisible()) {
     POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
     if (p) {
-      return m_ctlItemList.GetNextSelectedItem(p);
+      int i = m_ctlItemList.GetNextSelectedItem(p);
+      retval = (CItemData *)m_ctlItemList.GetItemData(i);
+      ASSERT(retval != NULL);
+      DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
+      ASSERT(di != NULL && di->list_index == i);
     }
   } else { // tree control visible, go from HTREEITEM to index
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     if (ti != NULL) {
-      CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(ti);
-      ASSERT(ci != NULL);
-      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-      ASSERT(di != NULL);
-      return di->list_index;
+      retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
+      ASSERT(retval != NULL);
+      DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
+      ASSERT(di != NULL && di->tree_item == ti);
     }    
   }
-    return -1;
+    return retval;
 }
 
 void
 DboxMain::ClearData(void)
 {
-  // XXX Iterate over item list, delete DisplayInfo
+  // Iterate over item list, delete DisplayInfo
+  POSITION listPos = m_core.GetFirstEntryPosition();
+  while (listPos != NULL) {
+    CItemData &ci = m_core.GetEntryAt(listPos);
+    delete ci.GetDisplayInfo(); // no need to Set to NULL
+    m_core.GetNextEntry(listPos);
+  }
   m_core.ClearData();
-   //Because GetText returns a copy, we cannot do anything about the names
-   if (m_windowok)
-      //Have to make sure this doesn't cause an access violation
-      m_ctlItemList.DeleteAllItems();
+  //Because GetText returns a copy, we cannot do anything about the names
+  if (m_windowok) {
+    //Have to make sure this doesn't cause an access violation
+    m_ctlItemList.DeleteAllItems();
+    m_ctlItemTree.DeleteAllItems();
+  }
 }
 
 void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -893,7 +921,7 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
     m_bSortAscending = true;
   }
   m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-
+  FixListIndexes(m_ctlItemList);
   *pResult = 0;
 }
 
