@@ -185,7 +185,23 @@ DboxMain::OnAdd()
     {
       dataDlg.m_username = m_core.GetDefUsername();
     }
-
+  // m_TreeViewGroup may be set by OnContextMenu, if not, try to grok it
+  if (m_TreeViewGroup.IsEmpty()) {
+    CItemData *itemData = NULL;
+    if (m_ctlItemTree.IsWindowVisible()) { // tree view
+      HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+      if (ti != NULL) { // if anything selected
+	itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+	if (itemData != NULL) { // leaf selected
+	  m_TreeViewGroup = itemData->GetGroup();
+	} else { // node selected
+	  m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
+	}
+      }
+    } else { // list view
+      // XXX TBD - get group name of currently selected list entry
+    }
+  }
   dataDlg.m_group = m_TreeViewGroup;
   m_TreeViewGroup = _T(""); // for next time
   app.DisableAccelerator();
