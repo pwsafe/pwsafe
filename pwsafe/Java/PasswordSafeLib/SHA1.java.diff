@@ -1,8 +1,8 @@
 diff 1/SHA1.java 2/SHA1.java
 63,81d62
 < 	/**
-< 	 * Partially clears the data.  Use {@link clear} to clear more data or
-< 	 * {@link restart} to start again.
+< 	 * Partially clears the data.  Use {@link #clear()} to clear more data or
+< 	 * {@link #restart()} to start again.
 < 	 */
 < 	public void clearContext()
 < 	{
