@@ -37,8 +37,6 @@ ThisMfcApp::ThisMfcApp() :
 #endif
 	m_pMRU( NULL )
 {
-   srand((unsigned)time(NULL));
-
 // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
 	// Double check that *_ENDIAN has been correctly set!
