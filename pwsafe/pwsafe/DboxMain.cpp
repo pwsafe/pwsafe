@@ -1165,11 +1165,15 @@ DboxMain::Open( const CMyString &pszFilename )
 	case TAR_NEW:
 		return New();
 	case PWScore::WRONG_PASSWORD:
+	case PWScore::USER_CANCEL:
 	/*
 	If the user just cancelled out of the password dialog, 
 	assume they want to return to where they were before... 
 		*/
 		return PWScore::USER_CANCEL;
+	default:
+	  ASSERT(0); // we should take care of all cases explicitly
+	  return PWScore::USER_CANCEL; // conservative behaviour for release version
 	}
 	
 	rc = m_core.ReadFile(pszFilename, passkey);
