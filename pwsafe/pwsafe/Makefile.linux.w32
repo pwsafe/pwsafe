@@ -17,7 +17,6 @@ RC=$(WINE) $(VCPATH)\\rc.exe
 # note - use the normal Linux rm
 RM=rm
 
-### The Lockstar convention
 CXXFLAGS=$(DEBUG) $(DEFINES) $(OPTIONS) $(TEST) $(INCLUDES)
 CFLAGS=$(DEBUG) $(DEFINES) $(OPTIONS) $(TEST) $(INCLUDES)
 
