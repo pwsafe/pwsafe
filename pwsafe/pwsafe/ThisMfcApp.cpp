@@ -133,19 +133,19 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
 		  _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
 		  _S_IREAD | _S_IWRITE);
   if (out != -1) {
+    unsigned char randstuff[StuffSize];
+    unsigned char randhash[20];   // HashSize
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
     _write(out, &len, sizeof(len)); // XXX portability issue!
 #else
     for (int i=0; i < 8; i++)
-      global.m_randstuff[i] = newrand();
+      randstuff[i] = newrand();
 
     // miserable bug - have to fix this way to avoid breaking existing files
-    global.m_randstuff[8] = global.m_randstuff[9] = '\0';
-    GenRandhash(passwd,
-		global.m_randstuff,
-		global.m_randhash);
-   _write(out, global.m_randstuff, 8);
-   _write(out, global.m_randhash, 20);
+    randstuff[8] = randstuff[9] = '\0';
+    GenRandhash(passwd, randstuff, randhash);
+   _write(out, randstuff, 8);
+   _write(out, randhash, 20);
 #endif // KEEP_FILE_MODE_BWD_COMPAT
 		
     unsigned char thesalt[SaltLength];
@@ -184,21 +184,21 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 		 _O_BINARY|_O_RDONLY|_O_SEQUENTIAL,
 		 S_IREAD | _S_IWRITE);
   if (in != -1) {
-      unsigned char salt[SaltLength];
-      unsigned char ipthing[8];
+    unsigned char randstuff[StuffSize];
+    unsigned char randhash[20];   // HashSize
+    unsigned char salt[SaltLength];
+    unsigned char ipthing[8];
 
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
       _read(in, &len, sizeof(len)); // XXX portability issue
 #else
-      _read(in, global.m_randstuff, 8);
-      global.m_randstuff[8] = global.m_randstuff[9] = '\0'; // ugly bug workaround
-      _read(in, global.m_randhash, 20);
+      _read(in, randstuff, 8);
+      randstuff[8] = randstuff[9] = '\0'; // ugly bug workaround
+      _read(in, randhash, 20);
 
       unsigned char temphash[20]; // HashSize
-      GenRandhash(passwd,
-		  global.m_randstuff,
-		  temphash);
-      if (0 != memcmp((char*)global.m_randhash,
+      GenRandhash(passwd, randstuff, temphash);
+      if (0 != memcmp((char*)randhash,
 		      (char*)temphash,
 		      20)) // HashSize
 	{

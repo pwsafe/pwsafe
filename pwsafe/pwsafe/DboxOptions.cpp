@@ -111,15 +111,17 @@ DboxMain::OnOptions()
       */
       m_bAlwaysOnTop = display.m_alwaysontop;
       UpdateAlwaysOnTop();
+      m_core.SetDefUsername(username.m_defusername);
+      m_core.SetUseDefUser(username.m_usedefuser == TRUE ? true : false);
 
       bool bOldShowPasswordInList = m_bShowPasswordInList;
       m_bShowPasswordInList = app.GetProfileInt("", "showpwinlist", FALSE)? true: false;
       if (currDefUsername != (CMyString)username.m_defusername)
       {
          if (TRUE == currUseDefUser)
-            MakeFullNames(&m_pwlist, currDefUsername);
+            m_core.MakeFullNames(currDefUsername);
          if (TRUE == username.m_usedefuser)
-            DropDefUsernames(&m_pwlist, username.m_defusername);
+            m_core.DropDefUsernames(username.m_defusername);
 
          RefreshList();
       }
@@ -127,9 +129,9 @@ DboxMain::OnOptions()
       {
          //Only check box has changed
          if (TRUE == currUseDefUser)
-            MakeFullNames(&m_pwlist, currDefUsername);
+            m_core.MakeFullNames(currDefUsername);
          else
-            DropDefUsernames(&m_pwlist, username.m_defusername);
+            m_core.DropDefUsernames(username.m_defusername);
          RefreshList();
       }
       else if ((bOldShowPasswordInList + m_bShowPasswordInList) == 1)

@@ -17,12 +17,7 @@
 
 #include "PasskeyEntry.h"
 #include "TryAgainDlg.h"
-
-#include "util.h"
-
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
+#include "DboxMain.h" // for CheckPassword()
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
@@ -31,6 +26,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
    : CDialog(first ? CPasskeyEntry::IDD : CPasskeyEntry::IDD_BASIC,
              pParent),
      m_first(first),
+     m_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID)
 {
@@ -47,9 +43,9 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
    m_passkey = "";
 
    if (a_filespec.GetLength() > FILE_DISP_LEN) {
-//	   m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
-//	   m_message.Insert(0, _T("..."));
-      // changed by karel@VanderGucht.de to see beginning + ending of 'a_filespec'
+// m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
+// m_message.Insert(0, _T("..."));
+// changed by karel@VanderGucht.de to see beginning + ending of 'a_filespec'
       m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + " ... " + a_filespec.Right(FILE_DISP_LEN/2);
 
    }
@@ -91,32 +87,34 @@ END_MESSAGE_MAP()
 BOOL
 CPasskeyEntry::OnInitDialog(void)
 {
-   CDialog::OnInitDialog();
+  DboxMain* pParent = (DboxMain*) GetParent();
+  ASSERT(pParent != NULL);
+  CDialog::OnInitDialog();
+  if (pParent->CheckPassword(m_filespec, m_passkey) != PWScore::SUCCESS)
+    if (("" == m_message)
+	&& m_first)
+      {
+	m_ctlPasskey.EnableWindow(FALSE);
+	m_ctlOK.EnableWindow(FALSE);
+	m_message = "[No current database]";
+      }
 
-   if (("" == m_message)
-       && m_first)
-   {
-      m_ctlPasskey.EnableWindow(FALSE);
-      m_ctlOK.EnableWindow(FALSE);
-      m_message = "[No current database]";
-   }
+  /*
+   * this bit makes the background come out right on
+   * the bitmaps
+   */
 
-   /*
-    * this bit makes the background come out right on
-    * the bitmaps
-    */
-
-   if (m_first)
-   {
+  if (m_first)
+    {
       m_ctlLogoText.ReloadBitmap(IDB_PSLOGO);
       m_ctlLogo.ReloadBitmap(IDB_CLOGO);
-   }
-   else
-   {
+    }
+  else
+    {
       m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
-   }
+    }
    
-   return TRUE;
+  return TRUE;
 }
 
 
@@ -149,52 +147,47 @@ CPasskeyEntry::OnCancel()
 void
 CPasskeyEntry::OnOK() 
 {
-   UpdateData(TRUE);
+  UpdateData(TRUE);
 
-   unsigned char temphash[20]; // HashSize
-   GenRandhash(m_passkey,
-               global.m_randstuff,
-               temphash);
-
-   if (m_passkey == "")
-   {
+  if (m_passkey.IsEmpty())
+    {
       AfxMessageBox("The combination cannot be blank.");
       m_ctlPasskey.SetFocus();
       return;
-   }
+    }
 
-   if (0 != memcmp((char*)global.m_randhash,
-                   (char*)temphash,
-                   20)) // HashSize
-   {
+  DboxMain* pParent = (DboxMain*) GetParent();
+  ASSERT(pParent != NULL);
+  if (pParent->CheckPassword(m_filespec, m_passkey) != PWScore::SUCCESS)
+    {
       if (m_tries >= 2)
-      {
-         CTryAgainDlg errorDlg(this);
+	{
+	  CTryAgainDlg errorDlg(this);
 
-         int nResponse = errorDlg.DoModal();
-         if (nResponse == IDOK)
-         {
-         }
-         else if (nResponse == IDCANCEL)
-         {
-            m_status = errorDlg.GetCancelReturnValue();
-            app.m_pMainWnd = NULL;
-            CDialog::OnCancel();
-         }
-      }
+	  int nResponse = errorDlg.DoModal();
+	  if (nResponse == IDOK)
+	    {
+	    }
+	  else if (nResponse == IDCANCEL)
+	    {
+	      m_status = errorDlg.GetCancelReturnValue();
+	      app.m_pMainWnd = NULL;
+	      CDialog::OnCancel();
+	    }
+	}
       else
-      {
-         m_tries++;
-         AfxMessageBox("Incorrect passkey");
-         m_ctlPasskey.SetSel(MAKEWORD(-1, 0));
-         m_ctlPasskey.SetFocus();
-      }
-   }
-   else
-   {
+	{
+	  m_tries++;
+	  AfxMessageBox("Incorrect passkey");
+	  m_ctlPasskey.SetSel(MAKEWORD(-1, 0));
+	  m_ctlPasskey.SetFocus();
+	}
+    }
+  else
+    {
       app.m_pMainWnd = NULL;
       CDialog::OnOK();
-   }
+    }
 }
 
 
