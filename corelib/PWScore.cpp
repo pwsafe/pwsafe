@@ -5,7 +5,8 @@
 #include "global.h"
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
-		     m_usedefuser(false), m_defusername(_T(""))
+		     m_usedefuser(false), m_defusername(_T("")),
+		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION)
 {
 }
 
@@ -97,12 +98,13 @@ PWScore::ReadFile(const CMyString &a_filename,
    PWSfile in(a_filename, a_passkey);
 
   int status;
-  PWSfile::VERSION version = in.GetFileVersion();
+  
+  m_ReadFileVersion = in.GetFileVersion();
 
-  if (version == PWSfile::UNKNOWN_VERSION)
+  if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION)
     return UNKNOWN_VERSION;
 
-  status = in.OpenReadFile(version);
+  status = in.OpenReadFile(m_ReadFileVersion);
 
   if (status != PWSfile::SUCCESS)
     return CANT_OPEN_FILE;
@@ -131,6 +133,13 @@ PWScore::ReadFile(const CMyString &a_filename,
 
    return SUCCESS;
 }
+
+int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
+{
+  //XXX TBD
+  return PWScore::SUCCESS;
+}
+
 
 void PWScore::ChangePassword(const CMyString &/*newPassword*/)
 {

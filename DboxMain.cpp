@@ -1139,6 +1139,33 @@ DboxMain::Save()
    if (m_core.GetCurFile().IsEmpty())
       return SaveAs();
 
+   if (m_core.GetReadFileVersion() == PWSfile::V17) {
+     CString OldName(m_core.GetCurFile());
+     int dotIndex = OldName.ReverseFind(TCHAR('.'));
+     if (dotIndex != -1)
+       OldName = OldName.Left(dotIndex-1);
+     OldName += _T(".old");
+
+
+     CString msg = _T("The original database, ");
+     msg += CString(m_core.GetCurFile());
+     msg += _T(", is in pre-2.0 format. It will be unchanged, and renamed to ");
+     msg += OldName;
+     msg += _T("Your changes will be written in the new"
+	       " format, which is unusable by old versions of PasswordSafe."
+	       " To save your changes in the old format, use the \"File->Export To"
+	       "-> Old (1.x) format\" command.\n\n"
+	       "Press OK to continue saving, Cancel to stop.");
+     if (MessageBox(msg, _T("File version warning"),
+		    MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
+       return PWScore::USER_CANCEL;
+     if (m_core.RenameFile(m_core.GetCurFile(), OldName) != PWScore::SUCCESS) {
+       MessageBox(_T("Could not rename file"), _T("File rename error"),
+		  MB_OK|MB_ICONWARNING);
+       return PWScore::CANT_OPEN_FILE;
+     }
+   }
+
    rc = m_core.WriteCurFile();
 
    if (rc == PWScore::CANT_OPEN_FILE)
@@ -1664,6 +1691,18 @@ DboxMain::SaveAs()
    int rc;
    CMyString newfile;
 
+   if (m_core.GetReadFileVersion() == PWSfile::V17) {
+     CMyString msg = _T("The original database, ");
+     msg += m_core.GetCurFile();
+     msg += _T(", is in pre-2.0 format. The data will now be written in the new"
+	       " format, which is unusable by old versions of PasswordSafe."
+	       " To save the data in the old format, use the \"File->Export To"
+	       "-> Old (1.x) format\" command.\n\n"
+	       "Press OK to continue saving, Cancel to stop.");
+     if (MessageBox(msg, _T("File version warning"),
+		    MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
+       return PWScore::USER_CANCEL;
+   }
    //SaveAs-type dialog box
    while (1)
    {
