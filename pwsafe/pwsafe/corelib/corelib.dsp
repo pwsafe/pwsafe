@@ -95,6 +95,10 @@ SOURCE=.\ItemData.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ItemField.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MyString.cpp
 # End Source File
 # Begin Source File
@@ -128,6 +132,10 @@ SOURCE=.\BlowFish.h
 # Begin Source File
 
 SOURCE=.\ItemData.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ItemField.h
 # End Source File
 # Begin Source File
 
