@@ -1,25 +1,76 @@
 $Id$
 
-Password Safe 2.0pre2 Release Note - January 2004
+Password Safe 2.0 Release Note - February 2004
 =================================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.0pre2. For a short description of Password
+with Password Safe version 2.0. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
 
-This is the second BETA release of version 2.0 of PasswordSafe. While
-much effort has been put into assuring the stability of the program
-and the integrity of the data, it cannot be considered "production
-quality" yet, and therefore should not be used except for evaluating
-the new features and providing input as to bugs, feature requests, etc.
+This is the first non-beta release of version 2.0 of PasswordSafe. The
+first beta was released over two months ago, and while several minor
+issues have been found and fixed, there have been *no* reports of lost
+or corrupted data. Therefore, I think that 2.0 is ready for prime
+time.
+
+Thanks to all the brave souls who've downloaded the pre-2.0 releases,
+reported bugs and have patiently explained, duplicated, posted test
+data, suggested fixes and workarounds, and verified fixes. Without
+you, this release would not have been possible!
+
+New Features for 2.0:
+=====================
+Two major new features in this release: A new database format, and a
+new tree view. The former should be invisible to users, the latter
+quite useful.
+
+The application imports old database files transparently, and warns
+the user upon saving that the new format is incompatible with old
+versions of the program.
+
+Also, the first URL in the Notes field (starting with http: or https:)
+will be added to the popup (right-click) menu for that entry. 
+Selecting it will invoke the default browser on that URL.
+
+A Russian version of the help file may be found in
+http://passwordsafe.sourceforge.net/pwsaferu.zip (Thanks to Maxim 
+Tikhonov). If anyone is interested in doing such work in other
+languages, please let me (https://sourceforge.net/users/ronys) know.
+
+Finally, the graphics have been spruced up a bit - thanks to Emilijan
+Mirceski for his patient work on the new logo and toolbar!
+
+Bugs Fixed in 2.0:
+==================
+[871893] Saving a converted (from old format) database second time now
+succeeds.
+[875288,893513] Change safe combination works again.
+[unreported] Find now selects items in tree view as well as list view.
+[878768] Online help updated and functional.
+[870756,886601] On XP, data would be invisible until minimize/maximize.
+[862504,878768] The help file now works and is updated.
+[895062,871893] Multiple saves after editing a converted (from old
+format) database now work correctly.
+[821837,777937] PasswordSafe is visible in taskbar and task switcher
+even when only the login window is displayed.
 
 New Features for 2.0pre2:
 =========================
 [RFE 504086] It is now possible to export the password database into a
 plain ASCII file. Fields are separated by a tab character. Note that
-this is a VERY large security if used carelessly.
+this is a VERY large security risk if used carelessly.
+
+
+Bugs Fixed in 2.0pre2:
+======================
+[859798, 859565] Debug libraries are no longer required.
+
+- Export to v1.7 format fixed.
+
+[777937] Safe combination dialog box now appears in taskbar and
+switcher
 
 New Features for 2.0pre1:
 =========================
@@ -27,23 +78,18 @@ New Features for 2.0pre1:
 entries now supported. This allows the user to define categories,
 sub-categories, etc.
 
-Bugs Fixed in 2.0pre2:
-======================
-
-[859798, 859565] Debug libraries are no longer required.
-
-- Export to v1.7 format fixed.
-
 Known Problems:
 ===============
-- The Help file is outdated for this release.
-
-- The Search facility is broken.
-
-- The default user name facility is broken.
+[879400] A category cannot be dragged to the top level. Workaround:
+Edit the Group field of the categories entries. For example, to make
+category "b" a top level category instead of under "a", change all
+its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.5  2004/02/17 21:11:06  ronys
+Updated for 2.0
+
 Revision 1.4  2004/01/03 19:14:18  ronys
 Updated for 2.0-pre2
 
