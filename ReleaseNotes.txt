@@ -1,17 +1,28 @@
 $Id$
 
-Password Safe 2.08 Release Note - January 2005
-==============================================
+Password Safe 2.09 Release Note - February 2005
+===============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.08. For a short description of Password
+with Password Safe version 2.09. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-This is a maintenance release, adding support for multiple and
-read-only access, and fixing a couple of bugs.
+This is a maintenance release, adding automatic backups, and fixing a
+couple of bugs.
+
+Bugs fixed in 2.09:
+===================
+[1107971] Edit via double-click no longer crashes the application.
+[1103501,1119212,1138635] Refined file lock mechanism.
+
+New Features for 2.09:
+======================
+When saving a database, the previous version, if one exists, will be
+renamed with the ".dat~" suffix. This provides some minimal automatic
+backup.
 
 Bugs fixed in 2.08:
 ===================
@@ -64,6 +75,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.17  2005/02/20 20:37:38  ronys
+Bumped release to 2.09
+
 Revision 1.16  2005/01/15 11:42:02  ronys
 update for 2.08
 
