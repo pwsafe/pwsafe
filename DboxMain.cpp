@@ -89,6 +89,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 		iResult = ((CString)pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
 		break;
 	default:
+        iResult = 0; // should never happen - just keep compiler happy
 		ASSERT(FALSE);
 	}
 	bool bSortAscending = HIWORD(lParamSort)? true: false;
@@ -503,7 +504,7 @@ DboxMain::OnAdd()
 }
 
 void
-DboxMain::OnListDoubleClick( NMHDR * pNotifyStruct, LRESULT * result )
+DboxMain::OnListDoubleClick( NMHDR *, LRESULT *)
 {
 	OnCopyPassword();
 }
@@ -1292,14 +1293,13 @@ DboxMain::OnCopyUsername()
 
 
 void
-DboxMain::OnContextMenu(CWnd* pWnd,
-                        CPoint point) 
+DboxMain::OnContextMenu(CWnd *, CPoint point) 
 {
    CPoint local = point;
    m_ctlItemList.ScreenToClient(&local);
 
-   BOOL in = TRUE;
    int item = m_ctlItemList.HitTest(local);
+
    if (item >= 0)
    {
      int rc = SelectEntry(item);
@@ -1372,8 +1372,6 @@ DboxMain::OnVKeyToItem(UINT nKey,
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
 	LV_KEYDOWN *pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
 
-   int curSel = getSelectedItem();
-
    switch (pLVKeyDow->wVKey) {
    case VK_DELETE:
       OnDelete();
@@ -1445,7 +1443,7 @@ DboxMain::OnOpen()
 int
 DboxMain::Open()
 {
-   int rc;
+   int rc = SUCCESS;
    CMyString newfile;
 
    //Open-type dialog box
@@ -1962,7 +1960,6 @@ int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
   // to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
   LPCSTR passstr = LPCSTR(app.m_passkey);
-  LPCSTR datastr = LPCSTR(data);
 
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
@@ -2380,7 +2377,7 @@ DboxMain::OnToolTipText(UINT,
 
 
 void
-DboxMain::OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result ) 
+DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *) 
 {
    const UINT statustext = IDS_STATMESSAGE;
 
@@ -2394,7 +2391,7 @@ DboxMain::OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result )
 
 
 void
-DboxMain::OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result ) 
+DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *) 
 {
    const UINT statustext = IDS_STATCOMPANY;
 
@@ -2750,7 +2747,7 @@ DboxMain::OnOpenMRU(UINT nID)
 }
 
 void
-DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu) 
+DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL) 
 {
 	// http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
 	// This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.

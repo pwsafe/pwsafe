@@ -111,7 +111,7 @@ newrand()
    int	r;
    while ((r = rand()) % 257 == 256)
       ; // 257?!?
-   return r;
+   return (unsigned char)r;
 }
 
 
@@ -121,11 +121,11 @@ GetRandAlphaNumChar()
    int temp = newrand() % 3;
 
    if (temp == 0)
-      return ((newrand() % ('9'-'0')) + '0');
+      return char(((newrand() % ('9'-'0')) + '0'));
    else if (temp == 1)
-      return ((newrand() % ('Z'-'A')) + 'A');
+      return char(((newrand() % ('Z'-'A')) + 'A'));
    else
-      return ((newrand() % ('z'-'a')) + 'a');
+      return char(((newrand() % ('z'-'a')) + 'a'));
 }
 
 

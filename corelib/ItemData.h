@@ -72,10 +72,10 @@ private:
    //Actual encryption/decryption
    BOOL EncryptData(const CMyString &plain,
                     unsigned char** cipher, int* cLength,
-                    BOOL* valid);
+                    BOOL &valid);
    BOOL EncryptData(const unsigned char* plain, int plainlength,
                     unsigned char** cipher, int* cLength,
-                    BOOL* valid);
+                    BOOL &valid);
    BOOL DecryptData(const unsigned char* cipher, int cLength,
                     BOOL valid,
                     unsigned char* plain, int plainlength) const;
