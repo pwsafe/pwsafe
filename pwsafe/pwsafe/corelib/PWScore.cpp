@@ -9,7 +9,15 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 		     m_usedefuser(false), m_defusername(_T("")),
 		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION)
 {
+  int i;
+
+  srand((unsigned)time(NULL));
   CItemData::SetSessionKey(); // per-session initialization
+  for (i = 0; i < sizeof(m_session_key); i++)
+    m_session_key[i] = newrand();
+  for (i = 0; i < sizeof(m_session_salt); i++)
+    m_session_salt[i] = newrand();
+
 }
 
 PWScore::~PWScore()
@@ -31,14 +39,14 @@ void
 PWScore::NewFile(const CMyString &passkey)
 {
    ClearData();
-   m_passkey = passkey;
+   SetPassKey(passkey);
    m_changed = false;
 }
 
 int
 PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 {
-  PWSfile out(filename, m_passkey);
+  PWSfile out(filename, GetPassKey());
 
   int status;
 
@@ -130,7 +138,7 @@ PWScore::ReadFile(const CMyString &a_filename,
 
    ClearData(); //Before overwriting old data, but after opening the file... 
 
-   m_passkey = a_passkey;
+   SetPassKey(a_passkey);
 
    CItemData temp;
 
@@ -156,7 +164,7 @@ int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
  
-  m_passkey = newPassword;
+  SetPassKey(newPassword);
   m_changed = TRUE;
 }
 
@@ -189,4 +197,11 @@ void PWScore::SetPassKey(const CMyString &new_passkey)
 bool PWScore::IsPassKey(const CMyString &new_passkey) const
 {
   return new_passkey == m_passkey; // XXX tmp
+  // Lazy way: Get cleartext m_passkey and compare
+  // Right way: encrypt new_passkey & compare to m_passkey
+}
+
+CMyString PWScore::GetPassKey() const
+{
+  return m_passkey; // XXX tmp
 }
