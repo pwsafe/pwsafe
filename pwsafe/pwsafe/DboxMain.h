@@ -121,8 +121,8 @@ protected:
    afx_msg void OnSave();
    afx_msg void OnAdd();
    afx_msg void OnOK();
-   afx_msg void OnSetfocusItemlist();
-   afx_msg void OnKillfocusItemlist();
+   afx_msg void OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
+   afx_msg void OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnDropFiles(HDROP hDrop);
 	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);

@@ -68,6 +68,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 	CMyString title1, username1;
 	CMyString title2, username2;
 
+
 	int iResult;
 	switch(LOWORD(lParamSort)) {
 	case 0:
@@ -149,6 +150,12 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
+	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
+	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
+	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
+	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnCopyPassword)
+	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
+
    ON_WM_DESTROY()
    ON_WM_DROPFILES()
    ON_WM_PAINT()
@@ -172,8 +179,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
-	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnCopyPassword)
-	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
@@ -183,10 +188,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
    ON_BN_CLICKED(IDOK, OnEdit)
-   // disabled by eq
-//	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
-//	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
-	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
+
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 END_MESSAGE_MAP()
@@ -207,7 +209,7 @@ DboxMain::OnInitDialog()
 
    SetIcon(m_hIcon, TRUE);  // Set big icon
    SetIcon(m_hIcon, FALSE); // Set small icon
-	
+
    m_listctrl = (CListCtrl*)GetDlgItem(IDC_ITEMLIST);
 	m_listctrl->SetExtendedStyle(LVS_EX_FULLROWSELECT);
 	int iColumnCount = 3;
@@ -270,12 +272,12 @@ DboxMain::OpenOnInit(void)
      the first time, and just opening a different database or
      un-minimizing the application
    */
-
    CMyString passkey;
    int rc;
    int rc2;
 
    rc = CheckPassword(m_currfile, passkey, true);
+
    switch (rc)
    {
    case SUCCESS:
@@ -348,11 +350,10 @@ DboxMain::setupBars()
 
    const UINT statustext = IDS_STATMESSAGE;
 
-   // i have diabled the status bar see developers list commnets - eq
 
    // Add the status bar
    if (m_statusBar.Create(this))
-   {                           
+   {
       m_statusBar.SetIndicators(&statustext, 1);
       // Make a sunken or recessed border around the first pane
       m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
@@ -371,7 +372,7 @@ DboxMain::setupBars()
 
    // placement code moved to OnSize - eq
 
-   // Set flag
+	// Set flag
    m_toolbarsSetup = TRUE;
 }
 
@@ -2241,7 +2242,7 @@ DboxMain::OnToolTipText(UINT,
 
 
 void
-DboxMain::OnSetfocusItemlist() 
+DboxMain::OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result ) 
 {
    const UINT statustext = IDS_STATMESSAGE;
 
@@ -2255,7 +2256,7 @@ DboxMain::OnSetfocusItemlist()
 
 
 void
-DboxMain::OnKillfocusItemlist() 
+DboxMain::OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result ) 
 {
    const UINT statustext = IDS_STATCOMPANY;
 
