@@ -782,10 +782,12 @@ DboxMain::OnSize(UINT nType,
 
 static void ExtractURL(CMyString &str)
 {
-  // Extract first instance of http[s]://.[^ \t\r\n]+
+  // Extract first instance of (http[s]|ftp)://.[^ \t\r\n]+
   int left = str.Find(_T("http://"));
   if (left == -1)
     left = str.Find(_T("https://"));
+  if (left == -1)
+    left = str.Find(_T("ftp://"));
   if (left == -1) {
     str = _T("");
   } else {
