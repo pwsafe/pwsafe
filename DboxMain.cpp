@@ -154,6 +154,7 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(DboxMain)
+	DDX_Control(pDX, IDC_ITEMLIST, m_ctlItemList);
 	//}}AFX_DATA_MAP
 }
 
@@ -228,26 +229,25 @@ DboxMain::OnInitDialog()
    SetIcon(m_hIcon, TRUE);  // Set big icon
    SetIcon(m_hIcon, FALSE); // Set small icon
 
-   m_listctrl = (CListCtrl*)GetDlgItem(IDC_ITEMLIST);
-	m_listctrl->SetExtendedStyle(LVS_EX_FULLROWSELECT);
+	m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 	int iColumnCount = 3;
-	m_listctrl->InsertColumn(0, "Title");
-	m_listctrl->InsertColumn(1, "User Name");
-	m_listctrl->InsertColumn(2, "Notes");
+	m_ctlItemList.InsertColumn(0, "Title");
+	m_ctlItemList.InsertColumn(1, "User Name");
+	m_ctlItemList.InsertColumn(2, "Notes");
 
 	if (app.GetProfileInt("", "showpwdefault", FALSE)) {
 		m_bShowPassword = true;
 	}
 
 	CRect rect;
-	m_listctrl->GetClientRect(&rect);
+	m_ctlItemList.GetClientRect(&rect);
 	int i1stWidth = app.GetProfileInt("", "column1width", rect.Width() / iColumnCount + rect.Width() % iColumnCount);
 	int i2ndWidth = app.GetProfileInt("", "column2width", rect.Width() / iColumnCount);
 	int i3rdWidth = app.GetProfileInt("", "column3width", rect.Width() / iColumnCount);
 
-	m_listctrl->SetColumnWidth(0, i1stWidth);
-	m_listctrl->SetColumnWidth(1, i2ndWidth);
-	m_listctrl->SetColumnWidth(2, i3rdWidth);
+	m_ctlItemList.SetColumnWidth(0, i1stWidth);
+	m_ctlItemList.SetColumnWidth(1, i2ndWidth);
+	m_ctlItemList.SetColumnWidth(2, i3rdWidth);
 
 	m_iSortedColumn = app.GetProfileInt("", "sortedcolumn", 0);
 	m_bSortAscending = app.GetProfileInt("", "sortascending", 1)? true: false;
@@ -491,7 +491,7 @@ DboxMain::OnAdd()
       POSITION curPos = m_pwlist.AddTail(temp);
       int newpos = insertItem(m_pwlist.GetAt(curPos));
       SelectEntry(newpos);
-      m_listctrl->SetFocus();
+      m_ctlItemList.SetFocus();
       m_changed = TRUE;
       ChangeOkUpdate();
    }
@@ -512,7 +512,7 @@ DboxMain::OnCopyPassword()
    if (SelItemOk() == TRUE)
    {
       int curSel = getSelectedItem();
-      CMyString curSelString = m_listctrl->GetItemText(curSel, 0);
+      CMyString curSelString = m_ctlItemList.GetItemText(curSel, 0);
       POSITION itemPos = Find(curSelString);
 		
       CMyString curPassString;
@@ -582,15 +582,15 @@ DboxMain::OnDelete()
       {
          m_changed = TRUE;
          int curSel = getSelectedItem();
-         CMyString curText = m_listctrl->GetItemText(curSel, 0);
-		 m_listctrl->DeleteItem(curSel);
+         CMyString curText = m_ctlItemList.GetItemText(curSel, 0);
+		 m_ctlItemList.DeleteItem(curSel);
          POSITION listindex = Find(curText);
          m_pwlist.RemoveAt(listindex);
          int rc = SelectEntry(curSel);
          if (rc == LB_ERR) {
-	   SelectEntry(m_listctrl->GetItemCount() - 1);
+	   SelectEntry(m_ctlItemList.GetItemCount() - 1);
          }
-         m_listctrl->SetFocus();
+         m_ctlItemList.SetFocus();
          ChangeOkUpdate();
       }
    }
@@ -610,7 +610,7 @@ DboxMain::OnEdit()
    {
       int curSel = getSelectedItem();
 		
-         CMyString curText = m_listctrl->GetItemText(curSel, 0);
+         CMyString curText = m_ctlItemList.GetItemText(curSel, 0);
 
       POSITION listindex = Find(curText);
       CItemData item = m_pwlist.GetAt(listindex);
@@ -654,16 +654,16 @@ DboxMain::OnEdit()
          */
          m_pwlist.RemoveAt(listindex);
          POSITION curPos = m_pwlist.AddTail(item);
-		 m_listctrl->DeleteItem(curSel);
+		 m_ctlItemList.DeleteItem(curSel);
 		 insertItem(m_pwlist.GetAt(curPos));
          m_changed = TRUE;
       }
 
          rc = SelectEntry(curSel);
          if (rc == LB_ERR) {
-	   SelectEntry(m_listctrl->GetItemCount() - 1);
+	   SelectEntry(m_ctlItemList.GetItemCount() - 1);
          }
-      m_listctrl->SetFocus();
+      m_ctlItemList.SetFocus();
       ChangeOkUpdate();
    }
 }
@@ -683,7 +683,7 @@ DboxMain::OnOK()
 	LVCOLUMN lvColumn;
 	lvColumn.mask = LVCF_WIDTH;
 	for (int i = 0; i < 4; i++) {
-		if (m_listctrl->GetColumn(i, &lvColumn)) {
+		if (m_ctlItemList.GetColumn(i, &lvColumn)) {
 			app.WriteProfileInt("", ppszAttributeNames[i], lvColumn.cx);
 		}
 	}
@@ -845,7 +845,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 	CMyString title, username;
 	SplitName(savecurname, title, username);
 	for (i = 0; i < NumEntries; i++) {
-	  listTitle = CMyString(m_listctrl->GetItemText(i, 0));
+	  listTitle = CMyString(m_ctlItemList.GetItemText(i, 0));
 	  if (listTitle == title && !matchVector[i]) {
 	    // add to indices, bump retval
 	    indices[retval++] = i;
@@ -872,7 +872,7 @@ DboxMain::SelItemOk()
    int curSel = getSelectedItem();
    if (curSel != LB_ERR)
    {
-         CMyString curText = m_listctrl->GetItemText(curSel, 0);
+         CMyString curText = m_ctlItemList.GetItemText(curSel, 0);
          POSITION listindex = Find(curText);
          if (listindex != NULL)
             return TRUE;
@@ -883,9 +883,9 @@ DboxMain::SelItemOk()
 BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 {
   BOOL retval;
-  retval = m_listctrl->SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+  retval = m_ctlItemList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
   if (MakeVisible)
-    m_listctrl->EnsureVisible(i, FALSE);
+    m_ctlItemList.EnsureVisible(i, FALSE);
   return retval;
 }
 
@@ -898,21 +898,21 @@ DboxMain::RefreshList()
       return;
 
    //Copy the data
-   m_listctrl->DeleteAllItems();
+   m_ctlItemList.DeleteAllItems();
 
 	LVCOLUMN lvColumn;
 	lvColumn.mask = LVCF_WIDTH;
 
-	bool bPasswordColumnShowing = m_listctrl->GetColumn(3, &lvColumn)? true: false;
+	bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
 	if (m_bShowPassword && !bPasswordColumnShowing) {
-		m_listctrl->InsertColumn(3, "Password");
+		m_ctlItemList.InsertColumn(3, "Password");
 		CRect rect;
-		m_listctrl->GetClientRect(&rect);
-		m_listctrl->SetColumnWidth(3, app.GetProfileInt("", "column4width", rect.Width() / 4));
+		m_ctlItemList.GetClientRect(&rect);
+		m_ctlItemList.SetColumnWidth(3, app.GetProfileInt("", "column4width", rect.Width() / 4));
 	}
 	else if (!m_bShowPassword && bPasswordColumnShowing) {
 		app.WriteProfileInt("", "column4width", lvColumn.cx);
-		m_listctrl->DeleteColumn(3);
+		m_ctlItemList.DeleteColumn(3);
 	}
 
    POSITION listPos = m_pwlist.GetHeadPosition();
@@ -922,10 +922,10 @@ DboxMain::RefreshList()
       m_pwlist.GetNext(listPos);
    }
 
-	m_listctrl->SortItems(CompareFunc, MAKELPARAM(m_iSortedColumn, (int)m_bSortAscending));
+	m_ctlItemList.SortItems(CompareFunc, MAKELPARAM(m_iSortedColumn, (int)m_bSortAscending));
 
    //Setup the selection
-   if (m_listctrl->GetItemCount() > 0 && getSelectedItem() < 0) {
+   if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
       SelectEntry(0);
    }
 }
@@ -1037,7 +1037,7 @@ DboxMain::OnSize(UINT nType,
 
    if (nType == SIZE_MINIMIZED)
    {
-	   m_listctrl->DeleteAllItems();
+	   m_ctlItemList.DeleteAllItems();
       if (app.GetProfileInt("",
                             "dontaskminimizeclearyesno",
                             FALSE) == TRUE)
@@ -1132,7 +1132,7 @@ DboxMain::OnSize(UINT nType,
 		CRect rect;
 		RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
 		RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
-		m_listctrl->MoveWindow(&rect, TRUE);
+		m_ctlItemList.MoveWindow(&rect, TRUE);
 	}
 }
 
@@ -1246,7 +1246,7 @@ DboxMain::OnCopyUsername()
       return;
 
    int curSel = getSelectedItem();
-   CMyString curSelString = m_listctrl->GetItemText(curSel, 0);
+   CMyString curSelString = m_ctlItemList.GetItemText(curSel, 0);
    POSITION itemPos = Find(curSelString);
 
    CMyString title, junk, username;
@@ -1294,17 +1294,17 @@ DboxMain::OnContextMenu(CWnd* pWnd,
                         CPoint point) 
 {
    CPoint local = point;
-   m_listctrl->ScreenToClient(&local);
+   m_ctlItemList.ScreenToClient(&local);
 
    BOOL in = TRUE;
-   int item = m_listctrl->HitTest(local);
+   int item = m_ctlItemList.HitTest(local);
    if (item >= 0)
    {
      int rc = SelectEntry(item);
      if (rc == LB_ERR) {
-       SelectEntry(m_listctrl->GetItemCount() - 1);
+       SelectEntry(m_ctlItemList.GetItemCount() - 1);
      }
-     m_listctrl->SetFocus();
+     m_ctlItemList.SetFocus();
 
       CMenu menu;
       if (menu.LoadMenu(IDR_POPMENU))
@@ -1325,7 +1325,7 @@ DboxMain::OnVKeyToItem(UINT nKey,
                        CListBox* pListBox,
                        UINT nIndex) 
 {
-   int curSel = m_listctrl->GetCurSel();
+   int curSel = m_ctlItemList.GetCurSel();
 
    switch (nKey)
    {
@@ -1339,26 +1339,26 @@ DboxMain::OnVKeyToItem(UINT nKey,
    case VK_PRIOR:  //Page up
       return -1; //do default
    case VK_HOME:
-      m_listctrl->SetCurSel(0);
-      m_listctrl->SetFocus();
+      m_ctlItemList.SetCurSel(0);
+      m_ctlItemList.SetFocus();
       return -2;
    case VK_NEXT:   //Page Down
       return -1; // do default;
    case VK_END:
-      m_listctrl->SetCurSel(m_listctrl->GetCount()-1);
-      m_listctrl->SetFocus();
+      m_ctlItemList.SetCurSel(m_ctlItemList.GetCount()-1);
+      m_ctlItemList.SetFocus();
       return -2;
    case VK_UP:
    case VK_LEFT:
       if (curSel>0)
-         m_listctrl->SetCurSel(curSel-1);
-      m_listctrl->SetFocus();
+         m_ctlItemList.SetCurSel(curSel-1);
+      m_ctlItemList.SetFocus();
       return -2;
    case VK_DOWN:
    case VK_RIGHT:
-      if (curSel!=(m_listctrl->GetCount()-1))
-         m_listctrl->SetCurSel(curSel+1);
-      m_listctrl->SetFocus();
+      if (curSel!=(m_ctlItemList.GetCount()-1))
+         m_ctlItemList.SetCurSel(curSel+1);
+      m_ctlItemList.SetFocus();
       return -2;
    case VK_CONTROL:
       return -2;
@@ -2091,7 +2091,7 @@ DboxMain::ClearData(void)
    //Because GetText returns a copy, we cannot do anything about the names
    if (m_windowok)
       //Have to make sure this doesn't cause an access violation
-      m_listctrl->DeleteAllItems();
+      m_ctlItemList.DeleteAllItems();
 }
 
 
@@ -2427,20 +2427,16 @@ DboxMain::OnDropFiles(HDROP hDrop)
 // sorting.
 //
 int DboxMain::insertItem(CItemData &itemData, int iIndex) {
-	if (!m_listctrl) {
-		return -1;
-	}
-
 	// TODO: sorted insert?
 	int iResult = iIndex;
 	if (iResult < 0) {
-		iResult = m_listctrl->GetItemCount();
+		iResult = m_ctlItemList.GetItemCount();
 	}
 
 	CMyString title, username;
 	SplitName(itemData.GetName(), title, username);
 
-	iResult = m_listctrl->InsertItem(iResult, title);
+	iResult = m_ctlItemList.InsertItem(iResult, title);
 	if (iResult < 0) {
 		// TODO: issue error here...
 		return iResult;
@@ -2454,24 +2450,21 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 		strNotes = strTemp;
 	}
 
-	m_listctrl->SetItemText(iResult, 1, username);
-	m_listctrl->SetItemText(iResult, 2, strNotes);
-	m_listctrl->SetItemData(iResult, (DWORD)&itemData);
+	m_ctlItemList.SetItemText(iResult, 1, username);
+	m_ctlItemList.SetItemText(iResult, 2, strNotes);
+	m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
 
 	if (m_bShowPassword) {
-		m_listctrl->SetItemText(iResult, 3, itemData.GetPassword());
+		m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
 	}
 
 	return iResult;
 }
 
 int DboxMain::getSelectedItem() {
-	if (!m_listctrl) {
-		return -1;
-	}
-	POSITION p = m_listctrl->GetFirstSelectedItemPosition();
+	POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
 	if (p) {
-		return m_listctrl->GetNextSelectedItem(p);
+		return m_ctlItemList.GetNextSelectedItem(p);
 	}
 	return -1;
 }
@@ -2486,7 +2479,7 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		m_iSortedColumn = pNMListView->iSubItem;
 		m_bSortAscending = true;
 	}
-	m_listctrl->SortItems(CompareFunc, MAKELPARAM(m_iSortedColumn, (int)m_bSortAscending));
+	m_ctlItemList.SortItems(CompareFunc, MAKELPARAM(m_iSortedColumn, (int)m_bSortAscending));
 
 	*pResult = 0;
 }

@@ -43,7 +43,8 @@ public:
    };
 
 	//{{AFX_DATA(DboxMain)
-   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
+	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
+	CListCtrl	m_ctlItemList;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -54,7 +55,6 @@ protected:
 
 protected:
    HICON m_hIcon;
-   CListCtrl* m_listctrl;
 
    // the password database
    CList<CItemData,CItemData> m_pwlist;
