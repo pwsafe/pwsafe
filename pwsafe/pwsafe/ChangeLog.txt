@@ -4,6 +4,93 @@ This file lists the changes made to older versions of
 PasswordSafe. The changes for the current version and the one before
 it are noted in ReleaseNotes.txt.
 
+Bugs fixed in 2.06:
+===================
+[1026630] Autotype now works correctly when "lock database on
+minimize" active.
+[1028394] Export to text function works again.
+[1003780, 1026335] Autotype support for AltGr
+[1039214, 992178] PasswordSafe can now be configured to ignore the Esc
+key or to exit when it is pressed (Manage->Options->Misc).
+
+New Features for 2.06:
+======================
+[958343] PasswordSafe can now be configured to lock automatically
+after a predefined idle time.
+[998966] In an "autotype" string, \d followed by up to 3 digits will
+cause the program to pause that many milliseconds between characters
+from that moment onwards.
+[1032149] Adding an entry with a group or item selected will fill the
+Group field with that currently selected (previously, this only worked
+on right-click on group item).
+
+Bugs fixed in 2.05:
+===================
+[1007283] Database no longer accidentally erased if modified and then
+screen lock kicks in before save.
+[1022367] Screen lock is disabled if a dialog box is open, such as
+when editing an exiting entry, adding an entry, etc.
+[992178] ESC no longer exits the application.
+[998745, 1003780] Autotype feature now works for non-US keyboards
+[987618] The group field of an entry is now also taken into account
+when checking for uniqueness.
+
+New Features for 2.05:
+======================
+[917795, 995167] Import from plain text file supported
+[951317, 894466, 834197] Preferences stored in password database as
+well as registry - useful for users who access the same database on
+several computers.
+
+Bugs fixed in 2.04:
+===================
+[970036] 24 bit displays now display toolbar correctly
+[971114] Switch to list view now works with new toolbar (silly typo in
+2.03)
+[972460] Master password is no longer kept in memory in the clear
+[899400, 899414] Drag & drop is now accurate
+[864828] Icon should now be visible in taskbar on all versions of
+Windows and all color schemes.
+[992073] Double clicking a group icon now does the right thing, i.e.,
+nothing
+[899412] Editing group names is now easier: Can now be invoked via F2
+and right-click, finished by Enter, and cancelled by Escape.
+[871471] Key shortcuts for Yes/No added to several dialog boxes.
+[986874] "Ooops" message no longer appears upon invoking Browse to URL
+[unreported] PasswordSafe now compiles cleanly under Visual Studio
+.NET as well a Visual Studio 6.0
+
+New Features for 2.04:
+======================
+[851563, 654677] Minimize to System Tray now supported. This is a configurable
+feature, active by default. Clearing the checkbox in
+Manage->Options->Display will restore the old behaviour.
+[986345] The popup menu for entries now displays the more frequently
+used operations (copy username & password) first.
+[unreported] There's a new "lock on workstation lock" option in
+Manage->Options->Security
+[969038] Autotype feature added: This is a really nice feature that
+pastes the selected entry's information (by default, username, tab,
+password, tab, enter) to the current browser field. See the online
+help for more details (See Autotype under "PasswordSafe Overview").
+[978070] Search (Find) function is now better documented.
+
+Bugs fixed in 2.03:
+===================
+[940585] On Windows XP, the toolbar would sometimes be invisible with
+the tree view active.
+[957957, 900331] No longer crashes when deleting certain items in tree view.
+
+New Features for 2.03:
+======================
+[847769] An "installer" version is now available! Thanks to David Lacy
+Kusters and Andrew Mill.
+[912799, 947146] If the display supports more than 256 colors, the user can choose
+between two styles of toolbar icons via the View menu. If not, then
+only the simple toolbar is enabled.
+[940000] The Notes section now has a scrollbar, making it easier to
+view long notes entries.
+
 Bugs fixed in 2.02:
 ===================
 [931119, 934192, 938393] No longer crashes when trying to change
@@ -93,5 +180,8 @@ entries now supported. This allows the user to define categories,
 sub-categories, etc.
 
 $Log$
+Revision 1.2  2005/01/15 11:13:24  ronys
+Moved 2.03-2.06 from ReleaseNotes.
+
 Revision 1.1  2004/06/11 03:57:30  ronys
 Moved older changes from ReleaseNotes to ChangeLog.
