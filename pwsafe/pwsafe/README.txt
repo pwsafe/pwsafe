@@ -72,11 +72,16 @@ project.
 - Jim Russell first brought the code to SourceForge, setting up a nice
 project and adding some minor features in release 1.9.0
 - The current release has been brought to you by: Andrew Mullican,
-Edward Quackenbush, Gregg Conklin, Graham Ullrich, and Rony Shapiro.
+Edward Quackenbush, Gregg Conklin, Graham Ullrich, and Rony
+Shapiro. Karel (Karlo) Van der Gucht also contributed some of the
+password policy code and some GUI improvements for 1.92.
 - Finally, thanks to the folks at SourceForge for hosting this
 project.
 
 $Log$
+Revision 1.2.2.1  2003/05/13 13:40:13  ronys
+1.92 release
+
 Revision 1.2  2003/04/30 13:20:14  ronys
 Listed supported platforms
 
