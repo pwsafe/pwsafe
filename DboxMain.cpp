@@ -542,7 +542,6 @@ DboxMain::OnPasswordChange()
    if (rc == IDOK)
    {
      m_core.ChangePassword(changeDlg.m_newpasskey);
-      RefreshList();
    }
    else if (rc == IDCANCEL)
    {
