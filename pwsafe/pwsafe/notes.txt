@@ -15,11 +15,22 @@ Where:
 RND is an 8 byte random value, used along with H(RND) to quickly
 verify the password.
 
-H(RND) is SHA1(tempSalt|Cipher(RND)); tempSalt = SHA1(RND|password);
+H(RND) is SHA1_init_state_zero(tempSalt|Cipher(RND));
+       tempSalt = SHA1(RND|{0x00,0x00}|password);
        Cipher(RND) is 1000 encryptions of RND, with tempSalt as the
        encryption key. In short, a kind of HMAC dependant on the
        password. Written before the HMAC RFC came out, no good reason
        to change. (If it ain't broke...)
+
+SHA1_init_state_zero() is the same as the normal SHA1 but the initial
+state of the hash is all zero's instead of the proscribed initial
+values (0x67452301, 0xEFCDAB89 and so forth). This (as well as the two
+zero bytes passed to SHA1) is an apparent artifact (bug?) of the
+original implementation. Changing it now would break all existing
+databases...
+
+[Thanks to Nicolas Dade for refining the above description - see
+https://sourceforge.net/forum/message.php?msg_id=2387939]
 
 SALT is the salt used for encrypting the data (you know, to protect
 against dictionary attacks)
@@ -42,15 +53,6 @@ Registry:
 HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/
 
 HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/Backup/
-
-bug P1.2 - FIXED
-EditDlg:
-current password 'nostaryet'
-actions
-button - showpassword
-change password to 'endswith*'
-button - ok (should save)
-*** doesn't save password ***
 
 
 Security issues:
@@ -82,20 +84,15 @@ to keeping everyone happy. CMyString has been tweaked to make the
 underlying CString m_mystring private, paving the way to replacing it
 with an STL string, if/when we get to porting to a non-MS platform.
 
-Devel issues:
-=============
-New objects to be created:
-   PasswordDb
-   App
 
 Bugs:
 =====
 Save as... doesn't ask for new password - should it?
 
-The 'press first letter' jump works, kinda.  Sometimes it jumps home instead. 
-Seems to work okay every time after PgDn pressed.
-
 $Log$
+Revision 1.6  2004/01/28 17:32:58  ronys
+corrected header format description based on ndade's post.
+
 Revision 1.5  2003/05/14 14:49:56  ronys
 post-1.92 merge into main trunk
 
