@@ -503,20 +503,10 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   CMyString curtitle, curuser, curnotes, curgroup, savetitle;
   CMyString listTitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
-  const int NumEntries = m_core.GetNumEntries();
-  bool *matchVector = new bool[NumEntries];
   int retval = 0;
-  int i;
 
   if (!CaseSensitive)
     searchstr.MakeLower();
-
-  for (i = 0; i < NumEntries; i++)
-    matchVector[i] = false;
-
-  // XXX Come to think of it, why are we searching twice, once
-  // XXX in the data structure and once in the display list?
-  // XXX Change to search only the latter!
 
   while (listPos != NULL)
   {
@@ -537,20 +527,16 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 	  ::strstr(curnotes, searchstr) ||
 	  ::strstr(curgroup, searchstr)) {
 	// Find index in displayed list
-	for (i = 0; i < NumEntries; i++) {
-	  listTitle = CMyString(m_ctlItemList.GetItemText(i, 0));
-	  if (listTitle == savetitle && !matchVector[i]) {
-	    // add to indices, bump retval
-	    indices[retval++] = i;
-	    matchVector[i] = true; // needed because titles are not unique
-	    break;
-	  } // match found in m_listctrl
-	} // for
+	DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+	ASSERT(di != NULL);
+	int li = di->list_index;
+	ASSERT(CMyString(m_ctlItemList.GetItemText(li, 0)) == savetitle);
+	// add to indices, bump retval
+	indices[retval++] = li;
       } // match found in m_pwlist
       m_core.GetNextEntry(listPos);
   }
 
-  delete[] matchVector;
   // Sort indices
   if (retval > 1)
     ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
@@ -585,6 +571,9 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     ASSERT(di != NULL);
     ASSERT(di->list_index == i);
     retval = m_ctlItemTree.SelectItem(di->tree_item);
+    m_ctlItemTree.SetItemState(di->tree_item,
+			       TVIS_DROPHILITED | TVIS_SELECTED,
+			       TVIS_DROPHILITED | TVIS_SELECTED);
   }
   return retval;
 }
