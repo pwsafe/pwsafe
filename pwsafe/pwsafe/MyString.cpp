@@ -213,6 +213,27 @@ CMyString::LoadString(UINT nID)
    return m_mystring.LoadString(nID);
 }
 
+int
+CMyString::FindByte(char ch) const
+{
+	int		nRetVal = -1;	// default to not found
+	int		nIndex	= 0;;
+
+	const char* pszString = (const char *)m_mystring;
+
+	while ( pszString[nIndex] )
+	{
+		if ( pszString[nIndex] == ch )
+		{
+			nRetVal = nIndex;
+			break;
+		}
+
+		++nIndex;
+	}
+
+	return nRetVal;
+}
 
 int
 CMyString::Find(TCHAR ch) const
