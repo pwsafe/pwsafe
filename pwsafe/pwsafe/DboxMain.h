@@ -12,6 +12,7 @@
 #else
   #include "resource.h"
 #endif
+#include "MyTreeCtrl.h"
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -59,7 +60,7 @@ public:
 #else
 	CListCtrl	m_ctlItemList;
 #endif
-        CTreeCtrl       m_ctlItemTree;
+        CMyTreeCtrl     m_ctlItemTree;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -144,7 +145,7 @@ protected:
    afx_msg void OnAbout();
    afx_msg void OnCopyUsername();
    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
+   afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnListDoubleClick( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnCopyPassword();
    afx_msg void OnNew();

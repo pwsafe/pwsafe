@@ -141,6 +141,10 @@ SOURCE=.\model.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\MyTreeCtrl.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\OptionsDisplay.cpp
 # End Source File
 # Begin Source File
@@ -265,6 +269,10 @@ SOURCE=.\MyString.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\MyTreeCtrl.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\OptionsDisplay.h
 # End Source File
 # Begin Source File
@@ -369,6 +377,10 @@ SOURCE=.\winview.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
+SOURCE=.\bitmap1.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=".\cpane-bw.ico"
 # End Source File
 # Begin Source File
@@ -390,6 +402,10 @@ SOURCE=.\cpanetxt.bmp
 # Begin Source File
 
 SOURCE=.\ibubble.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\node.bmp
 # End Source File
 # Begin Source File
 

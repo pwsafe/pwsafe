@@ -221,11 +221,27 @@ DboxMain::OnInitDialog()
    SetIcon(m_hIcon, TRUE);  // Set big icon
    SetIcon(m_hIcon, FALSE); // Set small icon
 
-	m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-	int iColumnCount = 3;
-	m_ctlItemList.InsertColumn(0, _T("Title"));
-	m_ctlItemList.InsertColumn(1, _T("User Name"));
-	m_ctlItemList.InsertColumn(2, _T("Notes"));
+   // Init stuff for tree view
+   CImageList *pImageList = new CImageList();
+   BOOL status = pImageList->Create(9, 9, ILC_COLOR, 2, 0);
+   ASSERT(status != 0);
+   CBitmap bitmap;
+
+   // Order of LoadBitmap() calls matches CMyTreeCtrl public enum
+   bitmap.LoadBitmap(IDB_NODE);
+   pImageList->Add(&bitmap, (COLORREF)0x0);
+   bitmap.DeleteObject();
+   bitmap.LoadBitmap(IDB_LEAF);
+   pImageList->Add(&bitmap, (COLORREF)0x0);
+   bitmap.DeleteObject();
+   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
+
+   // Init stuff for list view
+   m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+   int iColumnCount = 3;
+   m_ctlItemList.InsertColumn(0, _T("Title"));
+   m_ctlItemList.InsertColumn(1, _T("User Name"));
+   m_ctlItemList.InsertColumn(2, _T("Notes"));
 
 	if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
 			      _T("showpwdefault"), FALSE)) {

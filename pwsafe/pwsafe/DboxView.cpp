@@ -819,14 +819,25 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
 }
 #endif
 
+static const TCHAR GROUP_SEP = TCHAR('.');
+
 static CMyString GetPathElem(CMyString &path)
 {
-  // XXX will get first path element and chop it off, i.e., if
+  // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
+  // (assuming GROUP_SEP is '.')
+
   CMyString retval;
-  retval = path;
-  path = _T("");
+  int N = path.Find(GROUP_SEP);
+  if (N == -1) {
+    retval = path;
+    path = _T("");
+  } else {
+    const int Len = path.GetLength();
+    retval = CMyString(path.Left(N));
+    path = CMyString(path.Right(Len - N - 1));
+  }
   return retval;
 }
 
@@ -856,9 +867,10 @@ static HTREEITEM InsertGroup(CTreeCtrl &Tree, const CMyString &group)
     CMyString s;
     do {
       s = GetPathElem(path);
-      if (!ExistsInTree(Tree, ti, s, si))
+      if (!ExistsInTree(Tree, ti, s, si)) {
 	ti = Tree.InsertItem(s, ti, TVI_SORT);
-      else
+	Tree.SetItemImage(ti, CMyTreeCtrl::NODE, CMyTreeCtrl::NODE);
+      } else
 	ti = si;
     } while (!path.IsEmpty());
   }
@@ -903,6 +915,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
     // get path, create if necessary, add title as last node
     ti = InsertGroup(m_ctlItemTree, itemData.GetGroup());
     ti = m_ctlItemTree.InsertItem(title, ti, TVI_SORT);
+    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
     m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     di->tree_item = ti;
   }
