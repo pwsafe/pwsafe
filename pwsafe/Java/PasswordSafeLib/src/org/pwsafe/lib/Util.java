@@ -40,7 +40,7 @@ public class Util
 
 		for ( int ii = 0; ii < length; ++ii )
 		{
-			array[ii] = newrand();
+			array[ii] = newRand();
 		}
 		return array;
 	}
@@ -297,12 +297,30 @@ public class Util
 	 * 
 	 * @return A random byte.
 	 */
-	public static byte newrand()
+	public static byte newRand()
 	{
 		int rand;
 		
 		while ( (rand = (int)(Math.random() * Integer.MAX_VALUE) % 257) == 256);
 		return (byte) rand;
+	}
+
+	/**
+	 * Returns a random positive integer in the range 0 to <code>Integer.MAX_VALUE</code>.
+	 *  
+	 * @return A random integer in the range 0 to <code>Integer.MAX_VALUE</code>.
+	 */
+	public static int positiveRand()
+	{
+		int	rand;
+
+		do
+		{
+			rand = Math.abs( (int) (Math.random() * Integer.MAX_VALUE) );
+		}
+		while ( rand < 0 );
+
+		return rand;
 	}
 
 	/**
