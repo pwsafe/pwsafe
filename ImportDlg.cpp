@@ -85,7 +85,7 @@ void CImportDlg::OnYesGroup()
 void CImportDlg::OnHelp() 
 {
    ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/pws_import.htm",
+              "pwsafe.chm::/html/import.html",
               HH_DISPLAY_TOPIC, 0);
 }
 

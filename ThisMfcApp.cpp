@@ -506,12 +506,12 @@ ThisMfcApp::OnHelp()
     wnd->GetWindowText(title);
   }
   if (title != _T("Options"))
-    ::HtmlHelp(NULL,
-	       "pwsafe.chm::/html/pws_main.htm",
+    ::HtmlHelp(wnd->m_hWnd,
+	       "pwsafe.chm",
 	       HH_DISPLAY_TOPIC, 0);
   else
     ::HtmlHelp(NULL,
-	       "pwsafe.chm::/html/pws_opts.htm",
+	       "pwsafe.chm::/html/display_tab.html",
 	       HH_DISPLAY_TOPIC, 0);
 
 #endif

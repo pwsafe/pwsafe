@@ -111,7 +111,7 @@ void CAddDlg::OnHelp()
 #else
    //WinHelp(0x2008E, HELP_CONTEXT);
    ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/pws_add_data.htm",
+              "pwsafe.chm::/html/entering_pwd.html",
               HH_DISPLAY_TOPIC, 0);
 #endif
 }
