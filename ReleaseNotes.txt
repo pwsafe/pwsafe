@@ -42,10 +42,16 @@ Bugs Fixed:
 [591882] It is now possible to copy via Ctrl-C from the Title,
 Username and Notes fields in the Edit/View Entry window.
 
+[730640] Password changes not saved in Edit dialog when "show password
+by default" option enabled.
+
 Known Problems:
 ===============
 - The Help file is outdated for this release.
 
 $Log$
+Revision 1.2  2003/05/01 07:58:17  ronys
+Added fixed bug #730640
+
 Revision 1.1  2003/04/29 14:22:32  ronys
 First versions of README and Release Notes under CVS for 1.91
