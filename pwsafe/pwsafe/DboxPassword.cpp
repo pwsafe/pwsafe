@@ -12,6 +12,8 @@
 
 
 //-----------------------------------------------------------------------------
+
+// Generate a new random password.
 CMyString
 DboxMain::GetPassword(void) const
 {
