@@ -78,8 +78,10 @@ class PWScore {
 
  private:
   CMyString m_currfile; // current pw db filespec
-  CMyString m_passkey; // usually encrypted by session key
+  CMyString m_passkey; // encrypted by session key
   unsigned char m_session_key[20];
+  unsigned char m_session_salt[20];
+  CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   bool m_usedefuser;
   CMyString m_defusername;
   PWSfile::VERSION m_ReadFileVersion;
