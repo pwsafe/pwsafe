@@ -115,6 +115,10 @@ SOURCE=.\PWSfile.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PWSprefs.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\sha1.cpp
 # End Source File
 # Begin Source File
@@ -160,6 +164,10 @@ SOURCE=.\PWSfile.h
 # Begin Source File
 
 SOURCE=.\PwsPlatform.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PWSprefs.h
 # End Source File
 # Begin Source File
 
