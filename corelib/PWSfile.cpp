@@ -288,17 +288,40 @@ int PWSfile::ReadRecord(CItemData &item)
     return (numread > 0) ? SUCCESS : END_OF_FILE;
   }
   case V20: {
-    // XXX Need to change this to a while loop exited by END type,
-    // XXX otherwise we'll break on the first new field!
-    numread += ReadCBC(type, tempdata);
-    item.SetTitle(tempdata);
-    numread += ReadCBC(type, tempdata);
-    item.SetUser(tempdata);
-    numread += ReadCBC(type, tempdata);
-    item.SetPassword(tempdata);
-    numread += ReadCBC(type, tempdata);
-    item.SetNotes(tempdata);
-
+    int emergencyExit = 255; // to avoid endless loop.
+    int fieldLen; // zero means end of file reached
+    bool endFound = false; // set to true when record end detected - happy end
+    do {
+      fieldLen = ReadCBC(type, tempdata);
+      if (fieldLen > 0) {
+	numread += fieldLen;
+	switch (type) {
+	case CItemData::TITLE:
+	  item.SetTitle(tempdata); break;
+	case CItemData::USER:
+	  item.SetUser(tempdata); break;
+	case CItemData::PASSWORD:
+	  item.SetPassword(tempdata); break;
+	case CItemData::NOTES:
+	  item.SetNotes(tempdata); break;
+	case CItemData::END:
+	  endFound = true; break;
+	  // just silently ignore fields we don't support.
+	  // this is forward compatability...
+	case CItemData::GUID:
+	case CItemData::GROUP:
+	case CItemData::CTIME:
+	case CItemData::MTIME:
+	case CItemData::ATIME:
+	case CItemData::LTIME:
+	case CItemData::POLICY:
+	default:
+	  // XXX Set a flag here so user can be warned that
+	  // XXX we read a file format we don't fully support
+	  break;
+	} // switch
+      } // if (fieldLen > 0)
+    } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
     return (numread > 0) ? SUCCESS : END_OF_FILE;
   }
   default:
