@@ -29,7 +29,8 @@ public:
   afx_msg void OnDestroy();
   //}}AFX_MSG
 
-  void OnButtonUp(CPoint point);
+  void EndDragging(BOOL bCancel);
+  BOOL PreTranslateMessage(MSG* pMsg);
 
   DECLARE_MESSAGE_MAP()
 
@@ -38,7 +39,6 @@ private:
   HTREEITEM   m_hitemDrag;
   HTREEITEM   m_hitemDrop;
   CImageList  *m_pimagelist;
-  CString     m_BeginEditText;
 
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);

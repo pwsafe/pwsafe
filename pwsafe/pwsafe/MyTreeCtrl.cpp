@@ -51,6 +51,37 @@ void CMyTreeCtrl::OnDestroy()
   }
 }
 
+BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg) 
+{
+  // When an item is being edited make sure the edit control
+  // receives certain important key strokes
+  if (GetEditControl())
+  {
+    ::TranslateMessage(pMsg);
+    ::DispatchMessage(pMsg);
+    return TRUE; // DO NOT process further
+  }
+
+  //Hitting the Escape key, Cancelling drag & drop
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE && m_bDragging)
+  {
+    EndDragging(TRUE);
+    return TRUE;
+  }
+  //hitting the F2 key, being in-place editing of an item
+  else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2)
+  {
+    HTREEITEM hItem = GetSelectedItem();
+    if (hItem != NULL) 
+      EditLabel(hItem);
+    return TRUE;
+  }
+
+  //Let the parent class do its thing
+  return CTreeCtrl::PreTranslateMessage(pMsg);
+}
+
+
 void CMyTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
 {
   long        lStyleOld;
@@ -86,17 +117,7 @@ void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
 
 void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
-  // I thought m_BeginEditText was needed to restore text if desired,
-  // but setting *pLResult to FALSE in OnEndLabelEdit suffices
-  if (ptvinfo->item.pszText != NULL &&
-      ptvinfo->item.pszText[0] != '\0') {
-    m_BeginEditText = ptvinfo->item.pszText;
-  } else {
-    m_BeginEditText = _T("");
-  }
-  DboxMain *parent = (DboxMain *)GetParent();
-  parent->DisableOnEdit(true); // so that Enter doesn't invoke Edit dialog
+  //TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
   *pLResult = FALSE; // TRUE cancels label editing
 }
 
@@ -126,23 +147,17 @@ static void makeLeafText(CString &treeDispString, const CString &title, const CS
     treeDispString += _T(" [");
     treeDispString += user;
     treeDispString += _T("]");
-    }
+  }
 }
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  static bool inEdit = false;
-
-  if (inEdit) { // happens when edit control manipulated - see below
-    inEdit = false;
-    *pLResult = TRUE;
-    return;
-  }
   TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
   DboxMain *parent = (DboxMain *)GetParent();
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
-      ptvinfo->item.pszText[0] != '\0') { // empty if text deleted - not allowed
+      ptvinfo->item.pszText[0] != '\0') // empty if text deleted - not allowed
+  {
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     if (IsLeafNode(ptvinfo->item.hItem)) {
@@ -161,14 +176,11 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 	newUser = CString(ci->GetUser());
       CString treeDispString;
       makeLeafText(treeDispString, newTitle, newUser);
-      // Following needed to force display to update at this stage.
-      inEdit = true; // hack to exit ugly recursion.
-      CEdit *ed = EditLabel(ti);
-      ASSERT(ed != NULL);
-      ed->SetWindowText(treeDispString);
+      // update corresponding Tree mode text
       SetItemText(ti, treeDispString);
+      // update the password database record.
       ci->SetTitle(newTitle); ci->SetUser(newUser);
-      // update corresponding List text
+      // update corresponding List mode text
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       ASSERT(di != NULL);
       int lindex = di->list_index;
@@ -194,15 +206,12 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     // Mark database as modified
     parent->SetChanged(true);
     SortChildren(GetParentItem(ti));
-  *pLResult = TRUE;
+    *pLResult = TRUE;
   } else {
     // restore text
     // (not that this is documented anywhere in MS's docs...)
     *pLResult = FALSE;
   }
-  // following has to be done at end of function, since OnBeginLabelEdit
-  // may be called (indirectly) from this fuction
-  parent->DisableOnEdit(false); // Allow Enter to invoke Edit dialog
 }
 
 void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
@@ -256,6 +265,8 @@ void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
   } while (p != TVI_ROOT && p != NULL);
 }
 
+// Return the full path leading up to a given item, but
+// not including the name of the item itself.
 CString CMyTreeCtrl::GetGroup(HTREEITEM hItem)
 {
   CString retval;
@@ -379,7 +390,7 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   return true;
 }
 
-void CMyTreeCtrl::OnButtonUp()
+void CMyTreeCtrl::EndDragging(BOOL bCancel)
 {
   if (m_bDragging) {
     ASSERT(m_pimagelist != NULL);
@@ -389,10 +400,13 @@ void CMyTreeCtrl::OnButtonUp()
     m_pimagelist = NULL;
     HTREEITEM parent = GetParentItem(m_hitemDrag);
 
-    if (m_hitemDrag != m_hitemDrop &&
+    if (!bCancel &&
+        m_hitemDrag != m_hitemDrop &&
 	!IsLeafNode(m_hitemDrop) &&
 	!IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
-	parent != m_hitemDrop) {
+	parent != m_hitemDrop)
+    {
+      // drag operation completed successfully.
       TransferItem(m_hitemDrag, m_hitemDrop);
       DeleteItem(m_hitemDrag);
       while (parent != NULL && !ItemHasChildren(parent)) {
@@ -401,7 +415,8 @@ void CMyTreeCtrl::OnButtonUp()
 	parent = grandParent;
       }
       SelectItem(m_hitemDrop);
-    } else { // drag failed, revert to last selected
+    } else {
+      // drag failed or cancelled, revert to last selected
       SelectItem(m_hitemDrag);
     }
     ReleaseCapture();
@@ -410,9 +425,20 @@ void CMyTreeCtrl::OnButtonUp()
   }
 }
 
+
 void CMyTreeCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
-  OnButtonUp();
+  if (m_bDragging) {
+    // Dragging operation should be ended, but first check to see
+    // if the mouse is outside the window to decide if the 
+    // drag operation should be aborted.
+    CRect clientRect;
+    GetClientRect(&clientRect);
+    if (clientRect.PtInRect(point))
+      EndDragging(FALSE);
+    else
+      EndDragging(TRUE);
+  }
   CTreeCtrl::OnLButtonUp(nFlags, point);
 }
 
