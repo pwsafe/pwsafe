@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry sourcepath="C:/Java/jakarta-log4j-1.2.8/src.zip" kind="lib" path="C:/Java/jakarta-log4j-1.2.8/dist/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="src" path="/BlowfishJ"/>
+	<classpathentry sourcepath="JUNIT_HOME/junitsrc.zip" kind="var" path="JUNIT_HOME/junit.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
