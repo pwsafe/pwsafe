@@ -193,8 +193,11 @@ void CMyTreeCtrl::OnButtonUp()
 	parent != m_hitemDrop) {
       TransferItem(m_hitemDrag, m_hitemDrop);
       DeleteItem(m_hitemDrag);
-      if (parent != NULL && !ItemHasChildren(parent))
+      while (parent != NULL && !ItemHasChildren(parent)) {
+	HTREEITEM grandParent = GetParentItem(parent);
 	DeleteItem(parent);
+	parent = grandParent;
+      }
     } else
       MessageBeep(0);
 
