@@ -3,8 +3,12 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "CryptKeyEntry.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
 #include "util.h"
+
+#include "CryptKeyEntry.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -69,7 +73,10 @@ CCryptKeyEntry::OnOK()
 void
 CCryptKeyEntry::OnHelp() 
 {
-   WinHelp(0x20084, HELP_CONTEXT);
+   //WinHelp(0x20084, HELP_CONTEXT);
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_combo_entry.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
