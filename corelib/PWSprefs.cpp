@@ -52,6 +52,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("pwlendefault"), 8, true},
   {_T("maxmruitems"), 4, true},
   {_T("IdleTimeout"), 5, true},
+  {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
