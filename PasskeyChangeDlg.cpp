@@ -30,9 +30,6 @@ CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
    m_confirmnew = _T("");
    m_newpasskey = _T("");
    m_oldpasskey = _T("");
-   SetPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
-   SetPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
-   SetPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
 }
 
 
@@ -57,6 +54,18 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, super)
    ON_EN_KILLFOCUS(IDC_CONFIRMNEW, OnPasskeyKillfocus)
 #endif
 END_MESSAGE_MAP()
+
+BOOL
+CPasskeyChangeDlg::OnInitDialog()
+{
+  super::OnInitDialog();
+
+  SetPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
+  SetPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
+  SetPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
+
+  return TRUE;
+}
 
 
 void
