@@ -1,11 +1,6 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
-
 #include "PWScore.h"
 #include "global.h"
 
@@ -33,43 +28,21 @@ void
 PWScore::NewFile(const CMyString &passkey)
 {
    ClearData();
-
    global.m_passkey = passkey;
-
-   for (int x=0; x<8; x++)
-      m_randstuff[x] = newrand();
-   m_randstuff[8] = m_randstuff[9] = '\0';
-   GenRandhash(global.m_passkey, m_randstuff, m_randhash);
    m_changed = false;
 }
 
 int
 PWScore::WriteFile(const CMyString &filename)
 {
-  int out = _open((LPCTSTR)filename,
-		  _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
-		  _S_IREAD | _S_IWRITE);
+  PWSfile out(filename, global.m_passkey);
 
-  if (out == -1)
+  int status;
+
+  status = out.OpenWriteFile(PWSfile::V17);
+
+  if (status != PWSfile::SUCCESS)
     return CANT_OPEN_FILE;
-
-  _write(out, m_randstuff, 8);
-  _write(out, m_randhash, 20);
-
-  /*
-    I know salt is just salt, but randomness always makes me
-    nervous - must check this out {jpr}
-  */
-  unsigned char* thesalt = new unsigned char[SaltLength];
-  for (int x=0; x<SaltLength; x++)
-    thesalt[x] = newrand();
-
-  _write(out, thesalt, SaltLength);
-	
-  unsigned char ipthing[8];
-  for (x=0; x<8; x++)
-    ipthing[x] = newrand();
-  _write(out, ipthing, 8);
 
   //Write out full names
   if (GetUseDefUser())
@@ -77,21 +50,14 @@ PWScore::WriteFile(const CMyString &filename)
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
-  CMyString tempdata;
   while (listPos != NULL)
     {
       temp = m_pwlist.GetAt(listPos);
-      temp.GetName(tempdata);
-      WriteCBC(out, tempdata, thesalt, ipthing);
-      temp.GetPassword(tempdata);
-      WriteCBC(out, tempdata, thesalt, ipthing);
-      temp.GetNotes(tempdata);
-      WriteCBC(out, tempdata, thesalt, ipthing);
+      out.WriteRecord(temp);
       m_pwlist.GetNext(listPos);
     }
-  _close(out);
+  out.CloseFile();
 
-  delete [] thesalt;
 
   //Restore shortened names if necessary
   if (GetUseDefUser())
@@ -102,96 +68,23 @@ PWScore::WriteFile(const CMyString &filename)
   return SUCCESS;
 }
 
-bool PWScore::FileExists(const CMyString &filename)
-{
-  struct _stat statbuf;
-  int status;
-
-  status = ::_tstat(filename, &statbuf);
-  return (status == 0);
-}
-
-
 int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
 {
-  unsigned char randstuff[StuffSize];
-  unsigned char randhash[20];
+  PWSfile f(filename, passkey);
 
-  int in = _open((LPCTSTR) filename,
-		 _O_BINARY | _O_RDONLY | _O_SEQUENTIAL,
-		 S_IREAD | _S_IWRITE);
+  int status = f.CheckPassword();
 
-  if (in == -1) {
-    return CANT_OPEN_FILE;
-  } else {
-    /*
-      The beginning of the database file is
-      8 bytes of randomness and a SHA1 hash {jpr}
-    */
-    _read(in, randstuff, 8);
-    _read(in, randhash, 20);
-    _close(in);
-  }
-
-  randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
-  unsigned char temphash[20]; // HashSize
-  GenRandhash(passkey, randstuff, temphash);
-
-  if (0 != memcmp((char*)randhash,
-		  (char*)temphash,
-		  20)) {// HashSize
-    return WRONG_PASSWORD;
-  } else {
-    // Side effect: If the match is successful, update our data members
-    // ??? Do we need to do this ???
-    memcpy(m_randstuff, randstuff, StuffSize);
-    memcpy(m_randhash, randhash, 20);
+  switch (status) {
+  case PWSfile::SUCCESS:
     return SUCCESS;
+  case PWSfile::CANT_OPEN_FILE:
+    return CANT_OPEN_FILE;
+  case PWSfile::WRONG_PASSWORD:
+    return WRONG_PASSWORD;
+  default:
+    ASSERT(0);
+    return status; // should never happen
   }
-}
-
-int PWScore::WriteCBC(int fp, const CString &data, const unsigned char *salt,
-		      unsigned char *ipthing)
-{
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(global.m_passkey);
-  LPCSTR datastr = LPCSTR(data);
-
-  return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
-		   (const unsigned char *)passstr, global.m_passkey.GetLength(),
-		   salt, SaltLength, ipthing);
-}
-
-
-int
-PWScore::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
-		 unsigned char *ipthing)
-{
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(global.m_passkey);
-
-  unsigned char *buffer = NULL;
-  unsigned int buffer_len = 0;
-  int retval;
-
-  retval = _readcbc(fp, buffer, buffer_len,
-		   (const unsigned char *)passstr, global.m_passkey.GetLength(),
-		   salt, SaltLength, ipthing);
-  if (buffer_len > 0) {
-    CMyString str(LPCSTR(buffer), buffer_len);
-    data = str;
-    trashMemory(buffer, buffer_len);
-    delete[] buffer;
-  } else {
-    data = _T("");
-    // no need to delete[] buffer, since _readcbc will not allocate if
-    // buffer_len is zero
-  }
-  return retval;
 }
 
 
@@ -201,49 +94,30 @@ PWScore::ReadFile(const CMyString &a_filename,
 {	
    //That passkey had better be the same one that came from CheckPassword(...)
 
-   int in = _open((LPCTSTR) a_filename,
-                  _O_BINARY |_O_RDONLY | _O_SEQUENTIAL,
-                  S_IREAD | _S_IWRITE);
+   PWSfile in(a_filename, a_passkey);
 
-   if (in == -1)
-      return CANT_OPEN_FILE;
+  int status;
+
+  status = in.OpenReadFile(PWSfile::V17);
+
+  if (status != PWSfile::SUCCESS)
+    return CANT_OPEN_FILE;
 
    ClearData(); //Before overwriting old data, but after opening the file... 
-
-   _read(in, m_randstuff, 8);
-   _read(in, m_randhash, 20);
-
-   unsigned char* salt = new unsigned char[SaltLength];
-   unsigned char ipthing[8];
-   _read(in, salt, SaltLength);
-   _read(in, ipthing, 8);
 
    global.m_passkey = a_passkey;
 
    CItemData temp;
-   CMyString tempdata;
 
-   int numread = 0;
-   numread += ReadCBC(in, tempdata, salt, ipthing);
-   temp.SetName(tempdata);
-   numread += ReadCBC(in, tempdata, salt, ipthing);
-   temp.SetPassword(tempdata);
-   numread += ReadCBC(in, tempdata, salt, ipthing);
-   temp.SetNotes(tempdata);
-   while (numread > 0)
+   status = in.ReadRecord(temp);
+
+   while (status == PWSfile::SUCCESS)
    {
       m_pwlist.AddTail(temp);
-      numread = 0;
-      numread += ReadCBC(in, tempdata, salt, ipthing);
-      temp.SetName(tempdata);
-      numread += ReadCBC(in, tempdata, salt, ipthing);
-      temp.SetPassword(tempdata);
-      numread += ReadCBC(in, tempdata, salt, ipthing);
-      temp.SetNotes(tempdata);
+      status = in.ReadRecord(temp);
    }
 
-   delete [] salt;
-   _close(in);
+   in.CloseFile();
 
    //Shorten names if necessary
    if (GetUseDefUser())
@@ -298,19 +172,6 @@ void PWScore::ChangePassword(const CMyString &newPassword)
   //Changes the global password. Eck.
   global.m_passkey = newPassword;
 		
-  //Gets a new random value used for password authentication
-  for (int x=0; x < 8; x++)
-    m_randstuff[x] = newrand();
-  /*
-   * We generate 8 bytes of randomness, but m_randstuff
-   * is larger: StuffSize bytes. This appears to be a bug,
-   * let's at least explicitly zero the extra 2 bytes, since redefining
-   * StuffSize to 8 would break every existing database...
-   */
-  m_randstuff[8] = m_randstuff[9] = '\0';
-
-  GenRandhash(newPassword, m_randstuff, m_randhash);
-
   //Puts the list of CMyStrings back into CItemData
   while (listPos != NULL)
     {

@@ -6,6 +6,7 @@
 #include <afxtempl.h> // for CList
 #include "ItemData.h"
 #include "MyString.h"
+#include "PWSfile.h"
 
 class PWScore {
  public:
@@ -34,7 +35,7 @@ class PWScore {
   void NewFile(const CMyString &passkey);
   int WriteCurFile() {return WriteFile(m_currfile);}
   int WriteFile(const CMyString &filename);
-  bool FileExists(const CMyString &filename);
+  bool FileExists(const CMyString &filename) {return PWSfile::FileExists(filename);}
   int ReadCurFile(const CMyString &passkey)
     {return ReadFile(m_currfile, passkey);}
   int ReadFile(const CMyString &filename, const CMyString &passkey);
@@ -59,15 +60,8 @@ class PWScore {
  // Find in m_pwlist by title and user name, exact match
   POSITION Find(const CMyString &a_title, const CMyString &a_user);
 
-
-
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
- private:
-  int WriteCBC(int fp, const CString &data,
-	       const unsigned char *salt, unsigned char *ipthing);
-  int ReadCBC(int fp, CMyString &data,
-	      const unsigned char *salt, unsigned char *ipthing);
 
   // Following moved from Util.{h,cpp} and constified
  public:
@@ -89,10 +83,6 @@ class PWScore {
   // the password database
   CList<CItemData,CItemData> m_pwlist;
   bool m_changed;
-  // Following used to verify passkey against file's passkey
-  unsigned char m_randstuff[StuffSize];
-  unsigned char m_randhash[20];   // HashSize
-
 };
 
 #endif // PWScore_h
