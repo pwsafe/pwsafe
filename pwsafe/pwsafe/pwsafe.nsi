@@ -196,7 +196,9 @@ Section "Program Files" ProgramFiles
   ; Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
-  ; Write the uninstall keys for Windows
+  ; Add the uninstaller to the Add/Remove Programs window.  If the 
+  ; current user doesn't have permission to write to HKLM, then the
+  ; uninstaller will not appear in the Add or Remove Programs window.
   WriteRegStr HKLM \
 	      "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
 	      "DisplayName" "Password Safe"
@@ -279,9 +281,16 @@ Section "Uninstall"
   ; Delete all files in the directory
   RMDir /r "$INSTDIR"
 
-  ; Delete the registry key
+  ; Delete the registry key for Password Safe
   DeleteRegKey HKCU "Software\Counterpane Systems\Password Safe"
 
+  ; Delete the registry key for the Add or Remove Programs window.  If
+  ; the current user doesn't have permission to delete registry keys
+  ; from HKLM, then the entry in the Add or Remove Programs window will
+  ; remain.  The next time a user tries to click on the uninstaller,
+  ; they will be prompted to remove the entry.
+  DeleteRegKey HKLM \
+     "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe"
   ; Delete shortcuts, if created
   RMDir /r "$SMPROGRAMS\Password Safe"
   Delete "$DESKTOP\Password Safe.lnk"
@@ -291,6 +300,9 @@ Section "Uninstall"
 SectionEnd
 ;
 ; $Log$
+; Revision 1.4  2004/06/09 19:28:12  ronys
+; Merged dlacykusters fixes into post-2.03
+;
 ; Revision 1.3  2004/06/08 03:35:21  ronys
 ; - add unstaller to control panel
 ; - cleanup shortcuts on uninstall
