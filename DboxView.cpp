@@ -180,6 +180,7 @@ void
 DboxMain::OnAdd() 
 {
   CAddDlg dataDlg(this);
+  m_LockDisabled = true;
   if (m_core.GetUseDefUser())
     {
       dataDlg.m_username = m_core.GetDefUsername();
@@ -243,6 +244,7 @@ DboxMain::OnAdd()
   else if (rc == IDCANCEL)
     {
     }
+  m_LockDisabled = false;
 }
 
 //Add a group (tree view only)
@@ -269,6 +271,7 @@ DboxMain::OnAddGroup()
 void
 DboxMain::OnDelete() 
 {
+  m_LockDisabled = true;
   if (SelItemOk() == TRUE)
     {
       BOOL dodelete = TRUE;
@@ -327,6 +330,7 @@ DboxMain::OnDelete()
         }
       }
   }
+  m_LockDisabled = false;
 }
 
 void
@@ -343,6 +347,7 @@ DboxMain::OnRename()
 void
 DboxMain::OnEdit() 
 {
+  m_LockDisabled = true;
   if (SelItemOk() == TRUE)
     {
       CItemData *ci = getSelectedItem();
@@ -402,6 +407,7 @@ DboxMain::OnEdit()
 	  ChangeOkUpdate();
 	} // rc == IDOK
     }
+  m_LockDisabled = false;
 }
 
 void
@@ -1201,9 +1207,12 @@ DboxMain::OnTimer(UINT nIDEvent )
        * Since we clear the data, any unchanged changes will be lost,
        * so we force a save if database is modified, and fail
        * to lock if the save fails.
+       * Also, if m_LockDisabled is set, do nothing - this is set when
+       * a dialog box is open.
        */
         if(IsWorkstationLocked() &&
-	   (!m_core.IsChanged() || Save() == PWScore::SUCCESS)){
+	   (!m_core.IsChanged() || Save() == PWScore::SUCCESS) &&
+	   !m_LockDisabled){
             TRACE("locking database\n");
             ClearData();
             if(IsWindowVisible()){
