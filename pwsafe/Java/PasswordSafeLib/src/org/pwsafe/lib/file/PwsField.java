@@ -64,7 +64,7 @@ public abstract class PwsField implements Comparable
 	 * 
 	 * @return The field value in its native form.
 	 */
-	protected Object getValue()
+	public Object getValue()
 	{
 		return Value;
 	}
