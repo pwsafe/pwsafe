@@ -1,8 +1,6 @@
 /// \file ItemData.cpp
 //-----------------------------------------------------------------------------
 
-#include "global.h"
-
 #include "ItemData.h"
 #include "BlowFish.h"
 
@@ -11,6 +9,18 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+bool CItemData::IsSessionKeySet = false;
+unsigned char CItemData::SessionKey[64];
+
+void CItemData::SetSessionKey()
+{
+  // must be called once per session, no more, no less
+  ASSERT(!IsSessionKeySet);
+  for (int i = 0; i < sizeof(SessionKey); i++)
+    SessionKey[i] = newrand();
+  IsSessionKeySet = true;
+}
 
 //-----------------------------------------------------------------------------
 // Constructors
@@ -265,10 +275,8 @@ CItemData::SetUUID(const uuid_array_t &UUID)
 BlowFish *
 CItemData::MakeBlowFish() const
 {
-  LPCSTR passstr = LPCSTR(global.m_passkey);
-
-  return ::MakeBlowFish((const unsigned char *)passstr,
-			global.m_passkey.GetLength(),
+  ASSERT(IsSessionKeySet);
+  return ::MakeBlowFish(SessionKey, sizeof(SessionKey),
 			m_salt, SaltLength);
 }
 
