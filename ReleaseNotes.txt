@@ -68,10 +68,6 @@ Known Problems:
 Edit the Group field of the categories entries. For example, to make
 category "b" a top level category instead of under "a", change all
 its entries Group fields from "a.b" to "b".
-[unreported] If the Tray Icon feature is enabled, the icon will not
-reappear if Explorer crashes and restarts (you have to exit PWSafe, or
-use TaskManager to terminate the process, and restart PWSafe to get
-the tray icon back).
 [unreported] Some of the menuitems in the Edit menu are relevant only
 when an entry is selecte, or only when the tree view is active. They
 should be greyed-out or removed when irrelevant (currently, they just
@@ -79,6 +75,9 @@ do nothing).
 
 
 $Log$
+Revision 1.12  2004/07/22 03:59:02  ronys
+Update for 2.04 (again)
+
 Revision 1.11  2004/07/22 03:41:26  ronys
 Update for 2.04
 
