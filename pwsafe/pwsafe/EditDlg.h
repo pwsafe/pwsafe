@@ -23,6 +23,7 @@ public:
 
    POSITION  m_listindex;
 
+   bool m_IsReadOnly;
    void  ShowPassword(void);
    void  HidePassword(void);
 
