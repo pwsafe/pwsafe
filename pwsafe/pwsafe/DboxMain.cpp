@@ -1755,7 +1755,7 @@ DboxMain::startLockCheckTimer(){
   const UINT INTERVAL = 5000; // every 5 seconds should suffice
 
   if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE ){
+      GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE){
     TRACE("startLockCheckTimer: Starting timer\n");	
     SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
   }
@@ -1765,8 +1765,10 @@ DboxMain::startLockCheckTimer(){
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
-    // Do NOT pass the ESC along.
-    if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE)
+    // Do NOT pass the ESC along if preference EscExits is false.
+    if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE &&
+	!PWSprefs::GetInstance()->
+	GetPref(PWSprefs::BoolPrefs::EscExits))
     {
          return TRUE;
     }
