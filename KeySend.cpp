@@ -1,6 +1,6 @@
 #include "keysend.h"
 
-CKeySend::CKeySend(void)
+CKeySend::CKeySend(void) : m_delay(10)
 {
 	// get the locale of the current thread.
 	// we are assuming that all window and threading in the 
@@ -13,14 +13,13 @@ CKeySend::~CKeySend(void)
 }
 
 
-void CKeySend::SendString(CMyString data)
+void CKeySend::SendString(const CMyString &data)
 {
-	
-	for(int n=0;n<data.GetLength();n++){
-		SendChar(data[n]);
-	}
-	
+  const int N = data.GetLength();
 
+  for(int n=0;n<N;n++){
+    SendChar(data[n]);
+  }
 }
 
 void CKeySend::SendChar(TCHAR c){

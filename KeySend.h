@@ -17,7 +17,7 @@ class CKeySend
 public:
 	CKeySend(void);
 	~CKeySend(void);
-	void SendString(CMyString data);
+	void SendString(const CMyString &data);
 	void ResetKeyboardState();
 	void SendChar(TCHAR c);
 	void SetDelay(int d);
