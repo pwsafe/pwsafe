@@ -37,6 +37,8 @@ public:
 
   afx_msg void OnHelp();
 
+  static void	StripFileQuotes( CString& strFilename );
+
   DECLARE_MESSAGE_MAP()
 
 protected:

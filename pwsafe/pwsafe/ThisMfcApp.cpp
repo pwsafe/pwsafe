@@ -253,136 +253,159 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 BOOL
 ThisMfcApp::InitInstance()
 {
+/*
+* It's always best to start at the beginning.  [Glinda, Witch of the North]
+	*/
+	
+	/*
+	this pulls 'Counterpane Systems' out of the string table, verifies
+	that it exists (actually, only verifies that *some* IDS_COMPANY
+	string exists -- it could be 'Microsoft' for all we know), and then
+	instructs the app to use the registry instead of .ini files.  The
+	path ends up being
+	
+	  HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+	  
+		Assuming the open-source version of this is going to become less
+		Counterpane-centric, I expect this may change, but if it does, an
+		automagic migration ought to happen. -- {jpr}
+	*/
+	
+	CMyString companyname;
+	VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
+	SetRegistryKey(companyname);
+	
+	int nMRUItems = GetProfileInt("", "maxmruitems", 4);
+	m_pMRU = new CRecentFileList( 0, "MRU", "Safe%d", nMRUItems );;
+	m_pMRU->ReadList();
+	
+	DboxMain dbox(NULL);
+	
+	/*
+	* Command line processing:
+	* Historically, it appears that if a filename was passed as a commadline argument,
+	* the application would prompt the user for the password, and the encrypt or decrypt
+	* the named file, based on the file's suffix. Ugh.
+	*
+	* What I'll do is as follows:
+	* If a file is given in the command line, it is used as the database, overriding the
+	* registry value. This will allow the user to have several databases, say, one for work
+	* and one for personal use, and to set up a different shortcut for each.
+	*
+	* I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
+	*/
+	
+	if (m_lpCmdLine[0] != '\0') {
+		CString args = m_lpCmdLine;
+		
+		if (args[0] != _T('-')) {
+			StripFileQuotes( args );
+			
+			if (CheckFile(args)) {
+				dbox.SetCurFile(args);
+			} else {
+				return FALSE;
+			}
+		} else { // here if first char of arg is '-'
+			// first, let's check that there's a second arg
+			CString fn = args.Right(args.GetLength()-2);
+			fn.TrimLeft();
 
+			StripFileQuotes( fn );
 
-
-   /*
-    * It's always best to start at the beginning.  [Glinda, Witch of the North]
-    */
-
-   /*
-     this pulls 'Counterpane Systems' out of the string table, verifies
-     that it exists (actually, only verifies that *some* IDS_COMPANY
-     string exists -- it could be 'Microsoft' for all we know), and then
-     instructs the app to use the registry instead of .ini files.  The
-     path ends up being
-
-     HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
-
-     Assuming the open-source version of this is going to become less
-     Counterpane-centric, I expect this may change, but if it does, an
-     automagic migration ought to happen. -- {jpr}
-   */
-
-   CMyString companyname;
-   VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
-   SetRegistryKey(companyname);
-
-   int	nMRUItems = GetProfileInt("", "maxmruitems", 4);
-   m_pMRU = new CRecentFileList( 0, "MRU", "Safe%d", nMRUItems );;
-   m_pMRU->ReadList();
-
-   DboxMain dbox(NULL);
-
-   /*
-    * Command line processing:
-    * Historically, it appears that if a filename was passed as a commadline argument,
-    * the application would prompt the user for the password, and the encrypt or decrypt
-    * the named file, based on the file's suffix. Ugh.
-    *
-    * What I'll do is as follows:
-    * If a file is given in the command line, it is used as the database, overriding the
-    * registry value. This will allow the user to have several databases, say, one for work
-    * and one for personal use, and to set up a different shortcut for each.
-    *
-    * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
-    */
-
-   if (m_lpCmdLine[0] != '\0') {
-     CString args = m_lpCmdLine;
-
-     if (args[0] != _T('-')) {
-
-       if (CheckFile(args)) {
-	 dbox.SetCurFile(args);
-       } else {
-	 return FALSE;
-       }
-     } else { // here if first char of arg is '-'
-       // first, let's check that there's a second arg
-       CString fn = args.Right(args.GetLength()-2);
-       fn.TrimLeft();
-       if (fn.IsEmpty() || !CheckFile(fn)) {
-	 Usage();
-	 return FALSE;
-       }
-
-       CMyString passkey;
-       if (args[1] == 'e' || args[1] == 'E' || args[1] == 'd' || args[1] == 'D') {
-	 // get password from user if valid flag given. If note, default below will
-	 // pop usage message
-	 CCryptKeyEntry dlg(NULL);
-	 int nResponse = dlg.DoModal();
-
-	 if (nResponse==IDOK) {
-	     passkey = dlg.m_cryptkey1;
-	 } else {
-	   return FALSE;
-	 }
-       }
-       BOOL status;
-       switch (args[1]) {
-       case 'e': case 'E': // do encrpytion
-	 status = EncryptFile(fn, passkey);
-	 if (!status) {
-	   AfxMessageBox("Encryption failed");
-	 }
-	 break;
-       case 'd': case 'D': // do decryption
-	 status = DecryptFile(fn, passkey);
-	 if (!status) {
-	   // nothing to do - DecryptFile displays its own error messages
-	 }
-	 break;
-       default:
-	 Usage();
-	 return FALSE;
-       } // switch
-       return FALSE;
-     } // else
-   } // m_lpCmdLine[0] != '\0';
-       
-   /*
-    * normal startup
-    */
-
-   /*
-     Here's where PWS currently does DboxMain, which in turn will do
-     the initial PasskeyEntry (the one that looks like a splash screen).
-     This makes things very hard to control.
-     The app object (here) should instead do the initial PasskeyEntry,
-     and, if successful, move on to DboxMain.  I think. {jpr}
-    */
-   m_maindlg = &dbox;
-   m_pMainWnd = m_maindlg;
-
-   // Set up an Accelerator table
-   m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
-                                     MAKEINTRESOURCE(IDR_ACCS));
-   //Run dialog
-   (void) dbox.DoModal();
-
-   /*
-     note that we don't particularly care what the response was
-   */
-
-
-   // Since the dialog has been closed, return FALSE so that we exit the
-   //  application, rather than start the application's message pump.
-
-   return FALSE;
+			if (fn.IsEmpty() || !CheckFile(fn)) {
+				Usage();
+				return FALSE;
+			}
+			
+			CMyString passkey;
+			if (args[1] == 'e' || args[1] == 'E' || args[1] == 'd' || args[1] == 'D') {
+				// get password from user if valid flag given. If note, default below will
+				// pop usage message
+				CCryptKeyEntry dlg(NULL);
+				int nResponse = dlg.DoModal();
+				
+				if (nResponse==IDOK) {
+					passkey = dlg.m_cryptkey1;
+				} else {
+					return FALSE;
+				}
+			}
+			BOOL status;
+			switch (args[1]) {
+			case 'e': case 'E': // do encrpytion
+				status = EncryptFile(fn, passkey);
+				if (!status) {
+					AfxMessageBox("Encryption failed");
+				}
+				break;
+			case 'd': case 'D': // do decryption
+				status = DecryptFile(fn, passkey);
+				if (!status) {
+					// nothing to do - DecryptFile displays its own error messages
+				}
+				break;
+			default:
+				Usage();
+				return FALSE;
+			} // switch
+			return FALSE;
+		} // else
+	} // m_lpCmdLine[0] != '\0';
+	
+	  /*
+	  * normal startup
+	*/
+	
+	/*
+	Here's where PWS currently does DboxMain, which in turn will do
+	the initial PasskeyEntry (the one that looks like a splash screen).
+	This makes things very hard to control.
+	The app object (here) should instead do the initial PasskeyEntry,
+	and, if successful, move on to DboxMain.  I think. {jpr}
+	*/
+	m_maindlg = &dbox;
+	m_pMainWnd = m_maindlg;
+	
+	// Set up an Accelerator table
+	m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
+		MAKEINTRESOURCE(IDR_ACCS));
+	//Run dialog
+	(void) dbox.DoModal();
+	
+	/*
+	note that we don't particularly care what the response was
+	*/
+	
+	
+	// Since the dialog has been closed, return FALSE so that we exit the
+	//	application, rather than start the application's message pump.
+	
+	return FALSE;
 }
 
+// Removes quotation marks from file name parameters
+// as in "file with spaces.dat"
+void
+ThisMfcApp::StripFileQuotes( CString& strFilename )
+{
+	const char* szFilename	= strFilename;
+	int			nLen		= strFilename.GetLength();
+
+	// if the filenames starts with a quote...
+	if ( *szFilename == '\"' )
+	{
+		// remove leading quote
+		++szFilename;
+		--nLen;
+
+		// trailing quote is optional, remove if present
+		if ( szFilename[nLen - 1] == '\"' )
+			--nLen;
+
+		strFilename = CString( szFilename, nLen );
+	}
+}
 
 //Copied from Knowledge Base article Q100770
 BOOL
