@@ -1,6 +1,19 @@
 Password Safe for Pocket PC - Release Notes
 ===========================================
 
+Version 1.92c.2
+---------------
+
+Fixed:
+
+-  818692 (PPC: notes not fully visible).
+   Added horizontal and vertical scroll bars to the notes field in both the
+   Add and Edit dialogs to allow easy scrolling through the data.
+
+This fix raises an additional known problem in that entering data into the
+notes field is difficult because the field is partially obscured by the SIP.
+
+
 Version 1.92c.1
 ---------------
 
