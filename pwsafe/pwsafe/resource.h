@@ -54,6 +54,10 @@
 #define IDB_TOOLBAR2                    217
 #define IDR_POPTRAY                     218
 #define IDI_TRAY                        219
+#define IDI_MBSTOPICON                  221
+#define IDI_MBASKICON                   222
+#define IDI_MBWARNICON                  223
+#define IDI_MBINFOICON                  224
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -176,7 +180,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        220
+#define _APS_NEXT_RESOURCE_VALUE        225
 #define _APS_NEXT_COMMAND_VALUE         32838
 #define _APS_NEXT_CONTROL_VALUE         1085
 #define _APS_NEXT_SYMED_VALUE           105
