@@ -169,7 +169,7 @@ To
 securely clear a password from the Windows clipboard, select the Clear
 Clipboard menu item. If another application has copied data to the
 clipboard, the clipboard will not be cleared.<br>
-<h4>Perform Auto type <span style="color: blue;">[Ctrl+T]</span></h4>
+<h4><a name="autotype"></a>Perform Auto type <span style="color: blue;">[Ctrl+T]</span></h4>
 Autotype allows you to send keystrokes directly to the window behind
 password safe. This allows you to put your user and password into web
 forms, Terminal<br>
@@ -191,6 +191,10 @@ This will send username (\u) then a tab (\t) then password (\p) then a
 second tab then the enter key (\n) - that is, the default behaviour. To
 send, for example, only the password, the following text should be
 added "autotype:\p\t\n". '\r' will send the Return key.<br>
+In addition, you may change the default delay between characters by \d<span style="font-style: italic;">nnn</span> when <span style="font-style: italic;">nnn</span>
+is the delay in milliseconds. The default value is 10 milliseconds. To
+pause for half a second, and then continue at 10 milliseconds per
+character, you can enter "\d500\d10".<br>
 <br>
 You have to put the cursor in the text box that you need to start receiving the keystrokes before activating this feature.<br>
 <h3><span style="font-weight: bold;">View</span></h3>
