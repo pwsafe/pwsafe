@@ -176,8 +176,15 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 	newUser = CString(ci->GetUser());
       CString treeDispString;
       makeLeafText(treeDispString, newTitle, newUser);
-      // update corresponding Tree mode text
-      SetItemText(ti, treeDispString);
+
+      // Update corresponding Tree mode text with the new display text (ie: in case 
+      // the username was removed and had to be normalized back in).  Note that
+      // we cannot do "SetItemText(ti, treeDispString)" here since Windows will
+      // automatically overwrite and update the item text with the contents from 
+      // the "ptvinfo->item.pszText" buffer.
+      strncpy(ptvinfo->item.pszText, treeDispString, ptvinfo->item.cchTextMax);
+      ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = '\0';
+
       // update the password database record.
       ci->SetTitle(newTitle); ci->SetUser(newUser);
       // update corresponding List mode text
