@@ -247,7 +247,8 @@ DboxMain::OnAddGroup()
     m_TreeViewGroup = _T("New Group");
   else
     m_TreeViewGroup += _T(".New Group");
-  m_ctlItemTree.AddGroup(m_TreeViewGroup);
+  HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup);
+  m_ctlItemTree.SelectItem(newGroup);
   m_TreeViewGroup = _T(""); // for next time
 }
 
