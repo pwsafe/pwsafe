@@ -417,17 +417,20 @@ void CMyTreeCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 }
 
 
-void CMyTreeCtrl::OnBeginDrag(LPNMHDR , LRESULT *)
+void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
   CPoint      ptAction;
-  UINT        nFlags;
+
+  NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+  *pResult = 0;
 
   GetCursorPos(&ptAction);
   ScreenToClient(&ptAction);
   ASSERT(!m_bDragging);
   m_bDragging = TRUE;
-  m_hitemDrag = HitTest(ptAction, &nFlags);
+  m_hitemDrag = pNMTreeView->itemNew.hItem;
   m_hitemDrop = NULL;
+  SelectItem(m_hitemDrag);
 
   ASSERT(m_pimagelist == NULL);
   m_pimagelist = CreateDragImage(m_hitemDrag);
