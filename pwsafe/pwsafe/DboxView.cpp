@@ -422,6 +422,20 @@ DboxMain::OnEdit()
 	    }
 	  ChangeOkUpdate();
 	} // rc == IDOK
+    } else { // entry item not selected - perhaps here on Enter on tree item?
+      // perhaps not the most elegant solution to improving non-mouse use,
+      // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
+      // let me know...
+      CItemData *itemData = NULL;
+      if (m_ctlItemTree.IsWindowVisible()) { // tree view
+	HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+	if (ti != NULL) { // if anything selected
+	  itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+	  if (itemData == NULL) { // node selected
+	    m_ctlItemTree.Expand(ti, TVE_TOGGLE);
+	  }
+	}
+      }
     }
   m_LockDisabled = false;
 }
