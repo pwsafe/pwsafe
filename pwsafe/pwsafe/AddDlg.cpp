@@ -114,8 +114,9 @@ void CAddDlg::OnHelp()
 
 void CAddDlg::OnRandom() 
 {
-   UINT pwlen = app.GetProfileInt("", "pwlendefault", 8);
-   CMyString temp = GetAlphaNumPassword(pwlen);
+   DboxMain* pParent = (DboxMain*) GetParent();
+   ASSERT(pParent != NULL);
+   CMyString temp = pParent->GetPassword();
 
    UpdateData(TRUE);
 	

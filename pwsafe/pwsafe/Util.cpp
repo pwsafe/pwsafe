@@ -132,60 +132,6 @@ RangeRand(size_t len)
 }
 
 
-const char* lower_case_chars="abcdefghijklmnopqrstuvwxyz";
-const char* upper_case_chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const char* number_chars="0123456789";
-const char* special_chars="+-=_@#$%^&;:,.<>/~";
-
-
-char
-GetRandAlphaNumChar(void)
-{
-   char char_pool[257];
-   size_t poolLen;
-
-   memset(char_pool, 0, sizeof(char_pool));
-   strcpy(char_pool, number_chars);
-   strcat(char_pool, lower_case_chars);
-   strcat(char_pool, upper_case_chars);
-   poolLen = strlen(char_pool);
-
-   return(char_pool[RangeRand(poolLen)]);
-}
-
-
-char
-GetRandAlphaNumSymbolChar(void)
-{
-   char char_pool[257];
-   size_t poolLen;
-
-   memset(char_pool, 0, sizeof(char_pool));
-   strcpy(char_pool, number_chars);
-   strcat(char_pool, lower_case_chars);
-   strcat(char_pool, upper_case_chars);
-   strcat(char_pool, special_chars);
-   poolLen = strlen(char_pool);
-
-   return(char_pool[RangeRand(poolLen)]);
-}
-
-
-CMyString
-GetAlphaNumPassword(UINT pwlen)
-{
-   char ch;
-   CMyString password = "";
-
-   for (UINT x = 0; x < pwlen; x++)
-   {
-      ch = GetRandAlphaNumChar();
-      password += ch;
-   }
-   return password;
-}
-
-
 /*
  * Returns a BlowFish object set up for encryption or decrytion.
  *

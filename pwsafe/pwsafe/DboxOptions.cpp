@@ -47,6 +47,15 @@ DboxMain::OnOptions()
    security.m_confirmcopy = not(app.GetProfileInt("", "dontaskquestion", FALSE));
 
    passwordpolicy.m_pwlendefault = app.GetProfileInt("", "pwlendefault", 8);
+   passwordpolicy.m_pwuselowercase = app.GetProfileInt("", "pwuselowercase", TRUE);
+   passwordpolicy.m_pwuseuppercase = app.GetProfileInt("", "pwuseuppercase", TRUE);
+   passwordpolicy.m_pwusedigits = app.GetProfileInt("", "pwusedigits", TRUE);
+   passwordpolicy.m_pwusesymbols = app.GetProfileInt("", "pwusesymbols", TRUE);
+   passwordpolicy.m_pwminlowercase = app.GetProfileInt("", "pwminlowercase", 2);
+   passwordpolicy.m_pwminuppercase = app.GetProfileInt("", "pwminuppercase", 2);
+   passwordpolicy.m_pwmindigits = app.GetProfileInt("", "pwmindigits", 2);
+   passwordpolicy.m_pwminsymbols = app.GetProfileInt("", "pwminsymbols", 2);
+   passwordpolicy.m_pweasyvision = app.GetProfileInt("", "pweasyvision", FALSE);
 
    username.m_usedefuser = app.GetProfileInt("", "usedefuser", FALSE);
    username.m_defusername = app.GetProfileString("", "defusername", "");
@@ -67,6 +76,10 @@ DboxMain::OnOptions()
    BOOL      currUseDefUser = username.m_usedefuser;
    CMyString currDefUsername = username.m_defusername;
 
+   /*
+   **  Remove the "Apply Now" button.
+   */
+   optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW;
    int rc = optionsDlg.DoModal();
 
    if (rc == IDOK)
@@ -74,27 +87,42 @@ DboxMain::OnOptions()
       /*
       **  First save all the options.
       */
-      app.WriteProfileInt("", "alwaysontop", display.m_alwaysontop);
-      app.WriteProfileInt("", "showpwdefault", display.m_pwshowinedit);
-      app.WriteProfileInt("", "showpwinlist", display.m_pwshowinlist);
+      app.WriteProfileInt("", "alwaysontop",    display.m_alwaysontop);
+      app.WriteProfileInt("", "showpwdefault",  display.m_pwshowinedit);
+      app.WriteProfileInt("", "showpwinlist",   display.m_pwshowinlist);
 
-      app.WriteProfileInt("", "dontaskminimizeclearyesno", security.m_clearclipboard);
-      app.WriteProfileInt("", "databaseclear", security.m_lockdatabase);
-      app.WriteProfileInt("", "dontasksaveminimize", not(security.m_confirmsaveonminimize));
-      app.WriteProfileInt("", "dontaskquestion", not(security.m_confirmcopy));
+      app.WriteProfileInt("", "dontaskminimizeclearyesno",  security.m_clearclipboard);
+      app.WriteProfileInt("", "databaseclear",              security.m_lockdatabase);
+      app.WriteProfileInt("", "dontasksaveminimize",    not(security.m_confirmsaveonminimize));
+      app.WriteProfileInt("", "dontaskquestion",        not(security.m_confirmcopy));
 
-      app.WriteProfileInt("", "pwlendefault", passwordpolicy.m_pwlendefault);
+      app.WriteProfileInt("", "pwlendefault",   passwordpolicy.m_pwlendefault);
+      app.WriteProfileInt("", "pwuselowercase", passwordpolicy.m_pwuselowercase);
+      app.WriteProfileInt("", "pwuseuppercase", passwordpolicy.m_pwuseuppercase);
+      app.WriteProfileInt("", "pwusedigits",    passwordpolicy.m_pwusedigits);
+      app.WriteProfileInt("", "pwusesymbols",   passwordpolicy.m_pwusesymbols);
+      app.WriteProfileInt("", "pwminlowercase", passwordpolicy.m_pwminlowercase);
+      app.WriteProfileInt("", "pwminuppercase", passwordpolicy.m_pwminuppercase);
+      app.WriteProfileInt("", "pwmindigits",    passwordpolicy.m_pwmindigits);
+      app.WriteProfileInt("", "pwminsymbols",   passwordpolicy.m_pwminsymbols);
+      app.WriteProfileInt("", "pweasyvision",   passwordpolicy.m_pweasyvision);
 
-      app.WriteProfileInt("", "usedefuser", username.m_usedefuser);
+      app.WriteProfileInt("", "usedefuser",     username.m_usedefuser);
       app.WriteProfileString("", "defusername", username.m_defusername);
-      app.WriteProfileInt("", "querysetdef", username.m_querysetdef);
+      app.WriteProfileInt("", "querysetdef",    username.m_querysetdef);
 
-      app.WriteProfileInt("", "deletequestion", not(misc.m_confirmdelete));
-      app.WriteProfileInt("", "saveimmediately", misc.m_saveimmediately);
+      app.WriteProfileInt("", "deletequestion",   not(misc.m_confirmdelete));
+      app.WriteProfileInt("", "saveimmediately",      misc.m_saveimmediately);
 
       /*
       **  Now update the application according to the options.
       */
+      pwchars.SetPool(passwordpolicy.m_pweasyvision,
+                      passwordpolicy.m_pwuselowercase,
+                      passwordpolicy.m_pwuseuppercase,
+                      passwordpolicy.m_pwusedigits,
+                      passwordpolicy.m_pwusesymbols);
+
       m_bAlwaysOnTop = display.m_alwaysontop;
       UpdateAlwaysOnTop();
 
