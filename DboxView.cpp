@@ -819,6 +819,52 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
 }
 #endif
 
+static CMyString GetPathElem(CMyString &path)
+{
+  // XXX will get first path element and chop it off, i.e., if
+  // path = "a.b.c.d"
+  // will return "a" and path will be "b.c.d"
+  CMyString retval;
+  retval = path;
+  path = _T("");
+  return retval;
+}
+
+static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
+			 const CMyString &s, HTREEITEM &si)
+{
+  // returns true iff s is a direct descendant of node
+  HTREEITEM ti = Tree.GetChildItem(node);
+  
+  while (ti != NULL) {
+    const CMyString itemText = Tree.GetItemText(ti);
+    if (itemText == s) {
+      si = ti;
+      return true;
+    }
+    ti = Tree.GetNextItem(ti, TVGN_NEXT);
+  }
+  return false;
+}
+
+static HTREEITEM InsertGroup(CTreeCtrl &Tree, const CMyString &group)
+{
+  HTREEITEM ti = TVI_ROOT;
+  HTREEITEM si;
+  if (!group.IsEmpty()) {
+    CMyString path = group;
+    CMyString s;
+    do {
+      s = GetPathElem(path);
+      if (!ExistsInTree(Tree, ti, s, si))
+	ti = Tree.InsertItem(s, ti, TVI_SORT);
+      else
+	ti = si;
+    } while (!path.IsEmpty());
+  }
+  return ti;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
 // itemData must be the actual item in the item list.  if the item is remove
@@ -854,8 +900,8 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
   di->list_index = iResult;
   {
     HTREEITEM ti;
-    // XXX get path, create if necessary, add title as last node
-    ti = TVI_ROOT;
+    // get path, create if necessary, add title as last node
+    ti = InsertGroup(m_ctlItemTree, itemData.GetGroup());
     ti = m_ctlItemTree.InsertItem(title, ti, TVI_SORT);
     m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     di->tree_item = ti;
@@ -895,9 +941,10 @@ CItemData *DboxMain::getSelectedItem() {
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     if (ti != NULL) {
       retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
-      ASSERT(retval != NULL);
-      DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
-      ASSERT(di != NULL && di->tree_item == ti);
+      if (retval != NULL) {  // leaf node
+	DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
+	ASSERT(di != NULL && di->tree_item == ti);
+      }
     }    
   }
     return retval;
