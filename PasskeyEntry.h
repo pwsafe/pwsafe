@@ -14,9 +14,10 @@ public:
                  const CString& a_filespec,
                  bool first = false); 
 
-   int GetStatus()
+   int GetStatus() const
    { return m_status; }
-
+  const CMyString &GetPasskey() const {return m_passkey;}
+private:
 // Dialog Data
    enum { IDD_BASIC = IDD_PASSKEYENTRY };
    //{{AFX_DATA(CPasskeyEntry)
@@ -25,9 +26,10 @@ public:
 	CSysColStatic	m_ctlLogoText;
 	CButton	m_ctlOK;
 	CEdit	m_ctlPasskey;
-   CMyString	m_passkey;
+  CMyString	m_passkey;
 	//}}AFX_DATA
    CString	m_message;
+  const CMyString m_filespec;
 
 // Overrides
    // ClassWizard generated virtual function overrides

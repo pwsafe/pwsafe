@@ -4,8 +4,7 @@
 #ifndef DboxMain_h
 #define DboxMain_h
 
-#include "corelib/ItemData.h"
-#include "corelib/Util.h"
+#include "corelib/PWScore.h"
 #include "resource.h"
 
 //-----------------------------------------------------------------------------
@@ -16,34 +15,29 @@ class DboxMain
 // static methods
 private:
 	static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-	static int SplitName(const CMyString &name , CMyString &title, CMyString &username);
 
 public:
    // default constructor
    DboxMain(CWnd* pParent = NULL);
 
- // Find in m_pwlist by title and user name, exact match
-  POSITION Find(const CMyString &a_title, const CMyString &a_user);
- // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
+  CMyString GetPassword(void) const;
+
+ // Find in core by title and user name, exact match
+  POSITION Find(const CMyString &a_title, const CMyString &a_user)
+  {return m_core.Find(a_title, a_user);}
+ // Find  entry in core with same title and user name as the i'th entry in m_ctlItemList
   POSITION Find(int i);
   // FindAll is used by CFindDlg, returns # of finds.
   // indices allocated by caller
   int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
-  int GetNumEntries() const {return m_pwlist.GetCount();}
+  int GetNumEntries() const {return m_core.GetNumEntries();}
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE); // MakeVisible will scroll list, if needed
    void RefreshList();
 
-  void SetCurFile(const CString &arg) {m_currfile = CMyString(arg);} // set to argv
+  void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
 
-   enum retvals
-   {
-      CANT_OPEN_FILE = -10,
-      USER_CANCEL,
-      WRONG_PASSWORD,
-      NOT_SUCCESS,
-	  ALREADY_OPEN,
-      SUCCESS = 0,
-   };
+  int CheckPassword(const CMyString &filename, CMyString &passkey)
+  {return m_core.CheckPassword(filename, passkey);}
 
 	//{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -62,13 +56,10 @@ protected:
    // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
    bool	m_bSizing;
 
-   // the password database
-   CList<CItemData,CItemData> m_pwlist;
 
    unsigned int uGlobalMemSize;
    HGLOBAL hGlobalMemory;
 
-   CMyString m_currfile; // current pw db filespec
    CMyString m_currbackup;
    CMyString m_title; // what's displayed in the title bar
 
@@ -76,10 +67,9 @@ protected:
    CStatusBar m_statusBar;
    BOOL m_toolbarsSetup;
 
-   BOOL m_changed;
-   BOOL m_needsreading;
    bool m_windowok;
    BOOL m_existingrestore;
+   bool m_needsreading;
 
    bool m_bSortAscending;
    int m_iSortedColumn;
@@ -105,10 +95,6 @@ protected:
 
    void ClearData();
    int NewFile(void);
-   int WriteFile(const CMyString &filename);
-   int CheckPassword(const CMyString &filename, CMyString &passkey,
-                     bool first = false);
-   int ReadFile(const CMyString &filename, const CMyString &passkey);
 
    //Version of message functions with return values
    int Save(void);
@@ -138,7 +124,6 @@ protected:
    afx_msg void OnRestore();
    afx_msg void OnSaveAs();
    afx_msg void OnBackupSafe();
-   afx_msg void OnUpdateBackups();
    afx_msg void OnPasswordChange();
    afx_msg void OnClearclipboard();
    afx_msg void OnDelete();
@@ -161,22 +146,13 @@ protected:
 	afx_msg void OnOpenMRU(UINT nID);
    DECLARE_MESSAGE_MAP()
 
-   // Following moved from Util.{h,cpp} and constified
-public:
-   void MakeName(CMyString&, const CMyString &, const CMyString &) const; // used also by AddDlg, hence public
-   CMyString GetPassword(void);
+  BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
+  int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
+			  bool first = false);
 
 private:
-  int WriteCBC(int fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);
-  int ReadCBC(int fp, CMyString &data, const unsigned char *salt, unsigned char *ipthing);
-  void MakeFullNames(CList<CItemData, CItemData>* plist,
-		     const CMyString &defusername);
-  void DropDefUsernames(CList<CItemData, CItemData>* plist,
-			const CMyString &defusername);
-  int CheckVersion(CList<CItemData, CItemData>* plist);
-  void SetBlankToDef(CList<CItemData, CItemData>* plist);
-  void SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &username);
-  BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
+  PWScore m_core;
+
 };
 
 //-----------------------------------------------------------------------------

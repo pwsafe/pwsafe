@@ -11,7 +11,7 @@
 
 //-----------------------------------------------------------------------------
 CMyString
-DboxMain::GetPassword(void)
+DboxMain::GetPassword(void) const
 {
   CPasswordCharPool pwchars(app.GetProfileInt("", "pwlendefault", 8),
 			    app.GetProfileInt("", "pwuselowercase", TRUE),

@@ -25,10 +25,6 @@
 // widget override?
 #include "SysColStatic.h"
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
 
@@ -74,17 +70,24 @@ END_MESSAGE_MAP()
    * If sorting is by title (username) , username (title) is the secondary field if the
    * primary fields are identical.
    */
-int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {
-	// lParamSort determines which column is getting sorted:
-	// 0 - title
-	// 1 - user name
-	// 2 - note
-	// 3 - password
-	const int	nRecurseFlag		= 500;		// added to the desired sort column when recursing
+int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
+				   LPARAM closure)
+{
+  // closure is "this" of the calling DboxMain, from which we use:
+  // m_iSortedColumn to determine which column is getting sorted:
+  // 0 - title
+  // 1 - user name
+  // 2 - note
+  // 3 - password
+  // m_bSortAscending to determine the direction of the sort (duh)
+  // m_core.SplitName()
+
+  DboxMain *self = (DboxMain*)closure;
+	const int	nRecurseFlag		= 500; // added to the desired sort column when recursing
 	bool		bAlreadyRecursed	= false;
-	int			nSortColumn			= LOWORD(lParamSort);
-	CItemData*	pLHS				= (CItemData *)lParam1;
-	CItemData*	pRHS				= (CItemData *)lParam2;
+	int		nSortColumn		= self->m_iSortedColumn;
+	CItemData*	pLHS			= (CItemData *)lParam1;
+	CItemData*	pRHS			= (CItemData *)lParam2;
 	CMyString	title1, username1;
 	CMyString	title2, username2;
 
@@ -98,20 +101,28 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 	int iResult;
 	switch(nSortColumn) {
 	case 0:
-		SplitName(pLHS->GetName(), title1, username1);
-		SplitName(pRHS->GetName(), title2, username2);
+		self->m_core.SplitName(pLHS->GetName(), title1, username1);
+		self->m_core.SplitName(pRHS->GetName(), title2, username2);
 		iResult = ((CString)title1).CompareNoCase(title2);
-		if (iResult == 0 && !bAlreadyRecursed)
-		  iResult = CompareFunc(lParam1, lParam2,
-					MAKELPARAM(1 + nRecurseFlag, HIWORD(lParamSort)));	// making a recursed call, add nRecurseFlag
+		if (iResult == 0 && !bAlreadyRecursed) {
+		  // making a recursed call, add nRecurseFlag
+		  const int savedSortColumn = self->m_iSortedColumn;
+		  self->m_iSortedColumn = 1 + nRecurseFlag;
+		  iResult = CompareFunc(lParam1, lParam2, closure);
+		  self->m_iSortedColumn = savedSortColumn;
+		}
 		break;
 	case 1:
-		SplitName(pLHS->GetName(), title1, username1);
-		SplitName(pRHS->GetName(), title2, username2);
+		self->m_core.SplitName(pLHS->GetName(), title1, username1);
+		self->m_core.SplitName(pRHS->GetName(), title2, username2);
 		iResult = ((CString)username1).CompareNoCase(username2);
-		if (iResult == 0 && !bAlreadyRecursed)
-		  iResult = CompareFunc(lParam1, lParam2,
-					MAKELPARAM(0 + nRecurseFlag, HIWORD(lParamSort)));	// making a recursed call, add nRecurseFlag
+		if (iResult == 0 && !bAlreadyRecursed) {
+		  // making a recursed call, add nRecurseFlag
+		  const int savedSortColumn = self->m_iSortedColumn;
+		  self->m_iSortedColumn = 0 + nRecurseFlag;
+		  iResult = CompareFunc(lParam1, lParam2, closure);
+		  self->m_iSortedColumn = savedSortColumn;
+		}
 		break;
 	case 2:
 		iResult = ((CString)pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
@@ -124,66 +135,45 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
         iResult = 0; // should never happen - just keep compiler happy
 		ASSERT(FALSE);
 	}
-	bool bSortAscending = HIWORD(lParamSort)? true: false;
-	if (!bSortAscending) {
+	if (!self->m_bSortAscending) {
 		iResult *= -1;
 	}
-
 	return iResult;
 }
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
-   m_bSizing( false )
+     m_bSizing( false ), m_needsreading(true), m_windowok(false),
+     m_existingrestore(FALSE), m_toolbarsSetup(FALSE),
+     m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
+     m_bSortAscending(true), m_iSortedColumn(0)
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 
    m_hIcon = app.LoadIcon(IDI_CORNERICON);
-   m_pwlist.RemoveAll();
-   // m_pwdb.Clear(); when the new backend is in...
+   ClearData();
 
-   /*
-     currently - there's a string in the resource string table, with the
-     name of the default output file.  We pull it and concatenate the 
-     current directory to make a default password database filename
-     (which I think is the only usage of m_curdir) {jpr}
-   */
-
-   //CString temp;
-   //temp.LoadString(IDS_OUTPUTFILE);
-   //CString temp2 = app.m_curdir + temp;
-   //m_deffile = (CMyString) ".\\pwsafe.dat"; //temp2;
 
    /*
     * current file and current backup file specs are stored in registry
     * Note that if m_currfile is non-empty, we will not read the registry value.
     * This will happen if a filename was given in the command line.
     */
-   if (m_currfile.IsEmpty()) {
+   if (m_core.GetCurFile().IsEmpty()) {
      // If there's no registry key, this is probably a fresh install.
      // CheckPassword will catch this and handle it correctly
-     m_currfile = (CMyString) app.GetProfileString("", "currentfile");
+     m_core.SetCurFile((CMyString) app.GetProfileString(_T(""),
+							_T("currentfile")));
    }
-   m_currbackup =
-      (CMyString) app.GetProfileString("", "currentbackup", NULL);
-   m_title = "";
 
-   m_bAlwaysOnTop = app.GetProfileInt("", "alwaysontop", FALSE);
+   m_currbackup = // ??? move to PWScore??
+      (CMyString) app.GetProfileString(_T(""), _T("currentbackup"), NULL);
+   m_title = _T("");
 
-   m_changed = FALSE;
-   m_needsreading = TRUE;
-   m_windowok = false;
-   m_existingrestore = FALSE;
-
-   m_toolbarsSetup = FALSE;
-
-   m_bShowPasswordInEdit = false;
-   m_bShowPasswordInList = false;
-   m_bSortAscending = true;
-   m_iSortedColumn = 0;
+   m_bAlwaysOnTop = app.GetProfileInt(_T(""), _T("alwaysontop"), FALSE);
 }
 
 
@@ -214,7 +204,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
    ON_COMMAND(ID_MENUTIME_SAVEAS, OnSaveAs)
    ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
-   ON_COMMAND(ID_MENUITEM_UPDATEBACKUPS, OnUpdateBackups)
    ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
    ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearclipboard)
    ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
@@ -302,9 +291,6 @@ DboxMain::OnInitDialog()
 
    ChangeOkUpdate();
 
-   if (app.GetProfileInt("", "donebackupchange", FALSE) == FALSE)
-      OnUpdateBackups();
-
    setupBars(); // Just to keep things a little bit cleaner
 
    DragAcceptFiles(TRUE);
@@ -323,6 +309,10 @@ DboxMain::OnInitDialog()
 		MoveWindow(&rect, TRUE);
    }
 
+   UINT usedefuser = app.GetProfileInt("", "usedefuser", FALSE);
+   m_core.SetUseDefUser(usedefuser == TRUE); // plain usedefuser generates bogus compiler warning. grrrr
+   m_core.SetDefUsername(app.GetProfileString("", "defusername", ""));
+
    return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -339,62 +329,44 @@ DboxMain::OpenOnInit(void)
    int rc;
    int rc2;
 
-   rc = CheckPassword(m_currfile, passkey, true);
+   rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, true);
 
    switch (rc)
    {
-   case SUCCESS:
-      rc2 = ReadFile(m_currfile, passkey);
-      m_title = "Password Safe - " + m_currfile;
+   case PWScore::SUCCESS:
+      rc2 = m_core.ReadCurFile(passkey);
+      m_title = "Password Safe - " + m_core.GetCurFile();
       break; 
-   case CANT_OPEN_FILE:
+   case PWScore::CANT_OPEN_FILE:
       /*
        * If it is the default filename, assume that this is the first time
        * that they are starting Password Safe and don't confusing them.
        */
-#if 0
-      if (m_currfile != m_deffile)
-      {
-         CMyString temp = m_currfile
-            + "\n\nCannot open database. It likely does not exist."
-            + "\nA new database will be created.";
-         MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
-      }
-      else
-      {
-         // of course, this will be easier under DboxPasskeyFirst's control...
-
-         //GetDlgItem(IDC_PASSKEY)
-
-         // here's where I'll grey out the db entry, and make them hit the
-         // button instead - this is for bug #3
-      }
-#endif
       // currently falls thru to...
    case TAR_NEW:
       rc2 = New();
-      if (USER_CANCEL == rc2) {
+      if (PWScore::USER_CANCEL == rc2) {
          // somehow, get DboxPasskeyEntryFirst redisplayed...
 	  }
       break;
    case TAR_OPEN:
       rc2 = Open();
-      if (USER_CANCEL == rc2) {
+      if (PWScore::USER_CANCEL == rc2) {
          // somehow, get DboxPasskeyEntryFirst redisplayed...
 	  }
       break;
-   case WRONG_PASSWORD:
-      rc2 = NOT_SUCCESS;
+   case PWScore::WRONG_PASSWORD:
+      rc2 = PWScore::NOT_SUCCESS;
       break;
    default:
-      rc2 = NOT_SUCCESS;
+      rc2 = PWScore::NOT_SUCCESS;
       break;
    }
 
-   if (rc2 == SUCCESS)
+   if (rc2 == PWScore::SUCCESS)
    {
-      m_needsreading = FALSE;
       m_existingrestore = FALSE;
+      m_needsreading = false;
       return TRUE;
    }
    else
@@ -496,9 +468,9 @@ void
 DboxMain::OnAdd() 
 {
    CAddDlg dataDlg(this);
-   if (app.GetProfileInt("", "usedefuser", FALSE) == TRUE)
+   if (m_core.GetUseDefUser())
    {
-      dataDlg.m_username = CMyString(app.GetProfileString("", "defusername", ""));
+      dataDlg.m_username = m_core.GetDefUsername();
    }
 
    app.DisableAccelerator();
@@ -508,7 +480,7 @@ DboxMain::OnAdd()
    if (rc == IDOK)
    {
       //Check if they wish to set a default username
-      if ((app.GetProfileInt("", "usedefuser", FALSE) == FALSE)
+      if (!m_core.GetUseDefUser()
           && (app.GetProfileInt("", "querysetdef", TRUE) == TRUE)
           && (dataDlg.m_username != ""))
       {
@@ -525,28 +497,26 @@ DboxMain::OnAdd()
             app.WriteProfileInt("", "usedefuser", TRUE);
             app.WriteProfileString("", "defusername",
                                    dataDlg.m_username);
-            DropDefUsernames(&m_pwlist, dataDlg.m_username);
+	    m_core.SetUseDefUser(true);
+	    m_core.SetDefUsername(dataDlg.m_username);
+            m_core.DropDefUsernames(dataDlg.m_username);
             RefreshList();
          }
       }
       //Finish Check (Does that make any geographical sense?)
       CItemData temp;
       CMyString temptitle;
-      MakeName(temptitle, dataDlg.m_title, dataDlg.m_username);
+      m_core.MakeName(temptitle, dataDlg.m_title, dataDlg.m_username);
       temp.SetName(temptitle);
       temp.SetPassword(dataDlg.m_password);
       temp.SetNotes(dataDlg.m_notes);
-      POSITION curPos = m_pwlist.AddTail(temp);
-      int newpos = insertItem(m_pwlist.GetAt(curPos));
+      m_core.AddEntryToTail(temp);
+      int newpos = insertItem(temp);
       SelectEntry(newpos);
       m_ctlItemList.SetFocus();
       if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
       {
          Save();
-      }
-      else
-      {
-         m_changed = TRUE;
       }
       ChangeOkUpdate();
    }
@@ -569,7 +539,7 @@ DboxMain::OnCopyPassword()
       POSITION itemPos = Find(getSelectedItem());
 		
       CMyString curPassString;
-      m_pwlist.GetAt(itemPos).GetPassword(curPassString);
+      m_core.GetEntryAt(itemPos).GetPassword(curPassString);
 
       uGlobalMemSize = curPassString.GetLength()+1;
       hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
@@ -633,11 +603,10 @@ DboxMain::OnDelete()
 
       if (dodelete == TRUE)
       {
-         m_changed = TRUE;
          int curSel = getSelectedItem();
          POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 	 m_ctlItemList.DeleteItem(curSel);
-         m_pwlist.RemoveAt(listindex);
+         m_core.RemoveEntryAt(listindex);
          int rc = SelectEntry(curSel);
          if (rc == LB_ERR) {
 	   SelectEntry(m_ctlItemList.GetItemCount() - 1);
@@ -663,55 +632,39 @@ DboxMain::OnEdit()
       int curSel = getSelectedItem();
 		
       POSITION listindex = Find(curSel);
-      CItemData item = m_pwlist.GetAt(listindex);
-      //CMyString item_name;
-      //item.GetName(item_name);
+      CItemData item = m_core.GetEntryAt(listindex);
 
       CEditDlg dlg_edit(this);
-      SplitName(item.GetName(),
-                dlg_edit.m_title, dlg_edit.m_username);
+      m_core.SplitName(item.GetName(),
+		       dlg_edit.m_title, dlg_edit.m_username);
       dlg_edit.m_realpassword = item.GetPassword();
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = item.GetNotes();
       dlg_edit.m_listindex = listindex;   // for future reference, this is not multi-user friendly
 
-	  app.DisableAccelerator();
+      app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
-	  app.EnableAccelerator();
+      app.EnableAccelerator();
 
       if (rc == IDOK)
       {
          CMyString temptitle;
-         MakeName(temptitle, dlg_edit.m_title, dlg_edit.m_username);
+         m_core.MakeName(temptitle, dlg_edit.m_title, dlg_edit.m_username);
          item.SetName(temptitle);
 
-#if 0
-         // JPRFIXME - P1.2
-         //Adjust for the asterisks
-         if (dlg_edit.m_password.GetLength() == 0)
-            item.SetPassword(dlg_edit.m_password);
-         else if (dlg_edit.m_password[dlg_edit.m_password.GetLength()-1] == '*')
-            item.SetPassword(dlg_edit.m_realpassword);
-         else
-            item.SetPassword(dlg_edit.m_password);
-#endif
          item.SetPassword(dlg_edit.m_realpassword);
          item.SetNotes(dlg_edit.m_notes);
 
          /*
            Out with the old, in with the new
          */
-         m_pwlist.RemoveAt(listindex);
-         POSITION curPos = m_pwlist.AddTail(item);
-		   m_ctlItemList.DeleteItem(curSel);
-		   insertItem(m_pwlist.GetAt(curPos));
+         m_core.RemoveEntryAt(listindex);
+         m_core.AddEntryToTail(item);
+	 m_ctlItemList.DeleteItem(curSel);
+	 insertItem(item);
          if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
          {
             Save();
-         }
-         else
-         {
-            m_changed = TRUE;
          }
       }
 
@@ -756,18 +709,18 @@ DboxMain::OnOK()
 	app.WriteProfileInt("", "sortedcolumn", m_iSortedColumn);
 	app.WriteProfileInt("", "sortascending", m_bSortAscending);
 
-   if (m_changed == TRUE)
+   if (m_core.IsChanged())
    {
-      rc = MessageBox("Do you want to save changes to the password list?",
-                             AfxGetAppName(),
-                             MB_ICONQUESTION|MB_YESNOCANCEL);
+      rc = MessageBox(_T("Do you want to save changes to the password list?"),
+		      AfxGetAppName(),
+		      MB_ICONQUESTION|MB_YESNOCANCEL);
       switch (rc)
       {
       case IDCANCEL:
          return;
       case IDYES:
          rc2 = Save();
-         if (rc2 != SUCCESS)
+         if (rc2 != PWScore::SUCCESS)
             return;
       case IDNO:
          ClearClipboard();
@@ -784,8 +737,8 @@ DboxMain::OnOK()
    ClearData();
 
    //Store current filename for next time...
-   if (!m_currfile.IsEmpty())
-      app.WriteProfileString("", "currentfile", m_currfile);
+   if (!m_core.GetCurFile().IsEmpty())
+      app.WriteProfileString("", "currentfile", m_core.GetCurFile());
    else
       app.WriteProfileString("", "currentfile", NULL);
 
@@ -830,26 +783,6 @@ DboxMain::ClearClipboard()
       AfxMessageBox("The clipboard could not be closed");
 }
 
-//Finds stuff based on the .GetName() part not the entire object
-POSITION
-DboxMain::Find(const CMyString &a_title, const CMyString &a_user)
-{
-   POSITION listPos = m_pwlist.GetHeadPosition();
-   CMyString curthing;
-
-   while (listPos != NULL)
-   {
-      m_pwlist.GetAt(listPos).GetName(curthing);
-	  CMyString title, user;
-	  SplitName(curthing, title, user);
-      if (title == a_title && user == a_user)
-         break;
-      else
-         m_pwlist.GetNext(listPos);
-   }
-
-   return listPos;
-}
 
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
 POSITION DboxMain::Find(int i)
@@ -882,10 +815,10 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   ASSERT(!str.IsEmpty());
   ASSERT(indices != NULL);
 
-  POSITION listPos = m_pwlist.GetHeadPosition();
+  POSITION listPos = m_core.GetFirstEntryPosition();
   CMyString curname, savecurname, curnotes;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
-  const int NumEntries = GetNumEntries();
+  const int NumEntries = m_core.GetNumEntries();
   bool *matchVector = new bool[NumEntries];
   int retval = 0;
   int i;
@@ -898,9 +831,9 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 
   while (listPos != NULL)
   {
-      m_pwlist.GetAt(listPos).GetName(curname);
+      m_core.GetEntryAt(listPos).GetName(curname);
       savecurname = curname; // keep original for finding in m_listctrl
-      m_pwlist.GetAt(listPos).GetNotes(curnotes);
+      m_core.GetEntryAt(listPos).GetNotes(curnotes);
 
       if (!CaseSensitive) {
           curname.MakeLower();
@@ -910,7 +843,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 	// Find index in m_listctl
 	CMyString listTitle;
 	CMyString title, username;
-	SplitName(savecurname, title, username);
+	m_core.SplitName(savecurname, title, username);
 	for (i = 0; i < NumEntries; i++) {
 	  listTitle = CMyString(m_ctlItemList.GetItemText(i, 0));
 	  if (listTitle == title && !matchVector[i]) {
@@ -921,7 +854,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 	  } // match found in m_listctrl
 	} // for
       } // match found in m_pwlist
-      m_pwlist.GetNext(listPos);
+      m_core.GetNextEntry(listPos);
   }
 
   delete[] matchVector;
@@ -981,14 +914,14 @@ DboxMain::RefreshList()
 		m_ctlItemList.DeleteColumn(3);
 	}
 
-   POSITION listPos = m_pwlist.GetHeadPosition();
+   POSITION listPos = m_core.GetFirstEntryPosition();
    while (listPos != NULL)
    {
-		insertItem(m_pwlist.GetAt(listPos));
-      m_pwlist.GetNext(listPos);
+     insertItem(m_core.GetEntryAt(listPos));
+     m_core.GetNextEntry(listPos);
    }
 
-	m_ctlItemList.SortItems(CompareFunc, MAKELPARAM(m_iSortedColumn, (int)m_bSortAscending));
+   m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
 
    //Setup the selection
    if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
@@ -999,85 +932,11 @@ DboxMain::RefreshList()
 void
 DboxMain::OnPasswordChange() 
 {
-   /*
-    * To change passkeys, the data is copied into a list of CMyStrings
-    * and then re-put into the list with the new passkey
-    */
-
-   /*
-    * CItemData should have a ChangePasskey method instead
-    */
-
-   /*
-    * Here is my latest thought on this: It is definately possible to give
-    * CItemData a ChangePasskey method. However, that would involve either
-    * keeping two copies of the key schedule in memory at once, which would
-    * then require a lot more overhead and variables than we currently have,
-    * or recreating first the current and then the new schedule for each
-    * item, which would be really slow. Which is why I think that we should
-    * leave well enough alone. I mean, this function does work in the end.
-    */
-	
    CPasskeyChangeDlg changeDlg(this);
    int rc = changeDlg.DoModal();
    if (rc == IDOK)
    {
-      m_changed = TRUE;
-      //Copies the list into a plaintext list of CMyStrings
-      CList<CMyString, CMyString> tempList;
-      tempList.RemoveAll();
-      POSITION listPos = m_pwlist.GetHeadPosition();
-      while (listPos != NULL)
-      {
-         CItemData temp;
-         temp = m_pwlist.GetAt(listPos);
-         CMyString str;
-         temp.GetName(str);
-         tempList.AddTail(str);
-         temp.GetPassword(str);
-         tempList.AddTail(str);
-         temp.GetNotes(str);
-         tempList.AddTail(str);
-         m_pwlist.GetNext(listPos);
-      }
-      m_pwlist.RemoveAll();
-      listPos = tempList.GetHeadPosition();
-
-      //Changes the global password. Eck.
-      global.m_passkey = changeDlg.m_newpasskey;
-		
-      //Gets a new random value used for password authentication
-      for (int x=0; x < 8; x++)
-         global.m_randstuff[x] = newrand();
-      /*
-       * We generate 8 bytes of randomness, but m_randstuff
-       * is larger: StuffSize bytes. This appears to be a bug,
-       * let's at least explicitly zero the extra 2 bytes, since redefining
-       * StuffSize to 8 would break every existing database...
-       */
-      global.m_randstuff[8] = global.m_randstuff[9] = '\0';
-
-      GenRandhash(changeDlg.m_newpasskey,
-                  global.m_randstuff,
-                  global.m_randhash);
-
-      //Puts the list of CMyStrings back into CItemData
-      while (listPos != NULL)
-      {
-         CItemData temp;
-			
-         temp.SetName(tempList.GetAt(listPos));
-         tempList.GetNext(listPos);
-			
-         temp.SetPassword(tempList.GetAt(listPos));
-         tempList.GetNext(listPos);
-
-         temp.SetNotes(tempList.GetAt(listPos));
-         tempList.GetNext(listPos);
-
-         m_pwlist.AddTail(temp);
-      }
-		
+     m_core.ChangePassword(changeDlg.m_newpasskey);
       RefreshList();
    }
    else if (rc == IDCANCEL)
@@ -1125,7 +984,7 @@ DboxMain::OnSize(UINT nType,
                                           "dontasksaveminimize",
                                           FALSE);
          BOOL doit = TRUE;
-         if ((m_changed == TRUE)
+         if ((m_core.IsChanged())
              && (dontask == FALSE))
          {
             CRemindSaveDlg remindDlg(this);
@@ -1144,13 +1003,13 @@ DboxMain::OnSize(UINT nType,
          {
             OnSave();
             ClearData();
-            m_needsreading = TRUE;
+            m_needsreading = true;
          }
       }
    }
    else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
    {
-      if ((m_needsreading == TRUE)
+      if ((m_needsreading)
           && (m_existingrestore == FALSE)
           && (m_windowok))
       {
@@ -1160,16 +1019,16 @@ DboxMain::OnSize(UINT nType,
          int rc, rc2;
          CMyString temp;
 
-         rc = CheckPassword(m_currfile, passkey);
+         rc = GetAndCheckPassword(m_core.GetCurFile(), passkey);
          switch (rc)
          {
-         case SUCCESS:
-            rc2 = ReadFile(m_currfile, passkey);
-            m_title = "Password Safe - " + m_currfile;
+         case PWScore::SUCCESS:
+            rc2 = m_core.ReadCurFile(passkey);
+            m_title = "Password Safe - " + m_core.GetCurFile();
             break; 
-         case CANT_OPEN_FILE:
+         case PWScore::CANT_OPEN_FILE:
             temp =
-               m_currfile
+	      m_core.GetCurFile()
                + "\n\nCannot open database. It likely does not exist."
                + "\nA new database will be created.";
             MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
@@ -1179,19 +1038,19 @@ DboxMain::OnSize(UINT nType,
          case TAR_OPEN:
             rc2 = Open();
             break;
-         case WRONG_PASSWORD:
-            rc2 = NOT_SUCCESS;
+         case PWScore::WRONG_PASSWORD:
+            rc2 = PWScore::NOT_SUCCESS;
             break;
          default:
-            rc2 = NOT_SUCCESS;
+            rc2 = PWScore::NOT_SUCCESS;
             break;
          }
 
-         if (rc2 == SUCCESS)
+         if (rc2 == PWScore::SUCCESS)
          {
-            m_needsreading = FALSE;
+            m_needsreading = false;
             m_existingrestore = FALSE;
-			RefreshList();
+	    RefreshList();
          }
          else
          {
@@ -1226,21 +1085,20 @@ DboxMain::Save()
 {
    int rc;
 
-   if (m_currfile.IsEmpty())
+   if (m_core.GetCurFile().IsEmpty())
       return SaveAs();
 
-   rc = WriteFile(m_currfile);
+   rc = m_core.WriteCurFile();
 
-   if (rc == CANT_OPEN_FILE)
+   if (rc == PWScore::CANT_OPEN_FILE)
    {
-      CMyString temp = m_currfile + "\n\nCould not open file for writting!";
+      CMyString temp = m_core.GetCurFile() + "\n\nCould not open file for writting!";
       MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
-      return CANT_OPEN_FILE;
+      return PWScore::CANT_OPEN_FILE;
    }
 
-   m_changed = FALSE;
    ChangeOkUpdate();
-   return SUCCESS;
+   return PWScore::SUCCESS;
 }
 
 
@@ -1250,10 +1108,8 @@ DboxMain::ChangeOkUpdate()
    if (! m_windowok)
       return;
 
-   if (m_changed == TRUE)
-      GetMenu()->EnableMenuItem(ID_MENUITEM_SAVE, MF_ENABLED);
-   else if (m_changed == FALSE)
-      GetMenu()->EnableMenuItem(ID_MENUITEM_SAVE, MF_GRAYED);
+   GetMenu()->EnableMenuItem(ID_MENUITEM_SAVE,
+			     m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
 
    /*
      This doesn't exactly belong here, but it makes sure that the
@@ -1280,12 +1136,12 @@ DboxMain::OnCopyUsername()
    POSITION itemPos = Find(getSelectedItem());
 
    CMyString title, junk, username;
-   m_pwlist.GetAt(itemPos).GetName(title);
-   SplitName(title, junk, username);
+   m_core.GetEntryAt(itemPos).GetName(title);
+   m_core.SplitName(title, junk, username);
 
    if (username.GetLength() == 0)
    {
-      AfxMessageBox("There is no username associated with this item.");
+      AfxMessageBox(_T("There is no username associated with this item."));
    }
    else
    {
@@ -1444,19 +1300,20 @@ DboxMain::BackupSafe()
          break;
       }
       else
-         return USER_CANCEL;
+         return PWScore::USER_CANCEL;
    }
 
-   rc = WriteFile(tempname);
-   if (rc == CANT_OPEN_FILE)
+
+   rc = m_core.WriteFile(tempname);
+   if (rc == PWScore::CANT_OPEN_FILE)
    {
       CMyString temp = tempname + "\n\nCould not open file for writting!";
       MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
-      return CANT_OPEN_FILE;
+      return PWScore::CANT_OPEN_FILE;
    }
 
    m_currbackup = tempname;
-   return SUCCESS;
+   return PWScore::SUCCESS;
 }
 
 
@@ -1470,7 +1327,7 @@ DboxMain::OnOpen()
 int
 DboxMain::Open()
 {
-   int rc = SUCCESS;
+   int rc = PWScore::SUCCESS;
    CMyString newfile;
 
    //Open-type dialog box
@@ -1493,11 +1350,11 @@ DboxMain::Open()
 
 		 rc = Open( newfile );
 
-		 if ( rc == SUCCESS )
+		 if ( rc == PWScore::SUCCESS )
 	         break;
       }
       else
-         return USER_CANCEL;
+         return PWScore::USER_CANCEL;
    }
 
    return rc;
@@ -1510,22 +1367,22 @@ DboxMain::Open( const char* pszFilename )
 	CMyString passkey, temp;
 
 	//Check that this file isn't already open
-	if (pszFilename == m_currfile && !m_needsreading)
+	if (pszFilename == m_core.GetCurFile() && !m_needsreading)
 	{
 		//It is the same damn file
 		MessageBox("That file is already open.",
 			"Oops!",
 			MB_OK|MB_ICONWARNING);
-		return ALREADY_OPEN;
+		return PWScore::ALREADY_OPEN;
 	}
 	
-	if (m_changed == TRUE)
+	if (m_core.IsChanged())
 	{
 		int rc2;
 		
 		temp =
 			"Do you want to save changes to the password database: "
-			+ m_currfile
+		  + m_core.GetCurFile()
 			+ "?";
 		rc = MessageBox(temp,
 			AfxGetAppName(),
@@ -1533,42 +1390,43 @@ DboxMain::Open( const char* pszFilename )
 		switch (rc)
 		{
 		case IDCANCEL:
-			return USER_CANCEL;
+			return PWScore::USER_CANCEL;
 		case IDYES:
 			rc2 = Save();
 			// Make sure that writting the file was successful
-			if (rc2 == SUCCESS)
+			if (rc2 == PWScore::SUCCESS)
 				break;
 			else
-				return CANT_OPEN_FILE;
+				return PWScore::CANT_OPEN_FILE;
 		case IDNO:
 			break;
 		}
 	}
 	
-	rc = CheckPassword(pszFilename, passkey);
+	rc = GetAndCheckPassword(pszFilename, passkey);
 	switch (rc)
 	{
-	case SUCCESS:
+	case PWScore::SUCCESS:
 		app.GetMRU()->Add( pszFilename );
 		break; // Keep going... 
-	case CANT_OPEN_FILE:
-		temp = m_currfile + "\n\nCan't open file. Please choose another.";
+	case PWScore::CANT_OPEN_FILE:
+		temp = m_core.GetCurFile()
+		  + "\n\nCan't open file. Please choose another.";
 		MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
 	case TAR_OPEN:
 		return Open();
 	case TAR_NEW:
 		return New();
-	case WRONG_PASSWORD:
+	case PWScore::WRONG_PASSWORD:
 	/*
 	If the user just cancelled out of the password dialog, 
 	assume they want to return to where they were before... 
 		*/
-		return USER_CANCEL;
+		return PWScore::USER_CANCEL;
 	}
 	
-	rc = ReadFile(pszFilename, passkey);
-	if (rc == CANT_OPEN_FILE)
+	rc = m_core.ReadFile(pszFilename, passkey);
+	if (rc == PWScore::CANT_OPEN_FILE)
 	{
 		temp = pszFilename;
 		temp += "\n\nCould not open file for reading!";
@@ -1577,16 +1435,15 @@ DboxMain::Open( const char* pszFilename )
 		Everything stays as is... Worst case,
 		they saved their file....
 		*/
-		return CANT_OPEN_FILE;
+		return PWScore::CANT_OPEN_FILE;
 	}
 	
-	m_currfile = pszFilename;
-	m_changed = FALSE;
-	m_title = "Password Safe - " + m_currfile;
+	m_core.SetCurFile(pszFilename);
+	m_title = "Password Safe - " + m_core.GetCurFile();
 	ChangeOkUpdate();
 	RefreshList();
 	
-	return SUCCESS;
+	return PWScore::SUCCESS;
 }
 
 void
@@ -1601,11 +1458,11 @@ DboxMain::New()
 {
    int rc, rc2;
 
-   if (m_changed==TRUE)
+   if (m_core.IsChanged())
    {
       CMyString temp =
          "Do you want to save changes to the password database: "
-         + m_currfile
+	+ m_core.GetCurFile()
          + "?";
 
       rc = MessageBox(temp,
@@ -1614,35 +1471,34 @@ DboxMain::New()
       switch (rc)
       {
       case IDCANCEL:
-         return USER_CANCEL;
+         return PWScore::USER_CANCEL;
       case IDYES:
          rc2 = Save();
          /*
            Make sure that writting the file was successful
          */
-         if (rc2 == SUCCESS)
+         if (rc2 == PWScore::SUCCESS)
             break;
          else
-            return CANT_OPEN_FILE;
+            return PWScore::CANT_OPEN_FILE;
       case IDNO:
          break;
       }
    }
 
    rc = NewFile();
-   if (rc == USER_CANCEL)
+   if (rc == PWScore::USER_CANCEL)
       /*
         Everything stays as is... 
         Worst case, they saved their file.... 
       */
-      return USER_CANCEL;
+      return PWScore::USER_CANCEL;
 
-   m_currfile = ""; //Force a save as... 
-   m_changed = FALSE;
+   m_core.SetCurFile(""); //Force a save as... 
    m_title = "Password Safe - <Untitled>";
    ChangeOkUpdate();
 
-   return SUCCESS;
+   return PWScore::SUCCESS;
 }
 
 
@@ -1676,37 +1532,37 @@ DboxMain::Restore()
          break;
       }
       else
-         return USER_CANCEL;
+         return PWScore::USER_CANCEL;
    }
 
-   rc = CheckPassword(newback, passkey);
+   rc = GetAndCheckPassword(newback, passkey);
    switch (rc)
    {
-   case SUCCESS:
+   case PWScore::SUCCESS:
       break; // Keep going... 
-   case CANT_OPEN_FILE:
+   case PWScore::CANT_OPEN_FILE:
       temp =
-         m_currfile
-         + "\n\nCan't open file. Please choose another.";
+	m_core.GetCurFile()
+	+ "\n\nCan't open file. Please choose another.";
       MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
    case TAR_OPEN:
       return Open();
    case TAR_NEW:
       return New();
-   case WRONG_PASSWORD:
+   case PWScore::WRONG_PASSWORD:
       /*
         If the user just cancelled out of the password dialog, 
         assume they want to return to where they were before... 
       */
-      return USER_CANCEL;
+      return PWScore::USER_CANCEL;
    }
 
-   if (m_changed==TRUE)
+   if (m_core.IsChanged())
    {
       int rc2;
 	
       temp = "Do you want to save changes to the password list: "
-         + m_currfile + "?";
+         + m_core.GetCurFile() + "?";
 
       rc = MessageBox(temp,
                       AfxGetAppName(),
@@ -1714,35 +1570,35 @@ DboxMain::Restore()
       switch (rc)
       {
       case IDCANCEL:
-         return USER_CANCEL;
+         return PWScore::USER_CANCEL;
       case IDYES:
          rc2 = Save();
          //Make sure that writting the file was successful
-         if (rc2 == SUCCESS)
+         if (rc2 == PWScore::SUCCESS)
             break;
          else
-            return CANT_OPEN_FILE;
+            return PWScore::CANT_OPEN_FILE;
       case IDNO:
          break;
       }
    }
 
-   rc = ReadFile(newback, passkey);
-   if (rc == CANT_OPEN_FILE)
+   rc = m_core.ReadFile(newback, passkey);
+   if (rc == PWScore::CANT_OPEN_FILE)
    {
       temp = newback + "\n\nCould not open file for reading!";
       MessageBox(temp, "File read error.", MB_OK|MB_ICONWARNING);
       //Everything stays as is... Worst case, they saved their file....
-      return CANT_OPEN_FILE;
+      return PWScore::CANT_OPEN_FILE;
    }
 	
-   m_currfile = ""; //Force a save as...
-   m_changed = TRUE; //So that the *.dat version of the file will be saved.
+   m_core.SetCurFile(""); //Force a save as...
+   m_core.SetChanged(true); //So that the *.dat version of the file will be saved.
    m_title = "Password Safe - <Untitled Restored Backup>";
    ChangeOkUpdate();
    RefreshList();
 
-   return SUCCESS;
+   return PWScore::SUCCESS;
 }
 
 
@@ -1764,14 +1620,14 @@ DboxMain::SaveAs()
    {
       CFileDialog fd(FALSE,
                      "dat",
-                     m_currfile,
+                     m_core.GetCurFile(),
                      OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                      |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                      "Password Safe Databases (*.dat)|*.dat|"
                      "All files (*.*)|*.*|"
                      "|",
                      this);
-      if (m_currfile.IsEmpty())
+      if (m_core.GetCurFile().IsEmpty())
          fd.m_ofn.lpstrTitle =
             "Please Choose a Name for the Current (Untitled) Database:";
       else
@@ -1784,154 +1640,47 @@ DboxMain::SaveAs()
          break;
       }
       else
-         return USER_CANCEL;
+         return PWScore::USER_CANCEL;
    }
 
-   rc = WriteFile(newfile);
-   if (rc == CANT_OPEN_FILE)
+   rc = m_core.WriteFile(newfile);
+   if (rc == PWScore::CANT_OPEN_FILE)
    {
       CMyString temp = newfile + "\n\nCould not open file for writing!";
       MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
-      return CANT_OPEN_FILE;
+      return PWScore::CANT_OPEN_FILE;
    }
 
-   m_currfile = newfile;
-   m_changed = FALSE;
-   m_title = "Password Safe - " + m_currfile;
+   m_core.SetCurFile(newfile);
+   m_title = "Password Safe - " + m_core.GetCurFile();
    ChangeOkUpdate();
 
    app.GetMRU()->Add( newfile );
 
-   return SUCCESS;
-}
-
-int DboxMain::WriteCBC(int fp, const CString &data, const unsigned char *salt,
-		       unsigned char *ipthing)
-{
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(global.m_passkey);
-  LPCSTR datastr = LPCSTR(data);
-
-  return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
-		   (const unsigned char *)passstr, global.m_passkey.GetLength(),
-		   salt, SaltLength, ipthing);
+   return PWScore::SUCCESS;
 }
 
 int
-DboxMain::WriteFile(const CMyString &filename)
+DboxMain::GetAndCheckPassword(const CMyString &filename,
+			      CMyString& passkey,
+			      bool first)
 {
-   int out = _open((LPCTSTR)filename,
-                   _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
-                   _S_IREAD | _S_IWRITE);
-
-   if (out == -1)
-      return CANT_OPEN_FILE;
-
-   _write(out, global.m_randstuff, 8);
-   _write(out, global.m_randhash, 20);
-
-   /*
-     I know salt is just salt, but randomness always makes me
-     nervous - must check this out {jpr}
-    */
-   unsigned char* thesalt = new unsigned char[SaltLength];
-   for (int x=0; x<SaltLength; x++)
-      thesalt[x] = newrand();
-
-   _write(out, thesalt, SaltLength);
-	
-   unsigned char ipthing[8];
-   for (x=0; x<8; x++)
-      ipthing[x] = newrand();
-   _write(out, ipthing, 8);
-
-   //Write out full names
-   BOOL needexpand = app.GetProfileInt("", "usedefuser", FALSE);
-   CMyString defusername = app.GetProfileString("", "defusername", "");
-   if (needexpand==TRUE)
-      MakeFullNames(&m_pwlist, defusername);
-
-   CItemData temp;
-   POSITION listPos = m_pwlist.GetHeadPosition();
-   CMyString tempdata;
-   while (listPos != NULL)
-   {
-      temp = m_pwlist.GetAt(listPos);
-      temp.GetName(tempdata);
-      WriteCBC(out, tempdata, thesalt, ipthing);
-      temp.GetPassword(tempdata);
-      WriteCBC(out, tempdata, thesalt, ipthing);
-      temp.GetNotes(tempdata);
-      WriteCBC(out, tempdata, thesalt, ipthing);
-      m_pwlist.GetNext(listPos);
-   }
-   _close(out);
-
-   delete [] thesalt;
-
-   //Restore shortened names if necessary
-   if (needexpand)
-      DropDefUsernames(&m_pwlist, defusername);
-
-   m_changed = FALSE;
-   ChangeOkUpdate();
-
-   return SUCCESS;
-}
-
-
-int
-DboxMain::CheckPassword(const CMyString &filename,
-                        CMyString& passkey,
-                        bool first)
-{
-  DBGMSG("DboxMain::CheckPassword()\n");
-
-  unsigned char temprandstuff[8];
-  unsigned char temprandhash[20];
+  // Called for an existing database. promt user
+  // for password, verify against file
   int retval;
-  bool saved_stuff = false;
 
-  if (filename != "")
+  if (!filename.IsEmpty())
     {
-      DBGMSG("filename not blank\n");
+      bool exists = m_core.FileExists(filename);
 
-      int in = _open((LPCTSTR) filename,
-                     _O_BINARY | _O_RDONLY | _O_SEQUENTIAL,
-                     S_IREAD | _S_IWRITE);
-
-      if (in == -1)
-	{
-	  DBGMSG("open return -1\n");
-
-	  if (! first)
-            return CANT_OPEN_FILE;
-
-	  CString Errmess(_T("Can't open database "));
-	  Errmess += (const CString&)filename;
-	  MessageBox(Errmess, "File open error",
-		     MB_OK | MB_ICONWARNING);
-	}
-      else
-	{
-	  DBGMSG("hashstuff\n");
-
-	  //Preserve the current randstuff and hash
-	  memcpy(temprandstuff, global.m_randstuff, 8);
-	  memcpy(temprandhash, global.m_randhash, 20);
-	  saved_stuff = true;
-
-	  /*
-	    The beginning of the database file is
-	    8 bytes of randomness and a SHA1 hash {jpr}
-	  */
-	  _read(in, global.m_randstuff, 8);
-	  _read(in, global.m_randhash, 20);
-	  _close(in);
-	}
-    }
+      if (!exists) {
+	CString Errmess(_T("Can't open database "));
+	Errmess += (const CString&)filename;
+	MessageBox(Errmess, _T("File open error"),
+		   MB_OK | MB_ICONWARNING);
+	return PWScore::CANT_OPEN_FILE;
+      } // !exists
+    } // !filename.IsEmpty()
 
   /*
    * with my unsightly hacks of PasskeyEntry, it should now accept
@@ -1939,15 +1688,13 @@ DboxMain::CheckPassword(const CMyString &filename,
    */
 
   CPasskeyEntry dbox_pkentry(this, filename, first);
-  //app.m_pMainWnd = &dbox_pkentry;
-  //dbox_pkentry->m_message = filename;
   int rc = dbox_pkentry.DoModal();
 
   if (rc == IDOK)
     {
       DBGMSG("PasskeyEntry returns IDOK\n");
-      passkey = dbox_pkentry.m_passkey;
-      retval = SUCCESS;
+      passkey = dbox_pkentry.GetPasskey();
+      retval = PWScore::SUCCESS;
     }
   else /*if (rc==IDCANCEL) */ //Determine reason for cancel
     {
@@ -1957,116 +1704,19 @@ DboxMain::CheckPassword(const CMyString &filename,
 	case TAR_OPEN:
 	case TAR_NEW:
 	  DBGMSG("PasskeyEntry TAR_OPEN or TAR_NEW\n");
-	  retval = cancelreturn;		//Return either open or new flag... 
+	  retval = cancelreturn; //Return either open or new flag... 
 	  break;
 	default:
 	  DBGMSG("Default to WRONG_PASSWORD\n");
-	  retval = WRONG_PASSWORD;	//Just a normal cancel
+	  retval = PWScore::WRONG_PASSWORD;	//Just a normal cancel
 	  break;
 	}
-    }
-
-  //Restore the current randstuff and hash
-  if (saved_stuff)
-    {
-      memcpy(global.m_randstuff, temprandstuff, 8);
-      memcpy(global.m_randhash, temprandhash, 20);
-      trashMemory(temprandstuff, 8);
-      trashMemory(temprandhash, 20);
     }
 
   app.m_pMainWnd = NULL; // done with dbox_pkentry
 
   return retval;
 }
-
-int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
-		       unsigned char *ipthing)
-{
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(global.m_passkey);
-
-  unsigned char *buffer = NULL;
-  unsigned int buffer_len = 0;
-  int retval;
-
-  retval = _readcbc(fp, buffer, buffer_len,
-		   (const unsigned char *)passstr, global.m_passkey.GetLength(),
-		   salt, SaltLength, ipthing);
-  if (buffer_len > 0) {
-    CMyString str(LPCSTR(buffer), buffer_len);
-    data = str;
-    trashMemory(buffer, buffer_len);
-    delete[] buffer;
-  } else {
-    data = "";
-  }
-  return retval;
-}
-
-
-int
-DboxMain::ReadFile(const CMyString &a_filename,
-                   const CMyString &a_passkey)
-{	
-   //That passkey had better be the same one that came from CheckPassword(...)
-
-   int in = _open((LPCTSTR) a_filename,
-                  _O_BINARY |_O_RDONLY | _O_SEQUENTIAL,
-                  S_IREAD | _S_IWRITE);
-
-   if (in == -1)
-      return CANT_OPEN_FILE;
-
-   ClearData(); //Before overwriting old data, but after opening the file... 
-
-   _read(in, global.m_randstuff, 8);
-   _read(in, global.m_randhash, 20);
-
-   unsigned char* salt = new unsigned char[SaltLength];
-   unsigned char ipthing[8];
-   _read(in, salt, SaltLength);
-   _read(in, ipthing, 8);
-
-   global.m_passkey = a_passkey;
-
-   CItemData temp;
-   CMyString tempdata;
-
-   int numread = 0;
-   numread += ReadCBC(in, tempdata, salt, ipthing);
-   temp.SetName(tempdata);
-   numread += ReadCBC(in, tempdata, salt, ipthing);
-   temp.SetPassword(tempdata);
-   numread += ReadCBC(in, tempdata, salt, ipthing);
-   temp.SetNotes(tempdata);
-   while (numread > 0)
-   {
-      m_pwlist.AddTail(temp);
-      numread = 0;
-      numread += ReadCBC(in, tempdata, salt, ipthing);
-      temp.SetName(tempdata);
-      numread += ReadCBC(in, tempdata, salt, ipthing);
-      temp.SetPassword(tempdata);
-      numread += ReadCBC(in, tempdata, salt, ipthing);
-      temp.SetNotes(tempdata);
-   }
-
-   delete [] salt;
-   _close(in);
-
-   //Shorten names if necessary
-   if (app.GetProfileInt("", "usedefuser", FALSE) == TRUE)
-   {
-      CMyString temp = app.GetProfileString("", "defusername", "");
-      DropDefUsernames(&m_pwlist, temp);
-   }
-
-   return SUCCESS;
-}
-
 
 int
 DboxMain::NewFile(void)
@@ -2076,242 +1726,22 @@ DboxMain::NewFile(void)
    int rc = dbox_pksetup.DoModal();
 
    if (rc == IDCANCEL)
-      return USER_CANCEL;  //User cancelled password entry
+      return PWScore::USER_CANCEL;  //User cancelled password entry
 
-   ClearData();
-
-   global.m_passkey = dbox_pksetup.m_passkey;
-
-   for (int x=0; x<8; x++)
-      global.m_randstuff[x] = newrand();
-   global.m_randstuff[8] = global.m_randstuff[9] = '\0';
-   GenRandhash(global.m_passkey, global.m_randstuff, global.m_randhash);
-
-   return SUCCESS;
+   m_core.NewFile(dbox_pksetup.m_passkey);
+   m_needsreading = false;
+   return PWScore::SUCCESS;
 }
-
 
 void
 DboxMain::ClearData(void)
 {
-  global.m_passkey.Trash();
-
-   //Composed of ciphertext, so doesn't need to be overwritten
-   m_pwlist.RemoveAll();
-	
+  m_core.ClearData();
    //Because GetText returns a copy, we cannot do anything about the names
    if (m_windowok)
       //Have to make sure this doesn't cause an access violation
       m_ctlItemList.DeleteAllItems();
 }
-
-
-struct backup_t
-{
-   CMyString name;
-   CMyString location;
-};
-
-
-void
-DboxMain::OnUpdateBackups() 
-{
-   int rc;
-   CMyString temp;
-   CList<backup_t, backup_t> backuplist;
-
-   //Collect list of backups from registry
-   //This code copied almost verbatim from the old BackupDlg.cpp
-   CString companyname;
-   VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
-	
-   //We need to use the Win32SDK method because of RegEnumKeyEx
-   CMyString subkeyloc =
-      (CMyString)_T("Software\\") 
-      + (CMyString)companyname 
-      + (CMyString) _T("\\Password Safe\\Backup");
-   HKEY subkey;
-   DWORD disposition;
-   LONG result = RegCreateKeyEx(HKEY_CURRENT_USER,
-                                subkeyloc, 0, NULL,
-                                REG_OPTION_VOLATILE,
-                                KEY_ALL_ACCESS,
-                                NULL,
-                                &subkey, &disposition);
-   if (result != ERROR_SUCCESS)
-   {
-      //AfxMessageBox("There was an error opening a registry key. Sorry.");
-      return;
-   }
-
-   //If the key is new, it has no data
-   if (disposition == REG_CREATED_NEW_KEY)
-   {
-      //AfxMessageBox("There are no filenames stored in the registry. Sorry.");
-      RegCloseKey(subkey);
-      return;
-   }
-	
-   //Check if the key has any items (in this case, backup listings).
-   //If yes, check if user wants to update them. If no, close key and return
-   if (disposition == REG_OPENED_EXISTING_KEY)
-   {
-      DWORD test;
-      rc = IDNO;
-      RegQueryInfoKey(subkey,
-                      NULL, NULL, NULL, NULL, NULL, NULL,
-                      &test,
-                      NULL, NULL, NULL, NULL);
-      if (test!=0)
-      {
-         temp =
-            (CMyString)
-            "Password Safe has detected the presence of old backup records\n"
-            "from Version 1.1 of this program.  If you wish, you can update\n"
-            "these files to the current version (by simply adding a .bak "
-            "extension).\n"
-            "\nYou will be presented with a list of file locations and the "
-            "opportunity\n"
-            "to save them to a text file for future reference. Also, you can "
-            "rerun this\n"
-            "function at any time through the \"Update V1.1 Backups...\" "
-            "menu item."
-            "\n\nDo you wish to proceed?";
-
-         rc = MessageBox(LPCTSTR(temp),
-                                "Update Backups",
-                                MB_YESNOCANCEL|MB_ICONWARNING);
-      }
-      if (rc!= IDYES)
-      {
-         RegCloseKey(subkey);
-         return;
-      }
-	
-      //Ok, we have the go-ahead. Collect the data and update it
-      int x = 0;
-      int result = ERROR_SUCCESS;
-      char key[_MAX_PATH];
-      unsigned char value[_MAX_PATH];
-      DWORD keylen = _MAX_PATH, valuelen = _MAX_PATH;
-      DWORD valtype = REG_SZ;
-      backup_t temp;
-
-      result = RegEnumValue(subkey, x, key, &keylen, NULL,
-                            &valtype, value, &valuelen);
-      keylen = _MAX_PATH; valuelen = _MAX_PATH;
-      while (result != ERROR_NO_MORE_ITEMS)
-      {
-         temp.name = key;
-         temp.location = value;
-			
-         BOOL resp = CheckExtension(temp.location, (CMyString) ".bak");
-         if (resp == FALSE) // File has wrong extension.
-         {
-            int ret = rename(temp.location, temp.location + ".bak");
-            if (ret == 0) //Success
-            {
-               temp.location = temp.location + ".bak";
-               backuplist.AddTail(temp);				
-            }
-            else if (errno == EACCES)
-               // There is already a .bak version around
-            {;}
-            else if (errno == ENOENT)
-               // The old version no longer exists
-            {
-               CMyString out =
-                  "Please note that the backup named \""
-                  + temp.name
-                  + "\"\nno longer exists.It will be removed"
-                  " from the registry.";
-               MessageBox(out, "File not found.", MB_OK|MB_ICONWARNING);
-               temp.location = "";
-               backuplist.AddTail(temp);
-            }
-         }	
-         else
-         {
-            //Test to make sure it still exists
-            int ret = rename(temp.location, temp.location);
-            if (ret != 0 && errno == ENOENT)
-            {
-               CMyString out =
-                  "Please note that the backup named \""
-                  + temp.name 
-                  + "\"\nno longer exists. It will be removed"
-                  " from the registry.";
-               MessageBox(out, "File not found.", MB_OK|MB_ICONWARNING);
-               temp.location = "";
-               backuplist.AddTail(temp);
-            }
-         }
-         x++;
-         result = RegEnumValue(subkey, x, key, &keylen, NULL,
-                               &valtype, value, &valuelen);
-         keylen = _MAX_PATH;
-         valuelen = _MAX_PATH;
-      }
-
-      CMyString out = "The following files were altered:\n\n";
-      CMyString out2 = "";
-      POSITION listpos = backuplist.GetHeadPosition();
-      while (listpos != NULL)
-      {
-         backup_t temp = backuplist.GetAt(listpos);
-         if (temp.location != "")
-         {
-            out2 = out2 + temp.name + "\t" + temp.location + "\n";
-         }
-         backuplist.GetNext(listpos);
-      }
-
-      if (out2 == "")
-         out2 = "None.\n";
-
-      CMyString out3 =
-         (CMyString)
-         "\nDo you want to save a text version of this list?\n\n"
-         "(The file will be called changedbackups.txt\n"
-         "and will be saved in the current directory)";
-
-      rc = MessageBox(out+out2+out3,
-                             "Changed Files", MB_YESNOCANCEL);
-      if (rc == IDYES)
-      {
-         int in = _open("changedbackups.txt",
-                        _O_TEXT|_O_WRONLY|_O_SEQUENTIAL|_O_APPEND|_O_CREAT,
-                        _S_IREAD | _S_IWRITE);
-         if (in != -1)
-         {
-            // No error
-            _write(in, LPCTSTR(out+out2), strlen(LPCTSTR(out+out2)));
-            _close(in);
-         }
-      }
-
-
-      //Write data back to registry. This will alter the names altered and deleted
-      //the names not found. Copied from backupdlg.cpp
-      POSITION listPos = backuplist.GetHeadPosition();
-      while (listPos != NULL)
-      {
-         backup_t item = backuplist.GetAt(listPos);
-         if (item.location != "")
-            app.WriteProfileString("Backup", item.name, item.location);
-         else
-            app.WriteProfileString("Backup", item.name, NULL);
-
-         backuplist.GetNext(listPos);
-      }
-
-      //Mark that this has been done.
-      app.WriteProfileInt("", "donebackupchange", TRUE);
-   }
-
-   RegCloseKey(subkey);
-}	
-
 
 BOOL
 DboxMain::OnToolTipText(UINT,
@@ -2445,7 +1875,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 	}
 
 	CMyString title, username;
-	SplitName(itemData.GetName(), title, username);
+	m_core.SplitName(itemData.GetName(), title, username);
 
 	iResult = m_ctlItemList.InsertItem(iResult, title);
 	if (iResult < 0) {
@@ -2490,123 +1920,11 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 		m_iSortedColumn = pNMListView->iSubItem;
 		m_bSortAscending = true;
 	}
-	m_ctlItemList.SortItems(CompareFunc, MAKELPARAM(m_iSortedColumn, (int)m_bSortAscending));
+	m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
 
 	*pResult = 0;
 }
 
-
-/*
-  The following two functions are for use when switching default
-  username states.
-
-  Should be run only if usedefuser == TRUE
-*/
-void
-DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
-			const CMyString &defusername)
-{
-   POSITION listPos = plist->GetHeadPosition();
-   while (listPos != NULL)
-   {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
-      //Start MakeFullName
-      int pos = temp.Find(SPLTCHR);
-      int pos2 = temp.Find(DEFUSERCHR);
-      if (pos==-1 && pos2!=-1)
-      {
-         //Insert defusername if string contains defchr but not splitchr
-         plist->GetAt(listPos).SetName(
-            (CMyString)temp.Left(pos2) + SPLTSTR + defusername);
-      }
-      // End MakeFullName
-      plist->GetNext(listPos);
-   }
-}
-
-
-//Should only be run on full names...
-void
-DboxMain::DropDefUsernames(CList<CItemData, CItemData>* plist, const CMyString &defusername)
-{
-   POSITION listPos = plist->GetHeadPosition();
-   while (listPos != NULL)
-   {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
-      //Start DropDefUsername
-      CMyString temptitle, tempusername;
-      int pos = SplitName(temp, temptitle, tempusername);
-      if ((pos!=-1) && (tempusername == defusername))
-      {
-         //If name is splitable and username is default
-         plist->GetAt(listPos).SetName(temptitle + DEFUSERCHR);
-      }
-      //End DropDefUsername
-      plist->GetNext(listPos);
-   }
-}
-
-int
-DboxMain::CheckVersion(CList<CItemData, CItemData>* plist)
-{
-   POSITION listPos = plist->GetHeadPosition();
-   while (listPos != NULL)
-   {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
-
-      if (temp.Find(SPLTCHR) != -1)
-         return V15;
-
-      plist->GetNext(listPos);
-   }
-   
-   return V10;
-}
-
-
-
-void
-DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
-{
-   POSITION listPos = plist->GetHeadPosition();
-   while (listPos != NULL)
-   {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
-
-      //Start Check
-      if ((temp.Find(SPLTCHR) == -1)
-          && (temp.Find(DEFUSERCHR) == -1))
-      {
-         plist->GetAt(listPos).SetName(temp + DEFUSERCHR);
-      }
-      //End Check
-
-      plist->GetNext(listPos);
-   }
-}
-
-
-void
-DboxMain::SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &username)
-{
-   POSITION listPos = plist->GetHeadPosition();
-   while (listPos != NULL)
-   {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
-      //Start Check
-      if ( (temp.Find(SPLTCHR) == -1) && (temp.Find(DEFUSERCHR) == -1) )
-      {
-         plist->GetAt(listPos).SetName(temp + SPLTSTR + username);
-      }
-      //End Check
-      plist->GetNext(listPos);
-   }
-}
 
 
 BOOL
@@ -2614,69 +1932,6 @@ DboxMain::CheckExtension(const CMyString &name, const CMyString &ext) const
 {
    int pos = name.Find(ext);
    return (pos == name.GetLength() - ext.GetLength()); //Is this at the end??
-}
-
-
-int
-DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username)
-//Returns split position for a name that was split and -1 for non-split name
-{
-   int pos = name.Find(SPLTCHR);
-   if (pos==-1) //Not a split name
-   {
-      int pos2 = name.Find(DEFUSERCHR);
-      if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
-      {
-         title = name;
-      }
-      else
-      {
-         title = CMyString(name.Left(pos2));
-      }
-
-      if ((pos2 != -1)
-          && (app.GetProfileInt("", "usedefuser", FALSE)==TRUE))
-      {
-         username = CMyString(app.GetProfileString("", "defusername", ""));
-      }
-      else
-      {
-         username = "";
-      }
-   }
-   else
-   {
-      /*
-       * There should never ever be both a SPLITCHR and a DEFUSERCHR in
-       * the same string
-       */
-      CMyString temp;
-      temp = CMyString(name.Left(pos));
-      temp.TrimRight();
-      title = temp;
-      temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
-      temp.TrimLeft();
-      username = temp;
-   }
-   return pos;
-}
-
-
-void
-DboxMain::MakeName(CMyString& name, const CMyString &title, const CMyString &username) const
-{
-   if (username == "")
-      name = title;
-   else if (((app.GetProfileInt("", "usedefuser", FALSE))==TRUE)
-            && ((const CString &)username ==
-                app.GetProfileString("", "defusername", "")))
-   {
-      name = title + DEFUSERCHR;
-   }
-   else 
-   {
-      name = title + SPLTSTR + username;
-   }
 }
 
 void
