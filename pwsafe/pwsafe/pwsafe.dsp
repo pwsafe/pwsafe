@@ -121,6 +121,10 @@ SOURCE=.\DboxPassword.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DboxView.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\EditDlg.cpp
 # End Source File
 # Begin Source File
@@ -400,5 +404,9 @@ SOURCE=.\psafetxt.bmp
 SOURCE=.\toolbar1.bmp
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\PasswordSafe.exe.manifest
+# End Source File
 # End Target
 # End Project
