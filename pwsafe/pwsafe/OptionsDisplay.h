@@ -28,6 +28,7 @@ public:
 #if defined(POCKET_PC)
 	BOOL	m_dcshowspassword;
 #endif
+	BOOL    m_usesystemtray;
 	//}}AFX_DATA
 
 
