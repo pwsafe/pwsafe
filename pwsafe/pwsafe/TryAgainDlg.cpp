@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+
 #include "TryAgainDlg.h"
 
 #ifdef _DEBUG
@@ -54,7 +58,10 @@ CTryAgainDlg::OnTryagain()
 void
 CTryAgainDlg::OnHelp() 
 {
-   WinHelp(0x2008F, HELP_CONTEXT);
+   //WinHelp(0x2008F, HELP_CONTEXT);
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_combo_err.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 
 
