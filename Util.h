@@ -3,16 +3,12 @@
 #ifndef Util_h
 #define Util_h
 
-#include "stdafx.h"
+#include "PasswordSafe.h"
+
+#include "MyString.h"
 #include "sha1.h"
 
-typedef unsigned char block[8];
-
-#define bf_N 16
 #define SaltLength 20
-#define SaltSize 20
-#define NumMem 30
-#define StuffSize 10
 
 // this is for the undocumented 'command line file encryption'
 #define CIPHERTEXT_SUFFIX ".PSF"
@@ -25,12 +21,6 @@ typedef unsigned char block[8];
 //Version defines
 #define V10 0
 #define V15 1
-
-//Prototypes for stuff in variables.cpp
-extern unsigned long bf_S[4][256];
-extern unsigned long bf_P[bf_N + 2];
-extern unsigned long tempbf_S[4][256];
-extern unsigned long tempbf_P[bf_N + 2];
 
 enum windows_t {Win32s, Win95, WinNT};
 
@@ -47,17 +37,35 @@ typedef unsigned __int64 uint64;
 
 
 extern void trashMemory(SHA1_CTX& context);
-extern void trashMemory(unsigned char* buffer, long length);
-extern void trashMemory(unsigned char* buffer, long length, int numiter);
+#if 0
+extern void trashMemory(unsigned char* buffer, 
+                        long length);
+#endif
+extern void trashMemory(unsigned char* buffer,
+                        long length,
+                        int numiter = 30);
 extern void trashMemory(CString& string);
+#if 0
 extern void ErrorMessages(CMyString fn, int fp);
-extern void GenRandhash(CMyString passkey, unsigned char* m_randstuff,
+#endif
+extern void GenRandhash(CMyString passkey,
+                        unsigned char* m_randstuff,
                         unsigned char* m_randhash);
+#if 0
 extern int not(int x);
+#endif
+
 extern unsigned char newrand();
+#if 0
 extern BOOL FileExists(CMyString filename);
+#endif
+
+#if 0
 extern windows_t GetOSVersion();
+#endif 
+
 extern char GetRandAlphaNumChar();
+
 int _readcbc(int fp, unsigned char* buffer, unsigned int buffer_len,
              unsigned char* salt, unsigned char* cbcbuffer);
 int _readcbc(int fp, CMyString& deststring, unsigned char* salt,
@@ -66,13 +74,17 @@ int _writecbc(int fp, unsigned char* buffer, int length,
               unsigned char* salt, unsigned char* cbcbuffer);
 int _writecbc(int fp, CMyString string, unsigned char* salt,
               unsigned char* cbcbuffer);
-void _encryptFile(CString filepath);
-void _decryptFile(CString filepath);
-void convertToLongFilePath(CString& filepath);
+
+#if defined(WITH_LEGACY_CMDLINE)
+//void _encryptFile(CString filepath);
+//void _decryptFile(CString filepath);
+//void convertToLongFilePath(CString& filepath);
 void manageCmdLine(CString m_lpCmdLine);
-void xormem(unsigned char* mem1, unsigned char* mem2, int length);
+#endif
+
 int SplitName(CMyString, CMyString&, CMyString&);
 void MakeName(CMyString&, CMyString, CMyString);
+
 class CItemData;
 void MakeFullNames(CList<CItemData, CItemData>* plist,
                    CMyString defusername);
