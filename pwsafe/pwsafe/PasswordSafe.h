@@ -2,9 +2,8 @@
 // main header file for the PasswordSafe application
 //-----------------------------------------------------------------------------
 
-#define PWS_MFC 1
 
-#if defined(PWS_MFC)
+#if defined(WIN32)
 #include "stdafx.h"
 #endif
 
@@ -26,6 +25,9 @@
 
 class ThisMfcApp;
 extern ThisMfcApp app;
+
+#include "global.h"
+extern Global global;
 
 /*
  * This is the string to be displayed instead of the actual password, unless

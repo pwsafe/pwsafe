@@ -4,6 +4,7 @@
 #if !defined(ThisMfcApp_h)
 #define ThisMfcApp_h
 
+#include "stdafx.h"
 #include "MyString.h"
 #include "Util.h"
 //-----------------------------------------------------------------------------
@@ -16,12 +17,6 @@ public:
   ThisMfcApp();
   ~ThisMfcApp();
    
-  CMyString m_passkey; // the main one, in memory?!? yikes {jpr}
-
-  // Following used to verify passkey against file's passkey
-  unsigned char m_randstuff[StuffSize];
-  unsigned char m_randhash[20];   // HashSize
-
   HACCEL m_ghAccelTable;
 
   CRecentFileList*	GetMRU()			{ return m_pMRU; }
@@ -52,7 +47,8 @@ protected:
   thing... {jpr}
 */
 
-extern ThisMfcApp app;
+//extern ThisMfcApp app;
+
 
 //-----------------------------------------------------------------------------
 #endif // !defined(ThisMfcApp_h)

@@ -128,6 +128,14 @@ SOURCE=.\ItemData.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\main.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\model.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MyString.cpp
 # End Source File
 # Begin Source File
@@ -186,6 +194,10 @@ SOURCE=.\UsernameEntry.cpp
 
 SOURCE=.\Util.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\winview.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -228,11 +240,19 @@ SOURCE=.\FindDlg.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\global.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ItemData.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\jprdebug.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\model.h
 # End Source File
 # Begin Source File
 
@@ -313,6 +333,14 @@ SOURCE=.\UsernameEntry.h
 # Begin Source File
 
 SOURCE=.\Util.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\view.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\winview.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

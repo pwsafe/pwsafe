@@ -168,9 +168,9 @@ BlowFish *
 CItemData::MakeBlowFish() const
 {
   ASSERT(m_saltValid);
-  LPCSTR passstr = LPCSTR(app.m_passkey);
+  LPCSTR passstr = LPCSTR(global.m_passkey);
 
-  return ::MakeBlowFish((const unsigned char *)passstr, app.m_passkey.GetLength(),
+  return ::MakeBlowFish((const unsigned char *)passstr, global.m_passkey.GetLength(),
 			m_salt, SaltLength);
 }
 
