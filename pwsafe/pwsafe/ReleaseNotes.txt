@@ -1,16 +1,26 @@
 $Id$
 
-Password Safe 2.01 Release Note - April 2004
+Password Safe 2.02 Release Note - April 2004
 =================================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.01. For a short description of Password
+with Password Safe version 2.02. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
 
 This is a maintenance release, fixing minor issues that have been
-found in 2.0.
+found in 2.01.
+
+Bugs fixed in 2.02:
+===================
+[931119, 934192, 938393] No longer crashes when trying to change
+master password ("combination") - bug introduced in 2.01
+
+New Features for 2.02:
+======================
+[789030, 932445] It's now possible to override the random password genration
+policy for a single password in the add and edit entry dialog boxes.
 
 Bugs fixed in 2.01:
 ===================
@@ -99,6 +109,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.7  2004/04/30 04:09:56  ronys
+Updated for 2.02
+
 Revision 1.6  2004/04/07 05:39:29  ronys
 Updated for 2.01
 
