@@ -243,7 +243,10 @@ DboxMain::OnAddGroup()
   // or by clicking over "whitespace".
   // If the former, add a child node to the current one
   // If the latter, add to root.
-  m_TreeViewGroup += _T(".New Group");
+  if (m_TreeViewGroup.IsEmpty())
+    m_TreeViewGroup = _T("New Group");
+  else
+    m_TreeViewGroup += _T(".New Group");
   m_ctlItemTree.AddGroup(m_TreeViewGroup);
   m_TreeViewGroup = _T(""); // for next time
 }
