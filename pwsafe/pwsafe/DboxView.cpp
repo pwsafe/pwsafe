@@ -329,7 +329,7 @@ DboxMain::OnEdit()
 	  m_core.RemoveEntryAt(listpos);
 	  m_core.AddEntryToTail(editedItem);
 	  m_ctlItemList.DeleteItem(di->list_index);
-	  m_ctlItemTree.DeleteItem(di->tree_item);
+	  m_ctlItemTree.DeleteWithParents(di->tree_item);
 	  di->list_index = -1; // so that insertItem will set new values
 	  insertItem(editedItem);
 	  FixListIndexes(m_ctlItemList);
