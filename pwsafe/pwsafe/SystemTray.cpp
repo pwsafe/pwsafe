@@ -89,6 +89,7 @@ void CSystemTray::Initialise()
     m_hSavedIcon = NULL;
     m_DefaultMenuItemID = 0;
     m_DefaultMenuItemByPos = TRUE;
+    m_pTarget = NULL; // ronys
 }
 
 BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip, 
@@ -144,29 +145,29 @@ void CSystemTray::MoveToRight()
 
 void CSystemTray::RemoveIcon()
 {
-    if (!m_bEnabled) return;
+  if (!m_bEnabled) return;
 
-    m_tnd.uFlags = 0;
-    Shell_NotifyIcon(NIM_DELETE, &m_tnd);
-    m_bEnabled = FALSE;
+  m_tnd.uFlags = 0;
+  Shell_NotifyIcon(NIM_DELETE, &m_tnd);
+  m_bEnabled = FALSE;
 }
 
 void CSystemTray::HideIcon()
 {
-    if (m_bEnabled && !m_bHidden) {
-        m_tnd.uFlags = NIF_ICON;
-        Shell_NotifyIcon (NIM_DELETE, &m_tnd);
-        m_bHidden = TRUE;
-    }
+  if (m_bEnabled && !m_bHidden) {
+    m_tnd.uFlags = NIF_ICON;
+    Shell_NotifyIcon (NIM_DELETE, &m_tnd);
+    m_bHidden = TRUE;
+  }
 }
 
 void CSystemTray::ShowIcon()
 {
-    if (m_bEnabled && m_bHidden) {
-        m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
-        Shell_NotifyIcon(NIM_ADD, &m_tnd);
-        m_bHidden = FALSE;
-    }
+  if (m_bEnabled && m_bHidden) {
+    m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
+    Shell_NotifyIcon(NIM_ADD, &m_tnd);
+    m_bHidden = FALSE;
+  }
 }
 
 BOOL CSystemTray::SetIcon(HICON hIcon)
@@ -407,11 +408,12 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         return 0L;
 
     CMenu menu, *pSubMenu;
-    CWnd* pTarget = AfxGetMainWnd();
+    CWnd* pTarget = m_pTarget; // AfxGetMainWnd();
 
     // Clicking with right button brings up a context menu
     if (LOWORD(lParam) == WM_RBUTTONUP)
     {    
+        ASSERT(pTarget != NULL);
         if (!menu.LoadMenu(m_tnd.uID)) return 0;
         pSubMenu = menu.GetSubMenu(0);
         if (!pSubMenu) return 0;
@@ -434,6 +436,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     } 
     else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) 
     {
+        ASSERT(pTarget != NULL);
         // double click received, the default action is to execute default menu item
         pTarget->SetForegroundWindow();  
 
