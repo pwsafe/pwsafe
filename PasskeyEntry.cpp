@@ -22,6 +22,7 @@
 #include "SysColStatic.h"
 
 #include "PasskeyEntry.h"
+#include "PwFont.h"
 #include "TryAgainDlg.h"
 #include "DboxMain.h" // for CheckPassword()
 
@@ -104,6 +105,8 @@ END_MESSAGE_MAP()
 BOOL
 CPasskeyEntry::OnInitDialog(void)
 {
+  SetPasswordFont(GetDlgItem(IDC_PASSKEY));
+
 #if defined(POCKET_PC)
    // If displaying IDD_PASSKEYENTRY_FIRST then bypass superclass and go
    // directly to CDialog::OnInitDialog() and display the dialog fullscreen

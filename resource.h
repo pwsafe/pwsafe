@@ -121,6 +121,7 @@
 #define IDC_ITEMTREE                    1078
 #define IDC_GROUP                       1079
 #define IDC_EXPORT_TEXT_PASSWORD        1081
+#define IDC_USEHEXDIGITS                1082
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -165,7 +166,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        207
 #define _APS_NEXT_COMMAND_VALUE         32829
-#define _APS_NEXT_CONTROL_VALUE         1082
+#define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

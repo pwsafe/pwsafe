@@ -1,4 +1,4 @@
-/// \file DboxMain.cpp
+/// \file DboxOptions.cpp
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
@@ -55,6 +55,7 @@ DboxMain::OnOptions()
    passwordpolicy.m_pwuseuppercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE);
    passwordpolicy.m_pwusedigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE);
    passwordpolicy.m_pwusesymbols = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE);
+   passwordpolicy.m_pwusehexdigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusehexdigits"), FALSE);
    passwordpolicy.m_pweasyvision = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE);
 
    username.m_usedefuser = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
@@ -99,6 +100,7 @@ DboxMain::OnOptions()
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuseuppercase"),  passwordpolicy.m_pwuseuppercase);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusedigits"),     passwordpolicy.m_pwusedigits);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusesymbols"),    passwordpolicy.m_pwusesymbols);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusehexdigits"),  passwordpolicy.m_pwusehexdigits);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pweasyvision"),    passwordpolicy.m_pweasyvision);
 
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("usedefuser"),      username.m_usedefuser);

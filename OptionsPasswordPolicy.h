@@ -24,6 +24,7 @@ public:
 	enum { IDD = IDD_PS_PASSWORDPOLICY };
 	UINT	m_pwlendefault;
 	BOOL	m_pwusedigits;
+	BOOL	m_pwusehexdigits;
 	BOOL	m_pwuselowercase;
 	BOOL	m_pwusesymbols;
 	BOOL	m_pwuseuppercase;
@@ -47,7 +48,9 @@ protected:
 	afx_msg void OnUseuppercase();
 	afx_msg void OnUsedigits();
 	afx_msg void OnUsesymbols();
-   afx_msg BOOL OnKillActive();
+	afx_msg void OnUsehexdigits();
+	afx_msg void OnUseeasyvision();
+	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

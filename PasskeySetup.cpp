@@ -17,6 +17,7 @@
 #include "util.h"
 
 #include "PasskeySetup.h"
+#include "PwFont.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,6 +32,8 @@ CPasskeySetup::CPasskeySetup(CWnd* pParent)
 {
    m_passkey = _T("");
    m_verify = _T("");
+   SetPasswordFont(GetDlgItem(IDC_PASSKEY));
+   SetPasswordFont(GetDlgItem(IDC_VERIFY));
 }
 
 
