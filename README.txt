@@ -64,13 +64,14 @@ see the ReleaseNotes.txt file that comes with the package.
 
 Credits:
 ========
-- The original version of Password Safe was written by Bruce Schneier,
+- The original version of Password Safe was written by Mark Rosen,
 and was freely downloadable from Conterpane Lab's website. Thanks to
-Bruce for writing a great little application, and for making the
-source of release 1.7 publicly available as a SourceForge open source
-project.
-- Jim Russell first brought the code to SourceForge, setting up a nice
-project and adding some minor features in release 1.9.0
+Mark for writing a great little application! Following Mark, it was
+maintained by "AYB", at Counterpane. Thanks to Counterpane for
+deciding to open source the project!
+- Jim Russell first brought the code to SourceForge, did some major
+cleaning up of the code, set up a nice project and added some minor
+features in release 1.9.0
 - The current release has been brought to you by: Andrew Mullican,
 Edward Quackenbush, Gregg Conklin, Graham Ullrich, and Rony
 Shapiro. Karel (Karlo) Van der Gucht also contributed some of the
@@ -79,6 +80,9 @@ password policy code and some GUI improvements for 1.92.
 project.
 
 $Log$
+Revision 1.4  2003/05/28 08:29:04  ronys
+Corrected credits
+
 Revision 1.3  2003/05/14 14:49:55  ronys
 post-1.92 merge into main trunk
 
