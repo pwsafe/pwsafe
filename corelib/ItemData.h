@@ -38,7 +38,9 @@ public:
         m_saltValid(FALSE)
    {}
 
-   CItemData(const CMyString &name, const CMyString &password, const CMyString &notes);
+   CItemData(const CMyString &name, const CMyString &password, const CMyString &notes); // V17
+   CItemData(const CMyString &title, const CMyString &user, 
+	     const CMyString &password, const CMyString &notes); // V20
    CItemData(const CItemData& stuffhere);
 
    //Data retrieval
