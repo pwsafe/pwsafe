@@ -487,8 +487,8 @@ static int PWS_CDECL compint(const void *a1, const void *a2)
 #undef PWS_CDECL
 
 /*
- * Finds all entries in m_pwlist that contain str in name or notes field,
- * returns their sorted indices in m_listctrl via indices, which is
+ * Finds all entries in m_pwlist that contain str in title, user, group or notes
+ * field, returns their sorted indices in m_listctrl via indices, which is
  * assumed to be allocated by caller to DboxMain::GetNumEntries() ints.
  * FindAll returns the number of entries that matched.
  */
@@ -500,7 +500,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   ASSERT(indices != NULL);
 
   POSITION listPos = m_core.GetFirstEntryPosition();
-  CMyString curtitle, curuser, curnotes, savetitle;
+  CMyString curtitle, curuser, curnotes, curgroup, savetitle;
   CMyString listTitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   const int NumEntries = m_core.GetNumEntries();
@@ -524,15 +524,18 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
       savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
       curuser =  curitem.GetUser();
       curnotes = curitem.GetNotes();
+      curgroup = curitem.GetGroup();
 
       if (!CaseSensitive) {
           curtitle.MakeLower();
           curuser.MakeLower();
           curnotes.MakeLower();
+	  curgroup.MakeLower();
       }
       if (::strstr(curtitle, searchstr) ||
 	  ::strstr(curuser, searchstr) ||
-	  ::strstr(curnotes, searchstr)) {
+	  ::strstr(curnotes, searchstr) ||
+	  ::strstr(curgroup, searchstr)) {
 	// Find index in displayed list
 	for (i = 0; i < NumEntries; i++) {
 	  listTitle = CMyString(m_ctlItemList.GetItemText(i, 0));
@@ -569,9 +572,20 @@ DboxMain::SelItemOk()
 BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 {
   BOOL retval;
-  retval = m_ctlItemList.SetItemState(i, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+  if (m_ctlItemList.IsWindowVisible()) {
+    retval = m_ctlItemList.SetItemState(i,
+					LVIS_FOCUSED | LVIS_SELECTED,
+					LVIS_FOCUSED | LVIS_SELECTED);
   if (MakeVisible)
     m_ctlItemList.EnsureVisible(i, FALSE);
+  } else { //Tree view active
+    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(ci != NULL);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    ASSERT(di->list_index == i);
+    retval = m_ctlItemTree.SelectItem(di->tree_item);
+  }
   return retval;
 }
 
