@@ -51,10 +51,13 @@ shortcomings:
    Name:	"!!!Version 2 File Format!!!"
    Password:	"2.0" - corresponds to the major and minor version
 		numbers of this file format
-   Notes:	"" - currently empty, may be used in future
-		versions. To remain compatible for 1.x' an empty field
-		(length = 0) will have a single block of 8 bytes of
-		random data. 
+   Notes:	Used to store preferences: String is of the form
+		"X nn vv X nn vv..." Where X=[BIS] for binary,
+		integer and string, resp., nn is the numeric value of
+		the enum, and vv is the value, {1.0} for bool,
+		unsigned integer for int, and quoted string for
+		String. Only values != default are stored.
+		See PWSprefs.cpp for more details.
 
    The Type byte for the above fields is 0.
 
@@ -82,7 +85,8 @@ shortcomings:
    Last Access Time	      0x9		time_t  [3]
    Password Lifetime	      0xa		time_t  [4]
    Password Policy	      0xb		4 bytes [5]
-   End of Entry		      0xff		[empty] [6]
+   Last Mod. time	      0xc		time_t  [6]
+   End of Entry		      0xff		[empty] [7]
 
 [1] A universally unique identifier is needed in order to synchronize
 databases, i.e., between a handheld pocketPC device and a PC. The UUID
@@ -107,7 +111,9 @@ changed. Password lifetime is in seconds, and a value of zero means
 [5] Currently, the password policy is a global property. It makes
 sense, however, to want to control this on a per-entry basis. Four
 bytes seems sufficient to store the policy. Exact encoding TBD.
-[6] An explicit end of entry field is needed so that 2.x programs
+[6] This is the time that any field of the record was modified, useful
+for merging databases.
+[7] An explicit end of entry field is needed so that 2.x programs
 won't break when reading 2.y files where x != y. Alternately, we could
 have relied on the UUID field being the first, but this would have
 been a bit less elegant to parse, as well as less robust (suppose we
@@ -119,6 +125,9 @@ decide to drop the UUID, or move it to the last field?).
    name.
 
 $Log$
+Revision 1.6  2004/09/01 18:56:31  ronys
+Documented 2.05 preference storage format, added modification time.
+
 Revision 1.5  2003/10/05 10:42:51  ronys
 Support for UUID as part of V2 file format.
 
