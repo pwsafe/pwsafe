@@ -1616,15 +1616,21 @@ DboxMain::SaveAs()
       else
          return PWScore::USER_CANCEL;
    }
-
+   CMyString locker(_T("")); // null init is important here
+   if (!m_core.LockFile(newfile, locker)) {
+     CMyString temp = newfile + _T("\n\nFile is currently locked by ") + locker;
+     MessageBox(temp, _T("File lock error"), MB_OK|MB_ICONWARNING);
+     return PWScore::CANT_OPEN_FILE;
+   }
    rc = m_core.WriteFile(newfile);
    if (rc == PWScore::CANT_OPEN_FILE)
    {
-      CMyString temp = newfile + _T("\n\nCould not open file for writing!");
-      MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
-      return PWScore::CANT_OPEN_FILE;
+     m_core.UnlockFile(newfile);
+     CMyString temp = newfile + _T("\n\nCould not open file for writing!");
+     MessageBox(temp, _T("File write error"), MB_OK|MB_ICONWARNING);
+     return PWScore::CANT_OPEN_FILE;
    }
-
+   m_core.UnlockFile(m_core.GetCurFile());
    m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
    m_title = _T("Password Safe - ") + m_core.GetCurFile();
