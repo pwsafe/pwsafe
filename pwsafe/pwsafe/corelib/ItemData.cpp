@@ -33,16 +33,44 @@ CItemData::CItemData(const CMyString &name,
    SetNotes(notes);
 }
 
+CItemData::CItemData(const CMyString &title, const CMyString &user, 
+		     const CMyString &password, const CMyString &notes)
+{
+   InitStuff();
+   SetTitle(title);
+   SetUser(user);
+   SetPassword(password);
+   SetNotes(notes);
+}
+
+
 CItemData::CItemData(const CItemData &stuffhere)
 {
+   InitStuff();
    m_nLength = stuffhere.m_nLength;
+   m_tLength = stuffhere.m_tLength;
+   m_uLength = stuffhere.m_uLength;
    m_pwLength = stuffhere.m_pwLength;
    m_notesLength = stuffhere.m_notesLength;
 
-   m_name = new unsigned char[GetBlockSize(m_nLength)];
-   m_nameValid = TRUE;
-   memcpy(m_name, stuffhere.m_name, GetBlockSize(m_nLength));
-	
+   if (m_nLength > 0) {
+     m_name = new unsigned char[GetBlockSize(m_nLength)];
+     m_nameValid = TRUE;
+     memcpy(m_name, stuffhere.m_name, GetBlockSize(m_nLength));
+   }
+
+   if (m_tLength > 0) {
+     m_title = new unsigned char[GetBlockSize(m_tLength)];
+     m_titleValid = TRUE;
+     memcpy(m_title, stuffhere.m_title, GetBlockSize(m_tLength));
+   }
+
+   if (m_uLength > 0) {
+     m_user = new unsigned char[GetBlockSize(m_uLength)];
+     m_userValid = TRUE;
+     memcpy(m_user, stuffhere.m_user, GetBlockSize(m_uLength));
+   }
+
    m_password = new unsigned char[GetBlockSize(m_pwLength)];
    m_pwValid = TRUE;
    memcpy(m_password, stuffhere.m_password, GetBlockSize(m_pwLength));
@@ -134,21 +162,11 @@ CItemData::SetNotes(const CMyString &notes)
 //Deletes stuff
 CItemData::~CItemData()
 {
-   if (m_nameValid == TRUE)
-   {
-      delete [] m_name;
-      m_nameValid = FALSE;
-   }
-   if (m_pwValid == TRUE)
-   {
-      delete [] m_password;
-      m_pwValid = FALSE;
-   }
-   if (m_notesValid == TRUE)
-   {
-      delete [] m_notes;
-      m_notesValid = FALSE;
-   }
+  delete [] m_name;
+  delete [] m_title;
+  delete [] m_user;
+  delete [] m_password;
+  delete [] m_notes;
 }
 
 //Encrypts the thing in plain to the variable cipher - alloc'd here
@@ -300,20 +318,12 @@ CItemData::DecryptData(const unsigned char *cipher,
 //Called by the constructors
 void CItemData::InitStuff()
 {
-   m_nLength = 0;
-   m_pwLength = 0;
-   m_notesLength = 0;
+   m_nLength = m_tLength = m_uLength = m_pwLength = m_notesLength = 0;
 	
-   m_name = NULL;
-   m_nameValid = FALSE;
+   m_nameValid = m_titleValid = m_userValid = m_pwValid = FALSE;
+   m_notesValid = m_saltValid = FALSE;
 
-   m_password = NULL;	
-   m_pwValid = FALSE;
-
-   m_notes = NULL;
-   m_notesValid = FALSE;
-
-   m_saltValid = FALSE;
+   m_name = m_title = m_user = m_password = m_notes = NULL;
 }
 
 
@@ -335,6 +345,16 @@ CItemData::operator=(const CItemData &second)
          delete [] m_name;
          m_nameValid = FALSE;
       }
+      if (m_titleValid == TRUE)
+      {
+         delete [] m_title;
+         m_titleValid = FALSE;
+      }
+      if (m_userValid == TRUE)
+      {
+         delete [] m_user;
+         m_userValid = FALSE;
+      }
       if (m_pwValid == TRUE)
       {
          delete [] m_password;
@@ -353,6 +373,14 @@ CItemData::operator=(const CItemData &second)
       m_name = new unsigned char[GetBlockSize(m_nLength)];
       m_nameValid = TRUE;
       memcpy(m_name, second.m_name, GetBlockSize(m_nLength));
+		
+      m_title = new unsigned char[GetBlockSize(m_tLength)];
+      m_titleValid = TRUE;
+      memcpy(m_title, second.m_title, GetBlockSize(m_tLength));
+		
+      m_user = new unsigned char[GetBlockSize(m_uLength)];
+      m_userValid = TRUE;
+      memcpy(m_user, second.m_user, GetBlockSize(m_uLength));
 		
       m_password = new unsigned char[GetBlockSize(m_pwLength)];
       m_pwValid = TRUE;
