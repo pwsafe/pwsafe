@@ -414,8 +414,13 @@ CItemData::operator=(const CItemData &second)
          delete [] m_notes;
          m_notesValid = FALSE;
       }
-		
+      
+      // XXX Something fishy here - *valid is always TRUE
+      // XXX in this, regardless of value in second...
+
       m_nLength = second.m_nLength;
+      m_tLength = second.m_tLength;
+      m_uLength = second.m_uLength;
       m_pwLength = second.m_pwLength;
       m_notesLength = second.m_notesLength;
 
