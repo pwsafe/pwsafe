@@ -4,8 +4,7 @@
 
 
  <link rel="stylesheet" type="text/css" href="style.css"></head>
-
-  <body bgcolor="#ffffff" text="#000000">
+<body bgcolor="#ffffff" text="#000000">
 
     
 
@@ -15,7 +14,7 @@
 
     <p>The main window consists of a menu bar, a toolbar, and the entries of the current database.</p>
 <h2>The Menubar</h2>
-<p>The menubar has the following items:<br>
+<p>The menubar has the following items (shortcuts, where available, are listed next to the item <span style="color: blue;">[like this]</span>:<br>
 </p>
 <h3>File<br>
 </h3>
@@ -25,7 +24,15 @@ the existing name or with a new name, and export the database, either
 to the old, version 1.7, format, or as a text file, readable by a text
 editor or spreadsheet application.<br>
 </p>
-<h4><b>Open </b></h4>
+<h4>New Database <span style="color: blue;">[Ctrl+N]</span><br>
+</h4>
+Create a new password database. You will be prompted for a new "safe
+combination", after which a new, unnamed database will be created.<br>
+<p>
+</p>
+
+<h4><b>Open Database <span style="color: blue;">[Ctrl+O]</span><br>
+ </b></h4>
 
 
     
@@ -36,7 +43,8 @@ top of the main window.</p>
 
 
     
-<h4><b>Save </b></h4>
+<h4><b>Save <span style="color: blue;">[Ctrl+S]</span><br>
+ </b></h4>
 
 
     
@@ -56,12 +64,12 @@ A version under the old name (without the most recent changes) will
 still exist.</p>
 <h3><span style="font-weight: bold;">Edit</span></h3>
 <h3><span style="font-weight: bold;"></span></h3>
-<p><span style="font-weight: bold;"></span>For adding a new entry,
-editing or viewing an existing entry, deleting an entry, and searching
-for entries containing given text. Also for copying the password or
-username of an entry to the clipboard, and for clearing the clipboard.<br>
+<p><span style="font-weight: bold;"></span>For adding or deleting an
+entry, changing an existing one, finding entries with a given text, or
+manipulating the clipboard, as described below:<br>
 </p>
-<h4><b>Add Entry</b></h4>
+<h4><b>Add Entry <span style="color: blue;">[Ctrl+A]</span><br>
+</b></h4>
 
 
 
@@ -72,24 +80,44 @@ username of an entry to the clipboard, and for clearing the clipboard.<br>
 
 
     
-<h4><b>Edit/View Entry</b></h4>
+<h4><b>Edit/View Entry <span style="color: blue;">[Ctrl+Enter]</span><br>
+</b></h4>
 
 
 
     
-<p>Select this menu item to view or change an entry.</p>
+<p>Select this menu item to view or change the currently selected entry.</p>
 
 
 
     
-<h4><b>Delete Entry</b></h4>
+<h4><b>Delete Entry <span style="color: blue;">[Del]</span><br>
+</b></h4>
 
-<p>To delete an item, highlight its title and select this menu item.</p>
+<p>To delete an item, highlight its title and select this menu item.<br>
+</p>
+<h4>Rename Entry <span style="color: blue;">[F2]</span><br>
+</h4>
+(In tree view only) This command allows you to directly edit the name of the currently selected entry.<br>
+<h4>Find Entry <span style="color: blue;">[Ctrl+F]</span><br>
+</h4>
+This command will prompt you for a text to search for in all the text
+fields (except the password) of all the entries in the database. The
+number of matches found is displayed. If there is more than one match,
+repeatedly pressing "Find Next" will select each matching entry in
+turn. By default, the search is case-insensitive. This can be changed
+by checking the "Case sensitive search" checkbox.<br>
+<h4>Add Group</h4>
+(In tree view only) This command will create a new group, named by
+default "New Group". The group is automatically selected, and the name
+is directly editable.<br>
+
 
 
 
     
-<h4><b>Copy Password to Clipboard</b></h4>
+<h4><b>Copy Password to Clipboard <span style="color: blue;">[Ctrl+C]</span><br>
+</b></h4>
 
 
 
@@ -110,7 +138,8 @@ By default, the clipboard will be cleared when you exit or minimize Password Saf
     
 
     
-<h4><b>Copy Username to Clipboard</b></h4>
+<h4><b>Copy Username to Clipboard <span style="color: blue;">[Ctrl+U]</span><br>
+</b></h4>
 
 
 
@@ -130,7 +159,8 @@ By default, the clipboard will be cleared when you exit or minimize Password Saf
     
 
     
-<h4><b>Clear Clipboard</b></h4>
+<h4><b>Clear Clipboard <span style="color: blue;">[Ctrl+Del]</span><br>
+</b></h4>
 
 
 
@@ -141,7 +171,9 @@ Clipboard menu item. If another application has copied data to the
 clipboard, the clipboard will not be cleared.
 <h3><span style="font-weight: bold;">View</span></h3>
 <h3><span style="font-weight: bold;"></span></h3>
-<p><span style="font-weight: bold;"></span>For selecting how the password entries will be displayed. Either as a list, or as a heirarchical tree.<br>
+<p><span style="font-weight: bold;"></span>For selecting how the
+password entries will be displayed. Either as a list, or as a
+heirarchical tree. Also for selecting the new or old toolbar icons.<br>
 </p>
 <h3>Manage</h3>
 <p>For changing the safe combination (master password) of the currently
@@ -182,7 +214,7 @@ the Save As dialog if you wish to keep it.<br>
 The options dialog box is described <a href="pws_opts.htm">here</a>.<br>
 <h3><span style="font-weight: bold;">Help</span></h3>
 <h3><span style="font-weight: bold;"></span></h3>
-<p><span style="font-weight: bold;">Help </span>- For accessing the online help, and for showing the version of the PasswordSafe application.<br>
+<p><span style="font-weight: bold;">Help </span>- For accessing the online help, accessing the project homepage, and for showing the version of the PasswordSafe application.<br>
 </p>
 <h2>The Toolbar</h2>
 <p>The toolbar consists of buttons that provide shortcuts to the most
