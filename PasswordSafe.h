@@ -33,6 +33,8 @@ public:
    virtual BOOL InitInstance();
    virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
+   afx_msg void OnHelp();
+
    DECLARE_MESSAGE_MAP()
 };
 
