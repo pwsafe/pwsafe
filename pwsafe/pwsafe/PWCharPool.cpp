@@ -42,10 +42,12 @@ CPasswordCharPool::SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL u
       if (easyvision)
       {
          block.SetStr(easyvision_lowercase_chars);
+         block.SetLength(easyvision_lowercase_len);
       }
       else
       {
          block.SetStr(std_lowercase_chars);
+         block.SetLength(std_lowercase_len);
       }
       block.SetType(PWC_LOWER);
       m_pool.AddTail(block);
@@ -57,10 +59,12 @@ CPasswordCharPool::SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL u
       if (easyvision)
       {
          block.SetStr(easyvision_uppercase_chars);
+         block.SetLength(easyvision_uppercase_len);
       }
       else
       {
          block.SetStr(std_uppercase_chars);
+         block.SetLength(std_uppercase_len);
       }
       block.SetType(PWC_UPPER);
       m_pool.AddTail(block);
@@ -72,10 +76,12 @@ CPasswordCharPool::SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL u
       if (easyvision)
       {
          block.SetStr(easyvision_digit_chars);
+         block.SetLength(easyvision_digit_len);
       }
       else
       {
          block.SetStr(std_digit_chars);
+         block.SetLength(std_digit_len);
       }
       block.SetType(PWC_DIGIT);
       m_pool.AddTail(block);
@@ -87,10 +93,12 @@ CPasswordCharPool::SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL u
       if (easyvision)
       {
          block.SetStr(easyvision_symbol_chars);
+         block.SetLength(easyvision_symbol_len);
       }
       else
       {
          block.SetStr(std_symbol_chars);
+         block.SetLength(std_symbol_len);
       }
       block.SetType(PWC_SYMBOL);
       m_pool.AddTail(block);
@@ -164,7 +172,12 @@ void
 CPasswordCharBlock::SetStr(const TCHAR* str)
 {
    m_str = str;
-   m_length = strlen(str);
+}
+
+void
+CPasswordCharBlock::SetLength(size_t len)
+{
+   m_length = len;
 }
 
 void

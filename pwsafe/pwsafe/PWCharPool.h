@@ -28,6 +28,7 @@ class CPasswordCharBlock
 public:
    CPasswordCharBlock::CPasswordCharBlock();
    void           SetStr(const TCHAR* str);
+   void           SetLength(size_t len);
    void           SetType(PWCHARTYPE type);
    const TCHAR*   GetStr(void);
    PWCHARTYPE     GetType(void);
