@@ -44,6 +44,11 @@
   #include "stdafx.h"
 #endif
 
+// stop MS VC++ 6 and earlier being quite so pedantic
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) // i.e. only MSVC++ 6 and earlier
+#pragma warning ( disable : 4097 )
+#endif
+
 #undef PWS_PLATFORM
 #undef POCKET_PC
 
