@@ -105,7 +105,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_LockDisabled(false)
+     m_core(app.m_core), m_LockDisabled(false), m_IsReadOnly(false)
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
@@ -159,17 +159,23 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
    ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_MERGE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUTIME_SAVEAS, OnSaveAs)
    ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
    ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_CHANGECOMBO, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
    ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_DELETE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
    ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_RENAME, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_FIND, OnFind)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
    ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
    ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
@@ -178,10 +184,14 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
    ON_COMMAND(ID_FILE_EXPORTTO_XML, OnExportXML)
    ON_COMMAND(ID_FILE_IMPORT_PLAINTEXT, OnImportText)
+   ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_PLAINTEXT, OnUpdateROCommand)
    ON_COMMAND(ID_FILE_IMPORT_KEEPASS, OnImportKeePass)
+   ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_KEEPASS, OnUpdateROCommand)
    ON_COMMAND(ID_FILE_IMPORT_XML, OnImportXML)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADD, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADDGROUP, OnUpdateROCommand)
    ON_WM_TIMER()
    ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
 #if defined(POCKET_PC)
@@ -428,7 +438,10 @@ DboxMain::OpenOnInit(void)
 void
 DboxMain::OnDestroy()
 {
-   //WinHelp(0L, HELP_QUIT);
+  const CMyString filename(m_core.GetCurFile());
+  // The only way we're the locker is if it's locked & we're !readonly
+  if (!m_IsReadOnly && m_core.IsLockedFile(filename))
+    m_core.UnlockFile(filename);
    CDialog::OnDestroy();
 }
 
@@ -575,6 +588,8 @@ DboxMain::ClearClipboard()
 void
 DboxMain::OnPasswordChange() 
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
    m_LockDisabled = true;
    CPasskeyChangeDlg changeDlg(this);
    int rc = changeDlg.DoModal();
@@ -607,11 +622,19 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 #endif
 }
 
-
+void
+DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
+{
+  // Use this callback  for commands that need to
+  // be disabled in read-only mode
+  pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
+}
 
 void
 DboxMain::OnSave() 
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
    m_LockDisabled = true;
    Save();
    m_LockDisabled = false;
@@ -716,6 +739,9 @@ DboxMain::OnExportXML()
 void
 DboxMain::OnImportText()
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
   CImportDlg dlg;
   int status = dlg.DoModal();
   
@@ -779,6 +805,9 @@ DboxMain::OnImportText()
 void
 DboxMain::OnImportKeePass()
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
   CFileDialog fd(TRUE,
 		 _T("txt"),
 		 NULL,
@@ -820,6 +849,9 @@ DboxMain::OnImportKeePass()
 void
 DboxMain::OnImportXML()
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
   m_LockDisabled = true;
     // TODO - currently disabled in menubar
   m_LockDisabled = false;
@@ -1039,16 +1071,16 @@ DboxMain::OnOpen()
 int
 DboxMain::Open()
 {
-   int rc = PWScore::SUCCESS;
-   CMyString newfile;
+  int rc = PWScore::SUCCESS;
+  CMyString newfile;
 
-   //Open-type dialog box
-   while (1)
-   {
+  //Open-type dialog box
+  while (1)
+    {
       CFileDialog fd(TRUE,
                      _T("dat"),
                      NULL,
-                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                     OFN_FILEMUSTEXIST|OFN_LONGNAMES,
                      _T("Password Safe Databases (*.dat)|*.dat|")
                      _T("Password Safe Backups (*.bak)|*.bak|")
                      _T("All files (*.*)|*.*|")
@@ -1056,20 +1088,23 @@ DboxMain::Open()
                      this);
       fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Open:");
       rc = fd.DoModal();
+      const bool last_ro = m_IsReadOnly; // restore if user cancels
+      m_IsReadOnly = (fd.GetReadOnlyPref() == TRUE);
       if (rc == IDOK)
-      {
-         newfile = (CMyString)fd.GetPathName();
+	{
+	  newfile = (CMyString)fd.GetPathName();
 
-		 rc = Open( newfile );
+	  rc = Open( newfile );
 
-		 if ( rc == PWScore::SUCCESS )
-	         break;
+	  if ( rc == PWScore::SUCCESS ) 
+	    break;
+	}
+      else {
+	m_IsReadOnly = last_ro;
+	return PWScore::USER_CANCEL;
       }
-      else
-         return PWScore::USER_CANCEL;
-   }
-
-   return rc;
+    }
+  return rc;
 }
 
 int
@@ -1348,6 +1383,9 @@ DboxMain::Merge(const CMyString &pszFilename) {
 void
 DboxMain::OnMerge()
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
    m_LockDisabled = true;
    Merge();
    m_LockDisabled = false;
@@ -1420,6 +1458,9 @@ DboxMain::New()
 void
 DboxMain::OnRestore()
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
    m_LockDisabled = true;
    Restore();
    m_LockDisabled = false;
@@ -1622,14 +1663,31 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   CPasskeyEntry dbox_pkentry(this, filename, first);
   int rc = dbox_pkentry.DoModal();
 
-  if (rc == IDOK)
-    {
+  if (rc == IDOK) {
       DBGMSG("PasskeyEntry returns IDOK\n");
+      CMyString locker(_T("")); // null init is important here
       passkey = dbox_pkentry.GetPasskey();
-      retval = PWScore::SUCCESS;
-    }
-  else /*if (rc==IDCANCEL) */ //Determine reason for cancel
-    {
+      // Set read-only mode if user explicitly requested it OR
+      // we could not create a lock file.
+      // Note that we depend on lazy evaluation: if the 1st is true,
+      // the 2nd won't be called!
+      if (first) // if !first, then m_IsReadOnly is set in Open
+	m_IsReadOnly =  (dbox_pkentry.IsReadOnly() || !m_core.LockFile(filename, locker));
+      // locker won't be null IFF tried to lock and failed, in which case
+      // it shows the current file locker
+      if (!locker.IsEmpty()) {
+	CString str = _T("The database ");
+	str += CString(filename);
+	str += _T(" is apparently being used by ");
+	str += CString(locker);
+	str += ".\r\n Open the database for read-only?";
+	if (MessageBox(str, _T("File In Use"), MB_YESNO|MB_ICONQUESTION) == IDYES)
+	  retval = PWScore::SUCCESS;
+	else
+	  retval = PWScore::USER_CANCEL;
+      } else // locker.IsEmpty() means no lock needed or lock was successful
+	retval = PWScore::SUCCESS;
+    } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
       int cancelreturn = dbox_pkentry.GetStatus();
       switch (cancelreturn)
 	{
@@ -1664,6 +1722,11 @@ DboxMain::NewFile(void)
       return PWScore::USER_CANCEL;  //User cancelled password entry
 
    ClearData();
+   const CMyString filename(m_core.GetCurFile());
+   // The only way we're the locker is if it's locked & we're !readonly
+   if (!filename.IsEmpty() && !m_IsReadOnly && m_core.IsLockedFile(filename))
+     m_core.UnlockFile(filename);
+   m_IsReadOnly = false; // new file can't be read-only...
    m_core.NewFile(dbox_pksetup.m_passkey);
    m_needsreading = false;
    startLockCheckTimer();
@@ -1737,8 +1800,6 @@ DboxMain::OnDropFiles(HDROP hDrop)
 {
    //SetActiveWindow();
    SetForegroundWindow();
-
-   MessageBox(_T("go away you silly git"), _T("File drop"), MB_OK);
 
 #if 0
    // here's what we really want - sorta
@@ -1907,6 +1968,8 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
    pMenu->EnableMenuItem(ID_MENUITEM_SAVE,
 			m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
 
+   // enable/disable w.r.t read-only mode
+   // is handled via ON_UPDATE_COMMAND_UI/OnUpdateROCommand
 }
 
 

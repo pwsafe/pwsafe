@@ -179,6 +179,9 @@ DboxMain::setupBars()
 void
 DboxMain::OnAdd() 
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
   CAddDlg dataDlg(this);
   m_LockDisabled = true;
   if (m_core.GetUseDefUser())
@@ -267,6 +270,9 @@ DboxMain::OnAdd()
 void
 DboxMain::OnAddGroup()
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
   if (m_ctlItemTree.IsWindowVisible()) {
     // This can be reached by right clicking over an existing group node
     // or by clicking over "whitespace".
@@ -287,7 +293,7 @@ DboxMain::OnAddGroup()
 void
 DboxMain::OnDelete() 
 {
-  if (CWnd::GetActiveWindow() != this) // could happen with Find dialog...
+  if (m_IsReadOnly) // disable in read-only mode
     return;
 
   m_LockDisabled = true;
@@ -355,6 +361,9 @@ DboxMain::OnDelete()
 void
 DboxMain::OnRename() 
 {
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
     // Renaming is only allowed while in Tree mode.
     if (m_ctlItemTree.IsWindowVisible()) {
         HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
@@ -366,6 +375,8 @@ DboxMain::OnRename()
 void
 DboxMain::OnEdit() 
 {
+  // Note that Edit is also used for just viewing - don't want to disable
+  // viewing in read-only mode
   m_LockDisabled = true;
   if (SelItemOk() == TRUE)
     {
@@ -383,7 +394,7 @@ DboxMain::OnEdit()
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = ci->GetNotes();
       dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
-
+      dlg_edit.m_IsReadOnly = m_IsReadOnly;
       app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
       app.EnableAccelerator();

@@ -11,6 +11,7 @@
 #endif
 #include "FindDlg.h"
 #include "DboxMain.h"
+#include "ThisMfcApp.h" // for disable/enable accel.
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +53,7 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
   } else {
     self->BringWindowToTop();
   }
+  app.DisableAccelerator(); // don't accel Del when this dlg is shown
 }
 
 CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
@@ -185,6 +187,7 @@ void CFindDlg::OnCancel()
   *m_lastTextPtr = m_search_text;
   *m_lastCSPtr = m_cs_search;
   self = NULL;
+  app.EnableAccelerator(); // restore accel table
   super::DestroyWindow();
 }
 #else
@@ -195,6 +198,7 @@ void CFindDlg::OnClose()
   *m_lastCSPtr = m_cs_search;
 
   self = NULL;
+  app.EnableAccelerator(); // restore accel table
   super::OnCancel();
 }
 #endif

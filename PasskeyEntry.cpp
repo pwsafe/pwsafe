@@ -37,7 +37,8 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
      m_first(first),
      m_filespec(a_filespec),
      m_tries(0),
-     m_status(TAR_INVALID)
+     m_status(TAR_INVALID),
+     m_ReadOnly(FALSE)
 {
    const int FILE_DISP_LEN = 45;	
 
@@ -84,7 +85,8 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_ctlOK);
 #endif
 	DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
-   DDX_Text(pDX, IDC_MESSAGE, m_message);
+	DDX_Text(pDX, IDC_MESSAGE, m_message);
+	DDX_Check(pDX, IDC_READONLY, m_ReadOnly);
 	//}}AFX_DATA_MAP
 }
 

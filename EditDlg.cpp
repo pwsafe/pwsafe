@@ -157,6 +157,9 @@ BOOL CEditDlg::OnInitDialog()
       HidePassword();
    }
    UpdateData(FALSE);
+   if (m_IsReadOnly) {
+     GetDlgItem(IDOK)->EnableWindow(FALSE);
+   }
    return TRUE;
 }
 

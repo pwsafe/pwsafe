@@ -26,8 +26,8 @@ public:
                  const CString& a_filespec,
                  bool first = false); 
 
-   int GetStatus() const
-   { return m_status; }
+   int GetStatus() const {return m_status;}
+  bool IsReadOnly() const {return m_ReadOnly == TRUE;}
   const CMyString &GetPasskey() const {return m_passkey;}
 private:
 // Dialog Data
@@ -40,7 +40,8 @@ private:
 	CButton	m_ctlOK;
 #endif
 	CEdit	m_ctlPasskey;
-  CMyString	m_passkey;
+        CMyString	m_passkey;
+        BOOL            m_ReadOnly;
 	//}}AFX_DATA
    CString	m_message;
   const CMyString m_filespec;

@@ -52,7 +52,10 @@ class PWScore {
   int RenameFile(const CMyString &oldname, const CMyString &newname);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
-
+  bool LockFile(const CMyString &filename, CMyString &locker) const;
+  bool IsLockedFile(const CMyString &filename) const;
+  void UnlockFile(const CMyString &filename) const;
+  
   POSITION GetFirstEntryPosition() const
     {return m_pwlist.GetHeadPosition();}
   POSITION AddEntryToTail(const CItemData &item)

@@ -216,6 +216,7 @@ protected:
 #endif
     afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateROCommand(CCmdUI *pCmdUI);
     afx_msg void OnInitMenu(CMenu* pMenu);
     afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
     afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
@@ -246,6 +247,7 @@ private:
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   CMyString m_lastFindStr;
   BOOL m_lastFindCS;
+  bool m_IsReadOnly;
 
   BOOL IsWorkstationLocked();
   void startLockCheckTimer();

@@ -9,6 +9,11 @@
 #pragma warning(disable : 4786)
 using namespace std;
 
+#include <LMCONS.H> // for UNLEN definition
+#include <io.h> // low level file routines for locking
+#include <fcntl.h> // constants _O_* for above
+#include <sys/stat.h> // constants _S_* for above
+
 #include "PWScore.h"
 #include "BlowFish.h"
 #include "PWSprefs.h"
@@ -179,7 +184,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
       // tokenize into separate elements
       vector<string> tokens;
       for (int startpos = 0; ; ) {
-	int nextchar = linebuf.find_first_of('\t', startpos);
+	int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
 	if (nextchar >= 0 && tokens.size() < 3) {
 	  tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
 	  startpos = nextchar + 1;
@@ -553,3 +558,89 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
   return SUCCESS;
 }
 
+bool PWScore::LockFile(const CMyString &filename, CMyString &locker) const
+{
+  // derive lock filename from filename
+  CMyString lock_filename = filename.Left(filename.GetLength()-3);
+  lock_filename += _T("plk");
+
+  int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
+		 (_S_IREAD | _S_IWRITE));
+
+  if (fh == -1) { // failed to open exclusively. Already locked, or ???
+    switch (errno) {
+    case EACCES:
+      // Tried to open read-only file for writing, or file’s 
+      // sharing mode does not allow specified operations, or given path is directory 
+      locker = _T("Cannot create lock file - no permission in directory?");
+      break;
+    case EEXIST: // filename already exists
+      {
+	// read locker data ("user@machine") from file
+	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)*2];
+	int fh2 = _open(lock_filename, _O_RDONLY);
+	if (fh2 == -1) {
+	  locker = _T("Unable to determine locker?");
+	} else {
+	  int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
+	  _close(fh2);
+	  if (bytesRead > 0) {
+	    lockerStr[bytesRead] = TCHAR('\0');
+	    locker = lockerStr;
+	  } else { // read failed for some reason
+	    locker = _T("Unable to read locker?");
+	  } // read info from lock file
+	} // open lock file for read
+      } // EEXIST block
+      break;
+    case EINVAL: // Invalid oflag or pmode argument 
+      locker = _T("Internal error: Invalid oflag or pmode argument");
+      break;
+    case EMFILE: // No more file handles available (too many open files)
+      locker = _T("System error: No morefile handles available");
+      break;
+    case ENOENT: //File or path not found
+      locker = _T("File or path not found");
+      break;
+    default:
+      locker = _T("Internal error: Unexpected errno");
+      break;
+    } // switch (errno)
+    return false;
+  } else { // valid filehandle, write our info
+    TCHAR user[UNLEN+1];
+    TCHAR sysname[MAX_COMPUTERNAME_LENGTH+1];
+    DWORD len;
+    len = sizeof(user);
+    if (::GetUserName(user, &len)== FALSE) {
+      user[0] = TCHAR('?'); user[1] = TCHAR('\0');
+    }
+    len = sizeof(sysname);
+    if (::GetComputerName(sysname, &len) == FALSE) {
+      sysname[0] = TCHAR('?'); sysname[1] = TCHAR('\0');
+    }
+    int numWrit;
+    numWrit = _write(fh, user, _tcslen(user)*sizeof(TCHAR));
+    numWrit += _write(fh, _T("@"), _tcslen("@")*sizeof(TCHAR));
+    numWrit += _write(fh, sysname, _tcslen(sysname)*sizeof(TCHAR));
+    ASSERT(numWrit > 0);
+    _close(fh);
+    return true;
+  }
+}
+
+void PWScore::UnlockFile(const CMyString &filename) const
+{
+  // derive lock filename from filename
+  CMyString lock_filename = filename.Left(filename.GetLength()-3);
+  lock_filename += _T("plk");
+  _unlink(lock_filename);
+}
+
+bool PWScore::IsLockedFile(const CMyString &filename) const
+{
+  // derive lock filename from filename
+  CMyString lock_filename = filename.Left(filename.GetLength()-3);
+  lock_filename += _T("plk");
+  return PWSfile::FileExists(lock_filename);
+}
