@@ -144,6 +144,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_DESTROY()
    ON_WM_SIZE()
    ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
+   ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
    ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
 #if defined(POCKET_PC)
    ON_WM_CREATE()
@@ -749,6 +750,17 @@ DboxMain::OnAbout()
 {
    DboxAbout dbox;
    dbox.DoModal();
+}
+
+
+void DboxMain::OnPasswordSafeWebsite()
+{
+  HINSTANCE stat = ::ShellExecute(NULL, NULL, "http://passwordsafe.sourceforge.net/",
+				  NULL, _T("."), SW_SHOWNORMAL);
+  if (int(stat) < 32) {
+    AfxMessageBox("oops");
+  }
+
 }
 
 
