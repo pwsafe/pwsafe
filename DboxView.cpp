@@ -152,7 +152,9 @@ DboxMain::setupBars()
     }             
 
   // Add the ToolBar.
-  if (!m_wndToolBar.Create(this) || !m_wndToolBar.LoadToolBar(IDR_MAINBAR))
+  if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
+                WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
+      !m_wndToolBar.LoadToolBar(IDR_MAINBAR))
     {
       TRACE0("Failed to create toolbar\n");
       return;      // fail to create
@@ -207,9 +209,6 @@ DboxMain::setupBars()
   ilTemp.Detach();
   bmTemp.Detach();
 
-  // TODO: Remove this if you don't want tool tips or a resizeable toolbar
-  m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle()
-			   | CBRS_TOOLTIPS | CBRS_FLYBY);
 
   CRect rect;
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
