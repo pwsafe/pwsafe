@@ -95,7 +95,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
                          HICON icon, UINT uID)
 {
     // this is only for Windows 95 (or higher)
-    VERIFY(m_bEnabled = ( GetVersion() & 0xff ) >= 4);
+    m_bEnabled = ( GetVersion() & 0xff ) >= 4;
     if (!m_bEnabled) return FALSE;
 
     // Make sure Notification window is valid (not needed - CJM)
@@ -121,7 +121,8 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     _tcscpy(m_tnd.szTip, szToolTip);
 
     // Set the tray icon
-    VERIFY(m_bEnabled = Shell_NotifyIcon(NIM_ADD, &m_tnd));
+    m_bEnabled = Shell_NotifyIcon(NIM_ADD, &m_tnd);
+    ASSERT(m_bEnabled);
     return m_bEnabled;
 }
 
@@ -216,7 +217,6 @@ BOOL CSystemTray::SetIconList(UINT uFirstIconID, UINT uLastIconID)
 	if (uFirstIconID > uLastIconID)
         return FALSE;
 
-	UINT uIconArraySize = uLastIconID - uFirstIconID + 1;
 	const CWinApp * pApp = AfxGetApp();
     ASSERT(pApp != 0);
 
@@ -362,7 +362,8 @@ BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
     CMenu menu, *pSubMenu;
 
     if (!menu.LoadMenu(m_tnd.uID)) return FALSE;
-    if (!(pSubMenu = menu.GetSubMenu(0))) return FALSE;
+    pSubMenu = menu.GetSubMenu(0);
+    if (!pSubMenu) return FALSE;
 
     ::SetMenuDefaultItem(pSubMenu->m_hMenu, m_DefaultMenuItemID, m_DefaultMenuItemByPos);
 
@@ -412,7 +413,8 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     if (LOWORD(lParam) == WM_RBUTTONUP)
     {    
         if (!menu.LoadMenu(m_tnd.uID)) return 0;
-        if (!(pSubMenu = menu.GetSubMenu(0))) return 0;
+        pSubMenu = menu.GetSubMenu(0);
+        if (!pSubMenu) return 0;
 
         // Make chosen menu item the default (bold font)
         ::SetMenuDefaultItem(pSubMenu->m_hMenu, m_DefaultMenuItemID, m_DefaultMenuItemByPos);
@@ -439,7 +441,8 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         if (m_DefaultMenuItemByPos)
         {
             if (!menu.LoadMenu(m_tnd.uID)) return 0;
-            if (!(pSubMenu = menu.GetSubMenu(0))) return 0;
+            pSubMenu = menu.GetSubMenu(0);
+            if (!pSubMenu) return 0;
             uItem = pSubMenu->GetMenuItemID(m_DefaultMenuItemID);
         }
         else

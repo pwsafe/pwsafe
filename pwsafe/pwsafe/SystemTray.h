@@ -26,7 +26,7 @@
 #ifndef _INCLUDED_SYSTEMTRAY_H_
 #define _INCLUDED_SYSTEMTRAY_H_
 
-#include <afxtempl.h>
+#include <afxdisp.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
