@@ -4,7 +4,6 @@
 #include <fstream.h> // for WritePlaintextFile
 
 #include "PWScore.h"
-#include "global.h"
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 		     m_usedefuser(false), m_defusername(_T("")),
@@ -21,7 +20,7 @@ PWScore::~PWScore()
 void
 PWScore::ClearData(void)
 {
-  global.m_passkey.Trash();
+  m_passkey.Trash();
 
    //Composed of ciphertext, so doesn't need to be overwritten
    m_pwlist.RemoveAll();
@@ -32,14 +31,14 @@ void
 PWScore::NewFile(const CMyString &passkey)
 {
    ClearData();
-   global.m_passkey = passkey;
+   m_passkey = passkey;
    m_changed = false;
 }
 
 int
 PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 {
-  PWSfile out(filename, global.m_passkey);
+  PWSfile out(filename, m_passkey);
 
   int status;
 
@@ -131,7 +130,7 @@ PWScore::ReadFile(const CMyString &a_filename,
 
    ClearData(); //Before overwriting old data, but after opening the file... 
 
-   global.m_passkey = a_passkey;
+   m_passkey = a_passkey;
 
    CItemData temp;
 
@@ -157,14 +156,7 @@ int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
  
-  POSITION listPos = m_pwlist.GetHeadPosition();
-  while (listPos != NULL)
-    {
-      m_pwlist.GetAt(listPos).ChangePassKey(global.m_passkey, newPassword);
-      m_pwlist.GetNext(listPos);
-    }
-  //Changes the global password. Eck.
-  global.m_passkey = newPassword;
+  m_passkey = newPassword;
   m_changed = TRUE;
 }
 
@@ -191,10 +183,10 @@ PWScore::Find(const CMyString &a_title, const CMyString &a_user)
 
 void PWScore::SetPassKey(const CMyString &new_passkey)
 {
-  global.m_passkey = new_passkey; // XXX tmp!!!
+  m_passkey = new_passkey; // XXX tmp!!!
 }
 
 bool PWScore::IsPassKey(const CMyString &new_passkey) const
 {
-  return new_passkey == global.m_passkey; // XXX tmp
+  return new_passkey == m_passkey; // XXX tmp
 }
