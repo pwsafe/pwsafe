@@ -120,6 +120,10 @@ SOURCE=.\EditDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\FindDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ItemData.cpp
 # End Source File
 # Begin Source File
@@ -216,6 +220,10 @@ SOURCE=.\FileDialogExt.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\FindDlg.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ItemData.h
 # End Source File
 # Begin Source File
@@ -269,10 +277,6 @@ SOURCE=.\RemindSaveDlg.h
 # Begin Source File
 
 SOURCE=.\resource.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\SecString.h
 # End Source File
 # Begin Source File
 
