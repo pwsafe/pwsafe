@@ -754,13 +754,14 @@ DboxMain::OnOK()
 		}
 	}
 
-	CRect rect;
-	GetWindowRect(&rect);
-	app.WriteProfileInt("", "top", rect.top);
-	app.WriteProfileInt("", "bottom", rect.bottom);
-	app.WriteProfileInt("", "left", rect.left);
-	app.WriteProfileInt("", "right", rect.right);
-
+	if (!IsIconic()) {
+	  CRect rect;
+	  GetWindowRect(&rect);
+	  app.WriteProfileInt("", "top", rect.top);
+	  app.WriteProfileInt("", "bottom", rect.bottom);
+	  app.WriteProfileInt("", "left", rect.left);
+	  app.WriteProfileInt("", "right", rect.right);
+	}
 	app.WriteProfileInt("", "sortedcolumn", m_iSortedColumn);
 	app.WriteProfileInt("", "sortascending", m_bSortAscending);
 
