@@ -111,14 +111,16 @@
 #define ID_TOOLBUTTON_OPEN              32810
 #define ID_MENUITEM_FIND                32812
 #define ID_TOOLBUTTON_CLEARCLIPBOARD    32813
+#define ID_FILE_MRU_ENTRY1              40001
+#define ID_FILE_MRU_ENTRY20             40020
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        194
-#define _APS_NEXT_COMMAND_VALUE         32820
+#define _APS_NEXT_COMMAND_VALUE         32822
 #define _APS_NEXT_CONTROL_VALUE         1066
-#define _APS_NEXT_SYMED_VALUE           103
+#define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

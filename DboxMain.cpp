@@ -161,20 +161,15 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	//{{AFX_MSG_MAP(DboxMain)
-	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
-	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
-	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
-	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
-	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
-
    ON_WM_DESTROY()
-   ON_WM_DROPFILES()
    ON_WM_PAINT()
    ON_WM_QUERYDRAGICON()
    ON_WM_SIZE()
    ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
    ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
    ON_WM_CONTEXTMENU()
+	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
+	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
@@ -185,11 +180,16 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
    ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearclipboard)
    ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
-   ON_COMMAND(ID_MENUITEM_FIND, OnFind)
    ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
+   ON_COMMAND(ID_MENUITEM_FIND, OnFind)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
+	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
+	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
+   ON_WM_DROPFILES()
+	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
+	ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
@@ -202,8 +202,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
    ON_WM_SYSCOMMAND()
    ON_BN_CLICKED(IDOK, OnEdit)
+	ON_WM_INITMENUPOPUP()
 	//}}AFX_MSG_MAP
 
+	ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRY20, OnOpenMRU)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 END_MESSAGE_MAP()
@@ -1444,7 +1446,7 @@ int
 DboxMain::Open()
 {
    int rc;
-   CMyString newfile, passkey, temp;
+   CMyString newfile;
 
    //Open-type dialog box
    while (1)
@@ -1462,90 +1464,105 @@ DboxMain::Open()
       rc = fd.DoModal();
       if (rc == IDOK)
       {
-         //Check that this file isn't already open
          newfile = (CMyString)fd.GetPathName();
-         if (newfile == m_currfile && !m_needsreading)
-         {
-            //It is the same damn file
-            MessageBox("That file is already open.",
-                       "Oops!",
-                       MB_OK|MB_ICONWARNING);
-            continue;
-         }
-         break;
+
+		 rc = Open( newfile );
+
+		 if ( rc == SUCCESS )
+	         break;
       }
       else
          return USER_CANCEL;
    }
 
-   if (m_changed == TRUE)
-   {
-      int rc2;
-
-      temp =
-         "Do you want to save changes to the password databse: "
-         + m_currfile
-         + "?";
-      rc = MessageBox(temp,
-                      AfxGetAppName(),
-                      MB_ICONQUESTION|MB_YESNOCANCEL);
-      switch (rc)
-      {
-      case IDCANCEL:
-         return USER_CANCEL;
-      case IDYES:
-         rc2 = Save();
-         // Make sure that writting the file was successful
-         if (rc2 == SUCCESS)
-            break;
-         else
-            return CANT_OPEN_FILE;
-      case IDNO:
-         break;
-      }
-   }
-
-   rc = CheckPassword(newfile, passkey);
-   switch (rc)
-   {
-   case SUCCESS:
-      break; // Keep going... 
-   case CANT_OPEN_FILE:
-      temp = m_currfile + "\n\nCan't open file. Please choose another.";
-      MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
-   case TAR_OPEN:
-      return Open();
-   case TAR_NEW:
-      return New();
-   case WRONG_PASSWORD:
-      /*
-        If the user just cancelled out of the password dialog, 
-        assume they want to return to where they were before... 
-      */
-      return USER_CANCEL;
-   }
-
-   rc = ReadFile(newfile, passkey);
-   if (rc == CANT_OPEN_FILE)
-   {
-      temp = newfile + "\n\nCould not open file for reading!";
-      MessageBox(temp, "File read error.", MB_OK|MB_ICONWARNING);
-      /*
-        Everything stays as is... Worst case,
-        they saved their file....
-      */
-      return CANT_OPEN_FILE;
-   }
-
-   m_currfile = newfile;
-   m_changed = FALSE;
-   m_title = "Password Safe - " + m_currfile;
-   ChangeOkUpdate();
-   RefreshList();
-
-   return SUCCESS;
+   return rc;
 }
 
+int
+DboxMain::Open( const char* pszFilename )
+{
+	int rc;
+	CMyString passkey, temp;
+
+	//Check that this file isn't already open
+	if (pszFilename == m_currfile && !m_needsreading)
+	{
+		//It is the same damn file
+		MessageBox("That file is already open.",
+			"Oops!",
+			MB_OK|MB_ICONWARNING);
+		return ALREADY_OPEN;
+	}
+	
+	if (m_changed == TRUE)
+	{
+		int rc2;
+		
+		temp =
+			"Do you want to save changes to the password databse: "
+			+ m_currfile
+			+ "?";
+		rc = MessageBox(temp,
+			AfxGetAppName(),
+			MB_ICONQUESTION|MB_YESNOCANCEL);
+		switch (rc)
+		{
+		case IDCANCEL:
+			return USER_CANCEL;
+		case IDYES:
+			rc2 = Save();
+			// Make sure that writting the file was successful
+			if (rc2 == SUCCESS)
+				break;
+			else
+				return CANT_OPEN_FILE;
+		case IDNO:
+			break;
+		}
+	}
+	
+	rc = CheckPassword(pszFilename, passkey);
+	switch (rc)
+	{
+	case SUCCESS:
+		app.GetMRU()->Add( pszFilename );
+		break; // Keep going... 
+	case CANT_OPEN_FILE:
+		temp = m_currfile + "\n\nCan't open file. Please choose another.";
+		MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
+	case TAR_OPEN:
+		return Open();
+	case TAR_NEW:
+		return New();
+	case WRONG_PASSWORD:
+	/*
+	If the user just cancelled out of the password dialog, 
+	assume they want to return to where they were before... 
+		*/
+		return USER_CANCEL;
+	}
+	
+	rc = ReadFile(pszFilename, passkey);
+	if (rc == CANT_OPEN_FILE)
+	{
+		temp = pszFilename;
+		temp += "\n\nCould not open file for reading!";
+		MessageBox(temp, "File read error.", MB_OK|MB_ICONWARNING);
+		/*
+		Everything stays as is... Worst case,
+		they saved their file....
+		*/
+		return CANT_OPEN_FILE;
+	}
+	
+	m_currfile = pszFilename;
+	m_changed = FALSE;
+	m_title = "Password Safe - " + m_currfile;
+	ChangeOkUpdate();
+	RefreshList();
+	
+	return SUCCESS;
+}
 
 void
 DboxMain::OnNew()
@@ -1757,7 +1774,9 @@ DboxMain::SaveAs()
    m_changed = FALSE;
    m_title = "Password Safe - " + m_currfile;
    ChangeOkUpdate();
-	
+
+   app.GetMRU()->Add( newfile );
+
    return SUCCESS;
 }
 
@@ -2713,3 +2732,100 @@ DboxMain::ConfigureSystemMenu()
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+
+void
+DboxMain::OnUpdateMRU(CCmdUI* pCmdUI) 
+{
+	app.GetMRU()->UpdateMenu( pCmdUI );	
+}
+
+void 
+DboxMain::OnOpenMRU(UINT nID)
+{
+	UINT	uMRUItem = nID - ID_FILE_MRU_ENTRY1;
+
+	CString mruItem = (*app.GetMRU())[uMRUItem];
+
+	Open( mruItem );
+}
+
+void
+DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu) 
+{
+	// http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
+	// This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
+	ASSERT(pPopupMenu != NULL);
+	CCmdUI state; // Check the enabled state of various menu items
+	state.m_pMenu = pPopupMenu;
+	ASSERT(state.m_pOther == NULL);
+	ASSERT(state.m_pParentMenu == NULL);
+	
+	// Is the menu in question a popup in the top-level menu? If so, set m_pOther
+	// to this menu. Note that m_pParentMenu == NULL indicates that the menu is a
+	// secondary popup.
+	
+	HMENU hParentMenu;
+	if(AfxGetThreadState()->m_hTrackingMenu == pPopupMenu->m_hMenu)
+		state.m_pParentMenu = pPopupMenu; // Parent == child for tracking popup.
+	else if((hParentMenu = ::GetMenu(m_hWnd)) != NULL)
+	{
+		CWnd* pParent = this;
+		// Child windows don't have menus--need to go to the top!
+		if(pParent != NULL && (hParentMenu = ::GetMenu(pParent->m_hWnd)) != NULL)
+		{
+			int nIndexMax = ::GetMenuItemCount(hParentMenu);
+			for (int nIndex = 0; nIndex < nIndexMax; nIndex++)
+			{
+				if(::GetSubMenu(hParentMenu, nIndex) == pPopupMenu->m_hMenu)
+				{
+					// When popup is found, m_pParentMenu is containing menu.
+					state.m_pParentMenu = CMenu::FromHandle(hParentMenu);
+					break;
+				}
+			}
+		}
+	}
+	
+	state.m_nIndexMax = pPopupMenu->GetMenuItemCount();
+	for(state.m_nIndex = 0; state.m_nIndex < state.m_nIndexMax; state.m_nIndex++)
+	{
+		state.m_nID = pPopupMenu->GetMenuItemID(state.m_nIndex);
+		if(state.m_nID == 0)
+			continue; // Menu separator or invalid cmd - ignore it.
+		ASSERT(state.m_pOther == NULL);
+		ASSERT(state.m_pMenu != NULL);
+		if(state.m_nID == (UINT)-1)
+		{
+			// Possibly a popup menu, route to first item of that popup.
+			state.m_pSubMenu = pPopupMenu->GetSubMenu(state.m_nIndex);
+			if(state.m_pSubMenu == NULL ||
+				(state.m_nID = state.m_pSubMenu->GetMenuItemID(0)) == 0 ||
+				state.m_nID == (UINT)-1)
+			{
+				continue; // First item of popup can't be routed to.
+			}
+			state.DoUpdate(this, TRUE); // Popups are never auto disabled.
+		}
+		else
+		{
+			// Normal menu item.
+			// Auto enable/disable if frame window has m_bAutoMenuEnable
+			// set and command is _not_ a system command.
+			state.m_pSubMenu = NULL;
+			state.DoUpdate(this, FALSE);
+		}
+		
+		// Adjust for menu deletions and additions.
+		UINT nCount = pPopupMenu->GetMenuItemCount();
+		if(nCount < state.m_nIndexMax)
+		{
+			state.m_nIndex -= (state.m_nIndexMax - nCount);
+			while(state.m_nIndex < nCount &&
+				pPopupMenu->GetMenuItemID(state.m_nIndex) == state.m_nID)
+			{
+				state.m_nIndex++;
+			}
+		}
+		state.m_nIndexMax = nCount;
+	}
+}
