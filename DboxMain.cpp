@@ -104,6 +104,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_existingrestore(FALSE), m_toolbarsSetup(FALSE),
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
+     m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_LockDisabled(false)
 {
 	//{{AFX_DATA_INIT(DboxMain)
@@ -529,7 +530,8 @@ void
 DboxMain::OnFind() 
 {
   m_LockDisabled = true;
-  CFindDlg::Doit(this); // create modeless or popup existing
+  CFindDlg::Doit(this, &m_lastFindCS,
+		 &m_lastFindStr); // create modeless or popup existing
   // XXX Gross hack to fix aesthetic bug in tree view
   // without this, multiple "selected" displayed
   // if treeview && there's a selected item, then
