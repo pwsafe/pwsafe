@@ -3,9 +3,7 @@
 // data is scrubbed by trashstring() in the destructor, thus leaving an attacker
 // with a little less info to grovel for in the swap file / core dump / whatever
 //
-// Note that the CString member m_mystring is public - this is for cases where
-// a function requires a CString (reference) as an argument.
-// You could argue that implementing a cast-to-CString operator would be more elegant...
+// First priority for porting is to implement this without CString
 //-----------------------------------------------------------------------------
 
 #ifndef _MYSTRING_H_
@@ -16,8 +14,8 @@ class CMyString
 {
 public:
    CMyString();
-   CMyString(LPCSTR lpsz);
-   CMyString(LPCSTR lpsz, int nLength);
+   CMyString(LPCTSTR lpsz);
+   CMyString(LPCTSTR lpsz, int nLength);
    CMyString(const CMyString& stringSrc);
    CMyString(const CString& stringSrc);
    ~CMyString();
@@ -28,12 +26,10 @@ public:
    operator CString&();
    operator LPCTSTR() const;
    BOOL IsEmpty() const;
-   BOOL LoadString(UINT nID);
 
    const CMyString& operator=(const CMyString& stringSrc);
    const CMyString& operator=(TCHAR ch);
-   const CMyString& operator=(LPCSTR lpsz);
-   const CMyString& operator=(LPCWSTR lpsz);
+   const CMyString& operator=(LPCTSTR lpsz);
    const CMyString& operator=(const unsigned char* psz);
 
    const CMyString& operator+=(const CMyString& string);

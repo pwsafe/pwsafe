@@ -2178,14 +2178,14 @@ DboxMain::OnUpdateBackups()
 
    //Collect list of backups from registry
    //This code copied almost verbatim from the old BackupDlg.cpp
-   CMyString companyname;
+   CString companyname;
    VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
 	
    //We need to use the Win32SDK method because of RegEnumKeyEx
    CMyString subkeyloc =
-      (CMyString)"Software\\" 
-      + companyname 
-      + (CMyString) "\\Password Safe\\Backup";
+      (CMyString)_T("Software\\") 
+      + (CMyString)companyname 
+      + (CMyString) _T("\\Password Safe\\Backup");
    HKEY subkey;
    DWORD disposition;
    LONG result = RegCreateKeyEx(HKEY_CURRENT_USER,
