@@ -148,13 +148,13 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
 void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
-  HTREEITEM           hitem;
-  UINT                flags;
-
   if (m_bDragging) {
+    UINT                flags;
+
     ASSERT(m_pimagelist != NULL);
     m_pimagelist->DragMove(point);
-    if ((hitem = HitTest(point, &flags)) != NULL) {
+    HTREEITEM hitem = HitTest(point, &flags);
+    if (hitem != NULL) {
       m_pimagelist->DragLeave(this);
       SelectDropTarget(hitem);
       m_hitemDrop = hitem;
@@ -341,6 +341,9 @@ void CMyTreeCtrl::OnButtonUp()
 	DeleteItem(parent);
 	parent = grandParent;
       }
+      SelectItem(m_hitemDrop);
+    } else { // drag failed, revert to last selected
+      SelectItem(m_hitemDrag);
     }
     ReleaseCapture();
     m_bDragging = FALSE;
