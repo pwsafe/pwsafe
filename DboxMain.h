@@ -69,6 +69,7 @@ protected:
    int m_iSortedColumn;
 
 	bool m_bShowPassword;
+	BOOL m_bAlwaysOnTop;
 
 	int insertItem(CItemData &itemData, int iIndex = -1);
 	int getSelectedItem();
@@ -78,6 +79,12 @@ protected:
    void ClearClipboard();
    void setupBars();
    BOOL OpenOnInit();
+
+   void ConfigureSystemMenu();
+   void OnSysAlwaysOnTop();
+	afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
+
+   void UpdateAlwaysOnTop();
 
    void ClearData();
    int NewFile(void);

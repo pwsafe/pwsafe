@@ -129,6 +129,8 @@ DboxMain::DboxMain(CWnd* pParent)
       (CMyString) app.GetProfileString("", "currentbackup", NULL);
    m_title = "";
 
+   m_bAlwaysOnTop = app.GetProfileInt("", "alwaysontop", FALSE);
+
    m_changed = FALSE;
    m_needsreading = TRUE;
    m_windowok = false;
@@ -188,6 +190,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
    ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
+   ON_WM_SYSCOMMAND()
    ON_BN_CLICKED(IDOK, OnEdit)
 
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
@@ -198,7 +201,11 @@ END_MESSAGE_MAP()
 BOOL
 DboxMain::OnInitDialog()
 {
+   ConfigureSystemMenu();
+
    CDialog::OnInitDialog();
+
+   UpdateAlwaysOnTop();
 
    if (OpenOnInit()==FALSE) // If this function fails, abort launch
       return TRUE;
@@ -1066,9 +1073,14 @@ DboxMain::OnOptions()
    BOOL currUseDefUser = optionsDlg.m_usedefuser;
    CMyString currDefUsername = optionsDlg.m_defusername;
 
+   optionsDlg.m_alwaysontop = m_bAlwaysOnTop;
+
    int rc = optionsDlg.DoModal();
    if (rc == IDOK)
    {
+	   m_bAlwaysOnTop = optionsDlg.m_alwaysontop;
+	   UpdateAlwaysOnTop();
+
 	   bool bOldShowPassword = m_bShowPassword;
 	   m_bShowPassword = app.GetProfileInt("", "showpwdefault", FALSE)? true: false;
       if (currDefUsername != optionsDlg.m_defusername)
@@ -2562,6 +2574,48 @@ DboxMain::MakeName(CMyString& name, const CMyString &title, const CMyString &use
    }
 }
 
+void
+DboxMain::UpdateAlwaysOnTop()
+{
+	CMenu*	sysMenu = GetSystemMenu( FALSE );
 
+	if ( m_bAlwaysOnTop )
+	{
+		SetWindowPos( &wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
+		sysMenu->CheckMenuItem( ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_CHECKED );
+	}
+	else
+	{
+		SetWindowPos( &wndNoTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
+		sysMenu->CheckMenuItem( ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_UNCHECKED );
+	}
+}
+
+void 
+DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
+{
+	CDialog::OnSysCommand( nID, lParam );
+
+	if ( ID_SYSMENU_ALWAYSONTOP == nID )
+	{
+		m_bAlwaysOnTop = !m_bAlwaysOnTop;
+
+		app.WriteProfileInt( "", "alwaysontop", m_bAlwaysOnTop );
+
+		UpdateAlwaysOnTop();
+	}
+}
+
+
+void
+DboxMain::ConfigureSystemMenu()
+{
+	CMenu*	sysMenu = GetSystemMenu( FALSE );
+	CString	str;
+
+	str.LoadString( IDS_ALWAYSONTOP );
+
+	sysMenu->InsertMenu( 5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCTSTR)str );
+}
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
