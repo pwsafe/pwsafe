@@ -109,6 +109,8 @@ DboxMain::DboxMain(CWnd* pParent)
 	//}}AFX_DATA_INIT
 
    m_hIcon = app.LoadIcon(IDI_CORNERICON);
+   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+
    ClearData();
 
 
@@ -236,7 +238,7 @@ DboxMain::OnInitDialog()
   //  when the application's main window is not a dialog
 
   SetIcon(m_hIcon, TRUE);  // Set big icon
-  SetIcon(m_hIcon, FALSE); // Set small icon
+  SetIcon(m_hIconSm, FALSE); // Set small icon
   // Init stuff for tree view
   CImageList *pImageList = new CImageList();
   BOOL status = pImageList->Create(9, 9, ILC_COLOR, 2, 0);

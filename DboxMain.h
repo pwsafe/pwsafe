@@ -81,6 +81,7 @@ protected:
 
 protected:
    HICON m_hIcon;
+   HICON m_hIconSm;
 
    // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
    bool	m_bSizing;
