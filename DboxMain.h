@@ -161,6 +161,9 @@ protected:
    int SaveAs(void);
    int Open(void);
    int Open( const CMyString &pszFilename );
+   int Merge(void);
+   int Merge( const CMyString &pszFilename );
+
    int BackupSafe(void);
    int New(void);
    int Restore(void);
@@ -181,6 +184,7 @@ protected:
    afx_msg void OnCopyPassword();
    afx_msg void OnNew();
    afx_msg void OnOpen();
+   afx_msg void OnMerge();
    afx_msg void OnRestore();
    afx_msg void OnSaveAs();
    afx_msg void OnListView();

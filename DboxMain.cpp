@@ -155,6 +155,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
+   ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
    ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
    ON_COMMAND(ID_MENUTIME_SAVEAS, OnSaveAs)
    ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
@@ -1079,6 +1080,202 @@ DboxMain::Open( const CMyString &pszFilename )
 	
 	return PWScore::SUCCESS;
 }
+
+int
+DboxMain::Merge()
+{
+   int rc = PWScore::SUCCESS;
+   CMyString newfile;
+
+   //Open-type dialog box
+   while (1)
+   {
+      CFileDialog fd(TRUE,
+                     _T("dat"),
+                     NULL,
+                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                     _T("Password Safe Databases (*.dat)|*.dat|")
+                     _T("Password Safe Backups (*.bak)|*.bak|")
+                     _T("All files (*.*)|*.*|")
+                     _T("|"),
+                     this);
+      fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Merge:");
+      rc = fd.DoModal();
+      if (rc == IDOK)
+      {
+         newfile = (CMyString)fd.GetPathName();
+
+		 rc = Merge( newfile );
+
+		 if ( rc == PWScore::SUCCESS )
+	         break;
+      }
+      else
+         return PWScore::USER_CANCEL;
+   }
+
+   return rc;
+}
+
+int
+DboxMain::Merge(const CMyString &pszFilename) {
+   /* open file they want to merge */
+	int rc = PWScore::SUCCESS;
+	CMyString passkey, temp;
+
+	//Check that this file isn't already open
+	if (pszFilename == m_core.GetCurFile())
+	{
+		//It is the same damn file
+		MessageBox(_T("That file is already open."),
+			_T("Oops!"),
+			MB_OK|MB_ICONWARNING);
+		return PWScore::ALREADY_OPEN;
+	}
+	
+	rc = GetAndCheckPassword(pszFilename, passkey);
+	switch (rc)
+	{
+	case PWScore::SUCCESS:
+		app.GetMRU()->Add(pszFilename);
+		break; // Keep going... 
+	case PWScore::CANT_OPEN_FILE:
+		temp = m_core.GetCurFile()
+		  + "\n\nCan't open file. Please choose another.";
+		MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+	case TAR_OPEN:
+		return Open();
+	case TAR_NEW:
+		return New();
+	case PWScore::WRONG_PASSWORD:
+	/*
+	If the user just cancelled out of the password dialog, 
+	assume they want to return to where they were before... 
+		*/
+		return PWScore::USER_CANCEL;
+	}
+	
+	PWScore otherCore;
+	otherCore.ReadFile(pszFilename, passkey);
+	
+	if (rc == PWScore::CANT_OPEN_FILE)
+	{
+		temp = pszFilename;
+		temp += _T("\n\nCould not open file for reading!");
+		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+		/*
+		Everything stays as is... Worst case,
+		they saved their file....
+		*/
+		return PWScore::CANT_OPEN_FILE;
+	}
+   
+	otherCore.SetCurFile(pszFilename);
+
+	/* Put up hourglass...this might take a while */
+	CWaitCursor waitCursor;
+
+	/*
+	  Purpose:
+	  Merge entries from otherCore to m_core
+	  
+	  Algorithm:
+	  Foreach entry in otherCore
+	     Find in m_core
+		  if find a match
+		     if pw, notes, & group also matches
+   			    no merge
+			 else
+			    add to m_core with new title suffixed with -merged-HHMMSS-DDMMYY
+		  else
+		     add to m_core directly
+	*/
+	int numAdded = 0;
+	int numConflicts = 0;
+
+	POSITION otherPos = otherCore.GetFirstEntryPosition();
+	while (otherPos)
+	{
+		CItemData otherItem = otherCore.GetEntryAt(otherPos);
+		CMyString otherGroup = otherItem.GetGroup();
+		CMyString otherTitle = otherItem.GetTitle();
+		CMyString otherUser = otherItem.GetUser();
+		
+		POSITION foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
+		if (foundPos)
+		{
+			/* found a match, see if the pw & notes also match */
+			CItemData curItem = m_core.GetEntryAt(foundPos);
+			if (otherItem.GetPassword() != curItem.GetPassword() ||
+				 otherItem.GetNotes() != curItem.GetNotes())
+			{
+				/* have a match on title/user, but not on pw/notes 
+					add an entry suffixed with -merged-HHMMSS-DDMMYY */
+				CTime curTime = CTime::GetCurrentTime();
+				CMyString newTitle = otherItem.GetTitle();
+				newTitle += _T("-merged-");
+				CMyString timeStr = curTime.Format("%H%M%S-%m%d%y");
+				newTitle = newTitle + timeStr;
+
+				/* note it as an issue for the user */
+				CMyString warnMsg;
+				warnMsg = _T("Conflicting entries for ") + otherItem.GetGroup() + "," + 
+					      otherItem.GetTitle() + "," + otherItem.GetUser() + "\n";
+				warnMsg += _T("Adding new entry as ") + newTitle + "," + 
+                           otherItem.GetUser() + "\n";
+
+				/* tell the user the bad news */
+				MessageBox(warnMsg,
+						   _T("Merge conflict"),
+						   MB_OK|MB_ICONWARNING);				
+
+				/* do it */
+				otherItem.SetTitle(newTitle);
+				m_core.AddEntryToTail(otherItem);
+
+				numConflicts++;
+			}
+		}
+		else
+		{
+			/* didn't find any match...add it directly */
+			m_core.AddEntryToTail(otherItem);
+			numAdded++;
+		}
+
+		otherCore.GetNextEntry(otherPos);
+	}
+
+	waitCursor.Restore(); /* restore normal cursor */
+
+	/* tell the user we're done & provide short merge report */
+	int totalAdded = numAdded+numConflicts;
+	CString resultStr;
+	resultStr.Format("Merge complete:\n%d entr%s added (%d conflict%s)",
+					 totalAdded,
+					 totalAdded == 1 ? "y" : "ies",
+					 numConflicts,
+		             numConflicts == 1 ? "" : "s");
+	MessageBox(resultStr, _T("Merge Complete"), MB_OK);
+
+	ChangeOkUpdate();
+	RefreshList();
+   
+   return rc;
+}
+
+
+void
+DboxMain::OnMerge()
+{
+   m_LockDisabled = true;
+   Merge();
+   m_LockDisabled = false;
+}
+
+
+
+
 
 void
 DboxMain::OnNew()
