@@ -16,7 +16,7 @@ DBGDUMP(const char* mem, size_t len)
    char hexbuf[3];
    int wrap = 0;
    char ascbuf[wrapsize+1];
-   int ix;
+   size_t ix;
 
    DBGMSG("* DEBUGDUMP BEGIN *\n");
 
