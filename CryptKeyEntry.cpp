@@ -12,7 +12,7 @@
 #else
   #include "resource.h"
 #endif
-#include "util.h"
+#include "corelib/util.h"
 
 #include "CryptKeyEntry.h"
 
