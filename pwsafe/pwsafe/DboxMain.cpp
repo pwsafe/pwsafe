@@ -538,8 +538,7 @@ DboxMain::OnCopyPassword()
    {
       POSITION itemPos = Find(getSelectedItem());
 		
-      CMyString curPassString;
-      m_core.GetEntryAt(itemPos).GetPassword(curPassString);
+      CMyString curPassString = m_core.GetEntryAt(itemPos).GetPassword();
 
       uGlobalMemSize = curPassString.GetLength()+1;
       hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
@@ -831,9 +830,9 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 
   while (listPos != NULL)
   {
-      m_core.GetEntryAt(listPos).GetName(curname);
+      curname = m_core.GetEntryAt(listPos).GetName();
       savecurname = curname; // keep original for finding in m_listctrl
-      m_core.GetEntryAt(listPos).GetNotes(curnotes);
+      curnotes = m_core.GetEntryAt(listPos).GetNotes();
 
       if (!CaseSensitive) {
           curname.MakeLower();
@@ -1136,7 +1135,7 @@ DboxMain::OnCopyUsername()
    POSITION itemPos = Find(getSelectedItem());
 
    CMyString title, junk, username;
-   m_core.GetEntryAt(itemPos).GetName(title);
+   title = m_core.GetEntryAt(itemPos).GetName();
    m_core.SplitName(title, junk, username);
 
    if (username.GetLength() == 0)
