@@ -3,8 +3,6 @@
 #ifndef Util_h
 #define Util_h
 
-#include "PasswordSafe.h"
-
 #include "MyString.h"
 #include "sha1.h"
 

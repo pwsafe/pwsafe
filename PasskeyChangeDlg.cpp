@@ -45,7 +45,7 @@ void
 CPasskeyChangeDlg::OnOK() 
 {
    UpdateData(TRUE);
-   if (m_oldpasskey != app.m_passkey)
+   if (m_oldpasskey != global.m_passkey)
       AfxMessageBox("The old safe combination is not correct");
    else if (m_confirmnew != m_newpasskey)
       AfxMessageBox("New safe combination and confirmation do not match");

@@ -17,13 +17,7 @@
 #include "CryptKeyEntry.h"
 
 
-//-----------------------------------------------------------------------------
-/*
-  The one and only ThisMfcApp object.  In the MFC world, creating
-  this global object is what starts the application.
-*/
 
-ThisMfcApp app;
 
 //-----------------------------------------------------------------------------
 
@@ -143,15 +137,15 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
     _write(out, &len, sizeof(len)); // XXX portability issue!
 #else
     for (int i=0; i < 8; i++)
-      app.m_randstuff[i] = newrand();
+      global.m_randstuff[i] = newrand();
 
     // miserable bug - have to fix this way to avoid breaking existing files
-    app.m_randstuff[8] = app.m_randstuff[9] = '\0';
+    global.m_randstuff[8] = global.m_randstuff[9] = '\0';
     GenRandhash(passwd,
-		app.m_randstuff,
-		app.m_randhash);
-   _write(out, app.m_randstuff, 8);
-   _write(out, app.m_randhash, 20);
+		global.m_randstuff,
+		global.m_randhash);
+   _write(out, global.m_randstuff, 8);
+   _write(out, global.m_randhash, 20);
 #endif // KEEP_FILE_MODE_BWD_COMPAT
 		
     unsigned char thesalt[SaltLength];
@@ -196,15 +190,15 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
       _read(in, &len, sizeof(len)); // XXX portability issue
 #else
-      _read(in, app.m_randstuff, 8);
-      app.m_randstuff[8] = app.m_randstuff[9] = '\0'; // ugly bug workaround
-      _read(in, app.m_randhash, 20);
+      _read(in, global.m_randstuff, 8);
+      global.m_randstuff[8] = global.m_randstuff[9] = '\0'; // ugly bug workaround
+      _read(in, global.m_randhash, 20);
 
       unsigned char temphash[20]; // HashSize
       GenRandhash(passwd,
-		  app.m_randstuff,
+		  global.m_randstuff,
 		  temphash);
-      if (0 != memcmp((char*)app.m_randhash,
+      if (0 != memcmp((char*)global.m_randhash,
 		      (char*)temphash,
 		      20)) // HashSize
 	{
@@ -364,7 +358,8 @@ ThisMfcApp::InitInstance()
      and, if successful, move on to DboxMain.  I think. {jpr}
     */
    m_maindlg = &dbox;
-   m_pMainWnd = m_maindlg;
+   //  This doesn't do anything as best I can tell.
+   //m_pMainWnd = m_maindlg;
 
    // Set up an Accelerator table
    m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),

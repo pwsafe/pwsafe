@@ -152,7 +152,7 @@ CPasskeyEntry::OnOK()
 
    unsigned char temphash[20]; // HashSize
    GenRandhash(m_passkey,
-               app.m_randstuff,
+               global.m_randstuff,
                temphash);
 
    if (m_passkey == "")
@@ -162,7 +162,7 @@ CPasskeyEntry::OnOK()
       return;
    }
 
-   if (0 != memcmp((char*)app.m_randhash,
+   if (0 != memcmp((char*)global.m_randhash,
                    (char*)temphash,
                    20)) // HashSize
    {

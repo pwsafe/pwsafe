@@ -122,6 +122,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 		iResult = ((CString)pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
 		break;
 	default:
+
         iResult = 0; // should never happen - just keep compiler happy
 		ASSERT(FALSE);
 	}
@@ -1021,22 +1022,22 @@ DboxMain::OnPasswordChange()
       listPos = tempList.GetHeadPosition();
 
       //Changes the global password. Eck.
-      app.m_passkey = changeDlg.m_newpasskey;
+      global.m_passkey = changeDlg.m_newpasskey;
 		
       //Gets a new random value used for password authentication
       for (int x=0; x < 8; x++)
-         app.m_randstuff[x] = newrand();
+         global.m_randstuff[x] = newrand();
       /*
        * We generate 8 bytes of randomness, but m_randstuff
        * is larger: StuffSize bytes. This appears to be a bug,
        * let's at least explicitly zero the extra 2 bytes, since redefining
        * StuffSize to 8 would break every existing database...
        */
-      app.m_randstuff[8] = app.m_randstuff[9] = '\0';
+      global.m_randstuff[8] = global.m_randstuff[9] = '\0';
 
       GenRandhash(changeDlg.m_newpasskey,
-                  app.m_randstuff,
-                  app.m_randhash);
+                  global.m_randstuff,
+                  global.m_randhash);
 
       //Puts the list of CMyStrings back into CItemData
       while (listPos != NULL)
@@ -1833,11 +1834,11 @@ int DboxMain::WriteCBC(int fp, const CString &data, const unsigned char *salt,
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
   // to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(app.m_passkey);
+  LPCSTR passstr = LPCSTR(global.m_passkey);
   LPCSTR datastr = LPCSTR(data);
 
   return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
-		   (const unsigned char *)passstr, app.m_passkey.GetLength(),
+		   (const unsigned char *)passstr, global.m_passkey.GetLength(),
 		   salt, SaltLength, ipthing);
 }
 
@@ -1851,8 +1852,8 @@ DboxMain::WriteFile(const CMyString &filename)
    if (out == -1)
       return CANT_OPEN_FILE;
 
-   _write(out, app.m_randstuff, 8);
-   _write(out, app.m_randhash, 20);
+   _write(out, global.m_randstuff, 8);
+   _write(out, global.m_randhash, 20);
 
    /*
      I know salt is just salt, but randomness always makes me
@@ -1941,16 +1942,16 @@ DboxMain::CheckPassword(const CMyString &filename,
 	  DBGMSG("hashstuff\n");
 
 	  //Preserve the current randstuff and hash
-	  memcpy(temprandstuff, app.m_randstuff, 8);
-	  memcpy(temprandhash, app.m_randhash, 20);
+	  memcpy(temprandstuff, global.m_randstuff, 8);
+	  memcpy(temprandhash, global.m_randhash, 20);
 	  saved_stuff = true;
 
 	  /*
 	    The beginning of the database file is
 	    8 bytes of randomness and a SHA1 hash {jpr}
 	  */
-	  _read(in, app.m_randstuff, 8);
-	  _read(in, app.m_randhash, 20);
+	  _read(in, global.m_randstuff, 8);
+	  _read(in, global.m_randhash, 20);
 	  _close(in);
 	}
     }
@@ -1961,7 +1962,7 @@ DboxMain::CheckPassword(const CMyString &filename,
    */
 
   CPasskeyEntry dbox_pkentry(this, filename, first);
-  app.m_pMainWnd = &dbox_pkentry;
+  //app.m_pMainWnd = &dbox_pkentry;
   //dbox_pkentry->m_message = filename;
   int rc = dbox_pkentry.DoModal();
 
@@ -1991,8 +1992,8 @@ DboxMain::CheckPassword(const CMyString &filename,
   //Restore the current randstuff and hash
   if (saved_stuff)
     {
-      memcpy(app.m_randstuff, temprandstuff, 8);
-      memcpy(app.m_randhash, temprandhash, 20);
+      memcpy(global.m_randstuff, temprandstuff, 8);
+      memcpy(global.m_randhash, temprandhash, 20);
       trashMemory(temprandstuff, 8);
       trashMemory(temprandhash, 20);
     }
@@ -2008,14 +2009,14 @@ int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
   // to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(app.m_passkey);
+  LPCSTR passstr = LPCSTR(global.m_passkey);
 
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
   int retval;
 
   retval = _readcbc(fp, buffer, buffer_len,
-		   (const unsigned char *)passstr, app.m_passkey.GetLength(),
+		   (const unsigned char *)passstr, global.m_passkey.GetLength(),
 		   salt, SaltLength, ipthing);
   if (buffer_len > 0) {
     CMyString str(LPCSTR(buffer), buffer_len);
@@ -2044,15 +2045,15 @@ DboxMain::ReadFile(const CMyString &a_filename,
 
    ClearData(); //Before overwriting old data, but after opening the file... 
 
-   _read(in, app.m_randstuff, 8);
-   _read(in, app.m_randhash, 20);
+   _read(in, global.m_randstuff, 8);
+   _read(in, global.m_randhash, 20);
 
    unsigned char* salt = new unsigned char[SaltLength];
    unsigned char ipthing[8];
    _read(in, salt, SaltLength);
    _read(in, ipthing, 8);
 
-   app.m_passkey = a_passkey;
+   global.m_passkey = a_passkey;
 
    CItemData temp;
    CMyString tempdata;
@@ -2126,7 +2127,7 @@ int
 DboxMain::NewFile(void)
 {
    CPasskeySetup dbox_pksetup(this);
-   app.m_pMainWnd = &dbox_pksetup;
+   //app.m_pMainWnd = &dbox_pksetup;
    int rc = dbox_pksetup.DoModal();
 
    if (rc == IDCANCEL)
@@ -2134,12 +2135,12 @@ DboxMain::NewFile(void)
 
    ClearData();
 
-   app.m_passkey = dbox_pksetup.m_passkey;
+   global.m_passkey = dbox_pksetup.m_passkey;
 
    for (int x=0; x<8; x++)
-      app.m_randstuff[x] = newrand();
-   app.m_randstuff[8] = app.m_randstuff[9] = '\0';
-   GenRandhash(app.m_passkey, app.m_randstuff, app.m_randhash);
+      global.m_randstuff[x] = newrand();
+   global.m_randstuff[8] = global.m_randstuff[9] = '\0';
+   GenRandhash(global.m_passkey, global.m_randstuff, global.m_randhash);
 
    return SUCCESS;
 }
@@ -2148,7 +2149,7 @@ DboxMain::NewFile(void)
 void
 DboxMain::ClearData(void)
 {
-  app.m_passkey.Trash();
+  global.m_passkey.Trash();
 
    //Composed of ciphertext, so doesn't need to be overwritten
    m_pwlist.RemoveAll();
