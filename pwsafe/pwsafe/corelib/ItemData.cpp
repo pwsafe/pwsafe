@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
-    m_Notes(NOTES)
+    m_Notes(NOTES), m_UUID(UUID)
 {
   for (int x = 0; x < SaltLength; x++)
     m_salt[x] = newrand();
@@ -25,7 +25,7 @@ CItemData::CItemData()
 
 CItemData::CItemData(const CItemData &that) :
   m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
-  m_Password(that.m_Password), m_Notes(that.m_Notes)
+  m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
 }
@@ -39,6 +39,14 @@ void CItemData::GetField(const CItemField &field, CMyString &value) const
   field.Get(value, bf);
   delete bf;
 }
+
+void CItemData::GetField(const CItemField &field, unsigned char *value, unsigned int &length) const
+{
+  BlowFish *bf = MakeBlowFish();
+  field.Get(value, length, bf);
+  delete bf;
+}
+
 
 CMyString
 CItemData::GetName() const
@@ -80,6 +88,12 @@ CItemData::GetNotes() const
    CMyString ret;
    GetField(m_Notes, ret);
    return ret;
+}
+
+void CItemData::GetUUID(uuid_array_t &uuid_array) const
+{
+  unsigned int length = sizeof(uuid_array);
+  GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
 void CItemData::SplitName(const CMyString &name,
@@ -130,6 +144,21 @@ void CItemData::SetField(CItemField &field, const CMyString &value)
   delete bf;
 }
 
+void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
+{
+  BlowFish *bf = MakeBlowFish();
+  field.Set(value, length, bf);
+  delete bf;
+}
+
+void CItemData::CreateUUID()
+{
+  CUUIDGen uuid;
+  uuid_array_t uuid_array;
+  uuid.GetUUID(uuid_array);
+  SetUUID(uuid_array);
+}
+
 void
 CItemData::SetName(const CMyString &name)
 {
@@ -172,6 +201,11 @@ CItemData::SetNotes(const CMyString &notes)
   SetField(m_Notes, notes);
 }
 
+void
+CItemData::SetUUID(const uuid_array_t &UUID)
+{
+  SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
+}
 
 
 

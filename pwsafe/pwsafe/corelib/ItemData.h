@@ -6,6 +6,7 @@
 
 #include "Util.h"
 #include "ItemField.h"
+#include "UUIDGen.h"
 
 //-----------------------------------------------------------------------------
 
@@ -30,7 +31,7 @@ class BlowFish;
 class CItemData
 {
 public:
-  enum {NAME=0, GUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
+  enum {NAME=0, UUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
 	PASSWORD = 0x6, CTIME = 0x7, MTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
 	POLICY = 0xb, END = 0xff}; // field types, per formatV2.txt
    //Construction
@@ -44,13 +45,15 @@ public:
    CMyString GetUser() const; // V20
    CMyString GetPassword() const;
    CMyString GetNotes() const;
+   void GetUUID(uuid_array_t &) const; // V20
 
+   void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name); // V17 - deprecated - replaced by GetTitle & GetUser
    void SetTitle(const CMyString &title); // V20
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
    void SetNotes(const CMyString &notes);
-
+   void SetUUID(const uuid_array_t &UUID);
    CItemData& operator=(const CItemData& second);
 
 private:
@@ -59,6 +62,7 @@ private:
   CItemField m_User;
   CItemField m_Password;
   CItemField m_Notes;
+  CItemField m_UUID;
 
   //The salt value
   unsigned char m_salt[SaltLength];
@@ -71,7 +75,9 @@ private:
   BlowFish *MakeBlowFish() const;
   // Laziness is a Virtue:
   void GetField(const CItemField &field, CMyString &value) const;
+  void GetField(const CItemField &field, unsigned char *value, unsigned int &length) const;
   void SetField(CItemField &field, const CMyString &value);
+  void SetField(CItemField &field, const unsigned char *value, unsigned int length);
 };
 
 #endif

@@ -121,6 +121,10 @@ SOURCE=.\sha1.cpp
 
 SOURCE=.\Util.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\UUIDGen.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -164,6 +168,10 @@ SOURCE=.\sha1.h
 # Begin Source File
 
 SOURCE=.\Util.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\UUIDGen.h
 # End Source File
 # End Group
 # End Target
