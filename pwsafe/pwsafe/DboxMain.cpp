@@ -164,7 +164,9 @@ DboxMain::DboxMain(CWnd* pParent)
     * This will happen if a filename was given in the command line.
     */
    if (m_currfile.IsEmpty()) {
-     m_currfile = (CMyString) app.GetProfileString("", "currentfile", "xxxxx.dat");
+     // If there's no registry key, this is probably a fresh install.
+     // CheckPassword will catch this and handle it correctly
+     m_currfile = (CMyString) app.GetProfileString("", "currentfile");
    }
    m_currbackup =
       (CMyString) app.GetProfileString("", "currentbackup", NULL);
@@ -1567,7 +1569,7 @@ DboxMain::Open( const char* pszFilename )
 		int rc2;
 		
 		temp =
-			"Do you want to save changes to the password databse: "
+			"Do you want to save changes to the password database: "
 			+ m_currfile
 			+ "?";
 		rc = MessageBox(temp,
