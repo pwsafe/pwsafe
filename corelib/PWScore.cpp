@@ -153,16 +153,16 @@ void PWScore::ChangePassword(const CMyString &newPassword)
   CList<CMyString, CMyString> tempList;
   tempList.RemoveAll();
   POSITION listPos = m_pwlist.GetHeadPosition();
+  CItemData temp;
+  CMyString str;
   while (listPos != NULL)
     {
-      CItemData temp;
       temp = m_pwlist.GetAt(listPos);
-      CMyString str;
-      temp.GetName(str);
+      str = temp.GetName();
       tempList.AddTail(str);
-      temp.GetPassword(str);
+      str = temp.GetPassword();
       tempList.AddTail(str);
-      temp.GetNotes(str);
+      str = temp.GetNotes();
       tempList.AddTail(str);
       m_pwlist.GetNext(listPos);
     }
@@ -175,7 +175,6 @@ void PWScore::ChangePassword(const CMyString &newPassword)
   //Puts the list of CMyStrings back into CItemData
   while (listPos != NULL)
     {
-      CItemData temp;
 			
       temp.SetName(tempList.GetAt(listPos));
       tempList.GetNext(listPos);
@@ -201,9 +200,9 @@ PWScore::Find(const CMyString &a_title, const CMyString &a_user)
 
    while (listPos != NULL)
    {
-      m_pwlist.GetAt(listPos).GetName(curthing);
-	  CMyString title, user;
-	  SplitName(curthing, title, user);
+      curthing = m_pwlist.GetAt(listPos).GetName();
+      CMyString title, user;
+      SplitName(curthing, title, user);
       if (title == a_title && user == a_user)
          break;
       else
@@ -224,10 +223,10 @@ void
 PWScore::MakeFullNames(const CMyString &defusername)
 {
   POSITION listPos = m_pwlist.GetHeadPosition();
+  CMyString temp;
   while (listPos != NULL)
     {
-      CMyString temp;
-      m_pwlist.GetAt(listPos).GetName(temp);
+      temp = m_pwlist.GetAt(listPos).GetName();
       //Start MakeFullName
       int pos = temp.FindByte(SPLTCHR);
       int pos2 = temp.FindByte(DEFUSERCHR);
@@ -247,10 +246,10 @@ void
 PWScore::DropDefUsernames(const CMyString &defusername)
 {
   POSITION listPos = m_pwlist.GetHeadPosition();
+  CMyString temp;
   while (listPos != NULL)
     {
-      CMyString temp;
-      m_pwlist.GetAt(listPos).GetName(temp);
+      temp = m_pwlist.GetAt(listPos).GetName();
       //Start DropDefUsername
       CMyString temptitle, tempusername;
       int pos = SplitName(temp, temptitle, tempusername);

@@ -55,13 +55,6 @@ CItemData::CItemData(const CItemData &stuffhere)
    m_saltValid = stuffhere.m_saltValid;
 }
 
-//Returns a plaintext name
-BOOL
-CItemData::GetName(CMyString &name) const
-{
-   return DecryptData(m_name, m_nLength, m_nameValid, &name);
-}
-
 CMyString
 CItemData::GetName() const
 {
@@ -70,13 +63,22 @@ CItemData::GetName() const
    return ret;
 }
 
-
-//Returns a plaintext password
-BOOL
-CItemData::GetPassword(CMyString &password) const
+CMyString
+CItemData::GetTitle() const
 {
-   return DecryptData(m_password, m_pwLength, m_pwValid, &password);
+   CMyString ret;
+   (void) DecryptData(m_title, m_tLength, m_titleValid, &ret);
+   return ret;
 }
+
+CMyString
+CItemData::GetUser() const
+{
+   CMyString ret;
+   (void) DecryptData(m_user, m_uLength, m_userValid, &ret);
+   return ret;
+}
+
 
 CMyString
 CItemData::GetPassword() const
@@ -86,13 +88,6 @@ CItemData::GetPassword() const
    return ret;
 }
 
-
-//Returns a plaintext notes
-BOOL
-CItemData::GetNotes(CMyString &notes) const
-{
-   return DecryptData(m_notes, m_notesLength, m_notesValid, &notes);
-}
 
 CMyString
 CItemData::GetNotes() const
@@ -108,6 +103,18 @@ BOOL
 CItemData::SetName(const CMyString &name)
 {
    return EncryptData(name, &m_name, &m_nLength, m_nameValid);
+}
+
+BOOL
+CItemData::SetTitle(const CMyString &title)
+{
+   return EncryptData(title, &m_title, &m_tLength, m_titleValid);
+}
+
+BOOL
+CItemData::SetUser(const CMyString &user)
+{
+   return EncryptData(user, &m_user, &m_uLength, m_userValid);
 }
 
 //Encrypts a plaintext password and stores it in m_password

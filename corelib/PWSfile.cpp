@@ -24,9 +24,30 @@ PWSfile::~PWSfile()
   CloseFile(); // idempotent
 }
 
+static const CMyString V2ItemName("!!!Version 2 File Format!!!");
+
+int PWSfile::WriteV2Header()
+{
+  CItemData header;
+  // Fill out with V2-specific info
+  header.SetName(V2ItemName);
+  return WriteRecord(header);
+}
+
+int PWSfile::ReadV2Header()
+{
+  CItemData header;
+  int status = ReadRecord(header);
+  if (status == SUCCESS) {
+    const CMyString name = header.GetName();
+    status = (name == V2ItemName) ? SUCCESS : WRONG_VERSION;
+  }
+  return status;
+}
+
 int PWSfile::OpenWriteFile(VERSION v)
 {
-  if (v != V17) // XXX add V20 support!
+  if (v != V17 && v != V20)
     return UNSUPPORTED_VERSION;
 
   m_fd = _open((LPCTSTR)m_filename,
@@ -37,7 +58,7 @@ int PWSfile::OpenWriteFile(VERSION v)
     return CANT_OPEN_FILE;
 
   m_curversion = v;
-
+  
   // Following used to verify passkey against file's passkey
   unsigned char randstuff[StuffSize];
   unsigned char randhash[20];   // HashSize
@@ -60,12 +81,18 @@ int PWSfile::OpenWriteFile(VERSION v)
     m_ipthing[x] = newrand();
   _write(m_fd, m_ipthing, 8);
 
+  if (v == V20) {
+    int status = WriteV2Header();
+    if (status != SUCCESS)
+      return status;
+  }
+
   return SUCCESS;
 }
 
 int PWSfile::OpenReadFile(VERSION v)
 {
-  if (v != V17) // XXX add V20 support!
+  if (v != V17 && v != V20)
     return UNSUPPORTED_VERSION;
 
   m_fd = _open((LPCTSTR) m_filename,
@@ -86,7 +113,10 @@ int PWSfile::OpenReadFile(VERSION v)
    _read(m_fd, m_salt, SaltLength);
    _read(m_fd, m_ipthing, 8);
 
-  return SUCCESS;
+   if (v == V20)
+     status = ReadV2Header();
+
+  return status;
 }
 
 void PWSfile::CloseFile()
@@ -99,8 +129,15 @@ void PWSfile::CloseFile()
 
 PWSfile::VERSION PWSfile::GetFileVersion()
 {
-  // XXX TBD
-  return V17;
+  VERSION v;
+  int status = OpenReadFile(V20);
+  CloseFile();
+  switch (status) {
+  case SUCCESS: v = V20; break;
+  case WRONG_VERSION: v = V17; break;
+  default: v = UNKNOWN_VERSION; break;
+  }
+  return v;
 }
 
 int PWSfile::CheckPassword()
@@ -161,14 +198,9 @@ int PWSfile::WriteRecord(const CItemData &item)
 
   switch (m_curversion) {
   case V17: {
-    CMyString tempdata;
-
-    item.GetName(tempdata);
-    WriteCBC(tempdata);
-    item.GetPassword(tempdata);
-    WriteCBC(tempdata);
-    item.GetNotes(tempdata);
-    WriteCBC(tempdata);
+    WriteCBC(item.GetName());
+    WriteCBC(item.GetPassword());
+    WriteCBC(item.GetNotes());
     return SUCCESS;
   }
   break;

@@ -10,7 +10,8 @@
 class PWSfile {
  public:
   enum VERSION {V17, V20, UNKNOWN_VERSION}; // supported file versions: V17 is last pre-2.0
-  enum {CANT_OPEN_FILE, UNSUPPORTED_VERSION, WRONG_PASSWORD, END_OF_FILE, SUCCESS};
+  enum {CANT_OPEN_FILE, UNSUPPORTED_VERSION, WRONG_VERSION,
+	WRONG_PASSWORD, END_OF_FILE, SUCCESS};
 
   static bool FileExists(const CMyString &filename);
 
@@ -35,6 +36,8 @@ class PWSfile {
   unsigned char m_ipthing[8]; // for CBC
   int WriteCBC(const CString &data);
   int ReadCBC(CMyString &data);
+  int WriteV2Header();
+  int ReadV2Header();
 };
 
 #endif PWSfile_h
