@@ -65,6 +65,7 @@ public:
    CString Right(int nCount) const;
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
+  void MakeLower() {m_mystring.MakeLower();}
 
   void Trash() {trashstring();}
 
