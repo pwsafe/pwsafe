@@ -179,7 +179,8 @@ DboxMain::DboxMain(CWnd* pParent)
 
    m_toolbarsSetup = FALSE;
 
-   m_bShowPassword = false;
+   m_bShowPasswordInEdit = false;
+   m_bShowPasswordInList = false;
    m_bSortAscending = true;
    m_iSortedColumn = 0;
 }
@@ -275,7 +276,11 @@ DboxMain::OnInitDialog()
 	m_ctlItemList.InsertColumn(2, "Notes");
 
 	if (app.GetProfileInt("", "showpwdefault", FALSE)) {
-		m_bShowPassword = true;
+		m_bShowPasswordInEdit = true;
+	}
+
+	if (app.GetProfileInt("", "showpwinlistdefault", FALSE)) {
+		m_bShowPasswordInList = true;
 	}
 
 	CRect rect;
@@ -944,13 +949,13 @@ DboxMain::RefreshList()
 	lvColumn.mask = LVCF_WIDTH;
 
 	bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
-	if (m_bShowPassword && !bPasswordColumnShowing) {
+	if (m_bShowPasswordInList && !bPasswordColumnShowing) {
 		m_ctlItemList.InsertColumn(3, "Password");
 		CRect rect;
 		m_ctlItemList.GetClientRect(&rect);
 		m_ctlItemList.SetColumnWidth(3, app.GetProfileInt("", "column4width", rect.Width() / 4));
 	}
-	else if (!m_bShowPassword && bPasswordColumnShowing) {
+	else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
 		app.WriteProfileInt("", "column4width", lvColumn.cx);
 		m_ctlItemList.DeleteColumn(3);
 	}
@@ -1233,8 +1238,8 @@ DboxMain::OnOptions()
 	   m_bAlwaysOnTop = optionsDlg.m_alwaysontop;
 	   UpdateAlwaysOnTop();
 
-	   bool bOldShowPassword = m_bShowPassword;
-	   m_bShowPassword = app.GetProfileInt("", "showpwdefault", FALSE)? true: false;
+	   bool bOldShowPasswordInList = m_bShowPasswordInList;
+	   m_bShowPasswordInList = app.GetProfileInt("", "showpwinlistdefault", FALSE)? true: false;
       if (currDefUsername != optionsDlg.m_defusername)
       {
          if (currUseDefUser == TRUE)
@@ -1253,7 +1258,7 @@ DboxMain::OnOptions()
             DropDefUsernames(&m_pwlist, optionsDlg.m_defusername);
          RefreshList();
       }
-	  else if (bOldShowPassword + m_bShowPassword == 1) {
+	  else if (bOldShowPasswordInList + m_bShowPasswordInList == 1) {
          RefreshList();
 	  }
    }
@@ -2516,7 +2521,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 	m_ctlItemList.SetItemText(iResult, 2, strNotes);
 	m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
 
-	if (m_bShowPassword) {
+	if (m_bShowPasswordInList) {
 		m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
 	}
 

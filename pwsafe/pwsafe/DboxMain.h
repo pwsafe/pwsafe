@@ -84,7 +84,8 @@ protected:
    bool m_bSortAscending;
    int m_iSortedColumn;
 
-	bool m_bShowPassword;
+	bool m_bShowPasswordInEdit;
+	bool m_bShowPasswordInList;
 	BOOL m_bAlwaysOnTop;
 
 	int insertItem(CItemData &itemData, int iIndex = -1);

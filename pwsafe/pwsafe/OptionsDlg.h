@@ -12,7 +12,8 @@ public:
    BOOL		m_confirmdelete;
    BOOL		m_lockdatabase;
    BOOL		m_confirmsaveonminimize;
-   BOOL		m_pwshow;
+   BOOL		m_pwshowinedit;
+   BOOL		m_pwshowinlist;
    BOOL		m_usedefuser;
    CMyString	m_defusername;
    BOOL		m_querysetdef;

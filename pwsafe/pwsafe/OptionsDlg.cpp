@@ -32,8 +32,10 @@ COptionsDlg::COptionsDlg(CWnd* pParent)
       (app.GetProfileInt("", "databaseclear", FALSE));
    m_confirmsaveonminimize =
       not(app.GetProfileInt("", "dontasksaveminimize", FALSE));
-   m_pwshow =
+   m_pwshowinedit =
       app.GetProfileInt("", "showpwdefault", FALSE);
+   m_pwshowinlist =
+      app.GetProfileInt("", "showpwinlistdefault", FALSE);
    m_usedefuser =
       app.GetProfileInt("", "usedefuser", FALSE);
 
@@ -55,7 +57,8 @@ COptionsDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
    DDX_Check(pDX, IDC_LOCKBASE, m_lockdatabase);
    DDX_Check(pDX, IDC_SAVEMINIMIZE, m_confirmsaveonminimize);
-   DDX_Check(pDX, IDC_DEFPWSHOW, m_pwshow);
+   DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
+   DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_pwshowinlist);
    DDX_Check(pDX, IDC_USEDEFUSER, m_usedefuser);
    DDX_Text(pDX, IDC_DEFUSERNAME, (CString &)m_defusername);
    DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
@@ -89,7 +92,8 @@ COptionsDlg::OnOK()
    app.WriteProfileInt("", "deletequestion", not(m_confirmdelete));
    app.WriteProfileInt("", "databaseclear", m_lockdatabase);
    app.WriteProfileInt("", "dontasksaveminimize", not(m_confirmsaveonminimize));
-   app.WriteProfileInt("", "showpwdefault", m_pwshow);
+   app.WriteProfileInt("", "showpwdefault", m_pwshowinedit);
+   app.WriteProfileInt("", "showpwinlistdefault", m_pwshowinlist);
    app.WriteProfileInt("", "usedefuser", m_usedefuser);
    app.WriteProfileString("", "defusername", (CString &)m_defusername);
    app.WriteProfileInt("", "querysetdef", m_querysetdef);

@@ -64,9 +64,11 @@
 #define IDC_LOCKBASE                    1029
 #define IDC_SAVEMINIMIZE                1030
 #define IDC_DEFPWSHOW                   1031
+#define IDC_DEFPWSHOWINEDIT             1031
 #define IDC_USEDEFUSER                  1032
 #define IDC_QUERYSETDEF                 1033
 #define IDC_QUERYADDNAME                1034
+#define IDC_DEFPWSHOWINLIST             1035
 #define IDC_CRYPTKEY1                   1045
 #define IDC_CRYPTKEY2                   1046
 #define IDC_DEFUSERNAME                 1049
