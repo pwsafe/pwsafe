@@ -33,7 +33,8 @@ BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
 END_MESSAGE_MAP()
 
 
-ThisMfcApp::ThisMfcApp()
+ThisMfcApp::ThisMfcApp() :
+	m_bUseAccelerator( true )
 {
    srand((unsigned)time(NULL));
 }
@@ -247,6 +248,8 @@ BOOL
 ThisMfcApp::InitInstance()
 {
 
+
+
    /*
     * It's always best to start at the beginning.  [Glinda, Witch of the North]
     */
@@ -379,7 +382,8 @@ ThisMfcApp::ProcessMessageFilter(int code,
    if (code < 0)
       CWinApp::ProcessMessageFilter(code, lpMsg);
 	
-   if (m_maindlg != NULL
+   if (m_bUseAccelerator &&
+	   m_maindlg != NULL
        && m_ghAccelTable != NULL)
    {
       if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))

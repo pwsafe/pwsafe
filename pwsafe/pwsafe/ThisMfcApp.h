@@ -30,9 +30,15 @@ public:
   virtual BOOL InitInstance();
   virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
+  void		EnableAccelerator()						{ m_bUseAccelerator = true; }
+  void		DisableAccelerator()					{ m_bUseAccelerator = false; }
+
   afx_msg void OnHelp();
 
   DECLARE_MESSAGE_MAP()
+
+protected:
+	bool		m_bUseAccelerator;
     };
 
 //-----------------------------------------------------------------------------
