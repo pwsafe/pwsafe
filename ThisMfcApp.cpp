@@ -44,7 +44,10 @@ ThisMfcApp::ThisMfcApp() :
 ThisMfcApp::~ThisMfcApp()
 {
 	if ( m_pMRU )
+	{
 		m_pMRU->WriteList();
+		delete m_pMRU;
+	}
 
    /*
      apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
