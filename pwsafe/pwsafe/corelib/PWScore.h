@@ -79,8 +79,10 @@ class PWScore {
   CMyString m_currfile; // current pw db filespec
   unsigned char *m_passkey; // encrypted by session key
   unsigned int m_passkey_len; // Length of cleartext passkey
-  unsigned char m_session_key[20];
-  unsigned char m_session_salt[20];
+  static unsigned char m_session_key[20];
+  static unsigned char m_session_salt[20];
+  static unsigned char m_session_initialized;
+
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, int len,

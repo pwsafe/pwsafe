@@ -13,19 +13,29 @@ using namespace std;
 #include "BlowFish.h"
 #include "PWSprefs.h"
 
+unsigned char PWScore::m_session_key[20]; unsigned char 
+PWScore::m_session_salt[20]; unsigned char 
+PWScore::m_session_initialized = false;
+
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 		     m_usedefuser(false), m_defusername(_T("")),
 		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
 		     m_passkey(NULL), m_passkey_len(0)
 {
-  int i;
 
-  srand((unsigned)time(NULL));
-  CItemData::SetSessionKey(); // per-session initialization
-  for (i = 0; i < sizeof(m_session_key); i++)
-    m_session_key[i] = newrand();
-  for (i = 0; i < sizeof(m_session_salt); i++)
-    m_session_salt[i] = newrand();
+  if (!PWScore::m_session_initialized)
+  {
+	int i;
+
+	srand((unsigned)time(NULL));
+	CItemData::SetSessionKey(); // per-session initialization
+	for (i = 0; i < sizeof(m_session_key); i++)
+		m_session_key[i] = newrand();
+	for (i = 0; i < sizeof(m_session_salt); i++)
+		m_session_salt[i] = newrand();
+
+	PWScore::m_session_initialized = true;
+  }
 
 }
 
