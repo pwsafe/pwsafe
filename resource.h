@@ -147,6 +147,8 @@
 #define IDC_YES_GROUP                   1097
 #define IDC_GROUP_NAME                  1098
 #define IDC_READONLY                    1100
+#define IDC_HOTKEY_CTRL                 1102
+#define IDC_HOTKEY_ENABLE               1103
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -203,7 +205,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1102
+#define _APS_NEXT_CONTROL_VALUE         1104
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

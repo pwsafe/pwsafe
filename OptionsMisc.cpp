@@ -41,15 +41,45 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
 	DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
 	DDX_Radio(pDX, IDC_DOUBLE_CLICK_COPIES, m_doubleclickaction);
+	DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_hotkey_enabled);
+	DDX_Control(pDX, IDC_HOTKEY_CTRL, m_hotkey);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(COptionsMisc, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsMisc)
-		// NOTE: the ClassWizard will add message map macros here
+	ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+BOOL COptionsMisc::OnInitDialog() 
+{
+  CPropertyPage::OnInitDialog();
+
+  m_hotkey.SetHotKey(LOWORD(m_hotkey_value),HIWORD(m_hotkey_value));
+  if (m_hotkey_enabled == FALSE)
+    m_hotkey.EnableWindow(FALSE);
+
+  return TRUE;
+}
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc message handlers
+
+void COptionsMisc::OnEnableHotKey() 
+{
+  if (((CButton*)GetDlgItem(IDC_HOTKEY_ENABLE))->GetCheck() == 1)
+    GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(TRUE);
+  else
+    GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(FALSE);
+}
+
+void COptionsMisc::OnOK() 
+{
+  UpdateData(TRUE);
+  WORD wVirtualKeyCode, wModifiers;
+  m_hotkey.GetHotKey(wVirtualKeyCode, wModifiers);
+  DWORD v = wVirtualKeyCode | (wModifiers << 16);
+  m_hotkey_value = v;
+  CPropertyPage::OnOK();  
+}

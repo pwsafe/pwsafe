@@ -102,6 +102,8 @@ DboxMain::OnOptions()
    // of the radio buttons in the following :-)
    misc.m_doubleclickaction = prefs->
      GetPref(PWSprefs::IntPrefs::DoubleClickAction);
+   misc.m_hotkey_value = DWORD(prefs->GetPref(PWSprefs::IntPrefs::HotKey));
+   misc.m_hotkey_enabled = prefs->GetPref(PWSprefs::BoolPrefs::HotKeyEnabled) ? TRUE : FALSE;
 
    optionsDlg.AddPage( &display );
    optionsDlg.AddPage( &security );
@@ -182,6 +184,10 @@ DboxMain::OnOptions()
      prefs->SetPref(PWSprefs::IntPrefs::DoubleClickAction,
 		    misc.m_doubleclickaction);
 
+     prefs->SetPref(PWSprefs::BoolPrefs::HotKeyEnabled,
+		    misc.m_hotkey_enabled == TRUE);
+     prefs->SetPref(PWSprefs::IntPrefs::HotKey,
+		    misc.m_hotkey_value);
      /*
      ** Update string in database, if necessary & possible
      */
@@ -224,6 +230,16 @@ DboxMain::OnOptions()
 	  KillTimer(TIMER_USERLOCK);
 	}
       SetIdleLockCounter(security.m_IdleTimeOut);
+
+      // Handle HotKey setting
+      if (misc.m_hotkey_enabled == TRUE) {
+	WORD v;
+	v = WORD((misc.m_hotkey_value & 0xff) |
+      ((misc.m_hotkey_value & 0xff0000) >> 8));
+	SendMessage(WM_SETHOTKEY, v);
+      } else {
+	SendMessage(WM_SETHOTKEY, 0);
+      }
 
       /*
        * Here are the old (pre 2.0) semantics:

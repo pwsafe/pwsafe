@@ -26,8 +26,10 @@ public:
 	BOOL	m_saveimmediately;
 	BOOL	m_escexits;
 	int     m_doubleclickaction;
+	BOOL    m_hotkey_enabled;
+	CHotKeyCtrl	m_hotkey;
 	//}}AFX_DATA
-
+	DWORD m_hotkey_value;
 
 // Overrides
 	// ClassWizard generate virtual function overrides
@@ -38,9 +40,11 @@ public:
 
 // Implementation
 protected:
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
 	// Generated message map functions
 	//{{AFX_MSG(COptionsMisc)
-		// NOTE: the ClassWizard will add member functions here
+	afx_msg void OnEnableHotKey();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

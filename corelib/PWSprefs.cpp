@@ -42,6 +42,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("LockOnIdleTimeout"), true, true},
   {_T("EscExits"), true, true},
   {_T("IsUTF8"), false, true},
+  {_T("HotKeyEnabled"), false, true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
@@ -53,6 +54,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("pwlendefault"), 8, true},
   {_T("maxmruitems"), 4, true},
   {_T("IdleTimeout"), 5, true},
+  {_T("HotKey"), 0, true}, // zero means disabled, !=0 is key code.
   {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
 };
 
