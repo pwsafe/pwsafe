@@ -1,10 +1,10 @@
 $Id$
 
-Password Safe 2.06 Release Note - October 2004
+Password Safe 2.07 Release Note - November 2004
 ==============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.06. For a short description of Password
+with Password Safe version 2.07. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
@@ -12,6 +12,32 @@ releases may be found in the file ChangeLog.txt.
 
 This is a maintenance release, adding a couple of minor features,
 fixing a couple of bugs.
+
+Bugs fixed in 2.07:
+===================
+[1043438] Idle time lockout now works for idle times other than one
+minute.
+[1060241] Changing preference with no database opened no longer pops
+up error message.
+[1006234] Choosing "Cancel" in the Enter Password dialog box now exits
+the application.
+[1065049] Fixed broken link to Blowfish algorithm reference in Help.
+[1021879] Enter on a tree-item expands/collapses the list under that
+item.
+[1055968,1030060] Import text now handles Notes that are more than one
+line long (as long as the entire note is "within double quotes").
+
+New Features for 2.07:
+======================
+[885984] It is now possible to merge two different databases (File->Merge)
+[1055961, 1030775, 947841] The action taken upon double-clicking an
+entry can now be configured (via Manage->Misc): Either copy the
+password to the clipboard or edit/view the entry.
+[] The Import from text function is now more flexible: the field
+separator can be configured, and the imported entries may be under a
+common group or not.
+[] It is now possible to import text files exported by KeePass.
+[] The English online help file has been rewritten.
 
 Bugs fixed in 2.06:
 ===================
@@ -24,6 +50,8 @@ key or to exit when it is pressed (Manage->Options->Misc).
 
 New Features for 2.06:
 ======================
+[958343] PasswordSafe can now be configured to lock automatically
+after a predefined idle time.
 [998966] In an "autotype" string, \d followed by up to 3 digits will
 cause the program to pause that many milliseconds between characters
 from that moment onwards.
@@ -111,6 +139,9 @@ do nothing).
 
 
 $Log$
+Revision 1.15  2004/11/24 16:13:12  ronys
+Updated for 2.07
+
 Revision 1.14  2004/10/08 05:56:02  ronys
 Updated for 2.06
 

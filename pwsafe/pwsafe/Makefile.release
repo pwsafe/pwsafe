@@ -9,7 +9,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 2.06
+RELEASENAME = 2.07
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -84,6 +84,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.10  2004/11/24 16:14:15  ronys
+# Updated for 2.07
+#
 # Revision 1.9  2004/11/02 18:29:48  ronys
 # Updated for move to new machine
 #
