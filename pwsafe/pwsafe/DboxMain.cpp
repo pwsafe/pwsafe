@@ -783,7 +783,8 @@ DboxMain::OnOK()
    }
    else
    {
-      ClearClipboard();
+     if (app.GetProfileInt("", "dontaskminimizeclearyesno", FALSE) == TRUE)
+       ClearClipboard();
       app.m_pMainWnd = NULL;
    }
 
