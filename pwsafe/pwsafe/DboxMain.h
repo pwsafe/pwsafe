@@ -23,6 +23,8 @@ DECLARE_HANDLE(HDROP);
 
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
+// timer event number used to support lock on user-defined timeout
+#define TIMER_USERLOCK 0x05
 
 
 //-----------------------------------------------------------------------------
@@ -239,7 +241,10 @@ private:
   void startLockCheckTimer();
   void ExtractAutoTypeCmd(CMyString &str);
   bool m_LockDisabled; // set when a dialog box is open, to avoid confusion
-
+  UINT m_IdleLockCountDown;
+  void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
+  void ResetIdleLockCounter();
+  bool DecrementAndTestIdleLockCounter();
 };
 
 // Following used to keep track of display vs data
