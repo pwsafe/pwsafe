@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Опции Password Safe</title>
+    
+
+
+ <link rel="stylesheet" type="text/css" href="style.css"></head>
+
+  <body bgcolor="#ffffff" text="#000000">
+
+    
+
+    
+<h1><font size="+2">Опции Password Safe</font></h1>
+
+
+    
+
+    <p>Настраиваемые опции разделены на следующие категории:<br>
+<a href="#display">Display </a>- опции, относящиеся к тому, как отображается PasswordSafe<br>
+<a href="#security">Security </a>- опции, имеющее отношение к безопасности программы<br>
+<a href="#PasswordPolicy">Password Policy</a> - Определяют параметры для автоматически генерируемых паролей<br>
+<a href="#username">Username </a>- Определяет имя пользователя по умолчанию для новых записей<br>
+<a href="#misc">Misc </a>- Разные настройки<br>
+</p>
+<h2><a name="display"></a>Display</h2>
+<p><span style="font-weight: bold;">Always keep PasswordSafe on top</span> - При выборе этой опции PasswordSafe всегда будет виден.<br>
+<span style="font-weight: bold;">Show Password in display list</span> - Если выбрать эту опцию, то при отображении записей в главном окне в виде списка будет добавлена дополнительная колонка, показывающая пароль для каждой записи. <span style="font-style: italic; color: red;">Включать эту опцию не рекомендуется, так как открывается потенциальная брешь в системе безопасности.</span><br>
+<span style="font-weight: bold;">Show password by default in edit mode</span> - Выбор этой опции приведет к тому, что пароли будут показываться в диалоговом окне <a href="pws_edit.htm">Edit/View Entry</a>. По умолчанию показывается ряд звездочек ('*****'), пока вы не нажмете кнопку "Show Password".<br>
+</p>
+<h2><b><a name="security"></a>Security</b></h2>
+
+
+    
+<p><b>Clear the clipboard upon minimize or exit - </b>Если вы выберете эту опцию, буфер обмена будет очищен при сворачивании или выходе из PasswordSafe.</p>
+
+
+    
+<p><b>Lock password database on minimize </b>- Если вы выберете эту опцию, секретная информация (такая, как ваша сейфовая комбинация и названия записей) будет стерта из памяти, когда Password Safe свернут. Когда вы восстановите Password Safe, он запросит у вас сейфовую комбинацию.</p>
+
+
+    <p><b>Confirm password database save on minimize - </b>Если вы выберете эту опцию, Password Safe спросит вас о необходимости сохранения изменений в базе данных при сворачивании. Если эта опция не выбрана, база данных будет сохранена автоматически.</p>
+
+    
+
+    
+
+    <p><b>Confirm item copy to clipboard </b>- Если выбрать эту опцию, Password Safe известит вас, когда пароль будет скопирован в буфер обмена. После того, как вы привыкнете к тому, как работает Password Safe, вам, скорее всего, захочется отключить эту опцию.<br>
+</p>
+<h2><a name="PasswordPolicy"></a>Password Policy</h2>
+
+
+    
+
+    <p><b>Default password length </b>- Это поле определяет длину пароля, генерируемого при нажатии кнопки "Generate Random Password" в диалоговых окнах <a href="pws_edit.htm">Edit/View Entry</a> и <a href="pws_add_data.htm">Add Entry</a>. Минимальная длина -- 4 символа, максимальная -- 1024.</p>
+<p><b>Use lowercase letters </b>- Выберите эту опцию, если хотите, чтобы сгенерированный пароль содержал буквы нижнего регистра.</p>
+<p><b>Use UPPERCASE letters </b>- Выберите эту опцию, если хотите, чтобы сгенерированный пароль содержал буквы верхнего регистра.</p>
+<p><b>Use digits </b>- Выберите эту опцию, если хотите, чтобы сгенерированный пароль содержал цифры (0-9).<br>
+<br>
+<span style="font-weight: bold;">Use symbols (i.e., ,%,$, etc.) </span>- Выберите эту опцию, если хотите, чтобы сгенерированный пароль содержал и другие символы, помимо букв и цифр<span style="font-weight: bold;">.<br>
+</span></p>
+<p><span style="font-weight: bold;"><span style="font-weight: bold;">Use only easy-to-read characters (i.e., without "0" and "O") </span></span>-
+Выбор этой опции приведет к тому, что сгенерированный пароль не будет содержать визуально похожих символов, таких, как цифра ноль и заглавная буква О. Это особенно полезно, если вы не копируете и вставляете пароли, а предпочитаете посмотреть их и вводить вручную.<span style="font-weight: bold;"><span style="font-weight: bold;"></span><br>
+</span></p>
+<h2><a name="username"></a>Username</h2>
+
+
+    <p><b>Use a default username </b>- Если выбрана эта опция, имя пользователя, введенное в поле ниже, будет автоматически вставляться в поле Username диалогового окна Add Entry. Также, если поле Username оставлено незаполненным, будет вставлено имя пользователя по умолчанию.</p>
+
+    
+
+    
+
+    <p><b>Query user to set username as default </b>- Если выбрана эта опция, каждый раз, когда вы вводите имя пользователя для новой записи, а имя пользователя по умолчанию не задано, вам будет предлагаться сделать его именем пользователя по умолчанию. Смотрите выше дополнительную информацию об именах пользователя по умолчанию. </p>
+<h2><span style="font-weight: bold;"><a name="misc"></a>Misc</span></h2>
+<b>Confirm deletion of items </b>- Когда выбрана эта опция, PasswordSafe будет запрашивать подтверждение на удаление выбранной записи, когда вы выберете команду Delete Entry.<br>
+<br>
+<span style="font-weight: bold;">Save database immediately after Edit or Add </span>-
+Выбор этой опции заставит PasswordSafe сохранять изменения в базе данных немедленно, а не ждать команд Save или Save
+As.<br>
+</body></html>

@@ -1,0 +1,76 @@
+
+
+BODY	{
+	font-family:"Verdana",arial,helvetica,tahoma;
+	color:black;
+	font-size="small";
+	background-color: white;
+
+	}
+
+
+A:link {color: #0069CE; text-decoration: none;} 
+A:visited {color: #0069CE; text-decoration: none;}
+A:active {color: #B22222; text-decoration: none;}
+A:hover { Color: maroon; text-decoration: underline;}
+}
+
+ DD {
+          text-indent: 10%;
+     }
+
+li p
+	{
+	margin-top: .75em;
+	margin-bottom: 1.25em;	
+	}	
+
+li
+	{
+	margin-left: .15in;
+	}	 
+
+ol li	
+	{
+	margin-left: .10in;
+	} 
+
+ul
+	{
+	list-style: disc;
+	}
+
+ul.onestep
+	{
+	list-style: disc;
+	}
+
+
+
+
+
+/* tables */
+
+
+table 	{ font-size: 100%;
+		text-align: left;
+		margin-top: 0em;
+		}
+
+tr		{ margin: .25em;
+		vertical-align: top;
+		}
+			
+th 		{ text-align: left;
+		margin: .25em;
+		vertical-align: top;
+		background: #ffffff;
+		}
+						
+td		{ margin: .25em;
+		
+		vertical-align: top;
+		padding: 0;
+		}
+
+
