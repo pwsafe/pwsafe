@@ -1,6 +1,6 @@
 $Id$
 
-Password Safe 2.04 Release Note - ??? 2004
+Password Safe 2.04 Release Note - July 2004
 ===========================================
 
 This note describe the new features, fixed bugs and known problems
@@ -16,10 +16,35 @@ fixing a couple of bugs.
 Bugs fixed in 2.04:
 ===================
 [970036] 24 bit displays now display toolbar correctly
+[971114] Switch to list view now works with new toolbar (silly typo in
+2.03)
+[972460] Master password is no longer kept in memory in the clear
+[899400, 899414] Drag & drop is now accurate
+[864828] Icon should now be visible in taskbar on all versions of
+Windows and all color schemes.
+[992073] Double clicking a group icon now does the right thing, i.e.,
+nothing
+[899412] Editing group names is now easier: Can now be invoked via F2
+and right-click, finished by Enter, and cancelled by Escape.
+[871471] Key shortcuts for Yes/No added to several dialog boxes.
+[986874] "Ooops" message no longer appears upon invoking Browse to URL
+[unreported] PasswordSafe now compiles cleanly under Visual Studio
+.NET as well a Visual Studio 6.0
 
 New Features for 2.04:
 ======================
-[] 
+[851563, 654677] Minimize to System Tray now supported. This is a configurable
+feature, active by default. Clearing the checkbox in
+Manage->Options->Display will restore the old behaviour.
+[986345] The popup menu for entries now displays the more frequently
+used operations (copy username & password) first.
+[unreported] There's a new "lock on workstation lock" option in
+Manage->Options->Security
+[969038] Autotype feature added: This is a really nice feature that
+pastes the selected entry's information (by default, username, tab,
+password, tab, enter) to the current browser field. See the online
+help for more details (See Autotype under "PasswordSafe Overview").
+[978070] Search (Find) function is now better documented.
 
 Bugs fixed in 2.03:
 ===================
@@ -43,9 +68,20 @@ Known Problems:
 Edit the Group field of the categories entries. For example, to make
 category "b" a top level category instead of under "a", change all
 its entries Group fields from "a.b" to "b".
+[unreported] If the Tray Icon feature is enabled, the icon will not
+reappear if Explorer crashes and restarts (you have to exit PWSafe, or
+use TaskManager to terminate the process, and restart PWSafe to get
+the tray icon back).
+[unreported] Some of the menuitems in the Edit menu are relevant only
+when an entry is selecte, or only when the tree view is active. They
+should be greyed-out or removed when irrelevant (currently, they just
+do nothing).
 
 
 $Log$
+Revision 1.11  2004/07/22 03:41:26  ronys
+Update for 2.04
+
 Revision 1.10  2004/06/11 03:57:30  ronys
 Moved older changes from ReleaseNotes to ChangeLog.
 
