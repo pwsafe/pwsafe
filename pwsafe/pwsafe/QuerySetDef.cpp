@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+
 #include "QuerySetDef.h"
 
 #ifdef _DEBUG
@@ -36,7 +40,7 @@ END_MESSAGE_MAP()
 void CQuerySetDef::OnOK() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "querysetdef", not(m_querycheck));
+   app.WriteProfileInt("", "querysetdef", m_querycheck ? 0 : 1);
    CDialog::OnOK();
 }
 
@@ -44,7 +48,7 @@ void CQuerySetDef::OnOK()
 void CQuerySetDef::OnCancel()
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "querysetdef", not(m_querycheck));
+   app.WriteProfileInt("", "querysetdef", m_querycheck ? 0 : 1);
    CDialog::OnCancel();
 }
 //-----------------------------------------------------------------------------
