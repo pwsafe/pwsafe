@@ -115,7 +115,7 @@ CPasskeyChangeDlg::OnHelp()
 #else
    //WinHelp(0x20083, HELP_CONTEXT);
    ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/pws_combo_chg.htm",
+              "pwsafe.chm::/html/change_combo.html",
               HH_DISPLAY_TOPIC, 0);
 #endif
 }

@@ -278,7 +278,7 @@ void CEditDlg::OnHelp()
 #else
 	::HtmlHelp(
 		NULL,
-		"pwsafe.chm::/html/pws_edit.htm",
+		"pwsafe.chm::/html/entering_pwd.html",
 		HH_DISPLAY_TOPIC, 0);
 
 #endif

@@ -90,7 +90,7 @@ CCryptKeyEntry::OnHelp()
 #else
    //WinHelp(0x20084, HELP_CONTEXT);
    ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/pws_combo_entry.htm",
+              "pwsafe.chm::/html/create_new_db.html",
               HH_DISPLAY_TOPIC, 0);
 #endif
 }
