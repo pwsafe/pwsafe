@@ -1,22 +1,42 @@
 [OPTIONS]
+Auto Index=Yes
 Compatibility=1.1 or later
 Compiled file=pwsafe.chm
-Contents file=html\pws_toc.hhc
-Default topic=html\pws_intro.htm
+Contents file=pwsafe.hhc
+Default topic=html\Welcome.html
+Display compile notes=No
 Display compile progress=No
+Error log file=msgs
+Full-text search=Yes
+Index file=pwsafe.hhk
 Language=0x409 English (United States)
+Title=HTML Help for Password Safe
 
 
 [FILES]
-html\pws_edit.htm
-html\pws_main.htm
-html\pws_add_data.htm
-html\pws_combo_chg.htm
-html\pws_combo_entry.htm
-html\pws_combo_err.htm
-html\pws_intro.htm
-html\pws_import.htm
-html\pws_opts.htm
+html\popups.js
+html\style.css
+html\Welcome.html
+html\create_new_db.html
+html\entering_pwd.html
+html\retrieve_pwd.html
+html\about_combinations.html
+html\credits.html
+html\about_pws.html
+html\upgrade_from_v1x.html
+html\autotype.html
+html\backup_and_restore.html
+html\menu_toolbar.html
+html\file_menu.html
+html\edit_menu.html
+html\view_menu.html
+html\help_menu.html
+html\manage_menu.html
+html\username_tab.html
+html\display_tab.html
+html\misc_tab.html
+html\security_tab.html
+html\change_combo.html
 
 [INFOTYPES]
 

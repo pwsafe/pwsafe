@@ -9,11 +9,16 @@ BODY	{
 	}
 
 
+
 A:link {color: #0069CE; text-decoration: none;} 
 A:visited {color: #0069CE; text-decoration: none;}
 A:active {color: #B22222; text-decoration: none;}
 A:hover { Color: maroon; text-decoration: underline;}
-}
+
+.instr	{
+	 margin-left: .25in;
+	}
+
 
  DD {
           text-indent: 10%;
@@ -72,5 +77,3 @@ td		{ margin: .25em;
 		vertical-align: top;
 		padding: 0;
 		}
-
-
