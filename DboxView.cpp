@@ -300,6 +300,8 @@ DboxMain::OnDelete()
 void
 DboxMain::OnEdit() 
 {
+  if (m_OnEditDisabled) // set/cleared by MyTreeCtrl inline edit support
+    return;
   if (SelItemOk() == TRUE)
     {
       CItemData *ci = getSelectedItem();
@@ -444,9 +446,14 @@ DboxMain::OnCancel()
    OnOK();
 }
 
-void DboxMain::UpdateListItemTitle(int lindex, LPTSTR lpszText)
+void DboxMain::UpdateListItemTitle(int lindex, const CString &newTitle)
 {
-  m_ctlItemList.SetItemText(lindex, 0, lpszText);
+  m_ctlItemList.SetItemText(lindex, 0, newTitle);
+}
+
+void DboxMain::UpdateListItemUser(int lindex, const CString &newName)
+{
+  m_ctlItemList.SetItemText(lindex, 1, newName);
 }
 
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -912,6 +919,12 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
   {
     HTREEITEM ti;
     CMyString treeDispString = title;
+    CMyString user = itemData.GetUser();
+    if (!user.IsEmpty()) {
+      treeDispString += _T(" [");
+      treeDispString += user;
+      treeDispString += _T("]");
+    }
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);

@@ -95,31 +95,88 @@ void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   } else {
     m_BeginEditText = _T("");
   }
+  DboxMain *parent = (DboxMain *)GetParent();
+  parent->DisableOnEdit(true); // so that Enter doesn't invoke Edit dialog
   *pLResult = FALSE; // TRUE cancels label editing
+}
+
+static void splitLeafText(const char *lt, CString &newTitle, CString &newUser)
+{
+  CString leafText(lt);
+  int leftBraceIndex = leafText.Find('[');
+
+  if (leftBraceIndex == -1) {
+    newTitle = leafText;
+    newUser = _T("");
+  } else {
+    newTitle = leafText.Left(leftBraceIndex - 1);
+    int rightBraceIndex = leafText.Find(']');
+    if (rightBraceIndex == -1) {
+      newUser = leafText.Mid(leftBraceIndex + 1);
+    } else {
+      newUser = leafText.Mid(leftBraceIndex + 1, rightBraceIndex - leftBraceIndex - 1);
+    }
+  }
+}
+
+static void makeLeafText(CString &treeDispString, const CString &title, const CString &user)
+{
+  treeDispString = title;
+  if (!user.IsEmpty()) {
+    treeDispString += _T(" [");
+    treeDispString += user;
+    treeDispString += _T("]");
+    }
 }
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
+  static bool inEdit = false;
+
+  if (inEdit) { // happens when edit control manipulated - see below
+    inEdit = false;
+    *pLResult = TRUE;
+    return;
+  }
   TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
+  DboxMain *parent = (DboxMain *)GetParent();
+  parent->DisableOnEdit(false); // Allow Enter to invoke Edit dialog
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
       ptvinfo->item.pszText[0] != '\0') { // empty if text deleted - not allowed
-    DboxMain *parent = (DboxMain *)GetParent();
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     if (IsLeafNode(ptvinfo->item.hItem)) {
+      /*
+       * Leaf text is of the form: title [user]
+       * If edited text contains '[', then the user is updated
+       * If not, then the user is retrieved and the leaf is updated
+       */
       // Update leaf's title
       DWORD itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
-      ci->SetTitle(ptvinfo->item.pszText);
+      CString newTitle, newUser;
+      splitLeafText(ptvinfo->item.pszText, newTitle, newUser);
+      if (newUser.IsEmpty())
+	newUser = CString(ci->GetUser());
+      CString treeDispString;
+      makeLeafText(treeDispString, newTitle, newUser);
+      // Following needed to force display to update at this stage.
+      inEdit = true; // hack to exit ugly recursion.
+      CEdit *ed = EditLabel(ti);
+      ASSERT(ed != NULL);
+      ed->SetWindowText(treeDispString);
+      SetItemText(ti, treeDispString);
+      ci->SetTitle(newTitle); ci->SetUser(newUser);
       // update corresponding List text
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       ASSERT(di != NULL);
       int lindex = di->list_index;
-      parent->UpdateListItemTitle(lindex, ptvinfo->item.pszText);
+      parent->UpdateListItemTitle(lindex, newTitle);
+      parent->UpdateListItemUser(lindex, newUser);
     } else {
-      // Update all leaf chldren with new path element
+      // Update all leaf children with new path element
       // prefix is path up to and NOT including renamed node
       CString prefix;
       HTREEITEM parent, current = ti;

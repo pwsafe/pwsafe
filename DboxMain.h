@@ -53,7 +53,9 @@ public:
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}
   void SetChanged(bool changed) {m_core.SetChanged(changed);} // for MyTreeCtrl
-  void UpdateListItemTitle(int lindex, LPTSTR lpszText); // when title edited in tree
+  void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
+  void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
+  void DisableOnEdit(bool flag) {m_OnEditDisabled = flag;}
 
 	//{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -199,6 +201,7 @@ protected:
 
 private:
   PWScore m_core;
+  bool m_OnEditDisabled;
 };
 
 // Following used to keep track of display vs data
