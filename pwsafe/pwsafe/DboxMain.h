@@ -22,8 +22,10 @@ public:
    // default constructor
    DboxMain(CWnd* pParent = NULL);
 
-
-  POSITION Find(const CMyString &str); // find by name, exact match
+ // Find in m_pwlist by title and user name, exact match
+  POSITION Find(const CMyString &a_title, const CMyString &a_user);
+ // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
+  POSITION Find(int i);
   // FindAll is used by CFindDlg, returns # of finds.
   // indices allocated by caller
   int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
