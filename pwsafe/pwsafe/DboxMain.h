@@ -58,6 +58,7 @@ public:
 	CMyListCtrl	m_ctlItemList;
 #else
 	CListCtrl	m_ctlItemList;
+        CTreeCtrl       m_ctlItemTree;
 #endif
 	//}}AFX_DATA
 
