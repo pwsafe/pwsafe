@@ -440,7 +440,7 @@ DboxMain::OnDestroy()
 {
   const CMyString filename(m_core.GetCurFile());
   // The only way we're the locker is if it's locked & we're !readonly
-  if (!m_IsReadOnly && m_core.IsLockedFile(filename))
+  if (!filename.IsEmpty() && !m_IsReadOnly && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
    CDialog::OnDestroy();
 }
