@@ -247,7 +247,18 @@ int PWSfile::WriteRecord(const CItemData &item)
   case V17: {
     // 1.x programs totally ignore the type byte, hence safe to write it
     // (no need for two WriteCBC functions)
-    WriteCBC(CItemData::NAME, item.GetName());
+
+    // Prepend 2.0 group field to name, if not empty
+    // i.e. group "finances" name "broker" -> "finances.broker"
+
+    CMyString group = item.GetGroup();
+    CMyString name = item.GetName();
+    if (!group.IsEmpty()) {
+      group += _T(".");
+      group += name;
+      name = group;
+    }
+    WriteCBC(CItemData::NAME, name);
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
     WriteCBC(CItemData::NOTES, item.GetNotes());
     return SUCCESS;
@@ -259,6 +270,7 @@ int PWSfile::WriteRecord(const CItemData &item)
       item.GetUUID(uuid_array);
       WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
     }
+    WriteCBC(CItemData::GROUP, item.GetGroup());
     WriteCBC(CItemData::TITLE, item.GetTitle());
     WriteCBC(CItemData::USER, item.GetUser());
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
@@ -323,6 +335,7 @@ int PWSfile::ReadRecord(CItemData &item)
     item.SetNotes(tempdata);
     // No UUID, so we create one here
     item.CreateUUID();
+    // No Group - currently leave empty
     return (numread > 0) ? SUCCESS : END_OF_FILE;
   }
   case V20: {
@@ -351,9 +364,10 @@ int PWSfile::ReadRecord(CItemData &item)
 	    uuid_array[i] = ptr[i];
 	  item.SetUUID(uuid_array); break;
 	}
+	case CItemData::GROUP:
+	  item.SetGroup(tempdata); break;
 	  // just silently ignore fields we don't support.
 	  // this is forward compatability...
-	case CItemData::GROUP:
 	case CItemData::CTIME:
 	case CItemData::MTIME:
 	case CItemData::ATIME:

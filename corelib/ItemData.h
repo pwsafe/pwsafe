@@ -46,6 +46,7 @@ public:
    CMyString GetPassword() const;
    CMyString GetNotes() const;
    void GetUUID(uuid_array_t &) const; // V20
+   CMyString GetGroup() const; // V20
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name); // V17 - deprecated - replaced by GetTitle & GetUser
@@ -53,7 +54,8 @@ public:
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
    void SetNotes(const CMyString &notes);
-   void SetUUID(const uuid_array_t &UUID);
+   void SetUUID(const uuid_array_t &UUID); // V20
+   void SetGroup(const CMyString &group); // V20
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
@@ -66,6 +68,7 @@ private:
   CItemField m_Password;
   CItemField m_Notes;
   CItemField m_UUID;
+  CItemField m_Group;
   //The salt value
   unsigned char m_salt[SaltLength];
   // Following used by display methods - we just keep it handy
