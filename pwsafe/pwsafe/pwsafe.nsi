@@ -279,8 +279,16 @@ SectionEnd
 
 Section "Uninstall"
 
-  ; Delete all files in the directory
-  RMDir /r "$INSTDIR"
+  ; Delete all installed files in the directory
+  Delete "$INSTDIR\pwsafe.exe"
+  Delete "$INSTDIR\pwsafe.chm"
+  Delete "$INSTDIR\LICENSE"
+  Delete "$INSTDIR\README.TXT"
+  Delete "$INSTDIR\ReleaseNotes.txt"
+  Delete "$INSTDIR\ChangeLog.txt"
+
+  ; remove directory if it's empty
+  RMDir  "$INSTDIR"
 
   ; Delete the registry key for Password Safe
   DeleteRegKey HKCU "Software\Counterpane Systems\Password Safe"
@@ -301,6 +309,9 @@ Section "Uninstall"
 SectionEnd
 ;
 ; $Log$
+; Revision 1.6  2005/02/25 10:38:39  ronys
+; [1123373] Uninstall will only remove installed files, and will delete the installation directory if and only if it's empty.
+;
 ; Revision 1.5  2004/06/11 03:57:30  ronys
 ; Moved older changes from ReleaseNotes to ChangeLog.
 ;
