@@ -180,6 +180,7 @@ Section "Program Files" ProgramFiles
   File "LICENSE"
   File "README.TXT"
   File "ReleaseNotes.txt"
+  File "ChangeLog.txt"
   
   ; Store installation folder
   WriteRegStr HKCU \
@@ -300,6 +301,9 @@ Section "Uninstall"
 SectionEnd
 ;
 ; $Log$
+; Revision 1.5  2004/06/11 03:57:30  ronys
+; Moved older changes from ReleaseNotes to ChangeLog.
+;
 ; Revision 1.4  2004/06/09 19:28:12  ronys
 ; Merged dlacykusters fixes into post-2.03
 ;
