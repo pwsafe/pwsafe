@@ -11,10 +11,12 @@ class PWSfile {
  public:
   enum VERSION {V17, V20, VCURRENT = V20,
 		UNKNOWN_VERSION}; // supported file versions: V17 is last pre-2.0
-  enum {CANT_OPEN_FILE, UNSUPPORTED_VERSION, WRONG_VERSION,
-	WRONG_PASSWORD, END_OF_FILE, SUCCESS};
+  enum {SUCCESS = 0, FAILURE = 1, CANT_OPEN_FILE,
+	UNSUPPORTED_VERSION, WRONG_VERSION,
+	WRONG_PASSWORD, END_OF_FILE};
 
   static bool FileExists(const CMyString &filename);
+  static int RenameFile(const CMyString &oldname, const CMyString &newname);
 
   PWSfile(const CMyString &filename, const CMyString &passkey);
   ~PWSfile();

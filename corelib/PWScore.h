@@ -12,13 +12,14 @@ class PWScore {
  public:
 
   enum {
+    SUCCESS = 0,
+    FAILURE = 1,
     CANT_OPEN_FILE = -10,
     USER_CANCEL,
     WRONG_PASSWORD,
     UNKNOWN_VERSION,
     NOT_SUCCESS,
-    ALREADY_OPEN,
-    SUCCESS = 0,
+    ALREADY_OPEN
    };
 
   PWScore();

@@ -136,8 +136,7 @@ PWScore::ReadFile(const CMyString &a_filename,
 
 int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
 {
-  //XXX TBD
-  return PWScore::SUCCESS;
+  return PWSfile::RenameFile(oldname, newname);
 }
 
 
