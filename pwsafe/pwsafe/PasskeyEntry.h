@@ -18,11 +18,11 @@ public:
    { return m_status; }
 
 // Dialog Data
+   enum { IDD_BASIC = IDD_PASSKEYENTRY };
    //{{AFX_DATA(CPasskeyEntry)
-   enum { IDD = IDD_PASSKEYENTRY,
-          IDDFIRST = IDD_PASSKEYENTRY_FIRST };
+	enum { IDD = IDD_PASSKEYENTRY_FIRST };
    CMyString	m_passkey;
-   //}}AFX_DATA
+	//}}AFX_DATA
    CString	m_message;
 
 // Overrides
