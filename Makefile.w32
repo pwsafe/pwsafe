@@ -2,6 +2,7 @@
 #------------------------------------------------------------------------
 
 PLATFORM=win32
+#MAKEDEBUG=y
 
 ### The Microsoft toolset
 CC=cl.exe
@@ -9,10 +10,9 @@ CXX=cl.exe
 LINK=link.exe
 AR=link.exe -lib
 RC=rc.exe
-# note - this is not usually around
+# note - this is not usually around, but you should be able to find one
 RM=rm.exe
 
-### The Lockstar convention
 CXXFLAGS=$(DEBUG) $(DEFINES) $(OPTIONS) $(TEST) $(INCLUDES)
 CFLAGS=$(DEBUG) $(DEFINES) $(OPTIONS) $(TEST) $(INCLUDES)
 
@@ -40,16 +40,16 @@ SOURCE_FILES+=AddDlg.cpp
 SOURCE_FILES+=BlowFish.cpp
 SOURCE_FILES+=ClearQuestionDlg.cpp
 SOURCE_FILES+=ConfirmDeleteDlg.cpp
-SOURCE_FILES+=CryptKeyEntry.cpp
+#SOURCE_FILES+=CryptKeyEntry.cpp
 SOURCE_FILES+=EditDlg.cpp
-SOURCE_FILES+=FileDialogExt.cpp
+#SOURCE_FILES+=FileDialogExt.cpp
 SOURCE_FILES+=ItemData.cpp
 SOURCE_FILES+=MyString.cpp
 SOURCE_FILES+=OptionsDlg.cpp
 SOURCE_FILES+=PasskeyChangeDlg.cpp
 SOURCE_FILES+=PasskeyEntry.cpp
 SOURCE_FILES+=PasskeySetup.cpp
-SOURCE_FILES+=PasswordSafe.cpp
+#SOURCE_FILES+=PasswordSafe.cpp
 SOURCE_FILES+=DboxMain.cpp
 SOURCE_FILES+=QueryAddName.cpp
 SOURCE_FILES+=QuerySetDef.cpp
@@ -57,10 +57,11 @@ SOURCE_FILES+=RemindSaveDlg.cpp
 SOURCE_FILES+=sha1.cpp
 #SOURCE_FILES+=StdAfx.cpp
 SOURCE_FILES+=SysColStatic.cpp
+SOURCE_FILES+=ThisMfcApp.cpp
 SOURCE_FILES+=TryAgainDlg.cpp
 SOURCE_FILES+=UsernameEntry.cpp
 SOURCE_FILES+=Util.cpp
-SOURCE_FILES+=variables.cpp
+#SOURCE_FILES+=variables.cpp
 
 OBJECT_FILES = ${SOURCE_FILES:.cpp=.obj}
 
@@ -87,10 +88,12 @@ OPTIONS+=/GX # synchronous exception handling
 
 DEFINES+=/DWIN32
 ifeq ($(MAKEDEBUG),y)
+DEFINES+=/DDEBUG
 DEFINES+=/D_DEBUG
 else
 DEFINES+=/DNDEBUG
 endif
+DEFINES+=/DJPRDEBUG
 #DEFINES+=/D_CONSOLE
 DEFINES+=/D_MBCS
 DEFINES+=/D_WINDOWS
