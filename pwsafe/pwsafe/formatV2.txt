@@ -58,7 +58,7 @@ shortcomings:
 
    The Type byte for the above fields is 0.
 
-5. Following the Format Description Block will be the actual password
+4. Following the Format Description Block will be the actual password
    records. As for version 1.x, the order of records has no
    meaning. Each record consists of a fixed number of fields, with
    empty fields having a length of 0 in their first block.  Textual
@@ -67,7 +67,7 @@ shortcomings:
    (in network byte order), and refer to local time (I don't think
    timezones are a consideration for our needs).
 
-6. The fields for each record for version 2.0 are as follows:
+5. The fields for each record for version 2.0 are as follows:
 
    Name			      Type byte value	Type     Comments
    --------------------------------------------------------------
@@ -82,6 +82,7 @@ shortcomings:
    Last Access Time	      0x9		time_t  [3]
    Password Lifetime	      0xa		time_t  [4]
    Password Policy	      0xb		4 bytes [5]
+   End of Entry		      0xff		[empty] [6]
 
 [1] A globally unique identifier is needed in order to synchronize
 databases, i.e., between a handheld pocketPC device and a PC. The GUID
@@ -107,13 +108,21 @@ changed. Password lifetime is in seconds, and a value of zero means
 [5] Currently, the password policy is a global property. It makes
 sense, however, to want to control this on a per-entry basis. Four
 bytes seems sufficient to store the policy. Exact encoding TBD.
+[6] An explicit end of entry field is needed so that 2.x programs
+won't break when reading 2.y files where x != y. Alternately, we could
+have relied on the GUID field being the first, but this would have
+been a bit less elegant to parse, as well as less robust (suppose we
+decide to drop the GUID, or move it to the last field?).
 
-7. Conversion from 1.x databases to 2.x should be automatic. The user
+6. Conversion from 1.x databases to 2.x should be automatic. The user
    should be notified that the 1.x database will be renamed with a
    ".old" suffix added, and the 2.x saved with the old's original
    name.
 
 $Log$
+Revision 1.4  2003/07/17 04:16:06  ronys
+Added END field type
+
 Revision 1.3  2003/05/25 14:52:29  ronys
 Added GUID
 
