@@ -306,6 +306,7 @@ DboxMain::OnAddGroup()
   HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup);
   m_ctlItemTree.SelectItem(newGroup);
   m_TreeViewGroup = _T(""); // for next time
+  m_ctlItemTree.EditLabel(newGroup);
 }
 
 void
@@ -354,13 +355,37 @@ DboxMain::OnDelete()
 	  ChangeOkUpdate();
 	}
     }
+  else
+  {
+      // see if the user is just asking to delete an empty group.
+      if (m_ctlItemTree.IsWindowVisible()) {
+        HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+        if (ti != NULL && 
+            !m_ctlItemTree.GetItemData(ti) &&       // alternatively !m_ctlItemTree.IsLeafNode(ti)
+            !m_ctlItemTree.ItemHasChildren(ti))
+        {
+            HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            
+            m_ctlItemTree.DeleteItem(ti);
+            m_ctlItemTree.SelectItem(parent);
+        }
+      }
+  }
+}
+
+void
+DboxMain::OnRename() 
+{
+    // Renaming is only allowed while in Tree mode.
+    if (m_ctlItemTree.IsWindowVisible()) {
+        HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
+        if (hItem != NULL)
+            m_ctlItemTree.EditLabel(hItem);
+    }
 }
 
 void
 DboxMain::OnEdit() 
 {
-  if (m_OnEditDisabled) // set/cleared by MyTreeCtrl inline edit support
-    return;
   if (SelItemOk() == TRUE)
     {
       CItemData *ci = getSelectedItem();
@@ -855,6 +880,7 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
    CMyString itemURL;
 
    if (m_ctlItemList.IsWindowVisible()) {
+        // currently in flattened list view.
      m_ctlItemList.ScreenToClient(&local);
      item = m_ctlItemList.HitTest(local);
      if (item < 0)
@@ -872,13 +898,15 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
      if (ti != NULL) {
        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
        if (itemData != NULL) {
+           // right-click was on an item (LEAF)
 	 DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
 	 ASSERT(di != NULL);
 	 ASSERT(di->tree_item == ti);
 	 item = di->list_index;
 	 m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one
        } else {
-	 // NODE selected Show popup
+	 // right-click was on a group (NODE)
+         m_ctlItemTree.SelectItem(ti); 
 	 if (menu.LoadMenu(IDR_POPGROUP)) {
 	   CMenu* pPopup = menu.GetSubMenu(0);
 	   ASSERT(pPopup != NULL);
@@ -1043,6 +1071,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 CItemData *DboxMain::getSelectedItem() {
   CItemData *retval = NULL;
   if (m_ctlItemList.IsWindowVisible()) {
+    // flattened list mode.
     POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
     if (p) {
       int i = m_ctlItemList.GetNextSelectedItem(p);
@@ -1051,7 +1080,8 @@ CItemData *DboxMain::getSelectedItem() {
       DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
       ASSERT(di != NULL && di->list_index == i);
     }
-  } else { // tree control visible, go from HTREEITEM to index
+  } else {
+    // heirarchy tree mode; go from HTREEITEM to index
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     if (ti != NULL) {
       retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
