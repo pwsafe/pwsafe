@@ -168,7 +168,31 @@ By default, the clipboard will be cleared when you exit or minimize Password Saf
 To
 securely clear a password from the Windows clipboard, select the Clear
 Clipboard menu item. If another application has copied data to the
-clipboard, the clipboard will not be cleared.
+clipboard, the clipboard will not be cleared.<br>
+<h4>Perform Auto type <span style="color: blue;">[Ctrl+T]</span></h4>
+Autotype allows you to send keystrokes directly to the window behind
+password safe. This allows you to put your user and password into web
+forms, Terminal<br>
+Server Sessions, etc. with out copying and pasting. Invoking Autotype
+(from the Edit menu or by typing Ctrl+T) does the following:<br>
+<ol>
+  <li>Minimize PasswordSafe</li>
+  <li>Paste the Username of the currently selected entry to the current window (the last that was selected before PasswordSafe)</li>
+  <li>Tab to the next field</li>
+  <li>Paste the Password value<br>
+  </li>
+  <li>Simulate the Return key being pressed.<br>
+  </li>
+</ol>
+Note that this behaviour may be customized by adding a specially formatted text in the Notes field of an entry as follows:<br>
+&nbsp;&nbsp;&nbsp; autotype:\u\t\p\t\n<br>
+<br>
+This will send username (\u) then a tab (\t) then password (\p) then a
+second tab then the enter key (\n) - that is, the default behaviour. To
+send, for example, only the password, the following text should be
+added "autotype:\p\t\n". '\r' will send the Return key.<br>
+<br>
+You have to put the cursor in the text box that you need to start receiving the keystrokes before activating this feature.<br>
 <h3><span style="font-weight: bold;">View</span></h3>
 <h3><span style="font-weight: bold;"></span></h3>
 <p><span style="font-weight: bold;"></span>For selecting how the
