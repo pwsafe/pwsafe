@@ -155,6 +155,7 @@ protected:
    virtual void OnCancel();
    afx_msg void OnSize(UINT nType, int cx, int cy);
    afx_msg void OnAbout();
+   afx_msg void OnPasswordSafeWebsite();
    afx_msg void OnBrowse();
    afx_msg void OnCopyUsername();
    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
