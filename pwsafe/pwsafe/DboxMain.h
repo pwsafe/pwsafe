@@ -101,6 +101,7 @@ protected:
    CToolBar m_wndToolBar;
    CStatusBar m_statusBar;
    BOOL m_toolbarsSetup;
+   UINT m_toolbarMode;
 #endif
 
    bool m_windowok;
@@ -197,6 +198,7 @@ protected:
 #endif
 	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
+        afx_msg void OnInitMenu(CMenu* pMenu);
 	afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	//}}AFX_MSG

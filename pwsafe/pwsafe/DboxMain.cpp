@@ -190,6 +190,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #endif
    ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
    ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
+   ON_WM_INITMENU()
    ON_WM_INITMENUPOPUP()
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
@@ -268,18 +269,10 @@ DboxMain::OnInitDialog()
   m_bShowPasswordInList = PWSprefs::GetInstance()->
     GetPref(PWSprefs::BoolPrefs::ShowPWInList);
 
-  CMenu* mmenu = GetMenu();
-  CMenu* submenu = mmenu->GetSubMenu(2);
-
   const CString lastView = PWSprefs::GetInstance()->
     GetPref(PWSprefs::StringPrefs::LastView);
-
-  if (lastView == _T("list")) {
-    submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
-    submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
-  } else {
-    submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
-    submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_CHECKED | MF_BYCOMMAND);
+  if (lastView != _T("list")) {
+    // not list mode, so start in tree view.
     m_ctlItemList.ShowWindow(SW_HIDE);
     m_ctlItemTree.ShowWindow(SW_SHOW);
   }
@@ -1478,6 +1471,62 @@ DboxMain::OnOpenMRU(UINT nID)
 	return TRUE;
 #endif
 }
+
+
+// Called just before any pulldown or popup menu is displayed, so that menu items
+// can be enabled/disabled or checked/unchecked dynamically.
+void DboxMain::OnInitMenu(CMenu* pMenu)
+{
+    const BOOL bTreeView = m_ctlItemTree.IsWindowVisible();
+    const BOOL bItemSelected = SelItemOk();
+
+    UINT uiItemCmdFlags = MF_BYCOMMAND | (bItemSelected ? MF_ENABLED : MF_GRAYED);
+    pMenu->EnableMenuItem(ID_MENUITEM_COPYPASSWORD, uiItemCmdFlags);
+    pMenu->EnableMenuItem(ID_MENUITEM_COPYUSERNAME, uiItemCmdFlags);
+    pMenu->EnableMenuItem(ID_MENUITEM_EDIT, uiItemCmdFlags);
+#if defined(POCKET_PC)
+    pMenu->EnableMenuItem(ID_MENUITEM_SHOWPASSWORD, uiItemCmdFlags);
+#endif
+    pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, uiItemCmdFlags);
+
+
+    bool bGroupSelected = false;
+    bool bEmptyGroupSelected = false;
+    if (bTreeView) {
+        HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+        bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeafNode(hi));
+        bEmptyGroupSelected = (bGroupSelected && !m_ctlItemTree.ItemHasChildren(hi));
+    }
+    pMenu->EnableMenuItem(ID_MENUITEM_DELETE, ((bItemSelected || bEmptyGroupSelected) ? MF_ENABLED : MF_GRAYED));
+    pMenu->EnableMenuItem(ID_MENUITEM_RENAME, ((bTreeView && (bItemSelected || bGroupSelected)) ? MF_ENABLED : MF_GRAYED));
+    pMenu->EnableMenuItem(ID_MENUITEM_ADDGROUP, (bTreeView ? MF_ENABLED : MF_GRAYED));
+
+    pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW, 
+        (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW), MF_BYCOMMAND);
+
+
+    CDC* pDC = this->GetDC();
+    int NumBits = ( pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32 );
+    if (NumBits < 16 && m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) {
+        // Less that 16 color bits available, no choice, disable menu items
+        pMenu->EnableMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_GRAYED | MF_BYCOMMAND);
+        pMenu->EnableMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_GRAYED | MF_BYCOMMAND);
+    } else {
+        // High-color screen mode so all choices available.
+        // (or a low-color screen, but leave choices enabled so that the user still can switch.)
+        pMenu->EnableMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_ENABLED | MF_BYCOMMAND);
+        pMenu->EnableMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_ENABLED | MF_BYCOMMAND);
+    }
+
+    pMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, ID_MENUITEM_OLD_TOOLBAR, 
+        m_toolbarMode, MF_BYCOMMAND);
+
+
+   pMenu->EnableMenuItem(ID_MENUITEM_SAVE,
+			m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
+
+}
+
 
 // helps with MRU by allowing ON_UPDATE_COMMAND_UI
 void
