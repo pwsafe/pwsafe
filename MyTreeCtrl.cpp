@@ -33,7 +33,6 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONUP()
-	ON_WM_RBUTTONUP()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -177,12 +176,6 @@ void CMyTreeCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
   OnButtonUp();
   CTreeCtrl::OnLButtonUp(nFlags, point);
-}
-
-void CMyTreeCtrl::OnRButtonUp(UINT nFlags, CPoint point)
-{
-  OnButtonUp();
-  CTreeCtrl::OnRButtonUp(nFlags, point);
 }
 
 void CMyTreeCtrl::OnBeginDrag(LPNMHDR , LRESULT *)
