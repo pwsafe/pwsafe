@@ -1,8 +1,8 @@
 // ItemData.h
 //-----------------------------------------------------------------------------
 
-#ifndef _ITEMDATA_H_
-#define _ITEMDATA_H_
+#if !defined ItemData_h
+#define ItemData_h
 
 #include "Util.h"
 
