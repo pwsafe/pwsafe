@@ -348,7 +348,23 @@ DboxMain::OpenOnInit(void)
 	 // for the first time and don't confuse them.
 	 // fallthrough to New()
       } else {
-         rc2 = Open();
+	// Here if there was a filename saved from last invocation, but it couldn't
+	// be opened. It was either removed or renamed, so ask the user what to do
+	CMyString msg = _T("The database ") + m_core.GetCurFile();
+	msg += _T(" couldn't be opened.\nDo you wish to look for it elsewhere (Yes), ");
+	msg += _T("create a new database (No), or exit (Cancel)?");
+	int rc3 = MessageBox(msg, AfxGetAppName(), (MB_ICONQUESTION | MB_YESNOCANCEL));
+	switch (rc3) {
+	case IDYES:
+	  rc2 = Open();
+	  break;
+	case IDNO:
+	  rc2 = New();
+	  break;
+	case IDCANCEL:
+	  rc2 = PWScore::USER_CANCEL;
+	  break;
+	}
          break;
       }
    case TAR_NEW:
@@ -1201,10 +1217,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       bool exists = m_core.FileExists(filename);
 
       if (!exists) {
-	CString Errmess(_T("Can't open database "));
-	Errmess += (const CString&)filename;
-	MessageBox(Errmess, _T("File open error"),
-		   MB_OK | MB_ICONWARNING);
+	// Used to display an error message, but this is really the caller's business
 	return PWScore::CANT_OPEN_FILE;
       } // !exists
     } // !filename.IsEmpty()
