@@ -3,8 +3,7 @@
     
 
  <link rel="stylesheet" type="text/css" href="style.css"></head>
-
-  <body bgcolor="#ffffff" text="#000000">
+<body bgcolor="#ffffff" text="#000000">
 
     
 
@@ -26,12 +25,17 @@ group.<br>
 The <span style="font-weight: bold;">Title </span>field is the name by which the entry will be displayed. This field cannot be blank.<br>
 The <span style="font-weight: bold;">Username </span>field is used to store the username associated with this entry. If you've set a <a href="pws_opts.htm#username">default username</a> in the Options dialog box, this will appear here. Later, you can copy the username to the clipboard.<br>
 The <span style="font-weight: bold;">Password</span> field is where the
-password defined for this entry is set. If you press the "Generate
-Random Password" button, this field will be filled with a password that
-is randomly generated according to the rules set in the <a href="pws_opts.htm#PasswordPolicy">Password Policy</a> Options. This field cannot be blank.<br>
+password defined for this entry is set. This field cannot be blank.  If you press the "<span style="font-weight: bold;">Generate</span>" button, this field will be filled with a password that
+is randomly generated according to the rules set in the <a href="pws_opts.htm#PasswordPolicy">Password Policy</a> Options. These rules may be overridden for the current entry by checking "<span style="font-weight: bold;">Override Policy</span>".
+Doing so will cause the Password Policy dialog to be displayed before
+the password is generated. Changes made to the policy are <span style="font-style: italic;">not </span>retained.
+This is useful, for example, if you need a password for a site which
+has a well-defined password policy. Note that pressing "Cancel" on the
+Password Policy dialog box will cause the password to be generated
+using the default policy.<br>
 You can use the <span style="font-weight: bold;">Notes</span> field for
 any other information you need to remember about this item -- such as a
-URL or phone number. If you enter a URL beginning with "http://" or
-"https://", then you will be able to browse to this URL directly by
+URL or phone number. If you enter a URL beginning with "http://",
+"https://" or "ftp://", then you will be able to browse to this URL directly by
 right-clicking on the entry from the main window. </p>
 </body></html>
