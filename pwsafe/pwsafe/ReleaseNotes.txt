@@ -1,13 +1,27 @@
 $Id$
 
-Password Safe 1.92 Release Note - May 2003
+Password Safe 1.92a Release Note - May 2003
 ==========================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 1.92. For a short description of Password
+with Password Safe version 1.92a. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net
+
+1.92a:
+======
+Release 1.92a is a maintenance release that addresses the following
+two issues. If you didn't notice these bugs, then there's no reason to
+upgrade.
+
+Bugfix [738380]: Show Passwords in list wasn't kept correctly across
+application invokations. Selecting this option and exiting the
+application would cause the passwords no to be shown when the
+application was next run.
+
+Support request [736497] & Bugfix [589536]: It is now possible to read
+passwordsafe databases on multilingual systems, specifically Chinese XP.
 
 New Features for 1.92:
 ======================
@@ -77,6 +91,9 @@ Known Problems:
 - The Help file is outdated for this release.
 
 $Log$
+Revision 1.2.2.2  2003/05/20 13:15:51  ronys
+1.92a maintenance release
+
 Revision 1.2.2.1  2003/05/13 13:40:13  ronys
 1.92 release
 
