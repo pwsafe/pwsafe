@@ -25,7 +25,8 @@ PWScore::m_session_initialized = false;
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 		     m_usedefuser(false), m_defusername(_T("")),
 		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-		     m_passkey(NULL), m_passkey_len(0)
+		     m_passkey(NULL), m_passkey_len(0),
+		     m_lockFileHandle(INVALID_HANDLE_VALUE)
 {
 
   if (!PWScore::m_session_initialized)
@@ -570,12 +571,35 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
   return SUCCESS;
 }
 
-bool PWScore::LockFile(const CMyString &filename, CMyString &locker) const
-{
-  // derive lock filename from filename
-  CMyString lock_filename = filename.Left(filename.GetLength()-3);
-  lock_filename += _T("plk");
+/*
+ * The file lock/unlock functions were first implemented (in 2.08)
+ * with Posix semantics (using open(_O_CREATE|_O_EXCL) to detect
+ * an existing lock.
+ * This fails to check liveness of the locker process, specifically,
+ * if a user just turns of her PC, the lock file will remain.
+ * So, I'm keeping the Posix code under idef POSIX_FILE_LOCK,
+ * and re-implementing using the Win32 API, whose semantics
+ * supposedly protect against this scenario.
+ * Thanks to Frank (xformer) for discussion on the subject.
+ */
 
+static void GetLockFileName(const CMyString &filename,
+			    CMyString &lock_filename)
+{
+  ASSERT(!filename.IsEmpty());
+  // derive lock filename from filename
+  if (filename.GetLength() > 3)
+    lock_filename = CMyString(filename.Left(filename.GetLength()-3));
+  else
+    lock_filename = filename;
+  lock_filename += _T("plk");
+}
+
+bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
+{
+  CMyString lock_filename;
+  GetLockFileName(filename, lock_filename);
+#ifdef POSIX_FILE_LOCK
   int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
 		 (_S_IREAD | _S_IWRITE));
 
@@ -639,20 +663,129 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker) const
     _close(fh);
     return true;
   }
+#else
+  // Use Win32 API for locking - supposedly better at
+  // detecting dead locking processes
+  if (m_lockFileHandle != INVALID_HANDLE_VALUE) {
+    // here if we've open another dbase previously,
+    // need to unlock it. A bit inelegant...
+    ASSERT(filename != GetCurFile()); // if not, I'm confused
+    UnlockFile(GetCurFile());
+  }
+  m_lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),
+				  GENERIC_WRITE,
+				  FILE_SHARE_READ,
+				  NULL,
+				  CREATE_ALWAYS, // rely on share to fail if exists!
+				  FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+				  NULL);
+  if (m_lockFileHandle == INVALID_HANDLE_VALUE) {
+    DWORD error = GetLastError();
+    switch (error) {
+    case ERROR_SHARING_VIOLATION: // already open by a live process
+      {
+ 	// read locker data ("user@machine") from file
+	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)*2];
+	// flags here counter (my) intuition, but see
+	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
+	HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
+				 GENERIC_READ, FILE_SHARE_WRITE,
+				 NULL, OPEN_EXISTING,
+				 FILE_ATTRIBUTE_NORMAL, NULL);
+	if (h2 == INVALID_HANDLE_VALUE) {
+	  locker = _T("Unable to determine locker?");
+	} else {
+	  DWORD bytesRead;
+	  BOOL read_status = ::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
+					&bytesRead, NULL);
+	  CloseHandle(h2);
+	  if (bytesRead > 0) {
+	    lockerStr[bytesRead] = TCHAR('\0');
+	    locker = lockerStr;
+	  } else { // read failed for some reason
+	    locker = _T("Unable to read locker?");
+	  } // read info from lock file
+	} // open lock file for read
+      } // ERROR_SHARING_VIOLATION block
+      break;
+    default:
+      locker = _T("Cannot create lock file - no permission in directory?");
+      break;
+    } // switch (error)
+    return false;
+  } else { // valid filehandle, write our info
+    TCHAR user[UNLEN+1];
+    TCHAR sysname[MAX_COMPUTERNAME_LENGTH+1];
+    DWORD len;
+    len = sizeof(user);
+    if (::GetUserName(user, &len)== FALSE) {
+      user[0] = TCHAR('?'); user[1] = TCHAR('\0');
+    }
+    len = sizeof(sysname);
+    if (::GetComputerName(sysname, &len) == FALSE) {
+      sysname[0] = TCHAR('?'); sysname[1] = TCHAR('\0');
+    }
+    DWORD numWrit, sumWrit;
+    BOOL write_status;
+    write_status = ::WriteFile(m_lockFileHandle, user,
+			       _tcslen(user)*sizeof(TCHAR),
+			       &sumWrit, NULL);
+    write_status = ::WriteFile(m_lockFileHandle,
+			       _T("@"), _tcslen("@")*sizeof(TCHAR),
+			       &numWrit, NULL);
+    sumWrit += numWrit;
+    write_status += ::WriteFile(m_lockFileHandle,
+				sysname, _tcslen(sysname)*sizeof(TCHAR),
+				&numWrit, NULL);
+    sumWrit += numWrit;
+    ASSERT(sumWrit > 0);
+    return true;
+  }
+#endif // POSIX_FILE_LOCK
 }
 
-void PWScore::UnlockFile(const CMyString &filename) const
+void PWScore::UnlockFile(const CMyString &filename)
 {
-  // derive lock filename from filename
-  CMyString lock_filename = filename.Left(filename.GetLength()-3);
-  lock_filename += _T("plk");
+  CMyString lock_filename;
+  GetLockFileName(filename, lock_filename);
+#ifdef POSIX_FILE_LOCK
   _unlink(lock_filename);
+#else 
+  // Use Win32 API for locking - supposedly better at
+  // detecting dead locking processes
+  if (m_lockFileHandle != INVALID_HANDLE_VALUE) {
+    CloseHandle(m_lockFileHandle);
+    m_lockFileHandle = INVALID_HANDLE_VALUE;
+    DeleteFile(LPCTSTR(lock_filename));
+  }
+#endif // POSIX_FILE_LOCK
 }
 
 bool PWScore::IsLockedFile(const CMyString &filename) const
 {
-  // derive lock filename from filename
-  CMyString lock_filename = filename.Left(filename.GetLength()-3);
-  lock_filename += _T("plk");
+  CMyString lock_filename;
+  GetLockFileName(filename, lock_filename);
+#ifdef POSIX_FILE_LOCK
   return PWSfile::FileExists(lock_filename);
+#else
+  // under this scheme, we need to actually try to open the file to determine
+  // if it's locked.
+  HANDLE h = CreateFile(LPCTSTR(lock_filename),
+			GENERIC_WRITE,
+			FILE_SHARE_READ,
+			NULL,
+			OPEN_EXISTING, // don't create one!
+			FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+			NULL);
+  if (h == INVALID_HANDLE_VALUE) {
+    DWORD error = GetLastError();
+    if (error == ERROR_SHARING_VIOLATION)
+      return true;
+    else
+      return false; // couldn't open it, probably doesn't exist.
+  } else {
+    CloseHandle(h); // here if exists but lockable.
+    return false;
+  }
+#endif // POSIX_FILE_LOCK
 }
