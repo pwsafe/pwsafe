@@ -1,6 +1,20 @@
 Password Safe for Pocket PC - Release Notes
 ===========================================
 
+Version 1.92c
+-------------
+
+Installation is still manual for now, see below for details.  If you're
+upgrading from an earlier release simple copy the appropriate file from this
+release over the existing file.  Obviously you'll want to back up your device
+first, though!
+
+This release:
+
+1. Integrates the latest bug fixes from the desktop release.
+2. Fixes the endianness of devices built around the SH3 CPU.
+
+
 Version 1.92b
 -------------
 
