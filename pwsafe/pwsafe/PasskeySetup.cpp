@@ -3,8 +3,13 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "PasskeySetup.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+
 #include "util.h"
+
+#include "PasskeySetup.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,7 +70,10 @@ void CPasskeySetup::OnOK()
 
 void CPasskeySetup::OnHelp() 
 {
-   WinHelp(0x20084, HELP_CONTEXT);
+   //WinHelp(0x20084, HELP_CONTEXT);
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_intro.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
