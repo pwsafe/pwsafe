@@ -4,29 +4,48 @@
 #include "PWCharPool.h"
 #include "Util.h"
 
+// Following macro get length of std_*_chars less the trailing \0
+// compile time equivalent of strlen()
+#define LENGTH(s) (sizeof(s)/sizeof(s[0]) - sizeof(s[0]))
+
+const TCHAR 
+CPasswordCharPool::std_lowercase_chars[] = _T("abcdefghijklmnopqrstuvwxyz");
+const size_t
+CPasswordCharPool::std_lowercase_len = LENGTH(std_lowercase_chars);
+const TCHAR CPasswordCharPool::std_uppercase_chars[] = _T("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+const size_t
+CPasswordCharPool::std_uppercase_len = LENGTH(std_uppercase_chars);
+const TCHAR
+CPasswordCharPool::std_digit_chars[] =
+_T("0123456789");
+const size_t
+CPasswordCharPool::std_digit_len = LENGTH(std_digit_chars);
+const TCHAR
+CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~");
+const size_t
+CPasswordCharPool::std_symbol_len = LENGTH(std_symbol_chars);
+const TCHAR
+CPasswordCharPool::easyvision_lowercase_chars[] = _T("abcdefghijkmnopqrstuvwxyz");
+const size_t
+CPasswordCharPool::easyvision_lowercase_len = LENGTH(easyvision_lowercase_chars);
+const TCHAR
+CPasswordCharPool::easyvision_uppercase_chars[] = _T("ABCDEFGHIJKLMNPQRTUVWXY");
+const size_t
+CPasswordCharPool::easyvision_uppercase_len = LENGTH(easyvision_uppercase_chars);
+const TCHAR
+CPasswordCharPool::easyvision_digit_chars[] = _T("346789");
+const size_t
+CPasswordCharPool::easyvision_digit_len = LENGTH(easyvision_digit_chars);
+const TCHAR
+CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~");
+const size_t
+CPasswordCharPool::easyvision_symbol_len = LENGTH(easyvision_symbol_chars);
 
 //-----------------------------------------------------------------------------
 CPasswordCharPool::CPasswordCharPool()
 {
    m_pool.RemoveAll();
    m_length = 0;
-
-   std_lowercase_chars = _T("abcdefghijklmnopqrstuvwxyz");
-   std_lowercase_len = strlen(std_lowercase_chars);
-   std_uppercase_chars = _T("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-   std_uppercase_len = strlen(std_uppercase_chars);
-   std_digit_chars = _T("0123456789");
-   std_digit_len = strlen(std_digit_chars);
-   std_symbol_chars = _T("+-=_@#$%^&;:,.<>/~");
-   std_symbol_len = strlen(std_symbol_chars);
-   easyvision_lowercase_chars = _T("abcdefghijkmnopqrstuvwxyz");
-   easyvision_lowercase_len = strlen(easyvision_lowercase_chars);
-   easyvision_uppercase_chars = _T("ABCDEFGHIJKLMNPQRTUVWXY");
-   easyvision_uppercase_len = strlen(easyvision_uppercase_chars);
-   easyvision_digit_chars = _T("346789");
-   easyvision_digit_len = strlen(easyvision_digit_chars);
-   easyvision_symbol_chars = _T("+-=_@#$%^&;:,.<>/~");
-   easyvision_symbol_len = strlen(easyvision_symbol_chars);
 }
 
 
@@ -161,11 +180,14 @@ CPasswordCharPool::GetRandomChar(PWCHARTYPE* type)
 
 //-----------------------------------------------------------------------------
 
-CPasswordCharBlock::CPasswordCharBlock()
+CPasswordCharBlock::CPasswordCharBlock() : m_type(PWC_UNKNOWN),
+					   m_length(0), m_str(NULL)
 {
-   m_type = PWC_UNKNOWN;
-   m_length = 0;
-   m_str = "";
+}
+
+CPasswordCharBlock::CPasswordCharBlock(const CPasswordCharBlock &that)
+  : m_type(that.m_type), m_length(that.m_length), m_str(that.m_str)
+{
 }
 
 void
@@ -187,19 +209,19 @@ CPasswordCharBlock::SetType(PWCHARTYPE type)
 }
 
 const TCHAR*
-CPasswordCharBlock::GetStr(void)
+CPasswordCharBlock::GetStr(void) const
 {
    return m_str;
 }
 
 PWCHARTYPE
-CPasswordCharBlock::GetType(void)
+CPasswordCharBlock::GetType(void) const
 {
    return m_type;
 }
 
 size_t
-CPasswordCharBlock::GetLength(void)
+CPasswordCharBlock::GetLength(void) const
 {
    return m_length;
 }
@@ -207,17 +229,12 @@ CPasswordCharBlock::GetLength(void)
 CPasswordCharBlock&
 CPasswordCharBlock::operator=(const CPasswordCharBlock &second)
 {
-   char *str;
-
    //Check for self-assignment
    if (&second != this)
    {
       m_type = second.m_type;
       m_length = second.m_length;
-
-      str = new TCHAR[m_length+1];
-      memcpy(str, second.m_str, m_length+1);
-      m_str = str;
+      m_str = second.m_str;
    }
 
    return *this;

@@ -13,54 +13,42 @@
 CMyString
 DboxMain::GetPassword(void)
 {
-   return GetPassword(app.GetProfileInt("", "pwlendefault", 8));
+   return GetPassword(app.GetProfileInt("", "pwlendefault", 8),
+		      app.GetProfileInt("", "pwuselowercase", TRUE),
+		      app.GetProfileInt("", "pwuseuppercase", TRUE),
+		      app.GetProfileInt("", "pwusedigits", TRUE),
+		      app.GetProfileInt("", "pwusesymbols", TRUE));
 }
 
 
 CMyString
-DboxMain::GetPassword( UINT pwlen )
+DboxMain::GetPassword( UINT pwlen, BOOL uselowercase, BOOL useuppercase,
+		       BOOL usedigits, BOOL usesymbols)
 {
-   UINT pwminlowercase;
-   UINT pwminuppercase;
-   UINT pwmindigits;
-   UINT pwminsymbols;
-   UINT count_lowercase_chars;
-   UINT count_uppercase_chars;
-   UINT count_digit_chars;
-   UINT count_symbol_chars;
+  ASSERT(pwlen > 0);
+  ASSERT(uselowercase || useuppercase || usedigits || usesymbols);
 
-   CMyString password = "";
+  int lowercaseneeded;
+  int uppercaseneeded;
+  int digitsneeded;
+  int symbolsneeded;
 
-   if (app.GetProfileInt("", "pwuselowercase", TRUE))
-      pwminlowercase = app.GetProfileInt("", "pwminlowercase", 0);
-   else
-      pwminlowercase = 0;
+  CMyString password = "";
 
-   if (app.GetProfileInt("", "pwuseuppercase", TRUE))
-      pwminuppercase = app.GetProfileInt("", "pwminuppercase", 0);
-   else
-      pwminuppercase = 0;
-
-   if (app.GetProfileInt("", "pwusedigits", TRUE))
-      pwmindigits = app.GetProfileInt("", "pwmindigits", 0);
-   else
-      pwmindigits = 0;
-
-   if (app.GetProfileInt("", "pwusesymbols", TRUE))
-      pwminsymbols = app.GetProfileInt("", "pwminsymbols", 0);
-   else
-      pwminsymbols = 0;
-
-   BOOL pwRulesMet;
+  BOOL pwRulesMet;
 
    do
    {
-      char ch;
+      TCHAR ch;
 
-      count_uppercase_chars=0;
-      count_lowercase_chars=0;
-      count_digit_chars=0;
-      count_symbol_chars=0;
+      lowercaseneeded = (uselowercase) ? 1 : 0;
+      uppercaseneeded = (useuppercase) ? 1 : 0;
+      digitsneeded = (usedigits) ? 1 : 0;
+      symbolsneeded = (usesymbols) ? 1 : 0;
+
+      // If following assertion doesn't hold, we'll never exit the do loop!
+      ASSERT(int(pwlen) >= lowercaseneeded + uppercaseneeded +
+	     digitsneeded + symbolsneeded);
 
       CMyString temp = "";    // empty the password string
       PWCHARTYPE type;
@@ -70,55 +58,47 @@ DboxMain::GetPassword( UINT pwlen )
          ch = pwchars.GetRandomChar(&type);
          temp += ch;
          /*
-         **  Increment the appropriate character type count.
+         **  Decrement the appropriate needed character type count.
          */
          switch (type)
          {
             case PWC_LOWER:
-               count_lowercase_chars++;
+	      lowercaseneeded--;
                break;
 
             case PWC_UPPER:
-               count_uppercase_chars++;
+	      uppercaseneeded--;
                break;
 
             case PWC_DIGIT:
-               count_digit_chars++;
+	      digitsneeded--;
                break;
 
             case PWC_SYMBOL:
-               count_symbol_chars++;
+	      symbolsneeded--;
                break;
 
             default:
+	      ASSERT(0); // should never happen!
                break;
          }
-      }
+      } // for
 
       /*
-      **  Set the 'pwRulesMet' to TRUE, indicating success.
-      **  If we are not checking the rules the loop will end,
-      **  and if we are checking rules we'll let the checks
-      **  indicate failure if necessary.
-      */
-      pwRulesMet = TRUE;
+       * Make sure we have at least one representative of each required type
+       * after the for loop. If not, try again. Arguably, recursion would have
+       * been more elegant than a do loop, but this takes less stack...
+       */
+      pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
+		    digitsneeded <= 0 && symbolsneeded <= 0);
 
-      if (pwminuppercase > count_uppercase_chars)
-         pwRulesMet = FALSE;
-      else if (pwminlowercase > count_lowercase_chars)
-         pwRulesMet = FALSE;
-      else if (pwmindigits > count_digit_chars)
-         pwRulesMet = FALSE;
-      else if (pwminsymbols > count_symbol_chars)
-         pwRulesMet = FALSE;
-
-      if (pwRulesMet == TRUE)
+      if (pwRulesMet)
       {
          password = temp;
       }
-
-   } while (pwRulesMet == FALSE);
-
+      // Otherwise, do not exit, do not collect $200, try again...
+   } while (!pwRulesMet);
+   ASSERT(password.GetLength() == int(pwlen));
    return password;
 }
 

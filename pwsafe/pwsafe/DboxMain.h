@@ -168,7 +168,8 @@ protected:
 public:
    void MakeName(CMyString&, const CMyString &, const CMyString &) const; // used also by AddDlg, hence public
    CMyString GetPassword(void);
-   CMyString GetPassword(UINT len);
+   CMyString GetPassword( UINT pwlen, BOOL uselowercase, BOOL useuppercase,
+			  BOOL usedigits, BOOL usesymbols);
 
 private:
   int WriteCBC(int fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);

@@ -27,10 +27,6 @@ public:
 	BOOL	m_pwuselowercase;
 	BOOL	m_pwusesymbols;
 	BOOL	m_pwuseuppercase;
-	UINT	m_pwmindigits;
-	UINT	m_pwminsymbols;
-	UINT	m_pwminuppercase;
-	UINT	m_pwminlowercase;
 	BOOL	m_pweasyvision;
 	//}}AFX_DATA
 

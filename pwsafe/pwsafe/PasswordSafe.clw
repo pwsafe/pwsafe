@@ -14,7 +14,7 @@ Class2=CFindDlg
 Class3=CPasskeyEntry
 Class4=CSysColStatic
 
-ResourceCount=26
+ResourceCount=52
 Resource1=IDD_SECURECLEAR
 Resource2=IDD_CONFIRMDELETE_DIALOG
 Resource3=IDD_USERNAMEENTRY
@@ -46,6 +46,32 @@ Class7=COptionsPasswordPolicy
 Class8=COptionsSecurity
 Class9=COptionsUsername
 Resource26=IDR_MAINBAR
+Resource27=IDR_MAINMENU (English (U.S.))
+Resource28=IDD_KEYCHANGE_DIALOG (English (U.S.))
+Resource29=IDR_POPMENU (English (U.S.))
+Resource30=IDD_PASSKEYENTRY_FIRST (English (U.S.))
+Resource31=IDD_PASSKEYSETUP (English (U.S.))
+Resource32=IDD_CONFIRMDELETE_DIALOG (English (U.S.))
+Resource33=IDD_REMIND_SAVE (English (U.S.))
+Resource34=IDD_QUERYSETDEF (English (U.S.))
+Resource35=IDD_TRYAGAIN (English (U.S.))
+Resource36=IDD_PASSKEYENTRY (English (U.S.))
+Resource37=IDD_FIND (English (U.S.))
+Resource38=IDD_EDIT (English (U.S.))
+Resource39=IDD_SECURECLEAR (English (U.S.))
+Resource40=IDD_USERNAMEENTRY (English (U.S.))
+Resource41=IDD_CRYPTKEYENTRY (English (U.S.))
+Resource42=IDD_ADD (English (U.S.))
+Resource43=IDD_PS_SECURITY (English (U.S.))
+Resource44=IDD_PS_DISPLAY (English (U.S.))
+Resource45=IDD_PS_USERNAME (English (U.S.))
+Resource46=IDD_ABOUTBOX (English (U.S.))
+Resource47=IDD_PS_MISC (English (U.S.))
+Resource48=IDD_MINIMIZECLEAR_DIALOG (English (U.S.))
+Resource49=IDR_ACCS (English (U.S.))
+Resource50=IDD_PS_PASSWORDPOLICY (English (U.S.))
+Resource51=IDD_PASSWORDSAFE_DIALOG (English (U.S.))
+Resource52=IDR_MAINBAR (English (U.S.))
 
 [CLS:DboxMain]
 Type=0
@@ -425,7 +451,7 @@ ImplementationFile=OptionsPasswordPolicy.cpp
 BaseClass=CPropertyPage
 Filter=D
 VirtualFilter=idWC
-LastObject=COptionsPasswordPolicy
+LastObject=IDC_MINLOWERCASE
 
 [CLS:COptionsSecurity]
 Type=0
@@ -442,4 +468,324 @@ ImplementationFile=OptionsUsername.cpp
 BaseClass=CPropertyPage
 Filter=D
 VirtualFilter=idWC
+
+
+
+[DLG:IDD_PS_MISC (English (U.S.))]
+Type=1
+Class=?
+ControlCount=2
+Control1=IDC_CONFIRMDELETE,button,1342242819
+Control2=IDC_SAVEIMMEDIATELY,button,1342242819
+
+[DLG:IDD_ABOUTBOX (English (U.S.))]
+Type=1
+Class=?
+ControlCount=4
+Control1=IDC_STATIC,static,1342177283
+Control2=IDC_STATIC,static,1342308480
+Control3=IDC_STATIC,static,1342308352
+Control4=IDOK,button,1342373889
+
+[DLG:IDD_CONFIRMDELETE_DIALOG (English (U.S.))]
+Type=1
+Class=?
+ControlCount=5
+Control1=IDC_STATIC,static,1342177283
+Control2=IDC_DELITEM,static,1342308352
+Control3=IDC_CLEARCHECK,button,1342242819
+Control4=IDOK,button,1342242816
+Control5=IDCANCEL,button,1342242817
+
+[DLG:IDD_KEYCHANGE_DIALOG (English (U.S.))]
+Type=1
+Class=?
+ControlCount=10
+Control1=IDC_STATIC,static,1342308352
+Control2=IDC_OLDPASSKEY,edit,1350631584
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_NEWPASSKEY,edit,1350631584
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_CONFIRMNEW,edit,1350631584
+Control7=IDOK,button,1342242817
+Control8=IDCANCEL,button,1342242816
+Control9=ID_HELP,button,1342242816
+Control10=IDC_STATIC,static,1342308352
+
+[DLG:IDD_MINIMIZECLEAR_DIALOG (English (U.S.))]
+Type=1
+Class=?
+ControlCount=5
+Control1=IDC_STATIC,static,1342177283
+Control2=IDC_STATIC,static,1342308352
+Control3=IDC_CLEARCHECK,button,1342242819
+Control4=IDOK,button,1342242817
+Control5=IDCANCEL,button,1342242816
+
+[DLG:IDD_PASSKEYENTRY_FIRST (English (U.S.))]
+Type=1
+Class=?
+ControlCount=13
+Control1=IDC_STATIC_LOGOTEXT,static,1342179342
+Control2=IDC_STATIC,static,1342308352
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_MESSAGE,static,1342308352
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_PASSKEY,edit,1350631584
+Control7=IDC_STATIC_LOGO,static,1342179342
+Control8=IDC_STATIC,static,1342308352
+Control9=IDOK,button,1342242817
+Control10=ID_BROWSE,button,1342251008
+Control11=IDCANCEL,button,1342242816
+Control12=ID_HELP,button,1342242816
+Control13=ID_CREATE_DB,button,1342251008
+
+[DLG:IDD_PASSKEYSETUP (English (U.S.))]
+Type=1
+Class=?
+ControlCount=8
+Control1=65535,static,1342308352
+Control2=65535,static,1342308352
+Control3=IDC_PASSKEY,edit,1350631584
+Control4=65535,static,1342308352
+Control5=IDC_VERIFY,edit,1350631584
+Control6=IDOK,button,1342242817
+Control7=IDCANCEL,button,1342242816
+Control8=ID_HELP,button,1342242816
+
+[DLG:IDD_PASSWORDSAFE_DIALOG (English (U.S.))]
+Type=1
+Class=?
+ControlCount=1
+Control1=IDC_ITEMLIST,SysListView32,1350631453
+
+[DLG:IDD_REMIND_SAVE (English (U.S.))]
+Type=1
+Class=?
+ControlCount=5
+Control1=IDC_STATIC,static,1342177283
+Control2=IDC_DELITEM,static,1342308352
+Control3=IDC_CLEARCHECK,button,1342242819
+Control4=IDOK,button,1342242817
+Control5=IDCANCEL,button,1342242816
+
+[DLG:IDD_SECURECLEAR (English (U.S.))]
+Type=1
+Class=?
+ControlCount=5
+Control1=IDC_STATIC,static,1342177283
+Control2=IDC_STATIC,static,1342308352
+Control3=IDC_CLEARCHECK,button,1342242819
+Control4=IDOK,button,1342242817
+Control5=IDCANCEL,button,1342242816
+
+[DLG:IDD_TRYAGAIN (English (U.S.))]
+Type=1
+Class=?
+ControlCount=6
+Control1=IDC_STATIC,static,1342308352
+Control2=IDC_OPEN,button,1342242816
+Control3=IDC_NEW,button,1342242816
+Control4=IDC_TRYAGAIN,button,1342242817
+Control5=IDC_QUIT,button,1342242816
+Control6=ID_HELP,button,1342242816
+
+[DLG:IDD_CRYPTKEYENTRY (English (U.S.))]
+Type=1
+Class=?
+ControlCount=8
+Control1=IDC_CRYPTKEY1,edit,1350631584
+Control2=IDC_CRYPTKEY2,edit,1350631584
+Control3=IDOK,button,1342242817
+Control4=IDCANCEL,button,1342242816
+Control5=ID_HELP,button,1342242816
+Control6=IDC_STATIC,static,1342308352
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_STATIC,static,1342308352
+
+[DLG:IDD_ADD (English (U.S.))]
+Type=1
+Class=?
+ControlCount=13
+Control1=IDC_STATIC,static,1342308352
+Control2=IDC_TITLE,edit,1350631552
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_USERNAME,edit,1350631552
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_PASSWORD,edit,1350631552
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_NOTES,edit,1350635588
+Control9=IDOK,button,1342242817
+Control10=IDCANCEL,button,1342242816
+Control11=ID_HELP,button,1342242816
+Control12=IDC_RANDOM,button,1342251008
+Control13=IDC_STATIC,static,1342308352
+
+[DLG:IDD_EDIT (English (U.S.))]
+Type=1
+Class=?
+ControlCount=14
+Control1=IDC_STATIC,static,1342308352
+Control2=IDC_TITLE,edit,1350631552
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_USERNAME,edit,1350631552
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_PASSWORD,edit,1484849280
+Control7=IDC_SHOWPASSWORD,button,1342243584
+Control8=IDC_STATIC,static,1342308352
+Control9=IDC_NOTES,edit,1350635588
+Control10=IDOK,button,1342242817
+Control11=IDCANCEL,button,1342242816
+Control12=ID_HELP,button,1342242816
+Control13=IDC_RANDOM,button,1342251008
+Control14=IDC_STATIC,static,1342308352
+
+[DLG:IDD_QUERYSETDEF (English (U.S.))]
+Type=1
+Class=?
+ControlCount=5
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_STATIC,static,1342177283
+Control4=IDC_MESSAGE,static,1342308352
+Control5=IDC_QUERYCHECK,button,1342242819
+
+[DLG:IDD_USERNAMEENTRY (English (U.S.))]
+Type=1
+Class=?
+ControlCount=7
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_STATIC,static,1342308352
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_USERNAME,edit,1350631552
+Control7=IDC_MAKEDEF,button,1342242819
+
+[DLG:IDD_PASSKEYENTRY (English (U.S.))]
+Type=1
+Class=?
+ControlCount=8
+Control1=IDC_STATIC_LOGO,static,1342177294
+Control2=65535,static,1342308352
+Control3=IDC_MESSAGE,static,1342308352
+Control4=65535,static,1342308352
+Control5=IDC_PASSKEY,edit,1350631584
+Control6=IDOK,button,1342242817
+Control7=IDCANCEL,button,1342242816
+Control8=ID_HELP,button,1342242816
+
+[DLG:IDD_FIND (English (U.S.))]
+Type=1
+Class=?
+ControlCount=7
+Control1=IDC_FIND_TEXT,edit,1350762624
+Control2=IDC_FIND_CS,button,1342242819
+Control3=IDOK,button,1342242817
+Control4=IDCANCEL,button,1342242816
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_STATIC,static,1342308352
+Control7=IDC_STATUS,edit,1342179456
+
+[DLG:IDD_PS_SECURITY (English (U.S.))]
+Type=1
+Class=?
+ControlCount=4
+Control1=IDC_CLEARBOARD,button,1342242819
+Control2=IDC_LOCKBASE,button,1342242819
+Control3=IDC_SAVEMINIMIZE,button,1342242819
+Control4=IDC_CONFIRMCOPY,button,1342242819
+
+[DLG:IDD_PS_DISPLAY (English (U.S.))]
+Type=1
+Class=?
+ControlCount=3
+Control1=IDC_ALWAYSONTOP,button,1342242819
+Control2=IDC_DEFPWSHOWINLIST,button,1342242819
+Control3=IDC_DEFPWSHOWINEDIT,button,1342242819
+
+[DLG:IDD_PS_USERNAME (English (U.S.))]
+Type=1
+Class=?
+ControlCount=4
+Control1=IDC_USEDEFUSER,button,1342242819
+Control2=IDC_STATIC_USERNAME,static,1476526080
+Control3=IDC_DEFUSERNAME,edit,1484849280
+Control4=IDC_QUERYSETDEF,button,1342242819
+
+[DLG:IDD_PS_PASSWORDPOLICY (English (U.S.))]
+Type=1
+Class=COptionsPasswordPolicy
+ControlCount=9
+Control1=IDC_STATIC_DEFPWLENGTH,static,1342308352
+Control2=IDC_DEFPWLENGTH,edit,1350639744
+Control3=IDC_SPIN1,msctls_updown32,1342177442
+Control4=IDC_STATIC_RULES,static,1342308352
+Control5=IDC_USELOWERCASE,button,1342242819
+Control6=IDC_USEUPPERCASE,button,1342242819
+Control7=IDC_USEDIGITS,button,1342242819
+Control8=IDC_USESYMBOLS,button,1342242819
+Control9=IDC_EASYVISION,button,1342242819
+
+[MNU:IDR_MAINMENU (English (U.S.))]
+Type=1
+Class=?
+Command1=ID_MENUITEM_NEW
+Command2=ID_MENUITEM_OPEN
+Command3=ID_FILE_MRU_ENTRY1
+Command4=ID_MENUITEM_SAVE
+Command5=ID_MENUTIME_SAVEAS
+Command6=ID_MENUITEM_EXIT
+Command7=ID_MENUITEM_ADD
+Command8=ID_MENUITEM_EDIT
+Command9=ID_MENUITEM_DELETE
+Command10=ID_MENUITEM_FIND
+Command11=ID_MENUITEM_COPYPASSWORD
+Command12=ID_MENUITEM_COPYUSERNAME
+Command13=ID_MENUITEM_CLEARCLIPBOARD
+Command14=ID_MENUITEM_CHANGECOMBO
+Command15=ID_MENUITEM_BACKUPSAFE
+Command16=ID_MENUITEM_RESTORE
+Command17=ID_MENUITEM_UPDATEBACKUPS
+Command18=ID_MENUITEM_OPTIONS
+Command19=ID_HELP
+Command20=ID_MENUITEM_ABOUT
+CommandCount=20
+
+[MNU:IDR_POPMENU (English (U.S.))]
+Type=1
+Class=?
+CommandCount=0
+
+[ACL:IDR_ACCS (English (U.S.))]
+Type=1
+Class=?
+Command1=ID_MENUITEM_ADD
+Command2=ID_MENUITEM_BACKUP
+Command3=ID_MENUITEM_COPYPASSWORD
+Command4=ID_MENUITEM_FIND
+Command5=ID_MENUITEM_NEW
+Command6=ID_MENUITEM_OPEN
+Command7=ID_MENUITEM_EXIT
+Command8=ID_MENUITEM_RESTORE
+Command9=ID_MENUITEM_SAVE
+Command10=ID_MENUITEM_COPYUSERNAME
+Command11=ID_MENUITEM_CLEARCLIPBOARD
+Command12=ID_MENUITEM_COPYPASSWORD
+CommandCount=12
+
+[TB:IDR_MAINBAR (English (U.S.))]
+Type=1
+Class=?
+Command1=ID_TOOLBUTTON_NEW
+Command2=ID_TOOLBUTTON_OPEN
+Command3=ID_TOOLBUTTON_SAVE
+Command4=ID_TOOLBUTTON_COPYPASSWORD
+Command5=ID_TOOLBUTTON_COPYUSERNAME
+Command6=ID_TOOLBUTTON_CLEARCLIPBOARD
+Command7=ID_TOOLBUTTON_ADD
+Command8=ID_TOOLBUTTON_EDIT
+Command9=ID_TOOLBUTTON_DELETE
+Command10=ID_HELP
+CommandCount=10
 

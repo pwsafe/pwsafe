@@ -51,10 +51,6 @@ DboxMain::OnOptions()
    passwordpolicy.m_pwuseuppercase = app.GetProfileInt("", "pwuseuppercase", TRUE);
    passwordpolicy.m_pwusedigits = app.GetProfileInt("", "pwusedigits", TRUE);
    passwordpolicy.m_pwusesymbols = app.GetProfileInt("", "pwusesymbols", TRUE);
-   passwordpolicy.m_pwminlowercase = app.GetProfileInt("", "pwminlowercase", 2);
-   passwordpolicy.m_pwminuppercase = app.GetProfileInt("", "pwminuppercase", 2);
-   passwordpolicy.m_pwmindigits = app.GetProfileInt("", "pwmindigits", 2);
-   passwordpolicy.m_pwminsymbols = app.GetProfileInt("", "pwminsymbols", 2);
    passwordpolicy.m_pweasyvision = app.GetProfileInt("", "pweasyvision", FALSE);
 
    username.m_usedefuser = app.GetProfileInt("", "usedefuser", FALSE);
@@ -101,10 +97,6 @@ DboxMain::OnOptions()
       app.WriteProfileInt("", "pwuseuppercase", passwordpolicy.m_pwuseuppercase);
       app.WriteProfileInt("", "pwusedigits",    passwordpolicy.m_pwusedigits);
       app.WriteProfileInt("", "pwusesymbols",   passwordpolicy.m_pwusesymbols);
-      app.WriteProfileInt("", "pwminlowercase", passwordpolicy.m_pwminlowercase);
-      app.WriteProfileInt("", "pwminuppercase", passwordpolicy.m_pwminuppercase);
-      app.WriteProfileInt("", "pwmindigits",    passwordpolicy.m_pwmindigits);
-      app.WriteProfileInt("", "pwminsymbols",   passwordpolicy.m_pwminsymbols);
       app.WriteProfileInt("", "pweasyvision",   passwordpolicy.m_pweasyvision);
 
       app.WriteProfileInt("", "usedefuser",     username.m_usedefuser);
