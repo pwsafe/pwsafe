@@ -1,3 +1,5 @@
+$Id$
+
 The existing Passwordsafe file format is described in notes.txt This
 format, while efficient and secure, has several shortcomings:
 
@@ -19,61 +21,84 @@ format, while efficient and secure, has several shortcomings:
 The following proposed format attempts to address the above
 shortcomings:
 
-1. A PasswordSafe file will start with a constant 4-byte "magic
-   identifier" that will indicate that this is a post-1.x password
-   database. A 2.x application reading this file will check for this
-   first. Failing to find it, the application will try to reaed the
-   file as a format 1.x database. Failing that, it will indicate
-   "wrong passphrase or non-database file". A 1.x application trying
-   to read a 2.x format file will always give a "wrong passphrase"
-   error. Not perfect, but at least a "safe" failure mode.
-2. Following the magic identifier will be the RND|H(RND) pair as
+1. A PasswordSafe file will start with the RND|H(RND) pair as
    define in the 1.x format, to enable quick verification of the
-   passphrase. The only difference is that H(RND) will use
-   SHA1(password) instead of the password directly, since we will
-   calculate SHA1(password) and store it in the application's memory
-   instead of the passphrase, to address shortcoming #6.
-3. Following RND|H(RND) will be the SALT and IP as in the 1.x
+   passphrase. 
+
+2. Following RND|H(RND) will be the SALT and IP as in the 1.x
    format. From here onwards, all data is encrpyted in 8 byte blocks,
    with the first block holding the length (in bytes) of the encrypted
-   field that follows. This length is stored as a 32 bit unsigned
-   value in network byte order (i.e., read/written by
-   ntohl/htonl). This addresses shortcoming #2.
-4. Following the SALT and IP is a Format Description Block. This can
-   be a simple 2-byte major-version:minor-version field, or a schema
-   description of the record structure. For 2.0, the former is
-   suggested, that is, 0x2, 0x0.
+   field that follows and the type (see section 6). The length is
+   stored as a 32 bit unsigned value in little-endian byte order (to
+   maintain compatability with 1.x applications). The type is a 1-byte
+   code. The following N blocks contain the actual value of the
+   encrypted field, where N is the length read from the length block
+   divided by the blocksize in bytes (8), rounded upwards. Note that
+   the type byte is new for version 2. Version 1.x currently reads
+   only the 4 byte length value from the first block.
+
+3. Following the SALT and IP is a Format Description Block. This will
+   be parsed by 1.x applications so as to show "!!!Version 2 File
+   Format!!!" as the title of the first entry. (The following entries
+   will be displayed as "garbage", but this should give the user an
+   indication of what the problem is.) In more detail, the Format
+   Description Block will consist of the following fields: Title,
+   Password, Notes. Each field consists of a length block followed by
+   one or more value blocks. Unlike the actual database entries, these
+   field values are encoded in ASCII (not Unicode), so that they may
+   be displayed correctly on a 1.x application. The actual values of
+   these fields in the Format Description Block are as follows:
+   Name:	"!!!Version 2 File Format!!!"
+   Password:	"2.0" - corresponds to the major and minor version
+		numbers of this file format
+   Notes:	"" - currently empty, may be used in future
+		versions. To remain compatible for 1.x' an empty field
+		(length = 0) will have a single block of 8 bytes of
+		random data. 
+
+   The Type byte for the above fields is 0.
+
 5. Following the Format Description Block will be the actual password
    records. As for version 1.x, the order of records has no
    meaning. Each record consists of a fixed number of fields, with
-   empty fields having a length of 0 in their first (and only)
-   block. Textual data will be stored in Unicode (wchar_t). Numerical
-   data will be stored in network byte order. Timestamps will be
-   stored as time_t (in network byte order), and refer to local time
-   (I don't think timezones are a consideration for our needs).
+   empty fields having a length of 0 in their first block.  Textual
+   data will be stored in Unicode (wchar_t). Numerical data will be
+   stored in network byte order. Timestamps will be stored as time_t
+   (in network byte order), and refer to local time (I don't think
+   timezones are a consideration for our needs).
+
 6. The fields for each record for version 2.0 are as follows:
 
-   Name			      Type     Comments
+   Name			      Type byte value	Type     Comments
    --------------------------------------------
-   Group		      Text     [1]
-   Title		      Text
-   Username		      Text
-   Notes		      Text
-   Password		      Text
-   Creation Time	      time_t
-   Password Modification Time time_t
-   Password Lifetime	      time_t  [2]
-   Password Policy	      4 bytes [3]
+   Group		      0x1		Text     [1]
+   Title		      0x2		Text
+   Username		      0x3		Text
+   Notes		      0x4		Text
+   Password		      0x5		Text
+   Creation Time	      0x6		time_t
+   Password Modification Time 0x7		time_t
+   Last Access Time	      0x8		time_t  [2]
+   Password Lifetime	      0x9		time_t  [3]
+   Password Policy	      0xa		4 bytes [4]
 
 [1] The "Group" is meant to support displaying the entries in a
 tree-like manner. Groups can be heirarchical, with elements separated
 by a period, supporting groups such as "Finance.credit cards.Visa",
-"Finance.credit cards.Mastercard", Finance.bank.web access", etc.
-[2] This will allow the user to enter a lifetime for an entry. The
+"Finance.credit cards.Mastercard", Finance.bank.web access", etc. This
+implies that periods entered by the user will have a backslash `\`
+prepended to them. A backslash entered by the user will have another
+backslash prepended. For example, the Group "George W. Bush \
+President" will be stored internally as "George W\. Bush \\
+President".
+[2] This will be updated whenever the password of this entry is copied
+to the clipboard, or whenever the Password Modification Time is
+updated.
+[3] This will allow the user to enter a lifetime for an entry. The
 application can then prompt the user about passwords that need to be
 changed. Password lifetime is in seconds, and a value of zero means
 "forever".
-[3] Currently, the password policy is a global property. It makes
+[4] Currently, the password policy is a global property. It makes
 sense, however, to want to control this on a per-entry basis. Four
 bytes seems sufficient to store the policy. Exact encoding TBD.
 
@@ -82,3 +107,6 @@ bytes seems sufficient to store the policy. Exact encoding TBD.
    ".old" suffix added, and the 2.x saved with the old's original
    name.
 
+$Log$
+Revision 1.2  2003/05/25 12:14:13  ronys
+Updated after comments on devel mailing list
