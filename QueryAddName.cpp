@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+
 #include "QueryAddName.h"
 
 #ifdef _DEBUG
@@ -34,7 +38,7 @@ END_MESSAGE_MAP()
 void CQueryAddName::OnOK() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "queryaddname", not(m_dontqueryname));
+   app.WriteProfileInt("", "queryaddname", m_dontqueryname ? 0 : 1);
    CDialog::OnOK();
 }
 
@@ -42,7 +46,7 @@ void CQueryAddName::OnOK()
 void CQueryAddName::OnCancel() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "queryaddname", not(m_dontqueryname));
+   app.WriteProfileInt("", "queryaddname", m_dontqueryname ? 0 : 1);
    CDialog::OnCancel();
 }
 //-----------------------------------------------------------------------------
