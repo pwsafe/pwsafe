@@ -466,7 +466,7 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 	  OnCopyPassword();
 	  break;
 	case PWSprefs::DoubleClickEdit:
-	  OnEdit();
+	  PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
 	  break;
 	default:
 	  ASSERT(0);
