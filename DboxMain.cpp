@@ -1679,6 +1679,8 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       // the 2nd won't be called!
       if (first) // if !first, then m_IsReadOnly is set in Open
 	m_IsReadOnly =  (dbox_pkentry.IsReadOnly() || !m_core.LockFile(filename, locker));
+      else if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
+	m_IsReadOnly = !m_core.LockFile(filename, locker);
       // locker won't be null IFF tried to lock and failed, in which case
       // it shows the current file locker
       if (!locker.IsEmpty()) {
@@ -1686,11 +1688,21 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 	str += CString(filename);
 	str += _T(" is apparently being used by ");
 	str += CString(locker);
-	str += ".\r\n Open the database for read-only?";
-	if (MessageBox(str, _T("File In Use"), MB_YESNO|MB_ICONQUESTION) == IDYES)
-	  retval = PWScore::SUCCESS;
-	else
-	  retval = PWScore::USER_CANCEL;
+	str += _T(".\r\nOpen the database for read-only (Yes),");
+	str += _T("read-write (No), or exit (Cancel)?");
+	str += _T("\r\n\r\nNote: Choose \"No\" only if you are certain ");
+	str += _T("that the file is in fact not being used by anyone else.");
+	switch( MessageBox(str, _T("File In Use"),
+			   MB_YESNOCANCEL|MB_ICONQUESTION)) {
+	case IDYES:  retval = PWScore::SUCCESS; break;
+	case IDNO: m_IsReadOnly = false; // Caveat Emptor!
+	  retval = PWScore::SUCCESS; 
+	  break;
+	case IDCANCEL: retval = PWScore::USER_CANCEL;
+	  break;
+	default:
+	  ASSERT(false); retval = PWScore::USER_CANCEL;
+	}
       } else // locker.IsEmpty() means no lock needed or lock was successful
 	retval = PWScore::SUCCESS;
     } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
