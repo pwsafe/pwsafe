@@ -31,13 +31,26 @@ int PWSfile::WriteV2Header()
   CItemData header;
   // Fill out with V2-specific info
   header.SetName(V2ItemName);
-  return WriteRecord(header);
+  // need to fallback to V17, since the record
+  // won't be readable otherwise!
+  VERSION sv = m_curversion;
+  m_curversion = V17;
+  int status = WriteRecord(header);
+  // restore after writing V17-format header
+  m_curversion = sv;
+  return status;
 }
 
 int PWSfile::ReadV2Header()
 {
   CItemData header;
+  // need to fallback to V17, since the header
+  // is always written in this format
+  VERSION sv = m_curversion;
+  m_curversion = V17;
   int status = ReadRecord(header);
+  // restore after reading V17-format header
+  m_curversion = sv;
   if (status == SUCCESS) {
     const CMyString name = header.GetName();
     status = (name == V2ItemName) ? SUCCESS : WRONG_VERSION;

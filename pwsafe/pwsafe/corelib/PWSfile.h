@@ -9,7 +9,8 @@
 
 class PWSfile {
  public:
-  enum VERSION {V17, V20, UNKNOWN_VERSION}; // supported file versions: V17 is last pre-2.0
+  enum VERSION {V17, V20, VCURRENT = V20,
+		UNKNOWN_VERSION}; // supported file versions: V17 is last pre-2.0
   enum {CANT_OPEN_FILE, UNSUPPORTED_VERSION, WRONG_VERSION,
 	WRONG_PASSWORD, END_OF_FILE, SUCCESS};
 

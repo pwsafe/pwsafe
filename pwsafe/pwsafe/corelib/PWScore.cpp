@@ -33,13 +33,13 @@ PWScore::NewFile(const CMyString &passkey)
 }
 
 int
-PWScore::WriteFile(const CMyString &filename)
+PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 {
   PWSfile out(filename, global.m_passkey);
 
   int status;
 
-  status = out.OpenWriteFile(PWSfile::V17);
+  status = out.OpenWriteFile(version);
 
   if (status != PWSfile::SUCCESS)
     return CANT_OPEN_FILE;
@@ -268,7 +268,7 @@ PWScore::DropDefUsernames(const CMyString &defusername)
 }
 
 
-
+// XXX these should be moved to ItemData - except for Default Name handling!
 
 int
 PWScore::SplitName(const CMyString &name,

@@ -22,7 +22,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //-----------------------------------------------------------------------------
-//More complex constructor
+// Constructors
+
 CItemData::CItemData(const CMyString &name,
                      const CMyString &password,
                      const CMyString &notes)
@@ -125,12 +126,60 @@ CItemData::GetNotes() const
    return ret;
 }
 
+void CItemData::SplitName(const CMyString &name,
+		   CMyString &title, CMyString &username)
+{
+  // XXX TBD - punt Default Name handling to upper layer - just split
+  // the damn thing here!
+
+  int pos = name.FindByte(SPLTCHR);
+  if (pos==-1) {//Not a split name
+    int pos2 = name.FindByte(DEFUSERCHR);
+    if (pos2 == -1)  {//Make certain that you remove the DEFUSERCHR 
+	title = name;
+    } else {
+	title = CMyString(name.Left(pos2));
+    }
+#if 0 // XXX Handle elsewhere
+    if ((pos2 != -1)
+	&& GetUseDefUser())
+      {
+	username = GetDefUsername();
+      } else {
+	username = _T("");
+      }
+#endif
+  } else {
+    /*
+     * There should never ever be both a SPLITCHR and a DEFUSERCHR in
+     * the same string
+     */
+    CMyString temp;
+    temp = CMyString(name.Left(pos));
+    temp.TrimRight();
+    title = temp;
+    temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
+    temp.TrimLeft();
+    username = temp;
+  }
+}
+
 
 //Encrypts a plaintext name and stores it in m_name
 BOOL
 CItemData::SetName(const CMyString &name)
 {
-   return EncryptData(name, &m_name, &m_nLength, m_nameValid);
+  // the m_name is from pre-2.0 versions, and may contain the title and user
+  // separated by SPLTCHR. Here we fill the title and user fields so that
+  // the application can ignore this difference after an ItemData record
+  // has been created
+  CMyString title, user;
+  SplitName(name, title, user);
+  if (!title.IsEmpty())
+    EncryptData(title, &m_title, &m_tLength, m_titleValid);
+  if (!user.IsEmpty())
+    EncryptData(user, &m_user, &m_uLength, m_userValid);
+  return EncryptData(name, &m_name, &m_nLength, m_nameValid);
 }
 
 BOOL
