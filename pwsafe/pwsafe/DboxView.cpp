@@ -739,7 +739,9 @@ DboxMain::OnSize(UINT nType,
 	      m_needsreading = true;
 	    }
 	}
+#if 0
       m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE, FALSE);
+#endif 
     }
   else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
     {
@@ -810,7 +812,6 @@ DboxMain::OnSize(UINT nType,
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
     m_ctlItemList.MoveWindow(&rect, TRUE);
     m_ctlItemTree.MoveWindow(&rect, TRUE);
-    m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE, FALSE);
   }
 
   m_bSizing = false;
