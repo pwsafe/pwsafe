@@ -442,7 +442,17 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 		OnShowPassword();
 	}
 #else
-	OnCopyPassword();
+	switch (PWSprefs::GetInstance()->
+		GetPref(PWSprefs::IntPrefs::DoubleClickAction)) {
+	case PWSprefs::DoubleClickCopy:
+	  OnCopyPassword();
+	  break;
+	case PWSprefs::DoubleClickEdit:
+	  OnEdit();
+	  break;
+	default:
+	  ASSERT(0);
+	}
 #endif
 }
 
@@ -1313,7 +1323,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 			      CMyString& passkey,
 			      bool first)
 {
-  // Called for an existing database. promt user
+  // Called for an existing database. prompt user
   // for password, verify against file
   int retval;
 
@@ -1350,6 +1360,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 	case TAR_NEW:
 	  DBGMSG("PasskeyEntry TAR_OPEN or TAR_NEW\n");
 	  retval = cancelreturn; //Return either open or new flag... 
+	  break;
+	case TAR_CANCEL:
+	  retval = PWScore::USER_CANCEL;
 	  break;
 	default:
 	  DBGMSG("Default to WRONG_PASSWORD\n");
