@@ -3,9 +3,9 @@
 // Used by PasswordSafe.rc
 //
 #define ID_BROWSE                       3
-#define ID_BROWSE2                      4
 #define ID_CREATE_DB                    4
 #define IDD_ABOUTBOX                    100
+#define IDD_FIND                        101
 #define IDD_PASSWORDSAFE_DIALOG         102
 #define IDS_OUTPUTFILE                  102
 #define IDS_TEMPFILE                    103
@@ -76,6 +76,9 @@
 #define IDC_STATIC_ICON1                1057
 #define IDC_STATIC_ICON2                1060
 #define IDC_STATIC_ICON3                1061
+#define IDC_FIND_TEXT                   1062
+#define IDC_FIND_CS                     1063
+#define IDC_STATUS                      1064
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -103,14 +106,15 @@
 #define ID_TOOLBUTTON_COPYUSERNAME      32807
 #define ID_TOOLBUTTON_NEW               32809
 #define ID_TOOLBUTTON_OPEN              32810
+#define ID_MENUITEM_FIND                32812
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        192
-#define _APS_NEXT_COMMAND_VALUE         32812
-#define _APS_NEXT_CONTROL_VALUE         1063
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_RESOURCE_VALUE        194
+#define _APS_NEXT_COMMAND_VALUE         32814
+#define _APS_NEXT_CONTROL_VALUE         1065
+#define _APS_NEXT_SYMED_VALUE           102
 #endif
 #endif
