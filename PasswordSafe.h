@@ -2,43 +2,21 @@
 // main header file for the PasswordSafe application
 //-----------------------------------------------------------------------------
 
-#ifndef __AFXWIN_H__
-#error include 'stdafx.h' before including this file for PCH
+#define PWS_MFC 1
+
+#if defined(PWS_MFC)
+#include "stdafx.h"
 #endif
 
-#include "resource.h"  // main symbols
-#include "Util.h"      // for StuffSize
-#include "DboxMain.h"
+/*
+  jpr debug stuff
+*/
+#include "jprdebug.h"
 
-//-----------------------------------------------------------------------------
-class CPasswordSafeApp
-   : public CWinApp
-{
-public:
-   CPasswordSafeApp();
-   ~CPasswordSafeApp();
-   
-   CMyString m_passkey; // the main one, in memory?!? yikes {jpr}
-   CMyString m_curdir; /* only used once, in DboxMain constructor,
-                          to make m_deffile */
 
-   unsigned char m_randstuff[StuffSize];
-   unsigned char m_randhash[SaltSize];
-
-   DboxMain* m_maindlg;
-
-   HACCEL m_ghAccelTable;
-
-public:
-   virtual BOOL InitInstance();
-   virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
-
-   afx_msg void OnHelp();
-
-   DECLARE_MESSAGE_MAP()
-};
-
-//-----------------------------------------------------------------------------
+/*
+  eventually, this breaks off into pws_mfc.h
+*/
 
 /*
   a globally available reference to the app object, which is a whole lot
@@ -46,7 +24,8 @@ public:
   thing... {jpr}
 */
 
-extern CPasswordSafeApp app;
+class ThisMfcApp;
+extern ThisMfcApp app;
 
 //-----------------------------------------------------------------------------
 // Local variables:
