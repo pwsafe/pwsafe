@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+
 #include "PasskeyChangeDlg.h"
 
 #ifdef _DEBUG
@@ -66,7 +70,10 @@ CPasskeyChangeDlg::OnCancel()
 void
 CPasskeyChangeDlg::OnHelp() 
 {
-   WinHelp(0x20083, HELP_CONTEXT);
+   //WinHelp(0x20083, HELP_CONTEXT);
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_combo_chg.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
