@@ -1,0 +1,84 @@
+The existing Passwordsafe file format is described in notes.txt This
+format, while efficient and secure, has several shortcomings:
+
+1. No version identifier. This makes changes to the record structure
+   very difficult.
+2. Integers (field length) stored in host order. This is a portability
+   issue when writing and reading on machines of different
+   endian-ness.
+3. Record structure is fixed and implicit.
+4. Record title and username are stored in the same field, separated
+   by a special character. This is kludgey, and apparantly breaks on
+   machines running Chinese Windows XP.
+5. Text is stored as ASCII, meaning that multilingual records are not
+   supported.
+6. Fields are encrypted/decrypted using a passkey derived from the master
+   passphrase and salt. This requires keeping the master passphrase in
+   memory for the lifetime of the application.
+
+The following proposed format attempts to address the above
+shortcomings:
+
+1. A PasswordSafe file will start with a constant 4-byte "magic
+   identifier" that will indicate that this is a post-1.x password
+   database. A 2.x application reading this file will check for this
+   first. Failing to find it, the application will try to reaed the
+   file as a format 1.x database. Failing that, it will indicate
+   "wrong passphrase or non-database file". A 1.x application trying
+   to read a 2.x format file will always give a "wrong passphrase"
+   error. Not perfect, but at least a "safe" failure mode.
+2. Following the magic identifier will be the RND|H(RND) pair as
+   define in the 1.x format, to enable quick verification of the
+   passphrase. The only difference is that H(RND) will use
+   SHA1(password) instead of the password directly, since we will
+   calculate SHA1(password) and store it in the application's memory
+   instead of the passphrase, to address shortcoming #6.
+3. Following RND|H(RND) will be the SALT and IP as in the 1.x
+   format. From here onwards, all data is encrpyted in 8 byte blocks,
+   with the first block holding the length (in bytes) of the encrypted
+   field that follows. This length is stored as a 32 bit unsigned
+   value in network byte order (i.e., read/written by
+   ntohl/htonl). This addresses shortcoming #2.
+4. Following the SALT and IP is a Format Description Block. This can
+   be a simple 2-byte major-version:minor-version field, or a schema
+   description of the record structure. For 2.0, the former is
+   suggested, that is, 0x2, 0x0.
+5. Following the Format Description Block will be the actual password
+   records. As for version 1.x, the order of records has no
+   meaning. Each record consists of a fixed number of fields, with
+   empty fields having a length of 0 in their first (and only)
+   block. Textual data will be stored in Unicode (wchar_t). Numerical
+   data will be stored in network byte order. Timestamps will be
+   stored as time_t (in network byte order), and refer to local time
+   (I don't think timezones are a consideration for our needs).
+6. The fields for each record for version 2.0 are as follows:
+
+   Name			      Type     Comments
+   --------------------------------------------
+   Group		      Text     [1]
+   Title		      Text
+   Username		      Text
+   Notes		      Text
+   Password		      Text
+   Creation Time	      time_t
+   Password Modification Time time_t
+   Password Lifetime	      time_t  [2]
+   Password Policy	      4 bytes [3]
+
+[1] The "Group" is meant to support displaying the entries in a
+tree-like manner. Groups can be heirarchical, with elements separated
+by a period, supporting groups such as "Finance.credit cards.Visa",
+"Finance.credit cards.Mastercard", Finance.bank.web access", etc.
+[2] This will allow the user to enter a lifetime for an entry. The
+application can then prompt the user about passwords that need to be
+changed. Password lifetime is in seconds, and a value of zero means
+"forever".
+[3] Currently, the password policy is a global property. It makes
+sense, however, to want to control this on a per-entry basis. Four
+bytes seems sufficient to store the policy. Exact encoding TBD.
+
+7. Conversion from 1.x databases to 2.x should be automatic. The user
+   should be notified that the 1.x database will be renamed with a
+   ".old" suffix added, and the 2.x saved with the old's original
+   name.
+
