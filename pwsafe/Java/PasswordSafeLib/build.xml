@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  $Id$
+
+  This file is provided under the standard terms of the Artistic Licence.  See
+  the LICENSE file that comes with this package for details.
+
+  To successfully build you need to do one of the following:
+  
+  - Make sure that log4j and JUnit are in the CLASSPATH, or
+  - Uncomment the optional pathelement tags for project.class.path and change
+    to their location on your system.
+-->
+
 <project name="PasswordSafeLib" default="help">
 
 	<property name="srcdir" location="src" />
 	<property name="bindir" location="bin" />
 	<property name="docdir" location="doc" />
+	<property name="apidocdir" location="${docdir}/api" />
 	<property name="resourcedir" location="resources" />
 
 	<property name="jar.doc" value="passwordsafe-doc.zip" />
@@ -13,8 +27,10 @@
 	<path id="project.class.path">
 		<pathelement path="${java.class.path}" />
 		<pathelement location="../BlowfishJ/bin" />
-		<pathelement location="C:\Java\jakarta-log4j-1.2.8\dist\lib\log4j-1.2.8.jar" />
-		<pathelement location="C:\Java\junit3.8.1\junit.jar" />
+		<!--
+		<pathelement location="=== path to log4j ===" />
+		<pathelement location="=== path to JUnit ===" />
+		-->
 	</path>
 
 	<fileset id="resources-1" dir="${resourcedir}">
@@ -35,17 +51,20 @@
 		<echo>Targets:
 --------
 
-buildall    - Cleans the output directories and rebuilds everything.
-clean       - Cleans the bin and doc directories.
-cleanbin    - Cleans only the bin directory.
-cleandoc    - Cleans only the doc directory.
-compile     - Recompiles the Java files only.
-javadoc     - Rebuilds the javadocs only.
-makejars    - Rebuilds the jar files only.
+buildall   - Cleans the output directories and files and rebuilds everything.
+clean      - Cleans the bin and doc directories.
+cleanbin   - Cleans only the bin directory.
+cleandoc   - Cleans only the doc directory.
+cleanjars  - Cleans the bin and doc jars only.
+compile    - Recompiles the Java files only.
+help       - (Default) Show this help.
+javadoc    - Rebuilds the javadocs only.
+makejars   - Rebuilds the jar files only.
+runtests   - Runs the JUnit tests.
 		</echo>
 	</target>
 
-	<target name="buildall" depends="clean, compile, javadoc, makejars">
+	<target name="buildall" depends="clean, compile, javadoc, makejars, runtests">
 	</target>
 
 	<target name="clean" depends="cleanbin, cleandoc, cleanjars" />
@@ -56,8 +75,8 @@ makejars    - Rebuilds the jar files only.
 	</target>
 
 	<target name="cleandoc">
-		<delete dir="${docdir}" />
-		<mkdir dir="${docdir}" />
+		<delete dir="${apidocdir}" />
+		<mkdir dir="${apidocdir}" />
 	</target>
 
 	<target name="cleanjars">
@@ -77,12 +96,25 @@ makejars    - Rebuilds the jar files only.
 	</target>
 
 	<target name="javadoc" depends="cleandoc">
-		<javadoc destdir="${docdir}" access="private" use="true" notree="false" nonavbar="false" noindex="false" splitindex="true" author="true" version="true" nodeprecatedlist="false" nodeprecated="false" packagenames="org.pwsafe.lib.exception,org.pwsafe.lib.file,org.pwsafe.lib.crypto,org.pwsafe.test,org.pwsafe.lib" sourcepath="src;resources" classpath="bin;C:\Java\jakarta-log4j-1.2.8\dist\lib\log4j-1.2.8.jar;D:\Projects\Java\BlowfishJ\bin;C:\Java\junit3.8.1\junit.jar;C:\Java\eclipse-3.0M6\plugins\org.junit_3.8.1\junit.jar"/>
+		<javadoc destdir="${apidocdir}" access="private" use="true" notree="false" nonavbar="false" noindex="false" splitindex="true" author="true" version="true" nodeprecatedlist="false" nodeprecated="false" packagenames="org.pwsafe.lib.exception,org.pwsafe.lib.file,org.pwsafe.lib.crypto,org.pwsafe.test,org.pwsafe.lib" sourcepath="src;resources" classpath="bin;C:\Java\jakarta-log4j-1.2.8\dist\lib\log4j-1.2.8.jar;D:\Projects\Java\BlowfishJ\bin;C:\Java\junit3.8.1\junit.jar;C:\Java\eclipse-3.0M6\plugins\org.junit_3.8.1\junit.jar"/>
 	</target>
 
 	<target name="makejars">
 		<zip  destfile="${jar.doc}" basedir="${docdir}" />
 		<jar destfile="${jar.bin}" basedir="${bindir}" />
+	</target>
+
+	<target name="runtests">
+		<junit>
+			<formatter type="plain" usefile="false" />
+
+			<classpath>
+				<pathelement location="passwordsafe-lib.jar" />
+				<pathelement path="${project.class.path}"/>
+			</classpath>
+
+			<test name="org.pwsafe.test.UtilTest" />
+		</junit>
 	</target>
 
 </project>
