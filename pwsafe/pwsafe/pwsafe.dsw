@@ -15,6 +15,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "corelibtest"=".\corelib\corelibtest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "pwsafe"=".\pwsafe.dsp" - Package Owner=<4>
 
 Package=<5>
