@@ -23,6 +23,7 @@
 #include "TryAgainDlg.h"
 
 #include "corelib/pwsprefs.h"
+#include "KeySend.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1225,63 +1226,93 @@ BOOL DboxMain::IsWorkstationLocked()
 void
 DboxMain::OnAutoType()
 {
-    if (SelItemOk() == TRUE)
-    {
-        CItemData *ci = getSelectedItem();
-        ASSERT(ci != NULL);
-        CMyString AutoCmd = ci->GetNotes();
-        // get the notes and then extract te autotype command	
-        ExtractAutoTypeCmd(AutoCmd);
+	if (SelItemOk() == TRUE)
+	{
+		CItemData *ci = getSelectedItem();
+		ASSERT(ci != NULL);
+		CMyString AutoCmd = ci->GetNotes();
+		// get the notes and then extract te autotype command	
+		ExtractAutoTypeCmd(AutoCmd);
+		
+		if(AutoCmd.IsEmpty()){
+ 			// checking for user and password for default settings
+ 			if(!ci->GetPassword().IsEmpty()){
+ 				if(!ci->GetUser().IsEmpty())
+ 					AutoCmd="\\u\\t\\p\\n";
+ 				else
+ 					AutoCmd="\\p\\n";
+ 			}
+ 			
+		}
+		
+		CMyString tmp;
+		
+		char curChar;
+	
+		CKeySend ks;
+		ks.ResetKeyboardState();
 
-        if(AutoCmd.IsEmpty()){
-            // checking for user and password for default settings
-            if(!ci->GetPassword().IsEmpty()){
-                if(!ci->GetUser().IsEmpty())
-                    AutoCmd="\\u\\t\\p\\n";
-                else
-                    AutoCmd="\\p\\n";
-            }
+		ks.SetDelay(10);
+		ShowWindow(SW_MINIMIZE);
 
-        }
+		for(int n=0; n<AutoCmd.GetLength();n++){
+			curChar=AutoCmd[n];
+			if(curChar=='\\'){
+				n++;
+				if(n<AutoCmd.GetLength())
+					curChar=AutoCmd[n];
+					switch(curChar){
+					case '\\':
+						tmp+='\\';
+						break;
+					case 'n':case 'r':
+						tmp+='\r';
+						break;
+					case 't':
+						tmp+='\t';
+						break;
+					case 'u':
+						tmp+= ci->GetUser();
+						break;
+					case 'p':
+						tmp+=ci->GetPassword();
+						break;
+					case 'd':
+						ks.SendString(tmp);
+						
+						tmp="";
+						int c;
+						int newdelay;
+						
+						newdelay=0;
+					
+						for(n++,c=1;n<AutoCmd.GetLength() && c < 1000;c*=10,n++)
+						{
+							
+							if(isdigit(AutoCmd[n])){
+								newdelay+=c*(AutoCmd[n]-'0');
+							} else {
+								break;
+							}		
+						}
+						n--;
+								
+						ks.SetAndDelay(newdelay);
 
-        CMyString tmp;
-
-        char curChar;
-
-        for(int n=0; n<AutoCmd.GetLength();n++){
-            curChar=AutoCmd[n];
-            if(curChar=='\\'){
-                n++;
-                if(n<AutoCmd.GetLength())
-                    curChar=AutoCmd[n];
-                switch(curChar){
-                    case '\\':
-                        tmp+='\\';
-                        break;
-                    case 'n':case 'r':
-                        tmp+='\r';
-                        break;
-                    case 't':
-                        tmp+='\t';
-                        break;
-                    case 'u':
-                        tmp+= ci->GetUser();
-                        break;
-                    case 'p':
-                        tmp+=ci->GetPassword();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-                tmp+=curChar;
-        }
-
-        ResetKeyboardState();
-        ShowWindow(SW_MINIMIZE);
-        SendString(tmp);
-    }
+						break;
+					default:
+						tmp+="\\"+curChar;
+						break;
+					}
+			}
+			else
+				tmp+=curChar;
+		}
+		
+		
+		
+		ks.SendString(tmp);
+	}
 }
 
 void DboxMain::ExtractAutoTypeCmd(CMyString &str)
@@ -1302,71 +1333,3 @@ void DboxMain::ExtractAutoTypeCmd(CMyString &str)
     }
 }
 
-
-//this function take a string and generates keyboard events which will be processed by the foreground window
-//This function has currently only been tested on 101/102 US keyboards
-//however I have added the code to deal with other keyboards (thedavecollins)
-void DboxMain::SendString(CMyString data)
-{
-    BOOL shiftDown=false; //assume shift key is up
-    HKL hlocale = GetKeyboardLayout(0);
-
-    for(int n=0;n<data.GetLength();n++){
-
-        SHORT keyScanCode=VkKeyScanEx(data[n],hlocale );
-        // high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
-        // We only process the shift key at this stage
-        if(keyScanCode & 0x100){
-            shiftDown=true;	
-            //send a shift down
-            keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, hlocale ), KEYEVENTF_EXTENDEDKEY, 0);	
-
-        } 
-        // the lower order byte has the key scan code we need.
-        keyScanCode =(SHORT)( keyScanCode & 0xFF);
-
-        keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0,hlocale ), 0, 0);	
-        keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0,hlocale ), KEYEVENTF_KEYUP, 0);	
-
-        if(shiftDown){
-            //send a shift up
-            keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0,hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0);	
-            shiftDown=false;
-        }
-    }
-}
-
-void DboxMain::ResetKeyboardState()
-{
-    // We need to make sure that the Control Key is still not down. 
-    // It will be down while the user presses ctrl-T the shortcut for autotype.
-
-    BYTE keys[256];
-    HKL hlocale = GetKeyboardLayout(0);
-
-    GetKeyboardState((LPBYTE)&keys);
-
-    while((keys[VK_CONTROL] & 0x80)!=0){
-        // VK_CONTROL is down so send a down and an up...
-
-        keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, hlocale), KEYEVENTF_EXTENDEDKEY, 0);	
-
-        keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);	
-
-        //now we let the messages be processed by the applications to set the keyboard state
-        MSG msg;
-        //BOOL m_bCancel=false;
-        while (::PeekMessage(&msg,NULL,0,0,PM_NOREMOVE) )
-        {
-            // so there is a message process it.
-            if (!AfxGetThread()->PumpMessage())
-                break;
-        }
-
-
-        Sleep(10);
-        memset((void*)&keys,0,256);
-        GetKeyboardState((LPBYTE)&keys);
-    }
-
-}
