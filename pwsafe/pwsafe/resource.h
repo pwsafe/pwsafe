@@ -41,6 +41,11 @@
 #define IDR_MAINBAR                     187
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
+#define IDD_PS_SECURITY                 194
+#define IDD_PS_DISPLAY                  195
+#define IDD_PS_USERNAME                 196
+#define IDD_PS_PASSWORDPOLICY           197
+#define IDD_PS_MISC                     198
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -64,26 +69,50 @@
 #define IDC_LOCKBASE                    1029
 #define IDC_SAVEMINIMIZE                1030
 #define IDC_DEFPWSHOW                   1031
+#define IDC_DEFPWSHOWINEDIT             1031
 #define IDC_USEDEFUSER                  1032
 #define IDC_QUERYSETDEF                 1033
 #define IDC_QUERYADDNAME                1034
+#define IDC_DEFPWSHOWINLIST             1035
 #define IDC_CRYPTKEY1                   1045
 #define IDC_CRYPTKEY2                   1046
 #define IDC_DEFUSERNAME                 1049
 #define IDC_STATIC_USERNAME             1050
+#define IDC_DEFPWLENGTH                 1051
 #define IDC_MESSAGE                     1052
+#define IDC_STATIC_DEFPWLENGTH          1052
 #define IDC_QUERYCHECK                  1053
+#define IDC_STATIC_RULES                1053
+#define IDC_STATIC_MINLOWERCASE         1054
 #define IDC_MAKEDEF                     1055
+#define IDC_STATIC_MINUPPERCASE         1055
 #define IDC_NEW                         1056
+#define IDC_STATIC_MINDIGITS            1056
 #define IDC_STATIC_ICON1                1057
+#define IDC_STATIC_MINSYMBOLS           1057
+#define IDC_MINLOWERCASE                1058
+#define IDC_MINUPPERCASE                1059
 #define IDC_STATIC_ICON2                1060
 #define IDC_STATIC_LOGO                 1060
+#define IDC_MINDIGITS                   1060
 #define IDC_STATIC_ICON3                1061
+#define IDC_MINSYMBOLS                  1061
 #define IDC_FIND_TEXT                   1062
 #define IDC_FIND_CS                     1063
 #define IDC_STATUS                      1064
 #define IDC_ALWAYSONTOP                 1065
 #define IDC_STATIC_LOGOTEXT             1066
+#define IDC_SAVEIMMEDIATELY             1066
+#define IDC_SPIN1                       1068
+#define IDC_USELOWERCASE                1069
+#define IDC_USEUPPERCASE                1070
+#define IDC_USEDIGITS                   1071
+#define IDC_USESYMBOLS                  1072
+#define IDC_SPINLOWERCASE               1073
+#define IDC_SPINUPPERCASE               1074
+#define IDC_SPINDIGITS                  1075
+#define IDC_SPINSYMBOLS                 1076
+#define IDC_EASYVISION                  1077
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -120,9 +149,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        194
+#define _APS_NEXT_RESOURCE_VALUE        199
 #define _APS_NEXT_COMMAND_VALUE         32822
-#define _APS_NEXT_CONTROL_VALUE         1067
+#define _APS_NEXT_CONTROL_VALUE         1078
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

@@ -15,12 +15,11 @@
 #include "EditDlg.h"
 #include "FindDlg.h"
 #include "PasskeyChangeDlg.h"
-#include "OptionsDlg.h"
+//#include "OptionsDlg.h"
 #include "PasskeyEntry.h"
 #include "PasskeySetup.h"
 #include "RemindSaveDlg.h"
 #include "QuerySetDef.h"
-#include "QueryAddName.h"
 #include "UsernameEntry.h"
 #include "TryAgainDlg.h"
 
@@ -164,7 +163,9 @@ DboxMain::DboxMain(CWnd* pParent)
     * This will happen if a filename was given in the command line.
     */
    if (m_currfile.IsEmpty()) {
-     m_currfile = (CMyString) app.GetProfileString("", "currentfile", "xxxxx.dat");
+     // If there's no registry key, this is probably a fresh install.
+     // CheckPassword will catch this and handle it correctly
+     m_currfile = (CMyString) app.GetProfileString("", "currentfile");
    }
    m_currbackup =
       (CMyString) app.GetProfileString("", "currentbackup", NULL);
@@ -179,7 +180,8 @@ DboxMain::DboxMain(CWnd* pParent)
 
    m_toolbarsSetup = FALSE;
 
-   m_bShowPassword = false;
+   m_bShowPasswordInEdit = false;
+   m_bShowPasswordInList = false;
    m_bSortAscending = true;
    m_iSortedColumn = 0;
 }
@@ -275,7 +277,11 @@ DboxMain::OnInitDialog()
 	m_ctlItemList.InsertColumn(2, "Notes");
 
 	if (app.GetProfileInt("", "showpwdefault", FALSE)) {
-		m_bShowPassword = true;
+		m_bShowPasswordInEdit = true;
+	}
+
+	if (app.GetProfileInt("", "showpwinlistdefault", FALSE)) {
+		m_bShowPasswordInList = true;
 	}
 
 	CRect rect;
@@ -427,7 +433,10 @@ DboxMain::setupBars()
    m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle()
                             | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-   // placement code moved to OnSize - eq
+   CRect rect;
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+   m_ctlItemList.MoveWindow(&rect, TRUE);
 
 	// Set flag
    m_toolbarsSetup = TRUE;
@@ -531,7 +540,14 @@ DboxMain::OnAdd()
       int newpos = insertItem(m_pwlist.GetAt(curPos));
       SelectEntry(newpos);
       m_ctlItemList.SetFocus();
-      m_changed = TRUE;
+      if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+      {
+         Save();
+      }
+      else
+      {
+         m_changed = TRUE;
+      }
       ChangeOkUpdate();
    }
    else if (rc == IDCANCEL)
@@ -657,6 +673,7 @@ DboxMain::OnEdit()
       dlg_edit.m_realpassword = item.GetPassword();
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = item.GetNotes();
+      dlg_edit.m_listindex = listindex;   // for future reference, this is not multi-user friendly
 
 	  app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
@@ -686,15 +703,23 @@ DboxMain::OnEdit()
          */
          m_pwlist.RemoveAt(listindex);
          POSITION curPos = m_pwlist.AddTail(item);
-		 m_ctlItemList.DeleteItem(curSel);
-		 insertItem(m_pwlist.GetAt(curPos));
-         m_changed = TRUE;
+		   m_ctlItemList.DeleteItem(curSel);
+		   insertItem(m_pwlist.GetAt(curPos));
+         if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+         {
+            Save();
+         }
+         else
+         {
+            m_changed = TRUE;
+         }
       }
 
-         rc = SelectEntry(curSel);
-         if (rc == LB_ERR) {
-	   SelectEntry(m_ctlItemList.GetItemCount() - 1);
-         }
+      rc = SelectEntry(curSel);
+      if (rc == LB_ERR)
+      {
+	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+      }
       m_ctlItemList.SetFocus();
       ChangeOkUpdate();
    }
@@ -720,13 +745,14 @@ DboxMain::OnOK()
 		}
 	}
 
-	CRect rect;
-	GetWindowRect(&rect);
-	app.WriteProfileInt("", "top", rect.top);
-	app.WriteProfileInt("", "bottom", rect.bottom);
-	app.WriteProfileInt("", "left", rect.left);
-	app.WriteProfileInt("", "right", rect.right);
-
+	if (!IsIconic()) {
+	  CRect rect;
+	  GetWindowRect(&rect);
+	  app.WriteProfileInt("", "top", rect.top);
+	  app.WriteProfileInt("", "bottom", rect.bottom);
+	  app.WriteProfileInt("", "left", rect.left);
+	  app.WriteProfileInt("", "right", rect.right);
+	}
 	app.WriteProfileInt("", "sortedcolumn", m_iSortedColumn);
 	app.WriteProfileInt("", "sortascending", m_bSortAscending);
 
@@ -944,13 +970,13 @@ DboxMain::RefreshList()
 	lvColumn.mask = LVCF_WIDTH;
 
 	bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
-	if (m_bShowPassword && !bPasswordColumnShowing) {
+	if (m_bShowPasswordInList && !bPasswordColumnShowing) {
 		m_ctlItemList.InsertColumn(3, "Password");
 		CRect rect;
 		m_ctlItemList.GetClientRect(&rect);
 		m_ctlItemList.SetColumnWidth(3, app.GetProfileInt("", "column4width", rect.Width() / 4));
 	}
-	else if (!m_bShowPassword && bPasswordColumnShowing) {
+	else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
 		app.WriteProfileInt("", "column4width", lvColumn.cx);
 		m_ctlItemList.DeleteColumn(3);
 	}
@@ -1215,51 +1241,6 @@ DboxMain::Save()
    m_changed = FALSE;
    ChangeOkUpdate();
    return SUCCESS;
-}
-
-
-void
-DboxMain::OnOptions() 
-{
-   COptionsDlg optionsDlg(this);
-   BOOL currUseDefUser = optionsDlg.m_usedefuser;
-   CMyString currDefUsername = optionsDlg.m_defusername;
-
-   optionsDlg.m_alwaysontop = m_bAlwaysOnTop;
-
-   int rc = optionsDlg.DoModal();
-   if (rc == IDOK)
-   {
-	   m_bAlwaysOnTop = optionsDlg.m_alwaysontop;
-	   UpdateAlwaysOnTop();
-
-	   bool bOldShowPassword = m_bShowPassword;
-	   m_bShowPassword = app.GetProfileInt("", "showpwdefault", FALSE)? true: false;
-      if (currDefUsername != optionsDlg.m_defusername)
-      {
-         if (currUseDefUser == TRUE)
-            MakeFullNames(&m_pwlist, currDefUsername);
-         if (optionsDlg.m_usedefuser==TRUE)
-            DropDefUsernames(&m_pwlist, optionsDlg.m_defusername);
-
-         RefreshList();
-      }
-      else if (currUseDefUser != optionsDlg.m_usedefuser)
-      {
-         //Only check box has changed
-         if (currUseDefUser == TRUE)
-            MakeFullNames(&m_pwlist, currDefUsername);
-         else
-            DropDefUsernames(&m_pwlist, optionsDlg.m_defusername);
-         RefreshList();
-      }
-	  else if (bOldShowPassword + m_bShowPassword == 1) {
-         RefreshList();
-	  }
-   }
-   else if (rc == IDCANCEL)
-   {
-   }
 }
 
 
@@ -1543,7 +1524,7 @@ DboxMain::Open( const char* pszFilename )
 		int rc2;
 		
 		temp =
-			"Do you want to save changes to the password databse: "
+			"Do you want to save changes to the password database: "
 			+ m_currfile
 			+ "?";
 		rc = MessageBox(temp,
@@ -2083,38 +2064,6 @@ DboxMain::ReadFile(const CMyString &a_filename,
       DropDefUsernames(&m_pwlist, temp);
    }
 
-   //See if we should add usernames to an old version file
-   if (app.GetProfileInt("", "queryaddname", TRUE) == TRUE
-       && (CheckVersion(&m_pwlist) == V10))
-   {
-      //No splits and no defusers
-      CQueryAddName dlg(this);
-      int response = dlg.DoModal();
-      if (response == IDOK)
-      {
-         CUsernameEntry dlg2(this);
-         int response2 = dlg2.DoModal();
-         if (response2 == IDOK)
-         {
-            if (dlg2.m_makedefuser == TRUE)
-            {
-               //MakeLongNames if this changes a set default username
-               SetBlankToDef(&m_pwlist);
-            }
-            else
-            {
-               SetBlankToName(&m_pwlist, dlg2.m_username);
-            }
-            m_changed = TRUE;
-         }
-         else if (response2 == IDCANCEL)
-         {
-         }
-      }
-      else if (response == IDCANCEL)
-      {
-      }
-   }
    return SUCCESS;
 }
 
@@ -2516,7 +2465,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 	m_ctlItemList.SetItemText(iResult, 2, strNotes);
 	m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
 
-	if (m_bShowPassword) {
+	if (m_bShowPasswordInList) {
 		m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
 	}
 

@@ -5,8 +5,7 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
-#include "resource.h"
-
+#include "DboxMain.h"
 #include "EditDlg.h"
 #include "PwFont.h"
 
@@ -58,7 +57,8 @@ void CEditDlg::OnShowpassword()
 }
 
 
-void CEditDlg::OnOK() 
+void
+CEditDlg::OnOK() 
 {
    UpdateData(TRUE);
 
@@ -77,9 +77,39 @@ void CEditDlg::OnOK()
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       return;
    }
+   if (m_password == "")
+   {
+      AfxMessageBox("This entry must have a password.");
+      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+      return;
+   }
+   //End check
 
-   app.m_pMainWnd = NULL;
-   CDialog::OnOK();
+   DboxMain* pParent = (DboxMain*) GetParent();
+   ASSERT(pParent != NULL);
+
+   POSITION listindex = pParent->Find(m_title, m_username);
+   /*
+    *  If there is a matching entry in our list, and that
+    *  entry is not the same one we started editing, tell the
+    *  user to try again.
+    */
+   if ((listindex != NULL) &&
+       (m_listindex != listindex))
+   {
+      CMyString temp =
+         "An item with Title \""
+         + m_title + "\" and User Name \"" + m_username
+         + "\" already exists.";
+      AfxMessageBox(temp);
+      ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
+      ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
+   }
+   else
+   {
+      app.m_pMainWnd = NULL;
+      CDialog::OnOK();
+   }
 }
 
 
@@ -129,10 +159,9 @@ void CEditDlg::HidePassword(void)
 
 void CEditDlg::OnRandom() 
 {
-   CMyString temp;
-
-   for (int x=0; x<8; x++)
-      temp += GetRandAlphaNumChar();
+   DboxMain* pParent = (DboxMain*) GetParent();
+   ASSERT(pParent != NULL);
+   CMyString temp = pParent->GetPassword();
 
    UpdateData(TRUE);
    CMyString msg;
@@ -144,7 +173,7 @@ void CEditDlg::OnRandom()
       msg =
          "The randomly generated password is: \""
          + temp
-         + "\" (without\nthe quotes). Would you like to use it?";
+         + "\" \n(without the quotes). Would you like to use it?";
       nResponse = MessageBox(msg, 
                              AfxGetAppName(),
                              MB_ICONEXCLAMATION|MB_YESNO);
