@@ -173,6 +173,7 @@
 #define ID_MENUITEM_UNMINIMIZE          32834
 #define ID_MENUITEM_AUTOTYPE            32835
 #define ID_PWSAFE_WEBSITE               32836
+#define ID_MENUITEM_RENAME              32838
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRY20             40020
 
@@ -181,7 +182,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        225
-#define _APS_NEXT_COMMAND_VALUE         32838
+#define _APS_NEXT_COMMAND_VALUE         32839
 #define _APS_NEXT_CONTROL_VALUE         1085
 #define _APS_NEXT_SYMED_VALUE           105
 #endif

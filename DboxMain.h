@@ -61,7 +61,6 @@ public:
   void SetChanged(bool changed); // for MyTreeCtrl
   void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
   void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
-  void DisableOnEdit(bool flag) {m_OnEditDisabled = flag;}
 
 	//{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -174,6 +173,7 @@ protected:
    afx_msg void OnClearclipboard();
    afx_msg void OnDelete();
    afx_msg void OnEdit();
+   afx_msg void OnRename();
    afx_msg void OnFind();
    afx_msg void OnOptions();
    afx_msg void OnSave();
@@ -217,7 +217,6 @@ protected:
 
 private:
   PWScore  &m_core;
-  bool m_OnEditDisabled;
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
 
   BOOL IsWorkstationLocked();
