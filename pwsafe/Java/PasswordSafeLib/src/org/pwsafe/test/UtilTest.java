@@ -16,10 +16,11 @@ import junit.framework.TestCase;
 public class UtilTest extends TestCase
 {
 	/**
-	 * Default constructor
+	 *
 	 */
-	public UtilTest()
+	public final void testAllocateByteArray()
 	{
+		assertEquals( 16, Util.allocateByteArray(13).length );
 	}
 
 	/**
