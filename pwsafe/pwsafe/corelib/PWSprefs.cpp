@@ -32,6 +32,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("DontAskSaveMinimize"), false},
   {_T("QuerySetDef"), true},
   {_T("UseNewToolbar"), true},
+  {_T("UseSystemTray"), true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
