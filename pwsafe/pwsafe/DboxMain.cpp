@@ -102,7 +102,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_existingrestore(FALSE), m_toolbarsSetup(FALSE),
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
-     m_core(app.m_core)
+     m_core(app.m_core), m_LockDisabled(false)
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
@@ -505,6 +505,7 @@ DboxMain::OnCopyPassword()
 void
 DboxMain::OnFind() 
 {
+  m_LockDisabled = true;
   CFindDlg::Doit(this); // create modeless or popup existing
   // XXX Gross hack to fix aesthetic bug in tree view
   // without this, multiple "selected" displayed
@@ -514,6 +515,7 @@ DboxMain::OnFind()
 				 TVIS_SELECTED,
 				 TVIS_DROPHILITED | TVIS_SELECTED);
 #endif
+  m_LockDisabled = false;
 }
 
 
@@ -548,8 +550,10 @@ DboxMain::ClearClipboard()
 void
 DboxMain::OnPasswordChange() 
 {
+   m_LockDisabled = true;
    CPasskeyChangeDlg changeDlg(this);
    int rc = changeDlg.DoModal();
+   m_LockDisabled = false;
    if (rc == IDOK)
    {
      m_core.ChangePassword(changeDlg.m_newpasskey);
@@ -583,7 +587,9 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 void
 DboxMain::OnSave() 
 {
+   m_LockDisabled = true;
    Save();
+   m_LockDisabled = false;
 }
 
 void
@@ -595,6 +601,7 @@ DboxMain::OnExportV17()
   //SaveAs-type dialog box
   while (1)
     {
+      m_LockDisabled = true;
       CFileDialog fd(FALSE,
                      "dat",
                      m_core.GetCurFile(),
@@ -607,6 +614,7 @@ DboxMain::OnExportV17()
       fd.m_ofn.lpstrTitle =
 	_T("Please name the exported database");
       rc = fd.DoModal();
+      m_LockDisabled = false;
       if (rc == IDOK)
 	{
 	  newfile = (CMyString)fd.GetPathName();
@@ -628,7 +636,9 @@ void
 DboxMain::OnExportText()
 {
   CExportTextDlg et;
+  m_LockDisabled = true;
   int rc = et.DoModal();
+  m_LockDisabled = false;
   if (rc == IDOK) {
     CMyString newfile;
     CMyString pw(et.m_exportTextPassword);
@@ -648,7 +658,9 @@ DboxMain::OnExportText()
 		       this);
 	fd.m_ofn.lpstrTitle =
 	  _T("Please name the plaintext file");
+	m_LockDisabled = true;
 	rc = fd.DoModal();
+	m_LockDisabled = false;
 	if (rc == IDOK) {
 	  newfile = (CMyString)fd.GetPathName();
 	  break;
@@ -671,7 +683,9 @@ DboxMain::OnExportText()
 void
 DboxMain::OnExportXML()
 {
+  m_LockDisabled = true;
     // TODO - currently disabled in menubar
+  m_LockDisabled = false;
 }
 
 void
@@ -688,7 +702,9 @@ DboxMain::OnImportText()
         _T("|"),
         this);
     fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import:");
+    m_LockDisabled = true;
     int rc = fd.DoModal();
+    m_LockDisabled = false;
     if (rc == IDOK)
     {
         CMyString newfile = (CMyString)fd.GetPathName();
@@ -705,7 +721,9 @@ DboxMain::OnImportText()
 void
 DboxMain::OnImportXML()
 {
+  m_LockDisabled = true;
     // TODO - currently disabled in menubar
+  m_LockDisabled = false;
 }
 
 
@@ -798,7 +816,9 @@ void
 DboxMain::OnAbout() 
 {
    DboxAbout dbox;
+   m_LockDisabled = true;
    dbox.DoModal();
+   m_LockDisabled = false;
 }
 
 
@@ -860,7 +880,9 @@ DboxMain::OnCopyUsername()
 void
 DboxMain::OnBackupSafe() 
 {
+   m_LockDisabled = true;
    BackupSafe();
+   m_LockDisabled = false;
 }
 
 
@@ -909,7 +931,9 @@ DboxMain::BackupSafe()
 void
 DboxMain::OnOpen() 
 {
+   m_LockDisabled = true;
    Open();
+   m_LockDisabled = false;
 }
 
 
@@ -1040,7 +1064,9 @@ DboxMain::Open( const CMyString &pszFilename )
 void
 DboxMain::OnNew()
 {
+   m_LockDisabled = true;
    New();
+   m_LockDisabled = false;
 }
 
 
@@ -1098,7 +1124,9 @@ DboxMain::New()
 void
 DboxMain::OnRestore()
 {
+   m_LockDisabled = true;
    Restore();
+   m_LockDisabled = false;
 }
 
 
@@ -1200,7 +1228,9 @@ DboxMain::Restore()
 void
 DboxMain::OnSaveAs()
 {
+   m_LockDisabled = true;
    SaveAs();
+   m_LockDisabled = false;
 }
 
 
@@ -1467,15 +1497,17 @@ void
 DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
-	CDialog::OnSysCommand( nID, lParam );
+  m_LockDisabled = true;
+  CDialog::OnSysCommand( nID, lParam );
 
-	if ( ID_SYSMENU_ALWAYSONTOP == nID )
-	{
-	  m_bAlwaysOnTop = !m_bAlwaysOnTop;
-	  PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::AlwaysOnTop,
-					   m_bAlwaysOnTop);
-	  UpdateAlwaysOnTop();
-	}
+  if ( ID_SYSMENU_ALWAYSONTOP == nID )
+    {
+      m_bAlwaysOnTop = !m_bAlwaysOnTop;
+      PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::AlwaysOnTop,
+				       m_bAlwaysOnTop);
+      UpdateAlwaysOnTop();
+    }
+  m_LockDisabled = false;
 #endif
 }
 

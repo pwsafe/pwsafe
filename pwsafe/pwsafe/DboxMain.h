@@ -238,7 +238,7 @@ private:
   BOOL IsWorkstationLocked();
   void startLockCheckTimer();
   void ExtractAutoTypeCmd(CMyString &str);
-
+  bool m_LockDisabled; // set when a dialog box is open, to avoid confusion
 
 };
 
