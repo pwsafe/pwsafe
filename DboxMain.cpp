@@ -1793,7 +1793,19 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
 
 LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  if (message != WM_TIMER)
+  // list of all the events that signify actual user activity, as opposed
+  // to Windows internal events...
+  if (message == WM_KEYDOWN ||
+      message == WM_COMMAND ||
+      message == WM_SYSCOMMAND ||
+      message == WM_MOUSEMOVE ||
+      message == WM_MOVE ||
+      message == WM_LBUTTONDOWN ||
+      message == WM_LBUTTONDBLCLK ||
+      message == WM_CONTEXTMENU ||
+      message == WM_MENUSELECT ||
+      message == WM_VSCROLL
+      )
     ResetIdleLockCounter();
   return CDialog::WindowProc(message, wParam, lParam);
 }
