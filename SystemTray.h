@@ -43,6 +43,7 @@ public:
 
 // Operations
 public:
+    void SetTarget(CWnd *tgt) { m_pTarget = tgt;} // ronys
     BOOL Enabled() { return m_bEnabled; }
     BOOL Visible() { return !m_bHidden; }
 
@@ -108,6 +109,7 @@ protected:
     HICON        m_hSavedIcon;
     UINT         m_DefaultMenuItemID;
     BOOL         m_DefaultMenuItemByPos;
+    CWnd *       m_pTarget; // ronys
 
 // Generated message map functions
 protected:
