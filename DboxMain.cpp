@@ -331,10 +331,8 @@ DboxMain::OpenOnInit(void)
      un-minimizing the application
    */
    CMyString passkey;
-   int rc;
-   int rc2;
-
-   rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, true);
+   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, true);
+   int rc2 = PWScore::NOT_SUCCESS;
 
    switch (rc)
    {
@@ -345,11 +343,14 @@ DboxMain::OpenOnInit(void)
 #endif
       break; 
    case PWScore::CANT_OPEN_FILE:
-      /*
-       * If it is the default filename, assume that this is the first time
-       * that they are starting Password Safe and don't confusing them.
-       */
-      // currently falls thru to...
+      if (m_core.GetCurFile().IsEmpty()) {
+	 // Empty filename. Assume they are starting Password Safe 
+	 // for the first time and don't confuse them.
+	 // fallthrough to New()
+      } else {
+         rc2 = Open();
+         break;
+      }
    case TAR_NEW:
       rc2 = New();
       if (PWScore::USER_CANCEL == rc2) {
@@ -363,10 +364,7 @@ DboxMain::OpenOnInit(void)
 	  }
       break;
    case PWScore::WRONG_PASSWORD:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
    default:
-      rc2 = PWScore::NOT_SUCCESS;
       break;
    }
 
@@ -637,6 +635,17 @@ DboxMain::OnExportText()
       MessageBox(_T("Passkey incorrect"), _T("Error"));
       Sleep(3000); // protect against automatic attacks
     }
+  }
+}
+
+
+void DboxMain::SetChanged(bool changed) // for MyTreeCtrl
+{
+  if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
+			_T("saveimmediately"), FALSE) == TRUE) {
+    Save();
+  } else {
+    m_core.SetChanged(changed);
   }
 }
 
