@@ -98,6 +98,10 @@ DboxMain::OnOptions()
      GetPref(PWSprefs::BoolPrefs::SaveImmediately) ? TRUE : FALSE;
    misc.m_escexits = prefs->
      GetPref(PWSprefs::BoolPrefs::EscExits) ? TRUE : FALSE;
+   // by strange coincidence, the values of the enums match the indices
+   // of the radio buttons in the following :-)
+   misc.m_doubleclickaction = prefs->
+     GetPref(PWSprefs::IntPrefs::DoubleClickAction);
 
    optionsDlg.AddPage( &display );
    optionsDlg.AddPage( &security );
@@ -173,11 +177,15 @@ DboxMain::OnOptions()
 		    misc.m_saveimmediately == TRUE);
      prefs->SetPref(PWSprefs::BoolPrefs::EscExits,
 		    misc.m_escexits == TRUE);
+     // by strange coincidence, the values of the enums match the indices
+     // of the radio buttons in the following :-)
+     prefs->SetPref(PWSprefs::IntPrefs::DoubleClickAction,
+		    misc.m_doubleclickaction);
 
      /*
-     ** Update string in database, if necessary
+     ** Update string in database, if necessary & possible
      */
-     if (prefs->IsChanged()) {
+     if (prefs->IsChanged() && !app.m_core.GetCurFile().IsEmpty()) {
        // save changed preferences to file
        // Note that we currently can only write the entire file, so any changes
        // the user made to the database are also saved here

@@ -25,6 +25,7 @@ public:
 	BOOL	m_confirmdelete;
 	BOOL	m_saveimmediately;
 	BOOL	m_escexits;
+	int     m_doubleclickaction;
 	//}}AFX_DATA
 
 
