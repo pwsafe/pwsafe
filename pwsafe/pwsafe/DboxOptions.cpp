@@ -164,6 +164,18 @@ DboxMain::OnOptions()
      prefs->SetPref(PWSprefs::BoolPrefs::SaveImmediately,
 		    misc.m_saveimmediately == TRUE);
 
+     /*
+     ** Update string in database, if necessary
+     */
+     if (prefs->IsChanged()) {
+       // save changed preferences to file
+       // Note that we currently can only write the entire file, so any changes
+       // the user made to the database are also saved here
+       if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
+	 MessageBox(_T("Failed to save changed preferences"), AfxGetAppName());
+       else
+	 prefs->ClearChanged();
+     }
       /*
       **  Now update the application according to the options.
       */

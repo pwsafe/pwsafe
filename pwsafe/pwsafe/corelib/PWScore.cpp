@@ -1,14 +1,17 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
-
+#pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
 #include <string>
 #include <vector>
+#pragma warning(pop)
+#pragma warning(disable : 4786)
 using namespace std;
 
 #include "PWScore.h"
 #include "BlowFish.h"
+#include "PWSprefs.h"
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 		     m_usedefuser(false), m_defusername(_T("")),
@@ -60,6 +63,10 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   PWSfile out(filename, GetPassKey());
 
   int status;
+
+  // preferences are kept in header, which is written in OpenWriteFile,
+  // so we need to update the prefernce string here
+  out.SetPrefString(PWSprefs::GetInstance()->Store());
 
   status = out.OpenWriteFile(version);
 
@@ -137,7 +144,6 @@ PWScore::WriteXMLFile(const CMyString &filename)
   return SUCCESS;
 }
 */
-
 
 int
 PWScore::ImportPlaintextFile(const CMyString &filename)
@@ -263,6 +269,8 @@ PWScore::ReadFile(const CMyString &a_filename,
   // prepare handling of pre-2.0 DEFUSERCHR conversion
   if (m_ReadFileVersion == PWSfile::V17)
     in.SetDefUsername(m_defusername);
+  else // for 2.0 & later, get pref string (possibly empty)
+    PWSprefs::GetInstance()->Load(in.GetPrefString());
 
    ClearData(); //Before overwriting old data, but after opening the file... 
 

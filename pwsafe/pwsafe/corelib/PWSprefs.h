@@ -14,6 +14,10 @@
  * the file. This way, exisitng prefs will be imported first time, and file
  * prefs will have priority over locals. Storing prefs will be done both to
  * registry and to file. Of course, the registry part is Windows-specific.
+ *
+ * IMPORTANT: When adding a new preference, the new enum MUST be before last,
+ * that is, right before the Num*Prefs enum. This is because the prefs are
+ * identified in storage by their type and index.
  */
 
 #include "MyString.h"
@@ -24,8 +28,7 @@ class PWSprefs {
 
   // prefString is stored on file, format described in PWSprefs.cpp
   void Load(const CMyString &prefString);
-  CMyString &Store(); // returns string for saving in file
-  bool IsChanged() const {return m_changed;}
+  CMyString Store(); // returns string for saving in file
 
   enum  BoolPrefs {AlwaysOnTop, ShowPWDefault, ShowPWInList, SortAscending,
 		   UseDefUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
@@ -41,35 +44,22 @@ class PWSprefs {
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		     NumStringPrefs};
 
-  bool GetPref(BoolPrefs pref_enum) const {
-    return GetBoolPref(m_bool_prefs[pref_enum].name,
-		       m_bool_prefs[pref_enum].defVal);}
+  bool IsChanged() const {return m_changed;}
+  void ClearChanged() {m_changed = false;}
 
-  unsigned int GetPref(IntPrefs pref_enum) const {
-    return GetIntPref(m_int_prefs[pref_enum].name,
-		      m_int_prefs[pref_enum].defVal);}
-
+  bool GetPref(BoolPrefs pref_enum) const;
+  unsigned int GetPref(IntPrefs pref_enum) const;
   // Following for case where default value is determined @ runtime
-  unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal) const {
-    return GetIntPref(m_int_prefs[pref_enum].name, defVal);}
-
-  CMyString GetPref(StringPrefs pref_enum) const {
-    return GetStringPref(m_string_prefs[pref_enum].name,
-			 m_string_prefs[pref_enum].defVal);}
+  unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal) const;
+  CMyString GetPref(StringPrefs pref_enum) const;
 
   // Special case
   void GetPrefRect(long &top, long &bottom,
 		   long &left, long &right) const;
 
-  void SetPref(BoolPrefs pref_enum, bool value)
-    {SetPref(m_bool_prefs[pref_enum].name, value);}
-
-  void SetPref(IntPrefs pref_enum, unsigned int value)
-    {SetPref(m_int_prefs[pref_enum].name, value);}
-
-  void SetPref(StringPrefs pref_enum, const CMyString &value)
-    {SetPref(m_string_prefs[pref_enum].name, value);}
-
+  void SetPref(BoolPrefs pref_enum, bool value);
+  void SetPref(IntPrefs pref_enum, unsigned int value);
+  void SetPref(StringPrefs pref_enum, const CMyString &value);
   // Special case
   void SetPrefRect(long top, long bottom,
 		   long left, long right);
@@ -89,55 +79,16 @@ class PWSprefs {
 
   CWinApp *m_app;
   bool m_changed;
+  // below, isPersistent means stored in db, !isPersistent means use registry only
   static const struct boolPref {
-    TCHAR *name; bool defVal;} m_bool_prefs[NumBoolPrefs];
+    TCHAR *name; bool defVal; bool isPersistent;} m_bool_prefs[NumBoolPrefs];
   static const struct intPref {
-    TCHAR *name; unsigned int defVal;} m_int_prefs[NumIntPrefs];
+    TCHAR *name; unsigned int defVal; bool isPersistent;} m_int_prefs[NumIntPrefs];
   static const struct stringPref {
-    TCHAR *name; TCHAR *defVal;} m_string_prefs[NumStringPrefs];
+    TCHAR *name; TCHAR *defVal; bool isPersistent;} m_string_prefs[NumStringPrefs];
+  // current values, loaded/stored from db
+  bool m_boolValues[NumBoolPrefs];
+  unsigned int m_intValues[NumIntPrefs];
+  CMyString m_stringValues[NumStringPrefs];
 };
 #endif /* PWSprefs_h */
-
-#if 0
-// raw material - exisitng prefs
-app.GetProfileInt(_T(""), _T("dontaskminimizeclearyesno"), FALSE) == TRUE)
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("alwaysontop"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column1width"),
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column2width"),
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column3width"),
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column4width"),
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE));
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), FALSE));
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskminimizeclearyesno"), FALSE));
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), FALSE));
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("maxmruitems"), 4);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), 8);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusehexdigits"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuselowercase"), TRUE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), TRUE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), TRUE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortascending"), 1)
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortedcolumn"), 0);
-app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
-app.GetProfileInt(_T(PWS_REG_OPTIONS),_T("dontasksaveminimize"), FALSE);
-app.GetProfileInt(_T(PWS_REG_POSITION), _T("bottom"), -1);
-app.GetProfileInt(_T(PWS_REG_POSITION), _T("left"), -1);
-app.GetProfileInt(_T(PWS_REG_POSITION), _T("right"), -1);
-app.GetProfileInt(_T(PWS_REG_POSITION), _T("top"), -1);
-app.GetProfileString(_T(PWS_REG_OPTIONS), _T("currentbackup"), NULL);
-app.GetProfileString(_T(PWS_REG_OPTIONS), _T("currentfile")));
-app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T(""));
-app.GetProfileString(_T(PWS_REG_OPTIONS), _T("lastview"),
-
-#endif
