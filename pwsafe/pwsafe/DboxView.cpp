@@ -1283,7 +1283,8 @@ DboxMain::OnAutoType()
       char curChar;
       const int N = AutoCmd.GetLength();
       CKeySend ks;
-      ks.ResetKeyboardState();
+	  ks.BlockUserInput();
+	  ks.ResetKeyboardState();
 
       for(int n=0; n<N;n++){
 	curChar=AutoCmd[n];
@@ -1345,7 +1346,10 @@ DboxMain::OnAutoType()
       // since that will clear the data [Bugs item #1026630]
       ShowWindow(SW_MINIMIZE);
       ks.SendString(tmp);
+	  	ks.UnBlockUserInput();
     }
+
+		
 }
 
 void DboxMain::ExtractAutoTypeCmd(CMyString &str)
