@@ -14,6 +14,14 @@ bool PWSfile::FileExists(const CMyString &filename)
   return (status == 0);
 }
 
+int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
+{
+  int status = _trename(oldname, newname);
+
+  return (status == 0) ? SUCCESS : FAILURE;
+}
+
+
 PWSfile::PWSfile(const CMyString &filename, const CMyString &passkey)
   : m_filename(filename), m_passkey(passkey), m_curversion(UNKNOWN_VERSION), m_fd(-1)
 {
