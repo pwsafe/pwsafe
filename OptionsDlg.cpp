@@ -3,6 +3,11 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
+#include "resource.h"
+#include "MyString.h"
+
 #include "OptionsDlg.h"
 
 #ifdef _DEBUG
@@ -10,6 +15,8 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+#define not(x) ((x) ? 0 : 1)
 
 //-----------------------------------------------------------------------------
 COptionsDlg::COptionsDlg(CWnd* pParent)
@@ -98,7 +105,10 @@ COptionsDlg::OnOK()
 void
 COptionsDlg::OnHelp() 
 {
-   WinHelp(0x20089, HELP_CONTEXT);
+   //WinHelp(0x20089, HELP_CONTEXT);
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_opts.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 
 
