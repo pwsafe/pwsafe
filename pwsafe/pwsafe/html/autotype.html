@@ -1,33 +1,76 @@
-<html>
-	<head>
-		<title>Auto Type</title>
-		<!-- pwsafe version: 2.07-->
-		<!-- Modified: 11/3/2004 -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <title>Auto Type</title>
 
-		<!--Popup control -->
-		<OBJECT id=popup type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		
+		
+		
+
+		
+		<!-- pwsafe version: 2.07--><!-- Modified: 11/3/2004 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+	<body><object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
 		</object>
 		<!-- Popup Source File -->
-		<script language=javascript src="html/popups.js">
-		</script>
-
-		 <link rel="stylesheet" type="text/css" href="style.css">
-
-	</head>
-	<body>
 		
-		<h2>Auto Type</h2>
-		<p><b>Auto Type</b> provides a means for users to easily and quickly enter user name and password information. With a single click, the user name, and password are entered and the form submitted to the host for approval. In general, the formula followed by the automated keystrokes is as follows: the user name, followed by a tab key, followed by the password, and then the enter key (<i>username</i> <b>TAB</b> <i>password</i> <b>ENTER</b>). </p> Most, though not all, web forms will operate with the <b>Auto Type</b> feature. If you are unsure that a particular web site will function properly, manually try the keystroke sequence listed above first.</p>
 
-		<div class=instr>
+		 
+
+	
+		
+		
+<h2>Auto Type</h2>
+
+		
+<p><b>Auto Type</b>
+provides a means for users to easily and quickly enter user name and
+password information. With a single click, the user name, and password
+are entered and the form submitted to the host for approval. By
+default, the formula followed by the automated keystrokes is as
+follows: the user name, followed by a tab key, followed by the
+password, another tab, and then the enter key (<i>username</i> <b>TAB</b> <i>password</i> <b>TAB </b><b>ENTER</b>). </p>
+ Most, though not all, web forms will operate with the <b>Auto Type</b> feature. For those that don't, it is possible to tailor the autotype behaviour as described in the <a href="#autotype_details">Customizing Auto Type</a> section below.<br>
+
+
+
+		
+<div class="instr">
 			<h3>Using Auto Type</h3>
 			<ol>
 				<li>Place cursor in the form's user name field
-				<li>Maximize or open Password Safe
-				<li>Select a password entry
-				<li><b>Ctrl -T</b> or right-click and select <b>Perform Auto Type</b> to initiate.
-			</ol>
+				</li><li>Maximize or open Password Safe
+				</li><li>Select a password entry
+				</li><li><b>Ctrl -T</b> or right-click and select <b>Perform Auto Type</b> to initiate.</li></ol>
+<h3><a name="autotype_details"></a>Customizing Auto Type</h3>
+For web sites that do not have the username field followed by the
+password field followed by the login button, you can modify the
+behaviour by adding "autotype:" in an entry's Notes field, followed by
+a string that specifies the desired behavior as follows:<br>
+<ul>
+  <li><span style="font-weight: bold;">\u</span> is replaced by the username associated with the entry.&nbsp;</li>
+
+  <li><span style="font-weight: bold;">\p</span> is replaced by the password associated with the entry.&nbsp;</li>
+
+<li><span style="font-weight: bold;">\t</span> is replaced by the Tab key, in effect skipping a field.&nbsp;</li>
+
+<li><span style="font-weight: bold;">\n</span> is replaced by the enter key, in effect pressing a button.&nbsp;</li>
+
+<li><span style="font-weight: bold;">\\</span> is replaced by the backslash (\) key.&nbsp;</li>
+
+<li><span style="font-weight: bold;">\d<span style="font-style: italic;">NNN</span></span> sets the delay between characters to <span style="font-style: italic;">NNN</span> milliseconds, instead of 10 (the default). <br>
+</li><li>All other text is typed as-is.<br>
+  </li>
+
+
+</ul><span style="font-weight: bold;">Example:</span> The following can be used where the bank account number (12345) must be entered before the user and password:&nbsp;<br>&nbsp;&nbsp;&nbsp; autotype:12345\t\u\t\p\t\n&nbsp;<br>
+
+
+ 
 		</div>
+
 
 
 		
@@ -35,6 +78,4 @@
 			<param name="Keyword" value="Auto Type">
 			<param name="Keyword" value="Using Auto Type">
 		</object>
-	</body>
-</html>
-		
+	</body></html>
