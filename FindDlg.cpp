@@ -28,8 +28,27 @@ void CFindDlg::Doit(CWnd *pParent)
   if (self == NULL) {
     self = new CFindDlg(pParent);
     if (self != NULL)
-      if (self->Create(CFindDlg::IDD))
+      if (self->Create(CFindDlg::IDD)) {
+	RECT myRect, parentRect; 
+	// move find dialog so that it doesn't overlap its parent
+	pParent->GetWindowRect(&parentRect);
+	self->GetWindowRect(&myRect);
+	// Move the dialog to the right if parent is on left side
+	// of screen,and vice versa
+	int screenCenter = GetSystemMetrics(SM_CXSCREEN)/2;
+	int parentCenter = (parentRect.right + parentRect.left)/2;
+
+	if (parentCenter < screenCenter) {
+	  // move right
+	  myRect.right = parentRect.right + myRect.right - myRect.left;
+	  myRect.left = parentRect.right;
+	} else { // move left
+	  myRect.left = parentRect.left - (myRect.right - myRect.left);
+	  myRect.right = parentRect.left;
+	}
+	self-> MoveWindow(&myRect);
 	self->ShowWindow(SW_SHOW);
+      }
   } else {
     self->BringWindowToTop();
   }
