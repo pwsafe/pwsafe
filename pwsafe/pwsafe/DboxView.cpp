@@ -270,7 +270,7 @@ DboxMain::OnDelete()
 	  int curSel = di->list_index;
 	  POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 	  m_ctlItemList.DeleteItem(curSel);
-	  m_ctlItemTree.DeleteItem(di->tree_item);
+	  m_ctlItemTree.DeleteWithParents(di->tree_item);
 	  delete di;
 	  m_core.RemoveEntryAt(listindex);
 	  FixListIndexes(m_ctlItemList);

@@ -6,6 +6,7 @@
 
 #ifndef _MYTREECTRL_H
 #define _MYTREECTRL_H
+#include <Afxcmn.h>
 
 class CMyTreeCtrl : public CTreeCtrl
 {
@@ -15,17 +16,7 @@ public:
 
   enum {NODE=0, LEAF=1}; // indices of bitmaps in ImageList
 
-private:
-  bool        m_bDragging;
-  HTREEITEM   m_hitemDrag;
-  HTREEITEM   m_hitemDrop;
-  CImageList  *m_pimagelist;
-
-  void SetNewStyle(long lStyleMask, BOOL bSetBits);
-  bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
-  void OnButtonUp(void);
-  bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
-  bool IsLeafNode(HTREEITEM hItem);
+  void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
 
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
@@ -40,6 +31,18 @@ private:
   void OnButtonUp(CPoint point);
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  bool        m_bDragging;
+  HTREEITEM   m_hitemDrag;
+  HTREEITEM   m_hitemDrop;
+  CImageList  *m_pimagelist;
+
+  void SetNewStyle(long lStyleMask, BOOL bSetBits);
+  bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
+  void OnButtonUp(void);
+  bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
+  bool IsLeafNode(HTREEITEM hItem);
 };
 
 
