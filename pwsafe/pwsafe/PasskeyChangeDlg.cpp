@@ -30,9 +30,9 @@ void
 CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_CONFIRMNEW, m_confirmnew.m_mystring);
-   DDX_Text(pDX, IDC_NEWPASSKEY, m_newpasskey.m_mystring);
-   DDX_Text(pDX, IDC_OLDPASSKEY, m_oldpasskey.m_mystring);
+   DDX_Text(pDX, IDC_CONFIRMNEW, (CString &)m_confirmnew);
+   DDX_Text(pDX, IDC_NEWPASSKEY, (CString &)m_newpasskey);
+   DDX_Text(pDX, IDC_OLDPASSKEY, (CString &)m_oldpasskey);
 }
 
 

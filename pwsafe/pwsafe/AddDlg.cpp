@@ -30,10 +30,10 @@ CAddDlg::CAddDlg(CWnd* pParent)
 void CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_PASSWORD, m_password.m_mystring);
-   DDX_Text(pDX, IDC_NOTES, m_notes.m_mystring);
-   DDX_Text(pDX, IDC_USERNAME, m_username.m_mystring);
-   DDX_Text(pDX, IDC_TITLE, m_title.m_mystring);
+   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
+   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
+   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
+   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
 }
 
 

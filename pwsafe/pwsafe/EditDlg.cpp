@@ -19,10 +19,10 @@ static char THIS_FILE[] = __FILE__;
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_NOTES, m_notes.m_mystring);
-   DDX_Text(pDX, IDC_PASSWORD, m_password.m_mystring);
-   DDX_Text(pDX, IDC_USERNAME, m_username.m_mystring);
-   DDX_Text(pDX, IDC_TITLE, m_title.m_mystring);
+   DDX_Text(pDX, IDC_NOTES, (CString &)m_notes);
+   DDX_Text(pDX, IDC_PASSWORD, (CString &)m_password);
+   DDX_Text(pDX, IDC_USERNAME, (CString &)m_username);
+   DDX_Text(pDX, IDC_TITLE, (CString &)m_title);
 }
 
 
@@ -39,7 +39,7 @@ void CEditDlg::OnShowpassword()
    UpdateData(TRUE);
 
    CMyString wndName;
-   GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName.m_mystring);
+   GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
 
    if (wndName == "&Show Password")
    {
@@ -159,7 +159,7 @@ void CEditDlg::OnRandom()
       m_realpassword = temp;
 
       CMyString wndName;
-      GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName.m_mystring);
+      GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
 
       if (wndName == "&Show Password")
          m_password = GetAsterisk(m_realpassword);

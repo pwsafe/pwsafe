@@ -54,7 +54,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_PASSKEY, m_passkey.m_mystring);
+   DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
    DDX_Text(pDX, IDC_MESSAGE, m_message);
 }
 

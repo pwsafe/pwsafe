@@ -157,7 +157,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
       ipthing[x] = newrand();
     _write(out, ipthing, 8);
 
-    LPCSTR pwd = LPCSTR(passwd.m_mystring);
+    LPCSTR pwd = LPCSTR(passwd);
     _writecbc(out, buf, len,
 	      (unsigned char *)pwd, passwd.GetLength(),
 	      thesalt, SaltLength,
@@ -210,7 +210,7 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 
       _read(in, salt, SaltLength);
       _read(in, ipthing, 8);
-      LPCSTR pwd = LPCSTR(passwd.m_mystring);
+      LPCSTR pwd = LPCSTR(passwd);
       if (_readcbc(in, buf, len,
 		   (unsigned char *)pwd, passwd.GetLength(),
 		   salt, SaltLength, ipthing) == 0) {

@@ -25,6 +25,7 @@ public:
    TCHAR operator[](int nIndex) const;
    void SetAt(int nIndex, TCHAR ch);
    operator CString() const;
+   operator CString&();
    operator LPCTSTR() const;
    BOOL IsEmpty() const;
    BOOL LoadString(UINT nID);
@@ -65,12 +66,11 @@ public:
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
 
-   CString m_mystring;
-
   void Trash() {trashstring();}
 
 private:
-   void trashstring();
+  CString m_mystring;
+  void trashstring();
 };
 //-----------------------------------------------------------------------------
 

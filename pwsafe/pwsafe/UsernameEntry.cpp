@@ -29,7 +29,7 @@ void CUsernameEntry::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
    DDX_Check(pDX, IDC_MAKEDEF, m_makedefuser);
-   DDX_Text(pDX, IDC_USERNAME, m_username.m_mystring);
+   DDX_Text(pDX, IDC_USERNAME, (CString &)m_username);
 }
 
 
@@ -44,7 +44,7 @@ CUsernameEntry::OnOK()
 
    app.WriteProfileInt("", "usedefuser", m_makedefuser);
    if (m_makedefuser==TRUE)
-      app.WriteProfileString("", "defusername", m_username.m_mystring);
+      app.WriteProfileString("", "defusername", m_username);
 
    CDialog::OnOK();
 }
