@@ -48,7 +48,9 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
       DBGMSG("** FIRST **\n");
    }
 
-   m_passkey = "";
+   m_passkey = _T("");
+
+   m_hIcon = app.LoadIcon(IDI_CORNERICON);
 
    if (a_filespec.GetLength() > FILE_DISP_LEN) {
 // m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
@@ -118,14 +120,13 @@ CPasskeyEntry::OnInitDialog(void)
    }
 #endif
 
-   if (("" == m_message)
-       && m_first)
+   if (m_message.IsEmpty() && m_first)
    {
       m_ctlPasskey.EnableWindow(FALSE);
 #if !defined(POCKET_PC)
       m_ctlOK.EnableWindow(FALSE);
 #endif
-      m_message = "[No current database]";
+      m_message = _T("[No current database]");
    }
    /*
     * this bit makes the background come out right on
@@ -143,6 +144,13 @@ CPasskeyEntry::OnInitDialog(void)
       m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
    }
 #endif 
+
+   // Set the icon for this dialog.  The framework does this automatically
+   //  when the application's main window is not a dialog
+
+   SetIcon(m_hIcon, TRUE);  // Set big icon
+   SetIcon(m_hIcon, FALSE); // Set small icon
+
   return TRUE;
 }
 
