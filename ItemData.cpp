@@ -26,9 +26,9 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 //More complex constructor
-CItemData::CItemData(CMyString name,
-                     CMyString password,
-                     CMyString notes)
+CItemData::CItemData(const CMyString &name,
+                     const CMyString &password,
+                     const CMyString &notes)
 {
    InitStuff();
    SetName(name);
@@ -36,7 +36,7 @@ CItemData::CItemData(CMyString name,
    SetNotes(notes);
 }
 
-CItemData::CItemData(CItemData &stuffhere)
+CItemData::CItemData(const CItemData &stuffhere)
 {
    m_nLength = stuffhere.m_nLength;
    m_pwLength = stuffhere.m_pwLength;
@@ -60,13 +60,13 @@ CItemData::CItemData(CItemData &stuffhere)
 
 //Returns a plaintext name
 BOOL
-CItemData::GetName(CMyString &name)
+CItemData::GetName(CMyString &name) const
 {
    return DecryptData(m_name, m_nLength, m_nameValid, &name);
 }
 
 CMyString
-CItemData::GetName()
+CItemData::GetName() const
 {
    CMyString ret;
    (void) DecryptData(m_name, m_nLength, m_nameValid, &ret);
@@ -76,13 +76,13 @@ CItemData::GetName()
 
 //Returns a plaintext password
 BOOL
-CItemData::GetPassword(CMyString &password)
+CItemData::GetPassword(CMyString &password) const
 {
    return DecryptData(m_password, m_pwLength, m_pwValid, &password);
 }
 
 CMyString
-CItemData::GetPassword()
+CItemData::GetPassword() const
 {
    CMyString ret;
    (void) DecryptData(m_password, m_pwLength, m_pwValid, &ret);
@@ -92,13 +92,13 @@ CItemData::GetPassword()
 
 //Returns a plaintext notes
 BOOL
-CItemData::GetNotes(CMyString &notes)
+CItemData::GetNotes(CMyString &notes) const
 {
    return DecryptData(m_notes, m_notesLength, m_notesValid, &notes);
 }
 
 CMyString
-CItemData::GetNotes()
+CItemData::GetNotes() const
 {
    CMyString ret;
    (void) DecryptData(m_notes, m_notesLength, m_notesValid, &ret);
@@ -108,21 +108,21 @@ CItemData::GetNotes()
 
 //Encrypts a plaintext name and stores it in m_name
 BOOL
-CItemData::SetName(CMyString name)
+CItemData::SetName(const CMyString &name)
 {
    return EncryptData(name, &m_name, &m_nLength, (BOOL*)&m_nameValid);
 }
 
 //Encrypts a plaintext password and stores it in m_password
 BOOL
-CItemData::SetPassword(CMyString password)
+CItemData::SetPassword(const CMyString &password)
 {
    return EncryptData(password, &m_password, &m_pwLength, (BOOL*)&m_pwValid);
 }
 
 //Encrypts plaintext notes and stores them in m_notes
 BOOL
-CItemData::SetNotes(CMyString notes)
+CItemData::SetNotes(const CMyString &notes)
 {
    return EncryptData(notes, &m_notes, &m_notesLength, (BOOL*)&m_notesValid);
 }
@@ -149,27 +149,43 @@ CItemData::~CItemData()
 
 //Encrypts the thing in plain to the variable cipher - alloc'd here
 BOOL
-CItemData::EncryptData(CMyString plain,
+CItemData::EncryptData(const CMyString &plain,
                        unsigned char **cipher,
                        int *cLength,
                        BOOL *valid)
 {
-   int result = EncryptData((unsigned char*)plain.GetBuffer(plain.GetLength()),
+  const LPCSTR plainstr = (const LPCSTR)plain; // use of CString::operator LPCSTR
+  int result = EncryptData((const unsigned char*)plainstr,
                             plain.GetLength(),
                             cipher,
                             cLength,
                             valid);
-   plain.ReleaseBuffer();
    return result;
 }
 
+
+BlowFish *
+CItemData::MakeBlowFish() const
+{
+  ASSERT(m_saltValid);
+  LPCSTR passstr = LPCSTR(app.m_passkey);
+
+  return ::MakeBlowFish((const unsigned char *)passstr, app.m_passkey.GetLength(),
+			m_salt, SaltLength);
+}
+
+
+
 BOOL
-CItemData::EncryptData(unsigned char *plain,
+CItemData::EncryptData(const unsigned char *plain,
                        int plainlength,
                        unsigned char **cipher,
                        int *cLength,
                        BOOL *valid)
 {
+  // Note that the m_salt member is set here, and read in DecryptData,
+  // hence this can't be const, but DecryptData can
+
    if (*valid == TRUE)
    {
       delete [] *cipher;
@@ -193,22 +209,10 @@ CItemData::EncryptData(unsigned char *plain,
       m_saltValid = TRUE;
    }
 
-   unsigned char passkey[20];
-   VirtualLock(passkey, 20);
-   CMyString stringPasskey = app.m_passkey;
-
-   SHA1_CTX context;
-   SHA1Init(&context);
-   SHA1Update(&context,
-              (unsigned char*)stringPasskey.GetBuffer(stringPasskey.GetLength()),
-              stringPasskey.GetLength());
-   stringPasskey.ReleaseBuffer();
-   SHA1Update(&context, m_salt, SaltLength);
-   SHA1Final(passkey, &context);
-	
-   BlowFish Algorithm(passkey, 20);
+   BlowFish *Algorithm = MakeBlowFish();
 
    unsigned char *tempmem = new unsigned char[BlockLength];
+   // invariant: BlockLength >= plainlength
    memcpy((char*)tempmem, (char*)plain, plainlength);
 
    //Fill the unused characters in with random stuff
@@ -217,54 +221,38 @@ CItemData::EncryptData(unsigned char *plain,
 
    //Do the actual encryption
    for (x=0; x<BlockLength; x+=8)
-      Algorithm.Encrypt(tempmem+x, *cipher+x);
+      Algorithm->Encrypt(tempmem+x, *cipher+x);
 
+   delete Algorithm;
    delete [] tempmem;
-   trashMemory(passkey, 20L);
-   trashMemory(context);
-   VirtualUnlock(passkey, 20L);
 
    return TRUE;
 }
 
 //This is always used for preallocated data - not elegant, but who cares
 BOOL
-CItemData::DecryptData(unsigned char *cipher,
+CItemData::DecryptData(const unsigned char *cipher,
                        int cLength,
                        BOOL valid,
                        unsigned char *plain,
-                       int plainlength)
+                       int plainlength) const
 {
    int BlockLength = GetBlockSize(cLength);
-	
-   unsigned char passkey[20];
-   VirtualLock((char*)passkey, 20);
-   CMyString stringPasskey = app.m_passkey;
 
-   SHA1_CTX context;
-   SHA1Init(&context);
-   SHA1Update(&context,
-              (unsigned char*)stringPasskey.GetBuffer(stringPasskey.GetLength()),
-              stringPasskey.GetLength());
-   stringPasskey.ReleaseBuffer();
-   SHA1Update(&context, m_salt, SaltLength);
-   SHA1Final(passkey, &context);
-
-   BlowFish Algorithm(passkey, 20);
+   BlowFish *Algorithm = MakeBlowFish();
 	
    unsigned char *tempmem = new unsigned char[BlockLength];
 
    int x;
    for (x=0;x<BlockLength;x+=8)
-      Algorithm.Decrypt(cipher+x, tempmem+x);
+      Algorithm->Decrypt(cipher+x, tempmem+x);
+
+   delete Algorithm;
 
    for (x=0;x<cLength;x++)
       if (x<plainlength)
          plain[x] = tempmem[x];
 
-   trashMemory(passkey, 20);
-   trashMemory(context);
-   VirtualUnlock((char*)passkey, 20);
    delete [] tempmem;
 
    return TRUE;
@@ -272,31 +260,21 @@ CItemData::DecryptData(unsigned char *cipher,
 
 //Decrypts the thing pointed to by cipher into plain
 BOOL
-CItemData::DecryptData(unsigned char *cipher,
+CItemData::DecryptData(const unsigned char *cipher,
                        int cLength,
                        BOOL valid,
-                       CMyString *plain)
+                       CMyString *plain) const
 {
    int BlockLength = GetBlockSize(cLength);
 	
    unsigned char *plaintxt = (unsigned char*)plain->GetBuffer(BlockLength+1);
-   unsigned char passkey[20];
-   VirtualLock((char*)passkey, 20);
-   CMyString stringPasskey = app.m_passkey;
 
-   SHA1_CTX context;
-   SHA1Init(&context);
-   SHA1Update(&context,
-              (unsigned char*)stringPasskey.GetBuffer(stringPasskey.GetLength()),
-              stringPasskey.GetLength());
-   stringPasskey.ReleaseBuffer();
-   SHA1Update(&context, m_salt, SaltLength);
-   SHA1Final(passkey, &context);
-
-   BlowFish Algorithm(passkey, 20);
+   BlowFish *Algorithm = MakeBlowFish();
    int x;
    for (x=0;x<BlockLength;x+=8)
-      Algorithm.Decrypt(cipher+x, plaintxt+x);
+      Algorithm->Decrypt(cipher+x, plaintxt+x);
+
+   delete Algorithm;
 
    //ReleaseBuffer does a strlen, so 0s will be truncated
    for (x=cLength;x<BlockLength;x++)
@@ -304,9 +282,6 @@ CItemData::DecryptData(unsigned char *cipher,
    plaintxt[BlockLength] = 0;
 
    plain->ReleaseBuffer();
-   trashMemory(passkey, 20);
-   trashMemory(context);
-   VirtualUnlock((char*)passkey, 20);
 
    return TRUE;
 }
@@ -332,9 +307,9 @@ void CItemData::InitStuff()
 }
 
 
-//Returns the number of 8 byte blocks needed to store 'size' bytes
+//Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
 int
-CItemData::GetBlockSize(int size)
+CItemData::GetBlockSize(int size) const
 {
    return (int)ceil((double)size/8.0) * 8;
 }

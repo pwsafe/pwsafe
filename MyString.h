@@ -1,15 +1,23 @@
 // MyString.h
+// A drop-in replacement for CString, the main difference being that the
+// data is scrubbed by trashstring() in the destructor, thus leaving an attacker
+// with a little less info to grovel for in the swap file / core dump / whatever
+//
+// Note that the CString member m_mystring is public - this is for cases where
+// a function requires a CString (reference) as an argument.
+// You could argue that implementing a cast-to-CString operator would be more elegant...
 //-----------------------------------------------------------------------------
 
 #ifndef _MYSTRING_H_
 #define _MYSTRING_H_
-
+#include <AFX.H>
 //-----------------------------------------------------------------------------
 class CMyString
 {
 public:
    CMyString();
    CMyString(LPCSTR lpsz);
+   CMyString(LPCSTR lpsz, int nLength);
    CMyString(const CMyString& stringSrc);
    CMyString(const CString& stringSrc);
    ~CMyString();
@@ -54,8 +62,12 @@ public:
    int Find(LPCTSTR lpszSub) const;
    CString Left(int nCount) const;
    CString Right(int nCount) const;
+  void TrimRight() {m_mystring.TrimRight();}
+  void TrimLeft() {m_mystring.TrimLeft();}
 
    CString m_mystring;
+
+  void Trash() {trashstring();}
 
 private:
    void trashstring();

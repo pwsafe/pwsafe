@@ -1,16 +1,8 @@
 // BlowFish.h
 //-----------------------------------------------------------------------------
 
-//#include "Util.h"
 
-#define bf_N 16
-
-extern unsigned long bf_S[4][256];
-extern unsigned long bf_P[bf_N + 2];
-extern unsigned long tempbf_S[4][256];
-extern unsigned long tempbf_P[bf_N + 2];
-
-#define MAXKEYBYTES 56
+#define MAXKEYBYTES 56 // unused
 
 typedef unsigned char block[8];
 
@@ -32,12 +24,19 @@ class BlowFish
 {
 public:
    BlowFish(unsigned char* key, int keylen);
-   void Encrypt(block in, block out);
-   void Decrypt(block in, block out);
+  ~BlowFish();
+   void Encrypt(const block in, block out);
+   void Decrypt(const block in, block out);
+  enum {bf_N = 16};
 private:
-   void Blowfish_encipher(unsigned long* xl, unsigned long* xr);
-   void Blowfish_decipher(unsigned long* xl, unsigned long* xr);
-   void InitializeBlowfish(unsigned char key[], short keybytes);
+  // Following are global supposedly for performance reasons. TBV...
+  static unsigned long bf_S[4][256];
+  static unsigned long bf_P[bf_N + 2];
+  const static unsigned long tempbf_S[4][256];
+  const static unsigned long tempbf_P[bf_N + 2];
+  void Blowfish_encipher(unsigned long* xl, unsigned long* xr);
+  void Blowfish_decipher(unsigned long* xl, unsigned long* xr);
+  void InitializeBlowfish(unsigned char key[], short keybytes);
 };
 //-----------------------------------------------------------------------------
 // Local variables:

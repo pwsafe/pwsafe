@@ -39,10 +39,7 @@ void CEditDlg::OnShowpassword()
    UpdateData(TRUE);
 
    CMyString wndName;
-   CString temp;
-   GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(temp);
-   wndName = (CMyString)temp;
-   trashMemory(temp);
+   GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName.m_mystring);
 
    if (wndName == "&Show Password")
    {
@@ -162,10 +159,7 @@ void CEditDlg::OnRandom()
       m_realpassword = temp;
 
       CMyString wndName;
-      CString temp;
-      GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(temp);
-      wndName = (CMyString)temp;
-      trashMemory(temp);
+      GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName.m_mystring);
 
       if (wndName == "&Show Password")
          m_password = GetAsterisk(m_realpassword);
