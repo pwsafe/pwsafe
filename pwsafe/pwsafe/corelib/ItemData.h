@@ -49,7 +49,7 @@ public:
    CMyString GetGroup() const; // V20
 
    void CreateUUID(); // V20 - generate UUID for new item
-   void SetName(const CMyString &name); // V17 - deprecated - replaced by GetTitle & GetUser
+   void SetName(const CMyString &name); // V17 - deprecated - replaced by SetTitle & SetUser
    void SetTitle(const CMyString &title); // V20
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
