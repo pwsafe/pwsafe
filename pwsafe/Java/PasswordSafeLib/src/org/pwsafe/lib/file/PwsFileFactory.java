@@ -14,7 +14,7 @@ import org.pwsafe.lib.I18nHelper;
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
 import org.pwsafe.lib.exception.EndOfFileException;
-import org.pwsafe.lib.exception.InvalidPasswordException;
+import org.pwsafe.lib.exception.InvalidPassphraseException;
 import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
 import BlowfishJ.BlowfishECB;
@@ -39,19 +39,19 @@ public class PwsFileFactory
 	}
 
 	/**
-	 * Verifies that <code>password</code> is actually the password for the file.  It returns
-	 * normally if everything is OK or {@link InvalidPasswordException} if the password is
+	 * Verifies that <code>passphrase</code> is actually the passphrase for the file.  It returns
+	 * normally if everything is OK or {@link InvalidPassphraseException} if the passphrase is
 	 * incorrect.
 	 * 
-	 * @param filename the name of the file to be opened.
-	 * @param password the file's password.
+	 * @param filename   the name of the file to be opened.
+	 * @param passphrase the file's passphrase.
 	 * 
-	 * @throws InvalidPasswordException If the password is not the correct one for the file.
-	 * @throws FileNotFoundException    If the given file does not exist.
-	 * @throws IOException              If an error occurs whilst reading from the file.
+	 * @throws InvalidPassphraseException If the passphrase is not the correct one for the file.
+	 * @throws FileNotFoundException      If the given file does not exist.
+	 * @throws IOException                If an error occurs whilst reading from the file.
 	 */
-	private static final void checkPassword( String filename, String password )
-	throws InvalidPasswordException, FileNotFoundException, IOException 
+	private static final void checkPassword( String filename, String passphrase )
+	throws InvalidPassphraseException, FileNotFoundException, IOException 
 	{
 		LOG.enterMethod( "PwsFileFactory.checkPassword" );
 
@@ -78,13 +78,13 @@ public class PwsFileFactory
 				fudged[ii] = stuff[ii];
 			}
 			stuff	= null;
-			phash	= genRandHash( password, fudged );
+			phash	= genRandHash( passphrase, fudged );
 			
 			if ( !Util.bytesAreEqual( fhash, phash ) )
 			{
-				LOG.debug1( "Password is incorrect - throwing InvalidPasswordException" );
+				LOG.debug1( "Password is incorrect - throwing InvalidPassphraseException" );
 				LOG.leaveMethod( "PwsFileFactory.checkPassword" );
-				throw new InvalidPasswordException();
+				throw new InvalidPassphraseException();
 			}
 		}
 		catch ( IOException e )
@@ -129,14 +129,14 @@ public class PwsFileFactory
 	}
 
 	/**
-	 * Generates a checksum from the password and some random bytes.
+	 * Generates a checksum from the passphrase and some random bytes.
 	 * 
-	 * @param  password  the password.
-	 * @param  stuff     the random bytes.
+	 * @param  passphrase the passphrase.
+	 * @param  stuff      the random bytes.
 	 * 
 	 * @return the generated checksum.
 	 */
-	static final byte [] genRandHash( String password, byte [] stuff )
+	static final byte [] genRandHash( String passphrase, byte [] stuff )
 	{
 		LOG.enterMethod( "PwsFileFactory.genRandHash" );
 
@@ -146,7 +146,7 @@ public class PwsFileFactory
 		byte []			digest;
 		byte []			tmp;
 		
-		pw	= password.getBytes();
+		pw	= passphrase.getBytes();
 		md	= new SHA1();
 
 		md.update( stuff, 0, stuff.length );
@@ -178,28 +178,28 @@ public class PwsFileFactory
 	/**
 	 * Loads a Password Safe file.  It returns the appropriate subclass of {@link PwsFile}.
 	 * 
-	 * @param filename the name of the file to open
-	 * @param password the password for the file
+	 * @param filename   the name of the file to open
+	 * @param passphrase the passphrase for the file
 	 * 
 	 * @return The correct subclass of {@link PwsFile} for the file.
 	 * 
 	 * @throws EndOfFileException
 	 * @throws FileNotFoundException
-	 * @throws InvalidPasswordException
+	 * @throws InvalidPassphraseException
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 */
-	public static final PwsFile loadFile( String filename, String password )
-	throws EndOfFileException, FileNotFoundException, InvalidPasswordException, IOException, UnsupportedFileVersionException
+	public static final PwsFile loadFile( String filename, String passphrase )
+	throws EndOfFileException, FileNotFoundException, InvalidPassphraseException, IOException, UnsupportedFileVersionException
 	{
 		LOG.enterMethod( "PwsFileFactory.loadFile" );
 		
 		PwsFile		file;
 		PwsRecordV1	rec;
 
-		checkPassword( filename, password );
+		checkPassword( filename, passphrase );
 
-		file	= new PwsFileV1( filename, password );
+		file	= new PwsFileV1( filename, passphrase );
 		rec		= (PwsRecordV1) file.readRecord();
 
 		file.close();
@@ -211,12 +211,12 @@ public class PwsFileFactory
 		if ( rec.getField(PwsRecordV1.TITLE).equals(PwsFileV2.ID_STRING) )
 		{
 			LOG.debug1( "This is a V2 format file." );
-			file = new PwsFileV2( filename, password );
+			file = new PwsFileV2( filename, passphrase );
 		}
 		else
 		{
 			LOG.debug1( "This is a V1 format file." );
-			file = new PwsFileV1( filename, password );
+			file = new PwsFileV1( filename, passphrase );
 		}
 		file.readAll();
 		file.close();
@@ -224,5 +224,16 @@ public class PwsFileFactory
 		LOG.debug1( "File contains " + file.getRecordCount() + " records." );
 		LOG.leaveMethod( "PwsFileFactory.loadFile" );
 		return file;
+	}
+
+	/**
+	 * Creates a new, empty PasswordSafe database in memory.  The database will always
+	 * be the latest version supported by this library which for this release is version 2.
+	 * 
+	 * @return A new empty PasswordSafe database.
+	 */
+	public static final PwsFile newFile()
+	{
+		return new PwsFileV2();
 	}
 }

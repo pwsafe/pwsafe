@@ -39,6 +39,13 @@ public class PwsFileHeader
 	private byte [] IpThing		= new byte[8];
 
 	/**
+	 * Creates an empty file header.
+	 */
+	PwsFileHeader()
+	{
+	}
+
+	/**
 	 * Constructs the PasswordSafe file header by reading the header data from <code>file</code>.
 	 * 
 	 * @param file the file to read the header from.
@@ -105,21 +112,27 @@ public class PwsFileHeader
 	public void save( PwsFile file )
 	throws IOException
 	{
-		update( file.getPassword() );
+		LOG.enterMethod( "PwsFileHeader.save" );
+
+		update( file.getPassphrase() );
 
 		file.writeBytes( RandStuff );
 		file.writeBytes( RandHash );
 		file.writeBytes( Salt );
 		file.writeBytes( IpThing );
+
+		LOG.leaveMethod( "PwsFileHeader.save" );
 	}
 
 	/**
 	 * Updates the header ready for saving.
 	 * 
-	 * @param password the password to be used to encrypt the database.
+	 * @param passphrase the passphrase to be used to encrypt the database.
 	 */
-	private void update( String password )
+	private void update( String passphrase )
 	{
+		LOG.enterMethod( "PwsFileHeader.update" );
+
 		byte	temp[];
 
 		for ( int ii = 0; ii < RandStuff.length; ++ii )
@@ -127,7 +140,7 @@ public class PwsFileHeader
 			RandStuff[ii] = Util.newrand();
 		}
 		temp		= Util.cloneByteArray( RandStuff, 10 );
-		RandHash	= PwsFileFactory.genRandHash( password, temp );
+		RandHash	= PwsFileFactory.genRandHash( passphrase, temp );
 		
 		for ( int ii = 0; ii < Salt.length; ++ii )
 		{
@@ -138,5 +151,7 @@ public class PwsFileHeader
 		{
 			IpThing[ii] = Util.newrand();
 		}
+
+		LOG.leaveMethod( "PwsFileHeader.update" );
 	}
 }

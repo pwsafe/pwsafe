@@ -50,7 +50,7 @@ public abstract class PwsRecord implements Comparable
 	private PwsFile		OwningFile		= null;
 	private boolean		IsLoaded		= false;
 	private HashMap		Attributes		= new HashMap();
-	private int			ValidTypes []	= null;
+	private Object		ValidTypes []	= null;
 
 	/**
 	 * A holder class for all the data about a single field.  It holds the field's length,
@@ -98,7 +98,7 @@ public abstract class PwsRecord implements Comparable
 
 		/**
 		 * Gets this items data as a <code>String</code>.  The byte array is converted
-		 * to a <code>String</code> using {@link #DEFAULT_CHARSET} as the encoding.
+		 * to a <code>String</code> using <code>DEFAULT_CHARSET</code> as the encoding.
 		 * 
 		 * @return The item data as a <code>String</code>.
 		 */
@@ -155,7 +155,7 @@ public abstract class PwsRecord implements Comparable
 	 * 
 	 * @param validTypes an array of valid field types.
 	 */
-	PwsRecord( int [] validTypes )
+	PwsRecord( Object [] validTypes )
 	{
 		super();
 
@@ -171,7 +171,7 @@ public abstract class PwsRecord implements Comparable
 	 * @throws EndOfFileException
 	 * @throws IOException
 	 */
-	PwsRecord( PwsFile owner, int [] validTypes )
+	PwsRecord( PwsFile owner, Object [] validTypes )
 	throws EndOfFileException, IOException
 	{
 		super();
@@ -387,15 +387,20 @@ public abstract class PwsRecord implements Comparable
 
 		for ( int ii = 0; ii < ValidTypes.length; ++ii )
 		{
-			if ( ValidTypes[ii] == type )
-			{
-				// TODO also check that value is the correct subclass for type
-				// e.g. if type shows that value is an integer then value must
-				// be a PwsIntegerField.  Best done with reflection.
+			int		vType;
 
-				Attributes.put( new Integer(type), value );
-				setModified();
-				return;
+			vType	= ((Integer) ((Object[]) ValidTypes[ii])[0]).intValue();
+
+			if ( vType == type )
+			{
+				Class	cl = value.getClass();
+
+				if ( cl == (((Object[]) ValidTypes[ii])[2]) )
+				{	
+					Attributes.put( new Integer(type), value );
+					setModified();
+					return;
+				}
 			}
 		}
 		throw new IllegalArgumentException( I18nHelper.formatMessage("E00003", new Object [] { new Integer(type) } ) );

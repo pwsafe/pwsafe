@@ -6,9 +6,6 @@
  */
 package org.pwsafe.lib.file;
 
-import org.pwsafe.lib.I18nHelper;
-import org.pwsafe.lib.Log;
-import org.pwsafe.lib.exception.UnimplementedConversionException;
 
 /**
  * A record in PasswordSafe consists of a number of fields.  In V1.7 files all fields are
@@ -25,7 +22,7 @@ import org.pwsafe.lib.exception.UnimplementedConversionException;
  */
 public abstract class PwsField implements Comparable
 {
-	private static final Log LOG = Log.getInstance(PwsField.class.getPackage().getName());
+//	private static final Log LOG = Log.getInstance(PwsField.class.getPackage().getName());
 
 	private Object	Value	= null;
 	private int		Type	= 0;
@@ -46,19 +43,10 @@ public abstract class PwsField implements Comparable
 
 	/**
 	 * Converts this field into an array of bytes suitable for writing to a PasswordSafe file.
-	 * This method must be overridden by subclasses otherwise an <code>UnimplementedConversionException</code>
-	 * runtime exception is thrown.
 	 * 
 	 * @return The field as a byte array.
-	 * 
-	 * @throws UnimplementedConversionException
 	 */
-	public byte [] getBytes()
-	{
-		LOG.error( I18nHelper.formatMessage("E00013", new Object [] { "PwsField.getBytes()" } ) );
-
-		throw new UnimplementedConversionException(); 
-	}
+	public abstract byte [] getBytes();
 
 	/**
 	 * Returns the field type given when the object was created.  The field type is specific

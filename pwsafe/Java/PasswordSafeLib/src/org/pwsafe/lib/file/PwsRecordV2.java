@@ -52,7 +52,7 @@ public class PwsRecordV2 extends PwsRecord
 	public static final int		NOTES				= 5;
 
 	/**
-	 * Constant for the password field.
+	 * Constant for the passphrase field.
 	 */
 	public static final int		PASSWORD			= 6;
 
@@ -62,7 +62,7 @@ public class PwsRecordV2 extends PwsRecord
 	public static final int		CREATION_TIME		= 7;
 
 	/**
-	 * Constant for the password modification time field.
+	 * Constant for the passphrase modification time field.
 	 */
 	public static final int		PASSWORD_MOD_TIME	= 8;
 
@@ -72,12 +72,12 @@ public class PwsRecordV2 extends PwsRecord
 	public static final int		LAST_ACCESS_TIME	= 9;
 
 	/**
-	 * Constant for the password lifetime field.
+	 * Constant for the passphrase lifetime field.
 	 */
 	public static final int		PASSWORD_LIFETIME	= 10;
 
 	/**
-	 * Constant for the password policy field.
+	 * Constant for the passphrase policy field.
 	 */
 	public static final int		PASSWORD_POLICY		= 11;
 
@@ -87,42 +87,28 @@ public class PwsRecordV2 extends PwsRecord
 	public static final int		END_OF_RECORD		= 255;
 
 	/**
-	 * All the type codes that may be stored in a record.
+	 * All the valid type codes.
 	 */
-	private static final int []	VALID_TYPES	= new int [] {
-		V2_ID_STRING,
-		UUID,
-		GROUP,
-		TITLE,
-		USERNAME,
-		NOTES,
-		PASSWORD,
-		CREATION_TIME,
-		PASSWORD_MOD_TIME,
-		LAST_ACCESS_TIME,
-		PASSWORD_LIFETIME,
-		PASSWORD_POLICY
-		};
-
-	private static final String []	TYPE_NAMES	= new String [] {
-		"V2_ID_STRING",
-		"UUID",
-		"GROUP",
-		"TITLE",
-		"USERNAME",
-		"NOTES",
-		"PASSWORD",
-		"CREATION_TIME",
-		"PASSWORD_MOD_TIME",
-		"LAST_ACCESS_TIME",
-		"PASSWORD_LIFETIME",
-		"PASSWORD_POLICY"
-		};
+	private static final Object []	VALID_TYPES	= new Object []
+	{
+		new Object [] { new Integer(V2_ID_STRING),		"V2_ID_STRING",			PwsStringField.class },
+		new Object [] { new Integer(UUID),				"UUID",					PwsUUIDField.class },
+		new Object [] { new Integer(GROUP),				"GROUP",				PwsStringField.class },
+		new Object [] { new Integer(TITLE),				"TITLE",				PwsStringField.class },
+		new Object [] { new Integer(USERNAME),			"USERNAME",				PwsStringField.class },
+		new Object [] { new Integer(NOTES),				"NOTES",				PwsStringField.class },
+		new Object [] { new Integer(PASSWORD),			"PASSWORD",				PwsStringField.class },
+		new Object [] { new Integer(CREATION_TIME),		"CREATION_TIME",		PwsTimeField.class },
+		new Object [] { new Integer(PASSWORD_MOD_TIME),	"PASSWORD_MOD_TIME",	PwsTimeField.class },
+		new Object [] { new Integer(LAST_ACCESS_TIME),	"LAST_ACCESS_TIME",		PwsTimeField.class },
+		new Object [] { new Integer(PASSWORD_LIFETIME),	"PASSWORD_LIFETIME",	PwsIntegerField.class },
+		new Object [] { new Integer(PASSWORD_POLICY),	"PASSWORD_POLICY",		PwsStringField.class }
+	};
 
 	/**
 	 * Create a new record with all mandatory fields given their default value.
 	 */
-	public PwsRecordV2()
+	PwsRecordV2()
 	{
 		super( VALID_TYPES );
 
@@ -159,11 +145,9 @@ public class PwsRecordV2 extends PwsRecord
 	 * Creates a deep clone of this record.
 	 * 
 	 * @return the new record.
-	 * 
-	 * @throws CloneNotSupportedException Never thrown - a clone will always be created.
 	 */
 	public Object clone()
-	throws CloneNotSupportedException
+//	throws CloneNotSupportedException
 	{
 		return new PwsRecordV2( this );
 	}
@@ -179,7 +163,7 @@ public class PwsRecordV2 extends PwsRecord
 	 *         zero if they're equal and &gt; zero if this record is "greater than"
 	 *         <code>other</code>.
 	 * 
-	 * @throws ClassCastExcepton If <code>other</code> is not a <code>PwsRecordV1</code>.
+	 * @throws ClassCastException If <code>other</code> is not a <code>PwsRecordV1</code>.
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
@@ -219,8 +203,6 @@ public class PwsRecordV2 extends PwsRecord
 	 */
 	protected boolean isValid()
 	{
-		PwsStringField	title;
-
 		if ( ((PwsStringField) getField( TITLE )).equals(PwsFileV2.ID_STRING) )
 		{
 			LOG.debug1( "Ignoring record " + this.toString() );
@@ -233,6 +215,9 @@ public class PwsRecordV2 extends PwsRecord
 	 * Initialises this record by reading its data from <code>file</code>.
 	 * 
 	 * @param file the file to read the data from.
+	 * 
+	 * @throws EndOfFileException
+	 * @throws IOException
 	 */
 	protected void loadRecord( PwsFile file )
 	throws EndOfFileException, IOException
@@ -280,7 +265,7 @@ public class PwsRecordV2 extends PwsRecord
 				default :
 					throw new UnimplementedConversionException();
 			}
-			if ( LOG.isDebug2Enabled() ) LOG.debug2( "type=" + item.getType() + " (" + TYPE_NAMES[item.getType()] + "), value=\"" + itemVal.toString() + "\"" );
+			if ( LOG.isDebug2Enabled() ) LOG.debug2( "type=" + item.getType() + " (" + ((Object[])VALID_TYPES[item.getType()])[1] + "), value=\"" + itemVal.toString() + "\"" );
 			setField( itemVal );
 		}
 	}
@@ -306,7 +291,7 @@ public class PwsRecordV2 extends PwsRecord
 			type	= ((Integer) iter.next()).intValue();
 			value	= getField( type );
 
-			if ( LOG.isDebug2Enabled() ) LOG.debug2( "Writing field " + type + " (" + TYPE_NAMES[type] + ") : \"" + value.toString() + "\"" );
+			if ( LOG.isDebug2Enabled() ) LOG.debug2( "Writing field " + type + " (" + ((Object[])VALID_TYPES[type])[1] + ") : \"" + value.toString() + "\"" );
 
 			writeField( file, value );
 		}
@@ -343,7 +328,7 @@ public class PwsRecordV2 extends PwsRecord
 			}
 			first	= false;
 
-			sb.append( TYPE_NAMES[key.intValue()] );
+			sb.append( ((Object[])VALID_TYPES[key.intValue()])[1] );
 			sb.append( "=" );
 			sb.append( value );
 		}

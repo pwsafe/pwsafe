@@ -26,23 +26,31 @@ public class PwsFileV1 extends PwsFile
 	public static final int	VERSION		= 1;
 
 	/**
+	 * Constructs and initialises a new, empty version 1 PasswordSafe database in memory.
+	 */
+	public PwsFileV1()
+	{
+		super();
+	}
+
+	/**
 	 * Use of this constructor to load a PasswordSafe database is STRONGLY discouraged
 	 * since it's use ties the caller to a particular file version.  Use {@link
-	 * PwsFileFactory#loadFile} instead.
+	 * PwsFileFactory#loadFile(String, String)} instead.
 	 * </p><p>
 	 * <b>N.B. </b>this constructor's visibility may be reduced in future releases.
 	 * </p>
-	 * @param filename the name of the database to read.
-	 * @param password the password needed to open the database.
+	 * @param filename   the name of the database to read.
+	 * @param passphrase the passphrase needed to open the database.
 	 * 
 	 * @throws EndOfFileException
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 */
-	public PwsFileV1( String filename, String password )
+	public PwsFileV1( String filename, String passphrase )
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
-		super( filename, password );
+		super( filename, passphrase );
 	}
 
 	/**
@@ -53,5 +61,18 @@ public class PwsFileV1 extends PwsFile
 	public int getFileVersionMajor()
 	{
 		return VERSION;
+	}
+
+	/**
+	 * Allocates a new, empty record unowned by any file.  The record type is
+	 * {@link PwsRecordV1}.
+	 * 
+	 * @return A new empty record
+	 * 
+	 * @see org.pwsafe.lib.file.PwsFile#newRecord()
+	 */
+	public PwsRecord newRecord()
+	{
+		return new PwsRecordV1();
 	}
 }

@@ -44,7 +44,7 @@ public class PwsIntegerField extends PwsField
 		int		value;
 		byte	retval[];
 
-		value	= (int) ((Integer) super.getValue()).intValue();
+		value	= ((Integer) super.getValue()).intValue();
 		retval	= PwsFile.allocateBuffer( 4 );
 
 		Util.putIntToByteArray( retval, value, 0 );

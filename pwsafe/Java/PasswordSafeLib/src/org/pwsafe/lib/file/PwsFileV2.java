@@ -18,21 +18,42 @@ import org.pwsafe.lib.exception.UnsupportedFileVersionException;
  */
 public class PwsFileV2 extends PwsFile
 {
+	/**
+	 * The PasswordSafe database version number that this class supports.
+	 */
 	public static final int		VERSION		= 2;
+
+	/**
+	 * The string that identifies a database as V2 rather than V1
+	 */
 	public static final String	ID_STRING	= " !!!Version 2 File Format!!! Please upgrade to PasswordSafe 2.0 or later";
+
+	/**
+	 * Constructs and initialises a new, empty version 2 PasswordSafe database in memory.
+	 */
+	public PwsFileV2()
+	{
+		super();
+	}
 
 	/**
 	 * Use of this constructor to load a PasswordSafe database is STRONGLY discouraged
 	 * since it's use ties the caller to a particular file version.  Use {@link
-	 * PwsFileFactory#loadFile} instead.
+	 * PwsFileFactory#loadFile(String, String)} instead.
 	 * </p><p>
 	 * <b>N.B. </b>this constructor's visibility may be reduced in future releases.
 	 * </p>
+	 * @param filename   the name of the database to open.
+	 * @param passphrase the passphrase for the database.
+	 * 
+	 * @throws EndOfFileException
+	 * @throws IOException
+	 * @throws UnsupportedFileVersionException
 	 */
-	public PwsFileV2( String filename, String password ) 
+	public PwsFileV2( String filename, String passphrase ) 
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
-		super(filename, password);
+		super( filename, passphrase );
 	}
 
 	/**
@@ -45,6 +66,19 @@ public class PwsFileV2 extends PwsFile
 		return VERSION;
 	}
 
+	/**
+	 * Allocates a new, empty record unowned by any file.  The record type is
+	 * {@link PwsRecordV2}.
+	 * 
+	 * @return A new empty record
+	 * 
+	 * @see org.pwsafe.lib.file.PwsFile#newRecord()
+	 */
+	public PwsRecord newRecord()
+	{
+		return new PwsRecordV2();
+	}
+	
 	/**
 	 * Reads the extra header present in version 2 files.
 	 * 

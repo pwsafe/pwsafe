@@ -79,6 +79,8 @@ public abstract class PwsFile
 	 */
 	private class FileIterator implements Iterator
 	{
+		private final Log LOG = Log.getInstance(FileIterator.class.getPackage().getName());
+
 		private PwsFile		TheFile;
 		private Iterator	TheIterator;
 
@@ -107,7 +109,7 @@ public abstract class PwsFile
 		 * 
 		 * @see java.util.Iterator#hasNext()
 		 */
-		public boolean hasNext()
+		public final boolean hasNext()
 		{
 			return TheIterator.hasNext();
 		}
@@ -120,18 +122,18 @@ public abstract class PwsFile
 		 * 
 		 * @see java.util.Iterator#next()
 		 */
-		public Object next()
+		public final Object next()
 		{
 			return TheIterator.next();
 		}
 
 		/**
-		 * Removes the last record returned by {@link #next} from the PasswordSafe
+		 * Removes the last record returned by {@link PwsFile.FileIterator#next()} from the PasswordSafe
 		 * file and marks the file as modified.
 		 * 
 		 * @see java.util.Iterator#remove()
 		 */
-		public void remove()
+		public final void remove()
 		{
 			LOG.enterMethod( "PwsFile$FileIterator.remove" );
 
@@ -153,9 +155,9 @@ public abstract class PwsFile
 	private String			FileName		= null;
 
 	/**
-	 * The password for the file.
+	 * The passphrase for the file.
 	 */
-	private String			Password		= null;
+	private String			Passphrase		= null;
 
 	/**
 	 * The stream used to read data from the file.  It is non-null only whilst data
@@ -183,7 +185,7 @@ public abstract class PwsFile
 	/**
 	 * The records that are part of the file.
 	 */
-	private ArrayList		RecordSet		= null;
+	private ArrayList		RecordSet		= new ArrayList();
 
 	/**
 	 * Flag indicating whether (<code>true</code>) or not (<code>false</code>) the file
@@ -191,22 +193,31 @@ public abstract class PwsFile
 	 */
 	private boolean			Modified		= false;
 
+	
+	/**
+	 * Constructs and initialises a new, empty PasswordSafe database in memory.
+	 */
+	protected PwsFile()
+	{
+		Header	= new PwsFileHeader();
+	}
+
 	/**
 	 * Construct the PasswordSafe file by reading it from the file.
 	 * 
-	 * @param filename 
-	 * @param password
+	 * @param filename   the name of the database to open.
+	 * @param passphrase the passphrase for the database.
 	 * 
 	 * @throws EndOfFileException
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 */
-	public PwsFile( String filename, String password )
+	protected PwsFile( String filename, String passphrase )
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
 		LOG.enterMethod( "PwsFile.PwsFile( String )" );
 
-		open( new File(filename), password );
+		open( new File(filename), passphrase );
 
 		LOG.leaveMethod( "PwsFile.PwsFile( String )" );
 	}
@@ -239,7 +250,7 @@ public abstract class PwsFile
 	 * 
 	 * @return A byte array of the correct length.
 	 */
-	static byte [] allocateBuffer( int length )
+	static final byte [] allocateBuffer( int length )
 	{
 		LOG.enterMethod( "PwsFile.allocateBuffer" );
 
@@ -254,12 +265,16 @@ public abstract class PwsFile
 
 	/**
 	 * Calculates the next integer multiple of <code>BLOCK_LENGTH</code> &gt;= <code>length</code>.
+	 * If <code>length</code> is zero, however, then <code>BLOCK_LENGTH</code> is returned as the
+	 * calculated block length.
 	 * 
-	 * @param length 
+	 * @param length the minimum block length 
 	 * 
-	 * @return <code>length</code> rounded up to the next multiple of <code>BLOCK_LENGTH</code>. 
+	 * @return <code>length</code> rounded up to the next multiple of <code>BLOCK_LENGTH</code>.
+	 * 
+	 * @throws IllegalArgumentException if length &lt; zero.
 	 */
-	static int calcBlockLength( int length )
+	static final int calcBlockLength( int length )
 	{
 		LOG.enterMethod( "PwsFile.calcBlockLength" );
 
@@ -319,13 +334,13 @@ public abstract class PwsFile
 	}
 
 	/**
-	 * Returns the password used to open the file.
+	 * Returns the passphrase used to open the file.
 	 * 
-	 * @return The file's password.
+	 * @return The file's passphrase.
 	 */
-	String getPassword()
+	String getPassphrase()
 	{
-		return Password;
+		return Passphrase;
 	}
 
 	/**
@@ -369,11 +384,11 @@ public abstract class PwsFile
 	 * Constructs and initialises the blowfish encryption routines ready to decrypt or
 	 * encrypt data.
 	 * 
-	 * @param password
+	 * @param passphrase
 	 * 
 	 * @return A properly initialised {@link BlowfishPws} object.
 	 */
-	private BlowfishPws makeBlowfish( byte [] password )
+	private BlowfishPws makeBlowfish( byte [] passphrase )
 	{
 		SHA1	sha1;
 		byte	salt[];
@@ -381,7 +396,7 @@ public abstract class PwsFile
 		sha1 = new SHA1();
 		salt = Header.getSalt();
 
-		sha1.update( password, 0, password.length );
+		sha1.update( passphrase, 0, passphrase.length );
 		sha1.update( salt, 0, salt.length );
 		sha1.finalize();
 
@@ -389,28 +404,34 @@ public abstract class PwsFile
 	}
 
 	/**
-	 * Opens the file.
+	 * Allocates a new, empty record unowned by any file.
 	 * 
-	 * @param file
-	 * @param password
+	 * @return A new empty record
+	 */
+	public abstract PwsRecord newRecord();
+
+	/**
+	 * Opens the database.
+	 * 
+	 * @param file       the <code>File</code> to read from
+	 * @param passphrase the passphrase for the file.
 	 * 
 	 * @throws EndOfFileException
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 */
-	private void open( File file, String password )
+	private void open( File file, String passphrase )
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
 		LOG.enterMethod( "PwsFile.init" );
 
 		setFilename( file );
 
-		Password		= password;
+		Passphrase		= passphrase;
 
 		InStream		= new FileInputStream( file );
 		Header			= new PwsFileHeader( this );
-		Algorithm		= makeBlowfish( password.getBytes() );
-		RecordSet		= new ArrayList();
+		Algorithm		= makeBlowfish( passphrase.getBytes() );
 
 		readExtraHeader( this );
 
@@ -598,7 +619,7 @@ public abstract class PwsFile
 
 			// Can only be created once the V1 header's been written.
 
-			Algorithm	= makeBlowfish( Password.getBytes() );
+			Algorithm	= makeBlowfish( Passphrase.getBytes() );
 
 			writeExtraHeader( this );
 
@@ -724,6 +745,16 @@ public abstract class PwsFile
 	protected void setModified()
 	{
 		Modified = true;
+	}
+
+	/**
+	 * Sets the passphrase that will be used to encrypt the file when it is saved.
+	 * 
+	 * @param pass
+	 */
+	public void setPassphrase( String pass )
+	{
+		Passphrase	= pass;
 	}
 
 	/**

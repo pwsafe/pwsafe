@@ -24,43 +24,49 @@ public class PwsRecordV1 extends PwsRecord implements Comparable
 	 * The string that, if present in the title, indicates that the default username is
 	 * to be used for this record.
 	 */
-	private static String		DefUserString;
+	private static String			DefUserString;
 
 	/**
 	 * The string that separates the title from the username when both are present in the
 	 * title. 
 	 */
-	private static String		SplitChar;
+	private static String			SplitChar;
 
 	/**
 	 * The string that separates the title and username when it is a composite field.
 	 */
-	private static String		SplitString;
+	private static String			SplitString;
 
 	/**
 	 * Constant for the title field.
 	 */
-	public static final int		TITLE		= 3;
+	public static final int			TITLE		= 3;
 
 	/**
 	 * Constant for the username field.
 	 */
-	public static final int		USERNAME	= 4;
+	public static final int			USERNAME	= 4;
 
 	/**
 	 * Constant for the notes field.
 	 */
-	public static final int		NOTES		= 5;
+	public static final int			NOTES		= 5;
 
 	/**
-	 * Constant for the password field.
+	 * Constant for the passphrase field.
 	 */
-	public static final int		PASSWORD	= 6;
+	public static final int			PASSWORD	= 6;
 
 	/**
 	 * All the valid type codes.
 	 */
-	private static final int []	VALID_TYPES	= new int [] { TITLE, USERNAME, NOTES, PASSWORD };
+	private static final Object []	VALID_TYPES	= new Object []
+	{
+		new Object [] { new Integer(TITLE),		"TITLE",	PwsStringField.class },
+		new Object [] { new Integer(USERNAME),	"USERNAME",	PwsStringField.class },
+		new Object [] { new Integer(NOTES),		"NOTES",	PwsStringField.class },
+		new Object [] { new Integer(PASSWORD),	"PASSWORD",	PwsStringField.class }
+	};
 
 	static
 	{
@@ -82,7 +88,7 @@ public class PwsRecordV1 extends PwsRecord implements Comparable
 	/**
 	 * Create a new record with all mandatory fields given their default value.
 	 */
-	public PwsRecordV1()
+	PwsRecordV1()
 	{
 		super( VALID_TYPES );
 
@@ -121,11 +127,9 @@ public class PwsRecordV1 extends PwsRecord implements Comparable
 	 * Creates a deep clone of this record.
 	 * 
 	 * @return the new record.
-	 * 
-	 * @throws CloneNotSupportedException Never thrown - a clone will always be created.
 	 */
 	public Object clone()
-	throws CloneNotSupportedException
+//	throws CloneNotSupportedException
 	{
 		return new PwsRecordV1( this );
 	}
@@ -141,7 +145,7 @@ public class PwsRecordV1 extends PwsRecord implements Comparable
 	 *         zero if they're equal and &gt; zero if this record is "greater than"
 	 *         <code>other</code>.
 	 * 
-	 * @throws ClassCastExcepton If <code>other</code> is not a <code>PwsRecordV1</code>.
+	 * @throws ClassCastException If <code>other</code> is not a <code>PwsRecordV1</code>.
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
@@ -226,11 +230,13 @@ public class PwsRecordV1 extends PwsRecord implements Comparable
 	 * Initialises this record by reading its data from <code>file</code>.
 	 * 
 	 * @param file the file to read the data from.
+	 * 
+	 * @throws EndOfFileException
+	 * @throws IOException
 	 */
 	protected void loadRecord( PwsFile file )
 	throws EndOfFileException, IOException
 	{
-		Item	itm;
 		String	str;
 		int		pos;
 		
@@ -296,7 +302,6 @@ public class PwsRecordV1 extends PwsRecord implements Comparable
 	public String toString()
 	{
 		StringBuffer	sb;
-		String			notes;
 
 		sb = new StringBuffer();
 		sb.append( "{ \"" );
