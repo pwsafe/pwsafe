@@ -130,6 +130,8 @@ protected:
    afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
    LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
+   BOOL PreTranslateMessage(MSG* pMsg);
+
    void UpdateAlwaysOnTop();
 
    void ClearData();

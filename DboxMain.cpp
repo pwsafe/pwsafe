@@ -1648,3 +1648,14 @@ DboxMain::startLockCheckTimer(){
 	else
 		TRACE("Not Starting\n");
 }
+
+BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
+{
+    // Do NOT pass the ESC along.
+    if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE)
+    {
+         return TRUE;
+    }
+
+    return CDialog::PreTranslateMessage(pMsg);
+}
