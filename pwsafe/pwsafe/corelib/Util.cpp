@@ -114,18 +114,60 @@ newrand()
    return (unsigned char)r;
 }
 
+/* 
+ *  RangeRand(len)
+ *
+ *  Returns a random number in the range 0 to (len-1).
+ *  For example, RangeRand(256) returns a value from 0 to 255.
+ */
+unsigned int
+RangeRand(size_t len)
+{
+   unsigned int      r;
+   unsigned int      ceil = UINT_MAX - (UINT_MAX % len) - 1;
+
+   while ((r = rand()) > ceil)
+      ;
+   return(r%len);
+}
+
+
+const char* lower_case_chars="abcdefghijklmnopqrstuvwxyz";
+const char* upper_case_chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const char* number_chars="0123456789";
+const char* special_chars="+-=_@#$%^&;:,.<>/~";
+
 
 char
 GetRandAlphaNumChar()
 {
-   int temp = newrand() % 3;
+   char char_pool[257];
+   size_t poolLen;
 
-   if (temp == 0)
-      return char(((newrand() % ('9'-'0')) + '0'));
-   else if (temp == 1)
-      return char(((newrand() % ('Z'-'A')) + 'A'));
-   else
-      return char(((newrand() % ('z'-'a')) + 'a'));
+   memset(char_pool, 0, sizeof(char_pool));
+   strcpy(char_pool, number_chars);
+   strcat(char_pool, lower_case_chars);
+   strcat(char_pool, upper_case_chars);
+   poolLen = strlen(char_pool);
+
+   return(char_pool[RangeRand(poolLen)]);
+}
+
+
+char
+GetRandAlphaNumSymbolChar()
+{
+   char char_pool[257];
+   size_t poolLen;
+
+   memset(char_pool, 0, sizeof(char_pool));
+   strcpy(char_pool, number_chars);
+   strcat(char_pool, lower_case_chars);
+   strcat(char_pool, upper_case_chars);
+   strcat(char_pool, special_chars);
+   poolLen = strlen(char_pool);
+
+   return(char_pool[RangeRand(poolLen)]);
 }
 
 

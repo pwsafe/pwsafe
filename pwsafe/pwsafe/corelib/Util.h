@@ -45,7 +45,9 @@ extern void GenRandhash(const CMyString &passkey,
                         unsigned char* m_randhash);
 extern unsigned char newrand();
 
+extern unsigned int  RangeRand(size_t len);
 extern char GetRandAlphaNumChar();
+extern char GetRandAlphaNumSymbolChar();
 
 class BlowFish;
 extern BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
