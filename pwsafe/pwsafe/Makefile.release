@@ -9,7 +9,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 2.07
+RELEASENAME = 2.08
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -21,11 +21,11 @@ SRCRELNAME = pwsafe-$(RELEASENAME)-src
 RM = /usr/bin/rm
 CP = /usr/bin/cp
 MV = /usr/bin/mv
-GPG = /usr/bin/gpg
+GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
 MD5SUM = /usr/bin/md5sum
-FTP_PUT = /usr/local/bin/ncftpput -v upload.sourceforge.net incoming
+FTP_PUT = /usr/bin/ncftpput -v upload.sourceforge.net incoming
 
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 
@@ -84,6 +84,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.11  2005/01/15 11:04:52  ronys
+# Updated for 2.08
+#
 # Revision 1.10  2004/11/24 16:14:15  ronys
 # Updated for 2.07
 #
