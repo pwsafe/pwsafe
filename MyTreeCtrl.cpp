@@ -141,7 +141,6 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
   DboxMain *parent = (DboxMain *)GetParent();
-  parent->DisableOnEdit(false); // Allow Enter to invoke Edit dialog
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
       ptvinfo->item.pszText[0] != '\0') { // empty if text deleted - not allowed
     ptvinfo->item.mask = TVIF_TEXT;
@@ -201,6 +200,9 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     // (not that this is documented anywhere in MS's docs...)
     *pLResult = FALSE;
   }
+  // following has to be done at end of function, since OnBeginLabelEdit
+  // may be called (indirectly) from this fuction
+  parent->DisableOnEdit(false); // Allow Enter to invoke Edit dialog
 }
 
 void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
