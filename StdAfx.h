@@ -3,6 +3,10 @@
 //      are changed infrequently
 //
 
+#if !defined(stdafx_h)
+#define stdafx_h
+
+
 #define VC_EXTRALEAN     // Exclude rarely-used stuff from Windows headers
 
 #include <afxwin.h>         // MFC core and standard components
@@ -14,10 +18,13 @@
 
 #include <htmlhelp.h>
 
-#include "MyString.h"
+//#include "MyString.h"
 
 //Don't show warning for automatic inline conversion
 #pragma warning(disable: 4711)
+
+
+#endif // stdafx_h
 
 //-----------------------------------------------------------------------------
 // Local variables:
