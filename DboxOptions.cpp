@@ -164,7 +164,7 @@ DboxMain::OnOptions()
 
       if (bOldShowPasswordInList != m_bShowPasswordInList)
 	RefreshList();
-
+#if 0
       if (display.m_usesystemtray == TRUE) {
 	if (m_TrayIcon.Visible() == FALSE)
 	  m_TrayIcon.ShowIcon();
@@ -172,7 +172,7 @@ DboxMain::OnOptions()
 	if (m_TrayIcon.Visible() == TRUE)
 	  m_TrayIcon.HideIcon();
       }
-
+#endif
       /*
        * Here are the old (pre 2.0) semantics:
        * The username entered in this dialog box will be added to all the entries
