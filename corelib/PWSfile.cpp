@@ -248,15 +248,25 @@ int PWSfile::WriteRecord(const CItemData &item)
     // 1.x programs totally ignore the type byte, hence safe to write it
     // (no need for two WriteCBC functions)
 
-    // Prepend 2.0 group field to name, if not empty
-    // i.e. group "finances" name "broker" -> "finances.broker"
-
-    CMyString group = item.GetGroup();
     CMyString name = item.GetName();
-    if (!group.IsEmpty()) {
-      group += _T(".");
-      group += name;
-      name = group;
+    // If name field already ecists - use it. This is for the 2.0 header, as well as for files
+    // that were imported and re-exported.
+    if (name.IsEmpty()) {
+      // The name in 1.7 consists of title + SPLTCHR + username, or
+      // title + DEFUSERNAME
+      // XXX we currently don't support the latter format yet
+      // Prepend 2.0 group field to name, if not empty
+      // i.e. group "finances" name "broker" -> "finances.broker"
+      CMyString group = item.GetGroup();
+      CMyString title = item.GetTitle();
+      if (!group.IsEmpty()) {
+	group += _T(".");
+	group += title;
+	title = group;
+      }
+      name = title;
+      name += SPLTCHR;
+      name += item.GetUser();
     }
     WriteCBC(CItemData::NAME, name);
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
