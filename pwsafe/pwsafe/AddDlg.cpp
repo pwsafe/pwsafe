@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
+
+#include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "AddDlg.h"
 
@@ -16,6 +18,8 @@ static char THIS_FILE[] = __FILE__;
 CAddDlg::CAddDlg(CWnd* pParent)
    : CDialog(CAddDlg::IDD, pParent)
 {
+   DBGMSG("CAddDlg()\n");
+
    m_password = "";
    m_notes = "";
    m_username = "";
@@ -91,7 +95,10 @@ CAddDlg::OnOK()
 
 void CAddDlg::OnHelp() 
 {
-   WinHelp(0x2008E, HELP_CONTEXT);
+   //WinHelp(0x2008E, HELP_CONTEXT);
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_add_data.htm",
+              HH_DISPLAY_TOPIC, 0);
 }
 
 
