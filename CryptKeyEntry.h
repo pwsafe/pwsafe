@@ -1,6 +1,9 @@
 // CryptKeyEntry.h
 //-----------------------------------------------------------------------------
 
+#include "MyString.h"
+
+
 class CCryptKeyEntry : public CDialog
 {
 // Construction
