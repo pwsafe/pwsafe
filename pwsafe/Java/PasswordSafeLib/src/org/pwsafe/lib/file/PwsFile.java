@@ -317,6 +317,16 @@ public abstract class PwsFile
 	}
 
 	/**
+	 * Returns the fully qualified path and filename.
+	 * 
+	 * @return The fully qualified filename
+	 */
+	public String getFilename()
+	{
+		return FilePath + FileName;
+	}
+
+	/**
 	 * Returns the major version number for the file.
 	 * 
 	 * @return The major version number for the file.
@@ -338,7 +348,7 @@ public abstract class PwsFile
 	 * 
 	 * @return The file's passphrase.
 	 */
-	String getPassphrase()
+	public String getPassphrase()
 	{
 		return Passphrase;
 	}
