@@ -39,6 +39,10 @@ A German version of the help file may be found in
 http://passwordsafe.sourceforge.net/pwsafege.zip (Thanks to Sebastian
 Juergens).
 
+An Italian version of the help file may be found inhttp://home.datacomm.ch/winzozz/passwordsafe.htm
+ (Thanks to Sebastian
+Juergens).
+
 If anyone is interested in doing such work in other
 languages, please let me (https://sourceforge.net/users/ronys) know.
 
@@ -105,6 +109,9 @@ password policy code and some GUI improvements for 1.92.
 project.
 
 $Log$
+Revision 1.8  2004/11/24 16:21:13  ronys
+Added link to Italian help, plus unix2dos'ed
+
 Revision 1.7  2004/09/25 08:04:31  ronys
 Added pointer to French help file.
 
