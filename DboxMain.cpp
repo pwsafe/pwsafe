@@ -254,17 +254,20 @@ DboxMain::OnInitDialog()
 
 	}
 
-	/*
-	 * XXX For now, default to starting list view.
-	 * XXX This should be a persistent user preference.
-	 */
-
 	CMenu* mmenu = GetMenu();
 	CMenu* submenu = mmenu->GetSubMenu(2);
 
-	submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
-	submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
-
+	CString lastView = app.GetProfileString(_T(PWS_REG_OPTIONS), _T("lastview"),
+						_T("list"));
+	if (lastView == _T("list")) {
+	  submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_CHECKED | MF_BYCOMMAND);
+	  submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+	} else {
+	  submenu->CheckMenuItem(ID_MENUITEM_LIST_VIEW, MF_UNCHECKED | MF_BYCOMMAND);
+	  submenu->CheckMenuItem(ID_MENUITEM_TREE_VIEW, MF_CHECKED | MF_BYCOMMAND);
+	  m_ctlItemList.ShowWindow(SW_HIDE);
+	  m_ctlItemTree.ShowWindow(SW_SHOW);
+	}
 
 	CRect rect;
 	m_ctlItemList.GetClientRect(&rect);

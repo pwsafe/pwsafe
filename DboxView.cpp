@@ -1056,6 +1056,7 @@ DboxMain::SetListView()
 {
   m_ctlItemTree.ShowWindow(SW_HIDE);
   m_ctlItemList.ShowWindow(SW_SHOW);
+  app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("lastview"), _T("list"));
 }
 
 void
@@ -1063,5 +1064,6 @@ DboxMain::SetTreeView()
 {
   m_ctlItemList.ShowWindow(SW_HIDE);
   m_ctlItemTree.ShowWindow(SW_SHOW);
+  app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("lastview"), _T("tree"));
 }
 
