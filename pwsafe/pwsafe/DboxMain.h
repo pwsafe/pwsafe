@@ -22,11 +22,13 @@ public:
    // default constructor
    DboxMain(CWnd* pParent = NULL);
 
-   // the password database
-   CList<CItemData,CItemData> m_pwlist;
 
-   POSITION Find(const CMyString &lpszString);
-
+  POSITION Find(const CMyString &str); // find by name, exact match
+  // FindAll is used by CFindDlg, returns # of finds.
+  // indices allocated by caller
+  int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
+  int GetNumEntries() const {return m_pwlist.GetCount();}
+  BOOL SelectEntry(int i) {return m_listctrl->SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);}
    void RefreshList();
 
   void SetCurFile(const CString &arg) {m_currfile = CMyString(arg);} // set to argv
@@ -48,6 +50,9 @@ protected:
 protected:
    HICON m_hIcon;
    CListCtrl* m_listctrl;
+
+   // the password database
+   CList<CItemData,CItemData> m_pwlist;
 
    unsigned int uGlobalMemSize;
    HGLOBAL hGlobalMemory;
@@ -124,6 +129,7 @@ protected:
    afx_msg void OnClearclipboard();
    afx_msg void OnDelete();
    afx_msg void OnEdit();
+   afx_msg void OnFind();
    afx_msg void OnOptions();
    afx_msg void OnSave();
    afx_msg void OnAdd();
