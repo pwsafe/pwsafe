@@ -177,6 +177,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
    ON_COMMAND(ID_FILE_EXPORTTO_OLD1XFORMAT, OnExportV17)
    ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
+   ON_COMMAND(ID_FILE_EXPORTTO_XML, OnExportXML)
+   ON_COMMAND(ID_FILE_IMPORT_PLAINTEXT, OnImportText)
+   ON_COMMAND(ID_FILE_IMPORT_XML, OnImportXML)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
    ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
    ON_WM_TIMER()
@@ -629,14 +632,14 @@ DboxMain::OnExportText()
       //SaveAs-type dialog box
       while (1) {
 	CFileDialog fd(FALSE,
-		       "txt",
-		       "",
+		       _T("txt"),
+		       _T(""),
 		       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
 		       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-		       "Text files (*.txt)|*.txt|"
-		       "CSV files (*.csv)|*.csv|"
-		       "All files (*.*)|*.*|"
-		       "|",
+		       _T("Text files (*.txt)|*.txt|")
+		       _T("CSV files (*.csv)|*.csv|")
+		       _T("All files (*.*)|*.*|")
+		       _T("|"),
 		       this);
 	fd.m_ofn.lpstrTitle =
 	  _T("Please name the plaintext file");
@@ -658,6 +661,48 @@ DboxMain::OnExportText()
       Sleep(3000); // protect against automatic attacks
     }
   }
+}
+
+void
+DboxMain::OnExportXML()
+{
+    // TODO
+    MessageBox(_T("Not yet implemented"), _T("Error"), MB_OK|MB_ICONERROR);
+}
+
+void
+DboxMain::OnImportText()
+{
+    // TODO
+    CFileDialog fd(TRUE,
+        _T("txt"),
+        NULL,
+        OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+        _T("Text files (*.txt)|*.txt|")
+        _T("CSV files (*.csv)|*.csv|")
+        _T("All files (*.*)|*.*|")
+        _T("|"),
+        this);
+    fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import:");
+    int rc = fd.DoModal();
+    if (rc == IDOK)
+    {
+        CMyString newfile = (CMyString)fd.GetPathName();
+        rc = m_core.ImportPlaintextFile(newfile);
+        if (rc == PWScore::CANT_OPEN_FILE) {
+	    CMyString temp = newfile + _T("\n\nCould not open file for reading!");
+            MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+        }
+        RefreshList();
+        
+    }
+}
+
+void
+DboxMain::OnImportXML()
+{
+    // TODO
+    MessageBox(_T("Not yet implemented"), _T("Error"), MB_OK|MB_ICONERROR);
 }
 
 
