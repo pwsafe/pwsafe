@@ -71,17 +71,18 @@ class PWScore {
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
-
   void SetPassKey(const CMyString &new_passkey);
-  bool IsPassKey(const CMyString &new_passkey) const;
- 
 
  private:
   CMyString m_currfile; // current pw db filespec
-  CMyString m_passkey; // encrypted by session key
+  unsigned char *m_passkey; // encrypted by session key
+  unsigned int m_passkey_len; // Length of cleartext passkey
   unsigned char m_session_key[20];
   unsigned char m_session_salt[20];
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
+  // Following used by SetPassKey
+  void EncryptPassword(const unsigned char *plaintext, int len,
+		       unsigned char *ciphertext) const;
   bool m_usedefuser;
   CMyString m_defusername;
   PWSfile::VERSION m_ReadFileVersion;

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/PWScore.h" // for error statuses from CheckPassword()
 #include "corelib/PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
@@ -74,8 +75,11 @@ CPasskeyChangeDlg::OnOK()
    CMyString errmess;
 
    UpdateData(TRUE);
-   if (!app.m_core.IsPassKey(m_oldpasskey))
+   int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), m_oldpasskey);
+   if (rc == PWScore::WRONG_PASSWORD)
      AfxMessageBox(_T("The old safe combination is not correct"));
+   else if (rc == PWScore::CANT_OPEN_FILE)
+     AfxMessageBox(_T("Cannot verify old safe combination - file gone?"));
    else if (m_confirmnew != m_newpasskey)
       AfxMessageBox(_T("New safe combination and confirmation do not match"));
    else if (m_newpasskey.IsEmpty())

@@ -4,10 +4,12 @@
 #include <fstream.h> // for WritePlaintextFile
 
 #include "PWScore.h"
+#include "BlowFish.h"
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 		     m_usedefuser(false), m_defusername(_T("")),
-		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION)
+		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
+		     m_passkey(NULL), m_passkey_len(0)
 {
   int i;
 
@@ -22,14 +24,15 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 PWScore::~PWScore()
 {
-  // Nothing (for now)
+  if (m_passkey_len > 0) {
+    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    delete[] m_passkey;
+  }
 }
 
 void
 PWScore::ClearData(void)
 {
-  m_passkey.Trash();
-
    //Composed of ciphertext, so doesn't need to be overwritten
    m_pwlist.RemoveAll();
 	
@@ -189,19 +192,70 @@ PWScore::Find(const CMyString &a_title, const CMyString &a_user)
    return listPos;
 }
 
-void PWScore::SetPassKey(const CMyString &new_passkey)
+void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
+			      unsigned char *ciphertext) const
 {
-  m_passkey = new_passkey; // XXX tmp!!!
+  // ciphertext is ((len +7)/8)*8 bytes long
+  BlowFish *Algorithm = MakeBlowFish(m_session_key, sizeof(m_session_key),
+				     m_session_salt, sizeof(m_session_salt));
+  int BlockLength = ((len + 7)/8)*8;
+  unsigned char curblock[8];
+
+  for (int x=0;x<BlockLength;x+=8) {
+    int i;
+    if ((len == 0) ||
+	((len%8 != 0) && (len - x < 8))) {
+      //This is for an uneven last block
+      memset(curblock, 0, 8);
+      for (i = 0; i < len %8; i++)
+	curblock[i] = plaintext[x + i];
+      } else
+	for (i = 0; i < 8; i++)
+	  curblock[i] = plaintext[x + i];
+      Algorithm->Encrypt(curblock, curblock);
+      memcpy(ciphertext + x, curblock, 8);
+   }
+   trashMemory(curblock, 8);
+  delete Algorithm;
 }
 
-bool PWScore::IsPassKey(const CMyString &new_passkey) const
+void PWScore::SetPassKey(const CMyString &new_passkey)
 {
-  return new_passkey == m_passkey; // XXX tmp
-  // Lazy way: Get cleartext m_passkey and compare
-  // Right way: encrypt new_passkey & compare to m_passkey
+  // if changing, clear old
+  if (m_passkey_len > 0) {
+    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    delete[] m_passkey;
+  }
+
+  m_passkey_len = new_passkey.GetLength();
+
+  int BlockLength = ((m_passkey_len + 7)/8)*8;
+  m_passkey = new unsigned char[BlockLength];
+  LPCTSTR plaintext = LPCTSTR(new_passkey);
+  EncryptPassword((const unsigned char *)plaintext, m_passkey_len,
+		  m_passkey);
 }
 
 CMyString PWScore::GetPassKey() const
 {
-  return m_passkey; // XXX tmp
+  CMyString retval(_T(""));
+  if (m_passkey_len > 0) {
+    unsigned int BlockLength = ((m_passkey_len + 7)/8)*8;
+    BlowFish *Algorithm = MakeBlowFish(m_session_key, sizeof(m_session_key),
+				       m_session_salt, sizeof(m_session_salt));
+    unsigned char curblock[8];
+
+    for (unsigned int x = 0; x < BlockLength; x += 8) {
+      unsigned int i;
+      for (i = 0; i < 8; i++)
+	curblock[i] = m_passkey[x + i];
+      Algorithm->Decrypt(curblock, curblock);
+      for (i = 0; i < 8; i++)
+	if (x + i < m_passkey_len)
+	  retval += curblock[i];
+    }
+    trashMemory(curblock, 8);
+    delete Algorithm;
+  }
+  return retval;
 }
