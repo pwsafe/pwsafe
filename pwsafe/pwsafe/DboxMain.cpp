@@ -633,10 +633,8 @@ DboxMain::OnEdit()
       CEditDlg dlg_edit(this);
       SplitName(item.GetName(),
                 dlg_edit.m_title, dlg_edit.m_username);
-      //item.GetPassword(dlg_edit.m_realpassword);
       dlg_edit.m_realpassword = item.GetPassword();
-      dlg_edit.m_password = dlg_edit.GetAsterisk(dlg_edit.m_realpassword);
-      //item.GetNotes(dlg_edit.m_notes);
+      dlg_edit.m_password = "**************";
       dlg_edit.m_notes = item.GetNotes();
 
 	  app.DisableAccelerator();

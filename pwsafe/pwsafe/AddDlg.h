@@ -26,6 +26,7 @@ protected:
 // Implementation
 protected:
 
+   virtual BOOL OnInitDialog();
    // Generated message map functions
    //{{AFX_MSG(CAddDlg)
    virtual void OnCancel();
