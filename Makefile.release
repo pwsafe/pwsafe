@@ -21,15 +21,38 @@ SRCRELNAME = pwsafe-$(RELEASENAME)-src
 RM = /usr/bin/rm
 CP = /usr/bin/cp
 MV = /usr/bin/mv
+GPG = /usr/bin/gpg
+GPG_KEY = ronys@users.sourceforge.net
+GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
+MD5SUM = /usr/bin/md5sum
+FTP_PUT = /usr/local/bin/ncftpput -v upload.sourceforge.net incoming
 
 MAKENSIS = /cygdrive/d/local/NSIS/makensis.exe
 
 BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
 	ChangeLog.txt Release/pwsafe.exe pwsafe.chm
 
-.PHONY: all release bin-release src-release installable
+.PHONY: all release bin-release src-release installable signatures \
+	upload md5sums
 
-all: release installable
+all: release installable signatures md5sums
+
+upload:
+	(cd $(RELEASEDIR); \
+	 $(FTP_PUT) pwsafe-$(RELEASENAME).exe \
+	 $(BINRELNAME).zip $(SRCRELNAME).zip \
+	 pwsafe-$(RELEASENAME).exe.sig \
+	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig)
+
+md5sums:
+	(cd $(RELEASEDIR); \
+	 $(MD5SUM) pwsafe-$(RELEASENAME).exe \
+	 $(BINRELNAME).zip $(SRCRELNAME).zip)
+
+signatures:
+	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).exe
+	$(GPG_SIGN) $(RELEASEDIR)/$(BINRELNAME).zip
+	$(GPG_SIGN) $(RELEASEDIR)/$(SRCRELNAME).zip
 
 installable:
 	$(MAKENSIS) /DVERSION=$(RELEASENAME) pwsafe.nsi
@@ -61,6 +84,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.8  2004/09/11 18:30:39  ronys
+# Added some convenient targets
+#
 # Revision 1.7  2004/09/10 06:22:52  ronys
 # bump version to 2.05
 #
