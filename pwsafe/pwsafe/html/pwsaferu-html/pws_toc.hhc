@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Acirc;&acirc;&aring;&auml;&aring;&iacute;&egrave;&aring; &acirc; Password Safe">
+		<param name="Local" value="html\pws_intro.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Icirc;&aacute;&ccedil;&icirc;&eth; Password Safe">
+		<param name="Local" value="html\pws_main.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Acirc;&acirc;&icirc;&auml; &ntilde;&aring;&eacute;&ocirc;&icirc;&acirc;&icirc;&eacute; &ecirc;&icirc;&igrave;&aacute;&egrave;&iacute;&agrave;&ouml;&egrave;&egrave;">
+		<param name="Local" value="html\pws_combo_entry.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Egrave;&ccedil;&igrave;&aring;&iacute;&aring;&egrave;&aring; &ntilde;&aring;&eacute;&ocirc;&icirc;&acirc;&icirc;&eacute; &ecirc;&icirc;&igrave;&aacute;&egrave;&iacute;&agrave;&ouml;&egrave;&egrave;">
+		<param name="Local" value="html\pws_combo_chg.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Icirc;&oslash;&egrave;&aacute;&ecirc;&agrave; &acirc;&acirc;&icirc;&auml;&agrave; &ntilde;&aring;&eacute;&ocirc;&icirc;&acirc;&icirc;&eacute; &ecirc;&icirc;&igrave;&aacute;&egrave;&iacute;&agrave;&ouml;&egrave;&egrave;">
+		<param name="Local" value="html\pws_combo_err.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Auml;&icirc;&aacute;&agrave;&acirc;&euml;&aring;&iacute;&egrave;&aring; &ccedil;&agrave;&iuml;&egrave;&ntilde;&egrave;">
+		<param name="Local" value="html\pws_add_data.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Dstrok;&aring;&auml;&agrave;&ecirc;&ograve;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring;/&iuml;&eth;&icirc;&ntilde;&igrave;&icirc;&ograve;&eth; &ccedil;&agrave;&iuml;&egrave;&ntilde;&egrave;">
+		<param name="Local" value="html\pws_edit.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Icirc;&iuml;&ouml;&egrave;&egrave; Password Safe">
+		<param name="Local" value="html\pws_opts.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+</UL>
+</BODY></HTML>
