@@ -80,10 +80,22 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
        IsDlgButtonChecked(IDC_EASYVISION) )
    {
      GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(FALSE);
+		
+     GetDlgItem(IDC_USELOWERCASE)->EnableWindow(TRUE);
+     GetDlgItem(IDC_USEUPPERCASE)->EnableWindow(TRUE);
+     GetDlgItem(IDC_USEDIGITS)->EnableWindow(TRUE);
+     GetDlgItem(IDC_USESYMBOLS)->EnableWindow(TRUE);
+     GetDlgItem(IDC_EASYVISION)->EnableWindow(TRUE);
    }
    else
    {
      GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(TRUE);
+	   
+     GetDlgItem(IDC_USELOWERCASE)->EnableWindow(FALSE);
+     GetDlgItem(IDC_USEUPPERCASE)->EnableWindow(FALSE);
+     GetDlgItem(IDC_USEDIGITS)->EnableWindow(FALSE);
+     GetDlgItem(IDC_USESYMBOLS)->EnableWindow(FALSE);
+     GetDlgItem(IDC_EASYVISION)->EnableWindow(FALSE);
    }
 
    return TRUE;  // return TRUE unless you set the focus to a control
