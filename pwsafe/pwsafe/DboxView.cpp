@@ -165,7 +165,7 @@ DboxMain::setupBars()
   int NumBits = ( pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32 );
   if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseNewToolbar))  {
     SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
-  } else{
+  } else {
     SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
   }
 
@@ -248,20 +248,23 @@ DboxMain::OnAdd()
 void
 DboxMain::OnAddGroup()
 {
-  // This can be reached by right clicking over an existing group node
-  // or by clicking over "whitespace".
-  // If the former, add a child node to the current one
-  // If the latter, add to root.
-  if (m_TreeViewGroup.IsEmpty())
-    m_TreeViewGroup = _T("New Group");
-  else
-    m_TreeViewGroup += _T(".New Group");
-  HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup);
-  m_ctlItemTree.SelectItem(newGroup);
-  m_TreeViewGroup = _T(""); // for next time
-  m_ctlItemTree.EditLabel(newGroup);
+  if (m_ctlItemTree.IsWindowVisible()) {
+    // This can be reached by right clicking over an existing group node
+    // or by clicking over "whitespace".
+    // If the former, add a child node to the current one
+    // If the latter, add to root.
+    if (m_TreeViewGroup.IsEmpty())
+        m_TreeViewGroup = _T("New Group");
+    else
+        m_TreeViewGroup += _T(".New Group");
+    HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup);
+    m_ctlItemTree.SelectItem(newGroup);
+    m_TreeViewGroup = _T(""); // for next time
+    m_ctlItemTree.EditLabel(newGroup);
+  }
 }
 
+// Delete key was pressed (in list view or tree view) to delete an entry.
 void
 DboxMain::OnDelete() 
 {
@@ -314,7 +317,7 @@ DboxMain::OnDelete()
       if (m_ctlItemTree.IsWindowVisible()) {
         HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
         if (ti != NULL && 
-            !m_ctlItemTree.GetItemData(ti) &&       // alternatively !m_ctlItemTree.IsLeafNode(ti)
+            !m_ctlItemTree.IsLeafNode(ti) &&
             !m_ctlItemTree.ItemHasChildren(ti))
         {
             HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            
@@ -590,8 +593,9 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     retval = m_ctlItemList.SetItemState(i,
 					LVIS_FOCUSED | LVIS_SELECTED,
 					LVIS_FOCUSED | LVIS_SELECTED);
-  if (MakeVisible)
-    m_ctlItemList.EnsureVisible(i, FALSE);
+    if (MakeVisible) {
+      m_ctlItemList.EnsureVisible(i, FALSE);
+    }
   } else { //Tree view active
     CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(ci != NULL);
@@ -801,115 +805,115 @@ DboxMain::OnSize(UINT nType,
   m_bSizing = false;
 }
 
-static void ExtractURL(CMyString &str)
+static bool ExtractURL(const CMyString &instr, CMyString &outurl)
 {
-  // Extract first instance of (http[s]|ftp)://.[^ \t\r\n]+
-  int left = str.Find(_T("http://"));
+  // Extract first instance of (http|https|ftp)://[^ \t\r\n]+
+  int left = instr.Find(_T("http://"));
   if (left == -1)
-    left = str.Find(_T("https://"));
+    left = instr.Find(_T("https://"));
   if (left == -1)
-    left = str.Find(_T("ftp://"));
+    left = instr.Find(_T("ftp://"));
   if (left == -1) {
-    str = _T("");
+    outurl = _T("");
+    return false;
   } else {
-    CString url(str);
+    CString url(instr);
     url = url.Mid(left); // throw out everything left of URL
     int right = url.FindOneOf(_T(" \t\r\n"));
     if (right != -1) {
-      url = url.Left(right);
-      str = CMyString(url);
+      url = url.Left(right);      
     }
+    outurl = CMyString(url);
+    return true;
   }
 }
 
 
+// Called when right-click is invoked in the client area of the window.
 void
 DboxMain::OnContextMenu(CWnd *, CPoint point) 
 {
-   CPoint local = point;
-   int item = -1;
-   CItemData *itemData = NULL;
-   CMenu menu;
-   CMyString itemURL;
+#if defined(POCKET_PC)
+    const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
+#else
+    const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
+#endif
 
-   if (m_ctlItemList.IsWindowVisible()) {
+    CPoint local = point;
+    int item = -1;
+    CItemData *itemData = NULL;
+    CMenu menu;
+
+    if (m_ctlItemList.IsWindowVisible())
+    {
         // currently in flattened list view.
-     m_ctlItemList.ScreenToClient(&local);
-     item = m_ctlItemList.HitTest(local);
-     if (item < 0)
-       return; // right click on empty list
-     itemData = (CItemData *)m_ctlItemList.GetItemData(item);
-     int rc = SelectEntry(item);
-     if (rc == LB_ERR) {
-       return; // ? is this possible ?
-     }
-     m_ctlItemList.SetFocus();
-   } else { // currently in tree view
-     ASSERT(m_ctlItemTree.IsWindowVisible());
-     m_ctlItemTree.ScreenToClient(&local);
-     HTREEITEM ti = m_ctlItemTree.HitTest(local);
-     if (ti != NULL) {
-       itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-       if (itemData != NULL) {
-           // right-click was on an item (LEAF)
-	 DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
-	 ASSERT(di != NULL);
-	 ASSERT(di->tree_item == ti);
-	 item = di->list_index;
-	 m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one
-       } else {
-	 // right-click was on a group (NODE)
-         m_ctlItemTree.SelectItem(ti); 
-	 if (menu.LoadMenu(IDR_POPGROUP)) {
-	   CMenu* pPopup = menu.GetSubMenu(0);
-	   ASSERT(pPopup != NULL);
-	   m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
-	   pPopup->TrackPopupMenu(
-WCE_INS TPM_LEFTALIGN,
-WCE_DEL TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-                                point.x, point.y,
-                                this); // use this window for commands
-	 }
-       }
-     } else { // not over anything
-      if (menu.LoadMenu(IDR_POPTREE)) {
-	CMenu* pPopup = menu.GetSubMenu(0);
-	ASSERT(pPopup != NULL);
-	pPopup->TrackPopupMenu(
-WCE_INS TPM_LEFTALIGN,
-WCE_DEL TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-                                point.x, point.y,
-                                this); // use this window for commands
-      }
-     }
-     m_ctlItemTree.SetFocus();
-   } // tree view handling
+        m_ctlItemList.ScreenToClient(&local);
+        item = m_ctlItemList.HitTest(local);
+        if (item < 0)
+            return; // right click on empty list
+        itemData = (CItemData *)m_ctlItemList.GetItemData(item);
+        int rc = SelectEntry(item);
+        if (rc == LB_ERR) {
+            return; // ? is this possible ?
+        }
+        m_ctlItemList.SetFocus();
+    } else {
+        // currently in tree view
+        ASSERT(m_ctlItemTree.IsWindowVisible());
+        m_ctlItemTree.ScreenToClient(&local);
+        HTREEITEM ti = m_ctlItemTree.HitTest(local);
+        if (ti != NULL) {
+            itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+            if (itemData != NULL) {
+                // right-click was on an item (LEAF)
+                DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
+                ASSERT(di != NULL);
+                ASSERT(di->tree_item == ti);
+                item = di->list_index;
+                m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one
+            } else {
+                // right-click was on a group (NODE)
+                m_ctlItemTree.SelectItem(ti); 
+                if (menu.LoadMenu(IDR_POPGROUP)) {
+                    CMenu* pPopup = menu.GetSubMenu(0);
+                    ASSERT(pPopup != NULL);
+                    m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
+                    pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+                }
+            }
+        } else {
+            // not over anything
+            if (menu.LoadMenu(IDR_POPTREE)) {
+                CMenu* pPopup = menu.GetSubMenu(0);
+                ASSERT(pPopup != NULL);
+                pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+            }
+        }
+        m_ctlItemTree.SetFocus();
+    } // tree view handling
 
-   if (item >= 0) {
-     menu.LoadMenu(IDR_POPMENU);
-     CMenu* pPopup = menu.GetSubMenu(0);
-     ASSERT(pPopup != NULL);
+    if (item >= 0) {
+        menu.LoadMenu(IDR_POPMENU);
+        CMenu* pPopup = menu.GetSubMenu(0);
+        ASSERT(pPopup != NULL);
 
-     ASSERT(itemData != NULL);
-     itemURL = itemData->GetNotes();
-     ExtractURL(itemURL);
-     if (itemURL.IsEmpty()) {
-       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
-     } else {
-       m_BrowseURL = itemURL;
-       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
-     }
+        ASSERT(itemData != NULL);
 
-     pPopup->TrackPopupMenu(
-WCE_INS							TPM_LEFTALIGN,
-WCE_DEL							TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-                                point.x, point.y,
-                                this); // use this window for commands
-   } // if (item >= 0)
+        if (!ExtractURL(itemData->GetNotes(), m_BrowseURL)) {
+            ASSERT(m_BrowseURL.IsEmpty());
+            pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
+        } else {
+            ASSERT(!m_BrowseURL.IsEmpty());
+            pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
+        }
+
+        pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+
+    } // if (item >= 0)
 }
 
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
-	LV_KEYDOWN *pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
+   LV_KEYDOWN *pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
 
    switch (pLVKeyDow->wVKey) {
    case VK_DELETE:
@@ -920,21 +924,21 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
       break;
    }
 
-	*pResult = 0;
+   *pResult = 0;
 }
 
 #if !defined(POCKET_PC)
 void
 DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *) 
 {
-  const UINT statustext = IDS_STATMESSAGE;
+    const UINT statustext = IDS_STATMESSAGE;
 
-  if (m_toolbarsSetup == FALSE)
-    return;
+    if (m_toolbarsSetup == FALSE)
+        return;
 
-  m_statusBar.SetIndicators(&statustext, 1);	
-  // Make a sunken or recessed border around the first pane
-  m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+    m_statusBar.SetIndicators(&statustext, 1);	
+    // Make a sunken or recessed border around the first pane
+    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
 }
 
 void
@@ -961,7 +965,8 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
 // {kjp} We could use itemData.GetNotes(CString&) to reduce the number of
 // {kjp} temporary objects created and copied.
 //
-int DboxMain::insertItem(CItemData &itemData, int iIndex) {
+int DboxMain::insertItem(CItemData &itemData, int iIndex)
+{
   if (itemData.GetDisplayInfo() != NULL &&
       ((DisplayInfo *)itemData.GetDisplayInfo())->list_index != -1) {
     // true iff item already displayed
@@ -1021,53 +1026,54 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex) {
   return iResult;
 }
 
-CItemData *DboxMain::getSelectedItem() {
-  CItemData *retval = NULL;
-  if (m_ctlItemList.IsWindowVisible()) {
-    // flattened list mode.
-    POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
-    if (p) {
-      int i = m_ctlItemList.GetNextSelectedItem(p);
-      retval = (CItemData *)m_ctlItemList.GetItemData(i);
-      ASSERT(retval != NULL);
-      DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
-      ASSERT(di != NULL && di->list_index == i);
+CItemData *DboxMain::getSelectedItem()
+{
+    CItemData *retval = NULL;
+    if (m_ctlItemList.IsWindowVisible()) {
+        // flattened list mode.
+        POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
+        if (p) {
+            int i = m_ctlItemList.GetNextSelectedItem(p);
+            retval = (CItemData *)m_ctlItemList.GetItemData(i);
+            ASSERT(retval != NULL);
+            DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
+            ASSERT(di != NULL && di->list_index == i);
+        }
+    } else {
+        // heirarchy tree mode; go from HTREEITEM to index
+        HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+        if (ti != NULL) {
+            retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
+            if (retval != NULL) {  // leaf node
+                DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
+                ASSERT(di != NULL && di->tree_item == ti);
+            }
+        }    
     }
-  } else {
-    // heirarchy tree mode; go from HTREEITEM to index
-    HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-    if (ti != NULL) {
-      retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
-      if (retval != NULL) {  // leaf node
-	DisplayInfo *di = (DisplayInfo *)retval->GetDisplayInfo();
-	ASSERT(di != NULL && di->tree_item == ti);
-      }
-    }    
-  }
     return retval;
 }
 
 void
 DboxMain::ClearData(void)
 {
-  // Iterate over item list, delete DisplayInfo
-  POSITION listPos = m_core.GetFirstEntryPosition();
-  while (listPos != NULL) {
-    CItemData &ci = m_core.GetEntryAt(listPos);
-    delete ci.GetDisplayInfo(); // no need to Set to NULL
-    m_core.GetNextEntry(listPos);
-  }
-  m_core.ClearData();
-  //Because GetText returns a copy, we cannot do anything about the names
-  if (m_windowok) {
-    // For long lists, this is painful, so we disable updates
-    m_ctlItemList.LockWindowUpdate();
-    m_ctlItemList.DeleteAllItems();
-    m_ctlItemList.UnlockWindowUpdate();
-    m_ctlItemTree.LockWindowUpdate();
-    m_ctlItemTree.DeleteAllItems();
-    m_ctlItemTree.UnlockWindowUpdate();
-  }
+    // Iterate over item list, delete DisplayInfo
+    POSITION listPos = m_core.GetFirstEntryPosition();
+    while (listPos != NULL) {
+        CItemData &ci = m_core.GetEntryAt(listPos);
+        delete ci.GetDisplayInfo(); // no need to Set to NULL
+        m_core.GetNextEntry(listPos);
+    }
+    m_core.ClearData();
+    //Because GetText returns a copy, we cannot do anything about the names
+    if (m_windowok) {
+        // For long lists, this is painful, so we disable updates
+        m_ctlItemList.LockWindowUpdate();
+        m_ctlItemList.DeleteAllItems();
+        m_ctlItemList.UnlockWindowUpdate();
+        m_ctlItemTree.LockWindowUpdate();
+        m_ctlItemTree.DeleteAllItems();
+        m_ctlItemTree.UnlockWindowUpdate();
+    }
 }
 
 void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -1090,14 +1096,14 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 void
 DboxMain::OnListView() 
 {
-      SetListView();
-   }
+   SetListView();
+}
 
 void
 DboxMain::OnTreeView() 
 {
-      SetTreeView();
-   }
+   SetTreeView();
+}
 
 void
 DboxMain::SetListView()
@@ -1121,64 +1127,64 @@ void
 DboxMain::OnOldToolbar() 
 {
     PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::UseNewToolbar, false);
-      SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
-   }
+    SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
+}
 
 void
 DboxMain::OnNewToolbar() 
 {
     PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::UseNewToolbar, true);
-      SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
-   }
+    SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
+}
 
 void
 DboxMain::SetToolbar(int menuItem)
 {
-  UINT Flags = 0;
-  CBitmap bmTemp; 
-  COLORREF Background = RGB(192, 192, 192);
+    UINT Flags = 0;
+    CBitmap bmTemp; 
+    COLORREF Background = RGB(192, 192, 192);
 
-  switch (menuItem) {
+    switch (menuItem) {
         case ID_MENUITEM_NEW_TOOLBAR: {
-      int NumBits = 32;
-      CDC* pDC = this->GetDC();
-      if ( pDC )  {
+            int NumBits = 32;
+            CDC* pDC = this->GetDC();
+            if ( pDC )  {
                 NumBits = pDC->GetDeviceCaps(12 /*BITSPIXEL*/);
-      }
-      if (NumBits >= 32) {
-	bmTemp.LoadBitmap(IDR_MAINBAR);
-	Flags = ILC_MASK | ILC_COLOR32;
-      } else {
-	bmTemp.LoadBitmap(IDB_TOOLBAR1);
-	Flags = ILC_MASK | ILC_COLOR8;
-	Background = RGB( 196,198,196 );
-      }
-    break;
+            }
+            if (NumBits >= 32) {
+                bmTemp.LoadBitmap(IDR_MAINBAR);
+                Flags = ILC_MASK | ILC_COLOR32;
+            } else {
+                bmTemp.LoadBitmap(IDB_TOOLBAR1);
+                Flags = ILC_MASK | ILC_COLOR8;
+                Background = RGB( 196,198,196 );
+            }
+            break;
         }
-  case ID_MENUITEM_OLD_TOOLBAR:
-    bmTemp.LoadBitmap(IDB_TOOLBAR2);
-    Flags = ILC_MASK | ILC_COLOR8;
-    break;
-  default:
-    ASSERT(false);
+        case ID_MENUITEM_OLD_TOOLBAR:
+            bmTemp.LoadBitmap(IDB_TOOLBAR2);
+            Flags = ILC_MASK | ILC_COLOR8;
+            break;
+        default:
+            ASSERT(false);
             return;
-  }
+    }
     m_toolbarMode = menuItem;
 
-  CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
-  CImageList ilTemp; 
-  ilTemp.Create(16, 16, Flags, 10, 10);
-  ilTemp.Add(&bmTemp, Background);
-  tbcTemp.SetImageList(&ilTemp);
-  ilTemp.Detach();
-  bmTemp.Detach();
+    CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
+    CImageList ilTemp; 
+    ilTemp.Create(16, 16, Flags, 10, 10);
+    ilTemp.Add(&bmTemp, Background);
+    tbcTemp.SetImageList(&ilTemp);
+    ilTemp.Detach();
+    bmTemp.Detach();
 
-  m_wndToolBar.Invalidate();
+    m_wndToolBar.Invalidate();
 
-  CRect rect;
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
-  m_ctlItemList.MoveWindow(&rect, TRUE);
+    CRect rect;
+    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+    m_ctlItemList.MoveWindow(&rect, TRUE);
     m_ctlItemTree.MoveWindow(&rect, TRUE); // Fix Bug 940585
 }
 
@@ -1186,34 +1192,32 @@ DboxMain::SetToolbar(int menuItem)
 void
 DboxMain::OnTimer(UINT nIDEvent )
 {			
-	if(nIDEvent==TIMER_CHECKLOCK){
-		if(IsWorkstationLocked()){
-			TRACE("locking database\n");
-			ClearData();
-			if(IsWindowVisible()){
-				ShowWindow(SW_MINIMIZE);
-			}
-			m_needsreading = true;
-			KillTimer(TIMER_CHECKLOCK);
-		}
-	}
+    if(nIDEvent==TIMER_CHECKLOCK){
+        if(IsWorkstationLocked()){
+            TRACE("locking database\n");
+            ClearData();
+            if(IsWindowVisible()){
+                ShowWindow(SW_MINIMIZE);
+            }
+            m_needsreading = true;
+            KillTimer(TIMER_CHECKLOCK);
+        }
+    }
 }
 
 // This function determines if the workstation is locked.
-
 BOOL DboxMain::IsWorkstationLocked()
 {
-	HDESK hDesktop;
- 
+    HDESK hDesktop; 
     BOOL Result = false;
 
     hDesktop = OpenDesktop("default", 0, false, DESKTOP_SWITCHDESKTOP);
-    if( hDesktop != 0 ){
-		// SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
+    if( hDesktop != 0 ) {
+        // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
         Result = ! SwitchDesktop(hDesktop);
         CloseDesktop(hDesktop);
     }
-	return Result;
+    return Result;
 }
 
 // onAutoType handles menu item ID_MENUITEM_AUTOTYPE
@@ -1221,86 +1225,81 @@ BOOL DboxMain::IsWorkstationLocked()
 void
 DboxMain::OnAutoType()
 {
-	if (SelItemOk() == TRUE)
-	{
-		CItemData *ci = getSelectedItem();
-		ASSERT(ci != NULL);
-		CMyString AutoCmd = ci->GetNotes();
-		// get the notes and then extract te autotype command	
-		ExtractAutoTypeCmd(AutoCmd);
-		
-		if(AutoCmd.IsEmpty()){
- 			// checking for user and password for default settings
- 			if(!ci->GetPassword().IsEmpty()){
- 				if(!ci->GetUser().IsEmpty())
- 					AutoCmd="\\u\\t\\p\\n";
- 				else
- 					AutoCmd="\\p\\n";
- 			}
- 			
-		}
-		
-		CMyString tmp;
-		
-		char curChar;
-		
-		for(int n=0; n<AutoCmd.GetLength();n++){
-			curChar=AutoCmd[n];
-			if(curChar=='\\'){
-				n++;
-				if(n<AutoCmd.GetLength())
-					curChar=AutoCmd[n];
-					switch(curChar){
-					case '\\':
-						tmp+='\\';
-						break;
-					case 'n':case 'r':
-						tmp+='\r';
-						break;
-					case 't':
-						tmp+='\t';
-						break;
-					case 'u':
-						tmp+= ci->GetUser();
-						break;
-					case 'p':
-						tmp+=ci->GetPassword();
-						break;
-					default:
+    if (SelItemOk() == TRUE)
+    {
+        CItemData *ci = getSelectedItem();
+        ASSERT(ci != NULL);
+        CMyString AutoCmd = ci->GetNotes();
+        // get the notes and then extract te autotype command	
+        ExtractAutoTypeCmd(AutoCmd);
 
-						break;
-					}
-			}
-			else
-				tmp+=curChar;
-		}
-		
-		
+        if(AutoCmd.IsEmpty()){
+            // checking for user and password for default settings
+            if(!ci->GetPassword().IsEmpty()){
+                if(!ci->GetUser().IsEmpty())
+                    AutoCmd="\\u\\t\\p\\n";
+                else
+                    AutoCmd="\\p\\n";
+            }
 
-		ResetKeyboardState();
+        }
 
-		ShowWindow(SW_MINIMIZE);
+        CMyString tmp;
 
-		SendString(tmp);
-	}
+        char curChar;
+
+        for(int n=0; n<AutoCmd.GetLength();n++){
+            curChar=AutoCmd[n];
+            if(curChar=='\\'){
+                n++;
+                if(n<AutoCmd.GetLength())
+                    curChar=AutoCmd[n];
+                switch(curChar){
+                    case '\\':
+                        tmp+='\\';
+                        break;
+                    case 'n':case 'r':
+                        tmp+='\r';
+                        break;
+                    case 't':
+                        tmp+='\t';
+                        break;
+                    case 'u':
+                        tmp+= ci->GetUser();
+                        break;
+                    case 'p':
+                        tmp+=ci->GetPassword();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+                tmp+=curChar;
+        }
+
+        ResetKeyboardState();
+        ShowWindow(SW_MINIMIZE);
+        SendString(tmp);
+    }
 }
 
 void DboxMain::ExtractAutoTypeCmd(CMyString &str)
 {
-  int left = str.Find(_T("autotype:"));
-  if (left == -1) {
-    str = _T(""); 
-  } else {
-    CString tmp(str);
-    tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
-    int right = tmp.FindOneOf(_T("\r\n"));
-    if (right != -1) {
-      tmp = tmp.Left(right);
-      str = CMyString(tmp);
+    int left = str.Find(_T("autotype:"));
+    if (left == -1) {
+        str = _T(""); 
     } else {
-      str=CMyString(tmp);
+        CString tmp(str);
+        tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
+        int right = tmp.FindOneOf(_T("\r\n"));
+        if (right != -1) {
+            tmp = tmp.Left(right);
+            str = CMyString(tmp);
+        } else {
+            str=CMyString(tmp);
+        }
     }
-  }
 }
 
 
@@ -1309,69 +1308,65 @@ void DboxMain::ExtractAutoTypeCmd(CMyString &str)
 //however I have added the code to deal with other keyboards (thedavecollins)
 void DboxMain::SendString(CMyString data)
 {
-	
-	BOOL shiftDown=false; //assume shift key is up
-	HKL hlocale = GetKeyboardLayout(0);
+    BOOL shiftDown=false; //assume shift key is up
+    HKL hlocale = GetKeyboardLayout(0);
 
-	for(int n=0;n<data.GetLength();n++){
+    for(int n=0;n<data.GetLength();n++){
 
-			SHORT keyScanCode=VkKeyScanEx(data[n],hlocale );
-			// high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
-			// We only process the shift key at this stage
-			if(keyScanCode & 0x100){
-				shiftDown=true;	
-				//send a shift down
-				keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, hlocale ), KEYEVENTF_EXTENDEDKEY, 0);	
-				
-			} 
-			// the lower order byte has the key scan code we need.
-			keyScanCode =(SHORT)( keyScanCode & 0xFF);
+        SHORT keyScanCode=VkKeyScanEx(data[n],hlocale );
+        // high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
+        // We only process the shift key at this stage
+        if(keyScanCode & 0x100){
+            shiftDown=true;	
+            //send a shift down
+            keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, hlocale ), KEYEVENTF_EXTENDEDKEY, 0);	
 
-			keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0,hlocale ), 0, 0);	
-			keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0,hlocale ), KEYEVENTF_KEYUP, 0);	
+        } 
+        // the lower order byte has the key scan code we need.
+        keyScanCode =(SHORT)( keyScanCode & 0xFF);
 
-			if(shiftDown){
-				//send a shift up
-				keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0,hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0);	
-				shiftDown=false;
-			}
+        keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0,hlocale ), 0, 0);	
+        keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0,hlocale ), KEYEVENTF_KEYUP, 0);	
 
-		
-		}
-	
+        if(shiftDown){
+            //send a shift up
+            keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0,hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0);	
+            shiftDown=false;
+        }
+    }
 }
 
 void DboxMain::ResetKeyboardState()
 {
-	// We need to make sure that the Control Key is still not down. 
-	// It will be down while the user presses ctrl-T the shortcut for autotype.
-	
-	BYTE keys[256];
-	HKL hlocale = GetKeyboardLayout(0);
+    // We need to make sure that the Control Key is still not down. 
+    // It will be down while the user presses ctrl-T the shortcut for autotype.
 
-	GetKeyboardState((LPBYTE)&keys);
-	
-	while((keys[VK_CONTROL] & 0x80)!=0){
-		// VK_CONTROL is down so send a down and an up...
+    BYTE keys[256];
+    HKL hlocale = GetKeyboardLayout(0);
 
-		keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, hlocale), KEYEVENTF_EXTENDEDKEY, 0);	
-		
-		keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);	
-		
-		//now we let the messages be processed by the applications to set the keyboard state
-		MSG msg;
-		//BOOL m_bCancel=false;
-		while (::PeekMessage(&msg,NULL,0,0,PM_NOREMOVE) )
-		{
-			// so there is a message process it.
-			if (!AfxGetThread()->PumpMessage())
-				break;
-		}
-		
-		
-		Sleep(10);
-		memset((void*)&keys,0,256);
-		GetKeyboardState((LPBYTE)&keys);
-	}
+    GetKeyboardState((LPBYTE)&keys);
+
+    while((keys[VK_CONTROL] & 0x80)!=0){
+        // VK_CONTROL is down so send a down and an up...
+
+        keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, hlocale), KEYEVENTF_EXTENDEDKEY, 0);	
+
+        keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);	
+
+        //now we let the messages be processed by the applications to set the keyboard state
+        MSG msg;
+        //BOOL m_bCancel=false;
+        while (::PeekMessage(&msg,NULL,0,0,PM_NOREMOVE) )
+        {
+            // so there is a message process it.
+            if (!AfxGetThread()->PumpMessage())
+                break;
+        }
+
+
+        Sleep(10);
+        memset((void*)&keys,0,256);
+        GetKeyboardState((LPBYTE)&keys);
+    }
 
 }
