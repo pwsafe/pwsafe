@@ -19,7 +19,8 @@ class PWScore {
     WRONG_PASSWORD,
     UNKNOWN_VERSION,
     NOT_SUCCESS,
-    ALREADY_OPEN
+    ALREADY_OPEN,
+    INVALID_FORMAT
    };
 
   PWScore();
@@ -41,6 +42,7 @@ class PWScore {
     {return WriteFile(filename, PWSfile::V17);}
   int WritePlaintextFile(const CMyString &filename);
   int ImportPlaintextFile(const CMyString &filename);
+  int ImportKeePassTextFile(const CMyString &filename);
   bool FileExists(const CMyString &filename) {return PWSfile::FileExists(filename);}
   int ReadCurFile(const CMyString &passkey)
     {return ReadFile(m_currfile, passkey);}
