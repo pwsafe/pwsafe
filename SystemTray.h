@@ -110,13 +110,14 @@ protected:
     UINT         m_DefaultMenuItemID;
     BOOL         m_DefaultMenuItemByPos;
     CWnd *       m_pTarget; // ronys
-
+    static const UINT m_nTaskbarCreatedMsg; //thedavecollins
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)
 	afx_msg void OnTimer(UINT nIDEvent);
-	//}}AFX_MSG
 
+	//}}AFX_MSG
+    LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
     DECLARE_MESSAGE_MAP()
 };
 

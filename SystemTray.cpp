@@ -1,3 +1,4 @@
+
 /////////////////////////////////////////////////////////////////////////////
 // SystemTray.cpp : implementation file
 //
@@ -64,6 +65,7 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(CSystemTray, CWnd)
 
 UINT CSystemTray::m_nIDEvent = 4567;
+const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(_T("TaskbarCreated"));
 
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray construction/creation/destruction
@@ -383,7 +385,9 @@ void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos)
 BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
 	//{{AFX_MSG_MAP(CSystemTray)
 	ON_WM_TIMER()
+	ON_REGISTERED_MESSAGE(CSystemTray::m_nTaskbarCreatedMsg, OnTaskbarCreated)
 	//}}AFX_MSG_MAP
+
 END_MESSAGE_MAP()
 
 void CSystemTray::OnTimer(UINT nIDEvent) 
@@ -461,8 +465,22 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
 
 LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
 {
-    if (message == m_tnd.uCallbackMessage)
-        return OnTrayNotification(wParam, lParam);
+	if(message==m_tnd.uCallbackMessage)
+		return OnTrayNotification(wParam, lParam);
 	
+        
 	return CWnd::WindowProc(message, wParam, lParam);
+}
+
+// This is called whenever the taskbar is created (eg after explorer crashes
+// and restarts. Please note that the WM_TASKBARCREATED message is only passed
+// to TOP LEVEL windows (like WM_QUERYNEWPALETTE)
+LRESULT CSystemTray::OnTaskbarCreated(WPARAM /*wParam*/, LPARAM /*lParam*/) 
+{
+	if(m_bHidden ==  FALSE)
+	{
+		m_bHidden = TRUE;
+		ShowIcon();
+	}
+	return 0;
 }
