@@ -72,6 +72,10 @@ class PWScore {
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
 
+  void SetPassKey(const CMyString &new_passkey);
+  bool IsPassKey(const CMyString &new_passkey) const;
+ 
+
  private:
   CMyString m_currfile; // current pw db filespec
   bool m_usedefuser;

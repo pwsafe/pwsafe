@@ -188,3 +188,13 @@ PWScore::Find(const CMyString &a_title, const CMyString &a_user)
 
    return listPos;
 }
+
+void PWScore::SetPassKey(const CMyString &new_passkey)
+{
+  global.m_passkey = new_passkey; // XXX tmp!!!
+}
+
+bool PWScore::IsPassKey(const CMyString &new_passkey) const
+{
+  return new_passkey == global.m_passkey; // XXX tmp
+}
