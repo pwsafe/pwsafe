@@ -1,6 +1,23 @@
 Password Safe for Pocket PC - Release Notes
 ===========================================
 
+Version 1.92c.1
+---------------
+
+These bugs have, I believe, been fixed:
+
+-  787325 (Endianness of the MIPS processor is wrong)
+-  791417 & 792555 (Passwords are saved by the Pocket PC autocomplete feature)
+-  791423 (Multiline notes are displayed incorrectly in the edit dialog)
+
+The following new features have been added:
+
+-  There is a new check box option ("Double-click shows password") in
+   Options/Display that changes the behaviour of a double click on a password
+   entry.  Then checked, double clicks present a dialogue box showing the
+   password.  When unchecked the password is copied to the clipboard as normal.
+
+
 Version 1.92c
 -------------
 
