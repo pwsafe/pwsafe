@@ -1,6 +1,8 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
 
+#include <fstream.h> // for WritePlaintextFile
+
 #include "PWScore.h"
 #include "global.h"
 
@@ -65,6 +67,36 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     DropDefUsernames(GetDefUsername());
 
   m_changed = FALSE;
+
+  return SUCCESS;
+}
+
+int
+PWScore::WritePlaintextFile(const CMyString &filename)
+{
+  ofstream of(filename);
+
+  if (!of)
+    return CANT_OPEN_FILE;
+
+  //Write out full names
+  if (GetUseDefUser())
+    MakeFullNames(GetDefUsername());
+
+  CItemData temp;
+  POSITION listPos = m_pwlist.GetHeadPosition();
+  while (listPos != NULL)
+    {
+      temp = m_pwlist.GetAt(listPos);
+      of << temp.GetPlaintext('\t') << endl;
+      m_pwlist.GetNext(listPos);
+    }
+  of.close();
+
+
+  //Restore shortened names if necessary
+  if (GetUseDefUser())
+    DropDefUsernames(GetDefUsername());
 
   return SUCCESS;
 }

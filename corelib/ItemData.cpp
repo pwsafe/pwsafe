@@ -105,6 +105,21 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
+CMyString CItemData::GetPlaintext(char separator) const
+{
+  CMyString ret;
+  CMyString title;
+  CMyString group(GetGroup());
+  if (group.IsEmpty())
+    title = GetTitle();
+  else
+    title = group + '.' + GetTitle();
+  ret = title + separator + GetUser() + separator +
+    GetPassword() + separator + "\"" + GetNotes() + "\"";
+  return ret;
+}
+
+
 void CItemData::SplitName(const CMyString &name,
 		   CMyString &title, CMyString &username)
 {

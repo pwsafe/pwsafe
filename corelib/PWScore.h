@@ -39,6 +39,7 @@ class PWScore {
   int WriteFile(const CMyString &filename, PWSfile::VERSION version = PWSfile::VCURRENT);
   int WriteV17File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V17);}
+  int WritePlaintextFile(const CMyString &filename);
   bool FileExists(const CMyString &filename) {return PWSfile::FileExists(filename);}
   int ReadCurFile(const CMyString &passkey)
     {return ReadFile(m_currfile, passkey);}

@@ -47,6 +47,7 @@ public:
    CMyString GetNotes() const;
    void GetUUID(uuid_array_t &) const; // V20
    CMyString GetGroup() const; // V20
+   CMyString GetPlaintext(char separator) const; // returns all fields separated by separator
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name); // V17 - deprecated - replaced by SetTitle & SetUser
