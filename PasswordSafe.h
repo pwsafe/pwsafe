@@ -26,8 +26,7 @@
 class ThisMfcApp;
 extern ThisMfcApp app;
 
-#include "global.h"
-extern Global global;
+#include "corelib/global.h"
 
 /*
  * This is the string to be displayed instead of the actual password, unless

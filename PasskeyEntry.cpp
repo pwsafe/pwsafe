@@ -11,7 +11,7 @@
 #include "ThisMfcApp.h"
 #include "resource.h"
 
-#include "MyString.h"
+#include "corelib/MyString.h"
 
 #include "SysColStatic.h"
 

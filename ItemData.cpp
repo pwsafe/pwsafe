@@ -3,8 +3,7 @@
 
 //in add, Ok is ok the first time
 
-#include "stdafx.h"
-#include "PasswordSafe.h"
+#include "global.h"
 
 #include <io.h>
 #include <math.h>
@@ -12,8 +11,6 @@
 #include "Util.h"
 #include "Blowfish.h"
 #include "sha1.h"
-
-#include "ThisMfcApp.h"
 
 #include "ItemData.h"
 

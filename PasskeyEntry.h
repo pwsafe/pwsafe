@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 
 #include "SysColStatic.h"
-#include "MyString.h"
+#include "corelib/MyString.h"
 #include "resource.h" // ronys
 //-----------------------------------------------------------------------------
 class CPasskeyEntry

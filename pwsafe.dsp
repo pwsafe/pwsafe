@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 htmlhelp.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"C:\local\vc98\HTML Help Workshop\lib"
+# ADD LINK32 htmlhelp.lib corelib.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"C:\local\vc98\HTML Help Workshop\lib" /libpath:".\corelib\Release"
 
 !ELSEIF  "$(CFG)" == "pwsafe - Win32 Debug"
 
@@ -79,7 +79,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 htmlhelp.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept /libpath:"C:\local\vc98\HTML Help Workshop\lib"
+# ADD LINK32 htmlhelp.lib corelib.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept /libpath:"C:\local\vc98\HTML Help Workshop\lib" /libpath:".\corelib\Debug"
+# SUBTRACT LINK32 /verbose
 
 !ENDIF 
 
@@ -93,10 +94,6 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=.\AddDlg.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\BlowFish.cpp
 # End Source File
 # Begin Source File
 
@@ -132,19 +129,11 @@ SOURCE=.\FindDlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ItemData.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\main.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\model.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\MyString.cpp
 # End Source File
 # Begin Source File
 
@@ -180,10 +169,6 @@ SOURCE=.\PasskeySetup.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\PWCharPool.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\PwFont.cpp
 # End Source File
 # Begin Source File
@@ -200,10 +185,6 @@ SOURCE=.\RemindSaveDlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sha1.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\SysColStatic.cpp
 # End Source File
 # Begin Source File
@@ -217,10 +198,6 @@ SOURCE=.\TryAgainDlg.cpp
 # Begin Source File
 
 SOURCE=.\UsernameEntry.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Util.cpp
 # End Source File
 # Begin Source File
 

@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "PWCharPool.h" // for CheckPassword()
+#include "corelib/PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
 #include "resource.h"
 

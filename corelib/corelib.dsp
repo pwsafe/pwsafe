@@ -41,7 +41,8 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /W4 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
+# SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x40d /d "NDEBUG"
 # ADD RSC /l 0x40d /d "NDEBUG"
 BSC32=bscmake.exe
@@ -58,15 +59,16 @@ LIB32=link.exe -lib
 # PROP BASE Output_Dir "Debug"
 # PROP BASE Intermediate_Dir "Debug"
 # PROP BASE Target_Dir ""
-# PROP Use_MFC 0
+# PROP Use_MFC 2
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ  /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ  /c
+# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "_AFXDLL" /FD /GZ /c
+# SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x40d /d "_DEBUG"
-# ADD RSC /l 0x40d /d "_DEBUG"
+# ADD RSC /l 0x40d /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -83,10 +85,58 @@ LIB32=link.exe -lib
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\BlowFish.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ItemData.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\MyString.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PWCharPool.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\sha1.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Util.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\BlowFish.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ItemData.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\MyString.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PWCharPool.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sha1.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Util.h
+# End Source File
 # End Group
 # End Target
 # End Project
