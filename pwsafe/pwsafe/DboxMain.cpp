@@ -1099,7 +1099,7 @@ DboxMain::Merge()
                      _T("All files (*.*)|*.*|")
                      _T("|"),
                      this);
-      fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Merge:");
+      fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Merge");
       rc = fd.DoModal();
       if (rc == IDOK)
       {
@@ -1148,6 +1148,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
 	case TAR_NEW:
 		return New();
 	case PWScore::WRONG_PASSWORD:
+	case PWScore::USER_CANCEL:
 	/*
 	If the user just cancelled out of the password dialog, 
 	assume they want to return to where they were before... 
