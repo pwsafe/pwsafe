@@ -263,10 +263,6 @@ SOURCE=.\FindDlg.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\global.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\ItemData.h
 # End Source File
 # Begin Source File
