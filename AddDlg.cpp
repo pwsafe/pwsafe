@@ -17,14 +17,10 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
-   : CDialog(CAddDlg::IDD, pParent)
+  : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
+    m_username(_T("")), m_title(_T("")), m_group(_T(""))
 {
    DBGMSG("CAddDlg()\n");
-
-   m_password = "";
-   m_notes = "";
-   m_username = "";
-   m_title = "";
 }
 
 
@@ -45,6 +41,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
    DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
+   DDX_Text(pDX, IDC_GROUP, (CString&)m_group);
 }
 
 
@@ -68,13 +65,13 @@ CAddDlg::OnOK()
    UpdateData(TRUE);
 
    //Check that data is valid
-   if (m_title == "")
+   if (m_title.IsEmpty())
    {
       AfxMessageBox(_T("This entry must have a title."));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       return;
    }
-   if (m_password == "")
+   if (m_password.IsEmpty())
    {
       AfxMessageBox(_T("This entry must have a password."));
       ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
@@ -125,7 +122,7 @@ void CAddDlg::OnRandom()
    UpdateData(TRUE);
 	
    int nResponse;
-   if (m_password == "")
+   if (m_password.IsEmpty())
       nResponse = IDYES;
    else
    {

@@ -36,12 +36,12 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_PASSWORD, (CString &)m_password);
    DDX_Text(pDX, IDC_USERNAME, (CString &)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString &)m_title);
+   DDX_Text(pDX, IDC_GROUP, (CString &)m_group);
 }
 
 
 BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
    ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
-//   ON_BN_CLICKED(IDHELP, OnHelp)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 #if defined(POCKET_PC)
@@ -89,13 +89,13 @@ CEditDlg::OnOK()
       m_realpassword = m_password;
 
    //Check that data is valid
-   if (m_title == "")
+   if (m_title.IsEmpty())
    {
       AfxMessageBox(_T("This entry must have a title."));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       return;
    }
-   if (m_password == "")
+   if (m_password.IsEmpty())
    {
       AfxMessageBox(_T("This entry must have a password."));
       ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
@@ -144,7 +144,8 @@ BOOL CEditDlg::OnInitDialog()
  
    SetPasswordFont(GetDlgItem(IDC_PASSWORD));
 
-   if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE) == TRUE)
+   if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
+			 _T("showpwdefault"), FALSE) == TRUE)
    {
       ShowPassword();
    }
@@ -186,7 +187,7 @@ void CEditDlg::OnRandom()
    int nResponse;
  
    //Ask if something's there
-   if (m_password != "")
+   if (!m_password.IsEmpty())
    {
       msg =
          "The randomly generated password is: \""

@@ -212,10 +212,15 @@ DboxMain::OnAdd()
 	}
       //Finish Check (Does that make any geographical sense?)
       CItemData temp;
-      CMyString temptitle;
-      m_core.MakeName(temptitle, dataDlg.m_title, dataDlg.m_username);
+      CMyString user;
+      if (dataDlg.m_username.IsEmpty() && m_core.GetUseDefUser())
+	user = m_core.GetDefUsername();
+      else
+	user = dataDlg.m_username;
       temp.CreateUUID();
-      temp.SetName(temptitle);
+      temp.SetGroup(dataDlg.m_group);
+      temp.SetTitle(dataDlg.m_title);
+      temp.SetUser(user);
       temp.SetPassword(dataDlg.m_password);
       temp.SetNotes(dataDlg.m_notes);
       m_core.AddEntryToTail(temp);
@@ -291,6 +296,7 @@ DboxMain::OnEdit()
       POSITION listpos = Find(di->list_index);
 
       CEditDlg dlg_edit(this);
+      dlg_edit.m_group = ci->GetGroup();
       dlg_edit.m_title = ci->GetTitle();
       dlg_edit.m_username = ci->GetUser();
       dlg_edit.m_realpassword = ci->GetPassword();
@@ -305,9 +311,14 @@ DboxMain::OnEdit()
       if (rc == IDOK)
 	{
 	  CMyString temptitle;
-	  m_core.MakeName(temptitle, dlg_edit.m_title, dlg_edit.m_username);
-	  ci->SetName(temptitle);
-
+	  CMyString user;
+	  if (dlg_edit.m_username.IsEmpty() && m_core.GetUseDefUser())
+	    user = m_core.GetDefUsername();
+	  else
+	    user = dlg_edit.m_username;
+	  ci->SetGroup(dlg_edit.m_group);
+	  ci->SetTitle(dlg_edit.m_title);
+	  ci->SetUser(user);
 	  ci->SetPassword(dlg_edit.m_realpassword);
 	  ci->SetNotes(dlg_edit.m_notes);
 
@@ -322,7 +333,8 @@ DboxMain::OnEdit()
 	  di->list_index = -1; // so that insertItem will set new values
 	  insertItem(editedItem);
 	  FixListIndexes(m_ctlItemList);
-	  if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), FALSE) == TRUE)
+	  if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
+				_T("saveimmediately"), FALSE) == TRUE)
 	    {
 	      Save();
 	    }
