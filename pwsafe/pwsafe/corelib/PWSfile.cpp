@@ -23,7 +23,8 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 
 
 PWSfile::PWSfile(const CMyString &filename, const CMyString &passkey)
-  : m_filename(filename), m_passkey(passkey), m_curversion(UNKNOWN_VERSION), m_fd(NULL)
+  : m_filename(filename), m_passkey(passkey),  m_defusername(_T("")),
+    m_curversion(UNKNOWN_VERSION), m_fd(NULL)
 {
 }
 
@@ -43,7 +44,7 @@ int PWSfile::WriteV2Header()
 {
   CItemData header;
   // Fill out with V2-specific info
-  header.SetName(V2ItemName);
+  header.SetName(V2ItemName, _T(""));
   header.SetPassword(VersionString);
   // need to fallback to V17, since the record
   // won't be readable otherwise!
@@ -252,9 +253,9 @@ int PWSfile::WriteRecord(const CItemData &item)
     // If name field already ecists - use it. This is for the 2.0 header, as well as for files
     // that were imported and re-exported.
     if (name.IsEmpty()) {
-      // The name in 1.7 consists of title + SPLTCHR + username, or
-      // title + DEFUSERNAME
-      // XXX we currently don't support the latter format yet
+      // The name in 1.7 consists of title + SPLTCHR + username
+      // DEFUSERNAME was used in previous versions, but 2.0 converts this upon import
+      // so it is not an issue here.
       // Prepend 2.0 group field to name, if not empty
       // i.e. group "finances" name "broker" -> "finances.broker"
       CMyString group = item.GetGroup();
@@ -338,7 +339,7 @@ int PWSfile::ReadRecord(CItemData &item)
   case V17: {
     // type is meaningless, but why write two versions of ReadCBC?
     numread += ReadCBC(type, tempdata);
-    item.SetName(tempdata);
+    item.SetName(tempdata, m_defusername);
     numread += ReadCBC(type, tempdata);
     item.SetPassword(tempdata);
     numread += ReadCBC(type, tempdata);

@@ -31,12 +31,14 @@ class PWSfile {
   int CheckPassword(); // opens for read and then closes iff not already open
   int WriteRecord(const CItemData &item);
   int ReadRecord(CItemData &item);
+  void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
 
  private:
   const CMyString m_filename;
   const CMyString m_passkey;
   FILE *m_fd;
   VERSION m_curversion;
+  CMyString m_defusername; // for V17 conversion (read) only
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];
   unsigned char m_ipthing[8]; // for CBC

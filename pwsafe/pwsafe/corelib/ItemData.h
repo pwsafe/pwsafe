@@ -50,7 +50,8 @@ public:
    CMyString GetPlaintext(char separator) const; // returns all fields separated by separator
 
    void CreateUUID(); // V20 - generate UUID for new item
-   void SetName(const CMyString &name); // V17 - deprecated - replaced by SetTitle & SetUser
+   void SetName(const CMyString &name,
+		const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
    void SetTitle(const CMyString &title); // V20
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);

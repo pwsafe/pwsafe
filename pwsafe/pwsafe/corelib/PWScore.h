@@ -72,18 +72,6 @@ class PWScore {
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
 
-  // Following moved from Util.{h,cpp} and constified
- public:
-  void MakeName(CMyString&, const CMyString &, const CMyString &) const; // used also by AddDlg, hence public
-
-  void MakeFullNames(const CMyString &defusername);
-  void DropDefUsernames(const CMyString &defusername);
-  void SetBlankToDef();
-  void SetBlankToName(const CMyString &username);
-
-  int SplitName(const CMyString &name,
-		CMyString &title, CMyString &username);
-
  private:
   CMyString m_currfile; // current pw db filespec
   bool m_usedefuser;
