@@ -211,6 +211,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_FIND, OnFind)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
+   ON_COMMAND(ID_FILE_EXPORTTO_OLD1XFORMAT, OnExportV17)
+   ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
 	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
 	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
@@ -1078,6 +1080,19 @@ DboxMain::OnSave()
    Save();
 }
 
+void
+DboxMain::OnExportV17()
+{
+  // TBD
+}
+
+void
+DboxMain::OnExportText()
+{
+  //TBD
+  // Insert BIG FAT warning about shooting security down the drain
+}
+
 
 int
 DboxMain::Save()
@@ -1091,7 +1106,7 @@ DboxMain::Save()
 
    if (rc == PWScore::CANT_OPEN_FILE)
    {
-      CMyString temp = m_core.GetCurFile() + "\n\nCould not open file for writting!";
+      CMyString temp = m_core.GetCurFile() + "\n\nCould not open file for writing!";
       MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
       return PWScore::CANT_OPEN_FILE;
    }
