@@ -192,7 +192,7 @@ int PWSfile::CheckPassword()
   }
 }
 
-int PWSfile::WriteCBC(const CString &data)
+int PWSfile::WriteCBC(unsigned char type, const CString &data)
 {
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
   // to access the pointer we need,
@@ -200,7 +200,7 @@ int PWSfile::WriteCBC(const CString &data)
   LPCSTR passstr = LPCSTR(m_passkey);
   LPCSTR datastr = LPCSTR(data);
 
-  return _writecbc(m_fd, (const unsigned char *)datastr, data.GetLength(),
+  return _writecbc(m_fd, (const unsigned char *)datastr, data.GetLength(), type,
 		   (const unsigned char *)passstr, m_passkey.GetLength(),
 		   m_salt, SaltLength, m_ipthing);
 }
@@ -213,17 +213,20 @@ int PWSfile::WriteRecord(const CItemData &item)
 
   switch (m_curversion) {
   case V17: {
-    WriteCBC(item.GetName());
-    WriteCBC(item.GetPassword());
-    WriteCBC(item.GetNotes());
+    // 1.x programs totally ignore the type byte, hence safe to write it
+    // (no need for two WriteCBC functions)
+    WriteCBC(CItemData::NAME, item.GetName());
+    WriteCBC(CItemData::PASSWORD, item.GetPassword());
+    WriteCBC(CItemData::NOTES, item.GetNotes());
     return SUCCESS;
   }
   break;
   case V20: {
-    WriteCBC(item.GetTitle());
-    WriteCBC(item.GetUser());
-    WriteCBC(item.GetPassword());
-    WriteCBC(item.GetNotes());
+    WriteCBC(CItemData::TITLE, item.GetTitle());
+    WriteCBC(CItemData::USER, item.GetUser());
+    WriteCBC(CItemData::PASSWORD, item.GetPassword());
+    WriteCBC(CItemData::NOTES, item.GetNotes());
+    WriteCBC(CItemData::END, _T(""));
     return SUCCESS;
   }
   default:
@@ -234,7 +237,7 @@ int PWSfile::WriteRecord(const CItemData &item)
 }
 
 int
-PWSfile::ReadCBC(CMyString &data)
+PWSfile::ReadCBC(unsigned char &type, CMyString &data)
 {
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
   // to access the pointer we need,
@@ -245,7 +248,7 @@ PWSfile::ReadCBC(CMyString &data)
   unsigned int buffer_len = 0;
   int retval;
 
-  retval = _readcbc(m_fd, buffer, buffer_len,
+  retval = _readcbc(m_fd, buffer, buffer_len, type,
 		   (const unsigned char *)passstr, m_passkey.GetLength(),
 		   m_salt, SaltLength, m_ipthing);
   if (buffer_len > 0) {
@@ -270,26 +273,30 @@ int PWSfile::ReadRecord(CItemData &item)
 
   CMyString tempdata;  
   int numread = 0;
+  unsigned char type;
 
   switch (m_curversion) {
   case V17: {
-    numread += ReadCBC(tempdata);
+    // type is meaningless, but why write two versions of ReadCBC?
+    numread += ReadCBC(type, tempdata);
     item.SetName(tempdata);
-    numread += ReadCBC(tempdata);
+    numread += ReadCBC(type, tempdata);
     item.SetPassword(tempdata);
-    numread += ReadCBC(tempdata);
+    numread += ReadCBC(type, tempdata);
     item.SetNotes(tempdata);
 
     return (numread > 0) ? SUCCESS : END_OF_FILE;
   }
   case V20: {
-    numread += ReadCBC(tempdata);
+    // XXX Need to change this to a while loop exited by END type,
+    // XXX otherwise we'll break on the first new field!
+    numread += ReadCBC(type, tempdata);
     item.SetTitle(tempdata);
-    numread += ReadCBC(tempdata);
+    numread += ReadCBC(type, tempdata);
     item.SetUser(tempdata);
-    numread += ReadCBC(tempdata);
+    numread += ReadCBC(type, tempdata);
     item.SetPassword(tempdata);
-    numread += ReadCBC(tempdata);
+    numread += ReadCBC(type, tempdata);
     item.SetNotes(tempdata);
 
     return (numread > 0) ? SUCCESS : END_OF_FILE;

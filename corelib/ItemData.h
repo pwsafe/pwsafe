@@ -32,7 +32,7 @@ class CItemData
 public:
   enum {NAME=0, GUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
 	PASSWORD = 0x6, CTIME = 0x7, MTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
-	POLICY = 0xb}; // field types, per formatV2.txt
+	POLICY = 0xb, END = 0xff}; // field types, per formatV2.txt
    //Construction
   CItemData();
 

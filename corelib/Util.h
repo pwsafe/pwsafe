@@ -54,10 +54,12 @@ extern BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern int _readcbc(int fp, unsigned char* &buffer, unsigned int &buffer_len,
+		    unsigned char &type,
 		    const unsigned char *pass, int passlen,
 		    const unsigned char* salt, int saltlen,
 		    unsigned char* cbcbuffer);
 extern int _writecbc(int fp, const unsigned char* buffer, int length,
+		     unsigned char type,
 		     const unsigned char *pass, int passlen,
 		     const unsigned char* salt, int saltlen,
 		     unsigned char* cbcbuffer);
