@@ -1,10 +1,10 @@
 $Id$
 
-Password Safe 2.05 Release Note - August 2004
-=============================================
+Password Safe 2.06 Release Note - October 2004
+==============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.05. For a short description of Password
+with Password Safe version 2.06. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
@@ -12,6 +12,24 @@ releases may be found in the file ChangeLog.txt.
 
 This is a maintenance release, adding a couple of minor features,
 fixing a couple of bugs.
+
+Bugs fixed in 2.06:
+===================
+[1026630] Autotype now works correctly when "lock database on
+minimize" active.
+[1028394] Export to text function works again.
+[1003780, 1026335] Autotype support for AltGr
+[1039214, 992178] PasswordSafe can now be configured to ignore the Esc
+key or to exit when it is pressed (Manage->Options->Misc).
+
+New Features for 2.06:
+======================
+[998966] In an "autotype" string, \d followed by up to 3 digits will
+cause the program to pause that many milliseconds between characters
+from that moment onwards.
+[1032149] Adding an entry with a group or item selected will fill the
+Group field with that currently selected (previously, this only worked
+on right-click on group item).
 
 Bugs fixed in 2.05:
 ===================
@@ -26,9 +44,10 @@ when checking for uniqueness.
 
 New Features for 2.05:
 ======================
-[917795] Import from plain text file supported
-[951317] Preferences stored in password database as well as registry -
-useful for users who access the same database on several computers.
+[917795, 995167] Import from plain text file supported
+[951317, 894466, 834197] Preferences stored in password database as
+well as registry - useful for users who access the same database on
+several computers.
 
 Bugs fixed in 2.04:
 ===================
@@ -92,6 +111,9 @@ do nothing).
 
 
 $Log$
+Revision 1.14  2004/10/08 05:56:02  ronys
+Updated for 2.06
+
 Revision 1.13  2004/09/10 11:11:58  ronys
 Update for 2.05
 
