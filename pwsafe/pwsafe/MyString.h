@@ -27,6 +27,9 @@ public:
    operator CString() const;
    operator CString&();
    operator LPCTSTR() const;
+#ifdef UNICODE
+   operator LPCSTR() const;
+#endif
    BOOL IsEmpty() const;
    BOOL LoadString(UINT nID);
 
@@ -71,8 +74,15 @@ public:
   void Trash() {trashstring();}
 
 private:
+#ifdef UNICODE
+  volatile PCHAR	char_buffer;
+  volatile int		char_buffer_len;
+
+  void trashbuffer();
+#endif
   CString m_mystring;
   void trashstring();
+  void init();
 };
 //-----------------------------------------------------------------------------
 
@@ -82,6 +92,11 @@ bool operator==(LPCTSTR s1, const CMyString& s2);
 bool operator!=(const CMyString& s1, const CMyString& s2);
 bool operator!=(const CMyString& s1, LPCTSTR s2);
 bool operator!=(LPCTSTR s1, const CMyString& s2);
+
+#ifdef UNICODE
+bool operator==(const CMyString& s1, LPCSTR s2);
+bool operator!=(const CMyString& s1, LPCSTR s2);
+#endif
 
 //-----------------------------------------------------------------------------
 #endif

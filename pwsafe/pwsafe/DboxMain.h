@@ -4,14 +4,30 @@
 #ifndef DboxMain_h
 #define DboxMain_h
 
+#include <stdio.h>
+
 #include "ItemData.h"
 #include "util.h"
-#include "resource.h"
+#include "PwsPlatform.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+  #include "pocketpc/MyListCtrl.h"
+#else
+  #include "resource.h"
+#endif
+
+#if defined(POCKET_PC) || (_MFC_VER <= 1200)
+DECLARE_HANDLE(HDROP);
+#endif
 
 //-----------------------------------------------------------------------------
 class DboxMain
    : public CDialog
 {
+#if defined(POCKET_PC)
+friend class CMyListCtrl;
+#endif
 
 // static methods
 private:
@@ -47,7 +63,11 @@ public:
 
 	//{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
+#if defined(POCKET_PC)
+	CMyListCtrl	m_ctlItemList;
+#else
 	CListCtrl	m_ctlItemList;
+#endif
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -70,11 +90,18 @@ protected:
 
    CMyString m_currfile; // current pw db filespec
    CMyString m_currbackup;
+#if !defined(POCKET_PC)
    CMyString m_title; // what's displayed in the title bar
+#endif
 
+#if defined(POCKET_PC)
+   CCeCommandBar	*m_wndCommandBar;
+   CMenu			*m_wndMenu;
+#else
    CToolBar m_wndToolBar;
    CStatusBar m_statusBar;
    BOOL m_toolbarsSetup;
+#endif
 
    BOOL m_changed;
    BOOL m_needsreading;
@@ -114,7 +141,7 @@ protected:
    int Save(void);
    int SaveAs(void);
    int Open(void);
-   int Open( const char* pszFilename );
+   int Open( const CMyString &pszFilename );
    int BackupSafe(void);
    int New(void);
    int Restore(void);
@@ -148,9 +175,11 @@ protected:
    afx_msg void OnSave();
    afx_msg void OnAdd();
    afx_msg void OnOK();
+#if !defined(POCKET_PC)
    afx_msg void OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnDropFiles(HDROP hDrop);
+#endif
 	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
 	afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
@@ -158,7 +187,11 @@ protected:
 	//}}AFX_MSG
 
    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
+#if _MFC_VER > 1200
+	afx_msg BOOL OnOpenMRU(UINT nID);
+#else
 	afx_msg void OnOpenMRU(UINT nID);
+#endif
    DECLARE_MESSAGE_MAP()
 
    // Following moved from Util.{h,cpp} and constified
@@ -167,8 +200,8 @@ public:
    CMyString GetPassword(void);
 
 private:
-  int WriteCBC(int fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);
-  int ReadCBC(int fp, CMyString &data, const unsigned char *salt, unsigned char *ipthing);
+  int WriteCBC(FILE *fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);
+  int ReadCBC(FILE *fp, CMyString &data, const unsigned char *salt, unsigned char *ipthing);
   void MakeFullNames(CList<CItemData, CItemData>* plist,
 		     const CMyString &defusername);
   void DropDefUsernames(CList<CItemData, CItemData>* plist,

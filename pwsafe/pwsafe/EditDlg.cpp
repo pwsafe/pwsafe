@@ -8,11 +8,20 @@
 #include "DboxMain.h"
 #include "EditDlg.h"
 #include "PwFont.h"
+#include "PwsPlatform.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
+#endif
+
+#if defined(POCKET_PC)
+  #define SHOW_PASSWORD_TXT	_T("S")
+  #define HIDE_PASSWORD_TXT	_T("H")
+#else
+  #define SHOW_PASSWORD_TXT	_T("&Show Password")
+  #define HIDE_PASSWORD_TXT	_T("&Hide Password")
 #endif
 
 
@@ -31,6 +40,9 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 //   ON_BN_CLICKED(IDHELP, OnHelp)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+#if defined(POCKET_PC)
+   ON_WM_SHOWWINDOW()
+#endif
 END_MESSAGE_MAP()
 
 
@@ -41,17 +53,17 @@ void CEditDlg::OnShowpassword()
    CMyString wndName;
    GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
 
-   if (wndName == "&Show Password")
+   if (wndName == SHOW_PASSWORD_TXT)
    {
       ShowPassword();
    }
-   else if (wndName == "&Hide Password")
+   else if (wndName == HIDE_PASSWORD_TXT)
    {
       m_realpassword = m_password;
       HidePassword();
    }
    else
-      AfxMessageBox("Error in retrieving window text");
+      AfxMessageBox(_T("Error in retrieving window text"));
 
    UpdateData(FALSE);
 }
@@ -73,13 +85,13 @@ CEditDlg::OnOK()
    //Check that data is valid
    if (m_title == "")
    {
-      AfxMessageBox("This entry must have a title.");
+      AfxMessageBox(_T("This entry must have a title."));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
       return;
    }
    if (m_password == "")
    {
-      AfxMessageBox("This entry must have a password.");
+      AfxMessageBox(_T("This entry must have a password."));
       ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
       return;
    }
@@ -126,7 +138,7 @@ BOOL CEditDlg::OnInitDialog()
  
    SetPasswordFont(GetDlgItem(IDC_PASSWORD));
 
-   if (app.GetProfileInt("", "showpwdefault", FALSE) == TRUE)
+   if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE) == TRUE)
    {
       ShowPassword();
    }
@@ -143,7 +155,7 @@ void CEditDlg::ShowPassword(void)
 {
    m_password = m_realpassword;
    m_isPwHidden = false;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Hide Password");
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
    GetDlgItem(IDC_PASSWORD)->EnableWindow(TRUE);
 }
 
@@ -152,7 +164,7 @@ void CEditDlg::HidePassword(void)
 {
    m_password = HIDDEN_PASSWORD;
    m_isPwHidden = true;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText("&Show Password");
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
    GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
 }
 
@@ -188,11 +200,11 @@ void CEditDlg::OnRandom()
       CMyString wndName;
       GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
 
-      if (wndName == "&Show Password")
+      if (wndName == SHOW_PASSWORD_TXT)
       {
 	m_password = HIDDEN_PASSWORD;
       }
-      else if (wndName == "&Hide Password")
+      else if (wndName == HIDE_PASSWORD_TXT)
       {
          m_password = m_realpassword;
       }
@@ -206,12 +218,16 @@ void CEditDlg::OnRandom()
 
 void CEditDlg::OnHelp() 
 {
-   ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/pws_edit.htm",
-              HH_DISPLAY_TOPIC, 0);
+#if defined(POCKET_PC)
+	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+#else
+	::HtmlHelp(
+		NULL,
+		"pwsafe.chm::/html/pws_edit.htm",
+		HH_DISPLAY_TOPIC, 0);
+
+#endif
 }
-
-
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

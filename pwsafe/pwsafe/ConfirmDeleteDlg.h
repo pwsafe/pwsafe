@@ -1,9 +1,20 @@
 // ConfirmDeleteDlg.h
 //-----------------------------------------------------------------------------
-#include "resource.h"
+#include "PwsPlatform.h"
 
-class CConfirmDeleteDlg : public CDialog
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+  #include "pocketpc/PwsPopupDialog.h"
+  #define SUPERCLASS	CPwsPopupDialog
+#else
+  #include "resource.h"
+  #define SUPERCLASS	CDialog
+#endif
+
+class CConfirmDeleteDlg : public SUPERCLASS
 {
+	typedef SUPERCLASS		super;
+
 // Construction
 public:
    CConfirmDeleteDlg(CWnd* pParent = NULL);   // standard constructor
@@ -31,6 +42,8 @@ protected:
    //}}AFX_MSG
    DECLARE_MESSAGE_MAP()
 };
+
+#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

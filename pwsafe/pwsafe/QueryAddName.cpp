@@ -3,9 +3,14 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-
+#include "PwsPlatform.h"
 #include "ThisMfcApp.h"
-#include "resource.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 
 #include "QueryAddName.h"
 
@@ -38,7 +43,7 @@ END_MESSAGE_MAP()
 void CQueryAddName::OnOK() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "queryaddname", m_dontqueryname ? 0 : 1);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("queryaddname"), m_dontqueryname ? 0 : 1);
    CDialog::OnOK();
 }
 
@@ -46,7 +51,7 @@ void CQueryAddName::OnOK()
 void CQueryAddName::OnCancel() 
 {
    UpdateData(TRUE);
-   app.WriteProfileInt("", "queryaddname", m_dontqueryname ? 0 : 1);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("queryaddname"), m_dontqueryname ? 0 : 1);
    CDialog::OnCancel();
 }
 //-----------------------------------------------------------------------------

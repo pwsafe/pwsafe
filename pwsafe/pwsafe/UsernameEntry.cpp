@@ -3,9 +3,14 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-
+#include "PwsPlatform.h"
 #include "ThisMfcApp.h"
-#include "resource.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 
 #include "UsernameEntry.h"
 
@@ -42,9 +47,9 @@ CUsernameEntry::OnOK()
 {
    UpdateData(TRUE);
 
-   app.WriteProfileInt("", "usedefuser", m_makedefuser);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), m_makedefuser);
    if (m_makedefuser==TRUE)
-      app.WriteProfileString("", "defusername", m_username);
+      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), m_username);
 
    CDialog::OnOK();
 }

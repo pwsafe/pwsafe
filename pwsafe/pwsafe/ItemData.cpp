@@ -6,7 +6,6 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 
-#include <io.h>
 #include <math.h>
 
 #include "Util.h"
@@ -273,7 +272,7 @@ CItemData::DecryptData(const unsigned char *cipher,
 
    int BlockLength = GetBlockSize(cLength);
 	
-   unsigned char *plaintxt = (unsigned char*)plain->GetBuffer(BlockLength+1);
+   unsigned char *plaintxt = new unsigned char [ BlockLength + 1 ];
 
    BlowFish *Algorithm = MakeBlowFish();
    int x;
@@ -287,7 +286,10 @@ CItemData::DecryptData(const unsigned char *cipher,
       plaintxt[x] = 0;
    plaintxt[BlockLength] = 0;
 
-   plain->ReleaseBuffer();
+   // {kjp} Assign the decrypted string and delete the temp buffer
+   *plain = plaintxt;
+   trashMemory( plaintxt, BlockLength + 1 );
+   delete [] plaintxt;
 
    return TRUE;
 }

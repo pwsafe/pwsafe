@@ -1,6 +1,8 @@
 // TryAgainDlg.h
 //-----------------------------------------------------------------------------
 
+#include "PwsPlatform.h"
+
 //Globally useful values...
 enum
 {
@@ -9,12 +11,21 @@ enum
    TAR_OPEN
 };
 
+#if defined(POCKET_PC)
+  #include "pocketpc/PwsPopupDialog.h"
+  #define SUPERCLASS	CPwsPopupDialog
+#else
+  #define SUPERCLASS	CDialog
+#endif
+
 
 //-----------------------------------------------------------------------------
-class CTryAgainDlg : public CDialog
+class CTryAgainDlg : public SUPERCLASS
 {
 // Construction
 public:
+	typedef SUPERCLASS	super;
+
    CTryAgainDlg(CWnd* pParent = NULL);   // standard constructor
    int GetCancelReturnValue();
 
@@ -45,6 +56,8 @@ protected:
    //}}AFX_MSG
    DECLARE_MESSAGE_MAP()
 };
+
+#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

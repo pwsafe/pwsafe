@@ -4,11 +4,6 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-
 #include "PasskeyEntry.h"
 #include "PasskeySetup.h"
 #include "CryptKeyEntry.h"

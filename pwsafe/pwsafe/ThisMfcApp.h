@@ -30,7 +30,7 @@ public:
   DboxMain* m_maindlg;
 
   virtual BOOL InitInstance();
-  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
+WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
   void		EnableAccelerator()						{ m_bUseAccelerator = true; }
   void		DisableAccelerator()					{ m_bUseAccelerator = false; }

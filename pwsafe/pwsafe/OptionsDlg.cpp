@@ -3,9 +3,13 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-
+#include "PwsPlatform.h"
 #include "ThisMfcApp.h"
-#include "resource.h"
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 #include "MyString.h"
 
 #include "OptionsDlg.h"
@@ -23,35 +27,35 @@ COptionsDlg::COptionsDlg(CWnd* pParent)
    : CDialog(COptionsDlg::IDD, pParent)
 {
    m_confirmcopy =
-      not(app.GetProfileInt("", "dontaskquestion", FALSE));
+      not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), FALSE));
    m_clearclipboard =
-      (app.GetProfileInt("", "dontaskminimizeclearyesno", FALSE));
+      (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskminimizeclearyesno"), FALSE));
    m_confirmdelete =
-      not(app.GetProfileInt("", "deletequestion", FALSE));
+      not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), FALSE));
    m_lockdatabase =
-      (app.GetProfileInt("", "databaseclear", FALSE));
+      (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE));
    m_confirmsaveonminimize =
-      not(app.GetProfileInt("", "dontasksaveminimize", FALSE));
+      not(app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), FALSE));
    m_pwshowinedit =
-      app.GetProfileInt("", "showpwdefault", FALSE);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE);
    m_pwshowinlist =
-      app.GetProfileInt("", "showpwinlistdefault", FALSE);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlistdefault"), FALSE);
    m_usedefuser =
-      app.GetProfileInt("", "usedefuser", FALSE);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
 
-   m_defusername = CMyString(app.GetProfileString("", "defusername", ""));
+   m_defusername = CMyString(app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T("")));
 
    m_querysetdef =
-      app.GetProfileInt("", "querysetdef", TRUE);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), TRUE);
    m_queryaddname =
-      app.GetProfileInt("", "queryaddname", TRUE);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("queryaddname"), TRUE);
    m_saveimmediately =
-      app.GetProfileInt("", "saveimmediately", TRUE);
+      app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), TRUE);
 
 	CString temp;
 
-   UINT pwlen = app.GetProfileInt("", "pwlendefault", 8);
-   temp.Format("%d", pwlen);
+   UINT pwlen = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), 8);
+   temp.Format(_T("%d"), pwlen);
    m_pwlendefault = (CMyString)temp;
 }
 
@@ -97,21 +101,25 @@ COptionsDlg::OnOK()
 {
    UpdateData(TRUE);
 
-   app.WriteProfileInt("", "dontaskquestion", not(m_confirmcopy));
-   app.WriteProfileInt("", "dontaskminimizeclearyesno", m_clearclipboard);
-   app.WriteProfileInt("", "deletequestion", not(m_confirmdelete));
-   app.WriteProfileInt("", "databaseclear", m_lockdatabase);
-   app.WriteProfileInt("", "dontasksaveminimize", not(m_confirmsaveonminimize));
-   app.WriteProfileInt("", "showpwdefault", m_pwshowinedit);
-   app.WriteProfileInt("", "showpwinlistdefault", m_pwshowinlist);
-   app.WriteProfileInt("", "usedefuser", m_usedefuser);
-   app.WriteProfileString("", "defusername", (CString &)m_defusername);
-   app.WriteProfileInt("", "querysetdef", m_querysetdef);
-   app.WriteProfileInt("", "queryaddname", m_queryaddname);
-   app.WriteProfileInt("", "alwaysontop", m_alwaysontop);
-   app.WriteProfileInt("", "saveimmediately", m_saveimmediately);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskquestion"), not(m_confirmcopy));
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskminimizeclearyesno"), m_clearclipboard);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("deletequestion"), not(m_confirmdelete));
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), m_lockdatabase);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("dontasksaveminimize"), not(m_confirmsaveonminimize));
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), m_pwshowinedit);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlistdefault"), m_pwshowinlist);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), m_usedefuser);
+   app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), (CString &)m_defusername);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), m_querysetdef);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("queryaddname"), m_queryaddname);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("alwaysontop"), m_alwaysontop);
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), m_saveimmediately);
+#ifdef UNICODE
+   int pwlendefault = (int) wcstol(m_pwlendefault, NULL, 10);
+#else
    int pwlendefault = atoi(m_pwlendefault);
-   app.WriteProfileInt("", "pwlendefault", pwlendefault);
+#endif
+   app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), pwlendefault);
    app.m_pMainWnd = NULL;
 
    CDialog::OnOK();
@@ -121,10 +129,14 @@ COptionsDlg::OnOK()
 void
 COptionsDlg::OnHelp() 
 {
+#if defined(POCKET_PC)
+	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#options"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+#else
    //WinHelp(0x20089, HELP_CONTEXT);
    ::HtmlHelp(NULL,
               "pwsafe.chm::/html/pws_opts.htm",
               HH_DISPLAY_TOPIC, 0);
+#endif
 }
 
 

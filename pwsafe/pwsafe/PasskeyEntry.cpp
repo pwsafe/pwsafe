@@ -7,9 +7,14 @@
 */
 
 #include "PasswordSafe.h"
-
+#include "PwsPlatform.h"
 #include "ThisMfcApp.h"
-#include "resource.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 
 #include "MyString.h"
 
@@ -20,15 +25,12 @@
 
 #include "util.h"
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec,
                              bool first)
-   : CDialog(first ? CPasskeyEntry::IDD : CPasskeyEntry::IDD_BASIC,
+   : super(first ? CPasskeyEntry::IDD : CPasskeyEntry::IDD_BASIC,
              pParent),
      m_first(first),
      m_tries(0),
@@ -64,22 +66,26 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
 
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-   CDialog::DoDataExchange(pDX);
+   super::DoDataExchange(pDX);
    DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
 
+#if !defined(POCKET_PC)
    if ( m_first )
 	DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
+#endif
 
    //{{AFX_DATA_MAP(CPasskeyEntry)
+#if !defined(POCKET_PC)
 	DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
 	DDX_Control(pDX, IDOK, m_ctlOK);
+#endif
 	DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
    DDX_Text(pDX, IDC_MESSAGE, m_message);
 	//}}AFX_DATA_MAP
 }
 
 
-BEGIN_MESSAGE_MAP(CPasskeyEntry, CDialog)
+BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
 	//{{AFX_MSG_MAP(CPasskeyEntry)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(ID_BROWSE, OnBrowse)
@@ -91,13 +97,30 @@ END_MESSAGE_MAP()
 BOOL
 CPasskeyEntry::OnInitDialog(void)
 {
-   CDialog::OnInitDialog();
+#if defined(POCKET_PC)
+   // If displaying IDD_PASSKEYENTRY_FIRST then bypass superclass and go
+   // directly to CDialog::OnInitDialog() and display the dialog fullscreen
+   // otherwise display as a centred dialogue.
+   if ( m_nIDHelp == IDD )
+   {
+	   super::super::OnInitDialog();
+   }
+   else
+   {
+#endif
+   super::OnInitDialog();
+#if defined(POCKET_PC)
+   }
+#endif
+
 
    if (("" == m_message)
        && m_first)
    {
       m_ctlPasskey.EnableWindow(FALSE);
+#if !defined(POCKET_PC)
       m_ctlOK.EnableWindow(FALSE);
+#endif
       m_message = "[No current database]";
    }
 
@@ -106,6 +129,7 @@ CPasskeyEntry::OnInitDialog(void)
     * the bitmaps
     */
 
+#if !defined(POCKET_PC)
    if (m_first)
    {
       m_ctlLogoText.ReloadBitmap(IDB_PSLOGO);
@@ -115,6 +139,7 @@ CPasskeyEntry::OnInitDialog(void)
    {
       m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
    }
+#endif
    
    return TRUE;
 }
@@ -125,7 +150,7 @@ CPasskeyEntry::OnBrowse()
 {
    m_status = TAR_OPEN;
    app.m_pMainWnd = NULL;
-   CDialog::OnCancel();
+   super::OnCancel();
 }
 
 
@@ -134,7 +159,7 @@ CPasskeyEntry::OnCreateDb()
 {
    m_status = TAR_NEW;
    app.m_pMainWnd = NULL;
-   CDialog::OnCancel();
+   super::OnCancel();
 }
 
 
@@ -142,7 +167,7 @@ void
 CPasskeyEntry::OnCancel() 
 {
    app.m_pMainWnd = NULL;
-   CDialog::OnCancel();
+   super::OnCancel();
 }
 
 
@@ -158,7 +183,7 @@ CPasskeyEntry::OnOK()
 
    if (m_passkey == "")
    {
-      AfxMessageBox("The combination cannot be blank.");
+      AfxMessageBox(_T("The combination cannot be blank."));
       m_ctlPasskey.SetFocus();
       return;
    }
@@ -179,13 +204,13 @@ CPasskeyEntry::OnOK()
          {
             m_status = errorDlg.GetCancelReturnValue();
             app.m_pMainWnd = NULL;
-            CDialog::OnCancel();
+            super::OnCancel();
          }
       }
       else
       {
          m_tries++;
-         AfxMessageBox("Incorrect passkey");
+         AfxMessageBox(_T("Incorrect passkey"));
          m_ctlPasskey.SetSel(MAKEWORD(-1, 0));
          m_ctlPasskey.SetFocus();
       }
@@ -193,7 +218,7 @@ CPasskeyEntry::OnOK()
    else
    {
       app.m_pMainWnd = NULL;
-      CDialog::OnOK();
+      super::OnOK();
    }
 }
 
@@ -201,10 +226,14 @@ CPasskeyEntry::OnOK()
 void
 CPasskeyEntry::OnHelp() 
 {
+#if defined(POCKET_PC)
+	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+#else
    //WinHelp(0x200B9, HELP_CONTEXT);
    ::HtmlHelp(NULL,
               "pwsafe.chm::/html/pws_combo_entry.htm",
               HH_DISPLAY_TOPIC, 0);
+#endif
 }
 
 

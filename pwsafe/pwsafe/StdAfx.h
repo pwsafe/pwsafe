@@ -17,7 +17,11 @@
 #include <afxtempl.h>
 #include <afxpriv.h>
 
-#include <htmlhelp.h>
+// Due to the compiler being a bit brain-dead this will give warnings about
+// a missing file when you compile or clean the project (Pocket PC only).
+#ifndef _WIN32_WCE
+  #include <htmlhelp.h>
+#endif
 
 //#include "MyString.h"
 

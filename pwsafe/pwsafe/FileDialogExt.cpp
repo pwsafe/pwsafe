@@ -44,7 +44,7 @@ CFileDialogExt::OnFileNameOK()
          temp = "This file type must have a ."
             + temp
             + " extension.";
-         MessageBox(temp, "File name error", MB_OK|MB_ICONWARNING);
+         MessageBox(temp, _T("File name error"), MB_OK|MB_ICONWARNING);
          return 1;
       }
    }

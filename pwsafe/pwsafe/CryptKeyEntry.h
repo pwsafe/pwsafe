@@ -3,11 +3,21 @@
 
 #include "MyString.h"
 
+#include "PwsPlatform.h"
 
-class CCryptKeyEntry : public CDialog
+#if defined(POCKET_PC)
+  #include "pocketpc/PwsPopupDialog.h"
+  #define SUPERCLASS	CPwsPopupDialog
+#else
+  #define SUPERCLASS	CDialog
+#endif
+
+class CCryptKeyEntry : public SUPERCLASS
 {
 // Construction
 public:
+	typedef SUPERCLASS	super;
+
    CCryptKeyEntry(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
@@ -36,6 +46,8 @@ protected:
    //}}AFX_MSG
    DECLARE_MESSAGE_MAP()
 };
+
+#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

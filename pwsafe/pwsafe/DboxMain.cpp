@@ -4,7 +4,13 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
-#include "resource.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include <errno.h>
+  #include "resource.h"
+#endif
 
 // dialog boxen
 #include "DboxMain.h"
@@ -26,12 +32,19 @@
 // widget override?
 #include "SysColStatic.h"
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
+#include <stdio.h>
+
+#ifdef POCKET_PC
+  #include "pocketpc/PocketPC.h"
+#endif
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
+
+#if defined(UNICODE)
+  #define CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
+#else
+  #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
+#endif
 
 /*
  * This is the string to be displayed instead of the actual password, unless
@@ -43,11 +56,21 @@ const TCHAR *HIDDEN_PASSWORD = _T("**************");
 
 //-----------------------------------------------------------------------------
 class DboxAbout
+#if defined(POCKET_PC)
+   : public CPwsPopupDialog
+#else
    : public CDialog
+#endif
 {
 public:
+#if defined(POCKET_PC)
+	typedef CPwsPopupDialog	super;
+#else
+	typedef CDialog			super;
+#endif
+
    DboxAbout()
-      : CDialog(DboxAbout::IDD)
+      : super(DboxAbout::IDD)
    {}
 
    enum { IDD = IDD_ABOUTBOX };
@@ -55,7 +78,7 @@ public:
 protected:
    virtual void DoDataExchange(CDataExchange* pDX)    // DDX/DDV support
    {
-      CDialog::DoDataExchange(pDX);
+      super::DoDataExchange(pDX);
    }
 
 protected:
@@ -63,8 +86,10 @@ protected:
 };
 
 // I don't think we need this, but...
-BEGIN_MESSAGE_MAP(DboxAbout, CDialog)
+BEGIN_MESSAGE_MAP(DboxAbout, super)
 END_MESSAGE_MAP()
+
+//-----------------------------------------------------------------------------
 
   /*
    * Compare function used by m_ctlItemList.SortItems()
@@ -165,20 +190,24 @@ DboxMain::DboxMain(CWnd* pParent)
    if (m_currfile.IsEmpty()) {
      // If there's no registry key, this is probably a fresh install.
      // CheckPassword will catch this and handle it correctly
-     m_currfile = (CMyString) app.GetProfileString("", "currentfile");
+     m_currfile = (CMyString) app.GetProfileString(_T(PWS_REG_OPTIONS), _T("currentfile"));
    }
-   m_currbackup =
-      (CMyString) app.GetProfileString("", "currentbackup", NULL);
-   m_title = "";
+   m_currbackup = (CMyString) app.GetProfileString(_T(PWS_REG_OPTIONS), _T("currentbackup"), NULL);
 
-   m_bAlwaysOnTop = app.GetProfileInt("", "alwaysontop", FALSE);
+#if !defined(POCKET_PC)
+   m_title = "";
+#endif
+
+   m_bAlwaysOnTop = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("alwaysontop"), FALSE);
 
    m_changed = FALSE;
    m_needsreading = TRUE;
    m_windowok = false;
    m_existingrestore = FALSE;
 
+#if !defined(POCKET_PC)
    m_toolbarsSetup = FALSE;
+#endif
 
    m_bShowPasswordInEdit = false;
    m_bShowPasswordInList = false;
@@ -205,7 +234,11 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_SIZE()
    ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
    ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
+#if defined(POCKET_PC)
+   ON_WM_CREATE()
+#else
    ON_WM_CONTEXTMENU()
+#endif
 	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
 	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
@@ -223,13 +256,16 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
+#if !defined(POCKET_PC)
 	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
 	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
    ON_WM_DROPFILES()
+#endif
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
 	ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
 	ON_WM_INITMENUPOPUP()
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
+#if !defined(POCKET_PC)
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
@@ -239,14 +275,19 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
    ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
+#endif
    ON_WM_SYSCOMMAND()
+#if !defined(POCKET_PC)
    ON_BN_CLICKED(IDOK, OnEdit)
 	ON_WM_SIZING()
+#endif
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRY20, OnOpenMRU)
+#if !defined(POCKET_PC)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
+#endif
 END_MESSAGE_MAP()
 
 
@@ -272,48 +313,51 @@ DboxMain::OnInitDialog()
 
 	m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 	int iColumnCount = 3;
-	m_ctlItemList.InsertColumn(0, "Title");
-	m_ctlItemList.InsertColumn(1, "User Name");
-	m_ctlItemList.InsertColumn(2, "Notes");
+	m_ctlItemList.InsertColumn(0, _T("Title"));
+	m_ctlItemList.InsertColumn(1, _T("User Name"));
+	m_ctlItemList.InsertColumn(2, _T("Notes"));
 
-	if (app.GetProfileInt("", "showpwdefault", FALSE)) {
+	if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE)) {
 		m_bShowPasswordInEdit = true;
 	}
 
-	if (app.GetProfileInt("", "showpwinlist", FALSE)) {
+	if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE)) {
 		m_bShowPasswordInList = true;
 	}
 
 	CRect rect;
 	m_ctlItemList.GetClientRect(&rect);
-	int i1stWidth = app.GetProfileInt("", "column1width", rect.Width() / iColumnCount + rect.Width() % iColumnCount);
-	int i2ndWidth = app.GetProfileInt("", "column2width", rect.Width() / iColumnCount);
-	int i3rdWidth = app.GetProfileInt("", "column3width", rect.Width() / iColumnCount);
+	int i1stWidth = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column1width"), rect.Width() / iColumnCount + rect.Width() % iColumnCount);
+	int i2ndWidth = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column2width"), rect.Width() / iColumnCount);
+	int i3rdWidth = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column3width"), rect.Width() / iColumnCount);
 
 	m_ctlItemList.SetColumnWidth(0, i1stWidth);
 	m_ctlItemList.SetColumnWidth(1, i2ndWidth);
 	m_ctlItemList.SetColumnWidth(2, i3rdWidth);
 
-	m_iSortedColumn = app.GetProfileInt("", "sortedcolumn", 0);
-	m_bSortAscending = app.GetProfileInt("", "sortascending", 1)? true: false;
+	m_iSortedColumn = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortedcolumn"), 0);
+	m_bSortAscending = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("sortascending"), 1)? true: false;
 
 	// refresh list will add and size password column if necessary...
 	RefreshList();
 
    ChangeOkUpdate();
 
-   if (app.GetProfileInt("", "donebackupchange", FALSE) == FALSE)
+   if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("donebackupchange"), FALSE) == FALSE)
       OnUpdateBackups();
 
    setupBars(); // Just to keep things a little bit cleaner
 
+#if !defined(POCKET_PC)
+   // {kjp} Can't drag and drop files onto an application in PocketPC
    DragAcceptFiles(TRUE);
 
    // TODO: kinda hideous in the registry, encode as single string maybe?
-   rect.top = app.GetProfileInt("", "top", -1);
-   rect.bottom = app.GetProfileInt("", "bottom", -1);
-   rect.left = app.GetProfileInt("", "left", -1);
-   rect.right = app.GetProfileInt("", "right", -1);
+   // {kjp} meaningless when target is a PocketPC device.
+   rect.top = app.GetProfileInt(_T(PWS_REG_POSITION), _T("top"), -1);
+   rect.bottom = app.GetProfileInt(_T(PWS_REG_POSITION), _T("bottom"), -1);
+   rect.left = app.GetProfileInt(_T(PWS_REG_POSITION), _T("left"), -1);
+   rect.right = app.GetProfileInt(_T(PWS_REG_POSITION), _T("right"), -1);
 
    if (rect.top == -1 || rect.bottom == -1 || rect.left == -1 || rect.right == -1) {
 	   GetWindowRect(&rect);
@@ -322,6 +366,7 @@ DboxMain::OnInitDialog()
    else {
 		MoveWindow(&rect, TRUE);
    }
+#endif
 
    return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -345,7 +390,9 @@ DboxMain::OpenOnInit(void)
    {
    case SUCCESS:
       rc2 = ReadFile(m_currfile, passkey);
+#if !defined(POCKET_PC)
       m_title = "Password Safe - " + m_currfile;
+#endif
       break; 
    case CANT_OPEN_FILE:
       /*
@@ -409,6 +456,7 @@ DboxMain::OpenOnInit(void)
 void
 DboxMain::setupBars()
 {
+#if !defined(POCKET_PC)
    // This code is copied from the DLGCBR32 example that comes with MFC
 
    const UINT statustext = IDS_STATMESSAGE;
@@ -440,6 +488,7 @@ DboxMain::setupBars()
 
 	// Set flag
    m_toolbarsSetup = TRUE;
+#endif
 }
 
 
@@ -462,7 +511,9 @@ DboxMain::OnPaint()
    {
       CPaintDC dc(this); // device context for painting
 
+#if !defined(POCKET_PC)
       SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+#endif
 
       // Center icon in client rectangle
       int cxIcon = GetSystemMetrics(SM_CXICON);
@@ -496,9 +547,9 @@ void
 DboxMain::OnAdd() 
 {
    CAddDlg dataDlg(this);
-   if (app.GetProfileInt("", "usedefuser", FALSE) == TRUE)
+   if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE) == TRUE)
    {
-      dataDlg.m_username = CMyString(app.GetProfileString("", "defusername", ""));
+      dataDlg.m_username = CMyString(app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T("")));
    }
 
    app.DisableAccelerator();
@@ -508,8 +559,8 @@ DboxMain::OnAdd()
    if (rc == IDOK)
    {
       //Check if they wish to set a default username
-      if ((app.GetProfileInt("", "usedefuser", FALSE) == FALSE)
-          && (app.GetProfileInt("", "querysetdef", TRUE) == TRUE)
+      if ((app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE) == FALSE)
+          && (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("querysetdef"), TRUE) == TRUE)
           && (dataDlg.m_username != ""))
       {
          CQuerySetDef defDlg(this);
@@ -522,8 +573,8 @@ DboxMain::OnAdd()
          int rc2 = defDlg.DoModal();
          if (rc2 == IDOK)
          {
-            app.WriteProfileInt("", "usedefuser", TRUE);
-            app.WriteProfileString("", "defusername",
+            app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), TRUE);
+            app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"),
                                    dataDlg.m_username);
             DropDefUsernames(&m_pwlist, dataDlg.m_username);
             RefreshList();
@@ -540,7 +591,7 @@ DboxMain::OnAdd()
       int newpos = insertItem(m_pwlist.GetAt(curPos));
       SelectEntry(newpos);
       m_ctlItemList.SetFocus();
-      if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+      if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), FALSE) == TRUE)
       {
          Save();
       }
@@ -590,27 +641,26 @@ DboxMain::OnCopyPassword()
 		CMyString curPassString;
 		m_pwlist.GetAt(itemPos).GetPassword(curPassString);
 		
-		uGlobalMemSize = curPassString.GetLength()+1;
+		uGlobalMemSize = (curPassString.GetLength() + 1) * sizeof(TCHAR);
 		hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-		char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
+		// {kjp} fix to use UNICODE safe string definitions and string copy functions
+		LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
 		
-		memcpy(pGlobalLock, curPassString, curPassString.GetLength());
+		strCopy( pGlobalLock, curPassString );
 		
-		pGlobalLock[uGlobalMemSize-1] = '\0';
 		GlobalUnlock(hGlobalMemory);	
 		
 		if (OpenClipboard() == TRUE)
 		{
 			if (EmptyClipboard()!=TRUE)
-				AfxMessageBox("The clipboard was not emptied correctly");
-			if (SetClipboardData(CF_TEXT, hGlobalMemory) == NULL)
-				AfxMessageBox("The data was not copied into the clipboard "
-				"correctly");
+            AfxMessageBox(_T("The clipboard was not emptied correctly"));
+         if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL)
+            AfxMessageBox(_T("The data was not pasted into the clipboard correctly"));
 			if (CloseClipboard() != TRUE)
-				AfxMessageBox("The clipboard could not be closed");
+            AfxMessageBox(_T("The clipboard could not be closed"));
 		}
 		else
-			AfxMessageBox("The clipboard could not be opened correctly");
+			AfxMessageBox(_T("The clipboard could not be opened correctly"));
 	}
 }
 
@@ -711,7 +761,7 @@ DboxMain::OnEdit()
          POSITION curPos = m_pwlist.AddTail(item);
 		   m_ctlItemList.DeleteItem(curSel);
 		   insertItem(m_pwlist.GetAt(curPos));
-         if (app.GetProfileInt("", "saveimmediately", FALSE) == TRUE)
+         if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("saveimmediately"), FALSE) == TRUE)
          {
             Save();
          }
@@ -747,24 +797,26 @@ DboxMain::OnOK()
 	lvColumn.mask = LVCF_WIDTH;
 	for (int i = 0; i < 4; i++) {
 		if (m_ctlItemList.GetColumn(i, &lvColumn)) {
-			app.WriteProfileInt("", ppszAttributeNames[i], lvColumn.cx);
+			app.WriteProfileInt(_T(PWS_REG_OPTIONS), (LPCTSTR) ppszAttributeNames[i], lvColumn.cx);
 		}
 	}
 
 	if (!IsIconic()) {
 	  CRect rect;
 	  GetWindowRect(&rect);
-	  app.WriteProfileInt("", "top", rect.top);
-	  app.WriteProfileInt("", "bottom", rect.bottom);
-	  app.WriteProfileInt("", "left", rect.left);
-	  app.WriteProfileInt("", "right", rect.right);
+#if !defined(POCKET_PC)
+	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("top"), rect.top);
+	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("bottom"), rect.bottom);
+	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("left"), rect.left);
+	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("right"), rect.right);
+#endif
 	}
-	app.WriteProfileInt("", "sortedcolumn", m_iSortedColumn);
-	app.WriteProfileInt("", "sortascending", m_bSortAscending);
+	app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("sortedcolumn"), m_iSortedColumn);
+	app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("sortascending"), m_bSortAscending);
 
    if (m_changed == TRUE)
    {
-      rc = MessageBox("Do you want to save changes to the password list?",
+      rc = MessageBox(_T("Do you want to save changes to the password list?"),
                              AfxGetAppName(),
                              MB_ICONQUESTION|MB_YESNOCANCEL);
       switch (rc)
@@ -783,7 +835,7 @@ DboxMain::OnOK()
    }
    else
    {
-     if (app.GetProfileInt("", "dontaskminimizeclearyesno", FALSE) == TRUE)
+     if (app.GetProfileInt(_T(""), _T("dontaskminimizeclearyesno"), FALSE) == TRUE)
        ClearClipboard();
       app.m_pMainWnd = NULL;
    }
@@ -792,14 +844,14 @@ DboxMain::OnOK()
 
    //Store current filename for next time...
    if (!m_currfile.IsEmpty())
-      app.WriteProfileString("", "currentfile", m_currfile);
+      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentfile"), m_currfile);
    else
-      app.WriteProfileString("", "currentfile", NULL);
+      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentfile"), NULL);
 
    if (!m_currbackup.IsEmpty())
-      app.WriteProfileString("", "currentbackup", m_currbackup);
+      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentbackup"), m_currbackup);
    else
-      app.WriteProfileString("", "currentbackup", NULL);
+      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("currentbackup"), NULL);
 
    CDialog::OnOK();
 }
@@ -816,25 +868,25 @@ void
 DboxMain::ClearClipboard()
 {
    if (OpenClipboard() != TRUE)
-      AfxMessageBox("The clipboard could not be opened correctly");
+      AfxMessageBox(_T("The clipboard could not be opened correctly"));
 
-   if (IsClipboardFormatAvailable(CF_TEXT) != 0)
+   if (IsClipboardFormatAvailable(CLIPBOARD_TEXT_FORMAT) != 0)
    {
-      HGLOBAL hglb = GetClipboardData(CF_TEXT); 
+      HGLOBAL hglb = GetClipboardData(CLIPBOARD_TEXT_FORMAT); 
       if (hglb != NULL)
       {
          LPTSTR lptstr = (LPTSTR)GlobalLock(hglb); 
          if (lptstr != NULL)
          {
-            trashMemory((unsigned char*)lptstr, strlen(lptstr));
+			trashMemory( lptstr, strLength(lptstr) );
             GlobalUnlock(hglb); 
          } 
       } 
    }
    if (EmptyClipboard()!=TRUE)
-      AfxMessageBox("The clipboard was not emptied correctly");
+      AfxMessageBox(_T("The clipboard was not emptied correctly"));
    if (CloseClipboard() != TRUE)
-      AfxMessageBox("The clipboard could not be closed");
+      AfxMessageBox(_T("The clipboard could not be closed"));
 }
 
 //Finds stuff based on the .GetName() part not the entire object
@@ -867,14 +919,26 @@ POSITION DboxMain::Find(int i)
 }
 
 
+#if defined(POCKET_PC)
+  #if (POCKET_PC_VER == 2000)
+    #define PWS_CDECL	__cdecl
+  #else
+    #define PWS_CDECL
+  #endif
+#else
+  #define PWS_CDECL
+#endif
+
 // for qsort in FindAll
-static int compint(const void *a1, const void *a2)
+static int PWS_CDECL compint(const void *a1, const void *a2)
 {
   // since we're sorting a list of indices, v1 == v2 should never happen.
   const int v1 = *(int *)a1, v2 = *(int *)a2;
   ASSERT(v1 != v2);
   return (v1 < v2) ? -1 : (v1 > v2) ? 1 : 0;
 }
+
+#undef PWS_CDECL
 
 /*
  * Finds all entries in m_pwlist that contain str in name or notes field,
@@ -913,7 +977,8 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
           curname.MakeLower();
           curnotes.MakeLower();
       }
-      if (::strstr(curname, searchstr) || ::strstr(curnotes, searchstr)) {
+	  if ( strFind( curname, searchstr ) || strFind( curnotes, searchstr ) )
+	  {
 	// Find index in m_listctl
 	CMyString listTitle;
 	CMyString title, username;
@@ -964,30 +1029,46 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 
 
 //Updates m_listctrl from m_pwlist
+// {kjp} Updated for Pocket PC to stop it updating after each item is added
+// {kjp} and to do so only after they've all been added and the list sorted.
 void
 DboxMain::RefreshList()
 {
    if (! m_windowok)
       return;
 
+#if defined(POCKET_PC)
+	HCURSOR		waitCursor = app.LoadStandardCursor( IDC_WAIT );
+#endif
+
    //Copy the data
+#if defined(POCKET_PC)
+   m_ctlItemList.SetRedraw( FALSE );
+#endif
    m_ctlItemList.DeleteAllItems();
+#if defined(POCKET_PC)
+   m_ctlItemList.SetRedraw( TRUE );
+#endif
 
 	LVCOLUMN lvColumn;
 	lvColumn.mask = LVCF_WIDTH;
 
 	bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
 	if (m_bShowPasswordInList && !bPasswordColumnShowing) {
-		m_ctlItemList.InsertColumn(3, "Password");
+		m_ctlItemList.InsertColumn(3, _T("Password"));
 		CRect rect;
 		m_ctlItemList.GetClientRect(&rect);
-		m_ctlItemList.SetColumnWidth(3, app.GetProfileInt("", "column4width", rect.Width() / 4));
+		m_ctlItemList.SetColumnWidth(3, app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("column4width"), rect.Width() / 4));
 	}
 	else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
-		app.WriteProfileInt("", "column4width", lvColumn.cx);
+		app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("column4width"), lvColumn.cx);
 		m_ctlItemList.DeleteColumn(3);
 	}
 
+#if defined(POCKET_PC)
+   m_ctlItemList.SetRedraw( FALSE );
+   SetCursor( waitCursor );
+#endif
    POSITION listPos = m_pwlist.GetHeadPosition();
    while (listPos != NULL)
    {
@@ -996,6 +1077,10 @@ DboxMain::RefreshList()
    }
 
 	m_ctlItemList.SortItems(CompareFunc, MAKELPARAM(m_iSortedColumn, (int)m_bSortAscending));
+#if defined(POCKET_PC)
+	SetCursor( NULL );
+	m_ctlItemList.SetRedraw( TRUE );
+#endif
 
    //Setup the selection
    if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
@@ -1104,9 +1189,11 @@ DboxMain::OnClearclipboard()
 // changing the size of the dialog, and not restoring it
 void DboxMain::OnSizing(UINT fwSide, LPRECT pRect) 
 {
+#if !defined(POCKET_PC)
 	CDialog::OnSizing(fwSide, pRect);
 	
 	m_bSizing = true;
+#endif
 }
 
 void
@@ -1117,24 +1204,26 @@ DboxMain::OnSize(UINT nType,
 {
    CDialog::OnSize(nType, cx, cy);
 
+// {kjp} Only SIZE_RESTORED is supported on Pocket PC.
+#if !defined(POCKET_PC)
    if (nType == SIZE_MINIMIZED)
    {
 	   m_ctlItemList.DeleteAllItems();
 
 	   // clear clipboard when minimized
-	   if (app.GetProfileInt("",
-		   "dontaskminimizeclearyesno",
+	   if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
+		   _T("dontaskminimizeclearyesno"),
 		   FALSE) == TRUE)
 	   {
 		   ClearClipboard();
 	   }
 
 	   // lock database when minimized
-	   if (app.GetProfileInt("", "databaseclear", FALSE) == TRUE)
+       if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE) == TRUE)
 	   {
 		   // confirm save on minimize
-		   BOOL dontask = app.GetProfileInt("",
-			   "dontasksaveminimize",
+           BOOL dontask = app.GetProfileInt(_T(PWS_REG_OPTIONS),
+               _T("dontasksaveminimize"),
 			   FALSE);
 		   BOOL doit = TRUE;
 		   if ((m_changed == TRUE)
@@ -1163,6 +1252,7 @@ DboxMain::OnSize(UINT nType,
    }
    else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
    {
+#endif
       if ((m_needsreading == TRUE)
           && (m_existingrestore == FALSE)
           && (m_windowok))
@@ -1178,14 +1268,16 @@ DboxMain::OnSize(UINT nType,
          {
          case SUCCESS:
             rc2 = ReadFile(m_currfile, passkey);
+#if !defined(POCKET_PC)
             m_title = "Password Safe - " + m_currfile;
+#endif
             break; 
          case CANT_OPEN_FILE:
             temp =
                m_currfile
                + "\n\nCannot open database. It likely does not exist."
                + "\nA new database will be created.";
-            MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
+            MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
          case TAR_NEW:
             rc2 = New();
             break;
@@ -1215,7 +1307,9 @@ DboxMain::OnSize(UINT nType,
          }
       }
       RefreshList();
+#if !defined(POCKET_PC)
    }
+#endif
 
 	if (m_windowok) {
 		// And position the control bars
@@ -1248,8 +1342,8 @@ DboxMain::Save()
 
    if (rc == CANT_OPEN_FILE)
    {
-      CMyString temp = m_currfile + "\n\nCould not open file for writting!";
-      MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
+      CMyString temp = m_currfile + "\n\nCould not open file for writing!";
+      MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return CANT_OPEN_FILE;
    }
 
@@ -1264,7 +1358,21 @@ DboxMain::ChangeOkUpdate()
 {
    if (! m_windowok)
       return;
-
+#if defined(POCKET_PC)
+	CMenu		*menu	= m_wndMenu;
+	
+	if ( menu != NULL )
+	{
+		if (m_changed == TRUE)
+		{
+			menu->EnableMenuItem(ID_MENUITEM_SAVE, MF_ENABLED);
+		}
+		else if (m_changed == FALSE)
+		{
+			menu->EnableMenuItem(ID_MENUITEM_SAVE, MF_GRAYED);
+		}
+	}
+#else
    if (m_changed == TRUE)
       GetMenu()->EnableMenuItem(ID_MENUITEM_SAVE, MF_ENABLED);
    else if (m_changed == FALSE)
@@ -1275,6 +1383,7 @@ DboxMain::ChangeOkUpdate()
      title is fresh...
    */
    SetWindowText(LPCTSTR(m_title));
+#endif
 }
 
 
@@ -1300,33 +1409,29 @@ DboxMain::OnCopyUsername()
 
    if (username.GetLength() == 0)
    {
-      AfxMessageBox("There is no username associated with this item.");
+      AfxMessageBox(_T("There is no username associated with this item."));
    }
    else
    {
-      uGlobalMemSize = username.GetLength()+1;
+      uGlobalMemSize = (username.GetLength() + 1) * sizeof(TCHAR);
       hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE,
                                   uGlobalMemSize);
-      char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
-      
-      memcpy(pGlobalLock, username, username.GetLength());
-
-      pGlobalLock[uGlobalMemSize-1] = '\0';
+      LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
+	  strCopy( pGlobalLock, username );
       GlobalUnlock(hGlobalMemory);	
 		
       if (OpenClipboard() == TRUE)
       {
          if (EmptyClipboard()!=TRUE)
-            AfxMessageBox("The clipboard was not emptied correctly");
-         if (SetClipboardData(CF_TEXT, hGlobalMemory) == NULL)
-            AfxMessageBox("The data was not pasted into the "
-                          "clipboard correctly");
+            AfxMessageBox(_T("The clipboard was not emptied correctly"));
+         if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL)
+            AfxMessageBox(_T("The data was not pasted into the clipboard correctly"));
          if (CloseClipboard() != TRUE)
-            AfxMessageBox("The clipboard could not be closed");
+            AfxMessageBox(_T("The clipboard could not be closed"));
       }
       else
       {
-         AfxMessageBox("The clipboard could not be opened correctly");
+         AfxMessageBox(_T("The clipboard could not be opened correctly"));
       }
       //No need to remind the user about clipboard security
       //as this is only a username
@@ -1356,7 +1461,9 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
          CMenu* pPopup = menu.GetSubMenu(0);
          ASSERT(pPopup != NULL);
 
-         pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+			pPopup->TrackPopupMenu(
+WCE_INS							TPM_LEFTALIGN,
+WCE_DEL							TPM_LEFTALIGN | TPM_RIGHTBUTTON,
                                 point.x, point.y,
                                 this); // use this window for commands
       }
@@ -1444,13 +1551,13 @@ DboxMain::BackupSafe()
    while (1)
    {
       CFileDialog fd(FALSE,
-                     "bak",
+                     _T("bak"),
                      m_currbackup,
                      OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                      | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                     "Password Safe Backups (*.bak)|*.bak||",
+                     _T("Password Safe Backups (*.bak)|*.bak||"),
                      this);
-      fd.m_ofn.lpstrTitle = "Please Choose a Name for this Backup:";
+      fd.m_ofn.lpstrTitle = _T("Please Choose a Name for this Backup:");
 
       rc = fd.DoModal();
       if (rc == IDOK)
@@ -1465,8 +1572,8 @@ DboxMain::BackupSafe()
    rc = WriteFile(tempname);
    if (rc == CANT_OPEN_FILE)
    {
-      CMyString temp = tempname + "\n\nCould not open file for writting!";
-      MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
+      CMyString temp = tempname + "\n\nCould not open file for writing!";
+      MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return CANT_OPEN_FILE;
    }
 
@@ -1492,15 +1599,15 @@ DboxMain::Open()
    while (1)
    {
       CFileDialog fd(TRUE,
-                     "dat",
+                     _T("dat"),
                      NULL,
                      OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                     "Password Safe Databases (*.dat)|*.dat|"
-                     "Password Safe Backups (*.bak)|*.bak|"
-                     "All files (*.*)|*.*|"
-                     "|",
+                     _T("Password Safe Databases (*.dat)|*.dat|")
+                     _T("Password Safe Backups (*.bak)|*.bak|")
+                     _T("All files (*.*)|*.*|")
+                     _T("|"),
                      this);
-      fd.m_ofn.lpstrTitle = "Please Choose a Database to Open:";
+      fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Open:");
       rc = fd.DoModal();
       if (rc == IDOK)
       {
@@ -1519,7 +1626,7 @@ DboxMain::Open()
 }
 
 int
-DboxMain::Open( const char* pszFilename )
+DboxMain::Open( const CMyString &pszFilename )
 {
 	int rc;
 	CMyString passkey, temp;
@@ -1528,8 +1635,8 @@ DboxMain::Open( const char* pszFilename )
 	if (pszFilename == m_currfile && !m_needsreading)
 	{
 		//It is the same damn file
-		MessageBox("That file is already open.",
-			"Oops!",
+		MessageBox(_T("That file is already open."),
+			_T("Oops!"),
 			MB_OK|MB_ICONWARNING);
 		return ALREADY_OPEN;
 	}
@@ -1551,7 +1658,7 @@ DboxMain::Open( const char* pszFilename )
 			return USER_CANCEL;
 		case IDYES:
 			rc2 = Save();
-			// Make sure that writting the file was successful
+			// Make sure that writing the file was successful
 			if (rc2 == SUCCESS)
 				break;
 			else
@@ -1565,11 +1672,11 @@ DboxMain::Open( const char* pszFilename )
 	switch (rc)
 	{
 	case SUCCESS:
-		app.GetMRU()->Add( pszFilename );
+		app.GetMRU()->Add( LPCTSTR(pszFilename) );
 		break; // Keep going... 
 	case CANT_OPEN_FILE:
 		temp = m_currfile + "\n\nCan't open file. Please choose another.";
-		MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
+		MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
 	case TAR_OPEN:
 		return Open();
 	case TAR_NEW:
@@ -1587,7 +1694,7 @@ DboxMain::Open( const char* pszFilename )
 	{
 		temp = pszFilename;
 		temp += "\n\nCould not open file for reading!";
-		MessageBox(temp, "File read error.", MB_OK|MB_ICONWARNING);
+		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
 		/*
 		Everything stays as is... Worst case,
 		they saved their file....
@@ -1597,7 +1704,9 @@ DboxMain::Open( const char* pszFilename )
 	
 	m_currfile = pszFilename;
 	m_changed = FALSE;
+#if !defined(POCKET_PC)
 	m_title = "Password Safe - " + m_currfile;
+#endif
 	ChangeOkUpdate();
 	RefreshList();
 	
@@ -1633,7 +1742,7 @@ DboxMain::New()
       case IDYES:
          rc2 = Save();
          /*
-           Make sure that writting the file was successful
+           Make sure that writing the file was successful
          */
          if (rc2 == SUCCESS)
             break;
@@ -1654,7 +1763,9 @@ DboxMain::New()
 
    m_currfile = ""; //Force a save as... 
    m_changed = FALSE;
+#if !defined(POCKET_PC)
    m_title = "Password Safe - <Untitled>";
+#endif
    ChangeOkUpdate();
 
    return SUCCESS;
@@ -1678,12 +1789,12 @@ DboxMain::Restore()
    while (1)
    {
       CFileDialog fd(TRUE,
-                     "bak",
+                     _T("bak"),
                      m_currbackup,
                      OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                     "Password Safe Backups (*.bak)|*.bak||",
+                     _T("Password Safe Backups (*.bak)|*.bak||"),
                      this);
-      fd.m_ofn.lpstrTitle = "Please Choose a Backup to Restore:";
+      fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to Restore:");
       rc = fd.DoModal();
       if (rc == IDOK)
       {
@@ -1703,7 +1814,7 @@ DboxMain::Restore()
       temp =
          m_currfile
          + "\n\nCan't open file. Please choose another.";
-      MessageBox(temp, "File open error.", MB_OK|MB_ICONWARNING);
+      MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
    case TAR_OPEN:
       return Open();
    case TAR_NEW:
@@ -1732,7 +1843,7 @@ DboxMain::Restore()
          return USER_CANCEL;
       case IDYES:
          rc2 = Save();
-         //Make sure that writting the file was successful
+         //Make sure that writing the file was successful
          if (rc2 == SUCCESS)
             break;
          else
@@ -1746,14 +1857,16 @@ DboxMain::Restore()
    if (rc == CANT_OPEN_FILE)
    {
       temp = newback + "\n\nCould not open file for reading!";
-      MessageBox(temp, "File read error.", MB_OK|MB_ICONWARNING);
+      MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
       //Everything stays as is... Worst case, they saved their file....
       return CANT_OPEN_FILE;
    }
 	
    m_currfile = ""; //Force a save as...
    m_changed = TRUE; //So that the *.dat version of the file will be saved.
+#if !defined(POCKET_PC)
    m_title = "Password Safe - <Untitled Restored Backup>";
+#endif
    ChangeOkUpdate();
    RefreshList();
 
@@ -1778,20 +1891,20 @@ DboxMain::SaveAs()
    while (1)
    {
       CFileDialog fd(FALSE,
-                     "dat",
+                     _T("dat"),
                      m_currfile,
                      OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                      |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                     "Password Safe Databases (*.dat)|*.dat|"
-                     "All files (*.*)|*.*|"
-                     "|",
+                     _T("Password Safe Databases (*.dat)|*.dat|")
+                     _T("All files (*.*)|*.*|")
+                     _T("|"),
                      this);
       if (m_currfile.IsEmpty())
          fd.m_ofn.lpstrTitle =
-            "Please Choose a Name for the Current (Untitled) Database:";
+            _T("Please Choose a Name for the Current (Untitled) Database:");
       else
          fd.m_ofn.lpstrTitle =
-            "Please Choose a New Name for the Current Database:";
+            _T("Please Choose a New Name for the Current Database:");
       rc = fd.DoModal();
       if (rc == IDOK)
       {
@@ -1806,13 +1919,15 @@ DboxMain::SaveAs()
    if (rc == CANT_OPEN_FILE)
    {
       CMyString temp = newfile + "\n\nCould not open file for writing!";
-      MessageBox(temp, "File write error.", MB_OK|MB_ICONWARNING);
+      MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return CANT_OPEN_FILE;
    }
 
    m_currfile = newfile;
    m_changed = FALSE;
+#if !defined(POCKET_PC)
    m_title = "Password Safe - " + m_currfile;
+#endif
    ChangeOkUpdate();
 
    app.GetMRU()->Add( newfile );
@@ -1820,32 +1935,37 @@ DboxMain::SaveAs()
    return SUCCESS;
 }
 
-int DboxMain::WriteCBC(int fp, const CString &data, const unsigned char *salt,
+int DboxMain::WriteCBC(FILE *fp, const CString &data, const unsigned char *salt,
 		       unsigned char *ipthing)
 {
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(app.m_passkey);
-  LPCSTR datastr = LPCSTR(data);
+	// We do a double cast because the LPCSTR cast operator is overridden by the CString class
+	// to access the pointer we need,
+	// but we in fact need it as an unsigned char. Grrrr.
 
-  return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
-		   (const unsigned char *)passstr, app.m_passkey.GetLength(),
-		   salt, SaltLength, ipthing);
+	CMyString	myData(data);
+
+	LPCSTR passstr = LPCSTR(app.m_passkey);
+	LPCSTR datastr = LPCSTR(myData);
+
+	return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
+		(const unsigned char *)passstr, app.m_passkey.GetLength(),
+		salt, SaltLength, ipthing);
 }
 
 int
 DboxMain::WriteFile(const CMyString &filename)
 {
-   int out = _open((LPCTSTR)filename,
-                   _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
-                   _S_IREAD | _S_IWRITE);
+#ifdef UNICODE
+	FILE *out = _wfopen((LPCTSTR)filename, _T("wb") );
+#else
+	FILE *out = fopen((LPCTSTR)filename, _T("wb") );
+#endif
 
-   if (out == -1)
+	if ( out == NULL )
       return CANT_OPEN_FILE;
 
-   _write(out, app.m_randstuff, 8);
-   _write(out, app.m_randhash, 20);
+	fwrite( app.m_randstuff, 1,  8, out ); 
+	fwrite( app.m_randhash,  1, 20, out );
 
    /*
      I know salt is just salt, but randomness always makes me
@@ -1855,16 +1975,17 @@ DboxMain::WriteFile(const CMyString &filename)
    for (int x=0; x<SaltLength; x++)
       thesalt[x] = newrand();
 
-   _write(out, thesalt, SaltLength);
+   fwrite( thesalt, 1, SaltLength, out );
 	
    unsigned char ipthing[8];
    for (x=0; x<8; x++)
       ipthing[x] = newrand();
-   _write(out, ipthing, 8);
+
+   fwrite(ipthing, 1, 8, out);
 
    //Write out full names
-   BOOL needexpand = app.GetProfileInt("", "usedefuser", FALSE);
-   CMyString defusername = app.GetProfileString("", "defusername", "");
+   BOOL needexpand = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
+   CMyString defusername = app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T(""));
    if (needexpand==TRUE)
       MakeFullNames(&m_pwlist, defusername);
 
@@ -1882,7 +2003,7 @@ DboxMain::WriteFile(const CMyString &filename)
       WriteCBC(out, tempdata, thesalt, ipthing);
       m_pwlist.GetNext(listPos);
    }
-   _close(out);
+   fclose(out);
 
    delete [] thesalt;
 
@@ -1909,15 +2030,17 @@ DboxMain::CheckPassword(const CMyString &filename,
   int retval;
   bool saved_stuff = false;
 
-  if (filename != "")
+  if (filename != _T(""))
     {
       DBGMSG("filename not blank\n");
 
-      int in = _open((LPCTSTR) filename,
-                     _O_BINARY | _O_RDONLY | _O_SEQUENTIAL,
-                     S_IREAD | _S_IWRITE);
+#ifdef UNICODE
+	  FILE *in = _wfopen((LPCTSTR) filename, _T("rb"));
+#else
+	  FILE *in = fopen((LPCTSTR) filename, _T("rb"));
+#endif
 
-      if (in == -1)
+	  if ( in == NULL )
 	{
 	  DBGMSG("open return -1\n");
 
@@ -1926,7 +2049,7 @@ DboxMain::CheckPassword(const CMyString &filename,
 
 	  CString Errmess(_T("Can't open database "));
 	  Errmess += (const CString&)filename;
-	  MessageBox(Errmess, "File open error",
+	  MessageBox(Errmess, _T("File open error"),
 		     MB_OK | MB_ICONWARNING);
 	}
       else
@@ -1942,9 +2065,9 @@ DboxMain::CheckPassword(const CMyString &filename,
 	    The beginning of the database file is
 	    8 bytes of randomness and a SHA1 hash {jpr}
 	  */
-	  _read(in, app.m_randstuff, 8);
-	  _read(in, app.m_randhash, 20);
-	  _close(in);
+	  fread(app.m_randstuff, 1,  8, in);
+	  fread(app.m_randhash,  1, 20, in);
+	  fclose(in);
 	}
     }
 
@@ -1995,7 +2118,7 @@ DboxMain::CheckPassword(const CMyString &filename,
   return retval;
 }
 
-int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
+int DboxMain::ReadCBC(FILE *fp, CMyString &data, const unsigned char *salt,
 		       unsigned char *ipthing)
 {
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
@@ -2028,22 +2151,25 @@ DboxMain::ReadFile(const CMyString &a_filename,
 {	
    //That passkey had better be the same one that came from CheckPassword(...)
 
-   int in = _open((LPCTSTR) a_filename,
-                  _O_BINARY |_O_RDONLY | _O_SEQUENTIAL,
-                  S_IREAD | _S_IWRITE);
+#ifdef UNICODE
+	FILE * in = _wfopen((LPCTSTR) a_filename, _T("rb") );
+#else
+	FILE * in = fopen((LPCTSTR) a_filename, _T("rb") );
+#endif
 
-   if (in == -1)
+	if (in == NULL)
       return CANT_OPEN_FILE;
 
    ClearData(); //Before overwriting old data, but after opening the file... 
 
-   _read(in, app.m_randstuff, 8);
-   _read(in, app.m_randhash, 20);
+   fread(app.m_randstuff, 1,  8, in);
+   fread(app.m_randhash,  1, 20,  in);
 
    unsigned char* salt = new unsigned char[SaltLength];
    unsigned char ipthing[8];
-   _read(in, salt, SaltLength);
-   _read(in, ipthing, 8);
+
+   fread(salt,    1, SaltLength, in);
+   fread(ipthing, 1, 8, in);
 
    app.m_passkey = a_passkey;
 
@@ -2070,12 +2196,12 @@ DboxMain::ReadFile(const CMyString &a_filename,
    }
 
    delete [] salt;
-   _close(in);
+   fclose(in);
 
    //Shorten names if necessary
-   if (app.GetProfileInt("", "usedefuser", FALSE) == TRUE)
+   if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE) == TRUE)
    {
-      CMyString temp = app.GetProfileString("", "defusername", "");
+      CMyString temp = app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T(""));
       DropDefUsernames(&m_pwlist, temp);
    }
 
@@ -2194,7 +2320,7 @@ DboxMain::OnUpdateBackups()
             "\n\nDo you wish to proceed?";
 
          rc = MessageBox(LPCTSTR(temp),
-                                "Update Backups",
+                                _T("Update Backups"),
                                 MB_YESNOCANCEL|MB_ICONWARNING);
       }
       if (rc!= IDYES)
@@ -2206,7 +2332,11 @@ DboxMain::OnUpdateBackups()
       //Ok, we have the go-ahead. Collect the data and update it
       int x = 0;
       int result = ERROR_SUCCESS;
+#ifdef UNICODE
+      wchar_t key[_MAX_PATH];
+#else
       char key[_MAX_PATH];
+#endif
       unsigned char value[_MAX_PATH];
       DWORD keylen = _MAX_PATH, valuelen = _MAX_PATH;
       DWORD valtype = REG_SZ;
@@ -2240,7 +2370,7 @@ DboxMain::OnUpdateBackups()
                   + temp.name
                   + "\"\nno longer exists.It will be removed"
                   " from the registry.";
-               MessageBox(out, "File not found.", MB_OK|MB_ICONWARNING);
+               MessageBox(out, _T("File not found."), MB_OK|MB_ICONWARNING);
                temp.location = "";
                backuplist.AddTail(temp);
             }
@@ -2256,7 +2386,7 @@ DboxMain::OnUpdateBackups()
                   + temp.name 
                   + "\"\nno longer exists. It will be removed"
                   " from the registry.";
-               MessageBox(out, "File not found.", MB_OK|MB_ICONWARNING);
+               MessageBox(out, _T("File not found."), MB_OK|MB_ICONWARNING);
                temp.location = "";
                backuplist.AddTail(temp);
             }
@@ -2291,17 +2421,19 @@ DboxMain::OnUpdateBackups()
          "and will be saved in the current directory)";
 
       rc = MessageBox(out+out2+out3,
-                             "Changed Files", MB_YESNOCANCEL);
+                             _T("Changed Files"), MB_YESNOCANCEL);
       if (rc == IDYES)
       {
-         int in = _open("changedbackups.txt",
-                        _O_TEXT|_O_WRONLY|_O_SEQUENTIAL|_O_APPEND|_O_CREAT,
-                        _S_IREAD | _S_IWRITE);
-         if (in != -1)
-         {
-            // No error
-            _write(in, LPCTSTR(out+out2), strlen(LPCTSTR(out+out2)));
-            _close(in);
+#ifdef UNICODE
+			FILE * in = _wfopen( _T("changedbackups.txt"), _T("w") );
+#else
+			FILE * in = fopen( _T("changedbackups.txt"), _T("w") );
+#endif
+
+			if ( in != NULL )
+			{
+				fwrite( LPCTSTR(out+out2), 1, strLength(LPCTSTR(out+out2)), in );
+				fclose( in );
          }
       }
 
@@ -2313,15 +2445,15 @@ DboxMain::OnUpdateBackups()
       {
          backup_t item = backuplist.GetAt(listPos);
          if (item.location != "")
-            app.WriteProfileString("Backup", item.name, item.location);
+            app.WriteProfileString(_T("Backup"), item.name, item.location);
          else
-            app.WriteProfileString("Backup", item.name, NULL);
+            app.WriteProfileString(_T("Backup"), item.name, NULL);
 
          backuplist.GetNext(listPos);
       }
 
       //Mark that this has been done.
-      app.WriteProfileInt("", "donebackupchange", TRUE);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("donebackupchange"), TRUE);
    }
 
    RegCloseKey(subkey);
@@ -2334,6 +2466,7 @@ DboxMain::OnToolTipText(UINT,
                         LRESULT* pResult)
 // This code is copied from the DLGCBR32 example that comes with MFC
 {
+#if !defined(POCKET_PC)
    ASSERT(pNMHDR->code == TTN_NEEDTEXTA || pNMHDR->code == TTN_NEEDTEXTW);
 
    // allow top level routing frame to handle the message
@@ -2381,11 +2514,13 @@ DboxMain::OnToolTipText(UINT,
    // bring the tooltip window above other popup windows
    ::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, 0, 0, 0, 0,
                   SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
+#endif
 
    return TRUE;    // message was handled
 }
 
 
+#if !defined(POCKET_PC)
 void
 DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *) 
 {
@@ -2398,8 +2533,10 @@ DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *)
    // Make a sunken or recessed border around the first pane
    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
 }
+#endif
 
 
+#if !defined(POCKET_PC)
 void
 DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *) 
 {
@@ -2412,15 +2549,17 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
    // Make a sunken or recessed border around the first pane
    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
 }
+#endif
 
 
+#if !defined(POCKET_PC)
 void
 DboxMain::OnDropFiles(HDROP hDrop)
 {
    //SetActiveWindow();
    SetForegroundWindow();
 
-   MessageBox("go away you silly git", "File drop", MB_OK);
+   MessageBox(_T("go away you silly git"), _T("File drop"), MB_OK);
 
 #if 0
    // here's what we really want - sorta
@@ -2444,6 +2583,7 @@ DboxMain::OnDropFiles(HDROP hDrop)
 
    DragFinish(hDrop);
 } 
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
@@ -2451,6 +2591,8 @@ DboxMain::OnDropFiles(HDROP hDrop)
 // from the list, it must be removed from the display as well and vice versa.
 // a pointer is associated with the item in the display that is used for
 // sorting.
+// {kjp} We could use itemData.GetNotes(CString&) to reduce the number of
+// {kjp} temporary objects created and copied.
 //
 int DboxMain::insertItem(CItemData &itemData, int iIndex) {
 	// TODO: sorted insert?
@@ -2527,8 +2669,8 @@ DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start MakeFullName
-      int pos = temp.FindByte(SPLTCHR);
-      int pos2 = temp.FindByte(DEFUSERCHR);
+      int pos = temp.Find(SPLTCHR);
+      int pos2 = temp.Find(DEFUSERCHR);
       if (pos==-1 && pos2!=-1)
       {
          //Insert defusername if string contains defchr but not splitchr
@@ -2572,7 +2714,7 @@ DboxMain::CheckVersion(CList<CItemData, CItemData>* plist)
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
 
-      if (temp.FindByte(SPLTCHR) != -1)
+      if (temp.Find(SPLTCHR) != -1)
          return V15;
 
       plist->GetNext(listPos);
@@ -2593,8 +2735,8 @@ DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
       plist->GetAt(listPos).GetName(temp);
 
       //Start Check
-      if ((temp.FindByte(SPLTCHR) == -1)
-          && (temp.FindByte(DEFUSERCHR) == -1))
+      if ((temp.Find(SPLTCHR) == -1)
+          && (temp.Find(DEFUSERCHR) == -1))
       {
          plist->GetAt(listPos).SetName(temp + DEFUSERCHR);
       }
@@ -2614,7 +2756,7 @@ DboxMain::SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &us
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start Check
-      if ( (temp.FindByte(SPLTCHR) == -1) && (temp.FindByte(DEFUSERCHR) == -1) )
+      if ( (temp.Find(SPLTCHR) == -1) && (temp.Find(DEFUSERCHR) == -1) )
       {
          plist->GetAt(listPos).SetName(temp + SPLTSTR + username);
       }
@@ -2636,10 +2778,10 @@ int
 DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username)
 //Returns split position for a name that was split and -1 for non-split name
 {
-	int pos = name.FindByte(SPLTCHR);
+	int pos = name.Find(SPLTCHR);
 	if (pos==-1) //Not a split name
 	{
-		int pos2 = name.FindByte(DEFUSERCHR);
+		int pos2 = name.Find(DEFUSERCHR);
 		if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
 		{
 			title = name;
@@ -2650,9 +2792,9 @@ DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username
 		}
 		
 		if ((pos2 != -1)
-			&& (app.GetProfileInt("", "usedefuser", FALSE)==TRUE))
+			&& (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE)==TRUE))
 		{
-			username = CMyString(app.GetProfileString("", "defusername", ""));
+			username = CMyString(app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T("")));
 		}
 		else
 		{
@@ -2682,9 +2824,9 @@ DboxMain::MakeName(CMyString& name, const CMyString &title, const CMyString &use
 {
    if (username == "")
       name = title;
-   else if (((app.GetProfileInt("", "usedefuser", FALSE))==TRUE)
+   else if (((app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE))==TRUE)
             && ((const CString &)username ==
-                app.GetProfileString("", "defusername", "")))
+                app.GetProfileString(_T(PWS_REG_OPTIONS), _T("defusername"), _T(""))))
    {
       name = title + DEFUSERCHR;
    }
@@ -2697,6 +2839,7 @@ DboxMain::MakeName(CMyString& name, const CMyString &title, const CMyString &use
 void
 DboxMain::UpdateAlwaysOnTop()
 {
+#if !defined(POCKET_PC)
 	CMenu*	sysMenu = GetSystemMenu( FALSE );
 
 	if ( m_bAlwaysOnTop )
@@ -2709,33 +2852,43 @@ DboxMain::UpdateAlwaysOnTop()
 		SetWindowPos( &wndNoTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 		sysMenu->CheckMenuItem( ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_UNCHECKED );
 	}
+#endif
 }
 
 void 
 DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
+#if !defined(POCKET_PC)
 	CDialog::OnSysCommand( nID, lParam );
 
 	if ( ID_SYSMENU_ALWAYSONTOP == nID )
 	{
 		m_bAlwaysOnTop = !m_bAlwaysOnTop;
 
-		app.WriteProfileInt( "", "alwaysontop", m_bAlwaysOnTop );
+		app.WriteProfileInt( _T(PWS_REG_OPTIONS), _T("alwaysontop"), m_bAlwaysOnTop );
 
 		UpdateAlwaysOnTop();
 	}
+#endif
 }
 
 
 void
 DboxMain::ConfigureSystemMenu()
 {
+#if defined(POCKET_PC)
+	m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
+	m_wndMenu		= m_wndCommandBar->InsertMenuBar( IDR_MAINMENU );
+
+	ASSERT( m_wndMenu != NULL );
+#else
 	CMenu*	sysMenu = GetSystemMenu( FALSE );
 	CString	str;
 
 	str.LoadString( IDS_ALWAYSONTOP );
 
 	sysMenu->InsertMenu( 5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCTSTR)str );
+#endif
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -2746,7 +2899,11 @@ DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 	app.GetMRU()->UpdateMenu( pCmdUI );	
 }
 
+#if _MFC_VER > 1200
+BOOL
+#else
 void 
+#endif
 DboxMain::OnOpenMRU(UINT nID)
 {
 	UINT	uMRUItem = nID - ID_FILE_MRU_ENTRY1;
@@ -2754,6 +2911,9 @@ DboxMain::OnOpenMRU(UINT nID)
 	CString mruItem = (*app.GetMRU())[uMRUItem];
 
 	Open( mruItem );
+#if _MFC_VER > 1200
+	return TRUE;
+#endif
 }
 
 // helps with MRU by allowing ON_UPDATE_COMMAND_UI
@@ -2772,24 +2932,49 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 	// to this menu. Note that m_pParentMenu == NULL indicates that the menu is a
 	// secondary popup.
 	
+#ifdef POCKET_PC
+	CMenu *hParentMenu;
+#else
 	HMENU hParentMenu;
+#endif
 	if(AfxGetThreadState()->m_hTrackingMenu == pPopupMenu->m_hMenu)
 		state.m_pParentMenu = pPopupMenu; // Parent == child for tracking popup.
+#ifdef POCKET_PC
+	else if((hParentMenu = this->GetMenu()) != NULL)
+#else
 	else if((hParentMenu = ::GetMenu(m_hWnd)) != NULL)
+#endif
 	{
 		CWnd* pParent = this;
 		// Child windows don't have menus--need to go to the top!
+#ifdef POCKET_PC
+		if(pParent != NULL && (hParentMenu = pParent->GetMenu()) != NULL)
+#else
 		if(pParent != NULL && (hParentMenu = ::GetMenu(pParent->m_hWnd)) != NULL)
+#endif
 		{
+#ifdef POCKET_PC
+			int nIndexMax = hParentMenu->GetMenuItemCount();
+#else
 			int nIndexMax = ::GetMenuItemCount(hParentMenu);
+#endif
 			for (int nIndex = 0; nIndex < nIndexMax; nIndex++)
 			{
+#ifdef POCKET_PC
+				if(::GetSubMenu(hParentMenu->GetSafeHmenu(), nIndex) == pPopupMenu->m_hMenu)
+				{
+					// When popup is found, m_pParentMenu is containing menu.
+					state.m_pParentMenu = CMenu::FromHandle(hParentMenu->GetSafeHmenu());
+					break;
+				}
+#else
 				if(::GetSubMenu(hParentMenu, nIndex) == pPopupMenu->m_hMenu)
 				{
 					// When popup is found, m_pParentMenu is containing menu.
 					state.m_pParentMenu = CMenu::FromHandle(hParentMenu);
 					break;
 				}
+#endif
 			}
 		}
 	}
