@@ -6,7 +6,8 @@ enum
 {
    TAR_INVALID,
    TAR_NEW,
-   TAR_OPEN
+   TAR_OPEN,
+   TAR_CANCEL
 };
 
 
