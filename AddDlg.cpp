@@ -8,6 +8,8 @@
 #include "DboxMain.h"
 #include "AddDlg.h"
 #include "PwFont.h"
+#include "OptionsPasswordPolicy.h"
+#include "corelib/PWCharPool.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -115,30 +117,64 @@ void CAddDlg::OnHelp()
 
 void CAddDlg::OnRandom() 
 {
-   DboxMain* pParent = (DboxMain*) GetParent();
-   ASSERT(pParent != NULL);
-   CMyString temp = pParent->GetPassword();
+  DboxMain* pParent = (DboxMain*) GetParent();
+  ASSERT(pParent != NULL);
+  bool is_override = (IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
+  CMyString temp;
 
-   UpdateData(TRUE);
+  if (is_override) {
+    // Start with existing password policy
+    CPropertySheet optionsDlg(_T("Password Policy Override"), this);
+    COptionsPasswordPolicy  passwordpolicy;
+
+    passwordpolicy.m_pwlendefault = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwlendefault"), 8);
+    passwordpolicy.m_pwuselowercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuselowercase"), TRUE);
+    passwordpolicy.m_pwuseuppercase = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwuseuppercase"), TRUE);
+    passwordpolicy.m_pwusedigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusedigits"), TRUE);
+    passwordpolicy.m_pwusesymbols = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusesymbols"), FALSE);
+    passwordpolicy.m_pwusehexdigits = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pwusehexdigits"), FALSE);
+    passwordpolicy.m_pweasyvision = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("pweasyvision"), FALSE);
+
+    // Display COptionsPasswordPolicy page
+    optionsDlg.AddPage(&passwordpolicy);
+    optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW; // remove "Apply Now" button
+    int rc = optionsDlg.DoModal();
+    if (rc == IDOK) {
+      CPasswordCharPool pwchars(
+				passwordpolicy.m_pwlendefault,
+				passwordpolicy.m_pwuselowercase,
+				passwordpolicy.m_pwuseuppercase,
+				passwordpolicy.m_pwusedigits,
+				passwordpolicy.m_pwusesymbols,
+				passwordpolicy.m_pwusehexdigits,
+				passwordpolicy.m_pweasyvision);
+      temp = pwchars.MakePassword();
+    }
+  }
+  // generate password according to current policy if !override or user cancelled policy dialog
+  if (temp.IsEmpty())
+    temp = pParent->GetPassword();
+
+  UpdateData(TRUE);
 	
-   int nResponse;
-   if (m_password.IsEmpty())
-      nResponse = IDYES;
-   else
-   {
+  int nResponse;
+  if (m_password.IsEmpty())
+    nResponse = IDYES;
+  else
+    {
       CMyString msg;
-      msg = "The randomly generated password is: \""
-         + temp
-         + "\" \n(without the quotes). Would you like to use it?";
+      msg = _T("The randomly generated password is: \"")
+	+ temp
+	+ _T("\" \n(without the quotes). Would you like to use it?");
       nResponse = MessageBox(msg, AfxGetAppName(),
                              MB_ICONEXCLAMATION|MB_YESNO);
-   }
+    }
 
-   if (nResponse == IDYES)
-   {
+  if (nResponse == IDYES)
+    {
       m_password = temp;
       UpdateData(FALSE);
-   }
+    }
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
