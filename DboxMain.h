@@ -59,6 +59,9 @@ protected:
 protected:
    HICON m_hIcon;
 
+   // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
+   bool	m_bSizing;
+
    // the password database
    CList<CItemData,CItemData> m_pwlist;
 
@@ -146,14 +149,15 @@ protected:
    afx_msg void OnOK();
    afx_msg void OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
-   afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
    afx_msg void OnDropFiles(HDROP hDrop);
 	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
-	afx_msg void OnOpenMRU(UINT nID);
 	afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	//}}AFX_MSG
 
+   afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnOpenMRU(UINT nID);
    DECLARE_MESSAGE_MAP()
 
    // Following moved from Util.{h,cpp} and constified

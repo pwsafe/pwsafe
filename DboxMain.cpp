@@ -135,7 +135,8 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
-   : CDialog(DboxMain::IDD, pParent)
+   : CDialog(DboxMain::IDD, pParent),
+   m_bSizing( false )
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
@@ -225,6 +226,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_DROPFILES()
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
 	ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
+	ON_WM_INITMENUPOPUP()
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
@@ -237,7 +239,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
    ON_WM_SYSCOMMAND()
    ON_BN_CLICKED(IDOK, OnEdit)
-	ON_WM_INITMENUPOPUP()
+	ON_WM_SIZING()
 	//}}AFX_MSG_MAP
 
 	ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRY20, OnOpenMRU)
@@ -1065,6 +1067,15 @@ DboxMain::OnClearclipboard()
 }
 
 
+// this tells OnSize that the user is currently
+// changing the size of the dialog, and not restoring it
+void DboxMain::OnSizing(UINT fwSide, LPRECT pRect) 
+{
+	CDialog::OnSizing(fwSide, pRect);
+	
+	m_bSizing = true;
+}
+
 void
 DboxMain::OnSize(UINT nType,
                  int cx,
@@ -1111,7 +1122,7 @@ DboxMain::OnSize(UINT nType,
          }
       }
    }
-   else if (nType == SIZE_RESTORED)
+   else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
    {
       if ((m_needsreading == TRUE)
           && (m_existingrestore == FALSE)
@@ -1172,6 +1183,8 @@ DboxMain::OnSize(UINT nType,
 		RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
 		m_ctlItemList.MoveWindow(&rect, TRUE);
 	}
+
+	m_bSizing = false;
 }
 
 
@@ -2779,6 +2792,7 @@ DboxMain::OnOpenMRU(UINT nID)
 	Open( mruItem );
 }
 
+// helps with MRU by allowing ON_UPDATE_COMMAND_UI
 void
 DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL) 
 {
