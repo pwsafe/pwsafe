@@ -17,6 +17,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static const TCHAR GROUP_SEP = TCHAR('.');
 
 CMyTreeCtrl::CMyTreeCtrl() : m_bDragging(false), m_pimagelist(NULL)
 {
@@ -44,8 +45,10 @@ void CMyTreeCtrl::OnDestroy()
   CImageList  *pimagelist;
 
   pimagelist = GetImageList(TVSIL_NORMAL);
-  pimagelist->DeleteImageList();
-  delete pimagelist;
+  if (pimagelist != NULL) {
+    pimagelist->DeleteImageList();
+    delete pimagelist;
+  }
 }
 
 void CMyTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
@@ -61,15 +64,64 @@ void CMyTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
   SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
 }
 
+void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
+{
+  if (IsLeafNode(hItem)) {
+    DWORD itemData = GetItemData(hItem);
+    ASSERT(itemData != NULL);
+    CItemData *ci = (CItemData *)itemData;
+    ci->SetGroup(CMyString(prefix));
+  } else { // update prefix with current group name and recurse
+    if (!prefix.IsEmpty())
+      prefix += GROUP_SEP;
+    prefix += GetItemText(hItem);
+    HTREEITEM child;
+    for(child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
+      UpdateLeafsGroup(child, prefix);
+    }
+  }
+}
+
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  // XXX incomplete & not currently allowed in resource file!
   TV_DISPINFO     *ptvinfo;
 
   ptvinfo = (TV_DISPINFO *)pnmhdr;
   if (ptvinfo->item.pszText != NULL) {
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
+    HTREEITEM ti = ptvinfo->item.hItem;
+    if (IsLeafNode(ptvinfo->item.hItem)) {
+      // Update leaf's title
+      DWORD itemData = GetItemData(ti);
+      ASSERT(itemData != NULL);
+      CItemData *ci = (CItemData *)itemData;
+      ci->SetTitle(ptvinfo->item.pszText);
+      DboxMain *parent = (DboxMain *)GetParent();
+      // update corresponding List text
+      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+      ASSERT(di != NULL);
+      int lindex = di->list_index;
+      parent->UpdateListItemTitle(lindex, ptvinfo->item.pszText);
+      // Mark database as modified
+      parent->SetChanged(true);
+    } else {
+      // Update all leaf chldren with new path element
+      // prefix is path up to and NOT including renamed node
+      CString prefix;
+      HTREEITEM parent, current = ti;
+      do {
+	parent = GetParentItem(current);
+	if (parent == NULL) {
+	  break;
+	}
+	current = parent;
+	if (!prefix.IsEmpty())
+	  prefix = GROUP_SEP + prefix;
+	prefix = GetItemText(current) + prefix;
+      } while (1);
+      UpdateLeafsGroup(ti, prefix);
+    }
   }
   *pLResult = TRUE;
 }
@@ -126,6 +178,78 @@ void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
   } while (p != TVI_ROOT);
 }
 
+CString CMyTreeCtrl::GetGroup(HTREEITEM hItem)
+{
+  CString retval;
+  CString nodeText;
+  while (hItem != NULL) {
+    nodeText = GetItemText(hItem);
+    if (!retval.IsEmpty())
+      nodeText += GROUP_SEP;
+    retval = nodeText + retval;
+    hItem = GetParentItem(hItem);
+  }
+  return retval;
+}
+
+
+static CMyString GetPathElem(CMyString &path)
+{
+  // Get first path element and chop it off, i.e., if
+  // path = "a.b.c.d"
+  // will return "a" and path will be "b.c.d"
+  // (assuming GROUP_SEP is '.')
+
+  CMyString retval;
+  int N = path.Find(GROUP_SEP);
+  if (N == -1) {
+    retval = path;
+    path = _T("");
+  } else {
+    const int Len = path.GetLength();
+    retval = CMyString(path.Left(N));
+    path = CMyString(path.Right(Len - N - 1));
+  }
+  return retval;
+}
+
+static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
+			 const CMyString &s, HTREEITEM &si)
+{
+  // returns true iff s is a direct descendant of node
+  HTREEITEM ti = Tree.GetChildItem(node);
+  
+  while (ti != NULL) {
+    const CMyString itemText = Tree.GetItemText(ti);
+    if (itemText == s) {
+      si = ti;
+      return true;
+    }
+    ti = Tree.GetNextItem(ti, TVGN_NEXT);
+  }
+  return false;
+}
+
+HTREEITEM CMyTreeCtrl::AddGroup(const CString &group)
+{
+  // Add a group at the end of path
+  HTREEITEM ti = TVI_ROOT;
+  HTREEITEM si;
+  if (!group.IsEmpty()) {
+    CMyString path = group;
+    CMyString s;
+    do {
+      s = GetPathElem(path);
+      if (!ExistsInTree(*this, ti, s, si)) {
+	ti = InsertItem(s, ti, TVI_SORT);
+	SetItemImage(ti, CMyTreeCtrl::NODE, CMyTreeCtrl::NODE);
+      } else
+	ti = si;
+    } while (!path.IsEmpty());
+  }
+  return ti;
+}
+
 bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   TV_INSERTSTRUCT     tvstruct;
@@ -154,7 +278,7 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
       if (p != NULL) {
 	elem = CMyString(GetItemText(p));
 	if (!path.IsEmpty())
-	  elem += _T(".");
+	  elem += GROUP_SEP;
 	path = elem + path;
 	q = p;
       } else
@@ -212,6 +336,7 @@ void CMyTreeCtrl::OnLButtonUp(UINT nFlags, CPoint point)
   OnButtonUp();
   CTreeCtrl::OnLButtonUp(nFlags, point);
 }
+
 
 void CMyTreeCtrl::OnBeginDrag(LPNMHDR , LRESULT *)
 {

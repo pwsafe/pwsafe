@@ -53,6 +53,7 @@ public:
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}
   void SetChanged(bool changed) {m_core.SetChanged(changed);} // for MyTreeCtrl
+  void UpdateListItemTitle(int lindex, LPTSTR lpszText); // when title edited in tree
 
 	//{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -105,7 +106,9 @@ protected:
 	bool m_bShowPasswordInList;
 	BOOL m_bAlwaysOnTop;
 
-	int insertItem(CItemData &itemData, int iIndex = -1);
+  CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
+
+  int insertItem(CItemData &itemData, int iIndex = -1);
    CItemData *getSelectedItem();
 
    void ChangeOkUpdate();
@@ -164,6 +167,7 @@ protected:
    afx_msg void OnOptions();
    afx_msg void OnSave();
    afx_msg void OnAdd();
+   afx_msg void OnAddGroup();
    afx_msg void OnOK();
 #if defined(POCKET_PC)
    afx_msg void OnShowPassword();
