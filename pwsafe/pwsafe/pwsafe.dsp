@@ -116,6 +116,14 @@ SOURCE=.\DboxMain.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DboxOptions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DboxPassword.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\EditDlg.cpp
 # End Source File
 # Begin Source File
@@ -140,7 +148,23 @@ SOURCE=.\MyString.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\OptionsDlg.cpp
+SOURCE=.\OptionsDisplay.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsMisc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsPasswordPolicy.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsSecurity.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsUsername.cpp
 # End Source File
 # Begin Source File
 
@@ -153,6 +177,10 @@ SOURCE=.\PasskeyEntry.cpp
 # Begin Source File
 
 SOURCE=.\PasskeySetup.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PWCharPool.cpp
 # End Source File
 # Begin Source File
 
@@ -260,7 +288,23 @@ SOURCE=.\MyString.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\OptionsDlg.h
+SOURCE=.\OptionsDisplay.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsMisc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsPasswordPolicy.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsSecurity.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OptionsUsername.h
 # End Source File
 # Begin Source File
 
@@ -281,6 +325,10 @@ SOURCE=.\PasswordDb.h
 # Begin Source File
 
 SOURCE=.\PasswordSafe.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PWCharPool.h
 # End Source File
 # Begin Source File
 

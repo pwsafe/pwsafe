@@ -18,8 +18,8 @@ verify the password.
 H(RND) is SHA1(tempSalt|Cipher(RND)); tempSalt = SHA1(RND|password);
        Cipher(RND) is 1000 encryptions of RND, with tempSalt as the
        encryption key. In short, a kind of HMAC dependant on the
-       password. Must ask Schneier what's wrong with HMAC as defined
-       in the RFC?
+       password. Written before the HMAC RFC came out, no good reason
+       to change. (If it ain't broke...)
 
 SALT is the salt used for encrypting the data (you know, to protect
 against dictionary attacks)
@@ -96,6 +96,9 @@ The 'press first letter' jump works, kinda.  Sometimes it jumps home instead.
 Seems to work okay every time after PgDn pressed.
 
 $Log$
+Revision 1.5  2003/05/14 14:49:56  ronys
+post-1.92 merge into main trunk
+
 Revision 1.4  2003/04/30 13:02:59  ronys
 Added note re required build environment
 

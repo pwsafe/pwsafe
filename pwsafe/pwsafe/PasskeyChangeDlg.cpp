@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-
+#include "PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
 #include "resource.h"
 
@@ -20,9 +20,9 @@ static char THIS_FILE[] = __FILE__;
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
    : CDialog(CPasskeyChangeDlg::IDD, pParent)
 {
-   m_confirmnew = "";
-   m_newpasskey = "";
-   m_oldpasskey = "";
+   m_confirmnew = _T("");
+   m_newpasskey = _T("");
+   m_oldpasskey = _T("");
 }
 
 
@@ -44,17 +44,26 @@ END_MESSAGE_MAP()
 void
 CPasskeyChangeDlg::OnOK() 
 {
+   CMyString errmess;
+
    UpdateData(TRUE);
    if (m_oldpasskey != global.m_passkey)
-      AfxMessageBox("The old safe combination is not correct");
+      AfxMessageBox(_T("The old safe combination is not correct"));
    else if (m_confirmnew != m_newpasskey)
-      AfxMessageBox("New safe combination and confirmation do not match");
-   else if (m_newpasskey == "")
-      AfxMessageBox("The new safe combination cannot be blank.");
-   else
-   {
-      app.m_pMainWnd = NULL;
-      CDialog::OnOK();
+      AfxMessageBox(_T("New safe combination and confirmation do not match"));
+   else if (m_newpasskey.IsEmpty())
+      AfxMessageBox(_T("The new safe combination cannot be blank."));
+   else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
+     CString msg(_T("Weak password:\n"));
+     msg += CString(errmess);
+     msg += _T("\nAccept anyway?");
+     if (AfxMessageBox(msg, MB_YESNO) == IDYES) {
+       app.m_pMainWnd = NULL;
+       CDialog::OnOK();
+     }
+   } else {
+     app.m_pMainWnd = NULL;
+     CDialog::OnOK();
    }
 }
 

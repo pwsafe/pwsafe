@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-
+#include "PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
 #include "resource.h"
 
@@ -22,8 +22,8 @@ static char THIS_FILE[] = __FILE__;
 CPasskeySetup::CPasskeySetup(CWnd* pParent)
    : CDialog(CPasskeySetup::IDD, pParent)
 {
-   m_passkey = "";
-   m_verify = "";
+   m_passkey = _T("");
+   m_verify = _T("");
 }
 
 
@@ -52,17 +52,28 @@ void CPasskeySetup::OnOK()
    UpdateData(TRUE);
    if (m_passkey != m_verify)
    {
-      AfxMessageBox("The two entries do not match.");
+      AfxMessageBox(_T("The two entries do not match."));
       ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
       return;
    }
 
-   if (m_passkey == "")
+   if (m_passkey.IsEmpty())
    {
-      AfxMessageBox("Please enter a key and verify it.");
+      AfxMessageBox(_T("Please enter a key and verify it."));
       ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
       return;
    }
+
+   CMyString errmess;
+   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
+     CString msg(_T("Weak password:\n"));
+     msg += CString(errmess);
+     msg += _T("\nAccept anyway?");
+     if (AfxMessageBox(msg, MB_YESNO) == IDNO)
+       return;
+   }
+
+
    app.m_pMainWnd = NULL;
    CDialog::OnOK();
 }

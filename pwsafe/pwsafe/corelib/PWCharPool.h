@@ -4,77 +4,87 @@
 #ifndef PWCharPool_h
 #define PWCharPool_h
 
-#include "PasswordSafe.h"
+#include "MyString.h"
 
-#include "ThisMfcApp.h"
-#include "resource.h"
+//-----------------------------------------------------------------------------
 
 
 //-----------------------------------------------------------------------------
 
-typedef enum
-{
-   PWC_UNKNOWN,
-   PWC_LOWER,
-   PWC_UPPER,
-   PWC_DIGIT,
-   PWC_SYMBOL
-} PWCHARTYPE;
 
 //-----------------------------------------------------------------------------
-
-class CPasswordCharBlock
-{
-public:
-   CPasswordCharBlock::CPasswordCharBlock();
-   void           SetStr(const TCHAR* str);
-   void           SetLength(size_t len);
-   void           SetType(PWCHARTYPE type);
-   const TCHAR*   GetStr(void);
-   PWCHARTYPE     GetType(void);
-   size_t         GetLength(void);
-
-   CPasswordCharBlock& operator=(const CPasswordCharBlock& second);
-
-protected:
-   PWCHARTYPE     m_type;
-   size_t         m_length;
-   const TCHAR*   m_str;
-};
-
-//-----------------------------------------------------------------------------
+/*
+ * This class is used to create a random password based on the policy
+ * defined in the constructor.
+ * The policy consists of the following attributes:
+ * - The length of the password to be generated
+ * - Which type of characters to use from the following: lowercase, uppercase,
+ *   digits, symbols
+ * - Whether or not to use only characters that are easily distinguishable
+ *   (i.e., no '1', 'l', 'I', etc.)
+ * The class ensures that if a character type is selected, then at least one
+ * character from that type will be in the generated password. (i.e., at least
+ * one digit if usedigits is set in the constructor).
+ *
+ * The usage scenario is something like:
+ * CPasswordCharPool pwgen(-policy-);
+ * CMyString pwd = pwgen.MakePassword();
+ *
+ * CheckPassword() is used to verify the strength of existing passwords, i.e., the password
+ * used to protect the database.
+ */
 
 class CPasswordCharPool
 {
 public:
-   CPasswordCharPool::CPasswordCharPool();
-   void     SetPool(BOOL easyvision, BOOL uselower, BOOL useupper, BOOL usedigits, BOOL usesymbols);
-   char     GetRandomChar(PWCHARTYPE* type);
-   size_t   GetLength(void);
+   CPasswordCharPool::CPasswordCharPool(UINT pwlen,
+					BOOL uselowercase, BOOL useuppercase,
+					BOOL usedigits, BOOL usesymbols,
+					BOOL easyvision);
+   CMyString MakePassword() const;
 
+   static bool CheckPassword(const CMyString &pwd, CMyString &error);
 
 private:
-   const TCHAR *std_lowercase_chars;
-   const TCHAR *std_uppercase_chars;
-   const TCHAR *std_digit_chars;
-   const TCHAR *std_symbol_chars;
-   const TCHAR *easyvision_lowercase_chars;
-   const TCHAR *easyvision_uppercase_chars;
-   const TCHAR *easyvision_digit_chars;
-   const TCHAR *easyvision_symbol_chars;
+   enum CharType {LOWERCASE = 0, UPPERCASE = 1,
+		  DIGIT = 2, SYMBOL = 3, NUMTYPES = 4};
+   CharType GetRandomCharType(size_t rand) const; // select a chartype with weighted probability
+   TCHAR GetRandomChar(CharType t, size_t rand) const;
 
-   size_t std_lowercase_len;
-   size_t std_uppercase_len;
-   size_t std_digit_len;
-   size_t std_symbol_len;
-   size_t easyvision_lowercase_len;
-   size_t easyvision_uppercase_len;
-   size_t easyvision_digit_len;
-   size_t easyvision_symbol_len;
+   // here are all the character types, in both full and "easyvision" versions
+   static const TCHAR std_lowercase_chars[];
+   static const TCHAR std_uppercase_chars[];
+   static const TCHAR std_digit_chars[];
+   static const TCHAR std_symbol_chars[];
+   static const TCHAR easyvision_lowercase_chars[];
+   static const TCHAR easyvision_uppercase_chars[];
+   static const TCHAR easyvision_digit_chars[];
+   static const TCHAR easyvision_symbol_chars[];
+   // and here are the lengths of the above arrays
+   static const size_t std_lowercase_len;
+   static const size_t std_uppercase_len;
+   static const size_t std_digit_len;
+   static const size_t std_symbol_len;
+   static const size_t easyvision_lowercase_len;
+   static const size_t easyvision_uppercase_len;
+   static const size_t easyvision_digit_len;
+   static const size_t easyvision_symbol_len;
 
-   CList<CPasswordCharBlock,CPasswordCharBlock> m_pool;
-   UINT m_length;
+   // The following arrays are set by the constructor based on the policy
+   // These determine the probability of a CharType being chosen
+   // in GetRandomCharType.
+   size_t m_lengths[NUMTYPES];
+   size_t m_x[NUMTYPES+1]; // spread lengths along X axis
+   TCHAR *m_char_arrays[NUMTYPES];
+
+   int m_sumlengths; // sum of all selected chartypes
+
+   // Following state vars set by ctor, used by MakePassword()
+   const UINT m_pwlen;
+   const BOOL m_uselowercase;
+   const BOOL m_useuppercase;
+   const BOOL m_usedigits;
+   const BOOL m_usesymbols;
 };
 
 #endif
-

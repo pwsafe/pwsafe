@@ -159,10 +159,9 @@ void CEditDlg::HidePassword(void)
 
 void CEditDlg::OnRandom() 
 {
-   CMyString temp;
-
-   for (int x=0; x<8; x++)
-      temp += GetRandAlphaNumChar();
+   DboxMain* pParent = (DboxMain*) GetParent();
+   ASSERT(pParent != NULL);
+   CMyString temp = pParent->GetPassword();
 
    UpdateData(TRUE);
    CMyString msg;
@@ -174,7 +173,7 @@ void CEditDlg::OnRandom()
       msg =
          "The randomly generated password is: \""
          + temp
-         + "\" (without\nthe quotes). Would you like to use it?";
+         + "\" \n(without the quotes). Would you like to use it?";
       nResponse = MessageBox(msg, 
                              AfxGetAppName(),
                              MB_ICONEXCLAMATION|MB_YESNO);

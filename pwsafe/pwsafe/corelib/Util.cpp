@@ -114,18 +114,21 @@ newrand()
    return (unsigned char)r;
 }
 
-
-char
-GetRandAlphaNumChar()
+/* 
+ *  RangeRand(len)
+ *
+ *  Returns a random number in the range 0 to (len-1).
+ *  For example, RangeRand(256) returns a value from 0 to 255.
+ */
+unsigned int
+RangeRand(size_t len)
 {
-   int temp = newrand() % 3;
+   unsigned int      r;
+   unsigned int      ceil = UINT_MAX - (UINT_MAX % len) - 1;
 
-   if (temp == 0)
-      return char(((newrand() % ('9'-'0')) + '0'));
-   else if (temp == 1)
-      return char(((newrand() % ('Z'-'A')) + 'A'));
-   else
-      return char(((newrand() % ('z'-'a')) + 'a'));
+   while ((r = rand()) > ceil)
+      ;
+   return(r%len);
 }
 
 
