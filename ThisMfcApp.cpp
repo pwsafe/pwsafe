@@ -275,7 +275,7 @@ ThisMfcApp::InitInstance()
    VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
    SetRegistryKey(companyname);
 
-   int	nMRUItems = GetProfileInt("", "mruitems", 4);
+   int	nMRUItems = GetProfileInt("", "maxmruitems", 4);
    m_pMRU = new CRecentFileList( 0, "MRU", "Safe%d", nMRUItems );;
    m_pMRU->ReadList();
 
