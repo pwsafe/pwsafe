@@ -109,6 +109,7 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_DESTROY()
+   ON_WM_DROPFILES()
    ON_WM_PAINT()
    ON_WM_QUERYDRAGICON()
    ON_WM_SIZE()
@@ -174,7 +175,9 @@ DboxMain::OnInitDialog()
       OnUpdateBackups();
 
    setupBars(); // Just to keep things a little bit cleaner
-	
+
+   DragAcceptFiles(TRUE);
+
    return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -2102,5 +2105,38 @@ DboxMain::OnKillfocusItemlist()
    // Make a sunken or recessed border around the first pane
    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
 }
+
+
+void
+DboxMain::OnDropFiles(HDROP hDrop)
+{
+   //SetActiveWindow();
+   SetForegroundWindow();
+
+   MessageBox("go away you silly git", "File drop", MB_OK);
+
+#if 0
+   // here's what we really want - sorta
+   HDROP m_hDropInfo = hDropInfo;        
+   CString Filename;
+
+   if (m_hDropInfo)
+   {
+      int iFiles = DragQueryFile(m_hDropInfo, (UINT)-1, NULL, 0);
+      for (int i=0; i<ifiles; i++)
+      {
+         char* pFilename = Filename.GetBuffer(_MAX_PATH);
+         // do whatever...
+      }   // for each files...
+   }       // if DropInfo
+
+   DragFinish(m_hDropInfo);
+
+   m_hDropInfo = 0;
+#endif
+
+   DragFinish(hDrop);
+} 
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

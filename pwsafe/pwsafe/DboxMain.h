@@ -108,6 +108,7 @@ protected:
    afx_msg void OnSetfocusItemlist();
    afx_msg void OnKillfocusItemlist();
    afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
+   afx_msg void OnDropFiles(HDROP hDrop);
 
    DECLARE_MESSAGE_MAP()
 
