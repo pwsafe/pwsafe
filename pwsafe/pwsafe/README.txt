@@ -29,7 +29,13 @@ https://sourceforge.net/project/showfiles.php?group_id=41019
 
 A Russian version of the help file may be found in
 http://passwordsafe.sourceforge.net/pwsaferu.zip (Thanks to Maxim
-Tikhonov). If anyone is interested in doing such work in other
+Tikhonov). 
+
+A German version of the help file may be found in
+http://passwordsafe.sourceforge.net/pwsafege.zip (Thanks to Sebastian
+Juergens).
+
+If anyone is interested in doing such work in other
 languages, please let me (https://sourceforge.net/users/ronys) know.
 
 Installation:
@@ -48,18 +54,25 @@ that comes with the package.
 
 Helping Out:
 ============
-Please send all bugs and feature requests to the PasswordSafe user's
-mailing list. You can subscribe via:
+Please report bugs via the project's bug tracking form, at
+https://sourceforge.net/tracker/?group_id=41019&atid=429579 (you might
+want to browse the list, to see if the issue hasn't been reported
+already).
 
-http://lists.sourceforge.net/lists/listinfo/passwordsafe-users
+Requests for features and enhancements should be submitted to the RFE
+(Request For Enhancements) page, at
+https://sourceforge.net/tracker/?group_id=41019&atid=429582
+
+You can also post questions, suggestions, rants, raves, etc. to the
+Help or Open Discussion forums, at
+https://sourceforge.net/forum/?group_id=41019
 
 If you wish to contribute to the project by writing code and/or
 documentation, please drop a note to the developer's mailing list:
 
 http://lists.sourceforge.net/lists/listinfo/passwordsafe-devel
 
-(Just to round out the list, there's also an announcement mailing list
-where new releases are announced:
+New releases are announced on the passwordsafe-announce mailing list:
 
 http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce)
 
@@ -88,6 +101,9 @@ password policy code and some GUI improvements for 1.92.
 project.
 
 $Log$
+Revision 1.6  2004/03/31 04:44:31  ronys
+Announce availability of German version of online help
+
 Revision 1.5  2004/02/17 21:11:06  ronys
 Updated for 2.0
 
