@@ -339,10 +339,8 @@ DboxMain::OnDelete()
 	  m_core.RemoveEntryAt(listindex);
 	  FixListIndexes(m_ctlItemList);
 	  if (m_core.GetNumEntries() > 0) {
-	    int rc = SelectEntry(curSel);
-	    if (rc == LB_ERR) {
-	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
-	    }
+	    SelectEntry(curSel < m_core.GetNumEntries() ? 
+			curSel : m_core.GetNumEntries() - 1);
 	  }
 	  if (m_ctlItemList.IsWindowVisible())
 	    m_ctlItemList.SetFocus();
