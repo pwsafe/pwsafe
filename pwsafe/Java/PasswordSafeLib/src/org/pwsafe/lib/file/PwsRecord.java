@@ -367,7 +367,7 @@ public abstract class PwsRecord implements Comparable
 	 * 
 	 * @param item the <code>Item</code> containg the field's data.
 	 */
-	public void setField( Item item )
+	protected void setField( Item item )
 	{
 		setField( new PwsStringField( item.getType(), item.getData() ) );
 	}
