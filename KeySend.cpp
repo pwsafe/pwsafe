@@ -1,11 +1,14 @@
 #include "keysend.h"
 
+#include  <Winable.h>
+
 CKeySend::CKeySend(void) : m_delay(10)
 {
 	// get the locale of the current thread.
 	// we are assuming that all window and threading in the 
 	// current users desktop have the same locale.
 	m_hlocale = GetKeyboardLayout(0);
+	m_bIsKeyboardLocked=false;
 }
 
 CKeySend::~CKeySend(void)
@@ -126,4 +129,23 @@ void CKeySend::SetAndDelay(int d){
 void CKeySend::SetDelay(int d){
 	m_delay=d;
 	
+}
+
+
+void CKeySend::BlockUserInput()
+{
+        
+	if(m_bIsKeyboardLocked  == false)
+    {
+		m_bIsKeyboardLocked = (BlockInput(true) !=0 );
+    }
+    
+}
+
+void CKeySend::UnBlockUserInput()
+{
+        if(m_bIsKeyboardLocked  == true)
+        {
+                m_bIsKeyboardLocked = (BlockInput(false) !=0 );
+        }
 }
