@@ -2,12 +2,6 @@
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include "PasswordSafe.h"
-
-#include "ThisMfcApp.h"
-#include "resource.h"
-
-#include "EditDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,13 +17,15 @@ SetPasswordFont(CWnd* pDlgItem)
 	// in a LOGFONT structure.
 	LOGFONT lf;
 	memset(&lf, 0, sizeof(LOGFONT));          // clear out structure
-	lf.lfHeight = 10;                         // request a 10-pixel-height font
+	lf.lfHeight = 14;                         // request a 14-pixel-height font
 	strcpy(lf.lfFaceName, "Courier");         // request a face name "Courier"
 	HFONT hfont = ::CreateFontIndirect(&lf);  // create the font
-
-	// Convert the HFONT to CFont*.
-	CFont* pfont = CFont::FromHandle(hfont);
-   pDlgItem->SetFont(pfont);
+	if (hfont != NULL) {
+	  // Convert the HFONT to CFont*.
+	  CFont* pfont = CFont::FromHandle(hfont);
+	  if (pfont != NULL)
+	    pDlgItem->SetFont(pfont);
+	}
 }
 
 //-----------------------------------------------------------------------------
