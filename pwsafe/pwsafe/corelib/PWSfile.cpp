@@ -24,7 +24,9 @@ PWSfile::~PWSfile()
   CloseFile(); // idempotent
 }
 
-static const CMyString V2ItemName("!!!Version 2 File Format!!!");
+static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
+				  "Please upgrade to PasswordSafe 2.0"
+				  " or later");
 
 int PWSfile::WriteV2Header()
 {
