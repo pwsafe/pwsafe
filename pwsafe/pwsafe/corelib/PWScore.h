@@ -42,6 +42,8 @@ class PWScore {
   int ReadCurFile(const CMyString &passkey)
     {return ReadFile(m_currfile, passkey);}
   int ReadFile(const CMyString &filename, const CMyString &passkey);
+  PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
+  int RenameFile(const CMyString &oldname, const CMyString &newname);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
 
@@ -82,9 +84,11 @@ class PWScore {
   CMyString m_currfile; // current pw db filespec
   bool m_usedefuser;
   CMyString m_defusername;
+  PWSfile::VERSION m_ReadFileVersion;
 
   // the password database
   CList<CItemData,CItemData> m_pwlist;
+
   bool m_changed;
 };
 
