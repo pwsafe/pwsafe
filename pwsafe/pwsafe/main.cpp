@@ -1,10 +1,6 @@
 
 #include "model.h"
 #include "view.h"
-#include "corelib/global.h"
-
-//  Global object for use by everyone
-Global global;
 
 #ifdef WIN32
 /*
