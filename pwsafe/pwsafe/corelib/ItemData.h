@@ -61,6 +61,7 @@ public:
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(void *di) {m_display_info = di;}
+  void ChangePassKey(const CMyString &oldKey, const CMyString &newKey);
 
 private:
   CItemField m_Name;

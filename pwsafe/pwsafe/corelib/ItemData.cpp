@@ -119,6 +119,34 @@ CMyString CItemData::GetPlaintext(char separator) const
   return ret;
 }
 
+void CItemData::ChangePassKey(const CMyString &oldKey, const CMyString &newKey)
+{
+  // We don't change the salt - I *think* that this is OK, security-wise
+
+  LPCSTR oldPasstr = LPCSTR(oldKey);
+  LPCSTR newPasstr = LPCSTR(newKey);
+
+  BlowFish *oldBF = ::MakeBlowFish((const unsigned char *)oldPasstr,
+			oldKey.GetLength(), m_salt, SaltLength);
+  BlowFish *newBF = ::MakeBlowFish((const unsigned char *)newPasstr,
+			newKey.GetLength(), m_salt, SaltLength);
+
+  CMyString value;
+  /*
+   * For all fields:
+   *  field.Get(value, oldBF);
+   *  field.Set(value, newBF);
+   */
+  m_Name.Get(value, oldBF); m_Name.Set(value, newBF);
+  m_Title.Get(value, oldBF); m_Title.Set(value, newBF);
+  m_User.Get(value, oldBF); m_User.Set(value, newBF);
+  m_Password.Get(value, oldBF); m_Password.Set(value, newBF);
+  m_Notes.Get(value, oldBF); m_Notes.Set(value, newBF);
+  m_UUID.Get(value, oldBF); m_UUID.Set(value, newBF);
+  m_Group.Get(value, oldBF); m_Group.Set(value, newBF);
+
+  delete oldBF; delete newBF;
+}
 
 void CItemData::SplitName(const CMyString &name,
 		   CMyString &title, CMyString &username)

@@ -172,35 +172,18 @@ int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
 }
 
 
-void PWScore::ChangePassword(const CMyString &/*newPassword*/)
+void PWScore::ChangePassword(const CMyString &newPassword)
 {
-  /*
-   * To change passkeys, the data is copied into a list of CMyStrings
-   * and then re-put into the list with the new passkey
-   */
-
-  /*
-   * CItemData should have a ChangePasskey method instead
-   */
-
-  /*
-   * Here is my latest thought on this: It is definately possible to give
-   * CItemData a ChangePasskey method. However, that would involve either
-   * keeping two copies of the key schedule in memory at once, which would
-   * then require a lot more overhead and variables than we currently have,
-   * or recreating first the current and then the new schedule for each
-   * item, which would be really slow. Which is why I think that we should
-   * leave well enough alone. I mean, this function does work in the end.
-   */
-
-  /*
-   * OTOH, changing the password this way has the overhead of doubling the
-   * memory required at runtime, since we're holding the entire database
-   * in memory again (in cleartext!). Also, this requires an intimate
-   * knowledge of the CItemData's field, which is undergoing change.
-   * XXX For now, I'm marking this as broken. 
-   */
  
+  POSITION listPos = m_pwlist.GetHeadPosition();
+  while (listPos != NULL)
+    {
+      m_pwlist.GetAt(listPos).ChangePassKey(global.m_passkey, newPassword);
+      m_pwlist.GetNext(listPos);
+    }
+  //Changes the global password. Eck.
+  global.m_passkey = newPassword;
+  m_changed = TRUE;
 #if 0  
 	
   //Copies the list into a plaintext list of CMyStrings

@@ -11,10 +11,6 @@
 #define bf_F(x) (((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3))
 #define ROUND(a, b, n) (a.word ^= bf_F(b) ^ bf_P[n])
 
-
-unsigned long BlowFish::bf_S[4][256];
-unsigned long BlowFish::bf_P[BlowFish::bf_N + 2];
-
 const unsigned long BlowFish::tempbf_P[BlowFish::bf_N + 2] =
 {
    0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344,
@@ -389,7 +385,7 @@ BlowFish::BlowFish(unsigned char *key,
                    int keylen)
 {
    /*
-     bf_P and bf_S, for speed reasons, are static global variables.
+     bf_P and bf_S, *were* static global variables (for speed?).
      the temp... versions never are changed and are copied to the 
      real" ones used by the actual algorithm. These can change, as
      they are dependent on passkeys. The "real" (and the temp - why??
