@@ -434,7 +434,10 @@ DboxMain::OnAdd()
    {
       dataDlg.m_username = CMyString(app.GetProfileString("", "defusername", ""));
    }
+
+   app.DisableAccelerator();
    int rc = dataDlg.DoModal();
+   app.EnableAccelerator();
 	
    if (rc == IDOK)
    {
@@ -594,7 +597,9 @@ DboxMain::OnEdit()
       //item.GetNotes(dlg_edit.m_notes);
       dlg_edit.m_notes = item.GetNotes();
 
+	  app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
+	  app.EnableAccelerator();
 
       if (rc == IDOK)
       {
