@@ -1095,7 +1095,7 @@ DboxMain::OnListView()
    CMenu* mmenu = GetMenu();
    CMenu* submenu = mmenu->GetSubMenu(2);
 
-   UINT state = submenu->GetMenuState(ID_MENUITEM_NEW_TOOLBAR, MF_BYCOMMAND);
+   UINT state = submenu->GetMenuState(ID_MENUITEM_LIST_VIEW, MF_BYCOMMAND);
    ASSERT(state != 0xFFFFFFFF);
 
    if (state & MF_CHECKED) {
