@@ -102,7 +102,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_existingrestore(FALSE), m_toolbarsSetup(FALSE),
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
-     m_OnEditDisabled(false)
+     m_OnEditDisabled(false), m_core(app.m_core)
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
@@ -138,8 +138,6 @@ DboxMain::DboxMain(CWnd* pParent)
    m_bSortAscending = true;
    m_iSortedColumn = 0;
 }
-
-#define WM_ICON_NOTIFY (WM_APP + 10)
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	//{{AFX_MSG_MAP(DboxMain)
@@ -236,17 +234,6 @@ DboxMain::OnInitDialog()
 
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIcon, FALSE); // Set small icon
-
-  HICON stIcon = app.LoadIcon(IDI_TRAY);
-  ASSERT(stIcon != NULL);
-  m_TrayIcon.SetTarget(this);
-  if (!m_TrayIcon.Create(this, WM_ICON_NOTIFY, _T("PasswordSafe"),
-			 stIcon, IDR_POPTRAY))
-    return FALSE;
-  if (!PWSprefs::GetInstance()->
-      GetPref(PWSprefs::BoolPrefs::UseSystemTray))
-    m_TrayIcon.HideIcon();
-
   // Init stuff for tree view
   CImageList *pImageList = new CImageList();
   BOOL status = pImageList->Create(9, 9, ILC_COLOR, 2, 0);
@@ -1607,7 +1594,11 @@ void DboxMain::OnShowPassword()
 
 LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 {
+#if 0
   return m_TrayIcon.OnTrayNotification(wParam, lParam);
+#else
+  return 0;
+#endif
 }
 
 

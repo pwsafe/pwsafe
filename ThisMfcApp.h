@@ -7,6 +7,8 @@
 #include "stdafx.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
+#include "corelib/PWScore.h"
+#include "SystemTray.h"
 //-----------------------------------------------------------------------------
 class DboxMain;
 
@@ -23,6 +25,7 @@ public:
 
 public:
   DboxMain* m_maindlg;
+  PWScore m_core;
 
   virtual BOOL InitInstance();
 WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
@@ -36,9 +39,10 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   DECLARE_MESSAGE_MAP()
 
 protected:
-	CRecentFileList*		m_pMRU;
-	bool					m_bUseAccelerator;
-    };
+  CRecentFileList*		m_pMRU;
+  bool					m_bUseAccelerator;
+  CSystemTray m_TrayIcon;
+};
 
 //-----------------------------------------------------------------------------
 

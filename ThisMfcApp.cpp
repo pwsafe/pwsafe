@@ -414,6 +414,16 @@ ThisMfcApp::InitInstance()
 	m_maindlg = &dbox;
 	m_pMainWnd = m_maindlg;
 	
+	HICON stIcon = app.LoadIcon(IDI_TRAY);
+	ASSERT(stIcon != NULL);
+	m_TrayIcon.SetTarget(&dbox);
+	if (!m_TrayIcon.Create(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
+			       stIcon, IDR_POPTRAY))
+	  return FALSE;
+	if (!PWSprefs::GetInstance()->
+	    GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+	  m_TrayIcon.HideIcon();
+
 	// Set up an Accelerator table
 #if !defined(POCKET_PC)
 	m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),

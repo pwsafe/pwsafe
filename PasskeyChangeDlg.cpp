@@ -74,8 +74,8 @@ CPasskeyChangeDlg::OnOK()
    CMyString errmess;
 
    UpdateData(TRUE);
-   if (m_oldpasskey != global.m_passkey)
-      AfxMessageBox(_T("The old safe combination is not correct"));
+   if (app.m_core.IsPassKey(m_oldpasskey))
+     AfxMessageBox(_T("The old safe combination is not correct"));
    else if (m_confirmnew != m_newpasskey)
       AfxMessageBox(_T("New safe combination and confirmation do not match"));
    else if (m_newpasskey.IsEmpty())

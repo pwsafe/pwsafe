@@ -13,12 +13,12 @@
   #include "resource.h"
 #endif
 #include "MyTreeCtrl.h"
-#include "SystemTray.h"
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
 #endif
 
+#define WM_ICON_NOTIFY (WM_APP + 10)
 //-----------------------------------------------------------------------------
 class DboxMain
    : public CDialog
@@ -207,10 +207,9 @@ protected:
 			  bool first = false);
 
 private:
-  PWScore m_core;
+  PWScore  &m_core;
   bool m_OnEditDisabled;
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
-  CSystemTray m_TrayIcon;
 };
 
 // Following used to keep track of display vs data
