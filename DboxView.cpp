@@ -287,6 +287,9 @@ DboxMain::OnAddGroup()
 void
 DboxMain::OnDelete() 
 {
+  if (CWnd::GetActiveWindow() != this) // could happen with Find dialog...
+    return;
+
   m_LockDisabled = true;
   if (SelItemOk() == TRUE)
     {
