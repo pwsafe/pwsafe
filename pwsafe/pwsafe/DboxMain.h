@@ -236,10 +236,7 @@ private:
 
   BOOL IsWorkstationLocked();
   void startLockCheckTimer();
-  void ResetKeyboardState();
-  void SendString(CMyString data);
   void ExtractAutoTypeCmd(CMyString &str);
-
 
 
 };

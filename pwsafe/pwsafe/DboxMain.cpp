@@ -323,7 +323,6 @@ DboxMain::OnInitDialog()
 		       GetPref(PWSprefs::BoolPrefs::UseDefUser));
   m_core.SetDefUsername(PWSprefs::GetInstance()->
 		       GetPref(PWSprefs::StringPrefs::DefUserName));
-
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
