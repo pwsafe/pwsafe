@@ -1244,94 +1244,92 @@ BOOL DboxMain::IsWorkstationLocked()
 void
 DboxMain::OnAutoType()
 {
-	if (SelItemOk() == TRUE)
-	{
-		CItemData *ci = getSelectedItem();
-		ASSERT(ci != NULL);
-		CMyString AutoCmd = ci->GetNotes();
-		// get the notes and then extract te autotype command	
-		ExtractAutoTypeCmd(AutoCmd);
+  if (SelItemOk() == TRUE)
+    {
+      CItemData *ci = getSelectedItem();
+      ASSERT(ci != NULL);
+      CMyString AutoCmd = ci->GetNotes();
+      // get the notes and then extract te autotype command	
+      ExtractAutoTypeCmd(AutoCmd);
 		
-		if(AutoCmd.IsEmpty()){
- 			// checking for user and password for default settings
- 			if(!ci->GetPassword().IsEmpty()){
- 				if(!ci->GetUser().IsEmpty())
- 					AutoCmd="\\u\\t\\p\\n";
- 				else
- 					AutoCmd="\\p\\n";
- 			}
- 			
-		}
-		
-		CMyString tmp;
-		
-		char curChar;
-	
-		CKeySend ks;
-		ks.ResetKeyboardState();
-
-		ks.SetDelay(10);
-
-		for(int n=0; n<AutoCmd.GetLength();n++){
-			curChar=AutoCmd[n];
-			if(curChar=='\\'){
-				n++;
-				if(n<AutoCmd.GetLength())
-					curChar=AutoCmd[n];
-					switch(curChar){
-					case '\\':
-						tmp+='\\';
-						break;
-					case 'n':case 'r':
-						tmp+='\r';
-						break;
-					case 't':
-						tmp+='\t';
-						break;
-					case 'u':
-						tmp+= ci->GetUser();
-						break;
-					case 'p':
-						tmp+=ci->GetPassword();
-						break;
-					case 'd':
-						ks.SendString(tmp);
-						
-						tmp="";
-						int c;
-						int newdelay;
-						
-						newdelay=0;
-					
-						for(n++,c=1;n<AutoCmd.GetLength() && c < 1000;c*=10,n++)
-						{
-							
-							if(isdigit(AutoCmd[n])){
-								newdelay+=c*(AutoCmd[n]-'0');
-							} else {
-								break;
-							}		
-						}
-						n--;
-								
-						ks.SetAndDelay(newdelay);
-
-						break;
-					default:
-						tmp+="\\"+curChar;
-						break;
-					}
-			}
-			else
-				tmp+=curChar;
-		}
-		
-		// Note that minimizing the window before calling ci->Get*()
-		// will cause garbage to be read if "lock on minimize" selected,
-		// since that will clear the data [Bugs item #1026630]
-		ShowWindow(SW_MINIMIZE);
-		ks.SendString(tmp);
+      if(AutoCmd.IsEmpty()){
+	// checking for user and password for default settings
+	if(!ci->GetPassword().IsEmpty()){
+	  if(!ci->GetUser().IsEmpty())
+	    AutoCmd="\\u\\t\\p\\n";
+	  else
+	    AutoCmd="\\p\\n";
 	}
+ 			
+      }
+		
+      CMyString tmp;
+      char curChar;
+      const int N = AutoCmd.GetLength();
+      CKeySend ks;
+      ks.ResetKeyboardState();
+
+      for(int n=0; n<N;n++){
+	curChar=AutoCmd[n];
+	if(curChar=='\\'){
+	  n++;
+	  if(n<N)
+	    curChar=AutoCmd[n];
+	  switch(curChar){
+	  case '\\':
+	    tmp+='\\';
+	    break;
+	  case 'n':case 'r':
+	    tmp+='\r';
+	    break;
+	  case 't':
+	    tmp+='\t';
+	    break;
+	  case 'u':
+	    tmp+= ci->GetUser();
+	    break;
+	  case 'p':
+	    tmp+=ci->GetPassword();
+	    break;
+	  case 'd':
+	    // Delay is going to change - send what we have with old delay
+	    ks.SendString(tmp);
+	    // start collecting new delay
+	    tmp="";
+	    int c;
+	    int newdelay;
+						
+	    newdelay=0;
+	    
+	    for(n++,c=1;n<N && c < 1000;c*=10,n++)
+	      {
+							
+		if(isdigit(AutoCmd[n])){
+		  newdelay+=c*(AutoCmd[n]-'0');
+		} else {
+		  break;
+		}		
+	      }
+	    n--;
+								
+	    ks.SetAndDelay(newdelay);
+
+	    break;
+	  default:
+	    tmp+="\\"+curChar;
+	    break;
+	  }
+	}
+	else
+	  tmp+=curChar;
+      }
+		
+      // Note that minimizing the window before calling ci->Get*()
+      // will cause garbage to be read if "lock on minimize" selected,
+      // since that will clear the data [Bugs item #1026630]
+      ShowWindow(SW_MINIMIZE);
+      ks.SendString(tmp);
+    }
 }
 
 void DboxMain::ExtractAutoTypeCmd(CMyString &str)
