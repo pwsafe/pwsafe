@@ -1,0 +1,29 @@
+[OPTIONS]
+Auto TOC=9
+Compatibility=1.1 or later
+Compiled file=pwsafe.chm
+Contents file=pwsafe.hhc
+Default topic=html\pws_main.htm
+Display compile progress=No
+Index file=pwsafe.hhk
+Language=0x409 English (United States)
+
+
+[FILES]
+html\pws_main.htm
+html\pws_add_data.htm
+html\pws_edit.htm
+html\pws_about_cpane.htm
+html\pws_intro.htm
+html\pws_combo_entry.htm
+html\pws_combo_chg.htm
+html\pws_combo_err.htm
+html\pws_opts.htm
+html\pws_confirm_del.htm
+html\pws_copy_to_clip.htm
+html\pws_set_dflt_uname.htm
+html\pws_add_uname.htm
+html\pws_uname_entry.htm
+
+[INFOTYPES]
+
