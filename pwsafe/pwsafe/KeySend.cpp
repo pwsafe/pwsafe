@@ -8,7 +8,6 @@ CKeySend::CKeySend(void) : m_delay(10)
 	// we are assuming that all window and threading in the 
 	// current users desktop have the same locale.
 	m_hlocale = GetKeyboardLayout(0);
-	m_bIsKeyboardLocked=false;
 }
 
 CKeySend::~CKeySend(void)
@@ -75,8 +74,9 @@ void CKeySend::SendChar(TCHAR c)
               keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
               altDown=false;       
        } 
- 
+       ::BlockInput(true);
        ::Sleep(m_delay);
+       ::BlockInput(false);
 }
 
 
@@ -123,7 +123,9 @@ void CKeySend::ResetKeyboardState()
 
 void CKeySend::SetAndDelay(int d){
 	SetDelay(d);
-	Sleep(m_delay);
+	::BlockInput(true);
+	::Sleep(m_delay);
+	::BlockInput(false);
 }
 
 void CKeySend::SetDelay(int d){
@@ -131,21 +133,3 @@ void CKeySend::SetDelay(int d){
 	
 }
 
-
-void CKeySend::BlockUserInput()
-{
-        
-	if(m_bIsKeyboardLocked  == false)
-    {
-		m_bIsKeyboardLocked = (BlockInput(true) !=0 );
-    }
-    
-}
-
-void CKeySend::UnBlockUserInput()
-{
-        if(m_bIsKeyboardLocked  == true)
-        {
-                m_bIsKeyboardLocked = (BlockInput(false) !=0 );
-        }
-}
