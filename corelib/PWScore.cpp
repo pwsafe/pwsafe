@@ -187,7 +187,9 @@ PWScore::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
     trashMemory(buffer, buffer_len);
     delete[] buffer;
   } else {
-    data = "";
+    data = _T("");
+    // no need to delete[] buffer, since _readcbc will not allocate if
+    // buffer_len is zero
   }
   return retval;
 }

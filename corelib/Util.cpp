@@ -224,6 +224,8 @@ _writecbc(int fp,
  * enough.
  * *** THE CALLER MUST delete[] IT AFTER USE *** UGH++
  *
+ * (unless buffer_len is zero)
+ *
  * An alternative to STL strings would be to accept a buffer, and allocate a replacement
  * iff the buffer is too small. This is serious ugliness, but should be considered if
  * the new/delete performance hit is too big.
@@ -237,14 +239,17 @@ _readcbc(int fp,
 {
    int numRead = 0;
 
-   BlowFish *Algorithm = MakeBlowFish(pass, passlen, salt, saltlen);
-
    unsigned char lengthblock[8];
    unsigned char lcpy[8];
+
+   buffer_len = 0;
    numRead = _read(fp, lengthblock, 8);
    if (numRead != 8)
       return 0;
    memcpy(lcpy, lengthblock, 8);
+
+   BlowFish *Algorithm = MakeBlowFish(pass, passlen, salt, saltlen);
+
    Algorithm->Decrypt(lengthblock, lengthblock);
    xormem(lengthblock, cbcbuffer, 8);
    memcpy(cbcbuffer, lcpy, 8);
@@ -264,6 +269,10 @@ _readcbc(int fp,
    }
 
    int BlockLength = ((length+7)/8)*8;
+   // Following is meant for lengths < 8,
+   // but results in a block being read even
+   // if length is zero. This is wasteful,
+   // but fixing it would break all existing databases
    if (BlockLength == 0)
       BlockLength = 8;
 
@@ -283,6 +292,10 @@ _readcbc(int fp,
 	
    trashMemory(tempcbc, 8);
    delete Algorithm;
+   if (length == 0) {
+     // delete[] buffer here since caller will see zero length
+     delete[] buffer;
+   }
 
    return numRead;
 }
