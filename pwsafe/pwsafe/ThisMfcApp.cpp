@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -21,15 +21,6 @@
 #include "CryptKeyEntry.h"
 
 
-//-----------------------------------------------------------------------------
-/*
-  The one and only ThisMfcApp object.  In the MFC world, creating
-  this global object is what starts the application.
-*/
-
-ThisMfcApp app;
-
-//-----------------------------------------------------------------------------
 
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
 //   ON_COMMAND(ID_HELP, CWinApp::OnHelp)
@@ -323,7 +314,7 @@ ThisMfcApp::InitInstance()
 	SHInitExtraControls();
 #endif
 
-	CMyString companyname;
+	CString companyname;
 	VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
 	SetRegistryKey(companyname);
 	

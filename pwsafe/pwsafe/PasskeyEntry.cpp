@@ -7,7 +7,7 @@
 */
 
 #include "PasswordSafe.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)

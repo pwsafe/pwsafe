@@ -23,7 +23,7 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 
 
 PWSfile::PWSfile(const CMyString &filename, const CMyString &passkey)
-  : m_filename(filename), m_passkey(passkey), m_curversion(UNKNOWN_VERSION), m_fd(-1)
+  : m_filename(filename), m_passkey(passkey), m_curversion(UNKNOWN_VERSION), m_fd(NULL)
 {
 }
 
@@ -79,11 +79,13 @@ int PWSfile::OpenWriteFile(VERSION v)
   if (v != V17 && v != V20)
     return UNSUPPORTED_VERSION;
 
-  m_fd = _open((LPCTSTR)m_filename,
-	       _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
-	       _S_IREAD | _S_IWRITE);
+#ifdef UNICODE
+	m_fd = _wfopen((LPCTSTR)m_filename, _T("wb") );
+#else
+	m_fd = fopen((LPCTSTR)m_filename, _T("wb") );
+#endif
 
-  if (m_fd == -1)
+  if (m_fd == NULL)
     return CANT_OPEN_FILE;
 
   m_curversion = v;
@@ -98,17 +100,17 @@ int PWSfile::OpenWriteFile(VERSION v)
   randstuff[8] = randstuff[9] = '\0';
   GenRandhash(m_passkey, randstuff, randhash);
 
-  _write(m_fd, randstuff, 8);
-  _write(m_fd, randhash, 20);
+  fwrite(randstuff, 1, 8, m_fd);
+  fwrite(randhash, 1, 20, m_fd);
 
   for (x=0; x<SaltLength; x++)
     m_salt[x] = newrand();
 
-  _write(m_fd, m_salt, SaltLength);
+  fwrite(m_salt, 1, SaltLength, m_fd);
 	
   for (x=0; x<8; x++)
     m_ipthing[x] = newrand();
-  _write(m_fd, m_ipthing, 8);
+  fwrite(m_ipthing, 1, 8, m_fd);
 
   if (v == V20) {
     int status = WriteV2Header();
@@ -124,11 +126,13 @@ int PWSfile::OpenReadFile(VERSION v)
   if (v != V17 && v != V20)
     return UNSUPPORTED_VERSION;
 
-  m_fd = _open((LPCTSTR) m_filename,
-	       _O_BINARY |_O_RDONLY | _O_SEQUENTIAL,
-	       S_IREAD | _S_IWRITE);
+#ifdef UNICODE
+	  m_fd = _wfopen((LPCTSTR) m_filename, _T("rb"));
+#else
+	  m_fd = fopen((LPCTSTR) m_filename, _T("rb"));
+#endif
 
-  if (m_fd == -1)
+  if (m_fd == NULL)
     return CANT_OPEN_FILE;
   m_curversion = v;
 
@@ -139,8 +143,8 @@ int PWSfile::OpenReadFile(VERSION v)
     return status;
   }
 
-   _read(m_fd, m_salt, SaltLength);
-   _read(m_fd, m_ipthing, 8);
+   fread(m_salt, 1, SaltLength, m_fd);
+   fread(m_ipthing, 1, 8, m_fd);
 
    if (v == V20)
      status = ReadV2Header();
@@ -150,9 +154,9 @@ int PWSfile::OpenReadFile(VERSION v)
 
 void PWSfile::CloseFile()
 {
-  if (m_fd != -1) {
-    _close(m_fd);
-    m_fd = -1;
+  if (m_fd != NULL) {
+    fclose(m_fd);
+    m_fd = NULL;
   }
 }
 
@@ -173,23 +177,25 @@ int PWSfile::CheckPassword()
 {
   // if file was opened, leave it open,
   // else open it for check, close when done
-  const bool was_open = (m_fd != -1);
+  const bool was_open = (m_fd != NULL);
 
   if (!was_open) {
-    m_fd = _open((LPCTSTR) m_filename,
-		 _O_BINARY |_O_RDONLY | _O_SEQUENTIAL,
-		 S_IREAD | _S_IWRITE);
+#ifdef UNICODE
+	  m_fd = _wfopen((LPCTSTR) m_filename, _T("rb"));
+#else
+	  m_fd = fopen((LPCTSTR) m_filename, _T("rb"));
+#endif
 
-    if (m_fd == -1)
+    if (m_fd == NULL)
       return CANT_OPEN_FILE;
   }
 
   unsigned char randstuff[StuffSize];
   unsigned char randhash[20];   // HashSize
 
-   _read(m_fd, randstuff, 8);
+   fread(randstuff, 1, 8, m_fd);
    randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
-   _read(m_fd, randhash, 20);
+   fread(randhash, 1, 20, m_fd);
 
   if (!was_open)
     CloseFile();
@@ -222,7 +228,7 @@ int PWSfile::WriteCBC(unsigned char type, const CString &data)
 
 int PWSfile::WriteRecord(const CItemData &item)
 {
-  ASSERT(m_fd != -1);
+  ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
   switch (m_curversion) {
@@ -282,7 +288,7 @@ PWSfile::ReadCBC(unsigned char &type, CMyString &data)
 
 int PWSfile::ReadRecord(CItemData &item)
 {
-  ASSERT(m_fd != -1);
+  ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
   CMyString tempdata;  

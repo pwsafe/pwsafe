@@ -3,8 +3,9 @@
 
 #include "sha1.h"
 #include "BlowFish.h"
+#include "PwsPlatform.h"
 
-#include <io.h>
+#include <stdio.h>
 
 #include "Util.h"
 
@@ -46,12 +47,22 @@ trashMemory(unsigned char* buffer,
             long length,
             int numiter) // default 30
 {
-   for (int x=0; x<numiter; x++)
-   {
-      memset(buffer, 0x00, length);
-      memset(buffer, 0xFF, length);
-      memset(buffer, 0x00, length);
-   }
+	// {kjp} no point in looping around doing nothing is there?
+	if ( length != 0 )
+	{
+		for (int x=0; x<numiter; x++)
+		{
+		  memset(buffer, 0x00, length);
+		  memset(buffer, 0xFF, length);
+		  memset(buffer, 0x00, length);
+		}
+	}
+}
+
+void
+trashMemory( LPTSTR buffer, long length, int numiter )
+{
+	trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0]), numiter );
 }
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
@@ -146,7 +157,9 @@ BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
 		       const unsigned char *salt, int saltlen)
 {
    unsigned char passkey[20]; // SHA1 digest is 20 bytes - why isn't there a constant for this?
+#if !defined(POCKET_PC)
    VirtualLock(passkey, sizeof(passkey));
+#endif
 
    SHA1_CTX context;
    SHA1Init(&context);
@@ -156,13 +169,15 @@ BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
    BlowFish *retval = new BlowFish(passkey, sizeof(passkey));
    trashMemory(passkey, sizeof(passkey));
    trashMemory(context);
+#if !defined(POCKET_PC)
    VirtualUnlock(passkey, sizeof(passkey));
+#endif
    
    return retval;
 }
 
 int
-_writecbc(int fp,
+_writecbc(FILE *fp,
           const unsigned char* buffer,
           int length, unsigned char type,
 	  const unsigned char *pass, int passlen,
@@ -180,9 +195,7 @@ _writecbc(int fp,
    // First encrypt and write the length of the buffer
    unsigned char lengthblock[8];
    memset(lengthblock, 0, 8);
-   // XXX next line is a portability issue - what if file is read by a program
-   // compiled with a different sizeof int or different endian-ness?
-   memcpy(lengthblock, (unsigned char*)&length, sizeof length);
+   putInt32( lengthblock, length );
 
    // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
    lengthblock[sizeof(length)] = type;
@@ -190,7 +203,9 @@ _writecbc(int fp,
    xormem(lengthblock, cbcbuffer, 8); // do the CBC thing
    Algorithm->Encrypt(lengthblock, lengthblock);
    memcpy(cbcbuffer, lengthblock, 8); // update CBC for next round
-   numWritten = _write(fp, lengthblock, 8);
+
+   numWritten = fwrite(lengthblock, 1, 8, fp);
+
    trashMemory(lengthblock, 8);
 
    // Now, encrypt and write the buffer
@@ -208,7 +223,7 @@ _writecbc(int fp,
       xormem(curblock, cbcbuffer, 8);
       Algorithm->Encrypt(curblock, curblock);
       memcpy(cbcbuffer, curblock, 8);
-      numWritten += _write(fp, curblock, 8);
+      numWritten += fwrite(curblock, 1, 8, fp);
    }
    trashMemory(curblock, 8);
    delete Algorithm;
@@ -232,7 +247,7 @@ _writecbc(int fp,
  * the new/delete performance hit is too big.
  */
 int
-_readcbc(int fp,
+_readcbc(FILE *fp,
          unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
 	 const unsigned char *pass, int passlen,
          const unsigned char* salt, int saltlen,
@@ -244,7 +259,7 @@ _readcbc(int fp,
    unsigned char lcpy[8];
 
    buffer_len = 0;
-   numRead = _read(fp, lengthblock, 8);
+   numRead = fread(lengthblock, 1, sizeof lengthblock, fp);
    if (numRead != 8)
       return 0;
    memcpy(lcpy, lengthblock, 8);
@@ -255,8 +270,7 @@ _readcbc(int fp,
    xormem(lengthblock, cbcbuffer, 8);
    memcpy(cbcbuffer, lcpy, 8);
 
-   // portability issue - see comment in _writecbc
-   int length = *((int*)lengthblock);
+   int length = getInt32( lengthblock );
 
    // new for 2.0 -- lengthblock[4..7] previously set to zero
    type = lengthblock[sizeof(int)]; // type is first byte after the length
@@ -276,7 +290,7 @@ _readcbc(int fp,
    // Following is meant for lengths < 8,
    // but results in a block being read even
    // if length is zero. This is wasteful,
-   // but fixing it would break all existing databases
+   // but fixing it would break all existing databases.
    if (BlockLength == 0)
       BlockLength = 8;
 
@@ -285,7 +299,7 @@ _readcbc(int fp,
 
 
    unsigned char tempcbc[8];
-   numRead += _read(fp, buffer, BlockLength);
+   numRead += fread(buffer, 1, BlockLength, fp);
    for (int x=0;x<BlockLength;x+=8)
    {
       memcpy(tempcbc, buffer+x, 8);
@@ -302,4 +316,20 @@ _readcbc(int fp,
    }
 
    return numRead;
+}
+
+/**
+ * Returns the current length of a file.
+ */
+long fileLength( FILE *fp )
+{
+	long	pos;
+	long	len;
+
+	pos = ftell( fp );
+	fseek( fp, 0, SEEK_END );
+	len	= ftell( fp );
+	fseek( fp, pos, SEEK_SET );
+
+	return len;
 }

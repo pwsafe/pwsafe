@@ -3,7 +3,7 @@
 
 #include "corelib/MyString.h"
 
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PwsPopupDialog.h"

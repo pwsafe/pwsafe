@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-#include "PwsPlatform.h"
+
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"

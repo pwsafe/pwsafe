@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 #if !defined(ThisMfcApp_h)
 #define ThisMfcApp_h
-
+#include "PasswordSafe.h"
 #include "stdafx.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"

@@ -4,6 +4,8 @@
 
 #ifndef PWSfile_h
 #define PWSfile_h
+#include <stdio.h> // for FILE *
+
 #include "ItemData.h"
 #include "MyString.h"
 
@@ -32,7 +34,7 @@ class PWSfile {
  private:
   const CMyString m_filename;
   const CMyString m_passkey;
-  int m_fd;
+  FILE *m_fd;
   VERSION m_curversion;
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];

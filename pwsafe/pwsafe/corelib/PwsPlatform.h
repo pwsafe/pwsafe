@@ -41,7 +41,7 @@
 #define PwsPlatform_h
 
 #if defined(_WIN32)
-  #include "stdafx.h"
+  #include "../stdafx.h" // ONLY place in corelib which refers to parent. Ugh.
 #endif
 
 // stop MS VC++ 6 and earlier being quite so pedantic
