@@ -27,6 +27,7 @@
 #include "UsernameEntry.h"
 #include "TryAgainDlg.h"
 #include "ExportText.h"
+#include "ImportDlg.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -712,8 +713,14 @@ DboxMain::OnExportXML()
 void
 DboxMain::OnImportText()
 {
-  CMyString ImportedPrefix(_T("Imported"));
-  TCHAR fieldSeparator = TCHAR('\t');
+  CImportDlg dlg;
+  int status = dlg.DoModal();
+  
+  if (status == IDCANCEL)
+    return;
+
+  CMyString ImportedPrefix(dlg.m_groupName);
+  TCHAR fieldSeparator(dlg.m_Separator[0]);
   CFileDialog fd(TRUE,
 		 _T("txt"),
 		 NULL,
@@ -723,7 +730,7 @@ DboxMain::OnImportText()
 		 _T("All files (*.*)|*.*|")
 		 _T("|"),
 		 this);
-  fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import:");
+  fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import");
   m_LockDisabled = true;
   int rc = fd.DoModal();
   m_LockDisabled = false;

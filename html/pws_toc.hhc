@@ -37,6 +37,11 @@
 		<param name="Local" value="html\pws_edit.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Import from Text File">
+		<param name="Local" value="html\pws_import.htm">
+		<param name="URL" value="html\pws_import.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="PasswordSafe Options">
 		<param name="Local" value="html\pws_opts.htm">
 		</OBJECT>
