@@ -84,20 +84,29 @@ void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
   }
 }
 
-void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR, LRESULT *pLResult)
+void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
+  TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
+  // I thought m_BeginEditText was needed to restore text if desired,
+  // but setting *pLResult to FALSE in OnEndLabelEdit suffices
+  if (ptvinfo->item.pszText != NULL &&
+      ptvinfo->item.pszText[0] != '\0') {
+    m_BeginEditText = ptvinfo->item.pszText;
+  } else {
+    m_BeginEditText = _T("");
+  }
   *pLResult = FALSE; // TRUE cancels label editing
 }
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
   TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
-
-  if (ptvinfo->item.pszText != NULL) {
+  HTREEITEM ti = ptvinfo->item.hItem;
+  if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
+      ptvinfo->item.pszText[0] != '\0') { // empty if text deleted - not allowed
     DboxMain *parent = (DboxMain *)GetParent();
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
-    HTREEITEM ti = ptvinfo->item.hItem;
     if (IsLeafNode(ptvinfo->item.hItem)) {
       // Update leaf's title
       DWORD itemData = GetItemData(ti);
@@ -129,8 +138,12 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     // Mark database as modified
     parent->SetChanged(true);
     SortChildren(GetParentItem(ti));
-  }
   *pLResult = TRUE;
+  } else {
+    // restore text
+    // (not that this is documented anywhere in MS's docs...)
+    *pLResult = FALSE;
+  }
 }
 
 void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
@@ -181,7 +194,7 @@ void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
     if (ItemHasChildren(p))
       break;
     hItem = p;
-  } while (p != TVI_ROOT);
+  } while (p != TVI_ROOT && p != NULL);
 }
 
 CString CMyTreeCtrl::GetGroup(HTREEITEM hItem)
