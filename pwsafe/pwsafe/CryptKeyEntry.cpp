@@ -27,8 +27,8 @@ static char THIS_FILE[] = __FILE__;
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
    : super(CCryptKeyEntry::IDD, pParent)
 {
-   m_cryptkey1 = "";
-   m_cryptkey2 = "";
+   m_cryptkey1	= "";
+   m_cryptkey2	= "";
 }
 
 
@@ -42,6 +42,12 @@ void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CCryptKeyEntry, super)
    ON_BN_CLICKED(ID_HELP, OnHelp)
+#if defined(POCKET_PC)
+   ON_EN_SETFOCUS(IDC_CRYPTKEY1, OnPasskeySetfocus)
+   ON_EN_SETFOCUS(IDC_CRYPTKEY2, OnPasskeySetfocus)
+   ON_EN_KILLFOCUS(IDC_CRYPTKEY1, OnPasskeyKillfocus)
+   ON_EN_KILLFOCUS(IDC_CRYPTKEY2, OnPasskeyKillfocus)
+#endif
 END_MESSAGE_MAP()
 
 
@@ -88,5 +94,28 @@ CCryptKeyEntry::OnHelp()
               HH_DISPLAY_TOPIC, 0);
 #endif
 }
+
+
+#if defined(POCKET_PC)
+/************************************************************************/
+/* Restore the state of word completion when the password field loses   */
+/* focus.                                                               */
+/************************************************************************/
+void CCryptKeyEntry::OnPasskeyKillfocus()
+{
+	EnableWordCompletion( m_hWnd );
+}
+
+
+/************************************************************************/
+/* When the password field is activated, pull up the SIP and disable    */
+/* word completion.                                                     */
+/************************************************************************/
+void CCryptKeyEntry::OnPasskeySetfocus()
+{
+	DisableWordCompletion( m_hWnd );
+}
+#endif
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

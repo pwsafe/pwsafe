@@ -38,6 +38,10 @@ protected:
    virtual BOOL OnInitDialog();
    afx_msg void OnRandom();
    afx_msg void OnHelp();
+#if defined(POCKET_PC)
+   afx_msg void OnPasskeySetfocus();
+   afx_msg void OnPasskeyKillfocus();
+#endif
    DECLARE_MESSAGE_MAP()
 };
 //-----------------------------------------------------------------------------

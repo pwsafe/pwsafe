@@ -25,6 +25,7 @@ public:
 	BOOL	m_alwaysontop;
 	BOOL	m_pwshowinlist;
 	BOOL	m_pwshowinedit;
+	BOOL	m_dcshowspassword;
 	//}}AFX_DATA
 
 

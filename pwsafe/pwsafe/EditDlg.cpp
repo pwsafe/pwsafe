@@ -10,6 +10,10 @@
 #include "PwFont.h"
 #include "PwsPlatform.h"
 
+#if defined(POCKET_PC)
+  #include "pocketpc/PocketPC.h"
+#endif
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -42,6 +46,8 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 #if defined(POCKET_PC)
    ON_WM_SHOWWINDOW()
+   ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
+   ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
 #endif
 END_MESSAGE_MAP()
 
@@ -228,6 +234,28 @@ void CEditDlg::OnHelp()
 
 #endif
 }
+
+
+#if defined(POCKET_PC)
+/************************************************************************/
+/* Restore the state of word completion when the password field loses   */
+/* focus.                                                               */
+/************************************************************************/
+void CEditDlg::OnPasskeyKillfocus()
+{
+	EnableWordCompletion( m_hWnd );
+}
+
+
+/************************************************************************/
+/* When the password field is activated, pull up the SIP and disable    */
+/* word completion.                                                     */
+/************************************************************************/
+void CEditDlg::OnPasskeySetfocus()
+{
+	DisableWordCompletion( m_hWnd );
+}
+#endif
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

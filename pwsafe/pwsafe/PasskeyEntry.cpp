@@ -12,6 +12,7 @@
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
+  #include "pocketpc/PocketPC.h"
 #else
   #include "resource.h"
 #endif
@@ -90,6 +91,10 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(ID_BROWSE, OnBrowse)
    ON_BN_CLICKED(ID_CREATE_DB, OnCreateDb)
+#if defined(POCKET_PC)
+   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
+   ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
+#endif
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -143,6 +148,28 @@ CPasskeyEntry::OnInitDialog(void)
    
    return TRUE;
 }
+
+
+#if defined(POCKET_PC)
+/************************************************************************/
+/* Restore the state of word completion when the password field loses   */
+/* focus.                                                               */
+/************************************************************************/
+void CPasskeyEntry::OnPasskeyKillfocus()
+{
+	EnableWordCompletion( m_hWnd );
+}
+
+
+/************************************************************************/
+/* When the password field is activated, pull up the SIP and disable    */
+/* word completion.                                                     */
+/************************************************************************/
+void CPasskeyEntry::OnPasskeySetfocus()
+{
+	DisableWordCompletion( m_hWnd );
+}
+#endif
 
 
 void

@@ -196,6 +196,7 @@ DEP_CPP_ADDDL=\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
 	"..\MyListCtrl.h"\
+	"..\PocketPC.h"\
 	
 
 !ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARM) Debug"
@@ -244,6 +245,7 @@ DEP_CPP_ADDDL=\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
 	"..\MyListCtrl.h"\
+	"..\PocketPC.h"\
 	
 
 !ENDIF 
@@ -488,6 +490,7 @@ DEP_CPP_DBOXM=\
 	"..\..\PwsPlatform.h"\
 	"..\..\QuerySetDef.h"\
 	"..\..\RemindSaveDlg.h"\
+	"..\..\ShowPasswordDlg.h"\
 	"..\..\StdAfx.h"\
 	"..\..\SysColStatic.h"\
 	"..\..\ThisMfcApp.h"\
@@ -575,6 +578,7 @@ DEP_CPP_DBOXM=\
 	"..\..\PwsPlatform.h"\
 	"..\..\QuerySetDef.h"\
 	"..\..\RemindSaveDlg.h"\
+	"..\..\ShowPasswordDlg.h"\
 	"..\..\StdAfx.h"\
 	"..\..\SysColStatic.h"\
 	"..\..\ThisMfcApp.h"\
@@ -756,6 +760,7 @@ DEP_CPP_EDITD=\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
 	"..\MyListCtrl.h"\
+	"..\PocketPC.h"\
 	
 
 !ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARM) Debug"
@@ -804,6 +809,7 @@ DEP_CPP_EDITD=\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
 	"..\MyListCtrl.h"\
+	"..\PocketPC.h"\
 	
 
 !ENDIF 
@@ -1279,6 +1285,7 @@ DEP_CPP_PASSK=\
 	"..\..\PwsPlatform.h"\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
 	"..\PwsPopupDialog.h"\
 	
 
@@ -1321,6 +1328,7 @@ DEP_CPP_PASSK=\
 	"..\..\PwsPlatform.h"\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
 	"..\PwsPopupDialog.h"\
 	
 
@@ -1343,6 +1351,7 @@ DEP_CPP_PASSKE=\
 	"..\..\SysColStatic.h"\
 	"..\..\ThisMfcApp.h"\
 	"..\..\TryAgainDlg.h"\
+	"..\PocketPC.h"\
 	"..\PwsPopupDialog.h"\
 	
 
@@ -1388,6 +1397,7 @@ DEP_CPP_PASSKE=\
 	"..\..\SysColStatic.h"\
 	"..\..\ThisMfcApp.h"\
 	"..\..\TryAgainDlg.h"\
+	"..\PocketPC.h"\
 	"..\PwsPopupDialog.h"\
 	
 
@@ -1409,6 +1419,7 @@ DEP_CPP_PASSKEY=\
 	"..\..\PwsPlatform.h"\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
 	"..\PwsPopupDialog.h"\
 	
 
@@ -1451,6 +1462,7 @@ DEP_CPP_PASSKEY=\
 	"..\..\PwsPlatform.h"\
 	"..\..\StdAfx.h"\
 	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
 	"..\PwsPopupDialog.h"\
 	
 
@@ -1764,6 +1776,69 @@ DEP_CPP_SHA1_=\
 
 DEP_CPP_SHA1_=\
 	"..\..\sha1.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\ShowPasswordDlg.cpp
+
+!IF  "$(CFG)" == "pwsafe - Win32 (WCE ARM) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARM) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE x86) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE x86) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
 	
 
 !ENDIF 
@@ -2209,6 +2284,10 @@ SOURCE=..\..\sha1.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\ShowPasswordDlg.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\StdAfx.h
 # End Source File
 # Begin Source File
@@ -2262,6 +2341,10 @@ SOURCE=..\res\ibubble.ico
 # Begin Source File
 
 SOURCE=.\res\PwSafeLogo.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=..\res\PwSafeLogo.bmp
 # End Source File
 # End Group
 # End Target

@@ -61,4 +61,49 @@ void centreWithin( CWnd *parent, CWnd *child, CRect &result )
 	child->GetWindowRect( smaller );
 	centreWithin( larger, smaller, result );
 }
+
+DWORD DisableWordCompletion( HWND hwnd )
+{
+	DWORD	flags;
+	SIPINFO	info;
+
+	memset( &info, 0, sizeof(info) );
+	info.cbSize = sizeof(info);
+
+	SHSipInfo( SPI_GETSIPINFO, 0, &info, 0 );
+
+	flags			 = info.fdwFlags;
+	info.fdwFlags	|= SIPF_DISABLECOMPLETION;
+
+	SHSipInfo( SPI_SETSIPINFO, 0, &info, 0 );
+
+	if ( flags & SIPF_ON )
+	{
+		SHSipPreference( hwnd, SIP_DOWN );
+		SHSipPreference( hwnd, SIP_UP );
+	}
+
+	return flags;
+}
+
+void EnableWordCompletion( HWND hwnd )
+{
+	SIPINFO	info;
+
+	memset( &info, 0, sizeof(info) );
+	info.cbSize = sizeof(info);
+
+	SHSipInfo( SPI_GETSIPINFO, 0, &info, 0 );
+
+	info.fdwFlags	&= ~(SIPF_DISABLECOMPLETION);
+
+	SHSipInfo( SPI_SETSIPINFO, 0, &info, 0 );
+
+	if ( info.fdwFlags & SIPF_ON )
+	{
+		SHSipPreference( hwnd, SIP_DOWN );
+		SHSipPreference( hwnd, SIP_UP );
+	}
+}
+
 #endif

@@ -313,7 +313,10 @@ ThisMfcApp::InitInstance()
 		Counterpane-centric, I expect this may change, but if it does, an
 		automagic migration ought to happen. -- {jpr}
 	*/
-	
+#if defined(POCKET_PC)
+	SHInitExtraControls();
+#endif
+
 	CMyString companyname;
 	VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
 	SetRegistryKey(companyname);

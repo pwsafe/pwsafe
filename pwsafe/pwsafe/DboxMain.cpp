@@ -36,6 +36,7 @@
 
 #ifdef POCKET_PC
   #include "pocketpc/PocketPC.h"
+  #include "ShowPasswordDlg.h"
 #endif
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
@@ -256,7 +257,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
-#if !defined(POCKET_PC)
+#if defined(POCKET_PC)
+   ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
+#else
 	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
 	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
    ON_WM_DROPFILES()
@@ -609,7 +612,18 @@ DboxMain::OnAdd()
 void
 DboxMain::OnListDoubleClick( NMHDR *, LRESULT *)
 {
+#if defined(POCKET_PC)
+	if ( app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE) == FALSE )
+	{
+		OnCopyPassword();
+	}
+	else
+	{
+		OnShowPassword();
+	}
+#else
 	OnCopyPassword();
+#endif
 }
 
 void
@@ -3022,3 +3036,29 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 		state.m_nIndexMax = nCount;
 	}
 }
+
+#if defined(POCKET_PC)
+void DboxMain::OnShowPassword()
+{
+	if (SelItemOk() == TRUE)
+	{
+		CItemData			item;
+		CMyString			password;
+		CMyString			name;
+		CMyString			title;
+		CMyString			username;
+		CShowPasswordDlg	pwDlg( this );
+
+		item	= m_pwlist.GetAt( Find(getSelectedItem()) );
+
+		item.GetPassword(password);
+		item.GetName( name );
+
+		SplitName( name, title, username );
+
+		pwDlg.SetTitle( title );
+		pwDlg.SetPassword( password );
+		pwDlg.DoModal();
+	}
+}
+#endif

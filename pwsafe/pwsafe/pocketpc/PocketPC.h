@@ -34,6 +34,9 @@ extern time_t	time( time_t *timer );
 extern void		centreWithin( CRect &larger, CRect &smaller, CRect &result );
 extern void		centreWithin( CWnd *parent, CWnd *child, CRect &result );
 
+extern DWORD	DisableWordCompletion( HWND hwnd );
+extern void		EnableWordCompletion( HWND hwnd );
+
 #endif
 
 #endif

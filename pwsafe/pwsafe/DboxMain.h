@@ -175,7 +175,9 @@ protected:
    afx_msg void OnSave();
    afx_msg void OnAdd();
    afx_msg void OnOK();
-#if !defined(POCKET_PC)
+#if defined(POCKET_PC)
+   afx_msg void OnShowPassword();
+#else
    afx_msg void OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnDropFiles(HDROP hDrop);

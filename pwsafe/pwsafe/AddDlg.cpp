@@ -9,6 +9,10 @@
 #include "AddDlg.h"
 #include "PwFont.h"
 
+#if defined(POCKET_PC)
+  #include "pocketpc/PocketPC.h"
+#endif
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -51,6 +55,11 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+#if defined(POCKET_PC)
+   ON_WM_SHOWWINDOW()
+   ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
+   ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
+#endif
 END_MESSAGE_MAP()
 
 
@@ -143,5 +152,28 @@ void CAddDlg::OnRandom()
       UpdateData(FALSE);
    }
 }
+
+
+#if defined(POCKET_PC)
+/************************************************************************/
+/* Restore the state of word completion when the password field loses   */
+/* focus.                                                               */
+/************************************************************************/
+void CAddDlg::OnPasskeyKillfocus()
+{
+	EnableWordCompletion( m_hWnd );
+}
+
+
+/************************************************************************/
+/* When the password field is activated, pull up the SIP and disable    */
+/* word completion.                                                     */
+/************************************************************************/
+void CAddDlg::OnPasskeySetfocus()
+{
+	DisableWordCompletion( m_hWnd );
+}
+#endif
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

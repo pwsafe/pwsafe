@@ -2800,6 +2800,7 @@ DEP_CPP_DBOXM=\
 	"..\..\PwsPlatform.h"\
 	"..\..\QuerySetDef.h"\
 	"..\..\RemindSaveDlg.h"\
+	"..\..\ShowPasswordDlg.h"\
 	"..\..\StdAfx.h"\
 	"..\..\SysColStatic.h"\
 	"..\..\ThisMfcApp.h"\
@@ -10251,6 +10252,343 @@ DEP_CPP_SHA1_=\
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\ShowPasswordDlg.cpp
+
+!IF  "$(CFG)" == "pwsafe - Win32 (WCE MIPSII) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE MIPSII) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE SH4) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE SH4) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE SH3) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE SH3) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE MIPSIV) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE MIPSIV) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE emulator) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE emulator) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARMV4I) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARMV4I) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE MIPSIV_FP) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE MIPSIV_FP) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARMV4) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARMV4) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE MIPS16) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE MIPS16) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARMV4T) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE ARMV4T) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE x86) Release"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 (WCE x86) Debug"
+
+DEP_CPP_SHOWP=\
+	"..\..\jprdebug.h"\
+	"..\..\MyString.h"\
+	"..\..\PasswordSafe.h"\
+	"..\..\PwsPlatform.h"\
+	"..\..\ShowPasswordDlg.h"\
+	"..\..\StdAfx.h"\
+	"..\..\ThisMfcApp.h"\
+	"..\PocketPC.h"\
+	"..\PwsPopupDialog.h"\
+	{$(INCLUDE)}"htmlhelp.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\StdAfx.cpp
 
 !IF  "$(CFG)" == "pwsafe - Win32 (WCE MIPSII) Release"
@@ -12297,6 +12635,10 @@ SOURCE=..\..\sha1.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\ShowPasswordDlg.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\StdAfx.h
 # End Source File
 # Begin Source File
@@ -12334,6 +12676,10 @@ SOURCE=..\res\cpane.ico
 # Begin Source File
 
 SOURCE=..\res\ibubble.ico
+# End Source File
+# Begin Source File
+
+SOURCE=..\res\PwSafeLogo.bmp
 # End Source File
 # End Group
 # End Target

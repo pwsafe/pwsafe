@@ -41,6 +41,7 @@ DboxMain::OnOptions()
    display.m_alwaysontop = m_bAlwaysOnTop;
    display.m_pwshowinedit = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwdefault"), FALSE);
    display.m_pwshowinlist = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("showpwinlist"), FALSE);
+   display.m_dcshowspassword = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE);
 
    security.m_clearclipboard = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dontaskminimizeclearyesno"), FALSE));
    security.m_lockdatabase = (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE));
@@ -84,28 +85,29 @@ DboxMain::OnOptions()
       /*
       **  First save all the options.
       */
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("alwaysontop"),    display.m_alwaysontop);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwdefault"),  display.m_pwshowinedit);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwinlist"),   display.m_pwshowinlist);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("alwaysontop"),     display.m_alwaysontop);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwdefault"),   display.m_pwshowinedit);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("showpwinlist"),    display.m_pwshowinlist);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dcshowspassword"), display.m_dcshowspassword);
 
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontaskminimizeclearyesno"),  security.m_clearclipboard);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("databaseclear"),              security.m_lockdatabase);
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontasksaveminimize"),    not(security.m_confirmsaveonminimize));
       app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("dontaskquestion"),        not(security.m_confirmcopy));
 
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwlendefault"),   passwordpolicy.m_pwlendefault);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuselowercase"), passwordpolicy.m_pwuselowercase);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuseuppercase"), passwordpolicy.m_pwuseuppercase);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusedigits"),    passwordpolicy.m_pwusedigits);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusesymbols"),   passwordpolicy.m_pwusesymbols);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pweasyvision"),   passwordpolicy.m_pweasyvision);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwlendefault"),    passwordpolicy.m_pwlendefault);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuselowercase"),  passwordpolicy.m_pwuselowercase);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwuseuppercase"),  passwordpolicy.m_pwuseuppercase);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusedigits"),     passwordpolicy.m_pwusedigits);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pwusesymbols"),    passwordpolicy.m_pwusesymbols);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("pweasyvision"),    passwordpolicy.m_pweasyvision);
 
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("usedefuser"),     username.m_usedefuser);
-      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"),	username.m_defusername);
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("querysetdef"),    username.m_querysetdef);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("usedefuser"),      username.m_usedefuser);
+      app.WriteProfileString(_T(PWS_REG_OPTIONS), _T("defusername"),   username.m_defusername);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("querysetdef"),     username.m_querysetdef);
 
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("deletequestion"),   not(misc.m_confirmdelete));
-      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("saveimmediately"),      misc.m_saveimmediately);
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("deletequestion"),  not(misc.m_confirmdelete));
+      app.WriteProfileInt(_T(PWS_REG_OPTIONS),	_T("saveimmediately"),     misc.m_saveimmediately);
 
       /*
       **  Now update the application according to the options.

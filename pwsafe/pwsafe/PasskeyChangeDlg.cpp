@@ -8,6 +8,7 @@
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
+  #include "pocketpc/PocketPC.h"
 #else
   #include "resource.h"
 #endif
@@ -43,6 +44,14 @@ CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, super)
    ON_BN_CLICKED(ID_HELP, OnHelp)
+#if defined(POCKET_PC)
+   ON_EN_SETFOCUS(IDC_OLDPASSKEY, OnPasskeySetfocus)
+   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnPasskeySetfocus)
+   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnPasskeySetfocus)
+   ON_EN_KILLFOCUS(IDC_OLDPASSKEY, OnPasskeyKillfocus)
+   ON_EN_KILLFOCUS(IDC_NEWPASSKEY, OnPasskeyKillfocus)
+   ON_EN_KILLFOCUS(IDC_CONFIRMNEW, OnPasskeyKillfocus)
+#endif
 END_MESSAGE_MAP()
 
 
@@ -93,5 +102,29 @@ CPasskeyChangeDlg::OnHelp()
               HH_DISPLAY_TOPIC, 0);
 #endif
 }
+
+
+#if defined(POCKET_PC)
+/************************************************************************/
+/* Restore the state of word completion when the password field loses   */
+/* focus.                                                               */
+/************************************************************************/
+void CPasskeyChangeDlg::OnPasskeyKillfocus()
+{
+	EnableWordCompletion( m_hWnd );
+}
+
+
+/************************************************************************/
+/* When the password field is activated, pull up the SIP and disable    */
+/* word completion.                                                     */
+/************************************************************************/
+void CPasskeyChangeDlg::OnPasskeySetfocus()
+{
+	DisableWordCompletion( m_hWnd );
+}
+#endif
+
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

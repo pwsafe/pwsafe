@@ -36,12 +36,15 @@ protected:
 
 // Implementation
 protected:
-
    // Generated message map functions
    //{{AFX_MSG(CPasskeyChangeDlg)
    virtual void OnOK();
    virtual void OnCancel();
    afx_msg void OnHelp();
+#if defined(POCKET_PC)
+   afx_msg void OnPasskeySetfocus();
+   afx_msg void OnPasskeyKillfocus();
+#endif
    //}}AFX_MSG
    DECLARE_MESSAGE_MAP()
 };

@@ -31,6 +31,7 @@
 #define IDD_DIALOG1                     134
 #define IDD_CRYPTKEYENTRY               135
 #define IDI_IBUBBLE                     136
+#define IDD_SHOW_PASSWORD               137
 #define IDC_TITLE                       1000
 #define IDC_USERNAME                    1001
 #define IDC_PASSWORD                    1002
@@ -58,6 +59,7 @@
 #define IDC_SAVEIMMEDIATELY             1028
 #define IDC_USELOWERCASE                1028
 #define IDC_USEUPPERCASE                1029
+#define IDC_DCSHOWSPASSWORD             1029
 #define IDC_USEDIGITS                   1030
 #define IDC_USESYMBOLS                  1031
 #define IDC_EASYVISION                  1032
@@ -81,6 +83,7 @@
 #define IDC_NEW                         1046
 #define IDC_CRYPTKEY1                   1047
 #define IDC_STATIC_USERNAME             1048
+#define IDC_SIPPREF                     1050
 #define ID_FILE                         40001
 #define IDS_CAP_FILE                    40003
 #define ID_EDIT                         40004
@@ -114,14 +117,17 @@
 #define ID_FILE_MRU_ENTRY20             40058
 #define ID_POPUP                        40066
 #define IDS_CAP_POPUP                   40068
+#define ID_MENUITEM_SHOWPASSWORD        40069
+#define IDS_SHOWPWD_STATIC              40069
+#define IDS_CPUWARNING                  40070
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        137
-#define _APS_NEXT_COMMAND_VALUE         40069
-#define _APS_NEXT_CONTROL_VALUE         1049
+#define _APS_NEXT_RESOURCE_VALUE        138
+#define _APS_NEXT_COMMAND_VALUE         40070
+#define _APS_NEXT_CONTROL_VALUE         1052
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
