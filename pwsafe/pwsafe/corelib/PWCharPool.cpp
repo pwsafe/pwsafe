@@ -227,7 +227,7 @@ bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
     else has_other = true;
   }
   
-  if (has_lc && has_lc && (has_digit || has_other)) {
+  if (has_uc && has_lc && (has_digit || has_other)) {
     return true;
   } else {
     error = _T("Password should be mixed case, with at least one digit or punctuation character");
