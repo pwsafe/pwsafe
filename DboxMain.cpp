@@ -427,7 +427,10 @@ DboxMain::setupBars()
    m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle()
                             | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-   // placement code moved to OnSize - eq
+   CRect rect;
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+   m_ctlItemList.MoveWindow(&rect, TRUE);
 
 	// Set flag
    m_toolbarsSetup = TRUE;
