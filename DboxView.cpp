@@ -296,11 +296,16 @@ DboxMain::OnDelete()
 	  delete di;
 	  m_core.RemoveEntryAt(listindex);
 	  FixListIndexes(m_ctlItemList);
-	  int rc = SelectEntry(curSel);
-	  if (rc == LB_ERR) {
-	    SelectEntry(m_ctlItemList.GetItemCount() - 1);
+	  if (m_core.GetNumEntries() > 0) {
+	    int rc = SelectEntry(curSel);
+	    if (rc == LB_ERR) {
+	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+	    }
 	  }
-	  m_ctlItemList.SetFocus();
+	  if (m_ctlItemList.IsWindowVisible())
+	    m_ctlItemList.SetFocus();
+	  else // tree view visible
+	    m_ctlItemTree.SetFocus();
 	  ChangeOkUpdate();
 	}
     }
@@ -807,6 +812,8 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
    if (m_ctlItemList.IsWindowVisible()) {
      m_ctlItemList.ScreenToClient(&local);
      item = m_ctlItemList.HitTest(local);
+     if (item < 0)
+       return; // right click on empty list
      itemData = (CItemData *)m_ctlItemList.GetItemData(item);
      int rc = SelectEntry(item);
      if (rc == LB_ERR) {
