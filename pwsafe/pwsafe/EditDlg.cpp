@@ -28,7 +28,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
    ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
-   ON_BN_CLICKED(IDHELP, OnHelp)
+//   ON_BN_CLICKED(IDHELP, OnHelp)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 END_MESSAGE_MAP()
@@ -202,5 +202,16 @@ void CEditDlg::OnRandom()
    {
    }
 }
+
+
+void CEditDlg::OnHelp() 
+{
+   ::HtmlHelp(NULL,
+              "pwsafe.chm::/html/pws_edit.htm",
+              HH_DISPLAY_TOPIC, 0);
+}
+
+
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
