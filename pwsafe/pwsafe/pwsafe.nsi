@@ -196,6 +196,19 @@ Section "Program Files" ProgramFiles
   ; Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
+  ; Write the uninstall keys for Windows
+  WriteRegStr HKLM \
+	      "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
+	      "DisplayName" "Password Safe"
+  WriteRegStr HKLM \
+	      "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
+	       "UninstallString" '"$INSTDIR\Uninstall.exe"'
+  WriteRegDWORD HKLM \
+		"Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
+		"NoModify" 1
+  WriteRegDWORD HKLM \
+		"Software\Microsoft\Windows\CurrentVersion\Uninstall\PasswordSafe" \
+		"NoRepair" 1
 SectionEnd
 
 
@@ -269,9 +282,19 @@ Section "Uninstall"
   ; Delete the registry key
   DeleteRegKey HKCU "Software\Counterpane Systems\Password Safe"
 
+  ; Delete shortcuts, if created
+  RMDir /r "$SMPROGRAMS\Password Safe"
+  Delete "$DESKTOP\Password Safe.lnk"
+
+
+
 SectionEnd
 ;
 ; $Log$
+; Revision 1.3  2004/06/08 03:35:21  ronys
+; - add unstaller to control panel
+; - cleanup shortcuts on uninstall
+;
 ; Revision 1.2  2004/06/06 05:32:39  ronys
 ; release 2.03
 ;
