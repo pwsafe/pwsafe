@@ -1111,6 +1111,7 @@ DboxMain::OnSize(UINT nType,
             CDialog::OnCancel();
          }
       }
+      RefreshList();
    }
 
 	if (m_windowok) {
