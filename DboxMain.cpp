@@ -13,6 +13,7 @@
 #include "ConfirmDeleteDlg.h"
 #include "AddDlg.h"
 #include "EditDlg.h"
+#include "FindDlg.h"
 #include "PasskeyChangeDlg.h"
 #include "OptionsDlg.h"
 #include "PasskeyEntry.h"
@@ -31,7 +32,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <afxpriv.h>
-
+#include <stdlib.h> // for qsort
 //-----------------------------------------------------------------------------
 class DboxAbout
    : public CDialog
@@ -176,6 +177,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
    ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearclipboard)
    ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
+   ON_COMMAND(ID_MENUITEM_FIND, OnFind)
    ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
@@ -583,6 +585,12 @@ DboxMain::OnDelete()
 
 
 void
+DboxMain::OnFind() 
+{
+  CFindDlg::Doit(this); // create modeless or popup existing
+}
+
+void
 DboxMain::OnEdit() 
 {
    if (SelItemOk() == TRUE)
@@ -751,10 +759,9 @@ DboxMain::ClearClipboard()
       AfxMessageBox("The clipboard could not be closed");
 }
 
-
 //Finds stuff based on the .GetName() part not the entire object
 POSITION
-DboxMain::Find(const CMyString &lpszString)
+DboxMain::Find(const CMyString &str)
 {
    POSITION listPos = m_pwlist.GetHeadPosition();
    CMyString curthing;
@@ -764,13 +771,84 @@ DboxMain::Find(const CMyString &lpszString)
       m_pwlist.GetAt(listPos).GetName(curthing);
 	  CMyString title, username;
 	  SplitName(curthing, title, username);
-      if (title == lpszString)
+      if (title == str)
          break;
       else
          m_pwlist.GetNext(listPos);
    }
 
    return listPos;
+}
+
+// for qsort in FindAll
+static int compint(const void *a1, const void *a2)
+{
+  // since we're sorting a list of indices, v1 == v2 should never happen.
+  const int v1 = *(int *)a1, v2 = *(int *)a2;
+  ASSERT(v1 != v2);
+  return (v1 < v2) ? -1 : (v1 > v2) ? 1 : 0;
+}
+
+/*
+ * Finds all entries in m_pwlist that contain str in name or notes field,
+ * returns their sorted indices in m_listctrl via indices, which is
+ * assumed to be allocated by caller to DboxMain::GetNumEntries() ints.
+ * FindAll returns the number of entries that matched.
+ */
+
+int
+DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
+{
+  ASSERT(!str.IsEmpty());
+  ASSERT(indices != NULL);
+
+  POSITION listPos = m_pwlist.GetHeadPosition();
+  CMyString curname, savecurname, curnotes;
+  CString searchstr(str); // Since str is const, and we might need to MakeLower
+  const int NumEntries = GetNumEntries();
+  bool *matchVector = new bool[NumEntries];
+  int retval = 0;
+  int i;
+
+  if (!CaseSensitive)
+    searchstr.MakeLower();
+
+  for (i = 0; i < NumEntries; i++)
+    matchVector[i] = false;
+
+  while (listPos != NULL)
+  {
+      m_pwlist.GetAt(listPos).GetName(curname);
+      savecurname = curname; // keep original for finding in m_listctrl
+      m_pwlist.GetAt(listPos).GetNotes(curnotes);
+
+      if (!CaseSensitive) {
+          curname.MakeLower();
+          curnotes.MakeLower();
+      }
+      if (::strstr(curname, searchstr) || ::strstr(curnotes, searchstr)) {
+	// Find index in m_listctl
+	CMyString listTitle;
+	CMyString title, username;
+	SplitName(savecurname, title, username);
+	for (i = 0; i < NumEntries; i++) {
+	  listTitle = CMyString(m_listctrl->GetItemText(i, 0));
+	  if (listTitle == title && !matchVector[i]) {
+	    // add to indices, bump retval
+	    indices[retval++] = i;
+	    matchVector[i] = true; // needed because titles are not unique
+	    break;
+	  } // match found in m_listctrl
+	} // for
+      } // match found in m_pwlist
+      m_pwlist.GetNext(listPos);
+  }
+
+  delete[] matchVector;
+  // Sort indices
+  if (retval > 1)
+    ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
+  return retval;
 }
 
 
