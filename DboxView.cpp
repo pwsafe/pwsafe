@@ -1271,7 +1271,6 @@ DboxMain::OnAutoType()
 		ks.ResetKeyboardState();
 
 		ks.SetDelay(10);
-		ShowWindow(SW_MINIMIZE);
 
 		for(int n=0; n<AutoCmd.GetLength();n++){
 			curChar=AutoCmd[n];
@@ -1327,8 +1326,10 @@ DboxMain::OnAutoType()
 				tmp+=curChar;
 		}
 		
-		
-		
+		// Note that minimizing the window before calling ci->Get*()
+		// will cause garbage to be read if "lock on minimize" selected,
+		// since that will clear the data [Bugs item #1026630]
+		ShowWindow(SW_MINIMIZE);
 		ks.SendString(tmp);
 	}
 }
