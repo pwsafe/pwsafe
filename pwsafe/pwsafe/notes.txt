@@ -15,7 +15,7 @@ Where:
 RND is an 8 byte random value, used along with H(RND) to quickly
 verify the password.
 
-H(RND) is SHA1_init_state_zero(tempSalt|Cipher(RND));
+H(RND) is SHA1_init_state_zero(Cipher(RND)|{0x00,0x00});
        tempSalt = SHA1(RND|{0x00,0x00}|password);
        Cipher(RND) is 1000 encryptions of RND, with tempSalt as the
        encryption key. In short, a kind of HMAC dependant on the
@@ -31,6 +31,8 @@ databases...
 
 [Thanks to Nicolas Dade for refining the above description - see
 https://sourceforge.net/forum/message.php?msg_id=2387939]
+[Thanks again to Jason Diamond for correcting my correction (private
+correspondence)]
 
 SALT is the salt used for encrypting the data (you know, to protect
 against dictionary attacks)
@@ -90,6 +92,9 @@ Bugs:
 Save as... doesn't ask for new password - should it?
 
 $Log$
+Revision 1.7  2005/04/07 19:44:37  ronys
+Fixed some errors in the format descriptions, moved stuff to Misc directory, removed unused files.
+
 Revision 1.6  2004/01/28 17:32:58  ronys
 corrected header format description based on ndade's post.
 
