@@ -823,6 +823,7 @@ DboxMain::OnSize(UINT nType,
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;
 	    case PWScore::USER_CANCEL: // cancel exits program, no ifs or buts
+	      m_core.UnlockFile(m_core.GetCurFile());
 	      PostMessage(WM_CLOSE);
 	      return;
 	    default:
