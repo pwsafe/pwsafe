@@ -440,7 +440,7 @@ ThisMfcApp::InitInstance()
 
 #if !defined(POCKET_PC)
 // Removes quotation marks from file name parameters
-// as in "file with spaces.dat"
+// as in "file with spaces.pws"
 void
 ThisMfcApp::StripFileQuotes( CString& strFilename )
 {
