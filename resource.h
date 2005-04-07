@@ -9,9 +9,9 @@
 #define IDD_PASSWORDSAFE_DIALOG         102
 #define IDS_OUTPUTFILE                  102
 #define ID_SYSMENU_ALWAYSONTOP          102
-#define IDS_TEMPFILE                    103
+#define IDS_STATEDIT                    103
 #define IDS_STATCOMPANY                 105
-#define IDS_STATMESSAGE                 106
+#define IDS_STATCOPY                    106
 #define IDS_ALWAYSONTOP                 107
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128

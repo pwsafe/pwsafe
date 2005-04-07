@@ -188,6 +188,13 @@ DboxMain::OnOptions()
 		    misc.m_hotkey_enabled == TRUE);
      prefs->SetPref(PWSprefs::IntPrefs::HotKey,
 		    misc.m_hotkey_value);
+
+     /* Update status bar */
+      const UINT statustext =
+	((misc.m_doubleclickaction == PWSprefs::DoubleClickCopy) ?
+	 IDS_STATCOPY : IDS_STATEDIT);
+      m_statusBar.SetIndicators(&statustext, 1);	
+
      /*
      ** Update string in database, if necessary & possible
      */
@@ -261,7 +268,6 @@ DboxMain::OnOptions()
 
       m_core.SetDefUsername(username.m_defusername);
       m_core.SetUseDefUser(username.m_usedefuser == TRUE ? true : false);
-
    }
    else if (rc == IDCANCEL)
    {

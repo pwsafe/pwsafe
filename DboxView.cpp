@@ -142,7 +142,7 @@ DboxMain::setupBars()
 #if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
 
-  const UINT statustext = IDS_STATMESSAGE;
+  const UINT statustext = IDS_STATCOMPANY;
 
   // Add the status bar
   if (m_statusBar.Create(this))
@@ -989,14 +989,17 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
 void
 DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *) 
 {
-    const UINT statustext = IDS_STATMESSAGE;
+  const int dca = int(PWSprefs::GetInstance()->
+		      GetPref(PWSprefs::IntPrefs::DoubleClickAction));
+  const UINT statustext = ((dca == PWSprefs::DoubleClickCopy) ?
+			   IDS_STATCOPY : IDS_STATEDIT);
 
-    if (m_toolbarsSetup == FALSE)
-        return;
+  if (m_toolbarsSetup == FALSE)
+    return;
 
-    m_statusBar.SetIndicators(&statustext, 1);	
-    // Make a sunken or recessed border around the first pane
-    m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  m_statusBar.SetIndicators(&statustext, 1);	
+  // Make a sunken or recessed border around the first pane
+  m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
 }
 
 void

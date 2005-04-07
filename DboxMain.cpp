@@ -60,7 +60,16 @@ static char THIS_FILE[] = __FILE__;
 
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
 
-
+// Change the following when the database suffix will change to .pws,
+// probably when the database format changes again
+#define DOT_DAT_SUFFIX
+#ifdef DOT_DAT_SUFFIX
+#define DEFAULT_SUFFIX _T("dat")
+#define SUFFIX_FILTERS _T("Password Safe Databases (*.dat)|*.dat|")
+#else
+#define DEFAULT_SUFFIX _T("pws")
+#define SUFFIX_FILTERS _T("Password Safe Databases (*.pws; *.dat)|*.pws; *.dat|")
+#endif
 //-----------------------------------------------------------------------------
 class DboxAbout
 #if defined(POCKET_PC)
@@ -199,6 +208,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #else
    ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
    ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
+   ON_NOTIFY(NM_SETFOCUS, IDC_ITEMTREE, OnSetfocusItemlist)
+   ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMTREE, OnKillfocusItemlist)
    ON_WM_DROPFILES()
 #endif
    ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
@@ -673,13 +684,13 @@ DboxMain::OnExportV17()
     {
       m_LockDisabled = true;
       CFileDialog fd(FALSE,
-                     "dat",
+                     DEFAULT_SUFFIX,
                      m_core.GetCurFile(),
                      OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                      |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                     "Password Safe Databases (*.dat)|*.dat|"
-                     "All files (*.*)|*.*|"
-                     "|",
+                     SUFFIX_FILTERS
+                     _T("All files (*.*)|*.*|")
+                     _T("|"),
                      this);
       fd.m_ofn.lpstrTitle =
 	_T("Please name the exported database");
@@ -1100,10 +1111,10 @@ DboxMain::Open()
   while (1)
     {
       CFileDialog fd(TRUE,
-                     _T("dat"),
+                     DEFAULT_SUFFIX,
                      NULL,
                      OFN_FILEMUSTEXIST|OFN_LONGNAMES,
-                     _T("Password Safe Databases (*.dat)|*.dat|")
+                     SUFFIX_FILTERS
                      _T("Password Safe Backups (*.bak)|*.bak|")
                      _T("All files (*.*)|*.*|")
                      _T("|"),
@@ -1232,10 +1243,10 @@ DboxMain::Merge()
    while (1)
    {
       CFileDialog fd(TRUE,
-                     _T("dat"),
+                     DEFAULT_SUFFIX,
                      NULL,
                      OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                     _T("Password Safe Databases (*.dat)|*.dat|")
+                     SUFFIX_FILTERS
                      _T("Password Safe Backups (*.bak)|*.bak|")
                      _T("All files (*.*)|*.*|")
                      _T("|"),
@@ -1578,7 +1589,7 @@ DboxMain::Restore()
    }
 	
    m_core.SetCurFile(""); //Force a save as...
-   m_core.SetChanged(true); //So that the *.dat version of the file will be saved.
+   m_core.SetChanged(true); //So that the *.pws/*.dat version of the file will be saved.
 #if !defined(POCKET_PC)
    m_title = _T("Password Safe - <Untitled Restored Backup>");
 #endif
@@ -1620,11 +1631,11 @@ DboxMain::SaveAs()
    while (1)
    {
       CFileDialog fd(FALSE,
-                     _T("dat"),
+                     DEFAULT_SUFFIX,
                      m_core.GetCurFile(),
                      OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                      |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                     _T("Password Safe Databases (*.dat)|*.dat|")
+                     SUFFIX_FILTERS
                      _T("All files (*.*)|*.*|")
                      _T("|"),
                      this);
@@ -1657,7 +1668,8 @@ DboxMain::SaveAs()
      MessageBox(temp, _T("File write error"), MB_OK|MB_ICONWARNING);
      return PWScore::CANT_OPEN_FILE;
    }
-   m_core.UnlockFile(m_core.GetCurFile());
+   if (!m_core.GetCurFile().IsEmpty())
+     m_core.UnlockFile(m_core.GetCurFile());
    m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
    m_title = _T("Password Safe - ") + m_core.GetCurFile();
