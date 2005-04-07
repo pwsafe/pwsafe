@@ -48,15 +48,17 @@ shortcomings:
    field values are encoded in ASCII (not Unicode), so that they may
    be displayed correctly on a 1.x application. The actual values of
    these fields in the Format Description Block are as follows:
-   Name:	"!!!Version 2 File Format!!!"
+   Name:	"!!!Version 2 File Format!!!" (Type byte == 0)
    Password:	"2.0" - corresponds to the major and minor version
-		numbers of this file format
+		numbers of this file format (Type byte as described
+                below for Password field).
    Notes:	Used to store preferences: String is of the form
 		"X nn vv X nn vv..." Where X=[BIS] for binary,
 		integer and string, resp., nn is the numeric value of
 		the enum, and vv is the value, {1.0} for bool,
 		unsigned integer for int, and quoted string for
-		String. Only values != default are stored.
+		String. Only values != default are stored (Type byte
+		as described below for Notes field).
 		See PWSprefs.cpp for more details.
 
    The Type byte for the above fields is 0.
@@ -65,10 +67,14 @@ shortcomings:
    records. As for version 1.x, the order of records has no
    meaning. Each record consists of a fixed number of fields, with
    empty fields having a length of 0 in their first block.  Textual
-   data will be stored in Unicode (wchar_t). Numerical data will be
-   stored in network byte order. Timestamps will be stored as time_t
-   (in network byte order), and refer to local time (I don't think
-   timezones are a consideration for our needs).
+   data will be stored in Unicode (wchar_t) [See Note 1]. Numerical
+   data will be stored in network byte order. Timestamps will be
+   stored as time_t (in network byte order), and refer to local time
+   (I don't think timezones are a consideration for our needs).
+
+[Note 1] In database format 2.0, Unicode is *NOT* supported. Data is
+   stored one byte per character, in the PC's native encoding. UTF-8,
+   not Unicode, will be supported in a future version.
 
 5. The fields for each record for version 2.0 are as follows:
 
@@ -125,6 +131,9 @@ decide to drop the UUID, or move it to the last field?).
    name.
 
 $Log$
+Revision 1.7  2005/04/07 19:44:37  ronys
+Fixed some errors in the format descriptions, moved stuff to Misc directory, removed unused files.
+
 Revision 1.6  2004/09/01 18:56:31  ronys
 Documented 2.05 preference storage format, added modification time.
 
