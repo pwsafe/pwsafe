@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/Pwsprefs.h" // for DoubleClickAction enums
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -56,6 +57,16 @@ END_MESSAGE_MAP()
 BOOL COptionsMisc::OnInitDialog() 
 {
   CPropertyPage::OnInitDialog();
+
+  CButton *pBCopyRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_COPIES);
+  CButton *pBEditRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_EDITS);
+  ASSERT(pBCopyRB != NULL && pBEditRB != NULL);
+
+  if (m_doubleclickaction == PWSprefs::DoubleClickCopy) {
+    pBCopyRB->SetCheck(1); pBEditRB->SetCheck(0);
+  } else {
+    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(1);
+  }
 
   m_hotkey.SetHotKey(LOWORD(m_hotkey_value),HIWORD(m_hotkey_value));
   if (m_hotkey_enabled == FALSE)
