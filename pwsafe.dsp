@@ -447,11 +447,23 @@ SOURCE=.\psafetxt.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=".\toolbar1-greyedout.bmp"
+# End Source File
+# Begin Source File
+
 SOURCE=.\toolbar1.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=".\toolbar2-greyedout.bmp"
+# End Source File
+# Begin Source File
+
 SOURCE=.\toolbar2.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=".\toolbar3-greyedout.bmp"
 # End Source File
 # Begin Source File
 

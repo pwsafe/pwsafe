@@ -10,15 +10,15 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-This is a maintenance release, adding XXX, and fixing a
-couple of bugs.
+This is a maintenance release, adding a couple of features, and fixing
+some minor bugs.
 
 Bugs fixed in 2.10:
 ===================
 [1123373, 1075046] Uninstall will only remove installed files, and
 will delete the installation directory if and only if it's empty.
 [1151575, 1151581] Don't try to unlock empty filename in OnDestroy
-(ASSERT failed in debug version - potential problem in released
+(ASSERT failed in debug version - potential problem in release
 version)
 [1076377] Entering the wrong password 3 times no longer allows you to
 create an empty database with the same name.
@@ -28,9 +28,9 @@ database with name of existing database.
 changes or multiple screens used between invocations.
 [1145747] The import delimiter is now changeable (Thanks to Roger
 Hakansson for the patch).
-[1162044]  URL "Browse to" feature now documented
-[ ] XXX TODO XXX add support for .pws suffix in addition to .dat,
-register former to application.
+[1162044] URL "Browse to" feature now documented.
+[1165681] Lock file now deleted if user cancels in unlock dialog box.
+[1170180] Status bar now shows correct text.
 
 New Features for 2.10:
 ======================
@@ -101,6 +101,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.19  2005/04/08 09:54:50  ronys
+Added greyed-out bitmaps for readonly, ready for 2.10
+
 Revision 1.18  2005/04/06 17:52:38  ronys
 [1162048, 726521] Hotkey restore
 

@@ -39,6 +39,7 @@
 #define IDD_USERNAMEENTRY               184
 #define IDD_PASSKEYENTRY                185
 #define IDR_MAINBAR                     187
+#define IDR_MAINBAR_RO                  987
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
 #define IDD_PS_SECURITY                 194
@@ -52,6 +53,8 @@
 #define IDR_TOOLBAR1                    208
 #define IDB_TOOLBAR1                    208
 #define IDB_TOOLBAR2                    217
+#define IDB_TOOLBAR1_RO                 908
+#define IDB_TOOLBAR2_RO                 917
 #define IDR_POPTRAY                     218
 #define IDI_TRAY                        219
 #define IDI_MBSTOPICON                  221
