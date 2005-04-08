@@ -155,7 +155,7 @@ DboxMain::setupBars()
   // Add the ToolBar.
   if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
                 WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-      !m_wndToolBar.LoadToolBar(IDR_MAINBAR))
+      !m_wndToolBar.LoadToolBar(m_IsReadOnly ?IDR_MAINBAR_RO : IDR_MAINBAR))
     {
       TRACE0("Failed to create toolbar\n");
       return;      // fail to create
@@ -1213,17 +1213,17 @@ DboxMain::SetToolbar(int menuItem)
                 NumBits = pDC->GetDeviceCaps(12 /*BITSPIXEL*/);
             }
             if (NumBits >= 32) {
-                bmTemp.LoadBitmap(IDR_MAINBAR);
+                bmTemp.LoadBitmap(m_IsReadOnly ? IDR_MAINBAR_RO : IDR_MAINBAR);
                 Flags = ILC_MASK | ILC_COLOR32;
             } else {
-                bmTemp.LoadBitmap(IDB_TOOLBAR1);
+                bmTemp.LoadBitmap(m_IsReadOnly ? IDB_TOOLBAR1_RO : IDB_TOOLBAR1);
                 Flags = ILC_MASK | ILC_COLOR8;
                 Background = RGB( 196,198,196 );
             }
             break;
         }
         case ID_MENUITEM_OLD_TOOLBAR:
-            bmTemp.LoadBitmap(IDB_TOOLBAR2);
+            bmTemp.LoadBitmap(m_IsReadOnly ? IDB_TOOLBAR2_RO : IDB_TOOLBAR2);
             Flags = ILC_MASK | ILC_COLOR8;
             break;
         default:
