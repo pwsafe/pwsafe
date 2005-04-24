@@ -39,7 +39,15 @@
 
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
+#if _MSC_VER > 1200 // compile right under .Net
+#include <strstream>
+#define OSTRSTREAM std::ostrstream
+#define ENDS std::ends
+#else
 #include <strstrea.h>
+#define OSTRSTREAM ostrstream
+#define ENDS ends
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -818,14 +826,14 @@ DboxMain::OnImportText()
       case PWScore::SUCCESS:
       default:
 	{
-	  ostrstream os;
+	  OSTRSTREAM os;
 	  os << "Read " << numImported << " record";
 	  if (numImported != 1) os << "s";
 	  if (numSkipped != 0) {
 	    os << "\nCouldn't read " << numSkipped << " record";
 	    if (numSkipped > 1) os << "s";
 	  }
-	  os << ends;
+	  os << ENDS;
 	  CMyString temp(os.str());
 	  MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
 	}
