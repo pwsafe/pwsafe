@@ -525,7 +525,12 @@ DboxMain::OnOK()
 void
 DboxMain::OnCancel()
 {
-   OnOK();
+  // If system tray is enabled, cancel (X on title bar) closes
+  // window, else exit application
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+    ShowWindow(SW_MINIMIZE);
+  else
+    OnOK();
 }
 
 void DboxMain::UpdateListItemTitle(int lindex, const CString &newTitle)
