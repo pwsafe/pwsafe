@@ -1348,30 +1348,25 @@ DboxMain::OnAutoType()
 	  case 'p':
 	    tmp+=ci->GetPassword();
 	    break;
-	  case 'd':
+	  case 'd': {
 	    // Delay is going to change - send what we have with old delay
 	    ks.SendString(tmp);
 	    // start collecting new delay
 	    tmp="";
-	    int c;
-	    int newdelay;
+	    int newdelay = 0;
+	    int gNumIts = 0;
 						
-	    newdelay=0;
-	    
-	    for(n++,c=1;n<N && c < 1000;c*=10,n++)
-	      {
-							
-		if(isdigit(AutoCmd[n])){
-		  newdelay+=c*(AutoCmd[n]-'0');
-		} else {
-		  break;
-		}		
-	      }
-	    n--;
-								
+	    for(n++; n<N && (gNumIts < 3); ++gNumIts, n++)
+	      if(isdigit(AutoCmd[n])){
+		newdelay *= 10;
+		newdelay += (AutoCmd[n]-'0');
+	      } else
+		break; // for loop
+	    n--;							
 	    ks.SetAndDelay(newdelay);
 
-	    break;
+	    break; // case
+	  }
 	  default:
 	    tmp+="\\"+curChar;
 	    break;
