@@ -122,7 +122,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_LockDisabled(false), m_IsReadOnly(false)
+     m_core(app.m_core), m_LockDisabled(false), m_IsReadOnly(false),
+     m_clipboard_set(false)
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
@@ -529,56 +530,120 @@ void DboxMain::OnBrowse()
   }
 }
 
+void DboxMain::ToClipboard(const CMyString &data)
+{
+  uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
+  hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
+  // {kjp} fix to use UNICODE safe string definitions and string copy functions
+  LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
+		
+  strCopy( pGlobalLock, data);
+		
+  GlobalUnlock(hGlobalMemory);	
+		
+  if (OpenClipboard() == TRUE) {
+    if (EmptyClipboard()!=TRUE) {
+      DBGMSG("The clipboard was not emptied correctly");
+    }
+    if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL) {
+      DBGMSG("The data was not pasted into the clipboard correctly");
+      GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
+    } else {
+      // identify data in clipboard as ours, so as not to clear the wrong data later
+      // of course, we don't want an extra copy of a password floating around
+      // in memory, so we'll use the hash
+      const char *str = (const char *)data;
+      SHA1_CTX ctx;
+      SHA1Init(&ctx);
+      SHA1Update(&ctx, (const unsigned char *)str, data.GetLength());
+      SHA1Final(m_clipboard_digest, &ctx);
+      m_clipboard_set = true;
+    }
+    if (CloseClipboard() != TRUE) {
+      DBGMSG("The clipboard could not be closed");
+    }
+  } else {
+    DBGMSG("The clipboard could not be opened correctly");
+    GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
+  }
+}
+
 void
 DboxMain::OnCopyPassword() 
 {
-	bool	bCopyPassword = true;	// will get set to false if user hits cancel
+  if (!SelItemOk()) 
+    return;
 
-	if (!SelItemOk()) 
-		return;
+  //Remind the user about clipboard security
+  CClearQuestionDlg clearDlg(this);
+  if (clearDlg.m_dontaskquestion == FALSE &&
+      clearDlg.DoModal() == IDCANCEL)
+    return;
 
-	//Remind the user about clipboard security
-	CClearQuestionDlg clearDlg(this);
-	if (clearDlg.m_dontaskquestion == FALSE)
-	{
-		int rc = clearDlg.DoModal();
-		if (rc == IDOK)
-		{
-		}
-		else if (rc == IDCANCEL)
-		{
-			bCopyPassword = false;
-		}
-	}
+  CItemData *ci = getSelectedItem();
+  ASSERT(ci != NULL);
+  const CMyString curPassString = ci->GetPassword();
 
-	if ( !bCopyPassword )
-		return;
-
-	CItemData *ci = getSelectedItem();
-	ASSERT(ci != NULL);
-	CMyString curPassString = ci->GetPassword();
-
-		
-	uGlobalMemSize = (curPassString.GetLength() + 1) * sizeof(TCHAR);
-	hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-	// {kjp} fix to use UNICODE safe string definitions and string copy functions
-	LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
-		
-	strCopy( pGlobalLock, curPassString );
-		
-	GlobalUnlock(hGlobalMemory);	
-		
-	if (OpenClipboard() == TRUE) {
-		if (EmptyClipboard()!=TRUE)
-			AfxMessageBox(_T("The clipboard was not emptied correctly"));
-		if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL)
-			AfxMessageBox(_T("The data was not pasted into the clipboard correctly"));
-		if (CloseClipboard() != TRUE)
-			AfxMessageBox(_T("The clipboard could not be closed"));
-	} else {
-		AfxMessageBox(_T("The clipboard could not be opened correctly"));
-	}
+  ToClipboard(curPassString);
 }
+
+void
+DboxMain::OnCopyUsername() 
+{
+  if (SelItemOk() != TRUE)
+    return;
+
+  CItemData *ci = getSelectedItem();
+  ASSERT(ci != NULL);
+  const CMyString username = ci->GetUser();
+
+  if (username.IsEmpty()) {
+    AfxMessageBox(_T("There is no username associated with this item."));
+  } else {
+    ToClipboard(username);
+  }
+}
+
+void
+DboxMain::ClearClipboard()
+{
+  // Clear the clipboard IFF its value is the same as last set by this app.
+  if (!m_clipboard_set)
+    return;
+  if (OpenClipboard() != TRUE) {
+    DBGMSG("The clipboard could not be opened correctly");
+    return;
+  }
+  if (IsClipboardFormatAvailable(CLIPBOARD_TEXT_FORMAT) != 0) {
+    HGLOBAL hglb = GetClipboardData(CLIPBOARD_TEXT_FORMAT); 
+    if (hglb != NULL) {
+      LPTSTR lptstr = (LPTSTR)GlobalLock(hglb); 
+      if (lptstr != NULL) {
+	// check identity of data in clipboard
+	unsigned char digest[20];
+	SHA1_CTX ctx;
+	SHA1Init(&ctx);
+	SHA1Update(&ctx, (const unsigned char *)lptstr, strLength(lptstr));
+	SHA1Final(digest, &ctx);
+	if (memcmp(digest, m_clipboard_digest, sizeof(digest)) == 0) {
+	  trashMemory( lptstr, strLength(lptstr));
+	  GlobalUnlock(hglb);
+	  if (EmptyClipboard() == TRUE) {
+	    m_clipboard_set = false;
+	  } else {
+	    DBGMSG("The clipboard was not emptied correctly");
+	  }
+	} else { // hashes match 
+	  GlobalUnlock(hglb);
+	}
+      } // lptstr != NULL
+    } // hglb != NULL
+  } // IsClipboardFormatAvailable
+  if (CloseClipboard() != TRUE) {
+    DBGMSG("The clipboard could not be closed");
+  }
+}
+
 
 void
 DboxMain::OnFind() 
@@ -597,32 +662,6 @@ DboxMain::OnFind()
   m_LockDisabled = false;
 }
 
-
-
-void
-DboxMain::ClearClipboard()
-{
-   if (OpenClipboard() != TRUE)
-      AfxMessageBox(_T("The clipboard could not be opened correctly"));
-
-   if (IsClipboardFormatAvailable(CLIPBOARD_TEXT_FORMAT) != 0)
-   {
-      HGLOBAL hglb = GetClipboardData(CLIPBOARD_TEXT_FORMAT); 
-      if (hglb != NULL)
-      {
-         LPTSTR lptstr = (LPTSTR)GlobalLock(hglb); 
-         if (lptstr != NULL)
-         {
-			trashMemory( lptstr, strLength(lptstr) );
-            GlobalUnlock(hglb); 
-         } 
-      } 
-   }
-   if (EmptyClipboard()!=TRUE)
-      AfxMessageBox(_T("The clipboard was not emptied correctly"));
-   if (CloseClipboard() != TRUE)
-      AfxMessageBox(_T("The clipboard could not be closed"));
-}
 
 
 // Change the master password for the database.
@@ -1004,48 +1043,6 @@ void DboxMain::OnPasswordSafeWebsite()
 #endif
   }
 
-}
-
-
-void
-DboxMain::OnCopyUsername() 
-{
-   if (SelItemOk() != TRUE)
-      return;
-
-   CItemData *ci = getSelectedItem();
-   ASSERT(ci != NULL);
-   CMyString username = ci->GetUser();
-
-   if (username.IsEmpty())
-   {
-      AfxMessageBox(_T("There is no username associated with this item."));
-   }
-   else
-   {
-      uGlobalMemSize = (username.GetLength() + 1) * sizeof(TCHAR);
-      hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE,
-                                  uGlobalMemSize);
-      LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
-	  strCopy( pGlobalLock, username );
-      GlobalUnlock(hGlobalMemory);	
-		
-      if (OpenClipboard() == TRUE)
-      {
-         if (EmptyClipboard()!=TRUE)
-            AfxMessageBox(_T("The clipboard was not emptied correctly"));
-         if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL)
-            AfxMessageBox(_T("The data was not pasted into the clipboard correctly"));
-         if (CloseClipboard() != TRUE)
-            AfxMessageBox(_T("The clipboard could not be closed"));
-      }
-      else
-      {
-         AfxMessageBox(_T("The clipboard could not be opened correctly"));
-      }
-      //No need to remind the user about clipboard security
-      //as this is only a username
-   }
 }
 
 

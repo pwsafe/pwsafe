@@ -485,13 +485,11 @@ DboxMain::OnOK()
   prefs->SetPref(PWSprefs::IntPrefs::SortedColumn, m_iSortedColumn);
   prefs->SetPref(PWSprefs::BoolPrefs::SortAscending, m_bSortAscending);
 
-  if (m_core.IsChanged())
-    {
+  if (m_core.IsChanged()) {
       rc = MessageBox(_T("Do you want to save changes to the password list?"),
 		      AfxGetAppName(),
 		      MB_ICONQUESTION|MB_YESNOCANCEL);
-      switch (rc)
-	{
+      switch (rc) {
 	case IDCANCEL:
 	  return;
 	case IDYES:
@@ -499,17 +497,19 @@ DboxMain::OnOK()
 	  if (rc2 != PWScore::SUCCESS)
             return;
 	case IDNO:
-	  ClearClipboard();
-	  app.m_pMainWnd = NULL;
 	  break;
-	}
-    }
-  else
-    {
-      if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
-	ClearClipboard();
-      app.m_pMainWnd = NULL;
-    }
+      }
+  } // core.IsChanged()
+
+  // Clear clipboard on Exit? If the app is minimized and the systemtray
+  // is enabled, we should do so, regardless of the DontAskMinimizeClearYesNo
+  // pref
+  if (!IsWindowVisible() &&
+      prefs->GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {
+    ClearClipboard();
+  } else if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
+    ClearClipboard();
+  app.m_pMainWnd = NULL;
 
   ClearData();
 
