@@ -1711,7 +1711,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    * a blank filename, which will disable passkey entry and the OK button
    */
 
-  CPasskeyEntry dbox_pkentry(this, filename, first);
+  CPasskeyEntry dbox_pkentry(this, filename, m_IsReadOnly, first);
   int rc = dbox_pkentry.DoModal();
 
   if (rc == IDOK) {

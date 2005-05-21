@@ -24,6 +24,7 @@ public:
 
    CPasskeyEntry(CWnd* pParent,
                  const CString& a_filespec,
+		 bool forceReadOnly = false,
                  bool first = false); 
 
    int GetStatus() const {return m_status;}

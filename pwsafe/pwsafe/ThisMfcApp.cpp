@@ -82,7 +82,7 @@ ThisMfcApp::~ThisMfcApp()
 #if !defined(POCKET_PC)
 static void Usage()
 {
-  AfxMessageBox(_T("Usage: PasswordSafe [password database]\n")
+  AfxMessageBox(_T("Usage: PasswordSafe [-r] [password database]\n")
 		_T("or PasswordSafe [-e|-d] filename"));
 }
 
@@ -292,12 +292,12 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 BOOL
 ThisMfcApp::InitInstance()
 {
-   /*
-    * It's always best to start at the beginning.  [Glinda, Witch of the North]
-	*/
+  /*
+   * It's always best to start at the beginning.  [Glinda, Witch of the North]
+   */
 	
 #if defined(POCKET_PC)
-	SHInitExtraControls();
+  SHInitExtraControls();
 #endif
 
   /*
@@ -313,129 +313,132 @@ ThisMfcApp::InitInstance()
     Of course, this is legacy, and will go away once the registry is fully replaced
     by the in-database preference storage. -- ronys
   */
-   CString companyname("Counterpane Systems");
-   SetRegistryKey(companyname);
+  CString companyname("Counterpane Systems");
+  SetRegistryKey(companyname);
 
-   int	nMRUItems = PWSprefs::GetInstance()->
-     GetPref(PWSprefs::IntPrefs::MaxMRUItems);
-   m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );;
-	m_pMRU->ReadList();
+  int	nMRUItems = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::IntPrefs::MaxMRUItems);
+  m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );;
+  m_pMRU->ReadList();
 	
-	DboxMain dbox(NULL);
+  DboxMain dbox(NULL);
 	
-	/*
-	* Command line processing:
-	* Historically, it appears that if a filename was passed as a commadline argument,
-	* the application would prompt the user for the password, and the encrypt or decrypt
-	* the named file, based on the file's suffix. Ugh.
-	*
-	* What I'll do is as follows:
-	* If a file is given in the command line, it is used as the database, overriding the
-	* registry value. This will allow the user to have several databases, say, one for work
-	* and one for personal use, and to set up a different shortcut for each.
-	*
-	* I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
-	* {kjp} ... and I've removed all of it from the Pocket PC build.
-	*/
+  /*
+   * Command line processing:
+   * Historically, it appears that if a filename was passed as a commadline argument,
+   * the application would prompt the user for the password, and the encrypt or decrypt
+   * the named file, based on the file's suffix. Ugh.
+   *
+   * What I'll do is as follows:
+   * If a file is given in the command line, it is used as the database, overriding the
+   * registry value. This will allow the user to have several databases, say, one for work
+   * and one for personal use, and to set up a different shortcut for each.
+   *
+   * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
+   * {kjp} ... and I've removed all of it from the Pocket PC build.
+   */
 	
 #if !defined(POCKET_PC)
-	if (m_lpCmdLine[0] != '\0') {
-		CString args = m_lpCmdLine;
+  if (m_lpCmdLine[0] != '\0') {
+    CString args = m_lpCmdLine;
 		
-		if (args[0] != _T('-')) {
-			StripFileQuotes( args );
+    if (args[0] != _T('-')) {
+      StripFileQuotes( args );
 			
-			if (CheckFile(args)) {
-				dbox.SetCurFile(args);
-			} else {
-				return FALSE;
-			}
-		} else { // here if first char of arg is '-'
-			// first, let's check that there's a second arg
-			CString fn = args.Right(args.GetLength()-2);
-			fn.TrimLeft();
-
-			StripFileQuotes( fn );
-
-			if (fn.IsEmpty() || !CheckFile(fn)) {
-				Usage();
-				return FALSE;
-			}
-			
-			CMyString passkey;
-			if (args[1] == 'e' || args[1] == 'E' || args[1] == 'd' || args[1] == 'D') {
-				// get password from user if valid flag given. If note, default below will
-				// pop usage message
-				CCryptKeyEntry dlg(NULL);
-				int nResponse = dlg.DoModal();
-				
-				if (nResponse==IDOK) {
-					passkey = dlg.m_cryptkey1;
-				} else {
-					return FALSE;
-				}
-			}
-			BOOL status;
-			switch (args[1]) {
-			case 'e': case 'E': // do encrpytion
-				status = EncryptFile(fn, passkey);
-				if (!status) {
-	   AfxMessageBox(_T("Encryption failed"));
-				}
-				break;
-			case 'd': case 'D': // do decryption
-				status = DecryptFile(fn, passkey);
-				if (!status) {
-					// nothing to do - DecryptFile displays its own error messages
-				}
-				break;
-			default:
-				Usage();
-				return FALSE;
-			} // switch
-			return FALSE;
-		} // else
-	} // m_lpCmdLine[0] != '\0';
-#endif
-	
-	  /*
-	  * normal startup
-	*/
-	
-	/*
-	Here's where PWS currently does DboxMain, which in turn will do
-	the initial PasskeyEntry (the one that looks like a splash screen).
-	This makes things very hard to control.
-	The app object (here) should instead do the initial PasskeyEntry,
-	and, if successful, move on to DboxMain.  I think. {jpr}
-	*/
-	m_maindlg = &dbox;
-	m_pMainWnd = m_maindlg;
-	
-	HICON stIcon = app.LoadIcon(IDI_TRAY);
-	ASSERT(stIcon != NULL);
-	m_TrayIcon.SetTarget(&dbox);
-	if (!m_TrayIcon.Create(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-			       stIcon, IDR_POPTRAY))
-	  return FALSE;
-
-	// Set up an Accelerator table
-#if !defined(POCKET_PC)
-	m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
-		MAKEINTRESOURCE(IDR_ACCS));
-#endif
-	//Run dialog
-	(void) dbox.DoModal();
-	
-	/*
-	note that we don't particularly care what the response was
-	*/
-	
-	
-	// Since the dialog has been closed, return FALSE so that we exit the
-	//	application, rather than start the application's message pump.
-	
+      if (CheckFile(args)) {
+	dbox.SetCurFile(args);
+      } else {
 	return FALSE;
+      }
+    } else { // here if first char of arg is '-'
+      // first, let's check that there's a second arg
+      CString fn = args.Right(args.GetLength()-2);
+      fn.TrimLeft();
+
+      StripFileQuotes( fn );
+
+      if (args[1] != 'r' && args[1] != 'R' &&
+	  (fn.IsEmpty() || !CheckFile(fn))) {
+	Usage();
+	return FALSE;
+      }
+			
+      CMyString passkey;
+      if (args[1] == 'e' || args[1] == 'E' || args[1] == 'd' || args[1] == 'D') {
+	// get password from user if valid flag given. If note, default below will
+	// pop usage message
+	CCryptKeyEntry dlg(NULL);
+	int nResponse = dlg.DoModal();
+				
+	if (nResponse==IDOK) {
+	  passkey = dlg.m_cryptkey1;
+	} else {
+	  return FALSE;
+	}
+      }
+      BOOL status;
+      switch (args[1]) {
+      case 'e': case 'E': // do encrpytion
+	status = EncryptFile(fn, passkey);
+	if (!status) {
+	  AfxMessageBox(_T("Encryption failed"));
+	}
+	return TRUE;
+      case 'd': case 'D': // do decryption
+	status = DecryptFile(fn, passkey);
+	if (!status) {
+	  // nothing to do - DecryptFile displays its own error messages
+	}
+	return TRUE;
+      case 'r': case 'R':
+	dbox.SetReadOnly(true);
+	break;
+      default:
+	Usage();
+	return FALSE;
+      } // switch
+    } // else
+  } // m_lpCmdLine[0] != '\0';
+#endif
+	
+  /*
+   * normal startup
+   */
+	
+  /*
+    Here's where PWS currently does DboxMain, which in turn will do
+    the initial PasskeyEntry (the one that looks like a splash screen).
+    This makes things very hard to control.
+    The app object (here) should instead do the initial PasskeyEntry,
+    and, if successful, move on to DboxMain.  I think. {jpr}
+  */
+  m_maindlg = &dbox;
+  m_pMainWnd = m_maindlg;
+	
+  HICON stIcon = app.LoadIcon(IDI_TRAY);
+  ASSERT(stIcon != NULL);
+  m_TrayIcon.SetTarget(&dbox);
+  if (!m_TrayIcon.Create(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
+			 stIcon, IDR_POPTRAY))
+    return FALSE;
+
+  // Set up an Accelerator table
+#if !defined(POCKET_PC)
+  m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
+				    MAKEINTRESOURCE(IDR_ACCS));
+#endif
+  //Run dialog
+  (void) dbox.DoModal();
+	
+  /*
+    note that we don't particularly care what the response was
+  */
+	
+	
+  // Since the dialog has been closed, return FALSE so that we exit the
+  //	application, rather than start the application's message pump.
+	
+  return FALSE;
 }
 
 #if !defined(POCKET_PC)

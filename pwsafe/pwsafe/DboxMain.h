@@ -72,6 +72,7 @@ public:
     void SetChanged(bool changed); // for MyTreeCtrl
     void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
     void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
+    void SetReadOnly(bool state) { m_IsReadOnly = state;}
 
     //{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
