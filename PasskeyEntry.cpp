@@ -31,14 +31,14 @@
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec,
-                             bool first)
+			     bool forceReadOnly, bool first)
    : super(first ? CPasskeyEntry::IDD : CPasskeyEntry::IDD_BASIC,
              pParent),
      m_first(first),
      m_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID),
-     m_ReadOnly(FALSE)
+     m_ReadOnly(forceReadOnly)
 {
    const int FILE_DISP_LEN = 45;	
 
@@ -162,8 +162,7 @@ CPasskeyEntry::OnInitDialog(void)
 
 #if defined(POCKET_PC)
 /************************************************************************/
-/* Restore the state of word completion when the password field loses   */
-/* focus.                                                               */
+/* Restore the state of word completion when the password field loses   *//* focus.                                                               */
 /************************************************************************/
 void CPasskeyEntry::OnPasskeyKillfocus()
 {
