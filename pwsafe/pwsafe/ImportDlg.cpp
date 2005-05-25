@@ -21,8 +21,10 @@ CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CImportDlg)
 	m_groupName = _T("Imported");
 	m_Separator = _T("|");
+	m_defimpdelim = _T("^");
 	m_tab = 0;
 	m_group = 0;
+	m_querysetimpdelim = 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -36,7 +38,12 @@ void CImportDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MaxChars(pDX, m_Separator, 1);
 	DDX_Radio(pDX, IDC_TAB, m_tab);
 	DDX_Radio(pDX, IDC_NO_GROUP, m_group);
+	DDX_Check(pDX, IDC_QUERYSETIMPDELIM, m_querysetimpdelim);
+	DDX_Text(pDX, IDC_DEFIMPDELIM, m_defimpdelim);
+	DDV_MaxChars(pDX, m_defimpdelim, 1);
 	//}}AFX_DATA_MAP
+	if (m_querysetimpdelim == 1)
+		DDV_CheckImpDelimiter(pDX, m_defimpdelim);
 }
 
 
@@ -47,12 +54,34 @@ BEGIN_MESSAGE_MAP(CImportDlg, CDialog)
 	ON_BN_CLICKED(IDC_TAB, OnTab)
 	ON_BN_CLICKED(IDC_NO_GROUP, OnNoGroup)
 	ON_BN_CLICKED(IDC_YES_GROUP, OnYesGroup)
+	ON_BN_CLICKED(IDC_QUERYSETIMPDELIM, OnSetMultilineImportNotesDelimiter)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
+// Public functions
+
+void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter)
+{
+  if (pDX->m_bSaveAndValidate) {
+    if (delimiter.IsEmpty()) {
+      AfxMessageBox(_T("If requested, then a delimiter character must be entered!"));
+      pDX->Fail();
+      return;
+    }
+
+    if (delimiter[0] == '"') {
+      AfxMessageBox(_T("As the double quotation character is used to delimit the whole notes field, it cannot be used to delimit multiple lines within it. Please enter another character."));
+      pDX->Fail();
+      return;
+    }
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////
 // CImportDlg message handlers
+
 
 void CImportDlg::OnOther() 
 {
@@ -84,6 +113,20 @@ void CImportDlg::OnYesGroup()
   m_group=1;
 }
 
+void CImportDlg::OnSetMultilineImportNotesDelimiter() 
+{
+   if (((CButton*)GetDlgItem(IDC_QUERYSETIMPDELIM))->GetCheck() == 1)
+   {
+      GetDlgItem(IDC_DEFIMPDELIM)->EnableWindow(TRUE);
+	  m_querysetimpdelim = 1;
+   }
+   else
+   {
+      GetDlgItem(IDC_DEFIMPDELIM)->EnableWindow(FALSE);
+	  m_querysetimpdelim = 0;
+   }
+}
+
 void CImportDlg::OnHelp() 
 {
    ::HtmlHelp(NULL,
@@ -108,5 +151,9 @@ void CImportDlg::OnOK()
     UpdateData(FALSE);
   }
   
+  if (m_querysetimpdelim == 1) {
+	  GetDlgItemText(IDC_DEFIMPDELIM,m_defimpdelim);
+  }
+
   CDialog::OnOK();
 }

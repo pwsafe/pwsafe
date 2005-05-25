@@ -35,6 +35,7 @@ public:
 // Implementation
 protected:
 
+	virtual BOOL OnInitDialog();
 	// Generated message map functions
 	//{{AFX_MSG(CExportTextDlg)
 	virtual void OnOK();

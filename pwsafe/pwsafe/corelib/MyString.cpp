@@ -157,12 +157,6 @@ operator+(LPCTSTR lpsz, const CMyString& string)
    return s;
 }
 
-CMyString
-CMyString::Mid(int nFirst, int nCount) const
-{
-   return m_mystring.Mid(nFirst,nCount);
-}
-
 TCHAR
 CMyString::operator[](int nIndex) const
 {
@@ -230,6 +224,36 @@ CMyString::Find(LPCTSTR lpszSub) const
    return m_mystring.Find(lpszSub);
 }
 
+int
+CMyString::Find(TCHAR ch, int nstart) const
+{
+   return m_mystring.Find(ch, nstart);
+}
+
+int
+CMyString::Find(LPCTSTR lpszSub, int nstart) const
+{
+   return m_mystring.Find(lpszSub, nstart);
+}
+
+int
+CMyString::Replace(TCHAR chOld, TCHAR chNew) 
+{
+   return m_mystring.Replace(chOld,chNew);
+}
+
+int
+CMyString::Replace(LPCTSTR lpszOld, LPCTSTR lpszNew) 
+{
+   return m_mystring.Replace(lpszOld,lpszNew);
+}
+
+int
+CMyString::Remove(TCHAR ch) 
+{
+   return m_mystring.Remove(ch);
+}
+
 //Can't properly trash the memory here, so it is better to just return a CString
 CString
 CMyString::Left(int nCount) const
@@ -242,6 +266,20 @@ CString
 CMyString::Right(int nCount) const
 {
    return m_mystring.Right(nCount);
+}
+
+//Can't properly trash the memory here, so it is better to just return a CString
+CString
+CMyString::Mid(int nFirst) const
+{
+   return m_mystring.Mid(nFirst);
+}
+
+//Can't properly trash the memory here, so it is better to just return a CString
+CString
+CMyString::Mid(int nFirst, int nCount) const
+{
+   return m_mystring.Mid(nFirst, nCount);
 }
 
 bool
@@ -282,3 +320,4 @@ operator!=(LPCTSTR s1, const CMyString& s2)
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+

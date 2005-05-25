@@ -102,6 +102,17 @@ CItemData::GetNotes() const
 }
 
 CMyString
+CItemData::GetNotes(char delimiter) const
+{
+   CMyString ret;
+   GetField(m_Notes, ret);
+   ret.Replace('\n', delimiter);
+   ret.Remove('\r');
+
+   return ret;
+}
+
+CMyString
 CItemData::GetGroup() const
 {
    CMyString ret;
@@ -120,12 +131,36 @@ CMyString CItemData::GetPlaintext(char separator) const
   CMyString ret;
   CMyString title;
   CMyString group(GetGroup());
-  if (group.IsEmpty())
+  
+	// a '.' in title gets Import confused re: Groups
     title = GetTitle();
-  else
-    title = group + '.' + GetTitle();
+	title.Replace('.', '\b');
+
+  if (!group.IsEmpty())
+    title = group + '.' + title;
+  
   ret = title + separator + GetUser() + separator +
     GetPassword() + separator + "\"" + GetNotes() + "\"";
+
+  return ret;
+}
+
+CMyString CItemData::GetPlaintext(char separator, char delimiter) const
+{
+	CMyString ret;
+	CMyString title;
+	CMyString group(GetGroup());
+
+	// a '.' in title gets Import confused re: Groups
+    title = GetTitle();
+	title.Replace('.', '\b');
+
+	if (!group.IsEmpty())
+		title = group + '.' + title;
+
+	ret = title + separator + GetUser() + separator +
+    GetPassword() + separator + "\"" + GetNotes(delimiter) + "\"";
+
   return ret;
 }
 
@@ -208,7 +243,11 @@ CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
 void
 CItemData::SetTitle(const CMyString &title)
 {
-  SetField(m_Title, title);
+	// a '.' in title gets import confused re: Groups
+	CMyString temp_title;
+	temp_title = title;
+	temp_title.Replace('\b', '.');
+	SetField(m_Title, temp_title);
 }
 
 void
@@ -227,6 +266,34 @@ void
 CItemData::SetNotes(const CMyString &notes)
 {
   SetField(m_Notes, notes);
+}
+
+void
+CItemData::SetNotes(const CMyString &notes, char delimiter)
+{
+	const CMyString CRCRLF = "\r\r\n";
+	CMyString multiline_notes = "";
+
+	CMyString newCString;
+	CMyString tmpCString;
+
+	int pos = 0;
+
+	newCString = notes;
+	do {
+		pos = newCString.Find(delimiter);
+		if ( pos != -1 ) {
+			multiline_notes += CMyString(newCString.Left(pos)) + CRCRLF;
+
+			tmpCString = CMyString(newCString.Mid(pos + 1));
+			newCString = tmpCString;
+		}
+	} while ( pos != -1 );
+	
+	if (!newCString.IsEmpty())
+		multiline_notes += newCString;
+
+	SetField(m_Notes, multiline_notes);
 }
 
 void

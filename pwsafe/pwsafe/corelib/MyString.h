@@ -49,8 +49,6 @@ public:
    friend CMyString AFXAPI operator+(LPCTSTR lpsz,
                                      const CMyString& string);
 
-   CMyString Mid(int nFirst, int nCount) const;
-
    LPTSTR GetBuffer(int nMinBufLength);
    void ReleaseBuffer(int nNewLength = -1);
    int GetLength() const;
@@ -58,8 +56,15 @@ public:
    int FindByte( char ch ) const;
    int Find(TCHAR ch) const;
    int Find(LPCTSTR lpszSub) const;
+   int Find(TCHAR ch, int nstart) const;
+   int Find(LPCTSTR lpszSub, int nstart) const;
+   int Replace(TCHAR chOld, TCHAR chNew) ;
+   int Replace(LPCTSTR lpszOld, LPCTSTR lpszNew) ;
+   int Remove(TCHAR ch) ;
    CString Left(int nCount) const;
    CString Right(int nCount) const;
+   CString Mid(int nFirst) const;
+   CString Mid(int nFirst, int nCount) const;
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
   void MakeLower() {m_mystring.MakeLower();}
@@ -85,3 +90,4 @@ bool operator!=(LPCTSTR s1, const CMyString& s2);
 // Local variables:
 // mode: c++
 // End:
+

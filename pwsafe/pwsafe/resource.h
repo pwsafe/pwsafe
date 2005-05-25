@@ -53,8 +53,6 @@
 #define IDR_TOOLBAR1                    208
 #define IDB_TOOLBAR1                    208
 #define IDB_TOOLBAR2                    217
-#define IDB_TOOLBAR1_RO                 908
-#define IDB_TOOLBAR2_RO                 917
 #define IDR_POPTRAY                     218
 #define IDI_TRAY                        219
 #define IDI_MBSTOPICON                  221
@@ -62,6 +60,10 @@
 #define IDI_MBWARNICON                  223
 #define IDI_MBINFOICON                  224
 #define IDD_IMPORT_TEXT                 225
+#define IDD_EXPORT_TEXT_SETTINGSDLG     227
+#define IDB_TOOLBAR1_RO                 908
+#define IDB_TOOLBAR2_RO                 917
+#define IDR_MAINBAR_RO                  987
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -152,6 +154,10 @@
 #define IDC_READONLY                    1100
 #define IDC_HOTKEY_CTRL                 1102
 #define IDC_HOTKEY_ENABLE               1103
+#define IDC_QUERYSETIMPDELIM            1104
+#define IDC_DEFIMPDELIM                 1105
+#define IDC_QUERYSETEXPDELIM            1106
+#define IDC_DEFEXPDELIM                 1107
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -206,9 +212,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        226
+#define _APS_NEXT_RESOURCE_VALUE        228
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1104
+#define _APS_NEXT_CONTROL_VALUE         1108
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

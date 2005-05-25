@@ -105,7 +105,6 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   return SUCCESS;
 }
 
-
 int
 PWScore::WritePlaintextFile(const CMyString &filename)
 {
@@ -116,12 +115,35 @@ PWScore::WritePlaintextFile(const CMyString &filename)
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
+  
   while (listPos != NULL)
     {
       temp = m_pwlist.GetAt(listPos);
       of << (const char *)temp.GetPlaintext('\t') << endl;
       m_pwlist.GetNext(listPos);
     }
+  of.close();
+
+  return SUCCESS;
+}
+
+int
+PWScore::WritePlaintextFile(const CMyString &filename, const char delimiter)
+{
+  ofstream of(filename);
+
+  if (!of)
+    return CANT_OPEN_FILE;
+
+  CItemData temp;
+  POSITION listPos = m_pwlist.GetHeadPosition();
+  
+  while (listPos != NULL)
+  {
+      temp = m_pwlist.GetAt(listPos);
+      of << (const char *)temp.GetPlaintext('\t', delimiter) << endl;
+      m_pwlist.GetNext(listPos);
+  }
   of.close();
 
   return SUCCESS;
@@ -163,7 +185,7 @@ PWScore::WriteXMLFile(const CMyString &filename)
 
 int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
-			     TCHAR fieldSeparator, int &numImported, int &numSkipped)
+			     TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped)
 {
   ifstream ifs(filename);
   numImported = numSkipped = 0;
@@ -184,7 +206,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
 
       // tokenize into separate elements
       vector<string> tokens;
-      for (int startpos = 0; ; ) {
+      for (int startpos = 0; ; )
+      {
 	int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
 	if (nextchar >= 0 && tokens.size() < 3) {
 	  tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
@@ -199,12 +222,14 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
 	    //there was exactly one quote, meaning that we've a multi-line Note
 	    bool noteClosed = false;
 	    do {
-	      if (!getline(ifs, linebuf, '\n')) {
+	  					if (!getline(ifs, linebuf, '\n'))
+	  					{
 		  ifs.close(); // file ends before note closes
 		  return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
 	      }
 	      // remove MS-DOS linebreaks, if needed.
-	      if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
+	      			if (!linebuf.empty() && *(linebuf.end() - 1) == '\r')
+	      			{
 		linebuf.resize(linebuf.size() - 1);
 	      }
 	      note += "\r\n";
@@ -223,7 +248,6 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
 	continue; // try to process next records
       }
 
-
       // Start initializing the new record.
       CItemData temp;
       temp.CreateUUID();
@@ -233,9 +257,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
       // The group and title field are concatenated.
       const string &grouptitle = tokens[0];
       int lastdot = grouptitle.find_last_of('.');
-      if (lastdot > 0) {
-	CMyString newgroup(ImportedPrefix);
-	newgroup += ".";
+      if (lastdot > 0)
+      {
+      	CMyString newgroup(ImportedPrefix.IsEmpty() ?
+			   "" : ImportedPrefix + ".");
 	newgroup += grouptitle.substr(0, lastdot).c_str();
 	temp.SetGroup(newgroup);
 	temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
@@ -252,7 +277,11 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
 	  *(quotedNotes.end() - 1) == '\"')
         {
 	  quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
+      	if (delimiter == '\0') {
 	  temp.SetNotes(CMyString(quotedNotes.c_str()));
+		} else {
+			temp.SetNotes(CMyString(quotedNotes.c_str()), delimiter);
+		}
         }
 
       AddEntryToTail(temp);
@@ -262,7 +291,6 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
 
   return SUCCESS;
 }
-
 
 int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
 {
@@ -282,7 +310,6 @@ int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
     return status; // should never happen
   }
 }
-
 
 int
 PWScore::ReadFile(const CMyString &a_filename,

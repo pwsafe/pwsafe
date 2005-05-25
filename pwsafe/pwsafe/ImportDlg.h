@@ -9,6 +9,8 @@
 
 #include "resource.h"
 
+void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter);
+
 /////////////////////////////////////////////////////////////////////////////
 // CImportDlg dialog
 
@@ -23,8 +25,10 @@ public:
 	enum { IDD = IDD_IMPORT_TEXT };
 	CString	m_groupName;
 	CString	m_Separator;
+	CString m_defimpdelim;
 	int m_tab;
 	int m_group;
+	int m_querysetimpdelim;
 	//}}AFX_DATA
 
 
@@ -45,6 +49,7 @@ protected:
 	afx_msg void OnTab();
 	afx_msg void OnNoGroup();
 	afx_msg void OnYesGroup();
+	afx_msg void OnSetMultilineImportNotesDelimiter();
 	afx_msg void OnHelp();
 	virtual void OnOK();
 	//}}AFX_MSG

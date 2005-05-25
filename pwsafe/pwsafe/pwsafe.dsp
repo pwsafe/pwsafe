@@ -135,6 +135,10 @@ SOURCE=.\ExportText.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ExportTextSettingsDlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\FindDlg.cpp
 # End Source File
 # Begin Source File
@@ -260,6 +264,10 @@ SOURCE=.\EditDlg.h
 # Begin Source File
 
 SOURCE=.\ExportText.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ExportTextSettingsDlg.h
 # End Source File
 # Begin Source File
 
