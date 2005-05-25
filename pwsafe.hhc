@@ -69,6 +69,10 @@
 			<param name="Name" value="Importing Entries">
 			<param name="Local" value="html\import.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Exporting Entries">
+			<param name="Local" value="html\export.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Password Safe Menus">

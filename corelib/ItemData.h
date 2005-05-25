@@ -47,9 +47,11 @@ public:
    CMyString GetUser() const; // V20
    CMyString GetPassword() const;
    CMyString GetNotes() const;
+   CMyString GetNotes(char delimiter) const;
    void GetUUID(uuid_array_t &) const; // V20
    CMyString GetGroup() const; // V20
    CMyString GetPlaintext(char separator) const; // returns all fields separated by separator
+   CMyString GetPlaintext(char separator, char delimiter) const; // as above + delimiter for multiline notes
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,
@@ -58,6 +60,7 @@ public:
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
    void SetNotes(const CMyString &notes);
+   void SetNotes(const CMyString &notes, char delimiter);
    void SetUUID(const uuid_array_t &UUID); // V20
    void SetGroup(const CMyString &group); // V20
    CItemData& operator=(const CItemData& second);

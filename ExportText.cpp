@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ExportText.h"
+#include "PwFont.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,6 +22,16 @@ CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CExportTextDlg)
 	m_exportTextPassword = _T("");
 	//}}AFX_DATA_INIT
+}
+
+
+BOOL CExportTextDlg::OnInitDialog() 
+{
+   CDialog::OnInitDialog();
+ 
+   SetPasswordFont(GetDlgItem(IDC_EXPORT_TEXT_PASSWORD));
+
+   return TRUE;
 }
 
 

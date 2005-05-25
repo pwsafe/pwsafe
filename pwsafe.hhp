@@ -4,39 +4,40 @@ Compatibility=1.1 or later
 Compiled file=pwsafe.chm
 Contents file=pwsafe.hhc
 Default topic=html\Welcome.html
-Display compile notes=No
-Display compile progress=No
+Display compile notes=Yes
+Display compile progress=Yes
 Error log file=msgs
 Full-text search=Yes
 Index file=pwsafe.hhk
 Language=0x409 English (United States)
 Title=HTML Help for Password Safe
 
-
 [FILES]
 html\popups.js
 html\style.css
-html\Welcome.html
-html\create_new_db.html
-html\entering_pwd.html
-html\retrieve_pwd.html
 html\about_combinations.html
-html\credits.html
 html\about_pws.html
-html\upgrade_from_v1x.html
 html\autotype.html
 html\backup_and_restore.html
-html\menu_toolbar.html
-html\file_menu.html
-html\edit_menu.html
-html\view_menu.html
-html\help_menu.html
-html\manage_menu.html
-html\username_tab.html
-html\display_tab.html
-html\misc_tab.html
-html\security_tab.html
 html\change_combo.html
+html\create_new_db.html
+html\credits.html
+html\display_tab.html
+html\edit_menu.html
+html\entering_pwd.html
+html\export.html
+html\file_menu.html
+html\help_menu.html
+html\import.html
+html\manage_menu.html
+html\menu_toolbar.html
+html\misc_tab.html
+html\password_policies.html
+html\retrieve_pwd.html
+html\security_tab.html
+html\upgrade_from_v1x.html
+html\username_tab.html
+html\view_menu.html
+html\Welcome.html
 
 [INFOTYPES]
-

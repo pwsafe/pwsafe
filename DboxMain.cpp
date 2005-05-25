@@ -27,6 +27,7 @@
 #include "UsernameEntry.h"
 #include "TryAgainDlg.h"
 #include "ExportText.h"
+#include "ExportTextSettingsDlg.h"
 #include "ImportDlg.h"
 
 // widget override?
@@ -763,9 +764,12 @@ DboxMain::OnExportV17()
 void
 DboxMain::OnExportText()
 {
+	CExportTextSettingsDlg ets;
+	int rc = ets.DoModal();
+	
   CExportTextDlg et;
   m_LockDisabled = true;
-  int rc = et.DoModal();
+	rc = et.DoModal();
   m_LockDisabled = false;
   if (rc == IDOK) {
     CMyString newfile;
@@ -795,7 +799,16 @@ DboxMain::OnExportText()
 	} else
 	  return;
       } // while (1)
+
+		if (ets.m_querysetexpdelim == 1)
+		{
+			char delimiter;
+			delimiter = ets.m_defexpdelim[0];
+			rc = m_core.WritePlaintextFile(newfile, delimiter);
+		} else {
       rc = m_core.WritePlaintextFile(newfile);
+		}
+		
       if (rc == PWScore::CANT_OPEN_FILE)
 	{
 	  CMyString temp = newfile + _T("\n\nCould not open file for writing!");
@@ -847,8 +860,18 @@ DboxMain::OnImportText()
     {
       CMyString newfile = (CMyString)fd.GetPathName();
       int numImported = 0, numSkipped = 0;
+	  char delimiter;
+      if (dlg.m_querysetimpdelim == 1)
+	  {
+		  delimiter = dlg.m_defimpdelim[0];
+	  }
+	  else
+	  {
+		  delimiter = '\0';
+	  }
       rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, fieldSeparator,
-				      numImported, numSkipped);
+				      delimiter, numImported, numSkipped);
+
       switch (rc) {
       case PWScore::CANT_OPEN_FILE:
 	{
