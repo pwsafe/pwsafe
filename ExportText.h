@@ -22,6 +22,8 @@ public:
 	//{{AFX_DATA(CExportTextDlg)
 	enum { IDD = IDD_EXPORT_TEXT };
 	CString	m_exportTextPassword;
+	CString m_defexpdelim;
+	int m_querysetexpdelim;
 	//}}AFX_DATA
 
 
@@ -34,13 +36,16 @@ public:
 
 // Implementation
 protected:
-
 	virtual BOOL OnInitDialog();
 	// Generated message map functions
 	//{{AFX_MSG(CExportTextDlg)
+	afx_msg void OnSetMultilineExportNotesDelimiter();
+	afx_msg void OnHelp();
 	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+private:
+	void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX, const CString &delimiter);
 };
 
 //{{AFX_INSERT_LOCATION}}
