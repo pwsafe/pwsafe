@@ -27,7 +27,6 @@
 #include "UsernameEntry.h"
 #include "TryAgainDlg.h"
 #include "ExportText.h"
-#include "ExportTextSettingsDlg.h"
 #include "ImportDlg.h"
 
 // widget override?
@@ -764,12 +763,9 @@ DboxMain::OnExportV17()
 void
 DboxMain::OnExportText()
 {
-	CExportTextSettingsDlg ets;
-	int rc = ets.DoModal();
-	
   CExportTextDlg et;
   m_LockDisabled = true;
-	rc = et.DoModal();
+  int rc = et.DoModal();
   m_LockDisabled = false;
   if (rc == IDOK) {
     CMyString newfile;
@@ -800,13 +796,13 @@ DboxMain::OnExportText()
 	  return;
       } // while (1)
 
-		if (ets.m_querysetexpdelim == 1)
+		if (et.m_querysetexpdelim == 1)
 		{
-			char delimiter;
-			delimiter = ets.m_defexpdelim[0];
-			rc = m_core.WritePlaintextFile(newfile, delimiter);
+		  char delimiter;
+		  delimiter = et.m_defexpdelim[0];
+		  rc = m_core.WritePlaintextFile(newfile, delimiter);
 		} else {
-      rc = m_core.WritePlaintextFile(newfile);
+		  rc = m_core.WritePlaintextFile(newfile);
 		}
 		
       if (rc == PWScore::CANT_OPEN_FILE)

@@ -39,7 +39,6 @@
 #define IDD_USERNAMEENTRY               184
 #define IDD_PASSKEYENTRY                185
 #define IDR_MAINBAR                     187
-#define IDR_MAINBAR_RO                  987
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
 #define IDD_PS_SECURITY                 194
