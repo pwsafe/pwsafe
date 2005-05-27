@@ -1,7 +1,7 @@
 $Id$
 
-Password Safe 2.10 Release Note - March 2005
-===============================================
+Password Safe 2.11 Release Note - May 2005
+==========================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 2.10. For a short description of Password
@@ -12,6 +12,32 @@ releases may be found in the file ChangeLog.txt.
 
 This is a maintenance release, adding a couple of features, and fixing
 some minor bugs.
+
+
+Bugs fixed in 2.11:
+===================
+[] When system tray is used, close ("X") button no longer exits
+application.
+[1197706] Delay argument in autotype now correctly parsed (thanks to
+dturland for this!)
+[1170297, 1076510, 1183709] Clipboard is cleared upon exit from system
+tray, if it still contains data from application.
+[1207701] During Import, groups are no longer created under an empty
+group. (*)
+[1095881] Entries with titles containing a dot no longer cause Import to
+treat them as nested groups. (*)
+[] SetPasswordFont in request for password during Export. (*)
+
+New Features for 2.11:
+======================
+[1203679] '-r' may now be passed a command line switch, setting the
+'read-only' checkbox. Useful if user wants this to be the default.
+[] Export to plain text of entries with multi-line notes fields now can be
+kept on a single line (aids editing & sorting). (*)
+[] Import from plain text support for single line "multi-line" notes fields
+created above. (*)
+
+(*) Thanks to DK for his work on these bug fixes and new features!
 
 Bugs fixed in 2.10:
 ===================
@@ -101,6 +127,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.20  2005/05/27 15:12:51  ronys
+Closing 2.11
+
 Revision 1.19  2005/04/08 09:54:50  ronys
 Added greyed-out bitmaps for readonly, ready for 2.10
 

@@ -59,7 +59,6 @@
 #define IDI_MBWARNICON                  223
 #define IDI_MBINFOICON                  224
 #define IDD_IMPORT_TEXT                 225
-#define IDD_EXPORT_TEXT_SETTINGSDLG     227
 #define IDB_TOOLBAR1_RO                 908
 #define IDB_TOOLBAR2_RO                 917
 #define IDR_MAINBAR_RO                  987
@@ -211,7 +210,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        228
+#define _APS_NEXT_RESOURCE_VALUE        227
 #define _APS_NEXT_COMMAND_VALUE         32844
 #define _APS_NEXT_CONTROL_VALUE         1108
 #define _APS_NEXT_SYMED_VALUE           105

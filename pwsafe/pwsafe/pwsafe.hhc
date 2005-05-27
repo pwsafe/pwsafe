@@ -73,6 +73,10 @@
 			<param name="Name" value="Exporting Entries">
 			<param name="Local" value="html\export.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Command Line Arguments">
+			<param name="Local" value="html\cli.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Password Safe Menus">

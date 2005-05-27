@@ -1,8 +1,8 @@
 <html>
 	<head>
 		<title>File Menu</title>
-		<!-- pwsafe version: 2.07-->
-		<!-- Modified: 11/3/2004 -->
+		<!-- pwsafe version: 2.11-->
+		<!-- Modified: 27/5/2005 -->
 
 		<!--Popup control -->
 		<OBJECT id=popup type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
@@ -30,17 +30,26 @@
 			<p>This section of the file menu may list from one to four recently opened database files. This section will be blank if this is the first time <b>Password Safe</b> has been used.</p>
 
 			<h3>Save</h3>
-			<p>Save any changes to the current safe. If no changes have been made since the previous save, this choice will be ghosted.</p>
+			<p>Save any changes to the current safe. If no changes have been made since the previous save, this choice will be greyed-out.</p>
 
 			<h3>Save As</h3>
 			<p>Save a copy of the current safe under a new name or location.</p>
 
 			<h3>Export To</h3>
-			<p>Export the contents of the current database to an <a href=JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)>external file</a>.
+			<p>Export the contents of the current database to
+			an <a
+			href=JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)>external
+			file</a>. See <a href=html\export.html>here</a> for
+			more information on exporting the database to a text file.
 			</p>
 
 			<h3>Import From</h3>
-			<p>Import the contents of formatted a text file or a KeePass password database into the current database.</p>
+			<p>Import the contents of a previously <a
+			href=html\export.html>exported</a> or
+			correctly formatted text file or a KeePass password
+			database into the current database. See <a
+			href=html\import.html>here</a> for 
+			more information on importing text files.</p> 
 
 			<h3>Merge Database</h3>
 			<p>Merge a <b>Password Safe</b> database or backup file (.bak) into the current database.</p>

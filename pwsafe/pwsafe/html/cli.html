@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<title>Command Line Arguments</title>
+		<!-- pwsafe version: 2.11-->
+		<!-- Modified: 26/5/2005 -->
+
+
+		<!--Popup control -->
+		<OBJECT id=popup type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+		<script language=javascript src="html/popups.js">
+		</script>
+
+		 <link rel="stylesheet" type="text/css" href="style.css">
+
+	</head>
+	<body>
+		<h2>Command Line Arguments</h2>
+		<p>Invoking PasswordSafe with no arguments will cause the
+		application to prompt you for the combination of the last
+		database that was opened, or for the combination of a new
+		databse if noe was opened on the user's machine. It is,
+		however, possible to modify this by invoking PasswordSafe
+		as follows:<p>
+		<ul>
+		<li> <i>pwsafe</i> <b> database </b> <br>
+		This will open the specified database file, instead of the
+		last one opened.<br>
+		<li> <i>pwsafe</i> <b> -r database </b> <br>
+		This will open the database in read-only mode.<br>
+		<li> <i>pwsafe</i> <b> -e filename </b> <br>
+		This will prompt the user for a passphrase, and encrypt the
+		file with a key derived from the passphrase. <b>Note:</b>
+		The file can be <i>any</i> file. The encrypted file will
+		have the same name as the original file, with ".PSF"
+		appended to it.<br>
+		<li> <i>pwsafe</i> <b> -d filename </b> <br>
+		This will prompt the user for a passphrase, and decrypt the
+		file with a key derived from the passphrase. <b>Note:</b>
+		This will work only on files that were encrypted by invoking
+		pwsafe with the '-e' option (see above).<br>
+		</ul>
+			<param name="Keyword" value="Read-only">
+			<param name="Keyword" value="CLI">
+			<param name="Keyword" value="Command Line Arguments">
+			<param name="Keyword" value="File encryption">
+			<param name="Keyword" value="File decryption">
+		</object>
+	</body>
+</html>
