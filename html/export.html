@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>Exporting Entries</title>
+		<!-- pwsafe version: 2.11-->
+		<!-- Modified: 26/5/2005 -->
+
+
+		<!--Popup control -->
+		<OBJECT id=popup type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+		<script language=javascript src="html/popups.js">
+		</script>
+
+		 <link rel="stylesheet" type="text/css" href="style.css">
+
+	</head>
+	<body>
+		<h2>Exporting Entries</h2>
+		<img src=images\export.gif>
+		<p>Password Safe allows you to export password information to text files. These files may then be modified by other applications.</p>
+		
+		<p>You will first be asked to enter the master password or safe combination to confirm that you may export the database into a clear text unencrypted file.</p>
+		
+		<p>You will then be asked to supply the name of the new file and to confirm overwriting a file of the same name if it already exists in the directory you specify.<p>
+
+		<div class=instr>
+			<h3>The Notes field</h3>
+			<p>Password entries will be exported with a tab character between fields i.e. between the Group.Title, Username, Password and the Notes fields.  The "Group.Title" is considered a single field.  Any field containing a blank will be output inside double quotation characters.  Only the Notes field can contain multiple line entries.  The normal processing is to place each Notes line, if more than one, on a separate line in the exported text field.  However, this makes it difficult to sort or to use when comparing two different export files.  In order to overcome this, should you need to, you may specify a delimiter to be used to separate the multiple lines when exporting them.  If you are going to import the file into Password Safe at a later date and still have a delimiter character, then it must be specified on the import or all the Notes lines will appear as one single line in the resulting database.</p>
+
+			<p>If a Notes field multi-line delimiter character is required, enter it here so that, during the Export process, multiple lines in Notes field will be exported as a single line using this character between each of the original lines.</p>
+
+			<ol>
+				<li>If required, tick that you want to put all separate lines in the Notes field onto one line and enter the character to be used as the delimiter.  Since the whole Notes field is enclosed between double quotation marks, this character is prohibited from being selected as themulti-line delimiter.
+				<li>Click <b>OK</b>
+			</ol>
+
+		</div>
+
+<br><br><br>
+		<a href=JavaScript:popup.TextPopup(strPopText1,popFont,9,9,-1,-1)>text</a>
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="Export Password Entries">
+			<param name="Keyword" value="Import Password Entries">
+			<param name="Keyword" value="Excel Password Data">
+			<param name="Keyword" value="Converting Existing Password Data">
+		</object>
+	</body>
+</html>

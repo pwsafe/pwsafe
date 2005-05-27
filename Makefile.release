@@ -9,7 +9,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 2.10
+RELEASENAME = 2.11
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -74,7 +74,7 @@ src-release:
 	 $(RM) -f Release/* Debug/*; \
 	 find . \( -name '*~' -o -name '*.bak' -o -name \*.aps -o \
 		   -name '*.plg' -o -name '*.ncb' -o -name '*.opt' -o \
-		   -name '*.clw' -o \
+		   -name '*.clw' -o -name '*.chm' \
                    -name '*.sav' -o -name '*.old' \) | xargs $(RM) -f; \
 	 $(RM) -f Release/* Debug/* *~ *.bak *.sav *.old .#*; \
 	 $(RM) -f corelib/Release/* corelib/Debug/* test/Debug/*; \
@@ -84,6 +84,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.13  2005/05/27 15:12:51  ronys
+# Closing 2.11
+#
 # Revision 1.12  2005/04/06 17:52:37  ronys
 # [1162048, 726521] Hotkey restore
 #
