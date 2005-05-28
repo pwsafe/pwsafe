@@ -27,6 +27,8 @@ group. (*)
 [1095881] Entries with titles containing a dot no longer cause Import to
 treat them as nested groups. (*)
 [] SetPasswordFont in request for password during Export. (*)
+[1207600] Find dialog not moved off-screen if PasswordSafe takes up whole
+screen.
 
 New Features for 2.11:
 ======================
@@ -81,7 +83,7 @@ Bugs fixed in 2.08:
 [1077638] The size of the help file was reduced by using graphics
 with fewer colors.
 [1082510] Improvements to Find dialog: No longer obscures parent, last
-seaerch text remembered.
+searched text remembered.
 [1090153] Pressing Delete in Find dialog no longer deletes an entry.
 [1074014] Silly message no longer displayed upon drag&drop of a file
 onto main window.
@@ -127,6 +129,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.21  2005/05/28 19:06:58  ronys
+2.11 Release
+
 Revision 1.20  2005/05/27 15:12:51  ronys
 Closing 2.11
 
