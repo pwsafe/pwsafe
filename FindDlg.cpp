@@ -35,19 +35,24 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
 	pParent->GetWindowRect(&parentRect);
 	self->GetWindowRect(&myRect);
 	// Move the dialog to the right if parent is on left side
-	// of screen,and vice versa
-	int screenCenter = GetSystemMetrics(SM_CXSCREEN)/2;
-	int parentCenter = (parentRect.right + parentRect.left)/2;
+	// of screen,and vice versa,
+	// UNLESS parent is close to screen's width!
+	const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+	const int screenCenter = screenWidth/2;
+	const int parentWidth = (parentRect.right - parentRect.left);
+	const int parentCenter = (parentRect.right + parentRect.left)/2;
 
-	if (parentCenter < screenCenter) {
-	  // move right
-	  myRect.right = parentRect.right + myRect.right - myRect.left;
-	  myRect.left = parentRect.right;
-	} else { // move left
-	  myRect.left = parentRect.left - (myRect.right - myRect.left);
-	  myRect.right = parentRect.left;
-	}
-	self->MoveWindow(&myRect);
+	if (parentWidth < (screenWidth * 9) / 10) {
+	  if (parentCenter < screenCenter) {
+	    // move right
+	    myRect.right = parentRect.right + myRect.right - myRect.left;
+	    myRect.left = parentRect.right;
+	  } else { // move left
+	    myRect.left = parentRect.left - (myRect.right - myRect.left);
+	    myRect.right = parentRect.left;
+	  }
+	  self->MoveWindow(&myRect);
+	} // parent not too wide
 	self->ShowWindow(SW_SHOW);
       }
   } else {
