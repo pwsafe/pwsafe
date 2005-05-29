@@ -282,7 +282,7 @@ DboxMain::OnInitDialog()
    if (PWSprefs::GetInstance()->
        GetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout)) {
      const UINT MINUTE = 60*1000;
-     TRACE("Starting Idle time lock timer");
+     TRACE(_T("Starting Idle time lock timer"));
      SetTimer(TIMER_USERLOCK, MINUTE, NULL);
      ResetIdleLockCounter();
    }
@@ -1007,7 +1007,8 @@ DboxMain::Save()
 
    if (rc == PWScore::CANT_OPEN_FILE)
    {
-      CMyString temp = m_core.GetCurFile() + "\n\nCould not open file for writing!";
+      CMyString temp = m_core.GetCurFile() +
+	_T("\n\nCould not open file for writing!");
       MessageBox(temp, _T("File write error"), MB_OK|MB_ICONWARNING);
       return PWScore::CANT_OPEN_FILE;
    }
@@ -1215,7 +1216,7 @@ DboxMain::Open( const CMyString &pszFilename )
 		break; // Keep going... 
 	case PWScore::CANT_OPEN_FILE:
 		temp = m_core.GetCurFile()
-		  + "\n\nCan't open file. Please choose another.";
+		  + _T("\n\nCan't open file. Please choose another.");
 		MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
 	case TAR_OPEN:
 		return Open();
@@ -1317,7 +1318,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
 		break; // Keep going... 
 	case PWScore::CANT_OPEN_FILE:
 		temp = m_core.GetCurFile()
-		  + "\n\nCan't open file. Please choose another.";
+		  + _T("\n\nCan't open file. Please choose another.");
 		MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
 	case TAR_OPEN:
 		return Open();
@@ -1396,10 +1397,13 @@ DboxMain::Merge(const CMyString &pszFilename) {
 
 				/* note it as an issue for the user */
 				CMyString warnMsg;
-				warnMsg = _T("Conflicting entries for ") + otherItem.GetGroup() + "," + 
-					      otherItem.GetTitle() + "," + otherItem.GetUser() + "\n";
-				warnMsg += _T("Adding new entry as ") + newTitle + "," + 
-                           otherItem.GetUser() + "\n";
+				warnMsg = _T("Conflicting entries for ") +
+				  otherItem.GetGroup() + _T(",") + 
+				  otherItem.GetTitle() + _T(",") +
+				  otherItem.GetUser() + _T("\n");
+				warnMsg += _T("Adding new entry as ") +
+				  newTitle + _T(",") + 
+				  otherItem.GetUser() + _T("\n");
 
 				/* tell the user the bad news */
 				MessageBox(warnMsg,
@@ -1428,11 +1432,11 @@ DboxMain::Merge(const CMyString &pszFilename) {
 	/* tell the user we're done & provide short merge report */
 	int totalAdded = numAdded+numConflicts;
 	CString resultStr;
-	resultStr.Format("Merge complete:\n%d entr%s added (%d conflict%s)",
-					 totalAdded,
-					 totalAdded == 1 ? "y" : "ies",
-					 numConflicts,
-		             numConflicts == 1 ? "" : "s");
+	resultStr.Format(_T("Merge complete:\n%d entr%s added (%d conflict%s)"),
+			 totalAdded,
+			 totalAdded == 1 ? _T("y") : _T("ies"),
+			 numConflicts,
+			 numConflicts == 1 ? _T("") : _T("s"));
 	MessageBox(resultStr, _T("Merge Complete"), MB_OK);
 
 	ChangeOkUpdate();
@@ -1507,7 +1511,7 @@ DboxMain::New()
       */
       return PWScore::USER_CANCEL;
 
-   m_core.SetCurFile(""); //Force a save as... 
+   m_core.SetCurFile(_T("")); //Force a save as... 
 #if !defined(POCKET_PC)
    m_title = _T("Password Safe - <Untitled>");
 #endif
@@ -2191,11 +2195,11 @@ DboxMain::startLockCheckTimer(){
 
   if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE){
-    TRACE("startLockCheckTimer: Starting timer\n");	
+    TRACE(_T("startLockCheckTimer: Starting timer\n"));
     SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
   }
   else
-    TRACE("Not Starting\n");
+    TRACE(_T("Not Starting\n"));
 }
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
