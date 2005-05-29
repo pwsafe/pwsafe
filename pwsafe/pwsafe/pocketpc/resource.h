@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft eMbedded Visual C++ generated include file.
 // Used by PasswordSafe.rc
 //
 #define IDD_ABOUTBOX                    101
@@ -32,10 +32,12 @@
 #define IDD_CRYPTKEYENTRY               135
 #define IDI_IBUBBLE                     136
 #define IDD_SHOW_PASSWORD               137
+#define IDD_EXPORT_TEXT                 138
 #define IDC_TITLE                       1000
 #define IDC_USERNAME                    1001
 #define IDC_PASSWORD                    1002
 #define IDC_NOTES                       1003
+#define IDC_GROUP                       1004
 #define IDC_RANDOM                      1006
 #define IDC_CLEARCHECK                  1009
 #define IDC_SHOWPASSWORD                1015
@@ -65,6 +67,8 @@
 #define IDC_EASYVISION                  1032
 #define IDC_EDIT1                       1033
 #define IDC_DEFPWLENGTH                 1033
+#define IDC_IDLE_TIMEOUT                1033
+#define IDC_EXPORT_TEXT_PASSWORD        1033
 #define IDC_SPIN1                       1034
 #define IDC_CRYPTKEY2                   1034
 #define IDC_CLEARBOARD                  1035
@@ -84,9 +88,22 @@
 #define IDC_CRYPTKEY1                   1047
 #define IDC_STATIC_USERNAME             1048
 #define IDC_SIPPREF                     1050
+#define IDC_OVERRIDE_POLICY             1052
+#define IDC_READONLY                    1053
+#define IDC_LOCKONSCREEN                1054
+#define IDC_LOCK_TIMER                  1055
+#define IDC_SPIN2                       1056
+#define IDC_USEHEXDIGITS                1057
+#define IDC_ESC_EXITS                   1058
+#define IDC_HOTKEY_ENABLE               1059
+#define IDC_DOUBLE_CLICK_COPIES         1060
+#define IDC_DOUBLE_CLICK_EDITS          1061
+#define IDC_DEFPWUSESYSTRAY             1061
 #define ID_FILE                         40001
 #define IDS_CAP_FILE                    40003
 #define ID_EDIT                         40004
+#define IDS_STATCOPY                    40004
+#define IDS_STATEDIT                    40005
 #define IDS_CAP_EDIT                    40006
 #define ID_MANAGE                       40007
 #define IDS_CAP_MANAGE                  40009
@@ -125,9 +142,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        138
+#define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         40070
-#define _APS_NEXT_CONTROL_VALUE         1052
+#define _APS_NEXT_CONTROL_VALUE         1062
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

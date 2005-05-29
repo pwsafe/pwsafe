@@ -163,7 +163,7 @@ CPasswordCharPool::MakePassword() const
       ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
 	     digitsneeded + symbolsneeded + hexdigitsneeded);
 
-      temp = "";    // empty the password string
+      temp = _T("");    // empty the password string
 
       for (UINT x = 0; x < m_pwlen; x++)
       {

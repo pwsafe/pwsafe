@@ -27,8 +27,8 @@ static char THIS_FILE[] = __FILE__;
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
    : super(CCryptKeyEntry::IDD, pParent)
 {
-   m_cryptkey1	= "";
-   m_cryptkey2	= "";
+   m_cryptkey1	= _T("");
+   m_cryptkey2	= _T("");
 }
 
 
@@ -70,7 +70,7 @@ CCryptKeyEntry::OnOK()
       ((CEdit*)GetDlgItem(IDC_CRYPTKEY2))->SetFocus();
       return;
    }
-   if (m_cryptkey1 == "")
+   if (m_cryptkey1.IsEmpty())
    {
       AfxMessageBox(_T("Please enter the key and verify it."));
       ((CEdit*)GetDlgItem(IDC_CRYPTKEY1))->SetFocus();
