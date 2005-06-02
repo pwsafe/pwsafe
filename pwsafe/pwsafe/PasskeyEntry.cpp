@@ -215,7 +215,7 @@ CPasskeyEntry::OnOK()
 
   if (m_passkey.IsEmpty())
     {
-      AfxMessageBox("The combination cannot be blank.");
+      AfxMessageBox(_T("The combination cannot be blank."));
       m_ctlPasskey.SetFocus();
       return;
     }

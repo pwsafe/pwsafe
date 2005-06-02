@@ -223,12 +223,12 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #endif
    ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
    ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
-   ON_WM_INITMENU()
    ON_WM_INITMENUPOPUP()
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
    ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
 #if !defined(POCKET_PC)
+   ON_WM_INITMENU()
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
@@ -287,6 +287,8 @@ DboxMain::OnInitDialog()
      ResetIdleLockCounter();
    }
 
+   // JHF : no hotkeys on WinCE
+#if !defined(POCKET_PC)
    // Set Hotkey, if active
    if (PWSprefs::GetInstance()->
        GetPref(PWSprefs::BoolPrefs::HotKeyEnabled)) {
@@ -298,7 +300,7 @@ DboxMain::OnInitDialog()
      SendMessage(WM_SETHOTKEY, v);
 
    }
-
+#endif
 
    m_windowok = true;
 	
@@ -2036,6 +2038,8 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
 
     CDC* pDC = this->GetDC();
     int NumBits = ( pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32 );
+// JHF m_toolbarMode is not for WinCE (as in .h)
+#if !defined(POCKET_PC)
     if (NumBits < 16 && m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) {
         // Less that 16 color bits available, no choice, disable menu items
         pMenu->EnableMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_GRAYED | MF_BYCOMMAND);
@@ -2049,6 +2053,7 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
 
     pMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, ID_MENUITEM_OLD_TOOLBAR, 
         m_toolbarMode, MF_BYCOMMAND);
+#endif
 
 
    pMenu->EnableMenuItem(ID_MENUITEM_SAVE,
@@ -2242,7 +2247,10 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       message == WM_LBUTTONDOWN ||
       message == WM_LBUTTONDBLCLK ||
       message == WM_CONTEXTMENU ||
+	  // JHF undeclared identifier -> removed to get code to compile
+#if !defined(POCKET_PC)
       message == WM_MENUSELECT ||
+#endif
       message == WM_VSCROLL
       )
     ResetIdleLockCounter();

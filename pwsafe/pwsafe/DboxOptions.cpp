@@ -193,8 +193,10 @@ DboxMain::OnOptions()
       const UINT statustext =
 	((misc.m_doubleclickaction == PWSprefs::DoubleClickCopy) ?
 	 IDS_STATCOPY : IDS_STATEDIT);
+// JHF : no status bar under WinCE (was already so in the .h file !?!)
+#if !defined(POCKET_PC)
       m_statusBar.SetIndicators(&statustext, 1);	
-
+#endif
      /*
      ** Update string in database, if necessary & possible
      */
@@ -238,6 +240,8 @@ DboxMain::OnOptions()
 	}
       SetIdleLockCounter(security.m_IdleTimeOut);
 
+// JHF no hotkeys under WinCE
+#if !defined(POCKET_PC)
       // Handle HotKey setting
       if (misc.m_hotkey_enabled == TRUE) {
 	WORD v;
@@ -247,7 +251,7 @@ DboxMain::OnOptions()
       } else {
 	SendMessage(WM_SETHOTKEY, 0);
       }
-
+#endif
       /*
        * Here are the old (pre 2.0) semantics:
        * The username entered in this dialog box will be added to all the entries

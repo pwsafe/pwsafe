@@ -43,7 +43,10 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
 	DDX_Radio(pDX, IDC_DOUBLE_CLICK_COPIES, m_doubleclickaction);
 	DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_hotkey_enabled);
+// JHF class CHotKeyCtrl not defined under WinCE
+#if !defined(POCKET_PC)
 	DDX_Control(pDX, IDC_HOTKEY_CTRL, m_hotkey);
+#endif
 	//}}AFX_DATA_MAP
 }
 
@@ -68,10 +71,12 @@ BOOL COptionsMisc::OnInitDialog()
     pBCopyRB->SetCheck(0); pBEditRB->SetCheck(1);
   }
 
+  // JHF ditto here
+#if !defined(POCKET_PC)
   m_hotkey.SetHotKey(LOWORD(m_hotkey_value),HIWORD(m_hotkey_value));
   if (m_hotkey_enabled == FALSE)
     m_hotkey.EnableWindow(FALSE);
-
+#endif
   return TRUE;
 }
 /////////////////////////////////////////////////////////////////////////////
@@ -79,18 +84,24 @@ BOOL COptionsMisc::OnInitDialog()
 
 void COptionsMisc::OnEnableHotKey() 
 {
+	// JHF : no hotkeys on WinCE
+#if !defined(POCKET_PC)
   if (((CButton*)GetDlgItem(IDC_HOTKEY_ENABLE))->GetCheck() == 1)
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(TRUE);
   else
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(FALSE);
+#endif
 }
 
 void COptionsMisc::OnOK() 
 {
   UpdateData(TRUE);
+  // JHF ditto
+#if !defined(POCKET_PC)
   WORD wVirtualKeyCode, wModifiers;
   m_hotkey.GetHotKey(wVirtualKeyCode, wModifiers);
   DWORD v = wVirtualKeyCode | (wModifiers << 16);
   m_hotkey_value = v;
+#endif
   CPropertyPage::OnOK();  
 }

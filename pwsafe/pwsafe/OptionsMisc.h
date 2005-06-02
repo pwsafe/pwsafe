@@ -27,7 +27,10 @@ public:
 	BOOL	m_escexits;
 	int     m_doubleclickaction;
 	BOOL    m_hotkey_enabled;
+	// JHF : class CHotKeyCtrl not supported by WinCE
+#if !defined(POCKET_PC)
 	CHotKeyCtrl	m_hotkey;
+#endif
 	//}}AFX_DATA
 	DWORD m_hotkey_value;
 
