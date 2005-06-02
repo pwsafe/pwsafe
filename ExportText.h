@@ -10,7 +10,12 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExportText dialog
 
-#include "resource.h"
+// JHF : added PocketPC switch
+#if defined(POCKET_PC)
+  #include "pocketpc/resource.h"
+#else
+  #include "resource.h"
+#endif
 
 class CExportTextDlg : public CDialog
 {

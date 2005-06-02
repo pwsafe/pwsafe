@@ -119,10 +119,10 @@ CEditDlg::OnOK()
        (m_listindex != listindex))
    {
       CMyString temp =
-         "An item with Group \"" + m_group
-	 + "\", Title \"" + m_title 
-	 + "\" and User Name \"" + m_username
-         + "\" already exists.";
+         _T("An item with Group \"") + m_group
+	 + _T("\", Title \"") + m_title 
+	 + _T("\" and User Name \"") + m_username
+         + _T("\" already exists.");
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();

@@ -60,7 +60,7 @@ CTryAgainDlg::OnHelp()
 {
    //WinHelp(0x2008F, HELP_CONTEXT);
    ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/create_new_db.html",
+              _T("pwsafe.chm::/html/create_new_db.html"),
               HH_DISPLAY_TOPIC, 0);
 }
 

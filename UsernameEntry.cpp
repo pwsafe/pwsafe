@@ -21,7 +21,7 @@ CUsernameEntry::CUsernameEntry(CWnd* pParent)
    : CDialog(CUsernameEntry::IDD, pParent)
 {
    m_makedefuser = FALSE;
-   m_username = "";
+   m_username = _T("");
 }
 
 
@@ -42,9 +42,9 @@ CUsernameEntry::OnOK()
 {
    UpdateData(TRUE);
 
-   app.WriteProfileInt("", "usedefuser", m_makedefuser);
+   app.WriteProfileInt(_T(""), _T("usedefuser"), m_makedefuser);
    if (m_makedefuser==TRUE)
-      app.WriteProfileString("", "defusername", m_username);
+      app.WriteProfileString(_T(""), _T("defusername"), m_username);
 
    CDialog::OnOK();
 }
