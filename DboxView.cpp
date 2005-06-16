@@ -1306,27 +1306,35 @@ DboxMain::OnAutoType()
       CItemData *ci = getSelectedItem();
       ASSERT(ci != NULL);
       CMyString AutoCmd = ci->GetNotes();
-      // get the notes and then extract te autotype command	
+      // get the notes and then extract the autotype command	
       ExtractAutoTypeCmd(AutoCmd);
-		
+      const CMyString user(ci->GetUser());
+      const CMyString pwd(ci->GetPassword());
       if(AutoCmd.IsEmpty()){
 	// checking for user and password for default settings
-	if(!ci->GetPassword().IsEmpty()){
-	  if(!ci->GetUser().IsEmpty())
+	if(!pwd.IsEmpty()){
+	  if(!user.IsEmpty())
 	    AutoCmd="\\u\\t\\p\\n";
 	  else
 	    AutoCmd="\\p\\n";
 	}
- 			
       }
 		
       CMyString tmp;
       char curChar;
       const int N = AutoCmd.GetLength();
       CKeySend ks;
-	  ks.ResetKeyboardState();
+      ks.ResetKeyboardState();
 
-      for(int n=0; n<N;n++){
+      // Note that minimizing the window before calling ci->Get*()
+      // will cause garbage to be read if "lock on minimize" selected,
+      // since that will clear the data [Bugs item #1026630]
+      // (this is why we read user & pwd before actual use)
+
+      ShowWindow(SW_MINIMIZE);
+      Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+
+      for(int n=0; n < N; n++){
 	curChar=AutoCmd[n];
 	if(curChar=='\\'){
 	  n++;
@@ -1334,25 +1342,25 @@ DboxMain::OnAutoType()
 	    curChar=AutoCmd[n];
 	  switch(curChar){
 	  case '\\':
-	    tmp+='\\';
+	    tmp += '\\';
 	    break;
 	  case 'n':case 'r':
-	    tmp+='\r';
+	    tmp += '\r';
 	    break;
 	  case 't':
-	    tmp+='\t';
+	    tmp += '\t';
 	    break;
 	  case 'u':
-	    tmp+= ci->GetUser();
+	    tmp += user;
 	    break;
 	  case 'p':
-	    tmp+=ci->GetPassword();
+	    tmp += pwd;
 	    break;
 	  case 'd': {
 	    // Delay is going to change - send what we have with old delay
 	    ks.SendString(tmp);
 	    // start collecting new delay
-	    tmp="";
+	    tmp = "";
 	    int newdelay = 0;
 	    int gNumIts = 0;
 						
@@ -1373,17 +1381,10 @@ DboxMain::OnAutoType()
 	  }
 	}
 	else
-	  tmp+=curChar;
+	  tmp += curChar;
       }
-		
-      // Note that minimizing the window before calling ci->Get*()
-      // will cause garbage to be read if "lock on minimize" selected,
-      // since that will clear the data [Bugs item #1026630]
-      ShowWindow(SW_MINIMIZE);
       ks.SendString(tmp);
   }
-
-		
 }
 
 void DboxMain::ExtractAutoTypeCmd(CMyString &str)
