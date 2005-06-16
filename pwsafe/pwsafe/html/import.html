@@ -1,20 +1,20 @@
 <html>
 	<head>
 		<title>Importing Entries</title>
-		<!-- pwsafe version: 2.07-->
-		<!-- Modified: 11/3/2004 -->
-
+		<!-- pwsafe version: 2.11-->
+		<!-- Modified: 15/06/2005 -->
 
 		<!--Popup control -->
-		<OBJECT id=popup type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		<object id=popup type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
 		</object>
+		
 		<!-- Popup Source File -->
 		<script language=javascript src="html/popups.js">
 		</script>
 
-		 <link rel="stylesheet" type="text/css" href="style.css">
-
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
+	
 	<body>
 		<h2>Importing Entries</h2>
 		<img src=images\import.gif>
@@ -25,37 +25,33 @@
 			<p>Text files used to import password entries must consist of one or more password entries. Each field within an entry is separated by a field separator and each entry may consist of one or more lines.</p>
 
 			<ul>
-				<li><b>Group and Title Field</b><br>
-				 Groups and Titles are separated by periods. For example Finance.BangForBuckBank (Group.Title). If there is no associated group (a top level entry), then the Title should contain no periods.
-				<li><b>User Field</b><br>
-				The name of the user associated with this entry. To use the default name specified in <b>Options...</b> this field should be blank.
+				<li><b>Group and Title Field</b><br>Groups and Titles are separated by periods. For example Finance.BangForBuckBank (Group.Title). If there is no associated group (a top level entry), then the Title should contain no periods.</li>
+				<li><b>User Field</b><br>The name of the user associated with this entry. To use the default name specified in <b>Options...</b> this field should be blank.</li>
 
-				<li><b>Password Field</b><br>
-				 The actual password.
+				<li><b>Password Field</b><br>The actual password.</li>
 				
-				<li><b>Notes Field</b><br>
-				If the Note is more than a single word, it must be enclosed between double quotes ("test note"). A note may span more than a  single line, as long as it is terminated with a double quote.
-			
+				<li><b>Notes Field</b><br>If the Note is more than a single word, it must be enclosed between double quotes ("test note"). A note may span more than a  single line, as long as it is terminated with a double quote.</li>
 			</ul>	
 
 			<h3>Import Text Settings Dialog</h3>
 			<p>The field separator used in the text file being imported and a default group name to import the new entries into can be configured prior to the actual importation of a text file.
 
 			<ol>
-				<li><b>File > Import From....</b>
-				<li>Select <b>Plain Text...</b>
-				<li>Set import settings and parameters for the text file being imported
-				<li>If a Notes field multi-line delimiter character has been used, either in a previous Export or using a text editor, enter it here so that, during the Import process, the Notes field will be split into multiple lines by replacing this character by a newline.
-				<li>Click <b>OK</b>
-				<li>Select the text file to import.
+				<li><b>File > Import From....</b></li>
+				<li>Select <b>Plain Text...</b></li>
+				<li>Set import settings and parameters for the text file being imported</li>
+				<li>If a Notes field multi-line delimiter character has been used, either in a previous Export or using a text editor, enter it here so that, during the Import process, the Notes field will be split into multiple lines by replacing this character by a newline.</li>
+				<li>Click <b>OK</b></li>
+				<li>Select the text file to import.</li>
 			</OL>
-			<hr> <small><b>Note:</b>&nbsp;At the end of the import process, a small dialog box appears showing how may entries were added, and how many (if any) were unsuccessfully parsed. <br></small><hr>
-
-
+			<hr>
+			<small><b>Note:</b>&nbsp;At the end of the import process, a small dialog box appears showing how may entries were added, and how many (if any) were unsuccessfully parsed.<br></small>
+			<hr>
 		</div>
 
-<br><br><br>
-		<a href=JavaScript:popup.TextPopup(strPopText1,popFont,9,9,-1,-1)>text</a>
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br><br><br>
+		
 		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
 			<param name="Keyword" value="Import Password Entries">
 			<param name="Keyword" value="Export Password Entries">
@@ -64,4 +60,3 @@
 		</object>
 	</body>
 </html>
-		

@@ -1,28 +1,26 @@
+/* Modified: 15/06/2005 */
 
-
-BODY	{
+BODY
+	{
 	font-family:"Trebuchet MS",verdana,arial,helvetica,tahoma;
 	color:black;
 	font-size="small";
 	background-color: white;
-
 	}
-
-
 
 A:link {color: #0069CE; text-decoration: none;} 
 A:visited {color: #0069CE; text-decoration: none;}
 A:active {color: #B22222; text-decoration: none;}
 A:hover { Color: maroon; text-decoration: underline;}
 
-.instr	{
-	 margin-left: .25in;
+.instr
+	{
+	margin-left: .25in;
 	}
 
-
- DD {
-          text-indent: 10%;
-     }
+DD	{
+	text-indent: 10%;
+	}
 
 li p
 	{
@@ -30,18 +28,16 @@ li p
 	margin-bottom: 1.25em;	
 	}	
 
-li
-	{
+li	{
 	margin-left: .15in;
 	}	 
 
-ol li	
+ol li
 	{
 	margin-left: .10in;
-	} 
+	}
 
-ul
-	{
+ul	{
 	list-style: disc;
 	}
 
@@ -51,29 +47,29 @@ ul.onestep
 	}
 
 
-
-
-
 /* tables */
 
+table
+	{
+	font-size: 100%;
+	text-align: left;
+	margin-top: 0em;
+	}
 
-table 	{ font-size: 100%;
-		text-align: left;
-		margin-top: 0em;
-		}
+tr	{
+	margin: .25em;
+	vertical-align: top;
+	}
 
-tr		{ margin: .25em;
-		vertical-align: top;
-		}
-			
-th 		{ text-align: left;
-		margin: .25em;
-		vertical-align: top;
-		background: #ffffff;
-		}
-						
-td		{ margin: .25em;
-		
-		vertical-align: top;
-		padding: 0;
-		}
+th	{
+	text-align: left;
+	margin: .25em;
+	vertical-align: top;
+	background: #ffffff;
+	}
+
+td	{
+	margin: .25em;
+	vertical-align: top;
+	padding: 0;
+	}
