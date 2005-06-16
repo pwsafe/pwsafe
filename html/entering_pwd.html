@@ -1,97 +1,91 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-  <title>User Names and Passwords</title>
-
+<html>
+	<head>
+		<title>User Names and Passwords</title>
+		<!-- pwsafe version: 2.11-->
+		<!-- Modified: 15/06/2005 -->
 		
-		
-		
-
-		
-		<!-- pwsafe version: 2.07--><!-- Modified: 11/3/2004 --><!--Popup control -->
-  <script language="javascript" src="html/popups.js">
-		</script>
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-	<body><object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		<!--Popup control -->
+		<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
 		</object>
+		
 		<!-- Popup Source File -->
+		<script language="javascript" src="html/popups.js">
+		</script>
 		
-
-		 
-
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
 	
-		
-<h2>User Names, Passwords, and Groups</h2>
-
+	<body>
+		<h2>User Names, Passwords, and Groups</h2>
 		<img src="images%5Cedit_view_entry.gif">
 		
-<p>There are five bits of information associated with each password entry:</p>
+		<p>There are five bits of information associated with each password entry:</p>
+		<ul>
+			<li><b>Group</b>: Organizational name for grouping multiple entries.</li>
+			<li><b>Title</b>: A friendly name for a password entry</li>
+			<li><b>User name</b>: The user name</li>
+			<li><b>Password</b>: The password</li>
+			<li><b>Notes</b>: Free-form general notes field.</li>
+		</ul>
 
+		<hr>
+		<small><b>Note:</b>&nbsp;If you type a URL in the Notes field (starting with http:// or https:// or ftp://) then "Browse to URL" in the popup (right-click) menu for that entry will be enabled. Selecting it will invoke the default browser on that URL.<br></small>
+		<hr>
 		
-<ul>
+		<p>Only the title and password fields are required; all others are optional.</p>
 
-			<li><b>Group</b>: Organizational name for grouping multiple entries.
-			</li><li><b>Title</b>: A friendly name for a password entry
-			</li><li><b>User name</b>: The user name
-			</li><li><b>Password</b>: The password
-			</li><li><b>Notes</b>: Free-form general notes field.</li>
-</ul>
-
-<hr> <small><b>Note:</b>&nbsp;If
-you type a URL in the Notes field (starting with http:// or https:// or
-ftp://) then "Browse to URL" in the popup (right-click) menu for that
-entry will be enabled. Selecting it will invoke the default browser on
-that URL.<br></small>
-<hr>
-		
-		
-<p>Only the title and password fields are required; all others are optional.</p>
-
-
-		
-<div class="instr">
+		<div class="instr">
 			<h3>Creating a New User Name and Password Entry</h3>
 			<ol>
-				<li>Open the database where you wish to place the new entry
-				</li><li>From the <b>Edit</b> menu, select <b>Add Entry</b>
-				</li><li>Enter information into the <b>Edit/View Entry</b> dialog fields as necessary
-			</li></ol>
-			<hr> <small><b>Note:</b>&nbsp;If a Group name is selected and then a new entry added, that entry will have that Group name prefilled in the <b>Edit/View Entry</b> dialog. If a name of a new group is added to the Group field, that Group will be created.<br></small><hr>
-
+				<li>Open the database where you wish to place the new entry</li>
+				<li>From the <b>Edit</b> menu, select <b>Add Entry</b></li>
+				<li>Enter information into the <b>Edit/View Entry</b> dialog fields as necessary</li>
+			</ol>
+			<hr>
+			<small><b>Note:</b>&nbsp;If a Group name is selected and then a new entry added, that entry will have that Group name prefilled in the <b>Edit/View Entry</b> dialog. If a name of a new group is added to the Group field, that Group will be created.<br></small>
+			<hr>
 
 			<h3>Generating and Editing Passwords</h3>
-			<p>If you wish, you can enter your own password into the password field manually, or you can have <b>Password Safe</b> generate a new one based on the current <a href="html%5Cpassword_policies.html">Password Policy</a>. 
-			</p><ol>
-				<li>In the <b>Edit/View Entry</b> dialog click <b>Generate</b> 
-				</li><li>Click <b>Yes</b> to accept the password or <b>No</b> to reject it<br>
-			</li></ol>
-			<hr> <small><b>Note:</b>&nbsp;To temporarily override the current password policy check <b>Override Policy</b>.<br></small><hr>
-
+			<p>If you wish, you can enter your own password into the password field manually, or you can have <b>Password Safe</b> generate a new one based on the current <a href="html%5Cpassword_policies.html">Password Policy</a>.</p>
+			<ol>
+				<li>In the <b>Edit/View Entry</b> dialog click <b>Generate</b></li>
+				<li>Click <b>Yes</b> to accept the password or <b>No</b> to reject it<br></li>
+			</ol>
+			
+			<hr>
+			<small><b>Note:</b>&nbsp;To temporarily override the current password policy check <b>Override Policy</b>.<br></small>
+			<hr>
 
 			<h3>Editing Existing Entries</h3>
 			<ol>
-				<li>Select the password entry to edit from the list
-				</li><li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu
-			</li></ol>
-			<hr> <small><b>Note:</b>&nbsp;By default, passwords are obscured. To see the password associated with the Entry click <b>Show Password</b>.<br></small><hr>
+				<li>Select the password entry to edit from the list</li>
+				<li>Select <b>Edit/View Entry</b> from the <b>Edit</b> menu</li>
+			</ol>
+			
+			<hr>
+			<small><b>Note:</b>&nbsp;By default, passwords are obscured. To see the password associated with the Entry click <b>Show Password</b>.<br></small>
+			<hr>
 
 			<h3>Add a New Group</h3>
 			<ol>
-				<li>Select <b>Add Group</b> from the <b>Edit</b> menu
-				</li><li>Enter the Group name
-			</li></ol>
+				<li>Select <b>Add Group</b> from the <b>Edit</b> menu</li>
+				<li>Enter the Group name</li>
+			</ol>
 
 			<h3>Edit a Group Name</h3>
 			<ul>
-				<li>Right-click on the group and select <b>Rename Group</b> from the drop down list
-			</li></ul>
+				<li>Right-click on the group and select <b>Rename Group</b> from the drop down list</li>
+			</ul>
 
-			<hr> <small><b>Note:</b>&nbsp;Group names can be "nested," palcing a group name within/under another group name.<br></small><hr>
-
-
+			<hr>
+			<small><b>Note:</b>&nbsp;Group names can be "nested," palcing a group name within/under another group name.<br></small>
+			<hr>
 		</div>
-
 	
+
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br><br><br>
+
 		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
 			<param name="Keyword" value="User Names">
 			<param name="Keyword" value="Add Password Entries">
@@ -102,7 +96,6 @@ that URL.<br></small>
 			<param name="Keyword" value="Edit Password Entries">
 			<param name="Keyword" value="View Password Entries">
 			<param name="Keyword" value="Renaming Password Entries">
-
-
 		</object>
-	</body></html>
+	</body>
+</html>
