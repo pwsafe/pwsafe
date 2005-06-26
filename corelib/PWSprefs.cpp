@@ -61,7 +61,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("currentbackup"), _T(""), true},
   {_T("currentfile"), _T(""), false},
-  {_T("lastview"), _T("list"), true},
+  {_T("lastview"), _T("tree"), true},
   {_T("defusername"), _T(""), true},
 };
 
