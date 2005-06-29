@@ -1,0 +1,260 @@
+<project name="PasswordSafeSWT" default="run">
+
+    <!--
+
+        PasswordSafeSWT build script for Ant.
+
+        Initial work by Glen Smith.
+
+    -->
+    <target name="init" description="Initialise build parameters">
+        <property name="src.dir" location="src" />
+        <property name="classes.dir" location="build/classes" />
+        <property name="deploy.dir" location="deploy" />
+        <property name="lib.dir" location="lib" />
+        <property name="runme.jar" value="${deploy.dir}/PasswordSafeSWT.jar" />
+        <property name="main.class" value="org.pwsafe.passwordsafeswt.PasswordSafeJFace" />
+        <property name="app.name" value="PasswordSafeSWT" />
+
+        <!-- platform specific bundling stuff -->
+        <property name="platform.dir" location="platform" />
+        <property name="mac.dir" location="${platform.dir}/macosx" />
+        <property name="linux.dir" location="${platform.dir}/linux" />
+        <property name="win32.dir" location="${platform.dir}/win32" />
+
+        <!-- where resulting binaries are placed -->
+        <property name="dist.src.dir" location="${deploy.dir}/src" />
+        <property name="dist.mac.dir" location="${deploy.dir}/mac" />
+        <property name="dist.linux.dir" location="${deploy.dir}/linux" />
+        <property name="dist.win32.dir" location="${deploy.dir}/win32" />
+
+        <!-- Setup our version info -->
+        <property name="version" value="$Name$"/>
+        <property name="version.release.minor" value="01"/>
+        <property name="version.release.major" value="0"/>
+        <property name="version.file" value="build.version"/>
+        <property name="version.class" value="VersionInfo"/>
+        <property name="version.package" value="au.gov.centrelink.itsecurity"/>
+
+
+        <property file="${version.file}" />
+
+        <property name="build.version" value="${build.release.major}.${build.release.minor}.${build.number}"/>
+        <property name="build.version.tag" value="Release_${build.release.major}_${build.release.minor}_${build.number}" />
+
+        <property name="zip.dir.name" value="${app.name}-${build.release.major}.${build.release.minor}"/>
+
+        <mkdir dir="${deploy.dir}" />
+
+        <path id="useful.jars">
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+            <fileset dir="${mac.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+            <fileset dir="${deploy.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+            <!-- <pathelement path="${classes.dir}"/>  -->
+        </path>
+
+        <mkdir dir="${classes.dir}" />
+
+    </target>
+
+
+    <target name="build" depends="init" description="Compile PasswordSafeSWT">
+
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="useful.jars" />
+
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}">
+                <include name="**/*.gif" />
+            </fileset>
+        </copy>
+
+    </target>
+
+
+    <target name="jar" depends="build" description="Create PasswordSafeSWT jar file">
+        <mkdir dir="${deploy.dir}" />
+
+        <jar destfile="${runme.jar}" basedir="${classes.dir}">
+            <include name="**/*.gif" />
+            <include name="**/*.class" />
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}" />
+            </manifest>
+        </jar>
+    </target>
+
+
+    <target name="run" depends="jar" description="Run PasswordSafeSWT">
+        <java jvm="${mac.dir}/java_swt" classname="${main.class}" fork="true" classpathref="useful.jars">
+            <jvmarg value="-Djava.library.path=/Users/glen/Desktop/eclipse/workspace/PasswordSafeJ/platform/macosx/dll" />
+        </java>
+    </target>
+
+
+    <target name="deploy.win32" depends="jar" description="Build PasswordSafeSWT for Win32">
+
+        <delete dir="${dist.win32.dir}/${zip.dir.name}" />
+        <mkdir dir="${dist.win32.dir}/${zip.dir.name}" />
+
+        <taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="C:\java_apps\exe4j\bin\exe4j.jar" />
+
+        <exe4j projectfile="${win32.dir}/PasswordSafeSWT.exe4j" release="${build.version}" />
+
+        <copy todir="${dist.win32.dir}/${zip.dir.name}">
+            <fileset dir="${platform.dir}/win32/dll">
+                <include name="*.dll" />
+            </fileset>
+            <fileset dir="${basedir}">
+                <include name="*.exe" />
+            </fileset>
+        </copy>
+
+        <zip destfile="${dist.win32.dir}/${zip.dir.name}-win32.zip"
+               basedir="${dist.win32.dir}" includes="${zip.dir.name}/**/*.*"
+          />
+
+    </target>
+
+    <target name="deploy.linux" depends="jar" description="Build PasswordSafeSWT for Linux">
+
+        <delete dir="${dist.linux.dir}/${zip.dir.name}" />
+        <mkdir dir="${dist.linux.dir}/${zip.dir.name}" />
+
+        <copy todir="${dist.linux.dir}/${zip.dir.name}">
+            <fileset dir="${linux.dir}/dll">
+                <include name="*.so" />
+            </fileset>
+            <fileset dir="${linux.dir}">
+                <include name="pwsafe.sh" />
+                <include name="*.jar" />
+            </fileset>
+            <fileset dir="${lib.dir}" includes="*.jar" excludes="jar*.jar" />
+            <fileset dir="${deploy.dir}" includes="*.jar" />
+        </copy>
+
+        <!-- And set the laucher script and dlls executable... -->
+        <chmod perm="a+x">
+            <fileset dir="${dist.linux.dir}/${zip.dir.name}">
+                <include name="*.so" />
+                <include name="*.sh" />
+            </fileset>
+        </chmod>
+
+        <tar destfile="${dist.linux.dir}/${zip.dir.name}-linux.tar"
+                       basedir="${dist.linux.dir}" includes="${zip.dir.name}/**/*"
+                  />
+
+        <gzip src="${dist.linux.dir}/${zip.dir.name}-linux.tar" destfile="${dist.linux.dir}/${zip.dir.name}-linux.tar.gz"/>
+
+
+    </target>
+
+
+
+    <target name="deploy.mac" depends="jar" description="Builds PasswordSafeSWT for Mac">
+
+        <delete dir="${dist.mac.dir}/${zip.dir.name}" />
+        <mkdir dir="${dist.mac.dir}/${zip.dir.name}" />
+
+
+        <!-- http://www.loomcom.com/jarbundler/ -->
+        <taskdef name="jarbundler" classpath="${lib.dir}/jarbundler-1.4.jar" classname="com.loomcom.ant.tasks.jarbundler.JarBundler" />
+
+        <jarbundler dir="${dist.mac.dir}/${zip.dir.name}" name="${app.name}" mainclass="${main.class}" icon="${mac.dir}/PasswordSafe.icns" version="1.0" aboutmenuname="${app.name}" jvmversion="1.4+" infostring="PasswordSafeSWT, (c) 2005">
+            <jarfileset dir="${deploy.dir}">
+                <include name="PasswordSafeSWT.jar" />
+            </jarfileset>
+            <jarfileset dir="${lib.dir}">
+                <include name="**/*.jar" />
+                <exclude name="jarbundler*.*" />
+            </jarfileset>
+            <jarfileset dir="${mac.dir}">
+                <include name="**/*.jar" />
+            </jarfileset>
+            <jarfileset dir="${mac.dir}/dll">
+                <include name="**.*" />
+            </jarfileset>
+        </jarbundler>
+
+        <!-- And set the jni libs executable... -->
+        <chmod perm="a+x">
+            <fileset dir="${dist.mac.dir}/${zip.dir.name}/${app.name}.app/Contents/Resources/Java">
+                <include name="*.jnilib" />
+            </fileset>
+        </chmod>
+
+        <replace file="${dist.mac.dir}/${zip.dir.name}/${app.name}.app/Contents/Info.plist" token="&lt;key&gt;ClassPath" value="&lt;key&gt;StartOnMainThread&lt;/key&gt;&lt;true/&gt; &lt;key&gt;ClassPath" />
+
+        <tar destfile="${dist.mac.dir}/${zip.dir.name}-macosx.tar"
+                   basedir="${dist.mac.dir}" includes="${zip.dir.name}/**/*.*"
+              />
+
+        <gzip src="${dist.mac.dir}/${zip.dir.name}-macosx.tar" destfile="${dist.mac.dir}/${zip.dir.name}-macosx.tar.gz"/>
+
+
+    </target>
+
+    <target name="deploy.src" depends="jar" description="Deploys a source code distro">
+
+
+        <delete dir="${dist.src.dir}/${zip.dir.name}" />
+        <mkdir dir="${dist.src.dir}/${zip.dir.name}" />
+
+        <copy todir="${dist.src.dir}/${zip.dir.name}">
+            <fileset dir="${basedir}">
+                <include name="src/**/*.*" />
+                <include name="lib/**/*.*" />
+                <include name="platform/**/*.*" />
+            </fileset>
+            <fileset dir="${basedir}" includes="*.*" />
+        </copy>
+
+        <property name="src.tar.name" value="${dist.src.dir}/${zip.dir.name}-src-with-libs.tar"/>
+
+        <tar destfile="${src.tar.name}"
+                   basedir="${dist.src.dir}" includes="${zip.dir.name}/**/*.*"
+              />
+
+        <gzip src="${src.tar.name}" destfile="${src.tar.name}.gz"/>
+
+        <delete file="${src.tar.name}"/>
+
+
+    </target>
+
+
+    <target name="clean" depends="init" description="Remove all class files">
+        <delete dir="${classees.dir}" />
+        <delete dir="${deploy.dir}" />
+    </target>
+
+
+    <target name="version" depends="init" description="Update the version file and tag the CVS build">
+
+            <cvs command="update ${version.file}" failonerror="true"/>
+
+            <propertyfile file="${version.file}" comment="PasswordSafeSWT Version Build Properties File.">
+                <entry key="build.number" type="int" default="0" operation="+" pattern="000"/>
+                <entry key="build.release.minor" type="int" value="${version.release.minor}" pattern="0"/>
+                <entry key="build.release.major" type="int" value="${version.release.major}" pattern="0"/>
+                <entry key="build.date" type="date" value="now"/>
+                <entry key="build.user" type="string" value="${user.name}"/>
+            </propertyfile>
+
+            <cvs command="commit -m Release ${version.file}" failonerror="true"/>
+
+            <property file="${version.file}" />
+
+            <echo>CVS Tag is ${build.version.tag}. Version is ${build.version}</echo>
+
+            <cvs command="tag -R ${build.version.tag}" failonerror="true"/>
+
+    </target>
+
+</project>

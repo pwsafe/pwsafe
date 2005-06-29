@@ -1,0 +1,35 @@
+
+
+This is a v0.2 release, so there is much to do in every way ;-)
+
+* Options are persisted to file, but aren't yet wired to any GUI functionality (except for generate password)
+* The MRU only refreshes on each restart
+* The right click menus aren't context sensitive
+* The lauching of URLs in comments fields (Ctrl-T) is not yet implemented
+* None of the help is implemented (how to do this in crossplatform manner...)
+* Status bar is there, but not used for anything
+* Incorporate version info into about box or somewhere
+* Icons in toolbar are grungy and need more photoshop-ing
+* Logging is should be configured at INFO so all the DEBUG stuff doesn't go out
+* Starting planning for I18N
+
+
+Platform Specific Stuff
+
+MacOSX
+* Launching website doesn't work. Need to update browser code.
+* Integrate preferences in the Appname menu rather than on "Manage" menu
+* MRUs go in a particular Recent menu
+* Need ant task to build dmg file (currently by hand)
+* "Warning"/"Info" icons on dialogs is pretty bizarre and non-native
+* Verbs should be used for buttons names "Save", "Don't Save" instead of windows "Yes"/"No"
+
+Linux/Unix
+* Launcher script is pretty dodgy. Need help from a shell dude (or someone who knows about desktop integration on Linux)
+* Do we need builds for Motif environments?
+* Do we need a Solaris bundle?
+
+
+Win32
+* Should move off Glen's copy of exe4j into OSS alternative (JSmooth looks good but lacks Ant task)
+
