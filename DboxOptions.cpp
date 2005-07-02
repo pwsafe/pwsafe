@@ -54,6 +54,10 @@ DboxMain::OnOptions()
 #endif
    display.m_usesystemtray = prefs->
      GetPref(PWSprefs::BoolPrefs::UseSystemTray) ? TRUE : FALSE;
+   display.m_maxmruitems = prefs->
+     GetPref(PWSprefs::IntPrefs::MaxMRUItems);
+   display.m_mruonfilemenu = PWSprefs::GetInstance()->
+     GetPref(PWSprefs::BoolPrefs::MRUOnFileMenu);
 
    security.m_clearclipboard = prefs->
      GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
@@ -135,6 +139,10 @@ DboxMain::OnOptions()
 #endif
      prefs->SetPref(PWSprefs::BoolPrefs::UseSystemTray,
 		    display.m_usesystemtray == TRUE);
+     prefs->SetPref(PWSprefs::IntPrefs::MaxMRUItems,
+		    display.m_maxmruitems);
+	 prefs->SetPref(PWSprefs::BoolPrefs::MRUOnFileMenu,
+			display.m_mruonfilemenu == TRUE);
 
      prefs->SetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo,
 		    security.m_clearclipboard == TRUE);

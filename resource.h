@@ -156,6 +156,11 @@
 #define IDC_DEFIMPDELIM                 1105
 #define IDC_QUERYSETEXPDELIM            1106
 #define IDC_DEFEXPDELIM                 1107
+#define IDC_STATIC_MAXMRUITEMS          1108
+#define IDC_MAXMRUITEMS                 1109
+#define IDC_STATIC_GBMRU                1110
+#define IDC_MRU_ONFILEMENU              1111
+#define IDC_STATIC_RESTART              1112
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -210,9 +215,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        227
+#define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1108
+#define _APS_NEXT_CONTROL_VALUE         1113
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

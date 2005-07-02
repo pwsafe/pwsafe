@@ -104,6 +104,12 @@ CEditDlg::OnOK()
       ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
       return;
    }
+   if (!m_group.IsEmpty() && m_group[0] == '.')
+   {
+      AfxMessageBox(_T("A dot is invalid as the first character of the Group field."));
+      ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
+      return;
+   }
    //End check
 
    DboxMain* pParent = (DboxMain*) GetParent();

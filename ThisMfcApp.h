@@ -10,6 +10,10 @@
 #include "corelib/PWScore.h"
 #include "SystemTray.h"
 //-----------------------------------------------------------------------------
+
+int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
+int FindMenuItem(CMenu* Menu, int MenuID);
+
 class DboxMain;
 
 class ThisMfcApp
@@ -26,6 +30,8 @@ public:
 
   DboxMain* m_maindlg;
   PWScore m_core;
+  CMenu* m_mainmenu;
+  BOOL m_mruonfilemenu;
 
   virtual BOOL InitInstance();
 WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);

@@ -44,6 +44,9 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif
 	DDX_Check(pDX, IDC_DEFPWUSESYSTRAY, m_usesystemtray);
+	DDX_Text(pDX, IDC_MAXMRUITEMS, m_maxmruitems);
+	DDV_MinMaxInt(pDX, m_maxmruitems, 1, 20);
+	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
 	//}}AFX_DATA_MAP
 }
 

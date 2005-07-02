@@ -397,6 +397,9 @@ DboxMain::OnInitDialog()
 		       GetPref(PWSprefs::BoolPrefs::UseDefUser));
   m_core.SetDefUsername(PWSprefs::GetInstance()->
 		       GetPref(PWSprefs::StringPrefs::DefUserName));
+		       
+  SetMenu(app.m_mainmenu);  // Now show menu...
+  
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -1983,7 +1986,15 @@ DboxMain::ConfigureSystemMenu()
 void
 DboxMain::OnUpdateMRU(CCmdUI* pCmdUI) 
 {
+	if (!app.m_mruonfilemenu) {
+	    if (pCmdUI->m_nIndex == 0) { // Add to popup menu
+	    	app.GetMRU()->UpdateMenu( pCmdUI );
+	    } else {
+	    	return;
+	    }
+	} else {
 	app.GetMRU()->UpdateMenu( pCmdUI );	
+	}
 }
 
 #if _MFC_VER > 1200
