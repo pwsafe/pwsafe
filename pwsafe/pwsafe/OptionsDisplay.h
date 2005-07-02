@@ -29,6 +29,8 @@ public:
 	BOOL	m_dcshowspassword;
 #endif
 	BOOL    m_usesystemtray;
+	int		m_maxmruitems;
+	BOOL	m_mruonfilemenu;
 	//}}AFX_DATA
 
 

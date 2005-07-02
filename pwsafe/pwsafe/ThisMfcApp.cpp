@@ -313,12 +313,48 @@ ThisMfcApp::InitInstance()
     Of course, this is legacy, and will go away once the registry is fully replaced
     by the in-database preference storage. -- ronys
   */
-  CString companyname("Counterpane Systems");
+  CString companyname(_T("Counterpane Systems"));
   SetRegistryKey(companyname);
 
   int	nMRUItems = PWSprefs::GetInstance()->
     GetPref(PWSprefs::IntPrefs::MaxMRUItems);
-  m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );;
+
+  m_mruonfilemenu = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::BoolPrefs::MRUOnFileMenu);
+
+  m_mainmenu = new CMenu;
+  m_mainmenu->LoadMenu(IDR_MAINMENU);
+  
+  // Look for "File" menu.
+  int pos = FindMenuItem(m_mainmenu, _T("&File"));
+  
+  CMenu* m_file_submenu = m_mainmenu->GetSubMenu(pos);
+  
+  // Look for "Open Database"
+  pos = FindMenuItem(m_file_submenu, ID_MENUITEM_OPEN);
+  ASSERT(pos > -1);
+  
+  // Create New Popup Menu
+  CMenu* m_new_popupmenu;
+  m_new_popupmenu = new CMenu;
+  m_new_popupmenu->CreatePopupMenu();
+  int irc;
+  
+  if (!m_mruonfilemenu) {  // MRU entries in popup menu
+	  // Insert Item onto new popup
+	  irc = m_new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, _T("Safe%d") );
+	  ASSERT(irc != 0);
+
+	  // Insert Popup onto main menu
+	  irc = m_file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) m_new_popupmenu->m_hMenu, "&Recent Safes" );
+	  ASSERT(irc != 0);
+  }
+  else {  // MRU entries inline
+	  irc = m_file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
+	  ASSERT(irc != 0);
+  }
+
+  m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
   m_pMRU->ReadList();
 	
   DboxMain dbox(NULL);
@@ -522,5 +558,47 @@ ThisMfcApp::OnHelp()
 
 #endif
 }
+
+// FindMenuItem() will find a menu item string from the specified
+// popup menu and returns its position (0-based) in the specified 
+// popup menu. It returns -1 if no such menu item string is found.
+int FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
+{
+   ASSERT(Menu);
+   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+
+   int count = Menu->GetMenuItemCount();
+   for (int i = 0; i < count; i++)
+   {
+      CString str;
+      if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
+         (strcmp(str, MenuString) == 0))
+         return i;
+   }
+
+   return -1;
+}
+
+// FindMenuItem() will find a menu item ID from the specified
+// popup menu and returns its position (0-based) in the specified 
+// popup menu. It returns -1 if no such menu item string is found.
+int FindMenuItem(CMenu* Menu, int MenuID)
+{
+   ASSERT(Menu);
+   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+
+   int count = Menu->GetMenuItemCount();
+   int id;
+   
+   for (int i = 0; i < count; i++)
+   {
+      id = Menu->GetMenuItemID(i);  // id = 0 for Separator; 1 for popup
+      if ( id > 1 && id == MenuID)         
+         return i;
+   }
+
+   return -1;
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
