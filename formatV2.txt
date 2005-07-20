@@ -68,31 +68,39 @@ shortcomings:
    meaning. Each record consists of a fixed number of fields, with
    empty fields having a length of 0 in their first block.  Textual
    data will be stored in Unicode (wchar_t) [See Note 1]. Numerical
-   data will be stored in network byte order. Timestamps will be
-   stored as time_t (in network byte order), and refer to local time
-   (I don't think timezones are a consideration for our needs).
+   data will be stored in network byte order.
+   Timestamps will be stored as 32 bit, little endian, unsigned integers,
+   representing the number of seconds since Midnight, January 1, 1970,	
+   GMT. (This is equivalent to the time_t type on Windows and POSIX.
+   On the Macintosh, the value needs to be adjusted by the constant
+   value 2082844800 to account for the different epoch of its time_t
+   type.) Timestamps will be stored in GMT.
 
-[Note 1] In database format 2.0, Unicode is *NOT* supported. Data is
-   stored one byte per character, in the PC's native encoding. UTF-8,
-   not Unicode, will be supported in a future version.
+[Note 1] An "isUTF8" preference has been added to version 2.xx. The
+   semantics are as follows: If the IsUTF8 preference is true, textual data
+   is stored in UTF-8 format. If the IsUTF8 preference is false, textual
+   data is stored using the current locale. As of PasswordSafe 2.11, this
+   behaviour is not implemented. The flag will, howe ver, enable
+   PasswordSafe compatible implementations to interoperate in the future.
 
 5. The fields for each record for version 2.0 are as follows:
 
-   Name			      Type byte value	Type     Comments
-   --------------------------------------------------------------
-   UUID			      0x1		UUID	 [1]
-   Group		      0x2		Text     [2]
-   Title		      0x3		Text
-   Username		      0x4		Text
-   Notes		      0x5		Text
-   Password		      0x6		Text
-   Creation Time	      0x7		time_t
-   Password Modification Time 0x8 		time_t
-   Last Access Time	      0x9		time_t  [3]
-   Password Lifetime	      0xa		time_t  [4]
-   Password Policy	      0xb		4 bytes [5]
-   Last Mod. time	      0xc		time_t  [6]
-   End of Entry		      0xff		[empty] [7]
+							 Currently
+   Name			      Type byte value	Type     Implemented Comments
+   --------------------------------------------------------------------------
+   UUID			      0x1		UUID		Y	[1]
+   Group		      0x2		Text		Y	[2]
+   Title		      0x3		Text		Y
+   Username		      0x4		Text		Y
+   Notes		      0x5		Text		Y
+   Password		      0x6		Text		Y
+   Creation Time	      0x7		time_t		N
+   Password Modification Time 0x8 		time_t		N
+   Last Access Time	      0x9		time_t		N	[3]
+   Password Lifetime	      0xa		time_t		N	[4]
+   Password Policy	      0xb		4 bytes		N	[5]
+   Last Mod. time	      0xc		time_t		N	[6]
+   End of Entry		      0xff		[empty]		Y	[7]
 
 [1] A universally unique identifier is needed in order to synchronize
 databases, i.e., between a handheld pocketPC device and a PC. The UUID
@@ -101,12 +109,8 @@ other platforms, it's possible to use code from the OSF.
 [2] The "Group" is meant to support displaying the entries in a
 tree-like manner. Groups can be heirarchical, with elements separated
 by a period, supporting groups such as "Finance.credit cards.Visa",
-"Finance.credit cards.Mastercard", Finance.bank.web access", etc. This
-implies that periods entered by the user will have a backslash `\`
-prepended to them. A backslash entered by the user will have another
-backslash prepended. For example, the Group "George W. Bush \
-President" will be stored internally as "George W\. Bush \\
-President".
+"Finance.credit cards.Mastercard", Finance.bank.web access", etc. Dots
+entered by the user are "escaped" by the application.
 [3] This will be updated whenever the password of this entry is copied
 to the clipboard, or whenever the Password Modification Time is
 updated.
@@ -125,12 +129,15 @@ have relied on the UUID field being the first, but this would have
 been a bit less elegant to parse, as well as less robust (suppose we
 decide to drop the UUID, or move it to the last field?).
 
-6. Conversion from 1.x databases to 2.x should be automatic. The user
-   should be notified that the 1.x database will be renamed with a
+6. Conversion from 1.x databases to 2.x is automatic. The user
+   is notified that the 1.x database will be renamed with a
    ".old" suffix added, and the 2.x saved with the old's original
    name.
 
 $Log$
+Revision 1.8  2005/07/20 21:15:01  ronys
+Updated to refelct 2.11 status + some midifications discussed on dev list.
+
 Revision 1.7  2005/04/07 19:44:37  ronys
 Fixed some errors in the format descriptions, moved stuff to Misc directory, removed unused files.
 
