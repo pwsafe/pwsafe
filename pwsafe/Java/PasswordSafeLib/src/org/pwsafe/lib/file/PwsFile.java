@@ -319,11 +319,16 @@ public abstract class PwsFile
 	/**
 	 * Returns the fully qualified path and filename.
 	 * 
-	 * @return The fully qualified filename
+	 * @return The fully qualified filename, or null if no filename has been set.
 	 */
 	public String getFilename()
 	{
-		return FilePath + FileName;
+		if (FilePath != null && FileName != null) {
+			return FilePath + FileName;
+		} else {
+			return null;
+		}
+		
 	}
 
 	/**
@@ -739,9 +744,9 @@ public abstract class PwsFile
 		FilePath	= file2.getParent();
 		FileName	= file2.getName();
 
-		if ( !FilePath.endsWith("\\") )
+		if ( !FilePath.endsWith(File.separator) )
 		{
-			FilePath += "\\";
+			FilePath += File.separator;
 		}
 
 		LOG.debug2( "FileName = \"" + FilePath + FileName + "\"" );
