@@ -35,7 +35,7 @@ void CKeySend::SendChar(TCHAR c)
        if(keyScanCode & 0x100){
               shiftDown=true;      
               //send a shift down
-              keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), KEYEVENTF_EXTENDEDKEY, 0); 
+              keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), 0,3); //Fixes bug #1208955
        } 
  
        if(keyScanCode & 0x200){
@@ -58,7 +58,7 @@ void CKeySend::SendChar(TCHAR c)
  
        if(shiftDown){
               //send a shift up
-              keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
+              keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
               shiftDown=false;
        }
  
