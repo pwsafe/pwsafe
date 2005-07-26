@@ -194,7 +194,12 @@ public class PwsRecordV1 extends PwsRecord implements Comparable
 	 */
 	public boolean equals( Object rec )
 	{
-		return equals( (PwsRecordV1) rec );
+		if (rec instanceof PwsRecordV1) {
+			return equals( (PwsRecordV1) rec );
+		} else {
+			return false;
+		}
+		
 	}
 
 	/**

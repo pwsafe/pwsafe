@@ -189,10 +189,14 @@ public class PwsRecordV2 extends PwsRecord
 		UUID	thisUUID;
 		UUID	thatUUID;
 
-		thisUUID = (UUID) ((PwsUUIDField) getField( UUID )).getValue();
-		thatUUID = (UUID) ((PwsUUIDField) ((PwsRecord) that).getField( UUID )).getValue();
+		if (that instanceof PwsRecordV2) {
+			thisUUID = (UUID) ((PwsUUIDField) getField( UUID )).getValue();
+			thatUUID = (UUID) ((PwsUUIDField) ((PwsRecord) that).getField( UUID )).getValue();
 
-		return thisUUID.equals( thatUUID );
+			return thisUUID.equals( thatUUID );
+		} else {
+			return false;
+		}
 	}
 
 	/**
