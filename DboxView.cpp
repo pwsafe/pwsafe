@@ -726,6 +726,7 @@ DboxMain::RefreshList()
 #if defined(POCKET_PC)
   SetCursor( NULL );
 #endif
+  m_ctlItemTree.RestoreExpanded();
   // re-enable and force redraw!
   m_ctlItemList.SetRedraw( TRUE ); m_ctlItemList.Invalidate();
   m_ctlItemTree.SetRedraw( TRUE ); m_ctlItemTree.Invalidate();
@@ -853,7 +854,7 @@ DboxMain::OnSize(UINT nType,
 	}
       RefreshList();
 #if !defined(POCKET_PC)
-    }
+    } // !m_bSizing && nType == SIZE_RESTORED
 #endif
 
   if (m_windowok) {
@@ -864,7 +865,6 @@ DboxMain::OnSize(UINT nType,
     m_ctlItemList.MoveWindow(&rect, TRUE);
     m_ctlItemTree.MoveWindow(&rect, TRUE);
   }
-
   m_bSizing = false;
 }
 

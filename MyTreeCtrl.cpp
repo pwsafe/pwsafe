@@ -4,6 +4,15 @@
  * Based on MFC sample code from CMNCTRL1
  */
 
+// Need a set to keep track of what nodes are expanded, to re-expand
+// after minimize
+#pragma warning(disable:4786)
+#pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
+#include <set>
+#pragma warning(pop)
+
+using namespace std ;
+
 
 #include "stdafx.h"
 #include "MyTreeCtrl.h"
@@ -17,15 +26,21 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+typedef set<CItemData *> SetTreeItem_t;
+typedef SetTreeItem_t *SetTreeItemP_t;
+
 static const TCHAR GROUP_SEP = TCHAR('.');
 
 CMyTreeCtrl::CMyTreeCtrl() : m_bDragging(false), m_pimagelist(NULL)
 {
+  m_expandedItems = new SetTreeItem_t;
+  m_isRestoring = false;
 }
 
 CMyTreeCtrl::~CMyTreeCtrl()
 {
   delete m_pimagelist;
+  delete m_expandedItems;
 }
 
 
@@ -34,6 +49,7 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
+        ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
 	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONUP()
@@ -473,4 +489,64 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   m_pimagelist->DragMove(ptAction);
   m_pimagelist->DragEnter(this, ptAction);
   SetCapture();
+}
+
+
+void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
+{
+  // The hItem that is expanded isn't the one that will be restored,
+  // since the tree is rebuilt in DboxMain::RefreshList. Therefore, we
+  // need to store the corresponding elements. But groups have none, so
+  // we store the first (or any) child element, and upon restore, expand
+  // the parent. Ugh++.
+
+  if (!m_isRestoring) {
+    SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
+    NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNotifyStruct;
+    // now find a leaf son and add it's CitemData to set.
+    HTREEITEM child = GetChildItem(pNMTreeView->itemNew.hItem);
+    ASSERT(child != NULL); // can't expand something w/o children, right?
+    do {
+      if (IsLeafNode(child)) {
+	break; // stop at first leaf child found
+      }
+      child = GetNextSiblingItem(child);
+    } while (child != NULL);
+    
+    if (child == NULL) {
+      // case where expanded node has only tree subnodes,
+      // nothing to get a CItemData from. This borderline
+      // case is hereby deemed more trouble than it's worth to
+      // handle correctly.
+      return;
+    }
+    DWORD itemData = GetItemData(child);
+    ASSERT(itemData != NULL);
+    CItemData *ci = (CItemData *)itemData;
+    TRACE(_T("CMyTreeCtrl::OnExpandCollapse(hitem = %x, citem = %x, action = %d)\n"),
+	  pNMTreeView->itemNew.hItem, ci, pNMTreeView->action);
+    if (pNMTreeView->action == TVE_EXPAND)
+      pSet->insert(ci);
+    else if (pNMTreeView->action == TVE_COLLAPSE) {
+      ASSERT(pSet->find(ci) != pSet->end());
+      pSet->erase(ci);
+    }
+  }
+}
+
+void CMyTreeCtrl::RestoreExpanded()
+{
+  m_isRestoring = true;
+  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
+  SetTreeItem_t::iterator it;
+
+  for (it = pSet->begin(); it != pSet->end(); it++) {
+    TRACE(_T("CMyTreeCtrl::RestoreExpanded() iterating %x\n"), *it);
+    CItemData *ci = *it;
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    HTREEITEM parent = GetParentItem(di->tree_item);
+    TRACE(_T("di->tree_item = %x\n"), di->tree_item);
+    Expand(parent, TVE_EXPAND);
+  }
+  m_isRestoring = false;
 }
