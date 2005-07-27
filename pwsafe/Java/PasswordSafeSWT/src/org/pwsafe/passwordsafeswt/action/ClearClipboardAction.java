@@ -8,7 +8,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.pwsafe.passwordsafeswt.PasswordSafeJFace;
 
 /**
- * Clears the clipboard.
+ * Clears the current user clipboard.
  *
  * @author Glen Smith
  */
@@ -29,7 +29,7 @@ public class ClearClipboardAction extends Action {
 
         Clipboard cb = new Clipboard(app.getShell().getDisplay());
 
-        cb.setContents(new Object[]{""},
+		cb.setContents(new Object[]{"  "},
                 new Transfer[]{TextTransfer.getInstance()});
 
         cb.dispose();
