@@ -1,10 +1,16 @@
 package org.pwsafe.passwordsafeswt;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,7 +66,9 @@ import org.pwsafe.passwordsafeswt.action.DeleteRecordAction;
 import org.pwsafe.passwordsafeswt.action.EditRecordAction;
 import org.pwsafe.passwordsafeswt.action.ExitAppAction;
 import org.pwsafe.passwordsafeswt.action.ExportToTextAction;
+import org.pwsafe.passwordsafeswt.action.ExportToXMLAction;
 import org.pwsafe.passwordsafeswt.action.HelpAction;
+import org.pwsafe.passwordsafeswt.action.ImportFromXMLAction;
 import org.pwsafe.passwordsafeswt.action.MRUFileAction;
 import org.pwsafe.passwordsafeswt.action.NewFileAction;
 import org.pwsafe.passwordsafeswt.action.OpenFileAction;
@@ -79,7 +87,11 @@ import org.pwsafe.passwordsafeswt.model.PasswordTableLabelProvider;
 import org.pwsafe.passwordsafeswt.model.PasswordTableSorter;
 import org.pwsafe.passwordsafeswt.model.PasswordTreeContentProvider;
 import org.pwsafe.passwordsafeswt.model.PasswordTreeLabelProvider;
+import org.pwsafe.passwordsafeswt.preference.DisplayPreferences;
+import org.pwsafe.passwordsafeswt.preference.MiscPreferences;
+import org.pwsafe.passwordsafeswt.preference.SecurityPreferences;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
+import org.pwsafe.passwordsafeswt.xml.XMLDataParser;
 
 import com.swtdesigner.SWTResourceManager;
 
@@ -91,6 +103,8 @@ import com.swtdesigner.SWTResourceManager;
  */
 public class PasswordSafeJFace extends ApplicationWindow {
 
+	private ImportFromXMLAction importFromXMLAction;
+	private ExportToXMLAction exportToXMLAction;
 	private OptionsAction optionsAction;
 	private TreeViewer treeViewer;
 	private Tree tree;
@@ -137,8 +151,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		addToolBar(SWT.FLAT | SWT.WRAP);
 		addMenuBar();
 		addStatusLine();
-		setEditMenusEnabled(false); // TODO: use a dialog to prompt the user to
-		// open/create new safe
+		setEditMenusEnabled(false);
 	}
 
 	private void displayOpeningDialog() {
@@ -166,6 +179,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 				allDone = true;
 			}
 		}
+		setupStatusMessage();
 	}
 
 	private void startOpeningDialogThread(final Shell shell) {
@@ -237,11 +251,15 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			trayItem.setImage(image);
 			getShell().addShellListener(new ShellAdapter() {
 				public void shellIconified(ShellEvent e) {
-					if (trayItem != null) {
+					if (trayItem != null
+							&& UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_ICON_IN_SYSTEM_TRAY)) {
 						if (log.isDebugEnabled())
 							log.debug("Shrinking to tray");
 						trayItem.setVisible(true);
 						getShell().setVisible(false);
+					}
+					if (UserPreferences.getInstance().getBoolean(SecurityPreferences.CLEAR_CLIPBOARD_ON_MIN)) {
+						clearClipboardAction.run();
 					}
 				}
 			});
@@ -284,6 +302,17 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		tableColumn_2.setWidth(100);
 		tableColumn_2.setText("Notes");
 		tableColumn_2.addSelectionListener(new TableColumnSelectionAdaptor(tableViewer, 3));
+
+		if (UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_LIST)) {
+			final TableColumn tableColumn_3 = new TableColumn(table, SWT.NONE);
+			tableColumn_3.setWidth(100);
+			tableColumn_3.setText("Password");
+			tableColumn_3.addSelectionListener(new TableColumnSelectionAdaptor(tableViewer, 4));
+		}
+
+		// Sort on first column
+		PasswordTableSorter pts = (PasswordTableSorter) tableViewer.getSorter();
+		pts.sortOnColumn(1);
 
 		treeViewer = new TreeViewer(composite, SWT.BORDER);
 		treeViewer.setLabelProvider(new PasswordTreeLabelProvider());
@@ -344,6 +373,10 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 		optionsAction = new OptionsAction();
 
+		exportToXMLAction = new ExportToXMLAction();
+
+		importFromXMLAction = new ImportFromXMLAction();
+
 	}
 
 	/**
@@ -384,6 +417,13 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		menuManagerFile.add(menuManagerExportTo);
 
 		menuManagerExportTo.add(exportToTextAction);
+
+		menuManagerExportTo.add(exportToXMLAction);
+
+		final MenuManager menuManagerImportFrom = new MenuManager("Import From");
+		menuManagerFile.add(menuManagerImportFrom);
+
+		menuManagerImportFrom.add(importFromXMLAction);
 
 		menuManagerFile.add(new Separator());
 
@@ -505,8 +545,32 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 */
 	protected StatusLineManager createStatusLineManager() {
 		StatusLineManager statusLineManager = new StatusLineManager();
-		statusLineManager.setMessage(null, "http://passwordsafe.sourceforge.net");
+		statusLineManager.setMessage("http://passwordsafe.sf.net");
 		return statusLineManager;
+	}
+
+	/**
+	 * Updates the status bar with the supplied text.
+	 * 
+	 * @param statusMsg
+	 *            the message to display in the status bar
+	 */
+	public void setStatusMessage(String statusMsg) {
+		getStatusLineManager().setMessage(statusMsg);
+	}
+
+	public void setupStatusMessage() {
+
+		if (getPwsFile().getRecordCount() > 0) {
+			if (UserPreferences.getInstance().getBoolean(MiscPreferences.DOUBLE_CLICK_COPIES_TO_CLIPBOARD)) {
+				setStatusMessage("Double Click on entry to copy password");
+			} else {
+				setStatusMessage("Double Click to edit entry");
+			}
+		} else {
+			setStatusMessage("http://passwordsafe.sf.net");
+		}
+
 	}
 
 	/**
@@ -703,11 +767,25 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		newEntry.toPwsRecord(newRecord);
 		try {
 			getPwsFile().add(newRecord);
+			saveOnUpdateOrEditCheck();
 		} catch (PasswordSafeException e) {
 			displayErrorDialog("Add Entry Error", "Error Adding Entry", e);
 		}
 		updateViewers();
 
+	}
+
+	/**
+	 * If the user has set "Save on Update or Edit", we save the file
+	 * immediately.
+	 * 
+	 */
+	private void saveOnUpdateOrEditCheck() {
+		if (UserPreferences.getInstance().getBoolean(MiscPreferences.SAVE_IMMEDIATELY_ON_EDIT)) {
+			if (log.isDebugEnabled())
+				log.debug("Save on Edit option active. Saving database.");
+			saveFileAction.run();
+		}
 	}
 
 	/**
@@ -717,6 +795,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	public void deleteRecord() {
 		PwsRecord selectedRec = getSelectedRecord();
 		selectedRec.delete();
+		saveOnUpdateOrEditCheck();
 		updateViewers();
 	}
 
@@ -772,6 +851,9 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 * 
 	 */
 	public void exitApplication() {
+		if (UserPreferences.getInstance().getBoolean(SecurityPreferences.CLEAR_CLIPBOARD_ON_MIN)) {
+			clearClipboardAction.run();
+		}
 		getShell().dispose();
 	}
 
@@ -803,7 +885,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	}
 
 	/**
-	 * Turns on or off the edit record menus (add/edit/delete) and save/as menus.
+	 * Turns on or off the edit record menus (add/edit/delete) and save/as
+	 * menus.
 	 * 
 	 * @param enabled
 	 *            true to enable the menus, false otherwise
@@ -855,6 +938,93 @@ public class PasswordSafeJFace extends ApplicationWindow {
 					log.warn("Could not close output text file", e);
 				}
 			}
+
+		}
+
+	}
+
+	/**
+	 * Import an XML file into the current passwordsafe.
+	 * 
+	 * @param filename
+	 *            the name of the file
+	 * @throws PasswordSafeException
+	 */
+	public void importFromXML(String filename) throws PasswordSafeException {
+
+		File theFile = new File(filename);
+
+		if (!theFile.exists()) {
+			throw new RuntimeException("Could not locate XML source file: [" + filename + "]");
+		}
+		BufferedInputStream bis;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			bis = new BufferedInputStream(new FileInputStream(filename));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Could not open file", e);
+		}
+
+		String utf8String;
+		try {
+			int c;
+			
+	        while ((c = bis.read()) != -1) {
+	        	baos.write(c);
+			}
+	        
+	        byte[] utf8Bytes = baos.toByteArray();
+	        utf8String = new String(utf8Bytes, "UTF-8");
+	        char header = utf8String.charAt(0);
+	        if (header > 255) {
+	        	utf8String = utf8String.substring(1); // skip utf leading char
+	        }
+	        	
+		} catch (Exception ioe) {
+			throw new RuntimeException("IO Issues reading XML source file", ioe);
+		}
+
+		XMLDataParser xdp = new XMLDataParser();
+		PwsEntryDTO[] entries = xdp.parse(utf8String);
+		if (entries != null && entries.length > 0) {
+			PwsFile pwsFile = getPwsFile();
+			for (int i = 0; i < entries.length; i++) {
+				PwsEntryDTO nextEntry = entries[i];
+				PwsRecord newRecord = pwsFile.newRecord();
+				nextEntry.toPwsRecord(newRecord);
+				pwsFile.add(newRecord);
+			}
+			this.updateViewers();
+		}
+
+	}
+
+	/**
+	 * Export the current safe to the name file in XML format.
+	 * 
+	 * @param filename
+	 *            the filename to export to
+	 * @throws IOException
+	 */
+	public void exportToXML(String filename) throws IOException {
+
+		PwsFile pwsFile = getPwsFile();
+		if (pwsFile != null) {
+			List entryList = new ArrayList();
+			for (Iterator iter = pwsFile.getRecords(); iter.hasNext();) {
+				PwsEntryDTO nextDTO = PwsEntryDTO.fromPwsRecord((PwsRecord) iter.next());
+				entryList.add(nextDTO);
+			}
+			XMLDataParser xdp = new XMLDataParser();
+			String xmlOutput = xdp.convertToXML((PwsEntryDTO[]) entryList.toArray(new PwsEntryDTO[0]));
+			DataOutputStream dos = new DataOutputStream(new FileOutputStream(filename));
+			// output the UTF-8 BOM byte by byte directly to the stream
+			// http://tech.badpen.com/index.cfm?mode=entry&entry=21
+			dos.write(239); // 0xEF
+			dos.write(187); // 0xBB
+			dos.write(191); // 0xBF
+			dos.write(xmlOutput.getBytes());
+			dos.close();
 
 		}
 
