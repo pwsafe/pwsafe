@@ -55,19 +55,23 @@ public class SecurityPreferences extends PreferencePage {
 	    btnLockDatabaseOnMin = new Button(composite, SWT.CHECK);
 	    btnLockDatabaseOnMin.setText("Lock password database on minimize");
 	    btnLockDatabaseOnMin.setSelection(preferenceStore.getBoolean(LOCK_DB_ON_MIN));
+	    btnLockDatabaseOnMin.setEnabled(false);
 
 	    btnConfirmSaveOnMinimize = new Button(composite, SWT.CHECK);
 	    btnConfirmSaveOnMinimize.setEnabled(false);
 	    btnConfirmSaveOnMinimize.setText("Confirm password database save on minimize");
 	    btnConfirmSaveOnMinimize.setSelection(preferenceStore.getBoolean(CONFIRM_SAVE_ON_MIN));
+	    btnConfirmSaveOnMinimize.setEnabled(false);
 
 	    btnConfirmCopy = new Button(composite, SWT.CHECK);
 	    btnConfirmCopy.setText("Confirm item copy to clipboard");
 	    btnConfirmCopy.setSelection(preferenceStore.getBoolean(CONFIRM_COPY_TO_CLIPBOARD));
+	    btnConfirmCopy.setEnabled(false);
 
 	    btnLockDatabaseOnWorkstationLock = new Button(composite, SWT.CHECK);
 	    btnLockDatabaseOnWorkstationLock.setText("Lock password database on workstation lock");
 	    btnLockDatabaseOnWorkstationLock.setSelection(preferenceStore.getBoolean(LOCK_DB_ON_WS_LOCK));
+	    btnLockDatabaseOnWorkstationLock.setEnabled(false);
 
 	    final Composite composite_1 = new Composite(composite, SWT.NONE);
 	    final GridLayout gridLayout = new GridLayout();
@@ -79,12 +83,15 @@ public class SecurityPreferences extends PreferencePage {
 	    btnLockOnIdle = new Button(composite_1, SWT.CHECK);
 	    btnLockOnIdle.setText("Lock password database after");
 	    btnLockOnIdle.setSelection(preferenceStore.getBoolean(LOCK_ON_IDLE));
+	    btnLockOnIdle.setEnabled(false);
 
 	    txtMinutesIdle = new Text(composite_1, SWT.BORDER);
 	    txtMinutesIdle.setText(preferenceStore.getString(LOCK_ON_IDLE_MINS));
+	    txtMinutesIdle.setEnabled(false);
 
 	    final Label lblMinsIdle = new Label(composite_1, SWT.NONE);
 	    lblMinsIdle.setText("minutes idle");
+	    lblMinsIdle.setEnabled(false);
 
 	    return composite;
 	  }

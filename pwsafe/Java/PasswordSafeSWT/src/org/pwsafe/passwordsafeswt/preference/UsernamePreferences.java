@@ -62,6 +62,7 @@ public class UsernamePreferences extends PreferencePage {
 	    btnQuerySetUsername = new Button(composite, SWT.CHECK);
 	    btnQuerySetUsername.setText("Query user to set default username");
 	    btnQuerySetUsername.setSelection(preferenceStore.getBoolean(QUERY_FOR_DEFAULT_USERNAME));
+	    btnQuerySetUsername.setEnabled(false);
 
 	    // Create three text fields.
 	    // Set the text in each from the preference store

@@ -46,6 +46,7 @@ public class DisplayPreferences extends PreferencePage {
 		btnAlwaysOnTop = new Button(composite, SWT.CHECK);
 		btnAlwaysOnTop.setText("Always keep Password Safe on top");
 		btnAlwaysOnTop.setSelection(preferenceStore.getBoolean(ALWAYS_ON_TOP));
+		btnAlwaysOnTop.setEnabled(false);
 
 		btnShowPasswordInList = new Button(composite, SWT.CHECK);
 		btnShowPasswordInList.setText("Show password is display list");

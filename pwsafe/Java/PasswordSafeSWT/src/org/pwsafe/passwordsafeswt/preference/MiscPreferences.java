@@ -49,6 +49,7 @@ public class MiscPreferences extends PreferencePage {
 	    btnConfirmDeletion = new Button(composite, SWT.CHECK);
 	    btnConfirmDeletion.setText("Confirm deletion of items");
 	    btnConfirmDeletion.setSelection(preferenceStore.getBoolean(CONFIRM_ITEM_DELETION));
+	    btnConfirmDeletion.setEnabled(false);
 
 	    btnSaveImmediately = new Button(composite, SWT.CHECK);
 	    btnSaveImmediately.setText("Save database immediately after Edit or Add");
@@ -57,6 +58,7 @@ public class MiscPreferences extends PreferencePage {
 	    btnEscapeExitsApp = new Button(composite, SWT.CHECK);
 	    btnEscapeExitsApp.setText("Escape key exits application");
 	    btnEscapeExitsApp.setSelection(preferenceStore.getBoolean(ESCAPE_KEY_EXITS_APP));
+	    btnEscapeExitsApp.setEnabled(false);
 
 	    final Composite compositeHotKey = new Composite(composite, SWT.NONE);
 	    final GridLayout gridLayout = new GridLayout();
@@ -68,9 +70,11 @@ public class MiscPreferences extends PreferencePage {
 	    btnHotKey = new Button(compositeHotKey, SWT.CHECK);
 	    btnHotKey.setText("Hot key");
 	    btnHotKey.setSelection(preferenceStore.getBoolean(HOT_KEY_ACTIVE));
+	    btnHotKey.setEnabled(false);
 
 	    txtHotKey = new Text(compositeHotKey, SWT.BORDER);
 	    txtHotKey.setText(preferenceStore.getString(HOT_KEY));
+	    txtHotKey.setEnabled(false);
 
 	    final Composite compositeDoubleClick = new Composite(composite, SWT.NONE);
 	    final GridLayout gridLayout_1 = new GridLayout();
