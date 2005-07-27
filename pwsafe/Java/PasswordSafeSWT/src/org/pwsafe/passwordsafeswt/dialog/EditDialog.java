@@ -23,7 +23,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
+import org.pwsafe.passwordsafeswt.preference.DisplayPreferences;
 import org.pwsafe.passwordsafeswt.preference.PasswordPolicyPreferences;
+import org.pwsafe.passwordsafeswt.preference.SecurityPreferences;
 import org.pwsafe.passwordsafeswt.util.ShellHelpers;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 
@@ -184,7 +186,10 @@ public class EditDialog extends Dialog {
 		formData_7.right = new FormAttachment(txtUsername, 0 , SWT.RIGHT);
 		txtPassword.setLayoutData(formData_7);
 		txtPassword.addKeyListener(dirtyKeypress);
+		if (!UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_EDIT_MODE)) {
         txtPassword.setEchoChar('*');
+		}
+		
         if (entryToEdit.getPassword() != null)
             txtPassword.setText(entryToEdit.getPassword());
 

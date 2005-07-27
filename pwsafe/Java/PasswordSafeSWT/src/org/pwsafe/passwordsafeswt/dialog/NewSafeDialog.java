@@ -48,7 +48,7 @@ public class NewSafeDialog extends Dialog {
 	protected void createContents() {
 		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setLayout(new FormLayout());
-		shell.setSize(500, 300);
+		shell.setSize(500, 240);
 		shell.setText("Safe Combination Setup");
 		final Label label = new Label(shell, SWT.WRAP);
 		final FormData formData = new FormData();
@@ -93,6 +93,7 @@ public class NewSafeDialog extends Dialog {
 			}
 		});
 		final FormData formData_7 = new FormData();
+		formData_7.width = 80;
 		formData_7.bottom = new FormAttachment(100, -10);
 		formData_7.left = new FormAttachment(50, -5);
 		btnCancel.setLayoutData(formData_7);
@@ -113,6 +114,7 @@ public class NewSafeDialog extends Dialog {
 			}
 		});
 		final FormData formData_6 = new FormData();
+		formData_6.width = 80;
 		formData_6.top = new FormAttachment(btnCancel, 0, SWT.TOP);
 		formData_6.right = new FormAttachment(btnCancel, -10, SWT.LEFT);
 		btnOk.setLayoutData(formData_6);
@@ -120,6 +122,7 @@ public class NewSafeDialog extends Dialog {
 
 		final Button btnHelp = new Button(shell, SWT.NONE);
 		final FormData formData_8 = new FormData();
+		formData_8.width = 80;
 		formData_8.top = new FormAttachment(btnCancel, 0, SWT.TOP);
 		formData_8.left = new FormAttachment(btnCancel, 10, SWT.RIGHT);
 		btnHelp.setLayoutData(formData_8);

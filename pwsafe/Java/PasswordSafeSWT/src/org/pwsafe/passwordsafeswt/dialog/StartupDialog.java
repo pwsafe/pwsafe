@@ -3,6 +3,7 @@ package org.pwsafe.passwordsafeswt.dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -37,7 +38,6 @@ public class StartupDialog extends Dialog {
 	public static final String OPEN_OTHER = "open-other"; // open file dialog for other file
 	public static final String NEW_FILE = "new";    // create a new safe
 	public static final String CANCEL = "cancel";   // exit the app
-	
 	
 	public StartupDialog(Shell parent, int style) {
 		super(parent, style);
@@ -160,6 +160,7 @@ public class StartupDialog extends Dialog {
 			}
 		});
 		final FormData formData_7 = new FormData();
+		formData_7.width = 80;
 		formData_7.left = new FormAttachment(50, -80);
 		formData_7.bottom = new FormAttachment(100, -10);
 		btnOk.setLayoutData(formData_7);
@@ -173,6 +174,7 @@ public class StartupDialog extends Dialog {
 			}
 		});
 		final FormData formData_8 = new FormData();
+		formData_8.width = 80;
 		formData_8.left = new FormAttachment(btnOk, 10);
 		formData_8.top = new FormAttachment(btnOk, 0, SWT.TOP);
 		btnCancel.setLayoutData(formData_8);
@@ -180,6 +182,7 @@ public class StartupDialog extends Dialog {
 
 		final Button btnHelp = new Button(shell, SWT.NONE);
 		final FormData formData_9 = new FormData();
+		formData_9.width = 80;
 		formData_9.top = new FormAttachment(btnCancel, 0, SWT.TOP);		
 		formData_9.left = new FormAttachment(btnCancel, 10);
 		btnHelp.setLayoutData(formData_9);
