@@ -20,10 +20,13 @@ public:
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
   bool IsLeafNode(HTREEITEM hItem);
+  void RestoreExpanded();
+
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
+  afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
@@ -40,6 +43,9 @@ private:
   HTREEITEM   m_hitemDrag;
   HTREEITEM   m_hitemDrop;
   CImageList  *m_pimagelist;
+  void *m_expandedItems; // Internally this is a SetTreeItem_t, don't want to include stl file here...
+
+  bool m_isRestoring; // don't repopulate m_expandedItems in restore
 
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
