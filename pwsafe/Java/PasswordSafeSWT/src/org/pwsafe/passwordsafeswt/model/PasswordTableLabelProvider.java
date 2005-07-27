@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 
 /**
  * Label Provider for the password Table.
@@ -33,28 +34,31 @@ public class PasswordTableLabelProvider implements ITableLabelProvider {
 			PwsRecordV2 v2 = (PwsRecordV2) element;
 			switch(columnIndex) {
 				case 0:
-					columnString =  v2.getField(PwsRecordV2.TITLE).getValue().toString();
+					columnString =  PwsEntryDTO.getSafeValue(v2,PwsRecordV2.TITLE);
 					break;
 			    case 1:
-			    	columnString =  v2.getField(PwsRecordV2.USERNAME).getValue()
-					.toString();
+			    	columnString =  PwsEntryDTO.getSafeValue(v2,PwsRecordV2.USERNAME);
 			    	break;
 			    case 2:
-			    	columnString = v2.getField(PwsRecordV2.NOTES).getValue().toString();
+			    	columnString = PwsEntryDTO.getSafeValue(v2,PwsRecordV2.NOTES);
 			    	break;
+			    case 3:
+			    	columnString = PwsEntryDTO.getSafeValue(v2,PwsRecordV2.PASSWORD);
 			}
 		} else {
 			PwsRecordV1 v1 = (PwsRecordV1) element;
 			switch(columnIndex) {
 				case 0:
-					columnString = v1.getField(PwsRecordV1.TITLE).getValue().toString();
+					columnString = PwsEntryDTO.getSafeValue(v1,PwsRecordV1.TITLE);
 					break;
 			    case 1:
-			    	columnString = v1.getField(PwsRecordV1.USERNAME).getValue()
-					.toString();
+			    	columnString = PwsEntryDTO.getSafeValue(v1,PwsRecordV1.USERNAME);
 			    	break;
 			    case 2:
-			    	columnString = v1.getField(PwsRecordV1.NOTES).getValue().toString();
+			    	columnString = PwsEntryDTO.getSafeValue(v1,PwsRecordV1.NOTES);
+			    	break;
+			    case 3:
+			    	columnString = PwsEntryDTO.getSafeValue(v1,PwsRecordV1.PASSWORD);
 			    	break;
 			}
 			

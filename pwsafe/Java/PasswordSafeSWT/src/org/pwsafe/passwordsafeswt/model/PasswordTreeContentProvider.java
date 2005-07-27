@@ -14,6 +14,7 @@ import org.pwsafe.lib.file.PwsFile;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 
 /**
  * Content provider for the tree.
@@ -36,7 +37,7 @@ public class PasswordTreeContentProvider implements ITreeContentProvider {
 			// return all record matching this group...
 			for (Iterator iter = file.getRecords(); iter.hasNext(); ) {
 				PwsRecordV2 nextRecord = (PwsRecordV2) iter.next();
-				String recGroup = (String)nextRecord.getField(PwsRecordV2.GROUP).getValue();
+				String recGroup = PwsEntryDTO.getSafeValue(nextRecord, PwsRecordV2.GROUP);
 				if (((String)parentElement).equalsIgnoreCase(recGroup)) {
 						matchingRecs.add(nextRecord);
 					}
@@ -50,8 +51,7 @@ public class PasswordTreeContentProvider implements ITreeContentProvider {
 	 */
 	public Object getParent(Object element) {
 		if (element instanceof PwsRecordV2) {
-			return ((PwsRecordV2) element).getField(PwsRecordV2.GROUP)
-					.getValue();
+			return PwsEntryDTO.getSafeValue(((PwsRecordV2) element),PwsRecordV2.GROUP);
 		}
 		return null;
 	}

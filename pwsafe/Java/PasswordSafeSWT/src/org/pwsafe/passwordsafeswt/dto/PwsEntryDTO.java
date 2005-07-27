@@ -1,5 +1,6 @@
 package org.pwsafe.passwordsafeswt.dto;
 
+import org.pwsafe.lib.file.PwsField;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
@@ -116,25 +117,42 @@ public class PwsEntryDTO {
     }
 
     
+    /**
+     * A safer version of field retrieval that is null-safe.
+     * 
+     * @param record the record to retrieve the field from
+     * @param fieldCode the code of the field
+     * @return the value of the field or an empty string if the field is null
+     */
+    public static String getSafeValue(PwsRecord record, int fieldCode) {
+    	String fieldValue = "";
+    	PwsField field = record.getField(fieldCode);
+    	if (field != null && field.getValue() != null) {
+    		fieldValue = field.getValue().toString();
+    	} 
+    	return fieldValue;
+    }
+    
+    
     public static PwsEntryDTO fromPwsRecord(PwsRecord nextRecord) {
         PwsEntryDTO newEntry = new PwsEntryDTO();
         if (nextRecord instanceof PwsRecordV2) {
             
             PwsRecordV2 v2 = (PwsRecordV2) nextRecord;
             
-            String groupName = v2.getField(PwsRecordV2.GROUP).getValue().toString();
+            String groupName = getSafeValue(v2, PwsRecordV2.GROUP);
             newEntry.setGroup(groupName);
             
-            String title = v2.getField(PwsRecordV2.TITLE).getValue().toString();
+            String title = getSafeValue(v2,PwsRecordV2.TITLE);
             newEntry.setTitle(title);
             
-            String user = v2.getField(PwsRecordV2.USERNAME).getValue().toString();
+            String user = getSafeValue(v2, PwsRecordV2.USERNAME);
             newEntry.setUsername(user);
             
-            String password = v2.getField(PwsRecordV2.PASSWORD).getValue().toString();
+            String password = getSafeValue(v2,PwsRecordV2.PASSWORD);
             newEntry.setPassword(password);
             
-            String notes = v2.getField(PwsRecordV2.NOTES).getValue().toString();
+            String notes = getSafeValue(v2,PwsRecordV2.NOTES);
             newEntry.setNotes(notes);
             
             newEntry.setVersion("2");
@@ -142,16 +160,16 @@ public class PwsEntryDTO {
         } else {
             PwsRecordV1 v1 = (PwsRecordV1) nextRecord;
             
-            String title = v1.getField(PwsRecordV1.TITLE).getValue().toString();
+            String title = getSafeValue(v1,PwsRecordV1.TITLE);
             newEntry.setTitle(title);
             
-            String user = v1.getField(PwsRecordV1.USERNAME).getValue().toString();
+            String user = getSafeValue(v1,PwsRecordV1.USERNAME);
             newEntry.setUsername(user);
             
-            String password = v1.getField(PwsRecordV1.PASSWORD).getValue().toString();
+            String password = getSafeValue(v1,PwsRecordV1.PASSWORD);
             newEntry.setPassword(password);
             
-            String notes = v1.getField(PwsRecordV1.NOTES).getValue().toString();
+            String notes = getSafeValue(v1,PwsRecordV1.NOTES);
             newEntry.setNotes(notes);
             
             newEntry.setVersion("1");
