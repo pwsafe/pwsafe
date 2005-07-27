@@ -15,8 +15,10 @@ import org.pwsafe.passwordsafeswt.preference.SecurityPreferences;
 import org.pwsafe.passwordsafeswt.preference.UsernamePreferences;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 
+import com.swtdesigner.SWTResourceManager;
+
 /**
- * Displays the Options dialog.
+ * Displays the options dialog to manage user preferences.
  *
  * @author Glen Smith
  */
@@ -37,9 +39,12 @@ public class OptionsAction extends Action {
 
         // Create the nodes
         PreferenceNode displayPrefs = new PreferenceNode("display", "Display", null, DisplayPreferences.class.getName());
-        PreferenceNode securityPrefs = new PreferenceNode("security", "Security", null, SecurityPreferences.class.getName());
-        PreferenceNode passwordPolicyPrefs = new PreferenceNode("policy", "Password Policy", null, PasswordPolicyPreferences.class.getName());
-        PreferenceNode usernamePrefs = new PreferenceNode("username", "Username", null, UsernamePreferences.class.getName());
+		PreferenceNode securityPrefs = new PreferenceNode("security", "Security", null, SecurityPreferences.class
+				.getName());
+		PreferenceNode passwordPolicyPrefs = new PreferenceNode("policy", "Password Policy", null,
+				PasswordPolicyPreferences.class.getName());
+		PreferenceNode usernamePrefs = new PreferenceNode("username", "Username", null, UsernamePreferences.class
+				.getName());
         PreferenceNode miscPrefs = new PreferenceNode("misc", "Misc", null, MiscPreferences.class.getName());
 
         // Add the nodes
@@ -51,6 +56,8 @@ public class OptionsAction extends Action {
 
         // Create the preferences dialog
         PreferenceDialog dlg = new PreferenceDialog(app.getShell(), mgr);
+		dlg.setDefaultImage(SWTResourceManager.getImage(PasswordSafeJFace.class,
+				"/org/pwsafe/passwordsafeswt/images/clogo.gif"));
 
         // Set the preference store
         PreferenceStore ps = new PreferenceStore(UserPreferences.getInstance().getPreferencesFilename());
@@ -70,7 +77,6 @@ public class OptionsAction extends Action {
         } catch (IOException e) {
           e.printStackTrace();
         }
-
 
     }
 
