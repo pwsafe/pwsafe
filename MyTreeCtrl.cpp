@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONUP()
+	ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -549,4 +550,12 @@ void CMyTreeCtrl::RestoreExpanded()
     Expand(parent, TVE_EXPAND);
   }
   m_isRestoring = false;
+}
+
+void CMyTreeCtrl::OnSelchanged(NMHDR* , LRESULT* pResult) 
+{
+	*pResult = 0;
+
+	 DboxMain *parent = (DboxMain *)GetParent();
+	 parent->TreeSelectionChanged();  //let the parent know our selection changed.
 }

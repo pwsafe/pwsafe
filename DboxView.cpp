@@ -990,6 +990,37 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
    *pResult = 0;
 }
 
+/////////////////////////////////////////////////////////////////////
+//  TreeSelectionChanged is called by CMyTreeCtrl's OnSelchanged
+//  every time there is a selection change in the Treeview.
+//  Whether that selection is done by the mouse, or via keyboard.
+//  This happens to at least partially 
+//  fix bugs: 1179432, 1179386, 1237793  Where CTRL-L is out-of-date
+//
+//  Parameters: None        
+//  Results: Updates m_BrowseURL
+//  Tested on: Windows      (Not tested on Pocket PC)
+/////////////////////////////////////////////////////////////////////
+void 
+DboxMain::TreeSelectionChanged()
+{
+    CItemData *itemData = NULL;  ///lets create a nice place for the data, and initalize it.
+    HTREEITEM hti=m_ctlItemTree.GetSelectedItem();  //Which item is selected in the Tree?
+
+	if (hti!=NULL) //we have better have something selected, or no point going on.
+	{
+		itemData = (CItemData *)m_ctlItemTree.GetItemData(hti); //grab the data for the selected item
+	
+		if (itemData!=NULL)  //no data... no point in attempting to extract the current URL
+		{
+			if (!ExtractURL(itemData->GetNotes(), m_BrowseURL)) //given itemData, fill in the Web link data 
+			{
+				ASSERT(m_BrowseURL.IsEmpty());
+			}
+		}
+	}
+}
+
 #if !defined(POCKET_PC)
 void
 DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *) 
