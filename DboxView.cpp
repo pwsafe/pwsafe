@@ -661,6 +661,14 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     ASSERT(di->list_index == i);
+
+	HTREEITEM hti=m_ctlItemTree.GetSelectedItem();  //was there anything selected before?
+	if (hti!=NULL)  //NULL means nothing was selected.
+	{   //time to remove the old "fake selection" (a.k.a. drop-hilite) 
+		m_ctlItemTree.SetItemState(hti,0,TVIS_DROPHILITED);//make sure to undo "MakeVisible" on the previous selection.
+	}
+
+
     retval = m_ctlItemTree.SelectItem(di->tree_item);
     if (MakeVisible) {// Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(di->tree_item,
