@@ -18,8 +18,8 @@ using namespace std;
 #include "BlowFish.h"
 #include "PWSprefs.h"
 
-unsigned char PWScore::m_session_key[20]; unsigned char 
-PWScore::m_session_salt[20]; unsigned char 
+unsigned char PWScore::m_session_key[20]; unsigned char
+PWScore::m_session_salt[20]; unsigned char
 PWScore::m_session_initialized = false;
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
@@ -115,7 +115,7 @@ PWScore::WritePlaintextFile(const CMyString &filename)
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
-  
+
   while (listPos != NULL)
     {
       temp = m_pwlist.GetAt(listPos);
@@ -137,7 +137,7 @@ PWScore::WritePlaintextFile(const CMyString &filename, const char delimiter)
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
-  
+
   while (listPos != NULL)
   {
       temp = m_pwlist.GetAt(listPos);
@@ -273,7 +273,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
       // no special escaping of any other internal characters.
       string quotedNotes = tokens[3];
       if (!quotedNotes.empty() &&
-	  *quotedNotes.begin() == '\"' && 
+	  *quotedNotes.begin() == '\"' &&
 	  *(quotedNotes.end() - 1) == '\"')
         {
 	  quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
@@ -314,13 +314,13 @@ int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
 int
 PWScore::ReadFile(const CMyString &a_filename,
                    const CMyString &a_passkey)
-{	
+{
    //That passkey had better be the same one that came from CheckPassword(...)
 
    PWSfile in(a_filename, a_passkey);
 
   int status;
-  
+
   m_ReadFileVersion = in.GetFileVersion();
 
   if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION)
@@ -330,14 +330,14 @@ PWScore::ReadFile(const CMyString &a_filename,
 
   if (status != PWSfile::SUCCESS)
     return CANT_OPEN_FILE;
-  
+
   // prepare handling of pre-2.0 DEFUSERCHR conversion
   if (m_ReadFileVersion == PWSfile::V17)
     in.SetDefUsername(m_defusername);
   else // for 2.0 & later, get pref string (possibly empty)
     PWSprefs::GetInstance()->Load(in.GetPrefString());
 
-   ClearData(); //Before overwriting old data, but after opening the file... 
+   ClearData(); //Before overwriting old data, but after opening the file...
 
    SetPassKey(a_passkey);
 
@@ -376,7 +376,7 @@ int PWScore::RenameCurFile(const CMyString &newSuffix)
 
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
- 
+
   SetPassKey(newPassword);
   m_changed = TRUE;
 }
@@ -476,14 +476,14 @@ CMyString PWScore::GetPassKey() const
   Thought this might be useful to others...
   I made the mistake of using another password safe for a while...
   Glad I came back before it was too late, but I still needed to bring in those passwords.
-  
+
   The format of the source file is from doing an export to TXT file in keepass.
   I tested it using my password DB from KeePass.
 
   There are two small things: if you have a line that is enclosed by square brackets in the
   notes, it will stop processing.  Also, it adds a single, extra newline character to any notes
   that is imports.  Both are pretty easy things to live with.
-  
+
   --jah
 */
 
@@ -633,8 +633,8 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
   if (fh == -1) { // failed to open exclusively. Already locked, or ???
     switch (errno) {
     case EACCES:
-      // Tried to open read-only file for writing, or file’s 
-      // sharing mode does not allow specified operations, or given path is directory 
+      // Tried to open read-only file for writing, or file’s
+      // sharing mode does not allow specified operations, or given path is directory
       locker = _T("Cannot create lock file - no permission in directory?");
       break;
     case EEXIST: // filename already exists
@@ -656,7 +656,7 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
 	} // open lock file for read
       } // EEXIST block
       break;
-    case EINVAL: // Invalid oflag or pmode argument 
+    case EINVAL: // Invalid oflag or pmode argument
       locker = _T("Internal error: Invalid oflag or pmode argument");
       break;
     case EMFILE: // No more file handles available (too many open files)
@@ -777,7 +777,7 @@ void PWScore::UnlockFile(const CMyString &filename)
   GetLockFileName(filename, lock_filename);
 #ifdef POSIX_FILE_LOCK
   _unlink(lock_filename);
-#else 
+#else
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
   if (m_lockFileHandle != INVALID_HANDLE_VALUE) {
@@ -815,4 +815,25 @@ bool PWScore::IsLockedFile(const CMyString &filename) const
     return false;
   }
 #endif // POSIX_FILE_LOCK
+}
+
+// GetUniqueGroups - Creates an array of all group names, with no duplicates.
+void PWScore::GetUniqueGroups(CStringArray &aryGroups)
+{
+  aryGroups.RemoveAll();
+  POSITION listPos = GetFirstEntryPosition();
+  while (listPos != NULL) {
+    CItemData &ci = GetEntryAt(listPos);
+    CString strThisGroup = ci.GetGroup();
+    // Is this group already in the list?
+    bool bAlreadyInList=false;
+    for(int igrp=0; igrp<aryGroups.GetSize(); igrp++) {
+      if(aryGroups[igrp] == strThisGroup) {
+	bAlreadyInList = true;
+	break;
+      }
+    }
+    if(!bAlreadyInList) aryGroups.Add(strThisGroup);
+    GetNextEntry(listPos);
+  }
 }

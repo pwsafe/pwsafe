@@ -57,7 +57,10 @@ class PWScore {
   bool LockFile(const CMyString &filename, CMyString &locker);
   bool IsLockedFile(const CMyString &filename) const;
   void UnlockFile(const CMyString &filename);
-  
+
+  // Return list of unique groups
+  void GetUniqueGroups(CStringArray &ary);
+
   POSITION GetFirstEntryPosition() const
     {return m_pwlist.GetHeadPosition();}
   POSITION AddEntryToTail(const CItemData &item)

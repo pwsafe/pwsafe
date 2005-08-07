@@ -23,6 +23,8 @@
 
 //Don't show warning for automatic inline conversion
 #pragma warning(disable: 4711)
+//Don't show warning for "identifier was truncated to '255' characters" in STL.
+#pragma warning(disable: 4786)
 
 
 #endif // stdafx_h

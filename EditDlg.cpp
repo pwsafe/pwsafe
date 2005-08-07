@@ -35,11 +35,27 @@ static char THIS_FILE[] = __FILE__;
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
    CDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_NOTES, (CString &)m_notes);
-   DDX_Text(pDX, IDC_PASSWORD, (CString &)m_password);
-   DDX_Text(pDX, IDC_USERNAME, (CString &)m_username);
-   DDX_Text(pDX, IDC_TITLE, (CString &)m_title);
-   DDX_Text(pDX, IDC_GROUP, (CString &)m_group);
+   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
+   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
+   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
+   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
+
+   if(!pDX->m_bSaveAndValidate) {
+     // We are initializing the dialog.  Populate the groups combo box.
+     CComboBox comboGroup;
+     comboGroup.Attach(GetDlgItem(IDC_GROUP)->GetSafeHwnd());
+     // For some reason, MFC calls us twice when initializing.
+     // Populate the combo box only once.
+     if(0 == comboGroup.GetCount()) {
+       CStringArray aryGroups;
+       app.m_core.GetUniqueGroups(aryGroups);
+       for(int igrp=0; igrp<aryGroups.GetSize(); igrp++) {
+	 comboGroup.AddString((LPCTSTR)aryGroups[igrp]);
+       }
+     }
+     comboGroup.Detach();
+   }
+   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
 }
 
 
