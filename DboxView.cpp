@@ -754,14 +754,25 @@ DboxMain::OnSize(UINT nType,
 {
   CDialog::OnSize(nType, cx, cy);
 
+  if (m_windowok) {
+    // Position the control bars
+    CRect rect;
+    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+    m_ctlItemList.MoveWindow(&rect, TRUE);
+    m_ctlItemTree.MoveWindow(&rect, TRUE);
+  }
+
   // {kjp} Only SIZE_RESTORED is supported on Pocket PC.
 #if !defined(POCKET_PC)
   if (nType == SIZE_MINIMIZED)
     {
       PWSprefs *prefs = PWSprefs::GetInstance();
 
+      m_selectedAtMinimize = getSelectedItem();
       m_ctlItemList.DeleteAllItems();
       m_ctlItemTree.DeleteAllItems();
+
       if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
 	ClearClipboard();
       if (prefs->GetPref(PWSprefs::BoolPrefs::DatabaseClear)) {
@@ -785,6 +796,11 @@ DboxMain::OnSize(UINT nType,
 	      if ( m_core.IsChanged() ) // only save if changed
                 OnSave();
 	      ClearData();
+	      // If data is cleared, m_selectedAtMinimize is useless,
+	      // since it will be deleted and rebuilt from the file.
+	      // This means that selection won't be restored in this case.
+	      // Tough.
+	      m_selectedAtMinimize = NULL;
 	      m_needsreading = true;
 	    }
 	}
@@ -861,18 +877,12 @@ DboxMain::OnSize(UINT nType,
 	    }
 	}
       RefreshList();
+      if (m_selectedAtMinimize != NULL)
+	SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
 #if !defined(POCKET_PC)
     } // !m_bSizing && nType == SIZE_RESTORED
 #endif
 
-  if (m_windowok) {
-    // And position the control bars
-    CRect rect;
-    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-    RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
-    m_ctlItemList.MoveWindow(&rect, TRUE);
-    m_ctlItemTree.MoveWindow(&rect, TRUE);
-  }
   m_bSizing = false;
 }
 

@@ -694,9 +694,11 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
   if (m_lockFileHandle != INVALID_HANDLE_VALUE) {
-    // here if we've open another dbase previously,
+    // here if we've open another (or same) dbase previously,
     // need to unlock it. A bit inelegant...
-    ASSERT(filename != GetCurFile()); // if not, I'm confused
+    // If app was minimized and ClearData() called, we've a small
+    // potential for a TOCTTOU issue here. Worse case, lock
+    // will fail.
     UnlockFile(GetCurFile());
   }
   m_lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),

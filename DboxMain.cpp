@@ -123,7 +123,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_LockDisabled(false), m_IsReadOnly(false),
-     m_clipboard_set(false)
+     m_clipboard_set(false),
+     m_selectedAtMinimize(NULL)
 {
 	//{{AFX_DATA_INIT(DboxMain)
 		// NOTE: the ClassWizard will add member initialization here
