@@ -253,7 +253,7 @@ private:
   CMyString m_lastFindStr;
   BOOL m_lastFindCS;
   bool m_IsReadOnly;
-
+  CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   BOOL IsWorkstationLocked();
   void startLockCheckTimer();
   void ExtractAutoTypeCmd(CMyString &str);
