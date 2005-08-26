@@ -428,6 +428,7 @@ ThisMfcApp::InitInstance()
 	return TRUE;
       case 'r': case 'R':
 	dbox.SetReadOnly(true);
+	dbox.SetCurFile(fn);
 	break;
       default:
 	Usage();
