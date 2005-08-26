@@ -796,11 +796,6 @@ DboxMain::OnSize(UINT nType,
 	      if ( m_core.IsChanged() ) // only save if changed
                 OnSave();
 	      ClearData();
-	      // If data is cleared, m_selectedAtMinimize is useless,
-	      // since it will be deleted and rebuilt from the file.
-	      // This means that selection won't be restored in this case.
-	      // Tough.
-	      m_selectedAtMinimize = NULL;
 	      m_needsreading = true;
 	    }
 	}
@@ -1194,6 +1189,11 @@ DboxMain::ClearData(void)
         m_core.GetNextEntry(listPos);
     }
     m_core.ClearData();
+    // If data is cleared, m_selectedAtMinimize is useless,
+    // since it will be deleted and rebuilt from the file.
+    // This means that selection won't be restored in this case.
+    // Tough.
+    m_selectedAtMinimize = NULL;
     //Because GetText returns a copy, we cannot do anything about the names
     if (m_windowok) {
         // For long lists, this is painful, so we disable updates
