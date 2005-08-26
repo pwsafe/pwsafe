@@ -852,10 +852,15 @@ DboxMain::OnSize(UINT nType,
 	    case PWScore::WRONG_PASSWORD:
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;
-	    case PWScore::USER_CANCEL: // cancel exits program, no ifs or buts
-	      m_core.UnlockFile(m_core.GetCurFile());
-	      PostMessage(WM_CLOSE);
-	      return;
+	    case PWScore::USER_CANCEL: // cancel exits program, UNLESS systemtray used
+	      if (!PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {
+		m_core.UnlockFile(m_core.GetCurFile());
+		PostMessage(WM_CLOSE);
+		return;
+	      } else {
+		rc2 = PWScore::NOT_SUCCESS;
+	      }
+	      break;
 	    default:
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;
