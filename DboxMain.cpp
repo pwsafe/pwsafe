@@ -516,6 +516,9 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 	case PWSprefs::DoubleClickEdit:
 	  PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
 	  break;
+	case PWSprefs::DoubleClickAutoType:
+	  PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
+	  break;
 	default:
 	  ASSERT(0);
 	}

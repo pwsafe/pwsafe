@@ -1055,8 +1055,13 @@ DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *)
 {
   const int dca = int(PWSprefs::GetInstance()->
 		      GetPref(PWSprefs::IntPrefs::DoubleClickAction));
-  const UINT statustext = ((dca == PWSprefs::DoubleClickCopy) ?
-			   IDS_STATCOPY : IDS_STATEDIT);
+  UINT statustext;
+  switch (dca) {
+  case PWSprefs::DoubleClickCopy: statustext = IDS_STATCOPY; break;
+  case PWSprefs::DoubleClickEdit: statustext = IDS_STATEDIT; break;
+  case PWSprefs::DoubleClickAutoType: statustext = IDS_STATAUTOTYPE; break;
+  default: ASSERT(0);
+  }
 
   if (m_toolbarsSetup == FALSE)
     return;

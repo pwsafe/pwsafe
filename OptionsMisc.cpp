@@ -41,7 +41,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
 	DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
 	DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
-	DDX_Radio(pDX, IDC_DOUBLE_CLICK_COPIES, m_doubleclickaction);
+	DDX_Radio(pDX, IDC_DOUBLE_CLICK_COPIES, m_doubleclickaction); // only first!
 	DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_hotkey_enabled);
 // JHF class CHotKeyCtrl not defined under WinCE
 #if !defined(POCKET_PC)
@@ -63,12 +63,21 @@ BOOL COptionsMisc::OnInitDialog()
 
   CButton *pBCopyRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_COPIES);
   CButton *pBEditRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_EDITS);
+  CButton *pAutoTypeRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_AUTOTYPES);
   ASSERT(pBCopyRB != NULL && pBEditRB != NULL);
 
-  if (m_doubleclickaction == PWSprefs::DoubleClickCopy) {
-    pBCopyRB->SetCheck(1); pBEditRB->SetCheck(0);
-  } else {
-    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(1);
+  switch (m_doubleclickaction) {
+  case PWSprefs::DoubleClickCopy:
+    pBCopyRB->SetCheck(1); pBEditRB->SetCheck(0); pAutoTypeRB->SetCheck(0);
+    break;
+  case PWSprefs::DoubleClickEdit:
+    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(1); pAutoTypeRB->SetCheck(0);
+    break;
+  case PWSprefs::DoubleClickAutoType:
+    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(0); pAutoTypeRB->SetCheck(1);
+    break;
+  default:
+    ASSERT(0);
   }
 
   // JHF ditto here

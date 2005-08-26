@@ -47,7 +47,8 @@ class PWSprefs {
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		     NumStringPrefs};
 
-  enum {DoubleClickCopy = 0, DoubleClickEdit = 1}; // for DoubleClickAction
+  enum {DoubleClickCopy = 0, DoubleClickEdit = 1,
+	DoubleClickAutoType = 2}; // for DoubleClickAction
 
   bool IsChanged() const {return m_changed;}
   void ClearChanged() {m_changed = false;}
