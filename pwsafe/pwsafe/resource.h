@@ -140,8 +140,9 @@
 #define IDC_IDLE_TIMEOUT                1086
 #define IDC_LOCK_TIMER                  1087
 #define IDC_ESC_EXITS                   1088
-#define IDC_DOUBLE_CLICK_COPIES         1089
-#define IDC_DOUBLE_CLICK_EDITS          1090
+#define IDC_DOUBLE_CLICK_COPIES         2089
+#define IDC_DOUBLE_CLICK_EDITS          2090
+#define IDC_DOUBLE_CLICK_AUTOTYPES      2091
 #define IDC_TAB                         1091
 #define IDC_COMMA                       1092
 #define IDC_OTHER                       1093
@@ -210,6 +211,7 @@
 #define ID_FILE_IMPORT_KEEPASS          32843
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRY20             40020
+#define IDS_STATAUTOTYPE                57671
 
 // Next default values for new objects
 // 
@@ -217,7 +219,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1113
+#define _APS_NEXT_CONTROL_VALUE         1114
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

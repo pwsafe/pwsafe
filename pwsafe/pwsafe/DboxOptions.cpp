@@ -198,9 +198,13 @@ DboxMain::OnOptions()
 		    misc.m_hotkey_value);
 
      /* Update status bar */
-      const UINT statustext =
-	((misc.m_doubleclickaction == PWSprefs::DoubleClickCopy) ?
-	 IDS_STATCOPY : IDS_STATEDIT);
+      UINT statustext;
+      switch (misc.m_doubleclickaction) {
+      case PWSprefs::DoubleClickCopy: statustext = IDS_STATCOPY; break;
+      case PWSprefs::DoubleClickEdit: statustext = IDS_STATEDIT; break;
+      case PWSprefs::DoubleClickAutoType: statustext = IDS_STATAUTOTYPE; break;
+      default: ASSERT(0);
+      }
 // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
       m_statusBar.SetIndicators(&statustext, 1);	
