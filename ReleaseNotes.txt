@@ -1,7 +1,7 @@
 $Id$
 
-Password Safe 2.12 Release Note - June 2005
-===========================================
+Password Safe 2.12 Release Note - August 2005
+=============================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 2.12. For a short description of Password
@@ -13,67 +13,29 @@ releases may be found in the file ChangeLog.txt.
 This is a maintenance release, adding a couple of features, and fixing
 some minor bugs.
 
-
-4. I have re-organised the Help structure.
-   a.  Moved all Help files to a sub-directory (called help) rather than
-have the .hhp etc. file in the root.
-   b. Changed many options in the .hhp file.
-   c. Provided batch scripts to "correct" the Help HTML files ('tidy' from
-http://www.w3c.org/).
-   d. Provided batch scripts to change the Help HTML files and the hhp
-file
-to use either the "smaller lower resolution" gif files or the "larger
-higher
-resolution" jpg files (using perl).  Note: difference in chm file sizes is
-only 84KB - so why bother have the gif files?
-   e. Corrected some spelling errors in the HTML help files.
-   f. Made sure that all the images correspond to the latest version.
-   g. Moved "Help related" images to the images sub-directory of the new
-help directory.  This leaves very few in the original images directory.
-   h. Deleted files "Capture11-4-2004-10.26.20 AM11-5-2004-2.42.28
-PM11-22-2004-6.56.40 PM.jpg" and "sad.jpg" from the original images
-directory - not used!
-
-You will then need to delete the original root 'help' and 'images'
-directories and the following files from the root:
-   msgs, pwsafe.chm, pwsafe.hhc, pwsafe.hhk,  pwsafe.hhp
-
-I attached a zip file (extension .xyz)....
-
-This contains:  the modified source, the new root 'help' directory (you may
-want to delete the Perl files - perl.exe & perl58.dll and the tidy program -
-tidy.exe) and the replacement root 'images' directory.
-
-Note: the new images file_menu1 & file_menu2 (gif and jpg) replace the
-file_menu images, which can be deleted. 
-
-Noticed some problems with the help file (no popups!).
-
-Now fixed - the entry for the popups script file must be:
-    <script language="JavaScript" src="html/popups.js"></script>
-
-and not:
-    <script language="JavaScript" src="html/popups.js" 
-type="text/JavaScript"></script>
-
-Please see attached (which fixed a couple of other problemettes) - it is 
-only for the root help directory and its sub-directories (html & images).
-
-
-
+Thanks to DK and  Thanks to Karl Student for implementing fixes and new
+features in this version, and to Sebastian Juergens for his work on the
+help file.
 
 Bugs fixed in 2.12:
 ===================
-[] The helpfile has been edited, and graphics improved, thanks to Sebastian
-Juergens.
 [1216983]  Tree view is now the default view for new users.
-[1208955] Autotype now works with Terminal Serivecs Windows and capital
-letters. Thanks to Karl Student for the fix.
+[1208955] Autotype now works with Terminal Serivices Windows and capital
+letters.
 [1003782,1030077] In tree view, the expanded trees are no longer collapsed
 after minimizing/restoring.
+[1179386,1237793] Ctrl-L, autotype sometimes used old data
+[1004026] No more multiple highlights after doing a "Find Next"
+[1214940] Cancel on password entry with system tray no longer clears
+entries, allowing potential overwrite of database.
+[1217271,1258982] Specifiying -r with a filename in command line now works
+correctly.
+
 New Features for 2.12:
 ======================
-[] MRU now configurable - Thanks to DK.
+[1236853] MRU now configurable
+[1225255] Double-clicking on an entry can now be configured to Autotype the
+entry.
 
 Bugs fixed in 2.11:
 ===================
@@ -190,6 +152,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.23  2005/08/26 16:18:15  ronys
+Ready for release 2.12
+
 Revision 1.22  2005/07/28 17:58:43  ronys
 Before hiatus
 
