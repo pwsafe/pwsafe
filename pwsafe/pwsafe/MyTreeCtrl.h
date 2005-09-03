@@ -21,7 +21,7 @@ public:
   HTREEITEM AddGroup(const CString &path);
   bool IsLeafNode(HTREEITEM hItem);
   void RestoreExpanded();
-
+  void ClearExpanded(); // use when items will be invalid
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);

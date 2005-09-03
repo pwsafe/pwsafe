@@ -552,6 +552,12 @@ void CMyTreeCtrl::RestoreExpanded()
   m_isRestoring = false;
 }
 
+void CMyTreeCtrl::ClearExpanded()
+{
+  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
+  pSet->clear();
+}
+
 void CMyTreeCtrl::OnSelchanged(NMHDR* , LRESULT* pResult) 
 {
 	*pResult = 0;

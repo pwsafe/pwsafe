@@ -1194,6 +1194,9 @@ DboxMain::ClearData(void)
     // This means that selection won't be restored in this case.
     // Tough.
     m_selectedAtMinimize = NULL;
+    // Ditto for expanded groups, unfortunately
+    m_ctlItemTree.ClearExpanded();
+
     //Because GetText returns a copy, we cannot do anything about the names
     if (m_windowok) {
         // For long lists, this is painful, so we disable updates
