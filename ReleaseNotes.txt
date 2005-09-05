@@ -1,30 +1,36 @@
 $Id$
 
-Password Safe 2.12 Release Note - August 2005
-=============================================
+Password Safe 2.13 Release Note - September 2005
+================================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.12. For a short description of Password
+with Password Safe version 2.13. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-This is a maintenance release, adding a couple of features, and fixing
-some minor bugs.
+This release fixes a crash that would occur if the database were locked
+while one or more groups were expanded. Thanks to Nigel Pentland for help
+in fixing this.
 
-Thanks to DK and  Thanks to Karl Student for implementing fixes and new
-features in this version, and to Sebastian Juergens for his work on the
-help file.
+Bugs fixed in 2.13:
+===================
+[1275880,1275041,1280378] No longer crashes upon unlock if groups were
+expanded at lock time.
+
+New Features for 2.13:
+======================
+None - This release only fixes the abovemetioned bug.
 
 Bugs fixed in 2.12:
 ===================
-[1216983]  Tree view is now the default view for new users.
+[1216983] Tree view is now the default view for new users.
 [1208955] Autotype now works with Terminal Serivices Windows and capital
 letters.
 [1003782,1030077] In tree view, the expanded trees are no longer collapsed
 after minimizing/restoring.
-[1179386,1237793] Ctrl-L, autotype sometimes used old data
+[1179342,1237793] Ctrl-L, autotype sometimes used old data
 [1004026] No more multiple highlights after doing a "Find Next"
 [1214940] Cancel on password entry with system tray no longer clears
 entries, allowing potential overwrite of database.
@@ -152,6 +158,9 @@ its entries Group fields from "a.b" to "b".
 
 
 $Log$
+Revision 1.24  2005/09/05 03:43:56  ronys
+Closing version 2.13 - critical bugfix release
+
 Revision 1.23  2005/08/26 16:18:15  ronys
 Ready for release 2.12
 
