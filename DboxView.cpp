@@ -323,20 +323,29 @@ DboxMain::OnDelete()
 	  DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
 	  ASSERT(di != NULL);
 	  int curSel = di->list_index;
+	  // Find next in treeview, not always curSel after deletion
+	  HTREEITEM curTree_item = di->tree_item;
+	  HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
+							      TVGN_NEXT);
 	  POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 	  m_ctlItemList.DeleteItem(curSel);
 	  m_ctlItemTree.DeleteWithParents(di->tree_item);
 	  delete di;
 	  m_core.RemoveEntryAt(listindex);
 	  FixListIndexes(m_ctlItemList);
-	  if (m_core.GetNumEntries() > 0) {
-	    SelectEntry(curSel < m_core.GetNumEntries() ? 
-			curSel : m_core.GetNumEntries() - 1);
-	  }
-	  if (m_ctlItemList.IsWindowVisible())
+	  if (m_ctlItemList.IsWindowVisible()) {
+	    if (m_core.GetNumEntries() > 0) {
+	      SelectEntry(curSel < m_core.GetNumEntries() ? 
+			  curSel : m_core.GetNumEntries() - 1);
+	    }
 	    m_ctlItemList.SetFocus();
-	  else // tree view visible
+	  } else {// tree view visible
+	    if (nextTree_item != NULL)
+	      m_ctlItemTree.SelectItem(nextTree_item);
+	    else
+	      SelectEntry(0);
 	    m_ctlItemTree.SetFocus();
+	  }
 	  ChangeOkUpdate();
 	}
     }
@@ -451,6 +460,66 @@ DboxMain::OnEdit()
 	}
       }
     }
+  m_LockDisabled = false;
+}
+
+// Duplicate selected entry but make title unique
+void
+DboxMain::OnDuplicateEntry() 
+{
+  if (m_IsReadOnly) // disable in read-only mode
+    return;
+
+  m_LockDisabled = true;
+  if (SelItemOk() == TRUE)
+    {
+      CItemData *ci = getSelectedItem();
+      ASSERT(ci != NULL);
+      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+      ASSERT(di != NULL);
+      
+      // Get information from current selected entry
+      CMyString ci2_group = ci->GetGroup();
+      CMyString ci2_user = ci->GetUser();
+      CMyString ci2_title0 = ci->GetTitle();
+      CMyString ci2_title;
+      
+      // Find a unique "Title"
+      POSITION listpos = NULL;
+      int i = 0;
+      CString s_copy;
+      do {
+      	i++;
+		s_copy.Format(_T("%d"), i);
+      	ci2_title = ci2_title0 + _T(" Copy #") + CMyString(s_copy);
+      	listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
+      } while (listpos != NULL);
+      
+      // Set up new entry
+      CItemData ci2;
+      ci2.SetGroup(ci2_group);
+      ci2.SetTitle(ci2_title);
+      ci2.SetUser(ci2_user);
+      ci2.SetPassword( ci->GetPassword() );
+      ci2.SetNotes( ci->GetNotes() );
+      
+      // Add it to the end of the list      
+      m_core.AddEntryToTail(ci2);
+      di->list_index = -1; // so that insertItem will set new values
+      insertItem(m_core.GetTailEntry());
+      FixListIndexes(m_ctlItemList);
+      if (PWSprefs::GetInstance()->
+	      GetPref(PWSprefs::BoolPrefs::SaveImmediately))
+	   {
+	      Save();
+	   }
+	   int rc = SelectEntry(di->list_index);
+	   if (rc == LB_ERR)
+	   {
+	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+	   }
+	   ChangeOkUpdate();
+	 }
   m_LockDisabled = false;
 }
 

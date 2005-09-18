@@ -192,6 +192,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_RENAME, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_FIND, OnFind)
+   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_DUPLICATEENTRY, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVE, OnUpdateROCommand)
@@ -2034,6 +2036,7 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
     pMenu->EnableMenuItem(ID_MENUITEM_SHOWPASSWORD, uiItemCmdFlags);
 #endif
     pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, uiItemCmdFlags);
+	pMenu->EnableMenuItem(ID_MENUITEM_DUPLICATEENTRY, uiItemCmdFlags);
 
 
     bool bGroupSelected = false;
