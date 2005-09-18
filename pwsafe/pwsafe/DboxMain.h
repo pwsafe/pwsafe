@@ -201,6 +201,7 @@ protected:
    afx_msg void OnEdit();
    afx_msg void OnRename();
    afx_msg void OnFind();
+   afx_msg void OnDuplicateEntry();
    afx_msg void OnOptions();
    afx_msg void OnSave();
    afx_msg void OnAdd();
