@@ -142,8 +142,11 @@ void CAddDlg::OnHelp()
 
 void CAddDlg::OnRandom() 
 {
+  DboxMain* pParent = (DboxMain*)GetParent();
+  ASSERT(pParent != NULL);
+
   UpdateData(TRUE);
-  if (FMakeRandomPassword(this, m_password))
+  if (pParent->MakeRandomPassword(this, m_password))
     UpdateData(FALSE);
 }
 //-----------------------------------------------------------------------------
