@@ -71,9 +71,7 @@ public:
     void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
     void SetReadOnly(bool state) { m_IsReadOnly = state;}
 	void TreeSelectionChanged();
-    // this method is public so that FMakeRandomPassword can use it to place generated
-    // passwords into the clipboard
-    void ToClipboard(const CMyString &data);
+    bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
 
     //{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -263,6 +261,7 @@ private:
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
   void ResetIdleLockCounter();
   bool DecrementAndTestIdleLockCounter();
+  void ToClipboard(const CMyString &data);
 };
 
 // Following used to keep track of display vs data

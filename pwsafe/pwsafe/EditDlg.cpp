@@ -207,8 +207,10 @@ void CEditDlg::HidePassword(void)
 
 void CEditDlg::OnRandom() 
 {
+  DboxMain* pParent = (DboxMain*)GetParent();
+  ASSERT(pParent != NULL);
   UpdateData(TRUE);
-  if (FMakeRandomPassword(this, m_realpassword))
+  if (pParent->MakeRandomPassword(this, m_realpassword))
     {
       CMyString wndName;
       GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);

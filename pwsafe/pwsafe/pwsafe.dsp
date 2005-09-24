@@ -120,6 +120,13 @@ SOURCE=.\DboxOptions.cpp
 # Begin Source File
 
 SOURCE=.\DboxPassword.cpp
+
+!IF  "$(CFG)" == "pwsafe - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "pwsafe - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
