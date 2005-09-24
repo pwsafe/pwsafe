@@ -43,9 +43,6 @@ public:
     // default constructor
     DboxMain(CWnd* pParent = NULL);
 
-    // Generate a new random password.
-    CMyString GetPassword(void) const;
-
     // Find in core by title and user name, exact match
     POSITION Find(const CMyString &a_group,
 		  const CMyString &a_title, const CMyString &a_user)
@@ -74,6 +71,9 @@ public:
     void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
     void SetReadOnly(bool state) { m_IsReadOnly = state;}
 	void TreeSelectionChanged();
+    // this method is public so that FMakeRandomPassword can use it to place generated
+    // passwords into the clipboard
+    void ToClipboard(const CMyString &data);
 
     //{{AFX_DATA(DboxMain)
 	enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -90,6 +90,7 @@ public:
 protected:
    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	//}}AFX_VIRTUAL
+
 
 protected:
    HICON m_hIcon;
@@ -136,7 +137,6 @@ protected:
    void ChangeOkUpdate();
    BOOL SelItemOk();
    void ClearClipboard();
-   void ToClipboard(const CMyString &data);
   bool m_clipboard_set; // To verify that we're erasing *our* data
    unsigned char m_clipboard_digest[20]; // To verify that we're erasing *our* data
    void setupBars();

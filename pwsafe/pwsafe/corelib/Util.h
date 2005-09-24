@@ -37,18 +37,17 @@ typedef unsigned __int64 uint64;
 
 extern void trashMemory(SHA1_CTX& context);
 extern void trashMemory(unsigned char* buffer,
-                        long length,
-                        int numiter = 30);
-extern void trashMemory( LPTSTR buffer, long length, int numiter = 30 );
+                        long length );
+extern void trashMemory( LPTSTR buffer, long length );
 extern void GenRandhash(const CMyString &passkey,
                         const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
-extern unsigned char newrand();
 
-extern unsigned int  RangeRand(size_t len);
-extern char GetRandAlphaNumChar(void);
-extern char GetRandAlphaNumSymbolChar(void);
-CMyString   GetAlphaNumPassword(UINT pwlen);
+//  fill this buffer with random data
+void GetRandomData( void * const buffer, unsigned long length );
+
+//  generate a random number between 0 and len
+unsigned int RangeRand(size_t len);
 
 class BlowFish;
 extern BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,

@@ -172,9 +172,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
 #else
     unsigned char randstuff[StuffSize];
     unsigned char randhash[20];   // HashSize
-    for (int i=0; i < 8; i++)
-      randstuff[i] = newrand();
-
+    GetRandomData( randstuff, 8 );
     // miserable bug - have to fix this way to avoid breaking existing files
     randstuff[8] = randstuff[9] = '\0';
     GenRandhash(passwd,
@@ -185,13 +183,11 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
 #endif // KEEP_FILE_MODE_BWD_COMPAT
 		
     unsigned char thesalt[SaltLength];
-    for (int x=0;x<SaltLength;x++)
-      thesalt[x] = newrand();
+    GetRandomData( thesalt, SaltLength );
     fwrite(thesalt, 1, SaltLength, out);
 		
     unsigned char ipthing[8];
-    for (x=0;x<8;x++)
-      ipthing[x] = newrand();
+    GetRandomData( ipthing, 8 );
     fwrite(ipthing, 1, 8, out);
 
     LPCSTR pwd = LPCSTR(passwd);

@@ -31,14 +31,10 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
   if (!PWScore::m_session_initialized)
   {
-	int i;
-
 	srand((unsigned)time(NULL));
 	CItemData::SetSessionKey(); // per-session initialization
-	for (i = 0; i < sizeof(m_session_key); i++)
-		m_session_key[i] = newrand();
-	for (i = 0; i < sizeof(m_session_salt); i++)
-		m_session_salt[i] = newrand();
+  GetRandomData(m_session_key, sizeof(m_session_key) );
+  GetRandomData(m_session_salt, sizeof(m_session_salt) );
 
 	PWScore::m_session_initialized = true;
   }
@@ -725,7 +721,7 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
 	  locker = _T("Unable to determine locker?");
 	} else {
 	  DWORD bytesRead;
-	  BOOL read_status = ::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
+	  (void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
 					&bytesRead, NULL);
 	  CloseHandle(h2);
 	  if (bytesRead > 0) {
@@ -775,14 +771,16 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
 
 void PWScore::UnlockFile(const CMyString &filename)
 {
+#ifdef POSIX_FILE_LOCK
   CMyString lock_filename;
   GetLockFileName(filename, lock_filename);
-#ifdef POSIX_FILE_LOCK
   _unlink(lock_filename);
 #else
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
   if (m_lockFileHandle != INVALID_HANDLE_VALUE) {
+    CMyString lock_filename;
+    GetLockFileName(filename, lock_filename);
     CloseHandle(m_lockFileHandle);
     m_lockFileHandle = INVALID_HANDLE_VALUE;
     DeleteFile(LPCTSTR(lock_filename));
