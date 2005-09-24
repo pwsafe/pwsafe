@@ -75,13 +75,11 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
     // invariant: BlockLength >= plainlength
     ::memcpy((char*)tempmem, (char*)plainstr, m_Length);
 
-    int x;
    //Fill the unused characters in with random stuff
-    for (x=m_Length; x<BlockLength; x++)
-      tempmem[x] = newrand();
+    GetRandomData(tempmem+m_Length, BlockLength-m_Length );
 
     //Do the actual encryption
-    for (x=0; x<BlockLength; x+=8)
+    for (int x=0; x<BlockLength; x+=8)
       bf->Encrypt(tempmem+x, m_Data+x);
 
     delete[] tempmem;

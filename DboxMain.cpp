@@ -1219,6 +1219,17 @@ DboxMain::Open( const CMyString &pszFilename )
 		}
 	}
 	
+  // if we were using a different file, unlock it
+  // do this before GetAndCheckPassword() as that
+  // routine gets a lock on the new file
+  if( !m_core.GetCurFile().IsEmpty() )
+  {
+    m_core.UnlockFile(m_core.GetCurFile());
+  }
+
+  // clear the data before loading the new file
+  ClearData();
+
 	rc = GetAndCheckPassword(pszFilename, passkey);
 	switch (rc)
 	{
@@ -1258,7 +1269,6 @@ DboxMain::Open( const CMyString &pszFilename )
 		return PWScore::CANT_OPEN_FILE;
 	}
 	
-	m_core.UnlockFile(m_core.GetCurFile());
 	m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
 	m_title = _T("Password Safe - ") + m_core.GetCurFile();

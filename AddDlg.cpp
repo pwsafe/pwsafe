@@ -9,6 +9,7 @@
 #include "AddDlg.h"
 #include "PwFont.h"
 #include "OptionsPasswordPolicy.h"
+#include "RandomPassword.h"
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
 
@@ -141,72 +142,8 @@ void CAddDlg::OnHelp()
 
 void CAddDlg::OnRandom() 
 {
-  DboxMain* pParent = (DboxMain*) GetParent();
-  ASSERT(pParent != NULL);
-  bool is_override = (IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
-  CMyString temp;
-
-  if (is_override) {
-    // Start with existing password policy
-    CPropertySheet optionsDlg(_T("Password Policy Override"), this);
-    COptionsPasswordPolicy  passwordpolicy;
-    PWSprefs *prefs = PWSprefs::GetInstance();
-
-    passwordpolicy.m_pwlendefault = prefs->
-      GetPref(PWSprefs::IntPrefs::PWLenDefault);
-    passwordpolicy.m_pwuselowercase = prefs->
-      GetPref(PWSprefs::BoolPrefs::PWUseLowercase);
-    passwordpolicy.m_pwuseuppercase = prefs->
-      GetPref(PWSprefs::BoolPrefs::PWUseUppercase);
-    passwordpolicy.m_pwusedigits = prefs->
-      GetPref(PWSprefs::BoolPrefs::PWUseDigits);
-    passwordpolicy.m_pwusesymbols = prefs->
-      GetPref(PWSprefs::BoolPrefs::PWUseSymbols);
-    passwordpolicy.m_pwusehexdigits = prefs->
-      GetPref(PWSprefs::BoolPrefs::PWUseHexDigits);
-    passwordpolicy.m_pweasyvision = prefs->
-      GetPref(PWSprefs::BoolPrefs::PWEasyVision);
-
-    // Display COptionsPasswordPolicy page
-    optionsDlg.AddPage(&passwordpolicy);
-    optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW; // remove "Apply Now" button
-    int rc = optionsDlg.DoModal();
-    if (rc == IDOK) {
-      CPasswordCharPool pwchars(
-				passwordpolicy.m_pwlendefault,
-				passwordpolicy.m_pwuselowercase,
-				passwordpolicy.m_pwuseuppercase,
-				passwordpolicy.m_pwusedigits,
-				passwordpolicy.m_pwusesymbols,
-				passwordpolicy.m_pwusehexdigits,
-				passwordpolicy.m_pweasyvision);
-      temp = pwchars.MakePassword();
-    }
-  }
-  // generate password according to current policy if !override or user cancelled policy dialog
-  if (temp.IsEmpty())
-    temp = pParent->GetPassword();
-
   UpdateData(TRUE);
-	
-  int nResponse;
-  if (m_password.IsEmpty())
-    nResponse = IDYES;
-  else
-    {
-      CMyString msg;
-      msg = _T("The randomly generated password is: \"")
-	+ temp
-	+ _T("\" \n(without the quotes). Would you like to use it?");
-      nResponse = MessageBox(msg, AfxGetAppName(),
-                             MB_ICONEXCLAMATION|MB_YESNO);
-    }
-
-  if (nResponse == IDYES)
-    {
-      m_password = temp;
-      UpdateData(FALSE);
-    }
+  if (FMakeRandomPassword(this, m_password))
+    UpdateData(FALSE);
 }
-//-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

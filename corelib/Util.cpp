@@ -44,25 +44,25 @@ trashMemory(SHA1_CTX& context)
 
 void
 trashMemory(unsigned char* buffer,
-            long length,
-            int numiter) // default 30
+            long length)
 {
-	// {kjp} no point in looping around doing nothing is there?
-	if ( length != 0 )
+  // {kjp} no point in looping around doing nothing is there?
+  if ( length != 0 )
+    {
+      const int numiter = 30;
+      for (int x=0; x<numiter; x++)
 	{
-		for (int x=0; x<numiter; x++)
-		{
-		  memset(buffer, 0x00, length);
-		  memset(buffer, 0xFF, length);
-		  memset(buffer, 0x00, length);
-		}
+	  memset(buffer, 0x00, length);
+	  memset(buffer, 0xFF, length);
+	  memset(buffer, 0x00, length);
 	}
+    }
 }
 
 void
-trashMemory( LPTSTR buffer, long length, int numiter )
+trashMemory( LPTSTR buffer, long length )
 {
-	trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0]), numiter );
+  trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0])  );
 }
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
@@ -114,12 +114,80 @@ GenRandhash(const CMyString &a_passkey,
 
 
 unsigned char
-newrand()
+randchar()
 {
    int	r;
    while ((r = rand()) % 257 == 256)
       ; // 257?!?
    return (unsigned char)r;
+}
+
+// See the MSDN documentation for RtlGenRandom. We will try to load it
+// and if that fails, use the simple random number generator. The function
+// call is indirected through a function pointer, which initially points
+// to a function that tries to load RtlGenRandom
+
+static BOOLEAN __stdcall LoadRandomDataFunction(void *, ULONG);
+static BOOLEAN __stdcall MyGetRandomData( PVOID buffer, ULONG length );
+static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = LoadRandomDataFunction;
+
+static BOOLEAN __stdcall MyGetRandomData( PVOID buffer, ULONG length )
+{
+  BYTE * const pb = reinterpret_cast<BYTE *>( buffer );
+  for( unsigned int ib = 0; ib < length; ++ib )
+  {
+    pb[ib] = randchar();
+  }
+  return TRUE;
+}
+
+static BOOLEAN __stdcall LoadRandomDataFunction(void * pv, ULONG cb)
+{
+  //  this is the default function we'll use if loading RtlGenRandom fails
+  pfnGetRandomData = MyGetRandomData;
+
+  HMODULE hLib = LoadLibrary("ADVAPI32.DLL");
+  if (hLib)
+  {
+    BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG);
+    pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
+    if (pfnGetRandomDataT)
+    {
+      pfnGetRandomData = pfnGetRandomDataT;
+    }
+  }
+  return (*pfnGetRandomData)(pv, cb );
+}
+ 
+void GetRandomData( void * const buffer, unsigned long length )
+{
+  (void)(*pfnGetRandomData)(buffer, length);
+}
+
+
+// generate random numbers from a buffer filled in by GetRandomData()
+// NOTE: not threadsafe. the static data in the function can't
+// be used by multiple threads. hack it with __threadlocal,
+// make it an object or something like that if you need multi-threading
+ unsigned int MyRand()
+{
+  // we don't want to keep filling the random buffer for each number we
+  // want, so fill the buffer with random data and use it up
+
+  static const cbRandomData = 256;
+  static BYTE rgbRandomData[cbRandomData];
+  static ibRandomData = cbRandomData;
+
+  if( ibRandomData > ( cbRandomData - sizeof( unsigned int ) ) )
+  {
+    // no data left, refill the buffer
+    GetRandomData( rgbRandomData, cbRandomData );
+    ibRandomData = 0;
+  }
+
+  const unsigned int u = *(reinterpret_cast<unsigned int *>(rgbRandomData+ibRandomData));
+  ibRandomData += sizeof( unsigned int );
+  return u;
 }
 
 /* 
@@ -132,9 +200,8 @@ unsigned int
 RangeRand(size_t len)
 {
    unsigned int      r;
-   unsigned int      ceil = UINT_MAX - (UINT_MAX % len) - 1;
-
-   while ((r = rand()) > ceil)
+   const unsigned int ceil = UINT_MAX - (UINT_MAX % len) - 1;
+   while ((r = MyRand()) > ceil)
       ;
    return(r%len);
 }

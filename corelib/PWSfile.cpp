@@ -98,23 +98,19 @@ int PWSfile::OpenWriteFile(VERSION v)
   // Following used to verify passkey against file's passkey
   unsigned char randstuff[StuffSize];
   unsigned char randhash[20];   // HashSize
-  int x;
 
-  for (x=0; x<8; x++)
-    randstuff[x] = newrand();
+  GetRandomData( randstuff, 8 );
   randstuff[8] = randstuff[9] = '\0';
   GenRandhash(m_passkey, randstuff, randhash);
 
   fwrite(randstuff, 1, 8, m_fd);
   fwrite(randhash, 1, 20, m_fd);
 
-  for (x=0; x<SaltLength; x++)
-    m_salt[x] = newrand();
+  GetRandomData( m_salt, SaltLength );
 
   fwrite(m_salt, 1, SaltLength, m_fd);
 	
-  for (x=0; x<8; x++)
-    m_ipthing[x] = newrand();
+  GetRandomData( m_ipthing, 8 );
   fwrite(m_ipthing, 1, 8, m_fd);
 
   if (v == V20) {

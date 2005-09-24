@@ -17,8 +17,7 @@ void CItemData::SetSessionKey()
 {
   // must be called once per session, no more, no less
   ASSERT(!IsSessionKeySet);
-  for (int i = 0; i < sizeof(SessionKey); i++)
-    SessionKey[i] = newrand();
+  GetRandomData( SessionKey, sizeof( SessionKey ) );
   IsSessionKeySet = true;
 }
 
@@ -29,8 +28,7 @@ CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
     m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP), m_display_info(NULL)
 {
-  for (int x = 0; x < SaltLength; x++)
-    m_salt[x] = newrand();
+  GetRandomData( m_salt, SaltLength );
 }
 
 CItemData::CItemData(const CItemData &that) :
