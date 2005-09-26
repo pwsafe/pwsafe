@@ -9,7 +9,6 @@
 #include "EditDlg.h"
 #include "PwFont.h"
 #include "OptionsPasswordPolicy.h"
-#include "RandomPassword.h"
 #include "corelib/PWCharPool.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"

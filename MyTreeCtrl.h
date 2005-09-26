@@ -22,6 +22,8 @@ public:
   bool IsLeafNode(HTREEITEM hItem);
   void RestoreExpanded();
   void ClearExpanded(); // use when items will be invalid
+  void OnCollapseAll();
+  void OnExpandAll();
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);

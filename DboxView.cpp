@@ -1299,12 +1299,14 @@ void
 DboxMain::OnListView() 
 {
    SetListView();
+   m_IsListView = true;
 }
 
 void
 DboxMain::OnTreeView() 
 {
    SetTreeView();
+   m_IsListView = false;
 }
 
 void
@@ -1390,6 +1392,17 @@ DboxMain::SetToolbar(int menuItem)
     m_ctlItemTree.MoveWindow(&rect, TRUE); // Fix Bug 940585
 }
 
+void
+DboxMain::OnExpandAll()
+{
+	m_ctlItemTree.OnExpandAll();
+}
+
+void
+DboxMain::OnCollapseAll()
+{
+	m_ctlItemTree.OnCollapseAll();
+}
 
 void
 DboxMain::OnTimer(UINT nIDEvent )
@@ -1541,3 +1554,78 @@ void DboxMain::ExtractAutoTypeCmd(CMyString &str)
     }
 }
 
+void
+DboxMain::OnChangeFont() 
+{
+    HFONT hOldFontTree = (HFONT) m_ctlItemTree.SendMessage(WM_GETFONT);
+
+    // make sure we know what is inside the font.
+    LOGFONT lf;
+    ::GetObject(hOldFontTree, sizeof lf, &lf);
+
+    // present it and possibly change it
+    CFontDialog dlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
+    if(dlg.DoModal() == IDOK) {
+        m_hFontTree = ::CreateFontIndirect(&lf);
+        // transfer the fonts to the tree and list windows
+        m_ctlItemTree.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
+        m_ctlItemList.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
+        // now can get rid of the old font
+        ::DeleteObject(hOldFontTree);
+        
+        CString str;
+        str.Format("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
+        		lf.lfHeight,
+        		lf.lfWidth,
+        		lf.lfEscapement,
+        		lf.lfOrientation,
+        		lf.lfWeight,
+        		lf.lfItalic,
+        		lf.lfUnderline,
+        		lf.lfStrikeOut,
+        		lf.lfCharSet,
+        		lf.lfOutPrecision,
+        		lf.lfClipPrecision,
+        		lf.lfQuality,
+        		lf.lfPitchAndFamily,
+        		lf.lfFaceName);
+        	
+        PWSprefs *prefs = PWSprefs::GetInstance();        	
+        prefs->SetPref(PWSprefs::StringPrefs::TreeFont, str);
+    }
+}
+
+void
+DboxMain::ExtractFont(CString& str)
+{
+#pragma warning(push)
+#pragma warning(disable:4244)  // possible loss of data 'int' to 'unsigned char'
+	m_treefont.lfHeight=atol((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfWidth=atol((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfEscapement=atol((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfOrientation=atol((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfWeight=atol((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfItalic=atoi((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfUnderline=atoi((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfStrikeOut=atoi((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfCharSet=atoi((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfOutPrecision=atoi((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfClipPrecision=atoi((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfQuality=atoi((LPCTSTR)GetToken(str, ","));
+	m_treefont.lfPitchAndFamily=atoi((LPCTSTR)GetToken(str, ","));
+	strcpy(m_treefont.lfFaceName, str);
+#pragma warning(pop)
+}
+
+CString
+DboxMain::GetToken(CString& str, LPCTSTR c)
+{
+	int pos;
+	CString token;
+
+	pos=str.Find(c);
+	token=str.Left(pos);
+	str=str.Mid(pos+1);
+
+	return token;
+}

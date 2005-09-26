@@ -45,7 +45,7 @@ class PWSprefs {
 		  DoubleClickAction, HotKey,
 		  NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
-		     NumStringPrefs};
+		     TreeFont, NumStringPrefs};
 
   enum {DoubleClickCopy = 0, DoubleClickEdit = 1,
 	DoubleClickAutoType = 2}; // for DoubleClickAction
