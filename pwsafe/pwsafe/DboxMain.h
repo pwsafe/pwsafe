@@ -42,6 +42,7 @@ private:
 public:
     // default constructor
     DboxMain(CWnd* pParent = NULL);
+    ~DboxMain();
 
     // Find in core by title and user name, exact match
     POSITION Find(const CMyString &a_group,
@@ -207,6 +208,9 @@ protected:
    afx_msg void OnOK();
    afx_msg void OnOldToolbar();
    afx_msg void OnNewToolbar();
+   afx_msg void OnExpandAll();
+   afx_msg void OnCollapseAll();
+   afx_msg void OnChangeFont();
    afx_msg void OnMinimize();
    afx_msg void OnUnMinimize();
    afx_msg void OnTimer(UINT nIDEvent);
@@ -221,6 +225,7 @@ protected:
     afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
     afx_msg void OnUpdateROCommand(CCmdUI *pCmdUI);
+    afx_msg void OnUpdateTVCommand(CCmdUI *pCmdUI);
     afx_msg void OnInitMenu(CMenu* pMenu);
     afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
     afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
@@ -252,6 +257,9 @@ private:
   CMyString m_lastFindStr;
   BOOL m_lastFindCS;
   bool m_IsReadOnly;
+  bool m_IsListView;
+  HFONT m_hFontTree;
+  LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   BOOL IsWorkstationLocked();
   void startLockCheckTimer();
@@ -262,6 +270,8 @@ private:
   void ResetIdleLockCounter();
   bool DecrementAndTestIdleLockCounter();
   void ToClipboard(const CMyString &data);
+  void ExtractFont(CString& str);
+  CString GetToken(CString& str, LPCTSTR c);
 };
 
 // Following used to keep track of display vs data

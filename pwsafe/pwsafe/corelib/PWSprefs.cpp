@@ -64,6 +64,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("currentfile"), _T(""), false},
   {_T("lastview"), _T("tree"), true},
   {_T("defusername"), _T(""), true},
+  {_T("treefont"), _T(""), true},
 };
 
 

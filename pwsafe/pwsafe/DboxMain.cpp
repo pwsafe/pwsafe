@@ -156,6 +156,12 @@ DboxMain::DboxMain(CWnd* pParent)
    m_bShowPasswordInList = false;
    m_bSortAscending = true;
    m_iSortedColumn = 0;
+   m_hFontTree = NULL;
+}
+
+DboxMain::~DboxMain()
+{
+  ::DeleteObject( m_hFontTree );
 }
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
@@ -201,6 +207,11 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
    ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
    ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
+   ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_EXPANDALL, OnUpdateTVCommand)
+   ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_COLLAPSEALL, OnUpdateTVCommand)
+   ON_COMMAND(ID_MENUITEM_CHANGEFONT, OnChangeFont)
    ON_COMMAND(ID_FILE_EXPORTTO_OLD1XFORMAT, OnExportV17)
    ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
    ON_COMMAND(ID_FILE_EXPORTTO_XML, OnExportXML)
@@ -342,10 +353,12 @@ DboxMain::OnInitDialog()
 
   const CString lastView = PWSprefs::GetInstance()->
     GetPref(PWSprefs::StringPrefs::LastView);
+  m_IsListView = true;
   if (lastView != _T("list")) {
     // not list mode, so start in tree view.
     m_ctlItemList.ShowWindow(SW_HIDE);
     m_ctlItemTree.ShowWindow(SW_SHOW);
+    m_IsListView = false;
   }
 
   CRect rect;
@@ -400,7 +413,18 @@ DboxMain::OnInitDialog()
 		       GetPref(PWSprefs::BoolPrefs::UseDefUser));
   m_core.SetDefUsername(PWSprefs::GetInstance()->
 		       GetPref(PWSprefs::StringPrefs::DefUserName));
-		       
+
+  CString szTreeFont = PWSprefs::GetInstance()->
+		       GetPref(PWSprefs::StringPrefs::TreeFont);
+
+  if (szTreeFont != _T("")) {
+  	   ExtractFont(szTreeFont);
+  	   m_hFontTree = ::CreateFontIndirect(&m_treefont);
+      // transfer the fonts to the tree windows
+      m_ctlItemTree.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
+      m_ctlItemList.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
+  }
+  	       
   SetMenu(app.m_mainmenu);  // Now show menu...
   
   return TRUE;  // return TRUE unless you set the focus to a control
@@ -719,6 +743,14 @@ DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
   // Use this callback  for commands that need to
   // be disabled in read-only mode
   pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
+}
+
+void
+DboxMain::OnUpdateTVCommand(CCmdUI *pCmdUI)
+{
+  // Use this callback for commands that need to
+  // be disabled in ListView mode
+  pCmdUI->Enable(m_IsListView ? FALSE : TRUE);
 }
 
 void

@@ -565,3 +565,30 @@ void CMyTreeCtrl::OnSelchanged(NMHDR* , LRESULT* pResult)
 	 DboxMain *parent = (DboxMain *)GetParent();
 	 parent->TreeSelectionChanged();  //let the parent know our selection changed.
 }
+
+void CMyTreeCtrl::OnExpandAll() 
+{
+	SetRedraw(FALSE);
+	HTREEITEM hItem = this->GetRootItem();
+	do
+	{
+		this->Expand(hItem,TVE_EXPAND);
+		hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
+	}
+	while (hItem);
+	this->EnsureVisible(this->GetSelectedItem());
+	SetRedraw();
+}
+
+void CMyTreeCtrl::OnCollapseAll() 
+{
+	SetRedraw(FALSE);
+	HTREEITEM hItem = this->GetRootItem();
+	do
+	{
+		this->Expand(hItem,TVE_COLLAPSE);
+		hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
+	}
+	while (hItem);
+	SetRedraw();
+}

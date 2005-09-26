@@ -210,6 +210,9 @@
 #define ID_MENUITEM_MERGE               32842
 #define ID_FILE_IMPORT_KEEPASS          32843
 #define ID_MENUITEM_DUPLICATEENTRY      32844
+#define ID_MENUITEM_EXPANDALL           32845
+#define ID_MENUITEM_COLLAPSEALL         32846
+#define ID_MENUITEM_CHANGEFONT          32847
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRY20             40020
 #define IDS_STATAUTOTYPE                57671
@@ -219,7 +222,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        226
-#define _APS_NEXT_COMMAND_VALUE         32845
+#define _APS_NEXT_COMMAND_VALUE         32848
 #define _APS_NEXT_CONTROL_VALUE         1114
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
