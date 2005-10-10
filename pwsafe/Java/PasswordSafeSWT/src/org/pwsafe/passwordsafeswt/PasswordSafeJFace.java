@@ -788,6 +788,34 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		}
 	}
 
+    /**
+     * Prompts the user to save the current file, if it has been modified.
+     * @return <code>true</code> if the user cancels the action which triggered the
+     * call to this method, <code>false</code> if the save was successful or ignored.
+     */
+    public boolean saveAppIfDirty() {
+        boolean cancelled = false;
+        if (isDirty()) {
+            int style = SWT.APPLICATION_MODAL | SWT.YES | SWT.NO | SWT.CANCEL;
+            MessageBox messageBox = new MessageBox(getShell(), style);
+            messageBox.setText("Save Changes");
+            messageBox
+                    .setMessage("Do you want to save changes to the password list?");
+            int result = messageBox.open();
+            if (result == SWT.YES) {
+                try {
+                    saveFile();
+                } catch (IOException e1) {
+                    displayErrorDialog("Error Saving Safe", e1.getMessage(), e1);
+                    cancelled = true;
+                }
+            } else if (result == SWT.CANCEL) {
+                cancelled = true;
+            }
+        }
+        return cancelled;
+    }
+
 	/**
 	 * Deletes the selected record in the tree or table.
 	 * 

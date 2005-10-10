@@ -25,20 +25,22 @@ public class OpenFileAction extends Action {
      */
     public void run() {
         PasswordSafeJFace app = PasswordSafeJFace.getApp();
-        FileDialog fod = new FileDialog(app.getShell(), SWT.OPEN);
-        String fileName = fod.open();
-        if (fileName != null) {
-            PasswordDialog pd = new PasswordDialog(app.getShell());
-            pd.setFileName(fileName);
-            String password = (String) pd.open();
-            if (password != null) {
-                try {
-                    app.openFile(fileName, password);
-                } catch (Exception e) {
-                    app.displayErrorDialog("Error Opening Safe", "Invalid Passphrase", e);
+        boolean cancelled = app.saveAppIfDirty();
+        if (!cancelled) {
+            FileDialog fod = new FileDialog(app.getShell(), SWT.OPEN);
+            String fileName = fod.open();
+            if (fileName != null) {
+                PasswordDialog pd = new PasswordDialog(app.getShell());
+                pd.setFileName(fileName);
+                String password = (String) pd.open();
+                if (password != null) {
+                    try {
+                        app.openFile(fileName, password);
+                    } catch (Exception e) {
+                        app.displayErrorDialog("Error Opening Safe", "Invalid Passphrase", e);
+                    }
                 }
             }
-
         }
     }
 

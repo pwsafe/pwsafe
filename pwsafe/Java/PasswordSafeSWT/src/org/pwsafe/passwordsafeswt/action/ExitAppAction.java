@@ -19,7 +19,10 @@ public class ExitAppAction extends Action {
      */
     public void run() {
         PasswordSafeJFace app = PasswordSafeJFace.getApp();
-        app.exitApplication();
+        boolean cancelled = app.saveAppIfDirty();
+        if (!cancelled) {
+            app.exitApplication();
+        }
     }
 
 }
