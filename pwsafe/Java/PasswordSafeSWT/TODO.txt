@@ -1,6 +1,6 @@
 
 
-This is a v0.2 release, so there is much to do in every way ;-)
+This is a v0.4 release, so there is much to do in every way ;-)
 
 * Options are persisted to file, but aren't yet wired to any GUI functionality (except for generate password)
 * The MRU only refreshes on each restart
@@ -8,8 +8,6 @@ This is a v0.2 release, so there is much to do in every way ;-)
 * The lauching of URLs in comments fields (Ctrl-T) is not yet implemented
 * None of the help is implemented (how to do this in crossplatform manner...)
 * Status bar is there, but not used for anything
-* Incorporate version info into about box or somewhere
-* Icons in toolbar are grungy and need more photoshop-ing
 * Logging is should be configured at INFO so all the DEBUG stuff doesn't go out
 * Starting planning for I18N
 * Changes to the perferences (called options and not where I thought it would
