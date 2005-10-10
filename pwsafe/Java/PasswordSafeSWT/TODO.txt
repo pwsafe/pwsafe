@@ -12,6 +12,12 @@ This is a v0.2 release, so there is much to do in every way ;-)
 * Icons in toolbar are grungy and need more photoshop-ing
 * Logging is should be configured at INFO so all the DEBUG stuff doesn't go out
 * Starting planning for I18N
+* Changes to the perferences (called options and not where I thought it would
+be on the Mac) aren't reflected in the app - they do work on next
+invocation.  For instance the display of passwords in the list display and
+the display of actual password in the edit dialog.
+* The list listing could use the group name as an optional turn on field.
+
 
 
 Platform Specific Stuff
@@ -23,6 +29,7 @@ MacOSX
 * Need ant task to build dmg file (currently by hand)
 * "Warning"/"Info" icons on dialogs is pretty bizarre and non-native
 * Verbs should be used for buttons names "Save", "Don't Save" instead of windows "Yes"/"No"
+* Delay on the mouse over prompts for the menu icons is slow.
 
 Linux/Unix
 * Launcher script is pretty dodgy. Need help from a shell dude (or someone who knows about desktop integration on Linux)
