@@ -75,7 +75,11 @@ public class PasswordTreeContentProvider implements ITreeContentProvider {
 				if (thisRecord instanceof PwsRecordV2) {
 					PwsRecordV2 nextRecord = (PwsRecordV2) thisRecord;	
 					String recGroup = (String)nextRecord.getField(PwsRecordV2.GROUP).getValue();
-					rootElements.add(recGroup);
+					if (recGroup.trim().length() == 0) { // empty group name
+						rootElements.add(nextRecord);
+					} else { // add node for group name
+						rootElements.add(recGroup);
+					}				
 				} else {
 					PwsRecordV1 nextRecord = (PwsRecordV1) thisRecord;	
 					rootElements.add(nextRecord);

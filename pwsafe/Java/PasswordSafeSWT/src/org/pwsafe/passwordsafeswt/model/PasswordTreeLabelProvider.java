@@ -5,11 +5,12 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 
 /**
- * 
+ * Label provider for tree viewer.
  *
- * @author Glen
+ * @author Glen Smith
  */
 public class PasswordTreeLabelProvider implements ILabelProvider {
 
@@ -29,12 +30,13 @@ public class PasswordTreeLabelProvider implements ILabelProvider {
 			return node.toString();
 		} else {
 			if (node instanceof PwsRecordV2) {
-				return ((PwsRecordV2) node).getField(PwsRecordV2.USERNAME)
-				.getValue().toString();
+				PwsRecordV2 v2 = (PwsRecordV2) node;
+				return PwsEntryDTO.getSafeValue(v2, PwsRecordV2.TITLE) +
+				" [" + PwsEntryDTO.getSafeValue(v2, PwsRecordV2.USERNAME) + "]";
 			} else {
-				return ((PwsRecordV1) node).getField(PwsRecordV1.USERNAME)
-				.getValue().toString();
-				
+				PwsRecordV1 v1 = (PwsRecordV1) node;
+				return PwsEntryDTO.getSafeValue(v1, PwsRecordV2.TITLE) +
+				" [" + PwsEntryDTO.getSafeValue(v1, PwsRecordV2.USERNAME) + "]";
 			}
 		}
 	}
