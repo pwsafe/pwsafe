@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.pwsafe.passwordsafeswt.util.ShellHelpers;
+import org.pwsafe.passwordsafeswt.util.VersionInfo;
 
 import com.swtdesigner.SWTResourceManager;
 
@@ -194,6 +195,13 @@ public class StartupDialog extends Dialog {
 		formData_10.top = new FormAttachment(0, 15);
 		formData_10.left = new FormAttachment(50, -100);
 		lblTextLogo.setLayoutData(formData_10);
+
+		final Label lblVersion = new Label(shell, SWT.NONE);
+		final FormData formData_11 = new FormData();
+		formData_11.top = new FormAttachment(btnReadOnly, 0, SWT.TOP);
+		formData_11.left = new FormAttachment(btnOpen, 0, SWT.LEFT);
+		lblVersion.setLayoutData(formData_11);
+		lblVersion.setText("Version: " + VersionInfo.getVersion());
 	}
 	
 	/**

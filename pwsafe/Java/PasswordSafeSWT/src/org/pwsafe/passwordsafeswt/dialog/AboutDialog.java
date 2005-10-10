@@ -10,8 +10,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.pwsafe.passwordsafeswt.util.ShellHelpers;
+import org.pwsafe.passwordsafeswt.util.VersionInfo;
 
 /**
  * AboutDialog shows author/contributor/contact details.
@@ -50,6 +52,11 @@ public class AboutDialog extends Dialog {
 		group.setText("About");
 		group.setLayoutData(new GridData(GridData.FILL_BOTH));
 		group.setLayout(new GridLayout());
+
+		final Label lblVersion = new Label(group, SWT.NONE);
+		lblVersion.setAlignment(SWT.CENTER);
+		lblVersion.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL));
+		lblVersion.setText("Version: " + VersionInfo.getVersion());
 
 		final Composite composite = new Composite(shell, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));

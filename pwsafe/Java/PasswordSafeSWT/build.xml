@@ -33,9 +33,6 @@
         <property name="version.release.minor" value="01"/>
         <property name="version.release.major" value="0"/>
         <property name="version.file" value="build.version"/>
-        <property name="version.class" value="VersionInfo"/>
-        <property name="version.package" value="au.gov.centrelink.itsecurity"/>
-
 
         <property file="${version.file}" />
 
@@ -73,6 +70,8 @@
                 <include name="**/*.gif" />
             </fileset>
         </copy>
+    	
+		<copy todir="${classes.dir}" file="build.version"/>
 
     </target>
 
