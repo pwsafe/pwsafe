@@ -81,9 +81,14 @@
 
         <jar destfile="${runme.jar}" basedir="${classes.dir}">
             <include name="**/*.gif" />
+        	<include name="**/*.ico" />
             <include name="**/*.class" />
             <manifest>
                 <attribute name="Main-Class" value="${main.class}" />
+            	<section name="org/pwsafe/passwordsafeswt/util/">
+            		<attribute name="Implementation-Title" value="${app.name}"/>
+            		<attribute name="Implementation-Version" value="${build.version}"/>
+            	</section>
             </manifest>
         </jar>
     </target>
