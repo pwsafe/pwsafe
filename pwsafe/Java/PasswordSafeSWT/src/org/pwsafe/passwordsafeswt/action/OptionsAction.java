@@ -77,6 +77,7 @@ public class OptionsAction extends Action {
         } catch (IOException e) {
           e.printStackTrace();
         }
+        UserPreferences.reload();
 
     }
 
