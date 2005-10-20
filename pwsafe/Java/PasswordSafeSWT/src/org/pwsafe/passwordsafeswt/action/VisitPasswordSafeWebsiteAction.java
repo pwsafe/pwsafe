@@ -1,13 +1,11 @@
 package org.pwsafe.passwordsafeswt.action;
 
-import java.io.IOException;
-
-import net.jtank.util.BrowserLauncher;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.pwsafe.passwordsafeswt.PasswordSafeJFace;
+
+import edu.stanford.ejalbert.BrowserLauncher;
 
 /**
  * Launches a browser to the passwordsafe website.
@@ -30,7 +28,7 @@ public class VisitPasswordSafeWebsiteAction extends Action {
                 try {
                     BrowserLauncher
                             .openURL("http://passwordsafe.sourceforge.net/");
-                } catch (IOException ioe) {
+                } catch (Exception ioe) {
                     MessageBox mb = new MessageBox(app.getShell(),
                             SWT.ICON_ERROR);
                     mb.setText("Could not open URL");
