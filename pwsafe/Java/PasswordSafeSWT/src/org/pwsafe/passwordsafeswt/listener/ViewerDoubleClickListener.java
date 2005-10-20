@@ -13,20 +13,21 @@ import org.pwsafe.passwordsafeswt.util.UserPreferences;
  * @author Glen Smith
  */
 public class ViewerDoubleClickListener implements IDoubleClickListener {
-    
-    CopyPasswordAction cpa;
-    EditRecordAction era;
-    
-    public ViewerDoubleClickListener() {
-    	cpa = new CopyPasswordAction();
-    	era = new EditRecordAction();
-    }
-    /**
+
+	CopyPasswordAction cpa;
+	EditRecordAction era;
+
+	public ViewerDoubleClickListener() {
+		cpa = new CopyPasswordAction();
+		era = new EditRecordAction();
+	}
+	/**
 	 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
 	 */
 	public void doubleClick(DoubleClickEvent dce) {
-		if (UserPreferences.getInstance().getBoolean(MiscPreferences.DOUBLE_CLICK_COPIES_TO_CLIPBOARD)) {
-		cpa.run();
+		if (UserPreferences.getInstance().getBoolean(
+				MiscPreferences.DOUBLE_CLICK_COPIES_TO_CLIPBOARD)) {
+			cpa.run();
 		} else {
 			era.run();
 		}
