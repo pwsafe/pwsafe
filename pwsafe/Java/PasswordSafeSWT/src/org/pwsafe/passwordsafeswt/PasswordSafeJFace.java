@@ -138,7 +138,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	private static PasswordSafeJFace app;
 
 	private PwsFile pwsFile;
-	private UserPreferences prefs;
+	
+	private static final String DISPLAY_AS_LIST_PREF = "display.as.list";
 
 	/**
 	 * Constructor.
@@ -147,7 +148,6 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		super(null);
 		app = this;
 		createActions();
-		loadPreferences();
 		addToolBar(SWT.FLAT | SWT.WRAP);
 		addMenuBar();
 		addStatusLine();
@@ -163,6 +163,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			if (result == StartupDialog.CANCEL || result == null) {
 				// they cancelled or clicked the close button on the dialog
 				exitApplication();
+				return;
 			} else if (result == StartupDialog.OPEN_FILE) {
 				try {
 					openFile(sd.getFilename(), sd.getPassword());
@@ -205,7 +206,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 */
 	private void setupTrayItem() {
 		Image image = SWTResourceManager.getImage(PasswordSafeJFace.class,
-				"/org/pwsafe/passwordsafeswt/images/clogo.gif");
+				"/org/pwsafe/passwordsafeswt/images/cpane.ico");
 		final Tray tray = getShell().getDisplay().getSystemTray();
 		if (tray == null) {
 			if (log.isInfoEnabled())
@@ -322,7 +323,16 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		tree.setMenu(createPopupMenu(tree));
 		treeViewer.setInput(new Object());
 
-		stackLayout.topControl = table;
+		//stackLayout.topControl = table;
+		if (UserPreferences.getInstance().getBoolean(DISPLAY_AS_LIST_PREF)) {
+			showListView();
+			viewAsListAction.setChecked(true);
+			viewAsTreeAction.setChecked(false);
+		} else {
+			showTreeView();
+			viewAsTreeAction.setChecked(true);
+			viewAsListAction.setChecked(false);
+		}
 		composite.layout();
 
 		setupTrayItem();
@@ -601,31 +611,9 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		super.configureShell(newShell);
 		newShell.setText(PasswordSafeJFace.APP_NAME);
 		newShell.setImage(SWTResourceManager.getImage(PasswordSafeJFace.class,
-				"/org/pwsafe/passwordsafeswt/images/clogo.gif"));
-		newShell.addListener(SWT.Close, new Listener() {
-			public void handleEvent(Event event) {
-				if (getPwsFile() != null && getPwsFile().isModified()) {
-					int style = SWT.APPLICATION_MODAL | SWT.YES | SWT.NO | SWT.CANCEL;
-					MessageBox messageBox = new MessageBox(getShell(), style);
-					messageBox.setText("Save Changes");
-					messageBox.setMessage("Do you want to save changes to the password list?");
-					int result = messageBox.open();
-					event.doit = result != SWT.CANCEL;
-					if (result == SWT.YES) {
-						try {
-							app.saveFile();
-						} catch (IOException e1) {
-							app.displayErrorDialog("Error Saving Safe", e1.getMessage(), e1);
-							event.doit = false;
-						}
-					}
-
-				} else {
-					event.doit = true;
-				}
-			}
-		});
+				"/org/pwsafe/passwordsafeswt/images/cpane.ico"));
 		startOpeningDialogThread(newShell);
+		
 	}
 
 	/**
@@ -635,6 +623,11 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		return new Point(425, 375);
 	}
 
+	/**
+	 * Create a brand new empty safe.
+	 * 
+	 * @param password the password for the new safe
+	 */
 	public void newFile(String password) {
 		getShell().setText(PasswordSafeJFace.APP_NAME + " - <Untitled>");
 		PwsFile newFile = PwsFileFactory.newFile();
@@ -654,7 +647,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		getShell().setText(PasswordSafeJFace.APP_NAME + " - " + fileName);
 		setPwsFile(file);
 		if (true) // TODO (!openedFromMRU)
-			prefs.setMostRecentFilename(fileName);
+			UserPreferences.getInstance().setMostRecentFilename(fileName);
 	}
 
 	/**
@@ -682,7 +675,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		getPwsFile().setFilename(newFilename);
 		getPwsFile().save();
 		getShell().setText(PasswordSafeJFace.APP_NAME + " - " + newFilename);
-		prefs.setMostRecentFilename(newFilename);
+		UserPreferences.getInstance().setMostRecentFilename(newFilename);
 	}
 
 	/**
@@ -839,19 +832,6 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		return false;
 	}
 
-	/**
-	 * Loads the preferences object for internal use.
-	 * 
-	 */
-	public void loadPreferences() {
-
-		try {
-			prefs = UserPreferences.getInstance();
-		} catch (Exception e) {
-			log.error("Could not create user preferences object. Continuing anyway.", e);
-		}
-
-	}
 
 	/**
 	 * Returns the currently loaded pwsafe file.
@@ -875,13 +855,28 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	}
 
 	/**
+	 * Perform necessary shutdown operations, regardless of how the user
+	 * exited the application.
+	 *
+	 */
+	private void tidyUpOnExit() {
+		if (UserPreferences.getInstance().getBoolean(SecurityPreferences.CLEAR_CLIPBOARD_ON_MIN)) {
+			clearClipboardAction.run();
+		}
+		UserPreferences.getInstance().setString(DISPLAY_AS_LIST_PREF, Boolean.toString(stackLayout.topControl == table));
+		try {
+			UserPreferences.getInstance().savePreferences();
+		} catch (IOException e) {
+			displayErrorDialog("Error Saving User Preferences", "Error encountered saving your user preferences: " + e.getMessage(), e);
+		}
+	}
+	
+	/**
 	 * Exit the app.
 	 * 
 	 */
 	public void exitApplication() {
-		if (UserPreferences.getInstance().getBoolean(SecurityPreferences.CLEAR_CLIPBOARD_ON_MIN)) {
-			clearClipboardAction.run();
-		}
+		tidyUpOnExit();
 		getShell().dispose();
 	}
 
@@ -1074,6 +1069,20 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		mb.setMessage(message);
 		mb.open();
 		log.error(message, e);
+	}
+	
+	/**
+	 * 
+	 * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
+	 */
+	protected void handleShellCloseEvent() {
+		boolean cancelled = saveAppIfDirty();
+		if (cancelled) {
+			setReturnCode(OK);
+		} else {
+			tidyUpOnExit();
+			super.handleShellCloseEvent();
+		}
 	}
 
 }
