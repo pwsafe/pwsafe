@@ -229,6 +229,7 @@ public class EditDialog extends Dialog {
             txtNotes.setText(entryToEdit.getNotes());
 
 		final Button btnOk = new Button(compositeFields, SWT.NONE);
+		shell.setDefaultButton(btnOk);
 		btnOk.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
                 if (isDirty()) {
