@@ -168,6 +168,10 @@ public class UserPreferences {
     	return props.getProperty(propName, "");
     }
     
+    public void setString(String propName, String propValue) {
+    	props.setProperty(propName, propValue);
+    }
+    
     public boolean getBoolean(String propName) {
     	return Boolean.valueOf(props.getProperty(propName, "false")).booleanValue();
     }
