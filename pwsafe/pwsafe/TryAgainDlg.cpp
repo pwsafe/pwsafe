@@ -42,7 +42,6 @@ END_MESSAGE_MAP()
 void
 CTryAgainDlg::OnQuit() 
 {
-   app.m_pMainWnd = NULL;
    CDialog::OnCancel();
 }
 
@@ -50,7 +49,6 @@ CTryAgainDlg::OnQuit()
 void
 CTryAgainDlg::OnTryagain() 
 {
-   app.m_pMainWnd = NULL;
    CDialog::OnOK();
 }
 

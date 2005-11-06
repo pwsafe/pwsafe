@@ -45,7 +45,6 @@ END_MESSAGE_MAP()
 void
 CConfirmDeleteDlg::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 
@@ -56,7 +55,6 @@ CConfirmDeleteDlg::OnOK()
    UpdateData(TRUE);
    PWSprefs::GetInstance()->
      SetPref(PWSprefs::BoolPrefs::DeleteQuestion, m_dontaskquestion);
-   app.m_pMainWnd = NULL;
    super::OnOK();
 }
 //-----------------------------------------------------------------------------

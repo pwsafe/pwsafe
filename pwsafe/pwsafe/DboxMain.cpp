@@ -502,7 +502,6 @@ DboxMain::OpenOnInit(void)
    }
    else
    {
-      app.m_pMainWnd = NULL;
       CDialog::OnCancel();
       return FALSE;
    }
@@ -1844,8 +1843,6 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 	  break;
 	}
     }
-
-  app.m_pMainWnd = NULL; // done with dbox_pkentry
 
   return retval;
 }

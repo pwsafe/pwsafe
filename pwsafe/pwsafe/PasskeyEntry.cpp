@@ -185,7 +185,6 @@ void
 CPasskeyEntry::OnBrowse()
 {
    m_status = TAR_OPEN;
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 
@@ -194,7 +193,6 @@ void
 CPasskeyEntry::OnCreateDb()
 {
    m_status = TAR_NEW;
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 
@@ -202,7 +200,6 @@ CPasskeyEntry::OnCreateDb()
 void
 CPasskeyEntry::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    m_status = TAR_CANCEL;
    super::OnCancel();
 }
@@ -235,7 +232,6 @@ CPasskeyEntry::OnOK()
          else if (nResponse == IDCANCEL)
          {
             m_status = errorDlg.GetCancelReturnValue();
-            app.m_pMainWnd = NULL;
             super::OnCancel();
          }
       }
@@ -249,7 +245,6 @@ CPasskeyEntry::OnOK()
    }
    else
    {
-      app.m_pMainWnd = NULL;
       super::OnOK();
    }
 }

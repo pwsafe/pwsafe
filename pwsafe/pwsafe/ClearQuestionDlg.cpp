@@ -40,7 +40,6 @@ END_MESSAGE_MAP()
 void
 CClearQuestionDlg::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 
@@ -51,7 +50,6 @@ CClearQuestionDlg::OnOK()
 
    PWSprefs::GetInstance()->
      SetPref(PWSprefs::BoolPrefs::DontAskQuestion, m_dontaskquestion);
-   app.m_pMainWnd = NULL;
    super::OnOK();
 }
 //-----------------------------------------------------------------------------

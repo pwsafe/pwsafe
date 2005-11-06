@@ -89,11 +89,9 @@ CPasskeyChangeDlg::OnOK()
      msg += CString(errmess);
      msg += _T("\nAccept anyway?");
      if (AfxMessageBox(msg, MB_YESNO) == IDYES) {
-       app.m_pMainWnd = NULL;
        super::OnOK();
      }
    } else {
-     app.m_pMainWnd = NULL;
      super::OnOK();
    }
 }
@@ -102,7 +100,6 @@ CPasskeyChangeDlg::OnOK()
 void
 CPasskeyChangeDlg::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 

@@ -151,7 +151,6 @@ CEditDlg::OnOK()
    }
    else
    {
-      app.m_pMainWnd = NULL;
       CDialog::OnOK();
    }
 }
@@ -159,7 +158,6 @@ CEditDlg::OnOK()
 
 void CEditDlg::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    CDialog::OnCancel();
 }
 

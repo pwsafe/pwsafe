@@ -54,7 +54,6 @@ END_MESSAGE_MAP()
 void
 CCryptKeyEntry::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 
@@ -77,7 +76,6 @@ CCryptKeyEntry::OnOK()
       return;
    }
 
-   app.m_pMainWnd = NULL;
    super::OnOK();
 }
 
