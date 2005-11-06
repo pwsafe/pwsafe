@@ -578,7 +578,6 @@ DboxMain::OnOK()
     ClearClipboard();
   } else if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
     ClearClipboard();
-  app.m_pMainWnd = NULL;
 
   ClearData();
 
@@ -1623,9 +1622,9 @@ DboxMain::GetToken(CString& str, LPCTSTR c)
 	int pos;
 	CString token;
 
-	pos=str.Find(c);
-	token=str.Left(pos);
-	str=str.Mid(pos+1);
+	pos = str.Find(c);
+	token = str.Left(pos);
+	str = str.Mid(pos + 1);
 
 	return token;
 }

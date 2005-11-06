@@ -64,7 +64,6 @@ END_MESSAGE_MAP()
 
 void CPasskeySetup::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 
@@ -95,8 +94,6 @@ void CPasskeySetup::OnOK()
        return;
    }
 
-
-   app.m_pMainWnd = NULL;
    super::OnOK();
 }
 

@@ -73,7 +73,6 @@ END_MESSAGE_MAP()
 void
 CAddDlg::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    CDialog::OnCancel();
 }
 
@@ -120,7 +119,6 @@ CAddDlg::OnOK()
    }
    else
    {
-      app.m_pMainWnd = NULL;
       CDialog::OnOK();
    }
 }
