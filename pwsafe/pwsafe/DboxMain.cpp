@@ -706,7 +706,9 @@ DboxMain::OnPasswordChange()
     return;
    m_LockDisabled = true;
    CPasskeyChangeDlg changeDlg(this);
+   app.DisableAccelerator();
    int rc = changeDlg.DoModal();
+   app.EnableAccelerator();
    m_LockDisabled = false;
    if (rc == IDOK)
    {
@@ -1787,7 +1789,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    */
 
   CPasskeyEntry dbox_pkentry(this, filename, m_IsReadOnly, first);
+  app.DisableAccelerator();
   int rc = dbox_pkentry.DoModal();
+  app.EnableAccelerator();
 
   if (rc == IDOK) {
       DBGMSG("PasskeyEntry returns IDOK\n");

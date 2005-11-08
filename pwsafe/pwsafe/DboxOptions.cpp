@@ -120,7 +120,9 @@ DboxMain::OnOptions()
    **  Remove the "Apply Now" button.
    */
    optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+   app.DisableAccelerator();
    int rc = optionsDlg.DoModal();
+   app.EnableAccelerator();
 
    if (rc == IDOK)
    {
