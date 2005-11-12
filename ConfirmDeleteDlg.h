@@ -18,7 +18,7 @@ class CConfirmDeleteDlg : public SUPERCLASS
 // Construction
 public:
    CConfirmDeleteDlg(CWnd* pParent = NULL);   // standard constructor
-
+private:
 // Dialog Data
    //{{AFX_DATA(CConfirmDeleteDlg)
    enum { IDD = IDD_CONFIRMDELETE_DIALOG };
