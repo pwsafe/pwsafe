@@ -297,72 +297,83 @@ DboxMain::OnDelete()
     return;
 
   m_LockDisabled = true;
-  if (SelItemOk() == TRUE)
-    {
-      BOOL dodelete = TRUE;
-		
-      //Confirm whether to delete the file
-      CConfirmDeleteDlg deleteDlg(this);
-      if (deleteDlg.m_dontaskquestion == FALSE)
-	{
-	  int rc = deleteDlg.DoModal();
-	  if (rc == IDOK)
-	    {
-	      dodelete = TRUE;
-	    }
-	  else if (rc == IDCANCEL)
-	    {
-	      dodelete = FALSE;
-	    }
-	}
+  const bool dontaskquestion = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::BoolPrefs::DeleteQuestion);
 
-      if (dodelete == TRUE)
-	{
-	  CItemData *ci = getSelectedItem();
-	  ASSERT(ci != NULL);
-	  DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-	  ASSERT(di != NULL);
-	  int curSel = di->list_index;
-	  // Find next in treeview, not always curSel after deletion
-	  HTREEITEM curTree_item = di->tree_item;
-	  HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
-							      TVGN_NEXT);
-	  POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
-	  m_ctlItemList.DeleteItem(curSel);
-	  m_ctlItemTree.DeleteWithParents(di->tree_item);
-	  delete di;
-	  m_core.RemoveEntryAt(listindex);
-	  FixListIndexes(m_ctlItemList);
-	  if (m_ctlItemList.IsWindowVisible()) {
-	    if (m_core.GetNumEntries() > 0) {
-	      SelectEntry(curSel < m_core.GetNumEntries() ? 
-			  curSel : m_core.GetNumEntries() - 1);
-	    }
-	    m_ctlItemList.SetFocus();
-	  } else {// tree view visible
-	    if (nextTree_item != NULL)
-	      m_ctlItemTree.SelectItem(nextTree_item);
-	    else
-	      SelectEntry(0);
-	    m_ctlItemTree.SetFocus();
-	  }
-	  ChangeOkUpdate();
-	}
+  bool dodelete = true;
+    
+  //Confirm whether to delete the item
+  if (!dontaskquestion) {
+    CConfirmDeleteDlg deleteDlg(this);
+    int rc = deleteDlg.DoModal();
+    if (rc == IDOK) {
+      dodelete = true;
+    } else if (rc == IDCANCEL) {
+      dodelete = false;
     }
-  else
-  {
-      // see if the user is just asking to delete an empty group.
-      if (m_ctlItemTree.IsWindowVisible()) {
-        HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-        if (ti != NULL && 
-            !m_ctlItemTree.IsLeafNode(ti) &&
-            !m_ctlItemTree.ItemHasChildren(ti))
-        {
-            HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            
-            m_ctlItemTree.DeleteItem(ti);
-            m_ctlItemTree.SelectItem(parent);
+  }
+
+  if (SelItemOk() == TRUE) {
+
+    if (dodelete) {
+      CItemData *ci = getSelectedItem();
+      ASSERT(ci != NULL);
+      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+      ASSERT(di != NULL);
+      int curSel = di->list_index;
+      // Find next in treeview, not always curSel after deletion
+      HTREEITEM curTree_item = di->tree_item;
+      HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
+                                                          TVGN_NEXT);
+      POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
+      m_ctlItemList.DeleteItem(curSel);
+      m_ctlItemTree.DeleteWithParents(di->tree_item);
+      delete di;
+      m_core.RemoveEntryAt(listindex);
+      FixListIndexes(m_ctlItemList);
+      if (m_ctlItemList.IsWindowVisible()) {
+        if (m_core.GetNumEntries() > 0) {
+          SelectEntry(curSel < m_core.GetNumEntries() ? 
+                      curSel : m_core.GetNumEntries() - 1);
+        }
+        m_ctlItemList.SetFocus();
+      } else {// tree view visible
+        if (nextTree_item != NULL)
+          m_ctlItemTree.SelectItem(nextTree_item);
+        else
+          SelectEntry(0);
+        m_ctlItemTree.SetFocus();
+      }
+      ChangeOkUpdate();
+    }
+  } else { // !SelItemOk()
+    if (m_ctlItemTree.IsWindowVisible()) {
+      HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+      if (ti != NULL) {
+        if (!m_ctlItemTree.IsLeafNode(ti)) {
+          HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
+          const bool orig_dont_ask = dontaskquestion;
+          // don't question user for each leaf!
+          PWSprefs::GetInstance()->
+            SetPref(PWSprefs::BoolPrefs::DeleteQuestion, true);
+
+          while (cti != NULL) {
+            m_ctlItemTree.SelectItem(cti);
+            OnDelete(); // recursion - I'm so lazy!
+            cti = m_ctlItemTree.GetChildItem(ti);
+          }
+
+          // restore original preference after recursion
+          PWSprefs::GetInstance()->
+            SetPref(PWSprefs::BoolPrefs::DeleteQuestion, orig_dont_ask);
+
+          //  delete an empty group.
+          HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            
+          m_ctlItemTree.DeleteItem(ti);
+          m_ctlItemTree.SelectItem(parent);
         }
       }
+    }  
   }
   m_LockDisabled = false;
 }

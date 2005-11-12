@@ -32,7 +32,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("dontaskquestion"), false, true},
   {_T("deletequestion"), false, true},
   {_T("DCShowsPassword"), false, true},
-  {_T("DontAskMinimizeClearYesNo"), false, true},
+  {_T("DontAskMinimizeClearYesNo"), true, true},
   {_T("DatabaseClear"), false, true},
   {_T("DontAskSaveMinimize"), false, true},
   {_T("QuerySetDef"), true, true},
