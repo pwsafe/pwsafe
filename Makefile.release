@@ -75,15 +75,20 @@ src-release:
 	 find . \( -name '*~' -o -name '*.bak' -o -name \*.aps -o \
 		   -name '*.plg' -o -name '*.ncb' -o -name '*.opt' -o \
 		   -name '*.clw' -o -name '*.chm' \
+		   -name '*.rej' -o -name '*.orig' \
+		   -name '.#*' -o -name '#*#' \
                    -name '*.sav' -o -name '*.old' \) | xargs $(RM) -f; \
-	 $(RM) -f Release/* Debug/* *~ *.bak *.sav *.old .#*; \
-	 $(RM) -f corelib/Release/* corelib/Debug/* test/Debug/*; \
+	 $(RM) -f Release/* Debug/* *~ *.bak *.sav *.old ; \
+	 $(RM) -f corelib/Release/* corelib/Debug/* test/Debug/* ; \
 	 find . -type d -name CVS | xargs $(RM) -rf)
 	(cd $(RELEASEDIR); zip -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.17  2005/11/18 17:01:12  ronys
+# Updated help files, fixed Version info in RC, moved old news to ChangeLog.txt
+#
 # Revision 1.16  2005/09/26 05:39:23  ronys
 # Expand/Collapse all entries, selectFont added. [DK]
 #
