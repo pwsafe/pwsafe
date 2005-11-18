@@ -4,6 +4,66 @@ This file lists the changes made to older versions of
 PasswordSafe. The changes for the current version and the one before
 it are noted in ReleaseNotes.txt.
 
+Bugs fixed in 2.09:
+===================
+[1107971] Edit via double-click no longer crashes the application.
+[1103501,1119212,1138635] Refined file lock mechanism.
+
+New Features for 2.09:
+======================
+When saving a database, the previous version, if one exists, will be
+renamed with the ".dat~" suffix. This provides some minimal automatic
+backup.
+
+Bugs fixed in 2.08:
+===================
+[1077638] The size of the help file was reduced by using graphics
+with fewer colors.
+[1082510] Improvements to Find dialog: No longer obscures parent, last
+searched text remembered.
+[1090153] Pressing Delete in Find dialog no longer deletes an entry.
+[1074014] Silly message no longer displayed upon drag&drop of a file
+onto main window.
+
+New Features for 2.08:
+======================
+[1094005,1083950] Multiple instances of PasswordSafe can now open the same
+database - only the first instance will be able to modify the database,
+unles explicitly opened read-only.
+
+Bugs fixed in 2.07:
+===================
+[1043438] Idle time lockout now works for idle times other than one
+minute.
+[1060241] Changing preference with no database opened no longer pops
+up error message.
+[1006234] Choosing "Cancel" in the Enter Password dialog box now exits
+the application.
+[1065049] Fixed broken link to Blowfish algorithm reference in Help.
+[1021879] Enter on a tree-item expands/collapses the list under that
+item.
+[1055968,1030060] Import text now handles Notes that are more than one
+line long (as long as the entire note is "within double quotes").
+
+New Features for 2.07:
+======================
+[885984,722646] It is now possible to merge two different databases (File->Merge)
+[1055961, 1030775, 947841] The action taken upon double-clicking an
+entry can now be configured (via Manage->Misc): Either copy the
+password to the clipboard or edit/view the entry.
+[] The Import from text function is now more flexible: the field
+separator can be configured, and the imported entries may be under a
+common group or not.
+[] It is now possible to import text files exported by KeePass.
+[] The English online help file has been rewritten.
+
+Known Problems:
+===============
+[879400] A category cannot be dragged to the top level. Workaround:
+Edit the Group field of the categories entries. For example, to make
+category "b" a top level category instead of under "a", change all
+its entries Group fields from "a.b" to "b".
+
 Bugs fixed in 2.06:
 ===================
 [1026630] Autotype now works correctly when "lock database on
@@ -180,6 +240,9 @@ entries now supported. This allows the user to define categories,
 sub-categories, etc.
 
 $Log$
+Revision 1.3  2005/11/18 17:01:12  ronys
+Updated help files, fixed Version info in RC, moved old news to ChangeLog.txt
+
 Revision 1.2  2005/01/15 11:13:24  ronys
 Moved 2.03-2.06 from ReleaseNotes.
 
