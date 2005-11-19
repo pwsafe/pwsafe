@@ -261,7 +261,10 @@ _writecbc(FILE *fp,
 
    // First encrypt and write the length of the buffer
    unsigned char lengthblock[8];
-   memset(lengthblock, 0, 8);
+   // Fill unused bytes of length with random data, to make
+   // a dictionary attack harder
+   GetRandomData(lengthblock, sizeof(lengthblock));
+   // block length overwrites 4 bytes of the above randomness.
    putInt32( lengthblock, length );
 
    // following new for format 2.0 - lengthblock bytes 4-7 were unused before.

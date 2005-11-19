@@ -45,7 +45,17 @@ int PWSfile::WriteV2Header()
 {
   CItemData header;
   // Fill out with V2-specific info
-  header.SetName(V2ItemName, _T(""));
+  // To make a dictionary attack a little harder, we make the length
+  // of the first record (Name) variable, by appending variable length randomness
+  // to the fixed string
+  unsigned int rlen = RangeRand(62) + 2; // 64 is a trade-off...
+  char *rbuf = new char[rlen];
+  GetRandomData(rbuf, rlen-1);
+  rbuf[rlen-1] = '\0'; // although zero may be there before - who cares?
+  CMyString rname(V2ItemName);
+  rname += rbuf;
+  delete[] rbuf;
+  header.SetName(rname, _T(""));
   header.SetPassword(VersionString);
   header.SetNotes(m_prefString);
   // need to fallback to V17, since the record
@@ -69,10 +79,8 @@ int PWSfile::ReadV2Header()
   // restore after reading V17-format header
   m_curversion = sv;
   if (status == SUCCESS) {
-    const CMyString name = header.GetName();
-    // XXX Need to compare header.GetPassword() against VersionString
-    // XXX as well, for inter-2.x version checks
-    status = (name == V2ItemName) ? SUCCESS : WRONG_VERSION;
+    const CMyString version = header.GetPassword();
+    status = (version == VersionString) ? SUCCESS : WRONG_VERSION;
   }
   if (status == SUCCESS)
     m_prefString = header.GetNotes();
@@ -248,9 +256,16 @@ int PWSfile::WriteRecord(const CItemData &item)
   case V17: {
     // 1.x programs totally ignore the type byte, hence safe to write it
     // (no need for two WriteCBC functions)
+    // Note that 2.0 format still requires that the header be in this format,
+    // So that old programs reading new databases won't crash,
+    // This introduces a small security issue, in that the header is known text,
+    // making the password susceptible to a dictionary attack on the first block,
+    // rather than the hash^n in the beginning of the file.
+    // we can help minimize this here by writing a random byte in the "type"
+    // byte of the first block.
 
     CMyString name = item.GetName();
-    // If name field already ecists - use it. This is for the 2.0 header, as well as for files
+    // If name field already exists - use it. This is for the 2.0 header, as well as for files
     // that were imported and re-exported.
     if (name.IsEmpty()) {
       // The name in 1.7 consists of title + SPLTCHR + username
@@ -269,7 +284,9 @@ int PWSfile::WriteRecord(const CItemData &item)
       name += SPLTCHR;
       name += item.GetUser();
     }
-    WriteCBC(CItemData::NAME, name);
+    unsigned char dummy_type;
+    GetRandomData(&dummy_type, 1);
+    WriteCBC(dummy_type, name);
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
     WriteCBC(CItemData::NOTES, item.GetNotes());
     return SUCCESS;
