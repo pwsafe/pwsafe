@@ -48,6 +48,14 @@ int PWSfile::WriteV2Header()
   // To make a dictionary attack a little harder, we make the length
   // of the first record (Name) variable, by appending variable length randomness
   // to the fixed string
+  // OOPS - can't do this yet, since previous versions (pre-2.14) read the name
+  // (in ReadV2Header)
+  // and compare it directly to VersionString to check version - a small
+  // mistake that would cause a pre-2.14 executable to barf reading a database
+  // written by 2.14 and later.
+  // #idef-ing this out, while correcting the code
+  // in ReadV2Header. Perhaps this can be fixed a year from now?
+#ifdef BREAK_PRE_2_14_COMPATIBILITY
   unsigned int rlen = RangeRand(62) + 2; // 64 is a trade-off...
   char *rbuf = new char[rlen];
   GetRandomData(rbuf, rlen-1);
@@ -56,6 +64,9 @@ int PWSfile::WriteV2Header()
   rname += rbuf;
   delete[] rbuf;
   header.SetName(rname, _T(""));
+#else
+  header.SetName(V2ItemName, _T(""));
+#endif /* BREAK_PRE_2_14_COMPATIBILITY */
   header.SetPassword(VersionString);
   header.SetNotes(m_prefString);
   // need to fallback to V17, since the record
