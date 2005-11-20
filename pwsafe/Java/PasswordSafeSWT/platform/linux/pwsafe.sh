@@ -106,7 +106,7 @@ esac
 
 # -- now set some variables --
 _OSString="${_OSEnv}.${_OS}.${_OSPlatform}"
-_javalibpath=".${_pathfilesep}${_OSString}"
+_javalibpath=".${_pathfilesep}"
 _vaultdir="${HOME}${_pathfilesep}.passwordsafe"
 _prefprop="${_vaultdir}${_pathfilesep}preferences.properties"
 
