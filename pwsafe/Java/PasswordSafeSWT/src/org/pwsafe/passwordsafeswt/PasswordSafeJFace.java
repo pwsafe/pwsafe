@@ -727,7 +727,10 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		if (stackLayout.topControl == tree) {
 			if (tree.getSelectionCount() == 1) {
 				TreeItem ti = tree.getSelection()[0];
-				recordToCopy = (PwsRecord) ti.getData();
+				Object treeData = ti.getData();
+				if (treeData != null && treeData instanceof PwsRecord) { // must be a left, not a group entry
+					recordToCopy = (PwsRecord) treeData;
+				}					
 			}
 		} else {
 			if (table.getSelectionCount() == 1) {
