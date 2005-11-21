@@ -90,7 +90,7 @@ public class EditDialog extends Dialog {
     
 
 	protected void createContents() {
-		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		shell = new Shell(getParent(), SWT.RESIZE | SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setSize(530, 340);
 		shell.setText("Edit/View Entry");
 		final GridLayout gridLayout_2 = new GridLayout();
@@ -107,13 +107,13 @@ public class EditDialog extends Dialog {
 
 		final Composite compositeLabel = new Composite(shell, SWT.NONE);
 		final GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		gridData.widthHint = 499;
+		//gridData.widthHint = 499;
 		compositeLabel.setLayoutData(gridData);
 		compositeLabel.setLayout(new GridLayout());
 
 		final Label labelInfo = new Label(compositeLabel, SWT.WRAP);
 		final GridData gridData_1 = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
-		gridData_1.widthHint = 488;
+		//gridData_1.widthHint = 488;
 		labelInfo.setLayoutData(gridData_1);
 		labelInfo.setText("To edit this entry from the current password file, simply make the desired changes in the fields below. Note that at least a title and a password are still required.");
 
@@ -198,7 +198,9 @@ public class EditDialog extends Dialog {
 			public void widgetSelected(SelectionEvent e) {
                 if (txtPassword.getEchoChar() != '\0') {
                 	txtPassword.setEchoChar('\0');
+                	btnShowPassword.setText("Hide Password");
                 } else {
+                	btnShowPassword.setText("Show Password");
                 	txtPassword.setEchoChar('*');
                 }
 			}
@@ -306,7 +308,11 @@ public class EditDialog extends Dialog {
 		UserPreferences.reload(); // make sure we have a fresh copy
 		UserPreferences preferenceStore = UserPreferences.getInstance();
 		
-		int passwordLength = Integer.parseInt(preferenceStore.getString(PasswordPolicyPreferences.DEFAULT_PASSWORD_LENGTH));
+		String passwordLengthStr = preferenceStore.getString(PasswordPolicyPreferences.DEFAULT_PASSWORD_LENGTH);
+		int passwordLength = 0;
+		if (passwordLengthStr != null) {
+			passwordLength = Integer.parseInt(passwordLengthStr);
+		}
 		if (passwordLength <= 0)
 			passwordLength = 8; //let's be sensible about this..
 		
