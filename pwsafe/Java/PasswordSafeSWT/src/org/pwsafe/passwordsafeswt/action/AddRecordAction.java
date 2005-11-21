@@ -31,6 +31,13 @@ public class AddRecordAction extends Action {
 		if (prefs.getBoolean(UsernamePreferences.USE_DEFAULT_USERNAME)) {
 			newEntry.setUsername(prefs.getString(UsernamePreferences.DEFAULT_USERNAME));
 		}
+		if (app.isTreeViewShowing()) {
+			// create new entry within existing group
+			String selectedGroup = app.getSelectedTreeGroup();
+			if (selectedGroup != null && selectedGroup.length() > 0) {
+				newEntry.setGroup(selectedGroup);
+			}
+		}
         EditDialog ed = new EditDialog(app.getShell(), newEntry);
         newEntry = (PwsEntryDTO) ed.open();
         if (newEntry != null) {

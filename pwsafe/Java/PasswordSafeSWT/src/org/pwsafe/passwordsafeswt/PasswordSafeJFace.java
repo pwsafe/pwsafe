@@ -898,6 +898,31 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		stackLayout.topControl = tree;
 		composite.layout();
 	}
+	
+	/**
+	 * Returns whether the treeview is the active view.
+	 * 
+	 * @return true if the treeview is showing, false otherwise
+	 */
+	public boolean isTreeViewShowing() {
+		return (stackLayout.topControl == tree);
+	}
+	
+	public String getSelectedTreeGroup() {
+		
+		if (stackLayout.topControl == tree) {
+			if (tree.getSelectionCount() == 1) {
+				TreeItem ti = tree.getSelection()[0];
+				if (ti.getItemCount() > 0) {
+					return ti.getText();
+				} else {
+					// we're in a leaf node
+					return ti.getParentItem().getText();
+				}
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Refresh the tree and table.
