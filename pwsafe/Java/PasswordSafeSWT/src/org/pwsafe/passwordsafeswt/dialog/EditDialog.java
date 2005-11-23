@@ -107,19 +107,21 @@ public class EditDialog extends Dialog {
 
 		final Composite compositeLabel = new Composite(shell, SWT.NONE);
 		final GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		//gridData.widthHint = 499;
+		gridData.widthHint = 499;
 		compositeLabel.setLayoutData(gridData);
 		compositeLabel.setLayout(new GridLayout());
 
 		final Label labelInfo = new Label(compositeLabel, SWT.WRAP);
 		final GridData gridData_1 = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
-		//gridData_1.widthHint = 488;
+		gridData_1.widthHint = 499;
 		labelInfo.setLayoutData(gridData_1);
 		labelInfo.setText("To edit this entry from the current password file, simply make the desired changes in the fields below. Note that at least a title and a password are still required.");
 
 		final Composite compositeFields = new Composite(shell, SWT.NONE);
 		compositeFields.setLayout(new FormLayout());
-		compositeFields.setLayoutData(new GridData(GridData.FILL_BOTH));
+		final GridData gridData_c = new GridData(GridData.FILL_BOTH);
+		gridData_c.widthHint = 499;
+		compositeFields.setLayoutData(gridData_c);
 
 		final Label lblGroup = new Label(compositeFields, SWT.NONE);
 		final FormData formData = new FormData();
