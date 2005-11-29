@@ -16,6 +16,14 @@ invocation.  For instance the display of passwords in the list display and
 the display of actual password in the edit dialog.
 * The list listing could use the group name as an optional turn on field.
 
+Fixed:
+- XML Handling bugs (no comments read)
++ CSV Import and Export implemented
++ Resizeable edit dialog
+- Show Password button now toggles
+- Bugs in password generation fixed
++ Added compatibility with 2.14 files
+
 
 
 Platform Specific Stuff
