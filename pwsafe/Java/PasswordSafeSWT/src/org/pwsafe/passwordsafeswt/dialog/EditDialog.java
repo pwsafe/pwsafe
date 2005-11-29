@@ -340,12 +340,18 @@ public class EditDialog extends Dialog {
 			pwSet.append(BASE_SYMBOLS);
 		}
 		
+		
 		StringBuffer sb = new StringBuffer();
-		Random rand = new Random(System.currentTimeMillis());
-		for (int i = 0; i < passwordLength; i++) {
-			int randOffset = rand.nextInt(pwSet.length());
-			sb.append(pwSet.charAt(randOffset));
+		if (pwSet.length() > 0) {
+			Random rand = new Random(System.currentTimeMillis());
+			for (int i = 0; i < passwordLength; i++) {
+				int randOffset = rand.nextInt(pwSet.length());
+				sb.append(pwSet.charAt(randOffset));
+			}
+		} else {
+			sb.append("Must Edit Password Generation Options");
 		}
+
 		
 		return sb.toString();
 			
