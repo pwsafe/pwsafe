@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +71,7 @@ import org.pwsafe.passwordsafeswt.action.ExitAppAction;
 import org.pwsafe.passwordsafeswt.action.ExportToTextAction;
 import org.pwsafe.passwordsafeswt.action.ExportToXMLAction;
 import org.pwsafe.passwordsafeswt.action.HelpAction;
+import org.pwsafe.passwordsafeswt.action.ImportFromTextAction;
 import org.pwsafe.passwordsafeswt.action.ImportFromXMLAction;
 import org.pwsafe.passwordsafeswt.action.MRUFileAction;
 import org.pwsafe.passwordsafeswt.action.NewFileAction;
@@ -92,6 +96,9 @@ import org.pwsafe.passwordsafeswt.preference.MiscPreferences;
 import org.pwsafe.passwordsafeswt.preference.SecurityPreferences;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 import org.pwsafe.passwordsafeswt.xml.XMLDataParser;
+
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 
 import com.swtdesigner.SWTResourceManager;
 
@@ -127,6 +134,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	private ViewAsListAction viewAsListAction;
 	private ViewAsTreeAction viewAsTreeAction;
 	private ExportToTextAction exportToTextAction;
+	private ImportFromTextAction importFromTextAction;
 	private Table table;
 	private TrayItem trayItem;
 	private StackLayout stackLayout;
@@ -140,6 +148,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	private PwsFile pwsFile;
 	
 	private static final String DISPLAY_AS_LIST_PREF = "display.as.list";
+	
+	private static final String V1_GROUP_PLACEHOLDER = "UntitledGroup";
 
 	/**
 	 * Constructor.
@@ -354,6 +364,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		saveFileAsAction = new SaveFileAsAction();
 
 		exportToTextAction = new ExportToTextAction();
+		
+		importFromTextAction = new ImportFromTextAction();
 
 		exitAppAction = new ExitAppAction();
 
@@ -433,6 +445,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		final MenuManager menuManagerImportFrom = new MenuManager("Import From");
 		menuManagerFile.add(menuManagerImportFrom);
 
+		menuManagerImportFrom.add(importFromTextAction);
+		
 		menuManagerImportFrom.add(importFromXMLAction);
 
 		menuManagerFile.add(new Separator());
@@ -958,33 +972,37 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 * @throws FileNotFoundException
 	 */
 	public void exportToText(String filename) {
-		FileOutputStream fos = null;
+		FileWriter fw = null;
 		try {
-			fos = new FileOutputStream(filename);
+			fw = new FileWriter(filename);
 			Iterator iter = getPwsFile().getRecords();
+			CSVWriter csvWriter = new CSVWriter(fw, '\t');
 			while (iter.hasNext()) {
 				StringBuffer sb = new StringBuffer();
 				PwsRecord nextRecord = (PwsRecord) iter.next();
+				List nextEntry = new ArrayList();
+				
 				if (nextRecord instanceof PwsRecordV1) {
-					sb.append("UntitledGroup\t");
-					sb.append(nextRecord.getField(PwsRecordV1.TITLE).getValue().toString()).append("\t");
-					sb.append(nextRecord.getField(PwsRecordV1.USERNAME).getValue().toString()).append("\t");
-					sb.append(nextRecord.getField(PwsRecordV1.PASSWORD).getValue().toString()).append("\t");
+					nextEntry.add(V1_GROUP_PLACEHOLDER);
+					nextEntry.add(nextRecord.getField(PwsRecordV1.TITLE).getValue().toString());
+					nextEntry.add(nextRecord.getField(PwsRecordV1.USERNAME).getValue().toString());
+					nextEntry.add(nextRecord.getField(PwsRecordV1.PASSWORD).getValue().toString());
 				} else {
-					sb.append(nextRecord.getField(PwsRecordV2.GROUP).getValue().toString()).append("\t");
-					sb.append(nextRecord.getField(PwsRecordV2.TITLE).getValue().toString()).append("\t");
-					sb.append(nextRecord.getField(PwsRecordV2.USERNAME).getValue().toString()).append("\t");
-					sb.append(nextRecord.getField(PwsRecordV2.PASSWORD).getValue().toString()).append("\t");
+					nextEntry.add(nextRecord.getField(PwsRecordV2.GROUP).getValue().toString());
+					nextEntry.add(nextRecord.getField(PwsRecordV2.TITLE).getValue().toString());
+					nextEntry.add(nextRecord.getField(PwsRecordV2.USERNAME).getValue().toString());
+					nextEntry.add(nextRecord.getField(PwsRecordV2.PASSWORD).getValue().toString());
 				}
-				sb.append("\n");
-				fos.write(sb.toString().getBytes());
+				String[] nextLine = (String[])nextEntry.toArray(new String[0]);
+				csvWriter.writeNext(nextLine);
+				
 			}
 		} catch (IOException ioe) {
 			displayErrorDialog("Error Exporting", "Error writing to text file", ioe);
 		} finally {
-			if (fos != null) {
+			if (fw != null) {
 				try {
-					fos.close();
+					fw.close();
 				} catch (IOException e) {
 					log.warn("Could not close output text file", e);
 				}
@@ -992,6 +1010,54 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 		}
 
+	}
+	
+	public void importFromText(String filename) {
+
+		File theFile = new File(filename);
+
+		if (!theFile.exists()) {
+			throw new RuntimeException("Could not locate CSV source file: [" + filename + "]");
+		}
+		
+		Reader fileReader = null;
+		
+		try {
+		fileReader = new FileReader(theFile);
+		
+		CSVReader csvReader = new CSVReader(fileReader, '\t');
+		
+		String[] nextLine;
+		PwsFile pwsFile = getPwsFile();
+		while ((nextLine = csvReader.readNext()) != null) {
+			PwsRecord newRecord = pwsFile.newRecord();
+			PwsEntryDTO entry = new PwsEntryDTO();
+			if (!nextLine[0].equals(V1_GROUP_PLACEHOLDER)) {
+				entry.setGroup(nextLine[0]);
+			}
+			entry.setUsername(nextLine[1]);
+			entry.setTitle(nextLine[2]);
+			entry.setPassword(nextLine[3]);
+			entry.toPwsRecord(newRecord);
+			pwsFile.add(newRecord);
+		}
+		} catch (Exception e) {
+			
+			throw new RuntimeException("Could not process text file: [" + filename + "]", e);
+			
+		} finally {
+			if (fileReader != null) {
+				try {
+					fileReader.close();
+				} catch (IOException e) {
+					log.warn("Could not close import text file", e);
+				}
+			}
+		}
+		
+		
+		this.updateViewers();
+		
 	}
 
 	/**
