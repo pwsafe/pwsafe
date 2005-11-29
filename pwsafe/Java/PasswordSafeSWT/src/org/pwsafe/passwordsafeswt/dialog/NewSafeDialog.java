@@ -48,7 +48,7 @@ public class NewSafeDialog extends Dialog {
 	protected void createContents() {
 		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setLayout(new FormLayout());
-		shell.setSize(500, 240);
+		shell.setSize(380, 200);
 		shell.setText("Safe Combination Setup");
 		final Label label = new Label(shell, SWT.WRAP);
 		final FormData formData = new FormData();
@@ -100,6 +100,7 @@ public class NewSafeDialog extends Dialog {
 		btnCancel.setText("Cancel");
 
 		final Button btnOk = new Button(shell, SWT.NONE);
+		shell.setDefaultButton(btnOk);
 		btnOk.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (txtCombination.getText().equals(txtVerify.getText())) {
