@@ -312,7 +312,7 @@ public class EditDialog extends Dialog {
 		
 		String passwordLengthStr = preferenceStore.getString(PasswordPolicyPreferences.DEFAULT_PASSWORD_LENGTH);
 		int passwordLength = 0;
-		if (passwordLengthStr != null) {
+		if (passwordLengthStr != null && passwordLengthStr.trim().length() > 0) {
 			passwordLength = Integer.parseInt(passwordLengthStr);
 		}
 		if (passwordLength <= 0)
