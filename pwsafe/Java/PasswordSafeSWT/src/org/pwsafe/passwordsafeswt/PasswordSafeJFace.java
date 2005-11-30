@@ -184,7 +184,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 				}
 			} else if (result == StartupDialog.NEW_FILE) {
 				newFileAction.run();
-				allDone = true;
+                if (getPwsFile() != null)
+                    allDone = true;
 			} else if (result == StartupDialog.OPEN_OTHER) {
 				openFileAction.run();
 				allDone = true;
