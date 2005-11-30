@@ -48,7 +48,7 @@ public class NewSafeDialog extends Dialog {
 	protected void createContents() {
 		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setLayout(new FormLayout());
-		shell.setSize(380, 200);
+		shell.setSize(380, 250);
 		shell.setText("Safe Combination Setup");
 		final Label label = new Label(shell, SWT.WRAP);
 		final FormData formData = new FormData();
