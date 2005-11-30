@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/passwordsafe-lib.jar"/>
+	<classpathentry kind="lib" path="lib/opencsv-1.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
