@@ -544,6 +544,10 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 	case PWSprefs::DoubleClickAutoType:
 	  PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
 	  break;
+	case PWSprefs::DoubleClickBrowse:
+      TreeSelectionChanged();
+	  PostMessage(WM_COMMAND, ID_MENUITEM_BROWSE);
+          break;
 	default:
 	  ASSERT(0);
 	}

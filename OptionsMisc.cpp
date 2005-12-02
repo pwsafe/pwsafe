@@ -64,17 +64,24 @@ BOOL COptionsMisc::OnInitDialog()
   CButton *pBCopyRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_COPIES);
   CButton *pBEditRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_EDITS);
   CButton *pAutoTypeRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_AUTOTYPES);
-  ASSERT(pBCopyRB != NULL && pBEditRB != NULL);
+  CButton *pBrowseRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_BROWSE);
 
   switch (m_doubleclickaction) {
   case PWSprefs::DoubleClickCopy:
-    pBCopyRB->SetCheck(1); pBEditRB->SetCheck(0); pAutoTypeRB->SetCheck(0);
+    pBCopyRB->SetCheck(1); pBEditRB->SetCheck(0);
+    pAutoTypeRB->SetCheck(0); pBrowseRB->SetCheck(0);
     break;
   case PWSprefs::DoubleClickEdit:
-    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(1); pAutoTypeRB->SetCheck(0);
+    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(1);
+    pAutoTypeRB->SetCheck(0); pBrowseRB->SetCheck(0);
     break;
   case PWSprefs::DoubleClickAutoType:
-    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(0); pAutoTypeRB->SetCheck(1);
+    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(0);
+    pAutoTypeRB->SetCheck(1); pBrowseRB->SetCheck(0);
+    break;
+  case PWSprefs::DoubleClickBrowse:
+    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(0);
+    pAutoTypeRB->SetCheck(0); pBrowseRB->SetCheck(1);
     break;
   default:
     ASSERT(0);
