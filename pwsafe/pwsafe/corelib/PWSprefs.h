@@ -48,7 +48,7 @@ class PWSprefs {
 		     TreeFont, NumStringPrefs};
 
   enum {DoubleClickCopy = 0, DoubleClickEdit = 1,
-	DoubleClickAutoType = 2}; // for DoubleClickAction
+	DoubleClickAutoType = 2, DoubleClickBrowse = 3}; // for DoubleClickAction
 
   bool IsChanged() const {return m_changed;}
   void ClearChanged() {m_changed = false;}

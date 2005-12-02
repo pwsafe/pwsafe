@@ -1134,6 +1134,7 @@ DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *)
   case PWSprefs::DoubleClickCopy: statustext = IDS_STATCOPY; break;
   case PWSprefs::DoubleClickEdit: statustext = IDS_STATEDIT; break;
   case PWSprefs::DoubleClickAutoType: statustext = IDS_STATAUTOTYPE; break;
+  case PWSprefs::DoubleClickBrowse: statustext = IDS_STATBROWSE; break;
   default: ASSERT(0);
   }
 

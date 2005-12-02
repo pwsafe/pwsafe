@@ -10,6 +10,7 @@
 #define IDS_OUTPUTFILE                  102
 #define ID_SYSMENU_ALWAYSONTOP          102
 #define IDS_STATEDIT                    103
+#define IDS_STATBROWSE                  104
 #define IDS_STATCOMPANY                 105
 #define IDS_STATCOPY                    106
 #define IDS_ALWAYSONTOP                 107
@@ -162,6 +163,8 @@
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
+#define IDC_DOUBLE_CLICK_BROWSE         2092
+#define IDC_DOUBLE_CLICK_AUTOTYPES2     2092
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773

@@ -24,7 +24,7 @@ well as other dialog boxes)
 New features for 2.14:
 ======================
 [] Duplicating an existing entry is now possible via the menus or
-Ctrl+P. Thanks to DK.
+Ctrl+D. Thanks to DK.
 [] Expand all and collapse all tree entries now supported. Thanks to DK
 [] Selecting font for display of entries now supported. Thanks to DK
 [] If Window's RtlGenRandom is available, use it instead of rand(). Thanks
@@ -116,6 +116,9 @@ front, if obscured by other applications.
 
 
 $Log$
+Revision 1.26  2005/12/02 06:32:30  ronys
+Added dbl-click to bowse option, thanks to Laszlo Gombos
+
 Revision 1.25  2005/11/20 19:52:32  ronys
 Closing release 2.14
 
