@@ -213,8 +213,12 @@ public class EditDialog extends Dialog {
 		formData_8.top = new FormAttachment(txtUsername, 10, SWT.BOTTOM);
 		formData_8.right = new FormAttachment(70, 0);
 		btnShowPassword.setLayoutData(formData_8);
-		btnShowPassword.setText("Show Password");
-
+		if (UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_EDIT_MODE)) {
+			btnShowPassword.setText("Hide Password");
+		} else {
+			btnShowPassword.setText("Show Password");
+		}
+		
 		final Label lblNotes = new Label(compositeFields, SWT.NONE);
 		final FormData formData_9 = new FormData();
 		formData_9.top = new FormAttachment(txtPassword, 5, SWT.BOTTOM);
