@@ -1,0 +1,51 @@
+$Id$
+
+The format described below has two goals:
+1. To fix a minor design flaw in previous versions of the PasswordSafe
+database format.
+2. To replace the underlying cryptographic functions with more advanced
+versions.
+
+Meeting these goals is impossible without breaking compatibility: The new
+format will NOT be compatible with existing implementations. An
+implementation supporting this format SHALL be capable of importing from
+and exporting to the previous (2.x) format.
+
+A V3 format PasswordSafe will be structured as follows:
+
+SALT|H(P')|B1|B2|IV|HDR|R1|R2|...|Rn
+
+Where:
+
+SALT is a 256 bit random value, generated at file creation time.
+
+P' is the "stretched key" of the user's passphrase and the SALT, as defined
+by the hash-function-based key stretching algorithm in
+http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
+as the hash function, and 2048 iterations (i.e., t = 11).
+
+H(P') is SHA-256(P'), and is used to verify that the user has the correct
+passphrase.
+
+B1 and B2 are two 128-bit blocks encrypted with Twofish using P' as the
+key, in ECB mode. These blocks contain the 256 bit random key K that is used
+to encrypt the actual records. (This has the property that there is no
+known or guessable information on the plaintext encrypted with the
+passphrase-derived key that  allows an attacker to mount an attack that
+bypasses the key stretching algorithm.)
+
+IV is the 128-bit random Initial Value for CBC mode.
+
+All the following records are encrypted using Twofish in CBC mode, with K
+as the encryption key.
+
+HDR: The database header, containing the version number, non-default user
+preferences, and perhaps other housekeeping information.
+
+R1..Rn: The actual password entries, in the format described in the V2
+document, with possible additional fields.
+
+$Log$
+Revision 1.1  2005/12/04 11:05:08  ronys
+Checked in first draft
+
