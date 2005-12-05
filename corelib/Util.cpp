@@ -43,19 +43,19 @@ trashMemory(SHA1_CTX& context)
 
 
 void
-trashMemory(unsigned char* buffer,
-            long length)
+trashMemory(void* buffer, long length)
 {
+  ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
   if ( length != 0 )
     {
       const int numiter = 30;
       for (int x=0; x<numiter; x++)
-	{
-	  memset(buffer, 0x00, length);
-	  memset(buffer, 0xFF, length);
-	  memset(buffer, 0x00, length);
-	}
+        {
+          memset(buffer, 0x00, length);
+          memset(buffer, 0xFF, length);
+          memset(buffer, 0x00, length);
+        }
     }
 }
 
@@ -63,6 +63,18 @@ void
 trashMemory( LPTSTR buffer, long length )
 {
   trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0])  );
+}
+
+/**
+   Burn some stack memory
+   @param len amount of stack to burn in bytes
+*/
+void burnStack(unsigned long len)
+{
+   unsigned char buf[32];
+   trashMemory(buf, sizeof(buf));
+   if (len > (unsigned long)sizeof(buf))
+      burnStack(len - sizeof(buf));
 }
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
