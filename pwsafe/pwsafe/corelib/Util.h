@@ -34,11 +34,15 @@ typedef unsigned short   uint16;
 typedef unsigned int     uint32;
 typedef unsigned __int64 uint64;
 
+typedef unsigned __int64   ulong64;
+typedef unsigned long      ulong32;
+
 
 extern void trashMemory(SHA1_CTX& context);
-extern void trashMemory(unsigned char* buffer,
-                        long length );
+extern void trashMemory(void* buffer, long length );
 extern void trashMemory( LPTSTR buffer, long length );
+extern void burnStack(unsigned long len); // borrowed from libtomcrypt
+
 extern void GenRandhash(const CMyString &passkey,
                         const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
@@ -160,13 +164,6 @@ inline wchar_t * strFind( const wchar_t *str, const wchar_t *fstr )
 {
 	return wcsstr( str, fstr );
 }
-#endif
-
-#if defined(WITH_LEGACY_CMDLINE)
-//void _encryptFile(CString filepath);
-//void _decryptFile(CString filepath);
-//void convertToLongFilePath(CString& filepath);
-void manageCmdLine(CString m_lpCmdLine);
 #endif
 
 extern long		fileLength( FILE *fp );
