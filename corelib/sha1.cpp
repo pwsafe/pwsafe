@@ -1,7 +1,7 @@
 /// \file sha1.cpp
 //-----------------------------------------------------------------------------
 
-/* SHA-1 in C By Steve Reid <steve@edmweb.com> */
+/* based on SHA-1 in C By Steve Reid <steve@edmweb.com> */
 
 #define LITTLE_ENDIAN
 // #define SHA1HANDSOFF Copies data before messing with it.
@@ -34,7 +34,8 @@
 
 /* Hash a single 512-bit block. This is the core of the algorithm. */
 
-void SHA1Transform(unsigned long state[5], const unsigned char buffer[64])
+static void SHA1Transform(unsigned long state[5],
+                          const unsigned char buffer[64])
 {
 unsigned long a, b, c, d, e;
 typedef union {
@@ -86,72 +87,72 @@ static unsigned char workspace[64];
     a = b = c = d = e = 0;
 }
 
-
-/* SHA1Init - Initialize new context */
-
-void SHA1Init(SHA1_CTX* context)
+SHA1::SHA1()
 {
-    /* SHA1 initialization constants */
-    context->state[0] = 0x67452301;
-    context->state[1] = 0xEFCDAB89;
-    context->state[2] = 0x98BADCFE;
-    context->state[3] = 0x10325476;
-    context->state[4] = 0xC3D2E1F0;
-    context->count[0] = context->count[1] = 0;
+  /* SHA1 initialization constants */
+  state[0] = 0x67452301;
+  state[1] = 0xEFCDAB89;
+  state[2] = 0x98BADCFE;
+  state[3] = 0x10325476;
+  state[4] = 0xC3D2E1F0;
+  count[0] = count[1] = 0;  
 }
-
 
 /* Run your data through this. */
-
-void SHA1Update(SHA1_CTX* context, const unsigned char* data, unsigned int len)
+void SHA1::Update(const unsigned char* data, unsigned int len)
 {
-unsigned int i, j;
+  unsigned int i, j;
 
-    j = (context->count[0] >> 3) & 63;
-    if ((context->count[0] += len << 3) < (len << 3)) context->count[1]++;
-    context->count[1] += (len >> 29);
-    if ((j + len) > 63) {
-        memcpy(&context->buffer[j], data, (i = 64-j));
-        SHA1Transform(context->state, context->buffer);
-        for ( ; i + 63 < len; i += 64) {
-            SHA1Transform(context->state, &data[i]);
-        }
-        j = 0;
+  j = (count[0] >> 3) & 63;
+  if ((count[0] += len << 3) < (len << 3)) count[1]++;
+  count[1] += (len >> 29);
+  if ((j + len) > 63) {
+    memcpy(&buffer[j], data, (i = 64-j));
+    SHA1Transform(state, buffer);
+    for ( ; i + 63 < len; i += 64) {
+      SHA1Transform(state, &data[i]);
     }
-    else i = 0;
-    memcpy(&context->buffer[j], &data[i], len - i);
+    j = 0;
+  }
+  else i = 0;
+  memcpy(&buffer[j], &data[i], len - i);
 }
-
 
 /* Add padding and return the message digest. */
-
-void SHA1Final(unsigned char digest[20], SHA1_CTX* context)
+void SHA1::Final(unsigned char digest[HASHLEN])
 {
-unsigned long i, j;
-unsigned char finalcount[8];
+  unsigned long i, j;
+  unsigned char finalcount[8];
 
-    for (i = 0; i < 8; i++) {
-        finalcount[i] = (unsigned char)((context->count[(i >= 4 ? 0 : 1)]
-         >> ((3-(i & 3)) * 8) ) & 255);  /* Endian independent */
-    }
-    SHA1Update(context, (unsigned char *)"\200", 1);
-    while ((context->count[0] & 504) != 448) {
-        SHA1Update(context, (unsigned char *)"\0", 1);
-    }
-    SHA1Update(context, finalcount, 8);  /* Should cause a SHA1Transform() */
-    for (i = 0; i < 20; i++) {
-        digest[i] = (unsigned char)
-         ((context->state[i>>2] >> ((3-(i & 3)) * 8) ) & 255);
-    }
-    /* Wipe variables */
-    i = j = 0;
-    memset(context->buffer, 0, 64);
-    memset(context->state, 0, 20);
-    memset(context->count, 0, 8);
-    memset(finalcount, 0, 8);
+  for (i = 0; i < 8; i++) {
+    finalcount[i] = (unsigned char)((count[(i >= 4 ? 0 : 1)]
+                                     >> ((3-(i & 3)) * 8) ) & 255);  /* Endian independent */
+  }
+  Update((unsigned char *)"\200", 1);
+  while ((count[0] & 504) != 448) {
+    Update((unsigned char *)"\0", 1);
+  }
+  Update(finalcount, 8);  /* Should cause a SHA1Transform() */
+  for (i = 0; i < 20; i++) {
+    digest[i] = (unsigned char)
+      ((state[i>>2] >> ((3-(i & 3)) * 8) ) & 255);
+  }
+  /* Wipe variables */
+  i = j = 0;
+  memset(buffer, 0, 64);
+  memset(state, 0, 20);
+  memset(count, 0, 8);
+  memset(finalcount, 0, 8);
 #ifdef SHA1HANDSOFF  /* make SHA1Transform overwrite it's own static vars */
-    SHA1Transform(context->state, context->buffer);
+  SHA1Transform(state, buffer);
 #endif
 }
+
+SHA1::~SHA1()
+{
+  // first thought was to clear context here, but better to do this
+  // as early as possible, in Final().
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

@@ -33,14 +33,6 @@ xormem(unsigned char* mem1, unsigned char* mem2, int length)
 //-----------------------------------------------------------------------------
 //Overwrite the memory
 
-void
-trashMemory(SHA1_CTX& context)
-{
-   trashMemory((unsigned char*)context.state, sizeof context.state);
-   trashMemory((unsigned char*)context.count, sizeof context.count);
-   trashMemory((unsigned char*)context.buffer, sizeof context.buffer);
-}
-
 
 void
 trashMemory(void* buffer, long length)
@@ -92,15 +84,12 @@ GenRandhash(const CMyString &a_passkey,
    /*
      tempSalt <- H(a_randstuff + a_passkey)
    */
-   SHA1_CTX keyHash;
-   SHA1Init(&keyHash);
-   SHA1Update(&keyHash, a_randstuff, StuffSize);
-   SHA1Update(&keyHash,
-              (const unsigned char*)pkey,
-              a_passkey.GetLength());
+   SHA1 keyHash;
+   keyHash.Update(a_randstuff, StuffSize);
+   keyHash.Update((const unsigned char*)pkey, a_passkey.GetLength());
 
    unsigned char tempSalt[20]; // HashSize
-   SHA1Final(tempSalt, &keyHash);
+   keyHash.Final(tempSalt);
 
    /*
      tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
@@ -118,9 +107,8 @@ GenRandhash(const CMyString &a_passkey,
      hmm - seems we're not done with this context
      we throw the tempbuf into the hasher, and extract a_randhash
    */
-   SHA1Update(&keyHash, tempbuf, StuffSize);
-   SHA1Final(a_randhash, &keyHash);
-   trashMemory(keyHash);
+   keyHash.Update(tempbuf, StuffSize);
+   keyHash.Final(a_randhash);
 }
 
 
@@ -240,14 +228,12 @@ BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
    VirtualLock(passkey, sizeof(passkey));
 #endif
 
-   SHA1_CTX context;
-   SHA1Init(&context);
-   SHA1Update(&context, pass, passlen);
-   SHA1Update(&context, salt, saltlen);
-   SHA1Final(passkey, &context);
+   SHA1 context;
+   context.Update(pass, passlen);
+   context.Update(salt, saltlen);
+   context.Final(passkey);
    BlowFish *retval = new BlowFish(passkey, sizeof(passkey));
    trashMemory(passkey, sizeof(passkey));
-   trashMemory(context);
 #if !defined(POCKET_PC)
    VirtualUnlock(passkey, sizeof(passkey));
 #endif
