@@ -38,7 +38,6 @@ typedef unsigned __int64   ulong64;
 typedef unsigned long      ulong32;
 
 
-extern void trashMemory(SHA1_CTX& context);
 extern void trashMemory(void* buffer, long length );
 extern void trashMemory( LPTSTR buffer, long length );
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt

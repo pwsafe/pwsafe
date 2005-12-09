@@ -171,7 +171,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
     fwrite( &len, 1, sizeof(len), out);
 #else
     unsigned char randstuff[StuffSize];
-    unsigned char randhash[20];   // HashSize
+    unsigned char randhash[SHA1::HASHLEN];   // HashSize
     GetRandomData( randstuff, 8 );
     // miserable bug - have to fix this way to avoid breaking existing files
     randstuff[8] = randstuff[9] = '\0';
@@ -179,7 +179,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
 		randstuff,
 		randhash);
    fwrite(randstuff, 1,  8, out);
-   fwrite(randhash,  1, 20, out);
+   fwrite(randhash,  1, sizeof(randhash), out);
 #endif // KEEP_FILE_MODE_BWD_COMPAT
 		
     unsigned char thesalt[SaltLength];
@@ -221,22 +221,21 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
     unsigned char salt[SaltLength];
     unsigned char ipthing[8];
     unsigned char randstuff[StuffSize];
-    unsigned char randhash[20];   // HashSize
+    unsigned char randhash[SHA1::HASHLEN];
 
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
       fread(&len, 1, sizeof(len), in); // XXX portability issue
 #else
       fread(randstuff, 1, 8, in);
       randstuff[8] = randstuff[9] = '\0'; // ugly bug workaround
-      fread(randhash, 1, 20, in);
+      fread(randhash, 1, sizeof(randhash), in);
 
-      unsigned char temphash[20]; // HashSize
+      unsigned char temphash[SHA1::HASHLEN];
       GenRandhash(passwd,
 		  randstuff,
 		  temphash);
       if (0 != memcmp((char*)randhash,
-		      (char*)temphash,
-		      20)) // HashSize
+                      (char*)temphash, SHA1::HASHLEN))
 	{
 	  fclose(in);
 	  AfxMessageBox(_T("Incorrect password"));
