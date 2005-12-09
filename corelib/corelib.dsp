@@ -123,6 +123,14 @@ SOURCE=.\sha1.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\sha256.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TwoFish.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Util.cpp
 # End Source File
 # Begin Source File
@@ -172,6 +180,14 @@ SOURCE=.\PWSprefs.h
 # Begin Source File
 
 SOURCE=.\sha1.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\sha256.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\TwoFish.h
 # End Source File
 # Begin Source File
 
