@@ -23,10 +23,13 @@ union aword
 class BlowFish
 {
 public:
-   BlowFish(unsigned char* key, int keylen);
+  static BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
+                                const unsigned char *salt, int saltlen);
+  enum {BLOCKSIZE=8};
+  BlowFish(unsigned char* key, int keylen);
   ~BlowFish();
-   void Encrypt(const block in, block out);
-   void Decrypt(const block in, block out);
+  void Encrypt(const block in, block out);
+  void Decrypt(const block in, block out);
   enum {bf_N = 16};
 private:
   unsigned long bf_S[4][256];

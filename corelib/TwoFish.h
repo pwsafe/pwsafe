@@ -21,12 +21,13 @@ typedef unsigned char block16[8];
 class TwoFish
 {
 public:
-   TwoFish(const unsigned char* key, int keylen);
+  enum {BLOCKSIZE=16};
+  TwoFish(const unsigned char* key, int keylen);
   ~TwoFish();
-   void Encrypt(const block16 in, block16 out);
-   void Decrypt(const block16 in, block16 out);
- private:
-   twofish_key key_schedule;
+  void Encrypt(const block16 in, block16 out);
+  void Decrypt(const block16 in, block16 out);
+private:
+  twofish_key key_schedule;
 };
 #endif /* _TWOFISH_H_ */
 //-----------------------------------------------------------------------------

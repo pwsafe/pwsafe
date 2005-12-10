@@ -312,8 +312,8 @@ BlowFish *
 CItemData::MakeBlowFish() const
 {
   ASSERT(IsSessionKeySet);
-  return ::MakeBlowFish(SessionKey, sizeof(SessionKey),
-			m_salt, SaltLength);
+  return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
+                                m_salt, SaltLength);
 }
 
 CItemData&

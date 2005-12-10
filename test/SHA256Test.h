@@ -38,17 +38,6 @@ class CSHA256Test : public Test
 
       int i;
       unsigned char tmp[32];
-#if 0
-      sha256_state md;
-
-      for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
-        sha256_init(&md);
-        sha256_update(&md, (unsigned char*)tests[i].msg, (unsigned long)strlen(tests[i].msg));
-        sha256_done(&md, tmp);
-        _test(memcmp(tmp, tests[i].hash, 32) == 0);
-      }
-    }
-#endif
       for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
         SHA256 md;
         md.Update( (unsigned char*)tests[i].msg,
