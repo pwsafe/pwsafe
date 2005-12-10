@@ -7,15 +7,19 @@
 
 #include "Util.h" // for typedefs
 
-typedef struct {
-    ulong64 length;
-    ulong32 state[8], curlen;
-    unsigned char buf[64];
-} sha256_state;
-
-void sha256_init(sha256_state * md);
-void sha256_update(sha256_state *md, const unsigned char *in, unsigned long inlen);
-void sha256_done(sha256_state * md, unsigned char *out);
+class SHA256
+{
+public:
+  enum {HASHLEN = 32};
+  SHA256();
+  ~SHA256();
+  void Update(const unsigned char *in, unsigned long inlen);
+  void Final(unsigned char digest[HASHLEN]);
+private:
+  ulong64 length;
+  ulong32 state[8], curlen;
+  unsigned char buf[64];
+};
 
 #endif /* _SHA256_H_ */
 //-----------------------------------------------------------------------------
