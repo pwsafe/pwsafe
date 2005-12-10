@@ -1,10 +1,11 @@
 $Id$
 
-The format described below has two goals:
+The format described below has the following goals:
 1. To fix a minor design flaw in previous versions of the PasswordSafe
 database format.
 2. To replace the underlying cryptographic functions with more advanced
 versions.
+3. To allow detection of a truncated or corrupted/tampered database.
 
 Meeting these goals is impossible without breaking compatibility: The new
 format will NOT be compatible with existing implementations. An
@@ -13,9 +14,16 @@ and exporting to the previous (2.x) format.
 
 A V3 format PasswordSafe will be structured as follows:
 
-SALT|H(P')|B1|B2|IV|HDR|R1|R2|...|Rn
+TAG|SALT|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
 
 Where:
+
+TAG is the sequence of 4 ASCII characters "PWS3". This is to serve as a
+quick way for the application to identify the database as a PasswordSafe
+version 3 file. This tag has no cryptographic value. Changing or
+removing it will cause the database to be unreadable, and adding it to a
+non-database file will only cause the application to attempt to validate
+the passphrase as described below.
 
 SALT is a 256 bit random value, generated at file creation time.
 
@@ -34,18 +42,38 @@ known or guessable information on the plaintext encrypted with the
 passphrase-derived key that  allows an attacker to mount an attack that
 bypasses the key stretching algorithm.)
 
+B3 and B4 are two 128-bit blocks encrypted with Twofish using P' as the
+key, in ECB mode. These blocks contain the 256 bit random key L that is
+used to calculate the HMAC (keyed-hash message authentication code) of
+the encrypted data. See description of EOF field below for more details.
+Implementation Note: K and L must NOT be related.
+
 IV is the 128-bit random Initial Value for CBC mode.
 
-All the following records are encrypted using Twofish in CBC mode, with K
+The following records are encrypted using Twofish in CBC mode, with K
 as the encryption key.
 
-HDR: The database header, containing the version number, non-default user
-preferences, and perhaps other housekeeping information.
+HDR: The database header, containing the major and minor version number,
+a UUID, non-default user preferences, and perhaps other housekeeping
+information.
 
 R1..Rn: The actual password entries, in the format described in the V2
 document, with possible additional fields.
 
+EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is exactly
+one block long), unencrypted. This is an implementation convenience to
+inform the application that the following bytes are to be processed
+differently.
+
+HMAC: The 256-bit keyed-hash MAC, as described in RFC2104. The value is
+calculated over all of the plaintext fields. The key L as stored in B3
+and B4 is used as the hash key value.
+
+
 $Log$
+Revision 1.2  2005/12/10 10:34:08  ronys
+Ammended after comments from dev list.
+
 Revision 1.1  2005/12/04 11:05:08  ronys
 Checked in first draft
 
