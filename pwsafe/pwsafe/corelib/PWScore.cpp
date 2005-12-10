@@ -404,8 +404,10 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
 			      unsigned char *ciphertext) const
 {
   // ciphertext is ((len +7)/8)*8 bytes long
-  BlowFish *Algorithm = MakeBlowFish(m_session_key, sizeof(m_session_key),
-				     m_session_salt, sizeof(m_session_salt));
+  BlowFish *Algorithm = BlowFish::MakeBlowFish(m_session_key,
+                                               sizeof(m_session_key),
+                                               m_session_salt,
+                                               sizeof(m_session_salt));
   int BlockLength = ((len + 7)/8)*8;
   unsigned char curblock[8];
 
@@ -448,21 +450,24 @@ CMyString PWScore::GetPassKey() const
 {
   CMyString retval(_T(""));
   if (m_passkey_len > 0) {
-    unsigned int BlockLength = ((m_passkey_len + 7)/8)*8;
-    BlowFish *Algorithm = MakeBlowFish(m_session_key, sizeof(m_session_key),
-				       m_session_salt, sizeof(m_session_salt));
-    unsigned char curblock[8];
+    const unsigned int BS = BlowFish::BLOCKSIZE;
+    unsigned int BlockLength = ((m_passkey_len + (BS-1))/BS)*BS;
+    BlowFish *Algorithm = BlowFish::MakeBlowFish(m_session_key,
+                                                 sizeof(m_session_key),
+                                                 m_session_salt,
+                                                 sizeof(m_session_salt));
+    unsigned char curblock[BS];
 
-    for (unsigned int x = 0; x < BlockLength; x += 8) {
+    for (unsigned int x = 0; x < BlockLength; x += BS) {
       unsigned int i;
-      for (i = 0; i < 8; i++)
-	curblock[i] = m_passkey[x + i];
+      for (i = 0; i < BS; i++)
+        curblock[i] = m_passkey[x + i];
       Algorithm->Decrypt(curblock, curblock);
-      for (i = 0; i < 8; i++)
-	if (x + i < m_passkey_len)
-	  retval += curblock[i];
+      for (i = 0; i < BS; i++)
+        if (x + i < m_passkey_len)
+          retval += curblock[i];
     }
-    trashMemory(curblock, 8);
+    trashMemory(curblock, sizeof(curblock));
     delete Algorithm;
   }
   return retval;

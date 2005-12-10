@@ -206,41 +206,6 @@ RangeRand(size_t len)
    return(r%len);
 }
 
-
-/*
- * Returns a BlowFish object set up for encryption or decrytion.
- *
- * The main issue here is that the BlowFish key is SHA1(passphrase|salt)
- * Aside from saving duplicate code, we win here by minimizing the exposure
- * of the actual key.
- * The lose is that the BlowFish object is now dynamically allocated.
- * This could be fixed by having a ctor of BlowFish that works without a key,
- * which would be set by another member function, but I doubt that it's worth the bother.
- *
- * Note that it's the caller's responsibility to delete the BlowFish object allocated here
- */
-
-BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
-		       const unsigned char *salt, int saltlen)
-{
-   unsigned char passkey[20]; // SHA1 digest is 20 bytes - why isn't there a constant for this?
-#if !defined(POCKET_PC)
-   VirtualLock(passkey, sizeof(passkey));
-#endif
-
-   SHA1 context;
-   context.Update(pass, passlen);
-   context.Update(salt, saltlen);
-   context.Final(passkey);
-   BlowFish *retval = new BlowFish(passkey, sizeof(passkey));
-   trashMemory(passkey, sizeof(passkey));
-#if !defined(POCKET_PC)
-   VirtualUnlock(passkey, sizeof(passkey));
-#endif
-   
-   return retval;
-}
-
 int
 _writecbc(FILE *fp,
           const unsigned char* buffer,
@@ -249,53 +214,54 @@ _writecbc(FILE *fp,
           const unsigned char* salt, int saltlen,
           unsigned char* cbcbuffer)
 {
-   int numWritten = 0;
+  const unsigned int BS = BlowFish::BLOCKSIZE;
+  int numWritten = 0;
 
-   int BlockLength = ((length+7)/8)*8;
-   if (BlockLength == 0)
-      BlockLength = 8;
+  int BlockLength = ((length+(BS-1))/BS)*BS;
+  if (BlockLength == 0)
+    BlockLength = BS;
 
-   BlowFish *Algorithm = MakeBlowFish(pass, passlen, salt, saltlen);
+  BlowFish *Algorithm = BlowFish::MakeBlowFish(pass, passlen, salt, saltlen);
 
-   // First encrypt and write the length of the buffer
-   unsigned char lengthblock[8];
-   // Fill unused bytes of length with random data, to make
-   // a dictionary attack harder
-   GetRandomData(lengthblock, sizeof(lengthblock));
-   // block length overwrites 4 bytes of the above randomness.
-   putInt32( lengthblock, length );
+  // First encrypt and write the length of the buffer
+  unsigned char lengthblock[BS];
+  // Fill unused bytes of length with random data, to make
+  // a dictionary attack harder
+  GetRandomData(lengthblock, sizeof(lengthblock));
+  // block length overwrites 4 bytes of the above randomness.
+  putInt32( lengthblock, length );
 
-   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
-   lengthblock[sizeof(length)] = type;
+  // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
+  lengthblock[sizeof(length)] = type;
 
-   xormem(lengthblock, cbcbuffer, 8); // do the CBC thing
-   Algorithm->Encrypt(lengthblock, lengthblock);
-   memcpy(cbcbuffer, lengthblock, 8); // update CBC for next round
+  xormem(lengthblock, cbcbuffer, BS); // do the CBC thing
+  Algorithm->Encrypt(lengthblock, lengthblock);
+  memcpy(cbcbuffer, lengthblock, BS); // update CBC for next round
 
-   numWritten = fwrite(lengthblock, 1, 8, fp);
+  numWritten = fwrite(lengthblock, 1, BS, fp);
 
-   trashMemory(lengthblock, 8);
+  trashMemory(lengthblock, BS);
 
-   // Now, encrypt and write the buffer
-   unsigned char curblock[8];
-   for (int x=0;x<BlockLength;x+=8)
-   {
-      if ((length == 0) || ((length%8 != 0) && (length-x<8)))
-      {
-         //This is for an uneven last block
-         memset(curblock, 0, 8);
-         memcpy(curblock, buffer+x, length % 8);
-      }
+  // Now, encrypt and write the buffer
+  unsigned char curblock[BS];
+  for (int x=0;x<BlockLength;x+=BS)
+    {
+      if ((length == 0) || ((length%BS != 0) && (length-x<BS)))
+        {
+          //This is for an uneven last block
+          memset(curblock, 0, BS);
+          memcpy(curblock, buffer+x, length % BS);
+        }
       else
-         memcpy(curblock, buffer+x, 8);
-      xormem(curblock, cbcbuffer, 8);
+        memcpy(curblock, buffer+x, BS);
+      xormem(curblock, cbcbuffer, BS);
       Algorithm->Encrypt(curblock, curblock);
-      memcpy(cbcbuffer, curblock, 8);
-      numWritten += fwrite(curblock, 1, 8, fp);
-   }
-   trashMemory(curblock, 8);
-   delete Algorithm;
-   return numWritten;
+      memcpy(cbcbuffer, curblock, BS);
+      numWritten += fwrite(curblock, 1, BS, fp);
+    }
+  trashMemory(curblock, BS);
+  delete Algorithm;
+  return numWritten;
 }
 
 /*
@@ -317,73 +283,73 @@ _writecbc(FILE *fp,
 int
 _readcbc(FILE *fp,
          unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
-	 const unsigned char *pass, int passlen,
+         const unsigned char *pass, int passlen,
          const unsigned char* salt, int saltlen,
          unsigned char* cbcbuffer)
 {
-   int numRead = 0;
+  const unsigned int BS = BlowFish::BLOCKSIZE;
+  int numRead = 0;
 
-   unsigned char lengthblock[8];
-   unsigned char lcpy[8];
+  unsigned char lengthblock[BS];
+  unsigned char lcpy[BS];
 
-   buffer_len = 0;
-   numRead = fread(lengthblock, 1, sizeof lengthblock, fp);
-   if (numRead != 8)
-      return 0;
-   memcpy(lcpy, lengthblock, 8);
+  buffer_len = 0;
+  numRead = fread(lengthblock, 1, sizeof lengthblock, fp);
+  if (numRead != BS)
+    return 0;
+  memcpy(lcpy, lengthblock, BS);
 
-   BlowFish *Algorithm = MakeBlowFish(pass, passlen, salt, saltlen);
+  BlowFish *Algorithm = BlowFish::MakeBlowFish(pass, passlen, salt, saltlen);
 
-   Algorithm->Decrypt(lengthblock, lengthblock);
-   xormem(lengthblock, cbcbuffer, 8);
-   memcpy(cbcbuffer, lcpy, 8);
+  Algorithm->Decrypt(lengthblock, lengthblock);
+  xormem(lengthblock, cbcbuffer, BS);
+  memcpy(cbcbuffer, lcpy, BS);
 
-   int length = getInt32( lengthblock );
+  int length = getInt32( lengthblock );
 
-   // new for 2.0 -- lengthblock[4..7] previously set to zero
-   type = lengthblock[sizeof(int)]; // type is first byte after the length
+  // new for 2.0 -- lengthblock[4..7] previously set to zero
+  type = lengthblock[sizeof(int)]; // type is first byte after the length
 
-   trashMemory(lengthblock, 8);
-   trashMemory(lcpy, 8);
-
-
-   if (length < 0) {
-     delete Algorithm;
-     buffer = NULL;
-     buffer_len = 0;
-     return 0;
-   }
-
-   int BlockLength = ((length+7)/8)*8;
-   // Following is meant for lengths < 8,
-   // but results in a block being read even
-   // if length is zero. This is wasteful,
-   // but fixing it would break all existing databases.
-   if (BlockLength == 0)
-      BlockLength = 8;
-
-   buffer_len = length;
-   buffer = new unsigned char[BlockLength]; // so we lie a little...
+  trashMemory(lengthblock, BS);
+  trashMemory(lcpy, BS);
 
 
-   unsigned char tempcbc[8];
-   numRead += fread(buffer, 1, BlockLength, fp);
-   for (int x=0;x<BlockLength;x+=8)
-   {
-      memcpy(tempcbc, buffer+x, 8);
+  if (length < 0) {
+    delete Algorithm;
+    buffer = NULL;
+    buffer_len = 0;
+    return 0;
+  }
+
+  int BlockLength = ((length+(BS-1))/BS)*BS;
+  // Following is meant for lengths < BS,
+  // but results in a block being read even
+  // if length is zero. This is wasteful,
+  // but fixing it would break all existing databases.
+  if (BlockLength == 0)
+    BlockLength = BS;
+
+  buffer_len = length;
+  buffer = new unsigned char[BlockLength]; // so we lie a little...
+
+
+  unsigned char tempcbc[BS];
+  numRead += fread(buffer, 1, BlockLength, fp);
+  for (int x=0;x<BlockLength;x+=BS)
+    {
+      memcpy(tempcbc, buffer+x, BS);
       Algorithm->Decrypt(buffer+x, buffer+x);
-      xormem(buffer+x, cbcbuffer, 8);
-      memcpy(cbcbuffer, tempcbc, 8);
-   }
+      xormem(buffer+x, cbcbuffer, BS);
+      memcpy(cbcbuffer, tempcbc, BS);
+    }
 	
-   trashMemory(tempcbc, 8);
-   delete Algorithm;
-   if (length == 0) {
-     // delete[] buffer here since caller will see zero length
-     delete[] buffer;
-   }
-
-   return numRead;
+  trashMemory(tempcbc, BS);
+  delete Algorithm;
+  if (length == 0) {
+    // delete[] buffer here since caller will see zero length
+    delete[] buffer;
+  }
+  return numRead;
 }
 
 /**

@@ -137,7 +137,7 @@ protected:
    BOOL SelItemOk();
    void ClearClipboard();
   bool m_clipboard_set; // To verify that we're erasing *our* data
-   unsigned char m_clipboard_digest[20]; // To verify that we're erasing *our* data
+  unsigned char m_clipboard_digest[SHA1::HASHLEN]; // ditto
    void setupBars();
    BOOL OpenOnInit();
    // override following to reset idle timeout on any event

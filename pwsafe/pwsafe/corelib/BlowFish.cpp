@@ -2,6 +2,8 @@
 //-----------------------------------------------------------------------------
 
 #include "BlowFish.h"
+#include "sha1.h"
+#include "PwsPlatform.h"
 
 #include "Util.h" // for trashMemory
 
@@ -434,5 +436,40 @@ BlowFish::Decrypt(const block in, block out)
    Blowfish_decipher((unsigned long*)out,
                      (unsigned long*)(out+sizeof(unsigned long)));
 }
+
+/*
+ * Returns a BlowFish object set up for encryption or decrytion.
+ *
+ * The main issue here is that the BlowFish key is SHA1(passphrase|salt)
+ * Aside from saving duplicate code, we win here by minimizing the exposure
+ * of the actual key.
+ * The lose is that the BlowFish object is now dynamically allocated.
+ * This could be fixed by having a ctor of BlowFish that works without a key,
+ * which would be set by another member function, but I doubt that it's worth the bother.
+ *
+ * Note that it's the caller's responsibility to delete the BlowFish object allocated here
+ */
+
+BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, int passlen,
+                                 const unsigned char *salt, int saltlen)
+{
+   unsigned char passkey[SHA1::HASHLEN];
+#if !defined(POCKET_PC)
+   VirtualLock(passkey, sizeof(passkey));
+#endif
+
+   SHA1 context;
+   context.Update(pass, passlen);
+   context.Update(salt, saltlen);
+   context.Final(passkey);
+   BlowFish *retval = new BlowFish(passkey, sizeof(passkey));
+   trashMemory(passkey, sizeof(passkey));
+#if !defined(POCKET_PC)
+   VirtualUnlock(passkey, sizeof(passkey));
+#endif
+   return retval;
+}
+
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

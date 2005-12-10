@@ -52,10 +52,6 @@ void GetRandomData( void * const buffer, unsigned long length );
 //  generate a random number between 0 and len
 unsigned int RangeRand(size_t len);
 
-class BlowFish;
-extern BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
-			      const unsigned char *salt, int saltlen);
-
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern int _readcbc(FILE *fp, unsigned char* &buffer, unsigned int &buffer_len,
 		    unsigned char &type,
