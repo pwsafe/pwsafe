@@ -1,10 +1,10 @@
 $Id$
 
-Password Safe 2.14 Release Note - November 2005
+Password Safe 2.15 Release Note - December 2005
 ===============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.14. For a short description of Password
+with Password Safe version 2.15. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
@@ -12,6 +12,14 @@ releases may be found in the file ChangeLog.txt.
 
 This is a maintenance release, adding a new feature and fixing a few minor
 bugs, as described below.
+
+Bugs fixed in 2.15:
+===================
+
+New features for 2.15:
+======================
+[] Double-clicking on an item can now browse to the URL in the item -
+thanks to Laszlo Gombos.
 
 Bugs fixed in 2.14:
 ===================
@@ -116,6 +124,9 @@ front, if obscured by other applications.
 
 
 $Log$
+Revision 1.27  2005/12/12 19:07:56  ronys
+checkpoint
+
 Revision 1.26  2005/12/02 06:32:30  ronys
 Added dbl-click to bowse option, thanks to Laszlo Gombos
 
