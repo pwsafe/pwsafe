@@ -727,6 +727,9 @@ DboxMain::SelItemOk()
 BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 {
   BOOL retval;
+  if (m_ctlItemList.GetItemCount() == 0)
+    return false;
+
   if (m_ctlItemList.IsWindowVisible()) {
     retval = m_ctlItemList.SetItemState(i,
 					LVIS_FOCUSED | LVIS_SELECTED,
