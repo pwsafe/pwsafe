@@ -238,7 +238,7 @@ CPasskeyEntry::OnOK()
       else
       {
          m_tries++;
-         AfxMessageBox(_T("Incorrect passkey"));
+         AfxMessageBox(_T("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (backup database has same name as original, ending with '~')"));
          m_ctlPasskey.SetSel(MAKEWORD(-1, 0));
          m_ctlPasskey.SetFocus();
       }
