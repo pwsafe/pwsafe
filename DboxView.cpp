@@ -595,8 +595,6 @@ DboxMain::OnOK()
   //Store current filename for next time...
   prefs->SetPref(PWSprefs::StringPrefs::CurrentFile, m_core.GetCurFile());
 
-  prefs->SetPref(PWSprefs::StringPrefs::CurrentBackup, m_currbackup);
-
   CDialog::OnOK();
 }
 
