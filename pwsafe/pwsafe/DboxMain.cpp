@@ -283,11 +283,7 @@ DboxMain::OnInitDialog()
   m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::AlwaysOnTop);
   UpdateAlwaysOnTop();
 
-  // ditto for CurrentBackup...
-   m_currbackup =
-     PWSprefs::GetInstance()->GetPref(PWSprefs::StringPrefs::CurrentBackup);
-
-   // ... and for UseSystemTray
+   // ... same for UseSystemTray
    if (!PWSprefs::GetInstance()->
        GetPref(PWSprefs::BoolPrefs::UseSystemTray))
      app.m_TrayIcon.HideIcon();
@@ -1124,15 +1120,19 @@ DboxMain::OnBackupSafe()
 int
 DboxMain::BackupSafe()
 {
-   int rc;
-   CMyString tempname;
+  int rc;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  CMyString tempname;
+  CMyString currbackup =
+    prefs->GetPref(PWSprefs::StringPrefs::CurrentBackup);
 
-   //SaveAs-type dialog box
-   while (1)
-   {
+
+  //SaveAs-type dialog box
+  while (1)
+    {
       CFileDialog fd(FALSE,
                      _T("bak"),
-                     m_currbackup,
+                     currbackup,
                      OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                      | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                      _T("Password Safe Backups (*.bak)|*.bak||"),
@@ -1140,26 +1140,23 @@ DboxMain::BackupSafe()
       fd.m_ofn.lpstrTitle = _T("Please Choose a Name for this Backup:");
 
       rc = fd.DoModal();
-      if (rc == IDOK)
-      {
-         tempname = (CMyString)fd.GetPathName();
-         break;
-      }
-      else
-         return PWScore::USER_CANCEL;
-   }
+      if (rc == IDOK) {
+        tempname = (CMyString)fd.GetPathName();
+        break;
+      } else
+        return PWScore::USER_CANCEL;
+    }
 
 
-   rc = m_core.WriteFile(tempname);
-   if (rc == PWScore::CANT_OPEN_FILE)
-   {
+  rc = m_core.WriteFile(tempname);
+  if (rc == PWScore::CANT_OPEN_FILE) {
       CMyString temp = tempname + _T("\n\nCould not open file for writing!");
       MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return PWScore::CANT_OPEN_FILE;
-   }
+    }
 
-   m_currbackup = tempname;
-   return PWScore::SUCCESS;
+  prefs->SetPref(PWSprefs::StringPrefs::CurrentBackup, tempname);
+  return PWScore::SUCCESS;
 }
 
 
@@ -1592,95 +1589,92 @@ DboxMain::OnRestore()
 int
 DboxMain::Restore() 
 {
-   int rc;
-   CMyString newback, passkey, temp;
+  int rc;
+  CMyString newback, passkey, temp;
+  CMyString currbackup =
+    PWSprefs::GetInstance()->GetPref(PWSprefs::StringPrefs::CurrentBackup);
 
-   //Open-type dialog box
-   while (1)
-   {
-      CFileDialog fd(TRUE,
-                     _T("bak"),
-                     m_currbackup,
-                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                     _T("Password Safe Backups (*.bak)|*.bak||"),
-                     this);
-      fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to Restore:");
-      rc = fd.DoModal();
-      if (rc == IDOK)
-      {
-         newback = (CMyString)fd.GetPathName();
-         break;
-      }
-      else
-         return PWScore::USER_CANCEL;
-   }
+  //Open-type dialog box
+  while (1) {
+    CFileDialog fd(TRUE,
+                   _T("bak"),
+                   currbackup,
+                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                   _T("Password Safe Backups (*.bak)|*.bak||"),
+                   this);
+    fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to Restore:");
+    rc = fd.DoModal();
+    if (rc == IDOK) {
+      newback = (CMyString)fd.GetPathName();
+      break;
+    } else
+      return PWScore::USER_CANCEL;
+  }
 
-   rc = GetAndCheckPassword(newback, passkey);
-   switch (rc)
-   {
-   case PWScore::SUCCESS:
+  rc = GetAndCheckPassword(newback, passkey);
+  switch (rc)
+    {
+    case PWScore::SUCCESS:
       break; // Keep going... 
-   case PWScore::CANT_OPEN_FILE:
+    case PWScore::CANT_OPEN_FILE:
       temp =
-	m_core.GetCurFile()
-	+ _T("\n\nCan't open file. Please choose another.");
+        m_core.GetCurFile()
+        + _T("\n\nCan't open file. Please choose another.");
       MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-   case TAR_OPEN:
+    case TAR_OPEN:
       return Open();
-   case TAR_NEW:
+    case TAR_NEW:
       return New();
-   case PWScore::WRONG_PASSWORD:
+    case PWScore::WRONG_PASSWORD:
       /*
         If the user just cancelled out of the password dialog, 
         assume they want to return to where they were before... 
       */
       return PWScore::USER_CANCEL;
-   }
+    }
 
-   if (m_core.IsChanged())
-   {
-      int rc2;
+  if (m_core.IsChanged()) {
+    int rc2;
 	
-      temp = _T("Do you want to save changes to the password list: ")
-         + m_core.GetCurFile() + _T("?");
+    temp = _T("Do you want to save changes to the password list: ")
+      + m_core.GetCurFile() + _T("?");
 
-      rc = MessageBox(temp,
-                      AfxGetAppName(),
-                      MB_ICONQUESTION|MB_YESNOCANCEL);
-      switch (rc)
+    rc = MessageBox(temp,
+                    AfxGetAppName(),
+                    MB_ICONQUESTION|MB_YESNOCANCEL);
+    switch (rc)
       {
       case IDCANCEL:
-         return PWScore::USER_CANCEL;
+        return PWScore::USER_CANCEL;
       case IDYES:
-         rc2 = Save();
-         //Make sure that writting the file was successful
-         if (rc2 == PWScore::SUCCESS)
-            break;
-         else
-            return PWScore::CANT_OPEN_FILE;
+        rc2 = Save();
+        //Make sure that writting the file was successful
+        if (rc2 == PWScore::SUCCESS)
+          break;
+        else
+          return PWScore::CANT_OPEN_FILE;
       case IDNO:
-         break;
+        break;
       }
-   }
+  }
 
-   rc = m_core.ReadFile(newback, passkey);
-   if (rc == PWScore::CANT_OPEN_FILE)
-   {
-      temp = newback + _T("\n\nCould not open file for reading!");
-      MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
-      //Everything stays as is... Worst case, they saved their file....
-      return PWScore::CANT_OPEN_FILE;
-   }
+  rc = m_core.ReadFile(newback, passkey);
+  if (rc == PWScore::CANT_OPEN_FILE) {
+    temp = newback + _T("\n\nCould not open file for reading!");
+    MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+    //Everything stays as is... Worst case, they saved their file....
+    return PWScore::CANT_OPEN_FILE;
+  }
 	
-   m_core.SetCurFile(""); //Force a save as...
-   m_core.SetChanged(true); //So that the *.pws/*.dat version of the file will be saved.
+  m_core.SetCurFile(""); //Force a save as...
+  m_core.SetChanged(true); //So that the *.pws/*.dat version of the file will be saved.
 #if !defined(POCKET_PC)
-   m_title = _T("Password Safe - <Untitled Restored Backup>");
+  m_title = _T("Password Safe - <Untitled Restored Backup>");
 #endif
-   ChangeOkUpdate();
-   RefreshList();
+  ChangeOkUpdate();
+  RefreshList();
 
-   return PWScore::SUCCESS;
+  return PWScore::SUCCESS;
 }
 
 

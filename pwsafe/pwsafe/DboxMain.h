@@ -102,7 +102,6 @@ protected:
    unsigned int uGlobalMemSize;
    HGLOBAL hGlobalMemory;
 
-   CMyString m_currbackup;
 #if !defined(POCKET_PC)
    CMyString m_title; // what's displayed in the title bar
 #endif
