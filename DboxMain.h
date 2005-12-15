@@ -271,6 +271,7 @@ private:
   void ToClipboard(const CMyString &data);
   void ExtractFont(CString& str);
   CString GetToken(CString& str, LPCTSTR c);
+  int SaveIfChanged();
 };
 
 // Following used to keep track of display vs data
