@@ -1211,104 +1211,79 @@ DboxMain::Open()
 int
 DboxMain::Open( const CMyString &pszFilename )
 {
-	int rc;
-	CMyString passkey, temp;
+  int rc;
+  CMyString passkey, temp;
 
-	//Check that this file isn't already open
-	if (pszFilename == m_core.GetCurFile() && !m_needsreading)
+  //Check that this file isn't already open
+  if (pszFilename == m_core.GetCurFile() && !m_needsreading)
 	{
-		//It is the same damn file
-		MessageBox(_T("That file is already open."),
-			_T("Oops!"),
-			MB_OK|MB_ICONWARNING);
-		return PWScore::ALREADY_OPEN;
-	}
+      //It is the same damn file
+      MessageBox(_T("That file is already open."),
+                 _T("Oops!"),
+                 MB_OK|MB_ICONWARNING);
+      return PWScore::ALREADY_OPEN;
+	}	
 	
-	if (m_core.IsChanged())
-	{
-		int rc2;
-		
-		temp =
-		  _T("Do you want to save changes to the password database: ")
-		  + m_core.GetCurFile()
-			+ _T("?");
-		rc = MessageBox(temp,
-			AfxGetAppName(),
-			MB_ICONQUESTION|MB_YESNOCANCEL);
-		switch (rc)
-		{
-		case IDCANCEL:
-			return PWScore::USER_CANCEL;
-		case IDYES:
-			rc2 = Save();
-			// Make sure that file was successfully written
-			if (rc2 == PWScore::SUCCESS)
-				break;
-			else
-				return PWScore::CANT_OPEN_FILE;
-		case IDNO:
-			break;
-		}
-	}
-	
+  rc = SaveIfChanged();
+  if (rc != PWScore::SUCCESS)
+    return rc;
+
   // if we were using a different file, unlock it
   // do this before GetAndCheckPassword() as that
   // routine gets a lock on the new file
-  if( !m_core.GetCurFile().IsEmpty() )
-  {
+  if( !m_core.GetCurFile().IsEmpty() ) {
     m_core.UnlockFile(m_core.GetCurFile());
   }
 
   // clear the data before loading the new file
   ClearData();
 
-	rc = GetAndCheckPassword(pszFilename, passkey);
-	switch (rc)
-	{
-	case PWScore::SUCCESS:
-		app.GetMRU()->Add(pszFilename);
-		break; // Keep going... 
-	case PWScore::CANT_OPEN_FILE:
-		temp = m_core.GetCurFile()
-		  + _T("\n\nCan't open file. Please choose another.");
-		MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-	case TAR_OPEN:
-		return Open();
-	case TAR_NEW:
-		return New();
-	case PWScore::WRONG_PASSWORD:
-	case PWScore::USER_CANCEL:
-	/*
-	If the user just cancelled out of the password dialog, 
-	assume they want to return to where they were before... 
-		*/
-		return PWScore::USER_CANCEL;
-	default:
-	  ASSERT(0); // we should take care of all cases explicitly
-	  return PWScore::USER_CANCEL; // conservative behaviour for release version
-	}
+  rc = GetAndCheckPassword(pszFilename, passkey);
+  switch (rc) {
+  case PWScore::SUCCESS:
+    app.GetMRU()->Add(pszFilename);
+    break; // Keep going... 
+  case PWScore::CANT_OPEN_FILE:
+    temp = m_core.GetCurFile()
+      + _T("\n\nCan't open file. Please choose another.");
+    MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+  case TAR_OPEN:
+    return Open();
+  case TAR_NEW:
+    return New();
+  case PWScore::WRONG_PASSWORD:
+  case PWScore::USER_CANCEL:
+    /*
+      If the user just cancelled out of the password dialog, 
+      assume they want to return to where they were before... 
+    */
+    return PWScore::USER_CANCEL;
+  default:
+    ASSERT(0); // we should take care of all cases explicitly
+    return PWScore::USER_CANCEL; // conservative behaviour for release version
+  }
 	
-	rc = m_core.ReadFile(pszFilename, passkey);
-	if (rc == PWScore::CANT_OPEN_FILE)
+  rc = m_core.ReadFile(pszFilename, passkey);
+  if (rc == PWScore::CANT_OPEN_FILE)
 	{
-		temp = pszFilename;
-		temp += _T("\n\nCould not open file for reading!");
-		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
-		/*
+      temp = pszFilename;
+      temp += _T("\n\nCould not open file for reading!");
+      MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+      /*
 		Everything stays as is... Worst case,
 		they saved their file....
-		*/
-		return PWScore::CANT_OPEN_FILE;
+      */
+      return PWScore::CANT_OPEN_FILE;
 	}
 	
-	m_core.SetCurFile(pszFilename);
+  m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
-	m_title = _T("Password Safe - ") + m_core.GetCurFile();
+  m_title = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
-	ChangeOkUpdate();
-	RefreshList();
+  ChangeOkUpdate();
+  RefreshList();
 	
-	return PWScore::SUCCESS;
+  return PWScore::SUCCESS;
 }
 
 int
@@ -1349,153 +1324,148 @@ DboxMain::Merge()
 
 int
 DboxMain::Merge(const CMyString &pszFilename) {
-   /* open file they want to merge */
-	int rc = PWScore::SUCCESS;
-	CMyString passkey, temp;
+  /* open file they want to merge */
+  int rc = PWScore::SUCCESS;
+  CMyString passkey, temp;
 
-	//Check that this file isn't already open
-	if (pszFilename == m_core.GetCurFile())
+  //Check that this file isn't already open
+  if (pszFilename == m_core.GetCurFile())
 	{
-		//It is the same damn file
-		MessageBox(_T("That file is already open."),
-			_T("Oops!"),
-			MB_OK|MB_ICONWARNING);
-		return PWScore::ALREADY_OPEN;
+      //It is the same damn file
+      MessageBox(_T("That file is already open."),
+                 _T("Oops!"),
+                 MB_OK|MB_ICONWARNING);
+      return PWScore::ALREADY_OPEN;
 	}
 	
-	rc = GetAndCheckPassword(pszFilename, passkey);
-	switch (rc)
+  rc = GetAndCheckPassword(pszFilename, passkey);
+  switch (rc)
 	{
 	case PWScore::SUCCESS:
-		app.GetMRU()->Add(pszFilename);
-		break; // Keep going... 
+      app.GetMRU()->Add(pszFilename);
+      break; // Keep going... 
 	case PWScore::CANT_OPEN_FILE:
-		temp = m_core.GetCurFile()
-		  + _T("\n\nCan't open file. Please choose another.");
-		MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+      temp = m_core.GetCurFile()
+        + _T("\n\nCan't open file. Please choose another.");
+      MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
 	case TAR_OPEN:
-		return Open();
+      return Open();
 	case TAR_NEW:
-		return New();
+      return New();
 	case PWScore::WRONG_PASSWORD:
 	case PWScore::USER_CANCEL:
-	/*
-	If the user just cancelled out of the password dialog, 
-	assume they want to return to where they were before... 
-		*/
-		return PWScore::USER_CANCEL;
+      /*
+        If the user just cancelled out of the password dialog, 
+        assume they want to return to where they were before... 
+      */
+      return PWScore::USER_CANCEL;
 	}
 	
-	PWScore otherCore;
-	otherCore.ReadFile(pszFilename, passkey);
+  PWScore otherCore;
+  otherCore.ReadFile(pszFilename, passkey);
 	
-	if (rc == PWScore::CANT_OPEN_FILE)
+  if (rc == PWScore::CANT_OPEN_FILE)
 	{
-		temp = pszFilename;
-		temp += _T("\n\nCould not open file for reading!");
-		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
-		/*
+      temp = pszFilename;
+      temp += _T("\n\nCould not open file for reading!");
+      MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+      /*
 		Everything stays as is... Worst case,
 		they saved their file....
-		*/
-		return PWScore::CANT_OPEN_FILE;
+      */
+      return PWScore::CANT_OPEN_FILE;
 	}
    
-	otherCore.SetCurFile(pszFilename);
+  otherCore.SetCurFile(pszFilename);
 
-	/* Put up hourglass...this might take a while */
-	CWaitCursor waitCursor;
+  /* Put up hourglass...this might take a while */
+  CWaitCursor waitCursor;
 
-	/*
-	  Purpose:
-	  Merge entries from otherCore to m_core
+  /*
+    Purpose:
+    Merge entries from otherCore to m_core
 	  
-	  Algorithm:
-	  Foreach entry in otherCore
-	     Find in m_core
-		  if find a match
-		     if pw, notes, & group also matches
-   			    no merge
-			 else
-			    add to m_core with new title suffixed with -merged-HHMMSS-DDMMYY
-		  else
-		     add to m_core directly
-	*/
-	int numAdded = 0;
-	int numConflicts = 0;
+    Algorithm:
+    Foreach entry in otherCore
+    Find in m_core
+    if find a match
+    if pw, notes, & group also matches
+    no merge
+    else
+    add to m_core with new title suffixed with -merged-HHMMSS-DDMMYY
+    else
+    add to m_core directly
+  */
+  int numAdded = 0;
+  int numConflicts = 0;
 
-	POSITION otherPos = otherCore.GetFirstEntryPosition();
-	while (otherPos)
-	{
-		CItemData otherItem = otherCore.GetEntryAt(otherPos);
-		CMyString otherGroup = otherItem.GetGroup();
-		CMyString otherTitle = otherItem.GetTitle();
-		CMyString otherUser = otherItem.GetUser();
+  POSITION otherPos = otherCore.GetFirstEntryPosition();
+  while (otherPos) {
+    CItemData otherItem = otherCore.GetEntryAt(otherPos);
+    CMyString otherGroup = otherItem.GetGroup();
+    CMyString otherTitle = otherItem.GetTitle();
+    CMyString otherUser = otherItem.GetUser();
 		
-		POSITION foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
-		if (foundPos)
-		{
-			/* found a match, see if the pw & notes also match */
-			CItemData curItem = m_core.GetEntryAt(foundPos);
-			if (otherItem.GetPassword() != curItem.GetPassword() ||
-				 otherItem.GetNotes() != curItem.GetNotes())
-			{
-				/* have a match on title/user, but not on pw/notes 
-					add an entry suffixed with -merged-HHMMSS-DDMMYY */
-				CTime curTime = CTime::GetCurrentTime();
-				CMyString newTitle = otherItem.GetTitle();
-				newTitle += _T("-merged-");
-				CMyString timeStr = curTime.Format("%H%M%S-%m%d%y");
-				newTitle = newTitle + timeStr;
+    POSITION foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
+    if (foundPos) {
+      /* found a match, see if the pw & notes also match */
+      CItemData curItem = m_core.GetEntryAt(foundPos);
+      if (otherItem.GetPassword() != curItem.GetPassword() ||
+          otherItem.GetNotes() != curItem.GetNotes()) {
+        /* have a match on title/user, but not on pw/notes 
+           add an entry suffixed with -merged-HHMMSS-DDMMYY */
+        CTime curTime = CTime::GetCurrentTime();
+        CMyString newTitle = otherItem.GetTitle();
+        newTitle += _T("-merged-");
+        CMyString timeStr = curTime.Format("%H%M%S-%m%d%y");
+        newTitle = newTitle + timeStr;
 
-				/* note it as an issue for the user */
-				CMyString warnMsg;
-				warnMsg = _T("Conflicting entries for ") +
-				  otherItem.GetGroup() + _T(",") + 
-				  otherItem.GetTitle() + _T(",") +
-				  otherItem.GetUser() + _T("\n");
-				warnMsg += _T("Adding new entry as ") +
-				  newTitle + _T(",") + 
-				  otherItem.GetUser() + _T("\n");
+        /* note it as an issue for the user */
+        CMyString warnMsg;
+        warnMsg = _T("Conflicting entries for ") +
+          otherItem.GetGroup() + _T(",") + 
+          otherItem.GetTitle() + _T(",") +
+          otherItem.GetUser() + _T("\n");
+        warnMsg += _T("Adding new entry as ") +
+          newTitle + _T(",") + 
+          otherItem.GetUser() + _T("\n");
 
-				/* tell the user the bad news */
-				MessageBox(warnMsg,
-						   _T("Merge conflict"),
-						   MB_OK|MB_ICONWARNING);				
+        /* tell the user the bad news */
+        MessageBox(warnMsg,
+                   _T("Merge conflict"),
+                   MB_OK|MB_ICONWARNING);				
 
-				/* do it */
-				otherItem.SetTitle(newTitle);
-				m_core.AddEntryToTail(otherItem);
+        /* do it */
+        otherItem.SetTitle(newTitle);
+        m_core.AddEntryToTail(otherItem);
 
-				numConflicts++;
-			}
-		}
-		else
-		{
-			/* didn't find any match...add it directly */
-			m_core.AddEntryToTail(otherItem);
-			numAdded++;
-		}
+        numConflicts++;
+      }
+    } else {
+      /* didn't find any match...add it directly */
+      m_core.AddEntryToTail(otherItem);
+      numAdded++;
+    }
 
-		otherCore.GetNextEntry(otherPos);
-	}
+    otherCore.GetNextEntry(otherPos);
+  }
 
-	waitCursor.Restore(); /* restore normal cursor */
+  waitCursor.Restore(); /* restore normal cursor */
 
-	/* tell the user we're done & provide short merge report */
-	int totalAdded = numAdded+numConflicts;
-	CString resultStr;
-	resultStr.Format(_T("Merge complete:\n%d entr%s added (%d conflict%s)"),
-			 totalAdded,
-			 totalAdded == 1 ? _T("y") : _T("ies"),
-			 numConflicts,
-			 numConflicts == 1 ? _T("") : _T("s"));
-	MessageBox(resultStr, _T("Merge Complete"), MB_OK);
+  /* tell the user we're done & provide short merge report */
+  int totalAdded = numAdded+numConflicts;
+  CString resultStr;
+  resultStr.Format(_T("Merge complete:\n%d entr%s added (%d conflict%s)"),
+                   totalAdded,
+                   totalAdded == 1 ? _T("y") : _T("ies"),
+                   numConflicts,
+                   numConflicts == 1 ? _T("") : _T("s"));
+  MessageBox(resultStr, _T("Merge Complete"), MB_OK);
 
-	ChangeOkUpdate();
-	RefreshList();
+  ChangeOkUpdate();
+  RefreshList();
    
-   return rc;
+  return rc;
 }
 
 
@@ -1511,9 +1481,6 @@ DboxMain::OnMerge()
 }
 
 
-
-
-
 void
 DboxMain::OnNew()
 {
@@ -1526,51 +1493,49 @@ DboxMain::OnNew()
 int
 DboxMain::New() 
 {
-   int rc, rc2;
+  int rc, rc2;
 
-   if (m_core.IsChanged())
-   {
-      CMyString temp =
-	_T("Do you want to save changes to the password database: ")
-	+ m_core.GetCurFile()
-         + _T("?");
+  if (m_core.IsChanged()) {
+    CMyString temp =
+      _T("Do you want to save changes to the password database: ")
+      + m_core.GetCurFile()
+      + _T("?");
 
-      rc = MessageBox(temp,
-                      AfxGetAppName(),
-                      MB_ICONQUESTION|MB_YESNOCANCEL);
-      switch (rc)
-      {
-      case IDCANCEL:
-         return PWScore::USER_CANCEL;
-      case IDYES:
-         rc2 = Save();
-         /*
-           Make sure that writing the file was successful
-         */
-         if (rc2 == PWScore::SUCCESS)
-            break;
-         else
-            return PWScore::CANT_OPEN_FILE;
-      case IDNO:
-         break;
-      }
-   }
-
-   rc = NewFile();
-   if (rc == PWScore::USER_CANCEL)
-      /*
-        Everything stays as is... 
-        Worst case, they saved their file.... 
-      */
+    rc = MessageBox(temp,
+                    AfxGetAppName(),
+                    MB_ICONQUESTION|MB_YESNOCANCEL);
+    switch (rc) {
+    case IDCANCEL:
       return PWScore::USER_CANCEL;
+    case IDYES:
+      rc2 = Save();
+      /*
+        Make sure that writing the file was successful
+      */
+      if (rc2 == PWScore::SUCCESS)
+        break;
+      else
+        return PWScore::CANT_OPEN_FILE;
+    case IDNO:
+      break;
+    }
+  }
 
-   m_core.SetCurFile(_T("")); //Force a save as... 
+  rc = NewFile();
+  if (rc == PWScore::USER_CANCEL)
+    /*
+      Everything stays as is... 
+      Worst case, they saved their file.... 
+    */
+    return PWScore::USER_CANCEL;
+
+  m_core.SetCurFile(_T("")); //Force a save as... 
 #if !defined(POCKET_PC)
-   m_title = _T("Password Safe - <Untitled>");
+  m_title = _T("Password Safe - <Untitled>");
 #endif
-   ChangeOkUpdate();
+  ChangeOkUpdate();
 
-   return PWScore::SUCCESS;
+  return PWScore::SUCCESS;
 }
 
 
@@ -1585,14 +1550,50 @@ DboxMain::OnRestore()
    m_LockDisabled = false;
 }
 
+int DboxMain::SaveIfChanged()
+{
+  // offer to save existing database ifit was modified.
+  // used before loading another
+  // returns PWScore::SUCCESS if save succeeded or if user decided
+  // not to save
+
+  if (m_core.IsChanged()) {
+    int rc, rc2;
+    CMyString temp =
+      _T("Do you want to save changes to the password database: ")
+      + m_core.GetCurFile()
+      + _T("?");
+    rc = MessageBox(temp,
+                    AfxGetAppName(),
+                    MB_ICONQUESTION|MB_YESNOCANCEL);
+    switch (rc) {
+    case IDCANCEL:
+      return PWScore::USER_CANCEL;
+    case IDYES:
+      rc2 = Save();
+      // Make sure that file was successfully written
+      if (rc2 == PWScore::SUCCESS)
+        break;
+      else
+        return PWScore::CANT_OPEN_FILE;
+    case IDNO:
+      break;
+    }
+  }
+  return PWScore::SUCCESS;
+}
 
 int
 DboxMain::Restore() 
 {
   int rc;
-  CMyString newback, passkey, temp;
+  CMyString backup, passkey, temp;
   CMyString currbackup =
     PWSprefs::GetInstance()->GetPref(PWSprefs::StringPrefs::CurrentBackup);
+
+  rc = SaveIfChanged();
+  if (rc != PWScore::SUCCESS)
+    return rc;
 
   //Open-type dialog box
   while (1) {
@@ -1602,72 +1603,53 @@ DboxMain::Restore()
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
                    _T("Password Safe Backups (*.bak)|*.bak||"),
                    this);
-    fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to Restore:");
+    fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to restore:");
     rc = fd.DoModal();
     if (rc == IDOK) {
-      newback = (CMyString)fd.GetPathName();
+      backup = (CMyString)fd.GetPathName();
       break;
     } else
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(newback, passkey);
-  switch (rc)
-    {
-    case PWScore::SUCCESS:
-      break; // Keep going... 
-    case PWScore::CANT_OPEN_FILE:
-      temp =
-        m_core.GetCurFile()
-        + _T("\n\nCan't open file. Please choose another.");
-      MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-    case TAR_OPEN:
-      return Open();
-    case TAR_NEW:
-      return New();
-    case PWScore::WRONG_PASSWORD:
-      /*
-        If the user just cancelled out of the password dialog, 
-        assume they want to return to where they were before... 
-      */
-      return PWScore::USER_CANCEL;
-    }
-
-  if (m_core.IsChanged()) {
-    int rc2;
-	
-    temp = _T("Do you want to save changes to the password list: ")
-      + m_core.GetCurFile() + _T("?");
-
-    rc = MessageBox(temp,
-                    AfxGetAppName(),
-                    MB_ICONQUESTION|MB_YESNOCANCEL);
-    switch (rc)
-      {
-      case IDCANCEL:
-        return PWScore::USER_CANCEL;
-      case IDYES:
-        rc2 = Save();
-        //Make sure that writting the file was successful
-        if (rc2 == PWScore::SUCCESS)
-          break;
-        else
-          return PWScore::CANT_OPEN_FILE;
-      case IDNO:
-        break;
-      }
+  rc = GetAndCheckPassword(backup, passkey);
+  switch (rc) {
+  case PWScore::SUCCESS:
+    break; // Keep going... 
+  case PWScore::CANT_OPEN_FILE:
+    temp =
+      backup
+      + _T("\n\nCan't open file. Please choose another.");
+    MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+  case TAR_OPEN:
+    ASSERT(0); return PWScore::FAILURE; // shouldn't be an option here
+  case TAR_NEW:
+    ASSERT(0); return PWScore::FAILURE; // shouldn't be an option here
+  case PWScore::WRONG_PASSWORD:
+    /*
+      If the user just cancelled out of the password dialog, 
+      assume they want to return to where they were before... 
+    */
+    return PWScore::USER_CANCEL;
   }
 
-  rc = m_core.ReadFile(newback, passkey);
+  // unlock the file we're leaving
+  if( !m_core.GetCurFile().IsEmpty() ) {
+    m_core.UnlockFile(m_core.GetCurFile());
+  }
+
+  // clear the data before restoring
+  ClearData();
+
+  rc = m_core.ReadFile(backup, passkey);
   if (rc == PWScore::CANT_OPEN_FILE) {
-    temp = newback + _T("\n\nCould not open file for reading!");
+    temp = backup + _T("\n\nCould not open file for reading!");
     MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
-    //Everything stays as is... Worst case, they saved their file....
     return PWScore::CANT_OPEN_FILE;
   }
 	
-  m_core.SetCurFile(""); //Force a save as...
-  m_core.SetChanged(true); //So that the *.pws/*.dat version of the file will be saved.
+  m_core.SetCurFile(""); //Force a Save As...
+  m_core.SetChanged(true); //So that the restored file will be saved
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled Restored Backup>");
 #endif
