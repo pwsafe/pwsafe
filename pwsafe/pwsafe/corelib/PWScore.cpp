@@ -358,14 +358,11 @@ int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
 }
 
 
-int PWScore::RenameCurFile(const CMyString &newSuffix)
+int PWScore::BackupCurFile()
 {
+  // renames CurFile to CurFile~
   CString newname(GetCurFile());
-     int dotIndex = newname.ReverseFind(TCHAR('.'));
-     if (dotIndex != -1)
-       newname = newname.Left(dotIndex);
-     newname += TCHAR('.'); // cover both cases: name with/without .
-     newname += CString(newSuffix);
+  newname += TCHAR('~');
   return PWSfile::RenameFile(GetCurFile(), newname);
 }
 
