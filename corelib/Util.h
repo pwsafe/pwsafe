@@ -8,8 +8,9 @@
 #include "PwsPlatform.h"
 
 #define SaltLength 20
-#define SaltSize 20
 #define StuffSize 10
+
+#define SaltLengthV3 32
 
 // this is for the undocumented 'command line file encryption'
 #define CIPHERTEXT_SUFFIX ".PSF"

@@ -100,13 +100,15 @@ int PWSfile::ReadV2Header()
 
 int PWSfile::OpenWriteFile(VERSION v)
 {
-  if (v != V17 && v != V20)
+  int status = SUCCESS;
+
+  if (v != V17 && v != V20 && v != V30)
     return UNSUPPORTED_VERSION;
 
 #ifdef UNICODE
-	m_fd = _wfopen((LPCTSTR)m_filename, _T("wb") );
+  m_fd = _wfopen((LPCTSTR)m_filename, _T("wb") );
 #else
-	m_fd = fopen((LPCTSTR)m_filename, _T("wb") );
+  m_fd = fopen((LPCTSTR)m_filename, _T("wb") );
 #endif
 
   if (m_fd == NULL)
@@ -114,31 +116,32 @@ int PWSfile::OpenWriteFile(VERSION v)
 
   m_curversion = v;
   
-  // Following used to verify passkey against file's passkey
-  unsigned char randstuff[StuffSize];
-  unsigned char randhash[20];   // HashSize
+  if (m_curversion == V17 || m_curversion == V20) {
+    // Following used to verify passkey against file's passkey
+    unsigned char randstuff[StuffSize];
+    unsigned char randhash[20];   // HashSize
 
-  GetRandomData( randstuff, 8 );
-  randstuff[8] = randstuff[9] = '\0';
-  GenRandhash(m_passkey, randstuff, randhash);
+    GetRandomData( randstuff, 8 );
+    randstuff[8] = randstuff[9] = '\0';
+    GenRandhash(m_passkey, randstuff, randhash);
 
-  fwrite(randstuff, 1, 8, m_fd);
-  fwrite(randhash, 1, 20, m_fd);
+    fwrite(randstuff, 1, 8, m_fd);
+    fwrite(randhash, 1, 20, m_fd);
 
-  GetRandomData( m_salt, SaltLength );
+    GetRandomData(m_salt, SaltLength);
 
-  fwrite(m_salt, 1, SaltLength, m_fd);
+    fwrite(m_salt, 1, SaltLength, m_fd);
 	
-  GetRandomData( m_ipthing, 8 );
-  fwrite(m_ipthing, 1, 8, m_fd);
-
-  if (v == V20) {
-    int status = WriteV2Header();
-    if (status != SUCCESS)
-      return status;
+    GetRandomData( m_ipthing, 8);
+    fwrite(m_ipthing, 1, 8, m_fd);
+    if (v == V20) {
+      status = WriteV2Header();
+    }
   }
-
-  return SUCCESS;
+  if (m_curversion == V30) {
+    status = WriteV3Header();
+  }
+  return status;
 }
 
 int PWSfile::OpenReadFile(VERSION v)
@@ -234,8 +237,8 @@ int PWSfile::CheckPassword()
 
 int PWSfile::WriteCBC(unsigned char type, const CString &data)
 {
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
+  // We do a double cast because the LPCSTR cast operator is overridden
+  // by the CString class to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
   LPCSTR passstr = LPCSTR(m_passkey);
   LPCSTR datastr = LPCSTR(data);
@@ -262,6 +265,7 @@ int PWSfile::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
+  int status = SUCCESS;
 
   switch (m_curversion) {
   case V17: {
@@ -287,9 +291,9 @@ int PWSfile::WriteRecord(const CItemData &item)
       CMyString group = item.GetGroup();
       CMyString title = item.GetTitle();
       if (!group.IsEmpty()) {
-	group += _T(".");
-	group += title;
-	title = group;
+        group += _T(".");
+        group += title;
+        title = group;
       }
       name = title;
       name += SPLTCHR;
@@ -300,9 +304,8 @@ int PWSfile::WriteRecord(const CItemData &item)
     WriteCBC(dummy_type, name);
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
     WriteCBC(CItemData::NOTES, item.GetNotes());
-    return SUCCESS;
   }
-  break;
+    break;
   case V20: {
     {
       uuid_array_t uuid_array;
@@ -315,13 +318,13 @@ int PWSfile::WriteRecord(const CItemData &item)
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
     WriteCBC(CItemData::NOTES, item.GetNotes());
     WriteCBC(CItemData::END, _T(""));
-    return SUCCESS;
   }
+    break;
   default:
     ASSERT(0);
-    return UNSUPPORTED_VERSION;
+    status = UNSUPPORTED_VERSION;
   }
-  return SUCCESS;
+  return status;
 }
 
 int
@@ -425,5 +428,117 @@ int PWSfile::ReadRecord(CItemData &item)
     ASSERT(0);
     return UNSUPPORTED_VERSION;
   }
+}
+
+void PWSfile::StretchKey(const unsigned char *salt, unsigned long saltLen,
+                         unsigned char *Ptag)
+{
+  /*
+   * P' is the "stretched key" of the user's passphrase and the SALT, as defined
+   * by the hash-function-based key stretching algorithm in
+   * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
+   * as the hash function, and 2048 iterations (i.e., t = 11).
+   */
+  unsigned char *X = Ptag;
+  SHA256 H0;
+  // We do a double cast because the LPCSTR cast operator is overridden
+  // by the CString class to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR passstr = LPCSTR(m_passkey);
+  H0.Update((const unsigned char *)passstr, m_passkey.GetLength());
+  H0.Update(salt, saltLen);
+  H0.Final(X);
+
+  const int N = 2048;
+  for (int i = 0; i < N; i++) {
+    SHA256 H;
+    H.Update(X, sizeof(X));
+    H.Final(X);
+  }
+}
+
+const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
+
+int PWSfile::WriteV3Header()
+{
+  // See formatV3.txt for explanation of what's written here and why
+  fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
+
+  unsigned char salt[SaltLengthV3];
+  GetRandomData(salt, sizeof(salt));
+  fwrite(salt, 1, sizeof(salt), m_fd);
+
+  unsigned char Ptag[SHA256::HASHLEN];
+  StretchKey(salt, sizeof(salt), Ptag);
+
+  unsigned char HPtag[SHA256::HASHLEN];
+  SHA256 H;
+  H.Update(Ptag, sizeof(Ptag));
+  H.Final(HPtag);
+  fwrite(HPtag, 1, sizeof(HPtag), m_fd);
+
+  GetRandomData(m_v3key, sizeof(m_v3key));
+  unsigned char B1B2[sizeof(m_v3key)];
+  ASSERT(sizeof(B1B2) == 32); // Generalize later
+  TwoFish TF(Ptag, sizeof(Ptag));
+  TF.Encrypt(m_v3key, B1B2);
+  TF.Encrypt(m_v3key + 16, B1B2 + 16);
+  fwrite(B1B2, 1, sizeof(B1B2), m_fd);
+
+  GetRandomData(m_v3L, sizeof(m_v3L));
+  unsigned char B3B4[sizeof(m_v3L)];
+  ASSERT(sizeof(B3B4) == 32); // Generalize later
+  TF.Encrypt(m_v3L, B3B4);
+  TF.Encrypt(m_v3L + 16, B3B4 + 16);
+  fwrite(B3B4, 1, sizeof(B3B4), m_fd);
+
+  GetRandomData(m_ipthingV3, sizeof(m_ipthingV3));
+  fwrite(m_ipthingV3, 1, sizeof(m_ipthingV3), m_fd);
+
+  // write some actual data (at last!)
+  return SUCCESS;
+}
+
+int PWSfile::ReadV3Header()
+{
+  char tag[sizeof(V3TAG)];
+  fread(tag, 1, sizeof(tag), m_fd);
+  if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
+    return NOT_PWS3_FILE;
+  }
+ 
+  unsigned char salt[SaltLengthV3];
+  fread(salt, 1, sizeof(salt), m_fd);
+
+  unsigned char Ptag[SHA256::HASHLEN];
+  StretchKey(salt, sizeof(salt), Ptag);
+
+  unsigned char HPtag[SHA256::HASHLEN];
+  SHA256 H;
+  H.Update(Ptag, sizeof(Ptag));
+  H.Final(HPtag);
+  unsigned char readHPtag[SHA256::HASHLEN];
+  fread(readHPtag, 1, sizeof(readHPtag), m_fd);
+  if (memcmp(readHPtag, HPtag, sizeof(readHPtag)) != 0) {
+    return WRONG_PASSWORD;
+  }
+
+  unsigned char B1B2[sizeof(m_v3key)];
+  ASSERT(sizeof(B1B2) == 32); // Generalize later
+  fread(B1B2, 1, sizeof(B1B2), m_fd);
+  TwoFish TF(Ptag, sizeof(Ptag));
+  TF.Decrypt(B1B2, m_v3key);
+  TF.Decrypt(B1B2 + 16, m_v3key + 16);
+
+  unsigned char B3B4[sizeof(m_v3L)];
+  ASSERT(sizeof(B3B4) == 32); // Generalize later
+  fread(B3B4, 1, sizeof(B3B4), m_fd);
+  TF.Decrypt(B3B4, m_v3L);
+  TF.Decrypt(B3B4 + 16, m_v3L + 16);
+
+  fread(m_ipthingV3, 1, sizeof(m_ipthingV3), m_fd);
+
+  // read the header data
+  return SUCCESS;
 }
 
