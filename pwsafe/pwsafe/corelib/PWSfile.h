@@ -9,14 +9,17 @@
 #include "ItemData.h"
 #include "MyString.h"
 #include "UUIDGen.h"
+#include "BlowFish.h"
+#include "TwoFish.h"
+#include "sha256.h"
 
 class PWSfile {
  public:
-  enum VERSION {V17, V20, VCURRENT = V20,
+  enum VERSION {V17, V20, VCURRENT = V20, V30,
 		UNKNOWN_VERSION}; // supported file versions: V17 is last pre-2.0
   enum {SUCCESS = 0, FAILURE = 1, CANT_OPEN_FILE,
-	UNSUPPORTED_VERSION, WRONG_VERSION,
-	WRONG_PASSWORD, END_OF_FILE};
+        UNSUPPORTED_VERSION, WRONG_VERSION, NOT_PWS3_FILE,
+        WRONG_PASSWORD, END_OF_FILE};
 
   static bool FileExists(const CMyString &filename);
   static int RenameFile(const CMyString &oldname, const CMyString &newname);
@@ -45,13 +48,20 @@ class PWSfile {
   CMyString m_defusername; // for V17 conversion (read) only
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];
-  unsigned char m_ipthing[8]; // for CBC
+  unsigned char m_ipthing[BlowFish::BLOCKSIZE]; // for CBC
+  unsigned char m_ipthingV3[TwoFish::BLOCKSIZE]; // for CBC
+  unsigned char m_v3key[32];
+  unsigned char m_v3L[32]; // for HMAC
   CMyString m_prefString; // prefererences stored in the file
   int WriteCBC(unsigned char type, const CString &data);
   int WriteCBC(unsigned char type, const unsigned char *data, unsigned int length);
   int ReadCBC( unsigned char &type, CMyString &data);
   int WriteV2Header();
   int ReadV2Header();
+  int WriteV3Header();
+  int ReadV3Header();
+  void StretchKey(const unsigned char *salt, unsigned long saltLen,
+                  unsigned char *Ptag); // for V3
 };
 
 #endif PWSfile_h

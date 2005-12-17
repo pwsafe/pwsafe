@@ -71,6 +71,9 @@ and B4 is used as the hash key value.
 
 
 $Log$
+Revision 1.3  2005/12/17 10:26:35  ronys
+Started work on V3 header, still unhappy about OO/SE aspects - need to refactor a bit
+
 Revision 1.2  2005/12/10 10:34:08  ronys
 Ammended after comments from dev list.
 
