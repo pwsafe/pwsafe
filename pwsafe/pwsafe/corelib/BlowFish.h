@@ -1,6 +1,7 @@
 // BlowFish.h
 //-----------------------------------------------------------------------------
-
+#ifndef __BLOWFISH_H
+#define __BLOWFISH_H
 
 #define MAXKEYBYTES 56 // unused
 
@@ -30,8 +31,8 @@ public:
   ~BlowFish();
   void Encrypt(const block in, block out);
   void Decrypt(const block in, block out);
-  enum {bf_N = 16};
 private:
+  enum {bf_N = 16};
   unsigned long bf_S[4][256];
   unsigned long bf_P[bf_N + 2];
   const static unsigned long tempbf_S[4][256];
@@ -40,6 +41,7 @@ private:
   void Blowfish_decipher(unsigned long* xl, unsigned long* xr);
   void InitializeBlowfish(unsigned char key[], short keybytes);
 };
+#endif /* __BLOWFISH_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++
