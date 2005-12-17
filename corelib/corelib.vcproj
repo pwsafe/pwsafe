@@ -138,6 +138,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\hmac.cpp">
+			</File>
+			<File
 				RelativePath="ItemData.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -383,6 +386,9 @@
 			Filter="h;hpp;hxx;hm;inl">
 			<File
 				RelativePath="BlowFish.h">
+			</File>
+			<File
+				RelativePath=".\hmac.h">
 			</File>
 			<File
 				RelativePath="ItemData.h">
