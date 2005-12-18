@@ -498,6 +498,11 @@ DboxMain::OpenOnInit(void)
    }
    else
    {
+      CMyString msg = _T("The database ") + m_core.GetCurFile();
+	  msg += _T(" couldn't be opened.\n");
+	  msg += _T("Not a valid PasswordSafe file?");
+	  MessageBox(msg, AfxGetAppName(), (MB_ICONEXCLAMATION | MB_OK));
+
       CDialog::OnCancel();
       return FALSE;
    }

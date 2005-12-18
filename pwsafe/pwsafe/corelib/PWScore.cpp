@@ -72,28 +72,35 @@ PWScore::NewFile(const CMyString &passkey)
 int
 PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 {
-  PWSfile out(filename, GetPassKey());
-
   int status;
+  PWSfile *out = PWSfile::MakePWSfile(filename, version,
+                                      PWSfile::Write, status);
+
+  if (status != PWSfile::SUCCESS) {
+    delete out;
+    return status;
+  }
 
   // preferences are kept in header, which is written in OpenWriteFile,
   // so we need to update the prefernce string here
-  out.SetPrefString(PWSprefs::GetInstance()->Store());
+  out->SetPrefString(PWSprefs::GetInstance()->Store());
 
-  status = out.OpenWriteFile(version);
+  status = out->Open(GetPassKey());
 
-  if (status != PWSfile::SUCCESS)
+  if (status != PWSfile::SUCCESS) {
+    delete out;
     return CANT_OPEN_FILE;
+  }
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
-  while (listPos != NULL)
-    {
-      temp = m_pwlist.GetAt(listPos);
-      out.WriteRecord(temp);
-      m_pwlist.GetNext(listPos);
-    }
-  out.CloseFile();
+  while (listPos != NULL) {
+    temp = m_pwlist.GetAt(listPos);
+    out->WriteRecord(temp);
+    m_pwlist.GetNext(listPos);
+  }
+  out->Close();
+  delete out;
 
   m_changed = FALSE;
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
@@ -290,9 +297,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
 
 int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
 {
-  PWSfile f(filename, passkey);
-
-  int status = f.CheckPassword();
+  int status = PWSfile::CheckPassword(filename, passkey);
 
   switch (status) {
   case PWSfile::SUCCESS:
@@ -309,47 +314,50 @@ int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
 
 int
 PWScore::ReadFile(const CMyString &a_filename,
-                   const CMyString &a_passkey)
+                  const CMyString &a_passkey)
 {
-   //That passkey had better be the same one that came from CheckPassword(...)
-
-   PWSfile in(a_filename, a_passkey);
-
   int status;
+  PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
+                                     PWSfile::Read, status);
 
-  m_ReadFileVersion = in.GetFileVersion();
+  if (status != PWSfile::SUCCESS) {
+    delete in;
+    return status;
+  }
 
-  if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION)
-    return UNKNOWN_VERSION;
+  status = in->Open(a_passkey);
 
-  status = in.OpenReadFile(m_ReadFileVersion);
-
-  if (status != PWSfile::SUCCESS)
+  if (status != PWSfile::SUCCESS) {
+    delete in;
     return CANT_OPEN_FILE;
+  }
+  if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION) {
+    delete in;
+    return UNKNOWN_VERSION;
+  }
 
   // prepare handling of pre-2.0 DEFUSERCHR conversion
   if (m_ReadFileVersion == PWSfile::V17)
-    in.SetDefUsername(m_defusername);
+    in->SetDefUsername(m_defusername);
   else // for 2.0 & later, get pref string (possibly empty)
-    PWSprefs::GetInstance()->Load(in.GetPrefString());
+    PWSprefs::GetInstance()->Load(in->GetPrefString());
 
    ClearData(); //Before overwriting old data, but after opening the file...
 
-   SetPassKey(a_passkey);
+   SetPassKey(a_passkey); // so user won't be prompted for saves
 
    CItemData temp;
 
-   status = in.ReadRecord(temp);
+   status = in->ReadRecord(temp);
 
-   while (status == PWSfile::SUCCESS)
-   {
-      m_pwlist.AddTail(temp);
-      status = in.ReadRecord(temp);
+   while (status == PWSfile::SUCCESS) {
+     m_pwlist.AddTail(temp);
+     status = in->ReadRecord(temp);
    }
 
-   in.CloseFile();
-
-   return SUCCESS;
+   status = in->Close(); // in V3 this checks integrity
+   delete in;
+   return status;
 }
 
 int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
@@ -369,7 +377,6 @@ int PWScore::BackupCurFile()
 
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
-
   SetPassKey(newPassword);
   m_changed = TRUE;
 }
@@ -379,22 +386,21 @@ void PWScore::ChangePassword(const CMyString &newPassword)
 POSITION
 PWScore::Find(const CMyString &a_group,const CMyString &a_title, const CMyString &a_user)
 {
-   POSITION listPos = m_pwlist.GetHeadPosition();
-   CMyString group, title, user;
+  POSITION listPos = m_pwlist.GetHeadPosition();
+  CMyString group, title, user;
 
-   while (listPos != NULL)
-   {
-     const CItemData &item = m_pwlist.GetAt(listPos);
-      group = item.GetGroup();
-      title = item.GetTitle();
-      user = item.GetUser();
-      if (group == a_group && title == a_title && user == a_user)
-         break;
-      else
-         m_pwlist.GetNext(listPos);
-   }
+  while (listPos != NULL) {
+    const CItemData &item = m_pwlist.GetAt(listPos);
+    group = item.GetGroup();
+    title = item.GetTitle();
+    user = item.GetUser();
+    if (group == a_group && title == a_title && user == a_user)
+      break;
+    else
+      m_pwlist.GetNext(listPos);
+  }
 
-   return listPos;
+  return listPos;
 }
 
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
