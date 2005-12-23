@@ -1,20 +1,21 @@
-// PWSfileV1V2.h
+// PWSfileV3.h
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
 
-#ifndef PWSfileV1V2_h
-#define PWSfileV1V2_h
+#ifndef PWSfileV3_h
+#define PWSfileV3_h
 
 #include "PWSfile.h"
-#include "BlowFish.h"
+#include "TwoFish.h"
+#include "sha256.h"
 
-class PWSfileV1V2 : public PWSfile {
+class PWSfileV3 : public PWSfile {
  public:
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey, FILE *a_fd = NULL);
 
-  PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version);
-  ~PWSfileV1V2();
+  PWSfileV3(const CMyString &filename, RWmode mode, VERSION version);
+  ~PWSfileV3();
 
   virtual int Open(const CMyString &passkey);
   virtual int Close();
@@ -23,15 +24,18 @@ class PWSfileV1V2 : public PWSfile {
   virtual int ReadRecord(CItemData &item);
 
  private:
-  // crypto stuff for reading/writing files:
-  unsigned char m_salt[SaltLength];
-  unsigned char m_ipthing[BlowFish::BLOCKSIZE]; // for CBC
+  unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
+  unsigned char m_key[32];
+  unsigned char m_L[32]; // for HMAC
+  CMyString m_prefString; // prefererences stored in the file
   int WriteCBC(unsigned char type, const CString &data);
   int WriteCBC(unsigned char type, const unsigned char *data, unsigned int length);
   int ReadCBC( unsigned char &type, CMyString &data);
-  int WriteV2Header();
-  int ReadV2Header();
+  int WriteHeader();
+  int ReadHeader();
+  void StretchKey(const unsigned char *salt, unsigned long saltLen,
+                  unsigned char *Ptag);
 };
 
-#endif PWSfileV1V2_h
+#endif PWSfileV3_h
 
