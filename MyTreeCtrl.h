@@ -24,6 +24,7 @@ public:
   void ClearExpanded(); // use when items will be invalid
   void OnCollapseAll();
   void OnExpandAll();
+
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
@@ -33,6 +34,7 @@ public:
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
   afx_msg void OnDestroy();
+  afx_msg void OnTimer(UINT nIDEvent);
   afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
 
@@ -49,12 +51,19 @@ private:
   void *m_expandedItems; // Internally this is a SetTreeItem_t, don't want to include stl file here...
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore
-
+  
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
   void OnButtonUp(void);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
+  
+protected:
+	UINT    m_nTimerID;
+	UINT    m_timerticks;
+	UINT	m_nHoverTimerID;
+	POINT	m_HoverPoint;
+
 };
 
 
