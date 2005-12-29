@@ -15,11 +15,19 @@ bugs, as described below.
 
 Bugs fixed in 2.15:
 ===================
+[1363569] No longer crashes when deleting the last item in the last group.
+[1381729] No longer crashes when restoring with a database already opened.
+[1368198] More explanatory error message when database open fails.
+[1312870] Backup filename now updated correctly.
 
 New features for 2.15:
 ======================
 [] Double-clicking on an item can now browse to the URL in the item -
 thanks to Laszlo Gombos.
+[] When dragging to the top or bottom of the visible tree, it will scroll
+up or down; If dragged mouse hovers over a closed node, it expands the node
+to see subnodes etc. - code from www.codeproject.com, thanks to DK. 
+
 
 Bugs fixed in 2.14:
 ===================
@@ -124,6 +132,11 @@ front, if obscured by other applications.
 
 
 $Log$
+Revision 1.27.2.1  2005/12/25 20:26:40  ronys
+When dragging to the top or bottom of the visible tree, it will scroll
+up or down; If dragged mouse hovers over a closed node, it expands the node
+to see subnodes etc. - code from www.codeproject.com, thanks to DK.
+
 Revision 1.27  2005/12/12 19:07:56  ronys
 checkpoint
 
