@@ -184,34 +184,20 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
   }
 }
 
-int PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
+int PWSfileV1V2::WriteCBC(unsigned char type, const CString &data, Fish *fish)
 {
   // We do a double cast because the LPCSTR cast operator is overridden
   // by the CString class to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
   LPCSTR datastr = LPCSTR(data);
 
-  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
-                                          m_passkey.GetLength(), m_salt, SaltLength);
-  int numWritten = _writecbc(m_fd, (const unsigned char *)datastr, data.GetLength(), type,
-                             fish, m_ipthing);
-  delete fish;
-  return numWritten;
+  return WriteCBC(type, (const unsigned char *)datastr, data.GetLength(), fish);
 }
 
-int PWSfileV1V2::WriteCBC(unsigned char type, const unsigned char *data, unsigned int length)
+int PWSfileV1V2::WriteCBC(unsigned char type, const unsigned char *data,
+                          unsigned int length, Fish *fish)
 {
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
-  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
-                                          m_passkey.GetLength(), m_salt, SaltLength);
-
-  int numWritten = _writecbc(m_fd, data, length, type, fish, m_ipthing);
-  delete fish;
-  return numWritten;
+  return _writecbc(m_fd, data, length, type, fish, m_ipthing);
 }
 
 
@@ -220,6 +206,14 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
   int status = SUCCESS;
+
+  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
+  // to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR passstr = LPCSTR(m_passkey);
+  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr, m_passkey.GetLength(),
+                                          m_salt, SaltLength);
+
 
   switch (m_curversion) {
   case V17: {
@@ -255,48 +249,43 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
     }
     unsigned char dummy_type;
     GetRandomData(&dummy_type, 1);
-    WriteCBC(dummy_type, name);
-    WriteCBC(CItemData::PASSWORD, item.GetPassword());
-    WriteCBC(CItemData::NOTES, item.GetNotes());
+    WriteCBC(dummy_type, name, fish);
+    WriteCBC(CItemData::PASSWORD, item.GetPassword(), fish);
+    WriteCBC(CItemData::NOTES, item.GetNotes(), fish);
   }
     break;
   case V20: {
     {
       uuid_array_t uuid_array;
       item.GetUUID(uuid_array);
-      WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+      WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array), fish);
     }
-    WriteCBC(CItemData::GROUP, item.GetGroup());
-    WriteCBC(CItemData::TITLE, item.GetTitle());
-    WriteCBC(CItemData::USER, item.GetUser());
-    WriteCBC(CItemData::PASSWORD, item.GetPassword());
-    WriteCBC(CItemData::NOTES, item.GetNotes());
-    WriteCBC(CItemData::END, _T(""));
+    WriteCBC(CItemData::GROUP, item.GetGroup(), fish);
+    WriteCBC(CItemData::TITLE, item.GetTitle(), fish);
+    WriteCBC(CItemData::USER, item.GetUser(), fish);
+    WriteCBC(CItemData::PASSWORD, item.GetPassword(), fish);
+    WriteCBC(CItemData::NOTES, item.GetNotes(), fish);
+    WriteCBC(CItemData::END, _T(""), fish);
   }
     break;
   default:
     ASSERT(0);
     status = UNSUPPORTED_VERSION;
   }
+  delete fish;
   return status;
 }
 
 int
-PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
+PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data, Fish *fish)
 {
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
 
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
   int retval;
 
-  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr, m_passkey.GetLength(),
-                                          m_salt, SaltLength);
   retval = _readcbc(m_fd, buffer, buffer_len, type, fish, m_ipthing);
-  delete fish;
+
   if (buffer_len > 0) {
     CMyString str(LPCSTR(buffer), buffer_len);
     data = str;
@@ -320,15 +309,21 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   CMyString tempdata;  
   int numread = 0;
   unsigned char type;
+  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
+  // to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR passstr = LPCSTR(m_passkey);
+  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr, m_passkey.GetLength(),
+                                          m_salt, SaltLength);
 
   switch (m_curversion) {
   case V17: {
     // type is meaningless, but why write two versions of ReadCBC?
-    numread += ReadCBC(type, tempdata);
+    numread += ReadCBC(type, tempdata, fish);
     item.SetName(tempdata, m_defusername);
-    numread += ReadCBC(type, tempdata);
+    numread += ReadCBC(type, tempdata, fish);
     item.SetPassword(tempdata);
-    numread += ReadCBC(type, tempdata);
+    numread += ReadCBC(type, tempdata, fish);
     item.SetNotes(tempdata);
     // No UUID, so we create one here
     item.CreateUUID();
@@ -340,7 +335,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
     int fieldLen; // zero means end of file reached
     bool endFound = false; // set to true when record end detected - happy end
     do {
-      fieldLen = ReadCBC(type, tempdata);
+      fieldLen = ReadCBC(type, tempdata, fish);
       if (fieldLen > 0) {
 	numread += fieldLen;
 	switch (type) {
