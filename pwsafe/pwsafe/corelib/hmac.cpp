@@ -1,11 +1,24 @@
 #include "hmac.h"
 #include <string.h>
 
-HMAC_SHA256::HMAC_SHA256(unsigned char *key, unsigned long keylen)
+HMAC_SHA256::HMAC_SHA256(const unsigned char *key, unsigned long keylen)
 {
   ASSERT(key != NULL);
   ASSERT(keylen >= L); // "less than L bytes are strongly discouraged"
   memset(K, 0, sizeof(K));
+  Init(key, keylen);
+}
+
+HMAC_SHA256::HMAC_SHA256()
+{
+  memset(K, 0, sizeof(K));
+}
+
+void
+HMAC_SHA256::Init(const unsigned char *key, unsigned long keylen)
+{
+  ASSERT(key != NULL);
+  ASSERT(keylen >= L); // "less than L bytes are strongly discouraged"
 
   if (keylen > B) {
     SHA256 H0;

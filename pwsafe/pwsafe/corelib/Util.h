@@ -4,7 +4,7 @@
 #define Util_h
 
 #include "MyString.h"
-#include "sha1.h"
+#include "Fish.h"
 #include "PwsPlatform.h"
 
 #define SaltLength 20
@@ -55,15 +55,11 @@ unsigned int RangeRand(size_t len);
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern int _readcbc(FILE *fp, unsigned char* &buffer, unsigned int &buffer_len,
-		    unsigned char &type,
-		    const unsigned char *pass, int passlen,
-		    const unsigned char* salt, int saltlen,
-		    unsigned char* cbcbuffer);
+                    unsigned char &type, Fish *Algorithm,
+                    unsigned char* cbcbuffer);
 extern int _writecbc(FILE *fp, const unsigned char* buffer, int length,
-		     unsigned char type,
-		     const unsigned char *pass, int passlen,
-		     const unsigned char* salt, int saltlen,
-		     unsigned char* cbcbuffer);
+                     unsigned char type, Fish *Algorithm,
+                     unsigned char* cbcbuffer);
 
 /*
  * Get an integer that is stored in little-endian format

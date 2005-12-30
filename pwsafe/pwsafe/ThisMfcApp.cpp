@@ -17,6 +17,7 @@
 
 #include "ThisMfcApp.h"
 #include "corelib/Util.h"
+#include "corelib/BlowFish.h"
 #include "DboxMain.h"
 
 #include "CryptKeyEntry.h"
@@ -191,11 +192,10 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
     fwrite(ipthing, 1, 8, out);
 
     LPCSTR pwd = LPCSTR(passwd);
-    _writecbc(out, buf, len, (unsigned char)0,
-	      (unsigned char *)pwd, passwd.GetLength(),
-	      thesalt, SaltLength,
-	      ipthing);
-		
+    Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
+                                        thesalt, SaltLength);
+    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
+    delete fish;
     fclose(out);
 
   } else {
@@ -224,43 +224,43 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
     unsigned char randhash[SHA1::HASHLEN];
 
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
-      fread(&len, 1, sizeof(len), in); // XXX portability issue
+    fread(&len, 1, sizeof(len), in); // XXX portability issue
 #else
-      fread(randstuff, 1, 8, in);
-      randstuff[8] = randstuff[9] = '\0'; // ugly bug workaround
-      fread(randhash, 1, sizeof(randhash), in);
+    fread(randstuff, 1, 8, in);
+    randstuff[8] = randstuff[9] = '\0'; // ugly bug workaround
+    fread(randhash, 1, sizeof(randhash), in);
 
-      unsigned char temphash[SHA1::HASHLEN];
-      GenRandhash(passwd,
-		  randstuff,
-		  temphash);
-      if (0 != memcmp((char*)randhash,
-                      (char*)temphash, SHA1::HASHLEN))
-	{
-	  fclose(in);
-	  AfxMessageBox(_T("Incorrect password"));
-	  return FALSE;
-	}
-#endif // KEEP_FILE_MODE_BWD_COMPAT
-      buf = NULL; // allocated by _readcbc - see there for apologia
-
-      fread(salt,    1, SaltLength, in);
-      fread(ipthing, 1, 8,          in);
-      LPCSTR pwd = LPCSTR(passwd);
-      unsigned char dummyType;
-
-      if (_readcbc(in, buf, len,dummyType,
-		   (unsigned char *)pwd, passwd.GetLength(),
-		   salt, SaltLength, ipthing) == 0) {
-	delete[] buf; // if not yet allocated, delete[] NULL, which is OK
-	return FALSE;
-      }
-		
+    unsigned char temphash[SHA1::HASHLEN];
+    GenRandhash(passwd,
+                randstuff,
+                temphash);
+    if (0 != memcmp((char*)randhash,
+                    (char*)temphash, SHA1::HASHLEN)) {
       fclose(in);
-    } else {
-      ErrorMessages(fn, in);
+      AfxMessageBox(_T("Incorrect password"));
       return FALSE;
     }
+#endif // KEEP_FILE_MODE_BWD_COMPAT
+    buf = NULL; // allocated by _readcbc - see there for apologia
+
+    fread(salt,    1, SaltLength, in);
+    fread(ipthing, 1, 8,          in);
+    LPCSTR pwd = LPCSTR(passwd);
+    unsigned char dummyType;
+
+    Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
+                                        salt, SaltLength);
+    if (_readcbc(in, buf, len,dummyType, fish, ipthing) == 0) {
+      delete fish;
+      delete[] buf; // if not yet allocated, delete[] NULL, which is OK
+      return FALSE;
+    }
+    delete fish;
+    fclose(in);
+  } else {
+    ErrorMessages(fn, in);
+    return FALSE;
+  }
 
   int suffix_len = strlen(CIPHERTEXT_SUFFIX);
   int filepath_len = fn.GetLength();
@@ -276,8 +276,8 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
   if (out != NULL) {
     fwrite(buf, 1, len, out);
     fclose(out);
-    } else
-      ErrorMessages(out_fn, out);
+  } else
+    ErrorMessages(out_fn, out);
 
   delete[] buf; // allocated by _readcbc
   return TRUE;

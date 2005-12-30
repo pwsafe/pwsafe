@@ -8,6 +8,7 @@
 #include "PWSfile.h"
 #include "TwoFish.h"
 #include "sha256.h"
+#include "hmac.h"
 
 class PWSfileV3 : public PWSfile {
  public:
@@ -26,7 +27,7 @@ class PWSfileV3 : public PWSfile {
  private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
-  unsigned char m_L[32]; // for HMAC
+  HMAC_SHA256 hmac;
   CMyString m_prefString; // prefererences stored in the file
   int WriteCBC(unsigned char type, const CString &data);
   int WriteCBC(unsigned char type, const unsigned char *data, unsigned int length);

@@ -5,7 +5,7 @@
 #ifndef _TWOFISH_H_
 #define _TWOFISH_H_
 
-typedef unsigned char block16[8];
+#include "Fish.h"
 
 #ifndef TWOFISH_SMALL
    struct twofish_key {
@@ -18,14 +18,15 @@ typedef unsigned char block16[8];
    };
 #endif
 
-class TwoFish
+class TwoFish : public Fish
 {
 public:
   enum {BLOCKSIZE=16};
   TwoFish(const unsigned char* key, int keylen);
-  ~TwoFish();
-  void Encrypt(const block16 in, block16 out);
-  void Decrypt(const block16 in, block16 out);
+  virtual ~TwoFish();
+  virtual void Encrypt(const unsigned char *in, unsigned char *out);
+  virtual void Decrypt(const unsigned char *in, unsigned char *out);
+  virtual unsigned int GetBlockSize() const {return BLOCKSIZE;}
 private:
   twofish_key key_schedule;
 };

@@ -158,6 +158,7 @@ const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
 int PWSfileV3::WriteHeader()
 {
+
   // See formatV3.txt for explanation of what's written here and why
   fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
 
@@ -182,12 +183,15 @@ int PWSfileV3::WriteHeader()
   TF.Encrypt(m_key + 16, B1B2 + 16);
   fwrite(B1B2, 1, sizeof(B1B2), m_fd);
 
-  GetRandomData(m_L, sizeof(m_L));
-  unsigned char B3B4[sizeof(m_L)];
+  unsigned char L[32]; // for HMAC
+  GetRandomData(L, sizeof(L));
+  unsigned char B3B4[sizeof(L)];
   ASSERT(sizeof(B3B4) == 32); // Generalize later
-  TF.Encrypt(m_L, B3B4);
-  TF.Encrypt(m_L + 16, B3B4 + 16);
+  TF.Encrypt(L, B3B4);
+  TF.Encrypt(L + 16, B3B4 + 16);
   fwrite(B3B4, 1, sizeof(B3B4), m_fd);
+
+  hmac.Init(L, sizeof(L));
 
   GetRandomData(m_ipthing, sizeof(m_ipthing));
   fwrite(m_ipthing, 1, sizeof(m_ipthing), m_fd);
@@ -227,11 +231,12 @@ int PWSfileV3::ReadHeader()
   TF.Decrypt(B1B2, m_key);
   TF.Decrypt(B1B2 + 16, m_key + 16);
 
-  unsigned char B3B4[sizeof(m_L)];
+  unsigned char L[32]; // for HMAC
+  unsigned char B3B4[sizeof(L)];
   ASSERT(sizeof(B3B4) == 32); // Generalize later
   fread(B3B4, 1, sizeof(B3B4), m_fd);
-  TF.Decrypt(B3B4, m_L);
-  TF.Decrypt(B3B4 + 16, m_L + 16);
+  TF.Decrypt(B3B4, L);
+  TF.Decrypt(B3B4 + 16, L + 16);
 
   fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
 

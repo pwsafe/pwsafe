@@ -17,8 +17,8 @@
 static void
 xormem(unsigned char* mem1, unsigned char* mem2, int length)
 {
-   for (int x=0;x<length;x++)
-      mem1[x] ^= mem2[x];
+  for (int x=0;x<length;x++)
+    mem1[x] ^= mem2[x];
 }
 
 
@@ -39,16 +39,14 @@ trashMemory(void* buffer, long length)
 {
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
-  if ( length != 0 )
-    {
-      const int numiter = 30;
-      for (int x=0; x<numiter; x++)
-        {
-          memset(buffer, 0x00, length);
-          memset(buffer, 0xFF, length);
-          memset(buffer, 0x00, length);
-        }
+  if ( length != 0 ) {
+    const int numiter = 30;
+    for (int x=0; x<numiter; x++) {
+      memset(buffer, 0x00, length);
+      memset(buffer, 0xFF, length);
+      memset(buffer, 0x00, length);
     }
+  }
 }
 
 void
@@ -63,10 +61,10 @@ trashMemory( LPTSTR buffer, long length )
 */
 void burnStack(unsigned long len)
 {
-   unsigned char buf[32];
-   trashMemory(buf, sizeof(buf));
-   if (len > (unsigned long)sizeof(buf))
-      burnStack(len - sizeof(buf));
+  unsigned char buf[32];
+  trashMemory(buf, sizeof(buf));
+  if (len > (unsigned long)sizeof(buf))
+    burnStack(len - sizeof(buf));
 }
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
@@ -76,39 +74,39 @@ GenRandhash(const CMyString &a_passkey,
             unsigned char* a_randhash)
 {
   const LPCSTR pkey = (const LPCSTR)a_passkey;
-   /*
-     I'm not quite sure what this is doing, so as I figure out each piece,
-     I'll add more comments {jpr}
-   */
+  /*
+    I'm not quite sure what this is doing, so as I figure out each piece,
+    I'll add more comments {jpr}
+  */
 
-   /*
-     tempSalt <- H(a_randstuff + a_passkey)
-   */
-   SHA1 keyHash;
-   keyHash.Update(a_randstuff, StuffSize);
-   keyHash.Update((const unsigned char*)pkey, a_passkey.GetLength());
+  /*
+    tempSalt <- H(a_randstuff + a_passkey)
+  */
+  SHA1 keyHash;
+  keyHash.Update(a_randstuff, StuffSize);
+  keyHash.Update((const unsigned char*)pkey, a_passkey.GetLength());
 
-   unsigned char tempSalt[20]; // HashSize
-   keyHash.Final(tempSalt);
+  unsigned char tempSalt[20]; // HashSize
+  keyHash.Final(tempSalt);
 
-   /*
-     tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
-   */
+  /*
+    tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
+  */
 	
-   BlowFish Cipher(tempSalt, sizeof(tempSalt));
+  BlowFish Cipher(tempSalt, sizeof(tempSalt));
 	
-   unsigned char tempbuf[StuffSize];
-   memcpy((char*)tempbuf, (char*)a_randstuff, StuffSize);
+  unsigned char tempbuf[StuffSize];
+  memcpy((char*)tempbuf, (char*)a_randstuff, StuffSize);
 
-   for (int x=0; x<1000; x++)
-      Cipher.Encrypt(tempbuf, tempbuf);
+  for (int x=0; x<1000; x++)
+    Cipher.Encrypt(tempbuf, tempbuf);
 
-   /*
-     hmm - seems we're not done with this context
-     we throw the tempbuf into the hasher, and extract a_randhash
-   */
-   keyHash.Update(tempbuf, StuffSize);
-   keyHash.Final(a_randhash);
+  /*
+    hmm - seems we're not done with this context
+    we throw the tempbuf into the hasher, and extract a_randhash
+  */
+  keyHash.Update(tempbuf, StuffSize);
+  keyHash.Final(a_randhash);
 }
 
 
@@ -116,10 +114,10 @@ GenRandhash(const CMyString &a_passkey,
 unsigned char
 randchar()
 {
-   int	r;
-   while ((r = rand()) % 257 == 256)
-      ; // 257?!?
-   return (unsigned char)r;
+  int	r;
+  while ((r = rand()) % 257 == 256)
+    ; // 257?!?
+  return (unsigned char)r;
 }
 
 // See the MSDN documentation for RtlGenRandom. We will try to load it
@@ -134,8 +132,7 @@ static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = LoadRandomDataFuncti
 static BOOLEAN __stdcall MyGetRandomData( PVOID buffer, ULONG length )
 {
   BYTE * const pb = reinterpret_cast<BYTE *>( buffer );
-  for( unsigned int ib = 0; ib < length; ++ib )
-  {
+  for( unsigned int ib = 0; ib < length; ++ib ) {
     pb[ib] = randchar();
   }
   return TRUE;
@@ -147,12 +144,10 @@ static BOOLEAN __stdcall LoadRandomDataFunction(void * pv, ULONG cb)
   pfnGetRandomData = MyGetRandomData;
 
   HMODULE hLib = LoadLibrary("ADVAPI32.DLL");
-  if (hLib)
-  {
+  if (hLib) {
     BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG);
     pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
-    if (pfnGetRandomDataT)
-    {
+    if (pfnGetRandomDataT) {
       pfnGetRandomData = pfnGetRandomDataT;
     }
   }
@@ -178,8 +173,7 @@ void GetRandomData( void * const buffer, unsigned long length )
   static BYTE rgbRandomData[cbRandomData];
   static ibRandomData = cbRandomData;
 
-  if( ibRandomData > ( cbRandomData - sizeof( unsigned int ) ) )
-  {
+  if( ibRandomData > ( cbRandomData - sizeof( unsigned int ) ) ) {
     // no data left, refill the buffer
     GetRandomData( rgbRandomData, cbRandomData );
     ibRandomData = 0;
@@ -199,68 +193,61 @@ void GetRandomData( void * const buffer, unsigned long length )
 unsigned int
 RangeRand(size_t len)
 {
-   unsigned int      r;
-   const unsigned int ceil = UINT_MAX - (UINT_MAX % len) - 1;
-   while ((r = MyRand()) > ceil)
-      ;
-   return(r%len);
+  unsigned int      r;
+  const unsigned int ceil = UINT_MAX - (UINT_MAX % len) - 1;
+  while ((r = MyRand()) > ceil)
+    ;
+  return(r%len);
 }
 
 int
-_writecbc(FILE *fp,
-          const unsigned char* buffer,
-          int length, unsigned char type,
-	  const unsigned char *pass, int passlen,
-          const unsigned char* salt, int saltlen,
-          unsigned char* cbcbuffer)
+_writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
+          Fish *Algorithm, unsigned char* cbcbuffer)
 {
-  const unsigned int BS = BlowFish::BLOCKSIZE;
+  const unsigned int BS = Algorithm->GetBlockSize();
   int numWritten = 0;
 
-  int BlockLength = ((length+(BS-1))/BS)*BS;
+  unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
   if (BlockLength == 0)
     BlockLength = BS;
 
-  BlowFish *Algorithm = BlowFish::MakeBlowFish(pass, passlen, salt, saltlen);
+  // some trickery to avoid new/delete
+  unsigned char block1[16];
+
+  unsigned char *curblock = NULL;
+  ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
 
   // First encrypt and write the length of the buffer
-  unsigned char lengthblock[BS];
+  curblock = block1;
   // Fill unused bytes of length with random data, to make
   // a dictionary attack harder
-  GetRandomData(lengthblock, sizeof(lengthblock));
+  GetRandomData(curblock, BS);
   // block length overwrites 4 bytes of the above randomness.
-  putInt32( lengthblock, length );
+  putInt32(curblock, length);
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
-  lengthblock[sizeof(length)] = type;
+  curblock[sizeof(length)] = type;
 
-  xormem(lengthblock, cbcbuffer, BS); // do the CBC thing
-  Algorithm->Encrypt(lengthblock, lengthblock);
-  memcpy(cbcbuffer, lengthblock, BS); // update CBC for next round
+  xormem(curblock, cbcbuffer, BS); // do the CBC thing
+  Algorithm->Encrypt(curblock, curblock);
+  memcpy(cbcbuffer, curblock, BS); // update CBC for next round
 
-  numWritten = fwrite(lengthblock, 1, BS, fp);
-
-  trashMemory(lengthblock, BS);
+  numWritten = fwrite(curblock, 1, BS, fp);
 
   // Now, encrypt and write the buffer
-  unsigned char curblock[BS];
-  for (int x=0;x<BlockLength;x+=BS)
-    {
-      if ((length == 0) || ((length%BS != 0) && (length-x<BS)))
-        {
-          //This is for an uneven last block
-          memset(curblock, 0, BS);
-          memcpy(curblock, buffer+x, length % BS);
-        }
-      else
-        memcpy(curblock, buffer+x, BS);
-      xormem(curblock, cbcbuffer, BS);
-      Algorithm->Encrypt(curblock, curblock);
-      memcpy(cbcbuffer, curblock, BS);
-      numWritten += fwrite(curblock, 1, BS, fp);
-    }
+  for (unsigned int x=0; x<BlockLength; x+=BS) {
+    if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
+      //This is for an uneven last block
+      memset(curblock, 0, BS);
+      memcpy(curblock, buffer+x, length % BS);
+    } else
+      memcpy(curblock, buffer+x, BS);
+    xormem(curblock, cbcbuffer, BS);
+    Algorithm->Encrypt(curblock, curblock);
+    memcpy(cbcbuffer, curblock, BS);
+    numWritten += fwrite(curblock, 1, BS, fp);
+  }
   trashMemory(curblock, BS);
-  delete Algorithm;
   return numWritten;
 }
 
@@ -283,29 +270,35 @@ _writecbc(FILE *fp,
 int
 _readcbc(FILE *fp,
          unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
-         const unsigned char *pass, int passlen,
-         const unsigned char* salt, int saltlen,
-         unsigned char* cbcbuffer)
+         Fish *Algorithm, unsigned char* cbcbuffer)
 {
-  const unsigned int BS = BlowFish::BLOCKSIZE;
-  int numRead = 0;
+  const unsigned int BS = Algorithm->GetBlockSize();
+  unsigned int numRead = 0;
+  
+  // some trickery to avoid new/delete
+  unsigned char block1[16];
+  unsigned char block2[16];
+  unsigned char block3[16];
+  unsigned char *lengthblock = NULL;
 
-  unsigned char lengthblock[BS];
-  unsigned char lcpy[BS];
+  ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
+  lengthblock = block1;
+
 
   buffer_len = 0;
-  numRead = fread(lengthblock, 1, sizeof lengthblock, fp);
-  if (numRead != BS)
+  numRead = fread(lengthblock, 1, BS, fp);
+  if (numRead != BS) {
+    trashMemory(lengthblock, BS);
     return 0;
+  }
+  unsigned char *lcpy = block2;
   memcpy(lcpy, lengthblock, BS);
-
-  BlowFish *Algorithm = BlowFish::MakeBlowFish(pass, passlen, salt, saltlen);
 
   Algorithm->Decrypt(lengthblock, lengthblock);
   xormem(lengthblock, cbcbuffer, BS);
   memcpy(cbcbuffer, lcpy, BS);
 
-  int length = getInt32( lengthblock );
+  int length = getInt32(lengthblock);
 
   // new for 2.0 -- lengthblock[4..7] previously set to zero
   type = lengthblock[sizeof(int)]; // type is first byte after the length
@@ -313,15 +306,13 @@ _readcbc(FILE *fp,
   trashMemory(lengthblock, BS);
   trashMemory(lcpy, BS);
 
-
   if (length < 0) {
-    delete Algorithm;
     buffer = NULL;
     buffer_len = 0;
     return 0;
   }
 
-  int BlockLength = ((length+(BS-1))/BS)*BS;
+  unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
   // Following is meant for lengths < BS,
   // but results in a block being read even
   // if length is zero. This is wasteful,
@@ -332,19 +323,16 @@ _readcbc(FILE *fp,
   buffer_len = length;
   buffer = new unsigned char[BlockLength]; // so we lie a little...
 
-
-  unsigned char tempcbc[BS];
+  unsigned char *tempcbc = block3;
   numRead += fread(buffer, 1, BlockLength, fp);
-  for (int x=0;x<BlockLength;x+=BS)
-    {
-      memcpy(tempcbc, buffer+x, BS);
-      Algorithm->Decrypt(buffer+x, buffer+x);
-      xormem(buffer+x, cbcbuffer, BS);
-      memcpy(cbcbuffer, tempcbc, BS);
-    }
+  for (unsigned int x=0; x<BlockLength; x+=BS) {
+    memcpy(tempcbc, buffer+x, BS);
+    Algorithm->Decrypt(buffer+x, buffer+x);
+    xormem(buffer+x, cbcbuffer, BS);
+    memcpy(cbcbuffer, tempcbc, BS);
+  }
 	
   trashMemory(tempcbc, BS);
-  delete Algorithm;
   if (length == 0) {
     // delete[] buffer here since caller will see zero length
     delete[] buffer;
@@ -357,13 +345,13 @@ _readcbc(FILE *fp,
  */
 long fileLength( FILE *fp )
 {
-	long	pos;
-	long	len;
+  long	pos;
+  long	len;
 
-	pos = ftell( fp );
-	fseek( fp, 0, SEEK_END );
-	len	= ftell( fp );
-	fseek( fp, pos, SEEK_SET );
+  pos = ftell( fp );
+  fseek( fp, 0, SEEK_END );
+  len	= ftell( fp );
+  fseek( fp, pos, SEEK_SET );
 
-	return len;
+  return len;
 }

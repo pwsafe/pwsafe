@@ -619,12 +619,12 @@ TwoFish::~TwoFish()
   trashMemory(&key_schedule, sizeof(key_schedule));
 }
 
-void TwoFish::Encrypt(const block16 in, block16 out)
+void TwoFish::Encrypt(const unsigned char *in, unsigned char *out)
 {
   twofish_ecb_encrypt(in, out, &key_schedule);
 }
 
-void TwoFish::Decrypt(const block16 in, block16 out)
+void TwoFish::Decrypt(const unsigned char *in, unsigned char *out)
 {
   twofish_ecb_decrypt(in, out, &key_schedule);
 }
