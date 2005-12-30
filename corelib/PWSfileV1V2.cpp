@@ -192,9 +192,12 @@ int PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
   LPCSTR passstr = LPCSTR(m_passkey);
   LPCSTR datastr = LPCSTR(data);
 
-  return _writecbc(m_fd, (const unsigned char *)datastr, data.GetLength(), type,
-		   (const unsigned char *)passstr, m_passkey.GetLength(),
-		   m_salt, SaltLength, m_ipthing);
+  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
+                                          m_passkey.GetLength(), m_salt, SaltLength);
+  int numWritten = _writecbc(m_fd, (const unsigned char *)datastr, data.GetLength(), type,
+                             fish, m_ipthing);
+  delete fish;
+  return numWritten;
 }
 
 int PWSfileV1V2::WriteCBC(unsigned char type, const unsigned char *data, unsigned int length)
@@ -203,10 +206,12 @@ int PWSfileV1V2::WriteCBC(unsigned char type, const unsigned char *data, unsigne
   // to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
   LPCSTR passstr = LPCSTR(m_passkey);
+  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
+                                          m_passkey.GetLength(), m_salt, SaltLength);
 
-  return _writecbc(m_fd, data, length, type,
-		   (const unsigned char *)passstr, m_passkey.GetLength(),
-		   m_salt, SaltLength, m_ipthing);
+  int numWritten = _writecbc(m_fd, data, length, type, fish, m_ipthing);
+  delete fish;
+  return numWritten;
 }
 
 
@@ -288,9 +293,10 @@ PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
   unsigned int buffer_len = 0;
   int retval;
 
-  retval = _readcbc(m_fd, buffer, buffer_len, type,
-		   (const unsigned char *)passstr, m_passkey.GetLength(),
-		   m_salt, SaltLength, m_ipthing);
+  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr, m_passkey.GetLength(),
+                                          m_salt, SaltLength);
+  retval = _readcbc(m_fd, buffer, buffer_len, type, fish, m_ipthing);
+  delete fish;
   if (buffer_len > 0) {
     CMyString str(LPCSTR(buffer), buffer_len);
     data = str;

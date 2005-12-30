@@ -15,8 +15,10 @@ class HMAC_SHA256
 {
 public:
   enum {HASHLEN = 32};
-  HMAC_SHA256(unsigned char *key, unsigned long keylen);
+  HMAC_SHA256(const unsigned char *key, unsigned long keylen); // Calls Init
+  HMAC_SHA256(); // Init needs to be called separately
   ~HMAC_SHA256();
+  void Init(const unsigned char *key, unsigned long keylen);
   void Update(const unsigned char *in, unsigned long inlen);
   void Final(unsigned char digest[HASHLEN]);
 private:

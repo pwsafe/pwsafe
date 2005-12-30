@@ -9,7 +9,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 2.15
+RELEASENAME = 3.0Beta1
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -74,10 +74,10 @@ src-release:
 	 $(RM) -f Release/* Debug/*; \
 	 find . \( -name '*~' -o -name '*.bak' -o -name \*.aps -o \
 		   -name '*.plg' -o -name '*.ncb' -o -name '*.opt' -o \
-		   -name '*.clw' -o -name '*.chm' \
-		   -name '*.rej' -o -name '*.orig' \
-		   -name '.#*' -o -name '#*#' \
-                   -name '*.sav' -o -name '*.old' \) | xargs $(RM) -f; \
+		   -name '*.clw' -o -name '*.chm' -o \
+		   -name '*.rej' -o -name '*.orig' -o \
+		   -name '.#*' -o -name '#*#' -o -name '*.pch' -o \
+           -name '*.sav' -o -name '*.old' \) | xargs $(RM) -f; \
 	 $(RM) -f Release/* Debug/* *~ *.bak *.sav *.old ; \
 	 $(RM) -f corelib/Release/* corelib/Debug/* test/Debug/* ; \
 	 find . -type d -name CVS | xargs $(RM) -rf)
@@ -86,6 +86,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.19  2005/12/30 13:06:49  ronys
+# Virtualize *Fish classes so that _read/_writecbc can work with both Blow and TwoFish
+#
 # Revision 1.18  2005/12/02 06:32:30  ronys
 # Added dbl-click to bowse option, thanks to Laszlo Gombos
 #
