@@ -1,4 +1,5 @@
 #include "PWSfileV3.h"
+#include "UUIDGen.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -155,6 +156,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
 }
 
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
+const int VersionNum = 0x0300;
 
 int PWSfileV3::WriteHeader()
 {
@@ -197,6 +199,32 @@ int PWSfileV3::WriteHeader()
   fwrite(m_ipthing, 1, sizeof(m_ipthing), m_fd);
 
   // write some actual data (at last!)
+  TwoFish DataEncryptor(m_key, sizeof(m_key));
+  int numWritten = 0;
+  // Write Version Number
+  numWritten = _writecbc(m_fd, (const unsigned char *)&VersionNum,
+                         sizeof(VersionNum), 0, &DataEncryptor, m_ipthing);
+  hmac.Update((const unsigned char *)&VersionNum, sizeof(VersionNum));
+
+  // Write UUID
+  // We should probably reuse the UUID when saving an existing
+  // database, and generate a new one only from new dbs.
+  // For now, this is Good Enough.
+  uuid_array_t uuid_array;
+  CUUIDGen uuid;
+  
+  uuid.GetUUID(uuid_array);
+  
+  numWritten = _writecbc(m_fd, uuid_array, sizeof(uuid_array),
+                         0, &DataEncryptor, m_ipthing);
+  if (numWritten != sizeof(uuid_array)) {
+    fclose(m_fd);
+    return FAILURE;
+  }
+  hmac.Update(uuid_array, sizeof(uuid_array));
+
+  // Write (non default) user preferences
+  
   return SUCCESS;
 }
 
