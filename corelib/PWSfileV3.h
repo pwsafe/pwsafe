@@ -27,11 +27,12 @@ class PWSfileV3 : public PWSfile {
  private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
-  HMAC_SHA256 hmac;
+  HMAC_SHA256 m_hmac;
   CMyString m_prefString; // prefererences stored in the file
-  int WriteCBC(unsigned char type, const CString &data);
-  int WriteCBC(unsigned char type, const unsigned char *data, unsigned int length);
-  int ReadCBC( unsigned char &type, CMyString &data);
+  virtual int WriteCBC(unsigned char type, const CString &data, Fish *fish);
+  virtual int WriteCBC(unsigned char type, const unsigned char *data,
+                       unsigned int length, Fish *fish);
+  virtual int ReadCBC( unsigned char &type, CMyString &data, Fish *fish);
   int WriteHeader();
   int ReadHeader();
   void StretchKey(const unsigned char *salt, unsigned long saltLen,

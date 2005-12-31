@@ -11,6 +11,7 @@ PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
   : PWSfile(filename,mode)
 {
   m_curversion = version;
+  m_IV = m_ipthing;
 }
 
 PWSfileV3::~PWSfileV3()
@@ -83,16 +84,19 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
    return SUCCESS;
 }
 
-int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
+int PWSfileV3::WriteCBC(unsigned char type, const CString &data, Fish *fish)
 {
-  // XXX TBD
-  return SUCCESS;
+  LPCSTR d = LPCSTR(data);
+  m_hmac.Update((const unsigned char *)d, data.GetLength());
+
+  return PWSfile::WriteCBC(type, data, fish);
 }
 
-int PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data, unsigned int length)
+int PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
+                        unsigned int length, Fish *fish)
 {
-  // XXX TBD
-  return SUCCESS;
+  m_hmac.Update(data, length);
+  return PWSfile::WriteCBC(type, data, length, fish);
 }
 
 
@@ -107,15 +111,12 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 }
 
 int
-PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
+PWSfileV3::ReadCBC(unsigned char &type, CMyString &data, Fish *fish)
 {
-  // XXX TBD
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
-
-  return SUCCESS;
+  LPCSTR d = LPCSTR(data);
+  m_hmac.Update((const unsigned char *)d, data.GetLength());
+  
+  return PWSfile::ReadCBC(type, data, fish);
 }
 
 
@@ -193,7 +194,7 @@ int PWSfileV3::WriteHeader()
   TF.Encrypt(L + 16, B3B4 + 16);
   fwrite(B3B4, 1, sizeof(B3B4), m_fd);
 
-  hmac.Init(L, sizeof(L));
+  m_hmac.Init(L, sizeof(L));
 
   GetRandomData(m_ipthing, sizeof(m_ipthing));
   fwrite(m_ipthing, 1, sizeof(m_ipthing), m_fd);
@@ -202,10 +203,9 @@ int PWSfileV3::WriteHeader()
   TwoFish DataEncryptor(m_key, sizeof(m_key));
   int numWritten = 0;
   // Write Version Number
-  numWritten = _writecbc(m_fd, (const unsigned char *)&VersionNum,
-                         sizeof(VersionNum), 0, &DataEncryptor, m_ipthing);
-  hmac.Update((const unsigned char *)&VersionNum, sizeof(VersionNum));
-
+  numWritten = WriteCBC(0, (const unsigned char *)&VersionNum,
+                        sizeof(VersionNum), &DataEncryptor);
+  
   // Write UUID
   // We should probably reuse the UUID when saving an existing
   // database, and generate a new one only from new dbs.
@@ -215,16 +215,20 @@ int PWSfileV3::WriteHeader()
   
   uuid.GetUUID(uuid_array);
   
-  numWritten = _writecbc(m_fd, uuid_array, sizeof(uuid_array),
-                         0, &DataEncryptor, m_ipthing);
-  if (numWritten != sizeof(uuid_array)) {
+  numWritten += WriteCBC(0, uuid_array, sizeof(uuid_array),
+                         &DataEncryptor);
+
+  if (numWritten != sizeof(VersionNum) + sizeof(uuid_array)) {
     fclose(m_fd);
     return FAILURE;
   }
-  hmac.Update(uuid_array, sizeof(uuid_array));
 
   // Write (non default) user preferences
-  
+  numWritten = WriteCBC(0, m_prefString, &DataEncryptor);
+  if (numWritten != m_prefString.GetLength())
+    fclose(m_fd);
+    return FAILURE;
+  }
   return SUCCESS;
 }
 

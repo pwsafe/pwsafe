@@ -10,6 +10,7 @@ PWSfileV1V2::PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version
   : PWSfile(filename,mode)
 {
   m_curversion = version;
+  m_IV = m_ipthing;
 }
 
 PWSfileV1V2::~PWSfileV1V2()
@@ -22,6 +23,7 @@ static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
 				  " or later");
 // Used to specify the exact version
 static const CMyString VersionString("2.0");
+static const CMyString AltVersionString("pre-2.0"); 
 
 int PWSfileV1V2::WriteV2Header()
 {
@@ -73,7 +75,10 @@ int PWSfileV1V2::ReadV2Header()
   m_curversion = sv;
   if (status == SUCCESS) {
     const CMyString version = header.GetPassword();
-    status = (version == VersionString) ? SUCCESS : WRONG_VERSION;
+    // Compare to AltVersionString due to silly mistake
+    // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
+    status = (version == VersionString || version == AltVersionString)
+      ? SUCCESS : WRONG_VERSION;
   }
   if (status == SUCCESS)
     m_prefString = header.GetNotes();
@@ -184,22 +189,6 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
   }
 }
 
-int PWSfileV1V2::WriteCBC(unsigned char type, const CString &data, Fish *fish)
-{
-  // We do a double cast because the LPCSTR cast operator is overridden
-  // by the CString class to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR datastr = LPCSTR(data);
-
-  return WriteCBC(type, (const unsigned char *)datastr, data.GetLength(), fish);
-}
-
-int PWSfileV1V2::WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length, Fish *fish)
-{
-  return _writecbc(m_fd, data, length, type, fish, m_ipthing);
-}
-
 
 int PWSfileV1V2::WriteRecord(const CItemData &item)
 {
@@ -275,30 +264,6 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   delete fish;
   return status;
 }
-
-int
-PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data, Fish *fish)
-{
-
-  unsigned char *buffer = NULL;
-  unsigned int buffer_len = 0;
-  int retval;
-
-  retval = _readcbc(m_fd, buffer, buffer_len, type, fish, m_ipthing);
-
-  if (buffer_len > 0) {
-    CMyString str(LPCSTR(buffer), buffer_len);
-    data = str;
-    trashMemory(buffer, buffer_len);
-    delete[] buffer;
-  } else {
-    data = _T("");
-    // no need to delete[] buffer, since _readcbc will not allocate if
-    // buffer_len is zero
-  }
-  return retval;
-}
-
 
 
 int PWSfileV1V2::ReadRecord(CItemData &item)
