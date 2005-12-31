@@ -26,9 +26,6 @@ class PWSfileV1V2 : public PWSfile {
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];
   unsigned char m_ipthing[BlowFish::BLOCKSIZE]; // for CBC
-  int WriteCBC(unsigned char type, const CString &data, Fish *fish);
-  int WriteCBC(unsigned char type, const unsigned char *data, unsigned int length, Fish *fish);
-  int ReadCBC( unsigned char &type, CMyString &data, Fish *fish);
   int WriteV2Header();
   int ReadV2Header();
 };

@@ -41,6 +41,10 @@ class PWSfile {
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
+  virtual int WriteCBC(unsigned char type, const CString &data, Fish *fish);
+  virtual int WriteCBC(unsigned char type, const unsigned char *data,
+                       unsigned int length, Fish *fish);
+  virtual int ReadCBC( unsigned char &type, CMyString &data, Fish *fish);
   const CMyString m_filename;
   CMyString m_passkey;
   FILE *m_fd;
@@ -48,6 +52,7 @@ class PWSfile {
   const RWmode m_rw;
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
+  unsigned char *m_IV; // points to correct m_ipthing for *CBC()
 };
 
 #endif PWSfile_h

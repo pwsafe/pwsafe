@@ -75,6 +75,45 @@ int PWSfile::Close()
   return SUCCESS;
 }
 
+int PWSfile::WriteCBC(unsigned char type, const CString &data, Fish *fish)
+{
+  // We do a double cast because the LPCSTR cast operator is overridden
+  // by the CString class to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR datastr = LPCSTR(data);
+
+  return WriteCBC(type, (const unsigned char *)datastr, data.GetLength(), fish);
+}
+
+int PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
+                          unsigned int length, Fish *fish)
+{
+  return _writecbc(m_fd, data, length, type, fish, m_IV);
+}
+
+int PWSfile::ReadCBC(unsigned char &type, CMyString &data, Fish *fish)
+{
+
+  unsigned char *buffer = NULL;
+  unsigned int buffer_len = 0;
+  int retval;
+
+  retval = _readcbc(m_fd, buffer, buffer_len, type, fish, m_IV);
+
+  if (buffer_len > 0) {
+    CMyString str(LPCSTR(buffer), buffer_len);
+    data = str;
+    trashMemory(buffer, buffer_len);
+    delete[] buffer;
+  } else {
+    data = _T("");
+    // no need to delete[] buffer, since _readcbc will not allocate if
+    // buffer_len is zero
+  }
+  return retval;
+}
+
+
 int PWSfile::CheckPassword(const CMyString &filename, const CMyString &passkey)
 {
   // XXX start with V3 check
