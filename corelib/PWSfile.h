@@ -9,6 +9,8 @@
 #include "ItemData.h"
 #include "MyString.h"
 
+class Fish;
+
 class PWSfile {
  public:
   enum VERSION {V17, V20, VCURRENT = V20, V30,
@@ -41,10 +43,10 @@ class PWSfile {
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
-  virtual int WriteCBC(unsigned char type, const CString &data, Fish *fish);
+  virtual int WriteCBC(unsigned char type, const CString &data);
   virtual int WriteCBC(unsigned char type, const unsigned char *data,
-                       unsigned int length, Fish *fish);
-  virtual int ReadCBC( unsigned char &type, CMyString &data, Fish *fish);
+                       unsigned int length);
+  virtual int ReadCBC( unsigned char &type, CMyString &data);
   const CMyString m_filename;
   CMyString m_passkey;
   FILE *m_fd;
@@ -53,6 +55,7 @@ class PWSfile {
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
+  Fish *m_fish;
 };
 
 #endif PWSfile_h

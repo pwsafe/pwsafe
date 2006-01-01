@@ -13,7 +13,9 @@
 class PWSfileV3 : public PWSfile {
  public:
   static int CheckPassword(const CMyString &filename,
-                           const CMyString &passkey, FILE *a_fd = NULL);
+                           const CMyString &passkey,
+                           FILE *a_fd = NULL,
+                           unsigned char *aPtag = NULL);
 
   PWSfileV3(const CMyString &filename, RWmode mode, VERSION version);
   ~PWSfileV3();
@@ -29,14 +31,15 @@ class PWSfileV3 : public PWSfile {
   unsigned char m_key[32];
   HMAC_SHA256 m_hmac;
   CMyString m_prefString; // prefererences stored in the file
-  virtual int WriteCBC(unsigned char type, const CString &data, Fish *fish);
+  virtual int WriteCBC(unsigned char type, const CString &data);
   virtual int WriteCBC(unsigned char type, const unsigned char *data,
-                       unsigned int length, Fish *fish);
-  virtual int ReadCBC( unsigned char &type, CMyString &data, Fish *fish);
+                       unsigned int length);
+  virtual int ReadCBC( unsigned char &type, CMyString &data);
   int WriteHeader();
   int ReadHeader();
-  void StretchKey(const unsigned char *salt, unsigned long saltLen,
-                  unsigned char *Ptag);
+  static void StretchKey(const unsigned char *salt, unsigned long saltLen,
+                         const unsigned char *passkey, unsigned long passLen,
+                         unsigned char *Ptag);
 };
 
 #endif PWSfileV3_h

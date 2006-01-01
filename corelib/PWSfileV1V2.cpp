@@ -92,6 +92,10 @@ int PWSfileV1V2::Open(const CMyString &passkey)
   ASSERT(m_curversion == V17 || m_curversion == V20);
 
   m_passkey = passkey;
+  // We do a double cast because the LPCSTR cast operator
+  // is overridden by the CString class to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCSTR passstr = LPCSTR(m_passkey);
 
   if (m_rw == Write) {
 #ifdef UNICODE
@@ -121,6 +125,9 @@ int PWSfileV1V2::Open(const CMyString &passkey)
 	
     GetRandomData( m_ipthing, 8);
     fwrite(m_ipthing, 1, 8, m_fd);
+    m_fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
+                                    m_passkey.GetLength(),
+                                    m_salt, SaltLength);
     if (m_curversion == V20) {
       status = WriteV2Header();
     }
@@ -141,6 +148,9 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     fread(m_salt, 1, SaltLength, m_fd);
     fread(m_ipthing, 1, 8, m_fd);
 
+    m_fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
+                                    m_passkey.GetLength(),
+                                    m_salt, SaltLength);
     if (m_curversion == V20)
       status = ReadV2Header();
   } // read mode
@@ -196,13 +206,6 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   ASSERT(m_curversion != UNKNOWN_VERSION);
   int status = SUCCESS;
 
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
-  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr, m_passkey.GetLength(),
-                                          m_salt, SaltLength);
-
 
   switch (m_curversion) {
   case V17: {
@@ -238,30 +241,29 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
     }
     unsigned char dummy_type;
     GetRandomData(&dummy_type, 1);
-    WriteCBC(dummy_type, name, fish);
-    WriteCBC(CItemData::PASSWORD, item.GetPassword(), fish);
-    WriteCBC(CItemData::NOTES, item.GetNotes(), fish);
+    WriteCBC(dummy_type, name);
+    WriteCBC(CItemData::PASSWORD, item.GetPassword());
+    WriteCBC(CItemData::NOTES, item.GetNotes());
   }
     break;
   case V20: {
     {
       uuid_array_t uuid_array;
       item.GetUUID(uuid_array);
-      WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array), fish);
+      WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
     }
-    WriteCBC(CItemData::GROUP, item.GetGroup(), fish);
-    WriteCBC(CItemData::TITLE, item.GetTitle(), fish);
-    WriteCBC(CItemData::USER, item.GetUser(), fish);
-    WriteCBC(CItemData::PASSWORD, item.GetPassword(), fish);
-    WriteCBC(CItemData::NOTES, item.GetNotes(), fish);
-    WriteCBC(CItemData::END, _T(""), fish);
+    WriteCBC(CItemData::GROUP, item.GetGroup());
+    WriteCBC(CItemData::TITLE, item.GetTitle());
+    WriteCBC(CItemData::USER, item.GetUser());
+    WriteCBC(CItemData::PASSWORD, item.GetPassword());
+    WriteCBC(CItemData::NOTES, item.GetNotes());
+    WriteCBC(CItemData::END, _T(""));
   }
     break;
   default:
     ASSERT(0);
     status = UNSUPPORTED_VERSION;
   }
-  delete fish;
   return status;
 }
 
@@ -284,11 +286,11 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   switch (m_curversion) {
   case V17: {
     // type is meaningless, but why write two versions of ReadCBC?
-    numread += ReadCBC(type, tempdata, fish);
+    numread += ReadCBC(type, tempdata);
     item.SetName(tempdata, m_defusername);
-    numread += ReadCBC(type, tempdata, fish);
+    numread += ReadCBC(type, tempdata);
     item.SetPassword(tempdata);
-    numread += ReadCBC(type, tempdata, fish);
+    numread += ReadCBC(type, tempdata);
     item.SetNotes(tempdata);
     // No UUID, so we create one here
     item.CreateUUID();
@@ -300,7 +302,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
     int fieldLen; // zero means end of file reached
     bool endFound = false; // set to true when record end detected - happy end
     do {
-      fieldLen = ReadCBC(type, tempdata, fish);
+      fieldLen = ReadCBC(type, tempdata);
       if (fieldLen > 0) {
 	numread += fieldLen;
 	switch (type) {

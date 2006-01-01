@@ -56,7 +56,7 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 PWSfile::PWSfile(const CMyString &filename, RWmode mode)
   : m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
-    m_fd(NULL), m_prefString(_T(""))
+    m_fd(NULL), m_prefString(_T("")), m_fish(NULL)
 {
 }
 
@@ -68,6 +68,8 @@ PWSfile::~PWSfile()
 
 int PWSfile::Close()
 {
+  delete m_fish;
+  m_fish = NULL;
   if (m_fd != NULL) {
     fclose(m_fd);
     m_fd = NULL;
@@ -75,30 +77,33 @@ int PWSfile::Close()
   return SUCCESS;
 }
 
-int PWSfile::WriteCBC(unsigned char type, const CString &data, Fish *fish)
+int PWSfile::WriteCBC(unsigned char type, const CString &data)
 {
   // We do a double cast because the LPCSTR cast operator is overridden
   // by the CString class to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
   LPCSTR datastr = LPCSTR(data);
 
-  return WriteCBC(type, (const unsigned char *)datastr, data.GetLength(), fish);
+  return WriteCBC(type, (const unsigned char *)datastr,
+                  data.GetLength());
 }
 
 int PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length, Fish *fish)
+                          unsigned int length)
 {
-  return _writecbc(m_fd, data, length, type, fish, m_IV);
+  ASSERT(m_fish != NULL && m_IV != NULL);
+  return _writecbc(m_fd, data, length, type, m_fish, m_IV);
 }
 
-int PWSfile::ReadCBC(unsigned char &type, CMyString &data, Fish *fish)
+int PWSfile::ReadCBC(unsigned char &type, CMyString &data)
 {
 
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
   int retval;
 
-  retval = _readcbc(m_fd, buffer, buffer_len, type, fish, m_IV);
+  ASSERT(m_fish != NULL && m_IV != NULL);
+  retval = _readcbc(m_fd, buffer, buffer_len, type, m_fish, m_IV);
 
   if (buffer_len > 0) {
     CMyString str(LPCSTR(buffer), buffer_len);
