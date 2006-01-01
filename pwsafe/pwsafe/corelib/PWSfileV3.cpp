@@ -46,7 +46,7 @@ int PWSfileV3::Open(const CMyString &passkey)
 
     if (m_fd == NULL)
       return CANT_OPEN_FILE;
-    status = CheckPassword(m_filename, m_passkey, m_fd);
+    status = ReadHeader();
     if (status != SUCCESS) {
       Close();
       return status;
@@ -62,9 +62,11 @@ int PWSfileV3::Close()
   return PWSfile::Close();
 }
 
+const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
 int PWSfileV3::CheckPassword(const CMyString &filename,
-                               const CMyString &passkey, FILE *a_fd)
+                             const CMyString &passkey,
+                             FILE *a_fd, unsigned char *aPtag)
 {
   FILE *fd = a_fd;
   if (fd == NULL) {
@@ -77,26 +79,51 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   if (fd == NULL)
     return CANT_OPEN_FILE;
 
-  // XXX do the actual check
+  char tag[sizeof(V3TAG)];
+  fread(tag, 1, sizeof(tag), fd);
+  if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
+    return NOT_PWS3_FILE;
+  }
+
+  unsigned char salt[SaltLengthV3];
+  fread(salt, 1, sizeof(salt), fd);
+
+  unsigned char Ptag[SHA256::HASHLEN];
+  if (aPtag == NULL)
+    aPtag = Ptag;
+  LPCSTR passstr = LPCSTR(passkey); 
+  StretchKey(salt, sizeof(salt),
+             (const unsigned char *)passstr, passkey.GetLength(),
+             aPtag);
+
+  unsigned char HPtag[SHA256::HASHLEN];
+  SHA256 H;
+  H.Update(aPtag, SHA256::HASHLEN);
+  H.Final(HPtag);
+  unsigned char readHPtag[SHA256::HASHLEN];
+  fread(readHPtag, 1, sizeof(readHPtag), fd);
+  if (memcmp(readHPtag, HPtag, sizeof(readHPtag)) != 0) {
+    return WRONG_PASSWORD;
+  }
 
    if (a_fd == NULL) // if we opened the file, we close it...
      fclose(fd);
    return SUCCESS;
 }
 
-int PWSfileV3::WriteCBC(unsigned char type, const CString &data, Fish *fish)
+int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 {
   LPCSTR d = LPCSTR(data);
   m_hmac.Update((const unsigned char *)d, data.GetLength());
 
-  return PWSfile::WriteCBC(type, data, fish);
+  return PWSfile::WriteCBC(type, data);
 }
 
 int PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
-                        unsigned int length, Fish *fish)
+                        unsigned int length)
 {
   m_hmac.Update(data, length);
-  return PWSfile::WriteCBC(type, data, length, fish);
+  return PWSfile::WriteCBC(type, data, length);
 }
 
 
@@ -111,12 +138,12 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 }
 
 int
-PWSfileV3::ReadCBC(unsigned char &type, CMyString &data, Fish *fish)
+PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
 {
   LPCSTR d = LPCSTR(data);
   m_hmac.Update((const unsigned char *)d, data.GetLength());
   
-  return PWSfile::ReadCBC(type, data, fish);
+  return PWSfile::ReadCBC(type, data);
 }
 
 
@@ -130,6 +157,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
+                         const unsigned char *passkey, unsigned long passLen,
                          unsigned char *Ptag)
 {
   /*
@@ -140,11 +168,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
    */
   unsigned char *X = Ptag;
   SHA256 H0;
-  // We do a double cast because the LPCSTR cast operator is overridden
-  // by the CString class to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
-  H0.Update((const unsigned char *)passstr, m_passkey.GetLength());
+  H0.Update(passkey, passLen);
   H0.Update(salt, saltLen);
   H0.Final(X);
 
@@ -156,7 +180,6 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 const int VersionNum = 0x0300;
 
 int PWSfileV3::WriteHeader()
@@ -168,9 +191,12 @@ int PWSfileV3::WriteHeader()
   unsigned char salt[SaltLengthV3];
   GetRandomData(salt, sizeof(salt));
   fwrite(salt, 1, sizeof(salt), m_fd);
-
+  
   unsigned char Ptag[SHA256::HASHLEN];
-  StretchKey(salt, sizeof(salt), Ptag);
+  LPCSTR passstr = LPCSTR(m_passkey); 
+  StretchKey(salt, sizeof(salt),
+             (const unsigned char *)passstr, m_passkey.GetLength(),
+             Ptag);
 
   unsigned char HPtag[SHA256::HASHLEN];
   SHA256 H;
@@ -195,16 +221,17 @@ int PWSfileV3::WriteHeader()
   fwrite(B3B4, 1, sizeof(B3B4), m_fd);
 
   m_hmac.Init(L, sizeof(L));
-
+  
   GetRandomData(m_ipthing, sizeof(m_ipthing));
   fwrite(m_ipthing, 1, sizeof(m_ipthing), m_fd);
 
+  m_fish = new TwoFish(m_key, sizeof(m_key));
+
   // write some actual data (at last!)
-  TwoFish DataEncryptor(m_key, sizeof(m_key));
   int numWritten = 0;
   // Write Version Number
   numWritten = WriteCBC(0, (const unsigned char *)&VersionNum,
-                        sizeof(VersionNum), &DataEncryptor);
+                        sizeof(VersionNum));
   
   // Write UUID
   // We should probably reuse the UUID when saving an existing
@@ -215,45 +242,35 @@ int PWSfileV3::WriteHeader()
   
   uuid.GetUUID(uuid_array);
   
-  numWritten += WriteCBC(0, uuid_array, sizeof(uuid_array),
-                         &DataEncryptor);
+  numWritten += WriteCBC(0, uuid_array, sizeof(uuid_array));
 
   if (numWritten != sizeof(VersionNum) + sizeof(uuid_array)) {
-    fclose(m_fd);
+    Close();
     return FAILURE;
   }
 
   // Write (non default) user preferences
-  numWritten = WriteCBC(0, m_prefString, &DataEncryptor);
-  if (numWritten != m_prefString.GetLength())
-    fclose(m_fd);
+  numWritten = WriteCBC(0, m_prefString);
+  if (numWritten != m_prefString.GetLength()) {
+    Close();
     return FAILURE;
   }
+
+  // Write zero-length end-of-record type item
+  // for future-proof (skip possible additional fields in read)
+  WriteCBC(CItemData::END, NULL, 0);
+
   return SUCCESS;
 }
 
 int PWSfileV3::ReadHeader()
 {
-  char tag[sizeof(V3TAG)];
-  fread(tag, 1, sizeof(tag), m_fd);
-  if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
-    return NOT_PWS3_FILE;
-  }
- 
-  unsigned char salt[SaltLengthV3];
-  fread(salt, 1, sizeof(salt), m_fd);
-
   unsigned char Ptag[SHA256::HASHLEN];
-  StretchKey(salt, sizeof(salt), Ptag);
+  int status = CheckPassword(m_filename, m_passkey, m_fd, Ptag);
 
-  unsigned char HPtag[SHA256::HASHLEN];
-  SHA256 H;
-  H.Update(Ptag, sizeof(Ptag));
-  H.Final(HPtag);
-  unsigned char readHPtag[SHA256::HASHLEN];
-  fread(readHPtag, 1, sizeof(readHPtag), m_fd);
-  if (memcmp(readHPtag, HPtag, sizeof(readHPtag)) != 0) {
-    return WRONG_PASSWORD;
+  if (status != SUCCESS) {
+    Close();
+    return status;
   }
 
   unsigned char B1B2[sizeof(m_key)];
