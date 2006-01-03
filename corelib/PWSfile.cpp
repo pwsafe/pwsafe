@@ -1,5 +1,6 @@
 #include "PWSfile.h"
 #include "PWSfileV1V2.h"
+#include "PWSfileV3.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -121,8 +122,9 @@ int PWSfile::ReadCBC(unsigned char &type, CMyString &data)
 
 int PWSfile::CheckPassword(const CMyString &filename, const CMyString &passkey)
 {
-  // XXX start with V3 check
-  int status = PWSfileV1V2::CheckPassword(filename, passkey);
+  int status = PWSfileV3::CheckPassword(filename, passkey);
+  if (status == NOT_PWS3_FILE)
+    status = PWSfileV1V2::CheckPassword(filename, passkey);
   return status;
 }
 
