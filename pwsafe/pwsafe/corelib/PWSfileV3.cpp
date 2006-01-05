@@ -6,12 +6,16 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
+  'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
+  'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
 PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
   : PWSfile(filename,mode)
 {
   m_curversion = version;
   m_IV = m_ipthing;
+  m_terminal = TERMINAL_BLOCK;
 }
 
 PWSfileV3::~PWSfileV3()
@@ -55,11 +59,31 @@ int PWSfileV3::Open(const CMyString &passkey)
   return status;
 }
 
-
 int PWSfileV3::Close()
 {
-  // XXX TBD - write or verify HMAC, depending on RWmode.
-  return PWSfile::Close();
+  if (m_fd == NULL)
+    return SUCCESS; // idempotent
+
+  unsigned char digest[HMAC_SHA256::HASHLEN];
+  m_hmac.Final(digest);
+
+  // Write or verify HMAC, depending on RWmode.
+  if (m_rw == Write) {
+    fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
+    fwrite(digest, sizeof(digest), 1, m_fd);
+    return PWSfile::Close();
+  } else { // Read
+    // We're here *after* TERMINAL_BLOCK has been read
+    // and detected (by _readcbc) - just read hmac & verify
+    unsigned char d[HMAC_SHA256::HASHLEN];
+    fread(d, sizeof(d), 1, m_fd);
+    if (memcmp(d, digest, HMAC_SHA256::HASHLEN) == 0)
+      return PWSfile::Close();
+    else {
+      PWSfile::Close();
+      return BAD_DIGEST;
+    }
+  }
 }
 
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
@@ -245,8 +269,9 @@ int PWSfileV3::WriteHeader()
   // write some actual data (at last!)
   int numWritten = 0;
   // Write version number
-  numWritten = WriteCBC(0, (const unsigned char *)&VersionNum,
-                        sizeof(VersionNum));
+  unsigned char vnb[sizeof(VersionNum)];;
+  putInt32(vnb, VersionNum);
+  numWritten = WriteCBC(0, vnb, sizeof(VersionNum));
   
   // Write UUID
   // We should probably reuse the UUID when saving an existing
@@ -311,14 +336,17 @@ int PWSfileV3::ReadHeader()
   int numRead = 0;
   unsigned char type;
   // Read version number
-  int v;
-  unsigned int vlen = sizeof(v);
-  numRead = ReadCBC(type, (unsigned char *)&v, vlen);
+  unsigned int vlen = sizeof(VersionNum);
+  // Read version number
+  unsigned char vnb[sizeof(VersionNum)];;
+
+  numRead = ReadCBC(type, vnb, vlen);
   if (numRead <= 0  || vlen != sizeof(VersionNum)) {
     Close();
     return FAILURE;
   }
 
+  int v = getInt32(vnb);
   if ((v & 0xff00) != (VersionNum & 0xff00)) {
     //major version mismatch
     Close();

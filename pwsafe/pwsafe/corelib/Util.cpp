@@ -266,11 +266,15 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
  * An alternative to STL strings would be to accept a buffer, and allocate a replacement
  * iff the buffer is too small. This is serious ugliness, but should be considered if
  * the new/delete performance hit is too big.
+ *
+ * If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
+ * and -1 is returned if it matches. (used in V3)
  */
 int
 _readcbc(FILE *fp,
          unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
-         Fish *Algorithm, unsigned char* cbcbuffer)
+         Fish *Algorithm, unsigned char* cbcbuffer,
+         const unsigned char *TERMINAL_BLOCK)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   unsigned int numRead = 0;
@@ -291,6 +295,11 @@ _readcbc(FILE *fp,
     trashMemory(lengthblock, BS);
     return 0;
   }
+
+  if (TERMINAL_BLOCK != NULL &&
+      memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
+    return -1;
+
   unsigned char *lcpy = block2;
   memcpy(lcpy, lengthblock, BS);
 

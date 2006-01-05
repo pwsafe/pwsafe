@@ -18,7 +18,7 @@ class PWSfile {
   enum RWmode {Read, Write};
   enum {SUCCESS = 0, FAILURE = 1, CANT_OPEN_FILE,
         UNSUPPORTED_VERSION, WRONG_VERSION, NOT_PWS3_FILE,
-        WRONG_PASSWORD, END_OF_FILE};
+        WRONG_PASSWORD, BAD_DIGEST, END_OF_FILE};
 
   static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,
                               RWmode mode, int &status);
@@ -59,6 +59,7 @@ class PWSfile {
   CMyString m_prefString; // prefererences stored in the file
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
+  unsigned char *m_terminal;
 };
 
 #endif PWSfile_h

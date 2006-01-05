@@ -75,7 +75,7 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 PWSfile::PWSfile(const CMyString &filename, RWmode mode)
   : m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
-    m_fd(NULL), m_prefString(_T("")), m_fish(NULL)
+    m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL)
 {
 }
 
@@ -122,7 +122,8 @@ int PWSfile::ReadCBC(unsigned char &type, CMyString &data)
   int retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
-  retval = _readcbc(m_fd, buffer, buffer_len, type, m_fish, m_IV);
+  retval = _readcbc(m_fd, buffer, buffer_len, type,
+                    m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
     CMyString str(LPCSTR(buffer), buffer_len);
@@ -146,7 +147,8 @@ int PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
   int retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
-  retval = _readcbc(m_fd, buffer, buffer_len, type, m_fish, m_IV);
+  retval = _readcbc(m_fd, buffer, buffer_len, type,
+                    m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
     if (buffer_len < length)
