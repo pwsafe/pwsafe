@@ -34,7 +34,9 @@ class PWSfileV3 : public PWSfile {
   virtual int WriteCBC(unsigned char type, const CString &data);
   virtual int WriteCBC(unsigned char type, const unsigned char *data,
                        unsigned int length);
-  virtual int ReadCBC( unsigned char &type, CMyString &data);
+  virtual int ReadCBC(unsigned char &type, CMyString &data);
+  virtual int ReadCBC(unsigned char &type, unsigned char *data,
+                      unsigned int &length);
   int WriteHeader();
   int ReadHeader();
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
