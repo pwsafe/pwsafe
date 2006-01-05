@@ -20,15 +20,20 @@ PWSfile *PWSfile::MakePWSfile(const CMyString &a_filename, VERSION &version,
   case V20:
     status = SUCCESS;
     return new PWSfileV1V2(a_filename, mode, version);
-  case V30: // XXX ...
-    status = UNSUPPORTED_VERSION;
-    return NULL;
+  case V30:
+    status = SUCCESS;
+    return new PWSfileV3(a_filename, mode, version);
   case UNKNOWN_VERSION:
     ASSERT(mode == Read);
-    // XXX need to quickly determine file version
-    version = V20;
-    status = SUCCESS;
-    return new PWSfileV1V2(a_filename, mode, version);
+    if (PWSfile::ReadVersion(a_filename) == V30) {
+      version = V30;
+      status = SUCCESS;
+      return new PWSfileV3(a_filename, mode, version);
+    } else {
+      version = V20; // may be inaccurate (V17)
+      status = SUCCESS;
+      return new PWSfileV1V2(a_filename, mode, version);
+    }
   default:
     ASSERT(0);
     status = FAILURE; return NULL;
@@ -44,6 +49,19 @@ bool PWSfile::FileExists(const CMyString &filename)
   status = ::_tstat(filename, &statbuf);
   return (status == 0);
 }
+
+PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
+{
+  if (FileExists(filename)) {
+    VERSION v;
+    if (PWSfileV3::IsV3x(filename, v))
+      return v;
+    else
+      return V20;
+  } else
+    return UNKNOWN_VERSION;
+}
+
 
 int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 {

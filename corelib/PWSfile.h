@@ -13,7 +13,7 @@ class Fish;
 
 class PWSfile {
  public:
-  enum VERSION {V17, V20, VCURRENT = V20, V30,
+  enum VERSION {V17, V20, V30, VCURRENT = V30,
 		UNKNOWN_VERSION}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
   enum {SUCCESS = 0, FAILURE = 1, CANT_OPEN_FILE,
@@ -24,6 +24,7 @@ class PWSfile {
                               RWmode mode, int &status);
 
   static bool FileExists(const CMyString &filename);
+  static VERSION ReadVersion(const CMyString &filename);
   static int RenameFile(const CMyString &oldname, const CMyString &newname);
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey);

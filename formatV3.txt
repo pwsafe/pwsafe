@@ -55,7 +55,9 @@ as the encryption key.
 
 HDR: The database header, containing the major and minor version number,
 a UUID, non-default user preferences, and perhaps other housekeeping
-information.
+information. The header will be terminated by an empty record of type
+'END'. This will allow older versions of the program to skip over records
+that may be added over time to the header.
 
 R1..Rn: The actual password entries, in the format described in the V2
 document, with possible additional fields.
@@ -71,6 +73,9 @@ and B4 is used as the hash key value.
 
 
 $Log$
+Revision 1.4  2006/01/05 15:39:59  ronys
+Writes 3.0 header. Default suffix now pwsafe3. "Officially" v3.0BETA1...
+
 Revision 1.3  2005/12/17 10:26:35  ronys
 Started work on V3 header, still unhappy about OO/SE aspects - need to refactor a bit
 

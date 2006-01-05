@@ -279,9 +279,6 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
   // to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
-  BlowFish *fish = BlowFish::MakeBlowFish((const unsigned char *)passstr, m_passkey.GetLength(),
-                                          m_salt, SaltLength);
 
   switch (m_curversion) {
   case V17: {

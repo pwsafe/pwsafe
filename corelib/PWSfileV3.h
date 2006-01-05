@@ -16,6 +16,7 @@ class PWSfileV3 : public PWSfile {
                            const CMyString &passkey,
                            FILE *a_fd = NULL,
                            unsigned char *aPtag = NULL);
+  static bool IsV3x(const CMyString &filename, VERSION &v);
 
   PWSfileV3(const CMyString &filename, RWmode mode, VERSION version);
   ~PWSfileV3();

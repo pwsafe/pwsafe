@@ -68,16 +68,9 @@ static char THIS_FILE[] = __FILE__;
 
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
 
-// Change the following when the database suffix will change to .pws,
-// probably when the database format changes again
-#define DOT_DAT_SUFFIX
-#ifdef DOT_DAT_SUFFIX
-#define DEFAULT_SUFFIX _T("dat")
-#define SUFFIX_FILTERS _T("Password Safe Databases (*.dat)|*.dat|")
-#else
-#define DEFAULT_SUFFIX _T("pws")
-#define SUFFIX_FILTERS _T("Password Safe Databases (*.pws; *.dat)|*.pws; *.dat|")
-#endif
+#define DEFAULT_SUFFIX _T("psafe3")
+#define SUFFIX_FILTERS _T("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|")
+
 //-----------------------------------------------------------------------------
 class DboxAbout
 #if defined(POCKET_PC)
@@ -498,11 +491,13 @@ DboxMain::OpenOnInit(void)
    }
    else
    {
+      // Following pops up when it shouldn't, bad idea
+#if 0
       CMyString msg = _T("The database ") + m_core.GetCurFile();
 	  msg += _T(" couldn't be opened.\n");
 	  msg += _T("Not a valid PasswordSafe file?");
 	  MessageBox(msg, AfxGetAppName(), (MB_ICONEXCLAMATION | MB_OK));
-
+#endif
       CDialog::OnCancel();
       return FALSE;
    }

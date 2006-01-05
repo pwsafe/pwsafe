@@ -204,7 +204,7 @@ void SHA256::Update(const unsigned char *in, unsigned long inlen)
 {
   const unsigned long block_size = 64;
   unsigned long n;
-  ASSERT(in != NULL);
+  ASSERT(in != NULL || inlen == 0);
   ASSERT(curlen <= sizeof(buf));
   while (inlen > 0) {
     if (curlen == 0 && inlen >= block_size) {
