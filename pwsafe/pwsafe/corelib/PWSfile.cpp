@@ -119,6 +119,32 @@ int PWSfile::ReadCBC(unsigned char &type, CMyString &data)
   return retval;
 }
 
+int PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
+                     unsigned int &length)
+{
+
+  unsigned char *buffer = NULL;
+  unsigned int buffer_len = 0;
+  int retval;
+
+  ASSERT(m_fish != NULL && m_IV != NULL);
+  retval = _readcbc(m_fd, buffer, buffer_len, type, m_fish, m_IV);
+
+  if (buffer_len > 0) {
+    if (buffer_len < length)
+      length = buffer_len; // set to length read
+    // if buffer_len > length, data is truncated to length
+    // probably an error.
+    memcpy(data, buffer, length);
+    trashMemory(buffer, buffer_len);
+    delete[] buffer;
+  } else {
+    // no need to delete[] buffer, since _readcbc will not allocate if
+    // buffer_len is zero
+  }
+  return retval;
+}
+
 
 int PWSfile::CheckPassword(const CMyString &filename, const CMyString &passkey)
 {

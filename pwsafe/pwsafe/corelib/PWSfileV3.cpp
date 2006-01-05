@@ -140,12 +140,27 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 int
 PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
 {
-  LPCSTR d = LPCSTR(data);
-  m_hmac.Update((const unsigned char *)d, data.GetLength());
-  
-  return PWSfile::ReadCBC(type, data);
+  int status = PWSfile::ReadCBC(type, data);
+
+  if (status == SUCCESS) {
+    LPCSTR d = LPCSTR(data);
+    m_hmac.Update((const unsigned char *)d, data.GetLength());
+  }
+
+  return status;
 }
 
+int PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
+                       unsigned int &length)
+{
+  int status = PWSfile::ReadCBC(type, data, length);
+
+  if (status == SUCCESS) {
+    m_hmac.Update(data, length);
+  }
+
+  return status;
+}
 
 
 int PWSfileV3::ReadRecord(CItemData &item)
@@ -229,14 +244,14 @@ int PWSfileV3::WriteHeader()
 
   // write some actual data (at last!)
   int numWritten = 0;
-  // Write Version Number
+  // Write version number
   numWritten = WriteCBC(0, (const unsigned char *)&VersionNum,
                         sizeof(VersionNum));
   
   // Write UUID
   // We should probably reuse the UUID when saving an existing
   // database, and generate a new one only from new dbs.
-  // For now, this is Good Enough.
+  // For now, this is Good Enough. XXX
   uuid_array_t uuid_array;
   CUUIDGen uuid;
   
@@ -287,8 +302,54 @@ int PWSfileV3::ReadHeader()
   TF.Decrypt(B3B4, L);
   TF.Decrypt(B3B4 + 16, L + 16);
 
+  m_hmac.Init(L, sizeof(L));
+
   fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
 
-  // read the header data
+  m_fish = new TwoFish(m_key, sizeof(m_key));
+
+  int numRead = 0;
+  unsigned char type;
+  // Read version number
+  int v;
+  unsigned int vlen = sizeof(v);
+  numRead = ReadCBC(type, (unsigned char *)&v, vlen);
+  if (vlen != sizeof(VersionNum)) {
+    Close();
+    return FAILURE;
+  }
+
+  if ((v & 0xff00) != (VersionNum & 0xff00)) {
+    //major version mismatch
+    Close();
+    return UNSUPPORTED_VERSION;
+  }
+  // for now we assume that minor version changes will
+  // be backward-compatible
+
+  // Read UUID XXX should save into data member;
+  uuid_array_t uuid_array;
+  unsigned int ulen = sizeof(uuid_array);
+  numRead = ReadCBC(type, (unsigned char *)uuid_array, ulen);
+  if (ulen != sizeof(uuid_array)) {
+    Close();
+    return FAILURE;
+  }
+
+  // Read (non default) user preferences
+  numRead = ReadCBC(type, m_prefString);
+  if (numRead != m_prefString.GetLength()) {
+    Close();
+    return FAILURE;
+  }
+
+  // ignore zero or more fields that may be addded by future versions
+  // after prefString, until end-of-record read.
+
+  CMyString dummy;
+  do {
+    numRead = ReadCBC(type, dummy);
+  } while (type != CItemData::END);
+
   return SUCCESS;
 }

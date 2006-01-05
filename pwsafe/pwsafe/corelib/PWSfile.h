@@ -46,7 +46,9 @@ class PWSfile {
   virtual int WriteCBC(unsigned char type, const CString &data);
   virtual int WriteCBC(unsigned char type, const unsigned char *data,
                        unsigned int length);
-  virtual int ReadCBC( unsigned char &type, CMyString &data);
+  virtual int ReadCBC(unsigned char &type, CMyString &data);
+  virtual int ReadCBC(unsigned char &type, unsigned char *data,
+                      unsigned int &length);
   const CMyString m_filename;
   CMyString m_passkey;
   FILE *m_fd;
