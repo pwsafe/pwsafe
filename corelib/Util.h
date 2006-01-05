@@ -56,7 +56,8 @@ unsigned int RangeRand(size_t len);
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern int _readcbc(FILE *fp, unsigned char* &buffer, unsigned int &buffer_len,
                     unsigned char &type, Fish *Algorithm,
-                    unsigned char* cbcbuffer);
+                    unsigned char* cbcbuffer,
+                    const unsigned char *TERMINAL_BLOCK = NULL);
 extern int _writecbc(FILE *fp, const unsigned char* buffer, int length,
                      unsigned char type, Fish *Algorithm,
                      unsigned char* cbcbuffer);
