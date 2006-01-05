@@ -259,14 +259,14 @@ int PWSfileV3::WriteHeader()
   
   numWritten += WriteCBC(0, uuid_array, sizeof(uuid_array));
 
-  if (numWritten != sizeof(VersionNum) + sizeof(uuid_array)) {
+  if (numWritten <= 0) { // WriteCBC writes at least 2 blocks per datum.
     Close();
     return FAILURE;
   }
 
   // Write (non default) user preferences
   numWritten = WriteCBC(0, m_prefString);
-  if (numWritten != m_prefString.GetLength()) {
+  if (numWritten <= 0) {
     Close();
     return FAILURE;
   }
@@ -314,7 +314,7 @@ int PWSfileV3::ReadHeader()
   int v;
   unsigned int vlen = sizeof(v);
   numRead = ReadCBC(type, (unsigned char *)&v, vlen);
-  if (vlen != sizeof(VersionNum)) {
+  if (numRead <= 0  || vlen != sizeof(VersionNum)) {
     Close();
     return FAILURE;
   }
@@ -331,14 +331,14 @@ int PWSfileV3::ReadHeader()
   uuid_array_t uuid_array;
   unsigned int ulen = sizeof(uuid_array);
   numRead = ReadCBC(type, (unsigned char *)uuid_array, ulen);
-  if (ulen != sizeof(uuid_array)) {
+  if (numRead <= 0 || ulen != sizeof(uuid_array)) {
     Close();
     return FAILURE;
   }
 
   // Read (non default) user preferences
   numRead = ReadCBC(type, m_prefString);
-  if (numRead != m_prefString.GetLength()) {
+  if (numRead <= 0) {
     Close();
     return FAILURE;
   }
@@ -348,8 +348,34 @@ int PWSfileV3::ReadHeader()
 
   CMyString dummy;
   do {
-    numRead = ReadCBC(type, dummy);
+    ReadCBC(type, dummy);
   } while (type != CItemData::END);
 
   return SUCCESS;
+}
+
+
+bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
+{
+  // This is written so as to support V30, V31, V3x...
+
+  ASSERT(FileExists(filename));
+  FILE *fd;
+#ifdef UNICODE
+  fd = _wfopen((LPCTSTR) filename, _T("rb"));
+#else
+  fd = fopen((LPCTSTR) filename, _T("rb"));
+#endif
+
+  ASSERT(fd != NULL);
+  char tag[sizeof(V3TAG)];
+  fread(tag, 1, sizeof(tag), fd);
+  if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
+    v = V30;
+    return true;
+  } else {
+    v = UNKNOWN_VERSION;
+    return false;
+  }
+
 }
