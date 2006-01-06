@@ -192,7 +192,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
   // XXX TBD
-  return SUCCESS;
+  return END_OF_FILE;
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
