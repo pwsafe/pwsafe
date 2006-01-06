@@ -191,8 +191,53 @@ int PWSfileV3::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
-  // XXX TBD
-  return END_OF_FILE;
+
+  CMyString tempdata;  
+  int numread = 0;
+  unsigned char type;
+
+  int emergencyExit = 255; // to avoid endless loop.
+  int fieldLen; // <= 0 means end of file reached
+  bool endFound = false; // set to true when record end detected - happy end
+  do {
+    fieldLen = ReadCBC(type, tempdata);
+    if (fieldLen > 0) {
+      numread += fieldLen;
+      switch (type) {
+      case CItemData::TITLE:
+        item.SetTitle(tempdata); break;
+      case CItemData::USER:
+        item.SetUser(tempdata); break;
+      case CItemData::PASSWORD:
+        item.SetPassword(tempdata); break;
+      case CItemData::NOTES:
+        item.SetNotes(tempdata); break;
+      case CItemData::END:
+        endFound = true; break;
+      case CItemData::UUID: {
+        LPCSTR ptr = LPCSTR(tempdata);
+        uuid_array_t uuid_array;
+        for (int i = 0; i < sizeof(uuid_array); i++)
+          uuid_array[i] = ptr[i];
+        item.SetUUID(uuid_array); break;
+      }
+      case CItemData::GROUP:
+        item.SetGroup(tempdata); break;
+        // just silently ignore fields we don't support.
+        // this is forward compatability...
+      case CItemData::CTIME:
+      case CItemData::MTIME:
+      case CItemData::ATIME:
+      case CItemData::LTIME:
+      case CItemData::POLICY:
+      default:
+        // XXX Set a flag here so user can be warned that
+        // XXX we read a file format we don't fully support
+        break;
+      } // switch
+    } // if (fieldLen > 0)
+  } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
+  return (numread > 0) ? SUCCESS : END_OF_FILE;
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
