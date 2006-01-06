@@ -138,9 +138,7 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
 int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 {
   LPCSTR d = LPCSTR(data);
-  m_hmac.Update((const unsigned char *)d, data.GetLength());
-
-  return PWSfile::WriteCBC(type, data);
+  return WriteCBC(type, (const unsigned char *)d, data.GetLength());
 }
 
 int PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
@@ -164,26 +162,26 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 int
 PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
 {
-  int status = PWSfile::ReadCBC(type, data);
+  int numRead = PWSfile::ReadCBC(type, data);
 
-  if (status == SUCCESS) {
+  if (numRead > 0) {
     LPCSTR d = LPCSTR(data);
     m_hmac.Update((const unsigned char *)d, data.GetLength());
   }
 
-  return status;
+  return numRead;
 }
 
 int PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
                        unsigned int &length)
 {
-  int status = PWSfile::ReadCBC(type, data, length);
+  int numRead = PWSfile::ReadCBC(type, data, length);
 
-  if (status == SUCCESS) {
+  if (numRead > 0) {
     m_hmac.Update(data, length);
   }
 
-  return status;
+  return numRead;
 }
 
 
