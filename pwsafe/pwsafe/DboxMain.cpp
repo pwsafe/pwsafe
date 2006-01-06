@@ -423,84 +423,86 @@ DboxMain::OnInitDialog()
 BOOL
 DboxMain::OpenOnInit(void)
 {
-   /*
-     Routine to account for the differences between opening PSafe for
-     the first time, and just opening a different database or
-     un-minimizing the application
-   */
-   CMyString passkey;
-   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, true);
-   int rc2 = PWScore::NOT_SUCCESS;
+  /*
+    Routine to account for the differences between opening PSafe for
+    the first time, and just opening a different database or
+    un-minimizing the application
+  */
+  CMyString passkey;
+  int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, true);
+  int rc2 = PWScore::NOT_SUCCESS;
 
-   switch (rc)
-   {
-   case PWScore::SUCCESS:
-      rc2 = m_core.ReadCurFile(passkey);
+  switch (rc) {
+  case PWScore::SUCCESS:
+    rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-      m_title = "Password Safe - " + m_core.GetCurFile();
+    m_title = "Password Safe - " + m_core.GetCurFile();
 #endif
-      break; 
-   case PWScore::CANT_OPEN_FILE:
-      if (m_core.GetCurFile().IsEmpty()) {
-	 // Empty filename. Assume they are starting Password Safe 
-	 // for the first time and don't confuse them.
-	 // fallthrough to New()
-      } else {
-	// Here if there was a filename saved from last invocation, but it couldn't
-	// be opened. It was either removed or renamed, so ask the user what to do
-	CMyString msg = _T("The database ") + m_core.GetCurFile();
-	msg += _T(" couldn't be opened.\nDo you wish to look for it elsewhere (Yes), ");
-	msg += _T("create a new database (No), or exit (Cancel)?");
-	int rc3 = MessageBox(msg, AfxGetAppName(), (MB_ICONQUESTION | MB_YESNOCANCEL));
-	switch (rc3) {
-	case IDYES:
-	  rc2 = Open();
-	  break;
-	case IDNO:
-	  rc2 = New();
-	  break;
-	case IDCANCEL:
-	  rc2 = PWScore::USER_CANCEL;
-	  break;
-	}
-         break;
-      }
-   case TAR_NEW:
-      rc2 = New();
-      if (PWScore::USER_CANCEL == rc2) {
-         // somehow, get DboxPasskeyEntryFirst redisplayed...
-	  }
-      break;
-   case TAR_OPEN:
-      rc2 = Open();
-      if (PWScore::USER_CANCEL == rc2) {
-         // somehow, get DboxPasskeyEntryFirst redisplayed...
-	  }
-      break;
-   case PWScore::WRONG_PASSWORD:
-   default:
-      break;
-   }
-
-   if (rc2 == PWScore::SUCCESS)
-   {
-      m_existingrestore = FALSE;
-      m_needsreading = false;
-	  startLockCheckTimer();
-      return TRUE;
-   }
-   else
-   {
-      // Following pops up when it shouldn't, bad idea
-#if 0
+    break; 
+  case PWScore::CANT_OPEN_FILE:
+    if (m_core.GetCurFile().IsEmpty()) {
+      // Empty filename. Assume they are starting Password Safe 
+      // for the first time and don't confuse them.
+      // fallthrough to New()
+    } else {
+      // Here if there was a filename saved from last invocation, but it couldn't
+      // be opened. It was either removed or renamed, so ask the user what to do
       CMyString msg = _T("The database ") + m_core.GetCurFile();
-	  msg += _T(" couldn't be opened.\n");
-	  msg += _T("Not a valid PasswordSafe file?");
-	  MessageBox(msg, AfxGetAppName(), (MB_ICONEXCLAMATION | MB_OK));
-#endif
+      msg += _T(" couldn't be opened.\nDo you wish to look for it elsewhere (Yes), ");
+      msg += _T("create a new database (No), or exit (Cancel)?");
+      int rc3 = MessageBox(msg, AfxGetAppName(), (MB_ICONQUESTION | MB_YESNOCANCEL));
+      switch (rc3) {
+      case IDYES:
+        rc2 = Open();
+        break;
+      case IDNO:
+        rc2 = New();
+        break;
+      case IDCANCEL:
+        rc2 = PWScore::USER_CANCEL;
+        break;
+      }
+      break;
+    }
+  case TAR_NEW:
+    rc2 = New();
+    if (PWScore::USER_CANCEL == rc2) {
+      // somehow, get DboxPasskeyEntryFirst redisplayed...
+    }
+    break;
+  case TAR_OPEN:
+    rc2 = Open();
+    if (PWScore::USER_CANCEL == rc2) {
+      // somehow, get DboxPasskeyEntryFirst redisplayed...
+    }
+    break;
+  case PWScore::WRONG_PASSWORD:
+  default:
+    break;
+  }
+
+  switch (rc2) {
+  case PWScore::BAD_DIGEST: {
+    CMyString msg(m_core.GetCurFile());
+    msg += _T("\n\nFile corrupt or truncated!\n");
+    msg += _T("Data may have been lost or modified.\nContinue anyway?");
+    const int yn = MessageBox(msg, _T("File Read Error"),
+                              MB_YESNO|MB_ICONERROR);
+    if (yn == IDNO) {
       CDialog::OnCancel();
       return FALSE;
-   }
+    }
+  }
+    // DELIBERATE FALL-THRU if user chose YES
+  case PWScore::SUCCESS:
+    m_existingrestore = FALSE;
+    m_needsreading = false;
+    startLockCheckTimer();
+    return TRUE;
+  default:
+    CDialog::OnCancel();
+    return FALSE;
+  }
 }
 
 
@@ -1263,19 +1265,34 @@ DboxMain::Open( const CMyString &pszFilename )
     return PWScore::USER_CANCEL; // conservative behaviour for release version
   }
 	
+  temp = pszFilename;
   rc = m_core.ReadFile(pszFilename, passkey);
-  if (rc == PWScore::CANT_OPEN_FILE)
-	{
-      temp = pszFilename;
-      temp += _T("\n\nCould not open file for reading!");
-      MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
-      /*
-		Everything stays as is... Worst case,
-		they saved their file....
-      */
-      return PWScore::CANT_OPEN_FILE;
-	}
-	
+  switch (rc) {
+  case PWScore::SUCCESS:
+    break;
+  case PWScore::CANT_OPEN_FILE:
+    temp += _T("\n\nCould not open file for reading!");
+    MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+    /*
+      Everything stays as is... Worst case,
+      they saved their file....
+    */
+    return PWScore::CANT_OPEN_FILE;
+  case PWScore::BAD_DIGEST: {
+    temp += _T("\n\nFile corrupt or truncated!\n");
+    temp += _T("Data may have been lost or modified.\nContinue anyway?");
+    const int yn = MessageBox(temp, _T("File Read Error"),
+                              MB_YESNO|MB_ICONERROR);
+    if (yn == IDYES)
+      break;
+    else
+      return rc;
+  }
+  default:
+    temp += _T("Unknown error");
+    MessageBox(temp, _T("File read error."), MB_OK|MB_ICONERROR);
+	return rc;
+  }
   m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - ") + m_core.GetCurFile();
