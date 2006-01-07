@@ -152,9 +152,18 @@ int PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
 int PWSfileV3::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
-  ASSERT(m_curversion != UNKNOWN_VERSION);
+  ASSERT(m_curversion == V30);
   int status = SUCCESS;
-  // XXX TBD
+
+  uuid_array_t uuid_array;
+  item.GetUUID(uuid_array);
+  WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+  WriteCBC(CItemData::GROUP, item.GetGroup());
+  WriteCBC(CItemData::TITLE, item.GetTitle());
+  WriteCBC(CItemData::USER, item.GetUser());
+  WriteCBC(CItemData::PASSWORD, item.GetPassword());
+  WriteCBC(CItemData::NOTES, item.GetNotes());
+  WriteCBC(CItemData::END, _T(""));
 
   return status;
 }
