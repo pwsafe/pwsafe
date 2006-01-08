@@ -275,12 +275,20 @@ const int VersionNum = 0x0300;
 
 int PWSfileV3::WriteHeader()
 {
-
   // See formatV3.txt for explanation of what's written here and why
   fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
 
+  // According to the spec, salt is just random data. I don't think though,
+  // that it's good practice to directly expose the generated randomness
+  // to the attacker. Therefore, we'll hash the salt.
+  // The following takes shameless advantage of the fact that
+  // SaltLengthV3 == SHA256::HASHLEN
+  ASSERT(SaltLengthV3 == SHA256::HASHLEN); // if false, have to recode
   unsigned char salt[SaltLengthV3];
   GetRandomData(salt, sizeof(salt));
+  SHA256 salter;
+  salter.Update(salt, sizeof(salt));
+  salter.Final(salt);
   fwrite(salt, 1, sizeof(salt), m_fd);
   
   unsigned char Ptag[SHA256::HASHLEN];
@@ -313,7 +321,16 @@ int PWSfileV3::WriteHeader()
 
   m_hmac.Init(L, sizeof(L));
   
-  GetRandomData(m_ipthing, sizeof(m_ipthing));
+  // See discussion on Salt to understand why we hash
+  // random data instead of writing it directly
+  unsigned char ip_rand[SHA256::HASHLEN];
+  GetRandomData(ip_rand, sizeof(ip_rand));
+  SHA256 ipHash;
+  ipHash.Update(ip_rand, sizeof(ip_rand));
+  ipHash.Final(ip_rand);
+  ASSERT(sizeof(ip_rand) >= sizeof(m_ipthing)); // compilation assumption
+  memcpy(m_ipthing, ip_rand, sizeof(m_ipthing));
+  
   fwrite(m_ipthing, 1, sizeof(m_ipthing), m_fd);
 
   m_fish = new TwoFish(m_key, sizeof(m_key));
