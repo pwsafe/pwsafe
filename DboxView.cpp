@@ -194,12 +194,12 @@ DboxMain::OnAdd()
     if (m_ctlItemTree.IsWindowVisible()) { // tree view
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
       if (ti != NULL) { // if anything selected
-	itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-	if (itemData != NULL) { // leaf selected
-	  m_TreeViewGroup = itemData->GetGroup();
-	} else { // node selected
-	  m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
-	}
+        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        if (itemData != NULL) { // leaf selected
+          m_TreeViewGroup = itemData->GetGroup();
+        } else { // node selected
+          m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
+        }
       }
     } else { // list view
       // XXX TBD - get group name of currently selected list entry
@@ -211,55 +211,55 @@ DboxMain::OnAdd()
   int rc = dataDlg.DoModal();
   app.EnableAccelerator();
 	
-  if (rc == IDOK)
-    {
-      PWSprefs *prefs = PWSprefs::GetInstance();
-      //Check if they wish to set a default username
-      if (!m_core.GetUseDefUser()
-	  && (prefs->GetPref(PWSprefs::BoolPrefs::QuerySetDef))
-          && (!dataDlg.m_username.IsEmpty()))
-	{
+  if (rc == IDOK) {
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    //Check if they wish to set a default username
+    if (!m_core.GetUseDefUser()
+        && (prefs->GetPref(PWSprefs::BoolPrefs::QuerySetDef))
+        && (!dataDlg.m_username.IsEmpty())) {
 	  CQuerySetDef defDlg(this);
 	  defDlg.m_message =
-            _T("Would you like to set \"")
-            + (const CString&)dataDlg.m_username
-            + _T("\" as your default username?\n\nIt would then automatically be ")
+        _T("Would you like to set \"")
+        + (const CString&)dataDlg.m_username
+        + _T("\" as your default username?\n\nIt would then automatically be ")
 	    + _T("put in the dialog each time you add a new item.");
 	  int rc2 = defDlg.DoModal();
-	  if (rc2 == IDOK)
-	    {
-	      prefs->SetPref(PWSprefs::BoolPrefs::UseDefUser, true);
-	      prefs->SetPref(PWSprefs::StringPrefs::DefUserName,
-			     dataDlg.m_username);
-	      m_core.SetUseDefUser(true);
-	      m_core.SetDefUsername(dataDlg.m_username);
-	      RefreshList();
-	    }
+	  if (rc2 == IDOK) {
+        prefs->SetPref(PWSprefs::BoolPrefs::UseDefUser, true);
+        prefs->SetPref(PWSprefs::StringPrefs::DefUserName,
+                       dataDlg.m_username);
+        m_core.SetUseDefUser(true);
+        m_core.SetDefUsername(dataDlg.m_username);
+        RefreshList();
+      }
 	}
-      //Finish Check (Does that make any geographical sense?)
-      CItemData temp;
-      CMyString user;
-      if (dataDlg.m_username.IsEmpty() && m_core.GetUseDefUser())
-	user = m_core.GetDefUsername();
-      else
-	user = dataDlg.m_username;
-      temp.CreateUUID();
-      temp.SetGroup(dataDlg.m_group);
-      temp.SetTitle(dataDlg.m_title);
-      temp.SetUser(user);
-      temp.SetPassword(dataDlg.m_password);
-      temp.SetNotes(dataDlg.m_notes);
-      m_core.AddEntryToTail(temp);
-      int newpos = insertItem(m_core.GetTailEntry());
-      SelectEntry(newpos);
-      FixListIndexes(m_ctlItemList);
-      m_ctlItemList.SetFocus();
-      if (prefs->GetPref(PWSprefs::BoolPrefs::SaveImmediately))
-	{
-	  Save();
-	}
-      ChangeOkUpdate();
-    }
+    //Finish Check (Does that make any geographical sense?)
+    CItemData temp;
+    CMyString user;
+    if (dataDlg.m_username.IsEmpty() && m_core.GetUseDefUser())
+      user = m_core.GetDefUsername();
+    else
+      user = dataDlg.m_username;
+    temp.CreateUUID();
+    temp.SetGroup(dataDlg.m_group);
+    temp.SetTitle(dataDlg.m_title);
+    temp.SetUser(user);
+    temp.SetPassword(dataDlg.m_password);
+    temp.SetNotes(dataDlg.m_notes);
+    temp.SetURL(dataDlg.m_URL);
+    temp.SetAutoType(dataDlg.m_autotype);
+    temp.SetCTime();
+    m_core.AddEntryToTail(temp);
+    int newpos = insertItem(m_core.GetTailEntry());
+    SelectEntry(newpos);
+    FixListIndexes(m_ctlItemList);
+    m_ctlItemList.SetFocus();
+    if (prefs->GetPref(PWSprefs::BoolPrefs::SaveImmediately))
+      {
+        Save();
+      }
+    ChangeOkUpdate();
+  }
   else if (rc == IDCANCEL)
     {
     }

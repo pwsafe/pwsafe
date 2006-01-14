@@ -1053,5 +1053,8 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="PasswordSafe.rc"/>
 	</Globals>
 </VisualStudioProject>

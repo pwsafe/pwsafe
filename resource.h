@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by PasswordSafe.rc
 //
 #define ID_BROWSE                       3
@@ -160,6 +160,10 @@
 #define IDC_STATIC_GBMRU                1110
 #define IDC_MRU_ONFILEMENU              1111
 #define IDC_STATIC_RESTART              1112
+#define IDC_MORE                        1115
+#define IDC_URL                         1116
+#define IDC_EDIT2                       1117
+#define IDC_AUTOTYPE                    1117
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -226,7 +230,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32848
-#define _APS_NEXT_CONTROL_VALUE         1114
+#define _APS_NEXT_CONTROL_VALUE         1118
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
