@@ -3,6 +3,8 @@
 
 #include "ItemData.h"
 #include "BlowFish.h"
+#include "TwoFish.h"
+#include <time.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,7 +28,8 @@ void CItemData::SetSessionKey()
 
 CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
-    m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP), m_display_info(NULL)
+    m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
+    m_URL(URL), m_AutoType(AUTOTYPE), m_cTime(CTIME), m_display_info(NULL)
 {
   GetRandomData( m_salt, SaltLength );
 }
@@ -34,7 +37,8 @@ CItemData::CItemData()
 CItemData::CItemData(const CItemData &that) :
   m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
-  m_Group(that.m_Group), m_display_info(that.m_display_info)
+  m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
+  m_cTime(that.m_cTime), m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
 }
@@ -116,6 +120,53 @@ CItemData::GetGroup() const
    CMyString ret;
    GetField(m_Group, ret);
    return ret;
+}
+
+CMyString
+CItemData::GetURL() const
+{
+   CMyString ret;
+   GetField(m_URL, ret);
+   return ret;
+}
+
+CMyString
+CItemData::GetAutoType() const
+{
+   CMyString ret;
+   GetField(m_AutoType, ret);
+   return ret;
+}
+
+CMyString
+CItemData::GetCTime() const
+{
+   time_t t;
+   struct tm *st;
+   char *time_str;
+   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+   unsigned int tlen = sizeof(in); // ditto
+   
+   GetField(m_cTime, (unsigned char *)in, tlen);
+   ASSERT(tlen == sizeof(t));
+   memcpy(&t, in, sizeof(t));
+   st = localtime(&t);
+   time_str = asctime(st);
+   CMyString ret(time_str);
+   return ret;
+}
+
+void
+CItemData::GetCTime(time_t &t) const
+{
+   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+   unsigned int tlen = sizeof(in); // ditto
+   
+   GetField(m_cTime, (unsigned char *)in, tlen);
+   if (tlen != 0)
+     memcpy(&t, in, sizeof(t));
+   else
+     t = 0;
 }
 
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
@@ -306,6 +357,31 @@ CItemData::SetUUID(const uuid_array_t &UUID)
   SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
 }
 
+void
+CItemData::SetURL(const CMyString &URL)
+{
+  SetField(m_URL, URL);
+}
+
+void
+CItemData::SetAutoType(const CMyString &autotype)
+{
+  SetField(m_AutoType, autotype);
+}
+
+void
+CItemData::SetCTime(time_t t)
+{
+  SetField(m_cTime, (const unsigned char *)&t, sizeof(t));
+}
+
+void
+CItemData::SetCTime()
+{
+  time_t t;
+  time(&t);
+  SetCTime(t);
+}
 
 
 BlowFish *
@@ -329,6 +405,9 @@ CItemData::operator=(const CItemData &that)
      m_Password = that.m_Password;
      m_Notes = that.m_Notes;
      m_Group = that.m_Group;
+     m_URL = that.m_URL;
+     m_AutoType = that.m_AutoType;
+     m_cTime = that.m_cTime;
      m_display_info = that.m_display_info;
 
      memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);

@@ -163,6 +163,11 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   WriteCBC(CItemData::USER, item.GetUser());
   WriteCBC(CItemData::PASSWORD, item.GetPassword());
   WriteCBC(CItemData::NOTES, item.GetNotes());
+  WriteCBC(CItemData::URL, item.GetURL());
+  WriteCBC(CItemData::AUTOTYPE, item.GetAutoType());
+  time_t t;
+  item.GetCTime(t);
+  WriteCBC(CItemData::CTIME, (unsigned char *)&t, sizeof(t));
   WriteCBC(CItemData::END, _T(""));
 
   return status;
@@ -232,7 +237,16 @@ int PWSfileV3::ReadRecord(CItemData &item)
         item.SetGroup(tempdata); break;
         // just silently ignore fields we don't support.
         // this is forward compatability...
-      case CItemData::CTIME:
+      case CItemData::URL:
+        item.SetURL(tempdata); break;
+      case CItemData::AUTOTYPE:
+        item.SetAutoType(tempdata); break;
+      case CItemData::CTIME: {
+        LPCSTR ptr = LPCSTR(tempdata);
+        time_t t;
+        memcpy(&t, ptr, sizeof(t));
+        item.SetCTime(t);
+      }
       case CItemData::MTIME:
       case CItemData::ATIME:
       case CItemData::LTIME:

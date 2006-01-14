@@ -7,7 +7,7 @@
 #include "Util.h"
 #include "ItemField.h"
 #include "UUIDGen.h"
-
+#include <time.h> // for time_t
 //-----------------------------------------------------------------------------
 
 /*
@@ -33,7 +33,8 @@ class CItemData
 public:
   enum {NAME=0, UUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
 	PASSWORD = 0x6, CTIME = 0x7, MTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
-	POLICY = 0xb, END = 0xff}; // field types, per formatV2.txt
+	POLICY = 0xb, URL = 0xc, AUTOTYPE = 0xd,
+    END = 0xff}; // field types, per formatV{2,3}.txt
 
   static void SetSessionKey(); // call exactly once per session
    //Construction
@@ -50,6 +51,10 @@ public:
    CMyString GetNotes(char delimiter) const;
    void GetUUID(uuid_array_t &) const; // V20
    CMyString GetGroup() const; // V20
+   CMyString GetURL() const; // V30
+   CMyString GetAutoType() const; // V30
+   CMyString GetCTime() const; // V30
+   void GetCTime(time_t &t) const; // V30
    CMyString GetPlaintext(char separator) const; // returns all fields separated by separator
    CMyString GetPlaintext(char separator, char delimiter) const; // as above + delimiter for multiline notes
 
@@ -63,6 +68,10 @@ public:
    void SetNotes(const CMyString &notes, char delimiter);
    void SetUUID(const uuid_array_t &UUID); // V20
    void SetGroup(const CMyString &group); // V20
+   void SetURL(const CMyString &URL); // V30
+   void SetAutoType(const CMyString &autotype); // V30
+   void SetCTime(); // V30
+   void SetCTime(time_t t); // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
@@ -76,6 +85,9 @@ private:
   CItemField m_Notes;
   CItemField m_UUID;
   CItemField m_Group;
+  CItemField m_URL;
+  CItemField m_AutoType;
+  CItemField m_cTime;
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
