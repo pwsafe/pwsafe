@@ -1,78 +1,174 @@
 $Id$
 
-The format described below has the following goals:
-1. To fix a minor design flaw in previous versions of the PasswordSafe
+1. Introduction: The format described below has the following goals:
+a. To fix a minor design flaw in previous versions of the PasswordSafe
 database format.
-2. To replace the underlying cryptographic functions with more advanced
+b. To replace the underlying cryptographic functions with more advanced
 versions.
-3. To allow detection of a truncated or corrupted/tampered database.
+c. To allow detection of a truncated or corrupted/tampered database.
 
 Meeting these goals is impossible without breaking compatibility: The new
-format will NOT be compatible with existing implementations. An
-implementation supporting this format SHALL be capable of importing from
-and exporting to the previous (2.x) format.
+format will NOT be compatible with existing implementations.
 
-A V3 format PasswordSafe will be structured as follows:
+2. Format: A V3 format PasswordSafe will be structured as follows:
 
 TAG|SALT|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
 
 Where:
 
-TAG is the sequence of 4 ASCII characters "PWS3". This is to serve as a
+2.1 TAG is the sequence of 4 ASCII characters "PWS3". This is to serve as a
 quick way for the application to identify the database as a PasswordSafe
 version 3 file. This tag has no cryptographic value. Changing or
 removing it will cause the database to be unreadable, and adding it to a
 non-database file will only cause the application to attempt to validate
 the passphrase as described below.
 
-SALT is a 256 bit random value, generated at file creation time.
+2.1 SALT is a 256 bit random value, generated at file creation time.
 
-P' is the "stretched key" of the user's passphrase and the SALT, as defined
-by the hash-function-based key stretching algorithm in
+2.3 P' is the "stretched key" of the user's passphrase and the SALT, as
+defined by the hash-function-based key stretching algorithm in
 http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
 as the hash function, and 2048 iterations (i.e., t = 11).
 
-H(P') is SHA-256(P'), and is used to verify that the user has the correct
-passphrase.
+2.4 H(P') is SHA-256(P'), and is used to verify that the user has the
+correct passphrase.
 
-B1 and B2 are two 128-bit blocks encrypted with Twofish using P' as the
-key, in ECB mode. These blocks contain the 256 bit random key K that is used
-to encrypt the actual records. (This has the property that there is no
+2.5 B1 and B2 are two 128-bit blocks encrypted with Twofish using P' as the
+key, in ECB mode. These blocks contain the 256 bit random key K that is
+used to encrypt the actual records. (This has the property that there is no
 known or guessable information on the plaintext encrypted with the
-passphrase-derived key that  allows an attacker to mount an attack that
+passphrase-derived key that allows an attacker to mount an attack that
 bypasses the key stretching algorithm.)
 
-B3 and B4 are two 128-bit blocks encrypted with Twofish using P' as the
+2.6 B3 and B4 are two 128-bit blocks encrypted with Twofish using P' as the
 key, in ECB mode. These blocks contain the 256 bit random key L that is
-used to calculate the HMAC (keyed-hash message authentication code) of
-the encrypted data. See description of EOF field below for more details.
+used to calculate the HMAC (keyed-hash message authentication code) of the
+encrypted data. See description of EOF field below for more details.
 Implementation Note: K and L must NOT be related.
 
-IV is the 128-bit random Initial Value for CBC mode.
+2.7 IV is the 128-bit random Initial Value for CBC mode.
 
-The following records are encrypted using Twofish in CBC mode, with K
+2.8 All following records are encrypted using Twofish in CBC mode, with K
 as the encryption key.
 
-HDR: The database header, containing the major and minor version number,
-a UUID, non-default user preferences, and perhaps other housekeeping
-information. The header will be terminated by an empty record of type
-'END'. This will allow older versions of the program to skip over records
-that may be added over time to the header.
+2.8.1 HDR: The database header. All data in the header is written in
+fields, as defined in Section 3. The first field contains the version
+number of the database format. For this version, the value is 0x0300
+(stored in little-endian format, that is, 0x00, 0x03). The type of this
+field is zero.  The next field is the database's UUID, stored as 16
+bytes. The type of this field is UUID (as defined in Section 3.1).
+Following this, non-default user preferences are written as a string (as
+described below), with field type value set to 0x2.  Currently, no further
+data is written. To allow further enhancements, the database header is
+terminated by an empty field of type 'END'. This will allow older versions
+of the program to skip over records that may be added over time to the
+header.
 
-R1..Rn: The actual password entries, in the format described in the V2
-document, with possible additional fields.
+2.8.1.1 Non-default preferences are encoded in a string as follows: The
+string is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
+integer and string, resp., nn is the numeric value of the enum, and vv is
+the value, {1.0} for bool, unsigned integer for int, and quoted string for
+String. Only values != default are stored. See PWSprefs.cpp for more
+details.
 
-EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is exactly
+2.8.2 R1..Rn: The actual database records. Each record consists of one or
+more typed fields (as defined in Section 3), terminated by the 'END' type
+field. The UUID, Title, and Password fields are mandatory. All
+non-mandatory fields may either be absent or have zero length. When a field
+is absent or zero-length, its default value shall be used.
+
+2.9 EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is exactly
 one block long), unencrypted. This is an implementation convenience to
 inform the application that the following bytes are to be processed
 differently.
 
-HMAC: The 256-bit keyed-hash MAC, as described in RFC2104. The value is
-calculated over all of the plaintext fields. The key L as stored in B3
-and B4 is used as the hash key value.
+2.10 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with
+SHA-256 as the underlying hash function. The value is calculated over all
+of the plaintext fields, that is, over all the data stored in all fields
+(starting from the version number in the header, ending with the last field
+of the last record). The key L as stored in B3 and B4 is used as the hash
+key value.
 
+3. Fields: Data in PasswordSafe is stored in typed fields. Each field
+consists of one or more blocks. The blocks are the blocks of the underlying
+encryption algorithm - 16 bytes long for Twofish. The first block contains
+the field length in the first 4 bytes (little-endian), followed by a
+one-byte type identifier. The rest of the block is filled with random data
+(to minimize the known plaintext). The type of a field also defines the
+data representation.
+3.1 Field types (based on the v2 format):
+							             Currently
+   Name			      value	    Type     Implemented Comments
+   --------------------------------------------------------------------------
+   UUID			      0x1		UUID		Y	[1]
+   Group		      0x2		Text		Y	[2]
+   Title		      0x3		Text		Y
+   Username		      0x4		Text		Y
+   Notes		      0x5		Text		Y
+   Password		      0x6		Text		Y
+   Creation Time	  0x7		time_t		Y   [3]
+   Password Modification
+   Time               0x8       time_t      N
+   Last Access Time   0x9		time_t		N	[4]
+   Password Lifetime  0xa		time_t		N	[5]
+   Password Policy    0xb		4 bytes		N	[6]
+   URL                0xc       Text		Y	[7]
+   Autotype           0xd       Text        Y   [8]
+   End of Entry       0xff		[empty]		Y	[9]
+
+[1] A universally unique identifier is needed in order to synchronize
+databases, i.e., between a handheld pocketPC device and a PC. The UUID data
+type is 16 bytes long, as defined in RFC4122. Windows has functions for
+this, and the RFC has a sample implementation.
+
+[2] The "Group" supports displaying the entries in a tree-like
+manner. Groups can be heirarchical, with elements separated by a period,
+supporting groups such as "Finance.credit cards.Visa", "Finance.credit
+cards.Mastercard", Finance.bank.web access", etc. Dots entered by the user
+should be "escaped" by the application.
+
+[3] Timestamps are stored as 32 bit, little endian, unsigned integers,
+representing the number of seconds since Midnight, January 1, 1970,
+GMT. (This is equivalent to the time_t type on Windows and POSIX.  On the
+Macintosh, the value needs to be adjusted by the constant value 2082844800
+to account for the different epoch of its time_t type.)
+
+[4] This will be updated whenever the password of this entry is copied
+to the clipboard, or whenever the Password Modification Time is
+updated.
+
+[5] This will allow the user to enter a lifetime for an entry. The
+application can then prompt the user about passwords that need to be
+changed. Password lifetime is in seconds, and a value of zero means
+"forever".
+
+[6] Currently, the password policy is a global property. It makes
+sense, however, to want to control this on a per-entry basis. Four
+bytes seems sufficient to store the policy. Exact encoding TBD.
+
+[7] The URL will be passed to the shell when the user chooses the "Browse
+to" action for this entry. In version 2 of the format, this was extracted
+from the Notes field. By placing it in a separate field, we are no longer
+restricted to a URL - any action that may be executed by the shell may be
+specified here.
+
+[8] The text to be 'typed' by PasswordSafe upon the "Perform
+Autotype" action maybe specified here. If unspecified, the default value of
+'username, tab, password, tab, enter' is used. In version 2 of the format,
+this was extracted from the Notes field. Several codes are recognized here,
+e.g, '%p' is replaced by the record's password. See the user documentation
+for the complete list of codes. The replacement is done by the application
+at runtime, and is not stored in the database.
+
+[9] An explicit end of entry field is useful for supporting new fields
+without breaking backwards compatability.
+
+End of Format description.
 
 $Log$
+Revision 1.5  2006/01/18 20:48:49  ronys
+Revised after more comments from dev list.
+
 Revision 1.4  2006/01/05 15:39:59  ronys
 Writes 3.0 header. Default suffix now pwsafe3. "Officially" v3.0BETA1...
 
