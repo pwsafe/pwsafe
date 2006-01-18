@@ -365,7 +365,7 @@ int PWSfileV3::WriteHeader()
   
   uuid.GetUUID(uuid_array);
   
-  numWritten += WriteCBC(0, uuid_array, sizeof(uuid_array));
+  numWritten += WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
 
   if (numWritten <= 0) { // WriteCBC writes at least 2 blocks per datum.
     Close();
@@ -373,7 +373,7 @@ int PWSfileV3::WriteHeader()
   }
 
   // Write (non default) user preferences
-  numWritten = WriteCBC(0, m_prefString);
+  numWritten = WriteCBC(0x2, m_prefString);
   if (numWritten <= 0) {
     Close();
     return FAILURE;
