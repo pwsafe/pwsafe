@@ -1,7 +1,13 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
+// Tweaking for Unicode support broke this code
+// XXX need to rewrite with good ole FILE instead of dain bramaged MS ofstream
+#define OFSTREAM_BROKEN
+
 #pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
+#ifndef OFSTREAM_BROKEN
 #include <fstream> // for WritePlaintextFile
+#endif /* OFSTREAM_BROKEN */
 #include <iostream>
 #include <string>
 #include <vector>
@@ -111,29 +117,43 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 int
 PWScore::WritePlaintextFile(const CMyString &filename)
 {
-  ofstream of(filename);
-
-  if (!of)
+#ifndef OFSTREAM_BROKEN
+#ifdef UNICODE
+  wofstream ofs(LPCTSTR(filename));
+#else
+  ofstream ofs(LPCTSTR(filename));
+#endif
+  if (!ofs)
     return CANT_OPEN_FILE;
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
 
-  while (listPos != NULL)
-    {
-      temp = m_pwlist.GetAt(listPos);
-      of << (const char *)temp.GetPlaintext('\t') << endl;
-      m_pwlist.GetNext(listPos);
-    }
-  of.close();
+  while (listPos != NULL) {
+    temp = m_pwlist.GetAt(listPos);
+    ofs << (const char *)temp.GetPlaintext(TCHAR('\t')) << endl;
+    m_pwlist.GetNext(listPos);
+  }
+  ofs.close();
 
   return SUCCESS;
+#else
+  ::MessageBox(NULL,_T("Unimplemented function"),
+               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
+  return FAILURE;
+#endif
 }
 
 int
-PWScore::WritePlaintextFile(const CMyString &filename, const char delimiter)
+PWScore::WritePlaintextFile(const CMyString &filename, const TCHAR delimiter)
 {
-  ofstream of(filename);
+#ifndef OFSTREAM_BROKEN
+#ifdef UNICODE
+  wofstream of(LPCTSTR(filename));
+#else
+  ofstream of(LPCTSTR(filename));
+#endif
+
 
   if (!of)
     return CANT_OPEN_FILE;
@@ -144,12 +164,17 @@ PWScore::WritePlaintextFile(const CMyString &filename, const char delimiter)
   while (listPos != NULL)
   {
       temp = m_pwlist.GetAt(listPos);
-      of << (const char *)temp.GetPlaintext('\t', delimiter) << endl;
+      of << temp.GetPlaintext(TCHAR('\t'), delimiter) << endl;
       m_pwlist.GetNext(listPos);
   }
   of.close();
 
   return SUCCESS;
+#else
+  ::MessageBox(NULL,_T("Unimplemented function"),
+               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
+  return FAILURE;
+#endif
 }
 
 /*
@@ -190,7 +215,12 @@ int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
 			     TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped)
 {
-  ifstream ifs(filename);
+#ifndef OFSTREAM_BROKEN
+#ifdef UNICODE
+  wifstream ifs(LPCTSTR(filename));
+#else
+  ifstream ifs(LPCTSTR(filename));
+#endif
   numImported = numSkipped = 0;
 
   if (!ifs)
@@ -293,6 +323,11 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
   ifs.close();
 
   return SUCCESS;
+#else
+  ::MessageBox(NULL,_T("Unimplemented function"),
+               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
+  return FAILURE;
+#endif
 }
 
 int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
@@ -494,8 +529,13 @@ CMyString PWScore::GetPassKey() const
 int
 PWScore::ImportKeePassTextFile(const CMyString &filename)
 {
+#ifndef OFSTREAM_BROKEN
   static const char *ImportedPrefix = { "ImportedKeePass" };
-  ifstream ifs(filename);
+#ifdef UNICODE
+  wifstream ifs(LPCTSTR(filename));
+#else
+  ifstream ifs(LPCTSTR(filename));
+#endif
 
   if (!ifs) {
     return CANT_OPEN_FILE;
@@ -600,6 +640,11 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
   // TODO: maybe return an error if the full end of the file was not reached?
 
   return SUCCESS;
+#else
+  ::MessageBox(NULL,_T("Unimplemented function"),
+               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
+  return FAILURE;
+#endif
 }
 
 /*

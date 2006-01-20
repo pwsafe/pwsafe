@@ -17,7 +17,8 @@
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="4"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="0">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -66,7 +67,8 @@
 			IntermediateDirectory=".\Release"
 			ConfigurationType="4"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="0">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
