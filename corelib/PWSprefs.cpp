@@ -142,10 +142,10 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
 			   long &left, long &right) const
 {
   // this is never store in db
-  top = m_app->GetProfileInt(_T(PWS_REG_POSITION), _T("top"), -1);
-  bottom = m_app->GetProfileInt(_T(PWS_REG_POSITION), _T("bottom"), -1);
-  left = m_app->GetProfileInt(_T(PWS_REG_POSITION), _T("left"), -1);
-  right = m_app->GetProfileInt(_T(PWS_REG_POSITION), _T("right"), -1);
+  top = m_app->GetProfileInt(PWS_REG_POSITION, _T("top"), -1);
+  bottom = m_app->GetProfileInt(PWS_REG_POSITION, _T("bottom"), -1);
+  left = m_app->GetProfileInt(PWS_REG_POSITION, _T("left"), -1);
+  right = m_app->GetProfileInt(PWS_REG_POSITION, _T("right"), -1);
 }
 
 
@@ -188,10 +188,10 @@ void PWSprefs::SetPref(const CMyString &name, const CMyString &val)
 void PWSprefs::SetPrefRect(long top, long bottom,
 			   long left, long right)
 {
-  m_app->WriteProfileInt(_T(PWS_REG_POSITION), _T("top"), top);
-  m_app->WriteProfileInt(_T(PWS_REG_POSITION), _T("bottom"), bottom);
-  m_app->WriteProfileInt(_T(PWS_REG_POSITION), _T("left"), left);
-  m_app->WriteProfileInt(_T(PWS_REG_POSITION), _T("right"), right);
+  m_app->WriteProfileInt(PWS_REG_POSITION, _T("top"), top);
+  m_app->WriteProfileInt(PWS_REG_POSITION, _T("bottom"), bottom);
+  m_app->WriteProfileInt(PWS_REG_POSITION, _T("left"), left);
+  m_app->WriteProfileInt(PWS_REG_POSITION, _T("right"), right);
 }
 
 CMyString PWSprefs::Store()
