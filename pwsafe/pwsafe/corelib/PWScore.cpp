@@ -809,7 +809,7 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
 			       _tcslen(user)*sizeof(TCHAR),
 			       &sumWrit, NULL);
     write_status = ::WriteFile(m_lockFileHandle,
-			       _T("@"), _tcslen("@")*sizeof(TCHAR),
+			       _T("@"), _tcslen(_T("@"))*sizeof(TCHAR),
 			       &numWrit, NULL);
     sumWrit += numWrit;
     write_status += ::WriteFile(m_lockFileHandle,

@@ -73,7 +73,7 @@ GenRandhash(const CMyString &a_passkey,
             const unsigned char* a_randstuff,
             unsigned char* a_randhash)
 {
-  const LPCSTR pkey = (const LPCSTR)a_passkey;
+  const LPCTSTR pkey = (const LPCTSTR)a_passkey;
   /*
     I'm not quite sure what this is doing, so as I figure out each piece,
     I'll add more comments {jpr}
@@ -143,7 +143,7 @@ static BOOLEAN __stdcall LoadRandomDataFunction(void * pv, ULONG cb)
   //  this is the default function we'll use if loading RtlGenRandom fails
   pfnGetRandomData = MyGetRandomData;
 
-  HMODULE hLib = LoadLibrary("ADVAPI32.DLL");
+  HMODULE hLib = LoadLibrary(_T("ADVAPI32.DLL"));
   if (hLib) {
     BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG);
     pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
