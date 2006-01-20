@@ -55,8 +55,8 @@ public:
    CMyString GetAutoType() const; // V30
    CMyString GetCTime() const; // V30
    void GetCTime(time_t &t) const; // V30
-   CMyString GetPlaintext(char separator) const; // returns all fields separated by separator
-   CMyString GetPlaintext(char separator, char delimiter) const; // as above + delimiter for multiline notes
+   CMyString GetPlaintext(TCHAR separator) const; // returns all fields separated by separator
+   CMyString GetPlaintext(TCHAR separator, TCHAR delimiter) const; // as above + delimiter for multiline notes
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,

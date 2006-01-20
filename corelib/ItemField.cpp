@@ -88,7 +88,7 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
 
 void CItemField::Set(const CMyString &value, BlowFish *bf)
 {
-  const LPCSTR plainstr = (const LPCSTR)value; // use of CString::operator LPCSTR
+  const LPCTSTR plainstr = (const LPCTSTR)value; // use of CString::operator LPCSTR
 
   Set((const unsigned char *)plainstr, value.GetLength(), bf);
 }

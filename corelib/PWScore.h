@@ -42,7 +42,7 @@ class PWScore {
   int WriteV17File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V17);}
   int WritePlaintextFile(const CMyString &filename);
-  int WritePlaintextFile(const CMyString &filename, const char delimiter);
+  int WritePlaintextFile(const CMyString &filename, const TCHAR delimiter);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
 			  TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped);
   int ImportKeePassTextFile(const CMyString &filename);

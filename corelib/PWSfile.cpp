@@ -98,10 +98,10 @@ int PWSfile::Close()
 
 int PWSfile::WriteCBC(unsigned char type, const CString &data)
 {
-  // We do a double cast because the LPCSTR cast operator is overridden
+  // We do a double cast because the LPCTSTR cast operator is overridden
   // by the CString class to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR datastr = LPCSTR(data);
+  LPCTSTR datastr = LPCTSTR(data);
 
   return WriteCBC(type, (const unsigned char *)datastr,
                   data.GetLength());
@@ -126,7 +126,7 @@ int PWSfile::ReadCBC(unsigned char &type, CMyString &data)
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-    CMyString str(LPCSTR(buffer), buffer_len);
+    CMyString str(LPCTSTR(buffer), buffer_len);
     data = str;
     trashMemory(buffer, buffer_len);
     delete[] buffer;

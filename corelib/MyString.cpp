@@ -12,7 +12,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-CMyString::CMyString() : m_mystring("")
+CMyString::CMyString() : m_mystring(_T(""))
 {
 }
 
@@ -193,23 +193,25 @@ CMyString::IsEmpty() const
 int
 CMyString::FindByte(char ch) const
 {
-	int		nRetVal = -1;	// default to not found
-	int		nIndex	= 0;;
+  int		nRetVal = -1;	// default to not found
+  int		nIndex	= 0;;
 
-	const char* pszString = (const char *)m_mystring;
+  LPCTSTR pszString = LPCTSTR(m_mystring);
 
-	while ( pszString[nIndex] )
-	{
-		if ( pszString[nIndex] == ch )
-		{
-			nRetVal = nIndex;
-			break;
-		}
+  while ( pszString[nIndex] ) {
+#ifndef UNICODE
+    if ( pszString[nIndex] == ch ) {
+#else
+    if ( LOBYTE(pszString[nIndex]) == ch ) {
+#endif
+      nRetVal = nIndex;
+      break;
+    }
 
-		++nIndex;
-	}
+    ++nIndex;
+  }
 
-	return nRetVal;
+  return nRetVal;
 }
 
 int

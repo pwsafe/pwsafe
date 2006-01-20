@@ -92,10 +92,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
   ASSERT(m_curversion == V17 || m_curversion == V20);
 
   m_passkey = passkey;
-  // We do a double cast because the LPCSTR cast operator
-  // is overridden by the CString class to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(m_passkey);
+  LPCTSTR passstr = LPCTSTR(m_passkey);
 
   if (m_rw == Write) {
 #ifdef UNICODE
@@ -276,7 +273,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   CMyString tempdata;  
   int numread = 0;
   unsigned char type;
-  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
+  // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
   // to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
 
@@ -314,10 +311,10 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
 	case CItemData::END:
 	  endFound = true; break;
 	case CItemData::UUID: {
-	  LPCSTR ptr = LPCSTR(tempdata);
+	  LPCTSTR ptr = LPCTSTR(tempdata);
 	  uuid_array_t uuid_array;
 	  for (int i = 0; i < sizeof(uuid_array); i++)
-	    uuid_array[i] = ptr[i];
+	    uuid_array[i] = (unsigned char)ptr[i];
 	  item.SetUUID(uuid_array); break;
 	}
 	case CItemData::GROUP:

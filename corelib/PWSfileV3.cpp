@@ -115,7 +115,7 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   unsigned char Ptag[SHA256::HASHLEN];
   if (aPtag == NULL)
     aPtag = Ptag;
-  LPCSTR passstr = LPCSTR(passkey); 
+  LPCTSTR passstr = LPCTSTR(passkey); 
   StretchKey(salt, sizeof(salt),
              (const unsigned char *)passstr, passkey.GetLength(),
              aPtag);
@@ -137,7 +137,7 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
 
 int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 {
-  LPCSTR d = LPCSTR(data);
+  LPCTSTR d = LPCTSTR(data);
   return WriteCBC(type, (const unsigned char *)d, data.GetLength());
 }
 
@@ -179,7 +179,7 @@ PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
   int numRead = PWSfile::ReadCBC(type, data);
 
   if (numRead > 0) {
-    LPCSTR d = LPCSTR(data);
+    LPCTSTR d = LPCTSTR(data);
     m_hmac.Update((const unsigned char *)d, data.GetLength());
   }
 
@@ -227,10 +227,10 @@ int PWSfileV3::ReadRecord(CItemData &item)
       case CItemData::END:
         endFound = true; break;
       case CItemData::UUID: {
-        LPCSTR ptr = LPCSTR(tempdata);
+        LPCTSTR ptr = LPCTSTR(tempdata);
         uuid_array_t uuid_array;
         for (int i = 0; i < sizeof(uuid_array); i++)
-          uuid_array[i] = ptr[i];
+          uuid_array[i] = (unsigned char)ptr[i];
         item.SetUUID(uuid_array); break;
       }
       case CItemData::GROUP:
@@ -242,7 +242,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
       case CItemData::AUTOTYPE:
         item.SetAutoType(tempdata); break;
       case CItemData::CTIME: {
-        LPCSTR ptr = LPCSTR(tempdata);
+        LPCTSTR ptr = LPCTSTR(tempdata);
         time_t t;
         memcpy(&t, ptr, sizeof(t));
         item.SetCTime(t);
@@ -306,7 +306,7 @@ int PWSfileV3::WriteHeader()
   fwrite(salt, 1, sizeof(salt), m_fd);
   
   unsigned char Ptag[SHA256::HASHLEN];
-  LPCSTR passstr = LPCSTR(m_passkey); 
+  LPCTSTR passstr = LPCTSTR(m_passkey); 
   StretchKey(salt, sizeof(salt),
              (const unsigned char *)passstr, m_passkey.GetLength(),
              Ptag);

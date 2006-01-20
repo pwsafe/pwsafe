@@ -175,7 +175,7 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
-CMyString CItemData::GetPlaintext(char separator) const
+CMyString CItemData::GetPlaintext(TCHAR separator) const
 {
   CMyString ret;
   CMyString title;
@@ -186,15 +186,15 @@ CMyString CItemData::GetPlaintext(char separator) const
 	title.Replace('.', '\b');
 
   if (!group.IsEmpty())
-    title = group + '.' + title;
+    title = group + TCHAR('.') + title;
   
   ret = title + separator + GetUser() + separator +
-    GetPassword() + separator + "\"" + GetNotes() + "\"";
+    GetPassword() + separator + _T("\"") + GetNotes() + _T("\"");
 
   return ret;
 }
 
-CMyString CItemData::GetPlaintext(char separator, char delimiter) const
+CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
 {
 	CMyString ret;
 	CMyString title;
@@ -205,10 +205,10 @@ CMyString CItemData::GetPlaintext(char separator, char delimiter) const
 	title.Replace('.', '\b');
 
 	if (!group.IsEmpty())
-		title = group + '.' + title;
+		title = group + TCHAR('.') + title;
 
 	ret = title + separator + GetUser() + separator +
-    GetPassword() + separator + "\"" + GetNotes(delimiter) + "\"";
+    GetPassword() + separator + _T("\"") + GetNotes(delimiter) + _T("\"");
 
   return ret;
 }
