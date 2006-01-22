@@ -44,7 +44,10 @@ protected:
 private:
   // Are we showing more or less details?
   bool m_isExpanded;
-  CButton m_moreLessBtn;
+  void ResizeDialog();
+public:
+	afx_msg void OnBnClickedOk();
+	CButton m_moreLessBtn;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

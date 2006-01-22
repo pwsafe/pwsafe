@@ -44,6 +44,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("IsUTF8"), false, true},
   {_T("HotKeyEnabled"), false, true},
   {_T("MRUOnFileMenu"), true, true},
+  {_T("DisplayExpandedAddEditDlg"), true, true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {

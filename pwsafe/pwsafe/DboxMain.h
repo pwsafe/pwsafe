@@ -72,7 +72,8 @@ public:
     void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
     void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
     void SetReadOnly(bool state) { m_IsReadOnly = state;}
-	void TreeSelectionChanged();
+	//TODO Dave Collins think's this can be removed
+	//void TreeSelectionChanged();
     bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
 
     //{{AFX_DATA(DboxMain)
@@ -253,7 +254,6 @@ protected:
 
 private:
   PWScore  &m_core;
-  CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   CMyString m_lastFindStr;
   BOOL m_lastFindCS;
   bool m_IsReadOnly;
@@ -263,7 +263,6 @@ private:
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   BOOL IsWorkstationLocked();
   void startLockCheckTimer();
-  void ExtractAutoTypeCmd(CMyString &str);
   bool m_LockDisabled; // set when a dialog box is open, to avoid confusion
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
