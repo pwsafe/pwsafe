@@ -543,7 +543,8 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 	  PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
 	  break;
 	case PWSprefs::DoubleClickBrowse:
-      TreeSelectionChanged();
+		// TODO Dave Collins think's this can be removed
+      //TreeSelectionChanged();
 	  PostMessage(WM_COMMAND, ID_MENUITEM_BROWSE);
           break;
 	default:
@@ -555,14 +556,19 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 // Called to open a web browser to the URL associated with an entry.
 void DboxMain::OnBrowse()
 {
-  if (!m_BrowseURL.IsEmpty()) {
-    HINSTANCE stat = ::ShellExecute(NULL, NULL, m_BrowseURL,
-				    NULL, _T("."), SW_SHOWNORMAL);
-    if (int(stat) < 32) {
-    #ifdef _DEBUG
-        AfxMessageBox("oops");
-    #endif
-    }
+  CItemData *ci = getSelectedItem();
+  if(ci != NULL)
+  {
+	ASSERT(ci != NULL);
+	if (!ci->GetURL().IsEmpty()) {
+		HINSTANCE stat = ::ShellExecute(NULL, NULL, ci->GetURL(),
+						NULL, _T("."), SW_SHOWNORMAL);
+		if (int(stat) < 32) {
+		#ifdef _DEBUG
+			AfxMessageBox("oops");
+		#endif
+		}
+	}
   }
 }
 

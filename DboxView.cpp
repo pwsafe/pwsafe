@@ -184,6 +184,7 @@ DboxMain::OnAdd()
 
   CAddDlg dataDlg(this);
   m_LockDisabled = true;
+  
   if (m_core.GetUseDefUser())
     {
       dataDlg.m_username = m_core.GetDefUsername();
@@ -411,6 +412,8 @@ DboxMain::OnEdit()
       dlg_edit.m_title = ci->GetTitle();
       dlg_edit.m_username = ci->GetUser();
       dlg_edit.m_realpassword = ci->GetPassword();
+	  dlg_edit.m_URL = ci->GetURL();
+	  dlg_edit.m_autotype = ci->GetAutoType();
       dlg_edit.m_password = HIDDEN_PASSWORD;
       dlg_edit.m_notes = ci->GetNotes();
       dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
@@ -432,6 +435,8 @@ DboxMain::OnEdit()
 	  ci->SetUser(user);
 	  ci->SetPassword(dlg_edit.m_realpassword);
 	  ci->SetNotes(dlg_edit.m_notes);
+	  ci->SetURL(dlg_edit.m_URL);
+	  ci->SetAutoType(dlg_edit.m_autotype);
 
 	  /*
 	    Out with the old, in with the new
@@ -966,30 +971,6 @@ DboxMain::OnSize(UINT nType,
   m_bSizing = false;
 }
 
-static bool ExtractURL(const CMyString &instr, CMyString &outurl)
-{
-  // Extract first instance of (http|https|ftp)://[^ \t\r\n]+
-  int left = instr.Find(_T("http://"));
-  if (left == -1)
-    left = instr.Find(_T("https://"));
-  if (left == -1)
-    left = instr.Find(_T("ftp://"));
-  if (left == -1) {
-    outurl = _T("");
-    return false;
-  } else {
-    CString url(instr);
-    url = url.Mid(left); // throw out everything left of URL
-    int right = url.FindOneOf(_T(" \t\r\n"));
-    if (right != -1) {
-      url = url.Left(right);      
-    }
-    outurl = CMyString(url);
-    return true;
-  }
-}
-
-
 // Called when right-click is invoked in the client area of the window.
 void
 DboxMain::OnContextMenu(CWnd *, CPoint point) 
@@ -1060,11 +1041,11 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
 
         ASSERT(itemData != NULL);
 
-        if (!ExtractURL(itemData->GetNotes(), m_BrowseURL)) {
-            ASSERT(m_BrowseURL.IsEmpty());
+        if (itemData->GetURL().IsEmpty()) {
+            ASSERT(itemData->GetURL().IsEmpty());
             pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
         } else {
-            ASSERT(!m_BrowseURL.IsEmpty());
+            ASSERT(!itemData->GetURL().IsEmpty());
             pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
         }
 
@@ -1088,6 +1069,7 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
    *pResult = 0;
 }
 
+/* TODO Dave Collins think's this can be removed
 /////////////////////////////////////////////////////////////////////
 //  TreeSelectionChanged is called by CMyTreeCtrl's OnSelchanged
 //  every time there is a selection change in the Treeview.
@@ -1116,13 +1098,15 @@ DboxMain::TreeSelectionChanged()
 	
       if (itemData!=NULL)  //no data... no point in attempting to extract the current URL
 	{
-	  if (!ExtractURL(itemData->GetNotes(), m_BrowseURL)) //given itemData, fill in the Web link data 
-	    {
-	      ASSERT(m_BrowseURL.IsEmpty());
-	    }
+	//	if (!ExtractURL(itemData->GetNotes(), m_BrowseURL)) //given itemData, fill in the Web link data 
+	 //   {
+	  //    ASSERT(m_BrowseURL.IsEmpty());
+	  //  }
+
 	}
     }
 }
+*/
 
 #if !defined(POCKET_PC)
 void
@@ -1466,9 +1450,7 @@ DboxMain::OnAutoType()
     {
       CItemData *ci = getSelectedItem();
       ASSERT(ci != NULL);
-      CMyString AutoCmd = ci->GetNotes();
-      // get the notes and then extract the autotype command	
-      ExtractAutoTypeCmd(AutoCmd);
+      CMyString AutoCmd = ci->GetAutoType();
       const CMyString user(ci->GetUser());
       const CMyString pwd(ci->GetPassword());
       if(AutoCmd.IsEmpty()){
@@ -1546,24 +1528,6 @@ DboxMain::OnAutoType()
       }
       ks.SendString(tmp);
   }
-}
-
-void DboxMain::ExtractAutoTypeCmd(CMyString &str)
-{
-    int left = str.Find(_T("autotype:"));
-    if (left == -1) {
-        str = _T(""); 
-    } else {
-        CString tmp(str);
-        tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
-        int right = tmp.FindOneOf(_T("\r\n"));
-        if (right != -1) {
-            tmp = tmp.Left(right);
-            str = CMyString(tmp);
-        } else {
-            str=CMyString(tmp);
-        }
-    }
 }
 
 void

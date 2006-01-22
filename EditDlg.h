@@ -1,6 +1,7 @@
 // EditDlg.h
 //-----------------------------------------------------------------------------
 
+#include "afxwin.h"
 class CEditDlg
    : public CDialog
 {
@@ -18,6 +19,8 @@ public:
    CMyString m_username;
    CMyString m_title;
    CMyString m_group;
+   CMyString m_URL;
+   CMyString m_autotype;
 
    CMyString m_realpassword;
 
@@ -29,6 +32,9 @@ public:
 
 private:
    bool m_isPwHidden;
+   // Are we showing more or less details?
+   bool m_isExpanded;
+   void ResizeDialog();
 
 protected:
    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -45,6 +51,10 @@ protected:
    afx_msg void OnPasskeyKillfocus();
 #endif
    DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedMore();
+	CButton m_moreLessBtn;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
