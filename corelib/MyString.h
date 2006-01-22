@@ -30,8 +30,9 @@ public:
    const CMyString& operator=(const CMyString& stringSrc);
    const CMyString& operator=(TCHAR ch);
    const CMyString& operator=(LPCTSTR lpsz);
+#ifndef UNICODE // do we need this at all?
    const CMyString& operator=(const unsigned char* psz);
-
+#endif
    const CMyString& operator+=(const CMyString& string);
    const CMyString& operator+=(TCHAR ch);
    const CMyString& operator+=(LPCTSTR lpsz);

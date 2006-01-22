@@ -56,9 +56,9 @@ fields, as defined in Section 3. The first field contains the version
 number of the database format. For this version, the value is 0x0300
 (stored in little-endian format, that is, 0x00, 0x03). The type of this
 field is zero.  The next field is the database's UUID, stored as 16
-bytes. The type of this field is UUID (as defined in Section 3.1).
+bytes. The type of this field is 0x01 (as defined in Section 3.1).
 Following this, non-default user preferences are written as a string (as
-described below), with field type value set to 0x2.  Currently, no further
+described below), with field type value set to 0x02.  Currently, no further
 data is written. To allow further enhancements, the database header is
 terminated by an empty field of type 'END'. This will allow older versions
 of the program to skip over records that may be added over time to the
@@ -100,21 +100,22 @@ data representation.
 							             Currently
    Name			      value	    Type     Implemented Comments
    --------------------------------------------------------------------------
-   UUID			      0x1		UUID		Y	[1]
-   Group		      0x2		Text		Y	[2]
-   Title		      0x3		Text		Y
-   Username		      0x4		Text		Y
-   Notes		      0x5		Text		Y
-   Password		      0x6		Text		Y
-   Creation Time	  0x7		time_t		Y   [3]
+   UUID			      0x01		UUID		Y	[1]
+   Group		      0x02		Text		Y	[2]
+   Title		      0x03		Text		Y
+   Username		      0x04		Text		Y
+   Notes		      0x05		Text		Y
+   Password		      0x06		Text		Y
+   Creation Time	  0x07		time_t		Y   [3]
    Password Modification
-   Time               0x8       time_t      N
-   Last Access Time   0x9		time_t		N	[4]
-   Password Lifetime  0xa		time_t		N	[5]
-   Password Policy    0xb		4 bytes		N	[6]
-   URL                0xc       Text		Y	[7]
-   Autotype           0xd       Text        Y   [8]
-   End of Entry       0xff		[empty]		Y	[9]
+   Time               0x08      time_t      N
+   Last Access Time   0x09		time_t		N	[4]
+   Password Lifetime  0x0a		time_t		N	[5]
+   Password Policy    0x0b		4 bytes		N	[6]
+   Last Mod. time     0xc		time_t		N	[7]
+   URL                0x0c      Text		Y	[8]
+   Autotype           0x0d      Text        Y   [9]
+   End of Entry       0xff		[empty]		Y	[10]
 
 [1] A universally unique identifier is needed in order to synchronize
 databases, i.e., between a handheld pocketPC device and a PC. The UUID data
@@ -146,13 +147,16 @@ changed. Password lifetime is in seconds, and a value of zero means
 sense, however, to want to control this on a per-entry basis. Four
 bytes seems sufficient to store the policy. Exact encoding TBD.
 
-[7] The URL will be passed to the shell when the user chooses the "Browse
+[7] This is the time that any field of the record was modified, useful
+for merging databases.
+
+[8] The URL will be passed to the shell when the user chooses the "Browse
 to" action for this entry. In version 2 of the format, this was extracted
 from the Notes field. By placing it in a separate field, we are no longer
 restricted to a URL - any action that may be executed by the shell may be
 specified here.
 
-[8] The text to be 'typed' by PasswordSafe upon the "Perform
+[9] The text to be 'typed' by PasswordSafe upon the "Perform
 Autotype" action maybe specified here. If unspecified, the default value of
 'username, tab, password, tab, enter' is used. In version 2 of the format,
 this was extracted from the Notes field. Several codes are recognized here,
@@ -160,12 +164,17 @@ e.g, '%p' is replaced by the record's password. See the user documentation
 for the complete list of codes. The replacement is done by the application
 at runtime, and is not stored in the database.
 
-[9] An explicit end of entry field is useful for supporting new fields
+[10] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 End of Format description.
 
 $Log$
+Revision 1.6  2006/01/22 19:24:40  ronys
+- Merged with Dave Collin's work.
+- [1412208] Fixed tab order in opening dialog
+- More work on formatV3
+
 Revision 1.5  2006/01/18 20:48:49  ronys
 Revised after more comments from dev list.
 

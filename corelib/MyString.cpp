@@ -88,6 +88,7 @@ CMyString::operator=(LPCTSTR lpsz)
    return *this;
 }
 
+#ifndef UNICODE // do we need this at all?
 const CMyString&
 CMyString::operator=(const unsigned char* psz)
 {
@@ -95,6 +96,7 @@ CMyString::operator=(const unsigned char* psz)
    m_mystring = psz;
    return *this;
 }
+#endif
 
 const CMyString&
 CMyString::operator+=(const CMyString& string)

@@ -32,8 +32,8 @@ class CItemData
 {
 public:
   enum {NAME=0, UUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
-	PASSWORD = 0x6, CTIME = 0x7, MTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
-	POLICY = 0xb, URL = 0xc, AUTOTYPE = 0xd,
+	PASSWORD = 0x6, CTIME = 0x7, PMTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
+	POLICY = 0xb, RMTIME = 0xc, URL = 0xd, AUTOTYPE = 0xe,
     END = 0xff}; // field types, per formatV{2,3}.txt
 
   static void SetSessionKey(); // call exactly once per session
