@@ -247,7 +247,8 @@ int PWSfileV3::ReadRecord(CItemData &item)
         memcpy(&t, ptr, sizeof(t));
         item.SetCTime(t);
       }
-      case CItemData::MTIME:
+      case CItemData::PMTIME:
+      case CItemData::RMTIME:
       case CItemData::ATIME:
       case CItemData::LTIME:
       case CItemData::POLICY:

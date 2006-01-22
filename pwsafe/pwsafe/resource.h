@@ -168,6 +168,7 @@
 #define IDC_DISPLAY_EXPANDED            1123
 #define IDC_STATIC_URL                  1124
 #define IDC_STATIC_AUTO                 1125
+#define IDC_SCROLLBAR1                  1126
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -234,7 +235,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32848
-#define _APS_NEXT_CONTROL_VALUE         1126
+#define _APS_NEXT_CONTROL_VALUE         1127
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
