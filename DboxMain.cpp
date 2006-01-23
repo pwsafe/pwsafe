@@ -543,8 +543,6 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 	  PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
 	  break;
 	case PWSprefs::DoubleClickBrowse:
-		// TODO Dave Collins think's this can be removed
-      //TreeSelectionChanged();
 	  PostMessage(WM_COMMAND, ID_MENUITEM_BROWSE);
           break;
 	default:

@@ -55,8 +55,6 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONUP()
 	ON_WM_TIMER()
-	//TODO Dave Collins think's this can be removed
-	//ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -576,15 +574,6 @@ void CMyTreeCtrl::ClearExpanded()
   SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
   pSet->clear();
 }
-/* TODO Dave Collins think's this can be removed
-void CMyTreeCtrl::OnSelchanged(NMHDR* , LRESULT* pResult) 
-{
-	*pResult = 0;
-
-	 DboxMain *parent = (DboxMain *)GetParent();
-	 parent->TreeSelectionChanged();  //let the parent know our selection changed.
-}
-*/
 
 void CMyTreeCtrl::OnExpandAll() 
 {
