@@ -152,7 +152,10 @@ CItemData::GetCTime() const
    memcpy(&t, in, sizeof(t));
    st = localtime(&t);
    time_str = asctime(st);
+   
    CMyString ret(time_str);
+   // remote the trailing EOL char.
+   ret.TrimRight();
    return ret;
 }
 

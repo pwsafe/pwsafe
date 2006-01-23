@@ -11,6 +11,7 @@ public:
    CEditDlg(CWnd* pParent = NULL)
       : CDialog(CEditDlg::IDD, pParent),
         m_isPwHidden(true)
+		, m_CTime(_T(""))
    {}
 
    enum { IDD = IDD_EDIT };
@@ -21,6 +22,7 @@ public:
    CMyString m_group;
    CMyString m_URL;
    CMyString m_autotype;
+   CMyString m_CTime;
 
    CMyString m_realpassword;
 
@@ -55,6 +57,8 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedMore();
 	CButton m_moreLessBtn;
+
+	
 };
 //-----------------------------------------------------------------------------
 // Local variables:

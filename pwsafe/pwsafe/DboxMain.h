@@ -72,8 +72,6 @@ public:
     void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
     void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
     void SetReadOnly(bool state) { m_IsReadOnly = state;}
-	//TODO Dave Collins think's this can be removed
-	//void TreeSelectionChanged();
     bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
 
     //{{AFX_DATA(DboxMain)

@@ -418,6 +418,9 @@ DboxMain::OnEdit()
       dlg_edit.m_notes = ci->GetNotes();
       dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
       dlg_edit.m_IsReadOnly = m_IsReadOnly;
+	
+	  dlg_edit.m_CTime = ci->GetCTime();
+
       app.DisableAccelerator();
       int rc = dlg_edit.DoModal();
       app.EnableAccelerator();
@@ -1068,45 +1071,6 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
 
    *pResult = 0;
 }
-
-/* TODO Dave Collins think's this can be removed
-/////////////////////////////////////////////////////////////////////
-//  TreeSelectionChanged is called by CMyTreeCtrl's OnSelchanged
-//  every time there is a selection change in the Treeview.
-//  Whether that selection is done by the mouse, or via keyboard.
-//  This happens to at least partially 
-//  fix bugs: 1179432, 1179386, 1237793  Where CTRL-L is out-of-date
-//
-//  Parameters: None        
-//  Results: Updates m_BrowseURL
-//  Tested on: Windows      (Not tested on Pocket PC)
-/////////////////////////////////////////////////////////////////////
-void 
-DboxMain::TreeSelectionChanged()
-{
-  // This may be called after the tree has been cleared, e.g., upon exit, after ClearData()
-  // has been called, which may cause an invalid itemData to be referenced,
-  // so we punt if the list is empty.
-  if (m_core.GetNumEntries() == 0)
-    return;
-
-  HTREEITEM hti=m_ctlItemTree.GetSelectedItem();  //Which item is selected in the Tree?
-
-  if (hti!=NULL) //we have better have something selected, or no point going on.
-    {
-      CItemData *itemData = (CItemData *)m_ctlItemTree.GetItemData(hti); //grab the data for the selected item
-	
-      if (itemData!=NULL)  //no data... no point in attempting to extract the current URL
-	{
-	//	if (!ExtractURL(itemData->GetNotes(), m_BrowseURL)) //given itemData, fill in the Web link data 
-	 //   {
-	  //    ASSERT(m_BrowseURL.IsEmpty());
-	  //  }
-
-	}
-    }
-}
-*/
 
 #if !defined(POCKET_PC)
 void

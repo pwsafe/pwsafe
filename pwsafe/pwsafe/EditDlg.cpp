@@ -42,6 +42,8 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
 	DDX_Text(pDX, IDC_URL, (CString&)m_URL);
 	DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
+	DDX_Text(pDX, IDC_CTIME, (CString&)m_CTime);
+
 
 	if(!pDX->m_bSaveAndValidate) {
 		// We are initializing the dialog.  Populate the groups combo box.
@@ -60,6 +62,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 	}
 	DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
 	DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
+
 }
 
 
@@ -286,12 +289,14 @@ void CEditDlg::OnBnClickedMore()
 void CEditDlg::ResizeDialog()
 {
 	int TopHideableControl = IDC_URL;
-	int BottomHideableControl = IDC_AUTOTYPE;
+	int BottomHideableControl = IDC_CTIME;
 	int controls[]={
 IDC_URL,
 IDC_AUTOTYPE,
 IDC_STATIC_URL,
-IDC_STATIC_AUTO};
+IDC_STATIC_AUTO,
+	IDC_CTIME,
+	IDC_STATIC_CTIME};
 
 	
 	for(int n = 0; n<sizeof(controls)/sizeof(IDC_URL);n++)
