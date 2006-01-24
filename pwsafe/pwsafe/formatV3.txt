@@ -112,9 +112,9 @@ data representation.
    Last Access Time   0x09		time_t		N	[4]
    Password Lifetime  0x0a		time_t		N	[5]
    Password Policy    0x0b		4 bytes		N	[6]
-   Last Mod. time     0xc		time_t		N	[7]
-   URL                0x0c      Text		Y	[8]
-   Autotype           0x0d      Text        Y   [9]
+   Last Mod. time     0x0c		time_t		N	[7]
+   URL                0x0d      Text		Y	[8]
+   Autotype           0x0e      Text        Y   [9]
    End of Entry       0xff		[empty]		Y	[10]
 
 [1] A universally unique identifier is needed in order to synchronize
@@ -170,6 +170,9 @@ without breaking backwards compatability.
 End of Format description.
 
 $Log$
+Revision 1.7  2006/01/24 20:57:49  ronys
+oops
+
 Revision 1.6  2006/01/22 19:24:40  ronys
 - Merged with Dave Collin's work.
 - [1412208] Fixed tab order in opening dialog
