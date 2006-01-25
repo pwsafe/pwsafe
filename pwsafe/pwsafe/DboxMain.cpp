@@ -436,7 +436,7 @@ DboxMain::OpenOnInit(void)
      un-minimizing the application
    */
    CMyString passkey;
-   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, true);
+   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, 0);  // first
    int rc2 = PWScore::NOT_SUCCESS;
 
    switch (rc)
@@ -1238,7 +1238,7 @@ DboxMain::Open( const CMyString &pszFilename )
   // clear the data before loading the new file
   ClearData();
 
-  rc = GetAndCheckPassword(pszFilename, passkey);
+  rc = GetAndCheckPassword(pszFilename, passkey, 1);  // normal
   switch (rc) {
   case PWScore::SUCCESS:
     app.GetMRU()->Add(pszFilename);
@@ -1338,7 +1338,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
       return PWScore::ALREADY_OPEN;
 	}
 	
-  rc = GetAndCheckPassword(pszFilename, passkey);
+  rc = GetAndCheckPassword(pszFilename, passkey, 1 );  // normal
   switch (rc)
 	{
 	case PWScore::SUCCESS:
@@ -1612,7 +1612,7 @@ DboxMain::Restore()
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(backup, passkey);
+  rc = GetAndCheckPassword(backup, passkey, 1 );  // normal
   switch (rc) {
   case PWScore::SUCCESS:
     break; // Keep going... 
@@ -1744,8 +1744,13 @@ DboxMain::SaveAs()
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,
 			      CMyString& passkey,
-			      bool first)
+			      int index)
 {
+  // index:
+  //	0 first
+  //	1 normal
+  //  2 with Exit button
+
   // Called for an existing database. Prompt user
   // for password, verify against file. Lock file to
   // prevent multiple r/w access.
@@ -1766,7 +1771,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    * a blank filename, which will disable passkey entry and the OK button
    */
 
-  CPasskeyEntry dbox_pkentry(this, filename, m_IsReadOnly, first);
+  CPasskeyEntry dbox_pkentry(this, filename, m_IsReadOnly, index);
   app.DisableAccelerator();
   int rc = dbox_pkentry.DoModal();
   app.EnableAccelerator();
@@ -1779,7 +1784,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       // we could not create a lock file.
       // Note that we depend on lazy evaluation: if the 1st is true,
       // the 2nd won't be called!
-      if (first) // if !first, then m_IsReadOnly is set in Open
+      if (index == 0) // if !first, then m_IsReadOnly is set in Open
 	m_IsReadOnly =  (dbox_pkentry.IsReadOnly() || !m_core.LockFile(filename, locker));
       else if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
 	m_IsReadOnly = !m_core.LockFile(filename, locker);
@@ -1818,6 +1823,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 	  break;
 	case TAR_CANCEL:
 	  retval = PWScore::USER_CANCEL;
+	  break;
+	case TAR_EXIT:
+	  retval = PWScore::USER_EXIT;
 	  break;
 	default:
 	  DBGMSG("Default to WRONG_PASSWORD\n");

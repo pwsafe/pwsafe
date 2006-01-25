@@ -9,7 +9,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 2.15
+RELEASENAME = 2.16
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -86,6 +86,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.18.2.2  2006/01/25 20:43:33  ronys
+# DK's changes - unlock dialog box now offers exit and cancel, plus some minor cosmetics
+#
 # Revision 1.18.2.1  2005/12/31 13:29:26  ronys
 # remove pch files from source zip
 #

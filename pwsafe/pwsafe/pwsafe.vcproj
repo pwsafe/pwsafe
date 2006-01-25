@@ -103,21 +103,23 @@
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 				CompileAs="0"
-				ShowIncludes="TRUE"/>
+				ShowIncludes="FALSE"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib"
-				ShowProgress="2"
 				OutputFile=".\Debug/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories=".\corelib\Debug,C:\local\msvc\HTMLHelpWorkshop\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/pwsafe.pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="pwsafe.map"
+				MapLines="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
