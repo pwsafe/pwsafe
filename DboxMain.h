@@ -248,7 +248,11 @@ protected:
 
   BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-			  bool first = false);
+			  int index = 1);
+  // flag:
+  //	0 first
+  //	1 normal
+  //  2 with Exit button
 
 private:
   PWScore  &m_core;

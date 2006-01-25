@@ -77,6 +77,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 #endif
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
    ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
+   ON_STN_CLICKED(IDC_STATIC_CTIME, OnStnClickedStaticCtime)
 END_MESSAGE_MAP()
 
 
@@ -341,4 +342,8 @@ IDC_STATIC_AUTO,
 		newHeight , 
 		SWP_NOMOVE );
 
+}
+void CEditDlg::OnStnClickedStaticCtime()
+{
+    // TODO: Add your control notification handler code here
 }

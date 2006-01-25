@@ -307,46 +307,46 @@ DboxMain::OnDelete()
   if (!dontaskquestion) {
     CConfirmDeleteDlg deleteDlg(this);
     int rc = deleteDlg.DoModal();
-    if (rc == IDOK) {
-      dodelete = true;
-    } else if (rc == IDCANCEL) {
+    if (rc == IDCANCEL) {
       dodelete = false;
     }
   }
+  
+  if (!dodelete) {
+    m_LockDisabled = false;
+    return;
+  }
 
   if (SelItemOk() == TRUE) {
-
-    if (dodelete) {
-      CItemData *ci = getSelectedItem();
-      ASSERT(ci != NULL);
-      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-      ASSERT(di != NULL);
-      int curSel = di->list_index;
-      // Find next in treeview, not always curSel after deletion
-      HTREEITEM curTree_item = di->tree_item;
-      HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
-                                                          TVGN_NEXT);
-      POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
-      m_ctlItemList.DeleteItem(curSel);
-      m_ctlItemTree.DeleteWithParents(di->tree_item);
-      delete di;
-      m_core.RemoveEntryAt(listindex);
-      FixListIndexes(m_ctlItemList);
-      if (m_ctlItemList.IsWindowVisible()) {
-        if (m_core.GetNumEntries() > 0) {
-          SelectEntry(curSel < m_core.GetNumEntries() ? 
-                      curSel : m_core.GetNumEntries() - 1);
-        }
-        m_ctlItemList.SetFocus();
-      } else {// tree view visible
-        if (nextTree_item != NULL)
-          m_ctlItemTree.SelectItem(nextTree_item);
-        else
-          SelectEntry(0);
-        m_ctlItemTree.SetFocus();
+    CItemData *ci = getSelectedItem();
+    ASSERT(ci != NULL);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    int curSel = di->list_index;
+    // Find next in treeview, not always curSel after deletion
+    HTREEITEM curTree_item = di->tree_item;
+    HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
+                                                        TVGN_NEXT);
+    POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
+    m_ctlItemList.DeleteItem(curSel);
+    m_ctlItemTree.DeleteWithParents(di->tree_item);
+    delete di;
+    m_core.RemoveEntryAt(listindex);
+    FixListIndexes(m_ctlItemList);
+    if (m_ctlItemList.IsWindowVisible()) {
+      if (m_core.GetNumEntries() > 0) {
+        SelectEntry(curSel < m_core.GetNumEntries() ? 
+                    curSel : m_core.GetNumEntries() - 1);
       }
-      ChangeOkUpdate();
+      m_ctlItemList.SetFocus();
+    } else {// tree view visible
+      if (nextTree_item != NULL)
+        m_ctlItemTree.SelectItem(nextTree_item);
+      else
+        SelectEntry(0);
+      m_ctlItemTree.SetFocus();
     }
+    ChangeOkUpdate();
   } else { // !SelItemOk()
     if (m_ctlItemTree.IsWindowVisible()) {
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
@@ -911,7 +911,7 @@ DboxMain::OnSize(UINT nType,
 	  int rc, rc2;
 	  CMyString temp;
 
-	  rc = GetAndCheckPassword(m_core.GetCurFile(), passkey);
+	  rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, 2);  // with EXIT button
 	  switch (rc)
 	    {
 	    case PWScore::SUCCESS:
@@ -936,14 +936,12 @@ DboxMain::OnSize(UINT nType,
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;
 	    case PWScore::USER_CANCEL: // cancel exits program, UNLESS systemtray used
-	      if (!PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {
-		m_core.UnlockFile(m_core.GetCurFile());
-		PostMessage(WM_CLOSE);
-		return;
-	      } else {
-		rc2 = PWScore::NOT_SUCCESS;
-	      }
+		  rc2 = PWScore::NOT_SUCCESS;
 	      break;
+	    case PWScore::USER_EXIT:
+		  m_core.UnlockFile(m_core.GetCurFile());
+		  PostMessage(WM_CLOSE);
+		  return;
 	    default:
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;

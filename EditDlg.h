@@ -59,6 +59,7 @@ public:
 	CButton m_moreLessBtn;
 
 	
+    afx_msg void OnStnClickedStaticCtime();
 };
 //-----------------------------------------------------------------------------
 // Local variables:
