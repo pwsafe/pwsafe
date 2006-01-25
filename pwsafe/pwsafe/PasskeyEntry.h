@@ -25,7 +25,7 @@ public:
    CPasskeyEntry(CWnd* pParent,
                  const CString& a_filespec,
 		 bool forceReadOnly = false,
-                 bool first = false); 
+                 int index = 1); 
 
    int GetStatus() const {return m_status;}
   bool IsReadOnly() const {return m_ReadOnly == TRUE;}
@@ -33,6 +33,7 @@ public:
 private:
 // Dialog Data
    enum { IDD_BASIC = IDD_PASSKEYENTRY };
+   enum { IDD_WEXIT = IDD_PASSKEYENTRY_WITHEXIT };
    //{{AFX_DATA(CPasskeyEntry)
 	enum { IDD = IDD_PASSKEYENTRY_FIRST };
 #if !defined(POCKET_PC)
@@ -60,6 +61,8 @@ protected:
    int m_status;
    bool m_first;
 
+   static int CPasskeyEntry::dialog_lookup[3];
+
    HICON m_hIcon;
 
    // Generated message map functions
@@ -68,6 +71,7 @@ protected:
    virtual void OnCancel();
    virtual void OnOK();
    afx_msg void OnHelp();
+   afx_msg void OnExit();
 #if defined(POCKET_PC)
    afx_msg void OnPasskeySetfocus();
    afx_msg void OnPasskeyKillfocus();

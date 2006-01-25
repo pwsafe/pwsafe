@@ -28,13 +28,17 @@
 
 #include "corelib/Util.h"
 
+int CPasskeyEntry::dialog_lookup[3] = {IDD_PASSKEYENTRY_FIRST, 
+										IDD_PASSKEYENTRY, 
+										IDD_PASSKEYENTRY_WITHEXIT};
+
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec,
-			     bool forceReadOnly, bool first)
-   : super(first ? CPasskeyEntry::IDD : CPasskeyEntry::IDD_BASIC,
+			     bool forceReadOnly, int index)
+   : super(dialog_lookup[index],
              pParent),
-     m_first(first),
+     m_first(index == 0),
      m_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID),
@@ -46,7 +50,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
 	//}}AFX_DATA_INIT
 
    DBGMSG("CPasskeyEntry()\n");
-   if (first) {
+   if (index == 0) {
       DBGMSG("** FIRST **\n");
    }
 
@@ -96,6 +100,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(ID_BROWSE, OnBrowse)
    ON_BN_CLICKED(ID_CREATE_DB, OnCreateDb)
+   ON_BN_CLICKED(ID_EXIT, OnExit)
 #if defined(POCKET_PC)
    ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
    ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
@@ -204,6 +209,12 @@ CPasskeyEntry::OnCancel()
    super::OnCancel();
 }
 
+void
+CPasskeyEntry::OnExit() 
+{
+   m_status = TAR_EXIT;
+   super::OnCancel();
+}
 
 void
 CPasskeyEntry::OnOK() 

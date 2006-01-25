@@ -21,6 +21,7 @@ class PWScore {
     NOT_SUCCESS,
     ALREADY_OPEN,
     INVALID_FORMAT,
+    USER_EXIT,
     BAD_DIGEST = PWSfile::BAD_DIGEST
    };
 

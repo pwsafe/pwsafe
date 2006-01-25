@@ -4,6 +4,7 @@
 //
 #define ID_BROWSE                       3
 #define ID_CREATE_DB                    4
+#define ID_EXIT                         5
 #define IDD_ABOUTBOX                    100
 #define IDD_FIND                        101
 #define IDD_PASSWORDSAFE_DIALOG         102
@@ -40,6 +41,7 @@
 #define IDD_USERNAMEENTRY               184
 #define IDD_PASSKEYENTRY                185
 #define IDR_MAINBAR                     187
+#define IDD_PASSKEYENTRY_WITHEXIT       188
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
 #define IDD_PS_SECURITY                 194
@@ -162,13 +164,10 @@
 #define IDC_STATIC_RESTART              1112
 #define IDC_MORE                        1115
 #define IDC_URL                         1116
-#define IDC_EDIT2                       1117
 #define IDC_AUTOTYPE                    1117
-#define IDC_                            1123
 #define IDC_DISPLAY_EXPANDED            1123
 #define IDC_STATIC_URL                  1124
 #define IDC_STATIC_AUTO                 1125
-#define IDC_SCROLLBAR1                  1126
 #define IDC_STATIC_CTIME                1128
 #define IDC_CTIME_                      1129
 #define IDC_CTIME                       1129
