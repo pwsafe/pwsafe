@@ -26,6 +26,7 @@ using namespace std ;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
 typedef set<CItemData *> SetTreeItem_t;
 typedef SetTreeItem_t *SetTreeItemP_t;
 
@@ -49,10 +50,11 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
-        ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
+	ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
 	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONUP()
+	ON_WM_TIMER()
 	ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -240,11 +242,21 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
 void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
+  if (m_nHoverTimerID)
+  {
+  	KillTimer( m_nHoverTimerID );
+  	m_nHoverTimerID = 0;
+  }
+	
   if (m_bDragging) {
     UINT                flags;
 
     ASSERT(m_pimagelist != NULL);
     m_pimagelist->DragMove(point);
+
+	m_nHoverTimerID = SetTimer(2, 750, NULL);
+	m_HoverPoint = point;
+		
     HTREEITEM hitem = HitTest(point, &flags);
     if (hitem != NULL) {
       m_pimagelist->DragLeave(this);
@@ -252,6 +264,7 @@ void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
       m_hitemDrop = hitem;
       m_pimagelist->DragEnter(this, point);
     }
+    m_pimagelist->DragShowNolock(TRUE);
   }
   CTreeCtrl::OnMouseMove(nFlags, point);
 }
@@ -447,6 +460,8 @@ void CMyTreeCtrl::EndDragging(BOOL bCancel)
     m_bDragging = FALSE;
     SelectDropTarget(NULL);
   }
+  KillTimer(m_nTimerID);
+  KillTimer(m_nHoverTimerID);
 }
 
 
@@ -490,6 +505,9 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   m_pimagelist->DragMove(ptAction);
   m_pimagelist->DragEnter(this, ptAction);
   SetCapture();
+  
+  // Set up the timer
+  m_nTimerID = SetTimer(1, 75, NULL);
 }
 
 
@@ -591,4 +609,110 @@ void CMyTreeCtrl::OnCollapseAll()
 	}
 	while (hItem);
 	SetRedraw();
+}
+
+void CMyTreeCtrl::OnTimer(UINT nIDEvent)
+{
+  const int SCROLL_BORDER = 10;
+  const int SCROLL_SPEED_ZONE_WIDTH = 20;
+
+  if (nIDEvent == m_nHoverTimerID) {
+    KillTimer(m_nHoverTimerID);
+    m_nHoverTimerID = 0;
+
+    HTREEITEM	trItem	= 0;
+    UINT		uFlag	= 0;
+
+    trItem = HitTest(m_HoverPoint, &uFlag);
+
+    if (trItem) {
+      SelectItem(trItem);
+      Expand(trItem,TVE_EXPAND);
+    }
+    return;
+  }
+
+  if (nIDEvent != m_nTimerID) {
+    CTreeCtrl::OnTimer(nIDEvent);
+    return;
+  }
+	
+  // Doesn't matter that we didn't initialize m_timerticks
+  m_timerticks++;
+
+  POINT pt;
+  GetCursorPos(&pt);
+  CRect rect;
+  GetClientRect(&rect);
+  ClientToScreen(&rect);
+
+  // NOTE: Screen coordinate is being used because the call
+  // to DragEnter had used the Desktop window.
+  POINT pttemp = POINT(pt);
+  ClientToScreen(&pttemp);
+  CImageList::DragMove(pttemp);
+
+  int iMaxV = GetScrollLimit(SB_VERT);
+  int iPosV = GetScrollPos(SB_VERT);
+  HTREEITEM hitem = GetFirstVisibleItem();
+
+  // The cursor must not only be SOMEWHERE above/beneath the tree control
+  // BUT RIGHT above or beneath it
+  // i.e. the x-coordinates must be those of the control (+/- SCROLL_BORDER)
+  if ( pt.x < rect.left - SCROLL_BORDER )
+    ; // Too much to the left
+  else if ( pt.x > rect.right + SCROLL_BORDER )
+    ; // Too much to the right
+  else if( (pt.y < rect.top + SCROLL_BORDER) && iPosV )
+	{
+      // We need to scroll up
+      // Scroll slowly if cursor near the treeview control
+      int slowscroll = 6 - (rect.top + SCROLL_BORDER - pt.y) / SCROLL_SPEED_ZONE_WIDTH;
+      if (0 == (m_timerticks % (slowscroll > 0 ? slowscroll : 1)))
+		{
+          CImageList::DragShowNolock(FALSE);
+          SendMessage(WM_VSCROLL, SB_LINEUP);
+          SelectDropTarget(hitem);
+          m_hitemDrop = hitem;
+          CImageList::DragShowNolock(TRUE);
+		}
+	}
+  else if( (pt.y > rect.bottom - SCROLL_BORDER) && (iPosV!=iMaxV) )
+	{
+      // We need to scroll down
+      // Scroll slowly if cursor near the treeview control
+      int slowscroll = 6 - (pt.y - rect.bottom + SCROLL_BORDER ) / SCROLL_SPEED_ZONE_WIDTH;
+      if (0 == (m_timerticks % (slowscroll > 0 ? slowscroll : 1)))
+		{
+          CImageList::DragShowNolock(FALSE);
+          SendMessage(WM_VSCROLL, SB_LINEDOWN);
+          int nCount = GetVisibleCount();
+          for (int i=0; i<nCount-1; ++i)
+            hitem = GetNextVisibleItem(hitem);
+          if(hitem)
+            SelectDropTarget(hitem);
+          m_hitemDrop = hitem;
+          CImageList::DragShowNolock(TRUE);
+		}
+	}
+
+  // The cursor must be in a small zone IN the treecontrol at the left/right
+  int iPosH = GetScrollPos(SB_HORZ);
+  int iMaxH = GetScrollLimit(SB_HORZ);
+
+  if (!rect.PtInRect(pt)) return; // not in TreeCtrl
+  else if ((pt.x < rect.left + SCROLL_BORDER) && (iPosH != 0))
+	{
+      // We need to scroll to the left
+      CImageList::DragShowNolock(FALSE);
+      SendMessage(WM_HSCROLL, SB_LINELEFT);
+      CImageList::DragShowNolock(TRUE);
+	}
+  else if ((pt.x > rect.right - SCROLL_BORDER) && (iPosH != iMaxH))
+	{
+      // We need to scroll to the right
+      CImageList::DragShowNolock(FALSE);
+      SendMessage(WM_HSCROLL, SB_LINERIGHT);
+      CImageList::DragShowNolock(TRUE);
+	}
 }

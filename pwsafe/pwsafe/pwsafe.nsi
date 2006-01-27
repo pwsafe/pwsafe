@@ -61,6 +61,13 @@
 ; no actions other than running pwsafe.exe are required.  To reiterate, 
 ; use of this installer is completely optional.
 ; 
+; -- Change for version 2.16 of PasswordSafe and later:
+; Since the move to Visual Studio 2003 build environment
+; requires new versions of DLLs, this script will now
+; install the new files if required.
+; The files are also available from the project's homepage,
+; so the installer still isn't strictly necessary, even for users
+; who don't have the latest & greatest DLLs.
 ;
 ; USE
 ;
@@ -105,6 +112,10 @@
 
   !include "MUI.nsh"
 
+;--------------------------------
+; Include Library macros (for DLL work)
+
+  !include "Library.nsh"
 
 ;--------------------------------
 ; Version Info
@@ -181,6 +192,15 @@ Section "Program Files" ProgramFiles
   File "README.TXT"
   File "ReleaseNotes.txt"
   File "ChangeLog.txt"
+
+  Var /GLOBAL MFC71_INSTALLED
+
+  IfFileExists "$SYSDIR\mfc71.dll" 0 hasnt_mfc71
+   StrCpy $MFC71_INSTALLED 1
+ hasnt_mfc71:
+
+   !insertmacro InstallLib REGDLL $MFC71_INSTALLED NOREBOOT_PROTECTED ..\redist\mfc71.dll $SYSDIR\mfc71.dll $SYSDIR
+
   
   ; Store installation folder
   WriteRegStr HKCU \
@@ -309,6 +329,9 @@ Section "Uninstall"
 SectionEnd
 ;
 ; $Log$
+; Revision 1.6.2.1  2006/01/27 06:21:44  ronys
+; V2.16 release
+;
 ; Revision 1.6  2005/02/25 10:38:39  ronys
 ; [1123373] Uninstall will only remove installed files, and will delete the installation directory if and only if it's empty.
 ;

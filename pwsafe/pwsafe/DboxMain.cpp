@@ -436,7 +436,7 @@ DboxMain::OpenOnInit(void)
      un-minimizing the application
    */
    CMyString passkey;
-   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, true);
+   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, 0);  // first
    int rc2 = PWScore::NOT_SUCCESS;
 
    switch (rc)
@@ -445,6 +445,7 @@ DboxMain::OpenOnInit(void)
       rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
       m_title = "Password Safe - " + m_core.GetCurFile();
+      app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
 #endif
       break; 
    case PWScore::CANT_OPEN_FILE:
@@ -1176,35 +1177,34 @@ DboxMain::Open()
   CMyString newfile;
 
   //Open-type dialog box
-  while (1)
-    {
-      CFileDialog fd(TRUE,
-                     DEFAULT_SUFFIX,
-                     NULL,
-                     OFN_FILEMUSTEXIST|OFN_LONGNAMES,
-                     SUFFIX_FILTERS
-                     _T("Password Safe Backups (*.bak)|*.bak|")
-                     _T("All files (*.*)|*.*|")
-                     _T("|"),
-                     this);
-      fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Open:");
-      rc = fd.DoModal();
-      const bool last_ro = m_IsReadOnly; // restore if user cancels
-      m_IsReadOnly = (fd.GetReadOnlyPref() == TRUE);
-      if (rc == IDOK)
-	{
-	  newfile = (CMyString)fd.GetPathName();
+  while (1) {
+    CFileDialog fd(TRUE,
+                   DEFAULT_SUFFIX,
+                   NULL,
+                   OFN_FILEMUSTEXIST|OFN_LONGNAMES,
+                   SUFFIX_FILTERS
+                   _T("Password Safe Backups (*.bak)|*.bak|")
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+    fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Open:");
+    rc = fd.DoModal();
+    const bool last_ro = m_IsReadOnly; // restore if user cancels
+    m_IsReadOnly = (fd.GetReadOnlyPref() == TRUE);
+    if (rc == IDOK) {
+      newfile = (CMyString)fd.GetPathName();
 
-	  rc = Open( newfile );
+      rc = Open( newfile );
 
-	  if ( rc == PWScore::SUCCESS ) 
-	    break;
-	}
-      else {
-	m_IsReadOnly = last_ro;
-	return PWScore::USER_CANCEL;
+      if ( rc == PWScore::SUCCESS ) {
+        break;
+        app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
       }
+    } else {
+      m_IsReadOnly = last_ro;
+      return PWScore::USER_CANCEL;
     }
+  }
   return rc;
 }
 
@@ -1238,7 +1238,7 @@ DboxMain::Open( const CMyString &pszFilename )
   // clear the data before loading the new file
   ClearData();
 
-  rc = GetAndCheckPassword(pszFilename, passkey);
+  rc = GetAndCheckPassword(pszFilename, passkey, 1);  // normal
   switch (rc) {
   case PWScore::SUCCESS:
     app.GetMRU()->Add(pszFilename);
@@ -1338,7 +1338,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
       return PWScore::ALREADY_OPEN;
 	}
 	
-  rc = GetAndCheckPassword(pszFilename, passkey);
+  rc = GetAndCheckPassword(pszFilename, passkey, 1 );  // normal
   switch (rc)
 	{
 	case PWScore::SUCCESS:
@@ -1532,6 +1532,7 @@ DboxMain::New()
   m_core.SetCurFile(_T("")); //Force a save as... 
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled>");
+  app.m_TrayIcon.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
 
@@ -1612,7 +1613,7 @@ DboxMain::Restore()
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(backup, passkey);
+  rc = GetAndCheckPassword(backup, passkey, 1 );  // normal
   switch (rc) {
   case PWScore::SUCCESS:
     break; // Keep going... 
@@ -1652,6 +1653,7 @@ DboxMain::Restore()
   m_core.SetChanged(true); //So that the restored file will be saved
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled Restored Backup>");
+  app.m_TrayIcon.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
   RefreshList();
@@ -1733,6 +1735,7 @@ DboxMain::SaveAs()
    m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
    m_title = _T("Password Safe - ") + m_core.GetCurFile();
+   app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
 #endif
    ChangeOkUpdate();
 
@@ -1744,8 +1747,13 @@ DboxMain::SaveAs()
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,
 			      CMyString& passkey,
-			      bool first)
+			      int index)
 {
+  // index:
+  //	0 first
+  //	1 normal
+  //  2 with Exit button
+
   // Called for an existing database. Prompt user
   // for password, verify against file. Lock file to
   // prevent multiple r/w access.
@@ -1766,7 +1774,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    * a blank filename, which will disable passkey entry and the OK button
    */
 
-  CPasskeyEntry dbox_pkentry(this, filename, m_IsReadOnly, first);
+  CPasskeyEntry dbox_pkentry(this, filename, m_IsReadOnly, index);
   app.DisableAccelerator();
   int rc = dbox_pkentry.DoModal();
   app.EnableAccelerator();
@@ -1779,7 +1787,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       // we could not create a lock file.
       // Note that we depend on lazy evaluation: if the 1st is true,
       // the 2nd won't be called!
-      if (first) // if !first, then m_IsReadOnly is set in Open
+      if (index == 0) // if !first, then m_IsReadOnly is set in Open
 	m_IsReadOnly =  (dbox_pkentry.IsReadOnly() || !m_core.LockFile(filename, locker));
       else if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
 	m_IsReadOnly = !m_core.LockFile(filename, locker);
@@ -1818,6 +1826,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 	  break;
 	case TAR_CANCEL:
 	  retval = PWScore::USER_CANCEL;
+	  break;
+	case TAR_EXIT:
+	  retval = PWScore::USER_EXIT;
 	  break;
 	default:
 	  DBGMSG("Default to WRONG_PASSWORD\n");
@@ -2189,26 +2200,25 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 #if defined(POCKET_PC)
 void DboxMain::OnShowPassword()
 {
-	if (SelItemOk() == TRUE)
-	{
-		CItemData			item;
-		CMyString			password;
-		CMyString			name;
-		CMyString			title;
-		CMyString			username;
-		CShowPasswordDlg	pwDlg( this );
+  if (SelItemOk() == TRUE) {
+    CItemData			item;
+    CMyString			password;
+    CMyString			name;
+    CMyString			title;
+    CMyString			username;
+    CShowPasswordDlg	pwDlg( this );
 
-		item	= m_pwlist.GetAt( Find(getSelectedItem()) );
+    item	= m_pwlist.GetAt( Find(getSelectedItem()) );
 
-		item.GetPassword(password);
-		item.GetName( name );
+    item.GetPassword(password);
+    item.GetName( name );
 
-		SplitName( name, title, username );
+    SplitName( name, title, username );
 
-		pwDlg.SetTitle( title );
-		pwDlg.SetPassword( password );
-		pwDlg.DoModal();
-	}
+    pwDlg.SetTitle( title );
+    pwDlg.SetPassword( password );
+    pwDlg.DoModal();
+  }
 }
 #endif
 
