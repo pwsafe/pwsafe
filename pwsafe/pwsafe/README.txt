@@ -29,26 +29,10 @@ https://sourceforge.net/project/showfiles.php?group_id=41019
 
 Non-English Versions:
 =====================
-A French version of the help file may be found in
-http://passwordsafe.sourceforge.net/pwsafefr.zip (Thanks to Laurent
-Masson).
-
-A Russian version of the help file may be found in
-http://passwordsafe.sourceforge.net/pwsaferu.zip (Thanks to Maxim
-Tikhonov). 
-
-A German version of the help file may be found in
-http://passwordsafe.sourceforge.net/pwsafege.zip (Thanks to Sebastian
-Juergens).
-
-An Italian version of the help file may be found in
-http://home.datacomm.ch/winzozz/passwordsafe.htm (Thanks to Stefano)
-
-Kimmo 'Yodakoski' Koskinen has translated both the help file and the
-entire PasswordSafe (version 2.07) application to Finnish! These may
-be downloaded from http://tinyurl.com/7yqdv and
-http://tinyurl.com/5z3h3, respectively. The source files are available
-from http://tinyurl.com/5wt66. 
+People have volunteered to make PasswordSafe available in several
+languages, including: Spanish, French, Italian, Finnish, Russian and
+German. Please see http://passwordsafe.sourceforge.net/#NonEnglish for the
+current list.
 
 If anyone is interested in doing such work in other
 languages, please let me (https://sourceforge.net/users/ronys) know.
@@ -60,6 +44,12 @@ need to sacrifice a goat and/or reboot your computer. Just extract the
 files (using WinZip, for example) to any directory, double-click on
 the Pwsafe.exe icon,and that's it. "Advanced" users may want to
 create a shortcut to their desktop and/or Start menu.
+
+Note: Versions 2.15 and later require newer versions of Microsoft's runtime
+libraries. If PasswordSafe complains about a "Missing DLL", you can get the
+DLL from http://passwordsafe.sourceforge.net/redist.zip - just unzip it and
+place in in C:\Windows\system32. Alternately, use the install-kit version
+of the distribution to place this dll for you.
 
 License:
 ========
@@ -120,10 +110,14 @@ Shapiro. Karel (Karlo) Van der Gucht also contributed some of the
 password policy code and some GUI improvements for 1.92.
 - Emilijan Mirceski did the new graphics for 2.0.
 - Maxim Tikhonov translated the online help to Russian.
+- DK has contributed many bugfixes and refinements.
 - Finally, thanks to the folks at SourceForge for hosting this
 project.
 
 $Log$
+Revision 1.9.2.1  2006/01/27 06:21:44  ronys
+V2.16 release
+
 Revision 1.9  2005/01/15 11:07:14  ronys
 Update non-English list, add reference to donations.
 

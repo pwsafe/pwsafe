@@ -1,10 +1,10 @@
 $Id$
 
-Password Safe 2.15 Release Note - December 2005
-===============================================
+Password Safe 2.16 Release Note - January 2006
+==============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 2.15. For a short description of Password
+with Password Safe version 2.16. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
@@ -12,6 +12,20 @@ releases may be found in the file ChangeLog.txt.
 
 This is a maintenance release, adding a new feature and fixing a few minor
 bugs, as described below.
+
+New feature for 2.16:
+=====================
+[] When unlocking a locked database, one now has the option of cancelling
+the unlock as well as exiting the application. Thanks to DK for this.
+[1414899] - System tray tooltip now reflects the name of the database.
+
+Bugs fixed in 2.16:
+===================
+[1403533] Now takes "No" for an answer in delete group confirmation.
+[1412208] Tab sequence of opening dialog fixed.
+[1376566, 1393910] Databases written with early 2.x versions of
+PasswordSafe can now be read correctly.
+[] Installation kit now adds MFC71.dll if missing.
 
 Bugs fixed in 2.15:
 ===================
@@ -132,6 +146,9 @@ front, if obscured by other applications.
 
 
 $Log$
+Revision 1.27.2.2  2006/01/27 06:21:44  ronys
+V2.16 release
+
 Revision 1.27.2.1  2005/12/25 20:26:40  ronys
 When dragging to the top or bottom of the visible tree, it will scroll
 up or down; If dragged mouse hovers over a closed node, it expands the node

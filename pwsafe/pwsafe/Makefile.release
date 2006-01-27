@@ -86,6 +86,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.18.2.3  2006/01/27 06:21:44  ronys
+# V2.16 release
+#
 # Revision 1.18.2.2  2006/01/25 20:43:33  ronys
 # DK's changes - unlock dialog box now offers exit and cancel, plus some minor cosmetics
 #
