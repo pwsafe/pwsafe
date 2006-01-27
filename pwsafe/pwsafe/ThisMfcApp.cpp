@@ -322,20 +322,20 @@ ThisMfcApp::InitInstance()
   
   // Look for "File" menu.
   int pos = FindMenuItem(m_mainmenu, _T("&File"));
-  
+  if (pos == -1) // E.g., in non-English versions
+    pos = 0; // best guess...
   CMenu* m_file_submenu = m_mainmenu->GetSubMenu(pos);
+  if (m_file_submenu != NULL)  // Look for "Open Database"
+    pos = FindMenuItem(m_file_submenu, ID_MENUITEM_OPEN);
   
-  // Look for "Open Database"
-  pos = FindMenuItem(m_file_submenu, ID_MENUITEM_OPEN);
-  ASSERT(pos > -1);
+  if (pos > -1) {
+    // Create New Popup Menu
+    CMenu* m_new_popupmenu;
+    m_new_popupmenu = new CMenu;
+    m_new_popupmenu->CreatePopupMenu();
+    int irc;
   
-  // Create New Popup Menu
-  CMenu* m_new_popupmenu;
-  m_new_popupmenu = new CMenu;
-  m_new_popupmenu->CreatePopupMenu();
-  int irc;
-  
-  if (!m_mruonfilemenu) {  // MRU entries in popup menu
+    if (!m_mruonfilemenu) {  // MRU entries in popup menu
 	  // Insert Item onto new popup
 	  irc = m_new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, _T("Safe%d") );
 	  ASSERT(irc != 0);
@@ -343,15 +343,15 @@ ThisMfcApp::InitInstance()
 	  // Insert Popup onto main menu
 	  irc = m_file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) m_new_popupmenu->m_hMenu, "&Recent Safes" );
 	  ASSERT(irc != 0);
-  }
-  else {  // MRU entries inline
+    }
+    else {  // MRU entries inline
 	  irc = m_file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
 	  ASSERT(irc != 0);
-  }
+    }
 
-  m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
-  m_pMRU->ReadList();
-	
+    m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
+    m_pMRU->ReadList();
+  }
   DboxMain dbox(NULL);
 	
   /*
@@ -377,9 +377,9 @@ ThisMfcApp::InitInstance()
       StripFileQuotes( args );
 			
       if (CheckFile(args)) {
-	dbox.SetCurFile(args);
+        dbox.SetCurFile(args);
       } else {
-	return FALSE;
+        return FALSE;
       }
     } else { // here if first char of arg is '-'
       // first, let's check that there's a second arg
@@ -389,45 +389,45 @@ ThisMfcApp::InitInstance()
       StripFileQuotes( fn );
 
       if (args[1] != 'r' && args[1] != 'R' &&
-	  (fn.IsEmpty() || !CheckFile(fn))) {
-	Usage();
-	return FALSE;
+          (fn.IsEmpty() || !CheckFile(fn))) {
+        Usage();
+        return FALSE;
       }
 			
       CMyString passkey;
       if (args[1] == 'e' || args[1] == 'E' || args[1] == 'd' || args[1] == 'D') {
-	// get password from user if valid flag given. If note, default below will
-	// pop usage message
-	CCryptKeyEntry dlg(NULL);
-	int nResponse = dlg.DoModal();
+        // get password from user if valid flag given. If note, default below will
+        // pop usage message
+        CCryptKeyEntry dlg(NULL);
+        int nResponse = dlg.DoModal();
 				
-	if (nResponse==IDOK) {
-	  passkey = dlg.m_cryptkey1;
-	} else {
-	  return FALSE;
-	}
+        if (nResponse==IDOK) {
+          passkey = dlg.m_cryptkey1;
+        } else {
+          return FALSE;
+        }
       }
       BOOL status;
       switch (args[1]) {
       case 'e': case 'E': // do encrpytion
-	status = EncryptFile(fn, passkey);
-	if (!status) {
-	  AfxMessageBox(_T("Encryption failed"));
-	}
-	return TRUE;
+        status = EncryptFile(fn, passkey);
+        if (!status) {
+          AfxMessageBox(_T("Encryption failed"));
+        }
+        return TRUE;
       case 'd': case 'D': // do decryption
-	status = DecryptFile(fn, passkey);
-	if (!status) {
-	  // nothing to do - DecryptFile displays its own error messages
-	}
-	return TRUE;
+        status = DecryptFile(fn, passkey);
+        if (!status) {
+          // nothing to do - DecryptFile displays its own error messages
+        }
+        return TRUE;
       case 'r': case 'R':
-	dbox.SetReadOnly(true);
-	dbox.SetCurFile(fn);
-	break;
+        dbox.SetReadOnly(true);
+        dbox.SetCurFile(fn);
+        break;
       default:
-	Usage();
-	return FALSE;
+        Usage();
+        return FALSE;
       } // switch
     } // else
   } // m_lpCmdLine[0] != '\0';
@@ -447,20 +447,20 @@ ThisMfcApp::InitInstance()
   m_maindlg = &dbox;
   m_pMainWnd = m_maindlg;
 	
-	// JHF : no tray icon and menu for PPC
+  // JHF : no tray icon and menu for PPC
 #if !defined(POCKET_PC)
   HICON stIcon = app.LoadIcon(IDI_TRAY);
   ASSERT(stIcon != NULL);
   m_TrayIcon.SetTarget(&dbox);
   if (!m_TrayIcon.Create(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-			 stIcon, IDR_POPTRAY))
+                         stIcon, IDR_POPTRAY))
     return FALSE;
 #endif
 
   // Set up an Accelerator table
 #if !defined(POCKET_PC)
   m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
-				    MAKEINTRESOURCE(IDR_ACCS));
+                                    MAKEINTRESOURCE(IDR_ACCS));
 #endif
   //Run dialog
   (void) dbox.DoModal();

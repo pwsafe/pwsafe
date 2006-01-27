@@ -20,7 +20,8 @@ class PWScore {
     UNKNOWN_VERSION,
     NOT_SUCCESS,
     ALREADY_OPEN,
-    INVALID_FORMAT
+    INVALID_FORMAT,
+    USER_EXIT
    };
 
   PWScore();

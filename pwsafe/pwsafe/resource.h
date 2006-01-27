@@ -4,6 +4,7 @@
 //
 #define ID_BROWSE                       3
 #define ID_CREATE_DB                    4
+#define ID_EXIT                         5
 #define IDD_ABOUTBOX                    100
 #define IDD_FIND                        101
 #define IDD_PASSWORDSAFE_DIALOG         102
@@ -40,6 +41,7 @@
 #define IDD_USERNAMEENTRY               184
 #define IDD_PASSKEYENTRY                185
 #define IDR_MAINBAR                     187
+#define IDD_PASSKEYENTRY_WITHEXIT       188
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
 #define IDD_PS_SECURITY                 194

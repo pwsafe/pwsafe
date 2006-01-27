@@ -40,6 +40,7 @@ static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
 				  " or later");
 // Used to specify the exact version
 static const CMyString VersionString("2.0");
+static const CMyString AltVersionString("pre-2.0"); 
 
 int PWSfile::WriteV2Header()
 {
@@ -91,7 +92,10 @@ int PWSfile::ReadV2Header()
   m_curversion = sv;
   if (status == SUCCESS) {
     const CMyString version = header.GetPassword();
-    status = (version == VersionString) ? SUCCESS : WRONG_VERSION;
+    // Compare to AltVersionString due to silly mistake
+    // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
+    status = (version == VersionString || version == AltVersionString)
+      ? SUCCESS : WRONG_VERSION;
   }
   if (status == SUCCESS)
     m_prefString = header.GetNotes();
