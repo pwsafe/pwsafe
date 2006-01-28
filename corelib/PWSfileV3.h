@@ -40,6 +40,21 @@ class PWSfileV3 : public PWSfile {
                       unsigned int &length);
   int WriteHeader();
   int ReadHeader();
+  bool ToUTF8(const CString &data);
+  bool FromUTF8(CMyString &data);
+  // above functions use the following for out/in for efficiency
+  unsigned char *m_utf8;
+  int m_utf8Len;
+  int m_utf8MaxLen;
+  // reuse interim buffers efficiently
+  wchar_t *m_wc;
+  int m_wcMaxLen;
+  unsigned char *m_tmp;
+  int m_tmpMaxLen;
+  // above pointers allocated dynamically and monotically increase in size
+  // for efficiency w/o arbitrary restrictions
+  // deallocated by Close() and d'tor
+
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
                          const unsigned char *passkey, unsigned long passLen,
                          unsigned char *Ptag);
