@@ -436,7 +436,8 @@ DboxMain::OpenOnInit(void)
   case PWScore::SUCCESS:
     rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-    m_title = "Password Safe - " + m_core.GetCurFile();
+      m_title = "Password Safe - " + m_core.GetCurFile();
+      app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
 #endif
     break; 
   case PWScore::CANT_OPEN_FILE:
@@ -1203,14 +1204,15 @@ DboxMain::Open()
 
 	  rc = Open( newfile );
 
-	  if ( rc == PWScore::SUCCESS ) 
-	    break;
-	}
-      else {
-	m_IsReadOnly = last_ro;
-	return PWScore::USER_CANCEL;
+      if ( rc == PWScore::SUCCESS ) {
+        break;
+        app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
       }
+    } else {
+      m_IsReadOnly = last_ro;
+      return PWScore::USER_CANCEL;
     }
+  }
   return rc;
 }
 
@@ -1553,6 +1555,7 @@ DboxMain::New()
   m_core.SetCurFile(_T("")); //Force a save as... 
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled>");
+  app.m_TrayIcon.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
 
@@ -1673,6 +1676,7 @@ DboxMain::Restore()
   m_core.SetChanged(true); //So that the restored file will be saved
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled Restored Backup>");
+  app.m_TrayIcon.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
   RefreshList();
@@ -1754,6 +1758,7 @@ DboxMain::SaveAs()
    m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
    m_title = _T("Password Safe - ") + m_core.GetCurFile();
+   app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
 #endif
    ChangeOkUpdate();
 
