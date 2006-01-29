@@ -76,7 +76,7 @@ public:
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(void *di) {m_display_info = di;}
-
+  void Clear();
 private:
   CItemField m_Name;
   CItemField m_Title;
