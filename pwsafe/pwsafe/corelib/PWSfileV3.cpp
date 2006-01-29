@@ -180,17 +180,25 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
   int status = SUCCESS;
-
+  CMyString tmp;
   uuid_array_t uuid_array;
   item.GetUUID(uuid_array);
   WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
-  WriteCBC(CItemData::GROUP, item.GetGroup());
+  tmp = item.GetGroup();
+  if (!tmp.IsEmpty())
+    WriteCBC(CItemData::GROUP, tmp);
   WriteCBC(CItemData::TITLE, item.GetTitle());
   WriteCBC(CItemData::USER, item.GetUser());
   WriteCBC(CItemData::PASSWORD, item.GetPassword());
-  WriteCBC(CItemData::NOTES, item.GetNotes());
-  WriteCBC(CItemData::URL, item.GetURL());
-  WriteCBC(CItemData::AUTOTYPE, item.GetAutoType());
+  tmp = item.GetNotes();
+  if (!tmp.IsEmpty())
+    WriteCBC(CItemData::NOTES, tmp);
+  tmp = item.GetURL();
+  if (!tmp.IsEmpty())
+    WriteCBC(CItemData::URL, tmp);
+  tmp = item.GetAutoType();
+  if (!tmp.IsEmpty())
+    WriteCBC(CItemData::AUTOTYPE, tmp);
   time_t t;
   item.GetCTime(t);
   WriteCBC(CItemData::CTIME, (unsigned char *)&t, sizeof(t));

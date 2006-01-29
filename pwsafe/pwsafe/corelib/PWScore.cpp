@@ -387,6 +387,7 @@ PWScore::ReadFile(const CMyString &a_filename,
 
    while (status == PWSfile::SUCCESS) {
      m_pwlist.AddTail(temp);
+     temp.Clear(); // Rather than creating a new one each time.
      status = in->ReadRecord(temp);
    }
 

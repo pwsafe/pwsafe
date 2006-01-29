@@ -419,6 +419,19 @@ CItemData::operator=(const CItemData &that)
    return *this;
 }
 
+void
+CItemData::Clear()
+{
+  CMyString blank(_T(""));
+  SetTitle(blank);
+  SetUser(blank);
+  SetPassword(blank);
+  SetNotes(blank);
+  SetGroup(blank);
+  SetURL(blank);
+  SetAutoType(blank);
+}
+
 //TODO: "General System Fault. Please sacrifice a goat 
 //and two chickens to continue."
 
