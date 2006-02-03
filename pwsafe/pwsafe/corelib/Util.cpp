@@ -249,7 +249,7 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
     for (unsigned int x=0; x<BlockLength; x+=BS) {
       if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
         //This is for an uneven last block
-        memset(curblock, 0, BS);
+        GetRandomData(curblock, BS);
         memcpy(curblock, buffer+x, length % BS);
       } else
         memcpy(curblock, buffer+x, BS);
