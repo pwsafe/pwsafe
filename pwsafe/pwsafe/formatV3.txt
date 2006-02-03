@@ -93,9 +93,11 @@ key value.
 consists of one or more blocks. The blocks are the blocks of the underlying
 encryption algorithm - 16 bytes long for Twofish. The first block contains
 the field length in the first 4 bytes (little-endian), followed by a
-one-byte type identifier. The rest of the block is filled with random data
-(to minimize the known plaintext). The type of a field also defines the
-data representation.
+one-byte type identifier. The rest of the block contains up to 11 bytes of
+record data. If the record has less than 11 bytes of data, the extra bytes
+are filled with random values. The type of a field also defines the data
+representation.
+
 3.1 Field types (based on the v2 format):
 							             Currently
    Name			      value	    Type     Implemented Comments
@@ -170,6 +172,9 @@ without breaking backwards compatability.
 End of Format description.
 
 $Log$
+Revision 1.8  2006/02/03 06:19:45  ronys
+Utilize 16 byte length block more efficiently - saves a LOT of disk space!
+
 Revision 1.7  2006/01/24 20:57:49  ronys
 oops
 

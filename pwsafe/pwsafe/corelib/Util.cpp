@@ -207,10 +207,6 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
   const unsigned int BS = Algorithm->GetBlockSize();
   int numWritten = 0;
 
-  unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
-  if (BlockLength == 0)
-    BlockLength = BS;
-
   // some trickery to avoid new/delete
   unsigned char block1[16];
 
@@ -228,24 +224,40 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
   curblock[sizeof(length)] = type;
 
+  if (BS == 16) {
+    // In this case, we've too many (11) wasted bytes in the length block
+    // So we store actual data there:
+    // (11 = BlockSize - 4 (length) - 1 (type)
+    const int len1 = (length > 11) ? 11 : length;
+    memcpy(curblock+5, buffer, len1);
+    length -= len1;
+    buffer += len1;
+  }
+
   xormem(curblock, cbcbuffer, BS); // do the CBC thing
   Algorithm->Encrypt(curblock, curblock);
   memcpy(cbcbuffer, curblock, BS); // update CBC for next round
 
   numWritten = fwrite(curblock, 1, BS, fp);
 
-  // Now, encrypt and write the buffer
-  for (unsigned int x=0; x<BlockLength; x+=BS) {
-    if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
-      //This is for an uneven last block
-      memset(curblock, 0, BS);
-      memcpy(curblock, buffer+x, length % BS);
-    } else
-      memcpy(curblock, buffer+x, BS);
-    xormem(curblock, cbcbuffer, BS);
-    Algorithm->Encrypt(curblock, curblock);
-    memcpy(cbcbuffer, curblock, BS);
-    numWritten += fwrite(curblock, 1, BS, fp);
+  if (length > 0) {
+    unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
+    if (BlockLength == 0 && BS == 8)
+      BlockLength = BS;
+
+    // Now, encrypt and write the (rest of the) buffer
+    for (unsigned int x=0; x<BlockLength; x+=BS) {
+      if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
+        //This is for an uneven last block
+        memset(curblock, 0, BS);
+        memcpy(curblock, buffer+x, length % BS);
+      } else
+        memcpy(curblock, buffer+x, BS);
+      xormem(curblock, cbcbuffer, BS);
+      Algorithm->Encrypt(curblock, curblock);
+      memcpy(cbcbuffer, curblock, BS);
+      numWritten += fwrite(curblock, 1, BS, fp);
+    }
   }
   trashMemory(curblock, BS);
   return numWritten;
@@ -288,11 +300,9 @@ _readcbc(FILE *fp,
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
   lengthblock = block1;
 
-
   buffer_len = 0;
   numRead = fread(lengthblock, 1, BS, fp);
   if (numRead != BS) {
-    trashMemory(lengthblock, BS);
     return 0;
   }
 
@@ -312,37 +322,49 @@ _readcbc(FILE *fp,
   // new for 2.0 -- lengthblock[4..7] previously set to zero
   type = lengthblock[sizeof(int)]; // type is first byte after the length
 
-  trashMemory(lengthblock, BS);
-  trashMemory(lcpy, BS);
-
-  if (length < 0) {
+  if (length < 0) { // sanity check
+    TRACE("_readcbc: Read negative length - aborting\n");
     buffer = NULL;
     buffer_len = 0;
+    trashMemory(lengthblock, BS);
     return 0;
+  }
+
+  buffer_len = length;
+  buffer = new unsigned char[(length/BS)*BS +2*BS]; // round upwards
+  unsigned char *b = buffer;
+
+  if (BS == 16) {
+    // length block contains up to 11 (= 16 - 4 - 1) bytes
+    // of data
+    const int len1 = (length > 11) ? 11 : length;
+    memcpy(b, lengthblock+5, len1);
+    length -= len1;
+    b += len1;
   }
 
   unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
   // Following is meant for lengths < BS,
   // but results in a block being read even
   // if length is zero. This is wasteful,
-  // but fixing it would break all existing databases.
-  if (BlockLength == 0)
+  // but fixing it would break all existing pre-3.0 databases.
+  if (BlockLength == 0 && BS == 8)
     BlockLength = BS;
 
-  buffer_len = length;
-  buffer = new unsigned char[BlockLength]; // so we lie a little...
+  trashMemory(lengthblock, BS);
 
-  unsigned char *tempcbc = block3;
-  numRead += fread(buffer, 1, BlockLength, fp);
-  for (unsigned int x=0; x<BlockLength; x+=BS) {
-    memcpy(tempcbc, buffer+x, BS);
-    Algorithm->Decrypt(buffer+x, buffer+x);
-    xormem(buffer+x, cbcbuffer, BS);
-    memcpy(cbcbuffer, tempcbc, BS);
+  if (length > 0) {
+    unsigned char *tempcbc = block3;
+    numRead += fread(b, 1, BlockLength, fp);
+    for (unsigned int x=0; x<BlockLength; x+=BS) {
+      memcpy(tempcbc, b + x, BS);
+      Algorithm->Decrypt(b + x, b + x);
+      xormem(b + x, cbcbuffer, BS);
+      memcpy(cbcbuffer, tempcbc, BS);
+    }
   }
-	
-  trashMemory(tempcbc, BS);
-  if (length == 0) {
+
+  if (buffer_len == 0) {
     // delete[] buffer here since caller will see zero length
     delete[] buffer;
   }
