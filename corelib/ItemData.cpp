@@ -141,22 +141,29 @@ CItemData::GetAutoType() const
 CMyString
 CItemData::GetCTime() const
 {
-   time_t t;
-   struct tm *st;
-   char *time_str;
-   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-   unsigned int tlen = sizeof(in); // ditto
+  time_t t;
+  struct tm *st;
+  char *time_str;
+  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+  unsigned int tlen = sizeof(in); // ditto
+  CMyString ret;
    
-   GetField(m_cTime, (unsigned char *)in, tlen);
-   ASSERT(tlen == sizeof(t));
-   memcpy(&t, in, sizeof(t));
-   st = localtime(&t);
-   time_str = asctime(st);
-   
-   CMyString ret(time_str);
-   // remote the trailing EOL char.
-   ret.TrimRight();
-   return ret;
+  GetField(m_cTime, (unsigned char *)in, tlen);
+  if (tlen != 0) {
+    ASSERT(tlen == sizeof(t));
+    memcpy(&t, in, sizeof(t));
+  } else {
+    t = 0;
+  }
+  if (t != 0) {
+    st = localtime(&t);
+    time_str = _tasctime(st);
+    ret = time_str;
+  } else
+    ret = _T("Unknown");
+  // remote the trailing EOL char.
+  ret.TrimRight();
+  return ret;
 }
 
 void
