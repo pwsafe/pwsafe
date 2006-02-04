@@ -265,6 +265,52 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
 }
 
 
+static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
+{
+  CString instr(notesStr);
+  int left = instr.Find(_T("autotype:"));
+  if (left == -1) {
+    autotypeStr = _T(""); 
+  } else {
+    CString tmp(notesStr);
+    tmp = tmp.Mid(left+9); // throw out everything left of "autotype:"
+    instr = instr.Left(left);
+    int right = tmp.FindOneOf(_T("\r\n"));
+    if (right != -1) {
+      instr += tmp.Right(right);
+      tmp = tmp.Left(right);
+    }
+    autotypeStr = CMyString(tmp);
+    notesStr = CMyString(instr);
+  }
+}
+
+static void ExtractURL(CMyString &notesStr, CMyString &outurl)
+{
+  CString instr(notesStr);
+  // Extract first instance of (http|https|ftp)://[^ \t\r\n]+
+  int left = instr.Find(_T("http://"));
+  if (left == -1)
+    left = instr.Find(_T("https://"));
+  if (left == -1)
+    left = instr.Find(_T("ftp://"));
+  if (left == -1) {
+    outurl = _T("");
+  } else {
+    CString url(instr);
+    instr = notesStr.Left(left);
+    url = url.Mid(left); // throw out everything left of URL
+    int right = url.FindOneOf(_T(" \t\r\n"));
+    if (right != -1) {
+      instr += url.Right(right);
+      url = url.Left(right);      
+    }
+    outurl = CMyString(url);
+    notesStr = CMyString(instr);
+  }
+}
+
+
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
@@ -306,8 +352,17 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
 	  item.SetUser(tempdata); break;
 	case CItemData::PASSWORD:
 	  item.SetPassword(tempdata); break;
-	case CItemData::NOTES:
-	  item.SetNotes(tempdata); break;
+	case CItemData::NOTES: {
+      CMyString autotypeStr, URLStr;
+      ExtractAutoTypeCmd(tempdata, autotypeStr);
+      ExtractURL(tempdata, URLStr);
+	  item.SetNotes(tempdata);
+      if (!autotypeStr.IsEmpty())
+        item.SetAutoType(autotypeStr);
+      if (!URLStr.IsEmpty())
+        item.SetURL(URLStr);
+      break;
+    }
 	case CItemData::END:
 	  endFound = true; break;
 	case CItemData::UUID: {
