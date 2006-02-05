@@ -291,7 +291,7 @@ static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
     instr = instr.Left(left);
     int right = tmp.FindOneOf(_T("\r\n"));
     if (right != -1) {
-      instr += tmp.Right(right);
+      instr += tmp.Mid(right);
       tmp = tmp.Left(right);
     }
     autotypeStr = CMyString(tmp);
@@ -316,7 +316,7 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
     url = url.Mid(left); // throw out everything left of URL
     int right = url.FindOneOf(_T(" \t\r\n"));
     if (right != -1) {
-      instr += url.Right(right);
+      instr += url.Mid(right);
       url = url.Left(right);      
     }
     outurl = CMyString(url);
