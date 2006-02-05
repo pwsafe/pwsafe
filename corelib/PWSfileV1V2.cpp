@@ -401,7 +401,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
 	} // switch
       } // if (fieldLen > 0)
     } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-    return (numread > 0) ? SUCCESS : END_OF_FILE;
+    return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
   }
   default:
     ASSERT(0);
