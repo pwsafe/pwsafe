@@ -196,6 +196,20 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
   }
 }
 
+static CMyString ReMergeNotes(const CItemData &item)
+{
+  CMyString notes = item.GetNotes();
+  const CMyString url(item.GetURL());
+  if (!url.IsEmpty()) {
+    notes += _T("\r\n"); notes += url;
+  }
+  const CMyString at(item.GetAutoType());
+  if (!at.IsEmpty()) {
+    notes += _T("\r\nautotype:");
+    notes += at;
+  }
+  return notes;
+}
 
 int PWSfileV1V2::WriteRecord(const CItemData &item)
 {
@@ -240,7 +254,7 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
     GetRandomData(&dummy_type, 1);
     WriteCBC(dummy_type, name);
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
-    WriteCBC(CItemData::NOTES, item.GetNotes());
+    WriteCBC(CItemData::NOTES, ReMergeNotes(item));
   }
     break;
   case V20: {
@@ -253,7 +267,7 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
     WriteCBC(CItemData::TITLE, item.GetTitle());
     WriteCBC(CItemData::USER, item.GetUser());
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
-    WriteCBC(CItemData::NOTES, item.GetNotes());
+    WriteCBC(CItemData::NOTES, ReMergeNotes(item));
     WriteCBC(CItemData::END, _T(""));
   }
     break;
