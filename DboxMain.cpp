@@ -429,7 +429,7 @@ DboxMain::OpenOnInit(void)
      un-minimizing the application
    */
    CMyString passkey;
-   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, 0);  // first
+   int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_FIRST);  // First
    int rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {
@@ -1246,7 +1246,7 @@ DboxMain::Open( const CMyString &pszFilename )
   // clear the data before loading the new file
   ClearData();
 
-  rc = GetAndCheckPassword(pszFilename, passkey, 1);  // normal
+  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   switch (rc) {
   case PWScore::SUCCESS:
     app.GetMRU()->Add(pszFilename);
@@ -1361,7 +1361,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
       return PWScore::ALREADY_OPEN;
 	}
 	
-  rc = GetAndCheckPassword(pszFilename, passkey, 1 );  // normal
+  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL );  // OK, CANCEL, HELP
   switch (rc)
 	{
 	case PWScore::SUCCESS:
@@ -1636,7 +1636,7 @@ DboxMain::Restore()
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(backup, passkey, 1 );  // normal
+  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL );  // OK, CANCEL, HELP
   switch (rc) {
   case PWScore::SUCCESS:
     break; // Keep going... 
@@ -1773,9 +1773,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 			      int index)
 {
   // index:
-  //	0 first
-  //	1 normal
-  //  2 with Exit button
+  //	GCP_FIRST    (0) first
+  //	GCP_NORMAL   (1) normal
+  //    GCP_WITHEXIT (2) with Exit button
 
   // Called for an existing database. Prompt user
   // for password, verify against file. Lock file to

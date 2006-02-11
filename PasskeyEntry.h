@@ -61,7 +61,7 @@ protected:
    int m_status;
    bool m_first;
 
-   static int CPasskeyEntry::dialog_lookup[3];
+   static int dialog_lookup[3];
 
    HICON m_hIcon;
 
