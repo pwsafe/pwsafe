@@ -26,6 +26,11 @@ DECLARE_HANDLE(HDROP);
 // timer event number used to support lock on user-defined timeout
 #define TIMER_USERLOCK 0x05
 
+// Index values for which dialog to show during GetAndCheckPassword
+#define GCP_FIRST  0		// At startup of PWS
+#define GCP_NORMAL  1		// Only OK, CANCEL & HELP buttons
+#define GCP_WITHEXIT  2		// OK, CANCEL, EXIT & HELP buttons
+
 
 //-----------------------------------------------------------------------------
 class DboxMain
@@ -248,11 +253,7 @@ protected:
 
   BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-			  int index = 1);
-  // flag:
-  //	0 first
-  //	1 normal
-  //  2 with Exit button
+			  int index = GCP_NORMAL);
 
 private:
   PWScore  &m_core;

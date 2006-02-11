@@ -903,7 +903,11 @@ DboxMain::OnSize(UINT nType,
 	  int rc, rc2;
 	  CMyString temp;
 
-	  rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, 2);  // with EXIT button
+	  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {
+	  	rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
+	  } else {
+	  	rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+	  }
 	  switch (rc)
 	    {
 	    case PWScore::SUCCESS:
@@ -927,7 +931,7 @@ DboxMain::OnSize(UINT nType,
 	    case PWScore::WRONG_PASSWORD:
 	      rc2 = PWScore::NOT_SUCCESS;
 	      break;
-	    case PWScore::USER_CANCEL: // cancel exits program, UNLESS systemtray used
+	    case PWScore::USER_CANCEL:
 		  rc2 = PWScore::NOT_SUCCESS;
 	      break;
 	    case PWScore::USER_EXIT:

@@ -25,6 +25,7 @@ GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
 MD5SUM = /usr/bin/md5sum
+SHA1SUM = /usr/bin/sha1sum
 FTP_PUT = /usr/bin/ncftpput -v upload.sourceforge.net incoming
 
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
@@ -33,9 +34,9 @@ BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
 	ChangeLog.txt Release/pwsafe.exe pwsafe.chm
 
 .PHONY: all release bin-release src-release installable signatures \
-	upload md5sums
+	upload md5sums sha1sums
 
-all: release installable signatures md5sums
+all: release installable signatures sha1sums
 
 upload:
 	(cd $(RELEASEDIR); \
@@ -47,6 +48,11 @@ upload:
 md5sums:
 	(cd $(RELEASEDIR); \
 	 $(MD5SUM) pwsafe-$(RELEASENAME).exe \
+	 $(BINRELNAME).zip $(SRCRELNAME).zip)
+
+sha1sums:
+	(cd $(RELEASEDIR); \
+	 $(SHA1SUM) pwsafe-$(RELEASENAME).exe \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip)
 
 signatures:
@@ -71,7 +77,7 @@ src-release:
 	@-mkdir $(RELEASEDIR)/$(SRCRELNAME)
 	@$(CP) -R . $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR)/$(SRCRELNAME); \
-	 $(RM) -f Release/* Debug/*; \
+	 $(RM) -f Release/* Debug/* test/Debug/* test/Release/*; \
 	 find . \( -name '*~' -o -name '*.bak' -o -name \*.aps -o \
 		   -name '*.plg' -o -name '*.ncb' -o -name '*.opt' -o \
 		   -name '*.clw' -o -name '*.chm' -o -name '*.pch'\
@@ -86,6 +92,9 @@ src-release:
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 # $Log$
+# Revision 1.18.2.4  2006/02/11 18:21:13  ronys
+# Exit upon unlock w/systemtray now works correctly
+#
 # Revision 1.18.2.3  2006/01/27 06:21:44  ronys
 # V2.16 release
 #
