@@ -163,8 +163,12 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
 
 int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 {
-  LPCTSTR d = LPCTSTR(data);
-  return WriteCBC(type, (const unsigned char *)d, data.GetLength());
+  bool status;
+
+  status = ToUTF8(data);
+  if (!status)
+    TRACE(_T("ToUTF8(%s) failed\n"), data);
+  return WriteCBC(type, m_utf8, m_utf8Len);
 }
 
 int PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
@@ -210,11 +214,28 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 int
 PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
 {
-  int numRead = PWSfile::ReadCBC(type, data);
+  CMyString text;
+  int numRead = PWSfile::ReadCBC(type, text);
+
 
   if (numRead > 0) {
-    LPCTSTR d = LPCTSTR(data);
-    m_hmac.Update((const unsigned char *)d, data.GetLength());
+    LPCTSTR d = LPCTSTR(text);
+    m_hmac.Update((const unsigned char *)d, text.GetLength());
+    // HACK - following types non-utf-8
+    if (type == CItemData::UUID ||
+        type == CItemData::CTIME || type == CItemData::PMTIME ||
+        type == CItemData::ATIME || type == CItemData::LTIME ||
+        type == CItemData::RMTIME) {
+      data = text;
+      return numRead;
+    }
+    bool status;
+    m_utf8 = (unsigned char *)d;
+    m_utf8Len = text.GetLength();
+    status = FromUTF8(data);
+    m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
+    if (!status)
+      TRACE(_T("FromUTF8(%s) failed\n"), text);
   }
 
   return numRead;
@@ -600,7 +621,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     if (m_wc != NULL)
       trashMemory(m_wc, m_wcMaxLen * sizeof(m_wc[0]));
     delete[] m_wc;
-    m_wc = new wchar_t[wcLen];
+    m_wc = new wchar_t[wcLen+1];
     m_wcMaxLen = wcLen;
   }
   // next translate to buffer
@@ -611,6 +632,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
                               m_wc, wcLen);       // output buffer
   ASSERT(wcLen != 0);
 #ifdef UNICODE
+  m_wc[wcLen] = TCHAR('\0');
   data = m_wc;
 #else /* Go from Unicode to Locale encoding */
       // first get needed utf8 buffer size
@@ -630,7 +652,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     if (m_tmp != NULL)
       trashMemory(m_tmp, m_utf8MaxLen);
     delete[] m_tmp;
-    m_tmp = new unsigned char[mbLen];
+    m_tmp = new unsigned char[mbLen+1];
     m_tmpMaxLen = mbLen;
   }
   // Finally get result
@@ -640,6 +662,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
                                    LPSTR(m_tmp), mbLen,// buffer and length
                                    NULL,NULL);   // use system default for unmappables
   ASSERT(tmpLen == mbLen);
+  m_tmp[mbLen] = TCHAR('\0');
   data = m_tmp;
 #endif /* !UNICODE */
   ASSERT(data.GetLength() != 0);

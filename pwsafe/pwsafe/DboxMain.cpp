@@ -1205,8 +1205,8 @@ DboxMain::Open()
 	  rc = Open( newfile );
 
       if ( rc == PWScore::SUCCESS ) {
-        break;
         app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
+        break;
       }
     } else {
       m_IsReadOnly = last_ro;
