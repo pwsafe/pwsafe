@@ -12,7 +12,7 @@ format will NOT be compatible with existing implementations.
 
 2. Format: A V3 format PasswordSafe will be structured as follows:
 
-TAG|SALT|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
+TAG|SALT|ITER|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
 
 Where:
 
@@ -28,30 +28,34 @@ the passphrase as described below.
 2.3 P' is the "stretched key" of the user's passphrase and the SALT, as
 defined by the hash-function-based key stretching algorithm in
 http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
-as the hash function, and 2048 iterations (i.e., t = 11).
+as the hash function, and ITER iterations (at least 2048, i.e., t = 11).
 
-2.4 H(P') is SHA-256(P'), and is used to verify that the user has the
+2.4 ITER is the number of iterations on the hash function to calculate P',
+stored as a 32 bit little-endian value. This value is stored here in order
+to future-proof the file format against increases in processing power.
+
+2.5 H(P') is SHA-256(P'), and is used to verify that the user has the
 correct passphrase.
 
-2.5 B1 and B2 are two 128-bit blocks encrypted with Twofish using P' as the
+2.6 B1 and B2 are two 128-bit blocks encrypted with Twofish using P' as the
 key, in ECB mode. These blocks contain the 256 bit random key K that is
 used to encrypt the actual records. (This has the property that there is no
 known or guessable information on the plaintext encrypted with the
 passphrase-derived key that allows an attacker to mount an attack that
 bypasses the key stretching algorithm.)
 
-2.6 B3 and B4 are two 128-bit blocks encrypted with Twofish using P' as the
+2.7 B3 and B4 are two 128-bit blocks encrypted with Twofish using P' as the
 key, in ECB mode. These blocks contain the 256 bit random key L that is
 used to calculate the HMAC (keyed-hash message authentication code) of the
 encrypted data. See description of EOF field below for more details.
 Implementation Note: K and L must NOT be related.
 
-2.7 IV is the 128-bit random Initial Value for CBC mode.
+2.8 IV is the 128-bit random Initial Value for CBC mode.
 
-2.8 All following records are encrypted using Twofish in CBC mode, with K
+2.9 All following records are encrypted using Twofish in CBC mode, with K
 as the encryption key.
 
-2.8.1 HDR: The database header. All data in the header is written in
+2.9.1 HDR: The database header. All data in the header is written in
 fields, as defined in Section 3. The first field contains the version
 number of the database format. For this version, the value is 0x0300
 (stored in little-endian format, that is, 0x00, 0x03). The type of this
@@ -64,25 +68,25 @@ terminated by an empty field of type 'END'. This will allow older versions
 of the program to skip over records that may be added over time to the
 header.
 
-2.8.1.1 Non-default preferences are encoded in a string as follows: The
+2.9.1.1 Non-default preferences are encoded in a string as follows: The
 string is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
 integer and string, resp., nn is the numeric value of the enum, and vv is
 the value, {1.0} for bool, unsigned integer for int, and quoted string for
 String. Only values != default are stored. See PWSprefs.cpp for more
 details.
 
-2.8.2 R1..Rn: The actual database records. Each record consists of one or
+2.9.2 R1..Rn: The actual database records. Each record consists of one or
 more typed fields (as defined in Section 3), terminated by the 'END' type
 field. The UUID, Title, and Password fields are mandatory. All
 non-mandatory fields may either be absent or have zero length. When a field
 is absent or zero-length, its default value shall be used.
 
-2.9 EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is exactly
+2.10 EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is exactly
 one block long), unencrypted. This is an implementation convenience to
 inform the application that the following bytes are to be processed
 differently.
 
-2.10 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with
+2.11 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with
 SHA-256 as the underlying hash function. The value is calculated over all
 of the plaintext fields, that is, over all the data stored in all fields
 (starting from the version number in the header, ending with the last field
@@ -172,6 +176,9 @@ without breaking backwards compatability.
 End of Format description.
 
 $Log$
+Revision 1.9  2006/02/20 19:38:16  ronys
+Parametrized number of iterations of key-stretching algorithm, notless than 2048, per Frank Pilhofer's suggestion
+
 Revision 1.8  2006/02/03 06:19:45  ronys
 Utilize 16 byte length block more efficiently - saves a LOT of disk space!
 

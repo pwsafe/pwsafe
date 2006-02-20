@@ -57,7 +57,7 @@ class PWSfileV3 : public PWSfile {
 
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
                          const unsigned char *passkey, unsigned long passLen,
-                         unsigned char *Ptag);
+                         unsigned int N, unsigned char *Ptag);
 };
 
 #endif PWSfileV3_h
