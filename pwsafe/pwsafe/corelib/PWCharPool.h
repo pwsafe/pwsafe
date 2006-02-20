@@ -36,60 +36,60 @@
 
 class CPasswordCharPool
 {
-public:
-   CPasswordCharPool::CPasswordCharPool(UINT pwlen,
+ public:
+  CPasswordCharPool(UINT pwlen,
 					BOOL uselowercase, BOOL useuppercase,
 					BOOL usedigits, BOOL usesymbols, BOOL usehexdigits,
 					BOOL easyvision);
-   CMyString MakePassword() const;
+  CMyString MakePassword() const;
 
-   static bool CheckPassword(const CMyString &pwd, CMyString &error);
+  static bool CheckPassword(const CMyString &pwd, CMyString &error);
 
-private:
-   enum CharType {LOWERCASE = 0, UPPERCASE = 1,
-		  DIGIT = 2, SYMBOL = 3, HEXDIGIT = 4, NUMTYPES = 5};
-   CharType GetRandomCharType(size_t rand) const; // select a chartype with weighted probability
-   TCHAR GetRandomChar(CharType t, size_t rand) const;
+ private:
+  enum CharType {LOWERCASE = 0, UPPERCASE = 1,
+                 DIGIT = 2, SYMBOL = 3, HEXDIGIT = 4, NUMTYPES = 5};
+  CharType GetRandomCharType(size_t rand) const; // select a chartype with weighted probability
+  TCHAR GetRandomChar(CharType t, size_t rand) const;
 
-   // here are all the character types, in both full and "easyvision" versions
-   static const TCHAR std_lowercase_chars[];
-   static const TCHAR std_uppercase_chars[];
-   static const TCHAR std_digit_chars[];
-   static const TCHAR std_symbol_chars[];
-   static const TCHAR std_hexdigit_chars[];
-   static const TCHAR easyvision_lowercase_chars[];
-   static const TCHAR easyvision_uppercase_chars[];
-   static const TCHAR easyvision_digit_chars[];
-   static const TCHAR easyvision_symbol_chars[];
-   static const TCHAR easyvision_hexdigit_chars[];
-   // and here are the lengths of the above arrays
-   static const size_t std_lowercase_len;
-   static const size_t std_uppercase_len;
-   static const size_t std_digit_len;
-   static const size_t std_symbol_len;
-   static const size_t std_hexdigit_len;
-   static const size_t easyvision_lowercase_len;
-   static const size_t easyvision_uppercase_len;
-   static const size_t easyvision_digit_len;
-   static const size_t easyvision_symbol_len;
-   static const size_t easyvision_hexdigit_len;
+  // here are all the character types, in both full and "easyvision" versions
+  static const TCHAR std_lowercase_chars[];
+  static const TCHAR std_uppercase_chars[];
+  static const TCHAR std_digit_chars[];
+  static const TCHAR std_symbol_chars[];
+  static const TCHAR std_hexdigit_chars[];
+  static const TCHAR easyvision_lowercase_chars[];
+  static const TCHAR easyvision_uppercase_chars[];
+  static const TCHAR easyvision_digit_chars[];
+  static const TCHAR easyvision_symbol_chars[];
+  static const TCHAR easyvision_hexdigit_chars[];
+  // and here are the lengths of the above arrays
+  static const size_t std_lowercase_len;
+  static const size_t std_uppercase_len;
+  static const size_t std_digit_len;
+  static const size_t std_symbol_len;
+  static const size_t std_hexdigit_len;
+  static const size_t easyvision_lowercase_len;
+  static const size_t easyvision_uppercase_len;
+  static const size_t easyvision_digit_len;
+  static const size_t easyvision_symbol_len;
+  static const size_t easyvision_hexdigit_len;
 
-   // The following arrays are set by the constructor based on the policy
-   // These determine the probability of a CharType being chosen
-   // in GetRandomCharType.
-   size_t m_lengths[NUMTYPES];
-   size_t m_x[NUMTYPES+1]; // spread lengths along X axis
-   TCHAR *m_char_arrays[NUMTYPES];
+  // The following arrays are set by the constructor based on the policy
+  // These determine the probability of a CharType being chosen
+  // in GetRandomCharType.
+  size_t m_lengths[NUMTYPES];
+  size_t m_x[NUMTYPES+1]; // spread lengths along X axis
+  TCHAR *m_char_arrays[NUMTYPES];
 
-   int m_sumlengths; // sum of all selected chartypes
+  int m_sumlengths; // sum of all selected chartypes
 
-   // Following state vars set by ctor, used by MakePassword()
-   const UINT m_pwlen;
-   const BOOL m_uselowercase;
-   const BOOL m_useuppercase;
-   const BOOL m_usedigits;
-   const BOOL m_usesymbols;
-   const BOOL m_usehexdigits;
+  // Following state vars set by ctor, used by MakePassword()
+  const UINT m_pwlen;
+  const BOOL m_uselowercase;
+  const BOOL m_useuppercase;
+  const BOOL m_usedigits;
+  const BOOL m_usesymbols;
+  const BOOL m_usehexdigits;
 };
 
 #endif
