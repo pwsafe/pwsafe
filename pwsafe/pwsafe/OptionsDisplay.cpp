@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -61,10 +60,3 @@ BEGIN_MESSAGE_MAP(COptionsDisplay, CPropertyPage)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// COptionsDisplay message handlers
-
-void COptionsDisplay::OnBnClickedCheck1()
-{
-	// TODO: Add your control notification handler code here
-}

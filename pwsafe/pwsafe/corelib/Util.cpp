@@ -9,13 +9,10 @@
 
 #include "Util.h"
 
-// for now
-#define String CString
-#define SecString CMyString
 
 // used by CBC routines...
 static void
-xormem(unsigned char* mem1, unsigned char* mem2, int length)
+xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 {
   for (int x=0;x<length;x++)
     mem1[x] ^= mem2[x];
@@ -169,9 +166,9 @@ void GetRandomData( void * const buffer, unsigned long length )
   // we don't want to keep filling the random buffer for each number we
   // want, so fill the buffer with random data and use it up
 
-  static const cbRandomData = 256;
+  static const int cbRandomData = 256;
   static BYTE rgbRandomData[cbRandomData];
-  static ibRandomData = cbRandomData;
+  static int ibRandomData = cbRandomData;
 
   if( ibRandomData > ( cbRandomData - sizeof( unsigned int ) ) ) {
     // no data left, refill the buffer

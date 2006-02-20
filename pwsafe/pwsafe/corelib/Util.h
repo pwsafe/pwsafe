@@ -65,27 +65,27 @@ extern int _writecbc(FILE *fp, const unsigned char* buffer, int length,
 /*
  * Get an integer that is stored in little-endian format
  */
-inline int getInt32( const unsigned char *buf )
+inline int getInt32(const unsigned char buf[4])
 {
-	ASSERT(sizeof(int) == 4);
+  ASSERT(sizeof(int) == 4);
 #if defined(LITTLE_ENDIAN)
 #if defined(_DEBUG)
-	if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-		TRACE0( "Warning: LITTLE_ENDIAN defined but architecture is big endian\n" );
+      TRACE0( "Warning: LITTLE_ENDIAN defined but architecture is big endian\n" );
 	}
 #endif
-	return *(int *) buf;
+  return *(int *) buf;
 #elif defined(BIG_ENDIAN)
 #if defined(_DEBUG)
-	// Folowing code works for big or little endian architectures but we'll warn anyway
-	// if CPU is really little endian
-	if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  // Folowing code works for big or little endian architectures but we'll warn anyway
+  // if CPU is really little endian
+  if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-		TRACE0( "Warning: BIG_ENDIAN defined but architecture is little endian\n" );
+      TRACE0( "Warning: BIG_ENDIAN defined but architecture is little endian\n" );
 	}
 #endif
-	return (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24) );
+  return (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24) );
 #else
 #error Is the target CPU big or little endian?
 #endif
@@ -94,28 +94,28 @@ inline int getInt32( const unsigned char *buf )
 /*
  * Store an integer that is stored in little-endian format
  */
-inline void putInt32( unsigned char *buf, const int val )
+inline void putInt32(unsigned char buf[4], const int val )
 {
-	ASSERT(sizeof(int) == 4);
+  ASSERT(sizeof(int) == 4);
 #if defined(LITTLE_ENDIAN)
-	*(int32 *) buf = val;
+  *(int32 *) buf = val;
 #if defined(_DEBUG)
-	if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-		TRACE0( "Warning: LITTLE_ENDIAN defined but architecture is big endian\n" );
+      TRACE0( "Warning: LITTLE_ENDIAN defined but architecture is big endian\n" );
 	}
 #endif
 #elif defined(BIG_ENDIAN)
-	buf[0] = val & 0xFF;
-	buf[1] = (val >> 8) & 0xFF;
-	buf[2] = (val >> 16) & 0xFF;
-	buf[3] = (val >> 24) & 0xFF;
+  buf[0] = val & 0xFF;
+  buf[1] = (val >> 8) & 0xFF;
+  buf[2] = (val >> 16) & 0xFF;
+  buf[3] = (val >> 24) & 0xFF;
 #if defined(_DEBUG)
-	// Above code works for big or little endian architectures but we'll warn anyway
-	// if CPU is really little endian
-	if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  // Above code works for big or little endian architectures but we'll warn anyway
+  // if CPU is really little endian
+  if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-		TRACE0( "Warning: BIG_ENDIAN defined but architecture is little endian\n" );
+      TRACE0( "Warning: BIG_ENDIAN defined but architecture is little endian\n" );
 	}
 #endif
 #else
@@ -125,7 +125,7 @@ inline void putInt32( unsigned char *buf, const int val )
 
 inline char * strCopy( char *target, const char *source )
 {
-	return strcpy( target, source );
+  return strcpy( target, source );
 }
 
 #if defined(UNICODE)
@@ -135,13 +135,13 @@ inline LPTSTR strCopy( LPTSTR target, LPCTSTR source )
 }
 #endif
 
-inline int strLength( const char *str )
+inline size_t strLength( const char *str )
 {
 	return strlen( str );
 }
 
 #if defined(UNICODE)
-inline int strLength( const wchar_t *str )
+inline size_t strLength( const wchar_t *str )
 {
 	return wcslen( str );
 }
