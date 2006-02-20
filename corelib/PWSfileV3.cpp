@@ -119,6 +119,9 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
                              FILE *a_fd, unsigned char *aPtag)
 {
   FILE *fd = a_fd;
+  int retval = SUCCESS;
+  SHA256 H;
+
   if (fd == NULL) {
 #ifdef UNICODE
     fd = _wfopen((LPCTSTR) filename, _T("rb"));
@@ -132,33 +135,44 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   char tag[sizeof(V3TAG)];
   fread(tag, 1, sizeof(tag), fd);
   if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
-    return NOT_PWS3_FILE;
+    retval = NOT_PWS3_FILE;
+    goto err;
   }
 
   unsigned char salt[SaltLengthV3];
   fread(salt, 1, sizeof(salt), fd);
 
+  unsigned char Nb[sizeof(unsigned int)];;
+  fread(Nb, 1, sizeof(Nb), fd);
+  const unsigned int N = getInt32(Nb);
+
+  ASSERT(N >= 2048);
+  if (N < 2048) {
+    retval = FAILURE;
+    goto err;
+  }
   unsigned char Ptag[SHA256::HASHLEN];
   if (aPtag == NULL)
     aPtag = Ptag;
   LPCTSTR passstr = LPCTSTR(passkey); 
   StretchKey(salt, sizeof(salt),
              (const unsigned char *)passstr, passkey.GetLength(),
-             aPtag);
+             N, aPtag);
+
 
   unsigned char HPtag[SHA256::HASHLEN];
-  SHA256 H;
   H.Update(aPtag, SHA256::HASHLEN);
   H.Final(HPtag);
   unsigned char readHPtag[SHA256::HASHLEN];
   fread(readHPtag, 1, sizeof(readHPtag), fd);
   if (memcmp(readHPtag, HPtag, sizeof(readHPtag)) != 0) {
-    return WRONG_PASSWORD;
+    retval = WRONG_PASSWORD;
+    goto err;
   }
-
-   if (a_fd == NULL) // if we opened the file, we close it...
-     fclose(fd);
-   return SUCCESS;
+ err:
+  if (a_fd == NULL) // if we opened the file, we close it...
+    fclose(fd);
+  return retval;
 }
 
 int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
@@ -319,13 +333,13 @@ int PWSfileV3::ReadRecord(CItemData &item)
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
                          const unsigned char *passkey, unsigned long passLen,
-                         unsigned char *Ptag)
+                         unsigned int N, unsigned char *Ptag)
 {
   /*
    * P' is the "stretched key" of the user's passphrase and the SALT, as defined
    * by the hash-function-based key stretching algorithm in
    * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
-   * as the hash function, and 2048 iterations (i.e., t = 11).
+   * as the hash function, and N iterations.
    */
   unsigned char *X = Ptag;
   SHA256 H0;
@@ -333,8 +347,8 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   H0.Update(salt, saltLen);
   H0.Final(X);
 
-  const int N = 2048;
-  for (int i = 0; i < N; i++) {
+  ASSERT(N >= 2048); // minimal value we're willing to use
+  for (unsigned int i = 0; i < N; i++) {
     SHA256 H;
     H.Update(X, sizeof(X));
     H.Final(X);
@@ -346,6 +360,8 @@ const int VersionNum = 0x0300;
 int PWSfileV3::WriteHeader()
 {
   // See formatV3.txt for explanation of what's written here and why
+  const unsigned int NumHashIters = 2048; // At least 2048
+
   fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
 
   // According to the spec, salt is just random data. I don't think though,
@@ -360,12 +376,16 @@ int PWSfileV3::WriteHeader()
   salter.Update(salt, sizeof(salt));
   salter.Final(salt);
   fwrite(salt, 1, sizeof(salt), m_fd);
-  
+
+  unsigned char Nb[sizeof(NumHashIters)];;
+  putInt32(Nb, NumHashIters);
+  fwrite(Nb, 1, sizeof(Nb), m_fd);
+
   unsigned char Ptag[SHA256::HASHLEN];
   LPCTSTR passstr = LPCTSTR(m_passkey); 
   StretchKey(salt, sizeof(salt),
              (const unsigned char *)passstr, m_passkey.GetLength(),
-             Ptag);
+             NumHashIters, Ptag);
 
   unsigned char HPtag[SHA256::HASHLEN];
   SHA256 H;
