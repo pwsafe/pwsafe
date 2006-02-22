@@ -165,7 +165,6 @@
 #define IDC_MORE                        1115
 #define IDC_URL                         1116
 #define IDC_AUTOTYPE                    1117
-#define IDC_DISPLAY_EXPANDED            1123
 #define IDC_STATIC_URL                  1124
 #define IDC_STATIC_AUTO                 1125
 #define IDC_STATIC_CTIME                1128

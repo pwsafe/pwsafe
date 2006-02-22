@@ -24,7 +24,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(COptionsDisplay, CPropertyPage)
 
 COptionsDisplay::COptionsDisplay() : CPropertyPage(COptionsDisplay::IDD)
-, m_Display_Expanded(false)
 {
 	//{{AFX_DATA_INIT(COptionsDisplay)
 	//}}AFX_DATA_INIT
@@ -48,7 +47,6 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MAXMRUITEMS, m_maxmruitems);
 	DDV_MinMaxInt(pDX, m_maxmruitems, 1, 20);
 	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
-	DDX_Check(pDX, IDC_DISPLAY_EXPANDED, m_Display_Expanded);
 	
 	//}}AFX_DATA_MAP
 }
