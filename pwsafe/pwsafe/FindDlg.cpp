@@ -30,30 +30,30 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
     self = new CFindDlg(pParent, isCS, lastFind);
     if (self != NULL)
       if (self->Create(CFindDlg::IDD)) {
-	RECT myRect, parentRect; 
-	// move find dialog so that it doesn't overlap its parent
-	pParent->GetWindowRect(&parentRect);
-	self->GetWindowRect(&myRect);
-	// Move the dialog to the right if parent is on left side
-	// of screen,and vice versa,
-	// UNLESS parent is close to screen's width!
-	const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
-	const int screenCenter = screenWidth/2;
-	const int parentWidth = (parentRect.right - parentRect.left);
-	const int parentCenter = (parentRect.right + parentRect.left)/2;
+        RECT myRect, parentRect; 
+        // move find dialog so that it doesn't overlap its parent
+        pParent->GetWindowRect(&parentRect);
+        self->GetWindowRect(&myRect);
+        // Move the dialog to the right if parent is on left side
+        // of screen,and vice versa,
+        // UNLESS parent is close to screen's width!
+        const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+        const int screenCenter = screenWidth/2;
+        const int parentWidth = (parentRect.right - parentRect.left);
+        const int parentCenter = (parentRect.right + parentRect.left)/2;
 
-	if (parentWidth < (screenWidth * 9) / 10) {
-	  if (parentCenter < screenCenter) {
-	    // move right
-	    myRect.right = parentRect.right + myRect.right - myRect.left;
-	    myRect.left = parentRect.right;
-	  } else { // move left
-	    myRect.left = parentRect.left - (myRect.right - myRect.left);
-	    myRect.right = parentRect.left;
-	  }
-	  self->MoveWindow(&myRect);
-	} // parent not too wide
-	self->ShowWindow(SW_SHOW);
+        if (parentWidth < (screenWidth * 9) / 10) {
+          if (parentCenter < screenCenter) {
+            // move right
+            myRect.right = parentRect.right + myRect.right - myRect.left;
+            myRect.left = parentRect.right;
+          } else { // move left
+            myRect.left = parentRect.left - (myRect.right - myRect.left);
+            myRect.right = parentRect.left;
+          }
+          self->MoveWindow(&myRect);
+        } // parent not too wide
+        self->ShowWindow(SW_SHOW);
       }
   } else {
     self->BringWindowToTop();
@@ -73,7 +73,7 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   m_cs_search = *isCS;
   m_search_text = *lastFind;
   m_status = _T("");
-	//}}AFX_DATA_INIT
+  //}}AFX_DATA_INIT
 }
 
 CFindDlg::~CFindDlg()
@@ -84,14 +84,14 @@ CFindDlg::~CFindDlg()
 
 void CFindDlg::DoDataExchange(CDataExchange* pDX)
 {
-	super::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CFindDlg)
-	DDX_Check(pDX, IDC_FIND_CS, m_cs_search);
-	DDX_Text(pDX, IDC_FIND_TEXT, m_search_text);
+  super::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(CFindDlg)
+  DDX_Check(pDX, IDC_FIND_CS, m_cs_search);
+  DDX_Text(pDX, IDC_FIND_TEXT, m_search_text);
 #if !defined(POCKET_PC)
-	DDX_Text(pDX, IDC_STATUS, m_status);
+  DDX_Text(pDX, IDC_STATUS, m_status);
 #endif
-	//}}AFX_DATA_MAP
+  //}}AFX_DATA_MAP
 }
 
 
@@ -111,7 +111,6 @@ END_MESSAGE_MAP()
 
 void CFindDlg::OnFind() 
 {
-
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
 
@@ -180,7 +179,7 @@ void CFindDlg::OnFind()
     pParent->SelectEntry(m_indices[m_lastshown], TRUE);
   }
   if (m_numFound > 1) {
-      SetDlgItemText(IDOK, _T("Find Next"));
+    SetDlgItemText(IDOK, _T("Find Next"));
   }
   // don't call super::OnOK - user will Cancel() to close dbox
 }

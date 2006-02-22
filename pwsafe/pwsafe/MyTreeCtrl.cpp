@@ -73,22 +73,19 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
 {
   // When an item is being edited make sure the edit control
   // receives certain important key strokes
-  if (GetEditControl())
-  {
+  if (GetEditControl()) {
     ::TranslateMessage(pMsg);
     ::DispatchMessage(pMsg);
     return TRUE; // DO NOT process further
   }
 
   //Hitting the Escape key, Cancelling drag & drop
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE && m_bDragging)
-  {
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE && m_bDragging) {
     EndDragging(TRUE);
     return TRUE;
   }
   //hitting the F2 key, being in-place editing of an item
-  else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2)
-  {
+  else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
     HTREEITEM hItem = GetSelectedItem();
     if (hItem != NULL) 
       EditLabel(hItem);
@@ -174,8 +171,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   HTREEITEM ti = ptvinfo->item.hItem;
   DboxMain *parent = (DboxMain *)GetParent();
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
-      ptvinfo->item.pszText[0] != '\0') // empty if text deleted - not allowed
-  {
+      ptvinfo->item.pszText[0] != '\0') { // empty if text deleted - not allowed
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     if (IsLeafNode(ptvinfo->item.hItem)) {
@@ -191,7 +187,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       CString newTitle, newUser;
       splitLeafText(ptvinfo->item.pszText, newTitle, newUser);
       if (newUser.IsEmpty())
-	newUser = CString(ci->GetUser());
+        newUser = CString(ci->GetUser());
       CString treeDispString;
       makeLeafText(treeDispString, newTitle, newUser);
 
@@ -217,14 +213,14 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       CString prefix;
       HTREEITEM parent, current = ti;
       do {
-	parent = GetParentItem(current);
-	if (parent == NULL) {
-	  break;
-	}
-	current = parent;
-	if (!prefix.IsEmpty())
-	  prefix = GROUP_SEP + prefix;
-	prefix = GetItemText(current) + prefix;
+        parent = GetParentItem(current);
+        if (parent == NULL) {
+          break;
+        }
+        current = parent;
+        if (!prefix.IsEmpty())
+          prefix = GROUP_SEP + prefix;
+        prefix = GetItemText(current) + prefix;
       } while (1);
       UpdateLeafsGroup(ti, prefix);
     }
@@ -241,8 +237,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
 void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
-  if (m_nHoverTimerID)
-  {
+  if (m_nHoverTimerID) {
   	KillTimer( m_nHoverTimerID );
   	m_nHoverTimerID = 0;
   }
@@ -366,10 +361,10 @@ HTREEITEM CMyTreeCtrl::AddGroup(const CString &group)
     do {
       s = GetPathElem(path);
       if (!ExistsInTree(*this, ti, s, si)) {
-	ti = InsertItem(s, ti, TVI_SORT);
-	SetItemImage(ti, CMyTreeCtrl::NODE, CMyTreeCtrl::NODE);
+        ti = InsertItem(s, ti, TVI_SORT);
+        SetItemImage(ti, CMyTreeCtrl::NODE, CMyTreeCtrl::NODE);
       } else
-	ti = si;
+        ti = si;
     } while (!path.IsEmpty());
   }
   return ti;
@@ -387,7 +382,7 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   tvstruct.item.cchTextMax = sizeof(sztBuffer)/sizeof(TCHAR) - 1;
   tvstruct.item.pszText = sztBuffer;
   tvstruct.item.mask = (TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE
-			| TVIF_SELECTEDIMAGE | TVIF_TEXT);
+                        | TVIF_SELECTEDIMAGE | TVIF_TEXT);
   GetItem(&tvstruct.item);  // get information of the dragged element
   tvstruct.hParent = hitemDrop;
   tvstruct.hInsertAfter = TVI_SORT;
@@ -401,13 +396,13 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     do {
       p = GetParentItem(q);
       if (p != NULL) {
-	elem = CMyString(GetItemText(p));
-	if (!path.IsEmpty())
-	  elem += GROUP_SEP;
-	path = elem + path;
-	q = p;
+        elem = CMyString(GetItemText(p));
+        if (!path.IsEmpty())
+          elem += GROUP_SEP;
+        path = elem + path;
+        q = p;
       } else
-	break;
+        break;
     } while (1);
     ci->SetGroup(path);
     // Mark database as modified!
@@ -438,23 +433,23 @@ void CMyTreeCtrl::EndDragging(BOOL bCancel)
 
     if (!bCancel &&
         m_hitemDrag != m_hitemDrop &&
-	!IsLeafNode(m_hitemDrop) &&
-	!IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
-	parent != m_hitemDrop)
-    {
-      // drag operation completed successfully.
-      TransferItem(m_hitemDrag, m_hitemDrop);
-      DeleteItem(m_hitemDrag);
-      while (parent != NULL && !ItemHasChildren(parent)) {
-	HTREEITEM grandParent = GetParentItem(parent);
-	DeleteItem(parent);
-	parent = grandParent;
+        !IsLeafNode(m_hitemDrop) &&
+        !IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
+        parent != m_hitemDrop)
+      {
+        // drag operation completed successfully.
+        TransferItem(m_hitemDrag, m_hitemDrop);
+        DeleteItem(m_hitemDrag);
+        while (parent != NULL && !ItemHasChildren(parent)) {
+          HTREEITEM grandParent = GetParentItem(parent);
+          DeleteItem(parent);
+          parent = grandParent;
+        }
+        SelectItem(m_hitemDrop);
+      } else {
+        // drag failed or cancelled, revert to last selected
+        SelectItem(m_hitemDrag);
       }
-      SelectItem(m_hitemDrop);
-    } else {
-      // drag failed or cancelled, revert to last selected
-      SelectItem(m_hitemDrag);
-    }
     ReleaseCapture();
     m_bDragging = FALSE;
     SelectDropTarget(NULL);
@@ -526,7 +521,7 @@ void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
     ASSERT(child != NULL); // can't expand something w/o children, right?
     do {
       if (IsLeafNode(child)) {
-	break; // stop at first leaf child found
+        break; // stop at first leaf child found
       }
       child = GetNextSiblingItem(child);
     } while (child != NULL);
@@ -542,7 +537,7 @@ void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
     TRACE(_T("CMyTreeCtrl::OnExpandCollapse(hitem = %x, citem = %x, action = %d)\n"),
-	  pNMTreeView->itemNew.hItem, ci, pNMTreeView->action);
+          pNMTreeView->itemNew.hItem, ci, pNMTreeView->action);
     if (pNMTreeView->action == TVE_EXPAND)
       pSet->insert(ci);
     else if (pNMTreeView->action == TVE_COLLAPSE) {
@@ -577,29 +572,27 @@ void CMyTreeCtrl::ClearExpanded()
 
 void CMyTreeCtrl::OnExpandAll() 
 {
-	SetRedraw(FALSE);
-	HTREEITEM hItem = this->GetRootItem();
-	do
-	{
-		this->Expand(hItem,TVE_EXPAND);
-		hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
-	}
-	while (hItem);
-	this->EnsureVisible(this->GetSelectedItem());
-	SetRedraw();
+  SetRedraw(FALSE);
+  HTREEITEM hItem = this->GetRootItem();
+  do {
+    this->Expand(hItem,TVE_EXPAND);
+    hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
+  }
+  while (hItem);
+  this->EnsureVisible(this->GetSelectedItem());
+  SetRedraw();
 }
 
 void CMyTreeCtrl::OnCollapseAll() 
 {
-	SetRedraw(FALSE);
-	HTREEITEM hItem = this->GetRootItem();
-	do
-	{
-		this->Expand(hItem,TVE_COLLAPSE);
-		hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
-	}
-	while (hItem);
-	SetRedraw();
+  SetRedraw(FALSE);
+  HTREEITEM hItem = this->GetRootItem();
+  do {
+    this->Expand(hItem,TVE_COLLAPSE);
+    hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
+  }
+  while (hItem);
+  SetRedraw();
 }
 
 void CMyTreeCtrl::OnTimer(UINT nIDEvent)
@@ -654,20 +647,19 @@ void CMyTreeCtrl::OnTimer(UINT nIDEvent)
     ; // Too much to the left
   else if ( pt.x > rect.right + SCROLL_BORDER )
     ; // Too much to the right
-  else if( (pt.y < rect.top + SCROLL_BORDER) && iPosV )
-	{
-      // We need to scroll up
-      // Scroll slowly if cursor near the treeview control
-      int slowscroll = 6 - (rect.top + SCROLL_BORDER - pt.y) / SCROLL_SPEED_ZONE_WIDTH;
-      if (0 == (m_timerticks % (slowscroll > 0 ? slowscroll : 1)))
-		{
-          CImageList::DragShowNolock(FALSE);
-          SendMessage(WM_VSCROLL, SB_LINEUP);
-          SelectDropTarget(hitem);
-          m_hitemDrop = hitem;
-          CImageList::DragShowNolock(TRUE);
-		}
-	}
+  else if( (pt.y < rect.top + SCROLL_BORDER) && iPosV ) {
+    // We need to scroll up
+    // Scroll slowly if cursor near the treeview control
+    int slowscroll = 6 - (rect.top + SCROLL_BORDER - pt.y) / SCROLL_SPEED_ZONE_WIDTH;
+    if (0 == (m_timerticks % (slowscroll > 0 ? slowscroll : 1)))
+      {
+        CImageList::DragShowNolock(FALSE);
+        SendMessage(WM_VSCROLL, SB_LINEUP);
+        SelectDropTarget(hitem);
+        m_hitemDrop = hitem;
+        CImageList::DragShowNolock(TRUE);
+      }
+  }
   else if( (pt.y > rect.bottom - SCROLL_BORDER) && (iPosV!=iMaxV) )
 	{
       // We need to scroll down
@@ -692,18 +684,16 @@ void CMyTreeCtrl::OnTimer(UINT nIDEvent)
   int iMaxH = GetScrollLimit(SB_HORZ);
 
   if (!rect.PtInRect(pt)) return; // not in TreeCtrl
-  else if ((pt.x < rect.left + SCROLL_BORDER) && (iPosH != 0))
-	{
-      // We need to scroll to the left
-      CImageList::DragShowNolock(FALSE);
-      SendMessage(WM_HSCROLL, SB_LINELEFT);
-      CImageList::DragShowNolock(TRUE);
-	}
-  else if ((pt.x > rect.right - SCROLL_BORDER) && (iPosH != iMaxH))
-	{
-      // We need to scroll to the right
-      CImageList::DragShowNolock(FALSE);
-      SendMessage(WM_HSCROLL, SB_LINERIGHT);
-      CImageList::DragShowNolock(TRUE);
-	}
+  else if ((pt.x < rect.left + SCROLL_BORDER) && (iPosH != 0)) {
+    // We need to scroll to the left
+    CImageList::DragShowNolock(FALSE);
+    SendMessage(WM_HSCROLL, SB_LINELEFT);
+    CImageList::DragShowNolock(TRUE);
+  }
+  else if ((pt.x > rect.right - SCROLL_BORDER) && (iPosH != iMaxH)) {
+    // We need to scroll to the right
+    CImageList::DragShowNolock(FALSE);
+    SendMessage(WM_HSCROLL, SB_LINERIGHT);
+    CImageList::DragShowNolock(TRUE);
+  }
 }

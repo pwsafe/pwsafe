@@ -44,8 +44,8 @@ public:
 // Operations
 public:
     void SetTarget(CWnd *tgt) { m_pTarget = tgt;} // ronys
-    BOOL Enabled() { return m_bEnabled; }
-    BOOL Visible() { return !m_bHidden; }
+    BOOL Enabled() const { return m_bEnabled; }
+    BOOL Visible() const { return !m_bHidden; }
 
     // Create the tray icon
     BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID);
@@ -75,7 +75,7 @@ public:
     BOOL  StopAnimation();
 
     // Change menu default item
-    void GetMenuDefaultItem(UINT& uItem, BOOL& bByPos);
+    void GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) const;
     BOOL SetMenuDefaultItem(UINT uItem, BOOL bByPos);
 
     // Change or retrieve the window to send notification messages to

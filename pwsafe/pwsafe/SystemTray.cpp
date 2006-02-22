@@ -373,7 +373,7 @@ BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
     return TRUE;
 }
 
-void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos)
+void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) const
 {
     uItem = m_DefaultMenuItemID;
     bByPos = m_DefaultMenuItemByPos;
