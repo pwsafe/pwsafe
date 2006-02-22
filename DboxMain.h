@@ -236,7 +236,7 @@ protected:
     //}}AFX_MSG
 
     afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnExportV17();
+    afx_msg void OnExportVx(UINT nID);
     afx_msg void OnExportText();
     afx_msg void OnExportXML();
     afx_msg void OnImportText();
