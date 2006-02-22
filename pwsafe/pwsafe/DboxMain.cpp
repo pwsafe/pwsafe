@@ -205,7 +205,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_COLLAPSEALL, OnUpdateTVCommand)
    ON_COMMAND(ID_MENUITEM_CHANGEFONT, OnChangeFont)
-   ON_COMMAND(ID_FILE_EXPORTTO_OLD1XFORMAT, OnExportV17)
+   ON_COMMAND_RANGE(ID_FILE_EXPORTTO_OLD1XFORMAT, ID_FILE_EXPORTTO_V2FORMAT, OnExportVx)
    ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
    ON_COMMAND(ID_FILE_EXPORTTO_XML, OnExportXML)
    ON_COMMAND(ID_FILE_IMPORT_PLAINTEXT, OnImportText)
@@ -770,43 +770,50 @@ DboxMain::OnSave()
 }
 
 void
-DboxMain::OnExportV17()
+DboxMain::OnExportVx(UINT nID)
 {
   int rc;
   CMyString newfile;
 
   //SaveAs-type dialog box
-  while (1)
-    {
-      m_LockDisabled = true;
-      CFileDialog fd(FALSE,
-                     DEFAULT_SUFFIX,
-                     m_core.GetCurFile(),
-                     OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                     |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                     SUFFIX_FILTERS
-                     _T("All files (*.*)|*.*|")
-                     _T("|"),
-                     this);
-      fd.m_ofn.lpstrTitle =
-	_T("Please name the exported database");
-      rc = fd.DoModal();
-      m_LockDisabled = false;
-      if (rc == IDOK)
-	{
-	  newfile = (CMyString)fd.GetPathName();
-	  break;
-	}
-      else
-	return;
-    }
+  while (1) {
+    m_LockDisabled = true;
+    CFileDialog fd(FALSE,
+                   DEFAULT_SUFFIX,
+                   m_core.GetCurFile(),
+                   OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                   |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                   SUFFIX_FILTERS
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+    fd.m_ofn.lpstrTitle =
+      _T("Please name the exported database");
+    rc = fd.DoModal();
+    m_LockDisabled = false;
+    if (rc == IDOK) {
+      newfile = (CMyString)fd.GetPathName();
+      break;
+    } else
+      return;
+  }
 
-  rc = m_core.WriteV17File(newfile);
-  if (rc == PWScore::CANT_OPEN_FILE)
-    {
-      CMyString temp = newfile + _T("\n\nCould not open file for writing!");
-      MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
-    }
+  switch (nID) {
+  case ID_FILE_EXPORTTO_OLD1XFORMAT:
+    rc = m_core.WriteV17File(newfile);
+    break;
+  case ID_FILE_EXPORTTO_V2FORMAT:
+    rc = m_core.WriteV2File(newfile);
+    break;
+  default:
+    ASSERT(0);
+    rc = PWScore::FAILURE;
+    break;
+  }
+  if (rc == PWScore::CANT_OPEN_FILE) {
+    CMyString temp = newfile + _T("\n\nCould not open file for writing!");
+    MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+  }
 }
 
 void
@@ -823,42 +830,40 @@ DboxMain::OnExportText()
       // do the export
       //SaveAs-type dialog box
       while (1) {
-	CFileDialog fd(FALSE,
-		       _T("txt"),
-		       _T(""),
-		       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-		       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-		       _T("Text files (*.txt)|*.txt|")
-		       _T("CSV files (*.csv)|*.csv|")
-		       _T("All files (*.*)|*.*|")
-		       _T("|"),
-		       this);
-	fd.m_ofn.lpstrTitle =
-	  _T("Please name the plaintext file");
-	m_LockDisabled = true;
-	rc = fd.DoModal();
-	m_LockDisabled = false;
-	if (rc == IDOK) {
-	  newfile = (CMyString)fd.GetPathName();
-	  break;
-	} else
-	  return;
+        CFileDialog fd(FALSE,
+                       _T("txt"),
+                       _T(""),
+                       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                       _T("Text files (*.txt)|*.txt|")
+                       _T("CSV files (*.csv)|*.csv|")
+                       _T("All files (*.*)|*.*|")
+                       _T("|"),
+                       this);
+        fd.m_ofn.lpstrTitle =
+          _T("Please name the plaintext file");
+        m_LockDisabled = true;
+        rc = fd.DoModal();
+        m_LockDisabled = false;
+        if (rc == IDOK) {
+          newfile = (CMyString)fd.GetPathName();
+          break;
+        } else
+          return;
       } // while (1)
 
-		if (et.m_querysetexpdelim == 1)
-		{
-		  char delimiter;
-		  delimiter = et.m_defexpdelim[0];
-		  rc = m_core.WritePlaintextFile(newfile, delimiter);
-		} else {
-		  rc = m_core.WritePlaintextFile(newfile);
-		}
+      if (et.m_querysetexpdelim == 1) {
+        char delimiter;
+        delimiter = et.m_defexpdelim[0];
+        rc = m_core.WritePlaintextFile(newfile, delimiter);
+      } else {
+        rc = m_core.WritePlaintextFile(newfile);
+      }
 		
-      if (rc == PWScore::CANT_OPEN_FILE)
-	{
-	  CMyString temp = newfile + _T("\n\nCould not open file for writing!");
-	  MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
-	}
+      if (rc == PWScore::CANT_OPEN_FILE)        {
+        CMyString temp = newfile + _T("\n\nCould not open file for writing!");
+        MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+      }
     } else {
       MessageBox(_T("Passkey incorrect"), _T("Error"));
       Sleep(3000); // protect against automatic attacks
