@@ -2,8 +2,6 @@
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include "PasswordSafe.h"
-
 
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)

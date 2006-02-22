@@ -2,8 +2,6 @@
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include "PasswordSafe.h"
-#include "corelib/PwsPlatform.h"
 
 #include "corelib/PWSprefs.h"
 #include "ThisMfcApp.h"

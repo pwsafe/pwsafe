@@ -115,26 +115,25 @@ static void
 ErrorMessages(const CString &fn, FILE *fp)
 {
 #if !defined(POCKET_PC)
-  if (fp == NULL)
-    {
-      CString text;
-      text = "A fatal error occured: ";
+  if (fp == NULL) {
+    CString text;
+    text = _T("A fatal error occured: ");
 
-      if (errno==EACCES)
-	text += "Given path is a directory or file is read-only";
-      else if (errno==EEXIST)
-	text += "The filename already exists.";
-      else if (errno==EINVAL)
-	text += "Invalid oflag or shflag argument.";
-      else if (errno==EMFILE)
-	text += "No more file handles available.";
-      else if (errno==ENOENT)
-	text += "File or path not found.";
-      text += "\nProgram will terminate.";
+    if (errno==EACCES)
+      text += _T("Given path is a directory or file is read-only");
+    else if (errno==EEXIST)
+      text += _T("The filename already exists.");
+    else if (errno==EINVAL)
+      text += _T("Invalid oflag or shflag argument.");
+    else if (errno==EMFILE)
+      text += _T("No more file handles available.");
+    else if (errno==ENOENT)
+      text += _T("File or path not found.");
+    text += _T("\nProgram will terminate.");
 
-      CString title = "Password Safe - " + fn;
-      AfxGetMainWnd()->MessageBox(text, title, MB_ICONEXCLAMATION|MB_OK);
-    }
+    CString title = _T("Password Safe - ") + fn;
+    AfxGetMainWnd()->MessageBox(text, title, MB_ICONEXCLAMATION|MB_OK);
+  }
 #endif
 }
 
@@ -177,10 +176,10 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
     // miserable bug - have to fix this way to avoid breaking existing files
     randstuff[8] = randstuff[9] = '\0';
     GenRandhash(passwd,
-		randstuff,
-		randhash);
-   fwrite(randstuff, 1,  8, out);
-   fwrite(randhash,  1, sizeof(randhash), out);
+                randstuff,
+                randhash);
+    fwrite(randstuff, 1,  8, out);
+    fwrite(randhash,  1, sizeof(randhash), out);
 #endif // KEEP_FILE_MODE_BWD_COMPAT
 		
     unsigned char thesalt[SaltLength];
@@ -482,22 +481,21 @@ ThisMfcApp::InitInstance()
 void
 ThisMfcApp::StripFileQuotes( CString& strFilename )
 {
-	const char* szFilename	= strFilename;
-	int			nLen		= strFilename.GetLength();
+  const char* szFilename	= strFilename;
+  int			nLen		= strFilename.GetLength();
 
-	// if the filenames starts with a quote...
-	if ( *szFilename == '\"' )
-	{
-		// remove leading quote
-		++szFilename;
-		--nLen;
+  // if the filenames starts with a quote...
+  if ( *szFilename == '\"' ) {
+    // remove leading quote
+    ++szFilename;
+    --nLen;
 
-		// trailing quote is optional, remove if present
-		if ( szFilename[nLen - 1] == '\"' )
-			--nLen;
+    // trailing quote is optional, remove if present
+    if ( szFilename[nLen - 1] == '\"' )
+      --nLen;
 
-		strFilename = CString( szFilename, nLen );
-	}
+    strFilename = CString( szFilename, nLen );
+  }
 }
 #endif
 
@@ -508,17 +506,16 @@ BOOL
 ThisMfcApp::ProcessMessageFilter(int code,
                                  LPMSG lpMsg)
 {
-   if (code < 0)
-      CWinApp::ProcessMessageFilter(code, lpMsg);
+  if (code < 0)
+    CWinApp::ProcessMessageFilter(code, lpMsg);
 	
-   if (m_bUseAccelerator &&
-	   m_maindlg != NULL
-       && m_ghAccelTable != NULL)
-   {
-      if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))
-         return TRUE;
-   }
-   return CWinApp::ProcessMessageFilter(code, lpMsg);
+  if (m_bUseAccelerator &&
+      m_maindlg != NULL
+      && m_ghAccelTable != NULL) {
+    if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))
+      return TRUE;
+  }
+  return CWinApp::ProcessMessageFilter(code, lpMsg);
 }
 #endif
 
@@ -545,12 +542,12 @@ ThisMfcApp::OnHelp()
   }
   if (title != _T("Options"))
     ::HtmlHelp(wnd->m_hWnd,
-	       "pwsafe.chm",
-	       HH_DISPLAY_TOPIC, 0);
+               "pwsafe.chm",
+               HH_DISPLAY_TOPIC, 0);
   else
     ::HtmlHelp(NULL,
-	       "pwsafe.chm::/html/display_tab.html",
-	       HH_DISPLAY_TOPIC, 0);
+               "pwsafe.chm::/html/display_tab.html",
+               HH_DISPLAY_TOPIC, 0);
 
 #endif
 }
@@ -560,19 +557,18 @@ ThisMfcApp::OnHelp()
 // popup menu. It returns -1 if no such menu item string is found.
 int FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 {
-   ASSERT(Menu);
-   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+  ASSERT(Menu);
+  ASSERT(::IsMenu(Menu->GetSafeHmenu()));
 
-   int count = Menu->GetMenuItemCount();
-   for (int i = 0; i < count; i++)
-   {
-      CString str;
-      if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
-         (strcmp(str, MenuString) == 0))
-         return i;
-   }
+  int count = Menu->GetMenuItemCount();
+  for (int i = 0; i < count; i++) {
+    CString str;
+    if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
+        (strcmp(str, MenuString) == 0))
+      return i;
+  }
 
-   return -1;
+  return -1;
 }
 
 // FindMenuItem() will find a menu item ID from the specified
@@ -580,20 +576,19 @@ int FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 // popup menu. It returns -1 if no such menu item string is found.
 int FindMenuItem(CMenu* Menu, int MenuID)
 {
-   ASSERT(Menu);
-   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+  ASSERT(Menu);
+  ASSERT(::IsMenu(Menu->GetSafeHmenu()));
 
-   int count = Menu->GetMenuItemCount();
-   int id;
+  int count = Menu->GetMenuItemCount();
+  int id;
    
-   for (int i = 0; i < count; i++)
-   {
-      id = Menu->GetMenuItemID(i);  // id = 0 for Separator; 1 for popup
-      if ( id > 1 && id == MenuID)         
-         return i;
-   }
+  for (int i = 0; i < count; i++) {
+    id = Menu->GetMenuItemID(i);  // id = 0 for Separator; 1 for popup
+    if ( id > 1 && id == MenuID)         
+      return i;
+  }
 
-   return -1;
+  return -1;
 }
 
 //-----------------------------------------------------------------------------

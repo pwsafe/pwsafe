@@ -220,33 +220,29 @@ void CEditDlg::OnRandom()
   DboxMain* pParent = (DboxMain*)GetParent();
   ASSERT(pParent != NULL);
   UpdateData(TRUE);
-  if (pParent->MakeRandomPassword(this, m_realpassword))
-    {
-      CMyString wndName;
-      GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
+  if (pParent->MakeRandomPassword(this, m_realpassword)) {
+    CMyString wndName;
+    GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
 
-      if (wndName == SHOW_PASSWORD_TXT)
-	{
-	  m_password = HIDDEN_PASSWORD;
-	}
-      else if (wndName == HIDE_PASSWORD_TXT)
-	{
-	  m_password = m_realpassword;
-	}
-      UpdateData(FALSE);
+    if (wndName == SHOW_PASSWORD_TXT) {
+      m_password = HIDDEN_PASSWORD;
+    } else if (wndName == HIDE_PASSWORD_TXT) {
+      m_password = m_realpassword;
     }
+    UpdateData(FALSE);
+  }
 }
 
 
 void CEditDlg::OnHelp() 
 {
 #if defined(POCKET_PC)
-	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
-	::HtmlHelp(
-		NULL,
-		"pwsafe.chm::/html/entering_pwd.html",
-		HH_DISPLAY_TOPIC, 0);
+  ::HtmlHelp(
+             NULL,
+             "pwsafe.chm::/html/entering_pwd.html",
+             HH_DISPLAY_TOPIC, 0);
 
 #endif
 }
@@ -259,7 +255,7 @@ void CEditDlg::OnHelp()
 /************************************************************************/
 void CEditDlg::OnPasskeyKillfocus()
 {
-	EnableWordCompletion( m_hWnd );
+  EnableWordCompletion( m_hWnd );
 }
 
 
@@ -269,7 +265,7 @@ void CEditDlg::OnPasskeyKillfocus()
 /************************************************************************/
 void CEditDlg::OnPasskeySetfocus()
 {
-	DisableWordCompletion( m_hWnd );
+  DisableWordCompletion( m_hWnd );
 }
 #endif
 
@@ -278,69 +274,69 @@ void CEditDlg::OnPasskeySetfocus()
 
 void CEditDlg::OnBnClickedOk()
 {
-	OnOK();
+  OnOK();
 }
 
 void CEditDlg::OnBnClickedMore()
 {
-	m_isExpanded = !m_isExpanded;
-	ResizeDialog();
+  m_isExpanded = !m_isExpanded;
+  ResizeDialog();
 }
 
 void CEditDlg::ResizeDialog()
 {
-	int TopHideableControl = IDC_URL;
-	int BottomHideableControl = IDC_CTIME;
-	int controls[]={
-IDC_URL,
-IDC_AUTOTYPE,
-IDC_STATIC_URL,
-IDC_STATIC_AUTO,
+  int TopHideableControl = IDC_URL;
+  int BottomHideableControl = IDC_CTIME;
+  int controls[]={
+    IDC_URL,
+    IDC_AUTOTYPE,
+    IDC_STATIC_URL,
+    IDC_STATIC_AUTO,
 	IDC_CTIME,
 	IDC_STATIC_CTIME};
 
 	
-	for(int n = 0; n<sizeof(controls)/sizeof(IDC_URL);n++)
+  for(int n = 0; n<sizeof(controls)/sizeof(IDC_URL);n++)
 	{
-		CWnd* pWind;
-		pWind = (CWnd *)GetDlgItem(controls[n]);
-		pWind->ShowWindow(m_isExpanded);
+      CWnd* pWind;
+      pWind = (CWnd *)GetDlgItem(controls[n]);
+      pWind->ShowWindow(m_isExpanded);
 	}
 	
-	RECT curDialogRect;
+  RECT curDialogRect;
 	
-	this->GetWindowRect(&curDialogRect);
+  this->GetWindowRect(&curDialogRect);
 
-	RECT newDialogRect=curDialogRect;
+  RECT newDialogRect=curDialogRect;
 
 
-	RECT curLowestCtlRect;
-	CWnd* pLowestCtl;
-	int newHeight;
+  RECT curLowestCtlRect;
+  CWnd* pLowestCtl;
+  int newHeight;
   if (m_isExpanded) {
     // from less to more
-	  pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
+    pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
 	  
-	  pLowestCtl->GetWindowRect(&curLowestCtlRect);
+    pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
-	  newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
+    newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
     m_moreLessBtn.SetWindowText(_T("<< Less"));
   } else {
     
-	  // from more to less
-	  pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
-	  pLowestCtl->GetWindowRect(&curLowestCtlRect);
+    // from more to less
+    pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
+    pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
-	  newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
+    newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
 
     m_moreLessBtn.SetWindowText(_T("More >>"));
   }
   
 
   this->SetWindowPos(NULL,0,0,
-		newDialogRect.right - newDialogRect.left ,
-		newHeight , 
-		SWP_NOMOVE );
+                     newDialogRect.right - newDialogRect.left ,
+                     newHeight , 
+                     SWP_NOMOVE );
 
 }
 void CEditDlg::OnStnClickedStaticCtime()

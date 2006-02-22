@@ -8,10 +8,8 @@
 #include "DboxMain.h"
 #include "AddDlg.h"
 #include "PwFont.h"
-#include "OptionsPasswordPolicy.h"
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
-//#include ".\adddlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,7 +23,6 @@ CAddDlg::CAddDlg(CWnd* pParent)
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
     m_URL(_T("")), m_autotype(_T(""))
 {
-  //m_isExpanded = true; // XXX TBD - get from preference
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::BoolPrefs::DisplayExpandedAddEditDlg);
   	  
