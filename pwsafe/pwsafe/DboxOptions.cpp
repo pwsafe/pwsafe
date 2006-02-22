@@ -58,10 +58,6 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::IntPrefs::MaxMRUItems);
   display.m_mruonfilemenu = PWSprefs::GetInstance()->
     GetPref(PWSprefs::BoolPrefs::MRUOnFileMenu);
-
-  display.m_Display_Expanded = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::DisplayExpandedAddEditDlg);
-
   security.m_clearclipboard = prefs->
     GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
   security.m_lockdatabase = prefs->
@@ -148,10 +144,6 @@ DboxMain::OnOptions()
                      display.m_maxmruitems);
       prefs->SetPref(PWSprefs::BoolPrefs::MRUOnFileMenu,
                      display.m_mruonfilemenu == TRUE);
-
-      prefs->SetPref(PWSprefs::BoolPrefs::DisplayExpandedAddEditDlg,
-                     display.m_Display_Expanded == TRUE);
-
 
       prefs->SetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo,
                      security.m_clearclipboard == TRUE);

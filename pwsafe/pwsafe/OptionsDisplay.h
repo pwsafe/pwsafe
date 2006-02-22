@@ -31,7 +31,6 @@ public:
 	BOOL    m_usesystemtray;
 	int		m_maxmruitems;
 	BOOL	m_mruonfilemenu;
-	BOOL    m_Display_Expanded;
 	//}}AFX_DATA
 
 
