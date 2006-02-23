@@ -111,31 +111,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 }
 
 int
-PWScore::WritePlaintextFile(const CMyString &filename)
-{
-#ifdef UNICODE
-  wofstream ofs((const wchar_t *)LPCTSTR(filename));
-#else
-  ofstream ofs((const char *)LPCTSTR(filename));
-#endif
-  if (!ofs)
-    return CANT_OPEN_FILE;
-
-  CItemData temp;
-  POSITION listPos = m_pwlist.GetHeadPosition();
-
-  while (listPos != NULL) {
-    temp = m_pwlist.GetAt(listPos);
-    ofs << (const char *)temp.GetPlaintext(TCHAR('\t')) << endl;
-    m_pwlist.GetNext(listPos);
-  }
-  ofs.close();
-
-  return SUCCESS;
-}
-
-int
-PWScore::WritePlaintextFile(const CMyString &filename, const TCHAR delimiter)
+PWScore::WritePlaintextFile(const CMyString &filename, TCHAR delimiter)
 {
 #ifdef UNICODE
   wofstream ofs((const wchar_t *)LPCTSTR(filename));
@@ -264,19 +240,31 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
     temp.SetPassword(CMyString(tokens[2].c_str()));
 
     // The group and title field are concatenated.
+    // If the title field has periods, then it in doubleqoutes
     const string &grouptitle = tokens[0];
-    int lastdot = grouptitle.find_last_of('.');
-    if (lastdot > 0) {
-      CMyString newgroup(ImportedPrefix.IsEmpty() ?
-                         "" : ImportedPrefix + ".");
-      newgroup += grouptitle.substr(0, lastdot).c_str();
-      temp.SetGroup(newgroup);
-      temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
-    } else {
-      temp.SetGroup(ImportedPrefix);
-      temp.SetTitle(grouptitle.c_str());
-    }
 
+    if (grouptitle[grouptitle.length()-1] == TCHAR('\"')) {
+      size_t leftquote = grouptitle.find(TCHAR('\"'));
+      if (leftquote != grouptitle.length()-1) {
+        temp.SetGroup(grouptitle.substr(0, leftquote-1).c_str());
+        temp.SetTitle(grouptitle.substr(leftquote, grouptitle.length()-2).c_str());
+      } else { // only a single " ?!
+        // probably wrong, but a least we don't lose data
+        temp.SetTitle(grouptitle.c_str());
+      }
+    } else { // title has no period
+      size_t lastdot = grouptitle.find_last_of('.');
+      if (lastdot > 0) {
+        CMyString newgroup(ImportedPrefix.IsEmpty() ?
+                           "" : ImportedPrefix + ".");
+        newgroup += grouptitle.substr(0, lastdot).c_str();
+        temp.SetGroup(newgroup);
+        temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
+      } else {
+        temp.SetGroup(ImportedPrefix);
+        temp.SetTitle(grouptitle.c_str());
+      }
+    }
     // The notes field begins and ends with a double-quote, with
     // no special escaping of any other internal characters.
     string quotedNotes = tokens[3];
@@ -284,11 +272,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
         *quotedNotes.begin() == '\"' &&
         *(quotedNotes.end() - 1) == '\"') {
       quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
-      if (delimiter == '\0') {
-        temp.SetNotes(CMyString(quotedNotes.c_str()));
-      } else {
-        temp.SetNotes(CMyString(quotedNotes.c_str()), delimiter);
-      }
+      temp.SetNotes(CMyString(quotedNotes.c_str()), delimiter);
     }
 
     AddEntryToTail(temp);

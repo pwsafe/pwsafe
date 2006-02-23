@@ -94,23 +94,15 @@ CItemData::GetPassword() const
    return ret;
 }
 
-
 CMyString
-CItemData::GetNotes() const
+CItemData::GetNotes(TCHAR delimiter) const
 {
    CMyString ret;
    GetField(m_Notes, ret);
-   return ret;
-}
-
-CMyString
-CItemData::GetNotes(char delimiter) const
-{
-   CMyString ret;
-   GetField(m_Notes, ret);
-   ret.Replace('\n', delimiter);
-   ret.Remove('\r');
-
+   if (delimiter != 0) {
+     ret.Remove(TCHAR('\r'));
+     ret.Replace(TCHAR('\n'), delimiter);
+   }
    return ret;
 }
 
@@ -185,40 +177,23 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
-CMyString CItemData::GetPlaintext(TCHAR separator) const
+CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
 {
   CMyString ret;
   CMyString title;
   CMyString group(GetGroup());
-  
-	// a '.' in title gets Import confused re: Groups
-    title = GetTitle();
-	title.Replace('.', '\b');
+
+  // a '.' in title gets Import confused re: Groups
+  title = GetTitle();
+  if (title.Find(TCHAR('.')) != -1)
+    title = TCHAR('\"') + title + TCHAR('\"');
 
   if (!group.IsEmpty())
     title = group + TCHAR('.') + title;
-  
+
   ret = title + separator + GetUser() + separator +
-    GetPassword() + separator + _T("\"") + GetNotes() + _T("\"");
-
-  return ret;
-}
-
-CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
-{
-	CMyString ret;
-	CMyString title;
-	CMyString group(GetGroup());
-
-	// a '.' in title gets Import confused re: Groups
-    title = GetTitle();
-	title.Replace('.', '\b');
-
-	if (!group.IsEmpty())
-		title = group + TCHAR('.') + title;
-
-	ret = title + separator + GetUser() + separator +
-    GetPassword() + separator + _T("\"") + GetNotes(delimiter) + _T("\"");
+    GetPassword() + separator + _T("\"") + GetNotes(delimiter) + _T("\"") +
+    separator + GetURL() + separator + GetAutoType() + separator + GetCTime();
 
   return ret;
 }
@@ -302,11 +277,7 @@ CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
 void
 CItemData::SetTitle(const CMyString &title)
 {
-	// a '.' in title gets import confused re: Groups
-	CMyString temp_title;
-	temp_title = title;
-	temp_title.Replace('\b', '.');
-	SetField(m_Title, temp_title);
+  SetField(m_Title, title);
 }
 
 void
@@ -322,16 +293,13 @@ CItemData::SetPassword(const CMyString &password)
 }
 
 void
-CItemData::SetNotes(const CMyString &notes)
-{
-  SetField(m_Notes, notes);
-}
-
-void
 CItemData::SetNotes(const CMyString &notes, char delimiter)
 {
-	const CMyString CRCRLF = "\r\r\n";
-	CMyString multiline_notes = "";
+  if (delimiter == 0)
+    SetField(m_Notes, notes);
+  else {
+	const CMyString CRCRLF = _T("\r\r\n");
+	CMyString multiline_notes(_T(""));
 
 	CMyString newCString;
 	CMyString tmpCString;
@@ -340,19 +308,20 @@ CItemData::SetNotes(const CMyString &notes, char delimiter)
 
 	newCString = notes;
 	do {
-		pos = newCString.Find(delimiter);
-		if ( pos != -1 ) {
-			multiline_notes += CMyString(newCString.Left(pos)) + CRCRLF;
+      pos = newCString.Find(delimiter);
+      if ( pos != -1 ) {
+        multiline_notes += CMyString(newCString.Left(pos)) + CRCRLF;
 
-			tmpCString = CMyString(newCString.Mid(pos + 1));
-			newCString = tmpCString;
-		}
+        tmpCString = CMyString(newCString.Mid(pos + 1));
+        newCString = tmpCString;
+      }
 	} while ( pos != -1 );
 	
 	if (!newCString.IsEmpty())
-		multiline_notes += newCString;
+      multiline_notes += newCString;
 
 	SetField(m_Notes, multiline_notes);
+  }
 }
 
 void
