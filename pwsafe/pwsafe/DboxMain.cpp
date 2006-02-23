@@ -631,9 +631,7 @@ DboxMain::OnCopyUsername()
   ASSERT(ci != NULL);
   const CMyString username = ci->GetUser();
 
-  if (username.IsEmpty()) {
-    AfxMessageBox(_T("There is no username associated with this item."));
-  } else {
+  if (!username.IsEmpty()) {
     ToClipboard(username);
   }
 }
