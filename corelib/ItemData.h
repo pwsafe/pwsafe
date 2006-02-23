@@ -47,16 +47,16 @@ public:
    CMyString GetTitle() const; // V20
    CMyString GetUser() const; // V20
    CMyString GetPassword() const;
-   CMyString GetNotes() const;
-   CMyString GetNotes(char delimiter) const;
+   CMyString GetNotes(TCHAR delimiter = 0) const;
    void GetUUID(uuid_array_t &) const; // V20
    CMyString GetGroup() const; // V20
    CMyString GetURL() const; // V30
    CMyString GetAutoType() const; // V30
    CMyString GetCTime() const; // V30
    void GetCTime(time_t &t) const; // V30
-   CMyString GetPlaintext(TCHAR separator) const; // returns all fields separated by separator
-   CMyString GetPlaintext(TCHAR separator, TCHAR delimiter) const; // as above + delimiter for multiline notes
+   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
+   // it's used for multi-line notes.
+   CMyString GetPlaintext(TCHAR separator, TCHAR delimiter = 0) const;
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,
@@ -64,8 +64,7 @@ public:
    void SetTitle(const CMyString &title); // V20
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
-   void SetNotes(const CMyString &notes);
-   void SetNotes(const CMyString &notes, char delimiter);
+   void SetNotes(const CMyString &notes, TCHAR delimiter = 0);
    void SetUUID(const uuid_array_t &UUID); // V20
    void SetGroup(const CMyString &group); // V20
    void SetURL(const CMyString &URL); // V30
