@@ -1,13 +1,12 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
-// Tweaking for Unicode support broke this code
-// XXX need to rewrite with good ole FILE instead of dain bramaged MS ofstream
-#define OFSTREAM_BROKEN
+
+#include "PWScore.h"
+#include "BlowFish.h"
+#include "PWSprefs.h"
 
 #pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
-#ifndef OFSTREAM_BROKEN
 #include <fstream> // for WritePlaintextFile
-#endif /* OFSTREAM_BROKEN */
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,9 +19,6 @@ using namespace std;
 #include <fcntl.h> // constants _O_* for above
 #include <sys/stat.h> // constants _S_* for above
 
-#include "PWScore.h"
-#include "BlowFish.h"
-#include "PWSprefs.h"
 
 unsigned char PWScore::m_session_key[20]; unsigned char
 PWScore::m_session_salt[20]; unsigned char
@@ -117,11 +113,10 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 int
 PWScore::WritePlaintextFile(const CMyString &filename)
 {
-#ifndef OFSTREAM_BROKEN
 #ifdef UNICODE
-  wofstream ofs(LPCTSTR(filename));
+  wofstream ofs((const wchar_t *)LPCTSTR(filename));
 #else
-  ofstream ofs(LPCTSTR(filename));
+  ofstream ofs((const char *)LPCTSTR(filename));
 #endif
   if (!ofs)
     return CANT_OPEN_FILE;
@@ -137,44 +132,30 @@ PWScore::WritePlaintextFile(const CMyString &filename)
   ofs.close();
 
   return SUCCESS;
-#else
-  ::MessageBox(NULL,_T("Unimplemented function"),
-               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
-  return FAILURE;
-#endif
 }
 
 int
 PWScore::WritePlaintextFile(const CMyString &filename, const TCHAR delimiter)
 {
-#ifndef OFSTREAM_BROKEN
 #ifdef UNICODE
-  wofstream of(LPCTSTR(filename));
+  wofstream ofs((const wchar_t *)LPCTSTR(filename));
 #else
-  ofstream of(LPCTSTR(filename));
+  ofstream ofs((const char *)LPCTSTR(filename));
 #endif
-
-
-  if (!of)
+  if (!ofs)
     return CANT_OPEN_FILE;
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
 
-  while (listPos != NULL)
-  {
-      temp = m_pwlist.GetAt(listPos);
-      of << temp.GetPlaintext(TCHAR('\t'), delimiter) << endl;
-      m_pwlist.GetNext(listPos);
+  while (listPos != NULL) {
+    temp = m_pwlist.GetAt(listPos);
+    ofs << temp.GetPlaintext(TCHAR('\t'), delimiter) << endl;
+    m_pwlist.GetNext(listPos);
   }
-  of.close();
+  ofs.close();
 
   return SUCCESS;
-#else
-  ::MessageBox(NULL,_T("Unimplemented function"),
-               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
-  return FAILURE;
-#endif
 }
 
 /*
@@ -215,119 +196,107 @@ int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
 			     TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped)
 {
-#ifndef OFSTREAM_BROKEN
 #ifdef UNICODE
-  wifstream ifs(LPCTSTR(filename));
+  wifstream ifs((const wchar_t *)LPCTSTR(filename));
 #else
-  ifstream ifs(LPCTSTR(filename));
+  ifstream ifs((const char *)LPCTSTR(filename));
 #endif
   numImported = numSkipped = 0;
 
   if (!ifs)
     return CANT_OPEN_FILE;
 
-  for (;;)
-    {
-      // read a single line.
-      string linebuf;
-      if (!getline(ifs, linebuf, '\n')) break;
+  for (;;) {
+    // read a single line.
+    string linebuf;
+    if (!getline(ifs, linebuf, '\n')) break;
 
-      // remove MS-DOS linebreaks, if needed.
-      if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
-	linebuf.resize(linebuf.size() - 1);
-      }
+    // remove MS-DOS linebreaks, if needed.
+    if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
+      linebuf.resize(linebuf.size() - 1);
+    }
 
-      // tokenize into separate elements
-      vector<string> tokens;
-      for (int startpos = 0; ; )
-      {
-	int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
-	if (nextchar >= 0 && tokens.size() < 3) {
-	  tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
-	  startpos = nextchar + 1;
-	} else {
-	  // Here for last field, which is Notes. Notes may be double-quoted, and
-	  // if they are, they may span more than one line.
-	  string note(linebuf.substr(startpos));
-	  unsigned int first_quote = note.find_first_of('\"');
-	  unsigned int last_quote = note.find_last_of('\"');
-	  if (first_quote == last_quote && first_quote != string::npos) {
-	    //there was exactly one quote, meaning that we've a multi-line Note
-	    bool noteClosed = false;
-	    do {
-	  					if (!getline(ifs, linebuf, '\n'))
-	  					{
-		  ifs.close(); // file ends before note closes
-		  return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
-	      }
-	      // remove MS-DOS linebreaks, if needed.
-	      			if (!linebuf.empty() && *(linebuf.end() - 1) == '\r')
-	      			{
-		linebuf.resize(linebuf.size() - 1);
-	      }
-	      note += "\r\n";
-	      note += linebuf;
-	      unsigned int fq = linebuf.find_first_of('\"');
-	      unsigned int lq = linebuf.find_last_of('\"');
-	      noteClosed = (fq == lq && fq != string::npos);
-	    } while (!noteClosed);
-	  } // multiline note processed
-	  tokens.push_back(note);
-	  break;
-	}
-      }
-      if (tokens.size() != 4) {
-	numSkipped++; // malformed entry
-	continue; // try to process next records
-      }
-
-      // Start initializing the new record.
-      CItemData temp;
-      temp.CreateUUID();
-      temp.SetUser(CMyString(tokens[1].c_str()));
-      temp.SetPassword(CMyString(tokens[2].c_str()));
-
-      // The group and title field are concatenated.
-      const string &grouptitle = tokens[0];
-      int lastdot = grouptitle.find_last_of('.');
-      if (lastdot > 0)
-      {
-      	CMyString newgroup(ImportedPrefix.IsEmpty() ?
-			   "" : ImportedPrefix + ".");
-	newgroup += grouptitle.substr(0, lastdot).c_str();
-	temp.SetGroup(newgroup);
-	temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
+    // tokenize into separate elements
+    vector<string> tokens;
+    for (int startpos = 0; ; ) {
+      int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
+      if (nextchar >= 0 && tokens.size() < 3) {
+        tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
+        startpos = nextchar + 1;
       } else {
-	temp.SetGroup(ImportedPrefix);
-	temp.SetTitle(grouptitle.c_str());
+        // Here for last field, which is Notes. Notes may be double-quoted, and
+        // if they are, they may span more than one line.
+        string note(linebuf.substr(startpos));
+        unsigned int first_quote = note.find_first_of('\"');
+        unsigned int last_quote = note.find_last_of('\"');
+        if (first_quote == last_quote && first_quote != string::npos) {
+          //there was exactly one quote, meaning that we've a multi-line Note
+          bool noteClosed = false;
+          do {
+            if (!getline(ifs, linebuf, '\n')) {
+              ifs.close(); // file ends before note closes
+              return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
+            }
+            // remove MS-DOS linebreaks, if needed.
+            if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
+              linebuf.resize(linebuf.size() - 1);
+            }
+            note += "\r\n";
+            note += linebuf;
+            unsigned int fq = linebuf.find_first_of('\"');
+            unsigned int lq = linebuf.find_last_of('\"');
+            noteClosed = (fq == lq && fq != string::npos);
+          } while (!noteClosed);
+        } // multiline note processed
+        tokens.push_back(note);
+        break;
       }
+    }
+    if (tokens.size() != 4) {
+      numSkipped++; // malformed entry
+      continue; // try to process next records
+    }
 
-      // The notes field begins and ends with a double-quote, with
-      // no special escaping of any other internal characters.
-      string quotedNotes = tokens[3];
-      if (!quotedNotes.empty() &&
-	  *quotedNotes.begin() == '\"' &&
-	  *(quotedNotes.end() - 1) == '\"')
-        {
-	  quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
-      	if (delimiter == '\0') {
-	  temp.SetNotes(CMyString(quotedNotes.c_str()));
-		} else {
-			temp.SetNotes(CMyString(quotedNotes.c_str()), delimiter);
-		}
-        }
+    // Start initializing the new record.
+    CItemData temp;
+    temp.CreateUUID();
+    temp.SetUser(CMyString(tokens[1].c_str()));
+    temp.SetPassword(CMyString(tokens[2].c_str()));
 
-      AddEntryToTail(temp);
-      numImported++;
-    } // file processing for (;;) loop
+    // The group and title field are concatenated.
+    const string &grouptitle = tokens[0];
+    int lastdot = grouptitle.find_last_of('.');
+    if (lastdot > 0) {
+      CMyString newgroup(ImportedPrefix.IsEmpty() ?
+                         "" : ImportedPrefix + ".");
+      newgroup += grouptitle.substr(0, lastdot).c_str();
+      temp.SetGroup(newgroup);
+      temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
+    } else {
+      temp.SetGroup(ImportedPrefix);
+      temp.SetTitle(grouptitle.c_str());
+    }
+
+    // The notes field begins and ends with a double-quote, with
+    // no special escaping of any other internal characters.
+    string quotedNotes = tokens[3];
+    if (!quotedNotes.empty() &&
+        *quotedNotes.begin() == '\"' &&
+        *(quotedNotes.end() - 1) == '\"') {
+      quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
+      if (delimiter == '\0') {
+        temp.SetNotes(CMyString(quotedNotes.c_str()));
+      } else {
+        temp.SetNotes(CMyString(quotedNotes.c_str()), delimiter);
+      }
+    }
+
+    AddEntryToTail(temp);
+    numImported++;
+  } // file processing for (;;) loop
   ifs.close();
 
   return SUCCESS;
-#else
-  ::MessageBox(NULL,_T("Unimplemented function"),
-               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
-  return FAILURE;
-#endif
 }
 
 int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
@@ -440,7 +409,7 @@ PWScore::Find(const CMyString &a_group,const CMyString &a_title, const CMyString
 }
 
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
-			      unsigned char *ciphertext) const
+                              unsigned char *ciphertext) const
 {
   // ciphertext is ((len +7)/8)*8 bytes long
   BlowFish *Algorithm = BlowFish::MakeBlowFish(m_session_key,
@@ -453,18 +422,18 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
   for (int x=0;x<BlockLength;x+=8) {
     int i;
     if ((len == 0) ||
-	((len%8 != 0) && (len - x < 8))) {
+        ((len%8 != 0) && (len - x < 8))) {
       //This is for an uneven last block
       memset(curblock, 0, 8);
       for (i = 0; i < len %8; i++)
-	curblock[i] = plaintext[x + i];
-      } else
-	for (i = 0; i < 8; i++)
-	  curblock[i] = plaintext[x + i];
-      Algorithm->Encrypt(curblock, curblock);
-      memcpy(ciphertext + x, curblock, 8);
-   }
-   trashMemory(curblock, 8);
+        curblock[i] = plaintext[x + i];
+    } else
+      for (i = 0; i < 8; i++)
+        curblock[i] = plaintext[x + i];
+    Algorithm->Encrypt(curblock, curblock);
+    memcpy(ciphertext + x, curblock, 8);
+  }
+  trashMemory(curblock, 8);
   delete Algorithm;
 }
 
@@ -530,12 +499,11 @@ CMyString PWScore::GetPassKey() const
 int
 PWScore::ImportKeePassTextFile(const CMyString &filename)
 {
-#ifndef OFSTREAM_BROKEN
   static const char *ImportedPrefix = { "ImportedKeePass" };
 #ifdef UNICODE
-  wifstream ifs(LPCTSTR(filename));
+  wifstream ifs((const wchar_t *)LPCTSTR(filename));
 #else
-  ifstream ifs(LPCTSTR(filename));
+  ifstream ifs((const char *)LPCTSTR(filename));
 #endif
 
   if (!ifs) {
@@ -613,12 +581,12 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
     for (;;) {
       // see if we hit the end of the file
       if (!getline(ifs, linebuf, '\n')) {
-	break;
+        break;
       }
 
       // see if we hit a new record
       if (linebuf.find("[") == 0 && linebuf.rfind("]") == linebuf.length() - 1) {
-	break;
+        break;
       }
 
       notes.append("\r\n");
@@ -641,11 +609,6 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
   // TODO: maybe return an error if the full end of the file was not reached?
 
   return SUCCESS;
-#else
-  ::MessageBox(NULL,_T("Unimplemented function"),
-               _T("Unsupported (yet)"), MB_OK|MB_ICONERROR);
-  return FAILURE;
-#endif
 }
 
 /*
@@ -678,7 +641,7 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
   GetLockFileName(filename, lock_filename);
 #ifdef POSIX_FILE_LOCK
   int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
-		 (_S_IREAD | _S_IWRITE));
+                 (_S_IREAD | _S_IWRITE));
 
   if (fh == -1) { // failed to open exclusively. Already locked, or ???
     switch (errno) {
@@ -689,21 +652,21 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
       break;
     case EEXIST: // filename already exists
       {
-	// read locker data ("user@machine") from file
-	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)*2];
-	int fh2 = _open(lock_filename, _O_RDONLY);
-	if (fh2 == -1) {
-	  locker = _T("Unable to determine locker?");
-	} else {
-	  int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
-	  _close(fh2);
-	  if (bytesRead > 0) {
-	    lockerStr[bytesRead] = TCHAR('\0');
-	    locker = lockerStr;
-	  } else { // read failed for some reason
-	    locker = _T("Unable to read locker?");
-	  } // read info from lock file
-	} // open lock file for read
+        // read locker data ("user@machine") from file
+        TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)*2];
+        int fh2 = _open(lock_filename, _O_RDONLY);
+        if (fh2 == -1) {
+          locker = _T("Unable to determine locker?");
+        } else {
+          int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
+          _close(fh2);
+          if (bytesRead > 0) {
+            lockerStr[bytesRead] = TCHAR('\0');
+            locker = lockerStr;
+          } else { // read failed for some reason
+            locker = _T("Unable to read locker?");
+          } // read info from lock file
+        } // open lock file for read
       } // EEXIST block
       break;
     case EINVAL: // Invalid oflag or pmode argument
@@ -752,39 +715,39 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
     UnlockFile(GetCurFile());
   }
   m_lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),
-				  GENERIC_WRITE,
-				  FILE_SHARE_READ,
-				  NULL,
-				  CREATE_ALWAYS, // rely on share to fail if exists!
-				  FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
-				  NULL);
+                                  GENERIC_WRITE,
+                                  FILE_SHARE_READ,
+                                  NULL,
+                                  CREATE_ALWAYS, // rely on share to fail if exists!
+                                  FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+                                  NULL);
   if (m_lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     switch (error) {
     case ERROR_SHARING_VIOLATION: // already open by a live process
       {
- 	// read locker data ("user@machine") from file
-	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)*2];
-	// flags here counter (my) intuition, but see
-	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
-	HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
-				 GENERIC_READ, FILE_SHARE_WRITE,
-				 NULL, OPEN_EXISTING,
-				 FILE_ATTRIBUTE_NORMAL, NULL);
-	if (h2 == INVALID_HANDLE_VALUE) {
-	  locker = _T("Unable to determine locker?");
-	} else {
-	  DWORD bytesRead;
-	  (void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
-					&bytesRead, NULL);
-	  CloseHandle(h2);
-	  if (bytesRead > 0) {
-	    lockerStr[bytesRead] = TCHAR('\0');
-	    locker = lockerStr;
-	  } else { // read failed for some reason
-	    locker = _T("Unable to read locker?");
-	  } // read info from lock file
-	} // open lock file for read
+        // read locker data ("user@machine") from file
+        TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)*2];
+        // flags here counter (my) intuition, but see
+        // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
+        HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
+                                 GENERIC_READ, FILE_SHARE_WRITE,
+                                 NULL, OPEN_EXISTING,
+                                 FILE_ATTRIBUTE_NORMAL, NULL);
+        if (h2 == INVALID_HANDLE_VALUE) {
+          locker = _T("Unable to determine locker?");
+        } else {
+          DWORD bytesRead;
+          (void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
+                           &bytesRead, NULL);
+          CloseHandle(h2);
+          if (bytesRead > 0) {
+            lockerStr[bytesRead] = TCHAR('\0');
+            locker = lockerStr;
+          } else { // read failed for some reason
+            locker = _T("Unable to read locker?");
+          } // read info from lock file
+        } // open lock file for read
       } // ERROR_SHARING_VIOLATION block
       break;
     default:
@@ -807,15 +770,15 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
     DWORD numWrit, sumWrit;
     BOOL write_status;
     write_status = ::WriteFile(m_lockFileHandle, user,
-			       _tcslen(user)*sizeof(TCHAR),
-			       &sumWrit, NULL);
+                               _tcslen(user)*sizeof(TCHAR),
+                               &sumWrit, NULL);
     write_status = ::WriteFile(m_lockFileHandle,
-			       _T("@"), _tcslen(_T("@"))*sizeof(TCHAR),
-			       &numWrit, NULL);
+                               _T("@"), _tcslen(_T("@"))*sizeof(TCHAR),
+                               &numWrit, NULL);
     sumWrit += numWrit;
     write_status += ::WriteFile(m_lockFileHandle,
-				sysname, _tcslen(sysname)*sizeof(TCHAR),
-				&numWrit, NULL);
+                                sysname, _tcslen(sysname)*sizeof(TCHAR),
+                                &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
     return true;
