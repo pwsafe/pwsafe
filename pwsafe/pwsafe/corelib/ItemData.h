@@ -71,6 +71,7 @@ public:
    void SetAutoType(const CMyString &autotype); // V30
    void SetCTime(); // V30
    void SetCTime(time_t t); // V30
+   void SetCTime(const CMyString &URL); // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}

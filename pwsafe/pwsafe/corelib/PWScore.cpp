@@ -169,8 +169,10 @@ PWScore::WriteXMLFile(const CMyString &filename)
 */
 
 int
-PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
-			     TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped)
+PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
+                             const CMyString &filename,
+                             TCHAR fieldSeparator, TCHAR delimiter,
+                             int &numImported, int &numSkipped)
 {
 #ifdef UNICODE
   wifstream ifs((const wchar_t *)LPCTSTR(filename));
@@ -178,6 +180,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
   ifstream ifs((const char *)LPCTSTR(filename));
 #endif
   numImported = numSkipped = 0;
+  CItemData temp;
+  // Order of fields determined in CItemData::GetPlaintext()
+  enum Fields {GROUPTITLE, USER, PASSWORD, URL,
+               AUTOTYPE, CTIME, NOTES, NUMFIELDS};
 
   if (!ifs)
     return CANT_OPEN_FILE;
@@ -196,11 +202,11 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
     vector<string> tokens;
     for (int startpos = 0; ; ) {
       int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
-      if (nextchar >= 0 && tokens.size() < 3) {
+      if (nextchar >= 0 && tokens.size() < NOTES) {
         tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
         startpos = nextchar + 1;
       } else {
-        // Here for last field, which is Notes. Notes may be double-quoted, and
+        // Here for the Notes field. Notes may be double-quoted, and
         // if they are, they may span more than one line.
         string note(linebuf.substr(startpos));
         unsigned int first_quote = note.find_first_of('\"');
@@ -228,33 +234,34 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
         break;
       }
     }
-    if (tokens.size() != 4) {
+    if (tokens.size() != NUMFIELDS) {
       numSkipped++; // malformed entry
       continue; // try to process next records
     }
 
     // Start initializing the new record.
-    CItemData temp;
+    temp.Clear();
     temp.CreateUUID();
-    temp.SetUser(CMyString(tokens[1].c_str()));
-    temp.SetPassword(CMyString(tokens[2].c_str()));
+    temp.SetUser(CMyString(tokens[USER].c_str()));
+    temp.SetPassword(CMyString(tokens[PASSWORD].c_str()));
 
     // The group and title field are concatenated.
     // If the title field has periods, then it in doubleqoutes
-    const string &grouptitle = tokens[0];
+    const string &grouptitle = tokens[GROUPTITLE];
 
     if (grouptitle[grouptitle.length()-1] == TCHAR('\"')) {
       size_t leftquote = grouptitle.find(TCHAR('\"'));
       if (leftquote != grouptitle.length()-1) {
         temp.SetGroup(grouptitle.substr(0, leftquote-1).c_str());
-        temp.SetTitle(grouptitle.substr(leftquote, grouptitle.length()-2).c_str());
+        temp.SetTitle(grouptitle.substr(leftquote+1,
+                                        grouptitle.length()-leftquote-2).c_str());
       } else { // only a single " ?!
         // probably wrong, but a least we don't lose data
         temp.SetTitle(grouptitle.c_str());
       }
     } else { // title has no period
       size_t lastdot = grouptitle.find_last_of('.');
-      if (lastdot > 0) {
+      if (lastdot != string::npos) {
         CMyString newgroup(ImportedPrefix.IsEmpty() ?
                            "" : ImportedPrefix + ".");
         newgroup += grouptitle.substr(0, lastdot).c_str();
@@ -265,9 +272,15 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
         temp.SetTitle(grouptitle.c_str());
       }
     }
+
+    // New 3.0 fields: URL, AutoType, CTime
+    temp.SetURL(tokens[URL].c_str());
+    temp.SetAutoType(tokens[AUTOTYPE].c_str());
+    temp.SetCTime(tokens[CTIME].c_str());
+
     // The notes field begins and ends with a double-quote, with
     // no special escaping of any other internal characters.
-    string quotedNotes = tokens[3];
+    string quotedNotes = tokens[NOTES];
     if (!quotedNotes.empty() &&
         *quotedNotes.begin() == '\"' &&
         *(quotedNotes.end() - 1) == '\"') {
@@ -285,7 +298,25 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &f
 
 int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
 {
-  int status = PWSfile::CheckPassword(filename, passkey);
+  int status;
+
+  if (!filename.IsEmpty())
+    status = PWSfile::CheckPassword(filename, passkey);
+  else { // can happen if tries to export b4 save
+    unsigned int t_passkey_len = passkey.GetLength();
+    if (t_passkey_len != m_passkey_len) // trivial test
+      return WRONG_PASSWORD;
+    int BlockLength = ((m_passkey_len + 7)/8)*8;
+    unsigned char *t_passkey = new unsigned char[BlockLength];
+    LPCTSTR plaintext = LPCTSTR(passkey);
+    EncryptPassword((const unsigned char *)plaintext, t_passkey_len,
+                    t_passkey);
+    if (memcmp(t_passkey, m_passkey, BlockLength) == 0)
+      status = PWSfile::SUCCESS;
+    else
+      status = PWSfile::WRONG_PASSWORD;
+    delete[] t_passkey;
+  }
 
   switch (status) {
   case PWSfile::SUCCESS:
