@@ -191,9 +191,11 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
   if (!group.IsEmpty())
     title = group + TCHAR('.') + title;
 
+  // Notes field must be last, for ease of parsing import
   ret = title + separator + GetUser() + separator +
-    GetPassword() + separator + _T("\"") + GetNotes(delimiter) + _T("\"") +
-    separator + GetURL() + separator + GetAutoType() + separator + GetCTime();
+    GetPassword() + separator + GetURL() +
+    separator + GetAutoType() + separator +
+    GetCTime() + separator + _T("\"") + GetNotes(delimiter) + _T("\"");
 
   return ret;
 }
@@ -362,6 +364,14 @@ CItemData::SetCTime()
   SetCTime(t);
 }
 
+void
+CItemData::SetCTime(const CMyString &)
+{
+  // XXX TBD
+  time_t t;
+  time(&t);
+  SetCTime(t);
+}
 
 BlowFish *
 CItemData::MakeBlowFish() const
