@@ -273,9 +273,11 @@ private:
   void ResetIdleLockCounter();
   bool DecrementAndTestIdleLockCounter();
   void ToClipboard(const CMyString &data);
+  CMyString FromClipboard();
   void ExtractFont(CString& str);
   CString GetToken(CString& str, LPCTSTR c);
   int SaveIfChanged();
+  afx_msg void OnGenerateresponse();
 };
 
 // Following used to keep track of display vs data

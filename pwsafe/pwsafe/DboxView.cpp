@@ -24,6 +24,8 @@
 
 #include "corelib/pwsprefs.h"
 #include "KeySend.h"
+#include "DboxMain.h"
+#include "corelib/sha256.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1638,4 +1640,63 @@ DboxMain::GetToken(CString& str, LPCTSTR c)
 	str = str.Mid(pos + 1);
 
 	return token;
+}
+
+CMyString DboxMain::FromClipboard()
+{
+  CMyString retval(_T(""));
+
+  if (!IsClipboardFormatAvailable(CF_TEXT)) 
+    return retval; 
+  if (!OpenClipboard()) 
+    return retval;
+ 
+  HGLOBAL hglb = GetClipboardData(CF_TEXT); 
+  if (hglb != NULL) { 
+    LPTSTR lptstr = LPTSTR(GlobalLock(hglb)); 
+    if (lptstr != NULL) { 
+      retval = lptstr;
+      GlobalUnlock(hglb); 
+    } 
+  } 
+  CloseClipboard();
+  return retval;
+}
+
+
+void DboxMain::OnGenerateresponse()
+{
+  CItemData *item = getSelectedItem();
+  if (item == NULL) {
+    MessageBox(_T("Please select an entry"),
+               AfxGetAppName(),
+               MB_OK);
+    return;
+  }
+  CMyString pwd = item->GetPassword();
+  CMyString b64challenge = FromClipboard();
+  LPCTSTR b64challenge_p = LPCTSTR(b64challenge);
+  int err;
+  unsigned int challengeLen;
+  // Xform challenge from base64 to binary
+  unsigned char *challenge = base64_decode((unsigned char *)b64challenge_p,
+                                           &challengeLen, &err);
+  if (err !=0) {
+    MessageBox(_T("Clipboard does not contain a valid challenge"),
+               AfxGetAppName(),
+               MB_OK);
+    return;
+  }
+  unsigned char response[HMAC_SHA256::HASHLEN];
+  // calculate hmac of binary challenge using pwd as key
+  LPCTSTR pwd_p = LPCTSTR(pwd);
+  HMAC_SHA256 hmac((const unsigned char *)pwd_p, pwd.GetLength());
+  hmac.Update(challenge, challengeLen);
+  hmac.Final(response);
+  delete[] challenge;
+  // encode hmac to base64 for passing back to clipboard
+  unsigned char *b64response_p = base64_encode(response, HMAC_SHA256::HASHLEN);
+  CMyString b64response(b64response_p);
+  delete[] b64response_p;
+  ToClipboard(b64response);
 }

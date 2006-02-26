@@ -163,6 +163,22 @@ inline wchar_t * strFind( const wchar_t *str, const wchar_t *fstr )
 
 extern long		fileLength( FILE *fp );
 
+/* Accepts a binary buffer with an associated size.
+   Returns a base64 encoded, null-terminated string,
+   allocated with new
+ */
+extern unsigned char *base64_encode(unsigned char *input, int len);
+
+/* If err is non-zero on exit, then there was an incorrect padding
+   error.  We allocate enough space for all circumstances, but when
+   there is padding, or there are characters outside the character 
+   set in the string (which we are supposed to ignore), then we 
+   end up allocating too much space. returned value is allocated by new.
+ */
+
+extern unsigned char *base64_decode(unsigned char *buf,
+                                    unsigned int *len, int *err);
+
 #endif // Util_h
 //-----------------------------------------------------------------------------
 // Local variables:

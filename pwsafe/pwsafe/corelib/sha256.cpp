@@ -204,7 +204,7 @@ void SHA256::Update(const unsigned char *in, unsigned long inlen)
 {
   const unsigned long block_size = 64;
   unsigned long n;
-  ASSERT(in != NULL);
+  ASSERT(in != NULL || inlen == 0);
   ASSERT(curlen <= sizeof(buf));
   while (inlen > 0) {
     if (curlen == 0 && inlen >= block_size) {
@@ -276,3 +276,65 @@ void SHA256::Final(unsigned char digest[HASHLEN])
 #endif
 }
 
+HMAC_SHA256::HMAC_SHA256(const unsigned char *key, unsigned long keylen)
+{
+  ASSERT(key != NULL);
+  ASSERT(keylen >= L); // "less than L bytes are strongly discouraged"
+  memset(K, 0, sizeof(K));
+  Init(key, keylen);
+}
+
+HMAC_SHA256::HMAC_SHA256()
+{
+  memset(K, 0, sizeof(K));
+}
+
+void
+HMAC_SHA256::Init(const unsigned char *key, unsigned long keylen)
+{
+  ASSERT(key != NULL);
+  ASSERT(keylen >= L); // "less than L bytes are strongly discouraged"
+
+  if (keylen > B) {
+    SHA256 H0;
+    H0.Update(key, keylen);
+    H0.Final(K);
+  } else {
+    ASSERT(keylen <= sizeof(K));
+    memcpy(K, key, keylen);
+  }
+
+  unsigned char k_ipad[B];
+  for (int i = 0; i < B; i++)
+    k_ipad[i] = K[i] ^ 0x36;
+  H.Update(k_ipad, B);
+  memset(k_ipad, 0, B);
+}
+
+HMAC_SHA256::~HMAC_SHA256()
+{
+  // cleaned up in Final
+}
+
+void HMAC_SHA256::Update(const unsigned char *in, unsigned long inlen)
+{
+  H.Update(in, inlen);
+}
+
+void HMAC_SHA256::Final(unsigned char digest[SHA256::HASHLEN])
+{
+    unsigned char d[HASHLEN];
+
+  H.Final(d);
+  unsigned char k_opad[B];
+  for (int i = 0; i < B; i++)
+    k_opad[i] = K[i] ^ 0x5c;
+  memset(K, 0, B);
+
+  SHA256 H1;
+  H1.Update(k_opad, B);
+  memset(k_opad, 0, B);
+  H1.Update(d, HASHLEN);
+  memset(d, 0, HASHLEN);
+  H1.Final(digest);
+}
