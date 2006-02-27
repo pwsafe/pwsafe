@@ -279,7 +279,6 @@ void SHA256::Final(unsigned char digest[HASHLEN])
 HMAC_SHA256::HMAC_SHA256(const unsigned char *key, unsigned long keylen)
 {
   ASSERT(key != NULL);
-  ASSERT(keylen >= L); // "less than L bytes are strongly discouraged"
   memset(K, 0, sizeof(K));
   Init(key, keylen);
 }
@@ -293,7 +292,6 @@ void
 HMAC_SHA256::Init(const unsigned char *key, unsigned long keylen)
 {
   ASSERT(key != NULL);
-  ASSERT(keylen >= L); // "less than L bytes are strongly discouraged"
 
   if (keylen > B) {
     SHA256 H0;
