@@ -6,18 +6,19 @@
 //
 // The following macros are defined:
 //
-//    BIG_ENDIAN       - Defined only if the target CPU is big-endian.
-//    LITTLE_ENDIAN    - Defined only if the target CPU is little-endian.
-//    PWS_PLATFORM     - A string, the target platform, e.g. "Pocket PC".
-//    PWS_PLATFORM_EX  - A string, the target platform, e.g. "Pocket PC 2000".
-//    POCKET_PC        - Defined only if target is Pocket PC 2000 or later.
-//    POCKET_PC_VER    - Defined only if target is Pocket PC 2000 or later.
+//    PWS_BIG_ENDIAN    - Defined only if the target CPU is big-endian.
+//    PWS_LITTLE_ENDIAN - Defined only if the target CPU is little-endian.
+//    PWS_PLATFORM      - A string, the target platform, e.g. "Pocket PC".
+//    PWS_PLATFORM_EX   - A string, the target platform, e.g. "Pocket PC 2000".
+//    POCKET_PC         - Defined only if target is Pocket PC 2000 or later.
+//    POCKET_PC_VER     - Defined only if target is Pocket PC 2000 or later.
 //
 // Notes:
 //
-// 1. BIG_ENDIAN and LITTLE_ENDIAN are mutually exclusive.
-// 2. BIG_ENDIAN and LITTLE_ENDIAN may be defined on the complier command line
-//    but checks are made to ensure that one and only one is defined.
+// 1. PWS_BIG_ENDIAN and PWS_LITTLE_ENDIAN are mutually exclusive.
+// 2. PWS_BIG_ENDIAN and PWS_LITTLE_ENDIAN may be defined on the complier
+//    command line but checks are made to ensure that one and only one is
+//    defined.
 //
 // Supported Configurations:
 // -------------------------
@@ -52,15 +53,24 @@
 #undef PWS_PLATFORM
 #undef POCKET_PC
 
-// BIG_ENDIAN and LITTLE_ENDIAN can be specified on the 
-#if defined(BIG_ENDIAN)
-  #undef BIG_ENDIAN
-  #define BIG_ENDIAN
+#if defined(_WIN32)
+  #ifdef BIG_ENDIAN
+    #define PWD_BIG_ENDIAN
+  #endif
+  #ifdef LITTLE_ENDIAN
+    #define PWS_LITTLE_ENDIAN
+  #endif
 #endif
 
-#if defined(LITTLE_ENDIAN)
-  #undef LITTLE_ENDIAN
-  #define LITTLE_ENDIAN
+// PWS_BIG_ENDIAN and PWS_LITTLE_ENDIAN can be specified on the 
+#if defined(PWS_BIG_ENDIAN)
+  #undef PWS_BIG_ENDIAN
+  #define PWS_BIG_ENDIAN
+#endif
+
+#if defined(PWS_LITTLE_ENDIAN)
+  #undef PWS_LITTLE_ENDIAN
+  #define PWS_LITTLE_ENDIAN
 #endif
 
 #if defined(_WIN32_WCE_PSPC)
@@ -72,15 +82,15 @@
     #define PWS_PLATFORM_EX	"Pocket PC 2000"
     #define POCKET_PC_VER	2000
     #define POCKET_PC
-    #if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+    #if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
       #if defined(ARM) || defined(_ARM)
-        #define LITTLE_ENDIAN
+        #define PWS_LITTLE_ENDIAN
       #elif defined(MIPS) || defined(_MIPS)
-        #define LITTLE_ENDIAN
+        #define PWS_LITTLE_ENDIAN
       #elif defined(SH3) || defined(_SH3)
-        #define LITTLE_ENDIAN
+        #define PWS_LITTLE_ENDIAN
       #elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
-        #define LITTLE_ENDIAN
+        #define PWS_LITTLE_ENDIAN
       #endif
     #endif
   // **********************************************
@@ -91,11 +101,11 @@
     #define PWS_PLATFORM_EX	"Pocket PC 2002"
     #define POCKET_PC_VER	2002
     #define POCKET_PC
-    #if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+    #if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
       #if defined(ARM) || defined(_ARM)
-        #define LITTLE_ENDIAN
+        #define PWS_LITTLE_ENDIAN
       #elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
-        #define LITTLE_ENDIAN
+        #define PWS_LITTLE_ENDIAN
       #endif
     #endif
   #else
@@ -107,7 +117,7 @@
 #elif defined(_WIN32)
   #if defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
     #define PWS_PLATFORM	"Windows"
-    #define LITTLE_ENDIAN
+    #define PWS_LITTLE_ENDIAN
   #endif
 // **********************************************
 // * Add other platforms here...                *
@@ -119,12 +129,12 @@
   #error Unable to determine the target platform - please fix PwsPlatform.h
 #endif
 
-#if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+#if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
   #error Cannot determine whether the target CPU is big or little endian - please fix PwsPlatform.h
 #endif
 
-#if defined(BIG_ENDIAN) && defined(LITTLE_ENDIAN)
-  #error Both BIG_ENDIAN and LITTLE_ENDIAN are defined, only one should be defined.
+#if defined(PWS_BIG_ENDIAN) && defined(PWS_LITTLE_ENDIAN)
+  #error Both PWS_BIG_ENDIAN and PWS_LITTLE_ENDIAN are defined, only one should be defined.
 #endif
 
 // Following from libtomcrypt, for twofish & SHA256
