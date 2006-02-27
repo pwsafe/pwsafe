@@ -68,21 +68,21 @@ extern int _writecbc(FILE *fp, const unsigned char* buffer, int length,
 inline int getInt32(const unsigned char buf[4])
 {
   ASSERT(sizeof(int) == 4);
-#if defined(LITTLE_ENDIAN)
+#if defined(PWS_LITTLE_ENDIAN)
 #if defined(_DEBUG)
   if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-      TRACE0( "Warning: LITTLE_ENDIAN defined but architecture is big endian\n" );
+      TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
 	}
 #endif
   return *(int *) buf;
-#elif defined(BIG_ENDIAN)
+#elif defined(PWS_BIG_ENDIAN)
 #if defined(_DEBUG)
   // Folowing code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
   if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-      TRACE0( "Warning: BIG_ENDIAN defined but architecture is little endian\n" );
+      TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
 	}
 #endif
   return (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24) );
@@ -97,15 +97,15 @@ inline int getInt32(const unsigned char buf[4])
 inline void putInt32(unsigned char buf[4], const int val )
 {
   ASSERT(sizeof(int) == 4);
-#if defined(LITTLE_ENDIAN)
+#if defined(PWS_LITTLE_ENDIAN)
   *(int32 *) buf = val;
 #if defined(_DEBUG)
   if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-      TRACE0( "Warning: LITTLE_ENDIAN defined but architecture is big endian\n" );
+      TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
 	}
 #endif
-#elif defined(BIG_ENDIAN)
+#elif defined(PWS_BIG_ENDIAN)
   buf[0] = val & 0xFF;
   buf[1] = (val >> 8) & 0xFF;
   buf[2] = (val >> 16) & 0xFF;
@@ -115,7 +115,7 @@ inline void putInt32(unsigned char buf[4], const int val )
   // if CPU is really little endian
   if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
 	{
-      TRACE0( "Warning: BIG_ENDIAN defined but architecture is little endian\n" );
+      TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
 	}
 #endif
 #else

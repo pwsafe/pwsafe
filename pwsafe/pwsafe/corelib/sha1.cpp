@@ -3,7 +3,7 @@
 
 /* based on SHA-1 in C By Steve Reid <steve@edmweb.com> */
 
-#define LITTLE_ENDIAN
+#include "PwsPlatform.h"
 // #define SHA1HANDSOFF Copies data before messing with it.
 
 #include <stdio.h>
@@ -15,7 +15,7 @@
 
 /* blk0() and blk() perform the initial expand. */
 /* I got the idea of expanding during the round function from SSLeay */
-#ifdef LITTLE_ENDIAN
+#ifdef PWS_LITTLE_ENDIAN
 #define blk0(i) (block->l[i] = (rol(block->l[i],24)&0xFF00FF00) \
     |(rol(block->l[i],8)&0x00FF00FF))
 #else
