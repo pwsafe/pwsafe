@@ -83,7 +83,7 @@ ThisMfcApp::~ThisMfcApp()
 #if !defined(POCKET_PC)
 static void Usage()
 {
-  AfxMessageBox(_T("Usage: PasswordSafe [-r] [password database]\n")
+  AfxMessageBox(_T("Usage: PasswordSafe [-r|-s] [password database]\n")
 		_T("or PasswordSafe [-e|-d] filename"));
 }
 
@@ -422,6 +422,10 @@ ThisMfcApp::InitInstance()
         return TRUE;
       case 'r': case 'R':
         dbox.SetReadOnly(true);
+        dbox.SetCurFile(fn);
+        break;
+      case 's': case 'S':
+        dbox.SetStartSilent(true);
         dbox.SetCurFile(fn);
         break;
       default:

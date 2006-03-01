@@ -114,7 +114,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_LockDisabled(false), m_IsReadOnly(false),
-     m_clipboard_set(false),
+     m_IsStartSilent(false), m_clipboard_set(false),
      m_selectedAtMinimize(NULL)
 {
   //{{AFX_DATA_INIT(DboxMain)
@@ -259,23 +259,18 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #endif
 END_MESSAGE_MAP()
 
-
-BOOL
-DboxMain::OnInitDialog()
+void
+DboxMain::InitPasswordSafe()
 {
-  ConfigureSystemMenu();
-
-  CDialog::OnInitDialog();
-
-  if (OpenOnInit()==FALSE) // If this function fails, abort launch
-    return TRUE;
-
+  // Real initialization done here
+  // Requires OnInitDialog to have passed OK
   // AlwaysOnTop preference read from database, if possible, hence set after OpenOnInit
   m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::AlwaysOnTop);
   UpdateAlwaysOnTop();
 
   // ... same for UseSystemTray
-  if (!PWSprefs::GetInstance()->
+  // StartSilent trumps preference
+  if (!m_IsStartSilent && !PWSprefs::GetInstance()->
       GetPref(PWSprefs::BoolPrefs::UseSystemTray))
     app.m_TrayIcon.HideIcon();
 
@@ -413,6 +408,19 @@ DboxMain::OnInitDialog()
   }
   	       
   SetMenu(app.m_mainmenu);  // Now show menu...
+}
+
+BOOL
+DboxMain::OnInitDialog()
+{
+  ConfigureSystemMenu();
+
+  CDialog::OnInitDialog();
+
+  if (!m_IsStartSilent && (OpenOnInit() == FALSE))
+      return TRUE;
+
+  InitPasswordSafe();
   
   return TRUE;  // return TRUE unless you set the focus to a control
 }
