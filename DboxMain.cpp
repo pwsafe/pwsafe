@@ -1020,34 +1020,36 @@ DboxMain::Save()
   if (m_core.GetCurFile().IsEmpty())
     return SaveAs();
 
-  if (m_core.GetReadFileVersion() == PWSfile::V17) {
-    CString OldName(m_core.GetCurFile());
-    int dotIndex = OldName.ReverseFind(TCHAR('.'));
+  if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+    m_core.BackupCurFile(); // to save previous reversion
+  } else { // file version mis-match
+    CString NewName(m_core.GetCurFile());
+    int dotIndex = NewName.ReverseFind(TCHAR('.'));
     if (dotIndex != -1)
-      OldName = OldName.Left(dotIndex);
-    OldName += _T(".old");
+      NewName = NewName.Left(dotIndex+1);
+    NewName += DEFAULT_SUFFIX;
 
 
     CString msg = _T("The original database, \"");
     msg += CString(m_core.GetCurFile());
-    msg += _T("\", is in pre-2.0 format."
-              " It will be unchanged, and renamed to \"");
-    msg += OldName;
-    msg += _T("\"\nYour changes will be written in the new"
+    msg += _T("\", is in pre-3.0 format."
+              " It will be unchanged.\n");
+    msg += _T("Your changes will be written as \"");
+    msg += NewName;
+    msg += _T("\" in the new"
               " format, which is unusable by old versions of PasswordSafe."
               " To save your changes in the old format, use the \"File->Export To"
-              "-> Old (1.x) format\" command.\n\n"
+              "-> Old (1.x or 2) format\" command.\n\n"
               "Press OK to continue saving, or Cancel to stop.");
     if (MessageBox(msg, _T("File version warning"),
                    MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
       return PWScore::USER_CANCEL;
-    if (m_core.RenameFile(m_core.GetCurFile(), OldName) != PWScore::SUCCESS) {
-      MessageBox(_T("Could not rename file"), _T("File rename error"),
-                 MB_OK|MB_ICONWARNING);
-      return PWScore::CANT_OPEN_FILE;
-    }
+    m_core.SetCurFile(NewName);
+#if !defined(POCKET_PC)
+    m_title = _T("Password Safe - ") + m_core.GetCurFile();
+    app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
+#endif
   }
-  m_core.BackupCurFile(); // to save previous version
   rc = m_core.WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
@@ -1692,23 +1694,25 @@ DboxMain::SaveAs()
   int rc;
   CMyString newfile;
 
-  if (m_core.GetReadFileVersion() == PWSfile::V17) {
+  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT) {
     CMyString msg = _T("The original database, \"");
     msg += m_core.GetCurFile();
-    msg += _T("\", is in pre-2.0 format. The data will now be written in the new"
+    msg += _T("\", is in pre-3.0 format. The data will now be written in the new"
               " format, which is unusable by old versions of PasswordSafe."
               " To save the data in the old format, use the \"File->Export To"
-              "-> Old (1.x) format\" command.\n\n"
+              "-> Old (1.x or 2) format\" command.\n\n"
               "Press OK to continue saving, or Cancel to stop.");
     if (MessageBox(msg, _T("File version warning"),
                    MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
       return PWScore::USER_CANCEL;
   }
   //SaveAs-type dialog box
+  CMyString v3FileName(m_core.GetCurFile());
+  v3FileName.Replace(_T("dat"), DEFAULT_SUFFIX);
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   m_core.GetCurFile(),
+                   v3FileName,
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX_FILTERS
