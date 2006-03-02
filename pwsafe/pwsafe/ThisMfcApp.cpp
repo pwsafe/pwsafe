@@ -36,7 +36,7 @@ ThisMfcApp::ThisMfcApp() :
 #else
 	m_bUseAccelerator( true ),
 #endif
-	m_pMRU( NULL )
+	m_pMRU( NULL ), m_TrayLockedState(UNLOCKED)
 {
 // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -315,7 +315,7 @@ ThisMfcApp::InitInstance()
 
   m_mruonfilemenu = PWSprefs::GetInstance()->
     GetPref(PWSprefs::BoolPrefs::MRUOnFileMenu);
-
+    
   m_mainmenu = new CMenu;
   m_mainmenu->LoadMenu(IDR_MAINMENU);
   
@@ -328,11 +328,11 @@ ThisMfcApp::InitInstance()
     pos = FindMenuItem(m_file_submenu, ID_MENUITEM_OPEN);
   
   if (pos > -1) {
+    int irc;
     // Create New Popup Menu
     CMenu* m_new_popupmenu;
     m_new_popupmenu = new CMenu;
     m_new_popupmenu->CreatePopupMenu();
-    int irc;
   
     if (!m_mruonfilemenu) {  // MRU entries in popup menu
 	  // Insert Item onto new popup
@@ -352,6 +352,7 @@ ThisMfcApp::InitInstance()
     m_pMRU->ReadList();
   }
   DboxMain dbox(NULL);
+
 	
   /*
    * Command line processing:
@@ -452,12 +453,16 @@ ThisMfcApp::InitInstance()
 	
   // JHF : no tray icon and menu for PPC
 #if !defined(POCKET_PC)
-  HICON stIcon = app.LoadIcon(IDI_TRAY);
-  ASSERT(stIcon != NULL);
+  //HICON stIcon = app.LoadIcon(IDI_TRAY);
+  //ASSERT(stIcon != NULL);
+  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
+  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
+
   m_TrayIcon.SetTarget(&dbox);
   if (!m_TrayIcon.Create(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-                         stIcon, IDR_POPTRAY))
+                         m_UnLockedIcon, IDR_POPTRAY))
     return FALSE;
+
 #endif
 
   // Set up an Accelerator table
@@ -477,6 +482,15 @@ ThisMfcApp::InitInstance()
   //	application, rather than start the application's message pump.
 	
   return FALSE;
+}
+
+void
+ThisMfcApp::SetSystemTrayState(STATE s)
+{
+  if (s != m_TrayLockedState) {
+    m_TrayLockedState = s;
+    m_TrayIcon.SetIcon(s == LOCKED ? m_LockedIcon : m_UnLockedIcon);
+  }
 }
 
 #if !defined(POCKET_PC)
@@ -507,8 +521,7 @@ ThisMfcApp::StripFileQuotes( CString& strFilename )
 //Copied from Knowledge Base article Q100770
 //But not for WinCE {kjp}
 BOOL
-ThisMfcApp::ProcessMessageFilter(int code,
-                                 LPMSG lpMsg)
+ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 {
   if (code < 0)
     CWinApp::ProcessMessageFilter(code, lpMsg);

@@ -44,6 +44,8 @@
 #define IDD_PASSKEYENTRY_WITHEXIT       188
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
+#define IDI_LOCKEDICON                  192
+#define IDI_UNLOCKEDICON                193
 #define IDD_PS_SECURITY                 194
 #define IDD_PS_DISPLAY                  195
 #define IDD_PS_USERNAME                 196

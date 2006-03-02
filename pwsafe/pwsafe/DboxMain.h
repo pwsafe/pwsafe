@@ -153,6 +153,8 @@ protected:
   void ConfigureSystemMenu();
   void OnSysAlwaysOnTop();
   afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
+  enum STATE {LOCKED, UNLOCKED};
+  void UpdateSystemTray(STATE s);
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);

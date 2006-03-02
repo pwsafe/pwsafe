@@ -272,7 +272,7 @@ DboxMain::InitPasswordSafe()
   // StartSilent trumps preference
   if (!m_IsStartSilent && !PWSprefs::GetInstance()->
       GetPref(PWSprefs::BoolPrefs::UseSystemTray))
-    app.m_TrayIcon.HideIcon();
+    app.HideIcon();
 
   // Set timer for user-defined lockout, if selected
   if (PWSprefs::GetInstance()->
@@ -443,7 +443,7 @@ DboxMain::OpenOnInit(void)
     rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
     m_title = "Password Safe - " + m_core.GetCurFile();
-    app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
+    UpdateSystemTray(UNLOCKED);
 #endif
     break; 
   case PWScore::CANT_OPEN_FILE:
@@ -505,6 +505,7 @@ DboxMain::OpenOnInit(void)
     m_existingrestore = FALSE;
     m_needsreading = false;
     startLockCheckTimer();
+    UpdateSystemTray(UNLOCKED);
     return TRUE;
   default:
     CDialog::OnCancel();
@@ -1047,7 +1048,7 @@ DboxMain::Save()
     m_core.SetCurFile(NewName);
 #if !defined(POCKET_PC)
     m_title = _T("Password Safe - ") + m_core.GetCurFile();
-    app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
+    app.SetTooltipText(m_core.GetCurFile());
 #endif
   }
   rc = m_core.WriteCurFile();
@@ -1199,7 +1200,7 @@ DboxMain::Open()
       rc = Open( newfile );
 
       if ( rc == PWScore::SUCCESS ) {
-        app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
+        UpdateSystemTray(UNLOCKED);
         break;
       }
     } else {
@@ -1549,7 +1550,7 @@ DboxMain::New()
   m_core.SetCurFile(_T("")); //Force a save as... 
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled>");
-  app.m_TrayIcon.SetTooltipText(_T("PasswordSafe"));
+  app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
 
@@ -1670,7 +1671,7 @@ DboxMain::Restore()
   m_core.SetChanged(true); //So that the restored file will be saved
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled Restored Backup>");
-  app.m_TrayIcon.SetTooltipText(_T("PasswordSafe"));
+  app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
   RefreshList();
@@ -1750,7 +1751,7 @@ DboxMain::SaveAs()
   m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - ") + m_core.GetCurFile();
-  app.m_TrayIcon.SetTooltipText(m_core.GetCurFile());
+  app.SetTooltipText(m_core.GetCurFile());
 #endif
   ChangeOkUpdate();
 

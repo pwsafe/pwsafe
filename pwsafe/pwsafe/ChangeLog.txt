@@ -1,8 +1,134 @@
-$Id$
 
 This file lists the changes made to older versions of
 PasswordSafe. The changes for the current version and the one before
 it are noted in ReleaseNotes.txt.
+
+New feature for 2.16:
+=====================
+[] When unlocking a locked database, one now has the option of cancelling
+the unlock as well as exiting the application. Thanks to DK for this.
+[1414899] - System tray tooltip now reflects the name of the database.
+
+Bugs fixed in 2.16:
+===================
+[1403533] Now takes "No" for an answer in delete group confirmation.
+[1412208] Tab sequence of opening dialog fixed.
+[1376566, 1393910] Databases written with early 2.x versions of
+PasswordSafe can now be read correctly.
+[] Installation kit now adds MFC71.dll if missing.
+
+Bugs fixed in 2.15:
+===================
+[1363569] No longer crashes when deleting the last item in the last group.
+[1381729] No longer crashes when restoring with a database already opened.
+[1368198] More explanatory error message when database open fails.
+[1312870] Backup filename now updated correctly.
+
+New features for 2.15:
+======================
+[] Double-clicking on an item can now browse to the URL in the item -
+thanks to Laszlo Gombos.
+
+Bugs fixed in 2.14:
+===================
+[] Correct element is now selected after deletion in tree view.
+[] It's now possible to delete a group of items
+[1197342] The 'delete' key now works in safe combination dialog box (as
+well as other dialog boxes)
+[1292385] Default preference is to clear clipboard upon exit/minimize
+
+New features for 2.14:
+======================
+[] Duplicating an existing entry is now possible via the menus or
+Ctrl+D. Thanks to DK.
+[] Expand all and collapse all tree entries now supported. Thanks to DK
+[] Selecting font for display of entries now supported. Thanks to DK
+[] If Window's RtlGenRandom is available, use it instead of rand(). Thanks
+to Laurion Burchall.
+[] Newly generated passwords are copied to clipboard. Thanks to Laurion
+Burchall.
+
+Bugs fixed in 2.13:
+===================
+[1275880,1275041,1280378] No longer crashes upon unlock if groups were
+expanded at lock time.
+
+New Features for 2.13:
+======================
+None - This release only fixes the abovementioned bug.
+
+Bugs fixed in 2.12:
+===================
+[1216983] Tree view is now the default view for new users.
+[1208955] Autotype now works with Terminal Serivices Windows and capital
+letters.
+[1003782,1030077] In tree view, the expanded trees are no longer collapsed
+after minimizing/restoring.
+[1179342,1237793] Ctrl-L, autotype sometimes used old data
+[1004026] No more multiple highlights after doing a "Find Next"
+[1214940] Cancel on password entry with system tray no longer clears
+entries, allowing potential overwrite of database.
+[1217271,1258982] Specifiying -r with a filename in command line now works
+correctly.
+
+New Features for 2.12:
+======================
+[1236853] MRU now configurable
+[1225255] Double-clicking on an entry can now be configured to Autotype the
+entry.
+
+Bugs fixed in 2.11:
+===================
+[] When system tray is used, close ("X") button no longer exits
+application.
+[1197706] Delay argument in autotype now correctly parsed (thanks to
+dturland for this!)
+[1170297, 1076510, 1183709] Clipboard is cleared upon exit from system
+tray, if it still contains data from application.
+[1207701] During Import, groups are no longer created under an empty
+group. (*)
+[1095881] Entries with titles containing a dot no longer cause Import to
+treat them as nested groups. (*)
+[] SetPasswordFont in request for password during Export. (*)
+[1207600] Find dialog not moved off-screen if PasswordSafe takes up whole
+screen.
+
+New Features for 2.11:
+======================
+[1203679] '-r' may now be passed a command line switch, setting the
+'read-only' checkbox. Useful if user wants this to be the default.
+[] Export to plain text of entries with multi-line notes fields now can be
+kept on a single line (aids editing & sorting). (*)
+[] Import from plain text support for single line "multi-line" notes fields
+created above. (*)
+
+(*) Thanks to DK for his work on these bug fixes and new features!
+
+Bugs fixed in 2.10:
+===================
+[1123373, 1075046] Uninstall will only remove installed files, and
+will delete the installation directory if and only if it's empty.
+[1151575, 1151581] Don't try to unlock empty filename in OnDestroy
+(ASSERT failed in debug version - potential problem in release
+version)
+[1076377] Entering the wrong password 3 times no longer allows you to
+create an empty database with the same name.
+[1108115] "Cancel" at "Safe Combination Entry" no longer opens blank
+database with name of existing database.
+[1145173, 947813] Main window will be visible even if resolution
+changes or multiple screens used between invocations.
+[1145747] The import delimiter is now changeable (Thanks to Roger
+Hakansson for the patch).
+[1162044] URL "Browse to" feature now documented.
+[1165681] Lock file now deleted if user cancels in unlock dialog box.
+[1170180] Status bar now shows correct text.
+
+New Features for 2.10:
+======================
+[1078901] Ctrl+L is now a shortcut for "Browse to URL".
+[1162048, 726521] Hotkey restore: A selectable hotkey combination will restore
+PasswordSafe from the system tray, if minimized, or bring it to the
+front, if obscured by other applications.
 
 Bugs fixed in 2.09:
 ===================
@@ -239,12 +365,3 @@ New Features for 2.0pre1:
 entries now supported. This allows the user to define categories,
 sub-categories, etc.
 
-$Log$
-Revision 1.3  2005/11/18 17:01:12  ronys
-Updated help files, fixed Version info in RC, moved old news to ChangeLog.txt
-
-Revision 1.2  2005/01/15 11:13:24  ronys
-Moved 2.03-2.06 from ReleaseNotes.
-
-Revision 1.1  2004/06/11 03:57:30  ronys
-Moved older changes from ReleaseNotes to ChangeLog.
