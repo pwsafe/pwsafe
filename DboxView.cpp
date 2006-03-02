@@ -883,18 +883,17 @@ DboxMain::OnSize(UINT nType,
           }
       }
       if (PWSprefs::GetInstance()->
-          GetPref(PWSprefs::BoolPrefs::UseSystemTray))
-        {      
-		  app.m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE, FALSE);
-		  ShowWindow(SW_HIDE);
-        }
+          GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {      
+        app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
+        ShowWindow(SW_HIDE);
+      }
  
     }
   else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
     {
 #endif
 
-	  app.m_TrayIcon.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE, FALSE);
+	  app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
 
       if ((m_needsreading)
           && (m_existingrestore == FALSE)
@@ -946,15 +945,13 @@ DboxMain::OnSize(UINT nType,
               break;
             }
 
-          if (rc2 == PWScore::SUCCESS)
-            {
+          if (rc2 == PWScore::SUCCESS) {
               m_needsreading = false;
               m_existingrestore = FALSE;
+              UpdateSystemTray(UNLOCKED);
               startLockCheckTimer();
               RefreshList();
-            }
-          else
-            {
+            } else {
               m_needsreading = TRUE;
               m_existingrestore = FALSE;
               ShowWindow( SW_MINIMIZE );
@@ -1214,6 +1211,7 @@ DboxMain::ClearData(void)
     m_core.GetNextEntry(listPos);
   }
   m_core.ClearData();
+  UpdateSystemTray(LOCKED);
   // If data is cleared, m_selectedAtMinimize is useless,
   // since it will be deleted and rebuilt from the file.
   // This means that selection won't be restored in this case.
@@ -1562,4 +1560,21 @@ DboxMain::GetToken(CString& str, LPCTSTR c)
   str = str.Mid(pos + 1);
 
   return token;
+}
+
+void
+DboxMain::UpdateSystemTray(STATE s)
+{
+  switch (s) {
+  case LOCKED:
+    app.SetSystemTrayState(ThisMfcApp::LOCKED);
+    app.SetTooltipText(m_core.GetCurFile() + _T(" [Locked]"));
+    break;
+  case UNLOCKED:
+    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+    app.SetTooltipText(m_core.GetCurFile() + _T(" [Unlocked]"));
+    break;
+  default:
+    ASSERT(0);
+  }
 }

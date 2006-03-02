@@ -26,21 +26,28 @@ public:
   HACCEL m_ghAccelTable;
 
   CRecentFileList*	GetMRU()			{ return m_pMRU; }
-  CSystemTray m_TrayIcon;
 
   DboxMain* m_maindlg;
   PWScore m_core;
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
-
+    
   virtual BOOL InitInstance();
 WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
   void		EnableAccelerator()						{ m_bUseAccelerator = true; }
   void		DisableAccelerator()					{ m_bUseAccelerator = false; }
 
-  afx_msg void OnHelp();
+  BOOL SetTooltipText(LPCTSTR ttt) {return m_TrayIcon.SetTooltipText(ttt);}
+  BOOL SetMenuDefaultItem(UINT uItem) {return m_TrayIcon.SetMenuDefaultItem(uItem, FALSE);}
+  BOOL IsIconVisible() {return m_TrayIcon.Visible();}
+  void ShowIcon() {m_TrayIcon.ShowIcon();}
+  void HideIcon() {m_TrayIcon.HideIcon();}
 
+  afx_msg void OnHelp();
+  enum STATE {LOCKED, UNLOCKED};
+  void SetSystemTrayState(STATE);
+  STATE GetSystemTrayState() const {return m_TrayLockedState;}
   static void	StripFileQuotes( CString& strFilename );
   DECLARE_MESSAGE_MAP()
   
@@ -48,6 +55,11 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 protected:
   CRecentFileList*		m_pMRU;
   bool					m_bUseAccelerator;
+private:
+  HICON m_LockedIcon;
+  HICON m_UnLockedIcon;
+  CSystemTray m_TrayIcon;
+  STATE m_TrayLockedState;
 };
 
 

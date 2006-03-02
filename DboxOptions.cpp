@@ -237,11 +237,11 @@ DboxMain::OnOptions()
 		RefreshList();
 	
       if (display.m_usesystemtray == TRUE) {
-		if (app.m_TrayIcon.Visible() == FALSE)
-          app.m_TrayIcon.ShowIcon();
+		if (app.IsIconVisible() == FALSE)
+          app.ShowIcon();
 	  } else { // user doesn't want to display
-		if (app.m_TrayIcon.Visible() == TRUE)
-          app.m_TrayIcon.HideIcon();
+		if (app.IsIconVisible() == TRUE)
+          app.HideIcon();
       }
 
       // update idle timeout values, if changed
