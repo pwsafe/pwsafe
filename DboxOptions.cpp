@@ -214,7 +214,8 @@ DboxMain::OnOptions()
       /*
       ** Update string in database, if necessary & possible
       */
-      if (prefs->IsChanged() && !app.m_core.GetCurFile().IsEmpty()) {
+      if (prefs->IsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
+          m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
         // save changed preferences to file
         // Note that we currently can only write the entire file, so any changes
         // the user made to the database are also saved here

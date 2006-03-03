@@ -27,7 +27,7 @@ class PWSfile {
   static VERSION ReadVersion(const CMyString &filename);
   static int RenameFile(const CMyString &oldname, const CMyString &newname);
   static int CheckPassword(const CMyString &filename,
-                           const CMyString &passkey);
+                           const CMyString &passkey, VERSION &version);
 
   virtual ~PWSfile();
 
