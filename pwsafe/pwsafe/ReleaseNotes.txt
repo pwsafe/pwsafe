@@ -19,3 +19,9 @@ replaces Blowfish). Also, the integrity of the database is now checked.
 DK for this cool feature!)
 [] Add and Edit dialog box now have "simple" and "detailed" modes. Thanks
 to ??? for implementing this.
+
+Bugs fixed in 3.0Beta1:
+=======================
+[1384738] Backspace is no longer used instead of dots in the title for the
+plaintext import/export format.
+

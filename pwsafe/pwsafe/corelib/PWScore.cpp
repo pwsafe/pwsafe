@@ -301,7 +301,7 @@ int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
   int status;
 
   if (!filename.IsEmpty())
-    status = PWSfile::CheckPassword(filename, passkey);
+    status = PWSfile::CheckPassword(filename, passkey, m_ReadFileVersion);
   else { // can happen if tries to export b4 save
     unsigned int t_passkey_len = passkey.GetLength();
     if (t_passkey_len != m_passkey_len) // trivial test

@@ -166,11 +166,20 @@ int PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
 }
 
 
-int PWSfile::CheckPassword(const CMyString &filename, const CMyString &passkey)
+int PWSfile::CheckPassword(const CMyString &filename,
+                           const CMyString &passkey, VERSION &version)
 {
-  int status = PWSfileV3::CheckPassword(filename, passkey);
-  if (status == NOT_PWS3_FILE)
+  int status;
+
+  version = UNKNOWN_VERSION;
+  status = PWSfileV3::CheckPassword(filename, passkey);
+  if (status == SUCCESS)
+    version = V30;
+  if (status == NOT_PWS3_FILE) {
     status = PWSfileV1V2::CheckPassword(filename, passkey);
+    if (status == SUCCESS)
+      version = V20; // or V17?
+  }
   return status;
 }
 
