@@ -141,6 +141,7 @@
 #define IDC_OVERRIDE_POLICY             1082
 #define IDC_DEFPWUSESYSTRAY             1083
 #define IDC_LOCKONSCREEN                1084
+#define IDC_DEFPWRECENTRYHELP           1084
 #define IDC_SPIN2                       1085
 #define IDC_IDLE_TIMEOUT                1086
 #define IDC_LOCK_TIMER                  1087
@@ -228,9 +229,30 @@
 #define ID_MENUITEM_EXPANDALL           32845
 #define ID_MENUITEM_COLLAPSEALL         32846
 #define ID_MENUITEM_CHANGEFONT          32847
-#define ID_MENUITEM_RENAME              32848
-#define ID_FILE_MRU_ENTRY1              40001
-#define ID_FILE_MRU_ENTRY20             40020
+#define ID_MENUITEM_TRAYLOCKUNLOCK      32848
+#define ID_TRAYRECENT_ENTRY_CLEAR       32849
+#define ID_MENUITEM_TRAYCOPYUSERNAME    32850
+#define ID_MENUITEM_TRAYCOPYPASSWORD    32851
+#define ID_MENUITEM_TRAYBROWSE          32852
+#define ID_MENUITEM_TRAYDELETE          32853
+#define ID_MENUITEM_TRAYAUTOTYPE        32854
+#define ID_TRAYRECENT_ENTRY_HELP1       32855
+#define ID_TRAYRECENT_ENTRY_HELP2       32856
+#define ID_MENUITEM_RENAME              32857
+#define ID_FILE_MRU_ENTRY1              40001  // Do NOT define values between entry 1 & entry 20
+#define ID_FILE_MRU_ENTRYMAX            40020  // reserved max length
+#define ID_TRAYRECENT_ENTRY1            41001  // Do NOT define values between entry 1 & entry MAX
+#define ID_TRAYRECENT_ENTRYMAX          41025  // reserved max length
+#define ID_MENUITEM_TRAYCOPYUSERNAME1   41026  // Do NOT define values between entry 1 & entry MAX
+#define ID_MENUITEM_TRAYCOPYUSERNAMEMAX 41050  // reserved max length
+#define ID_MENUITEM_TRAYCOPYPASSWORD1   41051  // Do NOT define values between entry 1 & entry MAX
+#define ID_MENUITEM_TRAYCOPYPASSWORDMAX 41075  // reserved max length
+#define ID_MENUITEM_TRAYBROWSE1         41076  // Do NOT define values between entry 1 & entry MAX
+#define ID_MENUITEM_TRAYBROWSEMAX       41100  // reserved max length
+#define ID_MENUITEM_TRAYDELETE1         41101  // Do NOT define values between entry 1 & entry MAX
+#define ID_MENUITEM_TRAYDELETEMAX       41125  // reserved max length
+#define ID_MENUITEM_TRAYAUTOTYPE1       41126  // Do NOT define values between entry 1 & entry MAX
+#define ID_MENUITEM_TRAYAUTOTYPEMAX     41150  // reserved max length
 #define IDS_STATAUTOTYPE                57671
 
 // Next default values for new objects
@@ -238,8 +260,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        226
-#define _APS_NEXT_COMMAND_VALUE         32849
-#define _APS_NEXT_CONTROL_VALUE         1130
+#define _APS_NEXT_COMMAND_VALUE         32858
+#define _APS_NEXT_CONTROL_VALUE         1114
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

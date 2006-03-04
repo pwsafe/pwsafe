@@ -1406,84 +1406,90 @@ DboxMain::OnAutoType()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-    CMyString AutoCmd = ci->GetAutoType();
-    const CMyString user(ci->GetUser());
-    const CMyString pwd(ci->GetPassword());
-    if(AutoCmd.IsEmpty()){
-      // checking for user and password for default settings
-      if(!pwd.IsEmpty()){
-        if(!user.IsEmpty())
-          AutoCmd="\\u\\t\\p\\n";
-        else
-          AutoCmd="\\p\\n";
-      }
-    }
-		
-    CMyString tmp;
-    char curChar;
-    const int N = AutoCmd.GetLength();
-    CKeySend ks;
-    ks.ResetKeyboardState();
-
-    // Note that minimizing the window before calling ci->Get*()
-    // will cause garbage to be read if "lock on minimize" selected,
-    // since that will clear the data [Bugs item #1026630]
-    // (this is why we read user & pwd before actual use)
-
-    ShowWindow(SW_MINIMIZE);
-    Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
-
-    for(int n=0; n < N; n++){
-      curChar=AutoCmd[n];
-      if(curChar=='\\'){
-        n++;
-        if(n<N)
-          curChar=AutoCmd[n];
-        switch(curChar){
-        case '\\':
-          tmp += '\\';
-          break;
-        case 'n':case 'r':
-          tmp += '\r';
-          break;
-        case 't':
-          tmp += '\t';
-          break;
-        case 'u':
-          tmp += user;
-          break;
-        case 'p':
-          tmp += pwd;
-          break;
-        case 'd': {
-          // Delay is going to change - send what we have with old delay
-          ks.SendString(tmp);
-          // start collecting new delay
-          tmp = "";
-          int newdelay = 0;
-          int gNumIts = 0;
-						
-          for(n++; n<N && (gNumIts < 3); ++gNumIts, n++)
-            if(isdigit(AutoCmd[n])){
-              newdelay *= 10;
-              newdelay += (AutoCmd[n]-'0');
-            } else
-              break; // for loop
-          n--;							
-          ks.SetAndDelay(newdelay);
-
-          break; // case
-        }
-        default:
-          tmp+="\\"+curChar;
-          break;
-        }
-      }
-      else
-        tmp += curChar;
-    }
-    ks.SendString(tmp);
+    AutoType(*ci);
   }
+}
+
+void
+DboxMain::AutoType(const CItemData &ci)
+{
+  CMyString AutoCmd = ci.GetAutoType();
+ const CMyString user(ci.GetUser());
+ const CMyString pwd(ci.GetPassword());
+ if(AutoCmd.IsEmpty()){
+   // checking for user and password for default settings
+   if(!pwd.IsEmpty()){
+     if(!user.IsEmpty())
+       AutoCmd="\\u\\t\\p\\n";
+     else
+       AutoCmd="\\p\\n";
+   }
+ }
+		
+ CMyString tmp;
+ char curChar;
+ const int N = AutoCmd.GetLength();
+ CKeySend ks;
+ ks.ResetKeyboardState();
+
+ // Note that minimizing the window before calling ci.Get*()
+ // will cause garbage to be read if "lock on minimize" selected,
+ // since that will clear the data [Bugs item #1026630]
+ // (this is why we read user & pwd before actual use)
+
+ ShowWindow(SW_MINIMIZE);
+ Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+
+ for(int n=0; n < N; n++){
+   curChar=AutoCmd[n];
+   if(curChar=='\\'){
+     n++;
+     if(n<N)
+       curChar=AutoCmd[n];
+     switch(curChar){
+     case '\\':
+       tmp += '\\';
+       break;
+     case 'n':case 'r':
+       tmp += '\r';
+       break;
+     case 't':
+       tmp += '\t';
+       break;
+     case 'u':
+       tmp += user;
+       break;
+     case 'p':
+       tmp += pwd;
+       break;
+     case 'd': {
+       // Delay is going to change - send what we have with old delay
+       ks.SendString(tmp);
+       // start collecting new delay
+       tmp = "";
+       int newdelay = 0;
+       int gNumIts = 0;
+						
+       for(n++; n<N && (gNumIts < 3); ++gNumIts, n++)
+         if(isdigit(AutoCmd[n])){
+           newdelay *= 10;
+           newdelay += (AutoCmd[n]-'0');
+         } else
+           break; // for loop
+       n--;							
+       ks.SetAndDelay(newdelay);
+
+       break; // case
+     }
+     default:
+       tmp+="\\"+curChar;
+       break;
+     }
+   }
+   else
+     tmp += curChar;
+ }
+ ks.SendString(tmp);
 }
 
 void
@@ -1568,11 +1574,13 @@ DboxMain::UpdateSystemTray(STATE s)
   switch (s) {
   case LOCKED:
     app.SetSystemTrayState(ThisMfcApp::LOCKED);
-    app.SetTooltipText(m_core.GetCurFile() + _T(" [Locked]"));
+    if (!m_core.GetCurFile().IsEmpty())
+      app.SetTooltipText(_T("[") + m_core.GetCurFile() + _T("]"));
     break;
   case UNLOCKED:
     app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-    app.SetTooltipText(m_core.GetCurFile() + _T(" [Unlocked]"));
+    if (!m_core.GetCurFile().IsEmpty())
+      app.SetTooltipText(m_core.GetCurFile());
     break;
   default:
     ASSERT(0);

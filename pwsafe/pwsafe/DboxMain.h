@@ -89,6 +89,8 @@ public:
 #endif
   CMyTreeCtrl     m_ctlItemTree;
   //}}AFX_DATA
+  // recent entry lists
+  CList<CString,CString&> m_RecentEntriesList;
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -179,6 +181,38 @@ protected:
   int BackupSafe(void);
   int New(void);
   int Restore(void);
+
+  void AutoType(const CItemData &ci);
+  // Tray MRU entry related functions. Implemented in DboxTray.cpp
+  // Move to separate class?
+#if !defined(POCKET_PC)
+  void ClearTrayRecentEntries();
+  void AddTrayRecentEntry(const CMyString &group, const CMyString &title,
+                          const CMyString &username);
+  void RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldtitle,
+                             const CMyString &oldusername, const CMyString &newgroup,
+                             const CMyString &newtitle, const CMyString &newusername);
+  void DeleteTrayRecentEntry(const CMyString &group, const CMyString &title,
+                             const CMyString &user);
+  POSITION GetPWEntryFromREList(UINT nID_offset);
+
+	afx_msg void OnTrayLockUnLock();
+    afx_msg void OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI);
+    afx_msg void OnTrayClearRecentEntries();
+    afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
+	afx_msg void OnTrayRecentEntriesHelp(UINT nID);
+    afx_msg void OnUpdateTrayRecentEntriesHelp(CCmdUI *pCmdUI);
+	afx_msg void OnTrayCopyUsername(UINT nID);
+	afx_msg void OnUpdateTrayCopyUsername(CCmdUI *pCmdUI);
+	afx_msg void OnTrayCopyPassword(UINT nID);
+	afx_msg void OnUpdateTrayCopyPassword(CCmdUI *pCmdUI);
+	afx_msg void OnTrayBrowse(UINT nID);
+	afx_msg void OnUpdateTrayBrowse(CCmdUI *pCmdUI);
+	afx_msg void OnTrayDeleteEntry(UINT nID);
+	afx_msg void OnUpdateTrayDeleteEntry(CCmdUI *pCmdUI);
+	afx_msg void OnTrayAutoType(UINT nID);
+	afx_msg void OnUpdateTrayAutoType(CCmdUI *pCmdUI);
+#endif
 
   // Generated message map functions
   //{{AFX_MSG(DboxMain)
