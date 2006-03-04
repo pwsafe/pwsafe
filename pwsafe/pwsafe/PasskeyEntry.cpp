@@ -44,32 +44,29 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
      m_status(TAR_INVALID),
      m_ReadOnly(forceReadOnly)
 {
-   const int FILE_DISP_LEN = 45;	
+  const int FILE_DISP_LEN = 45;	
 
-	//{{AFX_DATA_INIT(CPasskeyEntry)
-	//}}AFX_DATA_INIT
+  //{{AFX_DATA_INIT(CPasskeyEntry)
+  //}}AFX_DATA_INIT
 
-   DBGMSG("CPasskeyEntry()\n");
-   if (index == 0) {
-      DBGMSG("** FIRST **\n");
-   }
+  DBGMSG("CPasskeyEntry()\n");
+  if (index == 0) {
+    DBGMSG("** FIRST **\n");
+  }
 
-   m_passkey = _T("");
+  m_passkey = _T("");
 
-   m_hIcon = app.LoadIcon(IDI_CORNERICON);
+  m_hIcon = app.LoadIcon(IDI_CORNERICON);
 
-   if (a_filespec.GetLength() > FILE_DISP_LEN) {
-// m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
-// m_message.Insert(0, _T("..."));
-// changed by karel@VanderGucht.de to see beginning + ending of 'a_filespec'
-      m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + " ... " + a_filespec.Right(FILE_DISP_LEN/2);
-   }
-
-   else
-
-   {
-	   m_message = a_filespec;
-   }
+  if (a_filespec.GetLength() > FILE_DISP_LEN) {
+    // m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
+    // m_message.Insert(0, _T("..."));
+    // changed by karel@VanderGucht.de to see beginning + ending of 'a_filespec'
+    m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + 
+      _T(" ... ") + a_filespec.Right(FILE_DISP_LEN/2);
+  } else {
+    m_message = a_filespec;
+  }
 }
 
 
