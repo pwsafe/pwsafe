@@ -36,7 +36,7 @@ ThisMfcApp::ThisMfcApp() :
 #else
 	m_bUseAccelerator( true ),
 #endif
-	m_pMRU( NULL ), m_TrayLockedState(UNLOCKED)
+	m_pMRU( NULL ), m_TrayLockedState(UNLOCKED), m_TrayIcon(NULL)
 {
 // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -64,19 +64,19 @@ ThisMfcApp::ThisMfcApp() :
 
 ThisMfcApp::~ThisMfcApp()
 {
-	if ( m_pMRU )
-	{
-		m_pMRU->WriteList();
-		delete m_pMRU;
-	}
+  delete m_TrayIcon;
+  if (m_pMRU != NULL) {
+    m_pMRU->WriteList();
+    delete m_pMRU;
+  }
 
-   /*
-     apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
-     to see the docs, someday.  In the meantime, force with :: syntax
-   */
+  /*
+    apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
+    to see the docs, someday.  In the meantime, force with :: syntax
+  */
 
 #if !defined(POCKET_PC)
-   ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
+  ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 #endif
 }
 
@@ -457,11 +457,10 @@ ThisMfcApp::InitInstance()
   //ASSERT(stIcon != NULL);
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
-
-  m_TrayIcon.SetTarget(&dbox);
-  if (!m_TrayIcon.Create(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-                         m_UnLockedIcon, IDR_POPTRAY))
-    return FALSE;
+  m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
+                               m_UnLockedIcon, dbox.m_RecentEntriesList,
+                               WM_ICON_NOTIFY, IDR_POPTRAY);
+  m_TrayIcon->SetTarget(&dbox);
 
 #endif
 
@@ -487,9 +486,11 @@ ThisMfcApp::InitInstance()
 void
 ThisMfcApp::SetSystemTrayState(STATE s)
 {
-  if (s != m_TrayLockedState) {
+  // need to protect against null m_TrayIcon due to
+  // tricky initialization order
+  if (m_TrayIcon != NULL && s != m_TrayLockedState) {
     m_TrayLockedState = s;
-    m_TrayIcon.SetIcon(s == LOCKED ? m_LockedIcon : m_UnLockedIcon);
+    m_TrayIcon->SetIcon(s == LOCKED ? m_LockedIcon : m_UnLockedIcon);
   }
 }
 

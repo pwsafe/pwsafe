@@ -252,7 +252,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
 	//}}AFX_MSG_MAP
 
-   ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRY20, OnOpenMRU)
+   ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
 #if !defined(POCKET_PC)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
@@ -625,9 +625,8 @@ DboxMain::OnCopyPassword()
 
   CItemData *ci = getSelectedItem();
   ASSERT(ci != NULL);
-  const CMyString curPassString = ci->GetPassword();
-
-  ToClipboard(curPassString);
+  ToClipboard(ci->GetPassword());
+  AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
 }
 
 void

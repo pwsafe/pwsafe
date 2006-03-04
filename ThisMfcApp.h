@@ -38,11 +38,11 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   void		EnableAccelerator()						{ m_bUseAccelerator = true; }
   void		DisableAccelerator()					{ m_bUseAccelerator = false; }
 
-  BOOL SetTooltipText(LPCTSTR ttt) {return m_TrayIcon.SetTooltipText(ttt);}
-  BOOL SetMenuDefaultItem(UINT uItem) {return m_TrayIcon.SetMenuDefaultItem(uItem, FALSE);}
-  BOOL IsIconVisible() {return m_TrayIcon.Visible();}
-  void ShowIcon() {m_TrayIcon.ShowIcon();}
-  void HideIcon() {m_TrayIcon.HideIcon();}
+  BOOL SetTooltipText(LPCTSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
+  BOOL SetMenuDefaultItem(UINT uItem) {return m_TrayIcon->SetMenuDefaultItem(uItem, FALSE);}
+  BOOL IsIconVisible() {return m_TrayIcon->Visible();}
+  void ShowIcon() {m_TrayIcon->ShowIcon();}
+  void HideIcon() {m_TrayIcon->HideIcon();}
 
   afx_msg void OnHelp();
   enum STATE {LOCKED, UNLOCKED};
@@ -58,7 +58,7 @@ protected:
 private:
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;
-  CSystemTray m_TrayIcon;
+  CSystemTray *m_TrayIcon; // DboxMain needs to be constructed first
   STATE m_TrayLockedState;
 };
 

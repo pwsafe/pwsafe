@@ -302,6 +302,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\DboxTray.cpp">
+			</File>
+			<File
 				RelativePath="DboxView.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

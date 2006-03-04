@@ -35,8 +35,10 @@ class CSystemTray : public CWnd
 {
 // Construction/destruction
 public:
-    CSystemTray();
-    CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID);
+  //    CSystemTray();
+    CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
+                CList<CString,CString&> &recentEntriesList,
+                UINT uID, UINT menuID);
     virtual ~CSystemTray();
 
     DECLARE_DYNAMIC(CSystemTray)
@@ -48,7 +50,8 @@ public:
     BOOL Visible() const { return !m_bHidden; }
 
     // Create the tray icon
-    BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID);
+    BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
+		UINT uID, UINT menuID);
 
     // Change or retrieve the Tooltip text
     BOOL    SetTooltipText(LPCTSTR pszTooltipText);
@@ -104,6 +107,7 @@ protected:
     static UINT  m_nIDEvent;
     UINT         m_uIDTimer;
     int          m_nCurrentIcon;
+	UINT		 m_menuID;
     COleDateTime m_StartTime;
     int          m_nAnimationPeriod;
     HICON        m_hSavedIcon;
@@ -111,6 +115,7 @@ protected:
     BOOL         m_DefaultMenuItemByPos;
     CWnd *       m_pTarget; // ronys
     static const UINT m_nTaskbarCreatedMsg; //thedavecollins
+    const CList<CString,CString&> &m_RecentEntriesList; // reference set to dboxmain's
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)
@@ -120,7 +125,6 @@ protected:
     LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
     DECLARE_MESSAGE_MAP()
 };
-
 
 #endif
 

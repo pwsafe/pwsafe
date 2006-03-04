@@ -1,4 +1,3 @@
-
 /////////////////////////////////////////////////////////////////////////////
 // SystemTray.cpp : implementation file
 //
@@ -9,7 +8,7 @@
 // Joerg Koenig suggested the icon animation stuff
 //
 // This class is a light wrapper around the windows system tray stuff. It
-// adds an icon to the system tray with the specified ToolTip text and 
+// adds an icon to the system tray with the specified ToolTip text and
 // callback notification value, which is sent back to the Parent window.
 //
 // The tray icon can be instantiated using either the constructor or by
@@ -55,6 +54,7 @@
     
 #include "stdafx.h"
 #include "SystemTray.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,16 +70,20 @@ const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(_T("Taskb
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray construction/creation/destruction
 
+#if 0 // XXX cleanup 
 CSystemTray::CSystemTray()
 {
     Initialise();
 }
+#endif
 
-CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip, 
-                         HICON icon, UINT uID)
+CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
+                         HICON icon, CList<CString,CString&> &recentEntriesList,
+                         UINT uID, UINT menuID)
+  : m_RecentEntriesList(recentEntriesList)
 {
     Initialise();
-    Create(pParent, uCallbackMessage, szToolTip, icon, uID);
+    Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
 }
 
 void CSystemTray::Initialise()
@@ -91,11 +95,12 @@ void CSystemTray::Initialise()
     m_hSavedIcon = NULL;
     m_DefaultMenuItemID = 0;
     m_DefaultMenuItemByPos = TRUE;
-    m_pTarget = NULL; // ronys
+	m_pTarget = NULL; // ronys
+	m_menuID = 0;
 }
 
-BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip, 
-                         HICON icon, UINT uID)
+BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
+                         HICON icon, UINT uID, UINT menuID)
 {
     // this is only for Windows 95 (or higher)
     m_bEnabled = ( GetVersion() & 0xff ) >= 4;
@@ -109,6 +114,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     ASSERT(uCallbackMessage >= WM_USER);
 
     // Tray only supports tooltip text up to 64 characters
+    // XXX Truncate gracefully to 64 (... in middle)
     ASSERT(_tcslen(szToolTip) <= 64);
 
     // Create an invisible window
@@ -126,6 +132,8 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
     // Set the tray icon
     m_bEnabled = Shell_NotifyIcon(NIM_ADD, &m_tnd);
     ASSERT(m_bEnabled);
+
+	m_menuID = menuID;
     return m_bEnabled;
 }
 
@@ -306,7 +314,7 @@ BOOL CSystemTray::StopAnimation()
 BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip)
 {
     if (!m_bEnabled) return FALSE;
-
+    // XXX truncate gracefully
     m_tnd.uFlags = NIF_TIP;
     _tcscpy(m_tnd.szTip, pszTip);
 
@@ -364,7 +372,7 @@ BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
 
     CMenu menu, *pSubMenu;
 
-    if (!menu.LoadMenu(m_tnd.uID)) return FALSE;
+    if (!menu.LoadMenu(m_menuID)) return FALSE;
     pSubMenu = menu.GetSubMenu(0);
     if (!pSubMenu) return FALSE;
 
@@ -411,30 +419,100 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
     if (wParam != m_tnd.uID)
         return 0L;
 
-    CMenu menu, *pSubMenu;
+    CMenu menu, *pContextMenu;
     CWnd* pTarget = m_pTarget; // AfxGetMainWnd();
 
     // Clicking with right button brings up a context menu
     if (LOWORD(lParam) == WM_RBUTTONUP)
     {    
         ASSERT(pTarget != NULL);
-        if (!menu.LoadMenu(m_tnd.uID)) return 0;
-        pSubMenu = menu.GetSubMenu(0);
-        if (!pSubMenu) return 0;
+        if (!menu.LoadMenu(m_menuID)) return 0;
 
-        // Make chosen menu item the default (bold font)
-        ::SetMenuDefaultItem(pSubMenu->m_hMenu, m_DefaultMenuItemID, m_DefaultMenuItemByPos);
+        // Get pointer to the real menu (must be POPUP for TrackPopupMenu)
+        pContextMenu = menu.GetSubMenu(0);
+        if (!pContextMenu) return 0;
+
+		CString cEntry, group, title, user;
+		CMenu *pMainRecentEntriesMenu;
+		POSITION re_listpos;
+		int irc;
+
+		pMainRecentEntriesMenu = pContextMenu->GetSubMenu(2);
+
+		CMenu *pNewRecentEntryMenu[ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1];
+
+		int num_recent_entries = m_RecentEntriesList.GetCount();
+
+		if (num_recent_entries == 0) {
+			// Only leave the "Clear Entries" menu item (greyed out in ON_UPDATE_COMMAND_UI function)
+			pMainRecentEntriesMenu->RemoveMenu(3, MF_BYPOSITION);  // Separator
+			pMainRecentEntriesMenu->RemoveMenu(2, MF_BYPOSITION);  // Help entry
+			pMainRecentEntriesMenu->RemoveMenu(1, MF_BYPOSITION);  // Help entry
+		} else {
+			// Build extra popup menus (1 per entry in list)
+			re_listpos = m_RecentEntriesList.GetHeadPosition();
+
+			for (int i = 0; i < num_recent_entries; i++) {
+				cEntry = m_RecentEntriesList.GetAt(re_listpos);
+				AfxExtractSubString(group, cEntry, 1, '\xbb');
+				AfxExtractSubString(title, cEntry, 2, '\xbb');
+				AfxExtractSubString(user, cEntry, 3, '\xbb');
+
+				if (group.IsEmpty())
+					group = _T("\xf7");
+
+				if (title.IsEmpty())
+					title = _T("\xf7");
+
+				if (user.IsEmpty())
+					user = _T("\xf7");
+
+				cEntry = "\xbb" + group + "\xbb" + title + "\xbb" + user + "\xbb";
+
+				pNewRecentEntryMenu[i] = new CMenu;
+				pNewRecentEntryMenu[i]->CreatePopupMenu();
+
+				pNewRecentEntryMenu[i]->InsertMenu(0, MF_BYPOSITION | MF_STRING,
+					ID_MENUITEM_TRAYCOPYUSERNAME1 + i, "Copy Username to Clipboard");
+				pNewRecentEntryMenu[i]->InsertMenu(1, MF_BYPOSITION | MF_STRING,
+					ID_MENUITEM_TRAYCOPYPASSWORD1 + i, "Copy Password to Clipboard");
+				pNewRecentEntryMenu[i]->InsertMenu(2, MF_BYPOSITION | MF_STRING,
+					ID_MENUITEM_TRAYBROWSE1 + i, "Browse to URL");
+				pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
+					ID_MENUITEM_TRAYDELETE1 + i, "Delete Entry from History");
+				pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
+					ID_MENUITEM_TRAYAUTOTYPE1 + i, "Perform Auto type");
+
+				// Insert new popup menu at the bottom of the list
+				// pos 0  = Clear Entries
+				// pos 1  = Note on entry format
+				// pos 2  = Note on missing fields in entry
+				// pos 3  = Separator
+				// pos 4+ = entries.....
+				irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
+							(UINT) pNewRecentEntryMenu[i]->m_hMenu, cEntry);
+			  	ASSERT(irc != 0);
+
+				m_RecentEntriesList.GetNext(re_listpos);
+			}
+		}
+
+		// Make chosen menu item the default (bold font)
+        ::SetMenuDefaultItem(pContextMenu->m_hMenu, m_DefaultMenuItemID, m_DefaultMenuItemByPos);
 
         // Display and track the popup menu
         CPoint pos;
         GetCursorPos(&pos);
 
-        pTarget->SetForegroundWindow();  
-        ::TrackPopupMenu(pSubMenu->m_hMenu, 0, pos.x, pos.y, 0, 
+        pTarget->SetForegroundWindow();
+        ::TrackPopupMenu(pContextMenu->m_hMenu, TPM_LEFTBUTTON, pos.x, pos.y, 0,
                          pTarget->GetSafeHwnd(), NULL);
 
         // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
         pTarget->PostMessage(WM_NULL, 0, 0);
+        
+		for (int i = 0; i < num_recent_entries; i++)
+			delete pNewRecentEntryMenu[i];
 
         menu.DestroyMenu();
     } 
@@ -447,10 +525,10 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         UINT uItem;
         if (m_DefaultMenuItemByPos)
         {
-            if (!menu.LoadMenu(m_tnd.uID)) return 0;
-            pSubMenu = menu.GetSubMenu(0);
-            if (!pSubMenu) return 0;
-            uItem = pSubMenu->GetMenuItemID(m_DefaultMenuItemID);
+            if (!menu.LoadMenu(m_menuID)) return 0;
+            pContextMenu = menu.GetSubMenu(0);
+            if (!pContextMenu) return 0;
+            uItem = pContextMenu->GetMenuItemID(m_DefaultMenuItemID);
         }
         else
             uItem = m_DefaultMenuItemID;
