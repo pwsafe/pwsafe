@@ -1220,6 +1220,8 @@ DboxMain::ClearData(void)
   // Ditto for expanded groups, unfortunately
   m_ctlItemTree.ClearExpanded();
 
+  ClearTrayRecentEntries();
+
   //Because GetText returns a copy, we cannot do anything about the names
   if (m_windowok) {
     // For long lists, this is painful, so we disable updates
@@ -1407,6 +1409,7 @@ DboxMain::OnAutoType()
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
     AutoType(*ci);
+    AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
   }
 }
 

@@ -232,7 +232,11 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
    ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
-#if !defined(POCKET_PC)
+#ifndef POCKET_PC
+   ON_COMMAND(ID_MENUITEM_TRAYLOCKUNLOCK, OnTrayLockUnLock)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_TRAYLOCKUNLOCK, OnUpdateTrayLockUnLockCommand)
+   ON_COMMAND(ID_TRAYRECENT_ENTRY_CLEAR, OnTrayClearRecentEntries)
+   ON_UPDATE_COMMAND_UI(ID_TRAYRECENT_ENTRY_CLEAR, OnUpdateTrayClearRecentEntries)
    ON_WM_INITMENU()
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
@@ -253,7 +257,17 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	//}}AFX_MSG_MAP
 
    ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
-#if !defined(POCKET_PC)
+#ifndef POCKET_PC
+   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnTrayCopyUsername)
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnUpdateTrayCopyUsername)
+   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYPASSWORD1, ID_MENUITEM_TRAYCOPYPASSWORDMAX, OnTrayCopyPassword)
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYPASSWORD1, ID_MENUITEM_TRAYCOPYPASSWORDMAX, OnUpdateTrayCopyPassword)
+   ON_COMMAND_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnTrayBrowse)
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnUpdateTrayBrowse)
+   ON_COMMAND_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnTrayDeleteEntry)
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnUpdateTrayDeleteEntry)       
+   ON_COMMAND_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnTrayAutoType)
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnUpdateTrayAutoType)   
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
@@ -561,7 +575,6 @@ void DboxMain::OnBrowse()
 {
   CItemData *ci = getSelectedItem();
   if(ci != NULL) {
-	ASSERT(ci != NULL);
 	if (!ci->GetURL().IsEmpty()) {
       HINSTANCE stat = ::ShellExecute(NULL, NULL, ci->GetURL(),
                                       NULL, _T("."), SW_SHOWNORMAL);
@@ -570,6 +583,7 @@ void DboxMain::OnBrowse()
         AfxMessageBox("oops");
 #endif
       }
+      AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
 	}
   }
 }
@@ -641,6 +655,7 @@ DboxMain::OnCopyUsername()
 
   if (!username.IsEmpty()) {
     ToClipboard(username);
+    AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
   }
 }
 
@@ -1200,6 +1215,7 @@ DboxMain::Open()
 
       if ( rc == PWScore::SUCCESS ) {
         UpdateSystemTray(UNLOCKED);
+        m_RecentEntriesList.RemoveAll();
         break;
       }
     } else {

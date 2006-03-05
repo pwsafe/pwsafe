@@ -38,26 +38,25 @@ ThisMfcApp::ThisMfcApp() :
 #endif
 	m_pMRU( NULL ), m_TrayLockedState(UNLOCKED), m_TrayIcon(NULL)
 {
-// {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
+  // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
-	// Double check that *_ENDIAN has been correctly set!
-#if defined(LITTLE_ENDIAN)
-	unsigned char	buf[4]	= { 1, 0, 0, 0 };
-	unsigned int	ii		= 1;
+  // Double check that *_ENDIAN has been correctly set!
+#if defined(PWS_LITTLE_ENDIAN)
+  unsigned char	buf[4]	= { 1, 0, 0, 0 };
+  unsigned int	ii		= 1;
 #define ENDIANNESS	_T("little endian")
 #define ENDIANNESS2	_T("big endian")
-#elif defined(BIG_ENDIAN)
-	unsigned char	buf[4]	= { 0, 0, 0, 1 };
-	unsigned int	ii		= 1;
+#elif defined(PWS_BIG_ENDIAN)
+  unsigned char	buf[4]	= { 0, 0, 0, 1 };
+  unsigned int	ii		= 1;
 #define ENDIANNESS	_T("big endian")
 #define ENDIANNESS2	_T("little endian")
 #endif
-	if (*(unsigned int*)buf != ii)
-	{
-		AfxMessageBox(_T("Password Safe has been compiled as ") ENDIANNESS
-			_T(" but CPU is really ") ENDIANNESS2 _T("\n")
-			_T("You may not be able to open files or saved files may be incompatible with other platforms."));
-	}
+  if (*(unsigned int*)buf != ii) {
+    AfxMessageBox(_T("Password Safe has been compiled as ") ENDIANNESS
+                  _T(" but CPU is really ") ENDIANNESS2 _T("\n")
+                  _T("You may not be able to open files or saved files may be incompatible with other platforms."));
+  }
 #endif
 }
 
@@ -458,7 +457,7 @@ ThisMfcApp::InitInstance()
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
   m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-                               m_UnLockedIcon, dbox.m_RecentEntriesList,
+                               m_LockedIcon, dbox.m_RecentEntriesList,
                                WM_ICON_NOTIFY, IDR_POPTRAY);
   m_TrayIcon->SetTarget(&dbox);
 
