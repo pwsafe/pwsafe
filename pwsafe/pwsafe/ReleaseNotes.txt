@@ -18,7 +18,7 @@ replaces Blowfish). Also, the integrity of the database is now checked.
 [] System Tray icon now indicated if database is locked or not (Thanks to
 DK for this cool feature!)
 [] Add and Edit dialog box now have "simple" and "detailed" modes. Thanks
-to ??? for implementing this.
+to Dave Collins for implementing this.
 
 Bugs fixed in 3.0Beta1:
 =======================
