@@ -239,7 +239,7 @@
 #define ID_TRAYRECENT_ENTRY_HELP1       32855
 #define ID_TRAYRECENT_ENTRY_HELP2       32856
 #define ID_MENUITEM_RENAME              32857
-#define ID_FILE_MRU_ENTRY1              40001  // Do NOT define values between entry 1 & entry 20
+#define ID_FILE_MRU_ENTRY1              40001  // Do NOT define values between entry 1 & entry MAX
 #define ID_FILE_MRU_ENTRYMAX            40020  // reserved max length
 #define ID_TRAYRECENT_ENTRY1            41001  // Do NOT define values between entry 1 & entry MAX
 #define ID_TRAYRECENT_ENTRYMAX          41025  // reserved max length
