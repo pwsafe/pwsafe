@@ -397,86 +397,89 @@ DboxMain::OnEdit()
   // Note that Edit is also used for just viewing - don't want to disable
   // viewing in read-only mode
   m_LockDisabled = true;
-  if (SelItemOk() == TRUE)
-    {
-      CItemData *ci = getSelectedItem();
-      ASSERT(ci != NULL);
-      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-      ASSERT(di != NULL);
-      POSITION listpos = Find(di->list_index);
+  if (SelItemOk() == TRUE) {
+    CItemData *ci = getSelectedItem();
+    ASSERT(ci != NULL);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    POSITION listpos = Find(di->list_index);
 
-      CEditDlg dlg_edit(this);
-      dlg_edit.m_group = ci->GetGroup();
-      dlg_edit.m_title = ci->GetTitle();
-      dlg_edit.m_username = ci->GetUser();
-      dlg_edit.m_realpassword = ci->GetPassword();
-	  dlg_edit.m_URL = ci->GetURL();
-	  dlg_edit.m_autotype = ci->GetAutoType();
-      dlg_edit.m_password = HIDDEN_PASSWORD;
-      dlg_edit.m_notes = ci->GetNotes();
-      dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
-      dlg_edit.m_IsReadOnly = m_IsReadOnly;
+    CEditDlg dlg_edit(this);
+    dlg_edit.m_group = ci->GetGroup();
+    dlg_edit.m_title = ci->GetTitle();
+    dlg_edit.m_username = ci->GetUser();
+    dlg_edit.m_realpassword = ci->GetPassword();
+    dlg_edit.m_URL = ci->GetURL();
+    dlg_edit.m_autotype = ci->GetAutoType();
+    dlg_edit.m_password = HIDDEN_PASSWORD;
+    dlg_edit.m_notes = ci->GetNotes();
+    dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
+    dlg_edit.m_IsReadOnly = m_IsReadOnly;
 	
-	  dlg_edit.m_CTime = ci->GetCTime();
+    dlg_edit.m_CTime = ci->GetCTime();
 
-      app.DisableAccelerator();
-      int rc = dlg_edit.DoModal();
-      app.EnableAccelerator();
+    app.DisableAccelerator();
+    int rc = dlg_edit.DoModal();
+    app.EnableAccelerator();
 
-      if (rc == IDOK)
-        {
-          CMyString temptitle;
-          CMyString user;
-          if (dlg_edit.m_username.IsEmpty() && m_core.GetUseDefUser())
-            user = m_core.GetDefUsername();
-          else
-            user = dlg_edit.m_username;
-          ci->SetGroup(dlg_edit.m_group);
-          ci->SetTitle(dlg_edit.m_title);
-          ci->SetUser(user);
-          ci->SetPassword(dlg_edit.m_realpassword);
-          ci->SetNotes(dlg_edit.m_notes);
-          ci->SetURL(dlg_edit.m_URL);
-          ci->SetAutoType(dlg_edit.m_autotype);
+    if (rc == IDOK) {
+      CMyString temptitle;
+      CMyString user;
+      // for system tray menu updating:
+      const CMyString oldgroup(ci->GetGroup());
+      const CMyString oldtitle(ci->GetTitle());
+      const CMyString olduser(ci->GetUser());
 
-          /*
-            Out with the old, in with the new
-          */
-          CItemData editedItem(*ci); // 'cause next line deletes *ci
-          m_core.RemoveEntryAt(listpos);
-          m_core.AddEntryToTail(editedItem);
-          m_ctlItemList.DeleteItem(di->list_index);
-          m_ctlItemTree.DeleteWithParents(di->tree_item);
-          di->list_index = -1; // so that insertItem will set new values
-          insertItem(m_core.GetTailEntry());
-          FixListIndexes(m_ctlItemList);
-          if (PWSprefs::GetInstance()->
-              GetPref(PWSprefs::BoolPrefs::SaveImmediately))
-            {
-              Save();
-            }
-          rc = SelectEntry(di->list_index);
-          if (rc == LB_ERR)
-            {
-              SelectEntry(m_ctlItemList.GetItemCount() - 1);
-            }
-          ChangeOkUpdate();
-        } // rc == IDOK
-    } else { // entry item not selected - perhaps here on Enter on tree item?
-      // perhaps not the most elegant solution to improving non-mouse use,
-      // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
-      // let me know...
-      CItemData *itemData = NULL;
-      if (m_ctlItemTree.IsWindowVisible()) { // tree view
-        HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-        if (ti != NULL) { // if anything selected
-          itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-          if (itemData == NULL) { // node selected
-            m_ctlItemTree.Expand(ti, TVE_TOGGLE);
-          }
+      if (dlg_edit.m_username.IsEmpty() && m_core.GetUseDefUser())
+        user = m_core.GetDefUsername();
+      else
+        user = dlg_edit.m_username;
+      ci->SetGroup(dlg_edit.m_group);
+      ci->SetTitle(dlg_edit.m_title);
+      ci->SetUser(user);
+      ci->SetPassword(dlg_edit.m_realpassword);
+      ci->SetNotes(dlg_edit.m_notes);
+      ci->SetURL(dlg_edit.m_URL);
+      ci->SetAutoType(dlg_edit.m_autotype);
+
+      /*
+        Out with the old, in with the new
+      */
+      CItemData editedItem(*ci); // 'cause next line deletes *ci
+      m_core.RemoveEntryAt(listpos);
+      m_core.AddEntryToTail(editedItem);
+      m_ctlItemList.DeleteItem(di->list_index);
+      m_ctlItemTree.DeleteWithParents(di->tree_item);
+      di->list_index = -1; // so that insertItem will set new values
+      insertItem(m_core.GetTailEntry());
+      FixListIndexes(m_ctlItemList);
+      RenameTrayRecentEntry(oldgroup, oldtitle, olduser,
+                            dlg_edit.m_group, dlg_edit.m_title, user);
+      if (PWSprefs::GetInstance()->
+          GetPref(PWSprefs::BoolPrefs::SaveImmediately)) {
+        Save();
+      }
+      rc = SelectEntry(di->list_index);
+      if (rc == LB_ERR) {
+        SelectEntry(m_ctlItemList.GetItemCount() - 1);
+      }
+      ChangeOkUpdate();
+    } // rc == IDOK
+  } else { // entry item not selected - perhaps here on Enter on tree item?
+    // perhaps not the most elegant solution to improving non-mouse use,
+    // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
+    // let me know...
+    CItemData *itemData = NULL;
+    if (m_ctlItemTree.IsWindowVisible()) { // tree view
+      HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+      if (ti != NULL) { // if anything selected
+        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        if (itemData == NULL) { // node selected
+          m_ctlItemTree.Expand(ti, TVE_TOGGLE);
         }
       }
     }
+  }
   m_LockDisabled = false;
 }
 
@@ -488,55 +491,53 @@ DboxMain::OnDuplicateEntry()
     return;
 
   m_LockDisabled = true;
-  if (SelItemOk() == TRUE)
-    {
-      CItemData *ci = getSelectedItem();
-      ASSERT(ci != NULL);
-      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-      ASSERT(di != NULL);
+  if (SelItemOk() == TRUE) {
+    CItemData *ci = getSelectedItem();
+    ASSERT(ci != NULL);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
       
-      // Get information from current selected entry
-      CMyString ci2_group = ci->GetGroup();
-      CMyString ci2_user = ci->GetUser();
-      CMyString ci2_title0 = ci->GetTitle();
-      CMyString ci2_title;
+    // Get information from current selected entry
+    CMyString ci2_group = ci->GetGroup();
+    CMyString ci2_user = ci->GetUser();
+    CMyString ci2_title0 = ci->GetTitle();
+    CMyString ci2_title;
       
-      // Find a unique "Title"
-      POSITION listpos = NULL;
-      int i = 0;
-      CString s_copy;
-      do {
-      	i++;
-		s_copy.Format(_T("%d"), i);
-      	ci2_title = ci2_title0 + _T(" Copy #") + CMyString(s_copy);
-      	listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
-      } while (listpos != NULL);
+    // Find a unique "Title"
+    POSITION listpos = NULL;
+    int i = 0;
+    CString s_copy;
+    do {
+      i++;
+      s_copy.Format(_T("%d"), i);
+      ci2_title = ci2_title0 + _T(" Copy #") + CMyString(s_copy);
+      listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
+    } while (listpos != NULL);
       
-      // Set up new entry
-      CItemData ci2;
-      ci2.SetGroup(ci2_group);
-      ci2.SetTitle(ci2_title);
-      ci2.SetUser(ci2_user);
-      ci2.SetPassword( ci->GetPassword() );
-      ci2.SetNotes( ci->GetNotes() );
+    // Set up new entry
+    CItemData ci2;
+    ci2.SetGroup(ci2_group);
+    ci2.SetTitle(ci2_title);
+    ci2.SetUser(ci2_user);
+    ci2.SetPassword( ci->GetPassword() );
+    ci2.SetNotes( ci->GetNotes() );
       
-      // Add it to the end of the list      
-      m_core.AddEntryToTail(ci2);
-      di->list_index = -1; // so that insertItem will set new values
-      insertItem(m_core.GetTailEntry());
-      FixListIndexes(m_ctlItemList);
-      if (PWSprefs::GetInstance()->
-	      GetPref(PWSprefs::BoolPrefs::SaveImmediately))
-        {
-	      Save();
-        }
-      int rc = SelectEntry(di->list_index);
-      if (rc == LB_ERR)
-        {
-	      SelectEntry(m_ctlItemList.GetItemCount() - 1);
-        }
-      ChangeOkUpdate();
+    // Add it to the end of the list      
+    m_core.AddEntryToTail(ci2);
+    di->list_index = -1; // so that insertItem will set new values
+    insertItem(m_core.GetTailEntry());
+    FixListIndexes(m_ctlItemList);
+    if (PWSprefs::GetInstance()->
+        GetPref(PWSprefs::BoolPrefs::SaveImmediately)) {
+      Save();
     }
+    int rc = SelectEntry(di->list_index);
+    if (rc == LB_ERR) {
+      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+    }
+    AddTrayRecentEntry(ci2_group, ci2_title, ci2_user);
+    ChangeOkUpdate();
+  }
   m_LockDisabled = false;
 }
 
