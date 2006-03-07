@@ -78,7 +78,7 @@ CSystemTray::CSystemTray()
 #endif
 
 CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
-                         HICON icon, CList<CString,CString&> &recentEntriesList,
+                         HICON icon, CList<CMyString,CMyString&> &recentEntriesList,
                          UINT uID, UINT menuID)
   : m_RecentEntriesList(recentEntriesList)
 {
@@ -109,6 +109,11 @@ static void NormalizeTTT(LPCTSTR in, LPTSTR out)
   } else {
     ttt = t;
   }
+#ifndef UNICODE
+  memset(out, 0, MAX_TTT_LEN); // brute-force trailing zero
+#else
+  wmemset(out, 0, MAX_TTT_LEN); // brute-force trailing zero
+#endif
   _tcsncpy(out, ttt, MAX_TTT_LEN);
 }
 
@@ -449,7 +454,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
       pContextMenu = menu.GetSubMenu(0);
       if (!pContextMenu) return 0;
 
-      CString cEntry, group, title, user;
+      CMyString cEntry, group, title, user;
       CMenu *pMainRecentEntriesMenu;
       POSITION re_listpos;
       int irc;

@@ -90,7 +90,7 @@ public:
   CMyTreeCtrl     m_ctlItemTree;
   //}}AFX_DATA
   // recent entry lists
-  CList<CString,CString&> m_RecentEntriesList;
+  CList<CMyString,CMyString&> m_RecentEntriesList;
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
