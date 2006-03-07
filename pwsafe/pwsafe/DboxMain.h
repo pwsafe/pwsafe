@@ -80,6 +80,18 @@ public:
   void SetStartSilent(bool state) { m_IsStartSilent = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
 
+  // Tray MRU entry related functions. Implemented in DboxTray.cpp
+  // Move to separate class?
+  void ClearTrayRecentEntries();
+  void AddTrayRecentEntry(const CMyString &group, const CMyString &title,
+                          const CMyString &username);
+  void RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldtitle,
+                             const CMyString &oldusername, const CMyString &newgroup,
+                             const CMyString &newtitle, const CMyString &newusername);
+  void DeleteTrayRecentEntry(const CMyString &group, const CMyString &title,
+                             const CMyString &user);
+  POSITION GetPWEntryFromREList(UINT nID_offset);
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -183,19 +195,8 @@ protected:
   int Restore(void);
 
   void AutoType(const CItemData &ci);
-  // Tray MRU entry related functions. Implemented in DboxTray.cpp
-  // Move to separate class?
-#if !defined(POCKET_PC)
-  void ClearTrayRecentEntries();
-  void AddTrayRecentEntry(const CMyString &group, const CMyString &title,
-                          const CMyString &username);
-  void RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldtitle,
-                             const CMyString &oldusername, const CMyString &newgroup,
-                             const CMyString &newtitle, const CMyString &newusername);
-  void DeleteTrayRecentEntry(const CMyString &group, const CMyString &title,
-                             const CMyString &user);
-  POSITION GetPWEntryFromREList(UINT nID_offset);
 
+#if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
     afx_msg void OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI);
     afx_msg void OnTrayClearRecentEntries();

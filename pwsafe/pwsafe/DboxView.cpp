@@ -249,6 +249,7 @@ DboxMain::OnAdd()
     temp.SetAutoType(dataDlg.m_autotype);
     temp.SetCTime();
     m_core.AddEntryToTail(temp);
+    AddTrayRecentEntry(dataDlg.m_group, dataDlg.m_title, user);
     int newpos = insertItem(m_core.GetTailEntry());
     SelectEntry(newpos);
     FixListIndexes(m_ctlItemList);
@@ -1409,8 +1410,10 @@ DboxMain::OnAutoType()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-    AutoType(*ci);
+    // AddTrayRecentEntry must be before AutoType since the latter
+    // may trash *ci if lock-on-minimize
     AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
+    AutoType(*ci);
   }
 }
 
