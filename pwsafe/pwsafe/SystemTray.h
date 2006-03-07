@@ -26,6 +26,7 @@
 #ifndef _INCLUDED_SYSTEMTRAY_H_
 #define _INCLUDED_SYSTEMTRAY_H_
 
+#include "corelib/MyString.h"
 #include <afxdisp.h>
 
 /////////////////////////////////////////////////////////////////////////////
@@ -37,7 +38,7 @@ class CSystemTray : public CWnd
 public:
   //    CSystemTray();
     CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
-                CList<CString,CString&> &recentEntriesList,
+                CList<CMyString,CMyString&> &recentEntriesList,
                 UINT uID, UINT menuID);
     virtual ~CSystemTray();
 
@@ -115,7 +116,7 @@ protected:
     BOOL         m_DefaultMenuItemByPos;
     CWnd *       m_pTarget; // ronys
     static const UINT m_nTaskbarCreatedMsg; //thedavecollins
-    const CList<CString,CString&> &m_RecentEntriesList; // reference set to dboxmain's
+    const CList<CMyString,CMyString&> &m_RecentEntriesList; // reference set to dboxmain's
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)

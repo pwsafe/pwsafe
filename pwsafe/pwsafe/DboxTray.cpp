@@ -245,15 +245,14 @@ void
 DboxMain::AddTrayRecentEntry(const CMyString &group, const CMyString &title,
                              const CMyString &user)
 {
-	CString cEntry;
+	CMyString cEntry =
+      "\xbb" + group + "\xbb" + title + "\xbb" + user + "\xbb";
 	POSITION re_listpos;
-
-	cEntry = "\xbb" + (CString)group + "\xbb" + (CString)title + "\xbb" + (CString)user + "\xbb";
 
 	re_listpos = m_RecentEntriesList.GetHeadPosition();
 	while (re_listpos != NULL)
 	{
-		const CString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
+		const CMyString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
 		if (re_Entry == cEntry)
 			break;
 		else
@@ -279,15 +278,14 @@ DboxMain::RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldt
                                 const CMyString &olduser, const CMyString &newgroup,
                                 const CMyString &newtitle, const CMyString &newuser)
 {
-	CString coldEntry, cnewEntry;
-	POSITION re_listpos;
+	CMyString coldEntry = 
+      "\xbb" + oldgroup + "\xbb" + oldtitle + "\xbb" + olduser + "\xbb";
 
-	coldEntry = "\xbb" + (CString)oldgroup + "\xbb" + (CString)oldtitle + "\xbb" + (CString)olduser + "\xbb";
+	POSITION re_listpos = m_RecentEntriesList.GetHeadPosition();
 
-	re_listpos = m_RecentEntriesList.GetHeadPosition();
 	while (re_listpos != NULL)
 	{
-		const CString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
+		const CMyString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
 		if (re_Entry == coldEntry)
 			break;
 		else
@@ -298,7 +296,8 @@ DboxMain::RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldt
 		return;
 
 	m_RecentEntriesList.RemoveAt(re_listpos);
-	cnewEntry = "\xbb" + (CString)newgroup + "\xbb" + (CString)newtitle + "\xbb" + (CString)newuser + "\xbb";
+	CMyString cnewEntry =
+      "\xbb" + newgroup + "\xbb" + newtitle + "\xbb" + newuser + "\xbb";
 	m_RecentEntriesList.AddHead(cnewEntry);
 }
 
@@ -306,20 +305,17 @@ void
 DboxMain::DeleteTrayRecentEntry(const CMyString &group, const CMyString &title,
                                 const CMyString &user)
 {
-	CString cEntry;
-	POSITION re_listpos;
+	CMyString	cEntry =
+      "\xbb" + group + "\xbb" + title + "\xbb" + user + "\xbb";
 
-	cEntry = "\xbb" + (CString)group + "\xbb" + (CString)title + "\xbb" + (CString)user + "\xbb";
-
-	re_listpos = m_RecentEntriesList.GetHeadPosition();
+	POSITION re_listpos = m_RecentEntriesList.GetHeadPosition();
 	while (re_listpos != NULL)
 	{
-		const CString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
+		const CMyString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
 		if (re_Entry == cEntry) {
 			m_RecentEntriesList.RemoveAt(re_listpos);
 			break;
-		}
-		else
+		} else
 			m_RecentEntriesList.GetNext(re_listpos);
 	}
 }
@@ -332,7 +328,7 @@ DboxMain::GetPWEntryFromREList(UINT nID_offset)
 	POSITION pw_listpos;  // for password list
 
 	re_listpos = m_RecentEntriesList.FindIndex(nID_offset);
-	const CString &cEntry = m_RecentEntriesList.GetAt(re_listpos);
+	const CMyString &cEntry = m_RecentEntriesList.GetAt(re_listpos);
 
 	// Entry format: >group>title>username>
     AfxExtractSubString(group, cEntry, 1, '\xbb');
