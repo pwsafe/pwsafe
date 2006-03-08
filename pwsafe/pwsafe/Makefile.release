@@ -71,16 +71,16 @@ src-release:
 	@-mkdir $(RELEASEDIR)/$(SRCRELNAME)
 	@$(CP) -R . $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR)/$(SRCRELNAME); \
-	 $(RM) -f Release/* Debug/*; \
+     $(RM) -rf .snprj ; \
 	 find . \( -name '*~' -o -name '*.bak' -o -name \*.aps -o \
 		   -name '*.plg' -o -name '*.ncb' -o -name '*.opt' -o \
-		   -name '*.clw' -o -name '*.chm' -o \
+		   -name '*.clw' -o -name '*.chm' -name '*.vcp' -o \
 		   -name '*.rej' -o -name '*.orig' -o \
 		   -name '.#*' -o -name '#*#' -o -name '*.pch' -o \
            -name '*.sav' -o -name '*.old' \) | xargs $(RM) -f; \
 	 $(RM) -f Release/* Debug/* *~ *.bak *.sav *.old ; \
 	 $(RM) -f corelib/Release/* corelib/Debug/* test/Debug/* ; \
-	 find . -type d -name CVS | xargs $(RM) -rf)
+	 find . -type d -name .svn | xargs $(RM) -rf)
 	(cd $(RELEASEDIR); zip -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
