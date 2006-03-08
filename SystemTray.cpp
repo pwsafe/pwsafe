@@ -476,9 +476,9 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
 
         for (int i = 0; i < num_recent_entries; i++) {
           cEntry = m_RecentEntriesList.GetAt(re_listpos);
-          AfxExtractSubString(group, cEntry, 1, '\xbb');
-          AfxExtractSubString(title, cEntry, 2, '\xbb');
-          AfxExtractSubString(user, cEntry, 3, '\xbb');
+          AfxExtractSubString(group, cEntry, 1, MRE_FS[0]);
+          AfxExtractSubString(title, cEntry, 2, MRE_FS[0]);
+          AfxExtractSubString(user, cEntry, 3, MRE_FS[0]);
 
           if (group.IsEmpty())
             group = _T("*");
@@ -489,7 +489,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
           if (user.IsEmpty())
             user = _T("*");
 
-          cEntry = "\xbb" + group + "\xbb" + title + "\xbb" + user + "\xbb";
+          cEntry = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
 
           pNewRecentEntryMenu[i] = new CMenu;
           pNewRecentEntryMenu[i]->CreatePopupMenu();
