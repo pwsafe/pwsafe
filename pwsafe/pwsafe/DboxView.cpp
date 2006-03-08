@@ -319,6 +319,11 @@ DboxMain::OnDelete()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
+	//  Needed for DeleteTrayRecentEntry later on
+    const CMyString group(ci->GetGroup());
+    const CMyString title(ci->GetTitle());
+    const CMyString user(ci->GetUser());
+
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     int curSel = di->list_index;
@@ -327,6 +332,7 @@ DboxMain::OnDelete()
     HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
                                                         TVGN_NEXT);
     POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
+
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteWithParents(di->tree_item);
     delete di;
@@ -345,6 +351,7 @@ DboxMain::OnDelete()
         SelectEntry(0);
       m_ctlItemTree.SetFocus();
     }
+    DeleteTrayRecentEntry(group, title, user);
     ChangeOkUpdate();
   } else { // !SelItemOk()
     if (m_ctlItemTree.IsWindowVisible()) {
@@ -880,7 +887,7 @@ DboxMain::OnSize(UINT nType,
           {
             if ( m_core.IsChanged() ) // only save if changed
               OnSave();
-            ClearData();
+            ClearData(false);
             m_needsreading = true;
           }
       }
@@ -1203,7 +1210,7 @@ CItemData *DboxMain::getSelectedItem()
 }
 
 void
-DboxMain::ClearData(void)
+DboxMain::ClearData(bool clearMRE)
 {
   // Iterate over item list, delete DisplayInfo
   POSITION listPos = m_core.GetFirstEntryPosition();
@@ -1222,7 +1229,8 @@ DboxMain::ClearData(void)
   // Ditto for expanded groups, unfortunately
   m_ctlItemTree.ClearExpanded();
 
-  ClearTrayRecentEntries();
+  if (clearMRE)
+    ClearTrayRecentEntries();
 
   //Because GetText returns a copy, we cannot do anything about the names
   if (m_windowok) {

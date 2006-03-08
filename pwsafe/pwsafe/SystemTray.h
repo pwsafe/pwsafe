@@ -32,6 +32,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
 
+// Following is Most Recent Entry field separator for dynamic menu:
+#define MRE_FS _T("\xbb")
+
 class CSystemTray : public CWnd
 {
 // Construction/destruction

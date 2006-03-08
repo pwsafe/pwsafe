@@ -246,7 +246,7 @@ DboxMain::AddTrayRecentEntry(const CMyString &group, const CMyString &title,
                              const CMyString &user)
 {
 	CMyString cEntry =
-      "\xbb" + group + "\xbb" + title + "\xbb" + user + "\xbb";
+      MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
 	POSITION re_listpos;
 
 	re_listpos = m_RecentEntriesList.GetHeadPosition();
@@ -279,7 +279,7 @@ DboxMain::RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldt
                                 const CMyString &newtitle, const CMyString &newuser)
 {
 	CMyString coldEntry = 
-      "\xbb" + oldgroup + "\xbb" + oldtitle + "\xbb" + olduser + "\xbb";
+      MRE_FS + oldgroup + MRE_FS + oldtitle + MRE_FS + olduser + MRE_FS;
 
 	POSITION re_listpos = m_RecentEntriesList.GetHeadPosition();
 
@@ -292,12 +292,11 @@ DboxMain::RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldt
 			m_RecentEntriesList.GetNext(re_listpos);
 	}
 
-	if (re_listpos == NULL)
-		return;
+	if (re_listpos != NULL)
+      m_RecentEntriesList.RemoveAt(re_listpos);
 
-	m_RecentEntriesList.RemoveAt(re_listpos);
 	CMyString cnewEntry =
-      "\xbb" + newgroup + "\xbb" + newtitle + "\xbb" + newuser + "\xbb";
+      MRE_FS + newgroup + MRE_FS + newtitle + MRE_FS + newuser + MRE_FS;
 	m_RecentEntriesList.AddHead(cnewEntry);
 }
 
@@ -306,7 +305,7 @@ DboxMain::DeleteTrayRecentEntry(const CMyString &group, const CMyString &title,
                                 const CMyString &user)
 {
 	CMyString	cEntry =
-      "\xbb" + group + "\xbb" + title + "\xbb" + user + "\xbb";
+      MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
 
 	POSITION re_listpos = m_RecentEntriesList.GetHeadPosition();
 	while (re_listpos != NULL)
@@ -331,9 +330,9 @@ DboxMain::GetPWEntryFromREList(UINT nID_offset)
 	const CMyString &cEntry = m_RecentEntriesList.GetAt(re_listpos);
 
 	// Entry format: >group>title>username>
-    AfxExtractSubString(group, cEntry, 1, '\xbb');
-    AfxExtractSubString(title, cEntry, 2, '\xbb');
-    AfxExtractSubString(user, cEntry, 3, '\xbb');
+    AfxExtractSubString(group, cEntry, 1, MRE_FS[0]);
+    AfxExtractSubString(title, cEntry, 2, MRE_FS[0]);
+    AfxExtractSubString(user, cEntry, 3, MRE_FS[0]);
 
 	pw_listpos = app.m_core.Find(group, title, user);
 	if (pw_listpos == NULL) {

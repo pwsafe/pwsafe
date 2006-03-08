@@ -175,7 +175,7 @@ protected:
 
   void UpdateAlwaysOnTop();
 
-  void ClearData();
+  void ClearData(bool clearMRE = true);
   int NewFile(void);
 
   void SetListView();
