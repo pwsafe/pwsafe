@@ -26,7 +26,7 @@ CRemindSaveDlg::CRemindSaveDlg(CWnd* pParent)
    : CDialog(CRemindSaveDlg::IDD, pParent)
 {
   m_dontask = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize) ? TRUE : FALSE;
+    GetPref(PWSprefs::DontAskSaveMinimize) ? TRUE : FALSE;
 }
 
 
@@ -44,7 +44,7 @@ END_MESSAGE_MAP()
 void CRemindSaveDlg::OnCancel() 
 {
    UpdateData(TRUE);
-   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize,
+   PWSprefs::GetInstance()->SetPref(PWSprefs::DontAskSaveMinimize,
 				    m_dontask == TRUE);
    CDialog::OnCancel();
 }
@@ -53,7 +53,7 @@ void CRemindSaveDlg::OnCancel()
 void CRemindSaveDlg::OnOK() 
 {
    UpdateData(TRUE);
-   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize,
+   PWSprefs::GetInstance()->SetPref(PWSprefs::DontAskSaveMinimize,
 				    m_dontask == TRUE);
    CDialog::OnOK();
 }

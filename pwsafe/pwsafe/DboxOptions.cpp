@@ -46,70 +46,70 @@ DboxMain::OnOptions()
   */
   display.m_alwaysontop = m_bAlwaysOnTop;
   display.m_pwshowinedit = prefs->
-    GetPref(PWSprefs::BoolPrefs::ShowPWDefault) ? TRUE : FALSE;
+    GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
   display.m_pwshowinlist = prefs->
-    GetPref(PWSprefs::BoolPrefs::ShowPWInList) ? TRUE : FALSE;
+    GetPref(PWSprefs::ShowPWInList) ? TRUE : FALSE;
 #if defined(POCKET_PC)
   display.m_dcshowspassword = prefs->
-    GetPref(PWSprefs::BoolPrefs::DCShowsPassword) ? TRUE : FALSE;
+    GetPref(PWSprefs::DCShowsPassword) ? TRUE : FALSE;
 #endif
   display.m_maxreitems = prefs->
-     GetPref(PWSprefs::IntPrefs::MaxREItems);
+     GetPref(PWSprefs::MaxREItems);
   display.m_usesystemtray = prefs->
-    GetPref(PWSprefs::BoolPrefs::UseSystemTray) ? TRUE : FALSE;
+    GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
   display.m_maxmruitems = prefs->
-    GetPref(PWSprefs::IntPrefs::MaxMRUItems);
+    GetPref(PWSprefs::MaxMRUItems);
   display.m_mruonfilemenu = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::MRUOnFileMenu);
+    GetPref(PWSprefs::MRUOnFileMenu);
   security.m_clearclipboard = prefs->
-    GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
+    GetPref(PWSprefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
   security.m_lockdatabase = prefs->
-    GetPref(PWSprefs::BoolPrefs::DatabaseClear) ? TRUE : FALSE;
+    GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
   security.m_confirmsaveonminimize = prefs->
-    GetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize) ? FALSE : TRUE;
+    GetPref(PWSprefs::DontAskSaveMinimize) ? FALSE : TRUE;
   security.m_confirmcopy = prefs->
-    GetPref(PWSprefs::BoolPrefs::DontAskQuestion) ? FALSE : TRUE;
+    GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
   security.m_LockOnWindowLock = prefs->
-    GetPref(PWSprefs::BoolPrefs::LockOnWindowLock) ? TRUE : FALSE;
+    GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
   security.m_LockOnIdleTimeout = prevLockOIT = prefs->
-    GetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout) ? TRUE : FALSE;
+    GetPref(PWSprefs::LockOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prefs->
-    GetPref(PWSprefs::IntPrefs::IdleTimeout);
+    GetPref(PWSprefs::IdleTimeout);
 
   passwordpolicy.m_pwlendefault = prefs->
-    GetPref(PWSprefs::IntPrefs::PWLenDefault);
+    GetPref(PWSprefs::PWLenDefault);
   passwordpolicy.m_pwuselowercase = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseLowercase);
+    GetPref(PWSprefs::PWUseLowercase);
   passwordpolicy.m_pwuseuppercase = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseUppercase);
+    GetPref(PWSprefs::PWUseUppercase);
   passwordpolicy.m_pwusedigits = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseDigits);
+    GetPref(PWSprefs::PWUseDigits);
   passwordpolicy.m_pwusesymbols = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseSymbols);
+    GetPref(PWSprefs::PWUseSymbols);
   passwordpolicy.m_pwusehexdigits = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseHexDigits);
+    GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWEasyVision);
+    GetPref(PWSprefs::PWEasyVision);
 
   username.m_usedefuser = prefs->
-    GetPref(PWSprefs::BoolPrefs::UseDefUser);
+    GetPref(PWSprefs::UseDefUser);
   username.m_defusername = CString(prefs->
-                                   GetPref(PWSprefs::StringPrefs::DefUserName));
+                                   GetPref(PWSprefs::DefUserName));
   username.m_querysetdef = prefs->
-    GetPref(PWSprefs::BoolPrefs::QuerySetDef);
+    GetPref(PWSprefs::QuerySetDef);
 
   misc.m_confirmdelete = prefs->
-    GetPref(PWSprefs::BoolPrefs::DeleteQuestion) ? FALSE : TRUE;
+    GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
   misc.m_saveimmediately = prefs->
-    GetPref(PWSprefs::BoolPrefs::SaveImmediately) ? TRUE : FALSE;
+    GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   misc.m_escexits = prefs->
-    GetPref(PWSprefs::BoolPrefs::EscExits) ? TRUE : FALSE;
+    GetPref(PWSprefs::EscExits) ? TRUE : FALSE;
   // by strange coincidence, the values of the enums match the indices
   // of the radio buttons in the following :-)
   misc.m_doubleclickaction = prefs->
-    GetPref(PWSprefs::IntPrefs::DoubleClickAction);
-  misc.m_hotkey_value = DWORD(prefs->GetPref(PWSprefs::IntPrefs::HotKey));
-  misc.m_hotkey_enabled = prefs->GetPref(PWSprefs::BoolPrefs::HotKeyEnabled) ? TRUE : FALSE;
+    GetPref(PWSprefs::DoubleClickAction);
+  misc.m_hotkey_value = DWORD(prefs->GetPref(PWSprefs::HotKey));
+  misc.m_hotkey_enabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
   optionsDlg.AddPage( &display );
   optionsDlg.AddPage( &security );
@@ -131,78 +131,78 @@ DboxMain::OnOptions()
       /*
       **  First save all the options.
       */
-      prefs->SetPref(PWSprefs::BoolPrefs::AlwaysOnTop,
+      prefs->SetPref(PWSprefs::AlwaysOnTop,
                      display.m_alwaysontop == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::ShowPWDefault,
+      prefs->SetPref(PWSprefs::ShowPWDefault,
                      display.m_pwshowinedit == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::ShowPWInList,
+      prefs->SetPref(PWSprefs::ShowPWInList,
                      display.m_pwshowinlist == TRUE);
 #if defined(POCKET_PC)
-      prefs->SetPref(PWSprefs::BoolPrefs::DCShowsPassword,
+      prefs->SetPref(PWSprefs::DCShowsPassword,
                      display.m_dcshowspassword == TRUE);
 #endif
-      prefs->SetPref(PWSprefs::BoolPrefs::UseSystemTray,
+      prefs->SetPref(PWSprefs::UseSystemTray,
                      display.m_usesystemtray == TRUE);
-      prefs->SetPref(PWSprefs::IntPrefs::MaxREItems,
+      prefs->SetPref(PWSprefs::MaxREItems,
 		    display.m_maxreitems);
-      m_RUEList.SetMax(prefs->GetPref(PWSprefs::IntPrefs::MaxREItems));
+      m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
-      prefs->SetPref(PWSprefs::IntPrefs::MaxMRUItems,
+      prefs->SetPref(PWSprefs::MaxMRUItems,
                      display.m_maxmruitems);
-      prefs->SetPref(PWSprefs::BoolPrefs::MRUOnFileMenu,
+      prefs->SetPref(PWSprefs::MRUOnFileMenu,
                      display.m_mruonfilemenu == TRUE);
 
-      prefs->SetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo,
+      prefs->SetPref(PWSprefs::DontAskMinimizeClearYesNo,
                      security.m_clearclipboard == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::DatabaseClear,
+      prefs->SetPref(PWSprefs::DatabaseClear,
                      security.m_lockdatabase == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize,
+      prefs->SetPref(PWSprefs::DontAskSaveMinimize,
                      security.m_confirmsaveonminimize == FALSE);
-      prefs->SetPref(PWSprefs::BoolPrefs::DontAskQuestion,
+      prefs->SetPref(PWSprefs::DontAskQuestion,
                      security.m_confirmcopy == FALSE);
-      prefs->SetPref(PWSprefs::BoolPrefs::LockOnWindowLock,
+      prefs->SetPref(PWSprefs::LockOnWindowLock,
                      security.m_LockOnWindowLock == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout,
+      prefs->SetPref(PWSprefs::LockOnIdleTimeout,
                      security.m_LockOnIdleTimeout == TRUE);
-      prefs->SetPref(PWSprefs::IntPrefs::IdleTimeout,
+      prefs->SetPref(PWSprefs::IdleTimeout,
                      security.m_IdleTimeOut);
 
-      prefs->SetPref(PWSprefs::IntPrefs::PWLenDefault,
+      prefs->SetPref(PWSprefs::PWLenDefault,
                      passwordpolicy.m_pwlendefault);
-      prefs->SetPref(PWSprefs::BoolPrefs::PWUseLowercase,
+      prefs->SetPref(PWSprefs::PWUseLowercase,
                      passwordpolicy.m_pwuselowercase == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::PWUseUppercase,
+      prefs->SetPref(PWSprefs::PWUseUppercase,
                      passwordpolicy.m_pwuseuppercase == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::PWUseDigits,
+      prefs->SetPref(PWSprefs::PWUseDigits,
                      passwordpolicy.m_pwusedigits == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::PWUseSymbols,
+      prefs->SetPref(PWSprefs::PWUseSymbols,
                      passwordpolicy.m_pwusesymbols == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::PWUseHexDigits,
+      prefs->SetPref(PWSprefs::PWUseHexDigits,
                      passwordpolicy.m_pwusehexdigits == TRUE);
-      prefs-> SetPref(PWSprefs::BoolPrefs::PWEasyVision,
+      prefs-> SetPref(PWSprefs::PWEasyVision,
                       passwordpolicy.m_pweasyvision == TRUE);
 
-      prefs->SetPref(PWSprefs::BoolPrefs::UseDefUser,
+      prefs->SetPref(PWSprefs::UseDefUser,
                      username.m_usedefuser == TRUE);
-      prefs->SetPref(PWSprefs::StringPrefs::DefUserName,
+      prefs->SetPref(PWSprefs::DefUserName,
                      username.m_defusername);
-      prefs->SetPref(PWSprefs::BoolPrefs::QuerySetDef,
+      prefs->SetPref(PWSprefs::QuerySetDef,
                      username.m_querysetdef == TRUE);
 
-      prefs->SetPref(PWSprefs::BoolPrefs::DeleteQuestion,
+      prefs->SetPref(PWSprefs::DeleteQuestion,
                      misc.m_confirmdelete == FALSE);
-      prefs->SetPref(PWSprefs::BoolPrefs::SaveImmediately,
+      prefs->SetPref(PWSprefs::SaveImmediately,
                      misc.m_saveimmediately == TRUE);
-      prefs->SetPref(PWSprefs::BoolPrefs::EscExits,
+      prefs->SetPref(PWSprefs::EscExits,
                      misc.m_escexits == TRUE);
       // by strange coincidence, the values of the enums match the indices
       // of the radio buttons in the following :-)
-      prefs->SetPref(PWSprefs::IntPrefs::DoubleClickAction,
+      prefs->SetPref(PWSprefs::DoubleClickAction,
                      misc.m_doubleclickaction);
 
-      prefs->SetPref(PWSprefs::BoolPrefs::HotKeyEnabled,
+      prefs->SetPref(PWSprefs::HotKeyEnabled,
                      misc.m_hotkey_enabled == TRUE);
-      prefs->SetPref(PWSprefs::IntPrefs::HotKey,
+      prefs->SetPref(PWSprefs::HotKey,
                      misc.m_hotkey_value);
 
       /* Update status bar */
@@ -239,7 +239,7 @@ DboxMain::OnOptions()
       UpdateAlwaysOnTop();
       bool bOldShowPasswordInList = m_bShowPasswordInList;
       m_bShowPasswordInList = prefs->
-        GetPref(PWSprefs::BoolPrefs::ShowPWInList);
+        GetPref(PWSprefs::ShowPWInList);
 
       if (bOldShowPasswordInList != m_bShowPasswordInList)
 		RefreshList();

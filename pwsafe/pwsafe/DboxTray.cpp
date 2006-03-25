@@ -52,7 +52,7 @@ DboxMain::OnTrayLockUnLock()
 	    	ClearClipboard();
 	    	ShowWindow(SW_MINIMIZE);
 	    	if (PWSprefs::GetInstance()->
-                GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+                GetPref(PWSprefs::UseSystemTray))
 	    		ShowWindow(SW_HIDE);
 	      	return;
 	    }

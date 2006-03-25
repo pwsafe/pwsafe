@@ -310,10 +310,10 @@ ThisMfcApp::InitInstance()
   SetRegistryKey(companyname);
 
   int	nMRUItems = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::IntPrefs::MaxMRUItems);
+    GetPref(PWSprefs::MaxMRUItems);
 
   m_mruonfilemenu = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::MRUOnFileMenu);
+    GetPref(PWSprefs::MRUOnFileMenu);
     
   m_mainmenu = new CMenu;
   m_mainmenu->LoadMenu(IDR_MAINMENU);

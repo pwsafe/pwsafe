@@ -136,7 +136,7 @@ DboxMain::DboxMain(CWnd* pParent)
     // If there's no stored preference, this is probably a fresh install.
     // CheckPassword will catch this and handle it correctly
     m_core.SetCurFile(PWSprefs::GetInstance()->
-                      GetPref(PWSprefs::StringPrefs::CurrentFile));
+                      GetPref(PWSprefs::CurrentFile));
   }
 #if !defined(POCKET_PC)
   m_title = _T("");
@@ -279,20 +279,20 @@ DboxMain::InitPasswordSafe()
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
   // AlwaysOnTop preference read from database, if possible, hence set after OpenOnInit
-  m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::AlwaysOnTop);
+  m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop);
   UpdateAlwaysOnTop();
 
   // ... same for UseSystemTray
   // StartSilent trumps preference
   if (!m_IsStartSilent && !PWSprefs::GetInstance()->
-      GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+      GetPref(PWSprefs::UseSystemTray))
     app.HideIcon();
 
-  m_RUEList.SetMax(PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::MaxREItems));
+  m_RUEList.SetMax(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxREItems));
   
   // Set timer for user-defined lockout, if selected
   if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout)) {
+      GetPref(PWSprefs::LockOnIdleTimeout)) {
     const UINT MINUTE = 60*1000;
     TRACE(_T("Starting Idle time lock timer"));
     SetTimer(TIMER_USERLOCK, MINUTE, NULL);
@@ -303,9 +303,9 @@ DboxMain::InitPasswordSafe()
 #if !defined(POCKET_PC)
   // Set Hotkey, if active
   if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::BoolPrefs::HotKeyEnabled)) {
+      GetPref(PWSprefs::HotKeyEnabled)) {
     const DWORD value = DWORD(PWSprefs::GetInstance()->
-                              GetPref(PWSprefs::IntPrefs::HotKey));
+                              GetPref(PWSprefs::HotKey));
     // Following contortions needed 'cause MS couldn't get their
     // act together and keep a consistent interface. Argh.
     WORD v = WORD((value & 0xff) | ((value & 0xff0000) >> 8));
@@ -344,13 +344,13 @@ DboxMain::InitPasswordSafe()
   m_ctlItemList.InsertColumn(2, _T("Notes"));
 
   m_bShowPasswordInEdit = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::ShowPWDefault);
+    GetPref(PWSprefs::ShowPWDefault);
 
   m_bShowPasswordInList = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::ShowPWInList);
+    GetPref(PWSprefs::ShowPWInList);
 
   const CString lastView = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::StringPrefs::LastView);
+    GetPref(PWSprefs::LastView);
   m_IsListView = true;
   if (lastView != _T("list")) {
     // not list mode, so start in tree view.
@@ -361,21 +361,21 @@ DboxMain::InitPasswordSafe()
 
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
-  int i1stWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::Column1Width,
+  int i1stWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column1Width,
                                                    (rect.Width() / iColumnCount +
                                                     rect.Width() % iColumnCount));
-  int i2ndWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::Column2Width,
+  int i2ndWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column2Width,
                                                    rect.Width() / iColumnCount);
-  int i3rdWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::Column3Width,
+  int i3rdWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column3Width,
                                                    rect.Width() / iColumnCount);
 
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
   m_ctlItemList.SetColumnWidth(1, i2ndWidth);
   m_ctlItemList.SetColumnWidth(2, i3rdWidth);
 
-  m_iSortedColumn = PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::SortedColumn);
+  m_iSortedColumn = PWSprefs::GetInstance()->GetPref(PWSprefs::SortedColumn);
   m_bSortAscending = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::SortAscending);
+    GetPref(PWSprefs::SortAscending);
 
   // refresh list will add and size password column if necessary...
   RefreshList();
@@ -408,12 +408,12 @@ DboxMain::InitPasswordSafe()
 #endif
 
   m_core.SetUseDefUser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::BoolPrefs::UseDefUser));
+                       GetPref(PWSprefs::UseDefUser));
   m_core.SetDefUsername(PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::StringPrefs::DefUserName));
+                        GetPref(PWSprefs::DefUserName));
 
   CString szTreeFont = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::StringPrefs::TreeFont);
+    GetPref(PWSprefs::TreeFont);
 
   if (szTreeFont != _T("")) {
     ExtractFont(szTreeFont);
@@ -553,7 +553,7 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
   }
 #else
   switch (PWSprefs::GetInstance()->
-          GetPref(PWSprefs::IntPrefs::DoubleClickAction)) {
+          GetPref(PWSprefs::DoubleClickAction)) {
   case PWSprefs::DoubleClickCopy:
     OnCopyPassword();
     break;
@@ -1021,7 +1021,7 @@ DboxMain::OnImportXML()
 
 void DboxMain::SetChanged(bool changed) // for MyTreeCtrl
 {
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::SaveImmediately)) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
     Save();
   } else {
     m_core.SetChanged(changed);
@@ -1144,7 +1144,7 @@ DboxMain::BackupSafe()
   PWSprefs *prefs = PWSprefs::GetInstance();
   CMyString tempname;
   CMyString currbackup =
-    prefs->GetPref(PWSprefs::StringPrefs::CurrentBackup);
+    prefs->GetPref(PWSprefs::CurrentBackup);
 
 
   //SaveAs-type dialog box
@@ -1175,7 +1175,7 @@ DboxMain::BackupSafe()
     return PWScore::CANT_OPEN_FILE;
   }
 
-  prefs->SetPref(PWSprefs::StringPrefs::CurrentBackup, tempname);
+  prefs->SetPref(PWSprefs::CurrentBackup, tempname);
   return PWScore::SUCCESS;
 }
 
@@ -1625,7 +1625,7 @@ DboxMain::Restore()
   int rc;
   CMyString backup, passkey, temp;
   CMyString currbackup =
-    PWSprefs::GetInstance()->GetPref(PWSprefs::StringPrefs::CurrentBackup);
+    PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   rc = SaveIfChanged();
   if (rc != PWScore::SUCCESS)
@@ -2019,7 +2019,7 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 
   if ( ID_SYSMENU_ALWAYSONTOP == nID ) {
     m_bAlwaysOnTop = !m_bAlwaysOnTop;
-    PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::AlwaysOnTop,
+    PWSprefs::GetInstance()->SetPref(PWSprefs::AlwaysOnTop,
                                      m_bAlwaysOnTop);
     UpdateAlwaysOnTop();
   }
@@ -2263,7 +2263,7 @@ DboxMain::startLockCheckTimer(){
   const UINT INTERVAL = 5000; // every 5 seconds should suffice
 
   if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::BoolPrefs::LockOnWindowLock )==TRUE){
+      GetPref(PWSprefs::LockOnWindowLock )==TRUE){
     TRACE(_T("startLockCheckTimer: Starting timer\n"));
     SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
   } else
@@ -2275,7 +2275,7 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
   // Do NOT pass the ESC along if preference EscExits is false.
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE &&
       !PWSprefs::GetInstance()->
-      GetPref(PWSprefs::BoolPrefs::EscExits)) {
+      GetPref(PWSprefs::EscExits)) {
     return TRUE;
   }
 
@@ -2285,7 +2285,7 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 void DboxMain::ResetIdleLockCounter()
 {
   m_IdleLockCountDown = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::IntPrefs::IdleTimeout);
+    GetPref(PWSprefs::IdleTimeout);
 
 }
 

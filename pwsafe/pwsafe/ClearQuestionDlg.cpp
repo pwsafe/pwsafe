@@ -18,7 +18,7 @@ CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
    : super(CClearQuestionDlg::IDD, pParent)
 {
   m_dontaskquestion =PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::DontAskQuestion);
+    GetPref(PWSprefs::DontAskQuestion);
 }
 
 
@@ -48,7 +48,7 @@ CClearQuestionDlg::OnOK()
    UpdateData(TRUE);
 
    PWSprefs::GetInstance()->
-     SetPref(PWSprefs::BoolPrefs::DontAskQuestion, m_dontaskquestion);
+     SetPref(PWSprefs::DontAskQuestion, m_dontaskquestion);
    super::OnOK();
 }
 //-----------------------------------------------------------------------------

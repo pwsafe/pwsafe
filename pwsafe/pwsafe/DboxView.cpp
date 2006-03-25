@@ -163,7 +163,7 @@ DboxMain::setupBars()
   // Set toolbar according to graphic capabilities, overridable by user choice.
   CDC* pDC = this->GetDC();
   int NumBits = ( pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32 );
-  if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseNewToolbar))  {
+  if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar))  {
     SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
   } else {
     SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
@@ -214,7 +214,7 @@ DboxMain::OnAdd()
     PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
     if (!m_core.GetUseDefUser()
-        && (prefs->GetPref(PWSprefs::BoolPrefs::QuerySetDef))
+        && (prefs->GetPref(PWSprefs::QuerySetDef))
         && (!dataDlg.m_username.IsEmpty())) {
 	  CQuerySetDef defDlg(this);
 	  defDlg.m_message =
@@ -224,8 +224,8 @@ DboxMain::OnAdd()
 	    + _T("put in the dialog each time you add a new item.");
 	  int rc2 = defDlg.DoModal();
 	  if (rc2 == IDOK) {
-        prefs->SetPref(PWSprefs::BoolPrefs::UseDefUser, true);
-        prefs->SetPref(PWSprefs::StringPrefs::DefUserName,
+        prefs->SetPref(PWSprefs::UseDefUser, true);
+        prefs->SetPref(PWSprefs::DefUserName,
                        dataDlg.m_username);
         m_core.SetUseDefUser(true);
         m_core.SetDefUsername(dataDlg.m_username);
@@ -253,7 +253,7 @@ DboxMain::OnAdd()
     SelectEntry(newpos);
     FixListIndexes(m_ctlItemList);
     m_ctlItemList.SetFocus();
-    if (prefs->GetPref(PWSprefs::BoolPrefs::SaveImmediately))
+    if (prefs->GetPref(PWSprefs::SaveImmediately))
       {
         Save();
       }
@@ -300,7 +300,7 @@ DboxMain::OnDelete()
 
   m_LockDisabled = true;
   const bool dontaskquestion = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::DeleteQuestion);
+    GetPref(PWSprefs::DeleteQuestion);
 
   bool dodelete = true;
     
@@ -362,7 +362,7 @@ DboxMain::OnDelete()
           const bool orig_dont_ask = dontaskquestion;
           // don't question user for each leaf!
           PWSprefs::GetInstance()->
-            SetPref(PWSprefs::BoolPrefs::DeleteQuestion, true);
+            SetPref(PWSprefs::DeleteQuestion, true);
 
           while (cti != NULL) {
             m_ctlItemTree.SelectItem(cti);
@@ -372,7 +372,7 @@ DboxMain::OnDelete()
 
           // restore original preference after recursion
           PWSprefs::GetInstance()->
-            SetPref(PWSprefs::BoolPrefs::DeleteQuestion, orig_dont_ask);
+            SetPref(PWSprefs::DeleteQuestion, orig_dont_ask);
 
           //  delete an empty group.
           HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            
@@ -457,7 +457,7 @@ DboxMain::OnEdit()
       insertItem(m_core.GetTailEntry());
       FixListIndexes(m_ctlItemList);
       if (PWSprefs::GetInstance()->
-          GetPref(PWSprefs::BoolPrefs::SaveImmediately)) {
+          GetPref(PWSprefs::SaveImmediately)) {
         Save();
       }
       rc = SelectEntry(di->list_index);
@@ -529,7 +529,7 @@ DboxMain::OnDuplicateEntry()
     insertItem(m_core.GetTailEntry());
     FixListIndexes(m_ctlItemList);
     if (PWSprefs::GetInstance()->
-        GetPref(PWSprefs::BoolPrefs::SaveImmediately)) {
+        GetPref(PWSprefs::SaveImmediately)) {
       Save();
     }
     int rc = SelectEntry(di->list_index);
@@ -551,10 +551,10 @@ DboxMain::OnOK()
   int rc, rc2;
 
   PWSprefs::IntPrefs WidthPrefs[] = {
-    PWSprefs::IntPrefs::Column1Width,
-    PWSprefs::IntPrefs::Column2Width,
-    PWSprefs::IntPrefs::Column3Width,
-    PWSprefs::IntPrefs::Column4Width,
+    PWSprefs::Column1Width,
+    PWSprefs::Column2Width,
+    PWSprefs::Column3Width,
+    PWSprefs::Column4Width,
   };
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -573,8 +573,8 @@ DboxMain::OnOK()
     prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
   }
 #endif
-  prefs->SetPref(PWSprefs::IntPrefs::SortedColumn, m_iSortedColumn);
-  prefs->SetPref(PWSprefs::BoolPrefs::SortAscending, m_bSortAscending);
+  prefs->SetPref(PWSprefs::SortedColumn, m_iSortedColumn);
+  prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
 
   if (m_core.IsChanged()) {
     rc = MessageBox(_T("Do you want to save changes to the password list?"),
@@ -596,15 +596,15 @@ DboxMain::OnOK()
   // is enabled, we should do so, regardless of the DontAskMinimizeClearYesNo
   // pref
   if (!IsWindowVisible() &&
-      prefs->GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {
+      prefs->GetPref(PWSprefs::UseSystemTray)) {
     ClearClipboard();
-  } else if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
+  } else if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
     ClearClipboard();
 
   ClearData();
 
   //Store current filename for next time...
-  prefs->SetPref(PWSprefs::StringPrefs::CurrentFile, m_core.GetCurFile());
+  prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
   CDialog::OnOK();
 }
@@ -615,7 +615,7 @@ DboxMain::OnCancel()
 {
   // If system tray is enabled, cancel (X on title bar) closes
   // window, else exit application
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseSystemTray))
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
     ShowWindow(SW_MINIMIZE);
   else
     OnOK();
@@ -796,11 +796,11 @@ DboxMain::RefreshList()
     m_ctlItemList.GetClientRect(&rect);
     m_ctlItemList.SetColumnWidth(3,
                                  PWSprefs::GetInstance()->
-                                 GetPref(PWSprefs::IntPrefs::Column4Width,
+                                 GetPref(PWSprefs::Column4Width,
                                          rect.Width() / 4));
   }
   else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
-    PWSprefs::GetInstance()->SetPref(PWSprefs::IntPrefs::Column4Width,
+    PWSprefs::GetInstance()->SetPref(PWSprefs::Column4Width,
                                      lvColumn.cx);
     m_ctlItemList.DeleteColumn(3);
   }
@@ -861,10 +861,10 @@ DboxMain::OnSize(UINT nType,
       m_ctlItemList.DeleteAllItems();
       m_ctlItemTree.DeleteAllItems();
 
-      if (prefs->GetPref(PWSprefs::BoolPrefs::DontAskMinimizeClearYesNo))
+      if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
         ClearClipboard();
-      if (prefs->GetPref(PWSprefs::BoolPrefs::DatabaseClear)) {
-        bool dontask = prefs->GetPref(PWSprefs::BoolPrefs::DontAskSaveMinimize);
+      if (prefs->GetPref(PWSprefs::DatabaseClear)) {
+        bool dontask = prefs->GetPref(PWSprefs::DontAskSaveMinimize);
         bool doit = true;
         if ((m_core.IsChanged()) && !dontask) {
 	      CRemindSaveDlg remindDlg(this);
@@ -888,7 +888,7 @@ DboxMain::OnSize(UINT nType,
           }
       }
       if (PWSprefs::GetInstance()->
-          GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {      
+          GetPref(PWSprefs::UseSystemTray)) {      
         app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
         ShowWindow(SW_HIDE);
       }
@@ -909,7 +909,7 @@ DboxMain::OnSize(UINT nType,
 			int rc, rc2;
           CMyString temp;
 
-          if (!PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {
+          if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
             rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
 			} else {
 				rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
@@ -1073,7 +1073,7 @@ void
 DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *) 
 {
   const int dca = int(PWSprefs::GetInstance()->
-		      GetPref(PWSprefs::IntPrefs::DoubleClickAction));
+		      GetPref(PWSprefs::DoubleClickAction));
   UINT statustext;
   switch (dca) {
   case PWSprefs::DoubleClickCopy: statustext = IDS_STATCOPY; break;
@@ -1273,7 +1273,7 @@ DboxMain::SetListView()
 {
   m_ctlItemTree.ShowWindow(SW_HIDE);
   m_ctlItemList.ShowWindow(SW_SHOW);
-  PWSprefs::GetInstance()->SetPref(PWSprefs::StringPrefs::LastView,
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
 				   _T("list"));
 }
 
@@ -1282,21 +1282,21 @@ DboxMain::SetTreeView()
 {
   m_ctlItemList.ShowWindow(SW_HIDE);
   m_ctlItemTree.ShowWindow(SW_SHOW);
-  PWSprefs::GetInstance()->SetPref(PWSprefs::StringPrefs::LastView,
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
                                    _T("tree"));
 }
 
 void
 DboxMain::OnOldToolbar() 
 {
-  PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::UseNewToolbar, false);
+  PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, false);
   SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
 }
 
 void
 DboxMain::OnNewToolbar() 
 {
-  PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::UseNewToolbar, true);
+  PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, true);
   SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
 }
 
@@ -1540,7 +1540,7 @@ DboxMain::OnChangeFont()
                lf.lfFaceName);
         	
     PWSprefs *prefs = PWSprefs::GetInstance();        	
-    prefs->SetPref(PWSprefs::StringPrefs::TreeFont, str);
+    prefs->SetPref(PWSprefs::TreeFont, str);
   }
 }
 
