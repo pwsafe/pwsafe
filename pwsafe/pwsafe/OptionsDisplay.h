@@ -28,6 +28,7 @@ public:
 #if defined(POCKET_PC)
 	BOOL	m_dcshowspassword;
 #endif
+	int		m_maxreitems;
 	BOOL    m_usesystemtray;
 	int		m_maxmruitems;
 	BOOL	m_mruonfilemenu;
@@ -45,7 +46,8 @@ public:
 protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsDisplay)
-		// NOTE: the ClassWizard will add member functions here
+	afx_msg void OnUseSystemTray();
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

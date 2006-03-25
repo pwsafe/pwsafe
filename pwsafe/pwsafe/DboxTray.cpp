@@ -14,6 +14,7 @@
 #endif
 
 #include "DboxMain.h"
+#include "RUEList.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/pwscore.h"
 
@@ -45,7 +46,7 @@ DboxMain::OnTrayLockUnLock()
 			UpdateSystemTray(UNLOCKED);
 			RefreshList();
 	    } else {
-	    	m_needsreading = TRUE;
+	    	m_needsreading = true;
 	    	m_existingrestore = FALSE;
 	    	UpdateSystemTray(LOCKED);
 	    	ClearClipboard();
@@ -85,7 +86,7 @@ DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
 void
 DboxMain::OnTrayClearRecentEntries()
 {
-  ClearTrayRecentEntries();
+	m_RUEList.ClearEntries();
 }
 
 void
@@ -101,7 +102,7 @@ DboxMain::OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI)
         return;
     }
     // otherwise enable
-	if (m_RecentEntriesList.GetCount() != 0)
+	if (m_RUEList.GetCount() != 0)
 		pCmdUI->Enable(TRUE);
 	else
 		pCmdUI->Enable(FALSE);
@@ -110,15 +111,11 @@ DboxMain::OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI)
 void
 DboxMain::OnTrayCopyUsername(UINT nID)
 {
-	POSITION pw_listpos;  // for password list
-
 	ASSERT((nID >= ID_MENUITEM_TRAYCOPYUSERNAME1) && (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
 
-	pw_listpos = GetPWEntryFromREList(nID - ID_MENUITEM_TRAYCOPYUSERNAME1);
-	if (pw_listpos == NULL)
-		return;
-
-	CItemData &ci = m_core.GetEntryAt(pw_listpos);
+	CItemData ci;
+	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci);
+	if (&ci == NULL) return;
 	const CMyString username = ci.GetUser();
 	if (!username.IsEmpty())
 		ToClipboard(username);
@@ -132,16 +129,11 @@ DboxMain::OnUpdateTrayCopyUsername(CCmdUI *)
 void
 DboxMain::OnTrayCopyPassword(UINT nID)
 {
-	POSITION pw_listpos;  // for password list
-
 	ASSERT((nID >= ID_MENUITEM_TRAYCOPYPASSWORD1) && (nID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX));
 
-	pw_listpos = GetPWEntryFromREList(nID - ID_MENUITEM_TRAYCOPYPASSWORD1);
-	if (pw_listpos == NULL)
-		return;
-
-	// Copy password to clipboard
-	CItemData &ci = m_core.GetEntryAt(pw_listpos);
+	CItemData ci;
+	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci);
+	if (&ci == NULL) return;
 	const CMyString curPassString = ci.GetPassword();
 	ToClipboard(curPassString);
 }
@@ -154,44 +146,31 @@ DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
 void
 DboxMain::OnTrayBrowse(UINT nID)
 {
-  POSITION pw_listpos;  // for password list
+	ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
 
-  ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
+	CItemData ci;
+	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
+	if (&ci == NULL) return;
 
-  pw_listpos = GetPWEntryFromREList(nID - ID_MENUITEM_TRAYBROWSE1);
-  if (pw_listpos == NULL)
-    return;
-
-  // Show the embedded URL
-  CItemData &ci = m_core.GetEntryAt(pw_listpos);
-  CMyString browseURL = ci.GetURL();
-  if (!browseURL.IsEmpty()) { // XXX factor out with OnBrowse
-    HINSTANCE stat = ::ShellExecute(NULL, NULL, browseURL,
-                                    NULL, _T("."), SW_SHOWNORMAL);
-    if (int(stat) < 32) {
-#ifdef _DEBUG
-      AfxMessageBox("oops");
-#endif
-    }
-  }
+	CMyString browseURL = ci.GetURL();
+	if (!browseURL.IsEmpty()) {
+		LaunchBrowser(browseURL);
+	}
 }
+
 
 void
 DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 {
-	// UNUSED_PARAMETER(pCmdUI);
-	POSITION pw_listpos;  // for password list
-	
 	int nID = pCmdUI->m_nID;
 
 	ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
 
-	pw_listpos = GetPWEntryFromREList(nID - ID_MENUITEM_TRAYBROWSE1);
-	if (pw_listpos == NULL)
-		return;
+	CItemData ci;
+	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
+	if (&ci == NULL) return;
 
 	// Has it an embedded URL
-	CItemData &ci = m_core.GetEntryAt(pw_listpos);
 	if (ci.GetURL().IsEmpty()) {
 		pCmdUI->Enable(FALSE);
 	}
@@ -200,14 +179,9 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 void
 DboxMain::OnTrayDeleteEntry(UINT nID)
 {
-	POSITION re_listpos;  // for recent entry list
-
 	ASSERT((nID >= ID_MENUITEM_TRAYDELETE1) && (nID <= ID_MENUITEM_TRAYDELETEMAX));
 
-	re_listpos = m_RecentEntriesList.FindIndex(nID - ID_MENUITEM_TRAYDELETE1);
-	ASSERT(re_listpos != NULL);
-
-	m_RecentEntriesList.RemoveAt(re_listpos);
+	m_RUEList.DeleteRUEntry(nID - ID_MENUITEM_TRAYDELETE1);
 }
 
 void
@@ -218,129 +192,17 @@ DboxMain::OnUpdateTrayDeleteEntry(CCmdUI *)
 void
 DboxMain::OnTrayAutoType(UINT nID)
 {
-	POSITION pw_listpos;  // for password list
-
 	ASSERT((nID >= ID_MENUITEM_TRAYAUTOTYPE1) && (nID <= ID_MENUITEM_TRAYAUTOTYPEMAX));
 
-	pw_listpos = GetPWEntryFromREList(nID - ID_MENUITEM_TRAYAUTOTYPE1);
-	if (pw_listpos == NULL)
-		return;
-
-	const CItemData &ci = m_core.GetEntryAt(pw_listpos);
+	CItemData ci;
+	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci);
+	if (&ci == NULL) return;
 	AutoType(ci);
 }
 
 void
 DboxMain::OnUpdateTrayAutoType(CCmdUI *)
 {
-}
-
-void
-DboxMain::ClearTrayRecentEntries()
-{
-	m_RecentEntriesList.RemoveAll();
-}
-
-void
-DboxMain::AddTrayRecentEntry(const CMyString &group, const CMyString &title,
-                             const CMyString &user)
-{
-	CMyString cEntry =
-      MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
-	POSITION re_listpos;
-
-	re_listpos = m_RecentEntriesList.GetHeadPosition();
-	while (re_listpos != NULL)
-	{
-		const CMyString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
-		if (re_Entry == cEntry)
-			break;
-		else
-			m_RecentEntriesList.GetNext(re_listpos);
-	}
-
-	const int maxmruitems = 25; // XXX TBD PWSprefs::GetInstance()->
-                                // GetPref(PWSprefs::IntPrefs::MaxREItems);
-
-	if (re_listpos == NULL) {
-		if (m_RecentEntriesList.GetCount() == maxmruitems)
-			m_RecentEntriesList.RemoveTail();
-
-		m_RecentEntriesList.AddHead(cEntry);
-	} else {
-		m_RecentEntriesList.RemoveAt(re_listpos);
-		m_RecentEntriesList.AddHead(cEntry);
-	}
-}
-
-void
-DboxMain::RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldtitle,
-                                const CMyString &olduser, const CMyString &newgroup,
-                                const CMyString &newtitle, const CMyString &newuser)
-{
-	CMyString coldEntry = 
-      MRE_FS + oldgroup + MRE_FS + oldtitle + MRE_FS + olduser + MRE_FS;
-
-	POSITION re_listpos = m_RecentEntriesList.GetHeadPosition();
-
-	while (re_listpos != NULL)
-	{
-		const CMyString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
-		if (re_Entry == coldEntry)
-			break;
-		else
-			m_RecentEntriesList.GetNext(re_listpos);
-	}
-
-	if (re_listpos != NULL)
-      m_RecentEntriesList.RemoveAt(re_listpos);
-
-	CMyString cnewEntry =
-      MRE_FS + newgroup + MRE_FS + newtitle + MRE_FS + newuser + MRE_FS;
-	m_RecentEntriesList.AddHead(cnewEntry);
-}
-
-void
-DboxMain::DeleteTrayRecentEntry(const CMyString &group, const CMyString &title,
-                                const CMyString &user)
-{
-	CMyString	cEntry =
-      MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
-
-	POSITION re_listpos = m_RecentEntriesList.GetHeadPosition();
-	while (re_listpos != NULL)
-	{
-		const CMyString &re_Entry = m_RecentEntriesList.GetAt(re_listpos);
-		if (re_Entry == cEntry) {
-			m_RecentEntriesList.RemoveAt(re_listpos);
-			break;
-		} else
-			m_RecentEntriesList.GetNext(re_listpos);
-	}
-}
-
-POSITION
-DboxMain::GetPWEntryFromREList(UINT nID_offset)
-{
-    CMyString group, title, user;
-    POSITION re_listpos;  // for recent entry list
-	POSITION pw_listpos;  // for password list
-
-	re_listpos = m_RecentEntriesList.FindIndex(nID_offset);
-	const CMyString &cEntry = m_RecentEntriesList.GetAt(re_listpos);
-
-	// Entry format: >group>title>username>
-    AfxExtractSubString(group, cEntry, 1, MRE_FS[0]);
-    AfxExtractSubString(title, cEntry, 2, MRE_FS[0]);
-    AfxExtractSubString(user, cEntry, 3, MRE_FS[0]);
-
-	pw_listpos = app.m_core.Find(group, title, user);
-	if (pw_listpos == NULL) {
-		// Entry does not exist anymore!
-		m_RecentEntriesList.RemoveAt(re_listpos);
-		AfxMessageBox(_T("Cannot process as this entry has been deleted from the open database."));
-	}
-	return pw_listpos;
 }
 
 #endif

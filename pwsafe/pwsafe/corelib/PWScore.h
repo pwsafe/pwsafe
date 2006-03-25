@@ -84,6 +84,7 @@ class PWScore {
  // Find in m_pwlist by title and user name, exact match
   POSITION Find(const CMyString &a_group,
 		const CMyString &a_title, const CMyString &a_user);
+  POSITION Find(const uuid_array_t &RUEuuid);
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...

@@ -165,6 +165,8 @@
 #define IDC_STATIC_GBMRU                1110
 #define IDC_MRU_ONFILEMENU              1111
 #define IDC_STATIC_RESTART              1112
+#define IDC_STATIC_MAXREITEMS           1113
+#define IDC_MAXREITEMS                  1114
 #define IDC_MORE                        1115
 #define IDC_URL                         1116
 #define IDC_AUTOTYPE                    1117

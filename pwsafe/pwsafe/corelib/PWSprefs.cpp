@@ -58,6 +58,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("IdleTimeout"), 5, true},
   {_T("HotKey"), 0, true}, // zero means disabled, !=0 is key code.
   {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
+  {_T("MaxREItems"), 25, true},
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

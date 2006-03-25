@@ -184,7 +184,6 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       DWORD itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
-      CMyString oldTitle(ci->GetTitle()), oldUser(ci->GetUser());
       CString newTitle, newUser;
       splitLeafText(ptvinfo->item.pszText, newTitle, newUser);
       if (newUser.IsEmpty())
@@ -202,8 +201,6 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
       // update the password database record.
       ci->SetTitle(newTitle); ci->SetUser(newUser);
-      parent->RenameTrayRecentEntry(ci->GetGroup(), oldTitle, oldUser,
-                                    ci->GetGroup(), newTitle, newUser);
       // update corresponding List mode text
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       ASSERT(di != NULL);

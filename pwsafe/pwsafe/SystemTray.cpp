@@ -78,9 +78,9 @@ CSystemTray::CSystemTray()
 #endif
 
 CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
-                         HICON icon, CList<CMyString,CMyString&> &recentEntriesList,
+                         HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-  : m_RecentEntriesList(recentEntriesList)
+  : m_RUEList(RUEList)
 {
   Initialise();
   Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
@@ -454,16 +454,14 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
       pContextMenu = menu.GetSubMenu(0);
       if (!pContextMenu) return 0;
 
-      CMyString cEntry, group, title, user;
       CMenu *pMainRecentEntriesMenu;
-      POSITION re_listpos;
       int irc;
 
       pMainRecentEntriesMenu = pContextMenu->GetSubMenu(2);
 
       CMenu *pNewRecentEntryMenu[ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1];
 
-      int num_recent_entries = m_RecentEntriesList.GetCount();
+      int num_recent_entries = m_RUEList.GetCount();
 
       if (num_recent_entries == 0) {
         // Only leave the "Clear Entries" menu item (greyed out in ON_UPDATE_COMMAND_UI function)
@@ -472,24 +470,11 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         pMainRecentEntriesMenu->RemoveMenu(1, MF_BYPOSITION);  // Help entry
       } else {
         // Build extra popup menus (1 per entry in list)
-        re_listpos = m_RecentEntriesList.GetHeadPosition();
+        m_RUEList.GetAllMenuItemStrings(m_menulist);
+        POSITION ml_pos = m_menulist.GetHeadPosition();
 
         for (int i = 0; i < num_recent_entries; i++) {
-          cEntry = m_RecentEntriesList.GetAt(re_listpos);
-          AfxExtractSubString(group, cEntry, 1, MRE_FS[0]);
-          AfxExtractSubString(title, cEntry, 2, MRE_FS[0]);
-          AfxExtractSubString(user, cEntry, 3, MRE_FS[0]);
-
-          if (group.IsEmpty())
-            group = _T("*");
-
-          if (title.IsEmpty())
-            title = _T("*");
-
-          if (user.IsEmpty())
-            user = _T("*");
-
-          cEntry = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
+          const CMyString cEntry = m_menulist.GetNext(ml_pos);
 
           pNewRecentEntryMenu[i] = new CMenu;
           pNewRecentEntryMenu[i]->CreatePopupMenu();
@@ -519,8 +504,6 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
           irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
                                                    (UINT)pNewRecentEntryMenu[i]->m_hMenu, cEntry);
           ASSERT(irc != 0);
-
-          m_RecentEntriesList.GetNext(re_listpos);
         }
       }
 
@@ -541,6 +524,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
       for (int i = 0; i < num_recent_entries; i++)
         delete pNewRecentEntryMenu[i];
 
+      m_menulist.RemoveAll();
       menu.DestroyMenu();
     } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
       ASSERT(pTarget != NULL);

@@ -288,6 +288,8 @@ DboxMain::InitPasswordSafe()
       GetPref(PWSprefs::BoolPrefs::UseSystemTray))
     app.HideIcon();
 
+  m_RUEList.SetMax(PWSprefs::GetInstance()->GetPref(PWSprefs::IntPrefs::MaxREItems));
+  
   // Set timer for user-defined lockout, if selected
   if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::BoolPrefs::LockOnIdleTimeout)) {
@@ -576,14 +578,10 @@ void DboxMain::OnBrowse()
   CItemData *ci = getSelectedItem();
   if(ci != NULL) {
 	if (!ci->GetURL().IsEmpty()) {
-      HINSTANCE stat = ::ShellExecute(NULL, NULL, ci->GetURL(),
-                                      NULL, _T("."), SW_SHOWNORMAL);
-      if (int(stat) < 32) {
-#ifdef _DEBUG
-        AfxMessageBox("oops");
-#endif
-      }
-      AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
+			LaunchBrowser(m_BrowseURL);
+			uuid_array_t RUEuuid;
+			ci->GetUUID(RUEuuid);
+			m_RUEList.AddRUEntry(RUEuuid);
 	}
   }
 }
@@ -640,7 +638,9 @@ DboxMain::OnCopyPassword()
   CItemData *ci = getSelectedItem();
   ASSERT(ci != NULL);
   ToClipboard(ci->GetPassword());
-  AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
+  uuid_array_t RUEuuid;
+  ci->GetUUID(RUEuuid);
+  m_RUEList.AddRUEntry(RUEuuid);
 }
 
 void
@@ -655,7 +655,9 @@ DboxMain::OnCopyUsername()
 
   if (!username.IsEmpty()) {
     ToClipboard(username);
-    AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
+    uuid_array_t RUEuuid;
+    ci->GetUUID(RUEuuid);
+    m_RUEList.AddRUEntry(RUEuuid);
   }
 }
 
@@ -1215,7 +1217,7 @@ DboxMain::Open()
 
       if ( rc == PWScore::SUCCESS ) {
         UpdateSystemTray(UNLOCKED);
-        m_RecentEntriesList.RemoveAll();
+        m_RUEList.ClearEntries();
         break;
       }
     } else {
