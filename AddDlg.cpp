@@ -24,7 +24,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
     m_URL(_T("")), m_autotype(_T(""))
 {
   m_isExpanded = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::DisplayExpandedAddEditDlg);
+    GetPref(PWSprefs::DisplayExpandedAddEditDlg);
   	  
 }
 

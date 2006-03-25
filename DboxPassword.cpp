@@ -35,19 +35,19 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
 
   COptionsPasswordPolicy  passwordpolicy;
   passwordpolicy.m_pwlendefault = prefs->
-    GetPref(PWSprefs::IntPrefs::PWLenDefault);
+    GetPref(PWSprefs::PWLenDefault);
   passwordpolicy.m_pwuselowercase = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseLowercase);
+    GetPref(PWSprefs::PWUseLowercase);
   passwordpolicy.m_pwuseuppercase = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseUppercase);
+    GetPref(PWSprefs::PWUseUppercase);
   passwordpolicy.m_pwusedigits = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseDigits);
+    GetPref(PWSprefs::PWUseDigits);
   passwordpolicy.m_pwusesymbols = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseSymbols);
+    GetPref(PWSprefs::PWUseSymbols);
   passwordpolicy.m_pwusehexdigits = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWUseHexDigits);
+    GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
-    GetPref(PWSprefs::BoolPrefs::PWEasyVision);
+    GetPref(PWSprefs::PWEasyVision);
 
   if (is_override) {
     // Start with existing password policy

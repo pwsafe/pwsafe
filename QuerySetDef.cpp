@@ -46,7 +46,7 @@ END_MESSAGE_MAP()
 void CQuerySetDef::OnOK() 
 {
    UpdateData(TRUE);
-   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::QuerySetDef,
+   PWSprefs::GetInstance()->SetPref(PWSprefs::QuerySetDef,
 				    m_querycheck == FALSE);
    super::OnOK();
 }
@@ -55,7 +55,7 @@ void CQuerySetDef::OnOK()
 void CQuerySetDef::OnCancel()
 {
    UpdateData(TRUE);
-   PWSprefs::GetInstance()->SetPref(PWSprefs::BoolPrefs::QuerySetDef,
+   PWSprefs::GetInstance()->SetPref(PWSprefs::QuerySetDef,
 				    m_querycheck == FALSE);
    super::OnCancel();
 }

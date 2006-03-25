@@ -178,7 +178,7 @@ BOOL CEditDlg::OnInitDialog()
  
    SetPasswordFont(GetDlgItem(IDC_PASSWORD));
 
-   if (PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::ShowPWDefault))
+   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault))
    {
       ShowPassword();
    }
@@ -191,7 +191,7 @@ BOOL CEditDlg::OnInitDialog()
      GetDlgItem(IDOK)->EnableWindow(FALSE);
    }
     m_isExpanded = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::DisplayExpandedAddEditDlg);
+    GetPref(PWSprefs::DisplayExpandedAddEditDlg);
 	ResizeDialog();
    return TRUE;
 }

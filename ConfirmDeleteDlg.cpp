@@ -23,7 +23,7 @@ CConfirmDeleteDlg::CConfirmDeleteDlg(CWnd* pParent)
    : super(CConfirmDeleteDlg::IDD, pParent)
 {
   m_dontaskquestion =PWSprefs::GetInstance()->
-    GetPref(PWSprefs::BoolPrefs::DeleteQuestion);
+    GetPref(PWSprefs::DeleteQuestion);
 }
 
 
@@ -53,7 +53,7 @@ CConfirmDeleteDlg::OnOK()
 {
    UpdateData(TRUE);
    PWSprefs::GetInstance()->
-     SetPref(PWSprefs::BoolPrefs::DeleteQuestion, m_dontaskquestion);
+     SetPref(PWSprefs::DeleteQuestion, m_dontaskquestion);
    super::OnOK();
 }
 //-----------------------------------------------------------------------------

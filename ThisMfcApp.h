@@ -41,7 +41,7 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
   BOOL SetTooltipText(LPCTSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
   BOOL SetMenuDefaultItem(UINT uItem) {return m_TrayIcon->SetMenuDefaultItem(uItem, FALSE);}
-  BOOL IsIconVisible() {return m_TrayIcon->Visible();}
+  BOOL IsIconVisible() const {return m_TrayIcon->Visible();}
   void ShowIcon() {m_TrayIcon->ShowIcon();}
   void HideIcon() {m_TrayIcon->HideIcon();}
 
