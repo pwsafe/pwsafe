@@ -79,6 +79,21 @@ void COptionsDisplay::OnUseSystemTray()
 BOOL COptionsDisplay::OnInitDialog() 
 {
 	CPropertyPage::OnInitDialog();
+
+	CString csStr, csNum;
+	int len;
+
+	GetDlgItem(IDC_STATIC_MAXMRUITEMS)->GetWindowText(csStr);
+	len = csStr.GetLength();
+	csNum.Format(_T("%d"), ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
+	csStr = csStr.Left(len-3) + csNum + _T(")");
+	GetDlgItem(IDC_STATIC_MAXMRUITEMS)->SetWindowText(csStr);
+
+	GetDlgItem(IDC_STATIC_MAXREITEMS)->GetWindowText(csStr);
+	len = csStr.GetLength();
+	csNum.Format(_T("%d"),  ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
+	csStr = csStr.Left(len-3) + csNum + _T(")");
+	GetDlgItem(IDC_STATIC_MAXREITEMS)->SetWindowText(csStr);
 	
 	OnUseSystemTray();
 	
