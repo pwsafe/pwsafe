@@ -103,18 +103,13 @@ static const int MAX_TTT_LEN = 64; // Max tooltip text length
 static void NormalizeTTT(LPCTSTR in, LPTSTR out)
 {
   CString t(in), ttt;
-  if (t.GetLength() > MAX_TTT_LEN) {
-    ttt = t.Left(MAX_TTT_LEN/2-5) + 
+  if (t.GetLength() > MAX_TTT_LEN - 1) {
+    ttt = t.Left(MAX_TTT_LEN/2-6) + 
       _T(" ... ") + t.Right(MAX_TTT_LEN/2);
   } else {
     ttt = t;
   }
-#ifndef UNICODE
-  memset(out, 0, MAX_TTT_LEN); // brute-force trailing zero
-#else
-  wmemset(out, 0, MAX_TTT_LEN); // brute-force trailing zero
-#endif
-  _tcsncpy(out, ttt, MAX_TTT_LEN);
+  _tcsncpy(out, ttt, MAX_TTT_LEN);  // _tcsncpy ensures trailing null
 }
 
 BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
@@ -146,7 +141,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
   m_tnd.hIcon  = icon;
   m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
   m_tnd.uCallbackMessage = uCallbackMessage;
-  _tcscpy(m_tnd.szTip, ttt);
+  _tcsncpy(m_tnd.szTip, ttt, MAX_TTT_LEN);
 
   // Set the tray icon
   m_bEnabled = Shell_NotifyIcon(NIM_ADD, &m_tnd);
@@ -333,12 +328,12 @@ BOOL CSystemTray::StopAnimation()
 BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip)
 {
   if (!m_bEnabled) return FALSE;
-  // Tray only supports tooltip text up to MAX_TTT_LEN characters
+  // Tray only supports tooltip text up to MAX_TTT_LEN characters (remember trailing null)
   // Truncate gracefully to MAX_TTT_LEN (... in middle)
   TCHAR ttt[MAX_TTT_LEN];
   NormalizeTTT(pszTip, ttt);
   m_tnd.uFlags = NIF_TIP;
-  _tcscpy(m_tnd.szTip, ttt);
+  _tcsncpy(m_tnd.szTip, ttt, MAX_TTT_LEN);
 
   return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }
