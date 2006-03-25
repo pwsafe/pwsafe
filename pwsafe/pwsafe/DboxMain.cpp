@@ -1710,7 +1710,8 @@ DboxMain::SaveAs()
   int rc;
   CMyString newfile;
 
-  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT) {
+  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
+      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
     CMyString msg = _T("The original database, \"");
     msg += m_core.GetCurFile();
     msg += _T("\", is in pre-3.0 format. The data will now be written in the new"

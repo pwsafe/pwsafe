@@ -350,7 +350,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   ASSERT(N >= 2048); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
     SHA256 H;
-    H.Update(X, sizeof(X));
+    H.Update(X, SHA256::HASHLEN);
     H.Final(X);
   }
 }
