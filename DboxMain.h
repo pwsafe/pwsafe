@@ -14,6 +14,7 @@
   #include "resource.h"
 #endif
 #include "MyTreeCtrl.h"
+#include "RUEList.h"
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -79,18 +80,7 @@ public:
   void SetReadOnly(bool state) { m_IsReadOnly = state;}
   void SetStartSilent(bool state) { m_IsStartSilent = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
-
-  // Tray MRU entry related functions. Implemented in DboxTray.cpp
-  // Move to separate class?
-  void ClearTrayRecentEntries();
-  void AddTrayRecentEntry(const CMyString &group, const CMyString &title,
-                          const CMyString &username);
-  void RenameTrayRecentEntry(const CMyString &oldgroup, const CMyString &oldtitle,
-                             const CMyString &oldusername, const CMyString &newgroup,
-                             const CMyString &newtitle, const CMyString &newusername);
-  void DeleteTrayRecentEntry(const CMyString &group, const CMyString &title,
-                             const CMyString &user);
-  POSITION GetPWEntryFromREList(UINT nID_offset);
+  BOOL LaunchBrowser(const CString &csURL);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -102,7 +92,7 @@ public:
   CMyTreeCtrl     m_ctlItemTree;
   //}}AFX_DATA
   // recent entry lists
-  CList<CMyString,CMyString&> m_RecentEntriesList;
+  CRUEList m_RUEList;
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -293,8 +283,10 @@ protected:
     BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
                           int index = GCP_NORMAL);
+  bool ExtractURL(const CMyString &instr, CMyString &outurl);
 
 private:
+  CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   PWScore  &m_core;
   CMyString m_lastFindStr;
   BOOL m_lastFindCS;

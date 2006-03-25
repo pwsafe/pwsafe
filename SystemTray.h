@@ -26,14 +26,12 @@
 #ifndef _INCLUDED_SYSTEMTRAY_H_
 #define _INCLUDED_SYSTEMTRAY_H_
 
+#include "RUEList.h"
 #include "corelib/MyString.h"
 #include <afxdisp.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
-
-// Following is Most Recent Entry field separator for dynamic menu:
-#define MRE_FS _T("\xbb")
 
 class CSystemTray : public CWnd
 {
@@ -41,7 +39,7 @@ class CSystemTray : public CWnd
 public:
   //    CSystemTray();
     CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
-                CList<CMyString,CMyString&> &recentEntriesList,
+                CRUEList &RUEList,
                 UINT uID, UINT menuID);
     virtual ~CSystemTray();
 
@@ -119,7 +117,8 @@ protected:
     BOOL         m_DefaultMenuItemByPos;
     CWnd *       m_pTarget; // ronys
     static const UINT m_nTaskbarCreatedMsg; //thedavecollins
-    const CList<CMyString,CMyString&> &m_RecentEntriesList; // reference set to dboxmain's
+    const CRUEList &m_RUEList; // reference set to dboxmain's
+    CList<CMyString, CMyString&> m_menulist;
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)

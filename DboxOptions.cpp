@@ -10,6 +10,7 @@
   #include "resource.h"
 #endif
 
+#include "RUEList.h"
 #include "corelib/PWSprefs.h"
 
 // dialog boxen
@@ -52,6 +53,8 @@ DboxMain::OnOptions()
   display.m_dcshowspassword = prefs->
     GetPref(PWSprefs::BoolPrefs::DCShowsPassword) ? TRUE : FALSE;
 #endif
+  display.m_maxreitems = prefs->
+     GetPref(PWSprefs::IntPrefs::MaxREItems);
   display.m_usesystemtray = prefs->
     GetPref(PWSprefs::BoolPrefs::UseSystemTray) ? TRUE : FALSE;
   display.m_maxmruitems = prefs->
@@ -140,6 +143,10 @@ DboxMain::OnOptions()
 #endif
       prefs->SetPref(PWSprefs::BoolPrefs::UseSystemTray,
                      display.m_usesystemtray == TRUE);
+      prefs->SetPref(PWSprefs::IntPrefs::MaxREItems,
+		    display.m_maxreitems);
+      m_RUEList.SetMax(prefs->GetPref(PWSprefs::IntPrefs::MaxREItems));
+
       prefs->SetPref(PWSprefs::IntPrefs::MaxMRUItems,
                      display.m_maxmruitems);
       prefs->SetPref(PWSprefs::BoolPrefs::MRUOnFileMenu,

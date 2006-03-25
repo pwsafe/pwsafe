@@ -423,6 +423,25 @@ PWScore::Find(const CMyString &a_group,const CMyString &a_title, const CMyString
   return listPos;
 }
 
+POSITION
+PWScore::Find(const uuid_array_t &RUEuuid)
+{
+   POSITION listPos = m_pwlist.GetHeadPosition();
+   uuid_array_t pw_uuidEntry;
+
+   while (listPos != NULL)
+   {
+     const CItemData &item = m_pwlist.GetAt(listPos);
+     item.GetUUID(pw_uuidEntry);
+	 if (memcmp(pw_uuidEntry, RUEuuid, sizeof(uuid_array_t)) == 0)
+		 break;
+	 else 
+		 m_pwlist.GetNext(listPos);
+   }
+
+   return listPos;
+}
+
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
                               unsigned char *ciphertext) const
 {

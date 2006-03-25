@@ -249,7 +249,6 @@ DboxMain::OnAdd()
     temp.SetAutoType(dataDlg.m_autotype);
     temp.SetCTime();
     m_core.AddEntryToTail(temp);
-    AddTrayRecentEntry(dataDlg.m_group, dataDlg.m_title, user);
     int newpos = insertItem(m_core.GetTailEntry());
     SelectEntry(newpos);
     FixListIndexes(m_ctlItemList);
@@ -259,6 +258,9 @@ DboxMain::OnAdd()
         Save();
       }
     ChangeOkUpdate();
+	uuid_array_t RUEuuid;
+	temp.GetUUID(RUEuuid);
+	m_RUEList.AddRUEntry(RUEuuid);
   }
   else if (rc == IDCANCEL)
     {
@@ -320,10 +322,8 @@ DboxMain::OnDelete()
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
 	//  Needed for DeleteTrayRecentEntry later on
-    const CMyString group(ci->GetGroup());
-    const CMyString title(ci->GetTitle());
-    const CMyString user(ci->GetUser());
-
+	uuid_array_t RUEuuid;
+	ci->GetUUID(RUEuuid);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     int curSel = di->list_index;
@@ -351,8 +351,8 @@ DboxMain::OnDelete()
         SelectEntry(0);
       m_ctlItemTree.SetFocus();
     }
-    DeleteTrayRecentEntry(group, title, user);
     ChangeOkUpdate();
+    m_RUEList.DeleteRUEntry(RUEuuid);
   } else { // !SelItemOk()
     if (m_ctlItemTree.IsWindowVisible()) {
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
@@ -433,11 +433,6 @@ DboxMain::OnEdit()
     if (rc == IDOK) {
       CMyString temptitle;
       CMyString user;
-      // for system tray menu updating:
-      const CMyString oldgroup(ci->GetGroup());
-      const CMyString oldtitle(ci->GetTitle());
-      const CMyString olduser(ci->GetUser());
-
       if (dlg_edit.m_username.IsEmpty() && m_core.GetUseDefUser())
         user = m_core.GetDefUsername();
       else
@@ -461,8 +456,6 @@ DboxMain::OnEdit()
       di->list_index = -1; // so that insertItem will set new values
       insertItem(m_core.GetTailEntry());
       FixListIndexes(m_ctlItemList);
-      RenameTrayRecentEntry(oldgroup, oldtitle, olduser,
-                            dlg_edit.m_group, dlg_edit.m_title, user);
       if (PWSprefs::GetInstance()->
           GetPref(PWSprefs::BoolPrefs::SaveImmediately)) {
         Save();
@@ -543,8 +536,11 @@ DboxMain::OnDuplicateEntry()
     if (rc == LB_ERR) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
-    AddTrayRecentEntry(ci2_group, ci2_title, ci2_user);
     ChangeOkUpdate();
+	uuid_array_t RUEuuid;
+	ci2.GetUUID(RUEuuid);
+	m_RUEList.AddRUEntry(RUEuuid);
+
   }
   m_LockDisabled = false;
 }
@@ -904,25 +900,23 @@ DboxMain::OnSize(UINT nType,
 
 	  app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
 
-      if ((m_needsreading)
-          && (m_existingrestore == FALSE)
-          && (m_windowok))
-        {
-          m_existingrestore = TRUE;
+		if ((m_needsreading)
+			&& (m_existingrestore == FALSE)
+			&& (m_windowok)) {
+			m_existingrestore = true;
 
-          CMyString passkey;
-          int rc, rc2;
+			CMyString passkey;
+			int rc, rc2;
           CMyString temp;
 
           if (!PWSprefs::GetInstance()->GetPref(PWSprefs::BoolPrefs::UseSystemTray)) {
             rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
-          } else {
-            rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
-          }
-          switch (rc)
-            {
+			} else {
+				rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+			}
+			switch (rc) {
             case PWScore::SUCCESS:
-              rc2 = m_core.ReadCurFile(passkey);
+				rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
               m_title = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
@@ -958,13 +952,13 @@ DboxMain::OnSize(UINT nType,
               m_needsreading = false;
               m_existingrestore = FALSE;
               UpdateSystemTray(UNLOCKED);
-              startLockCheckTimer();
-              RefreshList();
+				startLockCheckTimer();
+				RefreshList();
             } else {
-              m_needsreading = TRUE;
-              m_existingrestore = FALSE;
-              ShowWindow( SW_MINIMIZE );
-              return;
+				m_needsreading = true;
+				m_existingrestore = FALSE;
+				ShowWindow( SW_MINIMIZE );
+				return;
             }
         }
       RefreshList();
@@ -1230,7 +1224,7 @@ DboxMain::ClearData(bool clearMRE)
   m_ctlItemTree.ClearExpanded();
 
   if (clearMRE)
-    ClearTrayRecentEntries();
+    m_RUEList.ClearEntries();
 
   //Because GetText returns a copy, we cannot do anything about the names
   if (m_windowok) {
@@ -1418,9 +1412,11 @@ DboxMain::OnAutoType()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-    // AddTrayRecentEntry must be before AutoType since the latter
-    // may trash *ci if lock-on-minimize
-    AddTrayRecentEntry(ci->GetGroup(), ci->GetTitle(), ci->GetUser());
+	// AddRUEntry must be before AutoType since the latter
+	// may trash *ci if lock-on-minimize
+	uuid_array_t RUEuuid;
+	ci->GetUUID(RUEuuid);
+	m_RUEList.AddRUEntry(RUEuuid);
     AutoType(*ci);
   }
 }
@@ -1600,4 +1596,188 @@ DboxMain::UpdateSystemTray(STATE s)
   default:
     ASSERT(0);
   }
+}
+
+BOOL
+DboxMain::LaunchBrowser(const CString &csURL)
+{
+	CString csBrowser, csTempFileName, csMsg;
+	char lpPathBuffer[MAX_PATH];
+	HANDLE hTempFile;
+	BOOL bError = FALSE;
+	long hinst;
+
+	if (!app.m_csDefault_Browser.IsEmpty()) {
+		hinst = (long)::ShellExecute(NULL, NULL, app.m_csDefault_Browser, csURL,
+					NULL, SW_SHOWNORMAL);
+		return TRUE;
+	}
+
+	// Get the temp path.
+	DWORD dwRetVal = GetTempPath(MAX_PATH - 14, lpPathBuffer);
+
+	if(dwRetVal > MAX_PATH - 14) {
+		csMsg.Format("GetTempPath failed with error %d.\n", GetLastError());
+		AfxMessageBox(csMsg, MB_ICONSTOP);
+		return FALSE;
+	}
+
+	hTempFile = INVALID_HANDLE_VALUE;  // silly compiler warning!
+	// Create a temporary file.
+	for(int i = 1; i < 99999; i++) {
+		csTempFileName.Format("%sPWS%.5d.html", lpPathBuffer, i);
+		hTempFile = CreateFile(csTempFileName, 					// file name
+								GENERIC_READ | GENERIC_WRITE,	// open r-w
+								0,								// do not share
+								NULL,							// default security
+								CREATE_NEW,						// must be new
+								FILE_ATTRIBUTE_NORMAL,			// normal file
+								NULL);							// no template
+		if(hTempFile != INVALID_HANDLE_VALUE)
+			break;
+	}
+
+	if(hTempFile == INVALID_HANDLE_VALUE) {
+		csMsg.Format("Could not create a temporary file to determine default browser.\n");
+		AfxMessageBox(csMsg, MB_ICONSTOP);
+		return FALSE;
+	}
+
+	if(!CloseHandle(hTempFile)) {
+		csMsg.Format("CloseHandle failed with error %d.\n", GetLastError());
+		AfxMessageBox(csMsg, MB_ICONSTOP);
+		return FALSE;
+	}
+
+	hinst = (long)::FindExecutable(csTempFileName, NULL,
+							csBrowser.GetBufferSetLength(MAX_PATH));
+	csBrowser.ReleaseBuffer();
+
+	if(!DeleteFile(csTempFileName)) {
+		csMsg.Format("DeleteFile failed with error %d.\n", GetLastError());
+		bError = TRUE;
+	}
+#ifdef _DEBUG
+	switch(hinst) {
+		case 0:
+			csMsg.Format("The system is out of memory or resources.");
+			bError = TRUE;
+			break;
+		case 31:
+			csMsg.Format("No association for file type of '%s' found.", csTempFileName);
+			bError = TRUE;
+			break;
+		case ERROR_FILE_NOT_FOUND:
+			csMsg.Format("File '%s' not found.", csTempFileName);
+			bError = TRUE;
+			break;
+		case ERROR_PATH_NOT_FOUND:
+			csMsg.Format("Path of file '%s' not found.", csTempFileName);
+			bError = TRUE;
+			break;
+		case ERROR_BAD_FORMAT:
+			csMsg.Format("The executable file '%s' is invalid (non-Win32® .exe or error in .exe image).", csTempFileName);
+			bError = TRUE;
+			break;
+		default:
+			if(hinst < 32) {
+				csMsg.Format("Unknown error %d returned from FindExecutable().", hinst);
+				bError = TRUE;
+			}
+			break;
+	}
+
+	if (bError == TRUE) {
+		AfxMessageBox(csMsg, MB_ICONSTOP);
+		return FALSE;
+	}
+#else
+	if(hinst < 32) {
+		AfxMessageBox("oops can't find your default browser", MB_ICONSTOP);
+		
+		// Display it the old way - re-use any open browser window!
+	    hinst = (long)::ShellExecute(NULL, NULL, csURL, NULL,
+    					NULL, SW_SHOWNORMAL);
+		if(hinst < 32) {
+			AfxMessageBox("oops can't display URL", MB_ICONSTOP);
+			return FALSE;
+		}
+    	return TRUE;
+    }
+#endif
+	hinst = (long)::ShellExecute(NULL, NULL, csBrowser, csURL,
+					NULL, SW_SHOWNORMAL);
+#ifdef _DEBUG
+	switch(hinst) {
+		case 0:
+			csMsg.Format("The operating system is out of memory or resources.");
+			bError = TRUE;
+			break;
+		case ERROR_FILE_NOT_FOUND:
+			csMsg.Format("File '%s' not found.", csBrowser);
+			bError = TRUE;
+			break;
+		case ERROR_PATH_NOT_FOUND:
+			csMsg.Format("Path of file '%s' not found.", csBrowser);
+			bError = TRUE;
+			break;
+		case ERROR_BAD_FORMAT:
+			csMsg.Format("The executable for file '%s' is invalid (non-Win32® .exe or error in .exe image).", csBrowser);
+			bError = TRUE;
+			break;
+		case SE_ERR_ACCESSDENIED:
+			csMsg.Format("The operating system denied access to file '%s'.", csBrowser);
+			bError = TRUE;
+			break;
+		case SE_ERR_ASSOCINCOMPLETE:
+			csMsg.Format("Name association for file %s' is incomplete or invalid.", csBrowser);
+			bError = TRUE;
+			break;
+		case SE_ERR_DDEBUSY:
+			csMsg.Format("The DDE transaction could not be completed because other DDE transactions were being processed.");
+			bError = TRUE;
+			break;
+		case SE_ERR_DDEFAIL:
+			csMsg.Format("The DDE transaction failed.");
+			bError = TRUE;
+			break;
+		case SE_ERR_DDETIMEOUT:
+			csMsg.Format("The DDE transaction could not be completed because the request timed out.");
+			bError = TRUE;
+			break;
+		case SE_ERR_DLLNOTFOUND:
+			csMsg.Format("The specified dynamic-link library was not found.");
+			bError = TRUE;
+			break;
+		case SE_ERR_NOASSOC:
+			csMsg.Format("No association for file type of '%s' found.", csBrowser);
+			bError = TRUE;
+			break;
+		case SE_ERR_OOM:
+			csMsg.Format("The system is out of memory or resources.");
+			bError = TRUE;
+			break;
+		case SE_ERR_SHARE:
+			csMsg.Format("A sharing violation occurred.");
+			bError = TRUE;
+			break;
+		default:
+			if(hinst < 32) {
+				csMsg.Format("Unknown error %d returned from ShellExecute().", hinst);
+				bError = TRUE;
+			}
+	}
+	if (bError == TRUE) {
+		AfxMessageBox(csMsg, MB_ICONSTOP);
+		return FALSE;
+	}
+#else
+	if(hinst < 32) {
+		AfxMessageBox("oops can't display URL", MB_ICONSTOP);
+		return FALSE;
+	}
+#endif
+	// Save default browser - so we do not have to do this again!
+	app.m_csDefault_Browser = csBrowser;
+	return TRUE;
 }

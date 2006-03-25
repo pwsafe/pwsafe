@@ -25,6 +25,7 @@ GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
 MD5SUM = /usr/bin/md5sum
+SHA1SUM = /usr/bin/sha1sum
 FTP_PUT = /usr/bin/ncftpput -v upload.sourceforge.net incoming
 
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
@@ -33,9 +34,9 @@ BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
 	ChangeLog.txt Release/pwsafe.exe pwsafe.chm
 
 .PHONY: all release bin-release src-release installable signatures \
-	upload md5sums
+	upload md5sums sha1sums
 
-all: release installable signatures md5sums
+all: release installable signatures sha1sums
 
 upload:
 	(cd $(RELEASEDIR); \
@@ -47,6 +48,11 @@ upload:
 md5sums:
 	(cd $(RELEASEDIR); \
 	 $(MD5SUM) pwsafe-$(RELEASENAME).exe \
+	 $(BINRELNAME).zip $(SRCRELNAME).zip)
+
+sha1sums:
+	(cd $(RELEASEDIR); \
+	 $(SHA1SUM) pwsafe-$(RELEASENAME).exe \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip)
 
 signatures:

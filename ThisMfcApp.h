@@ -31,6 +31,7 @@ public:
   PWScore m_core;
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
+  CString m_csDefault_Browser;
     
   virtual BOOL InitInstance();
 WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
