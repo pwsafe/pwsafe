@@ -1,4 +1,3 @@
-# $Id$
 # This makefile automates the build of releases for sourceforge
 # The RELEASENAME should be changed per release
 # The RELEASEDIR should be set to whatever works for you.
@@ -9,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.0Beta2-dk-snaphot
+RELEASENAME = 3.0Beta2-dk-snapshot2
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -21,6 +20,7 @@ SRCRELNAME = pwsafe-$(RELEASENAME)-src
 RM = /usr/bin/rm
 CP = /usr/bin/cp
 MV = /usr/bin/mv
+SVN = /usr/bin/svn
 GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
@@ -74,81 +74,7 @@ bin-release:
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
 src-release:
-	@-mkdir $(RELEASEDIR)/$(SRCRELNAME)
-	@$(CP) -R . $(RELEASEDIR)/$(SRCRELNAME)
-	(cd $(RELEASEDIR)/$(SRCRELNAME); \
-     $(RM) -rf .snprj ; \
-	 find . \( -name '*~' -o -name '*.bak' -o -name \*.aps -o \
-		   -name '*.plg' -o -name '*.ncb' -o -name '*.opt' -o \
-		   -name '*.clw' -o -name '*.chm' -name '*.vcp' -o \
-		   -name '*.rej' -o -name '*.orig' -o \
-		   -name '.#*' -o -name '#*#' -o -name '*.pch' -o \
-           -name '*.sav' -o -name '*.old' \) | xargs $(RM) -f; \
-	 $(RM) -f Release/* Debug/* *~ *.bak *.sav *.old ; \
-	 $(RM) -f corelib/Release/* corelib/Debug/* test/Debug/* ; \
-	 find . -type d -name .svn | xargs $(RM) -rf)
+	$(SVN) export --non-interactive . $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR); zip -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
-
-# $Log$
-# Revision 1.19  2005/12/30 13:06:49  ronys
-# Virtualize *Fish classes so that _read/_writecbc can work with both Blow and TwoFish
-#
-# Revision 1.18  2005/12/02 06:32:30  ronys
-# Added dbl-click to bowse option, thanks to Laszlo Gombos
-#
-# Revision 1.17  2005/11/18 17:01:12  ronys
-# Updated help files, fixed Version info in RC, moved old news to ChangeLog.txt
-#
-# Revision 1.16  2005/09/26 05:39:23  ronys
-# Expand/Collapse all entries, selectFont added. [DK]
-#
-# Revision 1.15  2005/09/05 03:43:56  ronys
-# Closing version 2.13 - critical bugfix release
-#
-# Revision 1.14  2005/08/26 16:18:15  ronys
-# Ready for release 2.12
-#
-# Revision 1.13  2005/05/27 15:12:51  ronys
-# Closing 2.11
-#
-# Revision 1.12  2005/04/06 17:52:37  ronys
-# [1162048, 726521] Hotkey restore
-#
-# Revision 1.11  2005/01/15 11:04:52  ronys
-# Updated for 2.08
-#
-# Revision 1.10  2004/11/24 16:14:15  ronys
-# Updated for 2.07
-#
-# Revision 1.9  2004/11/02 18:29:48  ronys
-# Updated for move to new machine
-#
-# Revision 1.8  2004/09/11 18:30:39  ronys
-# Added some convenient targets
-#
-# Revision 1.7  2004/09/10 06:22:52  ronys
-# bump version to 2.05
-#
-# Revision 1.6  2004/07/22 03:43:34  ronys
-# Update for 2.04
-#
-# Revision 1.5  2004/06/11 03:57:30  ronys
-# Moved older changes from ReleaseNotes to ChangeLog.
-#
-# Revision 1.4  2004/06/08 03:34:29  ronys
-# silly mistakes
-#
-# Revision 1.3  2004/06/06 05:32:39  ronys
-# release 2.03
-#
-# Revision 1.2  2004/06/03 20:29:09  ronys
-# Copied from 1.92 branch.
-#
-# Revision 1.1.2.2  2003/08/29 06:17:25  ronys
-# Removed winXP manifest file from the deliverable. I'm told that it's part of the executable...
-#
-# Revision 1.1.2.1  2003/08/09 11:05:41  ronys
-# Added makefile to automate the building of src and binary releases (about time!)
-#
