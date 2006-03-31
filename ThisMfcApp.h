@@ -34,6 +34,7 @@ public:
   CString m_csDefault_Browser;
     
   virtual BOOL InitInstance();
+  virtual int ExitInstance();
 WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
   void		EnableAccelerator()						{ m_bUseAccelerator = true; }

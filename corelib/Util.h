@@ -135,43 +135,15 @@ inline void putInt32(unsigned char buf[4], const int val )
 #endif
 }
 
-inline char * strCopy( char *target, const char *source )
-{
-  return strcpy( target, source );
-}
-
-#if defined(UNICODE)
-inline LPTSTR strCopy( LPTSTR target, LPCTSTR source )
-{
-	return wcscpy( target, source );
-}
-#endif
-
-inline size_t strLength( const char *str )
-{
-	return strlen( str );
-}
-
-#if defined(UNICODE)
-inline size_t strLength( const wchar_t *str )
-{
-	return wcslen( str );
-}
-#endif
-
-inline char * strFind( const char *str, const char *fstr )
-{
-	return strstr( str, fstr );
-}
-
-#if defined(UNICODE)
-inline wchar_t * strFind( const wchar_t *str, const wchar_t *fstr )
-{
-	return wcsstr( str, fstr );
-}
-#endif
-
-extern long		fileLength( FILE *fp );
+class PWSUtil {
+public:
+  // namespace, really, of common utility functions
+  // For Windows implementation, hide Unicode abstraction,
+  // and use secure versions (_s) when available
+  static LPTSTR strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
+  static size_t strLength(const LPCTSTR str);
+  static long fileLength(FILE *fp);
+};
 
 #endif // Util_h
 //-----------------------------------------------------------------------------

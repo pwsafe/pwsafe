@@ -77,6 +77,14 @@ PWSprefs *PWSprefs::GetInstance()
   return self;
 }
 
+void PWSprefs::DeleteInstance()
+{
+  if (self != NULL) {
+    delete self;
+    self = NULL;
+  }
+}
+
 PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_changed(false)
 {
   ASSERT(m_app != NULL);

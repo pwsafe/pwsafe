@@ -94,17 +94,11 @@ int PWSfileV1V2::Open(const CMyString &passkey)
   m_passkey = passkey;
   LPCTSTR passstr = LPCTSTR(m_passkey);
 
+  FOpen();
+  if (m_fd == NULL)
+    return CANT_OPEN_FILE;
+
   if (m_rw == Write) {
-#ifdef UNICODE
-    m_fd = _wfopen((LPCTSTR)m_filename, _T("wb") );
-#else
-    m_fd = fopen((LPCTSTR)m_filename, _T("wb") );
-#endif
-
-    if (m_fd == NULL)
-      return CANT_OPEN_FILE;
-
-
     // Following used to verify passkey against file's passkey
     unsigned char randstuff[StuffSize];
     unsigned char randhash[20];   // HashSize
@@ -129,14 +123,6 @@ int PWSfileV1V2::Open(const CMyString &passkey)
       status = WriteV2Header();
     }
   } else { // open for read
-#ifdef UNICODE
-    m_fd = _wfopen((LPCTSTR) m_filename, _T("rb"));
-#else
-    m_fd = fopen((LPCTSTR) m_filename, _T("rb"));
-#endif
-
-    if (m_fd == NULL)
-      return CANT_OPEN_FILE;
     status = CheckPassword(m_filename, m_passkey, m_fd);
     if (status != SUCCESS) {
       Close();

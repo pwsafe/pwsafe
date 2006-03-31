@@ -368,10 +368,27 @@ _readcbc(FILE *fp,
   return numRead;
 }
 
+// PWSUtil implementations
+
+LPTSTR PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
+{
+#if (_MSC_VER >= 1400)
+  return _tcsncpy_s(target, tcount, source, scount);
+#else
+  tcount; // shut up warning;
+  return _tcsncpy(target, source, scount);
+#endif
+}
+
+size_t PWSUtil::strLength(const LPCTSTR str)
+{
+  return _tcslen(str);
+}
+
 /**
  * Returns the current length of a file.
  */
-long fileLength( FILE *fp )
+long PWSUtil::fileLength(FILE *fp)
 {
   long	pos;
   long	len;

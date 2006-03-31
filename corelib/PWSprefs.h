@@ -25,6 +25,7 @@
 class PWSprefs {
  public:
   static PWSprefs *GetInstance(); // singleton
+  static void DeleteInstance();
 
   // prefString is stored on file, format described in PWSprefs.cpp
   void Load(const CMyString &prefString);

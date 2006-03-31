@@ -103,13 +103,13 @@ static const int MAX_TTT_LEN = 64; // Max tooltip text length
 static void NormalizeTTT(LPCTSTR in, LPTSTR out)
 {
   CString t(in), ttt;
-  if (t.GetLength() > MAX_TTT_LEN - 1) {
+  if (t.GetLength() >= MAX_TTT_LEN) {
     ttt = t.Left(MAX_TTT_LEN/2-6) + 
       _T(" ... ") + t.Right(MAX_TTT_LEN/2);
   } else {
     ttt = t;
   }
-  _tcsncpy(out, ttt, MAX_TTT_LEN);  // _tcsncpy ensures trailing null
+  PWSUtil::strCopy(out, MAX_TTT_LEN, ttt, MAX_TTT_LEN);
 }
 
 BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,

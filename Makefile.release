@@ -9,7 +9,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.0Beta1
+RELEASENAME = 3.0Beta2-dk-snaphot
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 

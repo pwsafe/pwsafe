@@ -44,6 +44,7 @@ class PWSfile {
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
+  void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual int WriteCBC(unsigned char type, const CString &data);
   virtual int WriteCBC(unsigned char type, const unsigned char *data,
                        unsigned int length);
