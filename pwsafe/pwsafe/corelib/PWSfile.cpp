@@ -84,6 +84,17 @@ PWSfile::~PWSfile()
   Close(); // idempotent
 }
 
+void PWSfile::FOpen()
+{
+  TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
+  // calls right variant of m_fd = fopen(m_filename);
+#if _MSC_VER >= 1400
+  _tfopen_s(&m_fd, (LPCTSTR) m_filename, m);
+#else
+  m_fd = _tfopen((LPCTSTR) m_filename, m);
+#endif
+}
+
 
 int PWSfile::Close()
 {

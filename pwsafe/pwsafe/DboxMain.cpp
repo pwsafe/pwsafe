@@ -4,9 +4,8 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-
 #include "ThisMfcApp.h"
-
+#include "PwFont.h"
 #include "corelib/PWSprefs.h"
 
 #if defined(POCKET_PC)
@@ -152,7 +151,8 @@ DboxMain::DboxMain(CWnd* pParent)
 
 DboxMain::~DboxMain()
 {
-  ::DeleteObject( m_hFontTree );
+  ::DeleteObject(m_hFontTree);
+  ReleasePasswordFont();
 }
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
@@ -578,10 +578,10 @@ void DboxMain::OnBrowse()
   CItemData *ci = getSelectedItem();
   if(ci != NULL) {
 	if (!ci->GetURL().IsEmpty()) {
-			LaunchBrowser(m_BrowseURL);
-			uuid_array_t RUEuuid;
-			ci->GetUUID(RUEuuid);
-			m_RUEList.AddRUEntry(RUEuuid);
+      LaunchBrowser(ci->GetURL());
+      uuid_array_t RUEuuid;
+      ci->GetUUID(RUEuuid);
+      m_RUEList.AddRUEntry(RUEuuid);
 	}
   }
 }
@@ -590,10 +590,9 @@ void DboxMain::ToClipboard(const CMyString &data)
 {
   uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
   hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-  // {kjp} fix to use UNICODE safe string definitions and string copy functions
   LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
 		
-  strCopy( pGlobalLock, data);
+  PWSUtil::strCopy(pGlobalLock, uGlobalMemSize, data ,data.GetLength());
 		
   GlobalUnlock(hGlobalMemory);	
 		
@@ -679,10 +678,10 @@ DboxMain::ClearClipboard()
         // check identity of data in clipboard
         unsigned char digest[20];
         SHA1 ctx;
-        ctx.Update((const unsigned char *)lptstr, strLength(lptstr));
+        ctx.Update((const unsigned char *)lptstr, PWSUtil::strLength(lptstr));
         ctx.Final(digest);
         if (memcmp(digest, m_clipboard_digest, sizeof(digest)) == 0) {
-          trashMemory( lptstr, strLength(lptstr));
+          trashMemory( lptstr, PWSUtil::strLength(lptstr));
           GlobalUnlock(hglb);
           if (EmptyClipboard() == TRUE) {
             m_clipboard_set = false;

@@ -19,6 +19,7 @@ using namespace std ;
 #include "DboxMain.h"
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
+#include "corelib/Util.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -196,7 +197,8 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       // we cannot do "SetItemText(ti, treeDispString)" here since Windows will
       // automatically overwrite and update the item text with the contents from 
       // the "ptvinfo->item.pszText" buffer.
-      strncpy(ptvinfo->item.pszText, treeDispString, ptvinfo->item.cchTextMax);
+      PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
+                      treeDispString, ptvinfo->item.cchTextMax);
       ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = '\0';
 
       // update the password database record.

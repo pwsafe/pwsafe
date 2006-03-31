@@ -69,6 +69,11 @@ ThisMfcApp::~ThisMfcApp()
     delete m_pMRU;
   }
 
+  if (m_mainmenu != NULL)
+  	delete m_mainmenu;
+
+  PWSprefs::DeleteInstance();
+
   /*
     apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
     to see the docs, someday.  In the meantime, force with :: syntax
@@ -147,7 +152,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
   FILE *in = fopen(fn, _T("rb"));
 #endif
   if (in != NULL) {
-    len = fileLength(in);
+    len = PWSUtil::fileLength(in);
     buf = new unsigned char[len];
 
     fread(buf, 1, len, in);
@@ -160,10 +165,11 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
   CString out_fn = fn;
   out_fn += CIPHERTEXT_SUFFIX;
 
-#if defined(UNICODE)
-  FILE *out = _wfopen(out_fn, _T("wb"));
+#if _MSC_VER >= 1400
+	FILE *out;
+	_tfopen_s(&out, out_fn, _T("wb"));
 #else
-  FILE *out = fopen(out_fn, _T("wb"));
+	FILE *out = _tfopen(out_fn, _T("wb")); 
 #endif
   if (out != NULL) {
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
@@ -210,10 +216,11 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
   unsigned int len;
   unsigned char* buf;
 
-#if defined(UNICODE)
-  FILE *in = _wfopen(fn, _T("rb"));
+#if _MSC_VER >= 1400
+	FILE *in;
+	_tfopen_s(&in, fn, _T("rb"));
 #else
-  FILE *in = fopen(fn, _T("rb"));
+	FILE *in = _tfopen(fn, _T("rb")); 
 #endif
   if (in != NULL) {
     unsigned char salt[SaltLength];
@@ -266,10 +273,11 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
   CString out_fn = fn;
   out_fn = out_fn.Left(filepath_len - suffix_len);
 
-#if defined(UNICODE)
-  FILE *out = _wfopen(out_fn, _T("wb"));
+#if _MSC_VER >= 1400
+	FILE *out;
+	_tfopen_s(&out, out_fn, _T("wb"));
 #else
-  FILE *out = fopen(out_fn, _T("wb"));
+	FILE *out = _tfopen(out_fn, _T("wb")); 
 #endif
   if (out != NULL) {
     fwrite(buf, 1, len, out);
@@ -281,6 +289,13 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
   return TRUE;
 }
 #endif
+
+int
+ThisMfcApp::ExitInstance() 
+{ 
+  CWinApp::ExitInstance(); 
+  return 0; 
+} 
 
 BOOL
 ThisMfcApp::InitInstance()
@@ -317,33 +332,32 @@ ThisMfcApp::InitInstance()
     
   m_mainmenu = new CMenu;
   m_mainmenu->LoadMenu(IDR_MAINMENU);
+  CMenu* new_popupmenu = new CMenu;
   
   // Look for "File" menu.
   int pos = FindMenuItem(m_mainmenu, _T("&File"));
   if (pos == -1) // E.g., in non-English versions
     pos = 0; // best guess...
-  CMenu* m_file_submenu = m_mainmenu->GetSubMenu(pos);
-  if (m_file_submenu != NULL)  // Look for "Open Database"
-    pos = FindMenuItem(m_file_submenu, ID_MENUITEM_OPEN);
+  CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
+  if (file_submenu != NULL)  // Look for "Open Database"
+    pos = FindMenuItem(file_submenu, ID_MENUITEM_OPEN);
   
   if (pos > -1) {
     int irc;
     // Create New Popup Menu
-    CMenu* m_new_popupmenu;
-    m_new_popupmenu = new CMenu;
-    m_new_popupmenu->CreatePopupMenu();
+    new_popupmenu->CreatePopupMenu();
   
     if (!m_mruonfilemenu) {  // MRU entries in popup menu
 	  // Insert Item onto new popup
-	  irc = m_new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, _T("Safe%d") );
+	  irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, _T("Safe%d") );
 	  ASSERT(irc != 0);
 
 	  // Insert Popup onto main menu
-	  irc = m_file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) m_new_popupmenu->m_hMenu, "&Recent Safes" );
+	  irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) new_popupmenu->m_hMenu, "&Recent Safes" );
 	  ASSERT(irc != 0);
     }
     else {  // MRU entries inline
-	  irc = m_file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
+	  irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
 	  ASSERT(irc != 0);
     }
 
@@ -477,8 +491,9 @@ ThisMfcApp::InitInstance()
 	
 	
   // Since the dialog has been closed, return FALSE so that we exit the
-  //	application, rather than start the application's message pump.
-	
+  // application, rather than start the application's message pump.
+  if (new_popupmenu != NULL)
+    delete new_popupmenu;
   return FALSE;
 }
 

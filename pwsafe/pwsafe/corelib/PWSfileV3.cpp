@@ -43,26 +43,13 @@ int PWSfileV3::Open(const CMyString &passkey)
 
   m_passkey = passkey;
 
+  FOpen();
+  if (m_fd == NULL)
+    return CANT_OPEN_FILE;
+
   if (m_rw == Write) {
-#ifdef UNICODE
-    m_fd = _wfopen((LPCTSTR)m_filename, _T("wb") );
-#else
-    m_fd = fopen((LPCTSTR)m_filename, _T("wb") );
-#endif
-
-    if (m_fd == NULL)
-      return CANT_OPEN_FILE;
-
     status = WriteHeader();
   } else { // open for read
-#ifdef UNICODE
-    m_fd = _wfopen((LPCTSTR) m_filename, _T("rb"));
-#else
-    m_fd = fopen((LPCTSTR) m_filename, _T("rb"));
-#endif
-
-    if (m_fd == NULL)
-      return CANT_OPEN_FILE;
     status = ReadHeader();
     if (status != SUCCESS) {
       Close();
@@ -696,10 +683,10 @@ bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
 
   ASSERT(FileExists(filename));
   FILE *fd;
-#ifdef UNICODE
-  fd = _wfopen((LPCTSTR) filename, _T("rb"));
+#if _MSC_VER >= 1400
+  _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
 #else
-  fd = fopen((LPCTSTR) filename, _T("rb"));
+  fd = _tfopen((LPCTSTR) filename, _T("rb") );
 #endif
 
   ASSERT(fd != NULL);
