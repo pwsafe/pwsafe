@@ -370,7 +370,7 @@ _readcbc(FILE *fp,
 
 // PWSUtil implementations
 
-LPTSTR PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
+errno_t PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
 {
 #if (_MSC_VER >= 1400)
   return _tcsncpy_s(target, tcount, source, scount);

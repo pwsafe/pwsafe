@@ -140,7 +140,7 @@ public:
   // namespace, really, of common utility functions
   // For Windows implementation, hide Unicode abstraction,
   // and use secure versions (_s) when available
-  static LPTSTR strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
+  static errno_t strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   static size_t strLength(const LPCTSTR str);
   static long fileLength(FILE *fp);
 };
