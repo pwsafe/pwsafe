@@ -1,4 +1,5 @@
 #include "PWSfileV1V2.h"
+#include "PWSrand.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -42,7 +43,7 @@ int PWSfileV1V2::WriteV2Header()
 #ifdef BREAK_PRE_2_14_COMPATIBILITY
   unsigned int rlen = RangeRand(62) + 2; // 64 is a trade-off...
   char *rbuf = new char[rlen];
-  GetRandomData(rbuf, rlen-1);
+  PWSrand::GetInstance()->GetRandomData(rbuf, rlen-1);
   rbuf[rlen-1] = '\0'; // although zero may be there before - who cares?
   CMyString rname(V2ItemName);
   rname += rbuf;
@@ -103,18 +104,18 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     unsigned char randstuff[StuffSize];
     unsigned char randhash[20];   // HashSize
 
-    GetRandomData( randstuff, 8 );
+    PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
     randstuff[8] = randstuff[9] = '\0';
     GenRandhash(m_passkey, randstuff, randhash);
 
     fwrite(randstuff, 1, 8, m_fd);
     fwrite(randhash, 1, 20, m_fd);
 
-    GetRandomData(m_salt, SaltLength);
+    PWSrand::GetInstance()->GetRandomData(m_salt, SaltLength);
 
     fwrite(m_salt, 1, SaltLength, m_fd);
 	
-    GetRandomData( m_ipthing, 8);
+    PWSrand::GetInstance()->GetRandomData( m_ipthing, 8);
     fwrite(m_ipthing, 1, 8, m_fd);
     m_fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
                                     m_passkey.GetLength(),
@@ -237,7 +238,7 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
       name += item.GetUser();
     }
     unsigned char dummy_type;
-    GetRandomData(&dummy_type, 1);
+    PWSrand::GetInstance()->GetRandomData(&dummy_type, 1);
     WriteCBC(dummy_type, name);
     WriteCBC(CItemData::PASSWORD, item.GetPassword());
     WriteCBC(CItemData::NOTES, ReMergeNotes(item));

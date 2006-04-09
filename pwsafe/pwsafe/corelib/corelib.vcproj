@@ -289,6 +289,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\PWSrand.cpp">
+			</File>
+			<File
 				RelativePath="sha1.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -427,6 +430,9 @@
 			</File>
 			<File
 				RelativePath="PWSprefs.h">
+			</File>
+			<File
+				RelativePath=".\PWSrand.h">
 			</File>
 			<File
 				RelativePath="sha1.h">

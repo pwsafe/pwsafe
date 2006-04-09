@@ -4,6 +4,8 @@
 #include "ItemData.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
+#include "PWSrand.h"
+
 #include <time.h>
 
 #ifdef _DEBUG
@@ -19,7 +21,7 @@ void CItemData::SetSessionKey()
 {
   // must be called once per session, no more, no less
   ASSERT(!IsSessionKeySet);
-  GetRandomData( SessionKey, sizeof( SessionKey ) );
+  PWSrand::GetInstance()->GetRandomData( SessionKey, sizeof( SessionKey ) );
   IsSessionKeySet = true;
 }
 
@@ -31,7 +33,7 @@ CItemData::CItemData()
     m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
     m_URL(URL), m_AutoType(AUTOTYPE), m_cTime(CTIME), m_display_info(NULL)
 {
-  GetRandomData( m_salt, SaltLength );
+  PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
 
 CItemData::CItemData(const CItemData &that) :

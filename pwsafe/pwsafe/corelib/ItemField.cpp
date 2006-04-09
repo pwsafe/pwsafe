@@ -6,6 +6,7 @@
 #include "ItemField.h"
 #include "Util.h"
 #include "Blowfish.h"
+#include "PWSrand.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -76,7 +77,7 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
     ::memcpy((char*)tempmem, (char*)plainstr, m_Length);
 
    //Fill the unused characters in with random stuff
-    GetRandomData(tempmem+m_Length, BlockLength-m_Length );
+    PWSrand::GetInstance()->GetRandomData(tempmem+m_Length, BlockLength-m_Length );
 
     //Do the actual encryption
     for (int x=0; x<BlockLength; x+=8)

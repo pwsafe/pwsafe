@@ -3,6 +3,7 @@
 
 #include "PWCharPool.h"
 #include "Util.h"
+#include "PWSrand.h"
 
 // Following macro get length of std_*_chars less the trailing \0
 // compile time equivalent of strlen()
@@ -167,7 +168,7 @@ CPasswordCharPool::MakePassword() const
 
       for (UINT x = 0; x < m_pwlen; x++)
       {
-	 size_t rand = RangeRand(m_sumlengths);
+	 size_t rand = PWSrand::GetInstance()->RangeRand(m_sumlengths);
 	 // The only reason for passing rand as a parameter is to
 	 // avoid having to generate two random numbers for each
 	 // character. Alternately, we could have had a m_rand

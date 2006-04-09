@@ -4,6 +4,7 @@
 #include "PWScore.h"
 #include "BlowFish.h"
 #include "PWSprefs.h"
+#include "PWSrand.h"
 
 #pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
 #include <fstream> // for WritePlaintextFile
@@ -25,18 +26,15 @@ PWScore::m_session_salt[20]; unsigned char
 PWScore::m_session_initialized = false;
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
-		     m_usedefuser(false), m_defusername(_T("")),
-		     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-		     m_passkey(NULL), m_passkey_len(0),
-		     m_lockFileHandle(INVALID_HANDLE_VALUE)
+                     m_usedefuser(false), m_defusername(_T("")),
+                     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
+                     m_passkey(NULL), m_passkey_len(0),
+                     m_lockFileHandle(INVALID_HANDLE_VALUE)
 {
-
-  if (!PWScore::m_session_initialized)
-  {
-	srand((unsigned)time(NULL));
+  if (!PWScore::m_session_initialized) {
 	CItemData::SetSessionKey(); // per-session initialization
-  GetRandomData(m_session_key, sizeof(m_session_key) );
-  GetRandomData(m_session_salt, sizeof(m_session_salt) );
+    PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key) );
+    PWSrand::GetInstance()->GetRandomData(m_session_salt, sizeof(m_session_salt) );
 
 	PWScore::m_session_initialized = true;
   }

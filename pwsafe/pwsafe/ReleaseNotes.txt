@@ -11,6 +11,8 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.0Beta2:
 =======================
 [1450484] Trialing garbage in tooltip text fixed (DK).
+[1462527] Uses a decent PRNG for non-XP platforms, closing key recovery
+attack vulnerability.
 
 New Features for 3.0Beta1:
 ==========================
