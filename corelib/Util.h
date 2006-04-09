@@ -59,12 +59,6 @@ extern void GenRandhash(const CMyString &passkey,
                         const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
 
-//  fill this buffer with random data
-void GetRandomData( void * const buffer, unsigned long length );
-
-//  generate a random number between 0 and len
-unsigned int RangeRand(size_t len);
-
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern int _readcbc(FILE *fp, unsigned char* &buffer, unsigned int &buffer_len,
                     unsigned char &type, Fish *Algorithm,
@@ -140,7 +134,7 @@ public:
   // namespace, really, of common utility functions
   // For Windows implementation, hide Unicode abstraction,
   // and use secure versions (_s) when available
-  static errno_t strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
+  static void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   static size_t strLength(const LPCTSTR str);
   static long fileLength(FILE *fp);
 };

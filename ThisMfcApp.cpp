@@ -5,6 +5,7 @@
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
+#include "corelib/PWSrand.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -177,7 +178,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
 #else
     unsigned char randstuff[StuffSize];
     unsigned char randhash[SHA1::HASHLEN];   // HashSize
-    GetRandomData( randstuff, 8 );
+    PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
     // miserable bug - have to fix this way to avoid breaking existing files
     randstuff[8] = randstuff[9] = '\0';
     GenRandhash(passwd,
@@ -188,11 +189,11 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
 #endif // KEEP_FILE_MODE_BWD_COMPAT
 		
     unsigned char thesalt[SaltLength];
-    GetRandomData( thesalt, SaltLength );
+    PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
     fwrite(thesalt, 1, SaltLength, out);
 		
     unsigned char ipthing[8];
-    GetRandomData( ipthing, 8 );
+    PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
     fwrite(ipthing, 1, 8, out);
 
     LPCSTR pwd = LPCSTR(passwd);

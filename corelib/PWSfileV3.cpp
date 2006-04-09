@@ -1,5 +1,6 @@
 #include "PWSfileV3.h"
 #include "UUIDGen.h"
+#include "PWSrand.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -358,7 +359,7 @@ int PWSfileV3::WriteHeader()
   // SaltLengthV3 == SHA256::HASHLEN
   ASSERT(SaltLengthV3 == SHA256::HASHLEN); // if false, have to recode
   unsigned char salt[SaltLengthV3];
-  GetRandomData(salt, sizeof(salt));
+  PWSrand::GetInstance()->GetRandomData(salt, sizeof(salt));
   SHA256 salter;
   salter.Update(salt, sizeof(salt));
   salter.Final(salt);
@@ -380,7 +381,7 @@ int PWSfileV3::WriteHeader()
   H.Final(HPtag);
   fwrite(HPtag, 1, sizeof(HPtag), m_fd);
 
-  GetRandomData(m_key, sizeof(m_key));
+  PWSrand::GetInstance()->GetRandomData(m_key, sizeof(m_key));
   unsigned char B1B2[sizeof(m_key)];
   ASSERT(sizeof(B1B2) == 32); // Generalize later
   TwoFish TF(Ptag, sizeof(Ptag));
@@ -389,7 +390,7 @@ int PWSfileV3::WriteHeader()
   fwrite(B1B2, 1, sizeof(B1B2), m_fd);
 
   unsigned char L[32]; // for HMAC
-  GetRandomData(L, sizeof(L));
+  PWSrand::GetInstance()->GetRandomData(L, sizeof(L));
   unsigned char B3B4[sizeof(L)];
   ASSERT(sizeof(B3B4) == 32); // Generalize later
   TF.Encrypt(L, B3B4);
@@ -401,7 +402,7 @@ int PWSfileV3::WriteHeader()
   // See discussion on Salt to understand why we hash
   // random data instead of writing it directly
   unsigned char ip_rand[SHA256::HASHLEN];
-  GetRandomData(ip_rand, sizeof(ip_rand));
+  PWSrand::GetInstance()->GetRandomData(ip_rand, sizeof(ip_rand));
   SHA256 ipHash;
   ipHash.Update(ip_rand, sizeof(ip_rand));
   ipHash.Final(ip_rand);

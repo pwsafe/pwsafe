@@ -3,6 +3,7 @@
 
 #include "sha1.h"
 #include "BlowFish.h"
+#include "PWSrand.h"
 #include "PwsPlatform.h"
 
 #include <stdio.h>
@@ -106,97 +107,6 @@ GenRandhash(const CMyString &a_passkey,
   keyHash.Final(a_randhash);
 }
 
-
-
-unsigned char
-randchar()
-{
-  int	r;
-  while ((r = rand()) % 257 == 256)
-    ; // 257?!?
-  return (unsigned char)r;
-}
-
-// See the MSDN documentation for RtlGenRandom. We will try to load it
-// and if that fails, use the simple random number generator. The function
-// call is indirected through a function pointer, which initially points
-// to a function that tries to load RtlGenRandom
-
-static BOOLEAN __stdcall LoadRandomDataFunction(void *, ULONG);
-static BOOLEAN __stdcall MyGetRandomData( PVOID buffer, ULONG length );
-static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = LoadRandomDataFunction;
-
-static BOOLEAN __stdcall MyGetRandomData( PVOID buffer, ULONG length )
-{
-  BYTE * const pb = reinterpret_cast<BYTE *>( buffer );
-  for( unsigned int ib = 0; ib < length; ++ib ) {
-    pb[ib] = randchar();
-  }
-  return TRUE;
-}
-
-static BOOLEAN __stdcall LoadRandomDataFunction(void * pv, ULONG cb)
-{
-  //  this is the default function we'll use if loading RtlGenRandom fails
-  pfnGetRandomData = MyGetRandomData;
-
-  HMODULE hLib = LoadLibrary(_T("ADVAPI32.DLL"));
-  if (hLib) {
-    BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG);
-    pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
-    if (pfnGetRandomDataT) {
-      pfnGetRandomData = pfnGetRandomDataT;
-    }
-  }
-  return (*pfnGetRandomData)(pv, cb );
-}
- 
-void GetRandomData( void * const buffer, unsigned long length )
-{
-  (void)(*pfnGetRandomData)(buffer, length);
-}
-
-
-// generate random numbers from a buffer filled in by GetRandomData()
-// NOTE: not threadsafe. the static data in the function can't
-// be used by multiple threads. hack it with __threadlocal,
-// make it an object or something like that if you need multi-threading
- unsigned int MyRand()
-{
-  // we don't want to keep filling the random buffer for each number we
-  // want, so fill the buffer with random data and use it up
-
-  static const int cbRandomData = 256;
-  static BYTE rgbRandomData[cbRandomData];
-  static int ibRandomData = cbRandomData;
-
-  if( ibRandomData > ( cbRandomData - sizeof( unsigned int ) ) ) {
-    // no data left, refill the buffer
-    GetRandomData( rgbRandomData, cbRandomData );
-    ibRandomData = 0;
-  }
-
-  const unsigned int u = *(reinterpret_cast<unsigned int *>(rgbRandomData+ibRandomData));
-  ibRandomData += sizeof( unsigned int );
-  return u;
-}
-
-/* 
- *  RangeRand(len)
- *
- *  Returns a random number in the range 0 to (len-1).
- *  For example, RangeRand(256) returns a value from 0 to 255.
- */
-unsigned int
-RangeRand(size_t len)
-{
-  unsigned int      r;
-  const unsigned int ceil = UINT_MAX - (UINT_MAX % len) - 1;
-  while ((r = MyRand()) > ceil)
-    ;
-  return(r%len);
-}
-
 int
 _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
           Fish *Algorithm, unsigned char* cbcbuffer)
@@ -214,7 +124,7 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
   curblock = block1;
   // Fill unused bytes of length with random data, to make
   // a dictionary attack harder
-  GetRandomData(curblock, BS);
+  PWSrand::GetInstance()->GetRandomData(curblock, BS);
   // block length overwrites 4 bytes of the above randomness.
   putInt32(curblock, length);
 
@@ -246,7 +156,7 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
     for (unsigned int x=0; x<BlockLength; x+=BS) {
       if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
         //This is for an uneven last block
-        GetRandomData(curblock, BS);
+        PWSrand::GetInstance()->GetRandomData(curblock, BS);
         memcpy(curblock, buffer+x, length % BS);
       } else
         memcpy(curblock, buffer+x, BS);
@@ -370,13 +280,13 @@ _readcbc(FILE *fp,
 
 // PWSUtil implementations
 
-errno_t PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
+void PWSUtil::strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount)
 {
 #if (_MSC_VER >= 1400)
-  return _tcsncpy_s(target, tcount, source, scount);
+  (void) _tcsncpy_s(target, tcount, source, scount);
 #else
   tcount; // shut up warning;
-  return _tcsncpy(target, source, scount);
+  (void)_tcsncpy(target, source, scount);
 #endif
 }
 
