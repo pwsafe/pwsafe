@@ -7,6 +7,7 @@
 #include "ThisMfcApp.h"
 #include "PwFont.h"
 #include "corelib/PWSprefs.h"
+#include "corelib/PWSrand.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -2298,6 +2299,12 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
 
 LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
+  static DWORD last_t = 0;
+  DWORD t = GetTickCount();
+  if (t != last_t) {
+    PWSrand::GetInstance()->AddEntropy((unsigned char *)&t, sizeof(t));
+    last_t = t;
+  }
   // list of all the events that signify actual user activity, as opposed
   // to Windows internal events...
   if (message == WM_KEYDOWN ||
