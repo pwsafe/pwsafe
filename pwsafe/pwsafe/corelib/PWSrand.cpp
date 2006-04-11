@@ -1,8 +1,17 @@
 #include <limits.h>
 #include <stdlib.h>
+#include <process.h>
 
 #include "PwsPlatform.h"
 #include "PWSrand.h"
+
+// See the MSDN documentation for RtlGenRandom. We will try to load it
+// and if that fails, use our own random number generator. The function
+// call is indirected through a function pointer
+
+static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
+
+static bool __stdcall LoadRandomDataFunction();
 
 PWSrand *PWSrand::self = NULL;
 
@@ -21,9 +30,20 @@ void PWSrand::DeleteInstance()
 }
 
 PWSrand::PWSrand()
+  : ibRandomData(SHA256::HASHLEN)
 {
-  srand((unsigned)time(NULL)); // XXX temporary...
+  m_IsInternalPRNG = !LoadRandomDataFunction();
 
+  SHA256 s;
+  time_t t = time(NULL);
+  int pid = _getpid();
+  DWORD ticks = GetTickCount();
+
+  s.Update((const unsigned char *)&t, sizeof(t));
+  s.Update((const unsigned char *)&pid, sizeof(pid));
+  s.Update((const unsigned char *)&ticks, sizeof(ticks));
+
+  s.Final(K);
 }
 
 PWSrand::~PWSrand()
@@ -32,43 +52,72 @@ PWSrand::~PWSrand()
 
 void PWSrand::AddEntropy(unsigned char *bytes, unsigned int numBytes)
 {
+  ASSERT(bytes != NULL);
+
+  SHA256 s;
+
+  s.Update(K, sizeof(K));
+  s.Update(bytes, numBytes);
+  s.Final(K);
+  TRACE1(_T("PWSrand::AddEntropy! %x\n"), bytes[0]);
 }
 
-// See the MSDN documentation for RtlGenRandom. We will try to load it
-// and if that fails, use the simple random number generator. The function
-// call is indirected through a function pointer, which initially points
-// to a function that tries to load RtlGenRandom
+void PWSrand::NextRandBlock()
+{
+  SHA256 s;
+  s.Update(K, sizeof(K));
+  s.Final(R);
+  unsigned int *Kp = (unsigned int *)K;
+  unsigned int *Rp = (unsigned int *)R;
+  const int N = SHA256::HASHLEN/sizeof(unsigned int);
+  
+  Kp[0]++;
 
-static BOOLEAN __stdcall LoadRandomDataFunction(void *, ULONG);
-static BOOLEAN __stdcall MyGetRandomData( PVOID buffer, ULONG length );
-static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = LoadRandomDataFunction;
+  for (int i = 0; i < N; i++)
+    Kp[i] += Rp[i];
+}
 
 void PWSrand::GetRandomData( void * const buffer, unsigned long length )
 {
-  (void)(*pfnGetRandomData)(buffer, length);
+  if (!m_IsInternalPRNG) {
+    ASSERT(pfnGetRandomData != NULL);
+    (void)(*pfnGetRandomData)(buffer, length);
+  } else {
+    unsigned char *pb = (unsigned char *)buffer;
+    while (length > SHA256::HASHLEN) {
+      NextRandBlock();
+      for (int j = 0; j < SHA256::HASHLEN; j++)
+        pb[j] = R[j];
+      length -= SHA256::HASHLEN;
+      pb += SHA256::HASHLEN;
+    }
+    ASSERT(length <= SHA256::HASHLEN);
+    if (length > 0) {
+      unsigned long i = 0;
+      NextRandBlock();
+      while (i < length) {
+        pb[i] = R[i];
+        i++;
+      }
+    }
+  }
 }
 
 // generate random numbers from a buffer filled in by GetRandomData()
-// NOTE: not threadsafe. the static data in the function can't
-// be used by multiple threads. hack it with __threadlocal,
-// make it an object or something like that if you need multi-threading
-static unsigned int MyRand()
+unsigned int PWSrand::RandUInt()
 {
   // we don't want to keep filling the random buffer for each number we
   // want, so fill the buffer with random data and use it up
 
-  static const int cbRandomData = 256;
-  static BYTE rgbRandomData[cbRandomData];
-  static int ibRandomData = cbRandomData;
-
-  if( ibRandomData > ( cbRandomData - sizeof( unsigned int ) ) ) {
+  if( ibRandomData > ( SHA256::HASHLEN - sizeof( unsigned int ) ) ) {
     // no data left, refill the buffer
-    PWSrand::GetInstance()->GetRandomData( rgbRandomData, cbRandomData );
+    GetRandomData(rgbRandomData, SHA256::HASHLEN);
     ibRandomData = 0;
   }
 
-  const unsigned int u = *(reinterpret_cast<unsigned int *>(rgbRandomData+ibRandomData));
-  ibRandomData += sizeof( unsigned int );
+  const unsigned int u = 
+    *(reinterpret_cast<unsigned int *>(rgbRandomData + ibRandomData));
+  ibRandomData += sizeof(unsigned int);
   return u;
 }
 
@@ -82,42 +131,23 @@ unsigned int PWSrand::RangeRand(size_t len)
 {
   unsigned int      r;
   const unsigned int ceil = UINT_MAX - (UINT_MAX % len) - 1;
-  while ((r = MyRand()) > ceil)
+  while ((r = RandUInt()) > ceil)
     ;
   return(r%len);
 }
 
-static unsigned char
-randchar()
-{
-  int	r;
-  while ((r = rand()) % 257 == 256)
-    ; // 257?!?
-  return (unsigned char)r;
-}
 
-static BOOLEAN __stdcall MyGetRandomData( PVOID buffer, ULONG length )
-{
-  BYTE * const pb = reinterpret_cast<BYTE *>( buffer );
-  for( unsigned int ib = 0; ib < length; ++ib ) {
-    pb[ib] = randchar();
-  }
-  return TRUE;
-}
 
-static BOOLEAN __stdcall LoadRandomDataFunction(void * pv, ULONG cb)
+static bool __stdcall LoadRandomDataFunction()
 {
-  //  this is the default function we'll use if loading RtlGenRandom fails
-  pfnGetRandomData = MyGetRandomData;
-
   HMODULE hLib = LoadLibrary(_T("ADVAPI32.DLL"));
-  if (hLib) {
+  if (hLib != NULL) {
     BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG);
     pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
     if (pfnGetRandomDataT) {
       pfnGetRandomData = pfnGetRandomDataT;
     }
   }
-  return (*pfnGetRandomData)(pv, cb );
+  return (hLib != NULL);
 }
  
