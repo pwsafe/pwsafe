@@ -1597,187 +1597,176 @@ DboxMain::UpdateSystemTray(STATE s)
     ASSERT(0);
   }
 }
+#ifdef _DEBUG
+static BOOL MakeErrorString(long status, const CString & name, CString &mess)
+{
+  BOOL retval = FALSE;
+  switch(status) {
+  case 0:
+    mess.Format(_T("The system is out of memory or resources."));
+    retval = TRUE;
+    break;
+  case ERROR_FILE_NOT_FOUND:
+    mess.Format(_T("File '%s' not found."), name);
+    retval = TRUE;
+    break;
+  case ERROR_PATH_NOT_FOUND:
+    mess.Format(_T("Path of file '%s' not found."), name);
+    retval = TRUE;
+    break;
+  case ERROR_BAD_FORMAT:
+    mess.Format(_T("Executable '%s' is invalid (non-Win32® .exe or error in .exe image)."), name);
+    retval = TRUE;
+    break;
+  case SE_ERR_ACCESSDENIED:
+    mess.Format(_T("The operating system denied access to file '%s'."), name);
+    retval = TRUE;
+    break;
+  case SE_ERR_ASSOCINCOMPLETE:
+    mess.Format(_T("Name association for file %s' is incomplete or invalid."), name);
+    retval = TRUE;
+    break;
+  case SE_ERR_DDEBUSY:
+    mess.Format(_T("DDE transaction could not be completed: other DDE transactions being processed."));
+    retval = TRUE;
+    break;
+  case SE_ERR_DDEFAIL:
+    mess.Format(_T("DDE transaction failed."));
+    retval = TRUE;
+    break;
+  case SE_ERR_DDETIMEOUT:
+    mess.Format(_T("DDE transaction could not be completed: request timed out."));
+    retval = TRUE;
+    break;
+  case SE_ERR_DLLNOTFOUND:
+    mess.Format(_T("The specified dynamic-link library was not found."));
+    retval = TRUE;
+    break;
+  case SE_ERR_NOASSOC:
+    mess.Format(_T("No association for file type of '%s' found."), name);
+    retval = TRUE;
+    break;
+  case SE_ERR_OOM:
+    mess.Format(_T("The system is out of memory or resources."));
+    retval = TRUE;
+    break;
+  case SE_ERR_SHARE:
+    mess.Format(_T("A sharing violation occurred."));
+    retval = TRUE;
+    break;
+ default:
+   if(status < 32) {
+     mess.Format(_T("Unknown error %d returned from FindExecutable()."), status);
+     retval = TRUE;
+   }
+   break;
+  }
+  return retval;
+}
+
+#endif
 
 BOOL
 DboxMain::LaunchBrowser(const CString &csURL)
 {
-	CString csBrowser, csTempFileName, csMsg;
-	char lpPathBuffer[MAX_PATH];
-	HANDLE hTempFile;
-	BOOL bError = FALSE;
-	long hinst;
+  CString csBrowser, csTempFileName, csMsg;
+  char lpPathBuffer[MAX_PATH];
+  HANDLE hTempFile;
+  BOOL bError = FALSE;
+  long hinst;
 
-	if (!app.m_csDefault_Browser.IsEmpty()) {
-		hinst = (long)::ShellExecute(NULL, NULL, app.m_csDefault_Browser, csURL,
-					NULL, SW_SHOWNORMAL);
-		return TRUE;
-	}
+  // If csURL doesn't contain "://", then we'll prepend "http://" to it,
+  // e.g., change "www.mybank.com" to "http://www.mybank.com".
+  CString theURL(csURL);
 
-	// Get the temp path.
-	DWORD dwRetVal = GetTempPath(MAX_PATH - 14, lpPathBuffer);
+  if (theURL.Find(_T("://")) == -1)
+    theURL = _T("http://") + theURL;
 
-	if(dwRetVal > MAX_PATH - 14) {
-		csMsg.Format("GetTempPath failed with error %d.\n", GetLastError());
-		AfxMessageBox(csMsg, MB_ICONSTOP);
-		return FALSE;
-	}
+  if (!app.m_csDefault_Browser.IsEmpty()) {
+    hinst = long(::ShellExecute(NULL, NULL, app.m_csDefault_Browser, theURL,
+                                NULL, SW_SHOWNORMAL));
+    return TRUE;
+  }
 
-	hTempFile = INVALID_HANDLE_VALUE;  // silly compiler warning!
-	// Create a temporary file.
-	for(int i = 1; i < 99999; i++) {
-		csTempFileName.Format("%sPWS%.5d.html", lpPathBuffer, i);
-		hTempFile = CreateFile(csTempFileName, 					// file name
-								GENERIC_READ | GENERIC_WRITE,	// open r-w
-								0,								// do not share
-								NULL,							// default security
-								CREATE_NEW,						// must be new
-								FILE_ATTRIBUTE_NORMAL,			// normal file
-								NULL);							// no template
-		if(hTempFile != INVALID_HANDLE_VALUE)
-			break;
-	}
+  // Get the temp path.
+  DWORD dwRetVal = GetTempPath(MAX_PATH - 14, lpPathBuffer);
 
-	if(hTempFile == INVALID_HANDLE_VALUE) {
-		csMsg.Format("Could not create a temporary file to determine default browser.\n");
-		AfxMessageBox(csMsg, MB_ICONSTOP);
-		return FALSE;
-	}
+  if(dwRetVal > MAX_PATH - 14) {
+    csMsg.Format(_T("GetTempPath failed with error %d."), GetLastError());
+    AfxMessageBox(csMsg, MB_ICONSTOP);
+    return FALSE;
+  }
 
-	if(!CloseHandle(hTempFile)) {
-		csMsg.Format("CloseHandle failed with error %d.\n", GetLastError());
-		AfxMessageBox(csMsg, MB_ICONSTOP);
-		return FALSE;
-	}
+  hTempFile = INVALID_HANDLE_VALUE;  // silly compiler warning!
+  // Create a temporary file.
+  for(int i = 1; i < 99999; i++) {
+    csTempFileName.Format(_T("%sPWS%.5d.html)"), lpPathBuffer, i);
+    hTempFile = CreateFile(csTempFileName, 					// file name
+                           GENERIC_READ | GENERIC_WRITE,	// open r-w
+                           0,								// do not share
+                           NULL,							// default security
+                           CREATE_NEW,						// must be new
+                           FILE_ATTRIBUTE_NORMAL,			// normal file
+                           NULL);							// no template
+    if(hTempFile != INVALID_HANDLE_VALUE)
+      break;
+  }
 
-	hinst = (long)::FindExecutable(csTempFileName, NULL,
-							csBrowser.GetBufferSetLength(MAX_PATH));
-	csBrowser.ReleaseBuffer();
+  if(hTempFile == INVALID_HANDLE_VALUE) {
+    csMsg.Format(_T("Couldn't create a temporary file to determine default browser."));
+    AfxMessageBox(csMsg, MB_ICONSTOP);
+    return FALSE;
+  }
 
-	if(!DeleteFile(csTempFileName)) {
-		csMsg.Format("DeleteFile failed with error %d.\n", GetLastError());
-		bError = TRUE;
-	}
+  if(!CloseHandle(hTempFile)) {
+    csMsg.Format(_T("CloseHandle failed with error %d."), GetLastError());
+    AfxMessageBox(csMsg, MB_ICONSTOP);
+    return FALSE;
+  }
+
+  hinst = long(::FindExecutable(csTempFileName, NULL,
+                                csBrowser.GetBufferSetLength(MAX_PATH)));
+  csBrowser.ReleaseBuffer();
+
+  if(!DeleteFile(csTempFileName)) {
+    csMsg.Format(_T("DeleteFile failed with error %d."), GetLastError());
+    bError = TRUE;
+  }
 #ifdef _DEBUG
-	switch(hinst) {
-		case 0:
-			csMsg.Format("The system is out of memory or resources.");
-			bError = TRUE;
-			break;
-		case 31:
-			csMsg.Format("No association for file type of '%s' found.", csTempFileName);
-			bError = TRUE;
-			break;
-		case ERROR_FILE_NOT_FOUND:
-			csMsg.Format("File '%s' not found.", csTempFileName);
-			bError = TRUE;
-			break;
-		case ERROR_PATH_NOT_FOUND:
-			csMsg.Format("Path of file '%s' not found.", csTempFileName);
-			bError = TRUE;
-			break;
-		case ERROR_BAD_FORMAT:
-			csMsg.Format("The executable file '%s' is invalid (non-Win32® .exe or error in .exe image).", csTempFileName);
-			bError = TRUE;
-			break;
-		default:
-			if(hinst < 32) {
-				csMsg.Format("Unknown error %d returned from FindExecutable().", hinst);
-				bError = TRUE;
-			}
-			break;
-	}
+  bError = MakeErrorString(hinst, csTempFileName, csMsg);
 
-	if (bError == TRUE) {
-		AfxMessageBox(csMsg, MB_ICONSTOP);
-		return FALSE;
-	}
+  if (bError == TRUE) {
+    AfxMessageBox(csMsg, MB_ICONSTOP);
+    return FALSE;
+  }
 #else
-	if(hinst < 32) {
-		AfxMessageBox("oops can't find your default browser", MB_ICONSTOP);
-		
-		// Display it the old way - re-use any open browser window!
-	    hinst = (long)::ShellExecute(NULL, NULL, csURL, NULL,
-    					NULL, SW_SHOWNORMAL);
-		if(hinst < 32) {
-			AfxMessageBox("oops can't display URL", MB_ICONSTOP);
-			return FALSE;
-		}
-    	return TRUE;
+  if(hinst < 32) {
+    // Display it the old way - re-use any open browser window!
+    hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
+                                NULL, SW_SHOWNORMAL));
+    if(hinst < 32) {
+      AfxMessageBox(_T("oops - can't display URL"), MB_ICONSTOP);
+      return FALSE;
     }
+    return TRUE;
+  }
 #endif
-	hinst = (long)::ShellExecute(NULL, NULL, csBrowser, csURL,
-					NULL, SW_SHOWNORMAL);
+  hinst = long(::ShellExecute(NULL, NULL, csBrowser, theURL,
+                              NULL, SW_SHOWNORMAL));
 #ifdef _DEBUG
-	switch(hinst) {
-		case 0:
-			csMsg.Format("The operating system is out of memory or resources.");
-			bError = TRUE;
-			break;
-		case ERROR_FILE_NOT_FOUND:
-			csMsg.Format("File '%s' not found.", csBrowser);
-			bError = TRUE;
-			break;
-		case ERROR_PATH_NOT_FOUND:
-			csMsg.Format("Path of file '%s' not found.", csBrowser);
-			bError = TRUE;
-			break;
-		case ERROR_BAD_FORMAT:
-			csMsg.Format("The executable for file '%s' is invalid (non-Win32® .exe or error in .exe image).", csBrowser);
-			bError = TRUE;
-			break;
-		case SE_ERR_ACCESSDENIED:
-			csMsg.Format("The operating system denied access to file '%s'.", csBrowser);
-			bError = TRUE;
-			break;
-		case SE_ERR_ASSOCINCOMPLETE:
-			csMsg.Format("Name association for file %s' is incomplete or invalid.", csBrowser);
-			bError = TRUE;
-			break;
-		case SE_ERR_DDEBUSY:
-			csMsg.Format("The DDE transaction could not be completed because other DDE transactions were being processed.");
-			bError = TRUE;
-			break;
-		case SE_ERR_DDEFAIL:
-			csMsg.Format("The DDE transaction failed.");
-			bError = TRUE;
-			break;
-		case SE_ERR_DDETIMEOUT:
-			csMsg.Format("The DDE transaction could not be completed because the request timed out.");
-			bError = TRUE;
-			break;
-		case SE_ERR_DLLNOTFOUND:
-			csMsg.Format("The specified dynamic-link library was not found.");
-			bError = TRUE;
-			break;
-		case SE_ERR_NOASSOC:
-			csMsg.Format("No association for file type of '%s' found.", csBrowser);
-			bError = TRUE;
-			break;
-		case SE_ERR_OOM:
-			csMsg.Format("The system is out of memory or resources.");
-			bError = TRUE;
-			break;
-		case SE_ERR_SHARE:
-			csMsg.Format("A sharing violation occurred.");
-			bError = TRUE;
-			break;
-		default:
-			if(hinst < 32) {
-				csMsg.Format("Unknown error %d returned from ShellExecute().", hinst);
-				bError = TRUE;
-			}
-	}
-	if (bError == TRUE) {
-		AfxMessageBox(csMsg, MB_ICONSTOP);
-		return FALSE;
-	}
+  bError = MakeErrorString(hinst, csBrowser, csMsg);
+
+  if (bError == TRUE) {
+    AfxMessageBox(csMsg, MB_ICONSTOP);
+    return FALSE;
+  }
 #else
-	if(hinst < 32) {
-		AfxMessageBox("oops can't display URL", MB_ICONSTOP);
-		return FALSE;
-	}
+  if(hinst < 32) {
+    AfxMessageBox(_T("oops can't display URL"), MB_ICONSTOP);
+    return FALSE;
+  }
 #endif
-	// Save default browser - so we do not have to do this again!
-	app.m_csDefault_Browser = csBrowser;
-	return TRUE;
+  // Save default browser - so we do not have to do this again!
+  app.m_csDefault_Browser = csBrowser;
+  return TRUE;
 }
