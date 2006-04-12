@@ -13,6 +13,7 @@ Bugs fixed in 3.0Beta2:
 [1450484] Trialing garbage in tooltip text fixed (DK).
 [1462527] Uses a decent PRNG for non-XP platforms, closing key recovery
 attack vulnerability.
+[1463103] Fields in Edit Dialog are wider.
 
 New Features for 3.0Beta1:
 ==========================

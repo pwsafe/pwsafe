@@ -28,8 +28,8 @@ static char THIS_FILE[] = __FILE__;
   #define SHOW_PASSWORD_TXT	_T("S")
   #define HIDE_PASSWORD_TXT	_T("H")
 #else
-  #define SHOW_PASSWORD_TXT	_T("&Show Password")
-  #define HIDE_PASSWORD_TXT	_T("&Hide Password")
+  #define SHOW_PASSWORD_TXT	_T("&Show")
+  #define HIDE_PASSWORD_TXT	_T("&Hide")
 #endif
 
 
