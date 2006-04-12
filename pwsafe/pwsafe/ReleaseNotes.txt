@@ -14,6 +14,7 @@ Bugs fixed in 3.0Beta2:
 [1462527] Uses a decent PRNG for non-XP platforms, closing key recovery
 attack vulnerability.
 [1463103] Fields in Edit Dialog are wider.
+[1450486] URLs without a protocol now default to http.
 
 New Features for 3.0Beta1:
 ==========================
