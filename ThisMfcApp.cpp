@@ -147,10 +147,11 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
   unsigned int len;
   unsigned char* buf;
 
-#if defined(UNICODE)
-  FILE *in = _wfopen(fn, _T("rb"));
+  FILE *in;
+#if _MSC_VER >= 1400
+  _tfopen_s(&in, fn, _T("rb"));
 #else
-  FILE *in = fopen(fn, _T("rb"));
+  in = _tfopen(fn, _T("rb"));
 #endif
   if (in != NULL) {
     len = PWSUtil::fileLength(in);
@@ -166,11 +167,11 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
   CString out_fn = fn;
   out_fn += CIPHERTEXT_SUFFIX;
 
+  FILE *out;
 #if _MSC_VER >= 1400
-	FILE *out;
-	_tfopen_s(&out, out_fn, _T("wb"));
+  _tfopen_s(&out, out_fn, _T("wb"));
 #else
-	FILE *out = _tfopen(out_fn, _T("wb")); 
+  out = _tfopen(out_fn, _T("wb")); 
 #endif
   if (out != NULL) {
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
@@ -217,11 +218,11 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
   unsigned int len;
   unsigned char* buf;
 
+  FILE *in;
 #if _MSC_VER >= 1400
-	FILE *in;
-	_tfopen_s(&in, fn, _T("rb"));
+  _tfopen_s(&in, fn, _T("rb"));
 #else
-	FILE *in = _tfopen(fn, _T("rb")); 
+  in = _tfopen(fn, _T("rb")); 
 #endif
   if (in != NULL) {
     unsigned char salt[SaltLength];
@@ -275,10 +276,10 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
   out_fn = out_fn.Left(filepath_len - suffix_len);
 
 #if _MSC_VER >= 1400
-	FILE *out;
-	_tfopen_s(&out, out_fn, _T("wb"));
+  FILE *out;
+  _tfopen_s(&out, out_fn, _T("wb"));
 #else
-	FILE *out = _tfopen(out_fn, _T("wb")); 
+  FILE *out = _tfopen(out_fn, _T("wb")); 
 #endif
   if (out != NULL) {
     fwrite(buf, 1, len, out);
