@@ -111,10 +111,10 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   SHA256 H;
 
   if (fd == NULL) {
-#ifdef UNICODE
-    fd = _wfopen((LPCTSTR) filename, _T("rb"));
+#if _MSC_VER >= 1400
+    _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
 #else
-    fd = fopen((LPCTSTR) filename, _T("rb"));
+    fd = _tfopen((LPCTSTR) filename, _T("rb"));
 #endif
   }
   if (fd == NULL)
