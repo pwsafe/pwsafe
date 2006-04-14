@@ -853,119 +853,113 @@ DboxMain::OnSize(UINT nType,
 
   // {kjp} Only SIZE_RESTORED is supported on Pocket PC.
 #if !defined(POCKET_PC)
-  if (nType == SIZE_MINIMIZED)
-    {
-      PWSprefs *prefs = PWSprefs::GetInstance();
+  if (nType == SIZE_MINIMIZED) {
+    PWSprefs *prefs = PWSprefs::GetInstance();
 
-      m_selectedAtMinimize = getSelectedItem();
-      m_ctlItemList.DeleteAllItems();
-      m_ctlItemTree.DeleteAllItems();
+    m_selectedAtMinimize = getSelectedItem();
+    m_ctlItemList.DeleteAllItems();
+    m_ctlItemTree.DeleteAllItems();
 
-      if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
-        ClearClipboard();
-      if (prefs->GetPref(PWSprefs::DatabaseClear)) {
-        bool dontask = prefs->GetPref(PWSprefs::DontAskSaveMinimize);
-        bool doit = true;
-        if ((m_core.IsChanged()) && !dontask) {
-	      CRemindSaveDlg remindDlg(this);
+    if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
+      ClearClipboard();
+    if (prefs->GetPref(PWSprefs::DatabaseClear)) {
+      bool dontask = prefs->GetPref(PWSprefs::DontAskSaveMinimize);
+      bool doit = true;
+      if ((m_core.IsChanged()) && !dontask) {
+        CRemindSaveDlg remindDlg(this);
 
-	      int rc = remindDlg.DoModal();
-	      if (rc == IDOK)
-            {
-            }
-	      else if (rc == IDCANCEL)
-            {
-              doit = FALSE;
-            }
-	    }
-
-        if (doit && (m_existingrestore == FALSE)) 
-          {
-            if ( m_core.IsChanged() ) // only save if changed
-              OnSave();
-            ClearData(false);
-            m_needsreading = true;
-          }
-      }
-      if (PWSprefs::GetInstance()->
-          GetPref(PWSprefs::UseSystemTray)) {      
-        app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
-        ShowWindow(SW_HIDE);
-      }
- 
-    }
-  else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
-    {
-#endif
-
-	  app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
-
-		if ((m_needsreading)
-			&& (m_existingrestore == FALSE)
-			&& (m_windowok)) {
-			m_existingrestore = true;
-
-			CMyString passkey;
-			int rc, rc2;
-          CMyString temp;
-
-          if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-            rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
-			} else {
-				rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
-			}
-			switch (rc) {
-            case PWScore::SUCCESS:
-				rc2 = m_core.ReadCurFile(passkey);
-#if !defined(POCKET_PC)
-              m_title = _T("Password Safe - ") + m_core.GetCurFile();
-#endif
-              break; 
-            case PWScore::CANT_OPEN_FILE:
-              temp =
-                m_core.GetCurFile()
-                + "\n\nCannot open database. It likely does not exist."
-                + "\nA new database will be created.";
-              MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-            case TAR_NEW:
-              rc2 = New();
-              break;
-            case TAR_OPEN:
-              rc2 = Open();
-              break;
-            case PWScore::WRONG_PASSWORD:
-              rc2 = PWScore::NOT_SUCCESS;
-              break;
-            case PWScore::USER_CANCEL:
-              rc2 = PWScore::NOT_SUCCESS;
-              break;
-            case PWScore::USER_EXIT:
-              m_core.UnlockFile(m_core.GetCurFile());
-              PostMessage(WM_CLOSE);
-              return;
-            default:
-              rc2 = PWScore::NOT_SUCCESS;
-              break;
-            }
-
-          if (rc2 == PWScore::SUCCESS) {
-              m_needsreading = false;
-              m_existingrestore = FALSE;
-              UpdateSystemTray(UNLOCKED);
-				startLockCheckTimer();
-				RefreshList();
-            } else {
-				m_needsreading = true;
-				m_existingrestore = FALSE;
-				ShowWindow( SW_MINIMIZE );
-				return;
-            }
+        int rc = remindDlg.DoModal();
+        if (rc == IDOK) {
+        } else if (rc == IDCANCEL) {
+          doit = FALSE;
         }
-      RefreshList();
-      if (m_selectedAtMinimize != NULL)
-        SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
+      }
+
+      if (doit && (m_existingrestore == FALSE)) {
+        if ( m_core.IsChanged() ) // only save if changed
+          OnSave();
+        ClearData(false);
+        m_needsreading = true;
+      }
+    }
+    if (PWSprefs::GetInstance()->
+        GetPref(PWSprefs::UseSystemTray)) {      
+      app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
+      ShowWindow(SW_HIDE);
+    }
+ 
+  }
+  else if (!m_bSizing && nType == SIZE_RESTORED) { // gets called even when just resizing window
+#endif
+
+    app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
+
+    if ((m_needsreading)
+        && (m_existingrestore == FALSE)
+        && (m_windowok)) {
+      m_existingrestore = true;
+
+      CMyString passkey;
+      int rc, rc2;
+      CMyString temp;
+
+      if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+        rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
+      } else {
+        rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+      }
+      switch (rc) {
+      case PWScore::SUCCESS:
+        rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-    } // !m_bSizing && nType == SIZE_RESTORED
+        m_title = _T("Password Safe - ") + m_core.GetCurFile();
+#endif
+        break; 
+      case PWScore::CANT_OPEN_FILE:
+        temp =
+          m_core.GetCurFile()
+          + "\n\nCannot open database. It likely does not exist."
+          + "\nA new database will be created.";
+        MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+      case TAR_NEW:
+        rc2 = New();
+        break;
+      case TAR_OPEN:
+        rc2 = Open();
+        break;
+      case PWScore::WRONG_PASSWORD:
+        rc2 = PWScore::NOT_SUCCESS;
+        break;
+      case PWScore::USER_CANCEL:
+        rc2 = PWScore::NOT_SUCCESS;
+        break;
+      case PWScore::USER_EXIT:
+        m_core.UnlockFile(m_core.GetCurFile());
+        PostMessage(WM_CLOSE);
+        return;
+      default:
+        rc2 = PWScore::NOT_SUCCESS;
+        break;
+      }
+
+      if (rc2 == PWScore::SUCCESS) {
+        m_needsreading = false;
+        m_existingrestore = FALSE;
+        UpdateSystemTray(UNLOCKED);
+        startLockCheckTimer();
+        RefreshList();
+      } else {
+        m_needsreading = true;
+        m_existingrestore = FALSE;
+        ShowWindow( SW_MINIMIZE );
+        return;
+      }
+    }
+    RefreshList();
+    if (m_selectedAtMinimize != NULL)
+      SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
+#if !defined(POCKET_PC)
+  } // !m_bSizing && nType == SIZE_RESTORED
 #endif
 
   m_bSizing = false;

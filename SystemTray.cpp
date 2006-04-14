@@ -416,7 +416,11 @@ BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
 
 END_MESSAGE_MAP()
 
+#ifdef _DEBUG
 void CSystemTray::OnTimer(UINT nIDEvent) 
+#else
+void CSystemTray::OnTimer(UINT ) 
+#endif
 {
   ASSERT(nIDEvent == m_nIDEvent);
 
