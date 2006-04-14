@@ -136,8 +136,6 @@ CMyString
 CItemData::GetCTime() const
 {
   time_t t;
-  struct tm *st;
-  char *time_str;
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   unsigned int tlen = sizeof(in); // ditto
   CMyString ret;
@@ -150,8 +148,17 @@ CItemData::GetCTime() const
     t = 0;
   }
   if (t != 0) {
+#if _MSC_VER >= 1400
+	struct tm st;
+	char time_str[32];
+    localtime_s(&st, &t);  // secure version
+    _tasctime_s(time_str, 32, &st);  // secure version
+#else
+	struct tm *st;
+	char *time_str;
     st = localtime(&t);
     time_str = _tasctime(st);
+#endif
     ret = time_str;
   } else
     ret = _T("Unknown");
