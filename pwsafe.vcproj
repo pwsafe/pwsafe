@@ -25,7 +25,7 @@
 				InlineFunctionExpansion="1"
 				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -90,7 +90,7 @@
 				Optimization="0"
 				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -1015,6 +1015,9 @@
 				RelativePath="leaf.bmp">
 			</File>
 			<File
+				RelativePath=".\locked_tray.ico">
+			</File>
+			<File
 				RelativePath="node.bmp">
 			</File>
 			<File
@@ -1043,6 +1046,9 @@
 			</File>
 			<File
 				RelativePath="tray.ico">
+			</File>
+			<File
+				RelativePath=".\unlocked_tray.ico">
 			</File>
 			<File
 				RelativePath="w95mbx01.ico">
