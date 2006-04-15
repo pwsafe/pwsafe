@@ -147,7 +147,8 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
 
   numWritten = fwrite(curblock, 1, BS, fp);
 
-  if (length > 0) {
+  if (length > 0 ||
+      (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
     unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
     if (BlockLength == 0 && BS == 8)
       BlockLength = BS;
@@ -260,7 +261,8 @@ _readcbc(FILE *fp,
 
   trashMemory(lengthblock, BS);
 
-  if (length > 0) {
+  if (length > 0 ||
+      (BS == 8 && length == 0)) { // pre-3 pain
     unsigned char *tempcbc = block3;
     numRead += fread(b, 1, BlockLength, fp);
     for (unsigned int x=0; x<BlockLength; x+=BS) {
