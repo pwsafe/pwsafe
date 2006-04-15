@@ -42,7 +42,7 @@ CMyTreeCtrl::CMyTreeCtrl() : m_bDragging(false), m_pimagelist(NULL)
 CMyTreeCtrl::~CMyTreeCtrl()
 {
   delete m_pimagelist;
-  delete m_expandedItems;
+  delete (SetTreeItem_t *)m_expandedItems;
 }
 
 

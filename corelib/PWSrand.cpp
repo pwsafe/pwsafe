@@ -59,7 +59,7 @@ void PWSrand::AddEntropy(unsigned char *bytes, unsigned int numBytes)
   s.Update(K, sizeof(K));
   s.Update(bytes, numBytes);
   s.Final(K);
-  TRACE1(_T("PWSrand::AddEntropy! %x\n"), bytes[0]);
+  //  TRACE1(_T("PWSrand::AddEntropy! %x\n"), bytes[0]);
 }
 
 void PWSrand::NextRandBlock()
