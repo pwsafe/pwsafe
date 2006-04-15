@@ -74,6 +74,7 @@ ThisMfcApp::~ThisMfcApp()
   	delete m_mainmenu;
 
   PWSprefs::DeleteInstance();
+  PWSrand::DeleteInstance();
 
   /*
     apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
