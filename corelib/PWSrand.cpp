@@ -141,13 +141,13 @@ unsigned int PWSrand::RangeRand(size_t len)
 static bool __stdcall LoadRandomDataFunction()
 {
   HMODULE hLib = LoadLibrary(_T("ADVAPI32.DLL"));
+  BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;
   if (hLib != NULL) {
-    BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG);
     pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
     if (pfnGetRandomDataT) {
       pfnGetRandomData = pfnGetRandomDataT;
     }
   }
-  return (hLib != NULL);
+  return (hLib != NULL && pfnGetRandomDataT != NULL);
 }
  
