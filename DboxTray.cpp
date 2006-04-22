@@ -45,6 +45,7 @@ DboxMain::OnTrayLockUnLock()
 			startLockCheckTimer();
 			UpdateSystemTray(UNLOCKED);
 			RefreshList();
+			return;
 	    } else {
 	    	m_needsreading = true;
 	    	m_existingrestore = FALSE;
@@ -71,11 +72,10 @@ DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
 	const CString csLock = _T("Lock Database");
 
 	// Set text to "UnLock" or "Lock"
-	if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED) {
+	if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED)
 		pCmdUI->SetText(csLock);
-	} else {
+	else
 		pCmdUI->SetText(csUnLock);
-	}
 	// If dialog visible - obviously unlocked and no need to have option to lock
 	if (this->IsWindowVisible() == FALSE)
 		pCmdUI->Enable(TRUE);
