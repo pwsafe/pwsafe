@@ -16,6 +16,15 @@ attack vulnerability.
 [1446183] Export to v2 format now readable by pwsafe v2.x
 [1463103] Fields in Edit Dialog are wider.
 [1450486] URLs without a protocol now default to http.
+[1459326, 1427642] Fixed problems with password prompt (DK)
+
+Known problems in 3.0Beta2:
+===========================
+[1453108] Broken under Windows98SE?
+
+New Features for 3.0Beta2:
+==========================
+None.
 
 New Features for 3.0Beta1:
 ==========================
