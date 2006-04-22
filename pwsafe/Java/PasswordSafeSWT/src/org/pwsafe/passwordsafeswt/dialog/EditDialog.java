@@ -308,7 +308,9 @@ public class EditDialog extends Dialog {
 	
 	private String generatePassword() {
 		String BASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+        String BASE_LETTERS_EASY = "abcdefghjkmnpqrstuvwxyz";
 		String BASE_DIGITS = "1234567890";
+        String BASE_DIGITS_EASY = "23456789";
 		String BASE_SYMBOLS = "!@#$%^&*()";
 		StringBuffer pwSet = new StringBuffer();
 		
@@ -330,16 +332,29 @@ public class EditDialog extends Dialog {
 		boolean useEasyToRead = preferenceStore.getBoolean(PasswordPolicyPreferences.USE_EASY_TO_READ);
 		
 		if (useLowerCase) {
-			pwSet.append(BASE_LETTERS.toLowerCase());
+			if (useEasyToRead) {
+                pwSet.append(BASE_LETTERS_EASY.toLowerCase());
+            } else {
+                pwSet.append(BASE_LETTERS.toLowerCase());
+            }
 		}
-		
+
 		if (useUpperCase) {
-			pwSet.append(BASE_LETTERS.toUpperCase());
+            if (useEasyToRead) {
+                pwSet.append(BASE_LETTERS_EASY.toUpperCase());
+            } else {
+                pwSet.append(BASE_LETTERS.toUpperCase());
+            }
 		}
-		
+
 		if (useDigits) {
-			pwSet.append(BASE_DIGITS);
+            if (useEasyToRead) {
+                pwSet.append(BASE_DIGITS_EASY);
+            } else {
+                pwSet.append(BASE_DIGITS);
+            }
 		}
+
 		
 		if (useSymbols) {
 			pwSet.append(BASE_SYMBOLS);
@@ -357,10 +372,7 @@ public class EditDialog extends Dialog {
 			sb.append("Must Edit Password Generation Options");
 		}
 
-		
 		return sb.toString();
-			
-			
-		
+
 	}
 }
