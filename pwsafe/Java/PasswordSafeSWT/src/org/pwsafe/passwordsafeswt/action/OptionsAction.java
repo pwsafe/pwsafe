@@ -56,7 +56,7 @@ public class OptionsAction extends Action {
 
         // Create the preferences dialog
         PreferenceDialog dlg = new PreferenceDialog(app.getShell(), mgr);
-		dlg.setDefaultImage(SWTResourceManager.getImage(PasswordSafeJFace.class,
+		PreferenceDialog.setDefaultImage(SWTResourceManager.getImage(PasswordSafeJFace.class,
 				"/org/pwsafe/passwordsafeswt/images/clogo.gif"));
 
         // Set the preference store
