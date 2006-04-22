@@ -24,6 +24,7 @@ import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -52,6 +53,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 import org.pwsafe.lib.exception.PasswordSafeException;
 import org.pwsafe.lib.file.PwsFile;
@@ -247,7 +249,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 					trayItem.setVisible(false);
 				}
 			});
-			MenuItem traySep = new MenuItem(menu, SWT.SEPARATOR);
+			new MenuItem(menu, SWT.SEPARATOR);
 			MenuItem trayExit = new MenuItem(menu, SWT.PUSH);
 			trayExit.setText("Exit");
 			trayExit.addSelectionListener(new SelectionAdapter() {
@@ -298,7 +300,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		tableViewer.setContentProvider(new PasswordTableContentProvider());
 		tableViewer.setLabelProvider(new PasswordTableLabelProvider());
 		tableViewer.setInput(new Object());
-		tableViewer.setSorter(new PasswordTableSorter());
+        tableViewer.setSorter(new PasswordTableSorter());
 
 		final TableColumn tableColumn = new TableColumn(table, SWT.NONE);
 		tableColumn.setWidth(100);
@@ -329,12 +331,34 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		treeViewer = new TreeViewer(composite, SWT.BORDER);
 		treeViewer.setLabelProvider(new PasswordTreeLabelProvider());
 		treeViewer.setContentProvider(new PasswordTreeContentProvider());
+		treeViewer.setSorter(new ViewerSorter());		
 		treeViewer.addDoubleClickListener(new ViewerDoubleClickListener());
 		tree = treeViewer.getTree();
 		tree.setMenu(createPopupMenu(tree));
 		treeViewer.setInput(new Object());
 
-		//stackLayout.topControl = table;
+        final TreeColumn treeColumn = new TreeColumn(tree, SWT.NONE);
+        treeColumn.setWidth(100);
+        treeColumn.setText("Title");
+//        treeColumn.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 1));
+
+        final TreeColumn treeColumn_1 = new TreeColumn(tree, SWT.NONE);
+        treeColumn_1.setWidth(100);
+        treeColumn_1.setText("User Name");
+//        treeColumn_1.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 2));
+
+        final TreeColumn treeColumn_2 = new TreeColumn(tree, SWT.NONE);
+        treeColumn_2.setWidth(100);
+        treeColumn_2.setText("Notes");
+//        treeColumn_2.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 3));
+
+        if (UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_LIST)) {
+            final TreeColumn treeColumn_3 = new TreeColumn(tree, SWT.NONE);
+            treeColumn_3.setWidth(100);
+            treeColumn_3.setText("Password");
+//            treeColumn_3.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 4));
+        }
+
 		if (UserPreferences.getInstance().getBoolean(DISPLAY_AS_LIST_PREF)) {
 			showListView();
 			viewAsListAction.setChecked(true);
@@ -357,47 +381,26 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	private void createActions() {
 
 		newFileAction = new NewFileAction();
-
 		openFileAction = new OpenFileAction();
-
 		saveFileAction = new SaveFileAction();
-
 		saveFileAsAction = new SaveFileAsAction();
-
 		exportToTextAction = new ExportToTextAction();
-		
 		importFromTextAction = new ImportFromTextAction();
-
 		exitAppAction = new ExitAppAction();
-
 		copyUsernameAction = new CopyUsernameAction();
-
 		copyPasswordAction = new CopyPasswordAction();
-
 		clearClipboardAction = new ClearClipboardAction();
-
 		addRecordAction = new AddRecordAction();
-
 		editRecordAction = new EditRecordAction();
-
 		deleteRecordAction = new DeleteRecordAction();
-
 		viewAsListAction = new ViewAsListAction();
-
 		viewAsTreeAction = new ViewAsTreeAction();
-
 		visitPasswordSafeWebsiteAction = new VisitPasswordSafeWebsiteAction();
-
 		changeSafeCombinationAction = new ChangeSafeCombinationAction();
-
 		aboutAction = new AboutAction();
-
 		helpAction = new HelpAction();
-
 		optionsAction = new OptionsAction();
-
 		exportToXMLAction = new ExportToXMLAction();
-
 		importFromXMLAction = new ImportFromXMLAction();
 
 	}
@@ -412,14 +415,11 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		result.add(menuManagerFile);
 
 		menuManagerFile.add(newFileAction);
-
 		menuManagerFile.add(openFileAction);
-
 		menuManagerFile.add(new Separator());
 
 		String[] mruFiles = UserPreferences.getInstance().getMRUFiles();
 		if (mruFiles != null & mruFiles.length > 0) {
-
 			for (int i = 0; i < mruFiles.length; i++) {
 				String fileName = mruFiles[i];
 				String menuItem = "&" + (i + 1) + " " + new File(fileName).getName();
@@ -427,77 +427,58 @@ public class PasswordSafeJFace extends ApplicationWindow {
 				menuManagerFile.add(nextMRUAction);
 			}
 			menuManagerFile.add(new Separator());
-
 		}
 
 		menuManagerFile.add(saveFileAction);
-
 		menuManagerFile.add(saveFileAsAction);
-
 		menuManagerFile.add(new Separator());
 
 		final MenuManager menuManagerExportTo = new MenuManager("Export To");
 		menuManagerFile.add(menuManagerExportTo);
 
 		menuManagerExportTo.add(exportToTextAction);
-
 		menuManagerExportTo.add(exportToXMLAction);
 
 		final MenuManager menuManagerImportFrom = new MenuManager("Import From");
 		menuManagerFile.add(menuManagerImportFrom);
 
 		menuManagerImportFrom.add(importFromTextAction);
-		
 		menuManagerImportFrom.add(importFromXMLAction);
 
 		menuManagerFile.add(new Separator());
-
 		menuManagerFile.add(exitAppAction);
 
 		final MenuManager menuManagerEdit = new MenuManager("Edit");
 		result.add(menuManagerEdit);
 
 		menuManagerEdit.add(addRecordAction);
-
 		menuManagerEdit.add(editRecordAction);
-
 		menuManagerEdit.add(deleteRecordAction);
-
 		menuManagerEdit.add(new Separator());
-
 		menuManagerEdit.add(copyPasswordAction);
-
 		menuManagerEdit.add(copyUsernameAction);
-
 		menuManagerEdit.add(clearClipboardAction);
 
 		final MenuManager menuManagerView = new MenuManager("View");
 		result.add(menuManagerView);
 
 		menuManagerView.add(viewAsListAction);
-
 		menuManagerView.add(viewAsTreeAction);
 
 		final MenuManager menuManagerManage = new MenuManager("Manage");
 		result.add(menuManagerManage);
 
 		menuManagerManage.add(changeSafeCombinationAction);
-
 		menuManagerManage.add(new Separator());
-
 		menuManagerManage.add(optionsAction);
 
 		final MenuManager menuManagerHelp = new MenuManager("Help");
 		result.add(menuManagerHelp);
 
 		menuManagerHelp.add(helpAction);
-
 		menuManagerHelp.add(new Separator());
-
 		menuManagerHelp.add(visitPasswordSafeWebsiteAction);
-
 		menuManagerHelp.add(new Separator());
-
 		menuManagerHelp.add(aboutAction);
 
 		return result;
@@ -514,18 +495,13 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 		final MenuManager menuListPopup = new MenuManager("ListPopup");
 
-		Menu contextMenu = menuListPopup.createContextMenu(ctl);
+		menuListPopup.createContextMenu(ctl);
 
 		menuListPopup.add(copyPasswordAction);
-
 		menuListPopup.add(copyUsernameAction);
-
 		menuListPopup.add(new Separator());
-
 		menuListPopup.add(addRecordAction);
-
 		menuListPopup.add(editRecordAction);
-
 		menuListPopup.add(deleteRecordAction);
 
 		return menuListPopup.getMenu();
@@ -538,29 +514,17 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		ToolBarManager toolBarManager = new ToolBarManager(style);
 
 		toolBarManager.add(newFileAction);
-
 		toolBarManager.add(openFileAction);
-
 		toolBarManager.add(saveFileAction);
-
 		toolBarManager.add(new Separator());
-
 		toolBarManager.add(copyUsernameAction);
-
 		toolBarManager.add(copyPasswordAction);
-
 		toolBarManager.add(clearClipboardAction);
-
 		toolBarManager.add(new Separator());
-
 		toolBarManager.add(addRecordAction);
-
 		toolBarManager.add(editRecordAction);
-
 		toolBarManager.add(deleteRecordAction);
-
 		toolBarManager.add(new Separator());
-
 		toolBarManager.add(helpAction);
 		return toolBarManager;
 	}
@@ -979,7 +943,6 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			Iterator iter = getPwsFile().getRecords();
 			CSVWriter csvWriter = new CSVWriter(fw, '\t');
 			while (iter.hasNext()) {
-				StringBuffer sb = new StringBuffer();
 				PwsRecord nextRecord = (PwsRecord) iter.next();
 				List nextEntry = new ArrayList();
 				
