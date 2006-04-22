@@ -148,6 +148,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bSortAscending = true;
   m_iSortedColumn = 0;
   m_hFontTree = NULL;
+  m_FromOnSysCommand = false;
 }
 
 DboxMain::~DboxMain()
@@ -2014,15 +2015,28 @@ void
 DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
-  m_LockDisabled = true;
-  CDialog::OnSysCommand( nID, lParam );
-
   if ( ID_SYSMENU_ALWAYSONTOP == nID ) {
+  	m_LockDisabled = true;
     m_bAlwaysOnTop = !m_bAlwaysOnTop;
     PWSprefs::GetInstance()->SetPref(PWSprefs::AlwaysOnTop,
                                      m_bAlwaysOnTop);
     UpdateAlwaysOnTop();
+    m_LockDisabled = false;
+    return;
   }
+  
+  m_LockDisabled = true;
+
+ if ((nID & 0xFFF0) == SC_RESTORE) {
+	m_FromOnSysCommand = true;
+  	OnUnMinimize();
+	m_FromOnSysCommand = false;
+	if (!m_passphraseOK)	// password bad or cancel pressed
+		return;
+  }
+
+  CDialog::OnSysCommand( nID, lParam );
+
   m_LockDisabled = false;
 #endif
 }
@@ -2254,9 +2268,91 @@ void DboxMain::OnMinimize()
 
 void DboxMain::OnUnMinimize()
 {
-  ShowWindow(SW_RESTORE);
-}
+	m_passphraseOK = false;
+	// Case 1 - data available but is currently locked
+	if (!m_needsreading
+		&& (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
+		&& (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
+		CMyString passkey;
+		int rc;
+		rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+		if (rc != PWScore::SUCCESS)
+			return;  // don't even think of restoring window!
+
+		app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+		m_passphraseOK = true;
+		if (!m_FromOnSysCommand)
+			ShowWindow(SW_RESTORE);
+		return;
+	}
+	
+	// Case 2 - data unavailable
+	if ((m_needsreading)
+		&& (m_existingrestore == FALSE)
+		&& (m_windowok)) {
+		m_existingrestore = TRUE;
+	
+		CMyString passkey, temp;
+		int rc, rc2;
+	
+		if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
+		} else {
+			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+		}
+		switch (rc) {
+			case PWScore::SUCCESS:
+				rc2 = m_core.ReadCurFile(passkey);
+#if !defined(POCKET_PC)
+				m_title = _T("Password Safe - ") + m_core.GetCurFile();
+#endif
+				break;
+			case PWScore::CANT_OPEN_FILE:
+				temp = m_core.GetCurFile()
+						+ "\n\nCannot open database. It likely does not exist."
+						+ "\nA new database will be created.";
+				MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+			case TAR_NEW:
+				rc2 = New();
+				break;
+			case TAR_OPEN:
+				rc2 = Open();
+				break;
+			case PWScore::WRONG_PASSWORD:
+				rc2 = PWScore::NOT_SUCCESS;
+				break;
+			case PWScore::USER_CANCEL:
+				rc2 = PWScore::NOT_SUCCESS;
+				break;
+			case PWScore::USER_EXIT:
+				m_core.UnlockFile(m_core.GetCurFile());
+				PostMessage(WM_CLOSE);
+				return;
+			default:
+				rc2 = PWScore::NOT_SUCCESS;
+				break;
+		}
+	
+		if (rc2 == PWScore::SUCCESS) {
+			m_needsreading = false;
+			m_existingrestore = FALSE;
+			UpdateSystemTray(UNLOCKED);
+			startLockCheckTimer();
+			m_passphraseOK = true;
+		} else {
+			m_needsreading = true;
+			m_existingrestore = FALSE;
+			if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+				ShowWindow( SW_HIDE );
+			else
+				ShowWindow( SW_MINIMIZE );
+			return;   // don't even think of restoring window!
+		}
+	}
+	if (!m_FromOnSysCommand)
+		ShowWindow(SW_RESTORE);
+}
 
 void
 DboxMain::startLockCheckTimer(){
@@ -2267,7 +2363,7 @@ DboxMain::startLockCheckTimer(){
     TRACE(_T("startLockCheckTimer: Starting timer\n"));
     SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
   } else
-    TRACE(_T("Not Starting\n"));
+    TRACE(_T("startLockCheckTimer: Not Starting timer\n"));
 }
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)

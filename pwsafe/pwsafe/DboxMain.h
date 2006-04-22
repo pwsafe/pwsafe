@@ -129,6 +129,8 @@ protected:
   bool m_windowok;
   BOOL m_existingrestore;
   bool m_needsreading;
+  bool m_passphraseOK;
+  bool m_FromOnSysCommand;
 
   bool m_bSortAscending;
   int m_iSortedColumn;

@@ -839,6 +839,8 @@ DboxMain::OnSize(UINT nType,
                  int cx,
                  int cy) 
 //Note that onsize runs before InitDialog (Gee, I love MFC)
+//  Also, OnSize is called AFTER the function has been peformed.
+//  To verify IF the fucntion should be done at all, it must be checked in OnSysCommand.
 {
   CDialog::OnSize(nType, cx, cy);
 
@@ -891,70 +893,7 @@ DboxMain::OnSize(UINT nType,
   }
   else if (!m_bSizing && nType == SIZE_RESTORED) { // gets called even when just resizing window
 #endif
-
     app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
-
-    if ((m_needsreading)
-        && (m_existingrestore == FALSE)
-        && (m_windowok)) {
-      m_existingrestore = true;
-
-      CMyString passkey;
-      int rc, rc2;
-      CMyString temp;
-
-      if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-        rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
-      } else {
-        rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
-      }
-      switch (rc) {
-      case PWScore::SUCCESS:
-        rc2 = m_core.ReadCurFile(passkey);
-#if !defined(POCKET_PC)
-        m_title = _T("Password Safe - ") + m_core.GetCurFile();
-#endif
-        break; 
-      case PWScore::CANT_OPEN_FILE:
-        temp =
-          m_core.GetCurFile()
-          + "\n\nCannot open database. It likely does not exist."
-          + "\nA new database will be created.";
-        MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-      case TAR_NEW:
-        rc2 = New();
-        break;
-      case TAR_OPEN:
-        rc2 = Open();
-        break;
-      case PWScore::WRONG_PASSWORD:
-        rc2 = PWScore::NOT_SUCCESS;
-        break;
-      case PWScore::USER_CANCEL:
-        rc2 = PWScore::NOT_SUCCESS;
-        break;
-      case PWScore::USER_EXIT:
-        m_core.UnlockFile(m_core.GetCurFile());
-        PostMessage(WM_CLOSE);
-        return;
-      default:
-        rc2 = PWScore::NOT_SUCCESS;
-        break;
-      }
-
-      if (rc2 == PWScore::SUCCESS) {
-        m_needsreading = false;
-        m_existingrestore = FALSE;
-        UpdateSystemTray(UNLOCKED);
-        startLockCheckTimer();
-        RefreshList();
-      } else {
-        m_needsreading = true;
-        m_existingrestore = FALSE;
-        ShowWindow( SW_MINIMIZE );
-        return;
-      }
-    }
     RefreshList();
     if (m_selectedAtMinimize != NULL)
       SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
