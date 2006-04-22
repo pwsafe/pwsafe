@@ -49,7 +49,7 @@ public class DisplayPreferences extends PreferencePage {
 		btnAlwaysOnTop.setEnabled(false);
 
 		btnShowPasswordInList = new Button(composite, SWT.CHECK);
-		btnShowPasswordInList.setText("Show password is display list");
+		btnShowPasswordInList.setText("Show password in display list");
 		btnShowPasswordInList.setSelection(preferenceStore.getBoolean(SHOW_PASSWORD_IN_LIST));
 
 		btnShowPasswordInEdit = new Button(composite, SWT.CHECK);
