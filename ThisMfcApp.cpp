@@ -6,6 +6,7 @@
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
+#include "corelib/sha1.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"

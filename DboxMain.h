@@ -5,7 +5,7 @@
 #define DboxMain_h
 
 #include "corelib/PWScore.h"
-#include "corelib/sha1.h"
+#include "corelib/sha256.h"
 #include "corelib/PwsPlatform.h"
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -148,7 +148,7 @@ protected:
   BOOL SelItemOk();
   void ClearClipboard();
   bool m_clipboard_set; // To verify that we're erasing *our* data
-  unsigned char m_clipboard_digest[SHA1::HASHLEN]; // ditto
+  unsigned char m_clipboard_digest[SHA256::HASHLEN]; // ditto
   void setupBars();
   BOOL OpenOnInit();
   void InitPasswordSafe();

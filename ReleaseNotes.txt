@@ -1,4 +1,4 @@
-Password Safe 3.0Beta2 Release Note - March 2005
+Password Safe 3.0Beta2 Release Note - April 2006
 ================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -7,6 +7,10 @@ Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.1
+=================
+[1482002] Generated password no longer trashed if > 127 bytes
 
 Bugs fixed in 3.0Beta2:
 =======================
