@@ -610,7 +610,7 @@ void DboxMain::ToClipboard(const CMyString &data)
       // of course, we don't want an extra copy of a password floating around
       // in memory, so we'll use the hash
       const char *str = (const char *)data;
-      SHA1 ctx;
+      SHA256 ctx;
       ctx.Update((const unsigned char *)str, data.GetLength());
       ctx.Final(m_clipboard_digest);
       m_clipboard_set = true;
@@ -678,8 +678,8 @@ DboxMain::ClearClipboard()
       LPTSTR lptstr = (LPTSTR)GlobalLock(hglb); 
       if (lptstr != NULL) {
         // check identity of data in clipboard
-        unsigned char digest[20];
-        SHA1 ctx;
+        unsigned char digest[SHA256::HASHLEN];
+        SHA256 ctx;
         ctx.Update((const unsigned char *)lptstr, PWSUtil::strLength(lptstr));
         ctx.Final(digest);
         if (memcmp(digest, m_clipboard_digest, sizeof(digest)) == 0) {
