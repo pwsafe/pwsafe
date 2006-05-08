@@ -343,7 +343,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const int VersionNum = 0x0300;
+const short VersionNum = 0x0300;
 
 int PWSfileV3::WriteHeader()
 {
@@ -417,7 +417,8 @@ int PWSfileV3::WriteHeader()
   int numWritten = 0;
   // Write version number
   unsigned char vnb[sizeof(VersionNum)];;
-  putInt32(vnb, VersionNum);
+  vnb[0] = (unsigned char) (VersionNum & 0xff);
+  vnb[1] = (unsigned char) ((VersionNum & 0xff00) >> 8);
   numWritten = WriteCBC(0, vnb, sizeof(VersionNum));
   
   // Write UUID
@@ -483,18 +484,20 @@ int PWSfileV3::ReadHeader()
   int numRead = 0;
   unsigned char type;
   // Read version number
-  unsigned int vlen = sizeof(VersionNum);
+  // in Beta, VersionNum was an int (4 bytes) instead of short (2)
+  // This hack keeps bwd compatability.
+  unsigned int vlen = sizeof(int);
   // Read version number
-  unsigned char vnb[sizeof(VersionNum)];;
+  unsigned char vnb[sizeof(int)];
 
   numRead = ReadCBC(type, vnb, vlen);
-  if (numRead <= 0  || vlen != sizeof(VersionNum)) {
+  if (numRead <= 0  ||
+      (vlen != sizeof(VersionNum) && vlen != sizeof(int))) {
     Close();
     return FAILURE;
   }
 
-  int v = getInt32(vnb);
-  if ((v & 0xff00) != (VersionNum & 0xff00)) {
+  if ((vnb[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
     //major version mismatch
     Close();
     return UNSUPPORTED_VERSION;
