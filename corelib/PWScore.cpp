@@ -109,7 +109,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 }
 
 int
-PWScore::WritePlaintextFile(const CMyString &filename, TCHAR delimiter)
+PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header, TCHAR delimiter)
 {
 #ifdef UNICODE
   wofstream ofs((const wchar_t *)LPCTSTR(filename));
@@ -118,6 +118,10 @@ PWScore::WritePlaintextFile(const CMyString &filename, TCHAR delimiter)
 #endif
   if (!ofs)
     return CANT_OPEN_FILE;
+  if (bwrite_header) {
+	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassowrd Modified Time\tLast Access Time\tPassword Lifetime\tRecord Modified Time\tNotes"));
+	  ofs << hdr << endl;
+  }
 
   CItemData temp;
   POSITION listPos = m_pwlist.GetHeadPosition();
@@ -170,7 +174,7 @@ int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
                              const CMyString &filename,
                              TCHAR fieldSeparator, TCHAR delimiter,
-                             int &numImported, int &numSkipped)
+                             int &numImported, int &numSkipped, bool bimport_preV3)
 {
 #ifdef UNICODE
   wifstream ifs((const wchar_t *)LPCTSTR(filename));
@@ -180,11 +184,16 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   numImported = numSkipped = 0;
   CItemData temp;
   // Order of fields determined in CItemData::GetPlaintext()
-  enum Fields {GROUPTITLE, USER, PASSWORD, URL,
-               AUTOTYPE, CTIME, NOTES, NUMFIELDS};
+  enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
+  				CTIME, PMTIME, ATIME, LTIME, RMTIME,
+  				NOTES, NUMFIELDS};
 
+  enum Fields_PreV3 {GROUPTITLE_V1V2, USER_V1V2, PASSWORD_V1V2,
+				NOTES_V1V2, NUMFIELDS_V1V2};
   if (!ifs)
     return CANT_OPEN_FILE;
+  int i_numfields = bimport_preV3 ? NUMFIELDS_V1V2 : NUMFIELDS;
+  int i_notes = bimport_preV3 ? NOTES_V1V2 : NOTES;
 
   for (;;) {
     // read a single line.
@@ -200,7 +209,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     vector<string> tokens;
     for (int startpos = 0; ; ) {
       int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
-      if (nextchar >= 0 && tokens.size() < NOTES) {
+      if (nextchar >= 0 && (int)tokens.size() < i_notes) {
         tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
         startpos = nextchar + 1;
       } else {
@@ -232,7 +241,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         break;
       }
     }
-    if (tokens.size() != NUMFIELDS) {
+	if ((int)tokens.size() != i_numfields) {
       numSkipped++; // malformed entry
       continue; // try to process next records
     }
@@ -252,10 +261,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       if (leftquote != grouptitle.length()-1) {
         temp.SetGroup(grouptitle.substr(0, leftquote-1).c_str());
         temp.SetTitle(grouptitle.substr(leftquote+1,
-                                        grouptitle.length()-leftquote-2).c_str());
+			grouptitle.length()-leftquote-2).c_str(), delimiter);
       } else { // only a single " ?!
         // probably wrong, but a least we don't lose data
-        temp.SetTitle(grouptitle.c_str());
+        temp.SetTitle(grouptitle.c_str(), delimiter);
       }
     } else { // title has no period
       size_t lastdot = grouptitle.find_last_of('.');
@@ -264,21 +273,27 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
                            "" : ImportedPrefix + ".");
         newgroup += grouptitle.substr(0, lastdot).c_str();
         temp.SetGroup(newgroup);
-        temp.SetTitle(grouptitle.substr(lastdot + 1).c_str());
+        temp.SetTitle(grouptitle.substr(lastdot + 1).c_str(), delimiter);
       } else {
         temp.SetGroup(ImportedPrefix);
-        temp.SetTitle(grouptitle.c_str());
+        temp.SetTitle(grouptitle.c_str(), delimiter);
       }
     }
 
     // New 3.0 fields: URL, AutoType, CTime
+	if (!bimport_preV3) {
     temp.SetURL(tokens[URL].c_str());
     temp.SetAutoType(tokens[AUTOTYPE].c_str());
     temp.SetCTime(tokens[CTIME].c_str());
+		temp.SetPMTime(tokens[PMTIME].c_str());
+		temp.SetATime(tokens[ATIME].c_str());
+		temp.SetLTime(tokens[LTIME].c_str());
+		temp.SetRMTime(tokens[RMTIME].c_str());
+	}
 
     // The notes field begins and ends with a double-quote, with
     // no special escaping of any other internal characters.
-    string quotedNotes = tokens[NOTES];
+    string quotedNotes = tokens[i_notes];
     if (!quotedNotes.empty() &&
         *quotedNotes.begin() == '\"' &&
         *(quotedNotes.end() - 1) == '\"') {
@@ -328,6 +343,7 @@ int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)
     return status; // should never happen
   }
 }
+#define MRE_FS _T("\xbb")
 
 int
 PWScore::ReadFile(const CMyString &a_filename,

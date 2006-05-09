@@ -41,14 +41,12 @@ DboxMain::OnTrayLockUnLock()
 		rc = m_core.ReadCurFile(passkey);
 		if (rc == PWScore::SUCCESS) {
 			m_needsreading = false;
-			m_existingrestore = FALSE;
 			startLockCheckTimer();
 			UpdateSystemTray(UNLOCKED);
 			RefreshList();
 			return;
 	    } else {
 	    	m_needsreading = true;
-	    	m_existingrestore = FALSE;
 	    	UpdateSystemTray(LOCKED);
 	    	ClearClipboard();
 	    	ShowWindow(SW_MINIMIZE);
@@ -117,8 +115,13 @@ DboxMain::OnTrayCopyUsername(UINT nID)
 	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci);
 	if (&ci == NULL) return;
 	const CMyString username = ci.GetUser();
-	if (!username.IsEmpty())
+	if (!username.IsEmpty()) {
 		ToClipboard(username);
+	    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   			ci.SetATime();
+       		Save();
+		}
+	}
 }
 
 void
@@ -136,6 +139,10 @@ DboxMain::OnTrayCopyPassword(UINT nID)
 	if (&ci == NULL) return;
 	const CMyString curPassString = ci.GetPassword();
 	ToClipboard(curPassString);
+	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   		ci.SetATime();
+       	Save();
+	}
 }
 
 void
@@ -155,6 +162,10 @@ DboxMain::OnTrayBrowse(UINT nID)
 	CMyString browseURL = ci.GetURL();
 	if (!browseURL.IsEmpty()) {
 		LaunchBrowser(browseURL);
+	}
+	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   		ci.SetATime();
+       	Save();
 	}
 }
 
@@ -198,6 +209,10 @@ DboxMain::OnTrayAutoType(UINT nID)
 	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci);
 	if (&ci == NULL) return;
 	AutoType(ci);
+	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   		ci.SetATime();
+       	Save();
+	}
 }
 
 void

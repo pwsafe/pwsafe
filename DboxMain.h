@@ -91,15 +91,15 @@ public:
 #endif
   CMyTreeCtrl     m_ctlItemTree;
   //}}AFX_DATA
-  // recent entry lists
-  CRUEList m_RUEList;
+
+  CRUEList m_RUEList;   // recent entry lists
+  int m_nColumns;  // accessed from CompareFunc
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
   //}}AFX_VIRTUAL
-
 
 protected:
   HICON m_hIcon;
@@ -138,6 +138,7 @@ protected:
   bool m_bShowPasswordInEdit;
   bool m_bShowPasswordInList;
   bool m_bAlwaysOnTop;
+  bool m_bMaintainDateTimeStamps;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
@@ -309,6 +310,7 @@ private:
   void ExtractFont(CString& str);
   CString GetToken(CString& str, LPCTSTR c);
   int SaveIfChanged();
+  void CheckExpiredPasswords();
 };
 
 // Following used to keep track of display vs data

@@ -65,7 +65,8 @@ SetPasswordFont(CWnd* pDlgItem)
     // Prior versions of Windows have default font = Courier
     // Who knows about Vista?
     if (bOsVersionInfoEx || bOsVersionInfo) {
-      if ((osvi.dwMajorVersion >= 5) && (osvi.dwMinorVersion > 0)) {
+      if (((osvi.dwMajorVersion == 5) && (osvi.dwMinorVersion >= 1))	// XP, Server 2003 R2, Server 2003 or XP Pro x64 
+      		|| (osvi.dwMajorVersion > 5)) {								// Vista or Server "Longhorn"
         FONT_NAME = _T("Tahoma");
       } else {
         FONT_NAME = _T("Courier");

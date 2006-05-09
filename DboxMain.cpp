@@ -26,6 +26,7 @@
 #include "TryAgainDlg.h"
 #include "ExportText.h"
 #include "ImportDlg.h"
+#include "ExpPWListDlg.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -51,12 +52,6 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
-
-#if defined(UNICODE)
-  #define CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
-#else
-  #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
 #endif
 
 /*
@@ -109,7 +104,7 @@ END_MESSAGE_MAP()
 DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
      m_bSizing( false ), m_needsreading(true), m_windowok(false),
-     m_existingrestore(FALSE), m_toolbarsSetup(FALSE),
+     m_toolbarsSetup(FALSE),
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
@@ -284,6 +279,7 @@ DboxMain::InitPasswordSafe()
   m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop);
   UpdateAlwaysOnTop();
 
+  m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps);
   // ... same for UseSystemTray
   // StartSilent trumps preference
   if (!m_IsStartSilent && !PWSprefs::GetInstance()->
@@ -336,14 +332,22 @@ DboxMain::InitPasswordSafe()
   bitmap.LoadBitmap(IDB_LEAF);
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_EXPIRED);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
 
   // Init stuff for list view
   m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-  int iColumnCount = 3;
+  m_nColumns = 8;
   m_ctlItemList.InsertColumn(0, _T("Title"));
   m_ctlItemList.InsertColumn(1, _T("User Name"));
   m_ctlItemList.InsertColumn(2, _T("Notes"));
+  m_ctlItemList.InsertColumn(3, _T("Created"));
+  m_ctlItemList.InsertColumn(4, _T("Password Modified"));
+  m_ctlItemList.InsertColumn(5, _T("Last Accessed"));
+  m_ctlItemList.InsertColumn(6, _T("Password Lifetime"));
+  m_ctlItemList.InsertColumn(7, _T("Last Modified"));
 
   m_bShowPasswordInEdit = PWSprefs::GetInstance()->
     GetPref(PWSprefs::ShowPWDefault);
@@ -364,16 +368,25 @@ DboxMain::InitPasswordSafe()
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
   int i1stWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column1Width,
-                                                   (rect.Width() / iColumnCount +
-                                                    rect.Width() % iColumnCount));
+                                                   (rect.Width() / 3 +
+                                                    rect.Width() % 3));
   int i2ndWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column2Width,
-                                                   rect.Width() / iColumnCount);
+                                                   rect.Width() / 3);
   int i3rdWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column3Width,
-                                                   rect.Width() / iColumnCount);
+                                                   rect.Width() / 3);
 
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
   m_ctlItemList.SetColumnWidth(1, i2ndWidth);
   m_ctlItemList.SetColumnWidth(2, i3rdWidth);
+  m_ctlItemList.SetRedraw(FALSE);
+  const CString ascdatetime = "XXX Xxx DD HH:MM:SS YYYY";
+  int nWidth = m_ctlItemList.GetStringWidth(ascdatetime);
+  for (int i = 3; i < 8; i++) {
+	m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE);
+	m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+	m_ctlItemList.SetColumnWidth(i, nWidth);
+  }
+  m_ctlItemList.SetRedraw(TRUE);
 
   m_iSortedColumn = PWSprefs::GetInstance()->GetPref(PWSprefs::SortedColumn);
   m_bSortAscending = PWSprefs::GetInstance()->
@@ -520,7 +533,8 @@ DboxMain::OpenOnInit(void)
   }
     // DELIBERATE FALL-THRU if user chose YES
   case PWScore::SUCCESS:
-    m_existingrestore = FALSE;
+	if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
+		CheckExpiredPasswords();
     m_needsreading = false;
     startLockCheckTimer();
     UpdateSystemTray(UNLOCKED);
@@ -581,6 +595,10 @@ void DboxMain::OnBrowse()
   if(ci != NULL) {
 	if (!ci->GetURL().IsEmpty()) {
       LaunchBrowser(ci->GetURL());
+      if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   		ci->SetATime();
+       	Save();
+	  }
       uuid_array_t RUEuuid;
       ci->GetUUID(RUEuuid);
       m_RUEList.AddRUEntry(RUEuuid);
@@ -588,40 +606,13 @@ void DboxMain::OnBrowse()
   }
 }
 
-void DboxMain::ToClipboard(const CMyString &data)
+void
+DboxMain::ToClipboard(const CMyString &data)
 {
-  uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
-  hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-  LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
+	m_clipboard_set = PWSUtil::ToClipboard(data, m_clipboard_digest, app.m_pMainWnd->m_hWnd);
 		
-  PWSUtil::strCopy(pGlobalLock, uGlobalMemSize, data ,data.GetLength());
 		
-  GlobalUnlock(hGlobalMemory);	
 		
-  if (OpenClipboard() == TRUE) {
-    if (EmptyClipboard()!=TRUE) {
-      DBGMSG("The clipboard was not emptied correctly");
-    }
-    if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL) {
-      DBGMSG("The data was not pasted into the clipboard correctly");
-      GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
-    } else {
-      // identify data in clipboard as ours, so as not to clear the wrong data later
-      // of course, we don't want an extra copy of a password floating around
-      // in memory, so we'll use the hash
-      const char *str = (const char *)data;
-      SHA256 ctx;
-      ctx.Update((const unsigned char *)str, data.GetLength());
-      ctx.Final(m_clipboard_digest);
-      m_clipboard_set = true;
-    }
-    if (CloseClipboard() != TRUE) {
-      DBGMSG("The clipboard could not be closed");
-    }
-  } else {
-    DBGMSG("The clipboard could not be opened correctly");
-    GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
-  }
 }
 
 void
@@ -639,6 +630,10 @@ DboxMain::OnCopyPassword()
   CItemData *ci = getSelectedItem();
   ASSERT(ci != NULL);
   ToClipboard(ci->GetPassword());
+  if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+  	ci->SetATime();
+    Save();
+  }
   uuid_array_t RUEuuid;
   ci->GetUUID(RUEuuid);
   m_RUEList.AddRUEntry(RUEuuid);
@@ -656,6 +651,10 @@ DboxMain::OnCopyUsername()
 
   if (!username.IsEmpty()) {
     ToClipboard(username);
+    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   		ci->SetATime();
+       	Save();
+	}
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
     m_RUEList.AddRUEntry(RUEuuid);
@@ -668,37 +667,9 @@ DboxMain::ClearClipboard()
   // Clear the clipboard IFF its value is the same as last set by this app.
   if (!m_clipboard_set)
     return;
-  if (OpenClipboard() != TRUE) {
-    DBGMSG("The clipboard could not be opened correctly");
-    return;
-  }
-  if (IsClipboardFormatAvailable(CLIPBOARD_TEXT_FORMAT) != 0) {
-    HGLOBAL hglb = GetClipboardData(CLIPBOARD_TEXT_FORMAT); 
-    if (hglb != NULL) {
-      LPTSTR lptstr = (LPTSTR)GlobalLock(hglb); 
-      if (lptstr != NULL) {
+		
+	m_clipboard_set = PWSUtil::ClearClipboard(m_clipboard_digest, app.m_pMainWnd->m_hWnd);
         // check identity of data in clipboard
-        unsigned char digest[SHA256::HASHLEN];
-        SHA256 ctx;
-        ctx.Update((const unsigned char *)lptstr, PWSUtil::strLength(lptstr));
-        ctx.Final(digest);
-        if (memcmp(digest, m_clipboard_digest, sizeof(digest)) == 0) {
-          trashMemory( lptstr, PWSUtil::strLength(lptstr));
-          GlobalUnlock(hglb);
-          if (EmptyClipboard() == TRUE) {
-            m_clipboard_set = false;
-          } else {
-            DBGMSG("The clipboard was not emptied correctly");
-          }
-        } else { // hashes match 
-          GlobalUnlock(hglb);
-        }
-      } // lptstr != NULL
-    } // hglb != NULL
-  } // IsClipboardFormatAvailable
-  if (CloseClipboard() != TRUE) {
-    DBGMSG("The clipboard could not be closed");
-  }
 }
 
 
@@ -834,6 +805,7 @@ void
 DboxMain::OnExportText()
 {
   CExportTextDlg et;
+  bool bwrite_header;
   m_LockDisabled = true;
   int rc = et.DoModal();
   m_LockDisabled = false;
@@ -866,12 +838,13 @@ DboxMain::OnExportText()
           return;
       } // while (1)
 
+	  bwrite_header = (et.m_export_hdr == 1);
       if (et.m_querysetexpdelim == 1) {
         char delimiter;
         delimiter = et.m_defexpdelim[0];
-        rc = m_core.WritePlaintextFile(newfile, delimiter);
+        rc = m_core.WritePlaintextFile(newfile, bwrite_header, delimiter);
       } else {
-        rc = m_core.WritePlaintextFile(newfile);
+        rc = m_core.WritePlaintextFile(newfile, bwrite_header);
       }
 		
       if (rc == PWScore::CANT_OPEN_FILE)        {
@@ -923,6 +896,7 @@ DboxMain::OnImportText()
   if (rc == IDOK) {
     CMyString newfile = (CMyString)fd.GetPathName();
     int numImported = 0, numSkipped = 0;
+    bool bimport_preV3 = (dlg.m_import_preV3 == 1) ? true : false;
     char delimiter;
     if (dlg.m_querysetimpdelim == 1) {
       delimiter = dlg.m_defimpdelim[0];
@@ -930,7 +904,7 @@ DboxMain::OnImportText()
       delimiter = '\0';
     }
     rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, fieldSeparator,
-                                    delimiter, numImported, numSkipped);
+                                    delimiter, numImported, numSkipped, bimport_preV3);
 
     switch (rc) {
     case PWScore::CANT_OPEN_FILE:
@@ -1316,6 +1290,8 @@ DboxMain::Open( const CMyString &pszFilename )
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
+  if (m_bMaintainDateTimeStamps)
+	  CheckExpiredPasswords();
   ChangeOkUpdate();
   RefreshList();
 	
@@ -2289,9 +2265,7 @@ void DboxMain::OnUnMinimize()
 	
 	// Case 2 - data unavailable
 	if ((m_needsreading)
-		&& (m_existingrestore == FALSE)
 		&& (m_windowok)) {
-		m_existingrestore = TRUE;
 	
 		CMyString passkey, temp;
 		int rc, rc2;
@@ -2336,13 +2310,11 @@ void DboxMain::OnUnMinimize()
 	
 		if (rc2 == PWScore::SUCCESS) {
 			m_needsreading = false;
-			m_existingrestore = FALSE;
 			UpdateSystemTray(UNLOCKED);
 			startLockCheckTimer();
 			m_passphraseOK = true;
 		} else {
 			m_needsreading = true;
-			m_existingrestore = FALSE;
 			if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
 				ShowWindow( SW_HIDE );
 			else
@@ -2419,4 +2391,55 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       )
     ResetIdleLockCounter();
   return CDialog::WindowProc(message, wParam, lParam);
+}
+void
+DboxMain::CheckExpiredPasswords()
+{
+	ExpPWEntry exppwentry;
+	time_t now, LTime;
+
+	CList<ExpPWEntry, ExpPWEntry&>* p_expPWList = new CList<ExpPWEntry, ExpPWEntry&>;
+
+	POSITION listPos = m_core.GetFirstEntryPosition();
+
+	time(&now);
+
+	while (listPos != NULL)
+    {
+		const CItemData &curitem = m_core.GetEntryAt(listPos);
+		curitem.GetLTime(LTime);
+
+		if (((long)LTime != 0) && (LTime < now)) {
+			exppwentry.group = curitem.GetGroup();
+			exppwentry.title = curitem.GetTitle();
+			exppwentry.user = curitem.GetUser();
+			exppwentry.expiryascdate = curitem.GetLTime();
+			exppwentry.expiryexpdate = curitem.GetLTimeExp();
+			exppwentry.expirytttdate = LTime;
+			p_expPWList->AddTail(exppwentry);
+		}
+		m_core.GetNextEntry(listPos);
+	}
+
+	if (p_expPWList->GetCount() > 0) {
+		CExpPWListDlg dlg(this, m_core.GetCurFile());
+		dlg.m_pexpPWList = p_expPWList;
+		int rc = 0;
+		rc = dlg.DoModal();
+		// Only save clipboard digest if we used it just in case we want to clear it later
+		m_clipboard_set = dlg.m_copied_to_clipboard;
+		if (m_clipboard_set) {
+#if _MSC_VER >= 1400
+			memcpy_s(m_clipboard_digest, SHA256::HASHLEN,
+				dlg.m_expPWL_clipboard_digest, SHA256::HASHLEN);
+#else
+			memcpy(m_clipboard_digest, dlg.m_expPWL_clipboard_digest, SHA256::HASHLEN);
+#endif
+		}
+		p_expPWList->RemoveAll();
+	}
+
+	delete p_expPWList;
+
+	return;
 }

@@ -208,6 +208,14 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   time_t t;
   item.GetCTime(t);
   WriteCBC(CItemData::CTIME, (unsigned char *)&t, sizeof(t));
+  item.GetPMTime(t);
+  WriteCBC(CItemData::PMTIME, (unsigned char *)&t, sizeof(t));
+  item.GetATime(t);
+  WriteCBC(CItemData::ATIME, (unsigned char *)&t, sizeof(t));
+  item.GetLTime(t);
+  WriteCBC(CItemData::LTIME, (unsigned char *)&t, sizeof(t));
+  item.GetRMTime(t);
+  WriteCBC(CItemData::RMTIME, (unsigned char *)&t, sizeof(t));
   WriteCBC(CItemData::END, _T(""));
 
   return status;
@@ -268,6 +276,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
   int emergencyExit = 255; // to avoid endless loop.
   int fieldLen; // <= 0 means end of file reached
   bool endFound = false; // set to true when record end detected - happy end
+  time_t t;
   do {
     fieldLen = ReadCBC(type, tempdata);
     if (fieldLen > 0) {
@@ -284,30 +293,45 @@ int PWSfileV3::ReadRecord(CItemData &item)
       case CItemData::END:
         endFound = true; break;
       case CItemData::UUID: {
-        LPCTSTR ptr = LPCTSTR(tempdata);
+        LPCTSTR ptrU = LPCTSTR(tempdata);
         uuid_array_t uuid_array;
         for (int i = 0; i < sizeof(uuid_array); i++)
-          uuid_array[i] = (unsigned char)ptr[i];
+          uuid_array[i] = (unsigned char)ptrU[i];
         item.SetUUID(uuid_array); break;
       }
       case CItemData::GROUP:
         item.SetGroup(tempdata); break;
-        // just silently ignore fields we don't support.
-        // this is forward compatability...
       case CItemData::URL:
         item.SetURL(tempdata); break;
       case CItemData::AUTOTYPE:
         item.SetAutoType(tempdata); break;
       case CItemData::CTIME: {
-        LPCTSTR ptr = LPCTSTR(tempdata);
-        time_t t;
-        memcpy(&t, ptr, sizeof(t));
-        item.SetCTime(t);
+		LPCTSTR ptrC = LPCTSTR(tempdata);
+        memcpy(&t, ptrC, sizeof(t));
+		item.SetCTime(t); break;
+		}
+	  case CItemData::PMTIME: {
+        LPCTSTR ptrPM = LPCTSTR(tempdata);
+		memcpy(&t, ptrPM, sizeof(t));
+		item.SetPMTime(t); break;
       }
-      case CItemData::PMTIME:
-      case CItemData::RMTIME:
-      case CItemData::ATIME:
-      case CItemData::LTIME:
+	  case CItemData::ATIME: {
+        LPCTSTR ptrA = LPCTSTR(tempdata);
+		memcpy(&t, ptrA, sizeof(t));
+        item.SetATime(t); break;
+		}
+	  case CItemData::LTIME: {
+        LPCTSTR ptrL = LPCTSTR(tempdata);
+		memcpy(&t, ptrL, sizeof(t));
+        item.SetLTime(t); break;
+		}
+	  case CItemData::RMTIME: {
+        LPCTSTR ptrRM = LPCTSTR(tempdata);
+		memcpy(&t, ptrRM, sizeof(t));
+        item.SetRMTime(t); break;
+		}
+      // just silently ignore fields we don't support.
+      // this is forward compatability...
       case CItemData::POLICY:
       default:
         // XXX Set a flag here so user can be warned that

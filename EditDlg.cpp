@@ -12,6 +12,7 @@
 #include "corelib/PWCharPool.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
+#include "ExpDTDlg.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -42,7 +43,11 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
 	DDX_Text(pDX, IDC_URL, (CString&)m_URL);
 	DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
-	DDX_Text(pDX, IDC_CTIME, (CString&)m_CTime);
+	DDX_Text(pDX, IDC_CTIME, (CString&)m_ascCTime);
+	DDX_Text(pDX, IDC_PMTIME, (CString&)m_ascPMTime);
+	DDX_Text(pDX, IDC_ATIME, (CString&)m_ascATime);
+	DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
+	DDX_Text(pDX, IDC_RMTIME, (CString&)m_ascRMTime);
 
 
 	if(!pDX->m_bSaveAndValidate) {
@@ -77,7 +82,8 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 #endif
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
    ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
-   ON_STN_CLICKED(IDC_STATIC_CTIME, OnStnClickedStaticCtime)
+   ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
+   ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
 END_MESSAGE_MAP()
 
 
@@ -193,6 +199,13 @@ BOOL CEditDlg::OnInitDialog()
     m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
 	ResizeDialog();
+	m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->
+			GetPref(PWSprefs::MaintainDateTimeStamps);
+ 
+	if (!m_bMaintainDateTimeStamps) {
+		GetDlgItem(IDC_LTIME_CLEAR)->EnableWindow(FALSE);
+		GetDlgItem(IDC_LTIME_SET)->EnableWindow(FALSE);
+	}
    return TRUE;
 }
 
@@ -285,15 +298,28 @@ void CEditDlg::OnBnClickedMore()
 
 void CEditDlg::ResizeDialog()
 {
-  int TopHideableControl = IDC_URL;
-  int BottomHideableControl = IDC_CTIME;
+  int TopHideableControl = IDC_TOP_HIDEABLE;
+  int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
   int controls[]={
     IDC_URL,
     IDC_AUTOTYPE,
     IDC_STATIC_URL,
     IDC_STATIC_AUTO,
 	IDC_CTIME,
-	IDC_STATIC_CTIME};
+	IDC_STATIC_CTIME,
+	IDC_PMTIME,
+	IDC_STATIC_PMTIME,
+	IDC_ATIME,
+	IDC_STATIC_ATIME,
+	IDC_LTIME,
+	IDC_STATIC_LTIME,
+	IDC_RMTIME,
+	IDC_STATIC_RMTIME,
+	IDC_LTIME_CLEAR,
+	IDC_LTIME_SET,
+	IDC_STATIC_DTGROUP,
+	IDC_STATIC_DTEXPGROUP
+  };
 
 	
   for(int n = 0; n<sizeof(controls)/sizeof(IDC_URL);n++)
@@ -339,7 +365,27 @@ void CEditDlg::ResizeDialog()
                      SWP_NOMOVE );
 
 }
-void CEditDlg::OnStnClickedStaticCtime()
+void CEditDlg::OnBnClickedClearLTime()
 {
-    // TODO: Add your control notification handler code here
+	GetDlgItem(IDC_LTIME)->SetWindowText(_T("Never"));
+	m_ascLTime = "Never";
+	m_tttLTime = (time_t)0;
+}
+
+
+void CEditDlg::OnBnClickedSetLTime()
+{
+	CExpDTDlg dlg_expDT(this);
+
+	dlg_expDT.m_ascLTime = m_ascLTime;
+
+	app.DisableAccelerator();
+    int rc = dlg_expDT.DoModal();
+    app.EnableAccelerator();
+
+	if (rc == IDOK) {
+		m_tttLTime = dlg_expDT.m_tttLTime;
+		m_ascLTime = dlg_expDT.m_ascLTime;
+		GetDlgItem(IDC_LTIME)->SetWindowText(m_ascLTime);
+	}
 }

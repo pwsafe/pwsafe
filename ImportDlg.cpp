@@ -25,6 +25,7 @@ CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
 	m_tab = 0;
 	m_group = 0;
 	m_querysetimpdelim = 0;
+	m_import_preV3 = 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -41,6 +42,7 @@ void CImportDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_QUERYSETIMPDELIM, m_querysetimpdelim);
 	DDX_Text(pDX, IDC_DEFIMPDELIM, m_defimpdelim);
 	DDV_MaxChars(pDX, m_defimpdelim, 1);
+	DDX_Check(pDX, IDC_IMPORT_PREV3, m_import_preV3);
 	//}}AFX_DATA_MAP
 	if (m_querysetimpdelim == 1)
 		DDV_CheckImpDelimiter(pDX, m_defimpdelim);
@@ -55,6 +57,7 @@ BEGIN_MESSAGE_MAP(CImportDlg, CDialog)
 	ON_BN_CLICKED(IDC_NO_GROUP, OnNoGroup)
 	ON_BN_CLICKED(IDC_YES_GROUP, OnYesGroup)
 	ON_BN_CLICKED(IDC_QUERYSETIMPDELIM, OnSetMultilineImportNotesDelimiter)
+	ON_BN_CLICKED(IDC_IMPORT_PREV3, OnSetImportPreV3)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -127,6 +130,10 @@ void CImportDlg::OnSetMultilineImportNotesDelimiter()
    }
 }
 
+void CImportDlg::OnSetImportPreV3() 
+{
+   m_import_preV3 = ((CButton*)GetDlgItem(IDC_IMPORT_PREV3))->GetCheck();
+}
 void CImportDlg::OnHelp() 
 {
    ::HtmlHelp(NULL,

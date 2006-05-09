@@ -18,6 +18,8 @@ public:
   CMyString	m_group;
   CMyString m_URL;
   CMyString m_autotype;
+  CMyString m_ascLTime;
+  time_t m_tttLTime;
   //}}AFX_DATA
 
   // Overrides
@@ -26,6 +28,12 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
+private:
+  // Are we showing more or less details?
+  bool m_isExpanded;
+  // Are we maintaining date/timestamps?
+  bool m_bMaintainDateTimeStamps;
+  void ResizeDialog();
 
   // Implementation
 protected:
@@ -40,13 +48,10 @@ protected:
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
     public:
-  afx_msg void OnBnClickedMore();
-private:
-  // Are we showing more or less details?
-  bool m_isExpanded;
-  void ResizeDialog();
-public:
 	afx_msg void OnBnClickedOk();
+  afx_msg void OnBnClickedMore();
+	afx_msg void OnBnClickedClearLTime();
+	afx_msg void OnBnClickedSetLTime();
 	CButton m_moreLessBtn;
 };
 //-----------------------------------------------------------------------------

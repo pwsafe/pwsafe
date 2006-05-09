@@ -29,6 +29,7 @@ public:
 	CString	m_exportTextPassword;
 	CString m_defexpdelim;
 	int m_querysetexpdelim;
+	int m_export_hdr;
 	//}}AFX_DATA
 
 

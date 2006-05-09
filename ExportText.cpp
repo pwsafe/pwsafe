@@ -23,6 +23,7 @@ CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
 	m_exportTextPassword = _T("");
 	m_defexpdelim = _T("^");
 	m_querysetexpdelim = 0;
+	m_export_hdr = 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -42,6 +43,7 @@ void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EXPORT_TEXT_PASSWORD, m_exportTextPassword);
 	DDX_Check(pDX, IDC_QUERYSETEXPDELIM, m_querysetexpdelim);
 	DDX_Text(pDX, IDC_DEFEXPDELIM, m_defexpdelim);
+	DDX_Check(pDX, IDC_EXPORT_HDR, m_export_hdr);
 	DDV_MaxChars(pDX, m_defexpdelim, 1);
 	//}}AFX_DATA_MAP
 	if (m_querysetexpdelim == 1)

@@ -73,6 +73,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   CItemData*	pRHS			= (CItemData *)lParam2;
   CMyString	title1, username1;
   CMyString	title2, username2;
+  time_t t1, t2;
 
   // if the sort column is really big, then we must be being called via recursion
   if ( nSortColumn >= nRecurseFlag )
@@ -82,6 +83,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     }
 
   int iResult;
+  if (self->m_nColumns == 9) {
   switch(nSortColumn) {
   case 0:
     title1 = pLHS->GetTitle();
@@ -113,10 +115,92 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   case 3:
     iResult = ((CString)pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
     break;
+		case 4:
+			pLHS->GetCTime(t1);
+			pRHS->GetCTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 5:
+			pLHS->GetPMTime(t1);
+			pRHS->GetPMTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 6:
+			pLHS->GetATime(t1);
+			pRHS->GetATime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 7:
+			pLHS->GetLTime(t1);
+			pRHS->GetLTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 8:
+			pLHS->GetRMTime(t1);
+			pRHS->GetRMTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
   default:
-
+		    iResult = 0; // should never happen - just keep compiler happy
+			ASSERT(FALSE);
+	}
+  } else {
+	switch(nSortColumn) {
+		case 0:
+			title1 = pLHS->GetTitle();
+			title2 = pRHS->GetTitle();
+			iResult = ((CString)title1).CompareNoCase(title2);
+			if (iResult == 0 && !bAlreadyRecursed) {
+				const int savedSortColumn = self->m_iSortedColumn;
+				self->m_iSortedColumn = 1 + nRecurseFlag;
+				iResult = CompareFunc(lParam1, lParam2, closure);
+				self->m_iSortedColumn = savedSortColumn;
+			}
+			break;
+		case 1:
+			username1 = pLHS->GetUser();
+			username2 = pRHS->GetUser();
+			iResult = ((CString)username1).CompareNoCase(username2);
+			if (iResult == 0 && !bAlreadyRecursed) {
+			// making a recursed call, add nRecurseFlag
+				const int savedSortColumn = self->m_iSortedColumn;
+				self->m_iSortedColumn = 0 + nRecurseFlag;
+				iResult = CompareFunc(lParam1, lParam2, closure);
+				self->m_iSortedColumn = savedSortColumn;
+			}
+			break;
+		case 2:
+			iResult = ((CString)pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
+			break;
+		case 3:
+			pLHS->GetCTime(t1);
+			pRHS->GetCTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 4:
+			pLHS->GetPMTime(t1);
+			pRHS->GetPMTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 5:
+			pLHS->GetATime(t1);
+			pRHS->GetATime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 6:
+			pLHS->GetLTime(t1);
+			pRHS->GetLTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		case 7:
+			pLHS->GetRMTime(t1);
+			pRHS->GetRMTime(t2);
+			iResult = ((long) t1 < (long) t2) ? -1 : 1;
+			break;
+		default:
     iResult = 0; // should never happen - just keep compiler happy
     ASSERT(FALSE);
+	}
   }
   if (!self->m_bSortAscending) {
     iResult *= -1;
@@ -247,7 +331,12 @@ DboxMain::OnAdd()
     temp.SetNotes(dataDlg.m_notes);
     temp.SetURL(dataDlg.m_URL);
     temp.SetAutoType(dataDlg.m_autotype);
-    temp.SetCTime();
+    if (m_bMaintainDateTimeStamps) {
+    	time_t t;
+    	time(&t);
+    	temp.SetCTime(t);
+    	temp.SetLTime(dataDlg.m_tttLTime);
+    }
     m_core.AddEntryToTail(temp);
     int newpos = insertItem(m_core.GetTailEntry());
     SelectEntry(newpos);
@@ -413,18 +502,27 @@ DboxMain::OnEdit()
     POSITION listpos = Find(di->list_index);
 
     CEditDlg dlg_edit(this);
-    dlg_edit.m_group = ci->GetGroup();
-    dlg_edit.m_title = ci->GetTitle();
-    dlg_edit.m_username = ci->GetUser();
-    dlg_edit.m_realpassword = ci->GetPassword();
-    dlg_edit.m_URL = ci->GetURL();
-    dlg_edit.m_autotype = ci->GetAutoType();
+    CMyString oldGroup, oldTitle, oldUsername, oldRealPassword, oldURL,
+		oldAutoType, oldNotes, oldLTime;
+    oldGroup = dlg_edit.m_group = ci->GetGroup();
+    oldTitle = dlg_edit.m_title = ci->GetTitle();
+    oldUsername = dlg_edit.m_username = ci->GetUser();
+    oldRealPassword = dlg_edit.m_realpassword = ci->GetPassword();
+    oldURL = dlg_edit.m_URL = ci->GetURL();
+    oldAutoType = dlg_edit.m_autotype = ci->GetAutoType();
     dlg_edit.m_password = HIDDEN_PASSWORD;
-    dlg_edit.m_notes = ci->GetNotes();
+    oldNotes = dlg_edit.m_notes = ci->GetNotes();
     dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
     dlg_edit.m_IsReadOnly = m_IsReadOnly;
 	
-    dlg_edit.m_CTime = ci->GetCTime();
+    dlg_edit.m_ascCTime = ci->GetCTime();
+    dlg_edit.m_ascPMTime = ci->GetPMTime();
+    dlg_edit.m_ascATime = ci->GetATime();
+    dlg_edit.m_ascLTime = ci->GetLTimeN();
+    if (dlg_edit.m_ascLTime.GetLength() == 0)
+    	dlg_edit.m_ascLTime = "Never";
+    oldLTime = dlg_edit.m_ascLTime;
+    dlg_edit.m_ascRMTime = ci->GetRMTime();
 
     app.DisableAccelerator();
     int rc = dlg_edit.DoModal();
@@ -437,6 +535,35 @@ DboxMain::OnEdit()
         user = m_core.GetDefUsername();
       else
         user = dlg_edit.m_username;
+      time_t t;
+      time(&t);
+      bool bpswdChanged, banotherChanged;
+      bpswdChanged = banotherChanged = false;
+      if (oldRealPassword != dlg_edit.m_realpassword)
+      	bpswdChanged = true;
+      else {
+      	if (oldGroup != dlg_edit.m_group
+      		|| oldTitle != dlg_edit.m_title
+      		|| oldUsername != user
+      		|| oldNotes != dlg_edit.m_notes
+      		|| oldURL != dlg_edit.m_URL
+      		|| oldAutoType != dlg_edit.m_autotype
+      		|| oldLTime != dlg_edit.m_ascLTime)
+      		banotherChanged = true;
+      }
+
+	  if (!bpswdChanged && !banotherChanged) {  // Nothing changed!
+	  	m_LockDisabled = false;
+	  	return;
+	  }
+	  
+	  if (bpswdChanged && m_bMaintainDateTimeStamps) {
+      	ci->SetPMTime(t);
+      	ci->SetRMTime(t);
+      }
+      
+      if(banotherChanged && m_bMaintainDateTimeStamps)
+        ci->SetRMTime(t);
       ci->SetGroup(dlg_edit.m_group);
       ci->SetTitle(dlg_edit.m_title);
       ci->SetUser(user);
@@ -444,6 +571,8 @@ DboxMain::OnEdit()
       ci->SetNotes(dlg_edit.m_notes);
       ci->SetURL(dlg_edit.m_URL);
       ci->SetAutoType(dlg_edit.m_autotype);
+      if (m_bMaintainDateTimeStamps && oldLTime != dlg_edit.m_ascLTime)
+      	ci->SetLTime(dlg_edit.m_tttLTime);
 
       /*
         Out with the old, in with the new
@@ -789,9 +918,15 @@ DboxMain::RefreshList()
   LVCOLUMN lvColumn;
   lvColumn.mask = LVCF_WIDTH;
 
-  bool bPasswordColumnShowing = m_ctlItemList.GetColumn(3, &lvColumn)? true: false;
+  bool bPasswordColumnShowing;
+  m_ctlItemList.GetColumn(3, &lvColumn);
+  if (m_ctlItemList.GetHeaderCtrl()->GetItemCount() == 9)
+  	bPasswordColumnShowing = true;
+  else
+    bPasswordColumnShowing = false;
   if (m_bShowPasswordInList && !bPasswordColumnShowing) {
     m_ctlItemList.InsertColumn(3, _T("Password"));
+	m_nColumns++;
     CRect rect;
     m_ctlItemList.GetClientRect(&rect);
     m_ctlItemList.SetColumnWidth(3,
@@ -803,6 +938,7 @@ DboxMain::RefreshList()
     PWSprefs::GetInstance()->SetPref(PWSprefs::Column4Width,
                                      lvColumn.cx);
     m_ctlItemList.DeleteColumn(3);
+	m_nColumns--;
   }
 
   POSITION listPos = m_core.GetFirstEntryPosition();
@@ -877,7 +1013,7 @@ DboxMain::OnSize(UINT nType,
         }
       }
 
-      if (doit && (m_existingrestore == FALSE)) {
+      if (doit) {
         if ( m_core.IsChanged() ) // only save if changed
           OnSave();
         ClearData(false);
@@ -1085,6 +1221,12 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
+    time_t now, tLTime;
+    time(&now);
+    itemData.GetLTime(tLTime);
+    if (tLTime != 0 && tLTime < now)
+    	m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
+    else    
     m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
     m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     di->tree_item = ti;
@@ -1101,11 +1243,22 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
 
   m_ctlItemList.SetItemText(iResult, 1, username);
   m_ctlItemList.SetItemText(iResult, 2, strNotes);
-  m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
 
   if (m_bShowPasswordInList) {
     m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
+    m_ctlItemList.SetItemText(iResult, 4, itemData.GetCTimeN());
+    m_ctlItemList.SetItemText(iResult, 5, itemData.GetPMTimeN());
+    m_ctlItemList.SetItemText(iResult, 6, itemData.GetATimeN());
+    m_ctlItemList.SetItemText(iResult, 7, itemData.GetLTimeN());
+    m_ctlItemList.SetItemText(iResult, 8, itemData.GetRMTimeN());
+  } else {
+  	m_ctlItemList.SetItemText(iResult, 3, itemData.GetCTimeN());
+  	m_ctlItemList.SetItemText(iResult, 4, itemData.GetPMTimeN());
+  	m_ctlItemList.SetItemText(iResult, 5, itemData.GetATimeN());
+  	m_ctlItemList.SetItemText(iResult, 6, itemData.GetLTimeN());
+  	m_ctlItemList.SetItemText(iResult, 7, itemData.GetRMTimeN());
   }
+  m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
   return iResult;
 }
 
@@ -1182,6 +1335,19 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   }
   m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
   FixListIndexes(m_ctlItemList);
+#if (WINVER < 0x0501)  // These are already defined for WinXP and later
+#define HDF_SORTUP 0x0400
+#define HDF_SORTDOWN 0x0200
+#endif
+  HDITEM HeaderItem;
+  HeaderItem.mask = HDI_FORMAT;
+  m_ctlItemList.GetHeaderCtrl()->GetItem(m_iSortedColumn, &HeaderItem);
+  // Turn off all arrows
+  HeaderItem.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
+  // Turn on the correct arrow
+  HeaderItem.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
+  m_ctlItemList.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
+
   *pResult = 0;
 }
 
@@ -1351,6 +1517,10 @@ DboxMain::OnAutoType()
 	ci->GetUUID(RUEuuid);
 	m_RUEList.AddRUEntry(RUEuuid);
     AutoType(*ci);
+	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   		ci->SetATime();
+       	Save();
+    }
   }
 }
 
