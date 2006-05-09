@@ -10,6 +10,7 @@
 #include "PwFont.h"
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
+#include "ExpDTDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,11 +22,12 @@ static char THIS_FILE[] = __FILE__;
 CAddDlg::CAddDlg(CWnd* pParent)
   : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
-    m_URL(_T("")), m_autotype(_T(""))
+    m_URL(_T("")), m_autotype(_T("")), m_tttLTime((time_t)0)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
-  	  
+  m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::MaintainDateTimeStamps);  
 }
 
 
@@ -35,6 +37,10 @@ BOOL CAddDlg::OnInitDialog()
  
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   ResizeDialog();
+  if (!m_bMaintainDateTimeStamps) {
+	GetDlgItem(IDC_LTIME_CLEAR)->EnableWindow(FALSE);
+	GetDlgItem(IDC_LTIME_SET)->EnableWindow(FALSE);
+  }
   return TRUE;
 }
 
@@ -46,6 +52,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
 	DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
 	DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
+	DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
 
 	if(!pDX->m_bSaveAndValidate) {
 		// We are initializing the dialog.  Populate the groups combo box.
@@ -74,6 +81,8 @@ BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
    ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+   ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
+   ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
 END_MESSAGE_MAP()
 
 
@@ -165,13 +174,19 @@ void CAddDlg::OnBnClickedOk()
 
 void CAddDlg::ResizeDialog()
 {
-	int TopHideableControl = IDC_URL;
-	int BottomHideableControl = IDC_AUTOTYPE;
+	int TopHideableControl = IDC_TOP_HIDEABLE;
+	int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
 	int controls[]={
 IDC_URL,
 IDC_AUTOTYPE,
 IDC_STATIC_URL,
-IDC_STATIC_AUTO};
+		IDC_STATIC_AUTO,
+		IDC_LTIME,
+		IDC_STATIC_LTIME,
+		IDC_LTIME_CLEAR,
+		IDC_LTIME_SET,
+		IDC_STATIC_DTEXPGROUP
+	};	
 	
 	for(int n = 0; n<sizeof(controls)/sizeof(IDC_URL);n++)
 	{
@@ -215,4 +230,26 @@ IDC_STATIC_AUTO};
 		newHeight , 
 		SWP_NOMOVE );
 
+}
+void CAddDlg::OnBnClickedClearLTime()
+{
+	GetDlgItem(IDC_LTIME)->SetWindowText(_T("Never"));
+	m_ascLTime = _T("Never");
+	m_tttLTime = (time_t)0;
+}
+void CAddDlg::OnBnClickedSetLTime()
+{
+	CExpDTDlg dlg_expDT(this);
+
+	dlg_expDT.m_ascLTime = m_ascLTime;
+
+	app.DisableAccelerator();
+	int rc = dlg_expDT.DoModal();
+	app.EnableAccelerator();
+
+	if (rc == IDOK) {
+		m_tttLTime = dlg_expDT.m_tttLTime;
+		m_ascLTime = dlg_expDT.m_ascLTime;
+		GetDlgItem(IDC_LTIME)->SetWindowText(m_ascLTime);
+	}
 }

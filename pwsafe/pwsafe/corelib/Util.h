@@ -129,6 +129,11 @@ inline void putInt32(unsigned char buf[4], const int val )
 #endif
 }
 
+#if defined(UNICODE)
+  #define CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
+#else
+  #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
+#endif
 class PWSUtil {
 public:
   // namespace, really, of common utility functions
@@ -137,6 +142,11 @@ public:
   static void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   static size_t strLength(const LPCTSTR str);
   static long fileLength(FILE *fp);
+  static bool VerifyASCDateTimeString(const CString time_str, time_t &t);
+  static bool VerifyImportDateTimeString(const CString time_str, time_t &t);
+  static bool ToClipboard(const CMyString &data,
+	  unsigned char clipboard_digest[32], HWND hWindow);
+  static bool ClearClipboard(unsigned char clipboard_digest[32], HWND hWindow);
 };
 
 #endif // Util_h

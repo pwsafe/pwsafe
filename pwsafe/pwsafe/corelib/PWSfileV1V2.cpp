@@ -378,8 +378,10 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
 	  // just silently ignore fields we don't support.
 	  // this is forward compatability...
 	case CItemData::CTIME:
+	case CItemData::PMTIME:
 	case CItemData::ATIME:
 	case CItemData::LTIME:
+	case CItemData::RMTIME:
 	case CItemData::POLICY:
 	default:
 	  // XXX Set a flag here so user can be warned that

@@ -40,7 +40,7 @@ class PWSprefs {
 		   UseNewToolbar, UseSystemTray, 
 		   LockOnWindowLock, LockOnIdleTimeout,
 		   EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
-		   DisplayExpandedAddEditDlg,
+		   DisplayExpandedAddEditDlg, MaintainDateTimeStamps,
 		   NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,

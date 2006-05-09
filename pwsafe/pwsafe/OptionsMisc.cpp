@@ -40,6 +40,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(COptionsMisc)
 	DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
 	DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
+	DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_maintaindatetimestamps);
 	DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
 	DDX_Radio(pDX, IDC_DOUBLE_CLICK_COPIES, m_doubleclickaction); // only first!
 	DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_hotkey_enabled);

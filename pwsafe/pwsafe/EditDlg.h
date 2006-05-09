@@ -10,8 +10,9 @@ public:
    // default constructor
    CEditDlg(CWnd* pParent = NULL)
       : CDialog(CEditDlg::IDD, pParent),
-        m_isPwHidden(true)
-		, m_CTime(_T(""))
+        m_isPwHidden(true),
+		m_ascCTime(_T("")), m_ascPMTime(_T("")), m_ascATime(_T("")),
+		m_ascLTime(_T("")), m_ascRMTime(_T(""))
    {}
 
    enum { IDD = IDD_EDIT };
@@ -22,7 +23,12 @@ public:
    CMyString m_group;
    CMyString m_URL;
    CMyString m_autotype;
-   CMyString m_CTime;
+   CMyString m_ascCTime;
+   CMyString m_ascPMTime;
+   CMyString m_ascATime;
+   CMyString m_ascLTime;
+   CMyString m_ascRMTime;
+   time_t m_tttLTime;
 
    CMyString m_realpassword;
 
@@ -36,6 +42,7 @@ private:
    bool m_isPwHidden;
    // Are we showing more or less details?
    bool m_isExpanded;
+   bool m_bMaintainDateTimeStamps;
    void ResizeDialog();
 
 protected:
@@ -56,10 +63,11 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedMore();
+	afx_msg void OnBnClickedClearLTime();
+	afx_msg void OnBnClickedSetLTime();
 	CButton m_moreLessBtn;
 
 	
-    afx_msg void OnStnClickedStaticCtime();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

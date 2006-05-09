@@ -102,6 +102,8 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
   misc.m_saveimmediately = prefs->
     GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
+  misc.m_maintaindatetimestamps = prefs->
+    GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
   misc.m_escexits = prefs->
     GetPref(PWSprefs::EscExits) ? TRUE : FALSE;
   // by strange coincidence, the values of the enums match the indices
@@ -145,7 +147,6 @@ DboxMain::OnOptions()
                      display.m_usesystemtray == TRUE);
       prefs->SetPref(PWSprefs::MaxREItems,
 		    display.m_maxreitems);
-      m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
       prefs->SetPref(PWSprefs::MaxMRUItems,
                      display.m_maxmruitems);
@@ -193,6 +194,8 @@ DboxMain::OnOptions()
                      misc.m_confirmdelete == FALSE);
       prefs->SetPref(PWSprefs::SaveImmediately,
                      misc.m_saveimmediately == TRUE);
+      prefs->SetPref(PWSprefs::MaintainDateTimeStamps,
+                     misc.m_maintaindatetimestamps == TRUE);
       prefs->SetPref(PWSprefs::EscExits,
                      misc.m_escexits == TRUE);
       // by strange coincidence, the values of the enums match the indices
@@ -251,7 +254,9 @@ DboxMain::OnOptions()
 		if (app.IsIconVisible() == TRUE)
           app.HideIcon();
       }
+      m_RUEList.SetMax(display.m_maxreitems);
 
+	  m_bMaintainDateTimeStamps = (misc.m_maintaindatetimestamps == TRUE) ? true : false;
       // update idle timeout values, if changed
       if (security.m_LockOnIdleTimeout != prevLockOIT)
         if (security.m_LockOnIdleTimeout == TRUE) {

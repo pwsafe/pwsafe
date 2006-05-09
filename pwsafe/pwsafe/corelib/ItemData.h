@@ -52,8 +52,27 @@ public:
    CMyString GetGroup() const; // V20
    CMyString GetURL() const; // V30
    CMyString GetAutoType() const; // V30
-   CMyString GetCTime() const; // V30
-   void GetCTime(time_t &t) const; // V30
+   CMyString GetATime() const {return GetTime(ATIME);}  // V30
+   CMyString GetCTime() const {return GetTime(CTIME);}  // V30
+   CMyString GetLTime() const {return GetTime(LTIME);}  // V30
+   CMyString GetPMTime() const {return GetTime(PMTIME);}  // V30
+   CMyString GetRMTime() const {return GetTime(RMTIME);}  // V30
+   CMyString GetATimeN() const {return GetTime(-ATIME);}  // V30
+   CMyString GetCTimeN() const {return GetTime(-CTIME);}  // V30
+   CMyString GetLTimeN() const {return GetTime(-LTIME);}  // V30
+   CMyString GetPMTimeN() const {return GetTime(-PMTIME);}  // V30
+   CMyString GetRMTimeN() const {return GetTime(-RMTIME);}  // V30
+   CMyString GetATimeExp() const {return GetTime(ATIME + 256);}  // V30
+   CMyString GetCTimeExp() const {return GetTime(CTIME + 256);}  // V30
+   CMyString GetLTimeExp() const {return GetTime(LTIME + 256);}  // V30
+   CMyString GetPMTimeExp() const {return GetTime(PMTIME + 256);}  // V30
+   CMyString GetRMTimeExp() const {return GetTime(RMTIME + 256);}  // V30
+   //  These populate the time structure instead of giving a character string
+   void GetATime(time_t &t) const {return GetTime(ATIME, t);}  // V30
+   void GetCTime(time_t &t) const {return GetTime(CTIME, t);}  // V30
+   void GetLTime(time_t &t) const {return GetTime(LTIME, t);}  // V30
+   void GetPMTime(time_t &t) const {return GetTime(PMTIME, t);}  // V30
+   void GetRMTime(time_t &t) const {return GetTime(RMTIME, t);}  // V30
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
    // it's used for multi-line notes.
    CMyString GetPlaintext(TCHAR separator, TCHAR delimiter = 0) const;
@@ -61,7 +80,7 @@ public:
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,
 		const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
-   void SetTitle(const CMyString &title); // V20
+   void SetTitle(const CMyString &title, TCHAR delimiter = 0);
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
    void SetNotes(const CMyString &notes, TCHAR delimiter = 0);
@@ -69,9 +88,21 @@ public:
    void SetGroup(const CMyString &group); // V20
    void SetURL(const CMyString &URL); // V30
    void SetAutoType(const CMyString &autotype); // V30
-   void SetCTime(); // V30
-   void SetCTime(time_t t); // V30
-   void SetCTime(const CMyString &URL); // V30
+   void SetATime() {return SetTime(ATIME);}  // V30
+   void SetATime(time_t t) {return SetTime(ATIME, t);}  // V30
+   void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
+   void SetCTime() {return SetTime(CTIME);}  // V30
+   void SetCTime(time_t t) {return SetTime(CTIME, t);}  // V30
+   void SetCTime(const CString &time_str) {return SetTime(CTIME, time_str);}  // V30
+   void SetLTime() {return SetTime(LTIME);}  // V30
+   void SetLTime(time_t t) {return SetTime(LTIME, t);}  // V30
+   void SetLTime(const CString &time_str) {return SetTime(LTIME, time_str);}  // V30
+   void SetPMTime() {return SetTime(PMTIME);}  // V30
+   void SetPMTime(time_t t) {return SetTime(PMTIME, t);}  // V30
+   void SetPMTime(const CString &time_str) {return SetTime(PMTIME, time_str);}  // V30
+   void SetRMTime() {return SetTime(RMTIME);}  // V30
+   void SetRMTime(time_t t) {return SetTime(RMTIME, t);}  // V30
+   void SetRMTime(const CString &time_str) {return SetTime(RMTIME, time_str);}  // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
@@ -87,7 +118,11 @@ private:
   CItemField m_Group;
   CItemField m_URL;
   CItemField m_AutoType;
-  CItemField m_cTime;
+  CItemField m_tttATime;	// last 'A'ccess time
+  CItemField m_tttCTime;	// 'C'reation time
+  CItemField m_tttLTime;	// password 'L'ifetime
+  CItemField m_tttPMTime;	// last 'P'assword 'M'odification time
+  CItemField m_tttRMTime;	// last 'R'ecord 'M'odification time
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
@@ -101,6 +136,13 @@ private:
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const CMyString &name,
 		 CMyString &title, CMyString &username);
+  bool VerifyASCDateTimeString(const CString time_str);
+  bool VerifyImportDateTimeString(const CString time_str);
+  CMyString GetTime(const int whichtime) const; // V30
+  void GetTime(const int whichtime, time_t &t) const; // V30
+  void SetTime(const int whichtime); // V30
+  void SetTime(const int whichtime, time_t t); // V30
+  void SetTime(const int whichtime, const CString &time_str); // V30
 
   // Create local Encryption/Decryption object
   BlowFish *MakeBlowFish() const;

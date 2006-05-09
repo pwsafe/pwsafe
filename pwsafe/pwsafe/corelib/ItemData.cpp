@@ -31,7 +31,10 @@ void CItemData::SetSessionKey()
 CItemData::CItemData()
   : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
     m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
-    m_URL(URL), m_AutoType(AUTOTYPE), m_cTime(CTIME), m_display_info(NULL)
+    m_URL(URL), m_AutoType(AUTOTYPE),
+    m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
+    m_tttLTime(LTIME), m_tttRMTime(RMTIME),
+    m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -40,7 +43,9 @@ CItemData::CItemData(const CItemData &that) :
   m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
-  m_cTime(that.m_cTime), m_display_info(that.m_display_info)
+  m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
+  m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime),
+  m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
 }
@@ -132,15 +137,44 @@ CItemData::GetAutoType() const
    return ret;
 }
 
+//
+// If whichtime is positive and the time is not set then the string "Unknown" is returned
+// If whichtime is negative and the time is not set then a null string is returned
+//
+// If whichtime > 256, string returned is in the format "yyyy/mm/dd hh:mm:ss" (or null).
+// This is used for export and allows proper sorting
+//
 CMyString
-CItemData::GetCTime() const
+CItemData::GetTime(const int whichtime) const
 {
   time_t t;
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   unsigned int tlen = sizeof(in); // ditto
   CMyString ret;
+  int itime = abs(whichtime);
+  if (whichtime > 256)
+  	itime -= 256;
    
-  GetField(m_cTime, (unsigned char *)in, tlen);
+  switch (itime) {
+	case ATIME:
+		GetField(m_tttATime, (unsigned char *)in, tlen);
+		break;
+	case CTIME:
+		GetField(m_tttCTime, (unsigned char *)in, tlen);
+		break;
+	case LTIME:
+		GetField(m_tttLTime, (unsigned char *)in, tlen);
+		break;
+	case PMTIME:
+		GetField(m_tttPMTime, (unsigned char *)in, tlen);
+		break;
+	case RMTIME:
+		GetField(m_tttRMTime, (unsigned char *)in, tlen);
+		break;
+	default:
+		ASSERT(0);
+  }
+
   if (tlen != 0) {
     ASSERT(tlen == sizeof(t));
     memcpy(&t, in, sizeof(t));
@@ -152,28 +186,59 @@ CItemData::GetCTime() const
 	struct tm st;
 	char time_str[32];
     localtime_s(&st, &t);  // secure version
-    _tasctime_s(time_str, 32, &st);  // secure version
+    if (whichtime > 256)
+    	sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
+    		st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour, st.tm_min, st.tm_sec);
+    else
+    	_tasctime_s(time_str, 32, &st);  // secure version
 #else
 	struct tm *st;
 	char *time_str;
     st = localtime(&t);
-    time_str = _tasctime(st);
+    if (whichtime > 256)
+    	sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
+    		st->tm_year+1900, st->tm_mon+1, st->tm_mday, st->tm_hour, st->tm_min, st->tm_sec);
+    else
+    	time_str = _tasctime(st);
 #endif
     ret = time_str;
-  } else
-    ret = _T("Unknown");
-  // remote the trailing EOL char.
+  } else {
+    if ((whichtime < 0) || (whichtime > 256))
+    	ret = _T("");
+  	else
+    	ret = _T("Unknown");
+  }
+  // remove the trailing EOL char.
   ret.TrimRight();
   return ret;
 }
 
 void
-CItemData::GetCTime(time_t &t) const
+CItemData::GetTime(int whichtime, time_t &t) const
 {
    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
    unsigned int tlen = sizeof(in); // ditto
-   
-   GetField(m_cTime, (unsigned char *)in, tlen);
+
+   switch (whichtime) {
+   		case ATIME:
+   			GetField(m_tttATime, (unsigned char *)in, tlen);
+   			break;
+   		case CTIME:
+   			GetField(m_tttCTime, (unsigned char *)in, tlen);
+			break;
+		case LTIME:
+			GetField(m_tttLTime, (unsigned char *)in, tlen);
+			break;
+		case PMTIME:
+			GetField(m_tttPMTime, (unsigned char *)in, tlen);
+			break;
+		case RMTIME:
+			GetField(m_tttRMTime, (unsigned char *)in, tlen);
+			break;
+		default:
+		ASSERT(0);
+   }
+
    if (tlen != 0)
      memcpy(&t, in, sizeof(t));
    else
@@ -195,7 +260,10 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
   // a '.' in title gets Import confused re: Groups
   title = GetTitle();
   if (title.Find(TCHAR('.')) != -1)
-    title = TCHAR('\"') + title + TCHAR('\"');
+	 if (delimiter != 0) {
+		 title.Replace(TCHAR('.'), delimiter);
+	 } else 
+		 title = TCHAR('\"') + title + TCHAR('\"');
 
   if (!group.IsEmpty())
     title = group + TCHAR('.') + title;
@@ -204,7 +272,12 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
   ret = title + separator + GetUser() + separator +
     GetPassword() + separator + GetURL() +
     separator + GetAutoType() + separator +
-    GetCTime() + separator + _T("\"") + GetNotes(delimiter) + _T("\"");
+    GetCTimeExp() + separator +
+    GetPMTimeExp() + separator +
+    GetATimeExp() + separator +
+    GetLTimeExp() + separator +
+    GetRMTimeExp() + separator +
+    _T("\"") + GetNotes(delimiter) + _T("\"");
 
   return ret;
 }
@@ -215,7 +288,7 @@ void CItemData::SplitName(const CMyString &name,
   int pos = name.FindByte(SPLTCHR);
   if (pos==-1) {//Not a split name
     int pos2 = name.FindByte(DEFUSERCHR);
-    if (pos2 == -1)  {//Make certain that you remove the DEFUSERCHR 
+    if (pos2 == -1)  {//Make certain that you remove the DEFUSERCHR
 	title = name;
     } else {
 	title = CMyString(name.Left(pos2));
@@ -286,9 +359,31 @@ CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
 }
 
 void
-CItemData::SetTitle(const CMyString &title)
+CItemData::SetTitle(const CMyString &title, char delimiter)
 {
-  SetField(m_Title, title);
+	if (delimiter == 0)
+		SetField(m_Title, title);
+	else {
+		CMyString new_title(_T(""));
+		CMyString newCString, tmpCString;
+		int pos = 0;
+
+		newCString = title;
+		do {
+			pos = newCString.Find(delimiter);
+			if ( pos != -1 ) {
+				new_title += CMyString(newCString.Left(pos)) + _T(".");
+
+				tmpCString = CMyString(newCString.Mid(pos + 1));
+				newCString = tmpCString;
+			}
+		} while ( pos != -1 );
+
+		if (!newCString.IsEmpty())
+			new_title += newCString;
+
+		SetField(m_Title, new_title);
+	}
 }
 
 void
@@ -360,26 +455,54 @@ CItemData::SetAutoType(const CMyString &autotype)
 }
 
 void
-CItemData::SetCTime(time_t t)
-{
-  SetField(m_cTime, (const unsigned char *)&t, sizeof(t));
-}
-
-void
-CItemData::SetCTime()
+CItemData::SetTime(int whichtime)
 {
   time_t t;
   time(&t);
-  SetCTime(t);
+  SetTime(whichtime, t);
 }
 
 void
-CItemData::SetCTime(const CMyString &)
+CItemData::SetTime(int whichtime, time_t t)
 {
-  // XXX TBD
+  switch (whichtime) {
+  		case ATIME:
+  			SetField(m_tttATime, (const unsigned char *)&t, sizeof(t));
+			break;
+		case CTIME:
+			SetField(m_tttCTime, (const unsigned char *)&t, sizeof(t));
+			break;
+		case LTIME:
+			SetField(m_tttLTime, (const unsigned char *)&t, sizeof(t));
+			break;
+		case PMTIME:
+			SetField(m_tttPMTime, (const unsigned char *)&t, sizeof(t));
+			break;
+		case RMTIME:
+			SetField(m_tttRMTime, (const unsigned char *)&t, sizeof(t));
+			break;
+		default:
+			ASSERT(0);
+  }
+}
+
+void
+CItemData::SetTime(int whichtime, const CString &time_str)
+{
+  if (time_str.GetLength() == 0) {
+  	SetTime(whichtime, (time_t)0);
+  	return;
+  }
+  
   time_t t;
-  time(&t);
-  SetCTime(t);
+
+  if (!PWSUtil::VerifyImportDateTimeString(time_str, t))
+		 return;
+
+  if (t == (time_t)-1)	// error despite all our verification!
+  	return;
+
+  SetTime(whichtime, t);
 }
 
 BlowFish *
@@ -405,7 +528,11 @@ CItemData::operator=(const CItemData &that)
      m_Group = that.m_Group;
      m_URL = that.m_URL;
      m_AutoType = that.m_AutoType;
-     m_cTime = that.m_cTime;
+     m_tttCTime = that.m_tttCTime;
+	 m_tttPMTime = that.m_tttPMTime;
+	 m_tttATime = that.m_tttATime;
+	 m_tttLTime = that.m_tttLTime;
+	 m_tttRMTime = that.m_tttRMTime;
      m_display_info = that.m_display_info;
 
      memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -425,6 +552,11 @@ CItemData::Clear()
   SetGroup(blank);
   SetURL(blank);
   SetAutoType(blank);
+  SetCTime((time_t) 0);
+  SetPMTime((time_t) 0);
+  SetATime((time_t) 0);
+  SetLTime((time_t) 0);
+  SetRMTime((time_t) 0);
 }
 
 //TODO: "General System Fault. Please sacrifice a goat 

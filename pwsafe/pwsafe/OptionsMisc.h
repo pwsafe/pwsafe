@@ -24,6 +24,7 @@ public:
 	enum { IDD = IDD_PS_MISC };
 	BOOL	m_confirmdelete;
 	BOOL	m_saveimmediately;
+	BOOL	m_maintaindatetimestamps;
 	BOOL	m_escexits;
 	int     m_doubleclickaction;
 	BOOL    m_hotkey_enabled;
@@ -51,6 +52,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnBnClickedMaintaindatetimestamps();
 };
 
 //{{AFX_INSERT_LOCATION}}

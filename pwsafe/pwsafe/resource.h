@@ -53,6 +53,7 @@
 #define IDD_PS_MISC                     198
 #define IDB_NODE                        199
 #define IDB_LEAF                        200
+#define IDB_LEAF_EXPIRED                201
 #define IDD_EXPORT_TEXT                 204
 #define IDR_TOOLBAR1                    208
 #define IDB_TOOLBAR1                    208
@@ -64,6 +65,8 @@
 #define IDI_MBWARNICON                  223
 #define IDI_MBINFOICON                  224
 #define IDD_IMPORT_TEXT                 225
+#define IDD_PICKEXPDATETIME             226
+#define IDD_DISPLAY_EXPIRED_ENTRIES     227
 #define IDB_TOOLBAR1_RO                 908
 #define IDB_TOOLBAR2_RO                 917
 #define IDR_MAINBAR_RO                  987
@@ -170,11 +173,35 @@
 #define IDC_MORE                        1115
 #define IDC_URL                         1116
 #define IDC_AUTOTYPE                    1117
+#define IDC_EXPIRYDATE                  1118
+#define IDC_EXPIRYTIME                  1119
+#define IDC_STATIC_CURRENT_LTIME        1120
 #define IDC_STATIC_URL                  1124
 #define IDC_STATIC_AUTO                 1125
 #define IDC_STATIC_CTIME                1128
-#define IDC_CTIME_                      1129
 #define IDC_CTIME                       1129
+#define IDC_STATIC_PMTIME               1130
+#define IDC_PMTIME                      1131
+#define IDC_STATIC_ATIME                1132
+#define IDC_ATIME                       1133
+#define IDC_STATIC_LTIME                1134
+#define IDC_LTIME                       1135
+#define IDC_STATIC_RMTIME               1136
+#define IDC_RMTIME                      1137
+#define IDC_LTIME_CLEAR                 1138
+#define IDC_LTIME_SET                   1139
+#define IDC_LTIME_PICKER                1140
+#define IDC_MAINTAINDATETIMESTAMPS      1141
+#define IDC_STATIC_DTGROUP              1142
+#define IDC_STATIC_DTEXP_GROUP          1143
+#define IDC_STATIC_DTEXPGROUP           1144
+#define IDC_TOP_HIDEABLE                1145
+#define IDC_BOTTOM_HIDEABLE             1146
+#define IDC_EXPIRED_PASSWORD_LIST       1147
+#define IDC_COPY_EXP_TO_CLIPBOARD       1148
+#define IDC_IMPORT_PREV3                1149
+#define IDC_EXPORT_HDR                  1150
+#define IDC_EDIT1                       1153
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -261,9 +288,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        226
+#define _APS_NEXT_RESOURCE_VALUE        228
 #define _APS_NEXT_COMMAND_VALUE         32858
-#define _APS_NEXT_CONTROL_VALUE         1114
+#define _APS_NEXT_CONTROL_VALUE         1154
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

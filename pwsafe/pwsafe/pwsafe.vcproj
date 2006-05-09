@@ -347,6 +347,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\ExpDTDlg.cpp">
+			</File>
+			<File
 				RelativePath="ExportText.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -366,6 +369,9 @@
 						BasicRuntimeChecks="3"
 						BrowseInformation="1"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ExpPWListDlg.cpp">
 			</File>
 			<File
 				RelativePath="FindDlg.cpp">
@@ -879,7 +885,13 @@
 				RelativePath="EditDlg.h">
 			</File>
 			<File
+				RelativePath=".\ExpDTDlg.h">
+			</File>
+			<File
 				RelativePath="ExportText.h">
+			</File>
+			<File
+				RelativePath=".\ExpPWListDlg.h">
 			</File>
 			<File
 				RelativePath="FileDialogExt.h">
