@@ -319,6 +319,7 @@ DboxMain::OnAdd()
     //Finish Check (Does that make any geographical sense?)
     CItemData temp;
     CMyString user;
+    time_t t;
     if (dataDlg.m_username.IsEmpty() && m_core.GetUseDefUser())
       user = m_core.GetDefUsername();
     else
@@ -331,12 +332,9 @@ DboxMain::OnAdd()
     temp.SetNotes(dataDlg.m_notes);
     temp.SetURL(dataDlg.m_URL);
     temp.SetAutoType(dataDlg.m_autotype);
-    if (m_bMaintainDateTimeStamps) {
-    	time_t t;
-    	time(&t);
-    	temp.SetCTime(t);
-    	temp.SetLTime(dataDlg.m_tttLTime);
-    }
+   	time(&t);
+   	temp.SetCTime(t);
+   	temp.SetLTime(dataDlg.m_tttLTime);
     m_core.AddEntryToTail(temp);
     int newpos = insertItem(m_core.GetTailEntry());
     SelectEntry(newpos);
@@ -557,13 +555,14 @@ DboxMain::OnEdit()
 	  	return;
 	  }
 	  
-	  if (bpswdChanged && m_bMaintainDateTimeStamps) {
+	  if (bpswdChanged) {
       	ci->SetPMTime(t);
       	ci->SetRMTime(t);
       }
       
-      if(banotherChanged && m_bMaintainDateTimeStamps)
+      if (banotherChanged)
         ci->SetRMTime(t);
+
       ci->SetGroup(dlg_edit.m_group);
       ci->SetTitle(dlg_edit.m_title);
       ci->SetUser(user);
@@ -571,7 +570,7 @@ DboxMain::OnEdit()
       ci->SetNotes(dlg_edit.m_notes);
       ci->SetURL(dlg_edit.m_URL);
       ci->SetAutoType(dlg_edit.m_autotype);
-      if (m_bMaintainDateTimeStamps && oldLTime != dlg_edit.m_ascLTime)
+      if (oldLTime != dlg_edit.m_ascLTime)
       	ci->SetLTime(dlg_edit.m_tttLTime);
 
       /*
@@ -1519,7 +1518,7 @@ DboxMain::OnAutoType()
     AutoType(*ci);
 	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	Save();
+       	SetChanged(true);
     }
   }
 }

@@ -31,8 +31,6 @@ protected:
 private:
   // Are we showing more or less details?
   bool m_isExpanded;
-  // Are we maintaining date/timestamps?
-  bool m_bMaintainDateTimeStamps;
   void ResizeDialog();
 
   // Implementation

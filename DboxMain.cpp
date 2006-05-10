@@ -533,7 +533,6 @@ DboxMain::OpenOnInit(void)
   }
     // DELIBERATE FALL-THRU if user chose YES
   case PWScore::SUCCESS:
-	if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
 		CheckExpiredPasswords();
     m_needsreading = false;
     startLockCheckTimer();
@@ -597,7 +596,7 @@ void DboxMain::OnBrowse()
       LaunchBrowser(ci->GetURL());
       if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	Save();
+       	SetChanged(true);
 	  }
       uuid_array_t RUEuuid;
       ci->GetUUID(RUEuuid);
@@ -632,7 +631,7 @@ DboxMain::OnCopyPassword()
   ToClipboard(ci->GetPassword());
   if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
   	ci->SetATime();
-    Save();
+    SetChanged(true);
   }
   uuid_array_t RUEuuid;
   ci->GetUUID(RUEuuid);
@@ -653,7 +652,7 @@ DboxMain::OnCopyUsername()
     ToClipboard(username);
     if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	Save();
+       	SetChanged(true);
 	}
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
@@ -1290,8 +1289,7 @@ DboxMain::Open( const CMyString &pszFilename )
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
-  if (m_bMaintainDateTimeStamps)
-	  CheckExpiredPasswords();
+  CheckExpiredPasswords();
   ChangeOkUpdate();
   RefreshList();
 	

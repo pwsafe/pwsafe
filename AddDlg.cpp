@@ -26,8 +26,6 @@ CAddDlg::CAddDlg(CWnd* pParent)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
-  m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::MaintainDateTimeStamps);  
 }
 
 
@@ -37,10 +35,7 @@ BOOL CAddDlg::OnInitDialog()
  
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   ResizeDialog();
-  if (!m_bMaintainDateTimeStamps) {
-	GetDlgItem(IDC_LTIME_CLEAR)->EnableWindow(FALSE);
-	GetDlgItem(IDC_LTIME_SET)->EnableWindow(FALSE);
-  }
+
   return TRUE;
 }
 

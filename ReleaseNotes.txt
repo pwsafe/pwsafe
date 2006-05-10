@@ -12,6 +12,12 @@ Bugs fixed in 3.1
 =================
 [1482002] Generated password no longer trashed if > 127 bytes
 
+New Features for 3.1
+====================
+[726518] User can configure an expiration date for entries and be
+notified accordingly. (Thanks to DK!)
+[726508] Modification and access times now recorded. (DK strikes again!)
+
 Bugs fixed in 3.0Beta2:
 =======================
 [1450484] Trialing garbage in tooltip text fixed (DK).
@@ -35,7 +41,7 @@ New Features for 3.0Beta1:
 [731841] Database format is changed to use newer encryption algorithm (Twofish
 replaces Blowfish). Also, the integrity of the database is now checked.
 [] Entry creation time is now stored.
-[1393632] URL and Autotype moved from Notes to their own fields.
+[1393632, 1224370] URL and Autotype moved from Notes to their own fields.
 [] System Tray icon now indicated if database is locked or not (Thanks to
 DK for this cool feature!)
 [1422761] System Tray menu now has a list of recently used entries - a

@@ -145,34 +145,31 @@ CItemData::GetAutoType() const
 // This is used for export and allows proper sorting
 //
 CMyString
-CItemData::GetTime(const int whichtime) const
+CItemData::GetTime(const int whichtime, const int result_format) const
 {
   time_t t;
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   unsigned int tlen = sizeof(in); // ditto
   CMyString ret;
-  int itime = abs(whichtime);
-  if (whichtime > 256)
-  	itime -= 256;
    
-  switch (itime) {
-	case ATIME:
-		GetField(m_tttATime, (unsigned char *)in, tlen);
-		break;
-	case CTIME:
-		GetField(m_tttCTime, (unsigned char *)in, tlen);
-		break;
-	case LTIME:
-		GetField(m_tttLTime, (unsigned char *)in, tlen);
-		break;
-	case PMTIME:
-		GetField(m_tttPMTime, (unsigned char *)in, tlen);
-		break;
-	case RMTIME:
-		GetField(m_tttRMTime, (unsigned char *)in, tlen);
-		break;
-	default:
-		ASSERT(0);
+  switch (whichtime) {
+  case ATIME:
+    GetField(m_tttATime, (unsigned char *)in, tlen);
+    break;
+  case CTIME:
+    GetField(m_tttCTime, (unsigned char *)in, tlen);
+    break;
+  case LTIME:
+    GetField(m_tttLTime, (unsigned char *)in, tlen);
+    break;
+  case PMTIME:
+    GetField(m_tttPMTime, (unsigned char *)in, tlen);
+    break;
+  case RMTIME:
+    GetField(m_tttRMTime, (unsigned char *)in, tlen);
+    break;
+  default:
+    ASSERT(0);
   }
 
   if (tlen != 0) {
@@ -182,385 +179,388 @@ CItemData::GetTime(const int whichtime) const
     t = 0;
   }
   if (t != 0) {
+	char time_str[32];
 #if _MSC_VER >= 1400
 	struct tm st;
-	char time_str[32];
     localtime_s(&st, &t);  // secure version
-    if (whichtime > 256)
-    	sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
-    		st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour, st.tm_min, st.tm_sec);
+    if (result_format == EXPORT_IMPORT)
+      sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
+                st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
+                st.tm_min, st.tm_sec);
     else
-    	_tasctime_s(time_str, 32, &st);  // secure version
+      _tasctime_s(time_str, 32, &st);  // secure version
 #else
+    char *t_str_ptr;
 	struct tm *st;
-	char *time_str;
     st = localtime(&t);
-    if (whichtime > 256)
-    	sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
-    		st->tm_year+1900, st->tm_mon+1, st->tm_mday, st->tm_hour, st->tm_min, st->tm_sec);
-    else
-    	time_str = _tasctime(st);
+    if (result_format == EXPORT_IMPORT) {
+      sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
+              st->tm_year+1900, st->tm_mon+1, st->tm_mday,
+              st->tm_hour, st->tm_min, st->tm_sec);
+      t_str_ptr = time_str;
+    } else
+    	t_str_ptr = _tasctime(st);
 #endif
-    ret = time_str;
-  } else {
-    if ((whichtime < 0) || (whichtime > 256))
-    	ret = _T("");
-  	else
-    	ret = _T("Unknown");
-  }
-  // remove the trailing EOL char.
-  ret.TrimRight();
-  return ret;
-}
-
-void
-CItemData::GetTime(int whichtime, time_t &t) const
-{
-   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-   unsigned int tlen = sizeof(in); // ditto
-
-   switch (whichtime) {
-   		case ATIME:
-   			GetField(m_tttATime, (unsigned char *)in, tlen);
-   			break;
-   		case CTIME:
-   			GetField(m_tttCTime, (unsigned char *)in, tlen);
-			break;
-		case LTIME:
-			GetField(m_tttLTime, (unsigned char *)in, tlen);
-			break;
-		case PMTIME:
-			GetField(m_tttPMTime, (unsigned char *)in, tlen);
-			break;
-		case RMTIME:
-			GetField(m_tttRMTime, (unsigned char *)in, tlen);
-			break;
-		default:
-		ASSERT(0);
-   }
-
-   if (tlen != 0)
-     memcpy(&t, in, sizeof(t));
-   else
-     t = 0;
-}
-
-void CItemData::GetUUID(uuid_array_t &uuid_array) const
-{
-  unsigned int length = sizeof(uuid_array);
-  GetField(m_UUID, (unsigned char *)uuid_array, length);
-}
-
-CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
-{
-  CMyString ret;
-  CMyString title;
-  CMyString group(GetGroup());
-
-  // a '.' in title gets Import confused re: Groups
-  title = GetTitle();
-  if (title.Find(TCHAR('.')) != -1)
-	 if (delimiter != 0) {
-		 title.Replace(TCHAR('.'), delimiter);
-	 } else 
-		 title = TCHAR('\"') + title + TCHAR('\"');
-
-  if (!group.IsEmpty())
-    title = group + TCHAR('.') + title;
-
-  // Notes field must be last, for ease of parsing import
-  ret = title + separator + GetUser() + separator +
-    GetPassword() + separator + GetURL() +
-    separator + GetAutoType() + separator +
-    GetCTimeExp() + separator +
-    GetPMTimeExp() + separator +
-    GetATimeExp() + separator +
-    GetLTimeExp() + separator +
-    GetRMTimeExp() + separator +
-    _T("\"") + GetNotes(delimiter) + _T("\"");
-
-  return ret;
-}
-
-void CItemData::SplitName(const CMyString &name,
-		   CMyString &title, CMyString &username)
-{
-  int pos = name.FindByte(SPLTCHR);
-  if (pos==-1) {//Not a split name
-    int pos2 = name.FindByte(DEFUSERCHR);
-    if (pos2 == -1)  {//Make certain that you remove the DEFUSERCHR
-	title = name;
+      ret = t_str_ptr;
     } else {
-	title = CMyString(name.Left(pos2));
+      if (result_format != ASC_UNKNOWN)
+    	ret = _T("");
+      else
+    	ret = _T("Unknown");
     }
-  } else {
-    /*
-     * There should never ever be both a SPLITCHR and a DEFUSERCHR in
-     * the same string
-     */
-    CMyString temp;
-    temp = CMyString(name.Left(pos));
-    temp.TrimRight();
-    title = temp;
-    temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
-    temp.TrimLeft();
-    username = temp;
+    // remove the trailing EOL char.
+    ret.TrimRight();
+    return ret;
   }
-}
 
-//-----------------------------------------------------------------------------
-// Setters
+  void
+    CItemData::GetTime(int whichtime, time_t &t) const
+  {
+    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+    unsigned int tlen = sizeof(in); // ditto
 
-void CItemData::SetField(CItemField &field, const CMyString &value)
-{
-  BlowFish *bf = MakeBlowFish();
-  field.Set(value, bf);
-  delete bf;
-}
+    switch (whichtime) {
+    case ATIME:
+      GetField(m_tttATime, (unsigned char *)in, tlen);
+      break;
+    case CTIME:
+      GetField(m_tttCTime, (unsigned char *)in, tlen);
+      break;
+    case LTIME:
+      GetField(m_tttLTime, (unsigned char *)in, tlen);
+      break;
+    case PMTIME:
+      GetField(m_tttPMTime, (unsigned char *)in, tlen);
+      break;
+    case RMTIME:
+      GetField(m_tttRMTime, (unsigned char *)in, tlen);
+      break;
+    default:
+      ASSERT(0);
+    }
 
-void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
-{
-  BlowFish *bf = MakeBlowFish();
-  field.Set(value, length, bf);
-  delete bf;
-}
+    if (tlen != 0)
+      memcpy(&t, in, sizeof(t));
+    else
+      t = 0;
+  }
 
-void CItemData::CreateUUID()
-{
-  CUUIDGen uuid;
-  uuid_array_t uuid_array;
-  uuid.GetUUID(uuid_array);
-  SetUUID(uuid_array);
-}
+  void CItemData::GetUUID(uuid_array_t &uuid_array) const
+  {
+    unsigned int length = sizeof(uuid_array);
+    GetField(m_UUID, (unsigned char *)uuid_array, length);
+  }
 
+  CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
+  {
+    CMyString ret;
+    CMyString title;
+    CMyString group(GetGroup());
 
-void
-CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
-{
-  // the m_name is from pre-2.0 versions, and may contain the title and user
-  // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
-  // Here we fill the title and user fields so that
-  // the application can ignore this difference after an ItemData record
-  // has been created
-  CMyString title, user;
-  int pos = name.FindByte(DEFUSERCHR);
-  if (pos != -1) {
-    title = CMyString(name.Left(pos));
-    user = defaultUsername;
-  } else
-    SplitName(name, title, user);
-  // In order to avoid unecessary BlowFish construction/deletion,
-  // we forego SetField here...
-  BlowFish *bf = MakeBlowFish();
-  m_Name.Set(name, bf);
-  m_Title.Set(title, bf);
-  m_User.Set(user, bf);
-  delete bf;
-}
+    // a '.' in title gets Import confused re: Groups
+    title = GetTitle();
+    if (title.Find(TCHAR('.')) != -1)
+      if (delimiter != 0) {
+        title.Replace(TCHAR('.'), delimiter);
+      } else 
+        title = TCHAR('\"') + title + TCHAR('\"');
 
-void
-CItemData::SetTitle(const CMyString &title, char delimiter)
-{
-	if (delimiter == 0)
-		SetField(m_Title, title);
-	else {
-		CMyString new_title(_T(""));
-		CMyString newCString, tmpCString;
-		int pos = 0;
+    if (!group.IsEmpty())
+      title = group + TCHAR('.') + title;
 
-		newCString = title;
-		do {
-			pos = newCString.Find(delimiter);
-			if ( pos != -1 ) {
-				new_title += CMyString(newCString.Left(pos)) + _T(".");
+    // Notes field must be last, for ease of parsing import
+    ret = title + separator + GetUser() + separator +
+      GetPassword() + separator + GetURL() +
+      separator + GetAutoType() + separator +
+      GetCTimeExp() + separator +
+      GetPMTimeExp() + separator +
+      GetATimeExp() + separator +
+      GetLTimeExp() + separator +
+      GetRMTimeExp() + separator +
+      _T("\"") + GetNotes(delimiter) + _T("\"");
 
-				tmpCString = CMyString(newCString.Mid(pos + 1));
-				newCString = tmpCString;
-			}
-		} while ( pos != -1 );
+    return ret;
+  }
 
-		if (!newCString.IsEmpty())
-			new_title += newCString;
-
-		SetField(m_Title, new_title);
-	}
-}
-
-void
-CItemData::SetUser(const CMyString &user)
-{
-  SetField(m_User, user);
-}
-
-void
-CItemData::SetPassword(const CMyString &password)
-{
-  SetField(m_Password, password);
-}
-
-void
-CItemData::SetNotes(const CMyString &notes, char delimiter)
-{
-  if (delimiter == 0)
-    SetField(m_Notes, notes);
-  else {
-	const CMyString CRCRLF = _T("\r\r\n");
-	CMyString multiline_notes(_T(""));
-
-	CMyString newCString;
-	CMyString tmpCString;
-
-	int pos = 0;
-
-	newCString = notes;
-	do {
-      pos = newCString.Find(delimiter);
-      if ( pos != -1 ) {
-        multiline_notes += CMyString(newCString.Left(pos)) + CRCRLF;
-
-        tmpCString = CMyString(newCString.Mid(pos + 1));
-        newCString = tmpCString;
+  void CItemData::SplitName(const CMyString &name,
+                            CMyString &title, CMyString &username)
+  {
+    int pos = name.FindByte(SPLTCHR);
+    if (pos==-1) {//Not a split name
+      int pos2 = name.FindByte(DEFUSERCHR);
+      if (pos2 == -1)  {//Make certain that you remove the DEFUSERCHR
+        title = name;
+      } else {
+        title = CMyString(name.Left(pos2));
       }
-	} while ( pos != -1 );
+    } else {
+      /*
+       * There should never ever be both a SPLITCHR and a DEFUSERCHR in
+       * the same string
+       */
+      CMyString temp;
+      temp = CMyString(name.Left(pos));
+      temp.TrimRight();
+      title = temp;
+      temp = CMyString(name.Right(name.GetLength() - (pos+1))); // Zero-index string
+      temp.TrimLeft();
+      username = temp;
+    }
+  }
+
+  //-----------------------------------------------------------------------------
+  // Setters
+
+  void CItemData::SetField(CItemField &field, const CMyString &value)
+  {
+    BlowFish *bf = MakeBlowFish();
+    field.Set(value, bf);
+    delete bf;
+  }
+
+  void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
+  {
+    BlowFish *bf = MakeBlowFish();
+    field.Set(value, length, bf);
+    delete bf;
+  }
+
+  void CItemData::CreateUUID()
+  {
+    CUUIDGen uuid;
+    uuid_array_t uuid_array;
+    uuid.GetUUID(uuid_array);
+    SetUUID(uuid_array);
+  }
+
+
+  void
+    CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
+  {
+    // the m_name is from pre-2.0 versions, and may contain the title and user
+    // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
+    // Here we fill the title and user fields so that
+    // the application can ignore this difference after an ItemData record
+    // has been created
+    CMyString title, user;
+    int pos = name.FindByte(DEFUSERCHR);
+    if (pos != -1) {
+      title = CMyString(name.Left(pos));
+      user = defaultUsername;
+    } else
+      SplitName(name, title, user);
+    // In order to avoid unecessary BlowFish construction/deletion,
+    // we forego SetField here...
+    BlowFish *bf = MakeBlowFish();
+    m_Name.Set(name, bf);
+    m_Title.Set(title, bf);
+    m_User.Set(user, bf);
+    delete bf;
+  }
+
+  void
+    CItemData::SetTitle(const CMyString &title, char delimiter)
+  {
+	if (delimiter == 0)
+      SetField(m_Title, title);
+	else {
+      CMyString new_title(_T(""));
+      CMyString newCString, tmpCString;
+      int pos = 0;
+
+      newCString = title;
+      do {
+        pos = newCString.Find(delimiter);
+        if ( pos != -1 ) {
+          new_title += CMyString(newCString.Left(pos)) + _T(".");
+
+          tmpCString = CMyString(newCString.Mid(pos + 1));
+          newCString = tmpCString;
+        }
+      } while ( pos != -1 );
+
+      if (!newCString.IsEmpty())
+        new_title += newCString;
+
+      SetField(m_Title, new_title);
+	}
+  }
+
+  void
+    CItemData::SetUser(const CMyString &user)
+  {
+    SetField(m_User, user);
+  }
+
+  void
+    CItemData::SetPassword(const CMyString &password)
+  {
+    SetField(m_Password, password);
+  }
+
+  void
+    CItemData::SetNotes(const CMyString &notes, char delimiter)
+  {
+    if (delimiter == 0)
+      SetField(m_Notes, notes);
+    else {
+      const CMyString CRCRLF = _T("\r\r\n");
+      CMyString multiline_notes(_T(""));
+
+      CMyString newCString;
+      CMyString tmpCString;
+
+      int pos = 0;
+
+      newCString = notes;
+      do {
+        pos = newCString.Find(delimiter);
+        if ( pos != -1 ) {
+          multiline_notes += CMyString(newCString.Left(pos)) + CRCRLF;
+
+          tmpCString = CMyString(newCString.Mid(pos + 1));
+          newCString = tmpCString;
+        }
+      } while ( pos != -1 );
 	
-	if (!newCString.IsEmpty())
-      multiline_notes += newCString;
+      if (!newCString.IsEmpty())
+        multiline_notes += newCString;
 
-	SetField(m_Notes, multiline_notes);
+      SetField(m_Notes, multiline_notes);
+    }
   }
-}
 
-void
-CItemData::SetGroup(const CMyString &title)
-{
-  SetField(m_Group, title);
-}
-
-void
-CItemData::SetUUID(const uuid_array_t &UUID)
-{
-  SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
-}
-
-void
-CItemData::SetURL(const CMyString &URL)
-{
-  SetField(m_URL, URL);
-}
-
-void
-CItemData::SetAutoType(const CMyString &autotype)
-{
-  SetField(m_AutoType, autotype);
-}
-
-void
-CItemData::SetTime(int whichtime)
-{
-  time_t t;
-  time(&t);
-  SetTime(whichtime, t);
-}
-
-void
-CItemData::SetTime(int whichtime, time_t t)
-{
-  switch (whichtime) {
-  		case ATIME:
-  			SetField(m_tttATime, (const unsigned char *)&t, sizeof(t));
-			break;
-		case CTIME:
-			SetField(m_tttCTime, (const unsigned char *)&t, sizeof(t));
-			break;
-		case LTIME:
-			SetField(m_tttLTime, (const unsigned char *)&t, sizeof(t));
-			break;
-		case PMTIME:
-			SetField(m_tttPMTime, (const unsigned char *)&t, sizeof(t));
-			break;
-		case RMTIME:
-			SetField(m_tttRMTime, (const unsigned char *)&t, sizeof(t));
-			break;
-		default:
-			ASSERT(0);
+  void
+    CItemData::SetGroup(const CMyString &title)
+  {
+    SetField(m_Group, title);
   }
-}
 
-void
-CItemData::SetTime(int whichtime, const CString &time_str)
-{
-  if (time_str.GetLength() == 0) {
-  	SetTime(whichtime, (time_t)0);
-  	return;
+  void
+    CItemData::SetUUID(const uuid_array_t &UUID)
+  {
+    SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
   }
+
+  void
+    CItemData::SetURL(const CMyString &URL)
+  {
+    SetField(m_URL, URL);
+  }
+
+  void
+    CItemData::SetAutoType(const CMyString &autotype)
+  {
+    SetField(m_AutoType, autotype);
+  }
+
+  void
+    CItemData::SetTime(int whichtime)
+  {
+    time_t t;
+    time(&t);
+    SetTime(whichtime, t);
+  }
+
+  void
+    CItemData::SetTime(int whichtime, time_t t)
+  {
+    switch (whichtime) {
+    case ATIME:
+      SetField(m_tttATime, (const unsigned char *)&t, sizeof(t));
+      break;
+    case CTIME:
+      SetField(m_tttCTime, (const unsigned char *)&t, sizeof(t));
+      break;
+    case LTIME:
+      SetField(m_tttLTime, (const unsigned char *)&t, sizeof(t));
+      break;
+    case PMTIME:
+      SetField(m_tttPMTime, (const unsigned char *)&t, sizeof(t));
+      break;
+    case RMTIME:
+      SetField(m_tttRMTime, (const unsigned char *)&t, sizeof(t));
+      break;
+    default:
+      ASSERT(0);
+    }
+  }
+
+  void
+    CItemData::SetTime(int whichtime, const CString &time_str)
+  {
+    if (time_str.GetLength() == 0) {
+      SetTime(whichtime, (time_t)0);
+      return;
+    }
   
-  time_t t;
+    time_t t;
 
-  if (!PWSUtil::VerifyImportDateTimeString(time_str, t))
-		 return;
+    if (!PWSUtil::VerifyImportDateTimeString(time_str, t))
+      return;
 
-  if (t == (time_t)-1)	// error despite all our verification!
-  	return;
+    if (t == (time_t)-1)	// error despite all our verification!
+      return;
 
-  SetTime(whichtime, t);
-}
+    SetTime(whichtime, t);
+  }
 
-BlowFish *
-CItemData::MakeBlowFish() const
-{
-  ASSERT(IsSessionKeySet);
-  return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-                                m_salt, SaltLength);
-}
+  BlowFish *
+    CItemData::MakeBlowFish() const
+  {
+    ASSERT(IsSessionKeySet);
+    return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
+                                  m_salt, SaltLength);
+  }
 
-CItemData&
-CItemData::operator=(const CItemData &that)
-{
-   //Check for self-assignment
-   if (this != &that)
-   {
-     m_UUID = that.m_UUID;
-     m_Name = that.m_Name;
-     m_Title = that.m_Title;
-     m_User = that.m_User;
-     m_Password = that.m_Password;
-     m_Notes = that.m_Notes;
-     m_Group = that.m_Group;
-     m_URL = that.m_URL;
-     m_AutoType = that.m_AutoType;
-     m_tttCTime = that.m_tttCTime;
-	 m_tttPMTime = that.m_tttPMTime;
-	 m_tttATime = that.m_tttATime;
-	 m_tttLTime = that.m_tttLTime;
-	 m_tttRMTime = that.m_tttRMTime;
-     m_display_info = that.m_display_info;
+  CItemData&
+    CItemData::operator=(const CItemData &that)
+    {
+      //Check for self-assignment
+      if (this != &that)
+        {
+          m_UUID = that.m_UUID;
+          m_Name = that.m_Name;
+          m_Title = that.m_Title;
+          m_User = that.m_User;
+          m_Password = that.m_Password;
+          m_Notes = that.m_Notes;
+          m_Group = that.m_Group;
+          m_URL = that.m_URL;
+          m_AutoType = that.m_AutoType;
+          m_tttCTime = that.m_tttCTime;
+          m_tttPMTime = that.m_tttPMTime;
+          m_tttATime = that.m_tttATime;
+          m_tttLTime = that.m_tttLTime;
+          m_tttRMTime = that.m_tttRMTime;
+          m_display_info = that.m_display_info;
 
-     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
-   }
+          memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
+        }
 
-   return *this;
-}
+      return *this;
+    }
 
-void
-CItemData::Clear()
-{
-  CMyString blank(_T(""));
-  SetTitle(blank);
-  SetUser(blank);
-  SetPassword(blank);
-  SetNotes(blank);
-  SetGroup(blank);
-  SetURL(blank);
-  SetAutoType(blank);
-  SetCTime((time_t) 0);
-  SetPMTime((time_t) 0);
-  SetATime((time_t) 0);
-  SetLTime((time_t) 0);
-  SetRMTime((time_t) 0);
-}
+  void
+    CItemData::Clear()
+  {
+    CMyString blank(_T(""));
+    SetTitle(blank);
+    SetUser(blank);
+    SetPassword(blank);
+    SetNotes(blank);
+    SetGroup(blank);
+    SetURL(blank);
+    SetAutoType(blank);
+    SetCTime((time_t) 0);
+    SetPMTime((time_t) 0);
+    SetATime((time_t) 0);
+    SetLTime((time_t) 0);
+    SetRMTime((time_t) 0);
+  }
 
-//TODO: "General System Fault. Please sacrifice a goat 
-//and two chickens to continue."
+  //TODO: "General System Fault. Please sacrifice a goat 
+  //and two chickens to continue."
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------

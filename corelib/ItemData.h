@@ -35,6 +35,7 @@ public:
 	PASSWORD = 0x6, CTIME = 0x7, PMTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
 	POLICY = 0xb, RMTIME = 0xc, URL = 0xd, AUTOTYPE = 0xe,
     END = 0xff}; // field types, per formatV{2,3}.txt
+  enum {ASC_UNKNOWN = 0, ASC_NULL = 1, EXPORT_IMPORT = 2};	// GetTime result formats
 
   static void SetSessionKey(); // call exactly once per session
    //Construction
@@ -52,21 +53,21 @@ public:
    CMyString GetGroup() const; // V20
    CMyString GetURL() const; // V30
    CMyString GetAutoType() const; // V30
-   CMyString GetATime() const {return GetTime(ATIME);}  // V30
-   CMyString GetCTime() const {return GetTime(CTIME);}  // V30
-   CMyString GetLTime() const {return GetTime(LTIME);}  // V30
-   CMyString GetPMTime() const {return GetTime(PMTIME);}  // V30
-   CMyString GetRMTime() const {return GetTime(RMTIME);}  // V30
-   CMyString GetATimeN() const {return GetTime(-ATIME);}  // V30
-   CMyString GetCTimeN() const {return GetTime(-CTIME);}  // V30
-   CMyString GetLTimeN() const {return GetTime(-LTIME);}  // V30
-   CMyString GetPMTimeN() const {return GetTime(-PMTIME);}  // V30
-   CMyString GetRMTimeN() const {return GetTime(-RMTIME);}  // V30
-   CMyString GetATimeExp() const {return GetTime(ATIME + 256);}  // V30
-   CMyString GetCTimeExp() const {return GetTime(CTIME + 256);}  // V30
-   CMyString GetLTimeExp() const {return GetTime(LTIME + 256);}  // V30
-   CMyString GetPMTimeExp() const {return GetTime(PMTIME + 256);}  // V30
-   CMyString GetRMTimeExp() const {return GetTime(RMTIME + 256);}  // V30
+   CMyString GetATime() const {return GetTime(ATIME, ASC_UNKNOWN);}  // V30
+   CMyString GetCTime() const {return GetTime(CTIME, ASC_UNKNOWN);}  // V30
+   CMyString GetLTime() const {return GetTime(LTIME, ASC_UNKNOWN);}  // V30
+   CMyString GetPMTime() const {return GetTime(PMTIME, ASC_UNKNOWN);}  // V30
+   CMyString GetRMTime() const {return GetTime(RMTIME, ASC_UNKNOWN);}  // V30
+   CMyString GetATimeN() const {return GetTime(ATIME, ASC_NULL);}  // V30
+   CMyString GetCTimeN() const {return GetTime(CTIME, ASC_NULL);}  // V30
+   CMyString GetLTimeN() const {return GetTime(LTIME, ASC_NULL);}  // V30
+   CMyString GetPMTimeN() const {return GetTime(PMTIME, ASC_NULL);}  // V30
+   CMyString GetRMTimeN() const {return GetTime(RMTIME, ASC_NULL);}  // V30
+   CMyString GetATimeExp() const {return GetTime(ATIME, EXPORT_IMPORT);}  // V30
+   CMyString GetCTimeExp() const {return GetTime(CTIME, EXPORT_IMPORT);}  // V30
+   CMyString GetLTimeExp() const {return GetTime(LTIME, EXPORT_IMPORT);}  // V30
+   CMyString GetPMTimeExp() const {return GetTime(PMTIME, EXPORT_IMPORT);}  // V30
+   CMyString GetRMTimeExp() const {return GetTime(RMTIME, EXPORT_IMPORT);}  // V30
    //  These populate the time structure instead of giving a character string
    void GetATime(time_t &t) const {return GetTime(ATIME, t);}  // V30
    void GetCTime(time_t &t) const {return GetTime(CTIME, t);}  // V30
@@ -138,7 +139,7 @@ private:
 		 CMyString &title, CMyString &username);
   bool VerifyASCDateTimeString(const CString time_str);
   bool VerifyImportDateTimeString(const CString time_str);
-  CMyString GetTime(const int whichtime) const; // V30
+  CMyString GetTime(const int whichtime, const int result_format) const; // V30
   void GetTime(const int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30

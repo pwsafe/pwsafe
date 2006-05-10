@@ -199,13 +199,7 @@ BOOL CEditDlg::OnInitDialog()
     m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
 	ResizeDialog();
-	m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->
-			GetPref(PWSprefs::MaintainDateTimeStamps);
- 
-	if (!m_bMaintainDateTimeStamps) {
-		GetDlgItem(IDC_LTIME_CLEAR)->EnableWindow(FALSE);
-		GetDlgItem(IDC_LTIME_SET)->EnableWindow(FALSE);
-	}
+
    return TRUE;
 }
 
