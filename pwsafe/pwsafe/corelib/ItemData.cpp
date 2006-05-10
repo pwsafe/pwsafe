@@ -189,6 +189,7 @@ CItemData::GetTime(const int whichtime, const int result_format) const
                 st.tm_min, st.tm_sec);
     else
       _tasctime_s(time_str, 32, &st);  // secure version
+    ret = time_str;
 #else
     char *t_str_ptr;
 	struct tm *st;
@@ -199,19 +200,19 @@ CItemData::GetTime(const int whichtime, const int result_format) const
               st->tm_hour, st->tm_min, st->tm_sec);
       t_str_ptr = time_str;
     } else
-    	t_str_ptr = _tasctime(st);
+      t_str_ptr = _tasctime(st);
+    ret = t_str_ptr;
 #endif
-      ret = t_str_ptr;
-    } else {
-      if (result_format != ASC_UNKNOWN)
-    	ret = _T("");
-      else
-    	ret = _T("Unknown");
-    }
-    // remove the trailing EOL char.
-    ret.TrimRight();
-    return ret;
+  } else {
+    if (result_format != ASC_UNKNOWN)
+      ret = _T("");
+    else
+      ret = _T("Unknown");
   }
+  // remove the trailing EOL char.
+  ret.TrimRight();
+  return ret;
+}
 
   void
     CItemData::GetTime(int whichtime, time_t &t) const

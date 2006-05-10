@@ -444,6 +444,9 @@
 				RelativePath="TwoFish.h">
 			</File>
 			<File
+				RelativePath=".\typedefs.h">
+			</File>
+			<File
 				RelativePath="Util.h">
 			</File>
 			<File
