@@ -4,6 +4,7 @@
 //-----------------------------------------------------------------------------
 #include "sha256.h"
 #include "PwsPlatform.h"
+#include "Util.h"
 
 #define LTC_CLEAN_STACK
 

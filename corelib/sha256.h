@@ -4,9 +4,7 @@
 //-----------------------------------------------------------------------------
 #ifndef _SHA256_H_
 #define _SHA256_H_
-
-#include "Util.h" // for typedefs
-
+#include "typedefs.h"
 class SHA256
 {
 public:

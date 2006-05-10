@@ -3,9 +3,11 @@
 #ifndef Util_h
 #define Util_h
 
+#include "sha256.h"
 #include "MyString.h"
 #include "Fish.h"
 #include "PwsPlatform.h"
+#include "typedefs.h"
 
 #define SaltLength 20
 #define StuffSize 10
@@ -23,33 +25,6 @@
 //Version defines
 #define V10 0
 #define V15 1
-
-#ifdef _WIN32
-//Some extra typedefs -- I'm addicted to typedefs
-typedef char    int8;
-typedef short   int16;
-typedef int     int32;
-typedef __int64 int64;
-
-typedef unsigned char    uint8;
-typedef unsigned short   uint16;
-typedef unsigned int     uint32;
-typedef unsigned __int64 uint64;
-
-typedef unsigned __int64   ulong64;
-typedef unsigned long      ulong32;
-#else
-#include <sys/types.h>
-typedef int8_t	int8;
-typedef int16_t	int16;
-typedef int32_t	int32;
-typedef int64_t	int64;
-
-typedef u_int8_t	uint8;
-typedef u_int16_t	uint16;
-typedef u_int32_t	uint32;
-typedef u_int64_t	uint64;
-#endif
 
 extern void trashMemory(void* buffer, long length );
 extern void trashMemory( LPTSTR buffer, long length );
@@ -145,10 +120,11 @@ public:
   static bool VerifyASCDateTimeString(const CString time_str, time_t &t);
   static bool VerifyImportDateTimeString(const CString time_str, time_t &t);
   static bool ToClipboard(const CMyString &data,
-	  unsigned char clipboard_digest[32], HWND hWindow);
-  static bool ClearClipboard(unsigned char clipboard_digest[32], HWND hWindow);
+                          unsigned char clipboard_digest[SHA256::HASHLEN],
+                          HWND hWindow);
+  static bool ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
+                             HWND hWindow);
 };
-
 #endif // Util_h
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -502,7 +502,9 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
 }
 
 bool
-PWSUtil::ToClipboard(const CMyString &data, unsigned char clipboard_digest[32], HWND hWindow)
+PWSUtil::ToClipboard(const CMyString &data,
+                     unsigned char clipboard_digest[SHA256::HASHLEN],
+                     HWND hWindow)
 {
 	unsigned int uGlobalMemSize;
 	HGLOBAL hGlobalMemory;
@@ -545,7 +547,8 @@ PWSUtil::ToClipboard(const CMyString &data, unsigned char clipboard_digest[32], 
 }
 
 bool
-PWSUtil::ClearClipboard(unsigned char clipboard_digest[32], HWND hWindow)
+PWSUtil::ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
+                        HWND hWindow)
 {
 	bool b_retval;
 	b_retval = true;
