@@ -42,7 +42,6 @@ private:
    bool m_isPwHidden;
    // Are we showing more or less details?
    bool m_isExpanded;
-   bool m_bMaintainDateTimeStamps;
    void ResizeDialog();
 
 protected:

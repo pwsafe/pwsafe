@@ -39,7 +39,7 @@ well as other dialog boxes)
 
 New features for 2.14:
 ======================
-[] Duplicating an existing entry is now possible via the menus or
+[1207604] Duplicating an existing entry is now possible via the menus or
 Ctrl+D. Thanks to DK.
 [] Expand all and collapse all tree entries now supported. Thanks to DK
 [] Selecting font for display of entries now supported. Thanks to DK
@@ -95,7 +95,7 @@ screen.
 
 New Features for 2.11:
 ======================
-[1203679] '-r' may now be passed a command line switch, setting the
+[1162651, 1203679] '-r' may now be passed a command line switch, setting the
 'read-only' checkbox. Useful if user wants this to be the default.
 [] Export to plain text of entries with multi-line notes fields now can be
 kept on a single line (aids editing & sorting). (*)
