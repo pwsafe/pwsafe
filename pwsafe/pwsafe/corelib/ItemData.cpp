@@ -137,13 +137,6 @@ CItemData::GetAutoType() const
    return ret;
 }
 
-//
-// If whichtime is positive and the time is not set then the string "Unknown" is returned
-// If whichtime is negative and the time is not set then a null string is returned
-//
-// If whichtime > 256, string returned is in the format "yyyy/mm/dd hh:mm:ss" (or null).
-// This is used for export and allows proper sorting
-//
 CMyString
 CItemData::GetTime(const int whichtime, const int result_format) const
 {
