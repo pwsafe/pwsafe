@@ -287,6 +287,8 @@ void CEditDlg::OnBnClickedOk()
 void CEditDlg::OnBnClickedMore()
 {
   m_isExpanded = !m_isExpanded;
+  PWSprefs::GetInstance()->
+    SetPref(PWSprefs::DisplayExpandedAddEditDlg, m_isExpanded);
   ResizeDialog();
 }
 

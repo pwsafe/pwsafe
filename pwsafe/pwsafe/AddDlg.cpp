@@ -78,6 +78,7 @@ BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
    ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
    ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+   ON_STN_CLICKED(IDC_STATIC_LTIME, OnStnClickedStaticLtime)
 END_MESSAGE_MAP()
 
 
@@ -155,9 +156,9 @@ void CAddDlg::OnRandom()
 
 void CAddDlg::OnBnClickedMore()
 {
-  // XXX Add resize logic
-	
   m_isExpanded = !m_isExpanded;
+  PWSprefs::GetInstance()->
+    SetPref(PWSprefs::DisplayExpandedAddEditDlg, m_isExpanded);
   ResizeDialog();
 }
 
@@ -247,4 +248,9 @@ void CAddDlg::OnBnClickedSetLTime()
 		m_ascLTime = dlg_expDT.m_ascLTime;
 		GetDlgItem(IDC_LTIME)->SetWindowText(m_ascLTime);
 	}
+}
+
+void CAddDlg::OnStnClickedStaticLtime()
+{
+    // TODO: Add your control notification handler code here
 }
