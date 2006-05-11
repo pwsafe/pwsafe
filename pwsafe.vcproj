@@ -1027,6 +1027,9 @@
 				RelativePath="leaf.bmp">
 			</File>
 			<File
+				RelativePath=".\leaf_exp.bmp">
+			</File>
+			<File
 				RelativePath=".\locked_tray.ico">
 			</File>
 			<File
