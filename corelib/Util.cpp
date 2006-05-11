@@ -315,190 +315,170 @@ long PWSUtil::fileLength(FILE *fp)
 bool
 PWSUtil::VerifyImportDateTimeString(const CString time_str, time_t &t)
 {
-	//  String format must be "yyyy/mm/dd hh:mm:ss"
-	//                        "0123456789012345678"
+  //  String format must be "yyyy/mm/dd hh:mm:ss"
+  //                        "0123456789012345678"
 
-	CString xtime_str;
-	const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	const int idigits[14] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
-	const int ndigits = 14;
-	int yyyy, mon, dd, hh, min, ss, nscanned;
+  CString xtime_str;
+  const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  const int idigits[14] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
+  const int ndigits = 14;
+  int yyyy, mon, dd, hh, min, ss, nscanned;
 
-	t = (time_t)-1;
+  t = (time_t)-1;
 
-	if (time_str.GetLength() != 19)
-		return false;
+  if (time_str.GetLength() != 19)
+    return false;
 
-	// Validate time_str
-	if (time_str.Mid(4,1) != '/' ||
-		time_str.Mid(7,1) != '/' ||
-		time_str.Mid(10,1) != ' ' ||
-		time_str.Mid(13,1) != ':' ||
-		time_str.Mid(16,1) != ':')
-		return false;
+  // Validate time_str
+  if (time_str.Mid(4,1) != '/' ||
+      time_str.Mid(7,1) != '/' ||
+      time_str.Mid(10,1) != ' ' ||
+      time_str.Mid(13,1) != ':' ||
+      time_str.Mid(16,1) != ':')
+    return false;
 
-	for (int i = 0;  i < ndigits; i++)
-		if (!isdigit(time_str.GetAt(idigits[i])))
-			return false;
+  for (int i = 0;  i < ndigits; i++)
+    if (!isdigit(time_str.GetAt(idigits[i])))
+      return false;
 
-	// Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
-	// Then take copy of the string and replace all blanks by '#' (should only be 1)
-	if (time_str.Find('#') != (-1))
-		return false;
+  // Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
+  // Then take copy of the string and replace all blanks by '#' (should only be 1)
+  if (time_str.Find('#') != (-1))
+    return false;
 
-	xtime_str = time_str;
-	if (xtime_str.Replace(' ', '#') != 1)
-		return false;
+  xtime_str = time_str;
+  if (xtime_str.Replace(' ', '#') != 1)
+    return false;
 
 #if _MSC_VER >= 1400
-	nscanned = sscanf_s(xtime_str, "%4d/%2d/%2d#%2d:%2d:%2d", &yyyy, &mon, &dd, &hh, &min, &ss);
+  nscanned = sscanf_s(xtime_str, "%4d/%2d/%2d#%2d:%2d:%2d",
+                      &yyyy, &mon, &dd, &hh, &min, &ss);
 #else
-	nscanned = sscanf(xtime_str, "%4d/%2d/%2d#%2d:%2d:%2d", &yyyy, &mon, &dd, &hh, &min, &ss);
+  nscanned = sscanf(xtime_str, "%4d/%2d/%2d#%2d:%2d:%2d",
+                    &yyyy, &mon, &dd, &hh, &min, &ss);
 #endif
 
-	if (nscanned != 6)
-		return false;
+  if (nscanned != 6)
+    return false;
 
-	if (yyyy < 1970 || yyyy > 2038)
-		return false;
+  // Built-in obsolesence for pwsafe in 2038?
+  if (yyyy < 1970 || yyyy > 2038)
+    return false;
 
-	if (mon < 1 || mon > 12)
-		return false;
+  if ((mon < 1 || mon > 12) || (dd < 1))
+    return false;
 
-	if (dd < 1)
-		return false;
+  if (mon != 2 && (yyyy % 4) == 0) {
+    if(dd > month_lengths[mon - 1])
+      return false;
+  } else { // Feb of a leap-year
+    if (dd > 29)
+      return false;
+  }
 
-	if (mon != 2) {
-		if(dd > month_lengths[mon - 1])
-			return false;
-	} else {
-		if ((yyyy % 4) == 0) {	// Note: 2000 WAS a leap year even if 1900 & 2100 were/are not!
-			if (dd > 29)
-				return false;
-		} else {
-			if (dd > 28)
-				return false;
-		}
-	}
+  if ((hh < 0 || hh > 23) ||
+      (min < 0 || min > 59) ||
+      (ss < 0 || ss > 59))
+    return false;
 
-	if (hh < 0 || hh > 23)
-		return false;
+  const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
 
-	if (min < 0 || min > 59)
-		return false;
+  t = (time_t)ct.GetTime();
 
-	if (ss < 0 || ss > 59)
-		return false;
-
-	CTime ct = CTime(yyyy, mon, dd, hh, min, ss, -1);
-
-	t = (time_t)ct.GetTime();
-
-	return true;
+  return true;
 }
 
 bool
 PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
 {
-	//  String format must be "ddd MMM dd hh:mm:ss yyyy"
-	//                        "012345678901234567890123"
+  //  String format must be "ddd MMM dd hh:mm:ss yyyy"
+  //                        "012345678901234567890123"
 
-	const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	const CString str_months = "JanFebMarAprMayJunJulAugSepOctNovDec";
-	const CString str_days = "SunMonTueWedThuFriSat";
-	CString xtime_str;
-	char cmonth[4], cdayofweek[4];
-	const int idigits[12] = {8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 22, 23};
-	const int ndigits = 12;
-	int iMON, iDOW, nscanned;
-	int yyyy, mon, dd, hh, min, ss;
+  const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  const CString str_months = "JanFebMarAprMayJunJulAugSepOctNovDec";
+  const CString str_days = "SunMonTueWedThuFriSat";
+  CString xtime_str;
+  char cmonth[4], cdayofweek[4];
+  const int idigits[12] = {8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 22, 23};
+  const int ndigits = 12;
+  int iMON, iDOW, nscanned;
+  int yyyy, mon, dd, hh, min, ss;
 
-	cmonth[3] = cdayofweek[3] = '\0';
+  cmonth[3] = cdayofweek[3] = '\0';
 
-	t = (time_t)-1;
+  t = (time_t)-1;
 
-	if (time_str.GetLength() != 24)
-		return false;
+  if (time_str.GetLength() != 24)
+    return false;
 
-	// Validate time_str
-	if (time_str.Mid(13,1) != ':' ||
-		time_str.Mid(16,1) != ':')
-		return false;
+  // Validate time_str
+  if (time_str.Mid(13,1) != ':' ||
+      time_str.Mid(16,1) != ':')
+    return false;
 
-	for (int i = 0; i < ndigits; i++)
-		if (!isdigit(time_str.GetAt(idigits[i])))
-			return false;
+  for (int i = 0; i < ndigits; i++)
+    if (!isdigit(time_str.GetAt(idigits[i])))
+      return false;
 
-	// Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
-	// Then take copy of the string and replace all blanks by '#' (should be 4)
-	if (time_str.Find('#') != (-1))
-		return false;
+  // Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
+  // Then take copy of the string and replace all blanks by '#' (should be 4)
+  if (time_str.Find('#') != (-1))
+    return false;
 
-	xtime_str = time_str;
-	if (xtime_str.Replace(' ', '#') != 4)
-		return false;
+  xtime_str = time_str;
+  if (xtime_str.Replace(' ', '#') != 4)
+    return false;
 
 #if _MSC_VER >= 1400
-	nscanned = sscanf_s(xtime_str, "%3c#%3c#%2d#%2d:%2d:%2d#%4d",
-		cdayofweek, sizeof(cdayofweek), cmonth, sizeof(cmonth), &dd, &hh, &min, &ss, &yyyy);
+  nscanned = sscanf_s(xtime_str, "%3c#%3c#%2d#%2d:%2d:%2d#%4d",
+                      cdayofweek, sizeof(cdayofweek), cmonth, sizeof(cmonth), &dd, &hh, &min, &ss, &yyyy);
 #else
-	nscanned = sscanf(xtime_str, "%3c#%3c#%2d#%2d:%2d:%2d#%4d",
-		cdayofweek, cmonth, &dd, &hh, &min, &ss, &yyyy);
+  nscanned = sscanf(xtime_str, "%3c#%3c#%2d#%2d:%2d:%2d#%4d",
+                    cdayofweek, cmonth, &dd, &hh, &min, &ss, &yyyy);
 #endif
 
-	if (nscanned != 7)
-		return false;
+  if (nscanned != 7)
+    return false;
 
-	iMON = str_months.Find(cmonth);
-	if (iMON < 0)
-		return false;
+  iMON = str_months.Find(cmonth);
+  if (iMON < 0)
+    return false;
 
-	mon = (iMON / 3) + 1;
+  mon = (iMON / 3) + 1;
 
-	if (yyyy < 1970 || yyyy > 2038)
-		return false;
+  // Built-in obsolesence for pwsafe in 2038?
+  if (yyyy < 1970 || yyyy > 2038)
+    return false;
 
-	if (mon < 1 || mon > 12)
-		return false;
+  if ((mon < 1 || mon > 12) || (dd < 1))
+    return false;
 
-	if (dd < 1)
-		return false;
+  if (mon != 2 && (yyyy % 4) == 0) {
+    if(dd > month_lengths[mon - 1])
+      return false;
+  } else { // Feb of a leap-year
+    if (dd > 29)
+      return false;
+  }
 
-	if (mon != 2) {
-		if(dd > month_lengths[mon - 1])
-			return false;
-	} else {
-		if ((yyyy % 4) == 0) {	// Note: 2000 WAS a leap year even if 1900 & 2100 were/are not!
-			if (dd > 29)
-				return false;
-		} else {
-			if (dd > 28)
-				return false;
-		}
-	}
+  if ((hh < 0 || hh > 23) ||
+      (min < 0 || min > 59) ||
+      (ss < 0 || ss > 59))
+    return false;
 
-	if (hh < 0 || hh > 23)
-		return false;
+  const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
 
-	if (min < 0 || min > 59)
-		return false;
+  iDOW = str_days.Find(cdayofweek);
+  if (iDOW < 0)
+    return false;
 
-	if (ss < 0 || ss > 59)
-		return false;
+  iDOW = (iDOW / 3) + 1;
+  if (iDOW != ct.GetDayOfWeek())
+    return false;
 
-	CTime ct = CTime(yyyy, mon, dd, hh, min, ss, -1);
+  t = (time_t)ct.GetTime();
 
-	iDOW = str_days.Find(cdayofweek);
-	if (iDOW < 0)
-		return false;
-
-	iDOW = (iDOW / 3) + 1;
-	if (iDOW != ct.GetDayOfWeek())
-		return false;
-
-	t = (time_t)ct.GetTime();
-
-	return true;
+  return true;
 }
 
 bool
@@ -506,85 +486,85 @@ PWSUtil::ToClipboard(const CMyString &data,
                      unsigned char clipboard_digest[SHA256::HASHLEN],
                      HWND hWindow)
 {
-	unsigned int uGlobalMemSize;
-	HGLOBAL hGlobalMemory;
-	bool b_retval;
+  unsigned int uGlobalMemSize;
+  HGLOBAL hGlobalMemory;
+  bool b_retval;
 
-	uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
-	hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-	LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
+  uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
+  hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
+  LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
 
-	strCopy(pGlobalLock, uGlobalMemSize, data ,data.GetLength());
+  strCopy(pGlobalLock, uGlobalMemSize, data ,data.GetLength());
 
-	GlobalUnlock(hGlobalMemory);
-	b_retval = false;
+  GlobalUnlock(hGlobalMemory);
+  b_retval = false;
 
-	if (OpenClipboard(hWindow) == TRUE) {
-		if (EmptyClipboard() != TRUE) {
-			TRACE("The clipboard was not emptied correctly");
-		}
-		if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL) {
-			TRACE("The data was not pasted into the clipboard correctly");
-			GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
-		} else {
-			// identify data in clipboard as ours, so as not to clear the wrong data later
-			// of course, we don't want an extra copy of a password floating around
-			// in memory, so we'll use the hash
-			const char *str = (const char *)data;
-			SHA256 ctx;
-			ctx.Update((const unsigned char *)str, data.GetLength());
-			ctx.Final(clipboard_digest);
-			b_retval = true;
-		}
-		if (CloseClipboard() != TRUE) {
-			TRACE("The clipboard could not be closed");
-		}
-	} else {
-		TRACE("The clipboard could not be opened correctly");
-		GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
-	}
-	return b_retval;
+  if (OpenClipboard(hWindow) == TRUE) {
+    if (EmptyClipboard() != TRUE) {
+      TRACE("The clipboard was not emptied correctly");
+    }
+    if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL) {
+      TRACE("The data was not pasted into the clipboard correctly");
+      GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
+    } else {
+      // identify data in clipboard as ours, so as not to clear the wrong data later
+      // of course, we don't want an extra copy of a password floating around
+      // in memory, so we'll use the hash
+      const char *str = (const char *)data;
+      SHA256 ctx;
+      ctx.Update((const unsigned char *)str, data.GetLength());
+      ctx.Final(clipboard_digest);
+      b_retval = true;
+    }
+    if (CloseClipboard() != TRUE) {
+      TRACE("The clipboard could not be closed");
+    }
+  } else {
+    TRACE("The clipboard could not be opened correctly");
+    GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
+  }
+  return b_retval;
 }
 
 bool
 PWSUtil::ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
                         HWND hWindow)
 {
-	bool b_retval;
-	b_retval = true;
+  bool b_retval;
+  b_retval = true;
 
-	if (OpenClipboard(hWindow) != TRUE) {
-		TRACE("The clipboard could not be opened correctly");
-		return b_retval;
-	}
+  if (OpenClipboard(hWindow) != TRUE) {
+    TRACE("The clipboard could not be opened correctly");
+    return b_retval;
+  }
 
-	if (IsClipboardFormatAvailable(CLIPBOARD_TEXT_FORMAT) != 0) {
-		HGLOBAL hglb = GetClipboardData(CLIPBOARD_TEXT_FORMAT);
-		if (hglb != NULL) {
-			LPTSTR lptstr = (LPTSTR)GlobalLock(hglb);
-			if (lptstr != NULL) {
-				// check identity of data in clipboard
-				unsigned char digest[32];
-				SHA256 ctx;
-				ctx.Update((const unsigned char *)lptstr, PWSUtil::strLength(lptstr));
-				ctx.Final(digest);
-				if (memcmp(digest, clipboard_digest, 32) == 0) {
-					trashMemory( lptstr, strLength(lptstr));
-					GlobalUnlock(hglb);
-					if (EmptyClipboard() == TRUE) {
-						memset(clipboard_digest, '\0', 32);
-						b_retval = false;
-					} else {
-						TRACE("The clipboard was not emptied correctly");
-					}
-				} else { // hashes match
-					GlobalUnlock(hglb);
-				}
-			} // lptstr != NULL
-		} // hglb != NULL
-	} // IsClipboardFormatAvailable
-	if (CloseClipboard() != TRUE) {
-		TRACE("The clipboard could not be closed");
-	}
-	return b_retval;
+  if (IsClipboardFormatAvailable(CLIPBOARD_TEXT_FORMAT) != 0) {
+    HGLOBAL hglb = GetClipboardData(CLIPBOARD_TEXT_FORMAT);
+    if (hglb != NULL) {
+      LPTSTR lptstr = (LPTSTR)GlobalLock(hglb);
+      if (lptstr != NULL) {
+        // check identity of data in clipboard
+        unsigned char digest[SHA256::HASHLEN];
+        SHA256 ctx;
+        ctx.Update((const unsigned char *)lptstr, PWSUtil::strLength(lptstr));
+        ctx.Final(digest);
+        if (memcmp(digest, clipboard_digest, SHA256::HASHLEN) == 0) {
+          trashMemory( lptstr, strLength(lptstr));
+          GlobalUnlock(hglb);
+          if (EmptyClipboard() == TRUE) {
+            memset(clipboard_digest, '\0', SHA256::HASHLEN);
+            b_retval = false;
+          } else {
+            TRACE("The clipboard was not emptied correctly");
+          }
+        } else { // hashes match
+          GlobalUnlock(hglb);
+        }
+      } // lptstr != NULL
+    } // hglb != NULL
+  } // IsClipboardFormatAvailable
+  if (CloseClipboard() != TRUE) {
+    TRACE("The clipboard could not be closed");
+  }
+  return b_retval;
 }
