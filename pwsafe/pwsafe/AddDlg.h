@@ -51,7 +51,6 @@ protected:
 	afx_msg void OnBnClickedClearLTime();
 	afx_msg void OnBnClickedSetLTime();
 	CButton m_moreLessBtn;
-    afx_msg void OnStnClickedStaticLtime();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

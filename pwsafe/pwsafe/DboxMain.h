@@ -29,10 +29,10 @@ DECLARE_HANDLE(HDROP);
 #define TIMER_USERLOCK 0x05
 
 // Index values for which dialog to show during GetAndCheckPassword
-#define GCP_FIRST  0		// At startup of PWS
-#define GCP_NORMAL  1		// Only OK, CANCEL & HELP buttons
-#define GCP_WITHEXIT  2		// OK, CANCEL, EXIT & HELP buttons
-
+enum {GCP_FIRST = 0,		// At startup of PWS
+	  GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
+	  GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
+	  GCP_WITHEXIT = 3};	// OK, CANCEL, EXIT & HELP buttons
 
 //-----------------------------------------------------------------------------
 class DboxMain
@@ -77,7 +77,7 @@ public:
   void SetChanged(bool changed); // for MyTreeCtrl
   void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
   void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
-  void SetReadOnly(bool state) { m_IsReadOnly = state;}
+  void SetReadOnly(bool state);
   void SetStartSilent(bool state) { m_IsStartSilent = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);

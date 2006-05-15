@@ -59,9 +59,9 @@ protected:
 protected:
    int m_tries;
    int m_status;
-   bool m_first;
+   int m_index;
 
-   static int dialog_lookup[3];
+   static int dialog_lookup[4];
 
    HICON m_hIcon;
 
@@ -72,6 +72,7 @@ protected:
    virtual void OnOK();
    afx_msg void OnHelp();
    afx_msg void OnExit();
+   afx_msg void OnReadOnly();
 #if defined(POCKET_PC)
    afx_msg void OnPasskeySetfocus();
    afx_msg void OnPasskeyKillfocus();

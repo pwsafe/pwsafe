@@ -102,7 +102,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   out->Close();
   delete out;
 
-  m_changed = FALSE;
+  m_changed = false;
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
   return SUCCESS;
@@ -119,7 +119,7 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
   if (!ofs)
     return CANT_OPEN_FILE;
   if (bwrite_header) {
-	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassowrd Modified Time\tLast Access Time\tPassword Lifetime\tRecord Modified Time\tNotes"));
+	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassowrd Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tNotes"));
 	  ofs << hdr << endl;
   }
 
@@ -412,7 +412,7 @@ int PWScore::BackupCurFile()
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
   SetPassKey(newPassword);
-  m_changed = TRUE;
+  m_changed = true;
 }
 
 

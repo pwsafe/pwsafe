@@ -42,6 +42,7 @@ void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CExpPWListDlg, CDialog)
 	ON_BN_CLICKED(IDC_COPY_EXP_TO_CLIPBOARD, OnBnClickedCopyExpToClipboard)
+	ON_BN_CLICKED(IDOK, OnOK)
 	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
 	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
 END_MESSAGE_MAP()
@@ -89,6 +90,12 @@ CExpPWListDlg::OnInitDialog()
 	m_copied_to_clipboard = false;
 
 	return TRUE;
+}
+
+void
+CExpPWListDlg::OnOK() 
+{
+	CDialog::OnOK();
 }
 
 void
