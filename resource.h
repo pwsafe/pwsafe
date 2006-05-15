@@ -40,7 +40,6 @@
 #define IDD_QUERYADDNAME                183
 #define IDD_USERNAMEENTRY               184
 #define IDD_PASSKEYENTRY                185
-#define IDR_MAINBAR                     187
 #define IDD_PASSKEYENTRY_WITHEXIT       188
 #define IDB_CLOGO_SMALL                 189
 #define IDI_CORNERICON                  191
@@ -55,9 +54,9 @@
 #define IDB_LEAF                        200
 #define IDB_LEAF_EXPIRED                201
 #define IDD_EXPORT_TEXT                 204
-#define IDR_TOOLBAR1                    208
-#define IDB_TOOLBAR1                    208
-#define IDB_TOOLBAR2                    217
+#define IDB_TOOLBAR1                    212
+#define IDB_TOOLBAR2                    213
+#define IDB_TOOLBAR3                    214
 #define IDR_POPTRAY                     218
 #define IDI_TRAY                        219
 #define IDI_MBSTOPICON                  221
@@ -67,9 +66,6 @@
 #define IDD_IMPORT_TEXT                 225
 #define IDD_PICKEXPDATETIME             226
 #define IDD_DISPLAY_EXPIRED_ENTRIES     227
-#define IDB_TOOLBAR1_RO                 908
-#define IDB_TOOLBAR2_RO                 917
-#define IDR_MAINBAR_RO                  987
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001

@@ -31,7 +31,7 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 //-----------------------------------------------------------------------------
 //Overwrite the memory
 
-
+#pragma optimize("",off)
 void
 trashMemory(void* buffer, long length)
 {
@@ -46,6 +46,7 @@ trashMemory(void* buffer, long length)
     }
   }
 }
+#pragma optimize("",on)
 
 void
 trashMemory( LPTSTR buffer, long length )

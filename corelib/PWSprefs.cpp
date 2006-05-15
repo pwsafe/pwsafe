@@ -86,7 +86,7 @@ void PWSprefs::DeleteInstance()
   }
 }
 
-PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_changed(false)
+PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_prefs_changed(false)
 {
   ASSERT(m_app != NULL);
   // Start by reading in from registry
@@ -162,7 +162,7 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
 
 void PWSprefs::SetPref(BoolPrefs pref_enum, bool value)
 {
-  m_changed |= (m_boolValues[pref_enum] != value && m_int_prefs[pref_enum].isPersistent);
+  m_prefs_changed |= (m_boolValues[pref_enum] != value && m_int_prefs[pref_enum].isPersistent);
   m_boolValues[pref_enum] = value;
   SetPref(m_bool_prefs[pref_enum].name, value);
 }
@@ -174,7 +174,7 @@ void PWSprefs::SetPref(const CMyString &name, bool val)
 
 void PWSprefs::SetPref(IntPrefs pref_enum, unsigned int value)
 {
-  m_changed |= (m_intValues[pref_enum] != value && m_int_prefs[pref_enum].isPersistent);
+  m_prefs_changed |= (m_intValues[pref_enum] != value && m_int_prefs[pref_enum].isPersistent);
   m_intValues[pref_enum] = value;
   SetPref(m_int_prefs[pref_enum].name, value);
 }
@@ -186,7 +186,7 @@ void PWSprefs::SetPref(const CMyString &name, unsigned int val)
 
 void PWSprefs::SetPref(StringPrefs pref_enum, const CMyString &value)
 {
-  m_changed |= (m_stringValues[pref_enum] != value && m_string_prefs[pref_enum].isPersistent);
+  m_prefs_changed |= (m_stringValues[pref_enum] != value && m_string_prefs[pref_enum].isPersistent);
   m_stringValues[pref_enum] = value;
   SetPref(m_string_prefs[pref_enum].name, value);
 }

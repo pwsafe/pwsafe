@@ -235,15 +235,15 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TRAYRECENT_ENTRY_CLEAR, OnTrayClearRecentEntries)
    ON_UPDATE_COMMAND_UI(ID_TRAYRECENT_ENTRY_CLEAR, OnUpdateTrayClearRecentEntries)
    ON_WM_INITMENU()
-   ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
-   ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
-   ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
-   ON_COMMAND(ID_TOOLBUTTON_CLEARCLIPBOARD, OnClearClipboard)
-   ON_COMMAND(ID_TOOLBUTTON_DELETE, OnDelete)
-   ON_COMMAND(ID_TOOLBUTTON_EDIT, OnEdit)
    ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
    ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
+   ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
+   ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
+   ON_COMMAND(ID_TOOLBUTTON_CLEARCLIPBOARD, OnClearClipboard)
+   ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
+   ON_COMMAND(ID_TOOLBUTTON_EDIT, OnEdit)
+   ON_COMMAND(ID_TOOLBUTTON_DELETE, OnDelete)
 #endif
    ON_WM_SYSCOMMAND()
 #if !defined(POCKET_PC)
@@ -346,7 +346,7 @@ DboxMain::InitPasswordSafe()
   m_ctlItemList.InsertColumn(3, _T("Created"));
   m_ctlItemList.InsertColumn(4, _T("Password Modified"));
   m_ctlItemList.InsertColumn(5, _T("Last Accessed"));
-  m_ctlItemList.InsertColumn(6, _T("Password Lifetime"));
+  m_ctlItemList.InsertColumn(6, _T("Password Expiry Date"));
   m_ctlItemList.InsertColumn(7, _T("Last Modified"));
 
   m_bShowPasswordInEdit = PWSprefs::GetInstance()->
@@ -455,7 +455,6 @@ DboxMain::OnInitDialog()
   
   return TRUE;  // return TRUE unless you set the focus to a control
 }
-
 
 BOOL
 DboxMain::OpenOnInit(void)
@@ -609,9 +608,6 @@ void
 DboxMain::ToClipboard(const CMyString &data)
 {
 	m_clipboard_set = PWSUtil::ToClipboard(data, m_clipboard_digest, app.m_pMainWnd->m_hWnd);
-		
-		
-		
 }
 
 void
@@ -746,8 +742,6 @@ DboxMain::OnUpdateTVCommand(CCmdUI *pCmdUI)
 void
 DboxMain::OnSave() 
 {
-  if (m_IsReadOnly) // disable in read-only mode
-    return;
   m_LockDisabled = true;
   Save();
   m_LockDisabled = false;
@@ -1183,7 +1177,7 @@ DboxMain::Open()
     fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Open:");
     rc = fd.DoModal();
     const bool last_ro = m_IsReadOnly; // restore if user cancels
-    m_IsReadOnly = (fd.GetReadOnlyPref() == TRUE);
+    SetReadOnly(fd.GetReadOnlyPref() == TRUE);
     if (rc == IDOK) {
       newfile = (CMyString)fd.GetPathName();
 
@@ -1195,7 +1189,7 @@ DboxMain::Open()
         break;
       }
     } else {
-      m_IsReadOnly = last_ro;
+      SetReadOnly(last_ro);
       return PWScore::USER_CANCEL;
     }
   }
@@ -1527,6 +1521,8 @@ DboxMain::New()
       else
         return PWScore::CANT_OPEN_FILE;
     case IDNO:
+      // Reset changed flag
+      SetChanged(false);
       break;
     }
   }
@@ -1588,6 +1584,8 @@ int DboxMain::SaveIfChanged()
       else
         return PWScore::CANT_OPEN_FILE;
     case IDNO:
+      // Reset changed flag
+      SetChanged(false);
       break;
     }
   }
@@ -1749,6 +1747,12 @@ DboxMain::SaveAs()
   ChangeOkUpdate();
 
   app.GetMRU()->Add( newfile );
+ 
+  if (m_IsReadOnly) {
+  	// reset read-only status (new file can't be read-only!)
+  	// and so cause toolbar to be the correct version
+  	SetReadOnly(false);
+  }
 
   return PWScore::SUCCESS;
 }
@@ -1792,14 +1796,17 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     DBGMSG("PasskeyEntry returns IDOK\n");
     CMyString locker(_T("")); // null init is important here
     passkey = dbox_pkentry.GetPasskey();
+	// This dialog's setting of read-only overrides file dialog
+	m_IsReadOnly = dbox_pkentry.IsReadOnly();
+	SetReadOnly(m_IsReadOnly);
     // Set read-only mode if user explicitly requested it OR
     // we could not create a lock file.
     // Note that we depend on lazy evaluation: if the 1st is true,
     // the 2nd won't be called!
-    if (index == 0) // if !first, then m_IsReadOnly is set in Open
-      m_IsReadOnly =  (dbox_pkentry.IsReadOnly() || !m_core.LockFile(filename, locker));
+    if (index == GCP_FIRST) // if first, then m_IsReadOnly is set in Open
+      SetReadOnly(m_IsReadOnly || !m_core.LockFile(filename, locker));
     else if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
-      m_IsReadOnly = !m_core.LockFile(filename, locker);
+      SetReadOnly(!m_core.LockFile(filename, locker));
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
     if (!locker.IsEmpty()) {
@@ -1813,14 +1820,20 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       str += _T("that the file is in fact not being used by anyone else.");
       switch( MessageBox(str, _T("File In Use"),
                          MB_YESNOCANCEL|MB_ICONQUESTION)) {
-      case IDYES:  retval = PWScore::SUCCESS; break;
-      case IDNO: m_IsReadOnly = false; // Caveat Emptor!
+      case IDYES:
+      	SetReadOnly(true);
+      	retval = PWScore::SUCCESS;
+      	break;
+      case IDNO:
+      	SetReadOnly(false); // Caveat Emptor!
         retval = PWScore::SUCCESS; 
         break;
-      case IDCANCEL: retval = PWScore::USER_CANCEL;
+      case IDCANCEL:
+      	retval = PWScore::USER_CANCEL;
         break;
       default:
-        ASSERT(false); retval = PWScore::USER_CANCEL;
+        ASSERT(false);
+        retval = PWScore::USER_CANCEL;
       }
     } else // locker.IsEmpty() means no lock needed or lock was successful
       retval = PWScore::SUCCESS;
@@ -1864,7 +1877,7 @@ DboxMain::NewFile(void)
   // The only way we're the locker is if it's locked & we're !readonly
   if (!filename.IsEmpty() && !m_IsReadOnly && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
-  m_IsReadOnly = false; // new file can't be read-only...
+  SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
   m_needsreading = false;
   startLockCheckTimer();
@@ -2230,7 +2243,7 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 #if 0
   return m_TrayIcon.OnTrayNotification(wParam, lParam);
 #else
-  return 0;
+  return 0L;
 #endif
 }
 
@@ -2250,7 +2263,7 @@ void DboxMain::OnUnMinimize()
 
 		CMyString passkey;
 		int rc;
-		rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+		rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
 		if (rc != PWScore::SUCCESS)
 			return;  // don't even think of restoring window!
 
@@ -2271,7 +2284,7 @@ void DboxMain::OnUnMinimize()
 		if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
 			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
 		} else {
-			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
 		}
 		switch (rc) {
 			case PWScore::SUCCESS:

@@ -28,21 +28,22 @@
 
 #include "corelib/Util.h"
 
-int CPasskeyEntry::dialog_lookup[3] = {IDD_PASSKEYENTRY_FIRST, 
+int CPasskeyEntry::dialog_lookup[4] = {IDD_PASSKEYENTRY_FIRST, 
+										IDD_PASSKEYENTRY, 
 										IDD_PASSKEYENTRY, 
 										IDD_PASSKEYENTRY_WITHEXIT};
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec,
-			     bool forceReadOnly, int index)
+			     bool bReadOnly, int index)
    : super(dialog_lookup[index],
              pParent),
-     m_first(index == 0),
+     m_index(index),
      m_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID),
-     m_ReadOnly(forceReadOnly)
+     m_ReadOnly(bReadOnly)
 {
   const int FILE_DISP_LEN = 45;	
 
@@ -50,10 +51,10 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
   //}}AFX_DATA_INIT
 
   DBGMSG("CPasskeyEntry()\n");
-  if (index == 0) {
+  if (m_index == GCP_FIRST) {
     DBGMSG("** FIRST **\n");
   }
-
+  
   m_passkey = _T("");
 
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
@@ -76,7 +77,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
 
 #if !defined(POCKET_PC)
-   if ( m_first )
+   if (m_index == GCP_FIRST)
 	DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
 #endif
 
@@ -98,6 +99,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
    ON_BN_CLICKED(ID_BROWSE, OnBrowse)
    ON_BN_CLICKED(ID_CREATE_DB, OnCreateDb)
    ON_BN_CLICKED(ID_EXIT, OnExit)
+   ON_BN_CLICKED(IDC_READONLY, OnReadOnly)
 #if defined(POCKET_PC)
    ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
    ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
@@ -110,6 +112,27 @@ BOOL
 CPasskeyEntry::OnInitDialog(void)
 {
   SetPasswordFont(GetDlgItem(IDC_PASSKEY));
+
+  switch(m_index) {
+  	case GCP_FIRST:
+  		// At start up - give the user the option
+  		GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+  		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+  		break;
+  	case GCP_NORMAL:
+		// otherwise during open - user can
+		GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+  		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+  		break;
+  	case GCP_UNMINIMIZE:
+  	case GCP_WITHEXIT:
+  		// on UnMinimize - user can't change status
+  		GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+  		GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
+  		break;
+  	default:
+  		ASSERT(FALSE);
+  }
 
 #if defined(POCKET_PC)
   // If displaying IDD_PASSKEYENTRY_FIRST then bypass superclass and go
@@ -127,7 +150,7 @@ CPasskeyEntry::OnInitDialog(void)
     }
 #endif
 
-  if (m_message.IsEmpty() && m_first)
+  if (m_message.IsEmpty() && m_index == GCP_FIRST)
     {
       m_ctlPasskey.EnableWindow(FALSE);
 #if !defined(POCKET_PC)
@@ -141,7 +164,7 @@ CPasskeyEntry::OnInitDialog(void)
    */
 
 #if !defined(POCKET_PC)
-  if (m_first) {
+  if (m_index == GCP_FIRST) {
     m_ctlLogoText.ReloadBitmap(IDB_PSLOGO);
     m_ctlLogo.ReloadBitmap(IDB_CLOGO);
   } else {
@@ -179,6 +202,11 @@ void CPasskeyEntry::OnPasskeySetfocus()
 }
 #endif
 
+void
+CPasskeyEntry::OnReadOnly() 
+{
+   m_ReadOnly = ((CButton*)GetDlgItem(IDC_READONLY))->GetCheck();
+}
 
 void
 CPasskeyEntry::OnBrowse()

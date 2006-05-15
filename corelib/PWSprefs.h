@@ -52,8 +52,8 @@ class PWSprefs {
   enum {DoubleClickCopy = 0, DoubleClickEdit = 1,
 	DoubleClickAutoType = 2, DoubleClickBrowse = 3}; // for DoubleClickAction
 
-  bool IsChanged() const {return m_changed;}
-  void ClearChanged() {m_changed = false;}
+  bool IsChanged() const {return m_prefs_changed;}
+  void ClearChanged() {m_prefs_changed = false;}
 
   bool GetPref(BoolPrefs pref_enum) const;
   unsigned int GetPref(IntPrefs pref_enum) const;
@@ -86,7 +86,7 @@ class PWSprefs {
   static PWSprefs *self; // singleton
 
   CWinApp *m_app;
-  bool m_changed;
+  bool m_prefs_changed;
   // below, isPersistent means stored in db, !isPersistent means use registry only
   static const struct boolPref {
     TCHAR *name; bool defVal; bool isPersistent;} m_bool_prefs[NumBoolPrefs];

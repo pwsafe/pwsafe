@@ -78,7 +78,6 @@ BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
    ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
    ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
-   ON_STN_CLICKED(IDC_STATIC_LTIME, OnStnClickedStaticLtime)
 END_MESSAGE_MAP()
 
 
@@ -250,7 +249,3 @@ void CAddDlg::OnBnClickedSetLTime()
 	}
 }
 
-void CAddDlg::OnStnClickedStaticLtime()
-{
-    // TODO: Add your control notification handler code here
-}
