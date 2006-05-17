@@ -362,6 +362,10 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   ASSERT(N >= 2048); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
     SHA256 H;
+    // The 2nd param in next line was sizeof(X) in Beta-1
+    // (bug #1451422). This change broke the ability to read beta-1
+    // generated databases. If this is really needed, we should
+    // hack the read functionality to try both variants (ugh).
     H.Update(X, SHA256::HASHLEN);
     H.Final(X);
   }
