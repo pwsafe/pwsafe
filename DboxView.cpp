@@ -1517,16 +1517,16 @@ DboxMain::OnAutoType()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-	// AddRUEntry must be before AutoType since the latter
+	// All code using ci must be before AutoType since the latter
 	// may trash *ci if lock-on-minimize
 	uuid_array_t RUEuuid;
 	ci->GetUUID(RUEuuid);
 	m_RUEList.AddRUEntry(RUEuuid);
-    AutoType(*ci);
 	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
        	SetChanged(true);
     }
+    AutoType(*ci);
   }
 }
 
