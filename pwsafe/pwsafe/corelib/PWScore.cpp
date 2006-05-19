@@ -119,7 +119,7 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
   if (!ofs)
     return CANT_OPEN_FILE;
   if (bwrite_header) {
-	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassowrd Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tNotes"));
+	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tNotes"));
 	  ofs << hdr << endl;
   }
 
