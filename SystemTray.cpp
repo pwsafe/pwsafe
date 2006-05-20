@@ -485,12 +485,15 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
                                              ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
                                              _T("&Copy Password to Clipboard"));
           pNewRecentEntryMenu[i]->InsertMenu(2, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYCOPYNOTESFLD1 + i,
+                                             _T("Copy &Notes to Clipboard"));
+          pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYBROWSE1 + i,
                                              _T("&Browse to URL"));
-          pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
+          pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYDELETE1 + i,
                                              _T("&Delete Entry from History"));
-          pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
+          pNewRecentEntryMenu[i]->InsertMenu(5, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYAUTOTYPE1 + i,
                                              _T("Perform Auto&Type"));
 

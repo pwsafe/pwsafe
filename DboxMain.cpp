@@ -108,7 +108,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_LockDisabled(false), m_IsReadOnly(false),
+     m_core(app.m_core), m_LockDisabled(false),
      m_IsStartSilent(false), m_clipboard_set(false),
      m_selectedAtMinimize(NULL)
 {
@@ -144,6 +144,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_iSortedColumn = 0;
   m_hFontTree = NULL;
   m_FromOnSysCommand = false;
+  m_ctlItemTree.SetDboxPointer((void *)this);
 }
 
 DboxMain::~DboxMain()
@@ -169,8 +170,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
    ON_COMMAND(ID_MENUITEM_BROWSE, OnBrowse)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
+   ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
+   ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
    ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_MERGE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
@@ -240,7 +243,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
    ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
+   ON_COMMAND(ID_TOOLBUTTON_COPYNOTESFLD, OnCopyNotes)
    ON_COMMAND(ID_TOOLBUTTON_CLEARCLIPBOARD, OnClearClipboard)
+   ON_COMMAND(ID_TOOLBUTTON_AUTOTYPE, OnAutoType)
+   ON_COMMAND(ID_TOOLBUTTON_BROWSEURL, OnBrowse)
    ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
    ON_COMMAND(ID_TOOLBUTTON_EDIT, OnEdit)
    ON_COMMAND(ID_TOOLBUTTON_DELETE, OnDelete)
@@ -259,6 +265,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnUpdateTrayCopyUsername)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYPASSWORD1, ID_MENUITEM_TRAYCOPYPASSWORDMAX, OnTrayCopyPassword)
    ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYPASSWORD1, ID_MENUITEM_TRAYCOPYPASSWORDMAX, OnUpdateTrayCopyPassword)
+   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYNOTESFLD1, ID_MENUITEM_TRAYCOPYNOTESFLDMAX, OnTrayCopyNotes)
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYNOTESFLD1, ID_MENUITEM_TRAYCOPYNOTESFLDMAX, OnUpdateTrayCopyNotes)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnTrayBrowse)
    ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnUpdateTrayBrowse)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnTrayDeleteEntry)
@@ -475,6 +483,7 @@ DboxMain::OpenOnInit(void)
     m_title = "Password Safe - " + m_core.GetCurFile();
     UpdateSystemTray(UNLOCKED);
 #endif
+	CheckExpiredPasswords();
     break; 
   case PWScore::CANT_OPEN_FILE:
     if (m_core.GetCurFile().IsEmpty()) {
@@ -532,17 +541,16 @@ DboxMain::OpenOnInit(void)
   }
     // DELIBERATE FALL-THRU if user chose YES
   case PWScore::SUCCESS:
-		CheckExpiredPasswords();
     m_needsreading = false;
     startLockCheckTimer();
     UpdateSystemTray(UNLOCKED);
+	m_saveMRU = true;
     return TRUE;
   default:
     CDialog::OnCancel();
     return FALSE;
   }
 }
-
 
 void
 DboxMain::OnDestroy()
@@ -657,6 +665,41 @@ DboxMain::OnCopyUsername()
 }
 
 void
+DboxMain::OnCopyNotes() 
+{
+  if (SelItemOk() != TRUE)
+    return;
+
+  CItemData *ci = getSelectedItem();
+  ASSERT(ci != NULL);
+
+  const CMyString notes = ci->GetNotes();
+  const CMyString url = ci->GetURL();
+  const CMyString autotype = ci->GetAutoType();
+  CMyString clipboard_data;
+
+  clipboard_data = notes;
+  if (!url.IsEmpty()) {
+	  clipboard_data += _T("\r\nURL: ");
+	  clipboard_data += url;
+  }
+  if (!autotype.IsEmpty()) {
+	  clipboard_data += _T("\r\nAutotype: ");
+	  clipboard_data += autotype;
+  }
+  if (!clipboard_data.IsEmpty()) {
+    ToClipboard(clipboard_data);
+    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+   		ci->SetATime();
+       	SetChanged(true);
+	}
+    uuid_array_t RUEuuid;
+    ci->GetUUID(RUEuuid);
+    m_RUEList.AddRUEntry(RUEuuid);
+  }
+}
+
+void
 DboxMain::ClearClipboard()
 {
   // Clear the clipboard IFF its value is the same as last set by this app.
@@ -737,6 +780,13 @@ DboxMain::OnUpdateTVCommand(CCmdUI *pCmdUI)
   // Use this callback for commands that need to
   // be disabled in ListView mode
   pCmdUI->Enable(m_IsListView ? FALSE : TRUE);
+}
+
+void
+DboxMain::OnClearMRU() 
+{
+	app.ClearMRU();
+	m_saveMRU = false;
 }
 
 void
@@ -1193,6 +1243,7 @@ DboxMain::Open()
       return PWScore::USER_CANCEL;
     }
   }
+  m_saveMRU = true;
   return rc;
 }
 

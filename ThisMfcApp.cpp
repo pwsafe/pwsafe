@@ -345,6 +345,8 @@ ThisMfcApp::InitInstance()
   CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
   if (file_submenu != NULL)  // Look for "Open Database"
     pos = FindMenuItem(file_submenu, ID_MENUITEM_OPEN);
+  else
+    pos = -1;
   
   if (pos > -1) {
     int irc;
@@ -353,14 +355,13 @@ ThisMfcApp::InitInstance()
   
     if (!m_mruonfilemenu) {  // MRU entries in popup menu
 	  // Insert Item onto new popup
-	  irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, _T("Safe%d") );
+	  irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
 	  ASSERT(irc != 0);
 
 	  // Insert Popup onto main menu
 	  irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) new_popupmenu->m_hMenu, "&Recent Safes" );
 	  ASSERT(irc != 0);
-    }
-    else {  // MRU entries inline
+    } else {  // MRU entries inline
 	  irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
 	  ASSERT(irc != 0);
     }
@@ -368,8 +369,8 @@ ThisMfcApp::InitInstance()
     m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
     m_pMRU->ReadList();
   }
-  DboxMain dbox(NULL);
 
+  DboxMain dbox(NULL);
 	
   /*
    * Command line processing:
@@ -410,7 +411,10 @@ ThisMfcApp::InitInstance()
         Usage();
         return FALSE;
       }
-			
+
+	  if (fn.IsEmpty())
+		  fn = (CString)PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentFile);
+
       CMyString passkey;
       if (args[1] == 'e' || args[1] == 'E' || args[1] == 'd' || args[1] == 'D') {
         // get password from user if valid flag given. If note, default below will
@@ -425,6 +429,7 @@ ThisMfcApp::InitInstance()
         }
       }
       BOOL status;
+      dbox.SetReadOnly(false);
       switch (args[1]) {
       case 'e': case 'E': // do encrpytion
         status = EncryptFile(fn, passkey);
@@ -493,12 +498,61 @@ ThisMfcApp::InitInstance()
     note that we don't particularly care what the response was
   */
 	
-	
   // Since the dialog has been closed, return FALSE so that we exit the
   // application, rather than start the application's message pump.
   if (new_popupmenu != NULL)
     delete new_popupmenu;
   return FALSE;
+}
+
+void
+ThisMfcApp::ClearMRU()
+{
+	int numMRU = m_pMRU->GetSize();
+	for (int i = numMRU; i > 0; i--)
+		m_pMRU->Remove(i - 1);
+
+	m_pMRU->WriteList();
+
+	// Can't get the MRU list on the menu to tidy up automatically
+	// Do it manually!
+	CWnd* pMain = AfxGetMainWnd();
+
+	CMenu* xmainmenu = pMain->GetMenu();
+
+	// Look for "File" menu.
+	int pos = FindMenuItem(xmainmenu, _T("&File"));
+	if (pos == -1) // E.g., in non-English versions
+		pos = 0; // best guess...
+
+	CMenu* xfile_submenu = xmainmenu->GetSubMenu(pos);
+	if (xfile_submenu != NULL)  // Look for MRU first entry
+		pos = FindMenuItem(xfile_submenu, ID_FILE_MRU_ENTRY1);
+	else
+		return;
+
+	if (pos > -1) {
+		// Recent databases are on the main File menu
+		for (int nID = numMRU; nID > 1; nID--)
+			xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
+
+		return;
+	}
+
+	// Recent databases are on the popup menu off the main File menu
+	CMenu* xpopupmenu = xfile_submenu->GetSubMenu(3);
+	if (xpopupmenu != NULL)  // Look for MRU first entry
+		pos = FindMenuItem(xpopupmenu, ID_FILE_MRU_ENTRY1);
+	else
+		return;
+
+	if (pos > -1) {
+		// Recent databases are on the main File menu
+		for (int nID = numMRU; nID > 1; nID--)
+			xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
+
+		return;
+	}
 }
 
 void

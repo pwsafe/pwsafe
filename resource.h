@@ -197,12 +197,10 @@
 #define IDC_COPY_EXP_TO_CLIPBOARD       1148
 #define IDC_IMPORT_PREV3                1149
 #define IDC_EXPORT_HDR                  1150
-#define IDC_EDIT1                       1153
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
 #define IDC_DOUBLE_CLICK_BROWSE         2092
-#define IDC_DOUBLE_CLICK_AUTOTYPES2     2092
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -216,22 +214,26 @@
 #define ID_MENUITEM_OPTIONS             32780
 #define ID_MENUITEM_ABOUT               32782
 #define ID_MENUITEM_COPYUSERNAME        32787
+#define ID_MENUITEM_COPYNOTESFLD        32788
 #define ID_MENUITEM_OPEN                32793
 #define ID_MENUITEM_NEW                 32794
 #define ID_MENUTIME_SAVEAS              32795
 #define ID_MENUITEM_RESTORE             32797
 #define ID_MENUITEM_UPDATEBACKUPS       32798
-#define ID_TOOLBUTTON_SAVE              32799
-#define ID_TOOLBUTTON_COPYPASSWORD      32802
-#define ID_TOOLBUTTON_EDIT              32803
-#define ID_TOOLBUTTON_DELETE            32804
-#define ID_TOOLBUTTON_ADD               32805
-#define ID_TOOLBUTTON_HELP              32806
-#define ID_TOOLBUTTON_COPYUSERNAME      32807
-#define ID_TOOLBUTTON_NEW               32809
-#define ID_TOOLBUTTON_OPEN              32810
-#define ID_MENUITEM_FIND                32812
-#define ID_TOOLBUTTON_CLEARCLIPBOARD    32813
+#define ID_TOOLBUTTON_NEW               32800
+#define ID_TOOLBUTTON_OPEN              32801
+#define ID_TOOLBUTTON_SAVE              32802
+#define ID_TOOLBUTTON_COPYUSERNAME      32803
+#define ID_TOOLBUTTON_COPYPASSWORD      32804
+#define ID_TOOLBUTTON_COPYNOTESFLD      32805
+#define ID_TOOLBUTTON_CLEARCLIPBOARD    32806
+#define ID_TOOLBUTTON_AUTOTYPE          32807
+#define ID_TOOLBUTTON_BROWSEURL         32808
+#define ID_TOOLBUTTON_ADD               32809
+#define ID_TOOLBUTTON_EDIT              32810
+#define ID_TOOLBUTTON_DELETE            32811
+#define ID_TOOLBUTTON_HELP              32812
+#define ID_MENUITEM_FIND                32824
 #define ID_FILE_EXPORTTO_PLAINTEXT      32825
 #define ID_MENUITEM_LIST_VIEW           32826
 #define ID_MENUITEM_TREE_VIEW           32827
@@ -264,20 +266,23 @@
 #define ID_TRAYRECENT_ENTRY_HELP1       32855
 #define ID_TRAYRECENT_ENTRY_HELP2       32856
 #define ID_MENUITEM_RENAME              32857
-#define ID_FILE_MRU_ENTRY1              40001  // Do NOT define values between entry 1 & entry MAX
-#define ID_FILE_MRU_ENTRYMAX            40020  // reserved max length
-#define ID_TRAYRECENT_ENTRY1            41001  // Do NOT define values between entry 1 & entry MAX
-#define ID_TRAYRECENT_ENTRYMAX          41025  // reserved max length
-#define ID_MENUITEM_TRAYCOPYUSERNAME1   41026  // Do NOT define values between entry 1 & entry MAX
-#define ID_MENUITEM_TRAYCOPYUSERNAMEMAX 41050  // reserved max length
-#define ID_MENUITEM_TRAYCOPYPASSWORD1   41051  // Do NOT define values between entry 1 & entry MAX
-#define ID_MENUITEM_TRAYCOPYPASSWORDMAX 41075  // reserved max length
-#define ID_MENUITEM_TRAYBROWSE1         41076  // Do NOT define values between entry 1 & entry MAX
-#define ID_MENUITEM_TRAYBROWSEMAX       41100  // reserved max length
-#define ID_MENUITEM_TRAYDELETE1         41101  // Do NOT define values between entry 1 & entry MAX
-#define ID_MENUITEM_TRAYDELETEMAX       41125  // reserved max length
-#define ID_MENUITEM_TRAYAUTOTYPE1       41126  // Do NOT define values between entry 1 & entry MAX
-#define ID_MENUITEM_TRAYAUTOTYPEMAX     41150  // reserved max length
+#define ID_MENUITEM_CLEAR_MRU           32858
+#define ID_FILE_MRU_ENTRY1              40001
+#define ID_FILE_MRU_ENTRYMAX            40020
+#define ID_TRAYRECENT_ENTRY1            41001
+#define ID_TRAYRECENT_ENTRYMAX          41025
+#define ID_MENUITEM_TRAYCOPYUSERNAME1   41026
+#define ID_MENUITEM_TRAYCOPYUSERNAMEMAX 41050
+#define ID_MENUITEM_TRAYCOPYPASSWORD1   41051
+#define ID_MENUITEM_TRAYCOPYPASSWORDMAX 41075
+#define ID_MENUITEM_TRAYBROWSE1         41076
+#define ID_MENUITEM_TRAYBROWSEMAX       41100
+#define ID_MENUITEM_TRAYDELETE1         41101
+#define ID_MENUITEM_TRAYDELETEMAX       41125
+#define ID_MENUITEM_TRAYAUTOTYPE1       41126
+#define ID_MENUITEM_TRAYAUTOTYPEMAX     41150
+#define ID_MENUITEM_TRAYCOPYNOTESFLD1   41151
+#define ID_MENUITEM_TRAYCOPYNOTESFLDMAX 41175
 #define IDS_STATAUTOTYPE                57671
 
 // Next default values for new objects
@@ -285,8 +290,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        228
-#define _APS_NEXT_COMMAND_VALUE         32858
-#define _APS_NEXT_CONTROL_VALUE         1154
+#define _APS_NEXT_COMMAND_VALUE         32859
+#define _APS_NEXT_CONTROL_VALUE         1151
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
