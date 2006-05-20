@@ -81,6 +81,7 @@ public:
   void SetStartSilent(bool state) { m_IsStartSilent = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
+  bool GetShowPasswordInList() const {return m_bShowPasswordInList;}
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -107,7 +108,6 @@ protected:
 
   // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
   bool	m_bSizing;
-
 
   unsigned int uGlobalMemSize;
   HGLOBAL hGlobalMemory;
@@ -138,6 +138,7 @@ protected:
   bool m_bShowPasswordInList;
   bool m_bAlwaysOnTop;
   bool m_bMaintainDateTimeStamps;
+  bool m_saveMRU;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
@@ -199,6 +200,8 @@ protected:
 	afx_msg void OnUpdateTrayCopyUsername(CCmdUI *pCmdUI);
 	afx_msg void OnTrayCopyPassword(UINT nID);
 	afx_msg void OnUpdateTrayCopyPassword(CCmdUI *pCmdUI);
+	afx_msg void OnTrayCopyNotes(UINT nID);
+	afx_msg void OnUpdateTrayCopyNotes(CCmdUI *pCmdUI);
 	afx_msg void OnTrayBrowse(UINT nID);
 	afx_msg void OnUpdateTrayBrowse(CCmdUI *pCmdUI);
 	afx_msg void OnTrayDeleteEntry(UINT nID);
@@ -221,8 +224,10 @@ protected:
   afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnItemDoubleClick( NMHDR * pNotifyStruct, LRESULT * result );
   afx_msg void OnCopyPassword();
+  afx_msg void OnCopyNotes();
   afx_msg void OnNew();
   afx_msg void OnOpen();
+  afx_msg void OnClearMRU();
   afx_msg void OnMerge();
   afx_msg void OnRestore();
   afx_msg void OnSaveAs();

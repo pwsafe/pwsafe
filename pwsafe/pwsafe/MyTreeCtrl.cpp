@@ -156,21 +156,10 @@ static void splitLeafText(const char *lt, CString &newTitle, CString &newUser)
   }
 }
 
-static void makeLeafText(CString &treeDispString, const CString &title, const CString &user)
-{
-  treeDispString = title;
-  if (!user.IsEmpty()) {
-    treeDispString += _T(" [");
-    treeDispString += user;
-    treeDispString += _T("]");
-  }
-}
-
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
   TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
-  DboxMain *parent = (DboxMain *)GetParent();
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
       ptvinfo->item.pszText[0] != '\0') { // empty if text deleted - not allowed
     ptvinfo->item.mask = TVIF_TEXT;
@@ -190,7 +179,16 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       if (newUser.IsEmpty())
         newUser = CString(ci->GetUser());
       CString treeDispString;
-      makeLeafText(treeDispString, newTitle, newUser);
+	  treeDispString = newTitle;
+	  treeDispString += _T(" [");
+	  treeDispString += newUser;
+	  treeDispString += _T("]");
+	  if (((DboxMain *)m_parent)->GetShowPasswordInList()) {
+		  CString newPassword = CString(ci->GetPassword());
+		  treeDispString += _T(" [");
+		  treeDispString += newPassword;
+		  treeDispString += _T("]");
+	  }
 
       // Update corresponding Tree mode text with the new display text (ie: in case 
       // the username was removed and had to be normalized back in).  Note that
@@ -207,8 +205,8 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       ASSERT(di != NULL);
       int lindex = di->list_index;
-      parent->UpdateListItemTitle(lindex, newTitle);
-      parent->UpdateListItemUser(lindex, newUser);
+	  ((DboxMain *)m_parent)->UpdateListItemTitle(lindex, newTitle);
+      ((DboxMain *)m_parent)->UpdateListItemUser(lindex, newUser);
     } else {
       // Update all leaf children with new path element
       // prefix is path up to and NOT including renamed node
@@ -227,7 +225,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       UpdateLeafsGroup(ti, prefix);
     }
     // Mark database as modified
-    parent->SetChanged(true);
+    ((DboxMain *)m_parent)->SetChanged(true);
     SortChildren(GetParentItem(ti));
     *pLResult = TRUE;
   } else {

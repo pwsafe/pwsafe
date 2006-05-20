@@ -151,6 +151,45 @@ DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
 }
 
 void
+DboxMain::OnTrayCopyNotes(UINT nID)
+{
+	ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTESFLD1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESFLDMAX));
+
+	CItemData ci;
+	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTESFLD1, ci);
+	if (&ci == NULL)
+		return;
+
+	const CMyString notes = ci.GetNotes();
+	const CMyString url = ci.GetURL();
+	const CMyString autotype = ci.GetAutoType();
+	CMyString clipboard_data;
+
+	clipboard_data = notes;
+	if (!url.IsEmpty()) {
+		clipboard_data += _T("\r\nURL: ");
+		clipboard_data += url;
+	}
+	if (!autotype.IsEmpty()) {
+		clipboard_data += _T("\r\nAutotype: ");
+		clipboard_data += autotype;
+	}
+
+	if (!clipboard_data.IsEmpty()) {
+		ToClipboard(clipboard_data);
+		if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
+			ci.SetATime();
+			SetChanged(true);
+		}
+	}
+}
+
+void
+DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
+{
+}
+
+void
 DboxMain::OnTrayBrowse(UINT nID)
 {
 	ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));

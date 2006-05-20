@@ -24,6 +24,7 @@ public:
   void ClearExpanded(); // use when items will be invalid
   void OnCollapseAll();
   void OnExpandAll();
+  void SetDboxPointer(void *parent) {m_parent = parent;}
 
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
@@ -49,6 +50,7 @@ private:
   HTREEITEM   m_hitemDrag;
   HTREEITEM   m_hitemDrop;
   CImageList  *m_pimagelist;
+  void *m_parent;
   void *m_expandedItems; // Internally this is a SetTreeItem_t, don't want to include stl file here...
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore

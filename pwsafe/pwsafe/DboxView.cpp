@@ -737,7 +737,10 @@ DboxMain::OnOK()
   ClearData();
 
   //Store current filename for next time...
-  prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  if (m_saveMRU)
+	  prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  else
+	  prefs->SetPref(PWSprefs::CurrentFile, "");
 
   CDialog::OnOK();
 }
@@ -1217,11 +1220,15 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     HTREEITEM ti;
     CMyString treeDispString = title;
     CMyString user = itemData.GetUser();
-    if (!user.IsEmpty()) {
-      treeDispString += _T(" [");
-      treeDispString += user;
-      treeDispString += _T("]");
-    }
+    treeDispString += _T(" [");
+    treeDispString += user;
+    treeDispString += _T("]");
+    if (m_bShowPasswordInList) {
+		CMyString newPassword = itemData.GetPassword();
+		treeDispString += _T(" [");
+		treeDispString += newPassword;
+		treeDispString += _T("]");
+	}
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
@@ -1517,8 +1524,6 @@ DboxMain::OnAutoType()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-	// All code using ci must be before AutoType since the latter
-	// may trash *ci if lock-on-minimize
 	uuid_array_t RUEuuid;
 	ci->GetUUID(RUEuuid);
 	m_RUEList.AddRUEntry(RUEuuid);
@@ -1526,7 +1531,9 @@ DboxMain::OnAutoType()
    		ci->SetATime();
        	SetChanged(true);
     }
-    AutoType(*ci);
+    // All code using ci must be before this AutoType since the
+	// latter may trash *ci if lock-on-minimize
+	AutoType(*ci);
   }
 }
 

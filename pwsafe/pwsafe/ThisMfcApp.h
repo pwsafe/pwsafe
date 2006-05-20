@@ -26,6 +26,7 @@ public:
   HACCEL m_ghAccelTable;
 
   CRecentFileList*	GetMRU()			{ return m_pMRU; }
+  void ClearMRU();
 
   DboxMain* m_maindlg;
   PWScore m_core;
