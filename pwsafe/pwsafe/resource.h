@@ -197,6 +197,8 @@
 #define IDC_COPY_EXP_TO_CLIPBOARD       1148
 #define IDC_IMPORT_PREV3                1149
 #define IDC_EXPORT_HDR                  1150
+#define IDC_RESPIN                      1151
+#define IDC_MRUSPIN                     1152
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -291,7 +293,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        228
 #define _APS_NEXT_COMMAND_VALUE         32859
-#define _APS_NEXT_CONTROL_VALUE         1151
+#define _APS_NEXT_CONTROL_VALUE         1153
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
