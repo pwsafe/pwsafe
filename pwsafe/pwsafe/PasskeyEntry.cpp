@@ -35,15 +35,16 @@ int CPasskeyEntry::dialog_lookup[4] = {IDD_PASSKEYENTRY_FIRST,
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
-                             const CString& a_filespec,
-			     bool bReadOnly, int index)
+                             const CString& a_filespec, int index,
+			                 bool bReadOnly, bool bForceReadOnly)
    : super(dialog_lookup[index],
              pParent),
      m_index(index),
      m_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID),
-     m_ReadOnly(bReadOnly)
+     m_ReadOnly(bReadOnly),
+     m_bForceReadOnly(bForceReadOnly)
 {
   const int FILE_DISP_LEN = 45;	
 
@@ -115,13 +116,21 @@ CPasskeyEntry::OnInitDialog(void)
 
   switch(m_index) {
   	case GCP_FIRST:
-  		// At start up - give the user the option
-  		GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+  		// At start up - give the user the option unless file is R/O
+  		if (m_bForceReadOnly)
+  			GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+  		else
+  			GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+
   		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
   		break;
   	case GCP_NORMAL:
-		// otherwise during open - user can
-		GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+		// otherwise during open - user can - again unless file is R/O
+  		if (m_bForceReadOnly)
+  			GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
+  		else
+  			GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+
   		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
   		break;
   	case GCP_UNMINIMIZE:

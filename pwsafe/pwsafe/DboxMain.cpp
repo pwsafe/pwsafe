@@ -1822,10 +1822,11 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   // for password, verify against file. Lock file to
   // prevent multiple r/w access.
   int retval;
+  bool bFileIsReadOnly = false;
 
   if (!filename.IsEmpty())
     {
-      bool exists = m_core.FileExists(filename);
+      bool exists = m_core.FileExists(filename, bFileIsReadOnly);
 
       if (!exists) {
         // Used to display an error message, but this is really the caller's business
@@ -1838,7 +1839,11 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    * a blank filename, which will disable passkey entry and the OK button
    */
 
-  CPasskeyEntry dbox_pkentry(this, filename, m_IsReadOnly, index);
+  if (bFileIsReadOnly) {
+  	// As file is read-only, we must honour it and not permit user to change it
+  	m_IsReadOnly = true;
+  }
+  CPasskeyEntry dbox_pkentry(this, filename, index, m_IsReadOnly, bFileIsReadOnly);
   app.DisableAccelerator();
   int rc = dbox_pkentry.DoModal();
   app.EnableAccelerator();
