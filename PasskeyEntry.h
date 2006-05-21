@@ -23,9 +23,8 @@ public:
 	typedef	SUPERCLASS	super;
 
    CPasskeyEntry(CWnd* pParent,
-                 const CString& a_filespec,
-		 bool forceReadOnly = false,
-                 int index = 1); 
+                 const CString& a_filespec, int index = 1 /* GCP_NORMAL */,
+		         bool bReadOnly = false, bool bForceReadOnly = false); 
 
    int GetStatus() const {return m_status;}
   bool IsReadOnly() const {return m_ReadOnly == TRUE;}
@@ -41,9 +40,10 @@ private:
 	CSysColStatic	m_ctlLogoText;
 	CButton	m_ctlOK;
 #endif
-	CEdit	m_ctlPasskey;
-        CMyString	m_passkey;
-        BOOL            m_ReadOnly;
+	CEdit m_ctlPasskey;
+    CMyString m_passkey;
+    BOOL m_ReadOnly;
+    bool m_bForceReadOnly;
 	//}}AFX_DATA
    CString	m_message;
   const CMyString m_filespec;

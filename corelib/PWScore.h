@@ -49,6 +49,8 @@ class PWScore {
 			  TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
   int ImportKeePassTextFile(const CMyString &filename);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
+  bool FileExists(const CMyString &filename, bool &bReadOnly) const 
+	  {return PWSfile::FileExists(filename, bReadOnly);}
   int ReadCurFile(const CMyString &passkey)
     {return ReadFile(m_currfile, passkey);}
   int ReadFile(const CMyString &filename, const CMyString &passkey);
