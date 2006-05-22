@@ -676,11 +676,7 @@ static void GetLockFileName(const CMyString &filename,
 {
   ASSERT(!filename.IsEmpty());
   // derive lock filename from filename
-  if (filename.GetLength() > 3)
-    lock_filename = CMyString(filename.Left(filename.GetLength()-3));
-  else
-    lock_filename = filename;
-  lock_filename += _T("plk");
+  lock_filename = CMyString(filename.Left(MAX_PATH - 4) + _T(".plk"));
 }
 
 bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
