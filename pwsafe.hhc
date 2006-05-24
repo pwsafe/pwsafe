@@ -29,7 +29,7 @@
 			<param name="Local" value="html\retrieve_pwd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Upgrading Password Safe 1.x">
+			<param name="Name" value="Upgrading from previous versions">
 			<param name="Local" value="html\upgrade_from_v1x.html">
 			</OBJECT>
 	</UL>
