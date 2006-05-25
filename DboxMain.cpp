@@ -2380,17 +2380,18 @@ void DboxMain::OnUnMinimize()
 			UpdateSystemTray(UNLOCKED);
 			startLockCheckTimer();
 			m_passphraseOK = true;
+            if (!m_FromOnSysCommand)
+              ShowWindow(SW_RESTORE);
 		} else {
 			m_needsreading = true;
 			if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
 				ShowWindow( SW_HIDE );
 			else
 				ShowWindow( SW_MINIMIZE );
-			return;   // don't even think of restoring window!
 		}
+        return;
 	}
-	if (!m_FromOnSysCommand)
-		ShowWindow(SW_RESTORE);
+    ShowWindow(SW_RESTORE);
 }
 
 void
