@@ -129,7 +129,6 @@ protected:
   bool m_windowok;
   bool m_needsreading;
   bool m_passphraseOK;
-  bool m_FromOnSysCommand;
 
   bool m_bSortAscending;
   int m_iSortedColumn;
@@ -315,6 +314,7 @@ private:
   CString GetToken(CString& str, LPCTSTR c);
   int SaveIfChanged();
   void CheckExpiredPasswords();
+  void UnMinimize(bool update_windows);
 };
 
 // Following used to keep track of display vs data

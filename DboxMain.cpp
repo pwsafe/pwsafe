@@ -143,7 +143,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bSortAscending = true;
   m_iSortedColumn = 0;
   m_hFontTree = NULL;
-  m_FromOnSysCommand = false;
   m_ctlItemTree.SetDboxPointer((void *)this);
 }
 
@@ -2071,9 +2070,7 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
   m_LockDisabled = true;
 
  if ((nID & 0xFFF0) == SC_RESTORE) {
-	m_FromOnSysCommand = true;
-  	OnUnMinimize();
-	m_FromOnSysCommand = false;
+  	UnMinimize(true);
 	if (!m_passphraseOK)	// password bad or cancel pressed
 		return;
   }
@@ -2309,7 +2306,13 @@ void DboxMain::OnMinimize()
   ShowWindow(SW_MINIMIZE);
 }
 
+
 void DboxMain::OnUnMinimize()
+{
+  UnMinimize(true);
+}
+
+void DboxMain::UnMinimize(bool update_windows)
 {
 	m_passphraseOK = false;
 	// Case 1 - data available but is currently locked
@@ -2325,15 +2328,13 @@ void DboxMain::OnUnMinimize()
 
 		app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
 		m_passphraseOK = true;
-		if (!m_FromOnSysCommand)
+		if (update_windows)
 			ShowWindow(SW_RESTORE);
 		return;
 	}
 	
 	// Case 2 - data unavailable
-	if ((m_needsreading)
-		&& (m_windowok)) {
-	
+	if (m_needsreading && m_windowok) {
 		CMyString passkey, temp;
 		int rc, rc2;
 	
@@ -2380,7 +2381,7 @@ void DboxMain::OnUnMinimize()
 			UpdateSystemTray(UNLOCKED);
 			startLockCheckTimer();
 			m_passphraseOK = true;
-            if (!m_FromOnSysCommand)
+            if (update_windows)
               ShowWindow(SW_RESTORE);
 		} else {
 			m_needsreading = true;
@@ -2391,7 +2392,8 @@ void DboxMain::OnUnMinimize()
 		}
         return;
 	}
-    ShowWindow(SW_RESTORE);
+    if (update_windows)
+      ShowWindow(SW_RESTORE);
 }
 
 void

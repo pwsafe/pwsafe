@@ -1037,6 +1037,7 @@ DboxMain::OnSize(UINT nType,
   else if (!m_bSizing && nType == SIZE_RESTORED) { // gets called even when just resizing window
 #endif
     app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
+    UnMinimize(false);
     RefreshList();
     if (m_selectedAtMinimize != NULL)
       SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
@@ -1487,11 +1488,14 @@ DboxMain::OnTimer(UINT nIDEvent )
      * Also, if m_LockDisabled is set, do nothing - this is set when
      * a dialog box is open.
      */
-    if((!m_core.IsChanged() || Save() == PWScore::SUCCESS) &&
-       !m_LockDisabled){
+    if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
       ClearData();
       if(IsWindowVisible()){
+        if (m_LockDisabled){
+          // SendMessageToDescendants(WM_CLOSE);
+          m_LockDisabled = false;
+        }
         ShowWindow(SW_MINIMIZE);
       }
       m_needsreading = true;
