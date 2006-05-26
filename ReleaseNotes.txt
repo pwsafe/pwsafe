@@ -17,6 +17,7 @@ notified accordingly. (Thanks to DK!)
 Bugs fixed in 3.01
 ==================
 [1482002] Generated password no longer trashed if > 127 bytes
+[1495670] Find now searches new URL and Autotype fields
 
 New Features for 3.0Beta2:
 ==========================

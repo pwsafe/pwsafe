@@ -804,32 +804,37 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   ASSERT(indices != NULL);
 
   POSITION listPos = m_core.GetFirstEntryPosition();
-  CMyString curtitle, curuser, curnotes, curgroup, savetitle;
-  CMyString listTitle;
+  CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT;
+  CMyString listTitle, savetitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   int retval = 0;
 
   if (!CaseSensitive)
     searchstr.MakeLower();
 
-  while (listPos != NULL)
-    {
+  while (listPos != NULL) {
       const CItemData &curitem = m_core.GetEntryAt(listPos);
       savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
       curuser =  curitem.GetUser();
       curnotes = curitem.GetNotes();
       curgroup = curitem.GetGroup();
+      curURL = curitem.GetURL();
+      curAT = curitem.GetAutoType();
 
       if (!CaseSensitive) {
         curtitle.MakeLower();
         curuser.MakeLower();
         curnotes.MakeLower();
         curgroup.MakeLower();
+        curURL.MakeLower();
+        curAT.MakeLower();
       }
       if (::strstr(curtitle, searchstr) ||
           ::strstr(curuser, searchstr) ||
           ::strstr(curnotes, searchstr) ||
-          ::strstr(curgroup, searchstr)) {
+          ::strstr(curgroup, searchstr) ||
+          ::strstr(curURL, searchstr) ||
+          ::strstr(curAT, searchstr)) {
         // Find index in displayed list
         DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
         ASSERT(di != NULL);
