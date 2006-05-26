@@ -304,7 +304,6 @@ private:
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   BOOL IsWorkstationLocked() const;
   void startLockCheckTimer();
-  bool m_LockDisabled; // set when a dialog box is open, to avoid confusion
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
   void ResetIdleLockCounter();
