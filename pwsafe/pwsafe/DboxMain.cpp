@@ -108,9 +108,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_LockDisabled(false),
-     m_IsStartSilent(false), m_clipboard_set(false),
-     m_selectedAtMinimize(NULL)
+     m_core(app.m_core), m_IsStartSilent(false),
+     m_clipboard_set(false), m_selectedAtMinimize(NULL)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -713,7 +712,6 @@ DboxMain::ClearClipboard()
 void
 DboxMain::OnFind() 
 {
-  m_LockDisabled = true;
   CFindDlg::Doit(this, &m_lastFindCS,
                  &m_lastFindStr); // create modeless or popup existing
   // XXX Gross hack to fix aesthetic bug in tree view
@@ -724,7 +722,6 @@ DboxMain::OnFind()
                              TVIS_SELECTED,
                              TVIS_DROPHILITED | TVIS_SELECTED);
 #endif
-  m_LockDisabled = false;
 }
 
 
@@ -735,12 +732,10 @@ DboxMain::OnPasswordChange()
 {
   if (m_IsReadOnly) // disable in read-only mode
     return;
-  m_LockDisabled = true;
   CPasskeyChangeDlg changeDlg(this);
   app.DisableAccelerator();
   int rc = changeDlg.DoModal();
   app.EnableAccelerator();
-  m_LockDisabled = false;
   if (rc == IDOK) {
     m_core.ChangePassword(changeDlg.m_newpasskey);
   }
@@ -791,9 +786,7 @@ DboxMain::OnClearMRU()
 void
 DboxMain::OnSave() 
 {
-  m_LockDisabled = true;
   Save();
-  m_LockDisabled = false;
 }
 
 void
@@ -804,7 +797,6 @@ DboxMain::OnExportVx(UINT nID)
 
   //SaveAs-type dialog box
   while (1) {
-    m_LockDisabled = true;
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
                    m_core.GetCurFile(),
@@ -817,7 +809,6 @@ DboxMain::OnExportVx(UINT nID)
     fd.m_ofn.lpstrTitle =
       _T("Please name the exported database");
     rc = fd.DoModal();
-    m_LockDisabled = false;
     if (rc == IDOK) {
       newfile = (CMyString)fd.GetPathName();
       break;
@@ -848,9 +839,7 @@ DboxMain::OnExportText()
 {
   CExportTextDlg et;
   bool bwrite_header;
-  m_LockDisabled = true;
   int rc = et.DoModal();
-  m_LockDisabled = false;
   if (rc == IDOK) {
     CMyString newfile;
     CMyString pw(et.m_exportTextPassword);
@@ -870,9 +859,7 @@ DboxMain::OnExportText()
                        this);
         fd.m_ofn.lpstrTitle =
           _T("Please name the plaintext file");
-        m_LockDisabled = true;
         rc = fd.DoModal();
-        m_LockDisabled = false;
         if (rc == IDOK) {
           newfile = (CMyString)fd.GetPathName();
           break;
@@ -903,9 +890,7 @@ DboxMain::OnExportText()
 void
 DboxMain::OnExportXML()
 {
-  m_LockDisabled = true;
     // TODO - currently disabled in menubar
-  m_LockDisabled = false;
 }
 
 void
@@ -932,9 +917,7 @@ DboxMain::OnImportText()
                  _T("|"),
                  this);
   fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import");
-  m_LockDisabled = true;
   int rc = fd.DoModal();
-  m_LockDisabled = false;
   if (rc == IDOK) {
     CMyString newfile = (CMyString)fd.GetPathName();
     int numImported = 0, numSkipped = 0;
@@ -997,9 +980,7 @@ DboxMain::OnImportKeePass()
                  _T("|"),
                  this);
   fd.m_ofn.lpstrTitle = _T("Please Choose a KeePass Text File to Import");
-  m_LockDisabled = true;
   int rc = fd.DoModal();
-  m_LockDisabled = false;
   if (rc == IDOK) {
     CMyString newfile = (CMyString)fd.GetPathName();
     rc = m_core.ImportKeePassTextFile(newfile);
@@ -1030,9 +1011,7 @@ DboxMain::OnImportXML()
   if (m_IsReadOnly) // disable in read-only mode
     return;
 
-  m_LockDisabled = true;
   // TODO - currently disabled in menubar
-  m_LockDisabled = false;
 }
 
 
@@ -1127,9 +1106,7 @@ void
 DboxMain::OnAbout() 
 {
   DboxAbout dbox;
-  m_LockDisabled = true;
   dbox.DoModal();
-  m_LockDisabled = false;
 }
 
 
@@ -1148,9 +1125,7 @@ void DboxMain::OnPasswordSafeWebsite()
 void
 DboxMain::OnBackupSafe() 
 {
-  m_LockDisabled = true;
   BackupSafe();
-  m_LockDisabled = false;
 }
 
 
@@ -1200,9 +1175,7 @@ DboxMain::BackupSafe()
 void
 DboxMain::OnOpen() 
 {
-  m_LockDisabled = true;
   Open();
-  m_LockDisabled = false;
 }
 
 
@@ -1529,18 +1502,14 @@ DboxMain::OnMerge()
   if (m_IsReadOnly) // disable in read-only mode
     return;
 
-  m_LockDisabled = true;
   Merge();
-  m_LockDisabled = false;
 }
 
 
 void
 DboxMain::OnNew()
 {
-  m_LockDisabled = true;
   New();
-  m_LockDisabled = false;
 }
 
 
@@ -1599,12 +1568,8 @@ DboxMain::New()
 void
 DboxMain::OnRestore()
 {
-  if (m_IsReadOnly) // disable in read-only mode
-    return;
-
-  m_LockDisabled = true;
-  Restore();
-  m_LockDisabled = false;
+  if (!m_IsReadOnly) // disable in read-only mode
+    Restore();
 }
 
 int DboxMain::SaveIfChanged()
@@ -1723,9 +1688,7 @@ DboxMain::Restore()
 void
 DboxMain::OnSaveAs()
 {
-  m_LockDisabled = true;
   SaveAs();
-  m_LockDisabled = false;
 }
 
 
@@ -2058,17 +2021,13 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
   if ( ID_SYSMENU_ALWAYSONTOP == nID ) {
-  	m_LockDisabled = true;
     m_bAlwaysOnTop = !m_bAlwaysOnTop;
     PWSprefs::GetInstance()->SetPref(PWSprefs::AlwaysOnTop,
                                      m_bAlwaysOnTop);
     UpdateAlwaysOnTop();
-    m_LockDisabled = false;
     return;
   }
   
-  m_LockDisabled = true;
-
  if ((nID & 0xFFF0) == SC_RESTORE) {
   	UnMinimize(true);
 	if (!m_passphraseOK)	// password bad or cancel pressed
@@ -2077,7 +2036,6 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 
   CDialog::OnSysCommand( nID, lParam );
 
-  m_LockDisabled = false;
 #endif
 }
 

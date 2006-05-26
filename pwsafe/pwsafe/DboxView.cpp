@@ -274,7 +274,6 @@ void
 DboxMain::OnAdd() 
 {
   CAddDlg dataDlg(this);
-  m_LockDisabled = true;
   
   if (m_core.GetUseDefUser()) {
     dataDlg.m_username = m_core.GetDefUsername();
@@ -360,7 +359,6 @@ DboxMain::OnAdd()
   else if (rc == IDCANCEL)
     {
     }
-  m_LockDisabled = false;
 }
 
 //Add a group (tree view only)
@@ -390,7 +388,6 @@ DboxMain::OnAddGroup()
 void
 DboxMain::OnDelete() 
 {
-  m_LockDisabled = true;
   const bool dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
 
@@ -406,7 +403,6 @@ DboxMain::OnDelete()
   }
   
   if (!dodelete) {
-    m_LockDisabled = false;
     return;
   }
 
@@ -474,7 +470,6 @@ DboxMain::OnDelete()
       }
     }  
   }
-  m_LockDisabled = false;
 }
 
 void
@@ -496,7 +491,6 @@ DboxMain::OnEdit()
 {
   // Note that Edit is also used for just viewing - don't want to disable
   // viewing in read-only mode
-  m_LockDisabled = true;
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
@@ -556,7 +550,6 @@ DboxMain::OnEdit()
       }
 
 	  if (!bpswdChanged && !banotherChanged) {  // Nothing changed!
-	  	m_LockDisabled = false;
 	  	return;
 	  }
 	  
@@ -614,7 +607,6 @@ DboxMain::OnEdit()
       }
     }
   }
-  m_LockDisabled = false;
 }
 
 // Duplicate selected entry but make title unique
@@ -624,7 +616,6 @@ DboxMain::OnDuplicateEntry()
   if (m_IsReadOnly) // disable in read-only mode
     return;
 
-  m_LockDisabled = true;
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
@@ -675,7 +666,6 @@ DboxMain::OnDuplicateEntry()
 	m_RUEList.AddRUEntry(RUEuuid);
 
   }
-  m_LockDisabled = false;
 }
 
 void
@@ -1485,17 +1475,11 @@ DboxMain::OnTimer(UINT nIDEvent )
      * Since we clear the data, any unchanged changes will be lost,
      * so we force a save if database is modified, and fail
      * to lock if the save fails.
-     * Also, if m_LockDisabled is set, do nothing - this is set when
-     * a dialog box is open.
      */
     if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
       ClearData();
       if(IsWindowVisible()){
-        if (m_LockDisabled){
-          // SendMessageToDescendants(WM_CLOSE);
-          m_LockDisabled = false;
-        }
         ShowWindow(SW_MINIMIZE);
       }
       m_needsreading = true;
