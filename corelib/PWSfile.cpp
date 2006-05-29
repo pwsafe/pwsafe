@@ -60,7 +60,7 @@ bool PWSfile::FileExists(const CMyString &filename, bool &bReadOnly)
   // As "stat" gives "user permissions" not "file attributes"....
   if (status == 0) {
 	  DWORD dwAttr = GetFileAttributes(filename);
-	  bReadOnly = FILE_ATTRIBUTE_READONLY & dwAttr;
+	  bReadOnly = (FILE_ATTRIBUTE_READONLY & dwAttr) == FILE_ATTRIBUTE_READONLY;
 	  return true;
   } else {
 	  bReadOnly = false;

@@ -43,7 +43,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
      m_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID),
-     m_ReadOnly(bReadOnly),
+     m_ReadOnly(bReadOnly ? TRUE : FALSE),
      m_bForceReadOnly(bForceReadOnly)
 {
   const int FILE_DISP_LEN = 45;	
