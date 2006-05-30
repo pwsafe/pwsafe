@@ -66,6 +66,7 @@
 #define IDD_IMPORT_TEXT                 225
 #define IDD_PICKEXPDATETIME             226
 #define IDD_DISPLAY_EXPIRED_ENTRIES     227
+#define IDD_SHOW_PWHISTORY              228
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -122,8 +123,8 @@
 #define IDC_STATUS                      1064
 #define IDC_ALWAYSONTOP                 1065
 #define IDC_STATIC_LOGOTEXT             1066
-#define IDC_SAVEIMMEDIATELY             1066
-#define IDC_SPIN1                       1068
+#define IDC_SAVEIMMEDIATELY             1067
+#define IDC_PWLENSPIN                   1068
 #define IDC_USELOWERCASE                1069
 #define IDC_USEUPPERCASE                1070
 #define IDC_USEDIGITS                   1071
@@ -141,7 +142,7 @@
 #define IDC_DEFPWUSESYSTRAY             1083
 #define IDC_LOCKONSCREEN                1084
 #define IDC_DEFPWRECENTRYHELP           1084
-#define IDC_SPIN2                       1085
+#define IDC_IDLESPIN                    1085
 #define IDC_IDLE_TIMEOUT                1086
 #define IDC_LOCK_TIMER                  1087
 #define IDC_ESC_EXITS                   1088
@@ -199,6 +200,15 @@
 #define IDC_EXPORT_HDR                  1150
 #define IDC_RESPIN                      1151
 #define IDC_MRUSPIN                     1152
+#define IDC_PWHSPIN                     1153
+#define IDC_PWHISTORY_LIST              1154
+#define IDC_SAVEPWHISTORY               1155
+#define IDC_MAXPWHISTORY                1156
+#define IDC_COPY_OLDPW_TO_CLIPBOARD     1157
+#define IDC_SHOW_PWHIST                 1158
+#define IDC_CLEAR_PWHIST                1159
+#define IDC_STATIC_PWHIST               1160
+#define IDC_SAVE_PWHIST                 1161
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -291,9 +301,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        228
+#define _APS_NEXT_RESOURCE_VALUE        229
 #define _APS_NEXT_COMMAND_VALUE         32859
-#define _APS_NEXT_CONTROL_VALUE         1153
+#define _APS_NEXT_CONTROL_VALUE         1162
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

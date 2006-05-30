@@ -75,6 +75,10 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::LockOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prefs->
     GetPref(PWSprefs::IdleTimeout);
+  security.m_savepwhistory = prevLockOIT = prefs->
+    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
+  security.m_maxpwhistory = prefs->
+    GetPref(PWSprefs::MaxPWHistory);
 
   passwordpolicy.m_pwlendefault = prefs->
     GetPref(PWSprefs::PWLenDefault);
@@ -167,6 +171,10 @@ DboxMain::OnOptions()
                      security.m_LockOnIdleTimeout == TRUE);
       prefs->SetPref(PWSprefs::IdleTimeout,
                      security.m_IdleTimeOut);
+      prefs->SetPref(PWSprefs::SavePasswordHistory,
+      				 security.m_savepwhistory == TRUE);
+      prefs->SetPref(PWSprefs::MaxPWHistory,
+      				 security.m_maxpwhistory);
 
       prefs->SetPref(PWSprefs::PWLenDefault,
                      passwordpolicy.m_pwlendefault);
@@ -266,6 +274,8 @@ DboxMain::OnOptions()
           KillTimer(TIMER_USERLOCK);
         }
       SetIdleLockCounter(security.m_IdleTimeOut);
+      m_bSavePWHistory = (security.m_savepwhistory == TRUE) ? true : false;
+      m_MaxPWHistory = security.m_maxpwhistory;
 
       // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)

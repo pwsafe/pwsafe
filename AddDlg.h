@@ -20,6 +20,7 @@ public:
   CMyString m_autotype;
   CMyString m_ascLTime;
   time_t m_tttLTime;
+  BOOL m_SavePWHistory;
   //}}AFX_DATA
 
   // Overrides
@@ -50,6 +51,7 @@ protected:
   afx_msg void OnBnClickedMore();
 	afx_msg void OnBnClickedClearLTime();
 	afx_msg void OnBnClickedSetLTime();
+	afx_msg void OnCheckedSavePasswordHistory();
 	CButton m_moreLessBtn;
 };
 //-----------------------------------------------------------------------------

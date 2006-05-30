@@ -342,6 +342,8 @@ DboxMain::OnAdd()
    	time(&t);
    	temp.SetCTime(t);
    	temp.SetLTime(dataDlg.m_tttLTime);
+	if (dataDlg.m_SavePWHistory == TRUE)
+		temp.SetPWHistory(_T("100"));
     m_core.AddEntryToTail(temp);
     int newpos = insertItem(m_core.GetTailEntry());
     SelectEntry(newpos);
@@ -497,6 +499,7 @@ DboxMain::OnEdit()
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     POSITION listpos = Find(di->list_index);
+    m_pPWHistList = new CList<PWHistEntry, PWHistEntry&>;
 
     CEditDlg dlg_edit(this);
     CMyString oldGroup, oldTitle, oldUsername, oldRealPassword, oldURL,
@@ -520,6 +523,8 @@ DboxMain::OnEdit()
     	dlg_edit.m_ascLTime = "Never";
     oldLTime = dlg_edit.m_ascLTime;
     dlg_edit.m_ascRMTime = ci->GetRMTime();
+    dlg_edit.m_PWHistory = ci->GetPWHistory();
+    dlg_edit.m_pPWHistList = m_pPWHistList;
 
     app.DisableAccelerator();
     int rc = dlg_edit.DoModal();
@@ -534,10 +539,10 @@ DboxMain::OnEdit()
         user = dlg_edit.m_username;
       time_t t;
       time(&t);
-      bool bpswdChanged, banotherChanged;
-      bpswdChanged = banotherChanged = false;
+      bool bPswdChanged, bAnotherChanged, bPWHistoryCleared;
+      bPswdChanged = bAnotherChanged = bPWHistoryCleared = false;
       if (oldRealPassword != dlg_edit.m_realpassword)
-      	bpswdChanged = true;
+      	bPswdChanged = true;
       else {
       	if (oldGroup != dlg_edit.m_group
       		|| oldTitle != dlg_edit.m_title
@@ -546,20 +551,80 @@ DboxMain::OnEdit()
       		|| oldURL != dlg_edit.m_URL
       		|| oldAutoType != dlg_edit.m_autotype
       		|| oldLTime != dlg_edit.m_ascLTime)
-      		banotherChanged = true;
+      		bAnotherChanged = true;
       }
 
-	  if (!bpswdChanged && !banotherChanged) {  // Nothing changed!
-	  	return;
+	  if (dlg_edit.m_SavePWHistory == FALSE) {
+		  if (m_pPWHistList->GetCount() > 0) {
+			  m_pPWHistList->RemoveAll();
+			  ci->SetPWHistory(_T("000"));
+			  bPWHistoryCleared = true;
+		  }
+	  } else if (dlg_edit.m_ClearPWHistory == TRUE) {
+		  m_pPWHistList->RemoveAll();
+		  ci->SetPWHistory(_T("100"));
+		  bPWHistoryCleared = true;
 	  }
 	  
-	  if (bpswdChanged) {
+	  if (bPswdChanged) {
+	  	if (m_bSavePWHistory) {
+	  		int num = m_pPWHistList->GetCount();
+			PWHistEntry pwh_ent;
+			pwh_ent.password = oldRealPassword;
+	  		time_t t;
+	  		ci->GetPMTime(t);
+			if ((long)t == 0L) // if never set - try creation date
+				ci->GetCTime(t);
+			pwh_ent.changetttdate = t;
+			pwh_ent.changedate =
+					PWSUtil::ConvertToDateTimeString(t, EXPORT_IMPORT);
+			if (pwh_ent.changedate.IsEmpty()) {
+				//                       1234567890123456789
+				pwh_ent.changedate = _T("Unknown            ");
+			}
+	  		// Now add the latest
+	  		m_pPWHistList->AddTail(pwh_ent);
+	  		// Increment count
+	  		num++;
+	  		// Too many? remove the excess
+			if (num > m_MaxPWHistory) {
+	  			for (int i = 0; i < (num - m_MaxPWHistory); i++)
+	  				m_pPWHistList->RemoveHead();
+	  		}
+	  		// Now create string version!
+	  		
+	  		CMyString new_PWHistory;
+			CString buffer;
+
+			buffer.Format(_T("1%02x"), num);
+			new_PWHistory = CMyString(buffer);
+			
+			POSITION listpos = m_pPWHistList->GetHeadPosition();
+			while (listpos != NULL) {
+				const PWHistEntry pwshe = m_pPWHistList->GetAt(listpos);
+
+				buffer.Format(_T("%08x%04x%s"),
+					(long) pwshe.changetttdate, pwshe.password.GetLength(),
+					pwshe.password);
+				new_PWHistory += CMyString(buffer);
+				buffer.Empty();
+				m_pPWHistList->GetNext(listpos);
+			}
+	  		ci->SetPWHistory(new_PWHistory);
+		}
+	  	
       	ci->SetPMTime(t);
       	ci->SetRMTime(t);
       }
       
-      if (banotherChanged)
+      if (bAnotherChanged)
         ci->SetRMTime(t);
+
+	  if (!bPswdChanged && !bAnotherChanged && !bPWHistoryCleared) {  // Nothing changed!
+		m_pPWHistList->RemoveAll();
+		delete m_pPWHistList;
+	  	return;
+	  }
 
       ci->SetGroup(dlg_edit.m_group);
       ci->SetTitle(dlg_edit.m_title);
@@ -592,6 +657,8 @@ DboxMain::OnEdit()
       }
       ChangeOkUpdate();
     } // rc == IDOK
+	m_pPWHistList->RemoveAll();
+	delete m_pPWHistList;
   } else { // entry item not selected - perhaps here on Enter on tree item?
     // perhaps not the most elegant solution to improving non-mouse use,
     // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
@@ -720,9 +787,9 @@ DboxMain::OnOK()
   // pref
   if (!IsWindowVisible() &&
       prefs->GetPref(PWSprefs::UseSystemTray)) {
-    ClearClipboard();
+    app.ClearClipboardData();
   } else if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
-    ClearClipboard();
+    app.ClearClipboardData();
 
   ClearData();
 
@@ -1001,7 +1068,7 @@ DboxMain::OnSize(UINT nType,
     m_ctlItemTree.DeleteAllItems();
 
     if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
-      ClearClipboard();
+      app.ClearClipboardData();
     if (prefs->GetPref(PWSprefs::DatabaseClear)) {
       bool dontask = prefs->GetPref(PWSprefs::DontAskSaveMinimize);
       bool doit = true;

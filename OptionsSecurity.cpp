@@ -45,6 +45,9 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
 	DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
 	DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
+	DDX_Check(pDX, IDC_SAVEPWHISTORY, m_savepwhistory);
+	DDX_Text(pDX, IDC_MAXPWHISTORY, m_maxpwhistory);
+	DDV_MinMaxInt(pDX, m_maxpwhistory, 0, 25);
 	//}}AFX_DATA_MAP
 }
 
@@ -53,6 +56,7 @@ BEGIN_MESSAGE_MAP(COptionsSecurity, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsSecurity)
 	ON_BN_CLICKED(IDC_LOCKBASE, OnLockbase)
 	ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockbase)
+	ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -61,19 +65,19 @@ END_MESSAGE_MAP()
 
 void COptionsSecurity::OnLockbase() 
 {
-  if (((CButton*)GetDlgItem(IDC_LOCKBASE))->GetCheck() == 1)
-    GetDlgItem(IDC_SAVEMINIMIZE)->EnableWindow(TRUE);
-  else
-    GetDlgItem(IDC_SAVEMINIMIZE)->EnableWindow(FALSE);
+  BOOL enable = (((CButton*)GetDlgItem(IDC_LOCKBASE))->GetCheck() == 1) ? TRUE : FALSE;
+  GetDlgItem(IDC_SAVEMINIMIZE)->EnableWindow(enable);
 
-  if (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) {
-    GetDlgItem(IDC_SPIN2)->EnableWindow(TRUE);
-    GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(TRUE);
-  } else {
-    GetDlgItem(IDC_SPIN2)->EnableWindow(FALSE);
-    GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(FALSE);
-  }
+  enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
+  GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
+  GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
+}
 
+void COptionsSecurity::OnSavePWHistory() 
+{
+  BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
+
+  GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
 }
 
 BOOL COptionsSecurity::OnInitDialog() 
@@ -81,13 +85,20 @@ BOOL COptionsSecurity::OnInitDialog()
   CPropertyPage::OnInitDialog();
 	
   OnLockbase();
-  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPIN2);
+  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
   pspin->SetRange(1, 120);
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
-	
+  
+  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+
+  pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
+  pspin->SetRange(0, 25);
+  pspin->SetBase(5);
+  pspin->SetPos(m_maxpwhistory);
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }

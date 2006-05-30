@@ -13,6 +13,7 @@
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
 #include "ExpDTDlg.h"
+#include "ShowPWHistDlg.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -33,6 +34,18 @@ static char THIS_FILE[] = __FILE__;
   #define HIDE_PASSWORD_TXT	_T("&Hide")
 #endif
 
+CEditDlg::CEditDlg(CWnd* pParent)
+	: CDialog(CEditDlg::IDD, pParent),
+	m_isPwHidden(true),
+	m_ascCTime(_T("")), m_ascPMTime(_T("")), m_ascATime(_T("")),
+	m_ascLTime(_T("")), m_ascRMTime(_T("")),
+	m_ClearPWHistory(FALSE), m_SavePWHistory(FALSE)
+{
+}
+
+CEditDlg::~CEditDlg()
+{
+}
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -48,7 +61,8 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_ATIME, (CString&)m_ascATime);
 	DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
 	DDX_Text(pDX, IDC_RMTIME, (CString&)m_ascRMTime);
-
+	DDX_Check(pDX, IDC_CLEAR_PWHIST, m_ClearPWHistory);
+	DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
 	if(!pDX->m_bSaveAndValidate) {
 		// We are initializing the dialog.  Populate the groups combo box.
@@ -67,7 +81,6 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 	}
 	DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
 	DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
-
 }
 
 
@@ -84,6 +97,9 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
    ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
    ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
    ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+   ON_BN_CLICKED(IDC_SHOW_PWHIST, OnBnClickedShowPasswordHistory)
+   ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnCheckedClearPasswordHistory)
+   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 END_MESSAGE_MAP()
 
 
@@ -184,25 +200,54 @@ BOOL CEditDlg::OnInitDialog()
  
    SetPasswordFont(GetDlgItem(IDC_PASSWORD));
 
-   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault))
-   {
+   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
       ShowPassword();
-   }
-   else
-   {
+   } else {
       HidePassword();
    }
+
    UpdateData(FALSE);
+
+   SetPWHistoryList();
+
+   ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->SetCheck(m_SavePWHistory);
+
+   BOOL enable = (m_pPWHistList->GetCount() == 0) ? FALSE : TRUE;
+   GetDlgItem(IDC_SHOW_PWHIST)->EnableWindow(enable);
+   GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(enable);
+
    if (m_IsReadOnly) {
      GetDlgItem(IDOK)->EnableWindow(FALSE);
+	 GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
+     GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);  // overrides count
    }
-    m_isExpanded = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DisplayExpandedAddEditDlg);
-	ResizeDialog();
+   
+   CString cText = _T("Retaining Password History is ");
+
+   if (PWSprefs::GetInstance()->
+   				GetPref(PWSprefs::SavePasswordHistory)) {
+	   if (enable == FALSE)
+		   cText += _T("enabled but none are");
+	   else
+		   cText += _T("enabled and some are");
+   } else {
+	   GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
+	   ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->SetCheck(FALSE);
+	   if (enable == FALSE)
+		   cText += _T("disabled and there are none");
+	   else
+		   cText += _T("disabled but there are some");
+   }
+   cText += _T(" currently stored for this entry.");
+
+   GetDlgItem(IDC_STATIC_PWHIST)->SetWindowText(cText);
+
+   m_isExpanded = PWSprefs::GetInstance()->
+   				GetPref(PWSprefs::DisplayExpandedAddEditDlg);
+   ResizeDialog();
 
    return TRUE;
 }
-
 
 void CEditDlg::ShowPassword(void)
 {
@@ -239,7 +284,6 @@ void CEditDlg::OnRandom()
     UpdateData(FALSE);
   }
 }
-
 
 void CEditDlg::OnHelp() 
 {
@@ -301,6 +345,10 @@ void CEditDlg::ResizeDialog()
     IDC_AUTOTYPE,
     IDC_STATIC_URL,
     IDC_STATIC_AUTO,
+	IDC_SAVE_PWHIST,
+    IDC_SHOW_PWHIST,
+	IDC_CLEAR_PWHIST,
+	IDC_STATIC_PWHIST,
 	IDC_CTIME,
 	IDC_STATIC_CTIME,
 	IDC_PMTIME,
@@ -384,4 +432,109 @@ void CEditDlg::OnBnClickedSetLTime()
 		m_ascLTime = dlg_expDT.m_ascLTime;
 		GetDlgItem(IDC_LTIME)->SetWindowText(m_ascLTime);
 	}
+}
+
+void CEditDlg::OnBnClickedShowPasswordHistory()
+{
+	CShowPWHistDlg dlg_ShowPWHist(this);
+
+	dlg_ShowPWHist.m_message = _T("\t\xbb") + (CString)m_group + 
+				_T("\xbb") + (CString)m_title + 
+				_T("\xbb") + (CString)m_username + _T("\xbb");
+	dlg_ShowPWHist.m_pPWHistList = m_pPWHistList;
+
+	app.DisableAccelerator();
+    dlg_ShowPWHist.DoModal();
+    app.EnableAccelerator();
+		
+	return;
+}
+
+
+void CEditDlg::OnCheckedClearPasswordHistory()
+{
+	m_ClearPWHistory = ((CButton*)GetDlgItem(IDC_CLEAR_PWHIST))->GetCheck();
+	return;
+}
+
+void CEditDlg::OnCheckedSavePasswordHistory()
+{
+	m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
+	return;
+}
+
+void
+CEditDlg::SetPWHistoryList()
+{
+	PWHistEntry pwh_ent;
+	CMyString tmp, pwh = m_PWHistory;
+	int ipwlen, num;
+	long t;
+
+	if (m_PWHistory.IsEmpty() || m_PWHistory.Left(1) == "0") {
+		m_SavePWHistory = FALSE;
+		return;
+	}
+
+	m_SavePWHistory = TRUE;
+
+	int len = pwh.GetLength();
+	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
+	TCHAR *lpszPW;
+
+#if _MSC_VER >= 1400
+	int iread = sscanf_s(lpszPWHistory, "1%02x", &num);
+	ASSERT(iread == 1);
+	lpszPWHistory += 3;
+	for (int i = 0; i < num; i++) {
+		iread = sscanf_s(lpszPWHistory, "%8x", &t);
+		ASSERT(iread == 1);
+		pwh_ent.changetttdate = (time_t) t;
+		pwh_ent.changedate =
+				PWSUtil::ConvertToDateTimeString((time_t) t, EXPORT_IMPORT);
+		if (pwh_ent.changedate.IsEmpty()) {
+			//                       1234567890123456789
+			pwh_ent.changedate = _T("Unknown            ");
+		}
+		lpszPWHistory += 8;
+		iread = sscanf_s(lpszPWHistory, "%4x", &ipwlen);
+		ASSERT(iread == 1);
+		lpszPWHistory += 4;
+		lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
+		memcpy_s(lpszPW, ipwlen + sizeof(TCHAR), lpszPWHistory, ipwlen);
+		lpszPW[ipwlen] = '\0';
+		tmp.ReleaseBuffer();
+		ASSERT(tmp.GetLength() == ipwlen);
+		pwh_ent.password = (CMyString)tmp;
+		lpszPWHistory += ipwlen;
+		m_pPWHistList->AddTail(pwh_ent);
+	}
+#else
+	int iread = sscanf(lpszPWHistory, "1%02x", &num);
+	ASSERT(iread == 1);
+	lpszPWHistory += 2;
+	for (int i = 0; i < num; i++) {
+		iread = sscanf(lpszPWHistory, "%8x", &t);
+		ASSERT(iread == 1);
+		pwh_ent.changetttdate = (time_t) t;
+		pwh_ent.changedate =
+				PWSUtil::ConvertToDateTimeString((time_t) t, EXPORT_IMPORT);
+		if (pwh_ent.changedate.IsEmpty()) {
+			//                       1234567890123456789
+			pwh_ent.changedate = _T("Unknown            ");
+		}
+		lpszPWHistory += 8;
+		iread = sscanf(lpszPWHistory, "%4x", &ipwlen);
+		ASSERT(iread == 1);
+		lpszPWHistory += 4;
+		lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
+		memcpy(lpszPW, lpszPWHistory, ipwlen);
+		lpszPW[ipwlen] = '\0';
+		tmp.ReleaseBuffer();
+		ASSERT(tmp.GetLength() == ipwlen);
+		pwh_ent.password = (CMyString)tmp;
+		m_pPWHistList->AddTail(pwh_ent);
+	}
+#endif
+	pwh.ReleaseBuffer();
 }

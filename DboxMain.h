@@ -34,6 +34,12 @@ enum {GCP_FIRST = 0,		// At startup of PWS
 	  GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
 	  GCP_WITHEXIT = 3};	// OK, CANCEL, EXIT & HELP buttons
 
+// Password History Entry structure for CList
+struct PWHistEntry {
+  time_t changetttdate;
+  CMyString changedate;	// "YYYY/MM/DD HH:MM:SS" - format used in ListCtrl & copied to clipboard (best for sorting)
+  CMyString password;
+};
 //-----------------------------------------------------------------------------
 class DboxMain
    : public CDialog
@@ -138,6 +144,8 @@ protected:
   bool m_bAlwaysOnTop;
   bool m_bMaintainDateTimeStamps;
   bool m_saveMRU;
+  bool m_bSavePWHistory;
+  int m_MaxPWHistory;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
@@ -146,12 +154,10 @@ protected:
 
   void ChangeOkUpdate();
   BOOL SelItemOk();
-  void ClearClipboard();
-  bool m_clipboard_set; // To verify that we're erasing *our* data
-  unsigned char m_clipboard_digest[SHA256::HASHLEN]; // ditto
   void setupBars();
   BOOL OpenOnInit();
   void InitPasswordSafe();
+  CList<PWHistEntry, PWHistEntry&>* m_pPWHistList;
   // override following to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 

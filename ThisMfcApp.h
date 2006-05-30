@@ -46,6 +46,8 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   BOOL IsIconVisible() const {return m_TrayIcon->Visible();}
   void ShowIcon() {m_TrayIcon->ShowIcon();}
   void HideIcon() {m_TrayIcon->HideIcon();}
+  void ClearClipboardData();
+  void SetClipboardData(const CMyString &data);
 
   afx_msg void OnHelp();
   enum STATE {LOCKED, UNLOCKED};
@@ -54,10 +56,12 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   static void	StripFileQuotes( CString& strFilename );
   DECLARE_MESSAGE_MAP()
   
-
 protected:
   CRecentFileList*		m_pMRU;
   bool					m_bUseAccelerator;
+  bool m_clipboard_set; // To verify that we're erasing *our* data
+  unsigned char m_clipboard_digest[SHA256::HASHLEN]; // ditto
+
 private:
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;

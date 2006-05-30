@@ -48,6 +48,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
 	DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
 	DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
+	DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
 	if(!pDX->m_bSaveAndValidate) {
 		// We are initializing the dialog.  Populate the groups combo box.
@@ -78,6 +79,7 @@ BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
    ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
    ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 END_MESSAGE_MAP()
 
 
@@ -172,9 +174,10 @@ void CAddDlg::ResizeDialog()
 	int TopHideableControl = IDC_TOP_HIDEABLE;
 	int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
 	int controls[]={
-IDC_URL,
-IDC_AUTOTYPE,
-IDC_STATIC_URL,
+		IDC_STATIC_URL,
+		IDC_URL,
+		IDC_AUTOTYPE,
+		IDC_SAVE_PWHIST,
 		IDC_STATIC_AUTO,
 		IDC_LTIME,
 		IDC_STATIC_LTIME,
@@ -249,3 +252,8 @@ void CAddDlg::OnBnClickedSetLTime()
 	}
 }
 
+void CAddDlg::OnCheckedSavePasswordHistory()
+{
+	m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
+	return;
+}

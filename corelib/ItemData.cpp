@@ -33,7 +33,7 @@ CItemData::CItemData()
     m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
     m_URL(URL), m_AutoType(AUTOTYPE),
     m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
-    m_tttLTime(LTIME), m_tttRMTime(RMTIME),
+    m_tttLTime(LTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
     m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
@@ -44,7 +44,7 @@ CItemData::CItemData(const CItemData &that) :
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
   m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
-  m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime),
+  m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -143,7 +143,6 @@ CItemData::GetTime(const int whichtime, const int result_format) const
   time_t t;
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   unsigned int tlen = sizeof(in); // ditto
-  CMyString ret;
    
   switch (whichtime) {
   case ATIME:
@@ -171,45 +170,13 @@ CItemData::GetTime(const int whichtime, const int result_format) const
   } else {
     t = 0;
   }
-  if (t != 0) {
-	char time_str[32];
-#if _MSC_VER >= 1400
-	struct tm st;
-    localtime_s(&st, &t);  // secure version
-    if (result_format == EXPORT_IMPORT)
-      sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
-                st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
-                st.tm_min, st.tm_sec);
-    else
-      _tasctime_s(time_str, 32, &st);  // secure version
-    ret = time_str;
-#else
-    char *t_str_ptr;
-	struct tm *st;
-    st = localtime(&t);
-    if (result_format == EXPORT_IMPORT) {
-      sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
-              st->tm_year+1900, st->tm_mon+1, st->tm_mday,
-              st->tm_hour, st->tm_min, st->tm_sec);
-      t_str_ptr = time_str;
-    } else
-      t_str_ptr = _tasctime(st);
-    ret = t_str_ptr;
-#endif
-  } else {
-    if (result_format != ASC_UNKNOWN)
-      ret = _T("");
-    else
-      ret = _T("Unknown");
-  }
-  // remove the trailing EOL char.
-  ret.TrimRight();
-  return ret;
+
+  return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
-  void
-    CItemData::GetTime(int whichtime, time_t &t) const
-  {
+void
+CItemData::GetTime(int whichtime, time_t &t) const
+{
     unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
     unsigned int tlen = sizeof(in); // ditto
 
@@ -239,14 +206,24 @@ CItemData::GetTime(const int whichtime, const int result_format) const
       t = 0;
   }
 
-  void CItemData::GetUUID(uuid_array_t &uuid_array) const
-  {
+void
+CItemData::GetUUID(uuid_array_t &uuid_array) const
+{
     unsigned int length = sizeof(uuid_array);
     GetField(m_UUID, (unsigned char *)uuid_array, length);
-  }
+}
 
-  CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
-  {
+CMyString
+CItemData::GetPWHistory() const
+{
+	CMyString ret;
+	GetField(m_PWHistory, ret);
+	return ret;
+}
+
+CMyString
+CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
+{
     CMyString ret;
     CMyString title;
     CMyString group(GetGroup());
@@ -274,11 +251,12 @@ CItemData::GetTime(const int whichtime, const int result_format) const
       _T("\"") + GetNotes(delimiter) + _T("\"");
 
     return ret;
-  }
+}
 
-  void CItemData::SplitName(const CMyString &name,
-                            CMyString &title, CMyString &username)
-  {
+void
+CItemData::SplitName(const CMyString &name,
+                           CMyString &title, CMyString &username)
+{
     int pos = name.FindByte(SPLTCHR);
     if (pos==-1) {//Not a split name
       int pos2 = name.FindByte(DEFUSERCHR);
@@ -300,37 +278,40 @@ CItemData::GetTime(const int whichtime, const int result_format) const
       temp.TrimLeft();
       username = temp;
     }
-  }
+}
 
   //-----------------------------------------------------------------------------
   // Setters
 
-  void CItemData::SetField(CItemField &field, const CMyString &value)
-  {
+void
+CItemData::SetField(CItemField &field, const CMyString &value)
+{
     BlowFish *bf = MakeBlowFish();
     field.Set(value, bf);
     delete bf;
-  }
+}
 
-  void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
-  {
+void
+CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
+{
     BlowFish *bf = MakeBlowFish();
     field.Set(value, length, bf);
     delete bf;
-  }
+}
 
-  void CItemData::CreateUUID()
-  {
+void
+CItemData::CreateUUID()
+{
     CUUIDGen uuid;
     uuid_array_t uuid_array;
     uuid.GetUUID(uuid_array);
     SetUUID(uuid_array);
-  }
+}
 
 
-  void
-    CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
-  {
+void
+CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
+{
     // the m_name is from pre-2.0 versions, and may contain the title and user
     // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
     // Here we fill the title and user fields so that
@@ -350,11 +331,11 @@ CItemData::GetTime(const int whichtime, const int result_format) const
     m_Title.Set(title, bf);
     m_User.Set(user, bf);
     delete bf;
-  }
+}
 
-  void
-    CItemData::SetTitle(const CMyString &title, char delimiter)
-  {
+void
+CItemData::SetTitle(const CMyString &title, char delimiter)
+{
 	if (delimiter == 0)
       SetField(m_Title, title);
 	else {
@@ -378,23 +359,23 @@ CItemData::GetTime(const int whichtime, const int result_format) const
 
       SetField(m_Title, new_title);
 	}
-  }
+}
 
-  void
-    CItemData::SetUser(const CMyString &user)
-  {
+void
+CItemData::SetUser(const CMyString &user)
+{
     SetField(m_User, user);
-  }
+}
 
-  void
-    CItemData::SetPassword(const CMyString &password)
-  {
+void
+CItemData::SetPassword(const CMyString &password)
+{
     SetField(m_Password, password);
-  }
+}
 
-  void
-    CItemData::SetNotes(const CMyString &notes, char delimiter)
-  {
+void
+CItemData::SetNotes(const CMyString &notes, char delimiter)
+{
     if (delimiter == 0)
       SetField(m_Notes, notes);
     else {
@@ -422,43 +403,43 @@ CItemData::GetTime(const int whichtime, const int result_format) const
 
       SetField(m_Notes, multiline_notes);
     }
-  }
+}
 
-  void
-    CItemData::SetGroup(const CMyString &title)
-  {
+void
+CItemData::SetGroup(const CMyString &title)
+{
     SetField(m_Group, title);
-  }
+}
 
-  void
-    CItemData::SetUUID(const uuid_array_t &UUID)
-  {
+void
+CItemData::SetUUID(const uuid_array_t &UUID)
+{
     SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
-  }
+}
 
-  void
-    CItemData::SetURL(const CMyString &URL)
-  {
+void
+CItemData::SetURL(const CMyString &URL)
+{
     SetField(m_URL, URL);
-  }
+}
 
-  void
-    CItemData::SetAutoType(const CMyString &autotype)
-  {
+void
+CItemData::SetAutoType(const CMyString &autotype)
+{
     SetField(m_AutoType, autotype);
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime)
-  {
+void
+CItemData::SetTime(int whichtime)
+{
     time_t t;
     time(&t);
     SetTime(whichtime, t);
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime, time_t t)
-  {
+void
+CItemData::SetTime(int whichtime, time_t t)
+{
     switch (whichtime) {
     case ATIME:
       SetField(m_tttATime, (const unsigned char *)&t, sizeof(t));
@@ -478,11 +459,11 @@ CItemData::GetTime(const int whichtime, const int result_format) const
     default:
       ASSERT(0);
     }
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime, const CString &time_str)
-  {
+void
+CItemData::SetTime(int whichtime, const CString &time_str)
+{
     if (time_str.GetLength() == 0) {
       SetTime(whichtime, (time_t)0);
       return;
@@ -497,19 +478,25 @@ CItemData::GetTime(const int whichtime, const int result_format) const
       return;
 
     SetTime(whichtime, t);
-  }
+}
 
-  BlowFish *
-    CItemData::MakeBlowFish() const
-  {
+void
+CItemData::SetPWHistory(const CMyString &PWHistory)
+{
+	SetField(m_PWHistory, PWHistory);
+}
+
+BlowFish *
+CItemData::MakeBlowFish() const
+{
     ASSERT(IsSessionKeySet);
     return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
                                   m_salt, SaltLength);
-  }
+}
 
-  CItemData&
-    CItemData::operator=(const CItemData &that)
-    {
+CItemData&
+CItemData::operator=(const CItemData &that)
+{
       //Check for self-assignment
       if (this != &that)
         {
@@ -527,17 +514,18 @@ CItemData::GetTime(const int whichtime, const int result_format) const
           m_tttATime = that.m_tttATime;
           m_tttLTime = that.m_tttLTime;
           m_tttRMTime = that.m_tttRMTime;
+		  m_PWHistory = that.m_PWHistory;
           m_display_info = that.m_display_info;
 
           memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
         }
 
       return *this;
-    }
+}
 
-  void
-    CItemData::Clear()
-  {
+void
+CItemData::Clear()
+{
     CMyString blank(_T(""));
     SetTitle(blank);
     SetUser(blank);
@@ -551,7 +539,8 @@ CItemData::GetTime(const int whichtime, const int result_format) const
     SetATime((time_t) 0);
     SetLTime((time_t) 0);
     SetRMTime((time_t) 0);
-  }
+    SetPWHistory(_T("0"));
+}
 
   //TODO: "General System Fault. Please sacrifice a goat 
   //and two chickens to continue."
