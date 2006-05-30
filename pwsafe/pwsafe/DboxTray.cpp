@@ -48,7 +48,7 @@ DboxMain::OnTrayLockUnLock()
 	    } else {
 	    	m_needsreading = true;
 	    	UpdateSystemTray(LOCKED);
-	    	ClearClipboard();
+	    	app.ClearClipboardData();
 	    	ShowWindow(SW_MINIMIZE);
 	    	if (PWSprefs::GetInstance()->
                 GetPref(PWSprefs::UseSystemTray))
@@ -57,7 +57,7 @@ DboxMain::OnTrayLockUnLock()
 	    }
 	} else {						// User clicked Lock
 		UpdateSystemTray(LOCKED);
-		ClearClipboard();
+		app.ClearClipboardData();
 		ShowWindow(SW_MINIMIZE);
 		ShowWindow(SW_HIDE);
 	}

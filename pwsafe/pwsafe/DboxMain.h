@@ -146,9 +146,6 @@ protected:
 
   void ChangeOkUpdate();
   BOOL SelItemOk();
-  void ClearClipboard();
-  bool m_clipboard_set; // To verify that we're erasing *our* data
-  unsigned char m_clipboard_digest[SHA256::HASHLEN]; // ditto
   void setupBars();
   BOOL OpenOnInit();
   void InitPasswordSafe();

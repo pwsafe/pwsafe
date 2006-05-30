@@ -109,6 +109,7 @@ inline void putInt32(unsigned char buf[4], const int val )
 #else
   #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
 #endif
+enum {ASC_UNKNOWN = 1, ASC_NULL = 2, EXPORT_IMPORT = 4};
 class PWSUtil {
 public:
   // namespace, really, of common utility functions
@@ -119,11 +120,13 @@ public:
   static long fileLength(FILE *fp);
   static bool VerifyASCDateTimeString(const CString time_str, time_t &t);
   static bool VerifyImportDateTimeString(const CString time_str, time_t &t);
+  static CMyString ConvertToDateTimeString(const time_t &t, const int result_format);
   static bool ToClipboard(const CMyString &data,
                           unsigned char clipboard_digest[SHA256::HASHLEN],
                           HWND hWindow);
   static bool ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
                              HWND hWindow);
+  static const TCHAR *UNKNOWN_TIME_STR;
 };
 #endif // Util_h
 //-----------------------------------------------------------------------------

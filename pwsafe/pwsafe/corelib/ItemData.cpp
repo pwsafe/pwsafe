@@ -33,7 +33,7 @@ CItemData::CItemData()
     m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
     m_URL(URL), m_AutoType(AUTOTYPE),
     m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
-    m_tttLTime(LTIME), m_tttRMTime(RMTIME),
+    m_tttLTime(LTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
     m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
@@ -44,7 +44,7 @@ CItemData::CItemData(const CItemData &that) :
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
   m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
-  m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime),
+  m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -143,7 +143,6 @@ CItemData::GetTime(const int whichtime, const int result_format) const
   time_t t;
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   unsigned int tlen = sizeof(in); // ditto
-  CMyString ret;
    
   switch (whichtime) {
   case ATIME:
@@ -171,40 +170,8 @@ CItemData::GetTime(const int whichtime, const int result_format) const
   } else {
     t = 0;
   }
-  if (t != 0) {
-	char time_str[32];
-#if _MSC_VER >= 1400
-	struct tm st;
-    localtime_s(&st, &t);  // secure version
-    if (result_format == EXPORT_IMPORT)
-      sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
-                st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
-                st.tm_min, st.tm_sec);
-    else
-      _tasctime_s(time_str, 32, &st);  // secure version
-    ret = time_str;
-#else
-    char *t_str_ptr;
-	struct tm *st;
-    st = localtime(&t);
-    if (result_format == EXPORT_IMPORT) {
-      sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
-              st->tm_year+1900, st->tm_mon+1, st->tm_mday,
-              st->tm_hour, st->tm_min, st->tm_sec);
-      t_str_ptr = time_str;
-    } else
-      t_str_ptr = _tasctime(st);
-    ret = t_str_ptr;
-#endif
-  } else {
-    if (result_format != ASC_UNKNOWN)
-      ret = _T("");
-    else
-      ret = _T("Unknown");
-  }
-  // remove the trailing EOL char.
-  ret.TrimRight();
-  return ret;
+
+  return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
   void
@@ -245,36 +212,44 @@ CItemData::GetTime(const int whichtime, const int result_format) const
     GetField(m_UUID, (unsigned char *)uuid_array, length);
   }
 
-  CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
-  {
-    CMyString ret;
-    CMyString title;
-    CMyString group(GetGroup());
+CMyString
+CItemData::GetPWHistory() const
+{
+	CMyString ret;
+	GetField(m_PWHistory, ret);
+	return ret;
+}
 
-    // a '.' in title gets Import confused re: Groups
-    title = GetTitle();
-    if (title.Find(TCHAR('.')) != -1)
-      if (delimiter != 0) {
-        title.Replace(TCHAR('.'), delimiter);
-      } else 
-        title = TCHAR('\"') + title + TCHAR('\"');
+CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
+{
+  CMyString ret;
+  CMyString title;
+  CMyString group(GetGroup());
 
-    if (!group.IsEmpty())
-      title = group + TCHAR('.') + title;
+  // a '.' in title gets Import confused re: Groups
+  title = GetTitle();
+  if (title.Find(TCHAR('.')) != -1)
+    if (delimiter != 0) {
+      title.Replace(TCHAR('.'), delimiter);
+    } else 
+      title = TCHAR('\"') + title + TCHAR('\"');
 
-    // Notes field must be last, for ease of parsing import
-    ret = title + separator + GetUser() + separator +
-      GetPassword() + separator + GetURL() +
-      separator + GetAutoType() + separator +
-      GetCTimeExp() + separator +
-      GetPMTimeExp() + separator +
-      GetATimeExp() + separator +
-      GetLTimeExp() + separator +
-      GetRMTimeExp() + separator +
-      _T("\"") + GetNotes(delimiter) + _T("\"");
+  if (!group.IsEmpty())
+    title = group + TCHAR('.') + title;
 
-    return ret;
-  }
+  // Notes field must be last, for ease of parsing import
+  ret = title + separator + GetUser() + separator +
+    GetPassword() + separator + GetURL() +
+    separator + GetAutoType() + separator +
+    GetCTimeExp() + separator +
+    GetPMTimeExp() + separator +
+    GetATimeExp() + separator +
+    GetLTimeExp() + separator +
+    GetRMTimeExp() + separator +
+    _T("\"") + GetNotes(delimiter) + _T("\"");
+
+  return ret;
+}
 
   void CItemData::SplitName(const CMyString &name,
                             CMyString &title, CMyString &username)
@@ -499,6 +474,11 @@ CItemData::GetTime(const int whichtime, const int result_format) const
     SetTime(whichtime, t);
   }
 
+void
+CItemData::SetPWHistory(const CMyString &PWHistory)
+{
+	SetField(m_PWHistory, PWHistory);
+}
   BlowFish *
     CItemData::MakeBlowFish() const
   {
@@ -527,6 +507,7 @@ CItemData::GetTime(const int whichtime, const int result_format) const
           m_tttATime = that.m_tttATime;
           m_tttLTime = that.m_tttLTime;
           m_tttRMTime = that.m_tttRMTime;
+		  m_PWHistory = that.m_PWHistory;
           m_display_info = that.m_display_info;
 
           memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -551,6 +532,7 @@ CItemData::GetTime(const int whichtime, const int result_format) const
     SetATime((time_t) 0);
     SetLTime((time_t) 0);
     SetRMTime((time_t) 0);
+    SetPWHistory(_T("0"));
   }
 
   //TODO: "General System Fault. Please sacrifice a goat 
