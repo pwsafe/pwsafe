@@ -216,6 +216,8 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   WriteCBC(CItemData::LTIME, (unsigned char *)&t, sizeof(t));
   item.GetRMTime(t);
   WriteCBC(CItemData::RMTIME, (unsigned char *)&t, sizeof(t));
+  tmp = item.GetPWHistory();
+  WriteCBC(CItemData::PWHIST, tmp);
   WriteCBC(CItemData::END, _T(""));
 
   return status;
@@ -329,6 +331,9 @@ int PWSfileV3::ReadRecord(CItemData &item)
         LPCTSTR ptrRM = LPCTSTR(tempdata);
 		memcpy(&t, ptrRM, sizeof(t));
         item.SetRMTime(t); break;
+		}
+	  case CItemData::PWHIST: {
+        item.SetPWHistory(tempdata); break;
 		}
       // just silently ignore fields we don't support.
       // this is forward compatability...
