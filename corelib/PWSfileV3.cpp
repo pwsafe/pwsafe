@@ -205,17 +205,24 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetAutoType();
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::AUTOTYPE, tmp);
-  time_t t;
+  time_t t = 0;
   item.GetCTime(t);
-  WriteCBC(CItemData::CTIME, (unsigned char *)&t, sizeof(t));
+  if (t != 0)
+    WriteCBC(CItemData::CTIME, (unsigned char *)&t, sizeof(t));
   item.GetPMTime(t);
-  WriteCBC(CItemData::PMTIME, (unsigned char *)&t, sizeof(t));
+  if (t != 0)
+    WriteCBC(CItemData::PMTIME, (unsigned char *)&t, sizeof(t));
   item.GetATime(t);
-  WriteCBC(CItemData::ATIME, (unsigned char *)&t, sizeof(t));
+  if (t != 0)
+    WriteCBC(CItemData::ATIME, (unsigned char *)&t, sizeof(t));
   item.GetLTime(t);
-  WriteCBC(CItemData::LTIME, (unsigned char *)&t, sizeof(t));
+  if (t != 0)
+    WriteCBC(CItemData::LTIME, (unsigned char *)&t, sizeof(t));
   item.GetRMTime(t);
-  WriteCBC(CItemData::RMTIME, (unsigned char *)&t, sizeof(t));
+  if (t != 0)
+    WriteCBC(CItemData::RMTIME, (unsigned char *)&t, sizeof(t));
+  tmp = item.GetPWHistory();
+  WriteCBC(CItemData::PWHIST, tmp);
   WriteCBC(CItemData::END, _T(""));
 
   return status;
@@ -226,7 +233,6 @@ PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
 {
   CMyString text;
   int numRead = PWSfile::ReadCBC(type, text);
-
 
   if (numRead > 0) {
     LPCTSTR d = LPCTSTR(text);
@@ -329,6 +335,9 @@ int PWSfileV3::ReadRecord(CItemData &item)
         LPCTSTR ptrRM = LPCTSTR(tempdata);
 		memcpy(&t, ptrRM, sizeof(t));
         item.SetRMTime(t); break;
+		}
+	  case CItemData::PWHIST: {
+        item.SetPWHistory(tempdata); break;
 		}
       // just silently ignore fields we don't support.
       // this is forward compatability...

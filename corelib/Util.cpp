@@ -569,3 +569,45 @@ PWSUtil::ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
   }
   return b_retval;
 }
+
+const TCHAR *PWSUtil::UNKNOWN_TIME_STR = _T("Unknown");
+
+CMyString
+PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
+{
+  CMyString ret;
+  if (t != 0) {
+		char time_str[32];
+#if _MSC_VER >= 1400
+		struct tm st;
+    	localtime_s(&st, &t);  // secure version
+    	if ((result_format & EXPORT_IMPORT) == EXPORT_IMPORT)
+      		sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
+            		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
+                		st.tm_min, st.tm_sec);
+    	else
+      		_tasctime_s(time_str, 32, &st);  // secure version
+    	ret = time_str;
+#else
+    	char *t_str_ptr;
+		struct tm *st;
+    	st = localtime(&t);
+    	if ((result_format & EXPORT_IMPORT) == EXPORT_IMPORT) {
+      		sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
+            	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
+            	  st->tm_hour, st->tm_min, st->tm_sec);
+      	t_str_ptr = time_str;
+    	} else
+      		t_str_ptr = _tasctime(st);
+    	ret = t_str_ptr;
+#endif
+  } else {
+  	if ((result_format & ASC_UNKNOWN) == ASC_UNKNOWN)
+      ret = UNKNOWN_TIME_STR;
+    else
+    	ret = _T("");
+  }
+  // remove the trailing EOL char.
+  ret.TrimRight();
+  return ret;
+}

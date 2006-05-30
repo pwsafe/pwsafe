@@ -720,9 +720,9 @@ DboxMain::OnOK()
   // pref
   if (!IsWindowVisible() &&
       prefs->GetPref(PWSprefs::UseSystemTray)) {
-    ClearClipboard();
+    app.ClearClipboardData();
   } else if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
-    ClearClipboard();
+    app.ClearClipboardData();
 
   ClearData();
 
@@ -1001,7 +1001,7 @@ DboxMain::OnSize(UINT nType,
     m_ctlItemTree.DeleteAllItems();
 
     if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
-      ClearClipboard();
+      app.ClearClipboardData();
     if (prefs->GetPref(PWSprefs::DatabaseClear)) {
       bool dontask = prefs->GetPref(PWSprefs::DontAskSaveMinimize);
       bool doit = true;

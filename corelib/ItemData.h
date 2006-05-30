@@ -33,9 +33,8 @@ class CItemData
 public:
   enum {NAME=0, UUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
 	PASSWORD = 0x6, CTIME = 0x7, PMTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
-	POLICY = 0xb, RMTIME = 0xc, URL = 0xd, AUTOTYPE = 0xe,
+	POLICY = 0xb, RMTIME = 0xc, URL = 0xd, AUTOTYPE = 0xe, PWHIST = 0xf,
     END = 0xff}; // field types, per formatV{2,3}.txt
-  enum {ASC_UNKNOWN = 0, ASC_NULL = 1, EXPORT_IMPORT = 2};	// GetTime result formats
 
   static void SetSessionKey(); // call exactly once per session
    //Construction
@@ -74,6 +73,7 @@ public:
    void GetLTime(time_t &t) const {return GetTime(LTIME, t);}  // V30
    void GetPMTime(time_t &t) const {return GetTime(PMTIME, t);}  // V30
    void GetRMTime(time_t &t) const {return GetTime(RMTIME, t);}  // V30
+   CMyString GetPWHistory() const;  // V30
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
    // it's used for multi-line notes.
    CMyString GetPlaintext(TCHAR separator, TCHAR delimiter = 0) const;
@@ -104,6 +104,7 @@ public:
    void SetRMTime() {return SetTime(RMTIME);}  // V30
    void SetRMTime(time_t t) {return SetTime(RMTIME, t);}  // V30
    void SetRMTime(const CString &time_str) {return SetTime(RMTIME, time_str);}  // V30
+   void SetPWHistory(const CMyString &PWHistory);  // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
@@ -124,6 +125,7 @@ private:
   CItemField m_tttLTime;	// password 'L'ifetime
   CItemField m_tttPMTime;	// last 'P'assword 'M'odification time
   CItemField m_tttRMTime;	// last 'R'ecord 'M'odification time
+  CItemField m_PWHistory;
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
@@ -137,8 +139,6 @@ private:
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const CMyString &name,
 		 CMyString &title, CMyString &username);
-  bool VerifyASCDateTimeString(const CString time_str);
-  bool VerifyImportDateTimeString(const CString time_str);
   CMyString GetTime(const int whichtime, const int result_format) const; // V30
   void GetTime(const int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30

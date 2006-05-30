@@ -109,7 +109,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_IsStartSilent(false),
-     m_clipboard_set(false), m_selectedAtMinimize(NULL)
+     m_hFontTree(NULL), m_IsReadOnly(false),
+     m_selectedAtMinimize(NULL)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -137,11 +138,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_toolbarsSetup = FALSE;
 #endif
 
-  m_bShowPasswordInEdit = false;
-  m_bShowPasswordInList = false;
-  m_bSortAscending = true;
-  m_iSortedColumn = 0;
-  m_hFontTree = NULL;
   m_ctlItemTree.SetDboxPointer((void *)this);
 }
 
@@ -613,7 +609,7 @@ void DboxMain::OnBrowse()
 void
 DboxMain::ToClipboard(const CMyString &data)
 {
-	m_clipboard_set = PWSUtil::ToClipboard(data, m_clipboard_digest, app.m_pMainWnd->m_hWnd);
+	app.SetClipboardData(data);
 }
 
 void
@@ -698,18 +694,6 @@ DboxMain::OnCopyNotes()
 }
 
 void
-DboxMain::ClearClipboard()
-{
-  // Clear the clipboard IFF its value is the same as last set by this app.
-  if (!m_clipboard_set)
-    return;
-		
-	m_clipboard_set = PWSUtil::ClearClipboard(m_clipboard_digest, app.m_pMainWnd->m_hWnd);
-        // check identity of data in clipboard
-}
-
-
-void
 DboxMain::OnFind() 
 {
   CFindDlg::Doit(this, &m_lastFindCS,
@@ -745,7 +729,7 @@ DboxMain::OnPasswordChange()
 void
 DboxMain::OnClearClipboard() 
 {
-   ClearClipboard();
+   app.ClearClipboardData();
 }
 
 
@@ -1832,7 +1816,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       str += CString(filename);
       str += _T(" is apparently being used by ");
       str += CString(locker);
-      str += _T(".\r\nOpen the database for read-only (Yes),");
+      str += _T(".\r\nOpen the database for read-only (Yes), ");
       str += _T("read-write (No), or exit (Cancel)?");
       str += _T("\r\n\r\nNote: Choose \"No\" only if you are certain ");
       str += _T("that the file is in fact not being used by anyone else.");
@@ -2454,16 +2438,6 @@ DboxMain::CheckExpiredPasswords()
 		dlg.m_pexpPWList = p_expPWList;
 		int rc = 0;
 		rc = dlg.DoModal();
-		// Only save clipboard digest if we used it just in case we want to clear it later
-		m_clipboard_set = dlg.m_copied_to_clipboard;
-		if (m_clipboard_set) {
-#if _MSC_VER >= 1400
-			memcpy_s(m_clipboard_digest, SHA256::HASHLEN,
-				dlg.m_expPWL_clipboard_digest, SHA256::HASHLEN);
-#else
-			memcpy(m_clipboard_digest, dlg.m_expPWL_clipboard_digest, SHA256::HASHLEN);
-#endif
-		}
 		p_expPWList->RemoveAll();
 	}
 
