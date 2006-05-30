@@ -139,8 +139,6 @@ private:
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const CMyString &name,
 		 CMyString &title, CMyString &username);
-  bool VerifyASCDateTimeString(const CString time_str);
-  bool VerifyImportDateTimeString(const CString time_str);
   CMyString GetTime(const int whichtime, const int result_format) const; // V30
   void GetTime(const int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
