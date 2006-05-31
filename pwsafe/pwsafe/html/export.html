@@ -1,44 +1,58 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+
+  
+
+
+
+  
   <title>Exporting Entries</title>
-
-
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
+  
   <link rel="stylesheet" type="text/css" href="style.css">
-
 </head>
 
-	<body>
+
+<body>
+
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Exporting Entries</h2>
+
 
 <img src="images%5Cexport.gif">
 <p>Password Safe allows you to export password information to
 text files. These files may then be used or modified by other
 applications.</p>
 
+
 <p>You will first be asked to enter the master password or safe
 combination to confirm that you may export the database into a clear
 text unencrypted file.</p>
+
 
 <p>You will then be asked to supply the name of the new file and
 to confirm overwriting a file of the same name if it already exists in
 the directory you specify.</p>
 
+
 <p> </p>
 
+
 <hr> <small><b style="color: rgb(255, 0, 0);">Note:</b><span style="color: rgb(255, 0, 0);"> The exported text is an unprotected copy of </span><span style="font-weight: bold; color: rgb(255, 0, 0);">all</span><span style="color: rgb(255, 0, 0);"> of the password entries in the database. Deleting this copy after use is </span><span style="font-weight: bold; color: rgb(255, 0, 0);">not </span><span style="color: rgb(255, 0, 0);">sufficient for making it inaccesible to a determined attacker, in effect bypassing the security of the program.</span><br style="color: rgb(255, 0, 0);">
+
 <span style="color: rgb(255, 0, 0);">Please </span><span style="font-weight: bold; color: rgb(255, 0, 0);">DO NOT </span><span style="color: rgb(255, 0, 0);">use this function unless you understand and accept the risks.</span><br>
+
 
 </small>
 <hr> 
 <div class="instr">
 <h3>The Notes field</h3>
+
 
 <p>Password entries will be exported with a tab character between
 fields i.e., between the Group.Title, Username, Password and the Notes
@@ -55,12 +69,15 @@ have a delimiter character, then it must be specified on the import or
 all the Notes lines will appear as one single line in the resulting
 database.</p>
 
+
 <p>If a Notes field multi-line delimiter character is required,
 enter it here so that, during the Export process, multiple lines in
 Notes field will be exported as a single line using this character
 between each of the original lines.</p>
 
+
 <ol>
+
 
   <li>If required, tick that you want to put all separate lines
 in the Notes field onto one line and enter the character to be used as
@@ -68,18 +85,32 @@ the delimiter. Since the whole Notes field is enclosed between double
 quotation marks, this character is prohibited from being selected as
 the multi-line delimiter.</li>
 
+
   <li>Click <b>OK</b></li>
+  <span style="font-weight: bold;"></span>
+</ol>
+<h3>Title Row</h3>
+If this option is selected, the first line of the text file will
+contain a tab-separated list of the names of each column,
+e.g.,&nbsp;"Group/Title", "Username", "Password", etc.
+<ol>
+
 
 </ol>
 
+
 </div>
+
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 
-<br>
 
 <br>
+
+
+<br>
+
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Export Password Entries"> <param name="Keyword" value="Import Password Entries"> <param name="Keyword" value="Excel Password Data"> <param name="Keyword" value="Converting Existing Password Data">
 </object>
