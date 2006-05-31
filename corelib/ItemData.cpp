@@ -174,50 +174,50 @@ CItemData::GetTime(const int whichtime, const int result_format) const
   return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
-  void
-    CItemData::GetTime(int whichtime, time_t &t) const
-  {
-    unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-    unsigned int tlen = sizeof(in); // ditto
+void
+CItemData::GetTime(int whichtime, time_t &t) const
+{
+  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+  unsigned int tlen = sizeof(in); // ditto
 
-    switch (whichtime) {
-    case ATIME:
-      GetField(m_tttATime, (unsigned char *)in, tlen);
-      break;
-    case CTIME:
-      GetField(m_tttCTime, (unsigned char *)in, tlen);
-      break;
-    case LTIME:
-      GetField(m_tttLTime, (unsigned char *)in, tlen);
-      break;
-    case PMTIME:
-      GetField(m_tttPMTime, (unsigned char *)in, tlen);
-      break;
-    case RMTIME:
-      GetField(m_tttRMTime, (unsigned char *)in, tlen);
-      break;
-    default:
-      ASSERT(0);
-    }
-
-    if (tlen != 0)
-      memcpy(&t, in, sizeof(t));
-    else
-      t = 0;
+  switch (whichtime) {
+  case ATIME:
+    GetField(m_tttATime, (unsigned char *)in, tlen);
+    break;
+  case CTIME:
+    GetField(m_tttCTime, (unsigned char *)in, tlen);
+    break;
+  case LTIME:
+    GetField(m_tttLTime, (unsigned char *)in, tlen);
+    break;
+  case PMTIME:
+    GetField(m_tttPMTime, (unsigned char *)in, tlen);
+    break;
+  case RMTIME:
+    GetField(m_tttRMTime, (unsigned char *)in, tlen);
+    break;
+  default:
+    ASSERT(0);
   }
 
-  void CItemData::GetUUID(uuid_array_t &uuid_array) const
-  {
-    unsigned int length = sizeof(uuid_array);
-    GetField(m_UUID, (unsigned char *)uuid_array, length);
-  }
+  if (tlen != 0)
+    memcpy(&t, in, sizeof(t));
+  else
+    t = 0;
+}
+
+void CItemData::GetUUID(uuid_array_t &uuid_array) const
+{
+  unsigned int length = sizeof(uuid_array);
+  GetField(m_UUID, (unsigned char *)uuid_array, length);
+}
 
 CMyString
 CItemData::GetPWHistory() const
 {
-	CMyString ret;
-	GetField(m_PWHistory, ret);
-	return ret;
+  CMyString ret;
+  GetField(m_PWHistory, ret);
+  return ret;
 }
 
 CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
@@ -237,6 +237,11 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
   if (!group.IsEmpty())
     title = group + TCHAR('.') + title;
 
+  // History exported as "000" if empty, to make parsing easier
+  CMyString history = GetPWHistory();
+  if (history.IsEmpty())
+    history = _T("000");
+
   // Notes field must be last, for ease of parsing import
   ret = title + separator + GetUser() + separator +
     GetPassword() + separator + GetURL() +
@@ -246,6 +251,7 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
     GetATimeExp() + separator +
     GetLTimeExp() + separator +
     GetRMTimeExp() + separator +
+    history + separator +
     _T("\"") + GetNotes(delimiter) + _T("\"");
 
   return ret;

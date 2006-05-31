@@ -119,7 +119,7 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
   if (!ofs)
     return CANT_OPEN_FILE;
   if (bwrite_header) {
-	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tNotes"));
+	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tHistory\tNotes"));
 	  ofs << hdr << endl;
   }
 
@@ -137,37 +137,37 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
 }
 
 /*
-int
-PWScore::WriteXMLFile(const CMyString &filename)
-{
+  int
+  PWScore::WriteXMLFile(const CMyString &filename)
+  {
   ofstream of(filename);
 
   if (!of)
-    return CANT_OPEN_FILE;
+  return CANT_OPEN_FILE;
 
   of << "<?xml version=\"1.0\">" << endl;
   of << "<passwordsafe>" << endl;
   POSITION listPos = m_pwlist.GetHeadPosition();
   while (listPos != NULL)
-    {
-      CItemData temp = m_pwlist.GetAt(listPos);
+  {
+  CItemData temp = m_pwlist.GetAt(listPos);
 
-      of << "  <entry>" << endl;
-      // TODO: need to handle entity escaping of values.
-      of << "    <group>" << temp.GetGroup() << "</group>" << endl;
-      of << "    <title>" << temp.GetTitle() << "</title>" << endl;
-      of << "    <username>" << temp.GetUser() << "</username>" << endl;
-      of << "    <password>" << temp.GetPassword() << "</password>" << endl;
-      of << "    <notes>" << temp.GetNotes() << "</notes>" << endl;
-      of << "  </entry>" << endl;
+  of << "  <entry>" << endl;
+  // TODO: need to handle entity escaping of values.
+  of << "    <group>" << temp.GetGroup() << "</group>" << endl;
+  of << "    <title>" << temp.GetTitle() << "</title>" << endl;
+  of << "    <username>" << temp.GetUser() << "</username>" << endl;
+  of << "    <password>" << temp.GetPassword() << "</password>" << endl;
+  of << "    <notes>" << temp.GetNotes() << "</notes>" << endl;
+  of << "  </entry>" << endl;
 
-      m_pwlist.GetNext(listPos);
-    }
+  m_pwlist.GetNext(listPos);
+  }
   of << "</passwordsafe>" << endl;
   of.close();
 
   return SUCCESS;
-}
+  }
 */
 
 int
@@ -185,15 +185,15 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   CItemData temp;
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
-  				CTIME, PMTIME, ATIME, LTIME, RMTIME,
-  				NOTES, NUMFIELDS};
+               CTIME, PMTIME, ATIME, LTIME, RMTIME,
+               HISTORY, NOTES, NUMFIELDS};
 
   enum Fields_PreV3 {GROUPTITLE_V1V2, USER_V1V2, PASSWORD_V1V2,
-				NOTES_V1V2, NUMFIELDS_V1V2};
+                     NOTES_V1V2, NUMFIELDS_V1V2};
   if (!ifs)
     return CANT_OPEN_FILE;
-  int i_numfields = bimport_preV3 ? NUMFIELDS_V1V2 : NUMFIELDS;
-  int i_notes = bimport_preV3 ? NOTES_V1V2 : NOTES;
+  const int i_numfields = bimport_preV3 ? NUMFIELDS_V1V2 : NUMFIELDS;
+  const int i_notes = bimport_preV3 ? NOTES_V1V2 : NOTES;
 
   for (;;) {
     // read a single line.
@@ -261,7 +261,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       if (leftquote != grouptitle.length()-1) {
         temp.SetGroup(grouptitle.substr(0, leftquote-1).c_str());
         temp.SetTitle(grouptitle.substr(leftquote+1,
-			grouptitle.length()-leftquote-2).c_str(), delimiter);
+                                        grouptitle.length()-leftquote-2).c_str(), delimiter);
       } else { // only a single " ?!
         // probably wrong, but a least we don't lose data
         temp.SetTitle(grouptitle.c_str(), delimiter);
@@ -281,14 +281,15 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     }
 
     // New 3.0 fields: URL, AutoType, CTime
+    // XXX History NOT supported (yet)
 	if (!bimport_preV3) {
-    temp.SetURL(tokens[URL].c_str());
-    temp.SetAutoType(tokens[AUTOTYPE].c_str());
-    temp.SetCTime(tokens[CTIME].c_str());
-		temp.SetPMTime(tokens[PMTIME].c_str());
-		temp.SetATime(tokens[ATIME].c_str());
-		temp.SetLTime(tokens[LTIME].c_str());
-		temp.SetRMTime(tokens[RMTIME].c_str());
+      temp.SetURL(tokens[URL].c_str());
+      temp.SetAutoType(tokens[AUTOTYPE].c_str());
+      temp.SetCTime(tokens[CTIME].c_str());
+      temp.SetPMTime(tokens[PMTIME].c_str());
+      temp.SetATime(tokens[ATIME].c_str());
+      temp.SetLTime(tokens[LTIME].c_str());
+      temp.SetRMTime(tokens[RMTIME].c_str());
 	}
 
     // The notes field begins and ends with a double-quote, with
