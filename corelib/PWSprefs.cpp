@@ -22,7 +22,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("showpwinlist"), false, true},
   {_T("sortascending"), true, true},
   {_T("usedefuser"), false, true},
-  {_T("saveimmediately"), false, true},
+  {_T("saveimmediately"), true, true},
   {_T("pwuselowercase"), true, true},
   {_T("pwuseuppercase"), true, true},
   {_T("pwusedigits"), true, true},
