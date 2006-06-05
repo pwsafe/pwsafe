@@ -110,7 +110,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_IsStartSilent(false),
      m_hFontTree(NULL), m_IsReadOnly(false),
-     m_selectedAtMinimize(NULL)
+     m_selectedAtMinimize(NULL), m_bTSUpdated(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -597,7 +597,7 @@ void DboxMain::OnBrowse()
       LaunchBrowser(ci->GetURL());
       if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	  }
       uuid_array_t RUEuuid;
       ci->GetUUID(RUEuuid);
@@ -629,7 +629,7 @@ DboxMain::OnCopyPassword()
   ToClipboard(ci->GetPassword());
   if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
   	ci->SetATime();
-    SetChanged(true);
+    SetChanged(TimeStamp);
   }
   uuid_array_t RUEuuid;
   ci->GetUUID(RUEuuid);
@@ -650,7 +650,7 @@ DboxMain::OnCopyUsername()
     ToClipboard(username);
     if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	}
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
@@ -685,7 +685,7 @@ DboxMain::OnCopyNotes()
     ToClipboard(clipboard_data);
     if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	}
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
@@ -999,12 +999,25 @@ DboxMain::OnImportXML()
 }
 
 
-void DboxMain::SetChanged(bool changed) // for MyTreeCtrl
+void DboxMain::SetChanged(ChangeType changed)
 {
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-    Save();
-  } else {
-    m_core.SetChanged(changed);
+  switch (changed) {
+  case Data:
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+      Save();
+    } else {
+      m_core.SetChanged(true);
+    }
+    break;
+  case Clear:
+    m_core.SetChanged(false);
+    m_bTSUpdated = false;
+    break;
+  case TimeStamp:
+    m_bTSUpdated = true;
+    break;
+  default:
+    ASSERT(0);
   }
 }
 
@@ -1055,7 +1068,7 @@ DboxMain::Save()
     MessageBox(temp, _T("File write error"), MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
-
+  SetChanged(Clear);
   ChangeOkUpdate();
   return PWScore::SUCCESS;
 }
@@ -1525,7 +1538,7 @@ DboxMain::New()
         return PWScore::CANT_OPEN_FILE;
     case IDNO:
       // Reset changed flag
-      SetChanged(false);
+      SetChanged(Clear);
       break;
     }
   }
@@ -1584,7 +1597,7 @@ int DboxMain::SaveIfChanged()
         return PWScore::CANT_OPEN_FILE;
     case IDNO:
       // Reset changed flag
-      SetChanged(false);
+      SetChanged(Clear);
       break;
     }
   }
@@ -1657,7 +1670,7 @@ DboxMain::Restore()
   }
 	
   m_core.SetCurFile(""); //Force a Save As...
-  m_core.SetChanged(true); //So that the restored file will be saved
+  m_core.SetChanged(Data); //So that the restored file will be saved
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled Restored Backup>");
   app.SetTooltipText(_T("PasswordSafe"));
@@ -1741,6 +1754,7 @@ DboxMain::SaveAs()
   m_title = _T("Password Safe - ") + m_core.GetCurFile();
   app.SetTooltipText(m_core.GetCurFile());
 #endif
+  SetChanged(Clear);
   ChangeOkUpdate();
 
   app.GetMRU()->Add( newfile );

@@ -119,7 +119,7 @@ DboxMain::OnTrayCopyUsername(UINT nID)
 		ToClipboard(username);
 	    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    			ci.SetATime();
-       		SetChanged(true);
+       		SetChanged(TimeStamp);
 		}
 	}
 }
@@ -141,7 +141,7 @@ DboxMain::OnTrayCopyPassword(UINT nID)
 	ToClipboard(curPassString);
 	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci.SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	}
 }
 
@@ -179,7 +179,7 @@ DboxMain::OnTrayCopyNotes(UINT nID)
 		ToClipboard(clipboard_data);
 		if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
 			ci.SetATime();
-			SetChanged(true);
+			SetChanged(TimeStamp);
 		}
 	}
 }
@@ -204,7 +204,7 @@ DboxMain::OnTrayBrowse(UINT nID)
 	}
 	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci.SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	}
 }
 
@@ -250,7 +250,7 @@ DboxMain::OnTrayAutoType(UINT nID)
 	AutoType(ci);
 	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci.SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	}
 }
 

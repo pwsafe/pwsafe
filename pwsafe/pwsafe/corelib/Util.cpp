@@ -458,7 +458,7 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
     if(dd > month_lengths[mon - 1])
       return false;
   } else { // Feb of a leap-year
-    if (dd > 29)
+    if (mon == 2 && dd > 29)
       return false;
   }
 
