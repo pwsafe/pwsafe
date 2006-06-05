@@ -1,4 +1,3 @@
-; $Id$
 ;
 ; Password Safe Installation Script
 ;
@@ -29,8 +28,8 @@
 ; DESCRIPTION
 ;
 ; This script will create a self-extracting installer for the Password
-; Safe program.  Password Safe is intentionally designed to be self
-; contained.  Use of this installer is not mandatory.  pwsafe.exe, the
+; Safe program.  Password Safe was designed to be self contained.
+; In general, use of this installer is not mandatory. pwsafe.exe, the
 ; executable for Password Safe, can be placed in any location and run
 ; without any registration of DLLs, creation of directories, or entry
 ; of registry values.  When Password Safe intializes, any necessary
@@ -55,12 +54,12 @@
 ; 3. The installer will create an uninstaller and place an entry to
 ;    uninstall Password Safe in the Add or Remove Programs Wizard.
 ;
-; If you wish to avoid use of this installer, it is easy to do so.  
-; Merely place pwsafe.exe in any location.  It is executable by users
-; with fairly limited permissions. Since it is self-contained, so
-; no actions other than running pwsafe.exe are required.  To reiterate, 
-; use of this installer is completely optional.
-; 
+; Note that as of MSVC 2003, the PasswordSafe executable requires
+; DLL files that are apparently not available by default in many
+; PCs. These files are freely redistributable by Microsoft. NSIS
+; will put copies in the installation directory, apparently the
+; only way to ensure that a user will be able to install pwsafe
+; without admin rights. Bleh.
 ;
 ; USE
 ;
@@ -102,9 +101,7 @@
 
 ;--------------------------------
 ; Include Modern UI
-
   !include "MUI.nsh"
-
 
 ;--------------------------------
 ; Version Info
@@ -181,7 +178,10 @@ Section "Program Files" ProgramFiles
   File "README.TXT"
   File "ReleaseNotes.txt"
   File "ChangeLog.txt"
-  
+  File "..\..\redist\mfc71.dll"
+  File "..\..\redist\msvcp71.dll"
+  File "..\..\redist\msvcr71.dll"
+
   ; Store installation folder
   WriteRegStr HKCU \
               "Software\Counterpane Systems\Password Safe" \
@@ -286,6 +286,9 @@ Section "Uninstall"
   Delete "$INSTDIR\README.TXT"
   Delete "$INSTDIR\ReleaseNotes.txt"
   Delete "$INSTDIR\ChangeLog.txt"
+  Delete "$INSTDIR\mfc71.dll"
+  Delete "$INSTDIR\msvcp71.dll"
+  Delete "$INSTDIR\msvcr71.dll"
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
@@ -304,24 +307,4 @@ Section "Uninstall"
   RMDir /r "$SMPROGRAMS\Password Safe"
   Delete "$DESKTOP\Password Safe.lnk"
 
-
-
 SectionEnd
-;
-; $Log$
-; Revision 1.6  2005/02/25 10:38:39  ronys
-; [1123373] Uninstall will only remove installed files, and will delete the installation directory if and only if it's empty.
-;
-; Revision 1.5  2004/06/11 03:57:30  ronys
-; Moved older changes from ReleaseNotes to ChangeLog.
-;
-; Revision 1.4  2004/06/09 19:28:12  ronys
-; Merged dlacykusters fixes into post-2.03
-;
-; Revision 1.3  2004/06/08 03:35:21  ronys
-; - add unstaller to control panel
-; - cleanup shortcuts on uninstall
-;
-; Revision 1.2  2004/06/06 05:32:39  ronys
-; release 2.03
-;
