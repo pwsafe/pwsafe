@@ -699,6 +699,11 @@ DboxMain::OnOK()
   prefs->SetPref(PWSprefs::SortedColumn, m_iSortedColumn);
   prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
 
+  // If MaintainDateTimeStamps set and not read-only,
+  // save without asking user: "they get what it says on the tin"
+  if (m_bMaintainDateTimeStamps && !m_IsReadOnly && m_bTSUpdated)
+    Save();
+
   if (m_core.IsChanged()) {
     rc = MessageBox(_T("Do you want to save changes to the password list?"),
                     AfxGetAppName(),
@@ -1522,7 +1527,7 @@ DboxMain::OnAutoType()
 	m_RUEList.AddRUEntry(RUEuuid);
 	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
     }
     // All code using ci must be before this AutoType since the
 	// latter may trash *ci if lock-on-minimize

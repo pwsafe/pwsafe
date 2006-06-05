@@ -74,7 +74,8 @@ public:
 
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}
-  void SetChanged(bool changed); // for MyTreeCtrl
+  enum ChangeType {Clear, Data, TimeStamp};
+  void SetChanged(ChangeType changed);
   void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
   void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
   void SetReadOnly(bool state);
@@ -137,6 +138,7 @@ protected:
   bool m_bShowPasswordInList;
   bool m_bAlwaysOnTop;
   bool m_bMaintainDateTimeStamps;
+  bool m_bTSUpdated;
   bool m_saveMRU;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
