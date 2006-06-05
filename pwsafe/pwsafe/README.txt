@@ -1,5 +1,3 @@
-$Id$
-
 Introduction:
 =============
 Password Safe is a password database utility. Like many other such
@@ -114,42 +112,15 @@ deciding to open source the project.
 - Jim Russell first brought the code to SourceForge, did some major
 cleaning up of the code, set up a nice project and added some minor
 features in release 1.9.0
-- The current release has been brought to you by: Andrew Mullican,
+- Releases2.x have been brought to you by: Andrew Mullican,
 Edward Quackenbush, Gregg Conklin, Graham Ullrich, and Rony
 Shapiro. Karel (Karlo) Van der Gucht also contributed some of the
 password policy code and some GUI improvements for 1.92.
 - Emilijan Mirceski did the new graphics for 2.0.
 - Maxim Tikhonov translated the online help to Russian.
+- Thanks to the PasswordSafe developer's mailing list for help in
+nailing down the new 3.x file format.
+- Many, many new features in 3.0 have been implemented by DK.
 - Finally, thanks to the folks at SourceForge for hosting this
 project.
 
-$Log$
-Revision 1.9  2005/01/15 11:07:14  ronys
-Update non-English list, add reference to donations.
-
-Revision 1.8  2004/11/24 16:21:13  ronys
-Added link to Italian help, plus unix2dos'ed
-
-Revision 1.7  2004/09/25 08:04:31  ronys
-Added pointer to French help file.
-
-Revision 1.6  2004/03/31 04:44:31  ronys
-Announce availability of German version of online help
-
-Revision 1.5  2004/02/17 21:11:06  ronys
-Updated for 2.0
-
-Revision 1.4  2003/05/28 08:29:04  ronys
-Corrected credits
-
-Revision 1.3  2003/05/14 14:49:55  ronys
-post-1.92 merge into main trunk
-
-Revision 1.2.2.1  2003/05/13 13:40:13  ronys
-1.92 release
-
-Revision 1.2  2003/04/30 13:20:14  ronys
-Listed supported platforms
-
-Revision 1.1  2003/04/29 14:22:32  ronys
-First versions of README and Release Notes under CVS for 1.91

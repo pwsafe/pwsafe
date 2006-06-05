@@ -11,15 +11,15 @@ releases may be found in the file ChangeLog.txt.
 New Features for 3.01
 =====================
 [726518] User can configure an expiration date for entries and be
-notified accordingly. (Thanks to DK!)
-[726508] Modification and access times now recorded. (DK strikes again!)
+notified accordingly.
+[726508] Modification and access times now recorded.
 [737878] Copy Notes to Clipboard
 [1162051] Toolbar additions (Autotype, Browse URL, Copy Notes to clipboard)
 [1465395] View Passwords in Nested Tree Mode
 [] Ability to clear "Recent Database List"
 [] Browse to URL now starts a new instance of the user's default browser
-rather than taking over an existing instance.
-[] Ability to set a Password Expiry Date for an entry implemented
+rather than taking over an existing instance
+[] It is now possible to set password expiry dates
 
 Bugs fixed in 3.01
 ==================
@@ -28,6 +28,10 @@ Bugs fixed in 3.01
 [1495556] Restore after minimize now works when system-tray not used.
 [1472332] Read-only command line argument bug
 [] Help file now reflects 3.0 new features.
+[1490985, 1423020, 1398936] Microsoft redistributable dlls now
+included in installation
+[1440951] Can now close application after minimize w/o system tray.
+and zip file. Should fix all "MS*.dll not installed" problems
 
 
 New Features for 3.0Beta2:
@@ -67,8 +71,8 @@ Bugs fixed in 3.0Beta1:
 [1384738] Backspace is no longer used instead of dots in the title for the
 plaintext import/export format.
 
-Known Problems:
-===============
+Known Problems in 3.0Beta1:
+===========================
 [] No major problems are known in this release. However, it is a FIRST BETA 
 release, and should NOT be used on real databases without backups!
 [] Online help has not been updated
