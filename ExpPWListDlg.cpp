@@ -85,10 +85,6 @@ CExpPWListDlg::OnInitDialog()
 	}
 	m_expPWList.SetRedraw(TRUE);
 
-	// Clear this so we know that we can clear the clipboard later.
-	memset(m_expPWL_clipboard_digest, '\0', SHA256::HASHLEN);
-	m_copied_to_clipboard = false;
-
 	return TRUE;
 }
 
@@ -116,7 +112,7 @@ CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 		m_pexpPWList->GetNext(listpos);
 	}
 					
-	m_copied_to_clipboard = PWSUtil::ToClipboard(data, m_expPWL_clipboard_digest, app.m_pMainWnd->m_hWnd);
+	app.SetClipboardData(data);
 }
 
 void

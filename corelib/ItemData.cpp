@@ -237,10 +237,10 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
   if (!group.IsEmpty())
     title = group + TCHAR('.') + title;
 
-  // History exported as "000" if empty, to make parsing easier
+  // History exported as "00000" if empty, to make parsing easier
   CMyString history = GetPWHistory();
   if (history.IsEmpty())
-    history = _T("000");
+    history = _T("00000");
 
   // Notes field must be last, for ease of parsing import
   ret = title + separator + GetUser() + separator +
