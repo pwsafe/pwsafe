@@ -30,8 +30,6 @@ public:
 	CList<ExpPWEntry, ExpPWEntry&>* m_pexpPWList;
 	CListCtrl m_expPWList;
 	CString m_message;
-	unsigned char m_expPWL_clipboard_digest[SHA256::HASHLEN];
-	bool m_copied_to_clipboard;
 	int m_iSortedColumn; 
 	BOOL m_bSortAscending; 
 
