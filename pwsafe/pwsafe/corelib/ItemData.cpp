@@ -538,7 +538,7 @@ CItemData::SetPWHistory(const CMyString &PWHistory)
     SetATime((time_t) 0);
     SetLTime((time_t) 0);
     SetRMTime((time_t) 0);
-    SetPWHistory(_T("0"));
+    SetPWHistory(_T(""));
   }
 
   //TODO: "General System Fault. Please sacrifice a goat 

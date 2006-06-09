@@ -369,11 +369,13 @@ PWSUtil::VerifyImportDateTimeString(const CString time_str, time_t &t)
   if ((mon < 1 || mon > 12) || (dd < 1))
     return false;
 
-  if (mon != 2 && (yyyy % 4) == 0) {
-    if(dd > month_lengths[mon - 1])
+  if (mon == 2 && (yyyy % 4) == 0) {
+    // Feb and a leap year
+    if (dd > 29)
       return false;
-  } else { // Feb of a leap-year
-    if (mon == 2 && dd > 29)
+  } else {
+    // Either (Not Feb) or (Is Feb but not a leap-year)
+    if (dd > month_lengths[mon - 1])
       return false;
   }
 
@@ -454,11 +456,13 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
   if ((mon < 1 || mon > 12) || (dd < 1))
     return false;
 
-  if (mon != 2 && (yyyy % 4) == 0) {
-    if(dd > month_lengths[mon - 1])
+  if (mon == 2 && (yyyy % 4) == 0) {
+    // Feb and a leap year
+    if (dd > 29)
       return false;
-  } else { // Feb of a leap-year
-    if (mon == 2 && dd > 29)
+  } else {
+    // Either (Not Feb) or (Is Feb but not a leap-year)
+    if (dd > month_lengths[mon - 1])
       return false;
   }
 
