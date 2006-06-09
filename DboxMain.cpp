@@ -1033,12 +1033,21 @@ DboxMain::Save()
   if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
     m_core.BackupCurFile(); // to save previous reversion
   } else { // file version mis-match
-    CString NewName(m_core.GetCurFile());
-    int dotIndex = NewName.ReverseFind(TCHAR('.'));
-    if (dotIndex != -1)
-      NewName = NewName.Left(dotIndex+1);
-    NewName += DEFAULT_SUFFIX;
+  	TCHAR path_buffer[_MAX_PATH];
+  	TCHAR drive[_MAX_DRIVE];
+  	TCHAR dir[_MAX_DIR];
+  	TCHAR fname[_MAX_FNAME];
+  	TCHAR ext[_MAX_EXT];
 
+#if _MSC_VER >= 1400
+    _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+    _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, DEFAULT_SUFFIX );
+#else
+    _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
+    _tmakepath( path_buffer, drive, dir, fname, DEFAULT_SUFFIX );
+#endif
+    CMyString NewName = CMyString(path_buffer);
 
     CString msg = _T("The original database, \"");
     msg += CString(m_core.GetCurFile());
@@ -1709,8 +1718,22 @@ DboxMain::SaveAs()
       return PWScore::USER_CANCEL;
   }
   //SaveAs-type dialog box
-  CMyString v3FileName(m_core.GetCurFile());
-  v3FileName.Replace(_T("dat"), DEFAULT_SUFFIX);
+  TCHAR path_buffer[_MAX_PATH];
+  TCHAR drive[_MAX_DRIVE];
+  TCHAR dir[_MAX_DIR];
+  TCHAR fname[_MAX_FNAME];
+  TCHAR ext[_MAX_EXT];
+
+#if _MSC_VER >= 1400
+  _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+  _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, DEFAULT_SUFFIX );
+#else
+  _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
+  _tmakepath( path_buffer, drive, dir, fname, DEFAULT_SUFFIX );
+#endif
+  CMyString v3FileName = CMyString(path_buffer);
+
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
