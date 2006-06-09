@@ -26,8 +26,11 @@ public:
    CMyString m_ascLTime;
    CMyString m_ascRMTime;
    time_t m_tttLTime;
+   int m_MaxPWHistory;
+   int m_NumPWHistory;
 
-   CMyString m_PWHistory;
+   CListCtrl m_PWHistListCtrl;
+
    CList<PWHistEntry, PWHistEntry&>* m_pPWHistList;
 
    CMyString m_realpassword;
@@ -39,18 +42,21 @@ public:
    void  HidePassword(void);
    BOOL m_ClearPWHistory;
    BOOL m_SavePWHistory;
+   int m_iSortedColumn;
+   BOOL m_bSortAscending;
+   bool m_bSavePWHistory;
 
 private:
    bool m_isPwHidden;
    // Are we showing more or less details?
    bool m_isExpanded;
+   // Are we showing EVEN more or less details?
+   bool m_isMoreExpanded;
    void ResizeDialog();
-   void SetPWHistoryList();
+   void MakeDialogWider();
 
 protected:
    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-protected:
    afx_msg void OnShowpassword();
    virtual void OnOK();
    virtual void OnCancel();
@@ -62,6 +68,7 @@ protected:
    afx_msg void OnPasskeyKillfocus();
 #endif
    DECLARE_MESSAGE_MAP()
+
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedMore();
@@ -70,7 +77,13 @@ public:
 	afx_msg void OnBnClickedShowPasswordHistory();
 	afx_msg void OnCheckedClearPasswordHistory();
 	afx_msg void OnCheckedSavePasswordHistory();
-	CButton m_moreLessBtn;
+	afx_msg void OnBnClickedCopyToClipboard();
+	afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
+
+	CButton m_MoreLessBtn, m_EvenMoreLessBtn;
+
+private:
+	static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 };
 //-----------------------------------------------------------------------------
 // Local variables:

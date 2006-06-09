@@ -371,6 +371,28 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="ExportXML.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+
+			<File
 				RelativePath=".\ExpPWListDlg.cpp">
 			</File>
 			<File
@@ -888,13 +910,16 @@
 				RelativePath="EditDlg.h">
 			</File>
 			<File
-				RelativePath=".\ExpDTDlg.h">
+				RelativePath="ExpDTDlg.h">
 			</File>
 			<File
 				RelativePath="ExportText.h">
 			</File>
 			<File
-				RelativePath=".\ExpPWListDlg.h">
+				RelativePath="ExportXML.h">
+			</File>
+			<File
+				RelativePath="ExpPWListDlg.h">
 			</File>
 			<File
 				RelativePath="FileDialogExt.h">
@@ -972,13 +997,13 @@
 				RelativePath="resource.h">
 			</File>
 			<File
-				RelativePath=".\RUEList.h">
+				RelativePath="RUEList.h">
 			</File>
 			<File
 				RelativePath="sha1.h">
 			</File>
 			<File
-				RelativePath=".\ShowPWHistDlg.h">
+				RelativePath="ShowPWHistDlg.h">
 			</File>
 			<File
 				RelativePath="StdAfx.h">
@@ -1033,10 +1058,10 @@
 				RelativePath="leaf.bmp">
 			</File>
 			<File
-				RelativePath=".\leaf_exp.bmp">
+				RelativePath="leaf_exp.bmp">
 			</File>
 			<File
-				RelativePath=".\locked_tray.ico">
+				RelativePath="locked_tray.ico">
 			</File>
 			<File
 				RelativePath="node.bmp">
@@ -1060,7 +1085,7 @@
 				RelativePath="tray.ico">
 			</File>
 			<File
-				RelativePath=".\unlocked_tray.ico">
+				RelativePath="unlocked_tray.ico">
 			</File>
 			<File
 				RelativePath="w95mbx01.ico">

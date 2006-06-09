@@ -140,7 +140,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\hmac.cpp">
+				RelativePath="hmac.cpp">
 			</File>
 			<File
 				RelativePath="ItemData.cpp">
@@ -263,10 +263,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PWSfileV1V2.cpp">
+				RelativePath="PWSfileV1V2.cpp">
 			</File>
 			<File
-				RelativePath=".\PWSfileV3.cpp">
+				RelativePath="PWSfileV3.cpp">
 			</File>
 			<File
 				RelativePath="PWSprefs.cpp">
@@ -289,7 +289,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\PWSrand.cpp">
+				RelativePath="PWSrand.cpp">
 			</File>
 			<File
 				RelativePath="sha1.cpp">
@@ -399,7 +399,7 @@
 				RelativePath="BlowFish.h">
 			</File>
 			<File
-				RelativePath=".\hmac.h">
+				RelativePath="hmac.h">
 			</File>
 			<File
 				RelativePath="ItemData.h">
@@ -420,10 +420,10 @@
 				RelativePath="PWSfile.h">
 			</File>
 			<File
-				RelativePath=".\PWSfileV1V2.h">
+				RelativePath="PWSfileV1V2.h">
 			</File>
 			<File
-				RelativePath=".\PWSfileV3.h">
+				RelativePath="PWSfileV3.h">
 			</File>
 			<File
 				RelativePath="PwsPlatform.h">
@@ -432,7 +432,7 @@
 				RelativePath="PWSprefs.h">
 			</File>
 			<File
-				RelativePath=".\PWSrand.h">
+				RelativePath="PWSrand.h">
 			</File>
 			<File
 				RelativePath="sha1.h">
@@ -444,7 +444,7 @@
 				RelativePath="TwoFish.h">
 			</File>
 			<File
-				RelativePath=".\typedefs.h">
+				RelativePath="typedefs.h">
 			</File>
 			<File
 				RelativePath="Util.h">

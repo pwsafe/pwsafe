@@ -45,9 +45,11 @@ class PWScore {
   int WriteV2File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const CMyString &filename, const bool bwrite_header, TCHAR delimiter = 0);
+  int WriteXMLFile(const CMyString &filename, const TCHAR delimiter);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
 			  TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
   int ImportKeePassTextFile(const CMyString &filename);
+  int ImportXMLFile(const CMyString &ImportedPrefix, const CMyString &filename, int &numImported, int &numSkipped);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
   bool FileExists(const CMyString &filename, bool &bReadOnly) const 
 	  {return PWSfile::FileExists(filename, bReadOnly);}

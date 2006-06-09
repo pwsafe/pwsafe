@@ -25,6 +25,7 @@
 #include "PasskeySetup.h"
 #include "TryAgainDlg.h"
 #include "ExportText.h"
+#include "ExportXML.h"
 #include "ImportDlg.h"
 #include "ExpPWListDlg.h"
 
@@ -109,7 +110,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_IsStartSilent(false),
-     m_selectedAtMinimize(NULL)
+     m_hFontTree(NULL), m_IsReadOnly(false),
+     m_selectedAtMinimize(NULL), m_bTSUpdated(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -137,11 +139,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_toolbarsSetup = FALSE;
 #endif
 
-  m_bShowPasswordInEdit = false;
-  m_bShowPasswordInList = false;
-  m_bSortAscending = true;
-  m_iSortedColumn = 0;
-  m_hFontTree = NULL;
   m_ctlItemTree.SetDboxPointer((void *)this);
 }
 
@@ -209,6 +206,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_FILE_IMPORT_KEEPASS, OnImportKeePass)
    ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_KEEPASS, OnUpdateROCommand)
    ON_COMMAND(ID_FILE_IMPORT_XML, OnImportXML)
+   ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_XML, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADD, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
@@ -287,7 +285,6 @@ DboxMain::InitPasswordSafe()
 
   m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps);
   m_bSavePWHistory = PWSprefs::GetInstance()->GetPref(PWSprefs::SavePasswordHistory);
-  m_MaxPWHistory = PWSprefs::GetInstance()->GetPref(PWSprefs::MaxPWHistory);
   // ... same for UseSystemTray
   // StartSilent trumps preference
   if (!m_IsStartSilent && !PWSprefs::GetInstance()->
@@ -603,7 +600,7 @@ void DboxMain::OnBrowse()
       LaunchBrowser(ci->GetURL());
       if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	  }
       uuid_array_t RUEuuid;
       ci->GetUUID(RUEuuid);
@@ -635,7 +632,7 @@ DboxMain::OnCopyPassword()
   ToClipboard(ci->GetPassword());
   if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
   	ci->SetATime();
-    SetChanged(true);
+    SetChanged(TimeStamp);
   }
   uuid_array_t RUEuuid;
   ci->GetUUID(RUEuuid);
@@ -656,7 +653,7 @@ DboxMain::OnCopyUsername()
     ToClipboard(username);
     if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	}
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
@@ -691,7 +688,7 @@ DboxMain::OnCopyNotes()
     ToClipboard(clipboard_data);
     if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
    		ci->SetATime();
-       	SetChanged(true);
+       	SetChanged(TimeStamp);
 	}
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
@@ -880,7 +877,63 @@ DboxMain::OnExportText()
 void
 DboxMain::OnExportXML()
 {
-    // TODO - currently disabled in menubar
+  CExportXMLDlg eXML;
+  int rc = eXML.DoModal();
+  if (rc == IDOK) {
+    CMyString newfile;
+    CMyString pw(eXML.m_ExportXMLPassword);
+    if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
+      // do the export
+      //SaveAs-type dialog box
+	  TCHAR path_buffer[_MAX_PATH];
+	  TCHAR drive[_MAX_DRIVE];
+	  TCHAR dir[_MAX_DIR];
+	  TCHAR fname[_MAX_FNAME];
+	  TCHAR ext[_MAX_EXT];
+
+#if _MSC_VER >= 1400
+	  _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+	  _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, _T("xml") );
+#else
+	  _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
+	  _tmakepath( path_buffer, drive, dir, fname, _T("xml") );
+#endif
+  CMyString XMLFileName = CMyString(path_buffer);
+
+      while (1) {
+        CFileDialog fd(FALSE,
+                       _T("xml"),
+                       XMLFileName,
+                       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                       _T("XML files (*.xml)|*.xml|")
+                       _T("All files (*.*)|*.*|")
+                       _T("|"),
+                       this);
+        fd.m_ofn.lpstrTitle =
+          _T("Please name the XML file");
+        rc = fd.DoModal();
+        if (rc == IDOK) {
+          newfile = (CMyString)fd.GetPathName();
+          break;
+        } else
+          return;
+      } // while (1)
+
+      char delimiter;
+      delimiter = eXML.m_defexpdelim[0];
+      rc = m_core.WriteXMLFile(newfile, delimiter);
+		
+      if (rc == PWScore::CANT_OPEN_FILE)        {
+        CMyString temp = newfile + _T("\n\nCould not open file for writing!");
+        MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+      }
+    } else {
+      MessageBox(_T("Passkey incorrect"), _T("Error"));
+      Sleep(3000); // protect against automatic attacks
+    }
+  }
 }
 
 void
@@ -1001,19 +1054,34 @@ DboxMain::OnImportXML()
   if (m_IsReadOnly) // disable in read-only mode
     return;
 
-  // TODO - currently disabled in menubar
+  CString msg = _T("Sorry, this is not implemented.\n\nPlease convert your XML file to a text file as if ");
+  msg += _T("produced by the \"Export to Plain Text\" function\nand then use the \"Import from Plain Text\" function.");
+  MessageBox(msg, AfxGetAppName(), MB_ICONINFORMATION|MB_OK);
+
 }
 
-
-void DboxMain::SetChanged(bool changed) // for MyTreeCtrl
+void
+DboxMain::SetChanged(ChangeType changed)
 {
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-    Save();
-  } else {
-    m_core.SetChanged(changed);
+  switch (changed) {
+  case Data:
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+      Save();
+    } else {
+      m_core.SetChanged(true);
+    }
+    break;
+  case Clear:
+    m_core.SetChanged(false);
+    m_bTSUpdated = false;
+    break;
+  case TimeStamp:
+    m_bTSUpdated = true;
+    break;
+  default:
+    ASSERT(0);
   }
 }
-
 
 int
 DboxMain::Save()
@@ -1026,12 +1094,21 @@ DboxMain::Save()
   if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
     m_core.BackupCurFile(); // to save previous reversion
   } else { // file version mis-match
-    CString NewName(m_core.GetCurFile());
-    int dotIndex = NewName.ReverseFind(TCHAR('.'));
-    if (dotIndex != -1)
-      NewName = NewName.Left(dotIndex+1);
-    NewName += DEFAULT_SUFFIX;
+  	TCHAR path_buffer[_MAX_PATH];
+  	TCHAR drive[_MAX_DRIVE];
+  	TCHAR dir[_MAX_DIR];
+  	TCHAR fname[_MAX_FNAME];
+  	TCHAR ext[_MAX_EXT];
 
+#if _MSC_VER >= 1400
+    _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+    _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, DEFAULT_SUFFIX );
+#else
+    _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
+    _tmakepath( path_buffer, drive, dir, fname, DEFAULT_SUFFIX );
+#endif
+    CMyString NewName = CMyString(path_buffer);
 
     CString msg = _T("The original database, \"");
     msg += CString(m_core.GetCurFile());
@@ -1061,11 +1138,10 @@ DboxMain::Save()
     MessageBox(temp, _T("File write error"), MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
-
+  SetChanged(Clear);
   ChangeOkUpdate();
   return PWScore::SUCCESS;
 }
-
 
 void
 DboxMain::ChangeOkUpdate()
@@ -1091,7 +1167,6 @@ DboxMain::ChangeOkUpdate()
 #endif
 }
 
-
 void
 DboxMain::OnAbout() 
 {
@@ -1099,8 +1174,8 @@ DboxMain::OnAbout()
   dbox.DoModal();
 }
 
-
-void DboxMain::OnPasswordSafeWebsite()
+void
+DboxMain::OnPasswordSafeWebsite()
 {
   HINSTANCE stat = ::ShellExecute(NULL, NULL, "http://passwordsafe.sourceforge.net/",
                                   NULL, _T("."), SW_SHOWNORMAL);
@@ -1111,13 +1186,11 @@ void DboxMain::OnPasswordSafeWebsite()
   }
 }
 
-
 void
 DboxMain::OnBackupSafe() 
 {
   BackupSafe();
 }
-
 
 int
 DboxMain::BackupSafe()
@@ -1149,7 +1222,6 @@ DboxMain::BackupSafe()
         return PWScore::USER_CANCEL;
     }
 
-
   rc = m_core.WriteFile(tempname);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CMyString temp = tempname + _T("\n\nCould not open file for writing!");
@@ -1161,13 +1233,11 @@ DboxMain::BackupSafe()
   return PWScore::SUCCESS;
 }
 
-
 void
 DboxMain::OnOpen() 
 {
   Open();
 }
-
 
 int
 DboxMain::Open()
@@ -1485,7 +1555,6 @@ DboxMain::Merge(const CMyString &pszFilename) {
   return rc;
 }
 
-
 void
 DboxMain::OnMerge()
 {
@@ -1495,13 +1564,11 @@ DboxMain::OnMerge()
   Merge();
 }
 
-
 void
 DboxMain::OnNew()
 {
   New();
 }
-
 
 int
 DboxMain::New() 
@@ -1531,7 +1598,7 @@ DboxMain::New()
         return PWScore::CANT_OPEN_FILE;
     case IDNO:
       // Reset changed flag
-      SetChanged(false);
+      SetChanged(Clear);
       break;
     }
   }
@@ -1553,7 +1620,6 @@ DboxMain::New()
 
   return PWScore::SUCCESS;
 }
-
 
 void
 DboxMain::OnRestore()
@@ -1590,7 +1656,7 @@ int DboxMain::SaveIfChanged()
         return PWScore::CANT_OPEN_FILE;
     case IDNO:
       // Reset changed flag
-      SetChanged(false);
+      SetChanged(Clear);
       break;
     }
   }
@@ -1663,7 +1729,7 @@ DboxMain::Restore()
   }
 	
   m_core.SetCurFile(""); //Force a Save As...
-  m_core.SetChanged(true); //So that the restored file will be saved
+  m_core.SetChanged(Data); //So that the restored file will be saved
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled Restored Backup>");
   app.SetTooltipText(_T("PasswordSafe"));
@@ -1674,13 +1740,11 @@ DboxMain::Restore()
   return PWScore::SUCCESS;
 }
 
-
 void
 DboxMain::OnSaveAs()
 {
   SaveAs();
 }
-
 
 int
 DboxMain::SaveAs() 
@@ -1702,8 +1766,22 @@ DboxMain::SaveAs()
       return PWScore::USER_CANCEL;
   }
   //SaveAs-type dialog box
-  CMyString v3FileName(m_core.GetCurFile());
-  v3FileName.Replace(_T("dat"), DEFAULT_SUFFIX);
+  TCHAR path_buffer[_MAX_PATH];
+  TCHAR drive[_MAX_DRIVE];
+  TCHAR dir[_MAX_DIR];
+  TCHAR fname[_MAX_FNAME];
+  TCHAR ext[_MAX_EXT];
+
+#if _MSC_VER >= 1400
+  _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+  _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, DEFAULT_SUFFIX );
+#else
+  _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
+  _tmakepath( path_buffer, drive, dir, fname, DEFAULT_SUFFIX );
+#endif
+  CMyString v3FileName = CMyString(path_buffer);
+
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
@@ -1747,6 +1825,7 @@ DboxMain::SaveAs()
   m_title = _T("Password Safe - ") + m_core.GetCurFile();
   app.SetTooltipText(m_core.GetCurFile());
 #endif
+  SetChanged(Clear);
   ChangeOkUpdate();
 
   app.GetMRU()->Add( newfile );
@@ -1893,9 +1972,7 @@ DboxMain::NewFile(void)
 }
 
 BOOL
-DboxMain::OnToolTipText(UINT,
-                        NMHDR* pNMHDR,
-                        LRESULT* pResult)
+DboxMain::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 // This code is copied from the DLGCBR32 example that comes with MFC
 {
 #if !defined(POCKET_PC)
@@ -1950,8 +2027,6 @@ DboxMain::OnToolTipText(UINT,
   return TRUE;    // message was handled
 }
 
-
-
 #if !defined(POCKET_PC)
 void
 DboxMain::OnDropFiles(HDROP hDrop)
@@ -1980,8 +2055,6 @@ DboxMain::OnDropFiles(HDROP hDrop)
   DragFinish(hDrop);
 } 
 #endif
-
-
 
 BOOL
 DboxMain::CheckExtension(const CMyString &name, const CMyString &ext) const
@@ -2028,7 +2101,6 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 
 #endif
 }
-
 
 void
 DboxMain::ConfigureSystemMenu()
@@ -2081,10 +2153,10 @@ DboxMain::OnOpenMRU(UINT nID)
 #endif
 }
 
-
 // Called just before any pulldown or popup menu is displayed, so that menu items
 // can be enabled/disabled or checked/unchecked dynamically.
-void DboxMain::OnInitMenu(CMenu* pMenu)
+void
+DboxMain::OnInitMenu(CMenu* pMenu)
 {
   const BOOL bTreeView = m_ctlItemTree.IsWindowVisible();
   const BOOL bItemSelected = SelItemOk();
@@ -2114,7 +2186,6 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
   pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW, 
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW), MF_BYCOMMAND);
 
-
   CDC* pDC = this->GetDC();
   int NumBits = ( pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32 );
   // JHF m_toolbarMode is not for WinCE (as in .h)
@@ -2134,14 +2205,12 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
                             m_toolbarMode, MF_BYCOMMAND);
 #endif
 
-
   pMenu->EnableMenuItem(ID_MENUITEM_SAVE,
                         m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
 
   // enable/disable w.r.t read-only mode
   // is handled via ON_UPDATE_COMMAND_UI/OnUpdateROCommand
 }
-
 
 // helps with MRU by allowing ON_UPDATE_COMMAND_UI
 void
@@ -2215,7 +2284,8 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 }
 
 #if defined(POCKET_PC)
-void DboxMain::OnShowPassword()
+void
+DboxMain::OnShowPassword()
 {
   if (SelItemOk() == TRUE) {
     CItemData			item;
@@ -2248,19 +2318,20 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 #endif
 }
 
-
-void DboxMain::OnMinimize()
+void
+DboxMain::OnMinimize()
 {
   ShowWindow(SW_MINIMIZE);
 }
 
-
-void DboxMain::OnUnMinimize()
+void
+DboxMain::OnUnMinimize()
 {
   UnMinimize(true);
 }
 
-void DboxMain::UnMinimize(bool update_windows)
+void
+DboxMain::UnMinimize(bool update_windows)
 {
 	m_passphraseOK = false;
 	// Case 1 - data available but is currently locked
@@ -2356,7 +2427,8 @@ DboxMain::startLockCheckTimer(){
     TRACE(_T("startLockCheckTimer: Not Starting timer\n"));
 }
 
-BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
+BOOL
+DboxMain::PreTranslateMessage(MSG* pMsg)
 {
   // Do NOT pass the ESC along if preference EscExits is false.
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE &&
@@ -2368,14 +2440,16 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-void DboxMain::ResetIdleLockCounter()
+void
+DboxMain::ResetIdleLockCounter()
 {
   m_IdleLockCountDown = PWSprefs::GetInstance()->
     GetPref(PWSprefs::IdleTimeout);
 
 }
 
-bool DboxMain::DecrementAndTestIdleLockCounter()
+bool
+DboxMain::DecrementAndTestIdleLockCounter()
 {
   if (m_IdleLockCountDown > 0)
     return (--m_IdleLockCountDown == 0);
@@ -2383,7 +2457,8 @@ bool DboxMain::DecrementAndTestIdleLockCounter()
     return false; // so we return true only once if idle
 }
 
-LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT
+DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   static DWORD last_t = 0;
   DWORD t = GetTickCount();
@@ -2410,6 +2485,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     ResetIdleLockCounter();
   return CDialog::WindowProc(message, wParam, lParam);
 }
+
 void
 DboxMain::CheckExpiredPasswords()
 {

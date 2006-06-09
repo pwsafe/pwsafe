@@ -288,7 +288,7 @@ static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
 
 static void ExtractURL(CMyString &notesStr, CMyString &outurl)
 {
-  CString instr(notesStr);
+  CMyString instr(notesStr);
   // Extract first instance of (http|https|ftp)://[^ \t\r\n]+
   int left = instr.Find(_T("http://"));
   if (left == -1)
@@ -298,7 +298,7 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
   if (left == -1) {
     outurl = _T("");
   } else {
-    CString url(instr);
+    CMyString url(instr);
     instr = notesStr.Left(left);
     url = url.Mid(left); // throw out everything left of URL
     int right = url.FindOneOf(_T(" \t\r\n"));
@@ -306,11 +306,10 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
       instr += url.Mid(right);
       url = url.Left(right);      
     }
-    outurl = CMyString(url);
-    notesStr = CMyString(instr);
+    outurl = url;
+    notesStr = instr;
   }
 }
-
 
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {

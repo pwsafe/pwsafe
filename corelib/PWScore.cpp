@@ -5,6 +5,7 @@
 #include "BlowFish.h"
 #include "PWSprefs.h"
 #include "PWSrand.h"
+#include "Util.h"
 
 #pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
 #include <fstream> // for WritePlaintextFile
@@ -119,7 +120,7 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
   if (!ofs)
     return CANT_OPEN_FILE;
   if (bwrite_header) {
-	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tNotes"));
+	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tHistory\tNotes"));
 	  ofs << hdr << endl;
   }
 
@@ -136,39 +137,190 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
   return SUCCESS;
 }
 
-/*
 int
-PWScore::WriteXMLFile(const CMyString &filename)
+PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter)
 {
-  ofstream of(filename);
+	ofstream of(filename);
 
-  if (!of)
-    return CANT_OPEN_FILE;
+	if (!of)
+		return CANT_OPEN_FILE;
 
-  of << "<?xml version=\"1.0\">" << endl;
-  of << "<passwordsafe>" << endl;
-  POSITION listPos = m_pwlist.GetHeadPosition();
-  while (listPos != NULL)
-    {
-      CItemData temp = m_pwlist.GetAt(listPos);
+	CList<PWHistEntry, PWHistEntry&>* pPWHistList;
+	CMyString tmp, pwh;
 
-      of << "  <entry>" << endl;
-      // TODO: need to handle entity escaping of values.
-      of << "    <group>" << temp.GetGroup() << "</group>" << endl;
-      of << "    <title>" << temp.GetTitle() << "</title>" << endl;
-      of << "    <username>" << temp.GetUser() << "</username>" << endl;
-      of << "    <password>" << temp.GetPassword() << "</password>" << endl;
-      of << "    <notes>" << temp.GetNotes() << "</notes>" << endl;
-      of << "  </entry>" << endl;
+	char buffer[8];
+	time_t time_now;
+	int id = 1;
+	
+	pPWHistList = new CList<PWHistEntry, PWHistEntry&>;
+	POSITION listPos = m_pwlist.GetHeadPosition();
 
-      m_pwlist.GetNext(listPos);
-    }
-  of << "</passwordsafe>" << endl;
-  of.close();
+	time(&time_now);
+	const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, XML);
 
-  return SUCCESS;
+	of << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" << endl;
+	of << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
+	of << endl;
+	of << "<passwordsafe" << endl;
+	tmp = m_currfile;
+	tmp.Replace(_T("&"), _T("&amp;"));
+	of << "Database=\"" << tmp << "\"" << endl;
+	of << "ExportTimeStamp=\"" << now << "\"" << endl;
+	of << "delimiter=\"" << delimiter << "\"" << endl;
+	of << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
+	of << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
+	of << endl;
+
+	while (listPos != NULL) {
+		CItemData temp = m_pwlist.GetAt(listPos);
+#if _MSC_VER >= 1400
+		_itoa_s( id, buffer, 8, 10 );
+#else
+		_itoa( id, buffer, 10 );
+#endif
+		of << "\t<entry id=\"" << buffer << "\">" << endl;
+		// TODO: need to handle entity escaping of values.
+		tmp =  temp.GetGroup();
+		if (!tmp.IsEmpty())
+			of << "\t\t<group><![CDATA[" << tmp << "]]></group>" << endl;
+
+		tmp = temp.GetTitle();
+		if (!tmp.IsEmpty())
+			of << "\t\t<title><![CDATA[" << tmp << "]]></title>" << endl;
+
+		tmp = temp.GetUser();
+		if (!tmp.IsEmpty())
+			of << "\t\t<username><![CDATA[" << tmp << "]]></username>" << endl;
+
+		tmp = temp.GetPassword();
+		if (!tmp.IsEmpty())
+			of << "\t\t<password><![CDATA[" << tmp << "]]></password>" << endl;
+
+		tmp = temp.GetURL();
+		if (!tmp.IsEmpty())
+			of << "\t\t<url><![CDATA[" << tmp << "]]></url>" << endl;
+
+		tmp = temp.GetAutoType();
+		if (!tmp.IsEmpty())
+			of << "\t\t<autotype><![CDATA[" << tmp << "]]></autotype>" << endl;
+
+		tmp = temp.GetNotes(delimiter);
+		if (!tmp.IsEmpty())
+			of << "\t\t<notes><![CDATA[" << tmp << "]]></notes>" << endl;
+
+		tmp = temp.GetCTimeXML();
+		if (!tmp.IsEmpty()) {
+			of << "\t\t<ctime>" << endl;
+			of << "\t\t\t<date>" << tmp.Left(10) << "</date>" << endl;
+			of << "\t\t\t<time>" << tmp.Right(8) << "</time>" << endl;
+			of << "\t\t</ctime>" << endl;
+		}
+
+		tmp = temp.GetATimeXML();
+		if (!tmp.IsEmpty()) {
+			of << "\t\t<atime>" << endl;
+			of << "\t\t\t<date>" << tmp.Left(10) << "</date>" << endl;
+			of << "\t\t\t<time>" << tmp.Right(8) << "</time>" << endl;
+			of << "\t\t</atime>" << endl;
+		}
+
+		tmp = temp.GetLTimeXML();
+		if (!tmp.IsEmpty()) {
+			of << "\t\t<ltime>" << endl;
+			of << "\t\t\t<date>" << tmp.Left(10) << "</date>" << endl;
+			of << "\t\t\t<time>" << tmp.Right(8) << "</time>" << endl;
+			of << "\t\t</ltime>" << endl;
+		}
+
+		tmp = temp.GetPMTimeXML();
+		if (!tmp.IsEmpty()) {
+			of << "\t\t<pmtime>" << endl;
+			of << "\t\t\t<date>" << tmp.Left(10) << "</date>" << endl;
+			of << "\t\t\t<time>" << tmp.Right(8) << "</time>" << endl;
+			of << "\t\t</pmtime>" << endl;
+		}
+
+		tmp = temp.GetRMTimeXML();
+		if (!tmp.IsEmpty()) {
+			of << "\t\t<rmtime>" << endl;
+			of << "\t\t\t<date>" << tmp.Left(10) << "</date>" << endl;
+			of << "\t\t\t<time>" << tmp.Right(8) << "</time>" << endl;
+			of << "\t\t</rmtime>" << endl;
+		}
+
+		BOOL pwh_status;
+		int pwh_max, pwh_num;
+		temp.CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, XML);
+		if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
+			of << "\t\t<pwhistory>" << endl;
+#if _MSC_VER >= 1400
+			sprintf_s(buffer, 3, "%1d", pwh_status);
+			of << "\t\t\t<status>" << buffer << "</status>" << endl;
+
+			sprintf_s(buffer, 3, "%2d", pwh_max);
+			of << "\t\t\t<max>" << buffer << "</max>" << endl;
+
+			sprintf_s(buffer, 3, "%2d", pwh_num);
+			of << "\t\t\t<num>" << buffer << "</num>" << endl;
+#else
+			sprintf(buffer, "%1d", pwh_status);
+			of << "\t\t\t<status>" << buffer << "</status>" << endl;
+
+			sprintf(buffer, "%2d", pwh_max);
+			of << "\t\t\t<max>" << buffer << "</max>" << endl;
+
+			sprintf(buffer, "%2d", pwh_num);
+			of << "\t\t\t<num>" << buffer << "</num>" << endl;
+#endif
+			if (pPWHistList->GetCount() > 0) {
+				of << "\t\t\t<history_entries>" << endl;
+				POSITION listpos = pPWHistList->GetHeadPosition();
+				int num = 1;
+				while (listpos != NULL) {
+#if _MSC_VER >= 1400
+					_itoa_s( num, buffer, 8, 10 );
+#else
+					_itoa( num, buffer, 10 );
+#endif
+					of << "\t\t\t\t<history_entry num=\"" << buffer << "\">" << endl;
+					const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
+					of << "\t\t\t\t\t<changed>" << endl;
+					of << "\t\t\t\t\t\t<date>" << pwshe.changedate.Left(10) << "</date>" << endl;
+					of << "\t\t\t\t\t\t<time>" << pwshe.changedate.Right(8) << "</time>" << endl;
+					of << "\t\t\t\t\t</changed>" << endl;
+					of << "\t\t\t\t\t<oldpassword><![CDATA[" << pwshe.password << "]]></oldpassword>" << endl;
+					of << "\t\t\t\t</history_entry>" << endl;
+					
+					pPWHistList->GetNext(listpos);
+					num++;
+				}
+				of << "\t\t\t</history_entries>" << endl;
+			}
+			of << "\t\t</pwhistory>" << endl;
+			pPWHistList->RemoveAll();
+		}
+
+		of << "\t</entry>" << endl;
+		of << endl;
+
+		m_pwlist.GetNext(listPos);
+		id++;
+	}
+	of << "</passwordsafe>" << endl;
+	of.close();
+	delete pPWHistList;
+
+	return SUCCESS;
 }
-*/
+
+int
+PWScore::ImportXMLFile(const CMyString &, const CMyString &, int &, int &)
+{
+	// to do - maybe not!  User can use a XSLT file to transform a XML file into an
+	// exported plain text file for import.  Need an expert to write it!
+	// Or Excel 2002+ will read a XML file ans SaveAs a CSV file.
+	return SUCCESS;
+}
 
 int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
@@ -186,14 +338,14 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
   				CTIME, PMTIME, ATIME, LTIME, RMTIME,
-  				NOTES, NUMFIELDS};
+  				HISTORY, NOTES, NUMFIELDS};
 
   enum Fields_PreV3 {GROUPTITLE_V1V2, USER_V1V2, PASSWORD_V1V2,
 				NOTES_V1V2, NUMFIELDS_V1V2};
   if (!ifs)
     return CANT_OPEN_FILE;
-  int i_numfields = bimport_preV3 ? NUMFIELDS_V1V2 : NUMFIELDS;
-  int i_notes = bimport_preV3 ? NOTES_V1V2 : NOTES;
+  const int i_numfields = bimport_preV3 ? NUMFIELDS_V1V2 : NUMFIELDS;
+  const int i_notes = bimport_preV3 ? NOTES_V1V2 : NOTES;
 
   for (;;) {
     // read a single line.
@@ -282,13 +434,15 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
     // New 3.0 fields: URL, AutoType, CTime
 	if (!bimport_preV3) {
-    temp.SetURL(tokens[URL].c_str());
-    temp.SetAutoType(tokens[AUTOTYPE].c_str());
-    temp.SetCTime(tokens[CTIME].c_str());
+		temp.SetURL(tokens[URL].c_str());
+		temp.SetAutoType(tokens[AUTOTYPE].c_str());
+		temp.SetCTime(tokens[CTIME].c_str());
 		temp.SetPMTime(tokens[PMTIME].c_str());
 		temp.SetATime(tokens[ATIME].c_str());
 		temp.SetLTime(tokens[LTIME].c_str());
 		temp.SetRMTime(tokens[RMTIME].c_str());
+		if (PWSUtil::VerifyPWHistoryString(tokens[HISTORY].c_str()) == PWH_OK)
+			temp.SetPWHistory(tokens[HISTORY].c_str());
 	}
 
     // The notes field begins and ends with a double-quote, with

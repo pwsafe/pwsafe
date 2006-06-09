@@ -29,8 +29,8 @@ public:
 	BOOL	m_pwusesymbols;
 	BOOL	m_pwuseuppercase;
 	BOOL	m_pweasyvision;
+	BOOL	m_savepwhistory;
 	//}}AFX_DATA
-
 
 // Overrides
 	// ClassWizard generate virtual function overrides
@@ -51,6 +51,7 @@ protected:
 	afx_msg void OnUsehexdigits();
 	afx_msg void OnUseeasyvision();
 	afx_msg BOOL OnKillActive();
+	afx_msg void OnSavePWHistory();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

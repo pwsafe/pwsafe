@@ -225,7 +225,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       UpdateLeafsGroup(ti, prefix);
     }
     // Mark database as modified
-    ((DboxMain *)m_parent)->SetChanged(true);
+    ((DboxMain *)m_parent)->SetChanged(DboxMain::Data);
     SortChildren(GetParentItem(ti));
     *pLResult = TRUE;
   } else {
@@ -406,7 +406,7 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     } while (1);
     ci->SetGroup(path);
     // Mark database as modified!
-    ((DboxMain *)GetParent())->SetChanged(true);
+    ((DboxMain *)GetParent())->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);

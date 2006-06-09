@@ -22,25 +22,33 @@ static char THIS_FILE[] = __FILE__;
 CAddDlg::CAddDlg(CWnd* pParent)
   : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
-    m_URL(_T("")), m_autotype(_T("")), m_tttLTime((time_t)0)
+    m_URL(_T("")), m_autotype(_T("")), m_tttLTime((time_t)0),
+	m_MaxPWHistory(3), m_SavePWHistory(FALSE)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
 }
 
-
-BOOL CAddDlg::OnInitDialog() 
+BOOL
+CAddDlg::OnInitDialog() 
 {
   CDialog::OnInitDialog();
  
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   ResizeDialog();
 
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+
+  pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
+  pspin->SetRange(1, 25);
+  pspin->SetBase(10);
+  pspin->SetPos(m_MaxPWHistory);  // Default suggestion of max. to keep!
+
   return TRUE;
 }
 
-
-void CAddDlg::DoDataExchange(CDataExchange* pDX)
+void
+CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
@@ -69,8 +77,9 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_URL, (CString&)m_URL);
 	DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
 	DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
+	DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
+	DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 25);
 }
-
 
 BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -82,13 +91,11 @@ BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 END_MESSAGE_MAP()
 
-
 void
 CAddDlg::OnCancel() 
 {
   CDialog::OnCancel();
 }
-
 
 void
 CAddDlg::OnOK() 
@@ -130,8 +137,8 @@ CAddDlg::OnOK()
   }
 }
 
-
-void CAddDlg::OnHelp() 
+void
+CAddDlg::OnHelp() 
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#adddata"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
@@ -143,8 +150,8 @@ void CAddDlg::OnHelp()
 #endif
 }
 
-
-void CAddDlg::OnRandom() 
+void
+CAddDlg::OnRandom() 
 {
   DboxMain* pParent = (DboxMain*)GetParent();
   ASSERT(pParent != NULL);
@@ -155,7 +162,8 @@ void CAddDlg::OnRandom()
 }
 //-----------------------------------------------------------------------------
 
-void CAddDlg::OnBnClickedMore()
+void
+CAddDlg::OnBnClickedMore()
 {
   m_isExpanded = !m_isExpanded;
   PWSprefs::GetInstance()->
@@ -164,12 +172,14 @@ void CAddDlg::OnBnClickedMore()
 }
 
 
-void CAddDlg::OnBnClickedOk()
+void
+CAddDlg::OnBnClickedOk()
 {
 	OnOK();
 }
 
-void CAddDlg::ResizeDialog()
+void
+CAddDlg::ResizeDialog()
 {
 	int TopHideableControl = IDC_TOP_HIDEABLE;
 	int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
@@ -183,11 +193,14 @@ void CAddDlg::ResizeDialog()
 		IDC_STATIC_LTIME,
 		IDC_LTIME_CLEAR,
 		IDC_LTIME_SET,
-		IDC_STATIC_DTEXPGROUP
+		IDC_STATIC_DTEXPGROUP,
+		IDC_MAXPWHISTORY,
+		IDC_STATIC_OLDPW1,
+		IDC_PWHSPIN,
+		IDC_STATIC_PWHIST
 	};	
 	
-	for(int n = 0; n<sizeof(controls)/sizeof(IDC_URL);n++)
-	{
+	for(int n = 0; n < sizeof(controls)/sizeof(IDC_URL); n++) {
 		CWnd* pWind;
 		pWind = (CWnd *)GetDlgItem(controls[n]);
 		pWind->ShowWindow(m_isExpanded);
@@ -199,29 +212,24 @@ void CAddDlg::ResizeDialog()
 
 	RECT newDialogRect=curDialogRect;
 
-
 	RECT curLowestCtlRect;
 	CWnd* pLowestCtl;
 	int newHeight;
-  if (m_isExpanded) {
-    // from less to more
+	if (m_isExpanded) {
+      // from less to more
 	  pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
-	  
 	  pLowestCtl->GetWindowRect(&curLowestCtlRect);
-
 	  newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
-    m_moreLessBtn.SetWindowText(_T("<< Less"));
-  } else {
-    
+
+	  m_moreLessBtn.SetWindowText(_T("<< Less"));
+	} else {
 	  // from more to less
 	  pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
 	  pLowestCtl->GetWindowRect(&curLowestCtlRect);
-
 	  newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
 
-    m_moreLessBtn.SetWindowText(_T("More >>"));
-  }
-  
+	  m_moreLessBtn.SetWindowText(_T("More >>"));
+	}
 
   this->SetWindowPos(NULL,0,0,
 		newDialogRect.right - newDialogRect.left ,
@@ -229,13 +237,16 @@ void CAddDlg::ResizeDialog()
 		SWP_NOMOVE );
 
 }
-void CAddDlg::OnBnClickedClearLTime()
+void
+CAddDlg::OnBnClickedClearLTime()
 {
 	GetDlgItem(IDC_LTIME)->SetWindowText(_T("Never"));
 	m_ascLTime = _T("Never");
 	m_tttLTime = (time_t)0;
 }
-void CAddDlg::OnBnClickedSetLTime()
+
+void
+CAddDlg::OnBnClickedSetLTime()
 {
 	CExpDTDlg dlg_expDT(this);
 
@@ -252,8 +263,11 @@ void CAddDlg::OnBnClickedSetLTime()
 	}
 }
 
-void CAddDlg::OnCheckedSavePasswordHistory()
+void
+CAddDlg::OnCheckedSavePasswordHistory()
 {
 	m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
+
+	GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
 	return;
 }

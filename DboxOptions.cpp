@@ -75,10 +75,6 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::LockOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prefs->
     GetPref(PWSprefs::IdleTimeout);
-  security.m_savepwhistory = prevLockOIT = prefs->
-    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
-  security.m_maxpwhistory = prefs->
-    GetPref(PWSprefs::MaxPWHistory);
 
   passwordpolicy.m_pwlendefault = prefs->
     GetPref(PWSprefs::PWLenDefault);
@@ -94,6 +90,8 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
     GetPref(PWSprefs::PWEasyVision);
+  passwordpolicy.m_savepwhistory = prefs->
+    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
 
   username.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefUser);
@@ -171,10 +169,6 @@ DboxMain::OnOptions()
                      security.m_LockOnIdleTimeout == TRUE);
       prefs->SetPref(PWSprefs::IdleTimeout,
                      security.m_IdleTimeOut);
-      prefs->SetPref(PWSprefs::SavePasswordHistory,
-      				 security.m_savepwhistory == TRUE);
-      prefs->SetPref(PWSprefs::MaxPWHistory,
-      				 security.m_maxpwhistory);
 
       prefs->SetPref(PWSprefs::PWLenDefault,
                      passwordpolicy.m_pwlendefault);
@@ -190,6 +184,8 @@ DboxMain::OnOptions()
                      passwordpolicy.m_pwusehexdigits == TRUE);
       prefs-> SetPref(PWSprefs::PWEasyVision,
                       passwordpolicy.m_pweasyvision == TRUE);
+      prefs->SetPref(PWSprefs::SavePasswordHistory,
+      				 passwordpolicy.m_savepwhistory == TRUE);
 
       prefs->SetPref(PWSprefs::UseDefUser,
                      username.m_usedefuser == TRUE);
@@ -274,8 +270,7 @@ DboxMain::OnOptions()
           KillTimer(TIMER_USERLOCK);
         }
       SetIdleLockCounter(security.m_IdleTimeOut);
-      m_bSavePWHistory = (security.m_savepwhistory == TRUE) ? true : false;
-      m_MaxPWHistory = security.m_maxpwhistory;
+      m_bSavePWHistory = (passwordpolicy.m_savepwhistory == TRUE) ? true : false;
 
       // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)

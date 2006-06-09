@@ -44,6 +44,7 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_USESYMBOLS, m_pwusesymbols);
   DDX_Check(pDX, IDC_USEUPPERCASE, m_pwuseuppercase);
   DDX_Check(pDX, IDC_EASYVISION, m_pweasyvision);
+  DDX_Check(pDX, IDC_SAVEPWHISTORY, m_savepwhistory);
   //}}AFX_DATA_MAP
 }
 
@@ -56,6 +57,7 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, CPropertyPage)
 	ON_BN_CLICKED(IDC_USESYMBOLS, OnUsesymbols)
 	ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUsehexdigits)
 	ON_BN_CLICKED(IDC_EASYVISION, OnUseeasyvision)
+	ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -206,4 +208,11 @@ BOOL COptionsPasswordPolicy::OnKillActive()
   //End check
 
   return TRUE;
+}
+
+void COptionsPasswordPolicy::OnSavePWHistory() 
+{
+  BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
+
+  GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
 }

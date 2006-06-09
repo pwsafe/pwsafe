@@ -29,8 +29,6 @@ public:
 	BOOL	m_LockOnWindowLock;
 	BOOL	m_LockOnIdleTimeout;
 	UINT    m_IdleTimeOut;
-	BOOL	m_savepwhistory;
-	int     m_maxpwhistory;
 	//}}AFX_DATA
 
 
@@ -46,7 +44,6 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsSecurity)
 	afx_msg void OnLockbase();
-	afx_msg void OnSavePWHistory();
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

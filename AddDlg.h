@@ -21,6 +21,7 @@ public:
   CMyString m_ascLTime;
   time_t m_tttLTime;
   BOOL m_SavePWHistory;
+  int m_MaxPWHistory;
   //}}AFX_DATA
 
   // Overrides

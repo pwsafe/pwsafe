@@ -44,7 +44,7 @@ class PWSprefs {
 		   SavePasswordHistory, NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
-		  DoubleClickAction, HotKey, MaxREItems, MaxPWHistory,
+		  DoubleClickAction, HotKey, MaxREItems,
 		  NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		     TreeFont, NumStringPrefs};

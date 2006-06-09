@@ -25,10 +25,6 @@
 
 #include "CryptKeyEntry.h"
 
-#ifdef _DEBUG
-//#include "vld.h"
-#endif
-
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
 //   ON_COMMAND(ID_HELP, CWinApp::OnHelp)
    ON_COMMAND(ID_HELP, OnHelp)

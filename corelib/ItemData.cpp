@@ -239,6 +239,42 @@ CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
     if (!group.IsEmpty())
       title = group + TCHAR('.') + title;
 
+    // History exported as "00000" if empty, to make parsing easier
+    CMyString history;
+   	BOOL pwh_status;
+   	int pwh_max, pwh_num;
+   	CList<PWHistEntry, PWHistEntry&>* pPWHistList;
+
+	pPWHistList = new CList<PWHistEntry, PWHistEntry&>;
+   	CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, EXPORT_IMPORT);
+
+	//  Build export string
+	char buffer[8];
+#if _MSC_VER >= 1400
+	sprintf_s(buffer, 8, "%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+#else
+	sprintf(buffer,"%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+#endif
+	history = CMyString(buffer);
+	if (pPWHistList->GetCount() > 0) {
+		POSITION listpos = pPWHistList->GetHeadPosition();
+		while (listpos != NULL) {
+			const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
+			history += _T(' ');
+			history += pwshe.changedate;
+#if _MSC_VER >= 1400
+			sprintf_s(buffer, 8, " %4x ", pwshe.password.GetLength());
+#else
+			sprintf(buffer,"%4x ", pwshe.password.GetLength();
+#endif
+			history += CMyString(buffer);
+			history += pwshe.password;
+
+			pPWHistList->GetNext(listpos);
+		}
+	}
+    delete pPWHistList;
+
     // Notes field must be last, for ease of parsing import
     ret = title + separator + GetUser() + separator +
       GetPassword() + separator + GetURL() +
@@ -248,6 +284,7 @@ CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
       GetATimeExp() + separator +
       GetLTimeExp() + separator +
       GetRMTimeExp() + separator +
+      history + separator +
       _T("\"") + GetNotes(delimiter) + _T("\"");
 
     return ret;
@@ -486,6 +523,76 @@ CItemData::SetPWHistory(const CMyString &PWHistory)
 	SetField(m_PWHistory, PWHistory);
 }
 
+void
+CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num, CList<PWHistEntry, PWHistEntry&>* pPWHistList,
+							   const int time_format) const
+{
+	PWHistEntry pwh_ent;
+	CMyString tmp, pwh;
+	int ipwlen, m, n;
+	BOOL s;
+	long t;
+
+	pwh = this->GetPWHistory();
+	int len = pwh.GetLength();
+	if (len < 5) {
+			status = FALSE;
+			pwh_max = 0;
+			pwh_num = 0;
+		return;
+	}
+
+	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
+	TCHAR *lpszPW;
+
+#if _MSC_VER >= 1400
+	int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+#else
+	int iread = sscanf(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+#endif
+	ASSERT(iread == 3);
+	lpszPWHistory += 5;
+	for (int i = 0; i < n; i++) {
+#if _MSC_VER >= 1400
+		iread = sscanf_s(lpszPWHistory, "%8x", &t);
+#else
+		iread = sscanf(lpszPWHistory, "%8x", &t);
+#endif
+		ASSERT(iread == 1);
+		pwh_ent.changetttdate = (time_t) t;
+		pwh_ent.changedate =
+				PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
+		if (pwh_ent.changedate.IsEmpty()) {
+			//                       1234567890123456789
+			pwh_ent.changedate = _T("Unknown            ");
+		}
+		lpszPWHistory += 8;
+#if _MSC_VER >= 1400
+		iread = sscanf_s(lpszPWHistory, "%4x", &ipwlen);
+#else
+		iread = sscanf(lpszPWHistory, "%4x", &ipwlen);
+#endif
+		ASSERT(iread == 1);
+		lpszPWHistory += 4;
+		lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
+#if _MSC_VER >= 1400
+		memcpy_s(lpszPW, ipwlen + sizeof(TCHAR), lpszPWHistory, ipwlen);
+#else
+		memcpy(lpszPW, lpszPWHistory, ipwlen);
+#endif
+		lpszPW[ipwlen] = '\0';
+		tmp.ReleaseBuffer();
+		ASSERT(tmp.GetLength() == ipwlen);
+		pwh_ent.password = tmp;
+		lpszPWHistory += ipwlen;
+		pPWHistList->AddTail(pwh_ent);
+	}
+	status = s;
+	pwh_max = m;
+	pwh_num = n;
+	pwh.ReleaseBuffer();
+}
+
 BlowFish *
 CItemData::MakeBlowFish() const
 {
@@ -539,7 +646,7 @@ CItemData::Clear()
     SetATime((time_t) 0);
     SetLTime((time_t) 0);
     SetRMTime((time_t) 0);
-    SetPWHistory(_T("0"));
+    SetPWHistory(_T(""));
 }
 
   //TODO: "General System Fault. Please sacrifice a goat 

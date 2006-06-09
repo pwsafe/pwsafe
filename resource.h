@@ -54,6 +54,7 @@
 #define IDB_LEAF                        200
 #define IDB_LEAF_EXPIRED                201
 #define IDD_EXPORT_TEXT                 204
+#define IDD_EXPORT_XML                  205
 #define IDB_TOOLBAR1                    212
 #define IDB_TOOLBAR2                    213
 #define IDB_TOOLBAR3                    214
@@ -66,7 +67,6 @@
 #define IDD_IMPORT_TEXT                 225
 #define IDD_PICKEXPDATETIME             226
 #define IDD_DISPLAY_EXPIRED_ENTRIES     227
-#define IDD_SHOW_PWHISTORY              228
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -136,6 +136,7 @@
 #define IDC_EASYVISION                  1077
 #define IDC_ITEMTREE                    1078
 #define IDC_GROUP                       1079
+#define IDC_EXPORT_XML_PASSWORD         1080
 #define IDC_EXPORT_TEXT_PASSWORD        1081
 #define IDC_USEHEXDIGITS                1082
 #define IDC_OVERRIDE_POLICY             1082
@@ -190,25 +191,31 @@
 #define IDC_LTIME_PICKER                1140
 #define IDC_MAINTAINDATETIMESTAMPS      1141
 #define IDC_STATIC_DTGROUP              1142
-#define IDC_STATIC_DTEXP_GROUP          1143
-#define IDC_STATIC_DTEXPGROUP           1144
-#define IDC_TOP_HIDEABLE                1145
-#define IDC_BOTTOM_HIDEABLE             1146
-#define IDC_EXPIRED_PASSWORD_LIST       1147
-#define IDC_COPY_EXP_TO_CLIPBOARD       1148
-#define IDC_IMPORT_PREV3                1149
-#define IDC_EXPORT_HDR                  1150
-#define IDC_RESPIN                      1151
-#define IDC_MRUSPIN                     1152
-#define IDC_PWHSPIN                     1153
-#define IDC_PWHISTORY_LIST              1154
-#define IDC_SAVEPWHISTORY               1155
-#define IDC_MAXPWHISTORY                1156
-#define IDC_COPY_OLDPW_TO_CLIPBOARD     1157
-#define IDC_SHOW_PWHIST                 1158
-#define IDC_CLEAR_PWHIST                1159
-#define IDC_STATIC_PWHIST               1160
-#define IDC_SAVE_PWHIST                 1161
+#define IDC_STATIC_DTEXPGROUP           1143
+#define IDC_TOP_HIDEABLE                1144
+#define IDC_BOTTOM_HIDEABLE             1145
+#define IDC_LEFT_HIDEABLE               1146
+#define IDC_RIGHT_HIDEABLE              1147
+#define IDC_EXPIRED_PASSWORD_LIST       1148
+#define IDC_COPY_EXP_TO_CLIPBOARD       1149
+#define IDC_IMPORT_PREV3                1150
+#define IDC_EXPORT_HDR                  1151
+#define IDC_RESPIN                      1152
+#define IDC_MRUSPIN                     1153
+#define IDC_PWHSPIN                     1154
+#define IDC_STATIC_PWHGROUP             1155
+#define IDC_PWHISTORY_LIST              1156
+#define IDC_SAVEPWHISTORY               1157
+#define IDC_MAXPWHISTORY                1158
+#define IDC_COPY_OLDPW_TO_CLIPBOARD     1160
+#define IDC_CLEAR_PWHIST                1161
+#define IDC_STATIC_PWHIST               1162
+#define IDC_SAVE_PWHIST                 1163
+#define IDC_STATIC_OLDPW1               1164
+#define IDC_STATIC_OLDPW2               1165
+#define IDC_STATIC_OLDPW3               1166
+#define IDC_SHOW_PWHIST                 1167
+#define IDC_STATIC_PWHSTATUS            1168
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -301,9 +308,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        229
+#define _APS_NEXT_RESOURCE_VALUE        228
 #define _APS_NEXT_COMMAND_VALUE         32859
-#define _APS_NEXT_CONTROL_VALUE         1162
+#define _APS_NEXT_CONTROL_VALUE         1169
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

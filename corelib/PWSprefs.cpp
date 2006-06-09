@@ -22,7 +22,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("showpwinlist"), false, true},
   {_T("sortascending"), true, true},
   {_T("usedefuser"), false, true},
-  {_T("saveimmediately"), false, true},
+  {_T("saveimmediately"), true, true},
   {_T("pwuselowercase"), true, true},
   {_T("pwuseuppercase"), true, true},
   {_T("pwusedigits"), true, true},
@@ -61,7 +61,6 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("HotKey"), 0, true}, // zero means disabled, !=0 is key code.
   {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
   {_T("MaxREItems"), 25, true},
-  {_T("MaxPWHistory"), 0, true},
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
