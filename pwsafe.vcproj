@@ -777,9 +777,6 @@
 				RelativePath=".\RUEList.cpp">
 			</File>
 			<File
-				RelativePath=".\ShowPWHistDlg.cpp">
-			</File>
-			<File
 				RelativePath="SysColStatic.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -1001,9 +998,6 @@
 			</File>
 			<File
 				RelativePath="sha1.h">
-			</File>
-			<File
-				RelativePath="ShowPWHistDlg.h">
 			</File>
 			<File
 				RelativePath="StdAfx.h">

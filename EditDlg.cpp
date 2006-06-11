@@ -381,8 +381,7 @@ CEditDlg::OnPasskeySetfocus()
 void
 CEditDlg::OnBnClickedOk()
 {
-	UpdateData(TRUE);
-	CDialog::OnOK();
+	OnOK();
 }
 
 void
