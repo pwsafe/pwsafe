@@ -46,7 +46,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_maxreitems, 0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
 	DDX_Check(pDX, IDC_DEFPWUSESYSTRAY, m_usesystemtray);
 	DDX_Text(pDX, IDC_MAXMRUITEMS, m_maxmruitems);
-	DDV_MinMaxInt(pDX, m_maxmruitems, 0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
+	DDV_MinMaxInt(pDX, m_maxmruitems, 1, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
 	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);	
 	//}}AFX_DATA_MAP
 }
@@ -81,9 +81,11 @@ BOOL COptionsDisplay::OnInitDialog()
     pspin->SetRange(0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
     pspin->SetBase(10);
     pspin->SetPos(m_maxreitems);
+
     pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_MRUSPIN);
+
     pspin->SetBuddy(GetDlgItem(IDC_MAXMRUITEMS));
-    pspin->SetRange(0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
+    pspin->SetRange(1, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
     pspin->SetBase(10);
     pspin->SetPos(m_maxmruitems);
 	

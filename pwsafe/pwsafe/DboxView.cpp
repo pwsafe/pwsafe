@@ -645,8 +645,29 @@ DboxMain::OnDuplicateEntry()
     ci2.SetTitle(ci2_title);
     ci2.SetUser(ci2_user);
     ci2.SetPassword( ci->GetPassword() );
+    ci2.SetURL( ci->GetURL() );
+    ci2.SetAutoType( ci->GetAutoType() );
     ci2.SetNotes( ci->GetNotes() );
-      
+    time_t t;
+    ci->GetCTime(t);
+    if ((long) t != 0)
+    	ci2.SetCTime(t);
+    ci->GetATime(t);
+    if ((long) t != 0)
+    	ci2.SetATime(t);
+    ci->GetLTime(t);
+    if ((long) t != 0)
+    	ci2.SetLTime(t);
+    ci->GetPMTime(t);
+    if ((long) t != 0)
+    	ci2.SetPMTime(t);
+    ci->GetRMTime(t);
+    if ((long) t != 0)
+    	ci2.SetRMTime(t);
+    CMyString tmp = ci->GetPWHistory();
+    if (tmp.GetLength() >= 5)
+    	    ci2.SetPWHistory(tmp);
+
     // Add it to the end of the list      
     m_core.AddEntryToTail(ci2);
     di->list_index = -1; // so that insertItem will set new values
