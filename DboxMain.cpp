@@ -1258,7 +1258,7 @@ DboxMain::Open( const CMyString &pszFilename )
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   switch (rc) {
   case PWScore::SUCCESS:
-    app.GetMRU()->Add(pszFilename);
+    app.AddToMRU(pszFilename);
     break; // Keep going... 
   case PWScore::CANT_OPEN_FILE:
     temp = m_core.GetCurFile()
@@ -1375,7 +1375,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
   switch (rc)
 	{
 	case PWScore::SUCCESS:
-      app.GetMRU()->Add(pszFilename);
+      app.AddToMRU(pszFilename);
       break; // Keep going... 
 	case PWScore::CANT_OPEN_FILE:
       temp = m_core.GetCurFile()
@@ -1780,7 +1780,7 @@ DboxMain::SaveAs()
   SetChanged(Clear);
   ChangeOkUpdate();
 
-  app.GetMRU()->Add( newfile );
+  app.AddToMRU( newfile );
  
   if (m_IsReadOnly) {
   	// reset read-only status (new file can't be read-only!)
@@ -2084,6 +2084,9 @@ DboxMain::ConfigureSystemMenu()
 void
 DboxMain::OnUpdateMRU(CCmdUI* pCmdUI) 
 {
+  if (app.GetMRU() == NULL)
+  	return;
+
   if (!app.m_mruonfilemenu) {
     if (pCmdUI->m_nIndex == 0) { // Add to popup menu
       app.GetMRU()->UpdateMenu( pCmdUI );
