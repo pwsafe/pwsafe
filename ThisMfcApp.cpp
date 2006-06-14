@@ -327,13 +327,14 @@ ThisMfcApp::InitInstance()
   CString companyname(_T("Counterpane Systems"));
   SetRegistryKey(companyname);
 
-  int	nMRUItems = PWSprefs::GetInstance()->
+  int nMRUItems = PWSprefs::GetInstance()->
     GetPref(PWSprefs::MaxMRUItems);
 
   m_mruonfilemenu = PWSprefs::GetInstance()->
     GetPref(PWSprefs::MRUOnFileMenu);
-    
+
   m_clipboard_set = false;
+  
   m_mainmenu = new CMenu;
   m_mainmenu->LoadMenu(IDR_MAINMENU);
   CMenu* new_popupmenu = new CMenu;
@@ -341,34 +342,48 @@ ThisMfcApp::InitInstance()
   // Look for "File" menu.
   int pos = FindMenuItem(m_mainmenu, _T("&File"));
   if (pos == -1) // E.g., in non-English versions
-    pos = 0; // best guess...
+	pos = 0; // best guess...
+
   CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
   if (file_submenu != NULL)  // Look for "Open Database"
-    pos = FindMenuItem(file_submenu, ID_MENUITEM_OPEN);
+   	pos = FindMenuItem(file_submenu, ID_MENUITEM_OPEN);
   else
-    pos = -1;
-  
-  if (pos > -1) {
-    int irc;
-    // Create New Popup Menu
-    new_popupmenu->CreatePopupMenu();
-  
-    if (!m_mruonfilemenu) {  // MRU entries in popup menu
-	  // Insert Item onto new popup
-	  irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
-	  ASSERT(irc != 0);
+   	pos = -1;
 
-	  // Insert Popup onto main menu
-	  irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) new_popupmenu->m_hMenu, "&Recent Safes" );
-	  ASSERT(irc != 0);
-    } else {  // MRU entries inline
-	  irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
-	  ASSERT(irc != 0);
-    }
+  if (nMRUItems > 0) {
+	  if (pos > -1) {
+    	int irc;
+    	// Create New Popup Menu
+    	new_popupmenu->CreatePopupMenu();
 
-    m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
-    m_pMRU->ReadList();
-  }
+    	if (!m_mruonfilemenu) {  // MRU entries in popup menu
+	  		// Insert Item onto new popup
+	  		irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
+	  		ASSERT(irc != 0);
+
+	  		// Insert Popup onto main menu
+	  		irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) new_popupmenu->m_hMenu,
+	  									 "&Recent Safes" );
+			ASSERT(irc != 0);
+    	} else {  // MRU entries inline
+	  		irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
+	  		ASSERT(irc != 0);
+    	}
+
+    	m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
+    	m_pMRU->ReadList();
+  		}
+	} else {
+	  if (pos > -1) {
+    	int irc;
+    	// Remove extra separator
+    	irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
+    	ASSERT( irc != 0);
+    	// Remove Clear MRU menu item.
+    	irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
+    	ASSERT( irc != 0);
+      }
+	}
 
   DboxMain dbox(NULL);
 	
@@ -506,8 +521,20 @@ ThisMfcApp::InitInstance()
 }
 
 void
+ThisMfcApp::AddToMRU(const CMyString &pszFilename)
+{
+	if (m_pMRU == NULL)
+		return;
+		
+	m_pMRU->Add(pszFilename);
+}
+ 
+void
 ThisMfcApp::ClearMRU()
 {
+	if (m_pMRU == NULL)
+		return;
+
 	int numMRU = m_pMRU->GetSize();
 	for (int i = numMRU; i > 0; i--)
 		m_pMRU->Remove(i - 1);

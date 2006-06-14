@@ -783,10 +783,11 @@ DboxMain::OnExportVx(UINT nID)
   CMyString newfile;
 
   //SaveAs-type dialog box
+  CMyString OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("dat") );
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
-                   m_core.GetCurFile(),
+                   OldFormatFileName,
                    OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                    |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    SUFFIX_FILTERS
@@ -833,10 +834,11 @@ DboxMain::OnExportText()
     if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
+	  CMyString TxtFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("txt") );
       while (1) {
         CFileDialog fd(FALSE,
                        _T("txt"),
-                       _T(""),
+                       TxtFileName,
                        OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
                        |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                        _T("Text files (*.txt)|*.txt|")
@@ -885,22 +887,7 @@ DboxMain::OnExportXML()
     if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
-	  TCHAR path_buffer[_MAX_PATH];
-	  TCHAR drive[_MAX_DRIVE];
-	  TCHAR dir[_MAX_DIR];
-	  TCHAR fname[_MAX_FNAME];
-	  TCHAR ext[_MAX_EXT];
-
-#if _MSC_VER >= 1400
-	  _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
-                       _MAX_FNAME, ext, _MAX_EXT );
-	  _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, _T("xml") );
-#else
-	  _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
-	  _tmakepath( path_buffer, drive, dir, fname, _T("xml") );
-#endif
-  CMyString XMLFileName = CMyString(path_buffer);
-
+      CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml") );
       while (1) {
         CFileDialog fd(FALSE,
                        _T("xml"),
@@ -1094,21 +1081,7 @@ DboxMain::Save()
   if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
     m_core.BackupCurFile(); // to save previous reversion
   } else { // file version mis-match
-  	TCHAR path_buffer[_MAX_PATH];
-  	TCHAR drive[_MAX_DRIVE];
-  	TCHAR dir[_MAX_DIR];
-  	TCHAR fname[_MAX_FNAME];
-  	TCHAR ext[_MAX_EXT];
-
-#if _MSC_VER >= 1400
-    _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
-                       _MAX_FNAME, ext, _MAX_EXT );
-    _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, DEFAULT_SUFFIX );
-#else
-    _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
-    _tmakepath( path_buffer, drive, dir, fname, DEFAULT_SUFFIX );
-#endif
-    CMyString NewName = CMyString(path_buffer);
+  	CMyString NewName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
 
     CString msg = _T("The original database, \"");
     msg += CString(m_core.GetCurFile());
@@ -1312,7 +1285,7 @@ DboxMain::Open( const CMyString &pszFilename )
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   switch (rc) {
   case PWScore::SUCCESS:
-    app.GetMRU()->Add(pszFilename);
+    app.AddToMRU(pszFilename);
     break; // Keep going... 
   case PWScore::CANT_OPEN_FILE:
     temp = m_core.GetCurFile()
@@ -1429,7 +1402,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
   switch (rc)
 	{
 	case PWScore::SUCCESS:
-      app.GetMRU()->Add(pszFilename);
+      app.AddToMRU(pszFilename);
       break; // Keep going... 
 	case PWScore::CANT_OPEN_FILE:
       temp = m_core.GetCurFile()
@@ -1766,22 +1739,7 @@ DboxMain::SaveAs()
       return PWScore::USER_CANCEL;
   }
   //SaveAs-type dialog box
-  TCHAR path_buffer[_MAX_PATH];
-  TCHAR drive[_MAX_DRIVE];
-  TCHAR dir[_MAX_DIR];
-  TCHAR fname[_MAX_FNAME];
-  TCHAR ext[_MAX_EXT];
-
-#if _MSC_VER >= 1400
-  _tsplitpath_s( m_core.GetCurFile(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
-                       _MAX_FNAME, ext, _MAX_EXT );
-  _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, DEFAULT_SUFFIX );
-#else
-  _tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
-  _tmakepath( path_buffer, drive, dir, fname, DEFAULT_SUFFIX );
-#endif
-  CMyString v3FileName = CMyString(path_buffer);
-
+  CMyString v3FileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
@@ -1828,7 +1786,7 @@ DboxMain::SaveAs()
   SetChanged(Clear);
   ChangeOkUpdate();
 
-  app.GetMRU()->Add( newfile );
+  app.AddToMRU( newfile );
  
   if (m_IsReadOnly) {
   	// reset read-only status (new file can't be read-only!)
@@ -2056,13 +2014,6 @@ DboxMain::OnDropFiles(HDROP hDrop)
 } 
 #endif
 
-BOOL
-DboxMain::CheckExtension(const CMyString &name, const CMyString &ext) const
-{
-  int pos = name.Find(ext);
-  return (pos == name.GetLength() - ext.GetLength()); //Is this at the end??
-}
-
 void
 DboxMain::UpdateAlwaysOnTop()
 {
@@ -2125,6 +2076,9 @@ DboxMain::ConfigureSystemMenu()
 void
 DboxMain::OnUpdateMRU(CCmdUI* pCmdUI) 
 {
+  if (app.GetMRU() == NULL)
+  	return;
+ 
   if (!app.m_mruonfilemenu) {
     if (pCmdUI->m_nIndex == 0) { // Add to popup menu
       app.GetMRU()->UpdateMenu( pCmdUI );

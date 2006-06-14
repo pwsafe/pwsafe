@@ -27,6 +27,7 @@ public:
 
   CRecentFileList*	GetMRU()			{ return m_pMRU; }
   void ClearMRU();
+  void AddToMRU(const CMyString &pszFilename);
 
   DboxMain* m_maindlg;
   PWScore m_core;

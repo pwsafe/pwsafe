@@ -441,8 +441,9 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 		temp.SetATime(tokens[ATIME].c_str());
 		temp.SetLTime(tokens[LTIME].c_str());
 		temp.SetRMTime(tokens[RMTIME].c_str());
-		if (PWSUtil::VerifyPWHistoryString(tokens[HISTORY].c_str()) == PWH_OK)
-			temp.SetPWHistory(tokens[HISTORY].c_str());
+		CMyString newPWHistory;
+		if (PWSUtil::VerifyImportPWHistoryString(tokens[HISTORY].c_str(), newPWHistory) == PWH_OK)
+			temp.SetPWHistory(newPWHistory);
 	}
 
     // The notes field begins and ends with a double-quote, with

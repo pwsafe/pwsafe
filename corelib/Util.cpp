@@ -708,7 +708,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 }
 
 int
-PWSUtil::VerifyPWHistoryString(const char *PWHistory)
+PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory)
 {
 	// Format is (! == mandatory blank, unless at the end of the record):
 	//    sxx00
@@ -718,9 +718,11 @@ PWSUtil::VerifyPWHistoryString(const char *PWHistory)
 	//    !yyyy/mm/dd!hh:mm:ss! may be !Unknown            !
 
 	CMyString tmp, pwh;
+	CString buffer;
 	int ipwlen, s, m, n;
 	int rc = PWH_OK;
 	time_t t;
+	newPWHistory = _T("");
 
 	pwh = CMyString(PWHistory);
 	int len = pwh.GetLength();
@@ -767,6 +769,9 @@ PWSUtil::VerifyPWHistoryString(const char *PWHistory)
 		goto exit;
 	}
 
+	buffer.Format(_T("%01d%02x%02x"), s, m, n);
+	newPWHistory = CMyString(buffer);
+
 	for (int i = 0; i < n; i++) {
 		if (len < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
 			rc = PWH_TOO_SHORT;
@@ -790,11 +795,14 @@ PWSUtil::VerifyPWHistoryString(const char *PWHistory)
 		lpszPW[19] = '\0';
 		tmp.ReleaseBuffer();
 		
-		if (tmp != _T("Unknown            "))		
+		if (tmp == _T("Unknown            "))
+			t = 0;
+		else {
 			if (!VerifyImportDateTimeString(tmp, t)) {
 				rc = PWH_INVALID_DATETIME;
 				break;
 			}
+		}
 
 		lpszPWHistory += 19;
 		len -= 19;
@@ -808,9 +816,9 @@ PWSUtil::VerifyPWHistoryString(const char *PWHistory)
 		len -= 1;
 
 #if _MSC_VER >= 1400
-		iread = sscanf_s(lpszPWHistory, "%4x", &ipwlen);
+		iread = sscanf_s(lpszPWHistory, "%04x", &ipwlen);
 #else
-		iread = sscanf(lpszPWHistory, "%4x", &ipwlen);
+		iread = sscanf(lpszPWHistory, "%04x", &ipwlen);
 #endif
 		if (iread != 1) {
 			rc = PWH_INVALID_PSWD_LENGTH;
@@ -833,6 +841,18 @@ PWSUtil::VerifyPWHistoryString(const char *PWHistory)
 			break;
 		}
 
+		CMyString tmp;
+		lpszPW = tmp.GetBuffer(ipwlen + 1);
+#if _MSC_VER >= 1400
+		memcpy_s(lpszPW, ipwlen + 1, lpszPWHistory, ipwlen);
+#else
+		memcpy(lpszPW, lpszPWHistory, ipwlen);
+#endif
+		lpszPW[ipwlen] = '\0';
+		tmp.ReleaseBuffer();
+		buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
+		newPWHistory += CMyString(buffer);
+		buffer.Empty();
 		lpszPWHistory += ipwlen;
 		len -= ipwlen;
 	}
@@ -841,5 +861,28 @@ PWSUtil::VerifyPWHistoryString(const char *PWHistory)
 		rc = PWH_TOO_LONG;
 
 	exit: pwh.ReleaseBuffer();
+	if (rc != PWH_OK)
+		newPWHistory = _T("");
+
 	return rc;
+}
+
+CMyString
+PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &newExtn)
+{
+	TCHAR path_buffer[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE];
+	TCHAR dir[_MAX_DIR];
+	TCHAR fname[_MAX_FNAME];
+	TCHAR ext[_MAX_EXT];
+
+#if _MSC_VER >= 1400
+	_tsplitpath_s( oldfilename, drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+	_tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, newExtn );
+#else
+	_tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
+	_tmakepath( path_buffer, drive, dir, fname, newExtn );
+#endif
+	return CMyString(path_buffer);
 }

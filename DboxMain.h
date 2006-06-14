@@ -287,7 +287,6 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-    BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
                           int index = GCP_NORMAL);
   bool ExtractURL(const CMyString &instr, CMyString &outurl);

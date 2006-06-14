@@ -263,9 +263,9 @@ CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
 			history += _T(' ');
 			history += pwshe.changedate;
 #if _MSC_VER >= 1400
-			sprintf_s(buffer, 8, " %4x ", pwshe.password.GetLength());
+			sprintf_s(buffer, 8, " %04x ", pwshe.password.GetLength());
 #else
-			sprintf(buffer,"%4x ", pwshe.password.GetLength();
+			sprintf(buffer,"%04x ", pwshe.password.GetLength();
 #endif
 			history += CMyString(buffer);
 			history += pwshe.password;

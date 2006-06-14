@@ -135,7 +135,8 @@ public:
                           HWND hWindow);
   static bool ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
                              HWND hWindow);
-  static int VerifyPWHistoryString(const char *PWHistory);
+  static int VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory);
+  static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   static const TCHAR *UNKNOWN_TIME_STR;
 };
 #endif // Util_h
