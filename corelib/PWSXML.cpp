@@ -99,7 +99,11 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 					b_ok = true;
 				}
 			} else {
-				m_strResultText.Format("Parse Error %08X", hr);
+				if(pEH->bErrorsFound == TRUE) {
+					m_strResultText = pEH->m_strValidationResult;
+				} else {
+					m_strResultText.Format("Parse Error %08X", hr);
+				}
 			}  // End Check for parsing errors
 
 		} else {
