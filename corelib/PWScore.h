@@ -15,14 +15,16 @@ class PWScore {
     SUCCESS = 0,
     FAILURE = 1,
     CANT_OPEN_FILE = -10,
-    USER_CANCEL,
-    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD,
-    UNKNOWN_VERSION,
-    NOT_SUCCESS,
-    ALREADY_OPEN,
-    INVALID_FORMAT,
-    USER_EXIT,
-    BAD_DIGEST = PWSfile::BAD_DIGEST
+    USER_CANCEL,								// -9
+    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD,	//  6 - ensure the same value
+    BAD_DIGEST = PWSfile::BAD_DIGEST,			//  7 - ensure the same value
+    UNKNOWN_VERSION,							//  8
+    NOT_SUCCESS,								//  9
+    ALREADY_OPEN,								// 10
+    INVALID_FORMAT,								// 11
+    USER_EXIT,									// 12
+    XML_FAILED_VALIDATION,						// 13
+    XML_FAILED_IMPORT							// 14
    };
 
   PWScore();
@@ -47,9 +49,10 @@ class PWScore {
   int WritePlaintextFile(const CMyString &filename, const bool bwrite_header, TCHAR delimiter = 0);
   int WriteXMLFile(const CMyString &filename, const TCHAR delimiter);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
-			  TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
+			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
   int ImportKeePassTextFile(const CMyString &filename);
-  int ImportXMLFile(const CMyString &ImportedPrefix, const CMyString &filename, int &numImported, int &numSkipped);
+  int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
+			CString &strErrors, int &numValidated, int &numImported);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
   bool FileExists(const CMyString &filename, bool &bReadOnly) const 
 	  {return PWSfile::FileExists(filename, bReadOnly);}

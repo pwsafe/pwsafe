@@ -6,14 +6,15 @@
 #include "PWSprefs.h"
 #include "PWSrand.h"
 #include "Util.h"
+#include "PWSXML.h"
 
-#pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
+//#pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
 #include <string>
 #include <vector>
-#pragma warning(pop)
-#pragma warning(disable : 4786)
+//#pragma warning(pop)
+//#pragma warning(disable : 4786)
 using namespace std;
 
 #include <LMCONS.H> // for UNLEN definition
@@ -314,11 +315,34 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter)
 }
 
 int
-PWScore::ImportXMLFile(const CMyString &, const CMyString &, int &, int &)
+PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName,
+				const CString &strXSDFileName, CString &strErrors,
+				int &numValidated, int &numImported)
 {
-	// to do - maybe not!  User can use a XSLT file to transform a XML file into an
-	// exported plain text file for import.  Need an expert to write it!
-	// Or Excel 2002+ will read a XML file ans SaveAs a CSV file.
+	PWSXML *iXML;
+	bool status;
+
+	iXML = new PWSXML;
+	strErrors = _T("");
+	iXML->SetCore((void *)this);
+
+	status = iXML->XMLValidate(strXMLFileName, strXSDFileName);
+	if (!status) {
+		strErrors = iXML->m_strResultText;
+		delete iXML;
+		return XML_FAILED_VALIDATION;
+	}
+
+	numValidated = iXML->m_numEntriesValidated;
+	status = iXML->XMLImport(ImportedPrefix, strXMLFileName);
+	if (!status) {
+		strErrors = iXML->m_strResultText;
+		delete iXML;
+		return XML_FAILED_IMPORT;
+	}
+
+	numImported = iXML->m_numEntriesImported;
+	delete iXML;
 	return SUCCESS;
 }
 

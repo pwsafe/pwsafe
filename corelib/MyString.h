@@ -70,6 +70,7 @@ public:
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
   void MakeLower() {m_mystring.MakeLower();}
+  void Empty();
 
   void Trash() {trashstring();}
 

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-<xs:simpleType name="string_type">
+<xs:simpleType name="characterType">
+  <xs:restriction base="xs:string">
+    <xs:length value="1" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="stringType">
   <xs:restriction base="xs:string">
     <xs:whiteSpace value="preserve" />
   </xs:restriction>
 </xs:simpleType>
 
-<xs:complexType name="datetimestamp_type">
+<xs:complexType name="datetimestampType">
   <xs:sequence>
     <xs:element name="date" type="xs:date" />
     <xs:element name="time" type="xs:time" />
@@ -20,18 +26,18 @@
         <xs:element maxOccurs="unbounded" name="entry">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="group" type="string_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="title" type="string_type" />
-              <xs:element name="username" type="string_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="password" type="string_type" />
-              <xs:element name="url" type="string_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="autotype" type="string_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="notes" type="string_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="ctime" type="datetimestamp_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="atime" type="datetimestamp_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="ltime" type="datetimestamp_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="pmtime" type="datetimestamp_type" minOccurs="0" maxOccurs="1" />
-              <xs:element name="rmtime" type="datetimestamp_type" minOccurs="0" maxOccurs="1" />
+              <xs:element name="group" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="title" type="stringType" />
+              <xs:element name="username" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="password" type="stringType" />
+              <xs:element name="url" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="autotype" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="notes" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ctime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="atime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ltime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="pmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="rmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="pwhistory" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
@@ -44,10 +50,10 @@
                           <xs:element name="history_entry" minOccurs="0" maxOccurs="25">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element name="changed" type="datetimestamp_type" minOccurs="1" maxOccurs="1" />
-                                <xs:element name="oldpassword" type="string_type" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="changed" type="datetimestampType" minOccurs="1" maxOccurs="1" />
+                                <xs:element name="oldpassword" type="stringType" minOccurs="1" maxOccurs="1" />
                               </xs:sequence>
-                              <xs:attribute name="num" type="xs:integer" use="required" />
+                              <xs:attribute name="num" type="xs:integer" use="optional" />
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
@@ -57,13 +63,13 @@
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:integer" use="required" />
+            <xs:attribute name="id" type="xs:integer" use="optional" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute name="Database" type="string_type" use="required" />
-      <xs:attribute name="ExportTimeStamp" type="xs:dateTime" use="required" />
-      <xs:attribute name="delimiter" type="xs:string" use="required" />
+      <xs:attribute name="Database" type="stringType" use="optional" />
+      <xs:attribute name="ExportTimeStamp" type="xs:dateTime" use="optional" />
+      <xs:attribute name="delimiter" type="characterType" use="required" />
     </xs:complexType>
   </xs:element>
 </xs:schema>

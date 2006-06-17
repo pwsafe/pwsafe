@@ -27,10 +27,15 @@
 #include "ExportText.h"
 #include "ExportXML.h"
 #include "ImportDlg.h"
+#include "ImportXMLDlg.h"
+#include "ImportXMLErrDlg.h"
 #include "ExpPWListDlg.h"
 
 // widget override?
 #include "SysColStatic.h"
+
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #ifdef POCKET_PC
   #include "pocketpc/PocketPC.h"
@@ -266,9 +271,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnTrayBrowse)
    ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnUpdateTrayBrowse)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnTrayDeleteEntry)
-   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnUpdateTrayDeleteEntry)       
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnUpdateTrayDeleteEntry)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnTrayAutoType)
-   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnUpdateTrayAutoType)   
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYAUTOTYPE1, ID_MENUITEM_TRAYAUTOTYPEMAX, OnUpdateTrayAutoType)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
    ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
@@ -292,7 +297,7 @@ DboxMain::InitPasswordSafe()
     app.HideIcon();
 
   m_RUEList.SetMax(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxREItems));
-  
+
   // Set timer for user-defined lockout, if selected
   if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::LockOnIdleTimeout)) {
@@ -318,7 +323,7 @@ DboxMain::InitPasswordSafe()
 #endif
 
   m_windowok = true;
-	
+
   // Set the icon for this dialog.  The framework does this automatically
   //  when the application's main window is not a dialog
 
@@ -442,7 +447,7 @@ DboxMain::InitPasswordSafe()
     m_ctlItemTree.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
     m_ctlItemList.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
   }
-  	       
+
   SetMenu(app.m_mainmenu);  // Now show menu...
 }
 
@@ -457,7 +462,7 @@ DboxMain::OnInitDialog()
       return TRUE;
 
   InitPasswordSafe();
-  
+
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -481,10 +486,10 @@ DboxMain::OpenOnInit(void)
     UpdateSystemTray(UNLOCKED);
 #endif
 	CheckExpiredPasswords();
-    break; 
+    break;
   case PWScore::CANT_OPEN_FILE:
     if (m_core.GetCurFile().IsEmpty()) {
-      // Empty filename. Assume they are starting Password Safe 
+      // Empty filename. Assume they are starting Password Safe
       // for the first time and don't confuse them.
       // fallthrough to New()
     } else {
@@ -616,9 +621,9 @@ DboxMain::ToClipboard(const CMyString &data)
 }
 
 void
-DboxMain::OnCopyPassword() 
+DboxMain::OnCopyPassword()
 {
-  if (!SelItemOk()) 
+  if (!SelItemOk())
     return;
 
   //Remind the user about clipboard security
@@ -640,7 +645,7 @@ DboxMain::OnCopyPassword()
 }
 
 void
-DboxMain::OnCopyUsername() 
+DboxMain::OnCopyUsername()
 {
   if (SelItemOk() != TRUE)
     return;
@@ -662,7 +667,7 @@ DboxMain::OnCopyUsername()
 }
 
 void
-DboxMain::OnCopyNotes() 
+DboxMain::OnCopyNotes()
 {
   if (SelItemOk() != TRUE)
     return;
@@ -697,7 +702,7 @@ DboxMain::OnCopyNotes()
 }
 
 void
-DboxMain::OnFind() 
+DboxMain::OnFind()
 {
   CFindDlg::Doit(this, &m_lastFindCS,
                  &m_lastFindStr); // create modeless or popup existing
@@ -715,7 +720,7 @@ DboxMain::OnFind()
 
 // Change the master password for the database.
 void
-DboxMain::OnPasswordChange() 
+DboxMain::OnPasswordChange()
 {
   if (m_IsReadOnly) // disable in read-only mode
     return;
@@ -730,7 +735,7 @@ DboxMain::OnPasswordChange()
 
 
 void
-DboxMain::OnClearClipboard() 
+DboxMain::OnClearClipboard()
 {
    app.ClearClipboardData();
 }
@@ -738,11 +743,11 @@ DboxMain::OnClearClipboard()
 
 // this tells OnSize that the user is currently
 // changing the size of the dialog, and not restoring it
-void DboxMain::OnSizing(UINT fwSide, LPRECT pRect) 
+void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 {
 #if !defined(POCKET_PC)
   CDialog::OnSizing(fwSide, pRect);
-	
+
   m_bSizing = true;
 #endif
 }
@@ -764,14 +769,14 @@ DboxMain::OnUpdateTVCommand(CCmdUI *pCmdUI)
 }
 
 void
-DboxMain::OnClearMRU() 
+DboxMain::OnClearMRU()
 {
 	app.ClearMRU();
 	m_saveMRU = false;
 }
 
 void
-DboxMain::OnSave() 
+DboxMain::OnSave()
 {
   Save();
 }
@@ -864,7 +869,7 @@ DboxMain::OnExportText()
       } else {
         rc = m_core.WritePlaintextFile(newfile, bwrite_header);
       }
-		
+
       if (rc == PWScore::CANT_OPEN_FILE)        {
         CMyString temp = newfile + _T("\n\nCould not open file for writing!");
         MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
@@ -911,7 +916,7 @@ DboxMain::OnExportXML()
       char delimiter;
       delimiter = eXML.m_defexpdelim[0];
       rc = m_core.WriteXMLFile(newfile, delimiter);
-		
+
       if (rc == PWScore::CANT_OPEN_FILE)        {
         CMyString temp = newfile + _T("\n\nCould not open file for writing!");
         MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
@@ -931,7 +936,7 @@ DboxMain::OnImportText()
 
   CImportDlg dlg;
   int status = dlg.DoModal();
-  
+
   if (status == IDCANCEL)
     return;
 
@@ -1038,13 +1043,82 @@ DboxMain::OnImportKeePass()
 void
 DboxMain::OnImportXML()
 {
-  if (m_IsReadOnly) // disable in read-only mode
-    return;
+	if (m_IsReadOnly) // disable in read-only mode
+		return;
 
-  CString msg = _T("Sorry, this is not implemented.\n\nPlease convert your XML file to a text file as if ");
-  msg += _T("produced by the \"Export to Plain Text\" function\nand then use the \"Import from Plain Text\" function.");
-  MessageBox(msg, AfxGetAppName(), MB_ICONINFORMATION|MB_OK);
+	CString XSDFilename = _T("");
+	TCHAR acPath[MAX_PATH + 1];
+	struct _stat statbuf;
 
+	if ( GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
+		// guaranteed file name of at least one character after path '\'
+		*(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
+		// Add on xsd filename
+		XSDFilename = CString(acPath) + _T("pwsafe.xsd");
+	}
+
+	if (XSDFilename.IsEmpty() || _tstat(XSDFilename, &statbuf) != 0) {
+		CMyString temp = _T("Unable to find required XML Schema Definition file (pwsafe.xsd) in your PasswordSafe Application Directory.  Please copy it from your installation file.");
+		MessageBox(temp, _T("Missing XSD File - Unable to validate XML files"), MB_OK | MB_ICONSTOP);
+		return;
+	}
+	
+	CImportXMLDlg dlg;
+	int status = dlg.DoModal();
+
+	if (status == IDCANCEL)
+		return;
+
+	CString ImportedPrefix(dlg.m_groupName);
+
+	CFileDialog fd(TRUE,
+				 _T("xml"),
+				 NULL,
+				 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+				 _T("XML files (*.xml)|*.xml||"),
+				 this);
+	fd.m_ofn.lpstrTitle = _T("Please Choose a XML File to Import");
+
+	int rc = fd.DoModal();
+	if (rc == IDOK) {
+		CString strErrors;
+		CString XMLFilename = (CMyString)fd.GetPathName();
+		int numValidated, numImported;
+		rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename, XSDFilename, strErrors, numValidated, numImported);
+
+		switch (rc) {
+			case PWScore::XML_FAILED_VALIDATION:
+			{
+				CImportXMLErrDlg dlg;
+				dlg.m_strActionText = XMLFilename + _T(" failed validation against XML Schema Definition pwsafe.xsd");
+				dlg.m_strResultText = strErrors;
+				dlg.DoModal();
+			}
+				break;
+			case PWScore::XML_FAILED_IMPORT:
+			{
+				CImportXMLErrDlg dlg;
+				dlg.m_strActionText = XMLFilename + _T(" passed Validation but had the following errors during import:");
+				dlg.m_strResultText = strErrors;
+				dlg.DoModal();
+			}
+				break;
+			case PWScore::SUCCESS:
+			default:
+			{
+				OSTRSTREAM os;
+				os << "Validated " << numValidated << " record";
+				if (numValidated != 1) os << "s";
+				os << "\nImported " << numImported << " record";
+				if (numImported > 1) os << "s";
+				os << ENDS;
+				CMyString temp(os.str());
+				MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
+			}
+				RefreshList();
+				break;
+		} // switch
+	}
 }
 
 void
@@ -1141,7 +1215,7 @@ DboxMain::ChangeOkUpdate()
 }
 
 void
-DboxMain::OnAbout() 
+DboxMain::OnAbout()
 {
   DboxAbout dbox;
   dbox.DoModal();
@@ -1160,7 +1234,7 @@ DboxMain::OnPasswordSafeWebsite()
 }
 
 void
-DboxMain::OnBackupSafe() 
+DboxMain::OnBackupSafe()
 {
   BackupSafe();
 }
@@ -1207,7 +1281,7 @@ DboxMain::BackupSafe()
 }
 
 void
-DboxMain::OnOpen() 
+DboxMain::OnOpen()
 {
   Open();
 }
@@ -1266,8 +1340,8 @@ DboxMain::Open( const CMyString &pszFilename )
                  _T("Oops!"),
                  MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
-	}	
-	
+	}
+
   rc = SaveIfChanged();
   if (rc != PWScore::SUCCESS)
     return rc;
@@ -1286,7 +1360,7 @@ DboxMain::Open( const CMyString &pszFilename )
   switch (rc) {
   case PWScore::SUCCESS:
     app.AddToMRU(pszFilename);
-    break; // Keep going... 
+    break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
     temp = m_core.GetCurFile()
       + _T("\n\nCan't open file. Please choose another.");
@@ -1298,15 +1372,15 @@ DboxMain::Open( const CMyString &pszFilename )
   case PWScore::WRONG_PASSWORD:
   case PWScore::USER_CANCEL:
     /*
-      If the user just cancelled out of the password dialog, 
-      assume they want to return to where they were before... 
+      If the user just cancelled out of the password dialog,
+      assume they want to return to where they were before...
     */
     return PWScore::USER_CANCEL;
   default:
     ASSERT(0); // we should take care of all cases explicitly
     return PWScore::USER_CANCEL; // conservative behaviour for release version
   }
-	
+
   temp = pszFilename;
   rc = m_core.ReadFile(pszFilename, passkey);
   switch (rc) {
@@ -1342,7 +1416,7 @@ DboxMain::Open( const CMyString &pszFilename )
   CheckExpiredPasswords();
   ChangeOkUpdate();
   RefreshList();
-	
+
   return PWScore::SUCCESS;
 }
 
@@ -1397,13 +1471,13 @@ DboxMain::Merge(const CMyString &pszFilename) {
                  MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
 	}
-	
+
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL );  // OK, CANCEL, HELP
   switch (rc)
 	{
 	case PWScore::SUCCESS:
       app.AddToMRU(pszFilename);
-      break; // Keep going... 
+      break; // Keep going...
 	case PWScore::CANT_OPEN_FILE:
       temp = m_core.GetCurFile()
         + _T("\n\nCan't open file. Please choose another.");
@@ -1415,15 +1489,15 @@ DboxMain::Merge(const CMyString &pszFilename) {
 	case PWScore::WRONG_PASSWORD:
 	case PWScore::USER_CANCEL:
       /*
-        If the user just cancelled out of the password dialog, 
-        assume they want to return to where they were before... 
+        If the user just cancelled out of the password dialog,
+        assume they want to return to where they were before...
       */
       return PWScore::USER_CANCEL;
 	}
-	
+
   PWScore otherCore;
   otherCore.ReadFile(pszFilename, passkey);
-	
+
   if (rc == PWScore::CANT_OPEN_FILE)
 	{
       temp = pszFilename;
@@ -1435,7 +1509,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
       */
       return PWScore::CANT_OPEN_FILE;
 	}
-   
+
   otherCore.SetCurFile(pszFilename);
 
   /* Put up hourglass...this might take a while */
@@ -1444,7 +1518,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
   /*
     Purpose:
     Merge entries from otherCore to m_core
-	  
+
     Algorithm:
     Foreach entry in otherCore
     Find in m_core
@@ -1465,14 +1539,14 @@ DboxMain::Merge(const CMyString &pszFilename) {
     CMyString otherGroup = otherItem.GetGroup();
     CMyString otherTitle = otherItem.GetTitle();
     CMyString otherUser = otherItem.GetUser();
-		
+
     POSITION foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
     if (foundPos) {
       /* found a match, see if the pw & notes also match */
       CItemData curItem = m_core.GetEntryAt(foundPos);
       if (otherItem.GetPassword() != curItem.GetPassword() ||
           otherItem.GetNotes() != curItem.GetNotes()) {
-        /* have a match on title/user, but not on pw/notes 
+        /* have a match on title/user, but not on pw/notes
            add an entry suffixed with -merged-HHMMSS-DDMMYY */
         CTime curTime = CTime::GetCurrentTime();
         CMyString newTitle = otherItem.GetTitle();
@@ -1483,17 +1557,17 @@ DboxMain::Merge(const CMyString &pszFilename) {
         /* note it as an issue for the user */
         CMyString warnMsg;
         warnMsg = _T("Conflicting entries for ") +
-          otherItem.GetGroup() + _T(",") + 
+          otherItem.GetGroup() + _T(",") +
           otherItem.GetTitle() + _T(",") +
           otherItem.GetUser() + _T("\n");
         warnMsg += _T("Adding new entry as ") +
-          newTitle + _T(",") + 
+          newTitle + _T(",") +
           otherItem.GetUser() + _T("\n");
 
         /* tell the user the bad news */
         MessageBox(warnMsg,
                    _T("Merge conflict"),
-                   MB_OK|MB_ICONWARNING);				
+                   MB_OK|MB_ICONWARNING);
 
         /* do it */
         otherItem.SetTitle(newTitle);
@@ -1524,7 +1598,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
 
   ChangeOkUpdate();
   RefreshList();
-   
+
   return rc;
 }
 
@@ -1544,7 +1618,7 @@ DboxMain::OnNew()
 }
 
 int
-DboxMain::New() 
+DboxMain::New()
 {
   int rc, rc2;
 
@@ -1579,12 +1653,12 @@ DboxMain::New()
   rc = NewFile();
   if (rc == PWScore::USER_CANCEL)
     /*
-      Everything stays as is... 
-      Worst case, they saved their file.... 
+      Everything stays as is...
+      Worst case, they saved their file....
     */
     return PWScore::USER_CANCEL;
 
-  m_core.SetCurFile(_T("")); //Force a save as... 
+  m_core.SetCurFile(_T("")); //Force a save as...
 #if !defined(POCKET_PC)
   m_title = _T("Password Safe - <Untitled>");
   app.SetTooltipText(_T("PasswordSafe"));
@@ -1637,7 +1711,7 @@ int DboxMain::SaveIfChanged()
 }
 
 int
-DboxMain::Restore() 
+DboxMain::Restore()
 {
   int rc;
   CMyString backup, passkey, temp;
@@ -1668,7 +1742,7 @@ DboxMain::Restore()
   rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL );  // OK, CANCEL, HELP
   switch (rc) {
   case PWScore::SUCCESS:
-    break; // Keep going... 
+    break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
     temp =
       backup
@@ -1680,8 +1754,8 @@ DboxMain::Restore()
     ASSERT(0); return PWScore::FAILURE; // shouldn't be an option here
   case PWScore::WRONG_PASSWORD:
     /*
-      If the user just cancelled out of the password dialog, 
-      assume they want to return to where they were before... 
+      If the user just cancelled out of the password dialog,
+      assume they want to return to where they were before...
     */
     return PWScore::USER_CANCEL;
   }
@@ -1700,7 +1774,7 @@ DboxMain::Restore()
     MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
-	
+
   m_core.SetCurFile(""); //Force a Save As...
   m_core.SetChanged(Data); //So that the restored file will be saved
 #if !defined(POCKET_PC)
@@ -1720,7 +1794,7 @@ DboxMain::OnSaveAs()
 }
 
 int
-DboxMain::SaveAs() 
+DboxMain::SaveAs()
 {
   int rc;
   CMyString newfile;
@@ -1787,7 +1861,7 @@ DboxMain::SaveAs()
   ChangeOkUpdate();
 
   app.AddToMRU( newfile );
- 
+
   if (m_IsReadOnly) {
   	// reset read-only status (new file can't be read-only!)
   	// and so cause toolbar to be the correct version
@@ -1871,7 +1945,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       	break;
       case IDNO:
       	SetReadOnly(false); // Caveat Emptor!
-        retval = PWScore::SUCCESS; 
+        retval = PWScore::SUCCESS;
         break;
       case IDCANCEL:
       	retval = PWScore::USER_CANCEL;
@@ -1889,7 +1963,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
       case TAR_OPEN:
       case TAR_NEW:
         DBGMSG("PasskeyEntry TAR_OPEN or TAR_NEW\n");
-        retval = cancelreturn; //Return either open or new flag... 
+        retval = cancelreturn; //Return either open or new flag...
         break;
       case TAR_CANCEL:
         retval = PWScore::USER_CANCEL;
@@ -1994,7 +2068,7 @@ DboxMain::OnDropFiles(HDROP hDrop)
 
 #if 0
   // here's what we really want - sorta
-  HDROP m_hDropInfo = hDropInfo;        
+  HDROP m_hDropInfo = hDropInfo;
   CString Filename;
 
   if (m_hDropInfo) {
@@ -2011,7 +2085,7 @@ DboxMain::OnDropFiles(HDROP hDrop)
 #endif
 
   DragFinish(hDrop);
-} 
+}
 #endif
 
 void
@@ -2030,7 +2104,7 @@ DboxMain::UpdateAlwaysOnTop()
 #endif
 }
 
-void 
+void
 DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
@@ -2041,7 +2115,7 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
     UpdateAlwaysOnTop();
     return;
   }
-  
+
  if ((nID & 0xFFF0) == SC_RESTORE) {
   	UnMinimize(true);
 	if (!m_passphraseOK)	// password bad or cancel pressed
@@ -2074,11 +2148,11 @@ DboxMain::ConfigureSystemMenu()
 //-----------------------------------------------------------------------------
 
 void
-DboxMain::OnUpdateMRU(CCmdUI* pCmdUI) 
+DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 {
   if (app.GetMRU() == NULL)
   	return;
- 
+
   if (!app.m_mruonfilemenu) {
     if (pCmdUI->m_nIndex == 0) { // Add to popup menu
       app.GetMRU()->UpdateMenu( pCmdUI );
@@ -2086,14 +2160,14 @@ DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
       return;
     }
   } else {
-	app.GetMRU()->UpdateMenu( pCmdUI );	
+	app.GetMRU()->UpdateMenu( pCmdUI );
   }
 }
 
 #if _MFC_VER > 1200
 BOOL
 #else
-void 
+void
 #endif
 DboxMain::OnOpenMRU(UINT nID)
 {
@@ -2137,7 +2211,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
   pMenu->EnableMenuItem(ID_MENUITEM_RENAME, ((bTreeView && (bItemSelected || bGroupSelected)) ? MF_ENABLED : MF_GRAYED));
   pMenu->EnableMenuItem(ID_MENUITEM_ADDGROUP, (bTreeView ? MF_ENABLED : MF_GRAYED));
 
-  pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW, 
+  pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW), MF_BYCOMMAND);
 
   CDC* pDC = this->GetDC();
@@ -2155,7 +2229,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     pMenu->EnableMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_ENABLED | MF_BYCOMMAND);
   }
 
-  pMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, ID_MENUITEM_OLD_TOOLBAR, 
+  pMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, ID_MENUITEM_OLD_TOOLBAR,
                             m_toolbarMode, MF_BYCOMMAND);
 #endif
 
@@ -2168,7 +2242,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
 
 // helps with MRU by allowing ON_UPDATE_COMMAND_UI
 void
-DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL) 
+DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 {
   // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
   // This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
@@ -2177,7 +2251,7 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   state.m_pMenu = pPopupMenu;
   ASSERT(state.m_pOther == NULL);
   ASSERT(state.m_pParentMenu == NULL);
-    
+
   // Is the menu in question a popup in the top-level menu? If so, set m_pOther
   // to this menu. Note that m_pParentMenu == NULL indicates that the menu is a
   // secondary popup.
@@ -2199,7 +2273,7 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
       }
     }
   }
-    
+
   state.m_nIndexMax = pPopupMenu->GetMenuItemCount();
   for(state.m_nIndex = 0; state.m_nIndex < state.m_nIndexMax; state.m_nIndex++) {
     state.m_nID = pPopupMenu->GetMenuItemID(state.m_nIndex);
@@ -2305,12 +2379,12 @@ DboxMain::UnMinimize(bool update_windows)
 			ShowWindow(SW_RESTORE);
 		return;
 	}
-	
+
 	// Case 2 - data unavailable
 	if (m_needsreading && m_windowok) {
 		CMyString passkey, temp;
 		int rc, rc2;
-	
+
 		if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
 			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
 		} else {
@@ -2348,7 +2422,7 @@ DboxMain::UnMinimize(bool update_windows)
 				rc2 = PWScore::NOT_SUCCESS;
 				break;
 		}
-	
+
 		if (rc2 == PWScore::SUCCESS) {
 			m_needsreading = false;
 			UpdateSystemTray(UNLOCKED);

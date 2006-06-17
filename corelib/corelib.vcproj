@@ -312,6 +312,66 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="PWSXML.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="SAXHandlers.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="SAXHandlersBase.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="sha256.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -435,6 +495,15 @@
 				RelativePath="PWSrand.h">
 			</File>
 			<File
+				RelativePath="PWSXML.h">
+			</File>
+			<File
+				RelativePath="SAXHandlers.h">
+			</File>
+			<File
+				RelativePath="SAXHandlersBase.h">
+			</File>
+			<File
 				RelativePath="sha1.h">
 			</File>
 			<File
@@ -451,6 +520,9 @@
 			</File>
 			<File
 				RelativePath="UUIDGen.h">
+			</File>
+			<File
+				RelativePath="xml_import.h">
 			</File>
 		</Filter>
 	</Files>

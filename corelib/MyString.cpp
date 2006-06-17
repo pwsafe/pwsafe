@@ -64,6 +64,14 @@ CMyString::GetLength() const
    return m_mystring.GetLength();
 }
 
+void
+CMyString::Empty()
+{
+	trashstring();
+	m_mystring.Empty();
+	return;
+}
+
 const CMyString&
 CMyString::operator=(const CMyString& stringSrc)
 {

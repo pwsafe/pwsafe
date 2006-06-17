@@ -67,6 +67,8 @@
 #define IDD_IMPORT_TEXT                 225
 #define IDD_PICKEXPDATETIME             226
 #define IDD_DISPLAY_EXPIRED_ENTRIES     227
+#define IDD_IMPORT_XML                  228
+#define IDD_IMPORT_XML_ERRORS           229
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -216,6 +218,8 @@
 #define IDC_STATIC_OLDPW3               1166
 #define IDC_SHOW_PWHIST                 1167
 #define IDC_STATIC_PWHSTATUS            1168
+#define IDC_XML_IMPORT_ACTION           1169
+#define IDC_XML_IMPORT_RESULTS          1170
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -308,9 +312,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        228
+#define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         32859
-#define _APS_NEXT_CONTROL_VALUE         1169
+#define _APS_NEXT_CONTROL_VALUE         1171
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
