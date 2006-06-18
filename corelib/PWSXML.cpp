@@ -40,11 +40,11 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 	hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60));
 
 	//	Create ContentHandlerImpl object
-	ContentHandlerImpl* pCH = new ContentHandlerImpl();
+	PWSSAXContentHandler* pCH = new PWSSAXContentHandler();
 	pCH->SetVariables(NULL, m_bValidation, prefix, delim);
 
 	//	Create ErrorHandlerImpl object
-	ErrorHandlerImpl* pEH = new ErrorHandlerImpl();
+	PWSSAXErrorHandler* pEH = new PWSSAXErrorHandler();
 
 	if (!FAILED(hr0)) {  // Create SAXReader
 		//	Set Content Handler
@@ -132,11 +132,11 @@ bool PWSXML::XMLImport(const CString &ImportedPrefix, const CString &strXMLFileN
 	hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60));
 
 	//	Create ContentHandlerImpl object
-	ContentHandlerImpl* pCH = new ContentHandlerImpl();
+	PWSSAXContentHandler* pCH = new PWSSAXContentHandler();
 	pCH->SetVariables(m_core, m_bValidation, ImportedPrefix, m_delimiter);
 
 	//	Create ErrorHandlerImpl object
-	ErrorHandlerImpl* pEH = new ErrorHandlerImpl();
+	PWSSAXErrorHandler* pEH = new PWSSAXErrorHandler();
 
 	if (!FAILED(hr0)) {  // Create SAXReader
 		//	Set Content Handler

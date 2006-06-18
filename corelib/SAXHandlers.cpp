@@ -12,19 +12,51 @@
 #pragma warning(disable : 4100)
 
 //	-----------------------------------------------------------------------
-//	ErrorHandler Methods
+//	PWSSAXErrorHandler Methods
 //	-----------------------------------------------------------------------
-ErrorHandlerImpl::ErrorHandlerImpl():
+PWSSAXErrorHandler::PWSSAXErrorHandler():
 	bErrorsFound(FALSE),
 	m_strValidationResult("")
 {
+	m_refCnt = 0;
 }
 
-ErrorHandlerImpl::~ErrorHandlerImpl()
+PWSSAXErrorHandler::~PWSSAXErrorHandler()
 {
 }
 
-HRESULT STDMETHODCALLTYPE ErrorHandlerImpl::error (
+long __stdcall PWSSAXErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
+{
+	*ppvObject = NULL;
+	if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler))
+	{
+		*ppvObject = static_cast<ISAXErrorHandler *>(this);
+	}
+
+	if (*ppvObject)
+	{
+		AddRef();
+		return S_OK;
+	}
+	else return E_NOINTERFACE;
+}
+
+unsigned long __stdcall PWSSAXErrorHandler::AddRef()
+{
+	 return ++m_refCnt; // NOT thread-safe
+}
+
+unsigned long __stdcall PWSSAXErrorHandler::Release()
+{
+	--m_refCnt; // NOT thread-safe
+   if (m_refCnt == 0) {
+	  delete this;
+	  return 0; // Can't return the member of a deleted object.
+   }
+   else return m_refCnt;
+}
+
+HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
         struct ISAXLocator * pLocator,
         unsigned short * pwchErrorMessage,
         HRESULT hrErrorCode )
@@ -47,23 +79,40 @@ HRESULT STDMETHODCALLTYPE ErrorHandlerImpl::error (
 	return S_OK;
 }
 
-//	-----------------------------------------------------------------------
-//	ContentHandler Methods
-//	-----------------------------------------------------------------------
-ContentHandlerImpl::ContentHandlerImpl()
+HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::fatalError (
+		struct ISAXLocator * pLocator,
+        unsigned short * pwchErrorMessage,
+        HRESULT hrErrorCode )
 {
-	//m_strElemContent.Empty();
+	return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::ignorableWarning (
+		struct ISAXLocator * pLocator,
+        unsigned short * pwchErrorMessage,
+        HRESULT hrErrorCode )
+{
+	return S_OK;
+}
+
+//	-----------------------------------------------------------------------
+//	PWSSAXContentHandler Methods
+//	-----------------------------------------------------------------------
+PWSSAXContentHandler::PWSSAXContentHandler()
+{
+	m_refCnt = 0;
+	m_strElemContent.Empty();
 	m_numEntries = 0;
 	m_ImportedPrefix = _T("");
 	m_delimiter = _T('^');
 }
 
 //	-----------------------------------------------------------------------
-ContentHandlerImpl::~ContentHandlerImpl()
+PWSSAXContentHandler::~PWSSAXContentHandler()
 {
 }
 
-void ContentHandlerImpl::SetVariables(void *core, const bool &bValidation,
+void PWSSAXContentHandler::SetVariables(void *core, const bool &bValidation,
 									  const CString &ImportedPrefix, const TCHAR &delimiter)
 {
 	m_bValidation = bValidation;
@@ -72,14 +121,48 @@ void ContentHandlerImpl::SetVariables(void *core, const bool &bValidation,
 	m_core = core;
 }
 
+long __stdcall PWSSAXContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
+{
+	*ppvObject = NULL;
+	if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler)) {
+		*ppvObject = static_cast<ISAXContentHandler *>(this);
+	}
+
+	if (*ppvObject) {
+		AddRef();
+		return S_OK;
+	}
+	else return E_NOINTERFACE;
+}
+
+unsigned long __stdcall PWSSAXContentHandler::AddRef()
+{
+	 return ++m_refCnt; // NOT thread-safe
+}
+
+unsigned long __stdcall PWSSAXContentHandler::Release()
+{
+	--m_refCnt; // NOT thread-safe
+   if (m_refCnt == 0) {
+	  delete this;
+	  return 0; // Can't return the member of a deleted object.
+   }
+   else return m_refCnt;
+}
+
 //	-----------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE  ContentHandlerImpl::startDocument ( )
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::startDocument ( )
+{
+	return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::putDocumentLocator (struct ISAXLocator * pLocator )
 {
 	return S_OK;
 }
 
 //	---------------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE ContentHandlerImpl::startElement(
+HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
     /* [in] */ wchar_t __RPC_FAR *pwchNamespaceUri,
     /* [in] */ int cchNamespaceUri,
     /* [in] */ wchar_t __RPC_FAR *pwchLocalName,
@@ -156,7 +239,7 @@ HRESULT STDMETHODCALLTYPE ContentHandlerImpl::startElement(
 }
 
 //	---------------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE ContentHandlerImpl::characters(
+HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
             /* [in] */ wchar_t __RPC_FAR *pwchChars,
             /* [in] */ int cchChars)
 {
@@ -180,7 +263,7 @@ HRESULT STDMETHODCALLTYPE ContentHandlerImpl::characters(
 }
 
 //	-----------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE  ContentHandlerImpl::endElement (
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     unsigned short * pwchNamespaceUri,
     int cchNamespaceUri,
     unsigned short * pwchLocalName,
@@ -382,7 +465,46 @@ HRESULT STDMETHODCALLTYPE  ContentHandlerImpl::endElement (
 }
 
 //	---------------------------------------------------------------------------
-HRESULT STDMETHODCALLTYPE  ContentHandlerImpl::endDocument ( )
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endDocument ( )
+{
+	return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::startPrefixMapping (
+    unsigned short * pwchPrefix,
+    int cchPrefix,
+    unsigned short * pwchUri,
+    int cchUri )
+{
+	return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endPrefixMapping (
+    unsigned short * pwchPrefix,
+    int cchPrefix )
+{
+	return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::ignorableWhitespace (
+    unsigned short * pwchChars,
+    int cchChars )
+{
+	return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::processingInstruction (
+    unsigned short * pwchTarget,
+    int cchTarget,
+    unsigned short * pwchData,
+    int cchData )
+{
+	return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::skippedEntity (
+    unsigned short * pwchName,
+    int cchName )
 {
 	return S_OK;
 }
