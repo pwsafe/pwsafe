@@ -7,6 +7,7 @@
 #include "MyString.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <atlcomcli.h>
 #include "xml_import.h"
 
 #ifdef _DEBUG

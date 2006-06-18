@@ -881,7 +881,7 @@ PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &newExtn)
                        _MAX_FNAME, ext, _MAX_EXT );
 	_tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, newExtn );
 #else
-	_tsplitpath( m_core.GetCurFile(), drive, dir, fname, ext );
+	_tsplitpath( oldfilename, drive, dir, fname, ext );
 	_tmakepath( path_buffer, drive, dir, fname, newExtn );
 #endif
 	return CMyString(path_buffer);
