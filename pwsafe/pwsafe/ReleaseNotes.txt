@@ -1,4 +1,5 @@
-Password Safe 3.02 Release Note - June 2006
+Password Safe 3.02 Release Note - June 2006evert
+
 ===========================================
 
 This note describe the new features, fixed bugs and known problems
@@ -15,7 +16,10 @@ Bugs fixed in 3.02
 ==================
 [1503075] No longer crashes when number of last databases is set to
 zero.
-[1507847] Merge databases now merges all the record's fields.
+[1507847] Merge databases now merges all the record's fields, thanks
+to n0tig.
+[] Minimum master passphrase length is now 8 characters, and user is
+not offered the option of accepting weak passphrases.
 
 New Features for 3.01
 =====================

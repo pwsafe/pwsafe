@@ -227,7 +227,7 @@ CPasswordCharPool::MakePassword() const
 
 bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
 {
-  const int MinLength = 4;
+  const int MinLength = 8;
   int length = pwd.GetLength();
   // check for minimun length
   if (length < MinLength) {
