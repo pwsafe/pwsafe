@@ -73,6 +73,7 @@ class PWSSAXContentHandler: public ISAXContentHandler
 {
 public:
 	// Local variables & function
+	CString m_strImportErrors;
 	int m_numEntries;
 	TCHAR m_delimiter;
 	void SetVariables(void* core, const bool &bValidation,

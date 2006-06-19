@@ -153,6 +153,7 @@ unsigned long __stdcall PWSSAXContentHandler::Release()
 //	-----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::startDocument ( )
 {
+	m_strImportErrors = _T("");
 	return S_OK;
 }
 
@@ -307,8 +308,32 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		if (cur_entry->rmtime.GetLength() != 0)
 			m_tempitem.SetRMTime(cur_entry->rmtime);
 		CMyString newPWHistory;
-		if (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory) == PWH_OK)
-			m_tempitem.SetPWHistory(newPWHistory);
+		CString strPWHErrors, buffer;
+		buffer.Format(_T("\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "),
+				cur_entry->group, cur_entry->title, cur_entry->username);
+		switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
+			case PWH_OK:
+				m_tempitem.SetPWHistory(newPWHistory);
+				buffer.Empty();
+				break;
+			case PWH_IGNORE:
+				buffer.Empty();
+				break;
+			case PWH_INVALID_HDR:
+			case PWH_INVALID_STATUS:
+			case PWH_INVALID_MAX:
+			case PWH_INVALID_NUM:
+			case PWH_INVALID_DATETIME:
+			case PWH_INVALID_PSWD_LENGTH:
+			case PWH_TOO_SHORT:
+			case PWH_TOO_LONG:
+			case PWH_INVALID_CHARACTER:
+				buffer += strPWHErrors;
+				break;
+			default:
+				ASSERT(0);
+		}
+		m_strImportErrors += buffer;
 		if (cur_entry->notes.GetLength() != 0)
 			m_tempitem.SetNotes(cur_entry->notes, m_delimiter);
 

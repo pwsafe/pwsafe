@@ -48,7 +48,7 @@ class PWScore {
     {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const CMyString &filename, const bool bwrite_header, TCHAR delimiter = 0);
   int WriteXMLFile(const CMyString &filename, const TCHAR delimiter);
-  int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
+  int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
 			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
   int ImportKeePassTextFile(const CMyString &filename);
   int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
@@ -104,6 +104,7 @@ class PWScore {
   static unsigned char m_session_key[20];
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
+  static CString m_hdr;
 
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey

@@ -220,6 +220,7 @@
 #define IDC_STATIC_PWHSTATUS            1168
 #define IDC_XML_IMPORT_ACTION           1169
 #define IDC_XML_IMPORT_RESULTS          1170
+#define IDC_COPY_ERRORS_TO_CLIPBOARD    1171
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -290,6 +291,7 @@
 #define ID_TRAYRECENT_ENTRY_HELP2       32856
 #define ID_MENUITEM_RENAME              32857
 #define ID_MENUITEM_CLEAR_MRU           32858
+#define ID_MENUITEM_COMPARE             32859
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRYMAX            40020
 #define ID_TRAYRECENT_ENTRY1            41001
@@ -313,8 +315,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        230
-#define _APS_NEXT_COMMAND_VALUE         32859
-#define _APS_NEXT_CONTROL_VALUE         1171
+#define _APS_NEXT_COMMAND_VALUE         32860
+#define _APS_NEXT_CONTROL_VALUE         1172
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

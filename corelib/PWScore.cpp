@@ -23,9 +23,10 @@ using namespace std;
 #include <sys/stat.h> // constants _S_* for above
 
 
-unsigned char PWScore::m_session_key[20]; unsigned char
-PWScore::m_session_salt[20]; unsigned char
-PWScore::m_session_initialized = false;
+unsigned char PWScore::m_session_key[20];
+unsigned char PWScore::m_session_salt[20];
+unsigned char PWScore::m_session_initialized = false;
+CString PWScore::m_hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tHistory\tNotes"));
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_usedefuser(false), m_defusername(_T("")),
@@ -121,8 +122,7 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
   if (!ofs)
     return CANT_OPEN_FILE;
   if (bwrite_header) {
-	  const CString hdr(_T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tHistory\tNotes"));
-	  ofs << hdr << endl;
+	  ofs << m_hdr << endl;
   }
 
   CItemData temp;
@@ -334,6 +334,7 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 	}
 
 	numValidated = iXML->m_numEntriesValidated;
+
 	status = iXML->XMLImport(ImportedPrefix, strXMLFileName);
 	if (!status) {
 		strErrors = iXML->m_strResultText;
@@ -342,13 +343,14 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 	}
 
 	numImported = iXML->m_numEntriesImported;
+	strErrors = iXML->m_strResultText;  // could still be error messages - mainly due to PWHistory processing
 	delete iXML;
 	return SUCCESS;
 }
 
 int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
-                             const CMyString &filename,
+                             const CMyString &filename, CString &strErrors,
                              TCHAR fieldSeparator, TCHAR delimiter,
                              int &numImported, int &numSkipped, bool bimport_preV3)
 {
@@ -358,7 +360,13 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   ifstream ifs((const char *)LPCTSTR(filename));
 #endif
   numImported = numSkipped = 0;
+  strErrors = _T("");
+
   CItemData temp;
+  CString buffer;
+
+  int numlines = 0;
+
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
   				CTIME, PMTIME, ATIME, LTIME, RMTIME,
@@ -368,6 +376,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 				NOTES_V1V2, NUMFIELDS_V1V2};
   if (!ifs)
     return CANT_OPEN_FILE;
+
   const int i_numfields = bimport_preV3 ? NUMFIELDS_V1V2 : NUMFIELDS;
   const int i_notes = bimport_preV3 ? NOTES_V1V2 : NOTES;
 
@@ -375,6 +384,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // read a single line.
     string linebuf;
     if (!getline(ifs, linebuf, '\n')) break;
+
+    numlines++;
 
     // remove MS-DOS linebreaks, if needed.
     if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
@@ -399,9 +410,13 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
           bool noteClosed = false;
           do {
             if (!getline(ifs, linebuf, '\n')) {
+              buffer.Format(_T("\nFile ends on line %d before ending double quote of last entry's note field."),
+               		numlines);
+              strErrors += buffer;
               ifs.close(); // file ends before note closes
               return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
             }
+            numlines++;
             // remove MS-DOS linebreaks, if needed.
             if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
               linebuf.resize(linebuf.size() - 1);
@@ -418,8 +433,15 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       }
     }
 	if ((int)tokens.size() != i_numfields) {
-      numSkipped++; // malformed entry
-      continue; // try to process next records
+		if (numlines == 1 && CString(linebuf.c_str()) != m_hdr) {
+			strErrors = _T("\nHeader line ignored.");
+		} else {
+			buffer.Format(_T("\nInvalid input on line %d.  Number of fields separated by '%c' is not as expected."),
+						numlines, fieldSeparator);
+			strErrors += buffer;
+			numSkipped++; // malformed entry
+		}
+		continue; // try to process next records
     }
 
     // Start initializing the new record.
@@ -466,8 +488,30 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 		temp.SetLTime(tokens[LTIME].c_str());
 		temp.SetRMTime(tokens[RMTIME].c_str());
 		CMyString newPWHistory;
-		if (PWSUtil::VerifyImportPWHistoryString(tokens[HISTORY].c_str(), newPWHistory) == PWH_OK)
-			temp.SetPWHistory(newPWHistory);
+		CString strPWHErrors;
+		buffer.Format(_T("\nError in Password History on line %d: "), numlines);
+		switch (PWSUtil::VerifyImportPWHistoryString(tokens[HISTORY].c_str(), newPWHistory, strPWHErrors)) {
+			case PWH_OK:
+				temp.SetPWHistory(newPWHistory);
+				buffer.Empty();
+				break;
+			case PWH_IGNORE:
+				buffer.Empty();
+				break;
+			case PWH_INVALID_HDR:
+			case PWH_INVALID_STATUS:
+			case PWH_INVALID_MAX:
+			case PWH_INVALID_NUM:
+			case PWH_INVALID_DATETIME:
+			case PWH_INVALID_PSWD_LENGTH:
+			case PWH_TOO_SHORT:
+			case PWH_TOO_LONG:
+			case PWH_INVALID_CHARACTER:
+			default:
+				buffer += strPWHErrors;
+				break;
+		}
+		strErrors += buffer;
 	}
 
     // The notes field begins and ends with a double-quote, with

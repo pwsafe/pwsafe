@@ -182,6 +182,7 @@ protected:
   int Open( const CMyString &pszFilename );
   int Merge(void);
   int Merge( const CMyString &pszFilename );
+  int Compare( const CMyString &pszFilename );
 
   int BackupSafe(void);
   int New(void);
@@ -229,6 +230,7 @@ protected:
   afx_msg void OnOpen();
   afx_msg void OnClearMRU();
   afx_msg void OnMerge();
+  afx_msg void OnCompare();
   afx_msg void OnRestore();
   afx_msg void OnSaveAs();
   afx_msg void OnListView();
@@ -288,7 +290,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-                          int index = GCP_NORMAL);
+                          int index, bool bForceReadOnly = false);
   bool ExtractURL(const CMyString &instr, CMyString &outurl);
 
 private:

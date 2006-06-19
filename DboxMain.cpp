@@ -36,6 +36,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <bitset>
 
 #ifdef POCKET_PC
   #include "pocketpc/PocketPC.h"
@@ -44,15 +45,6 @@
 
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
-#if _MSC_VER > 1200 // compile right under .Net
-#include <strstream>
-#define OSTRSTREAM std::ostrstream
-#define ENDS std::ends
-#else
-#include <strstrea.h>
-#define OSTRSTREAM ostrstream
-#define ENDS ends
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -176,6 +168,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
    ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_MERGE, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
    ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUTIME_SAVEAS, OnSaveAs)
@@ -954,6 +947,7 @@ DboxMain::OnImportText()
   fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import");
   int rc = fd.DoModal();
   if (rc == IDOK) {
+  	CString strErrors;
     CMyString newfile = (CMyString)fd.GetPathName();
     int numImported = 0, numSkipped = 0;
     bool bimport_preV3 = (dlg.m_import_preV3 == 1) ? true : false;
@@ -963,7 +957,7 @@ DboxMain::OnImportText()
     } else {
       delimiter = '\0';
     }
-    rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, fieldSeparator,
+    rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strErrors, fieldSeparator,
                                     delimiter, numImported, numSkipped, bimport_preV3);
 
     switch (rc) {
@@ -982,16 +976,12 @@ DboxMain::OnImportText()
     case PWScore::SUCCESS:
     default:
       {
-        OSTRSTREAM os;
-        os << "Read " << numImported << " record";
-        if (numImported != 1) os << "s";
-        if (numSkipped != 0) {
-          os << "\nCouldn't read " << numSkipped << " record";
-          if (numSkipped > 1) os << "s";
-        }
-        os << ENDS;
-        CMyString temp(os.str());
-        MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
+      	CString temp1, temp2 = _T("");
+      	temp1.Format(_T("Read %d record%s"), numImported, (numImported != 1) ? _T("s") : _T(""));
+        if (numSkipped != 0)
+          temp2.Format(_T("\nCouldn't read %d record%s"), numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
+
+        MessageBox(temp1 + temp2, _T("Status"), MB_ICONINFORMATION|MB_OK);
       }
       RefreshList();
       break;
@@ -1084,7 +1074,9 @@ DboxMain::OnImportXML()
 		CString strErrors;
 		CString XMLFilename = (CMyString)fd.GetPathName();
 		int numValidated, numImported;
+		CWaitCursor waitCursor;  // This may take a while!
 		rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename, XSDFilename, strErrors, numValidated, numImported);
+		waitCursor.Restore();  // Restore normal cursor
 
 		switch (rc) {
 			case PWScore::XML_FAILED_VALIDATION:
@@ -1104,19 +1096,27 @@ DboxMain::OnImportXML()
 			}
 				break;
 			case PWScore::SUCCESS:
-			default:
 			{
-				OSTRSTREAM os;
-				os << "Validated " << numValidated << " record";
-				if (numValidated != 1) os << "s";
-				os << "\nImported " << numImported << " record";
-				if (numImported > 1) os << "s";
-				os << ENDS;
-				CMyString temp(os.str());
-				MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
+				if (!strErrors.IsEmpty()) {
+					CString temp;
+					temp.Format(_T("%s was imported (entries validated %d / imported %d) but had the following errors:"),
+								XMLFilename, numValidated, numImported);
+					CImportXMLErrDlg dlg;
+					dlg.m_strActionText = temp;
+					dlg.m_strResultText = strErrors;
+					dlg.DoModal();
+				} else {
+					CString temp1, temp2;
+					temp1.Format(_T("Validated %d record%s"), numValidated, (numValidated != 1) ? _T("s") : _T(""));
+					temp2.Format(_T("Imported %d record%s"), numImported, (numImported != 1) ? _T("s") : _T(""));
+
+					MessageBox(temp1 + temp2, _T("Status"), MB_ICONINFORMATION|MB_OK);
+				}
 			}
 				RefreshList();
 				break;
+			default:
+				ASSERT(0);
 		} // switch
 	}
 }
@@ -1472,7 +1472,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
       return PWScore::ALREADY_OPEN;
 	}
 
-  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL );  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   switch (rc)
 	{
 	case PWScore::SUCCESS:
@@ -1739,7 +1739,7 @@ DboxMain::Restore()
       return PWScore::USER_CANCEL;
   }
 
-  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL );  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   switch (rc) {
   case PWScore::SUCCESS:
     break; // Keep going...
@@ -1874,12 +1874,13 @@ DboxMain::SaveAs()
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,
 			      CMyString& passkey,
-			      int index)
+			      int index, bool bForceReadOnly)
 {
   // index:
-  //	GCP_FIRST    (0) first
-  //	GCP_NORMAL   (1) normal
-  //    GCP_WITHEXIT (2) with Exit button
+  //	GCP_FIRST      (0) first
+  //	GCP_NORMAL     (1) OK, CANCEL & HELP buttons
+  //	GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
+  //	GCP_WITHEXIT   (3} OK, CANCEL, EXIT & HELP buttons
 
   // Called for an existing database. Prompt user
   // for password, verify against file. Lock file to
@@ -1902,9 +1903,10 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    * a blank filename, which will disable passkey entry and the OK button
    */
 
-  if (bFileIsReadOnly) {
+  if (bForceReadOnly || bFileIsReadOnly) {
   	// As file is read-only, we must honour it and not permit user to change it
   	m_IsReadOnly = true;
+	bFileIsReadOnly = true;
   }
   CPasskeyEntry dbox_pkentry(this, filename, index, m_IsReadOnly, bFileIsReadOnly);
   app.DisableAccelerator();
@@ -2554,4 +2556,345 @@ DboxMain::CheckExpiredPasswords()
 	delete p_expPWList;
 
 	return;
+}
+
+void
+DboxMain::OnCompare()
+{
+	int rc = PWScore::SUCCESS;
+	if (m_core.GetCurFile().IsEmpty()) {
+		MessageBox(_T("No database open with which to compare against another database!"),
+					_T("Oops!"), MB_OK|MB_ICONWARNING);
+		return;
+	}
+
+	CMyString file2;
+
+	//Open-type dialog box
+	while (1) {
+		CFileDialog fd(TRUE,
+						DEFAULT_SUFFIX,
+						NULL,
+						OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+						SUFFIX_FILTERS
+						_T("All files (*.*)|*.*|")
+						_T("|"),
+						this);
+		fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Compare with current open database");
+		rc = fd.DoModal();
+		if (rc == IDOK) {
+			file2 = (CMyString)fd.GetPathName();
+			//Check that this file isn't the current one!
+			if (file2 == m_core.GetCurFile()) {
+				//It is the same damn file!
+				MessageBox(_T("This database is the same as the current database!"),
+							_T("Oops!"), MB_OK|MB_ICONWARNING);
+			} else {
+				rc = Compare(file2);
+				break;
+			}
+		} else {
+			rc = PWScore::USER_CANCEL;
+			break;
+		}
+	}
+
+	return;
+}
+
+int
+DboxMain::Compare(const CMyString &pszFilename)
+{
+	// open file they want to Compare
+	int rc = PWScore::SUCCESS;
+	CMyString passkey, temp;
+
+	// OK, CANCEL, HELP + force READ-ONLY
+	rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, true);
+	switch (rc) {
+		case PWScore::SUCCESS:
+			break; // Keep going...
+		case PWScore::CANT_OPEN_FILE:
+			temp = m_core.GetCurFile()
+					+ _T("\n\nCan't open file. Please choose another.");
+			MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+		case TAR_OPEN:
+			return Open();
+		case TAR_NEW:
+			return New();
+		case PWScore::WRONG_PASSWORD:
+		case PWScore::USER_CANCEL:
+			/*
+				If the user just cancelled out of the password dialog,
+				assume they want to return to where they were before...
+			*/
+			return PWScore::USER_CANCEL;
+	}
+
+	struct st_Conflict {
+		POSITION cPos;
+		POSITION nPos;
+		std::bitset<16> bsDiffs;
+	};
+
+	PWScore compCore;
+	compCore.ReadFile(pszFilename, passkey);
+
+	if (rc == PWScore::CANT_OPEN_FILE) {
+		temp = pszFilename;
+		temp += _T("\n\nCould not open file for reading!");
+		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+		return PWScore::CANT_OPEN_FILE;
+	}
+
+	CList<POSITION, POSITION&> list_OnlyInCurrent;
+	CList<POSITION, POSITION&> list_OnlyInComp;
+	CList<st_Conflict, st_Conflict&> list_Conflicts;
+
+	compCore.SetCurFile(pszFilename);
+
+	// Put up hourglass...this might take a while
+	CWaitCursor waitCursor;
+
+	/*
+		Purpose:
+		Compare entries from comparison database (compCore) with current database (m_core)
+
+		Algorithm:
+			Foreach entry in current database {
+				Find in comparison database
+				if found {
+					Compare
+						if match
+							OK
+						else
+							There are conflicts; note them & increment numConflicts
+				} else {
+					save & increment numOnlyInCurrent
+				}
+			}
+
+			Foreach entry in comparison database {
+				Find in current database
+				if not found
+					save & increment numOnlyInComp
+			}
+	*/
+
+	int numOnlyInCurrent = 0;
+	int numOnlyInComp = 0;
+	int numConflicts = 0;
+
+	std::bitset<16> bsConflicts (0);
+	st_Conflict * st_diff;
+
+	POSITION currentPos = m_core.GetFirstEntryPosition();
+	while (currentPos) {
+		CItemData currentItem = m_core.GetEntryAt(currentPos);
+		CMyString currentGroup = currentItem.GetGroup();
+		CMyString currentTitle = currentItem.GetTitle();
+		CMyString currentUser = currentItem.GetUser();
+
+		POSITION foundPos = compCore.Find(currentGroup, currentTitle, currentUser);
+		if (foundPos) {
+			// found a match, see if all other fields also match
+			// Difference flags:
+			/*
+				First word (values in square brackets taken from ItemData.h)
+				1... ....	NAME		[0x0] - n/a - depreciated
+				.1.. ....	UUID		[0x1] - n/a - unique
+				..1. ....	GROUP		[0x2] - not checked - must be identical
+				...1 ....	TITLE		[0x3] - not checked - must be identical
+				.... 1...	USER		[0x4] - not checked - must be identical
+				.... .1..	NOTES		[0x5]
+				.... ..1.	PASSWORD	[0x6]
+				.... ...1	CTIME		[0x7]
+
+				Second word
+				1... ....	PMTIME		[0x8]
+				.1.. ....	ATIME		[0x9]
+				..1. ....	LTIME		[0xa]
+				...1 ....	POLICY		[0xb] - not yet implemented
+				.... 1...	RMTIME		[0xc]
+				.... .1..	URL			[0xd]
+				.... ..1.	AUTOTYPE	[0xe]
+				.... ...1	PWHIST		[0xf]
+			*/
+
+			bsConflicts.reset();
+
+			CItemData compItem = compCore.GetEntryAt(foundPos);
+			if (currentItem.GetNotes() != compItem.GetNotes())
+				bsConflicts.flip(CItemData::NOTES);
+			if (currentItem.GetPassword() != compItem.GetPassword())
+				bsConflicts.flip(CItemData::PASSWORD);
+			if (currentItem.GetCTime() != compItem.GetCTime())
+				bsConflicts.flip(CItemData::CTIME);
+			if (currentItem.GetPMTime() != compItem.GetPMTime())
+				bsConflicts.flip(CItemData::PMTIME);
+			if (currentItem.GetATime() != compItem.GetATime())
+				bsConflicts.flip(CItemData::ATIME);
+			if (currentItem.GetLTime() != compItem.GetLTime())
+				bsConflicts.flip(CItemData::LTIME);
+			if (currentItem.GetRMTime() != compItem.GetRMTime())
+				bsConflicts.flip(CItemData::RMTIME);
+			if (currentItem.GetURL() != compItem.GetURL())
+				bsConflicts.flip(CItemData::URL);
+			if (currentItem.GetAutoType() != compItem.GetAutoType())
+				bsConflicts.flip(CItemData::AUTOTYPE);
+			CMyString cuPWH = currentItem.GetPWHistory();
+			CMyString coPWH = compItem.GetPWHistory();
+			if (cuPWH != coPWH)
+				bsConflicts.flip(CItemData::PWHIST);
+
+			if (bsConflicts.any()) {
+					st_diff = new st_Conflict;
+					st_diff->cPos = currentPos;
+					st_diff->nPos = foundPos;
+					st_diff->bsDiffs = bsConflicts;
+					list_Conflicts.AddTail(*st_diff);
+
+					numConflicts++;
+			}
+			} else {
+				/* didn't find any match... */
+				list_OnlyInCurrent.AddTail(currentPos);
+				numOnlyInCurrent++;
+		}
+
+		m_core.GetNextEntry(currentPos);
+	}
+
+	POSITION compPos = compCore.GetFirstEntryPosition();
+	while (compPos) {
+		CItemData compItem = compCore.GetEntryAt(compPos);
+		CMyString compGroup = compItem.GetGroup();
+		CMyString compTitle = compItem.GetTitle();
+		CMyString compUser = compItem.GetUser();
+
+		if (!m_core.Find(compGroup, compTitle, compUser)) {
+			/* didn't find any match... */
+			list_OnlyInComp.AddTail(compPos);
+			numOnlyInComp++;
+		}
+
+		compCore.GetNextEntry(compPos);
+	}
+
+	waitCursor.Restore(); // restore normal cursor
+
+	// tell the user we're done & provide short Compare report
+	CString resultStr(_T("")), buffer;
+	buffer.Format(_T("Compare complete of current database:\n\t %s\n and:\n\t %s"),
+					m_core.GetCurFile(), pszFilename);
+
+	if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
+		resultStr += buffer + _T("\n\nDatabases identical!");
+		MessageBox(resultStr, _T("Compare Complete"), MB_OK);
+		goto exit;
+	}
+
+	resultStr += buffer;
+	buffer.Empty();
+	buffer.Format(_T("\n\nNumber of entr%s only in the current database is %d"),
+						numOnlyInCurrent == 1 ? _T("y") : _T("ies"), numOnlyInCurrent);
+	resultStr += buffer;
+	buffer.Empty();
+	buffer.Format(_T("\nNumber of entr%s only in the comparison database is %d"),
+						numOnlyInComp == 1 ? _T("y") : _T("ies"), numOnlyInComp);
+	resultStr += buffer;
+	buffer.Empty();
+	buffer.Format(_T("\nNumber of entr%s in both but with differences is %d"),
+						numConflicts == 1 ? _T("y") : _T("ies"), numConflicts);
+	resultStr += buffer;
+	buffer.Empty();
+	resultStr += _T("\n\nTo copy details to the clipboard, press Yes - otherwise press No (default).");
+	int mb_rc = MessageBox(resultStr, _T("Compare Complete"), MB_YESNO | MB_DEFBUTTON2);
+
+	if (mb_rc == IDNO)
+		goto exit;
+
+	resultStr.Empty();
+	if (numOnlyInCurrent > 0) {
+		buffer.Format(_T("Entries only in current database (%s):"), m_core.GetCurFile());
+		resultStr += buffer;
+		POSITION currentPos = list_OnlyInCurrent.GetHeadPosition();
+		while (currentPos) {
+			POSITION corepos = list_OnlyInCurrent.GetAt(currentPos);
+			CItemData currentItem = m_core.GetEntryAt(corepos);
+			CMyString currentGroup = currentItem.GetGroup();
+			CMyString currentTitle = currentItem.GetTitle();
+			CMyString currentUser = currentItem.GetUser();
+
+			resultStr += _T("\n\tGroup:\"") + currentGroup +
+						 _T("\"; Title:\"") + currentTitle +
+						 _T("\"; User:\"") + currentUser +
+						 _T("\"");
+
+			list_OnlyInCurrent.GetNext(currentPos);
+		}
+		resultStr += _T("\n");
+	}
+
+	if (numOnlyInComp > 0) {
+		buffer.Format(_T("Entries only in comparison database (%s):"), pszFilename);
+		resultStr += buffer;
+		POSITION compPos = list_OnlyInComp.GetHeadPosition();
+		while (compPos) {
+			POSITION corepos = list_OnlyInComp.GetAt(compPos);
+			CItemData compItem = compCore.GetEntryAt(corepos);
+			CMyString compGroup = compItem.GetGroup();
+			CMyString compTitle = compItem.GetTitle();
+			CMyString compUser = compItem.GetUser();
+
+			resultStr += _T("\n\tGroup:\"") + compGroup +
+						 _T("\"; Title:\"") + compTitle +
+						 _T("\"; User:\"") + compUser +
+						 _T("\"");
+
+			list_OnlyInComp.GetNext(compPos);
+		}
+		resultStr += _T("\n");
+	}
+
+	if (numConflicts > 0) {
+		buffer.Format(_T("Entries in both %s and %s but with differences:"),
+					m_core.GetCurFile(), pszFilename);
+		resultStr += buffer;
+		POSITION conflictPos = list_Conflicts.GetHeadPosition();
+		while (conflictPos) {
+			st_Conflict st_diff = list_Conflicts.GetAt(conflictPos);
+			CItemData currentItem = m_core.GetEntryAt(st_diff.cPos);
+			CMyString currentGroup = currentItem.GetGroup();
+			CMyString currentTitle = currentItem.GetTitle();
+			CMyString currentUser = currentItem.GetUser();
+
+			resultStr += _T("\n\tIn entry - Group:\"") + currentGroup +
+						 _T("\"; Title:\"") + currentTitle +
+						 _T("\"; User:\"") + currentUser +
+						 _T("\"\n\t\tthe following fields have differences:");
+
+			if (st_diff.bsDiffs.test(CItemData::PASSWORD)) resultStr += _T(" 'Password'");
+			if (st_diff.bsDiffs.test(CItemData::NOTES)) resultStr += _T(" 'Notes'");
+			if (st_diff.bsDiffs.test(CItemData::URL)) resultStr += _T(" 'URL'");
+			if (st_diff.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += _T(" 'Autotype'");
+			if (st_diff.bsDiffs.test(CItemData::CTIME)) resultStr += _T(" 'Creation Time'");
+			if (st_diff.bsDiffs.test(CItemData::PMTIME)) resultStr += _T(" 'Password Modification Time'");
+			if (st_diff.bsDiffs.test(CItemData::ATIME)) resultStr += _T(" 'Last Access Time'");
+			if (st_diff.bsDiffs.test(CItemData::LTIME)) resultStr += _T(" 'Password Expiry Time'");
+			if (st_diff.bsDiffs.test(CItemData::RMTIME)) resultStr += _T(" 'Record Modification Time'");
+			if (st_diff.bsDiffs.test(CItemData::PWHIST)) resultStr += _T(" 'Password History'");
+
+			list_Conflicts.GetNext(conflictPos);
+		}
+	}
+
+	app.SetClipboardData(resultStr);
+
+exit:
+	list_OnlyInCurrent.RemoveAll();
+	list_OnlyInComp.RemoveAll();
+	list_Conflicts.RemoveAll();
+
+	return rc;
 }

@@ -2,6 +2,7 @@
 //
 
 #include "ImportXMLErrDlg.h"
+#include "ThisMfcApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,6 +33,7 @@ void CImportXMLErrDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CImportXMLErrDlg, CDialog)
 	//{{AFX_MSG_MAP(CImportXMLErrDlg)
 	ON_BN_CLICKED(IDOK, OnOK)
+	ON_BN_CLICKED(IDC_COPY_ERRORS_TO_CLIPBOARD, OnBnClickedCopyToClipboard)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -42,4 +44,10 @@ END_MESSAGE_MAP()
 void CImportXMLErrDlg::OnOK()
 {
 	CDialog::OnOK();
+}
+
+void
+CImportXMLErrDlg::OnBnClickedCopyToClipboard()
+{
+	app.SetClipboardData(m_strResultText);
 }

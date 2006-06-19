@@ -708,7 +708,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 }
 
 int
-PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory)
+PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory, CString &strErrors)
 {
 	// Format is (! == mandatory blank, unless at the end of the record):
 	//    sxx00
@@ -719,19 +719,24 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 
 	CMyString tmp, pwh;
 	CString buffer;
-	int ipwlen, s, m, n;
+	int ipwlen, s = -1, m = -1, n = -1;
 	int rc = PWH_OK;
 	time_t t;
+
 	newPWHistory = _T("");
+	strErrors = _T("");
 
 	pwh = CMyString(PWHistory);
 	int len = pwh.GetLength();
+	int pwleft = len;
 
-	if (len == 0)
+	if (pwleft == 0)
 		return PWH_OK;
 
-	if (len < 5)
-		return PWH_INVALID_HDR;
+	if (pwleft < 5) {
+		rc = PWH_INVALID_HDR;
+		goto exit;
+	}
 
 	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
 	TCHAR *lpszPW;
@@ -743,48 +748,48 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 #endif
 	if (iread != 3) {
 		rc = PWH_INVALID_HDR;
-		goto exit;
+		goto relbuf;
 	}
 
 	if (s != 0 && s != 1) {
 		rc = PWH_INVALID_STATUS;
-		goto exit;
+		goto relbuf;
 	}
 
 	if (m > 25) {
 		rc = PWH_INVALID_MAX;
-		goto exit;
+		goto relbuf;
 	}
 
 	if (n > m) {
 		rc = PWH_INVALID_NUM;
-		goto exit;
+		goto relbuf;
 	}
 
 	lpszPWHistory += 5;
-	len -= 5;
+	pwleft -= 5;
 
-	if (len == 0 && s == 0 && m == 0 && n == 0) {
+	if (pwleft == 0 && s == 0 && m == 0 && n == 0) {
 		rc = PWH_IGNORE;
-		goto exit;
+		goto relbuf;
 	}
 
 	buffer.Format(_T("%01d%02x%02x"), s, m, n);
 	newPWHistory = CMyString(buffer);
 
 	for (int i = 0; i < n; i++) {
-		if (len < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
+		if (pwleft < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
 			rc = PWH_TOO_SHORT;
 			break;
 		}
 
 		if (lpszPWHistory[0] != _T(' ')) {
 			rc = PWH_INVALID_CHARACTER;
-			goto exit;
+			goto relbuf;
 		}
 
 		lpszPWHistory += 1;
-		len -= 1;
+		pwleft -= 1;
 
 		lpszPW = tmp.GetBuffer(20);
 #if _MSC_VER >= 1400
@@ -805,15 +810,15 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 		}
 
 		lpszPWHistory += 19;
-		len -= 19;
+		pwleft -= 19;
 
 		if (lpszPWHistory[0] != _T(' ')) {
 			rc = PWH_INVALID_CHARACTER;
-			goto exit;
+			goto relbuf;
 		}
 
 		lpszPWHistory += 1;
-		len -= 1;
+		pwleft -= 1;
 
 #if _MSC_VER >= 1400
 		iread = sscanf_s(lpszPWHistory, "%04x", &ipwlen);
@@ -826,17 +831,17 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 		}
 
 		lpszPWHistory += 4;
-		len -= 4;
+		pwleft -= 4;
 
 		if (lpszPWHistory[0] != _T(' ')) {
 			rc = PWH_INVALID_CHARACTER;
-			goto exit;
+			goto relbuf;
 		}
 
 		lpszPWHistory += 1;
-		len -= 1;
+		pwleft -= 1;
 
-		if (len < ipwlen) {
+		if (pwleft < ipwlen) {
 			rc = PWH_INVALID_PSWD_LENGTH;
 			break;
 		}
@@ -854,13 +859,56 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 		newPWHistory += CMyString(buffer);
 		buffer.Empty();
 		lpszPWHistory += ipwlen;
-		len -= ipwlen;
+		pwleft -= ipwlen;
 	}
 
-	if (len > 0)
+	if (pwleft > 0)
 		rc = PWH_TOO_LONG;
 
-	exit: pwh.ReleaseBuffer();
+	relbuf: pwh.ReleaseBuffer();
+
+	exit: buffer.Format(_T("Error in Password History field at offset %d: "), len - pwleft);
+	CString temp;
+	switch (rc) {
+		case PWH_OK:
+		case PWH_IGNORE:
+			buffer.Empty();
+			break;
+		case PWH_INVALID_HDR:
+			temp.Format(_T("Invalid header: %s"), PWHistory);
+			buffer += temp;
+			break;
+		case PWH_INVALID_STATUS:
+			temp.Format(_T("Invalid status value: %d"), s);
+			buffer += temp;
+			break;
+		case PWH_INVALID_MAX:
+			temp.Format(_T("Invalid maximum number of saved old passwords: %d"), m);
+			buffer += temp;
+			break;
+		case PWH_INVALID_NUM:
+			temp.Format(_T("Invalid number of saved old passwords %d (max. set to %d)"), n, m);
+			buffer += temp;
+			break;
+		case PWH_INVALID_DATETIME:
+			buffer += _T("Invalid date/time value");
+			break;
+		case PWH_INVALID_PSWD_LENGTH:
+			buffer += _T("Invalid password length found");
+			break;
+		case PWH_TOO_SHORT:
+			buffer += _T("Field is too short. Minimum required per old password entry is 26 + the actual password");
+			break;
+		case PWH_TOO_LONG:
+			buffer += _T("Field is too long");
+			break;
+		case PWH_INVALID_CHARACTER:
+			buffer += _T("Invalid field separator character found - only a single blank is allowed between fields");
+			break;
+		default:
+			ASSERT(0);
+	}
+	strErrors += buffer;
 	if (rc != PWH_OK)
 		newPWHistory = _T("");
 

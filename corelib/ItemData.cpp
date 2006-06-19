@@ -218,6 +218,8 @@ CItemData::GetPWHistory() const
 {
 	CMyString ret;
 	GetField(m_PWHistory, ret);
+	if (ret == _T("0") || ret == _T("00000"))
+		ret = _T("");
 	return ret;
 }
 
@@ -520,7 +522,10 @@ CItemData::SetTime(int whichtime, const CString &time_str)
 void
 CItemData::SetPWHistory(const CMyString &PWHistory)
 {
-	SetField(m_PWHistory, PWHistory);
+	CMyString pwh = PWHistory;
+	if (pwh == _T("0") || pwh == _T("00000"))
+		pwh = _T("");
+	SetField(m_PWHistory, pwh);
 }
 
 void
