@@ -1421,8 +1421,8 @@ DboxMain::Merge(const CMyString &pszFilename) {
     Algorithm:
     Foreach entry in otherCore
     Find in m_core
-    if find a match
-    if pw, notes, & group also matches
+    if find a match on group/title/user
+    if pw, notes, url and autotype also matche
     no merge
     else
     add to m_core with new title suffixed with -merged-HHMMSS-DDMMYY
@@ -1435,22 +1435,24 @@ DboxMain::Merge(const CMyString &pszFilename) {
   POSITION otherPos = otherCore.GetFirstEntryPosition();
   while (otherPos) {
     CItemData otherItem = otherCore.GetEntryAt(otherPos);
-    CMyString otherGroup = otherItem.GetGroup();
-    CMyString otherTitle = otherItem.GetTitle();
-    CMyString otherUser = otherItem.GetUser();
+    const CMyString otherGroup = otherItem.GetGroup();
+    const CMyString otherTitle = otherItem.GetTitle();
+    const CMyString otherUser = otherItem.GetUser();
 		
     POSITION foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
     if (foundPos) {
-      /* found a match, see if the pw & notes also match */
+      /* found a match, see if other fields also match */
       CItemData curItem = m_core.GetEntryAt(foundPos);
       if (otherItem.GetPassword() != curItem.GetPassword() ||
-          otherItem.GetNotes() != curItem.GetNotes()) {
-        /* have a match on title/user, but not on pw/notes 
+          otherItem.GetNotes() != curItem.GetNotes() ||
+          otherItem.GetURL() != curItem.GetURL() ||
+          otherItem.GetAutoType() != curItem.GetAutoType()) {
+        /* have a match on title/user, but not on other fields
            add an entry suffixed with -merged-HHMMSS-DDMMYY */
         CTime curTime = CTime::GetCurrentTime();
         CMyString newTitle = otherItem.GetTitle();
         newTitle += _T("-merged-");
-        CMyString timeStr = curTime.Format("%H%M%S-%m%d%y");
+        CMyString timeStr = curTime.Format(_T("%H%M%S-%m%d%y"));
         newTitle = newTitle + timeStr;
 
         /* note it as an issue for the user */

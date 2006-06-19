@@ -1,12 +1,21 @@
-Password Safe 3.0Beta2 Release Note - April 2006
-================================================
+Password Safe 3.02 Release Note - June 2006
+===========================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.01. For a short description of Password
+with Password Safe version 3.02. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
+
+New Features for 3.02
+=====================
+
+Bugs fixed in 3.02
+==================
+[1503075] No longer crashes when number of last databases is set to
+zero.
+[1507847] Merge databases now merges all the record's fields.
 
 New Features for 3.01
 =====================
@@ -19,7 +28,6 @@ notified accordingly.
 [] Ability to clear "Recent Database List"
 [] Browse to URL now starts a new instance of the user's default browser
 rather than taking over an existing instance
-[] It is now possible to set password expiry dates
 
 Bugs fixed in 3.01
 ==================
@@ -29,9 +37,10 @@ Bugs fixed in 3.01
 [1472332] Read-only command line argument bug
 [] Help file now reflects 3.0 new features.
 [1490985, 1423020, 1398936] Microsoft redistributable dlls now
-included in installation
+included in installation and zip file. Should fix all "MS*.dll not
+installed" problems
 [1440951] Can now close application after minimize w/o system tray.
-and zip file. Should fix all "MS*.dll not installed" problems
+
 
 
 New Features for 3.0Beta2:
