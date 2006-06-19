@@ -87,10 +87,7 @@ CPasskeyChangeDlg::OnOK()
    else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
      CString msg(_T("Weak password:\n"));
      msg += CString(errmess);
-     msg += _T("\nAccept anyway?");
-     if (AfxMessageBox(msg, MB_YESNO) == IDYES) {
-       super::OnOK();
-     }
+     AfxMessageBox(msg, MB_ICONSTOP);
    } else {
      super::OnOK();
    }

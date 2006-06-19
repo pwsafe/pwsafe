@@ -84,15 +84,18 @@ void CPasskeySetup::OnOK()
       ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
       return;
    }
-
+   // Accept weak passwords in debug build, to make it easier to test
+   // Reject weak passwords in Release (prior to 3.02, we allowed the
+   // user to accept a weak password if she insisted).
+#ifndef _DEBUG
    CMyString errmess;
    if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
      CString msg(_T("Weak password:\n"));
      msg += CString(errmess);
-     msg += _T("\nAccept anyway?");
-     if (AfxMessageBox(msg, MB_YESNO) == IDNO)
-       return;
+     AfxMessageBox(msg, MB_ICONSTOP);
+     return;
    }
+#endif
 
    super::OnOK();
 }
