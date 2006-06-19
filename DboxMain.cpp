@@ -2742,9 +2742,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 				bsConflicts.flip(CItemData::URL);
 			if (currentItem.GetAutoType() != compItem.GetAutoType())
 				bsConflicts.flip(CItemData::AUTOTYPE);
-			CMyString cuPWH = currentItem.GetPWHistory();
-			CMyString coPWH = compItem.GetPWHistory();
-			if (cuPWH != coPWH)
+			if (currentItem.GetPWHistory() != compItem.GetPWHistory())
 				bsConflicts.flip(CItemData::PWHIST);
 
 			if (bsConflicts.any()) {
