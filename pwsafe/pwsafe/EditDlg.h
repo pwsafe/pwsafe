@@ -8,12 +8,8 @@ class CEditDlg
 
 public:
    // default constructor
-   CEditDlg(CWnd* pParent = NULL)
-      : CDialog(CEditDlg::IDD, pParent),
-        m_isPwHidden(true),
-		m_ascCTime(_T("")), m_ascPMTime(_T("")), m_ascATime(_T("")),
-		m_ascLTime(_T("")), m_ascRMTime(_T(""))
-   {}
+   CEditDlg(CWnd* pParent = NULL);
+   virtual ~CEditDlg();
 
    enum { IDD = IDD_EDIT };
    CMyString m_notes;
@@ -29,6 +25,12 @@ public:
    CMyString m_ascLTime;
    CMyString m_ascRMTime;
    time_t m_tttLTime;
+   int m_MaxPWHistory;
+   int m_NumPWHistory;
+
+   CListCtrl m_PWHistListCtrl;
+
+   CList<PWHistEntry, PWHistEntry&>* m_pPWHistList;
 
    CMyString m_realpassword;
 
@@ -37,17 +39,24 @@ public:
    bool m_IsReadOnly;
    void  ShowPassword(void);
    void  HidePassword(void);
+   BOOL m_ClearPWHistory;
+   BOOL m_SavePWHistory;
+   int m_iSortedColumn;
+   BOOL m_bSortAscending;
+   bool m_bSavePWHistory;
 
 private:
    bool m_isPwHidden;
    // Are we showing more or less details?
    bool m_isExpanded;
+   // Are we showing EVEN more or less details?
+   bool m_isMoreExpanded;
    void ResizeDialog();
+   void MakeDialogWider();
 
 protected:
    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-protected:
    afx_msg void OnShowpassword();
    virtual void OnOK();
    virtual void OnCancel();
@@ -64,9 +73,16 @@ public:
 	afx_msg void OnBnClickedMore();
 	afx_msg void OnBnClickedClearLTime();
 	afx_msg void OnBnClickedSetLTime();
-	CButton m_moreLessBtn;
+	afx_msg void OnBnClickedShowPasswordHistory();
+	afx_msg void OnCheckedClearPasswordHistory();
+	afx_msg void OnCheckedSavePasswordHistory();
+	afx_msg void OnBnClickedCopyToClipboard();
+	afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
 
-	
+	CButton m_MoreLessBtn, m_EvenMoreLessBtn;
+
+private:
+	static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -46,6 +46,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("MRUOnFileMenu"), true, true},
   {_T("DisplayExpandedAddEditDlg"), true, true},
   {_T("MaintainDateTimeStamps"), false, true},
+  {_T("SavePasswordHistory"), false, true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {

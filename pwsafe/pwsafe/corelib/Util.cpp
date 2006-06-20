@@ -487,6 +487,88 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
 }
 
 bool
+PWSUtil::VerifyXMLDateTimeString(const CString time_str, time_t &t)
+{
+  //  String format must be "yyyy-mm-ddThh:mm:ss"
+  //                        "0123456789012345678"
+
+  CString xtime_str;
+  const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  const int idigits[14] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
+  const int ndigits = 14;
+  int yyyy, mon, dd, hh, min, ss, nscanned;
+
+  t = (time_t)-1;
+
+  if (time_str.GetLength() != 19)
+    return false;
+
+  // Validate time_str
+  if (time_str.Mid(4,1) != '-' ||
+      time_str.Mid(7,1) != '-' ||
+      time_str.Mid(10,1) != 'T' ||
+      time_str.Mid(13,1) != ':' ||
+      time_str.Mid(16,1) != ':')
+    return false;
+
+  for (int i = 0;  i < ndigits; i++)
+    if (!isdigit(time_str.GetAt(idigits[i])))
+      return false;
+
+  // Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
+  // and no blanks.  Replace '-' & 'T' by '#'.
+  if (time_str.Find('#') != (-1))
+    return false;
+  if (time_str.Find(' ') != (-1))
+    return false;
+
+  xtime_str = time_str;
+  if (xtime_str.Replace('-', '#') != 2)
+    return false;
+  if (xtime_str.Replace('T', '#') != 1)
+    return false;
+
+#if _MSC_VER >= 1400
+  nscanned = sscanf_s(xtime_str, "%4d#%2d#%2d#%2d:%2d:%2d",
+                      &yyyy, &mon, &dd, &hh, &min, &ss);
+#else
+  nscanned = sscanf(xtime_str, "%4d#%2d#%2d#%2d:%2d:%2d",
+                    &yyyy, &mon, &dd, &hh, &min, &ss);
+#endif
+
+  if (nscanned != 6)
+    return false;
+
+  // Built-in obsolesence for pwsafe in 2038?
+  if (yyyy < 1970 || yyyy > 2038)
+    return false;
+
+  if ((mon < 1 || mon > 12) || (dd < 1))
+    return false;
+
+  if (mon == 2 && (yyyy % 4) == 0) {
+    // Feb and a leap year
+    if (dd > 29)
+      return false;
+  } else {
+    // Either (Not Feb) or (Is Feb but not a leap-year)
+    if (dd > month_lengths[mon - 1])
+      return false;
+  }
+
+  if ((hh < 0 || hh > 23) ||
+      (min < 0 || min > 59) ||
+      (ss < 0 || ss > 59))
+    return false;
+
+  const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
+
+  t = (time_t)ct.GetTime();
+
+  return true;
+}
+
+bool
 PWSUtil::ToClipboard(const CMyString &data,
                      unsigned char clipboard_digest[SHA256::HASHLEN],
                      HWND hWindow)
@@ -589,6 +671,10 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
       		sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
+    	else if ((result_format & XML) == XML)
+      		sprintf_s(time_str, 20, "%04d-%02d-%02dT%02d:%02d:%02d",
+            		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
+                		st.tm_min, st.tm_sec);
     	else
       		_tasctime_s(time_str, 32, &st);  // secure version
     	ret = time_str;
@@ -600,18 +686,251 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
       		sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
             	  st->tm_hour, st->tm_min, st->tm_sec);
-      	t_str_ptr = time_str;
+      		t_str_ptr = time_str;
+    	} else if ((result_format & XML) == XML) {
+      		sprintf(time_str, "%04d-%02d-%02dT%02d:%02d:%02d",
+            	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
+            	  st->tm_hour, st->tm_min, st->tm_sec);
+      		t_str_ptr = time_str;
     	} else
       		t_str_ptr = _tasctime(st);
     	ret = t_str_ptr;
 #endif
   } else {
   	if ((result_format & ASC_UNKNOWN) == ASC_UNKNOWN)
-      ret = UNKNOWN_TIME_STR;
+    	ret = UNKNOWN_TIME_STR;
     else
     	ret = _T("");
   }
   // remove the trailing EOL char.
   ret.TrimRight();
   return ret;
+}
+
+int
+PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory, CString &strErrors)
+{
+	// Format is (! == mandatory blank, unless at the end of the record):
+	//    sxx00
+	// or
+	//    sxxnn!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!.........
+	// Note:
+	//    !yyyy/mm/dd!hh:mm:ss! may be !Unknown            !
+
+	CMyString tmp, pwh;
+	CString buffer;
+	int ipwlen, s = -1, m = -1, n = -1;
+	int rc = PWH_OK;
+	time_t t;
+
+	newPWHistory = _T("");
+	strErrors = _T("");
+
+	pwh = CMyString(PWHistory);
+	int len = pwh.GetLength();
+	int pwleft = len;
+
+	if (pwleft == 0)
+		return PWH_OK;
+
+	if (pwleft < 5) {
+		rc = PWH_INVALID_HDR;
+		goto exit;
+	}
+
+	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
+	TCHAR *lpszPW;
+
+#if _MSC_VER >= 1400
+	int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+#else
+	int iread = sscanf(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+#endif
+	if (iread != 3) {
+		rc = PWH_INVALID_HDR;
+		goto relbuf;
+	}
+
+	if (s != 0 && s != 1) {
+		rc = PWH_INVALID_STATUS;
+		goto relbuf;
+	}
+
+	if (m > 25) {
+		rc = PWH_INVALID_MAX;
+		goto relbuf;
+	}
+
+	if (n > m) {
+		rc = PWH_INVALID_NUM;
+		goto relbuf;
+	}
+
+	lpszPWHistory += 5;
+	pwleft -= 5;
+
+	if (pwleft == 0 && s == 0 && m == 0 && n == 0) {
+		rc = PWH_IGNORE;
+		goto relbuf;
+	}
+
+	buffer.Format(_T("%01d%02x%02x"), s, m, n);
+	newPWHistory = CMyString(buffer);
+
+	for (int i = 0; i < n; i++) {
+		if (pwleft < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
+			rc = PWH_TOO_SHORT;
+			break;
+		}
+
+		if (lpszPWHistory[0] != _T(' ')) {
+			rc = PWH_INVALID_CHARACTER;
+			goto relbuf;
+		}
+
+		lpszPWHistory += 1;
+		pwleft -= 1;
+
+		lpszPW = tmp.GetBuffer(20);
+#if _MSC_VER >= 1400
+		memcpy_s(lpszPW, 20, lpszPWHistory, 19);
+#else
+		memcpy(lpszPW, lpszPWHistory, 19);
+#endif
+		lpszPW[19] = '\0';
+		tmp.ReleaseBuffer();
+		
+		if (tmp == _T("Unknown            "))
+			t = 0;
+		else {
+			if (!VerifyImportDateTimeString(tmp, t)) {
+				rc = PWH_INVALID_DATETIME;
+				break;
+			}
+		}
+
+		lpszPWHistory += 19;
+		pwleft -= 19;
+
+		if (lpszPWHistory[0] != _T(' ')) {
+			rc = PWH_INVALID_CHARACTER;
+			goto relbuf;
+		}
+
+		lpszPWHistory += 1;
+		pwleft -= 1;
+
+#if _MSC_VER >= 1400
+		iread = sscanf_s(lpszPWHistory, "%04x", &ipwlen);
+#else
+		iread = sscanf(lpszPWHistory, "%04x", &ipwlen);
+#endif
+		if (iread != 1) {
+			rc = PWH_INVALID_PSWD_LENGTH;
+			break;
+		}
+
+		lpszPWHistory += 4;
+		pwleft -= 4;
+
+		if (lpszPWHistory[0] != _T(' ')) {
+			rc = PWH_INVALID_CHARACTER;
+			goto relbuf;
+		}
+
+		lpszPWHistory += 1;
+		pwleft -= 1;
+
+		if (pwleft < ipwlen) {
+			rc = PWH_INVALID_PSWD_LENGTH;
+			break;
+		}
+
+		CMyString tmp;
+		lpszPW = tmp.GetBuffer(ipwlen + 1);
+#if _MSC_VER >= 1400
+		memcpy_s(lpszPW, ipwlen + 1, lpszPWHistory, ipwlen);
+#else
+		memcpy(lpszPW, lpszPWHistory, ipwlen);
+#endif
+		lpszPW[ipwlen] = '\0';
+		tmp.ReleaseBuffer();
+		buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
+		newPWHistory += CMyString(buffer);
+		buffer.Empty();
+		lpszPWHistory += ipwlen;
+		pwleft -= ipwlen;
+	}
+
+	if (pwleft > 0)
+		rc = PWH_TOO_LONG;
+
+	relbuf: pwh.ReleaseBuffer();
+
+	exit: buffer.Format(_T("Error in Password History field at offset %d: "), len - pwleft);
+	CString temp;
+	switch (rc) {
+		case PWH_OK:
+		case PWH_IGNORE:
+			buffer.Empty();
+			break;
+		case PWH_INVALID_HDR:
+			temp.Format(_T("Invalid header: %s"), PWHistory);
+			buffer += temp;
+			break;
+		case PWH_INVALID_STATUS:
+			temp.Format(_T("Invalid status value: %d"), s);
+			buffer += temp;
+			break;
+		case PWH_INVALID_MAX:
+			temp.Format(_T("Invalid maximum number of saved old passwords: %d"), m);
+			buffer += temp;
+			break;
+		case PWH_INVALID_NUM:
+			temp.Format(_T("Invalid number of saved old passwords %d (max. set to %d)"), n, m);
+			buffer += temp;
+			break;
+		case PWH_INVALID_DATETIME:
+			buffer += _T("Invalid date/time value");
+			break;
+		case PWH_INVALID_PSWD_LENGTH:
+			buffer += _T("Invalid password length found");
+			break;
+		case PWH_TOO_SHORT:
+			buffer += _T("Field is too short. Minimum required per old password entry is 26 + the actual password");
+			break;
+		case PWH_TOO_LONG:
+			buffer += _T("Field is too long");
+			break;
+		case PWH_INVALID_CHARACTER:
+			buffer += _T("Invalid field separator character found - only a single blank is allowed between fields");
+			break;
+		default:
+			ASSERT(0);
+	}
+	strErrors += buffer;
+	if (rc != PWH_OK)
+		newPWHistory = _T("");
+
+	return rc;
+}
+
+CMyString
+PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &newExtn)
+{
+	TCHAR path_buffer[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE];
+	TCHAR dir[_MAX_DIR];
+	TCHAR fname[_MAX_FNAME];
+	TCHAR ext[_MAX_EXT];
+
+#if _MSC_VER >= 1400
+	_tsplitpath_s( oldfilename, drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+	_tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, newExtn );
+#else
+	_tsplitpath( oldfilename, drive, dir, fname, ext );
+	_tmakepath( path_buffer, drive, dir, fname, newExtn );
+#endif
+	return CMyString(path_buffer);
 }

@@ -28,7 +28,7 @@ public:
 // Dialog Data
 	enum { IDD = IDD_DISPLAY_EXPIRED_ENTRIES };
 	CList<ExpPWEntry, ExpPWEntry&>* m_pexpPWList;
-	CListCtrl m_expPWList;
+	CListCtrl m_expPWListCtrl;
 	CString m_message;
 	int m_iSortedColumn; 
 	BOOL m_bSortAscending; 

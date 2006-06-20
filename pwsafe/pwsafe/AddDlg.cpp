@@ -22,7 +22,8 @@ static char THIS_FILE[] = __FILE__;
 CAddDlg::CAddDlg(CWnd* pParent)
   : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
-    m_URL(_T("")), m_autotype(_T("")), m_tttLTime((time_t)0)
+    m_URL(_T("")), m_autotype(_T("")), m_tttLTime((time_t)0),
+	m_MaxPWHistory(3), m_SavePWHistory(FALSE)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -36,6 +37,12 @@ BOOL CAddDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   ResizeDialog();
 
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+
+  pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
+  pspin->SetRange(1, 25);
+  pspin->SetBase(10);
+  pspin->SetPos(m_MaxPWHistory);  // Default suggestion of max. to keep!
   return TRUE;
 }
 
@@ -48,6 +55,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
 	DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
 	DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
+	DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
 	if(!pDX->m_bSaveAndValidate) {
 		// We are initializing the dialog.  Populate the groups combo box.
@@ -68,8 +76,9 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_URL, (CString&)m_URL);
 	DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
 	DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
+	DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
+	DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 25);
 }
-
 
 BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -78,6 +87,7 @@ BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
    ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
    ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 END_MESSAGE_MAP()
 
 
@@ -172,19 +182,23 @@ void CAddDlg::ResizeDialog()
 	int TopHideableControl = IDC_TOP_HIDEABLE;
 	int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
 	int controls[]={
-IDC_URL,
-IDC_AUTOTYPE,
-IDC_STATIC_URL,
+		IDC_STATIC_URL,
+		IDC_URL,
+		IDC_AUTOTYPE,
+		IDC_SAVE_PWHIST,
 		IDC_STATIC_AUTO,
 		IDC_LTIME,
 		IDC_STATIC_LTIME,
 		IDC_LTIME_CLEAR,
 		IDC_LTIME_SET,
-		IDC_STATIC_DTEXPGROUP
+		IDC_STATIC_DTEXPGROUP,
+		IDC_MAXPWHISTORY,
+		IDC_STATIC_OLDPW1,
+		IDC_PWHSPIN,
+		IDC_STATIC_PWHIST
 	};	
 	
-	for(int n = 0; n<sizeof(controls)/sizeof(IDC_URL);n++)
-	{
+	for(int n = 0; n < sizeof(controls)/sizeof(IDC_URL); n++) {
 		CWnd* pWind;
 		pWind = (CWnd *)GetDlgItem(controls[n]);
 		pWind->ShowWindow(m_isExpanded);
@@ -249,3 +263,10 @@ void CAddDlg::OnBnClickedSetLTime()
 	}
 }
 
+void
+CAddDlg::OnCheckedSavePasswordHistory()
+{
+	m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
+
+	GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
+}

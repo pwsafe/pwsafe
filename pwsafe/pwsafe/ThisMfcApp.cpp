@@ -534,6 +534,8 @@ ThisMfcApp::AddToMRU(const CMyString &pszFilename)
 void
 ThisMfcApp::ClearMRU()
 {
+	if (m_pMRU == NULL)
+		return;
 	int numMRU = m_pMRU->GetSize();
 	for (int i = numMRU; i > 0; i--)
 		m_pMRU->Remove(i - 1);

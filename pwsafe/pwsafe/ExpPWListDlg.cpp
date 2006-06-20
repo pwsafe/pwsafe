@@ -35,7 +35,7 @@ CExpPWListDlg::~CExpPWListDlg()
 void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EXPIRED_PASSWORD_LIST, m_expPWList);
+	DDX_Control(pDX, IDC_EXPIRED_PASSWORD_LIST, m_expPWListCtrl);
 	DDX_Text(pDX, IDC_MESSAGE, m_message);
 }
 
@@ -55,10 +55,10 @@ CExpPWListDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_expPWList.InsertColumn(0, _T("Group"));
-	m_expPWList.InsertColumn(1, _T("Title"));
-	m_expPWList.InsertColumn(2, _T("User Name"));
-	m_expPWList.InsertColumn(3, _T("Expiry Date/Time"));
+	m_expPWListCtrl.InsertColumn(0, _T("Group"));
+	m_expPWListCtrl.InsertColumn(1, _T("Title"));
+	m_expPWListCtrl.InsertColumn(2, _T("User Name"));
+	m_expPWListCtrl.InsertColumn(3, _T("Expiry Date/Time"));
 
 	int nPos = 0;
 	POSITION itempos;
@@ -67,23 +67,23 @@ CExpPWListDlg::OnInitDialog()
 	while (listpos != NULL) {
 		itempos = listpos;
 		const ExpPWEntry exppwentry = m_pexpPWList->GetAt(listpos);
-		nPos = m_expPWList.InsertItem(nPos, exppwentry.group);
-		m_expPWList.SetItemText(nPos, 1, exppwentry.title);
-		m_expPWList.SetItemText(nPos, 2, exppwentry.user);
-		m_expPWList.SetItemText(nPos, 3, exppwentry.expiryascdate);
-		m_expPWList.SetItemData(nPos, (DWORD)itempos);
+		nPos = m_expPWListCtrl.InsertItem(nPos, exppwentry.group);
+		m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.title);
+		m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.user);
+		m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.expiryascdate);
+		m_expPWListCtrl.SetItemData(nPos, (DWORD)itempos);
 		m_pexpPWList->GetNext(listpos);
 	}
 
-	m_expPWList.SetRedraw(FALSE);
+	m_expPWListCtrl.SetRedraw(FALSE);
 	for (int i = 0; i < 4; i++) {
-		m_expPWList.SetColumnWidth(i, LVSCW_AUTOSIZE);
-		int nColumnWidth = m_expPWList.GetColumnWidth(i);
-		m_expPWList.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-		int nHeaderWidth = m_expPWList.GetColumnWidth(i);
-		m_expPWList.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+		m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
+		int nColumnWidth = m_expPWListCtrl.GetColumnWidth(i);
+		m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+		int nHeaderWidth = m_expPWListCtrl.GetColumnWidth(i);
+		m_expPWListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
 	}
-	m_expPWList.SetRedraw(TRUE);
+	m_expPWListCtrl.SetRedraw(TRUE);
 
 	return TRUE;
 }
@@ -97,7 +97,7 @@ CExpPWListDlg::OnOK()
 void
 CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 {
-	CString data= "Group\tTitle\tUsername\tPassword Expiry Date\r\n";
+	CString data= _T("Group\tTitle\tUsername\tPassword Expiry Date\r\n");
 	const CString CRLF = _T("\r\n");
 	const CString TAB = _T('\t');
 
@@ -128,7 +128,7 @@ CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 			m_bSortAscending = TRUE;
 
 		m_iSortedColumn = phdn->iItem;
-		m_expPWList.SortItems(CompareFunc, (LPARAM)this);
+		m_expPWListCtrl.SortItems(CompareFunc, (LPARAM)this);
 
 		// Note: WINVER defines the minimum system level for which this is program compiled and 
 		// NOT the level of system it is running on!
@@ -143,12 +143,12 @@ CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 #endif
 		HDITEM HeaderItem;
 		HeaderItem.mask = HDI_FORMAT;
-		m_expPWList.GetHeaderCtrl()->GetItem(m_iSortedColumn, &HeaderItem);
+		m_expPWListCtrl.GetHeaderCtrl()->GetItem(m_iSortedColumn, &HeaderItem);
 		// Turn off all arrows
 		HeaderItem.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
 		// Turn on the correct arrow
 		HeaderItem.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
-		m_expPWList.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
+		m_expPWListCtrl.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
 	}
 
 	*pResult = 0;

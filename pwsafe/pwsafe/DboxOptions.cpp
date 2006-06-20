@@ -90,6 +90,8 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
     GetPref(PWSprefs::PWEasyVision);
+  passwordpolicy.m_savepwhistory = prefs->
+    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
 
   username.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefUser);
@@ -182,6 +184,8 @@ DboxMain::OnOptions()
                      passwordpolicy.m_pwusehexdigits == TRUE);
       prefs-> SetPref(PWSprefs::PWEasyVision,
                       passwordpolicy.m_pweasyvision == TRUE);
+      prefs->SetPref(PWSprefs::SavePasswordHistory,
+      				 passwordpolicy.m_savepwhistory == TRUE);
 
       prefs->SetPref(PWSprefs::UseDefUser,
                      username.m_usedefuser == TRUE);
@@ -266,6 +270,7 @@ DboxMain::OnOptions()
           KillTimer(TIMER_USERLOCK);
         }
       SetIdleLockCounter(security.m_IdleTimeOut);
+      m_bSavePWHistory = (passwordpolicy.m_savepwhistory == TRUE) ? true : false;
 
       // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)

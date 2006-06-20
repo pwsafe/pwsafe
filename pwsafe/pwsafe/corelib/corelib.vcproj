@@ -292,6 +292,12 @@
 				RelativePath=".\PWSrand.cpp">
 			</File>
 			<File
+				RelativePath=".\PWSXML.cpp">
+			</File>
+			<File
+				RelativePath=".\SAXHandlers.cpp">
+			</File>
+			<File
 				RelativePath="sha1.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -435,6 +441,12 @@
 				RelativePath=".\PWSrand.h">
 			</File>
 			<File
+				RelativePath=".\PWSXML.h">
+			</File>
+			<File
+				RelativePath=".\SAXHandlers.h">
+			</File>
+			<File
 				RelativePath="sha1.h">
 			</File>
 			<File
@@ -451,6 +463,9 @@
 			</File>
 			<File
 				RelativePath="UUIDGen.h">
+			</File>
+			<File
+				RelativePath=".\xml_import.h">
 			</File>
 		</Filter>
 	</Files>

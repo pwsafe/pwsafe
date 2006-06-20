@@ -109,7 +109,12 @@ inline void putInt32(unsigned char buf[4], const int val )
 #else
   #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
 #endif
-enum {ASC_UNKNOWN = 1, ASC_NULL = 2, EXPORT_IMPORT = 4};
+enum {ASC_UNKNOWN = 1, ASC_NULL = 2, EXPORT_IMPORT = 4, XML = 8};
+
+// Verify PWHistory Strng return codes
+enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
+	PWH_INVALID_MAX, PWH_INVALID_NUM, PWH_INVALID_DATETIME,
+	PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
 class PWSUtil {
 public:
   // namespace, really, of common utility functions
@@ -119,6 +124,7 @@ public:
   static size_t strLength(const LPCTSTR str);
   static long fileLength(FILE *fp);
   static bool VerifyASCDateTimeString(const CString time_str, time_t &t);
+  static bool VerifyXMLDateTimeString(const CString time_str, time_t &t);
   static bool VerifyImportDateTimeString(const CString time_str, time_t &t);
   static CMyString ConvertToDateTimeString(const time_t &t, const int result_format);
   static bool ToClipboard(const CMyString &data,
@@ -126,6 +132,8 @@ public:
                           HWND hWindow);
   static bool ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
                              HWND hWindow);
+  static int VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory, CString &strErrors);
+  static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   static const TCHAR *UNKNOWN_TIME_STR;
 };
 #endif // Util_h
