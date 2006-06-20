@@ -103,17 +103,17 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 				if(pEH->bErrorsFound == TRUE) {
 					m_strResultText = pEH->m_strValidationResult;
 				} else {
-					m_strResultText.Format("Parse Error %08X", hr);
+					m_strResultText.Format(_T("Parse Error %08X"), hr);
 				}
 			}  // End Check for parsing errors
 
 		} else {
-			m_strResultText.Format("Create Schema Cache Error %08X", hr);
+			m_strResultText.Format(_T("Create Schema Cache Error %08X"), hr);
 		}  // End Create Schema Cache
 
 	} else {
-		m_strResultText.Format("SAX Reader CreateInstance Error %08X.\n\n", hr0);
-		m_strResultText += _T("Probably caused by MS MXL Core Services V6.0 (msxml6.dll), or later, not being installed.");
+		m_strResultText.Format(_T("SAX Reader CreateInstance Error %08X."), hr0);
+		m_strResultText += _T("\r\n\r\nProbably caused by MS MXL Core Services V6.0 (msxml6.dll), or later, not being installed.");
 	}  // End Create SAXReader
 
 	return b_ok;
@@ -173,12 +173,12 @@ bool PWSXML::XMLImport(const CString &ImportedPrefix, const CString &strXMLFileN
 				b_ok = true;
 			}  // End Check for errors
 		} else {
-				m_strResultText.Format("Parse Error %08Xt", hr);
+				m_strResultText.Format(_T("Parse Error %08Xt"), hr);
 		}  // End Do Parse
 
 	} else {
-		m_strResultText.Format("SAX Reader CreateInstance Error %08X\n\n.", hr0);
-		m_strResultText += _T("Probably caused by MS MXL Core Services V6.0 (msxml6.dll), or later, not being installed.");
+		m_strResultText.Format(_T("SAX Reader CreateInstance Error %08X."), hr0);
+		m_strResultText += _T("\r\n\r\nProbably caused by MS MXL Core Services V6.0 (msxml6.dll), or later, not being installed.");
 	}  // Create SAXReader
 
 	return b_ok;
