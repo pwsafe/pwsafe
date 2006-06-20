@@ -2353,7 +2353,7 @@ void DboxMain::UnMinimize(bool update_windows)
 				break;
 			case PWScore::USER_EXIT:
 				m_core.UnlockFile(m_core.GetCurFile());
-				PostMessage(WM_CLOSE);
+				PostQuitMessage(0);
 				return;
 			default:
 				rc2 = PWScore::NOT_SUCCESS;
