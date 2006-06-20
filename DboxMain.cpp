@@ -2602,6 +2602,13 @@ DboxMain::OnCompare()
 	return;
 }
 
+struct st_Conflict {
+  POSITION cPos;
+  POSITION nPos;
+  std::bitset<16> bsDiffs;
+};
+
+
 int
 DboxMain::Compare(const CMyString &pszFilename)
 {
@@ -2630,12 +2637,6 @@ DboxMain::Compare(const CMyString &pszFilename)
 			*/
 			return PWScore::USER_CANCEL;
 	}
-
-	struct st_Conflict {
-		POSITION cPos;
-		POSITION nPos;
-		std::bitset<16> bsDiffs;
-	};
 
 	PWScore compCore;
 	compCore.ReadFile(pszFilename, passkey);
