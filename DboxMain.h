@@ -140,6 +140,7 @@ protected:
   bool m_bMaintainDateTimeStamps;
   bool m_bTSUpdated;
   bool m_saveMRU;
+  bool m_bSavePWHistory;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
@@ -151,6 +152,7 @@ protected:
   void setupBars();
   BOOL OpenOnInit();
   void InitPasswordSafe();
+  CList<PWHistEntry, PWHistEntry&>* m_pPWHistList;
   // override following to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -180,6 +182,7 @@ protected:
   int Open( const CMyString &pszFilename );
   int Merge(void);
   int Merge( const CMyString &pszFilename );
+  int Compare( const CMyString &pszFilename );
 
   int BackupSafe(void);
   int New(void);
@@ -227,6 +230,7 @@ protected:
   afx_msg void OnOpen();
   afx_msg void OnClearMRU();
   afx_msg void OnMerge();
+  afx_msg void OnCompare();
   afx_msg void OnRestore();
   afx_msg void OnSaveAs();
   afx_msg void OnListView();
@@ -285,7 +289,6 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 
-    BOOL CheckExtension(const CMyString &name, const CMyString &ext) const;
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
                           int index = GCP_NORMAL);
   bool ExtractURL(const CMyString &instr, CMyString &outurl);

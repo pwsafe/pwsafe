@@ -17,12 +17,14 @@ class PWScore {
     CANT_OPEN_FILE = -10,
     USER_CANCEL,
     WRONG_PASSWORD = PWSfile::WRONG_PASSWORD,
-    UNKNOWN_VERSION,
-    NOT_SUCCESS,
-    ALREADY_OPEN,
-    INVALID_FORMAT,
-    USER_EXIT,
-    BAD_DIGEST = PWSfile::BAD_DIGEST
+    BAD_DIGEST = PWSfile::BAD_DIGEST,			//  7 - ensure the same value
+    UNKNOWN_VERSION,							//  8
+    NOT_SUCCESS,								//  9
+    ALREADY_OPEN,								// 10
+    INVALID_FORMAT,								// 11
+    USER_EXIT,									// 12
+    XML_FAILED_VALIDATION,						// 13
+    XML_FAILED_IMPORT							// 14
    };
 
   PWScore();
@@ -45,9 +47,12 @@ class PWScore {
   int WriteV2File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const CMyString &filename, const bool bwrite_header, TCHAR delimiter = 0);
-  int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename,
-			  TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
+  int WriteXMLFile(const CMyString &filename, const TCHAR delimiter);
+  int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
+			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
   int ImportKeePassTextFile(const CMyString &filename);
+  int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
+			CString &strErrors, int &numValidated, int &numImported);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
   bool FileExists(const CMyString &filename, bool &bReadOnly) const 
 	  {return PWSfile::FileExists(filename, bReadOnly);}
@@ -99,6 +104,7 @@ class PWScore {
   static unsigned char m_session_key[20];
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
+  static CString m_hdr;
 
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey

@@ -64,6 +64,12 @@ CMyString::GetLength() const
    return m_mystring.GetLength();
 }
 
+void
+CMyString::Empty()
+{
+	trashstring();
+	m_mystring.Empty();
+}
 const CMyString&
 CMyString::operator=(const CMyString& stringSrc)
 {
@@ -241,13 +247,19 @@ CMyString::Find(LPCTSTR lpszSub, int nstart) const
 }
 
 int
-CMyString::Replace(TCHAR chOld, TCHAR chNew) 
+CMyString::FindOneOf(LPCTSTR lpszSub) const
+{
+   return m_mystring.FindOneOf(lpszSub);
+}
+
+int
+CMyString::Replace(const TCHAR chOld, const TCHAR chNew) 
 {
    return m_mystring.Replace(chOld,chNew);
 }
 
 int
-CMyString::Replace(LPCTSTR lpszOld, LPCTSTR lpszNew) 
+CMyString::Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew) 
 {
    return m_mystring.Replace(lpszOld,lpszNew);
 }
@@ -259,31 +271,36 @@ CMyString::Remove(TCHAR ch)
 }
 
 //Can't properly trash the memory here, so it is better to just return a CString
-CString
+CMyString
 CMyString::Left(int nCount) const
 {
-   return m_mystring.Left(nCount);
+   CMyString s;
+   s.m_mystring = m_mystring.Left(nCount);
+   return s;
 }
 
-//Can't properly trash the memory here, so it is better to just return a CString
-CString
+CMyString
 CMyString::Right(int nCount) const
 {
-   return m_mystring.Right(nCount);
+   CMyString s;
+   s.m_mystring = m_mystring.Right(nCount);
+   return s;
 }
 
-//Can't properly trash the memory here, so it is better to just return a CString
-CString
+CMyString
 CMyString::Mid(int nFirst) const
 {
-   return m_mystring.Mid(nFirst);
+   CMyString s;
+   s.m_mystring = m_mystring.Mid(nFirst);
+   return s;
 }
 
-//Can't properly trash the memory here, so it is better to just return a CString
-CString
+CMyString
 CMyString::Mid(int nFirst, int nCount) const
 {
-   return m_mystring.Mid(nFirst, nCount);
+   CMyString s;
+   s.m_mystring = m_mystring.Mid(nFirst, nCount);
+   return s;
 }
 
 bool

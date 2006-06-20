@@ -372,6 +372,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\ExportXML.cpp">
+			</File>
+			<File
 				RelativePath=".\ExpPWListDlg.cpp">
 			</File>
 			<File
@@ -415,6 +418,12 @@
 						BasicRuntimeChecks="3"
 						BrowseInformation="1"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ImportXMLDlg.cpp">
+			</File>
+			<File
+				RelativePath=".\ImportXMLErrDlg.cpp">
 			</File>
 			<File
 				RelativePath="KeySend.cpp">
@@ -892,6 +901,9 @@
 				RelativePath="ExportText.h">
 			</File>
 			<File
+				RelativePath=".\ExportXML.h">
+			</File>
+			<File
 				RelativePath=".\ExpPWListDlg.h">
 			</File>
 			<File
@@ -902,6 +914,12 @@
 			</File>
 			<File
 				RelativePath="ImportDlg.h">
+			</File>
+			<File
+				RelativePath=".\ImportXMLDlg.h">
+			</File>
+			<File
+				RelativePath=".\ImportXMLErrDlg.h">
 			</File>
 			<File
 				RelativePath="ItemData.h">

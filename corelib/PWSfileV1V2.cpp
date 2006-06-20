@@ -299,7 +299,7 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
     outurl = _T("");
   } else {
     CString url(instr);
-    instr = notesStr.Left(left);
+    instr = CString(notesStr.Left(left));
     url = url.Mid(left); // throw out everything left of URL
     int right = url.FindOneOf(_T(" \t\r\n"));
     if (right != -1) {

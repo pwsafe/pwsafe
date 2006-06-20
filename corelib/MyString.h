@@ -59,16 +59,18 @@ public:
    int Find(LPCTSTR lpszSub) const;
    int Find(TCHAR ch, int nstart) const;
    int Find(LPCTSTR lpszSub, int nstart) const;
-   int Replace(TCHAR chOld, TCHAR chNew) ;
-   int Replace(LPCTSTR lpszOld, LPCTSTR lpszNew) ;
+   int FindOneOf(LPCTSTR lpszSub) const;
+   int Replace(const TCHAR chOld, const TCHAR chNew) ;
+   int Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew) ;
    int Remove(TCHAR ch) ;
-   CString Left(int nCount) const;
-   CString Right(int nCount) const;
-   CString Mid(int nFirst) const;
-   CString Mid(int nFirst, int nCount) const;
+   CMyString Left(int nCount) const;
+   CMyString Right(int nCount) const;
+   CMyString Mid(int nFirst) const;
+   CMyString Mid(int nFirst, int nCount) const;
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
   void MakeLower() {m_mystring.MakeLower();}
+  void Empty();
 
   void Trash() {trashstring();}
 

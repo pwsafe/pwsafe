@@ -61,19 +61,12 @@ END_MESSAGE_MAP()
 
 void COptionsSecurity::OnLockbase() 
 {
-  if (((CButton*)GetDlgItem(IDC_LOCKBASE))->GetCheck() == 1)
-    GetDlgItem(IDC_SAVEMINIMIZE)->EnableWindow(TRUE);
-  else
-    GetDlgItem(IDC_SAVEMINIMIZE)->EnableWindow(FALSE);
+  BOOL enable = (((CButton*)GetDlgItem(IDC_LOCKBASE))->GetCheck() == 1) ? TRUE : FALSE;
+  GetDlgItem(IDC_SAVEMINIMIZE)->EnableWindow(enable);
 
-  if (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) {
-    GetDlgItem(IDC_SPIN2)->EnableWindow(TRUE);
-    GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(TRUE);
-  } else {
-    GetDlgItem(IDC_SPIN2)->EnableWindow(FALSE);
-    GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(FALSE);
-  }
-
+  enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
+  GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
+  GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
 }
 
 BOOL COptionsSecurity::OnInitDialog() 
@@ -81,7 +74,7 @@ BOOL COptionsSecurity::OnInitDialog()
   CPropertyPage::OnInitDialog();
 	
   OnLockbase();
-  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPIN2);
+  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
   pspin->SetRange(1, 120);

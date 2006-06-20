@@ -8,6 +8,16 @@
 #include "ItemField.h"
 #include "UUIDGen.h"
 #include <time.h> // for time_t
+
+// Password History Entry structure for CList
+struct PWHistEntry {
+  time_t changetttdate;
+  // "yyyy/mm/mm hh:mm:ss" - format used in ListCtrl & copied to clipboard (best for sorting)
+  // "yyyy-mm-ddThh:mm:ss" - format used in XML
+  CMyString changedate;
+  CMyString password;
+};
+
 //-----------------------------------------------------------------------------
 
 /*
@@ -67,6 +77,11 @@ public:
    CMyString GetLTimeExp() const {return GetTime(LTIME, EXPORT_IMPORT);}  // V30
    CMyString GetPMTimeExp() const {return GetTime(PMTIME, EXPORT_IMPORT);}  // V30
    CMyString GetRMTimeExp() const {return GetTime(RMTIME, EXPORT_IMPORT);}  // V30
+   CMyString GetATimeXML() const {return GetTime(ATIME, XML);}  // V30
+   CMyString GetCTimeXML() const {return GetTime(CTIME, XML);}  // V30
+   CMyString GetLTimeXML() const {return GetTime(LTIME, XML);}  // V30
+   CMyString GetPMTimeXML() const {return GetTime(PMTIME, XML);}  // V30
+   CMyString GetRMTimeXML() const {return GetTime(RMTIME, XML);}  // V30
    //  These populate the time structure instead of giving a character string
    void GetATime(time_t &t) const {return GetTime(ATIME, t);}  // V30
    void GetCTime(time_t &t) const {return GetTime(CTIME, t);}  // V30
@@ -105,6 +120,8 @@ public:
    void SetRMTime(time_t t) {return SetTime(RMTIME, t);}  // V30
    void SetRMTime(const CString &time_str) {return SetTime(RMTIME, time_str);}  // V30
    void SetPWHistory(const CMyString &PWHistory);  // V30
+   void CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num, CList<PWHistEntry, PWHistEntry&>* pPWHistList,
+	   const int time_format) const;  // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
