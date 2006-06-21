@@ -1536,38 +1536,40 @@ DboxMain::Merge(const CMyString &pszFilename) {
   POSITION otherPos = otherCore.GetFirstEntryPosition();
   while (otherPos) {
     CItemData otherItem = otherCore.GetEntryAt(otherPos);
-    CMyString otherGroup = otherItem.GetGroup();
-    CMyString otherTitle = otherItem.GetTitle();
-    CMyString otherUser = otherItem.GetUser();
-
+    const CMyString otherGroup = otherItem.GetGroup();
+    const CMyString otherTitle = otherItem.GetTitle();
+    const CMyString otherUser = otherItem.GetUser();
+		
     POSITION foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
     if (foundPos) {
-      /* found a match, see if the pw & notes also match */
+      /* found a match, see if other fields also match */
       CItemData curItem = m_core.GetEntryAt(foundPos);
       if (otherItem.GetPassword() != curItem.GetPassword() ||
-          otherItem.GetNotes() != curItem.GetNotes()) {
-        /* have a match on title/user, but not on pw/notes
+          otherItem.GetNotes() != curItem.GetNotes() ||
+          otherItem.GetURL() != curItem.GetURL() ||
+          otherItem.GetAutoType() != curItem.GetAutoType()) {
+        /* have a match on title/user, but not on other fields
            add an entry suffixed with -merged-HHMMSS-DDMMYY */
         CTime curTime = CTime::GetCurrentTime();
         CMyString newTitle = otherItem.GetTitle();
         newTitle += _T("-merged-");
-        CMyString timeStr = curTime.Format("%H%M%S-%m%d%y");
+        CMyString timeStr = curTime.Format(_T("%H%M%S-%m%d%y"));
         newTitle = newTitle + timeStr;
 
         /* note it as an issue for the user */
         CMyString warnMsg;
         warnMsg = _T("Conflicting entries for ") +
-          otherItem.GetGroup() + _T(",") +
+          otherItem.GetGroup() + _T(",") + 
           otherItem.GetTitle() + _T(",") +
           otherItem.GetUser() + _T("\n");
         warnMsg += _T("Adding new entry as ") +
-          newTitle + _T(",") +
+          newTitle + _T(",") + 
           otherItem.GetUser() + _T("\n");
 
         /* tell the user the bad news */
         MessageBox(warnMsg,
                    _T("Merge conflict"),
-                   MB_OK|MB_ICONWARNING);
+                   MB_OK|MB_ICONWARNING);				
 
         /* do it */
         otherItem.SetTitle(newTitle);
@@ -1874,7 +1876,7 @@ DboxMain::SaveAs()
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,
 			      CMyString& passkey,
-			      int index, bool bForceReadOnly)
+			      int index)
 {
   // index:
   //	GCP_FIRST      (0) first
@@ -1903,10 +1905,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    * a blank filename, which will disable passkey entry and the OK button
    */
 
-  if (bForceReadOnly || bFileIsReadOnly) {
+  if (bFileIsReadOnly) {
   	// As file is read-only, we must honour it and not permit user to change it
   	m_IsReadOnly = true;
-	bFileIsReadOnly = true;
   }
   CPasskeyEntry dbox_pkentry(this, filename, index, m_IsReadOnly, bFileIsReadOnly);
   app.DisableAccelerator();
@@ -2006,7 +2007,9 @@ DboxMain::NewFile(void)
 }
 
 BOOL
-DboxMain::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
+DboxMain::OnToolTipText(UINT,
+                        NMHDR* pNMHDR,
+                        LRESULT* pResult)
 // This code is copied from the DLGCBR32 example that comes with MFC
 {
 #if !defined(POCKET_PC)
@@ -2418,7 +2421,7 @@ DboxMain::UnMinimize(bool update_windows)
 				break;
 			case PWScore::USER_EXIT:
 				m_core.UnlockFile(m_core.GetCurFile());
-				PostMessage(WM_CLOSE);
+				PostQuitMessage(0);
 				return;
 			default:
 				rc2 = PWScore::NOT_SUCCESS;
@@ -2604,6 +2607,11 @@ DboxMain::OnCompare()
 	return;
 }
 
+struct st_Conflict {
+  POSITION cPos;
+  POSITION nPos;
+  std::bitset<16> bsDiffs;
+};
 int
 DboxMain::Compare(const CMyString &pszFilename)
 {
@@ -2612,7 +2620,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 	CMyString passkey, temp;
 
 	// OK, CANCEL, HELP + force READ-ONLY
-	rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, true);
+	rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);
 	switch (rc) {
 		case PWScore::SUCCESS:
 			break; // Keep going...
@@ -2632,12 +2640,6 @@ DboxMain::Compare(const CMyString &pszFilename)
 			*/
 			return PWScore::USER_CANCEL;
 	}
-
-	struct st_Conflict {
-		POSITION cPos;
-		POSITION nPos;
-		std::bitset<16> bsDiffs;
-	};
 
 	PWScore compCore;
 	compCore.ReadFile(pszFilename, passkey);
