@@ -290,7 +290,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-                          int index = GCP_NORMAL);
+                          int index, bool bForceReadOnly = false);
   bool ExtractURL(const CMyString &instr, CMyString &outurl);
 
 private:

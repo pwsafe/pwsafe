@@ -1875,8 +1875,8 @@ DboxMain::SaveAs()
 
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,
-			      CMyString& passkey,
-			      int index)
+                              CMyString& passkey,
+                              int index ,bool bForceReadOnly)
 {
   // index:
   //	GCP_FIRST      (0) first
@@ -1905,9 +1905,10 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
    * a blank filename, which will disable passkey entry and the OK button
    */
 
-  if (bFileIsReadOnly) {
+  if (bFileIsReadOnly || bForceReadOnly) {
   	// As file is read-only, we must honour it and not permit user to change it
   	m_IsReadOnly = true;
+    bFileIsReadOnly = true;
   }
   CPasskeyEntry dbox_pkentry(this, filename, index, m_IsReadOnly, bFileIsReadOnly);
   app.DisableAccelerator();
