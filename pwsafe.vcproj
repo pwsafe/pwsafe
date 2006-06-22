@@ -306,27 +306,6 @@
 				RelativePath=".\DboxTray.cpp">
 			</File>
 			<File
-				RelativePath="DboxView.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="EditDlg.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -466,6 +445,12 @@
 						BasicRuntimeChecks="3"
 						BrowseInformation="1"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\MainFile.cpp">
+			</File>
+			<File
+				RelativePath=".\MainView.cpp">
 			</File>
 			<File
 				RelativePath="model.cpp">
