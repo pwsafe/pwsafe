@@ -24,7 +24,6 @@
 #include "DboxMain.h"
 
 #include "TryAgainDlg.h"
-#include "PasskeyChangeDlg.h"
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
 
@@ -527,23 +526,6 @@ DboxMain::ToClipboard(const CMyString &data)
 	app.SetClipboardData(data);
 }
 
-
-// Change the master password for the database.
-void
-DboxMain::OnPasswordChange()
-{
-  if (m_IsReadOnly) // disable in read-only mode
-    return;
-  CPasskeyChangeDlg changeDlg(this);
-  app.DisableAccelerator();
-  int rc = changeDlg.DoModal();
-  app.EnableAccelerator();
-  if (rc == IDOK) {
-    m_core.ChangePassword(changeDlg.m_newpasskey);
-  }
-}
-
-
 // this tells OnSize that the user is currently
 // changing the size of the dialog, and not restoring it
 void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
@@ -636,138 +618,6 @@ DboxMain::OnPasswordSafeWebsite()
     AfxMessageBox("oops");
 #endif
   }
-}
-
-void
-DboxMain::OnBackupSafe()
-{
-  BackupSafe();
-}
-
-int
-DboxMain::BackupSafe()
-{
-  int rc;
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  CMyString tempname;
-  CMyString currbackup =
-    prefs->GetPref(PWSprefs::CurrentBackup);
-
-
-  //SaveAs-type dialog box
-  while (1)
-    {
-      CFileDialog fd(FALSE,
-                     _T("bak"),
-                     currbackup,
-                     OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                     | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                     _T("Password Safe Backups (*.bak)|*.bak||"),
-                     this);
-      fd.m_ofn.lpstrTitle = _T("Please Choose a Name for this Backup:");
-
-      rc = fd.DoModal();
-      if (rc == IDOK) {
-        tempname = (CMyString)fd.GetPathName();
-        break;
-      } else
-        return PWScore::USER_CANCEL;
-    }
-
-  rc = m_core.WriteFile(tempname);
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    CMyString temp = tempname + _T("\n\nCould not open file for writing!");
-    MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
-    return PWScore::CANT_OPEN_FILE;
-  }
-
-  prefs->SetPref(PWSprefs::CurrentBackup, tempname);
-  return PWScore::SUCCESS;
-}
-
-void
-DboxMain::OnRestore()
-{
-  if (!m_IsReadOnly) // disable in read-only mode
-    Restore();
-}
-
-
-int
-DboxMain::Restore()
-{
-  int rc;
-  CMyString backup, passkey, temp;
-  CMyString currbackup =
-    PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
-
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS)
-    return rc;
-
-  //Open-type dialog box
-  while (1) {
-    CFileDialog fd(TRUE,
-                   _T("bak"),
-                   currbackup,
-                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                   _T("Password Safe Backups (*.bak)|*.bak||"),
-                   this);
-    fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to restore:");
-    rc = fd.DoModal();
-    if (rc == IDOK) {
-      backup = (CMyString)fd.GetPathName();
-      break;
-    } else
-      return PWScore::USER_CANCEL;
-  }
-
-  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
-  switch (rc) {
-  case PWScore::SUCCESS:
-    break; // Keep going...
-  case PWScore::CANT_OPEN_FILE:
-    temp =
-      backup
-      + _T("\n\nCan't open file. Please choose another.");
-    MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-  case TAR_OPEN:
-    ASSERT(0); return PWScore::FAILURE; // shouldn't be an option here
-  case TAR_NEW:
-    ASSERT(0); return PWScore::FAILURE; // shouldn't be an option here
-  case PWScore::WRONG_PASSWORD:
-    /*
-      If the user just cancelled out of the password dialog,
-      assume they want to return to where they were before...
-    */
-    return PWScore::USER_CANCEL;
-  }
-
-  // unlock the file we're leaving
-  if( !m_core.GetCurFile().IsEmpty() ) {
-    m_core.UnlockFile(m_core.GetCurFile());
-  }
-
-  // clear the data before restoring
-  ClearData();
-
-  rc = m_core.ReadFile(backup, passkey);
-  if (rc == PWScore::CANT_OPEN_FILE) {
-    temp = backup + _T("\n\nCould not open file for reading!");
-    MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
-    return PWScore::CANT_OPEN_FILE;
-  }
-
-  m_core.SetCurFile(""); //Force a Save As...
-  m_core.SetChanged(Data); //So that the restored file will be saved
-#if !defined(POCKET_PC)
-  m_title = _T("Password Safe - <Untitled Restored Backup>");
-  app.SetTooltipText(_T("PasswordSafe"));
-#endif
-  ChangeOkUpdate();
-  RefreshList();
-
-  return PWScore::SUCCESS;
 }
 
 
