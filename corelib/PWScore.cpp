@@ -344,6 +344,19 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 
 	numImported = iXML->m_numEntriesImported;
 	strErrors = iXML->m_strResultText;  // could still be error messages - mainly due to PWHistory processing
+	switch (iXML->m_MSXML_Version) {
+		case 60:
+			break;
+		case 40:
+			strErrors += _T("Warning: Used MSXML V4 as V6 is unavailable.\r\nRecommend V6 or later is installed.");
+			break;
+		case 30:
+			strErrors += _T("Warning: Used MSXML V3 as both V4 and V6 are unavailable.\r\nRecommend V6 or later is installed.");
+			break;
+		default:
+			ASSERT(0);
+	}
+
 	delete iXML;
 	return SUCCESS;
 }

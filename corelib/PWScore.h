@@ -15,8 +15,8 @@ class PWScore {
     SUCCESS = 0,
     FAILURE = 1,
     CANT_OPEN_FILE = -10,
-    USER_CANCEL,
-    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD,
+    USER_CANCEL,								// -9
+    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD,	//  6 - ensure the same value
     BAD_DIGEST = PWSfile::BAD_DIGEST,			//  7 - ensure the same value
     UNKNOWN_VERSION,							//  8
     NOT_SUCCESS,								//  9

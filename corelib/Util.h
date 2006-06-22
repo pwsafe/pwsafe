@@ -109,12 +109,15 @@ inline void putInt32(unsigned char buf[4], const int val )
 #else
   #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
 #endif
+
+// Time conversion result formats - powers of 2 as they can be combined!
 enum {ASC_UNKNOWN = 1, ASC_NULL = 2, EXPORT_IMPORT = 4, XML = 8};
 
 // Verify PWHistory Strng return codes
 enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
 	PWH_INVALID_MAX, PWH_INVALID_NUM, PWH_INVALID_DATETIME,
 	PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
+
 class PWSUtil {
 public:
   // namespace, really, of common utility functions

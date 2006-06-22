@@ -1106,11 +1106,11 @@ DboxMain::OnImportXML()
 					dlg.m_strResultText = strErrors;
 					dlg.DoModal();
 				} else {
-					CString temp1, temp2;
-					temp1.Format(_T("Validated %d record%s"), numValidated, (numValidated != 1) ? _T("s") : _T(""));
-					temp2.Format(_T("Imported %d record%s"), numImported, (numImported != 1) ? _T("s") : _T(""));
-
-					MessageBox(temp1 + temp2, _T("Status"), MB_ICONINFORMATION|MB_OK);
+					CString temp;
+					temp.Format(_T("Validated %d record%s\r\n\r\nImported %d record%s"),
+						numValidated, (numValidated != 1) ? _T("s") : _T(""),
+						numImported, (numImported != 1) ? _T("s") : _T(""));
+					MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
 				}
 			}
 				RefreshList();
@@ -2608,11 +2608,14 @@ DboxMain::OnCompare()
 	return;
 }
 
+// The following structure needed for compare when record is in
+// both databases but there are differences
 struct st_Conflict {
   POSITION cPos;
   POSITION nPos;
   std::bitset<16> bsDiffs;
 };
+
 int
 DboxMain::Compare(const CMyString &pszFilename)
 {
@@ -2621,7 +2624,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 	CMyString passkey, temp;
 
 	// OK, CANCEL, HELP + force READ-ONLY
-	rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);
+	rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, true);
 	switch (rc) {
 		case PWScore::SUCCESS:
 			break; // Keep going...
@@ -2696,9 +2699,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 	POSITION currentPos = m_core.GetFirstEntryPosition();
 	while (currentPos) {
 		CItemData currentItem = m_core.GetEntryAt(currentPos);
-		CMyString currentGroup = currentItem.GetGroup();
-		CMyString currentTitle = currentItem.GetTitle();
-		CMyString currentUser = currentItem.GetUser();
+		const CMyString currentGroup = currentItem.GetGroup();
+		const CMyString currentTitle = currentItem.GetTitle();
+		const CMyString currentUser = currentItem.GetUser();
 
 		POSITION foundPos = compCore.Find(currentGroup, currentTitle, currentUser);
 		if (foundPos) {
@@ -2771,9 +2774,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 	POSITION compPos = compCore.GetFirstEntryPosition();
 	while (compPos) {
 		CItemData compItem = compCore.GetEntryAt(compPos);
-		CMyString compGroup = compItem.GetGroup();
-		CMyString compTitle = compItem.GetTitle();
-		CMyString compUser = compItem.GetUser();
+		const CMyString compGroup = compItem.GetGroup();
+		const CMyString compTitle = compItem.GetTitle();
+		const CMyString compUser = compItem.GetUser();
 
 		if (!m_core.Find(compGroup, compTitle, compUser)) {
 			/* didn't find any match... */
@@ -2825,9 +2828,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 		while (currentPos) {
 			POSITION corepos = list_OnlyInCurrent.GetAt(currentPos);
 			CItemData currentItem = m_core.GetEntryAt(corepos);
-			CMyString currentGroup = currentItem.GetGroup();
-			CMyString currentTitle = currentItem.GetTitle();
-			CMyString currentUser = currentItem.GetUser();
+			const CMyString currentGroup = currentItem.GetGroup();
+			const CMyString currentTitle = currentItem.GetTitle();
+			const CMyString currentUser = currentItem.GetUser();
 
 			resultStr += _T("\n\tGroup:\"") + currentGroup +
 						 _T("\"; Title:\"") + currentTitle +
@@ -2846,9 +2849,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 		while (compPos) {
 			POSITION corepos = list_OnlyInComp.GetAt(compPos);
 			CItemData compItem = compCore.GetEntryAt(corepos);
-			CMyString compGroup = compItem.GetGroup();
-			CMyString compTitle = compItem.GetTitle();
-			CMyString compUser = compItem.GetUser();
+			const CMyString compGroup = compItem.GetGroup();
+			const CMyString compTitle = compItem.GetTitle();
+			const CMyString compUser = compItem.GetUser();
 
 			resultStr += _T("\n\tGroup:\"") + compGroup +
 						 _T("\"; Title:\"") + compTitle +
@@ -2868,9 +2871,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 		while (conflictPos) {
 			st_Conflict st_diff = list_Conflicts.GetAt(conflictPos);
 			CItemData currentItem = m_core.GetEntryAt(st_diff.cPos);
-			CMyString currentGroup = currentItem.GetGroup();
-			CMyString currentTitle = currentItem.GetTitle();
-			CMyString currentUser = currentItem.GetUser();
+			const CMyString currentGroup = currentItem.GetGroup();
+			const CMyString currentTitle = currentItem.GetTitle();
+			const CMyString currentUser = currentItem.GetUser();
 
 			resultStr += _T("\n\tIn entry - Group:\"") + currentGroup +
 						 _T("\"; Title:\"") + currentTitle +
