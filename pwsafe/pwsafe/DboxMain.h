@@ -316,6 +316,7 @@ private:
   int SaveIfChanged();
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);
+  void FixListIndexes();
 };
 
 // Following used to keep track of display vs data
