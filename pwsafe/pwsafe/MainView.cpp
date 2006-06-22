@@ -1,4 +1,4 @@
-/// file DboxView.cpp
+/// file MainView.cpp
 //
 // View-related methods of DboxMain
 //-----------------------------------------------------------------------------
