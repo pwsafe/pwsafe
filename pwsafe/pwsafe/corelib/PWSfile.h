@@ -14,11 +14,17 @@ class Fish;
 class PWSfile {
  public:
   enum VERSION {V17, V20, V30, VCURRENT = V30,
-		UNKNOWN_VERSION}; // supported file versions: V17 is last pre-2.0
+		UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
-  enum {SUCCESS = 0, FAILURE = 1, CANT_OPEN_FILE,
-        UNSUPPORTED_VERSION, WRONG_VERSION, NOT_PWS3_FILE,
-        WRONG_PASSWORD, BAD_DIGEST, END_OF_FILE};
+  enum {SUCCESS = 0, FAILURE = 1, 
+  		CANT_OPEN_FILE,					//  2
+        UNSUPPORTED_VERSION,			//  3
+        WRONG_VERSION,					//  4
+        NOT_PWS3_FILE,					//  5
+        WRONG_PASSWORD,					//  6 - see PWScore.h
+        BAD_DIGEST,						//  7 - see PWScore.h
+        END_OF_FILE						//  8
+  };
 
   static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,
                               RWmode mode, int &status);
