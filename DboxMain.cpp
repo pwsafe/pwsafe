@@ -24,8 +24,6 @@
 #include "DboxMain.h"
 
 #include "TryAgainDlg.h"
-#include "ClearQuestionDlg.h"
-#include "FindDlg.h"
 #include "PasskeyChangeDlg.h"
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
@@ -462,7 +460,18 @@ DboxMain::OnDestroy()
   CDialog::OnDestroy();
 }
 
-
+void DboxMain::FixListIndexes()
+{
+  int N = m_ctlItemList.GetItemCount();
+  for (int i = 0; i < N; i++) {
+    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(ci != NULL);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    if (di->list_index != i)
+      di->list_index = i;
+  }
+}
 
 void
 DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
@@ -518,103 +527,6 @@ DboxMain::ToClipboard(const CMyString &data)
 	app.SetClipboardData(data);
 }
 
-void
-DboxMain::OnCopyPassword()
-{
-  if (!SelItemOk())
-    return;
-
-  //Remind the user about clipboard security
-  CClearQuestionDlg clearDlg(this);
-  if (clearDlg.m_dontaskquestion == FALSE &&
-      clearDlg.DoModal() == IDCANCEL)
-    return;
-
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
-  ToClipboard(ci->GetPassword());
-  if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-  	ci->SetATime();
-    SetChanged(TimeStamp);
-  }
-  uuid_array_t RUEuuid;
-  ci->GetUUID(RUEuuid);
-  m_RUEList.AddRUEntry(RUEuuid);
-}
-
-void
-DboxMain::OnCopyUsername()
-{
-  if (SelItemOk() != TRUE)
-    return;
-
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
-  const CMyString username = ci->GetUser();
-
-  if (!username.IsEmpty()) {
-    ToClipboard(username);
-    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci->SetATime();
-       	SetChanged(TimeStamp);
-	}
-    uuid_array_t RUEuuid;
-    ci->GetUUID(RUEuuid);
-    m_RUEList.AddRUEntry(RUEuuid);
-  }
-}
-
-void
-DboxMain::OnCopyNotes()
-{
-  if (SelItemOk() != TRUE)
-    return;
-
-  CItemData *ci = getSelectedItem();
-  ASSERT(ci != NULL);
-
-  const CMyString notes = ci->GetNotes();
-  const CMyString url = ci->GetURL();
-  const CMyString autotype = ci->GetAutoType();
-  CMyString clipboard_data;
-
-  clipboard_data = notes;
-  if (!url.IsEmpty()) {
-	  clipboard_data += _T("\r\nURL: ");
-	  clipboard_data += url;
-  }
-  if (!autotype.IsEmpty()) {
-	  clipboard_data += _T("\r\nAutotype: ");
-	  clipboard_data += autotype;
-  }
-  if (!clipboard_data.IsEmpty()) {
-    ToClipboard(clipboard_data);
-    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci->SetATime();
-       	SetChanged(TimeStamp);
-	}
-    uuid_array_t RUEuuid;
-    ci->GetUUID(RUEuuid);
-    m_RUEList.AddRUEntry(RUEuuid);
-  }
-}
-
-void
-DboxMain::OnFind()
-{
-  CFindDlg::Doit(this, &m_lastFindCS,
-                 &m_lastFindStr); // create modeless or popup existing
-  // XXX Gross hack to fix aesthetic bug in tree view
-  // without this, multiple "selected" displayed
-  // if treeview && there's a selected item, then
-#if 0
-  m_ctlItemTree.SetItemState(di->tree_item,
-                             TVIS_SELECTED,
-                             TVIS_DROPHILITED | TVIS_SELECTED);
-#endif
-}
-
-
 
 // Change the master password for the database.
 void
@@ -629,13 +541,6 @@ DboxMain::OnPasswordChange()
   if (rc == IDOK) {
     m_core.ChangePassword(changeDlg.m_newpasskey);
   }
-}
-
-
-void
-DboxMain::OnClearClipboard()
-{
-   app.ClearClipboardData();
 }
 
 

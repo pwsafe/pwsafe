@@ -447,6 +447,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\MainEdit.cpp">
+			</File>
+			<File
 				RelativePath=".\MainFile.cpp">
 			</File>
 			<File
