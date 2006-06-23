@@ -18,17 +18,20 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+const int MAX_PW_HISTORY = 25;
+
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
   : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
     m_URL(_T("")), m_autotype(_T("")), m_tttLTime((time_t)0),
-	m_MaxPWHistory(3), m_SavePWHistory(FALSE)
+	m_MaxPWHistory(3)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
+  m_SavePWHistory = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::SavePasswordHistory);
 }
-
 
 BOOL CAddDlg::OnInitDialog() 
 {
@@ -40,7 +43,7 @@ BOOL CAddDlg::OnInitDialog()
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
-  pspin->SetRange(1, 25);
+  pspin->SetRange(1, MAX_PW_HISTORY);
   pspin->SetBase(10);
   pspin->SetPos(m_MaxPWHistory);  // Default suggestion of max. to keep!
   return TRUE;
@@ -49,35 +52,37 @@ BOOL CAddDlg::OnInitDialog()
 
 void CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
-	DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
-	DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
-	DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
-	DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
-	DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
+  CDialog::DoDataExchange(pDX);
+  DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
+  DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
+  DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
+  DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
+  DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
+  DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
-	if(!pDX->m_bSaveAndValidate) {
-		// We are initializing the dialog.  Populate the groups combo box.
-		CComboBox comboGroup;
-		comboGroup.Attach(GetDlgItem(IDC_GROUP)->GetSafeHwnd());
-		// For some reason, MFC calls us twice when initializing.
-		// Populate the combo box only once.
-		if(0 == comboGroup.GetCount()) {
-			CStringArray aryGroups;
-			app.m_core.GetUniqueGroups(aryGroups);
-			for(int igrp=0; igrp<aryGroups.GetSize(); igrp++) {
-				comboGroup.AddString((LPCTSTR)aryGroups[igrp]);
-			}
-		}
-		comboGroup.Detach();
-	}
-	DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
-	DDX_Text(pDX, IDC_URL, (CString&)m_URL);
-	DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
-	DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
-	DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
-	DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 25);
+  if(!pDX->m_bSaveAndValidate) {
+    // We are initializing the dialog.  Populate the groups combo box.
+    CComboBox comboGroup;
+    comboGroup.Attach(GetDlgItem(IDC_GROUP)->GetSafeHwnd());
+    // For some reason, MFC calls us twice when initializing.
+    // Populate the combo box only once.
+    if(0 == comboGroup.GetCount()) {
+      CStringArray aryGroups;
+      app.m_core.GetUniqueGroups(aryGroups);
+      for(int igrp=0; igrp<aryGroups.GetSize(); igrp++) {
+        comboGroup.AddString((LPCTSTR)aryGroups[igrp]);
+      }
+    }
+    comboGroup.Detach();
+  }
+  DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
+  DDX_Text(pDX, IDC_URL, (CString&)m_URL);
+  DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
+  DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
+  DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
+  DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, MAX_PW_HISTORY);
+
+  GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
 }
 
 BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
@@ -179,65 +184,62 @@ void CAddDlg::OnBnClickedOk()
 
 void CAddDlg::ResizeDialog()
 {
-	int TopHideableControl = IDC_TOP_HIDEABLE;
-	int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
-	int controls[]={
-		IDC_STATIC_URL,
-		IDC_URL,
-		IDC_AUTOTYPE,
-		IDC_SAVE_PWHIST,
-		IDC_STATIC_AUTO,
-		IDC_LTIME,
-		IDC_STATIC_LTIME,
-		IDC_LTIME_CLEAR,
-		IDC_LTIME_SET,
-		IDC_STATIC_DTEXPGROUP,
-		IDC_MAXPWHISTORY,
-		IDC_STATIC_OLDPW1,
-		IDC_PWHSPIN,
-		IDC_STATIC_PWHIST
-	};	
+  int TopHideableControl = IDC_TOP_HIDEABLE;
+  int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
+  int controls[]={
+    IDC_STATIC_URL,
+    IDC_URL,
+    IDC_AUTOTYPE,
+    IDC_SAVE_PWHIST,
+    IDC_STATIC_AUTO,
+    IDC_LTIME,
+    IDC_STATIC_LTIME,
+    IDC_LTIME_CLEAR,
+    IDC_LTIME_SET,
+    IDC_STATIC_DTEXPGROUP,
+    IDC_MAXPWHISTORY,
+    IDC_STATIC_OLDPW1,
+    IDC_PWHSPIN,
+  };	
 	
-	for(int n = 0; n < sizeof(controls)/sizeof(IDC_URL); n++) {
-		CWnd* pWind;
-		pWind = (CWnd *)GetDlgItem(controls[n]);
-		pWind->ShowWindow(m_isExpanded);
-	}
+  for(int n = 0; n < sizeof(controls)/sizeof(controls[0]); n++) {
+    CWnd* pWind = (CWnd *)GetDlgItem(controls[n]);
+    pWind->ShowWindow(m_isExpanded);
+  }
 	
-	RECT curDialogRect;
+  RECT curDialogRect;
 	
-	this->GetWindowRect(&curDialogRect);
+  this->GetWindowRect(&curDialogRect);
 
-	RECT newDialogRect=curDialogRect;
+  RECT newDialogRect=curDialogRect;
 
 
-	RECT curLowestCtlRect;
-	CWnd* pLowestCtl;
-	int newHeight;
+  RECT curLowestCtlRect;
+  CWnd* pLowestCtl;
+  int newHeight;
   if (m_isExpanded) {
     // from less to more
-	  pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
+    pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
 	  
-	  pLowestCtl->GetWindowRect(&curLowestCtlRect);
+    pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
-	  newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
+    newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
     m_moreLessBtn.SetWindowText(_T("<< Less"));
   } else {
-    
-	  // from more to less
-	  pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
-	  pLowestCtl->GetWindowRect(&curLowestCtlRect);
+    // from more to less
+    pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
+    pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
-	  newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
+    newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
 
     m_moreLessBtn.SetWindowText(_T("More >>"));
   }
   
 
   this->SetWindowPos(NULL,0,0,
-		newDialogRect.right - newDialogRect.left ,
-		newHeight , 
-		SWP_NOMOVE );
+                     newDialogRect.right - newDialogRect.left ,
+                     newHeight , 
+                     SWP_NOMOVE );
 
 }
 void CAddDlg::OnBnClickedClearLTime()

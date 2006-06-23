@@ -413,7 +413,6 @@ DboxMain::OnOptions()
           KillTimer(TIMER_USERLOCK);
         }
       SetIdleLockCounter(security.m_IdleTimeOut);
-      m_bSavePWHistory = (passwordpolicy.m_savepwhistory == TRUE) ? true : false;
 
       // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
