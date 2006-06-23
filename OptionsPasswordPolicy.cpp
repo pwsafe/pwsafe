@@ -211,7 +211,4 @@ BOOL COptionsPasswordPolicy::OnKillActive()
 }
 void COptionsPasswordPolicy::OnSavePWHistory() 
 {
-  BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
-
-  GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
 }

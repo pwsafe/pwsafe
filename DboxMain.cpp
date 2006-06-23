@@ -271,7 +271,6 @@ DboxMain::InitPasswordSafe()
   UpdateAlwaysOnTop();
 
   m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps);
-  m_bSavePWHistory = PWSprefs::GetInstance()->GetPref(PWSprefs::SavePasswordHistory);
   // ... same for UseSystemTray
   // StartSilent trumps preference
   if (!m_IsStartSilent && !PWSprefs::GetInstance()->

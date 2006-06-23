@@ -140,7 +140,6 @@ protected:
   bool m_bMaintainDateTimeStamps;
   bool m_bTSUpdated;
   bool m_saveMRU;
-  bool m_bSavePWHistory;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
