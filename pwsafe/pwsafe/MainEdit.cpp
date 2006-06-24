@@ -268,7 +268,7 @@ DboxMain::OnEdit()
     CMyString oldGroup, oldTitle, oldUsername, oldRealPassword, oldURL,
       oldAutoType, oldNotes, oldLTime;
     int oldMaxPWHistory;
-    BOOL oldSavePWHistory;
+
     oldGroup = dlg_edit.m_group = ci->GetGroup();
     oldTitle = dlg_edit.m_title = ci->GetTitle();
     oldUsername = dlg_edit.m_username = ci->GetUser();
@@ -288,14 +288,14 @@ DboxMain::OnEdit()
       dlg_edit.m_ascLTime = _T("Never");
     oldLTime = dlg_edit.m_ascLTime;
     dlg_edit.m_ascRMTime = ci->GetRMTime();
-    dlg_edit.m_bSavePWHistory = PWSprefs::GetInstance()->GetPref(PWSprefs::SavePasswordHistory);
     dlg_edit.m_pPWHistList = m_pPWHistList;
 
-    ci->CreatePWHistoryList(oldSavePWHistory, oldMaxPWHistory, dlg_edit.m_NumPWHistory, 
+    BOOL HasHistory = FALSE;
+    ci->CreatePWHistoryList(HasHistory, oldMaxPWHistory,
+                            dlg_edit.m_NumPWHistory, 
                             m_pPWHistList, EXPORT_IMPORT);
 
     dlg_edit.m_MaxPWHistory = oldMaxPWHistory;
-    dlg_edit.m_SavePWHistory = oldSavePWHistory;
     app.DisableAccelerator();
     int rc = dlg_edit.DoModal();
     app.EnableAccelerator();
@@ -321,7 +321,6 @@ DboxMain::OnEdit()
       		|| oldURL != dlg_edit.m_URL
       		|| oldAutoType != dlg_edit.m_autotype
             || oldLTime != dlg_edit.m_ascLTime
-            || oldSavePWHistory != dlg_edit.m_SavePWHistory
             || oldMaxPWHistory != dlg_edit.m_MaxPWHistory)
           bAnotherChanged = true;
       }
@@ -340,7 +339,7 @@ DboxMain::OnEdit()
         bPWHistoryCleared = true;
       }
 
-      if (oldSavePWHistory == TRUE && dlg_edit.m_SavePWHistory == FALSE) {
+      if (HasHistory && dlg_edit.m_SavePWHistory == FALSE) {
         CMyString tmp = ci->GetPWHistory();
         if (tmp.GetLength() >= 5)
           tmp.SetAt(0, '0');	// Turn it off!
