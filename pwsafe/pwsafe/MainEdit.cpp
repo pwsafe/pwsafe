@@ -262,7 +262,7 @@ DboxMain::OnEdit()
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     POSITION listpos = Find(di->list_index);
-    m_pPWHistList = new CList<PWHistEntry, PWHistEntry&>;
+    m_pPWHistList = new PWHistList;
 
     CEditDlg dlg_edit(this);
     CMyString oldGroup, oldTitle, oldUsername, oldRealPassword, oldURL,

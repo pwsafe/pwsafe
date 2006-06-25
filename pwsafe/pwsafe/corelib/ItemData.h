@@ -18,6 +18,8 @@ struct PWHistEntry {
   CMyString password;
 };
 
+typedef CList<PWHistEntry, PWHistEntry&> PWHistList;
+
 //-----------------------------------------------------------------------------
 
 /*
@@ -83,11 +85,11 @@ public:
    CMyString GetPMTimeXML() const {return GetTime(PMTIME, XML);}  // V30
    CMyString GetRMTimeXML() const {return GetTime(RMTIME, XML);}  // V30
    //  These populate the time structure instead of giving a character string
-   void GetATime(time_t &t) const {return GetTime(ATIME, t);}  // V30
-   void GetCTime(time_t &t) const {return GetTime(CTIME, t);}  // V30
-   void GetLTime(time_t &t) const {return GetTime(LTIME, t);}  // V30
-   void GetPMTime(time_t &t) const {return GetTime(PMTIME, t);}  // V30
-   void GetRMTime(time_t &t) const {return GetTime(RMTIME, t);}  // V30
+   void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
+   void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
+   void GetLTime(time_t &t) const {GetTime(LTIME, t);}  // V30
+   void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
+   void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
    CMyString GetPWHistory() const;  // V30
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
    // it's used for multi-line notes.
@@ -107,21 +109,22 @@ public:
    void SetATime() {return SetTime(ATIME);}  // V30
    void SetATime(time_t t) {return SetTime(ATIME, t);}  // V30
    void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
-   void SetCTime() {return SetTime(CTIME);}  // V30
-   void SetCTime(time_t t) {return SetTime(CTIME, t);}  // V30
-   void SetCTime(const CString &time_str) {return SetTime(CTIME, time_str);}  // V30
-   void SetLTime() {return SetTime(LTIME);}  // V30
-   void SetLTime(time_t t) {return SetTime(LTIME, t);}  // V30
-   void SetLTime(const CString &time_str) {return SetTime(LTIME, time_str);}  // V30
-   void SetPMTime() {return SetTime(PMTIME);}  // V30
-   void SetPMTime(time_t t) {return SetTime(PMTIME, t);}  // V30
-   void SetPMTime(const CString &time_str) {return SetTime(PMTIME, time_str);}  // V30
-   void SetRMTime() {return SetTime(RMTIME);}  // V30
-   void SetRMTime(time_t t) {return SetTime(RMTIME, t);}  // V30
-   void SetRMTime(const CString &time_str) {return SetTime(RMTIME, time_str);}  // V30
+   void SetCTime() {SetTime(CTIME);}  // V30
+   void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
+   void SetCTime(const CString &time_str) {SetTime(CTIME, time_str);}  // V30
+   void SetLTime() {SetTime(LTIME);}  // V30
+   void SetLTime(time_t t) {SetTime(LTIME, t);}  // V30
+   void SetLTime(const CString &time_str) {SetTime(LTIME, time_str);}  // V30
+   void SetPMTime() {SetTime(PMTIME);}  // V30
+   void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
+   void SetPMTime(const CString &time_str) {SetTime(PMTIME, time_str);}  // V30
+   void SetRMTime() {SetTime(RMTIME);}  // V30
+   void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
+   void SetRMTime(const CString &time_str) {SetTime(RMTIME, time_str);}  // V30
    void SetPWHistory(const CMyString &PWHistory);  // V30
-   void CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num, CList<PWHistEntry, PWHistEntry&>* pPWHistList,
-	   const int time_format) const;  // V30
+   void CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
+                            PWHistList* pPWHistList,
+                            const int time_format) const;  // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
@@ -156,8 +159,8 @@ private:
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const CMyString &name,
 		 CMyString &title, CMyString &username);
-  CMyString GetTime(const int whichtime, const int result_format) const; // V30
-  void GetTime(const int whichtime, time_t &t) const; // V30
+  CMyString GetTime(int whichtime, int result_format) const; // V30
+  void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
   void SetTime(const int whichtime, const CString &time_str); // V30
@@ -166,9 +169,11 @@ private:
   BlowFish *MakeBlowFish() const;
   // Laziness is a Virtue:
   void GetField(const CItemField &field, CMyString &value) const;
-  void GetField(const CItemField &field, unsigned char *value, unsigned int &length) const;
+  void GetField(const CItemField &field, unsigned char *value,
+                unsigned int &length) const;
   void SetField(CItemField &field, const CMyString &value);
-  void SetField(CItemField &field, const unsigned char *value, unsigned int length);
+  void SetField(CItemField &field, const unsigned char *value,
+                unsigned int length);
 };
 
 #endif

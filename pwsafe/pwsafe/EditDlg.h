@@ -30,7 +30,7 @@ public:
 
    CListCtrl m_PWHistListCtrl;
 
-   CList<PWHistEntry, PWHistEntry&>* m_pPWHistList;
+   PWHistList* m_pPWHistList;
 
    CMyString m_realpassword;
 
