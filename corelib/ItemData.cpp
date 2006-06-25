@@ -138,39 +138,12 @@ CItemData::GetAutoType() const
 }
 
 CMyString
-CItemData::GetTime(const int whichtime, const int result_format) const
+CItemData::GetTime(int whichtime, int result_format) const
 {
   time_t t;
-  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
-  unsigned int tlen = sizeof(in); // ditto
+
+  GetTime(whichtime, t);
    
-  switch (whichtime) {
-  case ATIME:
-    GetField(m_tttATime, (unsigned char *)in, tlen);
-    break;
-  case CTIME:
-    GetField(m_tttCTime, (unsigned char *)in, tlen);
-    break;
-  case LTIME:
-    GetField(m_tttLTime, (unsigned char *)in, tlen);
-    break;
-  case PMTIME:
-    GetField(m_tttPMTime, (unsigned char *)in, tlen);
-    break;
-  case RMTIME:
-    GetField(m_tttRMTime, (unsigned char *)in, tlen);
-    break;
-  default:
-    ASSERT(0);
-  }
-
-  if (tlen != 0) {
-    ASSERT(tlen == sizeof(t));
-    memcpy(&t, in, sizeof(t));
-  } else {
-    t = 0;
-  }
-
   return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
@@ -200,10 +173,12 @@ CItemData::GetTime(int whichtime, time_t &t) const
     ASSERT(0);
   }
 
-  if (tlen != 0)
+  if (tlen != 0) {
+    ASSERT(tlen == sizeof(t));
     memcpy(&t, in, sizeof(t));
-  else
+  } else {
     t = 0;
+  }
 }
 
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
@@ -243,9 +218,9 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
     CMyString history;
    	BOOL pwh_status;
    	int pwh_max, pwh_num;
-   	CList<PWHistEntry, PWHistEntry&>* pPWHistList;
+   	PWHistList* pPWHistList;
 
-	pPWHistList = new CList<PWHistEntry, PWHistEntry&>;
+	pPWHistList = new PWHistList;
    	CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, EXPORT_IMPORT);
 
 	//  Build export string
@@ -522,73 +497,74 @@ CItemData::SetPWHistory(const CMyString &PWHistory)
 }
 
 void
-CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num, CList<PWHistEntry, PWHistEntry&>* pPWHistList,
+CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
+                               PWHistList* pPWHistList,
 							   const int time_format) const
 {
-	PWHistEntry pwh_ent;
-	CMyString tmp, pwh;
-	int ipwlen, m, n;
-	BOOL s;
-	long t;
+  PWHistEntry pwh_ent;
+  CMyString tmp, pwh;
+  int ipwlen, m, n;
+  BOOL s;
+  long t;
 
-	pwh = this->GetPWHistory();
-	int len = pwh.GetLength();
-	if (len < 5) {
-			status = FALSE;
-			pwh_max = 0;
-			pwh_num = 0;
-		return;
-	}
+  pwh = this->GetPWHistory();
+  int len = pwh.GetLength();
+  if (len < 5) {
+    status = FALSE;
+    pwh_max = 0;
+    pwh_num = 0;
+    return;
+  }
 
-	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
-	TCHAR *lpszPW;
+  TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
+  TCHAR *lpszPW;
 
 #if _MSC_VER >= 1400
-	int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+  int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
 #else
-	int iread = sscanf(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+  int iread = sscanf(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
 #endif
-	ASSERT(iread == 3);
-	lpszPWHistory += 5;
-	for (int i = 0; i < n; i++) {
+  ASSERT(iread == 3);
+  lpszPWHistory += 5;
+  for (int i = 0; i < n; i++) {
 #if _MSC_VER >= 1400
-		iread = sscanf_s(lpszPWHistory, "%8x", &t);
+    iread = sscanf_s(lpszPWHistory, "%8x", &t);
 #else
-		iread = sscanf(lpszPWHistory, "%8x", &t);
+    iread = sscanf(lpszPWHistory, "%8x", &t);
 #endif
-		ASSERT(iread == 1);
-		pwh_ent.changetttdate = (time_t) t;
-		pwh_ent.changedate =
-				PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
-		if (pwh_ent.changedate.IsEmpty()) {
-			//                       1234567890123456789
-			pwh_ent.changedate = _T("Unknown            ");
-		}
-		lpszPWHistory += 8;
+    ASSERT(iread == 1);
+    pwh_ent.changetttdate = (time_t) t;
+    pwh_ent.changedate =
+      PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
+    if (pwh_ent.changedate.IsEmpty()) {
+      //                       1234567890123456789
+      pwh_ent.changedate = _T("Unknown            ");
+    }
+    lpszPWHistory += 8;
 #if _MSC_VER >= 1400
-		iread = sscanf_s(lpszPWHistory, "%4x", &ipwlen);
+    iread = sscanf_s(lpszPWHistory, "%4x", &ipwlen);
 #else
-		iread = sscanf(lpszPWHistory, "%4x", &ipwlen);
+    iread = sscanf(lpszPWHistory, "%4x", &ipwlen);
 #endif
-		ASSERT(iread == 1);
-		lpszPWHistory += 4;
-		lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
+    ASSERT(iread == 1);
+    lpszPWHistory += 4;
+    lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
 #if _MSC_VER >= 1400
-		memcpy_s(lpszPW, ipwlen + sizeof(TCHAR), lpszPWHistory, ipwlen);
+    memcpy_s(lpszPW, ipwlen + sizeof(TCHAR), lpszPWHistory, ipwlen);
 #else
-		memcpy(lpszPW, lpszPWHistory, ipwlen);
+    memcpy(lpszPW, lpszPWHistory, ipwlen);
 #endif
-		lpszPW[ipwlen] = '\0';
-		tmp.ReleaseBuffer();
-		ASSERT(tmp.GetLength() == ipwlen);
-		pwh_ent.password = tmp;
-		lpszPWHistory += ipwlen;
-		pPWHistList->AddTail(pwh_ent);
-	}
-	status = s;
-	pwh_max = m;
-	pwh_num = n;
-	pwh.ReleaseBuffer();
+    lpszPW[ipwlen] = '\0';
+    tmp.ReleaseBuffer();
+    ASSERT(tmp.GetLength() == ipwlen);
+    pwh_ent.password = tmp;
+    lpszPWHistory += ipwlen;
+    pPWHistList->AddTail(pwh_ent);
+  }
+  status = s;
+  pwh_max = m;
+  pwh_num = n;
+  pwh.ReleaseBuffer();
 }
   BlowFish *
     CItemData::MakeBlowFish() const
