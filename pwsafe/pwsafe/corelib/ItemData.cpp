@@ -566,61 +566,61 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
   pwh_num = n;
   pwh.ReleaseBuffer();
 }
-  BlowFish *
-    CItemData::MakeBlowFish() const
-  {
-    ASSERT(IsSessionKeySet);
-    return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-                                  m_salt, SaltLength);
+
+BlowFish *
+CItemData::MakeBlowFish() const
+{
+  ASSERT(IsSessionKeySet);
+  return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
+                                m_salt, SaltLength);
+}
+
+CItemData&
+CItemData::operator=(const CItemData &that)
+{
+  //Check for self-assignment
+  if (this != &that) {
+    m_UUID = that.m_UUID;
+    m_Name = that.m_Name;
+    m_Title = that.m_Title;
+    m_User = that.m_User;
+    m_Password = that.m_Password;
+    m_Notes = that.m_Notes;
+    m_Group = that.m_Group;
+    m_URL = that.m_URL;
+    m_AutoType = that.m_AutoType;
+    m_tttCTime = that.m_tttCTime;
+    m_tttPMTime = that.m_tttPMTime;
+    m_tttATime = that.m_tttATime;
+    m_tttLTime = that.m_tttLTime;
+    m_tttRMTime = that.m_tttRMTime;
+    m_PWHistory = that.m_PWHistory;
+    m_display_info = that.m_display_info;
+
+    memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   }
+  
+  return *this;
+}
 
-  CItemData&
-    CItemData::operator=(const CItemData &that)
-    {
-      //Check for self-assignment
-      if (this != &that)
-        {
-          m_UUID = that.m_UUID;
-          m_Name = that.m_Name;
-          m_Title = that.m_Title;
-          m_User = that.m_User;
-          m_Password = that.m_Password;
-          m_Notes = that.m_Notes;
-          m_Group = that.m_Group;
-          m_URL = that.m_URL;
-          m_AutoType = that.m_AutoType;
-          m_tttCTime = that.m_tttCTime;
-          m_tttPMTime = that.m_tttPMTime;
-          m_tttATime = that.m_tttATime;
-          m_tttLTime = that.m_tttLTime;
-          m_tttRMTime = that.m_tttRMTime;
-		  m_PWHistory = that.m_PWHistory;
-          m_display_info = that.m_display_info;
-
-          memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
-        }
-
-      return *this;
-    }
-
-  void
-    CItemData::Clear()
-  {
-    CMyString blank(_T(""));
-    SetTitle(blank);
-    SetUser(blank);
-    SetPassword(blank);
-    SetNotes(blank);
-    SetGroup(blank);
-    SetURL(blank);
-    SetAutoType(blank);
-    SetCTime((time_t) 0);
-    SetPMTime((time_t) 0);
-    SetATime((time_t) 0);
-    SetLTime((time_t) 0);
-    SetRMTime((time_t) 0);
-    SetPWHistory(_T(""));
-  }
+void
+CItemData::Clear()
+{
+  CMyString blank(_T(""));
+  SetTitle(blank);
+  SetUser(blank);
+  SetPassword(blank);
+  SetNotes(blank);
+  SetGroup(blank);
+  SetURL(blank);
+  SetAutoType(blank);
+  SetCTime((time_t) 0);
+  SetPMTime((time_t) 0);
+  SetATime((time_t) 0);
+  SetLTime((time_t) 0);
+  SetRMTime((time_t) 0);
+  SetPWHistory(_T(""));
+}
 
   //TODO: "General System Fault. Please sacrifice a goat 
   //and two chickens to continue."
