@@ -257,12 +257,13 @@ DboxMain::OnEdit()
   // Note that Edit is also used for just viewing - don't want to disable
   // viewing in read-only mode
   if (SelItemOk() == TRUE) {
+    PWHistList* pPWHistList;
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     POSITION listpos = Find(di->list_index);
-    m_pPWHistList = new PWHistList;
+    pPWHistList = new PWHistList;
 
     CEditDlg dlg_edit(this);
     CMyString oldGroup, oldTitle, oldUsername, oldRealPassword, oldURL,
@@ -288,12 +289,12 @@ DboxMain::OnEdit()
       dlg_edit.m_ascLTime = _T("Never");
     oldLTime = dlg_edit.m_ascLTime;
     dlg_edit.m_ascRMTime = ci->GetRMTime();
-    dlg_edit.m_pPWHistList = m_pPWHistList;
+    dlg_edit.m_pPWHistList = pPWHistList;
 
     BOOL HasHistory = FALSE;
     ci->CreatePWHistoryList(HasHistory, oldMaxPWHistory,
                             dlg_edit.m_NumPWHistory, 
-                            m_pPWHistList, EXPORT_IMPORT);
+                            pPWHistList, EXPORT_IMPORT);
 
     dlg_edit.m_MaxPWHistory = oldMaxPWHistory;
     app.DisableAccelerator();
@@ -326,7 +327,7 @@ DboxMain::OnEdit()
       }
 
       if (dlg_edit.m_ClearPWHistory == TRUE) {
-        m_pPWHistList->RemoveAll();
+        pPWHistList->RemoveAll();
         if (dlg_edit.m_SavePWHistory == FALSE) {
           char buffer[6];
 #if _MSC_VER >= 1400
@@ -351,7 +352,7 @@ DboxMain::OnEdit()
       if (bPswdChanged) {
         if (PWSprefs::GetInstance()->GetPref(PWSprefs::SavePasswordHistory) &&
             dlg_edit.m_SavePWHistory == TRUE) {
-          int num = m_pPWHistList->GetCount();
+          int num = pPWHistList->GetCount();
           PWHistEntry pwh_ent;
           pwh_ent.password = oldRealPassword;
           time_t t;
@@ -367,7 +368,7 @@ DboxMain::OnEdit()
           }
 
           // Now add the latest
-          m_pPWHistList->AddTail(pwh_ent);
+          pPWHistList->AddTail(pwh_ent);
 
           // Increment count
           num++;
@@ -375,7 +376,7 @@ DboxMain::OnEdit()
           // Too many? remove the excess
           if (num > dlg_edit.m_MaxPWHistory) {
             for (int i = 0; i < (num - dlg_edit.m_MaxPWHistory); i++)
-              m_pPWHistList->RemoveHead();
+              pPWHistList->RemoveHead();
 
             num = dlg_edit.m_MaxPWHistory;
           }
@@ -387,16 +388,16 @@ DboxMain::OnEdit()
           buffer.Format(_T("1%02x%02x"), dlg_edit.m_MaxPWHistory, num);
           new_PWHistory = CMyString(buffer);
 
-          POSITION listpos = m_pPWHistList->GetHeadPosition();
+          POSITION listpos = pPWHistList->GetHeadPosition();
           while (listpos != NULL) {
-            const PWHistEntry pwshe = m_pPWHistList->GetAt(listpos);
+            const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
 
             buffer.Format(_T("%08x%04x%s"),
                           (long) pwshe.changetttdate, pwshe.password.GetLength(),
                           pwshe.password);
             new_PWHistory += CMyString(buffer);
             buffer.Empty();
-            m_pPWHistList->GetNext(listpos);
+            pPWHistList->GetNext(listpos);
           }
           ci->SetPWHistory(new_PWHistory);
         }
@@ -420,8 +421,8 @@ DboxMain::OnEdit()
         ci->SetRMTime(t);
 
       if (!bPswdChanged && !bAnotherChanged && !bPWHistoryCleared) {	// Nothing changed!
-        m_pPWHistList->RemoveAll();
-        delete m_pPWHistList;
+        pPWHistList->RemoveAll();
+        delete pPWHistList;
         return;
       }
 
@@ -454,8 +455,8 @@ DboxMain::OnEdit()
       }
       ChangeOkUpdate();
     } // rc == IDOK
-    m_pPWHistList->RemoveAll();
-    delete m_pPWHistList;
+    pPWHistList->RemoveAll();
+    delete pPWHistList;
   } else {
     // entry item not selected - perhaps here on Enter on tree item?
     // perhaps not the most elegant solution to improving non-mouse use,
