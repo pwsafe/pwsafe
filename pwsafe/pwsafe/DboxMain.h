@@ -266,6 +266,7 @@ protected:
   afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
   afx_msg void OnUpdateROCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateTVCommand(CCmdUI *pCmdUI);
+  afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenu(CMenu* pMenu);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
   afx_msg void OnSizing(UINT fwSide, LPRECT pRect);

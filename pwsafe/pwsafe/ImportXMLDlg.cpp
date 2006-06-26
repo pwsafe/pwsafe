@@ -29,6 +29,7 @@ void CImportXMLDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CImportXMLDlg)
+	DDX_Radio(pDX, IDC_NO_GROUP, m_group);
 	DDX_Text(pDX, IDC_GROUP_NAME, m_groupName);
 	//}}AFX_DATA_MAP
 }
