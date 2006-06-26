@@ -151,7 +151,6 @@ protected:
   void setupBars();
   BOOL OpenOnInit();
   void InitPasswordSafe();
-  PWHistList* m_pPWHistList;
   // override following to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
