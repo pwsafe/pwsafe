@@ -187,6 +187,30 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
+/*
+ * Password History (PWH):
+ * Password history is represented in the entry record as a textual field
+ * with the following semantics:
+ *
+ * Password History Header: 
+ * %01x - status for saving PWH for this entry (0 = no; 1 = yes) 
+ * %02x - maximum number of entries in this entry 
+ * %02x - number of entries currently saved 
+ *
+ * Each Password History Entry: 
+ * %08x - time of this old password was set (time_t) 
+ * %04x - length of old password (in TCHAR)
+ * %s   - old password 
+ *
+ * No history being kept for a record can be represented either by the lack
+ * of the PWH field (preferred), or by a header of _T("00000"):
+ * status = 0, max = 00, num = 00 
+ *
+ * Note that 0aabb where bb <= aa is possible if password history was enabled in the past
+ * but has been disabled and the history hasn't been cleared.
+ *
+ */
+
 CMyString
 CItemData::GetPWHistory() const
 {
