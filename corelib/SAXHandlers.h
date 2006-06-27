@@ -76,7 +76,7 @@ public:
 	CString m_strImportErrors;
 	int m_numEntries;
 	TCHAR m_delimiter;
-	void SetVariables(void* core, const bool &bValidation,
+	void SetVariables(PWScore *core, const bool &bValidation,
 					const CString &ImportedPrefix, const TCHAR &delimiter);
 
 	// Standard functions
@@ -146,11 +146,9 @@ private:
 	// Local variables
 	pw_entry *cur_entry;
 
-	CItemData m_tempitem;
-
 	CMyString m_strElemContent;
 	CString m_ImportedPrefix;
-	void* m_core;
+	PWScore *m_core;
 	int m_whichtime, m_ipwh;
 	bool m_bValidation;
 

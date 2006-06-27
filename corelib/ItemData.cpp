@@ -410,7 +410,7 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
     if (delimiter == 0)
       SetField(m_Notes, notes);
     else {
-      const CMyString CRCRLF = _T("\r\r\n");
+      const CMyString CRLF = _T("\r\n");
       CMyString multiline_notes(_T(""));
 
       CMyString newCString;
@@ -422,7 +422,7 @@ CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
       do {
         pos = newCString.Find(delimiter);
         if ( pos != -1 ) {
-          multiline_notes += CMyString(newCString.Left(pos)) + CRCRLF;
+          multiline_notes += CMyString(newCString.Left(pos)) + CRLF;
 
           tmpCString = CMyString(newCString.Mid(pos + 1));
           newCString = tmpCString;
