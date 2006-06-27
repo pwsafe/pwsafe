@@ -26,6 +26,12 @@ PWSXML::~PWSXML()
 {
 }
 
+void
+PWSXML::SetCore(PWScore *core)
+{
+	m_core = core;
+}
+
 //	---------------------------------------------------------------------------
 bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFileName)
 {
@@ -35,45 +41,33 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 	m_strResultText = _T("");
 	m_bValidation = true;
 	const CString prefix = _T("");
+	CString msg;
 
+	CoInitialize(NULL); 
 	//	Create SAXReader object
 	ISAXXMLReaderPtr pSAXReader = NULL;
+	//	Get ready for XSD schema validation
+	IXMLDOMSchemaCollection2Ptr pSchemaCache = NULL;
 
-	hr60 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60));
-	switch (hr60) {
-		case CO_E_NOTINITIALIZED:  // 0x800401F0L
-			// Try 40
-			hr40 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader40));
-			switch (hr40) {
-				case CO_E_NOTINITIALIZED:
-					// Try 30
-					hr30 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30));
-					switch (hr30) {
-						case CO_E_NOTINITIALIZED:
-							m_strResultText.Format(_T("SAXReader30, SAXReader40 and SAXReader60 all had CreateInstance Error %08X."), hr30);
-							m_strResultText += _T("\r\n\r\nProbably caused by both MS MXL Core Services V3, V4 and V6 not being installed.\r\n\r\nRecommend V6 or later is installed for its added security features.");
-							return false;
-						case S_OK:
-							m_MSXML_Version = 30;
-							break;
-						default:
-							m_strResultText.Format(_T("SAXReader60 CreateInstance Error %08X and\r\nSAXReader40 CreateInstance Error %08X and\r\nSAXReader30 CreateInstance Error %08X."), hr60, hr40, hr30);
-						return false;
-					}
-					break;
-				case S_OK:
-					m_MSXML_Version = 40;
-					break;
-				default:
-					m_strResultText.Format(_T("SAXReader60 CreateInstance Error %08X and\r\nSAXReader40 CreateInstance Error %08X."), hr60, hr40);
-					return false;
+	// Try 60
+	hr60 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL);
+	if (FAILED(hr60)) {
+		// Try 40
+		hr40 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL);
+		if (FAILED(hr40)) {
+			// Try 30
+			hr30 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL);
+			if (FAILED(hr30)) {
+				m_strResultText =_T("Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available.");
+				goto exit;
+			} else {
+				m_MSXML_Version = 30;
 			}
-			break;
-		case S_OK:
-			break;
-		default:
-			m_strResultText.Format(_T("SAXReader60 CreateInstance Error %08X."), hr60);
-			return false;
+		} else {
+			m_MSXML_Version = 40;
+		}
+	} else {
+		m_MSXML_Version = 60;
 	}
 
 	//	Create ContentHandlerImpl object
@@ -89,8 +83,6 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 	//	Set Error Handler
 	hr = pSAXReader->putErrorHandler(pEH);
 
-	//	Get ready for XSD schema validation
-	IXMLDOMSchemaCollection2Ptr pSchemaCache = NULL;
 	switch (m_MSXML_Version) {
 		case 60:
 			hr = pSchemaCache.CreateInstance(__uuidof(XMLSchemaCache60));
@@ -102,7 +94,8 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 			hr = pSchemaCache.CreateInstance(__uuidof(XMLSchemaCache30));
 			break;
 		default:
-			ASSERT(0);
+			m_strResultText = _T("Unable to validate a XML file using a XML Schema (XSD) on your system.");
+			goto exit;
 	}
 
 	if (!FAILED(hr)) {  // Create SchemaCache
@@ -130,20 +123,23 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 				case 40:
 					// Ignore any schema specified in the XML file
 					hr = pSAXReader->putFeature(L"use-schema-location", VARIANT_FALSE);
-					// Don't allow user to override validation by using DTDs
+					// Don't allow user to override validation by using DTDs - different way prior to V6
 					hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-general-entities", VARIANT_FALSE);
 					hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-parameter-entities", VARIANT_FALSE);
 					// Ignore any schema embedded in the XML file is not supported prior to V6
+					// .... L"use-inline-schema" ....
 					break;
 				case 30:
 					// Ignore any schema specified in the XML file is not supported prior to V4
-					// Don't allow user to override validation by using DTDs
+					// .... L"use-schema-location" ....
+					// Don't allow user to override validation by using DTDs - different way prior to V6
 					hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-general-entities", VARIANT_FALSE);
 					hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-parameter-entities", VARIANT_FALSE);
 					// Ignore any schema embedded in the XML file is not supported prior to V6
+					// .... L"use-inline-schema" ....
 					break;
 				default:
-					ASSERT(0);
+					goto exit;
 			}
 				
 			// Only use the XSD in PWSafe's installation directory!
@@ -172,14 +168,16 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 			if(pEH->bErrorsFound == TRUE) {
 				m_strResultText = pEH->m_strValidationResult;
 			} else {
-				m_strResultText.Format(_T("SAX Parse%2d Error %08X"), m_MSXML_Version, hr);
+				m_strResultText.Format(_T("SAX Parse%2d Error 0x%08X."), m_MSXML_Version, hr);
 			}
 		}  // End Check for parsing errors
 
 	} else {
-		m_strResultText.Format(_T("Create SchemaCache%2d Error %08X"), m_MSXML_Version, hr);
+		m_strResultText.Format(_T("Create SchemaCache%2d Error 0x%08X."), m_MSXML_Version, hr);
 	}  // End Create Schema Cache
 
+exit:
+	CoUninitialize();
 	return b_ok;
 }
 
@@ -192,19 +190,21 @@ bool PWSXML::XMLImport(const CString &ImportedPrefix, const CString &strXMLFileN
 	m_strResultText = _T("");
 	m_bValidation = false;
 
+	CoInitialize(NULL);
 	//	Create SAXReader object
 	ISAXXMLReaderPtr pSAXReader = NULL;
 	switch (m_MSXML_Version) {
 		case 60:
-			hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60));
+			hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL);
 			break;
 		case 40:
-			hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader40));
+			hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL);
 			break;
 		case 30:
-			hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30));
+			hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL);
 			break;
 		default:
+			// Should never get here as XMLValidate would have sorted it and this doesn't get called if it fails
 			ASSERT(0);
 	}
 
@@ -238,21 +238,26 @@ bool PWSXML::XMLImport(const CString &ImportedPrefix, const CString &strXMLFileN
 			case 40:
 				// Ignore any schema specified in the XML file
 				hr = pSAXReader->putFeature(L"use-schema-location", VARIANT_FALSE);
-				// Don't allow user to override validation by using DTDs
+				// Don't allow user to override validation by using DTDs - different way prior to V6
 				hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-general-entities", VARIANT_FALSE);
 				hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-parameter-entities", VARIANT_FALSE);
 				// Ignore any schema embedded in the XML file is not supported prior to V6
+				// .... L"use-inline-schema" ....
 				break;
 			case 30:
 				// Ignore any schema specified in the XML file is not supported prior to V4
-				// Don't allow user to override validation by using DTDs
+				// .... L"use-schema-location" ....
+				// Don't allow user to override validation by using DTDs - different way prior to V6
 				hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-general-entities", VARIANT_FALSE);
 				hr = pSAXReader->putFeature(L"http://xml.org/sax/features/external-parameter-entities", VARIANT_FALSE);
 				// Ignore any schema embedded in the XML file is not supported prior to V6
+				// .... L"use-inline-schema" ....
 				break;
 			default:
+				// Should never get here as XMLValidate would have sorted it and this doesn't get called if it fails
 				ASSERT(0);
 		}
+
 		//	Let's begin the parsing now
 		wchar_t wcURL[MAX_PATH]={0};
 #if _MSC_VER >= 1400
@@ -272,12 +277,13 @@ bool PWSXML::XMLImport(const CString &ImportedPrefix, const CString &strXMLFileN
 				b_ok = true;
 			}  // End Check for errors
 		} else {
-				m_strResultText.Format(_T("SAX Parse%2d Error %08Xt"), m_MSXML_Version, hr);
+				m_strResultText.Format(_T("SAX Parse%2d Error 0x%08X."), m_MSXML_Version, hr);
 		}  // End Do Parse
 
 	} else {
-		m_strResultText.Format(_T("SAXReader%2d CreateInstance Error %08X."), m_MSXML_Version, hr0);
+		m_strResultText.Format(_T("SAXReader%2d CreateInstance Error 0x%08X."), m_MSXML_Version, hr0);
 	}  // Create SAXReader
 
+	CoUninitialize();
 	return b_ok;
 }

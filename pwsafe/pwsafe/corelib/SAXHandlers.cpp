@@ -112,7 +112,7 @@ PWSSAXContentHandler::~PWSSAXContentHandler()
 {
 }
 
-void PWSSAXContentHandler::SetVariables(void *core, const bool &bValidation,
+void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
 									  const CString &ImportedPrefix, const TCHAR &delimiter)
 {
 	m_bValidation = bValidation;
@@ -283,37 +283,38 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 	}
 
 	if (_tcscmp(szCurElement, _T("entry")) == 0) {
-		m_tempitem.Clear();
-		m_tempitem.CreateUUID();
+		CItemData tempitem;
+		tempitem.Clear();
+		tempitem.CreateUUID();
 		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? "" : m_ImportedPrefix + ".");
-		m_tempitem.SetGroup(newgroup + cur_entry->group);
+		tempitem.SetGroup(newgroup + cur_entry->group);
 		if (cur_entry->title.GetLength() != 0)
-			m_tempitem.SetTitle(cur_entry->title, m_delimiter);
+			tempitem.SetTitle(cur_entry->title, m_delimiter);
 		if (cur_entry->username.GetLength() != 0)
-			m_tempitem.SetUser(cur_entry->username);
+			tempitem.SetUser(cur_entry->username);
 		if (cur_entry->password.GetLength() != 0)
-			m_tempitem.SetPassword(cur_entry->password);
+			tempitem.SetPassword(cur_entry->password);
 		if (cur_entry->url.GetLength() != 0)
-			m_tempitem.SetURL(cur_entry->url);
+			tempitem.SetURL(cur_entry->url);
 		if (cur_entry->autotype.GetLength() != 0)
-			m_tempitem.SetAutoType(cur_entry->autotype);
+			tempitem.SetAutoType(cur_entry->autotype);
 		if (cur_entry->ctime.GetLength() != 0)
-			m_tempitem.SetCTime(cur_entry->ctime);
+			tempitem.SetCTime(cur_entry->ctime);
 		if (cur_entry->pmtime.GetLength() != 0)
-			m_tempitem.SetPMTime(cur_entry->pmtime);
+			tempitem.SetPMTime(cur_entry->pmtime);
 		if (cur_entry->atime.GetLength() != 0)
-			m_tempitem.SetATime(cur_entry->atime);
+			tempitem.SetATime(cur_entry->atime);
 		if (cur_entry->ltime.GetLength() != 0)
-			m_tempitem.SetLTime(cur_entry->ltime);
+			tempitem.SetLTime(cur_entry->ltime);
 		if (cur_entry->rmtime.GetLength() != 0)
-			m_tempitem.SetRMTime(cur_entry->rmtime);
+			tempitem.SetRMTime(cur_entry->rmtime);
 		CMyString newPWHistory;
 		CString strPWHErrors, buffer;
 		buffer.Format(_T("\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "),
 				cur_entry->group, cur_entry->title, cur_entry->username);
 		switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
 			case PWH_OK:
-				m_tempitem.SetPWHistory(newPWHistory);
+				tempitem.SetPWHistory(newPWHistory);
 				buffer.Empty();
 				break;
 			case PWH_IGNORE:
@@ -335,9 +336,9 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		}
 		m_strImportErrors += buffer;
 		if (cur_entry->notes.GetLength() != 0)
-			m_tempitem.SetNotes(cur_entry->notes, m_delimiter);
+			tempitem.SetNotes(cur_entry->notes, m_delimiter);
 
-		((PWScore*)m_core)->AddEntryToTail(m_tempitem);
+		m_core->AddEntryToTail(tempitem);
 		delete cur_entry;
 		m_numEntries++;
 	}
