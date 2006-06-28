@@ -193,11 +193,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_FILE_IMPORT_KEEPASS, OnImportKeePass)
    ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_KEEPASS, OnUpdateROCommand)
    ON_COMMAND(ID_FILE_IMPORT_XML, OnImportXML)
-#ifdef PWS_XML_IMPORT_SUPPORTED
    ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_XML, OnUpdateROCommand)
-#else
-   ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_XML, OnUpdateNSCommand)
-#endif
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADD, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
@@ -543,7 +539,7 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 void
 DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
 {
-  // Use this callback for commands that need to
+  // Use this callback  for commands that need to
   // be disabled in read-only mode
   pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
 }
@@ -551,7 +547,7 @@ DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
 void
 DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
 {
-  // Use this callback for commands that need to
+  // Use this callback  for commands that need to
   // be disabled if not supported (yet)
   pCmdUI->Enable(FALSE);
 }
