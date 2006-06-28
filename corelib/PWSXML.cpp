@@ -177,6 +177,12 @@ bool PWSXML::XMLValidate(const CString &strXMLFileName, const CString &strXSDFil
 	}  // End Create Schema Cache
 
 exit:
+	if (pSchemaCache != NULL)
+		pSchemaCache.Release();
+
+	if (pSAXReader != NULL)
+		pSAXReader.Release();
+
 	CoUninitialize();
 	return b_ok;
 }
@@ -283,6 +289,9 @@ bool PWSXML::XMLImport(const CString &ImportedPrefix, const CString &strXMLFileN
 	} else {
 		m_strResultText.Format(_T("SAXReader%2d CreateInstance Error 0x%08X."), m_MSXML_Version, hr0);
 	}  // Create SAXReader
+
+	if (pSAXReader != NULL)
+		pSAXReader.Release();
 
 	CoUninitialize();
 	return b_ok;
