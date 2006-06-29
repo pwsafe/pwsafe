@@ -118,7 +118,7 @@ void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
 	m_bValidation = bValidation;
 	m_ImportedPrefix = ImportedPrefix;
 	m_delimiter = delimiter;
-	m_core = core;
+	m_xmlcore = core;
 }
 
 long __stdcall PWSSAXContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
@@ -338,7 +338,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		if (cur_entry->notes.GetLength() != 0)
 			tempitem.SetNotes(cur_entry->notes, m_delimiter);
 
-		m_core->AddEntryToTail(tempitem);
+		m_xmlcore->AddEntryToTail(tempitem);
 		delete cur_entry;
 		m_numEntries++;
 	}
