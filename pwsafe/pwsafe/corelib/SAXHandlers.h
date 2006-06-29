@@ -148,7 +148,7 @@ private:
 
 	CMyString m_strElemContent;
 	CString m_ImportedPrefix;
-	PWScore *m_core;
+	PWScore *m_xmlcore;
 	int m_whichtime, m_ipwh;
 	bool m_bValidation;
 

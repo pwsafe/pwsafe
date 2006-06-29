@@ -320,14 +320,15 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 				int &numValidated, int &numImported)
 {
 	PWSXML *iXML;
-	bool status;
+	bool status, validation;
 
 	iXML = new PWSXML;
 	strErrors = _T("");
 
-	status = iXML->XMLValidate(strXMLFileName, strXSDFileName);
+	validation = true;
+	status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName);
+	strErrors = iXML->m_strResultText;
 	if (!status) {
-		strErrors = iXML->m_strResultText;
 		delete iXML;
 		return XML_FAILED_VALIDATION;
 	}
@@ -335,15 +336,15 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 	numValidated = iXML->m_numEntriesValidated;
 
 	iXML->SetCore(this);
-	status = iXML->XMLImport(ImportedPrefix, strXMLFileName);
+	validation = false;
+	status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName);
+	strErrors = iXML->m_strResultText;
 	if (!status) {
-		strErrors = iXML->m_strResultText;
 		delete iXML;
 		return XML_FAILED_IMPORT;
 	}
 
 	numImported = iXML->m_numEntriesImported;
-	strErrors = iXML->m_strResultText;  // could still be error messages - mainly due to PWHistory processing
 
 	delete iXML;
 	return SUCCESS;
