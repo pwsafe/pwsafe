@@ -536,45 +536,46 @@ int PWSfileV3::ReadHeader()
     switch (type) {
     case 0: /* version */
       {
-	// in Beta, VersionNum was an int (4 bytes) instead of short (2)
-	// This hack keeps bwd compatability.
+        // in Beta, VersionNum was an int (4 bytes) instead of short (2)
+        // This hack keeps bwd compatability.
 
-	int vlen = headerField.GetLength ();
-	if (vlen != sizeof(VersionNum) && vlen != sizeof(int)) {
-	  Close();
-	  return FAILURE;
-	}
-	if ((headerData[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
-	  //major version mismatch
-	  Close();
-	  return UNSUPPORTED_VERSION;
-	}
-	// for now we assume that minor version changes will
-	// be backward-compatible
+        int vlen = headerField.GetLength ();
+        if (vlen != sizeof(VersionNum) && vlen != sizeof(int)) {
+          Close();
+          return FAILURE;
+        }
+        if ((headerData[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
+          //major version mismatch
+          Close();
+          return UNSUPPORTED_VERSION;
+        }
+        // for now we assume that minor version changes will
+        // be backward-compatible
       }
       break;
 
     case 1: /* UUID */
       {
-	// Read UUID XXX should save into data member
-	int ulen = headerField.GetLength ();
-	if (ulen != sizeof(uuid_array_t)) {
-	  Close();
-	  return FAILURE;
-	}
+        // Read UUID XXX should save into data member
+        int ulen = headerField.GetLength ();
+        if (ulen != sizeof(uuid_array_t)) {
+          Close();
+          return FAILURE;
+        }
       }
       break;
 
     case 2: /* Non-default user preferences */
       {
-	m_utf8 = (unsigned char *) headerData;
-	m_utf8Len = headerField.GetLength();
-	if (!FromUTF8 (headerField)) {
-	  Close ();
-	  return FAILURE;
-	}
-	m_utf8 = NULL;
-	m_utf8Len = 0;
+        m_utf8 = (unsigned char *) headerData;
+        m_utf8Len = headerField.GetLength();
+        if (!FromUTF8 (headerField)) {
+          Close ();
+          return FAILURE;
+        }
+        m_prefString = headerField;
+        m_utf8 = NULL;
+        m_utf8Len = 0;
       }
       break;
 
