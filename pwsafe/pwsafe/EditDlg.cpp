@@ -38,7 +38,7 @@ CEditDlg::CEditDlg(CWnd* pParent)
 	m_isPwHidden(true),
 	m_ascCTime(_T("")), m_ascPMTime(_T("")), m_ascATime(_T("")),
 	m_ascLTime(_T("")), m_ascRMTime(_T("")),
-	m_ClearPWHistory(FALSE), m_iSortedColumn(-1),
+	m_ClearPWHistory(false), m_iSortedColumn(-1),
     m_bSortAscending(TRUE), m_isMoreExpanded(false)
 {
   m_SavePWHistory = PWSprefs::GetInstance()->
@@ -64,7 +64,6 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
   DDX_Text(pDX, IDC_RMTIME, (CString&)m_ascRMTime);
   DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
-  DDX_Check(pDX, IDC_CLEAR_PWHIST, m_ClearPWHistory);
   DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
   DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
   DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 25);
@@ -103,11 +102,11 @@ ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
 ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
 ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
 ON_BN_CLICKED(IDC_SHOW_PWHIST, OnBnClickedShowPasswordHistory)
-ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnCheckedClearPasswordHistory)
 ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 ON_BN_CLICKED(IDC_COPY_OLDPW_TO_CLIPBOARD, OnBnClickedCopyToClipboard)
 ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
 ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedClearPWHist)
 END_MESSAGE_MAP()
 
 
@@ -135,6 +134,9 @@ CEditDlg::OnOK()
 {
   UpdateData(TRUE);
 
+  if (m_ClearPWHistory) {
+    // XXX clear the list
+  }
   /*
    *  If the password is shown it may have been edited,
    *  so save the current text.
@@ -474,8 +476,6 @@ CEditDlg::MakeDialogWider()
 	IDC_CLEAR_PWHIST,
 	IDC_SAVE_PWHIST,
 	IDC_STATIC_OLDPW1,
-	IDC_STATIC_OLDPW2,
-	IDC_STATIC_OLDPW3
   };
 
   int windows_state = m_isMoreExpanded ? SW_SHOW : SW_HIDE;
@@ -538,12 +538,6 @@ void CEditDlg::OnBnClickedSetLTime()
     m_ascLTime = dlg_expDT.m_ascLTime;
     GetDlgItem(IDC_LTIME)->SetWindowText(m_ascLTime);
   }
-}
-
-void
-CEditDlg::OnCheckedClearPasswordHistory()
-{
-  m_ClearPWHistory = ((CButton*)GetDlgItem(IDC_CLEAR_PWHIST))->GetCheck();
 }
 
 void
@@ -645,4 +639,9 @@ int CALLBACK CEditDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     iResult *= -1;
 
   return iResult;
+}
+
+void CEditDlg::OnBnClickedClearPWHist()
+{
+  m_ClearPWHistory = true;
 }

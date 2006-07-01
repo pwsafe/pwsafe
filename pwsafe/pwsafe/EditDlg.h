@@ -39,7 +39,7 @@ public:
    bool m_IsReadOnly;
    void  ShowPassword(void);
    void  HidePassword(void);
-   BOOL m_ClearPWHistory;
+   bool m_ClearPWHistory;
    BOOL m_SavePWHistory;
    int m_iSortedColumn;
    BOOL m_bSortAscending;
@@ -74,10 +74,10 @@ public:
 	afx_msg void OnBnClickedClearLTime();
 	afx_msg void OnBnClickedSetLTime();
 	afx_msg void OnBnClickedShowPasswordHistory();
-	afx_msg void OnCheckedClearPasswordHistory();
 	afx_msg void OnCheckedSavePasswordHistory();
 	afx_msg void OnBnClickedCopyToClipboard();
 	afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnBnClickedClearPWHist();
 
 	CButton m_MoreLessBtn, m_EvenMoreLessBtn;
 

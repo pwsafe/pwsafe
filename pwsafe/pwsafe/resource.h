@@ -214,13 +214,13 @@
 #define IDC_STATIC_PWHIST               1162
 #define IDC_SAVE_PWHIST                 1163
 #define IDC_STATIC_OLDPW1               1164
-#define IDC_STATIC_OLDPW2               1165
-#define IDC_STATIC_OLDPW3               1166
 #define IDC_SHOW_PWHIST                 1167
 #define IDC_STATIC_PWHSTATUS            1168
 #define IDC_XML_IMPORT_ACTION           1169
 #define IDC_XML_IMPORT_RESULTS          1170
 #define IDC_COPY_ERRORS_TO_CLIPBOARD    1171
+#define IDC_BUTTON1                     1172
+#define IDC_CLEAR_HISTORY               1173
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -316,7 +316,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        230
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1172
+#define _APS_NEXT_CONTROL_VALUE         1174
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
