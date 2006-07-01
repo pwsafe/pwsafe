@@ -518,53 +518,72 @@ int PWSfileV3::ReadHeader()
 
   m_fish = new TwoFish(m_key, sizeof(m_key));
 
-  int numRead = 0;
+  LPCTSTR headerData;
+  CMyString headerField;
   unsigned char type;
-  // Read version number
-  // in Beta, VersionNum was an int (4 bytes) instead of short (2)
-  // This hack keeps bwd compatability.
-  unsigned int vlen = sizeof(int);
-  // Read version number
-  unsigned char vnb[sizeof(int)];
+  int numRead;
 
-  numRead = ReadCBC(type, vnb, vlen);
-  if (numRead <= 0  ||
-      (vlen != sizeof(VersionNum) && vlen != sizeof(int))) {
-    Close();
-    return FAILURE;
-  }
-
-  if ((vnb[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
-    //major version mismatch
-    Close();
-    return UNSUPPORTED_VERSION;
-  }
-  // for now we assume that minor version changes will
-  // be backward-compatible
-
-  // Read UUID XXX should save into data member;
-  uuid_array_t uuid_array;
-  unsigned int ulen = sizeof(uuid_array);
-  numRead = ReadCBC(type, (unsigned char *)uuid_array, ulen);
-  if (numRead <= 0 || ulen != sizeof(uuid_array)) {
-    Close();
-    return FAILURE;
-  }
-
-  // Read (non default) user preferences
-  numRead = ReadCBC(type, m_prefString);
-  if (numRead <= 0) {
-    Close();
-    return FAILURE;
-  }
-
-  // ignore zero or more fields that may be addded by future versions
-  // after prefString, until end-of-record read.
-
-  CMyString dummy;
   do {
-    ReadCBC(type, dummy);
-  } while (type != CItemData::END);
+    numRead = PWSfile::ReadCBC (type, headerField);
+    headerData = LPCTSTR (headerField);
+    m_hmac.Update ((const unsigned char *) headerData, headerField.GetLength());
+
+    if (numRead < 0) {
+      Close ();
+      return FAILURE;
+    }
+
+    switch (type) {
+    case 0: /* version */
+      {
+	// in Beta, VersionNum was an int (4 bytes) instead of short (2)
+	// This hack keeps bwd compatability.
+
+	int vlen = headerField.GetLength ();
+	if (vlen != sizeof(VersionNum) && vlen != sizeof(int)) {
+	  Close();
+	  return FAILURE;
+	}
+	if ((headerData[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
+	  //major version mismatch
+	  Close();
+	  return UNSUPPORTED_VERSION;
+	}
+	// for now we assume that minor version changes will
+	// be backward-compatible
+      }
+      break;
+
+    case 1: /* UUID */
+      {
+	// Read UUID XXX should save into data member
+	int ulen = headerField.GetLength ();
+	if (ulen != sizeof(uuid_array_t)) {
+	  Close();
+	  return FAILURE;
+	}
+      }
+      break;
+
+    case 2: /* Non-default user preferences */
+      {
+	m_utf8 = (unsigned char *) headerData;
+	m_utf8Len = headerField.GetLength();
+	if (!FromUTF8 (headerField)) {
+	  Close ();
+	  return FAILURE;
+	}
+	m_utf8 = NULL;
+	m_utf8Len = 0;
+      }
+      break;
+
+    default:
+      // ignore fields that may be addded by future versions
+      break;
+    }
+  }
+  while (type != CItemData::END);
 
   return SUCCESS;
 }

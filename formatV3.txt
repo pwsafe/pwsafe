@@ -55,18 +55,14 @@ Implementation Note: K and L must NOT be related.
 2.9 All following records are encrypted using Twofish in CBC mode, with K
 as the encryption key.
 
-2.9.1 HDR: The database header. All data in the header is written in
-fields, as defined in Section 3. The first field contains the version
+2.9.1 HDR: The database header. The header consists of one or more typed
+fields (as defined in section 3), terminated by the 'END' type field. The
+version number field is mandatory. Field type 0x00 contains the version
 number of the database format. For this version, the value is 0x0300
 (stored in little-endian format, that is, 0x00, 0x03). The type of this
-field is zero.  The next field is the database's UUID, stored as 16
-bytes. The type of this field is 0x01 (as defined in Section 3.1).
-Following this, non-default user preferences are written as a string (as
-described below), with field type value set to 0x02.  Currently, no further
-data is written. To allow further enhancements, the database header is
-terminated by an empty field of type 'END'. This will allow older versions
-of the program to skip over records that may be added over time to the
-header.
+field is zero.  Field type 0x01 contains the database's UUID, stored as
+16 bytes. Field type 0x02 contains non-default user preferences string (as
+described below).
 
 2.9.1.1 Non-default preferences are encoded in a string as follows: The
 string is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
