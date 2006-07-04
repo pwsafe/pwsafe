@@ -21,6 +21,7 @@ zero.
 to n0tig.
 [] Minimum master passphrase length is now 8 characters, and user is
 not offered the option of accepting weak passphrases.
+[1513482] Preferences now saved in the .psafe3 file
 
 New Features for 3.01
 =====================
