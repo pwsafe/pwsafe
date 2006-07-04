@@ -577,7 +577,8 @@ DboxMain::SetChanged(ChangeType changed)
     m_bTSUpdated = false;
     break;
   case TimeStamp:
-    m_bTSUpdated = true;
+    if (m_bMaintainDateTimeStamps)
+      m_bTSUpdated = true;
     break;
   default:
     ASSERT(0);

@@ -285,7 +285,11 @@ DboxMain::OnOK()
 
   // If MaintainDateTimeStamps set and not read-only,
   // save without asking user: "they get what it says on the tin"
-  if (m_bMaintainDateTimeStamps && !m_IsReadOnly && m_bTSUpdated)
+  // Note that if database was cleared (e.g., locked), it might be
+  // possible to save an empty list :-(
+  // Protect against this both here and in OnSize (where we minimize
+  // & possibly ClearData).
+  if (!m_IsReadOnly && m_bTSUpdated && m_core.GetNumEntries() > 0)
     Save();
 
   if (m_core.IsChanged()) {
@@ -605,7 +609,7 @@ DboxMain::OnSize(UINT nType,
       }
 
       if (doit) {
-        if ( m_core.IsChanged() ) // only save if changed
+        if ( m_core.IsChanged() ||  m_bTSUpdated)
           OnSave();
         ClearData(false);
         m_needsreading = true;
@@ -1070,7 +1074,7 @@ DboxMain::OnTimer(UINT nIDEvent )
      * so we force a save if database is modified, and fail
      * to lock if the save fails.
      */
-    if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
+    if (!m_core.IsChanged() || !m_bTSUpdated || Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
       ClearData();
       if(IsWindowVisible()){
