@@ -36,8 +36,8 @@ class PWSprefs {
 		   PWUseDigits, PWUseSymbols, PWUseHexDigits, PWEasyVision,
 		   DontAskQuestion, DeleteQuestion, DCShowsPassword,
 		   DontAskMinimizeClearYesNo, DatabaseClear,
-		   DontAskSaveMinimize, QuerySetDef,
-		   UseNewToolbar, UseSystemTray, 
+           DontAskSaveMinimize, // Obsoleted in 3.02
+           QuerySetDef, UseNewToolbar, UseSystemTray, 
 		   LockOnWindowLock, LockOnIdleTimeout,
 		   EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
 		   DisplayExpandedAddEditDlg, MaintainDateTimeStamps,

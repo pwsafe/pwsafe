@@ -27,7 +27,6 @@
 #define IDD_MINIMIZECLEAR_DIALOG        141
 #define IDD_ADD                         142
 #define IDD_TRYAGAIN                    143
-#define IDD_REMIND_SAVE                 144
 #define IDB_PSLOGO                      148
 #define IDB_CLOGO                       150
 #define IDB_CTEXT                       151
