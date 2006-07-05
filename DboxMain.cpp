@@ -1318,11 +1318,11 @@ DboxMain::OnQueryEndSession()
 
 	if (m_core.IsChanged()) {
 		CString msg = _T("System is closing down, restarting or you are logging off.\r\n\r\n");
-		msg += _T("Do you wish stop, so that you can save any outstanding database changes first?");
-		int rc = AfxMessageBox(msg, MB_YESNO);
+		msg += _T("Do you wish to stop, so that you can save any outstanding database changes first?");
+		int rc = AfxMessageBox(msg, MB_ICONSTOP | MB_YESNO);
 		if (rc == IDYES)
 			return FALSE;
-		else
-			return TRUE;
 	}
+
+	return TRUE;
 }
