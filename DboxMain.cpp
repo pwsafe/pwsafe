@@ -138,6 +138,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	//{{AFX_MSG_MAP(DboxMain)
    ON_WM_DESTROY()
    ON_WM_SIZE()
+   ON_WM_QUERYENDSESSION()
    ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
    ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
    ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
@@ -1302,4 +1303,26 @@ DboxMain::UpdateAccessTime(CItemData *ci)
     ci->SetATime();
     SetChanged(TimeStamp);
   }
+}
+
+BOOL
+DboxMain::OnQueryEndSession()
+{
+	if (m_IsReadOnly)
+		return TRUE;
+
+	if (m_bTSUpdated && m_core.GetNumEntries() > 0) {
+		Save();
+		return TRUE;
+	}
+
+	if (m_core.IsChanged()) {
+		CString msg = _T("System is closing down, restarting or you are logging off.\r\n\r\n");
+		msg += _T("Do you wish stop, so that you can save any outstanding database changes first?");
+		int rc = AfxMessageBox(msg, MB_YESNO);
+		if (rc == IDYES)
+			return FALSE;
+		else
+			return TRUE;
+	}
 }

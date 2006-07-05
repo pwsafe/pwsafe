@@ -212,6 +212,7 @@ protected:
   //{{AFX_MSG(DboxMain)
   virtual BOOL OnInitDialog();
   afx_msg void OnDestroy();
+  afx_msg BOOL OnQueryEndSession();
   virtual void OnCancel();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnAbout();
