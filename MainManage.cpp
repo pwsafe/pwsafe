@@ -403,7 +403,6 @@ DboxMain::OnOptions()
       }
       m_RUEList.SetMax(display.m_maxreitems);
 
-	  m_bMaintainDateTimeStamps = (misc.m_maintaindatetimestamps == TRUE) ? true : false;
       // update idle timeout values, if changed
       if (security.m_LockOnIdleTimeout != prevLockOIT)
         if (security.m_LockOnIdleTimeout == TRUE) {

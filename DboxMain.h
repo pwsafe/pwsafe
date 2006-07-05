@@ -137,7 +137,6 @@ protected:
   bool m_bShowPasswordInEdit;
   bool m_bShowPasswordInList;
   bool m_bAlwaysOnTop;
-  bool m_bMaintainDateTimeStamps;
   bool m_bTSUpdated;
   bool m_saveMRU;
 
@@ -316,6 +315,7 @@ private:
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);
   void FixListIndexes();
+  void UpdateAccessTime(CItemData *ci);
 };
 
 // Following used to keep track of display vs data

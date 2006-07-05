@@ -270,7 +270,6 @@ DboxMain::InitPasswordSafe()
   m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop);
   UpdateAlwaysOnTop();
 
-  m_bMaintainDateTimeStamps = PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps);
   // ... same for UseSystemTray
   // StartSilent trumps preference
   if (!m_IsStartSilent && !PWSprefs::GetInstance()->
@@ -508,10 +507,7 @@ void DboxMain::OnBrowse()
   if(ci != NULL) {
 	if (!ci->GetURL().IsEmpty()) {
       LaunchBrowser(ci->GetURL());
-      if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci->SetATime();
-       	SetChanged(TimeStamp);
-	  }
+      UpdateAccessTime(ci);
       uuid_array_t RUEuuid;
       ci->GetUUID(RUEuuid);
       m_RUEList.AddRUEntry(RUEuuid);
@@ -577,7 +573,7 @@ DboxMain::SetChanged(ChangeType changed)
     m_bTSUpdated = false;
     break;
   case TimeStamp:
-    if (m_bMaintainDateTimeStamps)
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
       m_bTSUpdated = true;
     break;
   default:
@@ -1257,42 +1253,53 @@ DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 void
 DboxMain::CheckExpiredPasswords()
 {
-	ExpPWEntry exppwentry;
-	time_t now, LTime;
+  ExpPWEntry exppwentry;
+  time_t now, LTime;
 
-	CList<ExpPWEntry, ExpPWEntry&>* p_expPWList = new CList<ExpPWEntry, ExpPWEntry&>;
+  CList<ExpPWEntry, ExpPWEntry&>* p_expPWList = new CList<ExpPWEntry, ExpPWEntry&>;
 
-	POSITION listPos = m_core.GetFirstEntryPosition();
+  POSITION listPos = m_core.GetFirstEntryPosition();
 
-	time(&now);
+  time(&now);
 
-	while (listPos != NULL)
+  while (listPos != NULL)
     {
-		const CItemData &curitem = m_core.GetEntryAt(listPos);
-		curitem.GetLTime(LTime);
+      const CItemData &curitem = m_core.GetEntryAt(listPos);
+      curitem.GetLTime(LTime);
 
-		if (((long)LTime != 0) && (LTime < now)) {
-			exppwentry.group = curitem.GetGroup();
-			exppwentry.title = curitem.GetTitle();
-			exppwentry.user = curitem.GetUser();
-			exppwentry.expiryascdate = curitem.GetLTime();
-			exppwentry.expiryexpdate = curitem.GetLTimeExp();
-			exppwentry.expirytttdate = LTime;
-			p_expPWList->AddTail(exppwentry);
-		}
-		m_core.GetNextEntry(listPos);
+      if (((long)LTime != 0) && (LTime < now)) {
+        exppwentry.group = curitem.GetGroup();
+        exppwentry.title = curitem.GetTitle();
+        exppwentry.user = curitem.GetUser();
+        exppwentry.expiryascdate = curitem.GetLTime();
+        exppwentry.expiryexpdate = curitem.GetLTimeExp();
+        exppwentry.expirytttdate = LTime;
+        p_expPWList->AddTail(exppwentry);
+      }
+      m_core.GetNextEntry(listPos);
 	}
 
-	if (p_expPWList->GetCount() > 0) {
-		CExpPWListDlg dlg(this, m_core.GetCurFile());
-		dlg.m_pexpPWList = p_expPWList;
-		int rc = 0;
-		rc = dlg.DoModal();
-		p_expPWList->RemoveAll();
-	}
+  if (p_expPWList->GetCount() > 0) {
+    CExpPWListDlg dlg(this, m_core.GetCurFile());
+    dlg.m_pexpPWList = p_expPWList;
+    int rc = 0;
+    rc = dlg.DoModal();
+    p_expPWList->RemoveAll();
+  }
 
-	delete p_expPWList;
-
-	return;
+  delete p_expPWList;
 }
 
+void
+DboxMain::UpdateAccessTime(CItemData *ci)
+{
+  // Mark access time if so configured
+  ASSERT(ci != NULL);
+  bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::MaintainDateTimeStamps);
+
+  if (!m_IsReadOnly && bMaintainDateTimeStamps) {
+    ci->SetATime();
+    SetChanged(TimeStamp);
+  }
+}
