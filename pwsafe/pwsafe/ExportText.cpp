@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ExportText.h"
+#include "ExportTextXDlg.h"
 #include "PwFont.h"
 
 #ifdef _DEBUG
@@ -32,6 +33,8 @@ BOOL CExportTextDlg::OnInitDialog()
 {
    CDialog::OnInitDialog();
    SetPasswordFont(GetDlgItem(IDC_EXPORT_TEXT_PASSWORD));
+   m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
+   m_subgroup.Empty();
    return TRUE;
 }
 
@@ -54,6 +57,7 @@ void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CExportTextDlg, CDialog)
 	//{{AFX_MSG_MAP(CExportTextDlg)
 	ON_BN_CLICKED(IDC_QUERYSETEXPDELIM, OnSetMultilineExportNotesDelimiter)
+	ON_BN_CLICKED(IDC_EXPORT_ADVANCED, OnAdvanced)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -102,4 +106,18 @@ void CExportTextDlg::OnOK()
   if (m_querysetexpdelim == 1)
     GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
   CDialog::OnOK();
+}
+
+void CExportTextDlg::OnAdvanced()
+{
+	CExportTextXDlg etx;
+	int rc = etx.DoModal();
+	if (rc == IDOK) {
+		m_bsExport = etx.m_bsExport;
+		m_subgroup = etx.m_export_subgroup_name;
+		if (etx.m_export_subgroup == 1) {
+			m_subgroup_object = etx.m_subgroup_object;
+			m_subgroup_function = etx.m_subgroup_function;
+		}	
+	}
 }

@@ -21,7 +21,7 @@ using namespace std;
 #include <io.h> // low level file routines for locking
 #include <fcntl.h> // constants _O_* for above
 #include <sys/stat.h> // constants _S_* for above
-
+#include <bitset>
 
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
@@ -112,7 +112,9 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 }
 
 int
-PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header, TCHAR delimiter)
+PWScore::WritePlaintextFile(const CMyString &filename, const bool &bwrite_header, const std::bitset<16> &bsFields,
+							const CString &subgroup, const int &iObject, const int &iFunction,
+							TCHAR &delimiter)
 {
 #ifdef UNICODE
   wofstream ofs((const wchar_t *)LPCTSTR(filename));
@@ -122,7 +124,42 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
   if (!ofs)
     return CANT_OPEN_FILE;
   if (bwrite_header) {
+	if ( bsFields.count() == bsFields.size()) {
 	  ofs << m_hdr << endl;
+	} else {
+		CString hdr = _T("");
+		if (bsFields.test(CItemData::GROUP))
+			hdr += _T("Group/Title\t");
+		if (bsFields.test(CItemData::USER))
+			hdr += _T("Username\t");
+		if (bsFields.test(CItemData::PASSWORD))
+			hdr += _T("Password\t");
+		if (bsFields.test(CItemData::URL))
+			hdr += _T("URL\t");
+		if (bsFields.test(CItemData::AUTOTYPE))
+			hdr += _T("AutoType\t");
+		if (bsFields.test(CItemData::CTIME))
+			hdr += _T("Created Time\t");
+		if (bsFields.test(CItemData::PMTIME))
+			hdr += _T("Password Modified Time\t");
+		if (bsFields.test(CItemData::ATIME))
+			hdr += _T("Last Access Time\t");
+		if (bsFields.test(CItemData::LTIME))
+			hdr += _T("Password Expiry Date\t");
+		if (bsFields.test(CItemData::RMTIME))
+			hdr += _T("Record Modified Time\t");
+		if (bsFields.test(CItemData::PWHIST))
+			hdr += _T("History\t");
+		if (bsFields.test(CItemData::NOTES))
+			hdr += _T("Notes");
+
+		int hdr_len = hdr.GetLength();
+		if (hdr.Right(1) == _T("\t"))
+			hdr_len--;
+
+		ofs << hdr.Left(hdr_len) << endl;
+	}
+	
   }
 
   CItemData temp;
@@ -130,7 +167,9 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool bwrite_header,
 
   while (listPos != NULL) {
     temp = m_pwlist.GetAt(listPos);
-    ofs << temp.GetPlaintext(TCHAR('\t'), delimiter) << endl;
+    const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, subgroup, iObject, iFunction, delimiter);
+    if (!line.IsEmpty() != 0)
+    	ofs << line << endl;
     m_pwlist.GetNext(listPos);
   }
   ofs.close();

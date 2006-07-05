@@ -7,6 +7,8 @@
 #include "PWSrand.h"
 
 #include <time.h>
+#include <vector>
+#include <bitset>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -221,69 +223,259 @@ CItemData::GetPWHistory() const
   return ret;
 }
 
-CMyString CItemData::GetPlaintext(TCHAR separator, TCHAR delimiter) const
+CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> &bsFields,
+									const CString &subgroup, const int &iObject, const int &iFunction,
+									const TCHAR &delimiter) const
 {
-  CMyString ret;
-  CMyString title;
-  CMyString group(GetGroup());
+  CMyString ret(_T(""));
+  CMyString grouptitle;
+  const CMyString title(GetTitle());
+  const CMyString group(GetGroup());
+  const CMyString user(GetUser());
+  const CMyString url(GetURL());
+  const CMyString notes(GetNotes(delimiter));
 
+  if (bsFields.count() == 0)
+  	return ret;
+  
   // a '.' in title gets Import confused re: Groups
-  title = GetTitle();
-  if (title.Find(TCHAR('.')) != -1)
+  grouptitle = title;
+  if (grouptitle.Find(TCHAR('.')) != -1)
     if (delimiter != 0) {
-      title.Replace(TCHAR('.'), delimiter);
+      grouptitle.Replace(TCHAR('.'), delimiter);
     } else 
-      title = TCHAR('\"') + title + TCHAR('\"');
+      grouptitle = TCHAR('\"') + title + TCHAR('\"');
 
   if (!group.IsEmpty())
-    title = group + TCHAR('.') + title;
+    grouptitle = group + TCHAR('.') + grouptitle;
 
-  // History exported as "00000" if empty, to make parsing easier
-    CMyString history;
-   	BOOL pwh_status;
-   	int pwh_max, pwh_num;
-   	PWHistList* pPWHistList;
+  if (!subgroup.IsEmpty()) {
+  	CMyString csObject;
+  	switch(iObject) {
+  		case SGO_GROUP:
+  			csObject = group;
+  			break;
+  		case SGO_TITLE:
+  			csObject = title;
+  			break;
+  		case SGO_USER:
+  			csObject = user;
+  			break;
+  		case SGO_GROUPTITLE:
+  			csObject = group + TCHAR('.') + title;
+  			break;
+		case SGO_URL:
+			csObject = url;
+			break;
+		case SGO_NOTES:
+			csObject = notes;
+			break;
+  		default:
+  			ASSERT(0);
+  	}
 
-	pPWHistList = new PWHistList;
-   	CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, EXPORT_IMPORT);
+  	const int sb_len = subgroup.GetLength();
+  	const int ob_len = csObject.GetLength();
 
-	//  Build export string
-	char buffer[8];
+	// Negative = Case   Sensitive
+	// Positive = Case INsensitive
+  	switch (iFunction) {
+  		case -SGF_EQUALS:
+  			if ((ob_len != sb_len) ||
+  				(csObject.Compare((LPCTSTR)subgroup) != 0))
+  				return ret;
+  			break;
+  		case -SGF_NOTEQUAL:
+  			if (csObject.Compare((LPCTSTR)subgroup) == 0)
+  				return ret;
+  			break;
+  		case -SGF_BEGINS:
+  			if (ob_len >= sb_len) {
+  				csObject = csObject.Left(sb_len);
+  				if (subgroup.Compare((LPCTSTR)csObject) != 0)
+  					return ret;
+  			} else {
+				return ret;
+  			}
+  			break;
+  		case -SGF_NOTBEGIN:
+  			if (ob_len >= sb_len) {
+  				csObject = csObject.Left(sb_len);
+  				if (subgroup.Compare((LPCTSTR)csObject) == 0)
+  					return ret;
+  			}
+  			break;
+  		case -SGF_ENDS:
+  			if (ob_len > sb_len) {
+  				csObject = csObject.Right(sb_len);
+  				if (subgroup.Compare((LPCTSTR)csObject) != 0)
+  					return ret;
+  			} else {
+  				return ret;
+  			}
+  			break;
+  		case -SGF_NOTEND:
+  			if (ob_len > sb_len) {
+  				csObject = csObject.Right(sb_len);
+  				if (subgroup.Compare((LPCTSTR)csObject) == 0)
+  					return ret;
+  			}
+  			break;
+  		case -SGF_CONTAINS:
+  			if (csObject.Find((LPCTSTR)subgroup) == -1)
+  				return ret;
+  			break;
+  		case -SGF_NOTCONTAIN:
+  			if (csObject.Find((LPCTSTR)subgroup)  > -1)
+  				return ret;
+  			break;
+  		case SGF_EQUALS:
+  			if ((ob_len != sb_len) ||
+  				(csObject.CompareNoCase((LPCTSTR)subgroup) != 0))
+  				return ret;
+  			break;
+  		case SGF_NOTEQUAL:
+  			if (csObject.CompareNoCase((LPCTSTR)subgroup) == 0)
+  				return ret;
+  			break;
+  		case SGF_BEGINS:
+  			if (ob_len > sb_len) {
+  				csObject = csObject.Left(sb_len);
+  				if (subgroup.CompareNoCase((LPCTSTR)csObject) != 0)
+  					return ret;
+  			} else {
+  				return ret;
+  			}
+  			break;
+  		case SGF_NOTBEGIN:
+  			if (ob_len > sb_len) {
+  				csObject = csObject.Left(sb_len);
+  				if (subgroup.CompareNoCase((LPCTSTR)csObject) == 0)
+  					return ret;
+  			}
+  			break;
+  		case SGF_ENDS:
+  			if (ob_len > sb_len) {
+  				csObject = csObject.Right(sb_len);
+  				if (subgroup.CompareNoCase((LPCTSTR)csObject) != 0)
+  					return ret;
+  			} else {
+  				return ret;
+  			}
+  			break;
+  		case SGF_NOTEND:
+  			if (ob_len > sb_len) {
+  				csObject = csObject.Right(sb_len);
+  				if (subgroup.CompareNoCase((LPCTSTR)csObject) == 0)
+  					return ret;
+  			}
+  			break;
+  		case SGF_CONTAINS:
+			{
+				csObject.MakeLower();
+				CString subgroupLC(subgroup);
+				subgroupLC.MakeLower();
+  				if (csObject.Find((LPCTSTR)subgroupLC) == -1)
+  					return ret;
+  				break;
+			}
+  		case SGF_NOTCONTAIN:
+			{
+  				csObject.MakeLower();
+				CString subgroupLC(subgroup);
+				subgroupLC.MakeLower();
+  				if (csObject.Find((LPCTSTR)subgroupLC) > -1)
+  					return ret;
+  				break;
+			}
+		default:
+  			ASSERT(0);
+  	}
+  }
+
+	CMyString history;
+	if (bsFields.test(CItemData::PWHIST)) {
+	    // History exported as "00000" if empty, to make parsing easier
+   		BOOL pwh_status;
+	   	int pwh_max, pwh_num;
+   		PWHistList* pPWHistList;
+
+		pPWHistList = new PWHistList;
+   		CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, EXPORT_IMPORT);
+
+		//  Build export string
+		char buffer[8];
 #if _MSC_VER >= 1400
-	sprintf_s(buffer, 8, "%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+		sprintf_s(buffer, 8, "%1x%02x%02x", pwh_status, pwh_max, pwh_num);
 #else
-	sprintf(buffer,"%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+		sprintf(buffer,"%1x%02x%02x", pwh_status, pwh_max, pwh_num);
 #endif
-	history = CMyString(buffer);
-	if (pPWHistList->GetCount() > 0) {
-		POSITION listpos = pPWHistList->GetHeadPosition();
-		while (listpos != NULL) {
-			const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
-			history += _T(' ');
-			history += pwshe.changedate;
+		history = CMyString(buffer);
+		if (pPWHistList->GetCount() > 0) {
+			POSITION listpos = pPWHistList->GetHeadPosition();
+			while (listpos != NULL) {
+				const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
+				history += _T(' ');
+				history += pwshe.changedate;
 #if _MSC_VER >= 1400
-			sprintf_s(buffer, 8, " %04x ", pwshe.password.GetLength());
+				sprintf_s(buffer, 8, " %04x ", pwshe.password.GetLength());
 #else
-			sprintf(buffer,"%04x ", pwshe.password.GetLength());
+				sprintf(buffer,"%04x ", pwshe.password.GetLength());
 #endif
-			history += CMyString(buffer);
-			history += pwshe.password;
+				history += CMyString(buffer);
+				history += pwshe.password;
 
-			pPWHistList->GetNext(listpos);
+				pPWHistList->GetNext(listpos);
+			}
+		}
+    	delete pPWHistList;
+	}
+
+	// Notes field must be last, for ease of parsing import
+	if (bsFields.count() == bsFields.size()) {
+		// Everything - note can't actually set all bits via dialog!
+		ret = grouptitle + separator + user + separator +
+			GetPassword() + separator + url +
+			separator + GetAutoType() + separator +
+			GetCTimeExp() + separator +
+			GetPMTimeExp() + separator +
+			GetATimeExp() + separator +
+			GetLTimeExp() + separator +
+			GetRMTimeExp() + separator +
+			history + separator +
+			_T("\"") + notes + _T("\"");
+	} else {
+		// Not everything
+		if (bsFields.test(CItemData::GROUP))
+			ret += grouptitle + separator;
+		if (bsFields.test(CItemData::USER))
+			ret += user + separator;
+		if (bsFields.test(CItemData::PASSWORD))
+			ret += GetPassword() + separator;
+		if (bsFields.test(CItemData::URL))
+			ret += url + separator;
+		if (bsFields.test(CItemData::AUTOTYPE))
+			ret += GetAutoType() + separator;
+		if (bsFields.test(CItemData::CTIME))
+			ret += GetCTimeExp() + separator;
+		if (bsFields.test(CItemData::PMTIME))
+			ret += GetPMTimeExp() + separator;
+		if (bsFields.test(CItemData::ATIME))
+			ret += GetATimeExp() + separator;
+		if (bsFields.test(CItemData::LTIME))
+			ret += GetLTimeExp() + separator;
+		if (bsFields.test(CItemData::RMTIME))
+			ret += GetRMTimeExp() + separator;
+		if (bsFields.test(CItemData::PWHIST))
+			ret += history + separator;
+		if (bsFields.test(CItemData::NOTES))
+			ret += _T("\"") + notes + _T("\"");
+		// remove trailing separator
+		if ((CString)ret.Right(1) == separator) {
+			int rl = ret.GetLength();
+			ret.Left(rl - 1);
 		}
 	}
-    delete pPWHistList;
-  // Notes field must be last, for ease of parsing import
-  ret = title + separator + GetUser() + separator +
-    GetPassword() + separator + GetURL() +
-    separator + GetAutoType() + separator +
-    GetCTimeExp() + separator +
-    GetPMTimeExp() + separator +
-    GetATimeExp() + separator +
-    GetLTimeExp() + separator +
-    GetRMTimeExp() + separator +
-    history + separator +
-    _T("\"") + GetNotes(delimiter) + _T("\"");
 
   return ret;
 }

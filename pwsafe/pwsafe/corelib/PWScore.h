@@ -8,6 +8,9 @@
 #include "MyString.h"
 #include "PWSfile.h"
 
+#include <vector>
+#include <bitset>
+
 class PWScore {
  public:
 
@@ -46,7 +49,9 @@ class PWScore {
     {return WriteFile(filename, PWSfile::V17);}
   int WriteV2File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V20);}
-  int WritePlaintextFile(const CMyString &filename, const bool bwrite_header, TCHAR delimiter = 0);
+  int WritePlaintextFile(const CMyString &filename, const bool &bwrite_header, const std::bitset<16> &bsExport,
+  						const CString &subgroup, const int &iObject, const int &iFunction,
+						TCHAR &delimiter);
   int WriteXMLFile(const CMyString &filename, const TCHAR delimiter);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
 			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
