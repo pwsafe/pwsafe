@@ -109,19 +109,17 @@ DboxMain::OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI)
 void
 DboxMain::OnTrayCopyUsername(UINT nID)
 {
-	ASSERT((nID >= ID_MENUITEM_TRAYCOPYUSERNAME1) && (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYCOPYUSERNAME1) &&
+         (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
 
-	CItemData ci;
-	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci);
-	if (&ci == NULL) return;
-	const CMyString username = ci.GetUser();
-	if (!username.IsEmpty()) {
-		ToClipboard(username);
-	    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   			ci.SetATime();
-       		SetChanged(TimeStamp);
-		}
-	}
+  CItemData ci;
+  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci);
+  if (&ci == NULL) return;
+  const CMyString username = ci.GetUser();
+  if (!username.IsEmpty()) {
+    ToClipboard(username);
+    UpdateAccessTime(&ci);	
+  }
 }
 
 void
@@ -139,10 +137,7 @@ DboxMain::OnTrayCopyPassword(UINT nID)
 	if (&ci == NULL) return;
 	const CMyString curPassString = ci.GetPassword();
 	ToClipboard(curPassString);
-	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci.SetATime();
-       	SetChanged(TimeStamp);
-	}
+    UpdateAccessTime(&ci);
 }
 
 void
@@ -153,35 +148,32 @@ DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
 void
 DboxMain::OnTrayCopyNotes(UINT nID)
 {
-	ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTESFLD1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESFLDMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTESFLD1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESFLDMAX));
 
-	CItemData ci;
-	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTESFLD1, ci);
-	if (&ci == NULL)
-		return;
+  CItemData ci;
+  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTESFLD1, ci);
+  if (&ci == NULL)
+    return;
 
-	const CMyString notes = ci.GetNotes();
-	const CMyString url = ci.GetURL();
-	const CMyString autotype = ci.GetAutoType();
-	CMyString clipboard_data;
+  const CMyString notes = ci.GetNotes();
+  const CMyString url = ci.GetURL();
+  const CMyString autotype = ci.GetAutoType();
+  CMyString clipboard_data;
 
-	clipboard_data = notes;
-	if (!url.IsEmpty()) {
-		clipboard_data += _T("\r\nURL: ");
-		clipboard_data += url;
-	}
-	if (!autotype.IsEmpty()) {
-		clipboard_data += _T("\r\nAutotype: ");
-		clipboard_data += autotype;
-	}
+  clipboard_data = notes;
+  if (!url.IsEmpty()) {
+    clipboard_data += _T("\r\nURL: ");
+    clipboard_data += url;
+  }
+  if (!autotype.IsEmpty()) {
+    clipboard_data += _T("\r\nAutotype: ");
+    clipboard_data += autotype;
+  }
 
-	if (!clipboard_data.IsEmpty()) {
-		ToClipboard(clipboard_data);
-		if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-			ci.SetATime();
-			SetChanged(TimeStamp);
-		}
-	}
+  if (!clipboard_data.IsEmpty()) {
+    ToClipboard(clipboard_data);
+    UpdateAccessTime(&ci);
+  }
 }
 
 void
@@ -192,38 +184,35 @@ DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
 void
 DboxMain::OnTrayBrowse(UINT nID)
 {
-	ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
 
-	CItemData ci;
-	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
-	if (&ci == NULL) return;
+  CItemData ci;
+  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
+  if (&ci == NULL) return;
 
-	CMyString browseURL = ci.GetURL();
-	if (!browseURL.IsEmpty()) {
-		LaunchBrowser(browseURL);
-	}
-	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci.SetATime();
-       	SetChanged(TimeStamp);
-	}
+  CMyString browseURL = ci.GetURL();
+  if (!browseURL.IsEmpty()) {
+    LaunchBrowser(browseURL);
+  }
+  UpdateAccessTime(&ci);
 }
 
 
 void
 DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 {
-	int nID = pCmdUI->m_nID;
+  int nID = pCmdUI->m_nID;
 
-	ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
 
-	CItemData ci;
-	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
-	if (&ci == NULL) return;
+  CItemData ci;
+  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
+  if (&ci == NULL) return;
 
-	// Has it an embedded URL
-	if (ci.GetURL().IsEmpty()) {
-		pCmdUI->Enable(FALSE);
-	}
+  // Has it an embedded URL
+  if (ci.GetURL().IsEmpty()) {
+    pCmdUI->Enable(FALSE);
+  }
 }
 
 void
@@ -242,16 +231,13 @@ DboxMain::OnUpdateTrayDeleteEntry(CCmdUI *)
 void
 DboxMain::OnTrayAutoType(UINT nID)
 {
-	ASSERT((nID >= ID_MENUITEM_TRAYAUTOTYPE1) && (nID <= ID_MENUITEM_TRAYAUTOTYPEMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYAUTOTYPE1) && (nID <= ID_MENUITEM_TRAYAUTOTYPEMAX));
 
-	CItemData ci;
-	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci);
-	if (&ci == NULL) return;
-	AutoType(ci);
-	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci.SetATime();
-       	SetChanged(TimeStamp);
-	}
+  CItemData ci;
+  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci);
+  if (&ci == NULL) return;
+  AutoType(ci);
+  UpdateAccessTime(&ci);
 }
 
 void

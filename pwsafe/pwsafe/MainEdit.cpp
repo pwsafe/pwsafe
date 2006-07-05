@@ -570,10 +570,7 @@ DboxMain::OnCopyPassword()
   CItemData *ci = getSelectedItem();
   ASSERT(ci != NULL);
   ToClipboard(ci->GetPassword());
-  if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-  	ci->SetATime();
-    SetChanged(TimeStamp);
-  }
+  UpdateAccessTime(ci);
   uuid_array_t RUEuuid;
   ci->GetUUID(RUEuuid);
   m_RUEList.AddRUEntry(RUEuuid);
@@ -591,10 +588,7 @@ DboxMain::OnCopyUsername()
 
   if (!username.IsEmpty()) {
     ToClipboard(username);
-    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci->SetATime();
-       	SetChanged(TimeStamp);
-	}
+    UpdateAccessTime(ci);
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
     m_RUEList.AddRUEntry(RUEuuid);
@@ -626,10 +620,7 @@ DboxMain::OnCopyNotes()
   }
   if (!clipboard_data.IsEmpty()) {
     ToClipboard(clipboard_data);
-    if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci->SetATime();
-       	SetChanged(TimeStamp);
-	}
+    UpdateAccessTime(ci);
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
     m_RUEList.AddRUEntry(RUEuuid);
@@ -668,10 +659,7 @@ DboxMain::OnAutoType()
 	uuid_array_t RUEuuid;
 	ci->GetUUID(RUEuuid);
 	m_RUEList.AddRUEntry(RUEuuid);
-	if (!m_IsReadOnly && m_bMaintainDateTimeStamps) {
-   		ci->SetATime();
-       	SetChanged(TimeStamp);
-    }
+    UpdateAccessTime(ci);
     // All code using ci must be before this AutoType since the
 	// latter may trash *ci if lock-on-minimize
 	AutoType(*ci);
