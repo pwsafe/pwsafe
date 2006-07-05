@@ -8,6 +8,8 @@
 #include "ItemField.h"
 #include "UUIDGen.h"
 #include <time.h> // for time_t
+#include <vector>
+#include <bitset>
 
 // Password History Entry structure for CList
 struct PWHistEntry {
@@ -47,6 +49,12 @@ public:
 	PASSWORD = 0x6, CTIME = 0x7, PMTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
 	POLICY = 0xb, RMTIME = 0xc, URL = 0xd, AUTOTYPE = 0xe, PWHIST = 0xf,
     END = 0xff}; // field types, per formatV{2,3}.txt
+
+  // For subgroup processing in GetPlainText from ExportTextXDlg
+  // SubGroup Function
+  enum {SGF_EQUALS = 1, SGF_NOTEQUAL, SGF_BEGINS, SGF_NOTBEGIN, SGF_ENDS, SGF_NOTEND, SGF_CONTAINS, SGF_NOTCONTAIN};
+  // SubGroup Object
+  enum {SGO_GROUP, SGO_TITLE, SGO_USER, SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
 
   static void SetSessionKey(); // call exactly once per session
    //Construction
@@ -92,8 +100,10 @@ public:
    void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
    CMyString GetPWHistory() const;  // V30
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
-   // it's used for multi-line notes.
-   CMyString GetPlaintext(TCHAR separator, TCHAR delimiter = 0) const;
+   // it's used for multi-line notes and to replace '.' within the Title field.
+   CMyString GetPlaintext(const TCHAR &separator, const std::bitset<16> &bsExport,
+   						const CString &subgroup, const int &iObject, const int &iFunction,
+   						const TCHAR &delimiter) const;
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,

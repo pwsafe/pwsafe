@@ -7,6 +7,8 @@
 // ExportText.h : header file
 //
 
+#include <bitset>
+
 /////////////////////////////////////////////////////////////////////////////
 // CExportText dialog
 
@@ -32,6 +34,9 @@ public:
 	int m_export_hdr;
 	//}}AFX_DATA
 
+	std::bitset<16> m_bsExport;
+	CString m_subgroup;
+	int m_subgroup_object, m_subgroup_function;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -46,6 +51,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CExportTextDlg)
 	afx_msg void OnSetMultilineExportNotesDelimiter();
+	afx_msg void OnAdvanced();
 	afx_msg void OnHelp();
 	virtual void OnOK();
 	//}}AFX_MSG

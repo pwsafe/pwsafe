@@ -68,6 +68,7 @@
 #define IDD_DISPLAY_EXPIRED_ENTRIES     227
 #define IDD_IMPORT_XML                  228
 #define IDD_IMPORT_XML_ERRORS           229
+#define IDD_EXPORT_TEXTX                230
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -220,6 +221,28 @@
 #define IDC_COPY_ERRORS_TO_CLIPBOARD    1171
 #define IDC_BUTTON1                     1172
 #define IDC_CLEAR_HISTORY               1173
+#define IDC_EXPORT_ADVANCED             1174
+#define IDC_EXPORTX_GROUP_TITLE         1175
+#define IDC_EXPORTX_USER                1176
+#define IDC_EXPORTX_NOTES               1177
+#define IDC_EXPORTX_PASSWORD            1178
+#define IDC_EXPORTX_CTIME               1179
+#define IDC_EXPORTX_PMTIME              1180
+#define IDC_EXPORTX_ATIME               1181
+#define IDC_EXPORTX_LTIME               1182
+#define IDC_EXPORTX_RMTIME              1183
+#define IDC_EXPORTX_URL                 1184
+#define IDC_EXPORTX_AUTOTYPE            1185
+#define IDC_EXPORTX_PWHIST              1186
+#define IDC_EXPORTX_SETTIMES            1187
+#define IDC_EXPORTX_CLEARTIMES          1188
+#define IDC_EXPORTX_SUBGROUP            1189
+#define IDC_EXPORTX_SUBGROUP_NAME       1190
+#define IDC_EXPORTX_SETALL              1191
+#define IDC_EXPORTX_CLEARALL            1192
+#define IDC_EXPORTX_SUBGROUP_FUNCTION   1193
+#define IDC_EXPORTX_SUBGROUP_OBJECT     1194
+#define IDC_EXPORTX_SUBGROUP_CASE       1195
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -313,9 +336,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        230
+#define _APS_NEXT_RESOURCE_VALUE        231
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1174
+#define _APS_NEXT_CONTROL_VALUE         1196
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

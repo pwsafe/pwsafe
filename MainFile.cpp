@@ -597,13 +597,15 @@ DboxMain::OnExportText()
       } // while (1)
 
 	  bwrite_header = (et.m_export_hdr == 1);
-      if (et.m_querysetexpdelim == 1) {
-        char delimiter;
+	  const std::bitset<16> bsExport = et.m_bsExport;
+	  const CString subgroup = et.m_subgroup;
+	  const int iObject = et.m_subgroup_object;
+	  const int iFunction = et.m_subgroup_function;
+	  TCHAR delimiter = _T('\0');
+      if (et.m_querysetexpdelim == 1)
         delimiter = et.m_defexpdelim[0];
-        rc = m_core.WritePlaintextFile(newfile, bwrite_header, delimiter);
-      } else {
-        rc = m_core.WritePlaintextFile(newfile, bwrite_header);
-      }
+
+      rc = m_core.WritePlaintextFile(newfile, bwrite_header, bsExport, subgroup, iObject, iFunction, delimiter);
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
         CMyString temp = newfile + _T("\n\nCould not open file for writing!");

@@ -70,6 +70,8 @@ public:
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
   void MakeLower() {m_mystring.MakeLower();}
+  int Compare(const LPCTSTR lpszOther) {return m_mystring.Compare(lpszOther);}
+  int CompareNoCase(const LPCTSTR lpszOther) {return m_mystring.CompareNoCase(lpszOther);}
   void Empty();
 
   void Trash() {trashstring();}
