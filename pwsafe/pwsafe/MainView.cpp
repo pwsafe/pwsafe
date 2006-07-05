@@ -307,6 +307,12 @@ DboxMain::OnOK()
     }
   } // core.IsChanged()
 
+  //Store current filename for next time...
+  if (m_saveMRU)
+    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  else
+    prefs->SetPref(PWSprefs::CurrentFile, _T(""));
+
   // Clear clipboard on Exit? If the app is minimized and the systemtray
   // is enabled, we should do so, regardless of the DontAskMinimizeClearYesNo
   // pref
@@ -317,13 +323,6 @@ DboxMain::OnOK()
     app.ClearClipboardData();
 
   ClearData();
-
-  //Store current filename for next time...
-  if (m_saveMRU)
-	  prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-  else
-	  prefs->SetPref(PWSprefs::CurrentFile, "");
-
   CDialog::OnOK();
 }
 
@@ -1064,7 +1063,8 @@ DboxMain::OnTimer(UINT nIDEvent )
      * so we force a save if database is modified, and fail
      * to lock if the save fails.
      */
-    if (!m_core.IsChanged() || !m_bTSUpdated || Save() == PWScore::SUCCESS) {
+    if (!(m_core.IsChanged() || m_bTSUpdated) ||
+        Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
       ClearData();
       if(IsWindowVisible()){
