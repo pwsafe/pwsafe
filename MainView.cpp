@@ -14,7 +14,6 @@
 #endif
 
 #include "DboxMain.h"
-#include "RemindSaveDlg.h"
 #include "TryAgainDlg.h"
 
 #include "corelib/pwsprefs.h"
@@ -596,33 +595,25 @@ DboxMain::OnSize(UINT nType,
     if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
       app.ClearClipboardData();
     if (prefs->GetPref(PWSprefs::DatabaseClear)) {
-      bool dontask = prefs->GetPref(PWSprefs::DontAskSaveMinimize);
-      bool doit = true;
-      if ((m_core.IsChanged()) && !dontask) {
-        CRemindSaveDlg remindDlg(this);
-
-        int rc = remindDlg.DoModal();
-        if (rc == IDOK) {
-        } else if (rc == IDCANCEL) {
-          doit = FALSE;
+      if (m_core.IsChanged() ||  m_bTSUpdated)
+        if (Save() != PWScore::SUCCESS) {
+          // If we don't warn the user, data may be lost!
+          MessageBox(_T("Couldn't save database - Please save manually"),
+                     _T("Save error"),
+                     MB_ICONSTOP);
+          ShowWindow(SW_SHOW);
+          return;
         }
-      }
-
-      if (doit) {
-        if ( m_core.IsChanged() ||  m_bTSUpdated)
-          OnSave();
-        ClearData(false);
-        m_needsreading = true;
-      }
+      ClearData(false);
+      m_needsreading = true;
     }
     if (PWSprefs::GetInstance()->
         GetPref(PWSprefs::UseSystemTray)) {      
       app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
       ShowWindow(SW_HIDE);
-    }
- 
-  }
-  else if (!m_bSizing && nType == SIZE_RESTORED) { // gets called even when just resizing window
+    } 
+  } else if (!m_bSizing && nType == SIZE_RESTORED) {
+    // gets called even when just resizing window
 #endif
     app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
     UnMinimize(false);
@@ -632,7 +623,6 @@ DboxMain::OnSize(UINT nType,
 #if !defined(POCKET_PC)
   } // !m_bSizing && nType == SIZE_RESTORED
 #endif
-
   m_bSizing = false;
 }
 
