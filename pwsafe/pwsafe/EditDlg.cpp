@@ -106,7 +106,7 @@ ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 ON_BN_CLICKED(IDC_COPY_OLDPW_TO_CLIPBOARD, OnBnClickedCopyToClipboard)
 ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
 ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
-ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedClearPWHist)
+ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnBnClickedClearPWHist)
 END_MESSAGE_MAP()
 
 
@@ -134,9 +134,6 @@ CEditDlg::OnOK()
 {
   UpdateData(TRUE);
 
-  if (m_ClearPWHistory) {
-    // XXX clear the list
-  }
   /*
    *  If the password is shown it may have been edited,
    *  so save the current text.
@@ -252,33 +249,6 @@ BOOL CEditDlg::OnInitDialog()
 #else
   sprintf(buffer, "%d", m_NumPWHistory);
 #endif
-
-  CString isare = m_NumPWHistory > 1 ? _T("are ") : _T("is ");
-
-  CString cText = _T("Retaining Password History is ");
-  cText += (PWSprefs::GetInstance()->
-            GetPref(PWSprefs::SavePasswordHistory)) ? _T("enabled") : _T("disabled");
-
-  cText += m_SavePWHistory ? _T(" and set") : _T(" but not set");
-  cText += _T(" for this entry.\nThere ");
-
-  if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::SavePasswordHistory)) {
-    if (bpwh_count == FALSE)
-      cText += _T("are none");
-    else
-      cText += isare + CString(buffer);
-  } else {
-    GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
-    ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->SetCheck(FALSE);
-    if (bpwh_count == FALSE)
-      cText += _T("are none");
-    else
-      cText += isare + CString(buffer);
-  }
-  cText += _T(" currently stored for this entry.");
-
-  GetDlgItem(IDC_STATIC_PWHSTATUS)->SetWindowText(cText);
 
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -417,7 +387,6 @@ void CEditDlg::ResizeDialog()
 	IDC_LTIME_SET,
 	IDC_STATIC_DTGROUP,
 	IDC_STATIC_DTEXPGROUP,
-	IDC_STATIC_PWHSTATUS,
 	IDC_SHOW_PWHIST
   };
 
@@ -644,4 +613,5 @@ int CALLBACK CEditDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 void CEditDlg::OnBnClickedClearPWHist()
 {
   m_ClearPWHistory = true;
+  m_PWHistListCtrl.DeleteAllItems();
 }

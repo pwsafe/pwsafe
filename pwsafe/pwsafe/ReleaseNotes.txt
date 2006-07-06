@@ -11,6 +11,9 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.02
 =====================
+[] Password history can now be saved for selected entries
+[] Export/import to/from XML supported
+[] Selective text export
 
 Bugs fixed in 3.02
 ==================
@@ -23,6 +26,7 @@ to n0tig.
 not offered the option of accepting weak passphrases.
 [1513482] Preferences now saved in the .psafe3 file
 [1504107] No longer saves cleared database
+[1515994] User is now prompted to save database on system shutdown
 
 New Features for 3.01
 =====================

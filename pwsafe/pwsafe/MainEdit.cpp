@@ -328,15 +328,13 @@ DboxMain::OnEdit()
 
       if (dlg_edit.m_ClearPWHistory == TRUE) {
         pPWHistList->RemoveAll();
-        if (dlg_edit.m_SavePWHistory == FALSE) {
-          char buffer[6];
+        char buffer[6];
 #if _MSC_VER >= 1400
-          sprintf_s(buffer, 6, "0%02x00", dlg_edit.m_MaxPWHistory);
+        sprintf_s(buffer, 6, "0%02x00", dlg_edit.m_MaxPWHistory);
 #else
-          sprintf(buffer, "0%02x00", dlg_edit.m_MaxPWHistory);
+        sprintf(buffer, "0%02x00", dlg_edit.m_MaxPWHistory);
 #endif
-          ci->SetPWHistory(buffer);
-        }
+        ci->SetPWHistory(buffer);
         bPWHistoryCleared = true;
       }
 
