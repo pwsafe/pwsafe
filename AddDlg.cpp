@@ -155,6 +155,7 @@ CAddDlg::HidePassword()
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
    // Need verification as the user can not see the password entered
    GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
+   m_password2 = m_password;
 }
 
 void
@@ -180,8 +181,6 @@ CAddDlg::OnOK()
   }
   if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
     AfxMessageBox(_T("The entered passwords do not match.  Please re-enter them."));
-    m_password.Empty();
-    m_password2.Empty();
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
