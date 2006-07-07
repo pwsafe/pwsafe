@@ -18,14 +18,23 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#if defined(POCKET_PC)
+  #define SHOW_PASSWORD_TXT	_T("S")
+  #define HIDE_PASSWORD_TXT	_T("H")
+#else
+  #define SHOW_PASSWORD_TXT	_T("&Show")
+  #define HIDE_PASSWORD_TXT	_T("&Hide")
+#endif
+
 const int MAX_PW_HISTORY = 25;
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
   : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
-    m_URL(_T("")), m_autotype(_T("")), m_tttLTime((time_t)0),
-	m_MaxPWHistory(3)
+    m_URL(_T("")), m_autotype(_T("")),
+	m_tttLTime((time_t)0), m_ascLTime(_T("Never")),
+	m_MaxPWHistory(3), m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -38,6 +47,12 @@ BOOL CAddDlg::OnInitDialog()
   CDialog::OnInitDialog();
  
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
+  SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
+  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
+  // Get password character for later
+  m_passwordchar = ((CEdit*)GetDlgItem(IDC_PASSWORD))->GetPasswordChar();
+  // Remove password character so that the password is displayed
+  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
   ResizeDialog();
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
@@ -54,6 +69,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
   CDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
+  DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
@@ -87,6 +103,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
+   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
    ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
@@ -102,6 +119,43 @@ CAddDlg::OnCancel()
   CDialog::OnCancel();
 }
 
+void
+CAddDlg::OnShowpassword() 
+{
+  UpdateData(TRUE);
+
+  if (m_isPwHidden)
+    ShowPassword();
+  else
+    HidePassword();
+
+  UpdateData(FALSE);
+}
+
+void
+CAddDlg::ShowPassword()
+{
+   m_isPwHidden = false;
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
+   // Remove password character so that the password is displayed
+   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
+   ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+   // Don't need verification as the user can see the password entered
+   GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
+   m_password2.Empty();
+}
+
+void
+CAddDlg::HidePassword()
+{
+   m_isPwHidden = true;
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
+   // Set password character so that the password is not displayed
+   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(m_passwordchar);
+   ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+   // Need verification as the user can not see the password entered
+   GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
+}
 
 void
 CAddDlg::OnOK() 
@@ -122,6 +176,14 @@ CAddDlg::OnOK()
   if (!m_group.IsEmpty() && m_group[0] == '.') {
     AfxMessageBox(_T("A dot is invalid as the first character of the Group field."));
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
+    return;
+  }
+  if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
+    AfxMessageBox(_T("The entered passwords do not match.  Please re-enter them."));
+    m_password.Empty();
+    m_password2.Empty();
+    UpdateData(FALSE);
+    ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
   }
   //End check
@@ -163,8 +225,12 @@ void CAddDlg::OnRandom()
   ASSERT(pParent != NULL);
 
   UpdateData(TRUE);
-  if (pParent->MakeRandomPassword(this, m_password))
+  if (pParent->MakeRandomPassword(this, m_password)) {
+    if (m_isPwHidden) {
+    	m_password2 = m_password;
+    }
     UpdateData(FALSE);
+  }
 }
 //-----------------------------------------------------------------------------
 

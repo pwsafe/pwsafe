@@ -215,11 +215,10 @@
 #define IDC_SAVE_PWHIST                 1163
 #define IDC_STATIC_OLDPW1               1164
 #define IDC_SHOW_PWHIST                 1167
-#define IDC_STATIC_PWHSTATUS            1168
 #define IDC_XML_IMPORT_ACTION           1169
 #define IDC_XML_IMPORT_RESULTS          1170
 #define IDC_COPY_ERRORS_TO_CLIPBOARD    1171
-#define IDC_BUTTON1                     1172
+#define IDC_PASSWORD2                   1172
 #define IDC_CLEAR_HISTORY               1173
 #define IDC_EXPORT_ADVANCED             1174
 #define IDC_EXPORTX_GROUP_TITLE         1175
