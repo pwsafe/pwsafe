@@ -35,7 +35,6 @@ static char THIS_FILE[] = __FILE__;
 
 CEditDlg::CEditDlg(CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
-	m_isPwHidden(true),
 	m_ascCTime(_T("")), m_ascPMTime(_T("")), m_ascATime(_T("")),
 	m_ascLTime(_T("")), m_ascRMTime(_T("")),
 	m_ClearPWHistory(false), m_iSortedColumn(-1),
@@ -53,6 +52,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
   CDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
+  DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
@@ -77,7 +77,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
     if(0 == comboGroup.GetCount()) {
       CStringArray aryGroups;
       app.m_core.GetUniqueGroups(aryGroups);
-      for(int igrp=0; igrp<aryGroups.GetSize(); igrp++) {
+      for(int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
         comboGroup.AddString((LPCTSTR)aryGroups[igrp]);
       }
     }
@@ -89,41 +89,43 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
-ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
-ON_BN_CLICKED(ID_HELP, OnHelp)
-ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+	ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
+	ON_BN_CLICKED(ID_HELP, OnHelp)
+	ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 #if defined(POCKET_PC)
-ON_WM_SHOWWINDOW()
-ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
-ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
+	ON_WM_SHOWWINDOW()
+	ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
+	ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
 #endif
-ON_BN_CLICKED(IDOK, OnBnClickedOk)
-ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
-ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
-ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
-ON_BN_CLICKED(IDC_SHOW_PWHIST, OnBnClickedShowPasswordHistory)
-ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
-ON_BN_CLICKED(IDC_COPY_OLDPW_TO_CLIPBOARD, OnBnClickedCopyToClipboard)
-ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
-ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
-ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnBnClickedClearPWHist)
+	ON_BN_CLICKED(IDOK, OnBnClickedOk)
+	ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
+	ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
+	ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+	ON_BN_CLICKED(IDC_SHOW_PWHIST, OnBnClickedShowPasswordHistory)
+	ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
+	ON_BN_CLICKED(IDC_COPY_OLDPW_TO_CLIPBOARD, OnBnClickedCopyToClipboard)
+	ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
+	ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+	ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnBnClickedClearPWHist)
 END_MESSAGE_MAP()
 
 
 void CEditDlg::OnShowpassword() 
 {
-  UpdateData(TRUE);
+	UpdateData(TRUE);
 
-  CMyString wndName;
-  GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
-
-  if (wndName == SHOW_PASSWORD_TXT) {
-    ShowPassword();
-  } else if (wndName == HIDE_PASSWORD_TXT) {
-    m_realpassword = m_password;
+	if (m_isPwHidden) {
+		if (m_password.Compare(m_password2) != 0) {
+			AfxMessageBox(_T("The entered passwords do not match.  Please re-enter them."));
+			m_password.Empty();
+			m_password2.Empty();
+			UpdateData(FALSE);
+			((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+    } else
+    	ShowPassword();
+  } else {
     HidePassword();
-  } else
-    AfxMessageBox(_T("Error in retrieving window text"));
+  }
 
   UpdateData(FALSE);
 }
@@ -133,14 +135,6 @@ void
 CEditDlg::OnOK() 
 {
   UpdateData(TRUE);
-
-  /*
-   *  If the password is shown it may have been edited,
-   *  so save the current text.
-   */
-
-  if (! m_isPwHidden)
-    m_realpassword = m_password;
 
   //Check that data is valid
   if (m_title.IsEmpty()) {
@@ -158,7 +152,17 @@ CEditDlg::OnOK()
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
     return;
   }
+  if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
+    AfxMessageBox(_T("The entered passwords do not match.  Please re-enter them."));
+    m_password.Empty();
+    m_password2.Empty();
+    UpdateData(FALSE);
+    ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+    return;
+  }
   //End check
+
+  m_realpassword = m_password;
 
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
@@ -196,6 +200,10 @@ BOOL CEditDlg::OnInitDialog()
   CDialog::OnInitDialog();
  
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
+  SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
+
+  // Get password character for later
+  m_passwordchar = ((CEdit*)GetDlgItem(IDC_PASSWORD))->GetPasswordChar();
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
@@ -269,41 +277,42 @@ BOOL CEditDlg::OnInitDialog()
   return TRUE;
 }
 
-
-void CEditDlg::ShowPassword(void)
+void CEditDlg::ShowPassword()
 {
-   m_password = m_realpassword;
-   m_isPwHidden = false;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
-   GetDlgItem(IDC_PASSWORD)->EnableWindow(TRUE);
+	m_password = m_password2 = m_realpassword;
+	m_isPwHidden = false;
+	GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
+	// Remove password character so that the password is displayed
+	((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
+	((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+	// Don't need verification as the user can see the password entered
+	GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
+	m_password2.Empty();
 }
 
 
-void CEditDlg::HidePassword(void)
+void CEditDlg::HidePassword()
 {
-   m_password = HIDDEN_PASSWORD;
-   m_isPwHidden = true;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
-   GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
+	m_password = m_password2 = m_realpassword;
+	m_isPwHidden = true;
+	GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
+	// Set password character so that the password is not displayed
+	((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(m_passwordchar);
+	((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+	// Need verification as the user can not see the password entered
+	GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
 }
 
 
 void CEditDlg::OnRandom() 
 {
-  DboxMain* pParent = (DboxMain*)GetParent();
-  ASSERT(pParent != NULL);
-  UpdateData(TRUE);
-  if (pParent->MakeRandomPassword(this, m_realpassword)) {
-    CMyString wndName;
-    GetDlgItem(IDC_SHOWPASSWORD)->GetWindowText(wndName);
-
-    if (wndName == SHOW_PASSWORD_TXT) {
-      m_password = HIDDEN_PASSWORD;
-    } else if (wndName == HIDE_PASSWORD_TXT) {
-      m_password = m_realpassword;
-    }
-    UpdateData(FALSE);
-  }
+	DboxMain* pParent = (DboxMain*)GetParent();
+	ASSERT(pParent != NULL);
+	UpdateData(TRUE);
+	if (pParent->MakeRandomPassword(this, m_realpassword)) {
+		m_password = m_password2 = m_realpassword;
+		UpdateData(FALSE);
+	}
 }
 
 

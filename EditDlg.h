@@ -13,7 +13,7 @@ public:
 
    enum { IDD = IDD_EDIT };
    CMyString m_notes;
-   CMyString m_password;
+   CMyString m_password, m_password2;
    CMyString m_username;
    CMyString m_title;
    CMyString m_group;
@@ -37,8 +37,8 @@ public:
    POSITION  m_listindex;
 
    bool m_IsReadOnly;
-   void  ShowPassword(void);
-   void  HidePassword(void);
+   void  ShowPassword();
+   void  HidePassword();
    bool m_ClearPWHistory;
    BOOL m_SavePWHistory;
    int m_iSortedColumn;
@@ -46,6 +46,7 @@ public:
    bool m_bSavePWHistory;
 
 private:
+   TCHAR m_passwordchar;
    bool m_isPwHidden;
    // Are we showing more or less details?
    bool m_isExpanded;
