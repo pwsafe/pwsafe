@@ -444,14 +444,9 @@ CEditDlg::MakeDialogWider()
   const int LeftHideableControl = IDC_LEFT_HIDEABLE;
   const int RightHideableControl = IDC_RIGHT_HIDEABLE;
   const int controls[]={
-	IDC_PWHSPIN,
 	IDC_STATIC_PWHGROUP,
 	IDC_PWHISTORY_LIST,
-	IDC_MAXPWHISTORY,
 	IDC_COPY_OLDPW_TO_CLIPBOARD,
-	IDC_CLEAR_PWHIST,
-	IDC_SAVE_PWHIST,
-	IDC_STATIC_OLDPW1,
   };
 
   int windows_state = m_isMoreExpanded ? SW_SHOW : SW_HIDE;

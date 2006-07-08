@@ -14,8 +14,8 @@ New Features for 3.02
 [] Password history can now be saved for selected entries
 [] Export/import to/from XML supported
 [] Selective text export
-[1516674] Ability to hide password during Add & Edit entry.
-If hidden, password needs to be entered twice to verify.
+[1516674] Ability to hide password during Add & Edit entry. If hidden,
+password needs to be entered twice to verify. 
 
 Bugs fixed in 3.02
 ==================
