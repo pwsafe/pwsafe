@@ -74,6 +74,7 @@ public:
 	afx_msg void OnBnClickedShowPasswordHistory();
 	afx_msg void OnCheckedSavePasswordHistory();
 	afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnHistListClick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnBnClickedClearPWHist();
 
 	CButton m_MoreLessBtn;

@@ -103,6 +103,7 @@ ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
 ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
 ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+ON_NOTIFY(NM_CLICK, IDC_PWHISTORY_LIST, OnHistListClick)
 ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnBnClickedClearPWHist)
 END_MESSAGE_MAP()
 
@@ -461,6 +462,17 @@ CEditDlg::OnCheckedSavePasswordHistory()
 {
   m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
+}
+
+void
+CEditDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
+{
+  LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNMHDR;
+  ASSERT(lpnmitem != NULL);
+  int item = lpnmitem->iItem;
+  POSITION itempos = POSITION(m_PWHistListCtrl.GetItemData(item));
+  const PWHistEntry pwhentry = m_pPWHistList->GetAt(itempos);
+  app.SetClipboardData(pwhentry.password);
 }
 
 void
