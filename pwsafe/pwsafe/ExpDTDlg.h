@@ -13,8 +13,8 @@ public:
 	CExpDTDlg(CWnd* pParent = NULL)
 		: CDialog(CExpDTDlg::IDD, pParent){};   // standard constructor
 
-	CDateTimeCtrl* m_pTimeCtl;                // pointer to a time picker
-	CDateTimeCtrl* m_pDateCtl;                // pointer to a date picker
+	CDateTimeCtrl m_pTimeCtl;                // time picker control
+	CDateTimeCtrl m_pDateCtl;                // date picker control
 	CMyString m_ascLTime;
 	time_t m_tttLTime;
 

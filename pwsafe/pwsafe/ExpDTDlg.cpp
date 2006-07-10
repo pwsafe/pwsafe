@@ -10,8 +10,9 @@
 void CExpDTDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_EXPIRYDATE, m_pDateCtl);
+	DDX_Control(pDX, IDC_EXPIRYTIME, m_pTimeCtl);
 }
-
 
 BEGIN_MESSAGE_MAP(CExpDTDlg, CDialog)
 	ON_BN_CLICKED(IDOK, &CExpDTDlg::OnBnClickedOk)
@@ -52,23 +53,31 @@ BOOL CExpDTDlg::OnInitDialog()
 		}
 	}
 
-	m_pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
-	m_pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
-    m_pTimeCtl->SetFormat(sTimeFormat);
+	CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
+	CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
+    pTimeCtl->SetFormat(sTimeFormat);
+	pDateCtl->SetFormat(_T("ddd dd'/'MM'/'yyyy"));
 
 	time_t tt;
 	CTime ct, xt;
+	CTime now(CTime::GetCurrentTime());
+	ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
+
+	const CTime sMinDate(ct);
+	const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
+	// Set approx. limit of 32-bit times!
+	pDateCtl->SetRange(&sMinDate, &sMaxDate);
+
 	if (!PWSUtil::VerifyASCDateTimeString(m_ascLTime, tt)) {
-		CTime now(CTime::GetCurrentTime());
-		ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
 		m_ascLTime = "Never";
 	} else {
 		xt = CTime(tt);
-		ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(), 0, 0, 0, -1);
+		ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
+					xt.GetHour(), xt.GetMinute(), 0, -1);
 	}
 
-	m_pDateCtl->SetTime(&ct);
-	m_pTimeCtl->SetTime(&ct);
+	pDateCtl->SetTime(&ct);
+	pTimeCtl->SetTime(&ct);
 
 	GetDlgItem(IDC_STATIC_CURRENT_LTIME)->SetWindowText(m_ascLTime);
 
@@ -77,13 +86,15 @@ BOOL CExpDTDlg::OnInitDialog()
 
 void CExpDTDlg::OnBnClickedOk()
 {
+	UpdateData(TRUE);
+
 	CTime LTime, LDate, LDateTime;
 	DWORD dwResult;
 
-	dwResult = m_pTimeCtl->GetTime(LTime);
+	dwResult = m_pTimeCtl.GetTime(LTime);
 	ASSERT(dwResult == GDT_VALID);
 
-	dwResult = m_pDateCtl->GetTime(LDate);
+	dwResult = m_pDateCtl.GetTime(LDate);
 	ASSERT(dwResult == GDT_VALID);
 	
 	LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
@@ -93,4 +104,3 @@ void CExpDTDlg::OnBnClickedOk()
 
 	OnOK();
 }
-
