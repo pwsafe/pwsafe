@@ -45,14 +45,21 @@ CAddDlg::CAddDlg(CWnd* pParent)
 BOOL CAddDlg::OnInitDialog() 
 {
   CDialog::OnInitDialog();
- 
+
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
-  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
+
   // Get password character for later
   m_passwordchar = ((CEdit*)GetDlgItem(IDC_PASSWORD))->GetPasswordChar();
-  // Remove password character so that the password is displayed
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
+
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
+    ShowPassword();
+  } else {
+    HidePassword();
+  }
+
+  UpdateData(FALSE);
+
   ResizeDialog();
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
@@ -307,12 +314,14 @@ void CAddDlg::ResizeDialog()
                      SWP_NOMOVE );
 
 }
+
 void CAddDlg::OnBnClickedClearLTime()
 {
 	GetDlgItem(IDC_LTIME)->SetWindowText(_T("Never"));
 	m_ascLTime = _T("Never");
 	m_tttLTime = (time_t)0;
 }
+
 void CAddDlg::OnBnClickedSetLTime()
 {
 	CExpDTDlg dlg_expDT(this);

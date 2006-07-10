@@ -29,6 +29,7 @@ not offered the option of accepting weak passphrases.
 [1513482] Preferences now saved in the .psafe3 file
 [1504107] No longer saves cleared database
 [1515994] User is now prompted to save database on system shutdown
+[1519227] Password expires date set wrong
 
 New Features for 3.01
 =====================
