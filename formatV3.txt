@@ -110,11 +110,11 @@ representation.
    Password		      0x06		Text		Y
    Creation Time	  0x07		time_t		Y   [3]
    Password Modification
-   Time               0x08      time_t      N
-   Last Access Time   0x09		time_t		N	[4]
-   Password Lifetime  0x0a		time_t		N	[5]
+   Time               0x08      time_t      Y
+   Last Access Time   0x09		time_t		Y	[4]
+   Password Lifetime  0x0a		time_t		Y	[5]
    Password Policy    0x0b		4 bytes		N	[6]
-   Last Mod. time     0x0c		time_t		N	[7]
+   Last Mod. time     0x0c		time_t		Y	[7]
    URL                0x0d      Text		Y	[8]
    Autotype           0x0e      Text        Y   [9]
    End of Entry       0xff		[empty]		Y	[10]
@@ -136,14 +136,14 @@ GMT. (This is equivalent to the time_t type on Windows and POSIX.  On the
 Macintosh, the value needs to be adjusted by the constant value 2082844800
 to account for the different epoch of its time_t type.)
 
-[4] This will be updated whenever the password of this entry is copied
-to the clipboard, or whenever the Password Modification Time is
-updated.
+[4] This will be updated whenever any part of this entry is accessed
+i.e. to copy its username, password or notes to the clipboard; to perform
+autotype or to browse to url.
 
 [5] This will allow the user to enter a lifetime for an entry. The
 application can then prompt the user about passwords that need to be
-changed. Password lifetime is in seconds, and a value of zero means
-"forever".
+changed. Password lifetime is the expiry a date/time field in the same
+manner as the other time fields and a value of zero means "forever".
 
 [6] Currently, the password policy is a global property. It makes
 sense, however, to want to control this on a per-entry basis. Four
