@@ -139,6 +139,7 @@ protected:
   bool m_bAlwaysOnTop;
   bool m_bTSUpdated;
   bool m_saveMRU;
+  bool m_bSessionEnding;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
@@ -213,6 +214,7 @@ protected:
   virtual BOOL OnInitDialog();
   afx_msg void OnDestroy();
   afx_msg BOOL OnQueryEndSession();
+  afx_msg void OnEndSession(BOOL bEnding);
   virtual void OnCancel();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnAbout();
