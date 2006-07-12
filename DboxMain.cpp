@@ -97,7 +97,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_IsStartSilent(false),
      m_hFontTree(NULL), m_IsReadOnly(false),
-     m_selectedAtMinimize(NULL), m_bTSUpdated(false)
+     m_selectedAtMinimize(NULL), m_bTSUpdated(false),
+     m_bSessionEnding(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -139,6 +140,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_DESTROY()
    ON_WM_SIZE()
    ON_WM_QUERYENDSESSION()
+   ON_WM_ENDSESSION()
    ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
    ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
    ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
@@ -1317,12 +1319,32 @@ DboxMain::OnQueryEndSession()
 	}
 
 	if (m_core.IsChanged()) {
-		CString msg = _T("System is closing down, restarting or you are logging off.\r\n\r\n");
-		msg += _T("Do you wish to stop, so that you can save any outstanding database changes first?");
-		int rc = AfxMessageBox(msg, MB_ICONSTOP | MB_YESNO);
-		if (rc == IDYES)
-			return FALSE;
+		CString msg = _T("Do you wish to save the changes made to database:\r\n\r\n");
+		msg += m_core.GetCurFile();
+		msg += _T("\r\n\r\nor Cancel the shutdown\\restart\\logoff?");
+		int rc = AfxMessageBox(msg, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+		switch (rc) {
+			case IDCANCEL:
+				// Cancel shutdown\restart\logoff
+				return FALSE;
+			case IDYES:
+				// Save the changes and say OK to shutdown\restart\logoff
+				Save();
+				return TRUE;
+			case IDNO:
+				// Don't save the changes but say OK to shutdown\restart\logoff
+				return TRUE;
+		}
 	}
 
 	return TRUE;
+}
+
+void
+DboxMain::OnEndSession(BOOL bEnding)
+{
+	if (bEnding == TRUE) {
+		m_bSessionEnding = true;
+		OnOK();
+	}
 }

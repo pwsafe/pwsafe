@@ -17,6 +17,7 @@
 #include "ImportDlg.h"
 #include "ImportXMLDlg.h"
 #include "ImportXMLErrDlg.h"
+#include "corelib/pwsprefs.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -1399,4 +1400,91 @@ exit:
 	list_Conflicts.RemoveAll();
 
 	return rc;
+}
+
+void
+DboxMain::OnOK() 
+{
+  int rc, rc2;
+
+  PWSprefs::IntPrefs WidthPrefs[] = {
+    PWSprefs::Column1Width,
+    PWSprefs::Column2Width,
+    PWSprefs::Column3Width,
+    PWSprefs::Column4Width,
+  };
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  LVCOLUMN lvColumn;
+  lvColumn.mask = LVCF_WIDTH;
+  for (int i = 0; i < 4; i++) {
+    if (m_ctlItemList.GetColumn(i, &lvColumn)) {
+      prefs->SetPref(WidthPrefs[i], lvColumn.cx);
+    }
+  }
+
+#if !defined(POCKET_PC)
+  if (!IsIconic()) {
+    CRect rect;
+    GetWindowRect(&rect);
+    prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+  }
+#endif
+  prefs->SetPref(PWSprefs::SortedColumn, m_iSortedColumn);
+  prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
+
+  // If MaintainDateTimeStamps set and not read-only,
+  // save without asking user: "they get what it says on the tin"
+  // Note that if database was cleared (e.g., locked), it might be
+  // possible to save an empty list :-(
+  // Protect against this both here and in OnSize (where we minimize
+  // & possibly ClearData).
+  if (!m_IsReadOnly && m_bTSUpdated && m_core.GetNumEntries() > 0)
+    Save();
+
+  if (m_core.IsChanged()) {
+    rc = MessageBox(_T("Do you want to save changes to the password list?"),
+                    AfxGetAppName(),
+                    MB_ICONQUESTION|MB_YESNOCANCEL);
+    switch (rc) {
+	case IDCANCEL:
+	  return;
+	case IDYES:
+	  rc2 = Save();
+	  if (rc2 != PWScore::SUCCESS)
+        return;
+	case IDNO:
+	  break;
+    }
+  } // core.IsChanged()
+
+  //Store current filename for next time...
+  if (m_saveMRU)
+    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  else
+    prefs->SetPref(PWSprefs::CurrentFile, _T(""));
+
+  // Clear clipboard on Exit?  Yes if:
+  // a. the app is minimized and the systemtray is enabled
+  // b. the user has set the "DontAskMinimizeClearYesNo" pref
+  // c. the system is shutting down, restarting or the user is logging off
+  if ((!IsWindowVisible() && prefs->GetPref(PWSprefs::UseSystemTray)) ||
+      prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo) ||
+      m_bSessionEnding) {
+		app.ClearClipboardData();
+  }
+
+  ClearData();
+  CDialog::OnOK();
+}
+
+void
+DboxMain::OnCancel()
+{
+  // If system tray is enabled, cancel (X on title bar) closes
+  // window, else exit application
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+    ShowWindow(SW_MINIMIZE);
+  else
+    OnOK();
 }
