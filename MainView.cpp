@@ -216,13 +216,10 @@ DboxMain::setupBars()
 {
 #if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
-
-  const UINT statustext = IDS_STATCOMPANY;
-
   // Add the status bar
   if (m_statusBar.Create(this))
     {
-      m_statusBar.SetIndicators(&statustext, 1);
+      m_statusBar.SetIndicators(statustext, 2);
       // Make a sunken or recessed border around the first pane
       m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
     }             
@@ -404,7 +401,7 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 
 
 //Updates m_ctlItemList and m_ctlItemTree from m_pwlist
-// updates of windows suspended untill all data is in.
+// updates of windows suspended until all data is in.
 void
 DboxMain::RefreshList()
 {
@@ -641,34 +638,34 @@ DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *)
 {
   const int dca = int(PWSprefs::GetInstance()->
 		      GetPref(PWSprefs::DoubleClickAction));
-  UINT statustext;
+
   switch (dca) {
-  case PWSprefs::DoubleClickCopy: statustext = IDS_STATCOPY; break;
-  case PWSprefs::DoubleClickEdit: statustext = IDS_STATEDIT; break;
-  case PWSprefs::DoubleClickAutoType: statustext = IDS_STATAUTOTYPE; break;
-  case PWSprefs::DoubleClickBrowse: statustext = IDS_STATBROWSE; break;
+  case PWSprefs::DoubleClickCopy: statustext[0] = IDS_STATCOPY; break;
+  case PWSprefs::DoubleClickEdit: statustext[0] = IDS_STATEDIT; break;
+  case PWSprefs::DoubleClickAutoType: statustext[0] = IDS_STATAUTOTYPE; break;
+  case PWSprefs::DoubleClickBrowse: statustext[0] = IDS_STATBROWSE; break;
   default: ASSERT(0);
   }
 
   if (m_toolbarsSetup == FALSE)
     return;
 
-  m_statusBar.SetIndicators(&statustext, 1);	
+  m_statusBar.SetIndicators(statustext, 2);	
   // Make a sunken or recessed border around the first pane
   m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  UpdateStatusBar();
 }
 
 void
 DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *) 
 {
-  const UINT statustext = IDS_STATCOMPANY;
-
   if (m_toolbarsSetup == FALSE)
     return;
 
-  m_statusBar.SetIndicators(&statustext, 1);
+  m_statusBar.SetIndicators(statustext, 2);
   // Make a sunken or recessed border around the first pane
   m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  UpdateStatusBar();
 }
 #endif
 

@@ -15,6 +15,7 @@
 #define IDS_STATCOMPANY                 105
 #define IDS_STATCOPY                    106
 #define IDS_ALWAYSONTOP                 107
+#define IDS_STAT_NUM_IN_DB              108
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128
 #define IDD_KEYCHANGE_DIALOG            131

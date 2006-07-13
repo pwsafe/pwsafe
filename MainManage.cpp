@@ -356,17 +356,16 @@ DboxMain::OnOptions()
                      misc.m_hotkey_value);
 
       /* Update status bar */
-      UINT statustext;
       switch (misc.m_doubleclickaction) {
-      case PWSprefs::DoubleClickCopy: statustext = IDS_STATCOPY; break;
-      case PWSprefs::DoubleClickEdit: statustext = IDS_STATEDIT; break;
-      case PWSprefs::DoubleClickAutoType: statustext = IDS_STATAUTOTYPE; break;
-      case PWSprefs::DoubleClickBrowse: statustext = IDS_STATBROWSE; break;
+      case PWSprefs::DoubleClickCopy: statustext[0] = IDS_STATCOPY; break;
+      case PWSprefs::DoubleClickEdit: statustext[0] = IDS_STATEDIT; break;
+      case PWSprefs::DoubleClickAutoType: statustext[0] = IDS_STATAUTOTYPE; break;
+      case PWSprefs::DoubleClickBrowse: statustext[0] = IDS_STATBROWSE; break;
       default: ASSERT(0);
       }
       // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
-      m_statusBar.SetIndicators(&statustext, 1);	
+      m_statusBar.SetIndicators(statustext, 2);
 #endif
       /*
       ** Update string in database, if necessary & possible
