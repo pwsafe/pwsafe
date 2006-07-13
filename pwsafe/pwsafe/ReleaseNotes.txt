@@ -1,6 +1,5 @@
-Password Safe 3.02 Release Note - June 2006
-
-===========================================
+Password Safe 3.02 Release Note - Julye 2006
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.02. For a short description of Password
@@ -15,7 +14,8 @@ New Features for 3.02
 [] Export/import to/from XML supported
 [] Selective text export
 [1516674] Ability to hide password during Add & Edit entry. If hidden,
-password needs to be entered twice to verify. 
+password needs to be entered twice to verify.
+[1506320] Count of passwords stored in DB on status bar
 
 Bugs fixed in 3.02
 ==================

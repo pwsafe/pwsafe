@@ -172,6 +172,7 @@ protected:
   void SetListView();
   void SetTreeView();
   void SetToolbar(int menuItem);
+  void UpdateStatusBar();
 
   //Version of message functions with return values
   int Save(void);

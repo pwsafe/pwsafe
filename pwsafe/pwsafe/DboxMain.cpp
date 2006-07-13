@@ -618,6 +618,7 @@ DboxMain::ChangeOkUpdate()
 #if !defined(POCKET_PC)
   SetWindowText(LPCTSTR(m_title));
 #endif
+  UpdateStatusBar();
 }
 
 void
@@ -1375,5 +1376,15 @@ DboxMain::OnEndSession(BOOL bEnding)
 	} else {
 		// Reset status since the EndSession was cancelled
 		m_iSessionEndingStatus = IDIGNORE;
+	}
+}
+
+void
+DboxMain::UpdateStatusBar()
+{
+	if (m_toolbarsSetup == TRUE) {
+		CString s;
+		s.Format("# entries: %d", m_core.GetNumEntries());
+		m_statusBar.SetPaneText(1, s);
 	}
 }
