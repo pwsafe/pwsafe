@@ -98,7 +98,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_core(app.m_core), m_IsStartSilent(false),
      m_hFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
-     m_bSessionEnding(false)
+     m_iSessionEndingStatus(IDIGNORE)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -476,6 +476,18 @@ void DboxMain::FixListIndexes()
 void
 DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 {
+	// TreeView only - use DoubleClick to Expand/Collapse group
+	if (m_ctlItemTree.IsWindowVisible()) {
+		HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
+		// Only if a group is selected
+		if ((hItem != NULL && !m_ctlItemTree.IsLeafNode(hItem))) {
+			// Do standard double-click processing - i.e. toggle expand/collapse!
+			return;
+		}
+	}
+
+	// Continue if in ListView  or Leaf in TreeView
+
 #if defined(POCKET_PC)
   if ( app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE) == FALSE ) {
     OnCopyPassword();
@@ -1310,6 +1322,7 @@ DboxMain::UpdateAccessTime(CItemData *ci)
 BOOL
 DboxMain::OnQueryEndSession()
 {
+	m_iSessionEndingStatus = IDOK;
 	if (m_IsReadOnly)
 		return TRUE;
 
@@ -1323,13 +1336,13 @@ DboxMain::OnQueryEndSession()
 		msg += m_core.GetCurFile();
 		msg += _T("\r\n\r\nor Cancel the shutdown\\restart\\logoff?");
 		int rc = AfxMessageBox(msg, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+		m_iSessionEndingStatus = rc;
 		switch (rc) {
 			case IDCANCEL:
 				// Cancel shutdown\restart\logoff
 				return FALSE;
 			case IDYES:
 				// Save the changes and say OK to shutdown\restart\logoff
-				Save();
 				return TRUE;
 			case IDNO:
 				// Don't save the changes but say OK to shutdown\restart\logoff
@@ -1344,7 +1357,23 @@ void
 DboxMain::OnEndSession(BOOL bEnding)
 {
 	if (bEnding == TRUE) {
-		m_bSessionEnding = true;
-		OnOK();
+		switch (m_iSessionEndingStatus) {
+			case IDOK:
+				// Either not changed, R/O or already saved timestamps
+			case IDCANCEL:
+				// Shouldn't happen as the user said NO to shutdown\restart\logoff
+			case IDNO:
+				// User said NO to saving - so don't!
+				break;
+			case IDYES:
+				// User said YES they wanted to save - so do!
+				OnOK();
+				break;
+			default:
+				ASSERT(0);
+		}
+	} else {
+		// Reset status since the EndSession was cancelled
+		m_iSessionEndingStatus = IDIGNORE;
 	}
 }

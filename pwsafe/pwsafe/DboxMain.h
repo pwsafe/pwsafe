@@ -139,7 +139,7 @@ protected:
   bool m_bAlwaysOnTop;
   bool m_bTSUpdated;
   bool m_saveMRU;
-  bool m_bSessionEnding;
+  int m_iSessionEndingStatus;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 

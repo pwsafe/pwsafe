@@ -1,4 +1,4 @@
-Password Safe 3.02 Release Note - June 2006evert
+Password Safe 3.02 Release Note - June 2006
 
 ===========================================
 
@@ -30,6 +30,7 @@ not offered the option of accepting weak passphrases.
 [1504107] No longer saves cleared database
 [1515994] User is now prompted to save database on system shutdown
 [1519227] Password expires date set wrong
+[1519850] Double-click tree
 
 New Features for 3.01
 =====================
