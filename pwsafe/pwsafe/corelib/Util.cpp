@@ -682,6 +682,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
     	char *t_str_ptr;
 		struct tm *st;
     	st = localtime(&t);
+        ASSERT(st != NULL); // null means invalid time
     	if ((result_format & EXPORT_IMPORT) == EXPORT_IMPORT) {
       		sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
