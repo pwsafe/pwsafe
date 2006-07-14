@@ -15,20 +15,6 @@ public:
 
   enum { IDD = IDD_EDIT };
   CMyString m_defusername, m_username;
-  CMyString m_ascCTime;
-  CMyString m_ascPMTime;
-  CMyString m_ascATime;
-  CMyString m_ascLTime;
-  CMyString m_ascRMTime;
-  time_t m_tttLTime;
-  int m_MaxPWHistory;
-  int m_NumPWHistory;
-
-  CListCtrl m_PWHistListCtrl;
-
-  PWHistList* m_pPWHistList;
-
-  CMyString m_realpassword;
 
   POSITION  m_listindex;
 
@@ -36,23 +22,28 @@ public:
   void  ShowPassword();
   void  HidePassword();
   bool IsModified() const {return m_bIsModified;}
-  bool IsPswdModified() const {return m_bPswdModified;}
+
+private:
+  CListCtrl m_PWHistListCtrl;
+  PWHistList m_PWHistList;
+  CItemData *m_ci; // The entry being edited
+  CMyString m_title;
+  CMyString m_group;
+  CMyString m_realpassword, m_oldRealPassword;
+  CMyString m_password, m_password2;
+  CMyString m_notes;
+  CMyString m_URL;
+  CMyString m_autotype;
+  CMyString m_ascCTime;
+  CMyString m_ascPMTime, m_ascATime, m_ascLTime, m_ascRMTime;
+  time_t m_tttLTime;
+  int m_MaxPWHistory;
+  int m_NumPWHistory;
+  bool m_bIsModified, m_bPswdModified;
   bool m_ClearPWHistory;
   BOOL m_SavePWHistory;
   int m_iSortedColumn;
   BOOL m_bSortAscending;
-  bool m_bSavePWHistory;
-
-private:
-  CItemData *m_ci; // The entry being edited
-  CMyString m_notes;
-  CMyString m_password, m_password2;
-  CMyString m_title;
-  CMyString m_group;
-  CMyString m_URL;
-  CMyString m_autotype;
-  bool m_bIsModified;
-  bool m_bPswdModified;
   TCHAR m_passwordchar;
   bool m_isPwHidden;
   // Are we showing more or less details?
@@ -61,6 +52,7 @@ private:
   CMyString m_oldascLTime;
   int m_oldMaxPWHistory;
   void ResizeDialog();
+  void UpdateHistory();
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

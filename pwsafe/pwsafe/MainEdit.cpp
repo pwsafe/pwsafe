@@ -264,143 +264,18 @@ DboxMain::OnEdit()
     POSITION listpos = Find(di->list_index);
 
     CEditDlg dlg_edit(ci, this);
-    CMyString  oldRealPassword, oldLTime;
-    int oldMaxPWHistory;
 
     if (m_core.GetUseDefUser())
       dlg_edit.m_defusername = m_core.GetDefUsername();
 
-    oldRealPassword = ci->GetPassword();
     dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
     dlg_edit.m_IsReadOnly = m_IsReadOnly;
 	
-    oldLTime = dlg_edit.m_ascLTime;
-    PWHistList *pPWHistList = new PWHistList;
-    dlg_edit.m_pPWHistList = pPWHistList;
-
-    BOOL HasHistory = FALSE;
-    ci->CreatePWHistoryList(HasHistory, oldMaxPWHistory,
-                            dlg_edit.m_NumPWHistory, 
-                            pPWHistList, EXPORT_IMPORT);
-
-    dlg_edit.m_MaxPWHistory = oldMaxPWHistory;
     app.DisableAccelerator();
     int rc = dlg_edit.DoModal();
     app.EnableAccelerator();
 
     if (rc == IDOK) {
-      CMyString temptitle;
-      time_t t;
-      time(&t);
-      bool bPswdChanged, bAnotherChanged, bPWHistoryCleared;
-      bPswdChanged = bAnotherChanged = bPWHistoryCleared = false;
-      if (dlg_edit.IsPswdModified())
-        bPswdChanged = true;
-      else {
-        bAnotherChanged = dlg_edit.IsModified();
-      }
-
-      if (dlg_edit.m_ClearPWHistory == TRUE) {
-        pPWHistList->RemoveAll();
-        char buffer[6];
-#if _MSC_VER >= 1400
-        sprintf_s(buffer, 6, "0%02x00", dlg_edit.m_MaxPWHistory);
-#else
-        sprintf(buffer, "0%02x00", dlg_edit.m_MaxPWHistory);
-#endif
-        ci->SetPWHistory(buffer);
-        bPWHistoryCleared = true;
-      }
-
-      if (HasHistory && dlg_edit.m_SavePWHistory == FALSE) {
-        CMyString tmp = ci->GetPWHistory();
-        if (tmp.GetLength() >= 5)
-          tmp.SetAt(0, '0');	// Turn it off!
-        else
-          tmp = _T("");
-        ci->SetPWHistory(tmp);
-      }
-
-      if (bPswdChanged) {
-        if (PWSprefs::GetInstance()->GetPref(PWSprefs::SavePasswordHistory) &&
-            dlg_edit.m_SavePWHistory == TRUE) {
-          int num = pPWHistList->GetCount();
-          PWHistEntry pwh_ent;
-          pwh_ent.password = oldRealPassword;
-          time_t t;
-          ci->GetPMTime(t);
-          if ((long)t == 0L) // if never set - try creation date
-            ci->GetCTime(t);
-          pwh_ent.changetttdate = t;
-          pwh_ent.changedate =
-            PWSUtil::ConvertToDateTimeString(t, EXPORT_IMPORT);
-          if (pwh_ent.changedate.IsEmpty()) {
-            //                       1234567890123456789
-            pwh_ent.changedate = _T("Unknown            ");
-          }
-
-          // Now add the latest
-          pPWHistList->AddTail(pwh_ent);
-
-          // Increment count
-          num++;
-
-          // Too many? remove the excess
-          if (num > dlg_edit.m_MaxPWHistory) {
-            for (int i = 0; i < (num - dlg_edit.m_MaxPWHistory); i++)
-              pPWHistList->RemoveHead();
-
-            num = dlg_edit.m_MaxPWHistory;
-          }
-
-          // Now create string version!
-          CMyString new_PWHistory;
-          CString buffer;
-
-          buffer.Format(_T("1%02x%02x"), dlg_edit.m_MaxPWHistory, num);
-          new_PWHistory = CMyString(buffer);
-
-          POSITION listpos = pPWHistList->GetHeadPosition();
-          while (listpos != NULL) {
-            const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
-
-            buffer.Format(_T("%08x%04x%s"),
-                          (long) pwshe.changetttdate, pwshe.password.GetLength(),
-                          pwshe.password);
-            new_PWHistory += CMyString(buffer);
-            buffer.Empty();
-            pPWHistList->GetNext(listpos);
-          }
-          ci->SetPWHistory(new_PWHistory);
-        } // save history
-
-        ci->SetPMTime(t);
-        ci->SetRMTime(t);
-      } else { // password changed
-        if (oldMaxPWHistory != dlg_edit.m_MaxPWHistory) {
-          CMyString tmp = ci->GetPWHistory();
-          if (tmp.GetLength() >= 5) {
-            CString buffer;
-            buffer.Format(_T("%02x"), dlg_edit.m_MaxPWHistory);
-            tmp = tmp.Left(1) + CMyString(buffer) + tmp.Mid(3);
-          } else
-            tmp = _T("");
-          ci->SetPWHistory(tmp);
-        }
-      }
-		
-      if (bAnotherChanged)
-        ci->SetRMTime(t);
-
-      if (!bPswdChanged && !bAnotherChanged && !bPWHistoryCleared) {	// Nothing changed!
-        pPWHistList->RemoveAll();
-        delete pPWHistList;
-        return;
-      }
-
-      if (oldLTime != dlg_edit.m_ascLTime)
-        ci->SetLTime(dlg_edit.m_tttLTime);
-
       // Out with the old, in with the new
       CItemData editedItem(*ci); // 'cause next line deletes *ci
       m_core.RemoveEntryAt(listpos);
@@ -420,8 +295,6 @@ DboxMain::OnEdit()
       }
       ChangeOkUpdate();
     } // rc == IDOK
-    pPWHistList->RemoveAll();
-    delete pPWHistList;
   } else {
     // entry item not selected - perhaps here on Enter on tree item?
     // perhaps not the most elegant solution to improving non-mouse use,
