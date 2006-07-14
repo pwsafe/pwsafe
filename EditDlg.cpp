@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
     m_ci(ci), m_bIsModified(false), m_bPswdModified(false),
-	m_ascLTime(_T("")),
+	m_ascLTime(_T("")), m_oldascLTime(_T("")),
 	m_ClearPWHistory(false), m_iSortedColumn(-1),
     m_bSortAscending(TRUE)
 {
@@ -46,7 +46,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_title = ci->GetTitle();
   m_username = ci->GetUser();
   m_password = HIDDEN_PASSWORD;
-  m_realpassword = ci->GetPassword();
+  m_realpassword = m_oldRealPassword = ci->GetPassword();
   m_URL = ci->GetURL();
   m_autotype = ci->GetAutoType();
   m_notes = ci->GetNotes();
@@ -58,6 +58,12 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ascLTime = ci->GetLTimeN();
   if (m_ascLTime.IsEmpty())
     m_ascLTime = _T("Never");
+
+  BOOL HasHistory = FALSE;
+  ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
+                          m_NumPWHistory, 
+                          &m_PWHistList, EXPORT_IMPORT);
+  m_oldMaxPWHistory = m_MaxPWHistory;
 
   m_SavePWHistory = PWSprefs::GetInstance()->
     GetPref(PWSprefs::SavePasswordHistory);
@@ -153,16 +159,16 @@ CEditDlg::OnOK()
   UpdateData(TRUE);
 
   m_bIsModified = (
-                  m_group != m_ci->GetGroup() ||
-                  m_title != m_ci->GetTitle() ||
-                  m_username != m_ci->GetUser() ||
-                  m_notes != m_ci->GetNotes() ||
-                  m_URL != m_ci->GetURL() ||
-                  m_autotype != m_ci->GetAutoType() ||
-                  m_ascLTime != m_oldascLTime ||
-                  m_MaxPWHistory != m_oldMaxPWHistory
+                   m_group != m_ci->GetGroup() ||
+                   m_title != m_ci->GetTitle() ||
+                   m_username != m_ci->GetUser() ||
+                   m_notes != m_ci->GetNotes() ||
+                   m_URL != m_ci->GetURL() ||
+                   m_autotype != m_ci->GetAutoType() ||
+                   m_ascLTime != m_oldascLTime ||
+                   m_MaxPWHistory != m_oldMaxPWHistory
                    );
-  m_bPswdModified = m_realpassword != m_ci->GetPassword();
+  m_bPswdModified = m_realpassword != m_oldRealPassword;
   //Check that data is valid
   if (m_title.IsEmpty()) {
     AfxMessageBox(_T("This entry must have a title."));
@@ -217,6 +223,54 @@ CEditDlg::OnOK()
     m_ci->SetURL(m_URL);
     m_ci->SetAutoType(m_autotype);
 
+    bool bHasHistory = m_PWHistList.GetCount() > 0;
+    bool bPWHistoryCleared = false;
+    if (m_ClearPWHistory == TRUE) {
+      m_PWHistList.RemoveAll();
+      char buffer[6];
+#if _MSC_VER >= 1400
+      sprintf_s(buffer, 6, "0%02x00", m_MaxPWHistory);
+#else
+      sprintf(buffer, "0%02x00", m_MaxPWHistory);
+#endif
+      m_ci->SetPWHistory(buffer);
+      bPWHistoryCleared = true;
+    }
+
+    if (bHasHistory && m_SavePWHistory == FALSE) {
+      CMyString tmp = m_ci->GetPWHistory();
+      if (tmp.GetLength() >= 5)
+        tmp.SetAt(0, '0');	// Turn it off!
+      else
+        tmp = _T("");
+      m_ci->SetPWHistory(tmp);
+    }
+
+    // Adjust history length if changed
+    if (m_oldMaxPWHistory != m_MaxPWHistory) {
+      CMyString tmp = m_ci->GetPWHistory();
+      if (tmp.GetLength() >= 5) {
+        CString buffer;
+        buffer.Format(_T("%02x"), m_MaxPWHistory);
+        tmp = tmp.Left(1) + CMyString(buffer) + tmp.Mid(3);
+      } else
+        tmp = _T("");
+      m_ci->SetPWHistory(tmp);
+    }
+
+    time_t t;
+    time(&t);
+    if (m_bPswdModified) {
+      if (m_SavePWHistory)
+        UpdateHistory();
+      m_ci->SetPMTime(t);
+      m_ci->SetRMTime(t);
+    }
+    if (m_bIsModified)
+      m_ci->SetRMTime(t);
+    if (m_oldascLTime != m_ascLTime)
+      m_ci->SetLTime(m_tttLTime);
+
     CDialog::OnOK();
   }
 }
@@ -227,6 +281,56 @@ void CEditDlg::OnCancel()
    CDialog::OnCancel();
 }
 
+void CEditDlg::UpdateHistory()
+{
+  int num = m_PWHistList.GetCount();
+  PWHistEntry pwh_ent;
+  pwh_ent.password = m_oldRealPassword;
+  time_t t;
+  m_ci->GetPMTime(t);
+  if ((long)t == 0L) // if never set - try creation date
+    m_ci->GetCTime(t);
+  pwh_ent.changetttdate = t;
+  pwh_ent.changedate =
+    PWSUtil::ConvertToDateTimeString(t, EXPORT_IMPORT);
+  if (pwh_ent.changedate.IsEmpty()) {
+    //                       1234567890123456789
+    pwh_ent.changedate = _T("Unknown            ");
+  }
+
+  // Now add the latest
+  m_PWHistList.AddTail(pwh_ent);
+
+  // Increment count
+  num++;
+
+  // Too many? remove the excess
+  if (num > m_MaxPWHistory) {
+    for (int i = 0; i < (num - m_MaxPWHistory); i++)
+      m_PWHistList.RemoveHead();
+    num = m_MaxPWHistory;
+  }
+
+  // Now create string version!
+  CMyString new_PWHistory;
+  CString buffer;
+
+  buffer.Format(_T("1%02x%02x"), m_MaxPWHistory, num);
+  new_PWHistory = CMyString(buffer);
+
+  POSITION listpos = m_PWHistList.GetHeadPosition();
+  while (listpos != NULL) {
+    const PWHistEntry pwshe = m_PWHistList.GetAt(listpos);
+
+    buffer.Format(_T("%08x%04x%s"),
+                  (long) pwshe.changetttdate, pwshe.password.GetLength(),
+                  pwshe.password);
+    new_PWHistory += CMyString(buffer);
+    buffer.Empty();
+    m_PWHistList.GetNext(listpos);
+  }
+  m_ci->SetPWHistory(new_PWHistory);
+}
 
 BOOL CEditDlg::OnInitDialog() 
 {
@@ -248,7 +352,7 @@ BOOL CEditDlg::OnInitDialog()
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
 
-  BOOL bpwh_count = (m_pPWHistList->GetCount() == 0) ? FALSE : TRUE;
+  BOOL bpwh_count = (m_PWHistList.GetCount() == 0) ? FALSE : TRUE;
   GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bpwh_count);
   GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
 
@@ -265,14 +369,14 @@ BOOL CEditDlg::OnInitDialog()
   int nPos = 0;
   POSITION itempos;
 
-  POSITION listpos = m_pPWHistList->GetHeadPosition();
+  POSITION listpos = m_PWHistList.GetHeadPosition();
   while (listpos != NULL) {
     itempos = listpos;
-    const PWHistEntry pwhentry = m_pPWHistList->GetAt(listpos);
+    const PWHistEntry pwhentry = m_PWHistList.GetAt(listpos);
     nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
     m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
     m_PWHistListCtrl.SetItemData(nPos, (DWORD)itempos);
-    m_pPWHistList->GetNext(listpos);
+    m_PWHistList.GetNext(listpos);
   }
 
   m_PWHistListCtrl.SetRedraw(FALSE);
@@ -509,7 +613,7 @@ CEditDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
   ASSERT(lpnmitem != NULL);
   int item = lpnmitem->iItem;
   POSITION itempos = POSITION(m_PWHistListCtrl.GetItemData(item));
-  const PWHistEntry pwhentry = m_pPWHistList->GetAt(itempos);
+  const PWHistEntry pwhentry = m_PWHistList.GetAt(itempos);
   app.SetClipboardData(pwhentry.password);
 }
 
@@ -559,8 +663,8 @@ int CALLBACK CEditDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   int nSortColumn = self->m_iSortedColumn;
   POSITION Lpos = (POSITION)lParam1;
   POSITION Rpos = (POSITION)lParam2;
-  const PWHistEntry pLHS = self->m_pPWHistList->GetAt(Lpos);
-  const PWHistEntry pRHS = self->m_pPWHistList->GetAt(Rpos);
+  const PWHistEntry pLHS = self->m_PWHistList.GetAt(Lpos);
+  const PWHistEntry pRHS = self->m_PWHistList.GetAt(Rpos);
   CMyString password1, changedate1;
   CMyString password2, changedate2;
   time_t t1, t2;
