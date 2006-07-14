@@ -216,10 +216,15 @@ DboxMain::setupBars()
 {
 #if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
+
+  statustext[0] = IDS_STATCOMPANY;
+  statustext[1] = IDS_READ_ONLY;
+  statustext[2] = IDS_STAT_NUM_IN_DB;
+
   // Add the status bar
   if (m_statusBar.Create(this))
     {
-      m_statusBar.SetIndicators(statustext, 2);
+      m_statusBar.SetIndicators(statustext, 3);
       // Make a sunken or recessed border around the first pane
       m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
     }             
@@ -650,7 +655,7 @@ DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *)
   if (m_toolbarsSetup == FALSE)
     return;
 
-  m_statusBar.SetIndicators(statustext, 2);	
+  m_statusBar.SetIndicators(statustext, 3);	
   // Make a sunken or recessed border around the first pane
   m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
   UpdateStatusBar();
@@ -662,7 +667,7 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
   if (m_toolbarsSetup == FALSE)
     return;
 
-  m_statusBar.SetIndicators(statustext, 2);
+  m_statusBar.SetIndicators(statustext, 3);
   // Make a sunken or recessed border around the first pane
   m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
   UpdateStatusBar();

@@ -40,7 +40,6 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(COptionsSecurity)
 	DDX_Check(pDX, IDC_CLEARBOARD, m_clearclipboard);
 	DDX_Check(pDX, IDC_LOCKBASE, m_lockdatabase);
-	DDX_Check(pDX, IDC_SAVEMINIMIZE, m_confirmsaveonminimize);
 	DDX_Check(pDX, IDC_CONFIRMCOPY, m_confirmcopy);
 	DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
 	DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
@@ -61,10 +60,7 @@ END_MESSAGE_MAP()
 
 void COptionsSecurity::OnLockbase() 
 {
-  BOOL enable = (((CButton*)GetDlgItem(IDC_LOCKBASE))->GetCheck() == 1) ? TRUE : FALSE;
-  GetDlgItem(IDC_SAVEMINIMIZE)->EnableWindow(enable);
-
-  enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
+  BOOL enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
   GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
   GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
 }
