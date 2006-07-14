@@ -12,6 +12,7 @@
 #include "corelib/PWCharPool.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
+#include "corelib/ItemData.h"
 #include "ExpDTDlg.h"
 
 #if defined(POCKET_PC)
@@ -33,13 +34,31 @@ static char THIS_FILE[] = __FILE__;
   #define HIDE_PASSWORD_TXT	_T("&Hide")
 #endif
 
-CEditDlg::CEditDlg(CWnd* pParent)
+CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
-	m_ascCTime(_T("")), m_ascPMTime(_T("")), m_ascATime(_T("")),
-	m_ascLTime(_T("")), m_ascRMTime(_T("")),
+    m_ci(ci), m_bIsModified(false), m_bPswdModified(false),
+	m_ascLTime(_T("")),
 	m_ClearPWHistory(false), m_iSortedColumn(-1),
     m_bSortAscending(TRUE)
 {
+  ASSERT(ci != NULL);
+  m_group = ci->GetGroup();
+  m_title = ci->GetTitle();
+  m_username = ci->GetUser();
+  m_password = HIDDEN_PASSWORD;
+  m_realpassword = ci->GetPassword();
+  m_URL = ci->GetURL();
+  m_autotype = ci->GetAutoType();
+  m_notes = ci->GetNotes();
+  m_ascCTime = ci->GetCTime();
+  m_ascPMTime = ci->GetPMTime();
+  m_ascATime = ci->GetATime();
+  m_ascRMTime = ci->GetRMTime();
+
+  m_ascLTime = ci->GetLTimeN();
+  if (m_ascLTime.IsEmpty())
+    m_ascLTime = _T("Never");
+
   m_SavePWHistory = PWSprefs::GetInstance()->
     GetPref(PWSprefs::SavePasswordHistory);
 }
@@ -133,6 +152,17 @@ CEditDlg::OnOK()
 {
   UpdateData(TRUE);
 
+  m_bIsModified = (
+                  m_group != m_ci->GetGroup() ||
+                  m_title != m_ci->GetTitle() ||
+                  m_username != m_ci->GetUser() ||
+                  m_notes != m_ci->GetNotes() ||
+                  m_URL != m_ci->GetURL() ||
+                  m_autotype != m_ci->GetAutoType() ||
+                  m_ascLTime != m_oldascLTime ||
+                  m_MaxPWHistory != m_oldMaxPWHistory
+                   );
+  m_bPswdModified = m_realpassword != m_ci->GetPassword();
   //Check that data is valid
   if (m_title.IsEmpty()) {
     AfxMessageBox(_T("This entry must have a title."));
@@ -178,7 +208,15 @@ CEditDlg::OnOK()
     AfxMessageBox(temp);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
-  } else {
+  } else { // Everything OK, update fields
+    m_ci->SetGroup(m_group);
+    m_ci->SetTitle(m_title);
+    m_ci->SetUser(m_username.IsEmpty() ? m_defusername : m_username);
+    m_ci->SetPassword(m_realpassword);
+    m_ci->SetNotes(m_notes);
+    m_ci->SetURL(m_URL);
+    m_ci->SetAutoType(m_autotype);
+
     CDialog::OnOK();
   }
 }

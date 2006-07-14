@@ -257,38 +257,25 @@ DboxMain::OnEdit()
   // Note that Edit is also used for just viewing - don't want to disable
   // viewing in read-only mode
   if (SelItemOk() == TRUE) {
-    PWHistList* pPWHistList;
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     POSITION listpos = Find(di->list_index);
-    pPWHistList = new PWHistList;
 
-    CEditDlg dlg_edit(this);
-    CMyString oldGroup, oldTitle, oldUsername, oldRealPassword, oldURL,
-      oldAutoType, oldNotes, oldLTime;
+    CEditDlg dlg_edit(ci, this);
+    CMyString  oldRealPassword, oldLTime;
     int oldMaxPWHistory;
 
-    oldGroup = dlg_edit.m_group = ci->GetGroup();
-    oldTitle = dlg_edit.m_title = ci->GetTitle();
-    oldUsername = dlg_edit.m_username = ci->GetUser();
-    oldRealPassword = dlg_edit.m_realpassword = ci->GetPassword();
-    oldURL = dlg_edit.m_URL = ci->GetURL();
-    oldAutoType = dlg_edit.m_autotype = ci->GetAutoType();
-    dlg_edit.m_password = HIDDEN_PASSWORD;
-    oldNotes = dlg_edit.m_notes = ci->GetNotes();
+    if (m_core.GetUseDefUser())
+      dlg_edit.m_defusername = m_core.GetDefUsername();
+
+    oldRealPassword = ci->GetPassword();
     dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
     dlg_edit.m_IsReadOnly = m_IsReadOnly;
 	
-    dlg_edit.m_ascCTime = ci->GetCTime();
-    dlg_edit.m_ascPMTime = ci->GetPMTime();
-    dlg_edit.m_ascATime = ci->GetATime();
-    dlg_edit.m_ascLTime = ci->GetLTimeN();
-    if (dlg_edit.m_ascLTime.GetLength() == 0)
-      dlg_edit.m_ascLTime = _T("Never");
     oldLTime = dlg_edit.m_ascLTime;
-    dlg_edit.m_ascRMTime = ci->GetRMTime();
+    PWHistList *pPWHistList = new PWHistList;
     dlg_edit.m_pPWHistList = pPWHistList;
 
     BOOL HasHistory = FALSE;
@@ -303,27 +290,14 @@ DboxMain::OnEdit()
 
     if (rc == IDOK) {
       CMyString temptitle;
-      CMyString user;
-      if (dlg_edit.m_username.IsEmpty() && m_core.GetUseDefUser())
-        user = m_core.GetDefUsername();
-      else
-        user = dlg_edit.m_username;
       time_t t;
       time(&t);
       bool bPswdChanged, bAnotherChanged, bPWHistoryCleared;
       bPswdChanged = bAnotherChanged = bPWHistoryCleared = false;
-      if (oldRealPassword != dlg_edit.m_realpassword)
+      if (dlg_edit.IsPswdModified())
         bPswdChanged = true;
       else {
-      	if (oldGroup != dlg_edit.m_group
-      		|| oldTitle != dlg_edit.m_title
-      		|| oldUsername != user
-      		|| oldNotes != dlg_edit.m_notes
-      		|| oldURL != dlg_edit.m_URL
-      		|| oldAutoType != dlg_edit.m_autotype
-            || oldLTime != dlg_edit.m_ascLTime
-            || oldMaxPWHistory != dlg_edit.m_MaxPWHistory)
-          bAnotherChanged = true;
+        bAnotherChanged = dlg_edit.IsModified();
       }
 
       if (dlg_edit.m_ClearPWHistory == TRUE) {
@@ -398,11 +372,11 @@ DboxMain::OnEdit()
             pPWHistList->GetNext(listpos);
           }
           ci->SetPWHistory(new_PWHistory);
-        }
+        } // save history
 
         ci->SetPMTime(t);
         ci->SetRMTime(t);
-      } else {
+      } else { // password changed
         if (oldMaxPWHistory != dlg_edit.m_MaxPWHistory) {
           CMyString tmp = ci->GetPWHistory();
           if (tmp.GetLength() >= 5) {
@@ -424,13 +398,6 @@ DboxMain::OnEdit()
         return;
       }
 
-      ci->SetGroup(dlg_edit.m_group);
-      ci->SetTitle(dlg_edit.m_title);
-      ci->SetUser(user);
-      ci->SetPassword(dlg_edit.m_realpassword);
-      ci->SetNotes(dlg_edit.m_notes);
-      ci->SetURL(dlg_edit.m_URL);
-      ci->SetAutoType(dlg_edit.m_autotype);
       if (oldLTime != dlg_edit.m_ascLTime)
         ci->SetLTime(dlg_edit.m_tttLTime);
 

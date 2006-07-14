@@ -20,8 +20,8 @@ password needs to be entered twice to verify.
 Bugs fixed in 3.02
 ==================
 [1503123] Exits cleanly from lock with open dialog box.
-[1503075] No longer crashes when number of last databases is set to
-zero.
+[1503075,1520110] No longer crashes when number of last databases is
+set to zero.
 [1507847] Merge databases now merges all the record's fields, thanks
 to n0tig.
 [] Minimum master passphrase length is now 8 characters, and user is
@@ -29,7 +29,7 @@ not offered the option of accepting weak passphrases.
 [1513482] Preferences now saved in the .psafe3 file
 [1504107] No longer saves cleared database
 [1515994] User is now prompted to save database on system shutdown
-[1519227] Password expires date set wrong
+[1519227] Password expires date was set wrong
 [1519850] Double-click tree
 
 New Features for 3.01
