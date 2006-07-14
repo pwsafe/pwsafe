@@ -16,6 +16,7 @@
 #define IDS_STATCOPY                    106
 #define IDS_ALWAYSONTOP                 107
 #define IDS_STAT_NUM_IN_DB              108
+#define IDS_READ_ONLY                   109
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128
 #define IDD_KEYCHANGE_DIALOG            131
@@ -91,7 +92,6 @@
 #define IDC_OPEN                        1027
 #define IDC_RANDOM                      1028
 #define IDC_LOCKBASE                    1029
-#define IDC_SAVEMINIMIZE                1030
 #define IDC_DEFPWSHOW                   1031
 #define IDC_DEFPWSHOWINEDIT             1031
 #define IDC_USEDEFUSER                  1032

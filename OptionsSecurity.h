@@ -24,7 +24,6 @@ public:
 	enum { IDD = IDD_PS_SECURITY };
 	BOOL	m_clearclipboard;
 	BOOL	m_lockdatabase;
-	BOOL	m_confirmsaveonminimize;
 	BOOL	m_confirmcopy;
 	BOOL	m_LockOnWindowLock;
 	BOOL	m_LockOnIdleTimeout;

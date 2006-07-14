@@ -125,6 +125,7 @@ protected:
   CStatusBar m_statusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
+  UINT statustext[3];
 #endif
 
   bool m_windowok;

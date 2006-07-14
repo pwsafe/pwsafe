@@ -208,8 +208,6 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
   security.m_lockdatabase = prefs->
     GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
-  security.m_confirmsaveonminimize = prefs->
-    GetPref(PWSprefs::DontAskSaveMinimize) ? FALSE : TRUE;
   security.m_confirmcopy = prefs->
     GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
   security.m_LockOnWindowLock = prefs->
@@ -302,8 +300,6 @@ DboxMain::OnOptions()
                      security.m_clearclipboard == TRUE);
       prefs->SetPref(PWSprefs::DatabaseClear,
                      security.m_lockdatabase == TRUE);
-      prefs->SetPref(PWSprefs::DontAskSaveMinimize,
-                     security.m_confirmsaveonminimize == FALSE);
       prefs->SetPref(PWSprefs::DontAskQuestion,
                      security.m_confirmcopy == FALSE);
       prefs->SetPref(PWSprefs::LockOnWindowLock,
@@ -357,15 +353,18 @@ DboxMain::OnOptions()
 
       /* Update status bar */
       switch (misc.m_doubleclickaction) {
-      case PWSprefs::DoubleClickCopy: statustext[0] = IDS_STATCOPY; break;
-      case PWSprefs::DoubleClickEdit: statustext[0] = IDS_STATEDIT; break;
-      case PWSprefs::DoubleClickAutoType: statustext[0] = IDS_STATAUTOTYPE; break;
-      case PWSprefs::DoubleClickBrowse: statustext[0] = IDS_STATBROWSE; break;
-      default: ASSERT(0);
+      	case PWSprefs::DoubleClickCopy: statustext[0] = IDS_STATCOPY; break;
+      	case PWSprefs::DoubleClickEdit: statustext[0] = IDS_STATEDIT; break;
+      	case PWSprefs::DoubleClickAutoType: statustext[0] = IDS_STATAUTOTYPE; break;
+      	case PWSprefs::DoubleClickBrowse: statustext[0] = IDS_STATBROWSE; break;
+      	default: ASSERT(0);
       }
       // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
-      m_statusBar.SetIndicators(statustext, 2);
+      m_statusBar.SetIndicators(statustext, 3);
+	  UpdateStatusBar();
+	  // Make a sunken or recessed border around the first pane
+      m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
 #endif
       /*
       ** Update string in database, if necessary & possible

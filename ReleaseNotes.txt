@@ -1,5 +1,5 @@
-Password Safe 3.02 Release Note - Julye 2006
-============================================
+Password Safe 3.02 Release Note - July 2006
+===========================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.02. For a short description of Password
@@ -10,12 +10,20 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.02
 =====================
-[] Password history can now be saved for selected entries
-[] Export/import to/from XML supported
-[] Selective text export
+[] Export/import to/from XML supported.
+[] Selective text export.
+[705515,1120236,1487001] Password history can now be saved for selected
+entries.
 [1516674] Ability to hide password during Add & Edit entry. If hidden,
 password needs to be entered twice to verify.
-[1506320] Count of passwords stored in DB on status bar
+[1506320] Count of passwords stored in DB on status bar. Also indication
+of read/only status.
+
+Changes to Existing Features in 3.02
+====================================
+[] Minimum master passphrase length is now 8 characters, and user is
+not offered the option of accepting weak passphrases.
+[] "Save on minimize" option removed
 
 Bugs fixed in 3.02
 ==================
@@ -24,13 +32,12 @@ Bugs fixed in 3.02
 set to zero.
 [1507847] Merge databases now merges all the record's fields, thanks
 to n0tig.
-[] Minimum master passphrase length is now 8 characters, and user is
-not offered the option of accepting weak passphrases.
 [1513482] Preferences now saved in the .psafe3 file
 [1504107] No longer saves cleared database
 [1515994] User is now prompted to save database on system shutdown
 [1519227] Password expires date was set wrong
-[1519850] Double-click tree
+[1519850] Double-click on group entry in tree did not expand/collapse
+group
 
 New Features for 3.01
 =====================
