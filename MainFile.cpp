@@ -272,9 +272,6 @@ DboxMain::Open( const CMyString &pszFilename )
     m_core.UnlockFile(m_core.GetCurFile());
   }
 
-  // clear the data before loading the new file
-  ClearData();
-
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   switch (rc) {
   case PWScore::SUCCESS:
@@ -299,6 +296,9 @@ DboxMain::Open( const CMyString &pszFilename )
     ASSERT(0); // we should take care of all cases explicitly
     return PWScore::USER_CANCEL; // conservative behaviour for release version
   }
+
+  // clear the data before loading the new file
+  ClearData();
 
   temp = pszFilename;
   rc = m_core.ReadFile(pszFilename, passkey);

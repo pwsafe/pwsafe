@@ -39,6 +39,7 @@ to n0tig.
 [1519850] Double-click on group entry in tree did not expand/collapse
 group
 [1520562] Single entry not displayed in Nested Tree Mode
+[] Tree not refreshed if user decides not to open another DB
 
 New Features for 3.01
 =====================
