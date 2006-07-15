@@ -728,10 +728,11 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     time_t now, tLTime;
     time(&now);
     itemData.GetLTime(tLTime);
-    if (tLTime != 0 && tLTime < now)
+	if (tLTime != 0 && tLTime < now) {
     	m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
-    else    
-    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+	} else {
+		m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+	}
     m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     di->tree_item = ti;
   }

@@ -113,6 +113,10 @@ DboxMain::OnAdd()
     int newpos = insertItem(m_core.GetTailEntry());
     SelectEntry(newpos);
     FixListIndexes();
+	if (m_core.GetNumEntries() == 1) {
+		// For some reason, when adding the first entry, it is not visible!
+		m_ctlItemTree.SetRedraw(TRUE);
+	}
     m_ctlItemList.SetFocus();
     if (prefs->GetPref(PWSprefs::SaveImmediately))
         Save();
