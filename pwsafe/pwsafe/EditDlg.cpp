@@ -36,7 +36,7 @@ static char THIS_FILE[] = __FILE__;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
-    m_ci(ci), m_bIsModified(false), m_bPswdModified(false),
+    m_ci(ci), m_bIsModified(false),
 	m_ascLTime(_T("")), m_oldascLTime(_T("")),
 	m_ClearPWHistory(false), m_iSortedColumn(-1),
     m_bSortAscending(TRUE)
@@ -58,6 +58,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ascLTime = ci->GetLTimeN();
   if (m_ascLTime.IsEmpty())
     m_ascLTime = _T("Never");
+  m_oldascLTime = m_ascLTime;
 
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
@@ -157,6 +158,7 @@ void
 CEditDlg::OnOK() 
 {
   UpdateData(TRUE);
+  m_realpassword = m_password;
 
   m_bIsModified = (
                    m_group != m_ci->GetGroup() ||
@@ -168,7 +170,8 @@ CEditDlg::OnOK()
                    m_ascLTime != m_oldascLTime ||
                    m_MaxPWHistory != m_oldMaxPWHistory
                    );
-  m_bPswdModified = m_realpassword != m_oldRealPassword;
+
+  bool IsPswdModified = m_realpassword != m_oldRealPassword;
   //Check that data is valid
   if (m_title.IsEmpty()) {
     AfxMessageBox(_T("This entry must have a title."));
@@ -193,7 +196,6 @@ CEditDlg::OnOK()
   }
   //End check
 
-  m_realpassword = m_password;
 
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
@@ -260,13 +262,12 @@ CEditDlg::OnOK()
 
     time_t t;
     time(&t);
-    if (m_bPswdModified) {
+    if (IsPswdModified) {
       if (m_SavePWHistory)
         UpdateHistory();
       m_ci->SetPMTime(t);
-      m_ci->SetRMTime(t);
     }
-    if (m_bIsModified)
+    if (m_bIsModified || IsPswdModified)
       m_ci->SetRMTime(t);
     if (m_oldascLTime != m_ascLTime)
       m_ci->SetLTime(m_tttLTime);

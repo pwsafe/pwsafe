@@ -39,7 +39,7 @@ private:
   time_t m_tttLTime;
   int m_MaxPWHistory;
   int m_NumPWHistory;
-  bool m_bIsModified, m_bPswdModified;
+  bool m_bIsModified;
   bool m_ClearPWHistory;
   BOOL m_SavePWHistory;
   int m_iSortedColumn;
