@@ -38,6 +38,7 @@ to n0tig.
 [1519227] Password expires date was set wrong
 [1519850] Double-click on group entry in tree did not expand/collapse
 group
+[1520562] Single entry not displayed in Nested Tree Mode
 
 New Features for 3.01
 =====================
