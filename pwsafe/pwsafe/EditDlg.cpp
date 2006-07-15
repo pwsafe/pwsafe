@@ -66,8 +66,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
                           &m_PWHistList, EXPORT_IMPORT);
   m_oldMaxPWHistory = m_MaxPWHistory;
 
-  m_SavePWHistory = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::SavePasswordHistory);
+  CMyString HistStr = ci->GetPWHistory();
+  m_SavePWHistory = (HistStr[0] != '0') ? TRUE : FALSE;
 }
 
 CEditDlg::~CEditDlg()
@@ -225,40 +225,46 @@ CEditDlg::OnOK()
     m_ci->SetURL(m_URL);
     m_ci->SetAutoType(m_autotype);
 
-    bool bHasHistory = m_PWHistList.GetCount() > 0;
-    bool bPWHistoryCleared = false;
+    /* Handle history header.
+     * Header is in the form fmmnn, where:
+     * f = {0,1} if password history is on/off
+     * mm = 2 digits max size of history list
+     * nn = 2 digits current size of history list
+     *
+     * Special case: history empty and password history off - do nothing
+     */
+
+    CMyString HistStr = m_ci->GetPWHistory();
+
     if (m_ClearPWHistory == TRUE) {
       m_PWHistList.RemoveAll();
-      char buffer[6];
+      HistStr = HistStr.Left(5);
+    }
+
+    if (!(HistStr.IsEmpty() && m_SavePWHistory == FALSE)) {
+      TCHAR buffer[6];
 #if _MSC_VER >= 1400
-      sprintf_s(buffer, 6, "0%02x00", m_MaxPWHistory);
+      sprintf_s
 #else
-      sprintf(buffer, "0%02x00", m_MaxPWHistory);
+        sprintf
 #endif
-      m_ci->SetPWHistory(buffer);
-      bPWHistoryCleared = true;
+        (buffer,
+#if _MSC_VER >= 1400
+         6,
+#endif
+         "%1x%02x%02x",
+         (m_SavePWHistory == FALSE) ? 0 : 1,
+         m_MaxPWHistory,
+         m_PWHistList.GetCount()
+         );
+      if (HistStr.GetLength() >= 5) {
+        for (int i = 0; i < 5; i++) HistStr.SetAt(i, buffer[i]);
+      } else {
+        HistStr = buffer;
+      }
     }
+    m_ci->SetPWHistory(HistStr);
 
-    if (bHasHistory && m_SavePWHistory == FALSE) {
-      CMyString tmp = m_ci->GetPWHistory();
-      if (tmp.GetLength() >= 5)
-        tmp.SetAt(0, '0');	// Turn it off!
-      else
-        tmp = _T("");
-      m_ci->SetPWHistory(tmp);
-    }
-
-    // Adjust history length if changed
-    if (m_oldMaxPWHistory != m_MaxPWHistory) {
-      CMyString tmp = m_ci->GetPWHistory();
-      if (tmp.GetLength() >= 5) {
-        CString buffer;
-        buffer.Format(_T("%02x"), m_MaxPWHistory);
-        tmp = tmp.Left(1) + CMyString(buffer) + tmp.Mid(3);
-      } else
-        tmp = _T("");
-      m_ci->SetPWHistory(tmp);
-    }
 
     time_t t;
     time(&t);
