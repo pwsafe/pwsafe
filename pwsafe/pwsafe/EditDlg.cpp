@@ -34,6 +34,8 @@ static char THIS_FILE[] = __FILE__;
   #define HIDE_PASSWORD_TXT	_T("&Hide")
 #endif
 
+static TCHAR PSSWDCHAR = TCHAR('*');
+
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
     m_ci(ci), m_bIsModified(false),
@@ -45,7 +47,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_group = ci->GetGroup();
   m_title = ci->GetTitle();
   m_username = ci->GetUser();
-  m_password = HIDDEN_PASSWORD;
+  m_password = m_password2 = HIDDEN_PASSWORD;
   m_realpassword = m_oldRealPassword = ci->GetPassword();
   m_URL = ci->GetURL();
   m_autotype = ci->GetAutoType();
@@ -139,14 +141,7 @@ void CEditDlg::OnShowpassword()
   UpdateData(TRUE);
 
   if (m_isPwHidden) {
-    if (m_password.Compare(m_password2) != 0) {
-      AfxMessageBox(_T("The entered passwords do not match.  Please re-enter them."));
-      m_password.Empty();
-      m_password2.Empty();
-      UpdateData(FALSE);
-      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
-    } else
-      ShowPassword();
+    ShowPassword();
   } else {
     HidePassword();
   }
@@ -235,6 +230,7 @@ CEditDlg::OnOK()
      */
 
     CMyString HistStr = m_ci->GetPWHistory();
+    const CMyString oldHistStr = HistStr;
 
     if (m_ClearPWHistory == TRUE) {
       m_PWHistList.RemoveAll();
@@ -265,6 +261,7 @@ CEditDlg::OnOK()
     }
     m_ci->SetPWHistory(HistStr);
 
+    m_bIsModified |= (HistStr != oldHistStr);
 
     time_t t;
     time(&t);
@@ -346,8 +343,8 @@ BOOL CEditDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
-  // Get password character for later
-  m_passwordchar = ((CEdit*)GetDlgItem(IDC_PASSWORD))->GetPasswordChar();
+
+  ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
@@ -422,25 +419,27 @@ BOOL CEditDlg::OnInitDialog()
 
 void CEditDlg::ShowPassword()
 {
-  m_password = m_password2 = m_realpassword;
   m_isPwHidden = false;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
+
+  m_password = m_realpassword;
   // Remove password character so that the password is displayed
   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
   ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
   // Don't need verification as the user can see the password entered
-  GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
   m_password2.Empty();
+  GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
 }
 
 
 void CEditDlg::HidePassword()
 {
-  m_password = m_password2 = m_realpassword;
   m_isPwHidden = true;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
+
+  m_password = m_password2 = HIDDEN_PASSWORD;
   // Set password character so that the password is not displayed
-  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(m_passwordchar);
+  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(PSSWDCHAR);
   ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
   // Need verification as the user can not see the password entered
   GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
