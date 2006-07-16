@@ -121,9 +121,9 @@ ON_BN_CLICKED(ID_HELP, OnHelp)
 ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 #if defined(POCKET_PC)
 ON_WM_SHOWWINDOW()
+#endif
 ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
 ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
-#endif
 ON_BN_CLICKED(IDOK, OnBnClickedOk)
 ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
 ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
@@ -451,8 +451,9 @@ void CEditDlg::OnRandom()
   DboxMain* pParent = (DboxMain*)GetParent();
   ASSERT(pParent != NULL);
   UpdateData(TRUE);
-  if (pParent->MakeRandomPassword(this, m_realpassword)) {
-    m_password = m_password2 = m_realpassword;
+  if (pParent->MakeRandomPassword(this, m_realpassword) &&
+      !m_isPwHidden) {
+    m_password = m_realpassword;
     UpdateData(FALSE);
   }
 }
@@ -472,26 +473,29 @@ void CEditDlg::OnHelp()
 }
 
 
+void CEditDlg::OnPasskeyKillfocus()
+{
 #if defined(POCKET_PC)
 /************************************************************************/
 /* Restore the state of word completion when the password field loses   */
 /* focus.                                                               */
 /************************************************************************/
-void CEditDlg::OnPasskeyKillfocus()
-{
   EnableWordCompletion( m_hWnd );
+#endif
 }
 
 
+void CEditDlg::OnPasskeySetfocus()
+{
+  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetSel(0, -1);
+#if defined(POCKET_PC)
 /************************************************************************/
 /* When the password field is activated, pull up the SIP and disable    */
 /* word completion.                                                     */
 /************************************************************************/
-void CEditDlg::OnPasskeySetfocus()
-{
   DisableWordCompletion( m_hWnd );
-}
 #endif
+}
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
