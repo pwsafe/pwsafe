@@ -21,7 +21,6 @@ public:
   bool m_IsReadOnly;
   void  ShowPassword();
   void  HidePassword();
-  bool IsModified() const {return m_bIsModified;}
 
 private:
   CListCtrl m_PWHistListCtrl;
@@ -44,7 +43,6 @@ private:
   BOOL m_SavePWHistory;
   int m_iSortedColumn;
   BOOL m_bSortAscending;
-  TCHAR m_passwordchar;
   bool m_isPwHidden;
   // Are we showing more or less details?
   bool m_isExpanded;
