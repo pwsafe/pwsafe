@@ -23,8 +23,6 @@ public:
   void  HidePassword();
 
 private:
-  CListCtrl m_PWHistListCtrl;
-  PWHistList m_PWHistList;
   CItemData *m_ci; // The entry being edited
   CMyString m_title;
   CMyString m_group;
@@ -36,13 +34,14 @@ private:
   CMyString m_ascCTime;
   CMyString m_ascPMTime, m_ascATime, m_ascLTime, m_ascRMTime;
   time_t m_tttLTime;
-  int m_MaxPWHistory;
-  int m_NumPWHistory;
   bool m_bIsModified;
+  // Password History related stuff
+  int m_NumPWHistory;
+  int m_MaxPWHistory;
   bool m_ClearPWHistory;
   BOOL m_SavePWHistory;
-  int m_iSortedColumn;
-  BOOL m_bSortAscending;
+  PWHistList m_PWHistList;
+
   bool m_isPwHidden;
   // Are we showing more or less details?
   bool m_isExpanded;
@@ -57,7 +56,6 @@ protected:
 
   afx_msg void OnShowpassword();
   virtual void OnOK();
-  virtual void OnCancel();
   virtual BOOL OnInitDialog();
   afx_msg void OnRandom();
   afx_msg void OnHelp();
@@ -69,16 +67,10 @@ protected:
   afx_msg void OnBnClickedMore();
   afx_msg void OnBnClickedClearLTime();
   afx_msg void OnBnClickedSetLTime();
-  afx_msg void OnBnClickedShowPasswordHistory();
-  afx_msg void OnCheckedSavePasswordHistory();
-  afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnHistListClick(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnBnClickedClearPWHist();
+  afx_msg void OnBnClickedPwhist();
 
   CButton m_MoreLessBtn;
 
-private:
-  static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 };
 //-----------------------------------------------------------------------------
 // Local variables:
