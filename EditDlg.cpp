@@ -48,8 +48,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
                           m_NumPWHistory, 
                           &m_PWHistList, EXPORT_IMPORT);
-  const CMyString HistStr = ci->GetPWHistory();
-  m_SavePWHistory = (HistStr[0] != '0') ? TRUE : FALSE;
+  m_SavePWHistory = HasHistory;
 
   m_group = ci->GetGroup();
   m_title = ci->GetTitle();
