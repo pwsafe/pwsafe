@@ -71,6 +71,7 @@
 #define IDD_IMPORT_XML                  228
 #define IDD_IMPORT_XML_ERRORS           229
 #define IDD_EXPORT_TEXTX                230
+#define IDD_DLG_PWHIST                  231
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -243,6 +244,9 @@
 #define IDC_EXPORTX_SUBGROUP_FUNCTION   1193
 #define IDC_EXPORTX_SUBGROUP_OBJECT     1194
 #define IDC_EXPORTX_SUBGROUP_CASE       1195
+#define IDC_PWH_COPY_ALL                1196
+#define IDC_BUTTON1                     1197
+#define IDC_PWHIST                      1197
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -336,9 +340,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        231
+#define _APS_NEXT_RESOURCE_VALUE        232
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1196
+#define _APS_NEXT_CONTROL_VALUE         1198
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

@@ -1,0 +1,267 @@
+// PWHistDlg.cpp : implementation file
+//
+
+#include "stdafx.h"
+
+#include "PasswordSafe.h"
+#include "ThisMfcApp.h"
+#include "resource.h"
+#include "PWHistDlg.h"
+#include "corelib/ItemData.h"
+#include ".\pwhistdlg.h"
+
+
+// CPWHistDlg dialog
+
+IMPLEMENT_DYNAMIC(CPWHistDlg, CDialog)
+CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
+             CMyString &HistStr, PWHistList &PWHistList,
+             int NumPWHistory, int &MaxPWHistory,
+             BOOL &SavePWHistory)
+: CDialog(CPWHistDlg::IDD, pParent),
+  m_IsReadOnly(IsReadOnly),
+  m_HistStr(HistStr), m_PWHistList(PWHistList),
+  m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
+  m_SavePWHistory(SavePWHistory),
+  m_ClearPWHistory(false),
+  m_iSortedColumn(-1), m_bSortAscending(TRUE)
+{
+  m_oldMaxPWHistory = m_MaxPWHistory;
+}
+
+CPWHistDlg::~CPWHistDlg()
+{
+}
+
+void CPWHistDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+  DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
+  DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
+  DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
+  DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 25);
+}
+
+
+BEGIN_MESSAGE_MAP(CPWHistDlg, CDialog)
+ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnBnClickedClearPWHist)
+ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
+ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
+ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+ON_NOTIFY(NM_CLICK, IDC_PWHISTORY_LIST, OnHistListClick)
+ON_BN_CLICKED(IDC_PWH_COPY_ALL, OnBnClickedPwhCopyAll)
+END_MESSAGE_MAP()
+
+BOOL CPWHistDlg::OnInitDialog() 
+{
+  CDialog::OnInitDialog();
+
+  GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
+
+  BOOL bpwh_count = (m_PWHistList.GetCount() == 0) ? FALSE : TRUE;
+  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bpwh_count);
+  GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
+
+  if (m_IsReadOnly) {
+    GetDlgItem(IDOK)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);  // overrides count
+  }
+
+  m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+  m_PWHistListCtrl.InsertColumn(0, _T("Set Date/Time"));
+  m_PWHistListCtrl.InsertColumn(1, _T("Password"));
+
+  int nPos = 0;
+  POSITION itempos;
+
+  POSITION listpos = m_PWHistList.GetHeadPosition();
+  while (listpos != NULL) {
+    itempos = listpos;
+    const PWHistEntry pwhentry = m_PWHistList.GetAt(listpos);
+    nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
+    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
+    m_PWHistListCtrl.SetItemData(nPos, (DWORD)itempos);
+    m_PWHistList.GetNext(listpos);
+  }
+
+  m_PWHistListCtrl.SetRedraw(FALSE);
+  for (int i = 0; i < 2; i++) {
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
+    int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+    int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+  }
+  m_PWHistListCtrl.SetRedraw(TRUE);
+
+  char buffer[10];
+#if _MSC_VER >= 1400
+  sprintf_s(buffer, 10, "%d", m_NumPWHistory);
+#else
+  sprintf(buffer, "%d", m_NumPWHistory);
+#endif
+
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+
+  if (m_MaxPWHistory == 0)
+  	m_MaxPWHistory = 1;
+
+  pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
+  pspin->SetRange(1, 25);
+  pspin->SetBase(10);
+  pspin->SetPos(m_MaxPWHistory);
+ 
+  return TRUE;
+}
+
+
+// CPWHistDlg message handlers
+void CPWHistDlg::OnBnClickedClearPWHist()
+{
+  m_ClearPWHistory = true;
+  m_PWHistListCtrl.DeleteAllItems();
+}
+
+void
+CPWHistDlg::OnOK() 
+{
+  UpdateData(TRUE);
+  /* Handle history header.
+   * Header is in the form fmmnn, where:
+   * f = {0,1} if password history is on/off
+   * mm = 2 digits max size of history list
+   * nn = 2 digits current size of history list
+   *
+   * Special case: history empty and password history off - do nothing
+   */
+
+  const CMyString oldHistStr = m_HistStr;
+
+  if (m_ClearPWHistory == TRUE) {
+    m_PWHistList.RemoveAll();
+    m_HistStr = m_HistStr.Left(5);
+  }
+
+  if (!(m_HistStr.IsEmpty() && m_SavePWHistory == FALSE)) {
+    TCHAR buffer[6];
+#if _MSC_VER >= 1400
+    sprintf_s
+#else
+      sprintf
+#endif
+      (buffer,
+#if _MSC_VER >= 1400
+       6,
+#endif
+       "%1x%02x%02x",
+       (m_SavePWHistory == FALSE) ? 0 : 1,
+       m_MaxPWHistory,
+       m_PWHistList.GetCount()
+       );
+    if (m_HistStr.GetLength() >= 5) {
+      for (int i = 0; i < 5; i++) m_HistStr.SetAt(i, buffer[i]);
+    } else {
+      m_HistStr = buffer;
+    }
+  }
+  CDialog::OnOK();
+}
+
+void
+CPWHistDlg::OnCheckedSavePasswordHistory()
+{
+  m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
+  GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
+}
+
+void
+CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
+{
+  LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNMHDR;
+  ASSERT(lpnmitem != NULL);
+  int item = lpnmitem->iItem;
+  POSITION itempos = POSITION(m_PWHistListCtrl.GetItemData(item));
+  const PWHistEntry pwhentry = m_PWHistList.GetAt(itempos);
+  app.SetClipboardData(pwhentry.password);
+}
+
+void
+CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
+{
+  HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+
+  if(phdn->iButton == 0) {
+    // User clicked on header using left mouse button
+    if(phdn->iItem == m_iSortedColumn)
+      m_bSortAscending = !m_bSortAscending;
+    else
+      m_bSortAscending = TRUE;
+
+    m_iSortedColumn = phdn->iItem;
+    m_PWHistListCtrl.SortItems(CompareFunc, (LPARAM)this);
+
+    // Note: WINVER defines the minimum system level for which this is program compiled and
+    // NOT the level of system it is running on!
+    // In this case, these values are defined in Windows XP and later and supported
+    // by V6 of comctl32.dll (supplied with Windows XP) and later.
+    // They should be ignored by earlier levels of this dll or .....
+    //     we can check the dll version (code available on request)!
+
+#if (WINVER < 0x0501)	// These are already defined for WinXP and later
+#define HDF_SORTUP 0x0400
+#define HDF_SORTDOWN 0x0200
+#endif
+    HDITEM HeaderItem;
+    HeaderItem.mask = HDI_FORMAT;
+    m_PWHistListCtrl.GetHeaderCtrl()->GetItem(m_iSortedColumn, &HeaderItem);
+    // Turn off all arrows
+    HeaderItem.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
+    // Turn on the correct arrow
+    HeaderItem.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
+    m_PWHistListCtrl.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
+  }
+
+  *pResult = 0;
+}
+
+int CALLBACK CPWHistDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
+                                     LPARAM closure)
+{
+  CPWHistDlg *self = (CPWHistDlg*)closure;
+  int nSortColumn = self->m_iSortedColumn;
+  POSITION Lpos = (POSITION)lParam1;
+  POSITION Rpos = (POSITION)lParam2;
+  const PWHistEntry pLHS = self->m_PWHistList.GetAt(Lpos);
+  const PWHistEntry pRHS = self->m_PWHistList.GetAt(Rpos);
+  CMyString password1, changedate1;
+  CMyString password2, changedate2;
+  time_t t1, t2;
+
+  int iResult;
+  switch(nSortColumn) {
+  case 0:
+    t1 = pLHS.changetttdate;
+    t2 = pRHS.changetttdate;
+    iResult = ((long) t1 < (long) t2) ? -1 : 1;
+    break;
+  case 1:
+    password1 = pLHS.password;
+    password2 = pRHS.password;
+    iResult = ((CString)password1).Compare(password2);
+    break;
+  default:
+    iResult = 0; // should never happen - just keep compiler happy
+    ASSERT(FALSE);
+  }
+
+  if (!self->m_bSortAscending)
+    iResult *= -1;
+
+  return iResult;
+}
+
+void CPWHistDlg::OnBnClickedPwhCopyAll()
+{
+    // TODO: Add your control notification handler code here
+}

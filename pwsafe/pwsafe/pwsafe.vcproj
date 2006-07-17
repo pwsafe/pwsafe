@@ -672,6 +672,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\PWHistDlg.cpp">
+			</File>
+			<File
 				RelativePath="QueryAddName.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -926,6 +929,9 @@
 			</File>
 			<File
 				RelativePath="PwFont.h">
+			</File>
+			<File
+				RelativePath=".\PWHistDlg.h">
 			</File>
 			<File
 				RelativePath="PwsBackend.h">
