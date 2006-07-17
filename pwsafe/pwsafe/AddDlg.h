@@ -35,7 +35,6 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 private:
-  TCHAR m_passwordchar;
   bool m_isPwHidden;
   // Are we showing more or less details?
   bool m_isExpanded;

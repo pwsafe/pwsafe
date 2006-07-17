@@ -27,6 +27,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 const int MAX_PW_HISTORY = 25;
+static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
@@ -49,8 +50,7 @@ BOOL CAddDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
-  // Get password character for later
-  m_passwordchar = ((CEdit*)GetDlgItem(IDC_PASSWORD))->GetPasswordChar();
+  ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
@@ -158,7 +158,7 @@ CAddDlg::HidePassword()
    m_isPwHidden = true;
    GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
    // Set password character so that the password is not displayed
-   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(m_passwordchar);
+   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(PSSWDCHAR);
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
    // Need verification as the user can not see the password entered
    GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
