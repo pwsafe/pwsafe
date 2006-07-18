@@ -143,7 +143,8 @@ void
 CEditDlg::OnOK() 
 {
   UpdateData(TRUE);
-  m_realpassword = m_password;
+  if (m_password != HIDDEN_PASSWORD)
+    m_realpassword = m_password;
 
   m_bIsModified |= (
                    m_group != m_ci->GetGroup() ||

@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.01
+RELEASENAME = 3.02
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -31,7 +31,8 @@ FTP_PUT = /usr/bin/ncftpput -v upload.sourceforge.net incoming
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 
 BIN_MANIFEST = README.txt ReleaseNotes.txt LICENSE \
-	ChangeLog.txt Release/pwsafe.exe pwsafe.chm
+    xml/pwsafe.xsd xml/pwsafe.xsl \
+	ChangeLog.txt Release/pwsafe.exe html/pwsafe.chm
 
 REDISTS = ../../redist/mfc71.dll ../../redist/msvcp71.dll \
         ../../redist/msvcr71.dll
