@@ -41,6 +41,7 @@ private:
   bool m_ClearPWHistory;
   BOOL m_SavePWHistory;
   PWHistList m_PWHistList;
+  CMyString m_PWHistory;
 
   bool m_isPwHidden;
   // Are we showing more or less details?
