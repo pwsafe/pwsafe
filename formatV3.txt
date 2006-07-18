@@ -1,5 +1,3 @@
-$Id$
-
 1. Introduction: The format described below has the following goals:
 a. To fix a minor design flaw in previous versions of the PasswordSafe
 database format.
@@ -117,7 +115,8 @@ representation.
    Last Mod. time     0x0c		time_t		Y	[7]
    URL                0x0d      Text		Y	[8]
    Autotype           0x0e      Text        Y   [9]
-   End of Entry       0xff		[empty]		Y	[10]
+   Password History   0x0f      Text        Y   [10]
+   End of Entry       0xff		[empty]		Y	[11]
 
 [1] A universally unique identifier is needed in order to synchronize
 databases, i.e., between a handheld pocketPC device and a PC. The UUID data
@@ -166,38 +165,24 @@ e.g, '%p' is replaced by the record's password. See the user documentation
 for the complete list of codes. The replacement is done by the application
 at runtime, and is not stored in the database.
 
-[10] An explicit end of entry field is useful for supporting new fields
+[10] Pasword History is an optional record. If it exists, it stores
+the creation times and values of the last few passwords used in the
+current entry, in the following format:
+"fmmnnTLPTLP...TLP"
+Where:
+ f  = {0,1} if password history is on/off
+ mm = 2 digits max size of history list
+ nn = 2 digits current size of history list
+ T  = Time password was set
+ L  = 4 digit password length (in TCHAR)
+ P  = Password
+No history being kept for a record can be represented either by the
+lack of the PWH field (preferred), or by a header of _T("00000"): 
+ flag = 0, max = 00, num = 00 
+Note that 0aabb where bb <= aa is possible if password history was
+enabled in the past  but has been disabled and the history hasn't been cleared.
+
+[11] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 End of Format description.
-
-$Log$
-Revision 1.9  2006/02/20 19:38:16  ronys
-Parametrized number of iterations of key-stretching algorithm, notless than 2048, per Frank Pilhofer's suggestion
-
-Revision 1.8  2006/02/03 06:19:45  ronys
-Utilize 16 byte length block more efficiently - saves a LOT of disk space!
-
-Revision 1.7  2006/01/24 20:57:49  ronys
-oops
-
-Revision 1.6  2006/01/22 19:24:40  ronys
-- Merged with Dave Collin's work.
-- [1412208] Fixed tab order in opening dialog
-- More work on formatV3
-
-Revision 1.5  2006/01/18 20:48:49  ronys
-Revised after more comments from dev list.
-
-Revision 1.4  2006/01/05 15:39:59  ronys
-Writes 3.0 header. Default suffix now pwsafe3. "Officially" v3.0BETA1...
-
-Revision 1.3  2005/12/17 10:26:35  ronys
-Started work on V3 header, still unhappy about OO/SE aspects - need to refactor a bit
-
-Revision 1.2  2005/12/10 10:34:08  ronys
-Ammended after comments from dev list.
-
-Revision 1.1  2005/12/04 11:05:08  ronys
-Checked in first draft
-

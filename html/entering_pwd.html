@@ -47,7 +47,7 @@ In addition, the following fields may be used (viewable by pressing the
 
   <li><span style="font-weight: bold;">URL</span>:
 The URL associated
-with the entry. If this fieldis not empty, then the "Browse To" option
+with the entry. If this field is not empty, then the "Browse To" option
 is enabled. If the protocol is not specified, then "http://" is assumed
 (e.g., "www.foo.net" is the same as "http://www.foo.net").</li>
 
@@ -68,7 +68,12 @@ Expires On:</span> If set, <span style="font-weight: bold;">Password
 Safe</span>
 will warn when an entry is expired when the application is started. In
 addition, expired entries are indicated in the tree view by a different
-color.</li>
+color.<br>
+
+    <span style="font-weight: bold;">Note: Password Safe </span>will
+    <span style="font-style: italic;">only </span>warn
+the user when passwords have expired. It is the user's responsibility
+to change the password.</li>
 
 </ul>
 
@@ -172,7 +177,14 @@ from the drop down list</li>
 can be "nested," placing a group name within/under another group name.<br>
 
 </small>
-<hr> </div>
+<hr>
+<h3>Password History</h3>
+
+It is possible to configure <b>Password Safe</b> to save the last few passwords of an entry. This can be done either when the entry is created,
+or when viewing an existing entry. To view the recent passwords associated with the entry, or to change the number of
+recent passwords that are kept, click on the "Password History..." button. This will invoke the <a href="password_history.html">Password History</a>
+dialog box.
+ </div>
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>

@@ -263,5 +263,15 @@ int CALLBACK CPWHistDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 
 void CPWHistDlg::OnBnClickedPwhCopyAll()
 {
-    // TODO: Add your control notification handler code here
+  CMyString HistStr;
+  POSITION pos = m_PWHistList.GetHeadPosition();
+
+  while (pos != NULL) {
+    const PWHistEntry &ent = m_PWHistList.GetNext(pos);
+    HistStr += ent.changedate;
+    HistStr += _T("\t");
+    HistStr += ent.password;
+    HistStr += _T("\r\n");
+  }
+  app.SetClipboardData(HistStr);
 }
