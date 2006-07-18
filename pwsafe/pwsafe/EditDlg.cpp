@@ -58,6 +58,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_URL = ci->GetURL();
   m_autotype = ci->GetAutoType();
   m_notes = ci->GetNotes();
+  m_PWHistory = ci->GetPWHistory();
   m_ascCTime = ci->GetCTime();
   m_ascPMTime = ci->GetPMTime();
   m_ascATime = ci->GetATime();
@@ -151,6 +152,7 @@ CEditDlg::OnOK()
                    m_notes != m_ci->GetNotes() ||
                    m_URL != m_ci->GetURL() ||
                    m_autotype != m_ci->GetAutoType() ||
+                   m_PWHistory != m_ci->GetPWHistory() ||
                    m_ascLTime != m_oldascLTime
                    );
 
@@ -207,6 +209,7 @@ CEditDlg::OnOK()
     m_ci->SetNotes(m_notes);
     m_ci->SetURL(m_URL);
     m_ci->SetAutoType(m_autotype);
+    m_ci->SetPWHistory(m_PWHistory);
 
     time_t t;
     time(&t);
@@ -488,13 +491,10 @@ void CEditDlg::OnBnClickedSetLTime()
 
 void CEditDlg::OnBnClickedPwhist()
 {
-  CMyString HistStr(m_ci->GetPWHistory());
-  const CMyString oldHistStr(HistStr);
   CPWHistDlg dlg(this, m_IsReadOnly,
-                 HistStr, m_PWHistList,
+                 m_PWHistory, m_PWHistList,
                  m_NumPWHistory, m_MaxPWHistory,
                  m_SavePWHistory);
 
   dlg.DoModal();
-  m_bIsModified |= (oldHistStr != HistStr);
 }
