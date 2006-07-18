@@ -1,49 +1,67 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+
+  
+
+
+
+  
   <title>User Names and Passwords</title>
-
-
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
+  
   <link rel="stylesheet" type="text/css" href="style.css">
-
 </head>
 
 
 <body>
 
+
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>User Names, Passwords, and Groups</h2>
 
-<img src="images%5Cedit_view_entry.gif">
+
+<img style="width: 434px; height: 343px;" alt="Edit/View Entry" src="images%5Cedit_view_entry.gif">
 <p>The following bits of information are associated with each
 password entry:</p>
 
+
 <ul>
+
 
   <li><b>Group</b>: A name for grouping (organizing)
 multiple entries</li>
 
+
   <li><b>Title</b>: A friendly name for a password
 entry</li>
 
+
   <li><b>User name</b>: The user name</li>
+
 
   <li><b>Password</b>: The password</li>
 
+
   <li><b>Notes</b>: Free-form general notes field</li>
+
 
 </ul>
 
+
 In addition, the following fields may be used (viewable by pressing the
 "More&gt;&gt;" button on the Add or Edit dialog box):<br>
+<br>
 
-<img style="width: 431px; height: 297px;" alt="Extra fields" src="images/edit_view_entry_more.gif"><br>
+
+<img style="width: 434px; height: 260px;" alt="Extra fields" src="images/edit_view_entry_more.gif"><br>
+
 
 <ul>
+
 
   <li><span style="font-weight: bold;">URL</span>:
 The URL associated
@@ -51,10 +69,12 @@ with the entry. If this field is not empty, then the "Browse To" option
 is enabled. If the protocol is not specified, then "http://" is assumed
 (e.g., "www.foo.net" is the same as "http://www.foo.net").</li>
 
+
   <li><span style="font-weight: bold;">Autotype</span>:
 If this field
 is not empty, the its content replaces the default value for the
 autotype function. For more information, see the "<a href="autotype.html">Auto Type</a>" help topic.</li>
+
 
   <li><span style="font-weight: bold;">Date/Time
 Information</span>:
@@ -63,37 +83,54 @@ created, last accessed, etc. &nbsp;This information isn't displayed
 on
 the Add Entry dialog box.</li>
 
-  <li><span style="font-weight: bold;">Password
-Expires On:</span> If set, <span style="font-weight: bold;">Password
+
+  <li>
+    <ul>
+      <li><span style="font-weight: bold;">Password
+Expires on:</span>
+To set a password expiration date, click on the "Set" button and
+specify the desired expiration date. To cancel the expiration, click on
+"Clear". If set, <span style="font-weight: bold;">Password
 Safe</span>
 will warn when an entry is expired when the application is started. In
 addition, expired entries are indicated in the tree view by a different
-color.<br>
+color.</li>
+    </ul>
+
 
     <span style="font-weight: bold;">Note: Password Safe </span>will
     <span style="font-style: italic;">only </span>warn
 the user when passwords have expired. It is the user's responsibility
 to change the password.</li>
 
+
 </ul>
+
 
 <p>Only the title and password fields are required; all others
 are optional.</p>
 
+
 <div class="instr">
 <h3>Creating a New User Name and Password Entry</h3>
 
+
 <ol>
 
+
   <li>Open the database where you wish to place the new entry</li>
+
 
   <li>From the <b>Edit</b> menu, select <b>Add
 Entry</b></li>
 
+
   <li>Enter information into the <b>Edit/View Entry</b>
 dialog fields as necessary</li>
 
+
 </ol>
+
 
 <hr> <small><b>Note:</b>&nbsp;If a Group
 name is selected and then a new entry added, that entry will have that
@@ -101,30 +138,40 @@ Group name prefilled in the <b>Edit/View Entry</b> dialog.
 If a name of a new group is added to the Group field, that Group will
 be created.<br>
 
+
 </small>
 <hr>
 <h3>Generating and Editing Passwords</h3>
 
+
 <p>If you wish, you can enter your own password into the password
 field manually, or you can have <b>Password Safe</b>
-generate a new one based on the current <a href="html%5Cpassword_policies.html">Password Policy</a>.</p>
+generate a new one based on the current <a href="password_policies.html">Password Policy</a>.</p>
+
 
 <ol>
 
+
   <li>In the <b>Edit/View Entry</b> dialog click <b>Generate</b></li>
+
 
   <li>Click <b>Yes</b> to accept the password or <b>No</b>
 to reject it<br>
 
+
   </li>
 
+
 </ol>
+
 
 <hr> <small><b>Notes:</b>
 <ul>
 
+
   <li>To temporarily override the current password policy check <b>Override
 Policy</b>. </li>
+
 
   <li>If your password or user name contains a diacritical
 character ("&acute;", "`", "^", "&uml;" or "~" for instance)
@@ -132,66 +179,90 @@ followed by a character that can be modified by it on your keyboard
 ("a" for instance), the password must be entered as "[~][space]
 [space][a]" (This applies to non-US keyboards only). </li>
 
-</ul>
-
-</small>
-<hr>
-<h3>Editing Existing Entries</h3>
-
-<ol>
-
-  <li>Select the password entry to edit from the list</li>
-
-  <li>Select <b>Edit/View Entry</b> from the <b>Edit</b>
-menu</li>
-
-</ol>
-
-<hr> <small><b>Note:</b>&nbsp;By default,
-passwords are obscured. To see the password associated with the Entry
-click <b>Show Password</b>.<br>
-
-</small>
-<hr>
-<h3>Add a New Group</h3>
-
-<ol>
-
-  <li>Select <b>Add Group</b> from the <b>Edit</b>
-menu</li>
-
-  <li>Enter the Group name</li>
-
-</ol>
-
-<h3>Edit a Group Name</h3>
-
-<ul>
-
-  <li>Right-click on the group and select <b>Rename Group</b>
-from the drop down list</li>
 
 </ul>
 
-<hr> <small><b>Note:</b>&nbsp;Group names
-can be "nested," placing a group name within/under another group name.<br>
 
 </small>
 <hr>
 <h3>Password History</h3>
 
+
 It is possible to configure <b>Password Safe</b> to save the last few passwords of an entry. This can be done either when the entry is created,
 or when viewing an existing entry. To view the recent passwords associated with the entry, or to change the number of
 recent passwords that are kept, click on the "Password History..." button. This will invoke the <a href="password_history.html">Password History</a>
 dialog box.
+<h3>Editing Existing Entries</h3>
+
+
+<ol>
+
+
+  <li>Select the password entry to edit from the list</li>
+
+
+  <li>Select <b>Edit/View Entry</b> from the <b>Edit</b>
+menu</li>
+
+
+</ol>
+
+
+<hr> <small><b>Note:</b>&nbsp;By default,
+passwords are obscured. To see the password associated with the Entry
+click <b>Show Password</b>.<br>
+
+
+</small>
+<hr>
+<h3>Add a New Group</h3>
+
+
+<ol>
+
+
+  <li>Select <b>Add Group</b> from the <b>Edit</b>
+menu</li>
+
+
+  <li>Enter the Group name</li>
+
+
+</ol>
+
+
+<h3>Edit a Group Name</h3>
+
+
+<ul>
+
+
+  <li>Right-click on the group and select <b>Rename Group</b>
+from the drop down list</li>
+
+
+</ul>
+
+
+<hr> <small><b>Note:</b>&nbsp;Group names
+can be "nested," placing a group name within/under another group name.<br>
+
+
+</small>
+<hr><br>
+
  </div>
+
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 
-<br>
 
 <br>
+
+
+<br>
+
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="User Names"> <param name="Keyword" value="Add Password Entries"> <param name="Keyword" value="Storing Passwords"> <param name="Keyword" value="Groups"> <param name="Keyword" value="Generating Passwords"> <param name="Keyword" value="Passwords"> <param name="Keyword" value="Edit Password Entries"> <param name="Keyword" value="View Password Entries"> <param name="Keyword" value="Renaming Password Entries"> </object>
 </body>
