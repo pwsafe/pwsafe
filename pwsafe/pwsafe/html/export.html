@@ -2,15 +2,20 @@
 <html>
 <head>
 
+
   
 
 
+
+  
+  
 
   
   <title>Exporting Entries</title>
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
+  
   
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -19,9 +24,11 @@
 <body>
 
 
+
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Exporting Entries</h2>
+
 
 
 <p>Password Safe supports exporting (and importing) of the stored
@@ -29,29 +36,38 @@ passwords to various formats. To export data use the
 File-&gt;Export To menu. The supported formats are:</p>
 
 
+
 <ul>
+
 
 
   <li>Password Safe v1 (for use by versions 1.x of Password Safe)</li>
 
 
+
   <li>Password Safe v2 (for use by versions 2.x of PasswordSafe)</li>
 
 
-  <li>Plaintext</li>
+
+  <li><a href="#te">Plain text</a></li>
 
 
-  <li>XML</li>
+
+  <li><a href="#xml">XML</a></li>
+
 
 
 </ul>
+
 
 
 <p>For previous versions of Password Safe, just select the desired format and specify the name of the database file
 you wish to create.</p>
 
 
-<h3>Text Export</h3>
+
+<h3><a name="te"></a>Text Export</h3>
+
 
 
 
@@ -63,8 +79,10 @@ inaccesible to a determined attacker, in effect bypassing the security
 of the program.</span><br style="color: rgb(255, 0, 0);">
 
 
+
 <span style="color: rgb(255, 0, 0);">Please </span><span style="font-weight: bold; color: rgb(255, 0, 0);">DO NOT </span><span style="color: rgb(255, 0, 0);">use this function unless you
 understand and accept the risks.</span><br>
+
 
 
 </small>
@@ -74,18 +92,25 @@ understand and accept the risks.</span><br>
 text files. These files may then be used or modified by other
 applications.<br>
 
+
 You will first be asked to enter the master password or safe
 combination to confirm that you may export the database into a clear
 text unencrypted file.<br>
+
 <br>
+
 </p>
+
 
 
 <img style="width: 419px; height: 274px;" alt="Export Text" src="images%5Cexport.gif">
 <p> You can also specify some options:</p>
+
 <ul>
+
   <li>
 
+    
     <p>Password entries will be exported with a tab character between
 fields i.e., between the Group.Title, Username, Password and the Notes
 fields. The "Group.Title" is considered a single field. Any field
@@ -100,43 +125,71 @@ going to import the file into Password Safe at a later date and still
 have a delimiter character, then it must be specified on the import or
 all the Notes lines will appear as one single line in the resulting
 database.<br>
+
 If a Notes field multi-line delimiter character is required,
 enter it here so that, during the Export process, multiple lines in
 Notes field will be exported as a single line using this character
 between each of the original lines.<br>
+
 If required, tick that you want to put all separate lines
 in the Notes field onto one line and enter the character to be used as
 the delimiter. Since the whole Notes field is enclosed between double
 quotation marks, this character is prohibited from being selected as
 the multi-line delimiter.</p>
+
   </li>
+
   <li>
+    
     <p>A title row naming the columns,
 e.g.,&nbsp;"Group/Title", "Username", "Password", etc., may be added by selecting the "Include a Title Row" checkbox.</p>
 
 
+
   </li>
+
 </ul>
+
 <p>Even more control on the exported format may be specified by clicking on "Advanced". The following dialog box will appear:</p>
+
 <p><img style="width: 341px; height: 594px;" alt="Export Extra" src="images/export_extra.gif"></p>
+
 <p>This dialog box allows you to&nbsp;export only some of the entries,
 based on the text in specified fields, and/or specify which fields are
 to be exported. Click OK when you have finished, or Cancel to return to
 the Export Text dialog box without any changes.</p>
+
 <p>
 You will then be asked to supply the name of the new file and
 to confirm overwriting a file of the same name if it already exists in
 the directory you specify.</p>
+<h3><a name="xml"></a>XML</h3>
+XML (eXtensible Markup Language) is a popular format for transferring
+data between applications. Password Safe can export (and import) the
+database entries to this format. The structure (or <span style="font-style: italic;">schema</span>) against which the data is exported and validated is defined in the file <span style="font-style: italic;">pwsafe.xsd</span>,
+which is provided as part of the distribution. This file is used by
+PasswordSafe when XML data is imported, and should be provided to
+applications that wish to use the exported data.<br>
+The display of XML files is specified by <span style="font-style: italic;">pwsafe.xsl</span>
+- an eXtensible Stylesheet Language file. A sample file, which may be
+modified for your own needs, is supplied as part of the distribution.
+This file is only an example and you can easily modify it to display
+whatever fields you want to show.&nbsp; As this only displays the data
+and will not alter it, you will still be able to import it into
+PasswordSafe at some later time.
 
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 
 
+
 <br>
 
 
+
 <br>
+
 
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Export Password Entries"> <param name="Keyword" value="Import Password Entries"> <param name="Keyword" value="Excel Password Data"> <param name="Keyword" value="Converting Existing Password Data">
