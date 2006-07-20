@@ -78,10 +78,10 @@
 ; should be followed each time you want to create a release:
 ;
 ; 1. Compile Password Safe in release mode.  The script relies on 
-;    pwsafe.exe existing in the release directory.
+;    pwsafe.exe existing in the Release subdirectory.
 ;
 ; 2. Compile the help files for Password Safe.  The script relies on 
-;    pwsafe.chm existing in the current directory.
+;    pwsafe.chm existing in the html subdirectory.
 ;
 ; 3. At the command line (or in a build script such as the .dsp file,
 ;    makefile, or other scripted build process), execute the following:
@@ -173,11 +173,13 @@ Section "Program Files" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
   File "Release\pwsafe.exe"
-  File "pwsafe.chm"
+  File "html\pwsafe.chm"
   File "LICENSE"
   File "README.TXT"
   File "ReleaseNotes.txt"
   File "ChangeLog.txt"
+  File "xml\pwsafe.xsd"
+  File "xml\pwsafe.xsl"
   File "..\..\redist\mfc71.dll"
   File "..\..\redist\msvcp71.dll"
   File "..\..\redist\msvcr71.dll"
@@ -282,6 +284,8 @@ Section "Uninstall"
   ; Delete all installed files in the directory
   Delete "$INSTDIR\pwsafe.exe"
   Delete "$INSTDIR\pwsafe.chm"
+  Delete "$INSTDIR\pwsafe.xsd"
+  Delete "$INSTDIR\pwsafe.xsl"
   Delete "$INSTDIR\LICENSE"
   Delete "$INSTDIR\README.TXT"
   Delete "$INSTDIR\ReleaseNotes.txt"

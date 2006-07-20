@@ -32,6 +32,7 @@ import.html
 manage_menu.html
 menu_toolbar.html
 misc_tab.html
+password_history.html
 password_policies.html
 retrieve_pwd.html
 security_tab.html
