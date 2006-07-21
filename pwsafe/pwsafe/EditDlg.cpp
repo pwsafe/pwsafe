@@ -449,14 +449,14 @@ void CEditDlg::ResizeDialog()
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
     newHeight = curLowestCtlRect.bottom + 15 - newDialogRect.top;
     
-    m_MoreLessBtn.SetWindowText(_T("<< Less"));
+    m_MoreLessBtn.SetWindowText(_T("<< &Less"));
   } else {
     // from more to less
     pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
     newHeight = curLowestCtlRect.top + 5 - newDialogRect.top;
 
-    m_MoreLessBtn.SetWindowText(_T("More >>"));
+    m_MoreLessBtn.SetWindowText(_T("&More >>"));
   }
   
   this->SetWindowPos(NULL, 0, 0, newDialogRect.right - newDialogRect.left,
