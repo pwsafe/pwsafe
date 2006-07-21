@@ -18,6 +18,7 @@ entries.
 password needs to be entered twice to verify.
 [1506320] Count of passwords stored in DB on status bar. Also indication
 of read/only status.
+[] Compare of two databases supported
 
 Changes to Existing Features in 3.02
 ====================================
@@ -38,8 +39,9 @@ to n0tig.
 [1519227] Password expires date was set wrong
 [1519850] Double-click on group entry in tree did not expand/collapse
 group
-[1520562] Single entry not displayed in Nested Tree Mode
-[] Tree not refreshed if user decides not to open another DB
+[1520562] Single entry is now displayed in Nested Tree Mode
+[] Tree is now refreshed if user decides not to open another DB
+[1526174] Tab order more friendly in Edit dialog box.
 
 New Features for 3.01
 =====================

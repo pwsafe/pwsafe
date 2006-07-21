@@ -296,7 +296,7 @@ void CAddDlg::ResizeDialog()
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
     newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
-    m_moreLessBtn.SetWindowText(_T("<< Less"));
+    m_moreLessBtn.SetWindowText(_T("<< &Less"));
   } else {
     // from more to less
     pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
@@ -304,7 +304,7 @@ void CAddDlg::ResizeDialog()
 
     newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
 
-    m_moreLessBtn.SetWindowText(_T("More >>"));
+    m_moreLessBtn.SetWindowText(_T("&More >>"));
   }
   
 
