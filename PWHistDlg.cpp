@@ -181,6 +181,8 @@ CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
   LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNMHDR;
   ASSERT(lpnmitem != NULL);
   int item = lpnmitem->iItem;
+  if (item == -1)
+	  return;
   POSITION itempos = POSITION(m_PWHistListCtrl.GetItemData(item));
   const PWHistEntry pwhentry = m_PWHistList.GetAt(itempos);
   app.SetClipboardData(pwhentry.password);
