@@ -280,7 +280,7 @@ bool CMyTreeCtrl::IsLeafNode(HTREEITEM hItem)
   int i, dummy;
   status = GetItemImage(hItem, i, dummy);
   ASSERT(status);
-  return (i == LEAF);
+  return (i != NODE);
 }
 
 void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)

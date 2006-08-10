@@ -35,6 +35,7 @@ Bugs fixed in 3.03
 [1527029] Password count not visible in status bar.
 [1529305] Crash in Password History
 [] View Menu item "Collapse All" did not collapse all embedded groups.
+[] DoubleClick did not work on entries with expired passwords
 
 New Features for 3.02
 =====================
