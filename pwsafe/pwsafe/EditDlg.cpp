@@ -295,6 +295,16 @@ BOOL CEditDlg::OnInitDialog()
     HidePassword();
   }
 
+  GetDlgItem(IDC_PWHSTATUS)->
+	  SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
+  CString buffer;
+  if (m_SavePWHistory == TRUE)
+	  buffer.Format("%d", m_MaxPWHistory);
+  else
+	  buffer = _T("n/a");
+
+  GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
+
   UpdateData(FALSE);
 
 
@@ -498,4 +508,14 @@ void CEditDlg::OnBnClickedPwhist()
                  m_SavePWHistory);
 
   dlg.DoModal();
+
+  GetDlgItem(IDC_PWHSTATUS)->
+	  SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
+  CString buffer;
+  if (m_SavePWHistory == TRUE)
+	  buffer.Format("%d", m_MaxPWHistory);
+  else
+	  buffer = _T("n/a");
+
+  GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
 }
