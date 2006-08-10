@@ -539,7 +539,6 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 				break;
 			case PWH_INVALID_HDR:
 			case PWH_INVALID_STATUS:
-			case PWH_INVALID_MAX:
 			case PWH_INVALID_NUM:
 			case PWH_INVALID_DATETIME:
 			case PWH_INVALID_PSWD_LENGTH:
