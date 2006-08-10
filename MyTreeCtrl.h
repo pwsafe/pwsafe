@@ -25,6 +25,7 @@ public:
   void OnCollapseAll();
   void OnExpandAll();
   void SetDboxPointer(void *parent) {m_parent = parent;}
+  HTREEITEM GetNextTreeItem(HTREEITEM hItem);
 
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
