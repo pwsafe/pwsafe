@@ -207,6 +207,7 @@
 #define IDC_PWHISTORY_LIST              1156
 #define IDC_SAVEPWHISTORY               1157
 #define IDC_MAXPWHISTORY                1158
+#define IDC_DEFPWHNUM                   1159
 #define IDC_COPY_OLDPW_TO_CLIPBOARD     1160
 #define IDC_CLEAR_PWHIST                1161
 #define IDC_STATIC_PWHIST               1162

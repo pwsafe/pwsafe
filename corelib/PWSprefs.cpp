@@ -65,6 +65,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
   {_T("MaxREItems"), 25, true},
   {_T("TreeDisplayStatusAtOpen"), PWSprefs::AllCollapsed, true},
+  {_T("NumPWHistoryDefault"), 3, true},
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
