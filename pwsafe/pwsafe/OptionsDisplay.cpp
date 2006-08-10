@@ -10,6 +10,7 @@
   #include "resource.h"
 #endif
 #include "OptionsDisplay.h"
+#include "corelib\pwsprefs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,7 +48,8 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_DEFPWUSESYSTRAY, m_usesystemtray);
 	DDX_Text(pDX, IDC_MAXMRUITEMS, m_maxmruitems);
 	DDV_MinMaxInt(pDX, m_maxmruitems, 0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
-	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);	
+	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
+	DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_treedisplaystatusatopen); // only first!	
 	//}}AFX_DATA_MAP
 }
 
@@ -74,20 +76,44 @@ void COptionsDisplay::OnUseSystemTray()
 BOOL COptionsDisplay::OnInitDialog() 
 {
 	CPropertyPage::OnInitDialog();
+	
+	CButton *pBCollapsed = (CButton *)GetDlgItem(IDC_TREE_DISPLAY_COLLAPSED);
+	CButton *pBExpanded = (CButton *)GetDlgItem(IDC_TREE_DISPLAY_EXPANDED);
+	CButton *pBAsPerLastSave = (CButton *)GetDlgItem(IDC_TREE_DISPLAY_LASTSAVE);
 
-    CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
+	switch (m_treedisplaystatusatopen) {
+		case PWSprefs::AllCollapsed:
+			pBCollapsed->SetCheck(1);
+			pBExpanded->SetCheck(0);
+			pBAsPerLastSave->SetCheck(0);
+			break;
+		case PWSprefs::AllExpanded:
+			pBCollapsed->SetCheck(0);
+			pBExpanded->SetCheck(1);
+			pBAsPerLastSave->SetCheck(0);
+			break;
+	case PWSprefs::AsPerLastSave:
+			pBCollapsed->SetCheck(0);
+			pBExpanded->SetCheck(0);
+			pBAsPerLastSave->SetCheck(1);
+			break;
+	default:
+		ASSERT(0);
+	}
 
-    pspin->SetBuddy(GetDlgItem(IDC_MAXREITEMS));
-    pspin->SetRange(0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
-    pspin->SetBase(10);
-    pspin->SetPos(m_maxreitems);
+	CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
 
-    pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_MRUSPIN);
+	pspin->SetBuddy(GetDlgItem(IDC_MAXREITEMS));
+	pspin->SetRange(0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
+	pspin->SetBase(10);
+	pspin->SetPos(m_maxreitems);
 
-    pspin->SetBuddy(GetDlgItem(IDC_MAXMRUITEMS));
-    pspin->SetRange(0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
-    pspin->SetBase(10);
-    pspin->SetPos(m_maxmruitems);
+	pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_MRUSPIN);
+
+	pspin->SetBuddy(GetDlgItem(IDC_MAXMRUITEMS));
+	pspin->SetRange(0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
+	pspin->SetBase(10);
+	pspin->SetPos(m_maxmruitems);
 	
 	OnUseSystemTray();
 	

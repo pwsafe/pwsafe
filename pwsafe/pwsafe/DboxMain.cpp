@@ -387,6 +387,19 @@ DboxMain::InitPasswordSafe()
 
   // refresh list will add and size password column if necessary...
   RefreshList();
+  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
+  	case PWSprefs::AllCollapsed:
+  		m_ctlItemTree.OnCollapseAll();
+  		break;
+  	case PWSprefs::AllExpanded:
+  		m_ctlItemTree.OnExpandAll();
+  		break;
+  	case PWSprefs::AsPerLastSave:
+  		RestoreDisplayStatus();
+  		break;
+  	default:
+  		ASSERT(0);
+  }
   ChangeOkUpdate();
 
   setupBars(); // Just to keep things a little bit cleaner

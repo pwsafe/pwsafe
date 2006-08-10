@@ -32,6 +32,7 @@ public:
 	BOOL    m_usesystemtray;
 	int		m_maxmruitems;
 	BOOL	m_mruonfilemenu;
+	int     m_treedisplaystatusatopen;
 	//}}AFX_DATA
 
 

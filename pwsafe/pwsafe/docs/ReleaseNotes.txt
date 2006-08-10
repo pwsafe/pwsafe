@@ -15,6 +15,11 @@ New Features for 3.03
 entries during export has been implemented. Both export to "Plain Text"
 and export in "XML Format" will export the database entries in the order
 as displayed in the "Nested Tree Mode".
+[1249433] Startup state for Nested Tree mode - User can now select startup
+as a) All groups collapsed (previous behaviour); b) All groups expanded;
+or c) Same state as when the database was last saved (could be either all
+collapsed, all expanded or a mixture of some groups expanded and others
+collapsed).
 
 Changes to Existing Features in 3.03
 ====================================
