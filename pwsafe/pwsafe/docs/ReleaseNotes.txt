@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.03
 =====================
+[1302047] Enable Maximize/Window button
 
 Changes to Existing Features in 3.03
 ====================================
