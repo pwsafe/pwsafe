@@ -30,6 +30,7 @@ public:
 	BOOL	m_pwuseuppercase;
 	BOOL	m_pweasyvision;
 	BOOL	m_savepwhistory;
+	UINT	m_pwhistorynumdefault;
 	//}}AFX_DATA
 
 

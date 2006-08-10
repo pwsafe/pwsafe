@@ -238,6 +238,8 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::PWEasyVision);
   passwordpolicy.m_savepwhistory = prefs->
     GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
+  passwordpolicy.m_pwhistorynumdefault = prefs->
+    GetPref(PWSprefs::NumPWHistoryDefault);
 
   username.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefUser);
@@ -333,6 +335,9 @@ DboxMain::OnOptions()
                       passwordpolicy.m_pweasyvision == TRUE);
       prefs->SetPref(PWSprefs::SavePasswordHistory,
       				 passwordpolicy.m_savepwhistory == TRUE);
+      if (passwordpolicy.m_savepwhistory == TRUE)
+          prefs->SetPref(PWSprefs::NumPWHistoryDefault,
+                     passwordpolicy.m_pwhistorynumdefault);
 
       prefs->SetPref(PWSprefs::UseDefUser,
                      username.m_usedefuser == TRUE);

@@ -34,12 +34,14 @@ CAddDlg::CAddDlg(CWnd* pParent)
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
     m_URL(_T("")), m_autotype(_T("")),
 	m_tttLTime((time_t)0), m_ascLTime(_T("Never")),
-	m_MaxPWHistory(3), m_isPwHidden(false)
+	m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
   m_SavePWHistory = PWSprefs::GetInstance()->
     GetPref(PWSprefs::SavePasswordHistory);
+  m_MaxPWHistory = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::NumPWHistoryDefault);
 }
 
 BOOL CAddDlg::OnInitDialog() 

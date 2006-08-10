@@ -20,6 +20,10 @@ as a) All groups collapsed (previous behaviour); b) All groups expanded;
 or c) Same state as when the database was last saved (could be either all
 collapsed, all expanded or a mixture of some groups expanded and others
 collapsed).
+[1527058] password history - Ability to set the default number to be
+saved.  Can be overridden on an entry by entry basis. Changing the 
+default number has no effect if history is already saved for a
+particular entry.
 
 Changes to Existing Features in 3.03
 ====================================

@@ -105,7 +105,8 @@ BOOL CPWHistDlg::OnInitDialog()
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   if (m_MaxPWHistory == 0)
-  	m_MaxPWHistory = 1;
+  	m_MaxPWHistory = PWSprefs::GetInstance()->
+  			GetPref(PWSprefs::NumPWHistoryDefault);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
   pspin->SetRange(1, 255);
