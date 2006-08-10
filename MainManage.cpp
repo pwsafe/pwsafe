@@ -204,6 +204,11 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::MaxMRUItems);
   display.m_mruonfilemenu = PWSprefs::GetInstance()->
     GetPref(PWSprefs::MRUOnFileMenu);
+  // by strange coincidence, the values of the enums match the indices
+  // of the radio buttons in the following :-)
+  display.m_treedisplaystatusatopen = prefs->
+    GetPref(PWSprefs::TreeDisplayStatusAtOpen);
+
   security.m_clearclipboard = prefs->
     GetPref(PWSprefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
   security.m_lockdatabase = prefs->
@@ -290,11 +295,14 @@ DboxMain::OnOptions()
                      display.m_usesystemtray == TRUE);
       prefs->SetPref(PWSprefs::MaxREItems,
                      display.m_maxreitems);
-
       prefs->SetPref(PWSprefs::MaxMRUItems,
                      display.m_maxmruitems);
       prefs->SetPref(PWSprefs::MRUOnFileMenu,
                      display.m_mruonfilemenu == TRUE);
+      // by strange coincidence, the values of the enums match the indices
+      // of the radio buttons in the following :-)
+      prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen,
+                     display.m_treedisplaystatusatopen);
 
       prefs->SetPref(PWSprefs::DontAskMinimizeClearYesNo,
                      security.m_clearclipboard == TRUE);
@@ -345,7 +353,6 @@ DboxMain::OnOptions()
       // of the radio buttons in the following :-)
       prefs->SetPref(PWSprefs::DoubleClickAction,
                      misc.m_doubleclickaction);
-
       prefs->SetPref(PWSprefs::HotKeyEnabled,
                      misc.m_hotkey_enabled == TRUE);
       prefs->SetPref(PWSprefs::HotKey,

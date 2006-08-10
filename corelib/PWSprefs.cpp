@@ -16,6 +16,9 @@ const LPCTSTR PWS_REG_OPTIONS = _T("");
 
 PWSprefs *PWSprefs::self = NULL;
 
+// 1st parameter = name of preference
+// 2nd parameter = default value
+// 3rd parameter if 'true' means value stored in db, if 'false' means use registry only
 const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("alwaysontop"), false, true},
   {_T("showpwdefault"), false, true},
@@ -61,6 +64,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("HotKey"), 0, true}, // zero means disabled, !=0 is key code.
   {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
   {_T("MaxREItems"), 25, true},
+  {_T("TreeDisplayStatusAtOpen"), PWSprefs::AllCollapsed, true},
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

@@ -113,14 +113,10 @@
 #define IDC_STATIC_MINUPPERCASE         1055
 #define IDC_NEW                         1056
 #define IDC_STATIC_MINDIGITS            1056
-#define IDC_STATIC_ICON1                1057
 #define IDC_STATIC_MINSYMBOLS           1057
 #define IDC_MINLOWERCASE                1058
 #define IDC_MINUPPERCASE                1059
-#define IDC_STATIC_ICON2                1060
 #define IDC_STATIC_LOGO                 1060
-#define IDC_MINDIGITS                   1060
-#define IDC_STATIC_ICON3                1061
 #define IDC_MINSYMBOLS                  1061
 #define IDC_FIND_TEXT                   1062
 #define IDC_FIND_CS                     1063
@@ -245,8 +241,10 @@
 #define IDC_EXPORTX_SUBGROUP_OBJECT     1194
 #define IDC_EXPORTX_SUBGROUP_CASE       1195
 #define IDC_PWH_COPY_ALL                1196
-#define IDC_BUTTON1                     1197
 #define IDC_PWHIST                      1197
+#define IDC_TREE_DISPLAY_COLLAPSED      1198
+#define IDC_TREE_DISPLAY_EXPANDED       1199
+#define IDC_TREE_DISPLAY_LASTSAVE       1200
 #define IDC_DOUBLE_CLICK_COPIES         2089
 #define IDC_DOUBLE_CLICK_EDITS          2090
 #define IDC_DOUBLE_CLICK_AUTOTYPES      2091
@@ -260,7 +258,6 @@
 #define ID_MENUITEM_CLEARCLIPBOARD      32777
 #define ID_MENUITEM_CHANGECOMBO         32778
 #define ID_MENUITEM_BACKUPSAFE          32779
-#define ID_MENUITEM_BACKUP              32779
 #define ID_MENUITEM_OPTIONS             32780
 #define ID_MENUITEM_ABOUT               32782
 #define ID_MENUITEM_COPYUSERNAME        32787
@@ -342,7 +339,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        232
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1198
+#define _APS_NEXT_CONTROL_VALUE         1201
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

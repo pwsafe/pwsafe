@@ -44,13 +44,16 @@ class PWSprefs {
 		   SavePasswordHistory, NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
-		  DoubleClickAction, HotKey, MaxREItems,
+		  DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
 		  NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
-		     TreeFont, NumStringPrefs};
+		  TreeFont,
+		  NumStringPrefs};
 
   enum {DoubleClickCopy = 0, DoubleClickEdit = 1,
 	DoubleClickAutoType = 2, DoubleClickBrowse = 3}; // for DoubleClickAction
+
+  enum {AllCollapsed = 0, AllExpanded = 1, AsPerLastSave = 2}; // for TreeDisplayStatusAtOpen
 
   bool IsChanged() const {return m_prefs_changed;}
   void ClearChanged() {m_prefs_changed = false;}

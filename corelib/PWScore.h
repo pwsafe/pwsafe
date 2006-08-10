@@ -102,6 +102,9 @@ class PWScore {
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
   void SetPassKey(const CMyString &new_passkey);
 
+  void SetDisplayStatus(char *p_char_displaystatus, const int length);
+  CString GetDisplayStatus() {return m_displaystatus;}
+
   POSITION AddSortedEntryToTail(const CItemData &item)
     {return m_sorted_pwlist.AddTail(item);}
   void RemoveAllSorted() {m_sorted_pwlist.RemoveAll();}
@@ -129,6 +132,8 @@ class PWScore {
 
   bool m_changed;
   HANDLE m_lockFileHandle;
+
+  CString m_displaystatus;
 };
 
 #endif // PWScore_h

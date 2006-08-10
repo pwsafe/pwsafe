@@ -93,7 +93,8 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 PWSfile::PWSfile(const CMyString &filename, RWmode mode)
   : m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
-    m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL)
+    m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL),
+    m_file_displaystatus(_T(""))
 {
 }
 

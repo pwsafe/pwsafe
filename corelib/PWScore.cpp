@@ -8,13 +8,10 @@
 #include "Util.h"
 #include "PWSXML.h"
 
-#pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
 #include <string>
 #include <vector>
-#pragma warning(pop)
-#pragma warning(disable : 4786)
 using namespace std;
 
 #include <LMCONS.H> // for UNLEN definition
@@ -41,7 +38,6 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 	PWScore::m_session_initialized = true;
   }
-
 }
 
 PWScore::~PWScore()
@@ -87,6 +83,9 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   // preferences are kept in header, which is written in OpenWriteFile,
   // so we need to update the prefernce string here
   out->SetPrefString(PWSprefs::GetInstance()->Store());
+
+  // Tree Display Status is kept in header
+  out->SetDisplayStatus(m_displaystatus);
 
   status = out->Open(GetPassKey());
 
@@ -388,6 +387,7 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 	delete iXML;
 	return SUCCESS;
 }
+
 int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
                              const CMyString &filename, CString &strErrors,
@@ -633,8 +633,12 @@ PWScore::ReadFile(const CMyString &a_filename,
   // prepare handling of pre-2.0 DEFUSERCHR conversion
   if (m_ReadFileVersion == PWSfile::V17)
     in->SetDefUsername(m_defusername);
-  else // for 2.0 & later, get pref string (possibly empty)
+  else {
+  	// for 2.0 & later, get pref string and tree display status
+  	// both possibly empty
     PWSprefs::GetInstance()->Load(in->GetPrefString());
+    m_displaystatus = in->GetDisplayStatus();
+  }
 
    ClearData(); //Before overwriting old data, but after opening the file...
 
@@ -669,13 +673,11 @@ int PWScore::BackupCurFile()
   return PWSfile::RenameFile(GetCurFile(), newname);
 }
 
-
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
   SetPassKey(newPassword);
   m_changed = true;
 }
-
 
 // Finds stuff based on title & user fields only
 POSITION
@@ -1158,4 +1160,9 @@ void PWScore::GetUniqueGroups(CStringArray &aryGroups)
     if(!bAlreadyInList) aryGroups.Add(strThisGroup);
     GetNextEntry(listPos);
   }
+}
+
+void PWScore::SetDisplayStatus(char *p_char_displaystatus, const int length)
+{
+	m_displaystatus = CString(p_char_displaystatus, length);
 }

@@ -10,16 +10,16 @@ format will NOT be compatible with existing implementations.
 
 2. Format: A V3 format PasswordSafe will be structured as follows:
 
-TAG|SALT|ITER|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
+	TAG|SALT|ITER|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
 
 Where:
 
 2.1 TAG is the sequence of 4 ASCII characters "PWS3". This is to serve as a
 quick way for the application to identify the database as a PasswordSafe
-version 3 file. This tag has no cryptographic value. Changing or
-removing it will cause the database to be unreadable, and adding it to a
-non-database file will only cause the application to attempt to validate
-the passphrase as described below.
+version 3 file. This tag has no cryptographic value. Changing or removing
+it will cause the database to be unreadable, and adding it to a non-
+database file will only cause the application to attempt to validate the
+passphrase as described below.
 
 2.1 SALT is a 256 bit random value, generated at file creation time.
 
@@ -54,35 +54,23 @@ Implementation Note: K and L must NOT be related.
 as the encryption key.
 
 2.9.1 HDR: The database header. The header consists of one or more typed
-fields (as defined in section 3), terminated by the 'END' type field. The
-version number field is mandatory. Field type 0x00 contains the version
-number of the database format. For this version, the value is 0x0300
-(stored in little-endian format, that is, 0x00, 0x03). The type of this
-field is zero.  Field type 0x01 contains the database's UUID, stored as
-16 bytes. Field type 0x02 contains non-default user preferences string (as
-described below).
-
-2.9.1.1 Non-default preferences are encoded in a string as follows: The
-string is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
-integer and string, resp., nn is the numeric value of the enum, and vv is
-the value, {1.0} for bool, unsigned integer for int, and quoted string for
-String. Only values != default are stored. See PWSprefs.cpp for more
-details.
+fields (as defined in section 3.1), terminated by the 'END' type field. The
+version number field is mandatory.
 
 2.9.2 R1..Rn: The actual database records. Each record consists of one or
-more typed fields (as defined in Section 3), terminated by the 'END' type
-field. The UUID, Title, and Password fields are mandatory. All
-non-mandatory fields may either be absent or have zero length. When a field
-is absent or zero-length, its default value shall be used.
+more typed fields (as defined in Section 3.2), terminated by the 'END' type
+field. The UUID, Title, and Password fields are mandatory. All non-
+mandatory fields may either be absent or have zero length. When a field is
+absent or zero-length, its default value shall be used.
 
-2.10 EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is exactly
-one block long), unencrypted. This is an implementation convenience to
-inform the application that the following bytes are to be processed
+2.10 EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is
+exactly one block long), unencrypted. This is an implementation convenience
+to inform the application that the following bytes are to be processed
 differently.
 
-2.11 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with
-SHA-256 as the underlying hash function. The value is calculated over all
-of the plaintext fields, that is, over all the data stored in all fields
+2.11 HMAC: The 256-bit keyed-hash MAC, as described in RFC2104, with SHA-
+256 as the underlying hash function. The value is calculated over all of
+the plaintext fields, that is, over all the data stored in all fields
 (starting from the version number in the header, ending with the last field
 of the last record). The key L as stored in B3 and B4 is used as the hash
 key value.
@@ -90,53 +78,83 @@ key value.
 3. Fields: Data in PasswordSafe is stored in typed fields. Each field
 consists of one or more blocks. The blocks are the blocks of the underlying
 encryption algorithm - 16 bytes long for Twofish. The first block contains
-the field length in the first 4 bytes (little-endian), followed by a
-one-byte type identifier. The rest of the block contains up to 11 bytes of
+the field length in the first 4 bytes (little-endian), followed by a one-
+byte type identifier. The rest of the block contains up to 11 bytes of
 record data. If the record has less than 11 bytes of data, the extra bytes
 are filled with random values. The type of a field also defines the data
 representation.
 
-3.1 Field types (based on the v2 format):
-							             Currently
-   Name			      value	    Type     Implemented Comments
-   --------------------------------------------------------------------------
-   UUID			      0x01		UUID		Y	[1]
-   Group		      0x02		Text		Y	[2]
-   Title		      0x03		Text		Y
-   Username		      0x04		Text		Y
-   Notes		      0x05		Text		Y
-   Password		      0x06		Text		Y
-   Creation Time	  0x07		time_t		Y   [3]
-   Password Modification
-   Time               0x08      time_t      Y
-   Last Access Time   0x09		time_t		Y	[4]
-   Password Lifetime  0x0a		time_t		Y	[5]
-   Password Policy    0x0b		4 bytes		N	[6]
-   Last Mod. time     0x0c		time_t		Y	[7]
-   URL                0x0d      Text		Y	[8]
-   Autotype           0x0e      Text        Y   [9]
-   Password History   0x0f      Text        Y   [10]
-   End of Entry       0xff		[empty]		Y	[11]
+3.1 Field types for database header (based on the v2 format):
+												Currently
+Name						Value		Type	Implemented		Comments
+--------------------------------------------------------------------------
+Version						0x00		%02x		Y				[1]
+UUID						0x01		UUID		Y				[2]
+Non-default preferences		0x02		Text		Y				[3]
+Tree Display Status			0x03		Text		Y				[4]
+End of Entry				0xff		[empty]		Y				[5]
 
-[1] A universally unique identifier is needed in order to synchronize
+[1] The version number of the database format. For this version, the value
+is 0x0300 (stored in little-endian format, that is, 0x00, 0x03).
+
+[2] A universally unique identifier is needed in order to synchronize
 databases, i.e., between a handheld pocketPC device and a PC. The UUID data
 type is 16 bytes long, as defined in RFC4122. Windows has functions for
 this, and the RFC has a sample implementation.
 
-[2] The "Group" supports displaying the entries in a tree-like
-manner. Groups can be heirarchical, with elements separated by a period,
-supporting groups such as "Finance.credit cards.Visa", "Finance.credit
+[3] Non-default preferences are encoded in a string as follows: The string
+is of the form "X nn vv X nn vv..." Where X=[BIS] for binary, integer and
+string respectively, nn is the numeric value of the enum, and vv is the
+value, {1 or 0} for bool, unsigned integer for int, and quoted string for
+String. Only non-default values are stored. See PWSprefs.cpp for more
+details.
+
+[4] If requested to be saved, this is a string of 1s and 0s indicating the
+expanded state of the tree display when the database was saved. This can
+be applied at database open time, if the user wishes, so that the tree is
+displayed as it was. Alternatively, it can be ignored and the tree
+displayed completely expanded or collapsed. Implemented in V3.03 and later.
+
+[5] An explicit end of entry field is useful for supporting new fields
+without breaking backwards compatability.
+
+3.2 Field types for database Records (based on the v2 format):
+												Currently
+Name						Value		Type	Implemented		Comments
+--------------------------------------------------------------------------
+UUID						0x01		UUID		Y				[1]
+Group						0x02		Text		Y				[2]
+Title						0x03		Text		Y
+Username					0x04		Text		Y
+Notes						0x05		Text		Y
+Password					0x06		Text		Y
+Creation Time				0x07		time_t		Y				[3]
+Password Modification Time	0x08		time_t		Y				[3]
+Last Access Time			0x09		time_t		Y				[3,4]
+Password Lifetime			0x0a		time_t		Y				[3,5]
+Password Policy				0x0b		4 bytes		N				[6]
+Last Modification Time		0x0c		time_t		Y				[3,7]
+URL							0x0d		Text		Y				[8]
+Autotype					0x0e		Text		Y				[9]
+Password History			0x0f		Text		Y				[10]
+End of Entry				0xff		[empty]		Y				[11]
+
+[1] As per UUID in the HDR above.
+
+[2] The "Group" supports displaying the entries in a tree-like manner.
+Groups can be heirarchical, with elements separated by a period, supporting
+groups such as "Finance.credit cards.Visa", "Finance.credit
 cards.Mastercard", Finance.bank.web access", etc. Dots entered by the user
 should be "escaped" by the application.
 
 [3] Timestamps are stored as 32 bit, little endian, unsigned integers,
-representing the number of seconds since Midnight, January 1, 1970,
-GMT. (This is equivalent to the time_t type on Windows and POSIX.  On the
+representing the number of seconds since Midnight, January 1, 1970, GMT.
+(This is equivalent to the time_t type on Windows and POSIX. On the
 Macintosh, the value needs to be adjusted by the constant value 2082844800
 to account for the different epoch of its time_t type.)
 
-[4] This will be updated whenever any part of this entry is accessed
-i.e. to copy its username, password or notes to the clipboard; to perform
+[4] This will be updated whenever any part of this entry is accessed i.e.
+to copy its username, password or notes to the clipboard; to perform
 autotype or to browse to url.
 
 [5] This will allow the user to enter a lifetime for an entry. The
@@ -144,12 +162,12 @@ application can then prompt the user about passwords that need to be
 changed. Password lifetime is the expiry a date/time field in the same
 manner as the other time fields and a value of zero means "forever".
 
-[6] Currently, the password policy is a global property. It makes
-sense, however, to want to control this on a per-entry basis. Four
-bytes seems sufficient to store the policy. Exact encoding TBD.
+[6] Currently, the password policy is a global property. It makes sense,
+however, to want to control this on a per-entry basis. Four bytes seems
+sufficient to store the policy. Exact encoding TBD.
 
-[7] This is the time that any field of the record was modified, useful
-for merging databases.
+[7] This is the time that any field of the record was modified, useful for
+merging databases.
 
 [8] The URL will be passed to the shell when the user chooses the "Browse
 to" action for this entry. In version 2 of the format, this was extracted
@@ -157,30 +175,29 @@ from the Notes field. By placing it in a separate field, we are no longer
 restricted to a URL - any action that may be executed by the shell may be
 specified here.
 
-[9] The text to be 'typed' by PasswordSafe upon the "Perform
-Autotype" action maybe specified here. If unspecified, the default value of
+[9] The text to be 'typed' by PasswordSafe upon the "Perform Autotype"
+action maybe specified here. If unspecified, the default value of
 'username, tab, password, tab, enter' is used. In version 2 of the format,
 this was extracted from the Notes field. Several codes are recognized here,
 e.g, '%p' is replaced by the record's password. See the user documentation
 for the complete list of codes. The replacement is done by the application
 at runtime, and is not stored in the database.
 
-[10] Pasword History is an optional record. If it exists, it stores
-the creation times and values of the last few passwords used in the
-current entry, in the following format:
-"fmmnnTLPTLP...TLP"
-Where:
- f  = {0,1} if password history is on/off
- mm = 2 digits max size of history list
- nn = 2 digits current size of history list
- T  = Time password was set
- L  = 4 digit password length (in TCHAR)
- P  = Password
-No history being kept for a record can be represented either by the
-lack of the PWH field (preferred), or by a header of _T("00000"): 
- flag = 0, max = 00, num = 00 
-Note that 0aabb where bb <= aa is possible if password history was
-enabled in the past  but has been disabled and the history hasn't been cleared.
+[10] Pasword History is an optional record. If it exists, it stores the
+creation times and values of the last few passwords used in the current
+entry, in the following format:
+	"fmmnnTLPTLP...TLP" Where:
+	f  = {0,1} if password history is on/off
+	mm = 2 hexadecimal digits max size of history list (i.e. max = 255)
+	nn = 2 hexadecimal digits current size of history list
+	T  = Time password was set ("yyyy/mm/dd hh:mm:ss")
+	L  = 4 hexadecimal digit password length (in TCHAR)
+	P  = Password
+No history being kept for a record can be represented either by the lack of
+the PWH field (preferred), or by a header of _T("00000"):
+	flag = 0, max = 00, num = 00
+Note that 0aabb where bb <= aa is possible if password history was enabled in
+the past and has then been disabled but the history hasn't been cleared.
 
 [11] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.

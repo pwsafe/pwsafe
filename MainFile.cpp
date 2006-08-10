@@ -348,6 +348,7 @@ DboxMain::OnClearMRU()
 void
 DboxMain::OnSave()
 {
+  SaveDisplayStatus();
   Save();
 }
 
@@ -435,6 +436,7 @@ int DboxMain::SaveIfChanged()
 void
 DboxMain::OnSaveAs()
 {
+  SaveDisplayStatus();
   SaveAs();
 }
 
@@ -1525,3 +1527,60 @@ DboxMain::OnCancel()
   else
     OnOK();
 }
+
+void
+DboxMain::SaveDisplayStatus()
+{
+	const int max_displaystatus_size = m_ctlItemTree.GetCount();
+
+	char *p_char_displaystatus = new char[max_displaystatus_size];
+
+	memset(p_char_displaystatus, 0, max_displaystatus_size);
+
+	int i = 0;
+
+	GroupDisplayStatus(p_char_displaystatus, i, true);
+
+	m_core.SetDisplayStatus(p_char_displaystatus, i);
+	delete[] p_char_displaystatus;
+}
+
+void
+DboxMain::RestoreDisplayStatus()
+{
+	CString cs_displaystatus = m_core.GetDisplayStatus();
+
+	if (cs_displaystatus.IsEmpty())
+		return;
+
+	char *p_char_displaystatus = cs_displaystatus.GetBuffer(cs_displaystatus.GetLength());	
+
+	int i = 0;
+
+	GroupDisplayStatus(p_char_displaystatus, i, false);
+}
+
+void
+DboxMain::GroupDisplayStatus(char *p_char_displaystatus, int &i, bool bSet)
+{
+	const char c_one = '1';
+	HTREEITEM hItem = NULL;
+	while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+		if (m_ctlItemTree.ItemHasChildren(hItem)) {
+			const CString cs_text = m_ctlItemTree.GetItemText(hItem);
+			if (bSet) {
+				if (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED) {
+					p_char_displaystatus[i] = '1';
+				} else {
+					p_char_displaystatus[i] = '0';
+				}
+			} else {
+				if (memcmp(&p_char_displaystatus[i], &c_one, 1) == 0) {
+					m_ctlItemTree.Expand(hItem, TVE_EXPAND);
+				}
+			}
+			i++;
+		}
+	}
+}
+

@@ -456,7 +456,7 @@ int PWSfileV3::WriteHeader()
   unsigned char vnb[sizeof(VersionNum)];;
   vnb[0] = (unsigned char) (VersionNum & 0xff);
   vnb[1] = (unsigned char) ((VersionNum & 0xff00) >> 8);
-  numWritten = WriteCBC(0, vnb, sizeof(VersionNum));
+  numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
   
   // Write UUID
   // We should probably reuse the UUID when saving an existing
@@ -467,7 +467,7 @@ int PWSfileV3::WriteHeader()
   
   uuid.GetUUID(uuid_array);
   
-  numWritten += WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+  numWritten += WriteCBC(HDR_UUID, uuid_array, sizeof(uuid_array));
 
   if (numWritten <= 0) { // WriteCBC writes at least 2 blocks per datum.
     Close();
@@ -475,15 +475,24 @@ int PWSfileV3::WriteHeader()
   }
 
   // Write (non default) user preferences
-  numWritten = WriteCBC(0x2, m_prefString);
+  numWritten = WriteCBC(HDR_NDPREFS, m_prefString);
   if (numWritten <= 0) {
     Close();
     return FAILURE;
   }
 
+  // Write out display status
+  if (!m_file_displaystatus.IsEmpty()) {
+  	numWritten = WriteCBC(HDR_DISPSTAT, m_file_displaystatus);
+    if (numWritten <= 0) {
+      Close();
+      return FAILURE;
+    }
+  }
+
   // Write zero-length end-of-record type item
   // for future-proof (skip possible additional fields in read)
-  WriteCBC(CItemData::END, NULL, 0);
+  WriteCBC(HDR_END, NULL, 0);
 
   return SUCCESS;
 }
@@ -534,7 +543,7 @@ int PWSfileV3::ReadHeader()
     }
 
     switch (type) {
-    case 0: /* version */
+    case HDR_VERSION: /* version */
       {
         // in Beta, VersionNum was an int (4 bytes) instead of short (2)
         // This hack keeps bwd compatability.
@@ -554,7 +563,7 @@ int PWSfileV3::ReadHeader()
       }
       break;
 
-    case 1: /* UUID */
+    case HDR_UUID: /* UUID */
       {
         // Read UUID XXX should save into data member
         int ulen = headerField.GetLength ();
@@ -565,7 +574,7 @@ int PWSfileV3::ReadHeader()
       }
       break;
 
-    case 2: /* Non-default user preferences */
+    case HDR_NDPREFS: /* Non-default user preferences */
       {
         m_utf8 = (unsigned char *) headerData;
         m_utf8Len = headerField.GetLength();
@@ -579,12 +588,26 @@ int PWSfileV3::ReadHeader()
       }
       break;
 
+	case HDR_DISPSTAT: /* Tree Display Status */
+	  {
+        m_utf8 = (unsigned char *) headerData;
+        m_utf8Len = headerField.GetLength();
+        if (!FromUTF8 (headerField)) {
+          Close ();
+          return FAILURE;
+        }
+        m_file_displaystatus = (CString)headerField;
+        m_utf8 = NULL;
+        m_utf8Len = 0;
+	  }
+	  break;
+
     default:
       // ignore fields that may be addded by future versions
       break;
     }
   }
-  while (type != CItemData::END);
+  while (type != HDR_END);
 
   return SUCCESS;
 }

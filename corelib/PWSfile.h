@@ -48,6 +48,8 @@ class PWSfile {
   // see code for details on where it's kept.
   void SetPrefString(const CMyString &prefStr) {m_prefString = prefStr;}
   const CMyString &GetPrefString() const {return m_prefString;}
+  void SetDisplayStatus(const CString &displaystatus) {m_file_displaystatus = displaystatus;}
+  const CString &GetDisplayStatus() const {return m_file_displaystatus;}
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
@@ -65,6 +67,7 @@ class PWSfile {
   const RWmode m_rw;
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
+  CString m_file_displaystatus; // tree display sttaus stored in file
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
