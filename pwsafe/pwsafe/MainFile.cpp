@@ -335,7 +335,6 @@ DboxMain::Open( const CMyString &pszFilename )
   CheckExpiredPasswords();
   ChangeOkUpdate();
   RefreshList();
-
   return PWScore::SUCCESS;
 }
 
@@ -606,7 +605,19 @@ DboxMain::OnExportText()
       if (et.m_querysetexpdelim == 1)
         delimiter = et.m_defexpdelim[0];
 
+	  // Walk the Tree!
+	  HTREEITEM hItem = NULL;
+	  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+	      if (!m_ctlItemTree.ItemHasChildren(hItem)) {
+              CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+              ASSERT(ci != NULL);
+              m_core.AddSortedEntryToTail(*ci);
+		  }
+      }
+
       rc = m_core.WritePlaintextFile(newfile, bwrite_header, bsExport, subgroup, iObject, iFunction, delimiter);
+
+      m_core.RemoveAllSorted();
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
         CMyString temp = newfile + _T("\n\nCould not open file for writing!");
@@ -653,7 +664,20 @@ DboxMain::OnExportXML()
 
       char delimiter;
       delimiter = eXML.m_defexpdelim[0];
+      
+	  // Walk the Tree!
+	  HTREEITEM hItem = NULL;
+	  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+	      if (!m_ctlItemTree.ItemHasChildren(hItem)) {
+              CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+              ASSERT(ci != NULL);
+              m_core.AddSortedEntryToTail(*ci);
+		  }
+      }
+
       rc = m_core.WriteXMLFile(newfile, delimiter);
+
+      m_core.RemoveAllSorted();
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
         CMyString temp = newfile + _T("\n\nCould not open file for writing!");

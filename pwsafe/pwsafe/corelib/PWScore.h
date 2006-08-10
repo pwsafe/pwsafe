@@ -102,6 +102,10 @@ class PWScore {
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
   void SetPassKey(const CMyString &new_passkey);
 
+  POSITION AddSortedEntryToTail(const CItemData &item)
+    {return m_sorted_pwlist.AddTail(item);}
+  void RemoveAllSorted() {m_sorted_pwlist.RemoveAll();}
+
  private:
   CMyString m_currfile; // current pw db filespec
   unsigned char *m_passkey; // encrypted by session key
@@ -121,6 +125,7 @@ class PWScore {
 
   // the password database
   CList<CItemData,CItemData> m_pwlist;
+  CList<CItemData,CItemData> m_sorted_pwlist;
 
   bool m_changed;
   HANDLE m_lockFileHandle;

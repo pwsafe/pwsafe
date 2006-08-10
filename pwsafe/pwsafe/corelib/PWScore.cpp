@@ -163,14 +163,14 @@ PWScore::WritePlaintextFile(const CMyString &filename, const bool &bwrite_header
   }
 
   CItemData temp;
-  POSITION listPos = m_pwlist.GetHeadPosition();
+  POSITION listPos = m_sorted_pwlist.GetHeadPosition();
 
   while (listPos != NULL) {
-    temp = m_pwlist.GetAt(listPos);
+    temp = m_sorted_pwlist.GetAt(listPos);
     const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, subgroup, iObject, iFunction, delimiter);
     if (!line.IsEmpty() != 0)
     	ofs << line << endl;
-    m_pwlist.GetNext(listPos);
+    m_sorted_pwlist.GetNext(listPos);
   }
   ofs.close();
 
@@ -193,7 +193,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter)
 	int id = 1;
 	
 	pPWHistList = new CList<PWHistEntry, PWHistEntry&>;
-	POSITION listPos = m_pwlist.GetHeadPosition();
+	POSITION listPos = m_sorted_pwlist.GetHeadPosition();
 
 	time(&time_now);
 	const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, XML);
@@ -212,7 +212,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter)
 	of << endl;
 
 	while (listPos != NULL) {
-		CItemData temp = m_pwlist.GetAt(listPos);
+		CItemData temp = m_sorted_pwlist.GetAt(listPos);
 #if _MSC_VER >= 1400
 		_itoa_s( id, buffer, 8, 10 );
 #else
@@ -343,7 +343,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter)
 		of << "\t</entry>" << endl;
 		of << endl;
 
-		m_pwlist.GetNext(listPos);
+		m_sorted_pwlist.GetNext(listPos);
 		id++;
 	}
 	of << "</passwordsafe>" << endl;

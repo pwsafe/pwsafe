@@ -11,6 +11,10 @@ releases may be found in the file ChangeLog.txt.
 New Features for 3.03
 =====================
 [1302047] Enable Maximize/Window button
+[1511833] Better formatting of plain text export files. Only the order of
+entries during export has been implemented. Both export to "Plain Text"
+and export in "XML Format" will export the database entries in the order
+as displayed in the "Nested Tree Mode".
 
 Changes to Existing Features in 3.03
 ====================================
