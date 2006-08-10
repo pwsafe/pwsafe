@@ -26,7 +26,6 @@ static char THIS_FILE[] = __FILE__;
   #define HIDE_PASSWORD_TXT	_T("&Hide")
 #endif
 
-const int MAX_PW_HISTORY = 25;
 static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
@@ -65,7 +64,7 @@ BOOL CAddDlg::OnInitDialog()
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
-  pspin->SetRange(1, MAX_PW_HISTORY);
+  pspin->SetRange(1, 255);
   pspin->SetBase(10);
   pspin->SetPos(m_MaxPWHistory);  // Default suggestion of max. to keep!
   return TRUE;
@@ -103,7 +102,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
   DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
   DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
-  DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, MAX_PW_HISTORY);
+  DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 255);
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
 }

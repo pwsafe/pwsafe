@@ -757,11 +757,6 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 		goto relbuf;
 	}
 
-	if (m > 25) {
-		rc = PWH_INVALID_MAX;
-		goto relbuf;
-	}
-
 	if (n > m) {
 		rc = PWH_INVALID_NUM;
 		goto relbuf;
@@ -881,10 +876,6 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 			break;
 		case PWH_INVALID_STATUS:
 			temp.Format(_T("Invalid status value: %d"), s);
-			buffer += temp;
-			break;
-		case PWH_INVALID_MAX:
-			temp.Format(_T("Invalid maximum number of saved old passwords: %d"), m);
 			buffer += temp;
 			break;
 		case PWH_INVALID_NUM:
