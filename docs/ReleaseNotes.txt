@@ -24,6 +24,7 @@ collapsed).
 saved.  Can be overridden on an entry by entry basis. Changing the 
 default number has no effect if history is already saved for a
 particular entry.
+[] Show password history status on main Edit dialog
 
 Changes to Existing Features in 3.03
 ====================================
