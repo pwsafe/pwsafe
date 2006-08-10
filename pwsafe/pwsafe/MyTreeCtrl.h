@@ -60,6 +60,7 @@ private:
   void OnButtonUp(void);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
+  void CollapseBranch(HTREEITEM hItem);
   
 protected:
 	UINT    m_nTimerID;
