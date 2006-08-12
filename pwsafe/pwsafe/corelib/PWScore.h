@@ -105,8 +105,18 @@ class PWScore {
   void SetDisplayStatus(char *p_char_displaystatus, const int length);
   CString GetDisplayStatus() {return m_displaystatus;}
 
+  POSITION GetFirstSortedEntryPosition() const
+    {return m_sorted_pwlist.GetHeadPosition();}
   POSITION AddSortedEntryToTail(const CItemData &item)
     {return m_sorted_pwlist.AddTail(item);}
+  CItemData GetSortedEntryAt(POSITION pos) const
+    {return m_sorted_pwlist.GetAt(pos);}
+  CItemData &GetSortedEntryAt(POSITION pos)
+    {return m_sorted_pwlist.GetAt(pos);}
+  CItemData GetNextSortedEntry(POSITION &pos) const
+    {return m_sorted_pwlist.GetNext(pos);}
+  CItemData &GetNextSortedEntry(POSITION &pos)
+    {return m_sorted_pwlist.GetNext(pos);}
   void RemoveAllSorted() {m_sorted_pwlist.RemoveAll();}
 
  private:

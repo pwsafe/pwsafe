@@ -26,6 +26,7 @@
 #include "TryAgainDlg.h"
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
+#include "FindDlg.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -98,7 +99,8 @@ DboxMain::DboxMain(CWnd* pParent)
      m_core(app.m_core), m_IsStartSilent(false),
      m_hFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
-     m_iSessionEndingStatus(IDIGNORE)
+     m_iSessionEndingStatus(IDIGNORE),
+	 m_bFindActive(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -133,6 +135,7 @@ DboxMain::~DboxMain()
 {
   ::DeleteObject(m_hFontTree);
   ReleasePasswordFont();
+  CFindDlg::EndIt();
 }
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
@@ -180,7 +183,9 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_LIST_VIEW, OnUpdateViewCommand)
    ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_TREE_VIEW, OnUpdateViewCommand)
    ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
    ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
    ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
@@ -563,9 +568,17 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 void
 DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
 {
-  // Use this callback  for commands that need to
+  // Use this callback for commands that need to
   // be disabled in read-only mode
   pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
+}
+
+void
+DboxMain::OnUpdateViewCommand(CCmdUI *pCmdUI)
+{
+  // Use this callback to disable swap between Tree and List modes
+  // during a Find operation
+  pCmdUI->Enable(m_bFindActive ? FALSE : TRUE);
 }
 
 void

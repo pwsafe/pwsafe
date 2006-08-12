@@ -127,7 +127,9 @@ void CPWHistDlg::OnBnClickedClearPWHist()
 void
 CPWHistDlg::OnOK() 
 {
-  UpdateData(TRUE);
+  if (UpdateData(TRUE) != TRUE)
+	  return;
+
   /* Handle history header.
    * Header is in the form fmmnn, where:
    * f = {0,1} if password history is on/off
