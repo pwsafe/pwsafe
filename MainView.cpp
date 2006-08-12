@@ -309,7 +309,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   ASSERT(!str.IsEmpty());
   ASSERT(indices != NULL);
 
-  POSITION listPos = m_core.GetFirstEntryPosition();
+  POSITION listPos;
   CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT;
   CMyString listTitle, savetitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
@@ -318,43 +318,93 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   if (!CaseSensitive)
     searchstr.MakeLower();
 
-  while (listPos != NULL) {
-      const CItemData &curitem = m_core.GetEntryAt(listPos);
-      savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
-      curuser =  curitem.GetUser();
-      curnotes = curitem.GetNotes();
-      curgroup = curitem.GetGroup();
-      curURL = curitem.GetURL();
-      curAT = curitem.GetAutoType();
+  if (m_IsListView) {
+	listPos = m_core.GetFirstEntryPosition();
+	while (listPos != NULL) {
+		const  CItemData &curitem = m_core.GetEntryAt(listPos);
 
-      if (!CaseSensitive) {
-        curtitle.MakeLower();
-        curuser.MakeLower();
-        curnotes.MakeLower();
-        curgroup.MakeLower();
-        curURL.MakeLower();
-        curAT.MakeLower();
-      }
-      if (::strstr(curtitle, searchstr) ||
-          ::strstr(curuser, searchstr) ||
-          ::strstr(curnotes, searchstr) ||
-          ::strstr(curgroup, searchstr) ||
-          ::strstr(curURL, searchstr) ||
-          ::strstr(curAT, searchstr)) {
-        // Find index in displayed list
-        DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
-        ASSERT(di != NULL);
-        int li = di->list_index;
-        ASSERT(CMyString(m_ctlItemList.GetItemText(li, 0)) == savetitle);
-        // add to indices, bump retval
-        indices[retval++] = li;
-      } // match found in m_pwlist
-      m_core.GetNextEntry(listPos);
+		savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+		curuser =  curitem.GetUser();
+		curnotes = curitem.GetNotes();
+		curgroup = curitem.GetGroup();
+		curURL = curitem.GetURL();
+		curAT = curitem.GetAutoType();
+
+		if (!CaseSensitive) {
+			curtitle.MakeLower();
+			curuser.MakeLower();
+			curnotes.MakeLower();
+			curgroup.MakeLower();
+			curURL.MakeLower();
+			curAT.MakeLower();
+		}
+		if (::strstr(curtitle, searchstr) ||
+			::strstr(curuser, searchstr) ||
+			::strstr(curnotes, searchstr) ||
+			::strstr(curgroup, searchstr) ||
+			::strstr(curURL, searchstr) ||
+			::strstr(curAT, searchstr)) {
+			// Find index in displayed list
+			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+			ASSERT(di != NULL);
+			int li = di->list_index;
+			ASSERT(CMyString(m_ctlItemList.GetItemText(li, 0)) == savetitle);
+			// add to indices, bump retval
+			indices[retval++] = li;
+		} // match found in m_pwlist
+		m_core.GetNextEntry(listPos);
+	} // while
+	// Sort indices if in List View
+	if (retval > 1)
+		::qsort((void *)indices, retval, sizeof(indices[0]), compint);
+  } else {
+  	// Walk the Tree!
+	HTREEITEM hItem = NULL;
+	while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+	    if (!m_ctlItemTree.ItemHasChildren(hItem)) {
+            CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+            ASSERT(ci != NULL);
+            m_core.AddSortedEntryToTail(*ci);
+	    }
     }
+	listPos = m_core.GetFirstSortedEntryPosition();
+	while (listPos != NULL) {
+		const CItemData &curitem = m_core.GetSortedEntryAt(listPos);
 
-  // Sort indices
-  if (retval > 1)
-    ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
+	    savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+		curuser =  curitem.GetUser();
+		curnotes = curitem.GetNotes();
+		curgroup = curitem.GetGroup();
+		curURL = curitem.GetURL();
+		curAT = curitem.GetAutoType();
+
+		if (!CaseSensitive) {
+			curtitle.MakeLower();
+			curuser.MakeLower();
+			curnotes.MakeLower();
+			curgroup.MakeLower();
+			curURL.MakeLower();
+			curAT.MakeLower();
+		}
+		if (::strstr(curtitle, searchstr) ||
+			::strstr(curuser, searchstr) ||
+			::strstr(curnotes, searchstr) ||
+			::strstr(curgroup, searchstr) ||
+			::strstr(curURL, searchstr) ||
+			::strstr(curAT, searchstr)) {
+			// Find index in displayed list
+			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+			ASSERT(di != NULL);
+			int li = di->list_index;
+			ASSERT(CMyString(m_ctlItemList.GetItemText(li, 0)) == savetitle);
+			// add to indices, bump retval
+			indices[retval++] = li;
+		} // match found in m_pwlist
+		m_core.GetNextSortedEntry(listPos);
+    } // while
+	m_core.RemoveAllSorted();
+  }
+
   return retval;
 }
 

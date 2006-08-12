@@ -83,6 +83,9 @@ public:
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
   bool GetShowPasswordInList() const {return m_bShowPasswordInList;}
+  void SetFindActive() {m_bFindActive = true;}
+  void SetFindInActive() {m_bFindActive = false;}
+  bool GetCurrentView() {return m_IsListView;}
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -96,6 +99,7 @@ public:
 
   CRUEList m_RUEList;   // recent entry lists
   int m_nColumns;  // accessed from CompareFunc
+
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -141,6 +145,7 @@ protected:
   bool m_bTSUpdated;
   bool m_saveMRU;
   int m_iSessionEndingStatus;
+  bool m_bFindActive;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
@@ -270,6 +275,7 @@ protected:
   afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
   afx_msg void OnUpdateROCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateTVCommand(CCmdUI *pCmdUI);
+  afx_msg void OnUpdateViewCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenu(CMenu* pMenu);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);

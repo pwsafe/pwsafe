@@ -53,11 +53,13 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
           }
           self->MoveWindow(&myRect);
         } // parent not too wide
-        self->ShowWindow(SW_SHOW);
       }
   } else {
     self->BringWindowToTop();
   }
+  self->ShowWindow(SW_SHOW);
+  
+  ((DboxMain*)pParent)->SetFindActive();  //  Prevent switch tree/list display modes
   app.DisableAccelerator(); // don't accel Del when this dlg is shown
 }
 
@@ -74,6 +76,12 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   m_search_text = *lastFind;
   m_status = _T("");
   //}}AFX_DATA_INIT
+}
+
+void CFindDlg::EndIt()
+{
+  if (self != NULL)
+	  delete self;
 }
 
 CFindDlg::~CFindDlg()
@@ -139,6 +147,11 @@ void CFindDlg::OnFind()
     m_lastshown = -1;
   }
 
+  if (m_bLastView != pParent->GetCurrentView()) {
+	  m_bLastView = pParent->GetCurrentView();
+	  m_lastshown = -1;  // Indices will be in different order even if search the same
+  }
+
   if (m_lastshown == -1) {
 
     if (m_indices != NULL) {
@@ -199,9 +212,12 @@ void CFindDlg::OnClose()
 {
   UpdateData(TRUE);
   *m_lastTextPtr = m_search_text;
-  *m_lastCSPtr = m_cs_search;
+  *m_lastCSPtr = m_cs_search; 
 
-  self = NULL;
+  DboxMain* pParent = (DboxMain*)GetParent();
+  pParent->SetFindInActive();  //  Allow switch tree/list display modes again
+  m_bLastView = pParent->GetCurrentView();
+
   app.EnableAccelerator(); // restore accel table
   super::OnCancel();
 }

@@ -169,7 +169,8 @@ CAddDlg::HidePassword()
 void
 CAddDlg::OnOK() 
 {
-  UpdateData(TRUE);
+  if(UpdateData(TRUE) != TRUE)
+	  return;
 
   //Check that data is valid
   if (m_title.IsEmpty()) {

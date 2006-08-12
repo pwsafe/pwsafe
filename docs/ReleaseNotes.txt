@@ -24,19 +24,24 @@ collapsed).
 saved.  Can be overridden on an entry by entry basis. Changing the 
 default number has no effect if history is already saved for a
 particular entry.
-[] Show password history status on main Edit dialog
+[] Change Find processing in Tree view so that entries are shown in Tree
+order rather than List order.
 
 Changes to Existing Features in 3.03
 ====================================
 [1532368] increase password history - now maximum is limited by
 corresponding field in the database - i.e. 1 byte = 255.
+[] Prevent change of view (List <-> Tree) during Find operation as the order
+of found entries differ in these views.
 
 Bugs fixed in 3.03
 ==================
 [1527029] Password count not visible in status bar.
 [1529305] Crash in Password History
-[] View Menu item "Collapse All" did not collapse all embedded groups.
+[] View Menu item "Collapse All" did not collapse all embedded groups
 [] DoubleClick did not work on entries with expired passwords
+[] Fix long standing memory leak in Find processing
+[] Ensure all dialog validation entries are processed
 
 New Features for 3.02
 =====================

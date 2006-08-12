@@ -80,7 +80,8 @@ void CExportXMLDlg::OnHelp()
 
 void CExportXMLDlg::OnOK() 
 {
-  UpdateData();
+  if(UpdateData(TRUE) != TRUE)
+	  return;
   GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
 
   CDialog::OnOK();

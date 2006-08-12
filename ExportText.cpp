@@ -102,7 +102,8 @@ void CExportTextDlg::OnHelp()
 
 void CExportTextDlg::OnOK() 
 {
-  UpdateData();
+  if (UpdateData(TRUE) != TRUE)
+	  return;
   if (m_querysetexpdelim == 1)
     GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
   CDialog::OnOK();

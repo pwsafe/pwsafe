@@ -28,6 +28,7 @@ class CFindDlg : public SUPERCLASS
 
   static void Doit(CWnd* pParent, BOOL *isCS, CMyString *lastFind); // implement Singleton pattern
   ~CFindDlg();
+  static void EndIt();
   // Dialog Data
   //{{AFX_DATA(CFindDlg)
 	enum { IDD = IDD_FIND };
@@ -69,6 +70,7 @@ class CFindDlg : public SUPERCLASS
 
   CMyString *m_lastTextPtr;
   BOOL *m_lastCSPtr;
+  bool m_bLastView;
 };
 
 #undef SUPERCLASS
