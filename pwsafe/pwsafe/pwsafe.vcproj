@@ -156,178 +156,34 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
-				RelativePath="AddDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\AddDlg.cpp">
 			</File>
 			<File
-				RelativePath="ClearQuestionDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\ClearQuestionDlg.cpp">
 			</File>
 			<File
-				RelativePath="ConfirmDeleteDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\ConfirmDeleteDlg.cpp">
 			</File>
 			<File
-				RelativePath="CryptKeyEntry.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\CryptKeyEntry.cpp">
 			</File>
 			<File
-				RelativePath="DboxMain.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\DboxMain.cpp">
 			</File>
 			<File
-				RelativePath="DboxPassword.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\DboxPassword.cpp">
 			</File>
 			<File
 				RelativePath=".\DboxTray.cpp">
 			</File>
 			<File
-				RelativePath="EditDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\EditDlg.cpp">
 			</File>
 			<File
 				RelativePath=".\ExpDTDlg.cpp">
 			</File>
 			<File
-				RelativePath="ExportText.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\ExportText.cpp">
 			</File>
 			<File
 				RelativePath=".\ExportTextXDlg.cpp">
@@ -339,46 +195,10 @@
 				RelativePath=".\ExpPWListDlg.cpp">
 			</File>
 			<File
-				RelativePath="FindDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\FindDlg.cpp">
 			</File>
 			<File
-				RelativePath="ImportDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\ImportDlg.cpp">
 			</File>
 			<File
 				RelativePath=".\ImportXMLDlg.cpp">
@@ -387,46 +207,10 @@
 				RelativePath=".\ImportXMLErrDlg.cpp">
 			</File>
 			<File
-				RelativePath="KeySend.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\KeySend.cpp">
 			</File>
 			<File
-				RelativePath="main.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\main.cpp">
 			</File>
 			<File
 				RelativePath=".\MainEdit.cpp">
@@ -441,419 +225,98 @@
 				RelativePath=".\MainView.cpp">
 			</File>
 			<File
-				RelativePath="model.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\model.cpp">
 			</File>
 			<File
-				RelativePath="MyTreeCtrl.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\MyTreeCtrl.cpp">
 			</File>
 			<File
-				RelativePath="OptionsDisplay.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\OptionsDisplay.cpp">
 			</File>
 			<File
-				RelativePath="OptionsMisc.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\OptionsMisc.cpp">
 			</File>
 			<File
-				RelativePath="OptionsPasswordPolicy.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\OptionsPasswordHistory.cpp">
 			</File>
 			<File
-				RelativePath="OptionsSecurity.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\OptionsPasswordPolicy.cpp">
 			</File>
 			<File
-				RelativePath="OptionsUsername.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\OptionsSecurity.cpp">
 			</File>
 			<File
-				RelativePath="PasskeyChangeDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\OptionsSystem.cpp">
 			</File>
 			<File
-				RelativePath="PasskeyEntry.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\PasskeyChangeDlg.cpp">
 			</File>
 			<File
-				RelativePath="PasskeySetup.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\PasskeyEntry.cpp">
 			</File>
 			<File
-				RelativePath="PwFont.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\PasskeySetup.cpp">
+			</File>
+			<File
+				RelativePath=".\PwFont.cpp">
 			</File>
 			<File
 				RelativePath=".\PWHistDlg.cpp">
 			</File>
 			<File
-				RelativePath="QueryAddName.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\QueryAddName.cpp">
 			</File>
 			<File
-				RelativePath="QuerySetDef.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\QuerySetDef.cpp">
 			</File>
 			<File
 				RelativePath=".\RUEList.cpp">
 			</File>
 			<File
-				RelativePath="SysColStatic.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\SysColStatic.cpp">
 			</File>
 			<File
-				RelativePath="SystemTray.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\SystemTray.cpp">
 			</File>
 			<File
-				RelativePath="ThisMfcApp.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\ThisMfcApp.cpp">
 			</File>
 			<File
-				RelativePath="TryAgainDlg.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\TryAgainDlg.cpp">
 			</File>
 			<File
-				RelativePath="winview.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\winview.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl">
 			<File
-				RelativePath="AddDlg.h">
+				RelativePath=".\AddDlg.h">
 			</File>
 			<File
-				RelativePath="BlowFish.h">
+				RelativePath=".\BlowFish.h">
 			</File>
 			<File
-				RelativePath="ClearQuestionDlg.h">
+				RelativePath=".\ClearQuestionDlg.h">
 			</File>
 			<File
-				RelativePath="ConfirmDeleteDlg.h">
+				RelativePath=".\ConfirmDeleteDlg.h">
 			</File>
 			<File
-				RelativePath="CryptKeyEntry.h">
+				RelativePath=".\CryptKeyEntry.h">
 			</File>
 			<File
-				RelativePath="DboxMain.h">
+				RelativePath=".\DboxMain.h">
 			</File>
 			<File
-				RelativePath="EditDlg.h">
+				RelativePath=".\EditDlg.h">
 			</File>
 			<File
 				RelativePath=".\ExpDTDlg.h">
 			</File>
 			<File
-				RelativePath="ExportText.h">
+				RelativePath=".\ExportText.h">
 			</File>
 			<File
 				RelativePath=".\ExportTextXDlg.h">
@@ -865,13 +328,13 @@
 				RelativePath=".\ExpPWListDlg.h">
 			</File>
 			<File
-				RelativePath="FileDialogExt.h">
+				RelativePath=".\FileDialogExt.h">
 			</File>
 			<File
-				RelativePath="FindDlg.h">
+				RelativePath=".\FindDlg.h">
 			</File>
 			<File
-				RelativePath="ImportDlg.h">
+				RelativePath=".\ImportDlg.h">
 			</File>
 			<File
 				RelativePath=".\ImportXMLDlg.h">
@@ -880,128 +343,131 @@
 				RelativePath=".\ImportXMLErrDlg.h">
 			</File>
 			<File
-				RelativePath="ItemData.h">
+				RelativePath=".\ItemData.h">
 			</File>
 			<File
-				RelativePath="jprdebug.h">
+				RelativePath=".\jprdebug.h">
 			</File>
 			<File
-				RelativePath="model.h">
+				RelativePath=".\model.h">
 			</File>
 			<File
-				RelativePath="MyString.h">
+				RelativePath=".\MyString.h">
 			</File>
 			<File
-				RelativePath="MyTreeCtrl.h">
+				RelativePath=".\MyTreeCtrl.h">
 			</File>
 			<File
-				RelativePath="OptionsDisplay.h">
+				RelativePath=".\OptionsDisplay.h">
 			</File>
 			<File
-				RelativePath="OptionsMisc.h">
+				RelativePath=".\OptionsMisc.h">
 			</File>
 			<File
-				RelativePath="OptionsPasswordPolicy.h">
+				RelativePath=".\OptionsPasswordHistory.h">
 			</File>
 			<File
-				RelativePath="OptionsSecurity.h">
+				RelativePath=".\OptionsPasswordPolicy.h">
 			</File>
 			<File
-				RelativePath="OptionsUsername.h">
+				RelativePath=".\OptionsSecurity.h">
 			</File>
 			<File
-				RelativePath="PasskeyChangeDlg.h">
+				RelativePath=".\OptionsSystem.h">
 			</File>
 			<File
-				RelativePath="PasskeyEntry.h">
+				RelativePath=".\PasskeyChangeDlg.h">
 			</File>
 			<File
-				RelativePath="PasskeySetup.h">
+				RelativePath=".\PasskeyEntry.h">
 			</File>
 			<File
-				RelativePath="PasswordDb.h">
+				RelativePath=".\PasskeySetup.h">
 			</File>
 			<File
-				RelativePath="PasswordSafe.h">
+				RelativePath=".\PasswordDb.h">
 			</File>
 			<File
-				RelativePath="PWCharPool.h">
+				RelativePath=".\PasswordSafe.h">
 			</File>
 			<File
-				RelativePath="PwFont.h">
+				RelativePath=".\PWCharPool.h">
+			</File>
+			<File
+				RelativePath=".\PwFont.h">
 			</File>
 			<File
 				RelativePath=".\PWHistDlg.h">
 			</File>
 			<File
-				RelativePath="PwsBackend.h">
+				RelativePath=".\PwsBackend.h">
 			</File>
 			<File
-				RelativePath="QueryAddName.h">
+				RelativePath=".\QueryAddName.h">
 			</File>
 			<File
-				RelativePath="QuerySetDef.h">
+				RelativePath=".\QuerySetDef.h">
 			</File>
 			<File
-				RelativePath="resource.h">
+				RelativePath=".\resource.h">
 			</File>
 			<File
 				RelativePath=".\RUEList.h">
 			</File>
 			<File
-				RelativePath="sha1.h">
+				RelativePath=".\sha1.h">
 			</File>
 			<File
-				RelativePath="StdAfx.h">
+				RelativePath=".\StdAfx.h">
 			</File>
 			<File
-				RelativePath="SysColStatic.h">
+				RelativePath=".\SysColStatic.h">
 			</File>
 			<File
-				RelativePath="SystemTray.h">
+				RelativePath=".\SystemTray.h">
 			</File>
 			<File
-				RelativePath="ThisMfcApp.h">
+				RelativePath=".\ThisMfcApp.h">
 			</File>
 			<File
-				RelativePath="TryAgainDlg.h">
+				RelativePath=".\TryAgainDlg.h">
 			</File>
 			<File
-				RelativePath="Util.h">
+				RelativePath=".\Util.h">
 			</File>
 			<File
-				RelativePath="view.h">
+				RelativePath=".\view.h">
 			</File>
 			<File
-				RelativePath="winview.h">
+				RelativePath=".\winview.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
 			<File
-				RelativePath="bitmap1.bmp">
+				RelativePath=".\bitmap1.bmp">
 			</File>
 			<File
-				RelativePath="cpane-bw.ico">
+				RelativePath=".\cpane-bw.ico">
 			</File>
 			<File
-				RelativePath="cpane.bmp">
+				RelativePath=".\cpane.bmp">
 			</File>
 			<File
-				RelativePath="cpane.ico">
+				RelativePath=".\cpane.ico">
 			</File>
 			<File
-				RelativePath="cpane_s.bmp">
+				RelativePath=".\cpane_s.bmp">
 			</File>
 			<File
-				RelativePath="cpanetxt.bmp">
+				RelativePath=".\cpanetxt.bmp">
 			</File>
 			<File
-				RelativePath="ibubble.ico">
+				RelativePath=".\ibubble.ico">
 			</File>
 			<File
-				RelativePath="leaf.bmp">
+				RelativePath=".\leaf.bmp">
 			</File>
 			<File
 				RelativePath=".\leaf_exp.bmp">
@@ -1010,44 +476,44 @@
 				RelativePath=".\locked_tray.ico">
 			</File>
 			<File
-				RelativePath="node.bmp">
+				RelativePath=".\node.bmp">
 			</File>
 			<File
-				RelativePath="PasswordSafe.rc">
+				RelativePath=".\PasswordSafe.rc">
 			</File>
 			<File
-				RelativePath="psafetxt.bmp">
+				RelativePath=".\psafetxt.bmp">
 			</File>
 			<File
-				RelativePath="toolbar1.bmp">
+				RelativePath=".\toolbar1.bmp">
 			</File>
 			<File
-				RelativePath="toolbar2.bmp">
+				RelativePath=".\toolbar2.bmp">
 			</File>
 			<File
-				RelativePath="toolbar3.bmp">
+				RelativePath=".\toolbar3.bmp">
 			</File>
 			<File
-				RelativePath="tray.ico">
+				RelativePath=".\tray.ico">
 			</File>
 			<File
 				RelativePath=".\unlocked_tray.ico">
 			</File>
 			<File
-				RelativePath="w95mbx01.ico">
+				RelativePath=".\w95mbx01.ico">
 			</File>
 			<File
-				RelativePath="w95mbx02.ico">
+				RelativePath=".\w95mbx02.ico">
 			</File>
 			<File
-				RelativePath="w95mbx03.ico">
+				RelativePath=".\w95mbx03.ico">
 			</File>
 			<File
-				RelativePath="w95mbx04.ico">
+				RelativePath=".\w95mbx04.ico">
 			</File>
 		</Filter>
 		<File
-			RelativePath="PasswordSafe.exe.manifest">
+			RelativePath=".\PasswordSafe.exe.manifest">
 		</File>
 	</Files>
 	<Globals>

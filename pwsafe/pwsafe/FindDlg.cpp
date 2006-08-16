@@ -188,11 +188,35 @@ void CFindDlg::OnFind()
   // OK, so now we have a (possibly empty) list of items to select.
 
   if (m_numFound > 0) {
-    m_lastshown = (m_lastshown + 1) % m_numFound; //from -1 to 0, cycle afterwards
-    pParent->SelectEntry(m_indices[m_lastshown], TRUE);
-  }
-  if (m_numFound > 1) {
-    SetDlgItemText(IDOK, _T("Find Next"));
+    if (m_numFound == 1) {
+    	pParent->SelectEntry(m_indices[0], TRUE);
+    } else {
+    	m_lastshown++;
+    	if(m_lastshown >= m_numFound) {
+    		int rc = MessageBox(_T("Continue search from the beginning?"),
+    				_T("Search string not found"), MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
+    		switch (rc) {
+    			case IDYES:
+    				m_lastshown = 0;
+    				pParent->SelectEntry(m_indices[m_lastshown], TRUE);
+    				break;
+				case IDNO:
+#if defined(POCKET_PC)
+					OnCancel();
+#else
+					OnClose();
+#endif
+					break;
+    			case IDCANCEL:
+    				break;
+    			default:
+    				ASSERT(FALSE);
+    		}
+    	} else {
+    		pParent->SelectEntry(m_indices[m_lastshown], TRUE);
+    	}
+    	SetDlgItemText(IDOK, _T("Find Next"));
+    }
   }
   // don't call super::OnOK - user will Cancel() to close dbox
 }
@@ -203,7 +227,7 @@ void CFindDlg::OnCancel()
   UpdateData(TRUE);
   *m_lastTextPtr = m_search_text;
   *m_lastCSPtr = m_cs_search;
-  self = NULL;
+
   app.EnableAccelerator(); // restore accel table
   super::DestroyWindow();
 }

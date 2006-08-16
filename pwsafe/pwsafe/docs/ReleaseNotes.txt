@@ -26,6 +26,9 @@ default number has no effect if history is already saved for a
 particular entry.
 [] Change Find processing in Tree view so that entries are shown in Tree
 order rather than List order.
+[] Change Find to stop on the last found item and ask whether to continue
+from the beginning of the database or the user may select this previous
+behavour via a Misc. option.
 
 Changes to Existing Features in 3.03
 ====================================
@@ -33,15 +36,19 @@ Changes to Existing Features in 3.03
 corresponding field in the database - i.e. 1 byte = 255.
 [] Prevent change of view (List <-> Tree) during Find operation as the order
 of found entries differ in these views.
+[] User is again offered the option of accepting weak passphrases, if a
+Security Option is set.
 
 Bugs fixed in 3.03
 ==================
 [1527029] Password count not visible in status bar.
 [1529305] Crash in Password History
+[1528400] Cancel on "Restore from Backup" causes corrupt database
 [] View Menu item "Collapse All" did not collapse all embedded groups
 [] DoubleClick did not work on entries with expired passwords
 [] Fix long standing memory leak in Find processing
 [] Ensure all dialog validation entries are processed
+[] Fix coding typo in code setting persistent boolean preferences
 
 New Features for 3.02
 =====================

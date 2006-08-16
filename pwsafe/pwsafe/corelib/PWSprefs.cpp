@@ -50,6 +50,8 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("DisplayExpandedAddEditDlg"), true, true},
   {_T("MaintainDateTimeStamps"), false, true},
   {_T("SavePasswordHistory"), false, true},
+  {_T("AllowWeakPassphraes"), false, false},
+  {_T("ContinueFindAtEODB"), false, false},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {

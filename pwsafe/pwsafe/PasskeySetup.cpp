@@ -87,14 +87,22 @@ void CPasskeySetup::OnOK()
    // Accept weak passwords in debug build, to make it easier to test
    // Reject weak passwords in Release (prior to 3.02, we allowed the
    // user to accept a weak password if she insisted).
+   // DK - I think this is wrong, so I have put it back in a different form.
 #ifndef _DEBUG
-   CMyString errmess;
-   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
-     CString msg(_T("Weak password:\n"));
-     msg += CString(errmess);
-     AfxMessageBox(msg, MB_ICONSTOP);
-     return;
-   }
+	CMyString errmess;
+	if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
+		CString msg(_T("Weak passphrase:\n\n"));
+		msg += CString(errmess);
+		if (m_bAllowWeakPassphrases) {
+			msg += _T("\n\nAccept it anyway?");
+			int rc = AfxMessageBox(msg, MB_YESNO | MB_ICONSTOP);
+			if (rc == IDNO)
+				return;
+		} else {
+			AfxMessageBox(msg, MB_ICONSTOP);
+			return;
+		}
+	}
 #endif
 
    super::OnOK();

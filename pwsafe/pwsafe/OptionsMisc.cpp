@@ -37,24 +37,31 @@ COptionsMisc::~COptionsMisc()
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
+	
 	//{{AFX_DATA_MAP(COptionsMisc)
 	DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
 	DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
 	DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_maintaindatetimestamps);
 	DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
-	DDX_Radio(pDX, IDC_DOUBLE_CLICK_COPIES, m_doubleclickaction); // only first!
+	DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
 	DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_hotkey_enabled);
 // JHF class CHotKeyCtrl not defined under WinCE
 #if !defined(POCKET_PC)
 	DDX_Control(pDX, IDC_HOTKEY_CTRL, m_hotkey);
 #endif
+	DDX_Check(pDX, IDC_USEDEFUSER, m_usedefuser);
+	DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
+	DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
+	DDX_Check(pDX, IDC_CONTINUE_FIND_AT_EODB, m_continuefindateodb);
 	//}}AFX_DATA_MAP
-}
 
+}
 
 BEGIN_MESSAGE_MAP(COptionsMisc, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsMisc)
 	ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
+	ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
+	ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged) 
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -62,31 +69,17 @@ BOOL COptionsMisc::OnInitDialog()
 {
   CPropertyPage::OnInitDialog();
 
-  CButton *pBCopyRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_COPIES);
-  CButton *pBEditRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_EDITS);
-  CButton *pAutoTypeRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_AUTOTYPES);
-  CButton *pBrowseRB = (CButton *)GetDlgItem(IDC_DOUBLE_CLICK_BROWSE);
-
-  switch (m_doubleclickaction) {
-  case PWSprefs::DoubleClickCopy:
-    pBCopyRB->SetCheck(1); pBEditRB->SetCheck(0);
-    pAutoTypeRB->SetCheck(0); pBrowseRB->SetCheck(0);
-    break;
-  case PWSprefs::DoubleClickEdit:
-    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(1);
-    pAutoTypeRB->SetCheck(0); pBrowseRB->SetCheck(0);
-    break;
-  case PWSprefs::DoubleClickAutoType:
-    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(0);
-    pAutoTypeRB->SetCheck(1); pBrowseRB->SetCheck(0);
-    break;
-  case PWSprefs::DoubleClickBrowse:
-    pBCopyRB->SetCheck(0); pBEditRB->SetCheck(0);
-    pAutoTypeRB->SetCheck(0); pBrowseRB->SetCheck(1);
-    break;
-  default:
-    ASSERT(0);
+  // For some reason, MFC calls us twice when initializing.
+  // Populate the combo box only once.
+  if(m_dblclk_cbox.GetCount() == 0) {
+	m_dblclk_cbox.AddString(_T("Copies password to clipboard"));
+	m_dblclk_cbox.AddString(_T("View/Edit selected entry"));
+	m_dblclk_cbox.AddString(_T("Autotype"));
+	m_dblclk_cbox.AddString(_T("Browse to URL"));
   }
+
+  ASSERT(m_doubleclickaction >= 0 && m_doubleclickaction <= 3);
+  m_dblclk_cbox.SetCurSel(m_doubleclickaction);
 
   // JHF ditto here
 #if !defined(POCKET_PC)
@@ -94,6 +87,9 @@ BOOL COptionsMisc::OnInitDialog()
   if (m_hotkey_enabled == FALSE)
     m_hotkey.EnableWindow(FALSE);
 #endif
+
+  OnUsedefuser();
+
   return TRUE;
 }
 /////////////////////////////////////////////////////////////////////////////
@@ -108,6 +104,27 @@ void COptionsMisc::OnEnableHotKey()
   else
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(FALSE);
 #endif
+}
+
+void COptionsMisc::OnComboChanged() 
+{
+	m_doubleclickaction = m_dblclk_cbox.GetCurSel();
+}
+
+void COptionsMisc::OnUsedefuser() 
+{
+   if (((CButton*)GetDlgItem(IDC_USEDEFUSER))->GetCheck() == 1)
+   {
+      GetDlgItem(IDC_DEFUSERNAME)->EnableWindow(TRUE);
+      GetDlgItem(IDC_STATIC_USERNAME)->EnableWindow(TRUE);
+      GetDlgItem(IDC_QUERYSETDEF)->EnableWindow(FALSE);
+   }
+   else
+   {
+      GetDlgItem(IDC_DEFUSERNAME)->EnableWindow(FALSE);
+      GetDlgItem(IDC_STATIC_USERNAME)->EnableWindow(FALSE);
+      GetDlgItem(IDC_QUERYSETDEF)->EnableWindow(TRUE);
+   }
 }
 
 void COptionsMisc::OnOK() 
