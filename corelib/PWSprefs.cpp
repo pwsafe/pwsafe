@@ -168,7 +168,7 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
 
 void PWSprefs::SetPref(BoolPrefs pref_enum, bool value)
 {
-  m_prefs_changed |= (m_boolValues[pref_enum] != value && m_int_prefs[pref_enum].isPersistent);
+  m_prefs_changed |= (m_boolValues[pref_enum] != value && m_bool_prefs[pref_enum].isPersistent);
   m_boolValues[pref_enum] = value;
   SetPref(m_bool_prefs[pref_enum].name, value);
 }
