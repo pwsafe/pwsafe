@@ -1,9 +1,5 @@
-#if !defined(AFX_OPTIONSMISC_H__CB2E89DC_192A_49C6_83B5_AFC7ED368CB0__INCLUDED_)
-#define AFX_OPTIONSMISC_H__CB2E89DC_192A_49C6_83B5_AFC7ED368CB0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // OptionsMisc.h : header file
 //
 
@@ -26,14 +22,19 @@ public:
 	BOOL	m_saveimmediately;
 	BOOL	m_maintaindatetimestamps;
 	BOOL	m_escexits;
-	int     m_doubleclickaction;
 	BOOL    m_hotkey_enabled;
 	// JHF : class CHotKeyCtrl not supported by WinCE
 #if !defined(POCKET_PC)
 	CHotKeyCtrl	m_hotkey;
 #endif
+	CComboBox m_dblclk_cbox;
+	BOOL	m_usedefuser;
+	BOOL	m_querysetdef;
+	CString	m_defusername;
+	BOOL    m_continuefindateodb;
 	//}}AFX_DATA
 	DWORD m_hotkey_value;
+	int     m_doubleclickaction;
 
 // Overrides
 	// ClassWizard generate virtual function overrides
@@ -49,14 +50,14 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsMisc)
 	afx_msg void OnEnableHotKey();
+	afx_msg void OnUsedefuser();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
 	afx_msg void OnBnClickedMaintaindatetimestamps();
+	afx_msg void OnComboChanged();
 };
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_OPTIONSMISC_H__CB2E89DC_192A_49C6_83B5_AFC7ED368CB0__INCLUDED_)

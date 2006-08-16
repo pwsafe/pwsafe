@@ -14,10 +14,11 @@
 
 #include "PasskeyChangeDlg.h"
 #include "TryAgainDlg.h"
+#include "OptionsSystem.h"
 #include "OptionsSecurity.h"
 #include "OptionsDisplay.h"
-#include "OptionsUsername.h"
 #include "OptionsPasswordPolicy.h"
+#include "OptionsPasswordHistory.h"
 #include "OptionsMisc.h"
 
 #include <afxpriv.h>
@@ -130,15 +131,16 @@ DboxMain::Restore()
   case PWScore::SUCCESS:
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
-    temp =
-      backup
-      + _T("\n\nCan't open file. Please choose another.");
+    temp = backup + _T("\n\nCan't open file. Please choose another.");
     MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
   case TAR_OPEN:
-    ASSERT(0); return PWScore::FAILURE; // shouldn't be an option here
+    ASSERT(0);
+    return PWScore::FAILURE; // shouldn't be an option here
   case TAR_NEW:
-    ASSERT(0); return PWScore::FAILURE; // shouldn't be an option here
+    ASSERT(0);
+    return PWScore::FAILURE; // shouldn't be an option here
   case PWScore::WRONG_PASSWORD:
+  case PWScore::USER_CANCEL:
     /*
       If the user just cancelled out of the password dialog,
       assume they want to return to where they were before...
@@ -180,13 +182,23 @@ DboxMain::OnOptions()
   COptionsDisplay         display;
   COptionsSecurity        security;
   COptionsPasswordPolicy  passwordpolicy;
-  COptionsUsername        username;
+  COptionsPasswordHistory passwordhistory;
+  COptionsSystem          system;
   COptionsMisc            misc;
   PWSprefs               *prefs = PWSprefs::GetInstance();
   BOOL                   prevLockOIT; // lock on idle timeout set?
   /*
   **  Initialize the property pages values.
   */
+  system.m_maxreitems = prefs->
+    GetPref(PWSprefs::MaxREItems);
+  system.m_usesystemtray = prefs->
+    GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
+  system.m_maxmruitems = prefs->
+    GetPref(PWSprefs::MaxMRUItems);
+  system.m_mruonfilemenu = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::MRUOnFileMenu);
+
   display.m_alwaysontop = m_bAlwaysOnTop;
   display.m_pwshowinedit = prefs->
     GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
@@ -196,14 +208,6 @@ DboxMain::OnOptions()
   display.m_dcshowspassword = prefs->
     GetPref(PWSprefs::DCShowsPassword) ? TRUE : FALSE;
 #endif
-  display.m_maxreitems = prefs->
-    GetPref(PWSprefs::MaxREItems);
-  display.m_usesystemtray = prefs->
-    GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
-  display.m_maxmruitems = prefs->
-    GetPref(PWSprefs::MaxMRUItems);
-  display.m_mruonfilemenu = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::MRUOnFileMenu);
   // by strange coincidence, the values of the enums match the indices
   // of the radio buttons in the following :-)
   display.m_treedisplaystatusatopen = prefs->
@@ -221,6 +225,8 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::LockOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prefs->
     GetPref(PWSprefs::IdleTimeout);
+  security.m_bAllowWeakPassphrases = prefs->
+    GetPref(PWSprefs::AllowWeakPassphrases) ? TRUE : FALSE;
 
   passwordpolicy.m_pwlendefault = prefs->
     GetPref(PWSprefs::PWLenDefault);
@@ -236,17 +242,11 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
     GetPref(PWSprefs::PWEasyVision);
-  passwordpolicy.m_savepwhistory = prefs->
-    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
-  passwordpolicy.m_pwhistorynumdefault = prefs->
-    GetPref(PWSprefs::NumPWHistoryDefault);
 
-  username.m_usedefuser = prefs->
-    GetPref(PWSprefs::UseDefUser);
-  username.m_defusername = CString(prefs->
-                                   GetPref(PWSprefs::DefUserName));
-  username.m_querysetdef = prefs->
-    GetPref(PWSprefs::QuerySetDef);
+  passwordhistory.m_savepwhistory = prefs->
+    GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
+  passwordhistory.m_pwhistorynumdefault = prefs->
+    GetPref(PWSprefs::NumPWHistoryDefault);
 
   misc.m_confirmdelete = prefs->
     GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
@@ -261,14 +261,23 @@ DboxMain::OnOptions()
   misc.m_doubleclickaction = prefs->
     GetPref(PWSprefs::DoubleClickAction);
   misc.m_hotkey_value = DWORD(prefs->GetPref(PWSprefs::HotKey));
-  misc.m_hotkey_enabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+  misc.m_hotkey_enabled = prefs->
+    GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+  misc.m_usedefuser = prefs->
+    GetPref(PWSprefs::UseDefUser) ? TRUE : FALSE;
+  misc.m_defusername = CString(prefs->
+    GetPref(PWSprefs::DefUserName));
+  misc.m_querysetdef = prefs->
+    GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
+  misc.m_continuefindateodb = prefs->
+    GetPref(PWSprefs::ContinueFindAtEODB) ? TRUE : FALSE;
 
   optionsDlg.AddPage( &display );
-  optionsDlg.AddPage( &security );
-  optionsDlg.AddPage( &passwordpolicy );
-  optionsDlg.AddPage( &username );
   optionsDlg.AddPage( &misc );
-
+  optionsDlg.AddPage( &passwordpolicy );
+  optionsDlg.AddPage( &passwordhistory );
+  optionsDlg.AddPage( &security );
+  optionsDlg.AddPage( &system );
 
   /*
   **  Remove the "Apply Now" button.
@@ -293,18 +302,19 @@ DboxMain::OnOptions()
       prefs->SetPref(PWSprefs::DCShowsPassword,
                      display.m_dcshowspassword == TRUE);
 #endif
-      prefs->SetPref(PWSprefs::UseSystemTray,
-                     display.m_usesystemtray == TRUE);
-      prefs->SetPref(PWSprefs::MaxREItems,
-                     display.m_maxreitems);
-      prefs->SetPref(PWSprefs::MaxMRUItems,
-                     display.m_maxmruitems);
-      prefs->SetPref(PWSprefs::MRUOnFileMenu,
-                     display.m_mruonfilemenu == TRUE);
       // by strange coincidence, the values of the enums match the indices
       // of the radio buttons in the following :-)
       prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen,
                      display.m_treedisplaystatusatopen);
+
+      prefs->SetPref(PWSprefs::UseSystemTray,
+                     system.m_usesystemtray == TRUE);
+      prefs->SetPref(PWSprefs::MaxREItems,
+                     system.m_maxreitems);
+      prefs->SetPref(PWSprefs::MaxMRUItems,
+                     system.m_maxmruitems);
+      prefs->SetPref(PWSprefs::MRUOnFileMenu,
+                     system.m_mruonfilemenu == TRUE);
 
       prefs->SetPref(PWSprefs::DontAskMinimizeClearYesNo,
                      security.m_clearclipboard == TRUE);
@@ -318,6 +328,8 @@ DboxMain::OnOptions()
                      security.m_LockOnIdleTimeout == TRUE);
       prefs->SetPref(PWSprefs::IdleTimeout,
                      security.m_IdleTimeOut);
+      prefs->SetPref(PWSprefs::AllowWeakPassphrases,
+                     security.m_bAllowWeakPassphrases == TRUE);
 
       prefs->SetPref(PWSprefs::PWLenDefault,
                      passwordpolicy.m_pwlendefault);
@@ -333,18 +345,12 @@ DboxMain::OnOptions()
                      passwordpolicy.m_pwusehexdigits == TRUE);
       prefs-> SetPref(PWSprefs::PWEasyVision,
                       passwordpolicy.m_pweasyvision == TRUE);
-      prefs->SetPref(PWSprefs::SavePasswordHistory,
-      				 passwordpolicy.m_savepwhistory == TRUE);
-      if (passwordpolicy.m_savepwhistory == TRUE)
-          prefs->SetPref(PWSprefs::NumPWHistoryDefault,
-                     passwordpolicy.m_pwhistorynumdefault);
 
-      prefs->SetPref(PWSprefs::UseDefUser,
-                     username.m_usedefuser == TRUE);
-      prefs->SetPref(PWSprefs::DefUserName,
-                     username.m_defusername);
-      prefs->SetPref(PWSprefs::QuerySetDef,
-                     username.m_querysetdef == TRUE);
+      prefs->SetPref(PWSprefs::SavePasswordHistory,
+      				 passwordhistory.m_savepwhistory == TRUE);
+      if (passwordhistory.m_savepwhistory == TRUE)
+          prefs->SetPref(PWSprefs::NumPWHistoryDefault,
+                     passwordhistory.m_pwhistorynumdefault);
 
       prefs->SetPref(PWSprefs::DeleteQuestion,
                      misc.m_confirmdelete == FALSE);
@@ -362,6 +368,37 @@ DboxMain::OnOptions()
                      misc.m_hotkey_enabled == TRUE);
       prefs->SetPref(PWSprefs::HotKey,
                      misc.m_hotkey_value);
+      prefs->SetPref(PWSprefs::UseDefUser,
+                     misc.m_usedefuser == TRUE);
+      prefs->SetPref(PWSprefs::DefUserName,
+                     misc.m_defusername);
+      prefs->SetPref(PWSprefs::QuerySetDef,
+                     misc.m_querysetdef == TRUE);
+      prefs->SetPref(PWSprefs::ContinueFindAtEODB,
+                     misc.m_continuefindateodb == TRUE);
+
+      if (passwordhistory.m_applypwhistory == TRUE) {
+          TCHAR buffer[6];
+#if _MSC_VER >= 1400
+          _stprintf_s(buffer, 6, "1%02x00", passwordhistory.m_pwhistorynumdefault);
+#else
+          _stprintf(buffer, "1%02x00", passwordhistory.m_pwhistorynumdefault);
+#endif
+          POSITION listPos = m_core.GetFirstEntryPosition();
+          int i = 0;
+          while (listPos != NULL) {
+              CItemData &ci = m_core.GetEntryAt(listPos);
+              const CMyString tmp = ci.GetPWHistory();
+              if (tmp.GetLength() < 5 || tmp == _T("00000")) {
+                  ci.SetPWHistory(buffer);
+                  i++;
+              }
+              m_core.GetNextEntry(listPos);
+          } // while
+          CString csMsg;
+          csMsg.Format(_T("%d entries have had their settings changed to save password history."), i);
+          AfxMessageBox(csMsg);
+      }
 
       /* Update status bar */
       switch (misc.m_doubleclickaction) {
@@ -404,14 +441,14 @@ DboxMain::OnOptions()
       if (bOldShowPasswordInList != m_bShowPasswordInList)
 		RefreshList();
 	
-      if (display.m_usesystemtray == TRUE) {
+      if (system.m_usesystemtray == TRUE) {
 		if (app.IsIconVisible() == FALSE)
           app.ShowIcon();
 	  } else { // user doesn't want to display
 		if (app.IsIconVisible() == TRUE)
           app.HideIcon();
       }
-      m_RUEList.SetMax(display.m_maxreitems);
+      m_RUEList.SetMax(system.m_maxreitems);
 
       // update idle timeout values, if changed
       if (security.m_LockOnIdleTimeout != prevLockOIT)
@@ -453,7 +490,7 @@ DboxMain::OnOptions()
        * and in converting pre-2.0 databases.
        */
 
-      m_core.SetDefUsername(username.m_defusername);
-      m_core.SetUseDefUser(username.m_usedefuser == TRUE ? true : false);
+      m_core.SetDefUsername(misc.m_defusername);
+      m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
     }
 }

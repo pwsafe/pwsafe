@@ -44,8 +44,6 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_USESYMBOLS, m_pwusesymbols);
   DDX_Check(pDX, IDC_USEUPPERCASE, m_pwuseuppercase);
   DDX_Check(pDX, IDC_EASYVISION, m_pweasyvision);
-  DDX_Check(pDX, IDC_SAVEPWHISTORY, m_savepwhistory);
-  DDX_Text(pDX, IDC_DEFPWHNUM, m_pwhistorynumdefault);
   //}}AFX_DATA_MAP
 }
 
@@ -58,7 +56,6 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, CPropertyPage)
 	ON_BN_CLICKED(IDC_USESYMBOLS, OnUsesymbols)
 	ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUsehexdigits)
 	ON_BN_CLICKED(IDC_EASYVISION, OnUseeasyvision)
-	ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -75,13 +72,6 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
   pspin->SetRange(4, 1024);
   pspin->SetBase(10);
   pspin->SetPos(m_pwlendefault);
-
-  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
-
-  pspin->SetBuddy(GetDlgItem(IDC_DEFPWHNUM));
-  pspin->SetRange(1, 255);
-  pspin->SetBase(10);
-  pspin->SetPos(m_pwhistorynumdefault);
 
   if (IsDlgButtonChecked(IDC_USELOWERCASE) ||
       IsDlgButtonChecked(IDC_USEUPPERCASE) ||
@@ -213,26 +203,12 @@ BOOL COptionsPasswordPolicy::OnKillActive()
     return FALSE;
   }
   
-  if ((m_pwlendefault < 1) || (m_pwlendefault > 1024)) {
+  if ((m_pwlendefault < 4) || (m_pwlendefault > 1024)) {
   	AfxMessageBox(_T("Default password length must be between 1 and 1024."));
   	((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
   	return FALSE;
   }
-
-  if (m_savepwhistory && ((m_pwhistorynumdefault < 1) || (m_pwhistorynumdefault > 255))) {
-  	AfxMessageBox(_T("Default number of saved password history entries must be between 1 and 255."));
-  	((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
-  	return FALSE;
-  }
-
   //End check
 
   return TRUE;
-}
-
-void COptionsPasswordPolicy::OnSavePWHistory() 
-{
-  BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
-  GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
-  GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(enable);
 }

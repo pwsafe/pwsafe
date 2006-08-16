@@ -1,9 +1,5 @@
-#if !defined(AFX_OPTIONSSECURITY_H__C7A81288_E3D7_487A_BD39_B66B5272FCF9__INCLUDED_)
-#define AFX_OPTIONSSECURITY_H__C7A81288_E3D7_487A_BD39_B66B5272FCF9__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // OptionsSecurity.h : header file
 //
 
@@ -27,6 +23,7 @@ public:
 	BOOL	m_confirmcopy;
 	BOOL	m_LockOnWindowLock;
 	BOOL	m_LockOnIdleTimeout;
+	BOOL	m_bAllowWeakPassphrases;
 	UINT    m_IdleTimeOut;
 	//}}AFX_DATA
 
@@ -44,6 +41,7 @@ protected:
 	//{{AFX_MSG(COptionsSecurity)
 	afx_msg void OnLockbase();
 	virtual BOOL OnInitDialog();
+	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -51,5 +49,3 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_OPTIONSSECURITY_H__C7A81288_E3D7_487A_BD39_B66B5272FCF9__INCLUDED_)

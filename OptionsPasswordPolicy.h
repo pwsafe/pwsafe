@@ -1,9 +1,5 @@
-#if !defined(AFX_OPTIONSPASSWORDPOLICY_H__62F727BC_2E3E_4299_BB17_6FFD9AC73C23__INCLUDED_)
-#define AFX_OPTIONSPASSWORDPOLICY_H__62F727BC_2E3E_4299_BB17_6FFD9AC73C23__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // OptionsPasswordPolicy.h : header file
 //
 
@@ -29,8 +25,6 @@ public:
 	BOOL	m_pwusesymbols;
 	BOOL	m_pwuseuppercase;
 	BOOL	m_pweasyvision;
-	BOOL	m_savepwhistory;
-	UINT	m_pwhistorynumdefault;
 	//}}AFX_DATA
 
 
@@ -53,7 +47,6 @@ protected:
 	afx_msg void OnUsehexdigits();
 	afx_msg void OnUseeasyvision();
 	afx_msg BOOL OnKillActive();
-	afx_msg void OnSavePWHistory();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -61,5 +54,3 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_OPTIONSPASSWORDPOLICY_H__62F727BC_2E3E_4299_BB17_6FFD9AC73C23__INCLUDED_)

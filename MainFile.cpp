@@ -181,6 +181,8 @@ int
 DboxMain::NewFile(void)
 {
   CPasskeySetup dbox_pksetup(this);
+  dbox_pksetup.m_bAllowWeakPassphrases =
+  		PWSprefs::GetInstance()->GetPref(PWSprefs::AllowWeakPassphrases) == TRUE;
   //app.m_pMainWnd = &dbox_pksetup;
   int rc = dbox_pksetup.DoModal();
 

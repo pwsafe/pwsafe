@@ -120,147 +120,28 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
-				RelativePath="BlowFish.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\BlowFish.cpp">
 			</File>
 			<File
 				RelativePath=".\hmac.cpp">
 			</File>
 			<File
-				RelativePath="ItemData.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\ItemData.cpp">
 			</File>
 			<File
-				RelativePath="ItemField.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\ItemField.cpp">
 			</File>
 			<File
-				RelativePath="MyString.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\MyString.cpp">
 			</File>
 			<File
-				RelativePath="PWCharPool.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\PWCharPool.cpp">
 			</File>
 			<File
-				RelativePath="PWScore.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\PWScore.cpp">
 			</File>
 			<File
-				RelativePath="PWSfile.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\PWSfile.cpp">
 			</File>
 			<File
 				RelativePath=".\PWSfileV1V2.cpp">
@@ -269,24 +150,7 @@
 				RelativePath=".\PWSfileV3.cpp">
 			</File>
 			<File
-				RelativePath="PWSprefs.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\PWSprefs.cpp">
 			</File>
 			<File
 				RelativePath=".\PWSrand.cpp">
@@ -298,132 +162,47 @@
 				RelativePath=".\SAXHandlers.cpp">
 			</File>
 			<File
-				RelativePath="sha1.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\sha1.cpp">
 			</File>
 			<File
-				RelativePath="sha256.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\sha256.cpp">
 			</File>
 			<File
-				RelativePath="TwoFish.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\TwoFish.cpp">
 			</File>
 			<File
-				RelativePath="Util.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\Util.cpp">
 			</File>
 			<File
-				RelativePath="UUIDGen.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\UUIDGen.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl">
 			<File
-				RelativePath="BlowFish.h">
+				RelativePath=".\BlowFish.h">
 			</File>
 			<File
 				RelativePath=".\hmac.h">
 			</File>
 			<File
-				RelativePath="ItemData.h">
+				RelativePath=".\ItemData.h">
 			</File>
 			<File
-				RelativePath="ItemField.h">
+				RelativePath=".\ItemField.h">
 			</File>
 			<File
-				RelativePath="MyString.h">
+				RelativePath=".\MyString.h">
 			</File>
 			<File
-				RelativePath="PWCharPool.h">
+				RelativePath=".\PWCharPool.h">
 			</File>
 			<File
-				RelativePath="PWScore.h">
+				RelativePath=".\PWScore.h">
 			</File>
 			<File
-				RelativePath="PWSfile.h">
+				RelativePath=".\PWSfile.h">
 			</File>
 			<File
 				RelativePath=".\PWSfileV1V2.h">
@@ -432,10 +211,10 @@
 				RelativePath=".\PWSfileV3.h">
 			</File>
 			<File
-				RelativePath="PwsPlatform.h">
+				RelativePath=".\PwsPlatform.h">
 			</File>
 			<File
-				RelativePath="PWSprefs.h">
+				RelativePath=".\PWSprefs.h">
 			</File>
 			<File
 				RelativePath=".\PWSrand.h">
@@ -447,22 +226,22 @@
 				RelativePath=".\SAXHandlers.h">
 			</File>
 			<File
-				RelativePath="sha1.h">
+				RelativePath=".\sha1.h">
 			</File>
 			<File
-				RelativePath="sha256.h">
+				RelativePath=".\sha256.h">
 			</File>
 			<File
-				RelativePath="TwoFish.h">
+				RelativePath=".\TwoFish.h">
 			</File>
 			<File
 				RelativePath=".\typedefs.h">
 			</File>
 			<File
-				RelativePath="Util.h">
+				RelativePath=".\Util.h">
 			</File>
 			<File
-				RelativePath="UUIDGen.h">
+				RelativePath=".\UUIDGen.h">
 			</File>
 			<File
 				RelativePath=".\xml_import.h">
