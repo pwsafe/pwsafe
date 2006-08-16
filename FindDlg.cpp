@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 
 CFindDlg *CFindDlg::self = NULL; // for Singleton pattern
 
-void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
+void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *continuefindateodb)
 {
   if (self == NULL) {
     self = new CFindDlg(pParent, isCS, lastFind);
@@ -58,6 +58,7 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
     self->BringWindowToTop();
   }
   self->ShowWindow(SW_SHOW);
+  self->m_bcontinuefindateodb = *continuefindateodb;
   
   ((DboxMain*)pParent)->SetFindActive();  //  Prevent switch tree/list display modes
   app.DisableAccelerator(); // don't accel Del when this dlg is shown
@@ -193,8 +194,11 @@ void CFindDlg::OnFind()
     } else {
     	m_lastshown++;
     	if(m_lastshown >= m_numFound) {
-    		int rc = MessageBox(_T("Continue search from the beginning?"),
-    				_T("Search string not found"), MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
+    		int rc = IDYES;
+    		if (!m_bcontinuefindateodb) {  // Ask
+    			rc = MessageBox(_T("Continue search from the beginning?"),
+    					_T("Search string not found"), MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
+    		}
     		switch (rc) {
     			case IDYES:
     				m_lastshown = 0;

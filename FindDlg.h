@@ -1,9 +1,5 @@
-#if !defined(AFX_FINDDLG_H__D63D8AE1_8908_401A_8770_CBA6AC9F3D84__INCLUDED_)
-#define AFX_FINDDLG_H__D63D8AE1_8908_401A_8770_CBA6AC9F3D84__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // FindDlg.h : header file
 //
 
@@ -26,7 +22,8 @@ class CFindDlg : public SUPERCLASS
  public:
 	typedef SUPERCLASS		super;
 
-  static void Doit(CWnd* pParent, BOOL *isCS, CMyString *lastFind); // implement Singleton pattern
+  static void Doit(CWnd* pParent, BOOL *isCS, CMyString *lastFind,
+                   bool *continuefindateodb); // implement Singleton pattern
   ~CFindDlg();
   static void EndIt();
   // Dialog Data
@@ -71,11 +68,10 @@ class CFindDlg : public SUPERCLASS
   CMyString *m_lastTextPtr;
   BOOL *m_lastCSPtr;
   bool m_bLastView;
+  bool m_bcontinuefindateodb;
 };
 
 #undef SUPERCLASS
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_FINDDLG_H__D63D8AE1_8908_401A_8770_CBA6AC9F3D84__INCLUDED_)
