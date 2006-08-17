@@ -1473,29 +1473,33 @@ DboxMain::OnOK()
   if (m_core.IsChanged()) {
   	const CString msg = _T("Do you want to save changes to the password list?");
 	switch (m_iSessionEndingStatus) {
-		case IDIGNORE:
-			// Session is not ending - user has an option to cancel
-			rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
-			break;
-		case IDOK:
-			// Session is ending - user does not have an option to cancel
-			rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNO);
-			break;
-		case IDNO:
-		case IDYES:
-			// IDYES: Don't ask - user already said YES during OnQueryEndSession
-			// IDNO:  Don't ask - user already said NO during OnQueryEndSession
-			rc = m_iSessionEndingStatus;
+    case IDIGNORE:
+      // Session is not ending - user has an option to cancel
+      rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
+      break;
+    case IDOK:
+      // Session is ending - user does not have an option to cancel
+      rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNO);
+      break;
+    case IDNO:
+    case IDYES:
+      // IDYES: Don't ask - user already said YES during OnQueryEndSession
+      // IDNO:  Don't ask - user already said NO during OnQueryEndSession
+      rc = m_iSessionEndingStatus;
+      break;
+    default:
+      ASSERT(0); // should never happen...
+      rc = IDCANCEL; // ...but if it does, behave conservatively.
 	}
 	switch (rc) {
-		case IDCANCEL:
-			return;
-		case IDYES:
-			rc2 = Save();
-			if (rc2 != PWScore::SUCCESS)
-				return;
-		case IDNO:
-			break;
+    case IDCANCEL:
+      return;
+    case IDYES:
+      rc2 = Save();
+      if (rc2 != PWScore::SUCCESS)
+        return;
+    case IDNO:
+      break;
 	}
   } // core.IsChanged()
 
@@ -1512,7 +1516,7 @@ DboxMain::OnOK()
   if ((!IsWindowVisible() && prefs->GetPref(PWSprefs::UseSystemTray)) ||
       prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo) ||
       (m_iSessionEndingStatus == IDYES)) {
-		app.ClearClipboardData();
+    app.ClearClipboardData();
   }
 
   ClearData();
