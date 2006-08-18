@@ -1416,3 +1416,16 @@ DboxMain::UpdateStatusBar()
 		m_statusBar.SetPaneText(2, s);
 	}
 }
+
+void DboxMain::MakeSortedItemList(ItemList &il)
+{
+  // Walk the Tree!
+  HTREEITEM hItem = NULL;
+  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+    if (!m_ctlItemTree.ItemHasChildren(hItem)) {
+      CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+      ASSERT(ci != NULL);
+      il.AddTail(*ci);
+    }
+  }
+}
