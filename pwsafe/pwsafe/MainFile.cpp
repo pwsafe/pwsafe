@@ -609,19 +609,13 @@ DboxMain::OnExportText()
       if (et.m_querysetexpdelim == 1)
         delimiter = et.m_defexpdelim[0];
 
-	  // Walk the Tree!
-	  HTREEITEM hItem = NULL;
-	  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
-	      if (!m_ctlItemTree.ItemHasChildren(hItem)) {
-              CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-              ASSERT(ci != NULL);
-              m_core.AddSortedEntryToTail(*ci);
-		  }
-      }
+      ItemList sortedItemList;
+      MakeSortedItemList(sortedItemList);
 
-      rc = m_core.WritePlaintextFile(newfile, bwrite_header, bsExport, subgroup, iObject, iFunction, delimiter);
-
-      m_core.RemoveAllSorted();
+      rc = m_core.WritePlaintextFile(newfile, bwrite_header,
+                                     bsExport, subgroup, iObject,
+                                     iFunction, delimiter, &sortedItemList);
+      sortedItemList.RemoveAll(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
         CMyString temp = newfile + _T("\n\nCould not open file for writing!");
@@ -629,7 +623,7 @@ DboxMain::OnExportText()
       }
     } else {
       MessageBox(_T("Passkey incorrect"), _T("Error"));
-      Sleep(3000); // protect against automatic attacks
+      Sleep(3000); // against automatic attacks
     }
   }
 }
@@ -669,19 +663,11 @@ DboxMain::OnExportXML()
       char delimiter;
       delimiter = eXML.m_defexpdelim[0];
       
-	  // Walk the Tree!
-	  HTREEITEM hItem = NULL;
-	  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
-	      if (!m_ctlItemTree.ItemHasChildren(hItem)) {
-              CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-              ASSERT(ci != NULL);
-              m_core.AddSortedEntryToTail(*ci);
-		  }
-      }
+      ItemList sortedItemList;
+      MakeSortedItemList(sortedItemList);
+      rc = m_core.WriteXMLFile(newfile, delimiter, &sortedItemList);
 
-      rc = m_core.WriteXMLFile(newfile, delimiter);
-
-      m_core.RemoveAllSorted();
+      sortedItemList.RemoveAll(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
         CMyString temp = newfile + _T("\n\nCould not open file for writing!");

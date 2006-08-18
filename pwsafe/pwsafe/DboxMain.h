@@ -330,6 +330,7 @@ private:
   void SaveDisplayStatus();
   void RestoreDisplayStatus();
   void GroupDisplayStatus(char *p_char_displaystatus, int &i, bool bSet);
+  void MakeSortedItemList(ItemList &il);
 };
 
 // Following used to keep track of display vs data

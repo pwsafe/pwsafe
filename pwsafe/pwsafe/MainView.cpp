@@ -358,18 +358,11 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 	if (retval > 1)
 		::qsort((void *)indices, retval, sizeof(indices[0]), compint);
   } else {
-  	// Walk the Tree!
-	HTREEITEM hItem = NULL;
-	while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
-	    if (!m_ctlItemTree.ItemHasChildren(hItem)) {
-            CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-            ASSERT(ci != NULL);
-            m_core.AddSortedEntryToTail(*ci);
-	    }
-    }
-	listPos = m_core.GetFirstSortedEntryPosition();
+    ItemList sortedItemList;
+    MakeSortedItemList(sortedItemList);
+	listPos = sortedItemList.GetHeadPosition();
 	while (listPos != NULL) {
-		const CItemData &curitem = m_core.GetSortedEntryAt(listPos);
+		const CItemData &curitem = sortedItemList.GetAt(listPos);
 
 	    savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
 		curuser =  curitem.GetUser();
@@ -400,11 +393,10 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 			// add to indices, bump retval
 			indices[retval++] = li;
 		} // match found in m_pwlist
-		m_core.GetNextSortedEntry(listPos);
+		sortedItemList.GetNext(listPos);
     } // while
-	m_core.RemoveAllSorted();
+	sortedItemList.RemoveAll();
   }
-
   return retval;
 }
 

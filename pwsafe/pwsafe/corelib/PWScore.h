@@ -11,6 +11,8 @@
 #include <vector>
 #include <bitset>
 
+typedef CList<CItemData,CItemData> ItemList;
+
 class PWScore {
  public:
 
@@ -49,10 +51,14 @@ class PWScore {
     {return WriteFile(filename, PWSfile::V17);}
   int WriteV2File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V20);}
-  int WritePlaintextFile(const CMyString &filename, const bool &bwrite_header, const std::bitset<16> &bsExport,
-  						const CString &subgroup, const int &iObject, const int &iFunction,
-						TCHAR &delimiter);
-  int WriteXMLFile(const CMyString &filename, const TCHAR delimiter);
+  int WritePlaintextFile(const CMyString &filename,
+                         const bool &bwrite_header,
+                         const std::bitset<16> &bsExport,
+                         const CString &subgroup, const int &iObject,
+                         const int &iFunction, TCHAR &delimiter,
+                         const ItemList *il = NULL);
+  int WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
+                   const ItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
 			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
   int ImportKeePassTextFile(const CMyString &filename);
@@ -105,20 +111,6 @@ class PWScore {
   void SetDisplayStatus(char *p_char_displaystatus, const int length);
   CString GetDisplayStatus() {return m_displaystatus;}
 
-  POSITION GetFirstSortedEntryPosition() const
-    {return m_sorted_pwlist.GetHeadPosition();}
-  POSITION AddSortedEntryToTail(const CItemData &item)
-    {return m_sorted_pwlist.AddTail(item);}
-  CItemData GetSortedEntryAt(POSITION pos) const
-    {return m_sorted_pwlist.GetAt(pos);}
-  CItemData &GetSortedEntryAt(POSITION pos)
-    {return m_sorted_pwlist.GetAt(pos);}
-  CItemData GetNextSortedEntry(POSITION &pos) const
-    {return m_sorted_pwlist.GetNext(pos);}
-  CItemData &GetNextSortedEntry(POSITION &pos)
-    {return m_sorted_pwlist.GetNext(pos);}
-  void RemoveAllSorted() {m_sorted_pwlist.RemoveAll();}
-
  private:
   CMyString m_currfile; // current pw db filespec
   unsigned char *m_passkey; // encrypted by session key
@@ -137,8 +129,7 @@ class PWScore {
   PWSfile::VERSION m_ReadFileVersion;
 
   // the password database
-  CList<CItemData,CItemData> m_pwlist;
-  CList<CItemData,CItemData> m_sorted_pwlist;
+  ItemList m_pwlist;
 
   bool m_changed;
   HANDLE m_lockFileHandle;
