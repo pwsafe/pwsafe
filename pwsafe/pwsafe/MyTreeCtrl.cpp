@@ -572,8 +572,11 @@ void CMyTreeCtrl::ClearExpanded()
 
 void CMyTreeCtrl::OnExpandAll() 
 {
-  SetRedraw(FALSE);
+  // Updated to test for zero entries!
   HTREEITEM hItem = this->GetRootItem();
+  if (hItem == NULL)
+    return;
+  SetRedraw(FALSE);
   do {
     this->Expand(hItem,TVE_EXPAND);
     hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
@@ -586,8 +589,11 @@ void CMyTreeCtrl::OnExpandAll()
 void CMyTreeCtrl::OnCollapseAll() 
 {
   // Courtesy of Zafir Anjum from www.codeguru.com
-  SetRedraw(FALSE);
+  // Updated to test for zero entries!
   HTREEITEM hItem = this->GetRootItem();
+  if (hItem == NULL)
+    return;
+  SetRedraw(FALSE);
   do {
 	  CollapseBranch(hItem);
   }

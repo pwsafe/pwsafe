@@ -49,6 +49,7 @@ Bugs fixed in 3.03
 [] Fix long standing memory leak in Find processing
 [] Ensure all dialog validation entries are processed
 [] Fix coding typo in code setting persistent boolean preferences
+[] ExpandAll and CollapseAll must be disabled if no entries in Tree
 
 New Features for 3.02
 =====================
