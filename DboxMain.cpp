@@ -594,9 +594,13 @@ DboxMain::OnUpdateTVCommand(CCmdUI *pCmdUI)
 {
   // Use this callback for commands that need to
   // be disabled in ListView mode
-  pCmdUI->Enable(m_IsListView ? FALSE : TRUE);
+  if (m_IsListView) {
+    pCmdUI->Enable(FALSE);
+  } else {
+  	// Should be TRUE in TreeView but only if there are entries
+    pCmdUI->Enable(m_ctlItemTree.GetCount() > 0 ? TRUE : FALSE);
+  }
 }
-
 
 void
 DboxMain::SetChanged(ChangeType changed)
