@@ -70,42 +70,44 @@ void CPasskeySetup::OnCancel()
 
 void CPasskeySetup::OnOK()
 {
-   UpdateData(TRUE);
-   if (m_passkey != m_verify)
-   {
+  UpdateData(TRUE);
+  if (m_passkey != m_verify)
+    {
       AfxMessageBox(_T("The two entries do not match."));
       ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
       return;
-   }
+    }
 
-   if (m_passkey.IsEmpty())
-   {
+  if (m_passkey.IsEmpty())
+    {
       AfxMessageBox(_T("Please enter a key and verify it."));
       ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
       return;
-   }
-   // Accept weak passwords in debug build, to make it easier to test
-   // Reject weak passwords in Release (prior to 3.02, we allowed the
-   // user to accept a weak password if she insisted).
-   // DK - I think this is wrong, so I have put it back in a different form.
-#ifndef _DEBUG
-	CMyString errmess;
-	if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
-		CString msg(_T("Weak passphrase:\n\n"));
-		msg += CString(errmess);
-		if (m_bAllowWeakPassphrases) {
-			msg += _T("\n\nAccept it anyway?");
-			int rc = AfxMessageBox(msg, MB_YESNO | MB_ICONSTOP);
-			if (rc == IDNO)
-				return;
-		} else {
-			AfxMessageBox(msg, MB_ICONSTOP);
-			return;
-		}
-	}
+    }
+  // Vox populi vox dei - folks want the ability to use a weak
+  // passphrase, best we can do is warn them...
+  // If someone want to build a version that insists on proper
+  // passphrases, then just uncomment the following line
+  //#define PWS_FORCE_STRONG_PASSPHRASE
+#ifndef _DEBUG // for debug, we want no checks at all, to save time
+  CMyString errmess;
+  if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
+    CString msg(_T("Weak passphrase:\n\n"));
+    msg += CString(errmess);
+#ifndef PWS_FORCE_STRONG_PASSPHRASE
+    msg += _T("\nUse it anyway?");
+    int rc = AfxMessageBox(msg, MB_YESNO | MB_ICONSTOP);
+    if (rc == IDNO)
+      return;
+#else
+    msg += _T("\nPlease try another");
+    AfxMessageBox(msg, MB_OK | MB_ICONSTOP);
+    return
+#endif // PWS_FORCE_STRONG_PASSPHRASE
+  }
 #endif
 
-   super::OnOK();
+  super::OnOK();
 }
 
 
