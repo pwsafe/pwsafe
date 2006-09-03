@@ -788,6 +788,7 @@ DboxMain::OnToolTipText(UINT,
                         NMHDR* pNMHDR,
                         LRESULT* pResult)
 // This code is copied from the DLGCBR32 example that comes with MFC
+// Updated by MS on 25/09/2005
 {
 #if !defined(POCKET_PC)
   ASSERT(pNMHDR->code == TTN_NEEDTEXTA || pNMHDR->code == TTN_NEEDTEXTW);
@@ -799,8 +800,8 @@ DboxMain::OnToolTipText(UINT,
   // need to handle both ANSI and UNICODE versions of the message
   TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
   TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
-  TCHAR szFullText[256];
-  CString strTipText;
+  TCHAR tc_FullText[4096];  // Maxsize of a string in a resource file
+  CString cs_TipText;
   UINT nID = pNMHDR->idFrom;
   if (pNMHDR->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
       pNMHDR->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
@@ -808,35 +809,69 @@ DboxMain::OnToolTipText(UINT,
     nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
   }
 
-  if (nID != 0) // will be zero on a separator
-    {
-      AfxLoadString(nID, szFullText);
-      // this is the command id, not the button index
-      AfxExtractSubString(strTipText, szFullText, 1, '\n');
-    }
+  if (nID != 0) { // will be zero on a separator
+    if (AfxLoadString(nID, tc_FullText, 4095) == 0)
+       return FALSE;
+
+    // this is the command id, not the button index
+    if (AfxExtractSubString(cs_TipText, tc_FullText, 1, '\n') == FALSE)
+       return FALSE;
+  } else
+    return FALSE;
+
+  // Assume ToolTip is greater than 80 characters in ALL cases and so use
+  // the pointer approach.
+  // Otherwise comment out the definition of LONG_TOOLTIPS below
+
+#define LONG_TOOLTIPS
+
+#ifdef LONG_TOOLTIPS
+#ifndef _UNICODE
+  pTTTA->lpszText = (LPSTR)(LPCTSTR)cs_TipText;
+#else
+  pTTTW->lpszText = (LPSTR)(LPCTSTR)cs_TipText;
+#endif
+
+#else  // Short Tooltips!
 #ifndef _UNICODE
   if (pNMHDR->code == TTN_NEEDTEXTA)
-    lstrcpyn(pTTTA->szText, strTipText,
-             (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
-#if 0 // build problem with new cl? - jpr
-  else
-    _mbstowcsz(pTTTW->szText, strTipText,
-               (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])));
-#endif // 0
+#if _MSC_VER >= 1400
+    _tcsncpy_s(pTTTA->szText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])),
+      cs_TipText, _TRUNCATE);
 #else
-  if (pNMHDR->code == TTN_NEEDTEXTA)
-    _wcstombsz(pTTTA->szText, strTipText,
-               (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
-  else
-    lstrcpyn(pTTTW->szText, strTipText,
-             (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])));
+    _tcsncpy(pTTTA->szText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])),
+      cs_TipText);
 #endif
+  else {
+    int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText, 
+      sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
+    if (n > 0)
+      pTTTW->szText[n-1] = 0;
+  }
+#else
+  if (pNMHDR->code == TTN_NEEDTEXTA) {
+    int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1, 
+      pTTTA->szText, sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
+      NULL, NULL);
+    if (n > 0)
+      pTTTA->szText[n-1] = 0;
+  } else
+#if _MSC_VER >= 1400
+    _tcsncpy_s(pTTTW->szText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])),
+      cs_TipText, _TRUNCATE);
+#else
+    _tcsncpy(pTTTW->szText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])),
+      cs_TipText);
+#endif
+#endif  // _UNICODE
+#endif  // LONG_TOOLTIPS
+
   *pResult = 0;
 
   // bring the tooltip window above other popup windows
   ::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, 0, 0, 0, 0,
                  SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
-#endif
+#endif  // POCKET_PC
 
   return TRUE;    // message was handled
 }
