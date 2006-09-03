@@ -29,6 +29,7 @@ order rather than List order.
 [] Change Find to stop on the last found item and ask whether to continue
 from the beginning of the database or the user may select this previous
 behavour via a Misc. option.
+[] Allow tooltips to be longer than 79 characters + update for VC8
 
 Changes to Existing Features in 3.03
 ====================================
