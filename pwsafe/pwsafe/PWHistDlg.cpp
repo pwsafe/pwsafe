@@ -63,7 +63,8 @@ BOOL CPWHistDlg::OnInitDialog()
   GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
 
   if (m_IsReadOnly) {
-    GetDlgItem(IDOK)->EnableWindow(FALSE);
+    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
     GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
     GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);  // overrides count
   }
