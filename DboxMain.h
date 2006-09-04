@@ -147,6 +147,9 @@ protected:
   int m_iSessionEndingStatus;
   bool m_bFindActive;
 
+  WCHAR *m_pwchTip; 
+  TCHAR *m_pchTip; 
+
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
   int insertItem(CItemData &itemData, int iIndex = -1);

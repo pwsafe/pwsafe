@@ -286,6 +286,8 @@ BOOL CEditDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
+  if (m_IsReadOnly)
+    GetDlgItem(IDOK)->EnableWindow(FALSE);
 
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 

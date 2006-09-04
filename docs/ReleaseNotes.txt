@@ -45,6 +45,7 @@ Bugs fixed in 3.03
 [1527029] Password count not visible in status bar.
 [1529305] Crash in Password History
 [1528400] Cancel on "Restore from Backup" causes corrupt database
+[1551034] Modifying records in read-only mode
 [] View Menu item "Collapse All" did not collapse all embedded groups
 [] DoubleClick did not work on entries with expired passwords
 [] Fix long standing memory leak in Find processing
