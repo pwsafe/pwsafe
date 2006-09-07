@@ -100,7 +100,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_hFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
-	 m_bFindActive(false)
+  m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -110,7 +110,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
   ClearData();
-
 
   /*
    * current file and current backup file specs are stored in registry
@@ -129,17 +128,12 @@ DboxMain::DboxMain(CWnd* pParent)
 #endif
 
   m_ctlItemTree.SetDboxPointer((void *)this);
-  m_pchTip = NULL;
-  m_pwchTip = NULL;
 }
 
 DboxMain::~DboxMain()
 {
-  if (m_pchTip != NULL)
-    delete m_pchTip;
-
-  if (m_pwchTip != NULL)
-    delete m_pwchTip;
+  delete m_pchTip;
+  delete m_pwchTip;
 
   ::DeleteObject(m_hFontTree);
   ReleasePasswordFont();
@@ -819,11 +813,11 @@ DboxMain::OnToolTipText(UINT,
 
   if (nID != 0) { // will be zero on a separator
     if (AfxLoadString(nID, tc_FullText, 4095) == 0)
-       return FALSE;
+      return FALSE;
 
     // this is the command id, not the button index
     if (AfxExtractSubString(cs_TipText, tc_FullText, 1, '\n') == FALSE)
-       return FALSE;
+      return FALSE;
   } else
     return FALSE;
 
@@ -836,16 +830,14 @@ DboxMain::OnToolTipText(UINT,
 #ifdef LONG_TOOLTIPS
 #ifndef _UNICODE
   if(pNMHDR->code == TTN_NEEDTEXTA) {
-    if (m_pchTip != NULL)
-      delete m_pchTip;
+    delete m_pchTip;
 
     m_pchTip = new TCHAR[cs_TipText.GetLength() + 1];
     lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength()+1);
     pTTTW->lpszText = (WCHAR*)m_pchTip;
   } else {
-    if (cs_TipText.GetLength()) {
-      if (m_pwchTip != NULL)
-        delete m_pwchTip;
+    if (cs_TipText.GetLength() > 0) {
+      delete m_pwchTip;
 
       m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
       _mbstowcsz(m_pwchTip, cs_TipText, cs_TipText.GetLength()+1); 
@@ -854,15 +846,13 @@ DboxMain::OnToolTipText(UINT,
   }
 #else
   if(pNMHDR->code == TTN_NEEDTEXTA) {
-    if (m_pchTip != NULL)
-       delete m_pchTip;
+    delete m_pchTip;
 
     m_pchTip = new _TCHAR[cs_TipText.GetLength() + 1];
     lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1); 
     pTTTA->lpszText = (LPSTR)m_pchTip;
   } else {
-    if (m_pwchTip != NULL)
-      delete m_pwchTip;
+    delete m_pwchTip;
 
     m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
     lstrcpyn(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
@@ -876,29 +866,30 @@ DboxMain::OnToolTipText(UINT,
   if (pNMHDR->code == TTN_NEEDTEXTA)
 #if _MSC_VER >= 1400
     _tcsncpy_s(pTTTA->szText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])),
-      cs_TipText, _TRUNCATE);
+               cs_TipText, _TRUNCATE);
 #else
-    _tcsncpy(pTTTA->szText, cs_TipText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
+  _tcsncpy(pTTTA->szText, cs_TipText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
 #endif
   else {
     int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText, 
-      sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
+                                sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
     if (n > 0)
       pTTTW->szText[n-1] = 0;
   }
 #else
   if (pNMHDR->code == TTN_NEEDTEXTA) {
     int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1, 
-      pTTTA->szText, sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
-      NULL, NULL);
+                                pTTTA->szText,
+                                sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
+                                NULL, NULL);
     if (n > 0)
       pTTTA->szText[n-1] = 0;
   } else
 #if _MSC_VER >= 1400
     _tcsncpy_s(pTTTW->szText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])),
-      cs_TipText, _TRUNCATE);
+               cs_TipText, _TRUNCATE);
 #else
-    _tcsncpy(pTTTW->szText, cs_TipText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])));
+  _tcsncpy(pTTTW->szText, cs_TipText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])));
 #endif
 #endif // _UNICODE
 #endif // LONG_TOOLTIPS
@@ -909,7 +900,6 @@ DboxMain::OnToolTipText(UINT,
   ::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, 0, 0, 0, 0,
                  SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
 #endif  // POCKET_PC
-
   return TRUE;    // message was handled
 }
 
