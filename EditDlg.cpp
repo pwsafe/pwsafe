@@ -129,10 +129,10 @@ END_MESSAGE_MAP()
 void CEditDlg::OnShowpassword() 
 {
   UpdateData(TRUE);
-
   if (m_isPwHidden) {
     ShowPassword();
   } else {
+    m_realpassword = m_password; // save new password
     HidePassword();
   }
   UpdateData(FALSE);

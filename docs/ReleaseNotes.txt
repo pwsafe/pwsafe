@@ -1,5 +1,5 @@
-Password Safe 3.03 Release Note - July 2006
-===========================================
+Password Safe 3.03 Release Note - September 2006
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.03. For a short description of Password
@@ -45,13 +45,14 @@ Bugs fixed in 3.03
 [1527029] Password count not visible in status bar.
 [1529305] Crash in Password History
 [1528400] Cancel on "Restore from Backup" causes corrupt database
-[1551034] Modifying records in read-only mode
+[1551034] Entries can no longer be changed in read-only mode
 [] View Menu item "Collapse All" did not collapse all embedded groups
 [] DoubleClick did not work on entries with expired passwords
 [] Fix long standing memory leak in Find processing
 [] Ensure all dialog validation entries are processed
 [] Fix coding typo in code setting persistent boolean preferences
 [] ExpandAll and CollapseAll must be disabled if no entries in Tree
+[1540106] Fixed incorrect link to Twofish web page.
 
 New Features for 3.02
 =====================
