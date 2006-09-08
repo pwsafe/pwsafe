@@ -52,7 +52,10 @@ Bugs fixed in 3.03
 [] Ensure all dialog validation entries are processed
 [] Fix coding typo in code setting persistent boolean preferences
 [] ExpandAll and CollapseAll must be disabled if no entries in Tree
-[1540106] Fixed incorrect link to Twofish web page.
+[1540106] Fixed incorrect link to Twofish web page
+[1554253] Show/Unhide password no longer loses changes to password
+[1527144] No more multiple combination dialogs when restoring window
+from system tray
 
 New Features for 3.02
 =====================
