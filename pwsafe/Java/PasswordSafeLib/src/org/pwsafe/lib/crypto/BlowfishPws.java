@@ -8,7 +8,7 @@ package org.pwsafe.lib.crypto;
 
 import org.pwsafe.lib.Util;
 
-import BlowfishJ.BlowfishCBC;
+import net.sourceforge.blowfishj.BlowfishCBC;
 
 /**
  * An extension to the BlowfishJ.BlowfishCBC to allow it to be used for PasswordSafe. Byte 

@@ -23,7 +23,7 @@ import org.pwsafe.lib.exception.EndOfFileException;
 import org.pwsafe.lib.exception.PasswordSafeException;
 import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
-import BlowfishJ.SHA1;
+import net.sourceforge.blowfishj.SHA1;
 
 /**
  * This is the base class for all variations of the PasswordSafe file format.

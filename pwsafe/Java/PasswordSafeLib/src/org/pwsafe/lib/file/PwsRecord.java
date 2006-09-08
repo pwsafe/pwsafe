@@ -76,7 +76,8 @@ public abstract class PwsRecord implements Comparable
 		{
 			RawData = file.readBlock();
 			Length	= Util.getIntFromByteArray( RawData, 0 );
-			Type	= Util.getIntFromByteArray( RawData, 4 );
+			//Type	= Util.getIntFromByteArray( RawData, 4 );
+			Type = RawData[4] & 0x000000ff; // rest of header is now random data
 			Data	= PwsFile.allocateBuffer( Length );
 			
 			file.readDecryptedBytes( Data );
@@ -456,6 +457,7 @@ public abstract class PwsRecord implements Comparable
 		
 		Util.putIntToByteArray( lenBlock, dataBlock.length, 0 );
 		Util.putIntToByteArray( lenBlock, type, 4 );
+		//TODO put random bytes here
 
 		dataBlock	= Util.cloneByteArray( dataBlock, PwsFile.calcBlockLength(dataBlock.length) );
 

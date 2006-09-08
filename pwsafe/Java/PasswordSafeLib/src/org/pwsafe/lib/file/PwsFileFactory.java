@@ -18,8 +18,8 @@ import org.pwsafe.lib.exception.InvalidPassphraseException;
 import org.pwsafe.lib.exception.PasswordSafeException;
 import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
-import BlowfishJ.BlowfishECB;
-import BlowfishJ.SHA1;
+import net.sourceforge.blowfishj.BlowfishECB;
+import net.sourceforge.blowfishj.SHA1;
 
 /**
  * This is a singleton factory class used to load a PasswordSafe file.  It is able to
@@ -168,7 +168,7 @@ public class PwsFileFactory
 		Util.bytesToLittleEndian( tmp );
 		tmp = Util.cloneByteArray( tmp, 10 );
 
-		md.clearContext();
+		md.clear(); 
 		md.update( tmp, 0, tmp.length );
 		md.finalize();
 		
