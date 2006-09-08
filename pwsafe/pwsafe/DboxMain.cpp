@@ -710,17 +710,26 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   	m_IsReadOnly = true;
     bFileIsReadOnly = true;
   }
-  CPasskeyEntry dbox_pkentry(this, filename, index, m_IsReadOnly, bFileIsReadOnly);
-  app.DisableAccelerator();
-  int rc = dbox_pkentry.DoModal();
-  app.EnableAccelerator();
+  static CPasskeyEntry *dbox_pkentry = NULL;
+  int rc = 0;
+  if (dbox_pkentry == NULL) {
+    dbox_pkentry = new CPasskeyEntry(this, filename,
+                                     index, m_IsReadOnly, bFileIsReadOnly);
+    app.DisableAccelerator();
+    rc = dbox_pkentry->DoModal();
+    app.EnableAccelerator();
+  } else { // already present - bring to front
+    dbox_pkentry->BringWindowToTop(); // can happen with systray lock
+    return PWScore::USER_CANCEL; // multi-thread, 
+                                 // original thread will continue processing
+  }
 
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
     CMyString locker(_T("")); // null init is important here
-    passkey = dbox_pkentry.GetPasskey();
+    passkey = dbox_pkentry->GetPasskey();
 	// This dialog's setting of read-only overrides file dialog
-	m_IsReadOnly = dbox_pkentry.IsReadOnly();
+	m_IsReadOnly = dbox_pkentry->IsReadOnly();
 	SetReadOnly(m_IsReadOnly);
     // Set read-only mode if user explicitly requested it OR
     // we could not create a lock file.
@@ -761,7 +770,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     } else // locker.IsEmpty() means no lock needed or lock was successful
       retval = PWScore::SUCCESS;
   } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
-    int cancelreturn = dbox_pkentry.GetStatus();
+    int cancelreturn = dbox_pkentry->GetStatus();
     switch (cancelreturn)
       {
       case TAR_OPEN:
@@ -781,7 +790,8 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         break;
       }
   }
-
+  delete dbox_pkentry;
+  dbox_pkentry = NULL;
   return retval;
 }
 
