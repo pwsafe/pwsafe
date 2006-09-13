@@ -1,0 +1,6 @@
+
+These directories contain platform specific SWT binaries. The full source can be downloaded from http://www.eclipse.org/swt.
+
+SWT is licensed under the Eclipse Public License, and OSI approved open source license.
+
+For more information on the Eclipse Public License, see http://www.eclipse.org/legal/epl-v10.html
