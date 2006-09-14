@@ -6,8 +6,9 @@
  */
 package org.pwsafe.lib;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.commons.logging.LogFactory;
+//import org.apache.log4j.Logger;
+//import org.apache.log4j.xml.DOMConfigurator;
 
 /**
  * This class provides logging facilities using log4j.
@@ -16,17 +17,18 @@ import org.apache.log4j.xml.DOMConfigurator;
  */
 public class Log
 {
-	private int		DebugLevel;
-	private Logger	TheLogger;
+	private int	DebugLevel;
+	private org.apache.commons.logging.Log	TheLogger;
 
 	static
 	{
-		DOMConfigurator.configure( "log-config.xml" );
+		//DOMConfigurator.configure( "log-config.xml" );
 	}
 
 	private Log( String name )
 	{
-		TheLogger	= Logger.getLogger( name );
+		//TheLogger	= Logger.getLogger( name );
+		TheLogger = LogFactory.getLog(name);
 		setDebugLevel( 3 );
 	}
 
