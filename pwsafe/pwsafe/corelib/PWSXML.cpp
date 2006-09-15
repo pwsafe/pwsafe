@@ -7,7 +7,7 @@
 #include "MyString.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <atlcomcli.h>
+#include <atlcomcli.h> // needed for VS7.1, not 8
 #include "xml_import.h"
 
 #ifdef _DEBUG

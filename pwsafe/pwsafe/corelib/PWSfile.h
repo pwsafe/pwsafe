@@ -50,7 +50,7 @@ class PWSfile {
   const CMyString &GetPrefString() const {return m_prefString;}
   void SetDisplayStatus(const CString &displaystatus) {m_file_displaystatus = displaystatus;}
   const CString &GetDisplayStatus() const {return m_file_displaystatus;}
-
+  void SetUseUTF8(bool flag) { m_useUTF8 = flag; } // nop for v1v2
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
@@ -71,6 +71,7 @@ class PWSfile {
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
+  bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
 };
 
 #endif PWSfile_h
