@@ -44,7 +44,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("LockOnWindowLock"), true, true},
   {_T("LockOnIdleTimeout"), true, true},
   {_T("EscExits"), true, true},
-  {_T("IsUTF8"), false, true},
+  {_T("IsUTF8"), true, true}, // default true from 3.x for non-win9x
   {_T("HotKeyEnabled"), false, true},
   {_T("MRUOnFileMenu"), true, true},
   {_T("DisplayExpandedAddEditDlg"), true, true},

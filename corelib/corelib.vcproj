@@ -176,6 +176,9 @@
 			<File
 				RelativePath=".\UUIDGen.cpp">
 			</File>
+			<File
+				RelativePath=".\XMLprefs.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -245,6 +248,9 @@
 			</File>
 			<File
 				RelativePath=".\xml_import.h">
+			</File>
+			<File
+				RelativePath=".\XMLprefs.h">
 			</File>
 		</Filter>
 	</Files>
