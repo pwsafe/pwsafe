@@ -667,11 +667,11 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 #if _MSC_VER >= 1400
 		struct tm st;
     	localtime_s(&st, &t);  // secure version
-    	if ((result_format & EXPORT_IMPORT) == EXPORT_IMPORT)
+    	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
       		sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
-    	else if ((result_format & XML) == XML)
+    	else if ((result_format & TMC_XML) == TMC_XML)
       		sprintf_s(time_str, 20, "%04d-%02d-%02dT%02d:%02d:%02d",
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
@@ -683,12 +683,12 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 		struct tm *st;
     	st = localtime(&t);
         ASSERT(st != NULL); // null means invalid time
-    	if ((result_format & EXPORT_IMPORT) == EXPORT_IMPORT) {
+    	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT) {
       		sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
             	  st->tm_hour, st->tm_min, st->tm_sec);
       		t_str_ptr = time_str;
-    	} else if ((result_format & XML) == XML) {
+    	} else if ((result_format & TMC_XML) == TMC_XML) {
       		sprintf(time_str, "%04d-%02d-%02dT%02d:%02d:%02d",
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
             	  st->tm_hour, st->tm_min, st->tm_sec);
@@ -698,7 +698,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
     	ret = t_str_ptr;
 #endif
   } else {
-  	if ((result_format & ASC_UNKNOWN) == ASC_UNKNOWN)
+  	if ((result_format & TMC_ASC_UNKNOWN) == TMC_ASC_UNKNOWN)
     	ret = UNKNOWN_TIME_STR;
     else
     	ret = _T("");

@@ -24,7 +24,6 @@ public:
    CMyString	m_passkey;
    CMyString	m_verify;
    //}}AFX_DATA
-   bool m_bAllowWeakPassphrases;
 
 
 protected:

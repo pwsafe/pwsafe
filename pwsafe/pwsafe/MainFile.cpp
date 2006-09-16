@@ -181,8 +181,6 @@ int
 DboxMain::NewFile(void)
 {
   CPasskeySetup dbox_pksetup(this);
-  dbox_pksetup.m_bAllowWeakPassphrases =
-  		PWSprefs::GetInstance()->GetPref(PWSprefs::AllowWeakPassphrases) == TRUE;
   //app.m_pMainWnd = &dbox_pksetup;
   int rc = dbox_pksetup.DoModal();
 
@@ -225,6 +223,7 @@ DboxMain::Open()
                    _T("|"),
                    this);
     fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Open:");
+	fd.m_ofn.Flags &= ~OFN_READONLY;
     rc = fd.DoModal();
     const bool last_ro = m_IsReadOnly; // restore if user cancels
     SetReadOnly(fd.GetReadOnlyPref() == TRUE);

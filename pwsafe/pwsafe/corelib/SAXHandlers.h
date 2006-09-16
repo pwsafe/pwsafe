@@ -3,9 +3,10 @@
 
 #pragma once
 
-#include "xml_import.h"
 #include "MyString.h"
 #include "ItemData.h"
+#include "xml_import.h"
+using namespace MSXML2;
 
 // Local variables
 enum {PASSWORDSAFE = 0, PW_ENTRY, PW_GROUP, PW_TITLE, PW_USERNAME, PW_PASSWORD, PW_URL,
@@ -69,7 +70,7 @@ private:
 };
 
 //	-----------------------------------------------------------------------
-class PWSSAXContentHandler: public ISAXContentHandler
+class PWSSAXContentHandler: public MSXML2::ISAXContentHandler
 {
 public:
 	// Local variables & function
@@ -82,7 +83,6 @@ public:
 	// Standard functions
 	PWSSAXContentHandler();
 	virtual ~PWSSAXContentHandler();
-
 
 	//	This must be correctly implemented, if your handler must be a COM Object
 	//	the current implementation is NOT thread-safe

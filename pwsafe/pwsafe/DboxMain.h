@@ -86,6 +86,7 @@ public:
   void SetFindActive() {m_bFindActive = true;}
   void SetFindInActive() {m_bFindActive = false;}
   bool GetCurrentView() {return m_IsListView;}
+  void IssueError(LONG lRet, const CString &csFunction);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -129,7 +130,9 @@ protected:
   CStatusBar m_statusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
-  UINT statustext[3];
+  enum {SB_DBLCLICK = 0, SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
+        SB_TOTAL /* this must be the last entry */};
+  UINT statustext[SB_TOTAL];
 #endif
 
   bool m_windowok;
@@ -182,6 +185,7 @@ protected:
   void SetTreeView();
   void SetToolbar(int menuItem);
   void UpdateStatusBar();
+  bool UpdatePasswordHistory(const int &iAction, const int &num_default);
 
   //Version of message functions with return values
   int Save(void);

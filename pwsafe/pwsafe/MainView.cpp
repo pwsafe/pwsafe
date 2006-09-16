@@ -217,16 +217,17 @@ DboxMain::setupBars()
 #if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
 
-  statustext[0] = IDS_STATCOMPANY;
-  statustext[1] = IDS_READ_ONLY;
-  statustext[2] = IDS_STAT_NUM_IN_DB;
+  statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
+  statustext[SB_MODIFIED] = IDS_MODIFIED;
+  statustext[SB_READONLY] = IDS_READ_ONLY;
+  statustext[SB_NUM_ENT] = IDS_STAT_NUM_IN_DB;
 
   // Add the status bar
   if (m_statusBar.Create(this))
     {
-      m_statusBar.SetIndicators(statustext, 3);
+      m_statusBar.SetIndicators(statustext, SB_TOTAL);
       // Make a sunken or recessed border around the first pane
-      m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+      m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
     }             
 
   // Add the ToolBar.
@@ -687,17 +688,17 @@ DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *)
 		      GetPref(PWSprefs::DoubleClickAction));
 
   switch (dca) {
-  case PWSprefs::DoubleClickCopy: statustext[0] = IDS_STATCOPY; break;
-  case PWSprefs::DoubleClickEdit: statustext[0] = IDS_STATEDIT; break;
-  case PWSprefs::DoubleClickAutoType: statustext[0] = IDS_STATAUTOTYPE; break;
-  case PWSprefs::DoubleClickBrowse: statustext[0] = IDS_STATBROWSE; break;
+  case PWSprefs::DoubleClickCopy: statustext[SB_DBLCLICK] = IDS_STATCOPY; break;
+  case PWSprefs::DoubleClickEdit: statustext[SB_DBLCLICK] = IDS_STATEDIT; break;
+  case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+  case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
   default: ASSERT(0);
   }
 
   if (m_toolbarsSetup == FALSE)
     return;
 
-  m_statusBar.SetIndicators(statustext, 3);	
+  m_statusBar.SetIndicators(statustext, SB_TOTAL);	
   // Make a sunken or recessed border around the first pane
   m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
   UpdateStatusBar();
@@ -709,9 +710,9 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
   if (m_toolbarsSetup == FALSE)
     return;
 
-  m_statusBar.SetIndicators(statustext, 3);
+  m_statusBar.SetIndicators(statustext, SB_TOTAL);
   // Make a sunken or recessed border around the first pane
-  m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
   UpdateStatusBar();
 }
 #endif

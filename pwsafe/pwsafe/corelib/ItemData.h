@@ -72,26 +72,26 @@ public:
    CMyString GetGroup() const; // V20
    CMyString GetURL() const; // V30
    CMyString GetAutoType() const; // V30
-   CMyString GetATime() const {return GetTime(ATIME, ASC_UNKNOWN);}  // V30
-   CMyString GetCTime() const {return GetTime(CTIME, ASC_UNKNOWN);}  // V30
-   CMyString GetLTime() const {return GetTime(LTIME, ASC_UNKNOWN);}  // V30
-   CMyString GetPMTime() const {return GetTime(PMTIME, ASC_UNKNOWN);}  // V30
-   CMyString GetRMTime() const {return GetTime(RMTIME, ASC_UNKNOWN);}  // V30
-   CMyString GetATimeN() const {return GetTime(ATIME, ASC_NULL);}  // V30
-   CMyString GetCTimeN() const {return GetTime(CTIME, ASC_NULL);}  // V30
-   CMyString GetLTimeN() const {return GetTime(LTIME, ASC_NULL);}  // V30
-   CMyString GetPMTimeN() const {return GetTime(PMTIME, ASC_NULL);}  // V30
-   CMyString GetRMTimeN() const {return GetTime(RMTIME, ASC_NULL);}  // V30
-   CMyString GetATimeExp() const {return GetTime(ATIME, EXPORT_IMPORT);}  // V30
-   CMyString GetCTimeExp() const {return GetTime(CTIME, EXPORT_IMPORT);}  // V30
-   CMyString GetLTimeExp() const {return GetTime(LTIME, EXPORT_IMPORT);}  // V30
-   CMyString GetPMTimeExp() const {return GetTime(PMTIME, EXPORT_IMPORT);}  // V30
-   CMyString GetRMTimeExp() const {return GetTime(RMTIME, EXPORT_IMPORT);}  // V30
-   CMyString GetATimeXML() const {return GetTime(ATIME, XML);}  // V30
-   CMyString GetCTimeXML() const {return GetTime(CTIME, XML);}  // V30
-   CMyString GetLTimeXML() const {return GetTime(LTIME, XML);}  // V30
-   CMyString GetPMTimeXML() const {return GetTime(PMTIME, XML);}  // V30
-   CMyString GetRMTimeXML() const {return GetTime(RMTIME, XML);}  // V30
+   CMyString GetATime() const {return GetTime(ATIME, TMC_ASC_UNKNOWN);}  // V30
+   CMyString GetCTime() const {return GetTime(CTIME, TMC_ASC_UNKNOWN);}  // V30
+   CMyString GetLTime() const {return GetTime(LTIME, TMC_ASC_UNKNOWN);}  // V30
+   CMyString GetPMTime() const {return GetTime(PMTIME, TMC_ASC_UNKNOWN);}  // V30
+   CMyString GetRMTime() const {return GetTime(RMTIME, TMC_ASC_UNKNOWN);}  // V30
+   CMyString GetATimeN() const {return GetTime(ATIME, TMC_ASC_NULL);}  // V30
+   CMyString GetCTimeN() const {return GetTime(CTIME, TMC_ASC_NULL);}  // V30
+   CMyString GetLTimeN() const {return GetTime(LTIME, TMC_ASC_NULL);}  // V30
+   CMyString GetPMTimeN() const {return GetTime(PMTIME, TMC_ASC_NULL);}  // V30
+   CMyString GetRMTimeN() const {return GetTime(RMTIME, TMC_ASC_NULL);}  // V30
+   CMyString GetATimeExp() const {return GetTime(ATIME, TMC_EXPORT_IMPORT);}  // V30
+   CMyString GetCTimeExp() const {return GetTime(CTIME, TMC_EXPORT_IMPORT);}  // V30
+   CMyString GetLTimeExp() const {return GetTime(LTIME, TMC_EXPORT_IMPORT);}  // V30
+   CMyString GetPMTimeExp() const {return GetTime(PMTIME, TMC_EXPORT_IMPORT);}  // V30
+   CMyString GetRMTimeExp() const {return GetTime(RMTIME, TMC_EXPORT_IMPORT);}  // V30
+   CMyString GetATimeXML() const {return GetTime(ATIME, TMC_XML);}  // V30
+   CMyString GetCTimeXML() const {return GetTime(CTIME, TMC_XML);}  // V30
+   CMyString GetLTimeXML() const {return GetTime(LTIME, TMC_XML);}  // V30
+   CMyString GetPMTimeXML() const {return GetTime(PMTIME, TMC_XML);}  // V30
+   CMyString GetRMTimeXML() const {return GetTime(RMTIME, TMC_XML);}  // V30
    //  These populate the time structure instead of giving a character string
    void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
    void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30

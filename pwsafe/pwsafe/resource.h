@@ -17,6 +17,7 @@
 #define IDS_ALWAYSONTOP                 107
 #define IDS_STAT_NUM_IN_DB              108
 #define IDS_READ_ONLY                   109
+#define IDS_MODIFIED                    110
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128
 #define IDD_KEYCHANGE_DIALOG            131

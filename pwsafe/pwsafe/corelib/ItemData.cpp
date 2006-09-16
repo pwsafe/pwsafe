@@ -401,7 +401,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> 
    		PWHistList* pPWHistList;
 
 		pPWHistList = new PWHistList;
-   		CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, EXPORT_IMPORT);
+   		CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, TMC_EXPORT_IMPORT);
 
 		//  Build export string
 		char buffer[8];
