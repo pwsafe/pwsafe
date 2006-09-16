@@ -47,7 +47,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
                           m_NumPWHistory, 
-                          &m_PWHistList, EXPORT_IMPORT);
+                          &m_PWHistList, TMC_EXPORT_IMPORT);
   m_SavePWHistory = HasHistory;
 
   m_group = ci->GetGroup();
@@ -239,7 +239,7 @@ void CEditDlg::UpdateHistory()
     m_ci->GetCTime(t);
   pwh_ent.changetttdate = t;
   pwh_ent.changedate =
-    PWSUtil::ConvertToDateTimeString(t, EXPORT_IMPORT);
+    PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
   if (pwh_ent.changedate.IsEmpty()) {
     //                       1234567890123456789
     pwh_ent.changedate = _T("Unknown            ");

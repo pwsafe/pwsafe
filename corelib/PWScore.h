@@ -110,6 +110,7 @@ class PWScore {
 
   void SetDisplayStatus(char *p_char_displaystatus, const int length);
   CString GetDisplayStatus() {return m_displaystatus;}
+  void CopyPWList(const ItemList &in);
 
  private:
   CMyString m_currfile; // current pw db filespec

@@ -394,6 +394,7 @@ DboxMain::InitPasswordSafe()
 
   // refresh list will add and size password column if necessary...
   RefreshList();
+  if (m_ctlItemTree.GetCount() > 0)
   switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
   	case PWSprefs::AllCollapsed:
   		m_ctlItemTree.OnCollapseAll();
@@ -850,7 +851,12 @@ DboxMain::OnToolTipText(UINT,
       delete m_pwchTip;
 
       m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-      _mbstowcsz(m_pwchTip, cs_TipText, cs_TipText.GetLength()+1); 
+#if _MSC_VER >= 1400
+      size_t numconverted;
+      mbstowcs_s(&numconverted, m_pwchTip, cs_TipText.GetLength() + 1, cs_TipText, cs_TipText.GetLength() + 1);
+#else
+      mbstowcs(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
+#endif
       pTTTW->lpszText = m_pwchTip;
     }
   }
@@ -1484,13 +1490,17 @@ DboxMain::OnEndSession(BOOL bEnding)
 void
 DboxMain::UpdateStatusBar()
 {
-	if (m_toolbarsSetup == TRUE) {
-		CString s;
-		s = m_IsReadOnly ? _T(" R/O ") : _T(" R/W ");
-		m_statusBar.SetPaneText(1, s);
-		s.Format("# %5d", m_core.GetNumEntries());
-		m_statusBar.SetPaneText(2, s);
-	}
+  if (m_toolbarsSetup == TRUE) {
+    CString s;
+    s = m_core.IsChanged() ? _T("*") : _T(" ");
+    m_statusBar.SetPaneText(SB_MODIFIED, s);
+    s = m_IsReadOnly ? _T("R-O") : _T("R/W");
+    m_statusBar.SetPaneText(SB_READONLY, s);
+    s.Empty();
+    s.Format("%d items", m_core.GetNumEntries());
+    s.TrimRight();
+    m_statusBar.SetPaneText(SB_NUM_ENT, s);
+  }
 }
 
 void DboxMain::MakeSortedItemList(ItemList &il)

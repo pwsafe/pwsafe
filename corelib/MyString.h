@@ -69,6 +69,11 @@ public:
    CMyString Mid(int nFirst, int nCount) const;
   void TrimRight() {m_mystring.TrimRight();}
   void TrimLeft() {m_mystring.TrimLeft();}
+#if _MSC_VER >= 1400
+  void Trim() {m_mystring.Trim();}
+#else
+  void Trim() {m_mystring.TrimLeft(); m_mystring.TrimRight();}
+#endif
   void MakeLower() {m_mystring.MakeLower();}
   int Compare(const LPCTSTR lpszOther) {return m_mystring.Compare(lpszOther);}
   int CompareNoCase(const LPCTSTR lpszOther) {return m_mystring.CompareNoCase(lpszOther);}

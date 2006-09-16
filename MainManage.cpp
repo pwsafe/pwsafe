@@ -410,7 +410,7 @@ DboxMain::OnOptions()
       }
       // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
-      m_statusBar.SetIndicators(statustext, 3);
+      m_statusBar.SetIndicators(statustext, SB_TOTAL);
 	  UpdateStatusBar();
 	  // Make a sunken or recessed border around the first pane
       m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);

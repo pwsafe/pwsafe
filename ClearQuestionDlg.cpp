@@ -2,10 +2,11 @@
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include "corelib/PWSprefs.h"
 
 #include "ThisMfcApp.h"
 #include "ClearQuestionDlg.h"
+
+#include "corelib/PWSprefs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
