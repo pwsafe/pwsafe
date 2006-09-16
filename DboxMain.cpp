@@ -1488,7 +1488,7 @@ DboxMain::UpdateStatusBar()
 		CString s;
 		s = m_IsReadOnly ? _T(" R/O ") : _T(" R/W ");
 		m_statusBar.SetPaneText(1, s);
-		s.Format("# entries: %d", m_core.GetNumEntries());
+		s.Format("# %5d", m_core.GetNumEntries());
 		m_statusBar.SetPaneText(2, s);
 	}
 }
