@@ -19,10 +19,14 @@ import org.pwsafe.lib.exception.EndOfFileException;
  * <pre> +--------+-----------+-----------------------------------------------+
  * | Length | Name      | Description                                   |
  * +--------+-----------+-----------------------------------------------+
- * |      8 | RandStuff | Random bytes                                  |
- * |     20 | RandHash  | Random hash                                   |
- * |     20 | Salt      | Salt                                          |
- * |      8 | IpThing   | Initial vector for decryption                 |
+ * |      8 | tag       | PWS3 tag                                      |
+ * |     32 | salt      | Salt                                          |
+ * |      4 | iter      | number of iterations                          |
+ * |     16 | b1        | key material                                  |
+ * |     16 | b2        | key material                                  |
+ * |     16 | b3        | key material                                  |
+ * |     16 | b6        | key material                                  |
+ * |     16 | IV        | twofish IV                                    |  
  * +--------+-----------+-----------------------------------------------+</pre>
  * </tt>
  * </p>
