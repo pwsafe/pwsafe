@@ -279,7 +279,7 @@ DboxMain::Open( const CMyString &pszFilename )
     app.AddToMRU(pszFilename);
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
-    temp = m_core.GetCurFile()
+    temp = pszFilename
       + _T("\n\nCan't open file. Please choose another.");
     MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
   case TAR_OPEN:
