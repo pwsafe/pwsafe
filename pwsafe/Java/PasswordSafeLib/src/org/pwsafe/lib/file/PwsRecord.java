@@ -351,6 +351,9 @@ public abstract class PwsRecord implements Comparable
 	
 			case PwsFileV2.VERSION :
 				return new PwsRecordV2( file );
+				
+			case PwsFileV3.VERSION :
+				return new PwsRecordV3( file );
 		}
 		throw new UnsupportedFileVersionException();
 	}

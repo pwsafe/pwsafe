@@ -40,6 +40,7 @@ public class PwsFileHeaderV3
 	private byte [] tag 		= new byte[4];
 	private byte [] salt		= new byte[32];
 	private byte [] iter		= new byte[4];
+	private byte [] password	= new byte[32];
 	private byte [] b1 			= new byte[16];
 	private byte [] b2 			= new byte[16];
 	private byte [] b3 			= new byte[16];
@@ -68,6 +69,7 @@ public class PwsFileHeaderV3
 		file.readBytes( tag );
 		file.readBytes( salt );
 		file.readBytes( iter );
+		file.readBytes( password );
 		file.readBytes( b1 );
 		file.readBytes( b2 );
 		file.readBytes( b3 );
@@ -103,6 +105,15 @@ public class PwsFileHeaderV3
 	public byte [] getIter()
 	{
 		return Util.cloneByteArray( iter );
+	}
+	
+	/**
+	 * Gets a copy of the stretched password.
+	 * 
+	 * @return A copy of the streched password
+	 */
+	public byte [] getPassword() {
+		return Util.cloneByteArray(password);
 	}
 
 	/**

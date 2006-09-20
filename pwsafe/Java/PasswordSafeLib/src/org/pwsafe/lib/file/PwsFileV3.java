@@ -6,8 +6,17 @@
  */
 package org.pwsafe.lib.file;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.pwsafe.lib.I18nHelper;
+import org.pwsafe.lib.Log;
+import org.pwsafe.lib.Util;
+import org.pwsafe.lib.crypto.SHA256Pws;
 import org.pwsafe.lib.exception.EndOfFileException;
 import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
@@ -18,6 +27,8 @@ import org.pwsafe.lib.exception.UnsupportedFileVersionException;
  */
 public class PwsFileV3 extends PwsFile
 {
+	private static final Log LOG = Log.getInstance(PwsFileV3.class.getPackage().getName());
+
 	/**
 	 * The PasswordSafe database version number that this class supports.
 	 */
@@ -28,6 +39,13 @@ public class PwsFileV3 extends PwsFile
 	 */
 	public static final String	ID_STRING	= " !!!Version 2 File Format!!! Please upgrade to PasswordSafe 2.0 or later";
 
+	/**
+	 * The file's standard header.
+	 */
+	protected PwsFileHeaderV3	Header			= null;
+	
+	protected byte[] stretchedPassword;
+	
 	/**
 	 * Constructs and initialises a new, empty version 3 PasswordSafe database in memory.
 	 */
@@ -54,6 +72,66 @@ public class PwsFileV3 extends PwsFile
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
 		super( filename, passphrase );
+	}
+	
+	public void dumpBytes(String title, byte[] bytes) {
+		System.out.print(title + " [");
+		for (int i = 0; i < bytes.length; i++) {
+			System.out.print(bytes[i] + " ");
+		}
+		System.out.println("]");
+	}
+
+	protected void open( File file, String passphrase )
+	throws EndOfFileException, IOException, UnsupportedFileVersionException
+	{
+		LOG.enterMethod( "PwsFileV3.init" );
+
+		setFilename( file );
+
+		Passphrase		= passphrase;
+		
+
+		InStream		= new FileInputStream( file );
+		Header			= new PwsFileHeaderV3( this );
+		
+		int iter = Util.getIntFromByteArray(Header.getIter(), 0);
+		LOG.debug1("Using iterations: [" + iter + "]");
+		stretchedPassword = stretchPassphrase(passphrase.getBytes(), Header.getSalt(), iter);
+		//Algorithm		= makeBlowfish( passphrase.getBytes() );
+		dumpBytes("From file", Header.getPassword());
+		dumpBytes("Calc", stretchedPassword);
+
+		readExtraHeader( this );
+
+		LOG.leaveMethod( "PwsFileV3.init" );
+	}
+	
+	/**
+	 * Calculate stretched key.
+	 * 
+	 * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), 
+	 * with SHA-256 as the hash function, and ITER iterations 
+	 * (at least 2048, i.e., t = 11).
+	 * @param passphrase the user entered passphrase
+	 * @param salt the salt from the file
+	 * @param iter the number of iters from the file
+	 * @return the stretched user key for comparison
+	 */
+	private byte[] stretchPassphrase(byte[] passphrase, byte[] salt, int iter) {
+		byte[] p = new byte[passphrase.length + salt.length];
+		for (int i = 0; i < passphrase.length; i++) {
+			p[i] = passphrase[i];
+		}
+		for (int i = 0; i < salt.length; i++) {
+			p[passphrase.length + i] = salt[i];
+		}
+		byte[] hash = SHA256Pws.digest(p);
+		for (int i = 0; i < iter; i++) {
+			hash = SHA256Pws.digest(hash);
+		}
+		return hash;
+		
 	}
 
 	/**
@@ -91,15 +169,7 @@ public class PwsFileV3 extends PwsFile
 	protected void readExtraHeader( PwsFile file )
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
-		PwsRecordV1	hdr;
-
-		hdr = new PwsRecordV1();
-		hdr.loadRecord( file );
-
-		if ( !hdr.getField(PwsRecordV1.TITLE).equals(ID_STRING) )
-		{
-			throw new UnsupportedFileVersionException();
-		}
+		
 	}
 
 	/**
@@ -112,13 +182,49 @@ public class PwsFileV3 extends PwsFile
 	protected void writeExtraHeader( PwsFile file )
 	throws IOException
 	{
-		PwsRecordV1	hdr;
-
-		hdr = new PwsRecordV1();
-
-		hdr.setField( new PwsStringField( PwsRecordV1.TITLE, PwsFileV3.ID_STRING ) );
-		hdr.setField( new PwsStringField( PwsRecordV1.PASSWORD, "3.0" ) );
-
-		hdr.saveRecord( file );
+		
 	}
+	
+	/**
+	 * Reads bytes from the file and decryps them.  <code>buff</code> may be any length provided
+	 * that is a multiple of <code>BLOCK_LENGTH</code> bytes in length.
+	 * 
+	 * @param buff the buffer to read the bytes into.
+	 * 
+	 * @throws EndOfFileException If end of file has been reached.
+	 * @throws IOException If a read error occurs.
+	 * @throws IllegalArgumentException If <code>buff.length</code> is not an integral multiple of <code>BLOCK_LENGTH</code>.
+	 */
+	protected void readDecryptedBytes( byte [] buff )
+	throws EndOfFileException, IOException
+	{
+		if ( (buff.length == 0) || ((buff.length % BLOCK_LENGTH) != 0) )
+		{
+			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
+		}
+		readBytes( buff );
+		//Algorithm.decrypt( buff );
+	}
+	
+	/**
+	 * Encrypts then writes the contents of <code>buff</code> to the file.
+	 * 
+	 * @param buff the data to be written.
+	 * 
+	 * @throws IOException
+	 */
+	protected void writeEncryptedBytes( byte [] buff )
+	throws IOException
+	{
+		if ( (buff.length == 0) || ((buff.length % BLOCK_LENGTH) != 0) )
+		{
+			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
+		}
+		
+		byte [] temp = Util.cloneByteArray( buff );
+		//Algorithm.encrypt( temp );
+		writeBytes( temp );
+	}
+	
+	
 }

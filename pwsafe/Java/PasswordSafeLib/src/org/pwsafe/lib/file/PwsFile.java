@@ -157,13 +157,13 @@ public abstract class PwsFile
 	/**
 	 * The passphrase for the file.
 	 */
-	private String			Passphrase		= null;
+	protected String			Passphrase		= null;
 
 	/**
 	 * The stream used to read data from the file.  It is non-null only whilst data
 	 * are being read from the file.
 	 */
-	private InputStream		InStream		= null;
+	protected InputStream		InStream		= null;
 
 	/**
 	 * The stream used to write data to the file.  It is non-null only whilst data are
@@ -435,7 +435,7 @@ public abstract class PwsFile
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 */
-	private void open( File file, String passphrase )
+	protected void open( File file, String passphrase )
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
 		LOG.enterMethod( "PwsFile.init" );
@@ -733,7 +733,7 @@ public abstract class PwsFile
 	 * 
 	 * @throws IOException
 	 */
-	private void setFilename( File file )
+	protected void setFilename( File file )
 	throws IOException
 	{
 		String	fname;

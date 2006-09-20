@@ -19,12 +19,13 @@ public class TwofishPws {
     
     private static Provider provider = new BouncyCastleProvider();
     
-    public static Cipher getCipher(byte[] key) {
+    public static Cipher getCipher(byte[] key, boolean encrypting, boolean blockMode) {
 
         KeySpec ks = new SecretKeySpec(key, "BLOWFISH");
         try {
-            Cipher c = Cipher.getInstance("BLOWFISH",provider);
-            c.init(Cipher.ENCRYPT_MODE, (Key) ks);
+        	String algo = "BLOWFISH/" + (blockMode ? "ECB" : "CBC") + "/NoPadding"; 
+            Cipher c = Cipher.getInstance(algo,provider);
+            c.init(encrypting ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, (Key) ks);
             return c;
         } catch (Exception e) {
             throw new RuntimeException(e);
