@@ -165,6 +165,9 @@
 				RelativePath=".\ConfirmDeleteDlg.cpp">
 			</File>
 			<File
+				RelativePath=".\ControlExtns.cpp">
+			</File>
+			<File
 				RelativePath=".\CryptKeyEntry.cpp">
 			</File>
 			<File
@@ -302,6 +305,9 @@
 			</File>
 			<File
 				RelativePath=".\ConfirmDeleteDlg.h">
+			</File>
+			<File
+				RelativePath=".\ControlExtns.h">
 			</File>
 			<File
 				RelativePath=".\CryptKeyEntry.h">

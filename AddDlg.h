@@ -2,6 +2,8 @@
 //-----------------------------------------------------------------------------
 
 #include "afxwin.h"
+#include "ControlExtns.h"
+
 class CAddDlg : public CDialog
 {
   // Construction
@@ -25,6 +27,14 @@ public:
 
   void  ShowPassword();
   void  HidePassword();
+
+  CComboBoxExtn m_ex_group;
+  CEditExtn m_ex_password, m_ex_password2;
+  CEditExtn m_ex_notes;
+  CEditExtn m_ex_username;
+  CEditExtn m_ex_title;
+  CEditExtn m_ex_URL;
+  CEditExtn m_ex_autotype;
 
   //}}AFX_DATA
 

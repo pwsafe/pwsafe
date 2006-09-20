@@ -61,6 +61,7 @@ ThisMfcApp::ThisMfcApp() :
                   _T("You may not be able to open files or saved files may be incompatible with other platforms."));
   }
 #endif
+  CoInitialize(NULL);
 }
 
 
@@ -77,6 +78,7 @@ ThisMfcApp::~ThisMfcApp()
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
+  CoUninitialize();
 
   /*
     apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like

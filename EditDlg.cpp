@@ -15,6 +15,7 @@
 #include "corelib/ItemData.h"
 #include "ExpDTDlg.h"
 #include "PWHistDlg.h"
+#include "ControlExtns.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -90,27 +91,20 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
   DDX_Text(pDX, IDC_RMTIME, (CString&)m_ascRMTime);
 
-  if(!pDX->m_bSaveAndValidate) {
-    // We are initializing the dialog.  Populate the groups combo box.
-    CComboBox comboGroup;
-    comboGroup.Attach(GetDlgItem(IDC_GROUP)->GetSafeHwnd());
-    // For some reason, MFC calls us twice when initializing.
-    // Populate the combo box only once.
-    if(0 == comboGroup.GetCount()) {
-      CStringArray aryGroups;
-      app.m_core.GetUniqueGroups(aryGroups);
-      for(int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
-        comboGroup.AddString((LPCTSTR)aryGroups[igrp]);
-      }
-    }
-    comboGroup.Detach();
-  }
   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
   DDX_Control(pDX, IDC_MORE, m_MoreLessBtn);
+  DDX_Control(pDX, IDC_GROUP, m_ex_group);
+  DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
+  DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
+  DDX_Control(pDX, IDC_NOTES, m_ex_notes);
+  DDX_Control(pDX, IDC_USERNAME, m_ex_username);
+  DDX_Control(pDX, IDC_TITLE, m_ex_title);
+  DDX_Control(pDX, IDC_URL, m_ex_URL);
+  DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
-ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
+	ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
 ON_BN_CLICKED(ID_HELP, OnHelp)
 ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 #if defined(POCKET_PC)
@@ -126,7 +120,7 @@ ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
 END_MESSAGE_MAP()
 
 
-void CEditDlg::OnShowpassword() 
+void CEditDlg::OnShowPassword() 
 {
   UpdateData(TRUE);
   if (m_isPwHidden) {
@@ -296,14 +290,22 @@ BOOL CEditDlg::OnInitDialog()
   } else {
     HidePassword();
   }
+  // Populate the groups combo box
+  if (m_ex_group.GetCount() == 0) {
+    CStringArray aryGroups;
+    app.m_core.GetUniqueGroups(aryGroups);
+    for(int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
+      m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
+    }
+  }
 
   GetDlgItem(IDC_PWHSTATUS)->
-	  SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
+    SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
   CString buffer;
   if (m_SavePWHistory == TRUE)
-	  buffer.Format("%d", m_MaxPWHistory);
+    buffer.Format("%d", m_MaxPWHistory);
   else
-	  buffer = _T("n/a");
+    buffer = _T("n/a");
 
   GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
 
@@ -314,6 +316,7 @@ BOOL CEditDlg::OnInitDialog()
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
   ResizeDialog();
 
+  m_ex_group.ChangeColour();
   return TRUE;
 }
 
