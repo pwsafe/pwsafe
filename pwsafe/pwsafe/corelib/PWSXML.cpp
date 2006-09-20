@@ -7,7 +7,7 @@
 #include "MyString.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <atlcomcli.h> // needed for VS7.1, not 8
+#include <atlcomcli.h>
 #include "xml_import.h"
 
 #ifdef _DEBUG
@@ -42,7 +42,6 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 	m_strResultText = _T("");
 	m_bValidation = bvalidation;  // Validate or Import
 
-	CoInitialize(NULL); 
 	//	Create SAXReader object
 	ISAXXMLReaderPtr pSAXReader = NULL;
 	//	Get ready for XSD schema validation
@@ -200,6 +199,5 @@ exit:
 	if (pSAXReader != NULL)
 		pSAXReader.Release();
 
-	CoUninitialize();
 	return b_ok;
 }

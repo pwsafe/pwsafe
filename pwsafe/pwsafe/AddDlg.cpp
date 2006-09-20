@@ -11,6 +11,7 @@
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
 #include "ExpDTDlg.h"
+#include "ControlExtns.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -69,9 +70,19 @@ BOOL CAddDlg::OnInitDialog()
   pspin->SetRange(1, 255);
   pspin->SetBase(10);
   pspin->SetPos(m_MaxPWHistory);  // Default suggestion of max. to keep!
+
+  // Populate the combo box
+  if(m_ex_group.GetCount() == 0) {
+    CStringArray aryGroups;
+    app.m_core.GetUniqueGroups(aryGroups);
+    for(int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
+      m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
+    }
+  }
+
+  m_ex_group.ChangeColour();
   return TRUE;
 }
-
 
 void CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -84,27 +95,21 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
   DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
-  if(!pDX->m_bSaveAndValidate) {
-    // We are initializing the dialog.  Populate the groups combo box.
-    CComboBox comboGroup;
-    comboGroup.Attach(GetDlgItem(IDC_GROUP)->GetSafeHwnd());
-    // For some reason, MFC calls us twice when initializing.
-    // Populate the combo box only once.
-    if(0 == comboGroup.GetCount()) {
-      CStringArray aryGroups;
-      app.m_core.GetUniqueGroups(aryGroups);
-      for(int igrp=0; igrp<aryGroups.GetSize(); igrp++) {
-        comboGroup.AddString((LPCTSTR)aryGroups[igrp]);
-      }
-    }
-    comboGroup.Detach();
-  }
   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
   DDX_Text(pDX, IDC_URL, (CString&)m_URL);
   DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
   DDX_Control(pDX, IDC_MORE, m_moreLessBtn);
   DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
   DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 255);
+
+  DDX_Control(pDX, IDC_GROUP, m_ex_group);
+  DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
+  DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
+  DDX_Control(pDX, IDC_NOTES, m_ex_notes);
+  DDX_Control(pDX, IDC_USERNAME, m_ex_username);
+  DDX_Control(pDX, IDC_TITLE, m_ex_title);
+  DDX_Control(pDX, IDC_URL, m_ex_URL);
+  DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
 }

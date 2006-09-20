@@ -33,25 +33,19 @@ behavour via a Misc. option.
 
 Changes to Existing Features in 3.03
 ====================================
-[1532368] increase password history - now maximum is limited by
-corresponding field in the database - i.e. 1 byte = 255.
-[] Prevent change of view (List <-> Tree) during Find operation as the order
-of found entries differ in these views.
-[] User is again offered the option of accepting weak passphrases, if a
-Security Option is set.
+[1532368] Maximum number of passwords stored in history is now 255.
+[] Weak master passphrases are accepted, if the user insists.
+[] Field with focus has a different color.
+[] More info in status bar: read-only and modified status.
 
 Bugs fixed in 3.03
 ==================
-[1527029] Password count not visible in status bar.
-[1529305] Crash in Password History
-[1528400] Cancel on "Restore from Backup" causes corrupt database
+[1527029] Password count now displays correctly in status bar.
+[1529305] Crash in Password History resolved
+[1528400] Cancel on "Restore from Backup" no longer corrupts database
 [1551034] Entries can no longer be changed in read-only mode
-[] View Menu item "Collapse All" did not collapse all embedded groups
-[] DoubleClick did not work on entries with expired passwords
-[] Fix long standing memory leak in Find processing
-[] Ensure all dialog validation entries are processed
-[] Fix coding typo in code setting persistent boolean preferences
-[] ExpandAll and CollapseAll must be disabled if no entries in Tree
+[] View Menu item "Collapse All" now works correctly
+[] DoubleClick works on entries with expired passwords
 [1540106] Fixed incorrect link to Twofish web page
 [1554253] Show/Unhide password no longer loses changes to password
 [1527144] No more multiple combination dialogs when restoring window

@@ -1,7 +1,9 @@
 // EditDlg.h
 //-----------------------------------------------------------------------------
 
+#pragma once
 #include "afxwin.h"
+#include "ControlExtns.h"
 class CItemData;
 
 class CEditDlg
@@ -52,10 +54,18 @@ private:
   void ResizeDialog();
   void UpdateHistory();
 
+  CComboBoxExtn m_ex_group;
+  CEditExtn m_ex_password;
+  CEditExtn m_ex_password2;
+  CEditExtn m_ex_notes;
+  CEditExtn m_ex_username;
+  CEditExtn m_ex_title;
+  CEditExtn m_ex_URL;
+  CEditExtn m_ex_autotype;
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-  afx_msg void OnShowpassword();
+  afx_msg void OnShowPassword();
   virtual void OnOK();
   virtual BOOL OnInitDialog();
   afx_msg void OnRandom();
