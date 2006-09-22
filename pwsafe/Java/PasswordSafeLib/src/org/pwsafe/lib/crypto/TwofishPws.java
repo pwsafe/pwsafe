@@ -23,7 +23,7 @@ public class TwofishPws {
 
         
         try {
-        	String algo = "BLOWFISH/" + (blockMode ? "ECB" : "CBC") + "/NoPadding"; 
+        	String algo = "TWOFISH/" + (blockMode ? "ECB" : "CBC") + "/NoPadding"; 
         	KeySpec ks = new SecretKeySpec(key, algo); 
             Cipher c = Cipher.getInstance(algo,provider);
             c.init(encrypting ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, (Key) ks);
