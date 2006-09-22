@@ -21,9 +21,10 @@ public class TwofishPws {
     
     public static Cipher getCipher(byte[] key, boolean encrypting, boolean blockMode) {
 
-        KeySpec ks = new SecretKeySpec(key, "BLOWFISH");
+        
         try {
         	String algo = "BLOWFISH/" + (blockMode ? "ECB" : "CBC") + "/NoPadding"; 
+        	KeySpec ks = new SecretKeySpec(key, algo); 
             Cipher c = Cipher.getInstance(algo,provider);
             c.init(encrypting ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, (Key) ks);
             return c;
