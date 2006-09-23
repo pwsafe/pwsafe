@@ -21,6 +21,7 @@ public:
 	BOOL	m_alwaysontop;
 	BOOL	m_pwshowinlist;
 	BOOL	m_pwshowinedit;
+	BOOL    m_notesshowinedit;
 #if defined(POCKET_PC)
 	BOOL	m_dcshowspassword;
 #endif

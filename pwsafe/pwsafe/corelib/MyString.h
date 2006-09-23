@@ -21,6 +21,7 @@ public:
    ~CMyString();
 
    TCHAR operator[](int nIndex) const;
+   TCHAR GetAt(int nIndex);
    void SetAt(int nIndex, TCHAR ch);
    operator CString() const;
    operator CString&();

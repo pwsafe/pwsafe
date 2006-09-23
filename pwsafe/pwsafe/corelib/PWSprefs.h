@@ -41,7 +41,7 @@ class PWSprefs {
 		   LockOnWindowLock, LockOnIdleTimeout,
 		   EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
 		   DisplayExpandedAddEditDlg, MaintainDateTimeStamps,
-		   SavePasswordHistory, AllowWeakPassphrases, ContinueFindAtEODB,
+		   SavePasswordHistory, FindWraps, ShowNotesDefault,
 		   NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,

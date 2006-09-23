@@ -509,6 +509,30 @@ int PWSfileV3::WriteHeader()
     }
   }
 
+  // Write out time of this update
+  time_t time_now;
+  time(&time_now);
+  CString cs_update_time;
+  cs_update_time.Format("%08x", time_now);
+  numWritten = WriteCBC(HDR_LASTUPDATETIME, cs_update_time);
+  if (numWritten <= 0) {
+    Close();
+    return FAILURE;
+  } else {
+	  m_whenlastsaved = cs_update_time;
+  }
+
+  // Write out who saved it!
+  CString cs_who;
+  cs_who.Format("%04x%s%s", m_user.GetLength(), m_user, m_sysname);
+  numWritten = WriteCBC(HDR_LASTUPDATEUSERHOST, cs_who);
+  if (numWritten <= 0) {
+    Close();
+    return FAILURE;
+  } else {
+	  m_wholastsaved = cs_who;
+  }
+
   // Write zero-length end-of-record type item
   // for future-proof (skip possible additional fields in read)
   WriteCBC(HDR_END, NULL, 0);
@@ -616,6 +640,34 @@ int PWSfileV3::ReadHeader()
           return FAILURE;
         }
         m_file_displaystatus = (CString)headerField;
+        m_utf8 = NULL;
+        m_utf8Len = 0;
+	  }
+	  break;
+
+	  	case HDR_LASTUPDATETIME: /* When last saved */
+	  {
+        m_utf8 = (unsigned char *) headerData;
+        m_utf8Len = headerField.GetLength();
+        if (!FromUTF8 (headerField)) {
+          Close ();
+          return FAILURE;
+        }
+        m_whenlastsaved = (CString)headerField;
+        m_utf8 = NULL;
+        m_utf8Len = 0;
+	  }
+	  break;
+
+	  	case HDR_LASTUPDATEUSERHOST: /* and by whom */
+	  {
+        m_utf8 = (unsigned char *) headerData;
+        m_utf8Len = headerField.GetLength();
+        if (!FromUTF8 (headerField)) {
+          Close ();
+          return FAILURE;
+        }
+        m_wholastsaved = (CString)headerField;
         m_utf8 = NULL;
         m_utf8Len = 0;
 	  }

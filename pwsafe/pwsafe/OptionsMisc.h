@@ -31,7 +31,6 @@ public:
 	BOOL	m_usedefuser;
 	BOOL	m_querysetdef;
 	CString	m_defusername;
-	BOOL    m_continuefindateodb;
 	//}}AFX_DATA
 	DWORD m_hotkey_value;
 	int     m_doubleclickaction;

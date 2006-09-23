@@ -18,6 +18,10 @@
 #define IDS_STAT_NUM_IN_DB              108
 #define IDS_READ_ONLY                   109
 #define IDS_MODIFIED                    110
+#define IDS_STATAUTOTYPE                111
+#define IDS_RESETPWHISTORYOFF           112
+#define IDS_RESETPWHISTORYON            113
+#define IDS_SETMAXPWHISTORY             114
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128
 #define IDD_KEYCHANGE_DIALOG            131
@@ -74,6 +78,7 @@
 #define IDD_EXPORT_TEXTX                230
 #define IDD_DLG_PWHIST                  231
 #define IDD_PS_SYSTEM                   232
+#define IDD_PROPERTIES                  233
 #define IDC_PASSWORD                    1000
 #define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
@@ -250,10 +255,20 @@
 #define IDC_TREE_DISPLAY_LASTSAVE       1200
 #define IDC_PWHSTATUS                   1201
 #define IDC_PWHMAX                      1202
-#define IDC_APPLYPWHISTORY              1203
-#define IDC_DOUBLE_CLICK_ACTION         1204
-#define IDC_ALLOW_WEAK_PASSPHRASES      1205
-#define IDC_CONTINUE_FIND_AT_EODB       1206
+#define IDC_DOUBLE_CLICK_ACTION         1203
+#define IDC_FIND_WRAP                   1204
+#define IDC_RESETPWHISTORYOFF           1205
+#define IDC_RESETPWHISTORYON            1206
+#define IDC_SETMAXPWHISTORY             1207
+#define IDC_APPLYPWHCHANGESNOW          1208
+#define IDC_DELETEREGISTRY              1209
+#define IDC_SHOWNOTES                   1210
+#define IDC_DEFNOTESSHOWINEDIT          1211
+#define IDC_DATABASENAME                1212
+#define IDC_NUMGROUPS                   1213
+#define IDC_NUMENTRIES                  1214
+#define IDC_SAVEDBY                     1215
+#define IDC_SAVEDON                     1216
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -320,6 +335,7 @@
 #define ID_MENUITEM_RENAME              32857
 #define ID_MENUITEM_CLEAR_MRU           32858
 #define ID_MENUITEM_COMPARE             32859
+#define ID_MENUITEM_PROPERTIES          32860
 #define ID_FILE_MRU_ENTRY1              40001
 #define ID_FILE_MRU_ENTRYMAX            40020
 #define ID_TRAYRECENT_ENTRY1            41001
@@ -336,15 +352,14 @@
 #define ID_MENUITEM_TRAYAUTOTYPEMAX     41150
 #define ID_MENUITEM_TRAYCOPYNOTESFLD1   41151
 #define ID_MENUITEM_TRAYCOPYNOTESFLDMAX 41175
-#define IDS_STATAUTOTYPE                57671
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        233
-#define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1207
+#define _APS_NEXT_RESOURCE_VALUE        234
+#define _APS_NEXT_COMMAND_VALUE         32861
+#define _APS_NEXT_CONTROL_VALUE         1217
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

@@ -700,7 +700,7 @@ DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *)
 
   m_statusBar.SetIndicators(statustext, SB_TOTAL);	
   // Make a sunken or recessed border around the first pane
-  m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+  m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
   UpdateStatusBar();
 }
 

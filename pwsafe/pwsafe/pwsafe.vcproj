@@ -267,6 +267,9 @@
 				RelativePath=".\PWHistDlg.cpp">
 			</File>
 			<File
+				RelativePath=".\PWSRecentFileList.cpp">
+			</File>
+			<File
 				RelativePath=".\QueryAddName.cpp">
 			</File>
 			<File
@@ -407,6 +410,9 @@
 			</File>
 			<File
 				RelativePath=".\PwsBackend.h">
+			</File>
+			<File
+				RelativePath=".\PWSRecentFileList.h">
 			</File>
 			<File
 				RelativePath=".\QueryAddName.h">

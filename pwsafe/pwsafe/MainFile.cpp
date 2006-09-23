@@ -17,7 +17,9 @@
 #include "ImportDlg.h"
 #include "ImportXMLDlg.h"
 #include "ImportXMLErrDlg.h"
+#include "Properties.h"
 #include "corelib/pwsprefs.h"
+#include "corelib/util.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -1061,6 +1063,63 @@ DboxMain::Merge(const CMyString &pszFilename) {
   RefreshList();
 
   return rc;
+}
+
+void
+DboxMain::OnProperties()
+{
+  CProperties dlg;
+
+#define MAX_LEN 55  // pure guess!
+  CString t, ttt;
+  t = CString(m_core.GetCurFile());
+  if (t.GetLength() >= MAX_LEN) {
+    dlg.m_database = t.Left(MAX_LEN/2-6) + 
+      _T(" ... ") + t.Right(MAX_LEN/2);
+  } else {
+    dlg.m_database = t;
+  }
+
+  CStringArray aryGroups;
+  app.m_core.GetUniqueGroups(aryGroups);
+  dlg.m_numgroups.Format("%d",aryGroups.GetSize());
+
+  dlg.m_numentries.Format("%d", m_core.GetNumEntries());
+
+  CString wls = m_core.GetWhenLastSaved();
+  if (wls.GetLength() != 8)
+	  dlg.m_whenlastsaved = _T("Unknown");
+  else {
+	  long t;
+	  TCHAR *lpszWLS = wls.GetBuffer(9);
+#if _MSC_VER >= 1400
+	  int iread = sscanf_s(lpszWLS, "%8x", &t);
+#else
+	  int iread = sscanf(lpszWLS, "%8x", &t);
+#endif
+	  wls.ReleaseBuffer();
+	  ASSERT(iread == 1);
+      dlg.m_whenlastsaved =
+          CString(PWSUtil::ConvertToDateTimeString((time_t) t, TMC_EXPORT_IMPORT));
+  }
+
+  wls = m_core.GetWhoLastSaved();
+  if (wls.GetLength() == 0)
+	  dlg.m_wholastsaved = _T("Unknown");
+  else {
+	  int ulen;
+	  TCHAR *lpszWLS = wls.GetBuffer(wls.GetLength() + 1);
+#if _MSC_VER >= 1400
+	  int iread = sscanf_s(lpszWLS, "%4x", &ulen);
+#else
+	  int iread = sscanf(lpszWLS, "%4x", &ulen);
+#endif
+	wls.ReleaseBuffer();
+	ASSERT(iread == 1);
+	dlg.m_wholastsaved.Format("%s on %s", wls.Mid(4, ulen), wls.Mid(ulen + 4));
+  }
+
+  dlg.DoModal();
 }
 
 void

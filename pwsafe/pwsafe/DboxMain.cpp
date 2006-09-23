@@ -128,6 +128,7 @@ DboxMain::DboxMain(CWnd* pParent)
 #endif
 
   m_ctlItemTree.SetDboxPointer((void *)this);
+  m_bFindWrap = PWSprefs::GetInstance()->GetPref(PWSprefs::FindWraps);
 }
 
 DboxMain::~DboxMain()
@@ -138,6 +139,8 @@ DboxMain::~DboxMain()
   ::DeleteObject(m_hFontTree);
   ReleasePasswordFont();
   CFindDlg::EndIt();
+  // Save Find wrap value
+  PWSprefs::GetInstance()->SetPref(PWSprefs::FindWraps, m_bFindWrap);
 }
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
@@ -166,6 +169,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_MERGE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
+   ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
    ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUTIME_SAVEAS, OnSaveAs)
@@ -1496,9 +1500,7 @@ DboxMain::UpdateStatusBar()
     m_statusBar.SetPaneText(SB_MODIFIED, s);
     s = m_IsReadOnly ? _T("R-O") : _T("R/W");
     m_statusBar.SetPaneText(SB_READONLY, s);
-    s.Empty();
-    s.Format("%d items", m_core.GetNumEntries());
-    s.TrimRight();
+    s.Format("%5d items", m_core.GetNumEntries());
     m_statusBar.SetPaneText(SB_NUM_ENT, s);
   }
 }

@@ -24,11 +24,10 @@ public:
 	BOOL	m_mruonfilemenu;
 	//}}AFX_DATA
 
-
 // Overrides
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(COptionsSystem)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -40,8 +39,14 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
+
 	DECLARE_MESSAGE_MAP()
 
+// Implementation
+protected:
+
+private:
+	CToolTipCtrl* m_ToolTipCtrl;
 };
 
 //{{AFX_INSERT_LOCATION}}

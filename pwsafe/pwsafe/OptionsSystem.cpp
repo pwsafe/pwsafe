@@ -28,10 +28,12 @@ COptionsSystem::COptionsSystem() : CPropertyPage(COptionsSystem::IDD)
 {
 	//{{AFX_DATA_INIT(COptionsSystem)
 	//}}AFX_DATA_INIT
+	m_ToolTipCtrl = NULL;
 }
 
 COptionsSystem::~COptionsSystem()
 {
+	delete m_ToolTipCtrl;
 }
 
 void COptionsSystem::DoDataExchange(CDataExchange* pDX)
@@ -46,7 +48,6 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(COptionsSystem, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsSystem)
@@ -68,7 +69,9 @@ void COptionsSystem::OnUseSystemTray()
 
 BOOL COptionsSystem::OnInitDialog() 
 {
-	CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
+	CPropertyPage::OnInitDialog();
+
+	CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
 
 	pspin->SetBuddy(GetDlgItem(IDC_MAXREITEMS));
 	pspin->SetRange(0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
@@ -83,9 +86,9 @@ BOOL COptionsSystem::OnInitDialog()
 	pspin->SetPos(m_maxmruitems);
 	
 	OnUseSystemTray();
-	
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+
+	return TRUE;	// return TRUE unless you set the focus to a control
+					// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 BOOL COptionsSystem::OnKillActive()

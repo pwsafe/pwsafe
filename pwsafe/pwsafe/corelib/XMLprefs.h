@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "Pwsplatform.h"
+#include "PWScore.h"
 #include <afx.h>
 #include "xml_import.h"
 
@@ -11,10 +11,12 @@ class CXMLprefs
 {
 // Construction & Destruction
 public:
-	CXMLprefs() : m_pXMLDoc(NULL), m_csConfigFile(_T("")), m_bXMLLoaded(false), m_MSXML_Version(0)
+	CXMLprefs(PWScore *core) : m_pXMLDoc(NULL), m_csConfigFile(_T("")), m_bXMLLoaded(false), 
+			m_bBigUpdate(false), m_MSXML_Version(0)
 	{
+		m_xmlcore = core;
 	}
-	
+
 	~CXMLprefs()
 	{
 		if (m_bReadWrite)
@@ -25,19 +27,20 @@ public:
 public:
 	void SetConfigFile(const CString &csFile) { m_csConfigFile = csFile; };
 
-	int GetInt(const CString &csBaseKeyName, const CString &csValueName, 
+	int Get(const CString &csBaseKeyName, const CString &csValueName,
 		const int &iDefaultValue);
-	int SetInt(const CString &csBaseKeyName, const CString &csValueName, 
-		const int &iValue);
-
-	CString GetString(const CString &csBaseKeyName, const CString &csValueName, 
+	CString Get(const CString &csBaseKeyName, const CString &csValueName,
 		const CString &csDefaultValue);
-	int SetString(const CString &csBaseKeyName, const CString &csValueName, 
+
+	int Set(const CString &csBaseKeyName, const CString &csValueName,
+		const int &iValue);
+	int Set(const CString &csBaseKeyName, const CString &csValueName,
 		const CString &csValue);
 
 	BOOL DeleteSetting(const CString &csBaseKeyName, const CString &csValueName);
 	void ReformatAndSave();
 	void SetReadWriteStatus(bool readwrite) {m_bReadWrite = readwrite;}
+	void SetBigUpdate(bool state);
 
 	enum {XML_SUCCESS = 0, XML_LOAD_FAILED, XML_NODE_NOT_FOUND, XML_PUT_TEXT_FAILED, XML_SAVE_FAILED};
 
@@ -45,7 +48,7 @@ protected:
 	MSXML2::IXMLDOMDocument2Ptr m_pXMLDoc;
 	CString m_csConfigFile;
 	int m_MSXML_Version;
-	bool m_bXMLLoaded, m_bReadWrite;
+	bool m_bXMLLoaded, m_bReadWrite, m_bBigUpdate;
 
 	CString* ParseKeys(const CString &csFullKeyPath, int &iNumKeys);
 	BOOL LoadXML();
@@ -54,6 +57,7 @@ protected:
 	MSXML2::IXMLDOMNodePtr FindNode(MSXML2::IXMLDOMNodePtr parentNode,
 		CString* pcsKeys, int iNumKeys,
 		bool bAddNodes = false);
+
+private:
+	PWScore *m_xmlcore;
 };
-
-

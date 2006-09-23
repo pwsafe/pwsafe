@@ -50,8 +50,8 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("DisplayExpandedAddEditDlg"), true, true},
   {_T("MaintainDateTimeStamps"), false, true},
   {_T("SavePasswordHistory"), false, true},
-  {_T("AllowWeakPassphraes"), false, false},
-  {_T("ContinueFindAtEODB"), false, false},
+  {_T("FindWraps"), false, false},
+  {_T("ShowNotesDefault"), false, true},
 };
 
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
@@ -88,10 +88,8 @@ PWSprefs *PWSprefs::GetInstance()
 
 void PWSprefs::DeleteInstance()
 {
-  if (self != NULL) {
-    delete self;
-    self = NULL;
-  }
+  delete self;
+  self = NULL;
 }
 
 PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_prefs_changed(false)

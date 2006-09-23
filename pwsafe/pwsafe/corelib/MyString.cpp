@@ -171,6 +171,12 @@ CMyString::operator[](int nIndex) const
    return m_mystring[nIndex];
 }
 
+TCHAR
+CMyString::GetAt(int nIndex)
+{
+   return m_mystring.GetAt(nIndex);
+}
+
 void
 CMyString::SetAt(int nIndex, TCHAR ch)
 {
