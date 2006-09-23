@@ -3,6 +3,25 @@
 #include "Shlwapi.h"
 #include "PWSRecentFileList.h"
 
+	/*
+	   NOTE: Using a DEBUG version of the executable, adding a file whose path 
+	   does not exist (e.g. on USB stick that is no longer connected to the 
+	   computer) will cause an ASSERT failure in filelist.cpp and
+	   then a CFileException (badpath).
+
+	   Tried to get MS to just verify the filename is correctly formed but they insist
+	   in testing the volume is also mounted! They MAY fix it in a later version of VC8.
+
+	   The ASSERT does not occur in the Release version of the executable but the
+	   CFileException does - hence this code to still Add the filename.  If the volume
+	   is mounted, we pass it on to MS's code to Add.
+
+	   Note: If this happens, with MS's code, the valid filename will NOT be added
+	   to the MRU list, although it would if read from the registry
+	   (CRecentFileList::ReadList) since MS does NO checking in that routine and
+	   will add any string!
+	*/
+
 void CPWSRecentFileList::Add(LPCTSTR lpszPathName)
 {
 	ASSERT(m_arrNames != NULL);
@@ -60,6 +79,7 @@ void CPWSRecentFileList::Add(LPCTSTR lpszPathName)
 	}
 
 	if (bGetMSToAddIt) {
+		// Get MS to Add it.
 		CRecentFileList::Add(lpszPathName);
 		return;
 	}
