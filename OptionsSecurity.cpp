@@ -45,7 +45,6 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
 	DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
 	DDV_MinMaxInt(pDX, m_IdleTimeOut, 1, 120);
-	DDX_Check(pDX, IDC_ALLOW_WEAK_PASSPHRASES, m_bAllowWeakPassphrases);
 	//}}AFX_DATA_MAP
 }
 
@@ -82,7 +81,6 @@ BOOL COptionsSecurity::OnInitDialog()
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL COptionsSecurity::OnKillActive()
 {

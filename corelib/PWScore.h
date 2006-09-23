@@ -1,8 +1,8 @@
 // PWScore.h
 //-----------------------------------------------------------------------------
 
-#ifndef PWScore_h
-#define PWScore_h
+#pragma once
+
 #include <afxtempl.h> // for CList
 #include "ItemData.h"
 #include "MyString.h"
@@ -43,6 +43,11 @@ class PWScore {
   CMyString GetDefUsername() const {return m_defusername;}
   void SetDefUsername(const CMyString &du) {m_defusername = du;}
 
+  const CString &GetCurrentUser() const {return m_user;}
+  const CString &GetCurrentHost() const {return m_sysname;}
+  const CString &GetWhoLastSaved() const {return m_wholastsaved;}
+  const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
+
   void ClearData();
   void NewFile(const CMyString &passkey);
   int WriteCurFile() {return WriteFile(m_currfile);}
@@ -75,9 +80,9 @@ class PWScore {
   int BackupCurFile();
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
-  bool LockFile(const CMyString &filename, CMyString &locker);
-  bool IsLockedFile(const CMyString &filename) const;
-  void UnlockFile(const CMyString &filename);
+  bool LockFile(const CMyString &filename, CMyString &locker, const bool bDB = true);
+  bool IsLockedFile(const CMyString &filename, const bool bDB = true) const;
+  void UnlockFile(const CMyString &filename, const bool bDB = true);
 
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary);
@@ -136,6 +141,6 @@ class PWScore {
   HANDLE m_lockFileHandle;
 
   CString m_displaystatus;
+  CString m_wholastsaved, m_whenlastsaved;
+  CString m_user, m_sysname;
 };
-
-#endif // PWScore_h

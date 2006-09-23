@@ -52,7 +52,6 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_USEDEFUSER, m_usedefuser);
 	DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
 	DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
-	DDX_Check(pDX, IDC_CONTINUE_FIND_AT_EODB, m_continuefindateodb);
 	//}}AFX_DATA_MAP
 
 }

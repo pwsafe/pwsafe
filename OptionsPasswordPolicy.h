@@ -19,12 +19,12 @@ public:
 	//{{AFX_DATA(COptionsPasswordPolicy)
 	enum { IDD = IDD_PS_PASSWORDPOLICY };
 	UINT	m_pwlendefault;
-	BOOL	m_pwusedigits;
-	BOOL	m_pwusehexdigits;
 	BOOL	m_pwuselowercase;
-	BOOL	m_pwusesymbols;
 	BOOL	m_pwuseuppercase;
+	BOOL	m_pwusedigits;
+	BOOL	m_pwusesymbols;
 	BOOL	m_pweasyvision;
+	BOOL	m_pwusehexdigits;
 	//}}AFX_DATA
 
 
@@ -40,16 +40,17 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsPasswordPolicy)
 	virtual BOOL OnInitDialog();
-	afx_msg void OnUselowercase();
-	afx_msg void OnUseuppercase();
-	afx_msg void OnUsedigits();
-	afx_msg void OnUsesymbols();
 	afx_msg void OnUsehexdigits();
-	afx_msg void OnUseeasyvision();
 	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
+private:
+	BOOL	m_savepwuselowercase;
+	BOOL	m_savepwuseuppercase;
+	BOOL	m_savepwusedigits;
+	BOOL	m_savepwusesymbols;
+	BOOL	m_savepweasyvision;
 };
 
 //{{AFX_INSERT_LOCATION}}

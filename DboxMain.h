@@ -85,8 +85,10 @@ public:
   bool GetShowPasswordInList() const {return m_bShowPasswordInList;}
   void SetFindActive() {m_bFindActive = true;}
   void SetFindInActive() {m_bFindActive = false;}
+  void SetFindWrap(bool bwrap) {m_bFindWrap = bwrap;}
   bool GetCurrentView() {return m_IsListView;}
   void IssueError(LONG lRet, const CString &csFunction);
+  void UpdatePasswordHistory(const int &iAction, const int &num_default);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -149,9 +151,10 @@ protected:
   bool m_saveMRU;
   int m_iSessionEndingStatus;
   bool m_bFindActive;
+  bool m_bFindWrap;
 
-  WCHAR *m_pwchTip; 
-  TCHAR *m_pchTip; 
+  WCHAR *m_pwchTip;
+  TCHAR *m_pchTip;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
 
@@ -185,7 +188,6 @@ protected:
   void SetTreeView();
   void SetToolbar(int menuItem);
   void UpdateStatusBar();
-  bool UpdatePasswordHistory(const int &iAction, const int &num_default);
 
   //Version of message functions with return values
   int Save(void);
@@ -245,6 +247,7 @@ protected:
   afx_msg void OnClearMRU();
   afx_msg void OnMerge();
   afx_msg void OnCompare();
+  afx_msg void OnProperties();
   afx_msg void OnRestore();
   afx_msg void OnSaveAs();
   afx_msg void OnListView();

@@ -22,14 +22,19 @@ collapsed, all expanded or a mixture of some groups expanded and others
 collapsed).
 [1527058] password history - Ability to set the default number to be
 saved.  Can be overridden on an entry by entry basis. Changing the 
-default number has no effect if history is already saved for a
-particular entry.
+default number has no effect if there is already more passwords saved
+than the new maximum for a particular entry.
 [] Change Find processing in Tree view so that entries are shown in Tree
 order rather than List order.
-[] Change Find to stop on the last found item and ask whether to continue
-from the beginning of the database or the user may select this previous
-behavour via a Misc. option.
+[] Change Find to allow user to continue searching from the beginning
+again (Find wrapping)
 [] Allow tooltips to be longer than 79 characters + update for VC8
+[] Display database information (File->Database Properties)
+[] Allow password history settings to be turned on/off for all exisiting
+entries - Tooltips available on the Password History property page - presence
+shown by '(TT)' at the end of the text
+[] Ability to Show/Hide Notes field in Edit (in case someone is lurking
+behind you!)
 
 Changes to Existing Features in 3.03
 ====================================

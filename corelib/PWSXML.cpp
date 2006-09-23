@@ -16,7 +16,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-PWSXML::PWSXML()
+PWSXML::PWSXML() : m_xmlcore(NULL)
 {
 	m_MSXML_Version = 60;
 	m_delimiter = _T('^');

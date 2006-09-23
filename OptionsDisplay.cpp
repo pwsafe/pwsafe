@@ -40,6 +40,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
 	DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_pwshowinlist);
 	DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
+	DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
 #if defined(POCKET_PC)
 	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif

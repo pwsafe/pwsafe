@@ -2,8 +2,8 @@
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
 
-#ifndef PWSfile_h
-#define PWSfile_h
+#pragma once
+
 #include <stdio.h> // for FILE *
 
 #include "ItemData.h"
@@ -51,6 +51,11 @@ class PWSfile {
   void SetDisplayStatus(const CString &displaystatus) {m_file_displaystatus = displaystatus;}
   const CString &GetDisplayStatus() const {return m_file_displaystatus;}
   void SetUseUTF8(bool flag) { m_useUTF8 = flag; } // nop for v1v2
+  void SetUserHost(const CString &user, const CString &sysname)
+		{m_user = user; m_sysname = sysname;}
+  const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
+  const CString &GetWhoLastSaved() const {return m_wholastsaved;}
+
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
@@ -68,13 +73,11 @@ class PWSfile {
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
   CString m_file_displaystatus; // tree display sttaus stored in file
+  CString m_whenlastsaved; // When last saved
+  CString m_wholastsaved; // and by whom
+  CString m_user, m_sysname; // current user & host
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
   bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
 };
-
-#endif PWSfile_h
-
-
-

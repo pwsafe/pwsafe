@@ -38,6 +38,27 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 	PWScore::m_session_initialized = true;
   }
+
+  TCHAR user[UNLEN + sizeof(TCHAR)];
+  TCHAR sysname[MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)];
+  //  ulen INCLUDES the trailing blank
+  DWORD ulen = UNLEN + sizeof(TCHAR);
+  if (::GetUserName(user, &ulen)== FALSE) {
+    user[0] = TCHAR('?');
+	user[1] = TCHAR('\0');
+	ulen = 2;
+  }
+  ulen--;
+
+  //  slen EXCLUDES the trailing blank
+  DWORD slen = MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR);
+  if (::GetComputerName(sysname, &slen) == FALSE) {
+    sysname[0] = TCHAR('?');
+	sysname[1] = TCHAR('\0');
+	slen = 1;
+  }
+  m_user = CString(user, ulen);
+  m_sysname = CString(sysname, slen);
 }
 
 PWScore::~PWScore()
@@ -87,6 +108,9 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   // Tree Display Status is kept in header
   out->SetDisplayStatus(m_displaystatus);
 
+  // Who last saved which is kept in header
+  out->SetUserHost(m_user, m_sysname);
+
   status = out->Open(GetPassKey());
 
   if (status != PWSfile::SUCCESS) {
@@ -101,6 +125,9 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     out->WriteRecord(temp);
     m_pwlist.GetNext(listPos);
   }
+  m_wholastsaved = out->GetWhoLastSaved();
+  m_whenlastsaved = out->GetWhenLastSaved();
+
   out->Close();
   delete out;
 
@@ -646,6 +673,8 @@ PWScore::ReadFile(const CMyString &a_filename,
   	// both possibly empty
     PWSprefs::GetInstance()->Load(in->GetPrefString());
     m_displaystatus = in->GetDisplayStatus();
+	m_whenlastsaved = in->GetWhenLastSaved();
+	m_wholastsaved = in->GetWhoLastSaved();
   }
 
    ClearData(); //Before overwriting old data, but after opening the file...
@@ -943,17 +972,19 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
  */
 
 static void GetLockFileName(const CMyString &filename,
-			    CMyString &lock_filename)
+			    CMyString &lock_filename, const bool bDB)
 {
+  bDB;  // Needed for XMLprefs: Database or Config file lock!
+
   ASSERT(!filename.IsEmpty());
   // derive lock filename from filename
   lock_filename = CMyString(filename.Left(MAX_PATH - 4) + _T(".plk"));
 }
 
-bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
+bool PWScore::LockFile(const CMyString &filename, CMyString &locker, const bool bDB)
 {
   CMyString lock_filename;
-  GetLockFileName(filename, lock_filename);
+  GetLockFileName(filename, lock_filename, bDB);
 #ifdef POSIX_FILE_LOCK
   int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
                  (_S_IREAD | _S_IWRITE));
@@ -999,21 +1030,10 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
     } // switch (errno)
     return false;
   } else { // valid filehandle, write our info
-    TCHAR user[UNLEN+1];
-    TCHAR sysname[MAX_COMPUTERNAME_LENGTH+1];
-    DWORD len;
-    len = sizeof(user);
-    if (::GetUserName(user, &len)== FALSE) {
-      user[0] = TCHAR('?'); user[1] = TCHAR('\0');
-    }
-    len = sizeof(sysname);
-    if (::GetComputerName(sysname, &len) == FALSE) {
-      sysname[0] = TCHAR('?'); sysname[1] = TCHAR('\0');
-    }
     int numWrit;
-    numWrit = _write(fh, user, _tcslen(user)*sizeof(TCHAR));
+    numWrit = _write(fh, m_user, m_user.GetLength()*sizeof(TCHAR));
     numWrit += _write(fh, _T("@"), _tcslen("@")*sizeof(TCHAR));
-    numWrit += _write(fh, sysname, _tcslen(sysname)*sizeof(TCHAR));
+    numWrit += _write(fh, m_sysname, m_sysname.GetLength()*sizeof(TCHAR));
     ASSERT(numWrit > 0);
     _close(fh);
     return true;
@@ -1071,28 +1091,17 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
     } // switch (error)
     return false;
   } else { // valid filehandle, write our info
-    TCHAR user[UNLEN+1];
-    TCHAR sysname[MAX_COMPUTERNAME_LENGTH+1];
-    DWORD len;
-    len = sizeof(user);
-    if (::GetUserName(user, &len)== FALSE) {
-      user[0] = TCHAR('?'); user[1] = TCHAR('\0');
-    }
-    len = sizeof(sysname);
-    if (::GetComputerName(sysname, &len) == FALSE) {
-      sysname[0] = TCHAR('?'); sysname[1] = TCHAR('\0');
-    }
     DWORD numWrit, sumWrit;
     BOOL write_status;
-    write_status = ::WriteFile(m_lockFileHandle, user,
-                               _tcslen(user)*sizeof(TCHAR),
+    write_status = ::WriteFile(m_lockFileHandle, m_user,
+                               m_user.GetLength()*sizeof(TCHAR),
                                &sumWrit, NULL);
     write_status = ::WriteFile(m_lockFileHandle,
                                _T("@"), _tcslen(_T("@"))*sizeof(TCHAR),
                                &numWrit, NULL);
     sumWrit += numWrit;
     write_status += ::WriteFile(m_lockFileHandle,
-                                sysname, _tcslen(sysname)*sizeof(TCHAR),
+                                m_sysname, m_sysname.GetLength()*sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
@@ -1101,18 +1110,18 @@ bool PWScore::LockFile(const CMyString &filename, CMyString &locker)
 #endif // POSIX_FILE_LOCK
 }
 
-void PWScore::UnlockFile(const CMyString &filename)
+void PWScore::UnlockFile(const CMyString &filename, const bool bDB)
 {
 #ifdef POSIX_FILE_LOCK
   CMyString lock_filename;
-  GetLockFileName(filename, lock_filename);
+  GetLockFileName(filename, lock_filename, bDB);
   _unlink(lock_filename);
 #else
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
   if (m_lockFileHandle != INVALID_HANDLE_VALUE) {
     CMyString lock_filename;
-    GetLockFileName(filename, lock_filename);
+    GetLockFileName(filename, lock_filename, bDB);
     CloseHandle(m_lockFileHandle);
     m_lockFileHandle = INVALID_HANDLE_VALUE;
     DeleteFile(LPCTSTR(lock_filename));
@@ -1120,10 +1129,10 @@ void PWScore::UnlockFile(const CMyString &filename)
 #endif // POSIX_FILE_LOCK
 }
 
-bool PWScore::IsLockedFile(const CMyString &filename) const
+bool PWScore::IsLockedFile(const CMyString &filename, const bool bDB) const
 {
   CMyString lock_filename;
-  GetLockFileName(filename, lock_filename);
+  GetLockFileName(filename, lock_filename, bDB);
 #ifdef POSIX_FILE_LOCK
   return PWSfile::FileExists(lock_filename);
 #else

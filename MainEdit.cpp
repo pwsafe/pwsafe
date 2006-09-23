@@ -472,9 +472,9 @@ DboxMain::OnCopyNotes()
 void
 DboxMain::OnFind()
 {
-  bool continuefindateodb = PWSprefs::GetInstance()->GetPref(PWSprefs::ContinueFindAtEODB);
-  CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr,
-  				&continuefindateodb); // create modeless or popup existing
+  // create modeless or popup existing
+  CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr, &m_bFindWrap);
+
   // XXX Gross hack to fix aesthetic bug in tree view
   // without this, multiple "selected" displayed
   // if treeview && there's a selected item, then

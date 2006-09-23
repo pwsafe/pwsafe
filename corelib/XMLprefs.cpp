@@ -14,8 +14,19 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
 
+void CXMLprefs::SetBigUpdate(bool state)
+{
+	m_bBigUpdate = state;
+
+	// If a big update - load XML when set to true and unload it at the end
+	if (m_bBigUpdate)
+		LoadXML();
+	else
+		UnloadXML();
+}
+
 // get a int value
-int CXMLprefs::GetInt(const CString &csBaseKeyName, const CString &csValueName, 
+int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
 					   const int &iDefaultValue)
 {
 	/*
@@ -27,13 +38,13 @@ int CXMLprefs::GetInt(const CString &csBaseKeyName, const CString &csValueName,
 
 	csDefaultValue.Format("%d", iRetVal);
 
-	iRetVal = atoi(GetString(csBaseKeyName, csValueName, csDefaultValue));
+	iRetVal = atoi(Get(csBaseKeyName, csValueName, csDefaultValue));
 
 	return iRetVal;
 }
 
 // get a string value
-CString CXMLprefs::GetString(const CString &csBaseKeyName, const CString &csValueName, 
+CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
 							  const CString &csDefaultValue)
 {
 	int iNumKeys = 0;
@@ -71,9 +82,8 @@ CString CXMLprefs::GetString(const CString &csBaseKeyName, const CString &csValu
 				}
 				rootElem = NULL;
 			}
+			UnloadXML();  // dump the XML document
 		}
-
-		//UnloadXML();  // dump the XML document
 		delete [] pcsKeys;
 		pcsKeys = NULL;
 	}
@@ -82,7 +92,7 @@ CString CXMLprefs::GetString(const CString &csBaseKeyName, const CString &csValu
 }
 
 // set a int value
-int CXMLprefs::SetInt(const CString &csBaseKeyName, const CString &csValueName,
+int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
 					   const int &iValue)
 {
 	/*
@@ -94,13 +104,13 @@ int CXMLprefs::SetInt(const CString &csBaseKeyName, const CString &csValueName,
 
 	csValue.Format("%d", iValue);
 
-	iRetVal = SetString(csBaseKeyName, csValueName, csValue);
+	iRetVal = Set(csBaseKeyName, csValueName, csValue);
 
 	return iRetVal;
 }
 
 // set a string value
-int CXMLprefs::SetString(const CString &csBaseKeyName, const CString &csValueName, 
+int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName, 
 						  const CString &csValue)
 {
 	int iRetVal = XML_SUCCESS;
@@ -142,11 +152,10 @@ int CXMLprefs::SetString(const CString &csBaseKeyName, const CString &csValueNam
 
 				rootElem = NULL;
 			}
+			UnloadXML();  // dump the XML document
 		}
 		else
 			iRetVal = XML_LOAD_FAILED;
-
-		//UnloadXML();  // dump the XML document
 
 		delete [] pcsKeys;
 		pcsKeys = NULL;
@@ -197,7 +206,7 @@ BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csVal
 				}
 				rootElem = NULL;
 			}
-			//UnloadXML();  // dump the XML document
+			UnloadXML();  // dump the XML document
 		}
 		delete [] pcsKeys;
 		pcsKeys = NULL;
@@ -248,14 +257,15 @@ CString* CXMLprefs::ParseKeys(const CString &csFullKeyPath, int &iNumKeys)
 // load the XML file into the parser
 BOOL CXMLprefs::LoadXML()
 {
+	// Already loaded?
 	if (m_bXMLLoaded) return TRUE;
 
+	//  Couldn't get it to work previously?
 	if (m_MSXML_Version == -1) return FALSE;
 
 	BOOL b_OK = FALSE;
 
-	// initialize the Xml parser
-
+	// initialize the XML parser
 	switch (m_MSXML_Version) {
 		case 0:
 			// First time through!
@@ -307,6 +317,9 @@ BOOL CXMLprefs::LoadXML()
 	}
 
 	VARIANT_BOOL vbSuccessful;
+
+	CMyString locker(_T(""));
+	m_xmlcore->LockFile(m_csConfigFile, locker, false);
 
 	// see if the file exists
 	CFile file;
@@ -360,7 +373,7 @@ BOOL CXMLprefs::LoadXML()
 
 void CXMLprefs::UnloadXML()
 {
-	if (!m_bXMLLoaded)
+	if (!m_bXMLLoaded || m_bBigUpdate)
 		return;
 
 	if (m_pXMLDoc != NULL) {
@@ -369,6 +382,7 @@ void CXMLprefs::UnloadXML()
 	}
 
 	m_bXMLLoaded = false;
+	m_xmlcore->UnlockFile(m_csConfigFile, false);
 }
 
 
@@ -401,7 +415,7 @@ void CXMLprefs::ReformatAndSave()
 	csConfigData.ReleaseBuffer(num);
 	pIStream->Release();
 
-	// First remove all tabs, carraige returns and line-ends
+	// First remove all tabs, carriage returns and line-ends
 	csConfigData.Remove(_T('\t'));
 	csConfigData.Remove(_T('\r'));
 	csConfigData.Remove(_T('\n'));

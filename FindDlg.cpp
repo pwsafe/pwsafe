@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 
 CFindDlg *CFindDlg::self = NULL; // for Singleton pattern
 
-void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *continuefindateodb)
+void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *bFindWraps)
 {
   if (self == NULL) {
     self = new CFindDlg(pParent, isCS, lastFind);
@@ -58,7 +58,7 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *contin
     self->BringWindowToTop();
   }
   self->ShowWindow(SW_SHOW);
-  self->m_bcontinuefindateodb = *continuefindateodb;
+  self->m_FindWraps = *bFindWraps ? TRUE : FALSE;
   
   ((DboxMain*)pParent)->SetFindActive();  //  Prevent switch tree/list display modes
   app.DisableAccelerator(); // don't accel Del when this dlg is shown
@@ -77,12 +77,12 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   m_search_text = *lastFind;
   m_status = _T("");
   //}}AFX_DATA_INIT
+
 }
 
 void CFindDlg::EndIt()
 {
-  if (self != NULL)
-	  delete self;
+  delete self;
 }
 
 CFindDlg::~CFindDlg()
@@ -96,6 +96,7 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
   super::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CFindDlg)
   DDX_Check(pDX, IDC_FIND_CS, m_cs_search);
+  DDX_Check(pDX, IDC_FIND_WRAP, m_FindWraps);
   DDX_Text(pDX, IDC_FIND_TEXT, m_search_text);
 #if !defined(POCKET_PC)
   DDX_Text(pDX, IDC_STATUS, m_status);
@@ -107,6 +108,7 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CFindDlg, super)
 	//{{AFX_MSG_MAP(CFindDlg)
 	ON_BN_CLICKED(IDOK, OnFind)
+	ON_BN_CLICKED(IDC_FIND_WRAP, OnWrap)
 #if defined(POCKET_PC)
 	ON_BN_CLICKED(IDCANCEL, OnCancel)
 #else
@@ -195,7 +197,7 @@ void CFindDlg::OnFind()
     	m_lastshown++;
     	if(m_lastshown >= m_numFound) {
     		int rc = IDYES;
-    		if (!m_bcontinuefindateodb) {  // Ask
+    		if (m_FindWraps == FALSE) {  // Ask
     			rc = MessageBox(_T("Continue search from the beginning?"),
     					_T("Search string not found"), MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
     		}
@@ -223,6 +225,12 @@ void CFindDlg::OnFind()
     }
   }
   // don't call super::OnOK - user will Cancel() to close dbox
+}
+
+void CFindDlg::OnWrap()
+{
+  DboxMain* pParent = (DboxMain*)GetParent();
+  pParent->SetFindWrap(((CButton*)GetDlgItem(IDC_FIND_WRAP))->GetCheck() == 1);
 }
 
 #if defined(POCKET_PC)

@@ -196,7 +196,7 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
   system.m_maxmruitems = prefs->
     GetPref(PWSprefs::MaxMRUItems);
-  system.m_mruonfilemenu = PWSprefs::GetInstance()->
+  system.m_mruonfilemenu = prefs->
     GetPref(PWSprefs::MRUOnFileMenu);
 
   display.m_alwaysontop = m_bAlwaysOnTop;
@@ -204,6 +204,8 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
   display.m_pwshowinlist = prefs->
     GetPref(PWSprefs::ShowPWInList) ? TRUE : FALSE;
+  display.m_notesshowinedit = prefs->
+    GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
 #if defined(POCKET_PC)
   display.m_dcshowspassword = prefs->
     GetPref(PWSprefs::DCShowsPassword) ? TRUE : FALSE;
@@ -225,8 +227,6 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::LockOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prefs->
     GetPref(PWSprefs::IdleTimeout);
-  security.m_bAllowWeakPassphrases = prefs->
-    GetPref(PWSprefs::AllowWeakPassphrases) ? TRUE : FALSE;
 
   passwordpolicy.m_pwlendefault = prefs->
     GetPref(PWSprefs::PWLenDefault);
@@ -269,8 +269,6 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::DefUserName));
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
-  misc.m_continuefindateodb = prefs->
-    GetPref(PWSprefs::ContinueFindAtEODB) ? TRUE : FALSE;
 
   optionsDlg.AddPage( &display );
   optionsDlg.AddPage( &misc );
@@ -283,6 +281,8 @@ DboxMain::OnOptions()
   **  Remove the "Apply Now" button.
   */
   optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+
+  passwordhistory.m_pDboxMain = this;
   app.DisableAccelerator();
   int rc = optionsDlg.DoModal();
   app.EnableAccelerator();
@@ -298,6 +298,8 @@ DboxMain::OnOptions()
                      display.m_pwshowinedit == TRUE);
       prefs->SetPref(PWSprefs::ShowPWInList,
                      display.m_pwshowinlist == TRUE);
+      prefs->SetPref(PWSprefs::ShowNotesDefault,
+                     display.m_notesshowinedit == TRUE);
 #if defined(POCKET_PC)
       prefs->SetPref(PWSprefs::DCShowsPassword,
                      display.m_dcshowspassword == TRUE);
@@ -328,8 +330,6 @@ DboxMain::OnOptions()
                      security.m_LockOnIdleTimeout == TRUE);
       prefs->SetPref(PWSprefs::IdleTimeout,
                      security.m_IdleTimeOut);
-      prefs->SetPref(PWSprefs::AllowWeakPassphrases,
-                     security.m_bAllowWeakPassphrases == TRUE);
 
       prefs->SetPref(PWSprefs::PWLenDefault,
                      passwordpolicy.m_pwlendefault);
@@ -374,47 +374,23 @@ DboxMain::OnOptions()
                      misc.m_defusername);
       prefs->SetPref(PWSprefs::QuerySetDef,
                      misc.m_querysetdef == TRUE);
-      prefs->SetPref(PWSprefs::ContinueFindAtEODB,
-                     misc.m_continuefindateodb == TRUE);
 
-      if (passwordhistory.m_applypwhistory == TRUE) {
-          TCHAR buffer[6];
-#if _MSC_VER >= 1400
-          _stprintf_s(buffer, 6, "1%02x00", passwordhistory.m_pwhistorynumdefault);
-#else
-          _stprintf(buffer, "1%02x00", passwordhistory.m_pwhistorynumdefault);
-#endif
-          POSITION listPos = m_core.GetFirstEntryPosition();
-          int i = 0;
-          while (listPos != NULL) {
-              CItemData &ci = m_core.GetEntryAt(listPos);
-              const CMyString tmp = ci.GetPWHistory();
-              if (tmp.GetLength() < 5 || tmp == _T("00000")) {
-                  ci.SetPWHistory(buffer);
-                  i++;
-              }
-              m_core.GetNextEntry(listPos);
-          } // while
-          CString csMsg;
-          csMsg.Format(_T("%d entries have had their settings changed to save password history."), i);
-          AfxMessageBox(csMsg);
-      }
-
-      /* Update status bar */
-      switch (misc.m_doubleclickaction) {
-      	case PWSprefs::DoubleClickCopy: statustext[0] = IDS_STATCOPY; break;
-      	case PWSprefs::DoubleClickEdit: statustext[0] = IDS_STATEDIT; break;
-      	case PWSprefs::DoubleClickAutoType: statustext[0] = IDS_STATAUTOTYPE; break;
-      	case PWSprefs::DoubleClickBrowse: statustext[0] = IDS_STATBROWSE; break;
-      	default: ASSERT(0);
-      }
       // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
+      /* Update status bar */
+      switch (misc.m_doubleclickaction) {
+      	case PWSprefs::DoubleClickCopy: statustext[SB_DBLCLICK] = IDS_STATCOPY; break;
+      	case PWSprefs::DoubleClickEdit: statustext[SB_DBLCLICK] = IDS_STATEDIT; break;
+      	case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+      	case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
+      	default: ASSERT(0);
+      }
       m_statusBar.SetIndicators(statustext, SB_TOTAL);
 	  UpdateStatusBar();
 	  // Make a sunken or recessed border around the first pane
-      m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
+      m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
 #endif
+
       /*
       ** Update string in database, if necessary & possible
       */
@@ -493,4 +469,122 @@ DboxMain::OnOptions()
       m_core.SetDefUsername(misc.m_defusername);
       m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
     }
+}
+
+void
+DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
+{
+	ItemList new_pwlist;
+	CString cs_Msg, cs_Buffer;;
+	POSITION listPos;
+	int status, old_max, num_saved, len;
+	int num_altered = 0;
+	bool bResult = false;
+
+	switch (iAction) {
+		case 1:		// reset off
+			listPos = m_core.GetFirstEntryPosition();
+			while (listPos != NULL) {
+				CItemData &ci = m_core.GetEntryAt(listPos);
+				CMyString cs_tmp = ci.GetPWHistory();
+				if (cs_tmp.GetLength() >= 5 && cs_tmp.GetAt(0) == _T('1')) {
+					cs_tmp.SetAt(0, _T('0'));
+					ci.SetPWHistory(cs_tmp);
+					num_altered++;
+				}
+				new_pwlist.AddTail(ci);
+				m_core.GetNextEntry(listPos);
+			} // while
+			if (num_altered > 0) {
+				// items were changed - swap the in-core pwlist
+				m_core.CopyPWList(new_pwlist);
+			}
+			if (num_altered == 1)
+				cs_Msg = _T("1 entry has had its");
+			else
+				cs_Msg.Format(_T("%d entries have had their"), num_altered);
+			cs_Msg += _T(" settings changed to not save password history.");
+			AfxMessageBox(cs_Msg);
+			bResult = true;
+			break;
+		case 2:		// reset on
+			cs_Buffer.Format("1%02x00", new_default_max);
+			listPos = m_core.GetFirstEntryPosition();
+			while (listPos != NULL) {
+				CItemData &ci = m_core.GetEntryAt(listPos);
+				CMyString cs_tmp = ci.GetPWHistory();
+				len = cs_tmp.GetLength();
+				if (cs_tmp.GetLength() < 5) {
+					ci.SetPWHistory(cs_Buffer);
+					num_altered++;
+				} else {
+					if (cs_tmp.GetAt(0) == _T('0')) {
+						cs_tmp.SetAt(0, _T('1'));
+						ci.SetPWHistory(cs_tmp);
+						num_altered++;
+					}
+				}
+				new_pwlist.AddTail(ci);
+				m_core.GetNextEntry(listPos);
+			} // while
+			if (num_altered > 0) {
+				// items were changed - swap the in-core pwlist
+				m_core.CopyPWList(new_pwlist);
+			}
+			if (num_altered == 1)
+				cs_Msg = _T("1 entry has had its");
+			else
+				cs_Msg.Format(_T("%d entries have had their"), num_altered);
+			cs_Msg += _T(" settings changed to save password history.");
+			AfxMessageBox(cs_Msg);
+			bResult = true;
+			break;
+		case 4:		// setmax
+			cs_Buffer.Format("1%02x", new_default_max);
+			listPos = m_core.GetFirstEntryPosition();
+			while (listPos != NULL) {
+				CItemData &ci = m_core.GetEntryAt(listPos);
+				CMyString cs_tmp = ci.GetPWHistory();
+				len = cs_tmp.GetLength();
+				if (len >= 5) {
+					TCHAR *lpszPWHistory = cs_tmp.GetBuffer(len + sizeof(TCHAR));
+#if _MSC_VER >= 1400
+					int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", 
+						&status, &old_max, &num_saved);
+#else
+					int iread = sscanf(lpszPWHistory, "%01d%02x%02x",
+						&status, &old_max, &num_saved);
+#endif
+					cs_tmp.ReleaseBuffer();
+					if (iread == 3 && status == 1 && num_saved <= new_default_max) {
+						cs_tmp = CMyString(cs_Buffer) + cs_tmp.Mid(3);
+						ci.SetPWHistory(cs_tmp);
+						num_altered++;
+					}
+				}
+				new_pwlist.AddTail(ci);
+				m_core.GetNextEntry(listPos);
+			} // while
+			if (num_altered > 0) {
+				// items were changed - swap the in-core pwlist
+				m_core.CopyPWList(new_pwlist);
+			}
+			if (num_altered == 1)
+				cs_Msg = _T("1 entry has had its");
+			else
+				cs_Msg.Format(_T("%d entries have had their"), num_altered);
+			cs_Msg += _T(" 'maximum saved passwords' changed to the new default.");
+			AfxMessageBox(cs_Msg);
+			bResult = true;
+			break;
+		default:
+			break;
+	}
+
+	new_pwlist.RemoveAll();
+
+	if (bResult)
+		RefreshList();
+
+	return;
 }

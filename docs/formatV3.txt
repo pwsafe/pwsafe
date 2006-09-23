@@ -92,7 +92,9 @@ Version                     0x00        %02x          Y              [1]
 UUID                        0x01        UUID          Y              [2]
 Non-default preferences     0x02        Text          Y              [3]
 Tree Display Status         0x03        Text          Y              [4]
-End of Entry                0xff        [empty]       Y              [5]
+Timestamp of last save      0x04        time_t        Y              [5]
+Who performed last save     0x05        Text          Y              [6]
+End of Entry                0xff        [empty]       Y              [7]
 
 [1] The version number of the database format. For this version, the value
 is 0x0300 (stored in little-endian format, that is, 0x00, 0x03).
@@ -115,7 +117,18 @@ be applied at database open time, if the user wishes, so that the tree is
 displayed as it was. Alternatively, it can be ignored and the tree
 displayed completely expanded or collapsed. Implemented in V3.03 and later.
 
-[5] An explicit end of entry field is useful for supporting new fields
+[5] Timestamps are stored as 32 bit, little endian, unsigned integers,
+representing the number of seconds since Midnight, January 1, 1970, GMT.
+(This is equivalent to the time_t type on Windows and POSIX. On the
+Macintosh, the value needs to be adjusted by the constant value 2082844800
+to account for the different epoch of its time_t type.)
+
+[6] Text saved in the format:: nnnnu..uh..h, where: 
+    nnnn = 4 hexadecimal digits giving length of following user name field
+    u..u = user name
+    h..h = host computer name
+
+[7] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.2 Field types for database Records (based on the v2 format):
@@ -147,11 +160,7 @@ groups such as "Finance.credit cards.Visa", "Finance.credit
 cards.Mastercard", Finance.bank.web access", etc. Dots entered by the user
 should be "escaped" by the application.
 
-[3] Timestamps are stored as 32 bit, little endian, unsigned integers,
-representing the number of seconds since Midnight, January 1, 1970, GMT.
-(This is equivalent to the time_t type on Windows and POSIX. On the
-Macintosh, the value needs to be adjusted by the constant value 2082844800
-to account for the different epoch of its time_t type.)
+[3] As per 'Timestamp of last save' in the HDR above.
 
 [4] This will be updated whenever any part of this entry is accessed i.e.
 to copy its username, password or notes to the clipboard; to perform

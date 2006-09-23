@@ -2,8 +2,7 @@
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
 
-#ifndef PWSfileV3_h
-#define PWSfileV3_h
+#pragma once
 
 #include "PWSfile.h"
 #include "TwoFish.h"
@@ -14,6 +13,7 @@ class PWSfileV3 : public PWSfile {
  public:
 
   enum {HDR_VERSION=0, HDR_UUID=0x1, HDR_NDPREFS = 0x2, HDR_DISPSTAT = 0x3,
+	HDR_LASTUPDATETIME = 0x4, HDR_LASTUPDATEUSERHOST = 0x5,
     HDR_END = 0xff}; // header field types, per formatV{2,3}.txt
 
   static int CheckPassword(const CMyString &filename,
@@ -62,6 +62,3 @@ class PWSfileV3 : public PWSfile {
                          const unsigned char *passkey, unsigned long passLen,
                          unsigned int N, unsigned char *Ptag);
 };
-
-#endif PWSfileV3_h
-

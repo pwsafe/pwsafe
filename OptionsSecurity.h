@@ -23,7 +23,6 @@ public:
 	BOOL	m_confirmcopy;
 	BOOL	m_LockOnWindowLock;
 	BOOL	m_LockOnIdleTimeout;
-	BOOL	m_bAllowWeakPassphrases;
 	UINT    m_IdleTimeOut;
 	//}}AFX_DATA
 
@@ -31,7 +30,7 @@ public:
 // Overrides
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(COptionsSecurity)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
