@@ -254,6 +254,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_SIZING()
 #endif
    ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
+   ON_MESSAGE(WM_HOTKEY,OnHotKey)
 	//}}AFX_MSG_MAP
 
    ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
@@ -308,11 +309,13 @@ DboxMain::InitPasswordSafe()
       GetPref(PWSprefs::HotKeyEnabled)) {
     const DWORD value = DWORD(PWSprefs::GetInstance()->
                               GetPref(PWSprefs::HotKey));
-    // Following contortions needed 'cause MS couldn't get their
-    // act together and keep a consistent interface. Argh.
-    WORD v = WORD((value & 0xff) | ((value & 0xff0000) >> 8));
-    SendMessage(WM_SETHOTKEY, v);
-
+    WORD wVirtualKeyCode = WORD(value & 0xffff);
+    WORD wModifiers = WORD(value >> 16);
+    RegisterHotKey(m_hWnd, 5767, UINT(wModifiers), UINT(wVirtualKeyCode));
+    // registration might fail if combination already registered elsewhere,
+    // but don't see any elegant way to notify the user here, so fail silently
+  } else {
+    // No sense in unregistering at this stage, really.
   }
 #endif
 
@@ -457,6 +460,17 @@ DboxMain::InitPasswordSafe()
   }
 
   SetMenu(app.m_mainmenu);  // Now show menu...
+}
+
+LRESULT
+DboxMain::OnHotKey(WPARAM , LPARAM)
+{
+  // since we only have a single HotKey, the value assigned
+  // to it is meaningless & unused, hence params ignored
+  // The hotkey is used to invoke the app window, prompting
+  // for passphrase if needed.
+  PostMessage(WM_COMMAND, ID_MENUITEM_UNMINIMIZE);
+  return 0;
 }
 
 BOOL
@@ -1225,86 +1239,90 @@ DboxMain::OnUnMinimize()
 void
 DboxMain::UnMinimize(bool update_windows)
 {
-	m_passphraseOK = false;
-	// Case 1 - data available but is currently locked
-	if (!m_needsreading
-		&& (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
-		&& (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
+  m_passphraseOK = false;
+  // Case 1 - data available but is currently locked
+  if (!m_needsreading
+      && (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
+      && (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
-		CMyString passkey;
-		int rc;
-		rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
-		if (rc != PWScore::SUCCESS)
-			return;  // don't even think of restoring window!
+    CMyString passkey;
+    int rc;
+    rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
+    if (rc != PWScore::SUCCESS)
+      return;  // don't even think of restoring window!
 
-		app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-		m_passphraseOK = true;
-		if (update_windows)
-			ShowWindow(SW_RESTORE);
-		return;
-	}
-
-	// Case 2 - data unavailable
-	if (m_needsreading && m_windowok) {
-		CMyString passkey, temp;
-		int rc, rc2;
-
-		if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
-		} else {
-			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
-		}
-		switch (rc) {
-			case PWScore::SUCCESS:
-				rc2 = m_core.ReadCurFile(passkey);
-#if !defined(POCKET_PC)
-				m_title = _T("Password Safe - ") + m_core.GetCurFile();
-#endif
-				break;
-			case PWScore::CANT_OPEN_FILE:
-				temp = m_core.GetCurFile()
-						+ "\n\nCannot open database. It likely does not exist."
-						+ "\nA new database will be created.";
-				MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-			case TAR_NEW:
-				rc2 = New();
-				break;
-			case TAR_OPEN:
-				rc2 = Open();
-				break;
-			case PWScore::WRONG_PASSWORD:
-				rc2 = PWScore::NOT_SUCCESS;
-				break;
-			case PWScore::USER_CANCEL:
-				rc2 = PWScore::NOT_SUCCESS;
-				break;
-			case PWScore::USER_EXIT:
-				m_core.UnlockFile(m_core.GetCurFile());
-				PostQuitMessage(0);
-				return;
-			default:
-				rc2 = PWScore::NOT_SUCCESS;
-				break;
-		}
-
-		if (rc2 == PWScore::SUCCESS) {
-			m_needsreading = false;
-			UpdateSystemTray(UNLOCKED);
-			startLockCheckTimer();
-			m_passphraseOK = true;
-            if (update_windows)
-              ShowWindow(SW_RESTORE);
-		} else {
-			m_needsreading = true;
-			if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
-				ShowWindow( SW_HIDE );
-			else
-				ShowWindow( SW_MINIMIZE );
-		}
-        return;
-	}
+    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+    m_passphraseOK = true;
     if (update_windows)
       ShowWindow(SW_RESTORE);
+    return;
+  }
+
+  // Case 2 - data unavailable
+  if (m_needsreading && m_windowok) {
+    CMyString passkey, temp;
+    int rc, rc2;
+
+    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+      rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
+    } else {
+      rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
+    }
+    switch (rc) {
+    case PWScore::SUCCESS:
+      rc2 = m_core.ReadCurFile(passkey);
+#if !defined(POCKET_PC)
+      m_title = _T("Password Safe - ") + m_core.GetCurFile();
+#endif
+      break;
+    case PWScore::CANT_OPEN_FILE:
+      temp = m_core.GetCurFile()
+        + "\n\nCannot open database. It likely does not exist."
+        + "\nA new database will be created.";
+      MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+    case TAR_NEW:
+      rc2 = New();
+      break;
+    case TAR_OPEN:
+      rc2 = Open();
+      break;
+    case PWScore::WRONG_PASSWORD:
+      rc2 = PWScore::NOT_SUCCESS;
+      break;
+    case PWScore::USER_CANCEL:
+      rc2 = PWScore::NOT_SUCCESS;
+      break;
+    case PWScore::USER_EXIT:
+      m_core.UnlockFile(m_core.GetCurFile());
+      PostQuitMessage(0);
+      return;
+    default:
+      rc2 = PWScore::NOT_SUCCESS;
+      break;
+    }
+
+    if (rc2 == PWScore::SUCCESS) {
+      m_needsreading = false;
+      UpdateSystemTray(UNLOCKED);
+      startLockCheckTimer();
+      m_passphraseOK = true;
+      if (update_windows) {
+        ShowWindow(SW_RESTORE);
+        BringWindowToTop();
+      }
+    } else {
+      m_needsreading = true;
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
+        ShowWindow( SW_HIDE );
+      else
+        ShowWindow( SW_MINIMIZE );
+    }
+    return;
+  }
+  if (update_windows) {
+    ShowWindow(SW_RESTORE);
+    BringWindowToTop();
+  }
 }
 
 void

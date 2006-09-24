@@ -55,6 +55,7 @@ Bugs fixed in 3.03
 [1554253] Show/Unhide password no longer loses changes to password
 [1527144] No more multiple combination dialogs when restoring window
 from system tray
+[] HotKey now works with SystemTray icon
 
 New Features for 3.02
 =====================

@@ -261,6 +261,9 @@
 				RelativePath=".\PasskeySetup.cpp">
 			</File>
 			<File
+				RelativePath=".\Properties.cpp">
+			</File>
+			<File
 				RelativePath=".\PwFont.cpp">
 			</File>
 			<File
@@ -398,6 +401,9 @@
 			</File>
 			<File
 				RelativePath=".\PasswordSafe.h">
+			</File>
+			<File
+				RelativePath=".\Properties.h">
 			</File>
 			<File
 				RelativePath=".\PWCharPool.h">
