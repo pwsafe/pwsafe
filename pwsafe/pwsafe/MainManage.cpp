@@ -439,13 +439,12 @@ DboxMain::OnOptions()
       // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
       // Handle HotKey setting
+      UnregisterHotKey(m_hWnd, 5767); // clear last - never hurts
       if (misc.m_hotkey_enabled == TRUE) {
-        WORD v;
-        v = WORD((misc.m_hotkey_value & 0xff) |
-                 ((misc.m_hotkey_value & 0xff0000) >> 8));
-        SendMessage(WM_SETHOTKEY, v);
-      } else {
-        SendMessage(WM_SETHOTKEY, 0);
+        WORD wVirtualKeyCode = WORD(misc.m_hotkey_value & 0xffff);
+        WORD wModifiers = WORD(misc.m_hotkey_value >> 16);
+        RegisterHotKey(m_hWnd, 5767,
+                       UINT(wModifiers), UINT(wVirtualKeyCode));
       }
 #endif
       /*
