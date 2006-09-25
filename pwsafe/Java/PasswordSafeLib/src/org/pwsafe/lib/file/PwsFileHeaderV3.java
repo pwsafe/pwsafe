@@ -176,7 +176,7 @@ public class PwsFileHeaderV3
 	public void save( PwsFile file )
 	throws IOException
 	{
-		LOG.enterMethod( "PwsFileHeader.save" );
+		LOG.enterMethod( "PwsFileHeaderV3.save" );
 
 		update( file.getPassphrase() );
 		
@@ -189,7 +189,7 @@ public class PwsFileHeaderV3
 		file.writeBytes( b4 );
 		file.writeBytes( IV );
 
-		LOG.leaveMethod( "PwsFileHeader.save" );
+		LOG.leaveMethod( "PwsFileHeaderV3.save" );
 	}
 
 	/**
@@ -199,7 +199,7 @@ public class PwsFileHeaderV3
 	 */
 	private void update( String passphrase )
 	{
-		LOG.enterMethod( "PwsFileHeader.update" );
+		LOG.enterMethod( "PwsFileHeaderV3.update" );
 
 		byte	temp[];
 
@@ -220,6 +220,6 @@ public class PwsFileHeaderV3
 //			IpThing[ii] = Util.newRand();
 //		}
 
-		LOG.leaveMethod( "PwsFileHeader.update" );
+		LOG.leaveMethod( "PwsFileHeaderV3.update" );
 	}
 }

@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 public class PwsFileV3Test extends TestCase {
 	
 	public void testPassphrase() throws EndOfFileException, IOException, UnsupportedFileVersionException {
-		String filename = "/data/java/PasswordSafeLib/sample3.psafe3";
+		String filename = "/JAVA_A~1/PASSWO~1/pwsafe/Java/PASSWO~2/sample3.psafe3";
 		String password = "Pa$$word";
 		
 		PwsFileV3 file = new PwsFileV3(filename, password);

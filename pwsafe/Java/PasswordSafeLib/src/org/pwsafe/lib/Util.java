@@ -69,6 +69,37 @@ public class Util
 		}
 		return false;
 	}
+	
+	/**
+	 * Join two arrays to form a single array.
+	 * 
+	 * @param a first array
+	 * @param b second array
+	 * @return first array appended with second array
+	 */
+	public static byte[] mergeBytes(byte[] a, byte[] b) {
+		byte[] p = new byte[a.length + b.length];
+		for (int i = 0; i < a.length; i++) {
+			p[i] = a[i];
+		}
+		for (int i = 0; i < b.length; i++) {
+			p[a.length + i] = b[i];
+		}
+		return p;
+	}
+	
+	/**
+	 * Copies the contents of src into target.
+	 * 
+	 * @param src first array
+	 * @param target second array
+	 */
+	public static void copyBytes(byte[] src, byte[] target) {
+		for (int i = 0; i < src.length; i++) {
+			target[i] = src[i];
+		}
+	}
+	
 
 	/**
 	 * Converts a byte to its unsigned hexadecimal equivalent.  For example a value of -92 converts

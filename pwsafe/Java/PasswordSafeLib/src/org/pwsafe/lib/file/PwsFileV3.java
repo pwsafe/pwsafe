@@ -9,14 +9,14 @@ package org.pwsafe.lib.file;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import javax.crypto.Cipher;
 
 import org.pwsafe.lib.I18nHelper;
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
 import org.pwsafe.lib.crypto.SHA256Pws;
+import org.pwsafe.lib.crypto.TwofishPws;
 import org.pwsafe.lib.exception.EndOfFileException;
 import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
@@ -45,6 +45,11 @@ public class PwsFileV3 extends PwsFile
 	protected PwsFileHeaderV3	Header			= null;
 	
 	protected byte[] stretchedPassword;
+	protected byte[] decryptedRecordKey;
+	protected byte[] decryptedHmacKey;
+	
+	protected Cipher fieldCrypto;
+	protected Cipher fieldDecrypto;
 	
 	/**
 	 * Constructs and initialises a new, empty version 3 PasswordSafe database in memory.
@@ -100,13 +105,31 @@ public class PwsFileV3 extends PwsFile
 		stretchedPassword = stretchPassphrase(passphrase.getBytes(), Header.getSalt(), iter);
 		//Algorithm		= makeBlowfish( passphrase.getBytes() );
 		dumpBytes("From file", Header.getPassword());
-		dumpBytes("Calc", stretchedPassword);
+		dumpBytes("Calc", SHA256Pws.digest(stretchedPassword));
+		
+		try {
+			Cipher cipher = TwofishPws.getCipher(stretchedPassword, false, true);
+			byte[] rka = cipher.doFinal(Header.getB1());
+			byte[] rkb = cipher.doFinal(Header.getB2());
+			decryptedRecordKey = Util.mergeBytes(rka, rkb);
+
+			byte[] hka = cipher.doFinal(Header.getB3());
+			byte[] hkb = cipher.doFinal(Header.getB4());
+			decryptedHmacKey = Util.mergeBytes(hka, hkb);
+		} catch (Exception e) {
+			throw new IOException("Error reading encrypted fields");
+		}
+		
+		fieldCrypto = TwofishPws.getCipher(decryptedRecordKey, true, false);
+		fieldDecrypto = TwofishPws.getCipher(decryptedRecordKey, false, false);
 
 		readExtraHeader( this );
 
 		LOG.leaveMethod( "PwsFileV3.init" );
 	}
 	
+	
+
 	/**
 	 * Calculate stretched key.
 	 * 
@@ -119,13 +142,7 @@ public class PwsFileV3 extends PwsFile
 	 * @return the stretched user key for comparison
 	 */
 	private byte[] stretchPassphrase(byte[] passphrase, byte[] salt, int iter) {
-		byte[] p = new byte[passphrase.length + salt.length];
-		for (int i = 0; i < passphrase.length; i++) {
-			p[i] = passphrase[i];
-		}
-		for (int i = 0; i < salt.length; i++) {
-			p[passphrase.length + i] = salt[i];
-		}
+		byte[] p = Util.mergeBytes(passphrase, salt);
 		byte[] hash = SHA256Pws.digest(p);
 		for (int i = 0; i < iter; i++) {
 			hash = SHA256Pws.digest(hash);
@@ -203,6 +220,13 @@ public class PwsFileV3 extends PwsFile
 			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
 		}
 		readBytes( buff );
+		byte[] decrypted;
+		try {
+			decrypted = fieldDecrypto.doFinal(buff);
+		} catch (Exception e) {
+			throw new IOException("Error decrypting field");
+		}
+		Util.copyBytes(decrypted, buff);
 		//Algorithm.decrypt( buff );
 	}
 	
@@ -222,7 +246,11 @@ public class PwsFileV3 extends PwsFile
 		}
 		
 		byte [] temp = Util.cloneByteArray( buff );
-		//Algorithm.encrypt( temp );
+		try {
+			temp = fieldCrypto.doFinal(temp);
+		} catch(Exception e) {
+			throw new IOException("Error writing encrypted field");
+		}
 		writeBytes( temp );
 	}
 	
