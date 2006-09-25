@@ -297,8 +297,12 @@ BOOL CEditDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
-  if (m_IsReadOnly)
+  if (m_IsReadOnly) {
     GetDlgItem(IDOK)->EnableWindow(FALSE);
+	SetWindowText(_T("View Entry"));
+	GetDlgItem(IDC_EDITEXPLANATION)->SetWindowText(
+		_T("This database is in read-only mode. No changes to this entry will be saved."));
+  }
 
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 

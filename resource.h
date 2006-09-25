@@ -269,6 +269,7 @@
 #define IDC_NUMENTRIES                  1214
 #define IDC_SAVEDBY                     1215
 #define IDC_SAVEDON                     1216
+#define IDC_EDITEXPLANATION             1217
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -359,7 +360,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        234
 #define _APS_NEXT_COMMAND_VALUE         32861
-#define _APS_NEXT_CONTROL_VALUE         1217
+#define _APS_NEXT_CONTROL_VALUE         1218
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
