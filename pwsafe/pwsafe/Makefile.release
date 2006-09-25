@@ -20,14 +20,15 @@ SRCRELNAME = pwsafe-$(RELEASENAME)-src
 RM = /usr/bin/rm
 CP = /usr/bin/cp
 MV = /usr/bin/mv
-SVN = /usr/local/bin/svn
+SVN = /usr/bin/svn
 GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
 GPG_SIGN = $(GPG) --detach-sign --default-key $(GPG_KEY)
 MD5SUM = /usr/bin/md5sum
 SHA1SUM = /usr/bin/sha1sum
 FTP_PUT = /usr/bin/ncftpput -v upload.sourceforge.net incoming
-
+PYTHON = /usr/bin/python
+SVN2LOG = ../../svn2log.py
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
@@ -77,8 +78,12 @@ bin-release:
 	$(MV) foo.zip $(BINRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
-src-release:
+src-release: ChangeLog
 	$(SVN) export --non-interactive . $(RELEASEDIR)/$(SRCRELNAME)
+	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR); zip -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
+
+ChangeLog:
+	$(SVN) log -v --xml | $(PYTHON) $(SVN2LOG) -L -H -s -O
