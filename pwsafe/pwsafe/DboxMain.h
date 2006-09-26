@@ -28,6 +28,9 @@ DECLARE_HANDLE(HDROP);
 // timer event number used to support lock on user-defined timeout
 #define TIMER_USERLOCK 0x05
 
+// Hotkey value ID
+#define PWS_HOTKEY_ID 5767
+
 // Index values for which dialog to show during GetAndCheckPassword
 enum {GCP_FIRST = 0,		// At startup of PWS
 	  GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
@@ -102,7 +105,6 @@ public:
 
   CRUEList m_RUEList;   // recent entry lists
   int m_nColumns;  // accessed from CompareFunc
-
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)

@@ -39,7 +39,8 @@ ThisMfcApp::ThisMfcApp() :
 #else
 	m_bUseAccelerator( true ),
 #endif
-	m_pMRU( NULL ), m_TrayLockedState(LOCKED), m_TrayIcon(NULL), m_csDefault_Browser("")
+	m_pMRU( NULL ), m_TrayLockedState(LOCKED), m_TrayIcon(NULL), m_csDefault_Browser(""),
+	m_HotKeyPressed(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)

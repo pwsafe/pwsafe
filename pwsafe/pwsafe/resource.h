@@ -80,13 +80,13 @@
 #define IDD_PS_SYSTEM                   232
 #define IDD_PROPERTIES                  233
 #define IDC_PASSWORD                    1000
-#define IDC_ITEMLIST                    1000
 #define IDC_OLDPASSKEY                  1001
 #define IDC_NEWPASSKEY                  1002
 #define IDC_CONFIRMNEW                  1003
 #define IDC_TITLE                       1004
 #define IDC_USERNAME                    1005
 #define IDC_NOTES                       1006
+#define IDC_ITEMLIST                    1007
 #define IDC_SHOWPASSWORD                1008
 #define IDC_CLEARCHECK                  1009
 #define IDC_PASSKEY                     1010
