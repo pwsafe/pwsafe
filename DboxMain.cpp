@@ -100,7 +100,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_hFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
-  m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL)
+	 m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -310,8 +310,16 @@ DboxMain::InitPasswordSafe()
     const DWORD value = DWORD(PWSprefs::GetInstance()->
                               GetPref(PWSprefs::HotKey));
     WORD wVirtualKeyCode = WORD(value & 0xffff);
-    WORD wModifiers = WORD(value >> 16);
-    RegisterHotKey(m_hWnd, 5767, UINT(wModifiers), UINT(wVirtualKeyCode));
+    WORD mod = WORD(value >> 16);
+	WORD wModifiers = 0;
+	// Translate between CWnd & CHotKeyCtrl modifiers
+	if (mod & HOTKEYF_ALT) 
+		wModifiers |= MOD_ALT; 
+	if (mod & HOTKEYF_CONTROL) 
+		wModifiers |= MOD_CONTROL; 
+	if (mod & HOTKEYF_SHIFT) 
+		wModifiers |= MOD_SHIFT; 
+    RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers), UINT(wVirtualKeyCode));
     // registration might fail if combination already registered elsewhere,
     // but don't see any elegant way to notify the user here, so fail silently
   } else {
@@ -469,6 +477,7 @@ DboxMain::OnHotKey(WPARAM , LPARAM)
   // to it is meaningless & unused, hence params ignored
   // The hotkey is used to invoke the app window, prompting
   // for passphrase if needed.
+  app.SetHotKeyPressed(true);
   PostMessage(WM_COMMAND, ID_MENUITEM_UNMINIMIZE);
   return 0;
 }
@@ -496,6 +505,10 @@ DboxMain::OnDestroy()
   // The only way we're the locker is if it's locked & we're !readonly
   if (!filename.IsEmpty() && !m_IsReadOnly && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
+
+  // Get rid of hotkey
+  UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID);
+
   CDialog::OnDestroy();
 }
 

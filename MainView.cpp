@@ -218,17 +218,31 @@ DboxMain::setupBars()
   // This code is copied from the DLGCBR32 example that comes with MFC
 
   statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
-  statustext[SB_MODIFIED] = IDS_MODIFIED;
-  statustext[SB_READONLY] = IDS_READ_ONLY;
-  statustext[SB_NUM_ENT] = IDS_STAT_NUM_IN_DB;
+
 
   // Add the status bar
-  if (m_statusBar.Create(this))
-    {
-      m_statusBar.SetIndicators(statustext, SB_TOTAL);
+  if (m_statusBar.Create(this)) {
+	  // Set up DoubleClickAction text
+	  const int dca = int(PWSprefs::GetInstance()->
+		  GetPref(PWSprefs::DoubleClickAction));
+	  switch (dca) {
+		case PWSprefs::DoubleClickCopy: statustext[SB_DBLCLICK] = IDS_STATCOPY; break;
+		case PWSprefs::DoubleClickEdit: statustext[SB_DBLCLICK] = IDS_STATEDIT; break;
+		case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+		case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
+		default: ASSERT(0);
+	  }
+	  // Set up the rest
+	  statustext[SB_MODIFIED] = IDS_MODIFIED;
+	  statustext[SB_READONLY] = IDS_READ_ONLY;
+	  statustext[SB_NUM_ENT] = IDS_STAT_NUM_IN_DB;
+
+	  // And show
+	  m_statusBar.SetIndicators(statustext, SB_TOTAL);
+
       // Make a sunken or recessed border around the first pane
       m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
-    }             
+  }
 
   // Add the ToolBar.
   if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
@@ -682,38 +696,21 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
 
 #if !defined(POCKET_PC)
 void
-DboxMain::OnSetfocusItemlist( NMHDR *, LRESULT *) 
+DboxMain::OnSetfocusItemlist(NMHDR * , LRESULT * ) 
 {
-  const int dca = int(PWSprefs::GetInstance()->
-		      GetPref(PWSprefs::DoubleClickAction));
-
-  switch (dca) {
-  case PWSprefs::DoubleClickCopy: statustext[SB_DBLCLICK] = IDS_STATCOPY; break;
-  case PWSprefs::DoubleClickEdit: statustext[SB_DBLCLICK] = IDS_STATEDIT; break;
-  case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
-  case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
-  default: ASSERT(0);
-  }
-
-  if (m_toolbarsSetup == FALSE)
-    return;
-
-  m_statusBar.SetIndicators(statustext, SB_TOTAL);	
-  // Make a sunken or recessed border around the first pane
-  m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
-  UpdateStatusBar();
+  // Seems excessive to do this all the time
+  // Should be done only on Open and on Change (Add, Delete, Modify)
+  if (m_toolbarsSetup == TRUE)
+    UpdateStatusBar();
 }
 
 void
 DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *) 
 {
-  if (m_toolbarsSetup == FALSE)
-    return;
-
-  m_statusBar.SetIndicators(statustext, SB_TOTAL);
-  // Make a sunken or recessed border around the first pane
-  m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
-  UpdateStatusBar();
+  // Seems excessive to do this all the time
+  // Should be done only on Open and on Change (Add, Delete, Modify)
+  if (m_toolbarsSetup == TRUE)
+    UpdateStatusBar();
 }
 #endif
 

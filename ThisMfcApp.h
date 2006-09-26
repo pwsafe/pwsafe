@@ -54,9 +54,11 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   enum STATE {LOCKED, UNLOCKED};
   void SetSystemTrayState(STATE);
   STATE GetSystemTrayState() const {return m_TrayLockedState;}
-  static void	StripFileQuotes( CString& strFilename );
+  static void StripFileQuotes( CString& strFilename );
+  bool WasHotKeyPressed() {return m_HotKeyPressed;}
+  void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
+
   DECLARE_MESSAGE_MAP()
-  
 
 protected:
   CRecentFileList*		m_pMRU;
@@ -68,6 +70,7 @@ private:
   HICON m_UnLockedIcon;
   CSystemTray *m_TrayIcon; // DboxMain needs to be constructed first
   STATE m_TrayLockedState;
+  bool m_HotKeyPressed;
 };
 
 

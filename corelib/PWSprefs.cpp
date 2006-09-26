@@ -63,8 +63,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("pwlendefault"), 8, true},
   {_T("maxmruitems"), 4, true},
   {_T("IdleTimeout"), 5, true},
-  {_T("HotKey"), 0, true}, // zero means disabled, !=0 is key code.
   {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
+  {_T("HotKey"), 0, false},  // zero means disabled, !=0 is key code.
   {_T("MaxREItems"), 25, true},
   {_T("TreeDisplayStatusAtOpen"), PWSprefs::AllCollapsed, true},
   {_T("NumPWHistoryDefault"), 3, true},
@@ -110,6 +110,38 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_prefs_changed(false)
     m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
 							  m_string_prefs[i].name,
 							  m_string_prefs[i].defVal));
+
+  /*
+     The following is "defensive" code because there was "a code ordering
+     issue" in V3.02 and earlier.  PWSprefs.cpp and PWSprefs.h differed in
+     the order of the HotKey and DoubleClickAction preferences.
+     This is to protect the application should a HotKey value be assigned
+     to DoubleClickAction.
+     Note: HotKey also made an "Application preference" from a "Database
+     preference".
+  */
+  if (m_intValues[HotKey] > 0 && m_intValues[HotKey] <= 3) {
+	  m_boolValues[HotKeyEnabled] = false;
+	  m_intValues[DoubleClickAction] = m_intValues[HotKey];
+	  m_intValues[HotKey] = 0;
+	  m_app->WriteProfileInt(PWS_REG_OPTIONS,
+					  m_bool_prefs[HotKeyEnabled].name,
+					  0);
+	  m_app->WriteProfileInt(PWS_REG_OPTIONS,
+					  m_int_prefs[HotKey].name,
+					  0);
+	  m_app->WriteProfileInt(PWS_REG_OPTIONS,
+					  m_int_prefs[DoubleClickAction].name,
+					  m_intValues[DoubleClickAction]);
+  }
+
+  if (m_intValues[DoubleClickAction] > 3) {
+	  m_intValues[DoubleClickAction] = 1;
+	  m_app->WriteProfileInt(PWS_REG_OPTIONS,
+					  m_int_prefs[DoubleClickAction].name,
+					  1);
+  }
+  // End of "defensive" code
 }
 
 

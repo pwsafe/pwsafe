@@ -260,9 +260,15 @@ DboxMain::OnOptions()
   // of the radio buttons in the following :-)
   misc.m_doubleclickaction = prefs->
     GetPref(PWSprefs::DoubleClickAction);
+
   misc.m_hotkey_value = DWORD(prefs->GetPref(PWSprefs::HotKey));
-  misc.m_hotkey_enabled = prefs->
-    GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+  // Can't be enabled if not set!
+  if (misc.m_hotkey_value == 0)
+	  misc.m_hotkey_enabled = FALSE;
+  else
+	  misc.m_hotkey_enabled = prefs->
+         GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+
   misc.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefUser) ? TRUE : FALSE;
   misc.m_defusername = CString(prefs->
@@ -364,10 +370,16 @@ DboxMain::OnOptions()
       // of the radio buttons in the following :-)
       prefs->SetPref(PWSprefs::DoubleClickAction,
                      misc.m_doubleclickaction);
-      prefs->SetPref(PWSprefs::HotKeyEnabled,
-                     misc.m_hotkey_enabled == TRUE);
+
       prefs->SetPref(PWSprefs::HotKey,
                      misc.m_hotkey_value);
+	  // Can't be enabled if not set!
+	  if (misc.m_hotkey_value == 0)
+		  misc.m_hotkey_enabled = FALSE;
+	  else
+		  prefs->SetPref(PWSprefs::HotKeyEnabled,
+                     misc.m_hotkey_enabled == TRUE);
+
       prefs->SetPref(PWSprefs::UseDefUser,
                      misc.m_usedefuser == TRUE);
       prefs->SetPref(PWSprefs::DefUserName,
@@ -439,12 +451,26 @@ DboxMain::OnOptions()
       // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
       // Handle HotKey setting
-      UnregisterHotKey(m_hWnd, 5767); // clear last - never hurts
+      BOOL brc = UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
       if (misc.m_hotkey_enabled == TRUE) {
         WORD wVirtualKeyCode = WORD(misc.m_hotkey_value & 0xffff);
-        WORD wModifiers = WORD(misc.m_hotkey_value >> 16);
-        RegisterHotKey(m_hWnd, 5767,
+        WORD mod = WORD(misc.m_hotkey_value >> 16);
+		WORD wModifiers = 0;
+		// Translate between CWnd & CHotKeyCtrl modifiers
+		if (mod & HOTKEYF_ALT) 
+			wModifiers |= MOD_ALT; 
+		if (mod & HOTKEYF_CONTROL) 
+			wModifiers |= MOD_CONTROL; 
+		if (mod & HOTKEYF_SHIFT) 
+			wModifiers |= MOD_SHIFT; 
+        brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
                        UINT(wModifiers), UINT(wVirtualKeyCode));
+		if (brc == FALSE) {
+            CString cs_msg =_T("Sorry - your requested HotKey is already being used.\n\n");
+            cs_msg += _T("This feature has been temporarily disabled.\n\n");
+            cs_msg += _T("To re-enable in this session, please select a different key combination.");
+			AfxMessageBox(cs_msg, MB_OK);
+		}
       }
 #endif
       /*
