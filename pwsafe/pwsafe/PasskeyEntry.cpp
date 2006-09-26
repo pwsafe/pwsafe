@@ -71,7 +71,6 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
   }
 }
 
-
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
    super::DoDataExchange(pDX);
@@ -93,7 +92,6 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
 	//{{AFX_MSG_MAP(CPasskeyEntry)
    ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -107,7 +105,6 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
 #endif
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 BOOL
 CPasskeyEntry::OnInitDialog(void)
@@ -147,26 +144,22 @@ CPasskeyEntry::OnInitDialog(void)
   // If displaying IDD_PASSKEYENTRY_FIRST then bypass superclass and go
   // directly to CDialog::OnInitDialog() and display the dialog fullscreen
   // otherwise display as a centred dialogue.
-  if ( m_nIDHelp == IDD )
-    {
+  if ( m_nIDHelp == IDD ) {
       super::super::OnInitDialog();
-    }
-  else
-    {
-#endif
+  } else {
       super::OnInitDialog();
-#if defined(POCKET_PC)
-    }
+  }
+#else
+  super::OnInitDialog();
 #endif
 
-  if (m_message.IsEmpty() && m_index == GCP_FIRST)
-    {
+  if (m_message.IsEmpty() && m_index == GCP_FIRST) {
       m_ctlPasskey.EnableWindow(FALSE);
 #if !defined(POCKET_PC)
       m_ctlOK.EnableWindow(FALSE);
 #endif
       m_message = _T("[No current database]");
-    }
+  }
   /*
    * this bit makes the background come out right on
    * the bitmaps
@@ -187,9 +180,20 @@ CPasskeyEntry::OnInitDialog(void)
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIcon, FALSE); // Set small icon
 
-  return TRUE;
-}
+  if (app.WasHotKeyPressed()) {
+	  // Need to get it to the top as a result of a hotkey.
+	  // This is "stronger" than BringWindowToTop().
+	  SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	  // Reset it
+	  app.SetHotKeyPressed(false);
+  }
 
+  if (m_ctlPasskey.IsWindowEnabled() == TRUE) {
+    m_ctlPasskey.SetFocus();
+    return FALSE;
+  } else
+    return TRUE;
+}
 
 #if defined(POCKET_PC)
 /************************************************************************/
@@ -199,7 +203,6 @@ void CPasskeyEntry::OnPasskeyKillfocus()
 {
   EnableWordCompletion( m_hWnd );
 }
-
 
 /************************************************************************/
 /* When the password field is activated, pull up the SIP and disable    */
@@ -224,14 +227,12 @@ CPasskeyEntry::OnBrowse()
   super::OnCancel();
 }
 
-
 void
 CPasskeyEntry::OnCreateDb()
 {
   m_status = TAR_NEW;
   super::OnCancel();
 }
-
 
 void
 CPasskeyEntry::OnCancel() 
@@ -280,7 +281,6 @@ CPasskeyEntry::OnOK()
     super::OnOK();
   }
 }
-
 
 void
 CPasskeyEntry::OnHelp() 
