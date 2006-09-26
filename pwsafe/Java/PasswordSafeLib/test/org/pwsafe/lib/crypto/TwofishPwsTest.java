@@ -44,10 +44,10 @@ public class TwofishPwsTest extends TestCase {
 	 */
 	public void testRoundTrip() throws Exception {
 		
-        Cipher enc = TwofishPws.getCipher(unsignedToSigned(key), true, true); 
+        Cipher enc = TwofishPws.getCipher(unsignedToSigned(key), null, true, true); 
         byte[] encResult = enc.doFinal(unsignedToSigned(plainText));
 
-        Cipher decr = TwofishPws.getCipher(unsignedToSigned(key), false, true); 
+        Cipher decr = TwofishPws.getCipher(unsignedToSigned(key), null, false, true); 
         byte[] decResult = decr.doFinal(encResult);
 
         assertEquals(HmacPwsTest.byteArrayToHex(unsignedToSigned(plainText)), HmacPwsTest.byteArrayToHex(decResult));
@@ -60,7 +60,7 @@ public class TwofishPwsTest extends TestCase {
 	 */
     public void testVectorCounterPane() throws Exception {
         
-        Cipher enc = TwofishPws.getCipher(unsignedToSigned(cp_key), true, true); 
+        Cipher enc = TwofishPws.getCipher(unsignedToSigned(cp_key), null, true, true); 
         byte[] encResult = enc.doFinal(unsignedToSigned(cp_pt));
 
         String encStr = HmacPwsTest.byteArrayToHex(encResult);
@@ -79,7 +79,7 @@ public class TwofishPwsTest extends TestCase {
 	 */
     public void testVectorCVersion() throws Exception {
         
-        Cipher enc = TwofishPws.getCipher(unsignedToSigned(key), true, true); 
+        Cipher enc = TwofishPws.getCipher(unsignedToSigned(key), null, true, true); 
         byte[] encResult = enc.doFinal(unsignedToSigned(plainText));
 
         String encStr = HmacPwsTest.byteArrayToHex(encResult);
