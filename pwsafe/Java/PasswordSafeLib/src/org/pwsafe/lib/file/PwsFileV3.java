@@ -108,7 +108,7 @@ public class PwsFileV3 extends PwsFile
 		dumpBytes("Calc", SHA256Pws.digest(stretchedPassword));
 		
 		try {
-			Cipher cipher = TwofishPws.getCipher(stretchedPassword, false, true);
+			Cipher cipher = TwofishPws.getCipher(stretchedPassword, null, false, true);
 			byte[] rka = cipher.doFinal(Header.getB1());
 			byte[] rkb = cipher.doFinal(Header.getB2());
 			decryptedRecordKey = Util.mergeBytes(rka, rkb);
@@ -120,8 +120,8 @@ public class PwsFileV3 extends PwsFile
 			throw new IOException("Error reading encrypted fields");
 		}
 		
-		fieldCrypto = TwofishPws.getCipher(decryptedRecordKey, true, false);
-		fieldDecrypto = TwofishPws.getCipher(decryptedRecordKey, false, false);
+		fieldCrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), true, false);
+		fieldDecrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), false, false);
 
 		readExtraHeader( this );
 
