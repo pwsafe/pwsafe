@@ -1262,11 +1262,16 @@ DboxMain::UnMinimize(bool update_windows)
   if (m_needsreading && m_windowok) {
     CMyString passkey, temp;
     int rc, rc2;
+    const bool useSysTray = PWSprefs::GetInstance()->
+      GetPref(PWSprefs::UseSystemTray);
 
-    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-      rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_WITHEXIT);  // OK, CANCEL, EXIT, HELP
+    if (m_IsStartSilent) {
+      rc = PWScore::USER_CANCEL;
+      m_IsStartSilent = false; // only for start!
     } else {
-      rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
+      rc = GetAndCheckPassword(m_core.GetCurFile(),
+                               passkey,
+                               useSysTray ? GCP_UNMINIMIZE :GCP_WITHEXIT);
     }
     switch (rc) {
     case PWScore::SUCCESS:
@@ -1312,10 +1317,7 @@ DboxMain::UnMinimize(bool update_windows)
       }
     } else {
       m_needsreading = true;
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
-        ShowWindow( SW_HIDE );
-      else
-        ShowWindow( SW_MINIMIZE );
+      ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
     }
     return;
   }

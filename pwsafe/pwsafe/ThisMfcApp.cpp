@@ -426,6 +426,7 @@ ThisMfcApp::InitInstance()
       StripFileQuotes( fn );
 
       if (args[1] != 'r' && args[1] != 'R' &&
+          args[1] != 's' && args[1] != 'S' &&
           (fn.IsEmpty() || !CheckFile(fn))) {
         Usage();
         return FALSE;
