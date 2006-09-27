@@ -107,16 +107,25 @@ public class PwsFileV3 extends PwsFile
 		dumpBytes("From file", Header.getPassword());
 		dumpBytes("Calc", SHA256Pws.digest(stretchedPassword));
 		
+		if (!Util.bytesAreEqual(Header.getPassword(), SHA256Pws.digest(stretchedPassword))) {
+			throw new IOException("Invalid password");
+		}
+		
 		try {
+			
+			dumpBytes("stretchedPassword", stretchedPassword);
+			
 			Cipher cipher = TwofishPws.getCipher(stretchedPassword, null, false, true);
 			byte[] rka = cipher.doFinal(Header.getB1());
 			byte[] rkb = cipher.doFinal(Header.getB2());
 			decryptedRecordKey = Util.mergeBytes(rka, rkb);
-
+			
 			byte[] hka = cipher.doFinal(Header.getB3());
 			byte[] hkb = cipher.doFinal(Header.getB4());
 			decryptedHmacKey = Util.mergeBytes(hka, hkb);
+			
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new IOException("Error reading encrypted fields");
 		}
 		
