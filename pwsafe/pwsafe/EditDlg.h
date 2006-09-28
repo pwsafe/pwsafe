@@ -19,7 +19,6 @@ public:
 
   enum { IDD = IDD_EDIT };
   CMyString m_defusername, m_username;
-  POSITION  m_listindex;
   bool m_IsReadOnly;
 
   void  ShowPassword();

@@ -54,13 +54,18 @@ public:
   DboxMain(CWnd* pParent = NULL);
   ~DboxMain();
 
-  // Find in core by title and user name, exact match
+  // Find entry by title and user name, exact match
   POSITION Find(const CMyString &a_group,
                 const CMyString &a_title, const CMyString &a_user)
   {return m_core.Find(a_group, a_title, a_user);}
 
-  // Find  entry in core with same title and user name as the i'th entry in m_ctlItemList
+  // Find entry with same title and user name as the
+  // i'th entry in m_ctlItemList
   POSITION Find(int i);
+
+  // Find entry by UUID
+  POSITION Find(const uuid_array_t &uuid)
+  {return m_core.Find(uuid);}
 
   // FindAll is used by CFindDlg, returns # of finds.
   // indices allocated by caller
@@ -68,6 +73,10 @@ public:
 
   // Count the number of total entries.
   int GetNumEntries() const {return m_core.GetNumEntries();}
+
+  // Get CItemData @ position
+  CItemData &GetEntryAt(POSITION pos)
+    {return m_core.GetEntryAt(pos);}
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
