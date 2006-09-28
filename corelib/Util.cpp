@@ -7,6 +7,8 @@
 #include "PwsPlatform.h"
 
 #include <stdio.h>
+#include <sys/timeb.h>
+#include <time.h>
 
 #include "Util.h"
 
@@ -925,4 +927,52 @@ PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &newExtn)
 	_tmakepath( path_buffer, drive, dir, fname, newExtn );
 #endif
 	return CMyString(path_buffer);
+}
+
+void
+PWSUtil::IssueError(const CString &csFunction)
+{
+#ifdef _DEBUG
+    LPVOID lpMsgBuf;
+    LPVOID lpDisplayBuf;
+
+    const DWORD dw = GetLastError();
+
+    FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+        FORMAT_MESSAGE_FROM_SYSTEM,
+        NULL,
+        dw,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR) &lpMsgBuf,
+        0, NULL );
+
+    lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT, 
+        (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.GetLength() + 40) * sizeof(TCHAR)); 
+    wsprintf((LPTSTR)lpDisplayBuf, TEXT("%s failed with error %d: %s"), 
+        csFunction, dw, lpMsgBuf); 
+    MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK); 
+
+    LocalFree(lpMsgBuf);
+    LocalFree(lpDisplayBuf);
+#else
+	csFunction;
+#endif
+}
+
+CString
+PWSUtil::GetTimeStamp()
+{
+	struct _timeb timebuffer;
+#if (_MSC_VER >= 1400)
+	_ftime_s(&timebuffer);
+#else
+	_ftime(&timebuffer);
+#endif
+	CMyString cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
+
+	CString cs_now;
+	cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
+
+	return cs_now;
 }
