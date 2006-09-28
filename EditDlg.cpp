@@ -157,17 +157,19 @@ CEditDlg::OnOK()
   UpdateData(TRUE);
   if (m_password != HIDDEN_PASSWORD)
     m_realpassword = m_password;
+  if (m_notes != HIDDEN_PASSWORD)
+    m_realnotes = m_notes;
 
   m_bIsModified |= (
-                   m_group != m_ci->GetGroup() ||
-                   m_title != m_ci->GetTitle() ||
-                   m_username != m_ci->GetUser() ||
-                   m_realnotes != m_ci->GetNotes() ||
-                   m_URL != m_ci->GetURL() ||
-                   m_autotype != m_ci->GetAutoType() ||
-                   m_PWHistory != m_ci->GetPWHistory() ||
-                   m_ascLTime != m_oldascLTime
-                   );
+                    m_group != m_ci->GetGroup() ||
+                    m_title != m_ci->GetTitle() ||
+                    m_username != m_ci->GetUser() ||
+                    m_realnotes != m_ci->GetNotes() ||
+                    m_URL != m_ci->GetURL() ||
+                    m_autotype != m_ci->GetAutoType() ||
+                    m_PWHistory != m_ci->GetPWHistory() ||
+                    m_ascLTime != m_oldascLTime
+                    );
 
   bool IsPswdModified = m_realpassword != m_oldRealPassword;
   //Check that data is valid
@@ -203,40 +205,47 @@ CEditDlg::OnOK()
    *  entry is not the same one we started editing, tell the
    *  user to try again.
    */
-  if ((listindex != NULL) &&
-      (m_listindex != listindex)) {
-    CMyString temp =
-      _T("An item with Group \"") + m_group
-      + _T("\", Title \"") + m_title 
-      + _T("\" and User Name \"") + m_username
-      + _T("\" already exists.");
-    AfxMessageBox(temp);
-    ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
-    ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
-  } else { // Everything OK, update fields
-    m_ci->SetGroup(m_group);
-    m_ci->SetTitle(m_title);
-    m_ci->SetUser(m_username.IsEmpty() ? m_defusername : m_username);
-    m_ci->SetPassword(m_realpassword);
-    m_ci->SetNotes(m_realnotes);
-    m_ci->SetURL(m_URL);
-    m_ci->SetAutoType(m_autotype);
-    m_ci->SetPWHistory(m_PWHistory);
-
-    time_t t;
-    time(&t);
-    if (IsPswdModified) {
-      if (m_SavePWHistory)
-        UpdateHistory();
-      m_ci->SetPMTime(t);
+  if (listindex != NULL) {
+    const CItemData &listItem = pParent->GetEntryAt(listindex);
+    uuid_array_t list_uuid, elem_uuid;
+    listItem.GetUUID(list_uuid);
+    m_ci->GetUUID(elem_uuid);
+    bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
+    if (notSame) {
+      CMyString temp =
+        _T("An item with Group \"") + m_group
+        + _T("\", Title \"") + m_title 
+        + _T("\" and User Name \"") + m_username
+        + _T("\" already exists.");
+      AfxMessageBox(temp);
+      ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
+      ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
+      return;
     }
-    if (m_bIsModified || IsPswdModified)
-      m_ci->SetRMTime(t);
-    if (m_oldascLTime != m_ascLTime)
-      m_ci->SetLTime(m_tttLTime);
-
-    CDialog::OnOK();
   }
+  // Everything OK, update fields
+  m_ci->SetGroup(m_group);
+  m_ci->SetTitle(m_title);
+  m_ci->SetUser(m_username.IsEmpty() ? m_defusername : m_username);
+  m_ci->SetPassword(m_realpassword);
+  m_ci->SetNotes(m_realnotes);
+  m_ci->SetURL(m_URL);
+  m_ci->SetAutoType(m_autotype);
+  m_ci->SetPWHistory(m_PWHistory);
+
+  time_t t;
+  time(&t);
+  if (IsPswdModified) {
+    if (m_SavePWHistory)
+      UpdateHistory();
+    m_ci->SetPMTime(t);
+  }
+  if (m_bIsModified || IsPswdModified)
+    m_ci->SetRMTime(t);
+  if (m_oldascLTime != m_ascLTime)
+    m_ci->SetLTime(m_tttLTime);
+
+  CDialog::OnOK();
 }
 
 void CEditDlg::UpdateHistory()
@@ -523,7 +532,7 @@ void CEditDlg::ResizeDialog()
 void CEditDlg::OnBnClickedClearLTime()
 {
   GetDlgItem(IDC_LTIME)->SetWindowText(_T("Never"));
-  m_ascLTime = "Never";
+  m_ascLTime = _T("Never");
   m_tttLTime = (time_t)0;
 }
 
@@ -554,12 +563,12 @@ void CEditDlg::OnBnClickedPwhist()
   dlg.DoModal();
 
   GetDlgItem(IDC_PWHSTATUS)->
-	  SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
+    SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
   CString buffer;
   if (m_SavePWHistory == TRUE)
-	  buffer.Format("%d", m_MaxPWHistory);
+    buffer.Format("%d", m_MaxPWHistory);
   else
-	  buffer = _T("n/a");
+    buffer = _T("n/a");
 
   GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
 }

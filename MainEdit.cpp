@@ -263,16 +263,14 @@ DboxMain::OnEdit()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
-    POSITION listpos = Find(di->list_index);
+    // List might be cleared if db locked.
+    // Need to take care that we handle a rebuilt list.
+    CItemData editedItem(*ci);
 
-    CEditDlg dlg_edit(ci, this);
+    CEditDlg dlg_edit(&editedItem, this);
 
     if (m_core.GetUseDefUser())
       dlg_edit.m_defusername = m_core.GetDefUsername();
-
-    dlg_edit.m_listindex = listpos;   // for future reference, this is not multi-user friendly
     dlg_edit.m_IsReadOnly = m_IsReadOnly;
 	
     app.DisableAccelerator();
@@ -281,19 +279,31 @@ DboxMain::OnEdit()
 
     if (rc == IDOK) {
       // Out with the old, in with the new
-      CItemData editedItem(*ci); // 'cause next line deletes *ci
+      uuid_array_t uuid;
+      editedItem.GetUUID(uuid);
+      POSITION listpos = Find(uuid);
+      ASSERT(listpos != NULL);
+      CItemData oldElem = GetEntryAt(listpos);
+      DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
+      ASSERT(di != NULL);
+      // editedItem's dispinfo may have been deleted if
+      // application "locked" (Cleared list)
+      DisplayInfo *ndi = new DisplayInfo;
+      ndi->list_index = -1; // so that insertItem will set new values
+      ndi->tree_item = 0;
+      editedItem.SetDisplayInfo(ndi);
+
       m_core.RemoveEntryAt(listpos);
       m_core.AddEntryToTail(editedItem);
       m_ctlItemList.DeleteItem(di->list_index);
       m_ctlItemTree.DeleteWithParents(di->tree_item);
-      di->list_index = -1; // so that insertItem will set new values
       insertItem(m_core.GetTailEntry());
       FixListIndexes();
       if (PWSprefs::GetInstance()->
           GetPref(PWSprefs::SaveImmediately)) {
         Save();
       }
-      rc = SelectEntry(di->list_index);
+      rc = SelectEntry(ndi->list_index);
       if (rc == LB_ERR) {
         SelectEntry(m_ctlItemList.GetItemCount() - 1);
       }

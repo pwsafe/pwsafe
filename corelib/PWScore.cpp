@@ -718,7 +718,8 @@ void PWScore::ChangePassword(const CMyString &newPassword)
 
 // Finds stuff based on title & user fields only
 POSITION
-PWScore::Find(const CMyString &a_group,const CMyString &a_title, const CMyString &a_user)
+PWScore::Find(const CMyString &a_group,const CMyString &a_title,
+              const CMyString &a_user) const
 {
   POSITION listPos = m_pwlist.GetHeadPosition();
   CMyString group, title, user;
@@ -730,30 +731,26 @@ PWScore::Find(const CMyString &a_group,const CMyString &a_title, const CMyString
     user = item.GetUser();
     if (group == a_group && title == a_title && user == a_user)
       break;
-    else
-      m_pwlist.GetNext(listPos);
+    m_pwlist.GetNext(listPos);
   }
 
   return listPos;
 }
 
 POSITION
-PWScore::Find(const uuid_array_t &RUEuuid)
+PWScore::Find(const uuid_array_t &uuid) const
 {
-   POSITION listPos = m_pwlist.GetHeadPosition();
-   uuid_array_t pw_uuidEntry;
+  POSITION listPos = m_pwlist.GetHeadPosition();
+  uuid_array_t pw_uuidEntry;
 
-   while (listPos != NULL)
-   {
-     const CItemData &item = m_pwlist.GetAt(listPos);
-     item.GetUUID(pw_uuidEntry);
-	 if (memcmp(pw_uuidEntry, RUEuuid, sizeof(uuid_array_t)) == 0)
-		 break;
-	 else 
-		 m_pwlist.GetNext(listPos);
-   }
-
-   return listPos;
+  while (listPos != NULL) {
+    const CItemData &item = m_pwlist.GetAt(listPos);
+    item.GetUUID(pw_uuidEntry);
+    if (memcmp(pw_uuidEntry, uuid, sizeof(uuid_array_t)) == 0)
+      break;
+    m_pwlist.GetNext(listPos);
+  }
+  return listPos;
 }
 
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
