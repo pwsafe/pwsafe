@@ -19,6 +19,8 @@ public class PwsFileV3Test extends TestCase {
 		String password = "Pa$$word";
 		
 		PwsFileV3 file = new PwsFileV3(filename, password);
+		file.readAll();
+		System.out.println(file.getRecordCount());
 		
 	}
 

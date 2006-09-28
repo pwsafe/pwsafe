@@ -88,6 +88,18 @@ public class Util
 		return p;
 	}
 	
+	public static byte[] getBytes(byte[] src, int offset, int length) {
+		
+		byte[] output = new byte[length];
+		for (int i=0; i < length; i++) {
+			output[i] = src[offset + i];
+		}
+		return output;
+		
+	}
+	
+
+	
 	/**
 	 * Copies the contents of src into target.
 	 * 

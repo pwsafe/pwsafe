@@ -48,8 +48,8 @@ public class PwsFileV3 extends PwsFile
 	protected byte[] decryptedRecordKey;
 	protected byte[] decryptedHmacKey;
 	
-	protected Cipher fieldCrypto;
-	protected Cipher fieldDecrypto;
+//	protected Cipher fieldCrypto;
+//	protected Cipher fieldDecrypto;
 	
 	/**
 	 * Constructs and initialises a new, empty version 3 PasswordSafe database in memory.
@@ -115,13 +115,13 @@ public class PwsFileV3 extends PwsFile
 			
 			dumpBytes("stretchedPassword", stretchedPassword);
 			
-			Cipher cipher = TwofishPws.getCipher(stretchedPassword, null, false, true);
-			byte[] rka = cipher.doFinal(Header.getB1());
-			byte[] rkb = cipher.doFinal(Header.getB2());
+			//Cipher cipher = TwofishPws.getCipher(stretchedPassword, null, false, true);
+			byte[] rka = TwofishPws.processECB(stretchedPassword, false, Header.getB1());
+			byte[] rkb = TwofishPws.processECB(stretchedPassword, false, Header.getB2());
 			decryptedRecordKey = Util.mergeBytes(rka, rkb);
 			
-			byte[] hka = cipher.doFinal(Header.getB3());
-			byte[] hkb = cipher.doFinal(Header.getB4());
+			byte[] hka = TwofishPws.processECB(stretchedPassword, false, Header.getB3());
+			byte[] hkb = TwofishPws.processECB(stretchedPassword, false, Header.getB4());
 			decryptedHmacKey = Util.mergeBytes(hka, hkb);
 			
 		} catch (Exception e) {
@@ -129,8 +129,8 @@ public class PwsFileV3 extends PwsFile
 			throw new IOException("Error reading encrypted fields");
 		}
 		
-		fieldCrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), true, false);
-		fieldDecrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), false, false);
+//		fieldCrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), true, false);
+//		fieldDecrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), false, false);
 
 		readExtraHeader( this );
 
@@ -231,7 +231,7 @@ public class PwsFileV3 extends PwsFile
 		readBytes( buff );
 		byte[] decrypted;
 		try {
-			decrypted = fieldDecrypto.doFinal(buff);
+			decrypted = TwofishPws.processCBC(decryptedRecordKey, false, Header.getIV(), buff);
 		} catch (Exception e) {
 			throw new IOException("Error decrypting field");
 		}
@@ -256,7 +256,7 @@ public class PwsFileV3 extends PwsFile
 		
 		byte [] temp = Util.cloneByteArray( buff );
 		try {
-			temp = fieldCrypto.doFinal(temp);
+			temp = TwofishPws.processCBC(decryptedRecordKey, true, Header.getIV(), buff);
 		} catch(Exception e) {
 			throw new IOException("Error writing encrypted field");
 		}
