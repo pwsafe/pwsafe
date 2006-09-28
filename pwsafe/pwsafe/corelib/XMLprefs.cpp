@@ -14,15 +14,18 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
 
-void CXMLprefs::SetBigUpdate(bool state)
+void CXMLprefs::SetKeepXMLLock(bool state)
 {
-	m_bBigUpdate = state;
+	m_bKeepXMLLock = state;
 
 	// If a big update - load XML when set to true and unload it at the end
-	if (m_bBigUpdate)
+	if (m_bKeepXMLLock)
 		LoadXML();
-	else
+	else {
+		// Save disabled when doing a big read/update - need to do it now.
+		SaveXML();
 		UnloadXML();
+}
 }
 
 // get a int value
@@ -263,6 +266,11 @@ BOOL CXMLprefs::LoadXML()
 	//  Couldn't get it to work previously?
 	if (m_MSXML_Version == -1) return FALSE;
 
+	// No point continuing if we can't get the lock!
+	CMyString locker(_T(""));
+	if (!m_xmlcore->LockFile(m_csConfigFile, locker, false))
+		return FALSE;
+
 	BOOL b_OK = FALSE;
 
 	// initialize the XML parser
@@ -318,9 +326,6 @@ BOOL CXMLprefs::LoadXML()
 
 	VARIANT_BOOL vbSuccessful;
 
-	CMyString locker(_T(""));
-	m_xmlcore->LockFile(m_csConfigFile, locker, false);
-
 	// see if the file exists
 	CFile file;
 	if (!file.Open(m_csConfigFile, CFile::modeReadWrite)) {  // if not
@@ -368,12 +373,13 @@ BOOL CXMLprefs::LoadXML()
 		m_pXMLDoc = NULL;
 	}
 
+	m_xmlcore->UnlockFile(m_csConfigFile, false);
 	return FALSE;
 }
 
 void CXMLprefs::UnloadXML()
 {
-	if (!m_bXMLLoaded || m_bBigUpdate)
+	if (!m_bXMLLoaded || m_bKeepXMLLock)
 		return;
 
 	if (m_pXMLDoc != NULL) {
@@ -389,6 +395,11 @@ void CXMLprefs::UnloadXML()
 // save the XML file
 BOOL CXMLprefs::SaveXML()
 {
+	// If we are keeping the lock - save when we free it
+	if (m_bKeepXMLLock)
+		return TRUE;
+
+	// Now try to save!
 	if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
 		return TRUE;
 	else

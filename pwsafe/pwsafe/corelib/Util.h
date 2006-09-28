@@ -1,7 +1,6 @@
 // Util.h
 //-----------------------------------------------------------------------------
-#ifndef Util_h
-#define Util_h
+#pragma once
 
 #include "sha256.h"
 #include "MyString.h"
@@ -138,8 +137,10 @@ public:
   static int VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory, CString &strErrors);
   static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   static const TCHAR *UNKNOWN_TIME_STR;
+  static CString GetTimeStamp();
+  static void IssueError(const CString &csFunction);
 };
-#endif // Util_h
+
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

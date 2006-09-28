@@ -279,23 +279,22 @@ END_MESSAGE_MAP()
 void
 DboxMain::InitPasswordSafe()
 {
+	PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
   // AlwaysOnTop preference read from database, if possible, hence set after OpenOnInit
-  m_bAlwaysOnTop = PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop);
+  m_bAlwaysOnTop = prefs->GetPref(PWSprefs::AlwaysOnTop);
   UpdateAlwaysOnTop();
 
   // ... same for UseSystemTray
   // StartSilent trumps preference
-  if (!m_IsStartSilent && !PWSprefs::GetInstance()->
-      GetPref(PWSprefs::UseSystemTray))
+  if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
     app.HideIcon();
 
-  m_RUEList.SetMax(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxREItems));
+  m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
   // Set timer for user-defined lockout, if selected
-  if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::LockOnIdleTimeout)) {
+  if (prefs->GetPref(PWSprefs::LockOnIdleTimeout)) {
     const UINT MINUTE = 60*1000;
     TRACE(_T("Starting Idle time lock timer"));
     SetTimer(TIMER_USERLOCK, MINUTE, NULL);
@@ -305,10 +304,8 @@ DboxMain::InitPasswordSafe()
   // JHF : no hotkeys on WinCE
 #if !defined(POCKET_PC)
   // Set Hotkey, if active
-  if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::HotKeyEnabled)) {
-    const DWORD value = DWORD(PWSprefs::GetInstance()->
-                              GetPref(PWSprefs::HotKey));
+  if (prefs->GetPref(PWSprefs::HotKeyEnabled)) {
+    const DWORD value = DWORD(prefs->GetPref(PWSprefs::HotKey));
     WORD wVirtualKeyCode = WORD(value & 0xffff);
     WORD mod = WORD(value >> 16);
 	WORD wModifiers = 0;
@@ -364,14 +361,11 @@ DboxMain::InitPasswordSafe()
   m_ctlItemList.InsertColumn(6, _T("Password Expiry Date"));
   m_ctlItemList.InsertColumn(7, _T("Last Modified"));
 
-  m_bShowPasswordInEdit = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::ShowPWDefault);
+  m_bShowPasswordInEdit = prefs->GetPref(PWSprefs::ShowPWDefault);
 
-  m_bShowPasswordInList = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::ShowPWInList);
+  m_bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
 
-  const CString lastView = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::LastView);
+  const CString lastView = prefs->GetPref(PWSprefs::LastView);
   m_IsListView = true;
   if (lastView != _T("list")) {
     // not list mode, so start in tree view.
@@ -382,12 +376,11 @@ DboxMain::InitPasswordSafe()
 
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
-  int i1stWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column1Width,
-                                                   (rect.Width() / 3 +
-                                                    rect.Width() % 3));
-  int i2ndWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column2Width,
+  int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
+                                 (rect.Width() / 3 + rect.Width() % 3));
+  int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
                                                    rect.Width() / 3);
-  int i3rdWidth = PWSprefs::GetInstance()->GetPref(PWSprefs::Column3Width,
+  int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
                                                    rect.Width() / 3);
 
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
@@ -403,14 +396,13 @@ DboxMain::InitPasswordSafe()
   }
   m_ctlItemList.SetRedraw(TRUE);
 
-  m_iSortedColumn = PWSprefs::GetInstance()->GetPref(PWSprefs::SortedColumn);
-  m_bSortAscending = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::SortAscending);
+  m_iSortedColumn = prefs->GetPref(PWSprefs::SortedColumn);
+  m_bSortAscending = prefs->GetPref(PWSprefs::SortAscending);
 
   // refresh list will add and size password column if necessary...
   RefreshList();
   if (m_ctlItemTree.GetCount() > 0)
-  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
+  switch (prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
   	case PWSprefs::AllCollapsed:
   		m_ctlItemTree.OnCollapseAll();
   		break;
@@ -432,7 +424,7 @@ DboxMain::InitPasswordSafe()
   DragAcceptFiles(TRUE);
 
   // {kjp} meaningless when target is a PocketPC device.
-  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+  prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
   if (rect.top == -1 || rect.bottom == -1 || rect.left == -1 || rect.right == -1) {
     GetWindowRect(&rect);
@@ -451,13 +443,10 @@ DboxMain::InitPasswordSafe()
   }
 #endif
 
-  m_core.SetUseDefUser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::UseDefUser));
-  m_core.SetDefUsername(PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DefUserName));
+  m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefUser));
+  m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefUserName));
 
-  CString szTreeFont = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::TreeFont);
+  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont);
 
   if (szTreeFont != _T("")) {
     ExtractFont(szTreeFont);
