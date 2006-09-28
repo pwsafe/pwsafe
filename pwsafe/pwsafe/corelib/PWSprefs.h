@@ -1,8 +1,8 @@
 // PWSprefs.h
 //-----------------------------------------------------------------------------
 
-#ifndef PWSprefs_h
-#define PWSprefs_h
+#pragma once
+
 /*
  * A class to abstract away the persistent storage mechanism used to store and
  * retrieve user preferences. Pre-2.03 implementations used the Windows 
@@ -52,10 +52,13 @@ class PWSprefs {
 		  TreeFont,
 		  NumStringPrefs};
 
-  enum {DoubleClickCopy = 0, DoubleClickEdit = 1,
-	DoubleClickAutoType = 2, DoubleClickBrowse = 3}; // for DoubleClickAction
+  // for DoubleClickAction
+  enum {minDCA = 0, DoubleClickCopy = 0, DoubleClickEdit = 1,
+	DoubleClickAutoType = 2, DoubleClickBrowse = 3, maxDCA = 3};
 
-  enum {AllCollapsed = 0, AllExpanded = 1, AsPerLastSave = 2}; // for TreeDisplayStatusAtOpen
+  // for TreeDisplayStatusAtOpen
+  enum {minTDS = 0, AllCollapsed = 0, AllExpanded = 1,
+    AsPerLastSave = 2, maxTDS = 2};
 
   bool IsChanged() const {return m_prefs_changed;}
   void ClearChanged() {m_prefs_changed = false;}
@@ -96,7 +99,7 @@ class PWSprefs {
   static const struct boolPref {
     TCHAR *name; bool defVal; bool isPersistent;} m_bool_prefs[NumBoolPrefs];
   static const struct intPref {
-    TCHAR *name; unsigned int defVal; bool isPersistent;} m_int_prefs[NumIntPrefs];
+    TCHAR *name; unsigned int defVal; bool isPersistent; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
   static const struct stringPref {
     TCHAR *name; TCHAR *defVal; bool isPersistent;} m_string_prefs[NumStringPrefs];
   // current values, loaded/stored from db
@@ -104,4 +107,4 @@ class PWSprefs {
   unsigned int m_intValues[NumIntPrefs];
   CMyString m_stringValues[NumStringPrefs];
 };
-#endif /* PWSprefs_h */
+

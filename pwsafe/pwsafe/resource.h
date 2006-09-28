@@ -22,6 +22,7 @@
 #define IDS_RESETPWHISTORYOFF           112
 #define IDS_RESETPWHISTORYON            113
 #define IDS_SETMAXPWHISTORY             114
+#define IDS_NOHOTKEY                    115
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128
 #define IDD_KEYCHANGE_DIALOG            131

@@ -98,9 +98,10 @@ void COptionsMisc::OnEnableHotKey()
 {
 	// JHF : no hotkeys on WinCE
 #if !defined(POCKET_PC)
-  if (((CButton*)GetDlgItem(IDC_HOTKEY_ENABLE))->GetCheck() == 1)
+  if (((CButton*)GetDlgItem(IDC_HOTKEY_ENABLE))->GetCheck() == 1) {
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(TRUE);
-  else
+	GetDlgItem(IDC_HOTKEY_CTRL)->SetFocus();
+  } else
     GetDlgItem(IDC_HOTKEY_CTRL)->EnableWindow(FALSE);
 #endif
 }

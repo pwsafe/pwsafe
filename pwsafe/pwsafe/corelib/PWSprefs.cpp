@@ -1,9 +1,8 @@
 #include "PWSprefs.h"
 #include <AfxWin.h> // for AfxGetApp()
-#pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
+
 #include <strstream>
-#pragma warning(pop)
-#pragma warning(disable : 4786)
+
 using namespace std;
 
 #if defined(POCKET_PC)
@@ -54,20 +53,25 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowNotesDefault"), false, true},
 };
 
+// Defensive programming (the Registry & files are editable)
+// Set min and max values.  If value outside this range, set to default.
+// "-1" means not set/do not check
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), (unsigned int)-1, false}, // default unused - set @ runtime
-  {_T("column2width"), (unsigned int)-1, false}, // default unused - set @ runtime
-  {_T("column3width"), (unsigned int)-1, false}, // default unused - set @ runtime
-  {_T("column4width"), (unsigned int)-1, false}, // default unused - set @ runtime
-  {_T("sortedcolumn"), 0, true},
-  {_T("pwlendefault"), 8, true},
-  {_T("maxmruitems"), 4, true},
-  {_T("IdleTimeout"), 5, true},
-  {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true},
-  {_T("HotKey"), 0, false},  // zero means disabled, !=0 is key code.
-  {_T("MaxREItems"), 25, true},
-  {_T("TreeDisplayStatusAtOpen"), PWSprefs::AllCollapsed, true},
-  {_T("NumPWHistoryDefault"), 3, true},
+  {_T("column1width"), (unsigned int)-1, false, -1, -1}, // set @ runtime
+  {_T("column2width"), (unsigned int)-1, false, -1, -1}, // set @ runtime
+  {_T("column3width"), (unsigned int)-1, false, -1, -1}, // set @ runtime
+  {_T("column4width"), (unsigned int)-1, false, -1, -1}, // set @ runtime
+  {_T("sortedcolumn"), 0, true, 0, 7},
+  {_T("pwlendefault"), 8, true, 4, 1024},
+  // maxmruitems maximum = ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1
+  {_T("maxmruitems"), 4, true, 0, 20},
+  {_T("IdleTimeout"), 5, true, 1, 120},
+  {_T("DoubleClickAction"), PWSprefs::DoubleClickCopy, true, minDCA, maxDCA},
+  {_T("HotKey"), 0, false, 0, -1},  // zero means disabled, !=0 is key code.
+  // MaxREItems maximum = ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1
+  {_T("MaxREItems"), 25, true, 0, 25},
+  {_T("TreeDisplayStatusAtOpen"), PWSprefs::AllCollapsed, true, minTDS, maxTDS},
+  {_T("NumPWHistoryDefault"), 3, true, 0, 255},
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -97,15 +101,27 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_prefs_changed(false)
   ASSERT(m_app != NULL);
   // Start by reading in from registry
   int i;
-  // Read in values from registry
+
+  // Defensive programming, if not "0", then "TRUE", all other values = FALSE
   for (i = 0; i < NumBoolPrefs; i++)
     m_boolValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
 					   m_bool_prefs[i].name,
 					   m_bool_prefs[i].defVal) != 0;
-  for (i = 0; i < NumIntPrefs; i++)
-    m_intValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
+
+  // Defensive programming, if outside the permitted range, then set to default
+  for (i = 0; i < NumIntPrefs; i++) {
+    const int iVal = m_app->GetProfileInt(PWS_REG_OPTIONS,
 					  m_int_prefs[i].name,
 					  m_int_prefs[i].defVal);
+
+    if (m_int_prefs[i].minVal != -1 && iVal < m_int_prefs[i].minVal)
+      m_intValues[i] = m_int_prefs[i].defVal;
+    else if (m_int_prefs[i].maxVal != -1 && iVal > m_int_prefs[i].maxVal)
+      m_intValues[i] = m_int_prefs[i].defVal;
+    else m_intValues[i] = iVal;
+  }
+
+  // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++)
     m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
 							  m_string_prefs[i].name,

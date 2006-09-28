@@ -187,6 +187,7 @@ DboxMain::OnOptions()
   COptionsMisc            misc;
   PWSprefs               *prefs = PWSprefs::GetInstance();
   BOOL                   prevLockOIT; // lock on idle timeout set?
+  BOOL brc;
   /*
   **  Initialize the property pages values.
   */
@@ -288,13 +289,19 @@ DboxMain::OnOptions()
   */
   optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
+  // Disable Hotkey around this as the user may press the current key when 
+  // selecting the new key!
+
+#if !defined(POCKET_PC)
+  brc = UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
+#endif
+
   passwordhistory.m_pDboxMain = this;
   app.DisableAccelerator();
   int rc = optionsDlg.DoModal();
   app.EnableAccelerator();
 
-  if (rc == IDOK)
-    {
+  if (rc == IDOK) {
       /*
       **  First save all the options.
       */
@@ -451,7 +458,6 @@ DboxMain::OnOptions()
       // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
       // Handle HotKey setting
-      BOOL brc = UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
       if (misc.m_hotkey_enabled == TRUE) {
         WORD wVirtualKeyCode = WORD(misc.m_hotkey_value & 0xffff);
         WORD mod = WORD(misc.m_hotkey_value >> 16);
@@ -465,12 +471,8 @@ DboxMain::OnOptions()
 			wModifiers |= MOD_SHIFT; 
         brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
                        UINT(wModifiers), UINT(wVirtualKeyCode));
-		if (brc == FALSE) {
-            CString cs_msg =_T("Sorry - your requested HotKey is already being used.\n\n");
-            cs_msg += _T("This feature has been temporarily disabled.\n\n");
-            cs_msg += _T("To re-enable in this session, please select a different key combination.");
-			AfxMessageBox(cs_msg, MB_OK);
-		}
+		if (brc == FALSE)
+			AfxMessageBox(IDS_NOHOTKEY, MB_OK);
       }
 #endif
       /*
@@ -494,6 +496,28 @@ DboxMain::OnOptions()
       m_core.SetDefUsername(misc.m_defusername);
       m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
     }
+      // JHF no hotkeys under WinCE
+#if !defined(POCKET_PC)
+	else { // User did not press OK
+      // Put it back if it was there before but they didn't change it
+      if (misc.m_hotkey_enabled == TRUE) {
+        WORD wVirtualKeyCode = WORD(misc.m_hotkey_value & 0xffff);
+        WORD mod = WORD(misc.m_hotkey_value >> 16);
+		WORD wModifiers = 0;
+		// Translate between CWnd & CHotKeyCtrl modifiers
+		if (mod & HOTKEYF_ALT) 
+			wModifiers |= MOD_ALT; 
+		if (mod & HOTKEYF_CONTROL) 
+			wModifiers |= MOD_CONTROL; 
+		if (mod & HOTKEYF_SHIFT) 
+			wModifiers |= MOD_SHIFT; 
+        brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
+                       UINT(wModifiers), UINT(wVirtualKeyCode));
+		if (brc == FALSE)
+			AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+      }
+	}
+#endif
 }
 
 void
