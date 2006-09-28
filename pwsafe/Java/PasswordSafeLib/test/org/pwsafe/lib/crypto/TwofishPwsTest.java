@@ -1,5 +1,7 @@
 package org.pwsafe.lib.crypto;
 
+import org.pwsafe.lib.Util;
+
 import junit.framework.TestCase;
 
 /**
@@ -37,14 +39,6 @@ public class TwofishPwsTest extends TestCase {
 			0xEC, 0x2F, 0x2A, 0xE8, 0xC3, 0x5A };
 
 	
-	
-	public byte[] unsignedToSigned(int []ints) {
-		byte[] result = new byte[ints.length];
-		for (int i=0; i<ints.length; i++) {
-			result[i] = (byte) (ints[i] & 0xFF);
-		}
-		return result;
-	}
 	/**
 	 * Tests we can encrypted and decrypt and get back to square.
 	 * 
@@ -52,11 +46,11 @@ public class TwofishPwsTest extends TestCase {
 	 */
 	public void testRoundTrip() throws Exception {
 		
-		byte[] encResult = TwofishPws.processECB(unsignedToSigned(key), true, unsignedToSigned(plainText)); 
+		byte[] encResult = TwofishPws.processECB(Util.unsignedToSigned(key), true, Util.unsignedToSigned(plainText)); 
 
-        byte[] decResult = TwofishPws.processECB(unsignedToSigned(key), false, encResult);
+        byte[] decResult = TwofishPws.processECB(Util.unsignedToSigned(key), false, encResult);
 
-        assertEquals(HmacPwsTest.byteArrayToHex(unsignedToSigned(plainText)), HmacPwsTest.byteArrayToHex(decResult));
+        assertEquals(Util.bytesToHex(Util.unsignedToSigned(plainText)), Util.bytesToHex(decResult));
 	}
 	
 
@@ -67,11 +61,11 @@ public class TwofishPwsTest extends TestCase {
 	 */
 	public void testRoundTrip32() throws Exception {
 
-		byte[] encResult = TwofishPws.processECB(unsignedToSigned(key32), true, unsignedToSigned(plainText32)); 
+		byte[] encResult = TwofishPws.processECB(Util.unsignedToSigned(key32), true, Util.unsignedToSigned(plainText32)); 
 
-        byte[] decResult = TwofishPws.processECB(unsignedToSigned(key32), false, encResult);
+        byte[] decResult = TwofishPws.processECB(Util.unsignedToSigned(key32), false, encResult);
 
-        assertEquals(HmacPwsTest.byteArrayToHex(unsignedToSigned(plainText32)), HmacPwsTest.byteArrayToHex(decResult));
+        assertEquals(Util.bytesToHex(Util.unsignedToSigned(plainText32)), Util.bytesToHex(decResult));
 
 	}
 
@@ -83,11 +77,11 @@ public class TwofishPwsTest extends TestCase {
 	 */
     public void testVectorCounterPane() throws Exception {
 
-		byte[] encResult = TwofishPws.processECB(unsignedToSigned(cp_key), true, unsignedToSigned(cp_pt)); 
+		byte[] encResult = TwofishPws.processECB(Util.unsignedToSigned(cp_key), true, Util.unsignedToSigned(cp_pt)); 
 
-        byte[] decResult = TwofishPws.processECB(unsignedToSigned(cp_key), false, encResult);
+        byte[] decResult = TwofishPws.processECB(Util.unsignedToSigned(cp_key), false, encResult);
 
-        assertEquals(HmacPwsTest.byteArrayToHex(unsignedToSigned(cp_pt)), HmacPwsTest.byteArrayToHex(decResult));
+        assertEquals(Util.bytesToHex(Util.unsignedToSigned(cp_pt)), Util.bytesToHex(decResult));
         
     }
 	
@@ -98,17 +92,16 @@ public class TwofishPwsTest extends TestCase {
 	 * 
 	 * @throws Exception if bad things happen
 	 */
-//    public void testVectorCVersion() throws Exception {
-//        
-//        Cipher enc = TwofishPws.getCipher(unsignedToSigned(key), null, true, true); 
-//        byte[] encResult = enc.doFinal(unsignedToSigned(plainText));
-//
-//        String encStr = HmacPwsTest.byteArrayToHex(encResult);
-//        String expected = HmacPwsTest.byteArrayToHex(unsignedToSigned(cipherText));
-//        
-//        assertEquals(expected, encStr);
-//        
-//    }
+    public void testVectorCVersion() throws Exception {
+        
+    	byte[] encResult = TwofishPws.processECB(Util.unsignedToSigned(key), true, Util.unsignedToSigned(plainText)); 
+
+        String encStr = Util.bytesToHex(encResult);
+        String expected = Util.bytesToHex(Util.unsignedToSigned(cipherText));
+        
+        assertEquals(expected, encStr);
+        
+    }
     
     
 

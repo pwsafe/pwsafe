@@ -88,6 +88,15 @@ public class Util
 		return p;
 	}
 	
+	/**
+	 * Extracts a subset of a byte array as a new byte array.
+	 * 
+	 * @param src the byte array to trim
+	 * @param offset the offset to start at
+	 * @param length the number of bytes to include
+	 * 
+	 * @return a byte array containing the specified subset
+	 */
 	public static byte[] getBytes(byte[] src, int offset, int length) {
 		
 		byte[] output = new byte[length];
@@ -384,5 +393,19 @@ public class Util
 		buff[offset+3]	= (byte)((value & 0xff000000) >>> 24);
 		
 		LOG.leaveMethod( "Util.putIntToByteArray" );
+	}
+	
+	/**
+	 * Convert an unsigned set of bytes to a signed set.
+	 * 
+	 * @param ints an array of signed bytes
+	 * @return an array of unsigned bytes
+	 */
+	public static byte[] unsignedToSigned(int []ints) {
+		byte[] result = new byte[ints.length];
+		for (int i=0; i<ints.length; i++) {
+			result[i] = (byte) (ints[i] & 0xFF);
+		}
+		return result;
 	}
 }
