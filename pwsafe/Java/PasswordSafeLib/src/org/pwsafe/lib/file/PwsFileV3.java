@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import javax.crypto.Cipher;
-
 import org.pwsafe.lib.I18nHelper;
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
@@ -42,7 +40,7 @@ public class PwsFileV3 extends PwsFile
 	/**
 	 * The file's standard header.
 	 */
-	protected PwsFileHeaderV3	Header			= null;
+	protected PwsFileHeaderV3	headerV3;
 	
 	protected byte[] stretchedPassword;
 	protected byte[] decryptedRecordKey;
@@ -98,30 +96,24 @@ public class PwsFileV3 extends PwsFile
 		
 
 		InStream		= new FileInputStream( file );
-		Header			= new PwsFileHeaderV3( this );
+		headerV3			= new PwsFileHeaderV3( this );
 		
-		int iter = Util.getIntFromByteArray(Header.getIter(), 0);
+		int iter = Util.getIntFromByteArray(headerV3.getIter(), 0);
 		LOG.debug1("Using iterations: [" + iter + "]");
-		stretchedPassword = stretchPassphrase(passphrase.getBytes(), Header.getSalt(), iter);
-		//Algorithm		= makeBlowfish( passphrase.getBytes() );
-		dumpBytes("From file", Header.getPassword());
-		dumpBytes("Calc", SHA256Pws.digest(stretchedPassword));
+		stretchedPassword = stretchPassphrase(passphrase.getBytes(), headerV3.getSalt(), iter);
 		
-		if (!Util.bytesAreEqual(Header.getPassword(), SHA256Pws.digest(stretchedPassword))) {
+		if (!Util.bytesAreEqual(headerV3.getPassword(), SHA256Pws.digest(stretchedPassword))) {
 			throw new IOException("Invalid password");
 		}
 		
 		try {
 			
-			dumpBytes("stretchedPassword", stretchedPassword);
-			
-			//Cipher cipher = TwofishPws.getCipher(stretchedPassword, null, false, true);
-			byte[] rka = TwofishPws.processECB(stretchedPassword, false, Header.getB1());
-			byte[] rkb = TwofishPws.processECB(stretchedPassword, false, Header.getB2());
+			byte[] rka = TwofishPws.processECB(stretchedPassword, false, headerV3.getB1());
+			byte[] rkb = TwofishPws.processECB(stretchedPassword, false, headerV3.getB2());
 			decryptedRecordKey = Util.mergeBytes(rka, rkb);
 			
-			byte[] hka = TwofishPws.processECB(stretchedPassword, false, Header.getB3());
-			byte[] hkb = TwofishPws.processECB(stretchedPassword, false, Header.getB4());
+			byte[] hka = TwofishPws.processECB(stretchedPassword, false, headerV3.getB3());
+			byte[] hkb = TwofishPws.processECB(stretchedPassword, false, headerV3.getB4());
 			decryptedHmacKey = Util.mergeBytes(hka, hkb);
 			
 		} catch (Exception e) {
@@ -129,9 +121,6 @@ public class PwsFileV3 extends PwsFile
 			throw new IOException("Error reading encrypted fields");
 		}
 		
-//		fieldCrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), true, false);
-//		fieldDecrypto = TwofishPws.getCipher(decryptedRecordKey, Header.getIV(), false, false);
-
 		readExtraHeader( this );
 
 		LOG.leaveMethod( "PwsFileV3.init" );
@@ -224,15 +213,16 @@ public class PwsFileV3 extends PwsFile
 	protected void readDecryptedBytes( byte [] buff )
 	throws EndOfFileException, IOException
 	{
-		if ( (buff.length == 0) || ((buff.length % BLOCK_LENGTH) != 0) )
+		if ( (buff.length == 0) || ((buff.length % getBlockSize()) != 0) )
 		{
 			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
 		}
 		readBytes( buff );
 		byte[] decrypted;
 		try {
-			decrypted = TwofishPws.processCBC(decryptedRecordKey, false, Header.getIV(), buff);
+			decrypted = TwofishPws.processCBC(decryptedRecordKey, false, headerV3.getIV(), buff);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new IOException("Error decrypting field");
 		}
 		Util.copyBytes(decrypted, buff);
@@ -249,18 +239,25 @@ public class PwsFileV3 extends PwsFile
 	protected void writeEncryptedBytes( byte [] buff )
 	throws IOException
 	{
-		if ( (buff.length == 0) || ((buff.length % BLOCK_LENGTH) != 0) )
+		if ( (buff.length == 0) || ((buff.length % getBlockSize()) != 0) )
 		{
 			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
 		}
 		
 		byte [] temp = Util.cloneByteArray( buff );
 		try {
-			temp = TwofishPws.processCBC(decryptedRecordKey, true, Header.getIV(), buff);
+			temp = TwofishPws.processCBC(decryptedRecordKey, true, headerV3.getIV(), buff);
 		} catch(Exception e) {
 			throw new IOException("Error writing encrypted field");
 		}
 		writeBytes( temp );
+	}
+
+	/**
+	 * @see org.pwsafe.lib.file.PwsFile#getBlockSize()
+	 */
+	protected int getBlockSize() {
+		return 16;
 	}
 	
 	

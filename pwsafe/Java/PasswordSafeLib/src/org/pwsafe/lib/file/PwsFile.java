@@ -818,4 +818,11 @@ public abstract class PwsFile
 	throws IOException
 	{
 	}
+	
+	/** 
+	 * Returns the size of blocks in this file type.
+	 * 
+	 * @return the size of blocks in this file type as an int
+	 */
+	abstract int getBlockSize();
 }

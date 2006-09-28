@@ -75,4 +75,11 @@ public class PwsFileV1 extends PwsFile
 	{
 		return new PwsRecordV1();
 	}
+
+	/*
+	 * @see org.pwsafe.lib.file.PwsFile#getBlockSize()
+	 */
+	protected int getBlockSize() {
+		return 8;
+	}
 }

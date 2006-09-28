@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.UUID;
+import org.pwsafe.lib.Util;
 import org.pwsafe.lib.exception.EndOfFileException;
 import org.pwsafe.lib.exception.UnimplementedConversionException;
 
@@ -108,7 +109,7 @@ public class PwsRecordV3 extends PwsRecord
 	 */
 	private static final Object []	VALID_TYPES	= new Object []
 	{
-		new Object [] { new Integer(V3_ID_STRING),		"V3_ID_STRING",			PwsStringField.class },
+		new Object [] { new Integer(V3_ID_STRING),		"V3_ID_STRING",			PwsIntegerField.class },
 		new Object [] { new Integer(UUID),				"UUID",					PwsUUIDField.class },
 		new Object [] { new Integer(GROUP),				"GROUP",				PwsStringField.class },
 		new Object [] { new Integer(TITLE),				"TITLE",				PwsStringField.class },
@@ -235,6 +236,33 @@ public class PwsRecordV3 extends PwsRecord
 		return true;
 	}
 	
+	protected class ItemV3 extends Item {
+		public ItemV3( PwsFile file )
+		throws EndOfFileException, IOException
+		{
+			super();
+			RawData = file.readBlock();
+			Length	= Util.getIntFromByteArray( RawData, 0 );
+			//Type	= Util.getIntFromByteArray( RawData, 4 );
+			Type = RawData[4] & 0x000000ff; // rest of header is now random data
+			System.err.println("Data size is " + Length + " and type is " + Type);
+			Data    = new byte[Length];
+			byte[] remainingDataInRecord = Util.getBytes(RawData, 5, 11);
+			if (Length < 11) {
+				Util.copyBytes(Util.getBytes(remainingDataInRecord, 0, Length), Data);
+			} else if (Length > 11) {
+				int bytesToRead = Length - 11;
+				int blocksToRead = bytesToRead / file.getBlockSize() + 1;
+				byte[] remainingRecords = new byte[blocksToRead * file.getBlockSize()];
+				file.readDecryptedBytes( remainingRecords );
+				remainingRecords = Util.getBytes(remainingRecords, 0, bytesToRead);
+				Data = Util.mergeBytes(remainingDataInRecord, remainingRecords);
+			}
+			//Data	= PwsFile.allocateBuffer( Length, file.getBlockSize() );
+		
+		}
+	}
+	
 	/**
 	 * Initialises this record by reading its data from <code>file</code>.
 	 * 
@@ -251,7 +279,7 @@ public class PwsRecordV3 extends PwsRecord
 		
 		for ( ;; )
 		{
-			item = new Item( file );
+			item = new ItemV3( file );
 
 			if ( item.getType() == END_OF_RECORD )
 			{
@@ -260,11 +288,14 @@ public class PwsRecordV3 extends PwsRecord
 			}
 			switch ( item.getType() )
 			{
+				case V3_ID_STRING :
+					itemVal	= new PwsIntegerField( item.getType(), new byte[] {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} );
+					break;
+					
 				case UUID :
 					itemVal = new PwsUUIDField( item.getType(), item.getByteData() );
 					break;
-
-				case V3_ID_STRING :
+			
 				case GROUP :
 				case TITLE :
 				case USERNAME :

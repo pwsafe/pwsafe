@@ -58,11 +58,15 @@ public abstract class PwsRecord implements Comparable
 	 */
 	protected class Item
 	{
-		private byte []	RawData;
-		private byte []	Data;
-		private int		Length;
-		private int		Type;
+		protected byte []	RawData;
+		protected byte []	Data;
+		protected int		Length;
+		protected int		Type;
 
+		/** No args constructor helps subclassing. */
+		protected Item() {
+			
+		}
 		/**
 		 * Reads a single item of data from the file.
 		 * 

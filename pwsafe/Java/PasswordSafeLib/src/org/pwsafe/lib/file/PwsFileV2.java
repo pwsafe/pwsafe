@@ -121,4 +121,11 @@ public class PwsFileV2 extends PwsFile
 
 		hdr.saveRecord( file );
 	}
+
+	/**
+	 * @see org.pwsafe.lib.file.PwsFile#getBlockSize()
+	 */
+	protected int getBlockSize() {
+		return 8;
+	}
 }
