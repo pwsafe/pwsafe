@@ -27,9 +27,9 @@ IMPLEMENT_DYNCREATE(COptionsPasswordHistory, CPropertyPage)
 COptionsPasswordHistory::COptionsPasswordHistory() : CPropertyPage(COptionsPasswordHistory::IDD)
 {
   //{{AFX_DATA_INIT(COptionsPasswordHistory)
-  m_resetpwhistoryoff = m_resetpwhistoryon = m_setmaxpwhistory = FALSE;
   //}}AFX_DATA_INIT
   m_ToolTipCtrl = NULL;
+  m_pwhaction = 0;
 }
 
 COptionsPasswordHistory::~COptionsPasswordHistory()
@@ -43,20 +43,19 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP(COptionsPasswordHistory)
   DDX_Check(pDX, IDC_SAVEPWHISTORY, m_savepwhistory);
   DDX_Text(pDX, IDC_DEFPWHNUM, m_pwhistorynumdefault);
-  DDX_Check(pDX, IDC_RESETPWHISTORYOFF, m_resetpwhistoryoff);
-  DDX_Check(pDX, IDC_RESETPWHISTORYON, m_resetpwhistoryon);
-  DDX_Check(pDX, IDC_SETMAXPWHISTORY, m_setmaxpwhistory);
   //}}AFX_DATA_MAP
+  DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_pwhaction);
 }
 
 BEGIN_MESSAGE_MAP(COptionsPasswordHistory, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsPasswordHistory)
 	ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
-	ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnResetPWHistoryOff)
-	ON_BN_CLICKED(IDC_RESETPWHISTORYON, OnResetPWHistoryOn)
-	ON_BN_CLICKED(IDC_SETMAXPWHISTORY, OnSetMaxPWHistory)
-	ON_BN_CLICKED(IDC_APPLYPWHCHANGESNOW, &COptionsPasswordHistory::OnBnClickedApplyPWHChanges)
+	ON_BN_CLICKED(IDC_APPLYPWHCHANGESNOW, OnApplyPWHChanges)
 	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_PWHISTORYNOACTION, OnPWHistoryNoAction)
+	ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnPWHistoryDoAction)
+	ON_BN_CLICKED(IDC_RESETPWHISTORYON, OnPWHistoryDoAction)
+	ON_BN_CLICKED(IDC_SETMAXPWHISTORY, OnPWHistoryDoAction)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -126,50 +125,16 @@ void COptionsPasswordHistory::OnSavePWHistory()
   GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(enable);
 }
 
-void COptionsPasswordHistory::OnResetPWHistoryOff() 
-{
-  if (((CButton*)GetDlgItem(IDC_RESETPWHISTORYOFF))->GetCheck() == 1) {
-  	((CButton*)GetDlgItem(IDC_RESETPWHISTORYON))->SetCheck(0);
-  	((CButton*)GetDlgItem(IDC_SETMAXPWHISTORY))->SetCheck(0);
-	GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(TRUE);
-  } else
-    GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
-}
-
-void COptionsPasswordHistory::OnResetPWHistoryOn() 
-{
-  if (((CButton*)GetDlgItem(IDC_RESETPWHISTORYON))->GetCheck() == 1) {
-  	((CButton*)GetDlgItem(IDC_RESETPWHISTORYOFF))->SetCheck(0);
-  	((CButton*)GetDlgItem(IDC_SETMAXPWHISTORY))->SetCheck(0);
-	GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(TRUE);
-  } else
-    GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
-}
-
-void COptionsPasswordHistory::OnSetMaxPWHistory() 
-{
-  if (((CButton*)GetDlgItem(IDC_SETMAXPWHISTORY))->GetCheck() == 1) {
-  	((CButton*)GetDlgItem(IDC_RESETPWHISTORYOFF))->SetCheck(0);
-  	((CButton*)GetDlgItem(IDC_RESETPWHISTORYON))->SetCheck(0);
-	GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(TRUE);
-  } else
-    GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
-}
-
-void COptionsPasswordHistory::OnBnClickedApplyPWHChanges()
+void COptionsPasswordHistory::OnApplyPWHChanges()
 {
   ASSERT(m_pDboxMain != NULL);
 
   UpdateData(TRUE);
-  m_pDboxMain->UpdatePasswordHistory(m_resetpwhistoryoff +
-							2 * m_resetpwhistoryon +
-							4 * m_setmaxpwhistory,
-								m_pwhistorynumdefault);
+  m_pDboxMain->UpdatePasswordHistory(m_pwhaction, m_pwhistorynumdefault);
 
-  ((CButton*)GetDlgItem(IDC_RESETPWHISTORYOFF))->SetCheck(0);
-  ((CButton*)GetDlgItem(IDC_RESETPWHISTORYON))->SetCheck(0);
-  ((CButton*)GetDlgItem(IDC_SETMAXPWHISTORY))->SetCheck(0);
+  m_pwhaction = 0;
   GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
+  UpdateData(FALSE);
 }
 
 // Override PreTranslateMessage() so RelayEvent() can be 
@@ -181,4 +146,14 @@ BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
 		m_ToolTipCtrl->RelayEvent(pMsg);
 
 	return CPropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsPasswordHistory::OnPWHistoryNoAction()
+{
+	GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
+}
+
+void COptionsPasswordHistory::OnPWHistoryDoAction() 
+{
+	GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(TRUE);
 }

@@ -186,8 +186,9 @@ DboxMain::OnOptions()
   COptionsSystem          system;
   COptionsMisc            misc;
   PWSprefs               *prefs = PWSprefs::GetInstance();
-  BOOL                   prevLockOIT; // lock on idle timeout set?
-  BOOL brc;
+  BOOL                    prevLockOIT; // lock on idle timeout set?
+  BOOL                    brc, save_hotkey_enabled;
+  DWORD                   save_hotkey_value;
   /*
   **  Initialize the property pages values.
   */
@@ -262,12 +263,13 @@ DboxMain::OnOptions()
   misc.m_doubleclickaction = prefs->
     GetPref(PWSprefs::DoubleClickAction);
 
-  misc.m_hotkey_value = DWORD(prefs->GetPref(PWSprefs::HotKey));
+  save_hotkey_value = misc.m_hotkey_value = 
+    DWORD(prefs->GetPref(PWSprefs::HotKey));
   // Can't be enabled if not set!
   if (misc.m_hotkey_value == 0)
-	  misc.m_hotkey_enabled = FALSE;
+	  save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
   else
-	  misc.m_hotkey_enabled = prefs->
+	  save_hotkey_enabled = misc.m_hotkey_enabled = prefs->
          GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
   misc.m_usedefuser = prefs->
@@ -378,13 +380,16 @@ DboxMain::OnOptions()
       prefs->SetPref(PWSprefs::DoubleClickAction,
                      misc.m_doubleclickaction);
 
+      // Need to update previous values as we use these variables to re-instate
+      // the hotkey environment at the end whether the user changed it or not.
       prefs->SetPref(PWSprefs::HotKey,
                      misc.m_hotkey_value);
+      save_hotkey_value = misc.m_hotkey_value;
 	  // Can't be enabled if not set!
 	  if (misc.m_hotkey_value == 0)
-		  misc.m_hotkey_enabled = FALSE;
-	  else
-		  prefs->SetPref(PWSprefs::HotKeyEnabled,
+		  save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
+
+	  prefs->SetPref(PWSprefs::HotKeyEnabled,
                      misc.m_hotkey_enabled == TRUE);
 
       prefs->SetPref(PWSprefs::UseDefUser,
@@ -455,26 +460,6 @@ DboxMain::OnOptions()
         }
       SetIdleLockCounter(security.m_IdleTimeOut);
 
-      // JHF no hotkeys under WinCE
-#if !defined(POCKET_PC)
-      // Handle HotKey setting
-      if (misc.m_hotkey_enabled == TRUE) {
-        WORD wVirtualKeyCode = WORD(misc.m_hotkey_value & 0xffff);
-        WORD mod = WORD(misc.m_hotkey_value >> 16);
-		WORD wModifiers = 0;
-		// Translate between CWnd & CHotKeyCtrl modifiers
-		if (mod & HOTKEYF_ALT) 
-			wModifiers |= MOD_ALT; 
-		if (mod & HOTKEYF_CONTROL) 
-			wModifiers |= MOD_CONTROL; 
-		if (mod & HOTKEYF_SHIFT) 
-			wModifiers |= MOD_SHIFT; 
-        brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
-                       UINT(wModifiers), UINT(wVirtualKeyCode));
-		if (brc == FALSE)
-			AfxMessageBox(IDS_NOHOTKEY, MB_OK);
-      }
-#endif
       /*
        * Here are the old (pre 2.0) semantics:
        * The username entered in this dialog box will be added to all the entries
@@ -496,27 +481,25 @@ DboxMain::OnOptions()
       m_core.SetDefUsername(misc.m_defusername);
       m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
     }
-      // JHF no hotkeys under WinCE
+    // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
-	else { // User did not press OK
-      // Put it back if it was there before but they didn't change it
-      if (misc.m_hotkey_enabled == TRUE) {
-        WORD wVirtualKeyCode = WORD(misc.m_hotkey_value & 0xffff);
-        WORD mod = WORD(misc.m_hotkey_value >> 16);
-		WORD wModifiers = 0;
-		// Translate between CWnd & CHotKeyCtrl modifiers
-		if (mod & HOTKEYF_ALT) 
-			wModifiers |= MOD_ALT; 
-		if (mod & HOTKEYF_CONTROL) 
-			wModifiers |= MOD_CONTROL; 
-		if (mod & HOTKEYF_SHIFT) 
-			wModifiers |= MOD_SHIFT; 
+    // Restore hotkey as it was or as user changed it - if he/she pressed OK
+    if (save_hotkey_enabled == TRUE) {
+      WORD wVirtualKeyCode = WORD(save_hotkey_value & 0xffff);
+      WORD mod = WORD(save_hotkey_value >> 16);
+      WORD wModifiers = 0;
+      // Translate between CWnd & CHotKeyCtrl modifiers
+      if (mod & HOTKEYF_ALT) 
+          wModifiers |= MOD_ALT; 
+      if (mod & HOTKEYF_CONTROL) 
+          wModifiers |= MOD_CONTROL; 
+      if (mod & HOTKEYF_SHIFT) 
+          wModifiers |= MOD_SHIFT; 
         brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
                        UINT(wModifiers), UINT(wVirtualKeyCode));
-		if (brc == FALSE)
-			AfxMessageBox(IDS_NOHOTKEY, MB_OK);
-      }
-	}
+      if (brc == FALSE)
+            AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+    }
 #endif
 }
 
@@ -588,7 +571,7 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 			AfxMessageBox(cs_Msg);
 			bResult = true;
 			break;
-		case 4:		// setmax
+		case 3:		// setmax
 			cs_Buffer.Format("1%02x", new_default_max);
 			listPos = m_core.GetFirstEntryPosition();
 			while (listPos != NULL) {

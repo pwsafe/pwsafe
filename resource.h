@@ -258,19 +258,20 @@
 #define IDC_PWHMAX                      1202
 #define IDC_DOUBLE_CLICK_ACTION         1203
 #define IDC_FIND_WRAP                   1204
-#define IDC_RESETPWHISTORYOFF           1205
-#define IDC_RESETPWHISTORYON            1206
-#define IDC_SETMAXPWHISTORY             1207
-#define IDC_APPLYPWHCHANGESNOW          1208
-#define IDC_DELETEREGISTRY              1209
-#define IDC_SHOWNOTES                   1210
-#define IDC_DEFNOTESSHOWINEDIT          1211
-#define IDC_DATABASENAME                1212
-#define IDC_NUMGROUPS                   1213
-#define IDC_NUMENTRIES                  1214
-#define IDC_SAVEDBY                     1215
-#define IDC_SAVEDON                     1216
-#define IDC_EDITEXPLANATION             1217
+#define IDC_PWHISTORYNOACTION           1205
+#define IDC_RESETPWHISTORYOFF           1206
+#define IDC_RESETPWHISTORYON            1207
+#define IDC_SETMAXPWHISTORY             1208
+#define IDC_APPLYPWHCHANGESNOW          1209
+#define IDC_DELETEREGISTRY              1210
+#define IDC_SHOWNOTES                   1211
+#define IDC_DEFNOTESSHOWINEDIT          1212
+#define IDC_DATABASENAME                1213
+#define IDC_NUMGROUPS                   1214
+#define IDC_NUMENTRIES                  1215
+#define IDC_SAVEDBY                     1216
+#define IDC_SAVEDON                     1217
+#define IDC_EDITEXPLANATION             1218
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -361,7 +362,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        234
 #define _APS_NEXT_COMMAND_VALUE         32861
-#define _APS_NEXT_CONTROL_VALUE         1218
+#define _APS_NEXT_CONTROL_VALUE         1219
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

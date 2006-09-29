@@ -58,34 +58,4 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay message handlers
 
-BOOL COptionsDisplay::OnInitDialog() 
-{
-	CPropertyPage::OnInitDialog();
-	
-	CButton *pBCollapsed = (CButton *)GetDlgItem(IDC_TREE_DISPLAY_COLLAPSED);
-	CButton *pBExpanded = (CButton *)GetDlgItem(IDC_TREE_DISPLAY_EXPANDED);
-	CButton *pBAsPerLastSave = (CButton *)GetDlgItem(IDC_TREE_DISPLAY_LASTSAVE);
 
-	switch (m_treedisplaystatusatopen) {
-		case PWSprefs::AllCollapsed:
-			pBCollapsed->SetCheck(1);
-			pBExpanded->SetCheck(0);
-			pBAsPerLastSave->SetCheck(0);
-			break;
-		case PWSprefs::AllExpanded:
-			pBCollapsed->SetCheck(0);
-			pBExpanded->SetCheck(1);
-			pBAsPerLastSave->SetCheck(0);
-			break;
-	case PWSprefs::AsPerLastSave:
-			pBCollapsed->SetCheck(0);
-			pBExpanded->SetCheck(0);
-			pBAsPerLastSave->SetCheck(1);
-			break;
-	default:
-		ASSERT(0);
-	}
-
-  return TRUE;  // return TRUE unless you set the focus to a control
-  // EXCEPTION: OCX Property Pages should return FALSE
-}
