@@ -23,9 +23,7 @@ public:
 	enum { IDD = IDD_PS_PASSWORDHISTORY };
 	BOOL	m_savepwhistory;
 	UINT	m_pwhistorynumdefault;
-	BOOL    m_resetpwhistoryoff;
-	BOOL    m_resetpwhistoryon;
-	BOOL    m_setmaxpwhistory;
+	int     m_pwhaction;
 	//}}AFX_DATA
 
 // Overrides
@@ -42,10 +40,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg BOOL OnKillActive();
 	afx_msg void OnSavePWHistory();
-	afx_msg void OnResetPWHistoryOff();
-	afx_msg void OnResetPWHistoryOn();
-	afx_msg void OnSetMaxPWHistory();
-	afx_msg void OnBnClickedApplyPWHChanges();
+	afx_msg void OnApplyPWHChanges();
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
@@ -56,6 +51,8 @@ protected:
 
 private:
 	CToolTipCtrl* m_ToolTipCtrl;
+	afx_msg void OnPWHistoryNoAction();
+	afx_msg void OnPWHistoryDoAction();
 };
 
 //{{AFX_INSERT_LOCATION}}

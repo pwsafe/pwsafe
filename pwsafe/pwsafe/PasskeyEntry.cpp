@@ -181,11 +181,14 @@ CPasskeyEntry::OnInitDialog(void)
   SetIcon(m_hIcon, FALSE); // Set small icon
 
   if (app.WasHotKeyPressed()) {
+	  // Reset it
+	  app.SetHotKeyPressed(false);
+
 	  // Need to get it to the top as a result of a hotkey.
 	  // This is "stronger" than BringWindowToTop().
 	  SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-	  // Reset it
-	  app.SetHotKeyPressed(false);
+	  SetActiveWindow();
+	  SetForegroundWindow();
   }
 
   if (m_ctlPasskey.IsWindowEnabled() == TRUE) {

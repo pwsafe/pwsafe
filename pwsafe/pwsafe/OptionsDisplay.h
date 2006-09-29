@@ -40,7 +40,6 @@ public:
 protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsDisplay)
-	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
