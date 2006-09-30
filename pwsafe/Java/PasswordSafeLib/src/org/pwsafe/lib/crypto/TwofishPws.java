@@ -26,15 +26,22 @@ import org.pwsafe.lib.Util;
  * @author Glen Smith
  */
 public class TwofishPws {
-    
 	
-	public static byte[] processCBC(byte[] key, boolean forEncryption, byte[] IV, byte[] input) {
+	CBCBlockCipher cipher;
+    
+	public TwofishPws(byte[] key, boolean forEncryption, byte[] IV) {
 		
 		TwofishEngine tfe = new TwofishEngine();
-    	CBCBlockCipher cipher = new CBCBlockCipher(tfe);
+    	cipher = new CBCBlockCipher(tfe);
     	KeyParameter kp = new KeyParameter(key);
     	ParametersWithIV piv = new ParametersWithIV(kp, IV);
     	cipher.init(forEncryption, piv);
+		
+	}
+	
+	public byte[] processCBC(byte[] input) {
+		
+		
     	byte[]  out = new byte[input.length];
 
         int len1 = cipher.processBlock(input, 0, out, 0);
