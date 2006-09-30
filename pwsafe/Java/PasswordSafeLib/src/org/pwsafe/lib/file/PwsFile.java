@@ -489,7 +489,7 @@ public abstract class PwsFile
 	{
 		byte []	block;
 
-		block = new byte[ BLOCK_LENGTH ];
+		block = new byte[ getBlockSize() ];
 		readDecryptedBytes( block );
 		
 		return block;

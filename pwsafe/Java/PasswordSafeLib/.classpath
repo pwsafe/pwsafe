@@ -7,6 +7,6 @@
 	<classpathentry kind="lib" path="/PasswordSafeSWT/lib/blowfishj-2.14.jar"/>
 	<classpathentry kind="lib" path="/PasswordSafeSWT/lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="/PasswordSafeSWT/lib/bcprov-jdk14-133.jar"/>
-	<classpathentry kind="lib" path="C:/java_apps/grails-0.2/lib/junit.jar"/>
+	<classpathentry kind="var" path="JUNIT_HOME/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
