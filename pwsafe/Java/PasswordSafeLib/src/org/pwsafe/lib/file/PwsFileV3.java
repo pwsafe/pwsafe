@@ -8,7 +8,9 @@ package org.pwsafe.lib.file;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.pwsafe.lib.I18nHelper;
 import org.pwsafe.lib.Log;
@@ -48,6 +50,7 @@ public class PwsFileV3 extends PwsFile
 	
 //	protected Cipher fieldCrypto;
 //	protected Cipher fieldDecrypto;
+	TwofishPws twofishCbc;
 	
 	/**
 	 * Constructs and initialises a new, empty version 3 PasswordSafe database in memory.
@@ -120,12 +123,114 @@ public class PwsFileV3 extends PwsFile
 			e.printStackTrace();
 			throw new IOException("Error reading encrypted fields");
 		}
+		twofishCbc = new TwofishPws(decryptedRecordKey, false, headerV3.getIV());
 		
 		readExtraHeader( this );
 
 		LOG.leaveMethod( "PwsFileV3.init" );
 	}
 	
+	
+	/**
+	 * Writes this file back to the filesystem.  If successful the modified flag is also 
+	 * reset on the file and all records.
+	 * 
+	 * @throws IOException if the attempt fails.
+	 */
+	public void save()
+	throws IOException
+	{
+		PwsRecord	rec;
+		File		tempFile;
+		File		oldFile;
+		File		bakFile;
+
+		// For safety we'll write to a temporary file which will be renamed to the
+		// real name if we manage to write it successfully.
+
+		tempFile	= File.createTempFile( "pwsafe", null, new File(FilePath) );
+		OutStream	= new FileOutputStream( tempFile );
+
+		try
+		{
+			headerV3.save( this );
+
+			// Can only be created once the V1 header's been written.
+
+			twofishCbc = new TwofishPws(decryptedRecordKey, false, headerV3.getIV());
+
+
+			writeExtraHeader( this );
+
+			for ( Iterator iter = getRecords(); iter.hasNext(); )
+			{
+				rec = (PwsRecord) iter.next();
+	
+				rec.saveRecord( this );
+			}
+	
+			OutStream.close();
+	
+			oldFile		= new File( FilePath, FileName );
+			bakFile		= new File( FilePath, FileName + "~" );
+
+			if ( bakFile.exists() )
+			{	
+				if ( !bakFile.delete() )
+				{
+					LOG.error( I18nHelper.getInstance().formatMessage("E00012", new Object [] { bakFile.getCanonicalPath() } ) );
+					// TODO Throw an exception here
+					return;
+				}
+			}
+
+			if ( oldFile.exists() )
+			{
+				if ( !oldFile.renameTo( bakFile ) )
+				{
+					LOG.error( I18nHelper.getInstance().formatMessage("E00011", new Object [] { tempFile.getCanonicalPath() } ) );
+					// TODO Throw an exception here?
+					return;
+				}
+				LOG.debug1( "Old file successfully renamed to " + bakFile.getCanonicalPath() );
+			}
+
+			if ( tempFile.renameTo( oldFile ) )
+			{
+				LOG.debug1( "Temp file successfully renamed to " + oldFile.getCanonicalPath() );
+
+				for ( Iterator iter = getRecords(); iter.hasNext(); )
+				{
+					rec = (PwsRecord) iter.next();
+
+					rec.resetModified();
+				}
+				Modified = false;
+			}
+			else
+			{
+				LOG.error( I18nHelper.getInstance().formatMessage("E00010", new Object [] { tempFile.getCanonicalPath() } ) );
+				// TODO Throw an exception here?
+				return;
+			}
+		}
+		catch ( IOException e )
+		{
+			try
+			{
+				OutStream.close();
+			}
+			catch ( Exception e2 )
+			{
+				// do nothing we're going to throw the original exception
+			}
+			throw e;
+		}
+		finally
+		{
+			OutStream	= null;
+		}
+	}
 	
 
 	/**
@@ -220,7 +325,7 @@ public class PwsFileV3 extends PwsFile
 		readBytes( buff );
 		byte[] decrypted;
 		try {
-			decrypted = TwofishPws.processCBC(decryptedRecordKey, false, headerV3.getIV(), buff);
+			decrypted = twofishCbc.processCBC(buff);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IOException("Error decrypting field");
@@ -246,7 +351,7 @@ public class PwsFileV3 extends PwsFile
 		
 		byte [] temp = Util.cloneByteArray( buff );
 		try {
-			temp = TwofishPws.processCBC(decryptedRecordKey, true, headerV3.getIV(), buff);
+			temp = twofishCbc.processCBC(buff);
 		} catch(Exception e) {
 			throw new IOException("Error writing encrypted field");
 		}

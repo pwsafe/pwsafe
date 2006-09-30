@@ -99,6 +99,8 @@ public class PwsRecordV3 extends PwsRecord
 	 */
 	public static final int		AUTOTYPE	= 14;
 	
+	public static final int     TYPE15_MANNA = 15;
+	
 	/**
 	 * Constant for the end of record marker field.
 	 */
@@ -124,6 +126,7 @@ public class PwsRecordV3 extends PwsRecord
 		new Object [] { new Integer(LAST_MOD_TIME),		"LAST_MOD_TIME",		PwsTimeField.class },
 		new Object [] { new Integer(URL),				"URL",					PwsStringField.class },
 		new Object [] { new Integer(AUTOTYPE),			"AUTOTYPE",				PwsStringField.class },
+		new Object [] { new Integer(TYPE15_MANNA),		"WHATISIT",				PwsStringField.class },
 	};
 
 	/**
@@ -228,13 +231,18 @@ public class PwsRecordV3 extends PwsRecord
 	 */
 	protected boolean isValid()
 	{
-		if ( ((PwsStringField) getField( TITLE )).equals(PwsFileV2.ID_STRING) )
-		{
-			LOG.debug1( "Ignoring record " + this.toString() );
-			return false;
-		}
+		//TODO Ignore those records we read from the header....
+		
+//		if ( ((PwsStringField) getField( TITLE )).equals(PwsFileV2.ID_STRING) )
+//		{
+//			LOG.debug1( "Ignoring record " + this.toString() );
+//			return false;
+//		}
 		return true;
 	}
+	
+	private static byte[] EOF_BYTES = { 82, 1, 9, -3, 104, -67, -8, 126, -17, -111, 78, -31, 89, -36, -110, 101 };
+		//TODO: should do something like Util.signedToUnsigned("PWS3-EOFPWS3-EOF".getBytes());
 	
 	protected class ItemV3 extends Item {
 		public ItemV3( PwsFile file )
@@ -242,6 +250,9 @@ public class PwsRecordV3 extends PwsRecord
 		{
 			super();
 			RawData = file.readBlock();
+			if (Util.bytesAreEqual(EOF_BYTES, RawData)) {
+				throw new EndOfFileException();
+			}
 			Length	= Util.getIntFromByteArray( RawData, 0 );
 			//Type	= Util.getIntFromByteArray( RawData, 4 );
 			Type = RawData[4] & 0x000000ff; // rest of header is now random data
@@ -318,6 +329,9 @@ public class PwsRecordV3 extends PwsRecord
 					break;
 
 				case PASSWORD_POLICY :
+					break;
+				
+				case TYPE15_MANNA : 
 					break;
 				
 				default :

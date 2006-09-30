@@ -147,12 +147,12 @@ public abstract class PwsFile
 	/** 
 	 * The fully qualified path to the file.
 	 */
-	private String			FilePath		= null;
+	protected String			FilePath		= null;
 
 	/**
 	 * The file name.
 	 */
-	private String			FileName		= null;
+	protected String			FileName		= null;
 
 	/**
 	 * The passphrase for the file.
@@ -169,7 +169,7 @@ public abstract class PwsFile
 	 * The stream used to write data to the file.  It is non-null only whilst data are
 	 * being written to the file. 
 	 */
-	private OutputStream	OutStream		= null;
+	protected OutputStream	OutStream		= null;
 
 	/**
 	 * The file's standard header.
@@ -185,13 +185,13 @@ public abstract class PwsFile
 	/**
 	 * The records that are part of the file.
 	 */
-	private ArrayList		RecordSet		= new ArrayList();
+	protected ArrayList		RecordSet		= new ArrayList();
 
 	/**
 	 * Flag indicating whether (<code>true</code>) or not (<code>false</code>) the file
 	 * has been modified in memory and not yet written back to the filesystem.
 	 */
-	private boolean			Modified		= false;
+	protected boolean			Modified		= false;
 
 	
 	/**
@@ -580,6 +580,7 @@ public abstract class PwsFile
 		if ( rec.isValid() )
 		{	
 			RecordSet.add( rec );
+			System.err.println (rec.toString());
 		}
 
 		return rec;
