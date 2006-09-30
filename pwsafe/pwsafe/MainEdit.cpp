@@ -359,6 +359,7 @@ DboxMain::OnDuplicateEntry()
       
     // Set up new entry
     CItemData ci2;
+    ci2.CreateUUID();
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);
     ci2.SetUser(ci2_user);
