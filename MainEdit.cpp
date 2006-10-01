@@ -171,10 +171,14 @@ DboxMain::OnDelete()
     }
   }
   
-  if (!dodelete) {
-    return;
+  if (dodelete) {
+    Delete();
   }
+}
 
+void
+DboxMain::Delete(bool inRecursion) 
+{
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
@@ -202,10 +206,12 @@ DboxMain::OnDelete()
       }
       m_ctlItemList.SetFocus();
     } else {// tree view visible
-      if (nextTree_item != NULL)
-        m_ctlItemTree.SelectItem(nextTree_item);
-      else
-        SelectEntry(0);
+      if (!inRecursion) { // otherwise extra selection
+        if (nextTree_item != NULL)
+          m_ctlItemTree.SelectItem(nextTree_item);
+        else
+          SelectEntry(0);
+      }
       m_ctlItemTree.SetFocus();
     }
     ChangeOkUpdate();
@@ -216,20 +222,12 @@ DboxMain::OnDelete()
       if (ti != NULL) {
         if (!m_ctlItemTree.IsLeafNode(ti)) {
           HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
-          const bool orig_dont_ask = dontaskquestion;
-          // don't question user for each leaf!
-          PWSprefs::GetInstance()->
-            SetPref(PWSprefs::DeleteQuestion, true);
 
           while (cti != NULL) {
             m_ctlItemTree.SelectItem(cti);
-            OnDelete(); // recursion - I'm so lazy!
+            Delete(true); // recursion - I'm so lazy!
             cti = m_ctlItemTree.GetChildItem(ti);
           }
-
-          // restore original preference after recursion
-          PWSprefs::GetInstance()->
-            SetPref(PWSprefs::DeleteQuestion, orig_dont_ask);
 
           //  delete an empty group.
           HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            

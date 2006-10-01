@@ -214,6 +214,7 @@ protected:
   int New(void);
   int Restore(void);
 
+  void Delete(bool inRecursion = false);
   void AutoType(const CItemData &ci);
 
 #if !defined(POCKET_PC)
