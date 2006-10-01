@@ -838,6 +838,15 @@ CItemData::Clear()
   SetPWHistory(_T(""));
 }
 
+void
+CItemData::Validate()
+{
+  // currently only ensure that item has a uuid, creating one
+  // if missing.
+  if (m_UUID.IsEmpty())
+    CreateUUID();
+}
+
   //TODO: "General System Fault. Please sacrifice a goat 
   //and two chickens to continue."
 
