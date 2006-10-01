@@ -293,45 +293,45 @@ void PWSprefs::Load(const CMyString &prefString)
   // parse prefString, updating current values
   istrstream is(prefString);
   char type;
-  int index;
+  int index, ival;
+  unsigned int iuval;
+  CMyString msval;
+
+  const int N = prefString.GetLength(); // safe upper limit on string size
+  char *buf = new char[N];
 
   while (is) {
     is >> type >> index;
     switch (type) {
     case 'B':
-      if (index >= NumBoolPrefs) {
-	continue; // forward compatibility
-      } else {
-	int val;
-	is >> val;
-	ASSERT(val == 0 || val == 1);
-	m_boolValues[index] = (val != 0);
-      }
-      break;
+		// Need to get value - even of not understood or wanted
+		is >> ival;
+		// forward compatibility and check whether still in DB
+		if (index < NumBoolPrefs && m_bool_prefs[index].isPersistent) {
+			ASSERT(ival == 0 || ival == 1);
+			m_boolValues[index] = (ival != 0);
+		}
+		break;
     case 'I':
-      if (index >= NumIntPrefs) {
-	continue; // forward compatibility
-      } else {
-	unsigned int val;
-	is >> val;
-	m_intValues[index] = val;
-      }
-      break;
+		// Need to get value - even of not understood or wanted
+		is >> iuval;
+		// forward compatibility and check whether still in DB
+		if (index < NumIntPrefs && m_int_prefs[index].isPersistent)
+			m_intValues[index] = iuval;
+		break;
     case 'S':
-      if (index >= NumStringPrefs) {
-	continue; // forward compatibility
-      } else {
-	const int N = prefString.GetLength(); // safe upper limit on string size
-	char *buf = new char[N];
-	is.ignore(2, '\"'); // skip over space and leading "
-	is.get(buf, N, '\"'); // get string value
-	CMyString val(buf);
-	m_stringValues[index] = val;
-	delete[] buf;
-      }
-      break;
+		// Need to get value - even of not understood or wanted
+		is.ignore(2, '\"'); // skip over space and leading "
+		is.get(buf, N, '\"'); // get string value
+		// forward compatibility and check whether still in DB
+		if (index < NumStringPrefs && m_string_prefs[index].isPersistent) {
+			msval= buf;
+			m_stringValues[index] = msval;
+		}
+		break;
     default:
       continue; // forward compatibility (also last space)
     } // switch
   } // while
+  delete[] buf;
 }
