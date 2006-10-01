@@ -368,7 +368,11 @@ int PWSfileV3::ReadRecord(CItemData &item)
       } // switch
     } // if (fieldLen > 0)
   } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-  return (numread > 0) ? SUCCESS : END_OF_FILE;
+  if (numread > 0) {
+    item.Validate();
+    return SUCCESS;
+  } else
+    return END_OF_FILE;
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,

@@ -140,6 +140,7 @@ public:
   void *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(void *di) {m_display_info = di;}
   void Clear();
+  void Validate(); // check record for mandatory fields, silently fix if missing
 private:
   CItemField m_Name;
   CItemField m_Title;

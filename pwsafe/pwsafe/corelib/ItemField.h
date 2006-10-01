@@ -31,6 +31,7 @@ public:
   void Get(CMyString &value, BlowFish *bf) const;
   void Get(unsigned char *value, unsigned int &length, BlowFish *bf) const;
   unsigned char GetType() const {return m_Type;}
+  bool IsEmpty() {return m_Length == 0;}
 
 private:
   //Actual encryption/decryption
