@@ -99,7 +99,10 @@ public class PwsRecordV3 extends PwsRecord
 	 */
 	public static final int		AUTOTYPE	= 14;
 	
-	public static final int     TYPE15_MANNA = 15;
+	/**
+	 * History of recently used passwords.
+	 */
+	public static final int     PASSWORD_HISTORY = 15;
 	
 	/**
 	 * Constant for the end of record marker field.
@@ -126,7 +129,7 @@ public class PwsRecordV3 extends PwsRecord
 		new Object [] { new Integer(LAST_MOD_TIME),		"LAST_MOD_TIME",		PwsTimeField.class },
 		new Object [] { new Integer(URL),				"URL",					PwsStringField.class },
 		new Object [] { new Integer(AUTOTYPE),			"AUTOTYPE",				PwsStringField.class },
-		new Object [] { new Integer(TYPE15_MANNA),		"WHATISIT",				PwsStringField.class },
+		new Object [] { new Integer(PASSWORD_HISTORY),	"PASSWORD_HISTORY",		PwsStringField.class },
 	};
 
 	/**
@@ -251,6 +254,10 @@ public class PwsRecordV3 extends PwsRecord
 			super();
 			RawData = file.readBlock();
 			if (Util.bytesAreEqual(EOF_BYTES, RawData)) {
+				Data = new byte[8]; // to hold closing HMAC
+				file.readBytes(Data);
+				//TODO Check hash here
+				
 				throw new EndOfFileException();
 			}
 			Length	= Util.getIntFromByteArray( RawData, 0 );
@@ -331,7 +338,7 @@ public class PwsRecordV3 extends PwsRecord
 				case PASSWORD_POLICY :
 					break;
 				
-				case TYPE15_MANNA : 
+				case PASSWORD_HISTORY : 
 					break;
 				
 				default :
