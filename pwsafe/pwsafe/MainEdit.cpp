@@ -172,10 +172,13 @@ DboxMain::OnDelete()
   }
   
   if (dodelete) {
-    m_ctlItemTree.SetRedraw( FALSE );
+    if (m_ctlItemTree.IsWindowVisible())
+      m_ctlItemTree.SetRedraw( FALSE );
 	Delete();
-	m_ctlItemTree.SetRedraw( TRUE );
-	m_ctlItemTree.Invalidate();
+    if (m_ctlItemTree.IsWindowVisible()) {
+      m_ctlItemTree.SetRedraw( TRUE );
+      m_ctlItemTree.Invalidate();
+    }
   }
 }
 
