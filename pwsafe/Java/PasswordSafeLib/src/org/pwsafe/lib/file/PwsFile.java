@@ -580,7 +580,6 @@ public abstract class PwsFile
 		if ( rec.isValid() )
 		{	
 			RecordSet.add( rec );
-			System.err.println (rec.toString());
 		}
 
 		return rec;

@@ -256,18 +256,19 @@ public class PwsRecordV3 extends PwsRecord
 			super();
 			RawData = file.readBlock();
 			if (Util.bytesAreEqual(EOF_BYTES, RawData)) {
-				Data = new byte[8]; // to hold closing HMAC
+				Data = new byte[32]; // to hold closing HMAC
 				file.readBytes(Data);
-				//TODO Check hash here
 				byte[] hash = file.hasher.doFinal();
-				System.out.println("Hash from file is: " + Util.bytesToHex(Data) + " [" + Data.length + "] bytes");
-				System.out.println("Hash calculate is: " + Util.bytesToHex(hash) + " [" + hash.length + "] bytes");
-				System.out.flush();
+				//System.out.println("Hash from file is: " + Util.bytesToHex(Data) + " [" + Data.length + "] bytes");
+				//System.out.println("Hash calculate is: " + Util.bytesToHex(hash) + " [" + hash.length + "] bytes");
+				if (!Util.bytesAreEqual(Data, hash)) {
+					throw new IOException("HMAC record did not match. File has been tampered");
+				}
 				throw new EndOfFileException();
 			}
 			Length	= Util.getIntFromByteArray( RawData, 0 );
 			Type = RawData[4] & 0x000000ff; // rest of header is now random data
-			System.err.println("Data size is " + Length + " and type is " + Type);
+			//System.err.println("Data size is " + Length + " and type is " + Type);
 			Data    = new byte[Length];
 			byte[] remainingDataInRecord = Util.getBytes(RawData, 5, 11);
 			if (Length < 11) {
@@ -280,7 +281,7 @@ public class PwsRecordV3 extends PwsRecord
 				remainingRecords = Util.getBytes(remainingRecords, 0, bytesToRead);
 				Data = Util.mergeBytes(remainingDataInRecord, remainingRecords);
 			}
-			byte[] dataToHash = Util.mergeBytes(Util.getBytes(RawData, 0, 4), Data);
+			byte[] dataToHash = Data;
 			file.hasher.digest(dataToHash);
 		
 		}
