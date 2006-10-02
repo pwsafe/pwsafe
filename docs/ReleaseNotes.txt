@@ -51,6 +51,7 @@ Bugs fixed in 3.03
 [1527144] No more multiple combination dialogs when restoring window
 from system tray
 [1561335, 1373138, 1182406] HotKey now works with SystemTray icon
+[1527138] Select after deletion no longer surprises
 
 New Features for 3.02
 =====================
