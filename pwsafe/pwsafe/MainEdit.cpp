@@ -195,7 +195,7 @@ DboxMain::Delete(bool inRecursion)
     POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 
     m_ctlItemList.DeleteItem(curSel);
-    m_ctlItemTree.DeleteWithParents(di->tree_item);
+    m_ctlItemTree.DeleteWithParents(curTree_item);
     delete di;
     m_core.RemoveEntryAt(listindex);
     FixListIndexes();
@@ -206,11 +206,8 @@ DboxMain::Delete(bool inRecursion)
       }
       m_ctlItemList.SetFocus();
     } else {// tree view visible
-      if (!inRecursion) { // otherwise extra selection
-        if (nextTree_item != NULL)
-          m_ctlItemTree.SelectItem(nextTree_item);
-        else
-          SelectEntry(0);
+      if (!inRecursion && nextTree_item != NULL) {
+        m_ctlItemTree.SelectItem(nextTree_item);
       }
       m_ctlItemTree.SetFocus();
     }
