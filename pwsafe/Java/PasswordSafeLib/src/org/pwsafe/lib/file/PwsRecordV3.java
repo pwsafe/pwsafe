@@ -12,6 +12,7 @@ import java.util.Iterator;
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.UUID;
 import org.pwsafe.lib.Util;
+import org.pwsafe.lib.crypto.HmacPws;
 import org.pwsafe.lib.exception.EndOfFileException;
 import org.pwsafe.lib.exception.UnimplementedConversionException;
 
@@ -131,6 +132,7 @@ public class PwsRecordV3 extends PwsRecord
 		new Object [] { new Integer(AUTOTYPE),			"AUTOTYPE",				PwsStringField.class },
 		new Object [] { new Integer(PASSWORD_HISTORY),	"PASSWORD_HISTORY",		PwsStringField.class },
 	};
+	
 
 	/**
 	 * Create a new record with all mandatory fields given their default value.
@@ -248,7 +250,7 @@ public class PwsRecordV3 extends PwsRecord
 		//TODO: should do something like Util.signedToUnsigned("PWS3-EOFPWS3-EOF".getBytes());
 	
 	protected class ItemV3 extends Item {
-		public ItemV3( PwsFile file )
+		public ItemV3( PwsFileV3 file )
 		throws EndOfFileException, IOException
 		{
 			super();
@@ -257,11 +259,13 @@ public class PwsRecordV3 extends PwsRecord
 				Data = new byte[8]; // to hold closing HMAC
 				file.readBytes(Data);
 				//TODO Check hash here
-				
+				byte[] hash = file.hasher.doFinal();
+				System.out.println("Hash from file is: " + Util.bytesToHex(Data) + " [" + Data.length + "] bytes");
+				System.out.println("Hash calculate is: " + Util.bytesToHex(hash) + " [" + hash.length + "] bytes");
+				System.out.flush();
 				throw new EndOfFileException();
 			}
 			Length	= Util.getIntFromByteArray( RawData, 0 );
-			//Type	= Util.getIntFromByteArray( RawData, 4 );
 			Type = RawData[4] & 0x000000ff; // rest of header is now random data
 			System.err.println("Data size is " + Length + " and type is " + Type);
 			Data    = new byte[Length];
@@ -276,7 +280,8 @@ public class PwsRecordV3 extends PwsRecord
 				remainingRecords = Util.getBytes(remainingRecords, 0, bytesToRead);
 				Data = Util.mergeBytes(remainingDataInRecord, remainingRecords);
 			}
-			//Data	= PwsFile.allocateBuffer( Length, file.getBlockSize() );
+			byte[] dataToHash = Util.mergeBytes(Util.getBytes(RawData, 0, 4), Data);
+			file.hasher.digest(dataToHash);
 		
 		}
 	}
@@ -297,7 +302,7 @@ public class PwsRecordV3 extends PwsRecord
 		
 		for ( ;; )
 		{
-			item = new ItemV3( file );
+			item = new ItemV3( (PwsFileV3)file );
 
 			if ( item.getType() == END_OF_RECORD )
 			{

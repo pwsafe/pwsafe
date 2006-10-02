@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.pwsafe.lib.I18nHelper;
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
+import org.pwsafe.lib.crypto.HmacPws;
 import org.pwsafe.lib.crypto.SHA256Pws;
 import org.pwsafe.lib.crypto.TwofishPws;
 import org.pwsafe.lib.exception.EndOfFileException;
@@ -51,6 +52,7 @@ public class PwsFileV3 extends PwsFile
 //	protected Cipher fieldCrypto;
 //	protected Cipher fieldDecrypto;
 	TwofishPws twofishCbc;
+	HmacPws hasher;
 	
 	/**
 	 * Constructs and initialises a new, empty version 3 PasswordSafe database in memory.
@@ -118,6 +120,7 @@ public class PwsFileV3 extends PwsFile
 			byte[] hka = TwofishPws.processECB(stretchedPassword, false, headerV3.getB3());
 			byte[] hkb = TwofishPws.processECB(stretchedPassword, false, headerV3.getB4());
 			decryptedHmacKey = Util.mergeBytes(hka, hkb);
+			hasher = new HmacPws(decryptedHmacKey);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

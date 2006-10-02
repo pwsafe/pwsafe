@@ -16,17 +16,34 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  */
 public class HmacPws {
 
-    private static Provider provider = new BouncyCastleProvider();
+	private static Provider provider = new BouncyCastleProvider();
 
-    public static byte[] digest(byte[] key, byte[] incoming) {
-        try {
-            KeySpec ks = new SecretKeySpec(key, "HMACSHA256");
-            Mac mac = Mac.getInstance("HMACSHA256", provider);
-            mac.init((Key) ks);
-            return mac.doFinal(incoming);
+	private Mac mac;
+
+	public HmacPws(byte[] key) {
+		KeySpec ks = new SecretKeySpec(key, "HMACSHA256");
+		try {
+			mac = Mac.getInstance("HMACSHA256", provider);
+			mac.init((Key) ks);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void digest(byte[] incoming) {
+        try {         
+            mac.update(incoming);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+	public byte[] doFinal() {
+		try {
+			return mac.doFinal();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }

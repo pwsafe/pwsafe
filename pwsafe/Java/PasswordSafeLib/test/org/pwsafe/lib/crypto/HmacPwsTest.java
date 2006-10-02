@@ -16,7 +16,9 @@ public class HmacPwsTest extends TestCase {
         
         String key = "Jefe";
         String data = "what do ya want for nothing?";
-        byte[] hmac = HmacPws.digest(key.getBytes(), data.getBytes());
+        HmacPws hash = new HmacPws(key.getBytes());
+        hash.digest(data.getBytes());
+        byte[] hmac = hash.doFinal();
         
         String result = Util.bytesToHex(hmac);
         assertEquals("5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843", result);
