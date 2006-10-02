@@ -933,7 +933,9 @@ DboxMain::Merge(const CMyString &pszFilename) {
       return PWScore::ALREADY_OPEN;
 	}
 
-  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(pszFilename, passkey,
+                           GCP_NORMAL, // OK, CANCEL, HELP
+                           true);  // force readonly
   switch (rc)
 	{
 	case PWScore::SUCCESS:
