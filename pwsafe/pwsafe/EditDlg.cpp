@@ -18,7 +18,8 @@
 #include "ControlExtns.h"
 
 #if defined(POCKET_PC)
-  #include "pocketpc/PocketPC.h"
+#include "pocketpc/PocketPC.h"
+#include "editdlg.h"
 #endif
 
 #ifdef _DEBUG
@@ -28,18 +29,15 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #if defined(POCKET_PC)
-  #define SHOW_PASSWORD_TXT	_T("S/P")
-  #define HIDE_PASSWORD_TXT	_T("H/P")
-  #define SHOW_NOTES_TXT	_T("S/N")
-  #define HIDE_NOTES_TXT	_T("H/N")
+  #define SHOW_PASSWORD_TXT	_T("S")
+  #define HIDE_PASSWORD_TXT	_T("H")
 #else
-  #define SHOW_PASSWORD_TXT	_T("&Show Pswd")
-  #define HIDE_PASSWORD_TXT	_T("&Hide Pswd")
-  #define SHOW_NOTES_TXT	_T("Show &Notes")
-  #define HIDE_NOTES_TXT	_T("Hide &Notes")
+  #define SHOW_PASSWORD_TXT	_T("&Show")
+  #define HIDE_PASSWORD_TXT	_T("&Hide")
 #endif
 
 static TCHAR PSSWDCHAR = TCHAR('*');
+const TCHAR *HIDDEN_NOTES = _T("[Notes hidden - click here to display]");
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
@@ -61,7 +59,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_realpassword = m_oldRealPassword = ci->GetPassword();
   m_URL = ci->GetURL();
   m_autotype = ci->GetAutoType();
-  m_notes = HIDDEN_PASSWORD;
+  m_notes = HIDDEN_NOTES;
   m_realnotes = ci->GetNotes();
   m_PWHistory = ci->GetPWHistory();
   m_ascCTime = ci->GetCTime();
@@ -110,7 +108,6 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 	ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
-	ON_BN_CLICKED(IDC_SHOWNOTES, OnShowNotes)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
 	ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 #if defined(POCKET_PC)
@@ -123,6 +120,8 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 	ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
 	ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
 	ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
+    ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
+    ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -134,19 +133,6 @@ void CEditDlg::OnShowPassword()
   } else {
   	m_realpassword = m_password; // save new password
     HidePassword();
-  }
-  UpdateData(FALSE);
-}
-
-void CEditDlg::OnShowNotes() 
-{
-  UpdateData(TRUE);
-
-  if (m_isNotesHidden) {
-    ShowNotes();
-  } else {
-  	m_realnotes = m_notes; // save new notes
-    HideNotes();
   }
   UpdateData(FALSE);
 }
@@ -387,7 +373,6 @@ void CEditDlg::HidePassword()
 void CEditDlg::ShowNotes()
 {
   m_isNotesHidden = false;
-  GetDlgItem(IDC_SHOWNOTES)->SetWindowText(HIDE_NOTES_TXT);
 
   m_notes = m_realnotes;
 
@@ -398,12 +383,8 @@ void CEditDlg::ShowNotes()
 void CEditDlg::HideNotes()
 {
   m_isNotesHidden = true;
-  GetDlgItem(IDC_SHOWNOTES)->SetWindowText(SHOW_NOTES_TXT);
-
-  m_notes = HIDDEN_PASSWORD;
-
+  m_notes = HIDDEN_NOTES;
   ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
-  GetDlgItem(IDC_NOTES)->EnableWindow(FALSE);
 }
 
 void CEditDlg::OnRandom() 
@@ -571,4 +552,24 @@ void CEditDlg::OnBnClickedPwhist()
     buffer = _T("n/a");
 
   GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
+}
+
+void CEditDlg::OnEnSetfocusNotes()
+{
+  UpdateData(TRUE);
+  if (m_isNotesHidden) {
+    ShowNotes();
+  }
+  UpdateData(FALSE);
+}
+
+void CEditDlg::OnEnKillfocusNotes()
+{
+  UpdateData(TRUE);
+  if (!m_isNotesHidden &&
+      !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
+    m_realnotes = m_notes;
+    HideNotes();
+  }
+  UpdateData(FALSE);
 }
