@@ -68,7 +68,6 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
   afx_msg void OnShowPassword();
-  afx_msg void OnShowNotes();
   virtual void OnOK();
   virtual BOOL OnInitDialog();
   afx_msg void OnRandom();
@@ -87,6 +86,8 @@ public:
 
   CButton m_MoreLessBtn;
 
+  afx_msg void OnEnSetfocusNotes();
+  afx_msg void OnEnKillfocusNotes();
 };
 //-----------------------------------------------------------------------------
 // Local variables:
