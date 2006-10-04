@@ -8,8 +8,9 @@ package org.pwsafe.lib.file;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.pwsafe.lib.I18nHelper;
 import org.pwsafe.lib.Util;
@@ -49,7 +50,7 @@ public abstract class PwsRecord implements Comparable
 	private boolean		Modified		= false;
 	private PwsFile		OwningFile		= null;
 	private boolean		IsLoaded		= false;
-	private HashMap		Attributes		= new HashMap();
+	private Map		    Attributes		= new TreeMap();
 	private Object		ValidTypes []	= null;
 
 	/**

@@ -114,7 +114,7 @@ public class PwsRecordV3 extends PwsRecord
 	 */
 	private static final Object []	VALID_TYPES	= new Object []
 	{
-		new Object [] { new Integer(V3_ID_STRING),		"V3_ID_STRING",			PwsIntegerField.class },
+		new Object [] { new Integer(V3_ID_STRING),		"V3_ID_STRING",			PwsVersionField.class },
 		new Object [] { new Integer(UUID),				"UUID",					PwsUUIDField.class },
 		new Object [] { new Integer(GROUP),				"GROUP",				PwsStringField.class },
 		new Object [] { new Integer(TITLE),				"TITLE",				PwsStringField.class },
@@ -236,15 +236,16 @@ public class PwsRecordV3 extends PwsRecord
 	protected boolean isValid()
 	{
 		//TODO Ignore those records we read from the header....
+		PwsField idField = getField(V3_ID_STRING);
 		
-		if ( Util.bytesAreEqual(((PwsIntegerField) getField(V3_ID_STRING)).getBytes(), new byte[] { 3, 0, 0, 0 })) {
+		if ( idField != null ) {
 			LOG.debug1( "Ignoring record " + this.toString() );
 			return false;
 		}
 		return true;
 	}
 	
-	private static byte[] EOF_BYTES = { 82, 1, 9, -3, 104, -67, -8, 126, -17, -111, 78, -31, 89, -36, -110, 101 };
+	static byte[] EOF_BYTES = { 82, 1, 9, -3, 104, -67, -8, 126, -17, -111, 78, -31, 89, -36, -110, 101 };
 		//TODO: should do something like Util.signedToUnsigned("PWS3-EOFPWS3-EOF".getBytes());
 	
 	protected class ItemV3 extends Item {
@@ -311,7 +312,8 @@ public class PwsRecordV3 extends PwsRecord
 			switch ( item.getType() )
 			{
 				case V3_ID_STRING :
-					itemVal	= new PwsIntegerField( item.getType(), new byte[] {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} );
+					//itemVal	= new PwsIntegerField( item.getType(), new byte[] {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} );
+					itemVal	= new PwsVersionField( item.getType(), item.getByteData() );
 					break;
 					
 				case UUID :
@@ -383,6 +385,38 @@ public class PwsRecordV3 extends PwsRecord
 		}
 		writeField( file, new PwsStringField( END_OF_RECORD, "" ) );
 		LOG.debug2( "----- END OF RECORD -----" );
+	}
+	
+	/**
+	 * Writes a single field to the file.
+	 * 
+	 * @param file  the file to write the field to.
+	 * @param field the field to be written.
+	 * @param type  the type to write to the file instead of <code>field.getType()</code> 
+	 * 
+	 * @throws IOException
+	 */
+	protected void writeField( PwsFile file, PwsField field, int type )
+	throws IOException
+	{
+		byte	lenBlock[];
+		byte	dataBlock[];
+
+		lenBlock	= new byte[ 8 ];
+		dataBlock	= field.getBytes();
+		
+		Util.putIntToByteArray( lenBlock, dataBlock.length, 0 );
+		Util.putIntToByteArray( lenBlock, type, 4 );
+
+		// ensure encryption payload is equal blocks of 16
+		int bytesToPad = 16 - (lenBlock.length + dataBlock.length) % 16;
+		
+		// TODO put random bytes here
+		dataBlock	= Util.cloneByteArray( dataBlock, dataBlock.length + bytesToPad );
+
+		//file.writeBytes(lenBlock);
+		byte[] dataToWrite = Util.mergeBytes(lenBlock, dataBlock);
+		file.writeEncryptedBytes( dataToWrite );
 	}
 
 	/**

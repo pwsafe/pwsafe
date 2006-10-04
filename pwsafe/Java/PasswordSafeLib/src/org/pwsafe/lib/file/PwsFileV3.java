@@ -38,7 +38,7 @@ public class PwsFileV3 extends PwsFile
 	/**
 	 * The string that identifies a database as V2 rather than V1
 	 */
-	public static final String	ID_STRING	= " !!!Version 2 File Format!!! Please upgrade to PasswordSafe 2.0 or later";
+	public static final byte[]	ID_STRING	= "PWS3".getBytes();
 
 	/**
 	 * The file's standard header.
@@ -101,7 +101,7 @@ public class PwsFileV3 extends PwsFile
 		
 
 		InStream		= new FileInputStream( file );
-		headerV3			= new PwsFileHeaderV3( this );
+		headerV3		= new PwsFileHeaderV3( this );
 		
 		int iter = Util.getIntFromByteArray(headerV3.getIter(), 0);
 		LOG.debug1("Using iterations: [" + iter + "]");
@@ -170,6 +170,9 @@ public class PwsFileV3 extends PwsFile
 				rec.saveRecord( this );
 				//TODO work out a way to calculate record hash here?
 			}
+			
+			OutStream.write(PwsRecordV3.EOF_BYTES);
+			OutStream.write(hasher.doFinal());
 	
 			OutStream.close();
 	
@@ -351,7 +354,7 @@ public class PwsFileV3 extends PwsFile
 			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
 		}
 		
-		byte [] temp = Util.cloneByteArray( buff );
+		byte [] temp; // = Util.cloneByteArray( buff );
 		try {
 			temp = twofishCbc.processCBC(buff);
 		} catch(Exception e) {

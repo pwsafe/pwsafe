@@ -11,6 +11,7 @@ import java.io.IOException;
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
 import org.pwsafe.lib.crypto.HmacPws;
+import org.pwsafe.lib.crypto.SHA256Pws;
 import org.pwsafe.lib.crypto.TwofishPws;
 import org.pwsafe.lib.exception.EndOfFileException;
 
@@ -24,6 +25,7 @@ import org.pwsafe.lib.exception.EndOfFileException;
  * |      8 | tag       | PWS3 tag                                      |
  * |     32 | salt      | Salt                                          |
  * |      4 | iter      | number of iterations                          |
+ * |     32 | password  | Sha256 of stretched password                  |
  * |     16 | b1        | key material                                  |
  * |     16 | b2        | key material                                  |
  * |     16 | b3        | key material                                  |
@@ -55,7 +57,7 @@ public class PwsFileHeaderV3
 	 */
 	PwsFileHeaderV3()
 	{
-		tag = "PWS3".getBytes();
+		tag = PwsFileV3.ID_STRING;
 		for (int i=0; i<salt.length; i++) {
 			salt[i] = Util.newRand();
 		}
@@ -193,6 +195,7 @@ public class PwsFileHeaderV3
 		file.writeBytes( tag );
 		file.writeBytes( salt );
 		file.writeBytes( iter );
+		file.writeBytes( password );
 		file.writeBytes( b1 );
 		file.writeBytes( b2 );
 		file.writeBytes( b3 );
@@ -213,15 +216,37 @@ public class PwsFileHeaderV3
 		
 		byte[] stretchedPassword = PwsFileV3.stretchPassphrase(passphrase.getBytes(), salt, Util.getIntFromByteArray(iter, 0));
 		
-		b1 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
-		b2 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
-
-		file.decryptedRecordKey = Util.mergeBytes(b1, b2);
+		password = SHA256Pws.digest(stretchedPassword);
 		
-		b3 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
-		b4 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
+		byte[] b1pt = new byte[16];
+		for (int i=0; i<b1pt.length; i++) {
+			b1pt[i] = Util.newRand();
+		}
+		
+		byte[] b2pt = new byte[16];
+		for (int i=0; i<b2pt.length; i++) {
+			b2pt[i] = Util.newRand();
+		}
+			
+		b1 = TwofishPws.processECB(stretchedPassword, true, b1pt);
+		b2 = TwofishPws.processECB(stretchedPassword, true, b2pt);
 
-		file.decryptedHmacKey = Util.mergeBytes(b3, b4);
+		file.decryptedRecordKey = Util.mergeBytes(b1pt, b2pt);
+		
+		byte[] b3pt = new byte[16];
+		for (int i=0; i<b3pt.length; i++) {
+			b3pt[i] = Util.newRand();
+		}
+		
+		byte[] b4pt = new byte[16];
+		for (int i=0; i<b4pt.length; i++) {
+			b4pt[i] = Util.newRand();
+		}
+	
+		b3 = TwofishPws.processECB(stretchedPassword, true, b3pt);
+		b4 = TwofishPws.processECB(stretchedPassword, true, b4pt);
+
+		file.decryptedHmacKey = Util.mergeBytes(b3pt, b4pt);
 		file.hasher = new HmacPws(file.decryptedHmacKey);
 
 		LOG.leaveMethod( "PwsFileHeaderV3.update" );
