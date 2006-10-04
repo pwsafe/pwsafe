@@ -12,7 +12,6 @@ import java.util.Iterator;
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.UUID;
 import org.pwsafe.lib.Util;
-import org.pwsafe.lib.crypto.HmacPws;
 import org.pwsafe.lib.exception.EndOfFileException;
 import org.pwsafe.lib.exception.UnimplementedConversionException;
 
@@ -238,11 +237,10 @@ public class PwsRecordV3 extends PwsRecord
 	{
 		//TODO Ignore those records we read from the header....
 		
-//		if ( ((PwsStringField) getField( TITLE )).equals(PwsFileV2.ID_STRING) )
-//		{
-//			LOG.debug1( "Ignoring record " + this.toString() );
-//			return false;
-//		}
+		if ( Util.bytesAreEqual(((PwsIntegerField) getField(V3_ID_STRING)).getBytes(), new byte[] { 3, 0, 0, 0 })) {
+			LOG.debug1( "Ignoring record " + this.toString() );
+			return false;
+		}
 		return true;
 	}
 	
@@ -379,6 +377,9 @@ public class PwsRecordV3 extends PwsRecord
 			if ( LOG.isDebug2Enabled() ) LOG.debug2( "Writing field " + type + " (" + ((Object[])VALID_TYPES[type])[1] + ") : \"" + value.toString() + "\"" );
 
 			writeField( file, value );
+			
+			PwsFileV3 fileV3 = (PwsFileV3) file;
+			fileV3.hasher.digest(value.getBytes());
 		}
 		writeField( file, new PwsStringField( END_OF_RECORD, "" ) );
 		LOG.debug2( "----- END OF RECORD -----" );

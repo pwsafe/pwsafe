@@ -158,18 +158,17 @@ public class PwsFileV3 extends PwsFile
 		{
 			headerV3.save( this );
 
-			// Can only be created once the V1 header's been written.
+			// Can only be created once the V3 header resets key info
 
-			twofishCbc = new TwofishPws(decryptedRecordKey, false, headerV3.getIV());
-
+			twofishCbc = new TwofishPws(decryptedRecordKey, true, headerV3.getIV());
 
 			writeExtraHeader( this );
 
 			for ( Iterator iter = getRecords(); iter.hasNext(); )
 			{
 				rec = (PwsRecord) iter.next();
-	
 				rec.saveRecord( this );
+				//TODO work out a way to calculate record hash here?
 			}
 	
 			OutStream.close();
@@ -247,7 +246,7 @@ public class PwsFileV3 extends PwsFile
 	 * @param iter the number of iters from the file
 	 * @return the stretched user key for comparison
 	 */
-	private byte[] stretchPassphrase(byte[] passphrase, byte[] salt, int iter) {
+	static byte[] stretchPassphrase(byte[] passphrase, byte[] salt, int iter) {
 		byte[] p = Util.mergeBytes(passphrase, salt);
 		byte[] hash = SHA256Pws.digest(p);
 		for (int i = 0; i < iter; i++) {

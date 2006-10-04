@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import org.pwsafe.lib.Log;
 import org.pwsafe.lib.Util;
+import org.pwsafe.lib.crypto.HmacPws;
+import org.pwsafe.lib.crypto.TwofishPws;
 import org.pwsafe.lib.exception.EndOfFileException;
 
 /**
@@ -53,6 +55,14 @@ public class PwsFileHeaderV3
 	 */
 	PwsFileHeaderV3()
 	{
+		tag = "PWS3".getBytes();
+		for (int i=0; i<salt.length; i++) {
+			salt[i] = Util.newRand();
+		}
+		Util.putIntToByteArray(iter, 2048, 0);
+		for (int i=0; i<IV.length; i++) {
+			IV[i] = Util.newRand();
+		}
 	}
 
 	/**
@@ -178,7 +188,7 @@ public class PwsFileHeaderV3
 	{
 		LOG.enterMethod( "PwsFileHeaderV3.save" );
 
-		update( file.getPassphrase() );
+		update( file.getPassphrase(), (PwsFileV3) file );
 		
 		file.writeBytes( tag );
 		file.writeBytes( salt );
@@ -197,28 +207,22 @@ public class PwsFileHeaderV3
 	 * 
 	 * @param passphrase the passphrase to be used to encrypt the database.
 	 */
-	private void update( String passphrase )
+	private void update( String passphrase, PwsFileV3 file )
 	{
 		LOG.enterMethod( "PwsFileHeaderV3.update" );
+		
+		byte[] stretchedPassword = PwsFileV3.stretchPassphrase(passphrase.getBytes(), salt, Util.getIntFromByteArray(iter, 0));
+		
+		b1 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
+		b2 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
 
-		byte	temp[];
+		file.decryptedRecordKey = Util.mergeBytes(b1, b2);
+		
+		b3 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
+		b4 = TwofishPws.processECB(stretchedPassword, true, new byte[] { Util.newRand(), Util.newRand(), Util.newRand(), Util.newRand() });
 
-//		for ( int ii = 0; ii < RandStuff.length; ++ii )
-//		{
-//			RandStuff[ii] = Util.newRand();
-//		}
-//		temp		= Util.cloneByteArray( RandStuff, 10 );
-//		RandHash	= PwsFileFactory.genRandHash( passphrase, temp );
-//		
-//		for ( int ii = 0; ii < Salt.length; ++ii )
-//		{
-//			Salt[ii] = Util.newRand();
-//		}
-//		
-//		for ( int ii = 0; ii < IpThing.length; ++ii )
-//		{
-//			IpThing[ii] = Util.newRand();
-//		}
+		file.decryptedHmacKey = Util.mergeBytes(b3, b4);
+		file.hasher = new HmacPws(file.decryptedHmacKey);
 
 		LOG.leaveMethod( "PwsFileHeaderV3.update" );
 	}
