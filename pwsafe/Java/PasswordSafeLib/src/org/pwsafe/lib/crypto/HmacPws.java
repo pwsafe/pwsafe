@@ -1,13 +1,8 @@
 package org.pwsafe.lib.crypto;
 
-import java.security.Key;
-import java.security.Provider;
-import java.security.spec.KeySpec;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.crypto.digests.SHA256Digest;
+import org.bouncycastle.crypto.macs.HMac;
+import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
  * HMAC implementation. Currently uses BouncyCastle provider underneath.
@@ -16,34 +11,24 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  */
 public class HmacPws {
 
-	private static Provider provider = new BouncyCastleProvider();
-
-	private Mac mac;
+	private HMac mac;
 
 	public HmacPws(byte[] key) {
-		KeySpec ks = new SecretKeySpec(key, "HMACSHA256");
-		try {
-			mac = Mac.getInstance("HMACSHA256", provider);
-			mac.init((Key) ks);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		
+		mac = new HMac(new SHA256Digest());
+		KeyParameter kp = new KeyParameter(key);
+		mac.init(kp);
+		
 	}
 
 	public void digest(byte[] incoming) {
-        try {         
-            mac.update(incoming);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        mac.update(incoming, 0, incoming.length);
     }
 
 	public byte[] doFinal() {
-		try {
-			return mac.doFinal();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		byte[] output = new byte[mac.getUnderlyingDigest().getDigestSize()];
+		mac.doFinal(output, 0);
+		return output;
 	}
 
 }
