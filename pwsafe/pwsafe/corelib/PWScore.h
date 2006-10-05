@@ -47,6 +47,7 @@ class PWScore {
   const CString &GetCurrentHost() const {return m_sysname;}
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
   const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
+  const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
 
   void ClearData();
   void NewFile(const CMyString &passkey);
@@ -76,6 +77,8 @@ class PWScore {
     {return ReadFile(m_currfile, passkey);}
   int ReadFile(const CMyString &filename, const CMyString &passkey);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
+  unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
+  unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
   int RenameFile(const CMyString &oldname, const CMyString &newname);
   int BackupCurFile();
   int CheckPassword(const CMyString &filename, CMyString &passkey);
@@ -133,6 +136,7 @@ class PWScore {
   bool m_usedefuser;
   CMyString m_defusername;
   PWSfile::VERSION m_ReadFileVersion;
+  unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
 
   // the password database
   ItemList m_pwlist;
@@ -141,6 +145,6 @@ class PWScore {
   HANDLE m_lockFileHandle;
 
   CString m_displaystatus;
-  CString m_wholastsaved, m_whenlastsaved;
+  CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
   CString m_user, m_sysname;
 };

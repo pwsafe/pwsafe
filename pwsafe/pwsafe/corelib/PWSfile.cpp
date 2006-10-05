@@ -95,7 +95,7 @@ PWSfile::PWSfile(const CMyString &filename, RWmode mode)
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
     m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL),
     m_file_displaystatus(_T("")), m_whenlastsaved(_T("")),
-	m_wholastsaved(_T(""))
+	m_wholastsaved(_T("")), m_whatlastsaved(_T(""))
 {
 }
 
@@ -196,7 +196,6 @@ int PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
   return retval;
 }
 
-
 int PWSfile::CheckPassword(const CMyString &filename,
                            const CMyString &passkey, VERSION &version)
 {
@@ -213,5 +212,3 @@ int PWSfile::CheckPassword(const CMyString &filename,
   }
   return status;
 }
-
-

@@ -175,6 +175,70 @@ DboxMain::Restore()
   return PWScore::SUCCESS;
 }
 
+// The following structure needed for remembering details of uuids to
+// ensure they are unique
+struct st_uuids {
+  unsigned char c_uuid[16];
+  POSITION nPos;
+};
+
+void
+DboxMain::OnValidate() 
+{
+	// Check uuid is valid
+	// Check uuids are unique
+	// Check PWH is valid
+
+	POSITION listPos;
+	st_uuids *uuids;
+	uuid_array_t uuid_array;
+	int n, num_PWH_fixed, num_uuid_fixed, num_uuid_notunique;
+
+	uuids = new st_uuids [m_core.GetNumEntries() + 1];
+	const unsigned short nMajor = m_core.GetCurrentMajorVersion();
+	const unsigned short nMinor = m_core.GetCurrentMinorVersion();
+
+	n = num_PWH_fixed = num_uuid_fixed = num_uuid_notunique = 0;
+	listPos = m_core.GetFirstEntryPosition();
+	while (listPos != NULL) {
+		CItemData &ci = m_core.GetEntryAt(listPos);
+		ci.GetUUID(uuid_array);
+		if (uuid_array[0] == 0x00)
+			num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor);
+#if _MSC_VER >= 1400
+		memcpy_s(uuids[n].c_uuid, 16, uuid_array, 16);
+#else
+		memcpy(uuids[n].c_uuid, uuid_array, 16);
+#endif
+		uuids[n].nPos = listPos;
+		n++;
+		num_PWH_fixed += ci.ValidatePWHistory();
+		m_core.GetNextEntry(listPos);
+	} // while
+
+	// Is this quicker than sorting first and then looking for duplicates?
+	// Who knows!
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = i + 1; j < n; j++) {
+			if ((DWORD64)uuids[i].c_uuid[0] == (DWORD64)uuids[j].c_uuid[0]) {
+				CItemData &ci = m_core.GetEntryAt(uuids[j].nPos);
+				ci.CreateUUID();
+				num_uuid_notunique++;
+			}
+		}
+	}
+	if ( (num_uuid_fixed + num_uuid_notunique + num_PWH_fixed) != 0)
+		m_core.SetChanged(true);
+
+	CString cs_msg;
+	cs_msg.Format(_T("Number of UUIDs fixed: %d\n\n"
+	                 "Number of UUIDs made unique: %d\n\n"
+	                 "Number of Password Histories fixed: %d"),
+	                 num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
+	AfxMessageBox(cs_msg, MB_OK);
+	delete uuids;
+}
+
 void
 DboxMain::OnOptions() 
 {

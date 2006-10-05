@@ -14,6 +14,7 @@ class PWSfileV3 : public PWSfile {
 
   enum {HDR_VERSION=0, HDR_UUID=0x1, HDR_NDPREFS = 0x2, HDR_DISPSTAT = 0x3,
 	HDR_LASTUPDATETIME = 0x4, HDR_LASTUPDATEUSERHOST = 0x5,
+	HDR_LASTUPDATEAPPLICATION = 0x6,
     HDR_END = 0xff}; // header field types, per formatV{2,3}.txt
 
   static int CheckPassword(const CMyString &filename,

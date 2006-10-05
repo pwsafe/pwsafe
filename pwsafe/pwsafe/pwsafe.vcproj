@@ -42,7 +42,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib"
 				OutputFile=".\Release/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib"
 				OutputFile=".\Debug/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

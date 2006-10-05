@@ -239,7 +239,8 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   if (t != 0)
     WriteCBC(CItemData::RMTIME, (unsigned char *)&t, sizeof(t));
   tmp = item.GetPWHistory();
-  WriteCBC(CItemData::PWHIST, tmp);
+  if (!tmp.IsEmpty())
+    WriteCBC(CItemData::PWHIST, tmp);
   WriteCBC(CItemData::END, _T(""));
 
   return status;
@@ -288,7 +289,6 @@ int PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
   return numRead;
 }
 
-
 int PWSfileV3::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != NULL);
@@ -302,6 +302,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
   int fieldLen; // <= 0 means end of file reached
   bool endFound = false; // set to true when record end detected - happy end
   time_t t;
+
   do {
     fieldLen = ReadCBC(type, tempdata);
     if (fieldLen > 0) {
@@ -368,10 +369,9 @@ int PWSfileV3::ReadRecord(CItemData &item)
       } // switch
     } // if (fieldLen > 0)
   } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-  if (numread > 0) {
-    item.Validate();
+  if (numread > 0)
     return SUCCESS;
-  } else
+  else
     return END_OF_FILE;
 }
 
@@ -403,7 +403,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0300;
+const short VersionNum = 0x0301;
 
 int PWSfileV3::WriteHeader()
 {
@@ -479,6 +479,9 @@ int PWSfileV3::WriteHeader()
   unsigned char vnb[sizeof(VersionNum)];;
   vnb[0] = (unsigned char) (VersionNum & 0xff);
   vnb[1] = (unsigned char) ((VersionNum & 0xff00) >> 8);
+  m_nCurrentMajorVersion = (unsigned short) ((VersionNum & 0xff00) >> 8);
+  m_nCurrentMinorVersion = (unsigned short) (VersionNum & 0xff);
+
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
   
   // Write UUID
@@ -535,6 +538,45 @@ int PWSfileV3::WriteHeader()
     return FAILURE;
   } else {
 	  m_wholastsaved = cs_who;
+  }
+
+  // Write out what saved it!
+  // First get the application Version number (NOT the file format version)
+  char  szFullPath[MAX_PATH];
+  DWORD dwVerHnd, dwVerInfoSize;
+  int nMajor, nMinor;
+  // Get version information from the application
+  ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
+  dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
+  if (dwVerInfoSize) {
+	  char* pVersionInfo = new char[dwVerInfoSize];
+	  if(pVersionInfo) {
+		  BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
+			  (DWORD)dwVerHnd,
+			  (DWORD)dwVerInfoSize,
+			  (LPVOID)pVersionInfo);
+		  VS_FIXEDFILEINFO *szVer = NULL;
+		  UINT uVerLength; 
+		  if(bRet) {
+			  bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
+				  (LPVOID*)&szVer, &uVerLength);
+			  if (bRet) {
+				  nMajor = HIWORD(szVer->dwProductVersionMS);
+				  nMinor = LOWORD(szVer->dwProductVersionMS);
+			  } 
+		  }
+		  delete pVersionInfo;
+	  } 
+  } 
+
+  CString cs_what;
+  cs_what.Format("%s V%d.%02d", AfxGetAppName(), nMajor, nMinor);
+  numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION, cs_what);
+  if (numWritten <= 0) {
+    Close();
+    return FAILURE;
+  } else {
+	  m_whatlastsaved = cs_what;
   }
 
   // Write zero-length end-of-record type item
@@ -607,6 +649,8 @@ int PWSfileV3::ReadHeader()
         }
         // for now we assume that minor version changes will
         // be backward-compatible
+        m_nCurrentMajorVersion = (unsigned short)headerData[1];
+        m_nCurrentMinorVersion = (unsigned short)headerData[0];
       }
       break;
 
@@ -672,6 +716,20 @@ int PWSfileV3::ReadHeader()
           return FAILURE;
         }
         m_wholastsaved = (CString)headerField;
+        m_utf8 = NULL;
+        m_utf8Len = 0;
+	  }
+	  break;
+
+	  	case HDR_LASTUPDATEAPPLICATION: /* and by what */
+	  {
+        m_utf8 = (unsigned char *) headerData;
+        m_utf8Len = headerField.GetLength();
+        if (!FromUTF8 (headerField)) {
+          Close ();
+          return FAILURE;
+        }
+        m_whatlastsaved = (CString)headerField;
         m_utf8 = NULL;
         m_utf8Len = 0;
 	  }

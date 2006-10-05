@@ -1073,6 +1073,7 @@ DboxMain::OnProperties()
   CProperties dlg;
 
 #define MAX_LEN 55  // pure guess!
+
   CString t, ttt;
   t = CString(m_core.GetCurFile());
   if (t.GetLength() >= MAX_LEN) {
@@ -1081,6 +1082,10 @@ DboxMain::OnProperties()
   } else {
     dlg.m_database = t;
   }
+
+  int nmajor = m_core.GetCurrentMajorVersion();
+  int nminor = m_core.GetCurrentMinorVersion();
+  dlg.m_databaseformat.Format(_T("%d.%02d"), nmajor, nminor);
 
   CStringArray aryGroups;
   app.m_core.GetUniqueGroups(aryGroups);
@@ -1120,6 +1125,12 @@ DboxMain::OnProperties()
 	ASSERT(iread == 1);
 	dlg.m_wholastsaved.Format("%s on %s", wls.Mid(4, ulen), wls.Mid(ulen + 4));
   }
+
+  wls = m_core.GetWhatLastSaved();
+  if (wls.GetLength() == 0)
+	dlg.m_whatlastsaved = _T("Unknown");
+  else
+	dlg.m_whatlastsaved = wls;
 
   dlg.DoModal();
 }

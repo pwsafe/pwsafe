@@ -62,11 +62,15 @@ int PWSfileV1V2::WriteV2Header()
   int status = WriteRecord(header);
   // restore after writing V17-format header
   m_curversion = sv;
+  m_nCurrentMajorVersion = 2;
+  m_nCurrentMinorVersion = 0;
   return status;
 }
 
 int PWSfileV1V2::ReadV2Header()
 {
+  m_nCurrentMajorVersion = 1;
+  m_nCurrentMinorVersion = 0;
   CItemData header;
   // need to fallback to V17, since the header
   // is always written in this format
@@ -79,8 +83,11 @@ int PWSfileV1V2::ReadV2Header()
     const CMyString version = header.GetPassword();
     // Compare to AltVersionString due to silly mistake
     // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
-    status = (version == VersionString || version == AltVersionString)
-      ? SUCCESS : WRONG_VERSION;
+    if (version == VersionString || version == AltVersionString) {
+    	status = SUCCESS;
+    	m_nCurrentMajorVersion = 2;
+    } else
+    	status = WRONG_VERSION;
   }
   if (status == SUCCESS)
     m_prefString = header.GetNotes();
