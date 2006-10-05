@@ -125,8 +125,11 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     out->WriteRecord(temp);
     m_pwlist.GetNext(listPos);
   }
+  m_nCurrentMajorVersion = out->GetCurrentMajorVersion();
+  m_nCurrentMinorVersion = out->GetCurrentMinorVersion();
   m_wholastsaved = out->GetWhoLastSaved();
   m_whenlastsaved = out->GetWhenLastSaved();
+  m_whatlastsaved = out->GetWhatLastSaved();
 
   out->Close();
   delete out;
@@ -666,16 +669,22 @@ PWScore::ReadFile(const CMyString &a_filename,
   }
 
   // prepare handling of pre-2.0 DEFUSERCHR conversion
-  if (m_ReadFileVersion == PWSfile::V17)
+  if (m_ReadFileVersion == PWSfile::V17) {
     in->SetDefUsername(m_defusername);
-  else {
+    m_nCurrentMajorVersion = PWSfile::V17;
+    m_nCurrentMinorVersion = 0;
+  } else {
   	// for 2.0 & later, get pref string and tree display status
   	// both possibly empty
     PWSprefs::GetInstance()->Load(in->GetPrefString());
-    m_displaystatus = in->GetDisplayStatus();
-	m_whenlastsaved = in->GetWhenLastSaved();
-	m_wholastsaved = in->GetWhoLastSaved();
+    m_nCurrentMajorVersion = in->GetCurrentMajorVersion();
+    m_nCurrentMinorVersion = in->GetCurrentMinorVersion();
   }
+
+   m_displaystatus = in->GetDisplayStatus();
+   m_whenlastsaved = in->GetWhenLastSaved();
+   m_wholastsaved = in->GetWhoLastSaved();
+   m_whatlastsaved = in->GetWhatLastSaved();
 
    ClearData(); //Before overwriting old data, but after opening the file...
 

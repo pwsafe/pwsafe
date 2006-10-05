@@ -15,10 +15,12 @@ public:
 // Dialog Data
 	enum { IDD = IDD_PROPERTIES };
 	CString m_database;
+	CString m_databaseformat;
 	CString m_numgroups;
 	CString m_numentries;
 	CString m_whenlastsaved;
 	CString m_wholastsaved;
+	CString m_whatlastsaved;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

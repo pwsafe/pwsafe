@@ -112,7 +112,7 @@ inline void putInt32(unsigned char buf[4], const int val )
 // Time conversion result formats - powers of 2 as they can be combined!
 enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8};
 
-// Verify PWHistory Strng return codes
+// Verify PWHistory String return codes
 enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
 	PWH_INVALID_NUM, PWH_INVALID_DATETIME,
 	PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};

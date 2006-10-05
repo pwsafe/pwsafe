@@ -132,7 +132,7 @@ public:
    void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
    void SetRMTime(const CString &time_str) {SetTime(RMTIME, time_str);}  // V30
    void SetPWHistory(const CMyString &PWHistory);  // V30
-   void CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
+   int CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
                             PWHistList* pPWHistList,
                             const int time_format) const;  // V30
    CItemData& operator=(const CItemData& second);
@@ -140,7 +140,10 @@ public:
   void *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(void *di) {m_display_info = di;}
   void Clear();
-  void Validate(); // check record for mandatory fields, silently fix if missing
+  // check record for mandatory fields, silently fix if missing
+  int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor);
+  int ValidatePWHistory();
+
 private:
   CItemField m_Name;
   CItemField m_Title;

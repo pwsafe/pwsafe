@@ -55,6 +55,9 @@ class PWSfile {
 		{m_user = user; m_sysname = sysname;}
   const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
+  const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
+  unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
+  unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
@@ -69,12 +72,14 @@ class PWSfile {
   CMyString m_passkey;
   FILE *m_fd;
   VERSION m_curversion;
+  unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
   const RWmode m_rw;
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
   CString m_file_displaystatus; // tree display sttaus stored in file
   CString m_whenlastsaved; // When last saved
   CString m_wholastsaved; // and by whom
+  CString m_whatlastsaved; // and by what
   CString m_user, m_sysname; // current user & host
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;

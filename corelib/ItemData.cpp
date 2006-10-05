@@ -712,25 +712,27 @@ CItemData::SetPWHistory(const CMyString &PWHistory)
 	SetField(m_PWHistory, pwh);
 }
 
-void
+int
 CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
                                PWHistList* pPWHistList,
 							   const int time_format) const
 {
   PWHistEntry pwh_ent;
   CMyString tmp, pwh;
-  int ipwlen, m, n;
+  int ipwlen, m, n, i_error;
   BOOL s;
   long t;
 
+  status = FALSE;
+  pwh_max = 0;
+  pwh_num = 0;
+  i_error = 0;
+
   pwh = this->GetPWHistory();
   int len = pwh.GetLength();
-  if (len < 5) {
-    status = FALSE;
-    pwh_max = 0;
-    pwh_num = 0;
-    return;
-  }
+
+  if (len < 5)
+  	return (len != 0 ? 1 : 0);
 
   TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
   TCHAR *lpszPW;
@@ -740,7 +742,9 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
 #else
   int iread = sscanf(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
 #endif
-  ASSERT(iread == 3);
+  if (iread != 3)
+	return 1;
+
   lpszPWHistory += 5;
   for (int i = 0; i < n; i++) {
 #if _MSC_VER >= 1400
@@ -748,7 +752,10 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
 #else
     iread = sscanf(lpszPWHistory, "%8x", &t);
 #endif
-    ASSERT(iread == 1);
+    if (iread != 1) {
+    	i_error = 1;
+    	break;
+    }
     pwh_ent.changetttdate = (time_t) t;
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
@@ -762,7 +769,10 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
 #else
     iread = sscanf(lpszPWHistory, "%4x", &ipwlen);
 #endif
-    ASSERT(iread == 1);
+    if (iread != 1) {
+    	i_error = 1;
+    	break;
+    }
     lpszPWHistory += 4;
     lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
 #if _MSC_VER >= 1400
@@ -772,15 +782,20 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
 #endif
     lpszPW[ipwlen] = '\0';
     tmp.ReleaseBuffer();
-    ASSERT(tmp.GetLength() == ipwlen);
+    if (tmp.GetLength() != ipwlen) {
+    	i_error = 1;
+    	break;
+    }
     pwh_ent.password = tmp;
     lpszPWHistory += ipwlen;
     pPWHistList->AddTail(pwh_ent);
   }
+
   status = s;
   pwh_max = m;
   pwh_num = n;
   pwh.ReleaseBuffer();
+  return i_error;
 }
 
 BlowFish *
@@ -838,17 +853,103 @@ CItemData::Clear()
   SetPWHistory(_T(""));
 }
 
-void
-CItemData::Validate()
+int
+CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor)
 {
-  // currently only ensure that item has a uuid, creating one
-  // if missing.
-  if (m_UUID.IsEmpty())
-    CreateUUID();
+  // currently only ensure that item has a uuid, creating one if missing.
+
+  /* NOTE the unusual position of the default statement.
+
+     This is by design as it assumes that if we don't know the version, the
+     database probably has all the problems and should be fixed.
+
+     To date, we know that databases of format 0x0200 and 0x0300 have a UUID
+     problem if records were duplicated.  Databases of format 0x0100 did not
+     have the duplicate function and it has been fixed in databases in format
+     0x0301.
+
+     As more problems are detected and need to be fixed, this code will expand
+     and may have to change.
+  */
+  int iResult(0);
+  switch ((nMajor << 8) + nMinor) {
+  	default:
+  	case 0x0200:  // V2 format
+  	case 0x0300:  // V3 format prior to PWS V3.03
+  		CreateUUID();
+  		iResult = 1;
+  	case 0x0100:  // V1 format
+  	case 0x0301:  // V3 format PWS V3.03 and later
+  		break;
+  }
+  return iResult;
 }
 
-  //TODO: "General System Fault. Please sacrifice a goat 
-  //and two chickens to continue."
+int
+CItemData::ValidatePWHistory()
+{
+  if (m_PWHistory.IsEmpty())
+    return 0;
 
-  //-----------------------------------------------------------------------------
-  //-----------------------------------------------------------------------------
+  CMyString pwh = GetPWHistory();
+  if (pwh.GetLength() < 5) {
+    SetPWHistory(_T(""));
+    return 1;
+  }
+
+  BOOL pwh_status;
+  int pwh_max, pwh_num;
+  PWHistList* pPWHistList;
+  PWHistEntry pwh_ent;
+
+  pPWHistList = new PWHistList;
+  int iResult = CreatePWHistoryList(pwh_status, pwh_max,
+                          pwh_num, pPWHistList, TMC_EXPORT_IMPORT);
+  if (iResult == 0) {
+  	delete pPWHistList;
+    return 0;
+  }
+
+  int listnum = pPWHistList->GetCount();
+  if (listnum > pwh_num)
+    pwh_num = listnum;
+
+  if (pwh_max == 0 && pwh_num == 0) {
+    SetPWHistory(_T(""));
+    delete pPWHistList;
+    return 1;
+  }
+
+  if (listnum > pwh_max)
+    pwh_max = listnum;
+
+  pwh_num = listnum;
+
+  if (pwh_max < pwh_num)
+  	pwh_max = pwh_num;
+
+  // Rebuild PWHistory from the data we have
+  CMyString history;
+  CString cs_buffer(_T(""));
+  char buffer[8];
+#if _MSC_VER >= 1400
+  sprintf_s(buffer, 8, "%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+#else
+  sprintf(buffer,"%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+#endif
+  history = CMyString(buffer);
+  if (listnum > 0) {
+	  POSITION listpos = pPWHistList->GetHeadPosition();
+  	for (int i = 0; i < listnum; i++) {
+		pwh_ent = pPWHistList->GetAt(listpos);
+  		cs_buffer.Format(_T("%08x%04x%s"), pwh_ent.changetttdate, 
+			pwh_ent.password.GetLength(), pwh_ent.password);
+  		history += (LPCTSTR)cs_buffer;
+  		cs_buffer.Empty();
+		pPWHistList->GetNext(listpos);
+  	}
+    SetPWHistory(history);
+  }
+
+  return 1;
+}

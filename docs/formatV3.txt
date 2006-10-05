@@ -94,10 +94,13 @@ Non-default preferences     0x02        Text          Y              [3]
 Tree Display Status         0x03        Text          Y              [4]
 Timestamp of last save      0x04        time_t        Y              [5]
 Who performed last save     0x05        Text          Y              [6]
-End of Entry                0xff        [empty]       Y              [7]
+What performed last save    0x06        Text          Y              [7]
+End of Entry                0xff        [empty]       Y              [8]
 
 [1] The version number of the database format. For this version, the value
-is 0x0300 (stored in little-endian format, that is, 0x00, 0x03).
+is 0x0301 (stored in little-endian format, that is, 0x01, 0x03).
+PasswordSafe V3.01 introduced Format 0x0300
+PasswordSafe V3.03 introduced Format 0x0301
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, i.e., between a handheld pocketPC device and a PC. The UUID data
@@ -128,7 +131,14 @@ to account for the different epoch of its time_t type.)
     u..u = user name
     h..h = host computer name
 
-[7] An explicit end of entry field is useful for supporting new fields
+[7] Free form text giving the application that saved the database.
+PasswordSafe will use the text "Password Safe Vnn.mm", where nn and mm are the
+major and minor version numbers ("Password Safe" is the application name defined 
+in the projects resource file as string "AFX_IDS_APP_TITLE").  The major version
+will contain only the significant digits whereas the minor version will be padded
+to the left with zeroes e.g. "Password Safe V3.02".
+
+[8] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.2 Field types for database Records (based on the v2 format):
@@ -192,7 +202,7 @@ e.g, '%p' is replaced by the record's password. See the user documentation
 for the complete list of codes. The replacement is done by the application
 at runtime, and is not stored in the database.
 
-[10] Pasword History is an optional record. If it exists, it stores the
+[10] Password History is an optional record. If it exists, it stores the
 creation times and values of the last few passwords used in the current
 entry, in the following format:
     "fmmnnTLPTLP...TLP"
@@ -200,7 +210,7 @@ where:
     f  = {0,1} if password history is on/off
     mm = 2 hexadecimal digits max size of history list (i.e. max = 255)
     nn = 2 hexadecimal digits current size of history list
-    T  = Time password was set ("yyyy/mm/dd hh:mm:ss")
+    T  = Time password was set (time_t written out in %08x)
     L  = 4 hexadecimal digit password length (in TCHAR)
     P  = Password
 No history being kept for a record can be represented either by the lack of

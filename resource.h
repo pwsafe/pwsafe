@@ -267,11 +267,13 @@
 #define IDC_SHOWNOTES                   1211
 #define IDC_DEFNOTESSHOWINEDIT          1212
 #define IDC_DATABASENAME                1213
-#define IDC_NUMGROUPS                   1214
-#define IDC_NUMENTRIES                  1215
-#define IDC_SAVEDBY                     1216
-#define IDC_SAVEDON                     1217
-#define IDC_EDITEXPLANATION             1218
+#define IDC_DATABASEFORMAT              1214
+#define IDC_NUMGROUPS                   1215
+#define IDC_NUMENTRIES                  1216
+#define IDC_SAVEDBY                     1217
+#define IDC_SAVEDON                     1218
+#define IDC_SAVEDAPP                    1219
+#define IDC_EDITEXPLANATION             1220
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -282,6 +284,7 @@
 #define ID_MENUITEM_CHANGECOMBO         32778
 #define ID_MENUITEM_BACKUPSAFE          32779
 #define ID_MENUITEM_OPTIONS             32780
+#define ID_MENUITEM_VALIDATE            32781
 #define ID_MENUITEM_ABOUT               32782
 #define ID_MENUITEM_COPYUSERNAME        32787
 #define ID_MENUITEM_COPYNOTESFLD        32788
@@ -362,7 +365,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        234
 #define _APS_NEXT_COMMAND_VALUE         32861
-#define _APS_NEXT_CONTROL_VALUE         1219
+#define _APS_NEXT_CONTROL_VALUE         1221
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

@@ -668,7 +668,9 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 		char time_str[32];
 #if _MSC_VER >= 1400
 		struct tm st;
-    	localtime_s(&st, &t);  // secure version
+		errno_t err;
+    	err = localtime_s(&st, &t);  // secure version
+    	ASSERT(err == 0);
     	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
       		sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
@@ -677,8 +679,10 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
       		sprintf_s(time_str, 20, "%04d-%02d-%02dT%02d:%02d:%02d",
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
-    	else
-      		_tasctime_s(time_str, 32, &st);  // secure version
+    	else {
+    		ASSERT(err == 0);
+      		err = _tasctime_s(time_str, 32, &st);  // secure version
+      	}
     	ret = time_str;
 #else
     	char *t_str_ptr;
