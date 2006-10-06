@@ -53,6 +53,7 @@ public class PwsFileV3 extends PwsFile
 //	protected Cipher fieldDecrypto;
 	TwofishPws twofishCbc;
 	HmacPws hasher;
+	PwsRecordV3 headerRecord;
 	
 	/**
 	 * Constructs and initialises a new, empty version 3 PasswordSafe database in memory.
@@ -143,7 +144,7 @@ public class PwsFileV3 extends PwsFile
 	public void save()
 	throws IOException
 	{
-		PwsRecord	rec;
+		PwsRecordV3	rec;
 		File		tempFile;
 		File		oldFile;
 		File		bakFile;
@@ -163,12 +164,11 @@ public class PwsFileV3 extends PwsFile
 			twofishCbc = new TwofishPws(decryptedRecordKey, true, headerV3.getIV());
 
 			writeExtraHeader( this );
-
-			for ( Iterator iter = getRecords(); iter.hasNext(); )
-			{
-				rec = (PwsRecord) iter.next();
-				rec.saveRecord( this );
-				//TODO work out a way to calculate record hash here?
+			
+			for (Iterator iter = getRecords(); iter.hasNext();) {
+				rec = (PwsRecordV3) iter.next();
+				if (!rec.isHeaderRecord())
+					rec.saveRecord(this);
 			}
 			
 			OutStream.write(PwsRecordV3.EOF_BYTES);
@@ -206,8 +206,7 @@ public class PwsFileV3 extends PwsFile
 
 				for ( Iterator iter = getRecords(); iter.hasNext(); )
 				{
-					rec = (PwsRecord) iter.next();
-
+					rec = (PwsRecordV3) iter.next();
 					rec.resetModified();
 				}
 				Modified = false;
@@ -294,7 +293,7 @@ public class PwsFileV3 extends PwsFile
 	protected void readExtraHeader( PwsFile file )
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
-		
+		headerRecord = (PwsRecordV3) readRecord();
 	}
 
 	/**
@@ -307,7 +306,7 @@ public class PwsFileV3 extends PwsFile
 	protected void writeExtraHeader( PwsFile file )
 	throws IOException
 	{
-		
+		headerRecord.saveRecord(this);
 	}
 	
 	/**

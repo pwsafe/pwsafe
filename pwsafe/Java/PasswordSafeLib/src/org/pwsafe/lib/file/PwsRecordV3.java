@@ -245,6 +245,17 @@ public class PwsRecordV3 extends PwsRecord
 		return true;
 	}
 	
+	protected boolean isHeaderRecord() {
+
+		PwsField idField = getField(V3_ID_STRING);
+
+		if (idField != null) {
+			LOG.debug1("Ignoring record " + this.toString());
+			return false;
+		}
+		return true;
+	}
+	
 	static byte[] EOF_BYTES = { 82, 1, 9, -3, 104, -67, -8, 126, -17, -111, 78, -31, 89, -36, -110, 101 };
 		//TODO: should do something like Util.signedToUnsigned("PWS3-EOFPWS3-EOF".getBytes());
 	
@@ -402,11 +413,12 @@ public class PwsRecordV3 extends PwsRecord
 		byte	lenBlock[];
 		byte	dataBlock[];
 
-		lenBlock	= new byte[ 8 ];
+		lenBlock	= new byte[ 5 ];
 		dataBlock	= field.getBytes();
 		
 		Util.putIntToByteArray( lenBlock, dataBlock.length, 0 );
-		Util.putIntToByteArray( lenBlock, type, 4 );
+		//Util.putIntToByteArray( lenBlock, type, 4 );
+		lenBlock[4] = (byte) type;
 
 		// ensure encryption payload is equal blocks of 16
 		int bytesToPad = 16 - (lenBlock.length + dataBlock.length) % 16;
