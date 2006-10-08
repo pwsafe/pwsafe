@@ -136,7 +136,7 @@ public:
                              HWND hWindow);
   static int VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory, CString &strErrors);
   static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
-  static const TCHAR *UNKNOWN_TIME_STR;
+  static const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   static CString GetTimeStamp();
   static void IssueError(const CString &csFunction);
 };

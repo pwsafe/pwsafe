@@ -77,7 +77,9 @@ BOOL COptionsMisc::OnInitDialog()
 	m_dblclk_cbox.AddString(_T("Browse to URL"));
   }
 
-  ASSERT(m_doubleclickaction >= 0 && m_doubleclickaction <= 3);
+  if (m_doubleclickaction < PWSprefs::minDCA ||
+	  m_doubleclickaction > PWSprefs::maxDCA)
+  	m_doubleclickaction = PWSprefs::DoubleClickCopy;
   m_dblclk_cbox.SetCurSel(m_doubleclickaction);
 
   // JHF ditto here

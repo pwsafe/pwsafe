@@ -172,13 +172,7 @@ DboxMain::OnDelete()
   }
   
   if (dodelete) {
-    if (m_ctlItemTree.IsWindowVisible())
-      m_ctlItemTree.SetRedraw( FALSE );
 	Delete();
-    if (m_ctlItemTree.IsWindowVisible()) {
-      m_ctlItemTree.SetRedraw( TRUE );
-      m_ctlItemTree.Invalidate();
-    }
   }
 }
 
@@ -226,11 +220,16 @@ DboxMain::Delete(bool inRecursion)
         if (!m_ctlItemTree.IsLeafNode(ti)) {
           HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
 
+          m_ctlItemTree.SetRedraw( FALSE );
+
           while (cti != NULL) {
             m_ctlItemTree.SelectItem(cti);
             Delete(true); // recursion - I'm so lazy!
             cti = m_ctlItemTree.GetChildItem(ti);
           }
+
+          m_ctlItemTree.SetRedraw( TRUE );
+          m_ctlItemTree.Invalidate();
 
           //  delete an empty group.
           HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            
