@@ -760,8 +760,8 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
     if (pwh_ent.changedate.IsEmpty()) {
-      //                       1234567890123456789
-      pwh_ent.changedate = _T("Unknown            ");
+		//                       1234567890123456789
+		pwh_ent.changedate = _T("1970-01-01 00:00:00");
     }
     lpszPWHistory += 8;
 #if _MSC_VER >= 1400

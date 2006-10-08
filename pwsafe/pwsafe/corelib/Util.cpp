@@ -658,7 +658,8 @@ PWSUtil::ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
   return b_retval;
 }
 
-const TCHAR *PWSUtil::UNKNOWN_TIME_STR = _T("Unknown");
+const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01 00:00:00");
+const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 
 CMyString
 PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
@@ -680,8 +681,8 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
     	else {
-    		ASSERT(err == 0);
       		err = _tasctime_s(time_str, 32, &st);  // secure version
+    		ASSERT(err == 0);
       	}
     	ret = time_str;
 #else
@@ -704,10 +705,16 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
     	ret = t_str_ptr;
 #endif
   } else {
-  	if ((result_format & TMC_ASC_UNKNOWN) == TMC_ASC_UNKNOWN)
-    	ret = UNKNOWN_TIME_STR;
-    else
-    	ret = _T("");
+	  switch (result_format) {
+		case TMC_ASC_UNKNOWN:
+			ret = UNKNOWN_ASC_TIME_STR;
+			break;
+		case TMC_XML:
+			ret = UNKNOWN_XML_TIME_STR;
+			break;
+		default:
+			ret = _T("");
+	  }
   }
   // remove the trailing EOL char.
   ret.TrimRight();
@@ -722,7 +729,7 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 	// or
 	//    sxxnn!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!.........
 	// Note:
-	//    !yyyy/mm/dd!hh:mm:ss! may be !Unknown            !
+	//    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
 
 	CMyString tmp, pwh;
 	CString buffer;
@@ -802,7 +809,7 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 		lpszPW[19] = '\0';
 		tmp.ReleaseBuffer();
 		
-		if (tmp == _T("Unknown            "))
+		if (tmp.Left(10) == _T("1970-01-01"))
 			t = 0;
 		else {
 			if (!VerifyImportDateTimeString(tmp, t)) {

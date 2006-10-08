@@ -35,7 +35,7 @@ CPWHistDlg::~CPWHistDlg()
 
 void CPWHistDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
   DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
   DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
@@ -80,7 +80,10 @@ BOOL CPWHistDlg::OnInitDialog()
   while (listpos != NULL) {
     itempos = listpos;
     const PWHistEntry pwhentry = m_PWHistList.GetAt(listpos);
-    nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
+	if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
+		nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
+	else
+		nPos = m_PWHistListCtrl.InsertItem(nPos, _T("Unknown"));
     m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
     m_PWHistListCtrl.SetItemData(nPos, (DWORD)itempos);
     m_PWHistList.GetNext(listpos);

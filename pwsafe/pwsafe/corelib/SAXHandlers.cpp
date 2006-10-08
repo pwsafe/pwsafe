@@ -426,7 +426,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		cur_entry->changed.TrimRight();
 		if (cur_entry->changed.IsEmpty()) {
 			//                       1234567890123456789
-			cur_entry->changed = _T("Unknown            ");
+			cur_entry->changed = _T("1970-01-01 00:00:00");
 		}
 		cur_entry->pwhistory += _T(" ") + cur_entry->changed;
 		//cur_entry->changed.Empty();

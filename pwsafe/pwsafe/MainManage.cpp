@@ -194,15 +194,18 @@ DboxMain::OnValidate()
 	uuid_array_t uuid_array;
 	int n, num_PWH_fixed, num_uuid_fixed, num_uuid_notunique;
 
+	TRACE(_T("%s : Start validation\n"),PWSUtil::GetTimeStamp());
 	uuids = new st_uuids [m_core.GetNumEntries() + 1];
 	const unsigned short nMajor = m_core.GetCurrentMajorVersion();
 	const unsigned short nMinor = m_core.GetCurrentMinorVersion();
 
-	n = num_PWH_fixed = num_uuid_fixed = num_uuid_notunique = 0;
+	num_PWH_fixed = num_uuid_fixed = num_uuid_notunique = 0;
+	n = -1;
 	listPos = m_core.GetFirstEntryPosition();
 	while (listPos != NULL) {
 		CItemData &ci = m_core.GetEntryAt(listPos);
 		ci.GetUUID(uuid_array);
+		n++;
 		if (uuid_array[0] == 0x00)
 			num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor);
 #if _MSC_VER >= 1400
@@ -211,7 +214,6 @@ DboxMain::OnValidate()
 		memcpy(uuids[n].c_uuid, uuid_array, 16);
 #endif
 		uuids[n].nPos = listPos;
-		n++;
 		num_PWH_fixed += ci.ValidatePWHistory();
 		m_core.GetNextEntry(listPos);
 	} // while
@@ -220,7 +222,7 @@ DboxMain::OnValidate()
 	// Who knows!
 	for (int i = 0; i < n - 1; i++) {
 		for (int j = i + 1; j < n; j++) {
-			if ((DWORD64)uuids[i].c_uuid[0] == (DWORD64)uuids[j].c_uuid[0]) {
+			if ((DWORD64)uuids[i].c_uuid == (DWORD64)uuids[j].c_uuid) {
 				CItemData &ci = m_core.GetEntryAt(uuids[j].nPos);
 				ci.CreateUUID();
 				num_uuid_notunique++;
@@ -230,13 +232,15 @@ DboxMain::OnValidate()
 	if ( (num_uuid_fixed + num_uuid_notunique + num_PWH_fixed) != 0)
 		m_core.SetChanged(true);
 
+	delete uuids;
+	TRACE(_T("%s : End validation. %d entries processed\n"),PWSUtil::GetTimeStamp(), n + 1);
+
 	CString cs_msg;
 	cs_msg.Format(_T("Number of UUIDs fixed: %d\n\n"
 	                 "Number of UUIDs made unique: %d\n\n"
 	                 "Number of Password Histories fixed: %d"),
 	                 num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
 	AfxMessageBox(cs_msg, MB_OK);
-	delete uuids;
 }
 
 void
