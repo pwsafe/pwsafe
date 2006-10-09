@@ -178,7 +178,10 @@ DboxMain::Restore()
 // The following structure needed for remembering details of uuids to
 // ensure they are unique
 struct st_uuids {
-  unsigned char c_uuid[16];
+  DWORD dw_uuidA;
+  DWORD dw_uuidB;
+  DWORD dw_uuidC;
+  DWORD dw_uuidD;
   POSITION nPos;
 };
 
@@ -194,7 +197,7 @@ DboxMain::OnValidate()
 	uuid_array_t uuid_array;
 	int n, num_PWH_fixed, num_uuid_fixed, num_uuid_notunique;
 
-	TRACE(_T("%s : Start validation\n"),PWSUtil::GetTimeStamp());
+	TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 	uuids = new st_uuids [m_core.GetNumEntries() + 1];
 	const unsigned short nMajor = m_core.GetCurrentMajorVersion();
 	const unsigned short nMinor = m_core.GetCurrentMinorVersion();
@@ -207,11 +210,11 @@ DboxMain::OnValidate()
 		ci.GetUUID(uuid_array);
 		n++;
 		if (uuid_array[0] == 0x00)
-			num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor);
+			num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor, uuid_array);
 #if _MSC_VER >= 1400
-		memcpy_s(uuids[n].c_uuid, 16, uuid_array, 16);
+		memcpy_s(&uuids[n].dw_uuidA, 16, uuid_array, 16);
 #else
-		memcpy(uuids[n].c_uuid, uuid_array, 16);
+		memcpy(&uuids[n].dw_uuidA, uuid_array, 16);
 #endif
 		uuids[n].nPos = listPos;
 		num_PWH_fixed += ci.ValidatePWHistory();
@@ -222,9 +225,18 @@ DboxMain::OnValidate()
 	// Who knows!
 	for (int i = 0; i < n - 1; i++) {
 		for (int j = i + 1; j < n; j++) {
-			if ((DWORD64)uuids[i].c_uuid == (DWORD64)uuids[j].c_uuid) {
+			if (uuids[i].dw_uuidA == uuids[j].dw_uuidA &&
+				uuids[i].dw_uuidB == uuids[j].dw_uuidB &&
+				uuids[i].dw_uuidC == uuids[j].dw_uuidC && 
+				uuids[i].dw_uuidD == uuids[j].dw_uuidD) {
 				CItemData &ci = m_core.GetEntryAt(uuids[j].nPos);
 				ci.CreateUUID();
+				ci.GetUUID(uuid_array);
+#if _MSC_VER >= 1400
+				memcpy_s(&uuids[j].dw_uuidA, 16, uuid_array, 16);
+#else
+				memcpy(&uuids[j].dw_uuidA, uuid_array, 16);
+#endif
 				num_uuid_notunique++;
 			}
 		}
@@ -233,13 +245,14 @@ DboxMain::OnValidate()
 		m_core.SetChanged(true);
 
 	delete uuids;
-	TRACE(_T("%s : End validation. %d entries processed\n"),PWSUtil::GetTimeStamp(), n + 1);
+	TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
 
 	CString cs_msg;
-	cs_msg.Format(_T("Number of UUIDs fixed: %d\n\n"
+	cs_msg.Format(_T("Number of entries processed: %d\n\n"
+	                 "Number of UUIDs fixed: %d\n\n"
 	                 "Number of UUIDs made unique: %d\n\n"
 	                 "Number of Password Histories fixed: %d"),
-	                 num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
+	                 n + 1, num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
 	AfxMessageBox(cs_msg, MB_OK);
 }
 

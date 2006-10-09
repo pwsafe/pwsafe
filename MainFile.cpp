@@ -893,7 +893,7 @@ DboxMain::Merge()
       CFileDialog fd(TRUE,
                      DEFAULT_SUFFIX,
                      NULL,
-                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_READONLY|OFN_LONGNAMES,
                      SUFFIX_FILTERS
                      _T("Password Safe Backups (*.bak)|*.bak|")
                      _T("All files (*.*)|*.*|")
@@ -924,20 +924,25 @@ DboxMain::Merge(const CMyString &pszFilename) {
   CMyString passkey, temp;
 
   //Check that this file isn't already open
-  if (pszFilename == m_core.GetCurFile())
-	{
+  if (pszFilename == m_core.GetCurFile()) {
       //It is the same damn file
       MessageBox(_T("That file is already open."),
                  _T("Oops!"),
                  MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
-	}
+  }
 
+  // Save current read-only status around opening merge fil R-O
+  bool bCurrentFileIsReadOnly = m_IsReadOnly;
+  // Force input database into read-only status
   rc = GetAndCheckPassword(pszFilename, passkey,
                            GCP_NORMAL, // OK, CANCEL, HELP
                            true);  // force readonly
-  switch (rc)
-	{
+
+  // Restore original database read-only status
+  SetReadOnly(bCurrentFileIsReadOnly);
+
+  switch (rc) {
 	case PWScore::SUCCESS:
       app.AddToMRU(pszFilename);
       break; // Keep going...
@@ -956,13 +961,12 @@ DboxMain::Merge(const CMyString &pszFilename) {
         assume they want to return to where they were before...
       */
       return PWScore::USER_CANCEL;
-	}
+  }
 
   PWScore otherCore;
   otherCore.ReadFile(pszFilename, passkey);
 
-  if (rc == PWScore::CANT_OPEN_FILE)
-	{
+  if (rc == PWScore::CANT_OPEN_FILE) {
       temp = pszFilename;
       temp += _T("\n\nCould not open file for reading!");
       MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
@@ -971,7 +975,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
 		they saved their file....
       */
       return PWScore::CANT_OPEN_FILE;
-	}
+  }
 
   otherCore.SetCurFile(pszFilename);
 
