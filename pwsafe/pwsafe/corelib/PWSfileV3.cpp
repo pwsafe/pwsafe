@@ -526,7 +526,7 @@ int PWSfileV3::WriteHeader()
     Close();
     return FAILURE;
   } else {
-	  m_whenlastsaved = cs_update_time;
+    m_whenlastsaved = cs_update_time;
   }
 
   // Write out who saved it!
@@ -537,47 +537,46 @@ int PWSfileV3::WriteHeader()
     Close();
     return FAILURE;
   } else {
-	  m_wholastsaved = cs_who;
+    m_wholastsaved = cs_who;
   }
 
   // Write out what saved it!
   // First get the application Version number (NOT the file format version)
   char  szFullPath[MAX_PATH];
   DWORD dwVerHnd, dwVerInfoSize;
-  int nMajor, nMinor;
   // Get version information from the application
   ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
   dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
   if (dwVerInfoSize) {
-	  char* pVersionInfo = new char[dwVerInfoSize];
-	  if(pVersionInfo) {
-		  BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
-			  (DWORD)dwVerHnd,
-			  (DWORD)dwVerInfoSize,
-			  (LPVOID)pVersionInfo);
-		  VS_FIXEDFILEINFO *szVer = NULL;
-		  UINT uVerLength; 
-		  if(bRet) {
-			  bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
-				  (LPVOID*)&szVer, &uVerLength);
-			  if (bRet) {
-				  nMajor = HIWORD(szVer->dwProductVersionMS);
-				  nMinor = LOWORD(szVer->dwProductVersionMS);
-			  } 
-		  }
-		  delete pVersionInfo;
-	  } 
+    char* pVersionInfo = new char[dwVerInfoSize];
+    if(pVersionInfo) {
+      BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
+                                       (DWORD)dwVerHnd,
+                                       (DWORD)dwVerInfoSize,
+                                       (LPVOID)pVersionInfo);
+      VS_FIXEDFILEINFO *szVer = NULL;
+      UINT uVerLength; 
+      if(bRet) {
+        bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
+                               (LPVOID*)&szVer, &uVerLength);
+        if (bRet) {
+          int nMajor = HIWORD(szVer->dwProductVersionMS);
+          int nMinor = LOWORD(szVer->dwProductVersionMS);
+          CString cs_what;
+          cs_what.Format("%s V%d.%02d", AfxGetAppName(), nMajor, nMinor);
+          numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION, cs_what);
+          if (numWritten <= 0) {
+            Close();
+            return FAILURE;
+          } else {
+            m_whatlastsaved = cs_what;
+          }
+        } 
+      }
+      delete pVersionInfo;
+    } 
   } 
 
-  CString cs_what;
-  cs_what.Format("%s V%d.%02d", AfxGetAppName(), nMajor, nMinor);
-  numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION, cs_what);
-  if (numWritten <= 0) {
-    Close();
-    return FAILURE;
-  } else {
-	  m_whatlastsaved = cs_what;
-  }
 
   // Write zero-length end-of-record type item
   // for future-proof (skip possible additional fields in read)
