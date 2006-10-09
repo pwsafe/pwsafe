@@ -854,7 +854,8 @@ CItemData::Clear()
 }
 
 int
-CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor)
+CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
+						uuid_array_t &uuid_array)
 {
   // currently only ensure that item has a uuid, creating one if missing.
 
@@ -877,6 +878,7 @@ CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMin
   	case 0x0200:  // V2 format
   	case 0x0300:  // V3 format prior to PWS V3.03
   		CreateUUID();
+  		GetUUID(uuid_array);
   		iResult = 1;
   	case 0x0100:  // V1 format
   	case 0x0301:  // V3 format PWS V3.03 and later

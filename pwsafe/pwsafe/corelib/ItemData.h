@@ -141,7 +141,8 @@ public:
   void SetDisplayInfo(void *di) {m_display_info = di;}
   void Clear();
   // check record for mandatory fields, silently fix if missing
-  int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor);
+  int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
+                   uuid_array_t &uuid_array);
   int ValidatePWHistory();
 
 private:
