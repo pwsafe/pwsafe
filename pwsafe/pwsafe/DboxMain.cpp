@@ -91,16 +91,17 @@ END_MESSAGE_MAP()
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
-     m_bSizing( false ), m_needsreading(true), m_windowok(false),
-     m_toolbarsSetup(FALSE),
-     m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
-     m_bSortAscending(true), m_iSortedColumn(0),
-     m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_IsStartSilent(false),
-     m_hFontTree(NULL), m_IsReadOnly(false),
-     m_selectedAtMinimize(NULL), m_bTSUpdated(false),
-     m_iSessionEndingStatus(IDIGNORE),
-	 m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL)
+  m_bSizing( false ), m_needsreading(true), m_windowok(false),
+  m_toolbarsSetup(FALSE),
+  m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
+  m_bSortAscending(true), m_iSortedColumn(0),
+  m_lastFindCS(FALSE), m_lastFindStr(_T("")),
+  m_core(app.m_core), m_IsStartSilent(false),
+  m_hFontTree(NULL), m_IsReadOnly(false),
+  m_selectedAtMinimize(NULL), m_bTSUpdated(false),
+  m_iSessionEndingStatus(IDIGNORE),
+  m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
+  m_Validate(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -483,7 +484,12 @@ DboxMain::OnInitDialog()
       return TRUE;
 
   InitPasswordSafe();
-
+  // Validation does integrity check & repair on database
+  // currently invoke it iff m_Validate set (e.g., user passed '-v' flag)
+  if (m_Validate) {
+    PostMessage(WM_COMMAND, ID_MENUITEM_VALIDATE);
+    m_Validate = false;
+  }
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
