@@ -1215,25 +1215,23 @@ struct st_uuids {
 };
 
 bool
-PWScore::Validate(int &n, unsigned &num_PWH_fixed, 
-                  unsigned &num_uuid_fixed, unsigned &num_uuid_notunique) 
+PWScore::Validate(CString &status)
 {
   // Check uuid is valid
   // Check uuids are unique
   // Check PWH is valid
-  POSITION listPos;
-  st_uuids *uuids;
   uuid_array_t uuid_array;
-	
+  int n = -1;
+  unsigned num_PWH_fixed = 0;
+  unsigned num_uuid_fixed = 0;
+  unsigned num_uuid_notunique = 0;
 
   TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
-  uuids = new st_uuids [GetNumEntries() + 1];
+  st_uuids *uuids = new st_uuids [GetNumEntries() + 1];
   const unsigned short nMajor = GetCurrentMajorVersion();
   const unsigned short nMinor = GetCurrentMinorVersion();
 
-  num_PWH_fixed = num_uuid_fixed = num_uuid_notunique = 0;
-  n = -1;
-  listPos = GetFirstEntryPosition();
+  POSITION listPos = GetFirstEntryPosition();
   while (listPos != NULL) {
     CItemData &ci = GetEntryAt(listPos);
     ci.GetUUID(uuid_array);
@@ -1250,9 +1248,9 @@ PWScore::Validate(int &n, unsigned &num_PWH_fixed,
     GetNextEntry(listPos);
   } // while
 
- // Curently brute force O(n^2)
- // Sorting & searching would be O(N*logN)
- // Best to use a hash or set and test for membership O(1)
+  // Curently brute force O(n^2)
+  // Sorting & searching would be O(N*logN)
+  // Best to use a hash or set and test for membership O(1)
   for (int i = 0; i < n - 1; i++) {
     for (int j = i + 1; j < n; j++) {
       if (uuids[i].dw_uuidA == uuids[j].dw_uuidA &&
@@ -1274,6 +1272,11 @@ PWScore::Validate(int &n, unsigned &num_PWH_fixed,
   delete[] uuids;
   TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
   if ((num_uuid_fixed + num_uuid_notunique + num_PWH_fixed) > 0) {
+	status.Format(_T("Number of entries processed: %d\n\n"
+	                 "Number of UUIDs fixed: %d\n\n"
+	                 "Number of UUIDs made unique: %d\n\n"
+	                 "Number of Password Histories fixed: %d"),
+                  n + 1, num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
     SetChanged(true);
     return true;
   } else {

@@ -178,16 +178,8 @@ DboxMain::Restore()
 void
 DboxMain::OnValidate() 
 {
-  int n;
-  unsigned num_PWH_fixed, num_uuid_fixed, num_uuid_notunique;
   CString cs_msg;
-  if (m_core.Validate(n, num_PWH_fixed, num_uuid_fixed, num_uuid_notunique)) {
-	cs_msg.Format(_T("Number of entries processed: %d\n\n"
-	                 "Number of UUIDs fixed: %d\n\n"
-	                 "Number of UUIDs made unique: %d\n\n"
-	                 "Number of Password Histories fixed: %d"),
-                  n + 1, num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
-  } else {
+  if (!m_core.Validate(cs_msg)) {
     cs_msg = _T("Database validated - no problems found.");
   }
   AfxMessageBox(cs_msg, MB_OK);
