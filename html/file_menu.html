@@ -5,12 +5,16 @@
 
 
 
+
 		
 		
 		
 
 		
 		
+  
+
+  
   
 
   
@@ -27,11 +31,13 @@
   
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
 
 
 
@@ -49,9 +55,11 @@
 
 
 
-		<img style="width: 216px; height: 232px;" alt="file menu" src="images%5Cfile_menu.gif">
+
+		<img style="width: 191px; height: 258px;" alt="file menu" src="images%5Cfile_menu.gif">
 		
-<p>The <b>File Menu</b> contains options related to managing and creating new password safe databases.</p>
+<p>The <b>File Menu</b> contains options related to managing and creating new <span style="font-weight: bold;">Password Safe</span> databases.</p>
+
 
 
 
@@ -60,7 +68,8 @@
 		
 <div class="instr">
 			
-<h3>New Database</h3>
+<h3>New</h3>
+
 
 
 
@@ -72,8 +81,10 @@
 
 
 
+
 			
-<h3>Open Database</h3>
+<h3>Open</h3>
+
 
 
 
@@ -85,8 +96,10 @@
 
 
 
+
 			
-<h3>Recently Used Files</h3>
+<h3>Recent Safes</h3>
+
 
 
 
@@ -96,15 +109,25 @@
 opened database files. This section will be blank if this is the first
 time <b>Password Safe</b> has been used.</p>
 
-<p><span style="font-weight: bold;">Notes:</span></p>
+
+<hr style="width: 100%; height: 2px;">
+<p><small><span style="font-weight: bold;">Notes:</span></small></p>
+
 
 <ul>
+  <small>
 
-  <li>The list of recently opened files may be cleared by selecting "Clear Recent database List"</li>
+  </small><li><small>The list of recently opened files may be cleared by selecting "<span style="font-weight: bold;">Clear Recent Safe List</span>"</small></li>
+  <small>
 
-  <li>The number of recent files that <span style="font-weight: bold;">Password Safe</span> will keep may be configured via the <a href="display_tab.html">Manage-&gt;Options-&gt;Display</a> dialog box</li>
+  </small><li><small>The number of recent files that <span style="font-weight: bold;">Password Safe</span> will keep may be configured via the <a href="display_tab.html">Manage-&gt;Options-&gt;Display</a> dialog box</small></li>
+</ul>
+<hr style="width: 100%; height: 2px;">
+<ul>
+
 
 </ul>
+
 
 
 
@@ -116,8 +139,12 @@ time <b>Password Safe</b> has been used.</p>
 
 
 
+
 			
-<p>Save any changes to the current safe. If no changes have been made since the previous save, this choice will be greyed-out.</p>
+<p>Save any changes to the current safe. If no changes have been made
+since the previous save, or if the database was opened read-only, this
+choice will be greyed-out.</p>
+
 
 
 
@@ -129,8 +156,10 @@ time <b>Password Safe</b> has been used.</p>
 
 
 
+
 			
 <p>Save a copy of the current safe under a new name or location.</p>
+
 
 
 
@@ -142,12 +171,14 @@ time <b>Password Safe</b> has been used.</p>
 
 
 
+
 			
 <p>Export the contents of the current database to
 			an <a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">external
-			file</a> in either an old <span style="font-weight: bold;">Password Safe</span> database&nbsp;format or as text. See <a href="export.html">here</a> for
+			file</a> in either an old <span style="font-weight: bold;">Password Safe</span> database&nbsp;format, XML, or as text. See <a href="export.html">here</a> for
 			more information on exporting the database to other formats.
 			</p>
+
 
 
 
@@ -159,38 +190,52 @@ time <b>Password Safe</b> has been used.</p>
 
 
 
+
 			
 <p>Import the contents of a previously <a href="export.html">exported</a> or
-			correctly formatted text file or a KeePass password
+			correctly formatted text file, XML, or a KeePass password
 			database into the current database. See <a href="import.html">here</a> for 
 			more information on importing text files.</p>
+
 
 
 
  
 
 			
-<h3>Merge Database</h3>
+<h3>Merge</h3>
+
 
 			
-<p>Merge a <b>Password Safe</b> database or backup file (.bak) into the current database.</p>
+<p>Merge a <b>Password Safe</b> database or backup file (.bak) into the current database. Disabled in read-only mode.</p>
 
-<h3>Compare Database</h3>
+
+<h3>Compare</h3>
+
 
 <p>Compare the currently opened database with another.</p>
 
-<p><b>Note:</b> Both the Merge and Compare operations may take a long
-  time, especially for large databases.</p>
+
+<hr style="width: 100%; height: 2px;">
+<p><small><b>Note:</b> Both the Merge and Compare operations may take a long
+  time, especially for large databases.</small></p>
+<hr style="width: 100%; height: 2px;">
 
 
 			
+<h3>Properties</h3>
+Display information about the currently opened safe: Database format
+version, number of groups, number of entries, and information about
+when it was last saved and by whom.
 <h3>Exit</h3>
 
 
 
 
+
 			
-<p>Closes the <b>Password Safe</b> program.</p>
+<p>Closes the <b>Password Safe</b> program. If changes were made to the database since the last save, you will be prompted to save the database.</p>
+
 
 
 
@@ -201,16 +246,20 @@ time <b>Password Safe</b> has been used.</p>
 
 
 
+
 		<!-- Added some white space at the bottom for natural scrolling -->
 		<br>
 
 
 
-<br>
-
-
 
 <br>
+
+
+
+
+<br>
+
 
 
 
