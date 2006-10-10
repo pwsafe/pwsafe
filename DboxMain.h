@@ -117,6 +117,7 @@ public:
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
+  bool m_Validate; // do validation after reading db
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
   //}}AFX_VIRTUAL
@@ -209,7 +210,6 @@ protected:
   int Merge(void);
   int Merge( const CMyString &pszFilename );
   int Compare( const CMyString &pszFilename );
-
   int BackupSafe(void);
   int New(void);
   int Restore(void);

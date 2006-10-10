@@ -94,8 +94,10 @@ ThisMfcApp::~ThisMfcApp()
 #if !defined(POCKET_PC)
 static void Usage()
 {
-  AfxMessageBox(_T("Usage: PasswordSafe [-r|-s] [password database]\n")
-		_T("or PasswordSafe [-e|-d] filename"));
+  AfxMessageBox(_T("Usage: PasswordSafe [-r|-v] [password database]\n")
+                _T("or PasswordSafe [-e|-d] filename\n")
+                _T("-r = open read-only\n-v = validate & repair\n-e/d = encrypt/decrypt file")
+                );
 }
 
 // tests if file exists, returns empty string if so, displays error message if not
@@ -470,6 +472,10 @@ ThisMfcApp::InitInstance()
         break;
       case 's': case 'S':
         dbox.SetStartSilent(true);
+        dbox.SetCurFile(fn);
+        break;
+      case 'v': case 'V':
+        dbox.m_Validate = true;
         dbox.SetCurFile(fn);
         break;
       default:

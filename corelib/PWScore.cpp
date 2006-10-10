@@ -1203,3 +1203,80 @@ void PWScore::CopyPWList(const ItemList &in)
         in.GetNext(listPos);
     }
 }
+
+// The following structure needed for remembering details of uuids to
+// ensure they are unique
+struct st_uuids {
+  DWORD dw_uuidA;
+  DWORD dw_uuidB;
+  DWORD dw_uuidC;
+  DWORD dw_uuidD;
+  POSITION nPos;
+};
+
+bool
+PWScore::Validate(int &n, unsigned &num_PWH_fixed, 
+                  unsigned &num_uuid_fixed, unsigned &num_uuid_notunique) 
+{
+  // Check uuid is valid
+  // Check uuids are unique
+  // Check PWH is valid
+  POSITION listPos;
+  st_uuids *uuids;
+  uuid_array_t uuid_array;
+	
+
+  TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
+  uuids = new st_uuids [GetNumEntries() + 1];
+  const unsigned short nMajor = GetCurrentMajorVersion();
+  const unsigned short nMinor = GetCurrentMinorVersion();
+
+  num_PWH_fixed = num_uuid_fixed = num_uuid_notunique = 0;
+  n = -1;
+  listPos = GetFirstEntryPosition();
+  while (listPos != NULL) {
+    CItemData &ci = GetEntryAt(listPos);
+    ci.GetUUID(uuid_array);
+    n++;
+    if (uuid_array[0] == 0x00)
+      num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor, uuid_array);
+#if _MSC_VER >= 1400
+    memcpy_s(&uuids[n].dw_uuidA, 16, uuid_array, 16);
+#else
+    memcpy(&uuids[n].dw_uuidA, uuid_array, 16);
+#endif
+    uuids[n].nPos = listPos;
+    num_PWH_fixed += ci.ValidatePWHistory();
+    GetNextEntry(listPos);
+  } // while
+
+ // Curently brute force O(n^2)
+ // Sorting & searching would be O(N*logN)
+ // Best to use a hash or set and test for membership O(1)
+  for (int i = 0; i < n - 1; i++) {
+    for (int j = i + 1; j < n; j++) {
+      if (uuids[i].dw_uuidA == uuids[j].dw_uuidA &&
+          uuids[i].dw_uuidB == uuids[j].dw_uuidB &&
+          uuids[i].dw_uuidC == uuids[j].dw_uuidC && 
+          uuids[i].dw_uuidD == uuids[j].dw_uuidD) {
+        CItemData &ci = GetEntryAt(uuids[j].nPos);
+        ci.CreateUUID();
+        ci.GetUUID(uuid_array);
+#if _MSC_VER >= 1400
+        memcpy_s(&uuids[j].dw_uuidA, 16, uuid_array, 16);
+#else
+        memcpy(&uuids[j].dw_uuidA, uuid_array, 16);
+#endif
+        num_uuid_notunique++;
+      }
+    }
+  }
+  delete[] uuids;
+  TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
+  if ((num_uuid_fixed + num_uuid_notunique + num_PWH_fixed) > 0) {
+    SetChanged(true);
+    return true;
+  } else {
+    return false;
+  }
+}

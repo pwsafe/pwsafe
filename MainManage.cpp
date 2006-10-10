@@ -175,85 +175,22 @@ DboxMain::Restore()
   return PWScore::SUCCESS;
 }
 
-// The following structure needed for remembering details of uuids to
-// ensure they are unique
-struct st_uuids {
-  DWORD dw_uuidA;
-  DWORD dw_uuidB;
-  DWORD dw_uuidC;
-  DWORD dw_uuidD;
-  POSITION nPos;
-};
-
 void
 DboxMain::OnValidate() 
 {
-	// Check uuid is valid
-	// Check uuids are unique
-	// Check PWH is valid
-
-	POSITION listPos;
-	st_uuids *uuids;
-	uuid_array_t uuid_array;
-	int n, num_PWH_fixed, num_uuid_fixed, num_uuid_notunique;
-
-	TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
-	uuids = new st_uuids [m_core.GetNumEntries() + 1];
-	const unsigned short nMajor = m_core.GetCurrentMajorVersion();
-	const unsigned short nMinor = m_core.GetCurrentMinorVersion();
-
-	num_PWH_fixed = num_uuid_fixed = num_uuid_notunique = 0;
-	n = -1;
-	listPos = m_core.GetFirstEntryPosition();
-	while (listPos != NULL) {
-		CItemData &ci = m_core.GetEntryAt(listPos);
-		ci.GetUUID(uuid_array);
-		n++;
-		if (uuid_array[0] == 0x00)
-			num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor, uuid_array);
-#if _MSC_VER >= 1400
-		memcpy_s(&uuids[n].dw_uuidA, 16, uuid_array, 16);
-#else
-		memcpy(&uuids[n].dw_uuidA, uuid_array, 16);
-#endif
-		uuids[n].nPos = listPos;
-		num_PWH_fixed += ci.ValidatePWHistory();
-		m_core.GetNextEntry(listPos);
-	} // while
-
-	// Is this quicker than sorting first and then looking for duplicates?
-	// Who knows!
-	for (int i = 0; i < n - 1; i++) {
-		for (int j = i + 1; j < n; j++) {
-			if (uuids[i].dw_uuidA == uuids[j].dw_uuidA &&
-				uuids[i].dw_uuidB == uuids[j].dw_uuidB &&
-				uuids[i].dw_uuidC == uuids[j].dw_uuidC && 
-				uuids[i].dw_uuidD == uuids[j].dw_uuidD) {
-				CItemData &ci = m_core.GetEntryAt(uuids[j].nPos);
-				ci.CreateUUID();
-				ci.GetUUID(uuid_array);
-#if _MSC_VER >= 1400
-				memcpy_s(&uuids[j].dw_uuidA, 16, uuid_array, 16);
-#else
-				memcpy(&uuids[j].dw_uuidA, uuid_array, 16);
-#endif
-				num_uuid_notunique++;
-			}
-		}
-	}
-	if ( (num_uuid_fixed + num_uuid_notunique + num_PWH_fixed) != 0)
-		m_core.SetChanged(true);
-
-	delete uuids;
-	TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
-
-	CString cs_msg;
+  int n;
+  unsigned num_PWH_fixed, num_uuid_fixed, num_uuid_notunique;
+  CString cs_msg;
+  if (m_core.Validate(n, num_PWH_fixed, num_uuid_fixed, num_uuid_notunique)) {
 	cs_msg.Format(_T("Number of entries processed: %d\n\n"
 	                 "Number of UUIDs fixed: %d\n\n"
 	                 "Number of UUIDs made unique: %d\n\n"
 	                 "Number of Password Histories fixed: %d"),
-	                 n + 1, num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
-	AfxMessageBox(cs_msg, MB_OK);
+                  n + 1, num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
+  } else {
+    cs_msg = _T("Database validated - no problems found.");
+  }
+  AfxMessageBox(cs_msg, MB_OK);
 }
 
 void

@@ -119,6 +119,9 @@ class PWScore {
   void SetDisplayStatus(char *p_char_displaystatus, const int length);
   CString GetDisplayStatus() {return m_displaystatus;}
   void CopyPWList(const ItemList &in);
+  // Validate() returns true if data modified, false if all OK
+  bool Validate(int &n, unsigned &num_PWH_fixed, 
+                unsigned &num_uuid_fixed, unsigned &num_uuid_notunique);
 
  private:
   CMyString m_currfile; // current pw db filespec
