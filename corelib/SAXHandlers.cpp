@@ -6,6 +6,7 @@
 #include "MyString.h"
 #include "util.h"
 #include "SAXHandlers.h"
+#include "UUIDGen.h"
 #include "xml_import.h"
 
 // Stop warnings about unused formal parameters!
@@ -214,6 +215,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 		cur_entry->changed = _T("");
 		cur_entry->pwhistory = _T("");
 		cur_entry->notes = _T("");
+		cur_entry->uuid = _T("");
 	}
 
 	if (_tcscmp(szCurElement, _T("ctime")) == 0)
@@ -285,7 +287,20 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 	if (_tcscmp(szCurElement, _T("entry")) == 0) {
 		CItemData tempitem;
 		tempitem.Clear();
-		tempitem.CreateUUID();
+		if (cur_entry->uuid.IsEmpty())
+			tempitem.CreateUUID();
+		else {
+			uuid_array_t uuid_array;
+#if _MSC_VER >= 1400
+			int nscanned = sscanf_s(cur_entry->uuid, "%32x", uuid_array);
+#else
+			int nscanned = sscanf(cur_entry->uuid, "%32x", uuid_array);
+#endif
+			if (nscanned != 1)
+				tempitem.CreateUUID();
+			else
+				tempitem.SetUUID(uuid_array);
+		}
 		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? "" : m_ImportedPrefix + ".");
 		tempitem.SetGroup(newgroup + cur_entry->group);
 		if (cur_entry->title.GetLength() != 0)
@@ -368,6 +383,10 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
 	if (_tcscmp(szCurElement, _T("notes")) == 0) {
 		cur_entry->notes = m_strElemContent;
+	}
+
+	if (_tcscmp(szCurElement, _T("uuid")) == 0) {
+		cur_entry->uuid = m_strElemContent;
 	}
 
 	if (_tcscmp(szCurElement, _T("status")) == 0) {
