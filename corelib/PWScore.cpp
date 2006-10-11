@@ -1238,6 +1238,7 @@ void PWScore::CopyPWList(const ItemList &in)
         m_pwlist.AddTail(ci);
         in.GetNext(listPos);
     }
+    m_changed = true;
 }
 
 // The following structure needed for remembering details of uuids to
