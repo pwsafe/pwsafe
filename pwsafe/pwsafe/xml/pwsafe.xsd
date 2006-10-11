@@ -7,6 +7,12 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="uuidType">
+  <xs:restriction base="xs:hexBinary">
+    <xs:length value="16" fixed="true"/>
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="stringType">
   <xs:restriction base="xs:string">
     <xs:whiteSpace value="preserve" />
@@ -33,6 +39,7 @@
               <xs:element name="url" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="autotype" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="notes" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="uuid" type="uuidType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ctime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="atime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ltime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
@@ -67,9 +74,12 @@
           </xs:complexType>
         </xs:element>
       </xs:sequence>
+      <xs:attribute name="delimiter" type="characterType" use="required" />
       <xs:attribute name="Database" type="stringType" use="optional" />
       <xs:attribute name="ExportTimeStamp" type="xs:dateTime" use="optional" />
-      <xs:attribute name="delimiter" type="characterType" use="required" />
+      <xs:attribute name="FromDatabaseFormat" type="stringType" use="optional" />
+      <xs:attribute name="WhatSaved" type="stringType" use="optional" />
+      <xs:attribute name="WhoSaved" type="stringType" use="optional" />
     </xs:complexType>
   </xs:element>
 </xs:schema>

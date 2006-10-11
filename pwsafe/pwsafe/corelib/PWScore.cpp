@@ -7,6 +7,7 @@
 #include "PWSrand.h"
 #include "Util.h"
 #include "PWSXML.h"
+#include "UUIDGen.h"
 
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
@@ -222,6 +223,8 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 
 	CList<PWHistEntry, PWHistEntry&>* pPWHistList;
 	CMyString tmp, pwh;
+	CString cs_tmp;
+	uuid_array_t uuid_array;
 
 	char buffer[8];
 	time_t time_now;
@@ -235,15 +238,34 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 	time(&time_now);
 	const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
+	CString wls(_T(""));
+	if (!m_wholastsaved.IsEmpty()) {
+		int ulen; 
+		TCHAR *lpszWLS = m_wholastsaved.GetBuffer(wls.GetLength() + 1);
+#if _MSC_VER >= 1400
+		int iread = sscanf_s(lpszWLS, "%4x", &ulen);
+#else
+		int iread = sscanf(lpszWLS, "%4x", &ulen);
+#endif
+		m_wholastsaved.ReleaseBuffer();
+		ASSERT(iread == 1);
+		wls.Format("%s on %s", m_wholastsaved.Mid(4, ulen), m_wholastsaved.Mid(ulen + 4));
+	}
 	of << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" << endl;
 	of << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
 	of << endl;
 	of << "<passwordsafe" << endl;
 	tmp = m_currfile;
 	tmp.Replace(_T("&"), _T("&amp;"));
+	of << "delimiter=\"" << delimiter << "\"" << endl;
 	of << "Database=\"" << tmp << "\"" << endl;
 	of << "ExportTimeStamp=\"" << now << "\"" << endl;
-	of << "delimiter=\"" << delimiter << "\"" << endl;
+	cs_tmp.Format(_T("%d.%02d"), m_nCurrentMajorVersion, m_nCurrentMinorVersion);
+	of << "FromDatabaseFormat=\"" << cs_tmp << "\"" << endl;
+	if (!m_wholastsaved.IsEmpty())
+		of << "WhoSaved=\"" << wls << "\"" << endl;
+	if (!m_whatlastsaved.IsEmpty())
+		of << "WhatSaved=\"" << m_whatlastsaved << "\"" << endl;
 	of << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
 	of << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
 	of << endl;
@@ -284,6 +306,20 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 		tmp = temp.GetNotes(delimiter);
 		if (!tmp.IsEmpty())
 			of << "\t\t<notes><![CDATA[" << tmp << "]]></notes>" << endl;
+		temp.GetUUID(uuid_array);
+		char uuid_buffer[33];
+#if _MSC_VER >= 1400
+		sprintf_s(uuid_buffer, 33,
+#else
+		sprintf(uuid_buffer,
+#endif
+			"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+			uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3],
+			uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7],
+			uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11],
+			uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+		uuid_buffer[32] = '\0';
+		of << "\t\t<uuid><![CDATA[" << uuid_buffer << "]]></uuid>" << endl;
 
 		tmp = temp.GetCTimeXML();
 		if (!tmp.IsEmpty()) {
