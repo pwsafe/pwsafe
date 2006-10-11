@@ -598,7 +598,10 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 						&status, &old_max, &num_saved);
 #endif
 					cs_tmp.ReleaseBuffer();
-					if (iread == 3 && status == 1 && num_saved <= new_default_max) {
+					if (iread == 3 && 
+						status == 1 && 
+						old_max != new_default_max &&
+						num_saved <= new_default_max) {
 						cs_tmp = CMyString(cs_Buffer) + cs_tmp.Mid(3);
 						ci.SetPWHistory(cs_tmp);
 						num_altered++;
