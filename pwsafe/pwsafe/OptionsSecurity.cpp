@@ -44,7 +44,6 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
 	DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
 	DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
-	DDV_MinMaxInt(pDX, m_IdleTimeOut, 1, 120);
 	//}}AFX_DATA_MAP
 }
 
@@ -85,6 +84,13 @@ BOOL COptionsSecurity::OnInitDialog()
 BOOL COptionsSecurity::OnKillActive()
 {
   CPropertyPage::OnKillActive();
+
+  // Check that options, as set, are valid.
+  if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
+  	AfxMessageBox(_T("Time out period must be between 1 and 120 minutes."));
+  	((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+  	return FALSE;
+  }
 
   return TRUE;
 }
