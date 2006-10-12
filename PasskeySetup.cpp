@@ -87,8 +87,9 @@ void CPasskeySetup::OnOK()
   // Vox populi vox dei - folks want the ability to use a weak
   // passphrase, best we can do is warn them...
   // If someone want to build a version that insists on proper
-  // passphrases, then just uncomment the following line
-  //#define PWS_FORCE_STRONG_PASSPHRASE
+  // passphrases, then just define the preprocessor macro
+  // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
+  // (also used in CPasskeyChangeDlg)
 #ifndef _DEBUG // for debug, we want no checks at all, to save time
   CMyString errmess;
   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {

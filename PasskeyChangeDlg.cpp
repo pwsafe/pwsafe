@@ -72,25 +72,39 @@ CPasskeyChangeDlg::OnInitDialog()
 void
 CPasskeyChangeDlg::OnOK() 
 {
-   CMyString errmess;
+  CMyString errmess;
 
-   UpdateData(TRUE);
-   int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), m_oldpasskey);
-   if (rc == PWScore::WRONG_PASSWORD)
-     AfxMessageBox(_T("The old safe combination is not correct"));
-   else if (rc == PWScore::CANT_OPEN_FILE)
-     AfxMessageBox(_T("Cannot verify old safe combination - file gone?"));
-   else if (m_confirmnew != m_newpasskey)
-      AfxMessageBox(_T("New safe combination and confirmation do not match"));
-   else if (m_newpasskey.IsEmpty())
-      AfxMessageBox(_T("The new safe combination cannot be blank."));
-   else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
-     CString msg(_T("Weak password:\n"));
-     msg += CString(errmess);
-     AfxMessageBox(msg, MB_ICONSTOP);
-   } else {
-     super::OnOK();
-   }
+  UpdateData(TRUE);
+  int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), m_oldpasskey);
+  if (rc == PWScore::WRONG_PASSWORD)
+    AfxMessageBox(_T("The old safe combination is not correct"));
+  else if (rc == PWScore::CANT_OPEN_FILE)
+    AfxMessageBox(_T("Cannot verify old safe combination - file gone?"));
+  else if (m_confirmnew != m_newpasskey)
+    AfxMessageBox(_T("New safe combination and confirmation do not match"));
+  else if (m_newpasskey.IsEmpty())
+    AfxMessageBox(_T("The new safe combination cannot be blank."));
+  // Vox populi vox dei - folks want the ability to use a weak
+  // passphrase, best we can do is warn them...
+  // If someone want to build a version that insists on proper
+  // passphrases, then just define the preprocessor macro
+  // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
+  // (also used in CPasskeySetup)
+  else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
+    CString msg(_T("Weak password:\n"));
+    msg += CString(errmess);
+#ifndef PWS_FORCE_STRONG_PASSPHRASE
+    msg += _T("\nUse it anyway?");
+    int rc = AfxMessageBox(msg, MB_YESNO | MB_ICONSTOP);
+    if (rc == IDYES)
+      super::OnOK();
+#else
+    msg += _T("\nPlease try another");
+    AfxMessageBox(msg, MB_OK | MB_ICONSTOP);
+#endif // PWS_FORCE_STRONG_PASSPHRASE
+  } else {
+    super::OnOK();
+  }
 }
 
 
