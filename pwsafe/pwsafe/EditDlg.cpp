@@ -143,7 +143,7 @@ CEditDlg::OnOK()
   UpdateData(TRUE);
   if (m_password != HIDDEN_PASSWORD)
     m_realpassword = m_password;
-  if (m_notes != HIDDEN_PASSWORD)
+  if (m_notes != HIDDEN_NOTES)
     m_realnotes = m_notes;
 
   m_bIsModified |= (
@@ -383,7 +383,10 @@ void CEditDlg::ShowNotes()
 void CEditDlg::HideNotes()
 {
   m_isNotesHidden = true;
-  m_notes = HIDDEN_NOTES;
+  if (m_notes != HIDDEN_NOTES) {
+    m_realnotes = m_notes;
+    m_notes = HIDDEN_NOTES;
+  }
   ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
 }
 
@@ -568,7 +571,6 @@ void CEditDlg::OnEnKillfocusNotes()
   UpdateData(TRUE);
   if (!m_isNotesHidden &&
       !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
-    m_realnotes = m_notes;
     HideNotes();
   }
   UpdateData(FALSE);

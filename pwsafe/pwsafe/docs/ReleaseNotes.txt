@@ -10,16 +10,18 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.04
 =====================
-
+None
 
 Changes to Existing Features in 3.04
 ====================================
-
+None
 
 Bugs fixed in 3.04
 ==================
 [1575279] Database now marked as "changed" after performing PWHistory operations
-
+[1575432] Hidden notes no longer lost after edit
+[1575415] Weak master password allowed on password change as well as
+new safe.
 
 New Features for 3.03
 =====================
