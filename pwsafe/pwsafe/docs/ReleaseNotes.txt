@@ -1,4 +1,4 @@
-Password Safe 3.04 Release Note - ??? 200?
+Password Safe 3.04 Release Note - October 2006
 ==============================================
 
 This note describe the new features, fixed bugs and known problems
@@ -18,8 +18,8 @@ None
 
 Bugs fixed in 3.04
 ==================
-[1575279] Database now marked as "changed" after performing PWHistory operations
 [1575432] Hidden notes no longer lost after edit
+[1575279] Database now marked as "changed" after performing PWHistory operations
 [1575415] Weak master password allowed on password change as well as
 new safe.
 
