@@ -468,8 +468,14 @@ DboxMain::OnHotKey(WPARAM , LPARAM)
   // to it is meaningless & unused, hence params ignored
   // The hotkey is used to invoke the app window, prompting
   // for passphrase if needed.
-  app.SetHotKeyPressed(true);
-  PostMessage(WM_COMMAND, ID_MENUITEM_UNMINIMIZE);
+
+  if (IsWindowVisible()) {
+	  SetActiveWindow();
+	  SetForegroundWindow();
+  } else {
+  	app.SetHotKeyPressed(true);
+    PostMessage(WM_COMMAND, ID_MENUITEM_UNMINIMIZE);
+  }
   return 0;
 }
 
