@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="windows-1255"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="corelib"
-	SccProjectName=""
-	SccLocalPath=""
-	Keyword="MFCProj">
+	ProjectGUID="{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
+	Keyword="MFCProj"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="0">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -26,91 +46,122 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="false"
 				PrecompiledHeaderFile=".\Debug/corelib.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="4"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\Debug\corelib.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="1037"/>
+				Culture="1037"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLibrarianTool"
+				OutputFile=".\Debug\corelib.lib"
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="0">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="false"
 				PrecompiledHeaderFile=".\Release/corelib.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="4"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\Release\corelib.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1037"/>
+				Culture="1037"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLibrarianTool"
+				OutputFile=".\Release\corelib.lib"
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -118,139 +169,184 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
 			<File
-				RelativePath=".\BlowFish.cpp">
+				RelativePath=".\BlowFish.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\hmac.cpp">
+				RelativePath=".\hmac.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ItemData.cpp">
+				RelativePath=".\ItemData.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ItemField.cpp">
+				RelativePath=".\ItemField.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MyString.cpp">
+				RelativePath=".\MyString.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWCharPool.cpp">
+				RelativePath=".\PWCharPool.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWScore.cpp">
+				RelativePath=".\PWScore.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSfile.cpp">
+				RelativePath=".\PWSfile.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSfileV1V2.cpp">
+				RelativePath=".\PWSfileV1V2.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSfileV3.cpp">
+				RelativePath=".\PWSfileV3.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSprefs.cpp">
+				RelativePath=".\PWSprefs.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSrand.cpp">
+				RelativePath=".\PWSrand.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSXML.cpp">
+				RelativePath=".\PWSXML.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\SAXHandlers.cpp">
+				RelativePath=".\SAXHandlers.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\sha1.cpp">
+				RelativePath=".\sha1.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\sha256.cpp">
+				RelativePath=".\sha256.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TwoFish.cpp">
+				RelativePath=".\TwoFish.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\Util.cpp">
+				RelativePath=".\Util.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\UUIDGen.cpp">
+				RelativePath=".\UUIDGen.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\XMLprefs.cpp">
+				RelativePath=".\XMLprefs.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
+			Filter="h;hpp;hxx;hm;inl"
+			>
 			<File
-				RelativePath=".\BlowFish.h">
+				RelativePath=".\BlowFish.h"
+				>
 			</File>
 			<File
-				RelativePath=".\hmac.h">
+				RelativePath=".\hmac.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ItemData.h">
+				RelativePath=".\ItemData.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ItemField.h">
+				RelativePath=".\ItemField.h"
+				>
 			</File>
 			<File
-				RelativePath=".\MyString.h">
+				RelativePath=".\MyString.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWCharPool.h">
+				RelativePath=".\PWCharPool.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWScore.h">
+				RelativePath=".\PWScore.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSfile.h">
+				RelativePath=".\PWSfile.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSfileV1V2.h">
+				RelativePath=".\PWSfileV1V2.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSfileV3.h">
+				RelativePath=".\PWSfileV3.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PwsPlatform.h">
+				RelativePath=".\PwsPlatform.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSprefs.h">
+				RelativePath=".\PWSprefs.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSrand.h">
+				RelativePath=".\PWSrand.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSXML.h">
+				RelativePath=".\PWSXML.h"
+				>
 			</File>
 			<File
-				RelativePath=".\SAXHandlers.h">
+				RelativePath=".\SAXHandlers.h"
+				>
 			</File>
 			<File
-				RelativePath=".\sha1.h">
+				RelativePath=".\sha1.h"
+				>
 			</File>
 			<File
-				RelativePath=".\sha256.h">
+				RelativePath=".\sha256.h"
+				>
 			</File>
 			<File
-				RelativePath=".\TwoFish.h">
+				RelativePath=".\TwoFish.h"
+				>
 			</File>
 			<File
-				RelativePath=".\typedefs.h">
+				RelativePath=".\typedefs.h"
+				>
 			</File>
 			<File
-				RelativePath=".\Util.h">
+				RelativePath=".\Util.h"
+				>
 			</File>
 			<File
-				RelativePath=".\UUIDGen.h">
+				RelativePath=".\UUIDGen.h"
+				>
 			</File>
 			<File
-				RelativePath=".\xml_import.h">
+				RelativePath=".\xml_import.h"
+				>
 			</File>
 			<File
-				RelativePath=".\XMLprefs.h">
+				RelativePath=".\XMLprefs.h"
+				>
 			</File>
 		</Filter>
 	</Files>

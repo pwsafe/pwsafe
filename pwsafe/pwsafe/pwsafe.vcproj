@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="windows-1255"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="pwsafe"
+	ProjectGUID="{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
 	RootNamespace="pwsafe"
-	SccProjectName=""
-	SccLocalPath=""
-	Keyword="MFCProj">
+	Keyword="MFCProj"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			WholeProgramOptimization="TRUE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/pwsafe.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Release/pwsafe.pch"
 				AssemblerListingLocation=".\Release/"
@@ -37,116 +62,152 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="4"
 				DebugInformationFormat="3"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib"
 				OutputFile=".\Release/pwsafe.exe"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories=".\corelib\Release,C:\local\msvc\HTMLHelpWorkshop\lib"
 				ProgramDatabaseFile=".\Release/pwsafe.pdb"
 				SubSystem="2"
-				TargetMachine="1"/>
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/pwsafe.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/pwsafe.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
-				StringPooling="TRUE"
+				StringPooling="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				BufferSecurityCheck="TRUE"
-				UsePrecompiledHeader="2"
+				BufferSecurityCheck="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/pwsafe.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				BrowseInformation="1"
 				WarningLevel="4"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib Rpcrt4.lib version.lib"
 				OutputFile=".\Debug/pwsafe.exe"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories=".\corelib\Debug,C:\local\msvc\HTMLHelpWorkshop\lib"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/pwsafe.pdb"
 				SubSystem="2"
-				TargetMachine="1"/>
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/pwsafe.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -154,389 +215,532 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
 			<File
-				RelativePath=".\AddDlg.cpp">
+				RelativePath=".\AddDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ClearQuestionDlg.cpp">
+				RelativePath=".\ClearQuestionDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ConfirmDeleteDlg.cpp">
+				RelativePath=".\ConfirmDeleteDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ControlExtns.cpp">
+				RelativePath=".\ControlExtns.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\CryptKeyEntry.cpp">
+				RelativePath=".\CryptKeyEntry.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\DboxMain.cpp">
+				RelativePath=".\DboxMain.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\DboxPassword.cpp">
+				RelativePath=".\DboxPassword.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\DboxTray.cpp">
+				RelativePath=".\DboxTray.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\EditDlg.cpp">
+				RelativePath=".\EditDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ExpDTDlg.cpp">
+				RelativePath=".\ExpDTDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ExportText.cpp">
+				RelativePath=".\ExportText.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ExportTextXDlg.cpp">
+				RelativePath=".\ExportTextXDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ExportXML.cpp">
+				RelativePath=".\ExportXML.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ExpPWListDlg.cpp">
+				RelativePath=".\ExpPWListDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\FindDlg.cpp">
+				RelativePath=".\FindDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ImportDlg.cpp">
+				RelativePath=".\ImportDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ImportXMLDlg.cpp">
+				RelativePath=".\ImportXMLDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ImportXMLErrDlg.cpp">
+				RelativePath=".\ImportXMLErrDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\KeySend.cpp">
+				RelativePath=".\KeySend.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\main.cpp">
+				RelativePath=".\main.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MainEdit.cpp">
+				RelativePath=".\MainEdit.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MainFile.cpp">
+				RelativePath=".\MainFile.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MainManage.cpp">
+				RelativePath=".\MainManage.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MainView.cpp">
+				RelativePath=".\MainView.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\model.cpp">
+				RelativePath=".\model.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\MyTreeCtrl.cpp">
+				RelativePath=".\MyTreeCtrl.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsDisplay.cpp">
+				RelativePath=".\OptionsDisplay.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsMisc.cpp">
+				RelativePath=".\OptionsMisc.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsPasswordHistory.cpp">
+				RelativePath=".\OptionsPasswordHistory.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsPasswordPolicy.cpp">
+				RelativePath=".\OptionsPasswordPolicy.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsSecurity.cpp">
+				RelativePath=".\OptionsSecurity.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsSystem.cpp">
+				RelativePath=".\OptionsSystem.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PasskeyChangeDlg.cpp">
+				RelativePath=".\PasskeyChangeDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PasskeyEntry.cpp">
+				RelativePath=".\PasskeyEntry.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PasskeySetup.cpp">
+				RelativePath=".\PasskeySetup.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\Properties.cpp">
+				RelativePath=".\Properties.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PwFont.cpp">
+				RelativePath=".\PwFont.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWHistDlg.cpp">
+				RelativePath=".\PWHistDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSRecentFileList.cpp">
+				RelativePath=".\PWSRecentFileList.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\QueryAddName.cpp">
+				RelativePath=".\QueryAddName.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\QuerySetDef.cpp">
+				RelativePath=".\QuerySetDef.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\RUEList.cpp">
+				RelativePath=".\RUEList.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\SysColStatic.cpp">
+				RelativePath=".\SysColStatic.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\SystemTray.cpp">
+				RelativePath=".\SystemTray.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\ThisMfcApp.cpp">
+				RelativePath=".\ThisMfcApp.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\TryAgainDlg.cpp">
+				RelativePath=".\TryAgainDlg.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\winview.cpp">
+				RelativePath=".\winview.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
+			Filter="h;hpp;hxx;hm;inl"
+			>
 			<File
-				RelativePath=".\AddDlg.h">
+				RelativePath=".\AddDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\BlowFish.h">
+				RelativePath=".\BlowFish.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ClearQuestionDlg.h">
+				RelativePath=".\ClearQuestionDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ConfirmDeleteDlg.h">
+				RelativePath=".\ConfirmDeleteDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ControlExtns.h">
+				RelativePath=".\ControlExtns.h"
+				>
 			</File>
 			<File
-				RelativePath=".\CryptKeyEntry.h">
+				RelativePath=".\CryptKeyEntry.h"
+				>
 			</File>
 			<File
-				RelativePath=".\DboxMain.h">
+				RelativePath=".\DboxMain.h"
+				>
 			</File>
 			<File
-				RelativePath=".\EditDlg.h">
+				RelativePath=".\EditDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ExpDTDlg.h">
+				RelativePath=".\ExpDTDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ExportText.h">
+				RelativePath=".\ExportText.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ExportTextXDlg.h">
+				RelativePath=".\ExportTextXDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ExportXML.h">
+				RelativePath=".\ExportXML.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ExpPWListDlg.h">
+				RelativePath=".\ExpPWListDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\FileDialogExt.h">
+				RelativePath=".\FileDialogExt.h"
+				>
 			</File>
 			<File
-				RelativePath=".\FindDlg.h">
+				RelativePath=".\FindDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ImportDlg.h">
+				RelativePath=".\ImportDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ImportXMLDlg.h">
+				RelativePath=".\ImportXMLDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ImportXMLErrDlg.h">
+				RelativePath=".\ImportXMLErrDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ItemData.h">
+				RelativePath=".\ItemData.h"
+				>
 			</File>
 			<File
-				RelativePath=".\jprdebug.h">
+				RelativePath=".\jprdebug.h"
+				>
 			</File>
 			<File
-				RelativePath=".\model.h">
+				RelativePath=".\model.h"
+				>
 			</File>
 			<File
-				RelativePath=".\MyString.h">
+				RelativePath=".\MyString.h"
+				>
 			</File>
 			<File
-				RelativePath=".\MyTreeCtrl.h">
+				RelativePath=".\MyTreeCtrl.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsDisplay.h">
+				RelativePath=".\OptionsDisplay.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsMisc.h">
+				RelativePath=".\OptionsMisc.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsPasswordHistory.h">
+				RelativePath=".\OptionsPasswordHistory.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsPasswordPolicy.h">
+				RelativePath=".\OptionsPasswordPolicy.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsSecurity.h">
+				RelativePath=".\OptionsSecurity.h"
+				>
 			</File>
 			<File
-				RelativePath=".\OptionsSystem.h">
+				RelativePath=".\OptionsSystem.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PasskeyChangeDlg.h">
+				RelativePath=".\PasskeyChangeDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PasskeyEntry.h">
+				RelativePath=".\PasskeyEntry.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PasskeySetup.h">
+				RelativePath=".\PasskeySetup.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PasswordDb.h">
+				RelativePath=".\PasswordDb.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PasswordSafe.h">
+				RelativePath=".\PasswordSafe.h"
+				>
 			</File>
 			<File
-				RelativePath=".\Properties.h">
+				RelativePath=".\Properties.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWCharPool.h">
+				RelativePath=".\PWCharPool.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PwFont.h">
+				RelativePath=".\PwFont.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWHistDlg.h">
+				RelativePath=".\PWHistDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PwsBackend.h">
+				RelativePath=".\PwsBackend.h"
+				>
 			</File>
 			<File
-				RelativePath=".\PWSRecentFileList.h">
+				RelativePath=".\PWSRecentFileList.h"
+				>
 			</File>
 			<File
-				RelativePath=".\QueryAddName.h">
+				RelativePath=".\QueryAddName.h"
+				>
 			</File>
 			<File
-				RelativePath=".\QuerySetDef.h">
+				RelativePath=".\QuerySetDef.h"
+				>
 			</File>
 			<File
-				RelativePath=".\resource.h">
+				RelativePath=".\resource.h"
+				>
 			</File>
 			<File
-				RelativePath=".\RUEList.h">
+				RelativePath=".\RUEList.h"
+				>
 			</File>
 			<File
-				RelativePath=".\sha1.h">
+				RelativePath=".\sha1.h"
+				>
 			</File>
 			<File
-				RelativePath=".\StdAfx.h">
+				RelativePath=".\StdAfx.h"
+				>
 			</File>
 			<File
-				RelativePath=".\SysColStatic.h">
+				RelativePath=".\SysColStatic.h"
+				>
 			</File>
 			<File
-				RelativePath=".\SystemTray.h">
+				RelativePath=".\SystemTray.h"
+				>
 			</File>
 			<File
-				RelativePath=".\ThisMfcApp.h">
+				RelativePath=".\ThisMfcApp.h"
+				>
 			</File>
 			<File
-				RelativePath=".\TryAgainDlg.h">
+				RelativePath=".\TryAgainDlg.h"
+				>
 			</File>
 			<File
-				RelativePath=".\Util.h">
+				RelativePath=".\Util.h"
+				>
 			</File>
 			<File
-				RelativePath=".\view.h">
+				RelativePath=".\view.h"
+				>
 			</File>
 			<File
-				RelativePath=".\winview.h">
+				RelativePath=".\winview.h"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
-			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+			>
 			<File
-				RelativePath=".\bitmap1.bmp">
+				RelativePath=".\bitmap1.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\cpane-bw.ico">
+				RelativePath=".\cpane-bw.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\cpane.bmp">
+				RelativePath=".\cpane.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\cpane.ico">
+				RelativePath=".\cpane.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\cpane_s.bmp">
+				RelativePath=".\cpane_s.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\cpanetxt.bmp">
+				RelativePath=".\cpanetxt.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\ibubble.ico">
+				RelativePath=".\ibubble.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\leaf.bmp">
+				RelativePath=".\leaf.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\leaf_exp.bmp">
+				RelativePath=".\leaf_exp.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\locked_tray.ico">
+				RelativePath=".\locked_tray.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\node.bmp">
+				RelativePath=".\node.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\PasswordSafe.rc">
+				RelativePath=".\PasswordSafe.rc"
+				>
 			</File>
 			<File
-				RelativePath=".\psafetxt.bmp">
+				RelativePath=".\psafetxt.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\toolbar1.bmp">
+				RelativePath=".\toolbar1.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\toolbar2.bmp">
+				RelativePath=".\toolbar2.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\toolbar3.bmp">
+				RelativePath=".\toolbar3.bmp"
+				>
 			</File>
 			<File
-				RelativePath=".\tray.ico">
+				RelativePath=".\tray.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\unlocked_tray.ico">
+				RelativePath=".\unlocked_tray.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\w95mbx01.ico">
+				RelativePath=".\w95mbx01.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\w95mbx02.ico">
+				RelativePath=".\w95mbx02.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\w95mbx03.ico">
+				RelativePath=".\w95mbx03.ico"
+				>
 			</File>
 			<File
-				RelativePath=".\w95mbx04.ico">
+				RelativePath=".\w95mbx04.ico"
+				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\PasswordSafe.exe.manifest">
+			RelativePath=".\PasswordSafe.exe.manifest"
+			>
+			<FileConfiguration
+				Name="Release|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="PasswordSafe.rc"/>
+			Value="PasswordSafe.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
