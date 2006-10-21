@@ -258,7 +258,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportText.cpp"
+				RelativePath=".\ExportTextDlg.cpp"
 				>
 			</File>
 			<File
@@ -266,7 +266,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportXML.cpp"
+				RelativePath=".\ExportXMLDlg.cpp"
 				>
 			</File>
 			<File
@@ -447,7 +447,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportText.h"
+				RelativePath=".\ExportTextDlg.h"
 				>
 			</File>
 			<File
@@ -455,7 +455,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportXML.h"
+				RelativePath=".\ExportXMLDlg.h"
 				>
 			</File>
 			<File
@@ -492,10 +492,6 @@
 			</File>
 			<File
 				RelativePath=".\model.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MyString.h"
 				>
 			</File>
 			<File

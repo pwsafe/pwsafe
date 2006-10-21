@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
-#include "ExportXML.h"
+#include "ExportXMLDlg.h"
 #include "PwFont.h"
 
 #ifdef _DEBUG

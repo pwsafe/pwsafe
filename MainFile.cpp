@@ -12,8 +12,8 @@
 
 #include "PasskeySetup.h"
 #include "TryAgainDlg.h"
-#include "ExportText.h"
-#include "ExportXML.h"
+#include "ExportTextDlg.h"
+#include "ExportXMLDlg.h"
 #include "ImportDlg.h"
 #include "ImportXMLDlg.h"
 #include "ImportXMLErrDlg.h"
