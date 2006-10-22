@@ -1,8 +1,9 @@
+#ifndef __PWSFILEV3_H
+#define __PWSFILEV3_H
+
 // PWSfileV3.h
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
-
-#pragma once
 
 #include "PWSfile.h"
 #include "TwoFish.h"
@@ -63,3 +64,4 @@ class PWSfileV3 : public PWSfile {
                          const unsigned char *passkey, unsigned long passLen,
                          unsigned int N, unsigned char *Ptag);
 };
+#endif /* __PWSFILEV3_H */

@@ -20,6 +20,7 @@
 #include "OptionsPasswordPolicy.h"
 #include "OptionsPasswordHistory.h"
 #include "OptionsMisc.h"
+#include "OptionsBackup.h"
 
 #include <afxpriv.h>
 
@@ -115,7 +116,9 @@ DboxMain::Restore()
                    _T("bak"),
                    currbackup,
                    OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                   _T("Password Safe Backups (*.bak)|*.bak||"),
+                   _T("Password Safe Backups (*.bak)|*.bak|")
+				   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
+				   _T("|"),
                    this);
     fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to restore:");
     rc = fd.DoModal();
@@ -132,7 +135,7 @@ DboxMain::Restore()
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
     temp = backup + _T("\n\nCan't open file. Please choose another.");
-    MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+    MessageBox(temp, _T("File open error."), MB_OK | MB_ICONWARNING);
   case TAR_OPEN:
     ASSERT(0);
     return PWScore::FAILURE; // shouldn't be an option here
@@ -166,7 +169,7 @@ DboxMain::Restore()
   m_core.SetCurFile(_T("")); //Force a Save As...
   m_core.SetChanged(Data); //So that the restored file will be saved
 #if !defined(POCKET_PC)
-  m_title = _T("Password Safe - <Untitled Restored Backup>");
+  m_titlebar = _T("Password Safe - <Untitled Restored Backup>");
   app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
@@ -181,8 +184,8 @@ DboxMain::OnValidate()
   CString cs_msg;
   if (!m_core.Validate(cs_msg)) {
     cs_msg = _T("Database validated - no problems found.");
-  }
-  AfxMessageBox(cs_msg, MB_OK);
+			}
+	AfxMessageBox(cs_msg, MB_OK);
 }
 
 void
@@ -195,6 +198,7 @@ DboxMain::OnOptions()
   COptionsPasswordHistory passwordhistory;
   COptionsSystem          system;
   COptionsMisc            misc;
+  COptionsBackup          backup;
   PWSprefs               *prefs = PWSprefs::GetInstance();
   BOOL                    prevLockOIT; // lock on idle timeout set?
   BOOL                    brc, save_hotkey_enabled;
@@ -262,8 +266,6 @@ DboxMain::OnOptions()
 
   misc.m_confirmdelete = prefs->
     GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
-  misc.m_saveimmediately = prefs->
-    GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   misc.m_maintaindatetimestamps = prefs->
     GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
   misc.m_escexits = prefs->
@@ -289,6 +291,26 @@ DboxMain::OnOptions()
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
 
+  backup.m_saveimmediately = prefs->
+    GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
+  backup.m_backupbeforesave = prefs->
+    GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
+  backup.m_backupprefix = prefs->
+    GetPref(PWSprefs::BackupPrefix);
+  backup.m_userbackupprefix = CString(prefs->
+    GetPref(PWSprefs::BackupPrefixValue));
+  backup.m_backupsuffix = prefs->
+    GetPref(PWSprefs::BackupSuffix);
+  backup.m_maxnumincbackups = prefs->
+    GetPref(PWSprefs::BackupMaxIncremented);
+  backup.m_backuplocation = prefs->
+    GetPref(PWSprefs::BackupLocation);
+  backup.m_userbackupsubdirectory = CString(prefs->
+    GetPref(PWSprefs::BackupSubDirectoryValue));
+  backup.m_userbackupotherlocation = CString(prefs->
+    GetPref(PWSprefs::BackupOtherLocationValue));
+
+  optionsDlg.AddPage( &backup );
   optionsDlg.AddPage( &display );
   optionsDlg.AddPage( &misc );
   optionsDlg.AddPage( &passwordpolicy );
@@ -313,7 +335,8 @@ DboxMain::OnOptions()
   int rc = optionsDlg.DoModal();
   app.EnableAccelerator();
 
-  if (rc == IDOK) {
+  if (rc == IDOK)
+    {
       /*
       **  First save all the options.
       */
@@ -324,7 +347,7 @@ DboxMain::OnOptions()
       prefs->SetPref(PWSprefs::ShowPWInList,
                      display.m_pwshowinlist == TRUE);
       prefs->SetPref(PWSprefs::ShowNotesDefault,
-                     display.m_notesshowinedit == TRUE);
+                     display.m_notesshowinedit == TRUE);                   
 #if defined(POCKET_PC)
       prefs->SetPref(PWSprefs::DCShowsPassword,
                      display.m_dcshowspassword == TRUE);
@@ -379,8 +402,6 @@ DboxMain::OnOptions()
 
       prefs->SetPref(PWSprefs::DeleteQuestion,
                      misc.m_confirmdelete == FALSE);
-      prefs->SetPref(PWSprefs::SaveImmediately,
-                     misc.m_saveimmediately == TRUE);
       prefs->SetPref(PWSprefs::MaintainDateTimeStamps,
                      misc.m_maintaindatetimestamps == TRUE);
       prefs->SetPref(PWSprefs::EscExits,
@@ -399,7 +420,7 @@ DboxMain::OnOptions()
 	  if (misc.m_hotkey_value == 0)
 		  save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
 
-	  prefs->SetPref(PWSprefs::HotKeyEnabled,
+      prefs->SetPref(PWSprefs::HotKeyEnabled,
                      misc.m_hotkey_enabled == TRUE);
 
       prefs->SetPref(PWSprefs::UseDefUser,
@@ -409,15 +430,36 @@ DboxMain::OnOptions()
       prefs->SetPref(PWSprefs::QuerySetDef,
                      misc.m_querysetdef == TRUE);
 
+      prefs->SetPref(PWSprefs::SaveImmediately,
+                     backup.m_saveimmediately == TRUE);
+      prefs->SetPref(PWSprefs::BackupBeforeEverySave,
+                     backup.m_backupbeforesave == TRUE);
+      prefs->SetPref(PWSprefs::BackupPrefix,
+                     backup.m_backupprefix);
+      prefs->SetPref(PWSprefs::BackupPrefixValue,
+                     backup.m_userbackupprefix);
+      prefs->SetPref(PWSprefs::BackupSuffix,
+                     backup.m_backupsuffix);
+	  prefs->SetPref(PWSprefs::BackupMaxIncremented,
+                     backup.m_maxnumincbackups);
+      prefs->SetPref(PWSprefs::BackupLocation,
+                     backup.m_backuplocation);    
+      prefs->SetPref(PWSprefs::BackupSubDirectoryValue,
+                     backup.m_userbackupsubdirectory);
+      prefs->SetPref(PWSprefs::BackupOtherLocationValue,
+                     backup.m_userbackupotherlocation);
+
       // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
       /* Update status bar */
       switch (misc.m_doubleclickaction) {
-      	case PWSprefs::DoubleClickCopy: statustext[SB_DBLCLICK] = IDS_STATCOPY; break;
-      	case PWSprefs::DoubleClickEdit: statustext[SB_DBLCLICK] = IDS_STATEDIT; break;
       	case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
       	case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
-      	default: ASSERT(0);
+      	case PWSprefs::DoubleClickCopyNotes: statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
+      	case PWSprefs::DoubleClickCopyPassword: statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
+      	case PWSprefs::DoubleClickCopyUsername: statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
+		case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
+		default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
       }
       m_statusBar.SetIndicators(statustext, SB_TOTAL);
 	  UpdateStatusBar();
@@ -428,7 +470,7 @@ DboxMain::OnOptions()
       /*
       ** Update string in database, if necessary & possible
       */
-      if (prefs->IsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
+      if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
           m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
         // save changed preferences to file
         // Note that we currently can only write the entire file, so any changes
@@ -437,7 +479,7 @@ DboxMain::OnOptions()
         if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
           MessageBox(_T("Failed to save changed preferences"), AfxGetAppName());
         else
-          prefs->ClearChanged();
+          prefs->ClearDBprefsChanged();
       }
       /*
       **  Now update the application according to the options.
@@ -491,25 +533,25 @@ DboxMain::OnOptions()
       m_core.SetDefUsername(misc.m_defusername);
       m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
     }
-    // JHF no hotkeys under WinCE
+      // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
     // Restore hotkey as it was or as user changed it - if he/she pressed OK
     if (save_hotkey_enabled == TRUE) {
       WORD wVirtualKeyCode = WORD(save_hotkey_value & 0xffff);
       WORD mod = WORD(save_hotkey_value >> 16);
-      WORD wModifiers = 0;
-      // Translate between CWnd & CHotKeyCtrl modifiers
-      if (mod & HOTKEYF_ALT) 
-          wModifiers |= MOD_ALT; 
-      if (mod & HOTKEYF_CONTROL) 
-          wModifiers |= MOD_CONTROL; 
-      if (mod & HOTKEYF_SHIFT) 
-          wModifiers |= MOD_SHIFT; 
+		WORD wModifiers = 0;
+		// Translate between CWnd & CHotKeyCtrl modifiers
+		if (mod & HOTKEYF_ALT) 
+			wModifiers |= MOD_ALT; 
+		if (mod & HOTKEYF_CONTROL) 
+			wModifiers |= MOD_CONTROL; 
+		if (mod & HOTKEYF_SHIFT) 
+			wModifiers |= MOD_SHIFT; 
         brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
                        UINT(wModifiers), UINT(wVirtualKeyCode));
-      if (brc == FALSE)
-            AfxMessageBox(IDS_NOHOTKEY, MB_OK);
-    }
+		if (brc == FALSE)
+			AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+      }
 #endif
 }
 
@@ -561,7 +603,7 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 					num_altered++;
 				} else {
 					if (cs_tmp.GetAt(0) == _T('0')) {
-						cs_tmp.SetAt(0, _T('1'));
+							cs_tmp.SetAt(0, _T('1'));
 						ci.SetPWHistory(cs_tmp);
 						num_altered++;
 					}
@@ -598,10 +640,7 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 						&status, &old_max, &num_saved);
 #endif
 					cs_tmp.ReleaseBuffer();
-					if (iread == 3 && 
-						status == 1 && 
-						old_max != new_default_max &&
-						num_saved <= new_default_max) {
+					if (iread == 3 && status == 1 && num_saved <= new_default_max) {
 						cs_tmp = CMyString(cs_Buffer) + cs_tmp.Mid(3);
 						ci.SetPWHistory(cs_tmp);
 						num_altered++;

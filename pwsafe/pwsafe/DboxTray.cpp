@@ -33,34 +33,39 @@ DboxMain::OnTrayLockUnLock()
 	CMyString passkey;
 	int rc;
 
-	if (!app.GetSystemTrayState() == UNLOCKED) {  // User clicked UnLock
-		rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
-		if (rc != PWScore::SUCCESS)
-			return;
+	switch(app.GetSystemTrayState()) {
+		case ThisMfcApp::LOCKED:					// User clicked UnLock
+			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+			if (rc != PWScore::SUCCESS)
+				break;
 
-		rc = m_core.ReadCurFile(passkey);
-		if (rc == PWScore::SUCCESS) {
-			m_needsreading = false;
-			startLockCheckTimer();
-			UpdateSystemTray(UNLOCKED);
-			RefreshList();
-			return;
-	    } else {
-	    	m_needsreading = true;
-	    	UpdateSystemTray(LOCKED);
-	    	app.ClearClipboardData();
-	    	ShowWindow(SW_MINIMIZE);
-	    	if (PWSprefs::GetInstance()->
-                GetPref(PWSprefs::UseSystemTray))
-	    		ShowWindow(SW_HIDE);
-	      	return;
-	    }
-	} else {						// User clicked Lock
-		UpdateSystemTray(LOCKED);
-		app.ClearClipboardData();
-		ShowWindow(SW_MINIMIZE);
-		ShowWindow(SW_HIDE);
+			rc = m_core.ReadCurFile(passkey);
+			if (rc == PWScore::SUCCESS) {
+				m_needsreading = false;
+				startLockCheckTimer();
+				UpdateSystemTray(UNLOCKED);
+				RefreshList();
+			} else {
+				m_needsreading = true;
+				UpdateSystemTray(LOCKED);
+				app.ClearClipboardData();
+				ShowWindow(SW_MINIMIZE);
+				if (PWSprefs::GetInstance()->
+					GetPref(PWSprefs::UseSystemTray))
+					ShowWindow(SW_HIDE);
+			}
+			break;
+		case ThisMfcApp::UNLOCKED:					// User clicked Lock
+			UpdateSystemTray(LOCKED);
+			app.ClearClipboardData();
+			ShowWindow(SW_MINIMIZE);
+			ShowWindow(SW_HIDE);
+			break;
+		case ThisMfcApp::CLOSED:
+		default:
+			break;
 	}
+	return;
 }
 
 void
@@ -68,17 +73,32 @@ DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
 {
 	const CString csUnLock = _T("Unlock Database");
 	const CString csLock = _T("Lock Database");
+	const CString csClosed = _T("No Database Open");
 
+	const int i_state = app.GetSystemTrayState();
 	// Set text to "UnLock" or "Lock"
-	if (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED)
-		pCmdUI->SetText(csLock);
-	else
-		pCmdUI->SetText(csUnLock);
-	// If dialog visible - obviously unlocked and no need to have option to lock
-	if (this->IsWindowVisible() == FALSE)
-		pCmdUI->Enable(TRUE);
-	else
-		pCmdUI->Enable(FALSE);
+	switch (i_state) {
+		case ThisMfcApp::UNLOCKED:
+			pCmdUI->SetText(csLock);
+			break;
+		case ThisMfcApp::LOCKED:
+			pCmdUI->SetText(csUnLock);
+			break;
+		case ThisMfcApp::CLOSED:
+			pCmdUI->Enable(FALSE);
+			pCmdUI->SetText(csClosed);
+			break;
+		default:
+			break;
+	}
+
+	if (i_state != ThisMfcApp::CLOSED) {
+		// If dialog visible - obviously unlocked and no need to have option to lock
+		if (this->IsWindowVisible() == FALSE)
+			pCmdUI->Enable(TRUE);
+		else
+			pCmdUI->Enable(FALSE);
+	}
 }
 
 void

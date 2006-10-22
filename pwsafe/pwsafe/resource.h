@@ -10,10 +10,10 @@
 #define IDD_PASSWORDSAFE_DIALOG         102
 #define IDS_OUTPUTFILE                  102
 #define ID_SYSMENU_ALWAYSONTOP          102
-#define IDS_STATEDIT                    103
+#define IDS_STATVIEWEDIT                103
 #define IDS_STATBROWSE                  104
 #define IDS_STATCOMPANY                 105
-#define IDS_STATCOPY                    106
+#define IDS_STATCOPYPASSWORD            106
 #define IDS_ALWAYSONTOP                 107
 #define IDS_STAT_NUM_IN_DB              108
 #define IDS_READ_ONLY                   109
@@ -23,6 +23,16 @@
 #define IDS_RESETPWHISTORYON            113
 #define IDS_SETMAXPWHISTORY             114
 #define IDS_NOHOTKEY                    115
+#define IDS_STATCOPYNOTES               116
+#define IDS_STATCOPYUSERNAME            117
+#define IDS_DELETEREGISTRY              118
+#define IDS_CONFIG_NONE                 119
+#define IDS_CONFIG_REGISTRY             120
+#define IDS_CONFIG_FILE_RO              121
+#define IDS_CONFIG_FILE_RW              122
+#define IDS_BACKUPBEFORESAVE            123
+#define IDS_USERBACKUPSUBDIRECTORY      124
+#define IDS_USERBACKUPOTHERLOCATION     125
 #define IDR_MAINFRAME                   128
 #define IDR_ACCS                        128
 #define IDD_KEYCHANGE_DIALOG            131
@@ -67,6 +77,7 @@
 #define IDB_TOOLBAR3                    214
 #define IDR_POPTRAY                     218
 #define IDI_TRAY                        219
+#define IDD_PS_BACKUP                   220
 #define IDI_MBSTOPICON                  221
 #define IDI_MBASKICON                   222
 #define IDI_MBWARNICON                  223
@@ -274,6 +285,22 @@
 #define IDC_SAVEDON                     1218
 #define IDC_SAVEDAPP                    1219
 #define IDC_EDITEXPLANATION             1220
+#define IDC_BACKUPBEFORESAVE            1221
+#define IDC_DFLTBACKUPPREFIX            1222
+#define IDC_USERBACKUPPREFIX            1223
+#define IDC_USERBACKUPPREFIXVALUE       1224
+#define IDC_BACKUPSUFFIX                1225
+#define IDC_DFLTBACKUPLOCATION          1226
+#define IDC_USERBACKUPSUBDIRECTORY      1227
+#define IDC_USERBACKUPOTHERLOCATION     1228
+#define IDC_USERBACKUPSUBDIRECTORYVALUE 1229
+#define IDC_USERBACKUPOTHRLOCATIONVALUE 1230
+#define IDC_BACKUPEXAMPLE               1231
+#define IDC_BKPMAXINCSPIN               1232
+#define IDC_BACKUPMAXINC                1233
+#define IDC_BACKUPMAX                   1234
+#define IDC_BROWSEFORLOCATION           1235
+#define IDC_APPLYREGISTRYDELETENOW      1236
 #define ID_MENUITEM_SAVE                32771
 #define ID_MENUITEM_EXIT                32772
 #define ID_MENUITEM_ADD                 32773
@@ -290,9 +317,10 @@
 #define ID_MENUITEM_COPYNOTESFLD        32788
 #define ID_MENUITEM_OPEN                32793
 #define ID_MENUITEM_NEW                 32794
-#define ID_MENUTIME_SAVEAS              32795
+#define ID_MENUITEM_SAVEAS              32795
 #define ID_MENUITEM_RESTORE             32797
 #define ID_MENUITEM_UPDATEBACKUPS       32798
+#define ID_MENUITEM_CLOSE               32799
 #define ID_TOOLBUTTON_NEW               32800
 #define ID_TOOLBUTTON_OPEN              32801
 #define ID_TOOLBUTTON_SAVE              32802
@@ -365,7 +393,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        234
 #define _APS_NEXT_COMMAND_VALUE         32861
-#define _APS_NEXT_CONTROL_VALUE         1221
+#define _APS_NEXT_CONTROL_VALUE         1237
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

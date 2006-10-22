@@ -1,7 +1,7 @@
+#pragma once
+
 // OptionsSystem.h : header file
 //
-
-#pragma once
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem dialog
@@ -22,6 +22,7 @@ public:
 	BOOL    m_usesystemtray;
 	int		m_maxmruitems;
 	BOOL	m_mruonfilemenu;
+	BOOL	m_deleteregistry;
 	//}}AFX_DATA
 
 // Overrides
@@ -36,6 +37,8 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsSystem)
 	afx_msg void OnUseSystemTray();
+	afx_msg void OnSetDeleteRegistry();
+	afx_msg void OnApplyRegistryDeleteNow();
 	virtual BOOL OnInitDialog();
 	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
@@ -44,10 +47,8 @@ protected:
 
 // Implementation
 protected:
+	BOOL PreTranslateMessage(MSG* pMsg);
 
 private:
 	CToolTipCtrl* m_ToolTipCtrl;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.

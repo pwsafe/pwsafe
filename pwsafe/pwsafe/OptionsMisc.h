@@ -19,7 +19,6 @@ public:
 	//{{AFX_DATA(COptionsMisc)
 	enum { IDD = IDD_PS_MISC };
 	BOOL	m_confirmdelete;
-	BOOL	m_saveimmediately;
 	BOOL	m_maintaindatetimestamps;
 	BOOL	m_escexits;
 	BOOL    m_hotkey_enabled;
@@ -34,6 +33,7 @@ public:
 	//}}AFX_DATA
 	DWORD m_hotkey_value;
 	int     m_doubleclickaction;
+	int		m_DCA_to_Index[PWSprefs::maxDCA + 1];
 
 // Overrides
 	// ClassWizard generate virtual function overrides
@@ -57,6 +57,3 @@ public:
 	afx_msg void OnBnClickedMaintaindatetimestamps();
 	afx_msg void OnComboChanged();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.

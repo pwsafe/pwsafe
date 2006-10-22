@@ -1,3 +1,5 @@
+#pragma once
+
 // PasskeyChangeDlg.h
 //-----------------------------------------------------------------------------
 
@@ -25,7 +27,6 @@ public:
    CMyString	m_newpasskey;
    CMyString	m_oldpasskey;
    //}}AFX_DATA
-
 
 // Overrides
    // ClassWizard generated virtual function overrides

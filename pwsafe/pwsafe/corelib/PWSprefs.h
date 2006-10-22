@@ -1,7 +1,8 @@
+#ifndef __PWSPREFS_H
+#define __PWSPREFS_H
+
 // PWSprefs.h
 //-----------------------------------------------------------------------------
-
-#pragma once
 
 /*
  * A class to abstract away the persistent storage mechanism used to store and
@@ -21,10 +22,13 @@
  */
 
 #include "MyString.h"
+#include "XMLprefs.h"
+
+class PWScore;
 
 class PWSprefs {
  public:
-  static PWSprefs *GetInstance(); // singleton
+  static PWSprefs *GetInstance(PWScore *core = NULL); // singleton
   static void DeleteInstance();
 
   // prefString is stored on file, format described in PWSprefs.cpp
@@ -42,26 +46,43 @@ class PWSprefs {
 		   EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
 		   DisplayExpandedAddEditDlg, MaintainDateTimeStamps,
 		   SavePasswordHistory, FindWraps, ShowNotesDefault,
+		   BackupBeforeEverySave,
 		   NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
 		  DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
-		  NumPWHistoryDefault,
+		  NumPWHistoryDefault, BackupPrefix, BackupSuffix, BackupLocation,
+		  BackupMaxIncremented,
 		  NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
-		  TreeFont,
+		  TreeFont, BackupPrefixValue, BackupSubDirectoryValue,
+		  BackupOtherLocationValue,
 		  NumStringPrefs};
 
   // for DoubleClickAction
-  enum {minDCA = 0, DoubleClickCopy = 0, DoubleClickEdit = 1,
-	DoubleClickAutoType = 2, DoubleClickBrowse = 3, maxDCA = 3};
+  enum {minDCA = 0, DoubleClickCopyPassword = 0, DoubleClickViewEdit = 1,
+      DoubleClickAutoType = 2, DoubleClickBrowse = 3, 
+      DoubleClickCopyNotes = 4, DoubleClickCopyUsername = 5,
+      maxDCA = 5};
 
   // for TreeDisplayStatusAtOpen
-  enum {minTDS = 0, AllCollapsed = 0, AllExpanded = 1,
-    AsPerLastSave = 2, maxTDS = 2};
+  enum {minTDS = 0, AllCollapsed = 0, AllExpanded = 1, AsPerLastSave = 2,
+	  maxTDS = 2};
 
-  bool IsChanged() const {return m_prefs_changed;}
-  void ClearChanged() {m_prefs_changed = false;}
+  // for Backup Mask
+  enum {minBKSFX = 0, BKSFX_None = 0, BKSFX_DateTime = 1, BKSFX_IncNumber = 2,
+	  maxBKSFX = 2};
+
+  // Configuration options
+  enum {CF_NONE = 0, CF_REGISTRY = 1, CF_FILE_RO = 2, CF_FILE_RW = 4, CF_FILE_RW_NEW = 8};
+
+  // Preferences changed (Database or Application)
+  enum {DB_PREF = 0, APP_PREF = 1};
+  
+  bool IsDBprefsChanged() const {return m_prefs_changed[DB_PREF];}
+  bool IsAPPprefsChanged() const {return m_prefs_changed[APP_PREF];}
+  void ClearDBprefsChanged() {m_prefs_changed[DB_PREF] = false;}
+  void ClearAPPprefsChanged() {m_prefs_changed[APP_PREF] = false;}
 
   bool GetPref(BoolPrefs pref_enum) const;
   unsigned int GetPref(IntPrefs pref_enum) const;
@@ -70,41 +91,69 @@ class PWSprefs {
   CMyString GetPref(StringPrefs pref_enum) const;
 
   // Special case
-  void GetPrefRect(long &top, long &bottom,
-		   long &left, long &right) const;
+  void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
+  void SetPrefRect(long top, long bottom, long left, long right);
 
   void SetPref(BoolPrefs pref_enum, bool value);
   void SetPref(IntPrefs pref_enum, unsigned int value);
   void SetPref(StringPrefs pref_enum, const CMyString &value);
-  // Special case
-  void SetPrefRect(long top, long bottom,
-		   long left, long right);
+
+  bool DeletePref(const CMyString &name);
+  void SetKeepXMLLock(bool state) {m_XML_Config->SetKeepXMLLock(state);}
+
+  void InitializePreferences();
+  void LoadProfileFromDefaults();
+  void LoadProfileFromFile();
+  void LoadProfileFromRegistry();
+  void SaveProfileToXML();
+  void SaveApplicationPreferences();
+  void DeleteRegistryEntries();
+  bool CheckRegistryExists();
+  void DeleteMRUFromXML(const CString &csSubkey);
+  CString ReadMRUFromXML(const CString &csSubkey);
+  void WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename);
+  int GetConfigOptions() {return m_ConfigOptions;}
+  bool GetRegistryExistence() {return m_bRegistryKeyExists;}
 
  private:
   PWSprefs();
+  PWSprefs( PWScore *core);
+  PWScore *m_core;
 
-  bool GetBoolPref(const CMyString &name, bool defVal) const;
-  unsigned int GetIntPref(const CMyString &name, unsigned int defVal) const;
-  CMyString GetStringPref(const CMyString &name, const CMyString &defVal) const;
-
-  void SetPref(const CMyString &name, bool val);
-  void SetPref(const CMyString &name, unsigned int val);
-  void SetPref(const CMyString &name, const CMyString &val);
+  bool WritePref(const CMyString &name, bool val);
+  bool WritePref(const CMyString &name, unsigned int val);
+  bool WritePref(const CMyString &name, const CMyString &val);
+  void UpdateTimeStamp();
 
   static PWSprefs *self; // singleton
+  CXMLprefs *m_XML_Config;
+
+  CString m_configfilename;
+  bool m_bConfigFileExists;
+  bool m_bRegistryKeyExists;
+  int m_ConfigOptions;
+  void FileError(const int &cause);
+  CString m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
 
   CWinApp *m_app;
-  bool m_prefs_changed;
-  // below, isPersistent means stored in db, !isPersistent means use registry only
+
+  bool m_prefs_changed[2];  // 0 - DB stored pref; 1 - App related pref
+
+  // below, isStoredinDB means stored in db, !isStoredinDB means application related
   static const struct boolPref {
-    TCHAR *name; bool defVal; bool isPersistent;} m_bool_prefs[NumBoolPrefs];
+    TCHAR *name; bool defVal; bool isStoredinDB;} m_bool_prefs[NumBoolPrefs];
   static const struct intPref {
-    TCHAR *name; unsigned int defVal; bool isPersistent; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
+    TCHAR *name; unsigned int defVal; bool isStoredinDB; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
   static const struct stringPref {
-    TCHAR *name; TCHAR *defVal; bool isPersistent;} m_string_prefs[NumStringPrefs];
+    TCHAR *name; TCHAR *defVal; bool isStoredinDB;} m_string_prefs[NumStringPrefs];
+
   // current values, loaded/stored from db
   bool m_boolValues[NumBoolPrefs];
   unsigned int m_intValues[NumIntPrefs];
   CMyString m_stringValues[NumStringPrefs];
-};
 
+  bool m_boolChanged[NumBoolPrefs];
+  bool m_intChanged[NumIntPrefs];
+  bool m_stringChanged[NumStringPrefs];
+};
+#endif /*  __PWSPREFS_H */

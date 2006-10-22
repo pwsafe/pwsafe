@@ -1,6 +1,7 @@
+#ifndef __UTIL_H
+#define __UTIL_H
 // Util.h
 //-----------------------------------------------------------------------------
-#pragma once
 
 #include "sha256.h"
 #include "MyString.h"
@@ -140,7 +141,7 @@ public:
   static CString GetTimeStamp();
   static void IssueError(const CString &csFunction);
 };
-
+#endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

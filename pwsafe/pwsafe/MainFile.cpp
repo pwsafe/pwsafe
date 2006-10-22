@@ -10,6 +10,7 @@
 // dialog boxen
 #include "DboxMain.h"
 
+#include "resource.h"
 #include "PasskeySetup.h"
 #include "TryAgainDlg.h"
 #include "ExportTextDlg.h"
@@ -50,7 +51,7 @@ DboxMain::OpenOnInit(void)
   case PWScore::SUCCESS:
     rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-    m_title = "Password Safe - " + m_core.GetCurFile();
+    m_titlebar = "Password Safe - " + m_core.GetCurFile();
     UpdateSystemTray(UNLOCKED);
 #endif
 	CheckExpiredPasswords();
@@ -115,6 +116,11 @@ DboxMain::OpenOnInit(void)
     startLockCheckTimer();
     UpdateSystemTray(UNLOCKED);
 	m_saveMRU = true;
+  	if (!m_bOpen) {
+  	  // Previous state was closed - reset DCA in status bar
+      SetDCAText();
+	}
+	m_bOpen = true;
     return TRUE;
   default:
     CDialog::OnCancel();
@@ -171,7 +177,7 @@ DboxMain::New()
 
   m_core.SetCurFile(_T("")); //Force a save as...
 #if !defined(POCKET_PC)
-  m_title = _T("Password Safe - <Untitled>");
+  m_titlebar = _T("Password Safe - <Untitled>");
   app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
@@ -202,9 +208,82 @@ DboxMain::NewFile(void)
 }
 
 void
+DboxMain::OnClose()
+{
+  Close();
+}
+
+int
+DboxMain::Close()
+{
+	if (m_bOpen) {
+		// try and save it first
+		int rc = SaveIfChanged();
+		if (rc != PWScore::SUCCESS)
+			return rc;
+	}
+
+	// Unlock the current file
+	if( !m_core.GetCurFile().IsEmpty() ) {
+		m_core.UnlockFile(m_core.GetCurFile());
+		m_core.SetCurFile(_T(""));
+	}
+
+	// Clear all associated data
+	ClearData();
+	app.SetTooltipText(_T("PasswordSafe"));
+	UpdateSystemTray(CLOSED);
+	// Call UpdateMenuAndToolBar before UpdateStatusBar, as it sets m_bOpen
+	UpdateMenuAndToolBar(false);
+	UpdateStatusBar();
+	m_titlebar = "Password Safe";
+	return PWScore::SUCCESS;
+}
+
+void
 DboxMain::OnOpen()
 {
-  Open();
+  int rc = Open();
+  if (rc == PWScore::SUCCESS) {
+  	if (!m_bOpen) {
+  	  // Previous state was closed - reset DCA in status bar
+      SetDCAText();
+	}
+    UpdateMenuAndToolBar(true);
+  }
+}
+
+#if _MFC_VER > 1200
+BOOL
+#else
+void
+#endif
+DboxMain::OnOpenMRU(UINT nID)
+{
+  UINT	uMRUItem = nID - ID_FILE_MRU_ENTRY1;
+
+  CString mruItem = (*app.GetMRU())[uMRUItem];
+
+  // Save just in case need to restore if user cancels
+  const bool last_ro = m_IsReadOnly;
+  // Read-only status will be set by GetAndCheckPassword
+  int rc = Open( mruItem );
+  if (rc == PWScore::SUCCESS) {
+  	UpdateSystemTray(UNLOCKED);
+    m_RUEList.ClearEntries();
+  	if (!m_bOpen) {
+  	  // Previous state was closed - reset DCA in status bar
+      SetDCAText();
+	}
+    UpdateMenuAndToolBar(true);
+  } else {
+  	// Reset Read-only status
+	SetReadOnly(last_ro);
+  }
+
+#if _MFC_VER > 1200
+  return TRUE;
+#endif
 }
 
 int
@@ -218,9 +297,10 @@ DboxMain::Open()
     CFileDialog fd(TRUE,
                    DEFAULT_SUFFIX,
                    NULL,
-                   OFN_FILEMUSTEXIST|OFN_LONGNAMES,
+                   OFN_FILEMUSTEXIST | OFN_LONGNAMES,
                    SUFFIX_FILTERS
                    _T("Password Safe Backups (*.bak)|*.bak|")
+				   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
                    _T("All files (*.*)|*.*|")
                    _T("|"),
                    this);
@@ -333,7 +413,7 @@ DboxMain::Open( const CMyString &pszFilename )
   }
   m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
-  m_title = _T("Password Safe - ") + m_core.GetCurFile();
+  m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
   CheckExpiredPasswords();
   ChangeOkUpdate();
@@ -360,8 +440,14 @@ DboxMain::Save()
 {
   int rc;
 
+  // Save Application related preferences
+  PWSprefs::GetInstance()->SaveApplicationPreferences();
+
   if (m_core.GetCurFile().IsEmpty())
     return SaveAs();
+
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::BackupBeforeEverySave))
+    CreateIntermediateBackup();
 
   if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
     m_core.BackupCurFile(); // to save previous reversion
@@ -384,7 +470,7 @@ DboxMain::Save()
       return PWScore::USER_CANCEL;
     m_core.SetCurFile(NewName);
 #if !defined(POCKET_PC)
-    m_title = _T("Password Safe - ") + m_core.GetCurFile();
+    m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
     app.SetTooltipText(m_core.GetCurFile());
 #endif
   }
@@ -504,7 +590,7 @@ DboxMain::SaveAs()
     m_core.UnlockFile(m_core.GetCurFile());
   m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
-  m_title = _T("Password Safe - ") + m_core.GetCurFile();
+  m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
   app.SetTooltipText(m_core.GetCurFile());
 #endif
   SetChanged(Clear);
@@ -612,10 +698,10 @@ DboxMain::OnExportText()
 
       ItemList sortedItemList;
       MakeSortedItemList(sortedItemList);
-
-      rc = m_core.WritePlaintextFile(newfile, bwrite_header,
-                                     bsExport, subgroup, iObject,
-                                     iFunction, delimiter, &sortedItemList);
+      
+      rc = m_core.WritePlaintextFile(newfile, bwrite_header, 
+                          bsExport, subgroup, iObject, 
+                          iFunction, delimiter, &sortedItemList);
       sortedItemList.RemoveAll(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
@@ -896,6 +982,7 @@ DboxMain::Merge()
                      OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_READONLY|OFN_LONGNAMES,
                      SUFFIX_FILTERS
                      _T("Password Safe Backups (*.bak)|*.bak|")
+					 _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
                      _T("All files (*.*)|*.*|")
                      _T("|"),
                      this);
@@ -930,7 +1017,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
                  _T("Oops!"),
                  MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
-  }
+	}
 
   // Save current read-only status around opening merge fil R-O
   bool bCurrentFileIsReadOnly = m_IsReadOnly;
@@ -961,7 +1048,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
         assume they want to return to where they were before...
       */
       return PWScore::USER_CANCEL;
-  }
+	}
 
   PWScore otherCore;
   otherCore.ReadFile(pszFilename, passkey);
@@ -975,7 +1062,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
 		they saved their file....
       */
       return PWScore::CANT_OPEN_FILE;
-  }
+	}
 
   otherCore.SetCurFile(pszFilename);
 
@@ -1076,16 +1163,7 @@ DboxMain::OnProperties()
 {
   CProperties dlg;
 
-#define MAX_LEN 55  // pure guess!
-
-  CString t, ttt;
-  t = CString(m_core.GetCurFile());
-  if (t.GetLength() >= MAX_LEN) {
-    dlg.m_database = t.Left(MAX_LEN/2-6) + 
-      _T(" ... ") + t.Right(MAX_LEN/2);
-  } else {
-    dlg.m_database = t;
-  }
+  dlg.m_database = CString(m_core.GetCurFile());
 
   int nmajor = m_core.GetCurrentMajorVersion();
   int nminor = m_core.GetCurrentMinorVersion();
@@ -1534,41 +1612,39 @@ DboxMain::OnOK()
   if (m_core.IsChanged()) {
   	const CString msg = _T("Do you want to save changes to the password list?");
 	switch (m_iSessionEndingStatus) {
-    case IDIGNORE:
-      // Session is not ending - user has an option to cancel
-      rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
-      break;
-    case IDOK:
-      // Session is ending - user does not have an option to cancel
-      rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNO);
-      break;
-    case IDNO:
-    case IDYES:
-      // IDYES: Don't ask - user already said YES during OnQueryEndSession
-      // IDNO:  Don't ask - user already said NO during OnQueryEndSession
-      rc = m_iSessionEndingStatus;
-      break;
-    default:
-      ASSERT(0); // should never happen...
-      rc = IDCANCEL; // ...but if it does, behave conservatively.
+		case IDIGNORE:
+			// Session is not ending - user has an option to cancel
+			rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
+			break;
+		case IDOK:
+			// Session is ending - user does not have an option to cancel
+			rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNO);
+			break;
+		case IDNO:
+		case IDYES:
+			// IDYES: Don't ask - user already said YES during OnQueryEndSession
+			// IDNO:  Don't ask - user already said NO during OnQueryEndSession
+			rc = m_iSessionEndingStatus;
+			break; 
+		default: 
+			ASSERT(0); // should never happen... 
+			rc = IDCANCEL; // ...but if it does, behave conservatively. 
 	}
 	switch (rc) {
-    case IDCANCEL:
-      return;
-    case IDYES:
-      rc2 = Save();
-      if (rc2 != PWScore::SUCCESS)
-        return;
-    case IDNO:
-      break;
+		case IDCANCEL:
+			return;
+		case IDYES:
+			rc2 = Save();
+			if (rc2 != PWScore::SUCCESS)
+				return;
+		case IDNO:
+			break;
 	}
   } // core.IsChanged()
 
   //Store current filename for next time...
-  if (m_saveMRU)
+  if (m_saveMRU && !(m_core.GetCurFile()).IsEmpty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-  else
-    prefs->SetPref(PWSprefs::CurrentFile, _T(""));
 
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
@@ -1577,10 +1653,14 @@ DboxMain::OnOK()
   if ((!IsWindowVisible() && prefs->GetPref(PWSprefs::UseSystemTray)) ||
       prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo) ||
       (m_iSessionEndingStatus == IDYES)) {
-    app.ClearClipboardData();
+		app.ClearClipboardData();
   }
 
   ClearData();
+
+  // Save Application related preferences
+  PWSprefs::GetInstance()->SaveApplicationPreferences();
+
   CDialog::OnOK();
 }
 
@@ -1650,4 +1730,3 @@ DboxMain::GroupDisplayStatus(char *p_char_displaystatus, int &i, bool bSet)
 		}
 	}
 }
-

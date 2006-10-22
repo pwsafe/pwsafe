@@ -1,11 +1,11 @@
+#pragma once
+
 /*
  * Silly subclass of CTreeCtrl just to implement Drag&Drop.
  *
  * Based on MFC sample code from CMNCTRL1
  */
 
-#ifndef _MYTREECTRL_H
-#define _MYTREECTRL_H
 #include <Afxcmn.h>
 
 class CMyTreeCtrl : public CTreeCtrl
@@ -71,5 +71,3 @@ protected:
 
 };
 
-
-#endif /* _MYTREECTRL_H */

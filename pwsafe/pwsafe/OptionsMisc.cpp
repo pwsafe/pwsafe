@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "corelib/PwsPlatform.h"
-#include "corelib/Pwsprefs.h" // for DoubleClickAction enums
+#include "corelib/PWSprefs.h" // for DoubleClickAction enums
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -40,7 +40,6 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	
 	//{{AFX_DATA_MAP(COptionsMisc)
 	DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
-	DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
 	DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_maintaindatetimestamps);
 	DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
 	DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
@@ -53,7 +52,6 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
 	DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
 	//}}AFX_DATA_MAP
-
 }
 
 BEGIN_MESSAGE_MAP(COptionsMisc, CPropertyPage)
@@ -71,16 +69,37 @@ BOOL COptionsMisc::OnInitDialog()
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
   if(m_dblclk_cbox.GetCount() == 0) {
-	m_dblclk_cbox.AddString(_T("Copies password to clipboard"));
-	m_dblclk_cbox.AddString(_T("View/Edit selected entry"));
-	m_dblclk_cbox.AddString(_T("Autotype"));
-	m_dblclk_cbox.AddString(_T("Browse to URL"));
+  	// add the strings in alphabetical order
+  	int nIndex;
+	nIndex = m_dblclk_cbox.AddString(_T("Autotype"));
+	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
+	m_DCA_to_Index[PWSprefs::DoubleClickAutoType] = nIndex;
+
+	nIndex = m_dblclk_cbox.AddString(_T("Browse to URL"));
+	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
+	m_DCA_to_Index[PWSprefs::DoubleClickBrowse] = nIndex;
+
+	nIndex = m_dblclk_cbox.AddString(_T("Copies notes to clipboard"));
+	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
+	m_DCA_to_Index[PWSprefs::DoubleClickCopyNotes] = nIndex;
+
+	nIndex = m_dblclk_cbox.AddString(_T("Copies password to clipboard"));
+	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
+	m_DCA_to_Index[PWSprefs::DoubleClickCopyPassword] = nIndex;
+
+	nIndex = m_dblclk_cbox.AddString(_T("Copies username to clipboard"));
+	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
+	m_DCA_to_Index[PWSprefs::DoubleClickCopyUsername] = nIndex;
+
+	nIndex = m_dblclk_cbox.AddString(_T("View/Edit selected entry"));
+	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
+	m_DCA_to_Index[PWSprefs::DoubleClickViewEdit] = nIndex;
   }
 
   if (m_doubleclickaction < PWSprefs::minDCA ||
 	  m_doubleclickaction > PWSprefs::maxDCA)
-  	m_doubleclickaction = PWSprefs::DoubleClickCopy;
-  m_dblclk_cbox.SetCurSel(m_doubleclickaction);
+  	m_doubleclickaction = PWSprefs::DoubleClickCopyPassword;
+  m_dblclk_cbox.SetCurSel(m_DCA_to_Index[m_doubleclickaction]);
 
   // JHF ditto here
 #if !defined(POCKET_PC)
@@ -108,12 +127,13 @@ void COptionsMisc::OnEnableHotKey()
 #endif
 }
 
-void COptionsMisc::OnComboChanged() 
+void COptionsMisc::OnComboChanged()
 {
-	m_doubleclickaction = m_dblclk_cbox.GetCurSel();
+	int nIndex = m_dblclk_cbox.GetCurSel();
+	m_doubleclickaction = m_dblclk_cbox.GetItemData(nIndex);
 }
 
-void COptionsMisc::OnUsedefuser() 
+void COptionsMisc::OnUsedefuser()
 {
    if (((CButton*)GetDlgItem(IDC_USEDEFUSER))->GetCheck() == 1)
    {

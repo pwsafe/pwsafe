@@ -9,5 +9,5 @@ public:
 	: CRecentFileList(nStart, lpszSection, lpszEntryFormat,
         		nSize, nMaxDispLen){}
 
-	virtual void Add(LPCTSTR lpszPathName);
+	virtual void Add(LPCTSTR lpszPathName, const bool bstartup = false);
 };

@@ -1,11 +1,12 @@
-#pragma once
-
-#include "PWScore.h"
+#ifndef __XMLPREFS_H
+#define __XMLPREFS_H
 #include <afx.h>
 #include "xml_import.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs window
+
+class PWScore;
 
 class CXMLprefs
 {
@@ -61,3 +62,4 @@ protected:
 private:
 	PWScore *m_xmlcore;
 };
+#endif /* __XMLPREFS_H */

@@ -1,7 +1,7 @@
+#pragma once
+
 // ImportXMLErrDlg.h : header file
 //
-
-#pragma once
 
 #include "afxwin.h"
 #include "resource.h"
@@ -38,4 +38,3 @@ protected:
 
 	afx_msg void OnBnClickedCopyToClipboard();
 };
-

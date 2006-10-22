@@ -216,21 +216,30 @@ DboxMain::setupBars()
 {
 #if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
-
-  statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
-
-
+  
   // Add the status bar
   if (m_statusBar.Create(this)) {
 	  // Set up DoubleClickAction text
 	  const int dca = int(PWSprefs::GetInstance()->
 		  GetPref(PWSprefs::DoubleClickAction));
 	  switch (dca) {
-		case PWSprefs::DoubleClickCopy: statustext[SB_DBLCLICK] = IDS_STATCOPY; break;
-		case PWSprefs::DoubleClickEdit: statustext[SB_DBLCLICK] = IDS_STATEDIT; break;
 		case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
 		case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
-		default: ASSERT(0);
+		case PWSprefs::DoubleClickCopyNotes: statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
+		case PWSprefs::DoubleClickCopyPassword: statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
+      	case PWSprefs::DoubleClickCopyUsername: statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
+		case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
+		default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
+	  }
+	  // Set up Configuration text
+	  const int iConfigOptions = PWSprefs::GetInstance()->GetConfigOptions();
+	  switch (iConfigOptions) {
+	   	case PWSprefs::CF_NONE: statustext[SB_CONFIG] = IDS_CONFIG_NONE; break;
+	    case PWSprefs::CF_REGISTRY: statustext[SB_CONFIG] = IDS_CONFIG_REGISTRY; break;
+	    case PWSprefs::CF_FILE_RW:
+		case PWSprefs::CF_FILE_RW_NEW: statustext[SB_CONFIG] = IDS_CONFIG_FILE_RW; break;
+	    case PWSprefs::CF_FILE_RO: statustext[SB_CONFIG] = IDS_CONFIG_FILE_RO; break;
+    	default: ASSERT(0);
 	  }
 	  // Set up the rest
 	  statustext[SB_MODIFIED] = IDS_MODIFIED;
@@ -242,7 +251,7 @@ DboxMain::setupBars()
 
       // Make a sunken or recessed border around the first pane
       m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
-  }
+  }             
 
   // Add the ToolBar.
   if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
@@ -375,7 +384,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   } else {
     ItemList sortedItemList;
     MakeSortedItemList(sortedItemList);
-	listPos = sortedItemList.GetHeadPosition();
+    listPos = sortedItemList.GetHeadPosition();
 	while (listPos != NULL) {
 		const CItemData &curitem = sortedItemList.GetAt(listPos);
 
@@ -412,6 +421,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
     } // while
 	sortedItemList.RemoveAll();
   }
+
   return retval;
 }
 
@@ -467,7 +477,7 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 void
 DboxMain::RefreshList()
 {
-  if (! m_windowok)
+  if (!m_windowok)
     return;
 
 #if defined(POCKET_PC)
@@ -714,7 +724,6 @@ DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *)
 }
 #endif
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // NOTE!
 // itemData must be the actual item in the item list.  if the item is remove
@@ -845,7 +854,12 @@ DboxMain::ClearData(bool clearMRE)
     m_core.GetNextEntry(listPos);
   }
   m_core.ClearData();
-  UpdateSystemTray(LOCKED);
+
+  if (m_bOpen)
+	  UpdateSystemTray(LOCKED);
+  else
+	  UpdateSystemTray(CLOSED);
+
   // If data is cleared, m_selectedAtMinimize is useless,
   // since it will be deleted and rebuilt from the file.
   // This means that selection won't be restored in this case.
@@ -1126,7 +1140,7 @@ DboxMain::GetToken(CString& str, LPCTSTR c)
 }
 
 void
-DboxMain::UpdateSystemTray(STATE s)
+DboxMain::UpdateSystemTray(const STATE s)
 {
   switch (s) {
   case LOCKED:
@@ -1138,6 +1152,9 @@ DboxMain::UpdateSystemTray(STATE s)
     app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
     if (!m_core.GetCurFile().IsEmpty())
       app.SetTooltipText(m_core.GetCurFile());
+    break;
+  case CLOSED:
+    app.SetSystemTrayState(ThisMfcApp::CLOSED);
     break;
   default:
     ASSERT(0);
