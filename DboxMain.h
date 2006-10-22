@@ -1,8 +1,7 @@
+#pragma once
+
 // DboxMain.h
 //-----------------------------------------------------------------------------
-
-#ifndef DboxMain_h
-#define DboxMain_h
 
 #include "corelib/PWScore.h"
 #include "corelib/sha256.h"
@@ -15,6 +14,7 @@
 #endif
 #include "MyTreeCtrl.h"
 #include "RUEList.h"
+#include "MenuTipper.h"
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -92,6 +92,7 @@ public:
   void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
   void SetReadOnly(bool state);
   void SetStartSilent(bool state) { m_IsStartSilent = state;}
+  void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
   bool GetShowPasswordInList() const {return m_bShowPasswordInList;}
@@ -117,7 +118,6 @@ public:
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
-  bool m_Validate; // do validation after reading db
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
   //}}AFX_VIRTUAL
@@ -128,12 +128,14 @@ protected:
 
   // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
   bool	m_bSizing;
+  bool  m_bOpen;
+  bool m_bValidate; // do validation after reading db
 
   unsigned int uGlobalMemSize;
   HGLOBAL hGlobalMemory;
 
 #if !defined(POCKET_PC)
-  CMyString m_title; // what's displayed in the title bar
+  CMyString m_titlebar; // what's displayed in the title bar
 #endif
 
 #if defined(POCKET_PC)
@@ -144,7 +146,7 @@ protected:
   CStatusBar m_statusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
-  enum {SB_DBLCLICK = 0, SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
+  enum {SB_DBLCLICK = 0, SB_CONFIG, SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
         SB_TOTAL /* this must be the last entry */};
   UINT statustext[SB_TOTAL];
 #endif
@@ -169,6 +171,7 @@ protected:
   TCHAR *m_pchTip;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
+  CMenuTipManager m_menuTipManager;
 
   int insertItem(CItemData &itemData, int iIndex = -1);
   CItemData *getSelectedItem();
@@ -181,13 +184,12 @@ protected:
   // override following to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
-
   void ConfigureSystemMenu();
   void OnSysAlwaysOnTop();
   afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
-  enum STATE {LOCKED, UNLOCKED};
-  void UpdateSystemTray(STATE s);
+  enum STATE {LOCKED, UNLOCKED, CLOSED};  // Really shouldn't be here it, ThisMfcApp own it
+  void UpdateSystemTray(const STATE s);
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -201,15 +203,19 @@ protected:
   void SetTreeView();
   void SetToolbar(int menuItem);
   void UpdateStatusBar();
+  void UpdateMenuAndToolBar(const bool bOpen);
+  void SetDCAText();
 
   //Version of message functions with return values
   int Save(void);
   int SaveAs(void);
   int Open(void);
   int Open( const CMyString &pszFilename );
+  int Close(void);
   int Merge(void);
   int Merge( const CMyString &pszFilename );
   int Compare( const CMyString &pszFilename );
+
   int BackupSafe(void);
   int New(void);
   int Restore(void);
@@ -257,6 +263,7 @@ protected:
   afx_msg void OnCopyNotes();
   afx_msg void OnNew();
   afx_msg void OnOpen();
+  afx_msg void OnClose();
   afx_msg void OnClearMRU();
   afx_msg void OnMerge();
   afx_msg void OnCompare();
@@ -298,6 +305,7 @@ protected:
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
   afx_msg void OnUpdateROCommand(CCmdUI *pCmdUI);
+  afx_msg void OnUpdateClosedCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateTVCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateViewCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
@@ -355,6 +363,9 @@ private:
   void RestoreDisplayStatus();
   void GroupDisplayStatus(char *p_char_displaystatus, int &i, bool bSet);
   void MakeSortedItemList(ItemList &il);
+  void CreateIntermediateBackup();
+  BOOL GetIncBackupFileName(const CString &cs_filenamebase,
+	  const int &i_maxnumincbackups, CString &cs_newname);
 };
 
 // Following used to keep track of display vs data
@@ -366,8 +377,6 @@ struct DisplayInfo {
 };
 
 
-//-----------------------------------------------------------------------------
-#endif // DboxMain_h
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

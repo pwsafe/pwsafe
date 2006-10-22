@@ -1,3 +1,5 @@
+#pragma once
+
 // ConfirmDeleteDlg.h
 //-----------------------------------------------------------------------------
 #include "corelib/PwsPlatform.h"
@@ -24,7 +26,6 @@ private:
    enum { IDD = IDD_CONFIRMDELETE_DIALOG };
    bool	m_dontaskquestion;
    //}}AFX_DATA
-
 
 // Overrides
    // ClassWizard generated virtual function overrides

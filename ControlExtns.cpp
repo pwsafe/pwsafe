@@ -12,6 +12,7 @@ static char THIS_FILE[] = __FILE__;
 
 const COLORREF crefInFocus = (RGB(222,255,222));  // Light green
 const COLORREF crefNoFocus = (RGB(255,255,255));  // White
+const COLORREF crefBlack = (RGB(0,0,0));          // Black
 
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn
@@ -51,8 +52,12 @@ void CEditExtn::OnKillFocus(CWnd* pNewWnd)
 	Invalidate(TRUE);
 }
 
-HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /* nCtlColor */)
+HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
+	if (!this->IsWindowEnabled())
+		return NULL;
+
+	pDC->SetTextColor(crefBlack);
 	if (m_bIsFocused == TRUE) {
 		pDC->SetBkColor(crefInFocus);
 		return brInFocus;
@@ -102,6 +107,9 @@ void CListBoxExtn::OnKillFocus(CWnd* pNewWnd)
 
 HBRUSH CListBoxExtn::CtlColor(CDC* pDC, UINT /* nCtlColor */)
 {
+	if (!this->IsWindowEnabled())
+		return NULL;
+
 	if (m_bIsFocused == TRUE) {
 		pDC->SetBkColor(crefInFocus);
 		return brInFocus;

@@ -155,6 +155,7 @@ CAddDlg::ShowPassword()
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
    // Don't need verification as the user can see the password entered
    GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
+   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
    m_password2.Empty();
 }
 
@@ -168,6 +169,7 @@ CAddDlg::HidePassword()
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
    // Need verification as the user can not see the password entered
    GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
+   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
    m_password2 = m_password;
 }
 

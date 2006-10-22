@@ -54,6 +54,3 @@ private:
 	afx_msg void OnPWHistoryNoAction();
 	afx_msg void OnPWHistoryDoAction();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.

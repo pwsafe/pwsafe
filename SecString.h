@@ -1,8 +1,7 @@
+#pragma once
+
 /// \file MyString.h
 //-----------------------------------------------------------------------------
-
-#ifndef SecString_h
-#define SecString_h
 
 //-----------------------------------------------------------------------------
 class SecString
@@ -71,8 +70,6 @@ bool operator!=(const SecString& s1, const SecString& s2);
 bool operator!=(const SecString& s1, LPCTSTR s2);
 bool operator!=(LPCTSTR s1, const SecString& s2);
 
-//-----------------------------------------------------------------------------
-#endif
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

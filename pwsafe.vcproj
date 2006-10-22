@@ -234,6 +234,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CreateIntermediateBackup.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CryptKeyEntry.cpp"
 				>
 			</File>
@@ -314,11 +318,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MenuTipper.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\model.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MyTreeCtrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OptionsBackup.cpp"
 				>
 			</File>
 			<File
@@ -362,6 +374,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PupText.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PwFont.cpp"
 				>
 			</File>
@@ -383,6 +399,10 @@
 			</File>
 			<File
 				RelativePath=".\RUEList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Subclass.cpp"
 				>
 			</File>
 			<File
@@ -491,11 +511,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MenuTipper.h"
+				>
+			</File>
+			<File
 				RelativePath=".\model.h"
 				>
 			</File>
 			<File
 				RelativePath=".\MyTreeCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OptionsBackup.h"
 				>
 			</File>
 			<File
@@ -547,6 +575,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PupText.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PWCharPool.h"
 				>
 			</File>
@@ -588,6 +620,10 @@
 			</File>
 			<File
 				RelativePath=".\StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Subclass.h"
 				>
 			</File>
 			<File

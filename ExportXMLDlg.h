@@ -1,9 +1,5 @@
-#if !defined(AFX_ExportXML_H__CCC6EEF6_3DF0_41A2_BDA0_0437BBFAC672__INCLUDED_)
-#define AFX_ExportXML_H__CCC6EEF6_3DF0_41A2_BDA0_0437BBFAC672__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // ExportXML.h : header file
 //
 
@@ -50,8 +46,3 @@ protected:
 private:
 	void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX, const CString &delimiter);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_ExportXML_H__CCC6EEF6_3DF0_41A2_BDA0_0437BBFAC672__INCLUDED_)

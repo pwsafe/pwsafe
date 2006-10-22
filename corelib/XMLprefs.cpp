@@ -4,6 +4,8 @@
 #include <atlcomcli.h>  // needed for VS7.1, not 8
 #include "XMLprefs.h"
 #include "xml_import.h"
+#include "MyString.h"
+#include "PWScore.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,8 +1,8 @@
+#ifndef __PWSFILE_H
+#define __PWSFILE_H
 // PWSfile.h
 // Abstract the gory details of reading and writing an encrypted database
 //-----------------------------------------------------------------------------
-
-#pragma once
 
 #include <stdio.h> // for FILE *
 
@@ -86,3 +86,4 @@ class PWSfile {
   unsigned char *m_terminal;
   bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
 };
+#endif /* __PWSFILE_H */

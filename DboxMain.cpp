@@ -91,17 +91,17 @@ END_MESSAGE_MAP()
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
-  m_bSizing( false ), m_needsreading(true), m_windowok(false),
-  m_toolbarsSetup(FALSE),
-  m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
-  m_bSortAscending(true), m_iSortedColumn(0),
-  m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-  m_core(app.m_core), m_IsStartSilent(false),
-  m_hFontTree(NULL), m_IsReadOnly(false),
-  m_selectedAtMinimize(NULL), m_bTSUpdated(false),
-  m_iSessionEndingStatus(IDIGNORE),
-  m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
-  m_Validate(false)
+     m_bSizing( false ), m_needsreading(true), m_windowok(false),
+     m_toolbarsSetup(FALSE),
+     m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
+     m_bSortAscending(true), m_iSortedColumn(0),
+     m_lastFindCS(FALSE), m_lastFindStr(_T("")),
+     m_core(app.m_core), m_IsStartSilent(false),
+     m_hFontTree(NULL), m_IsReadOnly(false),
+     m_selectedAtMinimize(NULL), m_bTSUpdated(false),
+     m_iSessionEndingStatus(IDIGNORE),
+	 m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
+	 m_bValidate(false), m_bOpen(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -124,7 +124,7 @@ DboxMain::DboxMain(CWnd* pParent)
                       GetPref(PWSprefs::CurrentFile));
   }
 #if !defined(POCKET_PC)
-  m_title = _T("");
+  m_titlebar = _T("");
   m_toolbarsSetup = FALSE;
 #endif
 
@@ -138,7 +138,6 @@ DboxMain::~DboxMain()
   delete m_pwchTip;
 
   ::DeleteObject(m_hFontTree);
-  ReleasePasswordFont();
   CFindDlg::EndIt();
   // Save Find wrap value
   PWSprefs::GetInstance()->SetPref(PWSprefs::FindWraps, m_bFindWrap);
@@ -166,14 +165,19 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
+   ON_COMMAND(ID_MENUITEM_CLOSE, OnClose)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_CLOSE, OnUpdateClosedCommand)
    ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
    ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_MERGE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_COMPARE, OnUpdateClosedCommand)
    ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_PROPERTIES, OnUpdateClosedCommand)
    ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
-   ON_COMMAND(ID_MENUTIME_SAVEAS, OnSaveAs)
+   ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVEAS, OnUpdateClosedCommand)
    ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
    ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_CHANGECOMBO, OnUpdateROCommand)
@@ -312,12 +316,12 @@ DboxMain::InitPasswordSafe()
     WORD mod = WORD(value >> 16);
 	WORD wModifiers = 0;
 	// Translate between CWnd & CHotKeyCtrl modifiers
-	if (mod & HOTKEYF_ALT) 
-		wModifiers |= MOD_ALT; 
-	if (mod & HOTKEYF_CONTROL) 
-		wModifiers |= MOD_CONTROL; 
-	if (mod & HOTKEYF_SHIFT) 
-		wModifiers |= MOD_SHIFT; 
+	if (mod & HOTKEYF_ALT)
+		wModifiers |= MOD_ALT;
+	if (mod & HOTKEYF_CONTROL)
+		wModifiers |= MOD_CONTROL;
+	if (mod & HOTKEYF_SHIFT)
+		wModifiers |= MOD_SHIFT;
     RegisterHotKey(m_hWnd, PWS_HOTKEY_ID, UINT(wModifiers), UINT(wVirtualKeyCode));
     // registration might fail if combination already registered elsewhere,
     // but don't see any elegant way to notify the user here, so fail silently
@@ -381,9 +385,9 @@ DboxMain::InitPasswordSafe()
   int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
                                  (rect.Width() / 3 + rect.Width() % 3));
   int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
-                                                   rect.Width() / 3);
+                                 rect.Width() / 3);
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
-                                                   rect.Width() / 3);
+                                 rect.Width() / 3);
 
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
   m_ctlItemList.SetColumnWidth(1, i2ndWidth);
@@ -482,20 +486,31 @@ DboxMain::OnHotKey(WPARAM , LPARAM)
 BOOL
 DboxMain::OnInitDialog()
 {
-  ConfigureSystemMenu();
-
   CDialog::OnInitDialog();
 
-  if (!m_IsStartSilent && (OpenOnInit() == FALSE))
-      return TRUE;
+  // Install menu popups for full path on MRU entries
+  m_menuTipManager.Install(AfxGetMainWnd());
 
+  ConfigureSystemMenu();
   InitPasswordSafe();
-  // Validation does integrity check & repair on database
-  // currently invoke it iff m_Validate set (e.g., user passed '-v' flag)
-  if (m_Validate) {
-    PostMessage(WM_COMMAND, ID_MENUITEM_VALIDATE);
-    m_Validate = false;
+  
+  if (m_IsStartSilent) {
+  	  // Start up "closed"
+      Close();
+      return TRUE;
   }
+
+  // Validation does integrity check & repair on database
+  // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
+  if (m_bValidate) {
+    PostMessage(WM_COMMAND, ID_MENUITEM_VALIDATE);
+    m_bValidate = false;
+    return TRUE;
+  }
+
+  OpenOnInit();
+  RefreshList();
+
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -551,17 +566,23 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 #else
   switch (PWSprefs::GetInstance()->
           GetPref(PWSprefs::DoubleClickAction)) {
-  case PWSprefs::DoubleClickCopy:
-    OnCopyPassword();
-    break;
-  case PWSprefs::DoubleClickEdit:
-    PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
-    break;
   case PWSprefs::DoubleClickAutoType:
     PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
     break;
   case PWSprefs::DoubleClickBrowse:
     PostMessage(WM_COMMAND, ID_MENUITEM_BROWSE);
+    break;
+  case PWSprefs::DoubleClickCopyNotes:
+    OnCopyNotes();
+    break;
+  case PWSprefs::DoubleClickCopyPassword:
+    OnCopyPassword();
+    break;
+  case PWSprefs::DoubleClickCopyUsername:
+    OnCopyUsername();
+    break;
+  case PWSprefs::DoubleClickViewEdit:
+    PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
     break;
   default:
     ASSERT(0);
@@ -604,6 +625,12 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 void
 DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
 {
+  // Note: This first checks if a DB is Open before checking R-O status
+	// since CLOSED is a superset of Read-only
+  if (!m_bOpen) {
+  	pCmdUI->Enable(FALSE);
+  	return;
+  }
   // Use this callback for commands that need to
   // be disabled in read-only mode
   pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
@@ -615,6 +642,14 @@ DboxMain::OnUpdateViewCommand(CCmdUI *pCmdUI)
   // Use this callback to disable swap between Tree and List modes
   // during a Find operation
   pCmdUI->Enable(m_bFindActive ? FALSE : TRUE);
+}
+
+void
+DboxMain::OnUpdateClosedCommand(CCmdUI *pCmdUI)
+{
+  // Use this callback  for commands that need to
+  // be disabled if no DB is open
+  pCmdUI->Enable(m_bOpen ? TRUE : FALSE);
 }
 
 void
@@ -665,7 +700,7 @@ DboxMain::SetChanged(ChangeType changed)
 void
 DboxMain::ChangeOkUpdate()
 {
-  if (! m_windowok)
+  if (!m_windowok)
     return;
 
 #if defined(POCKET_PC)
@@ -674,16 +709,13 @@ DboxMain::ChangeOkUpdate()
   CMenu *menu	= GetMenu();
 #endif
 
+  // Don't need to worry about R-O, as IsChanged can't be true in this case
   menu->EnableMenuItem(ID_MENUITEM_SAVE,
                        m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
-
-  /*
-    This doesn't exactly belong here, but it makes sure that the
-    title is fresh...
-  */
-#if !defined(POCKET_PC)
-  SetWindowText(LPCTSTR(m_title));
-#endif
+  if (m_toolbarsSetup == TRUE) {
+	m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE,
+	                   m_core.IsChanged() ? TRUE : FALSE);
+  }
   UpdateStatusBar();
 }
 
@@ -754,7 +786,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     app.EnableAccelerator();
   } else { // already present - bring to front
     dbox_pkentry->BringWindowToTop(); // can happen with systray lock
-    return PWScore::USER_CANCEL; // multi-thread, 
+    return PWScore::USER_CANCEL; // multi-thread,
                                  // original thread will continue processing
   }
 
@@ -767,23 +799,46 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 	SetReadOnly(m_IsReadOnly);
     // Set read-only mode if user explicitly requested it OR
     // we could not create a lock file.
-    // Note that we depend on lazy evaluation: if the 1st is true,
-    // the 2nd won't be called!
-    if (index == GCP_FIRST) // if first, then m_IsReadOnly is set in Open
-      SetReadOnly(m_IsReadOnly || !m_core.LockFile(filename, locker));
-    else if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
-      SetReadOnly(!m_core.LockFile(filename, locker));
+    switch (index) {
+        case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
+            SetReadOnly(m_IsReadOnly || !m_core.LockFile(filename, locker));
+            break;
+        case GCP_NORMAL:
+            if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
+              SetReadOnly(!m_core.LockFile(filename, locker));
+			else
+			  SetReadOnly(m_IsReadOnly);
+            break;
+        case GCP_UNMINIMIZE:
+        case GCP_WITHEXIT:
+        default:
+            // user can't change R-O status
+            break;
+    }
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
     if (!locker.IsEmpty()) {
+	  CString cs_user_and_host, cs_PID(_T(""));
+	  cs_user_and_host = (CString)locker;
+	  int i_pid = cs_user_and_host.ReverseFind(_T(':'));
+	  if (i_pid > -1) {
+		  // If PID present then it is ":%08d" = 9 chars in length
+		  ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
+		  cs_PID = cs_user_and_host.Right(8);
+		  cs_user_and_host = cs_user_and_host.Left(i_pid);
+	  }
       CString str = _T("The database ");
       str += CString(filename);
-      str += _T(" is apparently being used by ");
-      str += CString(locker);
-      str += _T(".\r\nOpen the database for read-only (Yes), ");
+	  str += _T(" is apparently being used by:\n\n");
+	  if (i_pid > -1)
+		  str += cs_user_and_host + _T(" [Process ID=") + cs_PID + _T("]");
+	  else
+		  str += cs_user_and_host;
+      str += _T(".\n\nOpen the database for read-only (Yes), ");
       str += _T("read-write (No), or exit (Cancel)?");
       str += _T("\r\n\r\nNote: Choose \"No\" only if you are certain ");
-      str += _T("that the file is in fact not being used by anyone else.");
+      str += _T("that the file is in fact not being used by anyone else,\n");
+	  str += _T("including another copy of Password Safe running on your machine.");
       switch( MessageBox(str, _T("File In Use"),
                          MB_YESNOCANCEL|MB_ICONQUESTION)) {
       case IDYES:
@@ -898,7 +953,7 @@ DboxMain::OnToolTipText(UINT,
     delete m_pchTip;
 
     m_pchTip = new _TCHAR[cs_TipText.GetLength() + 1];
-    lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1); 
+    lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
     pTTTA->lpszText = (LPSTR)m_pchTip;
   } else {
     delete m_pwchTip;
@@ -920,14 +975,14 @@ DboxMain::OnToolTipText(UINT,
   _tcsncpy(pTTTA->szText, cs_TipText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
 #endif
   else {
-    int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText, 
+    int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText,
                                 sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
     if (n > 0)
       pTTTW->szText[n-1] = 0;
   }
 #else
   if (pNMHDR->code == TTN_NEEDTEXTA) {
-    int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1, 
+    int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
                                 pTTTA->szText,
                                 sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
                                 NULL, NULL);
@@ -1055,23 +1110,6 @@ DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
   } else {
 	app.GetMRU()->UpdateMenu( pCmdUI );
   }
-}
-
-#if _MFC_VER > 1200
-BOOL
-#else
-void
-#endif
-DboxMain::OnOpenMRU(UINT nID)
-{
-  UINT	uMRUItem = nID - ID_FILE_MRU_ENTRY1;
-
-  CString mruItem = (*app.GetMRU())[uMRUItem];
-
-  Open( mruItem );
-#if _MFC_VER > 1200
-  return TRUE;
-#endif
 }
 
 // Called just before any pulldown or popup menu is displayed, so that menu items
@@ -1254,92 +1292,101 @@ DboxMain::OnUnMinimize()
 void
 DboxMain::UnMinimize(bool update_windows)
 {
-  m_passphraseOK = false;
-  // Case 1 - data available but is currently locked
-  if (!m_needsreading
-      && (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
-      && (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
+	m_passphraseOK = false;
+	if (!m_bOpen) {
+		// first they may be nothing to do!
+		if (update_windows)
+			ShowWindow(SW_RESTORE);
+		UpdateSystemTray(CLOSED);
+		return;
+	}
 
-    CMyString passkey;
-    int rc;
-    rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
-    if (rc != PWScore::SUCCESS)
-      return;  // don't even think of restoring window!
+	// Case 1 - data available but is currently locked
+	if (!m_needsreading
+		&& (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
+		&& (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
-    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-    m_passphraseOK = true;
-    if (update_windows)
-      ShowWindow(SW_RESTORE);
-    return;
-  }
+		CMyString passkey;
+		int rc;
+		rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
+		if (rc != PWScore::SUCCESS)
+			return;  // don't even think of restoring window!
 
-  // Case 2 - data unavailable
-  if (m_needsreading && m_windowok) {
-    CMyString passkey, temp;
-    int rc, rc2;
-    const bool useSysTray = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::UseSystemTray);
+		app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+		m_passphraseOK = true;
+		if (update_windows)
+			ShowWindow(SW_RESTORE);
+		return;
+	}
 
-    if (m_IsStartSilent) {
-      rc = PWScore::USER_CANCEL;
-      m_IsStartSilent = false; // only for start!
-    } else {
-      rc = GetAndCheckPassword(m_core.GetCurFile(),
-                               passkey,
-                               useSysTray ? GCP_UNMINIMIZE :GCP_WITHEXIT);
-    }
-    switch (rc) {
-    case PWScore::SUCCESS:
-      rc2 = m_core.ReadCurFile(passkey);
+	// Case 2 - data unavailable
+	if (m_needsreading && m_windowok) {
+		CMyString passkey, temp;
+		int rc, rc2;
+		const bool useSysTray = PWSprefs::GetInstance()->
+			GetPref(PWSprefs::UseSystemTray);
+
+		rc = PWScore::USER_CANCEL;
+		if (m_IsStartSilent) {
+			m_IsStartSilent = false; // only for start!
+		} else {
+			if (m_bOpen)
+				rc = GetAndCheckPassword(m_core.GetCurFile(),
+										passkey,
+										useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT);
+		}
+		switch (rc) {
+			case PWScore::SUCCESS:
+				rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-      m_title = _T("Password Safe - ") + m_core.GetCurFile();
+				m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
-      break;
-    case PWScore::CANT_OPEN_FILE:
-      temp = m_core.GetCurFile()
-        + "\n\nCannot open database. It likely does not exist."
-        + "\nA new database will be created.";
-      MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
-    case TAR_NEW:
-      rc2 = New();
-      break;
-    case TAR_OPEN:
-      rc2 = Open();
-      break;
-    case PWScore::WRONG_PASSWORD:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    case PWScore::USER_CANCEL:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    case PWScore::USER_EXIT:
-      m_core.UnlockFile(m_core.GetCurFile());
-      PostQuitMessage(0);
-      return;
-    default:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    }
+				break;
+			case PWScore::CANT_OPEN_FILE:
+				temp = m_core.GetCurFile()
+						+ "\n\nCannot open database. It likely does not exist."
+						+ "\nA new database will be created.";
+				MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+			case TAR_NEW:
+				rc2 = New();
+				break;
+			case TAR_OPEN:
+				rc2 = Open();
+				break;
+			case PWScore::WRONG_PASSWORD:
+				rc2 = PWScore::NOT_SUCCESS;
+				break;
+			case PWScore::USER_CANCEL:
+				rc2 = PWScore::NOT_SUCCESS;
+				break;
+			case PWScore::USER_EXIT:
+				m_core.UnlockFile(m_core.GetCurFile());
+				PostQuitMessage(0);
+				return;
+			default:
+				rc2 = PWScore::NOT_SUCCESS;
+				break;
+		}
 
-    if (rc2 == PWScore::SUCCESS) {
-      m_needsreading = false;
-      UpdateSystemTray(UNLOCKED);
-      startLockCheckTimer();
-      m_passphraseOK = true;
-      if (update_windows) {
-        ShowWindow(SW_RESTORE);
-        BringWindowToTop();
-      }
-    } else {
-      m_needsreading = true;
-      ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
-    }
-    return;
-  }
-  if (update_windows) {
-    ShowWindow(SW_RESTORE);
-    BringWindowToTop();
-  }
+		if (rc2 == PWScore::SUCCESS) {
+			m_needsreading = false;
+			UpdateSystemTray(UNLOCKED);
+			startLockCheckTimer();
+			m_passphraseOK = true;
+			if (update_windows) {
+				ShowWindow(SW_RESTORE);
+				BringWindowToTop();
+			}
+		} else {
+			m_needsreading = true;
+			ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+		}
+		return;
+	}
+	if (update_windows) {
+		ShowWindow(SW_RESTORE);
+		BringWindowToTop();
+	}
 }
 
 void
@@ -1471,6 +1518,10 @@ BOOL
 DboxMain::OnQueryEndSession()
 {
 	m_iSessionEndingStatus = IDOK;
+
+	// Save Application related preferences
+	PWSprefs::GetInstance()->SaveApplicationPreferences();
+
 	if (m_IsReadOnly)
 		return TRUE;
 
@@ -1531,13 +1582,48 @@ DboxMain::UpdateStatusBar()
 {
   if (m_toolbarsSetup == TRUE) {
     CString s;
-    s = m_core.IsChanged() ? _T("*") : _T(" ");
-    m_statusBar.SetPaneText(SB_MODIFIED, s);
-    s = m_IsReadOnly ? _T("R-O") : _T("R/W");
-    m_statusBar.SetPaneText(SB_READONLY, s);
-    s.Format("%5d items", m_core.GetNumEntries());
-    m_statusBar.SetPaneText(SB_NUM_ENT, s);
+  	if (m_bOpen) {
+      s = m_core.IsChanged() ? _T("*") : _T(" ");
+      m_statusBar.SetPaneText(SB_MODIFIED, s);
+      s = m_IsReadOnly ? _T("R-O") : _T("R/W");
+      m_statusBar.SetPaneText(SB_READONLY, s);
+      s.Format("%5d items", m_core.GetNumEntries());
+      m_statusBar.SetPaneText(SB_NUM_ENT, s);
+    } else {
+      s.LoadString(IDS_STATCOMPANY);
+      m_statusBar.SetPaneText(SB_DBLCLICK, s);
+      m_statusBar.SetPaneText(SB_MODIFIED, _T(" "));
+      m_statusBar.SetPaneText(SB_READONLY, _T(" "));
+      m_statusBar.SetPaneText(SB_NUM_ENT, _T(" "));
+    }
   }
+  /*
+    This doesn't exactly belong here, but it makes sure that the
+    title is fresh...
+  */
+#if !defined(POCKET_PC)
+  SetWindowText(LPCTSTR(m_titlebar));
+#endif
+}
+
+void
+DboxMain::SetDCAText()
+{
+	const int dca = int(PWSprefs::GetInstance()->
+			GetPref(PWSprefs::DoubleClickAction));
+	int i_dca_text;
+	switch (dca) {
+		case PWSprefs::DoubleClickAutoType: i_dca_text = IDS_STATAUTOTYPE; break;
+		case PWSprefs::DoubleClickBrowse: i_dca_text = IDS_STATBROWSE; break;
+		case PWSprefs::DoubleClickCopyNotes: i_dca_text = IDS_STATCOPYNOTES; break;
+		case PWSprefs::DoubleClickCopyPassword: i_dca_text = IDS_STATCOPYPASSWORD; break;
+		case PWSprefs::DoubleClickCopyUsername: i_dca_text = IDS_STATCOPYUSERNAME; break;
+		case PWSprefs::DoubleClickViewEdit: i_dca_text = IDS_STATVIEWEDIT; break;
+		default: i_dca_text = IDS_STATCOMPANY;
+	}
+	CString s;
+	s.LoadString(i_dca_text);
+	m_statusBar.SetPaneText(SB_DBLCLICK, s);
 }
 
 void DboxMain::MakeSortedItemList(ItemList &il)
@@ -1551,4 +1637,82 @@ void DboxMain::MakeSortedItemList(ItemList &il)
       il.AddTail(*ci);
     }
   }
+}
+
+void
+DboxMain::UpdateMenuAndToolBar(const bool bOpen)
+{
+	// Set new open/close status
+	m_bOpen = bOpen;
+
+	// For open/close
+	const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
+	const BOOL btoolbar1 = bOpen ? TRUE : FALSE;
+	// If open but Read-Only
+	BOOL btoolbar2;
+	if (m_IsReadOnly)
+		btoolbar2 = FALSE;
+	else
+		btoolbar2 = btoolbar1;
+
+	// Change Main Menus if a database is Open or not
+	CWnd* pMain = AfxGetMainWnd();
+	CMenu* xmainmenu = pMain->GetMenu();
+
+	// Look for "File" menu.
+	int pos = app.FindMenuItem(xmainmenu, _T("&File"));
+	if (pos == -1) // E.g., in non-English versions
+		pos = 0; // best guess...
+
+	CMenu* xfilesubmenu = xmainmenu->GetSubMenu(pos);
+	if (xfilesubmenu != NULL)	// Look for "Save As"
+		pos = app.FindMenuItem(xfilesubmenu, ID_MENUITEM_SAVEAS);
+	else
+		pos = -1;
+
+	if (pos > -1) {
+		// Disable/enable Export and Import menu items (skip over separator)
+		xfilesubmenu->EnableMenuItem(pos + 2, MF_BYPOSITION | imenuflags);
+		xfilesubmenu->EnableMenuItem(pos + 3, MF_BYPOSITION | imenuflags);
+	}
+
+	// Look for "Edit" menu.
+	pos = app.FindMenuItem(xmainmenu, _T("&Edit"));
+	if (pos == -1) // E.g., in non-English versions
+		pos = 1; // best guess...
+
+	xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
+
+	// Look for "View" menu.
+	pos = app.FindMenuItem(xmainmenu, _T("&View"));
+	if (pos == -1) // E.g., in non-English versions
+		pos = 2; // best guess...
+
+	xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
+
+	// Look for "Manage" menu.
+	pos = app.FindMenuItem(xmainmenu, _T("&Manage"));
+	if (pos == -1) // E.g., in non-English versions
+		pos = 3; // best guess...
+
+	xfilesubmenu = xmainmenu->GetSubMenu(pos);
+	// Disable/enable menu items:
+	//   "Change Safe Combination", "Make Backup" & "Restore from Backup"
+	xfilesubmenu->EnableMenuItem(ID_MENUITEM_CHANGECOMBO, MF_BYCOMMAND | imenuflags);
+	xfilesubmenu->EnableMenuItem(ID_MENUITEM_BACKUPSAFE, MF_BYCOMMAND | imenuflags);
+	xfilesubmenu->EnableMenuItem(ID_MENUITEM_RESTORE, MF_BYCOMMAND | imenuflags);
+
+	if (m_toolbarsSetup == TRUE) {
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYPASSWORD, btoolbar1);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYUSERNAME, btoolbar1);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYNOTESFLD, btoolbar1);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_CLEARCLIPBOARD, btoolbar1);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_AUTOTYPE, btoolbar1);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, btoolbar1);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_EDIT, btoolbar1);
+
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, btoolbar2);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, btoolbar2);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, btoolbar2);
+	}
 }

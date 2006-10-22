@@ -1,7 +1,8 @@
+#ifndef __PWSCORE_H
+#define __PWSCORE_H
+
 // PWScore.h
 //-----------------------------------------------------------------------------
-
-#pragma once
 
 #include <afxtempl.h> // for CList
 #include "ItemData.h"
@@ -11,7 +12,7 @@
 #include <vector>
 #include <bitset>
 
-typedef CList<CItemData,CItemData> ItemList;
+typedef CList<CItemData,CItemData> ItemList; 
 
 class PWScore {
  public:
@@ -31,6 +32,8 @@ class PWScore {
     XML_FAILED_VALIDATION,						// 13
     XML_FAILED_IMPORT							// 14
    };
+
+  enum {DATABASE_LOCK = 0, CONFIG_LOCK};
 
   PWScore();
   ~PWScore();
@@ -62,8 +65,8 @@ class PWScore {
                          const std::bitset<16> &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
-                         const ItemList *il = NULL);
-  int WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
+						 const ItemList *il = NULL);
+  int WriteXMLFile(const CMyString &filename, const TCHAR delimiter, 
                    const ItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
 			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
@@ -86,6 +89,7 @@ class PWScore {
   bool LockFile(const CMyString &filename, CMyString &locker, const bool bDB = true);
   bool IsLockedFile(const CMyString &filename, const bool bDB = true) const;
   void UnlockFile(const CMyString &filename, const bool bDB = true);
+  bool GetLocker(const CMyString &filename, CMyString &locker);
 
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary);
@@ -144,9 +148,11 @@ class PWScore {
   ItemList m_pwlist;
 
   bool m_changed;
-  HANDLE m_lockFileHandle;
+  HANDLE m_lockFileHandle[2];
+  int m_LockCount[2];
 
   CString m_displaystatus;
   CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
-  CString m_user, m_sysname;
+  CString m_user, m_sysname, m_ProcessID;
 };
+#endif /* __PWSCORE_H */

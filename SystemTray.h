@@ -1,3 +1,5 @@
+#pragma once
+
 /////////////////////////////////////////////////////////////////////////////
 // SystemTray.h : header file
 //
@@ -23,8 +25,6 @@
 // that you have found/implemented and I will fix/incorporate them into this
 // file. 
 
-#ifndef _INCLUDED_SYSTEMTRAY_H_
-#define _INCLUDED_SYSTEMTRAY_H_
 
 #include "RUEList.h"
 #include "corelib/MyString.h"
@@ -128,7 +128,3 @@ protected:
     LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
     DECLARE_MESSAGE_MAP()
 };
-
-#endif
-
-/////////////////////////////////////////////////////////////////////////////

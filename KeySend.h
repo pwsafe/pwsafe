@@ -1,16 +1,13 @@
+#pragma once
+
 // 
 // KeySend.h
 // thedavecollins 2004-08-07
 // sends keystrokes
 //-----------------------------------------------------------------------------
 
-#ifndef CKeySend_h
-#define CKeySend_h
-
 #include "corelib/PWScore.h"
-
 #include "PasswordSafe.h"
-
 
 class CKeySend
 {
@@ -28,4 +25,3 @@ private:
 	HKL m_hlocale;
 };
 
-#endif

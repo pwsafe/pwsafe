@@ -1,7 +1,8 @@
+#ifndef __SAXHANDLERS_H
+#define __SAXHANDLERS_H
 // SAXHandlers.h : header file
 //
 
-#pragma once
 
 #include "MyString.h"
 #include "ItemData.h"
@@ -156,3 +157,4 @@ private:
 	// REQUIRED variable
 	ULONG m_refCnt;
 };
+#endif /*  __SAXHANDLERS_H */

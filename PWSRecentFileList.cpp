@@ -22,7 +22,7 @@
 	   will add any string!
 	*/
 
-void CPWSRecentFileList::Add(LPCTSTR lpszPathName)
+void CPWSRecentFileList::Add(LPCTSTR lpszPathName, const bool bstartup)
 {
 	ASSERT(m_arrNames != NULL);
 	ASSERT(AfxIsValidString(lpszPathName));
@@ -30,6 +30,12 @@ void CPWSRecentFileList::Add(LPCTSTR lpszPathName)
 	// Do nothing if string is not there
 	if ( lpszPathName == NULL || lstrlen(lpszPathName) == 0 )
 		return;
+
+	if (!bstartup) {
+		// Get MS to Add it.
+		CRecentFileList::Add(lpszPathName);
+		return;
+	}
 
 	TCHAR szTemp[_MAX_PATH];
 	DWORD dwRet = GetFullPathName(lpszPathName, _MAX_PATH, szTemp, NULL);

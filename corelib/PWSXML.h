@@ -1,10 +1,12 @@
 // PWSXML.h : header file
 //
 
-#pragma once
+#ifndef __PWSXML_H
+#define __PWSXML_H
 
-#include "PWScore.h"
 #include "MyString.h"
+
+class PWScore;
 
 class PWSXML {
 public:
@@ -23,3 +25,4 @@ private:
 	TCHAR m_delimiter;
 	bool m_bValidation;
 };
+#endif /* __PWSXML_H */

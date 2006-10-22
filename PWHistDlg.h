@@ -1,6 +1,8 @@
+#pragma once
+
 // PWHisDlg.h CPWHistDlg
 //-----------------------------------------------------------------
-#pragma once
+
 #include "afxwin.h"
 
 class CItemData;

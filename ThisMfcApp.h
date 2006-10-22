@@ -1,18 +1,19 @@
+#pragma once
+
 /// \file ThisMfcApp.h
 /// \brief App object of MFC version of Password Safe
 //-----------------------------------------------------------------------------
-#if !defined(ThisMfcApp_h)
-#define ThisMfcApp_h
+
 #include "PasswordSafe.h"
 #include "stdafx.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
 #include "corelib/PWScore.h"
 #include "SystemTray.h"
-//-----------------------------------------------------------------------------
+#include "PWSRecentFileList.h"
 
-int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
-int FindMenuItem(CMenu* Menu, int MenuID);
+#include <afxmt.h>
+//-----------------------------------------------------------------------------
 
 class DboxMain;
 
@@ -22,25 +23,28 @@ class ThisMfcApp
 public:
   ThisMfcApp();
   ~ThisMfcApp();
-   
+
   HACCEL m_ghAccelTable;
 
-  CRecentFileList*	GetMRU()			{ return m_pMRU; }
+  CPWSRecentFileList* GetMRU() { return m_pMRU; }
   void ClearMRU();
-  void AddToMRU(const CMyString &pszFilename);
+  void AddToMRU(const CString &pszFilename, const bool bstartup = false);
+  void WriteMRU(const int &iconfig);
+  void ReadMRU(const int &iconfig);
 
   DboxMain* m_maindlg;
   PWScore m_core;
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
   CString m_csDefault_Browser;
+  CString m_companyname;
     
   virtual BOOL InitInstance();
   virtual int ExitInstance();
 WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
-  void		EnableAccelerator()						{ m_bUseAccelerator = true; }
-  void		DisableAccelerator()					{ m_bUseAccelerator = false; }
+  void EnableAccelerator() { m_bUseAccelerator = true; }
+  void DisableAccelerator() { m_bUseAccelerator = false; }
 
   BOOL SetTooltipText(LPCTSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
   BOOL SetMenuDefaultItem(UINT uItem) {return m_TrayIcon->SetMenuDefaultItem(uItem, FALSE);}
@@ -51,31 +55,33 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   void SetClipboardData(const CMyString &data);
 
   afx_msg void OnHelp();
-  enum STATE {LOCKED, UNLOCKED};
+  enum STATE {LOCKED, UNLOCKED, CLOSED};
   void SetSystemTrayState(STATE);
   STATE GetSystemTrayState() const {return m_TrayLockedState;}
   static void StripFileQuotes( CString& strFilename );
   bool WasHotKeyPressed() {return m_HotKeyPressed;}
   void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
+  int FindMenuItem(CMenu* Menu, int MenuID);
+  int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
 
   DECLARE_MESSAGE_MAP()
 
 protected:
-  CRecentFileList*		m_pMRU;
-  bool					m_bUseAccelerator;
+  CPWSRecentFileList* m_pMRU;
+  bool m_bUseAccelerator;
   bool m_clipboard_set; // To verify that we're erasing *our* data
   unsigned char m_clipboard_digest[SHA256::HASHLEN]; // ditto
+
 private:
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;
+  HICON m_ClosedIcon;
   CSystemTray *m_TrayIcon; // DboxMain needs to be constructed first
   STATE m_TrayLockedState;
   bool m_HotKeyPressed;
 };
 
 
-//-----------------------------------------------------------------------------
-#endif // !defined(ThisMfcApp_h)
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

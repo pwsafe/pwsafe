@@ -1,3 +1,5 @@
+#pragma once
+
 // PasswordSafe.h
 // main header file for the PasswordSafe application
 //-----------------------------------------------------------------------------
