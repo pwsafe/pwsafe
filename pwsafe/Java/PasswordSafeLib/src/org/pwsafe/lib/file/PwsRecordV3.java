@@ -116,20 +116,20 @@ public class PwsRecordV3 extends PwsRecord
 	{
 		new Object [] { new Integer(V3_ID_STRING),		"V3_ID_STRING",			PwsVersionField.class },
 		new Object [] { new Integer(UUID),				"UUID",					PwsUUIDField.class },
-		new Object [] { new Integer(GROUP),				"GROUP",				PwsStringField.class },
-		new Object [] { new Integer(TITLE),				"TITLE",				PwsStringField.class },
-		new Object [] { new Integer(USERNAME),			"USERNAME",				PwsStringField.class },
-		new Object [] { new Integer(NOTES),				"NOTES",				PwsStringField.class },
-		new Object [] { new Integer(PASSWORD),			"PASSWORD",				PwsStringField.class },
+		new Object [] { new Integer(GROUP),				"GROUP",				PwsStringUnicodeField.class },
+		new Object [] { new Integer(TITLE),				"TITLE",				PwsStringUnicodeField.class },
+		new Object [] { new Integer(USERNAME),			"USERNAME",				PwsStringUnicodeField.class },
+		new Object [] { new Integer(NOTES),				"NOTES",				PwsStringUnicodeField.class },
+		new Object [] { new Integer(PASSWORD),			"PASSWORD",				PwsStringUnicodeField.class },
 		new Object [] { new Integer(CREATION_TIME),		"CREATION_TIME",		PwsTimeField.class },
 		new Object [] { new Integer(PASSWORD_MOD_TIME),	"PASSWORD_MOD_TIME",	PwsTimeField.class },
 		new Object [] { new Integer(LAST_ACCESS_TIME),	"LAST_ACCESS_TIME",		PwsTimeField.class },
 		new Object [] { new Integer(PASSWORD_LIFETIME),	"PASSWORD_LIFETIME",	PwsIntegerField.class },
-		new Object [] { new Integer(PASSWORD_POLICY),	"PASSWORD_POLICY",		PwsStringField.class },
+		new Object [] { new Integer(PASSWORD_POLICY),	"PASSWORD_POLICY",		PwsStringUnicodeField.class },
 		new Object [] { new Integer(LAST_MOD_TIME),		"LAST_MOD_TIME",		PwsTimeField.class },
-		new Object [] { new Integer(URL),				"URL",					PwsStringField.class },
-		new Object [] { new Integer(AUTOTYPE),			"AUTOTYPE",				PwsStringField.class },
-		new Object [] { new Integer(PASSWORD_HISTORY),	"PASSWORD_HISTORY",		PwsStringField.class },
+		new Object [] { new Integer(URL),				"URL",					PwsStringUnicodeField.class },
+		new Object [] { new Integer(AUTOTYPE),			"AUTOTYPE",				PwsStringUnicodeField.class },
+		new Object [] { new Integer(PASSWORD_HISTORY),	"PASSWORD_HISTORY",		PwsStringUnicodeField.class },
 	};
 	
 
@@ -251,9 +251,9 @@ public class PwsRecordV3 extends PwsRecord
 
 		if (idField != null) {
 			LOG.debug1("Ignoring record " + this.toString());
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	static byte[] EOF_BYTES = { 82, 1, 9, -3, 104, -67, -8, 126, -17, -111, 78, -31, 89, -36, -110, 101 };
@@ -338,7 +338,7 @@ public class PwsRecordV3 extends PwsRecord
 				case PASSWORD :
 				case URL :
 				case AUTOTYPE :
-					itemVal	= new PwsStringField( item.getType(), item.getData() );
+					itemVal	= new PwsStringUnicodeField( item.getType(), item.getByteData() );
 					break;
 
 				case CREATION_TIME :
@@ -428,7 +428,15 @@ public class PwsRecordV3 extends PwsRecord
 
 		//file.writeBytes(lenBlock);
 		byte[] dataToWrite = Util.mergeBytes(lenBlock, dataBlock);
-		file.writeEncryptedBytes( dataToWrite );
+		if (dataToWrite.length == 16) {
+			// only one block long, just write it out
+			file.writeEncryptedBytes( dataToWrite );	
+		} else {
+			file.writeEncryptedBytes( Util.getBytes(dataToWrite, 0, 16));
+			// write the rest as a separate block
+			file.writeEncryptedBytes( Util.getBytes(dataToWrite, 16, dataToWrite.length - 16));
+		}
+		
 	}
 
 	/**
