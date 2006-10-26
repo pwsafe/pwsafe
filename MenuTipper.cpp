@@ -75,6 +75,7 @@ void CMenuTipManager::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu)
 			m_wndTip.Cancel(); // no prompt: cancel tip
 		else {
 			prompt.Replace(_T("&"), _T("&&"));
+			prompt = _T(" ") + prompt + _T(" ");
 			CRect rc = GetMenuTipRect(hMenu, nItemID);
 			m_wndTip.SetWindowPos(&CWnd::wndTopMost, rc.left, rc.top,
 				rc.Width(), rc.Height(), SWP_NOACTIVATE);
