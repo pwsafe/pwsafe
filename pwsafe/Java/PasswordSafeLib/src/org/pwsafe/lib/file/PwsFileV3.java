@@ -45,12 +45,15 @@ public class PwsFileV3 extends PwsFile
 	 */
 	protected PwsFileHeaderV3	headerV3;
 	
+	/**
+	 * End of File marker. HMAC follows this tag.
+	 */
+	static byte[] EOF_BYTES_RAW = "PWS3-EOFPWS3-EOF".getBytes();
+	
 	protected byte[] stretchedPassword;
 	protected byte[] decryptedRecordKey;
 	protected byte[] decryptedHmacKey;
 	
-//	protected Cipher fieldCrypto;
-//	protected Cipher fieldDecrypto;
 	TwofishPws twofishCbc;
 	HmacPws hasher;
 	PwsRecordV3 headerRecord;
@@ -171,7 +174,7 @@ public class PwsFileV3 extends PwsFile
 					rec.saveRecord(this);
 			}
 			
-			OutStream.write(PwsRecordV3.EOF_BYTES);
+			OutStream.write(PwsRecordV3.EOF_BYTES_RAW);
 			OutStream.write(hasher.doFinal());
 	
 			OutStream.close();
@@ -327,6 +330,10 @@ public class PwsFileV3 extends PwsFile
 			throw new IllegalArgumentException( I18nHelper.getInstance().formatMessage("E00001") );
 		}
 		readBytes( buff );
+		if (Util.bytesAreEqual(buff,  EOF_BYTES_RAW)) {
+			throw new EndOfFileException();
+		}
+		
 		byte[] decrypted;
 		try {
 			decrypted = twofishCbc.processCBC(buff);

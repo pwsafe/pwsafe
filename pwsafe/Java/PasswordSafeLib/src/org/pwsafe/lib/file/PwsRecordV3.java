@@ -256,16 +256,16 @@ public class PwsRecordV3 extends PwsRecord
 		return false;
 	}
 	
-	static byte[] EOF_BYTES = { 82, 1, 9, -3, 104, -67, -8, 126, -17, -111, 78, -31, 89, -36, -110, 101 };
-		//TODO: should do something like Util.signedToUnsigned("PWS3-EOFPWS3-EOF".getBytes());
+	static byte[] EOF_BYTES_RAW = "PWS3-EOFPWS3-EOF".getBytes();
 	
 	protected class ItemV3 extends Item {
 		public ItemV3( PwsFileV3 file )
 		throws EndOfFileException, IOException
 		{
 			super();
-			RawData = file.readBlock();
-			if (Util.bytesAreEqual(EOF_BYTES, RawData)) {
+			try {
+				RawData = file.readBlock();
+			} catch (EndOfFileException eofe) {
 				Data = new byte[32]; // to hold closing HMAC
 				file.readBytes(Data);
 				byte[] hash = file.hasher.doFinal();
@@ -274,8 +274,9 @@ public class PwsRecordV3 extends PwsRecord
 				if (!Util.bytesAreEqual(Data, hash)) {
 					throw new IOException("HMAC record did not match. File has been tampered");
 				}
-				throw new EndOfFileException();
+				throw eofe;
 			}
+			
 			Length	= Util.getIntFromByteArray( RawData, 0 );
 			Type = RawData[4] & 0x000000ff; // rest of header is now random data
 			//System.err.println("Data size is " + Length + " and type is " + Type);

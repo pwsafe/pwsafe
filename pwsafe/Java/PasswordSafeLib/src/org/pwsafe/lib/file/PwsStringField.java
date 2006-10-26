@@ -6,6 +6,8 @@
  */
 package org.pwsafe.lib.file;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * @author Kevin Preece
  */
@@ -31,7 +33,13 @@ public class PwsStringField extends PwsField
 	 */
 	public byte[] getBytes()
 	{
-		return ((String) super.getValue()).getBytes();
+		byte[] bytes = null;
+		try {
+			bytes = ((String) super.getValue()).getBytes("ISO-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+		return bytes;
 	}
 
 	/**
