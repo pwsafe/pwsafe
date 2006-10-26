@@ -52,14 +52,18 @@ int CPopupText::Create(CPoint pt, CWnd* pParentWnd, UINT nID)
 LRESULT CPopupText::OnSetText(WPARAM , LPARAM lp)
 {
 	CRect rc;
+	const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 	GetWindowRect(&rc);
 	int h = rc.Height();
 	CClientDC dc(this);
-	DrawText(dc, CString((LPCTSTR)lp), rc, DT_CALCRECT);
+	DrawText(dc, CString((LPCTSTR)lp), rc, DT_CALCRECT); //  | DT_PATH_ELLIPSIS
+	int w = rc.Width();
 	rc.InflateRect(m_szMargins);
 	if (m_szMargins.cy)
 		h = rc.Height();
-	SetWindowPos(NULL, 0, 0, rc.Width(), h,
+	if ((rc.left + w + 10) > screenWidth)
+		w = screenWidth - rc.left - 10;
+	SetWindowPos(NULL, 0, 0, w, h,
 		SWP_NOZORDER|SWP_NOMOVE|SWP_NOACTIVATE);
 	return Default();
 }
@@ -71,7 +75,10 @@ void CPopupText::DrawText(CDC& dc, LPCTSTR lpText, CRect& rc, UINT flags)
 	dc.SetBkMode(TRANSPARENT);
 	dc.SetTextColor(GetSysColor(COLOR_INFOTEXT)); // tooltip text color
 	CFont* pOldFont = dc.SelectObject(&m_font);
-	dc.DrawText(lpText, &rc, flags);
+	if (flags != DT_CALCRECT)
+		dc.DrawText(lpText, &rc, flags | DT_PATH_ELLIPSIS);
+	else
+		dc.DrawText(lpText, &rc, flags);
 	dc.SelectObject(pOldFont);
 }
 
