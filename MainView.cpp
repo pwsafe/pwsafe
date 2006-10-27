@@ -11,6 +11,8 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 
 #include "DboxMain.h"
@@ -500,7 +502,9 @@ DboxMain::RefreshList()
   else
     bPasswordColumnShowing = false;
   if (m_bShowPasswordInList && !bPasswordColumnShowing) {
-    m_ctlItemList.InsertColumn(3, _T("Password"));
+	CString cs_text;
+  	cs_text.LoadString(IDS_PASSWORD);
+    m_ctlItemList.InsertColumn(3, cs_text);
 	m_nColumns++;
     CRect rect;
     m_ctlItemList.GetClientRect(&rect);
@@ -579,9 +583,10 @@ DboxMain::OnSize(UINT nType,
       if (m_core.IsChanged() ||  m_bTSUpdated)
         if (Save() != PWScore::SUCCESS) {
           // If we don't warn the user, data may be lost!
-          MessageBox(_T("Couldn't save database - Please save manually"),
-                     _T("Save error"),
-                     MB_ICONSTOP);
+          CString cs_text, cs_title;
+          cs_text.LoadString(IDS_COULDNOTSAVE);
+          cs_title.LoadString(IDS_SAVEERROR);
+          MessageBox(cs_text, cs_title, MB_ICONSTOP);
           ShowWindow(SW_SHOW);
           return;
         }
@@ -1160,74 +1165,6 @@ DboxMain::UpdateSystemTray(const STATE s)
     ASSERT(0);
   }
 }
-#ifdef _DEBUG
-static BOOL MakeErrorString(long status, const CString & name, CString &mess)
-{
-  BOOL retval = FALSE;
-  switch(status) {
-  case 0:
-    mess.Format(_T("The system is out of memory or resources."));
-    retval = TRUE;
-    break;
-  case ERROR_FILE_NOT_FOUND:
-    mess.Format(_T("File '%s' not found."), name);
-    retval = TRUE;
-    break;
-  case ERROR_PATH_NOT_FOUND:
-    mess.Format(_T("Path of file '%s' not found."), name);
-    retval = TRUE;
-    break;
-  case ERROR_BAD_FORMAT:
-    mess.Format(_T("Executable '%s' is invalid (non-Win32® .exe or error in .exe image)."), name);
-    retval = TRUE;
-    break;
-  case SE_ERR_ACCESSDENIED:
-    mess.Format(_T("The operating system denied access to file '%s'."), name);
-    retval = TRUE;
-    break;
-  case SE_ERR_ASSOCINCOMPLETE:
-    mess.Format(_T("Name association for file %s' is incomplete or invalid."), name);
-    retval = TRUE;
-    break;
-  case SE_ERR_DDEBUSY:
-    mess.Format(_T("DDE transaction could not be completed: other DDE transactions being processed."));
-    retval = TRUE;
-    break;
-  case SE_ERR_DDEFAIL:
-    mess.Format(_T("DDE transaction failed."));
-    retval = TRUE;
-    break;
-  case SE_ERR_DDETIMEOUT:
-    mess.Format(_T("DDE transaction could not be completed: request timed out."));
-    retval = TRUE;
-    break;
-  case SE_ERR_DLLNOTFOUND:
-    mess.Format(_T("The specified dynamic-link library was not found."));
-    retval = TRUE;
-    break;
-  case SE_ERR_NOASSOC:
-    mess.Format(_T("No association for file type of '%s' found."), name);
-    retval = TRUE;
-    break;
-  case SE_ERR_OOM:
-    mess.Format(_T("The system is out of memory or resources."));
-    retval = TRUE;
-    break;
-  case SE_ERR_SHARE:
-    mess.Format(_T("A sharing violation occurred."));
-    retval = TRUE;
-    break;
- default:
-   if(status < 32) {
-     mess.Format(_T("Unknown error %d returned from FindExecutable()."), status);
-     retval = TRUE;
-   }
-   break;
-  }
-  return retval;
-}
-
-#endif
 
 BOOL
 DboxMain::LaunchBrowser(const CString &csURL)
@@ -1255,7 +1192,7 @@ DboxMain::LaunchBrowser(const CString &csURL)
   DWORD dwRetVal = GetTempPath(MAX_PATH - 14, lpPathBuffer);
 
   if(dwRetVal > MAX_PATH - 14) {
-    csMsg.Format(_T("GetTempPath failed with error %d."), GetLastError());
+    csMsg.Format(IDS_NOTEMPPATH, GetLastError());
     AfxMessageBox(csMsg, MB_ICONSTOP);
     return FALSE;
   }
@@ -1276,13 +1213,12 @@ DboxMain::LaunchBrowser(const CString &csURL)
   }
 
   if(hTempFile == INVALID_HANDLE_VALUE) {
-    csMsg.Format(_T("Couldn't create a temporary file to determine default browser."));
-    AfxMessageBox(csMsg, MB_ICONSTOP);
+    AfxMessageBox(IDS_NOTEMPFILE, MB_ICONSTOP);
     return FALSE;
   }
 
   if(!CloseHandle(hTempFile)) {
-    csMsg.Format(_T("CloseHandle failed with error %d."), GetLastError());
+    csMsg.Format(IDS_CLOSETEMPFILEFAILED, GetLastError());
     AfxMessageBox(csMsg, MB_ICONSTOP);
     return FALSE;
   }
@@ -1292,43 +1228,29 @@ DboxMain::LaunchBrowser(const CString &csURL)
   csBrowser.ReleaseBuffer();
 
   if(!DeleteFile(csTempFileName)) {
-    csMsg.Format(_T("DeleteFile failed with error %d."), GetLastError());
+    csMsg.Format(IDS_TEMPDELETEFAILED, GetLastError());
+    AfxMessageBox(csMsg, MB_ICONSTOP);
     bError = TRUE;
   }
-#ifdef _DEBUG
-  bError = MakeErrorString(hinst, csTempFileName, csMsg);
 
-  if (bError == TRUE) {
-    AfxMessageBox(csMsg, MB_ICONSTOP);
-    return FALSE;
-  }
-#else
   if(hinst < 32) {
     // Display it the old way - re-use any open browser window!
     hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
                                 NULL, SW_SHOWNORMAL));
     if(hinst < 32) {
-      AfxMessageBox(_T("oops - can't display URL"), MB_ICONSTOP);
+      AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
       return FALSE;
     }
     return TRUE;
   }
-#endif
   hinst = long(::ShellExecute(NULL, NULL, csBrowser, theURL,
                               NULL, SW_SHOWNORMAL));
-#ifdef _DEBUG
-  bError = MakeErrorString(hinst, csBrowser, csMsg);
 
-  if (bError == TRUE) {
-    AfxMessageBox(csMsg, MB_ICONSTOP);
-    return FALSE;
-  }
-#else
   if(hinst < 32) {
-    AfxMessageBox(_T("oops can't display URL"), MB_ICONSTOP);
+    AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
     return FALSE;
   }
-#endif
+
   // Save default browser - so we do not have to do this again!
   app.m_csDefault_Browser = csBrowser;
   return TRUE;

@@ -12,6 +12,7 @@
   #include "pocketpc/PocketPC.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 
 #include "PasskeyChangeDlg.h"
@@ -73,17 +74,18 @@ void
 CPasskeyChangeDlg::OnOK() 
 {
   CMyString errmess;
+  CString cs_msg, cs_text;
 
   UpdateData(TRUE);
   int rc = app.m_core.CheckPassword(app.m_core.GetCurFile(), m_oldpasskey);
   if (rc == PWScore::WRONG_PASSWORD)
-    AfxMessageBox(_T("The old safe combination is not correct"));
+    AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)
-    AfxMessageBox(_T("Cannot verify old safe combination - file gone?"));
+    AfxMessageBox(IDS_CANTVERIFY);
   else if (m_confirmnew != m_newpasskey)
-    AfxMessageBox(_T("New safe combination and confirmation do not match"));
+    AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   else if (m_newpasskey.IsEmpty())
-    AfxMessageBox(_T("The new safe combination cannot be blank."));
+    AfxMessageBox(IDS_CANNOTBEBLANK);
   // Vox populi vox dei - folks want the ability to use a weak
   // passphrase, best we can do is warn them...
   // If someone want to build a version that insists on proper
@@ -91,16 +93,17 @@ CPasskeyChangeDlg::OnOK()
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   // (also used in CPasskeySetup)
   else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
-    CString msg(_T("Weak password:\n"));
-    msg += CString(errmess);
+    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess);
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-    msg += _T("\nUse it anyway?");
-    int rc = AfxMessageBox(msg, MB_YESNO | MB_ICONSTOP);
+    cs_text.LoadString(IDS_USEITANYWAY);
+    cs_msg += cs_text;
+    int rc = AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP);
     if (rc == IDYES)
       super::OnOK();
 #else
-    msg += _T("\nPlease try another");
-    AfxMessageBox(msg, MB_OK | MB_ICONSTOP);
+    cs_text.LoadString(IDS_TRYANOTHER);
+    cs_msg += cs_text;
+    AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   } else {
     super::OnOK();

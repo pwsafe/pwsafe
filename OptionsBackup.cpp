@@ -12,6 +12,7 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 
 #include "OptionsBackup.h"

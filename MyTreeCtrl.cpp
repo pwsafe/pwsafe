@@ -536,8 +536,6 @@ void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
     DWORD itemData = GetItemData(child);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
-/*  TRACE(_T("CMyTreeCtrl::OnExpandCollapse(hitem = %x, citem = %x, action = %d)\n"),
-          pNMTreeView->itemNew.hItem, ci, pNMTreeView->action);*/
     if (pNMTreeView->action == TVE_EXPAND)
       pSet->insert(ci);
     else if (pNMTreeView->action == TVE_COLLAPSE) {
@@ -554,11 +552,9 @@ void CMyTreeCtrl::RestoreExpanded()
   SetTreeItem_t::iterator it;
 
   for (it = pSet->begin(); it != pSet->end(); it++) {
-/*  TRACE(_T("CMyTreeCtrl::RestoreExpanded() iterating %x\n"), *it);*/
     CItemData *ci = *it;
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     HTREEITEM parent = GetParentItem(di->tree_item);
-/*  TRACE(_T("di->tree_item = %x\n"), di->tree_item);*/
     Expand(parent, TVE_EXPAND);
   }
   m_isRestoring = false;

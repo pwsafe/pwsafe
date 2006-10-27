@@ -2,6 +2,8 @@
 
 #include "afxcmn.h"
 #include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #include "corelib/MyString.h"
 #include "corelib/sha256.h"
 

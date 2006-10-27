@@ -1,0 +1,13 @@
+#ifndef _VERSION_H_
+#define _VERSION_H_
+
+// Using Tortoise SVN's program SubWCRev.exe to copy this to "version.h"
+// for use by the Resource Compiler and replace "WCREV" by the build number
+// SubWCRev.exe path\to\working\copy version.in version.h
+
+#define FILEVER        3, 4, 0, $WCREV$
+#define PRODUCTVER     3, 4, 0, $WCREV$
+#define STRFILEVER     "3, 4, 0,$WCREV$\0"
+#define STRPRODUCTVER  "3, 4, 0,$WCREV$\0"
+
+#endif // _VERSION_H_

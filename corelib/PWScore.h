@@ -125,6 +125,7 @@ class PWScore {
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
+  bool GetApplicationVersion(DWORD &dwMajorMinor, DWORD &dwSubMinorBuild);
 
  private:
   CMyString m_currfile; // current pw db filespec
@@ -134,6 +135,8 @@ class PWScore {
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
   static CString m_hdr;
+  DWORD m_dwMajorMinor;
+  DWORD m_dwSubMinorBuild;
 
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey

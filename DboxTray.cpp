@@ -11,6 +11,8 @@
 #else
   #include <errno.h>
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 
 #include "DboxMain.h"
@@ -71,9 +73,10 @@ DboxMain::OnTrayLockUnLock()
 void
 DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
 {
-	const CString csUnLock = _T("Unlock Database");
-	const CString csLock = _T("Lock Database");
-	const CString csClosed = _T("No Database Open");
+	CString csUnLock, csLock, csClosed;
+	csUnLock.LoadString(IDS_UNLOCKSAFE);
+	csLock.LoadString(IDS_LOCKSAFE);
+	csClosed.LoadString(IDS_NOSAFE);
 
 	const int i_state = app.GetSystemTrayState();
 	// Set text to "UnLock" or "Lock"
@@ -168,10 +171,11 @@ DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
 void
 DboxMain::OnTrayCopyNotes(UINT nID)
 {
-  ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTESFLD1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESFLDMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTES1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESMAX));
 
   CItemData ci;
-  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTESFLD1, ci);
+  CString cs_text;
+  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTES1, ci);
   if (&ci == NULL)
     return;
 
@@ -182,11 +186,13 @@ DboxMain::OnTrayCopyNotes(UINT nID)
 
   clipboard_data = notes;
   if (!url.IsEmpty()) {
-    clipboard_data += _T("\r\nURL: ");
+  	cs_text.LoadString(IDS_COPYURL);
+    clipboard_data += CMyString(cs_text);
     clipboard_data += url;
   }
   if (!autotype.IsEmpty()) {
-    clipboard_data += _T("\r\nAutotype: ");
+  	cs_text.LoadString(IDS_COPYAUTOTYPE);
+    clipboard_data += CMyString(cs_text);
     clipboard_data += autotype;
   }
 

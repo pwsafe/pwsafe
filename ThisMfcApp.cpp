@@ -15,6 +15,8 @@
   #include <errno.h>
   #include <io.h>
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 
 #include "ThisMfcApp.h"
@@ -52,18 +54,20 @@ ThisMfcApp::ThisMfcApp() :
 #if defined(PWS_LITTLE_ENDIAN)
   unsigned char	buf[4]	= { 1, 0, 0, 0 };
   unsigned int	ii		= 1;
-#define ENDIANNESS	_T("little endian")
-#define ENDIANNESS2	_T("big endian")
+#define ENDIANNESS1	0 // Little
+#define ENDIANNESS2	1 // Big
 #elif defined(PWS_BIG_ENDIAN)
   unsigned char	buf[4]	= { 0, 0, 0, 1 };
   unsigned int	ii		= 1;
-#define ENDIANNESS	_T("big endian")
-#define ENDIANNESS2	_T("little endian")
+#define ENDIANNESS1	1 // Big
+#define ENDIANNESS2	0 // Little
 #endif
   if (*(unsigned int*)buf != ii) {
-    AfxMessageBox(_T("Password Safe has been compiled as ") ENDIANNESS
-                  _T(" but CPU is really ") ENDIANNESS2 _T("\n")
-                  _T("You may not be able to open files or saved files may be incompatible with other platforms."));
+  	CString cs_msg, cs_e1, cs_e2;
+  	cs_e1.LoadString(ENDIANNESS1 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
+  	cs_e2.LoadString(ENDIANNESS2 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
+  	cs_msg.Format(IDS_ENDIANERROR, cs_e1, cs_e2);
+    AfxMessageBox(cs_msg);
   }
 #endif
 
@@ -98,35 +102,25 @@ ThisMfcApp::~ThisMfcApp()
 #if !defined(POCKET_PC)
 static void Usage()
 {
-  AfxMessageBox(_T("Usage: PasswordSafe [-r|-v] [password database]\n")
-                _T("or PasswordSafe [-e|-d] filename\n")
-				_T("or PasswordSafe [-s]\n\n")
-				_T(" where:\n")
-                _T("\t-r = open read-only\n")
-				_T("\t-v = validate & repair\n")
-				_T("\t-e/d = encrypt/decrypt file\n")
-				_T("\t-s = open silently i.e. no open database")
-                );
+  AfxMessageBox(IDS_USAGE);
 }
 
 // tests if file exists, returns empty string if so, displays error message if not
 static BOOL CheckFile(const CString &fn)
 {
   DWORD status = ::GetFileAttributes(fn);
-  CString ErrMess;
+  CString cs_msg(_T(""));
 
   if (status == -1) {
-    ErrMess = _T("Could not access file: ");
-    ErrMess += fn;
+    cs_msg.Format(IDS_FILEERROR1, fn);
   } else if (status & FILE_ATTRIBUTE_DIRECTORY) {
-    ErrMess = fn;
-    ErrMess += _T(" is a directory");
+    cs_msg.Format(IDS_FILEERROR2, fn);
   }
 
-  if (ErrMess.IsEmpty()) {
+  if (cs_msg.IsEmpty()) {
     return TRUE;
   } else {
-    AfxMessageBox(ErrMess);
+    AfxMessageBox(cs_msg);
     return FALSE;
   }
 }
@@ -138,23 +132,34 @@ ErrorMessages(const CString &fn, FILE *fp)
 {
 #if !defined(POCKET_PC)
   if (fp == NULL) {
-    CString text;
-    text = _T("A fatal error occured: ");
+    CString cs_text1, cs_text2;
+    cs_text1.LoadString(IDS_ERRORMESSAGE);
 
-    if (errno==EACCES)
-      text += _T("Given path is a directory or file is read-only");
-    else if (errno==EEXIST)
-      text += _T("The filename already exists.");
-    else if (errno==EINVAL)
-      text += _T("Invalid oflag or shflag argument.");
-    else if (errno==EMFILE)
-      text += _T("No more file handles available.");
-    else if (errno==ENOENT)
-      text += _T("File or path not found.");
-    text += _T("\nProgram will terminate.");
+    switch (errno) {
+    	case EACCES:
+    		cs_text2.LoadString(IDS_FILEREADONLY);
+    		break;
+        case EEXIST:
+        	cs_text2.LoadString(IDS_FILEEXISTS);
+        	break;
+    	case EINVAL:
+    		cs_text2.LoadString(IDS_INVALIDFLAG);
+    		break;
+		case EMFILE:
+			cs_text2.LoadString(IDS_NOMOREHANDLES);
+			break;
+		case ENOENT:
+			cs_text2.LoadString(IDS_FILEPATHNOTFOUND);
+			break;
+		default:
+			break;
+	}
+	cs_text1 += cs_text2;
+    cs_text2.LoadString(IDS_TERMINATE);
+    cs_text1 += cs_text2;
 
-    CString title = _T("Password Safe - ") + fn;
-    AfxGetMainWnd()->MessageBox(text, title, MB_ICONEXCLAMATION|MB_OK);
+    CString cs_title = _T("Password Safe - ") + fn;
+    AfxGetMainWnd()->MessageBox(cs_text1, cs_title, MB_ICONEXCLAMATION|MB_OK);
   }
 #endif
 }
@@ -188,7 +193,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
 #if _MSC_VER >= 1400
   _tfopen_s(&out, out_fn, _T("wb"));
 #else
-  out = _tfopen(out_fn, _T("wb")); 
+  out = _tfopen(out_fn, _T("wb"));
 #endif
   if (out != NULL) {
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
@@ -205,11 +210,11 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
     fwrite(randstuff, 1,  8, out);
     fwrite(randhash,  1, sizeof(randhash), out);
 #endif // KEEP_FILE_MODE_BWD_COMPAT
-		
+
     unsigned char thesalt[SaltLength];
     PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
     fwrite(thesalt, 1, SaltLength, out);
-		
+
     unsigned char ipthing[8];
     PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
     fwrite(ipthing, 1, 8, out);
@@ -239,7 +244,7 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 #if _MSC_VER >= 1400
   _tfopen_s(&in, fn, _T("rb"));
 #else
-  in = _tfopen(fn, _T("rb")); 
+  in = _tfopen(fn, _T("rb"));
 #endif
   if (in != NULL) {
     unsigned char salt[SaltLength];
@@ -261,7 +266,7 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
     if (0 != memcmp((char*)randhash,
                     (char*)temphash, SHA1::HASHLEN)) {
       fclose(in);
-      AfxMessageBox(_T("Incorrect password"));
+      AfxMessageBox(IDS_BADPASSWORD);
       return FALSE;
     }
 #endif // KEEP_FILE_MODE_BWD_COMPAT
@@ -296,7 +301,7 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
   FILE *out;
   _tfopen_s(&out, out_fn, _T("wb"));
 #else
-  FILE *out = _tfopen(out_fn, _T("wb")); 
+  FILE *out = _tfopen(out_fn, _T("wb"));
 #endif
   if (out != NULL) {
     fwrite(buf, 1, len, out);
@@ -310,11 +315,11 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 #endif
 
 int
-ThisMfcApp::ExitInstance() 
-{ 
-  CWinApp::ExitInstance(); 
-  return 0; 
-} 
+ThisMfcApp::ExitInstance()
+{
+  CWinApp::ExitInstance();
+  return 0;
+}
 
 BOOL
 ThisMfcApp::InitInstance()
@@ -322,7 +327,7 @@ ThisMfcApp::InitInstance()
   /*
    * It's always best to start at the beginning.  [Glinda, Witch of the North]
    */
-	
+
 #if defined(POCKET_PC)
   SHInitExtraControls();
 #endif
@@ -330,9 +335,9 @@ ThisMfcApp::InitInstance()
   /*
     this instructs the app to use the registry instead of .ini files.  The
     path ends up being
-	
+
     HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
-	  
+
     Assuming the open-source version of this is going to become less
     Counterpane-centric, I expect this may change, but if it does, an
     automagic migration ought to happen. -- {jpr}
@@ -361,7 +366,9 @@ ThisMfcApp::InitInstance()
 	new_popupmenu = new CMenu;
 
 	// Look for "File" menu.
-	int pos = FindMenuItem(m_mainmenu, _T("&File"));
+	CString cs_text;
+	cs_text.LoadString(IDS_FILEMENU);
+	int pos = FindMenuItem(m_mainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 0; // best guess...
 
@@ -411,7 +418,7 @@ ThisMfcApp::InitInstance()
   }
 
   DboxMain dbox(NULL);
-	
+
   /*
    * Command line processing:
    * Historically, it appears that if a filename was passed as a commadline argument,
@@ -426,14 +433,14 @@ ThisMfcApp::InitInstance()
    * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
    * {kjp} ... and I've removed all of it from the Pocket PC build.
    */
-	
+
 #if !defined(POCKET_PC)
   if (m_lpCmdLine[0] != '\0') {
     CString args = m_lpCmdLine;
-		
+
     if (args[0] != _T('-')) {
       StripFileQuotes( args );
-			
+
       if (CheckFile(args)) {
         dbox.SetCurFile(args);
       } else {
@@ -449,7 +456,7 @@ ThisMfcApp::InitInstance()
 
       const int UC_arg1(toupper(args[1]));
 	  // The following arguements require the database name and it exists!
-      if ((UC_arg1 == 'R' || UC_arg1 == 'E' || UC_arg1 == 'D' || UC_arg1 == 'V')
+      if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
 		   && (fn.IsEmpty() || CheckFile(fn) == FALSE)) {
         Usage();
         return FALSE;
@@ -464,7 +471,7 @@ ThisMfcApp::InitInstance()
         // pop usage message
         CCryptKeyEntry dlg(NULL);
         int nResponse = dlg.DoModal();
-				
+
         if (nResponse==IDOK) {
           passkey = dlg.m_cryptkey1;
         } else {
@@ -474,18 +481,22 @@ ThisMfcApp::InitInstance()
       BOOL status;
       dbox.SetReadOnly(false);
       switch (UC_arg1) {
-      case 'E': // do encrpytion
-        status = EncryptFile(fn, passkey);
-        if (!status) {
-          AfxMessageBox(_T("Encryption failed"));
-        }
-        return TRUE;
       case 'D': // do decryption
         status = DecryptFile(fn, passkey);
         if (!status) {
           // nothing to do - DecryptFile displays its own error messages
         }
         return TRUE;
+      case 'E': // do encrpytion
+        status = EncryptFile(fn, passkey);
+        if (!status) {
+          AfxMessageBox(IDS_ENCRYPTIONFAILED);
+        }
+        return TRUE;
+      case 'M':
+        dbox.SetStartMinimized(true);
+        dbox.SetCurFile(_T(""));
+        break;
       case 'R':
         dbox.SetReadOnly(true);
         dbox.SetCurFile(fn);
@@ -505,7 +516,7 @@ ThisMfcApp::InitInstance()
     } // else
   } // m_lpCmdLine[0] != '\0';
 #endif
-	
+
   /*
    * normal startup
    */
@@ -541,11 +552,11 @@ ThisMfcApp::InitInstance()
 #endif
   //Run dialog
   (void) dbox.DoModal();
-	
+
   /*
     note that we don't particularly care what the response was
   */
-	
+
   // Since the dialog has been closed, return FALSE so that we exit the
   // application, rather than start the application's message pump.
   delete new_popupmenu;
@@ -570,7 +581,7 @@ ThisMfcApp::AddToMRU(const CString &pszFilename, const bool bstartup)
 void
 ThisMfcApp::ClearMRU()
 {
-	if (m_pMRU == NULL || 
+	if (m_pMRU == NULL ||
 	    PWSprefs::GetInstance()->GetConfigOptions() == PWSprefs::CF_NONE)
 		return;
 
@@ -587,7 +598,9 @@ ThisMfcApp::ClearMRU()
 	CMenu* xmainmenu = pMain->GetMenu();
 
 	// Look for "File" menu.
-	int pos = FindMenuItem(xmainmenu, _T("&File"));
+	CString cs_text;
+	cs_text.LoadString(IDS_FILEMENU);
+	int pos = FindMenuItem(xmainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 0; // best guess...
 
@@ -621,7 +634,7 @@ ThisMfcApp::ClearMRU()
 	}
 }
 
-void 
+void
 ThisMfcApp::WriteMRU(const int &iconfig)
 {
 	switch (iconfig) {
@@ -653,11 +666,11 @@ ThisMfcApp::WriteMRU(const int &iconfig)
 		case PWSprefs::CF_FILE_RO:
 		case PWSprefs::CF_NONE:
 		default:
-			break;	
+			break;
 	}
 }
 
-void 
+void
 ThisMfcApp::ReadMRU(const int &iconfig)
 {
 	switch (iconfig) {
@@ -723,7 +736,7 @@ ThisMfcApp::ClearClipboardData()
   // Clear the clipboard IFF its value is the same as last set by this app.
   if (!m_clipboard_set)
     return;
-		
+
 	m_clipboard_set = PWSUtil::ClearClipboard(m_clipboard_digest, m_pMainWnd->m_hWnd);
 }
 
@@ -759,7 +772,7 @@ ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 {
   if (code < 0)
     CWinApp::ProcessMessageFilter(code, lpMsg);
-	
+
   if (m_bUseAccelerator &&
       m_maindlg != NULL
       && m_ghAccelTable != NULL) {
@@ -782,16 +795,18 @@ ThisMfcApp::OnHelp()
    * good. The "Help" button there is mapped to the App framework,
    * and that's that...
    */
-  CString title;
+  CString cs_title;
   CWnd *wnd = CWnd::GetCapture();
   if (wnd == NULL)
     wnd = CWnd::GetFocus();
   if (wnd != NULL)
     wnd = wnd->GetParent();
   if (wnd != NULL) {
-    wnd->GetWindowText(title);
+    wnd->GetWindowText(cs_title);
   }
-  if (title != _T("Options"))
+  CString cs_text;
+  cs_text.LoadString(IDS_OPTIONS);
+  if (cs_title != cs_text)
     ::HtmlHelp(wnd->m_hWnd,
                "pwsafe.chm",
                HH_DISPLAY_TOPIC, 0);
@@ -804,7 +819,7 @@ ThisMfcApp::OnHelp()
 }
 
 // FindMenuItem() will find a menu item string from the specified
-// popup menu and returns its position (0-based) in the specified 
+// popup menu and returns its position (0-based) in the specified
 // popup menu. It returns -1 if no such menu item string is found.
 int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 {
@@ -823,7 +838,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 }
 
 // FindMenuItem() will find a menu item ID from the specified
-// popup menu and returns its position (0-based) in the specified 
+// popup menu and returns its position (0-based) in the specified
 // popup menu. It returns -1 if no such menu item string is found.
 int ThisMfcApp::FindMenuItem(CMenu* Menu, int MenuID)
 {
@@ -832,10 +847,10 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, int MenuID)
 
   int count = Menu->GetMenuItemCount();
   int id;
-   
+
   for (int i = 0; i < count; i++) {
     id = Menu->GetMenuItemID(i);  // id = 0 for Separator; 1 for popup
-    if ( id > 1 && id == MenuID)         
+    if ( id > 1 && id == MenuID)
       return i;
   }
 
@@ -844,3 +859,4 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, int MenuID)
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+

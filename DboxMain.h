@@ -11,6 +11,8 @@
   #include "pocketpc/MyListCtrl.h"
 #else
   #include "resource.h"
+  #include "resource2.h"  // Version, Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 #include "MyTreeCtrl.h"
 #include "RUEList.h"
@@ -92,6 +94,7 @@ public:
   void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
   void SetReadOnly(bool state);
   void SetStartSilent(bool state) { m_IsStartSilent = state;}
+  void SetStartMinimized(bool state) { m_IsStartMinimized = state;}
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
@@ -222,6 +225,7 @@ protected:
 
   void Delete(bool inRecursion = false);
   void AutoType(const CItemData &ci);
+  void EditItem(CItemData *ci);
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
@@ -341,6 +345,7 @@ private:
   BOOL m_lastFindCS;
   bool m_IsReadOnly;
   bool m_IsStartSilent;
+  bool m_IsStartMinimized;
   bool m_IsListView;
   HFONT m_hFontTree;
   LOGFONT m_treefont;

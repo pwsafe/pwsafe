@@ -38,6 +38,7 @@ static char THIS_FILE[] = __FILE__;
 
 static TCHAR PSSWDCHAR = TCHAR('*');
 const TCHAR *HIDDEN_NOTES = _T("[Notes hidden - click here to display]");
+CString CS_ON, CS_OFF;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
@@ -45,6 +46,9 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 	m_ascLTime(_T("")), m_oldascLTime(_T(""))
 {
   ASSERT(ci != NULL);
+
+  CS_ON.LoadString(IDS_ON);
+  CS_OFF.LoadString(IDS_OFF);
 
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
@@ -69,7 +73,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 
   m_ascLTime = ci->GetLTimeN();
   if (m_ascLTime.IsEmpty())
-    m_ascLTime = _T("Never");
+    m_ascLTime.LoadString(IDS_NEVER);
   m_oldascLTime = m_ascLTime;
 }
 
@@ -160,22 +164,22 @@ CEditDlg::OnOK()
   bool IsPswdModified = m_realpassword != m_oldRealPassword;
   //Check that data is valid
   if (m_title.IsEmpty()) {
-    AfxMessageBox(_T("This entry must have a title."));
+    AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;
   }
   if (m_password.IsEmpty()) {
-    AfxMessageBox(_T("This entry must have a password."));
+    AfxMessageBox(IDS_MUSTHAVEPASSWORD);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
   }
   if (!m_group.IsEmpty() && m_group[0] == '.') {
-    AfxMessageBox(_T("A dot is invalid as the first character of the Group field."));
+    AfxMessageBox(IDS_DOTINVALID);
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
     return;
   }
   if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
-    AfxMessageBox(_T("The entered passwords do not match.  Please re-enter them."));
+    AfxMessageBox(IDS_PASSWORDSNOTMATCH);
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
@@ -198,11 +202,8 @@ CEditDlg::OnOK()
     m_ci->GetUUID(elem_uuid);
     bool notSame = (::memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
     if (notSame) {
-      CMyString temp =
-        _T("An item with Group \"") + m_group
-        + _T("\", Title \"") + m_title 
-        + _T("\" and User Name \"") + m_username
-        + _T("\" already exists.");
+      CMyString temp;
+      temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
@@ -247,8 +248,7 @@ void CEditDlg::UpdateHistory()
   pwh_ent.changedate =
     PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
   if (pwh_ent.changedate.IsEmpty()) {
-    //                       1234567890123456789
-    pwh_ent.changedate = _T("Unknown            ");
+    pwh_ent.changedate.LoadString(IDS_UNKNOWN);
   }
 
   // Now add the latest
@@ -292,11 +292,13 @@ BOOL CEditDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
+  CString cs_text;
   if (m_IsReadOnly) {
     GetDlgItem(IDOK)->EnableWindow(FALSE);
-	SetWindowText(_T("View Entry"));
-	GetDlgItem(IDC_EDITEXPLANATION)->SetWindowText(
-		_T("This database is in read-only mode. No changes to this entry will be saved."));
+    cs_text.LoadString(IDS_VIEWENTRY);
+	SetWindowText(cs_text);
+	cs_text.LoadString(IDS_DATABASEREADONLY);
+	GetDlgItem(IDC_EDITEXPLANATION)->SetWindowText(cs_text);
   }
 
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
@@ -323,7 +325,7 @@ BOOL CEditDlg::OnInitDialog()
   }
 
   GetDlgItem(IDC_PWHSTATUS)->
-	  SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
+	  SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
   CString buffer;
   if (m_SavePWHistory == TRUE)
 	  buffer.Format("%d", m_MaxPWHistory);
@@ -405,7 +407,8 @@ void CEditDlg::OnRandom()
 void CEditDlg::OnHelp() 
 {
 #if defined(POCKET_PC)
-  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), 
+	  NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   ::HtmlHelp(
              NULL,
@@ -492,6 +495,7 @@ void CEditDlg::ResizeDialog()
   RECT curLowestCtlRect;
   CWnd* pLowestCtl;
   int newHeight;
+  CString cs_text;
 
   if (m_isExpanded) {
     // from less to more
@@ -499,14 +503,16 @@ void CEditDlg::ResizeDialog()
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
     newHeight = curLowestCtlRect.bottom + 15 - newDialogRect.top;
     
-    m_MoreLessBtn.SetWindowText(_T("<< &Less"));
+    cs_text.LoadString(IDS_LESS);
+    m_MoreLessBtn.SetWindowText(cs_text);
   } else {
     // from more to less
     pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
     newHeight = curLowestCtlRect.top + 5 - newDialogRect.top;
 
-    m_MoreLessBtn.SetWindowText(_T("&More >>"));
+	cs_text.LoadString(IDS_MORE);
+    m_MoreLessBtn.SetWindowText(cs_text);
   }
   
   this->SetWindowPos(NULL, 0, 0, newDialogRect.right - newDialogRect.left,
@@ -515,8 +521,8 @@ void CEditDlg::ResizeDialog()
 
 void CEditDlg::OnBnClickedClearLTime()
 {
-  GetDlgItem(IDC_LTIME)->SetWindowText(_T("Never"));
-  m_ascLTime = _T("Never");
+  m_ascLTime.LoadString(IDS_NEVER);
+  GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_ascLTime);
   m_tttLTime = (time_t)0;
 }
 
@@ -547,7 +553,7 @@ void CEditDlg::OnBnClickedPwhist()
   dlg.DoModal();
 
   GetDlgItem(IDC_PWHSTATUS)->
-    SetWindowText(m_SavePWHistory == TRUE ? _T("On") : _T("Off"));
+    SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
   CString buffer;
   if (m_SavePWHistory == TRUE)
     buffer.Format("%d", m_MaxPWHistory);

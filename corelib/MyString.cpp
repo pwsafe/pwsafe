@@ -4,6 +4,8 @@
 #include "Util.h"
 
 #include "MyString.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,6 +72,33 @@ CMyString::Empty()
 	trashstring();
 	m_mystring.Empty();
 }
+
+BOOL
+CMyString::LoadString(const UINT &nID)
+{
+	return m_mystring.LoadString(nID);
+}
+
+void
+CMyString::Format(LPCTSTR lpszFormat, ... )
+{
+	va_list args;
+	va_start(args, lpszFormat);
+	m_mystring.FormatV(lpszFormat, args);
+	va_end(args);
+}
+
+void
+CMyString::Format(UINT nID, ... )
+{
+	va_list args;
+	va_start(args, nID);
+	CString csFormat;
+	csFormat.LoadString(nID);
+	m_mystring.FormatV(csFormat, args);
+	va_end(args);
+}
+
 const CMyString&
 CMyString::operator=(const CMyString& stringSrc)
 {

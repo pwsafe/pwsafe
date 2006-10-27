@@ -34,7 +34,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
   : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
     m_URL(_T("")), m_autotype(_T("")),
-	m_tttLTime((time_t)0), m_ascLTime(_T("Never")),
+	m_tttLTime((time_t)0),
 	m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
@@ -43,6 +43,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
     GetPref(PWSprefs::SavePasswordHistory);
   m_MaxPWHistory = PWSprefs::GetInstance()->
     GetPref(PWSprefs::NumPWHistoryDefault);
+  m_ascLTime.LoadString(IDS_NEVER);
 }
 
 BOOL CAddDlg::OnInitDialog() 
@@ -181,22 +182,22 @@ CAddDlg::OnOK()
 
   //Check that data is valid
   if (m_title.IsEmpty()) {
-    AfxMessageBox(_T("This entry must have a title."));
+    AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;
   }
   if (m_password.IsEmpty()) {
-    AfxMessageBox(_T("This entry must have a password."));
+    AfxMessageBox(IDS_MUSTHAVEPASSWORD);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
   }
   if (!m_group.IsEmpty() && m_group[0] == '.') {
-    AfxMessageBox(_T("A dot is invalid as the first character of the Group field."));
+    AfxMessageBox(IDS_DOTINVALID);
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
     return;
   }
   if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
-    AfxMessageBox(_T("The entered passwords do not match.  Please re-enter them."));
+    AfxMessageBox(IDS_PASSWORDSNOTMATCH);
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
@@ -207,11 +208,8 @@ CAddDlg::OnOK()
   ASSERT(pParent != NULL);
 
   if (pParent->Find(m_group, m_title, m_username) != NULL) {
-    CMyString temp =
-      _T("An item with Group \"") + m_group
-      + _T("\", Title \"") + m_title 
-      + _T("\" and User Name \"") + m_username
-      + _T("\" already exists.");
+    CMyString temp;
+    temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
     AfxMessageBox(temp);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
@@ -298,6 +296,7 @@ void CAddDlg::ResizeDialog()
   RECT curLowestCtlRect;
   CWnd* pLowestCtl;
   int newHeight;
+  CString cs_text;
   if (m_isExpanded) {
     // from less to more
     pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
@@ -305,7 +304,8 @@ void CAddDlg::ResizeDialog()
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
     newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
-    m_moreLessBtn.SetWindowText(_T("<< &Less"));
+    cs_text.LoadString(IDS_LESS);
+    m_moreLessBtn.SetWindowText(cs_text);
   } else {
     // from more to less
     pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
@@ -313,7 +313,8 @@ void CAddDlg::ResizeDialog()
 
     newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
 
-    m_moreLessBtn.SetWindowText(_T("&More >>"));
+	cs_text.LoadString(IDS_MORE);
+    m_moreLessBtn.SetWindowText(cs_text);
   }
   
 
@@ -326,8 +327,8 @@ void CAddDlg::ResizeDialog()
 
 void CAddDlg::OnBnClickedClearLTime()
 {
-	GetDlgItem(IDC_LTIME)->SetWindowText(_T("Never"));
-	m_ascLTime = _T("Never");
+	m_ascLTime.LoadString(IDS_NEVER);
+	GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_ascLTime);
 	m_tttLTime = (time_t)0;
 }
 

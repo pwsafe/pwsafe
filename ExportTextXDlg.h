@@ -10,6 +10,8 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 
 #include <bitset>

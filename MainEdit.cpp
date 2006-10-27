@@ -66,11 +66,7 @@ DboxMain::OnAdd()
         && (prefs->GetPref(PWSprefs::QuerySetDef))
         && (!dataDlg.m_username.IsEmpty())) {
 	  CQuerySetDef defDlg(this);
-	  defDlg.m_message =
-        _T("Would you like to set \"")
-        + (const CString&)dataDlg.m_username
-        + _T("\" as your default username?\n\nIt would then automatically be ")
-	    + _T("put in the dialog each time you add a new item.");
+	  defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dataDlg.m_username);
 	  int rc2 = defDlg.DoModal();
 	  if (rc2 == IDOK) {
         prefs->SetPref(PWSprefs::UseDefUser, true);
@@ -140,10 +136,12 @@ DboxMain::OnAddGroup()
     // or by clicking over "whitespace".
     // If the former, add a child node to the current one
     // If the latter, add to root.
+    CMyString cmys_text;
+	cmys_text.LoadString(IDS_NEWGROUP);
     if (m_TreeViewGroup.IsEmpty())
-      m_TreeViewGroup = _T("New Group");
+      m_TreeViewGroup = cmys_text;
     else
-      m_TreeViewGroup += _T(".New Group");
+      m_TreeViewGroup += _T(".") + cmys_text;
     HTREEITEM newGroup = m_ctlItemTree.AddGroup(m_TreeViewGroup);
     m_ctlItemTree.SelectItem(newGroup);
     m_TreeViewGroup = _T(""); // for next time
@@ -263,6 +261,28 @@ DboxMain::OnEdit()
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
+    EditItem(ci);
+  } else {
+    // entry item not selected - perhaps here on Enter on tree item?
+    // perhaps not the most elegant solution to improving non-mouse use,
+    // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
+    // let me know...
+    CItemData *itemData = NULL;
+    if (m_ctlItemTree.IsWindowVisible()) { // tree view
+      HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+      if (ti != NULL) { // if anything selected
+        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
+        if (itemData == NULL) { // node selected
+          m_ctlItemTree.Expand(ti, TVE_TOGGLE);
+        }
+      }
+    }
+  }
+}
+
+void
+DboxMain::EditItem(CItemData *ci)
+{
     // List might be cleared if db locked.
     // Need to take care that we handle a rebuilt list.
     CItemData editedItem(*ci);
@@ -309,23 +329,8 @@ DboxMain::OnEdit()
       }
       ChangeOkUpdate();
     } // rc == IDOK
-  } else {
-    // entry item not selected - perhaps here on Enter on tree item?
-    // perhaps not the most elegant solution to improving non-mouse use,
-    // but it works. If anyone knows how Enter/Return gets mapped to OnEdit,
-    // let me know...
-    CItemData *itemData = NULL;
-    if (m_ctlItemTree.IsWindowVisible()) { // tree view
-      HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-      if (ti != NULL) { // if anything selected
-        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-        if (itemData == NULL) { // node selected
-          m_ctlItemTree.Expand(ti, TVE_TOGGLE);
-        }
-      }
-    }
-  }
 }
+
 
 // Duplicate selected entry but make title unique
 void
@@ -349,11 +354,12 @@ DboxMain::OnDuplicateEntry()
     // Find a unique "Title"
     POSITION listpos = NULL;
     int i = 0;
-    CString s_copy;
+    CString s_copy, cs_text;
+    cs_text.LoadString(IDS_COPYNUMBER);
     do {
       i++;
       s_copy.Format(_T("%d"), i);
-      ci2_title = ci2_title0 + _T(" Copy #") + CMyString(s_copy);
+      ci2_title = ci2_title0 + CMyString(cs_text) + CMyString(s_copy);
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != NULL);
       
@@ -461,14 +467,17 @@ DboxMain::OnCopyNotes()
   const CMyString url = ci->GetURL();
   const CMyString autotype = ci->GetAutoType();
   CMyString clipboard_data;
+  CString cs_text;
 
   clipboard_data = notes;
   if (!url.IsEmpty()) {
-	  clipboard_data += _T("\r\nURL: ");
+  	  cs_text.LoadString(IDS_COPYURL);
+	  clipboard_data += CMyString(cs_text);
 	  clipboard_data += url;
   }
   if (!autotype.IsEmpty()) {
-	  clipboard_data += _T("\r\nAutotype: ");
+	  cs_text.LoadString(IDS_COPYAUTOTYPE);
+	  clipboard_data += CMyString(cs_text);
 	  clipboard_data += autotype;
   }
   if (!clipboard_data.IsEmpty()) {
@@ -501,8 +510,6 @@ DboxMain::OnClearClipboard()
 {
    app.ClearClipboardData();
 }
-
-// onAutoType handles menu item ID_MENUITEM_AUTOTYPE
 
 void
 DboxMain::OnAutoType()

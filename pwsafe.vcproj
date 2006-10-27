@@ -218,6 +218,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\AboutDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AddDlg.cpp"
 				>
 			</File>
@@ -390,10 +394,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\QueryAddName.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\QuerySetDef.cpp"
 				>
 			</File>
@@ -430,6 +430,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\AboutDlg.h"
+				>
+			</File>
 			<File
 				RelativePath=".\AddDlg.h"
 				>
@@ -599,15 +603,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\QueryAddName.h"
-				>
-			</File>
-			<File
 				RelativePath=".\QuerySetDef.h"
 				>
 			</File>
 			<File
 				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\resource2.h"
+				>
+			</File>
+			<File
+				RelativePath=".\resource3.h"
 				>
 			</File>
 			<File
@@ -647,6 +655,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\version.h"
+				>
+			</File>
+			<File
 				RelativePath=".\view.h"
 				>
 			</File>
@@ -660,47 +672,35 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath=".\bitmap1.bmp"
+				RelativePath=".\res\cpane.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\cpane-bw.ico"
+				RelativePath=".\res\cpane.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\cpane.bmp"
+				RelativePath=".\res\cpane_s.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\cpane.ico"
+				RelativePath=".\res\cpanetxt.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\cpane_s.bmp"
+				RelativePath=".\res\leaf.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\cpanetxt.bmp"
+				RelativePath=".\res\leaf_exp.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\ibubble.ico"
+				RelativePath=".\res\locked_tray.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\leaf.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\leaf_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\locked_tray.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\node.bmp"
+				RelativePath=".\res\node.bmp"
 				>
 			</File>
 			<File
@@ -708,65 +708,57 @@
 				>
 			</File>
 			<File
-				RelativePath=".\psafetxt.bmp"
+				RelativePath=".\res\PasswordSafe2.rc2"
 				>
 			</File>
 			<File
-				RelativePath=".\toolbar1.bmp"
+				RelativePath=".\res\PasswordSafe3.rc2"
 				>
 			</File>
 			<File
-				RelativePath=".\toolbar2.bmp"
+				RelativePath=".\res\psafetxt.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\toolbar3.bmp"
+				RelativePath=".\res\toolbar1.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\tray.ico"
+				RelativePath=".\res\toolbar2.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\unlocked_tray.ico"
+				RelativePath=".\res\toolbar3.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\w95mbx01.ico"
+				RelativePath=".\res\tray.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\w95mbx02.ico"
+				RelativePath=".\res\unlocked_tray.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\w95mbx03.ico"
+				RelativePath=".\res\w95mbx01.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\w95mbx04.ico"
+				RelativePath=".\res\w95mbx02.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\w95mbx03.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\w95mbx04.ico"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\PasswordSafe.exe.manifest"
+			RelativePath=".\res\PasswordSafe.exe.manifest"
 			>
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

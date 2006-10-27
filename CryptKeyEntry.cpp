@@ -9,6 +9,7 @@
   #include "pocketpc/PocketPC.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 #include "corelib/util.h"
 
@@ -63,13 +64,13 @@ CCryptKeyEntry::OnOK()
 
    if (m_cryptkey1 != m_cryptkey2)
    {
-      AfxMessageBox(_T("The two entries do not match."));
+      AfxMessageBox(IDS_ENTRIESDONOTMATCH);
       ((CEdit*)GetDlgItem(IDC_CRYPTKEY2))->SetFocus();
       return;
    }
    if (m_cryptkey1.IsEmpty())
    {
-      AfxMessageBox(_T("Please enter the key and verify it."));
+      AfxMessageBox(IDS_ENTERKEYANDVERIFY);
       ((CEdit*)GetDlgItem(IDC_CRYPTKEY1))->SetFocus();
       return;
    }

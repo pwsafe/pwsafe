@@ -7,6 +7,8 @@
 #include "stdafx.h"
 #include "ThisMfcApp.h"
 #include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #include "MenuTipper.h"
 #include <afxpriv.h> // for AfxLoadString
 

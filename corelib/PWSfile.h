@@ -53,6 +53,8 @@ class PWSfile {
   void SetUseUTF8(bool flag) { m_useUTF8 = flag; } // nop for v1v2
   void SetUserHost(const CString &user, const CString &sysname)
 		{m_user = user; m_sysname = sysname;}
+  void SetApplicationVersion(const DWORD dwMajorMinor) 
+		{m_dwMajorMinor = dwMajorMinor;}
   const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
@@ -81,6 +83,7 @@ class PWSfile {
   CString m_wholastsaved; // and by whom
   CString m_whatlastsaved; // and by what
   CString m_user, m_sysname; // current user & host
+  DWORD m_dwMajorMinor;
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;

@@ -49,40 +49,56 @@ BOOL CExportTextXDlg::OnInitDialog()
 	 m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
 
 	int index, irc;
+	CString cs_text;
+
 	CComboBox *cboSubgroupFunction = (CComboBox *)GetDlgItem(IDC_EXPORTX_SUBGROUP_FUNCTION);
 	if(cboSubgroupFunction->GetCount() == 0) {
-		index = cboSubgroupFunction->AddString(_T("equals"));
+		cs_text.LoadString(IDS_EQUALS);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_EQUALS);
-		index = cboSubgroupFunction->AddString(_T("does not equal"));
+		cs_text.LoadString(IDS_DOESNOTEQUAL);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_NOTEQUAL);
-		index = cboSubgroupFunction->AddString(_T("begins with"));
+		cs_text.LoadString(IDS_BEGINSWITH);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_BEGINS);
-		index = cboSubgroupFunction->AddString(_T("does not begin with"));
+		cs_text.LoadString(IDS_DOESNOTBEGINSWITH);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_NOTBEGIN);
-		index = cboSubgroupFunction->AddString(_T("ends with"));
+		cs_text.LoadString(IDS_ENDSWITH);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_ENDS);
-		index = cboSubgroupFunction->AddString(_T("does not end with"));
+		cs_text.LoadString(IDS_DOESNOTENDWITH);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_NOTEND);
-		index = cboSubgroupFunction->AddString(_T("contains"));
+		cs_text.LoadString(IDS_CONTAINS);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_CONTAINS);
-		index = cboSubgroupFunction->AddString(_T("does not contain"));
+		cs_text.LoadString(IDS_DOESNOTCONTAIN);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupFunction->SetItemData(index, CItemData::SGF_NOTCONTAIN);
 	}
 	cboSubgroupFunction->SetCurSel(0);
 
 	CComboBox *cboSubgroupObject = (CComboBox *)GetDlgItem(IDC_EXPORTX_SUBGROUP_OBJECT);
 	if(cboSubgroupObject->GetCount() == 0) {
-		index = cboSubgroupObject->AddString(_T("Group"));
+		cs_text.LoadString(IDS_GROUP);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_GROUP);
-		index = cboSubgroupObject->AddString(_T("Title"));
+		cs_text.LoadString(IDS_TITLE);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_TITLE);
-		index = cboSubgroupObject->AddString(_T("Username"));
+		cs_text.LoadString(IDS_USERNAME);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_USER);
-		index = cboSubgroupObject->AddString(_T("Group/Title"));
+		cs_text.LoadString(IDS_GROUPTITLE);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_GROUPTITLE);
-		index = cboSubgroupObject->AddString(_T("Url"));
+		cs_text.LoadString(IDS_URL);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_URL);
-		index = cboSubgroupObject->AddString(_T("Notes"));
+		cs_text.LoadString(IDS_NOTES);
+		index = cboSubgroupFunction->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_NOTES);
 	}
 	cboSubgroupObject->SetCurSel(0);
@@ -168,7 +184,7 @@ void CExportTextXDlg::OnOK()
 	m_bsExport.set(CItemData::PWHIST, m_export_pwhist == 1 ? true : false);
 
 	if (m_bsExport.count() == 0) {
-		AfxMessageBox(_T("No fields selected for export!"));
+		AfxMessageBox(IDS_NOFIELDSFOREXPORT);
 		m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
 		return;
 	}
@@ -177,14 +193,14 @@ void CExportTextXDlg::OnOK()
 		GetDlgItemText(IDC_EXPORTX_SUBGROUP_NAME, m_export_subgroup_name);
 		int nObject = ((CComboBox *)GetDlgItem(IDC_EXPORTX_SUBGROUP_OBJECT))->GetCurSel();
 		if (nObject == CB_ERR) {
-			AfxMessageBox(_T("No object selected for basing your restrictions."));
+			AfxMessageBox(IDS_NOOBJECT);
 			m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
 			((CComboBox *)GetDlgItem(IDC_EXPORTX_SUBGROUP_OBJECT))->SetFocus();
 			return;
 		}
 		int nFunction = ((CComboBox *)GetDlgItem(IDC_EXPORTX_SUBGROUP_FUNCTION))->GetCurSel();
 		if (nFunction == CB_ERR) {
-			AfxMessageBox(_T("No function selected for basing your restrictions."));
+			AfxMessageBox(IDS_NOFUNCTION);
 			m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
 			((CComboBox *)GetDlgItem(IDC_EXPORTX_SUBGROUP_FUNCTION))->SetFocus();
 			return;

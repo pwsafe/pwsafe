@@ -10,6 +10,8 @@
   #define SUPERCLASS	CPwsPopupDialog
 #else
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
   #define SUPERCLASS	CDialog
 #endif
 

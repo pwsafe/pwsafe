@@ -4,6 +4,7 @@
 #include "PasswordSafe.h"
 
 #include "resource.h"
+#include "resource3.h"  // String resources
 #include "OptionsPasswordPolicy.h"
 #include "corelib/Util.h"
 #include "corelib/PWCharPool.h"
@@ -51,7 +52,7 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
 
   if (is_override) {
     // Start with existing password policy
-    CPropertySheet optionsDlg(_T("Password Policy Override"), pDialog);
+    CPropertySheet optionsDlg(IDS_PASSWORDOVERRIDE, pDialog);
 
     // Display COptionsPasswordPolicy page
     optionsDlg.AddPage(&passwordpolicy);
@@ -77,9 +78,7 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
 
     int nResponse;
     CMyString msg;
-    msg = _T("The randomly generated password is: \"")
-      + temp
-      + _T("\" \n(without the quotes). Use it (Yes), or generate another (No)?");
+    msg.Format(IDS_RANDOMPASSWORD, temp);
     nResponse = pDialog->MessageBox(msg, AfxGetAppName(),
 				    MB_ICONQUESTION|MB_YESNOCANCEL);
 

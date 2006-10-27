@@ -8,6 +8,8 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 #include "FindDlg.h"
 #include "DboxMain.h"
@@ -129,7 +131,7 @@ void CFindDlg::OnFind()
 
   if (numEntries == 0) {
     // Right Thing would be to disable find menu item if list is empty
-    m_status = _T("Password list is empty.");
+    m_status.LoadString(IDS_PASSWORDLISTEMPTY);
     UpdateData(FALSE);
     return;
   }
@@ -137,7 +139,7 @@ void CFindDlg::OnFind()
   UpdateData(TRUE);
 
   if (m_search_text.IsEmpty()) {
-    m_status = _T("Please enter a search string");
+    m_status.LoadString(IDS_ENTERSEARCHSTRING);
     UpdateData(FALSE);
     return;
   }
@@ -168,21 +170,13 @@ void CFindDlg::OnFind()
 
     switch (m_numFound) {
     case 0:
-      m_status = _T("No matches found.");
+      m_status.LoadString(IDS_NOMATCHFOUND);
       break;
     case 1:
-      m_status = _T("Found 1 match.");
+      m_status.LoadString(IDS_FOUNDAMATCH);
       break;
     default:
-      // {kjp} this kludge is needed because the declaration of CString in <afx.h> defines
-      // {kjp} FormatMessage as implemented, but if you take a look at the source for 
-      // {kjp} CString in strex.cpp you'll see that it's only actully implemented if the
-      // {kjp} platform is not WinCE.  Methinks this is a bug in afx.h
-#if defined(POCKET_PC)
-      m_status.Format( _T("Found %d matches."), m_numFound );
-#else
-      m_status.FormatMessage(_T("Found %1!d! matches."), m_numFound);
-#endif
+      m_status.Format(IDS_FOUNDMATCHES, m_numFound);
       break;
     }
     UpdateData(FALSE);
@@ -198,8 +192,11 @@ void CFindDlg::OnFind()
     	if(m_lastshown >= m_numFound) {
     		int rc = IDYES;
     		if (m_FindWraps == FALSE) {  // Ask
-    			rc = MessageBox(_T("Continue search from the beginning?"),
-    					_T("Search string not found"), MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
+				CString cs_text, cs_title;
+    			cs_text.LoadString(IDS_CONTINUESEARCH);
+    			cs_title.LoadString(IDS_SEARCHNOTFOUND);
+    			rc = MessageBox(cs_text, cs_title, 
+					MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
     		}
     		switch (rc) {
     			case IDYES:
@@ -221,7 +218,9 @@ void CFindDlg::OnFind()
     	} else {
     		pParent->SelectEntry(m_indices[m_lastshown], TRUE);
     	}
-    	SetDlgItemText(IDOK, _T("Find Next"));
+    	CString cs_text;
+		cs_text.LoadString(IDS_FINDNEXT);
+    	SetDlgItemText(IDOK, cs_text);
     }
   }
   // don't call super::OnOK - user will Cancel() to close dbox

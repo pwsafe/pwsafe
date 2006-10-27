@@ -10,6 +10,7 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "AboutDlg.h"
 #include "PwFont.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
@@ -18,6 +19,8 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 
 // dialog boxen
@@ -53,42 +56,6 @@ static char THIS_FILE[] = __FILE__;
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
 
 //-----------------------------------------------------------------------------
-class DboxAbout
-#if defined(POCKET_PC)
-   : public CPwsPopupDialog
-#else
-   : public CDialog
-#endif
-{
-public:
-#if defined(POCKET_PC)
-  typedef CPwsPopupDialog	super;
-#else
-  typedef CDialog			super;
-#endif
-
-  DboxAbout()
-    : super(DboxAbout::IDD)
-  {}
-
-  enum { IDD = IDD_ABOUTBOX };
-
-protected:
-  virtual void DoDataExchange(CDataExchange* pDX)    // DDX/DDV support
-  {
-    super::DoDataExchange(pDX);
-  }
-
-protected:
-  DECLARE_MESSAGE_MAP()
-    };
-
-// I don't think we need this, but...
-BEGIN_MESSAGE_MAP(DboxAbout, super)
-END_MESSAGE_MAP()
-
-
-//-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
      m_bSizing( false ), m_needsreading(true), m_windowok(false),
@@ -101,7 +68,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
 	 m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
-	 m_bValidate(false), m_bOpen(false)
+	 m_bValidate(false), m_bOpen(false), m_IsStartMinimized(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -145,55 +112,54 @@ DboxMain::~DboxMain()
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 	//{{AFX_MSG_MAP(DboxMain)
-   ON_WM_DESTROY()
-   ON_WM_SIZE()
-   ON_WM_QUERYENDSESSION()
-   ON_WM_ENDSESSION()
-   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
-   ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
-   ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
-#if defined(POCKET_PC)
-   ON_WM_CREATE()
-#else
-   ON_WM_CONTEXTMENU()
-#endif
-   ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
-   ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
-   ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
-   ON_COMMAND(ID_MENUITEM_BROWSE, OnBrowse)
-   ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
-   ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
+
+// File Menu
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
    ON_COMMAND(ID_MENUITEM_CLOSE, OnClose)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_CLOSE, OnUpdateClosedCommand)
    ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
+   ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVE, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVEAS, OnUpdateClosedCommand)
+   ON_COMMAND_RANGE(ID_MENUITEM_EXPORT2OLD1XFORMAT, ID_MENUITEM_EXPORT2V2FORMAT, OnExportVx)
+   ON_COMMAND(ID_MENUITEM_EXPORT2PLAINTEXT, OnExportText)
+   ON_COMMAND(ID_MENUITEM_EXPORT2XML, OnExportXML)
+   ON_COMMAND(ID_MENUITEM_IMPORT_PLAINTEXT, OnImportText)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_IMPORT_PLAINTEXT, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_IMPORT_KEEPASS, OnImportKeePass)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_IMPORT_KEEPASS, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_IMPORT_XML, OnImportXML)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_IMPORT_XML, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_MERGE, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_COMPARE, OnUpdateClosedCommand)
    ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_PROPERTIES, OnUpdateClosedCommand)
-   ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
-   ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
-   ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
-   ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVEAS, OnUpdateClosedCommand)
-   ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
-   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
-   ON_UPDATE_COMMAND_UI(ID_MENUITEM_CHANGECOMBO, OnUpdateROCommand)
+
+// Edit Menu
+   ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADD, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADDGROUP, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
+   ON_COMMAND(ID_MENUITEM_BROWSE, OnBrowse)
+   ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
+   ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
+   ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
    ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
    ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_DELETE, OnUpdateROCommand)
-   ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
    ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_RENAME, OnUpdateROCommand)
    ON_COMMAND(ID_MENUITEM_FIND, OnFind)
    ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_DUPLICATEENTRY, OnUpdateROCommand)
-   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
-   ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
-   ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
-   ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVE, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
+
+// View Menu
    ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_LIST_VIEW, OnUpdateViewCommand)
    ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
@@ -205,42 +171,59 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_COLLAPSEALL, OnUpdateTVCommand)
    ON_COMMAND(ID_MENUITEM_CHANGEFONT, OnChangeFont)
-   ON_COMMAND_RANGE(ID_FILE_EXPORTTO_OLD1XFORMAT, ID_FILE_EXPORTTO_V2FORMAT, OnExportVx)
-   ON_COMMAND(ID_FILE_EXPORTTO_PLAINTEXT, OnExportText)
-   ON_COMMAND(ID_FILE_EXPORTTO_XML, OnExportXML)
-   ON_COMMAND(ID_FILE_IMPORT_PLAINTEXT, OnImportText)
-   ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_PLAINTEXT, OnUpdateROCommand)
-   ON_COMMAND(ID_FILE_IMPORT_KEEPASS, OnImportKeePass)
-   ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_KEEPASS, OnUpdateROCommand)
-   ON_COMMAND(ID_FILE_IMPORT_XML, OnImportXML)
-   ON_UPDATE_COMMAND_UI(ID_FILE_IMPORT_XML, OnUpdateROCommand)
-   ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
-   ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADD, OnUpdateROCommand)
-   ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
-   ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADDGROUP, OnUpdateROCommand)
+
+// Manage Menu
+   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_CHANGECOMBO, OnUpdateROCommand)
+   ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
+   ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
+   ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
+   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
+
+// Help Menu
+   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
+   ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
+
+// Others
+   ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
+
+#if defined(POCKET_PC)
+   ON_WM_CREATE()
+#else
+   ON_WM_CONTEXTMENU()
+#endif
+
+// Windows Messages
+   ON_WM_DESTROY()
+   ON_WM_ENDSESSION()
+   ON_WM_INITMENU()
+   ON_WM_INITMENUPOPUP()
+   ON_WM_QUERYENDSESSION()
+   ON_WM_SIZE()
+   ON_WM_SYSCOMMAND()
    ON_WM_TIMER()
-   ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
+   
+   ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
+   ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
+   ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
+   ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
+   ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
+   ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
+   ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
+
 #if defined(POCKET_PC)
    ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
 #else
+   ON_WM_DROPFILES()
+   ON_WM_SIZING()
    ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
    ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
    ON_NOTIFY(NM_SETFOCUS, IDC_ITEMTREE, OnSetfocusItemlist)
    ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMTREE, OnKillfocusItemlist)
-   ON_WM_DROPFILES()
-#endif
-   ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
-   ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
-   ON_WM_INITMENUPOPUP()
-   ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
-   ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
-   ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
-#ifndef POCKET_PC
    ON_COMMAND(ID_MENUITEM_TRAYLOCKUNLOCK, OnTrayLockUnLock)
    ON_UPDATE_COMMAND_UI(ID_MENUITEM_TRAYLOCKUNLOCK, OnUpdateTrayLockUnLockCommand)
    ON_COMMAND(ID_TRAYRECENT_ENTRY_CLEAR, OnTrayClearRecentEntries)
    ON_UPDATE_COMMAND_UI(ID_TRAYRECENT_ENTRY_CLEAR, OnUpdateTrayClearRecentEntries)
-   ON_WM_INITMENU()
    ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
    ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
    ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
@@ -254,23 +237,23 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_TOOLBUTTON_EDIT, OnEdit)
    ON_COMMAND(ID_TOOLBUTTON_DELETE, OnDelete)
 #endif
-   ON_WM_SYSCOMMAND()
-#if !defined(POCKET_PC)
+
+#ifndef POCKET_PC
    ON_BN_CLICKED(IDOK, OnEdit)
-   ON_WM_SIZING()
 #endif
+
    ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
    ON_MESSAGE(WM_HOTKEY,OnHotKey)
 	//}}AFX_MSG_MAP
-
    ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
+   ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
 #ifndef POCKET_PC
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnTrayCopyUsername)
    ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnUpdateTrayCopyUsername)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYPASSWORD1, ID_MENUITEM_TRAYCOPYPASSWORDMAX, OnTrayCopyPassword)
    ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYPASSWORD1, ID_MENUITEM_TRAYCOPYPASSWORDMAX, OnUpdateTrayCopyPassword)
-   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYNOTESFLD1, ID_MENUITEM_TRAYCOPYNOTESFLDMAX, OnTrayCopyNotes)
-   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYNOTESFLD1, ID_MENUITEM_TRAYCOPYNOTESFLDMAX, OnUpdateTrayCopyNotes)
+   ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYNOTES1, ID_MENUITEM_TRAYCOPYNOTESMAX, OnTrayCopyNotes)
+   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYNOTES1, ID_MENUITEM_TRAYCOPYNOTESMAX, OnUpdateTrayCopyNotes)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnTrayBrowse)
    ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYBROWSE1, ID_MENUITEM_TRAYBROWSEMAX, OnUpdateTrayBrowse)
    ON_COMMAND_RANGE(ID_MENUITEM_TRAYDELETE1, ID_MENUITEM_TRAYDELETEMAX, OnTrayDeleteEntry)
@@ -293,7 +276,7 @@ DboxMain::InitPasswordSafe()
   UpdateAlwaysOnTop();
 
   // ... same for UseSystemTray
-  // StartSilent trumps preference
+  // StartSilent trumps preference (but StatMinimized doesn't)
   if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
     app.HideIcon();
 
@@ -302,7 +285,6 @@ DboxMain::InitPasswordSafe()
   // Set timer for user-defined lockout, if selected
   if (prefs->GetPref(PWSprefs::LockOnIdleTimeout)) {
     const UINT MINUTE = 60*1000;
-    TRACE(_T("Starting Idle time lock timer"));
     SetTimer(TIMER_USERLOCK, MINUTE, NULL);
     ResetIdleLockCounter();
   }
@@ -358,14 +340,23 @@ DboxMain::InitPasswordSafe()
   // Init stuff for list view
   m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
   m_nColumns = 8;
-  m_ctlItemList.InsertColumn(0, _T("Title"));
-  m_ctlItemList.InsertColumn(1, _T("User Name"));
-  m_ctlItemList.InsertColumn(2, _T("Notes"));
-  m_ctlItemList.InsertColumn(3, _T("Created"));
-  m_ctlItemList.InsertColumn(4, _T("Password Modified"));
-  m_ctlItemList.InsertColumn(5, _T("Last Accessed"));
-  m_ctlItemList.InsertColumn(6, _T("Password Expiry Date"));
-  m_ctlItemList.InsertColumn(7, _T("Last Modified"));
+  CString cs_header;
+  cs_header.LoadString(IDS_TITLE);
+  m_ctlItemList.InsertColumn(0, cs_header);
+  cs_header.LoadString(IDS_USERNAME);
+  m_ctlItemList.InsertColumn(1, cs_header);
+  cs_header.LoadString(IDS_NOTES);
+  m_ctlItemList.InsertColumn(2, cs_header);
+  cs_header.LoadString(IDS_CREATED);
+  m_ctlItemList.InsertColumn(3, cs_header);
+  cs_header.LoadString(IDS_PASSWORDMODIFIED);
+  m_ctlItemList.InsertColumn(4, cs_header);
+  cs_header.LoadString(IDS_LASTACCESSED);
+  m_ctlItemList.InsertColumn(5, cs_header);
+  cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+  m_ctlItemList.InsertColumn(6, cs_header);
+  cs_header.LoadString(IDS_LASTMODIFIED);
+  m_ctlItemList.InsertColumn(7, cs_header);
 
   m_bShowPasswordInEdit = prefs->GetPref(PWSprefs::ShowPWDefault);
 
@@ -497,6 +488,14 @@ DboxMain::OnInitDialog()
   if (m_IsStartSilent) {
   	  // Start up "closed"
       Close();
+      return TRUE;
+  }
+
+  if (m_IsStartMinimized) {
+  	  // Start up "closed" and minimized
+  	  ShowWindow(SW_HIDE);
+      Close();
+      ShowWindow(SW_MINIMIZE);
       return TRUE;
   }
 
@@ -722,8 +721,20 @@ DboxMain::ChangeOkUpdate()
 void
 DboxMain::OnAbout()
 {
-  DboxAbout dbox;
-  dbox.DoModal();
+  CAboutDlg about;
+
+  DWORD dwMajorMinor, dwSubMinorBuild;
+  int nMajor(0), nMinor(0), nSubMinor(0), nBuild(0);
+  if (m_core.GetApplicationVersion(dwMajorMinor, dwSubMinorBuild)) {
+    nMajor = HIWORD(dwMajorMinor);
+    nMinor = LOWORD(dwMajorMinor);
+	nSubMinor = HIWORD(dwSubMinorBuild);
+    nBuild = LOWORD(dwSubMinorBuild);
+  }
+  about.m_appversion.Format("%s %d.%02d.%02d.%04d", AfxGetAppName(), 
+	  nMajor, nMinor, nSubMinor, nBuild);
+
+  about.DoModal();
 }
 
 void
@@ -781,6 +792,16 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   if (dbox_pkentry == NULL) {
     dbox_pkentry = new CPasskeyEntry(this, filename,
                                      index, m_IsReadOnly, bFileIsReadOnly);
+	DWORD dwMajorMinor, dwSubMinorBuild;
+	int nMajor(0), nMinor(0), nSubMinor(0), nBuild(0);
+	if (m_core.GetApplicationVersion(dwMajorMinor, dwSubMinorBuild)) {
+		nMajor = HIWORD(dwMajorMinor);
+		nMinor = LOWORD(dwMajorMinor);
+		nSubMinor = HIWORD(dwSubMinorBuild);
+		nBuild = LOWORD(dwSubMinorBuild);
+	}
+    dbox_pkentry->m_appversion.Format("Version %d.%02d", nMajor, nMinor);
+
     app.DisableAccelerator();
     rc = dbox_pkentry->DoModal();
     app.EnableAccelerator();
@@ -818,29 +839,20 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
     if (!locker.IsEmpty()) {
-	  CString cs_user_and_host, cs_PID(_T(""));
+	  CString cs_user_and_host, cs_PID;
 	  cs_user_and_host = (CString)locker;
 	  int i_pid = cs_user_and_host.ReverseFind(_T(':'));
 	  if (i_pid > -1) {
 		  // If PID present then it is ":%08d" = 9 chars in length
 		  ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
-		  cs_PID = cs_user_and_host.Right(8);
+		  cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
 		  cs_user_and_host = cs_user_and_host.Left(i_pid);
-	  }
-      CString str = _T("The database ");
-      str += CString(filename);
-	  str += _T(" is apparently being used by:\n\n");
-	  if (i_pid > -1)
-		  str += cs_user_and_host + _T(" [Process ID=") + cs_PID + _T("]");
-	  else
-		  str += cs_user_and_host;
-      str += _T(".\n\nOpen the database for read-only (Yes), ");
-      str += _T("read-write (No), or exit (Cancel)?");
-      str += _T("\r\n\r\nNote: Choose \"No\" only if you are certain ");
-      str += _T("that the file is in fact not being used by anyone else,\n");
-	  str += _T("including another copy of Password Safe running on your machine.");
-      switch( MessageBox(str, _T("File In Use"),
-                         MB_YESNOCANCEL|MB_ICONQUESTION)) {
+	  } else
+	      cs_PID = _T("");
+      CString cs_str, cs_title;
+	  cs_str.Format(IDS_LOCKED, filename, cs_user_and_host, cs_PID);
+	  cs_title.LoadString(IDS_FILEINUSE);
+      switch( MessageBox(cs_str, cs_title, MB_YESNOCANCEL|MB_ICONQUESTION)) {
       case IDYES:
       	SetReadOnly(true);
       	retval = PWScore::SUCCESS;
@@ -1335,6 +1347,7 @@ DboxMain::UnMinimize(bool update_windows)
 										passkey,
 										useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT);
 		}
+		CString cs_temp, cs_title;
 		switch (rc) {
 			case PWScore::SUCCESS:
 				rc2 = m_core.ReadCurFile(passkey);
@@ -1343,10 +1356,9 @@ DboxMain::UnMinimize(bool update_windows)
 #endif
 				break;
 			case PWScore::CANT_OPEN_FILE:
-				temp = m_core.GetCurFile()
-						+ "\n\nCannot open database. It likely does not exist."
-						+ "\nA new database will be created.";
-				MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+				cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+				cs_title.LoadString(IDS_FILEOPEN);
+				MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
 			case TAR_NEW:
 				rc2 = New();
 				break;
@@ -1395,10 +1407,8 @@ DboxMain::startLockCheckTimer(){
 
   if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::LockOnWindowLock )==TRUE){
-    TRACE(_T("startLockCheckTimer: Starting timer\n"));
     SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
-  } else
-    TRACE(_T("startLockCheckTimer: Not Starting timer\n"));
+  }
 }
 
 BOOL
@@ -1531,10 +1541,9 @@ DboxMain::OnQueryEndSession()
 	}
 
 	if (m_core.IsChanged()) {
-		CString msg = _T("Do you wish to save the changes made to database:\r\n\r\n");
-		msg += m_core.GetCurFile();
-		msg += _T("\r\n\r\nor Cancel the shutdown\\restart\\logoff?");
-		int rc = AfxMessageBox(msg, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+		CString cs_msg;
+		cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile());
+		int rc = AfxMessageBox(cs_msg, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
 		m_iSessionEndingStatus = rc;
 		switch (rc) {
 			case IDCANCEL:
@@ -1587,7 +1596,7 @@ DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneText(SB_MODIFIED, s);
       s = m_IsReadOnly ? _T("R-O") : _T("R/W");
       m_statusBar.SetPaneText(SB_READONLY, s);
-      s.Format("%5d items", m_core.GetNumEntries());
+      s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
       m_statusBar.SetPaneText(SB_NUM_ENT, s);
     } else {
       s.LoadString(IDS_STATCOMPANY);
@@ -1660,7 +1669,9 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	CMenu* xmainmenu = pMain->GetMenu();
 
 	// Look for "File" menu.
-	int pos = app.FindMenuItem(xmainmenu, _T("&File"));
+	CString cs_text;
+	cs_text.LoadString(IDS_FILEMENU);
+	int pos = app.FindMenuItem(xmainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 0; // best guess...
 
@@ -1677,21 +1688,24 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	}
 
 	// Look for "Edit" menu.
-	pos = app.FindMenuItem(xmainmenu, _T("&Edit"));
+	cs_text.LoadString(IDS_EDITMENU);
+	pos = app.FindMenuItem(xmainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 1; // best guess...
 
 	xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
 
 	// Look for "View" menu.
-	pos = app.FindMenuItem(xmainmenu, _T("&View"));
+	cs_text.LoadString(IDS_VIEWMENU);
+	pos = app.FindMenuItem(xmainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 2; // best guess...
 
 	xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
 
 	// Look for "Manage" menu.
-	pos = app.FindMenuItem(xmainmenu, _T("&Manage"));
+    cs_text.LoadString(IDS_MANAGEMENU);
+	pos = app.FindMenuItem(xmainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 3; // best guess...
 
