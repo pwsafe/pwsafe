@@ -13,6 +13,8 @@
   #define SUPERCLASS	CPwsPopupDialog
 #else
   #include "resource.h" //ronys
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
   #define SUPERCLASS	CDialog
 #endif
 
@@ -31,6 +33,7 @@ public:
    int GetStatus() const {return m_status;}
   bool IsReadOnly() const {return m_ReadOnly == TRUE;}
   const CMyString &GetPasskey() const {return m_passkey;}
+  CString m_appversion;
 private:
 // Dialog Data
    enum { IDD_BASIC = IDD_PASSKEYENTRY };

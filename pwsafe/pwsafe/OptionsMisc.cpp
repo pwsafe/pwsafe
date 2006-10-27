@@ -10,6 +10,7 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 #include "OptionsMisc.h"
 
@@ -71,27 +72,34 @@ BOOL COptionsMisc::OnInitDialog()
   if(m_dblclk_cbox.GetCount() == 0) {
   	// add the strings in alphabetical order
   	int nIndex;
-	nIndex = m_dblclk_cbox.AddString(_T("Autotype"));
+  	CString cs_text;
+  	cs_text.LoadString(IDS_DCAAUTOTYPE);
+	nIndex = m_dblclk_cbox.AddString(cs_text);
 	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
 	m_DCA_to_Index[PWSprefs::DoubleClickAutoType] = nIndex;
 
-	nIndex = m_dblclk_cbox.AddString(_T("Browse to URL"));
+	cs_text.LoadString(IDS_DCABROWSE);
+	nIndex = m_dblclk_cbox.AddString(cs_text);
 	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
 	m_DCA_to_Index[PWSprefs::DoubleClickBrowse] = nIndex;
 
-	nIndex = m_dblclk_cbox.AddString(_T("Copies notes to clipboard"));
+	cs_text.LoadString(IDS_DCACOPYNOTES);
+	nIndex = m_dblclk_cbox.AddString(cs_text);
 	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
 	m_DCA_to_Index[PWSprefs::DoubleClickCopyNotes] = nIndex;
 
-	nIndex = m_dblclk_cbox.AddString(_T("Copies password to clipboard"));
+	cs_text.LoadString(IDS_DCACOPYPASSWORD);
+	nIndex = m_dblclk_cbox.AddString(cs_text);
 	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
 	m_DCA_to_Index[PWSprefs::DoubleClickCopyPassword] = nIndex;
 
-	nIndex = m_dblclk_cbox.AddString(_T("Copies username to clipboard"));
+	cs_text.LoadString(IDS_DCACOPYUSERNAME);
+	nIndex = m_dblclk_cbox.AddString(cs_text);
 	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
 	m_DCA_to_Index[PWSprefs::DoubleClickCopyUsername] = nIndex;
 
-	nIndex = m_dblclk_cbox.AddString(_T("View/Edit selected entry"));
+	cs_text.LoadString(IDS_DCAVIEWEDIT);
+	nIndex = m_dblclk_cbox.AddString(cs_text);
 	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
 	m_DCA_to_Index[PWSprefs::DoubleClickViewEdit] = nIndex;
   }

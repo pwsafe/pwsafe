@@ -9,6 +9,7 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 #include "OptionsPasswordPolicy.h"
 
@@ -133,23 +134,23 @@ BOOL COptionsPasswordPolicy::OnKillActive()
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
       (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits || m_pwusesymbols)) {
-    AfxMessageBox(_T("Hexadecimal is mutually exclusive to all other options!"));
+    AfxMessageBox(IDS_HEXMUTUALLYEXCL);
     return FALSE;
   }
 
   if (m_pwusehexdigits) {
     if (m_pwlendefault % 2 != 0) {
-      AfxMessageBox(_T("Passwords generated in hexadecimal format must have even lengths\nas two hexadecimal characters make up a single ASCII character."));
+      AfxMessageBox(IDS_HEXMUSTBEEVEN);
       return FALSE;
     }
   } else if (!m_pwuselowercase && !m_pwuseuppercase &&
              !m_pwusedigits && !m_pwusesymbols) {
-    AfxMessageBox(_T("At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."));
+    AfxMessageBox(IDS_MUSTHAVEONEOPTION);
     return FALSE;
   }
   
   if ((m_pwlendefault < 4) || (m_pwlendefault > 1024)) {
-  	AfxMessageBox(_T("Default password length must be between 1 and 1024."));
+  	AfxMessageBox(IDS_DEFAULTPWLENGTH);
   	((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
   	return FALSE;
   }

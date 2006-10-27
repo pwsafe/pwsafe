@@ -19,7 +19,7 @@ CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CImportDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CImportDlg)
-	m_groupName = _T("Imported");
+	m_groupName.LoadString(IDS_IMPORTED);
 	m_Separator = _T("|");
 	m_defimpdelim = _T("^");
 	m_tab = 0;
@@ -69,13 +69,13 @@ void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter)
 {
   if (pDX->m_bSaveAndValidate) {
     if (delimiter.IsEmpty()) {
-      AfxMessageBox(_T("If requested, then a delimiter character must be entered!"));
+      AfxMessageBox(IDS_NEEDDELIMITER);
       pDX->Fail();
       return;
     }
 
     if (delimiter[0] == '"') {
-      AfxMessageBox(_T("As the double quotation character is used to delimit the whole notes field, it cannot be used to delimit multiple lines within it. Please enter another character."));
+      AfxMessageBox(IDS_INVALIDDELIMITER);
       pDX->Fail();
       return;
     }

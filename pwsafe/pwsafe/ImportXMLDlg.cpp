@@ -19,7 +19,7 @@ CImportXMLDlg::CImportXMLDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CImportXMLDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CImportXMLDlg)
-	m_groupName = _T("Imported");
+	m_groupName.LoadString(IDS_IMPORTED);
 	m_group = 0;
 	//}}AFX_DATA_INIT
 }

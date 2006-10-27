@@ -5,6 +5,7 @@
 #include "ThisMfcApp.h"
 #include "RUEList.h"
 #include "corelib/PWScore.h"
+#include "resource3.h"  // String resources
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -247,7 +248,7 @@ CRUEList::GetPWEntry(const int &index, CItemData &ci)
   if (pw_listpos == NULL) {
     // Entry does not exist anymore!
     m_RUEList.RemoveAt(re_listpos);
-    AfxMessageBox(_T("Cannot process as this entry has been deleted from the open database."));
+    AfxMessageBox(IDS_CANTPROCESSENTRY);
   }
   if (pw_listpos == NULL)
     return false;

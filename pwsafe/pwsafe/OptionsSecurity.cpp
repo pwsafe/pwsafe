@@ -10,6 +10,7 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 #include "OptionsSecurity.h"
 
@@ -87,7 +88,7 @@ BOOL COptionsSecurity::OnKillActive()
 
   // Check that options, as set, are valid.
   if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
-  	AfxMessageBox(_T("Time out period must be between 1 and 120 minutes."));
+  	AfxMessageBox(IDS_INVALIDTIMEOUT);
   	((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
   	return FALSE;
   }

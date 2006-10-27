@@ -66,14 +66,12 @@ void AFXAPI CExportTextDlg::DDV_CheckExpDelimiter(CDataExchange* pDX, const CStr
 {
   if (pDX->m_bSaveAndValidate) {
     if (delimiter.IsEmpty()) {
-      MessageBox(_T("If requested, then a delimiter character must be entered!"));
+      AfxMessageBox(IDS_NEEDDELIMITER);
       pDX->Fail();
       return;
     }   
     if (delimiter[0] == '"') {
-      MessageBox(_T("As the double quotation character is used to delimit the whole notes field,"
-		    "it cannot be used within it to delimit multiple lines."
-		    "Please enter another character."));
+      AfxMessageBox(IDS_INVALIDDELIMITER);
       pDX->Fail();
     }
   }

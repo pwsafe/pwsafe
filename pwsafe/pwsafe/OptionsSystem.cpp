@@ -10,6 +10,8 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 #include "OptionsSystem.h"
 
@@ -138,8 +140,7 @@ void COptionsSystem::OnApplyRegistryDeleteNow()
   UpdateData(TRUE);
 
   if (m_deleteregistry == TRUE) {
-    const CString cs_msg = _T("Please confirm that you wish to delete ALL information related to Password Safe for your logged on userid from the Windows registry on this computer!\n\n");
-    if (AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP) == IDYES)
+    if (AfxMessageBox(IDS_CONFIRMDELETEREG, MB_YESNO | MB_ICONSTOP) == IDYES)
 		PWSprefs::GetInstance()->DeleteRegistryEntries();
   }
 

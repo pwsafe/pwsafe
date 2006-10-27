@@ -55,10 +55,15 @@ CExpPWListDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_expPWListCtrl.InsertColumn(0, _T("Group"));
-	m_expPWListCtrl.InsertColumn(1, _T("Title"));
-	m_expPWListCtrl.InsertColumn(2, _T("User Name"));
-	m_expPWListCtrl.InsertColumn(3, _T("Expiry Date/Time"));
+	CString cs_text;
+	cs_text.LoadString(IDS_GROUP);
+	m_expPWListCtrl.InsertColumn(0, cs_text);
+	cs_text.LoadString(IDS_TITLE);
+	m_expPWListCtrl.InsertColumn(1, cs_text);
+	cs_text.LoadString(IDS_USERNAME);
+	m_expPWListCtrl.InsertColumn(2, cs_text);
+	cs_text.LoadString(IDS_EXPIRYDATETIME);
+	m_expPWListCtrl.InsertColumn(3, cs_text);
 
 	int nPos = 0;
 	POSITION itempos;
@@ -97,7 +102,7 @@ CExpPWListDlg::OnOK()
 void
 CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 {
-	CString data= _T("Group\tTitle\tUsername\tPassword Expiry Date\r\n");
+	CString data; data.LoadString(IDS_COPYTITLE);
 	const CString CRLF = _T("\r\n");
 	const CString TAB = _T('\t');
 

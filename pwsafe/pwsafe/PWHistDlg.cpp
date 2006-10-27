@@ -6,6 +6,7 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "resource.h"
+#include "resource3.h"  // String resources
 #include "PWHistDlg.h"
 #include "corelib/ItemData.h"
 #include "corelib/PWSprefs.h"
@@ -70,8 +71,11 @@ BOOL CPWHistDlg::OnInitDialog()
   }
 
   m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-  m_PWHistListCtrl.InsertColumn(0, _T("Set Date/Time"));
-  m_PWHistListCtrl.InsertColumn(1, _T("Password"));
+  CString cs_text;
+  cs_text.LoadString(IDS_SETDATETIME);
+  m_PWHistListCtrl.InsertColumn(0, cs_text);
+  cs_text.LoadString(IDS_PASSWORD);
+  m_PWHistListCtrl.InsertColumn(1, cs_text);
 
   int nPos = 0;
   POSITION itempos;
@@ -82,8 +86,11 @@ BOOL CPWHistDlg::OnInitDialog()
     const PWHistEntry pwhentry = m_PWHistList.GetAt(listpos);
 	if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
 		nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
-	else
-		nPos = m_PWHistListCtrl.InsertItem(nPos, _T("Unknown"));
+	else {
+		cs_text.LoadString(IDS_UNKNOWN);
+		cs_text.Trim();
+		nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
+	}
     m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
     m_PWHistListCtrl.SetItemData(nPos, (DWORD)itempos);
     m_PWHistList.GetNext(listpos);

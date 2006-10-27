@@ -9,6 +9,7 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 #include "OptionsPasswordHistory.h"
 #include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
@@ -108,7 +109,7 @@ BOOL COptionsPasswordHistory::OnKillActive()
 
   // Check that options, as set, are valid.
   if (m_savepwhistory && ((m_pwhistorynumdefault < 1) || (m_pwhistorynumdefault > 255))) {
-  	AfxMessageBox(_T("Default number of saved password history entries must be between 1 and 255."));
+  	AfxMessageBox(IDS_DEFAULTNUMPWH);
   	((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
   	return FALSE;
   }

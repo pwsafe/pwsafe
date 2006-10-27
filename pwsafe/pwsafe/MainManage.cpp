@@ -61,6 +61,8 @@ DboxMain::BackupSafe()
     prefs->GetPref(PWSprefs::CurrentBackup);
 
 
+  CString cs_text, cs_temp, cs_title;
+  cs_text.LoadString(IDS_PICKBACKUP);
   //SaveAs-type dialog box
   while (1) {
     CFileDialog fd(FALSE,
@@ -70,7 +72,7 @@ DboxMain::BackupSafe()
                    | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
                    _T("Password Safe Backups (*.bak)|*.bak||"),
                    this);
-    fd.m_ofn.lpstrTitle = _T("Please Choose a Name for this Backup:");
+    fd.m_ofn.lpstrTitle = cs_text;
 
     rc = fd.DoModal();
     if (rc == IDOK) {
@@ -82,8 +84,9 @@ DboxMain::BackupSafe()
 
   rc = m_core.WriteFile(tempname);
   if (rc == PWScore::CANT_OPEN_FILE) {
-    CMyString temp = tempname + _T("\n\nCould not open file for writing!");
-    MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+    cs_temp.Format(IDS_CANTOPENWRITING, tempname);
+    cs_title.LoadString(IDS_FILEWRITEERROR);
+    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
 
@@ -110,6 +113,8 @@ DboxMain::Restore()
   if (rc != PWScore::SUCCESS)
     return rc;
 
+  CString cs_text, cs_temp, cs_title;
+  cs_text.LoadString(IDS_PICKRESTORE);
   //Open-type dialog box
   while (1) {
     CFileDialog fd(TRUE,
@@ -120,7 +125,7 @@ DboxMain::Restore()
 				   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
 				   _T("|"),
                    this);
-    fd.m_ofn.lpstrTitle = _T("Please Choose a Backup to restore:");
+    fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
     if (rc == IDOK) {
       backup = (CMyString)fd.GetPathName();
@@ -134,8 +139,9 @@ DboxMain::Restore()
   case PWScore::SUCCESS:
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
-    temp = backup + _T("\n\nCan't open file. Please choose another.");
-    MessageBox(temp, _T("File open error."), MB_OK | MB_ICONWARNING);
+    cs_temp.Format(IDS_CANTOPEN, backup);
+    cs_title.LoadString(IDS_FILEOPENERROR);
+    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
   case TAR_OPEN:
     ASSERT(0);
     return PWScore::FAILURE; // shouldn't be an option here
@@ -161,15 +167,16 @@ DboxMain::Restore()
 
   rc = m_core.ReadFile(backup, passkey);
   if (rc == PWScore::CANT_OPEN_FILE) {
-    temp = backup + _T("\n\nCould not open file for reading!");
-    MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+    cs_temp.Format(IDS_CANTOPENREADING, backup);
+    cs_title.LoadString(IDS_FILEREADERROR);
+    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
 
   m_core.SetCurFile(_T("")); //Force a Save As...
   m_core.SetChanged(Data); //So that the restored file will be saved
 #if !defined(POCKET_PC)
-  m_titlebar = _T("Password Safe - <Untitled Restored Backup>");
+  m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
   app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
@@ -182,16 +189,16 @@ void
 DboxMain::OnValidate() 
 {
   CString cs_msg;
-  if (!m_core.Validate(cs_msg)) {
-    cs_msg = _T("Database validated - no problems found.");
-			}
+  if (!m_core.Validate(cs_msg))
+    cs_msg.LoadString(IDS_VALIDATEOK);
+
 	AfxMessageBox(cs_msg, MB_OK);
 }
 
 void
 DboxMain::OnOptions() 
 {
-  CPropertySheet optionsDlg(_T("Options"), this);
+  CPropertySheet optionsDlg(IDS_OPTIONS, this);
   COptionsDisplay         display;
   COptionsSecurity        security;
   COptionsPasswordPolicy  passwordpolicy;
@@ -477,7 +484,7 @@ DboxMain::OnOptions()
         // the user made to the database are also saved here
         m_core.BackupCurFile(); // try to save previous version
         if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
-          MessageBox(_T("Failed to save changed preferences"), AfxGetAppName());
+          AfxMessageBox(IDS_FAILEDSAVEPREF);
         else
           prefs->ClearDBprefsChanged();
       }
@@ -583,11 +590,7 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 				// items were changed - swap the in-core pwlist
 				m_core.CopyPWList(new_pwlist);
 			}
-			if (num_altered == 1)
-				cs_Msg = _T("1 entry has had its");
-			else
-				cs_Msg.Format(_T("%d entries have had their"), num_altered);
-			cs_Msg += _T(" settings changed to not save password history.");
+			cs_Msg.Format(IDS_ENTRIESCHANGEDSTOP, num_altered);
 			AfxMessageBox(cs_Msg);
 			bResult = true;
 			break;
@@ -615,11 +618,8 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 				// items were changed - swap the in-core pwlist
 				m_core.CopyPWList(new_pwlist);
 			}
-			if (num_altered == 1)
-				cs_Msg = _T("1 entry has had its");
-			else
-				cs_Msg.Format(_T("%d entries have had their"), num_altered);
-			cs_Msg += _T(" settings changed to save password history.");
+
+			cs_Msg.Format(IDS_ENTRIESCHANGEDSAVE, num_altered);
 			AfxMessageBox(cs_Msg);
 			bResult = true;
 			break;
@@ -653,11 +653,7 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 				// items were changed - swap the in-core pwlist
 				m_core.CopyPWList(new_pwlist);
 			}
-			if (num_altered == 1)
-				cs_Msg = _T("1 entry has had its");
-			else
-				cs_Msg.Format(_T("%d entries have had their"), num_altered);
-			cs_Msg += _T(" 'maximum saved passwords' changed to the new default.");
+			cs_Msg.Format(IDS_ENTRIESRESETMAX, num_altered);
 			AfxMessageBox(cs_Msg);
 			bResult = true;
 			break;

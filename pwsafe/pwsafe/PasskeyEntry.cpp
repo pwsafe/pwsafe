@@ -15,6 +15,7 @@
   #include "pocketpc/PocketPC.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 
 #include "corelib/MyString.h"
@@ -27,6 +28,8 @@
 #include "DboxMain.h" // for CheckPassword()
 
 #include "corelib/Util.h"
+
+static TCHAR PSSWDCHAR = TCHAR('*');
 
 int CPasskeyEntry::dialog_lookup[4] = {IDD_PASSKEYENTRY_FIRST, 
 										IDD_PASSKEYENTRY, 
@@ -95,9 +98,9 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
 	//{{AFX_MSG_MAP(CPasskeyEntry)
    ON_BN_CLICKED(ID_HELP, OnHelp)
-   ON_BN_CLICKED(ID_BROWSE, OnBrowse)
-   ON_BN_CLICKED(ID_CREATE_DB, OnCreateDb)
-   ON_BN_CLICKED(ID_EXIT, OnExit)
+   ON_BN_CLICKED(IDC_BROWSE, OnBrowse)
+   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
+   ON_BN_CLICKED(IDC_EXIT, OnExit)
    ON_BN_CLICKED(IDC_READONLY, OnReadOnly)
 #if defined(POCKET_PC)
    ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
@@ -111,6 +114,7 @@ CPasskeyEntry::OnInitDialog(void)
 {
   SetPasswordFont(GetDlgItem(IDC_PASSKEY));
 
+  ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
   switch(m_index) {
   	case GCP_FIRST:
   		// At start up - give the user the option unless file is R/O
@@ -120,6 +124,7 @@ CPasskeyEntry::OnInitDialog(void)
   			GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
 
   		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+  		GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
   		break;
   	case GCP_NORMAL:
 		// otherwise during open - user can - again unless file is R/O
@@ -158,7 +163,7 @@ CPasskeyEntry::OnInitDialog(void)
 #if !defined(POCKET_PC)
       m_ctlOK.EnableWindow(FALSE);
 #endif
-      m_message = _T("[No current database]");
+      m_message.LoadString(IDS_NOCURRENTSAFE);
   }
   /*
    * this bit makes the background come out right on
@@ -257,7 +262,7 @@ CPasskeyEntry::OnOK()
   UpdateData(TRUE);
 
   if (m_passkey.IsEmpty()) {
-    AfxMessageBox(_T("The combination cannot be blank."));
+    AfxMessageBox(IDS_CANNOTBEBLANK);
     m_ctlPasskey.SetFocus();
     return;
   }
@@ -276,7 +281,7 @@ CPasskeyEntry::OnOK()
       }
     } else {
       m_tries++;
-      AfxMessageBox(_T("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (backup database has same name as original, ending with '~')"));
+      AfxMessageBox(IDS_INCORRECTKEY);
       m_ctlPasskey.SetSel(MAKEWORD(-1, 0));
       m_ctlPasskey.SetFocus();
     }

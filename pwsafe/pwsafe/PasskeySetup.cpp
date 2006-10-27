@@ -12,6 +12,7 @@
   #include "pocketpc/PocketPC.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 
 #include "corelib/util.h"
@@ -73,14 +74,14 @@ void CPasskeySetup::OnOK()
   UpdateData(TRUE);
   if (m_passkey != m_verify)
     {
-      AfxMessageBox(_T("The two entries do not match."));
+      AfxMessageBox(IDS_ENTRIESDONOTMATCH);
       ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
       return;
     }
 
   if (m_passkey.IsEmpty())
     {
-      AfxMessageBox(_T("Please enter a key and verify it."));
+      AfxMessageBox(IDS_ENTERKEYANDVERIFY);
       ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
       return;
     }
@@ -93,20 +94,22 @@ void CPasskeySetup::OnOK()
 #ifndef _DEBUG // for debug, we want no checks at all, to save time
   CMyString errmess;
   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
-    CString msg(_T("Weak passphrase:\n\n"));
-    msg += CString(errmess);
+  	CString cs_msg, cs_text;
+    cs_msg.Format(IDS_WEAKPASSPHRASE, errmess);
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
-    msg += _T("\nUse it anyway?");
-    int rc = AfxMessageBox(msg, MB_YESNO | MB_ICONSTOP);
+    cs_text.LoadString(IDS_USEITANYWAY);
+    cs_msg += cs_text;
+    int rc = AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP);
     if (rc == IDNO)
       return;
 #else
-    msg += _T("\nPlease try another");
-    AfxMessageBox(msg, MB_OK | MB_ICONSTOP);
+    cs_text.LoadString(IDS_TRYANOTHER);
+    cs_msg += cs_text;
+    AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
     return
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   }
-#endif
+#endif // _DEBUG
 
   super::OnOK();
 }

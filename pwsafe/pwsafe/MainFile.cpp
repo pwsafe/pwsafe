@@ -11,6 +11,8 @@
 #include "DboxMain.h"
 
 #include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #include "PasskeySetup.h"
 #include "TryAgainDlg.h"
 #include "ExportTextDlg.h"
@@ -64,10 +66,9 @@ DboxMain::OpenOnInit(void)
     } else {
       // Here if there was a filename saved from last invocation, but it couldn't
       // be opened. It was either removed or renamed, so ask the user what to do
-      CMyString msg = _T("The database ") + m_core.GetCurFile();
-      msg += _T(" couldn't be opened.\nDo you wish to look for it elsewhere (Yes), ");
-      msg += _T("create a new database (No), or exit (Cancel)?");
-      int rc3 = MessageBox(msg, AfxGetAppName(), (MB_ICONQUESTION | MB_YESNOCANCEL));
+	  CString cs_msg;
+      cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile());
+      int rc3 = MessageBox(cs_msg, AfxGetAppName(), (MB_ICONQUESTION | MB_YESNOCANCEL));
       switch (rc3) {
       case IDYES:
         rc2 = Open();
@@ -100,11 +101,9 @@ DboxMain::OpenOnInit(void)
 
   switch (rc2) {
   case PWScore::BAD_DIGEST: {
-    CMyString msg(m_core.GetCurFile());
-    msg += _T("\n\nFile corrupt or truncated!\n");
-    msg += _T("Data may have been lost or modified.\nContinue anyway?");
-    const int yn = MessageBox(msg, _T("File Read Error"),
-                              MB_YESNO|MB_ICONERROR);
+    CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile());
+    CString cs_title; cs_title.LoadString(IDS_FILEREADERROR);
+    const int yn = MessageBox(cs_msg, cs_title, MB_YESNO|MB_ICONERROR);
     if (yn == IDNO) {
       CDialog::OnCancel();
       return FALSE;
@@ -140,13 +139,9 @@ DboxMain::New()
   int rc, rc2;
 
   if (m_core.IsChanged()) {
-    CMyString temp =
-      _T("Do you want to save changes to the password database: ")
-      + m_core.GetCurFile()
-      + _T("?");
-
-    rc = MessageBox(temp,
-                    AfxGetAppName(),
+	CString cs_temp;
+    cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile());
+    rc = MessageBox(cs_temp, AfxGetAppName(),
                     MB_ICONQUESTION|MB_YESNOCANCEL);
     switch (rc) {
     case IDCANCEL:
@@ -177,7 +172,7 @@ DboxMain::New()
 
   m_core.SetCurFile(_T("")); //Force a save as...
 #if !defined(POCKET_PC)
-  m_titlebar = _T("Password Safe - <Untitled>");
+  m_titlebar.LoadString(IDS_UNTITLED);
   app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
@@ -291,6 +286,8 @@ DboxMain::Open()
 {
   int rc = PWScore::SUCCESS;
   CMyString newfile;
+  CString cs_text;
+  cs_text.LoadString(IDS_CHOOSEDATABASE);
 
   //Open-type dialog box
   while (1) {
@@ -304,7 +301,7 @@ DboxMain::Open()
                    _T("All files (*.*)|*.*|")
                    _T("|"),
                    this);
-    fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Open:");
+    fd.m_ofn.lpstrTitle = cs_text;
 	fd.m_ofn.Flags &= ~OFN_READONLY;
     rc = fd.DoModal();
     const bool last_ro = m_IsReadOnly; // restore if user cancels
@@ -333,14 +330,15 @@ DboxMain::Open( const CMyString &pszFilename )
 {
   int rc;
   CMyString passkey, temp;
+  CString cs_title, cs_text;
 
   //Check that this file isn't already open
   if (pszFilename == m_core.GetCurFile() && !m_needsreading)
 	{
       //It is the same damn file
-      MessageBox(_T("That file is already open."),
-                 _T("Oops!"),
-                 MB_OK|MB_ICONWARNING);
+      cs_text.LoadString(IDS_ALREADYOPEN);
+      cs_title.LoadString(IDS_OPENDATABASE);
+      MessageBox(cs_text, cs_title, MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
 	}
 
@@ -361,9 +359,9 @@ DboxMain::Open( const CMyString &pszFilename )
     app.AddToMRU(pszFilename);
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
-    temp = pszFilename
-      + _T("\n\nCan't open file. Please choose another.");
-    MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+    temp.Format(IDS_SAFENOTEXIST, pszFilename);
+	cs_title.LoadString(IDS_FILEOPENERROR);
+    MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
   case TAR_OPEN:
     return Open();
   case TAR_NEW:
@@ -383,32 +381,30 @@ DboxMain::Open( const CMyString &pszFilename )
   // clear the data before loading the new file
   ClearData();
 
-  temp = pszFilename;
+  cs_title.LoadString(IDS_FILEREADERROR);
   rc = m_core.ReadFile(pszFilename, passkey);
   switch (rc) {
   case PWScore::SUCCESS:
     break;
   case PWScore::CANT_OPEN_FILE:
-    temp += _T("\n\nCould not open file for reading!");
-    MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+    temp.Format(IDS_CANTOPENREADING, pszFilename);
+    MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
     /*
       Everything stays as is... Worst case,
       they saved their file....
     */
     return PWScore::CANT_OPEN_FILE;
   case PWScore::BAD_DIGEST: {
-    temp += _T("\n\nFile corrupt or truncated!\n");
-    temp += _T("Data may have been lost or modified.\nContinue anyway?");
-    const int yn = MessageBox(temp, _T("File Read Error"),
-                              MB_YESNO|MB_ICONERROR);
+    temp.Format(IDS_FILECORRUPT, pszFilename);
+    const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
     if (yn == IDYES)
       break;
     else
       return rc;
   }
   default:
-    temp += _T("Unknown error");
-    MessageBox(temp, _T("File read error."), MB_OK|MB_ICONERROR);
+    temp.Format(IDS_UNKNOWNERROR, pszFilename);
+    MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);
 	return rc;
   }
   m_core.SetCurFile(pszFilename);
@@ -439,6 +435,7 @@ int
 DboxMain::Save()
 {
   int rc;
+  CString cs_title, cs_msg, cs_temp;
 
   // Save Application related preferences
   PWSprefs::GetInstance()->SaveApplicationPreferences();
@@ -454,19 +451,9 @@ DboxMain::Save()
   } else { // file version mis-match
   	CMyString NewName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
 
-    CString msg = _T("The original database, \"");
-    msg += CString(m_core.GetCurFile());
-    msg += _T("\", is in pre-3.0 format."
-              " It will be unchanged.\n");
-    msg += _T("Your changes will be written as \"");
-    msg += NewName;
-    msg += _T("\" in the new"
-              " format, which is unusable by old versions of PasswordSafe."
-              " To save your changes in the old format, use the \"File->Export To"
-              "-> Old (1.x or 2) format\" command.\n\n"
-              "Press OK to continue saving, or Cancel to stop.");
-    if (MessageBox(msg, _T("File version warning"),
-                   MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
+    cs_msg.Format(IDS_NEWFORMAT, m_core.GetCurFile(), NewName);
+    cs_title.LoadString(IDS_VERSIONWARNING);
+    if (MessageBox(cs_msg, cs_title, MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
       return PWScore::USER_CANCEL;
     m_core.SetCurFile(NewName);
 #if !defined(POCKET_PC)
@@ -477,9 +464,9 @@ DboxMain::Save()
   rc = m_core.WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-    CMyString temp = m_core.GetCurFile() +
-      _T("\n\nCould not open file for writing!");
-    MessageBox(temp, _T("File write error"), MB_OK|MB_ICONWARNING);
+    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile());
+    cs_title.LoadString(IDS_FILEWRITEERROR);
+    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
   SetChanged(Clear);
@@ -496,12 +483,9 @@ int DboxMain::SaveIfChanged()
 
   if (m_core.IsChanged()) {
     int rc, rc2;
-    CMyString temp =
-      _T("Do you want to save changes to the password database: ")
-      + m_core.GetCurFile()
-      + _T("?");
-    rc = MessageBox(temp,
-                    AfxGetAppName(),
+    CString cs_temp;
+	cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile());
+    rc = MessageBox(cs_temp, AfxGetAppName(),
                     MB_ICONQUESTION|MB_YESNOCANCEL);
     switch (rc) {
     case IDCANCEL:
@@ -534,17 +518,13 @@ DboxMain::SaveAs()
 {
   int rc;
   CMyString newfile;
+  CString cs_msg, cs_title, cs_text, cs_temp;
 
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
-    CMyString msg = _T("The original database, \"");
-    msg += m_core.GetCurFile();
-    msg += _T("\", is in pre-3.0 format. The data will now be written in the new"
-              " format, which is unusable by old versions of PasswordSafe."
-              " To save the data in the old format, use the \"File->Export To"
-              "-> Old (1.x or 2) format\" command.\n\n"
-              "Press OK to continue saving, or Cancel to stop.");
-    if (MessageBox(msg, _T("File version warning"),
+    cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile());
+    cs_title.LoadString(IDS_VERSIONWARNING);
+    if (MessageBox(cs_msg, cs_title,
                    MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
       return PWScore::USER_CANCEL;
   }
@@ -561,11 +541,10 @@ DboxMain::SaveAs()
                    _T("|"),
                    this);
     if (m_core.GetCurFile().IsEmpty())
-      fd.m_ofn.lpstrTitle =
-        _T("Please Choose a Name for the Current (Untitled) Database:");
+      cs_text.LoadString(IDS_NEWNAME1);
     else
-      fd.m_ofn.lpstrTitle =
-        _T("Please Choose a New Name for the Current Database:");
+      cs_text.LoadString(IDS_NEWNAME2);
+    fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
     if (rc == IDOK) {
       newfile = (CMyString)fd.GetPathName();
@@ -575,15 +554,17 @@ DboxMain::SaveAs()
   }
   CMyString locker(_T("")); // null init is important here
   if (!m_core.LockFile(newfile, locker)) {
-    CMyString temp = newfile + _T("\n\nFile is currently locked by ") + locker;
-    MessageBox(temp, _T("File lock error"), MB_OK|MB_ICONWARNING);
+    cs_temp.Format(IDS_FILEISLOCKED, newfile, locker);
+    cs_title.LoadString(IDS_FILELOCKERROR);
+    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
   rc = m_core.WriteFile(newfile);
   if (rc == PWScore::CANT_OPEN_FILE) {
     m_core.UnlockFile(newfile);
-    CMyString temp = newfile + _T("\n\nCould not open file for writing!");
-    MessageBox(temp, _T("File write error"), MB_OK|MB_ICONWARNING);
+    cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+    cs_title.LoadString(IDS_FILEWRITEERROR);
+    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
   if (!m_core.GetCurFile().IsEmpty())
@@ -612,9 +593,11 @@ DboxMain::OnExportVx(UINT nID)
 {
   int rc;
   CMyString newfile;
+  CString cs_text, cs_title, cs_temp;
 
   //SaveAs-type dialog box
   CMyString OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("dat") );
+  cs_text.LoadString(IDS_NAMEEXPORTFILE);
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,
@@ -625,8 +608,7 @@ DboxMain::OnExportVx(UINT nID)
                    _T("All files (*.*)|*.*|")
                    _T("|"),
                    this);
-    fd.m_ofn.lpstrTitle =
-      _T("Please name the exported database");
+    fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
     if (rc == IDOK) {
       newfile = (CMyString)fd.GetPathName();
@@ -636,10 +618,10 @@ DboxMain::OnExportVx(UINT nID)
   }
 
   switch (nID) {
-  case ID_FILE_EXPORTTO_OLD1XFORMAT:
+  case ID_MENUITEM_EXPORT2OLD1XFORMAT:
     rc = m_core.WriteV17File(newfile);
     break;
-  case ID_FILE_EXPORTTO_V2FORMAT:
+  case ID_MENUITEM_EXPORT2V2FORMAT:
     rc = m_core.WriteV2File(newfile);
     break;
   default:
@@ -648,8 +630,9 @@ DboxMain::OnExportVx(UINT nID)
     break;
   }
   if (rc == PWScore::CANT_OPEN_FILE) {
-    CMyString temp = newfile + _T("\n\nCould not open file for writing!");
-    MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+    cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+    cs_title.LoadString(IDS_FILEWRITEERROR);
+    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
   }
 }
 
@@ -658,6 +641,8 @@ DboxMain::OnExportText()
 {
   CExportTextDlg et;
   bool bwrite_header;
+  CString cs_text, cs_temp, cs_title;
+
   int rc = et.DoModal();
   if (rc == IDOK) {
     CMyString newfile;
@@ -666,6 +651,7 @@ DboxMain::OnExportText()
       // do the export
       //SaveAs-type dialog box
 	  CMyString TxtFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("txt") );
+	  cs_text.LoadString(IDS_NAMETEXTFILE);
       while (1) {
         CFileDialog fd(FALSE,
                        _T("txt"),
@@ -677,8 +663,7 @@ DboxMain::OnExportText()
                        _T("All files (*.*)|*.*|")
                        _T("|"),
                        this);
-        fd.m_ofn.lpstrTitle =
-          _T("Please name the plaintext file");
+        fd.m_ofn.lpstrTitle = cs_text;
         rc = fd.DoModal();
         if (rc == IDOK) {
           newfile = (CMyString)fd.GetPathName();
@@ -705,11 +690,12 @@ DboxMain::OnExportText()
       sortedItemList.RemoveAll(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
-        CMyString temp = newfile + _T("\n\nCould not open file for writing!");
-        MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+        cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+        cs_title.LoadString(IDS_FILEWRITEERROR);
+        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
     } else {
-      MessageBox(_T("Passkey incorrect"), _T("Error"));
+      AfxMessageBox(IDS_BADPASSKEY);
       Sleep(3000); // against automatic attacks
     }
   }
@@ -719,6 +705,8 @@ void
 DboxMain::OnExportXML()
 {
   CExportXMLDlg eXML;
+  CString cs_text, cs_title, cs_temp;
+
   int rc = eXML.DoModal();
   if (rc == IDOK) {
     CMyString newfile;
@@ -727,6 +715,7 @@ DboxMain::OnExportXML()
       // do the export
       //SaveAs-type dialog box
       CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml") );
+      cs_text.LoadString(IDS_NAMEXMLFILE);
       while (1) {
         CFileDialog fd(FALSE,
                        _T("xml"),
@@ -737,8 +726,7 @@ DboxMain::OnExportXML()
                        _T("All files (*.*)|*.*|")
                        _T("|"),
                        this);
-        fd.m_ofn.lpstrTitle =
-          _T("Please name the XML file");
+        fd.m_ofn.lpstrTitle = cs_text;
         rc = fd.DoModal();
         if (rc == IDOK) {
           newfile = (CMyString)fd.GetPathName();
@@ -757,11 +745,12 @@ DboxMain::OnExportXML()
       sortedItemList.RemoveAll(); // cleanup soonest
 
       if (rc == PWScore::CANT_OPEN_FILE)        {
-        CMyString temp = newfile + _T("\n\nCould not open file for writing!");
-        MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
+        cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+        cs_title.LoadString(IDS_FILEWRITEERROR);
+        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
     } else {
-      MessageBox(_T("Passkey incorrect"), _T("Error"));
+      AfxMessageBox(IDS_BADPASSKEY);
       Sleep(3000); // protect against automatic attacks
     }
   }
@@ -780,6 +769,7 @@ DboxMain::OnImportText()
     return;
 
   CMyString ImportedPrefix(dlg.m_groupName);
+  CString cs_text, cs_title, cs_temp;
   TCHAR fieldSeparator(dlg.m_Separator[0]);
   CFileDialog fd(TRUE,
                  _T("txt"),
@@ -790,7 +780,8 @@ DboxMain::OnImportText()
                  _T("All files (*.*)|*.*|")
                  _T("|"),
                  this);
-  fd.m_ofn.lpstrTitle = _T("Please Choose a Text File to Import");
+  cs_text.LoadString(IDS_PICKTEXTFILE);
+  fd.m_ofn.lpstrTitle = cs_text;
   int rc = fd.DoModal();
   if (rc == IDOK) {
   	CString strErrors;
@@ -806,28 +797,30 @@ DboxMain::OnImportText()
     rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strErrors, fieldSeparator,
                                     delimiter, numImported, numSkipped, bimport_preV3);
 
+    cs_title.LoadString(IDS_FILEREADERROR);
     switch (rc) {
     case PWScore::CANT_OPEN_FILE:
       {
-        CMyString temp = newfile + _T("\n\nCould not open file for reading!");
-        MessageBox(temp, _T("File open error"), MB_OK|MB_ICONWARNING);
+        cs_temp.Format(IDS_CANTOPENREADING, newfile);
+        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
       break;
     case PWScore::INVALID_FORMAT:
       {
-        CMyString temp = newfile + _T("\n\nInvalid format");
-        MessageBox(temp, _T("File read error"), MB_OK|MB_ICONWARNING);
+        cs_temp.Format(IDS_INVALIDFORMAT , newfile);
+        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
       break;
     case PWScore::SUCCESS:
     default:
       {
       	CString temp1, temp2 = _T("");
-      	temp1.Format(_T("Read %d record%s"), numImported, (numImported != 1) ? _T("s") : _T(""));
+      	temp1.Format(IDS_RECORDSREAD, numImported, (numImported != 1) ? _T("s") : _T(""));
         if (numSkipped != 0)
-          temp2.Format(_T("\nCouldn't read %d record%s"), numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
+          temp2.Format(IDS_RECORDSNOTREAD, numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
 
-        MessageBox(temp1 + temp2, _T("Status"), MB_ICONINFORMATION|MB_OK);
+        cs_title.LoadString(IDS_STATUS);
+        MessageBox(temp1 + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
       }
       RefreshList();
       break;
@@ -841,6 +834,7 @@ DboxMain::OnImportKeePass()
   if (m_IsReadOnly) // disable in read-only mode
     return;
 
+  CString cs_text, cs_title, cs_temp;
   CFileDialog fd(TRUE,
                  _T("txt"),
                  NULL,
@@ -850,7 +844,8 @@ DboxMain::OnImportKeePass()
                  _T("All files (*.*)|*.*|")
                  _T("|"),
                  this);
-  fd.m_ofn.lpstrTitle = _T("Please Choose a KeePass Text File to Import");
+  cs_text.LoadString(IDS_PICKKEEPASSFILE);
+  fd.m_ofn.lpstrTitle = cs_text;
   int rc = fd.DoModal();
   if (rc == IDOK) {
     CMyString newfile = (CMyString)fd.GetPathName();
@@ -858,14 +853,16 @@ DboxMain::OnImportKeePass()
     switch (rc) {
     case PWScore::CANT_OPEN_FILE:
       {
-        CMyString temp = newfile + _T("\n\nCould not open file for reading!");
-        MessageBox(temp, _T("File open error"), MB_OK|MB_ICONWARNING);
+        cs_temp.Format(IDS_CANTOPENREADING, newfile);
+        cs_title.LoadString(IDS_FILEOPENERROR);
+        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
       break;
     case PWScore::INVALID_FORMAT:
       {
-        CMyString temp = newfile + _T("\n\nInvalid format");
-        MessageBox(temp, _T("File read error"), MB_OK|MB_ICONWARNING);
+        cs_temp.Format(IDS_INVALIDFORMAT, newfile);
+        cs_title.LoadString(IDS_FILEREADERROR);
+        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       }
       break;
     case PWScore::SUCCESS:
@@ -882,6 +879,7 @@ DboxMain::OnImportXML()
   if (m_IsReadOnly) // disable in read-only mode
     return;
 
+  CString cs_title, cs_temp, cs_text;
   CString XSDFilename = _T("");
   TCHAR acPath[MAX_PATH + 1];
   struct _stat statbuf;
@@ -894,8 +892,9 @@ DboxMain::OnImportXML()
   }
 
   if (XSDFilename.IsEmpty() || _tstat(XSDFilename, &statbuf) != 0) {
-    CMyString temp = _T("Unable to find required XML Schema Definition file (pwsafe.xsd) in your PasswordSafe Application Directory.  Please copy it from your installation file.");
-    MessageBox(temp, _T("Missing XSD File - Unable to validate XML files"), MB_OK | MB_ICONSTOP);
+    cs_temp.LoadString(IDS_MISSINGXSD);
+    cs_title.LoadString(IDS_CANTVALIDATEXML);
+    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
 	
@@ -913,7 +912,8 @@ DboxMain::OnImportXML()
 				 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
 				 _T("XML files (*.xml)|*.xml||"),
 				 this);
-  fd.m_ofn.lpstrTitle = _T("Please Choose a XML File to Import");
+  cs_text.LoadString(IDS_PICKXMLFILE);
+  fd.m_ofn.lpstrTitle = cs_text;
 
   int rc = fd.DoModal();
   if (rc == IDOK) {
@@ -928,7 +928,7 @@ DboxMain::OnImportXML()
     case PWScore::XML_FAILED_VALIDATION:
       {
         CImportXMLErrDlg dlg;
-        dlg.m_strActionText = XMLFilename + _T(" failed validation against XML Schema Definition pwsafe.xsd");
+        dlg.m_strActionText.Format(IDS_FAILEDXMLVALIDATE, XMLFilename);
         dlg.m_strResultText = strErrors;
         dlg.DoModal();
       }
@@ -936,7 +936,7 @@ DboxMain::OnImportXML()
     case PWScore::XML_FAILED_IMPORT:
       {
         CImportXMLErrDlg dlg;
-        dlg.m_strActionText = XMLFilename + _T(" passed Validation but had the following errors during import:");
+        dlg.m_strActionText.Format(IDS_XMLERRORS, XMLFilename);
         dlg.m_strResultText = strErrors;
         dlg.DoModal();
       }
@@ -944,19 +944,18 @@ DboxMain::OnImportXML()
     case PWScore::SUCCESS:
       {
         if (!strErrors.IsEmpty()) {
-          CString temp;
-          temp.Format(_T("%s was imported (entries validated %d / imported %d) but had the following errors:"),
+          cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
                       XMLFilename, numValidated, numImported);
           CImportXMLErrDlg dlg;
-          dlg.m_strActionText = temp;
+          dlg.m_strActionText = cs_temp;
           dlg.m_strResultText = strErrors;
           dlg.DoModal();
         } else {
-          CString temp;
-          temp.Format(_T("Validated %d record%s\r\n\r\nImported %d record%s"),
+          cs_temp.Format(IDS_XMLIMPORTOK,
                       numValidated, (numValidated != 1) ? _T("s") : _T(""),
                       numImported, (numImported != 1) ? _T("s") : _T(""));
-          MessageBox(temp, _T("Status"), MB_ICONINFORMATION|MB_OK);
+          cs_title.LoadString(IDS_STATUS);
+          MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
         }
       }
       RefreshList();
@@ -972,10 +971,10 @@ DboxMain::Merge()
 {
    int rc = PWScore::SUCCESS;
    CMyString newfile;
+   CString cs_temp;
 
    //Open-type dialog box
-   while (1)
-   {
+   while (1) {
       CFileDialog fd(TRUE,
                      DEFAULT_SUFFIX,
                      NULL,
@@ -986,7 +985,8 @@ DboxMain::Merge()
                      _T("All files (*.*)|*.*|")
                      _T("|"),
                      this);
-      fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Merge");
+      cs_temp.LoadString(IDS_PICKMERGEFILE);
+      fd.m_ofn.lpstrTitle = cs_temp;
       rc = fd.DoModal();
       if (rc == IDOK)
       {
@@ -1013,9 +1013,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
   //Check that this file isn't already open
   if (pszFilename == m_core.GetCurFile()) {
       //It is the same damn file
-      MessageBox(_T("That file is already open."),
-                 _T("Oops!"),
-                 MB_OK|MB_ICONWARNING);
+      AfxMessageBox(IDS_ALREADYOPEN, MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
 	}
 
@@ -1029,14 +1027,15 @@ DboxMain::Merge(const CMyString &pszFilename) {
   // Restore original database read-only status
   SetReadOnly(bCurrentFileIsReadOnly);
 
+  CString cs_temp, cs_title;
   switch (rc) {
 	case PWScore::SUCCESS:
       app.AddToMRU(pszFilename);
       break; // Keep going...
 	case PWScore::CANT_OPEN_FILE:
-      temp = m_core.GetCurFile()
-        + _T("\n\nCan't open file. Please choose another.");
-      MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+      cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+      cs_title.LoadString(IDS_FILEOPENERROR);
+      MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
 	case TAR_OPEN:
       return Open();
 	case TAR_NEW:
@@ -1054,9 +1053,9 @@ DboxMain::Merge(const CMyString &pszFilename) {
   otherCore.ReadFile(pszFilename, passkey);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
-      temp = pszFilename;
-      temp += _T("\n\nCould not open file for reading!");
-      MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+      cs_temp.Format(IDS_CANTOPENREADING, pszFilename);
+      cs_title.LoadString(IDS_FILEREADERROR);
+      MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
       /*
 		Everything stays as is... Worst case,
 		they saved their file....
@@ -1111,19 +1110,14 @@ DboxMain::Merge(const CMyString &pszFilename) {
         newTitle = newTitle + timeStr;
 
         /* note it as an issue for the user */
-        CMyString warnMsg;
-        warnMsg = _T("Conflicting entries for ") +
-          otherItem.GetGroup() + _T(",") + 
-          otherItem.GetTitle() + _T(",") +
-          otherItem.GetUser() + _T("\n");
-        warnMsg += _T("Adding new entry as ") +
-          newTitle + _T(",") + 
-          otherItem.GetUser() + _T("\n");
+        CString warnMsg;
+        warnMsg.Format(IDS_MERGECONFLICTS, otherItem.GetGroup(), otherItem.GetTitle(), otherItem.GetUser(),
+          newTitle, otherItem.GetUser());
 
         /* tell the user the bad news */
-        MessageBox(warnMsg,
-                   _T("Merge conflict"),
-                   MB_OK|MB_ICONWARNING);				
+        CString cs_title;
+		cs_title.LoadString(IDS_MERGECONFLICTS2);
+        MessageBox(warnMsg, cs_title, MB_OK|MB_ICONWARNING);				
 
         /* do it */
         otherItem.SetTitle(newTitle);
@@ -1145,12 +1139,13 @@ DboxMain::Merge(const CMyString &pszFilename) {
   /* tell the user we're done & provide short merge report */
   int totalAdded = numAdded+numConflicts;
   CString resultStr;
-  resultStr.Format(_T("Merge complete:\n%d entr%s added (%d conflict%s)"),
+  resultStr.Format(IDS_MERGECOMPLETED,
                    totalAdded,
                    totalAdded == 1 ? _T("y") : _T("ies"),
                    numConflicts,
                    numConflicts == 1 ? _T("") : _T("s"));
-  MessageBox(resultStr, _T("Merge Complete"), MB_OK);
+  cs_title.LoadString(IDS_MERGECOMPLETED2);
+  MessageBox(resultStr, cs_title, MB_OK);
 
   ChangeOkUpdate();
   RefreshList();
@@ -1176,9 +1171,10 @@ DboxMain::OnProperties()
   dlg.m_numentries.Format("%d", m_core.GetNumEntries());
 
   CString wls = m_core.GetWhenLastSaved();
-  if (wls.GetLength() != 8)
-	  dlg.m_whenlastsaved = _T("Unknown");
-  else {
+  if (wls.GetLength() != 8) {
+	  dlg.m_whenlastsaved.LoadString(IDS_UNKNOWN);
+	  dlg.m_whenlastsaved.Trim();
+  } else {
 	  long t;
 	  TCHAR *lpszWLS = wls.GetBuffer(9);
 #if _MSC_VER >= 1400
@@ -1193,9 +1189,10 @@ DboxMain::OnProperties()
   }
 
   wls = m_core.GetWhoLastSaved();
-  if (wls.GetLength() == 0)
-	  dlg.m_wholastsaved = _T("Unknown");
-  else {
+  if (wls.GetLength() == 0) {
+	  dlg.m_wholastsaved.LoadString(IDS_UNKNOWN);
+	  dlg.m_whenlastsaved.Trim();
+  } else {
 	  int ulen;
 	  TCHAR *lpszWLS = wls.GetBuffer(wls.GetLength() + 1);
 #if _MSC_VER >= 1400
@@ -1209,9 +1206,10 @@ DboxMain::OnProperties()
   }
 
   wls = m_core.GetWhatLastSaved();
-  if (wls.GetLength() == 0)
-	dlg.m_whatlastsaved = _T("Unknown");
-  else
+  if (wls.GetLength() == 0) {
+	dlg.m_whatlastsaved.LoadString(IDS_UNKNOWN);
+	dlg.m_whenlastsaved.Trim();
+  } else
 	dlg.m_whatlastsaved = wls;
 
   dlg.DoModal();
@@ -1231,14 +1229,15 @@ DboxMain::OnCompare()
 {
 	int rc = PWScore::SUCCESS;
 	if (m_core.GetCurFile().IsEmpty()) {
-		MessageBox(_T("No database open with which to compare against another database!"),
-					_T("Oops!"), MB_OK|MB_ICONWARNING);
+		AfxMessageBox(IDS_NOCOMPAREFILE, MB_OK|MB_ICONWARNING);
 		return;
 	}
 
 	CMyString file2;
+	CString cs_text;
 
 	//Open-type dialog box
+	cs_text.LoadString(IDS_PICKCOMPAREFILE);
 	while (1) {
 		CFileDialog fd(TRUE,
 						DEFAULT_SUFFIX,
@@ -1248,15 +1247,14 @@ DboxMain::OnCompare()
 						_T("All files (*.*)|*.*|")
 						_T("|"),
 						this);
-		fd.m_ofn.lpstrTitle = _T("Please Choose a Database to Compare with current open database");
+		fd.m_ofn.lpstrTitle = cs_text;
 		rc = fd.DoModal();
 		if (rc == IDOK) {
 			file2 = (CMyString)fd.GetPathName();
 			//Check that this file isn't the current one!
 			if (file2 == m_core.GetCurFile()) {
 				//It is the same damn file!
-				MessageBox(_T("This database is the same as the current database!"),
-							_T("Oops!"), MB_OK|MB_ICONWARNING);
+				AfxMessageBox(IDS_COMPARESAME, MB_OK|MB_ICONWARNING);
 			} else {
 				bool bSave_RO_Status = m_IsReadOnly;  // Compare makes files R/O
 				rc = Compare(file2);
@@ -1286,6 +1284,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 	// open file they want to Compare
 	int rc = PWScore::SUCCESS;
 	CMyString passkey, temp;
+	CString cs_title, cs_text;
 
 	// OK, CANCEL, HELP + force READ-ONLY
 	rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, true);
@@ -1293,9 +1292,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 		case PWScore::SUCCESS:
 			break; // Keep going...
 		case PWScore::CANT_OPEN_FILE:
-			temp = m_core.GetCurFile()
-					+ _T("\n\nCan't open file. Please choose another.");
-			MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
+			temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+			cs_title.LoadString(IDS_FILEOPENERROR);
+			MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
 		case TAR_OPEN:
 			return Open();
 		case TAR_NEW:
@@ -1313,9 +1312,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 	compCore.ReadFile(pszFilename, passkey);
 
 	if (rc == PWScore::CANT_OPEN_FILE) {
-		temp = pszFilename;
-		temp += _T("\n\nCould not open file for reading!");
-		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
+		temp.Format(IDS_CANTOPENREADING, pszFilename);
+		cs_title.LoadString(IDS_FILEREADERROR);
+		MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
 		return PWScore::CANT_OPEN_FILE;
 	}
 
@@ -1455,38 +1454,33 @@ DboxMain::Compare(const CMyString &pszFilename)
 
 	// tell the user we're done & provide short Compare report
 	CString resultStr(_T("")), buffer;
-	buffer.Format(_T("Compare complete of current database:\n\t %s\n and:\n\t %s"),
-					m_core.GetCurFile(), pszFilename);
+	cs_title.LoadString(IDS_COMPARECOMPLETE);
+	buffer.Format(IDS_COMPARESTATISTICS, m_core.GetCurFile(), pszFilename);
 
 	if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
-		resultStr += buffer + _T("\n\nDatabases identical!");
-		MessageBox(resultStr, _T("Compare Complete"), MB_OK);
+		cs_text.LoadString(IDS_IDENTICALDATABASES);
+		resultStr += buffer + cs_text;
+		MessageBox(resultStr, cs_title, MB_OK);
 		goto exit;
 	}
 
 	resultStr += buffer;
-	buffer.Empty();
-	buffer.Format(_T("\n\nNumber of entr%s only in the current database is %d"),
-						numOnlyInCurrent == 1 ? _T("y") : _T("ies"), numOnlyInCurrent);
+	buffer.Format(IDS_COMPAREONLY1, numOnlyInCurrent);
 	resultStr += buffer;
-	buffer.Empty();
-	buffer.Format(_T("\nNumber of entr%s only in the comparison database is %d"),
-						numOnlyInComp == 1 ? _T("y") : _T("ies"), numOnlyInComp);
+	buffer.Format(IDS_COMPAREONLY2, numOnlyInComp);
 	resultStr += buffer;
-	buffer.Empty();
-	buffer.Format(_T("\nNumber of entr%s in both but with differences is %d"),
-						numConflicts == 1 ? _T("y") : _T("ies"), numConflicts);
+	buffer.Format(IDS_COMPAREBOTHDIFF, numConflicts);
 	resultStr += buffer;
-	buffer.Empty();
-	resultStr += _T("\n\nTo copy details to the clipboard, press Yes - otherwise press No (default).");
-	int mb_rc = MessageBox(resultStr, _T("Compare Complete"), MB_YESNO | MB_DEFBUTTON2);
+	buffer.LoadString(IDS_COMPARECOPYRESULT);
+	resultStr += buffer;
+	int mb_rc = MessageBox(resultStr, cs_title, MB_YESNO | MB_DEFBUTTON2);
 
 	if (mb_rc == IDNO)
 		goto exit;
 
 	resultStr.Empty();
 	if (numOnlyInCurrent > 0) {
-		buffer.Format(_T("Entries only in current database (%s):"), m_core.GetCurFile());
+		buffer.Format(IDS_COMPAREENTRIES1, m_core.GetCurFile());
 		resultStr += buffer;
 		POSITION currentPos = list_OnlyInCurrent.GetHeadPosition();
 		while (currentPos) {
@@ -1496,10 +1490,8 @@ DboxMain::Compare(const CMyString &pszFilename)
 			const CMyString currentTitle = currentItem.GetTitle();
 			const CMyString currentUser = currentItem.GetUser();
 
-			resultStr += _T("\n\tGroup:\"") + currentGroup +
-						 _T("\"; Title:\"") + currentTitle +
-						 _T("\"; User:\"") + currentUser +
-						 _T("\"");
+			buffer.Format(IDS_COMPARESTATS, currentGroup, currentTitle, currentUser);
+			resultStr += buffer;
 
 			list_OnlyInCurrent.GetNext(currentPos);
 		}
@@ -1507,7 +1499,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 	}
 
 	if (numOnlyInComp > 0) {
-		buffer.Format(_T("Entries only in comparison database (%s):"), pszFilename);
+		buffer.Format(IDS_COMPAREENTRIES2, pszFilename);
 		resultStr += buffer;
 		POSITION compPos = list_OnlyInComp.GetHeadPosition();
 		while (compPos) {
@@ -1517,10 +1509,8 @@ DboxMain::Compare(const CMyString &pszFilename)
 			const CMyString compTitle = compItem.GetTitle();
 			const CMyString compUser = compItem.GetUser();
 
-			resultStr += _T("\n\tGroup:\"") + compGroup +
-						 _T("\"; Title:\"") + compTitle +
-						 _T("\"; User:\"") + compUser +
-						 _T("\"");
+			buffer.Format(IDS_COMPARESTATS2, compGroup, compTitle, compUser);
+			resultStr += buffer;
 
 			list_OnlyInComp.GetNext(compPos);
 		}
@@ -1528,10 +1518,23 @@ DboxMain::Compare(const CMyString &pszFilename)
 	}
 
 	if (numConflicts > 0) {
-		buffer.Format(_T("Entries in both %s and %s but with differences:"),
-					m_core.GetCurFile(), pszFilename);
+		buffer.Format(IDS_COMPAREBOTHDIFF2, m_core.GetCurFile(), pszFilename);
 		resultStr += buffer;
 		POSITION conflictPos = list_Conflicts.GetHeadPosition();
+		CString csx_password, csx_notes, csx_url, csx_autotype, csx_ctime, csx_pmtime,
+			csx_atime, csx_ltime, csx_rmtime, csx_pwhistory;
+
+		csx_password.LoadString(IDS_COMPPASSWORD);
+		csx_notes.LoadString(IDS_COMPNOTES);
+		csx_url.LoadString(IDS_COMPURL);
+		csx_autotype.LoadString(IDS_COMPAUTOTYPE);
+		csx_ctime.LoadString(IDS_COMPCTIME);
+		csx_pmtime.LoadString(IDS_COMPPMTIME);
+		csx_atime.LoadString(IDS_COMPATIME);
+		csx_ltime.LoadString(IDS_COMPLTIME);
+		csx_rmtime.LoadString(IDS_COMPRMTIME);
+		csx_pwhistory.LoadString(IDS_COMPPWHISTORY);
+		
 		while (conflictPos) {
 			st_Conflict st_diff = list_Conflicts.GetAt(conflictPos);
 			CItemData currentItem = m_core.GetEntryAt(st_diff.cPos);
@@ -1539,21 +1542,19 @@ DboxMain::Compare(const CMyString &pszFilename)
 			const CMyString currentTitle = currentItem.GetTitle();
 			const CMyString currentUser = currentItem.GetUser();
 
-			resultStr += _T("\n\tIn entry - Group:\"") + currentGroup +
-						 _T("\"; Title:\"") + currentTitle +
-						 _T("\"; User:\"") + currentUser +
-						 _T("\"\n\t\tthe following fields have differences:");
+			buffer.Format(IDS_COMPARESTATS2, currentGroup, currentTitle, currentUser);
+			resultStr += buffer;
 
-			if (st_diff.bsDiffs.test(CItemData::PASSWORD)) resultStr += _T(" 'Password'");
-			if (st_diff.bsDiffs.test(CItemData::NOTES)) resultStr += _T(" 'Notes'");
-			if (st_diff.bsDiffs.test(CItemData::URL)) resultStr += _T(" 'URL'");
-			if (st_diff.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += _T(" 'Autotype'");
-			if (st_diff.bsDiffs.test(CItemData::CTIME)) resultStr += _T(" 'Creation Time'");
-			if (st_diff.bsDiffs.test(CItemData::PMTIME)) resultStr += _T(" 'Password Modification Time'");
-			if (st_diff.bsDiffs.test(CItemData::ATIME)) resultStr += _T(" 'Last Access Time'");
-			if (st_diff.bsDiffs.test(CItemData::LTIME)) resultStr += _T(" 'Password Expiry Time'");
-			if (st_diff.bsDiffs.test(CItemData::RMTIME)) resultStr += _T(" 'Record Modification Time'");
-			if (st_diff.bsDiffs.test(CItemData::PWHIST)) resultStr += _T(" 'Password History'");
+			if (st_diff.bsDiffs.test(CItemData::PASSWORD)) resultStr += csx_password;
+			if (st_diff.bsDiffs.test(CItemData::NOTES)) resultStr += csx_notes;
+			if (st_diff.bsDiffs.test(CItemData::URL)) resultStr += csx_url;
+			if (st_diff.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += csx_autotype;
+			if (st_diff.bsDiffs.test(CItemData::CTIME)) resultStr += csx_ctime;
+			if (st_diff.bsDiffs.test(CItemData::PMTIME)) resultStr += csx_pmtime;
+			if (st_diff.bsDiffs.test(CItemData::ATIME)) resultStr += csx_atime;
+			if (st_diff.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
+			if (st_diff.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
+			if (st_diff.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
 
 			list_Conflicts.GetNext(conflictPos);
 		}
@@ -1610,15 +1611,16 @@ DboxMain::OnOK()
     Save();
 
   if (m_core.IsChanged()) {
-  	const CString msg = _T("Do you want to save changes to the password list?");
+  	CString cs_msg;
+	cs_msg.LoadString(IDS_SAVEFIRST);
 	switch (m_iSessionEndingStatus) {
 		case IDIGNORE:
 			// Session is not ending - user has an option to cancel
-			rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
+			rc = MessageBox(cs_msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
 			break;
 		case IDOK:
 			// Session is ending - user does not have an option to cancel
-			rc = MessageBox(msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNO);
+			rc = MessageBox(cs_msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNO);
 			break;
 		case IDNO:
 		case IDYES:

@@ -2,6 +2,8 @@
 
 #include "afxwin.h"
 #include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #include "afxdtctl.h" // only needed for date/time controls
 #include "corelib\MyString.h"
 

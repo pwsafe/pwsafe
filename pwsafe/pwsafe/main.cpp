@@ -8,7 +8,6 @@
   this global object is what starts the application.
 */
 #include "ThisMfcApp.h"
-#include "resource.h"
 
 ThisMfcApp app;
 

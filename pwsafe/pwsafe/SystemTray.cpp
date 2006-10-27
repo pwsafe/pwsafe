@@ -55,6 +55,8 @@
 #include "stdafx.h"
 #include "SystemTray.h"
 #include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -478,24 +480,32 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
           pNewRecentEntryMenu[i] = new CMenu;
           pNewRecentEntryMenu[i]->CreatePopupMenu();
 
+          CString cs_text;
+
+          cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
           pNewRecentEntryMenu[i]->InsertMenu(0, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
-                                             _T("Copy &Username to Clipboard"));
-          pNewRecentEntryMenu[i]->InsertMenu(1, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
-                                             _T("&Copy Password to Clipboard"));
+                                             cs_text);
+          cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
+          pNewRecentEntryMenu[i]->InsertMenu(1, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
+                                             cs_text);
+          cs_text.LoadString(IDS_TRAYCOPYNOTES);
           pNewRecentEntryMenu[i]->InsertMenu(2, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYCOPYNOTESFLD1 + i,
-                                             _T("Copy &Notes to Clipboard"));
+                                             ID_MENUITEM_TRAYCOPYNOTES1 + i,
+                                             cs_text);
+          cs_text.LoadString(IDS_TRAYBROWSE);
           pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYBROWSE1 + i,
-                                             _T("&Browse to URL"));
+                                             cs_text);
+          cs_text.LoadString(IDS_TRAYAUTOTYPE);
           pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYDELETE1 + i,
-                                             _T("&Delete Entry from History"));
-          pNewRecentEntryMenu[i]->InsertMenu(5, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYAUTOTYPE1 + i,
-                                             _T("Perform Auto&Type"));
+                                             cs_text);
+          cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
+          pNewRecentEntryMenu[i]->InsertMenu(5, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYDELETE1 + i,
+                                             cs_text);
 
           // Insert new popup menu at the bottom of the list
           // pos 0  = Clear Entries

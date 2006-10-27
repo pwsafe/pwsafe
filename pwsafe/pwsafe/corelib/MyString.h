@@ -79,6 +79,9 @@ public:
   int Compare(const LPCTSTR lpszOther) {return m_mystring.Compare(lpszOther);}
   int CompareNoCase(const LPCTSTR lpszOther) {return m_mystring.CompareNoCase(lpszOther);}
   void Empty();
+  BOOL LoadString(const UINT &nID);
+  void Format(LPCTSTR lpszFormat, ... );
+  void Format(UINT nID, ... );
 
   void Trash() {trashstring();}
 

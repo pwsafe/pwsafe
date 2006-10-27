@@ -42,6 +42,7 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
   m_lockFileHandle[0] = INVALID_HANDLE_VALUE;
   m_lockFileHandle[1] = INVALID_HANDLE_VALUE;
   m_LockCount[0] = m_LockCount[1] = 0;
+  m_dwMajorMinor = m_dwSubMinorBuild = 0;
 
   TCHAR user[UNLEN + sizeof(TCHAR)];
   TCHAR sysname[MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)];
@@ -115,6 +116,9 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 
   // Who last saved which is kept in header
   out->SetUserHost(m_user, m_sysname);
+
+  // What last saved wgich is kept in  header
+  out->SetApplicationVersion(m_dwMajorMinor);
 
   status = out->Open(GetPassKey());
 
@@ -1376,4 +1380,50 @@ PWScore::Validate(CString &status)
   } else {
     return false;
   }
+}
+
+bool
+PWScore::GetApplicationVersion(DWORD &dwMajorMinor, DWORD &dwSubMinorBuild)
+{
+  if (m_dwMajorMinor > 0) {
+    dwMajorMinor = m_dwMajorMinor;
+    dwSubMinorBuild = m_dwSubMinorBuild;
+    return true;
+  }
+
+  if (m_dwMajorMinor < 0) {
+	return false;
+  }
+
+  bool bRC = false;
+  char  szFullPath[MAX_PATH];
+  DWORD dwVerHnd, dwVerInfoSize;
+  // Get version information from the application
+  ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
+  dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
+  if (dwVerInfoSize) {
+    char* pVersionInfo = new char[dwVerInfoSize];
+    if(pVersionInfo) {
+      BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
+                                       (DWORD)dwVerHnd,
+                                       (DWORD)dwVerInfoSize,
+                                       (LPVOID)pVersionInfo);
+      VS_FIXEDFILEINFO *szVer = NULL;
+      UINT uVerLength; 
+      if(bRet) {
+        bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
+                               (LPVOID*)&szVer, &uVerLength);
+		if (bRet) {
+		  m_dwMajorMinor = dwMajorMinor = szVer->dwProductVersionMS;
+		  m_dwSubMinorBuild = dwSubMinorBuild = szVer->dwProductVersionLS;
+		  bRC = true;
+		} else {
+		  m_dwMajorMinor = m_dwSubMinorBuild = (DWORD)-1;
+		}
+
+      }
+      delete pVersionInfo;
+    } 
+  }
+  return bRC;
 }
