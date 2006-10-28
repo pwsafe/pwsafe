@@ -5,6 +5,11 @@
 // for use by the Resource Compiler and replace "WCREV" by the build number
 // SubWCRev.exe path\to\working\copy version.in version.h
 
+// Format: Major, Minor, Build, Revision
+//   Build  = 0 for all Formally Released versions
+//   Build != 0 for all Intermediate versions
+// Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
+
 #define FILEVER        3, 4, 0, $WCREV$
 #define PRODUCTVER     3, 4, 0, $WCREV$
 #define STRFILEVER     "3, 4, 0,$WCREV$\0"

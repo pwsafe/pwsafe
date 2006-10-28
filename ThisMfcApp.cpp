@@ -481,6 +481,10 @@ ThisMfcApp::InitInstance()
       BOOL status;
       dbox.SetReadOnly(false);
       switch (UC_arg1) {
+      case 'C':
+        dbox.SetStartClosed(true);
+        dbox.SetCurFile(_T(""));
+        break;
       case 'D': // do decryption
         status = DecryptFile(fn, passkey);
         if (!status) {
@@ -493,10 +497,6 @@ ThisMfcApp::InitInstance()
           AfxMessageBox(IDS_ENCRYPTIONFAILED);
         }
         return TRUE;
-      case 'M':
-        dbox.SetStartMinimized(true);
-        dbox.SetCurFile(_T(""));
-        break;
       case 'R':
         dbox.SetReadOnly(true);
         dbox.SetCurFile(fn);
