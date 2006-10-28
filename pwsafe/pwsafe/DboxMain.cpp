@@ -63,12 +63,13 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_IsStartSilent(false),
+     m_core(app.m_core), 
      m_hFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
 	 m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
-	 m_bValidate(false), m_bOpen(false), m_IsStartMinimized(false)
+	 m_bValidate(false), m_bOpen(false), 
+	 m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -202,6 +203,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_SIZE()
    ON_WM_SYSCOMMAND()
    ON_WM_TIMER()
+   ON_WM_WINDOWPOSCHANGING()
    
    ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
    ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
@@ -276,7 +278,7 @@ DboxMain::InitPasswordSafe()
   UpdateAlwaysOnTop();
 
   // ... same for UseSystemTray
-  // StartSilent trumps preference (but StatMinimized doesn't)
+  // StartSilent trumps preference (but StartClosed doesn't)
   if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
     app.HideIcon();
 
@@ -485,17 +487,13 @@ DboxMain::OnInitDialog()
   ConfigureSystemMenu();
   InitPasswordSafe();
   
-  if (m_IsStartSilent) {
+  if (m_IsStartClosed || m_IsStartSilent) {
   	  // Start up "closed"
       Close();
-      return TRUE;
-  }
-
-  if (m_IsStartMinimized) {
-  	  // Start up "closed" and minimized
-  	  ShowWindow(SW_HIDE);
-      Close();
-      ShowWindow(SW_MINIMIZE);
+	  if (m_IsStartSilent)
+		  m_bStartHiddenAndMinimized = true;
+	  if (m_IsStartClosed)
+		  ShowWindow(SW_SHOW);
       return TRUE;
   }
 
@@ -526,6 +524,18 @@ DboxMain::OnDestroy()
   UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID);
 
   CDialog::OnDestroy();
+}
+
+
+void DboxMain::OnWindowPosChanging( WINDOWPOS* lpwndpos )
+{
+	if (m_bStartHiddenAndMinimized) {
+		lpwndpos->flags |= (SWP_HIDEWINDOW + SWP_NOACTIVATE);
+		lpwndpos->flags &= ~SWP_SHOWWINDOW;
+		PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
+	}
+
+	CDialog::OnWindowPosChanging(lpwndpos);
 }
 
 void DboxMain::FixListIndexes()
@@ -1292,6 +1302,9 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 void
 DboxMain::OnMinimize()
 {
+  if (m_bStartHiddenAndMinimized)
+	  m_bStartHiddenAndMinimized = false;
+
   ShowWindow(SW_MINIMIZE);
 }
 

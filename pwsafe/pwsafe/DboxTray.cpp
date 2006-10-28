@@ -136,8 +136,9 @@ DboxMain::OnTrayCopyUsername(UINT nID)
          (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
 
   CItemData ci;
-  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci);
-  if (&ci == NULL) return;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
+	  return;
+
   const CMyString username = ci.GetUser();
   if (!username.IsEmpty()) {
     ToClipboard(username);
@@ -156,8 +157,9 @@ DboxMain::OnTrayCopyPassword(UINT nID)
 	ASSERT((nID >= ID_MENUITEM_TRAYCOPYPASSWORD1) && (nID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX));
 
 	CItemData ci;
-	m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci);
-	if (&ci == NULL) return;
+	if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
+		return;
+
 	const CMyString curPassString = ci.GetPassword();
 	ToClipboard(curPassString);
     UpdateAccessTime(&ci);
@@ -175,9 +177,8 @@ DboxMain::OnTrayCopyNotes(UINT nID)
 
   CItemData ci;
   CString cs_text;
-  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTES1, ci);
-  if (&ci == NULL)
-    return;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTES1, ci))
+	  return;
 
   const CMyString notes = ci.GetNotes();
   const CMyString url = ci.GetURL();
@@ -213,8 +214,8 @@ DboxMain::OnTrayBrowse(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
 
   CItemData ci;
-  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
-  if (&ci == NULL) return;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
+	  return;
 
   CMyString browseURL = ci.GetURL();
   if (!browseURL.IsEmpty()) {
@@ -232,8 +233,8 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
 
   CItemData ci;
-  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci);
-  if (&ci == NULL) return;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
+	  return;
 
   // Has it an embedded URL
   if (ci.GetURL().IsEmpty()) {
@@ -260,8 +261,9 @@ DboxMain::OnTrayAutoType(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYAUTOTYPE1) && (nID <= ID_MENUITEM_TRAYAUTOTYPEMAX));
 
   CItemData ci;
-  m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci);
-  if (&ci == NULL) return;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci))
+	  return;
+
   AutoType(ci);
   UpdateAccessTime(&ci);
 }

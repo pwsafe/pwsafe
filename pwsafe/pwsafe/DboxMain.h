@@ -94,7 +94,7 @@ public:
   void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
   void SetReadOnly(bool state);
   void SetStartSilent(bool state) { m_IsStartSilent = state;}
-  void SetStartMinimized(bool state) { m_IsStartMinimized = state;}
+  void SetStartClosed(bool state) { m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
@@ -254,6 +254,7 @@ protected:
   afx_msg void OnDestroy();
   afx_msg BOOL OnQueryEndSession();
   afx_msg void OnEndSession(BOOL bEnding);
+  afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
   virtual void OnCancel();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnAbout();
@@ -345,7 +346,8 @@ private:
   BOOL m_lastFindCS;
   bool m_IsReadOnly;
   bool m_IsStartSilent;
-  bool m_IsStartMinimized;
+  bool m_IsStartClosed;
+  bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   HFONT m_hFontTree;
   LOGFONT m_treefont;
