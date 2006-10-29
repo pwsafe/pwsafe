@@ -24,7 +24,7 @@ class CExpPWListDlg : public CDialog
 
 public:
 	CExpPWListDlg(CWnd* pParent = NULL,
-		const CString& a_filespec = "");   // standard constructor
+		const CString& a_filespec = _T(""));   // standard constructor
 	virtual ~CExpPWListDlg();
 
 // Dialog Data

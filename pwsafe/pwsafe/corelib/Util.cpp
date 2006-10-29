@@ -400,8 +400,8 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
   //                        "012345678901234567890123"
 
   const int month_lengths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-  const CString str_months = "JanFebMarAprMayJunJulAugSepOctNovDec";
-  const CString str_days = "SunMonTueWedThuFriSat";
+  const CString str_months = _T("JanFebMarAprMayJunJulAugSepOctNovDec");
+  const CString str_days = _T("SunMonTueWedThuFriSat");
   CString xtime_str;
   char cmonth[4], cdayofweek[4];
   const int idigits[12] = {8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 22, 23};

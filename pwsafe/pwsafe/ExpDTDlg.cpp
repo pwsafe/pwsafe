@@ -69,7 +69,7 @@ BOOL CExpDTDlg::OnInitDialog()
 	pDateCtl->SetRange(&sMinDate, &sMaxDate);
 
 	if (!PWSUtil::VerifyASCDateTimeString(m_ascLTime, tt)) {
-		m_ascLTime = "Never";
+		m_ascLTime.LoadString(IDS_NEVER);
 	} else {
 		xt = CTime(tt);
 		ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),

@@ -144,7 +144,7 @@ CPasswordCharPool::MakePassword() const
   int symbolsneeded;
   int hexdigitsneeded;
 
-  CMyString password = "";
+  CMyString password = _T("");
 
   bool pwRulesMet;
   CMyString temp;

@@ -105,7 +105,7 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
 		call the SetSettingString method.
 	*/
 	int iRetVal = 0;
-	CString csValue = "";
+	CString csValue = _T("");
 
 	csValue.Format("%d", iValue);
 

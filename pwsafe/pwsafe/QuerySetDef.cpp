@@ -27,7 +27,7 @@ CQuerySetDef::CQuerySetDef(CWnd* pParent)
    : super(CQuerySetDef::IDD, pParent)
 {
    m_querycheck = FALSE;
-   m_message = "";
+   m_message = _T("");
 }
 
 
