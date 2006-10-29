@@ -53,7 +53,7 @@ DboxMain::OpenOnInit(void)
   case PWScore::SUCCESS:
     rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-    m_titlebar = "Password Safe - " + m_core.GetCurFile();
+    m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
     UpdateSystemTray(UNLOCKED);
 #endif
 	CheckExpiredPasswords();
@@ -231,7 +231,7 @@ DboxMain::Close()
 	// Call UpdateMenuAndToolBar before UpdateStatusBar, as it sets m_bOpen
 	UpdateMenuAndToolBar(false);
 	UpdateStatusBar();
-	m_titlebar = "Password Safe";
+	m_titlebar = _T("Password Safe");
 	return PWScore::SUCCESS;
 }
 

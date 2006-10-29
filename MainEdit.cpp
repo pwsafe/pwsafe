@@ -583,7 +583,7 @@ DboxMain::AutoType(const CItemData &ci)
        // Delay is going to change - send what we have with old delay
        ks.SendString(tmp);
        // start collecting new delay
-       tmp = "";
+       tmp = _T("");
        int newdelay = 0;
        int gNumIts = 0;
 						

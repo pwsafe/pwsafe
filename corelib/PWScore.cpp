@@ -541,7 +541,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
             if (!linebuf.empty() && *(linebuf.end() - 1) == '\r') {
               linebuf.resize(linebuf.size() - 1);
             }
-            note += "\r\n";
+            note += _T("\r\n");
             note += linebuf;
             unsigned int fq = linebuf.find_first_of('\"');
             unsigned int lq = linebuf.find_last_of('\"');
