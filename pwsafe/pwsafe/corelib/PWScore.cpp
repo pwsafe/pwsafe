@@ -696,12 +696,26 @@ PWScore::ReadFile(const CMyString &a_filename,
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
                                      PWSfile::Read, status);
 
+
   if (status != PWSfile::SUCCESS) {
     delete in;
     return status;
   }
 
   status = in->Open(a_passkey);
+
+  // in the old times we could open even 1.x files
+  // for compatibility reasons, we open them again, to see if this is really a "1.x" file
+  if ((m_ReadFileVersion == PWSfile::V20) && (status == PWSfile::WRONG_VERSION)) {
+    PWSfile::VERSION tmp_version;	// only for getting compatible to "1.x" files
+    tmp_version = m_ReadFileVersion;
+    m_ReadFileVersion = PWSfile::V17;
+    in->SetCurVersion(PWSfile::V17);
+    status = in->Open(a_passkey);
+    if (status != PWSfile::SUCCESS) {
+      m_ReadFileVersion = tmp_version;
+    }
+  }
 
   if (status != PWSfile::SUCCESS) {
     delete in;
