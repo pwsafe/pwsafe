@@ -212,7 +212,7 @@ Section "Program Files" ProgramFiles
 		"Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
 		"NoModify" 1
   WriteRegDWORD HKLM \
-		"Software\Microsoft\Windows\CurrentVersion\Uninstall\PasswordSafe" \
+		"Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
 		"NoRepair" 1
 SectionEnd
 
