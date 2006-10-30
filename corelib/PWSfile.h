@@ -60,6 +60,7 @@ class PWSfile {
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
   unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
+  void SetCurVersion(VERSION v) {m_curversion = v;}
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
