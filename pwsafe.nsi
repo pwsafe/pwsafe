@@ -180,9 +180,9 @@ Section "Program Files" ProgramFiles
   File "docs\ChangeLog.txt"
   File "xml\pwsafe.xsd"
   File "xml\pwsafe.xsl"
-  File "..\..\redist\mfc71.dll"
-  File "..\..\redist\msvcp71.dll"
-  File "..\..\redist\msvcr71.dll"
+  File "..\..\redist\mfc80.dll"
+  File "..\..\redist\msvcp80.dll"
+  File "..\..\redist\msvcr80.dll"
 
   ; Store installation folder
   WriteRegStr HKCU \
