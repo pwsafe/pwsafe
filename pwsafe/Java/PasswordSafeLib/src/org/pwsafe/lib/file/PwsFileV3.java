@@ -296,7 +296,8 @@ public class PwsFileV3 extends PwsFile
 	protected void readExtraHeader( PwsFile file )
 	throws EndOfFileException, IOException, UnsupportedFileVersionException
 	{
-		headerRecord = (PwsRecordV3) readRecord();
+		//headerRecord = (PwsRecordV3) readRecord();
+		headerRecord = new PwsRecordV3(this, true);
 	}
 
 	/**

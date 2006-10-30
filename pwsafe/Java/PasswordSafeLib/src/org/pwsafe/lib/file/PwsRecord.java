@@ -50,9 +50,12 @@ public abstract class PwsRecord implements Comparable
 	private boolean		Modified		= false;
 	private PwsFile		OwningFile		= null;
 	private boolean		IsLoaded		= false;
-	private Map		    Attributes		= new TreeMap();
+	protected Map		Attributes		= new TreeMap();
 	private Object		ValidTypes []	= null;
 
+	protected boolean ignoreFieldTypes = false;
+	
+	
 	/**
 	 * A holder class for all the data about a single field.  It holds the field's length,
 	 * data and, for those formats that use it, the field's type.
@@ -189,6 +192,31 @@ public abstract class PwsRecord implements Comparable
 
 		IsLoaded	= true;
 	}
+	
+	/**
+	 * Special constructor for use when ignoring field types.
+	 * 
+	 * @param owner      the file that data is to be read from and which "owns" this record. 
+	 * @param validTypes an array of valid field types.
+	 * @param ignoreFieldTypes true if all fields types should be ignored, false otherwise
+	 * 
+	 * @throws EndOfFileException
+	 * @throws IOException
+	 */
+	public PwsRecord(PwsFile owner, Object[] validTypes, boolean ignoreFieldTypes) throws EndOfFileException, IOException {
+		super();
+		
+		OwningFile	= owner;
+		ValidTypes	= validTypes;
+		this.ignoreFieldTypes = ignoreFieldTypes;
+
+		loadRecord( owner );
+
+		IsLoaded	= true;
+		
+		
+	}
+
 
 	/**
 	 * 
@@ -209,6 +237,7 @@ public abstract class PwsRecord implements Comparable
 	//*************************************************************************
 	//* Abstract methods
 	//*************************************************************************
+
 
 	/**
 	 * Returns a clone of this record that is a deep copy of it.

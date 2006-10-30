@@ -158,6 +158,20 @@ public class PwsRecordV3 extends PwsRecord
 	{
 		super( file, VALID_TYPES );
 	}
+	
+	/**
+	 * A special version which reads and ignores all headers since they have different
+	 * ids to standard types.
+	 * 
+	 * @param file the file to read data from.
+	 * @param validTypes the types allowable in the incoing data
+	 * @throws EndOfFileException If end of file is reached
+	 * @throws IOException        If a read error occurs.
+	 */
+	PwsRecordV3( PwsFile file, boolean ignoreFieldTypes)
+	throws EndOfFileException, IOException	{
+		super(file, VALID_TYPES, ignoreFieldTypes);
+	}
 
 	/**
 	 * Creates a new record that is a copy <code>base</code>.
@@ -287,9 +301,18 @@ public class PwsRecordV3 extends PwsRecord
 			} else if (Length > 11) {
 				int bytesToRead = Length - 11;
 				int blocksToRead = bytesToRead / file.getBlockSize() + 1;
-				byte[] remainingRecords = new byte[blocksToRead * file.getBlockSize()];
-				file.readDecryptedBytes( remainingRecords );
-				remainingRecords = Util.getBytes(remainingRecords, 0, bytesToRead);
+				byte[] remainingRecords = new byte[0];
+				for (int i = 0; i < blocksToRead; i++) {
+					byte[] nextBlock = new byte[file.getBlockSize()];
+					file.readDecryptedBytes( nextBlock );
+					if (i == blocksToRead - 1) {
+						// last block, do magic
+						nextBlock = Util.getBytes(nextBlock, 0, bytesToRead - remainingRecords.length);
+					}
+					remainingRecords = Util.mergeBytes(remainingRecords, nextBlock);
+				}
+//				file.readDecryptedBytes( remainingRecords );
+//				remainingRecords = Util.getBytes(remainingRecords, 0, bytesToRead);
 				Data = Util.mergeBytes(remainingDataInRecord, remainingRecords);
 			}
 			byte[] dataToHash = Data;
@@ -321,49 +344,57 @@ public class PwsRecordV3 extends PwsRecord
 				LOG.debug2( "-- END OF RECORD --" );
 				break; // out of the for loop
 			}
-			switch ( item.getType() )
-			{
-				case V3_ID_STRING :
-					//itemVal	= new PwsIntegerField( item.getType(), new byte[] {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} );
-					itemVal	= new PwsVersionField( item.getType(), item.getByteData() );
-					break;
-					
-				case UUID :
-					itemVal = new PwsUUIDField( item.getType(), item.getByteData() );
-					break;
 			
-				case GROUP :
-				case TITLE :
-				case USERNAME :
-				case NOTES :
-				case PASSWORD :
-				case URL :
-				case AUTOTYPE :
-					itemVal	= new PwsStringUnicodeField( item.getType(), item.getByteData() );
-					break;
-
-				case CREATION_TIME :
-				case PASSWORD_MOD_TIME :
-				case LAST_ACCESS_TIME :
-				case LAST_MOD_TIME : 
-					itemVal	= new PwsTimeField( item.getType(), item.getByteData() );
-					break;
-
-				case PASSWORD_LIFETIME :
-					itemVal	= new PwsIntegerField( item.getType(), item.getByteData() );
-					break;
-
-				case PASSWORD_POLICY :
-					break;
+			if (ignoreFieldTypes) {
+				// header record has no valid types...
+				itemVal = new PwsUnknownField(item.getType(), item.getByteData());
+				Attributes.put( new Integer(item.getType()), itemVal );
+			} else {
 				
-				case PASSWORD_HISTORY : 
-					break;
+				switch ( item.getType() )
+				{
+					case V3_ID_STRING :
+						//itemVal	= new PwsIntegerField( item.getType(), new byte[] {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} );
+						itemVal	= new PwsVersionField( item.getType(), item.getByteData() );
+						break;
+						
+					case UUID :
+						itemVal = new PwsUUIDField( item.getType(), item.getByteData() );
+						break;
 				
-				default :
-					throw new UnimplementedConversionException();
+					case GROUP :
+					case TITLE :
+					case USERNAME :
+					case NOTES :
+					case PASSWORD :
+					case URL :
+					case AUTOTYPE :
+						itemVal	= new PwsStringUnicodeField( item.getType(), item.getByteData() );
+						break;
+	
+					case CREATION_TIME :
+					case PASSWORD_MOD_TIME :
+					case LAST_ACCESS_TIME :
+					case LAST_MOD_TIME : 
+						itemVal	= new PwsTimeField( item.getType(), item.getByteData() );
+						break;
+	
+					case PASSWORD_LIFETIME :
+						itemVal	= new PwsIntegerField( item.getType(), item.getByteData() );
+						break;
+	
+					case PASSWORD_POLICY :
+						break;
+					
+					case PASSWORD_HISTORY : 
+						break;
+					
+					default :
+						throw new UnimplementedConversionException();
+				}
+				if ( LOG.isDebug2Enabled() ) LOG.debug2( "type=" + item.getType() + " (" + ((Object[])VALID_TYPES[item.getType()])[1] + "), value=\"" + itemVal.toString() + "\"" );
+				setField( itemVal );
 			}
-			if ( LOG.isDebug2Enabled() ) LOG.debug2( "type=" + item.getType() + " (" + ((Object[])VALID_TYPES[item.getType()])[1] + "), value=\"" + itemVal.toString() + "\"" );
-			setField( itemVal );
 		}
 	}
 
