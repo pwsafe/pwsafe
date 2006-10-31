@@ -107,31 +107,28 @@ PWSprefs *PWSprefs::GetInstance(PWScore *core)
 
 void PWSprefs::DeleteInstance()
 {
-	delete self->m_XML_Config;
-	self->m_XML_Config = NULL;
-
-	delete self;
-	self = NULL;
+  delete self->m_XML_Config; // should have ~PWSprefs
+  delete self;
+  self = NULL;
 }
 
-PWSprefs::PWSprefs(PWScore *core) : m_app(::AfxGetApp())
+PWSprefs::PWSprefs(PWScore *core) : m_app(::AfxGetApp()), m_core(core)
 {
-	ASSERT(m_app != NULL);
+  ASSERT(m_app != NULL);
 
-	m_prefs_changed[DB_PREF] = false;
-	m_prefs_changed[APP_PREF] = false;
+  m_prefs_changed[DB_PREF] = false;
+  m_prefs_changed[APP_PREF] = false;
 
-	for (int i = 0; i < NumBoolPrefs; i++)
-		m_boolChanged[i] = false;
+  for (int i = 0; i < NumBoolPrefs; i++)
+    m_boolChanged[i] = false;
 
-	for (int i = 0; i < NumIntPrefs; i++)
-		m_intChanged[i] = false;
+  for (int i = 0; i < NumIntPrefs; i++)
+    m_intChanged[i] = false;
 
-	for (int i = 0; i < NumStringPrefs; i++)
-		m_stringChanged[i] = false;
+  for (int i = 0; i < NumStringPrefs; i++)
+    m_stringChanged[i] = false;
 
-	m_core = core;
-	InitializePreferences();
+  InitializePreferences();
 }
 
 bool
@@ -173,7 +170,7 @@ unsigned int PWSprefs::GetPref(IntPrefs pref_enum, unsigned int defVal) const
 }
 
 void PWSprefs::GetPrefRect(long &top, long &bottom,
-				 long &left, long &right) const
+                           long &left, long &right) const
 {
 	// this is never stored in db
 	switch (m_ConfigOptions) {
@@ -326,52 +323,52 @@ void PWSprefs::SetKeepXMLLock(bool state)
 
 
 void PWSprefs::SetPrefRect(long top, long bottom,
-				 long left, long right)
+                           long left, long right)
 {
-	if (m_ConfigOptions == CF_FILE_RW ||
-	    m_ConfigOptions == CF_FILE_RW_NEW)
-		m_XML_Config->SetKeepXMLLock(true);
+  UpdateTimeStamp();
 
-	UpdateTimeStamp();
+  switch (m_ConfigOptions) {
+  case CF_REGISTRY:
+    m_app->WriteProfileInt(PWS_REG_POSITION, _T("top"), top);
+    m_app->WriteProfileInt(PWS_REG_POSITION, _T("bottom"), bottom);
+    m_app->WriteProfileInt(PWS_REG_POSITION, _T("left"), left);
+    m_app->WriteProfileInt(PWS_REG_POSITION, _T("right"), right);
+    break;
+  case CF_FILE_RW:
+  case CF_FILE_RW_NEW:
+    {
+      CString obuff;
+      m_XML_Config->SetKeepXMLLock(true);
+      obuff.Format("%d", top);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+      obuff.Format("%d", bottom);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
+      obuff.Format("%d", left);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
+      obuff.Format("%d", right);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+      m_XML_Config->SetKeepXMLLock(false);
+    }
+    break;
+  case CF_FILE_RO:
+  case CF_NONE:
+  default:
+    break;
+  }
 
-	CString obuff;
-	switch (m_ConfigOptions) {
-		case CF_REGISTRY:
-			m_app->WriteProfileInt(PWS_REG_POSITION, _T("top"), top);
-			m_app->WriteProfileInt(PWS_REG_POSITION, _T("bottom"), bottom);
-			m_app->WriteProfileInt(PWS_REG_POSITION, _T("left"), left);
-			m_app->WriteProfileInt(PWS_REG_POSITION, _T("right"), right);
-			break;
-		case CF_FILE_RW:
-		case CF_FILE_RW_NEW:
-			obuff.Format("%d", top);
-			VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-			obuff.Format("%d", bottom);
-			VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-			obuff.Format("%d", left);
-			VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-			obuff.Format("%d", right);
-			VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
-			break;
-		case CF_FILE_RO:
-		case CF_NONE:
-		default:
-			break;
-	}
-
-	if (m_ConfigOptions == CF_FILE_RW ||
-	    m_ConfigOptions == CF_FILE_RW_NEW)
-		m_XML_Config->SetKeepXMLLock(false);
 }
 
 CMyString PWSprefs::Store()
 {
 	/*
-	 * Create a string of values that are (1) different from the defaults, && (2) are isStoredinDB
-	 * String is of the form "X nn vv X nn vv..." Where X=[BIS] for binary, integer and string, resp.,
-	 * nn is the numeric value of the enum, and vv is the value, {1.0} for bool, unsigned integer
-	 * for int, and quoted string for String.
+	 * Create a string of values that are (1) different from the defaults, &&
+     * (2) are isStoredinDB
+	 * String is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
+     * integer and string, resp.,
+	 * nn is the numeric value of the enum, and vv is the value,
+     * {1,0} for bool, unsigned integer for int, and quoted string for String.
 	 */
+
 	CMyString retval(_T(""));
 	ostrstream os;
 
