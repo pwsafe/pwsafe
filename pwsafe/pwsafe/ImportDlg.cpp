@@ -136,9 +136,7 @@ void CImportDlg::OnSetImportPreV3()
 }
 void CImportDlg::OnHelp() 
 {
-   ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/import.html",
-              HH_DISPLAY_TOPIC, 0);
+  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/import.html")), HH_DISPLAY_TOPIC);
 }
 
 void CImportDlg::OnOK() 

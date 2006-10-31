@@ -61,9 +61,7 @@ void CImportXMLDlg::OnYesGroup()
 
 void CImportXMLDlg::OnHelp() 
 {
-   ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/importxml.html",
-              HH_DISPLAY_TOPIC, 0);
+  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/importxml.html")), HH_DISPLAY_TOPIC);
 }
 
 void CImportXMLDlg::OnOK() 

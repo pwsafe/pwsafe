@@ -118,12 +118,9 @@ void CPasskeySetup::OnOK()
 void CPasskeySetup::OnHelp() 
 {
 #if defined(POCKET_PC)
-	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#newdatabase"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+  CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#newdatabase"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
-   //WinHelp(0x20084, HELP_CONTEXT);
-   ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/create_new_db.html",
-              HH_DISPLAY_TOPIC, 0);
+  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/create_new_db.html")), HH_DISPLAY_TOPIC);
 #endif
 }
 

@@ -410,11 +410,7 @@ void CEditDlg::OnHelp()
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), 
 	  NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
-  ::HtmlHelp(
-             NULL,
-             "pwsafe.chm::/html/entering_pwd.html",
-             HH_DISPLAY_TOPIC, 0);
-
+  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/entering_pwd.html")), HH_DISPLAY_TOPIC);
 #endif
 }
 

@@ -70,7 +70,7 @@ ThisMfcApp::ThisMfcApp() :
     AfxMessageBox(cs_msg);
   }
 #endif
-
+  EnableHtmlHelp();
   CoInitialize(NULL);
 }
 
@@ -89,12 +89,9 @@ ThisMfcApp::~ThisMfcApp()
   PWSrand::DeleteInstance();
   CoUninitialize();
 
-  /*
-    apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
-    to see the docs, someday.  In the meantime, force with :: syntax
-  */
-
 #if !defined(POCKET_PC)
+  // WinApp::HtmlHelp asserts that main windows is valid, which (1) isn't true
+  // here, and (2) is irrelevant for HH_CLOSE_ALL, so we call ::HtmlHelp
   ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 #endif
 }
@@ -812,7 +809,7 @@ ThisMfcApp::OnHelp()
                HH_DISPLAY_TOPIC, 0);
   else
     ::HtmlHelp(NULL,
-               "pwsafe.chm::/html/display_tab.html",
+               "pwsafe.chm::/display_tab.html",
                HH_DISPLAY_TOPIC, 0);
 
 #endif
