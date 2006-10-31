@@ -22,9 +22,9 @@
  */
 
 #include "MyString.h"
-#include "XMLprefs.h"
 
 class PWScore;
+class CXMLprefs;
 
 class PWSprefs {
  public:
@@ -99,7 +99,7 @@ class PWSprefs {
   void SetPref(StringPrefs pref_enum, const CMyString &value);
 
   bool DeletePref(const CMyString &name);
-  void SetKeepXMLLock(bool state) {m_XML_Config->SetKeepXMLLock(state);}
+  void SetKeepXMLLock(bool state);
 
   void InitializePreferences();
   void LoadProfileFromDefaults();

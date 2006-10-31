@@ -4,6 +4,7 @@
 #include <strstream>
 #include <LMCons.h> // for UNLEN
 #include "PWScore.h"
+#include "XMLprefs.h"
 #include "util.h"
 
 using namespace std;
@@ -317,6 +318,12 @@ bool PWSprefs::DeletePref(const CMyString &name)
 	UpdateTimeStamp();
 	return bRetVal;
 }
+
+void PWSprefs::SetKeepXMLLock(bool state)
+{
+  m_XML_Config->SetKeepXMLLock(state);
+}
+
 
 void PWSprefs::SetPrefRect(long top, long bottom,
 				 long left, long right)
