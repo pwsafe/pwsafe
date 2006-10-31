@@ -27,6 +27,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Update Revision Number in Resources"
+				CommandLine="&quot;C:\Program Files\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -122,6 +124,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Update Revision Number in Resources"
+				CommandLine="&quot;C:\Program Files\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -648,10 +652,6 @@
 			</File>
 			<File
 				RelativePath=".\Util.h"
-				>
-			</File>
-			<File
-				RelativePath=".\version.h"
 				>
 			</File>
 			<File

@@ -1169,11 +1169,9 @@ DboxMain::UpdateSystemTray(const STATE s)
 BOOL
 DboxMain::LaunchBrowser(const CString &csURL)
 {
-  CString csBrowser, csTempFileName, csMsg;
-  char lpPathBuffer[MAX_PATH];
-  HANDLE hTempFile;
-  BOOL bError = FALSE;
+  CString csBrowser;
   long hinst;
+  int iUseDefault;
 
   // If csURL doesn't contain "://", then we'll prepend "http://" to it,
   // e.g., change "www.mybank.com" to "http://www.mybank.com".
@@ -1182,76 +1180,24 @@ DboxMain::LaunchBrowser(const CString &csURL)
   if (theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
 
-  if (!app.m_csDefault_Browser.IsEmpty()) {
-    hinst = long(::ShellExecute(NULL, NULL, app.m_csDefault_Browser, theURL,
+  iUseDefault = PWSprefs::GetInstance()->
+	  GetPref(PWSprefs::UseDefaultBrowser);
+
+  if (iUseDefault != 0)
+	  csBrowser = CString(PWSprefs::GetInstance()->
+	      GetPref(PWSprefs::OtherBrowser));
+
+  if (iUseDefault == 0 || csBrowser.IsEmpty()) {
+      hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
+                                  NULL, SW_SHOWNORMAL));
+      if(hinst < 32) {
+        AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
+        return FALSE;
+      }
+      return TRUE;
+  } else {
+	  hinst = long(::ShellExecute(NULL, NULL, csBrowser, theURL,
                                 NULL, SW_SHOWNORMAL));
-    return TRUE;
+      return TRUE;
   }
-
-  // Get the temp path.
-  DWORD dwRetVal = GetTempPath(MAX_PATH - 14, lpPathBuffer);
-
-  if(dwRetVal > MAX_PATH - 14) {
-    csMsg.Format(IDS_NOTEMPPATH, GetLastError());
-    AfxMessageBox(csMsg, MB_ICONSTOP);
-    return FALSE;
-  }
-
-  hTempFile = INVALID_HANDLE_VALUE;  // silly compiler warning!
-  // Create a temporary file.
-  for(int i = 1; i < 99999; i++) {
-    csTempFileName.Format(_T("%sPWS%.5d.html)"), lpPathBuffer, i);
-    hTempFile = CreateFile(csTempFileName, 					// file name
-                           GENERIC_READ | GENERIC_WRITE,	// open r-w
-                           0,								// do not share
-                           NULL,							// default security
-                           CREATE_NEW,						// must be new
-                           FILE_ATTRIBUTE_NORMAL,			// normal file
-                           NULL);							// no template
-    if(hTempFile != INVALID_HANDLE_VALUE)
-      break;
-  }
-
-  if(hTempFile == INVALID_HANDLE_VALUE) {
-    AfxMessageBox(IDS_NOTEMPFILE, MB_ICONSTOP);
-    return FALSE;
-  }
-
-  if(!CloseHandle(hTempFile)) {
-    csMsg.Format(IDS_CLOSETEMPFILEFAILED, GetLastError());
-    AfxMessageBox(csMsg, MB_ICONSTOP);
-    return FALSE;
-  }
-
-  hinst = long(::FindExecutable(csTempFileName, NULL,
-                                csBrowser.GetBufferSetLength(MAX_PATH)));
-  csBrowser.ReleaseBuffer();
-
-  if(!DeleteFile(csTempFileName)) {
-    csMsg.Format(IDS_TEMPDELETEFAILED, GetLastError());
-    AfxMessageBox(csMsg, MB_ICONSTOP);
-    bError = TRUE;
-  }
-
-  if(hinst < 32) {
-    // Display it the old way - re-use any open browser window!
-    hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
-                                NULL, SW_SHOWNORMAL));
-    if(hinst < 32) {
-      AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
-      return FALSE;
-    }
-    return TRUE;
-  }
-  hinst = long(::ShellExecute(NULL, NULL, csBrowser, theURL,
-                              NULL, SW_SHOWNORMAL));
-
-  if(hinst < 32) {
-    AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
-    return FALSE;
-  }
-
-  // Save default browser - so we do not have to do this again!
-  app.m_csDefault_Browser = csBrowser;
-  return TRUE;
 }

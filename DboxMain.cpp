@@ -733,16 +733,9 @@ DboxMain::OnAbout()
 {
   CAboutDlg about;
 
-  DWORD dwMajorMinor, dwSubMinorBuild;
-  int nMajor(0), nMinor(0), nSubMinor(0), nBuild(0);
-  if (m_core.GetApplicationVersion(dwMajorMinor, dwSubMinorBuild)) {
-    nMajor = HIWORD(dwMajorMinor);
-    nMinor = LOWORD(dwMajorMinor);
-	nSubMinor = HIWORD(dwSubMinorBuild);
-    nBuild = LOWORD(dwSubMinorBuild);
-  }
-  about.m_appversion.Format("%s %d.%02d.%02d.%04d", AfxGetAppName(), 
-	  nMajor, nMinor, nSubMinor, nBuild);
+  CString csFileVersionString;
+  csFileVersionString = m_core.GetFileVersionString();
+  about.m_appversion.Format("%s %s", AfxGetAppName(), csFileVersionString);
 
   about.DoModal();
 }
