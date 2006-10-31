@@ -297,6 +297,10 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::DefUserName));
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
+  misc.m_usedefaultbrowser = prefs->
+    GetPref(PWSprefs::UseDefaultBrowser);
+  misc.m_csBrowser = CString(prefs->
+    GetPref(PWSprefs::OtherBrowser));
 
   backup.m_saveimmediately = prefs->
     GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
@@ -436,6 +440,11 @@ DboxMain::OnOptions()
                      misc.m_defusername);
       prefs->SetPref(PWSprefs::QuerySetDef,
                      misc.m_querysetdef == TRUE);
+
+	  prefs->SetPref(PWSprefs::UseDefaultBrowser,
+		             misc.m_usedefaultbrowser);
+	  prefs->SetPref(PWSprefs::OtherBrowser,
+		             misc.m_csBrowser);
 
       prefs->SetPref(PWSprefs::SaveImmediately,
                      backup.m_saveimmediately == TRUE);

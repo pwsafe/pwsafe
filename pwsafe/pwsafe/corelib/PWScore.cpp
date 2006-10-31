@@ -1425,6 +1425,7 @@ PWScore::GetApplicationVersion(DWORD &dwMajorMinor, DWORD &dwSubMinorBuild)
       VS_FIXEDFILEINFO *szVer = NULL;
       UINT uVerLength; 
       if(bRet) {
+      	// get binary file version information
         bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
                                (LPVOID*)&szVer, &uVerLength);
 		if (bRet) {
@@ -1434,7 +1435,16 @@ PWScore::GetApplicationVersion(DWORD &dwMajorMinor, DWORD &dwSubMinorBuild)
 		} else {
 		  m_dwMajorMinor = m_dwSubMinorBuild = (DWORD)-1;
 		}
-
+		// Get string file version information (assume US English "040904B0" is there)
+		TCHAR *b; 
+        UINT buflen;
+        bRet = ::VerQueryValue(pVersionInfo,
+                               TEXT("\\StringFileInfo\\040904B0\\FileVersion"),
+                               (LPVOID*)&b, &buflen); 
+        if (bRet)
+          m_csFileVersionString = (TCHAR*)&b;
+        else
+          m_csFileVersionString = _T("");
       }
       delete pVersionInfo;
     } 

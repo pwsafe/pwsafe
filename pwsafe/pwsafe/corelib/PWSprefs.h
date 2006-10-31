@@ -52,11 +52,11 @@ class PWSprefs {
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
 		  DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
 		  NumPWHistoryDefault, BackupPrefix, BackupSuffix, BackupLocation,
-		  BackupMaxIncremented,
+		  BackupMaxIncremented, UseDefaultBrowser,
 		  NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		  TreeFont, BackupPrefixValue, BackupSubDirectoryValue,
-		  BackupOtherLocationValue,
+		  BackupOtherLocationValue, OtherBrowser,
 		  NumStringPrefs};
 
   // for DoubleClickAction

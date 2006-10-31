@@ -29,11 +29,14 @@ public:
 	CComboBox m_dblclk_cbox;
 	BOOL	m_usedefuser;
 	BOOL	m_querysetdef;
+	int    m_usedefaultbrowser;
 	CString	m_defusername;
+	CString m_otherbrowserlocation;
 	//}}AFX_DATA
 	DWORD m_hotkey_value;
 	int     m_doubleclickaction;
 	int		m_DCA_to_Index[PWSprefs::maxDCA + 1];
+	CString m_csBrowser;
 
 // Overrides
 	// ClassWizard generate virtual function overrides
@@ -50,6 +53,8 @@ protected:
 	//{{AFX_MSG(COptionsMisc)
 	afx_msg void OnEnableHotKey();
 	afx_msg void OnUsedefuser();
+	afx_msg void OnBrowser();
+	afx_msg void OnBrowseForLocation();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

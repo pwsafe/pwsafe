@@ -52,6 +52,8 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_USEDEFUSER, m_usedefuser);
 	DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
 	DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
+	DDX_Radio(pDX, IDC_DEFAULTBROWSER, m_usedefaultbrowser); // only first!
+	DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_otherbrowserlocation);
 	//}}AFX_DATA_MAP
 }
 
@@ -59,6 +61,9 @@ BEGIN_MESSAGE_MAP(COptionsMisc, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsMisc)
 	ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
 	ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
+	ON_BN_CLICKED(IDC_DEFAULTBROWSER, OnBrowser)
+	ON_BN_CLICKED(IDC_OTHERBROWSER, OnBrowser)
+	ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
 	ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged) 
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -116,7 +121,10 @@ BOOL COptionsMisc::OnInitDialog()
     m_hotkey.EnableWindow(FALSE);
 #endif
 
+  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
+
   OnUsedefuser();
+  OnBrowser();
 
   return TRUE;
 }
@@ -168,4 +176,63 @@ void COptionsMisc::OnOK()
   m_hotkey_value = v;
 #endif
   CPropertyPage::OnOK();  
+}
+
+void COptionsMisc::OnBrowser()
+{
+	UpdateData(TRUE);
+	switch (m_usedefaultbrowser) {
+		case 0:
+			GetDlgItem(IDC_OTHERBROWSERLOCATION)->EnableWindow(FALSE);
+			GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(FALSE);
+			break;
+		case 1:
+			GetDlgItem(IDC_OTHERBROWSERLOCATION)->EnableWindow(TRUE);
+			GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(TRUE);
+			break;
+		default:
+			break;
+	}
+}
+
+void COptionsMisc::OnBrowseForLocation()
+{
+	CString cs_initiallocation, cs_title;
+	TCHAR path_buffer[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE];
+	TCHAR dir[_MAX_DIR];
+	int rc;
+
+	if (m_csBrowser.IsEmpty())
+		cs_initiallocation = _T("C:\\");
+	else {
+#if _MSC_VER >= 1400
+		_tsplitpath_s(m_csBrowser, drive, _MAX_DRIVE, dir, _MAX_DIR, NULL, 0, NULL, 0);
+		_tmakepath_s(path_buffer, _MAX_PATH, drive, dir, NULL, NULL);
+#else
+		_tsplitpath(m_csBrowser, drive, dir, NULL, NULL);
+		_tmakepath(path_buffer, drive, dir, NULL, NULL);
+#endif
+		cs_initiallocation = CString(path_buffer);
+	}
+
+    CFileDialog fd(TRUE,
+                   NULL,
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
+				   OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
+                   _T("Programs (*.exe)|*.exe|")
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+
+	cs_title.LoadString(IDS_SELECTBROWSER);
+	fd.m_ofn.lpstrTitle = cs_title;
+	fd.m_ofn.lpstrInitialDir = cs_initiallocation;
+
+    rc = fd.DoModal();
+    if (rc == IDOK) {
+      m_csBrowser = fd.GetPathName();
+	  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
+	}
 }

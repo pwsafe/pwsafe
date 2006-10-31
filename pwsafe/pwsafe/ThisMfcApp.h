@@ -36,7 +36,6 @@ public:
   PWScore m_core;
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
-  CString m_csDefault_Browser;
   CString m_companyname;
     
   virtual BOOL InitInstance();

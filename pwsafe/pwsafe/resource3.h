@@ -157,10 +157,7 @@
 #define	IDS_COPYNUMBER          5319
 #define	IDS_COULDNOTSAVE        5320
 #define	IDS_SAVEERROR           5321
-#define	IDS_NOTEMPPATH          5322
-#define	IDS_NOTEMPFILE          5323
-#define	IDS_CLOSETEMPFILEFAILED 5324
-#define	IDS_TEMPDELETEFAILED    5325
+#define IDS_SELECTBROWSER       5322
 #define	IDS_CANTBROWSE          5326
 #define	IDS_CANTOPENSAFE        5327
 #define IDS_FILECORRUPT         5328

@@ -82,6 +82,7 @@ class PWScore {
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
   unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
+  CString GetFileVersionString() const {return m_csFileVersionString;}
   int RenameFile(const CMyString &oldname, const CMyString &newname);
   int BackupCurFile();
   int CheckPassword(const CMyString &filename, CMyString &passkey);
@@ -146,6 +147,7 @@ class PWScore {
   CMyString m_defusername;
   PWSfile::VERSION m_ReadFileVersion;
   unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
+  CString m_csFileVersionString;
 
   // the password database
   ItemList m_pwlist;
