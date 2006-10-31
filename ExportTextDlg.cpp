@@ -93,9 +93,7 @@ void CExportTextDlg::OnSetMultilineExportNotesDelimiter()
 
 void CExportTextDlg::OnHelp()
 {
-  ::HtmlHelp(NULL,
-	     "pwsafe.chm::/html/export.html",
-	     HH_DISPLAY_TOPIC, 0);
+  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/export.html")), HH_DISPLAY_TOPIC);
 }
 
 void CExportTextDlg::OnOK() 

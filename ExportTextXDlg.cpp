@@ -159,9 +159,7 @@ END_MESSAGE_MAP()
 
 void CExportTextXDlg::OnHelp()
 {
-	::HtmlHelp(NULL,
-		 "pwsafe.chm::/html/exportx.html",
-		 HH_DISPLAY_TOPIC, 0);
+  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/exportx.html")), HH_DISPLAY_TOPIC);
 }
 
 void CExportTextXDlg::OnOK()
