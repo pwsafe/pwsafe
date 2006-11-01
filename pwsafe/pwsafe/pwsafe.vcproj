@@ -125,7 +125,7 @@
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Update Revision Number in Resources"
-				CommandLine="&quot;C:\Program Files\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h"
+				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo ."
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
