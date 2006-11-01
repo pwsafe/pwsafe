@@ -62,6 +62,10 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
   int FindMenuItem(CMenu* Menu, int MenuID);
   int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
+  void GetApplicationVersionData();
+  CString GetFileVersionString() const {return m_csFileVersionString;}
+  DWORD GetFileVersionMajorMinor() const {return m_dwMajorMinor;}
+  DWORD GetFileVersionBuildRevision() const {return m_dwBuildRevision;}
 
   DECLARE_MESSAGE_MAP()
 
@@ -78,6 +82,9 @@ private:
   CSystemTray *m_TrayIcon; // DboxMain needs to be constructed first
   STATE m_TrayLockedState;
   bool m_HotKeyPressed;
+  DWORD m_dwMajorMinor;
+  DWORD m_dwBuildRevision;
+  CString m_csFileVersionString;
 };
 
 

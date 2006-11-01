@@ -325,6 +325,11 @@ ThisMfcApp::InitInstance()
    * It's always best to start at the beginning.  [Glinda, Witch of the North]
    */
 
+  // Get application version information
+  GetApplicationVersionData();
+  // PWScore needs it to get into database header if/when saved
+  m_core.SetApplicationMajorMinor(m_dwMajorMinor);
+
 #if defined(POCKET_PC)
   SHInitExtraControls();
 #endif
@@ -854,6 +859,47 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, int MenuID)
   return -1;
 }
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 
+void
+ThisMfcApp::GetApplicationVersionData()
+{
+  char  szFullPath[MAX_PATH];
+  DWORD dwVerHnd, dwVerInfoSize;
+  // Get version information from the application
+  ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
+  dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
+  if (dwVerInfoSize) {
+    char* pVersionInfo = new char[dwVerInfoSize];
+    if(pVersionInfo) {
+      BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
+                                       (DWORD)dwVerHnd,
+                                       (DWORD)dwVerInfoSize,
+                                       (LPVOID)pVersionInfo);
+      VS_FIXEDFILEINFO *szVer = NULL;
+      UINT uVerLength; 
+      if(bRet) {
+      	// get binary file version information
+        bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
+                               (LPVOID*)&szVer, &uVerLength);
+		if (bRet) {
+		  m_dwMajorMinor = szVer->dwProductVersionMS;
+		  m_dwBuildRevision = szVer->dwProductVersionLS;
+		} else {
+		  m_dwMajorMinor = m_dwBuildRevision = (DWORD)-1;
+		}
+		// Get string file version information (assume US English "040904B0" is there)
+		TCHAR *buffer; 
+        UINT buflen;
+        bRet = ::VerQueryValue(pVersionInfo,
+                               TEXT("\\StringFileInfo\\040904B0\\FileVersion"),
+                               (LPVOID*)&buffer, &buflen); 
+        if (bRet)
+          m_csFileVersionString = buffer;
+        else
+          m_csFileVersionString = _T("");
+      }
+      delete pVersionInfo;
+    } 
+  }
+  return;
+}

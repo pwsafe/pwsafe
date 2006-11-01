@@ -732,19 +732,22 @@ void
 DboxMain::OnAbout()
 {
   CAboutDlg about;
-  DWORD dwMajorMinor, dwBuildRevision;
   int nMajor(0), nMinor(0), nBuild(0), nRevision(0);
 
-  if (m_core.GetApplicationVersion(dwMajorMinor, dwBuildRevision)) {
+  DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
+  DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
+
+  if (dwMajorMinor > 0) {
 	  nMajor = HIWORD(dwMajorMinor);
 	  nMinor = LOWORD(dwMajorMinor);
 	  nBuild = HIWORD(dwBuildRevision);
 	  nRevision = LOWORD(dwBuildRevision);
   }
+
   CString csFileVersionString, csRevision;
   int itok = 4; // number of tokens in version string
 
-  csFileVersionString = m_core.GetFileVersionString();
+  csFileVersionString = app.GetFileVersionString();
 
   csFileVersionString.Tokenize(",", itok);
   csRevision = csFileVersionString.Tokenize(",", itok);
@@ -817,13 +820,13 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   if (dbox_pkentry == NULL) {
     dbox_pkentry = new CPasskeyEntry(this, filename,
                                      index, m_IsReadOnly, bFileIsReadOnly);
-	DWORD dwMajorMinor, dwBuildRevision;
-	int nMajor(0), nMinor(0), nBuild(0), nRevision(0);
-	if (m_core.GetApplicationVersion(dwMajorMinor, dwBuildRevision)) {
+
+	int nMajor(0), nMinor(0);
+	DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
+
+	if (dwMajorMinor > 0) {
 		nMajor = HIWORD(dwMajorMinor);
 		nMinor = LOWORD(dwMajorMinor);
-		nBuild = HIWORD(dwBuildRevision);
-		nRevision = LOWORD(dwBuildRevision);
 	}
     dbox_pkentry->m_appversion.Format("Version %d.%02d", nMajor, nMinor);
 
