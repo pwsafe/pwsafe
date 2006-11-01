@@ -1442,7 +1442,7 @@ PWScore::GetApplicationVersion(DWORD &dwMajorMinor, DWORD &dwSubMinorBuild)
                                TEXT("\\StringFileInfo\\040904B0\\FileVersion"),
                                (LPVOID*)&b, &buflen); 
         if (bRet)
-          m_csFileVersionString = (TCHAR*)&b;
+          m_csFileVersionString = b;
         else
           m_csFileVersionString = _T("");
       }

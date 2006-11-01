@@ -733,9 +733,25 @@ DboxMain::OnAbout()
 {
   CAboutDlg about;
 
-  CString csFileVersionString;
+  DWORD dwMajorMinor, dwBuildRevision;
+  int nMajor(0), nMinor(0), nBuild(0), nRevision(0);
+  if (m_core.GetApplicationVersion(dwMajorMinor, dwBuildRevision)) {
+	  nMajor = HIWORD(dwMajorMinor);
+	  nMinor = LOWORD(dwMajorMinor);
+	  nBuild = HIWORD(dwBuildRevision);
+	  nRevision = LOWORD(dwBuildRevision);
+  }
+  CString csFileVersionString, csRevision;
+  int itok = 4;
+
   csFileVersionString = m_core.GetFileVersionString();
-  about.m_appversion.Format("%s %s", AfxGetAppName(), csFileVersionString);
+
+  csFileVersionString.Tokenize(",", itok);
+  csRevision = csFileVersionString.Tokenize(",", itok);
+  csRevision.Trim();
+
+  about.m_appversion.Format("%s V%d.%02d.%02d.%s", AfxGetAppName(), 
+	      nMajor, nMinor, nBuild, csRevision);
 
   about.DoModal();
 }
@@ -795,13 +811,13 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   if (dbox_pkentry == NULL) {
     dbox_pkentry = new CPasskeyEntry(this, filename,
                                      index, m_IsReadOnly, bFileIsReadOnly);
-	DWORD dwMajorMinor, dwSubMinorBuild;
-	int nMajor(0), nMinor(0), nSubMinor(0), nBuild(0);
-	if (m_core.GetApplicationVersion(dwMajorMinor, dwSubMinorBuild)) {
+	DWORD dwMajorMinor, dwBuildRevision;
+	int nMajor(0), nMinor(0), nBuild(0), nRevision(0);
+	if (m_core.GetApplicationVersion(dwMajorMinor, dwBuildRevision)) {
 		nMajor = HIWORD(dwMajorMinor);
 		nMinor = LOWORD(dwMajorMinor);
-		nSubMinor = HIWORD(dwSubMinorBuild);
-		nBuild = LOWORD(dwSubMinorBuild);
+		nBuild = HIWORD(dwBuildRevision);
+		nRevision = LOWORD(dwBuildRevision);
 	}
     dbox_pkentry->m_appversion.Format("Version %d.%02d", nMajor, nMinor);
 
