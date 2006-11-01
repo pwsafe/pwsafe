@@ -460,9 +460,9 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
 
       pMainRecentEntriesMenu = pContextMenu->GetSubMenu(2);
 
-      CMenu *pNewRecentEntryMenu[ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1];
-
       int num_recent_entries = m_RUEList.GetCount();
+      typedef CMenu* CMenuPtr;
+      CMenu **pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
 
       if (num_recent_entries == 0) {
         // Only leave the "Clear Entries" menu item (greyed out in ON_UPDATE_COMMAND_UI function)
@@ -536,6 +536,7 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
       for (int i = 0; i < num_recent_entries; i++)
         delete pNewRecentEntryMenu[i];
 
+      delete[] pNewRecentEntryMenu;
       m_menulist.RemoveAll();
       menu.DestroyMenu();
     } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
