@@ -82,7 +82,6 @@ class PWScore {
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
   unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
-  CString GetFileVersionString() const {return m_csFileVersionString;}
   int RenameFile(const CMyString &oldname, const CMyString &newname);
   int BackupCurFile();
   int CheckPassword(const CMyString &filename, CMyString &passkey);
@@ -91,6 +90,7 @@ class PWScore {
   bool IsLockedFile(const CMyString &filename, const bool bDB = true) const;
   void UnlockFile(const CMyString &filename, const bool bDB = true);
   bool GetLocker(const CMyString &filename, CMyString &locker);
+  void SetApplicationMajorMinor(DWORD dwMajorMinor) {m_dwMajorMinor = dwMajorMinor;}
 
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary);
@@ -126,7 +126,6 @@ class PWScore {
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
-  bool GetApplicationVersion(DWORD &dwMajorMinor, DWORD &dwSubMinorBuild);
 
  private:
   CMyString m_currfile; // current pw db filespec
@@ -136,8 +135,6 @@ class PWScore {
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
   static CString m_hdr;
-  DWORD m_dwMajorMinor;
-  DWORD m_dwSubMinorBuild;
 
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
@@ -147,7 +144,7 @@ class PWScore {
   CMyString m_defusername;
   PWSfile::VERSION m_ReadFileVersion;
   unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
-  CString m_csFileVersionString;
+  DWORD m_dwMajorMinor;
 
   // the password database
   ItemList m_pwlist;
