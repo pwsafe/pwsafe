@@ -732,9 +732,9 @@ void
 DboxMain::OnAbout()
 {
   CAboutDlg about;
-
   DWORD dwMajorMinor, dwBuildRevision;
   int nMajor(0), nMinor(0), nBuild(0), nRevision(0);
+
   if (m_core.GetApplicationVersion(dwMajorMinor, dwBuildRevision)) {
 	  nMajor = HIWORD(dwMajorMinor);
 	  nMinor = LOWORD(dwMajorMinor);
@@ -742,17 +742,23 @@ DboxMain::OnAbout()
 	  nRevision = LOWORD(dwBuildRevision);
   }
   CString csFileVersionString, csRevision;
-  int itok = 4;
+  int itok = 4; // number of tokens in version string
 
   csFileVersionString = m_core.GetFileVersionString();
 
   csFileVersionString.Tokenize(",", itok);
   csRevision = csFileVersionString.Tokenize(",", itok);
   csRevision.Trim();
-
-  about.m_appversion.Format("%s V%d.%02d.%02d.%s", AfxGetAppName(), 
-	      nMajor, nMinor, nBuild, csRevision);
-
+  if (nBuild == 0) { // hide build # if zero (formal release)
+    about.m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
+                              nMajor, nMinor, csRevision);
+  } else {
+    about.m_appversion.Format(_T("%s V%d.%02d.%02d (%s)"), AfxGetAppName(), 
+                              nMajor, nMinor, nBuild, csRevision);
+  }
+#ifdef _DEBUG
+  about.m_appversion += _T(" [Debug]");
+#endif
   about.DoModal();
 }
 

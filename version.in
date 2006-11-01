@@ -1,18 +1,18 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
-// Using Tortoise SVN's program SubWCRev.exe to copy this to "version.h"
-// for use by the Resource Compiler and replace "WCRANGES" by the revison number(s)
-// SubWCRev.exe path\to\working\copy version.in version.h
-
+// version.h is automatically generated from version.in by a custom
+// pre-build step using Tortoise SVN's program SubWCRev.exe, which
+// replaces $WCREV$ with latest subversion revision number.
+s
 // Format: Major, Minor, Build, Revision
 //   Build  = 0 for all Formally Released versions
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define FILEVER        3, 4, 1, $WCREV$
-#define PRODUCTVER     3, 4, 1, $WCREV$
-#define STRFILEVER     "3, 4, 1, $WCREV$$WCMODS?+:$\0"
-#define STRPRODUCTVER  "3, 4, 1, $WCREV$$WCMODS?+:$\0"
+#define FILEVER        3, 4, 0, $WCREV$
+#define PRODUCTVER     3, 4, 0, $WCREV$
+#define STRFILEVER     "3, 4, 0, $WCREV$$WCMODS?+:$\0"
+#define STRPRODUCTVER  "3, 4, 0, $WCREV$$WCMODS?+:$\0"
 
 #endif // _VERSION_H_
