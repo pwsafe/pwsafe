@@ -33,7 +33,6 @@ class PWScore {
     XML_FAILED_IMPORT							// 14
    };
 
-  enum {DATABASE_LOCK = 0, CONFIG_LOCK};
 
   PWScore();
   ~PWScore();
@@ -46,8 +45,6 @@ class PWScore {
   CMyString GetDefUsername() const {return m_defusername;}
   void SetDefUsername(const CMyString &du) {m_defusername = du;}
 
-  const CString &GetCurrentUser() const {return m_user;}
-  const CString &GetCurrentHost() const {return m_sysname;}
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
   const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
@@ -86,10 +83,12 @@ class PWScore {
   int BackupCurFile();
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
-  bool LockFile(const CMyString &filename, CMyString &locker, const bool bDB = true);
-  bool IsLockedFile(const CMyString &filename, const bool bDB = true) const;
-  void UnlockFile(const CMyString &filename, const bool bDB = true);
-  bool GetLocker(const CMyString &filename, CMyString &locker);
+  bool LockFile(const CMyString &filename, CMyString &locker) const
+  {return PWSfile::LockFile(filename, locker);} // legacy/convenience
+  bool IsLockedFile(const CMyString &filename) const
+  {return PWSfile::IsLockedFile(filename);} // legacy/convenience
+  void UnlockFile(const CMyString &filename) const
+  {return PWSfile::UnlockFile(filename);}
   void SetApplicationMajorMinor(DWORD dwMajorMinor) {m_dwMajorMinor = dwMajorMinor;}
 
   // Return list of unique groups
@@ -150,11 +149,8 @@ class PWScore {
   ItemList m_pwlist;
 
   bool m_changed;
-  HANDLE m_lockFileHandle[2];
-  int m_LockCount[2];
 
   CString m_displaystatus;
   CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
-  CString m_user, m_sysname, m_ProcessID;
 };
 #endif /* __PWSCORE_H */

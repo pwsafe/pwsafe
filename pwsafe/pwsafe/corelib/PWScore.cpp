@@ -8,6 +8,7 @@
 #include "Util.h"
 #include "PWSXML.h"
 #include "UUIDGen.h"
+#include "SysInfo.h"
 
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
@@ -15,10 +16,6 @@
 #include <vector>
 using namespace std;
 
-#include <LMCONS.H> // for UNLEN definition
-#include <io.h> // low level file routines for locking
-#include <fcntl.h> // constants _O_* for above
-#include <sys/stat.h> // constants _S_* for above
 #include <bitset>
 
 unsigned char PWScore::m_session_key[20];
@@ -38,32 +35,6 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 	PWScore::m_session_initialized = true;
   }
-
-  m_lockFileHandle[0] = INVALID_HANDLE_VALUE;
-  m_lockFileHandle[1] = INVALID_HANDLE_VALUE;
-  m_LockCount[0] = m_LockCount[1] = 0;
-
-  TCHAR user[UNLEN + sizeof(TCHAR)];
-  TCHAR sysname[MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)];
-  //  ulen INCLUDES the trailing blank
-  DWORD ulen = UNLEN + sizeof(TCHAR);
-  if (::GetUserName(user, &ulen)== FALSE) {
-    user[0] = TCHAR('?');
-	user[1] = TCHAR('\0');
-	ulen = 2;
-  }
-  ulen--;
-
-  //  slen EXCLUDES the trailing blank
-  DWORD slen = MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR);
-  if (::GetComputerName(sysname, &slen) == FALSE) {
-    sysname[0] = TCHAR('?');
-	sysname[1] = TCHAR('\0');
-	slen = 1;
-  }
-  m_user = CString(user, ulen);
-  m_sysname = CString(sysname, slen);
-  m_ProcessID.Format("%08d", GetCurrentProcessId());
 }
 
 PWScore::~PWScore()
@@ -114,7 +85,10 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   out->SetDisplayStatus(m_displaystatus);
 
   // Who last saved which is kept in header
-  out->SetUserHost(m_user, m_sysname);
+  const SysInfo *si = SysInfo::GetInstance();
+  const CString user = si->GetCurrentUser();
+  const CString host = si->GetCurrentHost();
+  out->SetUserHost(user, host);
 
   // What last saved which is kept in  header
   out->SetApplicationVersion(m_dwMajorMinor);
@@ -1023,255 +997,6 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
   // TODO: maybe return an error if the full end of the file was not reached?
 
   return SUCCESS;
-}
-
-/*
- * The file lock/unlock functions were first implemented (in 2.08)
- * with Posix semantics (using open(_O_CREATE|_O_EXCL) to detect
- * an existing lock.
- * This fails to check liveness of the locker process, specifically,
- * if a user just turns of her PC, the lock file will remain.
- * So, I'm keeping the Posix code under idef POSIX_FILE_LOCK,
- * and re-implementing using the Win32 API, whose semantics
- * supposedly protect against this scenario.
- * Thanks to Frank (xformer) for discussion on the subject.
- */
-
-static void GetLockFileName(const CMyString &filename,
-			    CMyString &lock_filename, const bool bDB)
-{
-  ASSERT(!filename.IsEmpty());
-  // derive lock filename from filename
-  if (bDB)
-  	lock_filename = CMyString(filename.Left(MAX_PATH - 4) + _T(".plk"));
-  else
-  	lock_filename = CMyString(filename.Left(MAX_PATH - 4) + _T(".plk"));
-}
-
-bool PWScore::LockFile(const CMyString &filename, CMyString &locker, const bool bDB)
-{
-  CMyString lock_filename;
-  GetLockFileName(filename, lock_filename, bDB);
-#ifdef POSIX_FILE_LOCK
-  int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
-                 (_S_IREAD | _S_IWRITE));
-
-  if (fh == -1) { // failed to open exclusively. Already locked, or ???
-    switch (errno) {
-    case EACCES:
-      // Tried to open read-only file for writing, or file’s
-      // sharing mode does not allow specified operations, or given path is directory
-      locker = _T("Cannot create lock file - no permission in directory?");
-      break;
-    case EEXIST: // filename already exists
-      {
-        // read locker data ("user@machine:nnnnnnnn") from file
-        TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
-        int fh2 = _open(lock_filename, _O_RDONLY);
-        if (fh2 == -1) {
-          locker = _T("Unable to determine locker?");
-        } else {
-          int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
-          _close(fh2);
-          if (bytesRead > 0) {
-            lockerStr[bytesRead] = TCHAR('\0');
-            locker = lockerStr;
-          } else { // read failed for some reason
-            locker = _T("Unable to read locker?");
-          } // read info from lock file
-        } // open lock file for read
-      } // EEXIST block
-      break;
-    case EINVAL: // Invalid oflag or pmode argument
-      locker = _T("Internal error: Invalid oflag or pmode argument");
-      break;
-    case EMFILE: // No more file handles available (too many open files)
-      locker = _T("System error: No morefile handles available");
-      break;
-    case ENOENT: //File or path not found
-      locker = _T("File or path not found");
-      break;
-    default:
-      locker = _T("Internal error: Unexpected errno");
-      break;
-    } // switch (errno)
-    return false;
-  } else { // valid filehandle, write our info
-    int numWrit;
-    numWrit = _write(fh, m_user, m_user.GetLength() * sizeof(TCHAR));
-    numWrit += _write(fh, _T("@"), sizeof(TCHAR));
-    numWrit += _write(fh, m_sysname, m_sysname.GetLength() * sizeof(TCHAR));
-    numWrit += _write(fh, _T(":"), sizeof(TCHAR));
-    numWrit += _write(fh, m_ProcessID, m_ProcessID.GetLength() * sizeof(TCHAR));
-    ASSERT(numWrit > 0);
-    _close(fh);
-    return true;
-  }
-#else
-  const int iLFHandle = bDB ? DATABASE_LOCK : CONFIG_LOCK;
-  // Use Win32 API for locking - supposedly better at
-  // detecting dead locking processes
-  if (m_lockFileHandle[iLFHandle] != INVALID_HANDLE_VALUE) {
-    // here if we've open another (or same) dbase previously,
-    // need to unlock it. A bit inelegant...
-    // If app was minimized and ClearData() called, we've a small
-    // potential for a TOCTTOU issue here. Worse case, lock
-    // will fail.
-	const CString cs_me = m_user + _T("@") + m_sysname + _T(":") + m_ProcessID;
-    GetLockFileName(filename, lock_filename, bDB);
-	GetLocker(lock_filename, locker);
-
-	if (cs_me == CString(locker)) {
-		m_LockCount[iLFHandle]++;
-		TRACE(_T("%s Lock1   %s, Count now %d\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			m_LockCount[iLFHandle]);
-		locker.Empty();
-		return true;
-	} else {
-		UnlockFile(bDB ? GetCurFile() : filename, bDB);
-	}
-  }
-  m_lockFileHandle[iLFHandle] = ::CreateFile(LPCTSTR(lock_filename),
-                                  GENERIC_WRITE,
-                                  FILE_SHARE_READ,
-                                  NULL,
-                                  CREATE_ALWAYS, // rely on share to fail if exists!
-                                  FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
-                                  NULL);
-  if (m_lockFileHandle[iLFHandle] == INVALID_HANDLE_VALUE) {
-    DWORD error = GetLastError();
-    switch (error) {
-    case ERROR_SHARING_VIOLATION: // already open by a live process
-	  GetLocker(lock_filename, locker);
-      break;
-    default:
-      locker = _T("Cannot create lock file - no permission in directory?");
-      break;
-    } // switch (error)
-    return false;
-  } else { // valid filehandle, write our info
-    DWORD numWrit, sumWrit;
-    BOOL write_status;
-    write_status = ::WriteFile(m_lockFileHandle[iLFHandle],
-                               m_user, m_user.GetLength() * sizeof(TCHAR),
-                               &sumWrit, NULL);
-    write_status = ::WriteFile(m_lockFileHandle[iLFHandle],
-                               _T("@"), sizeof(TCHAR),
-                               &numWrit, NULL);
-    sumWrit += numWrit;
-    write_status += ::WriteFile(m_lockFileHandle[iLFHandle],
-                                m_sysname, m_sysname.GetLength() * sizeof(TCHAR),
-                                &numWrit, NULL);
-    sumWrit += numWrit;
-    write_status = ::WriteFile(m_lockFileHandle[iLFHandle],
-                               _T(":"), sizeof(TCHAR),
-                               &numWrit, NULL);
-    sumWrit += numWrit;
-    write_status += ::WriteFile(m_lockFileHandle[iLFHandle],
-                                m_ProcessID, m_ProcessID.GetLength() * sizeof(TCHAR),
-                                &numWrit, NULL);
-    sumWrit += numWrit;
-    ASSERT(sumWrit > 0);
-	m_LockCount[iLFHandle]++;
-	TRACE(_T("%s Lock1   %s, Count now %d; File Created\n"), 
-		PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-		m_LockCount[iLFHandle]);
-    return true;
-  }
-#endif // POSIX_FILE_LOCK
-}
-
-void PWScore::UnlockFile(const CMyString &filename, const bool bDB)
-{
-#ifdef POSIX_FILE_LOCK
-  CMyString lock_filename;
-  GetLockFileName(filename, lock_filename, bDB);
-  _unlink(lock_filename);
-#else
-  const int iLFHandle = bDB ? DATABASE_LOCK : CONFIG_LOCK;
-  // Use Win32 API for locking - supposedly better at
-  // detecting dead locking processes
-  if (m_lockFileHandle[iLFHandle] != INVALID_HANDLE_VALUE) {
-    CMyString lock_filename, locker;
-	const CString cs_me = m_user + _T("@") + m_sysname + _T(":") + m_ProcessID;
-    GetLockFileName(filename, lock_filename, bDB);
-	GetLocker(lock_filename, locker);
-
-	if (cs_me == CString(locker) && m_LockCount[iLFHandle] > 1) {
-		m_LockCount[iLFHandle]--;
-		TRACE(_T("%s Unlock2 %s, Count now %d\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			m_LockCount[iLFHandle]);
-	} else {
-		m_LockCount[iLFHandle] = 0;
-		TRACE(_T("%s Unlock1 %s, Count now %d; File Deleted\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			m_LockCount[iLFHandle]);
-		CloseHandle(m_lockFileHandle[iLFHandle]);
-		m_lockFileHandle[iLFHandle] = INVALID_HANDLE_VALUE;
-		DeleteFile(LPCTSTR(lock_filename));
-	}
-  }
-#endif // POSIX_FILE_LOCK
-}
-
-bool PWScore::IsLockedFile(const CMyString &filename, const bool bDB) const
-{
-  CMyString lock_filename;
-  GetLockFileName(filename, lock_filename, bDB);
-#ifdef POSIX_FILE_LOCK
-  return PWSfile::FileExists(lock_filename);
-#else
-  // under this scheme, we need to actually try to open the file to determine
-  // if it's locked.
-  HANDLE h = CreateFile(LPCTSTR(lock_filename),
-			GENERIC_WRITE,
-			FILE_SHARE_READ,
-			NULL,
-			OPEN_EXISTING, // don't create one!
-			FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
-			NULL);
-  if (h == INVALID_HANDLE_VALUE) {
-    DWORD error = GetLastError();
-    if (error == ERROR_SHARING_VIOLATION)
-      return true;
-    else
-      return false; // couldn't open it, probably doesn't exist.
-  } else {
-    CloseHandle(h); // here if exists but lockable.
-    return false;
-  }
-#endif // POSIX_FILE_LOCK
-}
-
-bool PWScore::GetLocker(const CMyString &lock_filename, CMyString &locker)
-{
-	bool bResult = false;
-	// read locker data ("user@machine:nnnnnnnn") from file
-	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
-	// flags here counter (my) intuition, but see
-	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
-	HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
-							GENERIC_READ, FILE_SHARE_WRITE,
-							NULL, OPEN_EXISTING,
-							FILE_ATTRIBUTE_NORMAL, NULL);
-	if (h2 == INVALID_HANDLE_VALUE) {
-		locker = _T("Unable to determine locker?");
-	} else {
-		DWORD bytesRead;
-		(void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
-					&bytesRead, NULL);
-		CloseHandle(h2);
-		if (bytesRead > 0) {
-			lockerStr[bytesRead] = TCHAR('\0');
-			locker = lockerStr;
-			bResult = true;
-		} else { // read failed for some reason
-			locker = _T("Unable to read locker?");
-		} // read info from lock file
-	}
-	return bResult;
 }
 
 // GetUniqueGroups - Creates an array of all group names, with no duplicates.

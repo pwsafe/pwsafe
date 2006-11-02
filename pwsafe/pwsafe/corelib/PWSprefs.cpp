@@ -3,7 +3,8 @@
 #include <AfxWin.h> // for AfxGetApp()
 #include <strstream>
 #include <LMCons.h> // for UNLEN
-#include "PWScore.h"
+#include "PWSfile.h"
+#include "SysInfo.h"
 #include "XMLprefs.h"
 #include "util.h"
 
@@ -99,12 +100,12 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 };
 
 
-PWSprefs *PWSprefs::GetInstance(PWScore *core)
+PWSprefs *PWSprefs::GetInstance()
 {
-	if (self == NULL) {
-		self = new PWSprefs (core);
-	}
-	return self;
+  if (self == NULL) {
+    self = new PWSprefs();
+  }
+  return self;
 }
 
 void PWSprefs::DeleteInstance()
@@ -114,7 +115,7 @@ void PWSprefs::DeleteInstance()
   self = NULL;
 }
 
-PWSprefs::PWSprefs(PWScore *core) : m_app(::AfxGetApp()), m_core(core)
+PWSprefs::PWSprefs() : m_app(::AfxGetApp())
 {
   ASSERT(m_app != NULL);
 
@@ -493,17 +494,19 @@ void PWSprefs::InitializePreferences()
 	m_configfilename = (CString)path_buffer;
 
 	// Set up all the XML "keys"
+    const SysInfo *si = SysInfo::GetInstance();
+
 	// Get the name of the computer
-	m_csHKCU = m_core->GetCurrentHost() + _T("\\");
+	m_csHKCU = si->GetCurrentHost() + _T("\\");
 
 	// Get the user name
-	m_csHKCU += m_core->GetCurrentUser();
+	m_csHKCU += si->GetCurrentUser();
 
 	m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
 	m_csHKCU_POS  = m_csHKCU + _T("\\Position");
 	m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
 	
-	m_XML_Config = new CXMLprefs (m_core);
+	m_XML_Config = new CXMLprefs ();
 	m_XML_Config->SetConfigFile(m_configfilename);
 
 	CFile iniFile;
@@ -518,10 +521,10 @@ void PWSprefs::InitializePreferences()
 	// as we need to know what to use
 	bool bgotconfiglock;
 	for (int iLoop = 0; iLoop < 10; iLoop++) {
-		bgotconfiglock = m_core->LockFile(m_configfilename, locker, false);
-		if (bgotconfiglock)
-			break;
-		Sleep(200);  // try max of 10 * 0.2 seconds = 2 secs
+      bgotconfiglock = PWSfile::LockFile(m_configfilename, locker, false);
+      if (bgotconfiglock)
+        break;
+      Sleep(200);  // try max of 10 * 0.2 seconds = 2 secs
 	}
 
 	if (!bgotconfiglock) {
@@ -598,8 +601,7 @@ void PWSprefs::InitializePreferences()
 		}
 	}
 
-	// Now unlock the file
-	m_core->UnlockFile(m_configfilename, false);
+    PWSfile::UnlockFile(m_configfilename, false);
 	
 	CString cs_msg;
 	switch (m_ConfigOptions) {

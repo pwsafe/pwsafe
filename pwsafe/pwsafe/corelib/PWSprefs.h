@@ -23,12 +23,11 @@
 
 #include "MyString.h"
 
-class PWScore;
 class CXMLprefs;
 
 class PWSprefs {
  public:
-  static PWSprefs *GetInstance(PWScore *core = NULL); // singleton
+  static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
 
   // prefString is stored on file, format described in PWSprefs.cpp
@@ -117,8 +116,6 @@ class PWSprefs {
 
  private:
   PWSprefs();
-  PWSprefs( PWScore *core);
-  PWScore *m_core;
 
   bool WritePref(const CMyString &name, bool val);
   bool WritePref(const CMyString &name, unsigned int val);

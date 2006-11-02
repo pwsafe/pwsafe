@@ -6,16 +6,13 @@
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs window
 
-class PWScore;
-
 class CXMLprefs
 {
 // Construction & Destruction
 public:
-	CXMLprefs(PWScore *core) : m_pXMLDoc(NULL), m_csConfigFile(_T("")), m_bXMLLoaded(false), 
+	CXMLprefs() : m_pXMLDoc(NULL), m_csConfigFile(_T("")), m_bXMLLoaded(false), 
 			m_bKeepXMLLock(false), m_MSXML_Version(0)
 	{
-		m_xmlcore = core;
 	}
 
 	~CXMLprefs()
@@ -58,8 +55,5 @@ protected:
 	MSXML2::IXMLDOMNodePtr FindNode(MSXML2::IXMLDOMNodePtr parentNode,
 		CString* pcsKeys, int iNumKeys,
 		bool bAddNodes = false);
-
-private:
-	PWScore *m_xmlcore;
 };
 #endif /* __XMLPREFS_H */

@@ -71,7 +71,7 @@ ThisMfcApp::ThisMfcApp() :
   }
 #endif
   EnableHtmlHelp();
-  CoInitialize(NULL);
+  CoInitialize(NULL); // Initializes the COM library (for XML processing)
 }
 
 ThisMfcApp::~ThisMfcApp()
@@ -87,7 +87,7 @@ ThisMfcApp::~ThisMfcApp()
   // Note: deleting PWSprefs instance first reformats the XML config file
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
-  CoUninitialize();
+  CoUninitialize(); // Uninitialize COM library
 
 #if !defined(POCKET_PC)
   // WinApp::HtmlHelp asserts that main windows is valid, which (1) isn't true
@@ -351,7 +351,7 @@ ThisMfcApp::InitInstance()
 
   // MUST (indirectly) create PWSprefs first
   // Ensures all things like saving locations etc. are set up.
-  PWSprefs *prefs = PWSprefs::GetInstance(&m_core);
+  PWSprefs *prefs = PWSprefs::GetInstance();
 
   CMenu* new_popupmenu = NULL;
   const int iConfigOptions = prefs->GetConfigOptions();
