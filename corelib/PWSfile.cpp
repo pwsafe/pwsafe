@@ -228,12 +228,24 @@ int PWSfile::CheckPassword(const CMyString &filename,
  */
 
 
+/*
+ * Originally, the lock/unlock functions were designed for working with the
+ * passsword database file alone.
+ * As of 3.05, there's a need to lock the application's configuration
+ * file as well, potentially concurrently with the database file.
+ * Problem is, we need to keep state information (HANDLE, LockCount) per
+ * locked file. since the filenames are unique, indeally we'd maintain a map
+ * between the filename and the resources. For now, we require the application
+ * to differentiate between them for us by the bool param bDB. Less elegant,
+ * but *much* easier than setting up a map...
+ */
+
 static HANDLE s_lockFileHandle[2] = {INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE};
 static int s_LockCount[2] = {0, 0};
 
 
 static void GetLockFileName(const CMyString &filename,
-			    CMyString &lock_filename, const bool)
+                            CMyString &lock_filename)
 {
   ASSERT(!filename.IsEmpty());
   // derive lock filename from filename
@@ -243,7 +255,7 @@ static void GetLockFileName(const CMyString &filename,
 bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool bDB)
 {
   CMyString lock_filename;
-  GetLockFileName(filename, lock_filename, bDB);
+  GetLockFileName(filename, lock_filename);
 #ifdef POSIX_FILE_LOCK
   int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
                  (_S_IREAD | _S_IWRITE));
@@ -316,7 +328,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
     // will fail.
 
     const CString cs_me = user + _T("@") + host + _T(":") + pid;
-    GetLockFileName(filename, lock_filename, bDB);
+    GetLockFileName(filename, lock_filename);
 	GetLocker(lock_filename, locker);
 
 	if (cs_me == CString(locker)) {
@@ -385,7 +397,7 @@ void PWSfile::UnlockFile(const CMyString &filename, const bool bDB)
 {
 #ifdef POSIX_FILE_LOCK
   CMyString lock_filename;
-  GetLockFileName(filename, lock_filename, bDB);
+  GetLockFileName(filename, lock_filename);
   _unlink(lock_filename);
 #else
   const SysInfo *si = SysInfo::GetInstance();
@@ -399,7 +411,7 @@ void PWSfile::UnlockFile(const CMyString &filename, const bool bDB)
   if (s_lockFileHandle[iLFHandle] != INVALID_HANDLE_VALUE) {
     CMyString lock_filename, locker;
 	const CString cs_me = user + _T("@") + host + _T(":") + pid;
-    GetLockFileName(filename, lock_filename, bDB);
+    GetLockFileName(filename, lock_filename);
 	GetLocker(lock_filename, locker);
 
 	if (cs_me == CString(locker) && s_LockCount[iLFHandle] > 1) {
@@ -420,10 +432,10 @@ void PWSfile::UnlockFile(const CMyString &filename, const bool bDB)
 #endif // POSIX_FILE_LOCK
 }
 
-bool PWSfile::IsLockedFile(const CMyString &filename, const bool bDB)
+bool PWSfile::IsLockedFile(const CMyString &filename, const bool)
 {
   CMyString lock_filename;
-  GetLockFileName(filename, lock_filename, bDB);
+  GetLockFileName(filename, lock_filename);
 #ifdef POSIX_FILE_LOCK
   return PWSfile::FileExists(lock_filename);
 #else
