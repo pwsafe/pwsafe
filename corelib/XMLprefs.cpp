@@ -5,7 +5,7 @@
 #include "XMLprefs.h"
 #include "xml_import.h"
 #include "MyString.h"
-#include "PWScore.h"
+#include "PWSfile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -270,7 +270,7 @@ BOOL CXMLprefs::LoadXML()
 
 	// No point continuing if we can't get the lock!
 	CMyString locker(_T(""));
-	if (!m_xmlcore->LockFile(m_csConfigFile, locker, false))
+	if (!PWSfile::LockFile(m_csConfigFile, locker, false))
 		return FALSE;
 
 	BOOL b_OK = FALSE;
@@ -375,7 +375,7 @@ BOOL CXMLprefs::LoadXML()
 		m_pXMLDoc = NULL;
 	}
 
-	m_xmlcore->UnlockFile(m_csConfigFile, false);
+    PWSfile::UnlockFile(m_csConfigFile, false);
 	return FALSE;
 }
 
@@ -390,7 +390,7 @@ void CXMLprefs::UnloadXML()
 	}
 
 	m_bXMLLoaded = false;
-	m_xmlcore->UnlockFile(m_csConfigFile, false);
+    PWSfile::UnlockFile(m_csConfigFile, false);
 }
 
 

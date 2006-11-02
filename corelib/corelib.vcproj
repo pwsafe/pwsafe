@@ -236,6 +236,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SysInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TwoFish.cpp"
 				>
 			</File>
@@ -322,6 +326,10 @@
 			</File>
 			<File
 				RelativePath=".\sha256.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SysInfo.h"
 				>
 			</File>
 			<File
