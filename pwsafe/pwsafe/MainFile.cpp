@@ -25,7 +25,6 @@
 #include "corelib/util.h"
 
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <bitset>
 
 #ifdef _DEBUG
@@ -882,7 +881,6 @@ DboxMain::OnImportXML()
   CString cs_title, cs_temp, cs_text;
   CString XSDFilename = _T("");
   TCHAR acPath[MAX_PATH + 1];
-  struct _stat statbuf;
 
   if ( GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
     // guaranteed file name of at least one character after path '\'
@@ -891,7 +889,7 @@ DboxMain::OnImportXML()
     XSDFilename = CString(acPath) + _T("pwsafe.xsd");
   }
 
-  if (XSDFilename.IsEmpty() || _tstat(XSDFilename, &statbuf) != 0) {
+  if (XSDFilename.IsEmpty() || !PWSfile::FileExists(XSDFilename)) {
     cs_temp.LoadString(IDS_MISSINGXSD);
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
