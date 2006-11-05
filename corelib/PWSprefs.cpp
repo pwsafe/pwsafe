@@ -113,6 +113,7 @@ void PWSprefs::DeleteInstance()
   delete self->m_XML_Config; // should have ~PWSprefs
   delete self;
   self = NULL;
+  SysInfo::DeleteInstance();
 }
 
 PWSprefs::PWSprefs() : m_app(::AfxGetApp())
