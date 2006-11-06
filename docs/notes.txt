@@ -1,12 +1,25 @@
-$Id$
+
+Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
+All rights reserved. Use of the code is allowed under the Artistic
+License terms, as specified in the LICENSE file distributed with this
+code, or available from
+http://www.opensource.org/licenses/artistic-license.php 
+
 Build Environment:
 ==================
-The current (April 2003, v1.91) build environment is MSVC++ 6.0, along
+PasswordSafe was originally built using MSVC++ 6.0, along
 with the HTML Help Workshop (downloadable from Microsoft's web site).
+Later MSVS2003 was used, again with the HTML Help Workshop.
+As of version 3.05, PasswordSafe is built with MSVS2005. HTML Help
+Workshop is no longer needed to build the project, but is still used
+to generate the .chm help file.
 
 File format:
 ============
-Currently (v1.9) the file is layed out as follows:
+Following is a description of the "v1.9" file format. For v2 and v3
+formats, see the formatv2.txt and formatv3.txt files, respectively.
+
+v1.9 files are arranged as follows:
 
 RND|H(RND)|SALT|IP|Name1|Password1|Notes1|...|NameN|PasswordN|NotesN
 
@@ -52,9 +65,10 @@ options. It works, but is not a pretty sight.
 
 Registry:
 =========
-HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/
+Currently, PasswordSafe stores configuration information in the
+database and under the following registry tree:
 
-HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/Backup/
+HKEY_CURRENT_USER/Software/Counterpane Systems/Password Safe/
 
 
 Security issues:
@@ -65,18 +79,20 @@ This seems like trouble.  Are we directly encrypting using the
 main-passkey?  We should be just as secure by hashing the main-passkey
 on entry, keeping *that* in memory, and tossing the entered password
 into the Gutmann Void.
+- Resolution: The main-passkey is no longer kept in the clear in memory.
 
-It seems that the biggest problem is the overuse of the secured 'CMyString' 
-class.  This class is intended to securely delete the memory used upon
-destruction, but it has automatic conversion constructors for CStrings and
-'C' strings.  If you've spent any time reading things like 'Efficient C++', 
-you know that C++ spends half its time creating temporary copies of objects,
-mostly during automatic type conversions.  I [Jim Russell] think that
-it is too hard a job to keep track of all these, so I propose a new
-secure string class with no automatic conversions whatsoever.  It will
-be much less convenient to work with, and that is by design.  Most of
-the strings in this program have no need to be secured, so let's just
-concentrate on the ones that do.
+- It seems that the biggest problem is the overuse of the secured
+'CMyString' class.  This class is intended to securely delete the
+memory used upon destruction, but it has automatic conversion
+constructors for CStrings and 'C' strings.  If you've spent any time
+reading things like 'Efficient C++', you know that C++ spends half its
+time creating temporary copies of objects, mostly during automatic
+type conversions.  I [Jim Russell] think that it is too hard a job to
+keep track of all these, so I propose a new secure string class with
+no automatic conversions whatsoever.  It will be much less convenient
+to work with, and that is by design.  Most of the strings in this
+program have no need to be secured, so let's just concentrate on the
+ones that do.
 
 I [Rony Shapiro], OTOH, think that CMyString is just fine, as long as
 function parameters are declared as const CMyString & instead of plain
@@ -85,22 +101,3 @@ contruction. Declaring a couple of cast operators also goes a long way
 to keeping everyone happy. CMyString has been tweaked to make the
 underlying CString m_mystring private, paving the way to replacing it
 with an STL string, if/when we get to porting to a non-MS platform.
-
-
-Bugs:
-=====
-Save as... doesn't ask for new password - should it?
-
-$Log$
-Revision 1.7  2005/04/07 19:44:37  ronys
-Fixed some errors in the format descriptions, moved stuff to Misc directory, removed unused files.
-
-Revision 1.6  2004/01/28 17:32:58  ronys
-corrected header format description based on ndade's post.
-
-Revision 1.5  2003/05/14 14:49:56  ronys
-post-1.92 merge into main trunk
-
-Revision 1.4  2003/04/30 13:02:59  ronys
-Added note re required build environment
-

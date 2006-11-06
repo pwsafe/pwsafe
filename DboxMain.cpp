@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 // file DboxMain.cpp
 //
 // The implementation of DboxMain's member functions is spread over source
@@ -762,6 +769,7 @@ DboxMain::OnAbout()
 #ifdef _DEBUG
   about.m_appversion += _T(" [Debug]");
 #endif
+  about.m_appcopyright = app.GetCopyrightString();
   about.DoModal();
 }
 
