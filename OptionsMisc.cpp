@@ -45,7 +45,7 @@ COptionsMisc::~COptionsMisc()
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
-	
+
 	//{{AFX_DATA_MAP(COptionsMisc)
 	DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
 	DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_maintaindatetimestamps);

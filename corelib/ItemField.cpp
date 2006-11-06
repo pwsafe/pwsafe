@@ -113,7 +113,7 @@ void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) c
    * if In < BlockLength, assertion is triggered (no way to handle gracefully)
    */
   if (m_Length == 0) {
-    value[0] = '\0';
+    value[0] = TCHAR('\0');
     length = 0;
   } else { // we have data to decrypt
     int BlockLength = GetBlockSize(m_Length);

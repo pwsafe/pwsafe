@@ -192,7 +192,7 @@ int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
       TRACE(_T("ToUTF8(%s) failed\n"), data);
     return WriteCBC(type, m_utf8, m_utf8Len);
   } else {
-    const LPCSTR str = (const LPCSTR)data;
+    const LPCTSTR str = (const LPCTSTR)data;
     return WriteCBC(type,(const unsigned char *)str, data.GetLength());
   }
 }
@@ -527,7 +527,7 @@ int PWSfileV3::WriteHeader()
   time_t time_now;
   time(&time_now);
   CString cs_update_time;
-  cs_update_time.Format("%08x", time_now);
+  cs_update_time.Format(_T("%08x"), time_now);
   numWritten = WriteCBC(HDR_LASTUPDATETIME, cs_update_time);
   if (numWritten <= 0) {
     Close();
@@ -538,7 +538,7 @@ int PWSfileV3::WriteHeader()
 
   // Write out who saved it!
   CString cs_who;
-  cs_who.Format("%04x%s%s", m_user.GetLength(), m_user, m_sysname);
+  cs_who.Format(_T("%04x%s%s"), m_user.GetLength(), m_user, m_sysname);
   numWritten = WriteCBC(HDR_LASTUPDATEUSERHOST, cs_who);
   if (numWritten <= 0) {
     Close();
@@ -552,7 +552,7 @@ int PWSfileV3::WriteHeader()
   int nMajor = HIWORD(m_dwMajorMinor);
   int nMinor = LOWORD(m_dwMajorMinor);
   CString cs_what;
-  cs_what.Format("%s V%d.%02d", AfxGetAppName(), nMajor, nMinor);
+  cs_what.Format(_T("%s V%d.%02d"), AfxGetAppName(), nMajor, nMinor);
   numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION, cs_what);
   if (numWritten <= 0) {
     Close();

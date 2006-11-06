@@ -13,6 +13,7 @@
 #include "xml_import.h"
 #include "MyString.h"
 #include "PWSfile.h"
+#include "corelib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,9 +49,9 @@ int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName,
 	int iRetVal = iDefaultValue;
 	CString csDefaultValue;
 
-	csDefaultValue.Format("%d", iRetVal);
+	csDefaultValue.Format(_T("%d"), iRetVal);
 
-	iRetVal = atoi(Get(csBaseKeyName, csValueName, csDefaultValue));
+	iRetVal = _ttoi(Get(csBaseKeyName, csValueName, csDefaultValue));
 
 	return iRetVal;
 }
@@ -114,7 +115,7 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
 	int iRetVal = 0;
 	CString csValue = _T("");
 
-	csValue.Format("%d", iValue);
+	csValue.Format(_T("%d"), iValue);
 
 	iRetVal = Set(csBaseKeyName, csValueName, csValue);
 
@@ -292,8 +293,7 @@ BOOL CXMLprefs::LoadXML()
 				if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument40), NULL, CLSCTX_ALL))) {
 					// Try 30
 					if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument30), NULL, CLSCTX_ALL))) {
-						CString cs_msg =_T("Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available.");
-						AfxMessageBox(cs_msg, MB_OK);
+						AfxMessageBox(IDSC_NOXMLREADER, MB_OK);
 						m_MSXML_Version = -1;
 						return FALSE;
 					} else {
@@ -338,12 +338,14 @@ BOOL CXMLprefs::LoadXML()
 	// see if the file exists
 	CFile file;
 	if (!file.Open(m_csConfigFile, CFile::modeReadWrite)) {  // if not
-		// create it
-		m_pXMLDoc->loadXML(_bstr_t("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"), &vbSuccessful);
+		// create it - IDSC_XMLHEADER
+		CComBSTR bstrXML;
+		bstrXML.LoadString(IDSC_XMLHEADER);
+		m_pXMLDoc->loadXML(bstrXML, &vbSuccessful);
 	} else {  // if so
 		file.Close();
 		// load it
-		m_pXMLDoc->load(CComVariant::CComVariant((LPCSTR)m_csConfigFile), &vbSuccessful);
+		m_pXMLDoc->load(CComVariant::CComVariant((LPCTSTR)m_csConfigFile), &vbSuccessful);
 	}
 
 	m_bXMLLoaded = (vbSuccessful == VARIANT_TRUE);
@@ -365,9 +367,11 @@ BOOL CXMLprefs::LoadXML()
 		pIParseError->get_linepos(&linepos);
 
 		CString csMessage;
-		csMessage.Format("Error 0x%08x at line:position %d:%d \n\t%s\n\nUnable to load configuration file.", 
+		csMessage.Format(IDSC_XMLFILEERROR, 
 					value, line, linepos, (char *)_bstr_t(bstr, TRUE));
-		MessageBox(NULL, csMessage, "LoadXML Malformed XML Error", MB_OK);
+		CString cs_title;
+		cs_title.LoadString(IDSC_XMLLOADFAILURE);
+		MessageBox(NULL, csMessage, cs_title, MB_OK);
 
 		if (bstr) {
 			SysFreeString(bstr);

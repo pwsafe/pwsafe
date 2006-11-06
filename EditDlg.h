@@ -71,6 +71,9 @@ private:
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
 
+  static CMyString HIDDEN_NOTES;
+  static CString CS_SHOW, CS_HIDE, CS_ON, CS_OFF;
+
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 

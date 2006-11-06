@@ -26,15 +26,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#if defined(POCKET_PC)
-  #define SHOW_PASSWORD_TXT	_T("S")
-  #define HIDE_PASSWORD_TXT	_T("H")
-#else
-  #define SHOW_PASSWORD_TXT	_T("&Show")
-  #define HIDE_PASSWORD_TXT	_T("&Hide")
-#endif
-
 static TCHAR PSSWDCHAR = TCHAR('*');
+CString CAddDlg::CS_SHOW;
+CString CAddDlg::CS_HIDE;
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
@@ -51,6 +45,17 @@ CAddDlg::CAddDlg(CWnd* pParent)
   m_MaxPWHistory = PWSprefs::GetInstance()->
     GetPref(PWSprefs::NumPWHistoryDefault);
   m_ascLTime.LoadString(IDS_NEVER);
+
+  if (CS_SHOW.IsEmpty()) {
+  	TRACE("Initialised Add Show/Hide");
+#if defined(POCKET_PC)
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
+#else
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
+#endif
+  }
 }
 
 BOOL CAddDlg::OnInitDialog() 
@@ -157,7 +162,7 @@ void
 CAddDlg::ShowPassword()
 {
    m_isPwHidden = false;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
    // Remove password character so that the password is displayed
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
@@ -171,7 +176,7 @@ void
 CAddDlg::HidePassword()
 {
    m_isPwHidden = true;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
+   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
    // Set password character so that the password is not displayed
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(PSSWDCHAR);
    ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
@@ -283,19 +288,18 @@ void CAddDlg::ResizeDialog()
     IDC_MAXPWHISTORY,
     IDC_STATIC_OLDPW1,
     IDC_PWHSPIN,
-  };	
-	
+  };
+
   for(int n = 0; n < sizeof(controls)/sizeof(controls[0]); n++) {
     CWnd* pWind = (CWnd *)GetDlgItem(controls[n]);
     pWind->ShowWindow(m_isExpanded);
   }
-	
+
   RECT curDialogRect;
-	
+
   this->GetWindowRect(&curDialogRect);
 
   RECT newDialogRect=curDialogRect;
-
 
   RECT curLowestCtlRect;
   CWnd* pLowestCtl;

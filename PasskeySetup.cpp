@@ -33,6 +33,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd* pParent)
@@ -47,6 +48,8 @@ BOOL CPasskeySetup::OnInitDialog()
    CDialog::OnInitDialog();
    SetPasswordFont(GetDlgItem(IDC_PASSKEY));
    SetPasswordFont(GetDlgItem(IDC_VERIFY));
+   ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
+   ((CEdit*)GetDlgItem(IDC_VERIFY))->SetPasswordChar(PSSWDCHAR);
 
    return TRUE;
 }

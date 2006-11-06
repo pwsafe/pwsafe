@@ -375,7 +375,7 @@ private:
   void UpdateAccessTime(CItemData *ci);
   void SaveDisplayStatus();
   void RestoreDisplayStatus();
-  void GroupDisplayStatus(char *p_char_displaystatus, int &i, bool bSet);
+  void GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet);
   void MakeSortedItemList(ItemList &il);
   void CreateIntermediateBackup();
   BOOL GetIncBackupFileName(const CString &cs_filenamebase,

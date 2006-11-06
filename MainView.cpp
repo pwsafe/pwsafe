@@ -371,12 +371,12 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 			curURL.MakeLower();
 			curAT.MakeLower();
 		}
-		if (::strstr(curtitle, searchstr) ||
-			::strstr(curuser, searchstr) ||
-			::strstr(curnotes, searchstr) ||
-			::strstr(curgroup, searchstr) ||
-			::strstr(curURL, searchstr) ||
-			::strstr(curAT, searchstr)) {
+		if (::_tcsstr(curtitle, searchstr) ||
+			::_tcsstr(curuser, searchstr) ||
+			::_tcsstr(curnotes, searchstr) ||
+			::_tcsstr(curgroup, searchstr) ||
+			::_tcsstr(curURL, searchstr) ||
+			::_tcsstr(curAT, searchstr)) {
 			// Find index in displayed list
 			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
 			ASSERT(di != NULL);
@@ -412,12 +412,12 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 			curURL.MakeLower();
 			curAT.MakeLower();
 		}
-		if (::strstr(curtitle, searchstr) ||
-			::strstr(curuser, searchstr) ||
-			::strstr(curnotes, searchstr) ||
-			::strstr(curgroup, searchstr) ||
-			::strstr(curURL, searchstr) ||
-			::strstr(curAT, searchstr)) {
+		if (::_tcsstr(curtitle, searchstr) ||
+			::_tcsstr(curuser, searchstr) ||
+			::_tcsstr(curnotes, searchstr) ||
+			::_tcsstr(curgroup, searchstr) ||
+			::_tcsstr(curURL, searchstr) ||
+			::_tcsstr(curAT, searchstr)) {
 			// Find index in displayed list
 			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
 			ASSERT(di != NULL);
@@ -801,7 +801,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
   itemData.SetDisplayInfo((void *)di);
   // get only the first line for display
   CMyString strNotes = itemData.GetNotes();
-  int iEOL = strNotes.Find('\r');
+  int iEOL = strNotes.Find(TCHAR('\r'));
   if (iEOL >= 0 && iEOL < strNotes.GetLength()) {
     CMyString strTemp = strNotes.Left(iEOL);
     strNotes = strTemp;
@@ -1037,7 +1037,7 @@ DboxMain::OnCollapseAll()
 
 void
 DboxMain::OnTimer(UINT nIDEvent )
-{			
+{
   if ((nIDEvent == TIMER_CHECKLOCK && IsWorkstationLocked()) ||
       (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
     /*
@@ -1065,7 +1065,7 @@ BOOL DboxMain::IsWorkstationLocked() const
   HDESK hDesktop; 
   BOOL Result = false;
 
-  hDesktop = OpenDesktop("default", 0, false, DESKTOP_SWITCHDESKTOP);
+  hDesktop = OpenDesktop(_T("default"), 0, false, DESKTOP_SWITCHDESKTOP);
   if( hDesktop != 0 ) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
     Result = ! SwitchDesktop(hDesktop);
@@ -1095,7 +1095,7 @@ DboxMain::OnChangeFont()
     ::DeleteObject(hOldFontTree);
         
     CString str;
-    str.Format("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s",
+    str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
                lf.lfHeight,
                lf.lfWidth,
                lf.lfEscapement,
@@ -1110,8 +1110,8 @@ DboxMain::OnChangeFont()
                lf.lfQuality,
                lf.lfPitchAndFamily,
                lf.lfFaceName);
-        	
-    PWSprefs *prefs = PWSprefs::GetInstance();        	
+
+    PWSprefs *prefs = PWSprefs::GetInstance();
     prefs->SetPref(PWSprefs::TreeFont, str);
   }
 }
@@ -1121,20 +1121,24 @@ DboxMain::ExtractFont(CString& str)
 {
 #pragma warning(push)
 #pragma warning(disable:4244)  // possible loss of data 'int' to 'unsigned char'
-  m_treefont.lfHeight=atol((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfWidth=atol((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfEscapement=atol((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfOrientation=atol((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfWeight=atol((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfItalic=atoi((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfUnderline=atoi((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfStrikeOut=atoi((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfCharSet=atoi((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfOutPrecision=atoi((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfClipPrecision=atoi((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfQuality=atoi((LPCTSTR)GetToken(str, ","));
-  m_treefont.lfPitchAndFamily=atoi((LPCTSTR)GetToken(str, ","));
-  strcpy(m_treefont.lfFaceName, str);
+  m_treefont.lfHeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfWidth = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfEscapement = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfOrientation = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfWeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfItalic = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfUnderline = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfStrikeOut = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfCharSet = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfOutPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfClipPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfQuality = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  m_treefont.lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+#if (_MSC_VER >= 1400)
+  _tcscpy_s(m_treefont.lfFaceName, LF_FACESIZE, str);
+#else
+  _tcscpy(m_treefont.lfFaceName, str);
+#endif  
 #pragma warning(pop)
 }
 

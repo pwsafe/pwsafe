@@ -72,7 +72,7 @@ END_MESSAGE_MAP()
 BOOL COptionsPasswordHistory::OnInitDialog() 
 {
   BOOL bResult = CPropertyPage::OnInitDialog();
-	
+
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWHNUM));

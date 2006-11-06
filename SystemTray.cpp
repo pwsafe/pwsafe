@@ -572,8 +572,7 @@ LRESULT CSystemTray::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   if(message==m_tnd.uCallbackMessage)
     return OnTrayNotification(wParam, lParam);
-	
-        
+
   return CWnd::WindowProc(message, wParam, lParam);
 }
 

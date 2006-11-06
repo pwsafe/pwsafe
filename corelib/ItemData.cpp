@@ -411,11 +411,11 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> 
    		CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, TMC_EXPORT_IMPORT);
 
 		//  Build export string
-		char buffer[8];
+		TCHAR buffer[8];
 #if _MSC_VER >= 1400
-		sprintf_s(buffer, 8, "%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+		_stprintf_s(buffer, 8, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #else
-		sprintf(buffer,"%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+		_stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #endif
 		history = CMyString(buffer);
 		if (pPWHistList->GetCount() > 0) {
@@ -425,9 +425,9 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> 
 				history += _T(' ');
 				history += pwshe.changedate;
 #if _MSC_VER >= 1400
-				sprintf_s(buffer, 8, " %04x ", pwshe.password.GetLength());
+				_stprintf_s(buffer, 8, _T(" %04x "), pwshe.password.GetLength());
 #else
-				sprintf(buffer,"%04x ", pwshe.password.GetLength());
+				_stprintf(buffer, _T("%04x "), pwshe.password.GetLength());
 #endif
 				history += CMyString(buffer);
 				history += pwshe.password;
@@ -564,7 +564,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> 
   }
 
   void
-    CItemData::SetTitle(const CMyString &title, char delimiter)
+    CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
   {
 	if (delimiter == 0)
       SetField(m_Title, title);
@@ -604,7 +604,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> 
   }
 
   void
-    CItemData::SetNotes(const CMyString &notes, char delimiter)
+    CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
   {
     if (delimiter == 0)
       SetField(m_Notes, notes);
@@ -627,7 +627,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> 
           newCString = tmpCString;
         }
       } while ( pos != -1 );
-	
+
       if (!newCString.IsEmpty())
         multiline_notes += newCString;
 
@@ -745,9 +745,9 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
   TCHAR *lpszPW;
 
 #if _MSC_VER >= 1400
-  int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+  int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #else
-  int iread = sscanf(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+  int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #endif
   if (iread != 3)
 	return 1;
@@ -755,9 +755,9 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
   lpszPWHistory += 5;
   for (int i = 0; i < n; i++) {
 #if _MSC_VER >= 1400
-    iread = sscanf_s(lpszPWHistory, "%8x", &t);
+    iread = _stscanf_s(lpszPWHistory, _T("%8x"), &t);
 #else
-    iread = sscanf(lpszPWHistory, "%8x", &t);
+    iread = _stscanf(lpszPWHistory, _T("%8x"), &t);
 #endif
     if (iread != 1) {
     	i_error = 1;
@@ -772,9 +772,9 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
     }
     lpszPWHistory += 8;
 #if _MSC_VER >= 1400
-    iread = sscanf_s(lpszPWHistory, "%4x", &ipwlen);
+    iread = _stscanf_s(lpszPWHistory, _T("%4x"), &ipwlen);
 #else
-    iread = sscanf(lpszPWHistory, "%4x", &ipwlen);
+    iread = _stscanf(lpszPWHistory, _T("%4x"), &ipwlen);
 #endif
     if (iread != 1) {
     	i_error = 1;
@@ -787,7 +787,7 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
 #else
     memcpy(lpszPW, lpszPWHistory, ipwlen);
 #endif
-    lpszPW[ipwlen] = '\0';
+    lpszPW[ipwlen] = TCHAR('\0');
     tmp.ReleaseBuffer();
     if (tmp.GetLength() != ipwlen) {
     	i_error = 1;
@@ -940,11 +940,11 @@ CItemData::ValidatePWHistory()
   // Rebuild PWHistory from the data we have
   CMyString history;
   CString cs_buffer(_T(""));
-  char buffer[8];
+  TCHAR buffer[8];
 #if _MSC_VER >= 1400
-  sprintf_s(buffer, 8, "%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+  _stprintf_s(buffer, 8, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #else
-  sprintf(buffer,"%1x%02x%02x", pwh_status, pwh_max, pwh_num);
+  _stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #endif
   history = CMyString(buffer);
   if (listnum > 0) {

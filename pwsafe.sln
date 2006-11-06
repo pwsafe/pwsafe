@@ -14,20 +14,34 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "pwsafe.vcproj", "
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_Unicode|Win32 = Debug_Unicode|Win32
 		Debug|Win32 = Debug|Win32
+		Release_Unicode|Win32 = Release_Unicode|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debug_Unicode|Win32.ActiveCfg = Debug_Unicode|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debug_Unicode|Win32.Build.0 = Debug_Unicode|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debug|Win32.ActiveCfg = Debug|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debug|Win32.Build.0 = Debug|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Release_Unicode|Win32.ActiveCfg = Release_Unicode|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Release_Unicode|Win32.Build.0 = Release_Unicode|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Release|Win32.ActiveCfg = Release|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Release|Win32.Build.0 = Release|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug_Unicode|Win32.ActiveCfg = Debug_Unicode|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug_Unicode|Win32.Build.0 = Debug_Unicode|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|Win32.Build.0 = Debug|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release_Unicode|Win32.ActiveCfg = Release_Unicode|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release_Unicode|Win32.Build.0 = Release_Unicode|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|Win32.ActiveCfg = Release|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|Win32.Build.0 = Release|Win32
+		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug_Unicode|Win32.ActiveCfg = Debug_Unicode|Win32
+		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug_Unicode|Win32.Build.0 = Debug_Unicode|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|Win32.Build.0 = Debug|Win32
+		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Release_Unicode|Win32.ActiveCfg = Release_Unicode|Win32
+		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Release_Unicode|Win32.Build.0 = Release_Unicode|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Release|Win32.ActiveCfg = Release|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

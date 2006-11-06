@@ -144,17 +144,17 @@ void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR , LRESULT *pLResult)
   *pLResult = FALSE; // TRUE cancels label editing
 }
 
-static void splitLeafText(const char *lt, CString &newTitle, CString &newUser)
+static void splitLeafText(const TCHAR *lt, CString &newTitle, CString &newUser)
 {
   CString leafText(lt);
-  int leftBraceIndex = leafText.Find('[');
+  int leftBraceIndex = leafText.Find(TCHAR('['));
 
   if (leftBraceIndex == -1) {
     newTitle = leafText;
     newUser = _T("");
   } else {
     newTitle = leafText.Left(leftBraceIndex - 1);
-    int rightBraceIndex = leafText.Find(']');
+    int rightBraceIndex = leafText.Find(TCHAR(']'));
     if (rightBraceIndex == -1) {
       newUser = leafText.Mid(leftBraceIndex + 1);
     } else {
@@ -165,10 +165,10 @@ static void splitLeafText(const char *lt, CString &newTitle, CString &newUser)
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
+  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
-      ptvinfo->item.pszText[0] != '\0') { // empty if text deleted - not allowed
+      ptvinfo->item.pszText[0] != TCHAR('\0')) { // empty if text deleted - not allowed
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     if (IsLeafNode(ptvinfo->item.hItem)) {
@@ -204,7 +204,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       // the "ptvinfo->item.pszText" buffer.
       PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
                       treeDispString, ptvinfo->item.cchTextMax);
-      ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = '\0';
+      ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = TCHAR('\0');
 
       // update the password database record.
       ci->SetTitle(newTitle); ci->SetUser(newUser);
@@ -248,7 +248,7 @@ void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
   	KillTimer( m_nHoverTimerID );
   	m_nHoverTimerID = 0;
   }
-	
+
   if (m_bDragging) {
     UINT                flags;
 
@@ -257,7 +257,7 @@ void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
 
 	m_nHoverTimerID = SetTimer(2, 750, NULL);
 	m_HoverPoint = point;
-		
+
     HTREEITEM hitem = HitTest(point, &flags);
     if (hitem != NULL) {
       m_pimagelist->DragLeave(this);
@@ -642,7 +642,7 @@ void CMyTreeCtrl::OnTimer(UINT nIDEvent)
     CTreeCtrl::OnTimer(nIDEvent);
     return;
   }
-	
+
   // Doesn't matter that we didn't initialize m_timerticks
   m_timerticks++;
 

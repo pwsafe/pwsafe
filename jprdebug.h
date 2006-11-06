@@ -29,7 +29,7 @@ DBGDUMP(const char* mem, size_t len)
 
    for (ix=0; ix<len; ix++)
    {
-      sprintf(hexbuf, "%02.2X", mem[ix]);
+      _stprintf(hexbuf, "%02.2X", mem[ix]);
       DBGMSG(hexbuf);
       if (ix % 2) DBGMSG(" ");
       if (mem[ix] != 0)

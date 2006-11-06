@@ -58,6 +58,7 @@ private:
   // Are we showing more or less details?
   bool m_isExpanded;
   void ResizeDialog();
+  static CString CS_SHOW, CS_HIDE;
 
   // Implementation
 protected:

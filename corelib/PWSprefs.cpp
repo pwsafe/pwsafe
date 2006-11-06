@@ -6,8 +6,9 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 #include "PWSprefs.h"
-
+#include "corelib.h"
 #include <AfxWin.h> // for AfxGetApp()
+#include <sstream>
 #include <strstream>
 #include <LMCons.h> // for UNLEN
 #include "PWSfile.h"
@@ -350,13 +351,13 @@ void PWSprefs::SetPrefRect(long top, long bottom,
     {
       CString obuff;
       m_XML_Config->SetKeepXMLLock(true);
-      obuff.Format("%d", top);
+      obuff.Format(_T("%d"), top);
       VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-      obuff.Format("%d", bottom);
+      obuff.Format(_T("%d"), bottom);
       VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-      obuff.Format("%d", left);
+      obuff.Format(_T("%d"), left);
       VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-      obuff.Format("%d", right);
+      obuff.Format(_T("%d"), right);
       VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
       m_XML_Config->SetKeepXMLLock(false);
     }
@@ -380,28 +381,32 @@ CMyString PWSprefs::Store()
      * {1,0} for bool, unsigned integer for int, and quoted string for String.
 	 */
 
-	CMyString retval(_T(""));
+	CString retval(_T(""));
+#ifdef _UNICODE
+	wostringstream os;
+#else
 	ostrstream os;
+#endif
 
 	for (int i = 0; i < NumBoolPrefs; i++)
 		if (m_boolValues[i] != m_bool_prefs[i].defVal &&
 			m_bool_prefs[i].isStoredinDB)
-			os << "B " << i << ' ' << (m_boolValues[i] ? 1 : 0) << ' ';
+			os << _T("B ") << i << TCHAR(' ') << (m_boolValues[i] ? 1 : 0) << TCHAR(' ');
 
 	for (int i = 0; i < NumIntPrefs; i++)
 		if (m_intValues[i] != m_int_prefs[i].defVal &&
 			m_int_prefs[i].isStoredinDB)
-			os << "I " << i << ' ' << m_intValues[i] << ' ';
+			os << _T("I ") << i << TCHAR(' ') << m_intValues[i] << TCHAR(' ');
 
 	for (int i = 0; i < NumStringPrefs; i++)
 		if (m_stringValues[i] != m_string_prefs[i].defVal &&
 			m_string_prefs[i].isStoredinDB)
-			os << "S " << i << " \"" << LPCTSTR(m_stringValues[i]) << "\" ";
+			os << _T("S ") << i << _T(" \"") << LPCTSTR(m_stringValues[i]) << _T("\" ");
 
 	os << ends;
 	retval = os.str();
 	delete[] os.str(); // reports memory leaks in spite of this!
-	return retval;
+	return CMyString(retval);
 }
 
 void PWSprefs::Load(const CMyString &prefString)
@@ -423,7 +428,11 @@ void PWSprefs::Load(const CMyString &prefString)
 		return;
 
 	// parse prefString, updating current values
+#ifdef _UNICODE
+	wistringstream is(prefString);
+#else
 	istrstream is(prefString);
+#endif
 	char type;
   int index, ival;
   unsigned int iuval;
@@ -435,7 +444,7 @@ void PWSprefs::Load(const CMyString &prefString)
 	while (is) {
 		is >> type >> index;
 		switch (type) {
-			case 'B':
+			case TCHAR('B'):
 				// Need to get value - even of not understood or wanted
 				is >> ival;
 				// forward compatibility and check whether still in DB
@@ -444,17 +453,17 @@ void PWSprefs::Load(const CMyString &prefString)
 					m_boolValues[index] = (ival != 0);
 				}
 				break;
-			case 'I':
+			case TCHAR('I'):
 				// Need to get value - even of not understood or wanted
 				is >> iuval;
 				// forward compatibility and check whether still in DB
 				if (index < NumIntPrefs && m_int_prefs[index].isStoredinDB)
 					m_intValues[index] = iuval;
 				break;
-			case 'S':
+			case TCHAR('S'):
 				// Need to get value - even of not understood or wanted
-				is.ignore(2, '\"'); // skip over space and leading "
-				is.get(buf, N, '\"'); // get string value
+				is.ignore(2, TCHAR('\"')); // skip over space and leading "
+				is.get(buf, N, TCHAR('\"')); // get string value
 				// forward compatibility and check whether still in DB
 				if (index < NumStringPrefs && m_string_prefs[index].isStoredinDB) {
 					msval= buf;
@@ -513,7 +522,7 @@ void PWSprefs::InitializePreferences()
 	m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
 	m_csHKCU_POS  = m_csHKCU + _T("\\Position");
 	m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
-	
+
 	m_XML_Config = new CXMLprefs ();
 	m_XML_Config->SetConfigFile(m_configfilename);
 
@@ -536,9 +545,7 @@ void PWSprefs::InitializePreferences()
 	}
 
 	if (!bgotconfiglock) {
-		CString cs_msg = _T("Unable to get configuration file lock.\n\n");
-		cs_msg += _T("Will use registry.");
-		AfxMessageBox(cs_msg, MB_OK);
+		AfxMessageBox(IDSC_NOCONFIGLOCK, MB_OK);
 		m_ConfigOptions = CF_REGISTRY;
 		if (m_bRegistryKeyExists)
 			LoadProfileFromRegistry();
@@ -610,11 +617,11 @@ void PWSprefs::InitializePreferences()
 	}
 
     PWSfile::UnlockFile(m_configfilename, false);
-	
+
 	CString cs_msg;
 	switch (m_ConfigOptions) {
 		case CF_REGISTRY:
-			cs_msg = _T("Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user.");
+			cs_msg.LoadString(IDSC_CANTCREATEXMLCFG);
 			break;
 		case CF_FILE_RW:
 		case CF_FILE_RW_NEW:
@@ -622,11 +629,11 @@ void PWSprefs::InitializePreferences()
 			break;
 		case CF_FILE_RO:
 			m_XML_Config->SetReadWriteStatus(false);
-			cs_msg = _T("Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user.");
+			cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
 			break;
 		case CF_NONE:
 		default:
-			cs_msg = _T("Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user.");
+			cs_msg.LoadString(IDSC_CANTDETERMINECFG);
 			break;
 	}
 	if (!cs_msg.IsEmpty())
@@ -772,7 +779,7 @@ void PWSprefs::SaveApplicationPreferences()
 			m_stringChanged[i] = false;
 		}
 	}
-	
+
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW)
 		m_XML_Config->SetKeepXMLLock(false);
@@ -870,23 +877,10 @@ void PWSprefs::DeleteRegistryEntries()
 
 void PWSprefs::FileError(const int &icause)
 {
-	CString file_error_msgs[15] =
-		{_T("No error occurred."),
-		_T("An unspecified error occurred."),
-		_T("The file was not found."),
-		_T("All or part of the path is invalid."),
-		_T("Too many open files."),
-		_T("Access to the file was denied: probably not sufficient security rights."),
-		_T("There was an attempt to use an invalid file handle."),
-		_T("The current working directory cannot be removed."),
-		_T("There are no more directory entries."),
-		_T("There was an error trying to set the file pointer."),
-		_T("There was a hardware error."),
-		_T("Sharing violation: file probably open in another application."),
-		_T("There was an attempt to lock a region that was already locked."),
-		_T("The disk is full."),
-		_T("The end of file was reached.")};
-	
+	CString cs_error, cs_msg;
+
 	ASSERT(icause >= 0 && icause <= 14);
-	AfxMessageBox(file_error_msgs[icause] + _T("\n\nThe configuration file will not be used."), MB_OK);
+	cs_error.LoadString(IDSC_FILEEXCEPTION00 + icause);
+	cs_msg.Format(IDSC_CANTUSECONFIGFILE, cs_error);
+	AfxMessageBox(cs_msg, MB_OK);
 }

@@ -756,8 +756,8 @@ DboxMain::OnAbout()
 
   csFileVersionString = app.GetFileVersionString();
 
-  csFileVersionString.Tokenize(",", itok);
-  csRevision = csFileVersionString.Tokenize(",", itok);
+  csFileVersionString.Tokenize(_T(","), itok);
+  csRevision = csFileVersionString.Tokenize(_T(","), itok);
   csRevision.Trim();
   if (nBuild == 0) { // hide build # if zero (formal release)
     about.m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
@@ -776,11 +776,11 @@ DboxMain::OnAbout()
 void
 DboxMain::OnPasswordSafeWebsite()
 {
-  HINSTANCE stat = ::ShellExecute(NULL, NULL, "http://passwordsafe.sourceforge.net/",
+  HINSTANCE stat = ::ShellExecute(NULL, NULL, _T("http://passwordsafe.sourceforge.net/"),
                                   NULL, _T("."), SW_SHOWNORMAL);
   if (int(stat) < 32) {
 #ifdef _DEBUG
-    AfxMessageBox("oops");
+    AfxMessageBox(_T("oops"));
 #endif
   }
 }
@@ -836,7 +836,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 		nMajor = HIWORD(dwMajorMinor);
 		nMinor = LOWORD(dwMajorMinor);
 	}
-    dbox_pkentry->m_appversion.Format("Version %d.%02d", nMajor, nMinor);
+    dbox_pkentry->m_appversion.Format(_T("Version %d.%02d"), nMajor, nMinor);
 
     app.DisableAccelerator();
     rc = dbox_pkentry->DoModal();

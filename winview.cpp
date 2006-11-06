@@ -14,7 +14,5 @@ View * WinView::_instance = 0;
 
 int WinView::PromptUserForCombination()
 {
-
-	
 	return 0;
 }

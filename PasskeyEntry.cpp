@@ -56,7 +56,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
      m_ReadOnly(bReadOnly ? TRUE : FALSE),
      m_bForceReadOnly(bForceReadOnly)
 {
-  const int FILE_DISP_LEN = 45;	
+  const int FILE_DISP_LEN = 45;
 
   //{{AFX_DATA_INIT(CPasskeyEntry)
   //}}AFX_DATA_INIT

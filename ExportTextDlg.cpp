@@ -20,6 +20,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static TCHAR PSSWDCHAR = TCHAR('*');
+
 /////////////////////////////////////////////////////////////////////////////
 // CExportTextDlg dialog
 
@@ -40,6 +42,7 @@ BOOL CExportTextDlg::OnInitDialog()
 {
    CDialog::OnInitDialog();
    SetPasswordFont(GetDlgItem(IDC_EXPORT_TEXT_PASSWORD));
+   ((CEdit*)GetDlgItem(IDC_EXPORT_TEXT_PASSWORD))->SetPasswordChar(PSSWDCHAR);
    m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
    m_subgroup.Empty();
    return TRUE;

@@ -515,7 +515,7 @@ DboxMain::OnOptions()
 
       if (bOldShowPasswordInList != m_bShowPasswordInList)
 		RefreshList();
-	
+
       if (system.m_usesystemtray == TRUE) {
 		if (app.IsIconVisible() == FALSE)
           app.ShowIcon();
@@ -611,7 +611,7 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 			bResult = true;
 			break;
 		case 2:		// reset on
-			cs_Buffer.Format("1%02x00", new_default_max);
+			cs_Buffer.Format(_T("1%02x00"), new_default_max);
 			listPos = m_core.GetFirstEntryPosition();
 			while (listPos != NULL) {
 				CItemData &ci = m_core.GetEntryAt(listPos);
@@ -640,7 +640,7 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 			bResult = true;
 			break;
 		case 3:		// setmax
-			cs_Buffer.Format("1%02x", new_default_max);
+			cs_Buffer.Format(_T("1%02x"), new_default_max);
 			listPos = m_core.GetFirstEntryPosition();
 			while (listPos != NULL) {
 				CItemData &ci = m_core.GetEntryAt(listPos);
@@ -649,10 +649,10 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 				if (len >= 5) {
 					TCHAR *lpszPWHistory = cs_tmp.GetBuffer(len + sizeof(TCHAR));
 #if _MSC_VER >= 1400
-					int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", 
+					int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
 						&status, &old_max, &num_saved);
 #else
-					int iread = sscanf(lpszPWHistory, "%01d%02x%02x",
+					int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"),
 						&status, &old_max, &num_saved);
 #endif
 					cs_tmp.ReleaseBuffer();

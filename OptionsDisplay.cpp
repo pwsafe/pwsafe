@@ -51,7 +51,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 #if defined(POCKET_PC)
 	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif
-	DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_treedisplaystatusatopen); // only first!	
+	DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_treedisplaystatusatopen); // only first!
 	//}}AFX_DATA_MAP
 }
 

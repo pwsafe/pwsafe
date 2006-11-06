@@ -28,7 +28,7 @@ SetPasswordFont(CWnd* pDlgItem)
     TCHAR* tch_fontname;
     const int ifontsize = 16;
     tch_fontname = _T("MS Sans Serif");
-		
+
     // Note these font names are less than the max. permitted length (LF_FACESIZE = 31 + null)
     // no need to check length before copy.
 

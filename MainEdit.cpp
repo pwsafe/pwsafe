@@ -65,7 +65,7 @@ DboxMain::OnAdd()
   app.DisableAccelerator();
   int rc = dataDlg.DoModal();
   app.EnableAccelerator();
-	
+
   if (rc == IDOK) {
     PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
@@ -106,9 +106,9 @@ DboxMain::OnAdd()
 	if (dataDlg.m_SavePWHistory == TRUE) {
 		TCHAR buffer[6];
 #if _MSC_VER >= 1400
-		_stprintf_s(buffer, 6, "1%02x00", dataDlg.m_MaxPWHistory);
+		_stprintf_s(buffer, 6, _T("1%02x00"), dataDlg.m_MaxPWHistory);
 #else
-		_stprintf(buffer, "1%02x00", dataDlg.m_MaxPWHistory);
+		_stprintf(buffer, _T("1%02x00"), dataDlg.m_MaxPWHistory);
 #endif
 		temp.SetPWHistory(buffer);
 	}
@@ -299,7 +299,7 @@ DboxMain::EditItem(CItemData *ci)
     if (m_core.GetUseDefUser())
       dlg_edit.m_defusername = m_core.GetDefUsername();
     dlg_edit.m_IsReadOnly = m_IsReadOnly;
-	
+
     app.DisableAccelerator();
     int rc = dlg_edit.DoModal();
     app.EnableAccelerator();
@@ -544,14 +544,14 @@ DboxMain::AutoType(const CItemData &ci)
    // checking for user and password for default settings
    if(!pwd.IsEmpty()){
      if(!user.IsEmpty())
-       AutoCmd="\\u\\t\\p\\n";
+       AutoCmd = _T("\\u\\t\\p\\n");
      else
-       AutoCmd="\\p\\n";
+       AutoCmd = _T("\\p\\n");
    }
  }
-		
+
  CMyString tmp;
- char curChar;
+ TCHAR curChar;
  const int N = AutoCmd.GetLength();
  CKeySend ks;
  ks.ResetKeyboardState();
@@ -564,49 +564,50 @@ DboxMain::AutoType(const CItemData &ci)
  ShowWindow(SW_MINIMIZE);
  Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
- for(int n=0; n < N; n++){
-   curChar=AutoCmd[n];
-   if(curChar=='\\'){
+ for(int n = 0; n < N; n++){
+   curChar = AutoCmd[n];
+   if(curChar == TCHAR('\\')) {
      n++;
-     if(n<N)
+     if(n < N)
        curChar=AutoCmd[n];
      switch(curChar){
-     case '\\':
-       tmp += '\\';
+     case TCHAR('\\'):
+       tmp += TCHAR('\\');
        break;
-     case 'n':case 'r':
-       tmp += '\r';
+     case TCHAR('n'):
+     case TCHAR('r'):
+       tmp += TCHAR('\r');
        break;
-     case 't':
-       tmp += '\t';
+     case TCHAR('t'):
+       tmp += TCHAR('\t');
        break;
-     case 'u':
+     case TCHAR('u'):
        tmp += user;
        break;
-     case 'p':
+     case TCHAR('p'):
        tmp += pwd;
        break;
-     case 'd': {
+     case TCHAR('d'): {
        // Delay is going to change - send what we have with old delay
        ks.SendString(tmp);
        // start collecting new delay
        tmp = _T("");
        int newdelay = 0;
        int gNumIts = 0;
-						
-       for(n++; n<N && (gNumIts < 3); ++gNumIts, n++)
+
+       for(n++; n < N && (gNumIts < 3); ++gNumIts, n++)
          if(isdigit(AutoCmd[n])){
            newdelay *= 10;
-           newdelay += (AutoCmd[n]-'0');
+           newdelay += (AutoCmd[n] - TCHAR('0'));
          } else
            break; // for loop
-       n--;							
+       n--;
        ks.SetAndDelay(newdelay);
 
        break; // case
      }
      default:
-       tmp+="\\"+curChar;
+       tmp += _T("\\") + curChar;
        break;
      }
    }
