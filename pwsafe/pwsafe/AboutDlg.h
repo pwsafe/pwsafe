@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 #pragma once
 
 /// \file AboutDlg.h
@@ -27,6 +34,7 @@ public:
   enum { IDD = IDD_ABOUTBOX };
   //}}AFX_DATA
   CString m_appversion;
+  CString m_appcopyright;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX)    // DDX/DDV support

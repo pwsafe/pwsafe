@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 /// \file ThisMfcApp.cpp
 /// \brief App object of MFC version of Password Safe
 //-----------------------------------------------------------------------------
@@ -868,16 +875,16 @@ ThisMfcApp::GetApplicationVersionData()
   // Get version information from the application
   ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
   dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
-  if (dwVerInfoSize) {
+  if (dwVerInfoSize > 0) {
     char* pVersionInfo = new char[dwVerInfoSize];
-    if(pVersionInfo) {
+    if(pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
                                        (DWORD)dwVerHnd,
                                        (DWORD)dwVerInfoSize,
                                        (LPVOID)pVersionInfo);
       VS_FIXEDFILEINFO *szVer = NULL;
       UINT uVerLength; 
-      if(bRet) {
+      if (bRet) {
       	// get binary file version information
         bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
                                (LPVOID*)&szVer, &uVerLength);
@@ -887,19 +894,22 @@ ThisMfcApp::GetApplicationVersionData()
 		} else {
 		  m_dwMajorMinor = m_dwBuildRevision = (DWORD)-1;
 		}
-		// Get string file version information (assume US English "040904B0" is there)
+		// Get string file version information 
+        // (assume US English "040904B0")
 		TCHAR *buffer; 
         UINT buflen;
         bRet = ::VerQueryValue(pVersionInfo,
                                TEXT("\\StringFileInfo\\040904B0\\FileVersion"),
                                (LPVOID*)&buffer, &buflen); 
-        if (bRet)
-          m_csFileVersionString = buffer;
-        else
-          m_csFileVersionString = _T("");
+        m_csFileVersionString = bRet ? buffer : _T("");
+        bRet = ::VerQueryValue(pVersionInfo,
+                               TEXT("\\StringFileInfo\\040904B0\\"
+                                    "LegalCopyright"),
+                               (LPVOID*)&buffer, &buflen); 
+        m_csCopyrightString = bRet ? buffer : _T("All rights reserved.");
       }
-      delete pVersionInfo;
-    } 
+    }
+    delete[] pVersionInfo;
   }
-  return;
 }
+

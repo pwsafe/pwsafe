@@ -279,6 +279,7 @@
 #define IDC_DEFAULTBROWSER              1214
 #define IDC_OTHERBROWSER                1215
 #define IDC_OTHERBROWSERLOCATION        1216
+#define IDC_APPCOPYRIGHT                1217
 
 // Next default values for new objects
 // 
@@ -286,7 +287,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        235
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1217
+#define _APS_NEXT_CONTROL_VALUE         1218
 #define _APS_NEXT_SYMED_VALUE           125
 #endif
 #endif
