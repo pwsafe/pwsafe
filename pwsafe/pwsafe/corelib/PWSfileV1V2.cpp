@@ -7,6 +7,7 @@
  */
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
+#include "corelib.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -52,7 +53,7 @@ int PWSfileV1V2::WriteV2Header()
   unsigned int rlen = RangeRand(62) + 2; // 64 is a trade-off...
   char *rbuf = new char[rlen];
   PWSrand::GetInstance()->GetRandomData(rbuf, rlen-1);
-  rbuf[rlen-1] = '\0'; // although zero may be there before - who cares?
+  rbuf[rlen-1] = TCHAR('\0'); // although zero may be there before - who cares?
   CMyString rname(V2ItemName);
   rname += rbuf;
   delete[] rbuf;
@@ -120,7 +121,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     unsigned char randhash[20];   // HashSize
 
     PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
-    randstuff[8] = randstuff[9] = '\0';
+    randstuff[8] = randstuff[9] = TCHAR('\0');
     GenRandhash(m_passkey, randstuff, randhash);
 
     fwrite(randstuff, 1, 8, m_fd);
@@ -129,7 +130,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     PWSrand::GetInstance()->GetRandomData(m_salt, SaltLength);
 
     fwrite(m_salt, 1, SaltLength, m_fd);
-	
+
     PWSrand::GetInstance()->GetRandomData( m_ipthing, 8);
     fwrite(m_ipthing, 1, 8, m_fd);
     m_fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
@@ -180,7 +181,7 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
   unsigned char randhash[20];   // HashSize
 
    fread(randstuff, 1, 8, fd);
-   randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
+   randstuff[8] = randstuff[9] = TCHAR('\0'); // Gross fugbix
    fread(randhash, 1, 20, fd);
 
    if (a_fd == NULL) // if we opened the file, we close it...
@@ -201,13 +202,16 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
 static CMyString ReMergeNotes(const CItemData &item)
 {
   CMyString notes = item.GetNotes();
+  CMyString cs_autotype;
+  cs_autotype.LoadString(IDSC_AUTOTYPE);
   const CMyString url(item.GetURL());
   if (!url.IsEmpty()) {
     notes += _T("\r\n"); notes += url;
   }
   const CMyString at(item.GetAutoType());
   if (!at.IsEmpty()) {
-    notes += _T("\r\nautotype:");
+    notes += _T("\r\n");
+	notes += cs_autotype;
     notes += at;
   }
   return notes;
@@ -284,7 +288,9 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
 static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
 {
   CString instr(notesStr);
-  int left = instr.Find(_T("autotype:"));
+  CString cs_autotype;
+  cs_autotype.LoadString(IDSC_AUTOTYPE);
+  int left = instr.Find(cs_autotype);
   if (left == -1) {
     autotypeStr = _T(""); 
   } else {

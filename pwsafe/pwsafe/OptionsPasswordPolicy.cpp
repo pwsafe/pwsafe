@@ -68,7 +68,7 @@ END_MESSAGE_MAP()
 BOOL COptionsPasswordPolicy::OnInitDialog() 
 {
   CPropertyPage::OnInitDialog();
-	
+
   CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWLENGTH));

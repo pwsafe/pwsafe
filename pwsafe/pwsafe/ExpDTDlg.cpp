@@ -103,7 +103,7 @@ void CExpDTDlg::OnBnClickedOk()
 
 	dwResult = m_pDateCtl.GetTime(LDate);
 	ASSERT(dwResult == GDT_VALID);
-	
+
 	LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
 		LTime.GetHour(), LTime.GetMinute(), 0, -1);
 	m_tttLTime = (time_t)LDateTime.GetTime();

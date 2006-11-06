@@ -19,6 +19,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static TCHAR PSSWDCHAR = TCHAR('*');
+
 /////////////////////////////////////////////////////////////////////////////
 // CExportXMLDlg dialog
 
@@ -37,6 +39,7 @@ BOOL CExportXMLDlg::OnInitDialog()
 {
    CDialog::OnInitDialog();
    SetPasswordFont(GetDlgItem(IDC_EXPORT_XML_PASSWORD));
+   ((CEdit*)GetDlgItem(IDC_EXPORT_XML_PASSWORD))->SetPasswordChar(PSSWDCHAR);
    return TRUE;
 }
 

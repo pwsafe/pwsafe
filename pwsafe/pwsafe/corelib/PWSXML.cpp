@@ -12,6 +12,7 @@
 #include "SAXHandlers.h"
 #include "ItemData.h"
 #include "MyString.h"
+#include "corelib.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <atlcomcli.h>
@@ -45,6 +46,9 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 {
 	HRESULT hr, hr0, hr60, hr40, hr30;
 	bool b_ok = false;
+	CString cs_validation, cs_import;
+	cs_validation.LoadString(IDSC_XMLVALIDATION);
+	cs_import.LoadString(IDSC_XMLIMPORT);
 
 	m_strResultText = _T("");
 	m_bValidation = bvalidation;  // Validate or Import
@@ -64,7 +68,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 				// Try 30
 				hr30 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL);
 				if (FAILED(hr30)) {
-					m_strResultText =_T("Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available.");
+					m_strResultText.LoadString(IDSC_NOXMLREADER);
 					goto exit;
 				} else {
 					m_MSXML_Version = 30;
@@ -119,7 +123,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 			hr = pSchemaCache.CreateInstance(__uuidof(XMLSchemaCache30));
 			break;
 		default:
-			m_strResultText = _T("Unable to validate a XML file using a XML Schema (XSD) on your system.");
+			m_strResultText.LoadString(IDSC_CANTXMLVALIDATE);
 			goto exit;
 	}
 
@@ -163,11 +167,19 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 
 		//	Let's begin the parsing now
 		wchar_t wcURL[MAX_PATH]={0};
+#ifdef _UNICODE
+#if _MSC_VER >= 1400
+		_tcscpy_s(wcURL, MAX_PATH, strXMLFileName);
+#else
+		_tcscpy(wcURL, strXMLFileName);
+#endif
+#else
 #if _MSC_VER >= 1400
 		size_t numconverted;
 		mbstowcs_s(&numconverted, wcURL, MAX_PATH, strXMLFileName, _tcslen(strXMLFileName));
 #else
 		mbstowcs(wcURL, strXMLFileName, _tcslen(strXMLFileName));
+#endif
 #endif
 		hr = pSAXReader->parseURL(wcURL);
 
@@ -189,14 +201,14 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 			if(pEH->bErrorsFound == TRUE) {
 				m_strResultText = pEH->m_strValidationResult;
 			} else {
-				m_strResultText.Format(_T("SAX Parse%2d Error 0x%08X during %s."), m_MSXML_Version, hr,
-							m_bValidation ? _T("validation") : _T("import"));
+				m_strResultText.Format(IDSC_XMLPARSEERROR, m_MSXML_Version, hr,
+							m_bValidation ? cs_validation : cs_import);
 			}
 		}  // End Check for parsing errors
 
 	} else {
-		m_strResultText.Format(_T("Create SchemaCache%2d Error 0x%08X during %s."), m_MSXML_Version, hr,
-						m_bValidation ? _T("validation") : _T("import"));
+		m_strResultText.Format(IDSC_XMLBADCREATESCHEMA, m_MSXML_Version, hr,
+						m_bValidation ? cs_validation : cs_import);
 	}  // End Create Schema Cache
 
 exit:

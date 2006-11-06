@@ -35,17 +35,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#if defined(POCKET_PC)
-  #define SHOW_PASSWORD_TXT	_T("S")
-  #define HIDE_PASSWORD_TXT	_T("H")
-#else
-  #define SHOW_PASSWORD_TXT	_T("&Show")
-  #define HIDE_PASSWORD_TXT	_T("&Hide")
-#endif
-
 static TCHAR PSSWDCHAR = TCHAR('*');
-const TCHAR *HIDDEN_NOTES = _T("[Notes hidden - click here to display]");
-CString CS_ON, CS_OFF;
+CMyString CEditDlg::HIDDEN_NOTES;
+CString CEditDlg::CS_SHOW;
+CString CEditDlg::CS_HIDE;
+CString CEditDlg::CS_ON;
+CString CEditDlg::CS_OFF;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
@@ -54,8 +49,19 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 {
   ASSERT(ci != NULL);
 
-  CS_ON.LoadString(IDS_ON);
-  CS_OFF.LoadString(IDS_OFF);
+  if (CS_ON.IsEmpty()) {
+  	TRACE("Initialised Edit Show/Hide");
+    CS_ON.LoadString(IDS_ON);
+    CS_OFF.LoadString(IDS_OFF);
+    HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
+#if defined(POCKET_PC)
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
+#else
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
+#endif
+  }
 
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
@@ -335,7 +341,7 @@ BOOL CEditDlg::OnInitDialog()
 	  SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
   CString buffer;
   if (m_SavePWHistory == TRUE)
-	  buffer.Format("%d", m_MaxPWHistory);
+	  buffer.Format(_T("%d"), m_MaxPWHistory);
   else
 	  buffer = _T("n/a");
 
@@ -354,7 +360,7 @@ BOOL CEditDlg::OnInitDialog()
 void CEditDlg::ShowPassword()
 {
   m_isPwHidden = false;
-  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(HIDE_PASSWORD_TXT);
+  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
 
   m_password = m_realpassword;
   // Remove password character so that the password is displayed
@@ -368,7 +374,7 @@ void CEditDlg::ShowPassword()
 void CEditDlg::HidePassword()
 {
   m_isPwHidden = true;
-  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(SHOW_PASSWORD_TXT);
+  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
 
   m_password = m_password2 = HIDDEN_PASSWORD;
 
@@ -490,7 +496,7 @@ void CEditDlg::ResizeDialog()
   }
 
   RECT curDialogRect;
-	
+
   this->GetWindowRect(&curDialogRect);
 
   RECT newDialogRect = curDialogRect;
@@ -559,7 +565,7 @@ void CEditDlg::OnBnClickedPwhist()
     SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
   CString buffer;
   if (m_SavePWHistory == TRUE)
-    buffer.Format("%d", m_MaxPWHistory);
+    buffer.Format(_T("%d"), m_MaxPWHistory);
   else
     buffer = _T("n/a");
 

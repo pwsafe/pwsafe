@@ -142,7 +142,7 @@ public:
                           HWND hWindow);
   static bool ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
                              HWND hWindow);
-  static int VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory, CString &strErrors);
+  static int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, CString &strErrors);
   static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   static const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   static CString GetTimeStamp();

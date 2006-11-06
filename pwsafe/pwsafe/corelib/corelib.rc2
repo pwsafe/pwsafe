@@ -1,0 +1,117 @@
+// Not editable by Visual C++
+// Open as a TEXT file to:
+//   add a new entry before using a in a resource file
+//   delete an unused entry
+
+#ifdef APSTUDIO_INVOKED
+    #error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+#include "..\corelib\corelib.h"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+// Usage
+
+STRINGTABLE
+BEGIN
+    IDSC_PASSWORDTOOSHORT   "Password is too short"
+    IDSC_PASSWORDPOOR       "Password should be mixed case, with at least one digit or punctuation character"
+END
+
+STRINGTABLE
+BEGIN
+    IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tHistory\tNotes"
+    IDSC_EXPHDRGROUPTITLE   "Group/Title\t"
+    IDSC_EXPHDRUSERNAME     "Username\t"
+    IDSC_EXPHDRPASSWORD     "Password\t"
+    IDSC_EXPHDRURL          "URL\t"
+    IDSC_EXPHDRAUTOTYPE     "AutoType\t"
+    IDSC_EXPHDRCTIME        "Created Time\t"
+    IDSC_EXPHDRPMTIME       "Password Modified Time\t"
+    IDSC_EXPHDRATIME        "Last Access Time\t"
+    IDSC_EXPHDRLTIME        "Password Expiry Date\t"
+    IDSC_EXPHDRRMTIME       "Record Modified Time\t"
+    IDSC_EXPHDRPWHISTORY    "History\t"
+    IDCS_EXPHDRNOTES        "Notes"
+END
+
+STRINGTABLE
+BEGIN
+	IDSC_IMPMISSINGQUOTE    "\nFile ends on line %d before ending double quote of last entry's note field."
+    IDSC_IMPHDRLINEIGNORED  "\nHeader line ignored."
+    IDSC_IMPINVALIDINPUT    "\nInvalid input on line %d.  Number of fields separated by '%c' is not as expected."
+    IDSC_IMPINVALIDPWH      "\nError in Password History on line %d: "
+END
+
+STRINGTABLE
+BEGIN
+	IDSC_NOLOCKACCESS       "Cannot create lock file - no permission in directory?"
+    IDSC_CANTGETLOCKER      "Unable to determine locker?"
+    IDSC_CANTREADLOCKER     "Unable to read locker?"
+    IDSC_INTERNALLOCKERROR  "Internal error: Invalid oflag or pmode argument"
+    IDSC_SYSTEMLOCKERROR    "System error: No more file handles available"
+    IDSC_LOCKFILEPATHNF     "File or path not found"
+    IDSC_LOCKUNKNOWNERROR   "Internal error: Unexpected error number"
+END
+
+STRINGTABLE
+BEGIN
+	IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of UUIDs made unique: %d\n\nNumber of Password Histories fixed: %d"
+    IDSC_AUTOTYPE           "autotype:"
+    IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
+    IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+    IDSC_CANTUPDATEXMLCFG   "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+    IDSC_CANTDETERMINECFG   "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+    IDSC_CANTUSECONFIGFILE  "%s\n\nThe configuration file will not be used."
+END
+
+STRINGTABLE
+BEGIN
+    IDSC_PWHERROR           "Error in Password History field at offset %d: "
+    IDSC_INVALIDHEADER      "Invalid header: %s"
+    IDSC_INVALIDPWHSTATUS   "Invalid status value: %d"
+    IDSC_INVALIDNUMOLDPW    "Invalid number of saved old passwords %d (max. set to %d)"
+    IDSC_INVALIDDATETIME    "Invalid date/time value"
+    IDSC_INVALIDPWLENGTH    "Invalid password length found"
+    IDSC_FIELDTOOSHORT      "Field is too short. Minimum required per old password entry is 26 + the actual password"
+    IDSC_FIELDTOOLONG       "Field is too long"
+    IDSC_INVALIDSEPARATER   "Invalid field separator character found - only a single blank is allowed between fields"
+END
+
+STRINGTABLE
+BEGIN
+	IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
+    IDSC_XMLPARSEERROR      "SAX Parse%2d Error 0x%08X during %s."
+    IDSC_XMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
+    IDSC_XMLVALIDATION      "validation"
+    IDSC_XMLIMPORT          "import"
+    IDSC_NOXMLREADER        "Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
+    IDSC_XMLHEADER          "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>\n<Pwsafe_Settings></Pwsafe_Settings>"
+    IDSC_XMLFILEERROR       "Error 0x%08x at line:position %d:%d \n\t%s\n\nUnable to load configuration file."
+    IDSC_XMLLOADFAILURE     "LoadXML Malformed XML Error"
+	IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
+	IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
+END
+
+STRINGTABLE
+BEGIN
+    IDSC_FILEEXCEPTION00    "No error occurred."
+    IDSC_FILEEXCEPTION01    "An unspecified error occurred."
+    IDSC_FILEEXCEPTION02    "The file was not found."
+    IDSC_FILEEXCEPTION03    "All or part of the path is invalid."
+    IDSC_FILEEXCEPTION04    "Too many open files."
+    IDSC_FILEEXCEPTION05    "Access to the file was denied: probably not sufficient security rights."
+    IDSC_FILEEXCEPTION06    "There was an attempt to use an invalid file handle."
+    IDSC_FILEEXCEPTION07    "The current working directory cannot be removed."
+    IDSC_FILEEXCEPTION08    "There are no more directory entries."
+    IDSC_FILEEXCEPTION09    "There was an error trying to set the file pointer."
+    IDSC_FILEEXCEPTION10    "There was a hardware error."
+    IDSC_FILEEXCEPTION11    "Sharing violation: file probably open in another application."
+    IDSC_FILEEXCEPTION12    "There was an attempt to lock a region that was already locked."
+    IDSC_FILEEXCEPTION13    "The disk is full."
+    IDSC_FILEEXCEPTION14    "The end of file was reached."
+END

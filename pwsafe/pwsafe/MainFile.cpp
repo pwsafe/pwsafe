@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license.php
- */
 /// file MainFile.cpp
 //
 // File-related methods of DboxMain
@@ -741,7 +734,7 @@ DboxMain::OnExportXML()
           return;
       } // while (1)
 
-      char delimiter;
+      TCHAR delimiter;
       delimiter = eXML.m_defexpdelim[0];
       
       ItemList sortedItemList;
@@ -794,11 +787,11 @@ DboxMain::OnImportText()
     CMyString newfile = (CMyString)fd.GetPathName();
     int numImported = 0, numSkipped = 0;
     bool bimport_preV3 = (dlg.m_import_preV3 == 1) ? true : false;
-    char delimiter;
+    TCHAR delimiter;
     if (dlg.m_querysetimpdelim == 1) {
       delimiter = dlg.m_defimpdelim[0];
     } else {
-      delimiter = '\0';
+      delimiter = TCHAR('\0');
     }
     rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strErrors, fieldSeparator,
                                     delimiter, numImported, numSkipped, bimport_preV3);
@@ -827,6 +820,7 @@ DboxMain::OnImportText()
 
         cs_title.LoadString(IDS_STATUS);
         MessageBox(temp1 + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
+		ChangeOkUpdate();
       }
       RefreshList();
       break;
@@ -874,6 +868,7 @@ DboxMain::OnImportKeePass()
     case PWScore::SUCCESS:
     default:
       RefreshList();
+	  ChangeOkUpdate();
       break;
     } // switch
   }
@@ -902,7 +897,7 @@ DboxMain::OnImportXML()
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
-	
+
   CImportXMLDlg dlg;
   int status = dlg.DoModal();
 
@@ -961,6 +956,7 @@ DboxMain::OnImportXML()
                       numImported, (numImported != 1) ? _T("s") : _T(""));
           cs_title.LoadString(IDS_STATUS);
           MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
+		  ChangeOkUpdate();
         }
       }
       RefreshList();
@@ -1097,7 +1093,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
     const CMyString otherGroup = otherItem.GetGroup();
     const CMyString otherTitle = otherItem.GetTitle();
     const CMyString otherUser = otherItem.GetUser();
-		
+
     POSITION foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
     if (foundPos) {
       /* found a match, see if other fields also match */
@@ -1122,7 +1118,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
         /* tell the user the bad news */
         CString cs_title;
 		cs_title.LoadString(IDS_MERGECONFLICTS2);
-        MessageBox(warnMsg, cs_title, MB_OK|MB_ICONWARNING);				
+        MessageBox(warnMsg, cs_title, MB_OK|MB_ICONWARNING);
 
         /* do it */
         otherItem.SetTitle(newTitle);
@@ -1171,9 +1167,9 @@ DboxMain::OnProperties()
 
   CStringArray aryGroups;
   app.m_core.GetUniqueGroups(aryGroups);
-  dlg.m_numgroups.Format("%d",aryGroups.GetSize());
+  dlg.m_numgroups.Format(_T("%d"), aryGroups.GetSize());
 
-  dlg.m_numentries.Format("%d", m_core.GetNumEntries());
+  dlg.m_numentries.Format(_T("%d"), m_core.GetNumEntries());
 
   CString wls = m_core.GetWhenLastSaved();
   if (wls.GetLength() != 8) {
@@ -1183,9 +1179,9 @@ DboxMain::OnProperties()
 	  long t;
 	  TCHAR *lpszWLS = wls.GetBuffer(9);
 #if _MSC_VER >= 1400
-	  int iread = sscanf_s(lpszWLS, "%8x", &t);
+	  int iread = _stscanf_s(lpszWLS, _T("%8x"), &t);
 #else
-	  int iread = sscanf(lpszWLS, "%8x", &t);
+	  int iread = _stscanf(lpszWLS, _T("%8x"), &t);
 #endif
 	  wls.ReleaseBuffer();
 	  ASSERT(iread == 1);
@@ -1201,13 +1197,13 @@ DboxMain::OnProperties()
 	  int ulen;
 	  TCHAR *lpszWLS = wls.GetBuffer(wls.GetLength() + 1);
 #if _MSC_VER >= 1400
-	  int iread = sscanf_s(lpszWLS, "%4x", &ulen);
+	  int iread = _stscanf_s(lpszWLS, _T("%4x"), &ulen);
 #else
-	  int iread = sscanf(lpszWLS, "%4x", &ulen);
+	  int iread = _stscanf(lpszWLS, _T("%4x"), &ulen);
 #endif
 	wls.ReleaseBuffer();
 	ASSERT(iread == 1);
-	dlg.m_wholastsaved.Format("%s on %s", wls.Mid(4, ulen), wls.Mid(ulen + 4));
+	dlg.m_wholastsaved.Format(_T("%s on %s"), wls.Mid(4, ulen), wls.Mid(ulen + 4));
   }
 
   wls = m_core.GetWhatLastSaved();
@@ -1539,7 +1535,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 		csx_ltime.LoadString(IDS_COMPLTIME);
 		csx_rmtime.LoadString(IDS_COMPRMTIME);
 		csx_pwhistory.LoadString(IDS_COMPPWHISTORY);
-		
+
 		while (conflictPos) {
 			st_Conflict st_diff = list_Conflicts.GetAt(conflictPos);
 			CItemData currentItem = m_core.GetEntryAt(st_diff.cPos);
@@ -1687,7 +1683,7 @@ DboxMain::SaveDisplayStatus()
 {
 	const int max_displaystatus_size = m_ctlItemTree.GetCount();
 
-	char *p_char_displaystatus = new char[max_displaystatus_size];
+	TCHAR *p_char_displaystatus = new TCHAR[max_displaystatus_size];
 
 	memset(p_char_displaystatus, 0, max_displaystatus_size);
 
@@ -1707,7 +1703,7 @@ DboxMain::RestoreDisplayStatus()
 	if (cs_displaystatus.IsEmpty())
 		return;
 
-	char *p_char_displaystatus = cs_displaystatus.GetBuffer(cs_displaystatus.GetLength());	
+	TCHAR *p_char_displaystatus = cs_displaystatus.GetBuffer(cs_displaystatus.GetLength());
 
 	int i = 0;
 
@@ -1715,21 +1711,21 @@ DboxMain::RestoreDisplayStatus()
 }
 
 void
-DboxMain::GroupDisplayStatus(char *p_char_displaystatus, int &i, bool bSet)
+DboxMain::GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet)
 {
-	const char c_one = '1';
+	const TCHAR c_one = TCHAR('1');
 	HTREEITEM hItem = NULL;
 	while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
 		if (m_ctlItemTree.ItemHasChildren(hItem)) {
 			const CString cs_text = m_ctlItemTree.GetItemText(hItem);
 			if (bSet) {
 				if (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED) {
-					p_char_displaystatus[i] = '1';
+					p_char_displaystatus[i] = TCHAR('1');
 				} else {
-					p_char_displaystatus[i] = '0';
+					p_char_displaystatus[i] = TCHAR('0');
 				}
 			} else {
-				if (memcmp(&p_char_displaystatus[i], &c_one, 1) == 0) {
+				if (memcmp(&p_char_displaystatus[i], &c_one, sizeof(TCHAR)) == 0) {
 					m_ctlItemTree.Expand(hItem, TVE_EXPAND);
 				}
 			}

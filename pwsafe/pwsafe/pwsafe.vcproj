@@ -121,11 +121,12 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 				Description="Update Revision Number in Resources"
-				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo ."
+				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo .&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -185,6 +186,205 @@
 				AdditionalLibraryDirectories=".\corelib\Debug,C:\local\msvc\HTMLHelpWorkshop\lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/pwsafe.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_Unicode|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Update Revision Number in Resources"
+				CommandLine="if not exist &quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; goto :Error1&#x0D;&#x0A;&quot;$(DevEnvDir)\..\..\..\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error1&#x0D;&#x0A;if not exist &quot;$(ProjectDir)\version.h&quot; goto :Error2&#x0D;&#x0A;echo &quot;Using static version.h&quot;&#x0D;&#x0A;goto :Done&#x0D;&#x0A;:Error2&#x0D;&#x0A;echo &quot;Can&apos;t find TortoiseSVN&apos;s SubWCRev.exe. Please install it or create version.h from version.in manually&quot;&#x0D;&#x0A;:Done&#x0D;&#x0A;echo .&#x0D;&#x0A;"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				StringPooling="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\Debug/pwsafe.pch"
+				AssemblerListingLocation=".\Debug_Unicode/"
+				ObjectFile=".\Debug_Unicode/"
+				ProgramDataBaseFileName=".\Debug_Unicode/"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="htmlhelp.lib corelibU.lib WS2_32.lib Rpcrt4.lib version.lib"
+				OutputFile=".\Debug_Unicode/pwsafeU.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=".\corelib\Debug_Unicode;C:\local\msvc\HTMLHelpWorkshop\lib"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug_Unicode/pwsafeU.pdb"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_Unicode|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Update Revision Number in Resources"
+				CommandLine="&quot;C:\Program Files\TortoiseSVN\bin\SubWCRev.exe&quot; .\ version.in version.h"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/pwsafe.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\Release/pwsafe.pch"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
+				WarningLevel="4"
+				DebugInformationFormat="3"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="htmlhelp.lib corelib.lib WS2_32.lib rpcrt4.lib version.lib"
+				OutputFile=".\Release/pwsafe.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories=".\corelib\Release,C:\local\msvc\HTMLHelpWorkshop\lib"
+				ProgramDatabaseFile=".\Release/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -459,6 +659,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\corelib\corelib.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CryptKeyEntry.h"
 				>
 			</File>
@@ -667,6 +871,10 @@
 			Name="Resource Files"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
+			<File
+				RelativePath=".\corelib\corelib.rc2"
+				>
+			</File>
 			<File
 				RelativePath=".\res\cpane.bmp"
 				>

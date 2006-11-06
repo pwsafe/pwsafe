@@ -92,19 +92,19 @@ void CKeySend::ResetKeyboardState()
 {
 	// We need to make sure that the Control Key is still not down. 
 	// It will be down while the user presses ctrl-T the shortcut for autotype.
-	
+
 	BYTE keys[256];
-	
+
 
 	GetKeyboardState((LPBYTE)&keys);
-	
+
 	while((keys[VK_CONTROL] & 0x80)!=0){
 		// VK_CONTROL is down so send a key down and an key up...
 
-		keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);	
-		
-		keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);	
-		
+		keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);
+
+		keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);
+
 		//now we let the messages be processed by the applications to set the keyboard state
 		MSG msg;
 		//BOOL m_bCancel=false;
@@ -114,8 +114,8 @@ void CKeySend::ResetKeyboardState()
 			if (!AfxGetThread()->PumpMessage())
 				break;
 		}
-		
-		
+
+
 		Sleep(10);
 		memset((void*)&keys,0,256);
 		GetKeyboardState((LPBYTE)&keys);
@@ -137,6 +137,5 @@ void CKeySend::SetAndDelay(int d){
 
 void CKeySend::SetDelay(int d){
 	m_delay=d;
-	
 }
 

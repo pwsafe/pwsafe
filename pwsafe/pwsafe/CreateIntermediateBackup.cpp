@@ -91,7 +91,7 @@ DboxMain::CreateIntermediateBackup()
 			break;
 		case 2:
 			if (GetIncBackupFileName(cs_temp, i_maxnumincbackups, cs_newfile) == FALSE) {
-				AfxMessageBox(_T("Unable to create intermediate backup. Feature disabled."), MB_OK);
+				AfxMessageBox(IDS_NOIBACKUP, MB_OK);
 				prefs->SetPref(PWSprefs::BackupBeforeEverySave, false);
 				return;
 			}
@@ -121,8 +121,8 @@ DboxMain::CreateIntermediateBackup()
 	cs_newfile.ReleaseBuffer();
 
 	// Must end with double NULL
-	szSource[cs_currentfile.GetLength() + 1] = '\0';
-	szDestination[cs_newfile.GetLength() + 1] = '\0';
+	szSource[cs_currentfile.GetLength() + 1] = TCHAR('\0');
+	szDestination[cs_newfile.GetLength() + 1] = TCHAR('\0');
 
 	SHFILEOPSTRUCT sfop;
 	memset(&sfop, 0, sizeof(sfop));
@@ -133,7 +133,7 @@ DboxMain::CreateIntermediateBackup()
 	sfop.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_SILENT;
 
 	if (SHFileOperation(&sfop) != 0) {
-		AfxMessageBox(_T("Unable to create intermediate backup. Feature disabled."), MB_OK);
+		AfxMessageBox(IDS_NOIBACKUP, MB_OK);
 		prefs->SetPref(PWSprefs::BackupBeforeEverySave, false);
 	}
 }
@@ -157,9 +157,9 @@ DboxMain::GetIncBackupFileName(const CString &cs_filenamebase,
 		num_found++;
 		cs_filename = finder.GetFileName();
 		cs_ibak_number = cs_filename.Mid(cs_filename.GetLength() - 8, 3);
-		if (cs_ibak_number.SpanIncluding(CString("0123456789")) != cs_ibak_number)
+		if (cs_ibak_number.SpanIncluding(CString(_T("0123456789"))) != cs_ibak_number)
 			continue;
-		n = atoi(cs_ibak_number);
+		n = _ttoi(cs_ibak_number);
 		file_nums.push_back(n);
 	}
 

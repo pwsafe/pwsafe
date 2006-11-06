@@ -8,6 +8,7 @@
 // SAXHandlers.cpp : implementation file
 //
 
+#include "corelib.h"
 #include "PWScore.h"
 #include "ItemData.h"
 #include "MyString.h"
@@ -73,12 +74,32 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
 	TCHAR szFormatString[MAX_PATH*2] = {0};
 	int iLineNumber, iCharacter;
 
+#ifdef _UNICODE
+#if (_MSC_VER >= 1400)
+	_tcscpy_s(szErrorMessage, MAX_PATH*2, pwchErrorMessage);
+#else
+	_tcscpy(szErrorMessage, pwchErrorMessage);
+#endif
+#else
+#if (_MSC_VER >= 1400)
+	size_t num_converted;
+	wcstombs_s(&num_converted, szErrorMessage, MAX_PATH*2, pwchErrorMessage, MAX_PATH);
+#else
 	wcstombs(szErrorMessage, pwchErrorMessage, MAX_PATH);
+#endif
+#endif
 	pLocator->getLineNumber(&iLineNumber);
 	pLocator->getColumnNumber(&iCharacter);
 
-	sprintf(szFormatString, "Error (%08X): line %d character %d %s",
+	CString cs_format;
+	cs_format.LoadString(IDSC_SAXGENERROR);
+#if (_MSC_VER >= 1400)
+	_stprintf_s(szFormatString, MAX_PATH*2, cs_format,
 		hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
+#else
+	_stprintf(szFormatString, cs_format,
+		hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
+#endif
 
 	m_strValidationResult += szFormatString;
 
@@ -181,7 +202,21 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
     /* [in] */ ISAXAttributes __RPC_FAR *pAttributes)
 {
 	TCHAR szCurElement[MAX_PATH+1] = {0};
+
+#ifdef _UNICODE
+#if (_MSC_VER >= 1400)
+	_tcscpy_s(szCurElement, MAX_PATH+1, pwchRawName);
+#else
+	_tcscpy(szCurElement, pwchRawName);
+#endif
+#else
+#if (_MSC_VER >= 1400)
+	size_t num_converted;
+	wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
+#else
 	wcstombs(szCurElement, pwchRawName, cchRawName);
+#endif
+#endif
 
 	if (_tcscmp(szCurElement, _T("passwordsafe")) == 0) {
 		if (m_bValidation) {
@@ -194,9 +229,24 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 				int QName_length, Value_length;
 
 				pAttributes->getQName(i, &QName, &QName_length);
-				wcstombs(szQName, QName, QName_length);
 				pAttributes->getValue(i, &Value, &Value_length);
+#ifdef _UNICODE
+#if (_MSC_VER >= 1400)
+				_tcscpy_s(szQName, MAX_PATH+1, QName);
+				_tcscpy_s(szValue, MAX_PATH+1, Value);
+#else
+				_tcscpy(szQName, QName);
+				_tcscpy(szValue, Value);
+#endif
+#else
+#if (_MSC_VER >= 1400)
+				wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
+				wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
+#else
+				wcstombs(szQName, QName, QName_length);
 				wcstombs(szValue, Value, Value_length);
+#endif
+#endif
 				if (_tcscmp(szQName, _T("delimiter")) == 0)
 					m_delimiter = szValue[0];
 			}
@@ -257,12 +307,22 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
 		return S_OK;
 
 	TCHAR* szData = new TCHAR[cchChars+2];
+
+#ifdef _UNICODE
+#if (_MSC_VER >= 1400)
+	_tcscpy_s(szData, cchChars+2, pwchChars);
+#else
+	_tcscpy(szData, pwchChars);
+#endif
+#else
 #if _MSC_VER >= 1400
 	size_t num_converted;
 	wcstombs_s(&num_converted, szData, cchChars+2, pwchChars, cchChars);
 #else
 	wcstombs(szData, pwchChars, cchChars);
 #endif
+#endif
+
 	szData[cchChars]=0;
 	m_strElemContent += szData;
 
@@ -282,7 +342,21 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     int cchQName )
 {
 	TCHAR szCurElement[MAX_PATH+1] = {0};
+
+#ifdef _UNICODE
+#if (_MSC_VER >= 1400)
+	_tcscpy_s(szCurElement, MAX_PATH+1, pwchQName);
+#else
+	_tcscpy(szCurElement, pwchQName);
+#endif
+#else
+#if (_MSC_VER >= 1400)
+	size_t num_converted;
+	wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchQName, cchQName);
+#else
 	wcstombs(szCurElement, pwchQName, cchQName);
+#endif
+#endif
 
 	if (m_bValidation) {
 		if (_tcscmp(szCurElement, _T("entry")) == 0)
@@ -299,16 +373,16 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		else {
 			uuid_array_t uuid_array;
 #if _MSC_VER >= 1400
-			int nscanned = sscanf_s(cur_entry->uuid, "%32x", uuid_array);
+			int nscanned = _stscanf_s(cur_entry->uuid, _T("%32x"), uuid_array);
 #else
-			int nscanned = sscanf(cur_entry->uuid, "%32x", uuid_array);
+			int nscanned = _stscanf(cur_entry->uuid, T("%32x"), uuid_array);
 #endif
 			if (nscanned != 1)
 				tempitem.CreateUUID();
 			else
 				tempitem.SetUUID(uuid_array);
 		}
-		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? "" : m_ImportedPrefix + ".");
+		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
 		tempitem.SetGroup(newgroup + cur_entry->group);
 		if (cur_entry->title.GetLength() != 0)
 			tempitem.SetTitle(cur_entry->title, m_delimiter);
@@ -332,7 +406,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 			tempitem.SetRMTime(cur_entry->rmtime);
 		CMyString newPWHistory;
 		CString strPWHErrors, buffer;
-		buffer.Format(_T("\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "),
+		buffer.Format(IDSC_SAXERRORPWH,
 				cur_entry->group, cur_entry->title, cur_entry->username);
 		switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
 			case PWH_OK:
@@ -398,22 +472,22 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
 	if (_tcscmp(szCurElement, _T("status")) == 0) {
 		CString buffer;
-		int i = atoi(m_strElemContent);
-		buffer.Format("%01x", i);
+		int i = _ttoi(m_strElemContent);
+		buffer.Format(_T("%01x"), i);
 		cur_entry->pwhistory = CMyString(buffer);
 	}
 
 	if (_tcscmp(szCurElement, _T("max")) == 0) {
 		CString buffer;
-		int i = atoi(m_strElemContent);
-		buffer.Format("%02x", i);
+		int i = _ttoi(m_strElemContent);
+		buffer.Format(_T("%02x"), i);
 		cur_entry->pwhistory += CMyString(buffer);
 	}
 
 	if (_tcscmp(szCurElement, _T("num")) == 0) {
 		CString buffer;
-		int i = atoi(m_strElemContent);
-		buffer.Format("%02x", i);
+		int i = _ttoi(m_strElemContent);
+		buffer.Format(_T("%02x"), i);
 		cur_entry->pwhistory += CMyString(buffer);
 	}
 
@@ -457,7 +531,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		cur_entry->pwhistory += _T(" ") + cur_entry->changed;
 		//cur_entry->changed.Empty();
 		CString buffer;
-		buffer.Format(" %04x %s", m_strElemContent.GetLength(), m_strElemContent);
+		buffer.Format(_T(" %04x %s"), m_strElemContent.GetLength(), m_strElemContent);
 		cur_entry->pwhistory += CMyString(buffer);
 		buffer.Empty();
 	}

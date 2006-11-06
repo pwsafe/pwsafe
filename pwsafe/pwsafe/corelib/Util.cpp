@@ -12,6 +12,7 @@
 #include "BlowFish.h"
 #include "PWSrand.h"
 #include "PwsPlatform.h"
+#include "corelib.h"
 
 #include <stdio.h>
 #include <sys/timeb.h>
@@ -100,9 +101,9 @@ GenRandhash(const CMyString &a_passkey,
   /*
     tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
   */
-	
+
   BlowFish Cipher(tempSalt, sizeof(tempSalt));
-	
+
   unsigned char tempbuf[StuffSize];
   memcpy((char*)tempbuf, (char*)a_randstuff, StuffSize);
 
@@ -351,20 +352,20 @@ PWSUtil::VerifyImportDateTimeString(const CString time_str, time_t &t)
     if (!isdigit(time_str.GetAt(idigits[i])))
       return false;
 
-  // Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
+  // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // Then take copy of the string and replace all blanks by '#' (should only be 1)
-  if (time_str.Find('#') != (-1))
+  if (time_str.Find(TCHAR('#')) != (-1))
     return false;
 
   xtime_str = time_str;
-  if (xtime_str.Replace(' ', '#') != 1)
+  if (xtime_str.Replace(TCHAR(' '), TCHAR('#')) != 1)
     return false;
 
 #if _MSC_VER >= 1400
-  nscanned = sscanf_s(xtime_str, "%4d/%2d/%2d#%2d:%2d:%2d",
+  nscanned = _stscanf_s(xtime_str, _T("%4d/%2d/%2d#%2d:%2d:%2d"),
                       &yyyy, &mon, &dd, &hh, &min, &ss);
 #else
-  nscanned = sscanf(xtime_str, "%4d/%2d/%2d#%2d:%2d:%2d",
+  nscanned = _stscanf(xtime_str, _T("%4d/%2d/%2d#%2d:%2d:%2d"),
                     &yyyy, &mon, &dd, &hh, &min, &ss);
 #endif
 
@@ -410,13 +411,13 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
   const CString str_months = _T("JanFebMarAprMayJunJulAugSepOctNovDec");
   const CString str_days = _T("SunMonTueWedThuFriSat");
   CString xtime_str;
-  char cmonth[4], cdayofweek[4];
+  TCHAR cmonth[4], cdayofweek[4];
   const int idigits[12] = {8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 22, 23};
   const int ndigits = 12;
   int iMON, iDOW, nscanned;
   int yyyy, mon, dd, hh, min, ss;
 
-  cmonth[3] = cdayofweek[3] = '\0';
+  cmonth[3] = cdayofweek[3] = TCHAR('\0');
 
   t = (time_t)-1;
 
@@ -432,20 +433,20 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
     if (!isdigit(time_str.GetAt(idigits[i])))
       return false;
 
-  // Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
+  // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // Then take copy of the string and replace all blanks by '#' (should be 4)
-  if (time_str.Find('#') != (-1))
+  if (time_str.Find(TCHAR('#')) != (-1))
     return false;
 
   xtime_str = time_str;
-  if (xtime_str.Replace(' ', '#') != 4)
+  if (xtime_str.Replace(TCHAR(' '), TCHAR('#')) != 4)
     return false;
 
 #if _MSC_VER >= 1400
-  nscanned = sscanf_s(xtime_str, "%3c#%3c#%2d#%2d:%2d:%2d#%4d",
+  nscanned = _stscanf_s(xtime_str, _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
                       cdayofweek, sizeof(cdayofweek), cmonth, sizeof(cmonth), &dd, &hh, &min, &ss, &yyyy);
 #else
-  nscanned = sscanf(xtime_str, "%3c#%3c#%2d#%2d:%2d:%2d#%4d",
+  nscanned = _stscanf(xtime_str, _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
                     cdayofweek, cmonth, &dd, &hh, &min, &ss, &yyyy);
 #endif
 
@@ -524,24 +525,24 @@ PWSUtil::VerifyXMLDateTimeString(const CString time_str, time_t &t)
     if (!isdigit(time_str.GetAt(idigits[i])))
       return false;
 
-  // Since white space is ignored with sscanf, first verify that there are no invalid '#' characters
+  // Since white space is ignored with _stscanf, first verify that there are no invalid '#' characters
   // and no blanks.  Replace '-' & 'T' by '#'.
-  if (time_str.Find('#') != (-1))
+  if (time_str.Find(TCHAR('#')) != (-1))
     return false;
-  if (time_str.Find(' ') != (-1))
+  if (time_str.Find(TCHAR(' ')) != (-1))
     return false;
 
   xtime_str = time_str;
-  if (xtime_str.Replace('-', '#') != 2)
+  if (xtime_str.Replace(TCHAR('-'), TCHAR('#')) != 2)
     return false;
-  if (xtime_str.Replace('T', '#') != 1)
+  if (xtime_str.Replace(TCHAR('T'), TCHAR('#')) != 1)
     return false;
 
 #if _MSC_VER >= 1400
-  nscanned = sscanf_s(xtime_str, "%4d#%2d#%2d#%2d:%2d:%2d",
+  nscanned = _stscanf_s(xtime_str, _T("%4d#%2d#%2d#%2d:%2d:%2d"),
                       &yyyy, &mon, &dd, &hh, &min, &ss);
 #else
-  nscanned = sscanf(xtime_str, "%4d#%2d#%2d#%2d:%2d:%2d",
+  nscanned = _stscanf(xtime_str, _T("%4d#%2d#%2d#%2d:%2d:%2d"),
                     &yyyy, &mon, &dd, &hh, &min, &ss);
 #endif
 
@@ -606,7 +607,7 @@ PWSUtil::ToClipboard(const CMyString &data,
       // identify data in clipboard as ours, so as not to clear the wrong data later
       // of course, we don't want an extra copy of a password floating around
       // in memory, so we'll use the hash
-      const char *str = (const char *)data;
+      const TCHAR *str = (const TCHAR *)data;
       SHA256 ctx;
       ctx.Update((const unsigned char *)str, data.GetLength());
       ctx.Final(clipboard_digest);
@@ -673,18 +674,18 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 {
   CMyString ret;
   if (t != 0) {
-		char time_str[32];
+		TCHAR time_str[32];
 #if _MSC_VER >= 1400
 		struct tm st;
 		errno_t err;
     	err = localtime_s(&st, &t);  // secure version
     	ASSERT(err == 0);
     	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
-      		sprintf_s(time_str, 20, "%04d/%02d/%02d %02d:%02d:%02d",
+      		_stprintf_s(time_str, 20, _T("%04d/%02d/%02d %02d:%02d:%02d"),
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
     	else if ((result_format & TMC_XML) == TMC_XML)
-      		sprintf_s(time_str, 20, "%04d-%02d-%02dT%02d:%02d:%02d",
+      		_stprintf_s(time_str, 20, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
     	else {
@@ -693,17 +694,17 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
       	}
     	ret = time_str;
 #else
-    	char *t_str_ptr;
+    	TCHAR *t_str_ptr;
 		struct tm *st;
     	st = localtime(&t);
         ASSERT(st != NULL); // null means invalid time
     	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT) {
-      		sprintf(time_str, "%04d/%02d/%02d %02d:%02d:%02d",
+      		_stprintf(time_str, _T("%04d/%02d/%02d %02d:%02d:%02d"),
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
             	  st->tm_hour, st->tm_min, st->tm_sec);
       		t_str_ptr = time_str;
     	} else if ((result_format & TMC_XML) == TMC_XML) {
-      		sprintf(time_str, "%04d-%02d-%02dT%02d:%02d:%02d",
+      		_stprintf(time_str, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
             	  st->tm_hour, st->tm_min, st->tm_sec);
       		t_str_ptr = time_str;
@@ -729,7 +730,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 }
 
 int
-PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHistory, CString &strErrors)
+PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, CString &strErrors)
 {
 	// Format is (! == mandatory blank, unless at the end of the record):
 	//    sxx00
@@ -763,9 +764,9 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 	TCHAR *lpszPW;
 
 #if _MSC_VER >= 1400
-	int iread = sscanf_s(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+	int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #else
-	int iread = sscanf(lpszPWHistory, "%01d%02x%02x", &s, &m, &n);
+	int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #endif
 	if (iread != 3) {
 		rc = PWH_INVALID_HDR;
@@ -813,9 +814,9 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 #else
 		memcpy(lpszPW, lpszPWHistory, 19);
 #endif
-		lpszPW[19] = '\0';
+		lpszPW[19] = TCHAR('\0');
 		tmp.ReleaseBuffer();
-		
+
 		if (tmp.Left(10) == _T("1970-01-01"))
 			t = 0;
 		else {
@@ -837,9 +838,9 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 		pwleft -= 1;
 
 #if _MSC_VER >= 1400
-		iread = sscanf_s(lpszPWHistory, "%04x", &ipwlen);
+		iread = _stscanf_s(lpszPWHistory, _T("%04x"), &ipwlen);
 #else
-		iread = sscanf(lpszPWHistory, "%04x", &ipwlen);
+		iread = _stscanf(lpszPWHistory, _T("%04x"), &ipwlen);
 #endif
 		if (iread != 1) {
 			rc = PWH_INVALID_PSWD_LENGTH;
@@ -869,7 +870,7 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 #else
 		memcpy(lpszPW, lpszPWHistory, ipwlen);
 #endif
-		lpszPW[ipwlen] = '\0';
+		lpszPW[ipwlen] = TCHAR('\0');
 		tmp.ReleaseBuffer();
 		buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
 		newPWHistory += CMyString(buffer);
@@ -883,43 +884,42 @@ PWSUtil::VerifyImportPWHistoryString(const char *PWHistory, CMyString &newPWHist
 
 	relbuf: pwh.ReleaseBuffer();
 
-	exit: buffer.Format(_T("Error in Password History field at offset %d: "), len - pwleft);
+	exit: buffer.Format(IDSC_PWHERROR, len - pwleft);
 	CString temp;
 	switch (rc) {
 		case PWH_OK:
 		case PWH_IGNORE:
+			temp.Empty();
 			buffer.Empty();
 			break;
 		case PWH_INVALID_HDR:
-			temp.Format(_T("Invalid header: %s"), PWHistory);
-			buffer += temp;
+			temp.Format(IDSC_INVALIDHEADER, PWHistory);
 			break;
 		case PWH_INVALID_STATUS:
-			temp.Format(_T("Invalid status value: %d"), s);
-			buffer += temp;
+			temp.Format(IDSC_INVALIDPWHSTATUS, s);
 			break;
 		case PWH_INVALID_NUM:
-			temp.Format(_T("Invalid number of saved old passwords %d (max. set to %d)"), n, m);
-			buffer += temp;
+			temp.Format(IDSC_INVALIDNUMOLDPW, n, m);
 			break;
 		case PWH_INVALID_DATETIME:
-			buffer += _T("Invalid date/time value");
+			temp.LoadString(IDSC_INVALIDDATETIME);
 			break;
 		case PWH_INVALID_PSWD_LENGTH:
-			buffer += _T("Invalid password length found");
+			temp.LoadString(IDSC_INVALIDPWLENGTH);
 			break;
 		case PWH_TOO_SHORT:
-			buffer += _T("Field is too short. Minimum required per old password entry is 26 + the actual password");
+			temp.LoadString(IDSC_FIELDTOOSHORT);
 			break;
 		case PWH_TOO_LONG:
-			buffer += _T("Field is too long");
+			temp.LoadString(IDSC_FIELDTOOLONG);
 			break;
 		case PWH_INVALID_CHARACTER:
-			buffer += _T("Invalid field separator character found - only a single blank is allowed between fields");
+			temp.LoadString(IDSC_INVALIDSEPARATER);
 			break;
 		default:
 			ASSERT(0);
 	}
+	buffer += temp;
 	strErrors += buffer;
 	if (rc != PWH_OK)
 		newPWHistory = _T("");

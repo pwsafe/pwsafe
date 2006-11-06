@@ -113,11 +113,11 @@ BOOL CPWHistDlg::OnInitDialog()
   }
   m_PWHistListCtrl.SetRedraw(TRUE);
 
-  char buffer[10];
+  TCHAR buffer[10];
 #if _MSC_VER >= 1400
-  sprintf_s(buffer, 10, "%d", m_NumPWHistory);
+  _stprintf_s(buffer, 10, _T("%d"), m_NumPWHistory);
 #else
-  sprintf(buffer, "%d", m_NumPWHistory);
+  _stprintf(buffer, _T("%d"), m_NumPWHistory);
 #endif
 
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
@@ -167,15 +167,15 @@ CPWHistDlg::OnOK()
   if (!(m_HistStr.IsEmpty() && m_SavePWHistory == FALSE)) {
     TCHAR buffer[6];
 #if _MSC_VER >= 1400
-    sprintf_s
+    _stprintf_s
 #else
-      sprintf
+      _stprintf
 #endif
       (buffer,
 #if _MSC_VER >= 1400
        6,
 #endif
-       "%1x%02x%02x",
+       _T("%1x%02x%02x"),
        (m_SavePWHistory == FALSE) ? 0 : 1,
        m_MaxPWHistory,
        m_PWHistList.GetCount()

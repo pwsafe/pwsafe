@@ -89,8 +89,10 @@ BOOL COptionsBackup::OnInitDialog()
 
 	if(m_backupsuffix_cbox.GetCount() == 0) {
 		// add the strings in alphabetical order
+		CString cs_text;
 		int nIndex;
-		nIndex = m_backupsuffix_cbox.AddString(_T("None"));
+		cs_text.LoadString(IDS_NONE);
+		nIndex = m_backupsuffix_cbox.AddString(cs_text);
 		m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_None);
 		m_BKSFX_to_Index[PWSprefs::BKSFX_None] = nIndex;
 
@@ -98,7 +100,8 @@ BOOL COptionsBackup::OnInitDialog()
 		m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_DateTime);
 		m_BKSFX_to_Index[PWSprefs::BKSFX_DateTime] = nIndex;
 
-		nIndex = m_backupsuffix_cbox.AddString(_T("Incremented Number [001-999]"));
+		cs_text.LoadString(IDS_INCREMENTNUM);
+		nIndex = m_backupsuffix_cbox.AddString(cs_text);
 		m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_IncNumber);
 		m_BKSFX_to_Index[PWSprefs::BKSFX_IncNumber] = nIndex;
 	}
@@ -299,14 +302,14 @@ BOOL COptionsBackup::OnKillActive()
 
 	// Check that correct fields are non-blank.
 	if (m_backupprefix == 1  && m_userbackupprefix.IsEmpty()) {
-		AfxMessageBox(_T("Please enter your backup database prefix!"));
+		AfxMessageBox(IDS_OPTBACKUPPREF);
 		((CEdit*)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
 		return FALSE;
 	}
 
 	if (m_backuplocation == 1) {
 		if(m_userbackupsubdirectory.IsEmpty()) {
-			AfxMessageBox(_T("Please specify the sub-directory to contain all backups."));
+			AfxMessageBox(IDS_OPTBACKUPSUBDIR);
 			((CEdit*)GetDlgItem(IDC_USERBACKUPSUBDIRECTORYVALUE))->SetFocus();
 			return FALSE;
 		}
@@ -319,7 +322,7 @@ BOOL COptionsBackup::OnKillActive()
 
 	if (m_backuplocation == 2) {
 		if (m_userbackupotherlocation.IsEmpty()) {
-			AfxMessageBox(_T("Please specify the destination location to contain all backups."));
+			AfxMessageBox(IDS_OPTBACKUPLOCATION);
 			((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
 			return FALSE;
 		}
@@ -330,7 +333,7 @@ BOOL COptionsBackup::OnKillActive()
 		}
 
 		if (PathIsDirectory(m_userbackupotherlocation) == FALSE) {
-			AfxMessageBox(_T("Destination location does not exist or is not accessible."));
+			AfxMessageBox(IDS_OPTBACKUPNOLOC);
 			((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
 			return FALSE;
 		}
@@ -338,8 +341,7 @@ BOOL COptionsBackup::OnKillActive()
 
 	if (m_backupsuffix == PWSprefs::BKSFX_IncNumber &&
 		((m_maxnumincbackups < 1) || (m_maxnumincbackups > 999))) {
-			AfxMessageBox(_T("Maximum number of backups kept using incremented number suffix\n"
-							 "must be between 1 and 999."));
+			AfxMessageBox(IDS_OPTBACKUPMAXNUM);
 			((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
 			return FALSE;
 	}
@@ -380,9 +382,11 @@ void COptionsBackup::OnBrowseForLocation()
 
 	bi.hwndOwner = this->GetSafeHwnd();
 	bi.ulFlags = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_USENEWUI;
-	bi.lpszTitle = _T("Select Location for Intermediate Backups");
+	CString cs_text;
+	cs_text.LoadString(IDS_OPTBACKUPTITLE);
+	bi.lpszTitle = cs_text;
 	bi.lpfn = SetSelProc;
-	bi.lParam = (LPARAM)(LPCSTR) cs_initiallocation;
+	bi.lParam = (LPARAM)(LPCTSTR) cs_initiallocation;
 
 
 	// Show the dialog and get the itemIDList for the

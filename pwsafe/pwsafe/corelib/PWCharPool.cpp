@@ -10,6 +10,7 @@
 
 #include "PWCharPool.h"
 #include "Util.h"
+#include "corelib.h"
 #include "PWSrand.h"
 
 // Following macro get length of std_*_chars less the trailing \0
@@ -238,7 +239,7 @@ bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
   int length = pwd.GetLength();
   // check for minimun length
   if (length < MinLength) {
-    error = _T("Password is too short");
+    error.LoadString(IDSC_PASSWORDTOOSHORT);
     return false;
   }
 
@@ -256,7 +257,7 @@ bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
   if (has_uc && has_lc && (has_digit || has_other)) {
     return true;
   } else {
-    error = _T("Password should be mixed case, with at least one digit or punctuation character");
+    error.LoadString(IDSC_PASSWORDPOOR);
     return false;
   }
 }

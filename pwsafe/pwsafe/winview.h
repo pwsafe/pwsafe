@@ -14,7 +14,7 @@
 //  Contains methods to display user interface, called by model
 
 class WinView : public View
-{		
+{
 public:
 	static View * Instance()
 	{
@@ -23,7 +23,7 @@ public:
 		return _instance;
 	}
 	virtual ~WinView() {};
-	
+
 	virtual int     PromptUserForCombination();
 	virtual int     ShowList() { return 0; };
 
@@ -32,7 +32,7 @@ protected:
 
 private:
 	static View * _instance;
-	
+
 };
 
 

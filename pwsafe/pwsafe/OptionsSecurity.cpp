@@ -76,7 +76,7 @@ void COptionsSecurity::OnLockbase()
 BOOL COptionsSecurity::OnInitDialog() 
 {
   CPropertyPage::OnInitDialog();
-	
+
   OnLockbase();
   CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
 
@@ -84,7 +84,7 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetRange(1, 120);
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
-	
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }

@@ -207,7 +207,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
     unsigned char randhash[SHA1::HASHLEN];   // HashSize
     PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
     // miserable bug - have to fix this way to avoid breaking existing files
-    randstuff[8] = randstuff[9] = '\0';
+    randstuff[8] = randstuff[9] = TCHAR('\0');
     GenRandhash(passwd,
                 randstuff,
                 randhash);
@@ -223,7 +223,7 @@ static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
     PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
     fwrite(ipthing, 1, 8, out);
 
-    LPCSTR pwd = LPCSTR(passwd);
+    LPCTSTR pwd = LPCTSTR(passwd);
     Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
                                         thesalt, SaltLength);
     _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
@@ -260,7 +260,7 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
     fread(&len, 1, sizeof(len), in); // XXX portability issue
 #else
     fread(randstuff, 1, 8, in);
-    randstuff[8] = randstuff[9] = '\0'; // ugly bug workaround
+    randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
     fread(randhash, 1, sizeof(randhash), in);
 
     unsigned char temphash[SHA1::HASHLEN];
@@ -278,7 +278,7 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 
     fread(salt,    1, SaltLength, in);
     fread(ipthing, 1, 8,          in);
-    LPCSTR pwd = LPCSTR(passwd);
+    LPCTSTR pwd = LPCTSTR(passwd);
     unsigned char dummyType;
 
     Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
@@ -392,18 +392,21 @@ ThisMfcApp::InitInstance()
 			int irc;
 			// Create New Popup Menu
 			new_popupmenu->CreatePopupMenu();
+			CString cs_recent, cs_recentsafes;
+			cs_recent.LoadString(IDS_RECENT);
+			cs_recentsafes.LoadString(IDS_RECENTSAFES);
 
 			if (!m_mruonfilemenu) {	// MRU entries in popup menu
 				// Insert Item onto new popup
-				irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
+				irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, cs_recent );
 				ASSERT(irc != 0);
 
 				// Insert Popup onto main menu
 				irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) new_popupmenu->m_hMenu,
-																				 "&Recent Safes" );
+																				 cs_recentsafes );
 				ASSERT(irc != 0);
 			} else {	// MRU entries inline
-				irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, "Recent" );
+				irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, cs_recent );
 				ASSERT(irc != 0);
 			}
 
@@ -444,7 +447,7 @@ ThisMfcApp::InitInstance()
    */
 
 #if !defined(POCKET_PC)
-  if (m_lpCmdLine[0] != '\0') {
+  if (m_lpCmdLine[0] != TCHAR('\0')) {
     CString args = m_lpCmdLine;
 
     if (args[0] != _T('-')) {
@@ -523,7 +526,7 @@ ThisMfcApp::InitInstance()
         return FALSE;
       } // switch
     } // else
-  } // m_lpCmdLine[0] != '\0';
+  } // m_lpCmdLine[0] != TCHAR('\0');
 #endif
 
   /*
@@ -660,13 +663,13 @@ ThisMfcApp::WriteMRU(const int &iconfig)
 				for (int i = 0; i < num_MRU; i++) {
 					csMRUFilename = (*m_pMRU)[i];
 					csMRUFilename.Trim();
-					csSubkey.Format("Safe%02d", i + 1);
+					csSubkey.Format(_T("Safe%02d"), i + 1);
 					PWSprefs::GetInstance()->WriteMRUToXML(csSubkey, csMRUFilename);
 				}
 				// Remove any not in use
 				const int max_MRU = ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1;
 				for (int i = num_MRU; i < max_MRU; i++) {
-					csSubkey.Format("Safe%02d", i + 1);
+					csSubkey.Format(_T("Safe%02d"), i + 1);
 					PWSprefs::GetInstance()->DeleteMRUFromXML(csSubkey);
 				}
 				PWSprefs::GetInstance()->SetKeepXMLLock(false);
@@ -694,7 +697,7 @@ ThisMfcApp::ReadMRU(const int &iconfig)
 				CString csSubkey;
 				PWSprefs::GetInstance()->SetKeepXMLLock(true);
 				for (int i = nMRUItems; i > 0; i--) {
-					csSubkey.Format("Safe%02d", i);
+					csSubkey.Format(_T("Safe%02d"), i);
 					const CString csMRUFilename = (PWSprefs::GetInstance()->
 						ReadMRUFromXML(csSubkey));
 					AddToMRU(csMRUFilename, true);
@@ -755,17 +758,17 @@ ThisMfcApp::ClearClipboardData()
 void
 ThisMfcApp::StripFileQuotes( CString& strFilename )
 {
-  const char* szFilename	= strFilename;
+  const TCHAR* szFilename	= strFilename;
   int			nLen		= strFilename.GetLength();
 
   // if the filenames starts with a quote...
-  if ( *szFilename == '\"' ) {
+  if ( *szFilename == TCHAR('\"') ) {
     // remove leading quote
     ++szFilename;
     --nLen;
 
     // trailing quote is optional, remove if present
-    if ( szFilename[nLen - 1] == '\"' )
+    if ( szFilename[nLen - 1] == TCHAR('\"') )
       --nLen;
 
     strFilename = CString( szFilename, nLen );
@@ -817,11 +820,11 @@ ThisMfcApp::OnHelp()
   cs_text.LoadString(IDS_OPTIONS);
   if (cs_title != cs_text)
     ::HtmlHelp(wnd->m_hWnd,
-               "pwsafe.chm",
+               _T("pwsafe.chm"),
                HH_DISPLAY_TOPIC, 0);
   else
     ::HtmlHelp(NULL,
-               "pwsafe.chm::/display_tab.html",
+               _T("pwsafe.chm::/display_tab.html"),
                HH_DISPLAY_TOPIC, 0);
 
 #endif
@@ -839,7 +842,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
   for (int i = 0; i < count; i++) {
     CString str;
     if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
-        (strcmp(str, MenuString) == 0))
+        (_tcscmp(str, MenuString) == 0))
       return i;
   }
 
@@ -870,7 +873,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, int MenuID)
 void
 ThisMfcApp::GetApplicationVersionData()
 {
-  char  szFullPath[MAX_PATH];
+  TCHAR szFullPath[MAX_PATH];
   DWORD dwVerHnd, dwVerInfoSize;
   // Get version information from the application
   ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));

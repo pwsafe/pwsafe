@@ -113,7 +113,7 @@ BOOL COptionsSystem::OnInitDialog()
 	pspin->SetRange(0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
 	pspin->SetBase(10);
 	pspin->SetPos(m_maxmruitems);
-	
+
 	OnUseSystemTray();
 
 	// Tooltips on Property Pages

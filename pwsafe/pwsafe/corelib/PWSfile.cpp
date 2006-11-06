@@ -9,6 +9,7 @@
 #include "PWSfileV1V2.h"
 #include "PWSfileV3.h"
 #include "SysInfo.h"
+#include "corelib.h"
 
 #include <LMCONS.H> // for UNLEN definition
 #include <io.h>
@@ -272,7 +273,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
     case EACCES:
       // Tried to open read-only file for writing, or file’s
       // sharing mode does not allow specified operations, or given path is directory
-      locker = _T("Cannot create lock file - no permission in directory?");
+	  locker.LoadString(IDSC_NOLOCKACCESS);
       break;
     case EEXIST: // filename already exists
       {
@@ -280,7 +281,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
         TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
         int fh2 = _open(lock_filename, _O_RDONLY);
         if (fh2 == -1) {
-          locker = _T("Unable to determine locker?");
+          locker.LoadString(IDSC_CANTGETLOCKER);
         } else {
           int bytesRead = _read(fh2, lockerStr, sizeof(lockerStr)-1);
           _close(fh2);
@@ -294,16 +295,16 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
       } // EEXIST block
       break;
     case EINVAL: // Invalid oflag or pmode argument
-      locker = _T("Internal error: Invalid oflag or pmode argument");
+      locker.LoadString(IDSC_INTERNALLOCKERROR);
       break;
     case EMFILE: // No more file handles available (too many open files)
-      locker = _T("System error: No morefile handles available");
+      locker.LoadString(IDSC_SYSTEMLOCKERROR);
       break;
     case ENOENT: //File or path not found
-      locker = _T("File or path not found");
+      locker.LoadString(IDSC_LOCKFILEPATHNF);
       break;
     default:
-      locker = _T("Internal error: Unexpected errno");
+      locker.LoadString(IDSC_LOCKUNKNOWNERROR);
       break;
     } // switch (errno)
     return false;
@@ -480,7 +481,7 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 							NULL, OPEN_EXISTING,
 							FILE_ATTRIBUTE_NORMAL, NULL);
 	if (h2 == INVALID_HANDLE_VALUE) {
-		locker = _T("Unable to determine locker?");
+		locker.LoadString(IDSC_CANTGETLOCKER);
 	} else {
 		DWORD bytesRead;
 		(void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
@@ -491,7 +492,7 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 			locker = lockerStr;
 			bResult = true;
 		} else { // read failed for some reason
-			locker = _T("Unable to read locker?");
+			locker.LoadString(IDSC_CANTREADLOCKER);
 		} // read info from lock file
 	}
 	return bResult;

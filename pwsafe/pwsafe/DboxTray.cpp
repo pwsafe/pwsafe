@@ -149,7 +149,7 @@ DboxMain::OnTrayCopyUsername(UINT nID)
   const CMyString username = ci.GetUser();
   if (!username.IsEmpty()) {
     ToClipboard(username);
-    UpdateAccessTime(&ci);	
+    UpdateAccessTime(&ci);
   }
 }
 

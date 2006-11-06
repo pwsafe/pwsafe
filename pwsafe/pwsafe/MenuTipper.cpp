@@ -127,9 +127,9 @@ CRect CMenuTipManager::GetMenuTipRect(HMENU hmenu, UINT nID)
 //
 static BOOL CALLBACK MyEnumProc(HWND hwnd, LPARAM lParam)
 {
-	char buf[16];
-	GetClassName(hwnd,buf,sizeof(buf));
-	if (strcmp(buf,"#32768") == 0) { // special classname for menus
+	TCHAR buf[16];
+	GetClassName(hwnd, buf, sizeof(buf));
+	if (_tcscmp(buf, _T("#32768")) == 0) { // special classname for menus
 		*((HWND*)lParam) = hwnd;	 // found it
 		return FALSE;
 	}

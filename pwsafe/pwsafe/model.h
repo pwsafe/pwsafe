@@ -29,7 +29,7 @@ public:
 
 	//  Kick off application
 	void Main();
-	
+
 	const char * GetDatabaseName() { return 0; };
 	int      CheckSafeCombination(const char *combo);
 
