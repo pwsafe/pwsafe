@@ -23,6 +23,7 @@
 #define IDS_CONFIG_REGISTRY             5031
 #define IDS_CONFIG_FILE_RO              5032
 #define IDS_CONFIG_FILE_RW              5033
+#define IDS_CONFIG_BLANK                5034
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
