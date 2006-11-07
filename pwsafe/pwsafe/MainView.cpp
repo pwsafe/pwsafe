@@ -240,7 +240,8 @@ DboxMain::setupBars()
 		case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
 		default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
 	  }
-	  // Set up Configuration text
+	  // Set up Configuration source indicator (debug only)
+#ifdef DEBUG
 	  const int iConfigOptions = PWSprefs::GetInstance()->GetConfigOptions();
 	  switch (iConfigOptions) {
 	   	case PWSprefs::CF_NONE: statustext[SB_CONFIG] = IDS_CONFIG_NONE; break;
@@ -250,6 +251,9 @@ DboxMain::setupBars()
 	    case PWSprefs::CF_FILE_RO: statustext[SB_CONFIG] = IDS_CONFIG_FILE_RO; break;
     	default: ASSERT(0);
 	  }
+#else
+      statustext[SB_CONFIG] = IDS_CONFIG_BLANK;
+#endif /* DEBUG */
 	  // Set up the rest
 	  statustext[SB_MODIFIED] = IDS_MODIFIED;
 	  statustext[SB_READONLY] = IDS_READ_ONLY;
