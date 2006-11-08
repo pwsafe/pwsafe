@@ -80,10 +80,9 @@ DboxMain::OnTrayLockUnLock()
 void
 DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
 {
-	CString csUnLock, csLock, csClosed;
-	csUnLock.LoadString(IDS_UNLOCKSAFE);
-	csLock.LoadString(IDS_LOCKSAFE);
-	csClosed.LoadString(IDS_NOSAFE);
+	const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
+	const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
+	const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
 
 	const int i_state = app.GetSystemTrayState();
 	// Set text to "UnLock" or "Lock"

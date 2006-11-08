@@ -46,9 +46,8 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 {
 	HRESULT hr, hr0, hr60, hr40, hr30;
 	bool b_ok = false;
-	CString cs_validation, cs_import;
-	cs_validation.LoadString(IDSC_XMLVALIDATION);
-	cs_import.LoadString(IDSC_XMLIMPORT);
+	const CString cs_validation(MAKEINTRESOURCE(IDSC_XMLVALIDATION));
+	const CString cs_import(MAKEINTRESOURCE(IDSC_XMLIMPORT));
 
 	m_strResultText = _T("");
 	m_bValidation = bvalidation;  // Validate or Import

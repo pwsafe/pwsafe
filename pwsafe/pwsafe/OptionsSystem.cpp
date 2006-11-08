@@ -133,8 +133,7 @@ BOOL COptionsSystem::OnInitDialog()
 	m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 2 * iTime);
 
 	if (m_ToolTipCtrl != NULL) {
-		CString cs_ToolTip;
-		cs_ToolTip.LoadString(IDS_DELETEREGISTRY);
+		CString cs_ToolTip(MAKEINTRESOURCE(IDS_DELETEREGISTRY));
 		m_ToolTipCtrl->AddTool(GetDlgItem(IDC_DELETEREGISTRY), cs_ToolTip);
 	}
 

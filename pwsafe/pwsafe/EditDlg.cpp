@@ -37,10 +37,10 @@ static char THIS_FILE[] = __FILE__;
 
 static TCHAR PSSWDCHAR = TCHAR('*');
 CMyString CEditDlg::HIDDEN_NOTES;
-CString CEditDlg::CS_SHOW;
-CString CEditDlg::CS_HIDE;
 CString CEditDlg::CS_ON;
 CString CEditDlg::CS_OFF;
+CString CEditDlg::CS_SHOW;
+CString CEditDlg::CS_HIDE;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
@@ -48,20 +48,6 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 	m_ascLTime(_T("")), m_oldascLTime(_T(""))
 {
   ASSERT(ci != NULL);
-
-  if (CS_ON.IsEmpty()) {
-  	TRACE("Initialised Edit Show/Hide");
-    CS_ON.LoadString(IDS_ON);
-    CS_OFF.LoadString(IDS_OFF);
-    HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
-#if defined(POCKET_PC)
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
-#else
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
-#endif
-  }
 
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
@@ -88,6 +74,19 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   if (m_ascLTime.IsEmpty())
     m_ascLTime.LoadString(IDS_NEVER);
   m_oldascLTime = m_ascLTime;
+
+  if (HIDDEN_NOTES.IsEmpty()) {
+    HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
+    CS_ON.LoadString(IDS_ON);
+    CS_OFF.LoadString(IDS_OFF);
+#if defined(POCKET_PC)
+	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
+	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
+#else
+	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
+	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
+#endif
+  }
 }
 
 CEditDlg::~CEditDlg()

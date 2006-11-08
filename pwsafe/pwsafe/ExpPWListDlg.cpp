@@ -109,7 +109,7 @@ CExpPWListDlg::OnOK()
 void
 CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 {
-	CString data; data.LoadString(IDS_COPYTITLE);
+	CString data(MAKEINTRESOURCE(IDS_COPYTITLE));
 	const CString CRLF = _T("\r\n");
 	const CString TAB = _T('\t');
 

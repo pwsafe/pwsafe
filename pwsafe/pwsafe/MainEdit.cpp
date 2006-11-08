@@ -143,8 +143,7 @@ DboxMain::OnAddGroup()
     // or by clicking over "whitespace".
     // If the former, add a child node to the current one
     // If the latter, add to root.
-    CMyString cmys_text;
-	cmys_text.LoadString(IDS_NEWGROUP);
+    CMyString cmys_text(MAKEINTRESOURCE(IDS_NEWGROUP));
     if (m_TreeViewGroup.IsEmpty())
       m_TreeViewGroup = cmys_text;
     else

@@ -101,7 +101,7 @@ DboxMain::OpenOnInit(void)
   switch (rc2) {
   case PWScore::BAD_DIGEST: {
     CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile());
-    CString cs_title; cs_title.LoadString(IDS_FILEREADERROR);
+    CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
     const int yn = MessageBox(cs_msg, cs_title, MB_YESNO|MB_ICONERROR);
     if (yn == IDNO) {
       CDialog::OnCancel();
@@ -1522,19 +1522,17 @@ DboxMain::Compare(const CMyString &pszFilename)
 		buffer.Format(IDS_COMPAREBOTHDIFF2, m_core.GetCurFile(), pszFilename);
 		resultStr += buffer;
 		POSITION conflictPos = list_Conflicts.GetHeadPosition();
-		CString csx_password, csx_notes, csx_url, csx_autotype, csx_ctime, csx_pmtime,
-			csx_atime, csx_ltime, csx_rmtime, csx_pwhistory;
 
-		csx_password.LoadString(IDS_COMPPASSWORD);
-		csx_notes.LoadString(IDS_COMPNOTES);
-		csx_url.LoadString(IDS_COMPURL);
-		csx_autotype.LoadString(IDS_COMPAUTOTYPE);
-		csx_ctime.LoadString(IDS_COMPCTIME);
-		csx_pmtime.LoadString(IDS_COMPPMTIME);
-		csx_atime.LoadString(IDS_COMPATIME);
-		csx_ltime.LoadString(IDS_COMPLTIME);
-		csx_rmtime.LoadString(IDS_COMPRMTIME);
-		csx_pwhistory.LoadString(IDS_COMPPWHISTORY);
+		const CString csx_password(MAKEINTRESOURCE(IDS_COMPPASSWORD));
+		const CString csx_notes(MAKEINTRESOURCE(IDS_COMPNOTES));
+		const CString csx_url(MAKEINTRESOURCE(IDS_COMPURL));
+		const CString csx_autotype(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
+		const CString csx_ctime(MAKEINTRESOURCE(IDS_COMPCTIME));
+		const CString csx_pmtime(MAKEINTRESOURCE(IDS_COMPPMTIME));
+		const CString csx_atime(MAKEINTRESOURCE(IDS_COMPATIME));
+		const CString csx_ltime(MAKEINTRESOURCE(IDS_COMPLTIME));
+		const CString csx_rmtime(MAKEINTRESOURCE(IDS_COMPRMTIME));
+		const CString csx_pwhistory(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
 
 		while (conflictPos) {
 			st_Conflict st_diff = list_Conflicts.GetAt(conflictPos);
