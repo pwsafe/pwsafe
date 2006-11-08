@@ -27,6 +27,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 static TCHAR PSSWDCHAR = TCHAR('*');
+
 CString CAddDlg::CS_SHOW;
 CString CAddDlg::CS_HIDE;
 
@@ -47,13 +48,12 @@ CAddDlg::CAddDlg(CWnd* pParent)
   m_ascLTime.LoadString(IDS_NEVER);
 
   if (CS_SHOW.IsEmpty()) {
-  	TRACE("Initialised Add Show/Hide");
 #if defined(POCKET_PC)
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
+	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
+	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
 #else
-    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
-    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
+	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
+	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
 #endif
   }
 }

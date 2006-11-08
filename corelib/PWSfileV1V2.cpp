@@ -202,8 +202,7 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
 static CMyString ReMergeNotes(const CItemData &item)
 {
   CMyString notes = item.GetNotes();
-  CMyString cs_autotype;
-  cs_autotype.LoadString(IDSC_AUTOTYPE);
+  CMyString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
   const CMyString url(item.GetURL());
   if (!url.IsEmpty()) {
     notes += _T("\r\n"); notes += url;
@@ -288,8 +287,7 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
 static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
 {
   CString instr(notesStr);
-  CString cs_autotype;
-  cs_autotype.LoadString(IDSC_AUTOTYPE);
+  CMyString cs_autotype(MAKEINTRESOURCE(IDSC_AUTOTYPE));
   int left = instr.Find(cs_autotype);
   if (left == -1) {
     autotypeStr = _T(""); 

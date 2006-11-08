@@ -91,8 +91,8 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
 	pLocator->getLineNumber(&iLineNumber);
 	pLocator->getColumnNumber(&iCharacter);
 
-	CString cs_format;
-	cs_format.LoadString(IDSC_SAXGENERROR);
+	const CString cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
+
 #if (_MSC_VER >= 1400)
 	_stprintf_s(szFormatString, MAX_PATH*2, cs_format,
 		hrErrorCode, iLineNumber, iCharacter, szErrorMessage);

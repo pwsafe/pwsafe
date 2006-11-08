@@ -369,8 +369,7 @@ BOOL CXMLprefs::LoadXML()
 		CString csMessage;
 		csMessage.Format(IDSC_XMLFILEERROR, 
 					value, line, linepos, (char *)_bstr_t(bstr, TRUE));
-		CString cs_title;
-		cs_title.LoadString(IDSC_XMLLOADFAILURE);
+		const CString cs_title(MAKEINTRESOURCE(IDSC_XMLLOADFAILURE));
 		MessageBox(NULL, csMessage, cs_title, MB_OK);
 
 		if (bstr) {

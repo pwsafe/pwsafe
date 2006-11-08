@@ -885,9 +885,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 		  cs_user_and_host = cs_user_and_host.Left(i_pid);
 	  } else
 	      cs_PID = _T("");
-      CString cs_str, cs_title;
+      const CString cs_title(MAKEINTRESOURCE(IDS_FILEINUSE));
+	  CString cs_str;
 	  cs_str.Format(IDS_LOCKED, filename, cs_user_and_host, cs_PID);
-	  cs_title.LoadString(IDS_FILEINUSE);
       switch( MessageBox(cs_str, cs_title, MB_YESNOCANCEL|MB_ICONQUESTION)) {
       case IDYES:
       	SetReadOnly(true);
@@ -1133,9 +1133,7 @@ DboxMain::ConfigureSystemMenu()
   ASSERT( m_wndMenu != NULL );
 #else
   CMenu*	sysMenu = GetSystemMenu( FALSE );
-  CString	str;
-
-  str.LoadString( IDS_ALWAYSONTOP );
+  const CString str(MAKEINTRESOURCE(IDS_ALWAYSONTOP));
 
   sysMenu->InsertMenu( 5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCTSTR)str );
 #endif
