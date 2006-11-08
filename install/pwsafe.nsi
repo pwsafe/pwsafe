@@ -1,10 +1,8 @@
 ;
 ; Password Safe Installation Script
 ;
-;
-; COPYRIGHT NOTICE
-;
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
+; Copyright 2005-2006 Rony Shapiro <ronys@users.sourceforge.net>
 ; This script may be redistributed and/or modified under the Artistic
 ; License as available at 
 ;
@@ -14,7 +12,6 @@
 ; disclaimed, including, but not limited to, the implied warranties of
 ; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
 ; 
-;
 ; SYNOPSIS
 ;
 ; This script will create a self-extracting installer for the Password
@@ -23,7 +20,6 @@
 ; pwsafe-X.XX.exe will be placed in the current directory (where X.XX
 ; is the version number of Password Safe).  The generated file can be 
 ; placed on a publicly available location.
-;
 ;
 ; DESCRIPTION
 ;
@@ -60,6 +56,15 @@
 ; will put copies in the installation directory, apparently the
 ; only way to ensure that a user will be able to install pwsafe
 ; without admin rights. Bleh.
+;
+; As of PasswordSafe 3.05, this script allows users to choose
+; between a "Regular" installation and a "Green" one, the difference
+; being that the latter does not write app-specific data to the registry
+; This is useful for installing to disk-on-key, and where company policy
+; and/or user permissions disallow writing to the registry. Also, Green
+; installation doesn't create an Uninstall.exe or entry in Add/Remove
+; Software in the control panel - to unistall, just delete the install
+; directory...
 ;
 ; USE
 ;
@@ -117,6 +122,10 @@
     !error "VERSION undefined. Usage: makensis.exe /DVERSION=X.XX pwsafe.nsi"
   !endif
 
+;--------------------------------
+;Variables
+
+  Var INSTALL_TYPE
 
 ;--------------------------------
 ; General
@@ -144,7 +153,9 @@
 ;--------------------------------
 ; Pages
 
-  !insertmacro MUI_PAGE_LICENSE "LICENSE"
+  !insertmacro MUI_PAGE_LICENSE "..\LICENSE"
+  ; ask about installation type, "green" or "regular"
+  Page custom GreenOrRegular
   !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
@@ -158,11 +169,20 @@
  
   !insertmacro MUI_LANGUAGE "English"
 
+;--------------------------------
+;Reserve Files
+  
+  ; NSIS documentation states that it's a Good Idea to put the following
+  ; two lines when using a custom dialog:  
+  ReserveFile "pws-install.ini"
+  !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
 
 ;--------------------------------
 ; The program itself
 
 Section "Program Files" ProgramFiles
+  ;Read the chosen installation type: 1 means "Green", 0 - "Regular"
+  !insertmacro MUI_INSTALLOPTIONS_READ $INSTALL_TYPE "pws-install.ini" "Field 2" "State"
 
   ; Make the program files mandatory
   SectionIn RO
@@ -172,17 +192,20 @@ Section "Program Files" ProgramFiles
   
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
-  File "Release\pwsafe.exe"
-  File "html\pwsafe.chm"
-  File "LICENSE"
-  File "README.TXT"
-  File "docs\ReleaseNotes.txt"
-  File "docs\ChangeLog.txt"
-  File "xml\pwsafe.xsd"
-  File "xml\pwsafe.xsl"
-  File "..\..\redist\mfc80.dll"
-  File "..\..\redist\msvcp80.dll"
-  File "..\..\redist\msvcr80.dll"
+  File "..\Release\pwsafe.exe"
+  File "..\html\pwsafe.chm"
+  File "..\LICENSE"
+  File "..\README.TXT"
+  File "..\docs\ReleaseNotes.txt"
+  File "..\docs\ChangeLog.txt"
+  File "..\xml\pwsafe.xsd"
+  File "..\xml\pwsafe.xsl"
+  File "..\..\..\redist\mfc80.dll"
+  File "..\..\..\redist\msvcp80.dll"
+  File "..\..\..\redist\msvcr80.dll"
+
+  ; skip over registry writes if 'Green' installation selected
+  IntCmp $INSTALL_TYPE 1 GreenInstall
 
   ; Store installation folder
   WriteRegStr HKCU \
@@ -214,8 +237,15 @@ Section "Program Files" ProgramFiles
   WriteRegDWORD HKLM \
 		"Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
 		"NoRepair" 1
+GreenInstall:
 SectionEnd
 
+;--------------------------------
+; Start with Windows
+Section "Start automatically" StartUp
+  CreateShortCut "$SMSTARTUP\Password Safe.lnk" \
+                 "$INSTDIR\pwsafe.exe" "-s"
+SectionEnd
 
 ;--------------------------------
 ; Start menu
@@ -253,6 +283,10 @@ SectionEnd
              ${LANG_ENGLISH} \
              "Installs the basic files necessary to run Password Safe."
 
+  LangString DESC_StartUp \
+             ${LANG_ENGLISH} \
+             "Starts Password Safe as part of Windows boot/login."
+
   LangString DESC_StartMenu \
              ${LANG_ENGLISH} \
              "Creates an entry in the start menu for Password Safe."
@@ -267,6 +301,7 @@ SectionEnd
                  ${ProgramFiles} \
                  $(DESC_ProgramFiles)
 
+    !insertmacro MUI_DESCRIPTION_TEXT ${StartUp} $(DESC_StartUp)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartMenu} $(DESC_StartMenu)
 
     !insertmacro MUI_DESCRIPTION_TEXT \
@@ -290,9 +325,9 @@ Section "Uninstall"
   Delete "$INSTDIR\README.TXT"
   Delete "$INSTDIR\ReleaseNotes.txt"
   Delete "$INSTDIR\ChangeLog.txt"
-  Delete "$INSTDIR\mfc71.dll"
-  Delete "$INSTDIR\msvcp71.dll"
-  Delete "$INSTDIR\msvcr71.dll"
+  Delete "$INSTDIR\mfc80.dll"
+  Delete "$INSTDIR\msvcp80.dll"
+  Delete "$INSTDIR\msvcr80.dll"
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
@@ -312,3 +347,20 @@ Section "Uninstall"
   Delete "$DESKTOP\Password Safe.lnk"
 
 SectionEnd
+
+;-----------------------------------------
+; Functions
+Function .onInit
+
+  ;Extract InstallOptions INI files
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "pws-install.ini"
+
+FunctionEnd
+
+LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
+LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+
+Function GreenOrRegular
+  !insertmacro MUI_HEADER_TEXT "$(TEXT_GC_TITLE)" "$(TEXT_GC_SUBTITLE)"
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "pws-install.ini"
+FunctionEnd

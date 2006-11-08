@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.04
+RELEASENAME = 3.05
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -35,8 +35,8 @@ BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe.xsl \
 	docs/ChangeLog.txt Release/pwsafe.exe html/pwsafe.chm
 
-REDISTS = ../../redist/mfc71.dll ../../redist/msvcp71.dll \
-        ../../redist/msvcr71.dll
+REDISTS = ../../redist/mfc80.dll ../../redist/msvcp80.dll \
+        ../../redist/msvcr80.dll
 
 .PHONY: all release bin-release src-release installable signatures \
 	upload md5sums sha1sums
@@ -66,7 +66,7 @@ signatures:
 	$(GPG_SIGN) $(RELEASEDIR)/$(SRCRELNAME).zip
 
 installable:
-	$(MAKENSIS) /DVERSION=$(RELEASENAME) pwsafe.nsi
+	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/pwsafe.nsi
 	$(MV) pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 release: bin-release src-release
