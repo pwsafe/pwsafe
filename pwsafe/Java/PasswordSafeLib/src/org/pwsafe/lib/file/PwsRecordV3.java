@@ -296,7 +296,7 @@ public class PwsRecordV3 extends PwsRecord
 			//System.err.println("Data size is " + Length + " and type is " + Type);
 			Data    = new byte[Length];
 			byte[] remainingDataInRecord = Util.getBytes(RawData, 5, 11);
-			if (Length < 11) {
+			if (Length <= 11) {
 				Util.copyBytes(Util.getBytes(remainingDataInRecord, 0, Length), Data);
 			} else if (Length > 11) {
 				int bytesToRead = Length - 11;
