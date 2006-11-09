@@ -11,9 +11,8 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-
 #include "ThisMfcApp.h"
-
+#include "Shortcut.h"
 #include "corelib/pwsprefs.h"
 
 // dialog boxen
@@ -205,6 +204,7 @@ DboxMain::OnValidate()
 void
 DboxMain::OnOptions() 
 {
+  const CString PWSLnkName(_T("Password Safe")); // for startup shortcut
   CPropertySheet optionsDlg(IDS_OPTIONS, this);
   COptionsDisplay         display;
   COptionsSecurity        security;
@@ -220,6 +220,8 @@ DboxMain::OnOptions()
   /*
   **  Initialize the property pages values.
   */
+  CShortcut shortcut;
+  BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
   system.m_maxreitems = prefs->
     GetPref(PWSprefs::MaxREItems);
   system.m_usesystemtray = prefs->
@@ -228,7 +230,7 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::MaxMRUItems);
   system.m_mruonfilemenu = prefs->
     GetPref(PWSprefs::MRUOnFileMenu);
-
+  system.m_startup = StartupShortcutExists;
   display.m_alwaysontop = m_bAlwaysOnTop;
   display.m_pwshowinedit = prefs->
     GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
@@ -293,21 +295,21 @@ DboxMain::OnOptions()
     DWORD(prefs->GetPref(PWSprefs::HotKey));
   // Can't be enabled if not set!
   if (misc.m_hotkey_value == 0)
-	  save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
+    save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
   else
-	  save_hotkey_enabled = misc.m_hotkey_enabled = prefs->
-         GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+    save_hotkey_enabled = misc.m_hotkey_enabled = prefs->
+      GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
   misc.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefUser) ? TRUE : FALSE;
   misc.m_defusername = CString(prefs->
-    GetPref(PWSprefs::DefUserName));
+                               GetPref(PWSprefs::DefUserName));
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
   misc.m_usedefaultbrowser = prefs->
     GetPref(PWSprefs::UseDefaultBrowser);
   misc.m_csBrowser = CString(prefs->
-    GetPref(PWSprefs::OtherBrowser));
+                             GetPref(PWSprefs::OtherBrowser));
 
   backup.m_saveimmediately = prefs->
     GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
@@ -316,7 +318,7 @@ DboxMain::OnOptions()
   backup.m_backupprefix = prefs->
     GetPref(PWSprefs::BackupPrefix);
   backup.m_userbackupprefix = CString(prefs->
-    GetPref(PWSprefs::BackupPrefixValue));
+                                      GetPref(PWSprefs::BackupPrefixValue));
   backup.m_backupsuffix = prefs->
     GetPref(PWSprefs::BackupSuffix);
   backup.m_maxnumincbackups = prefs->
@@ -324,9 +326,9 @@ DboxMain::OnOptions()
   backup.m_backuplocation = prefs->
     GetPref(PWSprefs::BackupLocation);
   backup.m_userbackupsubdirectory = CString(prefs->
-    GetPref(PWSprefs::BackupSubDirectoryValue));
+                                            GetPref(PWSprefs::BackupSubDirectoryValue));
   backup.m_userbackupotherlocation = CString(prefs->
-    GetPref(PWSprefs::BackupOtherLocationValue));
+                                             GetPref(PWSprefs::BackupOtherLocationValue));
 
   optionsDlg.AddPage( &backup );
   optionsDlg.AddPage( &display );
@@ -353,228 +355,238 @@ DboxMain::OnOptions()
   int rc = optionsDlg.DoModal();
   app.EnableAccelerator();
 
-  if (rc == IDOK)
-    {
-      /*
-      **  First save all the options.
-      */
-      prefs->SetPref(PWSprefs::AlwaysOnTop,
-                     display.m_alwaysontop == TRUE);
-      prefs->SetPref(PWSprefs::ShowPWDefault,
-                     display.m_pwshowinedit == TRUE);
-      prefs->SetPref(PWSprefs::ShowPWInList,
-                     display.m_pwshowinlist == TRUE);
-      prefs->SetPref(PWSprefs::ShowNotesDefault,
-                     display.m_notesshowinedit == TRUE);                   
+  if (rc == IDOK) {
+    /*
+    **  First save all the options.
+    */
+    prefs->SetPref(PWSprefs::AlwaysOnTop,
+                   display.m_alwaysontop == TRUE);
+    prefs->SetPref(PWSprefs::ShowPWDefault,
+                   display.m_pwshowinedit == TRUE);
+    prefs->SetPref(PWSprefs::ShowPWInList,
+                   display.m_pwshowinlist == TRUE);
+    prefs->SetPref(PWSprefs::ShowNotesDefault,
+                   display.m_notesshowinedit == TRUE);                   
 #if defined(POCKET_PC)
-      prefs->SetPref(PWSprefs::DCShowsPassword,
-                     display.m_dcshowspassword == TRUE);
+    prefs->SetPref(PWSprefs::DCShowsPassword,
+                   display.m_dcshowspassword == TRUE);
 #endif
-      // by strange coincidence, the values of the enums match the indices
-      // of the radio buttons in the following :-)
-      prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen,
-                     display.m_treedisplaystatusatopen);
+    // by strange coincidence, the values of the enums match the indices
+    // of the radio buttons in the following :-)
+    prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen,
+                   display.m_treedisplaystatusatopen);
 
-      prefs->SetPref(PWSprefs::UseSystemTray,
-                     system.m_usesystemtray == TRUE);
-      prefs->SetPref(PWSprefs::MaxREItems,
-                     system.m_maxreitems);
-      prefs->SetPref(PWSprefs::MaxMRUItems,
-                     system.m_maxmruitems);
-      prefs->SetPref(PWSprefs::MRUOnFileMenu,
-                     system.m_mruonfilemenu == TRUE);
+    prefs->SetPref(PWSprefs::UseSystemTray,
+                   system.m_usesystemtray == TRUE);
+    prefs->SetPref(PWSprefs::MaxREItems,
+                   system.m_maxreitems);
+    prefs->SetPref(PWSprefs::MaxMRUItems,
+                   system.m_maxmruitems);
+    prefs->SetPref(PWSprefs::MRUOnFileMenu,
+                   system.m_mruonfilemenu == TRUE);
 
-      prefs->SetPref(PWSprefs::DontAskMinimizeClearYesNo,
-                     security.m_clearclipboard == TRUE);
-      prefs->SetPref(PWSprefs::DatabaseClear,
-                     security.m_lockdatabase == TRUE);
-      prefs->SetPref(PWSprefs::DontAskQuestion,
-                     security.m_confirmcopy == FALSE);
-      prefs->SetPref(PWSprefs::LockOnWindowLock,
-                     security.m_LockOnWindowLock == TRUE);
-      prefs->SetPref(PWSprefs::LockOnIdleTimeout,
-                     security.m_LockOnIdleTimeout == TRUE);
-      prefs->SetPref(PWSprefs::IdleTimeout,
-                     security.m_IdleTimeOut);
+    prefs->SetPref(PWSprefs::DontAskMinimizeClearYesNo,
+                   security.m_clearclipboard == TRUE);
+    prefs->SetPref(PWSprefs::DatabaseClear,
+                   security.m_lockdatabase == TRUE);
+    prefs->SetPref(PWSprefs::DontAskQuestion,
+                   security.m_confirmcopy == FALSE);
+    prefs->SetPref(PWSprefs::LockOnWindowLock,
+                   security.m_LockOnWindowLock == TRUE);
+    prefs->SetPref(PWSprefs::LockOnIdleTimeout,
+                   security.m_LockOnIdleTimeout == TRUE);
+    prefs->SetPref(PWSprefs::IdleTimeout,
+                   security.m_IdleTimeOut);
 
-      prefs->SetPref(PWSprefs::PWLenDefault,
-                     passwordpolicy.m_pwlendefault);
-      prefs->SetPref(PWSprefs::PWUseLowercase,
-                     passwordpolicy.m_pwuselowercase == TRUE);
-      prefs->SetPref(PWSprefs::PWUseUppercase,
-                     passwordpolicy.m_pwuseuppercase == TRUE);
-      prefs->SetPref(PWSprefs::PWUseDigits,
-                     passwordpolicy.m_pwusedigits == TRUE);
-      prefs->SetPref(PWSprefs::PWUseSymbols,
-                     passwordpolicy.m_pwusesymbols == TRUE);
-      prefs->SetPref(PWSprefs::PWUseHexDigits,
-                     passwordpolicy.m_pwusehexdigits == TRUE);
-      prefs-> SetPref(PWSprefs::PWEasyVision,
-                      passwordpolicy.m_pweasyvision == TRUE);
+    prefs->SetPref(PWSprefs::PWLenDefault,
+                   passwordpolicy.m_pwlendefault);
+    prefs->SetPref(PWSprefs::PWUseLowercase,
+                   passwordpolicy.m_pwuselowercase == TRUE);
+    prefs->SetPref(PWSprefs::PWUseUppercase,
+                   passwordpolicy.m_pwuseuppercase == TRUE);
+    prefs->SetPref(PWSprefs::PWUseDigits,
+                   passwordpolicy.m_pwusedigits == TRUE);
+    prefs->SetPref(PWSprefs::PWUseSymbols,
+                   passwordpolicy.m_pwusesymbols == TRUE);
+    prefs->SetPref(PWSprefs::PWUseHexDigits,
+                   passwordpolicy.m_pwusehexdigits == TRUE);
+    prefs-> SetPref(PWSprefs::PWEasyVision,
+                    passwordpolicy.m_pweasyvision == TRUE);
 
-      prefs->SetPref(PWSprefs::SavePasswordHistory,
-      				 passwordhistory.m_savepwhistory == TRUE);
-      if (passwordhistory.m_savepwhistory == TRUE)
-          prefs->SetPref(PWSprefs::NumPWHistoryDefault,
+    prefs->SetPref(PWSprefs::SavePasswordHistory,
+                   passwordhistory.m_savepwhistory == TRUE);
+    if (passwordhistory.m_savepwhistory == TRUE)
+      prefs->SetPref(PWSprefs::NumPWHistoryDefault,
                      passwordhistory.m_pwhistorynumdefault);
 
-      prefs->SetPref(PWSprefs::DeleteQuestion,
-                     misc.m_confirmdelete == FALSE);
-      prefs->SetPref(PWSprefs::MaintainDateTimeStamps,
-                     misc.m_maintaindatetimestamps == TRUE);
-      prefs->SetPref(PWSprefs::EscExits,
-                     misc.m_escexits == TRUE);
-      // by strange coincidence, the values of the enums match the indices
-      // of the radio buttons in the following :-)
-      prefs->SetPref(PWSprefs::DoubleClickAction,
-                     misc.m_doubleclickaction);
+    prefs->SetPref(PWSprefs::DeleteQuestion,
+                   misc.m_confirmdelete == FALSE);
+    prefs->SetPref(PWSprefs::MaintainDateTimeStamps,
+                   misc.m_maintaindatetimestamps == TRUE);
+    prefs->SetPref(PWSprefs::EscExits,
+                   misc.m_escexits == TRUE);
+    // by strange coincidence, the values of the enums match the indices
+    // of the radio buttons in the following :-)
+    prefs->SetPref(PWSprefs::DoubleClickAction,
+                   misc.m_doubleclickaction);
 
-      // Need to update previous values as we use these variables to re-instate
-      // the hotkey environment at the end whether the user changed it or not.
-      prefs->SetPref(PWSprefs::HotKey,
-                     misc.m_hotkey_value);
-      save_hotkey_value = misc.m_hotkey_value;
-	  // Can't be enabled if not set!
-	  if (misc.m_hotkey_value == 0)
-		  save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
+    // Need to update previous values as we use these variables to re-instate
+    // the hotkey environment at the end whether the user changed it or not.
+    prefs->SetPref(PWSprefs::HotKey,
+                   misc.m_hotkey_value);
+    save_hotkey_value = misc.m_hotkey_value;
+    // Can't be enabled if not set!
+    if (misc.m_hotkey_value == 0)
+      save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
 
-      prefs->SetPref(PWSprefs::HotKeyEnabled,
-                     misc.m_hotkey_enabled == TRUE);
+    prefs->SetPref(PWSprefs::HotKeyEnabled,
+                   misc.m_hotkey_enabled == TRUE);
 
-      prefs->SetPref(PWSprefs::UseDefUser,
-                     misc.m_usedefuser == TRUE);
-      prefs->SetPref(PWSprefs::DefUserName,
-                     misc.m_defusername);
-      prefs->SetPref(PWSprefs::QuerySetDef,
-                     misc.m_querysetdef == TRUE);
+    prefs->SetPref(PWSprefs::UseDefUser,
+                   misc.m_usedefuser == TRUE);
+    prefs->SetPref(PWSprefs::DefUserName,
+                   misc.m_defusername);
+    prefs->SetPref(PWSprefs::QuerySetDef,
+                   misc.m_querysetdef == TRUE);
 
-	  prefs->SetPref(PWSprefs::UseDefaultBrowser,
-		             misc.m_usedefaultbrowser);
-	  prefs->SetPref(PWSprefs::OtherBrowser,
-		             misc.m_csBrowser);
+    prefs->SetPref(PWSprefs::UseDefaultBrowser,
+                   misc.m_usedefaultbrowser);
+    prefs->SetPref(PWSprefs::OtherBrowser,
+                   misc.m_csBrowser);
 
-      prefs->SetPref(PWSprefs::SaveImmediately,
-                     backup.m_saveimmediately == TRUE);
-      prefs->SetPref(PWSprefs::BackupBeforeEverySave,
-                     backup.m_backupbeforesave == TRUE);
-      prefs->SetPref(PWSprefs::BackupPrefix,
-                     backup.m_backupprefix);
-      prefs->SetPref(PWSprefs::BackupPrefixValue,
-                     backup.m_userbackupprefix);
-      prefs->SetPref(PWSprefs::BackupSuffix,
-                     backup.m_backupsuffix);
-	  prefs->SetPref(PWSprefs::BackupMaxIncremented,
-                     backup.m_maxnumincbackups);
-      prefs->SetPref(PWSprefs::BackupLocation,
-                     backup.m_backuplocation);    
-      prefs->SetPref(PWSprefs::BackupSubDirectoryValue,
-                     backup.m_userbackupsubdirectory);
-      prefs->SetPref(PWSprefs::BackupOtherLocationValue,
-                     backup.m_userbackupotherlocation);
+    prefs->SetPref(PWSprefs::SaveImmediately,
+                   backup.m_saveimmediately == TRUE);
+    prefs->SetPref(PWSprefs::BackupBeforeEverySave,
+                   backup.m_backupbeforesave == TRUE);
+    prefs->SetPref(PWSprefs::BackupPrefix,
+                   backup.m_backupprefix);
+    prefs->SetPref(PWSprefs::BackupPrefixValue,
+                   backup.m_userbackupprefix);
+    prefs->SetPref(PWSprefs::BackupSuffix,
+                   backup.m_backupsuffix);
+    prefs->SetPref(PWSprefs::BackupMaxIncremented,
+                   backup.m_maxnumincbackups);
+    prefs->SetPref(PWSprefs::BackupLocation,
+                   backup.m_backuplocation);    
+    prefs->SetPref(PWSprefs::BackupSubDirectoryValue,
+                   backup.m_userbackupsubdirectory);
+    prefs->SetPref(PWSprefs::BackupOtherLocationValue,
+                   backup.m_userbackupotherlocation);
 
-      // JHF : no status bar under WinCE (was already so in the .h file !?!)
+    // JHF : no status bar under WinCE (was already so in the .h file !?!)
 #if !defined(POCKET_PC)
-      /* Update status bar */
-      switch (misc.m_doubleclickaction) {
-      	case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
-      	case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
-      	case PWSprefs::DoubleClickCopyNotes: statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
-      	case PWSprefs::DoubleClickCopyPassword: statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
-      	case PWSprefs::DoubleClickCopyUsername: statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
-		case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
-		default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
-      }
-      m_statusBar.SetIndicators(statustext, SB_TOTAL);
-	  UpdateStatusBar();
-	  // Make a sunken or recessed border around the first pane
-      m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
+    /* Update status bar */
+    switch (misc.m_doubleclickaction) {
+    case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+    case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
+    case PWSprefs::DoubleClickCopyNotes: statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
+    case PWSprefs::DoubleClickCopyPassword: statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
+    case PWSprefs::DoubleClickCopyUsername: statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
+    case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
+    default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
+    }
+    m_statusBar.SetIndicators(statustext, SB_TOTAL);
+    UpdateStatusBar();
+    // Make a sunken or recessed border around the first pane
+    m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
 #endif
 
-      /*
-      ** Update string in database, if necessary & possible
-      */
-      if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
-          m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-        // save changed preferences to file
-        // Note that we currently can only write the entire file, so any changes
-        // the user made to the database are also saved here
-        m_core.BackupCurFile(); // try to save previous version
-        if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
-          AfxMessageBox(IDS_FAILEDSAVEPREF);
-        else
-          prefs->ClearDBprefsChanged();
-      }
-      /*
-      **  Now update the application according to the options.
-      */
-      m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
-      UpdateAlwaysOnTop();
-      bool bOldShowPasswordInList = m_bShowPasswordInList;
-      m_bShowPasswordInList = prefs->
-        GetPref(PWSprefs::ShowPWInList);
-
-      if (bOldShowPasswordInList != m_bShowPasswordInList)
-		RefreshList();
-
-      if (system.m_usesystemtray == TRUE) {
-		if (app.IsIconVisible() == FALSE)
-          app.ShowIcon();
-	  } else { // user doesn't want to display
-		if (app.IsIconVisible() == TRUE)
-          app.HideIcon();
-      }
-      m_RUEList.SetMax(system.m_maxreitems);
-
-      // update idle timeout values, if changed
-      if (security.m_LockOnIdleTimeout != prevLockOIT)
-        if (security.m_LockOnIdleTimeout == TRUE) {
-          const UINT MINUTE = 60*1000;
-          SetTimer(TIMER_USERLOCK, MINUTE, NULL);
-        } else {
-          KillTimer(TIMER_USERLOCK);
-        }
-      SetIdleLockCounter(security.m_IdleTimeOut);
-
-      /*
-       * Here are the old (pre 2.0) semantics:
-       * The username entered in this dialog box will be added to all the entries
-       * in the username-less database that you just opened. Click Ok to add the
-       * username or Cancel to leave them as is.
-       *
-       * You can also set this username to be the default username by clicking the
-       * check box.  In this case, you will not see the username that you just added
-       * in the main dialog (though it is still part of the entries), and it will
-       * automatically be inserted in the Add dialog for new entries.
-       *
-       * To me (ronys), these seem too complicated, and not useful once password files
-       * have been converted to the old (username-less) format to 1.9 (with usernames).
-       * (Not to mention 2.0).
-       * Therefore, the username will now only be a default value to be used in new entries,
-       * and in converting pre-2.0 databases.
-       */
-
-      m_core.SetDefUsername(misc.m_defusername);
-      m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
+    /*
+    ** Update string in database, if necessary & possible
+    */
+    if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
+        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+      // save changed preferences to file
+      // Note that we currently can only write the entire file, so any changes
+      // the user made to the database are also saved here
+      m_core.BackupCurFile(); // try to save previous version
+      if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
+        AfxMessageBox(IDS_FAILEDSAVEPREF);
+      else
+        prefs->ClearDBprefsChanged();
     }
-      // JHF no hotkeys under WinCE
-#if !defined(POCKET_PC)
-    // Restore hotkey as it was or as user changed it - if he/she pressed OK
-    if (save_hotkey_enabled == TRUE) {
-      WORD wVirtualKeyCode = WORD(save_hotkey_value & 0xffff);
-      WORD mod = WORD(save_hotkey_value >> 16);
-		WORD wModifiers = 0;
-		// Translate between CWnd & CHotKeyCtrl modifiers
-		if (mod & HOTKEYF_ALT) 
-			wModifiers |= MOD_ALT; 
-		if (mod & HOTKEYF_CONTROL) 
-			wModifiers |= MOD_CONTROL; 
-		if (mod & HOTKEYF_SHIFT) 
-			wModifiers |= MOD_SHIFT; 
-        brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
-                       UINT(wModifiers), UINT(wVirtualKeyCode));
-		if (brc == FALSE)
-			AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+    /*
+    **  Now update the application according to the options.
+    */
+    m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
+    UpdateAlwaysOnTop();
+    bool bOldShowPasswordInList = m_bShowPasswordInList;
+    m_bShowPasswordInList = prefs->
+      GetPref(PWSprefs::ShowPWInList);
+
+    if (bOldShowPasswordInList != m_bShowPasswordInList)
+      RefreshList();
+
+    if (system.m_usesystemtray == TRUE) {
+      if (app.IsIconVisible() == FALSE)
+        app.ShowIcon();
+    } else { // user doesn't want to display
+      if (app.IsIconVisible() == TRUE)
+        app.HideIcon();
+    }
+    m_RUEList.SetMax(system.m_maxreitems);
+
+    if (system.m_startup != StartupShortcutExists) {
+      if (system.m_startup == TRUE) {
+        TCHAR exeName[MAX_PATH];
+        GetModuleFileName(NULL, exeName, MAX_PATH);
+        shortcut.SetCmdArguments(CString(_T("-s")));
+        shortcut.CreateShortCut(exeName, PWSLnkName, CSIDL_STARTUP);
+      } else { // remove existing startup shortcut
+        shortcut.DeleteShortCut(PWSLnkName, CSIDL_STARTUP);
       }
+    }
+
+    // update idle timeout values, if changed
+    if (security.m_LockOnIdleTimeout != prevLockOIT)
+      if (security.m_LockOnIdleTimeout == TRUE) {
+        const UINT MINUTE = 60*1000;
+        SetTimer(TIMER_USERLOCK, MINUTE, NULL);
+      } else {
+        KillTimer(TIMER_USERLOCK);
+      }
+    SetIdleLockCounter(security.m_IdleTimeOut);
+
+    /*
+     * Here are the old (pre 2.0) semantics:
+     * The username entered in this dialog box will be added to all the entries
+     * in the username-less database that you just opened. Click Ok to add the
+     * username or Cancel to leave them as is.
+     *
+     * You can also set this username to be the default username by clicking the
+     * check box.  In this case, you will not see the username that you just added
+     * in the main dialog (though it is still part of the entries), and it will
+     * automatically be inserted in the Add dialog for new entries.
+     *
+     * To me (ronys), these seem too complicated, and not useful once password files
+     * have been converted to the old (username-less) format to 1.9 (with usernames).
+     * (Not to mention 2.0).
+     * Therefore, the username will now only be a default value to be used in new entries,
+     * and in converting pre-2.0 databases.
+     */
+
+    m_core.SetDefUsername(misc.m_defusername);
+    m_core.SetUseDefUser(misc.m_usedefuser == TRUE ? true : false);
+  }
+  // JHF no hotkeys under WinCE
+#if !defined(POCKET_PC)
+  // Restore hotkey as it was or as user changed it - if he/she pressed OK
+  if (save_hotkey_enabled == TRUE) {
+    WORD wVirtualKeyCode = WORD(save_hotkey_value & 0xffff);
+    WORD mod = WORD(save_hotkey_value >> 16);
+    WORD wModifiers = 0;
+    // Translate between CWnd & CHotKeyCtrl modifiers
+    if (mod & HOTKEYF_ALT) 
+      wModifiers |= MOD_ALT; 
+    if (mod & HOTKEYF_CONTROL) 
+      wModifiers |= MOD_CONTROL; 
+    if (mod & HOTKEYF_SHIFT) 
+      wModifiers |= MOD_SHIFT; 
+    brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
+                         UINT(wModifiers), UINT(wVirtualKeyCode));
+    if (brc == FALSE)
+      AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+  }
 #endif
 }
 
