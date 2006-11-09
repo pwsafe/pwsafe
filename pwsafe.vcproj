@@ -606,6 +606,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Shortcut.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Subclass.cpp"
 				>
 			</File>
@@ -828,6 +832,10 @@
 			</File>
 			<File
 				RelativePath=".\sha1.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Shortcut.h"
 				>
 			</File>
 			<File

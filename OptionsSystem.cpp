@@ -53,6 +53,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MAXREITEMS, m_maxreitems);
 	DDV_MinMaxInt(pDX, m_maxreitems, 0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
 	DDX_Check(pDX, IDC_DEFPWUSESYSTRAY, m_usesystemtray);
+	DDX_Check(pDX, IDC_STARTUP, m_startup);
 	DDX_Text(pDX, IDC_MAXMRUITEMS, m_maxmruitems);
 	DDV_MinMaxInt(pDX, m_maxmruitems, 0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
 	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
@@ -63,6 +64,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(COptionsSystem, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsSystem)
 	ON_BN_CLICKED(IDC_DEFPWUSESYSTRAY, OnUseSystemTray)
+	ON_BN_CLICKED(IDC_STARTUP, OnStartup)
 	ON_BN_CLICKED(IDC_DELETEREGISTRY, OnSetDeleteRegistry)
 	ON_BN_CLICKED(IDC_APPLYREGISTRYDELETENOW, OnApplyRegistryDeleteNow)
 	//}}AFX_MSG_MAP
@@ -73,11 +75,26 @@ END_MESSAGE_MAP()
 
 void COptionsSystem::OnUseSystemTray() 
 {
-  BOOL enable = (((CButton*)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() == 1) ? TRUE : FALSE;
+  BOOL enable = (((CButton*)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() ==
+                 BST_CHECKED) ? TRUE : FALSE;
 
   GetDlgItem(IDC_STATIC_MAXREITEMS)->EnableWindow(enable);
   GetDlgItem(IDC_MAXREITEMS)->EnableWindow(enable);
   GetDlgItem(IDC_RESPIN)->EnableWindow(enable);
+}
+
+void COptionsSystem::OnStartup() 
+{
+  // Startup implies System tray
+  bool enable = ((CButton*)GetDlgItem(IDC_STARTUP))->GetCheck() == BST_CHECKED;
+
+  if (enable) {
+    ((CButton*)GetDlgItem(IDC_DEFPWUSESYSTRAY))->SetCheck(BST_CHECKED);
+    GetDlgItem(IDC_STATIC_MAXREITEMS)->EnableWindow(TRUE);
+    GetDlgItem(IDC_MAXREITEMS)->EnableWindow(TRUE);
+    GetDlgItem(IDC_RESPIN)->EnableWindow(TRUE);
+  }
+  
 }
 
 void COptionsSystem::OnSetDeleteRegistry() 

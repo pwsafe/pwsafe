@@ -27,6 +27,7 @@ public:
 	enum { IDD = IDD_PS_SYSTEM };
 	int		m_maxreitems;
 	BOOL    m_usesystemtray;
+	BOOL    m_startup;
 	int		m_maxmruitems;
 	BOOL	m_mruonfilemenu;
 	BOOL	m_deleteregistry;
@@ -44,6 +45,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsSystem)
 	afx_msg void OnUseSystemTray();
+	afx_msg void OnStartup();
 	afx_msg void OnSetDeleteRegistry();
 	afx_msg void OnApplyRegistryDeleteNow();
 	virtual BOOL OnInitDialog();
