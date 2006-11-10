@@ -106,7 +106,7 @@
         <delete dir="${dist.win32.dir}/${zip.dir.name}" />
         <mkdir dir="${dist.win32.dir}/${zip.dir.name}" />
 
-        <taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="C:\java_apps\exe4j\bin\exe4j.jar" />
+        <taskdef name="exe4j" classname="com.exe4j.Exe4JTask" classpath="C:\Program Files\exe4j\bin\ant.jar" />
 
         <exe4j projectfile="${win32.dir}/PasswordSafeSWT.exe4j" release="${build.version}" />
 
