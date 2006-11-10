@@ -196,6 +196,21 @@ public class PwsFileFactory
 		LOG.enterMethod( "PwsFileFactory.loadFile" );
 		
 		PwsFile		file;
+		
+		// First check for a v3 file...
+		FileInputStream fis = new FileInputStream(filename);
+		byte[] first4Bytes = new byte[4];
+		fis.read(first4Bytes);
+		fis.close();
+		if (Util.bytesAreEqual("PWS3".getBytes(), first4Bytes)) {
+			LOG.debug1( "This is a V3 format file." );
+			file = new PwsFileV3( filename, passphrase);
+			file.readAll();
+			file.close();
+			return file;
+		}
+
+
 		PwsRecordV1	rec;
 
 		checkPassword( filename, passphrase );
