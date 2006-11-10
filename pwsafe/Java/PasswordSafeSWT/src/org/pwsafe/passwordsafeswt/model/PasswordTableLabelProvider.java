@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.lib.file.PwsRecordV3;
 import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 
 /**
@@ -30,7 +31,23 @@ public class PasswordTableLabelProvider implements ITableLabelProvider {
 	 */
 	public String getColumnText(Object element, int columnIndex) {
 		String columnString = null;
-		if (element instanceof PwsRecordV2) {
+		
+		if (element instanceof PwsRecordV3) {
+			PwsRecordV3 v3 = (PwsRecordV3) element;
+			switch(columnIndex) {
+				case 0:
+					columnString =  PwsEntryDTO.getSafeValue(v3,PwsRecordV3.TITLE);
+					break;
+			    case 1:
+			    	columnString =  PwsEntryDTO.getSafeValue(v3,PwsRecordV3.USERNAME);
+			    	break;
+			    case 2:
+			    	columnString = PwsEntryDTO.getSafeValue(v3,PwsRecordV3.NOTES);
+			    	break;
+			    case 3:
+			    	columnString = PwsEntryDTO.getSafeValue(v3,PwsRecordV3.PASSWORD);
+			}
+		} else if (element instanceof PwsRecordV2) {
 			PwsRecordV2 v2 = (PwsRecordV2) element;
 			switch(columnIndex) {
 				case 0:

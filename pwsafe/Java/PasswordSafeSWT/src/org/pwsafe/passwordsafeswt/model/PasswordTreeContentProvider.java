@@ -12,6 +12,7 @@ import org.pwsafe.lib.file.PwsFile;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.lib.file.PwsRecordV3;
 import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 
 /**
@@ -102,8 +103,17 @@ public class PasswordTreeContentProvider implements ITreeContentProvider {
         if (stringParent != null) {
 			// return all record matching this group...
 			for (Iterator iter = file.getRecords(); iter.hasNext(); ) {
-				PwsRecordV2 nextRecord = (PwsRecordV2) iter.next();
-				String recGroup = PwsEntryDTO.getSafeValue(nextRecord, PwsRecordV2.GROUP);
+				String recGroup = null;
+				Object nextRecord = iter.next();
+				
+				if (nextRecord instanceof PwsRecordV3) {
+					PwsRecordV3 nextRecordv3 = (PwsRecordV3) nextRecord;
+					recGroup = PwsEntryDTO.getSafeValue(nextRecordv3, PwsRecordV3.GROUP);					
+				} else if (nextRecord instanceof PwsRecordV2) {
+					PwsRecordV2 nextRecordv2 = (PwsRecordV2) nextRecord;
+					recGroup = PwsEntryDTO.getSafeValue(nextRecordv2, PwsRecordV2.GROUP);					
+				}
+				
                 if (stringParent.equalsIgnoreCase(recGroup)) {
                     log.debug("Adding record");
                     matchingRecs.add(nextRecord);
@@ -148,20 +158,26 @@ public class PasswordTreeContentProvider implements ITreeContentProvider {
 			file = (PwsFile) inputElement;
 			for (Iterator iter = file.getRecords(); iter.hasNext(); ) {
 				PwsRecord thisRecord = (PwsRecord) iter.next();
-				if (thisRecord instanceof PwsRecordV2) {
-					PwsRecordV2 nextRecord = (PwsRecordV2) thisRecord;	
-					String recGroup = (String)nextRecord.getField(PwsRecordV2.GROUP).getValue();
+				if (thisRecord instanceof PwsRecordV1) {
+					PwsRecordV1 nextRecord = (PwsRecordV1) thisRecord;	
+					rootElements.add(nextRecord);
+				} else {
+					String recGroup = null;
+					if (thisRecord instanceof PwsRecordV3) {
+						PwsRecordV3 nextRecord = (PwsRecordV3) thisRecord;	
+						recGroup = (String)nextRecord.getField(PwsRecordV3.GROUP).getValue();
+					} else if (thisRecord instanceof PwsRecordV2 ) {
+						PwsRecordV2 nextRecord = (PwsRecordV2) thisRecord;	
+						recGroup = (String)nextRecord.getField(PwsRecordV2.GROUP).getValue();
+					}
 					if (recGroup.trim().length() == 0) { // empty group name
-						rootElements.add(nextRecord);
+						rootElements.add(thisRecord);
 					} else { // add node for group name
                         if (recGroup.indexOf('.') > 0) {
                             recGroup = recGroup.substring(0, recGroup.indexOf('.'));
                         }
 						rootElements.add(recGroup);
 					}				
-				} else {
-					PwsRecordV1 nextRecord = (PwsRecordV1) thisRecord;	
-					rootElements.add(nextRecord);
 				}
 			}
 

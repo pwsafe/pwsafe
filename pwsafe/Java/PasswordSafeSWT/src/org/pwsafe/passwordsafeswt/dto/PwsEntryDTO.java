@@ -4,7 +4,9 @@ import org.pwsafe.lib.file.PwsField;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.lib.file.PwsRecordV3;
 import org.pwsafe.lib.file.PwsStringField;
+import org.pwsafe.lib.file.PwsStringUnicodeField;
 
 /**
  * Convenience class for transferring password info around in a 
@@ -136,7 +138,29 @@ public class PwsEntryDTO {
     
     public static PwsEntryDTO fromPwsRecord(PwsRecord nextRecord) {
         PwsEntryDTO newEntry = new PwsEntryDTO();
-        if (nextRecord instanceof PwsRecordV2) {
+        
+        if (nextRecord instanceof PwsRecordV3) {
+        	
+        	PwsRecordV3 v3 = (PwsRecordV3) nextRecord;
+            
+            String groupName = getSafeValue(v3, PwsRecordV3.GROUP);
+            newEntry.setGroup(groupName);
+            
+            String title = getSafeValue(v3,PwsRecordV3.TITLE);
+            newEntry.setTitle(title);
+            
+            String user = getSafeValue(v3, PwsRecordV3.USERNAME);
+            newEntry.setUsername(user);
+            
+            String password = getSafeValue(v3,PwsRecordV3.PASSWORD);
+            newEntry.setPassword(password);
+            
+            String notes = getSafeValue(v3,PwsRecordV3.NOTES);
+            newEntry.setNotes(notes);
+            
+            newEntry.setVersion("3");
+        	
+        } else if (nextRecord instanceof PwsRecordV2) {
             
             PwsRecordV2 v2 = (PwsRecordV2) nextRecord;
             
@@ -185,7 +209,16 @@ public class PwsEntryDTO {
 	 */
 	public void toPwsRecord(PwsRecord nextRecord) {
 		
-        if (nextRecord instanceof PwsRecordV2) {
+		if (nextRecord instanceof PwsRecordV3) {
+			
+            PwsRecordV3 v3 = (PwsRecordV3) nextRecord;
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.GROUP , getGroup()));
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.TITLE , getTitle()));
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.USERNAME , getUsername()));
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.PASSWORD , getPassword()));
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.NOTES , getNotes()));
+			
+		} else if (nextRecord instanceof PwsRecordV2) {
             
             PwsRecordV2 v2 = (PwsRecordV2) nextRecord;
             v2.setField(new PwsStringField(PwsRecordV2.GROUP , getGroup()));
