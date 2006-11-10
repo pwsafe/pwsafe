@@ -25,6 +25,17 @@ public class PwsStringUnicodeField extends PwsField
 		
 		super( type, new String(value, "UTF-8" ));
 	}
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param type  the field's type.
+	 * @param value the field's value.
+	 * @throws UnsupportedEncodingException 
+	 */
+	public PwsStringUnicodeField( int type, String value ) {
+		super( type, value);
+	}
 
 	/**
 	 * Returns the field's value as a byte array.
