@@ -460,14 +460,19 @@ public class PwsRecordV3 extends PwsRecord
 
 		//file.writeBytes(lenBlock);
 		byte[] dataToWrite = Util.mergeBytes(lenBlock, dataBlock);
-		if (dataToWrite.length == 16) {
-			// only one block long, just write it out
-			file.writeEncryptedBytes( dataToWrite );	
-		} else {
-			file.writeEncryptedBytes( Util.getBytes(dataToWrite, 0, 16));
-			// write the rest as a separate block
-			file.writeEncryptedBytes( Util.getBytes(dataToWrite, 16, dataToWrite.length - 16));
+		
+		for (int i = 0; i < (dataToWrite.length / 16); i++) {
+			byte[] nextBlock = Util.getBytes(dataToWrite, i * 16, 16);
+			file.writeEncryptedBytes(nextBlock);
 		}
+		//if (dataToWrite.length == 16) {
+			// only one block long, just write it out
+			//file.writeEncryptedBytes( dataToWrite );	
+		//} else {
+			//file.writeEncryptedBytes( Util.getBytes(dataToWrite, 0, 16));
+			// write the rest as a separate block
+			//file.writeEncryptedBytes( Util.getBytes(dataToWrite, 16, dataToWrite.length - 16));
+		//}
 		
 	}
 
