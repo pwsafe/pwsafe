@@ -87,5 +87,9 @@ public class PwsUnknownField extends PwsField
 	{
 		return Util.bytesAreEqual((byte[])getValue(), (byte[])other.getValue());
 	}
+	
+	public String toString() {
+		return new String(((byte[]) super.getValue()));
+	}
 
 }
