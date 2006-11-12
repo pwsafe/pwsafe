@@ -321,6 +321,9 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
 int
 ThisMfcApp::ExitInstance()
 {
+  if(m_hInstResDLL != NULL)
+    FreeLibrary(m_hInstResDLL);
+
   CWinApp::ExitInstance();
   return 0;
 }
@@ -331,6 +334,84 @@ ThisMfcApp::InitInstance()
   /*
    * It's always best to start at the beginning.  [Glinda, Witch of the North]
    */
+
+  /*
+   Format of resource-only DLL names (which MUST be in the same directory as the pwsafe.exe)
+     Debug:    pwsafeLL_CCd.dll
+	 Release:  pwsafeLL_CC.dll
+   or
+     Debug:    pwsafeLLd.dll
+	 Release:  pwsafeLL.dll
+
+   where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
+       see http://www.loc.gov/standards/iso639-2/
+   and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
+       see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
+
+   Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
+   .NET V2 and later applications (CultureInfo Class) or under Vista (via LOCALE_SNAME).
+   Older native and .NET V1 applications only support the ISO 639-1 two character
+   language codes.
+
+   Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
+   can't be found, the resources embedded in the executable pwsafe.exe will be used 
+   (US English i.e. equivalent to pwsafeEN_US.dll)).
+   */
+
+	int inum;
+	TCHAR szLang[4], szCtry[4];
+	inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME,
+		szLang, 4);
+	ASSERT(inum == 3);
+	_tcsupr(szLang);
+
+	TRACE("LOCALE_SISO639LANGNAME=%s\n", szLang);
+
+	inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
+		szCtry, 4);
+	ASSERT(inum == 3);
+
+	TRACE("LOCALE_SISO3166CTRYNAME=%s\n", szCtry);
+
+	TCHAR acPath[MAX_PATH + 1];
+
+	if ( GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
+		// guaranteed file name of at least one character after path '\'
+		*(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
+	}
+
+	CString csResLib, csPName, csSName;
+#ifdef _DEBUG
+	csResLib.Format(_T("%spwsafe%s_%sd.dll"), acPath, szLang, szCtry);
+	csSName.Format(_T("pwsafe%s_%sd.dll"), szLang, szCtry);
+#else
+	csResLib.Format(_T("%spwsafe%s_%s.dll"), acPath, szLang, szCtry);
+	csSName.Format(_T("pwsafe%s_%s.dll"), szLang, szCtry);
+#endif
+	m_hInstResDLL = LoadLibrary(csResLib);
+
+	if(m_hInstResDLL == NULL) {
+#ifdef _DEBUG
+		csResLib.Format(_T("%spwsafe%sd.dll"), acPath, szLang);
+		csPName.Format(_T("pwsafe%sd.dll"), szLang);
+#else
+		csResLib.Format(_T("%spwsafe%s.dll"), acPath, szLang);
+		csPName.Format(_T("pwsafe%s.dll"), szLang);
+#endif
+		m_hInstResDLL = LoadLibrary(csResLib);
+		if(m_hInstResDLL == NULL) {
+			TRACE(_T("Could not load language DLLs '%s' or '%s' - using embedded resources.\n"),
+				csSName, csPName);
+		}
+		else {
+			TRACE(_T("Could not load language dll '%s' - using language DLL '%s'.\n"), 
+				csSName, csPName);
+		}
+	} else
+		TRACE(_T("Using language DLL '%s'.\n"), csSName);
+
+	if(m_hInstResDLL != NULL)
+		AfxSetResourceHandle(m_hInstResDLL);
 
   // Get application version information
   GetApplicationVersionData();

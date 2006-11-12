@@ -280,8 +280,7 @@
 #define IDC_OTHERBROWSER                1215
 #define IDC_OTHERBROWSERLOCATION        1216
 #define IDC_APPCOPYRIGHT                1217
-#define IDC_CHECK2                      1219
-#define IDC_STARTUP                     1219
+#define IDC_STARTUP                     1218
 
 // Next default values for new objects
 // 
