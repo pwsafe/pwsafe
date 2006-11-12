@@ -100,7 +100,7 @@ public:
   void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
   void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
   void SetReadOnly(bool state);
-  void SetStartSilent(bool state) { m_IsStartSilent = state;}
+  void SetStartSilent(bool state);
   void SetStartClosed(bool state) { m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);

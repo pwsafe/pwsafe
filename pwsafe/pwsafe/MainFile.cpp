@@ -121,7 +121,8 @@ DboxMain::OpenOnInit(void)
 	m_bOpen = true;
     return TRUE;
   default:
-    CDialog::OnCancel();
+    if (!m_IsStartSilent)
+      CDialog::OnCancel();
     return FALSE;
   }
 }

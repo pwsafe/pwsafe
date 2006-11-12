@@ -515,7 +515,7 @@ ThisMfcApp::InitInstance()
         break;
       case 'S':
         dbox.SetStartSilent(true);
-        dbox.SetCurFile(_T(""));
+        dbox.SetCurFile(fn);
         break;
       case 'V':
         dbox.SetValidate(true);
