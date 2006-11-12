@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="pwsafeENU"
+	Name="pwsafeEN"
 	ProjectGUID="{ECDC9723-0E45-4F56-ACFF-285AA4510AEE}"
-	RootNamespace="pwsafeENU"
+	RootNamespace="pwsafeEN"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;pwsafeENU_EXPORTS;AFX_RESOURCE_DLL;AFX_TARG_ENU"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;pwsafeEN_EXPORTS;AFX_RESOURCE_DLL;AFX_TARG_ENU"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,6 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\$(ProjectName)d.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -116,7 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;pwsafeENU_EXPORTS;AFX_RESOURCE_DLL;AFX_TARG_ENU"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;pwsafeEN_EXPORTS;AFX_RESOURCE_DLL;AFX_TARG_ENU"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -176,7 +177,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\pwsafeENU.cpp"
+				RelativePath=".\pwsafeEN.cpp"
 				>
 			</File>
 			<File
