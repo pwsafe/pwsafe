@@ -311,6 +311,7 @@ DboxMain::OnOptions()
   misc.m_csBrowser = CString(prefs->
                              GetPref(PWSprefs::OtherBrowser));
 
+  backup.SetCurFile(m_core.GetCurFile());
   backup.m_saveimmediately = prefs->
     GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   backup.m_backupbeforesave = prefs->
@@ -325,8 +326,6 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::BackupMaxIncremented);
   backup.m_backuplocation = prefs->
     GetPref(PWSprefs::BackupLocation);
-  backup.m_userbackupsubdirectory = CString(prefs->
-                                            GetPref(PWSprefs::BackupSubDirectoryValue));
   backup.m_userbackupotherlocation = CString(prefs->
                                              GetPref(PWSprefs::BackupOtherLocationValue));
 
@@ -468,8 +467,6 @@ DboxMain::OnOptions()
                    backup.m_maxnumincbackups);
     prefs->SetPref(PWSprefs::BackupLocation,
                    backup.m_backuplocation);    
-    prefs->SetPref(PWSprefs::BackupSubDirectoryValue,
-                   backup.m_userbackupsubdirectory);
     prefs->SetPref(PWSprefs::BackupOtherLocationValue,
                    backup.m_userbackupotherlocation);
 
