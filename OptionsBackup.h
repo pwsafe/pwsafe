@@ -22,12 +22,15 @@ public:
 	COptionsBackup();
 	~COptionsBackup();
 
+    // Should be part of ctor, but MFC doesn't requires
+    // default ctor. Grrr.
+    void SetCurFile(const CString &currentFile);
+
 // Dialog Data
 	//{{AFX_DATA(COptionsBackup)
 	enum { IDD = IDD_PS_BACKUP };
 	CComboBox m_backupsuffix_cbox;
 	CString m_userbackupprefix;
-	CString m_userbackupsubdirectory;
 	CString m_userbackupotherlocation;
 	BOOL	m_saveimmediately;
 	BOOL	m_backupbeforesave;
@@ -37,6 +40,8 @@ public:
 	//}}AFX_DATA
 	int		m_backupsuffix;
 	int		m_BKSFX_to_Index[PWSprefs::maxBKSFX + 1];
+    CString m_currentFileDir;
+    CString m_currentFileBasename;
 
 // Overrides
 	// ClassWizard generate virtual function overrides

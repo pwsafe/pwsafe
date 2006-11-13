@@ -31,7 +31,6 @@
 #define IDS_SETMAXPWHISTORY             5102
 #define IDS_DELETEREGISTRY              5103
 #define IDS_BACKUPBEFORESAVE            5104
-#define IDS_USERBACKUPSUBDIRECTORY      5105
 #define IDS_USERBACKUPOTHERLOCATION     5106
 
 // Program strings
