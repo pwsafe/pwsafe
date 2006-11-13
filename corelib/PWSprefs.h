@@ -61,8 +61,7 @@ class PWSprefs {
 		  BackupMaxIncremented, UseDefaultBrowser,
 		  NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
-		  TreeFont, BackupPrefixValue, BackupSubDirectoryValue,
-		  BackupOtherLocationValue, OtherBrowser,
+		  TreeFont, BackupPrefixValue, BackupDir, OtherBrowser,
 		  NumStringPrefs};
 
   // for DoubleClickAction

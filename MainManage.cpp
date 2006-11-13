@@ -327,7 +327,7 @@ DboxMain::OnOptions()
   backup.m_backuplocation = prefs->
     GetPref(PWSprefs::BackupLocation);
   backup.m_userbackupotherlocation = CString(prefs->
-                                             GetPref(PWSprefs::BackupOtherLocationValue));
+                                             GetPref(PWSprefs::BackupDir));
 
   optionsDlg.AddPage( &backup );
   optionsDlg.AddPage( &display );
@@ -467,7 +467,7 @@ DboxMain::OnOptions()
                    backup.m_maxnumincbackups);
     prefs->SetPref(PWSprefs::BackupLocation,
                    backup.m_backuplocation);    
-    prefs->SetPref(PWSprefs::BackupOtherLocationValue,
+    prefs->SetPref(PWSprefs::BackupDir,
                    backup.m_userbackupotherlocation);
 
     // JHF : no status bar under WinCE (was already so in the .h file !?!)
