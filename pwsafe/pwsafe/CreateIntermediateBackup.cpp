@@ -24,7 +24,7 @@ void
 DboxMain::CreateIntermediateBackup()
 {
 	int i_backuplocation, i_backupprefix, i_backupsuffix, i_maxnumincbackups;
-	CString cs_userbackupprefix, cs_userbackupsubdirectory, cs_userbackupotherlocation;
+	CString cs_userbackupprefix, cs_userbackupdir;
 	CString cs_temp, cs_currentfile(m_core.GetCurFile()), cs_newfile;
 
 	PWSprefs *prefs = PWSprefs::GetInstance();
@@ -39,23 +39,25 @@ DboxMain::CreateIntermediateBackup()
 		GetPref(PWSprefs::BackupMaxIncremented);
 	cs_userbackupprefix = CString(prefs->
 		GetPref(PWSprefs::BackupPrefixValue));
-	cs_userbackupsubdirectory = CString(prefs->
-		GetPref(PWSprefs::BackupSubDirectoryValue));
-	cs_userbackupotherlocation = CString(prefs->
-		GetPref(PWSprefs::BackupOtherLocationValue));
+	cs_userbackupdir = CString(prefs->
+		GetPref(PWSprefs::BackupDir));
 
 	// Get location for intermediate backup
-	if (i_backuplocation < 2) {
-		// Get directory containing database
-		cs_temp = cs_currentfile;
-		TCHAR *lpszTemp = cs_temp.GetBuffer(_MAX_PATH);
-		PathRemoveFileSpec(lpszTemp);
-		cs_temp.ReleaseBuffer();
-		cs_temp += _T("\\");
-		if (i_backuplocation == 1)
-			cs_temp += cs_userbackupsubdirectory + _T("\\");
-	} else {
-		cs_temp = cs_userbackupotherlocation;
+    switch (i_backuplocation) { // case values from radio button ordering.
+    case 0: {// directory same as database's
+      // Get directory containing database
+      cs_temp = cs_currentfile;
+      TCHAR *lpszTemp = cs_temp.GetBuffer(_MAX_PATH);
+      PathRemoveFileSpec(lpszTemp);
+      cs_temp.ReleaseBuffer();
+      cs_temp += _T("\\");
+    }
+      break;
+    case 1: // user specified
+      cs_temp = cs_userbackupdir;
+      break;
+    default:
+      ASSERT(0);
 	}
 
 	// generate prefix of intermediate backup file name
@@ -73,12 +75,13 @@ DboxMain::CreateIntermediateBackup()
 	}
 
 	// Add on suffix
-	switch (i_backupsuffix) {
-		case 1:
+	switch (i_backupsuffix) { // case values from order in listbox.
+    case 1: // YYYYMMDD_HHMMSS suffix
 			{
 				time_t now;
 				time(&now);
-				CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now, TMC_EXPORT_IMPORT);
+				CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now,
+                                                                                TMC_EXPORT_IMPORT);
 				cs_temp += _T("_");
 				cs_newfile = cs_temp + cs_datetime.Left(4) +	// YYYY
 									cs_datetime.Mid(5,2) +	// MM
@@ -89,14 +92,14 @@ DboxMain::CreateIntermediateBackup()
 									cs_datetime.Mid(17,2);	// SS
 			}
 			break;
-		case 2:
+    case 2: // _nnn suffix
 			if (GetIncBackupFileName(cs_temp, i_maxnumincbackups, cs_newfile) == FALSE) {
 				AfxMessageBox(IDS_NOIBACKUP, MB_OK);
 				prefs->SetPref(PWSprefs::BackupBeforeEverySave, false);
 				return;
 			}
 			break;
-		case 0:
+    case 0: // no suffix
 		default:
 			cs_newfile = cs_temp;
 			break;

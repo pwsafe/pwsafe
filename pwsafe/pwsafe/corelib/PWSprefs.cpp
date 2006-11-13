@@ -102,8 +102,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 	{_T("defusername"), _T(""), true},								// database
 	{_T("treefont"), _T(""), false},								// application
 	{_T("BackupPrefixValue"), _T(""), false},						// application
-	{_T("BackupSubDirectoryValue"), _T(""), false},					// application
-	{_T("BackupOtherLocationValue"), _T(""), false},				// application
+	{_T("BackupDir"), _T(""), false},                               // application
 	{_T("OtherBrowser"), _T(""), false},							// application
 };
 
