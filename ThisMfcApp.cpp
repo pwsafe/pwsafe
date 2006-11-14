@@ -53,7 +53,7 @@ ThisMfcApp::ThisMfcApp() :
 	m_bUseAccelerator( true ),
 #endif
 	m_pMRU( NULL ), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
-	m_HotKeyPressed(false), m_companyname(_T("Counterpane Systems"))
+	m_HotKeyPressed(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -427,15 +427,16 @@ ThisMfcApp::InitInstance()
     path ends up being
 
     HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+    where companyname is what's set here, and appname is taken from
+    AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
 
-    Assuming the open-source version of this is going to become less
-    Counterpane-centric, I expect this may change, but if it does, an
-    automagic migration ought to happen. -- {jpr}
-
-    Of course, this is legacy, and will go away once the registry is fully replaced
-    by the in-database preference storage. -- ronys
+    Notes:
+    1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
+       member function.
+    2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
+       for discussion on how this is handled.
   */
-  SetRegistryKey(m_companyname);
+  SetRegistryKey(_T("Password Safe"));
 
   // MUST (indirectly) create PWSprefs first
   // Ensures all things like saving locations etc. are set up.

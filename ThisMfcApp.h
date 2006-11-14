@@ -43,7 +43,6 @@ public:
   PWScore m_core;
   CMenu* m_mainmenu;
   BOOL m_mruonfilemenu;
-  CString m_companyname;
   HINSTANCE m_hInstResDLL;
     
   virtual BOOL InitInstance();
