@@ -10,8 +10,8 @@
 
 // version.h is automatically generated from version.in by a custom
 // pre-build step using Tortoise SVN's program SubWCRev.exe, which
-// replaces $WCREV$ with latest subversion revision number.
-s
+// replaces "(dollar)WCREV(dollar)" with latest subversion revision number.
+
 // Format: Major, Minor, Build, Revision
 //   Build  = 0 for all Formally Released versions
 //   Build != 0 for all Intermediate versions

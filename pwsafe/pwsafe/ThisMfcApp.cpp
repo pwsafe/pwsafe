@@ -35,6 +35,8 @@
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
 
+#include "Shlwapi.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -335,12 +337,13 @@ ThisMfcApp::InitInstance()
    * It's always best to start at the beginning.  [Glinda, Witch of the North]
    */
 
+  // Get application version information
+  GetApplicationVersionData();
+
   /*
    Format of resource-only DLL names (which MUST be in the same directory as the pwsafe.exe)
-     Debug:    pwsafeLL_CCd.dll
 	 Release:  pwsafeLL_CC.dll
    or
-     Debug:    pwsafeLLd.dll
 	 Release:  pwsafeLL.dll
 
    where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
@@ -365,56 +368,90 @@ ThisMfcApp::InitInstance()
 	ASSERT(inum == 3);
 	_tcsupr(szLang);
 
-	TRACE("LOCALE_SISO639LANGNAME=%s\n", szLang);
+	TRACE("%s LOCALE_SISO639LANGNAME=%s\n", PWSUtil::GetTimeStamp(), szLang);
 
 	inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
 		szCtry, 4);
 	ASSERT(inum == 3);
 
-	TRACE("LOCALE_SISO3166CTRYNAME=%s\n", szCtry);
+	TRACE("%s LOCALE_SISO3166CTRYNAME=%s\n", PWSUtil::GetTimeStamp(), szCtry);
 
 	TCHAR acPath[MAX_PATH + 1];
 
-	if ( GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
+	if (GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
 		// guaranteed file name of at least one character after path '\'
 		*(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
 	}
 
 	CString csResLib, csPName, csSName;
-#ifdef _DEBUG
-	csResLib.Format(_T("%spwsafe%s_%sd.dll"), acPath, szLang, szCtry);
-	csSName.Format(_T("pwsafe%s_%sd.dll"), szLang, szCtry);
-#else
 	csResLib.Format(_T("%spwsafe%s_%s.dll"), acPath, szLang, szCtry);
 	csSName.Format(_T("pwsafe%s_%s.dll"), szLang, szCtry);
-#endif
 	m_hInstResDLL = LoadLibrary(csResLib);
 
 	if(m_hInstResDLL == NULL) {
-#ifdef _DEBUG
-		csResLib.Format(_T("%spwsafe%sd.dll"), acPath, szLang);
-		csPName.Format(_T("pwsafe%sd.dll"), szLang);
-#else
 		csResLib.Format(_T("%spwsafe%s.dll"), acPath, szLang);
 		csPName.Format(_T("pwsafe%s.dll"), szLang);
-#endif
 		m_hInstResDLL = LoadLibrary(csResLib);
 		if(m_hInstResDLL == NULL) {
-			TRACE(_T("Could not load language DLLs '%s' or '%s' - using embedded resources.\n"),
-				csSName, csPName);
+			TRACE(_T("%s Could not load language DLLs '%s' or '%s' - using embedded resources.\n"),
+				PWSUtil::GetTimeStamp(), csSName, csPName);
+		} else {
+			TRACE(_T("%s Could not load language dll '%s' - using language DLL '%s'.\n"), 
+				PWSUtil::GetTimeStamp(), csSName, csPName);
 		}
-		else {
-			TRACE(_T("Could not load language dll '%s' - using language DLL '%s'.\n"), 
-				csSName, csPName);
+	} else {
+		CString csResLibInfo(GetVersionInfoFromFile(csResLib));
+		CString csExeFileInfo(m_csFileVersionString);
+
+		//int iRI = csResLibInfo.ReverseFind(_T(','));
+		//int iEI = csExeFileInfo.ReverseFind(_T(','));
+		//csResLibInfo = csResLibInfo.Left(iRI);
+		//csExeFileInfo = csExeFileInfo.Left(iEI);
+
+		if (csExeFileInfo != csResLibInfo) {
+			TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %s/%s.\n"), 
+				PWSUtil::GetTimeStamp(), csPName, csExeFileInfo, csResLibInfo);
+			FreeLibrary(m_hInstResDLL);
+			m_hInstResDLL = NULL;
+		} else {
+			TRACE(_T("%s Using language DLL '%s'.\n"), PWSUtil::GetTimeStamp(), csSName);
+			AfxSetResourceHandle(m_hInstResDLL);
 		}
-	} else
-		TRACE(_T("Using language DLL '%s'.\n"), csSName);
+	}
 
-	if(m_hInstResDLL != NULL)
-		AfxSetResourceHandle(m_hInstResDLL);
+	CString sHelppath, sHelpName;
+	sHelppath.Format(_T("%spwsafe%s_%s.chm"), acPath, szLang, szCtry);
+	sHelpName.Format(_T("pwsafe%s_%s.chm"), szLang, szCtry);
+	if (PathFileExists(sHelppath)) {
+		free((void*)m_pszHelpFilePath);
+		m_pszHelpFilePath = _tcsdup(sHelppath);
+		TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), sHelpName);
+	} else {
+		sHelppath.Format(_T("%spwsafe%s.chm"), acPath, szLang);
+		sHelpName.Format(_T("%spwsafe%s.chm"), acPath, szLang);
+		if (PathFileExists(sHelppath)) {
+			free((void*)m_pszHelpFilePath);
+			m_pszHelpFilePath = _tcsdup(sHelppath);
+			TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), sHelpName);
+		} else {
+#ifdef DEBUG
+			TCHAR fname[_MAX_FNAME];
+			TCHAR ext[_MAX_EXT];
+#if _MSC_VER >= 1400
+			_tsplitpath_s( m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+			_tcslwr_s(fname, _MAX_FNAME);
+			_tcslwr_s(ext, _MAX_EXT);
+#else
+			_tsplitpath( m_pszHelpFilePath, NULL, NULL, fname, ext );
+			_tcslwr(ext);
+			_tcslwr(fname);
+#endif
+			TRACE(_T("%s Using help file: %s%s\n"), PWSUtil::GetTimeStamp(), fname, ext);
+#endif // DEBUG
+		}
+	}
 
-  // Get application version information
-  GetApplicationVersionData();
   // PWScore needs it to get into database header if/when saved
   m_core.SetApplicationMajorMinor(m_dwMajorMinor);
 
@@ -951,50 +988,111 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, int MenuID)
   return -1;
 }
 
-
 void
 ThisMfcApp::GetApplicationVersionData()
 {
-  TCHAR szFullPath[MAX_PATH];
-  DWORD dwVerHnd, dwVerInfoSize;
-  // Get version information from the application
-  ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
-  dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
-  if (dwVerInfoSize > 0) {
-    char* pVersionInfo = new char[dwVerInfoSize];
-    if(pVersionInfo != NULL) {
-      BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
-                                       (DWORD)dwVerHnd,
-                                       (DWORD)dwVerInfoSize,
-                                       (LPVOID)pVersionInfo);
-      VS_FIXEDFILEINFO *szVer = NULL;
-      UINT uVerLength; 
-      if (bRet) {
-      	// get binary file version information
-        bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
-                               (LPVOID*)&szVer, &uVerLength);
-		if (bRet) {
-		  m_dwMajorMinor = szVer->dwProductVersionMS;
-		  m_dwBuildRevision = szVer->dwProductVersionLS;
-		} else {
-		  m_dwMajorMinor = m_dwBuildRevision = (DWORD)-1;
-		}
-		// Get string file version information 
-        // (assume US English "040904B0")
-		TCHAR *buffer; 
-        UINT buflen;
-        bRet = ::VerQueryValue(pVersionInfo,
-                               TEXT("\\StringFileInfo\\040904B0\\FileVersion"),
-                               (LPVOID*)&buffer, &buflen); 
-        m_csFileVersionString = bRet ? buffer : _T("");
-        bRet = ::VerQueryValue(pVersionInfo,
-                               TEXT("\\StringFileInfo\\040904B0\\"
-                                    "LegalCopyright"),
-                               (LPVOID*)&buffer, &buflen); 
-        m_csCopyrightString = bRet ? buffer : _T("All rights reserved.");
-      }
+    TCHAR szFullPath[MAX_PATH];
+    DWORD dwVerHnd, dwVerInfoSize;
+
+    // Get version information from the application
+    ::GetModuleFileName(NULL, szFullPath, sizeof(szFullPath));
+    dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
+    if (dwVerInfoSize > 0) {
+        char* pVersionInfo = new char[dwVerInfoSize];
+        if(pVersionInfo != NULL) {
+            BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
+                                             (DWORD)dwVerHnd,
+                                             (DWORD)dwVerInfoSize,
+                                             (LPVOID)pVersionInfo);
+            VS_FIXEDFILEINFO *szVer = NULL;
+            UINT uVerLength; 
+            if (bRet) {
+                // get binary file version information
+                bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
+                                      (LPVOID*)&szVer, &uVerLength);
+                if (bRet) {
+                    m_dwMajorMinor = szVer->dwProductVersionMS;
+                    m_dwBuildRevision = szVer->dwProductVersionLS;
+                } else {
+                    m_dwMajorMinor = m_dwBuildRevision = (DWORD)-1;
+                }
+
+                struct TRANSARRAY {
+                    WORD wLangID;
+                    WORD wCharSet;
+                };
+
+                CString cs_text;
+                TCHAR *buffer, *lpsztext;
+                UINT buflen;
+                TRANSARRAY* lpTransArray;
+
+                VerQueryValue(pVersionInfo, _T("\\VarFileInfo\\Translation"),
+                             (LPVOID*)&buffer, &buflen);
+                lpTransArray = (TRANSARRAY*) buffer;
+
+                // Get string File Version information 
+                cs_text.Format(_T("\\StringFileInfo\\%04x%04x\\FileVersion"),
+                               lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
+				lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(TCHAR));
+                bRet = ::VerQueryValue(pVersionInfo, lpsztext, (LPVOID*)&buffer, &buflen); 
+                m_csFileVersionString = bRet ? buffer : _T("");
+				cs_text.ReleaseBuffer();
+
+                // Get string Legal Copyright information 
+                cs_text.Format(_T("\\StringFileInfo\\%04x%04x\\LegalCopyright"),
+                               lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
+				lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(TCHAR));
+                bRet = ::VerQueryValue(pVersionInfo, lpsztext, (LPVOID*)&buffer, &buflen); 
+                m_csCopyrightString = bRet ? buffer : _T("All rights reserved.");
+				cs_text.ReleaseBuffer();
+            }
+        }
+        delete[] pVersionInfo;
     }
-    delete[] pVersionInfo;
-  }
 }
 
+CString
+ThisMfcApp::GetVersionInfoFromFile(const CString &csFileName)
+{
+    CString csFileVersionString(_T(""));
+    DWORD dwVerHnd, dwVerInfoSize;
+
+    // Get version information from the application
+    dwVerInfoSize = ::GetFileVersionInfoSize((LPTSTR)(LPCTSTR)csFileName, &dwVerHnd);
+    if (dwVerInfoSize > 0) {
+        char* pVersionInfo = new char[dwVerInfoSize];
+        if(pVersionInfo != NULL) {
+            BOOL bRet = ::GetFileVersionInfo((LPTSTR)(LPCTSTR)csFileName,
+                                             (DWORD)dwVerHnd,
+                                             (DWORD)dwVerInfoSize,
+                                             (LPVOID)pVersionInfo);
+             if (bRet) {
+
+                struct TRANSARRAY {
+                    WORD wLangID;
+                    WORD wCharSet;
+                };
+
+                CString cs_text;
+                TCHAR *buffer, *lpsztext; 
+                UINT buflen;
+                TRANSARRAY* lpTransArray;
+
+                VerQueryValue(pVersionInfo, _T("\\VarFileInfo\\Translation"),
+                             (LPVOID*)&buffer, &buflen);
+                lpTransArray = (TRANSARRAY*) buffer;
+
+                // Get string File Version information 
+                cs_text.Format(_T("\\StringFileInfo\\%04x%04x\\FileVersion"),
+                               lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
+				lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(TCHAR));
+                bRet = ::VerQueryValue(pVersionInfo, lpsztext, (LPVOID*)&buffer, &buflen); 
+                csFileVersionString = bRet ? buffer : _T("");
+				cs_text.ReleaseBuffer();
+			}
+        }
+        delete[] pVersionInfo;
+    }
+    return csFileVersionString;
+}
