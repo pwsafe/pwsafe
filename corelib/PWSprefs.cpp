@@ -92,7 +92,6 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	// default, user specified sub-directory and user specified other location
 	{_T("BackupLocation"), 0, false, 0, 2},									// application
 	{_T("BackupMaxIncremented"), 3, false, 1, 999},							// application
-	{_T("UseDefaultBrowser"), 0, false, 0, 1},								// application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -103,7 +102,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 	{_T("treefont"), _T(""), false},								// application
 	{_T("BackupPrefixValue"), _T(""), false},						// application
 	{_T("BackupDir"), _T(""), false},                               // application
-	{_T("OtherBrowser"), _T(""), false},							// application
+	{_T("AltBrowser"), _T(""), false},							// application
 };
 
 

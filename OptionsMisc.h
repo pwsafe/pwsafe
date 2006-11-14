@@ -36,7 +36,6 @@ public:
 	CComboBox m_dblclk_cbox;
 	BOOL	m_usedefuser;
 	BOOL	m_querysetdef;
-	int    m_usedefaultbrowser;
 	CString	m_defusername;
 	CString m_otherbrowserlocation;
 	//}}AFX_DATA
@@ -60,7 +59,6 @@ protected:
 	//{{AFX_MSG(COptionsMisc)
 	afx_msg void OnEnableHotKey();
 	afx_msg void OnUsedefuser();
-	afx_msg void OnBrowser();
 	afx_msg void OnBrowseForLocation();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
@@ -68,4 +66,8 @@ protected:
 public:
 	afx_msg void OnBnClickedMaintaindatetimestamps();
 	afx_msg void OnComboChanged();
+	BOOL PreTranslateMessage(MSG* pMsg);
+
+private:
+	CToolTipCtrl* m_ToolTipCtrl;
 };

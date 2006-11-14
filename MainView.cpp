@@ -1184,35 +1184,35 @@ DboxMain::UpdateSystemTray(const STATE s)
 BOOL
 DboxMain::LaunchBrowser(const CString &csURL)
 {
-  CString csBrowser;
+  CString csAltBrowser;
+  bool useAltBrowser;
   long hinst;
-  int iUseDefault;
-
-  // If csURL doesn't contain "://", then we'll prepend "http://" to it,
-  // e.g., change "www.mybank.com" to "http://www.mybank.com".
   CString theURL(csURL);
 
+  // If csURL contains "[alt]" then we'll use the alternate browser (if defined),
+  // and remove the "[alt]" from the URL.
+  // If csURL doesn't contain "://", then we'll prepend "http://" to it,
+  // e.g., change "www.mybank.com" to "http://www.mybank.com".
+  int altReplacements = theURL.Replace(_T("[alt]"), _T(""));
   if (theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
 
-  iUseDefault = PWSprefs::GetInstance()->
-	  GetPref(PWSprefs::UseDefaultBrowser);
+  csAltBrowser = CString(PWSprefs::GetInstance()->
+                         GetPref(PWSprefs::AltBrowser));
 
-  if (iUseDefault != 0)
-	  csBrowser = CString(PWSprefs::GetInstance()->
-	      GetPref(PWSprefs::OtherBrowser));
+  useAltBrowser = (altReplacements > 0) && !csAltBrowser.IsEmpty();
 
-  if (iUseDefault == 0 || csBrowser.IsEmpty()) {
-      hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
-                                  NULL, SW_SHOWNORMAL));
-      if(hinst < 32) {
-        AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
-        return FALSE;
-      }
-      return TRUE;
-  } else {
-	  hinst = long(::ShellExecute(NULL, NULL, csBrowser, theURL,
+  if (!useAltBrowser) {
+    hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
                                 NULL, SW_SHOWNORMAL));
-      return TRUE;
+  } else {
+    hinst = long(::ShellExecute(NULL, NULL, csAltBrowser, theURL,
+                                NULL, SW_SHOWNORMAL));
   }
+
+  if(hinst < 32) {
+    AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
+    return FALSE;
+  }
+  return TRUE;
 }
