@@ -42,7 +42,7 @@
 ;    or in the Start Menu, for easy access.  
 ;
 ; 2. The installer places two registry values in 
-;    HKCU\Software\Counterpane Systems\Password Safe.  These registry
+;    HKCU\Software\Password Safe\Password Safe.  These registry
 ;    values are for the use of the installer itself.  Password Safe
 ;    does not rely on these registry values.  If the installer is not
 ;    used, these registry values need not be created.
@@ -140,7 +140,7 @@
   
   ; Get installation folder from registry if available
   InstallDirRegKey HKCU \
-                   "Software\Counterpane Systems\Password Safe" \
+                   "Software\Password Safe\Password Safe" \
                    "installdir"
 
 
@@ -209,13 +209,13 @@ Section "Program Files" ProgramFiles
 
   ; Store installation folder
   WriteRegStr HKCU \
-              "Software\Counterpane Systems\Password Safe" \
+              "Software\Password Safe\Password Safe" \
               "installdir" \
               $INSTDIR
 
   ; Store the version
   WriteRegStr HKCU \
-              "Software\Counterpane Systems\Password Safe" \
+              "Software\Password Safe\Password Safe" \
               "installversion" \
               "${VERSION}"
   
@@ -333,7 +333,7 @@ Section "Uninstall"
   RMDir  "$INSTDIR"
 
   ; Delete the registry key for Password Safe
-  DeleteRegKey HKCU "Software\Counterpane Systems\Password Safe"
+  DeleteRegKey HKCU "Software\Password Safe\Password Safe"
 
   ; Delete the registry key for the Add or Remove Programs window.  If
   ; the current user doesn't have permission to delete registry keys
