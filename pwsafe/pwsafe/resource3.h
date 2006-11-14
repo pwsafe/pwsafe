@@ -5,7 +5,7 @@
 //  Usage
 #define IDS_USAGE                       5000
 
-// Windiws state
+// Window state
 #define IDS_ALWAYSONTOP                 5010
 
 // Status bar
@@ -32,9 +32,10 @@
 #define IDS_DELETEREGISTRY              5103
 #define IDS_BACKUPBEFORESAVE            5104
 #define IDS_USERBACKUPOTHERLOCATION     5106
+#define IDS_MAINTAINDATETIMESTAMPS      5107
+#define IDS_OTHERBROWSERLOCATION        5108
 
 // Program strings
-
 #define IDS_DCAAUTOTYPE                 5200
 #define IDS_DCABROWSE                   5201
 #define IDS_DCACOPYNOTES                5202

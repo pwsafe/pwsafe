@@ -306,10 +306,8 @@ DboxMain::OnOptions()
                                GetPref(PWSprefs::DefUserName));
   misc.m_querysetdef = prefs->
     GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
-  misc.m_usedefaultbrowser = prefs->
-    GetPref(PWSprefs::UseDefaultBrowser);
   misc.m_csBrowser = CString(prefs->
-                             GetPref(PWSprefs::OtherBrowser));
+                             GetPref(PWSprefs::AltBrowser));
 
   backup.SetCurFile(m_core.GetCurFile());
   backup.m_saveimmediately = prefs->
@@ -440,17 +438,13 @@ DboxMain::OnOptions()
 
     prefs->SetPref(PWSprefs::HotKeyEnabled,
                    misc.m_hotkey_enabled == TRUE);
-
     prefs->SetPref(PWSprefs::UseDefUser,
                    misc.m_usedefuser == TRUE);
     prefs->SetPref(PWSprefs::DefUserName,
                    misc.m_defusername);
     prefs->SetPref(PWSprefs::QuerySetDef,
                    misc.m_querysetdef == TRUE);
-
-    prefs->SetPref(PWSprefs::UseDefaultBrowser,
-                   misc.m_usedefaultbrowser);
-    prefs->SetPref(PWSprefs::OtherBrowser,
+    prefs->SetPref(PWSprefs::AltBrowser,
                    misc.m_csBrowser);
 
     prefs->SetPref(PWSprefs::SaveImmediately,

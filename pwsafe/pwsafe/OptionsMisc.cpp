@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNCREATE(COptionsMisc, CPropertyPage)
 
-COptionsMisc::COptionsMisc() : CPropertyPage(COptionsMisc::IDD)
+COptionsMisc::COptionsMisc() : CPropertyPage(COptionsMisc::IDD), m_ToolTipCtrl(NULL)
 {
 	//{{AFX_DATA_INIT(COptionsMisc)
 	//}}AFX_DATA_INIT
@@ -40,6 +40,7 @@ COptionsMisc::COptionsMisc() : CPropertyPage(COptionsMisc::IDD)
 
 COptionsMisc::~COptionsMisc()
 {
+	delete m_ToolTipCtrl;
 }
 
 void COptionsMisc::DoDataExchange(CDataExchange* pDX)
@@ -59,7 +60,6 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_USEDEFUSER, m_usedefuser);
 	DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
 	DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
-	DDX_Radio(pDX, IDC_DEFAULTBROWSER, m_usedefaultbrowser); // only first!
 	DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_otherbrowserlocation);
 	//}}AFX_DATA_MAP
 }
@@ -68,8 +68,6 @@ BEGIN_MESSAGE_MAP(COptionsMisc, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsMisc)
 	ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
 	ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
-	ON_BN_CLICKED(IDC_DEFAULTBROWSER, OnBrowser)
-	ON_BN_CLICKED(IDC_OTHERBROWSER, OnBrowser)
 	ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
 	ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged) 
 	//}}AFX_MSG_MAP
@@ -131,7 +129,27 @@ BOOL COptionsMisc::OnInitDialog()
   GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
 
   OnUsedefuser();
-  OnBrowser();
+
+	// Tooltips on Property Pages
+	EnableToolTips();
+
+	m_ToolTipCtrl = new CToolTipCtrl;
+	if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+		TRACE("Unable To create Property Page ToolTip\n");
+		return TRUE;
+	}
+
+	// Activate the tooltip control.
+	m_ToolTipCtrl->Activate(TRUE);
+	m_ToolTipCtrl->SetMaxTipWidth(300);
+
+	// Set the tooltip
+	// Note naming convention: string IDS_xxx corresponds to control IDC_xxx
+	CString cs_ToolTip;
+	cs_ToolTip.LoadString(IDS_MAINTAINDATETIMESTAMPS);
+	m_ToolTipCtrl->AddTool(GetDlgItem(IDC_MAINTAINDATETIMESTAMPS), cs_ToolTip);
+	cs_ToolTip.LoadString(IDS_OTHERBROWSERLOCATION);
+	m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OTHERBROWSERLOCATION), cs_ToolTip);
 
   return TRUE;
 }
@@ -185,22 +203,6 @@ void COptionsMisc::OnOK()
   CPropertyPage::OnOK();  
 }
 
-void COptionsMisc::OnBrowser()
-{
-	UpdateData(TRUE);
-	switch (m_usedefaultbrowser) {
-		case 0:
-			GetDlgItem(IDC_OTHERBROWSERLOCATION)->EnableWindow(FALSE);
-			GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(FALSE);
-			break;
-		case 1:
-			GetDlgItem(IDC_OTHERBROWSERLOCATION)->EnableWindow(TRUE);
-			GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(TRUE);
-			break;
-		default:
-			break;
-	}
-}
 
 void COptionsMisc::OnBrowseForLocation()
 {
@@ -242,4 +244,15 @@ void COptionsMisc::OnBrowseForLocation()
       m_csBrowser = fd.GetPathName();
 	  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
 	}
+}
+
+// Override PreTranslateMessage() so RelayEvent() can be
+// called to pass a mouse message to CPWSOptions's
+// tooltip control for processing.
+BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
+{
+	if (m_ToolTipCtrl != NULL)
+		m_ToolTipCtrl->RelayEvent(pMsg);
+
+	return CPropertyPage::PreTranslateMessage(pMsg);
 }

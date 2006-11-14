@@ -274,8 +274,6 @@
 #define IDC_BACKUPMAX                   1211
 #define IDC_BROWSEFORLOCATION           1212
 #define IDC_APPLYREGISTRYDELETENOW      1213
-#define IDC_DEFAULTBROWSER              1214
-#define IDC_OTHERBROWSER                1215
 #define IDC_OTHERBROWSERLOCATION        1216
 #define IDC_APPCOPYRIGHT                1217
 #define IDC_STARTUP                     1218
