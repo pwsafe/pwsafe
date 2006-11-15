@@ -87,7 +87,7 @@ ThisMfcApp::~ThisMfcApp()
 {
   delete m_TrayIcon;
   if (m_pMRU != NULL) {
-  	WriteMRU(PWSprefs::GetInstance()->GetConfigOptions());
+    m_pMRU->WriteList();
     delete m_pMRU;
   }
 
@@ -480,72 +480,68 @@ ThisMfcApp::InitInstance()
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   CMenu* new_popupmenu = NULL;
-  const int iConfigOptions = prefs->GetConfigOptions();
 
-  if (iConfigOptions != PWSprefs::CF_NONE) {
-	int	nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
+  int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
 
-	m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
+  m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
 
-	m_clipboard_set = false;
+  m_clipboard_set = false;
 
-	m_mainmenu = new CMenu;
-	m_mainmenu->LoadMenu(IDR_MAINMENU);
-	new_popupmenu = new CMenu;
+  m_mainmenu = new CMenu;
+  m_mainmenu->LoadMenu(IDR_MAINMENU);
+  new_popupmenu = new CMenu;
 
-	// Look for "File" menu.
-	CString cs_text;
-	cs_text.LoadString(IDS_FILEMENU);
-	int pos = FindMenuItem(m_mainmenu, cs_text);
-	if (pos == -1) // E.g., in non-English versions
-		pos = 0; // best guess...
+  // Look for "File" menu.
+  CString cs_text;
+  cs_text.LoadString(IDS_FILEMENU);
+  int pos = FindMenuItem(m_mainmenu, cs_text);
+  if (pos == -1) // E.g., in non-English versions
+      pos = 0; // best guess...
 
-	CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
-	if (file_submenu != NULL)	// Look for "Close Database"
-		pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
-	else
-		pos = -1;
+  CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
+  if (file_submenu != NULL)	// Look for "Close Database"
+      pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
+  else
+      pos = -1;
 
-	if (nMRUItems > 0) {
-		if (pos > -1) {
-			int irc;
-			// Create New Popup Menu
-			new_popupmenu->CreatePopupMenu();
-			CString cs_recent, cs_recentsafes;
-			cs_recent.LoadString(IDS_RECENT);
-			cs_recentsafes.LoadString(IDS_RECENTSAFES);
+  if (nMRUItems > 0) {
+      if (pos > -1) {
+          int irc;
+          // Create New Popup Menu
+          new_popupmenu->CreatePopupMenu();
+          CString cs_recent, cs_recentsafes;
+          cs_recent.LoadString(IDS_RECENT);
+          cs_recentsafes.LoadString(IDS_RECENTSAFES);
+          
+          if (!m_mruonfilemenu) {	// MRU entries in popup menu
+              // Insert Item onto new popup
+              irc = new_popupmenu->InsertMenu(0, MF_BYPOSITION,
+                                              ID_FILE_MRU_ENTRY1, cs_recent);
+              ASSERT(irc != 0);
+              // Insert Popup onto main menu
+              irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION | MF_POPUP,
+                                             (UINT) new_popupmenu->m_hMenu,
+                                             cs_recentsafes);
+              ASSERT(irc != 0);
+          } else {	// MRU entries inline
+              irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
+                                             ID_FILE_MRU_ENTRY1, cs_recent);
+              ASSERT(irc != 0);
+          } // m_mruonfilemenu
 
-			if (!m_mruonfilemenu) {	// MRU entries in popup menu
-				// Insert Item onto new popup
-				irc = new_popupmenu->InsertMenu( 0, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, cs_recent );
-				ASSERT(irc != 0);
-
-				// Insert Popup onto main menu
-				irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION | MF_POPUP, (UINT) new_popupmenu->m_hMenu,
-																				 cs_recentsafes );
-				ASSERT(irc != 0);
-			} else {	// MRU entries inline
-				irc = file_submenu->InsertMenu( pos + 2, MF_BYPOSITION, ID_FILE_MRU_ENTRY1, cs_recent );
-				ASSERT(irc != 0);
-			}
-
-			m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
-			ReadMRU(iConfigOptions);
-			// If new config file, copy the existing ones over now.
-			if (iConfigOptions == PWSprefs::CF_FILE_RW_NEW)
-				WriteMRU(iConfigOptions);
-		}
-	} else {
-		if (pos > -1) {
-			int irc;
-			// Remove extra separator
-			irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
-			ASSERT( irc != 0);
-			// Remove Clear MRU menu item.
-			irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
-			ASSERT( irc != 0);
-		}
-	}
+          m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
+          m_pMRU->ReadList();
+      } // pos > -1
+  } else { // nMRUItems <= 0
+      if (pos > -1) {
+          int irc;
+          // Remove extra separator
+          irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
+          ASSERT( irc != 0);
+          // Remove Clear MRU menu item.
+          irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
+          ASSERT( irc != 0);
+      }
   }
 
   DboxMain dbox(NULL);
@@ -712,17 +708,16 @@ ThisMfcApp::AddToMRU(const CString &pszFilename, const bool bstartup)
 void
 ThisMfcApp::ClearMRU()
 {
-	if (m_pMRU == NULL ||
-	    PWSprefs::GetInstance()->GetConfigOptions() == PWSprefs::CF_NONE)
+	if (m_pMRU == NULL)
 		return;
 
 	int numMRU = m_pMRU->GetSize();
 	for (int i = numMRU; i > 0; i--)
 		m_pMRU->Remove(i - 1);
 
-	WriteMRU(PWSprefs::GetInstance()->GetConfigOptions());
+    m_pMRU->WriteList();
 
-	// Can't get the MRU list on the menu to tidy up automatically
+     // Can't get the MRU list on the menu to tidy up automatically
 	// Do it manually!
 	CWnd* pMain = AfxGetMainWnd();
 
@@ -762,71 +757,6 @@ ThisMfcApp::ClearMRU()
 			xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
 		return;
-	}
-}
-
-void
-ThisMfcApp::WriteMRU(const int &iconfig)
-{
-	switch (iconfig) {
-		case PWSprefs::CF_REGISTRY:
-			m_pMRU->WriteList();
-			break;
-		case PWSprefs::CF_FILE_RW:
-		case PWSprefs::CF_FILE_RW_NEW:
-			{
-				int num_MRU = m_pMRU->GetSize();
-				CString csMRUFilename, csSubkey;
-				PWSprefs::GetInstance()->SetKeepXMLLock(true);
-				// Write out ones in use
-				for (int i = 0; i < num_MRU; i++) {
-					csMRUFilename = (*m_pMRU)[i];
-					csMRUFilename.Trim();
-					csSubkey.Format(_T("Safe%02d"), i + 1);
-					PWSprefs::GetInstance()->WriteMRUToXML(csSubkey, csMRUFilename);
-				}
-				// Remove any not in use
-				const int max_MRU = ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1;
-				for (int i = num_MRU; i < max_MRU; i++) {
-					csSubkey.Format(_T("Safe%02d"), i + 1);
-					PWSprefs::GetInstance()->DeleteMRUFromXML(csSubkey);
-				}
-				PWSprefs::GetInstance()->SetKeepXMLLock(false);
-			}
-			break;
-		case PWSprefs::CF_FILE_RO:
-		case PWSprefs::CF_NONE:
-		default:
-			break;
-	}
-}
-
-void
-ThisMfcApp::ReadMRU(const int &iconfig)
-{
-	switch (iconfig) {
-		case PWSprefs::CF_REGISTRY:
-		case PWSprefs::CF_FILE_RW_NEW:
-			m_pMRU->ReadList();
-			break;
-		case PWSprefs::CF_FILE_RW:
-		case PWSprefs::CF_FILE_RO:
-			{
-				int	nMRUItems = PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems);
-				CString csSubkey;
-				PWSprefs::GetInstance()->SetKeepXMLLock(true);
-				for (int i = nMRUItems; i > 0; i--) {
-					csSubkey.Format(_T("Safe%02d"), i);
-					const CString csMRUFilename = (PWSprefs::GetInstance()->
-						ReadMRUFromXML(csSubkey));
-					AddToMRU(csMRUFilename, true);
-				}
-				PWSprefs::GetInstance()->SetKeepXMLLock(false);
-			}
-			break;
-		case PWSprefs::CF_NONE:
-		default:
-			break;
 	}
 }
 

@@ -142,7 +142,7 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp())
 }
 
 bool
-PWSprefs::CheckRegistryExists()
+PWSprefs::CheckRegistryExists() const
 {
 	bool bExists;
 	HKEY hSubkey;
@@ -205,6 +205,50 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
 			top = bottom = left = right = -1;
 			break;
 	}
+}
+
+int PWSprefs::GetMRUList(CString *MRUFiles)
+{
+    const int nMRUItems = GetPref(PWSprefs::MaxMRUItems);
+    CString csSubkey;
+    ASSERT(MRUFiles != NULL);
+
+    if (m_ConfigOptions == CF_NONE || m_ConfigOptions == CF_REGISTRY)
+        return 0;
+
+    SetKeepXMLLock(true);
+    for (int i = nMRUItems; i > 0; i--) {
+        csSubkey.Format(_T("Safe%02d"), i);
+        MRUFiles[i-1] = (ReadMRUFromXML(csSubkey));
+    }
+    SetKeepXMLLock(false);
+    return nMRUItems;
+}
+
+int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
+{
+    ASSERT(MRUFiles != NULL);
+
+    if (m_ConfigOptions == CF_NONE || m_ConfigOptions == CF_REGISTRY ||
+        m_ConfigOptions == CF_FILE_RO)
+        return 0;
+
+    CString csSubkey;
+    int i;
+    SetKeepXMLLock(true);
+    // Write out ones in use
+    for (i = 0; i < n; i++) {
+        csSubkey.Format(_T("Safe%02d"), i + 1);
+        WriteMRUToXML(csSubkey, MRUFiles[i]);
+    }
+    // Remove any not in use
+    
+    for (i = n; i < max_MRU; i++) {
+        csSubkey.Format(_T("Safe%02d"), i + 1);
+        DeleteMRUFromXML(csSubkey);
+        }
+    SetKeepXMLLock(false);
+    return n;
 }
 
 void PWSprefs::SetPref(BoolPrefs pref_enum, bool value)
@@ -854,6 +898,12 @@ void PWSprefs::WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilena
 	m_XML_Config->Set(m_csHKCU_MRU, csSubkey, csMRUFilename);
 }
 
+bool PWSprefs::OfferDeleteRegistry() const
+{
+    return (m_ConfigOptions == CF_FILE_RW &&
+            GetRegistryExistence());
+}
+
 void PWSprefs::DeleteRegistryEntries()
 {
 	HKEY hSubkey;
@@ -881,4 +931,16 @@ void PWSprefs::FileError(const int &icause)
 	cs_error.LoadString(IDSC_FILEEXCEPTION00 + icause);
 	cs_msg.Format(IDSC_CANTUSECONFIGFILE, cs_error);
 	AfxMessageBox(cs_msg, MB_OK);
+}
+
+int PWSprefs::GetConfigIndicator() const
+{
+    switch (m_ConfigOptions) {
+	   	case CF_NONE: return IDSC_CONFIG_NONE; break;
+	    case CF_REGISTRY: return IDSC_CONFIG_REGISTRY; break;
+	    case CF_FILE_RW:
+		case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW; break;
+	    case CF_FILE_RO: return IDSC_CONFIG_FILE_RO; break;
+    	default: ASSERT(0); return 0;
+    }
 }

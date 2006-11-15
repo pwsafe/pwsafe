@@ -5,6 +5,16 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
+
+/*
+ * This class works around a problem with CRecentFileList's implementation of Add,
+ * when the file being added doesn't exist (e.g., on a USB stick that has been
+ * removed). See the .cpp file for more details.
+ *
+ * Also, overrides ReadList & WriteList to work with our preference mechanism
+ * (that is, not neccesarily via the registry)
+ */
+
 #pragma once
 
 class CPWSRecentFileList : public CRecentFileList
@@ -17,4 +27,6 @@ public:
         		nSize, nMaxDispLen){}
 
 	virtual void Add(LPCTSTR lpszPathName, const bool bstartup = false);
+	virtual void ReadList();    // reads from registry or config file
+	virtual void WriteList();   // writes to registry or config file
 };

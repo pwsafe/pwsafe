@@ -17,11 +17,12 @@
  * registry. People have asked for preferences to be stored along with the 
  * database, so that the same preferences can be shared across computers
  * (e.g., using disk-on-key).
- * We need to be careful about compatability here, so: 
- * Loading preferences will be done first from the registry, then from
- * the file. This way, exisitng prefs will be imported first time, and file
- * prefs will have priority over locals. Storing prefs will be done both to
- * registry and to file. Of course, the registry part is Windows-specific.
+ *
+ * Starting with v3.05, preferences have been partitioned into two types:
+ * per-database and 'application'. Per-database preferences,
+ * as the name implies, are stored in the database. 'Application' preferences
+ * are stored in a separate configuration file.
+ * For more details, see 'config.txt' in the docs subdirectory.
  *
  * IMPORTANT: When adding a new preference, the new enum MUST be before last,
  * that is, right before the Num*Prefs enum. This is because the prefs are
@@ -40,6 +41,8 @@ class PWSprefs {
   // prefString is stored on file, format described in PWSprefs.cpp
   void Load(const CMyString &prefString);
   CMyString Store(); // returns string for saving in file
+
+  void SaveApplicationPreferences();
 
   enum  BoolPrefs {AlwaysOnTop, ShowPWDefault, ShowPWInList, SortAscending,
 		   UseDefUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
@@ -77,12 +80,7 @@ class PWSprefs {
   enum {minBKSFX = 0, BKSFX_None = 0, BKSFX_DateTime = 1, BKSFX_IncNumber = 2,
 	  maxBKSFX = 2};
 
-  // Configuration options
-  enum {CF_NONE = 0, CF_REGISTRY = 1, CF_FILE_RO = 2, CF_FILE_RW = 4, CF_FILE_RW_NEW = 8};
 
-  // Preferences changed (Database or Application)
-  enum {DB_PREF = 0, APP_PREF = 1};
-  
   bool IsDBprefsChanged() const {return m_prefs_changed[DB_PREF];}
   bool IsAPPprefsChanged() const {return m_prefs_changed[APP_PREF];}
   void ClearDBprefsChanged() {m_prefs_changed[DB_PREF] = false;}
@@ -94,38 +92,51 @@ class PWSprefs {
   unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal) const;
   CMyString GetPref(StringPrefs pref_enum) const;
 
-  // Special case
+  // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefRect(long top, long bottom, long left, long right);
+  int GetMRUList(CString *MRUFiles);
+  int SetMRUList(const CString *MRUFiles, int n, int max_MRU);
 
   void SetPref(BoolPrefs pref_enum, bool value);
   void SetPref(IntPrefs pref_enum, unsigned int value);
   void SetPref(StringPrefs pref_enum, const CMyString &value);
 
+  // CPSWRecentFileList needs to know if it can use registry or not:
+  bool IsUsingRegistry() const {return m_ConfigOptions == CF_REGISTRY;}
+
+  // for display in status bar (debug)
+  int GetConfigIndicator() const;
+
+  // for OptionSystem property sheet - support removing registry traces
+  bool OfferDeleteRegistry() const;
+  void DeleteRegistryEntries();  
+  
+ private:
+  PWSprefs();
+
+  // Configuration options
+  enum {CF_NONE = 0, CF_REGISTRY = 1, CF_FILE_RO = 2, CF_FILE_RW = 4, CF_FILE_RW_NEW = 8};
+
+  // Preferences changed (Database or Application)
+  enum {DB_PREF = 0, APP_PREF = 1};
+  
+  bool WritePref(const CMyString &name, bool val);
+  bool WritePref(const CMyString &name, unsigned int val);
+  bool WritePref(const CMyString &name, const CMyString &val);
+  void UpdateTimeStamp();
   bool DeletePref(const CMyString &name);
   void SetKeepXMLLock(bool state);
-
   void InitializePreferences();
   void LoadProfileFromDefaults();
   void LoadProfileFromFile();
   void LoadProfileFromRegistry();
   void SaveProfileToXML();
-  void SaveApplicationPreferences();
-  void DeleteRegistryEntries();
-  bool CheckRegistryExists();
+  bool CheckRegistryExists() const;
   void DeleteMRUFromXML(const CString &csSubkey);
   CString ReadMRUFromXML(const CString &csSubkey);
   void WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename);
-  int GetConfigOptions() {return m_ConfigOptions;}
-  bool GetRegistryExistence() {return m_bRegistryKeyExists;}
-
- private:
-  PWSprefs();
-
-  bool WritePref(const CMyString &name, bool val);
-  bool WritePref(const CMyString &name, unsigned int val);
-  bool WritePref(const CMyString &name, const CMyString &val);
-  void UpdateTimeStamp();
+  bool GetRegistryExistence() const {return m_bRegistryKeyExists;}
 
   static PWSprefs *self; // singleton
   CXMLprefs *m_XML_Config;
@@ -149,7 +160,7 @@ class PWSprefs {
   static const struct stringPref {
     TCHAR *name; TCHAR *defVal; bool isStoredinDB;} m_string_prefs[NumStringPrefs];
 
-  // current values, loaded/stored from db
+  // current values
   bool m_boolValues[NumBoolPrefs];
   unsigned int m_intValues[NumIntPrefs];
   CMyString m_stringValues[NumStringPrefs];
