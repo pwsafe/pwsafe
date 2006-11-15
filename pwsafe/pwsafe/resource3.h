@@ -19,11 +19,7 @@
 #define IDS_MODIFIED                    5027
 #define IDS_READ_ONLY                   5028
 #define IDS_STAT_NUM_IN_DB              5029
-#define IDS_CONFIG_NONE                 5030
-#define IDS_CONFIG_REGISTRY             5031
-#define IDS_CONFIG_FILE_RO              5032
-#define IDS_CONFIG_FILE_RW              5033
-#define IDS_CONFIG_BLANK                5034
+#define IDS_CONFIG_BLANK                5030
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100

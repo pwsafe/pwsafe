@@ -9,7 +9,8 @@
 #include <afxadv.h>
 #include "Shlwapi.h"
 #include "PWSRecentFileList.h"
-
+#include "corelib/PWSprefs.h"
+#include "resource2.h" // for ID_FILE_MRU_*
 	/*
 	   NOTE: Using a DEBUG version of the executable, adding a file whose path 
 	   does not exist (e.g. on USB stick that is no longer connected to the 
@@ -114,4 +115,42 @@ void CPWSRecentFileList::Add(LPCTSTR lpszPathName, const bool bstartup)
 
 	// place this one at the beginning
 	m_arrNames[0] = lpszPathName;
+}
+
+
+void CPWSRecentFileList::ReadList()
+{
+    PWSprefs *pref = PWSprefs::GetInstance();
+    // reads from registry or config file
+    if (pref->IsUsingRegistry()) {
+        CRecentFileList::ReadList();
+    } else {
+        const int nMRUItems = pref->GetPref(PWSprefs::MaxMRUItems);
+        CString *csMRUFiles = new CString[nMRUItems];
+        pref->GetMRUList(csMRUFiles);
+        for (int i = 0; i < nMRUItems; i++)
+            Add(csMRUFiles[i], true);
+        delete[] csMRUFiles;
+    }
+}
+
+void CPWSRecentFileList::WriteList()
+{
+    PWSprefs *pref = PWSprefs::GetInstance();
+    // writes to registry or config file
+    if (pref->IsUsingRegistry()) {
+        CRecentFileList::WriteList();
+    } else {
+        const int num_MRU = GetSize();
+        const int max_MRU = ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1;
+        CString *csMRUFiles = new CString[num_MRU];
+
+        for (int i = 0; i < num_MRU; i++) {
+            csMRUFiles[i] = (*this)[i];
+            csMRUFiles[i].Trim();
+        }
+
+        pref->SetMRUList(csMRUFiles, num_MRU, max_MRU);
+        delete[] csMRUFiles;
+    }
 }

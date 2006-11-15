@@ -115,3 +115,13 @@ BEGIN
     IDSC_FILEEXCEPTION13    "The disk is full."
     IDSC_FILEEXCEPTION14    "The end of file was reached."
 END
+
+// Status Bar
+
+STRINGTABLE
+BEGIN
+    IDSC_CONFIG_NONE         "C:None  "
+    IDSC_CONFIG_REGISTRY     "C:Reg   "
+    IDSC_CONFIG_FILE_RO      "C:F[R-O]"
+    IDSC_CONFIG_FILE_RW      "C:F[R/W]"
+END

@@ -242,15 +242,7 @@ DboxMain::setupBars()
 	  }
 	  // Set up Configuration source indicator (debug only)
 #ifdef DEBUG
-	  const int iConfigOptions = PWSprefs::GetInstance()->GetConfigOptions();
-	  switch (iConfigOptions) {
-	   	case PWSprefs::CF_NONE: statustext[SB_CONFIG] = IDS_CONFIG_NONE; break;
-	    case PWSprefs::CF_REGISTRY: statustext[SB_CONFIG] = IDS_CONFIG_REGISTRY; break;
-	    case PWSprefs::CF_FILE_RW:
-		case PWSprefs::CF_FILE_RW_NEW: statustext[SB_CONFIG] = IDS_CONFIG_FILE_RW; break;
-	    case PWSprefs::CF_FILE_RO: statustext[SB_CONFIG] = IDS_CONFIG_FILE_RO; break;
-    	default: ASSERT(0);
-	  }
+      statustext[SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
 #else
       statustext[SB_CONFIG] = IDS_CONFIG_BLANK;
 #endif /* DEBUG */
