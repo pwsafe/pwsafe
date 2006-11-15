@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "ExportTextXDlg.h"
 #include "corelib/ItemData.h"
+#include "ThisMfcApp.h"
 #include <bitset>
 
 #ifdef _DEBUG
@@ -166,7 +167,9 @@ END_MESSAGE_MAP()
 
 void CExportTextXDlg::OnHelp()
 {
-  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/exportx.html")), HH_DISPLAY_TOPIC);
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/exportx.html");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CExportTextXDlg::OnOK()

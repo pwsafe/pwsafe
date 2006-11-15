@@ -383,24 +383,27 @@ ThisMfcApp::InitInstance()
 		*(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
 	}
 
-	CString csResLib, csPName, csSName;
-	csResLib.Format(_T("%spwsafe%s_%s.dll"), acPath, szLang, szCtry);
-	csSName.Format(_T("pwsafe%s_%s.dll"), szLang, szCtry);
-	m_hInstResDLL = LoadLibrary(csResLib);
+	CString cs_ResPath, cs_ResName, cs_PName, cs_SName;
+	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), acPath, szLang, szCtry);
+	cs_SName.Format(_T("pwsafe%s_%s.dll"), szLang, szCtry);
+	m_hInstResDLL = LoadLibrary(cs_ResPath);
 
 	if(m_hInstResDLL == NULL) {
-		csResLib.Format(_T("%spwsafe%s.dll"), acPath, szLang);
-		csPName.Format(_T("pwsafe%s.dll"), szLang);
-		m_hInstResDLL = LoadLibrary(csResLib);
+		cs_ResPath.Format(_T("%spwsafe%s.dll"), acPath, szLang);
+		cs_PName.Format(_T("pwsafe%s.dll"), szLang);
+		m_hInstResDLL = LoadLibrary(cs_ResPath);
 		if(m_hInstResDLL == NULL) {
+			cs_ResName.Format(_T("%s.exe"), m_pszExeName);
 			TRACE(_T("%s Could not load language DLLs '%s' or '%s' - using embedded resources.\n"),
-				PWSUtil::GetTimeStamp(), csSName, csPName);
+				PWSUtil::GetTimeStamp(), cs_SName, cs_PName);
 		} else {
+			cs_ResName = cs_PName;
 			TRACE(_T("%s Could not load language dll '%s' - using language DLL '%s'.\n"), 
-				PWSUtil::GetTimeStamp(), csSName, csPName);
+				PWSUtil::GetTimeStamp(), cs_SName, cs_PName);
 		}
 	} else {
-		CString csResLibInfo(GetVersionInfoFromFile(csResLib));
+		cs_ResName = cs_SName;
+		CString csResLibInfo(GetVersionInfoFromFile(cs_ResPath));
 		CString csExeFileInfo(m_csFileVersionString);
 
 		//int iRI = csResLibInfo.ReverseFind(_T(','));
@@ -410,31 +413,51 @@ ThisMfcApp::InitInstance()
 
 		if (csExeFileInfo != csResLibInfo) {
 			TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %s/%s.\n"), 
-				PWSUtil::GetTimeStamp(), csPName, csExeFileInfo, csResLibInfo);
+				PWSUtil::GetTimeStamp(), cs_ResName, csExeFileInfo, csResLibInfo);
 			FreeLibrary(m_hInstResDLL);
 			m_hInstResDLL = NULL;
+			cs_ResName.Format(_T("%s.exe"), m_pszExeName);
 		} else {
-			TRACE(_T("%s Using language DLL '%s'.\n"), PWSUtil::GetTimeStamp(), csSName);
+			TRACE(_T("%s Using language DLL '%s'.\n"), PWSUtil::GetTimeStamp(), cs_SName);
 			AfxSetResourceHandle(m_hInstResDLL);
 		}
 	}
 
-	CString sHelppath, sHelpName;
-	sHelppath.Format(_T("%spwsafe%s_%s.chm"), acPath, szLang, szCtry);
-	sHelpName.Format(_T("pwsafe%s_%s.chm"), szLang, szCtry);
-	if (PathFileExists(sHelppath)) {
-		free((void*)m_pszHelpFilePath);
-		m_pszHelpFilePath = _tcsdup(sHelppath);
-		TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), sHelpName);
-	} else {
-		sHelppath.Format(_T("%spwsafe%s.chm"), acPath, szLang);
-		sHelpName.Format(_T("%spwsafe%s.chm"), acPath, szLang);
-		if (PathFileExists(sHelppath)) {
-			free((void*)m_pszHelpFilePath);
-			m_pszHelpFilePath = _tcsdup(sHelppath);
-			TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), sHelpName);
-		} else {
 #ifdef DEBUG
+	CString cs_PWS_LANG, cs_ovrResPath, cs_ovrResName;
+	BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
+	if (bPLRC == TRUE) {
+		cs_ovrResPath.Format(_T("%spwsafe%s.dll"), acPath, cs_PWS_LANG);
+		cs_ovrResName.Format(_T("pwsafe%s.dll"), cs_PWS_LANG);
+		if (PathFileExists(cs_ovrResPath)) {
+			if (m_hInstResDLL != NULL) {
+				FreeLibrary(m_hInstResDLL);
+				TRACE(_T("%s Language library %s overriden by user. %s now being used.\n"),
+					PWSUtil::GetTimeStamp(), cs_ResName, cs_ovrResName);
+			} else {
+				TRACE(_T("%s Language library %s now being used by user request.\n"),
+					PWSUtil::GetTimeStamp(), cs_ovrResName);
+			}
+			m_hInstResDLL = LoadLibrary(cs_ovrResPath);
+		}
+	}
+#endif
+
+	CString cs_HelpPath, cs_HelpName;
+	cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), acPath, szLang, szCtry);
+	cs_HelpName.Format(_T("pwsafe%s_%s.chm"), szLang, szCtry);
+	if (PathFileExists(cs_HelpPath)) {
+		free((void*)m_pszHelpFilePath);
+		m_pszHelpFilePath = _tcsdup(cs_HelpPath);
+		TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpName);
+	} else {
+		cs_HelpPath.Format(_T("%spwsafe%s.chm"), acPath, szLang);
+		cs_HelpName.Format(_T("pwsafe%s.chm"), szLang);
+		if (PathFileExists(cs_HelpPath)) {
+			free((void*)m_pszHelpFilePath);
+			m_pszHelpFilePath = _tcsdup(cs_HelpPath);
+			TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpName);
+		} else {
 			TCHAR fname[_MAX_FNAME];
 			TCHAR ext[_MAX_EXT];
 #if _MSC_VER >= 1400
@@ -447,10 +470,27 @@ ThisMfcApp::InitInstance()
 			_tcslwr(ext);
 			_tcslwr(fname);
 #endif
-			TRACE(_T("%s Using help file: %s%s\n"), PWSUtil::GetTimeStamp(), fname, ext);
-#endif // DEBUG
+			cs_HelpName.Format(_T("%s%s"), fname, ext);
+			TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpName);
 		}
 	}
+
+#ifdef DEBUG
+	CString cs_PWS_HELP, cs_ovrHelpPath, cs_ovrHelpName;
+	BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(_T("PWS_HELP"));
+	if (bPHRC == TRUE) {
+		cs_ovrHelpPath.Format(_T("%spwsafe%s.chm"), acPath, cs_PWS_HELP);
+		cs_ovrHelpName.Format(_T("pwsafe%s.chm"), cs_PWS_HELP);
+		if (PathFileExists(cs_ovrHelpPath)) {
+			free((void*)m_pszHelpFilePath);
+			m_pszHelpFilePath = _tcsdup(cs_ovrHelpPath);
+			TRACE(_T("%s Help file %s overriden by user. %s now being used.\n"),
+				PWSUtil::GetTimeStamp(), cs_HelpName, cs_ovrHelpName);
+			cs_HelpName = cs_ovrHelpName;
+		}
+	}
+#endif
+	m_csHelpFile = cs_HelpName;
 
   // PWScore needs it to get into database header if/when saved
   m_core.SetApplicationMajorMinor(m_dwMajorMinor);

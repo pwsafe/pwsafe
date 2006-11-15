@@ -63,7 +63,9 @@ CTryAgainDlg::OnTryagain()
 void
 CTryAgainDlg::OnHelp() 
 {
-  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/create_new_db.html")), HH_DISPLAY_TOPIC);
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/create_new_db.html");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 

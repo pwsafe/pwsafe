@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ImportXMLDlg.h"
+#include "ThisMfcApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,7 +69,9 @@ void CImportXMLDlg::OnYesGroup()
 
 void CImportXMLDlg::OnHelp() 
 {
-  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/importxml.html")), HH_DISPLAY_TOPIC);
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/importxml.html");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CImportXMLDlg::OnOK() 
