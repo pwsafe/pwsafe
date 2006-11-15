@@ -71,6 +71,7 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   CString GetVersionInfoFromFile(const CString &csFileName);
   CString GetFileVersionString() const {return m_csFileVersionString;}
   CString GetCopyrightString() const {return m_csCopyrightString;}
+  CString GetHelpFileName() const {return m_csHelpFile;}
   DWORD GetFileVersionMajorMinor() const {return m_dwMajorMinor;}
   DWORD GetFileVersionBuildRevision() const {return m_dwBuildRevision;}
 
@@ -93,6 +94,7 @@ private:
   DWORD m_dwBuildRevision;
   CString m_csFileVersionString;
   CString m_csCopyrightString;
+  CString m_csHelpFile;
 };
 
 

@@ -236,7 +236,9 @@ void CAddDlg::OnHelp()
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#adddata"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
-  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/entering_pwd.html")), HH_DISPLAY_TOPIC);
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/entering_pwd.html");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 

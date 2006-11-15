@@ -13,6 +13,7 @@
 #include "ExportTextDlg.h"
 #include "ExportTextXDlg.h"
 #include "PwFont.h"
+#include "ThisMfcApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -103,7 +104,9 @@ void CExportTextDlg::OnSetMultilineExportNotesDelimiter()
 
 void CExportTextDlg::OnHelp()
 {
-  HtmlHelp(DWORD_PTR(_T("pwsafe.chm::/export.html")), HH_DISPLAY_TOPIC);
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/export.html");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
 void CExportTextDlg::OnOK() 
