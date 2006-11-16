@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV2;
+import org.pwsafe.lib.file.PwsRecordV3;
 import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 
 /**
@@ -32,7 +33,11 @@ public class PasswordTreeLabelProvider implements ILabelProvider, ITableLabelPro
 			result = node.toString();
 		} else if (node instanceof PwsRecord) {
 		    PwsRecord record = (PwsRecord) node;
-		    result = PwsEntryDTO.getSafeValue(record, PwsRecordV2.TITLE);
+        	if (record instanceof PwsRecordV3) {
+        		result = PwsEntryDTO.getSafeValue(record, PwsRecordV3.TITLE);
+        	} else {
+        		result = PwsEntryDTO.getSafeValue(record, PwsRecordV2.TITLE);	
+        	}
 		} else if (node instanceof PasswordTreeContentProvider.TreeGroup) {
 		    result = node.toString();
 		}
@@ -90,24 +95,40 @@ public class PasswordTreeLabelProvider implements ILabelProvider, ITableLabelPro
                 result = element.toString();
             } else if (element instanceof PwsRecord) {
                 PwsRecord record = (PwsRecord) element;
-                result = PwsEntryDTO.getSafeValue(record, PwsRecordV2.TITLE);
+                if (record instanceof PwsRecordV3) {
+                	result = PwsEntryDTO.getSafeValue(record, PwsRecordV3.TITLE);
+                } else {
+                	result = PwsEntryDTO.getSafeValue(record, PwsRecordV2.TITLE);
+                }
             } else if (element instanceof PasswordTreeContentProvider.TreeGroup) {
                 result = element.toString();
             }
             break;
         case 1:
             if (element instanceof PwsRecord) {
-                result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV2.USERNAME);
+            	if (element instanceof PwsRecordV3) {
+            		result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV3.USERNAME);
+            	} else {
+            		result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV2.USERNAME);	
+            	}
             }
             break;
         case 2:
             if (element instanceof PwsRecord) {
-                result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV2.NOTES);
+            	if (element instanceof PwsRecordV3) {
+            		result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV3.NOTES);
+            	} else {
+            		result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV2.NOTES);	
+            	}
             }
             break;
         case 3:
             if (element instanceof PwsRecord) {
-                result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV2.PASSWORD);
+            	if (element instanceof PwsRecordV3) {
+            		result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV3.PASSWORD);
+            	} else {
+            		result = PwsEntryDTO.getSafeValue((PwsRecord) element, PwsRecordV2.PASSWORD);	
+            	}
             }
             break;
         }
