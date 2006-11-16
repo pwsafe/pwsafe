@@ -1,0 +1,80 @@
+Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
+All rights reserved. Use of the code is allowed under the Artistic
+License terms, as specified in the LICENSE file distributed with this
+code, or available from
+http://www.opensource.org/licenses/artistic-license.php 
+
+Managing configuration options in PasswordSafe
+----------------------------------------------
+
+1. Introduction:
+PasswordSafe has many options that may be configured by users to
+values that differ from the default values. This note describes how
+user configuration options are stored and managed as of version 3.05
+of PasswordSafe.
+
+2. Requirements:
+
+2.1 Scope: Some options are relevant to a particular database (such as
+    the default password length), while others are common across
+    databases, and specific to a given user on a given machine (such
+    as the use of the system tray icon). The preference mechanism
+    should support both in a user-transparent manner.
+
+2.2 Footprint: Traditionally, the Windows Registry has been used to
+    store preferences. This is not always desireable, however, as some
+    users may not have rights to access, or wish to leave traces in
+    the host machine's registry. Such a user typically runs
+    PasswordSafe off a disk-on-key, and all configuration information
+    should be available from there.
+
+2.3 Migration: The solution should detect preferences stored by
+    previous versions and transparently import them.
+
+2.4 Transparency: All the above should be supported without getting in
+    the user's way, that is, without distracting the user from using
+    PasswordSafe to store and retrieve her passwords.
+
+3. Solution:
+
+3.1 Database-specific preferences: All non-default preference values
+    are stored in the database as described in the formatv3.txt
+    document.
+
+3.2 User/Host application preferences: All non-default preference
+    values are stored in an XML file, pwsafe.cfg, currently assumed to
+    be in the same directory as the pwsafe.exe executable. The file
+    has a section per host, and each host has a per-user section,
+    allowing the same file to be shared across hosts and between
+    different users. Alternately, application-specific preferences may
+    be stored in the registry, as described in the following section.
+
+3.3 Footprint: By default, PasswordSafe will try to use pwsafe.cfg in
+    the same directory where the executable is located. If the file
+    does not exist, or if the user doesn't have read-write access to
+    it, PasswordSafe will use the registry, under
+    "HKCU\Software\Password Safe\Password Safe" If the user has only
+    read access to the file or registry, then changes to application
+    preferences will not be saved. Note that this includes the list of
+    recently opened databases, as well as the size and position of the
+    application's window. If, in addition, the user has no read access
+    to either, then the default values will be used.
+    In such cases (where PasswordSafe was unable to save application
+    prefernces in a file OR in the registry), user will be notified at
+    application exit time of the problem, and prompted to save the
+    pwsafe.cfg file elsewhere (Save As...).
+
+3.4 Migration: Previous version of PasswordSafe wrote
+    database-specific preference values both to the database and to
+    the registry, and application-specific prefernces only to the
+    registry. The location in the registry, however, was under
+    "HKCU\Software\Counterpane Systems\Password Safe". Therefore,
+    PasswordSafe should check for this location upon invokation, and
+    import the preferences found there, UNLESS an "imported" key is
+    found, which will be written upon the end of the import process,
+    to ensure this is a one-time process. If the "imported" key
+    cannot be written, then (and only then) shall the user be notified
+    of a problem, with the suggestion that he administrator remove the
+    Counterpane Systems tree.
+
+
