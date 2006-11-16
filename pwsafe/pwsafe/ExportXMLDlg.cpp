@@ -83,7 +83,7 @@ void AFXAPI CExportXMLDlg::DDV_CheckExpDelimiter(CDataExchange* pDX, const CStri
 void CExportXMLDlg::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/export.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/export.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 

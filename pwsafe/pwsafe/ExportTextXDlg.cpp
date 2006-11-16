@@ -168,7 +168,7 @@ END_MESSAGE_MAP()
 void CExportTextXDlg::OnHelp()
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/exportx.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/exportx.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 

@@ -423,7 +423,7 @@ void CEditDlg::OnHelp()
 	  NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/entering_pwd.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }

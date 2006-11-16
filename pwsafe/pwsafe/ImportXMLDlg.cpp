@@ -70,7 +70,7 @@ void CImportXMLDlg::OnYesGroup()
 void CImportXMLDlg::OnHelp() 
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/importxml.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/importxml.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 

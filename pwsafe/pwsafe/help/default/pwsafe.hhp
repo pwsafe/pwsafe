@@ -6,15 +6,15 @@ Contents file=pwsafe.hhc
 Default topic=html\Welcome.html
 Display compile notes=Yes
 Display compile progress=Yes
-Error log file=msgs
+Error log file=pwsafe.log
 Full-text search=Yes
 Index file=pwsafe.hhk
 Language=0x409 English (United States)
 Title=HTML Help for Password Safe
 
 [FILES]
-popups.js
-style.css
+html\popups.js
+html\style.css
 html\about_combinations.html
 html\about_pws.html
 html\autotype.html
@@ -27,7 +27,7 @@ html\edit_menu.html
 html\entering_pwd.html
 html\export.html
 html\file_menu.html
-html\html\help_menu.html
+html\help_menu.html
 html\import.html
 html\manage_menu.html
 html\menu_toolbar.html

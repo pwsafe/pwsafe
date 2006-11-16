@@ -907,14 +907,15 @@ ThisMfcApp::OnHelp()
   }
   CString cs_text;
   cs_text.LoadString(IDS_OPTIONS);
-  if (cs_title != cs_text)
+  if (cs_title != cs_text) {
     ::HtmlHelp(wnd->m_hWnd,
-               _T("pwsafe.chm"),
+               (LPCTSTR)m_csHelpFile,
                HH_DISPLAY_TOPIC, 0);
-  else
-    ::HtmlHelp(NULL,
-               _T("pwsafe.chm::/display_tab.html"),
-               HH_DISPLAY_TOPIC, 0);
+  } else {
+    CString cs_HelpTopic;
+    cs_HelpTopic = m_csHelpFile + _T("::/html/display_tab.html");
+    ::HtmlHelp(NULL, (LPCTSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+  }
 
 #endif
 }
