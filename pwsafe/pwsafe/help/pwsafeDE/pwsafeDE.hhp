@@ -1,9 +1,13 @@
 [OPTIONS]
+Auto Index=Yes
 Compatibility=1.1 or later
 Compiled file=pwsafede.chm
 Contents file=pwsafede.hhc
 Default topic=html\pws_intro.htm
-Display compile progress=No
+Display compile notes=Yes
+Display compile progress=Yes
+Error log file=pwsafede.log
+Full-text search=Yes
 Language=0x407 Deutsch (Deutschland)
 Title=Password Safe - Deutsche Hilfe für Version 2.06
 
@@ -20,6 +24,4 @@ html\pws_intro.htm
 html\pws_main.htm
 html\pws_opts.htm
 
-
 [INFOTYPES]
-

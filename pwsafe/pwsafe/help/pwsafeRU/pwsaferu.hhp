@@ -1,11 +1,14 @@
 [OPTIONS]
+Auto Index=Yes
 Compatibility=1.1 or later
 Compiled file=pwsaferu.chm
 Contents file=pwsaferu.hhc
 Default topic=html\pws_intro.htm
-Display compile progress=No
+Display compile notes=Yes
+Display compile progress=Yes
+Error log file=pwsaferu.log
+Full-text search=Yes
 Language=0x419 Русский
-
 
 [FILES]
 html\pws_opts.htm
@@ -18,4 +21,3 @@ html\pws_main.htm
 html\pws_add_data.htm
 
 [INFOTYPES]
-
