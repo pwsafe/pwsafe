@@ -66,7 +66,7 @@ of PasswordSafe.
 
 3.4 Migration: Previous version of PasswordSafe wrote
     database-specific preference values both to the database and to
-    the registry, and application-specific prefernces only to the
+    the registry, and application-specific preferences only to the
     registry. The location in the registry, however, was under
     "HKCU\Software\Counterpane Systems\Password Safe". Therefore,
     PasswordSafe should check for this location upon invokation, and
@@ -74,7 +74,7 @@ of PasswordSafe.
     found, which will be written upon the end of the import process,
     to ensure this is a one-time process. If the "imported" key
     cannot be written, then (and only then) shall the user be notified
-    of a problem, with the suggestion that he administrator remove the
-    Counterpane Systems tree.
+    of a problem, with the suggestion that the administrator remove
+    the Counterpane Systems tree.
 
 
