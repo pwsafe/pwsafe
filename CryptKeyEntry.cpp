@@ -93,7 +93,7 @@ CCryptKeyEntry::OnHelp()
 	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/create_new_db.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }

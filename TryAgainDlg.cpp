@@ -64,7 +64,7 @@ void
 CTryAgainDlg::OnHelp() 
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/create_new_db.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 

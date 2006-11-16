@@ -145,7 +145,7 @@ void CImportDlg::OnSetImportPreV3()
 void CImportDlg::OnHelp() 
 {
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/import.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/import.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 

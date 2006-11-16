@@ -132,7 +132,7 @@ CPasskeyChangeDlg::OnHelp()
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#changecombo"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + _T("::/change_combo.html");
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/change_combo.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
