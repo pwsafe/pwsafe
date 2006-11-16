@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.pwsafe.lib.file.PwsField;
 import org.pwsafe.lib.file.PwsFile;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
@@ -162,10 +163,13 @@ public class PasswordTreeContentProvider implements ITreeContentProvider {
 					PwsRecordV1 nextRecord = (PwsRecordV1) thisRecord;	
 					rootElements.add(nextRecord);
 				} else {
-					String recGroup = null;
+					String recGroup = "";
 					if (thisRecord instanceof PwsRecordV3) {
 						PwsRecordV3 nextRecord = (PwsRecordV3) thisRecord;	
-						recGroup = (String)nextRecord.getField(PwsRecordV3.GROUP).getValue();
+						PwsField field = nextRecord.getField(PwsRecordV3.GROUP);
+						if (field != null) {
+							recGroup = (String)field.getValue();
+						}
 					} else if (thisRecord instanceof PwsRecordV2 ) {
 						PwsRecordV2 nextRecord = (PwsRecordV2) thisRecord;	
 						recGroup = (String)nextRecord.getField(PwsRecordV2.GROUP).getValue();
