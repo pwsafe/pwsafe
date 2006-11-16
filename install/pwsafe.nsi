@@ -86,7 +86,7 @@
 ;    pwsafe.exe existing in the Release subdirectory.
 ;
 ; 2. Compile the help files for Password Safe.  The script relies on 
-;    pwsafe.chm existing in the html subdirectory.
+;    pwsafe.chm existing in the help/default subdirectory.
 ;
 ; 3. At the command line (or in a build script such as the .dsp file,
 ;    makefile, or other scripted build process), execute the following:
@@ -193,7 +193,7 @@ Section "Program Files" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
   File "..\Release\pwsafe.exe"
-  File "..\html\pwsafe.chm"
+  File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
   File "..\README.TXT"
   File "..\docs\ReleaseNotes.txt"

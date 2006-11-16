@@ -20,6 +20,7 @@ SRCRELNAME = pwsafe-$(RELEASENAME)-src
 RM = /usr/bin/rm
 CP = /usr/bin/cp
 MV = /usr/bin/mv
+ZIP = /usr/bin/zip
 SVN = /usr/bin/svn
 GPG = /usr/local/bin/gpg
 GPG_KEY = ronys@users.sourceforge.net
@@ -33,7 +34,7 @@ MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe.xsl \
-	docs/ChangeLog.txt Release/pwsafe.exe html/pwsafe.chm
+	docs/ChangeLog.txt Release/pwsafe.exe help/default/pwsafe.chm
 
 REDISTS = ../../redist/mfc80.dll ../../redist/msvcp80.dll \
         ../../redist/msvcr80.dll
@@ -74,16 +75,20 @@ release: bin-release src-release
 bin-release:
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
 	$(CP) $(BIN_MANIFEST) $(REDISTS) $(RELEASEDIR)/$(BINRELNAME)
-	(cd $(RELEASEDIR); zip -9 -r  foo ./$(BINRELNAME); \
+	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME); \
 	$(MV) foo.zip $(BINRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)
 
 src-release: ChangeLog
 	$(SVN) export --non-interactive . $(RELEASEDIR)/$(SRCRELNAME)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
-	(cd $(RELEASEDIR); zip -9 -r  bar ./$(SRCRELNAME); \
+	(cd $(RELEASEDIR); $(ZIP) -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)
 
 ChangeLog:
 	$(SVN) log -v --xml | $(PYTHON) $(SVN2LOG) -L -H -s -O
+
+# Local variables:
+# mode: Makefile
+# End:
