@@ -141,8 +141,8 @@ public class PwsRecordV3 extends PwsRecord
 		super( VALID_TYPES );
 
 		setField( new PwsUUIDField(UUID, new UUID()) );
-		setField( new PwsStringField(TITLE,    "") );
-		setField( new PwsStringField(PASSWORD, "") );
+		setField( new PwsStringUnicodeField(TITLE,    "") );
+		setField( new PwsStringUnicodeField(PASSWORD, "") );
 	}
 	
 	/**
@@ -242,8 +242,10 @@ public class PwsRecordV3 extends PwsRecord
 	}
 
 	/**
-	 * Validates the record, returning <code>true</code> if it's valid or <code>false</code>
-	 * if unequal.
+	 * Checks to see whether this record is one that we should display to the user
+	 * or not. The header record is the only one we suppress, and we determine
+	 * the header record by checking for the presence of the type 0 field which
+	 * represents the file format version. 
 	 * 
 	 * @return <code>true</code> if it's valid or <code>false</code> if unequal.
 	 */
@@ -283,8 +285,6 @@ public class PwsRecordV3 extends PwsRecord
 				Data = new byte[32]; // to hold closing HMAC
 				file.readBytes(Data);
 				byte[] hash = file.hasher.doFinal();
-				//System.out.println("Hash from file is: " + Util.bytesToHex(Data) + " [" + Data.length + "] bytes");
-				//System.out.println("Hash calculate is: " + Util.bytesToHex(hash) + " [" + hash.length + "] bytes");
 				if (!Util.bytesAreEqual(Data, hash)) {
 					throw new IOException("HMAC record did not match. File has been tampered");
 				}
@@ -311,8 +311,6 @@ public class PwsRecordV3 extends PwsRecord
 					}
 					remainingRecords = Util.mergeBytes(remainingRecords, nextBlock);
 				}
-//				file.readDecryptedBytes( remainingRecords );
-//				remainingRecords = Util.getBytes(remainingRecords, 0, bytesToRead);
 				Data = Util.mergeBytes(remainingDataInRecord, remainingRecords);
 			}
 			byte[] dataToHash = Data;
@@ -453,7 +451,11 @@ public class PwsRecordV3 extends PwsRecord
 		lenBlock[4] = (byte) type;
 
 		// ensure encryption payload is equal blocks of 16
-		int bytesToPad = 16 - (lenBlock.length + dataBlock.length) % 16;
+		int bytesToPad = 0;
+		int calcWriteLen = lenBlock.length + dataBlock.length;
+		if (calcWriteLen % 16 != 0) {
+			bytesToPad = 16 - (calcWriteLen % 16);
+		}
 		
 		// TODO put random bytes here
 		dataBlock	= Util.cloneByteArray( dataBlock, dataBlock.length + bytesToPad );
