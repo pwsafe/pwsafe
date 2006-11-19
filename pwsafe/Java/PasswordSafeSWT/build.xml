@@ -195,12 +195,13 @@
 
         <replace file="${dist.mac.dir}/${zip.dir.name}/${app.name}.app/Contents/Info.plist" token="&lt;key&gt;ClassPath" value="&lt;key&gt;StartOnMainThread&lt;/key&gt;&lt;true/&gt; &lt;key&gt;ClassPath" />
 
-        <tar destfile="${dist.mac.dir}/${zip.dir.name}-macosx.tar"
-                   basedir="${dist.mac.dir}" includes="${zip.dir.name}/**/*.*"
-              />
-
-        <gzip src="${dist.mac.dir}/${zip.dir.name}-macosx.tar" destfile="${dist.mac.dir}/${zip.dir.name}-macosx.tar.gz"/>
-
+    	<!-- Finally, create a DMG file for the distro -->
+    	<property name="dist.dmg.file" value="${zip.dir.name}.dmg"/>
+    	<delete file="${dist.mac.dir}/${dist.dmg.file}"/>
+    	
+    	<exec executable="hdiutil">
+    		<arg line="create -srcfolder ${dist.mac.dir}/${zip.dir.name} ${dist.mac.dir}/${dist.dmg.file}"/>
+    	</exec>    	
 
     </target>
 
