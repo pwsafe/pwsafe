@@ -125,17 +125,18 @@ void PWSprefs::DeleteInstance()
 PWSprefs::PWSprefs() : m_app(::AfxGetApp())
 {
   ASSERT(m_app != NULL);
+  int i;
 
   m_prefs_changed[DB_PREF] = false;
   m_prefs_changed[APP_PREF] = false;
 
-  for (int i = 0; i < NumBoolPrefs; i++)
+  for (i = 0; i < NumBoolPrefs; i++)
     m_boolChanged[i] = false;
 
-  for (int i = 0; i < NumIntPrefs; i++)
+  for (i = 0; i < NumIntPrefs; i++)
     m_intChanged[i] = false;
 
-  for (int i = 0; i < NumStringPrefs; i++)
+  for (i = 0; i < NumStringPrefs; i++)
     m_stringChanged[i] = false;
 
   InitializePreferences();
@@ -148,10 +149,10 @@ PWSprefs::CheckRegistryExists() const
 	HKEY hSubkey;
 	const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
 	bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-					csSubkey,
-					0L,
-					KEY_READ,
-					&hSubkey) == ERROR_SUCCESS);
+                              csSubkey,
+                              0L,
+                              KEY_READ,
+                              &hSubkey) == ERROR_SUCCESS);
 	if (bExists)
 		::RegCloseKey(hSubkey);
 
@@ -215,13 +216,14 @@ int PWSprefs::GetMRUList(CString *MRUFiles)
 
     if (m_ConfigOptions == CF_NONE || m_ConfigOptions == CF_REGISTRY)
         return 0;
-
-    SetKeepXMLLock(true);
+    
+    ASSERT(m_XML_Config != NULL);
+    m_XML_Config->SetKeepXMLLock(true);
     for (int i = nMRUItems; i > 0; i--) {
         csSubkey.Format(_T("Safe%02d"), i);
-        MRUFiles[i-1] = (ReadMRUFromXML(csSubkey));
+        MRUFiles[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
     }
-    SetKeepXMLLock(false);
+    m_XML_Config->SetKeepXMLLock(false);
     return nMRUItems;
 }
 
@@ -233,9 +235,10 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
         m_ConfigOptions == CF_FILE_RO)
         return 0;
 
+    ASSERT(m_XML_Config != NULL);
     CString csSubkey;
     int i;
-    SetKeepXMLLock(true);
+    m_XML_Config->SetKeepXMLLock(true);
     // Write out ones in use
     for (i = 0; i < n; i++) {
         csSubkey.Format(_T("Safe%02d"), i + 1);
@@ -245,9 +248,9 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
     
     for (i = n; i < max_MRU; i++) {
         csSubkey.Format(_T("Safe%02d"), i + 1);
-        DeleteMRUFromXML(csSubkey);
-        }
-    SetKeepXMLLock(false);
+        m_XML_Config->DeleteSetting(m_csHKCU_MRU, csSubkey);
+    }
+    m_XML_Config->SetKeepXMLLock(false);
     return n;
 }
 
@@ -369,13 +372,6 @@ bool PWSprefs::DeletePref(const CMyString &name)
 	UpdateTimeStamp();
 	return bRetVal;
 }
-
-void PWSprefs::SetKeepXMLLock(bool state)
-{
-  m_XML_Config->SetKeepXMLLock(state);
-}
-
-
 void PWSprefs::SetPrefRect(long top, long bottom,
                            long left, long right)
 {
@@ -392,6 +388,7 @@ void PWSprefs::SetPrefRect(long top, long bottom,
   case CF_FILE_RW_NEW:
     {
       CString obuff;
+      ASSERT(m_XML_Config != NULL);
       m_XML_Config->SetKeepXMLLock(true);
       obuff.Format(_T("%d"), top);
       VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
@@ -532,167 +529,139 @@ void PWSprefs::UpdateTimeStamp()
 
 void PWSprefs::InitializePreferences()
 {
-	// Does the registry entry exist for this user?
-	m_bRegistryKeyExists = CheckRegistryExists();
+/*
+ * 1. If the config file exists, use it, ignore registry (common case)
+ * 2. If no config file and old (*) registry tree, import registry prefs,
+ *    create config file. (1st run on upgrade)
+ * 3. If no config file and no registry, create config file. (virgin install)
+ *
+ * (*) Old == "Counterpane Systems" reg key
+ * - User can delete old registry key explicitly via options.
+ * - "No config file" also means config file exists but no entry for
+ *   host/user
+ * - If config file can't be created, fallback to "Password Safe" registry
+ */
+    // Find out name of config file (should it exist).
+    TCHAR path_buffer[_MAX_PATH];
+    TCHAR drive[_MAX_DRIVE];
+    TCHAR dir[_MAX_DIR];
 
-	// Find out name of config file (should it exist).
-	TCHAR path_buffer[_MAX_PATH];
-	TCHAR drive[_MAX_DRIVE];
-	TCHAR dir[_MAX_DIR];
-
-	GetModuleFileName(NULL, path_buffer, _MAX_PATH);
+    GetModuleFileName(NULL, path_buffer, _MAX_PATH);
 
 #if _MSC_VER >= 1400
-	_tsplitpath_s(path_buffer, drive, _MAX_DRIVE, dir, _MAX_DIR, NULL, 0, NULL, 0);
-	_tmakepath_s(path_buffer, _MAX_PATH, drive, dir, _T("pwsafe"), _T("cfg"));
+    _tsplitpath_s(path_buffer, drive, _MAX_DRIVE, dir, _MAX_DIR,
+                  NULL, 0, NULL, 0);
+    _tmakepath_s(path_buffer, _MAX_PATH, drive, dir, _T("pwsafe"), _T("cfg"));
 #else
-	_tsplitpath(path_buffer, drive, dir, NULL, NULL);
-	_tmakepath(path_buffer, drive, dir, _T("pwsafe"), _T("cfg"));
+    _tsplitpath(path_buffer, drive, dir, NULL, NULL);
+    _tmakepath(path_buffer, drive, dir, _T("pwsafe"), _T("cfg"));
 #endif
 
-	m_configfilename = (CString)path_buffer;
+    m_configfilename = (CString)path_buffer;
 
-	// Set up all the XML "keys"
+    // Start with fallback position: hardcoded defaults
+    LoadProfileFromDefaults();
+    m_ConfigOptions = CF_NONE;
+
+    // Actually, "config file exists" means:
+    // 1. File exists &&
+    // 2. host/user key found.
+
+    // 1. Does config file exist (and if, so, can we write to it?)?
+    bool isRO = false;
+    bool configFileExists = PWSfile::FileExists(m_configfilename, isRO);
+    if (configFileExists)
+        m_ConfigOptions = (isRO) ? CF_FILE_RO : CF_FILE_RW;
+    else 
+        m_ConfigOptions = CF_FILE_RW_NEW;
+
     const SysInfo *si = SysInfo::GetInstance();
+    // Set up XML "keys": host/user
+    m_csHKCU = si->GetCurrentHost() + _T("\\");
+    m_csHKCU += si->GetCurrentUser();
+    // set up other keys
+    m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
+    m_csHKCU_POS  = m_csHKCU + _T("\\Position");
+    m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
 
-	// Get the name of the computer
-	m_csHKCU = si->GetCurrentHost() + _T("\\");
+    m_XML_Config = new CXMLprefs();
+    m_XML_Config->SetConfigFile(m_configfilename);
 
-	// Get the user name
-	m_csHKCU += si->GetCurrentUser();
+    // Does the registry entry exist for this user?
+    m_bRegistryKeyExists = CheckRegistryExists();
 
-	m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
-	m_csHKCU_POS  = m_csHKCU + _T("\\Position");
-	m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
+    // 2. host/user key found?
+    if (configFileExists) {
+        // Are we (host/user) already in it?
+        CString tmp = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
+        time_t tt;
+        if (PWSUtil::VerifyXMLDateTimeString(tmp, tt)) {
+            // Yes, all is well
+            LoadProfileFromFile();
+        } else { // Config file exists, but host/user not in it
+            if (!isRO) { // we can create one
+                ImportOldPrefs(); // get pre-3.05, if any
+                // If we didn't have r/w but now do:
+                LoadProfileFromRegistry();
+            } else { // isRO
+                // awkward situation, config file exists, we're not in it,
+                // can't write to it either.
+                // Would a warning to user be appropriate?
+                if (CheckRegistryExists())
+                    LoadProfileFromRegistry();
+                else
+                    ImportOldPrefs();
+            } // isRO
+        } // host/user not found
+    } else { // File doesn't exist
+        ImportOldPrefs();
+        LoadProfileFromRegistry();
+        // can we create one? If not, fallback to registry
+        // We assume that if we can create a lock file, we can create
+        // a config file in the same directory
+        CMyString locker;
+        if (PWSfile::LockFile(m_configfilename, locker, false)) {
+            PWSfile::UnlockFile(m_configfilename, false);
+        } else {
+            m_ConfigOptions = CF_REGISTRY; // CF_FILE_RW_NEW -> CF_REGISTRY
+        }
+    }
 
-	m_XML_Config = new CXMLprefs ();
-	m_XML_Config->SetConfigFile(m_configfilename);
-
-	CFile iniFile;
-	CFileException fileException;
-	CFileStatus fileStatus; 
-
-	// Does it exist?
-	m_bConfigFileExists = CFile::GetStatus(m_configfilename, fileStatus) == TRUE;
-
-	CMyString locker(_T(""));
-	// We only loop on getting the lock in this one place
-	// as we need to know what to use
-	bool bgotconfiglock;
-	for (int iLoop = 0; iLoop < 10; iLoop++) {
-      bgotconfiglock = PWSfile::LockFile(m_configfilename, locker, false);
-      if (bgotconfiglock)
-        break;
-      Sleep(200);  // try max of 10 * 0.2 seconds = 2 secs
-	}
-
-	if (!bgotconfiglock) {
-		AfxMessageBox(IDSC_NOCONFIGLOCK, MB_OK);
-		m_ConfigOptions = CF_REGISTRY;
-		if (m_bRegistryKeyExists)
-			LoadProfileFromRegistry();
-		else
-			LoadProfileFromDefaults();
-		return;
-	}
-
-	m_ConfigOptions = CF_NONE;
-	// checking for: CFileException::accessDenied
-	if (m_bConfigFileExists) {
-		// File exists: check we can write to it
-		if (iniFile.Open(m_configfilename, CFile::modeWrite,
-					&fileException)) {
-			// it exists and we can use it!
-			iniFile.Close();
-			m_ConfigOptions = CF_FILE_RW;
-			// Are we already in it?
-			CString tmp = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
-			time_t tt;
-			if (!PWSUtil::VerifyXMLDateTimeString(tmp, tt)) {
-				// No - try and load from registry
-				if (m_bRegistryKeyExists)
-					LoadProfileFromRegistry();
-				else
-					LoadProfileFromDefaults();
-				// Now save to file
-				SaveProfileToXML();
-			} else {
-				// Yes - load previous values
-				LoadProfileFromFile();
-			}
-		} else {
-			// it exists but we can't write to it!
-			FileError(fileException.m_cause);
-			// Are we already in it?
-			CString tmp = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
-			time_t tt;
-			if (!PWSUtil::VerifyXMLDateTimeString(tmp, tt)) {
-				// No - use registry
-				m_ConfigOptions = CF_REGISTRY;
-				if (m_bRegistryKeyExists)
-					LoadProfileFromRegistry();
-				else
-					LoadProfileFromDefaults();
-			} else {
-				// Yes - load previous values
-				m_ConfigOptions = CF_FILE_RO;
-				LoadProfileFromFile();
-			}
-		}
-	} else {
-		// File doesn't exist: check we can create it and write to it
-		if (iniFile.Open(m_configfilename, CFile::modeCreate | CFile::modeWrite,
-					&fileException)) {
-			iniFile.Close();
-			m_ConfigOptions = CF_FILE_RW_NEW;
-			DeleteFile(m_configfilename); // Since we deleted it!
-			LoadProfileFromRegistry();
-			SaveProfileToXML();
-		} else {
-			m_ConfigOptions = CF_REGISTRY;
-			if (m_bRegistryKeyExists)
-				LoadProfileFromRegistry();
-			else
-				LoadProfileFromDefaults();
-			FileError(fileException.m_cause);
-		}
-	}
-
-    PWSfile::UnlockFile(m_configfilename, false);
-
-	CString cs_msg;
-	switch (m_ConfigOptions) {
-		case CF_REGISTRY:
-			cs_msg.LoadString(IDSC_CANTCREATEXMLCFG);
-			break;
-		case CF_FILE_RW:
-		case CF_FILE_RW_NEW:
-			m_XML_Config->SetReadWriteStatus(true);
-			break;
-		case CF_FILE_RO:
-			m_XML_Config->SetReadWriteStatus(false);
-			cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
-			break;
-		case CF_NONE:
-		default:
-			cs_msg.LoadString(IDSC_CANTDETERMINECFG);
-			break;
-	}
-	if (!cs_msg.IsEmpty())
-		AfxMessageBox(cs_msg, MB_OK);
+    CString cs_msg;
+    switch (m_ConfigOptions) {
+        case CF_REGISTRY:
+            cs_msg.LoadString(IDSC_CANTCREATEXMLCFG);
+            break;
+        case CF_FILE_RW:
+        case CF_FILE_RW_NEW:
+            m_XML_Config->SetReadWriteStatus(true);
+            break;
+        case CF_FILE_RO:
+            m_XML_Config->SetReadWriteStatus(false);
+            cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
+            break;
+        case CF_NONE:
+        default:
+            cs_msg.LoadString(IDSC_CANTDETERMINECFG);
+            break;
+    }
+    if (!cs_msg.IsEmpty())
+        TRACE(cs_msg);
 }
 
 void PWSprefs::LoadProfileFromDefaults()
 {
+    // set prefs to hardcoded values
+    int i;
 	// Default values only
-	for (int i = 0; i < NumBoolPrefs; i++)
+	for (i = 0; i < NumBoolPrefs; i++)
 		m_boolValues[i] = m_bool_prefs[i].defVal != 0;
 
-	for (int i = 0; i < NumIntPrefs; i++)
+	for (i = 0; i < NumIntPrefs; i++)
 		m_intValues[i] = m_int_prefs[i].defVal;
 
-	for (int i = 0; i < NumStringPrefs; i++)
-	 		m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+	for (i = 0; i < NumStringPrefs; i++)
+        m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
 }
 
 void PWSprefs::LoadProfileFromRegistry()
@@ -784,8 +753,10 @@ void PWSprefs::SaveApplicationPreferences()
 		return;
 
 	if (m_ConfigOptions == CF_FILE_RW ||
-	    m_ConfigOptions == CF_FILE_RW_NEW)
+	    m_ConfigOptions == CF_FILE_RW_NEW) {
+        ASSERT(m_XML_Config != NULL);
 		m_XML_Config->SetKeepXMLLock(true);
+    }
 
 	UpdateTimeStamp();
 	// Write in values to XML file
@@ -831,6 +802,7 @@ void PWSprefs::SaveApplicationPreferences()
 
 void PWSprefs::SaveProfileToXML()
 {
+    ASSERT(m_XML_Config != NULL);
 	m_XML_Config->SetKeepXMLLock(true);
 
 	UpdateTimeStamp();
@@ -839,8 +811,8 @@ void PWSprefs::SaveProfileToXML()
 		if (!m_bool_prefs[i].isStoredinDB) {
 			if (m_boolValues[i] != m_bool_prefs[i].defVal) {
 				VERIFY(m_XML_Config->Set(m_csHKCU_PREF,
-						 m_bool_prefs[i].name,
-						 m_boolValues[i] ? 1 : 0) == 0);
+                                         m_bool_prefs[i].name,
+                                         m_boolValues[i] ? 1 : 0) == 0);
 			} else {
 				DeletePref(m_bool_prefs[i].name);
 			}
@@ -851,8 +823,8 @@ void PWSprefs::SaveProfileToXML()
 		if (!m_int_prefs[i].isStoredinDB) {
 			if (m_intValues[i] != m_int_prefs[i].defVal) {
 				VERIFY(m_XML_Config->Set(m_csHKCU_PREF,
-						m_int_prefs[i].name,
-						m_intValues[i]) == 0);
+                                         m_int_prefs[i].name,
+                                         m_intValues[i]) == 0);
 			} else {
 				DeletePref(m_int_prefs[i].name);
 			}
@@ -863,8 +835,8 @@ void PWSprefs::SaveProfileToXML()
 		if (!m_string_prefs[i].isStoredinDB) {
 			if (m_stringValues[i] != m_string_prefs[i].defVal) {
 				VERIFY(m_XML_Config->Set(m_csHKCU_PREF,
-						m_string_prefs[i].name,
-						m_stringValues[i]) == 0);
+                                         m_string_prefs[i].name,
+                                         m_stringValues[i]) == 0);
 			} else {
 				DeletePref(m_string_prefs[i].name);
 			}
@@ -872,16 +844,6 @@ void PWSprefs::SaveProfileToXML()
 	}
 
 	m_XML_Config->SetKeepXMLLock(false);
-}
-
-void PWSprefs::DeleteMRUFromXML(const CString &csSubkey)
-{
-	m_XML_Config->DeleteSetting(m_csHKCU_MRU, csSubkey);
-}
-
-CString PWSprefs::ReadMRUFromXML(const CString &csSubkey)
-{
-	return m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
 }
 
 void PWSprefs::WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename)
@@ -901,11 +863,12 @@ void PWSprefs::WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilena
 bool PWSprefs::OfferDeleteRegistry() const
 {
     return (m_ConfigOptions == CF_FILE_RW &&
-            GetRegistryExistence());
+            (m_bRegistryKeyExists || OldPrefsExist()));
 }
 
 void PWSprefs::DeleteRegistryEntries()
 {
+    DeleteOldPrefs();
 	HKEY hSubkey;
 	const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
 
@@ -914,23 +877,16 @@ void PWSprefs::DeleteRegistryEntries()
 							NULL,
 							KEY_ALL_ACCESS,
 							&hSubkey);
-	ASSERT(dw == ERROR_SUCCESS);
+	if (dw != ERROR_SUCCESS) {
+        return; // may have been called due to OldPrefs
+    }
 
 	dw = m_app->DelRegTree(hSubkey, m_app->m_pszAppName);
 	ASSERT(dw == ERROR_SUCCESS);
 
 	dw = RegCloseKey(hSubkey);
 	ASSERT(dw == ERROR_SUCCESS);
-}
-
-void PWSprefs::FileError(const int &icause)
-{
-	CString cs_error, cs_msg;
-
-	ASSERT(icause >= 0 && icause <= 14);
-	cs_error.LoadString(IDSC_FILEEXCEPTION00 + icause);
-	cs_msg.Format(IDSC_CANTUSECONFIGFILE, cs_error);
-	AfxMessageBox(cs_msg, MB_OK);
+    m_bRegistryKeyExists = false;
 }
 
 int PWSprefs::GetConfigIndicator() const
@@ -943,4 +899,133 @@ int PWSprefs::GetConfigIndicator() const
 	    case CF_FILE_RO: return IDSC_CONFIG_FILE_RO; break;
     	default: ASSERT(0); return 0;
     }
+}
+
+// Old registry handling code:
+const CString OldSubKey(_T("Software\\Counterpane Systems"));
+
+bool PWSprefs::OldPrefsExist() const
+{
+    bool bExists;
+	HKEY hSubkey;
+	bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
+                              OldSubKey,
+                              0L,
+                              KEY_READ,
+                              &hSubkey) == ERROR_SUCCESS);
+	if (bExists)
+		::RegCloseKey(hSubkey);
+
+	return bExists;
+}
+
+void PWSprefs::ImportOldPrefs()
+{
+	HKEY hSubkey;
+    CString OldAppKey = OldSubKey + _T("\\Password Safe");
+	LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
+                             OldAppKey,
+                             NULL,
+                             KEY_ALL_ACCESS,
+                             &hSubkey);
+	if (dw != ERROR_SUCCESS) {
+        return;
+    }
+    // Iterate over app preferences (those not stored
+    // in database, read values and store if exist
+    int i;
+    LONG rv;
+    DWORD dwType;
+	for (i = 0; i < NumBoolPrefs; i++)
+        if (!m_bool_prefs[i].isStoredinDB) {
+            DWORD vData, DataLen(sizeof(vData));
+            rv = ::RegQueryValueEx(hSubkey,
+                                   m_bool_prefs[i].name,
+                                   NULL,
+                                   &dwType,
+                                   LPBYTE(&vData),
+                                   &DataLen
+                                   );
+            if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
+                m_boolValues[i] = (vData != 0);
+        }
+	for (i = 0; i < NumIntPrefs; i++)
+		if (!m_int_prefs[i].isStoredinDB) {
+            DWORD vData, DataLen(sizeof(vData));
+            rv = ::RegQueryValueEx(hSubkey,
+                                   m_int_prefs[i].name,
+                                   NULL,
+                                   &dwType,
+                                   LPBYTE(&vData),
+                                   &DataLen
+                                   );
+            if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
+                m_intValues[i] = vData;
+        }
+	for (i = 0; i < NumStringPrefs; i++)
+		if (!m_string_prefs[i].isStoredinDB) {
+            DWORD DataLen = 0;
+            rv = ::RegQueryValueEx(hSubkey,
+                                   m_string_prefs[i].name,
+                                   NULL,
+                                   &dwType,
+                                   NULL,
+                                   &DataLen
+                                   );
+            if (rv == ERROR_SUCCESS && dwType == REG_SZ) {
+                DataLen++;
+                BYTE *pData = new BYTE[DataLen];
+                ::memset(pData, 0, DataLen);
+                rv = ::RegQueryValueEx(hSubkey,
+                                       m_string_prefs[i].name,
+                                       NULL,
+                                       &dwType,
+                                       pData,
+                                       &DataLen
+                                       );
+                if (rv == ERROR_SUCCESS)
+                    m_stringValues[i] = pData;
+                delete[] pData;
+            } // Get the value
+        } // pref in registry
+
+    // Last but not least, rectangle
+    long rectVals[4] = {-1, -1, -1, -1};
+    TCHAR *rectNames[4] = {_T("top"), _T("bottom"), _T("left"), _T("right")};
+    for (i = 0; i < 4; i++) {
+        DWORD vData, DataLen(sizeof(vData));
+        rv = ::RegQueryValueEx(hSubkey,
+                               rectNames[i],
+                               NULL,
+                               &dwType,
+                               LPBYTE(&vData),
+                               &DataLen
+                               );
+        if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
+            rectVals[i] = vData;
+    }
+    SetPrefRect(rectVals[0], rectVals[1], rectVals[2], rectVals[3]);
+
+	dw = ::RegCloseKey(hSubkey);
+	ASSERT(dw == ERROR_SUCCESS);
+}
+
+
+void PWSprefs::DeleteOldPrefs()
+{
+	HKEY hSubkey;
+	LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
+                             OldSubKey,
+                             NULL,
+                             KEY_ALL_ACCESS,
+                             &hSubkey);
+	if (dw != ERROR_SUCCESS) {
+        return;
+    }
+
+	dw = m_app->DelRegTree(hSubkey, OldSubKey);
+	ASSERT(dw == ERROR_SUCCESS);
+
+	dw = ::RegCloseKey(hSubkey);
+	ASSERT(dw == ERROR_SUCCESS);
 }
