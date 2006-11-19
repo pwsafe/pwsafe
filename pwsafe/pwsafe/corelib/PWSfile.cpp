@@ -77,6 +77,16 @@ bool PWSfile::FileExists(const CMyString &filename, bool &bReadOnly)
 	  return false;
   }
 }
+void PWSfile::FileError(int formatRes, int cause)
+{
+    // present error from FileException to user
+	CString cs_error, cs_msg;
+
+	ASSERT(cause >= 0 && cause <= 14);
+	cs_error.LoadString(IDSC_FILEEXCEPTION00 + cause);
+	cs_msg.Format(formatRes, cs_error);
+	AfxMessageBox(cs_msg, MB_OK);
+}
 
 PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
 {

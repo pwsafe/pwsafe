@@ -281,21 +281,26 @@ BOOL CXMLprefs::LoadXML()
 	if (!PWSfile::LockFile(m_csConfigFile, locker, false))
 		return FALSE;
 
+    // from here on all exits from function need to unlock file
+	MSXML2::IXMLDOMParseErrorPtr pIParseError = NULL;
+	CFile file;
 	BOOL b_OK = FALSE;
-
+    BOOL retval = FALSE;
 	// initialize the XML parser
 	switch (m_MSXML_Version) {
 		case 0:
 			// First time through!
 			// Try 60
-			if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument60), NULL, CLSCTX_ALL))) {
+			if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument60),
+                                                NULL, CLSCTX_ALL))) {
 				// Try 40
-				if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument40), NULL, CLSCTX_ALL))) {
+				if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument40),
+                                                    NULL, CLSCTX_ALL))) {
 					// Try 30
 					if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument30), NULL, CLSCTX_ALL))) {
 						AfxMessageBox(IDSC_NOXMLREADER, MB_OK);
 						m_MSXML_Version = -1;
-						return FALSE;
+						retval = FALSE; goto exit;
 					} else {
 						m_MSXML_Version = 30;
 					}
@@ -322,21 +327,23 @@ BOOL CXMLprefs::LoadXML()
 		default:
 			// Should never get here
 			ASSERT(0);
+            retval = FALSE; goto exit;
 	}
 
-	if (b_OK == FALSE)
-		return FALSE;
+	if (b_OK == FALSE) {
+		retval = FALSE;
+        goto exit;
+    }
 
 	// Ensure we preserve all white space!
 	if (FAILED(m_pXMLDoc->put_preserveWhiteSpace(VARIANT_TRUE))) {
 		UnloadXML();
-		return FALSE;
+		retval = FALSE; goto exit;
 	}
 
 	VARIANT_BOOL vbSuccessful;
 
 	// see if the file exists
-	CFile file;
 	if (!file.Open(m_csConfigFile, CFile::modeReadWrite)) {  // if not
 		// create it - IDSC_XMLHEADER
 		CComBSTR bstrXML;
@@ -345,16 +352,17 @@ BOOL CXMLprefs::LoadXML()
 	} else {  // if so
 		file.Close();
 		// load it
-		m_pXMLDoc->load(CComVariant::CComVariant((LPCTSTR)m_csConfigFile), &vbSuccessful);
+		m_pXMLDoc->load(CComVariant::CComVariant((LPCTSTR)m_csConfigFile),
+                        &vbSuccessful);
 	}
 
 	m_bXMLLoaded = (vbSuccessful == VARIANT_TRUE);
 
-	if (m_bXMLLoaded)
-		return TRUE;  // loaded
+	if (m_bXMLLoaded) {
+		retval = TRUE; goto exit; // loaded
+    }
 
 	// an XML load error occurred so display the reason
-	MSXML2::IXMLDOMParseErrorPtr pIParseError = NULL;
 	m_pXMLDoc->get_parseError(&pIParseError);
 
 	if (pIParseError) {
@@ -368,7 +376,7 @@ BOOL CXMLprefs::LoadXML()
 
 		CString csMessage;
 		csMessage.Format(IDSC_XMLFILEERROR, 
-					value, line, linepos, (char *)_bstr_t(bstr, TRUE));
+                         value, line, linepos, (char *)_bstr_t(bstr, TRUE));
 		const CString cs_title(MAKEINTRESOURCE(IDSC_XMLLOADFAILURE));
 		MessageBox(NULL, csMessage, cs_title, MB_OK);
 
@@ -384,9 +392,9 @@ BOOL CXMLprefs::LoadXML()
 		m_pXMLDoc.Release();
 		m_pXMLDoc = NULL;
 	}
-
+  exit:
     PWSfile::UnlockFile(m_csConfigFile, false);
-	return FALSE;
+	return retval;
 }
 
 void CXMLprefs::UnloadXML()

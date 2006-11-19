@@ -114,10 +114,7 @@ class PWSprefs {
   
  private:
   PWSprefs();
-
-  // Configuration options
-  enum {CF_NONE = 0, CF_REGISTRY = 1, CF_FILE_RO = 2, CF_FILE_RW = 4, CF_FILE_RW_NEW = 8};
-
+  
   // Preferences changed (Database or Application)
   enum {DB_PREF = 0, APP_PREF = 1};
   
@@ -126,26 +123,26 @@ class PWSprefs {
   bool WritePref(const CMyString &name, const CMyString &val);
   void UpdateTimeStamp();
   bool DeletePref(const CMyString &name);
-  void SetKeepXMLLock(bool state);
   void InitializePreferences();
   void LoadProfileFromDefaults();
   void LoadProfileFromFile();
   void LoadProfileFromRegistry();
   void SaveProfileToXML();
   bool CheckRegistryExists() const;
-  void DeleteMRUFromXML(const CString &csSubkey);
-  CString ReadMRUFromXML(const CString &csSubkey);
   void WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename);
-  bool GetRegistryExistence() const {return m_bRegistryKeyExists;}
 
+  // Handle old (pre-3.05 registry-based) prefs.
+  void ImportOldPrefs();
+  bool OldPrefsExist() const;
+  void DeleteOldPrefs();
+  
   static PWSprefs *self; // singleton
   CXMLprefs *m_XML_Config;
 
   CString m_configfilename;
-  bool m_bConfigFileExists;
   bool m_bRegistryKeyExists;
-  int m_ConfigOptions;
-  void FileError(const int &cause);
+  enum {CF_NONE, CF_REGISTRY, CF_FILE_RO,
+        CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
   CString m_csHKCU, m_csHKCU_MRU, m_csHKCU_POS, m_csHKCU_PREF;
 
   CWinApp *m_app;

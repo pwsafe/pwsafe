@@ -38,6 +38,7 @@ class PWSfile {
 
   static bool FileExists(const CMyString &filename);
   static bool FileExists(const CMyString &filename, bool &bReadOnly);
+  static void FileError(int formatRes, int cause);
   static VERSION ReadVersion(const CMyString &filename);
   static int RenameFile(const CMyString &oldname, const CMyString &newname);
   static int CheckPassword(const CMyString &filename,
