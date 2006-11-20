@@ -896,7 +896,11 @@ public class PasswordSafeJFace extends ApplicationWindow {
 					return ti.getText();
 				} else {
 					// we're in a leaf node
-					return ti.getParentItem().getText();
+					if (ti.getParentItem() != null) {
+						return ti.getParentItem().getText(); 
+					} else {
+						return ""; // empty root element
+					}
 				}
 			}
 		}
