@@ -365,6 +365,8 @@ public class PwsRecordV3 extends PwsRecord
 					case USERNAME :
 					case NOTES :
 					case PASSWORD :
+					case PASSWORD_POLICY :
+					case PASSWORD_HISTORY :
 					case URL :
 					case AUTOTYPE :
 						itemVal	= new PwsStringUnicodeField( item.getType(), item.getByteData() );
@@ -381,14 +383,16 @@ public class PwsRecordV3 extends PwsRecord
 						itemVal	= new PwsIntegerField( item.getType(), item.getByteData() );
 						break;
 	
-					case PASSWORD_POLICY :
-						break;
-					
-					case PASSWORD_HISTORY : 
-						break;
+//					case PASSWORD_POLICY :
+//						break;
+//					
+//					case PASSWORD_HISTORY : 
+//						break;
 					
 					default :
-						throw new UnimplementedConversionException();
+						itemVal = new PwsUnknownField(item.getType(), item.getByteData());
+						break;
+						//throw new UnimplementedConversionException();
 				}
 				if ( LOG.isDebug2Enabled() ) LOG.debug2( "type=" + item.getType() + " (" + ((Object[])VALID_TYPES[item.getType()])[1] + "), value=\"" + itemVal.toString() + "\"" );
 				setField( itemVal );
@@ -467,14 +471,6 @@ public class PwsRecordV3 extends PwsRecord
 			byte[] nextBlock = Util.getBytes(dataToWrite, i * 16, 16);
 			file.writeEncryptedBytes(nextBlock);
 		}
-		//if (dataToWrite.length == 16) {
-			// only one block long, just write it out
-			//file.writeEncryptedBytes( dataToWrite );	
-		//} else {
-			//file.writeEncryptedBytes( Util.getBytes(dataToWrite, 0, 16));
-			// write the rest as a separate block
-			//file.writeEncryptedBytes( Util.getBytes(dataToWrite, 16, dataToWrite.length - 16));
-		//}
 		
 	}
 
