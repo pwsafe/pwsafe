@@ -250,6 +250,7 @@
 #define IDC_SETMAXPWHISTORY             1185
 #define IDC_APPLYPWHCHANGESNOW          1186
 #define IDC_DELETEREGISTRY              1187
+#define IDC_REGDEL_CB                   1187
 #define IDC_SHOWNOTES                   1188
 #define IDC_DEFNOTESSHOWINEDIT          1189
 #define IDC_DATABASENAME                1190
@@ -274,9 +275,11 @@
 #define IDC_BACKUPMAX                   1211
 #define IDC_BROWSEFORLOCATION           1212
 #define IDC_APPLYREGISTRYDELETENOW      1213
+#define IDC_REGDEL_BTN                  1213
 #define IDC_OTHERBROWSERLOCATION        1216
 #define IDC_APPCOPYRIGHT                1217
 #define IDC_STARTUP                     1218
+#define IDC_REGDEL_GRP                  1220
 
 // Next default values for new objects
 // 
@@ -284,7 +287,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        235
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1220
+#define _APS_NEXT_CONTROL_VALUE         1221
 #define _APS_NEXT_SYMED_VALUE           125
 #endif
 #endif
