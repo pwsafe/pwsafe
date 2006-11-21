@@ -25,7 +25,7 @@
 #define IDS_RESETPWHISTORYOFF           5100
 #define IDS_RESETPWHISTORYON            5101
 #define IDS_SETMAXPWHISTORY             5102
-#define IDS_DELETEREGISTRY              5103
+#define IDS_REGDEL_CB                   5103
 #define IDS_BACKUPBEFORESAVE            5104
 #define IDS_USERBACKUPOTHERLOCATION     5106
 #define IDS_MAINTAINDATETIMESTAMPS      5107

@@ -57,7 +57,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MAXMRUITEMS, m_maxmruitems);
 	DDV_MinMaxInt(pDX, m_maxmruitems, 0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
 	DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
-	DDX_Check(pDX, IDC_DELETEREGISTRY, m_deleteregistry);
+	DDX_Check(pDX, IDC_REGDEL_CB, m_deleteregistry);
 	//}}AFX_DATA_MAP
 }
 
@@ -65,8 +65,8 @@ BEGIN_MESSAGE_MAP(COptionsSystem, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsSystem)
 	ON_BN_CLICKED(IDC_DEFPWUSESYSTRAY, OnUseSystemTray)
 	ON_BN_CLICKED(IDC_STARTUP, OnStartup)
-	ON_BN_CLICKED(IDC_DELETEREGISTRY, OnSetDeleteRegistry)
-	ON_BN_CLICKED(IDC_APPLYREGISTRYDELETENOW, OnApplyRegistryDeleteNow)
+	ON_BN_CLICKED(IDC_REGDEL_CB, OnSetDeleteRegistry)
+	ON_BN_CLICKED(IDC_REGDEL_BTN, OnApplyRegistryDeleteNow)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -99,9 +99,9 @@ void COptionsSystem::OnStartup()
 
 void COptionsSystem::OnSetDeleteRegistry() 
 {
-  BOOL enable = (((CButton*)GetDlgItem(IDC_DELETEREGISTRY))->GetCheck() == 1) ? TRUE : FALSE;
+  BOOL enable = (((CButton*)GetDlgItem(IDC_REGDEL_CB))->GetCheck() == 1) ? TRUE : FALSE;
 
-  GetDlgItem(IDC_APPLYREGISTRYDELETENOW)->EnableWindow(enable);
+  GetDlgItem(IDC_REGDEL_BTN)->EnableWindow(enable);
 }
 
 BOOL COptionsSystem::OnInitDialog() 
@@ -111,10 +111,13 @@ BOOL COptionsSystem::OnInitDialog()
     bool bofferdeleteregistry = 
 		 PWSprefs::GetInstance()->OfferDeleteRegistry();
 
-	if (!bofferdeleteregistry)
-		GetDlgItem(IDC_DELETEREGISTRY)->EnableWindow(FALSE);
-
-	GetDlgItem(IDC_APPLYREGISTRYDELETENOW)->EnableWindow(FALSE);
+	if (!bofferdeleteregistry) {
+		GetDlgItem(IDC_REGDEL_GRP)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_REGDEL_CB)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_REGDEL_BTN)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_REGDEL_CB)->EnableWindow(FALSE);
+    }
+	GetDlgItem(IDC_REGDEL_BTN)->EnableWindow(FALSE);
 
 	CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_RESPIN);
 
@@ -149,8 +152,8 @@ BOOL COptionsSystem::OnInitDialog()
 	m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 2 * iTime);
 
 	if (m_ToolTipCtrl != NULL) {
-		CString cs_ToolTip(MAKEINTRESOURCE(IDS_DELETEREGISTRY));
-		m_ToolTipCtrl->AddTool(GetDlgItem(IDC_DELETEREGISTRY), cs_ToolTip);
+		CString cs_ToolTip(MAKEINTRESOURCE(IDS_REGDEL_CB));
+		m_ToolTipCtrl->AddTool(GetDlgItem(IDC_REGDEL_CB), cs_ToolTip);
 	}
 
 	return TRUE;	// return TRUE unless you set the focus to a control
@@ -166,7 +169,7 @@ void COptionsSystem::OnApplyRegistryDeleteNow()
 		PWSprefs::GetInstance()->DeleteRegistryEntries();
   }
 
-  GetDlgItem(IDC_APPLYREGISTRYDELETENOW)->EnableWindow(FALSE);
+  GetDlgItem(IDC_REGDEL_BTN)->EnableWindow(FALSE);
   UpdateData(FALSE);
 }
 
