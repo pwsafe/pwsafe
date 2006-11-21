@@ -4,12 +4,16 @@
 
 
 
+
 		
 		
 		
 		
 		
 		
+  
+
+  
   
 
   
@@ -22,11 +26,13 @@
 		</script>
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
 
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
@@ -42,13 +48,16 @@
 
 
 
-		<img style="width: 370px; height: 381px;" alt="Misc tab" src="images/misc_tab.jpg"><br>
+
+		<img style="width: 370px; height: 481px;" alt="Misc tab" src="images/options/misc_tab.jpg"><br>
+
 
 
 
 
 		
 <p>Various miscellaneous program defaults are stored in the <b>Misc Tab</b>.</p>
+
 
 
 
@@ -60,44 +69,37 @@
 
 
 
+
 			
 <p>When checked, a user prompt requesting confirmation will be displayed every time a user tries to delete a password entry.</p>
+<h3>Record last access times</h3>
 
-
-
-
-			
-<h3>Save database immediately after Edit or Add</h3>
-
-
-
-			
-<p>When checked,<b> Password Safe</b> saves all changes made to a password entry immediately, without waiting for the user to use <b>Save</b> or <b>Save As</b> and without confirmation.</p>
-
-
-
-
-			
-<h3>Maintain last access times</h3>
 
 When checked, Password Safe records the time each entry was accessed
 (e.g., when the password was copied, or when the entry's details were
-viewed, etc.). The time is stored as part of the entry.<br>
+viewed, etc.). The time is stored with the entry, and may be viewed in the entry's dialog box.<br>
+
 
 <span style="font-weight: bold;">Notes:<br>
+
 
 </span>
 <ul>
 
+
   <li><small>When this is enabled, the database will be modified even
 when no entry was edited. This means you may be prompted to save the
-database upon exit, even though you didn't explicitly modify anything.</small></li>
+database upon exit, even though you didn't explicitly change anything.</small></li>
+
 
   <li><small>When the database is opened in read-only mode, the access times are <span style="font-weight: bold;">not </span>updated.</small></li>
 
+
 </ul>
 
+
 <h3>Escape key closes application</h3>
+
 
 
 
@@ -113,8 +115,10 @@ database upon exit, even though you didn't explicitly modify anything.</small></
 
 
 
+
 			
 <h3>Hot Key</h3>
+
 
 
 
@@ -127,8 +131,10 @@ changed when the option is checked.</p>
 
 
 
+
 			
 <h3>Double click on entry</h3>
+
 
 
 
@@ -136,13 +142,25 @@ changed when the option is checked.</p>
 <p>This allows you to define what action PasswordSafe will take when
 you double-click on an entry. The default is to copy the entry's
 password to the clipboard.</p>
+
 <h3>Default Username</h3>
+
 This allows you to set a default user name that will be used
 automatically every time a new password entry is generated. when checked, the name entered
-will be inserted into new entries' user name field as the default. Of course, you can edit it if needed. 
+will be inserted into new entries' user name field as the default. Of course, you can edit it if needed.<br>
+<h3><a name="AltBrowser"></a>Alternate Browser</h3>
+The browser you specify in this field &nbsp;will be used when using the
+"Browse To" function for a selected entry, when the entry's URL has
+"[alt]" before the URL, e.g., "[alt]http://www.foo.net". This is
+useful, for example, if your
+default browser is Firefox, and you wish to access a website that works
+best with Internet Explorer, in which case you should specify the
+Internet Explorer as your alternate browser (typically "C:\Program
+Files\Internet Explorer\iexplorer.exe). 
 
 
 		</div>
+
 
 
 
@@ -151,10 +169,13 @@ will be inserted into new entries' user name field as the default. Of course, yo
 		<br>
 
 
+
 <br>
 
 
+
 <br>
+
 
 
 
