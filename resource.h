@@ -249,7 +249,6 @@
 #define IDC_RESETPWHISTORYON            1184
 #define IDC_SETMAXPWHISTORY             1185
 #define IDC_APPLYPWHCHANGESNOW          1186
-#define IDC_DELETEREGISTRY              1187
 #define IDC_REGDEL_CB                   1187
 #define IDC_SHOWNOTES                   1188
 #define IDC_DEFNOTESSHOWINEDIT          1189
@@ -274,7 +273,6 @@
 #define IDC_BACKUPMAXINC                1210
 #define IDC_BACKUPMAX                   1211
 #define IDC_BROWSEFORLOCATION           1212
-#define IDC_APPLYREGISTRYDELETENOW      1213
 #define IDC_REGDEL_BTN                  1213
 #define IDC_OTHERBROWSERLOCATION        1216
 #define IDC_APPCOPYRIGHT                1217
