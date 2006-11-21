@@ -66,6 +66,10 @@
 			<param name="Local" value="html\backup_and_restore.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Automatic Intermediate Backups">
+			<param name="Local" value="html\backups_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Importing Entries">
 			<param name="Local" value="html\import.html">
 			</OBJECT>

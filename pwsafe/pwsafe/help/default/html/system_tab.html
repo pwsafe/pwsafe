@@ -18,41 +18,64 @@
 <!-- Popup Source File -->
 <h2>System Tab</h2>
 
-<img style="width: 370px; height: 381px;" alt="system tab" src="images/system_tab.jpg">
+<img style="width: 370px; height: 481px;" alt="system tab" src="images/options/system_tab.jpg">
 <p>The System Tab provides access to settings that are related to
 Password Safe's interaction with the system on which it is running.</p>
 
 <div class="instr">
 <h3>Put icon in System Tray</h3>
 
-<p>If checked, <b>Password Safe</b> will minimize to the the System Tray area. If unchecked, the program will minimize to the task bar.</p>
+<p>If checked, <b>Password Safe</b> will minimize to
+the the System Tray area. If unchecked, the program will minimize to
+the task bar.</p>
 
-<p>The icon in the system tray indicates whether the password database is locked (<img style="width: 32px; height: 32px;" alt="locked" src="images/locked_tray.gif">) or unlocked (<img style="width: 32px; height: 32px;" alt="unlocked" src="images/unlocked_tray.gif">). If it is locked, you will be prompted for the master combination when you try to unminimize it.</p>
+<p>The icon in the system tray indicates whether the password
+database is locked (<img style="width: 32px; height: 32px;" alt="locked" src="images/locked_tray.gif">) or
+unlocked (<img style="width: 32px; height: 32px;" alt="unlocked" src="images/unlocked_tray.gif">). If
+it is locked, you will be prompted for the master combination when you
+try to unminimize it.</p>
 
-<h3>Remember last <span style="font-style: italic;">N</span> used entries in System Tray menu</h3>
+<h3>Remember last <span style="font-style: italic;">N</span>
+used entries in System Tray menu</h3>
 
-If the "Put icon in System Tray" option is enabled, you can right-click
+If the&nbsp;<span style="font-weight: bold;">Put icon in System Tray</span> option is enabled, you can right-click
 on the system tray icon to get to the most recently used entries
 directly, without going through the application's main screen. This
-option allows you to configure how many recent entries you wish to keep.
-<h3>Number of Recent Entries kept in history</h3>
-
-If the <span style="font-weight: bold;">Put Icon in System Tray </span>option is enabled, right-clicking on the <span style="font-weight: bold;">Password Safe </span>icon in the System Tray will open a menu that will allow you to rapidly access the last entries you've used since starting up <span style="font-weight: bold;">Password Safe</span>. Here you can configure how many entries to save, up to a maximum of 25.
+option allows you to configure how many recent entries you wish to
+keep in the system tray icon's list.
+<h3>Start Password Safe at Login</h3>
+If checked, this will cause Password Safe to start automatically in the
+System tray when you log on. Note that you will be prompted for the
+Safe combination the first time you double-click on the System Tray
+icon, <span style="font-weight: bold;">not <span style="font-weight: bold;">before.</span></span><span style="font-weight: bold;"></span>
 <h3>Recent Passwordsafe Databases</h3>
 
 <p>These controls allow you to configure how many
-recently opened databases are displayed in the File menu,
-for easy access. Note that you need to exit and restart
-<b>Password Safe</b> for changes in this control to take effect.</p>
+recently opened databases are displayed in the File menu. Note that you need to exit and restart
+<b>Password Safe</b> for changes in this control to take
+effect.</p>
 
 <h3>Recent Databases on File Menu rather than as a sub-menu</h3>
 
 This option determines how the recently opened databases are presented
-in the File menu - directly on the menu, or as a sub-menu.
-</div>
+in the File menu - directly on the menu, or as a sub-menu.<br>
+<h3>Remove Password Safe data from Registry</h3>
+Prior to version 3.05, <span style="font-weight: bold;">Password Safe</span>
+used the Registry to store configuration data, such as non-default
+options settings, last database opened, etc. As of this release, this
+information is split into database-specific and user/machine specific
+settings, with the latter being stored in a separate configuration
+file. Selecting this option and clicking on the <span style="font-weight: bold;">Apply </span>button will cause the registry settings to be cleared. This is useful if you wish to remove traces of <span style="font-weight: bold;">Password Safe</span> on your PC. Note, however, that this means that older versions of <span style="font-weight: bold;">Password Safe</span> will revert to default value for some of the settings.<br>
+<span style="font-weight: bold;"></span>
+<hr style="width: 100%; height: 2px;"><span style="font-weight: bold;">Notes:<br>
+</span>
+<ul>
+  <li>If previous versions of <span style="font-weight: bold;">Password Safe</span> have never been installed, or if the data has already been removed, then the checkbox and <span style="font-weight: bold;">Apply </span>button will not be displayed.</li>
+  <li>In rare circumstances, where <span style="font-weight: bold;">Password Safe</span> is unable to create or write to the configuration file, the registry will be used.</li>
+</ul>
+<hr style="width: 100%; height: 2px;"></div>
 
-<!-- Added some white space at the bottom for natural scrolling -->
-<br>
+
 
 <br>
 

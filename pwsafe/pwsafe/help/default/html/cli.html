@@ -4,12 +4,16 @@
 
 
 
+
 		
 		
 		
 
 		
 		
+  
+
+  
   
 
   
@@ -22,11 +26,13 @@
 		</script>
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
 
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
@@ -42,6 +48,7 @@
 
 
 
+
 		
 <p>Invoking <span style="font-weight: bold;">Password Safe</span> with
 no arguments will cause the application to prompt you for the
@@ -50,30 +57,39 @@ combination of a new database if none was previously opened on your&nbsp;machine
 It is, however, possible to modify this by invoking <span style="font-weight: bold;">Password Safe</span> as follows:</p>
 
 
+
 <p>
 		
 		</p>
+
 
 
 <ul>
 
 
 
+
 			<li><i>pwsafe</i> <b>database</b><br>
 
 
+
 This will open the specified database file, instead of the last one opened.<br>
+
 
 
   </li>
 
 
 
+
 			<li><i>pwsafe</i> <b>-r database</b><br>
 
 
+
 This will open the database in read-only mode.</li>
+
   <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-v database<br>
+
     <span style="font-weight: bold;"></span></span>This will validate
 the database after the correct passphrase is entered, correcting
 internal inconsistencies as necessary. Mostly useful when working with
@@ -81,28 +97,37 @@ databases written by other applications.<span style="font-weight: bold;"><span s
 
 
 
+
 			<li><i>pwsafe</i> <b>-e filename</b><br>
+
 
 
 This will prompt the user for a passphrase, and encrypt the file with a key derived from the passphrase. <b>Note:</b> The file can be <i>any</i> file. The encrypted file will 	have the same name as the original file, with ".PSF" appended to it.<br>
 
 
+
   </li>
+
 
 
 
 			<li><i>pwsafe</i> <b>-d filename</b><br>
 
 
-This will prompt the user for a passphrase, and decrypt the file with a key derived from the passphrase. <b>Note:</b> This will work only on files that were encrypted by invoking pwsafe with the '-e' option (see above).<br>
 
-
-  </li>
-
-
-
-		
+This will prompt the user for a passphrase, and decrypt the file with a key derived from the passphrase. <b>Note:</b> This will work only on files that were encrypted by invoking pwsafe with the '-e' option (see above).</li>
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-c<br>
+    </span>This will start the application closed, that is, with no
+database, and without the initial opening dialog (To access a database,
+use the File menu).</li>
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-s<br>
+    </span>This will start the application "silently", that is,
+minimized and with no database. When the application is unminimized,
+the user is presented with the opening dialog box (This option is meant
+for starting the application upon login, via a shortcut in the user's
+Startup folder).<span style="font-weight: bold;"></span></li>
 </ul>
+
 
 
 
@@ -112,10 +137,13 @@ This will prompt the user for a passphrase, and decrypt the file with a key deri
 		<br>
 
 
+
 <br>
 
 
+
 <br>
+
 
 
 
