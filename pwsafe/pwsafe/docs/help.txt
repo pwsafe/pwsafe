@@ -1,0 +1,118 @@
+Instructions for creating Localised Help Files
+==============================================
+
+This document is written for people interested in creating a
+translation of Password Safe's online help to another language.
+
+You're welcome to join the project as a translator, and commit the
+tralsated help directly, or to send your translation to the project
+administrator.
+
+The Help directory is organized (as of release 3.05) to facilitate the
+creation of non-English compiled Help files (*.chm) that are used by
+Password Safe, if present in the application installation directory.
+
+These compiled help files MUST be named either:
+    pwsafeLL.chm (preferred)
+or
+    pwsafeLL_CC.chm
+
+where
+    LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
+            see http://www.loc.gov/standards/iso639-2/
+and
+    CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
+            see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
+
+[Note: Although ISO 639 has been superseded, Microsoft only supports
+the new "RFC 3066bis" standard in .NET V2 and later applications
+(CultureInfo Class) or under Vista (via LOCALE_SNAME).  Older native
+and .NET V1 applications run on prior versions of Windows only support
+the ISO 639-1 two character language codes.]
+
+Password Safe's search order will be pwsafeLL_CC.chm, followed by
+pwsafeLL.chm.  If neither exist or can't be found, the default help
+file supplied (pwsafe.chm) will be used (US English i.e. equivalent to
+pwsafeEN_US.chm).
+
+It is recommended that only the preferred help files (pwsafeLL.chm)
+are produced, just to reduce the number. 
+
+For example, only:
+    pwsafeDE.chm    German
+
+and not also:
+    pwsafeDE_AT.chm    Austrian German
+    pwsafeDE_LI.chm    Liechtenstein German
+    pwsafeDE_LU.chm    Luxembourg German
+    pwsafeDE_CH.chm    Swiss German
+
+[The one exception seems to be Brazilian Portuguese in that many
+products supply this as well as or instead of Portugal's Portuguese
+i.e. pwsafePT_BR.chm and/or pwsafePT.chm.]
+
+The Help file selected is based on the Locale information of the user
+on the Windows system under which Password Safe is currently running
+(Control Panel -> "Regional Options" or similar depending on the
+Windows Version). 
+
+Mechanics of Help File Usage
+============================
+
+The way "Context Help" works under Windows is that the program
+recognises that the help key (normally F1) has been pressed and then
+opens the assigned Help file at a specific page relevant to what is
+currently being displayed to the user.  For this reason, the page name
+must be hard coded into the program.  Therefore, when translating the
+default English Help file into another language, the file names and
+their directory structure MUST not be changed - even if the contents
+of the file is now in a different language.  For example, you should
+translate the contents of the file "\html\about_pws.html" but not the
+name of the file "about_pws.html" into your language.  So in German,
+"about_pws.html" must NOT be renamed to "Über_pws.html". 
+
+Mechanics of Localisation
+=========================
+
+1.  Take a copy of the "help\default" directory and all its
+    subdirectories. 
+ 
+2.  Rename your copy to be "help\pwsafeLL" or "help\pwsafeLL_CC" as
+    discussed above.  For the rest of the instructions, for
+    simplicity, it is assumed that you are creating a "pwsafeLL.chm"
+    file and not a "pwsafeLL_CC.chm" file.
+ 
+3.  Within this directory, rename all files with a file name of
+    "pwsafe" to "pwsafeLL".  These would normally be the "hhc", "hhk"
+    and  "hhp" files. 
+
+4.  Using a text editor or your choice, edit the "pwsafeLL.hhp" file
+    as follows:
+
+In the [OPTIONS] section, change:
+
+Compiled file   from "pwsafe.chm" to "pwsafeLL.chm"
+Contents file   from "pwsafe.hhc" to "pwsafeLL.hhc"
+Error log file  from "pwsafe.log" to "pwsafeLL.log"
+Index file      from "pwsafe.hhk" to "pwsafeLL.hhk"
+Language        from "0x409 English (United States)" to your language
+                code and description 
+
+        (see http://msdn2.microsoft.com/en-us/library/ms970637.aspx)
+
+5.  The Contents file "pwsafeLL.hhc" (defines a "Table of Contents")
+    is very similar to a HTML or XML file.  It has a number of entries
+    that connect a name (e.g. "About Password Safe") to the
+    corresponding file name (e.g. "html\about_pws.html").  Using a
+    text editor or your choice, translate the contents of the "name"
+    entries in file.  Do not change the file name or directory
+    structure. 
+
+6.  The Index file "pwsafeLL.hhk" may also contain entries relating a
+    name with a file.  If so, again translate the name parts without
+    altering the file names or directory structure. 
+
+7. Finally, translate the contents of the html files in the html
+   directory.  Be careful not to translate the names of any files
+   referenced within these html files. 
+
