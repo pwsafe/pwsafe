@@ -250,7 +250,7 @@ public class PwsFileFactory
 	 */
 	public static final PwsFile newFile()
 	{
-		return new PwsFileV2();
+		return new PwsFileV3();
 	}
 
 	/**
