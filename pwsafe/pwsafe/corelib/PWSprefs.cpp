@@ -663,18 +663,21 @@ void PWSprefs::LoadProfileFromDefaults()
 void PWSprefs::LoadProfileFromRegistry()
 {
 	// Read in values from registry
+    // Note that default values are now current values,
+    // as they've been set in LoadProfileFromDefaults, and
+    // may have been overridden by ImportOldPrefs()
 	int i;
 	// Defensive programming, if not "0", then "TRUE", all other values = FALSE
 	for (i = 0; i < NumBoolPrefs; i++)
 		m_boolValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
 						 m_bool_prefs[i].name,
-						 m_bool_prefs[i].defVal) != 0;
+						 m_boolValues[i]) != 0;
 
 	// Defensive programming, if outside the permitted range, then set to default
 	for (i = 0; i < NumIntPrefs; i++) {
 		const int iVal = m_app->GetProfileInt(PWS_REG_OPTIONS,
 						m_int_prefs[i].name,
-						m_int_prefs[i].defVal);
+						m_intValues[i]);
 
 		if (m_int_prefs[i].minVal != -1 && iVal < m_int_prefs[i].minVal)
 			m_intValues[i] = m_int_prefs[i].defVal;
@@ -686,8 +689,8 @@ void PWSprefs::LoadProfileFromRegistry()
 	// Defensive programming not applicable.
 	for (int i = 0; i < NumStringPrefs; i++)
 		m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
-					m_string_prefs[i].name,
-					m_string_prefs[i].defVal));
+                                                              m_string_prefs[i].name,
+                                                              m_stringValues[i]));
 
 	/*
 		The following is "defensive" code because there was "a code ordering
@@ -720,14 +723,14 @@ void PWSprefs::LoadProfileFromFile()
 	// Defensive programming, if not "0", then "TRUE", all other values = FALSE
 	for (int i = 0; i < NumBoolPrefs; i++)
 		m_boolValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
-					 m_bool_prefs[i].name,
-					 m_bool_prefs[i].defVal) != 0;
+                                            m_bool_prefs[i].name,
+                                            m_bool_prefs[i].defVal) != 0;
 
 	// Defensive programming, if outside the permitted range, then set to default
 	for (int i = 0; i < NumIntPrefs; i++) {
 		const int iVal = m_XML_Config->Get(m_csHKCU_PREF,
-					m_int_prefs[i].name,
-					m_int_prefs[i].defVal);
+                                           m_int_prefs[i].name,
+                                           m_int_prefs[i].defVal);
 
 		if (m_int_prefs[i].minVal != -1 && iVal < m_int_prefs[i].minVal)
 			m_intValues[i] = m_int_prefs[i].defVal;
@@ -739,8 +742,8 @@ void PWSprefs::LoadProfileFromFile()
 	// Defensive programming not applicable.
 	for (int i = 0; i < NumStringPrefs; i++)
 		m_stringValues[i] = CMyString(m_XML_Config->Get(m_csHKCU_PREF,
-					m_string_prefs[i].name,
-					m_string_prefs[i].defVal));
+                                                        m_string_prefs[i].name,
+                                                        m_string_prefs[i].defVal));
 }
 
 void PWSprefs::SaveApplicationPreferences()
@@ -943,7 +946,7 @@ void PWSprefs::ImportOldPrefs()
                                    &DataLen
                                    );
             if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
-                m_boolValues[i] = (vData != 0);
+                SetPref(BoolPrefs(i), (vData != 0));
         }
 	for (i = 0; i < NumIntPrefs; i++)
 		if (!m_int_prefs[i].isStoredinDB) {
@@ -956,7 +959,7 @@ void PWSprefs::ImportOldPrefs()
                                    &DataLen
                                    );
             if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
-                m_intValues[i] = vData;
+                SetPref(IntPrefs(i), vData);
         }
 	for (i = 0; i < NumStringPrefs; i++)
 		if (!m_string_prefs[i].isStoredinDB) {
@@ -980,7 +983,7 @@ void PWSprefs::ImportOldPrefs()
                                        &DataLen
                                        );
                 if (rv == ERROR_SUCCESS)
-                    m_stringValues[i] = pData;
+                    SetPref(StringPrefs(i), CMyString(pData));
                 delete[] pData;
             } // Get the value
         } // pref in registry
