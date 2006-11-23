@@ -87,7 +87,8 @@ class PWScore {
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
   unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
   int RenameFile(const CMyString &oldname, const CMyString &newname);
-  int BackupCurFile();
+  bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
+                     const CString &userBackupPrefix, const CString &userBackupDir);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
   bool LockFile(const CMyString &filename, CMyString &locker) const
@@ -146,6 +147,9 @@ class PWScore {
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, int len,
 		       unsigned char *ciphertext) const;
+  BOOL GetIncBackupFileName(const CString &cs_filenamebase,
+                            int i_maxnumincbackups, CString &cs_newname);
+
   bool m_usedefuser;
   CMyString m_defusername;
   PWSfile::VERSION m_ReadFileVersion;

@@ -243,10 +243,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CreateIntermediateBackup.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CryptKeyEntry.cpp"
 				>
 			</File>

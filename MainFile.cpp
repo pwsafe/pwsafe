@@ -436,18 +436,25 @@ DboxMain::Save()
 {
   int rc;
   CString cs_title, cs_msg, cs_temp;
+  PWSprefs *prefs = PWSprefs::GetInstance();
 
   // Save Application related preferences
-  PWSprefs::GetInstance()->SaveApplicationPreferences();
+  prefs->SaveApplicationPreferences();
 
   if (m_core.GetCurFile().IsEmpty())
     return SaveAs();
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::BackupBeforeEverySave))
-    CreateIntermediateBackup();
 
   if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-    m_core.BackupCurFile(); // to save previous reversion
+      if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
+          int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
+          int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
+          CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
+          CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+          if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
+                                    userBackupPrefix, userBackupDir))
+              AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+      }
   } else { // file version mis-match
   	CMyString NewName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
 
