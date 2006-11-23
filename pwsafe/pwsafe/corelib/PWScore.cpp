@@ -18,10 +18,14 @@
 #include "UUIDGen.h"
 #include "SysInfo.h"
 
+#include <shellapi.h>
+#include <shlwapi.h>
+
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 #include <bitset>
@@ -783,12 +787,102 @@ int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
 }
 
 
-int PWScore::BackupCurFile()
+bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
+                            const CString &userBackupPrefix, const CString &userBackupDir)
 {
-  // renames CurFile to CurFile~
-  CString newname(GetCurFile());
-  newname += TCHAR('~');
-  return PWSfile::RenameFile(GetCurFile(), newname);
+    CString cs_temp, cs_newfile;
+	// Get location for intermediate backup
+    if (userBackupDir.IsEmpty()) { // directory same as database's
+        // Get directory containing database
+        cs_temp = CString(m_currfile);
+        TCHAR *lpszTemp = cs_temp.GetBuffer(_MAX_PATH);
+        PathRemoveFileSpec(lpszTemp);
+        cs_temp.ReleaseBuffer();
+        cs_temp += _T("\\");
+    } else {
+        cs_temp = userBackupDir;
+	}
+
+	// generate prefix of intermediate backup file name
+	if (userBackupPrefix.IsEmpty()) {
+		TCHAR fname[_MAX_FNAME];
+
+#if _MSC_VER >= 1400
+		_tsplitpath_s( m_currfile, NULL, 0, NULL, 0, fname, _MAX_FNAME, NULL, 0 );
+#else
+		_tsplitpath( m_currfile, NULL, NULL, fname, NULL );
+#endif
+		cs_temp += CString(fname);
+	} else {
+		cs_temp += userBackupPrefix;
+	}
+
+	// Add on suffix
+	switch (backupSuffix) { // case values from order in listbox.
+        case 1: // YYYYMMDD_HHMMSS suffix
+        {
+            time_t now;
+            time(&now);
+            CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now,
+                                                                            TMC_EXPORT_IMPORT);
+            cs_temp += _T("_");
+            cs_newfile = cs_temp + cs_datetime.Left(4) +	// YYYY
+                cs_datetime.Mid(5,2) +	// MM
+                cs_datetime.Mid(8,2) +	// DD
+                _T("_") +
+                cs_datetime.Mid(11,2) +	// HH
+                cs_datetime.Mid(14,2) +	// MM
+                cs_datetime.Mid(17,2);	// SS
+        }
+        break;
+        case 2: // _nnn suffix
+			if (GetIncBackupFileName(cs_temp, maxNumIncBackups, cs_newfile) == FALSE)
+				return false;
+			break;
+        case 0: // no suffix
+		default:
+			cs_newfile = cs_temp;
+			break;
+	}
+
+	cs_newfile +=  _T(".ibak");
+
+	// Now copy file and create any intervening directories as necessary & automatically
+	TCHAR szSource[_MAX_PATH];
+	TCHAR szDestination[_MAX_PATH];
+
+	TCHAR *lpsz_current = m_currfile.GetBuffer(_MAX_PATH);
+	TCHAR *lpsz_new = cs_newfile.GetBuffer(_MAX_PATH);
+#if _MSC_VER >= 1400
+	_tcscpy_s(szSource, _MAX_PATH, lpsz_current);
+	_tcscpy_s(szDestination, _MAX_PATH, lpsz_new);
+#else
+	_tcscpy(szSource, lpsz_current);
+	_tcscpy(szDestination, lpsz_new);
+#endif
+	m_currfile.ReleaseBuffer();
+	cs_newfile.ReleaseBuffer();
+
+	// Must end with double NULL
+	szSource[m_currfile.GetLength() + 1] = TCHAR('\0');
+	szDestination[cs_newfile.GetLength() + 1] = TCHAR('\0');
+
+	SHFILEOPSTRUCT sfop;
+	memset(&sfop, 0, sizeof(sfop));
+	sfop.hwnd = GetActiveWindow();
+	sfop.wFunc = FO_COPY;
+	sfop.pFrom = szSource;
+	sfop.pTo = szDestination;
+	sfop.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_SILENT;
+
+	if (SHFileOperation(&sfop) != 0) {
+        return false;
+	}
+    return true;
+    // renames CurFile to CurFile~
+    // CString newname(GetCurFile());
+    // newname += TCHAR('~');
+    // return PWSfile::RenameFile(GetCurFile(), newname);
 }
 
 void PWScore::ChangePassword(const CMyString &newPassword)
@@ -1154,4 +1248,56 @@ PWScore::Validate(CString &status)
   } else {
     return false;
   }
+}
+
+BOOL
+PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
+                              int i_maxnumincbackups, CString &cs_newname)
+{
+	CString cs_filenamemask(cs_filenamebase), cs_filename, cs_ibak_number;
+	CFileFind finder;
+	BOOL bWorking, brc(TRUE);
+	int num_found(0), n;
+	std::vector<int> file_nums;
+
+	cs_filenamemask += _T("_???.ibak");
+
+	bWorking = finder.FindFile(cs_filenamemask);
+	while (bWorking) {
+		bWorking = finder.FindNextFile();
+		num_found++;
+		cs_filename = finder.GetFileName();
+		cs_ibak_number = cs_filename.Mid(cs_filename.GetLength() - 8, 3);
+		if (cs_ibak_number.SpanIncluding(CString(_T("0123456789"))) != cs_ibak_number)
+			continue;
+		n = _ttoi(cs_ibak_number);
+		file_nums.push_back(n);
+	}
+
+	if (num_found == 0) {
+		cs_newname = cs_filenamebase + _T("_001");
+		return brc;
+	}
+
+	sort(file_nums.begin(), file_nums.end());
+
+	int nnn = file_nums.back();
+	nnn++;
+	if (nnn > 999) nnn = 1;
+
+	cs_newname.Format(_T("%s_%03d"), cs_filenamebase, nnn);
+
+	int i = 0;
+	while (num_found >= i_maxnumincbackups) {
+		nnn = file_nums.at(i);
+		cs_filename.Format(_T("%s_%03d.ibak"), cs_filenamebase, nnn);
+		i++;
+		num_found--;
+		if (DeleteFile(cs_filename) == FALSE) {
+			TRACE(_T("DeleteFile(%s)"), cs_filename);
+			continue;
+		}
+	}
+
+	return brc;
 }

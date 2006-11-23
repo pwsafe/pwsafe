@@ -377,9 +377,6 @@ private:
   void RestoreDisplayStatus();
   void GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet);
   void MakeSortedItemList(ItemList &il);
-  void CreateIntermediateBackup();
-  BOOL GetIncBackupFileName(const CString &cs_filenamebase,
-	  const int &i_maxnumincbackups, CString &cs_newname);
 };
 
 // Following used to keep track of display vs data
