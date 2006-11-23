@@ -60,8 +60,8 @@ class PWSprefs {
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
 		  DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
-		  NumPWHistoryDefault, BackupPrefix, BackupSuffix, BackupLocation,
-		  BackupMaxIncremented, NumIntPrefs};
+		  NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
+          NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser,
 		  NumStringPrefs};

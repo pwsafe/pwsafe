@@ -97,7 +97,7 @@ BEGIN_MESSAGE_MAP(COptionsBackup, CPropertyPage)
 	ON_BN_CLICKED(IDC_USERBACKUPOTHERLOCATION, OnBackupDirectory)
 	ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
 	ON_CBN_SELCHANGE(IDC_BACKUPSUFFIX, OnComboChanged)
-	ON_EN_KILLFOCUS(IDC_USERBACKUPPREFIX, OnUserPrefixKillfocus)
+	ON_EN_KILLFOCUS(IDC_USERBACKUPPREFIXVALUE, OnUserPrefixKillfocus)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -195,14 +195,16 @@ void COptionsBackup::OnBackupPrefix()
 	switch (m_backupprefix) {
 		case 0:
 			GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(FALSE);
+            m_userbackupprefix = _T("");
 			break;
 		case 1:
 			GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(TRUE);
 			break;
 		default:
-          ASSERT(0);
+            ASSERT(0);
 			break;
 	}
+    UpdateData(FALSE);
 	SetExample();
 }
 
@@ -213,6 +215,7 @@ void COptionsBackup::OnBackupDirectory()
 		case 0:
 			GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(FALSE);
 			GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(FALSE);
+            m_userbackupotherlocation = _T("");
 			break;
 		case 1:
 			GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(TRUE);
@@ -222,6 +225,7 @@ void COptionsBackup::OnBackupDirectory()
           ASSERT(0);
 			break;
 	}
+    UpdateData(FALSE);
 }
 
 void COptionsBackup::OnBackupBeforeSave()
@@ -253,7 +257,7 @@ void COptionsBackup::OnBackupBeforeSave()
 void COptionsBackup::SetExample()
 {
 	CString cs_example;
-
+    UpdateData(TRUE);
 	switch (m_backupprefix) {
 		case 0:
           cs_example = m_currentFileBasename;
