@@ -663,6 +663,10 @@ void PWSprefs::LoadProfileFromDefaults()
 void PWSprefs::LoadProfileFromRegistry()
 {
 	// Read in values from registry
+    if (!CheckRegistryExists())
+        return; // Avoid creating keys if none already, as
+    //             GetProfile* creates keys if not found!
+
     // Note that default values are now current values,
     // as they've been set in LoadProfileFromDefaults, and
     // may have been overridden by ImportOldPrefs()
