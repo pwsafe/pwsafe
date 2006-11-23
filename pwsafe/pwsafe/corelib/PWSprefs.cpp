@@ -64,7 +64,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 	{_T("SavePasswordHistory"), false, true},						// database
 	{_T("FindWraps"), false, false},								// application
 	{_T("ShowNotesDefault"), false, true},							// database
-	{_T("BackupBeforeEverySave"), false, false},					// application
+	{_T("BackupBeforeEverySave"), true, false},					// application
 };
 
 // Default value = -1 means set at runtime
@@ -85,13 +85,9 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	{_T("MaxREItems"), 25, false, 0, 25},									// application
 	{_T("TreeDisplayStatusAtOpen"), AllCollapsed, true, minTDS, maxTDS},	// database
 	{_T("NumPWHistoryDefault"), 3, true, 0, 255},							// database
-	// Default and user specified
-	{_T("BackupPrefix"), 0, false, 0, 1},									// application
 	// Specified by supported masks
 	{_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},						// application
-	// default, user specified sub-directory and user specified other location
-	{_T("BackupLocation"), 0, false, 0, 2},									// application
-	{_T("BackupMaxIncremented"), 3, false, 1, 999},							// application
+	{_T("BackupMaxIncremented"), 1, false, 1, 999},							// application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

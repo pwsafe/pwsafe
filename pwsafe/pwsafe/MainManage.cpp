@@ -314,18 +314,17 @@ DboxMain::OnOptions()
     GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
   backup.m_backupbeforesave = prefs->
     GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
-  backup.m_backupprefix = prefs->
-    GetPref(PWSprefs::BackupPrefix);
-  backup.m_userbackupprefix = CString(prefs->
-                                      GetPref(PWSprefs::BackupPrefixValue));
+  CString backupPrefix(prefs->
+                       GetPref(PWSprefs::BackupPrefixValue));
+  backup.m_backupprefix = backupPrefix.IsEmpty() ? 0 : 1;
+  backup.m_userbackupprefix = backupPrefix;
   backup.m_backupsuffix = prefs->
     GetPref(PWSprefs::BackupSuffix);
   backup.m_maxnumincbackups = prefs->
     GetPref(PWSprefs::BackupMaxIncremented);
-  backup.m_backuplocation = prefs->
-    GetPref(PWSprefs::BackupLocation);
-  backup.m_userbackupotherlocation = CString(prefs->
-                                             GetPref(PWSprefs::BackupDir));
+  CString backupDir(prefs->GetPref(PWSprefs::BackupDir));
+  backup.m_backuplocation = backupDir.IsEmpty() ? 0 : 1;
+  backup.m_userbackupotherlocation = backupDir;
 
   optionsDlg.AddPage( &backup );
   optionsDlg.AddPage( &display );
@@ -451,16 +450,12 @@ DboxMain::OnOptions()
                    backup.m_saveimmediately == TRUE);
     prefs->SetPref(PWSprefs::BackupBeforeEverySave,
                    backup.m_backupbeforesave == TRUE);
-    prefs->SetPref(PWSprefs::BackupPrefix,
-                   backup.m_backupprefix);
     prefs->SetPref(PWSprefs::BackupPrefixValue,
                    backup.m_userbackupprefix);
     prefs->SetPref(PWSprefs::BackupSuffix,
                    backup.m_backupsuffix);
     prefs->SetPref(PWSprefs::BackupMaxIncremented,
                    backup.m_maxnumincbackups);
-    prefs->SetPref(PWSprefs::BackupLocation,
-                   backup.m_backuplocation);    
     prefs->SetPref(PWSprefs::BackupDir,
                    backup.m_userbackupotherlocation);
 

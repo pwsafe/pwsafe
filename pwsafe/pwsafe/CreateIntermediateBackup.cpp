@@ -23,18 +23,14 @@
 void
 DboxMain::CreateIntermediateBackup()
 {
-	int i_backuplocation, i_backupprefix, i_backupsuffix, i_maxnumincbackups;
+	int i_backupsuffix, i_maxnumincbackups;
 	CString cs_userbackupprefix, cs_userbackupdir;
 	CString cs_temp, cs_currentfile(m_core.GetCurFile()), cs_newfile;
 
 	PWSprefs *prefs = PWSprefs::GetInstance();
 
-	i_backupprefix = prefs->
-		GetPref(PWSprefs::BackupPrefix);
 	i_backupsuffix = prefs->
 		GetPref(PWSprefs::BackupSuffix);
-	i_backuplocation = prefs->
-		GetPref(PWSprefs::BackupLocation);
 	i_maxnumincbackups = prefs->
 		GetPref(PWSprefs::BackupMaxIncremented);
 	cs_userbackupprefix = CString(prefs->
@@ -43,25 +39,19 @@ DboxMain::CreateIntermediateBackup()
 		GetPref(PWSprefs::BackupDir));
 
 	// Get location for intermediate backup
-    switch (i_backuplocation) { // case values from radio button ordering.
-    case 0: {// directory same as database's
+    if (cs_userbackupdir.IsEmpty()) { // directory same as database's
       // Get directory containing database
       cs_temp = cs_currentfile;
       TCHAR *lpszTemp = cs_temp.GetBuffer(_MAX_PATH);
       PathRemoveFileSpec(lpszTemp);
       cs_temp.ReleaseBuffer();
       cs_temp += _T("\\");
-    }
-      break;
-    case 1: // user specified
+    } else {
       cs_temp = cs_userbackupdir;
-      break;
-    default:
-      ASSERT(0);
 	}
 
 	// generate prefix of intermediate backup file name
-	if (i_backupprefix == 0) {
+	if (cs_userbackupprefix.IsEmpty()) {
 		TCHAR fname[_MAX_FNAME];
 
 #if _MSC_VER >= 1400
