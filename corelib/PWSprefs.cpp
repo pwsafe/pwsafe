@@ -303,7 +303,8 @@ bool PWSprefs::WritePref(const CMyString &name, bool val)
 		default:
 			break;
 	}
-	UpdateTimeStamp();
+	if (bRetVal)
+		UpdateTimeStamp();
 	return bRetVal;
 }
 
@@ -324,7 +325,8 @@ bool PWSprefs::WritePref(const CMyString &name, unsigned int val)
 		default:
 			break;
 	}
-	UpdateTimeStamp();
+	if (bRetVal)
+		UpdateTimeStamp();
 	return bRetVal;
 }
 
@@ -345,7 +347,8 @@ bool PWSprefs::WritePref(const CMyString &name, const CMyString &val)
 		default:
 			break;
 	}
-	UpdateTimeStamp();
+	if (bRetVal)
+		UpdateTimeStamp();
 	return bRetVal;
 }
 
@@ -365,14 +368,13 @@ bool PWSprefs::DeletePref(const CMyString &name)
 		default:
 			break;
 	}
-	UpdateTimeStamp();
+	if (bRetVal)
+		UpdateTimeStamp();
 	return bRetVal;
 }
 void PWSprefs::SetPrefRect(long top, long bottom,
                            long left, long right)
 {
-  UpdateTimeStamp();
-
   switch (m_ConfigOptions) {
   case CF_REGISTRY:
     m_app->WriteProfileInt(PWS_REG_POSITION, _T("top"), top);
@@ -386,6 +388,7 @@ void PWSprefs::SetPrefRect(long top, long bottom,
       CString obuff;
       ASSERT(m_XML_Config != NULL);
       m_XML_Config->SetKeepXMLLock(true);
+	  UpdateTimeStamp();
       obuff.Format(_T("%d"), top);
       VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
       obuff.Format(_T("%d"), bottom);
@@ -723,6 +726,7 @@ void PWSprefs::LoadProfileFromRegistry()
 void PWSprefs::LoadProfileFromFile()
 {
 	// Read in values from file
+	m_XML_Config->SetKeepXMLLock(true);
 
 	// Defensive programming, if not "0", then "TRUE", all other values = FALSE
 	for (int i = 0; i < NumBoolPrefs; i++)
@@ -748,6 +752,8 @@ void PWSprefs::LoadProfileFromFile()
 		m_stringValues[i] = CMyString(m_XML_Config->Get(m_csHKCU_PREF,
                                                         m_string_prefs[i].name,
                                                         m_string_prefs[i].defVal));
+
+	m_XML_Config->SetKeepXMLLock(false);
 }
 
 void PWSprefs::SaveApplicationPreferences()
@@ -759,10 +765,10 @@ void PWSprefs::SaveApplicationPreferences()
 	    m_ConfigOptions == CF_FILE_RW_NEW) {
         ASSERT(m_XML_Config != NULL);
 		m_XML_Config->SetKeepXMLLock(true);
+		UpdateTimeStamp();
     }
-
-	UpdateTimeStamp();
-	// Write in values to XML file
+	
+	// Write values to XML file of registry
 	for (int i = 0; i < NumBoolPrefs; i++) {
 		if (!m_bool_prefs[i].isStoredinDB && m_boolChanged[i]) {
 			if (m_boolValues[i] != m_bool_prefs[i].defVal) {
