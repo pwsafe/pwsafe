@@ -35,7 +35,7 @@ void CXMLprefs::SetKeepXMLLock(bool state)
 		// Save disabled when doing a big read/update - need to do it now.
 		SaveXML();
 		UnloadXML();
-}
+	}
 }
 
 // get a int value
@@ -285,7 +285,6 @@ BOOL CXMLprefs::LoadXML()
 	MSXML2::IXMLDOMParseErrorPtr pIParseError = NULL;
 	CFile file;
 	BOOL b_OK = FALSE;
-    BOOL retval = FALSE;
 	// initialize the XML parser
 	switch (m_MSXML_Version) {
 		case 0:
@@ -297,10 +296,11 @@ BOOL CXMLprefs::LoadXML()
 				if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument40),
                                                     NULL, CLSCTX_ALL))) {
 					// Try 30
-					if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument30), NULL, CLSCTX_ALL))) {
+					if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument30),
+						                                NULL, CLSCTX_ALL))) {
 						AfxMessageBox(IDSC_NOXMLREADER, MB_OK);
 						m_MSXML_Version = -1;
-						retval = FALSE; goto exit;
+						goto bad_exit;
 					} else {
 						m_MSXML_Version = 30;
 					}
@@ -327,18 +327,16 @@ BOOL CXMLprefs::LoadXML()
 		default:
 			// Should never get here
 			ASSERT(0);
-            retval = FALSE; goto exit;
+			goto bad_exit;
 	}
 
-	if (b_OK == FALSE) {
-		retval = FALSE;
-        goto exit;
-    }
+	if (b_OK == FALSE)
+        goto bad_exit;
 
 	// Ensure we preserve all white space!
 	if (FAILED(m_pXMLDoc->put_preserveWhiteSpace(VARIANT_TRUE))) {
-		UnloadXML();
-		retval = FALSE; goto exit;
+		UnloadXML();  // this will also release config file lock
+		return FALSE;
 	}
 
 	VARIANT_BOOL vbSuccessful;
@@ -358,9 +356,8 @@ BOOL CXMLprefs::LoadXML()
 
 	m_bXMLLoaded = (vbSuccessful == VARIANT_TRUE);
 
-	if (m_bXMLLoaded) {
-		retval = TRUE; goto exit; // loaded
-    }
+	if (m_bXMLLoaded)
+		return TRUE;  // loaded
 
 	// an XML load error occurred so display the reason
 	m_pXMLDoc->get_parseError(&pIParseError);
@@ -392,9 +389,9 @@ BOOL CXMLprefs::LoadXML()
 		m_pXMLDoc.Release();
 		m_pXMLDoc = NULL;
 	}
-  exit:
+  bad_exit:
     PWSfile::UnlockFile(m_csConfigFile, false);
-	return retval;
+	return FALSE;
 }
 
 void CXMLprefs::UnloadXML()
