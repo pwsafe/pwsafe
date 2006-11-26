@@ -419,7 +419,6 @@ ThisMfcApp::InitInstance()
 			cs_ResName.Format(_T("%s.exe"), m_pszExeName);
 		} else {
 			TRACE(_T("%s Using language DLL '%s'.\n"), PWSUtil::GetTimeStamp(), cs_SName);
-			AfxSetResourceHandle(m_hInstResDLL);
 		}
 	}
 
@@ -442,6 +441,8 @@ ThisMfcApp::InitInstance()
 		}
 	}
 #endif
+	if (m_hInstResDLL != NULL)
+		AfxSetResourceHandle(m_hInstResDLL);
 
 	CString cs_HelpPath, cs_HelpName;
 	cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), acPath, szLang, szCtry);
@@ -714,7 +715,7 @@ ThisMfcApp::InitInstance()
 
   // Set up an Accelerator table
 #if !defined(POCKET_PC)
-  m_ghAccelTable = LoadAccelerators(AfxGetInstanceHandle(),
+  m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
                                     MAKEINTRESOURCE(IDR_ACCS));
 #endif
   //Run dialog
