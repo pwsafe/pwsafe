@@ -114,6 +114,7 @@ class PWSprefs {
   
  private:
   PWSprefs();
+  ~PWSprefs();
   
   // Preferences changed (Database or Application)
   enum {DB_PREF = 0, APP_PREF = 1};
@@ -128,7 +129,6 @@ class PWSprefs {
   void LoadProfileFromFile();
   void LoadProfileFromRegistry();
   bool CheckRegistryExists() const;
-  void WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename);
 
   // Handle old (pre-3.05 registry-based) prefs.
   void ImportOldPrefs();
@@ -164,5 +164,7 @@ class PWSprefs {
   bool m_boolChanged[NumBoolPrefs];
   bool m_intChanged[NumIntPrefs];
   bool m_stringChanged[NumStringPrefs];
+
+  CString *m_MRUitems;
 };
 #endif /*  __PWSPREFS_H */

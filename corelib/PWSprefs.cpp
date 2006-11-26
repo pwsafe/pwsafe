@@ -112,7 +112,6 @@ PWSprefs *PWSprefs::GetInstance()
 
 void PWSprefs::DeleteInstance()
 {
-  delete self->m_XML_Config; // should have ~PWSprefs
   delete self;
   self = NULL;
   SysInfo::DeleteInstance();
@@ -138,7 +137,14 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp())
   m_rect.top = m_rect.bottom = m_rect.left = m_rect.right = -1;
   m_rect.changed = false;
 
+  m_MRUitems = new CString[m_int_prefs[MaxMRUItems].maxVal];
   InitializePreferences();
+}
+
+PWSprefs::~PWSprefs()
+{
+    delete m_XML_Config;
+    delete[] m_MRUitems;
 }
 
 bool
@@ -190,21 +196,16 @@ void PWSprefs::GetPrefRect(long &top, long &bottom,
 
 int PWSprefs::GetMRUList(CString *MRUFiles)
 {
-    const int nMRUItems = GetPref(PWSprefs::MaxMRUItems);
-    CString csSubkey;
     ASSERT(MRUFiles != NULL);
 
     if (m_ConfigOptions == CF_NONE || m_ConfigOptions == CF_REGISTRY)
         return 0;
     
-    ASSERT(m_XML_Config != NULL);
-    m_XML_Config->SetKeepXMLLock(true);
-    for (int i = nMRUItems; i > 0; i--) {
-        csSubkey.Format(_T("Safe%02d"), i);
-        MRUFiles[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
-    }
-    m_XML_Config->SetKeepXMLLock(false);
-    return nMRUItems;
+    const int n = GetPref(PWSprefs::MaxMRUItems);
+    for (int i = 0; i < n; i++)
+        MRUFiles[i] = m_MRUitems[i];
+
+    return n;
 }
 
 int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
@@ -215,22 +216,23 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
         m_ConfigOptions == CF_FILE_RO)
         return 0;
 
-    ASSERT(m_XML_Config != NULL);
-    CString csSubkey;
-    int i;
-    m_XML_Config->SetKeepXMLLock(true);
-    // Write out ones in use
-    for (i = 0; i < n; i++) {
-        csSubkey.Format(_T("Safe%02d"), i + 1);
-        WriteMRUToXML(csSubkey, MRUFiles[i]);
+    int i, cnt;
+    // remember the ones in use
+    for (i = 0, cnt = 1; i < n; i++) {
+        if (MRUFiles[i].IsEmpty() ||
+            // Don't remember backup files
+            MRUFiles[i].Right(4) == _T(".bak") ||
+            MRUFiles[i].Right(5) == _T(".bak~") ||
+            MRUFiles[i].Right(5) == _T(".ibak") ||
+            MRUFiles[i].Right(6) == _T(".ibak~"))
+            continue;
+        m_MRUitems[cnt-1] = MRUFiles[i];
+        cnt++;
     }
-    // Remove any not in use
-    
-    for (i = n; i < max_MRU; i++) {
-        csSubkey.Format(_T("Safe%02d"), i + 1);
-        m_XML_Config->DeleteSetting(m_csHKCU_MRU, csSubkey);
+    // Remove any not in use    
+    for (i = cnt - 1; i < max_MRU; i++) {
+        m_MRUitems[i] = _T("");
     }
-    m_XML_Config->SetKeepXMLLock(false);
     return n;
 }
 
@@ -702,17 +704,18 @@ void PWSprefs::LoadProfileFromRegistry()
 
 void PWSprefs::LoadProfileFromFile()
 {
+    int i;
 	// Read in values from file
 	m_XML_Config->SetKeepXMLLock(true);
 
 	// Defensive programming, if not "0", then "TRUE", all other values = FALSE
-	for (int i = 0; i < NumBoolPrefs; i++)
+	for (i = 0; i < NumBoolPrefs; i++)
 		m_boolValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
                                             m_bool_prefs[i].name,
                                             m_bool_prefs[i].defVal) != 0;
 
 	// Defensive programming, if outside the permitted range, then set to default
-	for (int i = 0; i < NumIntPrefs; i++) {
+	for (i = 0; i < NumIntPrefs; i++) {
 		const int iVal = m_XML_Config->Get(m_csHKCU_PREF,
                                            m_int_prefs[i].name,
                                            m_int_prefs[i].defVal);
@@ -725,7 +728,7 @@ void PWSprefs::LoadProfileFromFile()
 	}
 
 	// Defensive programming not applicable.
-	for (int i = 0; i < NumStringPrefs; i++)
+	for (i = 0; i < NumStringPrefs; i++)
 		m_stringValues[i] = CMyString(m_XML_Config->Get(m_csHKCU_PREF,
                                                         m_string_prefs[i].name,
                                                         m_string_prefs[i].defVal));
@@ -735,6 +738,15 @@ void PWSprefs::LoadProfileFromFile()
 	m_rect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
 	m_rect.left = m_XML_Config->Get(m_csHKCU_POS, _T("left"), -1);
     m_rect.right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
+
+    // Load most recently used file list
+    const int nMRUItems = m_intValues[MaxMRUItems];
+    CString csSubkey;
+    for (i = nMRUItems; i > 0; i--) {
+        csSubkey.Format(_T("Safe%02d"), i);
+        m_MRUitems[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
+    }
+
 	m_XML_Config->SetKeepXMLLock(false);
 }
 
@@ -818,25 +830,29 @@ void PWSprefs::SaveApplicationPreferences()
     } // m_rect.changed
 
 	if (m_ConfigOptions == CF_FILE_RW ||
+	    m_ConfigOptions == CF_FILE_RW_NEW) {
+        int i;
+        const int n = GetPref(PWSprefs::MaxMRUItems);
+        CString csSubkey;
+        for (i = 0; i < n; i++)
+            if (!m_MRUitems[i].IsEmpty()) {
+                csSubkey.Format(_T("Safe%02d"), i+1);
+                m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
+
+            }
+        // Remove any not in use
+        for (i = n-1; i < m_int_prefs[MaxMRUItems].maxVal; i++) {
+            csSubkey.Format(_T("Safe%02d"), i + 1);
+            m_XML_Config->DeleteSetting(m_csHKCU_MRU, csSubkey);
+        }
+    }
+
+
+	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW)
 		m_XML_Config->SetKeepXMLLock(false);
 
 	m_prefs_changed[APP_PREF] = false;
-}
-
-
-void PWSprefs::WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename)
-{
-	if (csMRUFilename.IsEmpty()) return;
-
-	// Don't remember backup files
-	if (csMRUFilename.Right(4) == _T(".bak") ||
-		csMRUFilename.Right(5) == _T(".bak~") ||
-		csMRUFilename.Right(5) == _T(".ibak") ||
-		csMRUFilename.Right(6) == _T(".ibak~"))
-		return;
-
-	m_XML_Config->Set(m_csHKCU_MRU, csSubkey, csMRUFilename);
 }
 
 bool PWSprefs::OfferDeleteRegistry() const
