@@ -135,6 +135,9 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp())
   for (i = 0; i < NumStringPrefs; i++)
     m_stringChanged[i] = false;
 
+  m_rect.top = m_rect.bottom = m_rect.left = m_rect.right = -1;
+  m_rect.changed = false;
+
   InitializePreferences();
 }
 
@@ -179,29 +182,10 @@ unsigned int PWSprefs::GetPref(IntPrefs pref_enum, unsigned int defVal) const
 void PWSprefs::GetPrefRect(long &top, long &bottom,
                            long &left, long &right) const
 {
-	// this is never stored in db
-	switch (m_ConfigOptions) {
-		case CF_REGISTRY:
-			top = m_app->GetProfileInt(PWS_REG_POSITION, _T("top"), -1);
-			bottom = m_app->GetProfileInt(PWS_REG_POSITION, _T("bottom"), -1);
-			left = m_app->GetProfileInt(PWS_REG_POSITION, _T("left"), -1);
-			right = m_app->GetProfileInt(PWS_REG_POSITION, _T("right"), -1);
-			break;
-		case CF_FILE_RO:
-		case CF_FILE_RW:
-		case CF_FILE_RW_NEW:
-			m_XML_Config->SetKeepXMLLock(true);
-			top = m_XML_Config->Get(m_csHKCU_POS, _T("top"), -1);
-			bottom = m_XML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
-			left = m_XML_Config->Get(m_csHKCU_POS, _T("left"), -1);
-			right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
-			m_XML_Config->SetKeepXMLLock(false);
-			break;
-		case CF_NONE:
-		default:
-			top = bottom = left = right = -1;
-			break;
-	}
+    top = m_rect.top;
+    bottom = m_rect.bottom;
+    left = m_rect.left;
+    right = m_rect.right;
 }
 
 int PWSprefs::GetMRUList(CString *MRUFiles)
@@ -375,37 +359,20 @@ bool PWSprefs::DeletePref(const CMyString &name)
 void PWSprefs::SetPrefRect(long top, long bottom,
                            long left, long right)
 {
-  switch (m_ConfigOptions) {
-  case CF_REGISTRY:
-    m_app->WriteProfileInt(PWS_REG_POSITION, _T("top"), top);
-    m_app->WriteProfileInt(PWS_REG_POSITION, _T("bottom"), bottom);
-    m_app->WriteProfileInt(PWS_REG_POSITION, _T("left"), left);
-    m_app->WriteProfileInt(PWS_REG_POSITION, _T("right"), right);
-    break;
-  case CF_FILE_RW:
-  case CF_FILE_RW_NEW:
-    {
-      CString obuff;
-      ASSERT(m_XML_Config != NULL);
-      m_XML_Config->SetKeepXMLLock(true);
-	  UpdateTimeStamp();
-      obuff.Format(_T("%d"), top);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-      obuff.Format(_T("%d"), bottom);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-      obuff.Format(_T("%d"), left);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-      obuff.Format(_T("%d"), right);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
-      m_XML_Config->SetKeepXMLLock(false);
+    if (m_rect.top != top) {
+        m_rect.top = top; m_rect.changed = true;
     }
-    break;
-  case CF_FILE_RO:
-  case CF_NONE:
-  default:
-    break;
-  }
-
+    if (m_rect.bottom != bottom) {
+        m_rect.bottom = bottom; m_rect.changed = true;
+    }
+    if (m_rect.left != left) {
+        m_rect.left = left; m_rect.changed = true;
+    }
+    if (m_rect.right != right) {
+        m_rect.right = right; m_rect.changed = true;
+    }
+    if (m_rect.changed)
+        m_prefs_changed[APP_PREF] = true;
 }
 
 CMyString PWSprefs::Store()
@@ -677,14 +644,14 @@ void PWSprefs::LoadProfileFromRegistry()
 	// Defensive programming, if not "0", then "TRUE", all other values = FALSE
 	for (i = 0; i < NumBoolPrefs; i++)
 		m_boolValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
-						 m_bool_prefs[i].name,
-						 m_boolValues[i]) != 0;
+                                               m_bool_prefs[i].name,
+                                               m_boolValues[i]) != 0;
 
 	// Defensive programming, if outside the permitted range, then set to default
 	for (i = 0; i < NumIntPrefs; i++) {
 		const int iVal = m_app->GetProfileInt(PWS_REG_OPTIONS,
-						m_int_prefs[i].name,
-						m_intValues[i]);
+                                              m_int_prefs[i].name,
+                                              m_intValues[i]);
 
 		if (m_int_prefs[i].minVal != -1 && iVal < m_int_prefs[i].minVal)
 			m_intValues[i] = m_int_prefs[i].defVal;
@@ -700,13 +667,13 @@ void PWSprefs::LoadProfileFromRegistry()
                                                               m_stringValues[i]));
 
 	/*
-		The following is "defensive" code because there was "a code ordering
-		issue" in V3.02 and earlier.  PWSprefs.cpp and PWSprefs.h differed in
-		the order of the HotKey and DoubleClickAction preferences.
-		This is to protect the application should a HotKey value be assigned
-		to DoubleClickAction.
-		Note: HotKey also made an "Application preference" from a "Database
-		preference".
+      The following is "defensive" code because there was "a code ordering
+      issue" in V3.02 and earlier.  PWSprefs.cpp and PWSprefs.h differed in
+      the order of the HotKey and DoubleClickAction preferences.
+      This is to protect the application should a HotKey value be assigned
+      to DoubleClickAction.
+      Note: HotKey also made an "Application preference" from a "Database
+      preference".
 	*/
 
 	if (m_intValues[HotKey] > 0 && m_intValues[HotKey] <= 3) {
@@ -721,6 +688,16 @@ void PWSprefs::LoadProfileFromRegistry()
 		m_prefs_changed[APP_PREF] = true;
 	}
 	// End of "defensive" code
+
+    // Load last main window size & pos:
+    m_rect.top = m_app->GetProfileInt(PWS_REG_POSITION,
+                                      _T("top"), -1);
+    m_rect.bottom = m_app->GetProfileInt(PWS_REG_POSITION,
+                                         _T("bottom"), -1);
+    m_rect.left = m_app->GetProfileInt(PWS_REG_POSITION,
+                                       _T("left"), -1);
+    m_rect.right = m_app->GetProfileInt(PWS_REG_POSITION,
+                                        _T("right"), -1);
 }
 
 void PWSprefs::LoadProfileFromFile()
@@ -753,6 +730,11 @@ void PWSprefs::LoadProfileFromFile()
                                                         m_string_prefs[i].name,
                                                         m_string_prefs[i].defVal));
 
+    // Load last main window size & pos:
+    m_rect.top = m_XML_Config->Get(m_csHKCU_POS, _T("top"), -1);
+	m_rect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
+	m_rect.left = m_XML_Config->Get(m_csHKCU_POS, _T("left"), -1);
+    m_rect.right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
 	m_XML_Config->SetKeepXMLLock(false);
 }
 
@@ -768,7 +750,7 @@ void PWSprefs::SaveApplicationPreferences()
 		UpdateTimeStamp();
     }
 	
-	// Write values to XML file of registry
+	// Write values to XML file or registry
 	for (int i = 0; i < NumBoolPrefs; i++) {
 		if (!m_bool_prefs[i].isStoredinDB && m_boolChanged[i]) {
 			if (m_boolValues[i] != m_bool_prefs[i].defVal) {
@@ -802,6 +784,39 @@ void PWSprefs::SaveApplicationPreferences()
 		}
 	}
 
+    if (m_rect.changed) {
+        switch (m_ConfigOptions) {
+            case CF_REGISTRY:
+                m_app->WriteProfileInt(PWS_REG_POSITION,
+                                       _T("top"), m_rect.top);
+                m_app->WriteProfileInt(PWS_REG_POSITION,
+                                       _T("bottom"), m_rect.bottom);
+                m_app->WriteProfileInt(PWS_REG_POSITION,
+                                       _T("left"), m_rect.left);
+                m_app->WriteProfileInt(PWS_REG_POSITION,
+                                       _T("right"), m_rect.right);
+                break;
+            case CF_FILE_RW:
+            case CF_FILE_RW_NEW: {
+                CString obuff;
+                obuff.Format(_T("%d"), m_rect.top);
+                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+                obuff.Format(_T("%d"), m_rect.bottom);
+                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
+                obuff.Format(_T("%d"), m_rect.left);
+                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
+                obuff.Format(_T("%d"), m_rect.right);
+                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+            }
+                break;
+            case CF_FILE_RO:
+            case CF_NONE:
+            default:
+                break;
+        }
+        m_rect.changed = false;
+    } // m_rect.changed
+
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW)
 		m_XML_Config->SetKeepXMLLock(false);
@@ -809,51 +824,6 @@ void PWSprefs::SaveApplicationPreferences()
 	m_prefs_changed[APP_PREF] = false;
 }
 
-void PWSprefs::SaveProfileToXML()
-{
-    ASSERT(m_XML_Config != NULL);
-	m_XML_Config->SetKeepXMLLock(true);
-
-	UpdateTimeStamp();
-	// Write in values to XML file
-	for (int i = 0; i < NumBoolPrefs; i++) {
-		if (!m_bool_prefs[i].isStoredinDB) {
-			if (m_boolValues[i] != m_bool_prefs[i].defVal) {
-				VERIFY(m_XML_Config->Set(m_csHKCU_PREF,
-                                         m_bool_prefs[i].name,
-                                         m_boolValues[i] ? 1 : 0) == 0);
-			} else {
-				DeletePref(m_bool_prefs[i].name);
-			}
-		}
-	}
-
-	for (int i = 0; i < NumIntPrefs; i++) {
-		if (!m_int_prefs[i].isStoredinDB) {
-			if (m_intValues[i] != m_int_prefs[i].defVal) {
-				VERIFY(m_XML_Config->Set(m_csHKCU_PREF,
-                                         m_int_prefs[i].name,
-                                         m_intValues[i]) == 0);
-			} else {
-				DeletePref(m_int_prefs[i].name);
-			}
-		}
-	}
-
-	for (int i = 0; i < NumStringPrefs; i++) {
-		if (!m_string_prefs[i].isStoredinDB) {
-			if (m_stringValues[i] != m_string_prefs[i].defVal) {
-				VERIFY(m_XML_Config->Set(m_csHKCU_PREF,
-                                         m_string_prefs[i].name,
-                                         m_stringValues[i]) == 0);
-			} else {
-				DeletePref(m_string_prefs[i].name);
-			}
-		}
-	}
-
-	m_XML_Config->SetKeepXMLLock(false);
-}
 
 void PWSprefs::WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename)
 {
