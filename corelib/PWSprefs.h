@@ -127,7 +127,6 @@ class PWSprefs {
   void LoadProfileFromDefaults();
   void LoadProfileFromFile();
   void LoadProfileFromRegistry();
-  void SaveProfileToXML();
   bool CheckRegistryExists() const;
   void WriteMRUToXML(const CString &csSubkey, const CString &csMRUFilename);
 
@@ -161,7 +160,7 @@ class PWSprefs {
   bool m_boolValues[NumBoolPrefs];
   unsigned int m_intValues[NumIntPrefs];
   CMyString m_stringValues[NumStringPrefs];
-
+  struct {long top, bottom, left, right; bool changed;} m_rect;
   bool m_boolChanged[NumBoolPrefs];
   bool m_intChanged[NumIntPrefs];
   bool m_stringChanged[NumStringPrefs];
