@@ -503,17 +503,17 @@ DboxMain::OnInitDialog()
 
   if (m_IsStartSilent) {
     m_bStartHiddenAndMinimized = true;
-    return TRUE;
   }
   if (m_IsStartClosed) {
     Close();
-    ShowWindow(SW_SHOW);
-    return TRUE;
+    if (!m_IsStartSilent)
+        ShowWindow(SW_SHOW);
   }
 
-  OpenOnInit();
-  RefreshList();
-
+  if (!m_IsStartClosed && !m_IsStartSilent) {
+      OpenOnInit();
+      RefreshList();
+  }
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -1357,14 +1357,20 @@ DboxMain::UnMinimize(bool update_windows)
     if (update_windows) {
       if (m_IsStartSilent) {
         // Show initial dialog ONCE (if succeeds)
-        if (OpenOnInit()) {
-          m_IsStartSilent = false;
-          RefreshList();
-          ShowWindow(SW_RESTORE);
-          UpdateSystemTray(UNLOCKED);
-        }
+          if (!m_IsStartClosed) {
+              if (OpenOnInit()) {
+                  m_IsStartSilent = false;
+                  RefreshList();
+                  ShowWindow(SW_RESTORE);
+                  UpdateSystemTray(UNLOCKED);
+              }
+          } else { // m_IsStartClosed (&& m_IsStartSilent)
+              m_IsStartClosed = m_IsStartSilent = false;
+              ShowWindow(SW_RESTORE);
+              UpdateSystemTray(UNLOCKED);
+          }
         return;
-      }  
+      } // m_IsStartSilent
       ShowWindow(SW_RESTORE);
     } // update_windows
     UpdateSystemTray(CLOSED);
