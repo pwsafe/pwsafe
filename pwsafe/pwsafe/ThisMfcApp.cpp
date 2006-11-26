@@ -665,6 +665,11 @@ ThisMfcApp::InitInstance()
           AfxMessageBox(IDS_ENCRYPTIONFAILED);
         }
         return TRUE;
+      case 'M': // closed & minimized
+        dbox.SetStartClosed(true);
+        dbox.SetStartSilent(true);
+        dbox.SetCurFile(_T(""));
+        break;
       case 'R':
         dbox.SetReadOnly(true);
         dbox.SetCurFile(fn);
