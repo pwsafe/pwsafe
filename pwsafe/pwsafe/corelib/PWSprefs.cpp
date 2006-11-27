@@ -552,21 +552,15 @@ void PWSprefs::InitializePreferences()
     m_csHKCU_POS  = m_csHKCU + _T("\\Position");
     m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
 
-    m_XML_Config = new CXMLprefs();
-    m_XML_Config->SetConfigFile(m_configfilename);
+    m_XML_Config = new CXMLprefs(m_configfilename);
 
     // Does the registry entry exist for this user?
     m_bRegistryKeyExists = CheckRegistryExists();
 
     // 2. host/user key found?
     if (configFileExists) {
-        // Are we (host/user) already in it?
-        CString tmp = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
-        time_t tt;
-        if (PWSUtil::VerifyXMLDateTimeString(tmp, tt)) {
-            // Yes, all is well
-            LoadProfileFromFile();
-        } else { // Config file exists, but host/user not in it
+        if (!LoadProfileFromFile()) {
+            // Config file exists, but host/user not in it
             if (!isRO) { // we can create one
                 ImportOldPrefs(); // get pre-3.05, if any
                 // If we didn't have r/w but now do:
@@ -702,11 +696,20 @@ void PWSprefs::LoadProfileFromRegistry()
                                         _T("right"), -1);
 }
 
-void PWSprefs::LoadProfileFromFile()
+bool PWSprefs::LoadProfileFromFile()
 {
     int i;
 	// Read in values from file
 	m_XML_Config->SetKeepXMLLock(true);
+
+    // Are we (host/user) already in the config file?
+    CString tmp = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
+    time_t tt;
+    if (!PWSUtil::VerifyXMLDateTimeString(tmp, tt)) {
+        // No, nothing to load, unlock and return false
+        m_XML_Config->SetKeepXMLLock(false);
+        return false;
+    }
 
 	// Defensive programming, if not "0", then "TRUE", all other values = FALSE
 	for (i = 0; i < NumBoolPrefs; i++)
@@ -748,6 +751,7 @@ void PWSprefs::LoadProfileFromFile()
     }
 
 	m_XML_Config->SetKeepXMLLock(false);
+    return true;
 }
 
 void PWSprefs::SaveApplicationPreferences()

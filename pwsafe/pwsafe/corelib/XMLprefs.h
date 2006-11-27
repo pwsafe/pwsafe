@@ -17,7 +17,8 @@ class CXMLprefs
 {
 // Construction & Destruction
 public:
-	CXMLprefs() : m_pXMLDoc(NULL), m_csConfigFile(_T("")), m_bXMLLoaded(false), 
+	CXMLprefs(const CString &configFile)
+        : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bXMLLoaded(false), 
 			m_bKeepXMLLock(false), m_MSXML_Version(0)
 	{
 	}
@@ -30,8 +31,6 @@ public:
 
 // Implementation
 public:
-	void SetConfigFile(const CString &csFile) { m_csConfigFile = csFile; };
-
 	int Get(const CString &csBaseKeyName, const CString &csValueName,
 		const int &iDefaultValue);
 	CString Get(const CString &csBaseKeyName, const CString &csValueName,
