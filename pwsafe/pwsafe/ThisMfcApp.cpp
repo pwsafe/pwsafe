@@ -380,8 +380,10 @@ ThisMfcApp::InitInstance()
 
 	if (GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
 		// guaranteed file name of at least one character after path '\'
-		*(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
-	}
+		*(_tcsrchr(acPath, TCHAR('\\')) + 1) = TCHAR('\0');
+	} else {
+        acPath[0] = TCHAR('\\'); acPath[1] = TCHAR('\0');
+    }
 
 	CString cs_ResPath, cs_ResName, cs_PName, cs_SName;
 	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), acPath, szLang, szCtry);
@@ -422,7 +424,6 @@ ThisMfcApp::InitInstance()
 		}
 	}
 
-#ifdef DEBUG
 	CString cs_PWS_LANG, cs_ovrResPath, cs_ovrResName;
 	BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
 	if (bPLRC == TRUE) {
@@ -440,7 +441,7 @@ ThisMfcApp::InitInstance()
 			m_hInstResDLL = LoadLibrary(cs_ovrResPath);
 		}
 	}
-#endif
+
 	if (m_hInstResDLL != NULL)
 		AfxSetResourceHandle(m_hInstResDLL);
 
@@ -476,7 +477,6 @@ ThisMfcApp::InitInstance()
 		}
 	}
 
-#ifdef DEBUG
 	CString cs_PWS_HELP, cs_ovrHelpPath, cs_ovrHelpName;
 	BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(_T("PWS_HELP"));
 	if (bPHRC == TRUE) {
@@ -490,7 +490,7 @@ ThisMfcApp::InitInstance()
 			cs_HelpName = cs_ovrHelpName;
 		}
 	}
-#endif
+
 	m_csHelpFile = cs_HelpName;
 
   // PWScore needs it to get into database header if/when saved
