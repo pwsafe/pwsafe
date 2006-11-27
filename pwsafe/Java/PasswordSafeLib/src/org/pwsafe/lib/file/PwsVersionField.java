@@ -42,7 +42,7 @@ public class PwsVersionField extends PwsIntegerField
 	{
 		byte[] intRetval	= super.getBytes();
 
-		return new byte[] { intRetval[0], intRetval[1] };
+		return new byte[] { intRetval[2], intRetval[3] };
 	}
 
 

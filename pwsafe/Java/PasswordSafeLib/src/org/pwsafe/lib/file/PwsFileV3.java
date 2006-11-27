@@ -66,7 +66,7 @@ public class PwsFileV3 extends PwsFile
 		super();
 		headerV3 = new PwsFileHeaderV3();
 		headerRecord = new PwsRecordV3();
-		headerRecord.setField(new PwsVersionField(0, new byte[] { 3, 0 }));
+		headerRecord.setField(new PwsVersionField(0, new byte[] { 1, 3 }));
 	}
 
 	/**
