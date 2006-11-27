@@ -126,7 +126,7 @@ class PWSprefs {
   bool DeletePref(const CMyString &name);
   void InitializePreferences();
   void LoadProfileFromDefaults();
-  void LoadProfileFromFile();
+  bool LoadProfileFromFile();
   void LoadProfileFromRegistry();
   bool CheckRegistryExists() const;
 
