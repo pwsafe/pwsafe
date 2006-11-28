@@ -86,14 +86,10 @@ ThisMfcApp::ThisMfcApp() :
 ThisMfcApp::~ThisMfcApp()
 {
   delete m_TrayIcon;
-  if (m_pMRU != NULL) {
-    m_pMRU->WriteList();
-    delete m_pMRU;
-  }
+  delete m_pMRU;
 
   delete m_mainmenu;
 
-  // Note: deleting PWSprefs instance first reformats the XML config file
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   CoUninitialize(); // Uninitialize COM library

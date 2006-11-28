@@ -24,262 +24,36 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
 
-void CXMLprefs::SetKeepXMLLock(bool state)
+bool CXMLprefs::Lock()
 {
-	m_bKeepXMLLock = state;
-
-	// If a big update - load XML when set to true and unload it at the end
-	if (m_bKeepXMLLock)
-		LoadXML();
-	else {
-		// Save disabled when doing a big read/update - need to do it now.
-		SaveXML();
-		UnloadXML();
-	}
+	CMyString locker(_T(""));
+    int tries = 10;
+    do {
+        m_bIsLocked = PWSfile::LockFile(m_csConfigFile, locker, false);
+        if (!m_bIsLocked)
+            Sleep(200);
+    } while (!m_bIsLocked && --tries > 0);
+    return m_bIsLocked;
 }
 
-// get a int value
-int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
-					   const int &iDefaultValue)
+void CXMLprefs::Unlock()
 {
-	/*
-		Since XML is text based and we have no schema, just convert to a string and
-		call the GetSettingString method.
-	*/
-	int iRetVal = iDefaultValue;
-	CString csDefaultValue;
-
-	csDefaultValue.Format(_T("%d"), iRetVal);
-
-	iRetVal = _ttoi(Get(csBaseKeyName, csValueName, csDefaultValue));
-
-	return iRetVal;
+    PWSfile::UnlockFile(m_csConfigFile, false);
+    m_bIsLocked = false;
 }
 
-// get a string value
-CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
-							  const CString &csDefaultValue)
-{
-	int iNumKeys = 0;
-	CString csValue = csDefaultValue;
-	CString* pcsKeys = NULL;
-
-	// Add the value to the base key separated by a '\'
-	CString csKeyName(csBaseKeyName);
-	csKeyName += _T("\\");
-	csKeyName += csValueName;
-
-	// Parse all keys from the base key name (keys separated by a '\')
-	pcsKeys = ParseKeys(csKeyName, iNumKeys);
-
-	// Traverse the xml using the keys parsed from the base key name to find the correct node
-	if (pcsKeys) {
-		if (LoadXML()) { // load the xml document
-			MSXML2::IXMLDOMElementPtr rootElem = NULL;
-			MSXML2::IXMLDOMNodePtr foundNode = NULL;
-
-			m_pXMLDoc->get_documentElement(&rootElem);  // root node
-			if (rootElem) {
-				// returns the last node in the chain
-				foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
-				if (foundNode) {
-					// get the text of the node (will be the value we requested)
-					BSTR bstr = NULL;
-					foundNode->get_text(&bstr);
-					csValue = (CString)bstr;
-					if (bstr) {
-						SysFreeString(bstr);
-						bstr = NULL;
-					}
-					foundNode = NULL;
-				}
-				rootElem = NULL;
-			}
-			UnloadXML();  // dump the XML document
-		}
-		delete [] pcsKeys;
-		pcsKeys = NULL;
-	}
-
-	return csValue;
-}
-
-// set a int value
-int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
-					   const int &iValue)
-{
-	/*
-		Since XML is text based and we have no schema, just convert to a string and
-		call the SetSettingString method.
-	*/
-	int iRetVal = 0;
-	CString csValue = _T("");
-
-	csValue.Format(_T("%d"), iValue);
-
-	iRetVal = Set(csBaseKeyName, csValueName, csValue);
-
-	return iRetVal;
-}
-
-// set a string value
-int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName, 
-						  const CString &csValue)
-{
-	int iRetVal = XML_SUCCESS;
-	int iNumKeys = 0;
-	CString* pcsKeys = NULL;
-
-	// Add the value to the base key separated by a '\'
-	CString csKeyName(csBaseKeyName);
-	csKeyName += _T("\\");
-	csKeyName += csValueName;
-
-	// Parse all keys from the base key name (keys separated by a '\')
-	pcsKeys = ParseKeys(csKeyName, iNumKeys);
-
-	// Traverse the xml using the keys parsed from the base key name to find the correct node
-	if (pcsKeys) {
-		if (LoadXML()) {  // load the xml document
-			MSXML2::IXMLDOMElementPtr rootElem = NULL;
-			MSXML2::IXMLDOMNodePtr foundNode = NULL;
-
-			m_pXMLDoc->get_documentElement(&rootElem);  // root node
-
-			if (rootElem) {
-				// returns the last node in the chain
-				foundNode = FindNode(rootElem, pcsKeys, iNumKeys, TRUE);
-
-				if (foundNode) {
-					// set the text of the node (will be the value we sent)
-					if (SUCCEEDED(foundNode->put_text(_bstr_t(csValue)))) {
-						if (!SaveXML()) {
-							iRetVal = XML_SAVE_FAILED;  // save the changed XML
-						}
-					} else
-						iRetVal = XML_PUT_TEXT_FAILED;
-
-					foundNode = NULL;
-				} else
-					iRetVal = XML_NODE_NOT_FOUND;
-
-				rootElem = NULL;
-			}
-			UnloadXML();  // dump the XML document
-		}
-		else
-			iRetVal = XML_LOAD_FAILED;
-
-		delete [] pcsKeys;
-		pcsKeys = NULL;
-	}
-
-	return iRetVal;
-}
-
-// delete a key or chain of keys
-BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csValueName)
-{
-	BOOL bRetVal = FALSE;
-	int iNumKeys = 0;
-	CString* pcsKeys = NULL;
-	CString csKeyName(csBaseKeyName);
-
-	if (!csValueName.IsEmpty()) {
-		csKeyName += _T("\\");
-		csKeyName += csValueName;
-	}
-
-	// Parse all keys from the base key name (keys separated by a '\')
-	pcsKeys = ParseKeys(csKeyName, iNumKeys);
-
-	// Traverse the xml using the keys parsed from the base key name to find the correct node.
-	if (pcsKeys) {
-		if (LoadXML()) {  // load the xml document
-			MSXML2::IXMLDOMElementPtr rootElem = NULL;
-			MSXML2::IXMLDOMNodePtr foundNode = NULL;
-
-			m_pXMLDoc->get_documentElement(&rootElem);  // root node
-			if (rootElem) {
-				// returns the last node in the chain
-				foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
-				if (foundNode) {
-					// get the parent of the found node and use removeChild to delete the found node
-					MSXML2::IXMLDOMNodePtr parentNode = NULL;
-					foundNode->get_parentNode(&parentNode);
-					if (parentNode) {
-						if (SUCCEEDED(parentNode->removeChild(foundNode, NULL))) {
-							if (SaveXML()) {
-								bRetVal = TRUE;  // save the changed XML
-							}
-						}
-						parentNode = NULL;
-					}
-					foundNode = NULL;
-				}
-				rootElem = NULL;
-			}
-			UnloadXML();  // dump the XML document
-		}
-		delete [] pcsKeys;
-		pcsKeys = NULL;
-	}
-	return bRetVal;
-}
-
-// Parse all keys from the base key name.
-CString* CXMLprefs::ParseKeys(const CString &csFullKeyPath, int &iNumKeys)
-{
-	CString* pcsKeys = NULL;
-
-	// replace spaces with _ since xml doesn't like them
-	CString csFKP(csFullKeyPath);
-	csFKP.Replace(_T(' '), _T('_'));
-
-	if (csFKP.GetAt(csFKP.GetLength() - 1) == _T('\\'))
-		csFKP.TrimRight(_T('\\'));  // remove slashes on the end
-
-	CString csTemp(csFKP);
-
-	iNumKeys = csTemp.Remove(_T('\\')) + 1;  // get a count of slashes
-
-	pcsKeys = new CString[iNumKeys];  // create storage for the keys
-
-	if (pcsKeys) {
-		int iFind = 0, iLastFind = 0, iCount = -1;
-
-		// get all of the keys in the chain
-		while (iFind != -1) {
-			iFind = csFKP.Find(_T("\\"), iLastFind);
-			if (iFind > -1) {
-				iCount++;
-				pcsKeys[iCount] = csFKP.Mid(iLastFind, iFind - iLastFind);
-				iLastFind = iFind + 1;
-			} else {
-				// make sure we don't just discard the last key in the chain
-				if (iLastFind < csFKP.GetLength())  {
-					iCount++;
-					pcsKeys[iCount] = csFKP.Right(csFKP.GetLength() - iLastFind);
-				}
-			}
-		}
-	}
-	return pcsKeys;
-}
-
-// load the XML file into the parser
-BOOL CXMLprefs::LoadXML()
+bool CXMLprefs::Load()
 {
 	// Already loaded?
-	if (m_bXMLLoaded) return TRUE;
-
+	if (m_bXMLLoaded) return true;
 	//  Couldn't get it to work previously?
-	if (m_MSXML_Version == -1) return FALSE;
+	if (m_MSXML_Version == -1) return false;
 
-	// No point continuing if we can't get the lock!
-	CMyString locker(_T(""));
-	if (!PWSfile::LockFile(m_csConfigFile, locker, false))
-		return FALSE;
+    bool alreadyLocked = m_bIsLocked;
+    if (!alreadyLocked) {
+        if (!Lock())
+            return false;
+    }
 
     // from here on all exits from function need to unlock file
 	MSXML2::IXMLDOMParseErrorPtr pIParseError = NULL;
@@ -300,7 +74,7 @@ BOOL CXMLprefs::LoadXML()
 						                                NULL, CLSCTX_ALL))) {
 						AfxMessageBox(IDSC_NOXMLREADER, MB_OK);
 						m_MSXML_Version = -1;
-						goto bad_exit;
+						goto exit;
 					} else {
 						m_MSXML_Version = 30;
 					}
@@ -327,16 +101,17 @@ BOOL CXMLprefs::LoadXML()
 		default:
 			// Should never get here
 			ASSERT(0);
-			goto bad_exit;
+            b_OK = FALSE;
 	}
 
-	if (b_OK == FALSE)
-        goto bad_exit;
+	if (b_OK == FALSE) {
+        goto exit;
+    }
 
 	// Ensure we preserve all white space!
 	if (FAILED(m_pXMLDoc->put_preserveWhiteSpace(VARIANT_TRUE))) {
-		UnloadXML();  // this will also release config file lock
-		return FALSE;
+		UnloadXML();
+		goto exit;
 	}
 
 	VARIANT_BOOL vbSuccessful;
@@ -356,77 +131,53 @@ BOOL CXMLprefs::LoadXML()
 
 	m_bXMLLoaded = (vbSuccessful == VARIANT_TRUE);
 
-	if (m_bXMLLoaded)
-		return TRUE;  // loaded
+	if (!m_bXMLLoaded) {
+        // an XML load error occurred so display the reason
+        m_pXMLDoc->get_parseError(&pIParseError);
 
-	// an XML load error occurred so display the reason
-	m_pXMLDoc->get_parseError(&pIParseError);
+        if (pIParseError) {
+            long value, line, linepos;
+            BSTR bstr = NULL;
 
-	if (pIParseError) {
-		long value, line, linepos;
-		BSTR bstr = NULL;
+            pIParseError->get_errorCode(&value);
+            pIParseError->get_reason(&bstr);
+            pIParseError->get_line(&line);
+            pIParseError->get_linepos(&linepos);
 
-		pIParseError->get_errorCode(&value);
-		pIParseError->get_reason(&bstr);
-		pIParseError->get_line(&line);
-		pIParseError->get_linepos(&linepos);
+            CString csMessage;
+            csMessage.Format(IDSC_XMLFILEERROR, 
+                             value, line, linepos, (char *)_bstr_t(bstr, TRUE));
+            const CString cs_title(MAKEINTRESOURCE(IDSC_XMLLOADFAILURE));
+            MessageBox(NULL, csMessage, cs_title, MB_OK);
 
-		CString csMessage;
-		csMessage.Format(IDSC_XMLFILEERROR, 
-                         value, line, linepos, (char *)_bstr_t(bstr, TRUE));
-		const CString cs_title(MAKEINTRESOURCE(IDSC_XMLLOADFAILURE));
-		MessageBox(NULL, csMessage, cs_title, MB_OK);
+            if (bstr) {
+                SysFreeString(bstr);
+                bstr = NULL;
+            }
 
-		if (bstr) {
-			SysFreeString(bstr);
-			bstr = NULL;
-		}
+            pIParseError = NULL;
+        }
 
-		pIParseError = NULL;
-	}
+        if (m_pXMLDoc != NULL) {
+            m_pXMLDoc.Release();
+            m_pXMLDoc = NULL;
+        }
+    } // load failed
 
-	if (m_pXMLDoc != NULL) {
-		m_pXMLDoc.Release();
-		m_pXMLDoc = NULL;
-	}
-  bad_exit:
-    PWSfile::UnlockFile(m_csConfigFile, false);
-	return FALSE;
+  exit:
+    // if we locked it, we should unlock it...
+    if (!alreadyLocked)
+        Unlock();
+    return m_bXMLLoaded;
 }
 
-void CXMLprefs::UnloadXML()
+bool CXMLprefs::Store()
 {
-	if (!m_bXMLLoaded || m_bKeepXMLLock)
-		return;
-
-	if (m_pXMLDoc != NULL) {
-		m_pXMLDoc.Release();
-		m_pXMLDoc = NULL;
-	}
-
-	m_bXMLLoaded = false;
-    PWSfile::UnlockFile(m_csConfigFile, false);
-}
-
-
-// save the XML file
-BOOL CXMLprefs::SaveXML()
-{
-	// If we are keeping the lock - save when we free it
-	if (m_bKeepXMLLock)
-		return TRUE;
-
-	// Now try to save!
-	if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
-		return TRUE;
-	else
-		return FALSE;
-}
-
-void CXMLprefs::ReformatAndSave()
-{
-	if (LoadXML() == FALSE)
-		return;
+   bool alreadyLocked = m_bIsLocked;
+    if (!alreadyLocked) {
+        if (!Lock())
+            return false;
+    }
 
 	CString csConfigData;
 	IStream *pIStream;
@@ -434,6 +185,7 @@ void CXMLprefs::ReformatAndSave()
 	VARIANT_BOOL vbSuccessful;
 	ULONG num;
 
+    ASSERT(m_pXMLDoc != NULL);
 	// Get the string from the DOM
 	m_pXMLDoc->QueryInterface(IID_IStream, (void **)&pIStream);
 	pIStream->Stat(&mStat, 0);
@@ -457,26 +209,26 @@ void CXMLprefs::ReformatAndSave()
 	switch (m_MSXML_Version) {
 		case 60:
 			if (SUCCEEDED(pSAXReader.CreateInstance(__uuidof(MSXML2::SAXXMLReader60), 
-						NULL, CLSCTX_ALL)))
+                                                    NULL, CLSCTX_ALL)))
 				b_R_OK = TRUE;
 			if (SUCCEEDED(pXMLWriter.CreateInstance(__uuidof(MSXML2::MXXMLWriter60), 
-						NULL, CLSCTX_ALL)))
+                                                    NULL, CLSCTX_ALL)))
 				b_W_OK = TRUE;
 			break;
 		case 40:
 			if (SUCCEEDED(pSAXReader.CreateInstance(__uuidof(MSXML2::SAXXMLReader40), 
-						NULL, CLSCTX_ALL)))
+                                                    NULL, CLSCTX_ALL)))
 				b_R_OK = TRUE;
 			if (SUCCEEDED(pXMLWriter.CreateInstance(__uuidof(MSXML2::MXXMLWriter40), 
-						NULL, CLSCTX_ALL)))
+                                                    NULL, CLSCTX_ALL)))
 				b_W_OK = TRUE;
 			break;
 		case 30:
 			if (SUCCEEDED(pSAXReader.CreateInstance(__uuidof(MSXML2::SAXXMLReader30), 
-						NULL, CLSCTX_ALL)))
+                                                    NULL, CLSCTX_ALL)))
 				b_R_OK = TRUE;
 			if (SUCCEEDED(pXMLWriter.CreateInstance(__uuidof(MSXML2::MXXMLWriter30), 
-						NULL, CLSCTX_ALL)))
+                                                    NULL, CLSCTX_ALL)))
 				b_W_OK = TRUE;
 			break;
 		default:
@@ -524,9 +276,259 @@ void CXMLprefs::ReformatAndSave()
 		pSAXReader = NULL;
 	}
 
-	VERIFY(SaveXML() == TRUE);
-	UnloadXML();
+	// Now try to save!
+    bool retval;
+	if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
+		retval = true;
+	else
+		retval = false;
+
+    // if we locked it, we should unlock it...
+    if (!alreadyLocked)
+        Unlock();
+    return retval;
 }
+
+
+// get a int value
+int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
+					   const int &iDefaultValue)
+{
+	/*
+		Since XML is text based and we have no schema, just convert to a string and
+		call the GetSettingString method.
+	*/
+	int iRetVal = iDefaultValue;
+	CString csDefaultValue;
+
+	csDefaultValue.Format(_T("%d"), iRetVal);
+
+	iRetVal = _ttoi(Get(csBaseKeyName, csValueName, csDefaultValue));
+
+	return iRetVal;
+}
+
+// get a string value
+CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
+                       const CString &csDefaultValue)
+{
+    ASSERT(m_bXMLLoaded); // shouldn't be called if load failed
+    if (!m_bXMLLoaded) // just in case
+        return csDefaultValue;
+
+	int iNumKeys = 0;
+	CString csValue = csDefaultValue;
+	CString* pcsKeys = NULL;
+
+	// Add the value to the base key separated by a '\'
+	CString csKeyName(csBaseKeyName);
+	csKeyName += _T("\\");
+	csKeyName += csValueName;
+
+	// Parse all keys from the base key name (keys separated by a '\')
+	pcsKeys = ParseKeys(csKeyName, iNumKeys);
+
+	// Traverse the xml using the keys parsed from the base key name to find the correct node
+	if (pcsKeys) {
+        MSXML2::IXMLDOMElementPtr rootElem = NULL;
+        MSXML2::IXMLDOMNodePtr foundNode = NULL;
+
+        m_pXMLDoc->get_documentElement(&rootElem);  // root node
+        if (rootElem) {
+            // returns the last node in the chain
+            foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
+            if (foundNode) {
+                // get the text of the node (will be the value we requested)
+                BSTR bstr = NULL;
+                foundNode->get_text(&bstr);
+                csValue = (CString)bstr;
+                if (bstr) {
+                    SysFreeString(bstr);
+                    bstr = NULL;
+                }
+                foundNode = NULL;
+            }
+            rootElem = NULL;
+        }
+		delete [] pcsKeys;
+		pcsKeys = NULL;
+	}
+
+	return csValue;
+}
+
+// set a int value
+int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
+					   const int &iValue)
+{
+	/*
+		Since XML is text based and we have no schema, just convert to a string and
+		call the SetSettingString method.
+	*/
+	int iRetVal = 0;
+	CString csValue = _T("");
+
+	csValue.Format(_T("%d"), iValue);
+
+	iRetVal = Set(csBaseKeyName, csValueName, csValue);
+
+	return iRetVal;
+}
+
+// set a string value
+int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName, 
+                   const CString &csValue)
+{
+    ASSERT(m_bXMLLoaded); // shouldn't be called if load failed
+    if (!m_bXMLLoaded) // just in case
+        return XML_LOAD_FAILED;
+
+	int iRetVal = XML_SUCCESS;
+	int iNumKeys = 0;
+	CString* pcsKeys = NULL;
+
+	// Add the value to the base key separated by a '\'
+	CString csKeyName(csBaseKeyName);
+	csKeyName += _T("\\");
+	csKeyName += csValueName;
+
+	// Parse all keys from the base key name (keys separated by a '\')
+	pcsKeys = ParseKeys(csKeyName, iNumKeys);
+
+	// Traverse the xml using the keys parsed from the base key name to find the correct node
+	if (pcsKeys) {
+        MSXML2::IXMLDOMElementPtr rootElem = NULL;
+        MSXML2::IXMLDOMNodePtr foundNode = NULL;
+
+        m_pXMLDoc->get_documentElement(&rootElem);  // root node
+
+        if (rootElem) {
+            // returns the last node in the chain
+            foundNode = FindNode(rootElem, pcsKeys, iNumKeys, TRUE);
+
+            if (foundNode) {
+                // set the text of the node (will be the value we sent)
+                if (!SUCCEEDED(foundNode->put_text(_bstr_t(csValue)))) {
+                    iRetVal = XML_PUT_TEXT_FAILED;
+                }
+                foundNode = NULL;
+            } else
+                iRetVal = XML_NODE_NOT_FOUND;
+
+            rootElem = NULL;
+		}
+		else
+			iRetVal = XML_LOAD_FAILED;
+
+		delete [] pcsKeys;
+		pcsKeys = NULL;
+	}
+
+	return iRetVal;
+}
+
+// delete a key or chain of keys
+BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csValueName)
+{
+    ASSERT(m_bXMLLoaded); // shouldn't be called if load failed
+    if (!m_bXMLLoaded) // just in case
+        return FALSE;
+
+	BOOL bRetVal = FALSE;
+	int iNumKeys = 0;
+	CString* pcsKeys = NULL;
+	CString csKeyName(csBaseKeyName);
+
+	if (!csValueName.IsEmpty()) {
+		csKeyName += _T("\\");
+		csKeyName += csValueName;
+	}
+
+	// Parse all keys from the base key name (keys separated by a '\')
+	pcsKeys = ParseKeys(csKeyName, iNumKeys);
+
+	// Traverse the xml using the keys parsed from the base key name to find the correct node.
+	if (pcsKeys) {
+        MSXML2::IXMLDOMElementPtr rootElem = NULL;
+        MSXML2::IXMLDOMNodePtr foundNode = NULL;
+
+        m_pXMLDoc->get_documentElement(&rootElem);  // root node
+        if (rootElem) {
+            // returns the last node in the chain
+            foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
+            if (foundNode) {
+                // get the parent of the found node and use removeChild to delete the found node
+                MSXML2::IXMLDOMNodePtr parentNode = NULL;
+                foundNode->get_parentNode(&parentNode);
+                if (parentNode) {
+                    if (SUCCEEDED(parentNode->removeChild(foundNode, NULL))) {
+                        bRetVal = TRUE;
+                    }
+                    parentNode = NULL;
+                }
+                foundNode = NULL;
+            }
+            rootElem = NULL;
+		}
+		delete [] pcsKeys;
+		pcsKeys = NULL;
+	}
+	return bRetVal;
+}
+
+// Parse all keys from the base key name.
+CString* CXMLprefs::ParseKeys(const CString &csFullKeyPath, int &iNumKeys)
+{
+	CString* pcsKeys = NULL;
+
+	// replace spaces with _ since xml doesn't like them
+	CString csFKP(csFullKeyPath);
+	csFKP.Replace(_T(' '), _T('_'));
+
+	if (csFKP.GetAt(csFKP.GetLength() - 1) == _T('\\'))
+		csFKP.TrimRight(_T('\\'));  // remove slashes on the end
+
+	CString csTemp(csFKP);
+
+	iNumKeys = csTemp.Remove(_T('\\')) + 1;  // get a count of slashes
+
+	pcsKeys = new CString[iNumKeys];  // create storage for the keys
+
+	if (pcsKeys) {
+		int iFind = 0, iLastFind = 0, iCount = -1;
+
+		// get all of the keys in the chain
+		while (iFind != -1) {
+			iFind = csFKP.Find(_T("\\"), iLastFind);
+			if (iFind > -1) {
+				iCount++;
+				pcsKeys[iCount] = csFKP.Mid(iLastFind, iFind - iLastFind);
+				iLastFind = iFind + 1;
+			} else {
+				// make sure we don't just discard the last key in the chain
+				if (iLastFind < csFKP.GetLength())  {
+					iCount++;
+					pcsKeys[iCount] = csFKP.Right(csFKP.GetLength() - iLastFind);
+				}
+			}
+		}
+	}
+	return pcsKeys;
+}
+
+void CXMLprefs::UnloadXML()
+{
+	if (!m_bXMLLoaded)
+		return;
+
+	if (m_pXMLDoc != NULL) {
+		m_pXMLDoc.Release();
+		m_pXMLDoc = NULL;
+	}
+	m_bXMLLoaded = false;
+}
+
+
 
 // find a node given a chain of key names
 MSXML2::IXMLDOMNodePtr CXMLprefs::FindNode(MSXML2::IXMLDOMNodePtr parentNode,

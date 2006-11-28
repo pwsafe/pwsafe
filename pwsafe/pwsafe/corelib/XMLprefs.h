@@ -11,7 +11,14 @@
 #include "xml_import.h"
 
 /////////////////////////////////////////////////////////////////////////////
-// CXMLprefs window
+// CXMLprefs class
+//
+// This class wraps access to an XML file containing user preferences.
+// Usage scenarios:
+// 1. Load() followed by zero or more Get()s
+// 2. Lock(), Load(), zero or more Set()s, zero or more
+//    DeleteSetting()s, Store(), Unlock()
+/////////////////////////////////////////////////////////////////////////////
 
 class CXMLprefs
 {
@@ -19,18 +26,19 @@ class CXMLprefs
 public:
 	CXMLprefs(const CString &configFile)
         : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bXMLLoaded(false), 
-			m_bKeepXMLLock(false), m_MSXML_Version(0)
+			m_bIsLocked(false), m_MSXML_Version(0)
 	{
 	}
 
-	~CXMLprefs()
-	{
-		if (m_bReadWrite)
-			ReformatAndSave();
-	}
+	~CXMLprefs() { UnloadXML(); }
 
 // Implementation
 public:
+    bool Load();
+    bool Store();
+    bool Lock();
+    void Unlock();
+    
 	int Get(const CString &csBaseKeyName, const CString &csValueName,
 		const int &iDefaultValue);
 	CString Get(const CString &csBaseKeyName, const CString &csValueName,
@@ -42,21 +50,16 @@ public:
 		const CString &csValue);
 
 	BOOL DeleteSetting(const CString &csBaseKeyName, const CString &csValueName);
-	void ReformatAndSave();
-	void SetReadWriteStatus(bool readwrite) {m_bReadWrite = readwrite;}
-	void SetKeepXMLLock(bool state);
 
 	enum {XML_SUCCESS = 0, XML_LOAD_FAILED, XML_NODE_NOT_FOUND, XML_PUT_TEXT_FAILED, XML_SAVE_FAILED};
 
-protected:
+private:
 	MSXML2::IXMLDOMDocument2Ptr m_pXMLDoc;
 	CString m_csConfigFile;
 	int m_MSXML_Version;
-	bool m_bXMLLoaded, m_bReadWrite, m_bKeepXMLLock;
+	bool m_bXMLLoaded, m_bIsLocked;
 
 	CString* ParseKeys(const CString &csFullKeyPath, int &iNumKeys);
-	BOOL LoadXML();
-	BOOL SaveXML();
 	void UnloadXML();
 	MSXML2::IXMLDOMNodePtr FindNode(MSXML2::IXMLDOMNodePtr parentNode,
 		CString* pcsKeys, int iNumKeys,
