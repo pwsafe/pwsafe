@@ -117,7 +117,7 @@ void PWSprefs::DeleteInstance()
   SysInfo::DeleteInstance();
 }
 
-PWSprefs::PWSprefs() : m_app(::AfxGetApp())
+PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_XML_Config(NULL)
 {
   ASSERT(m_app != NULL);
   int i;
@@ -217,6 +217,7 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
         return 0;
 
     int i, cnt;
+    bool changed = false;
     // remember the ones in use
     for (i = 0, cnt = 1; i < n; i++) {
         if (MRUFiles[i].IsEmpty() ||
@@ -226,13 +227,21 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
             MRUFiles[i].Right(5) == _T(".ibak") ||
             MRUFiles[i].Right(6) == _T(".ibak~"))
             continue;
-        m_MRUitems[cnt-1] = MRUFiles[i];
+        if (m_MRUitems[cnt-1] != MRUFiles[i]) {
+            m_MRUitems[cnt-1] = MRUFiles[i];
+            changed = true;
+        }
         cnt++;
     }
     // Remove any not in use    
     for (i = cnt - 1; i < max_MRU; i++) {
-        m_MRUitems[i] = _T("");
+        if (!m_MRUitems[i].IsEmpty()) {
+            m_MRUitems[i] = _T("");
+            changed = true;
+        }
     }
+    if (changed)
+        m_prefs_changed[APP_PREF] = true;
     return n;
 }
 
@@ -289,8 +298,6 @@ bool PWSprefs::WritePref(const CMyString &name, bool val)
 		default:
 			break;
 	}
-	if (bRetVal)
-		UpdateTimeStamp();
 	return bRetVal;
 }
 
@@ -311,8 +318,6 @@ bool PWSprefs::WritePref(const CMyString &name, unsigned int val)
 		default:
 			break;
 	}
-	if (bRetVal)
-		UpdateTimeStamp();
 	return bRetVal;
 }
 
@@ -333,8 +338,6 @@ bool PWSprefs::WritePref(const CMyString &name, const CMyString &val)
 		default:
 			break;
 	}
-	if (bRetVal)
-		UpdateTimeStamp();
 	return bRetVal;
 }
 
@@ -354,8 +357,6 @@ bool PWSprefs::DeletePref(const CMyString &name)
 		default:
 			break;
 	}
-	if (bRetVal)
-		UpdateTimeStamp();
 	return bRetVal;
 }
 void PWSprefs::SetPrefRect(long top, long bottom,
@@ -552,8 +553,6 @@ void PWSprefs::InitializePreferences()
     m_csHKCU_POS  = m_csHKCU + _T("\\Position");
     m_csHKCU_PREF = m_csHKCU + _T("\\Preferences");
 
-    m_XML_Config = new CXMLprefs(m_configfilename);
-
     // Does the registry entry exist for this user?
     m_bRegistryKeyExists = CheckRegistryExists();
 
@@ -596,10 +595,8 @@ void PWSprefs::InitializePreferences()
             break;
         case CF_FILE_RW:
         case CF_FILE_RW_NEW:
-            m_XML_Config->SetReadWriteStatus(true);
             break;
         case CF_FILE_RO:
-            m_XML_Config->SetReadWriteStatus(false);
             cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
             break;
         case CF_NONE:
@@ -698,19 +695,33 @@ void PWSprefs::LoadProfileFromRegistry()
 
 bool PWSprefs::LoadProfileFromFile()
 {
-    int i;
-	// Read in values from file
-	m_XML_Config->SetKeepXMLLock(true);
+    /*
+     * Called from InitializePreferences() at startup,
+     * attempts to read in application preferences
+     * from pref file.
+     * Returns false if couldn't read (unlikely, since exists),
+     * or if no host/user section
+     * found.
+     */
+    bool retval;
+    CString ts, csSubkey;
 
-    // Are we (host/user) already in the config file?
-    CString tmp = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
-    time_t tt;
-    if (!PWSUtil::VerifyXMLDateTimeString(tmp, tt)) {
-        // No, nothing to load, unlock and return false
-        m_XML_Config->SetKeepXMLLock(false);
-        return false;
+    m_XML_Config = new CXMLprefs(m_configfilename);
+	if (!m_XML_Config->Load()) {
+        retval = false;
+        goto exit;
     }
 
+    // Are we (host/user) already in the config file?
+    ts = m_XML_Config->Get(m_csHKCU, _T("LastUpdated"), _T(""));
+    time_t tt;
+    if (!PWSUtil::VerifyXMLDateTimeString(ts, tt)) {
+        // No, nothing to load, return false
+        retval = false;
+        goto exit;
+    }
+
+    int i;
 	// Defensive programming, if not "0", then "TRUE", all other values = FALSE
 	for (i = 0; i < NumBoolPrefs; i++)
 		m_boolValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
@@ -744,27 +755,38 @@ bool PWSprefs::LoadProfileFromFile()
 
     // Load most recently used file list
     const int nMRUItems = m_intValues[MaxMRUItems];
-    CString csSubkey;
     for (i = nMRUItems; i > 0; i--) {
         csSubkey.Format(_T("Safe%02d"), i);
         m_MRUitems[i-1] = m_XML_Config->Get(m_csHKCU_MRU, csSubkey, _T(""));
     }
-
-	m_XML_Config->SetKeepXMLLock(false);
-    return true;
+    retval = true;
+  exit:
+    delete m_XML_Config;
+    m_XML_Config = NULL;
+    return retval;
 }
 
 void PWSprefs::SaveApplicationPreferences()
 {
-	if (m_prefs_changed[APP_PREF] == false)
+	if (!m_prefs_changed[APP_PREF])
 		return;
 
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW) {
-        ASSERT(m_XML_Config != NULL);
-		m_XML_Config->SetKeepXMLLock(true);
-		UpdateTimeStamp();
+        // Load prefs file in case it was changed elsewhere
+        // Here we need to explicitly lock from before
+        // load to after store
+        m_XML_Config = new CXMLprefs(m_configfilename);
+		if (!m_XML_Config->Lock()) {
+            // punt to registry!
+            m_ConfigOptions = CF_REGISTRY;
+            delete m_XML_Config;
+            m_XML_Config = NULL;
+        } else { // acquired lock
+            m_XML_Config->Load();
+        }
     }
+    UpdateTimeStamp();
 	
 	// Write values to XML file or registry
 	for (int i = 0; i < NumBoolPrefs; i++) {
@@ -853,8 +875,12 @@ void PWSprefs::SaveApplicationPreferences()
 
 
 	if (m_ConfigOptions == CF_FILE_RW ||
-	    m_ConfigOptions == CF_FILE_RW_NEW)
-		m_XML_Config->SetKeepXMLLock(false);
+	    m_ConfigOptions == CF_FILE_RW_NEW) {
+        m_XML_Config->Store();
+        m_XML_Config->Unlock();
+        delete m_XML_Config;
+        m_XML_Config = NULL;
+    }
 
 	m_prefs_changed[APP_PREF] = false;
 }

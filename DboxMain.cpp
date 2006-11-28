@@ -1588,6 +1588,8 @@ BOOL
 DboxMain::OnQueryEndSession()
 {
 	m_iSessionEndingStatus = IDOK;
+    if (app.GetMRU() != NULL)
+        app.GetMRU()->WriteList();
 
 	// Save Application related preferences
 	PWSprefs::GetInstance()->SaveApplicationPreferences();

@@ -1655,6 +1655,9 @@ DboxMain::OnOK()
   if (m_saveMRU && !(m_core.GetCurFile()).IsEmpty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
+    if (app.GetMRU() != NULL)
+        app.GetMRU()->WriteList();
+
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
   // b. the user has set the "DontAskMinimizeClearYesNo" pref
@@ -1668,7 +1671,7 @@ DboxMain::OnOK()
   ClearData();
 
   // Save Application related preferences
-  PWSprefs::GetInstance()->SaveApplicationPreferences();
+  prefs->SaveApplicationPreferences();
 
   CDialog::OnOK();
 }
