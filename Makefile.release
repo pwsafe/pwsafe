@@ -68,7 +68,7 @@ signatures:
 
 installable:
 	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/pwsafe.nsi
-	$(MV) pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
+	$(MV) install/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 release: bin-release src-release
 
