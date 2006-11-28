@@ -216,6 +216,7 @@
                 <include name="src/**/*.*" />
                 <include name="lib/**/*.*" />
                 <include name="platform/**/*.*" />
+            	<exclude name="deploy/**/*.*" />
             </fileset>
             <fileset dir="${basedir}" includes="*.*" />
         </copy>
