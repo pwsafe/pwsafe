@@ -93,12 +93,12 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 	{_T("currentbackup"), _T(""), false},							// application
 	{_T("currentfile"), _T(""), false},								// application
-	{_T("lastview"), _T("tree"), true},								// database
+	{_T("lastview"), _T("tree"), false},							// application
 	{_T("defusername"), _T(""), true},								// database
 	{_T("treefont"), _T(""), false},								// application
 	{_T("BackupPrefixValue"), _T(""), false},						// application
 	{_T("BackupDir"), _T(""), false},                               // application
-	{_T("AltBrowser"), _T(""), false},							// application
+	{_T("AltBrowser"), _T(""), false},								// application
 };
 
 
