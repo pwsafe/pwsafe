@@ -112,6 +112,7 @@ public:
   bool GetCurrentView() {return m_IsListView;}
   void IssueError(LONG lRet, const CString &csFunction);
   void UpdatePasswordHistory(const int &iAction, const int &num_default);
+  void SetInitialDatabaseDisplay();
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };

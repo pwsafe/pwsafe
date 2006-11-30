@@ -415,6 +415,7 @@ DboxMain::Open( const CMyString &pszFilename )
   CheckExpiredPasswords();
   ChangeOkUpdate();
   RefreshList();
+  SetInitialDatabaseDisplay();
   return PWScore::SUCCESS;
 }
 
