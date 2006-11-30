@@ -407,20 +407,7 @@ DboxMain::InitPasswordSafe()
 
   // refresh list will add and size password column if necessary...
   RefreshList();
-  if (m_ctlItemTree.GetCount() > 0)
-  switch (prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
-  	case PWSprefs::AllCollapsed:
-  		m_ctlItemTree.OnCollapseAll();
-  		break;
-  	case PWSprefs::AllExpanded:
-  		m_ctlItemTree.OnExpandAll();
-  		break;
-  	case PWSprefs::AsPerLastSave:
-  		RestoreDisplayStatus();
-  		break;
-  	default:
-  		ASSERT(0);
-  }
+
   ChangeOkUpdate();
 
   setupBars(); // Just to keep things a little bit cleaner
@@ -504,6 +491,7 @@ DboxMain::OnInitDialog()
   if (m_IsStartSilent) {
     m_bStartHiddenAndMinimized = true;
   }
+
   if (m_IsStartClosed) {
     Close();
     if (!m_IsStartSilent)
@@ -514,9 +502,28 @@ DboxMain::OnInitDialog()
       OpenOnInit();
       RefreshList();
   }
+
+  SetInitialDatabaseDisplay();
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
+void DboxMain::SetInitialDatabaseDisplay()
+{
+  if (m_ctlItemTree.GetCount() > 0)
+  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
+  	case PWSprefs::AllCollapsed:
+  		m_ctlItemTree.OnCollapseAll();
+  		break;
+  	case PWSprefs::AllExpanded:
+  		m_ctlItemTree.OnExpandAll();
+  		break;
+  	case PWSprefs::AsPerLastSave:
+  		RestoreDisplayStatus();
+  		break;
+  	default:
+  		ASSERT(0);
+  }
+}
 
 void
 DboxMain::OnDestroy()
