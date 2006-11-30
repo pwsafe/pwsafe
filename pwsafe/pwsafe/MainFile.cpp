@@ -261,6 +261,7 @@ DboxMain::OnOpenMRU(UINT nID)
 
   // Save just in case need to restore if user cancels
   const bool last_ro = m_IsReadOnly;
+  m_IsReadOnly = false;
   // Read-only status will be set by GetAndCheckPassword
   int rc = Open( mruItem );
   if (rc == PWScore::SUCCESS) {
