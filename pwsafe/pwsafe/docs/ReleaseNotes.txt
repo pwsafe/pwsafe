@@ -1,5 +1,5 @@
-Password Safe 3.05 Release Note - ??????? 200?
-==============================================
+Password Safe 3.05 Release Note - November 2006
+===============================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.05. For a short description of Password
@@ -10,12 +10,18 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.05
 =====================
-[] Support multiple automatic backups
-[] Portable (e.g., USB stick) installation supported
+[1452303] Support multiple automatic backups
+[1504327, 1600626] Portable (e.g., USB stick) installation supported
+(configuration information stored in .cfg file instead of registry).
+[1452303, 1303548, 912724] Option to start Password Safe minimized at login
+[1600626] Ability to specify alternate browser for URLs - useful if
+Firefox is your default browser, but you need to access a site that
+only works with IE, for example.
 
-Changes to Existing Features in 3.??
+Changes to Existing Features in 3.05
 ====================================
-None
+[838450] The undocumented backup to .psafe3~ has been replaced by the
+multiple automatic backup mechanism.
 
 Bugs fixed in 3.05
 ==================
@@ -45,11 +51,11 @@ New Features for 3.03
 entries during export has been implemented. Both export to "Plain Text"
 and export in "XML Format" will export the database entries in the order
 as displayed in the "Nested Tree Mode".
-[1249433] Startup state for Nested Tree mode - User can now select startup
-as a) All groups collapsed (previous behaviour); b) All groups expanded;
-or c) Same state as when the database was last saved (could be either all
-collapsed, all expanded or a mixture of some groups expanded and others
-collapsed).
+[1249433, 1114473] Startup state for Nested Tree mode - User can now
+select startup as a) All groups collapsed (previous behaviour); b) All
+groups expanded; or c) Same state as when the database was last saved
+(could be either all collapsed, all expanded or a mixture of some
+groups expanded and others collapsed).
 [1527058, 1536006] password history - Ability to set the default
 number to be saved. Can be overridden on an entry by entry
 basis. Changing the default number has no effect if history is already
