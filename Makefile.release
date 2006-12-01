@@ -37,7 +37,8 @@ BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
 	docs/ChangeLog.txt Release/pwsafe.exe help/default/pwsafe.chm
 
 REDISTS = ../../redist/mfc80.dll ../../redist/msvcp80.dll \
-        ../../redist/msvcr80.dll
+        ../../redist/msvcr80.dll ../../redist/Microsoft.VC80.CRT.manifest \
+		../../redist/Microsoft.VC80.MFC.manifest
 
 .PHONY: all release bin-release src-release installable signatures \
 	upload md5sums sha1sums

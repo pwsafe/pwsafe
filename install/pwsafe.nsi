@@ -203,6 +203,8 @@ Section "Program Files" ProgramFiles
   File "..\..\..\redist\mfc80.dll"
   File "..\..\..\redist\msvcp80.dll"
   File "..\..\..\redist\msvcr80.dll"
+  File "..\..\..\redist\Microsoft.VC80.CRT.manifest"
+  File "..\..\..\redist\Microsoft.VC80.MFC.manifest"
 
   ; skip over registry writes if 'Green' installation selected
   IntCmp $INSTALL_TYPE 1 GreenInstall
@@ -328,6 +330,8 @@ Section "Uninstall"
   Delete "$INSTDIR\mfc80.dll"
   Delete "$INSTDIR\msvcp80.dll"
   Delete "$INSTDIR\msvcr80.dll"
+  Delete "$INSTDIR\Microsoft.VC80.CRT.manifest"
+  Delete "$INSTDIR\Microsoft.VC80.MFC.manifest"
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
