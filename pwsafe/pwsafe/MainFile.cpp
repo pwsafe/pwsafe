@@ -538,7 +538,10 @@ DboxMain::SaveAs()
       return PWScore::USER_CANCEL;
   }
   //SaveAs-type dialog box
-  CMyString v3FileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
+  CMyString cf(m_core.GetCurFile());
+  if (cf.IsEmpty())
+      cf.LoadString(IDS_DEFDBNAME); // reasonable default for first time user
+  CMyString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX );
   while (1) {
     CFileDialog fd(FALSE,
                    DEFAULT_SUFFIX,

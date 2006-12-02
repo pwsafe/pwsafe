@@ -249,4 +249,4 @@
 #define IDS_OPTBACKUPNOLOC              5417
 #define IDS_OPTBACKUPMAXNUM             5418
 #define IDS_OPTBACKUPTITLE              5419
-
+#define IDS_DEFDBNAME                   5420
