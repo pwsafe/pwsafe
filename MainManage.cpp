@@ -483,22 +483,25 @@ DboxMain::OnOptions()
         if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
             m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
             if (!m_IsReadOnly) {
-            // save changed preferences to file
-            // Note that we currently can only write the entire file, so any changes
-            // the user made to the database are also saved here
-            int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
-            int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-            CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-            CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
-            m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
-                                 userBackupPrefix, userBackupDir); // try to save previous version
-            if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
-                AfxMessageBox(IDS_FAILEDSAVEPREF);
-            else
-                prefs->ClearDBprefsChanged();
-
-            } else
-				AfxMessageBox(IDS_FAILEDSAVEPREFRO);  // Read-only!
+                // save changed preferences to file
+                // Note that we currently can only write the entire file, so any changes
+                // the user made to the database are also saved here
+                int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
+                int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
+                CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
+                CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+                m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
+                                     userBackupPrefix, userBackupDir); // try to save previous version
+                if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
+                    AfxMessageBox(IDS_FAILEDSAVEPREF);
+                else
+                    prefs->ClearDBprefsChanged();
+            } else {
+                if (!m_bAlreadyToldUserNoSave) {
+                    AfxMessageBox(IDS_FAILEDSAVEPREFRO);  // Read-only!
+                    m_bAlreadyToldUserNoSave = true;
+                }
+            }
         }
         /*
         **  Now update the application according to the options.

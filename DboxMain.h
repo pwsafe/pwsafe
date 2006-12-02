@@ -357,6 +357,7 @@ private:
   bool m_IsStartClosed;
   bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
+  bool m_bAlreadyToldUserNoSave;
   HFONT m_hFontTree;
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize

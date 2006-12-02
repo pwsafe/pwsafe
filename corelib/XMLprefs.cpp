@@ -285,12 +285,12 @@ bool CXMLprefs::Store()
 	// Free memory
 	SysFreeString(vDocString.bstrVal);
 
+	bool retval(false);
 	// Now try to save!
-    bool retval;
-	if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
-		retval = true;
-	else
-		retval = false;
+	if (vbSuccessful == VARIANT_TRUE) {
+        if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
+            retval = true;
+	}
 
 	// Now free reader & writer (content handler is done automatically)
 	if (pXMLWriter != NULL) {
