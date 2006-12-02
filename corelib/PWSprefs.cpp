@@ -859,20 +859,16 @@ void PWSprefs::SaveApplicationPreferences()
 	    m_ConfigOptions == CF_FILE_RW_NEW) {
         int i;
         const int n = GetPref(PWSprefs::MaxMRUItems);
+		// Delete ALL entries
+		m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
+		// Now put back the ones we want
         CString csSubkey;
         for (i = 0; i < n; i++)
             if (!m_MRUitems[i].IsEmpty()) {
                 csSubkey.Format(_T("Safe%02d"), i+1);
                 m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
-
             }
-        // Remove any not in use
-        for (i = n-1; i < m_int_prefs[MaxMRUItems].maxVal; i++) {
-            csSubkey.Format(_T("Safe%02d"), i + 1);
-            m_XML_Config->DeleteSetting(m_csHKCU_MRU, csSubkey);
-        }
     }
-
 
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW) {

@@ -478,10 +478,11 @@ DboxMain::OnOptions()
 #endif
 
         /*
-        ** Update string in database, if necessary & possible
+        ** Update string in database, if necessary & possible (i.e. ignore if R-O)
         */
         if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
             m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+            if (!m_IsReadOnly) {
             // save changed preferences to file
             // Note that we currently can only write the entire file, so any changes
             // the user made to the database are also saved here
@@ -495,6 +496,9 @@ DboxMain::OnOptions()
                 AfxMessageBox(IDS_FAILEDSAVEPREF);
             else
                 prefs->ClearDBprefsChanged();
+
+            } else
+				AfxMessageBox(IDS_FAILEDSAVEPREFRO);  // Read-only!
         }
         /*
         **  Now update the application according to the options.

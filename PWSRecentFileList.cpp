@@ -128,7 +128,7 @@ void CPWSRecentFileList::ReadList()
         const int nMRUItems = pref->GetPref(PWSprefs::MaxMRUItems);
         CString *csMRUFiles = new CString[nMRUItems];
         pref->GetMRUList(csMRUFiles);
-        for (int i = 0; i < nMRUItems; i++)
+        for (int i = nMRUItems; i > 0 ; i--)
             Add(csMRUFiles[i], true);
         delete[] csMRUFiles;
     }
