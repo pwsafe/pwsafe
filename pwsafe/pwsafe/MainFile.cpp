@@ -358,6 +358,7 @@ DboxMain::Open( const CMyString &pszFilename )
   switch (rc) {
   case PWScore::SUCCESS:
     app.AddToMRU(pszFilename);
+    m_bAlreadyToldUserNoSave = false;
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
     temp.Format(IDS_SAFENOTEXIST, pszFilename);

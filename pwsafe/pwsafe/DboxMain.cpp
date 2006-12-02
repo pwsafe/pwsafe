@@ -74,9 +74,10 @@ DboxMain::DboxMain(CWnd* pParent)
      m_hFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
-	 m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
-	 m_bValidate(false), m_bOpen(false), 
-	 m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false)
+     m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
+     m_bValidate(false), m_bOpen(false), 
+     m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
+     m_bAlreadyToldUserNoSave(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
