@@ -21,6 +21,18 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+//#define DEBUG_XMLPREFS
+#ifdef DEBUG_XMLPREFS
+#include <stdio.h>
+static FILE *f;
+#define DOPEN() do {f = fopen("cxmlpref.log", "a+");} while (0)
+#define DPRINT(x) do {fprintf x; fflush(f);} while (0)
+#define DCLOSE() fclose(f)
+#else
+#define DOPEN()
+#define DPRINT(x)
+#define DCLOSE()
+#endif
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
 
@@ -184,7 +196,10 @@ bool CXMLprefs::Store()
 	STATSTG mStat;
 	VARIANT_BOOL vbSuccessful;
 	ULONG num;
-
+    DOPEN();
+    DPRINT((f, "Entered CXMLprefs::Store()\n"));
+    DPRINT((f, "\tm_MSXML_Version = %d\n", m_MSXML_Version));
+    DPRINT((f, "\tm_pXMLDoc = %p\n", m_pXMLDoc));
     ASSERT(m_pXMLDoc != NULL);
 	// Get the string from the DOM
 	m_pXMLDoc->QueryInterface(IID_IStream, (void **)&pIStream);
@@ -194,7 +209,7 @@ bool CXMLprefs::Store()
 	pIStream->Read(lpszBuffer, ilen, &num);
 	csConfigData.ReleaseBuffer(num);
 	pIStream->Release();
-
+    DPRINT((f, "csConfigData=[%s]\n",csConfigData));
 	// First remove all tabs, carriage returns and line-ends
 	csConfigData.Remove(_T('\t'));
 	csConfigData.Remove(_T('\r'));
@@ -238,7 +253,10 @@ bool CXMLprefs::Store()
 
 	// Check created OK
 	ASSERT(b_R_OK && b_W_OK);
-
+    DPRINT((f, "\tb_R_OK = %s\n", b_R_OK ? "true" : "false"));
+    DPRINT((f, "\tb_W_OK = %s\n", b_W_OK ? "true" : "false"));
+    DPRINT((f, "\tpXMLWriter = %p\n",pXMLWriter));
+    DPRINT((f, "\tpSAXReader = %p\n",pSAXReader));
 	// Say we want it indented
 	pXMLWriter->put_indent(VARIANT_TRUE);
 	pXMLWriter->put_standalone(VARIANT_TRUE);
@@ -261,9 +279,18 @@ bool CXMLprefs::Store()
 	m_pXMLDoc->loadXML(vNewDocString.bstrVal, &vbSuccessful);
 
 	ASSERT(vbSuccessful == VARIANT_TRUE);
+    DPRINT((f, "\tvbSuccessful = %s\n",
+            vbSuccessful == VARIANT_TRUE ? "OK" : "***FAILED***"));
 
 	// Free memory
 	SysFreeString(vDocString.bstrVal);
+
+	// Now try to save!
+    bool retval;
+	if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
+		retval = true;
+	else
+		retval = false;
 
 	// Now free reader & writer (content handler is done automatically)
 	if (pXMLWriter != NULL) {
@@ -276,16 +303,12 @@ bool CXMLprefs::Store()
 		pSAXReader = NULL;
 	}
 
-	// Now try to save!
-    bool retval;
-	if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
-		retval = true;
-	else
-		retval = false;
-
     // if we locked it, we should unlock it...
     if (!alreadyLocked)
         Unlock();
+    DPRINT((f, "Leaving CXMLprefs::Store(), retval = %s\n",
+            retval ? "true" : "false"));
+    DCLOSE();
     return retval;
 }
 

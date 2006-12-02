@@ -548,6 +548,13 @@ void PWSprefs::InitializePreferences()
     // Set up XML "keys": host/user
     m_csHKCU = si->GetCurrentHost() + _T("\\");
     m_csHKCU += si->GetCurrentUser();
+    // make sure host/user is only ASCII
+    int N = m_csHKCU.GetLength();
+    for (int i = 0; i < N; i++) {
+        TCHAR t = m_csHKCU[i];
+        t &= 0x7f;
+        m_csHKCU.SetAt(i, t);
+    }
     // set up other keys
     m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
     m_csHKCU_POS  = m_csHKCU + _T("\\Position");
