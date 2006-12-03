@@ -58,8 +58,14 @@ bool CXMLprefs::Load()
 {
 	// Already loaded?
 	if (m_bXMLLoaded) return true;
+    DOPEN();
+    DPRINT((f, "Entered CXMLprefs::Load()\n"));
 	//  Couldn't get it to work previously?
-	if (m_MSXML_Version == -1) return false;
+	if (m_MSXML_Version == -1) {
+        DPRINT((f, "Leaving CXMLprefs::Load() - m_MSXML_Version == -1\n"));
+        DCLOSE();
+        return false;
+    }
 
     bool alreadyLocked = m_bIsLocked;
     if (!alreadyLocked) {
@@ -113,10 +119,12 @@ bool CXMLprefs::Load()
 		default:
 			// Should never get here
 			ASSERT(0);
+            DPRINT((f, "\tm_MSXML_Version = %d **ILLEGAL VALUE**\n", m_MSXML_Version));
             b_OK = FALSE;
 	}
 
 	if (b_OK == FALSE) {
+        DPRINT((f, "\tCouldn't CreateInstance, m_MSXML_Version = %d\n", m_MSXML_Version));
         goto exit;
     }
 
@@ -129,8 +137,9 @@ bool CXMLprefs::Load()
 	VARIANT_BOOL vbSuccessful;
 
 	// see if the file exists
-	if (!file.Open(m_csConfigFile, CFile::modeReadWrite)) {  // if not
+	if (!file.Open(m_csConfigFile, CFile::modeRead)) {  // if not
 		// create it - IDSC_XMLHEADER
+        DPRINT((f, "\tCouldn't open %s for read, assuming doesn't exist\n",m_csConfigFile));
 		CComBSTR bstrXML;
 		bstrXML.LoadString(IDSC_XMLHEADER);
 		m_pXMLDoc->loadXML(bstrXML, &vbSuccessful);
@@ -180,12 +189,17 @@ bool CXMLprefs::Load()
     // if we locked it, we should unlock it...
     if (!alreadyLocked)
         Unlock();
+    DPRINT((f, "Leaving CXMLprefs::Load(), retval = %s\n",
+            m_bXMLLoaded ? "true" : "false"));
+    DCLOSE();
     return m_bXMLLoaded;
 }
 
 bool CXMLprefs::Store()
 {
-   bool alreadyLocked = m_bIsLocked;
+	bool retval(false);
+    bool alreadyLocked = m_bIsLocked;
+
     if (!alreadyLocked) {
         if (!Lock())
             return false;
@@ -218,6 +232,7 @@ bool CXMLprefs::Store()
 	// Define and then create the SAX reader and DOM writer.
 	MSXML2::ISAXXMLReaderPtr pSAXReader = NULL;
 	MSXML2::IMXWriterPtr pXMLWriter = NULL;
+	MSXML2::ISAXContentHandlerPtr pCH = NULL;
 	BOOL b_R_OK, b_W_OK;
 
 	b_R_OK = b_W_OK = FALSE;
@@ -248,22 +263,27 @@ bool CXMLprefs::Store()
 			break;
 		default:
 			// Should never get here
+            DPRINT((f, "\tm_MSXML_Version = %d **ILLEGAL VALUE**\n",m_MSXML_Version));
 			ASSERT(0);
+            goto exit;
 	}
 
 	// Check created OK
-	ASSERT(b_R_OK && b_W_OK);
     DPRINT((f, "\tb_R_OK = %s\n", b_R_OK ? "true" : "false"));
     DPRINT((f, "\tb_W_OK = %s\n", b_W_OK ? "true" : "false"));
     DPRINT((f, "\tpXMLWriter = %p\n",pXMLWriter));
     DPRINT((f, "\tpSAXReader = %p\n",pSAXReader));
+	ASSERT(b_R_OK && b_W_OK);
+    if (!b_R_OK || !b_W_OK) {
+        goto exit;
+    }
 	// Say we want it indented
 	pXMLWriter->put_indent(VARIANT_TRUE);
 	pXMLWriter->put_standalone(VARIANT_TRUE);
 	pXMLWriter->put_encoding(CComBSTR(L"UTF-8"));
 
 	// Create a reader ContentHandler and make it the writer
-	MSXML2::ISAXContentHandlerPtr pCH = pXMLWriter;
+	pCH = pXMLWriter;
 	pSAXReader->putContentHandler(pCH);
 
 	// Parse the current XML and then reload it once reformatted
@@ -285,13 +305,13 @@ bool CXMLprefs::Store()
 	// Free memory
 	SysFreeString(vDocString.bstrVal);
 
-	bool retval(false);
 	// Now try to save!
 	if (vbSuccessful == VARIANT_TRUE) {
         if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
             retval = true;
 	}
 
+  exit:
 	// Now free reader & writer (content handler is done automatically)
 	if (pXMLWriter != NULL) {
 		pXMLWriter.Release();
