@@ -1,5 +1,10 @@
-Password Safe 3.05 Release Note - November 2006
+Password Safe 3.05 Release Note - December 2006
 ===============================================
+
+** Note: This is a re-release of 3.05, mainly addressing bug 1606026
+** (missing manifest files). The "old" 3.05 displayed "PasswordSafe
+** V3.05 (1173)" in the Help About dialog box. This one displays
+** (1185).  Bugs fixed in this re-release are marked with a '*'.
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.05. For a short description of Password
@@ -25,6 +30,10 @@ multiple automatic backup mechanism.
 
 Bugs fixed in 3.05
 ==================
+[1606026*] Missing manifest files added, application no longer requires
+vcredist_x86.exe
+[1606237*, 1606232*] View preferences now work correctly
+[1605389*] Read-only flag now updated correctly
 [1578171] Hotkey works again if window just obscured
 [1521684,1504527] Old (V1) databases now read correctly - thanks to
 Karel Van der Gucht.
