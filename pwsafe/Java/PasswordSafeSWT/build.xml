@@ -218,7 +218,7 @@
                 <include name="platform/**/*.*" />
             	<exclude name="deploy/**/*.*" />
             </fileset>
-            <fileset dir="${basedir}" includes="*.*" />
+            <fileset dir="${basedir}" includes="*.*" excludes="*.exe"/>
         </copy>
 
         <property name="src.tar.name" value="${dist.src.dir}/${zip.dir.name}-src-with-libs.tar"/>
