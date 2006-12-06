@@ -286,7 +286,8 @@ public class PwsRecordV3 extends PwsRecord
 				file.readBytes(Data);
 				byte[] hash = file.hasher.doFinal();
 				if (!Util.bytesAreEqual(Data, hash)) {
-					throw new IOException("HMAC record did not match. File has been tampered");
+					LOG.error("HMAC record did not match. File may have been tampered");
+					//TODO should throw new IOException("HMAC record did not match. File has been tampered");
 				}
 				throw eofe;
 			}
