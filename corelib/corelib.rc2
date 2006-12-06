@@ -91,8 +91,9 @@ BEGIN
     IDSC_XMLIMPORT          "import"
     IDSC_NOXMLREADER        "Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
     IDSC_XMLHEADER          "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-    IDSC_XMLFILEERROR       "Error 0x%08x at line:position %d:%d \n\t%s\n\nUnable to load configuration file."
-    IDSC_XMLLOADFAILURE     "LoadXML Malformed XML Error"
+    IDSC_XMLFILEERROR       "%s\n%s\nline %d column %d"
+    IDSC_XMLLOADFAILURE     "Unable to load configuration file"
+    IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
 	IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
 	IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
 END

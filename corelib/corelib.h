@@ -53,8 +53,9 @@
 #define IDSC_XMLHEADER                  3048
 #define IDSC_XMLFILEERROR               3049
 #define IDSC_XMLLOADFAILURE             3050
-#define IDSC_SAXERRORPWH                3051
-#define IDSC_SAXGENERROR                3052
+#define IDSC_XMLSAVEFAILURE             3051
+#define IDSC_SAXERRORPWH                3052
+#define IDSC_SAXGENERROR                3053
                                         
 #define IDSC_FILEEXCEPTION00            3100
 #define IDSC_FILEEXCEPTION01            3101
