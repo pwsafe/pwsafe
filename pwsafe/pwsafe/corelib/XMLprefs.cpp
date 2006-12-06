@@ -7,10 +7,8 @@
  */
 // XMLprefs.cpp : implementation file
 //
-#include "..\stdafx.h"
-#include <atlcomcli.h>  // needed for VS7.1, not 8
 #include "XMLprefs.h"
-#include "xml_import.h"
+#include "tinyxml/tinyxml.h"
 #include "MyString.h"
 #include "PWSfile.h"
 #include "corelib.h"
@@ -54,18 +52,28 @@ void CXMLprefs::Unlock()
     m_bIsLocked = false;
 }
 
+bool CXMLprefs::CreateXML(bool forLoad)
+{
+    // Call with forLoad set when about to Load, else
+    // this also adds a toplevel root element
+    ASSERT(m_pXMLDoc == NULL);
+    m_pXMLDoc = new TiXmlDocument(m_csConfigFile);
+    if (!forLoad && m_pXMLDoc != NULL) {
+        TiXmlDeclaration decl("1.0", "UTF-8", "yes");
+        TiXmlElement rootElem(_T("Pwsafe_Settings"));
+
+        return (m_pXMLDoc->InsertEndChild(decl) != NULL &&
+                m_pXMLDoc->InsertEndChild(rootElem) != NULL);
+    } else
+        return m_pXMLDoc != NULL;
+}
+
 bool CXMLprefs::Load()
 {
 	// Already loaded?
-	if (m_bXMLLoaded) return true;
+	if (m_pXMLDoc != NULL) return true;
     DOPEN();
     DPRINT((f, "Entered CXMLprefs::Load()\n"));
-	//  Couldn't get it to work previously?
-	if (m_MSXML_Version == -1) {
-        DPRINT((f, "Leaving CXMLprefs::Load() - m_MSXML_Version == -1\n"));
-        DCLOSE();
-        return false;
-    }
 
     bool alreadyLocked = m_bIsLocked;
     if (!alreadyLocked) {
@@ -73,131 +81,36 @@ bool CXMLprefs::Load()
             return false;
     }
 
-    // from here on all exits from function need to unlock file
-	MSXML2::IXMLDOMParseErrorPtr pIParseError = NULL;
-	CFile file;
-	BOOL b_OK = FALSE;
-	// initialize the XML parser
-	switch (m_MSXML_Version) {
-		case 0:
-			// First time through!
-			// Try 60
-			if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument60),
-                                                NULL, CLSCTX_ALL))) {
-				// Try 40
-				if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument40),
-                                                    NULL, CLSCTX_ALL))) {
-					// Try 30
-					if (FAILED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument30),
-						                                NULL, CLSCTX_ALL))) {
-						AfxMessageBox(IDSC_NOXMLREADER, MB_OK);
-						m_MSXML_Version = -1;
-						goto exit;
-					} else {
-						m_MSXML_Version = 30;
-					}
-				} else {
-					m_MSXML_Version = 40;
-				}
-			} else {
-				m_MSXML_Version = 60;
-			}
-			b_OK = TRUE;
-			break;
-		case 60:
-			if (SUCCEEDED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument60), NULL, CLSCTX_ALL)))
-				b_OK = TRUE;
-			break;
-		case 40:
-			if (SUCCEEDED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument40), NULL, CLSCTX_ALL)))
-				b_OK = TRUE;
-			break;
-		case 30:
-			if (SUCCEEDED(m_pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument30), NULL, CLSCTX_ALL)))
-				b_OK = TRUE;
-			break;
-		default:
-			// Should never get here
-			ASSERT(0);
-            DPRINT((f, "\tm_MSXML_Version = %d **ILLEGAL VALUE**\n", m_MSXML_Version));
-            b_OK = FALSE;
-	}
+    if (!CreateXML(true))
+        return false;
 
-	if (b_OK == FALSE) {
-        DPRINT((f, "\tCouldn't CreateInstance, m_MSXML_Version = %d\n", m_MSXML_Version));
-        goto exit;
-    }
+    bool retval = m_pXMLDoc->LoadFile();
 
-	// Ensure we preserve all white space!
-	if (FAILED(m_pXMLDoc->put_preserveWhiteSpace(VARIANT_TRUE))) {
-		UnloadXML();
-		goto exit;
-	}
-
-	VARIANT_BOOL vbSuccessful;
-
-	// see if the file exists
-	if (!file.Open(m_csConfigFile, CFile::modeRead)) {  // if not
-		// create it - IDSC_XMLHEADER
-        DPRINT((f, "\tCouldn't open %s for read, assuming doesn't exist\n",m_csConfigFile));
-		CComBSTR bstrXML;
-		bstrXML.LoadString(IDSC_XMLHEADER);
-		m_pXMLDoc->loadXML(bstrXML, &vbSuccessful);
-	} else {  // if so
-		file.Close();
-		// load it
-		m_pXMLDoc->load(CComVariant::CComVariant((LPCTSTR)m_csConfigFile),
-                        &vbSuccessful);
-	}
-
-	m_bXMLLoaded = (vbSuccessful == VARIANT_TRUE);
-
-	if (!m_bXMLLoaded) {
+	if (!retval) {
         // an XML load error occurred so display the reason
-        m_pXMLDoc->get_parseError(&pIParseError);
-
-        if (pIParseError) {
-            long value, line, linepos;
-            BSTR bstr = NULL;
-
-            pIParseError->get_errorCode(&value);
-            pIParseError->get_reason(&bstr);
-            pIParseError->get_line(&line);
-            pIParseError->get_linepos(&linepos);
-
-            CString csMessage;
-            csMessage.Format(IDSC_XMLFILEERROR, 
-                             value, line, linepos, (char *)_bstr_t(bstr, TRUE));
-            const CString cs_title(MAKEINTRESOURCE(IDSC_XMLLOADFAILURE));
-            MessageBox(NULL, csMessage, cs_title, MB_OK);
-
-            if (bstr) {
-                SysFreeString(bstr);
-                bstr = NULL;
-            }
-
-            pIParseError = NULL;
-        }
-
-        if (m_pXMLDoc != NULL) {
-            m_pXMLDoc.Release();
-            m_pXMLDoc = NULL;
-        }
+        CString csMessage;
+        csMessage.Format(IDSC_XMLFILEERROR,
+                         m_pXMLDoc->ErrorDesc(), m_csConfigFile,
+                         m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
+        const CString cs_title(MAKEINTRESOURCE(IDSC_XMLLOADFAILURE));
+        MessageBox(NULL, csMessage, cs_title, MB_OK);
+        
+        delete m_pXMLDoc;
+        m_pXMLDoc = NULL;
     } // load failed
 
-  exit:
     // if we locked it, we should unlock it...
     if (!alreadyLocked)
         Unlock();
     DPRINT((f, "Leaving CXMLprefs::Load(), retval = %s\n",
-            m_bXMLLoaded ? "true" : "false"));
+            retval ? "true" : "false"));
     DCLOSE();
-    return m_bXMLLoaded;
+    return retval;
 }
 
 bool CXMLprefs::Store()
 {
-	bool retval(false);
+	bool retval = false;
     bool alreadyLocked = m_bIsLocked;
 
     if (!alreadyLocked) {
@@ -205,124 +118,31 @@ bool CXMLprefs::Store()
             return false;
     }
 
-	CString csConfigData;
-	IStream *pIStream;
-	STATSTG mStat;
-	VARIANT_BOOL vbSuccessful;
-	ULONG num;
     DOPEN();
     DPRINT((f, "Entered CXMLprefs::Store()\n"));
-    DPRINT((f, "\tm_MSXML_Version = %d\n", m_MSXML_Version));
     DPRINT((f, "\tm_pXMLDoc = %p\n", m_pXMLDoc));
+
+    // Although technically possible, it doesn't make sense
+    // to create a toplevel document here, since we'd then
+    // be saving an empty document.
     ASSERT(m_pXMLDoc != NULL);
-	// Get the string from the DOM
-	m_pXMLDoc->QueryInterface(IID_IStream, (void **)&pIStream);
-	pIStream->Stat(&mStat, 0);
-	const int ilen = (int)mStat.cbSize.QuadPart + 1;
-	TCHAR *lpszBuffer = csConfigData.GetBuffer(ilen);
-	pIStream->Read(lpszBuffer, ilen, &num);
-	csConfigData.ReleaseBuffer(num);
-	pIStream->Release();
-    DPRINT((f, "csConfigData=[%s]\n",csConfigData));
-	// First remove all tabs, carriage returns and line-ends
-	csConfigData.Remove(_T('\t'));
-	csConfigData.Remove(_T('\r'));
-	csConfigData.Remove(_T('\n'));
-
-	// Define and then create the SAX reader and DOM writer.
-	MSXML2::ISAXXMLReaderPtr pSAXReader = NULL;
-	MSXML2::IMXWriterPtr pXMLWriter = NULL;
-	MSXML2::ISAXContentHandlerPtr pCH = NULL;
-	BOOL b_R_OK, b_W_OK;
-
-	b_R_OK = b_W_OK = FALSE;
-	switch (m_MSXML_Version) {
-		case 60:
-			if (SUCCEEDED(pSAXReader.CreateInstance(__uuidof(MSXML2::SAXXMLReader60), 
-                                                    NULL, CLSCTX_ALL)))
-				b_R_OK = TRUE;
-			if (SUCCEEDED(pXMLWriter.CreateInstance(__uuidof(MSXML2::MXXMLWriter60), 
-                                                    NULL, CLSCTX_ALL)))
-				b_W_OK = TRUE;
-			break;
-		case 40:
-			if (SUCCEEDED(pSAXReader.CreateInstance(__uuidof(MSXML2::SAXXMLReader40), 
-                                                    NULL, CLSCTX_ALL)))
-				b_R_OK = TRUE;
-			if (SUCCEEDED(pXMLWriter.CreateInstance(__uuidof(MSXML2::MXXMLWriter40), 
-                                                    NULL, CLSCTX_ALL)))
-				b_W_OK = TRUE;
-			break;
-		case 30:
-			if (SUCCEEDED(pSAXReader.CreateInstance(__uuidof(MSXML2::SAXXMLReader30), 
-                                                    NULL, CLSCTX_ALL)))
-				b_R_OK = TRUE;
-			if (SUCCEEDED(pXMLWriter.CreateInstance(__uuidof(MSXML2::MXXMLWriter30), 
-                                                    NULL, CLSCTX_ALL)))
-				b_W_OK = TRUE;
-			break;
-		default:
-			// Should never get here
-            DPRINT((f, "\tm_MSXML_Version = %d **ILLEGAL VALUE**\n",m_MSXML_Version));
-			ASSERT(0);
-            goto exit;
-	}
-
-	// Check created OK
-    DPRINT((f, "\tb_R_OK = %s\n", b_R_OK ? "true" : "false"));
-    DPRINT((f, "\tb_W_OK = %s\n", b_W_OK ? "true" : "false"));
-    DPRINT((f, "\tpXMLWriter = %p\n",pXMLWriter));
-    DPRINT((f, "\tpSAXReader = %p\n",pSAXReader));
-	ASSERT(b_R_OK && b_W_OK);
-    if (!b_R_OK || !b_W_OK) {
+    if (m_pXMLDoc == NULL) {
+        retval = false;
         goto exit;
     }
-	// Say we want it indented
-	pXMLWriter->put_indent(VARIANT_TRUE);
-	pXMLWriter->put_standalone(VARIANT_TRUE);
-	pXMLWriter->put_encoding(CComBSTR(L"UTF-8"));
 
-	// Create a reader ContentHandler and make it the writer
-	pCH = pXMLWriter;
-	pSAXReader->putContentHandler(pCH);
-
-	// Parse the current XML and then reload it once reformatted
-	// But first convert from CString to VARIANT!
-	VARIANT vDocString;
-	vDocString.vt = VT_BSTR;
-	vDocString.bstrVal = csConfigData.AllocSysString();
-
-	pSAXReader->parse(vDocString);
-
-	VARIANT vNewDocString;
-	pXMLWriter->get_output(&vNewDocString);
-	m_pXMLDoc->loadXML(vNewDocString.bstrVal, &vbSuccessful);
-
-	ASSERT(vbSuccessful == VARIANT_TRUE);
-    DPRINT((f, "\tvbSuccessful = %s\n",
-            vbSuccessful == VARIANT_TRUE ? "OK" : "***FAILED***"));
-
-	// Free memory
-	SysFreeString(vDocString.bstrVal);
-
-	// Now try to save!
-	if (vbSuccessful == VARIANT_TRUE) {
-        if (SUCCEEDED(m_pXMLDoc->save(CComVariant::CComVariant(m_csConfigFile))))
-            retval = true;
-	}
+    retval = m_pXMLDoc->SaveFile();
+    if (!retval) {
+        // Get and show error
+        CString csMessage;
+        csMessage.Format(IDSC_XMLFILEERROR,
+                         m_pXMLDoc->ErrorDesc(), m_csConfigFile,
+                         m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
+        const CString cs_title(MAKEINTRESOURCE(IDSC_XMLSAVEFAILURE));
+        MessageBox(NULL, csMessage, cs_title, MB_OK);
+    }
 
   exit:
-	// Now free reader & writer (content handler is done automatically)
-	if (pXMLWriter != NULL) {
-		pXMLWriter.Release();
-		pXMLWriter = NULL;
-		pCH = NULL;
-	}
-	if (pSAXReader != NULL) {
-		pSAXReader.Release();
-		pSAXReader = NULL;
-	}
-
     // if we locked it, we should unlock it...
     if (!alreadyLocked)
         Unlock();
@@ -355,13 +175,12 @@ int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName,
 CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
                        const CString &csDefaultValue)
 {
-    ASSERT(m_bXMLLoaded); // shouldn't be called if load failed
-    if (!m_bXMLLoaded) // just in case
+    ASSERT(m_pXMLDoc != NULL); // shouldn't be called if not loaded
+    if (m_pXMLDoc == NULL) // just in case
         return csDefaultValue;
 
 	int iNumKeys = 0;
 	CString csValue = csDefaultValue;
-	CString* pcsKeys = NULL;
 
 	// Add the value to the base key separated by a '\'
 	CString csKeyName(csBaseKeyName);
@@ -369,32 +188,22 @@ CString CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName,
 	csKeyName += csValueName;
 
 	// Parse all keys from the base key name (keys separated by a '\')
-	pcsKeys = ParseKeys(csKeyName, iNumKeys);
+	CString *pcsKeys = ParseKeys(csKeyName, iNumKeys);
 
 	// Traverse the xml using the keys parsed from the base key name to find the correct node
-	if (pcsKeys) {
-        MSXML2::IXMLDOMElementPtr rootElem = NULL;
-        MSXML2::IXMLDOMNodePtr foundNode = NULL;
+	if (pcsKeys != NULL) {
+        TiXmlElement *rootElem = m_pXMLDoc->RootElement();
 
-        m_pXMLDoc->get_documentElement(&rootElem);  // root node
-        if (rootElem) {
+        if (rootElem != NULL) {
             // returns the last node in the chain
-            foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
-            if (foundNode) {
+            TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
+
+            if (foundNode != NULL) {
                 // get the text of the node (will be the value we requested)
-                BSTR bstr = NULL;
-                foundNode->get_text(&bstr);
-                csValue = (CString)bstr;
-                if (bstr) {
-                    SysFreeString(bstr);
-                    bstr = NULL;
-                }
-                foundNode = NULL;
+                csValue = CString(foundNode->GetText());
             }
-            rootElem = NULL;
         }
-		delete [] pcsKeys;
-		pcsKeys = NULL;
+		delete[] pcsKeys;
 	}
 
 	return csValue;
@@ -422,13 +231,14 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
 int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName, 
                    const CString &csValue)
 {
-    ASSERT(m_bXMLLoaded); // shouldn't be called if load failed
-    if (!m_bXMLLoaded) // just in case
-        return XML_LOAD_FAILED;
+    // m_pXMLDoc may be NULL if Load() not called b4 Set,
+    // or if called & failed
+    
+    if (m_pXMLDoc == NULL && !CreateXML(false))
+        return false;
 
 	int iRetVal = XML_SUCCESS;
 	int iNumKeys = 0;
-	CString* pcsKeys = NULL;
 
 	// Add the value to the base key separated by a '\'
 	CString csKeyName(csBaseKeyName);
@@ -436,50 +246,46 @@ int CXMLprefs::Set(const CString &csBaseKeyName, const CString &csValueName,
 	csKeyName += csValueName;
 
 	// Parse all keys from the base key name (keys separated by a '\')
-	pcsKeys = ParseKeys(csKeyName, iNumKeys);
+	CString *pcsKeys = ParseKeys(csKeyName, iNumKeys);
 
 	// Traverse the xml using the keys parsed from the base key name to find the correct node
-	if (pcsKeys) {
-        MSXML2::IXMLDOMElementPtr rootElem = NULL;
-        MSXML2::IXMLDOMNodePtr foundNode = NULL;
+	if (pcsKeys != NULL) {
+        TiXmlElement *rootElem = m_pXMLDoc->RootElement();
 
-        m_pXMLDoc->get_documentElement(&rootElem);  // root node
-
-        if (rootElem) {
+        if (rootElem != NULL) {
             // returns the last node in the chain
-            foundNode = FindNode(rootElem, pcsKeys, iNumKeys, TRUE);
+            TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys, TRUE);
 
-            if (foundNode) {
-                // set the text of the node (will be the value we sent)
-                if (!SUCCEEDED(foundNode->put_text(_bstr_t(csValue)))) {
-                    iRetVal = XML_PUT_TEXT_FAILED;
+            if (foundNode != NULL) {
+                TiXmlNode *valueNode = foundNode->FirstChild();
+                if (valueNode != NULL) // replace existing value
+                    valueNode->SetValue(csValue);
+                else {// first time set
+                    TiXmlText value(csValue);
+                    foundNode->InsertEndChild(value);
                 }
-                foundNode = NULL;
             } else
                 iRetVal = XML_NODE_NOT_FOUND;
 
-            rootElem = NULL;
-		}
-		else
+		} else
 			iRetVal = XML_LOAD_FAILED;
 
 		delete [] pcsKeys;
-		pcsKeys = NULL;
 	}
-
-	return iRetVal;
+    return iRetVal;
 }
 
 // delete a key or chain of keys
 BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csValueName)
 {
-    ASSERT(m_bXMLLoaded); // shouldn't be called if load failed
-    if (!m_bXMLLoaded) // just in case
-        return FALSE;
+    // m_pXMLDoc may be NULL if Load() not called b4 DeleteSetting,
+    // or if called & failed
+    
+    if (m_pXMLDoc == NULL && !CreateXML(false))
+        return false;
 
 	BOOL bRetVal = FALSE;
 	int iNumKeys = 0;
-	CString* pcsKeys = NULL;
 	CString csKeyName(csBaseKeyName);
 
 	if (!csValueName.IsEmpty()) {
@@ -488,33 +294,28 @@ BOOL CXMLprefs::DeleteSetting(const CString &csBaseKeyName, const CString &csVal
 	}
 
 	// Parse all keys from the base key name (keys separated by a '\')
-	pcsKeys = ParseKeys(csKeyName, iNumKeys);
+	CString *pcsKeys = ParseKeys(csKeyName, iNumKeys);
 
 	// Traverse the xml using the keys parsed from the base key name to find the correct node.
-	if (pcsKeys) {
-        MSXML2::IXMLDOMElementPtr rootElem = NULL;
-        MSXML2::IXMLDOMNodePtr foundNode = NULL;
+	if (pcsKeys != NULL) {
+        TiXmlElement *rootElem = m_pXMLDoc->RootElement();
 
-        m_pXMLDoc->get_documentElement(&rootElem);  // root node
-        if (rootElem) {
+        if (rootElem != NULL) {
             // returns the last node in the chain
-            foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
-            if (foundNode) {
+            TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
+
+            if (foundNode!= NULL) {
                 // get the parent of the found node and use removeChild to delete the found node
-                MSXML2::IXMLDOMNodePtr parentNode = NULL;
-                foundNode->get_parentNode(&parentNode);
-                if (parentNode) {
-                    if (SUCCEEDED(parentNode->removeChild(foundNode, NULL))) {
+                TiXmlNode *parentNode = foundNode->Parent();
+
+                if (parentNode != NULL) {
+                    if (parentNode->RemoveChild(foundNode)) {
                         bRetVal = TRUE;
                     }
-                    parentNode = NULL;
                 }
-                foundNode = NULL;
             }
-            rootElem = NULL;
 		}
-		delete [] pcsKeys;
-		pcsKeys = NULL;
+		delete[] pcsKeys;
 	}
 	return bRetVal;
 }
@@ -561,56 +362,42 @@ CString* CXMLprefs::ParseKeys(const CString &csFullKeyPath, int &iNumKeys)
 
 void CXMLprefs::UnloadXML()
 {
-	if (!m_bXMLLoaded)
-		return;
-
 	if (m_pXMLDoc != NULL) {
-		m_pXMLDoc.Release();
+		delete m_pXMLDoc;
 		m_pXMLDoc = NULL;
 	}
-	m_bXMLLoaded = false;
 }
 
 
 
 // find a node given a chain of key names
-MSXML2::IXMLDOMNodePtr CXMLprefs::FindNode(MSXML2::IXMLDOMNodePtr parentNode,
+TiXmlElement *CXMLprefs::FindNode(TiXmlElement *parentNode,
 									CString* pcsKeys, int iNumKeys,
 									bool bAddNodes /*= false*/)
 {
-	MSXML2::IXMLDOMNodePtr foundNode = NULL;
-	MSXML2::IXMLDOMElementPtr rootElem = NULL, tempElem = NULL;
-
-	m_pXMLDoc->get_documentElement(&rootElem);  // root element
+    ASSERT(m_pXMLDoc != NULL); // shouldn't be called if load failed
+    if (m_pXMLDoc == NULL) // just in case
+        return NULL;
 
 	for (int i=0; i<iNumKeys; i++) {
 		// find the node named X directly under the parent
-		HRESULT hr = parentNode->selectSingleNode(_bstr_t(pcsKeys[i]), &foundNode);
+        TiXmlNode *foundNode = parentNode->IterateChildren(pcsKeys[i], NULL);
 
-		if (FAILED(hr) || foundNode == NULL) {
+		if (foundNode == NULL) {
 			// if its not found...
 			if (bAddNodes)  {  // create the node and append to parent (Set only)
-				m_pXMLDoc->createElement(_bstr_t(pcsKeys[i]), &tempElem);
-				if (tempElem)  {
-					parentNode->appendChild(tempElem, &foundNode);
-				}
-
-				// since we are traversing the nodes, we need to set the parentNode to our foundNode
-				parentNode = NULL;
-				parentNode = foundNode;
-				foundNode = NULL;
+                TiXmlElement elem(pcsKeys[i]);
+                // Add child, set parent to it for next iteration
+                parentNode = parentNode->InsertEndChild(elem)->ToElement();
 			} else {
-				foundNode = NULL;
 				parentNode = NULL;
 				break;
 			}
 		} else {
 			// since we are traversing the nodes, we need to set the parentNode to our foundNode
-			parentNode = NULL;
-			parentNode = foundNode;
+			parentNode = foundNode->ToElement();
 			foundNode = NULL;
 		}
 	}
-	rootElem = NULL;
 	return parentNode;
 }

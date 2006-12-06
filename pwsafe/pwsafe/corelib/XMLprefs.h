@@ -7,9 +7,7 @@
  */
 #ifndef __XMLPREFS_H
 #define __XMLPREFS_H
-#include <afx.h>
-#include "xml_import.h"
-
+#include <afx.h> // for CString
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs class
 //
@@ -19,14 +17,15 @@
 // 2. Lock(), Load(), zero or more Set()s, zero or more
 //    DeleteSetting()s, Store(), Unlock()
 /////////////////////////////////////////////////////////////////////////////
+class TiXmlDocument;
+class TiXmlElement;
 
 class CXMLprefs
 {
 // Construction & Destruction
 public:
 	CXMLprefs(const CString &configFile)
-        : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bXMLLoaded(false), 
-			m_bIsLocked(false), m_MSXML_Version(0)
+        : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false)
 	{
 	}
 
@@ -54,15 +53,14 @@ public:
 	enum {XML_SUCCESS = 0, XML_LOAD_FAILED, XML_NODE_NOT_FOUND, XML_PUT_TEXT_FAILED, XML_SAVE_FAILED};
 
 private:
-	MSXML2::IXMLDOMDocument2Ptr m_pXMLDoc;
+	TiXmlDocument *m_pXMLDoc;
 	CString m_csConfigFile;
-	int m_MSXML_Version;
-	bool m_bXMLLoaded, m_bIsLocked;
+	bool m_bIsLocked;
 
 	CString* ParseKeys(const CString &csFullKeyPath, int &iNumKeys);
+    bool CreateXML(bool forLoad); // forLoad will skip creation of root element
 	void UnloadXML();
-	MSXML2::IXMLDOMNodePtr FindNode(MSXML2::IXMLDOMNodePtr parentNode,
-		CString* pcsKeys, int iNumKeys,
-		bool bAddNodes = false);
+	TiXmlElement *FindNode(TiXmlElement *parentNode, CString* pcsKeys, int iNumKeys,
+                           bool bAddNodes = false);
 };
 #endif /* __XMLPREFS_H */

@@ -546,8 +546,16 @@ void PWSprefs::InitializePreferences()
 
     const SysInfo *si = SysInfo::GetInstance();
     // Set up XML "keys": host/user
-    m_csHKCU = si->GetCurrentHost() + _T("\\");
-    m_csHKCU += si->GetCurrentUser();
+    // ensure that they start with letter, per
+    // http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
+    CString hn = si->GetCurrentHost();
+    if (!_istalpha(hn[0]))
+        hn = _T("H") + hn;
+    CString un = si->GetCurrentUser();
+    if (!_istalpha(un[0]))
+        un = _T("U") + un;
+    m_csHKCU =  hn + _T("\\");
+    m_csHKCU += un;
     // make sure host/user is only ASCII
     int N = m_csHKCU.GetLength();
     for (int i = 0; i < N; i++) {
@@ -790,7 +798,9 @@ void PWSprefs::SaveApplicationPreferences()
             delete m_XML_Config;
             m_XML_Config = NULL;
         } else { // acquired lock
-            m_XML_Config->Load();
+            // if file exists, load to get other values
+            if (PWSfile::FileExists(m_configfilename))
+                m_XML_Config->Load();
         }
     }
     UpdateTimeStamp();

@@ -241,6 +241,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tinyxml\tinystr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlparser.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TwoFish.cpp"
 				>
 			</File>
@@ -335,6 +351,10 @@
 			</File>
 			<File
 				RelativePath=".\SysInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.h"
 				>
 			</File>
 			<File
