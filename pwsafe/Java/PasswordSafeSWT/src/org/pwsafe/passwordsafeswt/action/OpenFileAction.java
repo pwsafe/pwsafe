@@ -28,6 +28,8 @@ public class OpenFileAction extends Action {
         boolean cancelled = app.saveAppIfDirty();
         if (!cancelled) {
             FileDialog fod = new FileDialog(app.getShell(), SWT.OPEN);
+            fod.setFilterExtensions(new String[] { "*.psafe3,*.dat", "*.*" });
+            fod.setFilterNames(new String[] { "PasswordSafe Files", "All Files"} );
             String fileName = fod.open();
             if (fileName != null) {
                 PasswordDialog pd = new PasswordDialog(app.getShell());
