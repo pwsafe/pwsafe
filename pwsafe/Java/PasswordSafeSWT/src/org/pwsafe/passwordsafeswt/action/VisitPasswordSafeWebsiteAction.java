@@ -26,7 +26,7 @@ public class VisitPasswordSafeWebsiteAction extends Action {
         new Thread() {
             public void run() {
                 try {
-                		Program.launch("http://passwordsafe.sourceforge.net/");
+                		Program.launch("http://www.bytecode.com.au/passwordsafeswt/");
                 } catch (Exception ioe) {
                     MessageBox mb = new MessageBox(app.getShell(),
                             SWT.ICON_ERROR);
