@@ -75,12 +75,21 @@ public class StartupDialog extends Dialog {
 		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setLayout(new FormLayout());
 		shell.setImage(SWTResourceManager.getImage(StartupDialog.class, "/org/pwsafe/passwordsafeswt/images/clogo.gif"));
-		shell.setSize(550, 280);
+		shell.setSize(550, 368);
 		shell.setText("Safe Combination Entry");
 
+		final Label lblTextLogo = new Label(shell, SWT.NONE);
+		lblTextLogo.setAlignment(SWT.CENTER);
+		lblTextLogo.setImage(SWTResourceManager.getImage(StartupDialog.class, "/org/pwsafe/passwordsafeswt/images/psafetxtNew.gif"));
+		final FormData formData_10 = new FormData();
+		formData_10.left = new FormAttachment(24, 0);
+		formData_10.top = new FormAttachment(0, 15);
+		lblTextLogo.setLayoutData(formData_10);
+		
 		final Label lblPleaseEnter = new Label(shell, SWT.NONE);
 		final FormData formData = new FormData();
-		formData.top = new FormAttachment(0, 55);
+		//formData.top = new FormAttachment(0, 55);
+		formData.top = new FormAttachment(lblTextLogo, 15);
 		formData.left = new FormAttachment(0, 55);
 		lblPleaseEnter.setLayoutData(formData);
 		lblPleaseEnter.setText("Please enter the safe combination for the password database:");
@@ -188,13 +197,6 @@ public class StartupDialog extends Dialog {
 		formData_9.left = new FormAttachment(btnCancel, 10);
 		btnHelp.setLayoutData(formData_9);
 		btnHelp.setText("Help");
-
-		final Label lblTextLogo = new Label(shell, SWT.NONE);
-		lblTextLogo.setImage(SWTResourceManager.getImage(StartupDialog.class, "/org/pwsafe/passwordsafeswt/images/psafetxt.gif"));
-		final FormData formData_10 = new FormData();
-		formData_10.top = new FormAttachment(0, 15);
-		formData_10.left = new FormAttachment(50, -100);
-		lblTextLogo.setLayoutData(formData_10);
 
 		final Label lblVersion = new Label(shell, SWT.NONE);
 		final FormData formData_11 = new FormData();

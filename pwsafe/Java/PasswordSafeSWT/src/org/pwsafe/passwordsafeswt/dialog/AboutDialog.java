@@ -49,7 +49,7 @@ public class AboutDialog extends Dialog {
 	protected void createContents() {
 		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setLayout(new GridLayout());
-		shell.setSize(401, 234);
+		shell.setSize(401, 264);
 		shell.setText("About PasswordSafe");
 
 		final Group group = new Group(shell, SWT.NONE);
@@ -58,8 +58,9 @@ public class AboutDialog extends Dialog {
 		group.setLayout(new GridLayout());
 
 		final Label lblLogo = new Label(group, SWT.NONE);
-		lblLogo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_VERTICAL));
-		lblLogo.setImage(SWTResourceManager.getImage(AboutDialog.class, "/org/pwsafe/passwordsafeswt/images/psafetxt.gif"));
+		lblLogo.setAlignment(SWT.CENTER);
+		lblLogo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
+		lblLogo.setImage(SWTResourceManager.getImage(AboutDialog.class, "/org/pwsafe/passwordsafeswt/images/psafetxtNew.gif"));
 
 		final Label lblAuthor = new Label(group, SWT.NONE);
 		lblAuthor.setAlignment(SWT.CENTER);
@@ -79,7 +80,7 @@ public class AboutDialog extends Dialog {
 		});
 		lblWebsite.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
 		lblWebsite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		lblWebsite.setText("Visit Password Safe Website");
+		lblWebsite.setText("Visit PasswordSafeSWT Website");
 
 		final Composite composite = new Composite(shell, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
