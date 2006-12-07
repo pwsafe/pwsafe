@@ -498,13 +498,14 @@ DboxMain::RefreshList()
   LVCOLUMN lvColumn;
   lvColumn.mask = LVCF_WIDTH;
 
-  bool bPasswordColumnShowing;
   m_ctlItemList.GetColumn(3, &lvColumn);
-  if (m_ctlItemList.GetHeaderCtrl()->GetItemCount() == 9)
-  	bPasswordColumnShowing = true;
-  else
-    bPasswordColumnShowing = false;
-  if (m_bShowPasswordInList && !bPasswordColumnShowing) {
+  bool bPasswordColumnShowing =
+      (m_ctlItemList.GetHeaderCtrl()->GetItemCount() == 9);
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
+
+  if (bShowPasswordInList && !bPasswordColumnShowing) {
 	CString cs_text;
   	cs_text.LoadString(IDS_PASSWORD);
     m_ctlItemList.InsertColumn(3, cs_text);
@@ -516,7 +517,7 @@ DboxMain::RefreshList()
                                  GetPref(PWSprefs::Column4Width,
                                          rect.Width() / 4));
   }
-  else if (!m_bShowPasswordInList && bPasswordColumnShowing) {
+  else if (!bShowPasswordInList && bPasswordColumnShowing) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::Column4Width,
                                      lvColumn.cx);
     m_ctlItemList.DeleteColumn(3);
@@ -766,6 +767,8 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
   if (di == NULL)
     di = new DisplayInfo;
   di->list_index = iResult;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
   {
     HTREEITEM ti;
     CMyString treeDispString = title;
@@ -773,7 +776,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     treeDispString += _T(" [");
     treeDispString += user;
     treeDispString += _T("]");
-    if (m_bShowPasswordInList) {
+    if (bShowPasswordInList) {
 		CMyString newPassword = itemData.GetPassword();
 		treeDispString += _T(" [");
 		treeDispString += newPassword;
@@ -806,7 +809,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
   m_ctlItemList.SetItemText(iResult, 1, username);
   m_ctlItemList.SetItemText(iResult, 2, strNotes);
 
-  if (m_bShowPasswordInList) {
+  if (bShowPasswordInList) {
     m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
     m_ctlItemList.SetItemText(iResult, 4, itemData.GetCTimeN());
     m_ctlItemList.SetItemText(iResult, 5, itemData.GetPMTimeN());

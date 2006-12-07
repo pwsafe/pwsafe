@@ -18,6 +18,8 @@ Bugs fixed in 3.06
 ==================
 [1606265] No longer terminates after edit when username and/or
 hostname is not an XML-compliant name.
+[1609759] "Show Password in display list & tree" setting now
+persistent across application exit.
 
 New Features for 3.05
 =====================
