@@ -27,6 +27,7 @@ using namespace std ;
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
+#include "corelib/Pwsprefs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -190,7 +191,11 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 	  treeDispString += _T(" [");
 	  treeDispString += newUser;
 	  treeDispString += _T("]");
-	  if (((DboxMain *)m_parent)->GetShowPasswordInList()) {
+
+      PWSprefs *prefs = PWSprefs::GetInstance();
+      bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
+
+	  if (bShowPasswordInList) {
 		  CString newPassword = CString(ci->GetPassword());
 		  treeDispString += _T(" [");
 		  treeDispString += newPassword;

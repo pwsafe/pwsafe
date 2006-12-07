@@ -105,7 +105,6 @@ public:
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
-  bool GetShowPasswordInList() const {return m_bShowPasswordInList;}
   void SetFindActive() {m_bFindActive = true;}
   void SetFindInActive() {m_bFindActive = false;}
   void SetFindWrap(bool bwrap) {m_bFindWrap = bwrap;}
@@ -170,7 +169,6 @@ protected:
   int m_iSortedColumn;
 
   bool m_bShowPasswordInEdit;
-  bool m_bShowPasswordInList;
   bool m_bAlwaysOnTop;
   bool m_bTSUpdated;
   bool m_saveMRU;

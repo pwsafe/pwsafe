@@ -67,7 +67,7 @@ DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
      m_bSizing( false ), m_needsreading(true), m_windowok(false),
      m_toolbarsSetup(FALSE),
-     m_bShowPasswordInEdit(false), m_bShowPasswordInList(false),
+     m_bShowPasswordInEdit(false),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), 
@@ -369,8 +369,6 @@ DboxMain::InitPasswordSafe()
   m_ctlItemList.InsertColumn(7, cs_header);
 
   m_bShowPasswordInEdit = prefs->GetPref(PWSprefs::ShowPWDefault);
-
-  m_bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView);
   m_IsListView = true;

@@ -217,11 +217,16 @@ DboxMain::OnOptions()
     BOOL                    prevLockOIT; // lock on idle timeout set?
     BOOL                    brc, save_hotkey_enabled;
     DWORD                   save_hotkey_value;
+    CShortcut shortcut;
+    BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
+
+    // Need to compare pre-post values for some:
+    const bool bOldShowPasswordInList = prefs->
+        GetPref(PWSprefs::ShowPWInList);
+
     /*
     **  Initialize the property pages values.
     */
-    CShortcut shortcut;
-    BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
     system.m_maxreitems = prefs->
         GetPref(PWSprefs::MaxREItems);
     system.m_usesystemtray = prefs->
@@ -508,11 +513,11 @@ DboxMain::OnOptions()
         */
         m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
         UpdateAlwaysOnTop();
-        bool bOldShowPasswordInList = m_bShowPasswordInList;
-        m_bShowPasswordInList = prefs->
+
+        bool bShowPasswordInList = prefs->
             GetPref(PWSprefs::ShowPWInList);
 
-        if (bOldShowPasswordInList != m_bShowPasswordInList)
+        if (bOldShowPasswordInList != bShowPasswordInList)
             RefreshList();
 
         if (system.m_usesystemtray == TRUE) {
