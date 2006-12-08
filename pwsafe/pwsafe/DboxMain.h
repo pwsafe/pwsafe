@@ -168,7 +168,6 @@ protected:
   bool m_bSortAscending;
   int m_iSortedColumn;
 
-  bool m_bShowPasswordInEdit;
   bool m_bAlwaysOnTop;
   bool m_bTSUpdated;
   bool m_saveMRU;
