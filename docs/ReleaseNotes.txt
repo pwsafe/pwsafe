@@ -20,6 +20,8 @@ Bugs fixed in 3.06
 hostname is not an XML-compliant name.
 [1609759] "Show Password in display list & tree" setting now
 persistent across application exit.
+[1608191] Tree view's state is now preserved across timed lock and
+when starting with '-s' flag.
 
 New Features for 3.05
 =====================

@@ -358,6 +358,8 @@ private:
   HFONT m_hFontTree;
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
+  CString m_lock_displaystatus;
+
   BOOL IsWorkstationLocked() const;
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;

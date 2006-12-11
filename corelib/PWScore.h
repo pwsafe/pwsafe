@@ -129,6 +129,7 @@ class PWScore {
   void SetPassKey(const CMyString &new_passkey);
 
   void SetDisplayStatus(TCHAR *p_char_displaystatus, const int length);
+  void SetDisplayStatus(const CString &s) { m_displaystatus = s;}
   CString GetDisplayStatus() {return m_displaystatus;}
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK

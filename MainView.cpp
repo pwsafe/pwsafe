@@ -1047,6 +1047,8 @@ DboxMain::OnTimer(UINT nIDEvent )
     if (!(m_core.IsChanged() || m_bTSUpdated) ||
         Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
+      SaveDisplayStatus();
+      m_lock_displaystatus = m_core.GetDisplayStatus();
       ClearData();
       if(IsWindowVisible()){
         ShowWindow(SW_MINIMIZE);
