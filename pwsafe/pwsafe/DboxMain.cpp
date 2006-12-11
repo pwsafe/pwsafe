@@ -69,7 +69,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_toolbarsSetup(FALSE),
      m_bSortAscending(true), m_iSortedColumn(0),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), 
+     m_core(app.m_core), m_lock_displaystatus(_T("")),
      m_hFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
@@ -1354,114 +1354,119 @@ DboxMain::OnUnMinimize()
 void
 DboxMain::UnMinimize(bool update_windows)
 {
-  m_passphraseOK = false;
-  if (!m_bOpen) {
-    // first they may be nothing to do!
-    if (update_windows) {
-      if (m_IsStartSilent) {
-        // Show initial dialog ONCE (if succeeds)
-          if (!m_IsStartClosed) {
-              if (OpenOnInit()) {
-                  m_IsStartSilent = false;
-                  RefreshList();
-                  ShowWindow(SW_RESTORE);
-                  UpdateSystemTray(UNLOCKED);
-              }
-          } else { // m_IsStartClosed (&& m_IsStartSilent)
-              m_IsStartClosed = m_IsStartSilent = false;
-              ShowWindow(SW_RESTORE);
-              UpdateSystemTray(UNLOCKED);
-          }
+    m_passphraseOK = false;
+    if (!m_bOpen) {
+        // first they may be nothing to do!
+        if (update_windows) {
+            if (m_IsStartSilent) {
+                // Show initial dialog ONCE (if succeeds)
+                if (!m_IsStartClosed) {
+                    if (OpenOnInit()) {
+                        m_IsStartSilent = false;
+                        RefreshList();
+                        ShowWindow(SW_RESTORE);
+                        SetInitialDatabaseDisplay();
+                        UpdateSystemTray(UNLOCKED);
+                    }
+                } else { // m_IsStartClosed (&& m_IsStartSilent)
+                    m_IsStartClosed = m_IsStartSilent = false;
+                    ShowWindow(SW_RESTORE);
+                    UpdateSystemTray(UNLOCKED);
+                }
+                return;
+            } // m_IsStartSilent
+            ShowWindow(SW_RESTORE);
+        } // update_windows
+        UpdateSystemTray(CLOSED);
         return;
-      } // m_IsStartSilent
-      ShowWindow(SW_RESTORE);
-    } // update_windows
-    UpdateSystemTray(CLOSED);
-    return;
-  }
+    }
 
-  // Case 1 - data available but is currently locked
-  if (!m_needsreading
-      && (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
-      && (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
+    // Case 1 - data available but is currently locked
+    if (!m_needsreading
+        && (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
+        && (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
-    CMyString passkey;
-    int rc;
-    rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
-    if (rc != PWScore::SUCCESS)
-      return;  // don't even think of restoring window!
+        CMyString passkey;
+        int rc;
+        rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
+        if (rc != PWScore::SUCCESS)
+            return;  // don't even think of restoring window!
 
-    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-    m_passphraseOK = true;
-    if (update_windows)
-      ShowWindow(SW_RESTORE);
-    return;
-  }
+        app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+        m_passphraseOK = true;
+        if (update_windows) {
+            ShowWindow(SW_RESTORE);
+        }
+        return;
+    }
 
-  // Case 2 - data unavailable
-  if (m_needsreading && m_windowok) {
-    CMyString passkey, temp;
-    int rc, rc2;
-    const bool useSysTray = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::UseSystemTray);
+    // Case 2 - data unavailable
+    if (m_needsreading && m_windowok) {
+        CMyString passkey, temp;
+        int rc, rc2;
+        const bool useSysTray = PWSprefs::GetInstance()->
+            GetPref(PWSprefs::UseSystemTray);
 
-    rc = PWScore::USER_CANCEL;
-    if (m_bOpen)
-      rc = GetAndCheckPassword(m_core.GetCurFile(),
-                               passkey,
-                               useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT);
-    CString cs_temp, cs_title;
-    switch (rc) {
-    case PWScore::SUCCESS:
-      rc2 = m_core.ReadCurFile(passkey);
+        rc = PWScore::USER_CANCEL;
+        if (m_bOpen)
+            rc = GetAndCheckPassword(m_core.GetCurFile(),
+                                     passkey,
+                                     useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT);
+        CString cs_temp, cs_title;
+        switch (rc) {
+            case PWScore::SUCCESS:
+                rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-      m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+                m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
 #endif
-      break;
-    case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
-      cs_title.LoadString(IDS_FILEOPEN);
-      MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-    case TAR_NEW:
-      rc2 = New();
-      break;
-    case TAR_OPEN:
-      rc2 = Open();
-      break;
-    case PWScore::WRONG_PASSWORD:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    case PWScore::USER_CANCEL:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    case PWScore::USER_EXIT:
-      m_core.UnlockFile(m_core.GetCurFile());
-      PostQuitMessage(0);
-      return;
-    default:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    }
+                break;
+            case PWScore::CANT_OPEN_FILE:
+                cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+                cs_title.LoadString(IDS_FILEOPEN);
+                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            case TAR_NEW:
+                rc2 = New();
+                break;
+            case TAR_OPEN:
+                rc2 = Open();
+                break;
+            case PWScore::WRONG_PASSWORD:
+                rc2 = PWScore::NOT_SUCCESS;
+                break;
+            case PWScore::USER_CANCEL:
+                rc2 = PWScore::NOT_SUCCESS;
+                break;
+            case PWScore::USER_EXIT:
+                m_core.UnlockFile(m_core.GetCurFile());
+                PostQuitMessage(0);
+                return;
+            default:
+                rc2 = PWScore::NOT_SUCCESS;
+                break;
+        }
 
-    if (rc2 == PWScore::SUCCESS) {
-      m_needsreading = false;
-      UpdateSystemTray(UNLOCKED);
-      startLockCheckTimer();
-      m_passphraseOK = true;
-      if (update_windows) {
-        ShowWindow(SW_RESTORE);
-        BringWindowToTop();
-      }
-    } else {
-      m_needsreading = true;
-      ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+        if (rc2 == PWScore::SUCCESS) {
+            m_needsreading = false;
+            UpdateSystemTray(UNLOCKED);
+            startLockCheckTimer();
+            m_passphraseOK = true;
+            if (update_windows) {
+                ShowWindow(SW_RESTORE);
+                m_core.SetDisplayStatus(m_lock_displaystatus);
+                RestoreDisplayStatus();
+                BringWindowToTop();
+            }
+        } else {
+            m_needsreading = true;
+            ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+        }
+        return;
     }
-    return;
-  }
-  if (update_windows) {
-    ShowWindow(SW_RESTORE);
-    BringWindowToTop();
-  }
+    if (update_windows) {
+        ShowWindow(SW_RESTORE);
+        RestoreDisplayStatus();
+        BringWindowToTop();
+    }
 }
 
 void
