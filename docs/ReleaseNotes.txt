@@ -22,6 +22,7 @@ hostname is not an XML-compliant name.
 persistent across application exit.
 [1608191] Tree view's state is now preserved across timed lock and
 when starting with '-s' flag.
+[1612881] Notes now appear consistently.
 
 New Features for 3.05
 =====================
