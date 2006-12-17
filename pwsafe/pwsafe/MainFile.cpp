@@ -113,12 +113,12 @@ DboxMain::OpenOnInit(void)
     m_needsreading = false;
     startLockCheckTimer();
     UpdateSystemTray(UNLOCKED);
-	m_saveMRU = true;
   	if (!m_bOpen) {
   	  // Previous state was closed - reset DCA in status bar
       SetDCAText();
 	}
 	m_bOpen = true;
+    app.AddToMRU(m_core.GetCurFile());
     return TRUE;
   default:
     if (!m_IsStartSilent)
@@ -322,7 +322,6 @@ DboxMain::Open()
       return PWScore::USER_CANCEL;
     }
   }
-  m_saveMRU = true;
   return rc;
 }
 
@@ -424,7 +423,6 @@ void
 DboxMain::OnClearMRU()
 {
 	app.ClearMRU();
-	m_saveMRU = false;
 }
 
 void
@@ -1658,11 +1656,8 @@ DboxMain::OnOK()
   } // core.IsChanged()
 
   //Store current filename for next time...
-  if (m_saveMRU && !(m_core.GetCurFile()).IsEmpty())
+  if (!m_core.GetCurFile().IsEmpty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-
-    if (app.GetMRU() != NULL)
-        app.GetMRU()->WriteList();
 
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled

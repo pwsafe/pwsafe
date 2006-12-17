@@ -734,17 +734,17 @@ ThisMfcApp::InitInstance()
 }
 
 void
-ThisMfcApp::AddToMRU(const CString &pszFilename, const bool bstartup)
+ThisMfcApp::AddToMRU(const CString &pszFilename)
 {
 	if (m_pMRU == NULL)
 		return;
 
 	CString csMRUFilename(pszFilename);
 	csMRUFilename.Trim();
-	/* Implemented own CRecentFileList to get around MS problem - see code in
-	   PWSRecentFileList.cpp */
-	if (!csMRUFilename.IsEmpty())
-		m_pMRU->Add(csMRUFilename, bstartup);
+	if (!csMRUFilename.IsEmpty()) {
+		m_pMRU->Add(csMRUFilename);
+		m_pMRU->WriteList();
+    }
 }
 
 void
