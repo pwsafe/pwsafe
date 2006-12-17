@@ -18,13 +18,13 @@ File opened in initial dialog now added to recent files list.
 
 Bugs fixed in 3.05.02
 =====================
-[1606265] No longer terminates after edit when username and/or
-hostname starts with a digit.
+[1606265, 1609291] No longer terminates after edit when username
+and/or hostname starts with a digit.
 [1609759] "Show Password in display list & tree" setting now
 persistent across application exit.
 [1608191] Tree view's state is now preserved across timed lock and
 when starting with '-s' flag.
-[1612881] Notes now appear consistently.
+[1612881, 1577505] Notes now appear consistently.
 
 
 New Features for 3.05
