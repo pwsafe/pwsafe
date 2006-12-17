@@ -26,7 +26,6 @@ public:
 	: CRecentFileList(nStart, lpszSection, lpszEntryFormat,
         		nSize, nMaxDispLen){}
 
-	virtual void Add(LPCTSTR lpszPathName, const bool bstartup = false);
 	virtual void ReadList();    // reads from registry or config file
 	virtual void WriteList();   // writes to registry or config file
 };

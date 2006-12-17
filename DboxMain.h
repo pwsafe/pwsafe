@@ -170,7 +170,6 @@ protected:
 
   bool m_bAlwaysOnTop;
   bool m_bTSUpdated;
-  bool m_saveMRU;
   int m_iSessionEndingStatus;
   bool m_bFindActive;
   bool m_bFindWrap;
