@@ -23,6 +23,7 @@
 #include "Properties.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
+#include "corelib/PWSdirs.h"
 
 #include <sys/types.h>
 #include <bitset>
@@ -304,6 +305,9 @@ DboxMain::Open()
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
 	fd.m_ofn.Flags &= ~OFN_READONLY;
+    CString dir = PWSdirs::GetSafeDir();
+    if (!dir.IsEmpty())
+        fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
     const bool last_ro = m_IsReadOnly; // restore if user cancels
     SetReadOnly(fd.GetReadOnlyPref() == TRUE);
@@ -556,6 +560,9 @@ DboxMain::SaveAs()
     else
       cs_text.LoadString(IDS_NEWNAME2);
     fd.m_ofn.lpstrTitle = cs_text;
+    CString dir = PWSdirs::GetSafeDir();
+    if (!dir.IsEmpty())
+        fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
     if (rc == IDOK) {
       newfile = (CMyString)fd.GetPathName();
@@ -893,15 +900,7 @@ DboxMain::OnImportXML()
     return;
 
   CString cs_title, cs_temp, cs_text;
-  CString XSDFilename = _T("");
-  TCHAR acPath[MAX_PATH + 1];
-
-  if ( GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
-    // guaranteed file name of at least one character after path '\'
-    *(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
-    // Add on xsd filename
-    XSDFilename = CString(acPath) + _T("pwsafe.xsd");
-  }
+  CString XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe.xsd");
 
   if (XSDFilename.IsEmpty() || !PWSfile::FileExists(XSDFilename)) {
     cs_temp.LoadString(IDS_MISSINGXSD);
@@ -982,39 +981,41 @@ DboxMain::OnImportXML()
 int
 DboxMain::Merge()
 {
-   int rc = PWScore::SUCCESS;
-   CMyString newfile;
-   CString cs_temp;
+    int rc = PWScore::SUCCESS;
+    CMyString newfile;
+    CString cs_temp;
 
-   //Open-type dialog box
-   while (1) {
-      CFileDialog fd(TRUE,
-                     DEFAULT_SUFFIX,
-                     NULL,
-                     OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_READONLY|OFN_LONGNAMES,
-                     SUFFIX_FILTERS
-                     _T("Password Safe Backups (*.bak)|*.bak|")
-					 _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-                     _T("All files (*.*)|*.*|")
-                     _T("|"),
-                     this);
-      cs_temp.LoadString(IDS_PICKMERGEFILE);
-      fd.m_ofn.lpstrTitle = cs_temp;
-      rc = fd.DoModal();
-      if (rc == IDOK)
-      {
-         newfile = (CMyString)fd.GetPathName();
+    //Open-type dialog box
+    while (1) {
+        CFileDialog fd(TRUE,
+                       DEFAULT_SUFFIX,
+                       NULL,
+                       OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_READONLY|OFN_LONGNAMES,
+                       SUFFIX_FILTERS
+                       _T("Password Safe Backups (*.bak)|*.bak|")
+                       _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
+                       _T("All files (*.*)|*.*|")
+                       _T("|"),
+                       this);
+        cs_temp.LoadString(IDS_PICKMERGEFILE);
+        fd.m_ofn.lpstrTitle = cs_temp;
+        CString dir = PWSdirs::GetSafeDir();
+        if (!dir.IsEmpty())
+            fd.m_ofn.lpstrInitialDir = dir;
+        rc = fd.DoModal();
+        if (rc == IDOK) {
+            newfile = (CMyString)fd.GetPathName();
 
-		 rc = Merge( newfile );
+            rc = Merge( newfile );
 
-		 if ( rc == PWScore::SUCCESS )
-	         break;
-      }
-      else
-         return PWScore::USER_CANCEL;
-   }
+            if ( rc == PWScore::SUCCESS )
+                break;
+        }
+        else
+            return PWScore::USER_CANCEL;
+    }
 
-   return rc;
+    return rc;
 }
 
 int
@@ -1253,14 +1254,17 @@ DboxMain::OnCompare()
 	cs_text.LoadString(IDS_PICKCOMPAREFILE);
 	while (1) {
 		CFileDialog fd(TRUE,
-						DEFAULT_SUFFIX,
-						NULL,
-						OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-						SUFFIX_FILTERS
-						_T("All files (*.*)|*.*|")
-						_T("|"),
-						this);
+                       DEFAULT_SUFFIX,
+                       NULL,
+                       OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                       SUFFIX_FILTERS
+                       _T("All files (*.*)|*.*|")
+                       _T("|"),
+                       this);
 		fd.m_ofn.lpstrTitle = cs_text;
+        CString dir = PWSdirs::GetSafeDir();
+        if (!dir.IsEmpty())
+            fd.m_ofn.lpstrInitialDir = dir;
 		rc = fd.DoModal();
 		if (rc == IDOK) {
 			file2 = (CMyString)fd.GetPathName();

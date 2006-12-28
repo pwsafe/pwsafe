@@ -14,6 +14,7 @@
 #include "ThisMfcApp.h"
 #include "Shortcut.h"
 #include "corelib/pwsprefs.h"
+#include "corelib/PWSdirs.h"
 
 // dialog boxen
 #include "DboxMain.h"
@@ -79,7 +80,9 @@ DboxMain::BackupSafe()
                    _T("Password Safe Backups (*.bak)|*.bak||"),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
-
+    CString dir = PWSdirs::GetSafeDir();
+    if (!dir.IsEmpty())
+        fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
     if (rc == IDOK) {
       tempname = (CMyString)fd.GetPathName();
@@ -132,6 +135,9 @@ DboxMain::Restore()
 				   _T("|"),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
+    CString dir = PWSdirs::GetSafeDir();
+    if (!dir.IsEmpty())
+        fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
     if (rc == IDOK) {
       backup = (CMyString)fd.GetPathName();
