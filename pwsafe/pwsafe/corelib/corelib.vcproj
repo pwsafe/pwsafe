@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWSdirs.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWSfile.cpp"
 				>
 			</File>
@@ -307,6 +311,10 @@
 			</File>
 			<File
 				RelativePath=".\PWScore.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWSdirs.h"
 				>
 			</File>
 			<File

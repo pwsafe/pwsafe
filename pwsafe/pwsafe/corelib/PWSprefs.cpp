@@ -15,6 +15,7 @@
 #include "SysInfo.h"
 #include "XMLprefs.h"
 #include "util.h"
+#include "PWSdirs.h"
 
 using namespace std;
 
@@ -510,23 +511,9 @@ void PWSprefs::InitializePreferences()
  *   host/user
  * - If config file can't be created, fallback to "Password Safe" registry
  */
-    // Find out name of config file (should it exist).
-    TCHAR path_buffer[_MAX_PATH];
-    TCHAR drive[_MAX_DRIVE];
-    TCHAR dir[_MAX_DIR];
+    // Set path & name of config file
 
-    GetModuleFileName(NULL, path_buffer, _MAX_PATH);
-
-#if _MSC_VER >= 1400
-    _tsplitpath_s(path_buffer, drive, _MAX_DRIVE, dir, _MAX_DIR,
-                  NULL, 0, NULL, 0);
-    _tmakepath_s(path_buffer, _MAX_PATH, drive, dir, _T("pwsafe"), _T("cfg"));
-#else
-    _tsplitpath(path_buffer, drive, dir, NULL, NULL);
-    _tmakepath(path_buffer, drive, dir, _T("pwsafe"), _T("cfg"));
-#endif
-
-    m_configfilename = (CString)path_buffer;
+    m_configfilename = PWSdirs::GetConfigDir() + _T("pwsafe.cfg");
 
     // Start with fallback position: hardcoded defaults
     LoadProfileFromDefaults();

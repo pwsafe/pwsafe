@@ -12,6 +12,7 @@
 #include "PasswordSafe.h"
 
 #include "corelib/PWSrand.h"
+#include "corelib/PWSdirs.h"
 #include "corelib/sha256.h"
 #include "corelib/sha1.h"
 
@@ -372,22 +373,14 @@ ThisMfcApp::InitInstance()
 
 	TRACE("%s LOCALE_SISO3166CTRYNAME=%s\n", PWSUtil::GetTimeStamp(), szCtry);
 
-	TCHAR acPath[MAX_PATH + 1];
-
-	if (GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
-		// guaranteed file name of at least one character after path '\'
-		*(_tcsrchr(acPath, TCHAR('\\')) + 1) = TCHAR('\0');
-	} else {
-        acPath[0] = TCHAR('\\'); acPath[1] = TCHAR('\0');
-    }
-
+    const CString cs_ExePath(PWSdirs::GetExeDir());
 	CString cs_ResPath, cs_ResName, cs_PName, cs_SName;
-	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), acPath, szLang, szCtry);
+	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), cs_ExePath, szLang, szCtry);
 	cs_SName.Format(_T("pwsafe%s_%s.dll"), szLang, szCtry);
 	m_hInstResDLL = LoadLibrary(cs_ResPath);
 
 	if(m_hInstResDLL == NULL) {
-		cs_ResPath.Format(_T("%spwsafe%s.dll"), acPath, szLang);
+		cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, szLang);
 		cs_PName.Format(_T("pwsafe%s.dll"), szLang);
 		m_hInstResDLL = LoadLibrary(cs_ResPath);
 		if(m_hInstResDLL == NULL) {
@@ -423,7 +416,7 @@ ThisMfcApp::InitInstance()
 	CString cs_PWS_LANG, cs_ovrResPath, cs_ovrResName;
 	BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
 	if (bPLRC == TRUE) {
-		cs_ovrResPath.Format(_T("%spwsafe%s.dll"), acPath, cs_PWS_LANG);
+		cs_ovrResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_PWS_LANG);
 		cs_ovrResName.Format(_T("pwsafe%s.dll"), cs_PWS_LANG);
 		if (PathFileExists(cs_ovrResPath)) {
 			if (m_hInstResDLL != NULL) {
@@ -442,19 +435,23 @@ ThisMfcApp::InitInstance()
 		AfxSetResourceHandle(m_hInstResDLL);
 
 	CString cs_HelpPath, cs_HelpName;
-	cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), acPath, szLang, szCtry);
+    const CString cs_HelpDir(PWSdirs::GetHelpDir());
+
+	cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), cs_HelpDir, szLang, szCtry);
 	cs_HelpName.Format(_T("pwsafe%s_%s.chm"), szLang, szCtry);
 	if (PathFileExists(cs_HelpPath)) {
 		free((void*)m_pszHelpFilePath);
 		m_pszHelpFilePath = _tcsdup(cs_HelpPath);
-		TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpName);
+		TRACE(_T("%s Using help file: %s\n"),
+              PWSUtil::GetTimeStamp(), cs_HelpName);
 	} else {
-		cs_HelpPath.Format(_T("%spwsafe%s.chm"), acPath, szLang);
+		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, szLang);
 		cs_HelpName.Format(_T("pwsafe%s.chm"), szLang);
 		if (PathFileExists(cs_HelpPath)) {
 			free((void*)m_pszHelpFilePath);
 			m_pszHelpFilePath = _tcsdup(cs_HelpPath);
-			TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpName);
+			TRACE(_T("%s Using help file: %s\n"),
+                  PWSUtil::GetTimeStamp(), cs_HelpName);
 		} else {
 			TCHAR fname[_MAX_FNAME];
 			TCHAR ext[_MAX_EXT];
@@ -476,7 +473,7 @@ ThisMfcApp::InitInstance()
 	CString cs_PWS_HELP, cs_ovrHelpPath, cs_ovrHelpName;
 	BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(_T("PWS_HELP"));
 	if (bPHRC == TRUE) {
-		cs_ovrHelpPath.Format(_T("%spwsafe%s.chm"), acPath, cs_PWS_HELP);
+		cs_ovrHelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_PWS_HELP);
 		cs_ovrHelpName.Format(_T("pwsafe%s.chm"), cs_PWS_HELP);
 		if (PathFileExists(cs_ovrHelpPath)) {
 			free((void*)m_pszHelpFilePath);
