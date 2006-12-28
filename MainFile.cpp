@@ -1396,14 +1396,14 @@ DboxMain::Compare(const CMyString &pszFilename)
 				.... 1...	USER		[0x4] - not checked - must be identical
 				.... .1..	NOTES		[0x5]
 				.... ..1.	PASSWORD	[0x6]
-				.... ...1	CTIME		[0x7]
+        .... ...1 CTIME    [0x7] - not checked - immaterial
 
 				Second word
-				1... ....	PMTIME		[0x8]
-				.1.. ....	ATIME		[0x9]
+        1... .... PMTIME   [0x8] - not checked - immaterial
+        .1.. .... ATIME    [0x9] - not checked - immaterial
 				..1. ....	LTIME		[0xa]
 				...1 ....	POLICY		[0xb] - not yet implemented
-				.... 1...	RMTIME		[0xc]
+        .... 1... RMTIME   [0xc] - not checked - immaterial
 				.... .1..	URL			[0xd]
 				.... ..1.	AUTOTYPE	[0xe]
 				.... ...1	PWHIST		[0xf]
@@ -1416,16 +1416,16 @@ DboxMain::Compare(const CMyString &pszFilename)
 				bsConflicts.flip(CItemData::NOTES);
 			if (currentItem.GetPassword() != compItem.GetPassword())
 				bsConflicts.flip(CItemData::PASSWORD);
-			if (currentItem.GetCTime() != compItem.GetCTime())
+		/*	if (currentItem.GetCTime() != compItem.GetCTime())
 				bsConflicts.flip(CItemData::CTIME);
 			if (currentItem.GetPMTime() != compItem.GetPMTime())
 				bsConflicts.flip(CItemData::PMTIME);
 			if (currentItem.GetATime() != compItem.GetATime())
-				bsConflicts.flip(CItemData::ATIME);
+				bsConflicts.flip(CItemData::ATIME); */
 			if (currentItem.GetLTime() != compItem.GetLTime())
 				bsConflicts.flip(CItemData::LTIME);
-			if (currentItem.GetRMTime() != compItem.GetRMTime())
-				bsConflicts.flip(CItemData::RMTIME);
+        /*  if (currentItem.GetRMTime() != compItem.GetRMTime())
+				bsConflicts.flip(CItemData::RMTIME); */
 			if (currentItem.GetURL() != compItem.GetURL())
 				bsConflicts.flip(CItemData::URL);
 			if (currentItem.GetAutoType() != compItem.GetAutoType())
@@ -1439,6 +1439,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 					st_diff->nPos = foundPos;
 					st_diff->bsDiffs = bsConflicts;
 					list_Conflicts.AddTail(*st_diff);
+                    delete[] st_diff;
 
 					numConflicts++;
 			}
@@ -1526,7 +1527,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 			const CMyString compTitle = compItem.GetTitle();
 			const CMyString compUser = compItem.GetUser();
 
-			buffer.Format(IDS_COMPARESTATS2, compGroup, compTitle, compUser);
+			buffer.Format(IDS_COMPARESTATS, compGroup, compTitle, compUser);
 			resultStr += buffer;
 
 			list_OnlyInComp.GetNext(compPos);
