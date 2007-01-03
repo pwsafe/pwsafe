@@ -907,7 +907,7 @@ ThisMfcApp::OnHelp()
   CString cs_text;
   cs_text.LoadString(IDS_OPTIONS);
   if (cs_title != cs_text) {
-    ::HtmlHelp(wnd->m_hWnd,
+      ::HtmlHelp(wnd != NULL ? wnd->m_hWnd : NULL,
                (LPCTSTR)m_csHelpFile,
                HH_DISPLAY_TOPIC, 0);
   } else {
