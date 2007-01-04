@@ -330,404 +330,398 @@ ThisMfcApp::ExitInstance()
 BOOL
 ThisMfcApp::InitInstance()
 {
-  /*
-   * It's always best to start at the beginning.  [Glinda, Witch of the North]
-   */
+    /*
+     * It's always best to start at the beginning.  [Glinda, Witch of the North]
+     */
 
-  // Get application version information
-  GetApplicationVersionData();
+    // Get application version information
+    GetApplicationVersionData();
 
-  /*
-   Format of resource-only DLL names (which MUST be in the same directory as the pwsafe.exe)
-	 Release:  pwsafeLL_CC.dll
-   or
-	 Release:  pwsafeLL.dll
+    /*
+      Format of resource-only DLL names (in dir returned by GetExeDir)
+      pwsafeLL_CC.dll
+      or
+      pwsafeLL.dll
 
-   where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
-       see http://www.loc.gov/standards/iso639-2/
-   and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
-       see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
+      where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
+      see http://www.loc.gov/standards/iso639-2/
+      and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
+      see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
 
-   Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
-   .NET V2 and later applications (CultureInfo Class) or under Vista (via LOCALE_SNAME).
-   Older native and .NET V1 applications only support the ISO 639-1 two character
-   language codes.
+      Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
+      .NET V2 and later applications (CultureInfo Class)
+      or under Vista (via LOCALE_SNAME).
+      Older native and .NET V1 applications only support the ISO 639-1 two character
+      language codes.
 
-   Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
-   can't be found, the resources embedded in the executable pwsafe.exe will be used 
-   (US English i.e. equivalent to pwsafeEN_US.dll)).
-   */
+      We will use locale info from ::GetLocaleInfo unless PWS_LANG is defined.
 
-	int inum;
-	TCHAR szLang[4], szCtry[4];
-	inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME,
-		szLang, 4);
-	ASSERT(inum == 3);
-	_tcsupr(szLang);
+      Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
+      can't be found, the resources embedded in the executable pwsafe.exe will be used 
+      (US English i.e. equivalent to pwsafeEN_US.dll)).
 
-	TRACE("%s LOCALE_SISO639LANGNAME=%s\n", PWSUtil::GetTimeStamp(), szLang);
+      Likewise, we will look for localized versions of pwsafe.chm in GetHelpDir,
+      defaulting to pwsafe.chm if not found.
+    */
 
-	inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
-		szCtry, 4);
-	ASSERT(inum == 3);
+	CString cs_PWS_LANG, cs_LANG, cs_CTRY;
+	BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
+	if (bPLRC == TRUE) { // did user override via PWS_LANG env var?
+        cs_LANG = cs_PWS_LANG;
+        cs_CTRY = _T("");
+    } else { // no override, use Locale info
+        int inum;
+        TCHAR szLang[4], szCtry[4];
+        inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME,
+                               szLang, 4);
+        ASSERT(inum == 3);
+        _tcsupr(szLang);
+        TRACE("%s LOCALE_SISO639LANGNAME=%s\n", PWSUtil::GetTimeStamp(), szLang);
 
-	TRACE("%s LOCALE_SISO3166CTRYNAME=%s\n", PWSUtil::GetTimeStamp(), szCtry);
+        inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
+                               szCtry, 4);
+        ASSERT(inum == 3);
+        TRACE("%s LOCALE_SISO3166CTRYNAME=%s\n", PWSUtil::GetTimeStamp(), szCtry);
+        cs_LANG = szLang; cs_CTRY = szCtry;
+    }
 
     const CString cs_ExePath(PWSdirs::GetExeDir());
-	CString cs_ResPath, cs_ResName, cs_PName, cs_SName;
-	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), cs_ExePath, szLang, szCtry);
-	cs_SName.Format(_T("pwsafe%s_%s.dll"), szLang, szCtry);
-	m_hInstResDLL = LoadLibrary(cs_ResPath);
+	CString cs_ResPath;
+
+	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), cs_ExePath, cs_LANG, cs_CTRY);
+    m_hInstResDLL = LoadLibrary(cs_ResPath);
 
 	if(m_hInstResDLL == NULL) {
-		cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, szLang);
-		cs_PName.Format(_T("pwsafe%s.dll"), szLang);
+		cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_LANG);
 		m_hInstResDLL = LoadLibrary(cs_ResPath);
-		if(m_hInstResDLL == NULL) {
-			cs_ResName.Format(_T("%s.exe"), m_pszExeName);
-			TRACE(_T("%s Could not load language DLLs '%s' or '%s' - using embedded resources.\n"),
-				PWSUtil::GetTimeStamp(), cs_SName, cs_PName);
-		} else {
-			cs_ResName = cs_PName;
-			TRACE(_T("%s Could not load language dll '%s' - using language DLL '%s'.\n"), 
-				PWSUtil::GetTimeStamp(), cs_SName, cs_PName);
-		}
-	} else {
-		cs_ResName = cs_SName;
+    }
+    if(m_hInstResDLL == NULL) {
+        TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
+              PWSUtil::GetTimeStamp());
+	} else { // successfully loaded a resource dll, check version
 		CString csResLibInfo(GetVersionInfoFromFile(cs_ResPath));
 		CString csExeFileInfo(m_csFileVersionString);
 
-		//int iRI = csResLibInfo.ReverseFind(_T(','));
-		//int iEI = csExeFileInfo.ReverseFind(_T(','));
-		//csResLibInfo = csResLibInfo.Left(iRI);
-		//csExeFileInfo = csExeFileInfo.Left(iEI);
-
 		if (csExeFileInfo != csResLibInfo) {
 			TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %s/%s.\n"), 
-				PWSUtil::GetTimeStamp(), cs_ResName, csExeFileInfo, csResLibInfo);
+                  PWSUtil::GetTimeStamp(), cs_ResPath, csExeFileInfo, csResLibInfo);
 			FreeLibrary(m_hInstResDLL);
 			m_hInstResDLL = NULL;
-			cs_ResName.Format(_T("%s.exe"), m_pszExeName);
-		} else {
-			TRACE(_T("%s Using language DLL '%s'.\n"), PWSUtil::GetTimeStamp(), cs_SName);
+		} else { // Passed version check
+			TRACE(_T("%s Using language DLL '%s'.\n"),
+                  PWSUtil::GetTimeStamp(), cs_ResPath);
 		}
-	}
-
-	CString cs_PWS_LANG, cs_ovrResPath, cs_ovrResName;
-	BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
-	if (bPLRC == TRUE) {
-		cs_ovrResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_PWS_LANG);
-		cs_ovrResName.Format(_T("pwsafe%s.dll"), cs_PWS_LANG);
-		if (PathFileExists(cs_ovrResPath)) {
-			if (m_hInstResDLL != NULL) {
-				FreeLibrary(m_hInstResDLL);
-				TRACE(_T("%s Language library %s overriden by user. %s now being used.\n"),
-					PWSUtil::GetTimeStamp(), cs_ResName, cs_ovrResName);
-			} else {
-				TRACE(_T("%s Language library %s now being used by user request.\n"),
-					PWSUtil::GetTimeStamp(), cs_ovrResName);
-			}
-			m_hInstResDLL = LoadLibrary(cs_ovrResPath);
-		}
-	}
+	} // end of resource dll hunt
 
 	if (m_hInstResDLL != NULL)
 		AfxSetResourceHandle(m_hInstResDLL);
 
-	CString cs_HelpPath, cs_HelpName;
+    /**
+     * So far, we've handle the resource dll. Now go for the compiled helpfile
+     * in a similar manner.
+     */
+
+	CString cs_HelpPath;
     const CString cs_HelpDir(PWSdirs::GetHelpDir());
+    bool helpFileFound = false;
 
-	cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), cs_HelpDir, szLang, szCtry);
-	cs_HelpName.Format(_T("pwsafe%s_%s.chm"), szLang, szCtry);
-	if (PathFileExists(cs_HelpPath)) {
-		free((void*)m_pszHelpFilePath);
-		m_pszHelpFilePath = _tcsdup(cs_HelpPath);
-		TRACE(_T("%s Using help file: %s\n"),
-              PWSUtil::GetTimeStamp(), cs_HelpName);
-	} else {
-		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, szLang);
-		cs_HelpName.Format(_T("pwsafe%s.chm"), szLang);
-		if (PathFileExists(cs_HelpPath)) {
-			free((void*)m_pszHelpFilePath);
-			m_pszHelpFilePath = _tcsdup(cs_HelpPath);
-			TRACE(_T("%s Using help file: %s\n"),
-                  PWSUtil::GetTimeStamp(), cs_HelpName);
-		} else {
-			TCHAR fname[_MAX_FNAME];
-			TCHAR ext[_MAX_EXT];
-#if _MSC_VER >= 1400
-			_tsplitpath_s( m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
-                       _MAX_FNAME, ext, _MAX_EXT );
-			_tcslwr_s(fname, _MAX_FNAME);
-			_tcslwr_s(ext, _MAX_EXT);
-#else
-			_tsplitpath( m_pszHelpFilePath, NULL, NULL, fname, ext );
-			_tcslwr(ext);
-			_tcslwr(fname);
-#endif
-			cs_HelpName.Format(_T("%s%s"), fname, ext);
-			TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpName);
-		}
-	}
-
-	CString cs_PWS_HELP, cs_ovrHelpPath, cs_ovrHelpName;
+	CString cs_PWS_HELP;
 	BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(_T("PWS_HELP"));
 	if (bPHRC == TRUE) {
-		cs_ovrHelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_PWS_HELP);
-		cs_ovrHelpName.Format(_T("pwsafe%s.chm"), cs_PWS_HELP);
-		if (PathFileExists(cs_ovrHelpPath)) {
-			free((void*)m_pszHelpFilePath);
-			m_pszHelpFilePath = _tcsdup(cs_ovrHelpPath);
-			TRACE(_T("%s Help file %s overriden by user. %s now being used.\n"),
-				PWSUtil::GetTimeStamp(), cs_HelpName, cs_ovrHelpName);
-			cs_HelpName = cs_ovrHelpName;
+		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_PWS_HELP);
+		if (PathFileExists(cs_HelpPath)) {
+            helpFileFound = true;
+			if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
+			m_pszHelpFilePath = _tcsdup(cs_HelpPath);
+			TRACE(_T("%s Help file overriden by user. Using %s.\n"),
+                  PWSUtil::GetTimeStamp(), cs_HelpPath);
 		}
 	}
 
-	m_csHelpFile = cs_HelpName;
+    if (!helpFileFound) {
+        cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), cs_HelpDir, cs_LANG, cs_CTRY);
+        if (PathFileExists(cs_HelpPath)) {
+            helpFileFound = true;
+        }
+    }
+    if (!helpFileFound) {
+		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_LANG);
+		if (PathFileExists(cs_HelpPath)) {
+            helpFileFound = true;
+		}
+    }
+    if (!helpFileFound) {
+		cs_HelpPath.Format(_T("%spwsafe.chm"), cs_HelpDir);
+		if (PathFileExists(cs_HelpPath)) {
+            helpFileFound = true;
+		}
+    }
+    if (!helpFileFound) { // last resort
+        TCHAR fname[_MAX_FNAME];
+        TCHAR ext[_MAX_EXT];
+#if _MSC_VER >= 1400
+        _tsplitpath_s( m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
+                       _MAX_FNAME, ext, _MAX_EXT );
+        _tcslwr_s(fname, _MAX_FNAME);
+        _tcslwr_s(ext, _MAX_EXT);
+#else
+        _tsplitpath( m_pszHelpFilePath, NULL, NULL, fname, ext );
+        _tcslwr(ext);
+        _tcslwr(fname);
+#endif
+        cs_HelpPath.Format(_T("%s%s"), fname, ext);
+        TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
+    }
 
-  // PWScore needs it to get into database header if/when saved
-  m_core.SetApplicationMajorMinor(m_dwMajorMinor);
+    if (m_pszHelpFilePath != NULL)
+        free((void*)m_pszHelpFilePath);
+    m_pszHelpFilePath = _tcsdup(cs_HelpPath);
+    TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
+
+	m_csHelpFile = cs_HelpPath;
+
+    // PWScore needs it to get into database header if/when saved
+    m_core.SetApplicationMajorMinor(m_dwMajorMinor);
 
 #if defined(POCKET_PC)
-  SHInitExtraControls();
+    SHInitExtraControls();
 #endif
 
-  /*
-    this instructs the app to use the registry instead of .ini files.  The
-    path ends up being
+    /*
+      this instructs the app to use the registry instead of .ini files.  The
+      path ends up being
 
-    HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
-    where companyname is what's set here, and appname is taken from
-    AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
+      HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+      where companyname is what's set here, and appname is taken from
+      AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
 
-    Notes:
-    1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
-       member function.
-    2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
-       for discussion on how this is handled.
-  */
-  SetRegistryKey(_T("Password Safe"));
+      Notes:
+      1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
+      member function.
+      2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
+      for discussion on how this is handled.
+    */
+    SetRegistryKey(_T("Password Safe"));
 
-  // MUST (indirectly) create PWSprefs first
-  // Ensures all things like saving locations etc. are set up.
-  PWSprefs *prefs = PWSprefs::GetInstance();
+    // MUST (indirectly) create PWSprefs first
+    // Ensures all things like saving locations etc. are set up.
+    PWSprefs *prefs = PWSprefs::GetInstance();
 
-  CMenu* new_popupmenu = NULL;
+    CMenu* new_popupmenu = NULL;
 
-  int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
+    int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
 
-  m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
+    m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
 
-  m_clipboard_set = false;
+    m_clipboard_set = false;
 
-  m_mainmenu = new CMenu;
-  m_mainmenu->LoadMenu(IDR_MAINMENU);
-  new_popupmenu = new CMenu;
+    m_mainmenu = new CMenu;
+    m_mainmenu->LoadMenu(IDR_MAINMENU);
+    new_popupmenu = new CMenu;
 
-  // Look for "File" menu.
-  CString cs_text;
-  cs_text.LoadString(IDS_FILEMENU);
-  int pos = FindMenuItem(m_mainmenu, cs_text);
-  if (pos == -1) // E.g., in non-English versions
-      pos = 0; // best guess...
+    // Look for "File" menu.
+    CString cs_text;
+    cs_text.LoadString(IDS_FILEMENU);
+    int pos = FindMenuItem(m_mainmenu, cs_text);
+    if (pos == -1) // E.g., in non-English versions
+        pos = 0; // best guess...
 
-  CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
-  if (file_submenu != NULL)	// Look for "Close Database"
-      pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
-  else
-      pos = -1;
+    CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
+    if (file_submenu != NULL)	// Look for "Close Database"
+        pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
+    else
+        pos = -1;
 
-  if (nMRUItems > 0) {
-      if (pos > -1) {
-          int irc;
-          // Create New Popup Menu
-          new_popupmenu->CreatePopupMenu();
-          CString cs_recent, cs_recentsafes;
-          cs_recent.LoadString(IDS_RECENT);
-          cs_recentsafes.LoadString(IDS_RECENTSAFES);
+    if (nMRUItems > 0) {
+        if (pos > -1) {
+            int irc;
+            // Create New Popup Menu
+            new_popupmenu->CreatePopupMenu();
+            CString cs_recent, cs_recentsafes;
+            cs_recent.LoadString(IDS_RECENT);
+            cs_recentsafes.LoadString(IDS_RECENTSAFES);
           
-          if (!m_mruonfilemenu) {	// MRU entries in popup menu
-              // Insert Item onto new popup
-              irc = new_popupmenu->InsertMenu(0, MF_BYPOSITION,
-                                              ID_FILE_MRU_ENTRY1, cs_recent);
-              ASSERT(irc != 0);
-              // Insert Popup onto main menu
-              irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION | MF_POPUP,
-                                             (UINT) new_popupmenu->m_hMenu,
-                                             cs_recentsafes);
-              ASSERT(irc != 0);
-          } else {	// MRU entries inline
-              irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
-                                             ID_FILE_MRU_ENTRY1, cs_recent);
-              ASSERT(irc != 0);
-          } // m_mruonfilemenu
+            if (!m_mruonfilemenu) {	// MRU entries in popup menu
+                // Insert Item onto new popup
+                irc = new_popupmenu->InsertMenu(0, MF_BYPOSITION,
+                                                ID_FILE_MRU_ENTRY1, cs_recent);
+                ASSERT(irc != 0);
+                // Insert Popup onto main menu
+                irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION | MF_POPUP,
+                                               (UINT) new_popupmenu->m_hMenu,
+                                               cs_recentsafes);
+                ASSERT(irc != 0);
+            } else {	// MRU entries inline
+                irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
+                                               ID_FILE_MRU_ENTRY1, cs_recent);
+                ASSERT(irc != 0);
+            } // m_mruonfilemenu
 
-          m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
-          m_pMRU->ReadList();
-      } // pos > -1
-  } else { // nMRUItems <= 0
-      if (pos > -1) {
-          int irc;
-          // Remove extra separator
-          irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
-          ASSERT( irc != 0);
-          // Remove Clear MRU menu item.
-          irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
-          ASSERT( irc != 0);
-      }
-  }
+            m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
+            m_pMRU->ReadList();
+        } // pos > -1
+    } else { // nMRUItems <= 0
+        if (pos > -1) {
+            int irc;
+            // Remove extra separator
+            irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
+            ASSERT( irc != 0);
+            // Remove Clear MRU menu item.
+            irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
+            ASSERT( irc != 0);
+        }
+    }
 
-  DboxMain dbox(NULL);
+    DboxMain dbox(NULL);
 
-  /*
-   * Command line processing:
-   * Historically, it appears that if a filename was passed as a commadline argument,
-   * the application would prompt the user for the password, and the encrypt or decrypt
-   * the named file, based on the file's suffix. Ugh.
-   *
-   * What I'll do is as follows:
-   * If a file is given in the command line, it is used as the database, overriding the
-   * registry value. This will allow the user to have several databases, say, one for work
-   * and one for personal use, and to set up a different shortcut for each.
-   *
-   * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
-   * {kjp} ... and I've removed all of it from the Pocket PC build.
-   */
+    /*
+     * Command line processing:
+     * Historically, it appears that if a filename was passed as a commadline argument,
+     * the application would prompt the user for the password, and the encrypt or decrypt
+     * the named file, based on the file's suffix. Ugh.
+     *
+     * What I'll do is as follows:
+     * If a file is given in the command line, it is used as the database, overriding the
+     * registry value. This will allow the user to have several databases, say, one for work
+     * and one for personal use, and to set up a different shortcut for each.
+     *
+     * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
+     * {kjp} ... and I've removed all of it from the Pocket PC build.
+     */
 
 #if !defined(POCKET_PC)
-  if (m_lpCmdLine[0] != TCHAR('\0')) {
-    CString args = m_lpCmdLine;
+    if (m_lpCmdLine[0] != TCHAR('\0')) {
+        CString args = m_lpCmdLine;
 
-    if (args[0] != _T('-')) {
-      StripFileQuotes( args );
+        if (args[0] != _T('-')) {
+            StripFileQuotes( args );
 
-      if (CheckFile(args)) {
-        dbox.SetCurFile(args);
-      } else {
-        return FALSE;
-      }
-    } else { // here if first char of arg is '-'
-      // first, let's check that there's a second arg
-      CString fn = args.Right(args.GetLength()-2);
-      fn.Trim();
+            if (CheckFile(args)) {
+                dbox.SetCurFile(args);
+            } else {
+                return FALSE;
+            }
+        } else { // here if first char of arg is '-'
+            // first, let's check that there's a second arg
+            CString fn = args.Right(args.GetLength()-2);
+            fn.Trim();
 
-      if (!fn.IsEmpty())
-        StripFileQuotes( fn );
+            if (!fn.IsEmpty())
+                StripFileQuotes( fn );
 
-      const int UC_arg1(toupper(args[1]));
-	  // The following arguements require the database name and it exists!
-      if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
-		   && (fn.IsEmpty() || CheckFile(fn) == FALSE)) {
-        Usage();
-        return FALSE;
-      }
+            const int UC_arg1(toupper(args[1]));
+            // The following arguements require the database name and it exists!
+            if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
+                && (fn.IsEmpty() || CheckFile(fn) == FALSE)) {
+                Usage();
+                return FALSE;
+            }
 
-	  if (fn.IsEmpty())
-		  fn = (CString)PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentFile);
+            if (fn.IsEmpty())
+                fn = (CString)PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentFile);
 
-      CMyString passkey;
-      if (UC_arg1 == 'E' || UC_arg1 == 'D') {
-        // get password from user if valid flag given. If note, default below will
-        // pop usage message
-        CCryptKeyEntry dlg(NULL);
-        int nResponse = dlg.DoModal();
+            CMyString passkey;
+            if (UC_arg1 == 'E' || UC_arg1 == 'D') {
+                // get password from user if valid flag given. If note, default below will
+                // pop usage message
+                CCryptKeyEntry dlg(NULL);
+                int nResponse = dlg.DoModal();
 
-        if (nResponse==IDOK) {
-          passkey = dlg.m_cryptkey1;
-        } else {
-          return FALSE;
-        }
-      }
-      BOOL status;
-      dbox.SetReadOnly(false);
-      switch (UC_arg1) {
-      case 'C':
-        dbox.SetStartClosed(true);
-        dbox.SetCurFile(_T(""));
-        break;
-      case 'D': // do decryption
-        status = DecryptFile(fn, passkey);
-        if (!status) {
-          // nothing to do - DecryptFile displays its own error messages
-        }
-        return TRUE;
-      case 'E': // do encrpytion
-        status = EncryptFile(fn, passkey);
-        if (!status) {
-          AfxMessageBox(IDS_ENCRYPTIONFAILED);
-        }
-        return TRUE;
-      case 'M': // closed & minimized
-        dbox.SetStartClosed(true);
-        dbox.SetStartSilent(true);
-        dbox.SetCurFile(_T(""));
-        break;
-      case 'R':
-        dbox.SetReadOnly(true);
-        dbox.SetCurFile(fn);
-        break;
-      case 'S':
-        dbox.SetStartSilent(true);
-        dbox.SetCurFile(fn);
-        break;
-      case 'V':
-        dbox.SetValidate(true);
-        dbox.SetCurFile(fn);
-        break;
-      default:
-        Usage();
-        return FALSE;
-      } // switch
-    } // else
-  } // m_lpCmdLine[0] != TCHAR('\0');
+                if (nResponse==IDOK) {
+                    passkey = dlg.m_cryptkey1;
+                } else {
+                    return FALSE;
+                }
+            }
+            BOOL status;
+            dbox.SetReadOnly(false);
+            switch (UC_arg1) {
+                case 'C':
+                    dbox.SetStartClosed(true);
+                    dbox.SetCurFile(_T(""));
+                    break;
+                case 'D': // do decryption
+                    status = DecryptFile(fn, passkey);
+                    if (!status) {
+                        // nothing to do - DecryptFile displays its own error messages
+                    }
+                    return TRUE;
+                case 'E': // do encrpytion
+                    status = EncryptFile(fn, passkey);
+                    if (!status) {
+                        AfxMessageBox(IDS_ENCRYPTIONFAILED);
+                    }
+                    return TRUE;
+                case 'M': // closed & minimized
+                    dbox.SetStartClosed(true);
+                    dbox.SetStartSilent(true);
+                    dbox.SetCurFile(_T(""));
+                    break;
+                case 'R':
+                    dbox.SetReadOnly(true);
+                    dbox.SetCurFile(fn);
+                    break;
+                case 'S':
+                    dbox.SetStartSilent(true);
+                    dbox.SetCurFile(fn);
+                    break;
+                case 'V':
+                    dbox.SetValidate(true);
+                    dbox.SetCurFile(fn);
+                    break;
+                default:
+                    Usage();
+                    return FALSE;
+            } // switch
+        } // else
+    } // m_lpCmdLine[0] != TCHAR('\0');
 #endif
 
-  /*
-   * normal startup
-   */
+    /*
+     * normal startup
+     */
 
-  /*
-    Here's where PWS currently does DboxMain, which in turn will do
-    the initial PasskeyEntry (the one that looks like a splash screen).
-    This makes things very hard to control.
-    The app object (here) should instead do the initial PasskeyEntry,
-    and, if successful, move on to DboxMain.  I think. {jpr}
-  */
-  m_maindlg = &dbox;
-  m_pMainWnd = m_maindlg;
+    /*
+      Here's where PWS currently does DboxMain, which in turn will do
+      the initial PasskeyEntry (the one that looks like a splash screen).
+      This makes things very hard to control.
+      The app object (here) should instead do the initial PasskeyEntry,
+      and, if successful, move on to DboxMain.  I think. {jpr}
+    */
+    m_maindlg = &dbox;
+    m_pMainWnd = m_maindlg;
 
-  // JHF : no tray icon and menu for PPC
+    // JHF : no tray icon and menu for PPC
 #if !defined(POCKET_PC)
-  //HICON stIcon = app.LoadIcon(IDI_TRAY);
-  //ASSERT(stIcon != NULL);
-  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
-  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
-  m_ClosedIcon = app.LoadIcon(IDI_TRAY);
-  m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-                               m_LockedIcon, dbox.m_RUEList,
-                               WM_ICON_NOTIFY, IDR_POPTRAY);
-  m_TrayIcon->SetTarget(&dbox);
+    //HICON stIcon = app.LoadIcon(IDI_TRAY);
+    //ASSERT(stIcon != NULL);
+    m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
+    m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
+    m_ClosedIcon = app.LoadIcon(IDI_TRAY);
+    m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
+                                 m_LockedIcon, dbox.m_RUEList,
+                                 WM_ICON_NOTIFY, IDR_POPTRAY);
+    m_TrayIcon->SetTarget(&dbox);
 
 #endif
 
-  // Set up an Accelerator table
+    // Set up an Accelerator table
 #if !defined(POCKET_PC)
-  m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
-                                    MAKEINTRESOURCE(IDR_ACCS));
+    m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
+                                      MAKEINTRESOURCE(IDR_ACCS));
 #endif
-  //Run dialog
-  (void) dbox.DoModal();
+    //Run dialog
+    (void) dbox.DoModal();
 
-  /*
-    note that we don't particularly care what the response was
-  */
+    /*
+      note that we don't particularly care what the response was
+    */
 
-  // Since the dialog has been closed, return FALSE so that we exit the
-  // application, rather than start the application's message pump.
-  delete new_popupmenu;
+    // Since the dialog has been closed, return FALSE so that we exit the
+    // application, rather than start the application's message pump.
+    delete new_popupmenu;
 
-  return FALSE;
+    return FALSE;
 }
 
 void
