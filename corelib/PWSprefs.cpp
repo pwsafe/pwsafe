@@ -497,6 +497,20 @@ void PWSprefs::UpdateTimeStamp()
 	}
 }
 
+static void xmlify( TCHAR t, CString &name)
+{
+    if (!_istalpha(name[0]))
+        name = t + name;
+    int N = name.GetLength();
+    for (int i = 0; i < N; i++)
+        if (!_istalpha(name[i]) &&
+            name[i] != TCHAR('_') &&
+            name[i] != TCHAR('-') &&
+            name[i] != TCHAR(':') &&
+            name[i] != TCHAR('.'))
+            name.SetAt(i, TCHAR('_'));
+}
+
 void PWSprefs::InitializePreferences()
 {
 /*
@@ -533,21 +547,21 @@ void PWSprefs::InitializePreferences()
 
     const SysInfo *si = SysInfo::GetInstance();
     // Set up XML "keys": host/user
-    // ensure that they start with letter, per
+    // ensure that they start with letter,
+    // and otherwise conforms with
     // http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
     CString hn = si->GetCurrentHost();
-    if (!_istalpha(hn[0]))
-        hn = _T("H") + hn;
+    xmlify('H', hn);
     CString un = si->GetCurrentUser();
-    if (!_istalpha(un[0]))
-        un = _T("U") + un;
+    xmlify('u', un);
     m_csHKCU =  hn + _T("\\");
     m_csHKCU += un;
     // make sure host/user is only ASCII
     int N = m_csHKCU.GetLength();
     for (int i = 0; i < N; i++) {
         TCHAR t = m_csHKCU[i];
-        t &= 0x7f;
+        if (t != _T('\\') && !_istalnum(t))
+            t = ('A' + (TBYTE)t % 26); // XXX
         m_csHKCU.SetAt(i, t);
     }
     // set up other keys
