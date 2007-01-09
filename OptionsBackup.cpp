@@ -107,9 +107,8 @@ BOOL COptionsBackup::OnInitDialog()
 
 	if(m_backupsuffix_cbox.GetCount() == 0) {
 		// add the strings in alphabetical order
-		CString cs_text;
+		CString cs_text(MAKEINTRESOURCE(IDS_NONE));
 		int nIndex;
-		cs_text.LoadString(IDS_NONE);
 		nIndex = m_backupsuffix_cbox.AddString(cs_text);
 		m_backupsuffix_cbox.SetItemData(nIndex, PWSprefs::BKSFX_None);
 		m_BKSFX_to_Index[PWSprefs::BKSFX_None] = nIndex;
@@ -382,8 +381,7 @@ void COptionsBackup::OnBrowseForLocation()
 
   bi.hwndOwner = this->GetSafeHwnd();
   bi.ulFlags = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_USENEWUI;
-  CString cs_text;
-  cs_text.LoadString(IDS_OPTBACKUPTITLE);
+  CString cs_text(MAKEINTRESOURCE(IDS_OPTBACKUPTITLE));
   bi.lpszTitle = cs_text;
   bi.lpfn = SetSelProc;
   bi.lParam = (LPARAM)(LPCTSTR) cs_initiallocation;

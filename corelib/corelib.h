@@ -73,7 +73,9 @@
 #define IDSC_FILEEXCEPTION13            3113
 #define IDSC_FILEEXCEPTION14            3114
                                         
-#define IDSC_CONFIG_NONE                 3230
-#define IDSC_CONFIG_REGISTRY             3231
-#define IDSC_CONFIG_FILE_RO              3232
-#define IDSC_CONFIG_FILE_RW              3233
+#define IDSC_CONFIG_NONE                3230
+#define IDSC_CONFIG_REGISTRY            3231
+#define IDSC_CONFIG_FILE_RO             3232
+#define IDSC_CONFIG_FILE_RW             3233
+
+#define IDSC_IMPORTNUMBER               3240

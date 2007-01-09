@@ -126,3 +126,8 @@ BEGIN
     IDSC_CONFIG_FILE_RO      "C:F[R-O]"
     IDSC_CONFIG_FILE_RW      "C:F[R/W]"
 END
+
+STRINGTABLE
+BEGIN
+    IDSC_IMPORTNUMBER        " Import # %d"
+END

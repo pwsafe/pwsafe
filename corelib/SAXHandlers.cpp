@@ -16,6 +16,7 @@
 #include "SAXHandlers.h"
 #include "UUIDGen.h"
 #include "xml_import.h"
+#include "corelib.h"
 
 // Stop warnings about unused formal parameters!
 #pragma warning(disable : 4100)
@@ -372,18 +373,45 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 			tempitem.CreateUUID();
 		else {
 			uuid_array_t uuid_array;
+            // _stscanf_s always outputs to an "int" using %x even though
+            // target is only 1.  Read into larger buffer to prevent data being
+            // overwritten and then copy to where we want it!
+            unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
+			int nscanned = 0;
+			TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
+ 			for (int i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
-			int nscanned = _stscanf_s(cur_entry->uuid, _T("%32x"), uuid_array);
+			    nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
-			int nscanned = _stscanf(cur_entry->uuid, T("%32x"), uuid_array);
+			    nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #endif
-			if (nscanned != 1)
+                lpszuuid += 2;
+            }
+            cur_entry->uuid.ReleaseBuffer(sizeof(uuid_array_t) * 2);
+            memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
+			if (nscanned != sizeof(uuid_array_t) || m_xmlcore->Find(uuid_array) != NULL)
 				tempitem.CreateUUID();
-			else
+			else {
 				tempitem.SetUUID(uuid_array);
 		}
+		}
 		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
-		tempitem.SetGroup(newgroup + cur_entry->group);
+		newgroup += cur_entry->group;
+		if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != NULL) {
+            // Find a unique "Title"
+            CMyString Unique_Title;
+            POSITION listpos = NULL;
+            int i = 0;
+            CString s_import;
+            do {
+                i++;
+                s_import.Format(IDSC_IMPORTNUMBER, i);
+                Unique_Title = cur_entry->title + CMyString(s_import);
+                listpos = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
+            } while (listpos != NULL);
+            cur_entry->title = Unique_Title;
+        }
+		tempitem.SetGroup(newgroup);
 		if (cur_entry->title.GetLength() != 0)
 			tempitem.SetTitle(cur_entry->title, m_delimiter);
 		if (cur_entry->username.GetLength() != 0)
