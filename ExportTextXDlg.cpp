@@ -91,22 +91,22 @@ BOOL CExportTextXDlg::OnInitDialog()
 	CComboBox *cboSubgroupObject = (CComboBox *)GetDlgItem(IDC_EXPORTX_SUBGROUP_OBJECT);
 	if(cboSubgroupObject->GetCount() == 0) {
 		cs_text.LoadString(IDS_GROUP);
-		index = cboSubgroupFunction->AddString(cs_text);
+		index = cboSubgroupObject->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_GROUP);
 		cs_text.LoadString(IDS_TITLE);
-		index = cboSubgroupFunction->AddString(cs_text);
+		index = cboSubgroupObject->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_TITLE);
 		cs_text.LoadString(IDS_USERNAME);
-		index = cboSubgroupFunction->AddString(cs_text);
+		index = cboSubgroupObject->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_USER);
 		cs_text.LoadString(IDS_GROUPTITLE);
-		index = cboSubgroupFunction->AddString(cs_text);
+		index = cboSubgroupObject->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_GROUPTITLE);
 		cs_text.LoadString(IDS_URL);
-		index = cboSubgroupFunction->AddString(cs_text);
+		index = cboSubgroupObject->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_URL);
 		cs_text.LoadString(IDS_NOTES);
-		index = cboSubgroupFunction->AddString(cs_text);
+		index = cboSubgroupObject->AddString(cs_text);
 		irc = cboSubgroupObject->SetItemData(index, CItemData::SGO_NOTES);
 	}
 	cboSubgroupObject->SetCurSel(0);
