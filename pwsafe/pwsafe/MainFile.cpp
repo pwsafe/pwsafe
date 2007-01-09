@@ -288,8 +288,7 @@ DboxMain::Open()
 {
   int rc = PWScore::SUCCESS;
   CMyString newfile;
-  CString cs_text;
-  cs_text.LoadString(IDS_CHOOSEDATABASE);
+  CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
 
   //Open-type dialog box
   while (1) {
@@ -1248,10 +1247,9 @@ DboxMain::OnCompare()
 	}
 
 	CMyString file2;
-	CString cs_text;
+	CString cs_text(MAKEINTRESOURCE(IDS_PICKCOMPAREFILE));
 
 	//Open-type dialog box
-	cs_text.LoadString(IDS_PICKCOMPAREFILE);
 	while (1) {
 		CFileDialog fd(TRUE,
                        DEFAULT_SUFFIX,
@@ -1627,8 +1625,7 @@ DboxMain::OnOK()
     Save();
 
   if (m_core.IsChanged()) {
-  	CString cs_msg;
-	cs_msg.LoadString(IDS_SAVEFIRST);
+  	CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
 	switch (m_iSessionEndingStatus) {
 		case IDIGNORE:
 			// Session is not ending - user has an option to cancel

@@ -225,8 +225,7 @@ void CFindDlg::OnFind()
     	} else {
     		pParent->SelectEntry(m_indices[m_lastshown], TRUE);
     	}
-    	CString cs_text;
-		cs_text.LoadString(IDS_FINDNEXT);
+    	CString cs_text(MAKEINTRESOURCE(IDS_FINDNEXT));
     	SetDlgItemText(IDOK, cs_text);
     }
   }

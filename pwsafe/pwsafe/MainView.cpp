@@ -506,8 +506,7 @@ DboxMain::RefreshList()
   bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
 
   if (bShowPasswordInList && !bPasswordColumnShowing) {
-	CString cs_text;
-  	cs_text.LoadString(IDS_PASSWORD);
+	CString cs_text(MAKEINTRESOURCE(IDS_PICKBACKUP));
     m_ctlItemList.InsertColumn(3, cs_text);
 	m_nColumns++;
     CRect rect;
@@ -587,9 +586,8 @@ DboxMain::OnSize(UINT nType,
       if (m_core.IsChanged() ||  m_bTSUpdated)
         if (Save() != PWScore::SUCCESS) {
           // If we don't warn the user, data may be lost!
-          CString cs_text, cs_title;
-          cs_text.LoadString(IDS_COULDNOTSAVE);
-          cs_title.LoadString(IDS_SAVEERROR);
+          CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
+              cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
           MessageBox(cs_text, cs_title, MB_ICONSTOP);
           ShowWindow(SW_SHOW);
           return;
