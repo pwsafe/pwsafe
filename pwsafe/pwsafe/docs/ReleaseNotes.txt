@@ -10,7 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.06
 =====================
-None.
+Support for U3 (disk-on-key).
 
 Changes to Existing Features in 3.06
 ====================================
@@ -19,6 +19,7 @@ File opened in initial dialog now added to recent files list.
 Bugs fixed in 3.06
 ==================
 [1625557] No longer crashes when invoking help after using Hot-Key.
+[1633516] No longer crashes upon Find with an empty group.
 
 New Features for 3.05.02
 ========================
