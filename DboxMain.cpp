@@ -1715,8 +1715,8 @@ void DboxMain::MakeSortedItemList(ItemList &il)
   while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
     if (!m_ctlItemTree.ItemHasChildren(hItem)) {
       CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-      ASSERT(ci != NULL);
-      il.AddTail(*ci);
+      if (ci != NULL) // NULL if there's an empty group [bug #1633516]
+          il.AddTail(*ci);
     }
   }
 }
