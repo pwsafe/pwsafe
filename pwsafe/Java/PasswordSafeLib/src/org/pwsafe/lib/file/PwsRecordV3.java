@@ -287,7 +287,7 @@ public class PwsRecordV3 extends PwsRecord
 				byte[] hash = file.hasher.doFinal();
 				if (!Util.bytesAreEqual(Data, hash)) {
 					LOG.error("HMAC record did not match. File may have been tampered");
-					//TODO should throw new IOException("HMAC record did not match. File has been tampered");
+					throw new IOException("HMAC record did not match. File has been tampered");
 				}
 				throw eofe;
 			}
@@ -301,7 +301,13 @@ public class PwsRecordV3 extends PwsRecord
 				Util.copyBytes(Util.getBytes(remainingDataInRecord, 0, Length), Data);
 			} else if (Length > 11) {
 				int bytesToRead = Length - 11;
-				int blocksToRead = bytesToRead / file.getBlockSize() + 1;
+				int blocksToRead = bytesToRead / file.getBlockSize();
+				
+				// if blocksToRead doesn't fit neatly into current block 
+				// size, add an extra block for the remaining bytes
+				if (bytesToRead % file.getBlockSize() != 0)
+					blocksToRead++;
+				
 				byte[] remainingRecords = new byte[0];
 				for (int i = 0; i < blocksToRead; i++) {
 					byte[] nextBlock = new byte[file.getBlockSize()];
