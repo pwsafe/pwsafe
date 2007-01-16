@@ -1,0 +1,21 @@
+diff 1/SHA1.java 2/SHA1.java
+63,81d62
+< 	/**
+< 	 * Partially clears the data.  Use {@link #clear()} to clear more data or
+< 	 * {@link #restart()} to start again.
+< 	 */
+< 	public void clearContext()
+< 	{
+< 		for ( int ii = 0; ii < m_state.length; ++ii )
+< 		{
+< 			m_state[ii] = 0;
+< 		}
+< 		for ( int ii = 0; ii < m_block.length; ++ii )
+< 		{
+< 			m_block[ii] = 0;
+< 		}
+< 		m_lCount = 0;
+< 	}
+< 
+< 	///////////////////////////////////////////////////////////////////////////
+< 

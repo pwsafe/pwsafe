@@ -1,0 +1,26 @@
+$Id$
+
+This is a user interface written in Java for PasswordSafe.
+
+Requirements
+============
+
+*  JDK 1.4 or later (it may work with 1.3 but isn't tested).
+*  PasswordSafeLib - available from the same place as this project.
+*  BlowfishJ (2.13 or later) from http://www.come.to/hahn.
+*  Log4j
+
+See the READMEs that come with the above for further requirements.
+
+To Build
+========
+
+** To be completed **
+
+Acknowledgements
+================
+
+The toolbar icons are taken from the Noia Warm KDE 0.95 icon set created by
+Carles Carbonell Bernado and which have been made available under the GNU
+General Public License version 2.  The full icon set is available from either
+http://www.carlitus.net/ or http://carlitus.deviantart.com/.

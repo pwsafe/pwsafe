@@ -1,0 +1,112 @@
+$Id$
+
+PasswordSafeLib
+===============
+
+This is a Java implementation of the core functionality of PasswordSafe.  For
+the moment it should be considered early-access software.  It should be
+stable enough for you to start developing against as long as you are aware
+that:
+
+1.  Without doubt there are plenty of bugs waiting to be found.
+
+2.  The package structure may change.  I don't anticipate making any changes,
+    but as I add features I find bits that I'm unhappy with and refactor
+    them.
+
+3.  You shouldn't use it with any real passwordsafe files that you can't
+    recover should this software do horrible things to them.
+
+4.  Writing files has not been tested thouroughly, in fact it's hardly been
+    tested at all so use at your own risk.
+
+5.  This is the most insecure version of Password Safe there is.  When a
+    file is read it is stored in memory in plain text format.  And so is the
+    file's password.  I hope to rectify this sometime but not in the immediate
+    future.  I'm actually not sure whether anything I do is going to be
+    effective since I have practically no control over object creation,
+    deletion, garbage collection, cloning, etc.
+
+6.  The areas of the API that deal with modifying and creating files are
+    volatile and are likely to change.  You'll almost certainly need to
+    rewrite bits of your code if you use tham as they stand right now.
+
+7.  The Javadocs are far from complete and might be wildly inaccurate in
+    places.
+
+8.  There's no UI yet - this just allows you to read and write files.
+
+With all that said I hope that this library is of use and welcome any feedback
+you have through the normal passwordsafe developer lists.
+
+What you need:
+
+1.  A Java JDK.  This was developed with 1.4.2 but it might work with 1.3
+
+2.  The BlowfishJ package, available from http://www.come.to/hahn.  Version
+    2.13 was used to develop this, other versions may have issues.  However,
+    before you can build you need to apply the patch SHA1.java.diff against
+    SHA1.java.  This fixes an issue that arises because the c++ version uses
+    SHA1 in a non-standard way.
+
+3.  log4j - http://logging.apache.org/log4j/docs/
+
+4.  JUnit - http://www.junit.org/
+
+5.  For the moment you'll also need the C++ version of PasswordSafe (both
+    1.9.2c and 2.0) to create/edit password safes.
+
+If you use the Eclipse IDE for development you can use the .project and
+.classpath files to import the project into your workspace, although you'll
+need to change the paths in .classpath to match the locations on your system.
+
+
+TODO
+====
+
+Firstly I intend building the core functionality so that it is robust and
+extensible.  I'm aiming to make the API such that if a new version of the file
+format were to be defined it is a simple matter to add support by creating a
+few new implementation classes and updating the factory methods.
+
+What follows is a list of features, in no particular order, that I plan to add
+in forthcoming releases:
+
+-  Helper methods to convert between native file formats.  The core library will
+   NOT automatically update files to the latest supported version when they're
+   opened.  It's my view that this decision belongs in the application domain.
+
+-  Helper methods to export to and import from non-native formats.  The core
+   library will deal only with files in their native format, helper methods will
+   be used for everything else.  This will include, but not necessarily be
+   limited to:
+
+   @  Comma separated (CSV) files.
+   @  XML
+
+-  Helper methods to sort a file's records into some arbitrary, application
+   specified, order.
+
+-  Keeping the file encrypted in memory, decrypting only when required.
+
+-  Wiping sensitive data from memory when no longer needed, if such a thing is
+   possible and effective.
+
+-  Helper methods to create Swing/AWT/SWT components from a PasswordSafe file.
+
+-  A comprehensive set of JUnit regression tests.
+
+Kevin.
+(preecek at users dot sourceforge dot net)
+
+UPDATES
+=======
+
+25/02/2004
+- It's now possible to create new files, both V1 and V2.
+
+27/02/2004
+- Added helper classes to generate random passphrases and check for weak
+  passphrases.
+- Fixed junit tests in ant build script, added more test cases, and added test
+  suite.

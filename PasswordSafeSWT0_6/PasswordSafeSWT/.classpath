@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/blowfishj-2.14.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/passwordsafe-lib.jar"/>
+	<classpathentry kind="lib" path="lib/opencsv-1.1.jar"/>
+	<classpathentry kind="lib" path="platform/win32/swt.jar"/>
+	<classpathentry kind="lib" path="lib/bcprov-jdk14-133.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
