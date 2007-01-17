@@ -20,6 +20,7 @@ Bugs fixed in 3.06
 ==================
 [1625557] No longer crashes when invoking help after using Hot-Key.
 [1633516] No longer crashes upon Find with an empty group.
+[] Configuration handled correctly with non-English user or host names.
 
 New Features for 3.05.02
 ========================
