@@ -612,7 +612,6 @@ DboxMain::OnOptions()
 void
 DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 {
-	ItemList new_pwlist;
 	CString cs_Msg, cs_Buffer;;
 	POSITION listPos;
 	int status, old_max, num_saved, len;
@@ -630,13 +629,8 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 					ci.SetPWHistory(cs_tmp);
 					num_altered++;
 				}
-				new_pwlist.AddTail(ci);
 				m_core.GetNextEntry(listPos);
 			} // while
-			if (num_altered > 0) {
-				// items were changed - swap the in-core pwlist
-				m_core.CopyPWList(new_pwlist);
-			}
 			cs_Msg.Format(IDS_ENTRIESCHANGEDSTOP, num_altered);
 			AfxMessageBox(cs_Msg);
 			bResult = true;
@@ -658,13 +652,8 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 						num_altered++;
 					}
 				}
-				new_pwlist.AddTail(ci);
 				m_core.GetNextEntry(listPos);
 			} // while
-			if (num_altered > 0) {
-				// items were changed - swap the in-core pwlist
-				m_core.CopyPWList(new_pwlist);
-			}
 
 			cs_Msg.Format(IDS_ENTRIESCHANGEDSAVE, num_altered);
 			AfxMessageBox(cs_Msg);
@@ -693,13 +682,8 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 						num_altered++;
 					}
 				}
-				new_pwlist.AddTail(ci);
 				m_core.GetNextEntry(listPos);
 			} // while
-			if (num_altered > 0) {
-				// items were changed - swap the in-core pwlist
-				m_core.CopyPWList(new_pwlist);
-			}
 			cs_Msg.Format(IDS_ENTRIESRESETMAX, num_altered);
 			AfxMessageBox(cs_Msg);
 			bResult = true;
@@ -707,8 +691,6 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 		default:
 			break;
 	}
-
-	new_pwlist.RemoveAll();
 
 	if (bResult)
 		RefreshList();
