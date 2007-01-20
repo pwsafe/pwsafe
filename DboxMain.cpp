@@ -253,6 +253,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 
    ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
    ON_MESSAGE(WM_HOTKEY,OnHotKey)
+   ON_MESSAGE((WM_APP+0x765), OnU3AppStop)
 	//}}AFX_MSG_MAP
    ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
    ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
@@ -1341,6 +1342,14 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 #endif
 }
 
+LRESULT DboxMain::OnU3AppStop(WPARAM , LPARAM )
+{
+    // Here upon "soft eject" from U3 device
+    if (OnQueryEndSession())
+        PostQuitMessage(0);
+    return 0L;
+}
+
 void
 DboxMain::OnMinimize()
 {
@@ -1602,8 +1611,18 @@ DboxMain::OnQueryEndSession()
 {
 	m_iSessionEndingStatus = IDOK;
 
+    //Store current filename for next time
+	PWSprefs *prefs = PWSprefs::GetInstance();
+    if (!m_core.GetCurFile().IsEmpty())
+        prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+    // Save last size & pos for next time
+    if (!IsIconic()) {
+        CRect rect;
+        GetWindowRect(&rect);
+        prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+    }
 	// Save Application related preferences
-	PWSprefs::GetInstance()->SaveApplicationPreferences();
+	prefs->SaveApplicationPreferences();
 
 	if (m_IsReadOnly)
 		return TRUE;
@@ -1624,6 +1643,7 @@ DboxMain::OnQueryEndSession()
 				return FALSE;
 			case IDYES:
 				// Save the changes and say OK to shutdown\restart\logoff
+                Save();
 				return TRUE;
 			case IDNO:
 				// Don't save the changes but say OK to shutdown\restart\logoff

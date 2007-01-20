@@ -212,6 +212,11 @@ DboxMain::OnClose()
 int
 DboxMain::Close()
 {
+    PWSprefs *prefs = PWSprefs::GetInstance();
+
+    // Save Application related preferences
+    prefs->SaveApplicationPreferences();
+
 	if (m_bOpen) {
 		// try and save it first
 		int rc = SaveIfChanged();
