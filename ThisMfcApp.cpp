@@ -15,6 +15,7 @@
 #include "corelib/PWSdirs.h"
 #include "corelib/sha256.h"
 #include "corelib/sha1.h"
+#include "corelib/SysInfo.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -326,6 +327,30 @@ ThisMfcApp::ExitInstance()
   CWinApp::ExitInstance();
   return 0;
 }
+
+// Listener window whose sole purpose in life is to receive
+// the "AppStop" message from the U3 framework and then
+// cause a semi-graceful exit.
+
+class CLWnd : public CWnd
+{
+public:
+    CLWnd(DboxMain &dbox) : m_dbox(dbox) {}
+    virtual LRESULT WindowProc(UINT message,
+                               WPARAM wParam, LPARAM lParam)
+        {
+            if (message != (WM_APP+0x765))
+                return CWnd::WindowProc(message, wParam, lParam);
+            else {
+                m_dbox.U3ExitNow();
+                if (!m_dbox.InPostInit())
+                    ::exit(0); // sometimes brute force is required...
+            }
+            return 0L;
+        }
+private:
+    DboxMain &m_dbox;
+};
 
 BOOL
 ThisMfcApp::InitInstance()
@@ -710,6 +735,19 @@ ThisMfcApp::InitInstance()
     m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
                                       MAKEINTRESOURCE(IDR_ACCS));
 #endif
+
+    CLWnd ListenerWnd(dbox);
+    if (SysInfo::IsUnderU3()) {
+        // See comment under CLWnd to understand this.
+        ListenerWnd.m_hWnd = NULL;
+        if (!ListenerWnd.CreateEx(0, AfxRegisterWndClass(0),
+                                  _T("Pwsafe Listener"),
+                                  WS_OVERLAPPED, 0, 0, 0, 0, NULL, NULL)) {
+            ASSERT(0);
+            return FALSE;
+        } 
+    }
+
     //Run dialog
     (void) dbox.DoModal();
 

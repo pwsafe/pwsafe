@@ -112,7 +112,8 @@ public:
   void IssueError(LONG lRet, const CString &csFunction);
   void UpdatePasswordHistory(const int &iAction, const int &num_default);
   void SetInitialDatabaseDisplay();
-
+  void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
+  bool InPostInit() const {return m_InitDone;}
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -198,7 +199,6 @@ protected:
   enum STATE {LOCKED, UNLOCKED, CLOSED};  // Really shouldn't be here it, ThisMfcApp own it
   void UpdateSystemTray(const STATE s);
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
-  LRESULT OnU3AppStop(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -355,6 +355,7 @@ private:
   bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
+  bool m_InitDone;
   HFONT m_hFontTree;
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize

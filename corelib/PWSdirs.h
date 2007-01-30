@@ -11,6 +11,7 @@
 // Provide directories used by application
 //-----------------------------------------------------------------------------
 #include "MyString.h"
+#include "SysInfo.h"
 
 class PWSdirs
 {
@@ -21,7 +22,7 @@ class PWSdirs
     static CString GetHelpDir(); // help file(s)
     static CString GetExeDir(); // location of executable
   private:
-    static CString GetEnv(const char *env); // wrapper for ::getenv()
+    static CString GetEnv(const char *env) {return SysInfo::GetEnv(env);}
     static CString GetMFNDir(); // wrapper for ::GetModuleFileName()
 };
 #endif /* __PWSDIRS_H */

@@ -92,7 +92,6 @@ protected:
    //}}AFX_MSG
    afx_msg void OnBrowse();
    afx_msg void OnCreateDb();
-    LRESULT OnU3AppStop(WPARAM wParam, LPARAM lParam);
 
    DECLARE_MESSAGE_MAP()
 };

@@ -76,7 +76,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
      m_bValidate(false), m_bOpen(false), 
      m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
-     m_bAlreadyToldUserNoSave(false)
+     m_bAlreadyToldUserNoSave(false), m_InitDone(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -253,7 +253,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 
    ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
    ON_MESSAGE(WM_HOTKEY,OnHotKey)
-   ON_MESSAGE((WM_APP+0x765), OnU3AppStop)
 	//}}AFX_MSG_MAP
    ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
    ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
@@ -501,6 +500,7 @@ DboxMain::OnInitDialog()
   }
 
   SetInitialDatabaseDisplay();
+  m_InitDone = true;
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -1342,14 +1342,6 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 #endif
 }
 
-LRESULT DboxMain::OnU3AppStop(WPARAM , LPARAM )
-{
-    // Here upon "soft eject" from U3 device
-    if (OnQueryEndSession())
-        PostQuitMessage(0);
-    return 0L;
-}
-
 void
 DboxMain::OnMinimize()
 {
@@ -1822,4 +1814,12 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, btoolbar2);
 		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, btoolbar2);
 	}
+}
+
+void DboxMain::U3ExitNow()
+{
+    // Here upon "soft eject" from U3 device
+    if (OnQueryEndSession()) {
+        PostQuitMessage(0);
+    }
 }
