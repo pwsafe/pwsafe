@@ -113,7 +113,6 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
    ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
    ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
 #endif
-   ON_MESSAGE((WM_APP+0x765), OnU3AppStop)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -308,13 +307,6 @@ CPasskeyEntry::OnHelp()
   cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
-}
-
-LRESULT CPasskeyEntry::OnU3AppStop(WPARAM , LPARAM )
-{
-    // Here upon "soft eject" from U3 device
-    PostQuitMessage(0);
-    return 0L;
 }
 
 //-----------------------------------------------------------------------------

@@ -22,9 +22,13 @@ public:
   static SysInfo *GetInstance(); // singleton
   static void DeleteInstance();
 
+  static bool IsUnderU3();
+
   const CString &GetCurrentUser() const {return m_user;}
   const CString &GetCurrentHost() const {return m_sysname;}
   const CString &GetCurrentPID() const {return m_ProcessID;}
+
+  static CString GetEnv(const char *env); // wrapper for ::getenv()
 
 private:
   SysInfo();
