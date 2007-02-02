@@ -15,6 +15,7 @@
 
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/Pwsdirs.h"
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)
@@ -50,14 +51,12 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
    : super(dialog_lookup[index],
              pParent),
      m_index(index),
-     m_filespec(a_filespec),
+     m_filespec(a_filespec), m_orig_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID),
      m_ReadOnly(bReadOnly ? TRUE : FALSE),
      m_bForceReadOnly(bForceReadOnly)
 {
-  const int FILE_DISP_LEN = 45;
-
   //{{AFX_DATA_INIT(CPasskeyEntry)
   //}}AFX_DATA_INIT
 
@@ -70,15 +69,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
 
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
 
-  if (a_filespec.GetLength() > FILE_DISP_LEN) {
-    // m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
-    // m_message.Insert(0, _T("..."));
-    // changed by karel@VanderGucht.de to see beginning + ending of 'a_filespec'
-    m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + 
-      _T(" ... ") + a_filespec.Right(FILE_DISP_LEN/2);
-  } else {
-    m_message = a_filespec;
-  }
+  m_message = a_filespec;
 }
 
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
@@ -98,23 +89,41 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 #endif
 	DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
 	DDX_Text(pDX, IDC_MESSAGE, m_message);
+    if (m_index == GCP_FIRST)
+        DDX_Control(pDX, IDC_COMBO1, m_MRU_combo);
 	DDX_Check(pDX, IDC_READONLY, m_ReadOnly);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
-	//{{AFX_MSG_MAP(CPasskeyEntry)
-   ON_BN_CLICKED(ID_HELP, OnHelp)
-   ON_BN_CLICKED(IDC_BROWSE, OnBrowse)
-   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
-   ON_BN_CLICKED(IDC_EXIT, OnExit)
-   ON_BN_CLICKED(IDC_READONLY, OnReadOnly)
+//{{AFX_MSG_MAP(CPasskeyEntry)
+ON_BN_CLICKED(ID_HELP, OnHelp)
+ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
+ON_BN_CLICKED(IDC_EXIT, OnExit)
+ON_BN_CLICKED(IDC_READONLY, OnReadOnly)
 #if defined(POCKET_PC)
-   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
-   ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
+ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
+ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
 #endif
-	//}}AFX_MSG_MAP
+//}}AFX_MSG_MAP
+ON_CBN_EDITCHANGE(IDC_COMBO1, &CPasskeyEntry::OnComboEditChange)
+ON_CBN_SELCHANGE(IDC_COMBO1, &CPasskeyEntry::OnComboSelChange)
+ON_BN_CLICKED(IDC_BTN_BROWSE, &CPasskeyEntry::OnOpenFileBrowser)
 END_MESSAGE_MAP()
+
+
+static CString NarrowPathText(const CString &text)
+{
+    const int Width = 50;
+    CString retval;
+    if (text.GetLength() > Width) {
+        retval =  text.Left(Width/2-5) + 
+            _T(" ... ") + text.Right(Width/2);
+    } else {
+        retval = text;
+    }
+    return retval;
+}
 
 BOOL
 CPasskeyEntry::OnInitDialog(void)
@@ -172,6 +181,26 @@ CPasskeyEntry::OnInitDialog(void)
 #endif
       m_message.LoadString(IDS_NOCURRENTSAFE);
   }
+
+  if (m_index == GCP_FIRST) {
+      GetDlgItem(IDC_MESSAGE)->ShowWindow(SW_HIDE);
+      if (!m_filespec.IsEmpty()) {
+          m_MRU_combo.AddString(NarrowPathText(m_filespec));
+          m_MRU_combo.SelectString(-1, NarrowPathText(m_filespec));
+          m_MRU_combo.SetItemData(0, DWORD_PTR(-1));
+      }
+      CRecentFileList *mru = app.GetMRU();
+      const int N = mru->GetSize();
+      for (int i = 0; i < N; i++) {
+          const CString &str = (*mru)[i];
+          if (str != m_filespec) {
+              int li = m_MRU_combo.AddString(NarrowPathText(str));
+              if (li != CB_ERR && li != CB_ERRSPACE)
+                  m_MRU_combo.SetItemData(li, i);
+          }
+      }
+  }
+
   /*
    * this bit makes the background come out right on
    * the bitmaps
@@ -210,6 +239,7 @@ CPasskeyEntry::OnInitDialog(void)
     return TRUE;
 }
 
+
 #if defined(POCKET_PC)
 /************************************************************************/
 /* Restore the state of word completion when the password field loses   *//* focus.                                                               */
@@ -233,13 +263,6 @@ void
 CPasskeyEntry::OnReadOnly() 
 {
    m_ReadOnly = ((CButton*)GetDlgItem(IDC_READONLY))->GetCheck();
-}
-
-void
-CPasskeyEntry::OnBrowse()
-{
-  m_status = TAR_OPEN;
-  super::OnCancel();
 }
 
 void
@@ -310,3 +333,54 @@ CPasskeyEntry::OnHelp()
 }
 
 //-----------------------------------------------------------------------------
+void CPasskeyEntry::OnComboEditChange()
+{
+    m_MRU_combo.m_edit.GetWindowText(m_filespec);
+}
+
+void CPasskeyEntry::OnComboSelChange()
+{
+    CRecentFileList *mru = app.GetMRU();
+    int curSel = m_MRU_combo.GetCurSel();
+    const int N = mru->GetSize();
+    if (curSel == CB_ERR || curSel >= N) {
+        ASSERT(0);
+    } else {
+        int i = int(m_MRU_combo.GetItemData(curSel));
+        if (i >= 0) // -1 means original m_filespec
+            m_filespec = (*mru)[i];
+        else
+            m_filespec = m_orig_filespec;
+    }
+}
+
+void CPasskeyEntry::OnOpenFileBrowser()
+{
+    CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
+
+    //Open-type dialog box
+    CFileDialog fd(TRUE,
+                   DEFAULT_SUFFIX,
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_LONGNAMES,
+                   SUFFIX_FILTERS
+                   _T("Password Safe Backups (*.bak)|*.bak|")
+				   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+    fd.m_ofn.lpstrTitle = cs_text;
+	fd.m_ofn.Flags &= ~OFN_READONLY;
+    CString dir = PWSdirs::GetSafeDir();
+    if (!dir.IsEmpty())
+        fd.m_ofn.lpstrInitialDir = dir;
+    int rc = fd.DoModal();
+    if (rc == IDOK) {
+        m_ReadOnly = fd.GetReadOnlyPref();
+  		((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_ReadOnly == TRUE
+                                                        ? BST_CHECKED
+                                                        : BST_UNCHECKED);
+        m_filespec = fd.GetPathName();
+        m_MRU_combo.m_edit.SetWindowText(m_filespec);
+    }
+}

@@ -34,8 +34,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define DEFAULT_SUFFIX _T("psafe3")
-#define SUFFIX_FILTERS _T("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|")
 
 BOOL
 DboxMain::OpenOnInit(void)

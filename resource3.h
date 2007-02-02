@@ -1,6 +1,8 @@
 //{{NO_DEPENDENCIES}}
 
 // Strings
+#define DEFAULT_SUFFIX _T("psafe3")
+#define SUFFIX_FILTERS _T("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|")
 
 //  Usage
 #define IDS_USAGE                       5000
