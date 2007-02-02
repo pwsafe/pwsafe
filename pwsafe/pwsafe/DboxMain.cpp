@@ -868,6 +868,8 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
+    const CString &curFile = dbox_pkentry->GetFileName();
+    m_core.SetCurFile(curFile);
     CMyString locker(_T("")); // null init is important here
     passkey = dbox_pkentry->GetPasskey();
 	// This dialog's setting of read-only overrides file dialog
@@ -877,11 +879,11 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     // we could not create a lock file.
     switch (index) {
         case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-            SetReadOnly(m_IsReadOnly || !m_core.LockFile(filename, locker));
+            SetReadOnly(m_IsReadOnly || !m_core.LockFile(curFile, locker));
             break;
         case GCP_NORMAL:
             if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
-              SetReadOnly(!m_core.LockFile(filename, locker));
+              SetReadOnly(!m_core.LockFile(curFile, locker));
 			else
 			  SetReadOnly(m_IsReadOnly);
             break;
@@ -906,7 +908,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 	      cs_PID = _T("");
       const CString cs_title(MAKEINTRESOURCE(IDS_FILEINUSE));
 	  CString cs_str;
-	  cs_str.Format(IDS_LOCKED, filename, cs_user_and_host, cs_PID);
+	  cs_str.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
       switch( MessageBox(cs_str, cs_title, MB_YESNOCANCEL|MB_ICONQUESTION)) {
       case IDYES:
       	SetReadOnly(true);
@@ -929,10 +931,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     int cancelreturn = dbox_pkentry->GetStatus();
     switch (cancelreturn)
       {
-      case TAR_OPEN:
       case TAR_NEW:
-        DBGMSG("PasskeyEntry TAR_OPEN or TAR_NEW\n");
-        retval = cancelreturn; //Return either open or new flag...
+        DBGMSG("PasskeyEntry TAR_NEW\n");
+        retval = cancelreturn; //Return new flag...
         break;
       case TAR_CANCEL:
         retval = PWScore::USER_CANCEL;

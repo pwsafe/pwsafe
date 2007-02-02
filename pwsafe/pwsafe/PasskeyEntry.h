@@ -11,6 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "SysColStatic.h"
+#include "ControlExtns.h"
 #include "corelib/MyString.h"
 #include "corelib/PwsPlatform.h"
 
@@ -26,6 +27,14 @@
 #endif
 
 //-----------------------------------------------------------------------------
+/**
+ * This class is a bit schizophrenic - it has multiple personalities,
+ * displaying the one specified by the "index" parameter
+ *
+ * An OO purist would have a fit (mumble subclasses mumble polymorphism
+ * mumble sigh)...
+ */
+
 class CPasskeyEntry
    : public SUPERCLASS
 {
@@ -40,6 +49,7 @@ public:
    int GetStatus() const {return m_status;}
   bool IsReadOnly() const {return m_ReadOnly == TRUE;}
   const CMyString &GetPasskey() const {return m_passkey;}
+  const CString &GetFileName() const {return m_filespec;}
   CString m_appversion;
 private:
 // Dialog Data
@@ -58,7 +68,8 @@ private:
     bool m_bForceReadOnly;
 	//}}AFX_DATA
    CString	m_message;
-  const CMyString m_filespec;
+   CComboBoxExtn m_MRU_combo;
+   CString m_filespec, m_orig_filespec;
 
 // Overrides
    // ClassWizard generated virtual function overrides
@@ -90,10 +101,13 @@ protected:
    afx_msg void OnPasskeyKillfocus();
 #endif
    //}}AFX_MSG
-   afx_msg void OnBrowse();
    afx_msg void OnCreateDb();
 
    DECLARE_MESSAGE_MAP()
+public:
+    afx_msg void OnComboEditChange();
+    afx_msg void OnComboSelChange();
+    afx_msg void OnOpenFileBrowser();
 };
 
 #undef SUPERCLASS
