@@ -381,6 +381,8 @@ CPasskeyEntry::OnHelp()
 void CPasskeyEntry::OnComboEditChange()
 {
     m_MRU_combo.m_edit.GetWindowText(m_filespec);
+    m_ctlPasskey.EnableWindow(TRUE);
+    m_ctlOK.EnableWindow(TRUE);
 }
 
 void CPasskeyEntry::OnComboSelChange()
@@ -397,6 +399,8 @@ void CPasskeyEntry::OnComboSelChange()
         else
             m_filespec = m_orig_filespec;
     }
+    m_ctlPasskey.EnableWindow(TRUE);
+    m_ctlOK.EnableWindow(TRUE);
 }
 
 void CPasskeyEntry::OnOpenFileBrowser()
@@ -427,5 +431,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
                                                         : BST_UNCHECKED);
         m_filespec = fd.GetPathName();
         m_MRU_combo.m_edit.SetWindowText(m_filespec);
+        m_ctlPasskey.EnableWindow(TRUE);
+        m_ctlOK.EnableWindow(TRUE);
     }
 }
