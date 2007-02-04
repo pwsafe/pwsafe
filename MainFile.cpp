@@ -807,7 +807,7 @@ DboxMain::OnImportText()
   	CString strErrors;
     CMyString newfile = (CMyString)fd.GetPathName();
     int numImported = 0, numSkipped = 0;
-    bool bimport_preV3 = (dlg.m_import_preV3 == 1) ? true : false;
+    bool bimport_preV3 = (dlg.m_import_preV3 == 1);
     TCHAR delimiter;
     if (dlg.m_querysetimpdelim == 1) {
       delimiter = dlg.m_defimpdelim[0];

@@ -805,151 +805,163 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
                               CMyString& passkey,
                               int index ,bool bForceReadOnly)
 {
-  // index:
-  //	GCP_FIRST      (0) first
-  //	GCP_NORMAL     (1) OK, CANCEL & HELP buttons
-  //	GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
-  //	GCP_WITHEXIT   (3} OK, CANCEL, EXIT & HELP buttons
+    // index:
+    //	GCP_FIRST      (0) first
+    //	GCP_NORMAL     (1) OK, CANCEL & HELP buttons
+    //	GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
+    //	GCP_WITHEXIT   (3} OK, CANCEL, EXIT & HELP buttons
 
-  // Called for an existing database. Prompt user
-  // for password, verify against file. Lock file to
-  // prevent multiple r/w access.
-  int retval;
-  bool bFileIsReadOnly = false;
+    // Called for an existing database. Prompt user
+    // for password, verify against file. Lock file to
+    // prevent multiple r/w access.
+    int retval;
+    bool bFileIsReadOnly = false;
 
-  if (!filename.IsEmpty())
-    {
-      bool exists = m_core.FileExists(filename, bFileIsReadOnly);
+    if (!filename.IsEmpty()) {
+        bool exists = m_core.FileExists(filename, bFileIsReadOnly);
 
-      if (!exists) {
-        // Used to display an error message, but this is really the caller's business
-        return PWScore::CANT_OPEN_FILE;
-      } // !exists
+        if (!exists) {
+            // Used to display an error message, but this is really the caller's business
+            return PWScore::CANT_OPEN_FILE;
+        } // !exists
     } // !filename.IsEmpty()
 
-  /*
-   * with my unsightly hacks of PasskeyEntry, it should now accept
-   * a blank filename, which will disable passkey entry and the OK button
-   */
+    /*
+     * with my unsightly hacks of PasskeyEntry, it should now accept
+     * a blank filename, which will disable passkey entry and the OK button
+     */
 
-  if (bFileIsReadOnly || bForceReadOnly) {
-  	// As file is read-only, we must honour it and not permit user to change it
-  	m_IsReadOnly = true;
-    bFileIsReadOnly = true;
-  }
-  static CPasskeyEntry *dbox_pkentry = NULL;
-  int rc = 0;
-  if (dbox_pkentry == NULL) {
-    dbox_pkentry = new CPasskeyEntry(this, filename,
-                                     index, m_IsReadOnly, bFileIsReadOnly);
-
-	int nMajor(0), nMinor(0), nBuild(0);
-	DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
-    DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
-
-	if (dwMajorMinor > 0) {
-		nMajor = HIWORD(dwMajorMinor);
-		nMinor = LOWORD(dwMajorMinor);
-        nBuild = HIWORD(dwBuildRevision);
-	}
-    if (nBuild == 0)
-        dbox_pkentry->m_appversion.Format(_T("Version %d.%02d"), nMajor, nMinor);
-    else
-        dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d"), nMajor, nMinor, nBuild);
-
-    app.DisableAccelerator();
-    rc = dbox_pkentry->DoModal();
-    app.EnableAccelerator();
-  } else { // already present - bring to front
-    dbox_pkentry->BringWindowToTop(); // can happen with systray lock
-    return PWScore::USER_CANCEL; // multi-thread,
-                                 // original thread will continue processing
-  }
-
-  if (rc == IDOK) {
-    DBGMSG("PasskeyEntry returns IDOK\n");
-    const CString &curFile = dbox_pkentry->GetFileName();
-    m_core.SetCurFile(curFile);
-    CMyString locker(_T("")); // null init is important here
-    passkey = dbox_pkentry->GetPasskey();
-	// This dialog's setting of read-only overrides file dialog
-	m_IsReadOnly = dbox_pkentry->IsReadOnly();
-	SetReadOnly(m_IsReadOnly);
-    // Set read-only mode if user explicitly requested it OR
-    // we could not create a lock file.
-    switch (index) {
-        case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-            SetReadOnly(m_IsReadOnly || !m_core.LockFile(curFile, locker));
-            break;
-        case GCP_NORMAL:
-            if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
-              SetReadOnly(!m_core.LockFile(curFile, locker));
-			else
-			  SetReadOnly(m_IsReadOnly);
-            break;
-        case GCP_UNMINIMIZE:
-        case GCP_WITHEXIT:
-        default:
-            // user can't change R-O status
-            break;
+    if (bFileIsReadOnly || bForceReadOnly) {
+        // As file is read-only, we must honour it and not permit user to change it
+        m_IsReadOnly = true;
+        bFileIsReadOnly = true;
     }
-    // locker won't be null IFF tried to lock and failed, in which case
-    // it shows the current file locker
-    if (!locker.IsEmpty()) {
-	  CString cs_user_and_host, cs_PID;
-	  cs_user_and_host = (CString)locker;
-	  int i_pid = cs_user_and_host.ReverseFind(_T(':'));
-	  if (i_pid > -1) {
-		  // If PID present then it is ":%08d" = 9 chars in length
-		  ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
-		  cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
-		  cs_user_and_host = cs_user_and_host.Left(i_pid);
-	  } else
-	      cs_PID = _T("");
-      const CString cs_title(MAKEINTRESOURCE(IDS_FILEINUSE));
-	  CString cs_str;
-	  cs_str.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
-      switch( MessageBox(cs_str, cs_title, MB_YESNOCANCEL|MB_ICONQUESTION)) {
-      case IDYES:
-      	SetReadOnly(true);
-      	retval = PWScore::SUCCESS;
-      	break;
-      case IDNO:
-      	SetReadOnly(false); // Caveat Emptor!
-        retval = PWScore::SUCCESS;
-        break;
-      case IDCANCEL:
-      	retval = PWScore::USER_CANCEL;
-        break;
-      default:
-        ASSERT(false);
-        retval = PWScore::USER_CANCEL;
-      }
-    } else // locker.IsEmpty() means no lock needed or lock was successful
-      retval = PWScore::SUCCESS;
-  } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
-    int cancelreturn = dbox_pkentry->GetStatus();
-    switch (cancelreturn)
-      {
-      case TAR_NEW:
-        DBGMSG("PasskeyEntry TAR_NEW\n");
-        retval = cancelreturn; //Return new flag...
-        break;
-      case TAR_CANCEL:
-        retval = PWScore::USER_CANCEL;
-        break;
-      case TAR_EXIT:
-        retval = PWScore::USER_EXIT;
-        break;
-      default:
-        DBGMSG("Default to WRONG_PASSWORD\n");
-        retval = PWScore::WRONG_PASSWORD;	//Just a normal cancel
-        break;
-      }
-  }
-  delete dbox_pkentry;
-  dbox_pkentry = NULL;
-  return retval;
+    static CPasskeyEntry *dbox_pkentry = NULL;
+    int rc = 0;
+    if (dbox_pkentry == NULL) {
+        dbox_pkentry = new CPasskeyEntry(this, filename,
+                                         index, m_IsReadOnly, bFileIsReadOnly);
+
+        int nMajor(0), nMinor(0), nBuild(0);
+        DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
+        DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
+
+        if (dwMajorMinor > 0) {
+            nMajor = HIWORD(dwMajorMinor);
+            nMinor = LOWORD(dwMajorMinor);
+            nBuild = HIWORD(dwBuildRevision);
+        }
+        if (nBuild == 0)
+            dbox_pkentry->m_appversion.Format(_T("Version %d.%02d"), nMajor, nMinor);
+        else
+            dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d"), nMajor, nMinor, nBuild);
+
+        app.DisableAccelerator();
+        rc = dbox_pkentry->DoModal();
+        app.EnableAccelerator();
+    } else { // already present - bring to front
+        dbox_pkentry->BringWindowToTop(); // can happen with systray lock
+        return PWScore::USER_CANCEL; // multi-thread,
+        // original thread will continue processing
+    }
+
+    if (rc == IDOK) {
+        DBGMSG("PasskeyEntry returns IDOK\n");
+        const CString &curFile = dbox_pkentry->GetFileName();
+        m_core.SetCurFile(curFile);
+        CMyString locker(_T("")); // null init is important here
+        passkey = dbox_pkentry->GetPasskey();
+        // This dialog's setting of read-only overrides file dialog
+        m_IsReadOnly = dbox_pkentry->IsReadOnly();
+        SetReadOnly(m_IsReadOnly);
+        // Set read-only mode if user explicitly requested it OR
+        // we could not create a lock file.
+        switch (index) {
+            case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
+                SetReadOnly(m_IsReadOnly || !m_core.LockFile(curFile, locker));
+                break;
+            case GCP_NORMAL:
+                if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
+                    SetReadOnly(!m_core.LockFile(curFile, locker));
+                else
+                    SetReadOnly(m_IsReadOnly);
+                break;
+            case GCP_UNMINIMIZE:
+            case GCP_WITHEXIT:
+            default:
+                // user can't change R-O status
+                break;
+        }
+        // locker won't be null IFF tried to lock and failed, in which case
+        // it shows the current file locker
+        if (!locker.IsEmpty()) {
+            CString cs_user_and_host, cs_PID;
+            cs_user_and_host = (CString)locker;
+            int i_pid = cs_user_and_host.ReverseFind(_T(':'));
+            if (i_pid > -1) {
+                // If PID present then it is ":%08d" = 9 chars in length
+                ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
+                cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
+                cs_user_and_host = cs_user_and_host.Left(i_pid);
+            } else
+                cs_PID = _T("");
+            const CString cs_title(MAKEINTRESOURCE(IDS_FILEINUSE));
+            CString cs_str;
+            cs_str.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
+            switch(MessageBox(cs_str, cs_title,
+                              MB_YESNOCANCEL|MB_ICONQUESTION)) {
+                case IDYES:
+                    SetReadOnly(true);
+                    retval = PWScore::SUCCESS;
+                    break;
+                case IDNO:
+                    SetReadOnly(false); // Caveat Emptor!
+                    retval = PWScore::SUCCESS;
+                    break;
+                case IDCANCEL:
+                    retval = PWScore::USER_CANCEL;
+                    break;
+                default:
+                    ASSERT(false);
+                    retval = PWScore::USER_CANCEL;
+            }
+        } else { // locker.IsEmpty() means no lock needed or lock was successful
+            if (dbox_pkentry->GetStatus() == TAR_NEW) {
+                // Save new file
+                m_core.NewFile(dbox_pkentry->GetPasskey());
+                rc = m_core.WriteCurFile();
+                
+                if (rc == PWScore::CANT_OPEN_FILE) {
+                    CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
+                    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile());
+                    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+                    retval = PWScore::USER_CANCEL;
+                } else
+                    retval = PWScore::SUCCESS;
+            } else // no need to create file
+                retval = PWScore::SUCCESS;
+        }
+    } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
+        int cancelreturn = dbox_pkentry->GetStatus();
+        switch (cancelreturn) {
+            case TAR_OPEN:
+                ASSERT(0); // now handled entirely in CPasskeyEntry
+            case TAR_CANCEL:
+            case TAR_NEW:
+                retval = PWScore::USER_CANCEL;
+                break;
+            case TAR_EXIT:
+                retval = PWScore::USER_EXIT;
+                break;
+            default:
+                DBGMSG("Default to WRONG_PASSWORD\n");
+                retval = PWScore::WRONG_PASSWORD;	//Just a normal cancel
+                break;
+        }
+    }
+    delete dbox_pkentry;
+    dbox_pkentry = NULL;
+    return retval;
 }
 
 BOOL

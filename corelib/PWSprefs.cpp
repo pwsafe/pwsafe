@@ -941,14 +941,15 @@ int PWSprefs::GetConfigIndicator() const
 }
 
 // Old registry handling code:
-const CString OldSubKey(_T("Software\\Counterpane Systems"));
+const CString OldSubKey(_T("Counterpane Systems"));
+const CString Software(_T("Software"));
 
 bool PWSprefs::OldPrefsExist() const
 {
     bool bExists;
 	HKEY hSubkey;
 	bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-                              OldSubKey,
+                              Software + _T("\\") + OldSubKey,
                               0L,
                               KEY_READ,
                               &hSubkey) == ERROR_SUCCESS);
@@ -961,7 +962,7 @@ bool PWSprefs::OldPrefsExist() const
 void PWSprefs::ImportOldPrefs()
 {
 	HKEY hSubkey;
-    CString OldAppKey = OldSubKey + _T("\\Password Safe");
+    CString OldAppKey = Software + _T("\\") + OldSubKey + _T("\\Password Safe");
 	LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
                              OldAppKey,
                              NULL,
@@ -1054,7 +1055,7 @@ void PWSprefs::DeleteOldPrefs()
 {
 	HKEY hSubkey;
 	LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-                             OldSubKey,
+                             Software,
                              NULL,
                              KEY_ALL_ACCESS,
                              &hSubkey);

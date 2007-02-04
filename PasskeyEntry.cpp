@@ -34,6 +34,7 @@
 #include "PwFont.h"
 #include "TryAgainDlg.h"
 #include "DboxMain.h" // for CheckPassword()
+#include "PasskeySetup.h"
 
 #include "corelib/Util.h"
 
@@ -193,7 +194,7 @@ CPasskeyEntry::OnInitDialog(void)
       const int N = mru->GetSize();
       for (int i = 0; i < N; i++) {
           const CString &str = (*mru)[i];
-          if (str != m_filespec) {
+          if (str != m_filespec && !str.IsEmpty()) {
               int li = m_MRU_combo.AddString(NarrowPathText(str));
               if (li != CB_ERR && li != CB_ERRSPACE)
                   m_MRU_combo.SetItemData(li, i);
@@ -268,8 +269,52 @@ CPasskeyEntry::OnReadOnly()
 void
 CPasskeyEntry::OnCreateDb()
 {
-  m_status = TAR_NEW;
-  super::OnCancel();
+    // 1. Get a filename from a file dialog box
+    // 2. Get a password
+    // 3. Set m_filespec && m_passkey to returned value!
+    int rc;
+    CString newfile;
+    CString cs_msg, cs_title, cs_temp;
+    CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
+
+    CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
+    CString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX );
+
+    while (1) {
+        CFileDialog fd(FALSE,
+                       DEFAULT_SUFFIX,
+                       v3FileName,
+                       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                       SUFFIX3_FILTERS
+                       _T("All files (*.*)|*.*|")
+                       _T("|"),
+                       this);
+        fd.m_ofn.lpstrTitle = cs_text;
+        CString dir = PWSdirs::GetSafeDir();
+        if (!dir.IsEmpty())
+            fd.m_ofn.lpstrInitialDir = dir;
+        rc = fd.DoModal();
+        if (rc == IDOK) {
+            newfile = fd.GetPathName();
+            break;
+        } else
+            return;
+    }
+
+    // 2. Get a password
+    CPasskeySetup dbox_pksetup(this);
+    rc = dbox_pksetup.DoModal();
+
+    if (rc == IDCANCEL)
+        return;  //User cancelled password entry
+
+    // 3. Set m_filespec && m_passkey to returned value!
+    m_filespec = newfile;
+    m_passkey = dbox_pksetup.m_passkey;
+    ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
+    m_status = TAR_NEW;
+    super::OnOK();
 }
 
 void
