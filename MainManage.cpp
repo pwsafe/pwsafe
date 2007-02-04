@@ -84,6 +84,13 @@ DboxMain::BackupSafe()
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return PWScore::USER_CANCEL;
+    }
     if (rc == IDOK) {
       tempname = (CMyString)fd.GetPathName();
       break;
@@ -139,6 +146,13 @@ DboxMain::Restore()
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return PWScore::USER_CANCEL;
+    }
     if (rc == IDOK) {
       backup = (CMyString)fd.GetPathName();
       break;

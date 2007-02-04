@@ -360,6 +360,7 @@ private:
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   CString m_lock_displaystatus;
+  bool m_inExit; // help U3ExitNow
 
   BOOL IsWorkstationLocked() const;
   void startLockCheckTimer();

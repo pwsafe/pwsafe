@@ -76,7 +76,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
      m_bValidate(false), m_bOpen(false), 
      m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
-     m_bAlreadyToldUserNoSave(false), m_InitDone(false)
+     m_bAlreadyToldUserNoSave(false), m_InitDone(false), m_inExit(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -1833,6 +1833,7 @@ void DboxMain::U3ExitNow()
 {
     // Here upon "soft eject" from U3 device
     if (OnQueryEndSession()) {
+        m_inExit = true;
         PostQuitMessage(0);
     }
 }

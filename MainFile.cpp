@@ -311,6 +311,13 @@ DboxMain::Open()
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return PWScore::USER_CANCEL;
+    }
     const bool last_ro = m_IsReadOnly; // restore if user cancels
     SetReadOnly(fd.GetReadOnlyPref() == TRUE);
     if (rc == IDOK) {
@@ -566,6 +573,13 @@ DboxMain::SaveAs()
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
     rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return PWScore::USER_CANCEL;
+    }
     if (rc == IDOK) {
       newfile = (CMyString)fd.GetPathName();
       break;
@@ -630,6 +644,13 @@ DboxMain::OnExportVx(UINT nID)
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return;
+    }
     if (rc == IDOK) {
       newfile = (CMyString)fd.GetPathName();
       break;
@@ -685,6 +706,13 @@ DboxMain::OnExportText()
                        this);
         fd.m_ofn.lpstrTitle = cs_text;
         rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return;
+    }
         if (rc == IDOK) {
           newfile = (CMyString)fd.GetPathName();
           break;
@@ -724,260 +752,288 @@ DboxMain::OnExportText()
 void
 DboxMain::OnExportXML()
 {
-  CExportXMLDlg eXML;
-  CString cs_text, cs_title, cs_temp;
+    CExportXMLDlg eXML;
+    CString cs_text, cs_title, cs_temp;
 
-  int rc = eXML.DoModal();
-  if (rc == IDOK) {
-    CMyString newfile;
-    CMyString pw(eXML.m_ExportXMLPassword);
-    if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
-      // do the export
-      //SaveAs-type dialog box
-      CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml") );
-      cs_text.LoadString(IDS_NAMEXMLFILE);
-      while (1) {
-        CFileDialog fd(FALSE,
-                       _T("xml"),
-                       XMLFileName,
-                       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                       _T("XML files (*.xml)|*.xml|")
-                       _T("All files (*.*)|*.*|")
-                       _T("|"),
-                       this);
-        fd.m_ofn.lpstrTitle = cs_text;
-        rc = fd.DoModal();
-        if (rc == IDOK) {
-          newfile = (CMyString)fd.GetPathName();
-          break;
-        } else
-          return;
-      } // while (1)
+    int rc = eXML.DoModal();
+    if (rc == IDOK) {
+        CMyString newfile;
+        CMyString pw(eXML.m_ExportXMLPassword);
+        if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
+            // do the export
+            //SaveAs-type dialog box
+            CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml") );
+            cs_text.LoadString(IDS_NAMEXMLFILE);
+            while (1) {
+                CFileDialog fd(FALSE,
+                               _T("xml"),
+                               XMLFileName,
+                               OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                               |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                               _T("XML files (*.xml)|*.xml|")
+                               _T("All files (*.*)|*.*|")
+                               _T("|"),
+                               this);
+                fd.m_ofn.lpstrTitle = cs_text;
+                rc = fd.DoModal();
+                if (m_inExit) {
+                    // If U3ExitNow called while in CFileDialog,
+                    // PostQuitMessage makes us return here instead
+                    // of exiting the app. Try resignalling 
+                    PostQuitMessage(0);
+                    return;
+                }
+                if (rc == IDOK) {
+                    newfile = (CMyString)fd.GetPathName();
+                    break;
+                } else
+                    return;
+            } // while (1)
 
-      TCHAR delimiter;
-      delimiter = eXML.m_defexpdelim[0];
+            TCHAR delimiter;
+            delimiter = eXML.m_defexpdelim[0];
       
-      ItemList sortedItemList;
-      MakeSortedItemList(sortedItemList);
-      rc = m_core.WriteXMLFile(newfile, delimiter, &sortedItemList);
+            ItemList sortedItemList;
+            MakeSortedItemList(sortedItemList);
+            rc = m_core.WriteXMLFile(newfile, delimiter, &sortedItemList);
 
-      sortedItemList.RemoveAll(); // cleanup soonest
+            sortedItemList.RemoveAll(); // cleanup soonest
 
-      if (rc == PWScore::CANT_OPEN_FILE)        {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile);
-        cs_title.LoadString(IDS_FILEWRITEERROR);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-      }
-    } else {
-      AfxMessageBox(IDS_BADPASSKEY);
-      Sleep(3000); // protect against automatic attacks
+            if (rc == PWScore::CANT_OPEN_FILE)        {
+                cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+                cs_title.LoadString(IDS_FILEWRITEERROR);
+                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            }
+        } else {
+            AfxMessageBox(IDS_BADPASSKEY);
+            Sleep(3000); // protect against automatic attacks
+        }
     }
-  }
 }
 
 void
 DboxMain::OnImportText()
 {
-  if (m_IsReadOnly) // disable in read-only mode
-    return;
+    if (m_IsReadOnly) // disable in read-only mode
+        return;
 
-  CImportDlg dlg;
-  int status = dlg.DoModal();
+    CImportDlg dlg;
+    int status = dlg.DoModal();
 
-  if (status == IDCANCEL)
-    return;
+    if (status == IDCANCEL)
+        return;
 
-  CMyString ImportedPrefix(dlg.m_groupName);
-  CString cs_text, cs_title, cs_temp;
-  TCHAR fieldSeparator(dlg.m_Separator[0]);
-  CFileDialog fd(TRUE,
-                 _T("txt"),
-                 NULL,
-                 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 _T("Text files (*.txt)|*.txt|")
-                 _T("CSV files (*.csv)|*.csv|")
-                 _T("All files (*.*)|*.*|")
-                 _T("|"),
-                 this);
-  cs_text.LoadString(IDS_PICKTEXTFILE);
-  fd.m_ofn.lpstrTitle = cs_text;
-  int rc = fd.DoModal();
-  if (rc == IDOK) {
-  	CString strErrors;
-    CMyString newfile = (CMyString)fd.GetPathName();
-    int numImported = 0, numSkipped = 0;
-    bool bimport_preV3 = (dlg.m_import_preV3 == 1);
-    TCHAR delimiter;
-    if (dlg.m_querysetimpdelim == 1) {
-      delimiter = dlg.m_defimpdelim[0];
-    } else {
-      delimiter = TCHAR('\0');
+    CMyString ImportedPrefix(dlg.m_groupName);
+    CString cs_text, cs_title, cs_temp;
+    TCHAR fieldSeparator(dlg.m_Separator[0]);
+    CFileDialog fd(TRUE,
+                   _T("txt"),
+                   NULL,
+                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                   _T("Text files (*.txt)|*.txt|")
+                   _T("CSV files (*.csv)|*.csv|")
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+    cs_text.LoadString(IDS_PICKTEXTFILE);
+    fd.m_ofn.lpstrTitle = cs_text;
+    int rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return;
     }
-    rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strErrors, fieldSeparator,
-                                    delimiter, numImported, numSkipped, bimport_preV3);
+    if (rc == IDOK) {
+        CString strErrors;
+        CMyString newfile = (CMyString)fd.GetPathName();
+        int numImported = 0, numSkipped = 0;
+        bool bimport_preV3 = (dlg.m_import_preV3 == 1);
+        TCHAR delimiter;
+        if (dlg.m_querysetimpdelim == 1) {
+            delimiter = dlg.m_defimpdelim[0];
+        } else {
+            delimiter = TCHAR('\0');
+        }
+        rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strErrors, fieldSeparator,
+                                        delimiter, numImported, numSkipped, bimport_preV3);
 
-    cs_title.LoadString(IDS_FILEREADERROR);
-    switch (rc) {
-    case PWScore::CANT_OPEN_FILE:
-      {
-        cs_temp.Format(IDS_CANTOPENREADING, newfile);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-      }
-      break;
-    case PWScore::INVALID_FORMAT:
-      {
-        cs_temp.Format(IDS_INVALIDFORMAT , newfile);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-      }
-      break;
-    case PWScore::SUCCESS:
-    default:
-      {
-      	CString temp1, temp2 = _T("");
-      	temp1.Format(IDS_RECORDSREAD, numImported, (numImported != 1) ? _T("s") : _T(""));
-        if (numSkipped != 0)
-          temp2.Format(IDS_RECORDSNOTREAD, numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
+        cs_title.LoadString(IDS_FILEREADERROR);
+        switch (rc) {
+            case PWScore::CANT_OPEN_FILE:
+            {
+                cs_temp.Format(IDS_CANTOPENREADING, newfile);
+                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            }
+            break;
+            case PWScore::INVALID_FORMAT:
+            {
+                cs_temp.Format(IDS_INVALIDFORMAT , newfile);
+                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            }
+            break;
+            case PWScore::SUCCESS:
+            default:
+            {
+                CString temp1, temp2 = _T("");
+                temp1.Format(IDS_RECORDSREAD, numImported, (numImported != 1) ? _T("s") : _T(""));
+                if (numSkipped != 0)
+                    temp2.Format(IDS_RECORDSNOTREAD, numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
 
-        cs_title.LoadString(IDS_STATUS);
-        MessageBox(temp1 + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
-		ChangeOkUpdate();
-      }
-      RefreshList();
-      break;
-    } // switch
-  }
+                cs_title.LoadString(IDS_STATUS);
+                MessageBox(temp1 + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
+                ChangeOkUpdate();
+            }
+            RefreshList();
+            break;
+        } // switch
+    }
 }
 
 void
 DboxMain::OnImportKeePass()
 {
-  if (m_IsReadOnly) // disable in read-only mode
-    return;
+    if (m_IsReadOnly) // disable in read-only mode
+        return;
 
-  CString cs_text, cs_title, cs_temp;
-  CFileDialog fd(TRUE,
-                 _T("txt"),
-                 NULL,
-                 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-                 _T("Text files (*.txt)|*.txt|")
-                 _T("CSV files (*.csv)|*.csv|")
-                 _T("All files (*.*)|*.*|")
-                 _T("|"),
-                 this);
-  cs_text.LoadString(IDS_PICKKEEPASSFILE);
-  fd.m_ofn.lpstrTitle = cs_text;
-  int rc = fd.DoModal();
-  if (rc == IDOK) {
-    CMyString newfile = (CMyString)fd.GetPathName();
-    rc = m_core.ImportKeePassTextFile(newfile);
-    switch (rc) {
-    case PWScore::CANT_OPEN_FILE:
-      {
-        cs_temp.Format(IDS_CANTOPENREADING, newfile);
-        cs_title.LoadString(IDS_FILEOPENERROR);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-      }
-      break;
-    case PWScore::INVALID_FORMAT:
-      {
-        cs_temp.Format(IDS_INVALIDFORMAT, newfile);
-        cs_title.LoadString(IDS_FILEREADERROR);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-      }
-      break;
-    case PWScore::SUCCESS:
-    default:
-      RefreshList();
-	  ChangeOkUpdate();
-      break;
-    } // switch
-  }
+    CString cs_text, cs_title, cs_temp;
+    CFileDialog fd(TRUE,
+                   _T("txt"),
+                   NULL,
+                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                   _T("Text files (*.txt)|*.txt|")
+                   _T("CSV files (*.csv)|*.csv|")
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+    cs_text.LoadString(IDS_PICKKEEPASSFILE);
+    fd.m_ofn.lpstrTitle = cs_text;
+    int rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return;
+    }
+    if (rc == IDOK) {
+        CMyString newfile = (CMyString)fd.GetPathName();
+        rc = m_core.ImportKeePassTextFile(newfile);
+        switch (rc) {
+            case PWScore::CANT_OPEN_FILE:
+            {
+                cs_temp.Format(IDS_CANTOPENREADING, newfile);
+                cs_title.LoadString(IDS_FILEOPENERROR);
+                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            }
+            break;
+            case PWScore::INVALID_FORMAT:
+            {
+                cs_temp.Format(IDS_INVALIDFORMAT, newfile);
+                cs_title.LoadString(IDS_FILEREADERROR);
+                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            }
+            break;
+            case PWScore::SUCCESS:
+            default:
+                RefreshList();
+                ChangeOkUpdate();
+                break;
+        } // switch
+    }
 }
 
 void
 DboxMain::OnImportXML()
 {
-  if (m_IsReadOnly) // disable in read-only mode
-    return;
+    if (m_IsReadOnly) // disable in read-only mode
+        return;
 
-  CString cs_title, cs_temp, cs_text;
-  CString XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe.xsd");
+    CString cs_title, cs_temp, cs_text;
+    CString XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe.xsd");
 
-  if (XSDFilename.IsEmpty() || !PWSfile::FileExists(XSDFilename)) {
-    cs_temp.LoadString(IDS_MISSINGXSD);
-    cs_title.LoadString(IDS_CANTVALIDATEXML);
-    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
-    return;
-  }
+    if (XSDFilename.IsEmpty() || !PWSfile::FileExists(XSDFilename)) {
+        cs_temp.LoadString(IDS_MISSINGXSD);
+        cs_title.LoadString(IDS_CANTVALIDATEXML);
+        MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
+        return;
+    }
 
-  CImportXMLDlg dlg;
-  int status = dlg.DoModal();
+    CImportXMLDlg dlg;
+    int status = dlg.DoModal();
 
-  if (status == IDCANCEL)
-    return;
+    if (status == IDCANCEL)
+        return;
 
-  CString ImportedPrefix(dlg.m_groupName);
+    CString ImportedPrefix(dlg.m_groupName);
 
-  CFileDialog fd(TRUE,
-				 _T("xml"),
-				 NULL,
-				 OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-				 _T("XML files (*.xml)|*.xml||"),
-				 this);
-  cs_text.LoadString(IDS_PICKXMLFILE);
-  fd.m_ofn.lpstrTitle = cs_text;
+    CFileDialog fd(TRUE,
+                   _T("xml"),
+                   NULL,
+                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                   _T("XML files (*.xml)|*.xml||"),
+                   this);
+    cs_text.LoadString(IDS_PICKXMLFILE);
+    fd.m_ofn.lpstrTitle = cs_text;
 
-  int rc = fd.DoModal();
-  if (rc == IDOK) {
-    CString strErrors;
-    CString XMLFilename = (CMyString)fd.GetPathName();
-    int numValidated, numImported;
-    CWaitCursor waitCursor;  // This may take a while!
-    rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename, XSDFilename, strErrors, numValidated, numImported);
-    waitCursor.Restore();  // Restore normal cursor
+    int rc = fd.DoModal();
+    if (m_inExit) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return;
+    }
+    if (rc == IDOK) {
+        CString strErrors;
+        CString XMLFilename = (CMyString)fd.GetPathName();
+        int numValidated, numImported;
+        CWaitCursor waitCursor;  // This may take a while!
+        rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename, XSDFilename, strErrors, numValidated, numImported);
+        waitCursor.Restore();  // Restore normal cursor
 
-    switch (rc) {
-    case PWScore::XML_FAILED_VALIDATION:
-      {
-        CImportXMLErrDlg dlg;
-        dlg.m_strActionText.Format(IDS_FAILEDXMLVALIDATE, XMLFilename);
-        dlg.m_strResultText = strErrors;
-        dlg.DoModal();
-      }
-      break;
-    case PWScore::XML_FAILED_IMPORT:
-      {
-        CImportXMLErrDlg dlg;
-        dlg.m_strActionText.Format(IDS_XMLERRORS, XMLFilename);
-        dlg.m_strResultText = strErrors;
-        dlg.DoModal();
-      }
-      break;
-    case PWScore::SUCCESS:
-      {
-        if (!strErrors.IsEmpty()) {
-          cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                      XMLFilename, numValidated, numImported);
-          CImportXMLErrDlg dlg;
-          dlg.m_strActionText = cs_temp;
-          dlg.m_strResultText = strErrors;
-          dlg.DoModal();
-        } else {
-          cs_temp.Format(IDS_XMLIMPORTOK,
-                      numValidated, (numValidated != 1) ? _T("s") : _T(""),
-                      numImported, (numImported != 1) ? _T("s") : _T(""));
-          cs_title.LoadString(IDS_STATUS);
-          MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
-		  ChangeOkUpdate();
-        }
-      }
-      RefreshList();
-      break;
-    default:
-      ASSERT(0);
-    } // switch
-  }
+        switch (rc) {
+            case PWScore::XML_FAILED_VALIDATION:
+            {
+                CImportXMLErrDlg dlg;
+                dlg.m_strActionText.Format(IDS_FAILEDXMLVALIDATE, XMLFilename);
+                dlg.m_strResultText = strErrors;
+                dlg.DoModal();
+            }
+            break;
+            case PWScore::XML_FAILED_IMPORT:
+            {
+                CImportXMLErrDlg dlg;
+                dlg.m_strActionText.Format(IDS_XMLERRORS, XMLFilename);
+                dlg.m_strResultText = strErrors;
+                dlg.DoModal();
+            }
+            break;
+            case PWScore::SUCCESS:
+            {
+                if (!strErrors.IsEmpty()) {
+                    cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
+                                   XMLFilename, numValidated, numImported);
+                    CImportXMLErrDlg dlg;
+                    dlg.m_strActionText = cs_temp;
+                    dlg.m_strResultText = strErrors;
+                    dlg.DoModal();
+                } else {
+                    cs_temp.Format(IDS_XMLIMPORTOK,
+                                   numValidated, (numValidated != 1) ? _T("s") : _T(""),
+                                   numImported, (numImported != 1) ? _T("s") : _T(""));
+                    cs_title.LoadString(IDS_STATUS);
+                    MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
+                    ChangeOkUpdate();
+                }
+            }
+            RefreshList();
+            break;
+            default:
+                ASSERT(0);
+        } // switch
+    }
 }
 
 int
@@ -1005,6 +1061,13 @@ DboxMain::Merge()
         if (!dir.IsEmpty())
             fd.m_ofn.lpstrInitialDir = dir;
         rc = fd.DoModal();
+        if (m_inExit) {
+            // If U3ExitNow called while in CFileDialog,
+            // PostQuitMessage makes us return here instead
+            // of exiting the app. Try resignalling 
+            PostQuitMessage(0);
+            return PWScore::USER_CANCEL;
+        }
         if (rc == IDOK) {
             newfile = (CMyString)fd.GetPathName();
 
@@ -1267,6 +1330,13 @@ DboxMain::OnCompare()
         if (!dir.IsEmpty())
             fd.m_ofn.lpstrInitialDir = dir;
 		rc = fd.DoModal();
+        if (m_inExit) {
+            // If U3ExitNow called while in CFileDialog,
+            // PostQuitMessage makes us return here instead
+            // of exiting the app. Try resignalling 
+            PostQuitMessage(0);
+            return;
+        }
 		if (rc == IDOK) {
 			file2 = (CMyString)fd.GetPathName();
 			//Check that this file isn't the current one!
