@@ -13,6 +13,7 @@
 //Globally useful values...
 enum
 {
+   TAR_OK,
    TAR_INVALID,
    TAR_NEW,
    TAR_OPEN,

@@ -3,6 +3,7 @@
 // Strings
 #define DEFAULT_SUFFIX _T("psafe3")
 #define SUFFIX_FILTERS _T("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|")
+#define SUFFIX3_FILTERS _T("Password Safe Databases (*.psafe3)|*.psafe3|")
 
 //  Usage
 #define IDS_USAGE                       5000
@@ -252,3 +253,4 @@
 #define IDS_OPTBACKUPMAXNUM             5418
 #define IDS_OPTBACKUPTITLE              5419
 #define IDS_DEFDBNAME                   5420
+#define IDS_CREATENAME                  5421
