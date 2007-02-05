@@ -341,11 +341,8 @@ public:
         {
             if (message != (WM_APP+0x765))
                 return CWnd::WindowProc(message, wParam, lParam);
-            else {
+            else
                 m_dbox.U3ExitNow();
-                if (!m_dbox.InPostInit())
-                    ::exit(0); // sometimes brute force is required...
-            }
             return 0L;
         }
 private:

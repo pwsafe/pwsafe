@@ -113,7 +113,7 @@ public:
   void UpdatePasswordHistory(const int &iAction, const int &num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
-  bool InPostInit() const {return m_InitDone;}
+  bool ExitRequested() const {return m_inExit;}
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -355,7 +355,6 @@ private:
   bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
-  bool m_InitDone;
   HFONT m_hFontTree;
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
