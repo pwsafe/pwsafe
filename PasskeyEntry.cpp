@@ -295,6 +295,13 @@ CPasskeyEntry::OnCreateDb()
         if (!dir.IsEmpty())
             fd.m_ofn.lpstrInitialDir = dir;
         rc = fd.DoModal();
+        if (((DboxMain*) GetParent())->ExitRequested()) {
+            // If U3ExitNow called while in CFileDialog,
+            // PostQuitMessage makes us return here instead
+            // of exiting the app. Try resignalling 
+            PostQuitMessage(0);
+            return;
+        }
         if (rc == IDOK) {
             newfile = fd.GetPathName();
             break;
@@ -306,7 +313,7 @@ CPasskeyEntry::OnCreateDb()
     CPasskeySetup dbox_pksetup(this);
     rc = dbox_pksetup.DoModal();
 
-    if (rc == IDCANCEL)
+    if (rc != IDOK)
         return;  //User cancelled password entry
 
     // 3. Set m_filespec && m_passkey to returned value!
@@ -424,6 +431,13 @@ void CPasskeyEntry::OnOpenFileBrowser()
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
     int rc = fd.DoModal();
+    if (((DboxMain*) GetParent())->ExitRequested()) {
+        // If U3ExitNow called while in CFileDialog,
+        // PostQuitMessage makes us return here instead
+        // of exiting the app. Try resignalling 
+        PostQuitMessage(0);
+        return;
+    }
     if (rc == IDOK) {
         m_ReadOnly = fd.GetReadOnlyPref();
   		((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_ReadOnly == TRUE

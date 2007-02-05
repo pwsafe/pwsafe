@@ -76,7 +76,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
      m_bValidate(false), m_bOpen(false), 
      m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
-     m_bAlreadyToldUserNoSave(false), m_InitDone(false), m_inExit(false)
+     m_bAlreadyToldUserNoSave(false), m_inExit(false)
 {
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
@@ -500,7 +500,6 @@ DboxMain::OnInitDialog()
   }
 
   SetInitialDatabaseDisplay();
-  m_InitDone = true;
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
