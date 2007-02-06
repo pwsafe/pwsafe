@@ -862,11 +862,12 @@ ThisMfcApp::SetClipboardData(const CMyString &data)
 void
 ThisMfcApp::ClearClipboardData()
 {
-  // Clear the clipboard IFF its value is the same as last set by this app.
-  if (!m_clipboard_set)
-    return;
+    // Clear the clipboard IFF its value is the same as last set by this app.
+    if (!m_clipboard_set)
+        return;
 
-	m_clipboard_set = PWSUtil::ClearClipboard(m_clipboard_digest, m_pMainWnd->m_hWnd);
+	m_clipboard_set = PWSUtil::ClearClipboard(m_clipboard_digest,
+                                              m_pMainWnd->m_hWnd);
 }
 
 #if !defined(POCKET_PC)
@@ -1066,7 +1067,7 @@ ThisMfcApp::GetVersionInfoFromFile(const CString &csFileName)
                                              (DWORD)dwVerHnd,
                                              (DWORD)dwVerInfoSize,
                                              (LPVOID)pVersionInfo);
-             if (bRet) {
+            if (bRet) {
 
                 struct TRANSARRAY {
                     WORD wLangID;
@@ -1079,7 +1080,7 @@ ThisMfcApp::GetVersionInfoFromFile(const CString &csFileName)
                 TRANSARRAY* lpTransArray;
 
                 VerQueryValue(pVersionInfo, _T("\\VarFileInfo\\Translation"),
-                             (LPVOID*)&buffer, &buflen);
+                              (LPVOID*)&buffer, &buflen);
                 lpTransArray = (TRANSARRAY*) buffer;
 
                 // Get string File Version information 

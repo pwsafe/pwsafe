@@ -157,7 +157,6 @@ CPWHistDlg::OnOK()
    * Special case: history empty and password history off - do nothing
    */
 
-  const CMyString oldHistStr = m_HistStr;
 
   if (m_ClearPWHistory == TRUE) {
     m_PWHistList.RemoveAll();

@@ -731,21 +731,21 @@ CMyTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
 	if (NULL == hItem)
 		return this->GetRootItem(); 
 
-      // First, try to go to this item's 1st child 
-      HTREEITEM hReturn = this->GetChildItem(hItem); 
+    // First, try to go to this item's 1st child 
+    HTREEITEM hReturn = this->GetChildItem(hItem); 
 
-      // If no more child items... 
-      while (hItem && !hReturn) { 
-         // Get this item's next sibling 
-         hReturn = this->GetNextSiblingItem(hItem); 
+    // If no more child items... 
+    while (hItem && !hReturn) { 
+        // Get this item's next sibling 
+        hReturn = this->GetNextSiblingItem(hItem); 
 
-         // If hReturn is NULL, then there are no 
-         // sibling items, and we're on a leaf node. 
-         // Backtrack up the tree one level, and 
-         // we'll look for a sibling on the next 
-         // iteration (or we'll reach the root and 
-         // quit). 
-         hItem = this->GetParentItem(hItem); 
-      }
-	  return hReturn;
+        // If hReturn is NULL, then there are no 
+        // sibling items, and we're on a leaf node. 
+        // Backtrack up the tree one level, and 
+        // we'll look for a sibling on the next 
+        // iteration (or we'll reach the root and 
+        // quit). 
+        hItem = this->GetParentItem(hItem); 
+    }
+    return hReturn;
 } 

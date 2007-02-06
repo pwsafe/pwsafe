@@ -37,5 +37,5 @@ class PWSfileV1V2 : public PWSfile {
   int ReadV2Header();
 };
 
-#endif PWSfileV1V2_h
+#endif /* PWSfileV1V2_h */
 

@@ -332,86 +332,86 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
 
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {
-  ASSERT(m_fd != NULL);
-  ASSERT(m_curversion != UNKNOWN_VERSION);
+    ASSERT(m_fd != NULL);
+    ASSERT(m_curversion != UNKNOWN_VERSION);
 
-  CMyString tempdata;  
-  int numread = 0;
-  unsigned char type;
-  // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
-  // to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
+    CMyString tempdata;  
+    int numread = 0;
+    unsigned char type;
+    // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
+    // to access the pointer we need,
+    // but we in fact need it as an unsigned char. Grrrr.
 
-  switch (m_curversion) {
-  case V17: {
-    // type is meaningless, but why write two versions of ReadCBC?
-    numread += ReadCBC(type, tempdata);
-    item.SetName(tempdata, m_defusername);
-    numread += ReadCBC(type, tempdata);
-    item.SetPassword(tempdata);
-    numread += ReadCBC(type, tempdata);
-    item.SetNotes(tempdata);
-    // No UUID, so we create one here
-    item.CreateUUID();
-    // No Group - currently leave empty
-    return (numread > 0) ? SUCCESS : END_OF_FILE;
-  }
-  case V20: {
-    int emergencyExit = 255; // to avoid endless loop.
-    int fieldLen; // zero means end of file reached
-    bool endFound = false; // set to true when record end detected - happy end
-    do {
-      fieldLen = ReadCBC(type, tempdata);
-      if (fieldLen > 0) {
-	numread += fieldLen;
-	switch (type) {
-	case CItemData::TITLE:
-	  item.SetTitle(tempdata); break;
-	case CItemData::USER:
-	  item.SetUser(tempdata); break;
-	case CItemData::PASSWORD:
-	  item.SetPassword(tempdata); break;
-	case CItemData::NOTES: {
-      CMyString autotypeStr, URLStr;
-      ExtractAutoTypeCmd(tempdata, autotypeStr);
-      ExtractURL(tempdata, URLStr);
-	  item.SetNotes(tempdata);
-      if (!autotypeStr.IsEmpty())
-        item.SetAutoType(autotypeStr);
-      if (!URLStr.IsEmpty())
-        item.SetURL(URLStr);
-      break;
+    switch (m_curversion) {
+        case V17: {
+            // type is meaningless, but why write two versions of ReadCBC?
+            numread += ReadCBC(type, tempdata);
+            item.SetName(tempdata, m_defusername);
+            numread += ReadCBC(type, tempdata);
+            item.SetPassword(tempdata);
+            numread += ReadCBC(type, tempdata);
+            item.SetNotes(tempdata);
+            // No UUID, so we create one here
+            item.CreateUUID();
+            // No Group - currently leave empty
+            return (numread > 0) ? SUCCESS : END_OF_FILE;
+        }
+        case V20: {
+            int emergencyExit = 255; // to avoid endless loop.
+            int fieldLen; // zero means end of file reached
+            bool endFound = false; // set to true when record end detected - happy end
+            do {
+                fieldLen = ReadCBC(type, tempdata);
+                if (fieldLen > 0) {
+                    numread += fieldLen;
+                    switch (type) {
+                        case CItemData::TITLE:
+                            item.SetTitle(tempdata); break;
+                        case CItemData::USER:
+                            item.SetUser(tempdata); break;
+                        case CItemData::PASSWORD:
+                            item.SetPassword(tempdata); break;
+                        case CItemData::NOTES: {
+                            CMyString autotypeStr, URLStr;
+                            ExtractAutoTypeCmd(tempdata, autotypeStr);
+                            ExtractURL(tempdata, URLStr);
+                            item.SetNotes(tempdata);
+                            if (!autotypeStr.IsEmpty())
+                                item.SetAutoType(autotypeStr);
+                            if (!URLStr.IsEmpty())
+                                item.SetURL(URLStr);
+                            break;
+                        }
+                        case CItemData::END:
+                            endFound = true; break;
+                        case CItemData::UUID: {
+                            LPCTSTR ptr = LPCTSTR(tempdata);
+                            uuid_array_t uuid_array;
+                            for (unsigned i = 0; i < sizeof(uuid_array); i++)
+                                uuid_array[i] = (unsigned char)ptr[i];
+                            item.SetUUID(uuid_array); break;
+                        }
+                        case CItemData::GROUP:
+                            item.SetGroup(tempdata); break;
+                            // just silently ignore fields we don't support.
+                            // this is forward compatability...
+                        case CItemData::CTIME:
+                        case CItemData::PMTIME:
+                        case CItemData::ATIME:
+                        case CItemData::LTIME:
+                        case CItemData::RMTIME:
+                        case CItemData::POLICY:
+                        default:
+                            // XXX Set a flag here so user can be warned that
+                            // XXX we read a file format we don't fully support
+                            break;
+                    } // switch
+                } // if (fieldLen > 0)
+            } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
+            return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
+        }
+        default:
+            ASSERT(0);
+            return UNSUPPORTED_VERSION;
     }
-	case CItemData::END:
-	  endFound = true; break;
-	case CItemData::UUID: {
-	  LPCTSTR ptr = LPCTSTR(tempdata);
-	  uuid_array_t uuid_array;
-	  for (int i = 0; i < sizeof(uuid_array); i++)
-	    uuid_array[i] = (unsigned char)ptr[i];
-	  item.SetUUID(uuid_array); break;
-	}
-	case CItemData::GROUP:
-	  item.SetGroup(tempdata); break;
-	  // just silently ignore fields we don't support.
-	  // this is forward compatability...
-	case CItemData::CTIME:
-	case CItemData::PMTIME:
-	case CItemData::ATIME:
-	case CItemData::LTIME:
-	case CItemData::RMTIME:
-	case CItemData::POLICY:
-	default:
-	  // XXX Set a flag here so user can be warned that
-	  // XXX we read a file format we don't fully support
-	  break;
-	} // switch
-      } // if (fieldLen > 0)
-    } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-    return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
-  }
-  default:
-    ASSERT(0);
-    return UNSUPPORTED_VERSION;
-  }
 }

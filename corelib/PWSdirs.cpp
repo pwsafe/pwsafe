@@ -70,7 +70,7 @@ CString PWSdirs::GetXMLDir()
     else {
         retval = GetMFNDir();
     }
-        return retval;
+    return retval;
 }
 
 CString PWSdirs::GetHelpDir()

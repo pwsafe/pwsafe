@@ -24,7 +24,7 @@ const COLORREF crefBlack = (RGB(0,0,0));          // Black
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn
 
-CEditExtn::CEditExtn()
+CEditExtn::CEditExtn() : m_bIsFocused(FALSE)
 {
 	brInFocus.CreateSolidBrush(crefInFocus);
 	brNoFocus.CreateSolidBrush(crefNoFocus);
@@ -77,7 +77,7 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 /////////////////////////////////////////////////////////////////////////////
 // CListBoxExtn
 
-CListBoxExtn::CListBoxExtn()
+CListBoxExtn::CListBoxExtn() : m_bIsFocused(FALSE)
 {
 	brInFocus.CreateSolidBrush(crefInFocus);
 	brNoFocus.CreateSolidBrush(crefNoFocus);

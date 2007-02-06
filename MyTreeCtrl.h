@@ -65,7 +65,6 @@ private:
   
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
-  void OnButtonUp(void);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);

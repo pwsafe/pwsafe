@@ -41,10 +41,6 @@ public:
   bool IsEmpty() {return m_Length == 0;}
 
 private:
-  //Actual encryption/decryption
-  void EncryptData(const CMyString &plain, BlowFish *bf);
-  void DecryptData(CMyString &plain, BlowFish *bf) const;
-
   //Number of 8 byte blocks needed for size
   int GetBlockSize(int size) const;
 

@@ -328,7 +328,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
       case CItemData::UUID: {
         LPCTSTR ptrU = LPCTSTR(tempdata);
         uuid_array_t uuid_array;
-        for (int i = 0; i < sizeof(uuid_array); i++)
+        for (unsigned i = 0; i < sizeof(uuid_array); i++)
           uuid_array[i] = (unsigned char)ptrU[i];
         item.SetUUID(uuid_array); break;
       }
@@ -872,7 +872,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
                                      LPSTR(m_tmp), mbLen,// buffer and length
                                      NULL,NULL);   // use system default for unmappables
     ASSERT(tmpLen == mbLen);
-    m_tmp[mbLen-1] = TCHAR('\0');
+    m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
     data = m_tmp;
 #endif /* !UNICODE */
     ASSERT(data.GetLength() != 0);

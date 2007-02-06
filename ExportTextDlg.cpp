@@ -28,7 +28,9 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 
 CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CExportTextDlg::IDD, pParent)
+        : CDialog(CExportTextDlg::IDD, pParent),
+          m_subgroup(_T("")),
+          m_subgroup_object(0), m_subgroup_function(0)
 {
 	//{{AFX_DATA_INIT(CExportTextDlg)
 	m_exportTextPassword = _T("");

@@ -379,7 +379,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
             unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
 			int nscanned = 0;
 			TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
- 			for (int i = 0; i < sizeof(uuid_array_t); i++) {
+ 			for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
 			    nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
@@ -393,7 +393,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 				tempitem.CreateUUID();
 			else {
 				tempitem.SetUUID(uuid_array);
-		}
+            }
 		}
 		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
 		newgroup += cur_entry->group;
@@ -435,7 +435,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		CMyString newPWHistory;
 		CString strPWHErrors, buffer;
 		buffer.Format(IDSC_SAXERRORPWH,
-				cur_entry->group, cur_entry->title, cur_entry->username);
+                      cur_entry->group, cur_entry->title, cur_entry->username);
 		switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
 			case PWH_OK:
 				tempitem.SetPWHistory(newPWHistory);

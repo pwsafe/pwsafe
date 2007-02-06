@@ -43,8 +43,6 @@ protected:
 
 // Implementation
 protected:
-   char GetRandAlphaNumChar();
-
    // Generated message map functions
    //{{AFX_MSG(CPasskeySetup)
    virtual void OnCancel();

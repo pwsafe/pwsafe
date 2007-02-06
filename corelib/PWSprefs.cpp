@@ -396,18 +396,18 @@ CMyString PWSprefs::Store()
 #else
 	ostrstream os;
 #endif
-
-	for (int i = 0; i < NumBoolPrefs; i++)
+    int i;
+	for (i = 0; i < NumBoolPrefs; i++)
 		if (m_boolValues[i] != m_bool_prefs[i].defVal &&
 			m_bool_prefs[i].isStoredinDB)
 			os << _T("B ") << i << TCHAR(' ') << (m_boolValues[i] ? 1 : 0) << TCHAR(' ');
 
-	for (int i = 0; i < NumIntPrefs; i++)
+	for (i = 0; i < NumIntPrefs; i++)
 		if (m_intValues[i] != m_int_prefs[i].defVal &&
 			m_int_prefs[i].isStoredinDB)
 			os << _T("I ") << i << TCHAR(' ') << m_intValues[i] << TCHAR(' ');
 
-	for (int i = 0; i < NumStringPrefs; i++)
+	for (i = 0; i < NumStringPrefs; i++)
 		if (m_stringValues[i] != m_string_prefs[i].defVal &&
 			m_string_prefs[i].isStoredinDB)
 			os << _T("S ") << i << _T(" \"") << LPCTSTR(m_stringValues[i]) << _T("\" ");
@@ -421,15 +421,16 @@ CMyString PWSprefs::Store()
 void PWSprefs::Load(const CMyString &prefString)
 {
 	// Set default values for preferences stored in Database
-	for (int i = 0; i < NumBoolPrefs; i++)
+    int i;
+	for (i = 0; i < NumBoolPrefs; i++)
 		if (m_bool_prefs[i].isStoredinDB)
 			m_boolValues[i] = m_bool_prefs[i].defVal != 0;
 
-	for (int i = 0; i < NumIntPrefs; i++)
+	for (i = 0; i < NumIntPrefs; i++)
 		if (m_int_prefs[i].isStoredinDB)
 			m_intValues[i] = m_int_prefs[i].defVal;
 
-	for (int i = 0; i < NumStringPrefs; i++)
+	for (i = 0; i < NumStringPrefs; i++)
 		if (m_string_prefs[i].isStoredinDB)
 	 		m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
 
@@ -670,7 +671,7 @@ void PWSprefs::LoadProfileFromRegistry()
 	}
 
 	// Defensive programming not applicable.
-	for (int i = 0; i < NumStringPrefs; i++)
+	for (i = 0; i < NumStringPrefs; i++)
 		m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
                                                               m_string_prefs[i].name,
                                                               m_stringValues[i]));
@@ -784,6 +785,7 @@ bool PWSprefs::LoadProfileFromFile()
 
 void PWSprefs::SaveApplicationPreferences()
 {
+    int i;
 	if (!m_prefs_changed[APP_PREF])
 		return;
 
@@ -807,7 +809,7 @@ void PWSprefs::SaveApplicationPreferences()
     UpdateTimeStamp();
 	
 	// Write values to XML file or registry
-	for (int i = 0; i < NumBoolPrefs; i++) {
+	for (i = 0; i < NumBoolPrefs; i++) {
 		if (!m_bool_prefs[i].isStoredinDB && m_boolChanged[i]) {
 			if (m_boolValues[i] != m_bool_prefs[i].defVal) {
 				WritePref(m_bool_prefs[i].name, m_boolValues[i]);
@@ -818,7 +820,7 @@ void PWSprefs::SaveApplicationPreferences()
 		}
 	}
 
-	for (int i = 0; i < NumIntPrefs; i++) {
+	for (i = 0; i < NumIntPrefs; i++) {
 		if (!m_int_prefs[i].isStoredinDB && m_intChanged[i]) {
 			if (m_intValues[i] != m_int_prefs[i].defVal) {
 				WritePref(m_int_prefs[i].name, m_intValues[i]);
@@ -829,7 +831,7 @@ void PWSprefs::SaveApplicationPreferences()
 		}
 	}
 
-	for (int i = 0; i < NumStringPrefs; i++) {
+	for (i = 0; i < NumStringPrefs; i++) {
 		if (!m_string_prefs[i].isStoredinDB && m_stringChanged[i]) {
 			if (m_stringValues[i] != m_string_prefs[i].defVal) {
 				WritePref(m_string_prefs[i].name, m_stringValues[i]);
@@ -931,11 +933,11 @@ void PWSprefs::DeleteRegistryEntries()
 int PWSprefs::GetConfigIndicator() const
 {
     switch (m_ConfigOptions) {
-	   	case CF_NONE: return IDSC_CONFIG_NONE; break;
-	    case CF_REGISTRY: return IDSC_CONFIG_REGISTRY; break;
+	   	case CF_NONE: return IDSC_CONFIG_NONE;
+	    case CF_REGISTRY: return IDSC_CONFIG_REGISTRY;
 	    case CF_FILE_RW:
-		case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW; break;
-	    case CF_FILE_RO: return IDSC_CONFIG_FILE_RO; break;
+		case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW;
+	    case CF_FILE_RO: return IDSC_CONFIG_FILE_RO;
     	default: ASSERT(0); return 0;
     }
 }

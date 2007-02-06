@@ -752,7 +752,8 @@ void
 DboxMain::OnAbout()
 {
   CAboutDlg about;
-  int nMajor(0), nMinor(0), nBuild(0), nRevision(0);
+  int nMajor(0), nMinor(0), nBuild(0);
+  // int nRevision(0);
 
   DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
   DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
@@ -761,7 +762,7 @@ DboxMain::OnAbout()
 	  nMajor = HIWORD(dwMajorMinor);
 	  nMinor = LOWORD(dwMajorMinor);
 	  nBuild = HIWORD(dwBuildRevision);
-	  nRevision = LOWORD(dwBuildRevision);
+//	  nRevision = LOWORD(dwBuildRevision);
   }
 
   CString csFileVersionString, csRevision;
@@ -1135,21 +1136,21 @@ void
 DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
-  if ( ID_SYSMENU_ALWAYSONTOP == nID ) {
-    m_bAlwaysOnTop = !m_bAlwaysOnTop;
-    PWSprefs::GetInstance()->SetPref(PWSprefs::AlwaysOnTop,
-                                     m_bAlwaysOnTop);
-    UpdateAlwaysOnTop();
-    return;
-  }
+    if ( ID_SYSMENU_ALWAYSONTOP == nID ) {
+        m_bAlwaysOnTop = !m_bAlwaysOnTop;
+        PWSprefs::GetInstance()->SetPref(PWSprefs::AlwaysOnTop,
+                                         m_bAlwaysOnTop);
+        UpdateAlwaysOnTop();
+        return;
+    }
 
- if ((nID & 0xFFF0) == SC_RESTORE) {
-  	UnMinimize(true);
-	if (!m_passphraseOK)	// password bad or cancel pressed
-		return;
-  }
+    if ((nID & 0xFFF0) == SC_RESTORE) {
+        UnMinimize(true);
+        if (!m_passphraseOK)	// password bad or cancel pressed
+            return;
+    }
 
-  CDialog::OnSysCommand( nID, lParam );
+    CDialog::OnSysCommand( nID, lParam );
 
 #endif
 }
@@ -1588,8 +1589,7 @@ DboxMain::CheckExpiredPasswords()
   if (p_expPWList->GetCount() > 0) {
     CExpPWListDlg dlg(this, m_core.GetCurFile());
     dlg.m_pexpPWList = p_expPWList;
-    int rc = 0;
-    rc = dlg.DoModal();
+    dlg.DoModal();
     p_expPWList->RemoveAll();
   }
 
@@ -1773,16 +1773,12 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 		pos = 0; // best guess...
 
 	CMenu* xfilesubmenu = xmainmenu->GetSubMenu(pos);
-	if (xfilesubmenu != NULL)	// Look for "Save As"
+	if (xfilesubmenu != NULL) {	// Look for "Save As"
 		pos = app.FindMenuItem(xfilesubmenu, ID_MENUITEM_SAVEAS);
-	else
-		pos = -1;
-
-	if (pos > -1) {
 		// Disable/enable Export and Import menu items (skip over separator)
 		xfilesubmenu->EnableMenuItem(pos + 2, MF_BYPOSITION | imenuflags);
 		xfilesubmenu->EnableMenuItem(pos + 3, MF_BYPOSITION | imenuflags);
-	}
+    }
 
 	// Look for "Edit" menu.
 	cs_text.LoadString(IDS_EDITMENU);

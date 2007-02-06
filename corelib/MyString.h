@@ -83,8 +83,8 @@ public:
   void Trim() {m_mystring.TrimLeft(); m_mystring.TrimRight();}
 #endif
   void MakeLower() {m_mystring.MakeLower();}
-  int Compare(const LPCTSTR lpszOther) {return m_mystring.Compare(lpszOther);}
-  int CompareNoCase(const LPCTSTR lpszOther) {return m_mystring.CompareNoCase(lpszOther);}
+  int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
+  int CompareNoCase(const LPCTSTR lpszOther) const {return m_mystring.CompareNoCase(lpszOther);}
   void Empty();
   BOOL LoadString(const UINT &nID);
   void Format(LPCTSTR lpszFormat, ... );

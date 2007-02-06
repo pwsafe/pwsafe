@@ -128,7 +128,7 @@ void SHA1::Update(const unsigned char* data, unsigned int len)
 /* Add padding and return the message digest. */
 void SHA1::Final(unsigned char digest[HASHLEN])
 {
-  unsigned long i, j;
+  unsigned long i;
   unsigned char finalcount[8];
 
   for (i = 0; i < 8; i++) {
@@ -145,7 +145,6 @@ void SHA1::Final(unsigned char digest[HASHLEN])
       ((state[i>>2] >> ((3-(i & 3)) * 8) ) & 255);
   }
   /* Wipe variables */
-  i = j = 0;
   memset(buffer, 0, 64);
   memset(state, 0, 20);
   memset(count, 0, 8);
