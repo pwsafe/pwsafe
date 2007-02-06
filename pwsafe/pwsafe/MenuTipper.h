@@ -31,7 +31,8 @@ protected:
 public:
 	int m_iDelay;				// tooltip delay: you can change
 
-	CMenuTipManager() : m_iDelay(2000), m_bSticky(FALSE) { }
+  CMenuTipManager()
+      : m_iDelay(2000), m_bSticky(FALSE), m_bMouseSelect(FALSE) { }
 	~CMenuTipManager() { }
 
 	// call this to install tips
@@ -39,12 +40,7 @@ public:
 
 	// Useful helpers to get window/rect of current active menu
 	static CWnd* GetRunningMenuWnd();
-	static void  GetRunningMenuRect(CRect& rcMenu);
 	CRect GetMenuTipRect(HMENU hmenu, UINT nID);
-
-	// Useful helper to get the prompt string for a command ID.
-	// Like CFrameWnd::GetMessageString, but you don't need a frame wnd.
-	static CString GetResCommandPrompt(UINT nID);
 
 	// hook fn to trap main window's messages
 	virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);

@@ -680,73 +680,73 @@ DboxMain::OnExportVx(UINT nID)
 void
 DboxMain::OnExportText()
 {
-  CExportTextDlg et;
-  bool bwrite_header;
-  CString cs_text, cs_temp, cs_title;
+    CExportTextDlg et;
+    bool bwrite_header;
+    CString cs_text, cs_temp, cs_title;
 
-  int rc = et.DoModal();
-  if (rc == IDOK) {
-    CMyString newfile;
-    CMyString pw(et.m_exportTextPassword);
-    if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
-      // do the export
-      //SaveAs-type dialog box
-	  CMyString TxtFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("txt") );
-	  cs_text.LoadString(IDS_NAMETEXTFILE);
-      while (1) {
-        CFileDialog fd(FALSE,
-                       _T("txt"),
-                       TxtFileName,
-                       OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-                       |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-                       _T("Text files (*.txt)|*.txt|")
-                       _T("CSV files (*.csv)|*.csv|")
-                       _T("All files (*.*)|*.*|")
-                       _T("|"),
-                       this);
-        fd.m_ofn.lpstrTitle = cs_text;
-        rc = fd.DoModal();
-    if (m_inExit) {
-        // If U3ExitNow called while in CFileDialog,
-        // PostQuitMessage makes us return here instead
-        // of exiting the app. Try resignalling 
-        PostQuitMessage(0);
-        return;
-    }
-        if (rc == IDOK) {
-          newfile = (CMyString)fd.GetPathName();
-          break;
-        } else
-          return;
-      } // while (1)
+    int rc = et.DoModal();
+    if (rc == IDOK) {
+        CMyString newfile;
+        CMyString pw(et.m_exportTextPassword);
+        if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
+            // do the export
+            //SaveAs-type dialog box
+            CMyString TxtFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("txt") );
+            cs_text.LoadString(IDS_NAMETEXTFILE);
+            while (1) {
+                CFileDialog fd(FALSE,
+                               _T("txt"),
+                               TxtFileName,
+                               OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                               |OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                               _T("Text files (*.txt)|*.txt|")
+                               _T("CSV files (*.csv)|*.csv|")
+                               _T("All files (*.*)|*.*|")
+                               _T("|"),
+                               this);
+                fd.m_ofn.lpstrTitle = cs_text;
+                rc = fd.DoModal();
+                if (m_inExit) {
+                    // If U3ExitNow called while in CFileDialog,
+                    // PostQuitMessage makes us return here instead
+                    // of exiting the app. Try resignalling 
+                    PostQuitMessage(0);
+                    return;
+                }
+                if (rc == IDOK) {
+                    newfile = (CMyString)fd.GetPathName();
+                    break;
+                } else
+                    return;
+            } // while (1)
 
-	  bwrite_header = (et.m_export_hdr == 1);
-	  const std::bitset<16> bsExport = et.m_bsExport;
-	  const CString subgroup = et.m_subgroup;
-	  const int iObject = et.m_subgroup_object;
-	  const int iFunction = et.m_subgroup_function;
-	  TCHAR delimiter = _T('\0');
-      if (et.m_querysetexpdelim == 1)
-        delimiter = et.m_defexpdelim[0];
+            bwrite_header = (et.m_export_hdr == 1);
+            const std::bitset<16> bsExport = et.m_bsExport;
+            const CString subgroup = et.m_subgroup;
+            const int iObject = et.m_subgroup_object;
+            const int iFunction = et.m_subgroup_function;
+            TCHAR delimiter = _T('\0');
+            if (et.m_querysetexpdelim == 1)
+                delimiter = et.m_defexpdelim[0];
 
-      ItemList sortedItemList;
-      MakeSortedItemList(sortedItemList);
+            ItemList sortedItemList;
+            MakeSortedItemList(sortedItemList);
       
-      rc = m_core.WritePlaintextFile(newfile, bwrite_header, 
-                          bsExport, subgroup, iObject, 
-                          iFunction, delimiter, &sortedItemList);
-      sortedItemList.RemoveAll(); // cleanup soonest
+            rc = m_core.WritePlaintextFile(newfile, bwrite_header, 
+                                           bsExport, subgroup, iObject, 
+                                           iFunction, delimiter, &sortedItemList);
+            sortedItemList.RemoveAll(); // cleanup soonest
 
-      if (rc == PWScore::CANT_OPEN_FILE)        {
-        cs_temp.Format(IDS_CANTOPENWRITING, newfile);
-        cs_title.LoadString(IDS_FILEWRITEERROR);
-        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-      }
-    } else {
-      AfxMessageBox(IDS_BADPASSKEY);
-      Sleep(3000); // against automatic attacks
+            if (rc == PWScore::CANT_OPEN_FILE)        {
+                cs_temp.Format(IDS_CANTOPENWRITING, newfile);
+                cs_title.LoadString(IDS_FILEWRITEERROR);
+                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            }
+        } else {
+            AfxMessageBox(IDS_BADPASSKEY);
+            Sleep(3000); // against automatic attacks
+        }
     }
-  }
 }
 
 void
@@ -1390,8 +1390,8 @@ DboxMain::Compare(const CMyString &pszFilename)
 		case PWScore::WRONG_PASSWORD:
 		case PWScore::USER_CANCEL:
 			/*
-				If the user just cancelled out of the password dialog,
-				assume they want to return to where they were before...
+              If the user just cancelled out of the password dialog,
+              assume they want to return to where they were before...
 			*/
 			return PWScore::USER_CANCEL;
 	}
@@ -1416,28 +1416,28 @@ DboxMain::Compare(const CMyString &pszFilename)
 	CWaitCursor waitCursor;
 
 	/*
-		Purpose:
-		Compare entries from comparison database (compCore) with current database (m_core)
+      Purpose:
+      Compare entries from comparison database (compCore) with current database (m_core)
 
-		Algorithm:
-			Foreach entry in current database {
-				Find in comparison database
-				if found {
-					Compare
-						if match
-							OK
-						else
-							There are conflicts; note them & increment numConflicts
-				} else {
-					save & increment numOnlyInCurrent
-				}
-			}
+      Algorithm:
+      Foreach entry in current database {
+      Find in comparison database
+      if found {
+      Compare
+      if match
+      OK
+      else
+      There are conflicts; note them & increment numConflicts
+      } else {
+      save & increment numOnlyInCurrent
+      }
+      }
 
-			Foreach entry in comparison database {
-				Find in current database
-				if not found
-					save & increment numOnlyInComp
-			}
+      Foreach entry in comparison database {
+      Find in current database
+      if not found
+      save & increment numOnlyInComp
+      }
 	*/
 
 	int numOnlyInCurrent = 0;
@@ -1459,25 +1459,25 @@ DboxMain::Compare(const CMyString &pszFilename)
 			// found a match, see if all other fields also match
 			// Difference flags:
 			/*
-				First word (values in square brackets taken from ItemData.h)
-				1... ....	NAME		[0x0] - n/a - depreciated
-				.1.. ....	UUID		[0x1] - n/a - unique
-				..1. ....	GROUP		[0x2] - not checked - must be identical
-				...1 ....	TITLE		[0x3] - not checked - must be identical
-				.... 1...	USER		[0x4] - not checked - must be identical
-				.... .1..	NOTES		[0x5]
-				.... ..1.	PASSWORD	[0x6]
-        .... ...1 CTIME    [0x7] - not checked - immaterial
+              First word (values in square brackets taken from ItemData.h)
+              1... ....	NAME		[0x0] - n/a - depreciated
+              .1.. ....	UUID		[0x1] - n/a - unique
+              ..1. ....	GROUP		[0x2] - not checked - must be identical
+              ...1 ....	TITLE		[0x3] - not checked - must be identical
+              .... 1...	USER		[0x4] - not checked - must be identical
+              .... .1..	NOTES		[0x5]
+              .... ..1.	PASSWORD	[0x6]
+              .... ...1 CTIME    [0x7] - not checked - immaterial
 
-				Second word
-        1... .... PMTIME   [0x8] - not checked - immaterial
-        .1.. .... ATIME    [0x9] - not checked - immaterial
-				..1. ....	LTIME		[0xa]
-				...1 ....	POLICY		[0xb] - not yet implemented
-        .... 1... RMTIME   [0xc] - not checked - immaterial
-				.... .1..	URL			[0xd]
-				.... ..1.	AUTOTYPE	[0xe]
-				.... ...1	PWHIST		[0xf]
+              Second word
+              1... .... PMTIME   [0x8] - not checked - immaterial
+              .1.. .... ATIME    [0x9] - not checked - immaterial
+              ..1. ....	LTIME		[0xa]
+              ...1 ....	POLICY		[0xb] - not yet implemented
+              .... 1... RMTIME   [0xc] - not checked - immaterial
+              .... .1..	URL			[0xd]
+              .... ..1.	AUTOTYPE	[0xe]
+              .... ...1	PWHIST		[0xf]
 			*/
 
 			bsConflicts.reset();
@@ -1487,15 +1487,15 @@ DboxMain::Compare(const CMyString &pszFilename)
 				bsConflicts.flip(CItemData::NOTES);
 			if (currentItem.GetPassword() != compItem.GetPassword())
 				bsConflicts.flip(CItemData::PASSWORD);
-		/*	if (currentItem.GetCTime() != compItem.GetCTime())
+            /*	if (currentItem.GetCTime() != compItem.GetCTime())
 				bsConflicts.flip(CItemData::CTIME);
-			if (currentItem.GetPMTime() != compItem.GetPMTime())
+                if (currentItem.GetPMTime() != compItem.GetPMTime())
 				bsConflicts.flip(CItemData::PMTIME);
-			if (currentItem.GetATime() != compItem.GetATime())
+                if (currentItem.GetATime() != compItem.GetATime())
 				bsConflicts.flip(CItemData::ATIME); */
 			if (currentItem.GetLTime() != compItem.GetLTime())
 				bsConflicts.flip(CItemData::LTIME);
-        /*  if (currentItem.GetRMTime() != compItem.GetRMTime())
+            /*  if (currentItem.GetRMTime() != compItem.GetRMTime())
 				bsConflicts.flip(CItemData::RMTIME); */
 			if (currentItem.GetURL() != compItem.GetURL())
 				bsConflicts.flip(CItemData::URL);
@@ -1505,19 +1505,19 @@ DboxMain::Compare(const CMyString &pszFilename)
 				bsConflicts.flip(CItemData::PWHIST);
 
 			if (bsConflicts.any()) {
-					st_diff = new st_Conflict;
-					st_diff->cPos = currentPos;
-					st_diff->nPos = foundPos;
-					st_diff->bsDiffs = bsConflicts;
-					list_Conflicts.AddTail(*st_diff);
-                    delete[] st_diff;
+                st_diff = new st_Conflict;
+                st_diff->cPos = currentPos;
+                st_diff->nPos = foundPos;
+                st_diff->bsDiffs = bsConflicts;
+                list_Conflicts.AddTail(*st_diff);
+                delete st_diff;
 
-					numConflicts++;
+                numConflicts++;
 			}
-			} else {
-				/* didn't find any match... */
-				list_OnlyInCurrent.AddTail(currentPos);
-				numOnlyInCurrent++;
+        } else {
+            /* didn't find any match... */
+            list_OnlyInCurrent.AddTail(currentPos);
+            numOnlyInCurrent++;
 		}
 
 		m_core.GetNextEntry(currentPos);
@@ -1649,7 +1649,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 
 	app.SetClipboardData(resultStr);
 
-exit:
+  exit:
 	list_OnlyInCurrent.RemoveAll();
 	list_OnlyInComp.RemoveAll();
 	list_Conflicts.RemoveAll();
@@ -1802,7 +1802,6 @@ DboxMain::GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet)
 	HTREEITEM hItem = NULL;
 	while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
 		if (m_ctlItemTree.ItemHasChildren(hItem)) {
-			const CString cs_text = m_ctlItemTree.GetItemText(hItem);
 			if (bSet) {
 				if (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED) {
 					p_char_displaystatus[i] = TCHAR('1');

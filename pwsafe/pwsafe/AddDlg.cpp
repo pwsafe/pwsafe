@@ -292,7 +292,7 @@ void CAddDlg::ResizeDialog()
     IDC_PWHSPIN,
   };
 
-  for(int n = 0; n < sizeof(controls)/sizeof(controls[0]); n++) {
+  for(unsigned n = 0; n < sizeof(controls)/sizeof(controls[0]); n++) {
     CWnd* pWind = (CWnd *)GetDlgItem(controls[n]);
     pWind->ShowWindow(m_isExpanded);
   }

@@ -109,7 +109,6 @@ public:
   void SetFindInActive() {m_bFindActive = false;}
   void SetFindWrap(bool bwrap) {m_bFindWrap = bwrap;}
   bool GetCurrentView() {return m_IsListView;}
-  void IssueError(LONG lRet, const CString &csFunction);
   void UpdatePasswordHistory(const int &iAction, const int &num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
@@ -193,7 +192,6 @@ protected:
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
   void ConfigureSystemMenu();
-  void OnSysAlwaysOnTop();
   afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
   enum STATE {LOCKED, UNLOCKED, CLOSED};  // Really shouldn't be here it, ThisMfcApp own it
@@ -237,8 +235,6 @@ protected:
     afx_msg void OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI);
     afx_msg void OnTrayClearRecentEntries();
     afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
-	afx_msg void OnTrayRecentEntriesHelp(UINT nID);
-    afx_msg void OnUpdateTrayRecentEntriesHelp(CCmdUI *pCmdUI);
 	afx_msg void OnTrayCopyUsername(UINT nID);
 	afx_msg void OnUpdateTrayCopyUsername(CCmdUI *pCmdUI);
 	afx_msg void OnTrayCopyPassword(UINT nID);
@@ -342,7 +338,6 @@ protected:
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
                           int index, bool bForceReadOnly = false);
-  bool ExtractURL(const CMyString &instr, CMyString &outurl);
 
 private:
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()

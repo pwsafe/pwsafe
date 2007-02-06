@@ -20,7 +20,8 @@ class CExpDTDlg
 
 public:
 	CExpDTDlg(CWnd* pParent = NULL)
-		: CDialog(CExpDTDlg::IDD, pParent){};   // standard constructor
+		: CDialog(CExpDTDlg::IDD, pParent), m_tttLTime(time_t(0))
+            {};   // standard constructor
 
 	CDateTimeCtrl m_pTimeCtl;                // time picker control
 	CDateTimeCtrl m_pDateCtl;                // date picker control

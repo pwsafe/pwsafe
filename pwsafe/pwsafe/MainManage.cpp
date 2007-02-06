@@ -214,9 +214,9 @@ DboxMain::Restore()
 void
 DboxMain::OnValidate() 
 {
-  CString cs_msg;
-  if (!m_core.Validate(cs_msg))
-    cs_msg.LoadString(IDS_VALIDATEOK);
+    CString cs_msg;
+    if (!m_core.Validate(cs_msg))
+        cs_msg.LoadString(IDS_VALIDATEOK);
 
 	AfxMessageBox(cs_msg, MB_OK);
 }

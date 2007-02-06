@@ -385,19 +385,19 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
     write_status = ::WriteFile(s_lockFileHandle[iLFHandle],
                                user, user.GetLength() * sizeof(TCHAR),
                                &sumWrit, NULL);
-    write_status = ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
                                _T("@"), sizeof(TCHAR),
                                &numWrit, NULL);
     sumWrit += numWrit;
-    write_status += ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
                                 host, host.GetLength() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
-    write_status = ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
                                _T(":"), sizeof(TCHAR),
                                &numWrit, NULL);
     sumWrit += numWrit;
-    write_status += ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
                                 pid, pid.GetLength() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
@@ -406,7 +406,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
 	TRACE(_T("%s Lock1   %s, Count now %d; File Created\n"), 
           PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
           s_LockCount[iLFHandle]);
-    return true;
+    return (write_status == TRUE);
   }
 #endif // POSIX_FILE_LOCK
 }

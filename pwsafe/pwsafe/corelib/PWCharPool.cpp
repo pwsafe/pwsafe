@@ -143,94 +143,92 @@ TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, size_t ran
 CMyString
 CPasswordCharPool::MakePassword() const
 {
-  ASSERT(m_pwlen > 0);
-  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
+    ASSERT(m_pwlen > 0);
+    ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
 
-  int lowercaseneeded;
-  int uppercaseneeded;
-  int digitsneeded;
-  int symbolsneeded;
-  int hexdigitsneeded;
+    int lowercaseneeded;
+    int uppercaseneeded;
+    int digitsneeded;
+    int symbolsneeded;
+    int hexdigitsneeded;
 
-  CMyString password = _T("");
+    CMyString password = _T("");
 
-  bool pwRulesMet;
-  CMyString temp;
+    bool pwRulesMet;
+    CMyString temp;
 
-   do
-   {
-      TCHAR ch;
-      CharType type;
+    do
+        {
+            TCHAR ch;
+            CharType type;
 
-      lowercaseneeded = (m_uselowercase) ? 1 : 0;
-      uppercaseneeded = (m_useuppercase) ? 1 : 0;
-      digitsneeded = (m_usedigits) ? 1 : 0;
-      symbolsneeded = (m_usesymbols) ? 1 : 0;
-	  hexdigitsneeded = (m_usehexdigits) ? 1 : 0;
+            lowercaseneeded = (m_uselowercase) ? 1 : 0;
+            uppercaseneeded = (m_useuppercase) ? 1 : 0;
+            digitsneeded = (m_usedigits) ? 1 : 0;
+            symbolsneeded = (m_usesymbols) ? 1 : 0;
+            hexdigitsneeded = (m_usehexdigits) ? 1 : 0;
 
-      // If following assertion doesn't hold, we'll never exit the do loop!
-      ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
-	     digitsneeded + symbolsneeded + hexdigitsneeded);
+            // If following assertion doesn't hold, we'll never exit the do loop!
+            ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
+                   digitsneeded + symbolsneeded + hexdigitsneeded);
 
-      temp = _T("");    // empty the password string
+            temp = _T("");    // empty the password string
 
-      for (UINT x = 0; x < m_pwlen; x++)
-      {
-	 size_t rand = PWSrand::GetInstance()->RangeRand(m_sumlengths);
-	 // The only reason for passing rand as a parameter is to
-	 // avoid having to generate two random numbers for each
-	 // character. Alternately, we could have had a m_rand
-	 // data member. Which solution is uglier is debatable.
-	 type = GetRandomCharType(rand);
-         ch = GetRandomChar(type, rand);
-         temp += ch;
-         /*
-         **  Decrement the appropriate needed character type count.
-         */
-         switch (type)
-         {
-	    case LOWERCASE:
-	      lowercaseneeded--;
-               break;
+            for (UINT x = 0; x < m_pwlen; x++) {
+                size_t rand = PWSrand::GetInstance()->RangeRand(m_sumlengths);
+                // The only reason for passing rand as a parameter is to
+                // avoid having to generate two random numbers for each
+                // character. Alternately, we could have had a m_rand
+                // data member. Which solution is uglier is debatable.
+                type = GetRandomCharType(rand);
+                ch = GetRandomChar(type, rand);
+                temp += ch;
+                /*
+                **  Decrement the appropriate needed character type count.
+                */
+                switch (type) {
+                    case LOWERCASE:
+                        lowercaseneeded--;
+                        break;
 
-            case UPPERCASE:
-	      uppercaseneeded--;
-               break;
+                    case UPPERCASE:
+                        uppercaseneeded--;
+                        break;
 
-            case DIGIT:
-	      digitsneeded--;
-               break;
+                    case DIGIT:
+                        digitsneeded--;
+                        break;
 
-            case SYMBOL:
-	      symbolsneeded--;
-               break;
+                    case SYMBOL:
+                        symbolsneeded--;
+                        break;
 
-			case HEXDIGIT:
-				hexdigitsneeded--;
-               break;
+                    case HEXDIGIT:
+                        hexdigitsneeded--;
+                        break;
 
-            default:
-	      ASSERT(0); // should never happen!
-               break;
-         }
-      } // for
+                    default:
+                        ASSERT(0); // should never happen!
+                        break;
+                }
+            } // for
 
-      /*
-       * Make sure we have at least one representative of each required type
-       * after the for loop. If not, try again. Arguably, recursion would have
-       * been more elegant than a do loop, but this takes less stack...
-       */
-      pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
-		    digitsneeded <= 0 && symbolsneeded <= 0 && hexdigitsneeded <= 0);
+            /*
+             * Make sure we have at least one representative of each required type
+             * after the for loop. If not, try again. Arguably, recursion would have
+             * been more elegant than a do loop, but this takes less stack...
+             */
+            pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
+                          digitsneeded <= 0 && symbolsneeded <= 0 && 
+                          hexdigitsneeded <= 0);
 
-      if (pwRulesMet)
-      {
-         password = temp;
-      }
-      // Otherwise, do not exit, do not collect $200, try again...
-   } while (!pwRulesMet);
-   ASSERT(password.GetLength() == int(m_pwlen));
-   return password;
+            if (pwRulesMet) {
+                password = temp;
+            }
+            // Otherwise, do not exit, do not collect $200, try again...
+        } while (!pwRulesMet);
+    ASSERT(password.GetLength() == int(m_pwlen));
+    return password;
 }
 
 bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)

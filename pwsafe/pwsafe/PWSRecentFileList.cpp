@@ -7,7 +7,7 @@
  */
 #include "stdafx.h"
 #include <afxadv.h>
-#include "Shlwapi.h"
+
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
 #include "resource2.h" // for ID_FILE_MRU_*

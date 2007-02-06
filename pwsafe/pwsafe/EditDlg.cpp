@@ -44,8 +44,9 @@ CString CEditDlg::CS_HIDE;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
-    m_ci(ci), m_bIsModified(false),
-	m_ascLTime(_T("")), m_oldascLTime(_T(""))
+    m_ci(ci), m_bIsModified(false), m_IsReadOnly(false),
+	m_tttLTime (time_t(0)),
+    m_ascLTime(_T("")), m_oldascLTime(_T(""))
 {
   ASSERT(ci != NULL);
 
@@ -490,7 +491,7 @@ void CEditDlg::ResizeDialog()
   };
 
   int windows_state = m_isExpanded ? SW_SHOW : SW_HIDE;
-  for(int n = 0; n < sizeof(controls)/sizeof(controls[0]); n++) {
+  for(unsigned n = 0; n < sizeof(controls)/sizeof(controls[0]); n++) {
     CWnd* pWind;
     pWind = (CWnd *)GetDlgItem(controls[n]);
     pWind->ShowWindow(windows_state);
