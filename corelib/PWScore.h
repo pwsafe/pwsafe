@@ -19,6 +19,8 @@
 #include <vector>
 #include <bitset>
 
+#define MAXDEMO 10
+
 typedef CList<CItemData,CItemData> ItemList; 
 
 class PWScore {
@@ -37,7 +39,8 @@ class PWScore {
     INVALID_FORMAT,								// 11
     USER_EXIT,									// 12
     XML_FAILED_VALIDATION,						// 13
-    XML_FAILED_IMPORT							// 14
+    XML_FAILED_IMPORT,							// 14
+    LIMIT_REACHED                               // 15
    };
 
 

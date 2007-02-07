@@ -12,6 +12,7 @@
 
 #include "AboutDlg.h"
 #include "resource.h"
+#include "resource3.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,6 +32,9 @@ BOOL
 CAboutDlg::OnInitDialog()
 {
   super::OnInitDialog();
+#ifdef DEMO
+  m_appversion += _T(" ") + CString(MAKEINTRESOURCE(IDS_DEMO));
+#endif
   GetDlgItem(IDC_APPVERSION)->SetWindowText(m_appversion);
   GetDlgItem(IDC_APPCOPYRIGHT)->SetWindowText(m_appcopyright);
 

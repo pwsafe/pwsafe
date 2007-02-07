@@ -142,6 +142,10 @@ CPasskeyEntry::OnInitDialog(void)
 
   		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
   		GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
+#ifdef DEMO
+            GetDlgItem(IDC_SPCL_TXT)->
+                SetWindowText(CString(MAKEINTRESOURCE(IDS_DEMO)));
+#endif
   		break;
   	case GCP_NORMAL:
 		// otherwise during open - user can - again unless file is R/O
