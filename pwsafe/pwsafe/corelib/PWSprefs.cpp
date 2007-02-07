@@ -504,7 +504,7 @@ static void xmlify( TCHAR t, CString &name)
         name = t + name;
     int N = name.GetLength();
     for (int i = 0; i < N; i++)
-        if (!_istalpha(name[i]) &&
+        if (!_istalnum(name[i]) &&
             name[i] != TCHAR('_') &&
             name[i] != TCHAR('-') &&
             name[i] != TCHAR(':') &&
@@ -555,16 +555,7 @@ void PWSprefs::InitializePreferences()
     xmlify('H', hn);
     CString un = si->GetCurrentUser();
     xmlify('u', un);
-    m_csHKCU =  hn + _T("\\");
-    m_csHKCU += un;
-    // make sure host/user is only ASCII
-    int N = m_csHKCU.GetLength();
-    for (int i = 0; i < N; i++) {
-        TCHAR t = m_csHKCU[i];
-        if (t != _T('\\') && !_istalnum(t))
-            t = ('A' + (TBYTE)t % 26); // XXX
-        m_csHKCU.SetAt(i, t);
-    }
+    m_csHKCU =  hn + _T("\\") + un;
     // set up other keys
     m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
     m_csHKCU_POS  = m_csHKCU + _T("\\Position");
