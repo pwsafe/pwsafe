@@ -254,3 +254,4 @@
 #define IDS_OPTBACKUPTITLE              5419
 #define IDS_DEFDBNAME                   5420
 #define IDS_CREATENAME                  5421
+#define IDS_DEMO                        5422

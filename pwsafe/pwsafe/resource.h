@@ -279,8 +279,8 @@
 #define IDC_STARTUP                     1218
 #define IDC_REGDEL_GRP                  1220
 #define IDC_COMBO1                      1221
-#define IDC_BUTTON1                     1222
 #define IDC_BTN_BROWSE                  1222
+#define IDC_SPCL_TXT                    1223
 
 // Next default values for new objects
 // 
@@ -288,7 +288,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        235
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1223
+#define _APS_NEXT_CONTROL_VALUE         1224
 #define _APS_NEXT_SYMED_VALUE           125
 #endif
 #endif
