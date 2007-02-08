@@ -658,6 +658,25 @@ DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
   // Use this callback for commands that need to
   // be disabled in read-only mode
   pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
+#ifdef DEMO
+  if (!m_IsReadOnly) {
+      bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
+      if (isLimited) {
+          switch (pCmdUI->m_nID) {
+              case ID_MENUITEM_ADD:
+              case ID_MENUITEM_ADDGROUP:
+              case ID_MENUITEM_DUPLICATEENTRY:
+              case ID_MENUITEM_IMPORT_KEEPASS:
+              case ID_MENUITEM_IMPORT_PLAINTEXT:
+              case ID_MENUITEM_IMPORT_XML:
+              case ID_MENUITEM_MERGE:
+                  pCmdUI->Enable(FALSE);
+              default:
+                  break;
+          }
+      }
+  }
+#endif
 }
 
 void
@@ -751,6 +770,11 @@ DboxMain::ChangeOkUpdate()
 	m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE,
 	                   m_core.IsChanged() ? TRUE : FALSE);
   }
+#ifdef DEMO
+  bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
+  if (isLimited)
+      m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, FALSE);
+#endif
   UpdateStatusBar();
 }
 

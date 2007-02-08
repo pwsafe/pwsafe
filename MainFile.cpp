@@ -119,6 +119,21 @@ DboxMain::OpenOnInit(void)
 	m_bOpen = true;
     app.AddToMRU(m_core.GetCurFile());
     return TRUE;
+#ifdef DEMO
+        case PWScore::LIMIT_REACHED: {
+            CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
+            CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
+            const int yn = MessageBox(cs_msg, cs_title,
+                                      MB_YESNO|MB_ICONWARNING);
+            if (yn == IDNO) {
+                CDialog::OnCancel();
+            }
+            m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
+                                                       FALSE);
+
+            return TRUE;
+        }
+#endif
   default:
     if (!m_IsStartSilent)
       CDialog::OnCancel();
@@ -243,6 +258,7 @@ void
 DboxMain::OnOpen()
 {
   int rc = Open();
+
   if (rc == PWScore::SUCCESS) {
   	if (!m_bOpen) {
   	  // Previous state was closed - reset DCA in status bar
@@ -324,7 +340,6 @@ DboxMain::Open()
       newfile = (CMyString)fd.GetPathName();
 
       rc = Open( newfile );
-
       if ( rc == PWScore::SUCCESS ) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
@@ -341,95 +356,104 @@ DboxMain::Open()
 int
 DboxMain::Open( const CMyString &pszFilename )
 {
-  int rc;
-  CMyString passkey, temp;
-  CString cs_title, cs_text;
+    int rc;
+    CMyString passkey, temp;
+    CString cs_title, cs_text;
 
-  //Check that this file isn't already open
-  if (pszFilename == m_core.GetCurFile() && !m_needsreading)
-	{
-      //It is the same damn file
-      cs_text.LoadString(IDS_ALREADYOPEN);
-      cs_title.LoadString(IDS_OPENDATABASE);
-      MessageBox(cs_text, cs_title, MB_OK|MB_ICONWARNING);
-      return PWScore::ALREADY_OPEN;
-	}
+    //Check that this file isn't already open
+    if (pszFilename == m_core.GetCurFile() && !m_needsreading)
+        {
+            //It is the same damn file
+            cs_text.LoadString(IDS_ALREADYOPEN);
+            cs_title.LoadString(IDS_OPENDATABASE);
+            MessageBox(cs_text, cs_title, MB_OK|MB_ICONWARNING);
+            return PWScore::ALREADY_OPEN;
+        }
 
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS)
-    return rc;
+    rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS)
+        return rc;
 
-  // if we were using a different file, unlock it
-  // do this before GetAndCheckPassword() as that
-  // routine gets a lock on the new file
-  if( !m_core.GetCurFile().IsEmpty() ) {
-    m_core.UnlockFile(m_core.GetCurFile());
-  }
+    // if we were using a different file, unlock it
+    // do this before GetAndCheckPassword() as that
+    // routine gets a lock on the new file
+    if( !m_core.GetCurFile().IsEmpty() ) {
+        m_core.UnlockFile(m_core.GetCurFile());
+    }
 
-  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
-  switch (rc) {
-  case PWScore::SUCCESS:
-    app.AddToMRU(pszFilename);
-    m_bAlreadyToldUserNoSave = false;
-    break; // Keep going...
-  case PWScore::CANT_OPEN_FILE:
-    temp.Format(IDS_SAFENOTEXIST, pszFilename);
-	cs_title.LoadString(IDS_FILEOPENERROR);
-    MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
-  case TAR_OPEN:
-    return Open();
-  case TAR_NEW:
-    return New();
-  case PWScore::WRONG_PASSWORD:
-  case PWScore::USER_CANCEL:
-    /*
-      If the user just cancelled out of the password dialog,
-      assume they want to return to where they were before...
-    */
-    return PWScore::USER_CANCEL;
-  default:
-    ASSERT(0); // we should take care of all cases explicitly
-    return PWScore::USER_CANCEL; // conservative behaviour for release version
-  }
+    rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+    switch (rc) {
+        case PWScore::SUCCESS:
+            app.AddToMRU(pszFilename);
+            m_bAlreadyToldUserNoSave = false;
+            break; // Keep going...
+        case PWScore::CANT_OPEN_FILE:
+            temp.Format(IDS_SAFENOTEXIST, pszFilename);
+            cs_title.LoadString(IDS_FILEOPENERROR);
+            MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
+        case TAR_OPEN:
+            return Open();
+        case TAR_NEW:
+            return New();
+        case PWScore::WRONG_PASSWORD:
+        case PWScore::USER_CANCEL:
+            /*
+              If the user just cancelled out of the password dialog,
+              assume they want to return to where they were before...
+            */
+            return PWScore::USER_CANCEL;
+        default:
+            ASSERT(0); // we should take care of all cases explicitly
+            return PWScore::USER_CANCEL; // conservative behaviour for release version
+    }
 
-  // clear the data before loading the new file
-  ClearData();
+    // clear the data before loading the new file
+    ClearData();
 
-  cs_title.LoadString(IDS_FILEREADERROR);
-  rc = m_core.ReadFile(pszFilename, passkey);
-  switch (rc) {
-  case PWScore::SUCCESS:
-    break;
-  case PWScore::CANT_OPEN_FILE:
-    temp.Format(IDS_CANTOPENREADING, pszFilename);
-    MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
-    /*
-      Everything stays as is... Worst case,
-      they saved their file....
-    */
-    return PWScore::CANT_OPEN_FILE;
-  case PWScore::BAD_DIGEST: {
-    temp.Format(IDS_FILECORRUPT, pszFilename);
-    const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
-    if (yn == IDYES)
-      break;
-    else
-      return rc;
-  }
-  default:
-    temp.Format(IDS_UNKNOWNERROR, pszFilename);
-    MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);
-	return rc;
-  }
-  m_core.SetCurFile(pszFilename);
-#if !defined(POCKET_PC)
-  m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+    cs_title.LoadString(IDS_FILEREADERROR);
+    rc = m_core.ReadFile(pszFilename, passkey);
+    switch (rc) {
+        case PWScore::SUCCESS:
+            break;
+        case PWScore::CANT_OPEN_FILE:
+            temp.Format(IDS_CANTOPENREADING, pszFilename);
+            MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
+            /*
+              Everything stays as is... Worst case,
+              they saved their file....
+            */
+            return PWScore::CANT_OPEN_FILE;
+        case PWScore::BAD_DIGEST: {
+            temp.Format(IDS_FILECORRUPT, pszFilename);
+            const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
+            if (yn == IDYES) {
+                rc = PWScore::SUCCESS;
+                break;
+            } else
+                return rc;
+        }
+#ifdef DEMO
+        case PWScore::LIMIT_REACHED: {
+            CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG2, MAXDEMO);
+            CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
+            MessageBox(cs_msg, cs_title, MB_ICONWARNING);
+            break;
+        }
 #endif
-  CheckExpiredPasswords();
-  ChangeOkUpdate();
-  RefreshList();
-  SetInitialDatabaseDisplay();
-  return PWScore::SUCCESS;
+        default:
+            temp.Format(IDS_UNKNOWNERROR, pszFilename);
+            MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);
+            return rc;
+    }
+    m_core.SetCurFile(pszFilename);
+#if !defined(POCKET_PC)
+    m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+#endif
+    CheckExpiredPasswords();
+    ChangeOkUpdate();
+    RefreshList();
+    SetInitialDatabaseDisplay();
+    return rc;
 }
 
 void
