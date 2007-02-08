@@ -649,6 +649,12 @@ DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
   	pCmdUI->Enable(FALSE);
   	return;
   }
+
+  if (pCmdUI->m_pMenu != NULL)
+    if (pCmdUI->m_nID == ID_MENUITEM_DUPLICATEENTRY &&
+          pCmdUI->m_pMenu->GetMenuState(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND) == MF_GRAYED)
+        return;
+
   // Use this callback for commands that need to
   // be disabled in read-only mode
   pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
@@ -1216,9 +1222,14 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeafNode(hi));
     bEmptyGroupSelected = (bGroupSelected && !m_ctlItemTree.ItemHasChildren(hi));
   }
-  pMenu->EnableMenuItem(ID_MENUITEM_DELETE, ((bItemSelected || bEmptyGroupSelected) ? MF_ENABLED : MF_GRAYED));
-  pMenu->EnableMenuItem(ID_MENUITEM_RENAME, ((bTreeView && (bItemSelected || bGroupSelected)) ? MF_ENABLED : MF_GRAYED));
-  pMenu->EnableMenuItem(ID_MENUITEM_ADDGROUP, (bTreeView ? MF_ENABLED : MF_GRAYED));
+  pMenu->EnableMenuItem(ID_MENUITEM_DELETE,
+                        ((bItemSelected || bEmptyGroupSelected) ?
+                         MF_ENABLED : MF_GRAYED));
+  pMenu->EnableMenuItem(ID_MENUITEM_RENAME,
+                        ((bTreeView && (bItemSelected || bGroupSelected)) ?
+                         MF_ENABLED : MF_GRAYED));
+  pMenu->EnableMenuItem(ID_MENUITEM_ADDGROUP,
+                        (bTreeView ? MF_ENABLED : MF_GRAYED));
 
   pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW), MF_BYCOMMAND);
