@@ -255,3 +255,6 @@
 #define IDS_DEFDBNAME                   5420
 #define IDS_CREATENAME                  5421
 #define IDS_DEMO                        5422
+#define IDS_LIMIT_TITLE                 5423
+#define IDS_LIMIT_MSG                   5424
+#define IDS_LIMIT_MSG2                  5425
