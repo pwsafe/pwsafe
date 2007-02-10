@@ -495,6 +495,9 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
   *pResult = 0;
 
+  if (((DboxMain *)GetParent())->IsReadOnly())
+      return; // don't drag in read-only mode
+
   GetCursorPos(&ptAction);
   ScreenToClient(&ptAction);
   ASSERT(!m_bDragging);
