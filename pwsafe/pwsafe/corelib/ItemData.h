@@ -52,9 +52,11 @@ class BlowFish;
 class CItemData
 {
 public:
-  enum {NAME=0, UUID=0x1, GROUP = 0x2, TITLE = 0x3, USER = 0x4, NOTES = 0x5,
-	PASSWORD = 0x6, CTIME = 0x7, PMTIME = 0x8, ATIME = 0x9, LTIME = 0xa,
-	POLICY = 0xb, RMTIME = 0xc, URL = 0xd, AUTOTYPE = 0xe, PWHIST = 0xf,
+  enum {
+    START = 0x00,
+    NAME = 0x00, UUID=0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
+	PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
+	POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
     END = 0xff}; // field types, per formatV{2,3}.txt
 
   // For subgroup processing in GetPlainText from ExportTextXDlg

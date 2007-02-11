@@ -61,6 +61,13 @@ static char THIS_FILE[] = __FILE__;
  */
 
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
+CString DboxMain::CS_DELETEENTRY;
+CString DboxMain::CS_DELETEGROUP;
+CString DboxMain::CS_RENAMEENTRY;
+CString DboxMain::CS_RENAMEGROUP;
+CString DboxMain::CS_EDITENTRY;
+CString DboxMain::CS_VIEWENTRY;
+CString DboxMain::CS_EXPCOLGROUP;
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
@@ -78,6 +85,13 @@ DboxMain::DboxMain(CWnd* pParent)
      m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
      m_bAlreadyToldUserNoSave(false), m_inExit(false)
 {
+  CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
+  CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
+  CS_VIEWENTRY.LoadString(IDS_MENUVIEWENTRY);
+  CS_DELETEENTRY.LoadString(IDS_MENUDELETEENTRY);
+  CS_DELETEGROUP.LoadString(IDS_MENUDELETEGROUP);
+  CS_RENAMEENTRY.LoadString(IDS_MENURENAMEENTRY);
+  CS_RENAMEGROUP.LoadString(IDS_MENURENAMEGROUP);
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
   //}}AFX_DATA_INIT
@@ -1231,13 +1245,11 @@ DboxMain::OnInitMenu(CMenu* pMenu)
   UINT uiItemCmdFlags = MF_BYCOMMAND | (bItemSelected ? MF_ENABLED : MF_GRAYED);
   pMenu->EnableMenuItem(ID_MENUITEM_COPYPASSWORD, uiItemCmdFlags);
   pMenu->EnableMenuItem(ID_MENUITEM_COPYUSERNAME, uiItemCmdFlags);
+  pMenu->EnableMenuItem(ID_MENUITEM_COPYNOTESFLD, uiItemCmdFlags);
   pMenu->EnableMenuItem(ID_MENUITEM_EDIT, uiItemCmdFlags);
 #if defined(POCKET_PC)
   pMenu->EnableMenuItem(ID_MENUITEM_SHOWPASSWORD, uiItemCmdFlags);
 #endif
-  pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, uiItemCmdFlags);
-  pMenu->EnableMenuItem(ID_MENUITEM_DUPLICATEENTRY, uiItemCmdFlags);
-
 
   bool bGroupSelected = false;
   bool bEmptyGroupSelected = false;
@@ -1246,6 +1258,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeafNode(hi));
     bEmptyGroupSelected = (bGroupSelected && !m_ctlItemTree.ItemHasChildren(hi));
   }
+
   pMenu->EnableMenuItem(ID_MENUITEM_DELETE,
                         ((bItemSelected || bEmptyGroupSelected) ?
                          MF_ENABLED : MF_GRAYED));
@@ -1254,6 +1267,49 @@ DboxMain::OnInitMenu(CMenu* pMenu)
                          MF_ENABLED : MF_GRAYED));
   pMenu->EnableMenuItem(ID_MENUITEM_ADDGROUP,
                         (bTreeView ? MF_ENABLED : MF_GRAYED));
+
+  if (bGroupSelected) {
+    pMenu->EnableMenuItem(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND | MF_GRAYED);
+    pMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
+        ID_MENUITEM_DELETE, CS_DELETEGROUP);
+    pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
+        ID_MENUITEM_RENAME, CS_RENAMEGROUP);
+    pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
+        ID_MENUITEM_EDIT, CS_EXPCOLGROUP);
+  } else {
+    pMenu->EnableMenuItem(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND | MF_ENABLED);
+    pMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
+        ID_MENUITEM_DELETE, CS_DELETEENTRY);
+    pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
+        ID_MENUITEM_RENAME, CS_RENAMEENTRY);
+    if (m_IsReadOnly) {
+      pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
+        ID_MENUITEM_EDIT, CS_VIEWENTRY);
+    } else {
+      pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
+        ID_MENUITEM_EDIT, CS_EDITENTRY);
+    }
+  }
+
+  if (bItemSelected) {
+    CItemData *ci = getSelectedItem();
+    ASSERT(ci != NULL);
+
+    if (ci->GetURL().IsEmpty()) {
+      pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
+    } else {
+      pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
+    }
+
+    if (ci->GetAutoType().IsEmpty()) {
+      pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
+    } else {
+      pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);
+    }
+  } else {
+    pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
+    pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
+  }
 
   pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW), MF_BYCOMMAND);

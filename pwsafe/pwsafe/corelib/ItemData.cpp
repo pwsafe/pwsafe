@@ -702,6 +702,8 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> 
     time_t t;
 
     if (!PWSUtil::VerifyImportDateTimeString(time_str, t))
+      if (!PWSUtil::VerifyXMLDateTimeString(time_str, t))
+        if (!PWSUtil::VerifyASCDateTimeString(time_str, t))
       return;
 
     if (t == (time_t)-1)	// error despite all our verification!

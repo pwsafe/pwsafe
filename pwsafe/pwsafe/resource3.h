@@ -192,7 +192,7 @@
 #define IDS_PICKTEXTFILE                5357
 #define IDS_INVALIDFORMAT               5358
 #define IDS_STATUS                      5359
-#define IDS_RECORDSREAD                 5360
+#define IDS_RECORDSIMPORTED             5360
 #define IDS_RECORDSNOTREAD              5361
 #define IDS_PICKKEEPASSFILE             5362
 #define IDS_MISSINGXSD                  5363
@@ -258,3 +258,11 @@
 #define IDS_LIMIT_TITLE                 5423
 #define IDS_LIMIT_MSG                   5424
 #define IDS_LIMIT_MSG2                  5425
+#define IDS_MENUEXPCOLGROUP             5426
+#define IDS_MENUEDITENTRY               5427
+#define IDS_MENUVIEWENTRY               5428
+#define IDS_MENUDELETEENTRY             5429
+#define IDS_MENUDELETEGROUP             5430
+#define IDS_MENURENAMEENTRY             5431
+#define IDS_MENURENAMEGROUP             5432
+#define IDS_MAXNUMDAYSEXCEEDED          5433

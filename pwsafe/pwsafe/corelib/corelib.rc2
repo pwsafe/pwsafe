@@ -42,9 +42,12 @@ END
 STRINGTABLE
 BEGIN
 	IDSC_IMPMISSINGQUOTE    "\nFile ends on line %d before ending double quote of last entry's note field."
-    IDSC_IMPHDRLINEIGNORED  "\nHeader line ignored."
     IDSC_IMPINVALIDINPUT    "\nInvalid input on line %d.  Number of fields separated by '%c' is not as expected."
     IDSC_IMPINVALIDPWH      "\nError in Password History on line %d: "
+    IDSC_IMPORTFAILURE      "\nInternal error. Import failed.\n\nNo records imported."
+    IDSC_IMPORTHDR          "%d column headers were recognised and processed but %d ignored.\n\n"
+    IDSC_IMPORTMISSINGCOLS  "\nEither or both of the Group/Title and Password columns are missing.\n\nNo records imported."
+    IDSC_IMPORTNOCOLS       "\nColumn header row not recognised as first record.\n\nNo records imported."
 END
 
 STRINGTABLE

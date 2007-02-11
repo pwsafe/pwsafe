@@ -54,9 +54,11 @@ class DboxMain
   friend class CMyListCtrl;
 #endif
 
-  // static methods
+  // static methods and variables
 private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+  static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
+  static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
 
 public:
   // default constructor

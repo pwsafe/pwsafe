@@ -100,8 +100,7 @@ CMyString::Format(UINT nID, ... )
 {
 	va_list args;
 	va_start(args, nID);
-	CString csFormat;
-	csFormat.LoadString(nID);
+	CString csFormat(MAKEINTRESOURCE(nID));
 	m_mystring.FormatV(csFormat, args);
 	va_end(args);
 }

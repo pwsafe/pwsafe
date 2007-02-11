@@ -136,8 +136,7 @@ ErrorMessages(const CString &fn, FILE *fp)
 {
 #if !defined(POCKET_PC)
   if (fp == NULL) {
-    CString cs_text1, cs_text2;
-    cs_text1.LoadString(IDS_ERRORMESSAGE);
+    CString cs_text1(MAKEINTRESOURCE(IDS_ERRORMESSAGE)), cs_text2;
 
     switch (errno) {
     	case EACCES:
@@ -542,8 +541,7 @@ ThisMfcApp::InitInstance()
     new_popupmenu = new CMenu;
 
     // Look for "File" menu.
-    CString cs_text;
-    cs_text.LoadString(IDS_FILEMENU);
+    CString cs_text(MAKEINTRESOURCE(IDS_FILEMENU));
     int pos = FindMenuItem(m_mainmenu, cs_text);
     if (pos == -1) // E.g., in non-English versions
         pos = 0; // best guess...
@@ -559,9 +557,8 @@ ThisMfcApp::InitInstance()
             int irc;
             // Create New Popup Menu
             new_popupmenu->CreatePopupMenu();
-            CString cs_recent, cs_recentsafes;
-            cs_recent.LoadString(IDS_RECENT);
-            cs_recentsafes.LoadString(IDS_RECENTSAFES);
+            CString cs_recent(MAKEINTRESOURCE(IDS_RECENT)), 
+                cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
           
             if (!m_mruonfilemenu) {	// MRU entries in popup menu
                 // Insert Item onto new popup
@@ -792,8 +789,7 @@ ThisMfcApp::ClearMRU()
 	CMenu* xmainmenu = pMain->GetMenu();
 
 	// Look for "File" menu.
-	CString cs_text;
-	cs_text.LoadString(IDS_FILEMENU);
+	CString cs_text(MAKEINTRESOURCE(IDS_FILEMENU));
 	int pos = FindMenuItem(xmainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 0; // best guess...
@@ -934,8 +930,7 @@ ThisMfcApp::OnHelp()
   if (wnd != NULL) {
     wnd->GetWindowText(cs_title);
   }
-  CString cs_text;
-  cs_text.LoadString(IDS_OPTIONS);
+  CString cs_text(MAKEINTRESOURCE(IDS_OPTIONS));
   if (cs_title != cs_text) {
       ::HtmlHelp(wnd != NULL ? wnd->m_hWnd : NULL,
                (LPCTSTR)m_csHelpFile,

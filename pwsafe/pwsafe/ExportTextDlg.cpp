@@ -34,9 +34,7 @@ CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
 {
 	//{{AFX_DATA_INIT(CExportTextDlg)
 	m_exportTextPassword = _T("");
-	m_defexpdelim = _T("^");
-	m_querysetexpdelim = 0;
-	m_export_hdr = 0;
+	m_defexpdelim = _T("\xbb");
 	//}}AFX_DATA_INIT
 }
 
@@ -46,8 +44,23 @@ BOOL CExportTextDlg::OnInitDialog()
    CDialog::OnInitDialog();
    SetPasswordFont(GetDlgItem(IDC_EXPORT_TEXT_PASSWORD));
    ((CEdit*)GetDlgItem(IDC_EXPORT_TEXT_PASSWORD))->SetPasswordChar(PSSWDCHAR);
+
    m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
    m_subgroup.Empty();
+
+   LOGFONT lf1, lf2;
+   CFont font1, font2;
+
+   GetDlgItem(IDC_EXPWARNING1)->GetFont()->GetLogFont(&lf1);
+   lf1.lfWeight = FW_BOLD;
+   font1.CreateFontIndirect(&lf1);
+   GetDlgItem(IDC_EXPWARNING1)->SetFont(&font1);
+
+   GetDlgItem(IDC_EXPWARNING2)->GetFont()->GetLogFont(&lf2);
+   lf2.lfWeight = FW_BOLD;
+   font2.CreateFontIndirect(&lf2);
+   GetDlgItem(IDC_EXPWARNING2)->SetFont(&font2);
+
    return TRUE;
 }
 
@@ -57,19 +70,15 @@ void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CExportTextDlg)
 	DDX_Text(pDX, IDC_EXPORT_TEXT_PASSWORD, m_exportTextPassword);
-	DDX_Check(pDX, IDC_QUERYSETEXPDELIM, m_querysetexpdelim);
 	DDX_Text(pDX, IDC_DEFEXPDELIM, m_defexpdelim);
-	DDX_Check(pDX, IDC_EXPORT_HDR, m_export_hdr);
 	DDV_MaxChars(pDX, m_defexpdelim, 1);
 	//}}AFX_DATA_MAP
-	if (m_querysetexpdelim == 1)
-	  DDV_CheckExpDelimiter(pDX, m_defexpdelim);
+	DDV_CheckExpDelimiter(pDX, m_defexpdelim);
 }
 
 
 BEGIN_MESSAGE_MAP(CExportTextDlg, CDialog)
 	//{{AFX_MSG_MAP(CExportTextDlg)
-	ON_BN_CLICKED(IDC_QUERYSETEXPDELIM, OnSetMultilineExportNotesDelimiter)
 	ON_BN_CLICKED(IDC_EXPORT_ADVANCED, OnAdvanced)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
 	//}}AFX_MSG_MAP
@@ -93,17 +102,6 @@ void AFXAPI CExportTextDlg::DDV_CheckExpDelimiter(CDataExchange* pDX, const CStr
 /////////////////////////////////////////////////////////////////////////////
 // CExportTextDlg message handlers
 
-void CExportTextDlg::OnSetMultilineExportNotesDelimiter() 
-{
-  if (((CButton*)GetDlgItem(IDC_QUERYSETEXPDELIM))->GetCheck() == 1) {
-    GetDlgItem(IDC_DEFEXPDELIM)->EnableWindow(TRUE);
-    m_querysetexpdelim = 1;
-  } else {
-    GetDlgItem(IDC_DEFEXPDELIM)->EnableWindow(FALSE);
-    m_querysetexpdelim = 0;
-  }
-}
-
 void CExportTextDlg::OnHelp()
 {
   CString cs_HelpTopic;
@@ -115,8 +113,8 @@ void CExportTextDlg::OnOK()
 {
   if (UpdateData(TRUE) != TRUE)
 	  return;
-  if (m_querysetexpdelim == 1)
-    GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
+
+  GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
   CDialog::OnOK();
 }
 

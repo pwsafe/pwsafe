@@ -32,8 +32,6 @@ public:
 	CString m_defimpdelim;
 	int m_tab;
 	int m_group;
-	int m_querysetimpdelim;
-	int m_import_preV3;
 	//}}AFX_DATA
 
 
@@ -46,6 +44,7 @@ public:
 
 // Implementation
 protected:
+    virtual BOOL OnInitDialog();
 
 	// Generated message map functions
 	//{{AFX_MSG(CImportDlg)
@@ -54,8 +53,6 @@ protected:
 	afx_msg void OnTab();
 	afx_msg void OnNoGroup();
 	afx_msg void OnYesGroup();
-	afx_msg void OnSetMultilineImportNotesDelimiter();
-	afx_msg void OnSetImportPreV3();
 	afx_msg void OnHelp();
 	virtual void OnOK();
 	//}}AFX_MSG
