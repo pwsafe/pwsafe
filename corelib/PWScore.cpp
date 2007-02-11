@@ -136,7 +136,6 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 
 int
 PWScore::WritePlaintextFile(const CMyString &filename,
-                            const bool &bwrite_header,
                             const std::bitset<16> &bsFields,
 							const CString &subgroup,
 							const int &iObject, const int &iFunction,
@@ -149,7 +148,7 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 #endif
   if (!ofs)
     return CANT_OPEN_FILE;
-  if (bwrite_header) {
+
 	if ( bsFields.count() == bsFields.size()) {
 	  if (m_hdr.IsEmpty())
 	    m_hdr.LoadString(IDSC_EXPORTHEADER);
@@ -210,8 +209,6 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 			hdr_len--;
 
 		ofs << hdr.Left(hdr_len) << endl;
-	}
-
   }
 
   CItemData temp;
@@ -221,7 +218,8 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 
   while (listPos != NULL) {
     temp = pwlist.GetAt(listPos);
-    const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, subgroup, iObject, iFunction, delimiter);
+    const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, subgroup,
+                                             iObject, iFunction, delimiter);
     if (!line.IsEmpty() != 0)
     	ofs << line << endl;
     pwlist.GetNext(listPos);
@@ -491,185 +489,275 @@ int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
                              const CMyString &filename, CString &strErrors,
                              TCHAR fieldSeparator, TCHAR delimiter,
-                             int &numImported, int &numSkipped, bool bimport_preV3)
+                             int &numImported, int &numSkipped)
 {
 #ifdef UNICODE
-    wifstream ifs((const wchar_t *)LPCTSTR(filename));
+  wifstream ifs((const wchar_t *)LPCTSTR(filename));
 #else
-    ifstream ifs((const char *)LPCTSTR(filename));
+  ifstream ifs((const char *)LPCTSTR(filename));
 #endif
-    numImported = numSkipped = 0;
-    strErrors = _T("");
 
-    CItemData temp;
-    CString buffer;
+  if (!ifs)
+    return CANT_OPEN_FILE;
 
-    if (m_hdr.IsEmpty())
-        m_hdr.LoadString(IDSC_EXPORTHEADER);
+  numImported = numSkipped = 0;
+  strErrors = _T("");
 
-    int numlines = 0;
+  if (m_hdr.IsEmpty())
+    m_hdr.LoadString(IDSC_EXPORTHEADER);
 
-    // Order of fields determined in CItemData::GetPlaintext()
-    enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
-                 CTIME, PMTIME, ATIME, LTIME, RMTIME,
-                 HISTORY, NOTES, NUMFIELDS};
+  int numlines = 0;
 
-    enum Fields_PreV3 {GROUPTITLE_V1V2, USER_V1V2, PASSWORD_V1V2,
-                       NOTES_V1V2, NUMFIELDS_V1V2};
-    if (!ifs)
-        return CANT_OPEN_FILE;
-    const int i_numfields = bimport_preV3 ? NUMFIELDS_V1V2 : NUMFIELDS;
-    const int i_notes = bimport_preV3 ? NOTES_V1V2 : NOTES;
+  CItemData temp;
+  CString buffer;
 
-    for (;;) {
-        // read a single line.
-        string linebuf;
-        if (!getline(ifs, linebuf, TCHAR('\n'))) break;
-        numlines++;
+  vector<string> vs_Header;
+  const string s_hdr(m_hdr);
+  const TCHAR pTab[] = _T("\t");
+  TCHAR pSeps[] = _T(" ");
+  TCHAR *pTemp;
 
-        // remove MS-DOS linebreaks, if needed.
-        if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
-            linebuf.resize(linebuf.size() - 1);
-        }
+  // Order of fields determined in CItemData::GetPlaintext()
+  enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
+               CTIME, PMTIME, ATIME, LTIME, RMTIME,
+               HISTORY, NOTES, NUMFIELDS};
+  int i_Offset[NUMFIELDS];
+  for (int i = 0; i < NUMFIELDS; i++)
+      i_Offset[i] = -1;
 
-        if (numlines == 1 && CString(linebuf.c_str()) == m_hdr) {
-            strErrors.LoadString(IDSC_IMPHDRLINEIGNORED);
-            continue;
-        }
+  // Duplicate as c_str is R-O and strtok modifies the string
+  pTemp = _tcsdup(s_hdr.c_str());
+  if (pTemp == NULL) {
+    strErrors.LoadString(IDSC_IMPORTFAILURE);
+    return FAILURE;
+  }
 
-        // tokenize into separate elements
-        vector<string> tokens;
-        for (int startpos = 0; ; ) {
-            int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
-            if (nextchar >= 0 && (int)tokens.size() < i_notes) {
-                tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
-                startpos = nextchar + 1;
-            } else {
-                // Here for the Notes field. Notes may be double-quoted, and
-                // if they are, they may span more than one line.
-                string note(linebuf.substr(startpos));
-                unsigned int first_quote = note.find_first_of('\"');
-                unsigned int last_quote = note.find_last_of('\"');
-                if (first_quote == last_quote && first_quote != string::npos) {
-                    //there was exactly one quote, meaning that we've a multi-line Note
-                    bool noteClosed = false;
-                    do {
-                        if (!getline(ifs, linebuf, TCHAR('\n'))) {
-                            buffer.Format(IDSC_IMPMISSINGQUOTE, numlines);
-                            strErrors += buffer;
-                            ifs.close(); // file ends before note closes
-                            return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
-                        }
-                        numlines++;
-                        // remove MS-DOS linebreaks, if needed.
-                        if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
-                            linebuf.resize(linebuf.size() - 1);
-                        }
-                        note += _T("\r\n");
-                        note += linebuf;
-                        unsigned int fq = linebuf.find_first_of(TCHAR('\"'));
-                        unsigned int lq = linebuf.find_last_of(TCHAR('\"'));
-                        noteClosed = (fq == lq && fq != string::npos);
-                    } while (!noteClosed);
-                } // multiline note processed
-                tokens.push_back(note);
-                break;
+  pSeps[0] = fieldSeparator;
+#if _MSC_VER >= 1400
+  // Capture individual column titles:
+  char *next_token;
+  TCHAR *token = _tcstok_s(pTemp, pTab, &next_token);
+  while(token) {
+    vs_Header.push_back(token);
+    token = _tcstok_s(NULL, pTab, &next_token);
+  }
+#else
+  // Capture individual column titles:
+  TCHAR *token = _tcstok(pTemp, pTab);
+  while(token) {
+    vs_Header.push_back(token);
+    token = _tcstok(NULL, pTab);
+  }
+#endif
+  free(pTemp);
+
+  // Get title record
+  string s_title;
+  if (!getline(ifs, s_title, TCHAR('\n')))
+     return SUCCESS;  // not even a title record! - succeeded but none imported!
+
+  // Duplicate as c_str is R-O and strtok modifies the string
+  pTemp = _tcsdup(s_title.c_str());
+  if (pTemp == NULL) {
+    strErrors.LoadString(IDSC_IMPORTFAILURE);
+    return FAILURE;
+  }
+
+  int num_found = 0;
+  int itoken = 0;
+
+#if _MSC_VER >= 1400
+  // Capture individual column titles:
+  token = _tcstok_s(pTemp, pSeps, &next_token);
+  while(token) {
+    std::vector<std::string>::const_iterator it
+        (std::find(vs_Header.begin(), vs_Header.end(), token));
+    if (it != vs_Header.end()) {
+        i_Offset[it - vs_Header.begin()] = itoken;
+        num_found++;
+    }
+    token = _tcstok_s(NULL, pSeps, &next_token);
+    itoken++;
+  }
+#else
+  // Capture individual column titles:
+  token = _tcstok(pTemp, pSeps);
+  while(token) {
+    std::vector<std::string>::const_iterator it
+        (std::find(vs_Header.begin(), vs_Header.end(), token));
+    if (it != vs_Header.end()) {
+        i_Offset[it - vs_Header.begin()] = itoken;
+        num_found++;
+    }
+    token = _tcstok(NULL, pSeps);
+    itoken++;
+  }
+#endif
+
+  free(pTemp);
+  if (num_found == 0) {
+      strErrors.LoadString(IDSC_IMPORTNOCOLS);
+      return FAILURE;
+  }
+
+  // These are "must haves"!
+  if (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1) {
+      strErrors.LoadString(IDSC_IMPORTMISSINGCOLS);
+      return FAILURE;
+  }
+
+  if (num_found < (int)vs_Header.size())
+      strErrors.Format(IDSC_IMPORTHDR, num_found, vs_Header.size() - num_found);
+
+  for (;;) {
+    // read a single line.
+    string linebuf;
+    if (!getline(ifs, linebuf, TCHAR('\n'))) break;
+    numlines++;
+
+    // remove MS-DOS linebreaks, if needed.
+    if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
+      linebuf.resize(linebuf.size() - 1);
+    }
+
+    // tokenize into separate elements
+    itoken = 0;
+    vector<string> tokens;
+    for (int startpos = 0; ; ) {
+      int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
+      if (nextchar >= 0 && i_Offset[itoken] != NOTES) {
+        tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
+        startpos = nextchar + 1;
+      } else {
+        // Here for the Notes field. Notes may be double-quoted, and
+        // if they are, they may span more than one line.
+        string note(linebuf.substr(startpos));
+        unsigned int first_quote = note.find_first_of('\"');
+        unsigned int last_quote = note.find_last_of('\"');
+        if (first_quote == last_quote && first_quote != string::npos) {
+          //there was exactly one quote, meaning that we've a multi-line Note
+          bool noteClosed = false;
+          do {
+            if (!getline(ifs, linebuf, TCHAR('\n'))) {
+              buffer.Format(IDSC_IMPMISSINGQUOTE, numlines);
+              strErrors += buffer;
+              ifs.close(); // file ends before note closes
+              return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
             }
-        }
-        if ((int)tokens.size() != i_numfields) {
-            buffer.Format(IDSC_IMPINVALIDINPUT, numlines, fieldSeparator);
-            strErrors += buffer;
-            numSkipped++; // malformed entry
-            continue; // try to process next records
-        }
-
-        // Start initializing the new record.
-        temp.Clear();
-        temp.CreateUUID();
-        temp.SetUser(CMyString(tokens[USER].c_str()));
-        temp.SetPassword(CMyString(tokens[PASSWORD].c_str()));
-
-        // The group and title field are concatenated.
-        // If the title field has periods, then it in doubleqoutes
-        const string &grouptitle = tokens[GROUPTITLE];
-
-        if (grouptitle[grouptitle.length()-1] == TCHAR('\"')) {
-            size_t leftquote = grouptitle.find(TCHAR('\"'));
-            if (leftquote != grouptitle.length()-1) {
-                temp.SetGroup(grouptitle.substr(0, leftquote-1).c_str());
-                temp.SetTitle(grouptitle.substr(leftquote+1,
-                                                grouptitle.length()-leftquote-2).c_str(), delimiter);
-            } else { // only a single " ?!
-                // probably wrong, but a least we don't lose data
-                temp.SetTitle(grouptitle.c_str(), delimiter);
+            numlines++;
+            // remove MS-DOS linebreaks, if needed.
+            if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
+              linebuf.resize(linebuf.size() - 1);
             }
-        } else { // title has no period
-            size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
-            if (lastdot != string::npos) {
-                CMyString newgroup(ImportedPrefix.IsEmpty() ?
-                                   _T("") : ImportedPrefix + _T("."));
-                newgroup += grouptitle.substr(0, lastdot).c_str();
-                temp.SetGroup(newgroup);
-                temp.SetTitle(grouptitle.substr(lastdot + 1).c_str(), delimiter);
-            } else {
-                temp.SetGroup(ImportedPrefix);
-                temp.SetTitle(grouptitle.c_str(), delimiter);
-            }
-        }
+            note += _T("\r\n");
+            note += linebuf;
+            unsigned int fq = linebuf.find_first_of(TCHAR('\"'));
+            unsigned int lq = linebuf.find_last_of(TCHAR('\"'));
+            noteClosed = (fq == lq && fq != string::npos);
+          } while (!noteClosed);
+        } // multiline note processed
+        tokens.push_back(note);
+        break;
+      }
+      itoken++;
+    }
 
-        // New 3.0 fields: URL, AutoType, CTime
-        // XXX History NOT supported (yet)
-        if (!bimport_preV3) {
-            temp.SetURL(tokens[URL].c_str());
-            temp.SetAutoType(tokens[AUTOTYPE].c_str());
-            temp.SetCTime(tokens[CTIME].c_str());
-            temp.SetPMTime(tokens[PMTIME].c_str());
-            temp.SetATime(tokens[ATIME].c_str());
-            temp.SetLTime(tokens[LTIME].c_str());
-            temp.SetRMTime(tokens[RMTIME].c_str());
-            CMyString newPWHistory;
-            CString strPWHErrors;
-            buffer.Format(IDSC_IMPINVALIDPWH, numlines);
-            switch (PWSUtil::VerifyImportPWHistoryString(tokens[HISTORY].c_str(), newPWHistory, strPWHErrors)) {
-                case PWH_OK:
-                    temp.SetPWHistory(newPWHistory);
-                    buffer.Empty();
-                    break;
-                case PWH_IGNORE:
-                    buffer.Empty();
-                    break;
-                case PWH_INVALID_HDR:
-                case PWH_INVALID_STATUS:
-                case PWH_INVALID_NUM:
-                case PWH_INVALID_DATETIME:
-                case PWH_INVALID_PSWD_LENGTH:
-                case PWH_TOO_SHORT:
-                case PWH_TOO_LONG:
-                case PWH_INVALID_CHARACTER:
-                default:
-                    buffer += strPWHErrors;
-                    break;
-            }
-            strErrors += buffer;
-        }
+    // Start initializing the new record.
+    temp.Clear();
+    temp.CreateUUID();
+    if (i_Offset[USER] >= 0)
+        temp.SetUser(CMyString(tokens[i_Offset[USER]].c_str()));
+    if (i_Offset[PASSWORD] >= 0)
+        temp.SetPassword(CMyString(tokens[i_Offset[PASSWORD]].c_str()));
 
-        // The notes field begins and ends with a double-quote, with
-        // no special escaping of any other internal characters.
-        string quotedNotes = tokens[i_notes];
+    // The group and title field are concatenated.
+    // If the title field has periods, then it in doubleqoutes
+    const string &grouptitle = tokens[i_Offset[GROUPTITLE]];
+
+    if (grouptitle[grouptitle.length()-1] == TCHAR('\"')) {
+      size_t leftquote = grouptitle.find(TCHAR('\"'));
+      if (leftquote != grouptitle.length()-1) {
+        temp.SetGroup(grouptitle.substr(0, leftquote-1).c_str());
+        temp.SetTitle(grouptitle.substr(leftquote+1,
+                                        grouptitle.length()-leftquote-2).c_str(), delimiter);
+      } else { // only a single " ?!
+        // probably wrong, but a least we don't lose data
+        temp.SetTitle(grouptitle.c_str(), delimiter);
+      }
+    } else { // title has no period
+      size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
+      if (lastdot != string::npos) {
+        CMyString newgroup(ImportedPrefix.IsEmpty() ?
+                           _T("") : ImportedPrefix + _T("."));
+        newgroup += grouptitle.substr(0, lastdot).c_str();
+        temp.SetGroup(newgroup);
+        temp.SetTitle(grouptitle.substr(lastdot + 1).c_str(), delimiter);
+      } else {
+        temp.SetGroup(ImportedPrefix);
+        temp.SetTitle(grouptitle.c_str(), delimiter);
+      }
+    }
+    if (i_Offset[URL] >= 0)
+        temp.SetURL(tokens[i_Offset[URL]].c_str());
+    if (i_Offset[AUTOTYPE] >= 0)
+        temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
+    if (i_Offset[CTIME] >= 0)
+        temp.SetCTime(tokens[i_Offset[CTIME]].c_str());
+    if (i_Offset[PMTIME] >= 0)
+        temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str());
+    if (i_Offset[ATIME] >= 0)
+        temp.SetATime(tokens[i_Offset[ATIME]].c_str());
+    if (i_Offset[LTIME] >= 0)
+        temp.SetLTime(tokens[i_Offset[LTIME]].c_str());
+    if (i_Offset[RMTIME] >= 0)
+        temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str());
+    if (i_Offset[HISTORY] >= 0) {
+        CMyString newPWHistory;
+        CString strPWHErrors;
+	    buffer.Format(IDSC_IMPINVALIDPWH, numlines);
+	    switch (PWSUtil::VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
+                      newPWHistory, strPWHErrors)) {
+		    case PWH_OK:
+			    temp.SetPWHistory(newPWHistory);
+			    buffer.Empty();
+			    break;
+		    case PWH_IGNORE:
+			    buffer.Empty();
+			    break;
+		    case PWH_INVALID_HDR:
+		    case PWH_INVALID_STATUS:
+		    case PWH_INVALID_NUM:
+		    case PWH_INVALID_DATETIME:
+		    case PWH_INVALID_PSWD_LENGTH:
+		    case PWH_TOO_SHORT:
+		    case PWH_TOO_LONG:
+		    case PWH_INVALID_CHARACTER:
+		    default:
+			    buffer += strPWHErrors;
+			    break;
+	    }
+    }
+	strErrors += buffer;
+
+    // The notes field begins and ends with a double-quote, with
+    // no special escaping of any other internal characters.
+    if (i_Offset[NOTES] >= 0) {
+        string quotedNotes = tokens[i_Offset[NOTES]];
         if (!quotedNotes.empty() &&
             *quotedNotes.begin() == TCHAR('\"') &&
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
             quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
             temp.SetNotes(CMyString(quotedNotes.c_str()), delimiter);
         }
+    }
 
-        AddEntryToTail(temp);
-        numImported++;
-    } // file processing for (;;) loop
-    ifs.close();
+    AddEntryToTail(temp);
+    numImported++;
+  } // file processing for (;;) loop
+  ifs.close();
 
-    m_changed = true;
-    return SUCCESS;
+  m_changed = true;
+  return SUCCESS;
 }
 
 int PWScore::CheckPassword(const CMyString &filename, CMyString& passkey)

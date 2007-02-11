@@ -68,7 +68,6 @@ class PWScore {
   int WriteV2File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const CMyString &filename,
-                         const bool &bwrite_header,
                          const std::bitset<16> &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
@@ -76,7 +75,7 @@ class PWScore {
   int WriteXMLFile(const CMyString &filename, const TCHAR delimiter, 
                    const ItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
-			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped, bool bimport_preV3);
+			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped);
   int ImportKeePassTextFile(const CMyString &filename);
   int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
 			CString &strErrors, int &numValidated, int &numImported);

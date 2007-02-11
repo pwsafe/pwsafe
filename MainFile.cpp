@@ -705,7 +705,6 @@ void
 DboxMain::OnExportText()
 {
     CExportTextDlg et;
-    bool bwrite_header;
     CString cs_text, cs_temp, cs_title;
 
     int rc = et.DoModal();
@@ -744,24 +743,20 @@ DboxMain::OnExportText()
                     return;
             } // while (1)
 
-            bwrite_header = (et.m_export_hdr == 1);
             const std::bitset<16> bsExport = et.m_bsExport;
             const CString subgroup = et.m_subgroup;
             const int iObject = et.m_subgroup_object;
             const int iFunction = et.m_subgroup_function;
-            TCHAR delimiter = _T('\0');
-            if (et.m_querysetexpdelim == 1)
-                delimiter = et.m_defexpdelim[0];
+            TCHAR delimiter = et.m_defexpdelim[0];
 
             ItemList sortedItemList;
             MakeSortedItemList(sortedItemList);
       
-            rc = m_core.WritePlaintextFile(newfile, bwrite_header, 
-                                           bsExport, subgroup, iObject, 
+            rc = m_core.WritePlaintextFile(newfile, bsExport, subgroup, iObject, 
                                            iFunction, delimiter, &sortedItemList);
             sortedItemList.RemoveAll(); // cleanup soonest
 
-            if (rc == PWScore::CANT_OPEN_FILE)        {
+            if (rc == PWScore::CANT_OPEN_FILE) {
                 cs_temp.Format(IDS_CANTOPENWRITING, newfile);
                 cs_title.LoadString(IDS_FILEWRITEERROR);
                 MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
@@ -873,15 +868,10 @@ DboxMain::OnImportText()
         CString strErrors;
         CMyString newfile = (CMyString)fd.GetPathName();
         int numImported = 0, numSkipped = 0;
-        bool bimport_preV3 = (dlg.m_import_preV3 == 1);
-        TCHAR delimiter;
-        if (dlg.m_querysetimpdelim == 1) {
-            delimiter = dlg.m_defimpdelim[0];
-        } else {
-            delimiter = TCHAR('\0');
-        }
+        TCHAR delimiter = dlg.m_defimpdelim[0];
+
         rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strErrors, fieldSeparator,
-                                        delimiter, numImported, numSkipped, bimport_preV3);
+                                        delimiter, numImported, numSkipped);
 
         cs_title.LoadString(IDS_FILEREADERROR);
         switch (rc) {
@@ -893,20 +883,25 @@ DboxMain::OnImportText()
             break;
             case PWScore::INVALID_FORMAT:
             {
-                cs_temp.Format(IDS_INVALIDFORMAT , newfile);
+                cs_temp.Format(IDS_INVALIDFORMAT, newfile);
                 MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+            }
+            break;
+            case PWScore::FAILURE:
+            {
+                MessageBox(strErrors, cs_title, MB_OK|MB_ICONWARNING);
             }
             break;
             case PWScore::SUCCESS:
             default:
             {
                 CString temp1, temp2 = _T("");
-                temp1.Format(IDS_RECORDSREAD, numImported, (numImported != 1) ? _T("s") : _T(""));
+                temp1.Format(IDS_RECORDSIMPORTED, numImported, (numImported != 1) ? _T("s") : _T(""));
                 if (numSkipped != 0)
                     temp2.Format(IDS_RECORDSNOTREAD, numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
 
                 cs_title.LoadString(IDS_STATUS);
-                MessageBox(temp1 + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
+                MessageBox(strErrors + temp1 + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
                 ChangeOkUpdate();
             }
             RefreshList();

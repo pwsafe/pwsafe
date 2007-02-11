@@ -35,8 +35,6 @@ public:
 	enum { IDD = IDD_EXPORT_TEXT };
 	CString	m_exportTextPassword;
 	CString m_defexpdelim;
-	int m_querysetexpdelim;
-	int m_export_hdr;
 	//}}AFX_DATA
 
 	std::bitset<16> m_bsExport;
@@ -55,7 +53,6 @@ protected:
 	virtual BOOL OnInitDialog();
 	// Generated message map functions
 	//{{AFX_MSG(CExportTextDlg)
-	afx_msg void OnSetMultilineExportNotesDelimiter();
 	afx_msg void OnAdvanced();
 	afx_msg void OnHelp();
 	virtual void OnOK();

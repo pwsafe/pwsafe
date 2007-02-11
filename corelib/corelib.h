@@ -18,7 +18,6 @@
 #define IDSC_EXPHDRPWHISTORY            3013
 #define IDCS_EXPHDRNOTES                3014
 #define IDSC_IMPMISSINGQUOTE            3015
-#define IDSC_IMPHDRLINEIGNORED          3016
 #define IDSC_IMPINVALIDINPUT            3017
 #define IDSC_IMPINVALIDPWH              3018
 #define IDSC_NOLOCKACCESS               3019
@@ -79,3 +78,7 @@
 #define IDSC_CONFIG_FILE_RW             3233
 
 #define IDSC_IMPORTNUMBER               3240
+#define IDSC_IMPORTFAILURE              3241
+#define IDSC_IMPORTHDR                  3242
+#define IDSC_IMPORTMISSINGCOLS          3243
+#define IDSC_IMPORTNOCOLS               3244

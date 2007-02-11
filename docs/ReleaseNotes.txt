@@ -1,5 +1,5 @@
-Password Safe 3.06 Release Notes - January 2007
-===============================================
+Password Safe 3.06 Release Notes - February 2007
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.06. For a short description of Password
@@ -14,8 +14,10 @@ Support for U3 (disk-on-key).
 
 Changes to Existing Features in 3.06
 ====================================
-Opening dialog now shows recently opened databases in dropdown list.
-File opened in initial dialog now added to recent files list.
+[] Opening dialog now shows recently opened databases in dropdown list.
+[] File opened in initial dialog now added to recent files list.
+[1634251] Password expiration date can now be specified relatively,
+e.g., "45 days from now".
 
 Bugs fixed in 3.06
 ==================

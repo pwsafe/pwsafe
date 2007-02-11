@@ -691,6 +691,14 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
     }
 
+    if (itemData->GetAutoType().IsEmpty()) {
+      ASSERT(itemData->GetAutoType().IsEmpty());
+      pPopup->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
+    } else {
+      ASSERT(!itemData->GetAutoType().IsEmpty());
+      pPopup->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);
+    }
+
     pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
 
   } // if (item >= 0)

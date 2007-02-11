@@ -360,12 +360,11 @@ DboxMain::OnDuplicateEntry()
     // Find a unique "Title"
     POSITION listpos = NULL;
     int i = 0;
-    CString s_copy, cs_text;
-    cs_text.LoadString(IDS_COPYNUMBER);
+    CString s_copy;
     do {
       i++;
-      s_copy.Format(_T("%d"), i);
-      ci2_title = ci2_title0 + CMyString(cs_text) + CMyString(s_copy);
+      s_copy.Format(IDS_COPYNUMBER, i);
+      ci2_title = ci2_title0 + CMyString(s_copy);
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != NULL);
       

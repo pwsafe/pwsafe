@@ -151,7 +151,6 @@
 #define IDC_READONLY                    1086
 #define IDC_HOTKEY_CTRL                 1087
 #define IDC_HOTKEY_ENABLE               1088
-#define IDC_QUERYSETIMPDELIM            1089
 #define IDC_DEFIMPDELIM                 1090
 #define IDC_QUERYSETEXPDELIM            1091
 #define IDC_DEFEXPDELIM                 1092
@@ -192,8 +191,6 @@
 #define IDC_RIGHT_HIDEABLE              1127
 #define IDC_EXPIRED_PASSWORD_LIST       1128
 #define IDC_COPY_EXP_TO_CLIPBOARD       1129
-#define IDC_IMPORT_PREV3                1130
-#define IDC_EXPORT_HDR                  1131
 #define IDC_RESPIN                      1132
 #define IDC_MRUSPIN                     1133
 #define IDC_PWHSPIN                     1134
@@ -281,6 +278,13 @@
 #define IDC_COMBO1                      1221
 #define IDC_BTN_BROWSE                  1222
 #define IDC_SPCL_TXT                    1223
+#define IDC_TITLEROW                    1224
+#define IDC_EXPWARNING1                 1225
+#define IDC_EXPWARNING2                 1226
+#define IDC_SELECTBYDATETIME            1227
+#define IDC_SELECTBYDAYS                1228
+#define IDC_EXPDAYS                     1229
+#define IDC_EXPDAYSSPIN                 1230
 
 // Next default values for new objects
 // 
@@ -288,7 +292,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        235
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1224
+#define _APS_NEXT_CONTROL_VALUE         1231
 #define _APS_NEXT_SYMED_VALUE           125
 #endif
 #endif

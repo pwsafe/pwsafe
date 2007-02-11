@@ -14,16 +14,49 @@
 
 // CExpDTDlg dialog
 
+CExpDTDlg::CExpDTDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CExpDTDlg::IDD, pParent)
+{
+	//{{AFX_DATA_INIT(CImportDlg)
+	m_how = 0;
+    m_numDays = 1;
+	//}}AFX_DATA_INIT
+}
+
 void CExpDTDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CExpDTDlg)
 	DDX_Control(pDX, IDC_EXPIRYDATE, m_pDateCtl);
 	DDX_Control(pDX, IDC_EXPIRYTIME, m_pTimeCtl);
+    DDX_Radio(pDX, IDC_SELECTBYDATETIME, m_how);
+    DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
+    //{{AFX_DATA_MAP
+    DDV_CheckMaxDays(pDX, m_how, m_numDays, m_maxDays);
 }
 
 BEGIN_MESSAGE_MAP(CExpDTDlg, CDialog)
-	ON_BN_CLICKED(IDOK, &CExpDTDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDOK, &CExpDTDlg::OnOK)
+    ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
+    ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
 END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// Public functions
+
+void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how, 
+                             int &numDays, const int &maxDays)
+{
+  if (pDX->m_bSaveAndValidate) {
+    if (how == 1 && numDays > maxDays) {
+      CString csError;
+      csError.Format(IDS_MAXNUMDAYSEXCEEDED, maxDays);
+      AfxMessageBox(csError);
+      pDX->Fail();
+      return;
+    }
+  }
+}
 
 BOOL CExpDTDlg::OnInitDialog()
 {
@@ -33,6 +66,22 @@ BOOL CExpDTDlg::OnInitDialog()
 	int            nIndex;                  // index of the string, if found
 
 	CDialog::OnInitDialog();
+
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+
+    // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
+    // Find number of days from now to 2038/01/18 = max value here
+    const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
+    const CTime ct_Now(CTime::GetCurrentTime());
+    CTimeSpan elapsedTime = ct_Latest - ct_Now;
+    m_maxDays = (int)elapsedTime.GetDays();
+
+    CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
+
+    pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
+    pspin->SetRange32(1, m_maxDays);
+    pspin->SetBase(10);
+    pspin->SetPos(1);
 
     // First get the time format picture.
     VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 64));
@@ -91,23 +140,49 @@ BOOL CExpDTDlg::OnInitDialog()
 	return TRUE;
 }
 
-void CExpDTDlg::OnBnClickedOk()
+void CExpDTDlg::OnDays() 
 {
-	UpdateData(TRUE);
+  GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
+  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+  m_how = 1;
+}
+
+void CExpDTDlg::OnDateTime() 
+{
+  GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
+  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(TRUE);
+  m_how = 0;
+}
+
+void CExpDTDlg::OnOK()
+{
+    if (UpdateData(TRUE) != TRUE) {
+      // Only reason is numDays!  Set to max.
+      m_numDays = m_maxDays;
+      UpdateData(FALSE);
+	  return;
+    }
 
 	CTime LTime, LDate, LDateTime;
 	DWORD dwResult;
 
-	dwResult = m_pTimeCtl.GetTime(LTime);
-	ASSERT(dwResult == GDT_VALID);
+    if (m_how == 0) {
+	  dwResult = m_pTimeCtl.GetTime(LTime);
+	  ASSERT(dwResult == GDT_VALID);
 
-	dwResult = m_pDateCtl.GetTime(LDate);
-	ASSERT(dwResult == GDT_VALID);
+	  dwResult = m_pDateCtl.GetTime(LDate);
+	  ASSERT(dwResult == GDT_VALID);
 
-	LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
-		LTime.GetHour(), LTime.GetMinute(), 0, -1);
+	  LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
+          LTime.GetHour(), LTime.GetMinute(), 0, -1);
+    } else {
+      LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
+    }
+
 	m_tttLTime = (time_t)LDateTime.GetTime();
 	m_ascLTime = (CMyString)LDateTime.Format("%a %b %d %H:%M:00 %Y");
 
-	OnOK();
+	CDialog::OnOK();
 }

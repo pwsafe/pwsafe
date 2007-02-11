@@ -29,11 +29,9 @@ CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CImportDlg)
 	m_groupName.LoadString(IDS_IMPORTED);
 	m_Separator = _T("|");
-	m_defimpdelim = _T("^");
+	m_defimpdelim = _T("\xbb");
 	m_tab = 0;
 	m_group = 0;
-	m_querysetimpdelim = 0;
-	m_import_preV3 = 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -47,13 +45,10 @@ void CImportDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MaxChars(pDX, m_Separator, 1);
 	DDX_Radio(pDX, IDC_TAB, m_tab);
 	DDX_Radio(pDX, IDC_NO_GROUP, m_group);
-	DDX_Check(pDX, IDC_QUERYSETIMPDELIM, m_querysetimpdelim);
 	DDX_Text(pDX, IDC_DEFIMPDELIM, m_defimpdelim);
 	DDV_MaxChars(pDX, m_defimpdelim, 1);
-	DDX_Check(pDX, IDC_IMPORT_PREV3, m_import_preV3);
 	//}}AFX_DATA_MAP
-	if (m_querysetimpdelim == 1)
-		DDV_CheckImpDelimiter(pDX, m_defimpdelim);
+	DDV_CheckImpDelimiter(pDX, m_defimpdelim);
 }
 
 
@@ -64,8 +59,6 @@ BEGIN_MESSAGE_MAP(CImportDlg, CDialog)
 	ON_BN_CLICKED(IDC_TAB, OnTab)
 	ON_BN_CLICKED(IDC_NO_GROUP, OnNoGroup)
 	ON_BN_CLICKED(IDC_YES_GROUP, OnYesGroup)
-	ON_BN_CLICKED(IDC_QUERYSETIMPDELIM, OnSetMultilineImportNotesDelimiter)
-	ON_BN_CLICKED(IDC_IMPORT_PREV3, OnSetImportPreV3)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -88,6 +81,18 @@ void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter)
       return;
     }
   }
+}
+
+BOOL CImportDlg::OnInitDialog() 
+{
+    CDialog::OnInitDialog();
+    LOGFONT lf; 
+    CFont font; 
+    GetDlgItem(IDC_TITLEROW)->GetFont()->GetLogFont(&lf); 
+    lf.lfWeight = FW_BOLD;
+    font.CreateFontIndirect(&lf); 
+    GetDlgItem(IDC_TITLEROW)->SetFont(&font); 
+    return TRUE;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -124,24 +129,6 @@ void CImportDlg::OnYesGroup()
   m_group=1;
 }
 
-void CImportDlg::OnSetMultilineImportNotesDelimiter() 
-{
-   if (((CButton*)GetDlgItem(IDC_QUERYSETIMPDELIM))->GetCheck() == 1)
-   {
-      GetDlgItem(IDC_DEFIMPDELIM)->EnableWindow(TRUE);
-	  m_querysetimpdelim = 1;
-   }
-   else
-   {
-      GetDlgItem(IDC_DEFIMPDELIM)->EnableWindow(FALSE);
-	  m_querysetimpdelim = 0;
-   }
-}
-
-void CImportDlg::OnSetImportPreV3() 
-{
-   m_import_preV3 = ((CButton*)GetDlgItem(IDC_IMPORT_PREV3))->GetCheck();
-}
 void CImportDlg::OnHelp() 
 {
   CString cs_HelpTopic;
@@ -166,9 +153,7 @@ void CImportDlg::OnOK()
     UpdateData(FALSE);
   }
   
-  if (m_querysetimpdelim == 1) {
-	  GetDlgItemText(IDC_DEFIMPDELIM,m_defimpdelim);
-  }
+  GetDlgItemText(IDC_DEFIMPDELIM,m_defimpdelim);
 
   CDialog::OnOK();
 }
