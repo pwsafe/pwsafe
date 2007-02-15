@@ -1318,11 +1318,8 @@ DboxMain::OnInitMenu(CMenu* pMenu)
       pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
     }
 
-    if (ci->GetAutoType().IsEmpty()) {
-      pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
-    } else {
-      pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);
-    }
+    pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);
+
   } else {
     pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
     pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
