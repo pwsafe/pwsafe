@@ -45,7 +45,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
     GetPref(PWSprefs::SavePasswordHistory);
   m_MaxPWHistory = PWSprefs::GetInstance()->
     GetPref(PWSprefs::NumPWHistoryDefault);
-  m_ascLTime.LoadString(IDS_NEVER);
+  m_locLTime.LoadString(IDS_NEVER);
 
   if (CS_SHOW.IsEmpty()) {
 #if defined(POCKET_PC)
@@ -105,7 +105,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
-  DDX_Text(pDX, IDC_LTIME, (CString&)m_ascLTime);
+  DDX_Text(pDX, IDC_LTIME, (CString&)m_locLTime);
   DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
@@ -337,8 +337,8 @@ void CAddDlg::ResizeDialog()
 
 void CAddDlg::OnBnClickedClearLTime()
 {
-	m_ascLTime.LoadString(IDS_NEVER);
-	GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_ascLTime);
+	m_locLTime.LoadString(IDS_NEVER);
+	GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_locLTime);
 	m_tttLTime = (time_t)0;
 }
 
@@ -346,7 +346,7 @@ void CAddDlg::OnBnClickedSetLTime()
 {
 	CExpDTDlg dlg_expDT(this);
 
-	dlg_expDT.m_ascLTime = m_ascLTime;
+	dlg_expDT.m_locLTime = m_locLTime;
 
 	app.DisableAccelerator();
 	int rc = dlg_expDT.DoModal();
@@ -354,8 +354,8 @@ void CAddDlg::OnBnClickedSetLTime()
 
 	if (rc == IDOK) {
 		m_tttLTime = dlg_expDT.m_tttLTime;
-		m_ascLTime = dlg_expDT.m_ascLTime;
-		GetDlgItem(IDC_LTIME)->SetWindowText(m_ascLTime);
+		m_locLTime = dlg_expDT.m_locLTime;
+		GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
 	}
 }
 

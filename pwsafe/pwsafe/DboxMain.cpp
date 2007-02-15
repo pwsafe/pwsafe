@@ -1669,7 +1669,7 @@ DboxMain::CheckExpiredPasswords()
         exppwentry.group = curitem.GetGroup();
         exppwentry.title = curitem.GetTitle();
         exppwentry.user = curitem.GetUser();
-        exppwentry.expiryascdate = curitem.GetLTime();
+        exppwentry.expirylocdate = curitem.GetLTimeL();
         exppwentry.expiryexpdate = curitem.GetLTimeExp();
         exppwentry.expirytttdate = LTime;
         p_expPWList->AddTail(exppwentry);

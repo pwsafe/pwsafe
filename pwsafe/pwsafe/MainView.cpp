@@ -817,17 +817,17 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
 
   if (bShowPasswordInList) {
     m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
-    m_ctlItemList.SetItemText(iResult, 4, itemData.GetCTimeN());
-    m_ctlItemList.SetItemText(iResult, 5, itemData.GetPMTimeN());
-    m_ctlItemList.SetItemText(iResult, 6, itemData.GetATimeN());
-    m_ctlItemList.SetItemText(iResult, 7, itemData.GetLTimeN());
-    m_ctlItemList.SetItemText(iResult, 8, itemData.GetRMTimeN());
+    m_ctlItemList.SetItemText(iResult, 4, itemData.GetCTimeL());
+    m_ctlItemList.SetItemText(iResult, 5, itemData.GetPMTimeL());
+    m_ctlItemList.SetItemText(iResult, 6, itemData.GetATimeL());
+    m_ctlItemList.SetItemText(iResult, 7, itemData.GetLTimeL());
+    m_ctlItemList.SetItemText(iResult, 8, itemData.GetRMTimeL());
   } else {
-  	m_ctlItemList.SetItemText(iResult, 3, itemData.GetCTimeN());
-  	m_ctlItemList.SetItemText(iResult, 4, itemData.GetPMTimeN());
-  	m_ctlItemList.SetItemText(iResult, 5, itemData.GetATimeN());
-  	m_ctlItemList.SetItemText(iResult, 6, itemData.GetLTimeN());
-  	m_ctlItemList.SetItemText(iResult, 7, itemData.GetRMTimeN());
+  	m_ctlItemList.SetItemText(iResult, 3, itemData.GetCTimeL());
+  	m_ctlItemList.SetItemText(iResult, 4, itemData.GetPMTimeL());
+  	m_ctlItemList.SetItemText(iResult, 5, itemData.GetATimeL());
+  	m_ctlItemList.SetItemText(iResult, 6, itemData.GetLTimeL());
+  	m_ctlItemList.SetItemText(iResult, 7, itemData.GetRMTimeL());
   }
   m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
   return iResult;

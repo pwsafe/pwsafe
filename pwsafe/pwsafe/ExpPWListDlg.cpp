@@ -82,7 +82,7 @@ CExpPWListDlg::OnInitDialog()
 		nPos = m_expPWListCtrl.InsertItem(nPos, exppwentry.group);
 		m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.title);
 		m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.user);
-		m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.expiryascdate);
+		m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.expirylocdate);
 		m_expPWListCtrl.SetItemData(nPos, (DWORD)itempos);
 		m_pexpPWList->GetNext(listpos);
 	}

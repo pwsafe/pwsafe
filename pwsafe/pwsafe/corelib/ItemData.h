@@ -86,6 +86,11 @@ public:
    CMyString GetLTime() const {return GetTime(LTIME, TMC_ASC_UNKNOWN);}  // V30
    CMyString GetPMTime() const {return GetTime(PMTIME, TMC_ASC_UNKNOWN);}  // V30
    CMyString GetRMTime() const {return GetTime(RMTIME, TMC_ASC_UNKNOWN);}  // V30
+   CMyString GetATimeL() const {return GetTime(ATIME, TMC_LOCALE);}  // V30
+   CMyString GetCTimeL() const {return GetTime(CTIME, TMC_LOCALE);}  // V30
+   CMyString GetLTimeL() const {return GetTime(LTIME, TMC_LOCALE);}  // V30
+   CMyString GetPMTimeL() const {return GetTime(PMTIME, TMC_LOCALE);}  // V30
+   CMyString GetRMTimeL() const {return GetTime(RMTIME, TMC_LOCALE);}  // V30
    CMyString GetATimeN() const {return GetTime(ATIME, TMC_ASC_NULL);}  // V30
    CMyString GetCTimeN() const {return GetTime(CTIME, TMC_ASC_NULL);}  // V30
    CMyString GetLTimeN() const {return GetTime(LTIME, TMC_ASC_NULL);}  // V30

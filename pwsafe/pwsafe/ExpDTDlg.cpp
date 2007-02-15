@@ -114,7 +114,6 @@ BOOL CExpDTDlg::OnInitDialog()
     pTimeCtl->SetFormat(sTimeFormat);
 	pDateCtl->SetFormat(_T("ddd dd'/'MM'/'yyyy"));
 
-	time_t tt;
 	CTime ct, xt;
 	CTime now(CTime::GetCurrentTime());
 	ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
@@ -124,18 +123,19 @@ BOOL CExpDTDlg::OnInitDialog()
 	// Set approx. limit of 32-bit times!
 	pDateCtl->SetRange(&sMinDate, &sMaxDate);
 
-	if (!PWSUtil::VerifyASCDateTimeString(m_ascLTime, tt)) {
-		m_ascLTime.LoadString(IDS_NEVER);
+	if (m_tttLTime == 0) {
+		m_locLTime.LoadString(IDS_NEVER);
 	} else {
-		xt = CTime(tt);
+		xt = CTime(m_tttLTime);
 		ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
 					xt.GetHour(), xt.GetMinute(), 0, -1);
+		m_locLTime = CMyString(ct.Format(_T("%#c")));
 	}
 
 	pDateCtl->SetTime(&ct);
 	pTimeCtl->SetTime(&ct);
 
-	GetDlgItem(IDC_STATIC_CURRENT_LTIME)->SetWindowText(m_ascLTime);
+	GetDlgItem(IDC_STATIC_CURRENT_LTIME)->SetWindowText(m_locLTime);
 
 	return TRUE;
 }
@@ -182,7 +182,7 @@ void CExpDTDlg::OnOK()
     }
 
 	m_tttLTime = (time_t)LDateTime.GetTime();
-	m_ascLTime = (CMyString)LDateTime.Format("%a %b %d %H:%M:00 %Y");
+	m_locLTime = (CMyString)LDateTime.Format("%#c");
 
 	CDialog::OnOK();
 }
