@@ -266,3 +266,5 @@
 #define IDS_MENURENAMEENTRY             5431
 #define IDS_MENURENAMEGROUP             5432
 #define IDS_MAXNUMDAYSEXCEEDED          5433
+#define IDS_HELPMENU                    5434
+#define IDS_U3PURCHASE                  5435

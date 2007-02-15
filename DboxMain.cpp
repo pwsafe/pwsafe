@@ -205,6 +205,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 // Help Menu
    ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
    ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
+   ON_COMMAND(ID_U3SHOP_WEBSITE, OnU3ShopWebsite)
 
 // Others
    ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
@@ -843,6 +844,22 @@ DboxMain::OnPasswordSafeWebsite()
   }
 }
 
+void
+DboxMain::OnU3ShopWebsite()
+{
+#ifdef DEMO
+    ::ShellExecute(NULL, NULL,
+                   _T("http://software.u3.com/Product_Details.aspx?productId=294&Selection=7"),
+                   NULL, _T("."), SW_SHOWNORMAL);
+/*
+ * TBD - point to language-specific sites:
+ * FRENCH: Same as above plus "&Lang=f"
+ * ITALIAN: "&Lang=it"
+ * GERMAN:  "&Lang=de"
+ * SPANISH: "&Lang=es "
+ */
+#endif
+}
 
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,

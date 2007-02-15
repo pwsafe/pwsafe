@@ -590,6 +590,20 @@ ThisMfcApp::InitInstance()
             ASSERT( irc != 0);
         }
     }
+#ifdef DEMO
+    // add specific menu item for demo version
+    int hpos = FindMenuItem(m_mainmenu, CString(MAKEINTRESOURCE(IDS_HELPMENU)));
+    if (hpos == -1)
+        hpos = 4; // best guess...
+
+    CMenu* help_submenu = m_mainmenu->GetSubMenu(hpos);
+    if (help_submenu != NULL) {
+        help_submenu->InsertMenu(2, MF_BYPOSITION, ID_U3SHOP_WEBSITE,
+                                 CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
+    }
+
+#endif /* DEMO */
+
 
     DboxMain dbox(NULL);
 
