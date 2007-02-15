@@ -57,6 +57,7 @@
 // Help menu
 #define ID_PWSAFE_WEBSITE               32200
 #define ID_MENUITEM_ABOUT               32201
+#define ID_U3SHOP_WEBSITE               32202
 
 // System Tray Menu
 #define ID_MENUITEM_TRAYLOCKUNLOCK      32500
