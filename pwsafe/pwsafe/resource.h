@@ -278,7 +278,6 @@
 #define IDC_COMBO1                      1221
 #define IDC_BTN_BROWSE                  1222
 #define IDC_SPCL_TXT                    1223
-#define IDC_TITLEROW                    1224
 #define IDC_EXPWARNING1                 1225
 #define IDC_EXPWARNING2                 1226
 #define IDC_SELECTBYDATETIME            1227

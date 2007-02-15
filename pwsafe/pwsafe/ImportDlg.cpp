@@ -83,17 +83,6 @@ void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter)
   }
 }
 
-BOOL CImportDlg::OnInitDialog() 
-{
-    CDialog::OnInitDialog();
-    LOGFONT lf; 
-    CFont font; 
-    GetDlgItem(IDC_TITLEROW)->GetFont()->GetLogFont(&lf); 
-    lf.lfWeight = FW_BOLD;
-    font.CreateFontIndirect(&lf); 
-    GetDlgItem(IDC_TITLEROW)->SetFont(&font); 
-    return TRUE;
-}
 
 /////////////////////////////////////////////////////////////////////////////
 // CImportDlg message handlers
