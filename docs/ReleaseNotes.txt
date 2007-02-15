@@ -18,6 +18,7 @@ Changes to Existing Features in 3.06
 [] File opened in initial dialog now added to recent files list.
 [1634251] Password expiration date can now be specified relatively,
 e.g., "45 days from now".
+[] All dates and times are now displayed in the local format.
 
 Bugs fixed in 3.06
 ==================
