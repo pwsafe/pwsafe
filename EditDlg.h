@@ -42,8 +42,8 @@ private:
   CMyString m_notes, m_realnotes;
   CMyString m_URL;
   CMyString m_autotype;
-  CMyString m_ascCTime;
-  CMyString m_ascPMTime, m_ascATime, m_ascLTime, m_ascRMTime;
+  CMyString m_locCTime;
+  CMyString m_locPMTime, m_locATime, m_locLTime, m_locRMTime;
   time_t m_tttLTime;
   bool m_bIsModified;
   // Password History related stuff
@@ -57,7 +57,7 @@ private:
   // Are we showing more or less details?
   bool m_isExpanded;
   // following two are not directly derived from CItemData
-  CMyString m_oldascLTime;
+  CMyString m_oldlocLTime;
   int m_oldMaxPWHistory;
   void ResizeDialog();
   void UpdateHistory();

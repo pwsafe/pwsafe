@@ -29,7 +29,7 @@ public:
   CMyString	m_group;
   CMyString m_URL;
   CMyString m_autotype;
-  CMyString m_ascLTime;
+  CMyString m_locLTime;
   time_t m_tttLTime;
   BOOL m_SavePWHistory;
   int m_MaxPWHistory;

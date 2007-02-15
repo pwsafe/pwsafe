@@ -674,42 +674,78 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 {
   CMyString ret;
   if (t != 0) {
-		TCHAR time_str[32];
+		TCHAR time_str[80], datetime_str[80];
 #if _MSC_VER >= 1400
 		struct tm st;
 		errno_t err;
     	err = localtime_s(&st, &t);  // secure version
     	ASSERT(err == 0);
     	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
-      		_stprintf_s(time_str, 20, _T("%04d/%02d/%02d %02d:%02d:%02d"),
+      		_stprintf_s(datetime_str, 20, _T("%04d/%02d/%02d %02d:%02d:%02d"),
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
     	else if ((result_format & TMC_XML) == TMC_XML)
-      		_stprintf_s(time_str, 20, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
+      		_stprintf_s(datetime_str, 20, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
             		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
                 		st.tm_min, st.tm_sec);
-    	else {
-      		err = _tasctime_s(time_str, 32, &st);  // secure version
+        else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
+            SYSTEMTIME systime;
+            systime.wYear = (WORD)st.tm_year+1900;
+            systime.wMonth = (WORD)st.tm_mon+1;
+            systime.wDay = (WORD)st.tm_mday;
+            systime.wDayOfWeek = (WORD) st.tm_wday;
+            systime.wHour = (WORD)st.tm_hour;
+            systime.wMinute = (WORD)st.tm_min;
+            systime.wSecond = (WORD)st.tm_sec;
+            systime.wMilliseconds = (WORD)0;
+            TCHAR szBuf[80];
+            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SLONGDATE, szBuf, 80));
+            GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
+            szBuf[0] = _T(' ');  // Put a blank between date and time
+            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
+            GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
+            _tcscat_s(datetime_str, 80, time_str);
+        } else {
+      		err = _tasctime_s(datetime_str, 32, &st);  // secure version
     		ASSERT(err == 0);
       	}
-    	ret = time_str;
+    	ret = datetime_str;
 #else
     	TCHAR *t_str_ptr;
 		struct tm *st;
     	st = localtime(&t);
         ASSERT(st != NULL); // null means invalid time
     	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT) {
-      		_stprintf(time_str, _T("%04d/%02d/%02d %02d:%02d:%02d"),
+      		_stprintf(datetime_str, _T("%04d/%02d/%02d %02d:%02d:%02d"),
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
             	  st->tm_hour, st->tm_min, st->tm_sec);
-      		t_str_ptr = time_str;
+      		t_str_ptr = datetime_str;
     	} else if ((result_format & TMC_XML) == TMC_XML) {
       		_stprintf(time_str, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
             	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
             	  st->tm_hour, st->tm_min, st->tm_sec);
-      		t_str_ptr = time_str;
+      		t_str_ptr = datetime_str;
+    	} else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
+            SYSTEMTIME systime;
+            systime.wYear = (WORD)st.tm_year+1900;
+            systime.wMonth = (WORD)st.tm_mon+1;
+            systime.wDay = (WORD)st.tm_mday;
+            systime.wDayOfWeek = (WORD) st.tm_wday;
+            systime.wHour = (WORD)st.tm_hour;
+            systime.wMinute = (WORD)st.tm_min;
+            systime.wSecond = (WORD)st.tm_sec;
+            systime.wMilliseconds = (WORD)0;
+            TCHAR szBuf[80];
+            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SLONGDATE, szBuf, 80));
+            GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
+            szBuf[0] = _T(' ');  // Put a blank between date and time
+            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
+            GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
+            _tcscat(datetime_str, 80, time_str);
+      		t_str_ptr = datetime_str;
     	} else
       		t_str_ptr = _tasctime(st);
+
     	ret = t_str_ptr;
 #endif
   } else {
