@@ -1,11 +1,16 @@
 /// \file Util.cpp
 //-----------------------------------------------------------------------------
-
+#include "stdafx.h" // thomas
 #include "sha1.h"
 #include "BlowFish.h"
 #include "PwsPlatform.h"
 
-#include <stdio.h>
+#if !defined(POCKET_PC)
+  #include <fcntl.h>
+  #include <errno.h>
+  #include <io.h>
+  #include <sys\stat.h>
+#endif
 
 #include "Util.h"
 
@@ -178,7 +183,11 @@ BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
 }
 
 int
+#if defined(POCKET_PC)
 _writecbc(FILE *fp,
+#else
+_writecbc(int fp,
+#endif
           const unsigned char* buffer,
           int length,
 	  const unsigned char *pass, int passlen,
@@ -196,13 +205,19 @@ _writecbc(FILE *fp,
    // First encrypt and write the length of the buffer
    unsigned char lengthblock[8];
    memset(lengthblock, 0, 8);
+   // XXX next line is a portability issue - what if file is read by a program
+   // compiled with a different sizeof int or different endian-ness?
    putInt32( lengthblock, length );
-
+//   memcpy(lengthblock, (unsigned char*)&length, sizeof length);
    xormem(lengthblock, cbcbuffer, 8); // do the CBC thing
    Algorithm->Encrypt(lengthblock, lengthblock);
    memcpy(cbcbuffer, lengthblock, 8); // update CBC for next round
 
+#if defined(POCKET_PC)
    numWritten = fwrite(lengthblock, 1, 8, fp);
+#else
+   numWritten = _write(fp, lengthblock, 8);
+#endif
 
    trashMemory(lengthblock, 8);
 
@@ -221,7 +236,11 @@ _writecbc(FILE *fp,
       xormem(curblock, cbcbuffer, 8);
       Algorithm->Encrypt(curblock, curblock);
       memcpy(cbcbuffer, curblock, 8);
+#if defined(POCKET_PC)
       numWritten += fwrite(curblock, 1, 8, fp);
+#else
+      numWritten += _write(fp, curblock, 8);
+#endif
    }
    trashMemory(curblock, 8);
    delete Algorithm;
@@ -238,14 +257,16 @@ _writecbc(FILE *fp,
  * enough.
  * *** THE CALLER MUST delete[] IT AFTER USE *** UGH++
  *
- * (unless buffer_len is zero)
- *
  * An alternative to STL strings would be to accept a buffer, and allocate a replacement
  * iff the buffer is too small. This is serious ugliness, but should be considered if
  * the new/delete performance hit is too big.
  */
 int
+#if defined(POCKET_PC)
 _readcbc(FILE *fp,
+#else
+_readcbc(int fp,
+#endif
          unsigned char* &buffer, unsigned int &buffer_len,
 	 const unsigned char *pass, int passlen,
          const unsigned char* salt, int saltlen,
@@ -253,21 +274,24 @@ _readcbc(FILE *fp,
 {
    int numRead = 0;
 
-   unsigned char lengthblock[8];
-   unsigned char lcpy[8];
-
-   buffer_len = 0;
-   numRead = fread(lengthblock, 1, sizeof lengthblock, fp);
-   if (numRead != 8)
-      return 0;
-   memcpy(lcpy, lengthblock, 8);
-
    BlowFish *Algorithm = MakeBlowFish(pass, passlen, salt, saltlen);
 
+   unsigned char lengthblock[8];
+   unsigned char lcpy[8];
+#if defined(POCKET_PC)
+   numRead = fread(lengthblock, 1, sizeof lengthblock, fp);
+#else
+   numRead = _read(fp, lengthblock, 8);
+#endif
+   if (numRead != 8)
+      return 0;
+   memcpy(lcpy, lengthblock, sizeof(lcpy));
    Algorithm->Decrypt(lengthblock, lengthblock);
-   xormem(lengthblock, cbcbuffer, 8);
-   memcpy(cbcbuffer, lcpy, 8);
+   xormem(lengthblock, cbcbuffer, sizeof(lengthblock));
+   memcpy(cbcbuffer, lcpy, sizeof(lcpy));
 
+   // portability issue - see comment in _writecbc
+//   int length = *((int*)lengthblock);
    int length = getInt32( lengthblock );
 
    trashMemory(lengthblock, 8);
@@ -282,10 +306,6 @@ _readcbc(FILE *fp,
    }
 
    int BlockLength = ((length+7)/8)*8;
-   // Following is meant for lengths < 8,
-   // but results in a block being read even
-   // if length is zero. This is wasteful,
-   // but fixing it would break all existing databases.
    if (BlockLength == 0)
       BlockLength = 8;
 
@@ -294,7 +314,11 @@ _readcbc(FILE *fp,
 
 
    unsigned char tempcbc[8];
+#if defined(POCKET_PC)
    numRead += fread(buffer, 1, BlockLength, fp);
+#else
+   numRead += _read(fp, buffer, BlockLength);
+#endif
    for (int x=0;x<BlockLength;x+=8)
    {
       memcpy(tempcbc, buffer+x, 8);
@@ -305,26 +329,6 @@ _readcbc(FILE *fp,
 	
    trashMemory(tempcbc, 8);
    delete Algorithm;
-   if (length == 0) {
-	   // delete[] buffer here since caller will see zero length
-	   delete [] buffer;
-   }
 
    return numRead;
-}
-
-/**
- * Returns the current length of a file.
- */
-long fileLength( FILE *fp )
-{
-	long	pos;
-	long	len;
-
-	pos = ftell( fp );
-	fseek( fp, 0, SEEK_END );
-	len	= ftell( fp );
-	fseek( fp, pos, SEEK_SET );
-
-	return len;
 }

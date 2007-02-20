@@ -1,6 +1,7 @@
 /// \file PasskeyEntry.cpp
 //-----------------------------------------------------------------------------
 
+#include  "stdafx.h" // thomas
 /*
   Passkey?  That's Russian for 'pass'.  You know, passkey
   down the streetsky.  [Groucho Marx]
@@ -26,6 +27,11 @@
 
 #include "util.h"
 
+#ifndef POCKET_PC
+#include <io.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#endif
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
@@ -51,7 +57,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
 
    if (a_filespec.GetLength() > FILE_DISP_LEN) {
 //	   m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
-//	   m_message.Insert(0, _T("..."));
+//	   m_message.Insert(0, TEXT("..."));
       // changed by karel@VanderGucht.de to see beginning + ending of 'a_filespec'
       m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + " ... " + a_filespec.Right(FILE_DISP_LEN/2);
 
@@ -81,7 +87,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_ctlOK);
 #endif
 	DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
-   DDX_Text(pDX, IDC_MESSAGE, m_message);
+	DDX_Text(pDX, IDC_MESSAGE, m_message);
 	//}}AFX_DATA_MAP
 }
 
@@ -91,10 +97,6 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(ID_BROWSE, OnBrowse)
    ON_BN_CLICKED(ID_CREATE_DB, OnCreateDb)
-#if defined(POCKET_PC)
-   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
-   ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
-#endif
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -148,28 +150,6 @@ CPasskeyEntry::OnInitDialog(void)
    
    return TRUE;
 }
-
-
-#if defined(POCKET_PC)
-/************************************************************************/
-/* Restore the state of word completion when the password field loses   */
-/* focus.                                                               */
-/************************************************************************/
-void CPasskeyEntry::OnPasskeyKillfocus()
-{
-	EnableWordCompletion( m_hWnd );
-}
-
-
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
-void CPasskeyEntry::OnPasskeySetfocus()
-{
-	DisableWordCompletion( m_hWnd );
-}
-#endif
 
 
 void
@@ -256,7 +236,7 @@ CPasskeyEntry::OnHelp()
 #if defined(POCKET_PC)
 	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
-   //WinHelp(0x200B9, HELP_CONTEXT);
+	//WinHelp(0x200B9, HELP_CONTEXT);
    ::HtmlHelp(NULL,
               "pwsafe.chm::/html/pws_combo_entry.htm",
               HH_DISPLAY_TOPIC, 0);

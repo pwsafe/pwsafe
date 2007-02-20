@@ -1,6 +1,6 @@
 /// \file PWCharPool.cpp
 //-----------------------------------------------------------------------------
-
+#include "stdafx.h" // thomas
 #include "PWCharPool.h"
 #include "Util.h"
 

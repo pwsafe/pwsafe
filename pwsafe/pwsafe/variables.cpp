@@ -1,6 +1,6 @@
 /// \file variables.cpp
 //-----------------------------------------------------------------------------
-
+#include "stdafx.h" // thomas
 //#include "util.h"
 
 //Static global variables for speed and security reasons

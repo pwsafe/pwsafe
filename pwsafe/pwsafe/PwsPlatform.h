@@ -40,17 +40,24 @@
 #ifndef PwsPlatform_h
 #define PwsPlatform_h
 
+// WIN32_PLATFORM_WFSP
+// PPC2003 don't have SHELL_AYGSHELL
+#ifndef SHELL_AYGSHELL
+//#error
+#else
+#endif
+
 #if defined(_WIN32)
   #include "stdafx.h"
 #endif
 
-// stop MS VC++ 6 and earlier being quite so pedantic
-#if defined(_MSC_VER) && (_MSC_VER <= 1200) // i.e. only MSVC++ 6 and earlier
-#pragma warning ( disable : 4097 )
-#endif
-
 #undef PWS_PLATFORM
 #undef POCKET_PC
+
+#define POCKET_PC
+#define PWS_PLATFORM	"Windows Mobile 2005"
+#define LITTLE_ENDIAN
+
 
 // BIG_ENDIAN and LITTLE_ENDIAN can be specified on the 
 #if defined(BIG_ENDIAN)
@@ -76,9 +83,9 @@
       #if defined(ARM) || defined(_ARM)
         #define LITTLE_ENDIAN
       #elif defined(MIPS) || defined(_MIPS)
-        #define LITTLE_ENDIAN
+        #define BIG_ENDIAN
       #elif defined(SH3) || defined(_SH3)
-        #define LITTLE_ENDIAN
+        #define BIG_ENDIAN
       #elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
         #define LITTLE_ENDIAN
       #endif
@@ -116,8 +123,9 @@
 
 // 
 #if !defined(PWS_PLATFORM)
-  #error Unable to determine the target platform - please fix PwsPlatform.h
+  //#error Unable to determine the target platform - please fix PwsPlatform.h
 #endif
+
 
 #if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
   #error Cannot determine whether the target CPU is big or little endian - please fix PwsPlatform.h

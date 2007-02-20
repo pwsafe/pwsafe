@@ -11,13 +11,13 @@
 #if defined(POCKET_PC)
 #include <stdlib.h>
 #include <Afxwin.h>
-
+#if (!defined(UNDER_CE) || (UNDER_CE < 0x420))
 #define EACCES	ERROR_ACCESS_DENIED
 #define EEXIST	ERROR_FILE_EXISTS
 #define EINVAL	ERROR_INVALID_PARAMETER
 #define ENOENT	ERROR_FILE_NOT_FOUND
 #define EMFILE	ERROR_TOO_MANY_OPEN_FILES
-
+#endif
 extern int errno;
 
 #ifdef UNICODE

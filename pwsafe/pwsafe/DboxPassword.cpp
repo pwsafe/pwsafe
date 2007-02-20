@@ -1,6 +1,6 @@
 /// \file DboxPassword.cpp
 //-----------------------------------------------------------------------------
-
+#include "stdafx.h" // thomas
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"

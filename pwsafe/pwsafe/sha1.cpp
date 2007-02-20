@@ -1,6 +1,6 @@
 /// \file sha1.cpp
 //-----------------------------------------------------------------------------
-
+#include "stdafx.h" // thomas
 /* SHA-1 in C By Steve Reid <steve@edmweb.com> */
 
 #define LITTLE_ENDIAN

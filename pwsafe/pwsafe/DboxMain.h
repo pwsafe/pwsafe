@@ -4,17 +4,18 @@
 #ifndef DboxMain_h
 #define DboxMain_h
 
-#include <stdio.h>
-
 #include "ItemData.h"
 #include "util.h"
 #include "PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
-  #include "pocketpc/MyListCtrl.h"
 #else
   #include "resource.h"
+#endif
+
+#if defined(POCKET_PC)
+  #include "pocketpc/MyListCtrl.h"
 #endif
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
@@ -95,7 +96,8 @@ protected:
 #endif
 
 #if defined(POCKET_PC)
-   CCeCommandBar	*m_wndCommandBar;
+   CCommandBar 	*m_wndCommandBar;
+   HWND m_hwndMb;
    CMenu			*m_wndMenu;
 #else
    CToolBar m_wndToolBar;
@@ -141,6 +143,7 @@ protected:
    int Save(void);
    int SaveAs(void);
    int Open(void);
+//   int Open( const char* pszFilename );
    int Open( const CMyString &pszFilename );
    int BackupSafe(void);
    int New(void);
@@ -175,12 +178,10 @@ protected:
    afx_msg void OnSave();
    afx_msg void OnAdd();
    afx_msg void OnOK();
-#if defined(POCKET_PC)
-   afx_msg void OnShowPassword();
-#else
+#if !defined(POCKET_PC)
    afx_msg void OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
    afx_msg void OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
-   afx_msg void OnDropFiles(HDROP hDrop);
+   //afx_msg void OnDropFiles(HDROP hDrop);
 #endif
 	afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
@@ -202,8 +203,13 @@ public:
    CMyString GetPassword(void);
 
 private:
+#ifdef POCKET_PC
   int WriteCBC(FILE *fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);
   int ReadCBC(FILE *fp, CMyString &data, const unsigned char *salt, unsigned char *ipthing);
+#else
+  int WriteCBC(int fp, const CString &data, const unsigned char *salt, unsigned char *ipthing);
+  int ReadCBC(int fp, CMyString &data, const unsigned char *salt, unsigned char *ipthing);
+#endif
   void MakeFullNames(CList<CItemData, CItemData>* plist,
 		     const CMyString &defusername);
   void DropDefUsernames(CList<CItemData, CItemData>* plist,

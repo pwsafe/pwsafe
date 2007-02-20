@@ -57,11 +57,19 @@ extern BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
 			      const unsigned char *salt, int saltlen);
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
+#if defined(_WIN32_WCE)
 extern int _readcbc(FILE *fp, unsigned char* &buffer, unsigned int &buffer_len,
+#else
+extern int _readcbc(int fp, unsigned char* &buffer, unsigned int &buffer_len,
+#endif
 		    const unsigned char *pass, int passlen,
 		    const unsigned char* salt, int saltlen,
 		    unsigned char* cbcbuffer);
+#if defined(_WIN32_WCE)
 extern int _writecbc(FILE *fp, const unsigned char* buffer, int length,
+#else
+extern int _writecbc(int fp, const unsigned char* buffer, int length,
+#endif
 		     const unsigned char *pass, int passlen,
 		     const unsigned char* salt, int saltlen,
 		     unsigned char* cbcbuffer);
@@ -170,7 +178,6 @@ inline wchar_t * strFind( const wchar_t *str, const wchar_t *fstr )
 void manageCmdLine(CString m_lpCmdLine);
 #endif
 
-extern long		fileLength( FILE *fp );
 
 #endif // Util_h
 //-----------------------------------------------------------------------------

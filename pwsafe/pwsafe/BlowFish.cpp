@@ -1,5 +1,6 @@
 // BlowFish.cpp
 //-----------------------------------------------------------------------------
+#include "stdafx.h" // thomas
 
 #include "BlowFish.h"
 

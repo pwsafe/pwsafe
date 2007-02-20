@@ -73,12 +73,13 @@ ThisMfcApp::ThisMfcApp() :
 
 ThisMfcApp::~ThisMfcApp()
 {
+#ifndef POCKET_PC
 	if ( m_pMRU )
 	{
 		m_pMRU->WriteList();
 		delete m_pMRU;
 	}
-
+#endif
    /*
      apparently, with vc7, there's a CWinApp::HtmlHelp - I'd like
      to see the docs, someday.  In the meantime, force with :: syntax
@@ -320,11 +321,11 @@ ThisMfcApp::InitInstance()
 	CMyString companyname;
 	VERIFY(companyname.LoadString(IDS_COMPANY) != 0);
 	SetRegistryKey(companyname);
-	
+#ifndef POCKET_PC	
    int	nMRUItems = GetProfileInt(_T(PWS_REG_OPTIONS), _T("maxmruitems"), 4);
    m_pMRU = new CRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );;
 	m_pMRU->ReadList();
-	
+#endif	
 	DboxMain dbox(NULL);
 	
 	/*

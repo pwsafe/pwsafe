@@ -1,14 +1,22 @@
 /// \file DboxMain.cpp
+//
+// {kjp} PocketPC - minimize application when "OK" button top right corner is
+// pressed.
 //-----------------------------------------------------------------------------
-
+#include "stdafx.h" // thomas
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
+#include <aygshell.h>
+
+#pragma message("Linker library-search : aygshell.lib")
+#pragma comment(lib, "aygshell.lib")
+
+
 #else
-  #include <errno.h>
   #include "resource.h"
 #endif
 
@@ -32,11 +40,14 @@
 // widget override?
 #include "SysColStatic.h"
 
-#include <stdio.h>
-
 #ifdef POCKET_PC
+  #include <stdio.h>
   #include "pocketpc/PocketPC.h"
-  #include "ShowPasswordDlg.h"
+#else
+  #include <io.h>
+  #include <fcntl.h>
+  #include <sys/stat.h>
+  #include <errno.h>
 #endif
 #include <afxpriv.h>
 #include <stdlib.h> // for qsort
@@ -81,6 +92,10 @@ protected:
    {
       super::DoDataExchange(pDX);
    }
+
+#if defined(POCKET_PC)
+//   virtual BOOL OnInitDialog();
+#endif
 
 protected:
    DECLARE_MESSAGE_MAP()
@@ -167,6 +182,7 @@ DboxMain::DboxMain(CWnd* pParent)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 
+   m_hwndMb = NULL;
    m_hIcon = app.LoadIcon(IDI_CORNERICON);
    m_pwlist.RemoveAll();
    // m_pwdb.Clear(); when the new backend is in...
@@ -240,7 +256,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #else
    ON_WM_CONTEXTMENU()
 #endif
-	ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
+   ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
 	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
@@ -257,14 +273,12 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
    ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
    ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
-#if defined(POCKET_PC)
-   ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
-#else
+#if !defined(POCKET_PC)
 	ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnSetfocusItemlist)
 	ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnKillfocusItemlist)
    ON_WM_DROPFILES()
 #endif
-	ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
+   ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
 	ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
 	ON_WM_INITMENUPOPUP()
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
@@ -349,6 +363,10 @@ DboxMain::OnInitDialog()
    if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("donebackupchange"), FALSE) == FALSE)
       OnUpdateBackups();
 
+#if defined(POCKET_PC)
+   ::DrawMenuBar(m_hwndMb);
+#endif
+
    setupBars(); // Just to keep things a little bit cleaner
 
 #if !defined(POCKET_PC)
@@ -357,10 +375,10 @@ DboxMain::OnInitDialog()
 
    // TODO: kinda hideous in the registry, encode as single string maybe?
    // {kjp} meaningless when target is a PocketPC device.
-   rect.top = app.GetProfileInt(_T(PWS_REG_POSITION), _T("top"), -1);
-   rect.bottom = app.GetProfileInt(_T(PWS_REG_POSITION), _T("bottom"), -1);
-   rect.left = app.GetProfileInt(_T(PWS_REG_POSITION), _T("left"), -1);
-   rect.right = app.GetProfileInt(_T(PWS_REG_POSITION), _T("right"), -1);
+   rect.top = app.GetProfileInt(_TPWS_REG_POSITION), _T("top"), -1);
+   rect.bottom = app.GetProfileInt(_TPWS_REG_POSITION), _T("bottom"), -1);
+   rect.left = app.GetProfileInt(_TPWS_REG_POSITION), _T("left"), -1);
+   rect.right = app.GetProfileInt(_TPWS_REG_POSITION), _T("right"), -1);
 
    if (rect.top == -1 || rect.bottom == -1 || rect.left == -1 || rect.right == -1) {
 	   GetWindowRect(&rect);
@@ -612,70 +630,62 @@ DboxMain::OnAdd()
 void
 DboxMain::OnListDoubleClick( NMHDR *, LRESULT *)
 {
-#if defined(POCKET_PC)
-	if ( app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("dcshowspassword"), FALSE) == FALSE )
-	{
-		OnCopyPassword();
-	}
-	else
-	{
-		OnShowPassword();
-	}
-#else
 	OnCopyPassword();
-#endif
 }
 
 void
 DboxMain::OnCopyPassword() 
 {
-	bool	bCopyPassword = true;	// will get set to false if user hits cancel
+   if (SelItemOk() == TRUE)
+   {
+      POSITION itemPos = Find(getSelectedItem());
+		
+      CMyString curPassString;
+      m_pwlist.GetAt(itemPos).GetPassword(curPassString);
 
-	//Remind the user about clipboard security
-	CClearQuestionDlg clearDlg(this);
-	if (clearDlg.m_dontaskquestion == FALSE)
-	{
-		int rc = clearDlg.DoModal();
-		if (rc == IDOK)
-		{
-		}
-		else if (rc == IDCANCEL)
-		{
-			bCopyPassword = false;
-		}
-	}
+	  // {kjp} fix to use the real amount of storage used
+      uGlobalMemSize = (curPassString.GetLength() + 1) * sizeof(TCHAR);
+      hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
+#if 1
+	  // {kjp} fix to use UNICODE safe string definitions and string copy functions
+      LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
 
-	if ( !bCopyPassword )
-		return;
+	  strCopy( pGlobalLock, curPassString );
+#else
+      char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
 
-	if (SelItemOk() == TRUE)
-	{
-		POSITION itemPos = Find(getSelectedItem());
+      memcpy(pGlobalLock, (LPCSTR)curPassString, curPassString.GetLength());
+
+      pGlobalLock[uGlobalMemSize-1] = _T'\0');
+#endif
+
+      GlobalUnlock(hGlobalMemory);	
 		
-		CMyString curPassString;
-		m_pwlist.GetAt(itemPos).GetPassword(curPassString);
-		
-		uGlobalMemSize = (curPassString.GetLength() + 1) * sizeof(TCHAR);
-		hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
-		// {kjp} fix to use UNICODE safe string definitions and string copy functions
-		LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
-		
-		strCopy( pGlobalLock, curPassString );
-		
-		GlobalUnlock(hGlobalMemory);	
-		
-		if (OpenClipboard() == TRUE)
-		{
-			if (EmptyClipboard()!=TRUE)
+      if (OpenClipboard() == TRUE)
+      {
+         if (EmptyClipboard()!=TRUE)
             AfxMessageBox(_T("The clipboard was not emptied correctly"));
          if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL)
             AfxMessageBox(_T("The data was not pasted into the clipboard correctly"));
-			if (CloseClipboard() != TRUE)
+         if (CloseClipboard() != TRUE)
             AfxMessageBox(_T("The clipboard could not be closed"));
-		}
-		else
-			AfxMessageBox(_T("The clipboard could not be opened correctly"));
-	}
+      }
+      else
+         AfxMessageBox(_T("The clipboard could not be opened correctly"));
+		
+      //Remind the user about clipboard security
+      CClearQuestionDlg clearDlg(this);
+      if (clearDlg.m_dontaskquestion == FALSE)
+      {
+         int rc = clearDlg.DoModal();
+         if (rc == IDOK)
+         {
+         }
+         else if (rc == IDCANCEL)
+         {
+         }
+      }
+   }
 }
 
 
@@ -818,12 +828,10 @@ DboxMain::OnOK()
 	if (!IsIconic()) {
 	  CRect rect;
 	  GetWindowRect(&rect);
-#if !defined(POCKET_PC)
 	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("top"), rect.top);
 	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("bottom"), rect.bottom);
 	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("left"), rect.left);
 	  app.WriteProfileInt(_T(PWS_REG_POSITION), _T("right"), rect.right);
-#endif
 	}
 	app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("sortedcolumn"), m_iSortedColumn);
 	app.WriteProfileInt(_T(PWS_REG_OPTIONS), _T("sortascending"), m_bSortAscending);
@@ -849,8 +857,7 @@ DboxMain::OnOK()
    }
    else
    {
-     if (app.GetProfileInt(_T(""), _T("dontaskminimizeclearyesno"), FALSE) == TRUE)
-       ClearClipboard();
+      ClearClipboard();
       app.m_pMainWnd = NULL;
    }
 
@@ -892,8 +899,13 @@ DboxMain::ClearClipboard()
          LPTSTR lptstr = (LPTSTR)GlobalLock(hglb); 
          if (lptstr != NULL)
          {
-			trashMemory( lptstr, strLength(lptstr) );
-            GlobalUnlock(hglb); 
+#if 1
+			 // {kjp} fixed to use UNICODE safe functions
+			 trashMemory( lptstr, strLength(lptstr) );
+#else
+			 trashMemory((unsigned char*)lptstr, strlen(lptstr));
+#endif
+			 GlobalUnlock(hglb); 
          } 
       } 
    }
@@ -991,8 +1003,16 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
           curname.MakeLower();
           curnotes.MakeLower();
       }
+#if 1
 	  if ( strFind( curname, searchstr ) || strFind( curnotes, searchstr ) )
 	  {
+#else
+#ifdef UNICODE
+      if (::wcsstr(curname, searchstr) || ::wcsstr(curnotes, searchstr)) {
+#else
+      if (::strstr(curname, searchstr) || ::strstr(curnotes, searchstr)) {
+#endif
+#endif
 	// Find index in m_listctl
 	CMyString listTitle;
 	CMyString title, username;
@@ -1223,46 +1243,40 @@ DboxMain::OnSize(UINT nType,
    if (nType == SIZE_MINIMIZED)
    {
 	   m_ctlItemList.DeleteAllItems();
+      if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
+                            _T("dontaskminimizeclearyesno"),
+                            FALSE) == TRUE)
+      {
+         ClearClipboard();
+      }
+      if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE) == TRUE)
+      {
+         BOOL dontask = app.GetProfileInt(_T(PWS_REG_OPTIONS),
+                                          _T("dontasksaveminimize"),
+                                          FALSE);
+         BOOL doit = TRUE;
+         if ((m_changed == TRUE)
+             && (dontask == FALSE))
+         {
+            CRemindSaveDlg remindDlg(this);
 
-	   // clear clipboard when minimized
-	   if (app.GetProfileInt(_T(PWS_REG_OPTIONS),
-		   _T("dontaskminimizeclearyesno"),
-		   FALSE) == TRUE)
-	   {
-		   ClearClipboard();
-	   }
+            int rc = remindDlg.DoModal();
+            if (rc == IDOK)
+            {
+            }
+            else if (rc == IDCANCEL)
+            {
+               doit = FALSE;
+            }
+         }
 
-	   // lock database when minimized
-       if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("databaseclear"), FALSE) == TRUE)
-	   {
-		   // confirm save on minimize
-           BOOL dontask = app.GetProfileInt(_T(PWS_REG_OPTIONS),
-               _T("dontasksaveminimize"),
-			   FALSE);
-		   BOOL doit = TRUE;
-		   if ((m_changed == TRUE)
-			   && (dontask == FALSE))
-		   {
-			   CRemindSaveDlg remindDlg(this);
-			   
-			   int rc = remindDlg.DoModal();
-			   if (rc == IDOK)
-			   {
-			   }
-			   else if (rc == IDCANCEL)
-			   {
-				   doit = FALSE;
-			   }
-		   }
-		   
-		   if ((doit == TRUE) && (m_existingrestore == FALSE)) 
-		   {
-			   if ( m_changed ) // only save if changed
-				   OnSave();
-			   ClearData();
-			   m_needsreading = TRUE;
-		   }
-	   }
+         if ((doit == TRUE) && (m_existingrestore == FALSE)) 
+         {
+            OnSave();
+            ClearData();
+            m_needsreading = TRUE;
+         }
+      }
    }
    else if (!m_bSizing && nType == SIZE_RESTORED)	// gets called even when just resizing window
    {
@@ -1314,10 +1328,8 @@ DboxMain::OnSize(UINT nType,
          }
          else
          {
-            m_needsreading = TRUE;
-            m_existingrestore = FALSE;
-            ShowWindow( SW_MINIMIZE );
-            return;
+            app.m_pMainWnd = NULL;
+            CDialog::OnCancel();
          }
       }
       RefreshList();
@@ -1373,8 +1385,11 @@ DboxMain::ChangeOkUpdate()
    if (! m_windowok)
       return;
 #if defined(POCKET_PC)
+	/*
 	CMenu		*menu	= m_wndMenu;
 	
+//	menu = m_wndCommandBar->GetMenuBar( 0 );
+
 	if ( menu != NULL )
 	{
 		if (m_changed == TRUE)
@@ -1386,6 +1401,7 @@ DboxMain::ChangeOkUpdate()
 			menu->EnableMenuItem(ID_MENUITEM_SAVE, MF_GRAYED);
 		}
 	}
+	*/
 #else
    if (m_changed == TRUE)
       GetMenu()->EnableMenuItem(ID_MENUITEM_SAVE, MF_ENABLED);
@@ -1427,11 +1443,22 @@ DboxMain::OnCopyUsername()
    }
    else
    {
+	  // {kjp} fix to use the real amount of storage used
       uGlobalMemSize = (username.GetLength() + 1) * sizeof(TCHAR);
       hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE,
                                   uGlobalMemSize);
+#if 1
+	  // {kjp} fix to use UNICODE safe string definitions and string copy functions
       LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
+
 	  strCopy( pGlobalLock, username );
+#else
+      char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
+      
+      memcpy(pGlobalLock, (LPCSTR)username, username.GetLength());
+
+      pGlobalLock[uGlobalMemSize-1] = '\0';
+#endif
       GlobalUnlock(hGlobalMemory);	
 		
       if (OpenClipboard() == TRUE)
@@ -1456,32 +1483,36 @@ DboxMain::OnCopyUsername()
 void
 DboxMain::OnContextMenu(CWnd *, CPoint point) 
 {
-   CPoint local = point;
-   m_ctlItemList.ScreenToClient(&local);
+	TRACE0("DboxMain::OnContextMenu");
+	CPoint local = point;
+	m_ctlItemList.ScreenToClient(&local);
 
-   int item = m_ctlItemList.HitTest(local);
+	int item = m_ctlItemList.HitTest(local);
 
-   if (item >= 0)
-   {
-     int rc = SelectEntry(item);
-     if (rc == LB_ERR) {
-       SelectEntry(m_ctlItemList.GetItemCount() - 1);
-     }
-     m_ctlItemList.SetFocus();
+	if (item >= 0)
+	{
+		int rc = SelectEntry(item);
+		if (rc == LB_ERR) {
+			SelectEntry(m_ctlItemList.GetItemCount() - 1);
+		}
+		m_ctlItemList.SetFocus();
 
-      CMenu menu;
-      if (menu.LoadMenu(IDR_POPMENU))
-      {
-         CMenu* pPopup = menu.GetSubMenu(0);
-         ASSERT(pPopup != NULL);
+		CMenu menu;
+		if (menu.LoadMenu(IDR_POPMENU))
+		{
+			CMenu* pPopup = menu.GetSubMenu(0);
+			ASSERT(pPopup != NULL);
 
 			pPopup->TrackPopupMenu(
-WCE_INS							TPM_LEFTALIGN,
-WCE_DEL							TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+#ifdef POCKET_PC
+								TPM_LEFTALIGN,
+#else
+								TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+#endif
                                 point.x, point.y,
                                 this); // use this window for commands
-      }
-   }
+		}
+	}
 }
 
 /*
@@ -1686,7 +1717,7 @@ DboxMain::Open( const CMyString &pszFilename )
 	switch (rc)
 	{
 	case SUCCESS:
-		app.GetMRU()->Add( LPCTSTR(pszFilename) );
+//		app.GetMRU()->Add( LPCTSTR(pszFilename) );
 		break; // Keep going... 
 	case CANT_OPEN_FILE:
 		temp = m_currfile + "\n\nCan't open file. Please choose another.";
@@ -1944,11 +1975,12 @@ DboxMain::SaveAs()
 #endif
    ChangeOkUpdate();
 
-   app.GetMRU()->Add( newfile );
+//   app.GetMRU()->Add( newfile );
 
    return SUCCESS;
 }
 
+#ifdef POCKET_PC
 int DboxMain::WriteCBC(FILE *fp, const CString &data, const unsigned char *salt,
 		       unsigned char *ipthing)
 {
@@ -1965,10 +1997,28 @@ int DboxMain::WriteCBC(FILE *fp, const CString &data, const unsigned char *salt,
 		(const unsigned char *)passstr, app.m_passkey.GetLength(),
 		salt, SaltLength, ipthing);
 }
+#else
+int DboxMain::WriteCBC(int fp, const CString &data, const unsigned char *salt,
+		       unsigned char *ipthing)
+{
+  // We do a double cast because the LPCSTR cast operator is overridden by the CString class
+  // to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+
+  LPCSTR passstr = LPCSTR(app.m_passkey);
+  LPCSTR datastr = LPCSTR(data);
+
+  return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
+		   (const unsigned char *)passstr, app.m_passkey.GetLength(),
+		   salt, SaltLength, ipthing);
+}
+#endif
 
 int
 DboxMain::WriteFile(const CMyString &filename)
 {
+	int x;
+#ifdef POCKET_PC
 #ifdef UNICODE
 	FILE *out = _wfopen((LPCTSTR)filename, _T("wb") );
 #else
@@ -1976,26 +2026,46 @@ DboxMain::WriteFile(const CMyString &filename)
 #endif
 
 	if ( out == NULL )
-      return CANT_OPEN_FILE;
+		return CANT_OPEN_FILE;
 
 	fwrite( app.m_randstuff, 1,  8, out ); 
 	fwrite( app.m_randhash,  1, 20, out );
+#else
+
+   int out = _open((LPCTSTR)filename,
+                   _O_BINARY|_O_WRONLY|_O_SEQUENTIAL|_O_TRUNC|_O_CREAT,
+                   _S_IREAD | _S_IWRITE);
+
+   if (out == -1)
+      return CANT_OPEN_FILE;
+
+   _write(out, app.m_randstuff, 8);
+   _write(out, app.m_randhash, 20);
+#endif
 
    /*
      I know salt is just salt, but randomness always makes me
      nervous - must check this out {jpr}
     */
    unsigned char* thesalt = new unsigned char[SaltLength];
-   for (int x=0; x<SaltLength; x++)
+   for (x=0; x<SaltLength; x++)
       thesalt[x] = newrand();
 
+#ifdef POCKET_PC
    fwrite( thesalt, 1, SaltLength, out );
+#else
+   _write(out, thesalt, SaltLength);
+#endif
 	
    unsigned char ipthing[8];
    for (x=0; x<8; x++)
       ipthing[x] = newrand();
 
+#ifdef POCKET_PC
    fwrite(ipthing, 1, 8, out);
+#else
+   _write(out, ipthing, 8);
+#endif
 
    //Write out full names
    BOOL needexpand = app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE);
@@ -2017,7 +2087,11 @@ DboxMain::WriteFile(const CMyString &filename)
       WriteCBC(out, tempdata, thesalt, ipthing);
       m_pwlist.GetNext(listPos);
    }
+#ifdef POCKET_PC
    fclose(out);
+#else
+   _close(out);
+#endif
 
    delete [] thesalt;
 
@@ -2048,6 +2122,7 @@ DboxMain::CheckPassword(const CMyString &filename,
     {
       DBGMSG("filename not blank\n");
 
+#ifdef POCKET_PC
 #ifdef UNICODE
 	  FILE *in = _wfopen((LPCTSTR) filename, _T("rb"));
 #else
@@ -2055,6 +2130,13 @@ DboxMain::CheckPassword(const CMyString &filename,
 #endif
 
 	  if ( in == NULL )
+#else
+      int in = _open((LPCTSTR) filename,
+                     _O_BINARY | _O_RDONLY | _O_SEQUENTIAL,
+                     S_IREAD | _S_IWRITE);
+
+      if (in == -1)
+#endif
 	{
 	  DBGMSG("open return -1\n");
 
@@ -2079,9 +2161,15 @@ DboxMain::CheckPassword(const CMyString &filename,
 	    The beginning of the database file is
 	    8 bytes of randomness and a SHA1 hash {jpr}
 	  */
+#ifdef POCKET_PC
 	  fread(app.m_randstuff, 1,  8, in);
 	  fread(app.m_randhash,  1, 20, in);
 	  fclose(in);
+#else
+	  _read(in, app.m_randstuff, 8);
+	  _read(in, app.m_randhash, 20);
+	  _close(in);
+#endif
 	}
     }
 
@@ -2094,6 +2182,7 @@ DboxMain::CheckPassword(const CMyString &filename,
   app.m_pMainWnd = &dbox_pkentry;
   //dbox_pkentry->m_message = filename;
   int rc = dbox_pkentry.DoModal();
+  //dbox_pkentry.ShowWindow()
 
   if (rc == IDOK)
     {
@@ -2132,8 +2221,13 @@ DboxMain::CheckPassword(const CMyString &filename,
   return retval;
 }
 
+#ifdef POCKET_PC
 int DboxMain::ReadCBC(FILE *fp, CMyString &data, const unsigned char *salt,
 		       unsigned char *ipthing)
+#else
+int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
+		       unsigned char *ipthing)
+#endif
 {
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
   // to access the pointer we need,
@@ -2165,6 +2259,8 @@ DboxMain::ReadFile(const CMyString &a_filename,
 {	
    //That passkey had better be the same one that came from CheckPassword(...)
 
+#ifdef POCKET_PC
+	int		nr;
 #ifdef UNICODE
 	FILE * in = _wfopen((LPCTSTR) a_filename, _T("rb") );
 #else
@@ -2172,18 +2268,35 @@ DboxMain::ReadFile(const CMyString &a_filename,
 #endif
 
 	if (in == NULL)
+#else
+   int in = _open((LPCTSTR) a_filename,
+                  _O_BINARY |_O_RDONLY | _O_SEQUENTIAL,
+                  S_IREAD | _S_IWRITE);
+
+   if (in == -1)
+#endif
       return CANT_OPEN_FILE;
 
    ClearData(); //Before overwriting old data, but after opening the file... 
 
-   fread(app.m_randstuff, 1,  8, in);
-   fread(app.m_randhash,  1, 20,  in);
+#ifdef POCKET_PC
+   nr = fread(app.m_randstuff, 1,  8, in);
+   nr = fread(app.m_randhash,  1, 20,  in);
+#else
+   _read(in, app.m_randstuff, 8);
+   _read(in, app.m_randhash, 20);
+#endif
 
    unsigned char* salt = new unsigned char[SaltLength];
    unsigned char ipthing[8];
 
-   fread(salt,    1, SaltLength, in);
-   fread(ipthing, 1, 8, in);
+#ifdef POCKET_PC
+   nr = fread(salt,    1, SaltLength, in);
+   nr = fread(ipthing, 1, 8, in);
+#else
+   _read(in, salt, SaltLength);
+   _read(in, ipthing, 8);
+#endif
 
    app.m_passkey = a_passkey;
 
@@ -2210,7 +2323,11 @@ DboxMain::ReadFile(const CMyString &a_filename,
    }
 
    delete [] salt;
+#ifdef POCKET_PC
    fclose(in);
+#else
+   _close(in);
+#endif
 
    //Shorten names if necessary
    if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("usedefuser"), FALSE) == TRUE)
@@ -2438,6 +2555,7 @@ DboxMain::OnUpdateBackups()
                              _T("Changed Files"), MB_YESNOCANCEL);
       if (rc == IDYES)
       {
+#ifdef POCKET_PC
 #ifdef UNICODE
 			FILE * in = _wfopen( _T("changedbackups.txt"), _T("w") );
 #else
@@ -2446,9 +2564,20 @@ DboxMain::OnUpdateBackups()
 
 			if ( in != NULL )
 			{
-				fwrite( LPCTSTR(out+out2), 1, strLength(LPCTSTR(out+out2)), in );
+				fwrite( LPCTSTR(out+out2), 1, wcslen(LPCTSTR(out+out2)), in );
 				fclose( in );
+			}
+#else
+         int in = _open("changedbackups.txt",
+                        _O_TEXT|_O_WRONLY|_O_SEQUENTIAL|_O_APPEND|_O_CREAT,
+                        _S_IREAD | _S_IWRITE);
+         if (in != -1)
+         {
+            // No error
+            _write(in, LPCTSTR(out+out2), strlen(LPCTSTR(out+out2)));
+            _close(in);
          }
+#endif
       }
 
 
@@ -2506,7 +2635,7 @@ DboxMain::OnToolTipText(UINT,
       // this is the command id, not the button index
       AfxExtractSubString(strTipText, szFullText, 1, '\n');
    }
-#ifndef _UNICODE
+#ifndef UNICODE
    if (pNMHDR->code == TTN_NEEDTEXTA)
       lstrcpyn(pTTTA->szText, strTipText,
                (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
@@ -2683,6 +2812,9 @@ DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start MakeFullName
+// {kjp} BUGFIX : these are strings, not byte arrays!
+//      int pos = temp.FindByte(SPLTCHR);
+//      int pos2 = temp.FindByte(DEFUSERCHR);
       int pos = temp.Find(SPLTCHR);
       int pos2 = temp.Find(DEFUSERCHR);
       if (pos==-1 && pos2!=-1)
@@ -2728,6 +2860,8 @@ DboxMain::CheckVersion(CList<CItemData, CItemData>* plist)
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
 
+// {kjp} BUGFIX these are strings not byte arrays!
+//    if (temp.FindByte(SPLTCHR) != -1)
       if (temp.Find(SPLTCHR) != -1)
          return V15;
 
@@ -2749,6 +2883,9 @@ DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
       plist->GetAt(listPos).GetName(temp);
 
       //Start Check
+// {kjp} BUGFIX this is a string not a byte array!
+//    if ((temp.FindByte(SPLTCHR) == -1)
+//        && (temp.FindByte(DEFUSERCHR) == -1))
       if ((temp.Find(SPLTCHR) == -1)
           && (temp.Find(DEFUSERCHR) == -1))
       {
@@ -2770,6 +2907,8 @@ DboxMain::SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &us
       CMyString temp;
       plist->GetAt(listPos).GetName(temp);
       //Start Check
+	  // {kjp} BUGFIX this is a string not a byte array
+//    if ( (temp.FindByte(SPLTCHR) == -1) && (temp.FindByte(DEFUSERCHR) == -1) )
       if ( (temp.Find(SPLTCHR) == -1) && (temp.Find(DEFUSERCHR) == -1) )
       {
          plist->GetAt(listPos).SetName(temp + SPLTSTR + username);
@@ -2792,9 +2931,13 @@ int
 DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username)
 //Returns split position for a name that was split and -1 for non-split name
 {
+// {kjp} BUGFIX we're dealing with strings not bytes
+//	int pos = name.FindByte(SPLTCHR);
 	int pos = name.Find(SPLTCHR);
 	if (pos==-1) //Not a split name
 	{
+// {kjp} BUGFIX we're dealing with strings not bytes
+//		int pos2 = name.FindByte(DEFUSERCHR);
 		int pos2 = name.Find(DEFUSERCHR);
 		if (pos2 == -1)  //Make certain that you remove the DEFUSERCHR 
 		{
@@ -2890,11 +3033,81 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 void
 DboxMain::ConfigureSystemMenu()
 {
-#if defined(POCKET_PC)
-	m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
-	m_wndMenu		= m_wndCommandBar->InsertMenuBar( IDR_MAINMENU );
+#if defined(WIN32_PLATFORM_WFSP) || defined(POCKET_PC)
+	SHMENUBARINFO mbi;
+                ZeroMemory(&mbi, sizeof(SHMENUBARINFO));
 
-	ASSERT( m_wndMenu != NULL );
+                mbi.cbSize     = sizeof(SHMENUBARINFO);
+				mbi.hwndParent = this->m_hWnd;
+                mbi.nToolBarId = IDR_MAINMENU;
+                mbi.hInstRes   = AfxGetInstanceHandle();
+                mbi.dwFlags    = SHCMBF_HMENU;
+
+                if(SHCreateMenuBar(&mbi))
+                {
+                    m_hwndMb          = mbi.hwndMB;
+                    TBBUTTONINFO tbbi = {0};
+                    tbbi.cbSize       = sizeof(tbbi);
+                    tbbi.dwMask       = TBIF_LPARAM ;
+
+					
+
+
+					//::SendMessage(m_hwndMb, TB_GETBUTTONINFO, 0, (LPARAM)&tbbi);
+                    //m_wndMenu           = CMenu::FromHandle((HMENU)tbbi.lParam);
+                }
+
+				// Query the SIP state and size our window appropriately.
+				SIPINFO si;
+				int cx, cy;
+memset (&si, 0, sizeof (si));
+si.cbSize = sizeof (si);
+SHSipInfo(SPI_GETSIPINFO, 0, (PVOID)&si, FALSE); 
+
+cx = si.rcVisibleDesktop.right - si.rcVisibleDesktop.left;
+cy = si.rcVisibleDesktop.bottom - si.rcVisibleDesktop.top;
+
+// If the SIP is not shown, or is showing but not docked, the
+// desktop rect doesn't include the height of the menu bar.
+if (!(si.fdwFlags & SIPF_ON) ||
+    ((si.fdwFlags & SIPF_ON) && !(si.fdwFlags & SIPF_DOCKED))) { 
+        RECT rectMB;
+		::GetWindowRect (m_hwndMb, &rectMB);
+        cy -= (rectMB.bottom - rectMB.top);  
+    }
+::SetWindowPos (this->m_hWnd, NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_NOZORDER);
+
+#endif
+
+#if defined(POCKET_PC)
+	/*
+	DWORD dwAdornmentFlags = 0;
+
+	
+	m_wndCommandBar = new CCommandBar();
+	if (!m_wndCommandBar->CreateEx(this) ||
+        !m_wndCommandBar->InsertMenuBar(IDR_MAINMENU) ||
+        !m_wndCommandBar->AddAdornments(dwAdornmentFlags))
+    {
+        TRACE0("Failed to create CommandBar\n");
+        return;      // fail to create
+    }
+
+	m_wndCommandBar->SetBarStyle(m_wndCommandBar->GetBarStyle() |
+           CBRS_SIZE_FIXED);
+
+	m_wndMenu = CMenu::FromHandle(m_wndCommandBar->m_hMenu);
+
+	 m_wndCommandBar->Show(TRUE);
+
+	 BOOL res=m_wndCommandBar->DrawMenuBar(IDR_MAINMENU); // Returns TRUE  
+  
+     DrawMenuBar();  
+*/
+
+
+
+
 #else
 	CMenu*	sysMenu = GetSystemMenu( FALSE );
 	CString	str;
@@ -2910,7 +3123,7 @@ DboxMain::ConfigureSystemMenu()
 void
 DboxMain::OnUpdateMRU(CCmdUI* pCmdUI) 
 {
-	app.GetMRU()->UpdateMenu( pCmdUI );	
+	//app.GetMRU()->UpdateMenu( pCmdUI );	
 }
 
 #if _MFC_VER > 1200
@@ -2922,9 +3135,8 @@ DboxMain::OnOpenMRU(UINT nID)
 {
 	UINT	uMRUItem = nID - ID_FILE_MRU_ENTRY1;
 
-	CString mruItem = (*app.GetMRU())[uMRUItem];
-
-	Open( mruItem );
+	//CString mruItem = (*app.GetMRU())[uMRUItem];
+	//Open( mruItem );
 #if _MFC_VER > 1200
 	return TRUE;
 #endif
@@ -2934,6 +3146,7 @@ DboxMain::OnOpenMRU(UINT nID)
 void
 DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL) 
 {
+/*
 	// http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
 	// This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
 	ASSERT(pPopupMenu != NULL);
@@ -3035,30 +3248,5 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 		}
 		state.m_nIndexMax = nCount;
 	}
+*/
 }
-
-#if defined(POCKET_PC)
-void DboxMain::OnShowPassword()
-{
-	if (SelItemOk() == TRUE)
-	{
-		CItemData			item;
-		CMyString			password;
-		CMyString			name;
-		CMyString			title;
-		CMyString			username;
-		CShowPasswordDlg	pwDlg( this );
-
-		item	= m_pwlist.GetAt( Find(getSelectedItem()) );
-
-		item.GetPassword(password);
-		item.GetName( name );
-
-		SplitName( name, title, username );
-
-		pwDlg.SetTitle( title );
-		pwDlg.SetPassword( password );
-		pwDlg.DoModal();
-	}
-}
-#endif
