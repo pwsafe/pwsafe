@@ -236,7 +236,9 @@ DboxMain::OnOptions()
     PWSprefs               *prefs = PWSprefs::GetInstance();
     BOOL                    prevLockOIT; // lock on idle timeout set?
     BOOL                    brc, save_hotkey_enabled;
+    BOOL                    save_preexpirywarn;
     DWORD                   save_hotkey_value;
+    int                     save_preexpirywarndays;
     CShortcut shortcut;
     BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
 
@@ -256,6 +258,7 @@ DboxMain::OnOptions()
     system.m_mruonfilemenu = prefs->
         GetPref(PWSprefs::MRUOnFileMenu);
     system.m_startup = StartupShortcutExists;
+
     display.m_alwaysontop = m_bAlwaysOnTop;
     display.m_pwshowinedit = prefs->
         GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
@@ -263,6 +266,12 @@ DboxMain::OnOptions()
         GetPref(PWSprefs::ShowPWInList) ? TRUE : FALSE;
     display.m_notesshowinedit = prefs->
         GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
+    display.m_preexpirywarn = prefs->
+        GetPref(PWSprefs::PreExpiryWarn) ? TRUE : FALSE;
+    display.m_preexpirywarndays = prefs->
+        GetPref(PWSprefs::PreExpiryWarnDays);
+    save_preexpirywarn = display.m_preexpirywarn;
+    save_preexpirywarndays = display.m_preexpirywarndays;
 #if defined(POCKET_PC)
     display.m_dcshowspassword = prefs->
         GetPref(PWSprefs::DCShowsPassword) ? TRUE : FALSE;
@@ -388,6 +397,10 @@ DboxMain::OnOptions()
                        display.m_pwshowinlist == TRUE);
         prefs->SetPref(PWSprefs::ShowNotesDefault,
                        display.m_notesshowinedit == TRUE);                   
+        prefs->SetPref(PWSprefs::PreExpiryWarn,
+                       display.m_preexpirywarn == TRUE);
+        prefs->SetPref(PWSprefs::PreExpiryWarnDays,
+                       display.m_preexpirywarndays);
 #if defined(POCKET_PC)
         prefs->SetPref(PWSprefs::DCShowsPassword,
                        display.m_dcshowspassword == TRUE);
@@ -545,7 +558,9 @@ DboxMain::OnOptions()
         bool bShowPasswordInList = prefs->
             GetPref(PWSprefs::ShowPWInList);
 
-        if (bOldShowPasswordInList != bShowPasswordInList)
+        if ((bOldShowPasswordInList != bShowPasswordInList) ||
+            (save_preexpirywarn != display.m_preexpirywarn) ||
+            (save_preexpirywarndays != display.m_preexpirywarndays))
             RefreshList();
 
         if (system.m_usesystemtray == TRUE) {

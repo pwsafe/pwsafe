@@ -21,7 +21,8 @@ public:
   CMyTreeCtrl();
   ~CMyTreeCtrl();
 
-  enum {NODE=0, LEAF=1, EXPIRED_LEAF = 2}; // indices of bitmaps in ImageList
+   // indices of bitmaps in ImageList
+  enum {NODE=0, LEAF=1, EXPIRED_LEAF = 2, WARNEXPIRED_LEAF = 3};
 
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
@@ -76,4 +77,5 @@ protected:
 	POINT	m_HoverPoint;
 
 };
+
 

@@ -29,10 +29,12 @@ public:
 	BOOL	m_pwshowinlist;
 	BOOL	m_pwshowinedit;
 	BOOL    m_notesshowinedit;
+	BOOL    m_preexpirywarn;
 #if defined(POCKET_PC)
 	BOOL	m_dcshowspassword;
 #endif
 	int     m_treedisplaystatusatopen;
+	int     m_preexpirywarndays;
 	//}}AFX_DATA
 
 
@@ -47,6 +49,9 @@ public:
 protected:
 	// Generated message map functions
 	//{{AFX_MSG(COptionsDisplay)
+	virtual BOOL OnInitDialog();
+	afx_msg void OnPreWarn();
+	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

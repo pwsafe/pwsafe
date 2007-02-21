@@ -791,14 +791,36 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
-    time_t now, tLTime;
+    time_t now, warnexptime, tLTime;
     time(&now);
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
+        int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+        struct tm st;
+#if _MSC_VER >= 1400
+        errno_t err;
+        err = localtime_s(&st, &now);  // secure version
+#else
+        st = *localtime(&now);
+        ASSERT(st != NULL); // null means invalid time
+#endif
+        st.tm_mday += idays;
+        warnexptime = mktime(&st);
+        if (warnexptime == (time_t)-1)
+          warnexptime = (time_t)0;
+    } else
+        warnexptime = (time_t)0;
+    
     itemData.GetLTime(tLTime);
-	if (tLTime != 0 && tLTime < now) {
-    	m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
-	} else {
-		m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
-	}
+	if (tLTime != 0) {
+	    if (tLTime <= now) {
+    	    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
+    	} else if (tLTime < warnexptime) {
+    	    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::WARNEXPIRED_LEAF, CMyTreeCtrl::WARNEXPIRED_LEAF);
+	    } else
+	        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+	} else
+	  m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+	
     m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     di->tree_item = ti;
   }

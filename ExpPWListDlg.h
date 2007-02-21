@@ -22,6 +22,7 @@ struct ExpPWEntry {
   CMyString expirylocdate;	// user's long dat/time   - format displayed in ListCtrl
   CMyString expiryexpdate;	// "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
   time_t expirytttdate;
+  int type;
 };
 
 // CExpPWListDlg dialog
@@ -38,6 +39,7 @@ public:
 	enum { IDD = IDD_DISPLAY_EXPIRED_ENTRIES };
 	CList<ExpPWEntry, ExpPWEntry&>* m_pexpPWList;
 	CListCtrl m_expPWListCtrl;
+    CImageList *m_pImageList;
 	CString m_message;
 	int m_iSortedColumn; 
 	BOOL m_bSortAscending; 

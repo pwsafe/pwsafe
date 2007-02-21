@@ -27,6 +27,7 @@
 #define IDI_MBINFOICON                  122
 #define IDI_MBSTOPICON                  123
 #define IDI_MBWARNICON                  124
+#define IDB_LEAF_WARNEXPIRED            125
 #define IDD_ABOUTBOX                    200
 #define IDD_FIND                        201
 #define IDD_PASSWORDSAFE_DIALOG         202
@@ -284,6 +285,9 @@
 #define IDC_SELECTBYDAYS                1228
 #define IDC_EXPDAYS                     1229
 #define IDC_EXPDAYSSPIN                 1230
+#define IDC_PREWARNEXPIRY               1231
+#define IDC_PREEXPIRYWARNDAYS           1232
+#define IDC_PREWARNEXPIRYSPIN           1233
 
 // Next default values for new objects
 // 
@@ -291,7 +295,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        235
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1231
-#define _APS_NEXT_SYMED_VALUE           125
+#define _APS_NEXT_CONTROL_VALUE         1234
+#define _APS_NEXT_SYMED_VALUE           126
 #endif
 #endif

@@ -62,33 +62,51 @@ CExpPWListDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	CString cs_text;
-	cs_text.LoadString(IDS_GROUP);
-	m_expPWListCtrl.InsertColumn(0, cs_text);
-	cs_text.LoadString(IDS_TITLE);
-	m_expPWListCtrl.InsertColumn(1, cs_text);
-	cs_text.LoadString(IDS_USERNAME);
-	m_expPWListCtrl.InsertColumn(2, cs_text);
-	cs_text.LoadString(IDS_EXPIRYDATETIME);
-	m_expPWListCtrl.InsertColumn(3, cs_text);
+    //m_expPWListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_SUBITEMIMAGES );
 
-	int nPos = 0;
+	CString cs_text;
+    m_expPWListCtrl.InsertColumn(0, _T(""));
+	cs_text.LoadString(IDS_GROUP);
+	m_expPWListCtrl.InsertColumn(1, cs_text);
+	cs_text.LoadString(IDS_TITLE);
+	m_expPWListCtrl.InsertColumn(3, cs_text);
+	cs_text.LoadString(IDS_USERNAME);
+	m_expPWListCtrl.InsertColumn(3, cs_text);
+	cs_text.LoadString(IDS_EXPIRYDATETIME);
+	m_expPWListCtrl.InsertColumn(4, cs_text);
+
+    m_pImageList = new CImageList();
+    BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 2, 0);
+    ASSERT(status != 0);
+    CBitmap bitmap;
+
+    bitmap.LoadBitmap(IDB_LEAF_EXPIRED);
+    m_pImageList->Add(&bitmap, (COLORREF)0x0);
+    bitmap.DeleteObject();
+    bitmap.LoadBitmap(IDB_LEAF_WARNEXPIRED);
+    m_pImageList->Add(&bitmap, (COLORREF)0x0);
+    bitmap.DeleteObject();
+    m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_SMALL);
+    m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_NORMAL);
+
+    int nPos = 0;
 	POSITION itempos;
 
 	POSITION listpos = m_pexpPWList->GetHeadPosition();
 	while (listpos != NULL) {
 		itempos = listpos;
 		const ExpPWEntry exppwentry = m_pexpPWList->GetAt(listpos);
-		nPos = m_expPWListCtrl.InsertItem(nPos, exppwentry.group);
-		m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.title);
-		m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.user);
-		m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.expirylocdate);
+		nPos = m_expPWListCtrl.InsertItem(nPos, NULL, exppwentry.type);
+   m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group);
+		m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title);
+		m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user);
+		m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate);
 		m_expPWListCtrl.SetItemData(nPos, (DWORD)itempos);
 		m_pexpPWList->GetNext(listpos);
 	}
 
 	m_expPWListCtrl.SetRedraw(FALSE);
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
 		int nColumnWidth = m_expPWListCtrl.GetColumnWidth(i);
 		m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
@@ -104,6 +122,7 @@ void
 CExpPWListDlg::OnOK() 
 {
 	CDialog::OnOK();
+    delete m_pImageList;
 }
 
 void
@@ -177,26 +196,32 @@ int CALLBACK CExpPWListDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 	const ExpPWEntry pRHS = self->m_pexpPWList->GetAt(Rpos);
 	CMyString group1, title1, username1;
 	CMyString group2, title2, username2;
+    int type1, type2;
 	time_t t1, t2;
 
 	int iResult;
 	switch(nSortColumn) {
 		case 0:
+			type1 = pLHS.type;
+			type2 = pRHS.type;
+			iResult = (type1 < type2) ? -1 : 1;
+			break;
+		case 1:
 			group1 = pLHS.group;
 			group2 = pRHS.group;
 			iResult = ((CString)group1).CompareNoCase(group2);
 			break;
-		case 1:
+		case 2:
 			title1 = pLHS.title;
 			title2 = pRHS.title;
 			iResult = ((CString)title1).CompareNoCase(title2);
 			break;
-		case 2:
+		case 3:
 			username1 = pLHS.user;
 			username2 = pRHS.user;
 			iResult = ((CString)username1).CompareNoCase(username2);
 			break;
-		case 3:
+		case 4:
 			t1 = pLHS.expirytttdate;
 			t2 = pRHS.expirytttdate;
 			iResult = ((long) t1 < (long) t2) ? -1 : 1;
