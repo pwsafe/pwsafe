@@ -144,6 +144,10 @@
 			<param name="Local" value="html\system_tab.html">
 		  </OBJECT>
       </ul>
+        <li><OBJECT type="text/sitemap">
+			<param name="Name" value="Plain Text Export &amp; Import Format">
+			<param name="Local" value="html\imp_exp_text_details.html">
+		  </OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Program Credits">
 		</OBJECT>
