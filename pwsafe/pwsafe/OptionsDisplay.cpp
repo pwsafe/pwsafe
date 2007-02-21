@@ -15,6 +15,7 @@
   #include "pocketpc/resource.h"
 #else
   #include "resource.h"
+  #include "resource3.h"
 #endif
 #include "OptionsDisplay.h"
 #include "corelib\pwsprefs.h"
@@ -48,6 +49,8 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_pwshowinlist);
 	DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
 	DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
+	DDX_Check(pDX, IDC_PREWARNEXPIRY, m_preexpirywarn);
+	DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_preexpirywarndays);
 #if defined(POCKET_PC)
 	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif
@@ -58,6 +61,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsDisplay)
+	ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -65,4 +69,42 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay message handlers
 
+
+void COptionsDisplay::OnPreWarn() 
+{
+  BOOL enable = (((CButton*)GetDlgItem(IDC_PREWARNEXPIRY))->GetCheck() == 1) ? TRUE : FALSE;
+  GetDlgItem(IDC_PREWARNEXPIRYSPIN)->EnableWindow(enable);
+  GetDlgItem(IDC_PREEXPIRYWARNDAYS)->EnableWindow(enable);
+}
+
+
+BOOL COptionsDisplay::OnInitDialog() 
+{
+  CPropertyPage::OnInitDialog();
+
+  OnPreWarn();
+  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
+
+  pspin->SetBuddy(GetDlgItem(IDC_PREEXPIRYWARNDAYS));
+  pspin->SetRange(1, 30);
+  pspin->SetBase(10);
+  pspin->SetPos(m_preexpirywarndays);
+
+  return TRUE;  // return TRUE unless you set the focus to a control
+  // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+BOOL COptionsDisplay::OnKillActive()
+{
+  CPropertyPage::OnKillActive();
+
+  // Check that options, as set, are valid.
+  if ((m_preexpirywarndays < 1) || (m_preexpirywarndays > 30)) {
+  	AfxMessageBox(IDS_INVALIDEXPIRYWARNDAYS);
+  	((CEdit*)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
+  	return FALSE;
+  }
+
+  return TRUE;
+}
 

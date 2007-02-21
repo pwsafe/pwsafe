@@ -345,7 +345,7 @@ DboxMain::InitPasswordSafe()
   SetIcon(m_hIconSm, FALSE); // Set small icon
   // Init stuff for tree view
   CImageList *pImageList = new CImageList();
-  BOOL status = pImageList->Create(9, 9, ILC_COLOR, 2, 0);
+  BOOL status = pImageList->Create(9, 9, ILC_COLOR, 4, 0);
   ASSERT(status != 0);
   CBitmap bitmap;
 
@@ -357,6 +357,9 @@ DboxMain::InitPasswordSafe()
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_EXPIRED);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_WARNEXPIRED);
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
@@ -1666,7 +1669,7 @@ void
 DboxMain::CheckExpiredPasswords()
 {
   ExpPWEntry exppwentry;
-  time_t now, LTime;
+  time_t now, exptime, LTime;
 
   CList<ExpPWEntry, ExpPWEntry&>* p_expPWList = new CList<ExpPWEntry, ExpPWEntry&>;
 
@@ -1674,15 +1677,33 @@ DboxMain::CheckExpiredPasswords()
 
   time(&now);
 
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
+    int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+    struct tm st;
+#if _MSC_VER >= 1400
+    errno_t err;
+    err = localtime_s(&st, &now);  // secure version
+#else
+    st = *localtime(&now);
+    ASSERT(st != NULL); // null means invalid time
+#endif
+    st.tm_mday += idays;
+    exptime = mktime(&st);
+    if (exptime == (time_t)-1)
+      exptime = now;
+  } else
+      exptime = now;
+
   while (listPos != NULL)
     {
       const CItemData &curitem = m_core.GetEntryAt(listPos);
       curitem.GetLTime(LTime);
 
-      if (((long)LTime != 0) && (LTime < now)) {
+      if (((long)LTime != 0) && (LTime < exptime)) {
         exppwentry.group = curitem.GetGroup();
         exppwentry.title = curitem.GetTitle();
         exppwentry.user = curitem.GetUser();
+        exppwentry.type = LTime <= now ? 0 : 1; // Expired or Warning
         exppwentry.expirylocdate = curitem.GetLTimeL();
         exppwentry.expiryexpdate = curitem.GetLTimeExp();
         exppwentry.expirytttdate = LTime;

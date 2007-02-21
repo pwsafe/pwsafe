@@ -800,6 +800,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\leaf_warn.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\locked_tray.ico"
 				>
 			</File>

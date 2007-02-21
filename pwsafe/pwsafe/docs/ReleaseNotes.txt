@@ -11,11 +11,15 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.06.01
 =====================
 [1660721] Autotype menu & shortcut no longer disabled if field is empty.
-[TODO] - Update online help with appendix describing export text
-format
 [TODO] - Update online help with appendix describing
 dbase/cfg/registry preference logic (or lack of thereof).
-[TODO] - Add '-c config file path' command line option.
+[TODO] - Add '-c config file path' command line option?
+
+New Features for 3.06.01
+========================
+[] - Password expiration notice can now be given a few days prior to
+actual expiration
+[] - Exported/imported text format is now documented in online help
 
 New Features for 3.06
 =====================
@@ -202,48 +206,3 @@ Bugs fixed in 3.01
 included in installation and zip file. Should fix all "MS*.dll not
 installed" problems
 [1440951] Can now close application after minimize w/o system tray.
-
-
-
-New Features for 3.0Beta2:
-==========================
-None.
-
-Bugs fixed in 3.0Beta2:
-=======================
-[1450484] Trialing garbage in tooltip text fixed (DK).
-[1462527] Uses a decent PRNG for non-XP platforms, closing key recovery
-attack vulnerability.
-[1446183] Export to v2 format now readable by pwsafe v2.x
-[1463103] Fields in Edit Dialog are wider.
-[1450486] URLs without a protocol now default to http.
-[1459326, 1427642] Fixed problems with password prompt (DK)
-
-Known problems in 3.0Beta2:
-===========================
-[1453108] Broken under Windows98SE?
-
-New Features for 3.0Beta1:
-==========================
-[731841] Database format is changed to use newer encryption algorithm (Twofish
-replaces Blowfish). Also, the integrity of the database is now checked.
-[] Entry creation time is now stored.
-[1393632, 1224370] URL and Autotype moved from Notes to their own fields.
-[] System Tray icon now indicated if database is locked or not (Thanks to
-DK for this cool feature!)
-[1422761] System Tray menu now has a list of recently used entries - a
-convenient shortcut to common entries. Thanks to Ork for suggesting this,
-and to DK for the implementation!
-[] Add and Edit dialog box now have "simple" and "detailed" modes. Thanks
-to Dave Collins for implementing this.
-
-Bugs fixed in 3.0Beta1:
-=======================
-[1384738] Backspace is no longer used instead of dots in the title for the
-plaintext import/export format.
-
-Known Problems in 3.0Beta1:
-===========================
-[] No major problems are known in this release. However, it is a FIRST BETA 
-release, and should NOT be used on real databases without backups!
-[] Online help has not been updated
