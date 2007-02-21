@@ -1,5 +1,5 @@
-Password Safe 3.07 Release Notes - February 2007
-================================================
+Password Safe 3.06.01 Release Notes - February 2007
+===================================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.07. For a short description of Password
@@ -8,10 +8,14 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.07
-==================
+Bugs fixed in 3.06.01
+=====================
 [1660721] Autotype menu & shortcut no longer disabled if field is empty.
-
+[TODO] - Update online help with appendix describing export text
+format
+[TODO] - Update online help with appendix describing
+dbase/cfg/registry preference logic (or lack of thereof).
+[TODO] - Add '-c config file path' command line option.
 
 New Features for 3.06
 =====================
