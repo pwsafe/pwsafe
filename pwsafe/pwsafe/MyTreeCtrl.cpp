@@ -345,6 +345,23 @@ static CMyString GetPathElem(CMyString &path)
   return retval;
 }
 
+static CMyString GetLastElem(CMyString path)
+{
+	// if path = "a.b.c.d" will return d
+
+	int N = path.Find(GROUP_SEP);
+
+	while(true){
+		if (N == -1) {
+			return path;
+		} else {
+			const int Len = path.GetLength();
+			path = CMyString(path.Right(Len - N - 1));
+		}
+		N = path.Find(GROUP_SEP);
+	}
+}
+
 static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
 			 const CMyString &s, HTREEITEM &si)
 {
@@ -380,6 +397,36 @@ HTREEITEM CMyTreeCtrl::AddGroup(const CString &group)
     } while (!path.IsEmpty());
   }
   return ti;
+}
+
+void CMyTreeCtrl::MoveGroupToTop(const CString &group)
+{
+	CMyString lastElement;
+	lastElement=GetLastElem(group);
+
+	HTREEITEM ti = TVI_ROOT;
+	HTREEITEM si;
+	CMyString s;
+	int len = group.GetLength();
+
+	if (!group.IsEmpty()) {
+		CMyString path = group;
+		while (len>0){
+			s = GetPathElem(path);
+			len = path.GetLength();
+			if (!ExistsInTree(*this, ti, s, si)) {
+				break;//Error message needed, since if this point is reached then we  
+				//have recursed through the tree and still not found the target group
+			}else
+				ti = si;
+		} 
+	}
+
+	if(s==lastElement){
+		si = TVI_ROOT;
+		bool transferAttempt = TransferItem(ti, si);
+		if(transferAttempt == TRUE) DeleteItem(ti);
+	}//Need error message if this is not executed
 }
 
 bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
