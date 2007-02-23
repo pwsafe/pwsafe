@@ -295,6 +295,7 @@ protected:
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
+  afx_msg void MoveGroupToTopLevel();
   afx_msg void OnOK();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();

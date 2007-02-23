@@ -27,6 +27,7 @@ public:
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
+  void MoveGroupToTop(const CString &group);
   bool IsLeafNode(HTREEITEM hItem);
   void RestoreExpanded();
   void ClearExpanded(); // use when items will be invalid
