@@ -415,18 +415,22 @@ void CMyTreeCtrl::MoveGroupToTop(const CString &group)
 			s = GetPathElem(path);
 			len = path.GetLength();
 			if (!ExistsInTree(*this, ti, s, si)) {
-				break;//Error message needed, since if this point is reached then we  
-				//have recursed through the tree and still not found the target group
-			}else
+                ASSERT(0); // should never happen - group can't just vanish!
+				return; // if it does in release, just do nothing.
+			} else
 				ti = si;
 		} 
 	}
 
-	if(s==lastElement){
+	if (s==lastElement) {
 		si = TVI_ROOT;
-		bool transferAttempt = TransferItem(ti, si);
-		if(transferAttempt == TRUE) DeleteItem(ti);
-	}//Need error message if this is not executed
+		if (TransferItem(ti, si))
+            DeleteItem(ti);
+        else {
+            // fail silently if not
+            ASSERT(0);
+        }
+	}
 }
 
 bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
