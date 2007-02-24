@@ -436,7 +436,7 @@ void CMyTreeCtrl::MoveGroupToTop(const CString &group)
 bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   TV_INSERTSTRUCT     tvstruct;
-  TCHAR               sztBuffer[128];
+  TCHAR               sztBuffer[260];  // max visible
   HTREEITEM           hNewItem, hFirstChild;
   DWORD itemData = GetItemData(hitemDrag);
 
@@ -467,12 +467,40 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
       } else
         break;
     } while (1);
+    // Get information from current selected entry
+    CMyString ci_user = ci->GetUser();
+    CMyString ci_title0 = ci->GetTitle();
+    CMyString ci_title = ci_title0;
+    if (((DboxMain *)m_parent)->Find(path, ci_title0, ci_user) != NULL) {
+        // Find a unique "Title"
+        POSITION listpos = NULL;
+        int i = 0;
+        CString s_copy;
+        do {
+            i++;
+            s_copy.Format(IDS_DRAGNUMBER, i);
+            ci_title = ci_title0 + CMyString(s_copy);
+            listpos = ((DboxMain *)m_parent)->Find(path, ci_title, ci_user);
+        } while (listpos != NULL);
+    }
     ci->SetGroup(path);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    if (ci_title.Compare(ci_title0) != 0) {
+        ci->SetTitle(ci_title);
+        CString newString;
+        CString oldString(tvstruct.item.pszText);
+        int pos = oldString.Find(_T(" ["));
+        newString = (CString)ci_title + (CString)oldString.Mid(pos);
+        // Update tree label
+        SetItemText(hNewItem, newString);
+        SortChildren(hitemDrop);
+        // Update list field
+        ((DboxMain *)GetParent())->UpdateListItemTitle(di->list_index, (CString)ci_title);
+    }
     // Mark database as modified!
     ((DboxMain *)GetParent())->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
     di->tree_item = hNewItem;
   }
   SetItemData(hNewItem, itemData);
@@ -493,10 +521,11 @@ void CMyTreeCtrl::EndDragging(BOOL bCancel)
     delete m_pimagelist;
     m_pimagelist = NULL;
     HTREEITEM parent = GetParentItem(m_hitemDrag);
+    if (IsLeafNode(m_hitemDrop))
+        m_hitemDrop = GetParentItem(m_hitemDrop);
 
     if (!bCancel &&
         m_hitemDrag != m_hitemDrop &&
-        !IsLeafNode(m_hitemDrop) &&
         !IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
         parent != m_hitemDrop)
       {
