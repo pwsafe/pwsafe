@@ -285,11 +285,19 @@ DboxMain::setupBars()
 void DboxMain::UpdateListItemTitle(int lindex, const CString &newTitle)
 {
   m_ctlItemList.SetItemText(lindex, 0, newTitle);
+  if (m_iSortedColumn == 0) {
+    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+    FixListIndexes();
+  }
 }
 
 void DboxMain::UpdateListItemUser(int lindex, const CString &newName)
 {
   m_ctlItemList.SetItemText(lindex, 1, newName);
+  if (m_iSortedColumn == 1) {
+    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+    FixListIndexes();
+  }
 }
 
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
