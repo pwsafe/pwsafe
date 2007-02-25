@@ -324,7 +324,6 @@ CString CMyTreeCtrl::GetGroup(HTREEITEM hItem)
   return retval;
 }
 
-
 static CMyString GetPathElem(CMyString &path)
 {
   // Get first path element and chop it off, i.e., if
@@ -343,23 +342,6 @@ static CMyString GetPathElem(CMyString &path)
     path = CMyString(path.Right(Len - N - 1));
   }
   return retval;
-}
-
-static CMyString GetLastElem(CMyString path)
-{
-	// if path = "a.b.c.d" will return d
-
-	int N = path.Find(GROUP_SEP);
-
-	while(true){
-		if (N == -1) {
-			return path;
-		} else {
-			const int Len = path.GetLength();
-			path = CMyString(path.Right(Len - N - 1));
-		}
-		N = path.Find(GROUP_SEP);
-	}
 }
 
 static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
@@ -397,40 +379,6 @@ HTREEITEM CMyTreeCtrl::AddGroup(const CString &group)
     } while (!path.IsEmpty());
   }
   return ti;
-}
-
-void CMyTreeCtrl::MoveGroupToTop(const CString &group)
-{
-	CMyString lastElement;
-	lastElement=GetLastElem(group);
-
-	HTREEITEM ti = TVI_ROOT;
-	HTREEITEM si;
-	CMyString s;
-	int len = group.GetLength();
-
-	if (!group.IsEmpty()) {
-		CMyString path = group;
-		while (len>0){
-			s = GetPathElem(path);
-			len = path.GetLength();
-			if (!ExistsInTree(*this, ti, s, si)) {
-                ASSERT(0); // should never happen - group can't just vanish!
-				return; // if it does in release, just do nothing.
-			} else
-				ti = si;
-		} 
-	}
-
-	if (s==lastElement) {
-		si = TVI_ROOT;
-		if (TransferItem(ti, si))
-            DeleteItem(ti);
-        else {
-            // fail silently if not
-            ASSERT(0);
-        }
-	}
 }
 
 bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)

@@ -155,22 +155,6 @@ DboxMain::OnAddGroup()
   }
 }
 
-
-void
-DboxMain::MoveGroupToTopLevel()
-{
-	if (m_IsReadOnly) // disable in read-only mode
-		return;
-
-	if (m_ctlItemTree.IsWindowVisible()) {
-		// This can be reached by right clicking over an existing group node
-		// or by clicking over "whitespace".
-		m_ctlItemTree.MoveGroupToTop(m_TreeViewGroup);
-		m_TreeViewGroup = _T(""); // for next time
-	}
-}
-
-
 // Delete key was pressed (in list view or tree view) to delete an entry.
 void
 DboxMain::OnDelete() 
