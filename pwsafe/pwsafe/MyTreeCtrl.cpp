@@ -166,6 +166,9 @@ static void splitLeafText(const TCHAR *lt, CString &newTitle, CString &newUser)
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
+  if (((DboxMain *)GetParent())->IsReadOnly())
+      return; // don't drag in read-only mode
+
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
