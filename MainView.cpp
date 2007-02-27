@@ -514,7 +514,7 @@ DboxMain::RefreshList()
   bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
 
   if (bShowPasswordInList && !bPasswordColumnShowing) {
-	CString cs_text(MAKEINTRESOURCE(IDS_PICKBACKUP));
+	CString cs_text(MAKEINTRESOURCE(IDS_PASSWORD));
     m_ctlItemList.InsertColumn(3, cs_text);
 	m_nColumns++;
     CRect rect;
