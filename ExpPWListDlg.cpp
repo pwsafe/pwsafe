@@ -159,7 +159,7 @@ CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 			m_bSortAscending = TRUE;
 
 		m_iSortedColumn = phdn->iItem;
-		m_expPWListCtrl.SortItems(CompareFunc, (LPARAM)this);
+		m_expPWListCtrl.SortItems(ExpPWCompareFunc, (LPARAM)this);
 
 		// Note: WINVER defines the minimum system level for which this is program compiled and 
 		// NOT the level of system it is running on!
@@ -185,7 +185,7 @@ CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-int CALLBACK CExpPWListDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
+int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
 										LPARAM closure)
 {
 	CExpPWListDlg *self = (CExpPWListDlg*)closure;

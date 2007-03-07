@@ -56,5 +56,5 @@ public:
 	afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
 
 private:
-  static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+  static int CALLBACK ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 };

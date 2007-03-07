@@ -55,24 +55,11 @@ protected:
 	virtual BOOL OnInitDialog();
 	// Generated message map functions
 	//{{AFX_MSG(CExportTextXDlg)
-	afx_msg void OnSetExportGroupTitle();
-	afx_msg void OnSetExportUser();
-	afx_msg void OnSetExportNotes();
-	afx_msg void OnSetExportPassword();
-	afx_msg void OnSetExportCTime();
-	afx_msg void OnSetExportPMTime();
-	afx_msg void OnSetExportATime();
-	afx_msg void OnSetExportLTime();
-	afx_msg void OnSetExportRMTime();
-	afx_msg void OnSetExportUrl();
-	afx_msg void OnSetExportAutotype();
-	afx_msg void OnSetExportPWHist();
 	afx_msg void OnClearTimes();
 	afx_msg void OnSetTimes();
 	afx_msg void OnClearAll();
 	afx_msg void OnSetAll();
 	afx_msg void OnSetSubGroup();
-	afx_msg void OnSetSubgroupCase();
 	afx_msg void OnHelp();
 	virtual void OnOK();
 	//}}AFX_MSG

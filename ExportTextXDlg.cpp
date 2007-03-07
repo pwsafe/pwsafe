@@ -140,22 +140,9 @@ void CExportTextXDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CExportTextXDlg, CDialog)
 	//{{AFX_MSG_MAP(CExportTextXDlg)
-	ON_BN_CLICKED(IDC_EXPORTX_GROUP_TITLE, OnSetExportGroupTitle)
-	ON_BN_CLICKED(IDC_EXPORTX_USER, OnSetExportUser)
-	ON_BN_CLICKED(IDC_EXPORTX_NOTES, OnSetExportNotes)
-	ON_BN_CLICKED(IDC_EXPORTX_PASSWORD, OnSetExportPassword)
-	ON_BN_CLICKED(IDC_EXPORTX_CTIME, OnSetExportCTime)
-	ON_BN_CLICKED(IDC_EXPORTX_PMTIME, OnSetExportPMTime)
-	ON_BN_CLICKED(IDC_EXPORTX_ATIME, OnSetExportATime)
-	ON_BN_CLICKED(IDC_EXPORTX_LTIME, OnSetExportLTime)
-	ON_BN_CLICKED(IDC_EXPORTX_RMTIME, OnSetExportRMTime)
-	ON_BN_CLICKED(IDC_EXPORTX_URL, OnSetExportUrl)
-	ON_BN_CLICKED(IDC_EXPORTX_AUTOTYPE, OnSetExportAutotype)
-	ON_BN_CLICKED(IDC_EXPORTX_PWHIST, OnSetExportPWHist)
 	ON_BN_CLICKED(IDC_EXPORTX_SETTIMES, OnSetTimes)
 	ON_BN_CLICKED(IDC_EXPORTX_CLEARTIMES, OnClearTimes)
 	ON_BN_CLICKED(IDC_EXPORTX_SUBGROUP, OnSetSubGroup)
-	ON_BN_CLICKED(IDC_EXPORTX_SUBGROUP_CASE, OnSetSubgroupCase)
 	ON_BN_CLICKED(IDC_EXPORTX_SETALL, OnSetAll)
 	ON_BN_CLICKED(IDC_EXPORTX_CLEARALL, OnClearAll)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -292,69 +279,4 @@ void CExportTextXDlg::OnClearTimes()
 	((CButton*)GetDlgItem(IDC_EXPORTX_LTIME))->SetCheck(BST_UNCHECKED);
 	((CButton*)GetDlgItem(IDC_EXPORTX_RMTIME))->SetCheck(BST_UNCHECKED);
 	m_export_ctime = m_export_pmtime = m_export_atime = m_export_ltime = m_export_rmtime = 0;
-}
-
-void CExportTextXDlg::OnSetExportGroupTitle()
-{
-	m_export_group_title = ((CButton*)GetDlgItem(IDC_EXPORTX_GROUP_TITLE))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportUser()
-{
-	m_export_user = ((CButton*)GetDlgItem(IDC_EXPORTX_USER))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportPassword()
-{
-	m_export_password = ((CButton*)GetDlgItem(IDC_EXPORTX_PASSWORD))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportNotes()
-{
-	m_export_notes = ((CButton*)GetDlgItem(IDC_EXPORTX_NOTES))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportCTime()
-{
-	m_export_ctime = ((CButton*)GetDlgItem(IDC_EXPORTX_CTIME))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportPMTime()
-{
-	m_export_pmtime = ((CButton*)GetDlgItem(IDC_EXPORTX_PMTIME))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportATime()
-{
-	m_export_atime = ((CButton*)GetDlgItem(IDC_EXPORTX_ATIME))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportLTime()
-{
-	m_export_ltime = ((CButton*)GetDlgItem(IDC_EXPORTX_LTIME))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportRMTime()
-{
-	m_export_rmtime = ((CButton*)GetDlgItem(IDC_EXPORTX_RMTIME))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportUrl()
-{
-	m_export_url = ((CButton*)GetDlgItem(IDC_EXPORTX_URL))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportAutotype()
-{
-	m_export_autotype = ((CButton*)GetDlgItem(IDC_EXPORTX_AUTOTYPE))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetExportPWHist()
-{
-	m_export_pwhist = ((CButton*)GetDlgItem(IDC_EXPORTX_PWHIST))->GetCheck();
-}
-
-void CExportTextXDlg::OnSetSubgroupCase()
-{
-	m_export_subgroup_case = ((CButton*)GetDlgItem(IDC_EXPORTX_SUBGROUP_CASE))->GetCheck();
 }
