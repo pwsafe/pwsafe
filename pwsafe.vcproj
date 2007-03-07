@@ -539,10 +539,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BlowFish.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ClearQuestionDlg.h"
 				>
 			</File>
