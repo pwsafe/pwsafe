@@ -27,6 +27,8 @@ public:
 	enum { IDD = IDD_PS_DISPLAY };
 	BOOL	m_alwaysontop;
 	BOOL	m_pwshowinlist;
+	BOOL    m_explorertree;
+	BOOL    m_enablegrid;
 	BOOL	m_pwshowinedit;
 	BOOL    m_notesshowinedit;
 	BOOL    m_preexpirywarn;

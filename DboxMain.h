@@ -92,6 +92,8 @@ public:
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
   void RefreshList();
+  void SortTree(const HTREEITEM htreeitem);
+  bool IsExplorerTree() const {return m_bExplorerTypeTree;}
 
   void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
 
@@ -99,8 +101,12 @@ public:
   {return m_core.CheckPassword(filename, passkey);}
   enum ChangeType {Clear, Data, TimeStamp};
   void SetChanged(ChangeType changed);
-  void UpdateListItemTitle(int lindex, const CString &newTitle); // when title edited in tree
-  void UpdateListItemUser(int lindex, const CString &newUser); // when user edited in tree
+
+  // when Title or User edited in tree
+  void UpdateListItemTitle(const int lindex, const CString &newTitle);
+  void UpdateListItemUser(const int lindex, const CString &newUser);
+  void SetHeaderInfo();
+
   void SetReadOnly(bool state);
   bool IsReadOnly() const {return m_IsReadOnly;};
   void SetStartSilent(bool state);
@@ -116,6 +122,7 @@ public:
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
   bool ExitRequested() const {return m_inExit;}
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -354,6 +361,9 @@ private:
   bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
+  bool m_bShowPasswordInList;
+  bool m_bExplorerTypeTree;
+  bool m_bUseGridLines;
   HFONT m_hFontTree;
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
