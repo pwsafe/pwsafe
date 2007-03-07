@@ -58,6 +58,7 @@ private:
   bool        m_bDragging;
   HTREEITEM   m_hitemDrag;
   HTREEITEM   m_hitemDrop;
+  HTREEITEM   m_hitemRoot;
   CImageList  *m_pimagelist;
   void *m_parent;
   void *m_expandedItems; // Internally this is a SetTreeItem_t, don't want to include stl file here...

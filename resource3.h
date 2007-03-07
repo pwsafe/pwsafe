@@ -270,3 +270,4 @@
 #define IDS_U3PURCHASE                  5435
 #define IDS_INVALIDEXPIRYWARNDAYS       5436
 #define IDS_DRAGNUMBER                  5437
+#define IDS_ROOT                        5438
