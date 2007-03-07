@@ -21,6 +21,7 @@
   #include "resource3.h"  // String resources
 #endif
 
+#include "corelib/ItemData.h"
 #include <bitset>
 
 class CExportTextXDlg : public CDialog
@@ -40,7 +41,7 @@ public:
 
 	//}}AFX_DATA
 
-	std::bitset<16> m_bsExport;
+	std::bitset<CItemData::LAST> m_bsExport;
 
 // Overrides
 	// ClassWizard generated virtual function overrides

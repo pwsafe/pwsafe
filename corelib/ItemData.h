@@ -57,7 +57,7 @@ public:
     NAME = 0x00, UUID=0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
 	PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
 	POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
-    END = 0xff}; // field types, per formatV{2,3}.txt
+    LAST, END = 0xff}; // field types, per formatV{2,3}.txt
 
   // For subgroup processing in GetPlainText from ExportTextXDlg
   // SubGroup Function
@@ -115,7 +115,7 @@ public:
    CMyString GetPWHistory() const;  // V30
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
    // it's used for multi-line notes and to replace '.' within the Title field.
-   CMyString GetPlaintext(const TCHAR &separator, const std::bitset<16> &bsExport,
+   CMyString GetPlaintext(const TCHAR &separator, const std::bitset<CItemData::LAST> &bsExport,
    						const CString &subgroup, const int &iObject, const int &iFunction,
    						const TCHAR &delimiter) const;
 

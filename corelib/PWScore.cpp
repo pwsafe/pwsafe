@@ -136,7 +136,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 
 int
 PWScore::WritePlaintextFile(const CMyString &filename,
-                            const std::bitset<16> &bsFields,
+                            const std::bitset<CItemData::LAST> &bsFields,
 							const CString &subgroup,
 							const int &iObject, const int &iFunction,
 							TCHAR &delimiter, const ItemList *il)
