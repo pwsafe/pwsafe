@@ -12,21 +12,17 @@ Bugs fixed in 3.07
 =====================
 [1675716] <ESC> to close application now works
 [1673028] Merge operation now fixed
+[1673028] Similar problem in Compare operation fixed
 
 New Features for 3.07
 ========================
+-
 
 
+Changes to Existing Features in 3.07
+====================================
+-
 
-Password Safe 3.06.01 Release Notes - February 2007
-===================================================
-
-This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.07. For a short description of Password
-Safe, please see the accompanying README.txt file. For more
-information on the product and the project, please visit
-http://passwordsafe.sourceforge.net. Details about changes to previous
-releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.06.01
 =====================

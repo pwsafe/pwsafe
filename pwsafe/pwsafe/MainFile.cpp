@@ -1098,7 +1098,6 @@ DboxMain::Merge()
             return PWScore::USER_CANCEL;
     }
 
-    m_core.UnlockFile(newfile);
     return rc;
 }
 
@@ -1113,11 +1112,12 @@ DboxMain::Merge(const CMyString &pszFilename) {
       //It is the same damn file
       AfxMessageBox(IDS_ALREADYOPEN, MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
-	}
-  CMyString cs_saveCurFileName(m_core.GetCurFile());
+  }
 
-  // Save current read-only status around opening merge fil R-O
-  bool bCurrentFileIsReadOnly = m_IsReadOnly;
+  // Save current database name
+  const CMyString cs_saveCurFileName(m_core.GetCurFile());
+  // Save current read-only status around opening merge file R-O
+  const bool bCurrentFileIsReadOnly(m_IsReadOnly);
   // Force input database into read-only status
   rc = GetAndCheckPassword(pszFilename, passkey,
                            GCP_NORMAL, // OK, CANCEL, HELP
@@ -1365,9 +1365,13 @@ DboxMain::OnCompare()
 				//It is the same damn file!
 				AfxMessageBox(IDS_COMPARESAME, MB_OK|MB_ICONWARNING);
 			} else {
-				bool bSave_RO_Status = m_IsReadOnly;  // Compare makes files R/O
+                // Save current database name and R/O status
+				const bool bSave_RO_Status(m_IsReadOnly);  // Compare makes files R/O
+                const CMyString cs_saveCurFileName(m_core.GetCurFile());
 				rc = Compare(file2);
+                // Restore current database name and R/O status
 				SetReadOnly(bSave_RO_Status);
+                m_core.SetCurFile(cs_saveCurFileName);
 				break;
 			}
 		} else {
