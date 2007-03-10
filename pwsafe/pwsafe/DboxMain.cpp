@@ -474,13 +474,12 @@ DboxMain::OnHotKey(WPARAM , LPARAM)
   // The hotkey is used to invoke the app window, prompting
   // for passphrase if needed.
 
-  if (IsWindowVisible()) {
-	  SetActiveWindow();
-	  SetForegroundWindow();
-  } else {
-  	app.SetHotKeyPressed(true);
-    PostMessage(WM_COMMAND, ID_MENUITEM_UNMINIMIZE);
+  app.SetHotKeyPressed(true);
+  if (IsIconic()) {
+    SendMessage(WM_COMMAND, ID_MENUITEM_UNMINIMIZE);
   }
+  SetActiveWindow();
+  SetForegroundWindow();
   return 0;
 }
 
