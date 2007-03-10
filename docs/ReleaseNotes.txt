@@ -11,9 +11,11 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.07
 =====================
 [1675716] <ESC> to close application now works
+[1673028] Merge operation now fixed
 
 New Features for 3.07
 ========================
+
 
 
 Password Safe 3.06.01 Release Notes - February 2007

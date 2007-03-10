@@ -1090,15 +1090,15 @@ DboxMain::Merge()
         if (rc == IDOK) {
             newfile = (CMyString)fd.GetPathName();
 
-            rc = Merge( newfile );
+            rc = Merge(newfile);
 
-            if ( rc == PWScore::SUCCESS )
+            if (rc == PWScore::SUCCESS)
                 break;
-        }
-        else
+        } else
             return PWScore::USER_CANCEL;
     }
 
+    m_core.UnlockFile(newfile);
     return rc;
 }
 
@@ -1114,6 +1114,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
       AfxMessageBox(IDS_ALREADYOPEN, MB_OK|MB_ICONWARNING);
       return PWScore::ALREADY_OPEN;
 	}
+  CMyString cs_saveCurFileName(m_core.GetCurFile());
 
   // Save current read-only status around opening merge fil R-O
   bool bCurrentFileIsReadOnly = m_IsReadOnly;
@@ -1122,8 +1123,9 @@ DboxMain::Merge(const CMyString &pszFilename) {
                            GCP_NORMAL, // OK, CANCEL, HELP
                            true);  // force readonly
 
-  // Restore original database read-only status
+  // Restore original database read-only status & name
   SetReadOnly(bCurrentFileIsReadOnly);
+  m_core.SetCurFile(cs_saveCurFileName);
 
   CString cs_temp, cs_title;
   switch (rc) {
