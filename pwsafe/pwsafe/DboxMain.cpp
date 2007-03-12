@@ -72,9 +72,9 @@ CString DboxMain::CS_EXPCOLGROUP;
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
-     m_bSizing( false ), m_needsreading(true), m_windowok(false),
+     m_bSizing(false), m_needsreading(true), m_windowok(false),
      m_toolbarsSetup(FALSE),
-     m_bSortAscending(true), m_iSortedColumn(0),
+     m_bSortAscending(true), m_iSortedColumn(CItemData::TITLE),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_lock_displaystatus(_T("")),
      m_hFontTree(NULL), m_IsReadOnly(false),
@@ -207,6 +207,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
    ON_COMMAND(ID_U3SHOP_WEBSITE, OnU3ShopWebsite)
 
+// List view Column Picker
+   ON_COMMAND(ID_MENUITEM_COLUMNPICKER, OnColumnPicker)
+   ON_COMMAND(ID_MENUITEM_RESETCOLUMNS, OnResetColumns)
+
 // Others
    ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
 
@@ -231,6 +235,10 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
    ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
    ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
+   ON_NOTIFY(NM_RCLICK, IDC_LIST_HEADER, OnHeaderRClick)
+   ON_NOTIFY(HDN_ENDDRAG, IDC_LIST_HEADER, OnHeaderEndDrag)
+   ON_NOTIFY(HDN_ENDTRACK, IDC_LIST_HEADER, OnHeaderNotify)
+   ON_NOTIFY(HDN_ITEMCHANGED, IDC_LIST_HEADER, OnHeaderNotify)   
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
    ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
@@ -267,7 +275,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 #endif
 
    ON_MESSAGE(WM_ICON_NOTIFY, OnTrayNotification)
-   ON_MESSAGE(WM_HOTKEY,OnHotKey)
+   ON_MESSAGE(WM_HOTKEY, OnHotKey)
+   ON_MESSAGE(WM_HDR_DRAG_COMPLETE, OnHeaderDragComplete)
 	//}}AFX_MSG_MAP
    ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
    ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
@@ -291,8 +300,8 @@ END_MESSAGE_MAP()
 
 void
 DboxMain::InitPasswordSafe()
-{
-	PWSprefs *prefs = PWSprefs::GetInstance();
+{  
+  PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
   // AlwaysOnTop preference read from database, if possible, hence set after OpenOnInit
@@ -365,25 +374,19 @@ DboxMain::InitPasswordSafe()
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
 
   // Init stuff for list view
-  m_ctlItemList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-  m_nColumns = 8;
-  CString cs_header;
-  cs_header.LoadString(IDS_TITLE);
-  m_ctlItemList.InsertColumn(0, cs_header);
-  cs_header.LoadString(IDS_USERNAME);
-  m_ctlItemList.InsertColumn(1, cs_header);
-  cs_header.LoadString(IDS_NOTES);
-  m_ctlItemList.InsertColumn(2, cs_header);
-  cs_header.LoadString(IDS_CREATED);
-  m_ctlItemList.InsertColumn(3, cs_header);
-  cs_header.LoadString(IDS_PASSWORDMODIFIED);
-  m_ctlItemList.InsertColumn(4, cs_header);
-  cs_header.LoadString(IDS_LASTACCESSED);
-  m_ctlItemList.InsertColumn(5, cs_header);
-  cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
-  m_ctlItemList.InsertColumn(6, cs_header);
-  cs_header.LoadString(IDS_LASTMODIFIED);
-  m_ctlItemList.InsertColumn(7, cs_header);
+  m_bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
+
+  m_bExplorerTypeTree = prefs->GetPref(PWSprefs::ExplorerTypeTree);
+  m_bUseGridLines = prefs->GetPref(PWSprefs::ListViewGridLines);
+
+  DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
+  if (m_bUseGridLines)
+      dw_ExtendedStyle |= LVS_EX_GRIDLINES;
+
+  m_ctlItemList.SetExtendedStyle(dw_ExtendedStyle);
+
+  m_pctlItemListHdr = m_ctlItemList.GetHeaderCtrl();
+  m_pctlItemListHdr->SetDlgCtrlID(IDC_LIST_HEADER);
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView);
   m_IsListView = true;
@@ -394,29 +397,43 @@ DboxMain::InitPasswordSafe()
     m_IsListView = false;
   }
 
-  CRect rect;
-  m_ctlItemList.GetClientRect(&rect);
-  int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
-                                 (rect.Width() / 3 + rect.Width() % 3));
-  int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
-                                 rect.Width() / 3);
-  int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
-                                 rect.Width() / 3);
+  // Get default column width for datetime fields
+  TCHAR time_str[80], datetime_str[80];
+  // Use "fictitious" longest English date
+  SYSTEMTIME systime;
+  systime.wYear = (WORD)2000;
+  systime.wMonth = (WORD)9;
+  systime.wDay = (WORD)30;
+  systime.wDayOfWeek = (WORD)3;
+  systime.wHour = (WORD)23;
+  systime.wMinute = (WORD)44;
+  systime.wSecond = (WORD)55;
+  systime.wMilliseconds = (WORD)0;
+  TCHAR szBuf[80];
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SLONGDATE, szBuf, 80));
+  GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
+  szBuf[0] = _T(' ');  // Put a blank between date and time
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
+  GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
+#if _MSC_VER >= 1400
+  _tcscat_s(datetime_str, 80, time_str);
+#else
+  _tcscat(datetime_str, 80, time_str);
+#endif
 
-  m_ctlItemList.SetColumnWidth(0, i1stWidth);
-  m_ctlItemList.SetColumnWidth(1, i2ndWidth);
-  m_ctlItemList.SetColumnWidth(2, i3rdWidth);
-  m_ctlItemList.SetRedraw(FALSE);
-  const CString ascdatetime = "XXX Xxx DD HH:MM:SS YYYY";
-  int nWidth = m_ctlItemList.GetStringWidth(ascdatetime);
-  for (int i = 3; i < 8; i++) {
-	m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE);
-	m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-	m_ctlItemList.SetColumnWidth(i, nWidth);
-  }
-  m_ctlItemList.SetRedraw(TRUE);
+  m_iDateTimeFieldWidth = m_ctlItemList.GetStringWidth(datetime_str) + 6;
+
+  CString cs_ListColumns = prefs->GetPref(PWSprefs::ListColumns);
+  CString cs_ListColumnsWidths = prefs->GetPref(PWSprefs::ColumnWidths);
+
+  if (cs_ListColumns.IsEmpty())
+    SetColumns();
+  else
+    SetColumns(cs_ListColumns, cs_ListColumnsWidths);
 
   m_iSortedColumn = prefs->GetPref(PWSprefs::SortedColumn);
+  if (m_iSortedColumn == 0)
+      m_iSortedColumn = CItemData::TITLE;
   m_bSortAscending = prefs->GetPref(PWSprefs::SortAscending);
 
   // refresh list will add and size password column if necessary...
@@ -431,6 +448,7 @@ DboxMain::InitPasswordSafe()
   DragAcceptFiles(TRUE);
 
   // {kjp} meaningless when target is a PocketPC device.
+  CRect rect;
   prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
   if (rect.top == -1 || rect.bottom == -1 || rect.left == -1 || rect.right == -1) {
@@ -481,6 +499,27 @@ DboxMain::OnHotKey(WPARAM , LPARAM)
   SetActiveWindow();
   SetForegroundWindow();
   return 0;
+}
+
+LRESULT
+DboxMain::OnHeaderDragComplete(WPARAM , LPARAM)
+{
+    // Now update header info
+    SetHeaderInfo();
+
+#ifdef _DEBUG
+    TRACE("After drag\n");
+    for (int i = 0; i < m_nColumns; i++) {
+      TRACE("Column=%d,OrderToItem=%d,ItemType=%d,ItemWidth=%d\n", i,
+          m_nColumnOrderToItem[i], m_nColumnItemType[i], m_nColumnItemWidth[i]);
+    }
+    TRACE("TypeToItem=");
+    for (int i = 0; i < CItemData::LAST; i++) {
+      TRACE("%d ", m_nColumnTypeToItem[i]);
+    }
+    TRACE("\n");
+#endif
+    return 0L;
 }
 
 BOOL
@@ -742,7 +781,6 @@ DboxMain::SetStartSilent(bool state)
     PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, true);  
   }
 }
-
 
 void
 DboxMain::SetChanged(ChangeType changed)
@@ -1614,7 +1652,6 @@ DboxMain::PreTranslateMessage(MSG* pMsg)
       GetPref(PWSprefs::EscExits)) {
     return TRUE;
   }
-
   return CDialog::PreTranslateMessage(pMsg);
 }
 

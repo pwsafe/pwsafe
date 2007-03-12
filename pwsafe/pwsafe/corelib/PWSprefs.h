@@ -65,7 +65,8 @@ class PWSprefs {
 		  PreExpiryWarnDays,
           NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
-		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser,
+		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
+          ColumnWidths,
 		  NumStringPrefs};
 
   // for DoubleClickAction

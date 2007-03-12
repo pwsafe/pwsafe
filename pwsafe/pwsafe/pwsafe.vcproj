@@ -330,6 +330,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ColumnPickerDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ConfirmDeleteDlg.cpp"
 				>
 			</File>
@@ -544,6 +548,10 @@
 			</File>
 			<File
 				RelativePath=".\ClearQuestionDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ColumnPickerDlg.h"
 				>
 			</File>
 			<File

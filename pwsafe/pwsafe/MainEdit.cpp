@@ -312,7 +312,7 @@ DboxMain::EditItem(CItemData *ci)
       CItemData oldElem = GetEntryAt(listpos);
       DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
       ASSERT(di != NULL);
-      // editedItem's displayinfo may have been deleted if
+      // editedItem's displayinfo will have been deleted if
       // application "locked" (Cleared list)
       DisplayInfo *ndi = new DisplayInfo;
       ndi->list_index = -1; // so that insertItem will set new values

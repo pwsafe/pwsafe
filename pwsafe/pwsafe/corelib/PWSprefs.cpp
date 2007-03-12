@@ -65,7 +65,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 	{_T("SavePasswordHistory"), false, true},						// database
 	{_T("FindWraps"), false, false},								// application
 	{_T("ShowNotesDefault"), false, true},							// database
-	{_T("BackupBeforeEverySave"), true, false},					// application
+	{_T("BackupBeforeEverySave"), true, false},					    // application
 	{_T("PreExpiryWarn"), false, false},                            // application
     {_T("ExplorerTypeTree"), false, false},                         // application
     {_T("ListViewGridLines"), false, false},                        // application
@@ -78,7 +78,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	{_T("column2width"), (unsigned int)-1, false, -1, -1}, 					// application
 	{_T("column3width"), (unsigned int)-1, false, -1, -1}, 					// application
 	{_T("column4width"), (unsigned int)-1, false, -1, -1}, 					// application
-	{_T("sortedcolumn"), 0, false, 0, 7},									// application
+	{_T("sortedcolumn"), 0, false, 0, 15},									// application
 	{_T("pwlendefault"), 8, true, 4, 1024},									// database
 	// maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
 	{_T("maxmruitems"), 4, false, 0, 20},									// application
@@ -104,6 +104,8 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 	{_T("BackupPrefixValue"), _T(""), false},						// application
 	{_T("BackupDir"), _T(""), false},                               // application
 	{_T("AltBrowser"), _T(""), false},								// application
+	{_T("ListColumns"), _T(""), false},								// application
+    {_T("ColumnWidths"), _T(""), false},							// application
 };
 
 
