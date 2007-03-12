@@ -245,7 +245,8 @@ DboxMain::OnOptions()
     // Need to compare pre-post values for some:
     const bool bOldShowPasswordInList = prefs->
         GetPref(PWSprefs::ShowPWInList);
-
+    const bool bOldExplorerTypeTree = prefs->
+        GetPref(PWSprefs::ExplorerTypeTree);
     /*
     **  Initialize the property pages values.
     */
@@ -264,6 +265,10 @@ DboxMain::OnOptions()
         GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
     display.m_pwshowinlist = prefs->
         GetPref(PWSprefs::ShowPWInList) ? TRUE : FALSE;
+    display.m_explorertree = prefs->
+        GetPref(PWSprefs::ExplorerTypeTree) ? TRUE : FALSE;
+    display.m_enablegrid = prefs->
+        GetPref(PWSprefs::ListViewGridLines) ? TRUE : FALSE;
     display.m_notesshowinedit = prefs->
         GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
     display.m_preexpirywarn = prefs->
@@ -395,6 +400,10 @@ DboxMain::OnOptions()
                        display.m_pwshowinedit == TRUE);
         prefs->SetPref(PWSprefs::ShowPWInList,
                        display.m_pwshowinlist == TRUE);
+        prefs->SetPref(PWSprefs::ExplorerTypeTree,
+                       display.m_explorertree == TRUE);
+        prefs->SetPref(PWSprefs::ListViewGridLines,
+                       display.m_enablegrid == TRUE);
         prefs->SetPref(PWSprefs::ShowNotesDefault,
                        display.m_notesshowinedit == TRUE);                   
         prefs->SetPref(PWSprefs::PreExpiryWarn,
@@ -555,10 +564,23 @@ DboxMain::OnOptions()
         m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
         UpdateAlwaysOnTop();
 
-        bool bShowPasswordInList = prefs->
-            GetPref(PWSprefs::ShowPWInList);
+        m_bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
+        m_bExplorerTypeTree = prefs->GetPref(PWSprefs::ExplorerTypeTree);
 
-        if ((bOldShowPasswordInList != bShowPasswordInList) ||
+        DWORD dwExtendedStyle = m_ctlItemList.GetExtendedStyle();
+        BOOL bGridLines = ((dwExtendedStyle & LVS_EX_GRIDLINES) == LVS_EX_GRIDLINES) ? TRUE : FALSE;
+        
+        if (display.m_enablegrid != bGridLines) {
+            if (display.m_enablegrid) {
+              dwExtendedStyle |= LVS_EX_GRIDLINES;
+            } else {
+              dwExtendedStyle &= ~LVS_EX_GRIDLINES;
+            }
+            m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
+        }
+
+        if ((bOldShowPasswordInList != m_bShowPasswordInList) ||
+            (bOldExplorerTypeTree != m_bExplorerTypeTree) ||
             (save_preexpirywarn != display.m_preexpirywarn) ||
             (save_preexpirywarndays != display.m_preexpirywarndays))
             RefreshList();

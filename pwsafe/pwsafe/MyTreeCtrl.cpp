@@ -395,6 +395,9 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
                         | TVIF_SELECTEDIMAGE | TVIF_TEXT);
   GetItem(&tvstruct.item);  // get information of the dragged element
   tvstruct.hParent = hitemDrop;
+  if (((DboxMain *)GetParent())->IsExplorerTree())
+    tvstruct.hInsertAfter = TVI_LAST;
+  else
   tvstruct.hInsertAfter = TVI_SORT;
   tvstruct.item.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
   hNewItem = InsertItem(&tvstruct);
@@ -441,7 +444,6 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
         newString = (CString)ci_title + (CString)oldString.Mid(pos);
         // Update tree label
         SetItemText(hNewItem, newString);
-        SortChildren(hitemDrop);
         // Update list field
         ((DboxMain *)GetParent())->UpdateListItemTitle(di->list_index, (CString)ci_title);
     }
@@ -451,6 +453,10 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     di->tree_item = hNewItem;
   }
   SetItemData(hNewItem, itemData);
+  if (((DboxMain *)GetParent())->IsExplorerTree())
+    ((DboxMain *)GetParent())->SortTree(hitemDrop);
+  else
+    SortChildren(hitemDrop);
 
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
     TransferItem(hFirstChild, hNewItem);  // recursively transfer all the items

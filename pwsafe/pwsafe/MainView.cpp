@@ -199,6 +199,27 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
+static int CALLBACK ExplorerCompareProc(LPARAM lParam1, LPARAM lParam2, LPARAM /*closure*/)
+{
+  int iResult;
+  CItemData* pLHS = (CItemData *)lParam1;
+  CItemData* pRHS = (CItemData *)lParam2;
+  //DboxMain *self = (DboxMain*)closure;
+  if (pLHS == NULL)
+      return -1;
+  if (pRHS == NULL)
+      return 1;
+  
+  iResult = (pLHS->GetGroup()).CompareNoCase(pRHS->GetGroup());
+  if (iResult == 0) {
+    iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+    if (iResult == 0) {
+      iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+    }
+  }
+  return iResult;
+}
+
 void
 DboxMain::DoDataExchange(CDataExchange* pDX)
 {
@@ -549,6 +570,11 @@ DboxMain::RefreshList()
   SetCursor( NULL );
 #endif
   m_ctlItemTree.RestoreExpanded();
+
+  if (m_bExplorerTypeTree) {
+      SortTree(TVI_ROOT);
+  }
+
   // re-enable and force redraw!
   m_ctlItemList.SetRedraw( TRUE ); m_ctlItemList.Invalidate();
   m_ctlItemTree.SetRedraw( TRUE ); m_ctlItemTree.Invalidate();
@@ -558,6 +584,22 @@ DboxMain::RefreshList()
   if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
     SelectEntry(0);
   }
+}
+
+void
+DboxMain::SortTree(const HTREEITEM htreeitem)
+{
+  TVSORTCB tvs;
+  HTREEITEM hti(htreeitem);
+
+  if (hti == NULL)
+      hti = TVI_ROOT;
+
+  tvs.hParent = hti;
+  tvs.lpfnCompare = ExplorerCompareProc;
+  tvs.lParam = (LPARAM)this;
+
+  m_ctlItemTree.SortChildrenCB(&tvs);
 }
 
 void
@@ -624,7 +666,7 @@ DboxMain::OnSize(UINT nType,
 
 // Called when right-click is invoked in the client area of the window.
 void
-DboxMain::OnContextMenu(CWnd *, CPoint point) 
+DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point) 
 {
 #if defined(POCKET_PC)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
@@ -712,7 +754,8 @@ DboxMain::OnContextMenu(CWnd *, CPoint point)
   } // if (item >= 0)
 }
 
-void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
+void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
+{
   LV_KEYDOWN *pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
 
   switch (pLVKeyDow->wVKey) {
@@ -729,7 +772,7 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult) {
 
 #if !defined(POCKET_PC)
 void
-DboxMain::OnSetfocusItemlist(NMHDR * , LRESULT * ) 
+DboxMain::OnSetfocusItemlist(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
 {
   // Seems excessive to do this all the time
   // Should be done only on Open and on Change (Add, Delete, Modify)
@@ -738,7 +781,7 @@ DboxMain::OnSetfocusItemlist(NMHDR * , LRESULT * )
 }
 
 void
-DboxMain::OnKillfocusItemlist( NMHDR *, LRESULT *) 
+DboxMain::OnKillfocusItemlist(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
 {
   // Seems excessive to do this all the time
   // Should be done only on Open and on Change (Add, Delete, Modify)
@@ -798,7 +841,14 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
 	}
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
+    if (!m_bExplorerTypeTree) {
     ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
+      m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
+    } else {
+      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
+      m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
+      SortTree(m_ctlItemTree.GetParentItem(ti));
+    }
     time_t now, warnexptime, tLTime;
     time(&now);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
