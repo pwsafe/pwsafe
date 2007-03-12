@@ -1703,6 +1703,24 @@ DboxMain::OnOK()
     }
   }
 
+  CString cs_columns(_T(""));
+  CString cs_columnswidths(_T(""));
+  TCHAR buffer[8], widths[8];
+
+  for (int i = 0; i < m_nColumns; i++) {
+#if _MSC_VER >= 1400
+    _itot_s(m_nColumnItemType[i], buffer, 8, 10);
+    _itot_s(m_nColumnItemWidth[i], widths, 8, 10);
+#else
+    _itot(m_nColumnItemType[i], buffer, 10);
+    _itot(m_nColumnItemWidth[i], widths, 10);
+#endif
+    cs_columns += buffer;
+    cs_columnswidths += widths;
+    cs_columns += _T(",");
+    cs_columnswidths += _T(",");
+  }
+
 #if !defined(POCKET_PC)
   if (!IsIconic()) {
     CRect rect;
@@ -1712,6 +1730,8 @@ DboxMain::OnOK()
 #endif
   prefs->SetPref(PWSprefs::SortedColumn, m_iSortedColumn);
   prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
+  prefs->SetPref(PWSprefs::ListColumns, cs_columns);
+  prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
 
   // If MaintainDateTimeStamps set and not read-only,
   // save without asking user: "they get what it says on the tin"

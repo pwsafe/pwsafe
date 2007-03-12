@@ -59,6 +59,10 @@
 #define ID_MENUITEM_ABOUT               32201
 #define ID_U3SHOP_WEBSITE               32202
 
+// Listview Header menu
+#define ID_MENUITEM_COLUMNPICKER        32210
+#define ID_MENUITEM_RESETCOLUMNS        32211
+
 // System Tray Menu
 #define ID_MENUITEM_TRAYLOCKUNLOCK      32500
 #define ID_TRAYRECENT_ENTRY_CLEAR       32501
@@ -122,4 +126,3 @@
 
 #define ID_MENUITEM_TRAYVIEWEDIT1       33301
 #define ID_MENUITEM_TRAYVIEWEDITMAX     33325
-

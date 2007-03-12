@@ -24,8 +24,11 @@
 
 #include "DboxMain.h"
 #include "TryAgainDlg.h"
+#include "ColumnPickerDlg.h"
 
 #include "corelib/pwsprefs.h"
+#include "commctrl.h"
+#include <vector>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,8 +45,8 @@ static char THIS_FILE[] = __FILE__;
    * the second, a positive value if the first item should follow the second, or zero if
    * the two items are equivalent."
    *
-   * If sorting is by title (username) , username (title) is the secondary field if the
-   * primary fields are identical.
+   * If sorting is by group (title/user), title (username), username (title) 
+   * fields in brackets are the secondary fields if the primary fields are identical.
    */
 int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 				   LPARAM closure)
@@ -57,141 +60,74 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   // m_bSortAscending to determine the direction of the sort (duh)
 
   DboxMain *self = (DboxMain*)closure;
-  const int	nRecurseFlag		= 500; // added to the desired sort column when recursing
-  bool		bAlreadyRecursed	= false;
-  int		nSortColumn		= self->m_iSortedColumn;
-  CItemData*	pLHS			= (CItemData *)lParam1;
-  CItemData*	pRHS			= (CItemData *)lParam2;
-  CMyString	title1, username1;
-  CMyString	title2, username2;
+  int nSortColumn = self->m_iSortedColumn;
+  CItemData* pLHS = (CItemData *)lParam1;
+  CItemData* pRHS = (CItemData *)lParam2;
+  CMyString	group1, group2;
   time_t t1, t2;
 
-  // if the sort column is really big, then we must be being called via recursion
-  if ( nSortColumn >= nRecurseFlag )
-    {
-      bAlreadyRecursed = true;		// prevents further recursion
-      nSortColumn -= nRecurseFlag;	// normalizes sort column
-    }
-
   int iResult;
-  if (self->m_nColumns == 9) {
   switch(nSortColumn) {
-  case 0:
-    title1 = pLHS->GetTitle();
-    title2 = pRHS->GetTitle();
-    iResult = ((CString)title1).CompareNoCase(title2);
-    if (iResult == 0 && !bAlreadyRecursed) {
-      // making a recursed call, add nRecurseFlag
-      const int savedSortColumn = self->m_iSortedColumn;
-      self->m_iSortedColumn = 1 + nRecurseFlag;
-      iResult = CompareFunc(lParam1, lParam2, closure);
-      self->m_iSortedColumn = savedSortColumn;
-    }
-    break;
-  case 1:
-    username1 = pLHS->GetUser();
-    username2 = pRHS->GetUser();
-    iResult = ((CString)username1).CompareNoCase(username2);
-    if (iResult == 0 && !bAlreadyRecursed) {
-      // making a recursed call, add nRecurseFlag
-      const int savedSortColumn = self->m_iSortedColumn;
-      self->m_iSortedColumn = 0 + nRecurseFlag;
-      iResult = CompareFunc(lParam1, lParam2, closure);
-      self->m_iSortedColumn = savedSortColumn;
-    }
-    break;
-  case 2:
-    iResult = ((CString)pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
-    break;
-  case 3:
-    iResult = ((CString)pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
-    break;
-		case 4:
-			pLHS->GetCTime(t1);
-			pRHS->GetCTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 5:
-			pLHS->GetPMTime(t1);
-			pRHS->GetPMTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 6:
-			pLHS->GetATime(t1);
-			pRHS->GetATime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 7:
-			pLHS->GetLTime(t1);
-			pRHS->GetLTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 8:
-			pLHS->GetRMTime(t1);
-			pRHS->GetRMTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-  default:
-		    iResult = 0; // should never happen - just keep compiler happy
-			ASSERT(FALSE);
-	}
-  } else {
-	switch(nSortColumn) {
-		case 0:
-			title1 = pLHS->GetTitle();
-			title2 = pRHS->GetTitle();
-			iResult = ((CString)title1).CompareNoCase(title2);
-			if (iResult == 0 && !bAlreadyRecursed) {
-				const int savedSortColumn = self->m_iSortedColumn;
-				self->m_iSortedColumn = 1 + nRecurseFlag;
-				iResult = CompareFunc(lParam1, lParam2, closure);
-				self->m_iSortedColumn = savedSortColumn;
-			}
-			break;
-		case 1:
-			username1 = pLHS->GetUser();
-			username2 = pRHS->GetUser();
-			iResult = ((CString)username1).CompareNoCase(username2);
-			if (iResult == 0 && !bAlreadyRecursed) {
-			// making a recursed call, add nRecurseFlag
-				const int savedSortColumn = self->m_iSortedColumn;
-				self->m_iSortedColumn = 0 + nRecurseFlag;
-				iResult = CompareFunc(lParam1, lParam2, closure);
-				self->m_iSortedColumn = savedSortColumn;
-			}
-			break;
-		case 2:
-			iResult = ((CString)pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
-			break;
-		case 3:
-			pLHS->GetCTime(t1);
-			pRHS->GetCTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 4:
-			pLHS->GetPMTime(t1);
-			pRHS->GetPMTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 5:
-			pLHS->GetATime(t1);
-			pRHS->GetATime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 6:
-			pLHS->GetLTime(t1);
-			pRHS->GetLTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		case 7:
-			pLHS->GetRMTime(t1);
-			pRHS->GetRMTime(t2);
-			iResult = ((long) t1 < (long) t2) ? -1 : 1;
-			break;
-		default:
-    iResult = 0; // should never happen - just keep compiler happy
-    ASSERT(FALSE);
-	}
+    case CItemData::GROUP:
+      group1 = pLHS->GetGroup();
+      group2 = pRHS->GetGroup();
+      if (group1.IsEmpty())  // root?
+        group1 = _T("\xff");
+      if (group2.IsEmpty())  // root?
+        group2 = _T("\xff");
+      iResult = group1.CompareNoCase(group2);
+      if (iResult == 0) {
+        iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+        if (iResult == 0) {
+          iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+        }
+      }
+      break;
+    case CItemData::TITLE:
+      iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+      if (iResult == 0) {
+        iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+      }
+      break;
+    case CItemData::USER:
+      iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+      if (iResult == 0) {
+        iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+      }
+    case CItemData::NOTES:
+      iResult = (pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
+      break;
+    case CItemData::PASSWORD:
+      iResult = (pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
+      break;
+    case CItemData::CTIME:
+      pLHS->GetCTime(t1);
+      pRHS->GetCTime(t2);
+      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    case CItemData::PMTIME:
+      pLHS->GetPMTime(t1);
+      pRHS->GetPMTime(t2);
+      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    case CItemData::ATIME:
+      pLHS->GetATime(t1);
+      pRHS->GetATime(t2);
+      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    case CItemData::LTIME:
+      pLHS->GetLTime(t1);
+      pRHS->GetLTime(t2);
+      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    case CItemData::RMTIME:
+      pLHS->GetRMTime(t1);
+      pRHS->GetRMTime(t2);
+      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    default:
+      iResult = 0; // should never happen - just keep compiler happy
+      ASSERT(FALSE);
   }
   if (!self->m_bSortAscending) {
     iResult *= -1;
@@ -303,21 +239,19 @@ DboxMain::setupBars()
 #endif
 }
 
-void DboxMain::UpdateListItemTitle(int lindex, const CString &newTitle)
+void DboxMain::UpdateListItem(const int lindex, const int type, const CString &newText)
 {
-  m_ctlItemList.SetItemText(lindex, 0, newTitle);
-  if (m_iSortedColumn == 0) {
-    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-    FixListIndexes();
-  }
-}
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
 
-void DboxMain::UpdateListItemUser(int lindex, const CString &newName)
-{
-  m_ctlItemList.SetItemText(lindex, 1, newName);
-  if (m_iSortedColumn == 1) {
-    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-    FixListIndexes();
+  int iSubItem = m_nColumnTypeToItem[type];
+
+  if (iSubItem > 0) {
+    m_ctlItemList.SetItemText(lindex, iSubItem, newText);
+    if (m_iSortedColumn == type) {
+      m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+      FixListIndexes();
+    }
   }
 }
 
@@ -327,8 +261,8 @@ POSITION DboxMain::Find(int i)
   CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(ci != NULL);
   const CMyString curGroup = ci->GetGroup();
-  const CMyString curTitle = m_ctlItemList.GetItemText(i, 0);
-  const CMyString curUser = m_ctlItemList.GetItemText(i, 1);
+  const CMyString curTitle = ci->GetTitle();
+  const CMyString curUser = ci->GetUser();
   return Find(curGroup, curTitle, curUser);
 }
 
@@ -376,6 +310,14 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   if (!CaseSensitive)
     searchstr.MakeLower();
 
+  int ititle(-1);  // Must be there as it is mandatory!
+  for (int ic = 0; ic < m_nColumns; ic++) {
+      if (m_nColumnItemType[ic] == CItemData::TITLE) {
+          ititle = ic;
+          break;
+      }
+  }
+
   if (m_IsListView) {
 	listPos = m_core.GetFirstEntryPosition();
 	while (listPos != NULL) {
@@ -406,7 +348,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
 			ASSERT(di != NULL);
 			int li = di->list_index;
-			ASSERT(CMyString(m_ctlItemList.GetItemText(li, 0)) == savetitle);
+			ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
 			// add to indices, bump retval
 			indices[retval++] = li;
 		} // match found in m_pwlist
@@ -447,7 +389,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
 			ASSERT(di != NULL);
 			int li = di->list_index;
-			ASSERT(CMyString(m_ctlItemList.GetItemText(li, 0)) == savetitle);
+			ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
 			// add to indices, bump retval
 			indices[retval++] = li;
 		} // match found in m_pwlist
@@ -506,7 +448,7 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 }
 
 
-//Updates m_ctlItemList and m_ctlItemTree from m_pwlist
+// Updates m_ctlItemList and m_ctlItemTree from m_pwlist
 // updates of windows suspended until all data is in.
 void
 DboxMain::RefreshList()
@@ -523,34 +465,6 @@ DboxMain::RefreshList()
   m_ctlItemTree.SetRedraw( FALSE );
   m_ctlItemList.DeleteAllItems();
   m_ctlItemTree.DeleteAllItems();
-
-  LVCOLUMN lvColumn;
-  lvColumn.mask = LVCF_WIDTH;
-
-  m_ctlItemList.GetColumn(3, &lvColumn);
-  bool bPasswordColumnShowing =
-      (m_ctlItemList.GetHeaderCtrl()->GetItemCount() == 9);
-
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
-
-  if (bShowPasswordInList && !bPasswordColumnShowing) {
-	CString cs_text(MAKEINTRESOURCE(IDS_PASSWORD));
-    m_ctlItemList.InsertColumn(3, cs_text);
-	m_nColumns++;
-    CRect rect;
-    m_ctlItemList.GetClientRect(&rect);
-    m_ctlItemList.SetColumnWidth(3,
-                                 PWSprefs::GetInstance()->
-                                 GetPref(PWSprefs::Column4Width,
-                                         rect.Width() / 4));
-  }
-  else if (!bShowPasswordInList && bPasswordColumnShowing) {
-    PWSprefs::GetInstance()->SetPref(PWSprefs::Column4Width,
-                                     lvColumn.cx);
-    m_ctlItemList.DeleteColumn(3);
-	m_nColumns--;
-  }
 
   POSITION listPos = m_core.GetFirstEntryPosition();
 #if defined(POCKET_PC)
@@ -741,14 +655,6 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
     }
 
-    if (itemData->GetAutoType().IsEmpty()) {
-      ASSERT(itemData->GetAutoType().IsEmpty());
-      pPopup->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
-    } else {
-      ASSERT(!itemData->GetAutoType().IsEmpty());
-      pPopup->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);
-    }
-
     pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
 
   } // if (item >= 0)
@@ -812,10 +718,55 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     iResult = m_ctlItemList.GetItemCount();
   }
 
+  CMyString group = itemData.GetGroup();
   CMyString title = itemData.GetTitle();
   CMyString username = itemData.GetUser();
+  // get only the first line for display
+  CMyString strNotes = itemData.GetNotes();
+  int iEOL = strNotes.Find(TCHAR('\r'));
+  if (iEOL >= 0 && iEOL < strNotes.GetLength()) {
+    CMyString strTemp = strNotes.Left(iEOL);
+    strNotes = strTemp;
+  }
+  CMyString cs_fielddata;
 
-  iResult = m_ctlItemList.InsertItem(iResult, title);
+  // Insert the first column data
+  switch (m_nColumnItemType[0]) {
+    case CItemData::GROUP:
+      cs_fielddata = group;
+      break;
+    case CItemData::TITLE:
+      cs_fielddata = title;
+      break;
+    case CItemData::USER:
+      cs_fielddata = username;
+      break;
+    case CItemData::NOTES:
+      cs_fielddata = strNotes;
+      break;
+    case CItemData::PASSWORD:
+      cs_fielddata = itemData.GetPassword();
+      break;
+    case CItemData::CTIME:
+      cs_fielddata = itemData.GetCTimeL();
+      break;
+    case CItemData::PMTIME:
+      cs_fielddata = itemData.GetPMTimeL();
+      break;
+    case CItemData::ATIME:
+      cs_fielddata = itemData.GetATimeL();
+      break;
+    case CItemData::LTIME:
+      cs_fielddata = itemData.GetLTimeL();
+      break;
+    case CItemData::RMTIME:
+      cs_fielddata = itemData.GetRMTimeL();
+      break;
+    default:
+      ASSERT(0);
+  }
+  iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata);
+
   if (iResult < 0) {
     // TODO: issue error here...
     return iResult;
@@ -824,8 +775,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
   if (di == NULL)
     di = new DisplayInfo;
   di->list_index = iResult;
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
+
   {
     HTREEITEM ti;
     CMyString treeDispString = title;
@@ -833,7 +783,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     treeDispString += _T(" [");
     treeDispString += user;
     treeDispString += _T("]");
-    if (bShowPasswordInList) {
+    if (m_bShowPasswordInList) {
 		CMyString newPassword = itemData.GetPassword();
 		treeDispString += _T(" [");
 		treeDispString += newPassword;
@@ -842,7 +792,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     if (!m_bExplorerTypeTree) {
-    ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
+      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     } else {
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
@@ -879,36 +829,50 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
 	} else
 	  m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
 	
-    m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
+    ASSERT(ti != NULL);
+    itemData.SetDisplayInfo((void *)di);
     di->tree_item = ti;
   }
 
-  itemData.SetDisplayInfo((void *)di);
-  // get only the first line for display
-  CMyString strNotes = itemData.GetNotes();
-  int iEOL = strNotes.Find(TCHAR('\r'));
-  if (iEOL >= 0 && iEOL < strNotes.GetLength()) {
-    CMyString strTemp = strNotes.Left(iEOL);
-    strNotes = strTemp;
+  // Set the data in the rest of the columns
+  for (int i = 1; i < m_nColumns; i++) {
+    switch (m_nColumnItemType[i]) {
+      case CItemData::GROUP:
+        cs_fielddata = group;
+        break;
+      case CItemData::TITLE:
+        cs_fielddata = title;
+        break;
+      case CItemData::USER:
+        cs_fielddata = username;
+        break;
+      case CItemData::NOTES:
+        cs_fielddata = strNotes;
+        break;
+      case CItemData::PASSWORD:
+        cs_fielddata = itemData.GetPassword();
+        break;
+      case CItemData::CTIME:
+        cs_fielddata = itemData.GetCTimeL();
+        break;
+      case CItemData::PMTIME:
+        cs_fielddata = itemData.GetPMTimeL();
+        break;
+      case CItemData::ATIME:
+        cs_fielddata = itemData.GetATimeL();
+        break;
+      case CItemData::LTIME:
+        cs_fielddata = itemData.GetLTimeL();
+        break;
+      case CItemData::RMTIME:
+        cs_fielddata = itemData.GetRMTimeL();
+        break;
+      default:
+        ASSERT(0);
+    }
+    m_ctlItemList.SetItemText(iResult, i, cs_fielddata);
   }
 
-  m_ctlItemList.SetItemText(iResult, 1, username);
-  m_ctlItemList.SetItemText(iResult, 2, strNotes);
-
-  if (bShowPasswordInList) {
-    m_ctlItemList.SetItemText(iResult, 3, itemData.GetPassword());
-    m_ctlItemList.SetItemText(iResult, 4, itemData.GetCTimeL());
-    m_ctlItemList.SetItemText(iResult, 5, itemData.GetPMTimeL());
-    m_ctlItemList.SetItemText(iResult, 6, itemData.GetATimeL());
-    m_ctlItemList.SetItemText(iResult, 7, itemData.GetLTimeL());
-    m_ctlItemList.SetItemText(iResult, 8, itemData.GetRMTimeL());
-  } else {
-  	m_ctlItemList.SetItemText(iResult, 3, itemData.GetCTimeL());
-  	m_ctlItemList.SetItemText(iResult, 4, itemData.GetPMTimeL());
-  	m_ctlItemList.SetItemText(iResult, 5, itemData.GetATimeL());
-  	m_ctlItemList.SetItemText(iResult, 6, itemData.GetLTimeL());
-  	m_ctlItemList.SetItemText(iResult, 7, itemData.GetRMTimeL());
-  }
   m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
   return iResult;
 }
@@ -983,31 +947,96 @@ DboxMain::ClearData(bool clearMRE)
 void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult) 
 {
   NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-  if (m_iSortedColumn == pNMListView->iSubItem) {
+
+  // Get column index to CItemData value
+  int iItem = pNMListView->iSubItem;
+  int isortcolumn = m_nColumnItemType[iItem];
+  
+  if (m_iSortedColumn == isortcolumn) {
     m_bSortAscending = !m_bSortAscending;
   } else {
-    m_iSortedColumn = pNMListView->iSubItem;
+    m_iSortedColumn = isortcolumn;
     m_bSortAscending = true;
   }
+
   m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
   FixListIndexes();
+
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
 #define HDF_SORTUP 0x0400
 #define HDF_SORTDOWN 0x0200
 #endif
-  HDITEM HeaderItem;
-  HeaderItem.mask = HDI_FORMAT;
-  m_ctlItemList.GetHeaderCtrl()->GetItem(m_iSortedColumn, &HeaderItem);
-  // Turn off all arrows
-  HeaderItem.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
-  // Turn on the correct arrow
-  HeaderItem.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
-  m_ctlItemList.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
 
-  *pResult = 0;
+  HDITEM hdi;
+  hdi.mask = HDI_FORMAT;
+
+  m_ctlItemList.GetHeaderCtrl()->GetItem(iItem, &hdi);
+  // Turn off all arrows
+  hdi.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
+  // Turn on the correct arrow
+  hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
+  m_ctlItemList.GetHeaderCtrl()->SetItem(iItem, &hdi);
+
+  *pResult = TRUE;
 }
 
+void
+DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+{
+#if defined(POCKET_PC)
+  const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
+#else
+  const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
+#endif
+  CMenu menu;
+  CPoint ptMousePos;
+  GetCursorPos(&ptMousePos);
 
+  if (menu.LoadMenu(IDR_POPCOLUMNS)) {
+    CMenu* pPopup = menu.GetSubMenu(0);
+    ASSERT(pPopup != NULL);
+    pPopup->TrackPopupMenu(dwTrackPopupFlags, ptMousePos.x, ptMousePos.y, this);
+  }
+  *pResult = TRUE;
+}
+
+void
+DboxMain::OnHeaderEndDrag(NMHDR* /* pNMHDR */, LRESULT *pResult)
+{
+  // Called for HDN_ENDDRAG which changes the column order
+  // Unfortuantely the changes are only really done when this call returns,
+  // hence the PostMessage to get the information later
+
+  // get control after operation is really complete
+  PostMessage(WM_HDR_DRAG_COMPLETE);
+  *pResult = FALSE;
+}
+
+void
+DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
+{
+  HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+  
+  *pResult = TRUE;
+  if (m_nColumnItemWidth == NULL || phdn->pitem == NULL)
+      return;
+
+  UINT mask = phdn->pitem->mask;
+
+  switch (phdn->hdr.code) {
+    case HDN_ENDTRACK:
+      m_nColumnItemWidth[phdn->iItem] = phdn->pitem->cxy;
+      break;
+    case HDN_ITEMCHANGED:
+      if ((mask & HDI_WIDTH) == HDI_WIDTH) {
+        // column width changed
+        m_nColumnItemWidth[phdn->iItem] = phdn->pitem->cxy;
+      }
+      break;
+    default:
+      break;
+  }
+}
 
 void
 DboxMain::OnListView() 
@@ -1298,4 +1327,380 @@ DboxMain::LaunchBrowser(const CString &csURL)
     return FALSE;
   }
   return TRUE;
+}
+
+void
+DboxMain::SetColumns()
+{
+  CString cs_header;
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+
+  int ipwd = m_bShowPasswordInList ? 1 : 0;
+  //  User hasn't yet saved the columns he/she wants
+  //  Gets our order!
+
+  CRect rect;
+  m_ctlItemList.GetClientRect(&rect);
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
+                                 (rect.Width() / 3 + rect.Width() % 3));
+  int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
+                                 rect.Width() / 3);
+  int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
+                                 rect.Width() / 3);
+  
+  cs_header.LoadString(IDS_TITLE);
+  m_ctlItemList.InsertColumn(0, cs_header);
+  hdi.lParam = CItemData::TITLE;
+  m_pctlItemListHdr->SetItem(0, &hdi);
+  m_ctlItemList.SetColumnWidth(0, i1stWidth);
+  
+  cs_header.LoadString(IDS_USERNAME);
+  m_ctlItemList.InsertColumn(1, cs_header);
+  hdi.lParam = CItemData::USER;
+  m_pctlItemListHdr->SetItem(1, &hdi);
+  m_ctlItemList.SetColumnWidth(1, i2ndWidth);
+
+  cs_header.LoadString(IDS_NOTES);
+  m_ctlItemList.InsertColumn(2, cs_header);
+  hdi.lParam = CItemData::NOTES;
+  m_pctlItemListHdr->SetItem(2, &hdi);
+  m_ctlItemList.SetColumnWidth(1, i3rdWidth);
+    
+  if (m_bShowPasswordInList) {
+    cs_header.LoadString(IDS_PASSWORD);
+    m_ctlItemList.InsertColumn(3, cs_header);
+    hdi.lParam = CItemData::PASSWORD;
+    m_pctlItemListHdr->SetItem(3, &hdi);
+    m_ctlItemList.SetColumnWidth(3,
+           PWSprefs::GetInstance()->
+           GetPref(PWSprefs::Column4Width,
+           rect.Width() / 4));
+  }
+
+  cs_header.LoadString(IDS_CREATED);
+  m_ctlItemList.InsertColumn(ipwd + 3, cs_header);
+  hdi.lParam = CItemData::CTIME;
+  m_pctlItemListHdr->SetItem(ipwd + 3, &hdi);
+  
+  cs_header.LoadString(IDS_PASSWORDMODIFIED);
+  m_ctlItemList.InsertColumn(ipwd + 4, cs_header);
+  hdi.lParam = CItemData::PMTIME;
+  m_pctlItemListHdr->SetItem(ipwd + 4, &hdi);
+  
+  cs_header.LoadString(IDS_LASTACCESSED);
+  m_ctlItemList.InsertColumn(ipwd + 5, cs_header);
+  hdi.lParam = CItemData::ATIME;
+  m_pctlItemListHdr->SetItem(ipwd + 5, &hdi);
+  
+  cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+  m_ctlItemList.InsertColumn(ipwd + 6, cs_header);
+  hdi.lParam = CItemData::LTIME;
+  m_pctlItemListHdr->SetItem(ipwd + 6, &hdi);
+  
+  cs_header.LoadString(IDS_LASTMODIFIED);
+  m_ctlItemList.InsertColumn(ipwd + 7, cs_header);
+  hdi.lParam = CItemData::RMTIME;
+  m_pctlItemListHdr->SetItem(ipwd + 7, &hdi);
+
+  m_ctlItemList.SetRedraw(FALSE);
+
+  for (int i = ipwd + 3; i < (ipwd + 8); i++) {
+	m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE);
+	m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+	m_ctlItemList.SetColumnWidth(i, m_iDateTimeFieldWidth);
+  }
+
+  SetHeaderInfo();
+
+  return;
+}
+void
+DboxMain::SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsWidths)
+{
+    CString cs_header;
+    HDITEM hdi;
+    hdi.mask = HDI_LPARAM;
+
+    //  User has saved the columns he/she wants
+    std::vector<int> vi_columns;
+    std::vector<int> vi_widths;
+    std::vector<int>::const_iterator vi_Iter;
+    const TCHAR pSep[] = _T(",");
+    TCHAR *pTemp, *pWidths;
+  
+    // Duplicate as strtok modifies the string
+    pTemp = _tcsdup((LPCTSTR)cs_ListColumns);
+    pWidths = _tcsdup((LPCTSTR)cs_ListColumnsWidths);
+  
+#if _MSC_VER >= 1400
+    // Capture columns shown:
+    char *next_token;
+    TCHAR *token = _tcstok_s(pTemp, pSep, &next_token);
+    while(token) {
+      vi_columns.push_back(_ttoi(token));
+      token = _tcstok_s(NULL, pSep, &next_token);
+    }
+    // and their widths
+    next_token = NULL;
+    token = _tcstok_s(pWidths, pSep, &next_token);
+    while(token) {
+      vi_widths.push_back(_ttoi(token));
+      token = _tcstok_s(NULL, pSep, &next_token);
+    }
+#else
+    // Capture columns shown:
+    TCHAR *token = _tcstok(pTemp, pSep);
+    while(token) {
+      vi_columns.push_back(_ttoi(token));
+      token = _tcstok(NULL, pSep);
+    }
+    // and their widths
+    token = _tcstok(pWidths, pSep);
+    while(token) {
+      vi_widths.push_back(_ttoi(token));
+      token = _tcstok(NULL, pSep);
+    }
+#endif
+
+    ASSERT(vi_columns.size() == vi_widths.size());
+    free(pTemp);
+    free(pWidths);
+  
+    int icol = 0;
+    bool bNotWanted;
+
+    for (vi_Iter = vi_columns.begin();
+         vi_Iter != vi_columns.end();
+         vi_Iter++) {
+      bNotWanted = false;
+      int icolset = (int)*vi_Iter;
+      int &iwidth = vi_widths.at(icol);
+      switch (icolset) {
+        case CItemData::GROUP:
+          cs_header.LoadString(IDS_GROUP);
+          break;
+        case CItemData::TITLE:
+          cs_header.LoadString(IDS_TITLE);
+          break;
+       case CItemData::USER:
+          cs_header.LoadString(IDS_USERNAME);
+          break;
+       case CItemData::PASSWORD:
+          cs_header.LoadString(IDS_PASSWORD);
+          break;
+       case CItemData::NOTES:
+          cs_header.LoadString(IDS_NOTES);
+          break;
+       case CItemData::CTIME:        
+          cs_header.LoadString(IDS_CREATED);
+          break;
+       case CItemData::PMTIME:
+          cs_header.LoadString(IDS_PASSWORDMODIFIED);
+          break;
+       case CItemData::ATIME:
+          cs_header.LoadString(IDS_LASTACCESSED);
+          break;
+       case CItemData::LTIME:
+          cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+          break;
+       case CItemData::RMTIME:
+          cs_header.LoadString(IDS_LASTMODIFIED);
+          break;
+       default:
+          bNotWanted = true;
+      }
+      if (!bNotWanted) {
+          m_ctlItemList.InsertColumn(icol, cs_header);
+          m_ctlItemList.SetColumnWidth(icol, iwidth);
+          hdi.lParam = icolset;
+          m_pctlItemListHdr->SetItem(icol, &hdi);
+          icol++;
+      }
+    }
+
+    SetHeaderInfo();
+
+    return;
+}
+
+void
+DboxMain::SetColumns(const std::bitset<CItemData::LAST> bscolumn)
+{
+    CString cs_header;
+    int nWidth;
+    bool bNotWanted;
+    HDITEM hdi;
+
+    hdi.mask = HDI_LPARAM;
+
+    for (int i = 15; i >0; i--) {
+      int itype = bscolumn.test(i) ? i : 0;
+      bNotWanted = false;
+      switch (itype) {
+        case CItemData::GROUP:
+          cs_header.LoadString(IDS_GROUP);
+          nWidth = LVSCW_AUTOSIZE_USEHEADER;
+          break;
+        case CItemData::TITLE:
+          cs_header.LoadString(IDS_TITLE);
+          nWidth = LVSCW_AUTOSIZE_USEHEADER;
+          break;
+        case CItemData::USER:
+          cs_header.LoadString(IDS_USERNAME);
+          nWidth = LVSCW_AUTOSIZE_USEHEADER;
+          break;
+        case CItemData::PASSWORD:
+          cs_header.LoadString(IDS_PASSWORD);
+          nWidth = LVSCW_AUTOSIZE_USEHEADER;
+          break;
+        case CItemData::NOTES:
+          cs_header.LoadString(IDS_NOTES);
+          nWidth = LVSCW_AUTOSIZE_USEHEADER;
+          break;
+        case CItemData::CTIME:        
+          cs_header.LoadString(IDS_CREATED);
+          nWidth = m_iDateTimeFieldWidth;
+          break;
+        case CItemData::PMTIME:
+          cs_header.LoadString(IDS_PASSWORDMODIFIED);
+          nWidth = m_iDateTimeFieldWidth;
+          break;
+        case CItemData::ATIME:
+          cs_header.LoadString(IDS_LASTACCESSED);
+          nWidth = m_iDateTimeFieldWidth;
+          break;
+        case CItemData::LTIME:
+          cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+          nWidth = m_iDateTimeFieldWidth;
+          break;
+        case CItemData::RMTIME:
+          cs_header.LoadString(IDS_LASTMODIFIED);
+          nWidth = m_iDateTimeFieldWidth;
+          break;
+        default:
+          bNotWanted = true;
+          nWidth = 0;  // Shut up compiler
+      }
+      if (!bNotWanted) {
+          m_ctlItemList.InsertColumn(0, cs_header);
+          m_ctlItemList.SetColumnWidth(0, nWidth);
+          hdi.lParam = itype;
+          m_pctlItemListHdr->SetItem(0, &hdi);
+      }
+    }
+
+    SetHeaderInfo();
+
+    return;
+}
+
+void
+DboxMain::SetHeaderInfo()
+{
+  int i;
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM | HDI_WIDTH | HDI_ORDER;
+
+  m_nColumns = m_pctlItemListHdr->GetItemCount();
+  ASSERT(m_nColumns > 1);  // Title & User are mandatory!
+
+  // re-initialise array
+  for (i = 0; i < CItemData::LAST; i++) {
+    m_nColumnTypeToItem[i] = -1;
+    m_nColumnOrderToItem[i] = -1;
+    m_nColumnItemType[i] = -1;
+    m_nColumnItemWidth[i] = -1;
+  }
+
+  m_pctlItemListHdr->GetOrderArray(m_nColumnOrderToItem, m_nColumns);
+
+  // Last column is special
+  m_ctlItemList.SetColumnWidth(m_nColumns - 1, LVSCW_AUTOSIZE_USEHEADER);
+
+  for (i = 0; i < m_nColumns; i++) {
+    m_pctlItemListHdr->GetItem(m_nColumnOrderToItem[i], &hdi);
+    ASSERT(i == hdi.iOrder);
+    m_nColumnTypeToItem[hdi.lParam] = hdi.iOrder;
+    m_nColumnItemType[i] = hdi.lParam;
+    m_nColumnItemWidth[i] = hdi.cxy;
+  }
+
+  // Check sort column still there
+  if (m_nColumnTypeToItem[m_iSortedColumn] == -1) {
+    // No - take highest visible
+      for (i = 0; i < CItemData::LAST; i++) {
+          if (m_nColumnTypeToItem[i] != -1) {
+              m_iSortedColumn = i;
+              break;
+          }
+      }
+  }
+}
+
+void
+DboxMain::OnResetColumns()
+{
+  int i;
+
+  // Delete all existing columns
+  for (i = 0; i < m_nColumns; i++) {
+    m_ctlItemList.DeleteColumn(0);
+  }
+
+  // re-initialise array
+  for (i = 0; i < CItemData::LAST; i++)
+    m_nColumnTypeToItem[i] = -1;
+
+  // Set default columns
+  SetColumns();
+
+  // Refresh the ListView
+  RefreshList();
+}
+
+void
+DboxMain::OnColumnPicker()
+{
+  HDITEM hdi;
+  hdi.mask = HDI_LPARAM;
+  std::bitset<CItemData::LAST> bsColumn;
+  std::bitset<CItemData::LAST> bsOldColumn;
+  std::bitset<CItemData::LAST> bsNewColumn;
+
+  int i;
+
+  for (i = 0; i < m_nColumns; i++) {
+    bsOldColumn.set(m_nColumnItemType[i], true);
+  }
+
+  CColumnPickerDlg cpk;
+
+  cpk.m_bsColumn = bsOldColumn;
+
+  int rc = cpk.DoModal();
+
+  if (rc == IDOK) {
+    if (cpk.m_bsColumn == bsColumn)
+        return;
+
+    bsNewColumn = cpk.m_bsColumn;
+
+    // Find unwanted columns and delete them
+    bsColumn = bsOldColumn & ~bsNewColumn;
+    for (i = 15; i > 0; i--) {
+      if (bsColumn.test(i)) {
+        m_ctlItemList.DeleteColumn(m_nColumnTypeToItem[i]);
+      }
+    }
+
+    // Find new columns wanted and add them to the front
+    // as we can't guess the order the user wanted
+    bsColumn = bsNewColumn & ~bsOldColumn;
+    SetColumns(bsColumn);
+
+    // Refresh the ListView
+    RefreshList();
+  }
 }

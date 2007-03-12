@@ -163,7 +163,7 @@ static void splitLeafText(const TCHAR *lt, CString &newTitle, CString &newUser)
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
   if (((DboxMain *)GetParent())->IsReadOnly())
-      return; // don't drag in read-only mode
+    return; // don't drag in read-only mode
 
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
@@ -398,7 +398,7 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   if (((DboxMain *)GetParent())->IsExplorerTree())
     tvstruct.hInsertAfter = TVI_LAST;
   else
-  tvstruct.hInsertAfter = TVI_SORT;
+    tvstruct.hInsertAfter = TVI_SORT;
   tvstruct.item.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
   hNewItem = InsertItem(&tvstruct);
   if (itemData != 0) { // Non-NULL itemData implies Leaf
@@ -438,12 +438,19 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     ASSERT(di != NULL);
     if (ci_title.Compare(ci_title0) != 0) {
         ci->SetTitle(ci_title);
-        CString newString;
-        CString oldString(tvstruct.item.pszText);
-        int pos = oldString.Find(_T(" ["));
-        newString = (CString)ci_title + (CString)oldString.Mid(pos);
+        CMyString treeDispString;
+	    treeDispString = ci_title;
+	    treeDispString += _T(" [");
+	    treeDispString += ci_user;
+	    treeDispString += _T("]");
+        if( PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWInList)) {
+		    CMyString ci_Password = ci->GetPassword();
+		    treeDispString += _T(" [");
+		    treeDispString += ci_Password;
+		    treeDispString += _T("]");
+	    }
         // Update tree label
-        SetItemText(hNewItem, newString);
+        SetItemText(hNewItem, treeDispString);
         // Update list field
         ((DboxMain *)GetParent())->UpdateListItemTitle(di->list_index, (CString)ci_title);
     }

@@ -32,6 +32,9 @@ DECLARE_HANDLE(HDROP);
 // custom message event used for system tray handling.
 #define WM_ICON_NOTIFY (WM_APP + 10)
 
+// to catch post Header drag
+#define WM_HDR_DRAG_COMPLETE (WM_APP + 20)
+
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
 // timer event number used to support lock on user-defined timeout
@@ -102,9 +105,14 @@ public:
   enum ChangeType {Clear, Data, TimeStamp};
   void SetChanged(ChangeType changed);
 
-  // when Title or User edited in tree
-  void UpdateListItemTitle(const int lindex, const CString &newTitle);
-  void UpdateListItemUser(const int lindex, const CString &newUser);
+  // when Group, Title or User edited in tree
+  void UpdateListItem(const int lindex, const int type, const CString &newText);
+  void UpdateListItemGroup(const int lindex, const CString &newGroup)
+  {UpdateListItem(lindex, CItemData::GROUP, newGroup);}
+  void UpdateListItemTitle(const int lindex, const CString &newTitle)
+  {UpdateListItem(lindex, CItemData::TITLE, newTitle);}
+  void UpdateListItemUser(const int lindex, const CString &newUser)
+  {UpdateListItem(lindex, CItemData::USER, newUser);}
   void SetHeaderInfo();
 
   void SetReadOnly(bool state);
@@ -126,15 +134,15 @@ public:
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
-  CMyListCtrl	m_ctlItemList;
+  CMyListCtrl m_ctlItemList;
 #else
-  CListCtrl	m_ctlItemList;
+  CListCtrl m_ctlItemList;
 #endif
-  CMyTreeCtrl     m_ctlItemTree;
+  CMyTreeCtrl  m_ctlItemTree;
+  CHeaderCtrl *m_pctlItemListHdr;
   //}}AFX_DATA
 
   CRUEList m_RUEList;   // recent entry lists
-  int m_nColumns;  // accessed from CompareFunc
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
@@ -204,6 +212,7 @@ protected:
   void ConfigureSystemMenu();
   afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
+  LRESULT OnHeaderDragComplete(WPARAM wParam, LPARAM lParam);
   enum STATE {LOCKED, UNLOCKED, CLOSED};  // Really shouldn't be here it, ThisMfcApp own it
   void UpdateSystemTray(const STATE s);
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
@@ -275,7 +284,10 @@ protected:
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnItemDoubleClick( NMHDR * pNotifyStruct, LRESULT * result );
+  afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderEndDrag(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnCopyPassword();
   afx_msg void OnCopyNotes();
   afx_msg void OnNew();
@@ -312,6 +324,8 @@ protected:
   afx_msg void OnUnMinimize();
   afx_msg void OnTimer(UINT nIDEvent);
   afx_msg void OnAutoType();
+  afx_msg void OnColumnPicker();
+  afx_msg void OnResetColumns();
 #if defined(POCKET_PC)
   afx_msg void OnShowPassword();
 #else
@@ -361,9 +375,16 @@ private:
   bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
+  bool m_bPasswordColumnShowing;
   bool m_bShowPasswordInList;
   bool m_bExplorerTypeTree;
   bool m_bUseGridLines;
+  int m_iDateTimeFieldWidth;
+  int m_nColumns;
+  int m_nColumnTypeToItem[CItemData::LAST];
+  int m_nColumnOrderToItem[CItemData::LAST];
+  int m_nColumnItemType[CItemData::LAST];
+  int m_nColumnItemWidth[CItemData::LAST];
   HFONT m_hFontTree;
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
@@ -388,6 +409,9 @@ private:
   void RestoreDisplayStatus();
   void GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet);
   void MakeSortedItemList(ItemList &il);
+  void SetColumns();  // default order
+  void SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsWidths);
+  void SetColumns(const std::bitset<CItemData::LAST> bscolumn);
 };
 
 // Following used to keep track of display vs data

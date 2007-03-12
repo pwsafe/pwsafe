@@ -28,6 +28,7 @@
 #define IDI_MBSTOPICON                  123
 #define IDI_MBWARNICON                  124
 #define IDB_LEAF_WARNEXPIRED            125
+#define IDR_POPCOLUMNS                  126
 #define IDD_ABOUTBOX                    200
 #define IDD_FIND                        201
 #define IDD_PASSWORDSAFE_DIALOG         202
@@ -63,6 +64,7 @@
 #define IDD_DLG_PWHIST                  232
 #define IDD_PS_SYSTEM                   233
 #define IDD_PROPERTIES                  234
+#define IDD_COLUMNPICKER                235
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -290,14 +292,25 @@
 #define IDC_PREWARNEXPIRYSPIN           1233
 #define IDC_DEFEXPLORERTREE             1234
 #define IDC_DEFENABLEGRIDLINES          1235
+#define IDC_COLPICK_GROUP               1236
+#define IDC_COLPICK_TITLE               1237
+#define IDC_COLPICK_USER                1238
+#define IDC_COLPICK_NOTES               1239
+#define IDC_COLPICK_PASSWORD            1240
+#define IDC_COLPICK_CTIME               1241
+#define IDC_COLPICK_PMTIME              1242
+#define IDC_COLPICK_ATIME               1243
+#define IDC_COLPICK_LTIME               1244
+#define IDC_COLPICK_RMTIME              1245
+#define IDC_LIST_HEADER                 1246
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        235
+#define _APS_NEXT_RESOURCE_VALUE        236
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1236
-#define _APS_NEXT_SYMED_VALUE           126
+#define _APS_NEXT_CONTROL_VALUE         1247
+#define _APS_NEXT_SYMED_VALUE           127
 #endif
 #endif
