@@ -47,8 +47,10 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(COptionsDisplay)
 	DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
 	DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_pwshowinlist);
+	DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_explorertree);
 	DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
 	DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
+	DDX_Check(pDX, IDC_DEFENABLEGRIDLINES, m_enablegrid);
 	DDX_Check(pDX, IDC_PREWARNEXPIRY, m_preexpirywarn);
 	DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_preexpirywarndays);
 #if defined(POCKET_PC)
@@ -58,13 +60,11 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(COptionsDisplay, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsDisplay)
 	ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay message handlers
@@ -107,4 +107,3 @@ BOOL COptionsDisplay::OnKillActive()
 
   return TRUE;
 }
-

@@ -67,6 +67,8 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 	{_T("ShowNotesDefault"), false, true},							// database
 	{_T("BackupBeforeEverySave"), true, false},					// application
 	{_T("PreExpiryWarn"), false, false},                            // application
+    {_T("ExplorerTypeTree"), false, false},                         // application
+    {_T("ListViewGridLines"), false, false},                        // application
 };
 
 // Default value = -1 means set at runtime
@@ -90,7 +92,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	// Specified by supported masks
 	{_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},						// application
 	{_T("BackupMaxIncremented"), 1, false, 1, 999},							// application
-    {_T("PreExpiryWarnDays"), 0, false, 1, 30},                             // application
+    {_T("PreExpiryWarnDays"), 1, false, 1, 30},                             // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

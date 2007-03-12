@@ -288,6 +288,8 @@
 #define IDC_PREWARNEXPIRY               1231
 #define IDC_PREEXPIRYWARNDAYS           1232
 #define IDC_PREWARNEXPIRYSPIN           1233
+#define IDC_DEFEXPLORERTREE             1234
+#define IDC_DEFENABLEGRIDLINES          1235
 
 // Next default values for new objects
 // 
@@ -295,7 +297,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        235
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1234
+#define _APS_NEXT_CONTROL_VALUE         1236
 #define _APS_NEXT_SYMED_VALUE           126
 #endif
 #endif
