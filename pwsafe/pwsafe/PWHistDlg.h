@@ -57,7 +57,7 @@ class CPWHistDlg : public CDialog
    public:
   afx_msg void OnBnClickedClearPWHist();
 private:
-  static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2,
+  static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                   LPARAM lParamSort);
 };
 //-----------------------------------------------------------------------------

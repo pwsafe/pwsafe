@@ -58,6 +58,14 @@ CItemField &CItemField::operator=(const CItemField &that)
   return *this;
 }
 
+void CItemField::Empty()
+{
+  if (m_Data != NULL) {
+    delete[] m_Data;
+    m_Data = NULL;
+    m_Length = 0;
+  }
+}
 
 void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *bf)
 {

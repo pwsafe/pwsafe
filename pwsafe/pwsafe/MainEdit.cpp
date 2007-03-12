@@ -199,6 +199,7 @@ DboxMain::Delete(bool inRecursion)
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteWithParents(curTree_item);
     delete di;
+
     m_core.RemoveEntryAt(listindex);
     FixListIndexes();
     if (m_ctlItemList.IsWindowVisible()) {
@@ -311,7 +312,7 @@ DboxMain::EditItem(CItemData *ci)
       CItemData oldElem = GetEntryAt(listpos);
       DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
       ASSERT(di != NULL);
-      // editedItem's dispinfo may have been deleted if
+      // editedItem's displayinfo may have been deleted if
       // application "locked" (Cleared list)
       DisplayInfo *ndi = new DisplayInfo;
       ndi->list_index = -1; // so that insertItem will set new values
@@ -324,6 +325,8 @@ DboxMain::EditItem(CItemData *ci)
       m_ctlItemTree.DeleteWithParents(di->tree_item);
       insertItem(m_core.GetTailEntry());
       FixListIndexes();
+      // Now delete old entry's DisplayInfo
+      delete di;
       if (PWSprefs::GetInstance()->
           GetPref(PWSprefs::SaveImmediately)) {
         Save();
@@ -396,7 +399,6 @@ DboxMain::OnDuplicateEntry()
     CMyString tmp = ci->GetPWHistory();
     if (tmp.GetLength() >= 5)
     	    ci2.SetPWHistory(tmp);
-
     // Add it to the end of the list      
     m_core.AddEntryToTail(ci2);
     di->list_index = -1; // so that insertItem will set new values

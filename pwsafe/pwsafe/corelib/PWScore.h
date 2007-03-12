@@ -68,7 +68,7 @@ class PWScore {
   int WriteV2File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const CMyString &filename,
-                         const std::bitset<16> &bsExport,
+                         const std::bitset<CItemData::LAST> &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
 						 const ItemList *il = NULL);
