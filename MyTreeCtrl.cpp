@@ -13,13 +13,9 @@
 
 // Need a set to keep track of what nodes are expanded, to re-expand
 // after minimize
-#pragma warning(disable:4786)
-#pragma warning(push,3) // sad that VC6 cannot cleanly compile standard headers
 #include <set>
-#pragma warning(pop)
 
 using namespace std ;
-
 
 #include "stdafx.h"
 #include "MyTreeCtrl.h"

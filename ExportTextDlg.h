@@ -24,6 +24,8 @@
   #include "resource3.h"  // String resources
 #endif
 
+#include "corelib/ItemData.h"
+
 class CExportTextDlg : public CDialog
 {
 // Construction
@@ -37,7 +39,7 @@ public:
 	CString m_defexpdelim;
 	//}}AFX_DATA
 
-	std::bitset<16> m_bsExport;
+	std::bitset<CItemData::LAST> m_bsExport;
 	CString m_subgroup;
 	int m_subgroup_object, m_subgroup_function;
 

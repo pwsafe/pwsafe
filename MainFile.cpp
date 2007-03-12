@@ -743,7 +743,7 @@ DboxMain::OnExportText()
                     return;
             } // while (1)
 
-            const std::bitset<16> bsExport = et.m_bsExport;
+            const std::bitset<CItemData::LAST> bsExport = et.m_bsExport;
             const CString subgroup = et.m_subgroup;
             const int iObject = et.m_subgroup_object;
             const int iFunction = et.m_subgroup_function;
@@ -1388,7 +1388,7 @@ DboxMain::OnCompare()
 struct st_Conflict {
   POSITION cPos;
   POSITION nPos;
-  std::bitset<16> bsDiffs;
+  std::bitset<CItemData::LAST> bsDiffs;
 };
 
 int
@@ -1469,7 +1469,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 	int numOnlyInComp = 0;
 	int numConflicts = 0;
 
-	std::bitset<16> bsConflicts (0);
+	std::bitset<CItemData::LAST> bsConflicts (0);
 	st_Conflict * st_diff;
 
 	POSITION currentPos = m_core.GetFirstEntryPosition();

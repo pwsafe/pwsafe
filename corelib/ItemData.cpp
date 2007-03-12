@@ -230,7 +230,7 @@ CItemData::GetPWHistory() const
   return ret;
 }
 
-CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<16> &bsFields,
+CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<CItemData::LAST> &bsFields,
                                   const CString &subgroup, const int &iObject, const int &iFunction,
                                   const TCHAR &delimiter) const
 {
@@ -846,20 +846,19 @@ CItemData::operator=(const CItemData &that)
 void
 CItemData::Clear()
 {
-  CMyString blank(_T(""));
-  SetTitle(blank);
-  SetUser(blank);
-  SetPassword(blank);
-  SetNotes(blank);
-  SetGroup(blank);
-  SetURL(blank);
-  SetAutoType(blank);
-  SetCTime((time_t) 0);
-  SetPMTime((time_t) 0);
-  SetATime((time_t) 0);
-  SetLTime((time_t) 0);
-  SetRMTime((time_t) 0);
-  SetPWHistory(_T(""));
+  m_Title.Empty();
+  m_User.Empty();
+  m_Password.Empty();
+  m_Notes.Empty();
+  m_Group.Empty();
+  m_URL.Empty();
+  m_AutoType.Empty();
+  m_tttCTime.Empty();
+  m_tttPMTime.Empty();
+  m_tttATime.Empty();
+  m_tttLTime.Empty();
+  m_tttRMTime.Empty();
+  m_PWHistory.Empty();
 }
 
 int
