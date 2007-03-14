@@ -397,31 +397,7 @@ DboxMain::InitPasswordSafe()
     m_IsListView = false;
   }
 
-  // Get default column width for datetime fields
-  TCHAR time_str[80], datetime_str[80];
-  // Use "fictitious" longest English date
-  SYSTEMTIME systime;
-  systime.wYear = (WORD)2000;
-  systime.wMonth = (WORD)9;
-  systime.wDay = (WORD)30;
-  systime.wDayOfWeek = (WORD)3;
-  systime.wHour = (WORD)23;
-  systime.wMinute = (WORD)44;
-  systime.wSecond = (WORD)55;
-  systime.wMilliseconds = (WORD)0;
-  TCHAR szBuf[80];
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SLONGDATE, szBuf, 80));
-  GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
-  szBuf[0] = _T(' ');  // Put a blank between date and time
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
-  GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
-#if _MSC_VER >= 1400
-  _tcscat_s(datetime_str, 80, time_str);
-#else
-  _tcscat(datetime_str, 80, time_str);
-#endif
-
-  m_iDateTimeFieldWidth = m_ctlItemList.GetStringWidth(datetime_str) + 6;
+  CalcHeaderWidths();
 
   CString cs_ListColumns = prefs->GetPref(PWSprefs::ListColumns);
   CString cs_ListColumnsWidths = prefs->GetPref(PWSprefs::ColumnWidths);
@@ -511,7 +487,7 @@ DboxMain::OnHeaderDragComplete(WPARAM , LPARAM)
     TRACE("After drag\n");
     for (int i = 0; i < m_nColumns; i++) {
       TRACE("Column=%d,OrderToItem=%d,ItemType=%d,ItemWidth=%d\n", i,
-          m_nColumnOrderToItem[i], m_nColumnItemType[i], m_nColumnItemWidth[i]);
+          m_nColumnOrderToItem[i], m_nColumnTypeByItem[i], m_nColumnWidthByItem[i]);
     }
     TRACE("TypeToItem=");
     for (int i = 0; i < CItemData::LAST; i++) {
@@ -1769,6 +1745,16 @@ DboxMain::UpdateAccessTime(CItemData *ci)
   if (!m_IsReadOnly && bMaintainDateTimeStamps) {
     ci->SetATime();
     SetChanged(TimeStamp);
+    // Need to update view if there
+    if (m_nColumnTypeToItem[CItemData::ATIME] != -1) {
+       // Get index of entry
+       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+       // Get value in correct format
+       CString cs_atime = ci->GetATimeL();
+       // Update it
+       m_ctlItemList.SetItemText(di->list_index,
+           m_nColumnTypeToItem[CItemData::ATIME], cs_atime);
+    }
   }
 }
 
