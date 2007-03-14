@@ -114,6 +114,9 @@ public:
   void UpdateListItemUser(const int lindex, const CString &newUser)
   {UpdateListItem(lindex, CItemData::USER, newUser);}
   void SetHeaderInfo();
+  CString GetHeaderText(const int ihdr);
+  int GetHeaderWidth(const int ihdr);
+  void CalcHeaderWidths();
 
   void SetReadOnly(bool state);
   bool IsReadOnly() const {return m_IsReadOnly;};
@@ -383,8 +386,9 @@ private:
   int m_nColumns;
   int m_nColumnTypeToItem[CItemData::LAST];
   int m_nColumnOrderToItem[CItemData::LAST];
-  int m_nColumnItemType[CItemData::LAST];
-  int m_nColumnItemWidth[CItemData::LAST];
+  int m_nColumnTypeByItem[CItemData::LAST];
+  int m_nColumnWidthByItem[CItemData::LAST];
+  int m_nColumnHeaderWidthByType[CItemData::LAST];
   HFONT m_hFontTree;
   LOGFONT m_treefont;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
@@ -412,6 +416,7 @@ private:
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsWidths);
   void SetColumns(const std::bitset<CItemData::LAST> bscolumn);
+  void ResizeColumns();
 };
 
 // Following used to keep track of display vs data

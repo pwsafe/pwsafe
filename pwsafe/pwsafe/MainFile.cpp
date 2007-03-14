@@ -1709,11 +1709,11 @@ DboxMain::OnOK()
 
   for (int i = 0; i < m_nColumns; i++) {
 #if _MSC_VER >= 1400
-    _itot_s(m_nColumnItemType[i], buffer, 8, 10);
-    _itot_s(m_nColumnItemWidth[i], widths, 8, 10);
+    _itot_s(m_nColumnTypeByItem[i], buffer, 8, 10);
+    _itot_s(m_nColumnWidthByItem[i], widths, 8, 10);
 #else
-    _itot(m_nColumnItemType[i], buffer, 10);
-    _itot(m_nColumnItemWidth[i], widths, 10);
+    _itot(m_nColumnTypeByItem[i], buffer, 10);
+    _itot(m_nColumnWidthByItem[i], widths, 10);
 #endif
     cs_columns += buffer;
     cs_columnswidths += widths;
