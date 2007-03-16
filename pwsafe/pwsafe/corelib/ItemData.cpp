@@ -14,8 +14,6 @@
 #include "PWSrand.h"
 
 #include <time.h>
-#include <vector>
-#include <bitset>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -230,8 +228,10 @@ CItemData::GetPWHistory() const
   return ret;
 }
 
-CMyString CItemData::GetPlaintext(const TCHAR &separator, const std::bitset<CItemData::LAST> &bsFields,
-                                  const CString &subgroup, const int &iObject, const int &iFunction,
+CMyString CItemData::GetPlaintext(const TCHAR &separator,
+                                  const FieldBits &bsFields,
+                                  const CString &subgroup, const int &iObject,
+                                  const int &iFunction,
                                   const TCHAR &delimiter) const
 {
     CMyString ret(_T(""));

@@ -15,7 +15,6 @@
 #include "ItemField.h"
 #include "UUIDGen.h"
 #include <time.h> // for time_t
-#include <vector>
 #include <bitset>
 
 // Password History Entry structure for CList
@@ -64,6 +63,9 @@ public:
   enum {SGF_EQUALS = 1, SGF_NOTEQUAL, SGF_BEGINS, SGF_NOTBEGIN, SGF_ENDS, SGF_NOTEND, SGF_CONTAINS, SGF_NOTCONTAIN};
   // SubGroup Object
   enum {SGO_GROUP, SGO_TITLE, SGO_USER, SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
+
+ // a bitset for indicating a subset of an item's fields: 
+  typedef std::bitset<LAST> FieldBits;
 
   static void SetSessionKey(); // call exactly once per session
    //Construction
@@ -115,7 +117,7 @@ public:
    CMyString GetPWHistory() const;  // V30
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
    // it's used for multi-line notes and to replace '.' within the Title field.
-   CMyString GetPlaintext(const TCHAR &separator, const std::bitset<CItemData::LAST> &bsExport,
+   CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
    						const CString &subgroup, const int &iObject, const int &iFunction,
    						const TCHAR &delimiter) const;
 

@@ -16,9 +16,6 @@
 #include "MyString.h"
 #include "PWSfile.h"
 
-#include <vector>
-#include <bitset>
-
 #define MAXDEMO 10
 
 typedef CList<CItemData,CItemData> ItemList; 
@@ -68,7 +65,7 @@ class PWScore {
   int WriteV2File(const CMyString &filename)
     {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const CMyString &filename,
-                         const std::bitset<CItemData::LAST> &bsExport,
+                         const CItemData::FieldBits &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
 						 const ItemList *il = NULL);
