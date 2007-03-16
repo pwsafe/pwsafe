@@ -28,7 +28,6 @@
 #include <algorithm>
 using namespace std;
 
-#include <bitset>
 
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
@@ -136,7 +135,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 
 int
 PWScore::WritePlaintextFile(const CMyString &filename,
-                            const std::bitset<CItemData::LAST> &bsFields,
+                            const CItemData::FieldBits &bsFields,
 							const CString &subgroup,
 							const int &iObject, const int &iFunction,
 							TCHAR &delimiter, const ItemList *il)

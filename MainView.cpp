@@ -1491,27 +1491,25 @@ DboxMain::SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsW
 }
 
 void
-DboxMain::SetColumns(const std::bitset<CItemData::LAST> bscolumn)
+DboxMain::SetColumns(const CItemData::FieldBits bscolumn)
 {
     CString cs_header;
     HDITEM hdi;
 
     hdi.mask = HDI_LPARAM;
 
-    for (int i = CItemData::LAST; i >0; i--) {
-      int itype = bscolumn.test(i) ? i : 0;
-      cs_header = GetHeaderText(itype);
-      if (!cs_header.IsEmpty()) {
-          m_ctlItemList.InsertColumn(0, cs_header);
-          m_ctlItemList.SetColumnWidth(0, GetHeaderWidth(itype));
-          hdi.lParam = itype;
-          m_pctlItemListHdr->SetItem(0, &hdi);
-      }
+    for (int i = CItemData::LAST - 1; i >= 0; i--) {
+        int itype = bscolumn.test(i) ? i : 0; // repeat operation on column 0?
+        cs_header = GetHeaderText(itype);
+        if (!cs_header.IsEmpty()) {
+            m_ctlItemList.InsertColumn(0, cs_header);
+            m_ctlItemList.SetColumnWidth(0, GetHeaderWidth(itype));
+            hdi.lParam = itype;
+            m_pctlItemListHdr->SetItem(0, &hdi);
+        }
     }
 
     SetHeaderInfo();
-
-    return;
 }
 
 void
@@ -1606,9 +1604,9 @@ DboxMain::OnColumnPicker()
 {
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
-  std::bitset<CItemData::LAST> bsColumn;
-  std::bitset<CItemData::LAST> bsOldColumn;
-  std::bitset<CItemData::LAST> bsNewColumn;
+  CItemData::FieldBits bsColumn;
+  CItemData::FieldBits bsOldColumn;
+  CItemData::FieldBits bsNewColumn;
 
   int i;
 
@@ -1630,7 +1628,7 @@ DboxMain::OnColumnPicker()
 
     // Find unwanted columns and delete them
     bsColumn = bsOldColumn & ~bsNewColumn;
-    for (i = CItemData::LAST; i > 0; i--) {
+    for (i = CItemData::LAST - 1; i >= 0; i--) {
       if (bsColumn.test(i)) {
         m_ctlItemList.DeleteColumn(m_nColumnTypeToItem[i]);
       }
