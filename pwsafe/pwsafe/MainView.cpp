@@ -1332,13 +1332,13 @@ DboxMain::LaunchBrowser(const CString &csURL)
 void
 DboxMain::SetColumns()
 {
+  // User hasn't yet saved the columns he/she wants and so gets our order!
+  // Or - user has reset the columns (popup menu from right click on Header)
   CString cs_header;
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
 
   int ipwd = m_bShowPasswordInList ? 1 : 0;
-  //  User hasn't yet saved the columns he/she wants
-  //  Gets our order!
 
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
@@ -1419,11 +1419,11 @@ DboxMain::SetColumns()
 void
 DboxMain::SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsWidths)
 {
+  //  User has saved the columns he/she wants and now we are putting them back
     CString cs_header;
     HDITEM hdi;
     hdi.mask = HDI_LPARAM;
 
-    //  User has saved the columns he/she wants
     std::vector<int> vi_columns;
     std::vector<int> vi_widths;
     std::vector<int>::const_iterator vi_Iter;
@@ -1493,20 +1493,24 @@ DboxMain::SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsW
 void
 DboxMain::SetColumns(const CItemData::FieldBits bscolumn)
 {
+  // User has changed columns he/she wants and we have deleted the ones
+  // not required.
+  // Now add any new columns in reverse order at the beginning of the display
     CString cs_header;
     HDITEM hdi;
 
     hdi.mask = HDI_LPARAM;
 
     for (int i = CItemData::LAST - 1; i >= 0; i--) {
-        int itype = bscolumn.test(i) ? i : 0; // repeat operation on column 0?
-        cs_header = GetHeaderText(itype);
+      if (bscolumn.test(i)) {
+        cs_header = GetHeaderText(i);
         if (!cs_header.IsEmpty()) {
             m_ctlItemList.InsertColumn(0, cs_header);
-            m_ctlItemList.SetColumnWidth(0, GetHeaderWidth(itype));
-            hdi.lParam = itype;
+            m_ctlItemList.SetColumnWidth(0, GetHeaderWidth(i));
+            hdi.lParam = i;
             m_pctlItemListHdr->SetItem(0, &hdi);
         }
+      }
     }
 
     SetHeaderInfo();
@@ -1628,22 +1632,24 @@ DboxMain::OnColumnPicker()
 
     // Find unwanted columns and delete them
     bsColumn = bsOldColumn & ~bsNewColumn;
-    for (i = CItemData::LAST - 1; i >= 0; i--) {
-      if (bsColumn.test(i)) {
-        m_ctlItemList.DeleteColumn(m_nColumnTypeToItem[i]);
+    if (bsColumn.any()) {
+      for (i = CItemData::LAST - 1; i >= 0; i--) {
+        if (bsColumn.test(i)) {
+          m_ctlItemList.DeleteColumn(m_nColumnTypeToItem[i]);
+        }
       }
     }
 
     // Find new columns wanted and add them to the front
     // as we can't guess the order the user wanted
     bsColumn = bsNewColumn & ~bsOldColumn;
-    SetColumns(bsColumn);
+    if (bsColumn.any())
+      SetColumns(bsColumn);
 
     // Refresh the ListView
     RefreshList();
     ResizeColumns();
   }
-
 }
 
 CString DboxMain::GetHeaderText(const int ihdr)
