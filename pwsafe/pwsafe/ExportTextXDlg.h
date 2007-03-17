@@ -41,7 +41,7 @@ public:
 
 	//}}AFX_DATA
 
-	std::bitset<CItemData::LAST> m_bsExport;
+	CItemData::FieldBits m_bsExport;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
