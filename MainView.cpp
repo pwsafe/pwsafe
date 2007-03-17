@@ -1207,9 +1207,10 @@ DboxMain::OnChangeFont()
     // transfer the fonts to the tree and list windows
     m_ctlItemTree.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
     m_ctlItemList.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
+    m_pctlItemListHdr->SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
     // now can get rid of the old font
     ::DeleteObject(hOldFontTree);
-        
+
     CString str;
     str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
                lf.lfHeight,
