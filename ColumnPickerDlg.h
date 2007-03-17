@@ -22,7 +22,6 @@
 #endif
 
 #include "corelib/ItemData.h"
-#include <bitset>
 
 class CColumnPickerDlg : public CDialog
 {
@@ -37,7 +36,7 @@ public:
 		m_column_ctime, m_column_pmtime, m_column_atime, m_column_ltime, m_column_rmtime;
 	//}}AFX_DATA
 
-	std::bitset<CItemData::LAST> m_bsColumn;
+	CItemData::FieldBits m_bsColumn;
 
 // Overrides
 	// ClassWizard generated virtual function overrides

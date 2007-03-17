@@ -415,7 +415,7 @@ private:
   void MakeSortedItemList(ItemList &il);
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsWidths);
-  void SetColumns(const std::bitset<CItemData::LAST> bscolumn);
+  void SetColumns(const CItemData::FieldBits bscolumn);
   void ResizeColumns();
 };
 

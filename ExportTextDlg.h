@@ -38,8 +38,8 @@ public:
 	CString	m_exportTextPassword;
 	CString m_defexpdelim;
 	//}}AFX_DATA
-
-	std::bitset<CItemData::LAST> m_bsExport;
+ 
+	CItemData::FieldBits m_bsExport;
 	CString m_subgroup;
 	int m_subgroup_object, m_subgroup_function;
 
