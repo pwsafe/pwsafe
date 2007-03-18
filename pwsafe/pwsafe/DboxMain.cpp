@@ -984,10 +984,18 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
                 cs_PID = _T("");
             const CString cs_title(MAKEINTRESOURCE(IDS_FILEINUSE));
             CString cs_str;
+#ifdef PWS_STRICT_LOCKING // define if you don't want to allow user override
+            cs_str.Format(IDS_STRICT_LOCKED, curFile, cs_user_and_host, cs_PID);
+            int user_choice = MessageBox(cs_str, cs_title,
+                                         MB_OKCANCEL|MB_ICONQUESTION);
+#else
             cs_str.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
-            switch(MessageBox(cs_str, cs_title,
-                              MB_YESNOCANCEL|MB_ICONQUESTION)) {
+            int user_choice = MessageBox(cs_str, cs_title,
+                                         MB_YESNOCANCEL|MB_ICONQUESTION);
+#endif
+            switch(user_choice) {
                 case IDYES:
+                case IDOK:
                     SetReadOnly(true);
                     retval = PWScore::SUCCESS;
                     break;
