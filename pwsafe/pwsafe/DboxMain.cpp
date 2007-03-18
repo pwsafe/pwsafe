@@ -77,7 +77,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bSortAscending(true), m_iSortedColumn(CItemData::TITLE),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_lock_displaystatus(_T("")),
-     m_hFontTree(NULL), m_IsReadOnly(false),
+     m_pFontTree(NULL), m_IsReadOnly(false),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
@@ -125,8 +125,8 @@ DboxMain::~DboxMain()
 {
   delete m_pchTip;
   delete m_pwchTip;
+  delete m_pFontTree;
 
-  ::DeleteObject(m_hFontTree);
   CFindDlg::EndIt();
   // Save Find wrap value
   PWSprefs::GetInstance()->SetPref(PWSprefs::FindWraps, m_bFindWrap);
@@ -388,6 +388,22 @@ DboxMain::InitPasswordSafe()
   m_pctlItemListHdr = m_ctlItemList.GetHeaderCtrl();
   m_pctlItemListHdr->SetDlgCtrlID(IDC_LIST_HEADER);
 
+  // Set up fonts before playing with Tree/List views
+  m_pFontTree = new CFont;
+  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont);
+
+  if (szTreeFont != _T("")) {
+    LOGFONT *ptreefont = new LOGFONT;
+    memset(ptreefont, 0, sizeof(LOGFONT)); 
+    ExtractFont(szTreeFont, ptreefont);
+    m_pFontTree->CreateFontIndirect(ptreefont);
+    // transfer the fonts to the tree windows
+    m_ctlItemTree.SetFont(m_pFontTree);
+    m_ctlItemList.SetFont(m_pFontTree);
+    m_pctlItemListHdr->SetFont(m_pFontTree);
+    delete ptreefont;
+  }
+
   const CString lastView = prefs->GetPref(PWSprefs::LastView);
   m_IsListView = true;
   if (lastView != _T("list")) {
@@ -446,16 +462,6 @@ DboxMain::InitPasswordSafe()
 
   m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefUser));
   m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefUserName));
-
-  CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont);
-
-  if (szTreeFont != _T("")) {
-    ExtractFont(szTreeFont);
-    m_hFontTree = ::CreateFontIndirect(&m_treefont);
-    // transfer the fonts to the tree windows
-    m_ctlItemTree.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
-    m_ctlItemList.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
-  }
 
   SetMenu(app.m_mainmenu);  // Now show menu...
 }

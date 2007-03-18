@@ -389,8 +389,7 @@ private:
   int m_nColumnTypeByItem[CItemData::LAST];
   int m_nColumnWidthByItem[CItemData::LAST];
   int m_nColumnHeaderWidthByType[CItemData::LAST];
-  HFONT m_hFontTree;
-  LOGFONT m_treefont;
+  CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   CString m_lock_displaystatus;
   bool m_inExit; // help U3ExitNow
@@ -402,7 +401,7 @@ private:
   void ResetIdleLockCounter();
   bool DecrementAndTestIdleLockCounter();
   void ToClipboard(const CMyString &data);
-  void ExtractFont(CString& str);
+  void ExtractFont(CString& str, LOGFONT *ptreefont);
   CString GetToken(CString& str, LPCTSTR c);
   int SaveIfChanged();
   void CheckExpiredPasswords();

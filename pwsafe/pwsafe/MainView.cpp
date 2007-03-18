@@ -1194,22 +1194,27 @@ BOOL DboxMain::IsWorkstationLocked() const
 void
 DboxMain::OnChangeFont() 
 {
-  HFONT hOldFontTree = (HFONT) m_ctlItemTree.SendMessage(WM_GETFONT);
+  CFont *pOldFontTree;
+  pOldFontTree = m_ctlItemTree.GetFont();
 
   // make sure we know what is inside the font.
   LOGFONT lf;
-  ::GetObject(hOldFontTree, sizeof lf, &lf);
+  pOldFontTree->GetLogFont(&lf);
 
   // present it and possibly change it
   CFontDialog dlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
   if(dlg.DoModal() == IDOK) {
-    m_hFontTree = ::CreateFontIndirect(&lf);
+    m_pFontTree->DeleteObject();
+    m_pFontTree->CreateFontIndirect(&lf);
     // transfer the fonts to the tree and list windows
-    m_ctlItemTree.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
-    m_ctlItemList.SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
-    m_pctlItemListHdr->SendMessage(WM_SETFONT, (WPARAM) m_hFontTree, true);
-    // now can get rid of the old font
-    ::DeleteObject(hOldFontTree);
+    m_ctlItemTree.SetFont(m_pFontTree);
+    m_ctlItemList.SetFont(m_pFontTree);
+    m_pctlItemListHdr->SetFont(m_pFontTree);
+
+    // Recalculate header widths
+    CalcHeaderWidths();
+    // Reset column widths
+    ResizeColumns();
 
     CString str;
     str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
@@ -1234,29 +1239,31 @@ DboxMain::OnChangeFont()
 }
 
 void
-DboxMain::ExtractFont(CString& str)
+DboxMain::ExtractFont(CString& str, LOGFONT *ptreefont)
 {
+  ptreefont->lfHeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfWidth = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfEscapement = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfOrientation = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfWeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
+
 #pragma warning(push)
-#pragma warning(disable:4244)  // possible loss of data 'int' to 'unsigned char'
-  m_treefont.lfHeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfWidth = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfEscapement = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfOrientation = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfWeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfItalic = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfUnderline = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfStrikeOut = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfCharSet = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfOutPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfClipPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfQuality = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  m_treefont.lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-#if (_MSC_VER >= 1400)
-  _tcscpy_s(m_treefont.lfFaceName, LF_FACESIZE, str);
-#else
-  _tcscpy(m_treefont.lfFaceName, str);
-#endif  
+#pragma warning(disable:4244) //conversion from 'int' to 'BYTE', possible loss of data
+  ptreefont->lfItalic = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfUnderline = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfStrikeOut = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfCharSet = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfOutPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfClipPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfQuality = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  ptreefont->lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(str, _T(",")));
 #pragma warning(pop)
+
+#if (_MSC_VER >= 1400)
+  _tcscpy_s(ptreefont->lfFaceName, LF_FACESIZE, str);
+#else
+  _tcscpy(ptreefont->lfFaceName, str);
+#endif  
 }
 
 CString
@@ -1558,12 +1565,16 @@ DboxMain::SetHeaderInfo()
 
   for (i = 0; i < (m_nColumns - 1); i++) {
     int itype = m_nColumnTypeByItem[m_nColumnOrderToItem[i]];
-    if (m_nColumnWidthByItem[m_nColumnOrderToItem[i]] < m_nColumnHeaderWidthByType[itype])
+    if (m_nColumnWidthByItem[m_nColumnOrderToItem[i]] < m_nColumnHeaderWidthByType[itype]) {
       m_ctlItemList.SetColumnWidth(i, m_nColumnHeaderWidthByType[itype]);
+      m_nColumnWidthByItem[m_nColumnOrderToItem[i]] = m_nColumnHeaderWidthByType[itype];
+    }
   }
 
   // Last column is special
   m_ctlItemList.SetColumnWidth(m_nColumns - 1, LVSCW_AUTOSIZE_USEHEADER);
+  m_nColumnWidthByItem[m_nColumnOrderToItem[m_nColumns - 1]] = 
+    m_ctlItemList.GetColumnWidth(m_nColumns - 1);
 }
 
 void
