@@ -17,6 +17,8 @@ Bugs fixed in 3.07
 empty.
 [1679461, 1612567] Text in Password field no longer truncated with large
 texts.
+[1682516] Menu display no longer trashed if accelerator pressed with
+an open menu.
 [TODO] - Update online help with appendix describing
 dbase/cfg/registry preference logic (or lack of thereof).
 [TODO] - Add '-c config file path' command line option?
