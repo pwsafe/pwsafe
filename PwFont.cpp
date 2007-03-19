@@ -26,7 +26,7 @@ SetPasswordFont(CWnd* pDlgItem)
 	CFont *pw_font;
     HFONT hfont;
     TCHAR* tch_fontname;
-    const int ifontsize = 16;
+    const int ifontsize = -16;
     tch_fontname = _T("MS Sans Serif");
 
     // Note these font names are less than the max. permitted length (LF_FACESIZE = 31 + null)
@@ -36,7 +36,7 @@ SetPasswordFont(CWnd* pDlgItem)
     // in a LOGFONT structure.
     LOGFONT lf;
     memset(&lf, 0, sizeof(LOGFONT));	  // clear out structure
-    lf.lfHeight = ifontsize;		  // request a 14-pixel-height font
+    lf.lfHeight = ifontsize;
     _tcsncpy(lf.lfFaceName, tch_fontname, _tcslen(tch_fontname));      // UNICODE safe string copy
 	lf.lfPitchAndFamily = FF_SWISS;
     hfont = ::CreateFontIndirect(&lf);	  // create the font (must be deleted with ::DeleteObject()
