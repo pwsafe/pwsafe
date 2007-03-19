@@ -21,7 +21,8 @@ New Features for 3.07
 
 Changes to Existing Features in 3.07
 ====================================
--
+List view columns now selectable, entries sortable by any column,
+settings are persistent - Thanks to DK.
 
 
 Bugs fixed in 3.06.01
