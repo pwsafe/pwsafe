@@ -914,8 +914,9 @@ ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
     CWinApp::ProcessMessageFilter(code, lpMsg);
 
   if (m_bUseAccelerator &&
-      m_maindlg != NULL
-      && m_ghAccelTable != NULL) {
+      m_maindlg != NULL &&
+      m_ghAccelTable != NULL &&
+      code != MSGF_MENU) {
     if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))
       return TRUE;
   }
