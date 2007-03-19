@@ -1564,10 +1564,11 @@ DboxMain::SetHeaderInfo()
   }
 
   for (i = 0; i < (m_nColumns - 1); i++) {
-    int itype = m_nColumnTypeByItem[m_nColumnOrderToItem[i]];
-    if (m_nColumnWidthByItem[m_nColumnOrderToItem[i]] < m_nColumnHeaderWidthByType[itype]) {
-      m_ctlItemList.SetColumnWidth(i, m_nColumnHeaderWidthByType[itype]);
-      m_nColumnWidthByItem[m_nColumnOrderToItem[i]] = m_nColumnHeaderWidthByType[itype];
+      const int j = m_nColumnOrderToItem[i];
+      const int itype = m_nColumnTypeByItem[j];
+      if (m_nColumnWidthByItem[j] < m_nColumnHeaderWidthByType[itype]) {
+          m_ctlItemList.SetColumnWidth(i, m_nColumnHeaderWidthByType[itype]);
+          m_nColumnWidthByItem[j] = m_nColumnHeaderWidthByType[itype];
     }
   }
 
@@ -1604,15 +1605,16 @@ DboxMain::OnResetColumns()
 void
 DboxMain::ResizeColumns()
 {
-  for (int i = 0; i < (m_nColumns - 1); i++) {
-    m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE);
-    int itype = m_nColumnTypeByItem[m_nColumnOrderToItem[i]];
-    if (m_nColumnWidthByItem[m_nColumnOrderToItem[i]] < m_nColumnHeaderWidthByType[itype])
-      m_ctlItemList.SetColumnWidth(i, m_nColumnHeaderWidthByType[itype]);
-  }
+    for (int i = 0; i < (m_nColumns - 1); i++) {
+        const int j = m_nColumnOrderToItem[i];
+        const int itype = m_nColumnTypeByItem[j];
+        m_ctlItemList.SetColumnWidth(i, LVSCW_AUTOSIZE);
+        if (m_nColumnWidthByItem[j] < m_nColumnHeaderWidthByType[itype])
+            m_ctlItemList.SetColumnWidth(i, m_nColumnHeaderWidthByType[itype]);
+    }
 
-  // Last column is special
-  m_ctlItemList.SetColumnWidth(m_nColumns - 1, LVSCW_AUTOSIZE_USEHEADER);
+    // Last column is special
+    m_ctlItemList.SetColumnWidth(m_nColumns - 1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
 void
