@@ -13,30 +13,27 @@ Bugs fixed in 3.07
 [1675716] <ESC> to close application now works
 [1673028] Merge operation now fixed
 [1673028] Similar problem in Compare operation fixed
-
-New Features for 3.07
-========================
--
-
-
-Changes to Existing Features in 3.07
-====================================
-List view columns now selectable, entries sortable by any column,
-settings are persistent - Thanks to DK.
-
-
-Bugs fixed in 3.06.01
-=====================
-[1660721] Autotype menu & shortcut no longer disabled if field is empty.
+[1660721] Autotype menu & shortcut no longer disabled if field is
+empty.
+[1679461, 1612567] Text in Password field no longer truncated with large
+texts.
 [TODO] - Update online help with appendix describing
 dbase/cfg/registry preference logic (or lack of thereof).
 [TODO] - Add '-c config file path' command line option?
 
-New Features for 3.06.01
+New Features for 3.07
 ========================
 [] - Password expiration notice can now be given a few days prior to
 actual expiration
 [] - Exported/imported text format is now documented in online help
+
+Changes to Existing Features in 3.07
+====================================
+[] List view columns now selectable, entries sortable by any column,
+settings are persistent - Thanks to DK.
+[] List view may be configured to show Grid lines.
+[] Tree view may be configured to show all groups first, instead of
+strict alphabetic order.
 
 New Features for 3.06
 =====================
