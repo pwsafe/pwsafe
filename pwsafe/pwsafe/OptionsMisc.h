@@ -43,6 +43,7 @@ public:
 	int     m_doubleclickaction;
 	int		m_DCA_to_Index[PWSprefs::maxDCA + 1];
 	CString m_csBrowser;
+	CString m_csAutotype;
 
 // Overrides
 	// ClassWizard generate virtual function overrides

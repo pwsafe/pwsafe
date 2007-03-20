@@ -303,6 +303,7 @@
 #define IDC_COLPICK_LTIME               1244
 #define IDC_COLPICK_RMTIME              1245
 #define IDC_LIST_HEADER                 1246
+#define IDC_DEFAULTAUTOTYPE             1247
 
 // Next default values for new objects
 // 
@@ -310,7 +311,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        236
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1247
+#define _APS_NEXT_CONTROL_VALUE         1248
 #define _APS_NEXT_SYMED_VALUE           127
 #endif
 #endif

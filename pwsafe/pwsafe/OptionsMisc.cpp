@@ -61,6 +61,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
 	DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
 	DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_otherbrowserlocation);
+	DDX_Text(pDX, IDC_DEFAULTAUTOTYPE, m_csAutotype);
 	//}}AFX_DATA_MAP
 }
 

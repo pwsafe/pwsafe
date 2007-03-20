@@ -106,6 +106,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 	{_T("AltBrowser"), _T(""), false},								// application
 	{_T("ListColumns"), _T(""), false},								// application
     {_T("ColumnWidths"), _T(""), false},							// application
+    {_T("DefaultAutotypeString"), _T(""), true},					// database
 };
 
 

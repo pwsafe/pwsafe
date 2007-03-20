@@ -66,7 +66,7 @@ class PWSprefs {
           NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
-          ColumnWidths,
+          ColumnWidths, DefaultAutotypeString,
 		  NumStringPrefs};
 
   // for DoubleClickAction
