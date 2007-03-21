@@ -542,8 +542,8 @@ DboxMain::AutoType(const CItemData &ci)
 
   // If empty, try the database default
   if (AutoCmd.IsEmpty()) {
-    AutoCmd = CMyString(PWSprefs::GetInstance()->
-                      GetPref(PWSprefs::DefaultAutotypeString));
+    AutoCmd = PWSprefs::GetInstance()->
+                   GetPref(PWSprefs::DefaultAutotypeString);
 
     // If still empty, take this default
     if (AutoCmd.IsEmpty()) {
@@ -575,8 +575,18 @@ DboxMain::AutoType(const CItemData &ci)
  // since that will clear the data [Bugs item #1026630]
  // (this is why we read user & pwd before actual use)
 
-  // If set always on top, just hide it, otherise minimize
-  if (m_bAlwaysOnTop)
+  // Rules are (AlwaysOnTop takes precedence):
+  // 1. If "Always on Top" - hide PWS during Autotype and then make it
+  //    "AlwaysOnTop" again.
+  // 2. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
+  //    not restore it (previous default action - but a pain if locked
+  //    in the system tray!)
+  // 3. If not "MinimizeOnAutotype" - hide PWS during Autotype and show
+  //    it again once finished.
+  bool bMinOnAuto = PWSprefs::GetInstance()->
+                   GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
+
+  if (m_bAlwaysOnTop || !bMinOnAuto)
     ShowWindow(SW_HIDE);
   else
     ShowWindow(SW_MINIMIZE);
@@ -641,6 +651,8 @@ DboxMain::AutoType(const CItemData &ci)
   if (m_bAlwaysOnTop) {
     ShowWindow(SW_SHOW);
     SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  } else if (!bMinOnAuto) {
+    ShowWindow(SW_SHOW);
   }
 
   // If we turned off CAPSLOCK, put it back

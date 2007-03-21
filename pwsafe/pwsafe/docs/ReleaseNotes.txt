@@ -32,6 +32,8 @@ New Features for 3.07
 actual expiration
 [] - Exported/imported text format is now documented in online help
 [1623802] Default Autotype string can be specified per database
+[] - PWS may configured not to minimize during Autotype to stop annoying
+process of unlocking from System Tray. 'Always on Top' takes precedence.
 
 Changes to Existing Features in 3.07
 ====================================
