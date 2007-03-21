@@ -349,6 +349,8 @@ DboxMain::OnOptions()
                                GetPref(PWSprefs::AltBrowser));
     misc.m_csAutotype = CString(prefs->
                                GetPref(PWSprefs::DefaultAutotypeString));
+    misc.m_minauto = prefs->
+        GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;                               
 
     backup.SetCurFile(m_core.GetCurFile());
     backup.m_saveimmediately = prefs->
@@ -496,6 +498,8 @@ DboxMain::OnOptions()
                        misc.m_csBrowser);
         prefs->SetPref(PWSprefs::DefaultAutotypeString,
                        misc.m_csAutotype);
+        prefs->SetPref(PWSprefs::MinimizeOnAutotype,
+                       misc.m_minauto == TRUE);
 
         prefs->SetPref(PWSprefs::SaveImmediately,
                        backup.m_saveimmediately == TRUE);
