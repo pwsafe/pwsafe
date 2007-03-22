@@ -1150,7 +1150,7 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
     // the first line of the keepass text file contains a few garbage characters
     linebuf = linebuf.erase(0, linebuf.find("["));
 
-    int pos = -1;
+    size_t pos = static_cast<size_t>(-1);
     for (;;) {
         if (!ifs)
             break;
