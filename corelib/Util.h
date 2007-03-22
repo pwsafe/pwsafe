@@ -42,13 +42,14 @@ extern void GenRandhash(const CMyString &passkey,
                         unsigned char* m_randhash);
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
-extern int _readcbc(FILE *fp, unsigned char* &buffer, unsigned int &buffer_len,
-                    unsigned char &type, Fish *Algorithm,
-                    unsigned char* cbcbuffer,
-                    const unsigned char *TERMINAL_BLOCK = NULL);
-extern int _writecbc(FILE *fp, const unsigned char* buffer, int length,
-                     unsigned char type, Fish *Algorithm,
-                     unsigned char* cbcbuffer);
+extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
+                       unsigned int &buffer_len,
+                       unsigned char &type, Fish *Algorithm,
+                       unsigned char* cbcbuffer,
+                       const unsigned char *TERMINAL_BLOCK = NULL);
+extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
+                        unsigned char type, Fish *Algorithm,
+                        unsigned char* cbcbuffer);
 
 /*
  * Get an integer that is stored in little-endian format

@@ -118,12 +118,12 @@ GenRandhash(const CMyString &a_passkey,
   keyHash.Final(a_randhash);
 }
 
-int
+size_t
 _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
           Fish *Algorithm, unsigned char* cbcbuffer)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
-  int numWritten = 0;
+  size_t numWritten = 0;
 
   // some trickery to avoid new/delete
   unsigned char block1[16];
@@ -201,14 +201,14 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
  * If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
  * and -1 is returned if it matches. (used in V3)
  */
-int
+size_t
 _readcbc(FILE *fp,
          unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
          Fish *Algorithm, unsigned char* cbcbuffer,
          const unsigned char *TERMINAL_BLOCK)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
-  unsigned int numRead = 0;
+  size_t numRead = 0;
   
   // some trickery to avoid new/delete
   unsigned char block1[16];
@@ -227,7 +227,7 @@ _readcbc(FILE *fp,
 
   if (TERMINAL_BLOCK != NULL &&
       memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
-    return -1;
+      return static_cast<size_t>(-1);
 
   unsigned char *lcpy = block2;
   memcpy(lcpy, lengthblock, BS);
