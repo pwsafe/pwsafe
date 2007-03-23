@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.06.01
+RELEASENAME = 3.07
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -35,10 +35,6 @@ MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe.xsl \
 	docs/ChangeLog.txt Release/pwsafe.exe help/default/pwsafe.chm
-
-REDISTS = ../../redist/mfc80.dll ../../redist/msvcp80.dll \
-        ../../redist/msvcr80.dll ../../redist/Microsoft.VC80.CRT.manifest \
-		../../redist/Microsoft.VC80.MFC.manifest
 
 .PHONY: all release bin-release src-release installable signatures \
 	upload md5sums sha1sums
@@ -75,7 +71,7 @@ release: bin-release src-release
 
 bin-release:
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME)
-	$(CP) $(BIN_MANIFEST) $(REDISTS) $(RELEASEDIR)/$(BINRELNAME)
+	$(CP) $(BIN_MANIFEST) $(RELEASEDIR)/$(BINRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  foo ./$(BINRELNAME); \
 	$(MV) foo.zip $(BINRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(BINRELNAME)

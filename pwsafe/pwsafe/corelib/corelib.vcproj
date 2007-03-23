@@ -54,6 +54,7 @@
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
@@ -95,7 +96,7 @@
 			IntermediateDirectory=".\Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -121,7 +122,7 @@
 				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="false"
 				PrecompiledHeaderFile=".\Release/corelib.pch"
@@ -170,7 +171,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="2"
+			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="0"
 			>
@@ -196,7 +197,7 @@
 				AdditionalIncludeDirectories="C:\local\msvc\HTMLHelpWorkshop\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;DEMO"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="false"
 				PrecompiledHeaderFile=".\Release/corelib.pch"
