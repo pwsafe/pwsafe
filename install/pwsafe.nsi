@@ -50,13 +50,6 @@
 ; 3. The installer will create an uninstaller and place an entry to
 ;    uninstall Password Safe in the Add or Remove Programs Wizard.
 ;
-; Note that as of MSVC 2003, the PasswordSafe executable requires
-; DLL files that are apparently not available by default in many
-; PCs. These files are freely redistributable by Microsoft. NSIS
-; will put copies in the installation directory, apparently the
-; only way to ensure that a user will be able to install pwsafe
-; without admin rights. Bleh.
-;
 ; As of PasswordSafe 3.05, this script allows users to choose
 ; between a "Regular" installation and a "Green" one, the difference
 ; being that the latter does not write app-specific data to the registry
@@ -200,11 +193,6 @@ Section "Program Files" ProgramFiles
   File "..\docs\ChangeLog.txt"
   File "..\xml\pwsafe.xsd"
   File "..\xml\pwsafe.xsl"
-  File "..\..\..\redist\mfc80.dll"
-  File "..\..\..\redist\msvcp80.dll"
-  File "..\..\..\redist\msvcr80.dll"
-  File "..\..\..\redist\Microsoft.VC80.CRT.manifest"
-  File "..\..\..\redist\Microsoft.VC80.MFC.manifest"
 
   ; skip over registry writes if 'Green' installation selected
   IntCmp $INSTALL_TYPE 1 GreenInstall
