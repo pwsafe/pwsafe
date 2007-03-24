@@ -26,6 +26,7 @@ public:
 	void SendChar(TCHAR c);
 	void SetDelay(int d);
 	void SetAndDelay(int d);
+    void SetCapsLock(const bool bstate);
 
 private:
 	int m_delay;
