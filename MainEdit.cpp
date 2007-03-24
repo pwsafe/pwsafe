@@ -533,6 +533,9 @@ DboxMain::OnAutoType()
   }
 }
 
+const CString DboxMain::DEFAULT_AUTOTYPE = _T("\\u\\t\\p\\n");
+
+
 void
 DboxMain::AutoType(const CItemData &ci)
 {
@@ -550,7 +553,7 @@ DboxMain::AutoType(const CItemData &ci)
             // checking for user and password for default settings
             if (!pwd.IsEmpty()){
                 if (!user.IsEmpty())
-                    AutoCmd = _T("\\u\\t\\p\\n");
+                    AutoCmd = CMyString(DEFAULT_AUTOTYPE);
                 else
                     AutoCmd = _T("\\p\\n");
             }
