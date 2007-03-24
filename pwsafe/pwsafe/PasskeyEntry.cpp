@@ -135,10 +135,7 @@ CPasskeyEntry::OnInitDialog(void)
   switch(m_index) {
   	case GCP_FIRST:
   		// At start up - give the user the option unless file is R/O
-  		if (m_bForceReadOnly)
-  			GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
-  		else
-  			GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
+        GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
 
   		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
   		GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
@@ -195,6 +192,7 @@ CPasskeyEntry::OnInitDialog(void)
           m_MRU_combo.SetItemData(0, DWORD_PTR(-1));
       }
       CRecentFileList *mru = app.GetMRU();
+      ASSERT(mru != NULL);
       const int N = mru->GetSize();
       for (int i = 0; i < N; i++) {
           const CString &str = (*mru)[i];
