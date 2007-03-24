@@ -347,8 +347,11 @@ DboxMain::OnOptions()
         GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
     misc.m_csBrowser = CString(prefs->
                                GetPref(PWSprefs::AltBrowser));
-    misc.m_csAutotype = CString(prefs->
-                               GetPref(PWSprefs::DefaultAutotypeString));
+    CString dats = CString(prefs->
+                           GetPref(PWSprefs::DefaultAutotypeString));
+    if (dats.IsEmpty())
+        dats = DEFAULT_AUTOTYPE;
+    misc.m_csAutotype = CString(dats);
     misc.m_minauto = prefs->
         GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;                               
 
@@ -496,8 +499,10 @@ DboxMain::OnOptions()
                        misc.m_querysetdef == TRUE);
         prefs->SetPref(PWSprefs::AltBrowser,
                        misc.m_csBrowser);
-        prefs->SetPref(PWSprefs::DefaultAutotypeString,
-                       misc.m_csAutotype);
+        if (!misc.m_csAutotype.IsEmpty() &&
+            misc.m_csAutotype != DEFAULT_AUTOTYPE)
+            prefs->SetPref(PWSprefs::DefaultAutotypeString,
+                           misc.m_csAutotype);
         prefs->SetPref(PWSprefs::MinimizeOnAutotype,
                        misc.m_minauto == TRUE);
 
