@@ -552,6 +552,8 @@ ThisMfcApp::InitInstance()
     else
         pos = -1;
 
+    m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"),
+                                     ((nMRUItems != 0) ? nMRUItems : 1));
     if (nMRUItems > 0) {
         if (pos > -1) {
             int irc;
@@ -576,7 +578,6 @@ ThisMfcApp::InitInstance()
                 ASSERT(irc != 0);
             } // m_mruonfilemenu
 
-            m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"), nMRUItems );
             m_pMRU->ReadList();
         } // pos > -1
     } else { // nMRUItems <= 0
