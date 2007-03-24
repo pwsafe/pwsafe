@@ -536,148 +536,127 @@ DboxMain::OnAutoType()
 void
 DboxMain::AutoType(const CItemData &ci)
 {
-  CMyString AutoCmd = ci.GetAutoType();
-  const CMyString user(ci.GetUser());
-  const CMyString pwd(ci.GetPassword());
+    CMyString AutoCmd = ci.GetAutoType();
+    const CMyString user(ci.GetUser());
+    const CMyString pwd(ci.GetPassword());
 
-  // If empty, try the database default
-  if (AutoCmd.IsEmpty()) {
-    AutoCmd = PWSprefs::GetInstance()->
-                   GetPref(PWSprefs::DefaultAutotypeString);
-
-    // If still empty, take this default
+    // If empty, try the database default
     if (AutoCmd.IsEmpty()) {
-      // checking for user and password for default settings
-      if (!pwd.IsEmpty()){
-        if (!user.IsEmpty())
-          AutoCmd = _T("\\u\\t\\p\\n");
-        else
-          AutoCmd = _T("\\p\\n");
-      }
+        AutoCmd = PWSprefs::GetInstance()->
+            GetPref(PWSprefs::DefaultAutotypeString);
+
+        // If still empty, take this default
+        if (AutoCmd.IsEmpty()) {
+            // checking for user and password for default settings
+            if (!pwd.IsEmpty()){
+                if (!user.IsEmpty())
+                    AutoCmd = _T("\\u\\t\\p\\n");
+                else
+                    AutoCmd = _T("\\p\\n");
+            }
+        }
     }
-  }
 
-  // Turn off CAPSLOCK
-  bool bCapsLock = false;
-  if (GetKeyState(VK_CAPITAL)) {
-    bCapsLock = true;
-    SetCapsLock(false);
-  }
+    CKeySend ks;
+    // Turn off CAPSLOCK
+    bool bCapsLock = false;
+    if (GetKeyState(VK_CAPITAL)) {
+        bCapsLock = true;
+        ks.SetCapsLock(false);
+    }
 
- CMyString tmp;
- TCHAR curChar;
- const int N = AutoCmd.GetLength();
- CKeySend ks;
- ks.ResetKeyboardState();
+    CMyString tmp;
+    TCHAR curChar;
+    const int N = AutoCmd.GetLength();
+    ks.ResetKeyboardState();
 
- // Note that minimizing the window before calling ci.Get*()
- // will cause garbage to be read if "lock on minimize" selected,
- // since that will clear the data [Bugs item #1026630]
- // (this is why we read user & pwd before actual use)
+    // Note that minimizing the window before calling ci.Get*()
+    // will cause garbage to be read if "lock on minimize" selected,
+    // since that will clear the data [Bugs item #1026630]
+    // (this is why we read user & pwd before actual use)
 
-  // Rules are (AlwaysOnTop takes precedence):
-  // 1. If "Always on Top" - hide PWS during Autotype and then make it
-  //    "AlwaysOnTop" again.
-  // 2. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
-  //    not restore it (previous default action - but a pain if locked
-  //    in the system tray!)
-  // 3. If not "MinimizeOnAutotype" - hide PWS during Autotype and show
-  //    it again once finished.
-  bool bMinOnAuto = PWSprefs::GetInstance()->
-                   GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
+    // Rules are (AlwaysOnTop takes precedence):
+    // 1. If "Always on Top" - hide PWS during Autotype and then make it
+    //    "AlwaysOnTop" again.
+    // 2. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
+    //    not restore it (previous default action - but a pain if locked
+    //    in the system tray!)
+    // 3. If not "MinimizeOnAutotype" - hide PWS during Autotype and show
+    //    it again once finished.
+    bool bMinOnAuto = PWSprefs::GetInstance()->
+        GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
 
-  if (m_bAlwaysOnTop || !bMinOnAuto)
-    ShowWindow(SW_HIDE);
-  else
-    ShowWindow(SW_MINIMIZE);
+    if (m_bAlwaysOnTop || !bMinOnAuto)
+        ShowWindow(SW_HIDE);
+    else
+        ShowWindow(SW_MINIMIZE);
 
-  Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+    Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
- for(int n = 0; n < N; n++){
-   curChar = AutoCmd[n];
-   if(curChar == TCHAR('\\')) {
-     n++;
-     if(n < N)
-       curChar=AutoCmd[n];
-     switch(curChar){
-     case TCHAR('\\'):
-       tmp += TCHAR('\\');
-       break;
-     case TCHAR('n'):
-     case TCHAR('r'):
-       tmp += TCHAR('\r');
-       break;
-     case TCHAR('t'):
-       tmp += TCHAR('\t');
-       break;
-     case TCHAR('u'):
-       tmp += user;
-       break;
-     case TCHAR('p'):
-       tmp += pwd;
-       break;
-     case TCHAR('d'): {
-       // Delay is going to change - send what we have with old delay
-       ks.SendString(tmp);
-       // start collecting new delay
-       tmp = _T("");
-       int newdelay = 0;
-       int gNumIts = 0;
+    for(int n = 0; n < N; n++){
+        curChar = AutoCmd[n];
+        if(curChar == TCHAR('\\')) {
+            n++;
+            if(n < N)
+                curChar=AutoCmd[n];
+            switch(curChar){
+                case TCHAR('\\'):
+                    tmp += TCHAR('\\');
+                break;
+                case TCHAR('n'):
+                case TCHAR('r'):
+                    tmp += TCHAR('\r');
+                break;
+                case TCHAR('t'):
+                    tmp += TCHAR('\t');
+                break;
+                case TCHAR('u'):
+                    tmp += user;
+                break;
+                case TCHAR('p'):
+                    tmp += pwd;
+                break;
+                case TCHAR('d'): {
+                    // Delay is going to change - send what we have with old delay
+                    ks.SendString(tmp);
+                    // start collecting new delay
+                    tmp = _T("");
+                    int newdelay = 0;
+                    int gNumIts = 0;
 
-       for(n++; n < N && (gNumIts < 3); ++gNumIts, n++)
-         if(isdigit(AutoCmd[n])){
-           newdelay *= 10;
-           newdelay += (AutoCmd[n] - TCHAR('0'));
-         } else
-           break; // for loop
-       n--;
-       ks.SetAndDelay(newdelay);
+                    for(n++; n < N && (gNumIts < 3); ++gNumIts, n++)
+                        if(isdigit(AutoCmd[n])){
+                            newdelay *= 10;
+                            newdelay += (AutoCmd[n] - TCHAR('0'));
+                        } else
+                            break; // for loop
+                    n--;
+                    ks.SetAndDelay(newdelay);
 
-       break; // case
-     }
-     default:
-       tmp += _T("\\") + curChar;
-       break;
-     }
-   }
-   else
-     tmp += curChar;
- }
- ks.SendString(tmp);
+                    break; // case
+                }
+                default:
+                    tmp += _T("\\") + curChar;
+                    break;
+            }
+        } else
+            tmp += curChar;
+    }
+    ks.SendString(tmp);
+    // If we turned off CAPSLOCK, put it back
+    if (bCapsLock) 
+        ks.SetCapsLock(true);
  
-  Sleep(100);
+    Sleep(100);
 
-  // If we hid it, now show it
-  if (m_bAlwaysOnTop) {
-    ShowWindow(SW_SHOW);
-    SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-  } else if (!bMinOnAuto) {
-    ShowWindow(SW_SHOW);
-  }
+    // If we hid it, now show it
+    if (m_bAlwaysOnTop) {
+        SetWindowPos(&wndTopMost, 0, 0, 0, 0,
+                     SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+    } else if (!bMinOnAuto) {
+        SetWindowPos(&wndBottom, 0, 0, 0, 0,
+                     SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+    }
 
-  // If we turned off CAPSLOCK, put it back
-  if (bCapsLock) {
-      SetCapsLock(true);
-  }
 }
 
-void DboxMain::SetCapsLock(const bool bState)
-{
-  BYTE keyState[256];
-
-  GetKeyboardState((LPBYTE)&keyState);
-  if((bState && !(keyState[VK_CAPITAL] & 1)) ||
-     (!bState && (keyState[VK_CAPITAL] & 1))) {
-      // Simulate a key press
-      keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | 0, 0);
-      // Simulate a key release
-      keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
-  }
-
-  MSG msg;
-  while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE) ) {
-    // so there is a message process it.
-    if (!AfxGetThread()->PumpMessage())
-      break;
-  }
-}
