@@ -6,12 +6,16 @@
 
 
 
+
 		
 		
 		
 
 		
 		
+  
+
+  
   
 
   
@@ -32,11 +36,13 @@
   
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
 
 
 
@@ -56,6 +62,7 @@
 
 
 
+
 		
 		
 <p><span style="font-weight: bold;">Password Safe</span> allows you to import password information from other
@@ -65,7 +72,9 @@ text editor.</p>
 
 
 
+
 <p>The formats that <span style="font-weight: bold;">Password Safe</span> support are:</p>
+
 
 
 
@@ -73,7 +82,9 @@ text editor.</p>
 
 
 
+
   <li><a href="#text">Text</a></li>
+
 
 
 
@@ -81,11 +92,14 @@ text editor.</p>
 
 
 
+
   <li>KeePass (another password management utility)</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -99,152 +113,12 @@ text editor.</p>
 
 
 
+
 <p>Text files used to import password entries&nbsp;consist of one or
 more password entries. Each field within an entry is separated by a
-field separator and each entry may consist of one or more lines. The fields are as follows:</p>
-
-
-
-
-
-
-			
-<ul>
-
-
-
-
-
-				<li><b>Group and Title Field</b><br>
-
-
-
-
-Groups and Titles are separated by periods. For example
-Finance.BangForBuckBank (Group.Title). If there is no associated group
-(a top level entry), then the Title should contain no periods.</li>
-
-
-
-
-
-				<li><b>User Field</b><br>
-
-
-
-
-The name of the user associated with this entry. To use the default name specified in <b>Options...</b> this field should be blank.</li>
-
-
-
-
-
-
-				<li><b>Password Field</b><br>
-
-
-
-
-The actual password.</li>
-
-
-
-
-  <li><span style="font-weight: bold;">URL</span><br>
-
-
-
-
-The URL associated with this entry (if any)</li>
-
-
-
-
-  <li><span style="font-weight: bold;">AutoType</span><br>
-
-
-
-
-The AutoType string to be used instead of the default (see <a href="autotype.html">AutoType</a>)</li>
-
-
-
-
-  <li><span style="font-weight: bold;">Creation Time</span><br>
-
-
-
-
-The date and time that the entry was created, in the format of "YYYYY/MM/DD HH:MM:SS".</li>
-
-
-
-
-  <li><span style="font-weight: bold;">Password Modification Time</span><br>
-
-
-
-
-The date and time that the password was last modified, in the same format as the creation time</li>
-
-
-
-
-  <li><span style="font-weight: bold;">Last Access Time</span><br>
-
-
-
-
-The last date and time that the entry was accessed (username or password copied to clipboard or entry viewed)</li>
-
-
-
-
-  <li><span style="font-weight: bold;">Password Expiry Date</span><br>
-
-
-
-
-The date and time that the entry was set to expire</li>
-
-
-
-
-  <li><span style="font-weight: bold;">Record Modified Time</span><br>
-
-
-
-
-The last time that any field in the entry was modified</li>
-
-
-
-
-
-				
-				<li><b>Notes Field</b><br>
-
-
-
-
-If the Note is more than a single word, it must be enclosed between
-double quotes ("test note"). A note may span more than a single line,
-as long as it is terminated with a double quote.</li>
-
-
-
-
-
-			
-</ul>
-
-
-
-
-	
-
-			
+field separator and each entry may consist of one or more lines.&nbsp;Details on the expected format of the imported text file may be found in the "<a href="imp_exp_text_details.html">Plain Text Export &amp; Import Format</a>" section.</p>
 <h3>Import Text Settings Dialog</h3>
+
 
 
 
@@ -256,7 +130,9 @@ default group name to import the new entries into can be configured before proce
 
 
 
+
 <p><img style="width: 324px; height: 203px;" alt="Import Text Settings" src="images/import.jpg"></p>
+
 
 
 
@@ -265,7 +141,9 @@ default group name to import the new entries into can be configured before proce
 
 
 
+
 <ol>
+
 
 
 
@@ -277,13 +155,16 @@ default group name to import the new entries into can be configured before proce
 
 
 
+
 				<li>Select <b>Plain Text...</b></li>
 
 
 
 
 
+
 				<li>Set import settings and parameters for the text file being imported</li>
+
 
 
 
@@ -297,7 +178,9 @@ multiple lines by replacing this character by a newline.</li>
 
 
 
+
   <li>If the text file has no date information, then the "Import V2 or earlier text file" should be checked.</li>
+
 
 
 
@@ -309,7 +192,12 @@ multiple lines by replacing this character by a newline.</li>
 
 
 
+
 				<li>Select the text file to import.</li>
+  <li>At the end of the import process, a small dialog box appears
+showing how may entries were added, and how many (if any) were
+unsuccessfully parsed.</li>
+
 
 
 
@@ -317,6 +205,7 @@ multiple lines by replacing this character by a newline.</li>
 
 			
 </ol>
+
 
 
 
@@ -331,19 +220,11 @@ the names of the fields that each entry contains, e.g.,
 Password&nbsp;&nbsp;&nbsp; URL", etc. This line is generated
 automatically by the "<a href="export.html">Export Text</a>" function, but must be added manually for files created from other tools.<br>
 
-</small>
-<hr style="width: 100%; height: 2px;"><small><b>Notes:</b> <br>
-</small>
-<ul>
-  <li><small>At the end of the import process, a
-small dialog box appears showing how may entries were added, and how
-many (if any) were unsuccessfully parsed.</small></li>
-  <li><small>Details on the expected format of the imported text file may be found in the "<a href="imp_exp_text_details.html">Plain Text Export &amp; Import Format</a>" section.</small></li>
-</ul>
 
-			
-<hr>
+</small>
+<hr style="width: 100%; height: 2px;">
 <h3><a name="XML"></a>XML</h3>
+
 
 
 
@@ -358,18 +239,22 @@ which is provided as part of the distribution.&nbsp;
 
 
 
+
 		<!-- Added some white space at the bottom for natural scrolling -->
 		<br>
 
 
 
 
-<br>
-
-
-
 
 <br>
+
+
+
+
+
+<br>
+
 
 
 
