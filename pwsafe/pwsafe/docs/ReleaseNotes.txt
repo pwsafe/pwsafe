@@ -23,6 +23,8 @@ an open menu.
 [1683060] Autotype fixed (v3.06.01)
 [1678707] CapsLock temporarily turned off in Autotype
 [1681366] Now stays on top during autotype
+[1672770] Right-click->unlock on system tray icon now same as
+double-clicking on locked system tray icon
 [TODO] - Update online help with appendix describing
 dbase/cfg/registry preference logic (or lack of thereof).
 [TODO] - Add '-c config file path' command line option?
