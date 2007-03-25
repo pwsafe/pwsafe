@@ -38,31 +38,9 @@ static char THIS_FILE[] = __FILE__;
 void
 DboxMain::OnTrayLockUnLock()
 {
-	CString cMenuString;
-	CMyString passkey;
-	int rc;
-
-	switch(app.GetSystemTrayState()) {
+    switch(app.GetSystemTrayState()) {
 		case ThisMfcApp::LOCKED:					// User clicked UnLock
-			rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_NORMAL);  // OK, CANCEL, HELP
-			if (rc != PWScore::SUCCESS)
-				break;
-
-			rc = m_core.ReadCurFile(passkey);
-			if (rc == PWScore::SUCCESS) {
-				m_needsreading = false;
-				startLockCheckTimer();
-				UpdateSystemTray(UNLOCKED);
-				RefreshList();
-			} else {
-				m_needsreading = true;
-				UpdateSystemTray(LOCKED);
-				app.ClearClipboardData();
-				ShowWindow(SW_MINIMIZE);
-				if (PWSprefs::GetInstance()->
-					GetPref(PWSprefs::UseSystemTray))
-					ShowWindow(SW_HIDE);
-			}
+            ShowWindow(SW_RESTORE);
 			break;
 		case ThisMfcApp::UNLOCKED:					// User clicked Lock
 			UpdateSystemTray(LOCKED);
@@ -72,9 +50,9 @@ DboxMain::OnTrayLockUnLock()
 			break;
 		case ThisMfcApp::CLOSED:
 		default:
+            ASSERT(0);
 			break;
 	}
-	return;
 }
 
 void
@@ -98,6 +76,7 @@ DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
 			pCmdUI->SetText(csClosed);
 			break;
 		default:
+            ASSERT(0);
 			break;
 	}
 
@@ -129,10 +108,7 @@ DboxMain::OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI)
         return;
     }
     // otherwise enable
-	if (m_RUEList.GetCount() != 0)
-		pCmdUI->Enable(TRUE);
-	else
-		pCmdUI->Enable(FALSE);
+    pCmdUI->Enable((m_RUEList.GetCount() != 0) ? TRUE : FALSE);
 }
 
 void
@@ -279,4 +255,4 @@ DboxMain::OnUpdateTrayAutoType(CCmdUI *)
 {
 }
 
-#endif
+#endif /*  POCKET_PC */
