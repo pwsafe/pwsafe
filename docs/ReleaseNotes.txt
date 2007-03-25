@@ -10,7 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.07
 =====================
-[1684827] No longer crashes after you specify to remember 0 databases
+[1684827, 1668493] No longer crashes after you specify to remember 0 databases
 [1675716] <ESC> to close application now works
 [1673028] Merge operation now fixed
 [1673028] Similar problem in Compare operation fixed
@@ -20,23 +20,25 @@ empty.
 texts.
 [1682516] Menu display no longer trashed if accelerator pressed with
 an open menu.
-[1683060] Autotype fixed (v3.06.01)
+[1683060] Autotype now works again for all entries
 [1678707] CapsLock temporarily turned off in Autotype
 [1681366] Now stays on top during autotype
 [1672770] Right-click->unlock on system tray icon now same as
 double-clicking on locked system tray icon
 [TODO] - Update online help with appendix describing
 dbase/cfg/registry preference logic (or lack of thereof).
-[TODO] - Add '-c config file path' command line option?
 
 New Features for 3.07
-========================
+=====================
 [] - Password expiration notice can now be given a few days prior to
 actual expiration
 [] - Exported/imported text format is now documented in online help
 [1623802] Default Autotype string can be specified per database
 [1686819] - PWS may configured not to minimize during
 Autotype (Manage->Options->Misc). 'Always on Top' takes precedence.
+[] If the PWS_PREFSDIR environment variable is defined, that's where
+the pwsafe.cfg file will be read from, instead of the same directory
+as the executable
 
 Changes to Existing Features in 3.07
 ====================================

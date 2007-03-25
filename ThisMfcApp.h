@@ -84,6 +84,7 @@ protected:
   unsigned char m_clipboard_digest[SHA256::HASHLEN]; // ditto
 
 private:
+  void LoadLocalizedStuff();
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;
   HICON m_ClosedIcon;
