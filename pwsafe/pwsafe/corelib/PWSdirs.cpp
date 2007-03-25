@@ -18,6 +18,7 @@
  *                U3_DEVICE_DOCUMENT_PATH\My Safes\
  * GetConfigDir() Location of configuration file:
  *                U3_APP_DATA_PATH
+ *                NOTE: PWS_PREFSDIR can be set to override this!
  * GetXMLDir()    Location of XML .xsd and .xsl files:
  *                U3_APP_DATA_PATH\xml\
  * GetHelpDir()   Location of help file(s):
@@ -54,10 +55,13 @@ CString PWSdirs::GetSafeDir()
 
 CString PWSdirs::GetConfigDir()
 {
-    // returns directory of executable unless U3 environment detected
-    CString retval(GetEnv("U3_APP_DATA_PATH"));
+    // PWS_PREFSDIR overrides all:
+    CString retval(GetEnv("PWS_PREFSDIR"));
     if (retval.IsEmpty()) {
-        retval = GetMFNDir();
+        // returns directory of executable unless U3 environment detected
+        retval= GetEnv("U3_APP_DATA_PATH");
+        if (retval.IsEmpty())
+            retval = GetMFNDir();
     }
     return retval;
 }

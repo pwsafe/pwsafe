@@ -9,6 +9,10 @@
 #define __PWSDIRS_H
 // PWSdirs.h
 // Provide directories used by application
+//
+// Note that GetConfigDir will return value of environment var
+// PWS_PREFSDIR if defined.
+//
 //-----------------------------------------------------------------------------
 #include "MyString.h"
 #include "SysInfo.h"
