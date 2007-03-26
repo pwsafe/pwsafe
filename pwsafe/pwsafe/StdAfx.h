@@ -7,6 +7,11 @@
 #define stdafx_h
 
 
+#ifdef _WIN32_WCE
+// required that the WinCE SDK is configured for correct version
+#define WINVER _WIN32_WCE
+#endif
+
 #define VC_EXTRALEAN     // Exclude rarely-used stuff from Windows headers
 
 #include <afxwin.h>         // MFC core and standard components
