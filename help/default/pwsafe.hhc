@@ -114,7 +114,7 @@
     <LI><OBJECT type="text/sitemap">
 		<param name="Name" value="Options">
 	  </OBJECT>
-      <ul>
+      <UL>
         <li><OBJECT type="text/sitemap">
 			<param name="Name" value="Backup Options">
 			<param name="Local" value="html\backups_tab.html">
@@ -143,11 +143,20 @@
 			<param name="Name" value="System Options">
 			<param name="Local" value="html\system_tab.html">
 		  </OBJECT>
-      </ul>
+      </UL>
+      <LI><OBJECT type="text/sitemap">
+		<param name="Name" value="Appendices">
+        </OBJECT>
+      <ul>
         <li><OBJECT type="text/sitemap">
 			<param name="Name" value="Plain Text Export &amp; Import Format">
 			<param name="Local" value="html\imp_exp_text_details.html">
 		  </OBJECT>
+        <li><OBJECT type="text/sitemap">
+			<param name="Name" value="Preferences">
+			<param name="Local" value="html\preferences.html">
+		  </OBJECT>
+      </ul>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Program Credits">
 		</OBJECT>
