@@ -1,8 +1,17 @@
+/*
+ * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 // BlowFish.cpp
 //-----------------------------------------------------------------------------
 #include "PwsPlatform.h"
 
 #include "BlowFish.h"
+#include "sha1.h"
+#include "PwsPlatform.h"
 
 #include "Util.h" // for trashMemory
 
@@ -11,10 +20,6 @@
 #define S(x, i) (bf_S[i][x.w.byte##i])
 #define bf_F(x) (((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3))
 #define ROUND(a, b, n) (a.word ^= bf_F(b) ^ bf_P[n])
-
-
-unsigned long BlowFish::bf_S[4][256];
-unsigned long BlowFish::bf_P[BlowFish::bf_N + 2];
 
 const unsigned long BlowFish::tempbf_P[BlowFish::bf_N + 2] =
 {
@@ -390,7 +395,7 @@ BlowFish::BlowFish(unsigned char *key,
                    int keylen)
 {
    /*
-     bf_P and bf_S, for speed reasons, are static global variables.
+     bf_P and bf_S, *were* static global variables (for speed?).
      the temp... versions never are changed and are copied to the 
      real" ones used by the actual algorithm. These can change, as
      they are dependent on passkeys. The "real" (and the temp - why??
@@ -421,7 +426,7 @@ BlowFish::~BlowFish()
 }
 
 void
-BlowFish::Encrypt(const block in, block out)
+BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
 {
    for (int x=0; x<8; x++)
       out[x] = in[x];
@@ -432,12 +437,47 @@ BlowFish::Encrypt(const block in, block out)
 
 
 void
-BlowFish::Decrypt(const block in, block out)
+BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
 {
    for (int x=0; x<8; x++)
       out[x] = in[x];
    Blowfish_decipher((unsigned long*)out,
                      (unsigned long*)(out+sizeof(unsigned long)));
 }
+
+/*
+ * Returns a BlowFish object set up for encryption or decrytion.
+ *
+ * The main issue here is that the BlowFish key is SHA1(passphrase|salt)
+ * Aside from saving duplicate code, we win here by minimizing the exposure
+ * of the actual key.
+ * The lose is that the BlowFish object is now dynamically allocated.
+ * This could be fixed by having a ctor of BlowFish that works without a key,
+ * which would be set by another member function, but I doubt that it's worth the bother.
+ *
+ * Note that it's the caller's responsibility to delete the BlowFish object allocated here
+ */
+
+BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, int passlen,
+                                 const unsigned char *salt, int saltlen)
+{
+   unsigned char passkey[SHA1::HASHLEN];
+#if !defined(POCKET_PC)
+   VirtualLock(passkey, sizeof(passkey));
+#endif
+
+   SHA1 context;
+   context.Update(pass, passlen);
+   context.Update(salt, saltlen);
+   context.Final(passkey);
+   BlowFish *retval = new BlowFish(passkey, sizeof(passkey));
+   trashMemory(passkey, sizeof(passkey));
+#if !defined(POCKET_PC)
+   VirtualUnlock(passkey, sizeof(passkey));
+#endif
+   return retval;
+}
+
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

@@ -1,0 +1,40 @@
+/*
+ * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
+// UUIDGen.h
+// Silly class for generating UUIDs
+// Each instance has its own unique value, 
+// which can be accessed as an array of bytes or as a human-readable
+// Unicode string.
+//
+
+#ifndef __UUIDGEN_H
+#define __UUIDGEN_H
+
+#include "PwsPlatform.h"
+#include <tchar.h>
+
+#define UUID_ARRAY_LENGTH	16
+#define UUID_STRING_LENGTH	36
+
+// binary representation od a UUID; should not be changed to wide characters
+typedef unsigned char uuid_array_t[16];
+// string representation in Unicode wide characters
+typedef TCHAR uuid_str_t[37]; //"204012e6-600f-4e01-a5eb-515267cb0d50"
+
+class CUUIDGen {
+ public:
+  CUUIDGen(); // UUID generated at creation time
+  CUUIDGen(const uuid_array_t &); // for storing an existing UUID
+  ~CUUIDGen();
+  void GetUUID(uuid_array_t &) const;
+  void GetUUIDStr(uuid_str_t &) const;
+ private:
+  UUID uuid;
+};
+
+#endif /* __UUIDGEN_H */
