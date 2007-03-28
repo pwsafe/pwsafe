@@ -1,12 +1,19 @@
+/*
+ * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 /// \file MyString.cpp
 //-----------------------------------------------------------------------------
 
 #include "PwsPlatform.h"
-#include "../PasswordSafe.h"
-
 #include "Util.h"
 
 #include "MyString.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,17 +22,17 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-CMyString::CMyString() : m_mystring("")
+CMyString::CMyString() : m_mystring(_T(""))
 {
 	init();
 }
 
-CMyString::CMyString(LPCSTR lpsz) : m_mystring(lpsz)
+CMyString::CMyString(LPCTSTR lpsz) : m_mystring(lpsz)
 {
 	init();
 }
 
-CMyString::CMyString(LPCSTR lpsz, int nLength) : m_mystring(lpsz, nLength)
+CMyString::CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength)
 {
 	init();
 }
@@ -97,6 +104,38 @@ CMyString::GetLength() const
    return m_mystring.GetLength();
 }
 
+void
+CMyString::Empty()
+{
+	trashstring();
+	m_mystring.Empty();
+}
+
+BOOL
+CMyString::LoadString(const UINT &nID)
+{
+	return m_mystring.LoadString(nID);
+}
+
+void
+CMyString::Format(LPCTSTR lpszFormat, ... )
+{
+	va_list args;
+	va_start(args, lpszFormat);
+	m_mystring.FormatV(lpszFormat, args);
+	va_end(args);
+}
+
+void
+CMyString::Format(UINT nID, ... )
+{
+	va_list args;
+	va_start(args, nID);
+	CString csFormat(MAKEINTRESOURCE(nID));
+	m_mystring.FormatV(csFormat, args);
+	va_end(args);
+}
+
 const CMyString&
 CMyString::operator=(const CMyString& stringSrc)
 {
@@ -120,7 +159,7 @@ CMyString::operator=(TCHAR ch)
 }
 
 const CMyString&
-CMyString::operator=(LPCSTR lpsz)
+CMyString::operator=(LPCTSTR lpsz)
 {
    trashstring();
 #if defined(UNICODE)
@@ -130,17 +169,7 @@ CMyString::operator=(LPCSTR lpsz)
    return *this;
 }
 
-const CMyString&
-CMyString::operator=(LPCWSTR lpsz)
-{
-   trashstring();
-#if defined(UNICODE)
-   trashbuffer();
-#endif
-   m_mystring = lpsz;
-   return *this;
-}
-
+#ifndef UNICODE // do we need this at all?
 const CMyString&
 CMyString::operator=(const unsigned char* psz)
 {
@@ -151,6 +180,7 @@ CMyString::operator=(const unsigned char* psz)
    m_mystring = psz;
    return *this;
 }
+#endif
 
 const CMyString&
 CMyString::operator+=(const CMyString& string)
@@ -213,16 +243,16 @@ operator+(LPCTSTR lpsz, const CMyString& string)
    return s;
 }
 
-CMyString
-CMyString::Mid(int nFirst, int nCount) const
-{
-   return m_mystring.Mid(nFirst,nCount);
-}
-
 TCHAR
 CMyString::operator[](int nIndex) const
 {
    return m_mystring[nIndex];
+}
+
+TCHAR
+CMyString::GetAt(int nIndex)
+{
+   return m_mystring.GetAt(nIndex);
 }
 
 void
@@ -240,11 +270,11 @@ CMyString::operator CString&()
 {
    return m_mystring;
 }
-
+/*
 #ifdef UNICODE
 /*
  * Returns a c-style string i.e. a null terminated char* array.
- */
+ *
 CMyString::operator LPCSTR() const
 {
 	int		len;
@@ -265,6 +295,7 @@ CMyString::operator LPCSTR() const
 	return char_buffer;
 }
 #endif
+*/
 
 /*
  * If compiling to a unicode target this returns a null terminated wide string
@@ -281,36 +312,28 @@ CMyString::IsEmpty() const
    return m_mystring.IsEmpty();
 }
 
-BOOL
-CMyString::LoadString(UINT nID)
-{
-   return m_mystring.LoadString(nID);
-}
-
 int
 CMyString::FindByte(char ch) const
 {
-	int		nRetVal = -1;	// default to not found
-	int		nIndex	= 0;;
+  int		nRetVal = -1;	// default to not found
+  int		nIndex	= 0;;
 
-#ifdef UNICODE
-	const wchar_t* pszString = (const wchar_t *)m_mystring;
+  LPCTSTR pszString = LPCTSTR(m_mystring);
+
+  while ( pszString[nIndex] ) {
+#ifndef UNICODE
+    if ( pszString[nIndex] == ch ) {
 #else
-	const char* pszString = (const char *)m_mystring;
+    if ( LOBYTE(pszString[nIndex]) == ch ) {
 #endif
+      nRetVal = nIndex;
+      break;
+    }
 
-	while ( pszString[nIndex] )
-	{
-		if ( pszString[nIndex] == ch )
-		{
-			nRetVal = nIndex;
-			break;
-		}
+    ++nIndex;
+  }
 
-		++nIndex;
-	}
-
-	return nRetVal;
+  return nRetVal;
 }
 
 int
@@ -325,18 +348,73 @@ CMyString::Find(LPCTSTR lpszSub) const
    return m_mystring.Find(lpszSub);
 }
 
-//Can't properly trash the memory here, so it is better to just return a CString
-CString
-CMyString::Left(int nCount) const
+int
+CMyString::Find(TCHAR ch, int nstart) const
 {
-   return m_mystring.Left(nCount);
+   return m_mystring.Find(ch, nstart);
+}
+
+int
+CMyString::Find(LPCTSTR lpszSub, int nstart) const
+{
+   return m_mystring.Find(lpszSub, nstart);
+}
+
+int
+CMyString::FindOneOf(LPCTSTR lpszSub) const
+{
+   return m_mystring.FindOneOf(lpszSub);
+}
+
+int
+CMyString::Replace(const TCHAR chOld, const TCHAR chNew) 
+{
+   return m_mystring.Replace(chOld,chNew);
+}
+
+int
+CMyString::Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew) 
+{
+   return m_mystring.Replace(lpszOld,lpszNew);
+}
+
+int
+CMyString::Remove(TCHAR ch) 
+{
+   return m_mystring.Remove(ch);
 }
 
 //Can't properly trash the memory here, so it is better to just return a CString
-CString
+CMyString
+CMyString::Left(int nCount) const
+{
+   CMyString s;
+   s.m_mystring = m_mystring.Left(nCount);
+   return s;
+}
+
+CMyString
 CMyString::Right(int nCount) const
 {
-   return m_mystring.Right(nCount);
+   CMyString s;
+   s.m_mystring = m_mystring.Right(nCount);
+   return s;
+}
+
+CMyString
+CMyString::Mid(int nFirst) const
+{
+   CMyString s;
+   s.m_mystring = m_mystring.Mid(nFirst);
+   return s;
+}
+
+CMyString
+CMyString::Mid(int nFirst, int nCount) const
+{
+   CMyString s;
+   s.m_mystring = m_mystring.Mid(nFirst, nCount);
+   return s;
 }
 
 bool
@@ -395,3 +473,4 @@ operator!=(const CMyString& s1, LPCSTR s2)
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+
