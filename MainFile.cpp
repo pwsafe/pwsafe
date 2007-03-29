@@ -1707,13 +1707,14 @@ DboxMain::OnOK()
   CString cs_columnswidths(_T(""));
   TCHAR buffer[8], widths[8];
 
-  for (int i = 0; i < m_nColumns; i++) {
+  for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
+    int iIndex = m_nColumnIndexByOrder[iOrder];
 #if _MSC_VER >= 1400
-    _itot_s(m_nColumnTypeByItem[i], buffer, 8, 10);
-    _itot_s(m_nColumnWidthByItem[i], widths, 8, 10);
+    _itot_s(m_nColumnTypeByIndex[iIndex], buffer, 8, 10);
+    _itot_s(m_nColumnWidthByIndex[iIndex], widths, 8, 10);
 #else
-    _itot(m_nColumnTypeByItem[i], buffer, 10);
-    _itot(m_nColumnWidthByItem[i], widths, 10);
+    _itot(m_nColumnTypeByIndex[iIndex], buffer, 10);
+    _itot(m_nColumnWidthByIndex[iIndex], widths, 10);
 #endif
     cs_columns += buffer;
     cs_columnswidths += widths;

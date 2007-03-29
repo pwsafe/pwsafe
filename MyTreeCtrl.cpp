@@ -505,6 +505,7 @@ void CMyTreeCtrl::EndDragging(BOOL bCancel)
     ReleaseCapture();
     m_bDragging = FALSE;
     SelectDropTarget(NULL);
+
   }
   KillTimer(m_nTimerID);
   KillTimer(m_nHoverTimerID);

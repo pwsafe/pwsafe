@@ -24,6 +24,8 @@
 #include "MyTreeCtrl.h"
 #include "RUEList.h"
 #include "MenuTipper.h"
+#include "LVHdrCtrl.h"
+#include "ColumnChooserDlg.h"
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -34,6 +36,8 @@ DECLARE_HANDLE(HDROP);
 
 // to catch post Header drag
 #define WM_HDR_DRAG_COMPLETE (WM_APP + 20)
+#define WM_CCTOHDR_DD_COMPLETE (WM_APP + 21)
+#define WM_HDRTOCC_DD_COMPLETE (WM_APP + 22)
 
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
@@ -48,6 +52,9 @@ enum {GCP_FIRST = 0,		// At startup of PWS
 	  GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
 	  GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
 	  GCP_WITHEXIT = 3};	// OK, CANCEL, EXIT & HELP buttons
+
+// Drag and Drop source (TREE not implemented)
+enum { FROMCC, FROMHDR, FROMTREE };
 
 //-----------------------------------------------------------------------------
 class DboxMain
@@ -115,8 +122,8 @@ public:
   void UpdateListItemUser(const int lindex, const CString &newUser)
   {UpdateListItem(lindex, CItemData::USER, newUser);}
   void SetHeaderInfo();
-  CString GetHeaderText(const int ihdr);
-  int GetHeaderWidth(const int ihdr);
+  CString GetHeaderText(const int iType);
+  int GetHeaderWidth(const int iType);
   void CalcHeaderWidths();
 
   void SetReadOnly(bool state);
@@ -134,6 +141,8 @@ public:
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
   bool ExitRequested() const {return m_inExit;}
+  void SetCapsLock(const bool bState);
+  void AutoResizeColumns();
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -143,7 +152,9 @@ public:
   CListCtrl m_ctlItemList;
 #endif
   CMyTreeCtrl  m_ctlItemTree;
-  CHeaderCtrl *m_pctlItemListHdr;
+  CLVHdrCtrl m_LVHdrCtrl;
+  CColumnChooserDlg *m_pCC;
+  CPoint m_RCMousePos;
   //}}AFX_DATA
 
   CRUEList m_RUEList;   // recent entry lists
@@ -216,6 +227,8 @@ protected:
   void ConfigureSystemMenu();
   afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
   LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
+  LRESULT OnCCToHdrDragComplete(WPARAM wParam, LPARAM lParam);
+  LRESULT OnHdrToCCDragComplete(WPARAM wParam, LPARAM lParam);
   LRESULT OnHeaderDragComplete(WPARAM wParam, LPARAM lParam);
   enum STATE {LOCKED, UNLOCKED, CLOSED};  // Really shouldn't be here it, ThisMfcApp own it
   void UpdateSystemTray(const STATE s);
@@ -255,9 +268,9 @@ protected:
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
-    afx_msg void OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI);
-    afx_msg void OnTrayClearRecentEntries();
-    afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
+  afx_msg void OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI);
+  afx_msg void OnTrayClearRecentEntries();
+  afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
 	afx_msg void OnTrayCopyUsername(UINT nID);
 	afx_msg void OnUpdateTrayCopyUsername(CCmdUI *pCmdUI);
 	afx_msg void OnTrayCopyPassword(UINT nID);
@@ -385,11 +398,12 @@ private:
   bool m_bUseGridLines;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
-  int m_nColumnTypeToItem[CItemData::LAST];
-  int m_nColumnOrderToItem[CItemData::LAST];
-  int m_nColumnTypeByItem[CItemData::LAST];
-  int m_nColumnWidthByItem[CItemData::LAST];
+  int m_nColumnIndexByOrder[CItemData::LAST];
+  int m_nColumnIndexByType[CItemData::LAST];
+  int m_nColumnTypeByIndex[CItemData::LAST];
+  int m_nColumnWidthByIndex[CItemData::LAST];
   int m_nColumnHeaderWidthByType[CItemData::LAST];
+  int m_iheadermaxwidth;
   CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   CString m_lock_displaystatus;
@@ -414,9 +428,11 @@ private:
   void GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet);
   void MakeSortedItemList(ItemList &il);
   void SetColumns();  // default order
-  void SetColumns(const CString cs_ListColumns, const CString cs_ListColumnsWidths);
-  void SetColumns(const CItemData::FieldBits bscolumn);
-  void ResizeColumns();
+  void SetColumns(const CString cs_ListColumns);
+  void SetColumnWidths(const CString cs_ListColumnsWidths);
+  void SetupColumnChooser(const bool bShowHide);
+  void AddColumn(const int iType, const int iIndex);
+  void DeleteColumn(const int iType);
 };
 
 // Following used to keep track of display vs data
