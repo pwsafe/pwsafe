@@ -271,3 +271,5 @@
 #define IDS_INVALIDEXPIRYWARNDAYS       5436
 #define IDS_DRAGNUMBER                  5437
 #define IDS_STRICT_LOCKED               5438
+#define IDS_CPF_CDD                     5439
+#define IDS_NOITEMS                     5440
