@@ -562,7 +562,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     return FAILURE;
   }
 
-  int num_found = 0;
+  unsigned num_found = 0;
   int itoken = 0;
 
 #if _MSC_VER >= 1400
@@ -605,9 +605,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       return FAILURE;
   }
 
-  if (num_found < (int)vs_Header.size())
+  if (num_found < vs_Header.size())
       strErrors.Format(IDSC_IMPORTHDR, num_found, vs_Header.size() - num_found);
 
+  // Finished parsing header, go get the data!
   for (;;) {
     // read a single line.
     string linebuf;
@@ -618,6 +619,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
       linebuf.resize(linebuf.size() - 1);
     }
+
+    // skip blank lines
+    if (linebuf.empty())
+        continue;
 
     // tokenize into separate elements
     itoken = 0;
@@ -661,6 +666,11 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       itoken++;
     }
 
+    // Sanity check
+    if (tokens.size() < num_found) {
+        numSkipped++;
+        continue;
+    }
     // Start initializing the new record.
     temp.Clear();
     temp.CreateUUID();
