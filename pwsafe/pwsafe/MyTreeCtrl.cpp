@@ -92,7 +92,7 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
   //hitting the F2 key, being in-place editing of an item
   else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
     HTREEITEM hItem = GetSelectedItem();
-    if (hItem != NULL) 
+    if (hItem != NULL && !((DboxMain *)GetParent())->IsReadOnly())
       EditLabel(hItem);
     return TRUE;
   }

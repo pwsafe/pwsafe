@@ -12,6 +12,8 @@ Bugs fixed in 3.07.01
 =====================
 [1691048] Import text file with blank lines or missing fields will no
 longer crash application.
+[1688994] Although rename is not possible in read-only mode, this change
+prevents F2 giving the user the feel that they can.
 
 Bugs fixed in 3.07
 =====================

@@ -77,13 +77,12 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   // Check if it is ours?
   // - we don't accept drop from other instances of PWS
-  if (randID != gbl_randID)
-    return FALSE;
-
   // Check if it is from List View HeaderCtrl?
   // - we don't accept drop from anything else
-  if (iDDType != FROMHDR)
+  if ((randID != gbl_randID) || (iDDType != FROMHDR)) {
+    GlobalUnlock(hGlobal);
     return FALSE;
+  }
 
   // Now add it
   const CString cs_header(pData + 16, iLen);
