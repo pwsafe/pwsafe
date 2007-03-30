@@ -397,12 +397,12 @@ void ThisMfcApp::LoadLocalizedStuff()
                                szLang, 4);
         ASSERT(inum == 3);
         _tcsupr(szLang);
-        TRACE("%s LOCALE_SISO639LANGNAME=%s\n", PWSUtil::GetTimeStamp(), szLang);
+        TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"), PWSUtil::GetTimeStamp(), szLang);
 
         inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
                                szCtry, 4);
         ASSERT(inum == 3);
-        TRACE("%s LOCALE_SISO3166CTRYNAME=%s\n", PWSUtil::GetTimeStamp(), szCtry);
+        TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"), PWSUtil::GetTimeStamp(), szCtry);
         cs_LANG = szLang; cs_CTRY = szCtry;
     }
 
