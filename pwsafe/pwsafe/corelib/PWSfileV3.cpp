@@ -800,6 +800,7 @@ bool PWSfileV3::ToUTF8(const CString &data)
                                     LPSTR(m_utf8), mbLen, // buffer and length
                                     NULL,NULL);   // use system default for unmappables
     ASSERT(m_utf8Len != 0);
+    m_utf8Len--; // remove uneeded null termination
     return true;
 }
 
