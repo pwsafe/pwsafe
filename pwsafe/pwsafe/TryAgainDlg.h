@@ -1,7 +1,7 @@
 // TryAgainDlg.h
 //-----------------------------------------------------------------------------
 
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 //Globally useful values...
 enum

@@ -3,9 +3,9 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "PWCharPool.h" // for CheckPassword()
+#include "corelib/PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -14,7 +14,7 @@
   #include "resource.h"
 #endif
 
-#include "util.h"
+#include "corelib/Util.h"
 
 #include "PasskeySetup.h"
 

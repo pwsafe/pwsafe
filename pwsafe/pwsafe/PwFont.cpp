@@ -9,8 +9,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#include "PwsPlatform.h"
-#include "util.h"
+#include "corelib/PwsPlatform.h"
+#include "corelib/Util.h"
 
 // Select the font style and size for the password box
 #if !defined(POCKET_PC)

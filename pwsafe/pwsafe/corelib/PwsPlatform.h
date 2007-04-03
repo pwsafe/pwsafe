@@ -55,10 +55,6 @@
 #undef PWS_PLATFORM
 #undef POCKET_PC
 
-//#define POCKET_PC
-//#define PWS_PLATFORM	"Windows Mobile 2005"
-//#define LITTLE_ENDIAN
-
 #if defined(_WIN32)
   #ifdef BIG_ENDIAN
     #define PWD_BIG_ENDIAN
@@ -79,11 +75,11 @@
   #define PWS_LITTLE_ENDIAN
 #endif
 
-#if defined(_WIN32_WCE_PSPC)
+#if defined(_WIN32_WCE)
   // **********************************************
   // * Pocket PC 2000                             *
   // **********************************************
-  #if (WIN32_PLATFORM_PSPC == 1)
+  #if (_WIN32_WCE == 1)
     #define PWS_PLATFORM	"Pocket PC"
     #define PWS_PLATFORM_EX	"Pocket PC 2000"
     #define POCKET_PC_VER	2000
@@ -100,9 +96,9 @@
       #endif
     #endif
   // **********************************************
-  // * Pocket PC 2002 and later                   *
+  // * Pocket PC 2002                             *
   // **********************************************
-  #elif (WIN32_PLATFORM_PSPC >= 310)
+  #elif (_MSC_VER < 1400) && (_WIN32_WCE == 310)
     #define PWS_PLATFORM	"Pocket PC"
     #define PWS_PLATFORM_EX	"Pocket PC 2002"
     #define POCKET_PC_VER	2002
@@ -114,7 +110,37 @@
         #define PWS_LITTLE_ENDIAN
       #endif
     #endif
-  #else
+  // **********************************************
+  // * Pocket PC 2003                             *
+  // **********************************************
+  #elif (_MSC_VER >= 1400) && (_WIN32_WCE == 0x420)
+	#define PWS_PLATFORM	"Pocket PC"
+    #define PWS_PLATFORM_EX	"Pocket PC 2003"
+    #define POCKET_PC_VER	2003
+    #define POCKET_PC
+    #if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
+      #if defined(ARM) || defined(_ARM)
+        #define PWS_LITTLE_ENDIAN
+      #elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
+        #define PWS_LITTLE_ENDIAN
+      #endif
+    #endif
+  // **********************************************
+  // * Windows Mobile 5 and later                 *
+  // **********************************************
+  #elif (_MSC_VER >= 1400) && (_WIN32_WCE >= 0x500)
+	#define PWS_PLATFORM	"Pocket PC"
+    #define PWS_PLATFORM_EX	"Windows Mobile 2005"
+    #define POCKET_PC_VER	2005
+	#define POCKET_PC
+	#if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
+      #if defined(ARM) || defined(_ARM)
+        #define PWS_LITTLE_ENDIAN
+      #elif defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
+        #define PWS_LITTLE_ENDIAN
+      #endif
+    #endif
+  #else 
     #error Only Pocket PC 2000 and later are supported
   #endif
 

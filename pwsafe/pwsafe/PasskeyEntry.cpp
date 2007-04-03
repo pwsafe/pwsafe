@@ -8,7 +8,7 @@
 */
 
 #include "PasswordSafe.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)
@@ -18,14 +18,14 @@
   #include "resource.h"
 #endif
 
-#include "MyString.h"
+#include "corelib/MyString.h"
 
 #include "SysColStatic.h"
 
 #include "PasskeyEntry.h"
 #include "TryAgainDlg.h"
 
-#include "util.h"
+#include "corelib/Util.h"
 
 #ifndef POCKET_PC
 #include <io.h>

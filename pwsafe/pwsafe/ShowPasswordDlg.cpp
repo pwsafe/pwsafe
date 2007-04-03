@@ -9,7 +9,7 @@
 
 #include "ThisMfcApp.h"
 #include "ShowPasswordDlg.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"

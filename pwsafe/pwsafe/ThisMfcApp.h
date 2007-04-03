@@ -4,8 +4,8 @@
 #if !defined(ThisMfcApp_h)
 #define ThisMfcApp_h
 
-#include "MyString.h"
-#include "Util.h"
+#include "corelib/MyString.h"
+#include "corelib/Util.h"
 //-----------------------------------------------------------------------------
 class DboxMain;
 

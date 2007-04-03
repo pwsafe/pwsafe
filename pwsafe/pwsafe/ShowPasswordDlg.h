@@ -4,8 +4,8 @@
 // desktop build if required.
 //-----------------------------------------------------------------------------
 
-#include "PwsPlatform.h"
-#include "MyString.h"
+#include "corelib/PwsPlatform.h"
+#include "corelib/MyString.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"

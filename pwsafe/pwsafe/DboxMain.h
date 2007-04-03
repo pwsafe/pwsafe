@@ -4,9 +4,9 @@
 #ifndef DboxMain_h
 #define DboxMain_h
 
-#include "ItemData.h"
-#include "util.h"
-#include "PwsPlatform.h"
+#include "corelib/ItemData.h"
+#include "corelib/Util.h"
+#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"

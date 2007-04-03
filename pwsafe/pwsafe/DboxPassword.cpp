@@ -4,8 +4,8 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
-#include "Util.h"
-#include "PWCharPool.h"
+#include "corelib/Util.h"
+#include "corelib/PWCharPool.h"
 #include "DboxMain.h"
 
 

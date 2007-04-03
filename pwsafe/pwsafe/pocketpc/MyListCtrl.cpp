@@ -8,7 +8,7 @@
 // {kjp} it seems this is an eVC 4.0 feature (i.e Pocket PC 2003 and CE .NET
 // {kjp} compact) and is not present in eVC 3.0.
 
-#include "../PwsPlatform.h"
+#include "../corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
 

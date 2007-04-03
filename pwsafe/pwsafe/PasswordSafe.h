@@ -8,7 +8,7 @@
 #include "stdafx.h"
 #endif
 
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #if !defined(WCE_INS)
 #if defined(POCKET_PC)

@@ -4,7 +4,7 @@
 #ifndef MyListCtrl_h
 #define MyListCtrl_h
 
-#include "../PwsPlatform.h"
+#include "../corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
 

@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -15,7 +15,7 @@
 #endif
 
 #include "ThisMfcApp.h"
-#include "Util.h"
+#include "corelib/Util.h"
 #include "DboxMain.h"
 
 #include "CryptKeyEntry.h"
@@ -50,12 +50,12 @@ ThisMfcApp::ThisMfcApp() :
 // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
 	// Double check that *_ENDIAN has been correctly set!
-#if defined(LITTLE_ENDIAN)
+#if defined(PWS_LITTLE_ENDIAN)
 	unsigned char	buf[4]	= { 1, 0, 0, 0 };
 	unsigned int	ii		= 1;
 #define ENDIANNESS	_T("little endian")
 #define ENDIANNESS2	_T("big endian")
-#elif defined(BIG_ENDIAN)
+#elif defined(PWS_BIG_ENDIAN)
 	unsigned char	buf[4]	= { 0, 0, 0, 1 };
 	unsigned int	ii		= 1;
 #define ENDIANNESS	_T("big endian")

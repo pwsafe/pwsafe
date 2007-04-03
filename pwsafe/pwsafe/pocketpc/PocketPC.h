@@ -6,7 +6,7 @@
 // the standard Windows CE / PocketPC environment
 //-----------------------------------------------------------------------------
 
-#include "../PwsPlatform.h"
+#include "../corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
 #include <stdlib.h>
@@ -30,7 +30,9 @@ extern int rename( const char *oldname, const char *newname );
 
 #endif
 
+#if defined(_WIN32_WCE) && (_WIN32_WCE < 0x420 )
 extern time_t	time( time_t *timer );
+#endif
 extern void		centreWithin( CRect &larger, CRect &smaller, CRect &result );
 extern void		centreWithin( CWnd *parent, CWnd *child, CRect &result );
 

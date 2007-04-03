@@ -1,7 +1,7 @@
 // PocketPC.cpp
 //
 //-----------------------------------------------------------------------------
-#include "../PwsPlatform.h"
+#include "../corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
 
@@ -33,7 +33,7 @@ int rename( const char *oldname, const char *newname )
 	return errno;
 }
 
-
+#if defined(_WIN32_WCE) && (_WIN32_WCE < 0x420 )
 /**
  * Gets the number of
  */
@@ -43,6 +43,7 @@ time_t time( time_t *timer )
 
 	return now.GetTime();
 }
+#endif
 
 void centreWithin( CRect &larger, CRect &smaller, CRect &result )
 {

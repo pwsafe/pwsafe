@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "PwsPlatform.h"
+#include "corelib/PwsPlatform.h"
 
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
@@ -12,7 +12,7 @@
 #else
   #include "resource.h"
 #endif
-#include "util.h"
+#include "corelib/Util.h"
 
 #include "CryptKeyEntry.h"
 

@@ -18,7 +18,7 @@
 #define PwsPopupDialog_h
 
 #include "../stdafx.h"
-#include "../PwsPlatform.h"
+#include "../corelib/PwsPlatform.h"
 
 class CPwsPopupDialog : public CDialog
 {

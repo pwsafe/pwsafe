@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "PwsPlatform.h"
-#include "PWCharPool.h" // for CheckPassword()
+#include "corelib/PwsPlatform.h"
+#include "corelib/PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
