@@ -578,21 +578,21 @@ DboxMain::AutoType(const CItemData &ci)
     // since that will clear the data [Bugs item #1026630]
     // (this is why we read user & pwd before actual use)
 
-    // Rules are (AlwaysOnTop takes precedence):
-    // 1. If "Always on Top" - hide PWS during Autotype and then make it
-    //    "AlwaysOnTop" again.
-    // 2. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
+    // Rules are ("Minimize on Autotype" takes precedence):
+    // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
     //    not restore it (previous default action - but a pain if locked
     //    in the system tray!)
-    // 3. If not "MinimizeOnAutotype" - hide PWS during Autotype and show
-    //    it again once finished.
+    // 2. If "Always on Top" - hide PWS during Autotype and then make it
+    //    "AlwaysOnTop" again, unless minimized!
+    // 3. If not "Always on Top" - hide PWS during Autotype and show
+    //    it again once finished - but behind other windows.
     bool bMinOnAuto = PWSprefs::GetInstance()->
         GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
 
-    if (m_bAlwaysOnTop || !bMinOnAuto)
-        ShowWindow(SW_HIDE);
-    else
+    if (bMinOnAuto)
         ShowWindow(SW_MINIMIZE);
+    else
+        ShowWindow(SW_HIDE);
 
     Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
@@ -653,13 +653,15 @@ DboxMain::AutoType(const CItemData &ci)
     Sleep(100);
 
     // If we hid it, now show it
+    if (bMinOnAuto)
+      return;
+
     if (m_bAlwaysOnTop) {
         SetWindowPos(&wndTopMost, 0, 0, 0, 0,
                      SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
-    } else if (!bMinOnAuto) {
+    } else {
         SetWindowPos(&wndBottom, 0, 0, 0, 0,
                      SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
     }
-
 }
 
