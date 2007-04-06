@@ -49,24 +49,24 @@ class PWSprefs {
 		   PWUseDigits, PWUseSymbols, PWUseHexDigits, PWEasyVision,
 		   DontAskQuestion, DeleteQuestion, DCShowsPassword,
 		   DontAskMinimizeClearYesNo, DatabaseClear,
-           DontAskSaveMinimize, // Obsoleted in 3.02
-           QuerySetDef, UseNewToolbar, UseSystemTray, 
+       DontAskSaveMinimize, // Obsoleted in 3.02
+       QuerySetDef, UseNewToolbar, UseSystemTray, 
 		   LockOnWindowLock, LockOnIdleTimeout,
 		   EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
 		   DisplayExpandedAddEditDlg, MaintainDateTimeStamps,
 		   SavePasswordHistory, FindWraps, ShowNotesDefault,
 		   BackupBeforeEverySave, PreExpiryWarn,
-           ExplorerTypeTree, ListViewGridLines, MinimizeOnAutotype,
+       ExplorerTypeTree, ListViewGridLines, MinimizeOnAutotype,
 		   NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
 		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
 		  DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
 		  NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
 		  PreExpiryWarnDays,
-          NumIntPrefs};
+      NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
 		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
-          ColumnWidths, DefaultAutotypeString,
+      ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
 		  NumStringPrefs};
 
   // for DoubleClickAction

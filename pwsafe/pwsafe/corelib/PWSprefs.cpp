@@ -67,9 +67,9 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 	{_T("ShowNotesDefault"), false, true},							// database
 	{_T("BackupBeforeEverySave"), true, false},					    // application
 	{_T("PreExpiryWarn"), false, false},                            // application
-    {_T("ExplorerTypeTree"), false, false},                         // application
-    {_T("ListViewGridLines"), false, false},                        // application
-    {_T("MinimizeOnAutotype"), true, false},                        // application
+  {_T("ExplorerTypeTree"), false, false},                         // application
+  {_T("ListViewGridLines"), false, false},                        // application
+  {_T("MinimizeOnAutotype"), true, false},                        // application
 };
 
 // Default value = -1 means set at runtime
@@ -93,7 +93,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	// Specified by supported masks
 	{_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},						// application
 	{_T("BackupMaxIncremented"), 1, false, 1, 999},							// application
-    {_T("PreExpiryWarnDays"), 1, false, 1, 30},                             // application
+  {_T("PreExpiryWarnDays"), 1, false, 1, 30},                             // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -103,11 +103,12 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 	{_T("defusername"), _T(""), true},								// database
 	{_T("treefont"), _T(""), false},								// application
 	{_T("BackupPrefixValue"), _T(""), false},						// application
-	{_T("BackupDir"), _T(""), false},                               // application
+	{_T("BackupDir"), _T(""), false},                   // application
 	{_T("AltBrowser"), _T(""), false},								// application
 	{_T("ListColumns"), _T(""), false},								// application
-    {_T("ColumnWidths"), _T(""), false},							// application
-    {_T("DefaultAutotypeString"), _T(""), true},					// database
+  {_T("ColumnWidths"), _T(""), false},							// application
+  {_T("DefaultAutotypeString"), _T(""), true},					// database
+	{_T("AltBrowserCmdLineParms"), _T(""), false},				// application
 };
 
 

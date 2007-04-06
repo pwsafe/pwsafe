@@ -14,6 +14,12 @@ Bugs fixed in 3.07.01
 longer crash application.
 [1688994] Although rename is not possible in read-only mode, this change
 prevents F2 giving the user the feel that they can.
+[1693395] Now Minimize takes precedence over "Always on Top" during Autotype
+
+New Features for 3.07.01
+========================
+[1695446] Can't reproduce error "Browse to URL no longer opens new browser" but
+allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
 
 Bugs fixed in 3.07
 =====================

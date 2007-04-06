@@ -1322,6 +1322,7 @@ BOOL
 DboxMain::LaunchBrowser(const CString &csURL)
 {
   CString csAltBrowser;
+  CString csCmdLineParms;
   bool useAltBrowser;
   long hinst;
   CString theURL(csURL);
@@ -1334,6 +1335,9 @@ DboxMain::LaunchBrowser(const CString &csURL)
   if (theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
 
+  csCmdLineParms = CString(PWSprefs::GetInstance()->
+                         GetPref(PWSprefs::AltBrowserCmdLineParms));
+  
   csAltBrowser = CString(PWSprefs::GetInstance()->
                          GetPref(PWSprefs::AltBrowser));
 
@@ -1343,6 +1347,8 @@ DboxMain::LaunchBrowser(const CString &csURL)
     hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
                                 NULL, SW_SHOWNORMAL));
   } else {
+    if (!csCmdLineParms.IsEmpty())
+      theURL = csCmdLineParms + _T(" ") + theURL;
     hinst = long(::ShellExecute(NULL, NULL, csAltBrowser, theURL,
                                 NULL, SW_SHOWNORMAL));
   }
