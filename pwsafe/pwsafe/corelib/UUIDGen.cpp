@@ -62,7 +62,7 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 void CUUIDGen::GetUUIDStr(uuid_str_t &str) const
 {
 #if _MSC_VER >= 1400
-  _stprintf_s((char *)str, 36,
+  _stprintf_s((char *)str, 37,
 #else
   _stprintf((char *)str,
 #endif
