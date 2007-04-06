@@ -296,6 +296,7 @@
 #define IDC_CPLIST                      1247
 #define IDC_DEFAULTAUTOTYPE             1248
 #define IDC_MINIMIZEONAUTOTYPE          1249
+#define IDC_ALTBROWSER_CMDLINE          1250
 
 // Next default values for new objects
 // 
@@ -303,7 +304,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        237
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1250
+#define _APS_NEXT_CONTROL_VALUE         1251
 #define _APS_NEXT_SYMED_VALUE           127
 #endif
 #endif
