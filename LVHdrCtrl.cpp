@@ -56,8 +56,10 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
                         DROPEFFECT /* dropEffect */, CPoint /* point */)
 {
   // On Drop of column from Column Chooser Dialog onto Header
-  HGLOBAL hGlobal;
+  if (!pDataObject->IsDataAvailable(gbl_ccddCPFID, NULL))
+    return FALSE;
 
+  HGLOBAL hGlobal;
   hGlobal = pDataObject->GetGlobalData(gbl_ccddCPFID);
 
   LPCSTR pData = (LPCSTR)GlobalLock(hGlobal);
