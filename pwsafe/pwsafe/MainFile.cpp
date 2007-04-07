@@ -1343,6 +1343,8 @@ DboxMain::OnCompare()
                        NULL,
                        OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
                        SUFFIX_FILTERS
+                       _T("Password Safe Backups (*.bak)|*.bak|")
+                       _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
                        _T("All files (*.*)|*.*|")
                        _T("|"),
                        this);
