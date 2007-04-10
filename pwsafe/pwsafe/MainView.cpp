@@ -563,7 +563,9 @@ DboxMain::OnSize(UINT nType,
         GetPref(PWSprefs::UseSystemTray)) {      
       app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
       ShowWindow(SW_HIDE);
-    } 
+    }
+  } else if (nType == SIZE_MAXIMIZED) {
+    RefreshList();
   } else if (!m_bSizing && nType == SIZE_RESTORED) {
     // gets called even when just resizing window
 #endif
