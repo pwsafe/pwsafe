@@ -457,11 +457,16 @@ DboxMain::InitPasswordSafe()
     // Sanity checks on stored rect - displays change...
     const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     const int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    if (rect.right > screenWidth || rect.bottom > screenHeight ||
-        rect.left > screenWidth || rect.top > screenHeight) {
-      // if any corner is out of screen, fallback to sane values
-      rect.top = rect.left = 10;
-      rect.bottom = 320; rect.right = 230;
+    // MS adds 4 pixels around the max screen size so if, maximized, then
+    // top/left = (-4,-4) instead of (0,0) and bottom/right = (W+4, H+4)
+    // If height/width too big, make them max. allowed values instead.
+    if (rect.Height() > screenHeight) {
+      rect.top = -4;
+      rect.bottom = screenHeight + 4;
+    }
+    if (rect.Width() > screenWidth) {
+      rect.left = -4;
+      rect.right = screenWidth + 4;
     }
     MoveWindow(&rect, TRUE);
   }
