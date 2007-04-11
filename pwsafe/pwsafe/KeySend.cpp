@@ -81,9 +81,7 @@ void CKeySend::SendChar(TCHAR c)
               keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
               altDown=false;       
        } 
-       ::BlockInput(true);
        ::Sleep(m_delay);
-       ::BlockInput(false);
 }
 
 
@@ -130,9 +128,7 @@ void CKeySend::ResetKeyboardState()
 
 void CKeySend::SetAndDelay(int d){
 	SetDelay(d);
-	::BlockInput(true);
 	::Sleep(m_delay);
-	::BlockInput(false);
 }
 
 void CKeySend::SetDelay(int d){

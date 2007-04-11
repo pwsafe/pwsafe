@@ -27,6 +27,7 @@
 #include "ClearQuestionDlg.h"
 #include "FindDlg.h"
 
+#include  <Winable.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -573,6 +574,8 @@ DboxMain::AutoType(const CItemData &ci)
     const int N = AutoCmd.GetLength();
     ks.ResetKeyboardState();
 
+    ::BlockInput(false);
+
     // Note that minimizing the window before calling ci.Get*()
     // will cause garbage to be read if "lock on minimize" selected,
     // since that will clear the data [Bugs item #1026630]
@@ -651,6 +654,8 @@ DboxMain::AutoType(const CItemData &ci)
         ks.SetCapsLock(true);
  
     Sleep(100);
+
+    ::BlockInput(false);
 
     // If we hid it, now show it
     if (bMinOnAuto)
