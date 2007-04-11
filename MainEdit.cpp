@@ -574,7 +574,7 @@ DboxMain::AutoType(const CItemData &ci)
     const int N = AutoCmd.GetLength();
     ks.ResetKeyboardState();
 
-    ::BlockInput(false);
+    ::BlockInput(true);
 
     // Note that minimizing the window before calling ci.Get*()
     // will cause garbage to be read if "lock on minimize" selected,
