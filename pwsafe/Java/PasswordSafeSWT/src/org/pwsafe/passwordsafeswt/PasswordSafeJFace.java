@@ -1003,8 +1003,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			if (!nextLine[0].equals(V1_GROUP_PLACEHOLDER)) {
 				entry.setGroup(nextLine[0]);
 			}
-			entry.setUsername(nextLine[1]);
-			entry.setTitle(nextLine[2]);
+			entry.setTitle(nextLine[1]);
+			entry.setUsername(nextLine[2]);
 			entry.setPassword(nextLine[3]);
 			entry.toPwsRecord(newRecord);
 			pwsFile.add(newRecord);
