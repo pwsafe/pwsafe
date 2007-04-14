@@ -16,17 +16,32 @@
 #include "UUIDGen.h"
 #include <time.h> // for time_t
 #include <bitset>
+#include <vector>
 
-// Password History Entry structure for CList
+// Password History Entry structure
 struct PWHistEntry {
-  time_t changetttdate;
-  // "yyyy/mm/mm hh:mm:ss" - format used in ListCtrl & copied to clipboard (best for sorting)
-  // "yyyy-mm-ddThh:mm:ss" - format used in XML
-  CMyString changedate;
-  CMyString password;
+    time_t changetttdate;
+    // "yyyy/mm/mm hh:mm:ss" - format used in ListCtrl & copied to clipboard (best for sorting)
+    // "yyyy-mm-ddThh:mm:ss" - format used in XML
+    CMyString changedate;
+    CMyString password;
+
+    PWHistEntry() :changetttdate(0), changedate(), password() {}
+    // copy c'tor and assignment operator, standard idioms
+    PWHistEntry(const PWHistEntry &that)
+            : changetttdate(that.changetttdate),
+              changedate(that.changedate), password(that.password) {}
+    PWHistEntry &operator=(const PWHistEntry &that)
+        { if (this != &that) {
+                changetttdate = that.changetttdate;
+                changedate = that.changedate;
+                password = that.password;
+            }
+            return *this;
+        }
 };
 
-typedef CList<PWHistEntry, PWHistEntry&> PWHistList;
+typedef std::vector<PWHistEntry> PWHistList;
 
 //-----------------------------------------------------------------------------
 
@@ -148,9 +163,9 @@ public:
    void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
    void SetRMTime(const CString &time_str) {SetTime(RMTIME, time_str);}  // V30
    void SetPWHistory(const CMyString &PWHistory);  // V30
-   int CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
-                            PWHistList* pPWHistList,
-                            const int time_format) const;  // V30
+   int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
+                           PWHistList* pPWHistList,
+                           const int time_format) const;  // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}

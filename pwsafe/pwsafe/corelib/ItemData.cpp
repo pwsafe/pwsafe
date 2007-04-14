@@ -404,11 +404,11 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 	if (bsFields.test(CItemData::PWHIST)) {
 	    // History exported as "00000" if empty, to make parsing easier
    		BOOL pwh_status;
-	   	int pwh_max, pwh_num;
-   		PWHistList* pPWHistList;
+	   	size_t pwh_max, pwh_num;
+   		PWHistList PWHistList;
 
-		pPWHistList = new PWHistList;
-   		CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, TMC_EXPORT_IMPORT);
+   		CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+                            &PWHistList, TMC_EXPORT_IMPORT);
 
 		//  Build export string
 		TCHAR buffer[8];
@@ -418,24 +418,19 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 		_stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #endif
 		history = CMyString(buffer);
-		if (pPWHistList->GetCount() > 0) {
-			POSITION listpos = pPWHistList->GetHeadPosition();
-			while (listpos != NULL) {
-				const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
-				history += _T(' ');
-				history += pwshe.changedate;
+        PWHistList::iterator iter;
+        for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
+            const PWHistEntry pwshe = *iter;
+            history += _T(' ');
+            history += pwshe.changedate;
 #if _MSC_VER >= 1400
-				_stprintf_s(buffer, 8, _T(" %04x "), pwshe.password.GetLength());
+            _stprintf_s(buffer, 8, _T(" %04x "), pwshe.password.GetLength());
 #else
-				_stprintf(buffer, _T("%04x "), pwshe.password.GetLength());
+            _stprintf(buffer, _T("%04x "), pwshe.password.GetLength());
 #endif
-				history += CMyString(buffer);
-				history += pwshe.password;
-
-				pPWHistList->GetNext(listpos);
-			}
-		}
-    	delete pPWHistList;
+            history += CMyString(buffer);
+            history += pwshe.password;
+        }
 	}
 
 	// Notes field must be last, for ease of parsing import
@@ -722,7 +717,8 @@ CItemData::SetPWHistory(const CMyString &PWHistory)
 }
 
 int
-CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
+CItemData::CreatePWHistoryList(BOOL &status,
+                               size_t &pwh_max, size_t &pwh_num,
                                PWHistList* pPWHistList,
 							   const int time_format) const
 {
@@ -797,7 +793,7 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
     }
     pwh_ent.password = tmp;
     lpszPWHistory += ipwlen;
-    pPWHistList->AddTail(pwh_ent);
+    pPWHistList->push_back(pwh_ent);
   }
 
   status = s;
@@ -908,25 +904,20 @@ CItemData::ValidatePWHistory()
   }
 
   BOOL pwh_status;
-  int pwh_max, pwh_num;
-  PWHistList* pPWHistList;
-  PWHistEntry pwh_ent;
-
-  pPWHistList = new PWHistList;
+  size_t pwh_max, pwh_num;
+  PWHistList PWHistList;
   int iResult = CreatePWHistoryList(pwh_status, pwh_max,
-                          pwh_num, pPWHistList, TMC_EXPORT_IMPORT);
+                                    pwh_num, &PWHistList, TMC_EXPORT_IMPORT);
   if (iResult == 0) {
-  	delete pPWHistList;
     return 0;
   }
 
-  int listnum = static_cast<int>(pPWHistList->GetCount());
+  size_t listnum = PWHistList.size();
   if (listnum > pwh_num)
     pwh_num = listnum;
 
   if (pwh_max == 0 && pwh_num == 0) {
     SetPWHistory(_T(""));
-    delete pPWHistList;
     return 1;
   }
 
@@ -948,18 +939,16 @@ CItemData::ValidatePWHistory()
   _stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #endif
   history = CMyString(buffer);
-  if (listnum > 0) {
-	  POSITION listpos = pPWHistList->GetHeadPosition();
-  	for (int i = 0; i < listnum; i++) {
-		pwh_ent = pPWHistList->GetAt(listpos);
-  		cs_buffer.Format(_T("%08x%04x%s"), pwh_ent.changetttdate, 
-			pwh_ent.password.GetLength(), pwh_ent.password);
-  		history += (LPCTSTR)cs_buffer;
-  		cs_buffer.Empty();
-		pPWHistList->GetNext(listpos);
-  	}
-    SetPWHistory(history);
+
+  PWHistList::iterator iter;
+  for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
+      PWHistEntry pwh_ent = *iter;
+      cs_buffer.Format(_T("%08x%04x%s"), pwh_ent.changetttdate, 
+                       pwh_ent.password.GetLength(), pwh_ent.password);
+      history += (LPCTSTR)cs_buffer;
+      cs_buffer.Empty();
   }
+  SetPWHistory(history);
 
   return 1;
 }

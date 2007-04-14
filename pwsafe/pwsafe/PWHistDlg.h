@@ -21,7 +21,7 @@ class CPWHistDlg : public CDialog
    public:
   CPWHistDlg(CWnd* pParent, bool IsReadOnly,
              CMyString &HistStr, PWHistList &PWHistList,
-             int NumPWHistory, int &MaxPWHistory,
+             size_t NumPWHistory, size_t &MaxPWHistory,
              BOOL &SavePWHistory);
 
   virtual ~CPWHistDlg();
@@ -39,7 +39,7 @@ class CPWHistDlg : public CDialog
   CMyString &m_HistStr;
   PWHistList &m_PWHistList;
   const int m_NumPWHistory;
-  int &m_MaxPWHistory;
+  size_t &m_MaxPWHistory;
   BOOL &m_SavePWHistory;
 
   CListCtrl m_PWHistListCtrl;

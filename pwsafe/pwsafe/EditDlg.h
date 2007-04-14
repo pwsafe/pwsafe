@@ -47,8 +47,8 @@ private:
   time_t m_tttLTime;
   bool m_bIsModified;
   // Password History related stuff
-  int m_NumPWHistory;
-  int m_MaxPWHistory;
+  size_t m_NumPWHistory;
+  size_t m_MaxPWHistory;
   BOOL m_SavePWHistory;
   PWHistList m_PWHistList;
   CMyString m_PWHistory;

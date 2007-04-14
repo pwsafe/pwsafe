@@ -237,7 +237,6 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 	if (!of)
 		return CANT_OPEN_FILE;
 
-	CList<PWHistEntry, PWHistEntry&>* pPWHistList;
 	CMyString tmp, pwh;
 	CString cs_tmp;
 	uuid_array_t uuid_array;
@@ -245,8 +244,6 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 	TCHAR buffer[8];
 	time_t time_now;
 	int id = 1;
-
-	pPWHistList = new CList<PWHistEntry, PWHistEntry&>;
 
 	const ItemList &pwlist = (il == NULL) ? m_pwlist : *il;
 	POSITION listPos = pwlist.GetHeadPosition();
@@ -383,8 +380,10 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
         }
 
         BOOL pwh_status;
-        int pwh_max, pwh_num;
-        temp.CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, TMC_XML);
+        size_t pwh_max, pwh_num;
+        PWHistList PWHistList;
+        temp.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+                                 &PWHistList, TMC_XML);
         if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
             of << _T("\t\t<pwhistory>") << endl;
 #if _MSC_VER >= 1400
@@ -406,18 +405,19 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
             _stprintf(buffer, "%2d", pwh_num);
             of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
 #endif
-            if (pPWHistList->GetCount() > 0) {
+            if (!PWHistList.empty()) {
                 of << _T("\t\t\t<history_entries>") << endl;
-                POSITION listpos = pPWHistList->GetHeadPosition();
                 int num = 1;
-                while (listpos != NULL) {
+                PWHistList::iterator iter;
+                for (iter = PWHistList.begin(); iter != PWHistList.end();
+                     iter++) {
 #if _MSC_VER >= 1400
                     _itoa_s( num, buffer, 8, 10 );
 #else
                     _itoa( num, buffer, 10 );
 #endif
                     of << _T("\t\t\t\t<history_entry num=\"") << buffer << _T("\">") << endl;
-                    const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
+                    const PWHistEntry pwshe = *iter;
                     of << _T("\t\t\t\t\t<changed>") << endl;
                     of << _T("\t\t\t\t\t\t<date>") << pwshe.changedate.Left(10) << _T("</date>") << endl;
                     of << _T("\t\t\t\t\t\t<time>") << pwshe.changedate.Right(8) << _T("</time>") << endl;
@@ -425,13 +425,11 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
                     of << _T("\t\t\t\t\t<oldpassword><![CDATA[") << pwshe.password << _T("]]></oldpassword>") << endl;
                     of << _T("\t\t\t\t</history_entry>") << endl;
 
-                    pPWHistList->GetNext(listpos);
                     num++;
-                }
+                } // for
                 of << _T("\t\t\t</history_entries>") << endl;
-            }
+            } // if !empty
             of << _T("\t\t</pwhistory>") << endl;
-            pPWHistList->RemoveAll();
         }
 
         of << _T("\t</entry>") << endl;
@@ -442,7 +440,6 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
     }
     of << _T("</passwordsafe>") << endl;
     of.close();
-    delete pPWHistList;
 
     return SUCCESS;
 }
