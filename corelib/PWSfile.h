@@ -79,12 +79,12 @@ class PWSfile {
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
-  virtual int WriteCBC(unsigned char type, const CString &data);
-  virtual int WriteCBC(unsigned char type, const unsigned char *data,
-                       unsigned int length);
-  virtual int ReadCBC(unsigned char &type, CMyString &data);
-  virtual int ReadCBC(unsigned char &type, unsigned char *data,
-                      unsigned int &length);
+  virtual size_t WriteCBC(unsigned char type, const CString &data);
+  virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
+                          unsigned int length);
+  virtual size_t ReadCBC(unsigned char &type, CMyString &data);
+  virtual size_t ReadCBC(unsigned char &type, unsigned char *data,
+                         unsigned int &length);
   const CMyString m_filename;
   CMyString m_passkey;
   FILE *m_fd;

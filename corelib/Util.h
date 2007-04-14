@@ -33,8 +33,8 @@
 #define V10 0
 #define V15 1
 
-extern void trashMemory(void* buffer, long length );
-extern void trashMemory( LPTSTR buffer, long length );
+extern void trashMemory(void* buffer, size_t length );
+extern void trashMemory( LPTSTR buffer, size_t length );
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
 extern void GenRandhash(const CMyString &passkey,

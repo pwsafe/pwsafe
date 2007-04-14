@@ -336,7 +336,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
     ASSERT(m_curversion != UNKNOWN_VERSION);
 
     CMyString tempdata;  
-    int numread = 0;
+    signed long numread = 0;
     unsigned char type;
     // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
     // to access the pointer we need,
@@ -345,11 +345,11 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
     switch (m_curversion) {
         case V17: {
             // type is meaningless, but why write two versions of ReadCBC?
-            numread += ReadCBC(type, tempdata);
+            numread += static_cast<signed long>(ReadCBC(type, tempdata));
             item.SetName(tempdata, m_defusername);
-            numread += ReadCBC(type, tempdata);
+            numread += static_cast<signed long>(ReadCBC(type, tempdata));
             item.SetPassword(tempdata);
-            numread += ReadCBC(type, tempdata);
+            numread += static_cast<signed long>(ReadCBC(type, tempdata));
             item.SetNotes(tempdata);
             // No UUID, so we create one here
             item.CreateUUID();
@@ -358,11 +358,11 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
         }
         case V20: {
             int emergencyExit = 255; // to avoid endless loop.
-            int fieldLen; // zero means end of file reached
+            signed long fieldLen; // zero means end of file reached
             bool endFound = false; // set to true when record end detected - happy end
             do {
-                fieldLen = ReadCBC(type, tempdata);
-                if (fieldLen > 0) {
+                fieldLen = static_cast<signed long>(ReadCBC(type, tempdata));
+                if (signed(fieldLen) > 0) {
                     numread += fieldLen;
                     switch (type) {
                         case CItemData::TITLE:

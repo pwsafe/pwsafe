@@ -627,8 +627,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // tokenize into separate elements
     itoken = 0;
     vector<string> tokens;
-    for (int startpos = 0; ; ) {
-      int nextchar = linebuf.find_first_of(fieldSeparator, startpos);
+    for (size_t startpos = 0; ; ) {
+      size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar >= 0 && i_Offset[itoken] != NOTES) {
         tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
         startpos = nextchar + 1;
@@ -636,8 +636,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         // Here for the Notes field. Notes may be double-quoted, and
         // if they are, they may span more than one line.
         string note(linebuf.substr(startpos));
-        unsigned int first_quote = note.find_first_of('\"');
-        unsigned int last_quote = note.find_last_of('\"');
+        size_t first_quote = note.find_first_of('\"');
+        size_t last_quote = note.find_last_of('\"');
         if (first_quote == last_quote && first_quote != string::npos) {
           //there was exactly one quote, meaning that we've a multi-line Note
           bool noteClosed = false;
@@ -655,8 +655,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
             }
             note += _T("\r\n");
             note += linebuf;
-            unsigned int fq = linebuf.find_first_of(TCHAR('\"'));
-            unsigned int lq = linebuf.find_last_of(TCHAR('\"'));
+            size_t fq = linebuf.find_first_of(TCHAR('\"'));
+            size_t lq = linebuf.find_last_of(TCHAR('\"'));
             noteClosed = (fq == lq && fq != string::npos);
           } while (!noteClosed);
         } // multiline note processed

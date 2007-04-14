@@ -54,7 +54,7 @@
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="false"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
@@ -131,6 +131,7 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="true"
 				CompileAs="0"
 			/>
 			<Tool
@@ -203,6 +204,7 @@
 				PrecompiledHeaderFile=".\Release/corelib.pch"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="true"
 				CompileAs="0"
 			/>
 			<Tool

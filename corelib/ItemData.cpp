@@ -920,7 +920,7 @@ CItemData::ValidatePWHistory()
     return 0;
   }
 
-  int listnum = pPWHistList->GetCount();
+  int listnum = static_cast<int>(pPWHistList->GetCount());
   if (listnum > pwh_num)
     pwh_num = listnum;
 

@@ -115,7 +115,7 @@ class PWScore {
     {return m_pwlist.GetNext(pos);}
   CItemData &GetTailEntry()
     {return m_pwlist.GetTail();}
-  int GetNumEntries() const {return m_pwlist.GetCount();}
+  int GetNumEntries() const {return static_cast<int>(m_pwlist.GetCount());}
   void RemoveEntryAt(POSITION pos)
     {m_changed = true; m_pwlist.RemoveAt(pos);}
  // Find in m_pwlist by title and user name, exact match
