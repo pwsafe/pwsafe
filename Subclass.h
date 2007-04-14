@@ -58,7 +58,7 @@ public:
 
 protected:
 	HWND			m_hWnd;				// the window hooked
-	WNDPROC			m_pOldWndProc;		// ..and original window proc
+	LONG_PTR        m_pOldWndProc;		// ..and original window proc
 	CSubclassWnd*	m_pNext;			// next in chain of hooks for this window
 
 	DECLARE_DYNAMIC(CSubclassWnd);
