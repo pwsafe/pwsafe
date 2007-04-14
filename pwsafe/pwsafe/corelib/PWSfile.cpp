@@ -147,7 +147,7 @@ int PWSfile::Close()
   return SUCCESS;
 }
 
-int PWSfile::WriteCBC(unsigned char type, const CString &data)
+size_t PWSfile::WriteCBC(unsigned char type, const CString &data)
 {
   // We do a double cast because the LPCTSTR cast operator is overridden
   // by the CString class to access the pointer we need,
@@ -158,19 +158,19 @@ int PWSfile::WriteCBC(unsigned char type, const CString &data)
                   data.GetLength());
 }
 
-int PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length)
+size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
+                         unsigned int length)
 {
   ASSERT(m_fish != NULL && m_IV != NULL);
   return _writecbc(m_fd, data, length, type, m_fish, m_IV);
 }
 
-int PWSfile::ReadCBC(unsigned char &type, CMyString &data)
+size_t PWSfile::ReadCBC(unsigned char &type, CMyString &data)
 {
 
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
-  int retval;
+  size_t retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
@@ -189,13 +189,13 @@ int PWSfile::ReadCBC(unsigned char &type, CMyString &data)
   return retval;
 }
 
-int PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
-                     unsigned int &length)
+size_t PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
+                        unsigned int &length)
 {
 
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
-  int retval;
+  size_t retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
   retval = _readcbc(m_fd, buffer, buffer_len, type,

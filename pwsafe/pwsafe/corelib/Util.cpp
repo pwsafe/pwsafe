@@ -43,7 +43,7 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 
 #pragma optimize("",off)
 void
-trashMemory(void* buffer, long length)
+trashMemory(void* buffer, size_t length)
 {
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
@@ -59,7 +59,7 @@ trashMemory(void* buffer, long length)
 #pragma optimize("",on)
 
 void
-trashMemory( LPTSTR buffer, long length )
+trashMemory( LPTSTR buffer, size_t length )
 {
   trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0])  );
 }

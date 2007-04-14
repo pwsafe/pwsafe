@@ -44,12 +44,12 @@ class PWSfileV3 : public PWSfile {
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
   HMAC_SHA256 m_hmac;
-  virtual int WriteCBC(unsigned char type, const CString &data);
-  virtual int WriteCBC(unsigned char type, const unsigned char *data,
-                       unsigned int length);
-  virtual int ReadCBC(unsigned char &type, CMyString &data);
-  virtual int ReadCBC(unsigned char &type, unsigned char *data,
-                      unsigned int &length);
+  virtual size_t WriteCBC(unsigned char type, const CString &data);
+  virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
+                          unsigned int length);
+  virtual size_t ReadCBC(unsigned char &type, CMyString &data);
+  virtual size_t ReadCBC(unsigned char &type, unsigned char *data,
+                         unsigned int &length);
   int WriteHeader();
   int ReadHeader();
   bool ToUTF8(const CString &data);

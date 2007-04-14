@@ -208,10 +208,10 @@ SHA256::~SHA256()
    @return CRYPT_OK if successful
 */
 
-void SHA256::Update(const unsigned char *in, unsigned long inlen)
+void SHA256::Update(const unsigned char *in, size_t inlen)
 {
-  const unsigned long block_size = 64;
-  unsigned long n;
+  const size_t block_size = 64;
+  size_t n;
   ASSERT(in != NULL || inlen == 0);
   ASSERT(curlen <= sizeof(buf));
   while (inlen > 0) {

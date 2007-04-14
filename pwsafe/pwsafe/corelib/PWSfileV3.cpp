@@ -183,7 +183,7 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   return retval;
 }
 
-int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
+size_t PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 {
   if (m_useUTF8) {
     bool status;
@@ -197,7 +197,7 @@ int PWSfileV3::WriteCBC(unsigned char type, const CString &data)
   }
 }
 
-int PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
+size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
                         unsigned int length)
 {
   m_hmac.Update(data, length);
@@ -253,11 +253,11 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   return status;
 }
 
-int
+size_t
 PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
 {
   CMyString text;
-  int numRead = PWSfile::ReadCBC(type, text);
+  size_t numRead = PWSfile::ReadCBC(type, text);
 
   if (numRead > 0) {
     LPCTSTR d = LPCTSTR(text);
@@ -284,10 +284,10 @@ PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
   return numRead;
 }
 
-int PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
+size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
                        unsigned int &length)
 {
-  int numRead = PWSfile::ReadCBC(type, data, length);
+  size_t numRead = PWSfile::ReadCBC(type, data, length);
 
   if (numRead > 0) {
     m_hmac.Update(data, length);
@@ -302,17 +302,17 @@ int PWSfileV3::ReadRecord(CItemData &item)
   ASSERT(m_curversion == V30);
 
   CMyString tempdata;  
-  int numread = 0;
+  signed long numread = 0;
   unsigned char type;
 
   int emergencyExit = 255; // to avoid endless loop.
-  int fieldLen; // <= 0 means end of file reached
+  signed long fieldLen; // <= 0 means end of file reached
   bool endFound = false; // set to true when record end detected - happy end
   time_t t;
 
   do {
-    fieldLen = ReadCBC(type, tempdata);
-    if (fieldLen > 0) {
+      fieldLen = static_cast<signed long>(ReadCBC(type, tempdata));
+      if (fieldLen > 0) {
       numread += fieldLen;
       switch (type) {
       case CItemData::TITLE:
@@ -481,7 +481,7 @@ int PWSfileV3::WriteHeader()
   m_fish = new TwoFish(m_key, sizeof(m_key));
 
   // write some actual data (at last!)
-  int numWritten = 0;
+  size_t numWritten = 0;
   // Write version number
   unsigned char vnb[sizeof(VersionNum)];;
   vnb[0] = (unsigned char) (VersionNum & 0xff);
@@ -601,7 +601,7 @@ int PWSfileV3::ReadHeader()
   LPCTSTR headerData;
   CMyString headerField;
   unsigned char type;
-  int numRead;
+  size_t numRead;
 
   do {
     numRead = PWSfile::ReadCBC (type, headerField);
