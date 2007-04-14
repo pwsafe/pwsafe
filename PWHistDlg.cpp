@@ -88,7 +88,7 @@ BOOL CPWHistDlg::OnInitDialog()
     DWORD nIdx;
     for (iter = m_PWHistList.begin(), nIdx = 0;
          iter != m_PWHistList.end(); iter++, nIdx++) {
-        int nPos;
+        int nPos = 0;
         const PWHistEntry pwhentry = *iter;
         if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
             nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
