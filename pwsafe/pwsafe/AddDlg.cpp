@@ -349,7 +349,7 @@ void CAddDlg::OnBnClickedSetLTime()
 	dlg_expDT.m_locLTime = m_locLTime;
 
 	app.DisableAccelerator();
-	int rc = dlg_expDT.DoModal();
+	INT_PTR rc = dlg_expDT.DoModal();
 	app.EnableAccelerator();
 
 	if (rc == IDOK) {

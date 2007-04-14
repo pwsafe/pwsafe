@@ -300,11 +300,11 @@ static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
     return FALSE;
   }
 
-  int suffix_len = strlen(CIPHERTEXT_SUFFIX);
-  int filepath_len = fn.GetLength();
+  size_t suffix_len = strlen(CIPHERTEXT_SUFFIX);
+  size_t filepath_len = fn.GetLength();
 
   CString out_fn = fn;
-  out_fn = out_fn.Left(filepath_len - suffix_len);
+  out_fn = out_fn.Left(static_cast<int>(filepath_len - suffix_len));
 
 #if _MSC_VER >= 1400
   FILE *out;
@@ -607,8 +607,9 @@ ThisMfcApp::InitInstance()
                                                 ID_FILE_MRU_ENTRY1, cs_recent);
                 ASSERT(irc != 0);
                 // Insert Popup onto main menu
-                irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION | MF_POPUP,
-                                               (UINT) new_popupmenu->m_hMenu,
+                irc = file_submenu->InsertMenu(pos + 2,
+                                               MF_BYPOSITION | MF_POPUP,
+                                               UINT_PTR(new_popupmenu->m_hMenu),
                                                cs_recentsafes);
                 ASSERT(irc != 0);
             } else {	// MRU entries inline
@@ -698,7 +699,7 @@ ThisMfcApp::InitInstance()
                 // get password from user if valid flag given. If note, default below will
                 // pop usage message
                 CCryptKeyEntry dlg(NULL);
-                int nResponse = dlg.DoModal();
+                INT_PTR nResponse = dlg.DoModal();
 
                 if (nResponse==IDOK) {
                     passkey = dlg.m_cryptkey1;

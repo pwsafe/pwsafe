@@ -114,7 +114,7 @@ protected:
 
     CArray<HICON, HICON> m_IconList;
     static UINT  m_nIDEvent;
-    UINT         m_uIDTimer;
+    UINT_PTR     m_uIDTimer;
     int          m_nCurrentIcon;
 	UINT		 m_menuID;
     COleDateTime m_StartTime;

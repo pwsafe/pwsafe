@@ -95,7 +95,7 @@ LRESULT CSubclassWnd::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 //	ASSERT_VALID(this);  // removed for speed
 	ASSERT(m_pOldWndProc);
 	return m_pNext ? m_pNext->WindowProc(msg, wp, lp) :
-		::CallWindowProc(m_pOldWndProc, m_hWnd, msg, wp, lp);
+		::CallWindowProc(WNDPROC(m_pOldWndProc), m_hWnd, msg, wp, lp);
 }
 
 //////////////////
@@ -165,9 +165,9 @@ HookWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 		// Window is being destroyed: unhook all hooks (for this window)
 		// and pass msg to orginal window proc
 		//
-		WNDPROC wndproc = pSubclassWnd->m_pOldWndProc;
+		LONG_PTR wndproc = pSubclassWnd->m_pOldWndProc;
 		theHookMap.RemoveAll(hwnd);
-		lr = ::CallWindowProc(wndproc, hwnd, msg, wp, lp);
+		lr = ::CallWindowProc(WNDPROC(wndproc), hwnd, msg, wp, lp);
 	} else {
 		// pass to msg hook
 		lr = pSubclassWnd->WindowProc(msg, wp, lp);
@@ -216,7 +216,7 @@ void CSubclassWndMap::Add(HWND hwnd, CSubclassWnd* pSubclassWnd)
 	if (pSubclassWnd->m_pNext == NULL) {
 		// If this is the first hook added, subclass the window
 		pSubclassWnd->m_pOldWndProc =
-			(WNDPROC)SetWindowLong(hwnd, GWL_WNDPROC, (DWORD)HookWndProc);
+			SetWindowLongPtr(hwnd, GWL_WNDPROC, LONG_PTR(HookWndProc));
 	} else {
 		// just copy wndproc from next hook
 		pSubclassWnd->m_pOldWndProc = pSubclassWnd->m_pNext->m_pOldWndProc;

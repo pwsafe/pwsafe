@@ -520,8 +520,10 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
           // pos 2  = Note on missing fields in entry
           // pos 3  = Separator
           // pos 4+ = entries.....
-          irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
-                                                   (UINT)pNewRecentEntryMenu[i]->m_hMenu, cEntry);
+          irc = pMainRecentEntriesMenu->InsertMenu(i + 4,
+                                                   MF_BYPOSITION | MF_POPUP,
+                                                   UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
+                                                   cEntry);
           ASSERT(irc != 0);
         }
       }
