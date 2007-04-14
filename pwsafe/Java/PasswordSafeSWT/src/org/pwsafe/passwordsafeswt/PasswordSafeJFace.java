@@ -334,30 +334,33 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		treeViewer.setSorter(new ViewerSorter());		
 		treeViewer.addDoubleClickListener(new ViewerDoubleClickListener());
 		tree = treeViewer.getTree();
+		tree.setHeaderVisible(true);
 		tree.setMenu(createPopupMenu(tree));
 		treeViewer.setInput(new Object());
 
-        final TreeColumn treeColumn = new TreeColumn(tree, SWT.NONE);
-        treeColumn.setWidth(100);
+        final TreeColumn treeColumn = new TreeColumn(tree, SWT.CENTER);
         treeColumn.setText("Title");
 //        treeColumn.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 1));
 
-        final TreeColumn treeColumn_1 = new TreeColumn(tree, SWT.NONE);
-        treeColumn_1.setWidth(100);
+        final TreeColumn treeColumn_1 = new TreeColumn(tree, SWT.LEFT);
         treeColumn_1.setText("User Name");
 //        treeColumn_1.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 2));
 
-        final TreeColumn treeColumn_2 = new TreeColumn(tree, SWT.NONE);
-        treeColumn_2.setWidth(100);
+        final TreeColumn treeColumn_2 = new TreeColumn(tree, SWT.LEFT);
         treeColumn_2.setText("Notes");
 //        treeColumn_2.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 3));
 
         if (UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_LIST)) {
-            final TreeColumn treeColumn_3 = new TreeColumn(tree, SWT.NONE);
-            treeColumn_3.setWidth(100);
+        	final TreeColumn treeColumn_3 = new TreeColumn(tree, SWT.LEFT);
             treeColumn_3.setText("Password");
 //            treeColumn_3.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 4));
         }
+        TreeColumn[] columns = tree.getColumns();
+        for (int i = 0; i < columns.length; i++) {
+        	columns[i].setWidth(100);
+            columns[i].setMoveable(true);
+        }
+
 
 		if (UserPreferences.getInstance().getBoolean(DISPLAY_AS_LIST_PREF)) {
 			showListView();
