@@ -98,7 +98,8 @@ class CMyStringTest : public Test
     {
       // const CMyString& operator=(const CMyString& stringSrc);
       CMyString s1(_T("one"));
-      CMyString s2 = s1;
+      CMyString s2;
+      s2 = s1;
       _test(s1 == s2);
       // const CMyString& operator=(TCHAR ch);
       s1 = TCHAR('x');
@@ -106,7 +107,8 @@ class CMyStringTest : public Test
       _test(s1[0] == TCHAR('x'));
       // const CMyString& operator=(LPCTSTR lpsz);
       const LPCTSTR t3 = _T("ABC123acb!@#");
-      CMyString s3 = t3;
+      CMyString s3;
+      s3 = t3;
       _test(_tcscmp(t3, LPCTSTR(s3)) == 0 ? true : false);
 #ifndef UNICODE
       // const CMyString& operator=(const unsigned char* psz);
