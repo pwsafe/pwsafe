@@ -59,7 +59,7 @@ bool CXMLprefs::CreateXML(bool forLoad)
     ASSERT(m_pXMLDoc == NULL);
     m_pXMLDoc = new TiXmlDocument(m_csConfigFile);
     if (!forLoad && m_pXMLDoc != NULL) {
-        TiXmlDeclaration decl("1.0", "UTF-8", "yes");
+        TiXmlDeclaration decl(_T("1.0"), _T("UTF-8"), _T("yes"));
         TiXmlElement rootElem(_T("Pwsafe_Settings"));
 
         return (m_pXMLDoc->InsertEndChild(decl) != NULL &&

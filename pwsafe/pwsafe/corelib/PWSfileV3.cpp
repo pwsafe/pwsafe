@@ -769,7 +769,7 @@ bool PWSfileV3::ToUTF8(const CString &data)
     ASSERT(wcLen != 0);
     wcPtr = m_wc;
 #else
-    wcPtr = LPCTSTR(data);
+    wcPtr = const_cast<CString &>(data).GetBuffer();
     wcLen = data.GetLength()+1;
 #endif
     // first get needed utf8 buffer size
