@@ -18,8 +18,8 @@ CDropSource::~CDropSource()
 {
 }
 
-DROPEFFECT CDropSource::StartDragging(LPCSTR szData, DWORD dwLength, CLIPFORMAT cpfmt,
-                  RECT *rClient, CPoint *ptMousePos)
+DROPEFFECT CDropSource::StartDragging(LPCTSTR szData, DWORD dwLength, CLIPFORMAT cpfmt,
+                                      RECT *rClient, CPoint *ptMousePos)
 {
   HGLOBAL hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwLength);
   ASSERT(hgData != NULL);

@@ -1467,7 +1467,7 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   
 #if _MSC_VER >= 1400
   // Capture columns shown:
-  char *next_token;
+  TCHAR *next_token;
   TCHAR *token = _tcstok_s(pTemp, pSep, &next_token);
   while(token) {
     vi_columns.push_back(_ttoi(token));
@@ -1516,7 +1516,7 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   
 #if _MSC_VER >= 1400
   // Capture column widths shown:
-  char *next_token;
+  TCHAR *next_token;
   TCHAR *token = _tcstok_s(pWidths, pSep, &next_token);
   while(token) {
     vi_widths.push_back(_ttoi(token));
