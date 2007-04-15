@@ -403,7 +403,7 @@ CMyString PWSprefs::Store()
 #ifdef _UNICODE
 	wostringstream os;
 #else
-	ostrstream os;
+	ostringstream os;
 #endif
     int i;
 	for (i = 0; i < NumBoolPrefs; i++)
@@ -422,8 +422,7 @@ CMyString PWSprefs::Store()
 			os << _T("S ") << i << _T(" \"") << LPCTSTR(m_stringValues[i]) << _T("\" ");
 
 	os << ends;
-	retval = os.str();
-	delete[] os.str(); // reports memory leaks in spite of this!
+	retval = os.str().c_str();
 	return CMyString(retval);
 }
 
@@ -448,47 +447,49 @@ void PWSprefs::Load(const CMyString &prefString)
 
 	// parse prefString, updating current values
 #ifdef _UNICODE
-	wistringstream is(prefString);
+    wstring sps(prefString);
+	wistringstream is(sps);
 #else
-	istrstream is(prefString);
+    string sps(prefString);
+	istringstream is(sps);
 #endif
-	char type;
-  int index, ival;
-  unsigned int iuval;
-  CMyString msval;
+	TCHAR type;
+    int index, ival;
+    unsigned int iuval;
+    CMyString msval;
 
-  const int N = prefString.GetLength(); // safe upper limit on string size
-  char *buf = new char[N];
+    const int N = prefString.GetLength(); // safe upper limit on string size
+    TCHAR *buf = new TCHAR[N];
 
-	while (is) {
+    while (is) {
 		is >> type >> index;
 		switch (type) {
 			case TCHAR('B'):
 				// Need to get value - even of not understood or wanted
 				is >> ival;
-				// forward compatibility and check whether still in DB
-				if (index < NumBoolPrefs && m_bool_prefs[index].isStoredinDB) {
-					ASSERT(ival == 0 || ival == 1);
-					m_boolValues[index] = (ival != 0);
-				}
-				break;
+            // forward compatibility and check whether still in DB
+            if (index < NumBoolPrefs && m_bool_prefs[index].isStoredinDB) {
+                ASSERT(ival == 0 || ival == 1);
+                m_boolValues[index] = (ival != 0);
+            }
+            break;
 			case TCHAR('I'):
 				// Need to get value - even of not understood or wanted
 				is >> iuval;
-				// forward compatibility and check whether still in DB
-				if (index < NumIntPrefs && m_int_prefs[index].isStoredinDB)
-					m_intValues[index] = iuval;
-				break;
+            // forward compatibility and check whether still in DB
+            if (index < NumIntPrefs && m_int_prefs[index].isStoredinDB)
+                m_intValues[index] = iuval;
+            break;
 			case TCHAR('S'):
 				// Need to get value - even of not understood or wanted
 				is.ignore(2, TCHAR('\"')); // skip over space and leading "
-				is.get(buf, N, TCHAR('\"')); // get string value
-				// forward compatibility and check whether still in DB
-				if (index < NumStringPrefs && m_string_prefs[index].isStoredinDB) {
-					msval= buf;
-					m_stringValues[index] = msval;
-				}
-				break;
+            is.get(buf, N, TCHAR('\"')); // get string value
+            // forward compatibility and check whether still in DB
+            if (index < NumStringPrefs && m_string_prefs[index].isStoredinDB) {
+                msval= buf;
+                m_stringValues[index] = msval;
+            }
+            break;
 			default:
 				continue; // forward compatibility (also last space)
 		} // switch
