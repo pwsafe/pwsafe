@@ -65,7 +65,7 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   HGLOBAL hGlobal;
   hGlobal = pDataObject->GetGlobalData(gbl_ccddCPFID);
 
-  LPCSTR pData = (LPCSTR)GlobalLock(hGlobal);
+  LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
   DWORD randID;
@@ -115,7 +115,7 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
 
   // ListView HeaderCtrl only needs the type as it uses main routine
   // to add/delete columns via SendMessage
-  cs_text.Format("%08x%02x%02x", gbl_randID, FROMCC, dw_type);
+  cs_text.Format(_T("%08x%02x%02x"), gbl_randID, FROMCC, dw_type);
 
   // Get client window position
   CPoint currentClientPosition;

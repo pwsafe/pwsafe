@@ -62,7 +62,7 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   HGLOBAL hGlobal;
   hGlobal = pDataObject->GetGlobalData(gbl_ccddCPFID);
 
-  LPCSTR pData = (LPCSTR)GlobalLock(hGlobal);
+  LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
   DWORD randID;
@@ -138,7 +138,7 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   // Get the data: ColumnChooser Listbox needs the column string
   const int iLen = _tcslen(lpBuffer);
   CString cs_text;
-  cs_text.Format("%08x%02x%02x%04x%s", gbl_randID, FROMHDR, m_dwHDRType, iLen, lpBuffer);
+  cs_text.Format(_T("%08x%02x%02x%04x%s"), gbl_randID, FROMHDR, m_dwHDRType, iLen, lpBuffer);
 
   // Set drag image
   m_pDragImage = CreateDragImage(hdhti.iItem);

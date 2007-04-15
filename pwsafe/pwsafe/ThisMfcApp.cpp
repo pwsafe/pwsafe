@@ -545,7 +545,7 @@ ThisMfcApp::InitInstance()
       unsigned int uiFormat = 0;
 
       while ((uiFormat = EnumClipboardFormats(uiFormat)) != 0) {
-        char szName[512];
+        TCHAR szName[512];
         GetClipboardFormatName(uiFormat, szName, sizeof(szName));
         if (cs_CPF.Compare(CString(szName)) == 0) {
           gbl_ccddCPFID = (CLIPFORMAT)uiFormat;

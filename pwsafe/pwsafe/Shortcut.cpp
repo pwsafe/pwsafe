@@ -120,6 +120,7 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
       psl->SetArguments(m_sCmdArg);
 
     if (SUCCEEDED(psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf))) {
+#ifndef UNICODE
       WCHAR wsz[MAX_PATH];
 
       MultiByteToWideChar(CP_ACP,
@@ -128,7 +129,7 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
                           -1,
                           wsz,
                           MAX_PATH);
-
+#endif
       /* Call IShellLink::SetIconLocation with the file containing
          the icon and the index of the icon */
       if(!IconLocation.IsEmpty()) {
@@ -139,7 +140,12 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
 #endif
       }
 				
-      if(SUCCEEDED(ppf->Save(wsz, TRUE))) {
+#ifndef UNICODE
+      if(SUCCEEDED(ppf->Save(wsz, TRUE)))
+#else
+      if(SUCCEEDED(ppf->Save(sSpecialFolder, TRUE)))
+#endif
+ {
         bRet = TRUE;
       }
       ppf->Release();
@@ -198,7 +204,7 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
   FIO.wFunc=FO_DELETE;
   FIO.fFlags=FOF_NOERRORUI|FOF_NOCONFIRMATION;
 		
-  if(sSpecialFolder.Find('\0')!=sSpecialFolder.GetLength()) {
+  if(sSpecialFolder.Find(TCHAR('\0'))!=sSpecialFolder.GetLength()) {
     FIO.fFlags|=FOF_MULTIDESTFILES;
   }
   if(sSpecialFolder.Right(1)) {
@@ -291,6 +297,7 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
     hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf);
 
     if (SUCCEEDED(hres)) { 
+#ifndef UNICODE
       WCHAR wsz[MAX_PATH];  
       // Ensure that the string is Unicode. 
       MultiByteToWideChar(CP_ACP,
@@ -300,7 +307,9 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
                           wsz, 
                           MAX_PATH);   // Load the shortcut. 
       hres = ppf->Load(wsz, STGM_READ); 
-						
+#else
+      hres = ppf->Load(sLnkFile, STGM_READ); 
+#endif						
       if (SUCCEEDED(hres)) {   // Resolve the link. 
         hres = psl->Resolve(hwnd, SLR_ANY_MATCH); 
 								
