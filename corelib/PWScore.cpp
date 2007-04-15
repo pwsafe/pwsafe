@@ -28,6 +28,19 @@
 #include <algorithm>
 using namespace std;
 
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::vector<std::wstring>::const_iterator vciter;
+typedef std::wstring stringT;
+typedef std::wifstream ifstreamT;
+typedef std::wofstream ofstreamT;
+#else
+typedef std::vector<std::string>::const_iterator vciter;
+typedef std::string stringT;
+typedef std::ifstream ifstreamT;
+typedef std::ofstream ofstreamT;
+#endif
+
 
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
@@ -140,11 +153,8 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 							const int &iObject, const int &iFunction,
 							TCHAR &delimiter, const ItemList *il)
 {
-#ifdef UNICODE
-  wofstream ofs((const wchar_t *)LPCTSTR(filename));
-#else
-  ofstream ofs((const char *)LPCTSTR(filename));
-#endif
+  ofstreamT ofs(filename);
+
   if (!ofs)
     return CANT_OPEN_FILE;
 
@@ -286,9 +296,9 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 	while (listPos != NULL) {
 		CItemData temp = pwlist.GetAt(listPos);
 #if _MSC_VER >= 1400
-		_itoa_s( id, buffer, 8, 10 );
+		_itot_s( id, buffer, 8, 10 );
 #else
-		_itoa( id, buffer, 10 );
+		_itot( id, buffer, 10 );
 #endif
 		of << _T("\t<entry id=\"") << buffer << _T("\">") << endl;
 		// TODO: need to handle entity escaping of values.
@@ -390,19 +400,19 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
             _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
             of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
 
-            _stprintf_s(buffer, 3, "%2d", pwh_max);
+            _stprintf_s(buffer, 3, _T("%2d"), pwh_max);
             of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
 
-            _stprintf_s(buffer, 3, "%2d", pwh_num);
+            _stprintf_s(buffer, 3, _T("%2d"), pwh_num);
             of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
 #else
-            _stprintf(buffer, "%1d", pwh_status);
+            _stprintf(buffer, _T("%1d"), pwh_status);
             of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
 
-            _stprintf(buffer, "%2d", pwh_max);
+            _stprintf(buffer, _T("%2d"), pwh_max);
             of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
 
-            _stprintf(buffer, "%2d", pwh_num);
+            _stprintf(buffer, _T("%2d"), pwh_num);
             of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
 #endif
             if (!PWHistList.empty()) {
@@ -412,9 +422,9 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
                 for (iter = PWHistList.begin(); iter != PWHistList.end();
                      iter++) {
 #if _MSC_VER >= 1400
-                    _itoa_s( num, buffer, 8, 10 );
+                    _itot_s( num, buffer, 8, 10 );
 #else
-                    _itoa( num, buffer, 10 );
+                    _itot( num, buffer, 10 );
 #endif
                     of << _T("\t\t\t\t<history_entry num=\"") << buffer << _T("\">") << endl;
                     const PWHistEntry pwshe = *iter;
@@ -487,11 +497,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
                              TCHAR fieldSeparator, TCHAR delimiter,
                              int &numImported, int &numSkipped)
 {
-#ifdef UNICODE
-  wifstream ifs((const wchar_t *)LPCTSTR(filename));
-#else
-  ifstream ifs((const char *)LPCTSTR(filename));
-#endif
+    ifstreamT ifs(filename);
 
   if (!ifs)
     return CANT_OPEN_FILE;
@@ -506,9 +512,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
   CItemData temp;
   CString buffer;
-
-  vector<string> vs_Header;
-  const string s_hdr(m_hdr);
+  vector<stringT> vs_Header;
+  const stringT s_hdr(m_hdr);
   const TCHAR pTab[] = _T("\t");
   TCHAR pSeps[] = _T(" ");
   TCHAR *pTemp;
@@ -531,7 +536,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   pSeps[0] = fieldSeparator;
 #if _MSC_VER >= 1400
   // Capture individual column titles:
-  char *next_token;
+  TCHAR *next_token;
   TCHAR *token = _tcstok_s(pTemp, pTab, &next_token);
   while(token) {
     vs_Header.push_back(token);
@@ -547,8 +552,9 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 #endif
   free(pTemp);
 
+  stringT s_title, linebuf;
+
   // Get title record
-  string s_title;
   if (!getline(ifs, s_title, TCHAR('\n')))
      return SUCCESS;  // not even a title record! - succeeded but none imported!
 
@@ -566,8 +572,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   // Capture individual column titles:
   token = _tcstok_s(pTemp, pSeps, &next_token);
   while(token) {
-    std::vector<std::string>::const_iterator it
-        (std::find(vs_Header.begin(), vs_Header.end(), token));
+    vciter it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
         i_Offset[it - vs_Header.begin()] = itoken;
         num_found++;
@@ -579,8 +584,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   // Capture individual column titles:
   token = _tcstok(pTemp, pSeps);
   while(token) {
-    std::vector<std::string>::const_iterator it
-        (std::find(vs_Header.begin(), vs_Header.end(), token));
+    vciter it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
         i_Offset[it - vs_Header.begin()] = itoken;
         num_found++;
@@ -608,7 +612,6 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   // Finished parsing header, go get the data!
   for (;;) {
     // read a single line.
-    string linebuf;
     if (!getline(ifs, linebuf, TCHAR('\n'))) break;
     numlines++;
 
@@ -623,7 +626,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
     // tokenize into separate elements
     itoken = 0;
-    vector<string> tokens;
+vector<stringT> tokens;
     for (size_t startpos = 0; ; ) {
       size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar >= 0 && i_Offset[itoken] != NOTES) {
@@ -632,7 +635,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       } else {
         // Here for the Notes field. Notes may be double-quoted, and
         // if they are, they may span more than one line.
-        string note(linebuf.substr(startpos));
+        stringT note(linebuf.substr(startpos));
         size_t first_quote = note.find_first_of('\"');
         size_t last_quote = note.find_last_of('\"');
         if (first_quote == last_quote && first_quote != string::npos) {
@@ -678,8 +681,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
     // The group and title field are concatenated.
     // If the title field has periods, then it in doubleqoutes
-    const string &grouptitle = tokens[i_Offset[GROUPTITLE]];
-
+    const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
     if (grouptitle[grouptitle.length()-1] == TCHAR('\"')) {
       size_t leftquote = grouptitle.find(TCHAR('\"'));
       if (leftquote != grouptitle.length()-1) {
@@ -748,7 +750,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // The notes field begins and ends with a double-quote, with
     // no special escaping of any other internal characters.
     if (i_Offset[NOTES] >= 0) {
-        string quotedNotes = tokens[i_Offset[NOTES]];
+        stringT quotedNotes = tokens[i_Offset[NOTES]];
         if (!quotedNotes.empty() &&
             *quotedNotes.begin() == TCHAR('\"') &&
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
@@ -1130,24 +1132,20 @@ CMyString PWScore::GetPassKey() const
 int
 PWScore::ImportKeePassTextFile(const CMyString &filename)
 {
-    static const TCHAR *ImportedPrefix = { "ImportedKeePass" };
-#ifdef UNICODE
-    wifstream ifs((const wchar_t *)LPCTSTR(filename));
-#else
-    ifstream ifs((const char *)LPCTSTR(filename));
-#endif
+    static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
+    ifstreamT ifs(filename);
 
     if (!ifs) {
         return CANT_OPEN_FILE;
     }
 
-    string linebuf;
+    stringT linebuf;
 
-    string group;
-    string title;
-    string user;
-    string passwd;
-    string notes;
+    stringT group;
+    stringT title;
+    stringT user;
+    stringT passwd;
+    stringT notes;
 
     // read a single line.
     if (!getline(ifs, linebuf, TCHAR('\n')) || linebuf.empty()) {
@@ -1155,7 +1153,7 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
     }
 
     // the first line of the keepass text file contains a few garbage characters
-    linebuf = linebuf.erase(0, linebuf.find("["));
+    linebuf = linebuf.erase(0, linebuf.find(_T("[")));
 
     size_t pos = static_cast<size_t>(-1);
     for (;;) {
@@ -1193,7 +1191,7 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
         }
         if (!linebuf.substr(pos + 5).empty()) {
             notes.append(linebuf.substr(pos + 5));
-            notes.append("\r\n\r\n");
+            notes.append(_T("\r\n\r\n"));
         }
 
         // set the password: line pattern: Password: <passwd>
