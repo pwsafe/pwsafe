@@ -26,7 +26,6 @@ class CUUIDGen {
   CUUIDGen(const uuid_array_t &); // for storing an existing UUID
   ~CUUIDGen();
   void GetUUID(uuid_array_t &) const;
-  void GetUUIDStr(uuid_str_t &) const;
  private:
   UUID uuid;
 };
