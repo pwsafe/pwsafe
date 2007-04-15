@@ -8,11 +8,10 @@
 /// \file MyString.cpp
 //-----------------------------------------------------------------------------
 
+#include "MyString.h"
 #include "Util.h"
 
-#include "MyString.h"
-#include <stdio.h>
-#include <stdarg.h>
+#include <cstdarg>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,57 +19,11 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-CMyString::CMyString() : m_mystring(_T(""))
-{
-}
-
-CMyString::CMyString(LPCTSTR lpsz) : m_mystring(lpsz)
-{
-}
-
-CMyString::CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength)
-{
-}
-
-CMyString::CMyString(const CMyString& stringSrc) : m_mystring(stringSrc.m_mystring)
-{
-}
-
-CMyString::CMyString(const CString& stringSrc) : m_mystring(stringSrc)
-{
-}
-
-CMyString::~CMyString()
-{
-   trashstring();
-}
-
-
 void
 CMyString::trashstring()
 {
    trashMemory((unsigned char*)m_mystring.GetBuffer(m_mystring.GetLength()),
                m_mystring.GetLength());
-}
-
-
-LPTSTR
-CMyString::GetBuffer(int nMinBufLength)
-{
-   return m_mystring.GetBuffer(nMinBufLength);
-}
-
-void
-CMyString::ReleaseBuffer(int nNewLength)
-{
-   m_mystring.ReleaseBuffer(nNewLength);
-}
-
-int
-CMyString::GetLength() const
-{
-   return m_mystring.GetLength();
 }
 
 void
@@ -139,27 +92,6 @@ CMyString::operator=(const unsigned char* psz)
 }
 #endif
 
-const CMyString&
-CMyString::operator+=(const CMyString& string)
-{
-   m_mystring += string.m_mystring;
-   return *this;
-}
-
-const CMyString&
-CMyString::operator+=(TCHAR ch)
-{
-   m_mystring += ch;
-   return *this;
-}
-
-const CMyString&
-CMyString::operator+=(LPCTSTR lpsz)
-{
-   m_mystring += lpsz;
-   return *this;
-}
-
 CMyString AFXAPI
 operator+(const CMyString& string1,const CMyString& string2)
 {
@@ -200,44 +132,6 @@ operator+(LPCTSTR lpsz, const CMyString& string)
    return s;
 }
 
-TCHAR
-CMyString::operator[](int nIndex) const
-{
-   return m_mystring[nIndex];
-}
-
-TCHAR
-CMyString::GetAt(int nIndex)
-{
-   return m_mystring.GetAt(nIndex);
-}
-
-void
-CMyString::SetAt(int nIndex, TCHAR ch)
-{
-   m_mystring.SetAt(nIndex,ch);
-}
-
-CMyString::operator CString() const
-{
-   return m_mystring;
-}
-
-CMyString::operator CString&()
-{
-   return m_mystring;
-}
-
-CMyString::operator LPCTSTR() const
-{
-   return (LPCTSTR)m_mystring;
-}
-
-BOOL
-CMyString::IsEmpty() const
-{
-   return m_mystring.IsEmpty();
-}
 
 int
 CMyString::FindByte(char ch) const
@@ -261,54 +155,6 @@ CMyString::FindByte(char ch) const
   }
 
   return nRetVal;
-}
-
-int
-CMyString::Find(TCHAR ch) const
-{
-   return m_mystring.Find(ch);
-}
-
-int
-CMyString::Find(LPCTSTR lpszSub) const
-{
-   return m_mystring.Find(lpszSub);
-}
-
-int
-CMyString::Find(TCHAR ch, int nstart) const
-{
-   return m_mystring.Find(ch, nstart);
-}
-
-int
-CMyString::Find(LPCTSTR lpszSub, int nstart) const
-{
-   return m_mystring.Find(lpszSub, nstart);
-}
-
-int
-CMyString::FindOneOf(LPCTSTR lpszSub) const
-{
-   return m_mystring.FindOneOf(lpszSub);
-}
-
-int
-CMyString::Replace(const TCHAR chOld, const TCHAR chNew) 
-{
-   return m_mystring.Replace(chOld,chNew);
-}
-
-int
-CMyString::Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew) 
-{
-   return m_mystring.Replace(lpszOld,lpszNew);
-}
-
-int
-CMyString::Remove(TCHAR ch) 
-{
-   return m_mystring.Remove(ch);
 }
 
 //Can't properly trash the memory here, so it is better to just return a CString
@@ -342,42 +188,6 @@ CMyString::Mid(int nFirst, int nCount) const
    CMyString s;
    s.m_mystring = m_mystring.Mid(nFirst, nCount);
    return s;
-}
-
-bool
-operator==(const CMyString& s1, const CMyString& s2)
-{
-   return (const CString)s1 == (const CString)s2;
-}
-
-bool
-operator==(const CMyString& s1, LPCTSTR s2)
-{
-   return (const CString)s1==s2;
-}
-
-bool
-operator==(LPCTSTR s1, const CMyString& s2)
-{
-   return s1==(const CString)s2;
-}
-
-bool
-operator!=(const CMyString& s1, const CMyString& s2)
-{
-   return (const CString)s1 != (const CString)s2;
-}
-
-bool
-operator!=(const CMyString& s1, LPCTSTR s2)
-{
-   return (const CString)s1 != s2;
-}
-
-bool
-operator!=(LPCTSTR s1, const CMyString& s2)
-{
-   return s1 != (const CString)s2;
 }
 
 //-----------------------------------------------------------------------------
