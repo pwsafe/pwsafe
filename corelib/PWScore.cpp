@@ -329,60 +329,68 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 		tmp = temp.GetNotes(delimiter);
 		if (!tmp.IsEmpty())
 			of << _T("\t\t<notes><![CDATA[") << tmp << _T("]]></notes>") << endl;
+
 		temp.GetUUID(uuid_array);
 		TCHAR uuid_buffer[33];
 #if _MSC_VER >= 1400
 		_stprintf_s(uuid_buffer, 33,
                     _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
-                    uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3],
-                    uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7],
-                    uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11],
+                    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+                    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+                    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
                     uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #else
-        _stprintf(uuid_buffer,
-                  _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
-                  uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3],
-                  uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7],
-                  uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11],
-                  uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+    _stprintf(uuid_buffer,
+                    _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+                    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+                    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+                    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+                    uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #endif
         uuid_buffer[32] = TCHAR('\0');
         of << _T("\t\t<uuid><![CDATA[") << uuid_buffer << _T("]]></uuid>") << endl;
 
-        tmp = temp.GetCTimeXML();
-        if (!tmp.IsEmpty()) {
+        time_t t;
+
+        temp.GetCTime(t);
+        if ((long)t != 0) {
+            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<ctime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
             of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
             of << _T("\t\t</ctime>") << endl;
         }
 
-        tmp = temp.GetATimeXML();
-        if (!tmp.IsEmpty()) {
+        temp.GetATime(t);
+        if ((long)t != 0) {
+            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<atime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
             of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
             of << _T("\t\t</atime>") << endl;
         }
 
-        tmp = temp.GetLTimeXML();
-        if (!tmp.IsEmpty()) {
+        temp.GetLTime(t);
+        if ((long)t != 0) {
+            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<ltime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
             of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
             of << _T("\t\t</ltime>") << endl;
         }
 
-        tmp = temp.GetPMTimeXML();
-        if (!tmp.IsEmpty()) {
+        temp.GetPMTime(t);
+        if ((long)t != 0) {
+            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<pmtime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
             of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
             of << _T("\t\t</pmtime>") << endl;
         }
 
-        tmp = temp.GetRMTimeXML();
-        if (!tmp.IsEmpty()) {
+        temp.GetRMTime(t);
+        if ((long)t != 0) {
+            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<rmtime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
             of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
