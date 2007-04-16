@@ -17,6 +17,7 @@ prevents F2 giving the user the feel that they can.
 [1693395] Now Minimize takes precedence over "Always on Top" during Autotype
 [1695991] 3.07 - File type Compare now has .bak & .ibak suffixes
 [Open Discussion] Fix issue if PWS is maximized/minimized/then restored
+[1701508] Entry times no longer written out if not set
 
 New Features for 3.07.01
 ========================
