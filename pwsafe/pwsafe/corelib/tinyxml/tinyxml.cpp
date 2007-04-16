@@ -31,6 +31,9 @@ distribution.
 
 #include "tinyxml.h"
 
+#ifdef UNICODE
+#include <Windows.h>
+#endif
 
 bool TiXmlBase::condenseWhiteSpace = true;
 
@@ -1013,17 +1016,23 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	}
 	*/
 
-	TCHAR* buf = new TCHAR[ length+1 ];
+	char* buf = new char[ length + 1 ];
 	buf[0] = 0;
+#ifdef UNICODE
+    wchar_t *wbuf = new wchar_t[length+1];
+#endif
 
-	if ( fread( buf, sizeof(TCHAR)*length, 1, file ) != 1 ) {
+	if ( fread( buf, length, 1, file ) != 1 ) {
 		delete [] buf;
+#ifdef UNICODE
+        delete [] wbuf;
+#endif
 		SetError( TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN );
 		return false;
 	}
 
-	const TCHAR* lastPos = buf;
-	const TCHAR* p = buf;
+	const char* lastPos = buf;
+	const char* p = buf;
 
 	buf[length] = 0;
 	while( *p ) {
@@ -1031,7 +1040,17 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 		if ( *p == 0xa ) {
 			// Newline character. No special rules for this. Append all the characters
 			// since the last string, and include the newline.
-			data.append( lastPos, (p-lastPos+1) );	// append, include the newline
+#ifdef UNICODE
+            // translate from lastpos to (p-lastPos+1) to wchar_t
+            int nw;
+            nw = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED,
+                                     lastPos, (p-lastPos+1),
+                                     wbuf, (length+1));
+            assert(nw == p-lastPos+1);
+            data.append(wbuf, (p-lastPos+1));
+#else
+			data.append( lastPos, (p-lastPos+1) );  // append, include the newline
+#endif
 			++p;									// move past the newline
 			lastPos = p;							// and point to the new buffer (may be 0)
 			assert( p <= (buf+length) );
@@ -1040,7 +1059,17 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 			// Carriage return. Append what we have so far, then
 			// handle moving forward in the buffer.
 			if ( (p-lastPos) > 0 ) {
-				data.append( lastPos, p-lastPos );	// do not add the CR
+#ifdef UNICODE
+                // translate from lastpos to (p-lastPos) to wchar_t
+                int nw;
+                nw = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED,
+                                         lastPos, (p-lastPos),
+                                         wbuf, (length+1));
+                assert(nw == p-lastPos);
+                data.append(wbuf, (p-lastPos));
+#else
+                data.append( lastPos, (p-lastPos) );	// do not add the CR
+#endif
 			}
 			data += (char)0xa;						// a proper newline
 
@@ -1063,9 +1092,22 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	}
 	// Handle any left over characters.
 	if ( p-lastPos ) {
-		data.append( lastPos, p-lastPos );
+#ifdef UNICODE
+        // translate from lastpos to (p-lastPos) to wchar_t
+        int nw;
+        nw = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED,
+                                 lastPos, (p-lastPos),
+                                 wbuf, (length+1));
+        assert(nw == p-lastPos);
+        data.append(wbuf, (p-lastPos));
+#else
+data.append( lastPos, (p-lastPos) );
+#endif
 	}		
 	delete [] buf;
+#ifdef UNICODE
+    delete [] wbuf;
+#endif
 	buf = 0;
 
 	Parse( data.c_str(), 0, encoding );
