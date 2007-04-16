@@ -68,7 +68,7 @@ class PWSfileV3 : public PWSfile {
   // deallocated by Close() and d'tor
 
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
-                         const unsigned char *passkey, unsigned long passLen,
+                         const CMyString &passkey,
                          unsigned int N, unsigned char *Ptag);
 };
 #endif /* __PWSFILEV3_H */

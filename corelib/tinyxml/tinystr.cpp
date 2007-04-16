@@ -45,7 +45,7 @@ void TiXmlString::reserve (size_type cap)
 	{
 		TiXmlString tmp;
 		tmp.init(length(), cap);
-		memcpy(tmp.start(), data(), length());
+		memcpy(tmp.start(), data(), length() * sizeof(TCHAR));
 		swap(tmp);
 	}
 }
@@ -58,12 +58,12 @@ TiXmlString& TiXmlString::assign(const TCHAR* str, size_type len)
 	{
 		TiXmlString tmp;
 		tmp.init(len);
-		memcpy(tmp.start(), str, len);
+		memcpy(tmp.start(), str, len * sizeof(TCHAR));
 		swap(tmp);
 	}
 	else
 	{
-		memmove(start(), str, len);
+		memmove(start(), str, len * sizeof(TCHAR));
 		set_size(len);
 	}
 	return *this;
@@ -77,7 +77,7 @@ TiXmlString& TiXmlString::append(const TCHAR* str, size_type len)
 	{
 		reserve (newsize + capacity());
 	}
-	memmove(finish(), str, len);
+	memmove(finish(), str, len * sizeof(TCHAR));
 	set_size(newsize);
 	return *this;
 }

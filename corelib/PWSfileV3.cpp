@@ -162,11 +162,8 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   unsigned char Ptag[SHA256::HASHLEN];
   if (aPtag == NULL)
     aPtag = Ptag;
-  LPCTSTR passstr = LPCTSTR(passkey); 
-  StretchKey(salt, sizeof(salt),
-             (const unsigned char *)passstr, passkey.GetLength(),
-             N, aPtag);
 
+  StretchKey(salt, sizeof(salt), passkey, N, aPtag);
 
   unsigned char HPtag[SHA256::HASHLEN];
   H.Update(aPtag, SHA256::HASHLEN);
@@ -383,8 +380,8 @@ int PWSfileV3::ReadRecord(CItemData &item)
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
-                         const unsigned char *passkey, unsigned long passLen,
-                         unsigned int N, unsigned char *Ptag)
+                           const CMyString &passkey,
+                           unsigned int N, unsigned char *Ptag)
 {
   /*
    * P' is the "stretched key" of the user's passphrase and the SALT, as defined
@@ -392,9 +389,13 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
    * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
    * as the hash function, and N iterations.
    */
+
+  LPCTSTR passstr = LPCTSTR(passkey); 
+  unsigned long passLen = passkey.GetLength();
+
   unsigned char *X = Ptag;
   SHA256 H0;
-  H0.Update(passkey, passLen);
+  H0.Update((unsigned char *)passstr, passLen);
   H0.Update(salt, saltLen);
   H0.Final(X);
 
@@ -437,10 +438,8 @@ int PWSfileV3::WriteHeader()
   fwrite(Nb, 1, sizeof(Nb), m_fd);
 
   unsigned char Ptag[SHA256::HASHLEN];
-  LPCTSTR passstr = LPCTSTR(m_passkey); 
-  StretchKey(salt, sizeof(salt),
-             (const unsigned char *)passstr, m_passkey.GetLength(),
-             NumHashIters, Ptag);
+
+  StretchKey(salt, sizeof(salt), m_passkey, NumHashIters, Ptag);
 
   unsigned char HPtag[SHA256::HASHLEN];
   SHA256 H;

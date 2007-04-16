@@ -84,21 +84,21 @@ class TiXmlString
 	TiXmlString ( const TiXmlString & copy) : rep_(0)
 	{
 		init(copy.length());
-		memcpy(start(), copy.data(), length());
+		memcpy(start(), copy.data(), length() * sizeof(TCHAR));
 	}
 
 	// TiXmlString constructor, based on a string
 	TIXML_EXPLICIT TiXmlString ( const TCHAR * copy) : rep_(0)
 	{
 		init( static_cast<size_type>( _tcsclen(copy) ));
-		memcpy(start(), copy, length());
+		memcpy(start(), copy, length() * sizeof(TCHAR));
 	}
 
 	// TiXmlString constructor, based on a string
 	TIXML_EXPLICIT TiXmlString ( const TCHAR * str, size_type len) : rep_(0)
 	{
 		init(len);
-		memcpy(start(), str, len);
+		memcpy(start(), str, len * sizeof(TCHAR));
 	}
 
 	// TiXmlString destructor
@@ -238,7 +238,7 @@ class TiXmlString
 			// doesn't work in some cases of new being overloaded. Switching
 			// to the normal allocation, although use an 'int' for systems
 			// that are overly picky about structure alignment.
-			const size_type bytesNeeded = sizeof(Rep) + cap;
+			const size_type bytesNeeded = sizeof(Rep) + (cap * sizeof(TCHAR));
 			const size_type intsNeeded = ( bytesNeeded + sizeof(int) - 1 ) / sizeof( int ); 
 			rep_ = reinterpret_cast<Rep*>( new int[ intsNeeded ] );
 
