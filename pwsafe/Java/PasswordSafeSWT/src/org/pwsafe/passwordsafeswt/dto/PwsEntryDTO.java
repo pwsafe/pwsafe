@@ -1,5 +1,10 @@
 package org.pwsafe.passwordsafeswt.dto;
 
+import java.util.Date;
+import org.pwsafe.lib.UUID;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pwsafe.lib.file.PwsField;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
@@ -7,6 +12,8 @@ import org.pwsafe.lib.file.PwsRecordV2;
 import org.pwsafe.lib.file.PwsRecordV3;
 import org.pwsafe.lib.file.PwsStringField;
 import org.pwsafe.lib.file.PwsStringUnicodeField;
+import org.pwsafe.lib.file.PwsTimeField;
+import org.pwsafe.lib.file.PwsUUIDField;
 
 /**
  * Convenience class for transferring password info around in a 
@@ -16,15 +23,25 @@ import org.pwsafe.lib.file.PwsStringUnicodeField;
  */
 public class PwsEntryDTO {
     
+	private static final Log log = LogFactory.getLog(PwsEntryDTO.class);
+
+	UUID id;
     String group;
     String title;
 
     String username;
     String password;
     String notes;
+    String url;
+    String autotype;
     
     String version;
     
+    Date lastAccess;
+    Date created;
+    Date lastPwChange;
+    Date lastChange;
+    Date expires;
     
     /**
      * Default constructor.
@@ -42,6 +59,14 @@ public class PwsEntryDTO {
         this.password = password;
         this.notes = notes;
     }
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return Returns the group.
@@ -104,6 +129,63 @@ public class PwsEntryDTO {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getAutotype() {
+		return autotype;
+	}
+
+
+	public void setAutotype(String autotype) {
+		this.autotype = autotype;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getLastAccess() {
+		return lastAccess;
+	}
+
+	public void setLastAccess(Date lastAccess) {
+		this.lastAccess = lastAccess;
+	}
+
+	public Date getLastChange() {
+		return lastChange;
+	}
+
+	public void setLastChange(Date lastChange) {
+		this.lastChange = lastChange;
+	}
+
+	public Date getLastPwChange() {
+		return lastPwChange;
+	}
+
+	public void setLastPwChange(Date lastPwChange) {
+		this.lastPwChange = lastPwChange;
+	}
+
+	public Date getExpires() {
+		return expires;
+	}
+
+	public void setExpires(Date expires) {
+		this.expires = expires;
+	}
     
     /**
      * @return Returns the version.
@@ -119,7 +201,24 @@ public class PwsEntryDTO {
     }
 
     
-    /**
+    
+	public String toString() {
+		StringBuffer all = new StringBuffer (200);
+		all.append("PwsEntryDTO ").append(version).append(": ID ");
+		all.append(id != null ? id.toString() : null);
+		all.append(", Group ").append(group); 
+		all.append(", Title ").append(title);
+		all.append(", User ").append(username);
+		all.append(", Notes ").append(notes);
+		all.append(", Url ").append(url);
+		all.append(", Created ").append(created);
+		all.append(", Changed ").append(lastChange);
+		all.append(", Expires ").append(expires);
+		return all.toString();
+	}
+
+
+	/**
      * A safer version of field retrieval that is null-safe.
      * 
      * @param record the record to retrieve the field from
@@ -135,6 +234,18 @@ public class PwsEntryDTO {
     	return fieldValue;
     }
     
+    /**
+     * A safer version of date retrieval that is null-safe.
+     * 
+     * @param v3
+     * @param type
+     * @return the Field as Date
+     */
+	public static Date getSafeDate(final PwsRecordV3 v3, final int type) {
+		PwsTimeField field = (PwsTimeField) v3.getField(type);
+
+		return field != null ? (Date) field.getValue() : null; 
+	}
     
     public static PwsEntryDTO fromPwsRecord(PwsRecord nextRecord) {
         PwsEntryDTO newEntry = new PwsEntryDTO();
@@ -142,6 +253,10 @@ public class PwsEntryDTO {
         if (nextRecord instanceof PwsRecordV3) {
         	
         	PwsRecordV3 v3 = (PwsRecordV3) nextRecord;
+
+            PwsUUIDField idField = (PwsUUIDField) v3.getField(PwsRecordV3.UUID);
+            if (idField != null)
+            	newEntry.setId((UUID) idField.getValue());
             
             String groupName = getSafeValue(v3, PwsRecordV3.GROUP);
             newEntry.setGroup(groupName);
@@ -157,8 +272,25 @@ public class PwsEntryDTO {
             
             String notes = getSafeValue(v3,PwsRecordV3.NOTES);
             newEntry.setNotes(notes);
+
+            String url = getSafeValue(v3,PwsRecordV3.URL);
+            newEntry.setUrl(url);
+
+            String autotype = getSafeValue(v3,PwsRecordV3.AUTOTYPE);
+            newEntry.setUrl(autotype);
+
+            newEntry.setLastChange(getSafeDate(v3, PwsRecordV3.LAST_MOD_TIME));
+            
+            newEntry.setCreated(getSafeDate(v3, PwsRecordV3.CREATION_TIME));
+ 
+            newEntry.setLastAccess(getSafeDate(v3, PwsRecordV3.LAST_ACCESS_TIME));
+            
+            newEntry.setLastPwChange(getSafeDate(v3, PwsRecordV3.PASSWORD_MOD_TIME));
             
             newEntry.setVersion("3");
+            
+            if (log.isDebugEnabled())
+            	log.debug("PwsDTO created " + newEntry.toString());
         	
         } else if (nextRecord instanceof PwsRecordV2) {
             
@@ -217,6 +349,15 @@ public class PwsEntryDTO {
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.USERNAME , getUsername()));
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.PASSWORD , getPassword()));
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.NOTES , getNotes()));
+            // roxon: Commented out until proven ok ;-)
+//            v3.setField(new PwsUUIDField(PwsRecordV3.UUID, getId()));
+//            v3.setField(new PwsStringUnicodeField(PwsRecordV3.URL , getUrl()));
+//            v3.setField(new PwsStringUnicodeField(PwsRecordV3.AUTOTYPE , getAutotype()));
+//            v3.setField(new PwsTimeField(PwsRecordV3.CREATION_TIME, getCreated()));
+//            v3.setField(new PwsTimeField(PwsRecordV3.LAST_ACCESS_TIME, getLastAccess()));
+//            v3.setField(new PwsTimeField(PwsRecordV3.LAST_MOD_TIME, getLastChange()));
+//            v3.setField(new PwsTimeField(PwsRecordV3.PASSWORD_MOD_TIME, getLastPwChange()));
+//            v3.setField(new PwsTimeField(PwsRecordV3.PASSWORD_LIFETIME, getExpires()));
 			
 		} else if (nextRecord instanceof PwsRecordV2) {
             
@@ -239,4 +380,6 @@ public class PwsEntryDTO {
 
 		
 	}
+
+
 }
