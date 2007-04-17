@@ -27,6 +27,17 @@ public class PwsTimeField extends PwsField
 	}
 
 	/**
+	 * Constructor
+	 * 
+	 * @param type  the field's type.
+	 * @param value the field's value.
+	 */
+	public PwsTimeField( int type, Date aDate)
+	{
+		super( type, aDate);
+	}
+
+	/**
 	 * Returns the field's value as a byte array.
 	 * 
 	 * @return A byte array containing the field's data.
