@@ -591,7 +591,7 @@ PWSUtil::ToClipboard(const CMyString &data,
   hGlobalMemory = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, uGlobalMemSize);
   LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
 
-  strCopy(pGlobalLock, uGlobalMemSize, data ,data.GetLength());
+  strCopy(pGlobalLock, data.GetLength() + 1, data ,data.GetLength());
 
   GlobalUnlock(hGlobalMemory);
   b_retval = false;
@@ -600,7 +600,13 @@ PWSUtil::ToClipboard(const CMyString &data,
     if (EmptyClipboard() != TRUE) {
       TRACE("The clipboard was not emptied correctly");
     }
-    if (SetClipboardData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory) == NULL) {
+    if (SetClipboardData(
+#ifdef UNICODE
+            CF_UNICODETEXT,
+#else
+            CLIPBOARD_TEXT_FORMAT,
+#endif
+            hGlobalMemory) == NULL) {
       TRACE("The data was not pasted into the clipboard correctly");
       GlobalFree(hGlobalMemory); // wasn't passed to Clipboard
     } else {
