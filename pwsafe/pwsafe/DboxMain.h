@@ -51,7 +51,8 @@ DECLARE_HANDLE(HDROP);
 enum {GCP_FIRST = 0,		// At startup of PWS
 	  GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
 	  GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
-	  GCP_WITHEXIT = 3};	// OK, CANCEL, EXIT & HELP buttons
+	  GCP_WITHEXIT = 3,	// OK, CANCEL, EXIT & HELP buttons
+	  GCP_ADVANCED = 4};	// OK, CANCEL, ADVANCED & HELP buttons
 
 // Drag and Drop source (TREE not implemented)
 enum { FROMCC, FROMHDR, FROMTREE };
@@ -206,6 +207,7 @@ protected:
   int m_iSessionEndingStatus;
   bool m_bFindActive;
   bool m_bFindWrap;
+  bool m_bAdvanced; // Used by Compare
 
   WCHAR *m_pwchTip;
   TCHAR *m_pchTip;

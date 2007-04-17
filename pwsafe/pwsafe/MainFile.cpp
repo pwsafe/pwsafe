@@ -17,6 +17,7 @@
 #include "TryAgainDlg.h"
 #include "ExportTextDlg.h"
 #include "ExportXMLDlg.h"
+#include "CompareXDlg.h"
 #include "ImportDlg.h"
 #include "ImportXMLDlg.h"
 #include "ImportXMLErrDlg.h"
@@ -809,12 +810,17 @@ DboxMain::OnExportXML()
                     return;
             } // while (1)
 
+            const CItemData::FieldBits bsExport = eXML.m_bsExport;
+            const CString subgroup = eXML.m_subgroup;
+            const int iObject = eXML.m_subgroup_object;
+            const int iFunction = eXML.m_subgroup_function;
             TCHAR delimiter;
             delimiter = eXML.m_defexpdelim[0];
       
             ItemList sortedItemList;
             MakeSortedItemList(sortedItemList);
-            rc = m_core.WriteXMLFile(newfile, delimiter, &sortedItemList);
+            rc = m_core.WriteXMLFile(newfile, bsExport, subgroup, iObject, 
+                                     iFunction, delimiter, &sortedItemList);
 
             sortedItemList.RemoveAll(); // cleanup soonest
 
@@ -1402,7 +1408,7 @@ DboxMain::Compare(const CMyString &pszFilename)
 	CString cs_title, cs_text;
 
 	// OK, CANCEL, HELP + force READ-ONLY
-	rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, true);
+	rc = GetAndCheckPassword(pszFilename, passkey, GCP_ADVANCED, true);
 	switch (rc) {
 		case PWScore::SUCCESS:
 			break; // Keep going...
@@ -1422,6 +1428,28 @@ DboxMain::Compare(const CMyString &pszFilename)
 			*/
 			return PWScore::USER_CANCEL;
 	}
+
+  CItemData::FieldBits bsCompare;
+  CString subgroup;
+  int iObject;
+  int iFunction;
+
+  if (m_bAdvanced) {
+    CCompareXDlg cpx;
+
+    int rc = cpx.DoModal();
+
+    if (rc == IDOK) {
+      bsCompare = cpx.m_bsCompare;
+      subgroup = cpx.m_compare_subgroup_name;
+      iObject = cpx.m_subgroup_object;
+      iFunction = cpx.m_subgroup_function;
+    } else {
+      m_bAdvanced = false;
+      bsCompare.set();  // note: impossible to set them all even via the advanced dialog
+      subgroup.Empty();
+    }
+  }
 
 	PWScore compCore;
 	compCore.ReadFile(pszFilename, passkey);
@@ -1477,6 +1505,12 @@ DboxMain::Compare(const CMyString &pszFilename)
 	POSITION currentPos = m_core.GetFirstEntryPosition();
 	while (currentPos) {
 		CItemData currentItem = m_core.GetEntryAt(currentPos);
+
+    if (m_bAdvanced)
+      if(currentItem.WantItem(subgroup, iObject, iFunction) == FALSE)
+      goto skip_entry1;
+
+    {
 		const CMyString currentGroup = currentItem.GetGroup();
 		const CMyString currentTitle = currentItem.GetTitle();
 		const CMyString currentUser = currentItem.GetUser();
@@ -1510,25 +1544,25 @@ DboxMain::Compare(const CMyString &pszFilename)
 			bsConflicts.reset();
 
 			CItemData compItem = compCore.GetEntryAt(foundPos);
-			if (currentItem.GetNotes() != compItem.GetNotes())
+			if (bsCompare.test(CItemData::NOTES) && currentItem.GetNotes() != compItem.GetNotes())
 				bsConflicts.flip(CItemData::NOTES);
-			if (currentItem.GetPassword() != compItem.GetPassword())
+			if (bsCompare.test(CItemData::PASSWORD) && currentItem.GetPassword() != compItem.GetPassword())
 				bsConflicts.flip(CItemData::PASSWORD);
-            /*	if (currentItem.GetCTime() != compItem.GetCTime())
+      if (m_bAdvanced && bsCompare.test(CItemData::CTIME) && currentItem.GetCTime() != compItem.GetCTime())
 				bsConflicts.flip(CItemData::CTIME);
-                if (currentItem.GetPMTime() != compItem.GetPMTime())
+      if (m_bAdvanced && bsCompare.test(CItemData::PMTIME) && currentItem.GetPMTime() != compItem.GetPMTime())
 				bsConflicts.flip(CItemData::PMTIME);
-                if (currentItem.GetATime() != compItem.GetATime())
-				bsConflicts.flip(CItemData::ATIME); */
-			if (currentItem.GetLTime() != compItem.GetLTime())
+      if (m_bAdvanced && bsCompare.test(CItemData::ATIME) && currentItem.GetATime() != compItem.GetATime())
+				bsConflicts.flip(CItemData::ATIME);
+			if (bsCompare.test(CItemData::LTIME) && currentItem.GetLTime() != compItem.GetLTime())
 				bsConflicts.flip(CItemData::LTIME);
-            /*  if (currentItem.GetRMTime() != compItem.GetRMTime())
-				bsConflicts.flip(CItemData::RMTIME); */
-			if (currentItem.GetURL() != compItem.GetURL())
+      if (m_bAdvanced && bsCompare.test(CItemData::RMTIME) && currentItem.GetRMTime() != compItem.GetRMTime())
+				bsConflicts.flip(CItemData::RMTIME);
+			if (bsCompare.test(CItemData::URL) && currentItem.GetURL() != compItem.GetURL())
 				bsConflicts.flip(CItemData::URL);
-			if (currentItem.GetAutoType() != compItem.GetAutoType())
+			if (bsCompare.test(CItemData::AUTOTYPE) && currentItem.GetAutoType() != compItem.GetAutoType())
 				bsConflicts.flip(CItemData::AUTOTYPE);
-			if (currentItem.GetPWHistory() != compItem.GetPWHistory())
+			if (bsCompare.test(CItemData::PWHIST) && currentItem.GetPWHistory() != compItem.GetPWHistory())
 				bsConflicts.flip(CItemData::PWHIST);
 
 			if (bsConflicts.any()) {
@@ -1546,13 +1580,21 @@ DboxMain::Compare(const CMyString &pszFilename)
             list_OnlyInCurrent.AddTail(currentPos);
             numOnlyInCurrent++;
 		}
+    }
 
+skip_entry1:
 		m_core.GetNextEntry(currentPos);
 	}
 
 	POSITION compPos = compCore.GetFirstEntryPosition();
 	while (compPos) {
 		CItemData compItem = compCore.GetEntryAt(compPos);
+
+    if (m_bAdvanced)
+      if(compItem.WantItem(subgroup, iObject, iFunction) == FALSE)
+      goto skip_entry2;
+
+    {
 		const CMyString compGroup = compItem.GetGroup();
 		const CMyString compTitle = compItem.GetTitle();
 		const CMyString compUser = compItem.GetUser();
@@ -1562,7 +1604,9 @@ DboxMain::Compare(const CMyString &pszFilename)
 			list_OnlyInComp.AddTail(compPos);
 			numOnlyInComp++;
 		}
+    }
 
+skip_entry2:
 		compCore.GetNextEntry(compPos);
 	}
 

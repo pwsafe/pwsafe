@@ -175,6 +175,9 @@ public:
   int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
                    uuid_array_t &uuid_array);
   int ValidatePWHistory();
+  
+  BOOL WantItem(const CString &subgroup, const int &iObject, 
+                const int &iFunction) const;
 
 private:
   CItemField m_Name;

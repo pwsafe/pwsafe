@@ -23,6 +23,8 @@ New Features for 3.07.01
 ========================
 [1695446] Can't reproduce error "Browse to URL no longer opens new browser" but
 allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
+[] Implement "Advanced" option for Exporting in XML format (as per Export in Text
+format) and for when comparing databases
 
 Bugs fixed in 3.07
 =====================

@@ -934,7 +934,8 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     //	GCP_FIRST      (0) first
     //	GCP_NORMAL     (1) OK, CANCEL & HELP buttons
     //	GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
-    //	GCP_WITHEXIT   (3} OK, CANCEL, EXIT & HELP buttons
+    //	GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
+    //	GCP_ADVANCED   (4) OK, CANCEL, HELP buttons + ADVANCED checkbox
 
     // Called for an existing database. Prompt user
     // for password, verify against file. Lock file to
@@ -984,6 +985,10 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         app.DisableAccelerator();
         rc = dbox_pkentry->DoModal();
         app.EnableAccelerator();
+
+        if (index == GCP_ADVANCED)
+          m_bAdvanced = dbox_pkentry->IsAdvanced();
+
     } else { // already present - bring to front
         dbox_pkentry->BringWindowToTop(); // can happen with systray lock
         return PWScore::USER_CANCEL; // multi-thread,
@@ -1006,6 +1011,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
                 SetReadOnly(m_IsReadOnly || !m_core.LockFile(curFile, locker));
                 break;
             case GCP_NORMAL:
+            case GCP_ADVANCED:
                 if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
                     SetReadOnly(!m_core.LockFile(curFile, locker));
                 else

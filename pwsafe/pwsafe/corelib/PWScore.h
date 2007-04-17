@@ -68,8 +68,11 @@ class PWScore {
                          const CItemData::FieldBits &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
-						 const ItemList *il = NULL);
-  int WriteXMLFile(const CMyString &filename, const TCHAR delimiter, 
+                         const ItemList *il = NULL);
+  int WriteXMLFile(const CMyString &filename,
+                   const CItemData::FieldBits &bsExport,
+                   const CString &subgroup, const int &iObject,
+                   const int &iFunction, const TCHAR delimiter,
                    const ItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
 			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped);

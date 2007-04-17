@@ -22,6 +22,8 @@
   #include "resource3.h"  // String resources
 #endif
 
+#include "corelib/ItemData.h"
+
 class CExportXMLDlg : public CDialog
 {
 // Construction
@@ -35,6 +37,9 @@ public:
 	CString m_defexpdelim;
 	//}}AFX_DATA
 
+	CItemData::FieldBits m_bsExport;
+	CString m_subgroup;
+	int m_subgroup_object, m_subgroup_function;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -48,6 +53,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	// Generated message map functions
 	//{{AFX_MSG(CExportXMLDlg)
+	afx_msg void OnAdvanced();
 	afx_msg void OnHelp();
 	virtual void OnOK();
 	//}}AFX_MSG
