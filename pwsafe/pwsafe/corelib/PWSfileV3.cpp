@@ -42,18 +42,18 @@ PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
 
 PWSfileV3::~PWSfileV3()
 {
-  if (m_utf8 != NULL) {
-    trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
-    delete[] m_utf8;
-  }
-  if (m_wc != NULL) {
-    trashMemory(m_wc, m_wcMaxLen*sizeof(m_wc[0]));
-    delete[] m_wc;
-  }
-  if (m_tmp != NULL) {
-    trashMemory(m_tmp, m_tmpMaxLen*sizeof(m_tmp[0]));
-    delete[] m_tmp;
-  }
+    if (m_utf8 != NULL) {
+        trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
+        delete[] m_utf8;
+    }
+    if (m_wc != NULL) {
+        trashMemory(m_wc, m_wcMaxLen);
+        delete[] m_wc;
+    }
+    if (m_tmp != NULL) {
+        trashMemory(m_tmp, m_tmpMaxLen*sizeof(m_tmp[0]));
+        delete[] m_tmp;
+    }
 }
 
 int PWSfileV3::Open(const CMyString &passkey)
@@ -82,42 +82,42 @@ int PWSfileV3::Open(const CMyString &passkey)
 
 int PWSfileV3::Close()
 {
-  if (m_fd == NULL)
-    return SUCCESS; // idempotent
-  if (m_utf8 != NULL) {
-    trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
-    delete[] m_utf8; m_utf8 = NULL;
-    m_utf8Len = m_utf8MaxLen = 0;
-  }
-  if (m_wc != NULL) {
-    trashMemory(m_wc, m_wcMaxLen*sizeof(m_wc[0]));
-    delete[] m_wc; m_wc = NULL; m_wcMaxLen = 0;
-  }
-  if (m_tmp != NULL) {
-    trashMemory(m_tmp, m_tmpMaxLen*sizeof(m_tmp[0]));
-    delete[] m_tmp; m_tmp = NULL; m_tmpMaxLen = 0;
-  }
-
-  unsigned char digest[HMAC_SHA256::HASHLEN];
-  m_hmac.Final(digest);
-
-  // Write or verify HMAC, depending on RWmode.
-  if (m_rw == Write) {
-    fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
-    fwrite(digest, sizeof(digest), 1, m_fd);
-    return PWSfile::Close();
-  } else { // Read
-    // We're here *after* TERMINAL_BLOCK has been read
-    // and detected (by _readcbc) - just read hmac & verify
-    unsigned char d[HMAC_SHA256::HASHLEN];
-    fread(d, sizeof(d), 1, m_fd);
-    if (memcmp(d, digest, HMAC_SHA256::HASHLEN) == 0)
-      return PWSfile::Close();
-    else {
-      PWSfile::Close();
-      return BAD_DIGEST;
+    if (m_fd == NULL)
+        return SUCCESS; // idempotent
+    if (m_utf8 != NULL) {
+        trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
+        delete[] m_utf8; m_utf8 = NULL;
+        m_utf8Len = m_utf8MaxLen = 0;
     }
-  }
+    if (m_wc != NULL) {
+        trashMemory(m_wc, m_wcMaxLen);
+        delete[] m_wc; m_wc = NULL; m_wcMaxLen = 0;
+    }
+    if (m_tmp != NULL) {
+        trashMemory(m_tmp, m_tmpMaxLen*sizeof(m_tmp[0]));
+        delete[] m_tmp; m_tmp = NULL; m_tmpMaxLen = 0;
+    }
+
+    unsigned char digest[HMAC_SHA256::HASHLEN];
+    m_hmac.Final(digest);
+
+    // Write or verify HMAC, depending on RWmode.
+    if (m_rw == Write) {
+        fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
+        fwrite(digest, sizeof(digest), 1, m_fd);
+        return PWSfile::Close();
+    } else { // Read
+        // We're here *after* TERMINAL_BLOCK has been read
+        // and detected (by _readcbc) - just read hmac & verify
+        unsigned char d[HMAC_SHA256::HASHLEN];
+        fread(d, sizeof(d), 1, m_fd);
+        if (memcmp(d, digest, HMAC_SHA256::HASHLEN) == 0)
+            return PWSfile::Close();
+        else {
+            PWSfile::Close();
+            return BAD_DIGEST;
+        }
+    }
 }
 
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
@@ -272,6 +272,7 @@ PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
     bool status;
     m_utf8 = (unsigned char *)d;
     m_utf8Len = text.GetLength();
+    m_utf8[m_utf8Len] = '\0';
     status = FromUTF8(data);
     m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
     if (!status)
@@ -389,15 +390,27 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
    * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
    * as the hash function, and N iterations.
    */
-
   LPCTSTR passstr = LPCTSTR(passkey); 
   unsigned long passLen = passkey.GetLength();
-
+  unsigned char *pstr;
+#ifdef UNICODE
+  pstr = new unsigned char[2*passLen];
+  int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
+                                LPSTR(pstr), 2*passLen, NULL, NULL);
+  ASSERT(len != 0);
+  passLen = len;
+#else
+  pstr = (unsigned char *)passstr;
+#endif
   unsigned char *X = Ptag;
   SHA256 H0;
-  H0.Update((unsigned char *)passstr, passLen);
+  H0.Update(pstr, passLen);
   H0.Update(salt, saltLen);
   H0.Final(X);
+
+#ifdef UNICODE
+  delete[] pstr;
+#endif
 
   ASSERT(N >= 2048); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
@@ -623,15 +636,16 @@ int PWSfileV3::ReadHeader()
           Close();
           return FAILURE;
         }
-        if ((headerData[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
+        const unsigned char *hv = reinterpret_cast<const unsigned char *>(headerData);
+        if ((hv[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
           //major version mismatch
           Close();
           return UNSUPPORTED_VERSION;
         }
         // for now we assume that minor version changes will
         // be backward-compatible
-        m_nCurrentMajorVersion = (unsigned short)headerData[1];
-        m_nCurrentMinorVersion = (unsigned short)headerData[0];
+        m_nCurrentMajorVersion = (unsigned short)hv[1];
+        m_nCurrentMinorVersion = (unsigned short)hv[0];
       }
       break;
 
@@ -650,7 +664,8 @@ int PWSfileV3::ReadHeader()
       {
         m_utf8 = (unsigned char *) headerData;
         m_utf8Len = headerField.GetLength();
-        if (!FromUTF8 (headerField)) {
+        m_utf8[m_utf8Len] = '\0';
+        if (!FromUTF8(headerField)) {
           Close ();
           return FAILURE;
         }
@@ -664,7 +679,8 @@ int PWSfileV3::ReadHeader()
 	  {
         m_utf8 = (unsigned char *) headerData;
         m_utf8Len = headerField.GetLength();
-        if (!FromUTF8 (headerField)) {
+        m_utf8[m_utf8Len] = '\0';
+        if (!FromUTF8(headerField)) {
           Close ();
           return FAILURE;
         }
@@ -678,7 +694,8 @@ int PWSfileV3::ReadHeader()
 	  {
         m_utf8 = (unsigned char *) headerData;
         m_utf8Len = headerField.GetLength();
-        if (!FromUTF8 (headerField)) {
+        m_utf8[m_utf8Len] = '\0';
+        if (!FromUTF8(headerField)) {
           Close ();
           return FAILURE;
         }
@@ -692,7 +709,8 @@ int PWSfileV3::ReadHeader()
 	  {
         m_utf8 = (unsigned char *) headerData;
         m_utf8Len = headerField.GetLength();
-        if (!FromUTF8 (headerField)) {
+        m_utf8[m_utf8Len] = '\0';
+        if (!FromUTF8(headerField)) {
           Close ();
           return FAILURE;
         }
@@ -706,7 +724,8 @@ int PWSfileV3::ReadHeader()
 	  {
         m_utf8 = (unsigned char *) headerData;
         m_utf8Len = headerField.GetLength();
-        if (!FromUTF8 (headerField)) {
+        m_utf8[m_utf8Len] = '\0';
+        if (!FromUTF8(headerField)) {
           Close ();
           return FAILURE;
         }
@@ -828,7 +847,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     // Allocate buffer (if previous allocation was smaller)
     if (wcLen > m_wcMaxLen) {
         if (m_wc != NULL)
-            trashMemory(m_wc, m_wcMaxLen * sizeof(m_wc[0]));
+            trashMemory(m_wc, m_wcMaxLen);
         delete[] m_wc;
         m_wc = new wchar_t[wcLen];
         m_wcMaxLen = wcLen;
@@ -839,6 +858,21 @@ bool PWSfileV3::FromUTF8(CMyString &data)
                                 LPSTR(m_utf8),       // string to map
                                 -1,           // -1 means null-terminated
                                 m_wc, wcLen);       // output buffer
+    if (wcLen == 0) {
+        DWORD errCode = GetLastError();
+        switch (errCode) {
+            case ERROR_INSUFFICIENT_BUFFER:
+                TRACE("INSUFFICIENT BUFFER"); break;
+            case ERROR_INVALID_FLAGS:
+                TRACE("INVALID FLAGS"); break;
+            case ERROR_INVALID_PARAMETER:
+                TRACE("INVALID PARAMETER"); break;
+            case ERROR_NO_UNICODE_TRANSLATION:
+                TRACE("NO UNICODE TRANSLATION"); break;
+            default:
+                ASSERT(0);
+        }
+    }
     ASSERT(wcLen != 0);
 #ifdef UNICODE
     m_wc[wcLen-1] = TCHAR('\0');
