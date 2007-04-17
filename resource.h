@@ -65,6 +65,8 @@
 #define IDD_PS_SYSTEM                   233
 #define IDD_PROPERTIES                  234
 #define IDD_COLUMNCHOOSER               236
+#define IDD_EXPORT_XMLX                 237
+#define IDD_COMPAREX                    238
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -278,7 +280,7 @@
 #define IDC_APPCOPYRIGHT                1217
 #define IDC_STARTUP                     1218
 #define IDC_REGDEL_GRP                  1220
-#define IDC_COMBO1                      1221
+#define IDC_DATABASECOMBO               1221
 #define IDC_BTN_BROWSE                  1222
 #define IDC_SPCL_TXT                    1223
 #define IDC_EXPWARNING1                 1225
@@ -297,14 +299,61 @@
 #define IDC_DEFAULTAUTOTYPE             1248
 #define IDC_MINIMIZEONAUTOTYPE          1249
 #define IDC_ALTBROWSER_CMDLINE          1250
+#define IDC_XML_ADVANCED                1251
+#define IDC_XMLX_GROUP                  1252
+#define IDC_XMLX_TITLE                  1253
+#define IDC_XMLX_USER                   1254
+#define IDC_XMLX_NOTES                  1255
+#define IDC_XMLX_PASSWORD               1256
+#define IDC_XMLX_CTIME                  1257
+#define IDC_XMLX_PMTIME                 1258
+#define IDC_XMLX_ATIME                  1259
+#define IDC_XMLX_LTIME                  1260
+#define IDC_XMLX_RMTIME                 1261
+#define IDC_XMLX_URL                    1262
+#define IDC_XMLX_AUTOTYPE               1263
+#define IDC_XMLX_PWHIST                 1264
+#define IDC_XMLX_SETTIMES               1265
+#define IDC_XMLX_CLEARTIMES             1266
+#define IDC_XMLX_SUBGROUP               1267
+#define IDC_XMLX_SUBGROUP_NAME          1268
+#define IDC_XMLX_SETALL                 1269
+#define IDC_XMLX_CLEARALL               1270
+#define IDC_XMLX_SUBGROUP_FUNCTION      1271
+#define IDC_XMLX_SUBGROUP_OBJECT        1272
+#define IDC_XMLX_SUBGROUP_CASE          1273
+#define IDC_ADVANCED                    1274
+#define IDC_COMPAREX_GROUP              1275
+#define IDC_COMPAREX_TITLE              1276
+#define IDC_COMPAREX_USER               1277
+#define IDC_COMPAREX_NOTES              1278
+#define IDC_COMPAREX_PASSWORD           1279
+#define IDC_COMPAREX_CTIME              1280
+#define IDC_COMPAREX_PMTIME             1281
+#define IDC_COMPAREX_ATIME              1282
+#define IDC_COMPAREX_LTIME              1283
+#define IDC_COMPAREX_RMTIME             1284
+#define IDC_COMPAREX_URL                1285
+#define IDC_COMPAREX_AUTOTYPE           1286
+#define IDC_COMPAREX_PWHIST             1287
+#define IDC_COMPAREX_SETTIMES           1288
+#define IDC_COMPAREX_CLEARTIMES         1289
+#define IDC_COMPAREX_SUBGROUP           1290
+#define IDC_COMPAREX_SUBGROUP_NAME      1291
+#define IDC_COMPAREX_SETALL             1292
+#define IDC_COMPAREX_CLEARALL           1293
+#define IDC_COMPAREX_SUBGROUP_FUNCTION  1294
+#define IDC_COMPAREX_SUBGROUP_OBJECT    1295
+#define IDC_COMPAREX_SUBGROUP_CASE      1296
 
+//
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        237
+#define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1251
+#define _APS_NEXT_CONTROL_VALUE         1297
 #define _APS_NEXT_SYMED_VALUE           127
 #endif
 #endif

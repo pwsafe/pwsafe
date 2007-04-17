@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ExportXMLDlg.h"
+#include "ExportXMLXDlg.h"
 #include "PwFont.h"
 #include "ThisMfcApp.h"
 
@@ -27,7 +28,9 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 
 CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CExportXMLDlg::IDD, pParent)
+	: CDialog(CExportXMLDlg::IDD, pParent),
+          m_subgroup(_T("")),
+          m_subgroup_object(0), m_subgroup_function(0)
 {
 	//{{AFX_DATA_INIT(CExportXMLDlg)
 	m_ExportXMLPassword = _T("");
@@ -39,6 +42,10 @@ CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
 BOOL CExportXMLDlg::OnInitDialog() 
 {
    CDialog::OnInitDialog();
+
+   m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
+   m_subgroup.Empty();
+
    SetPasswordFont(GetDlgItem(IDC_EXPORT_XML_PASSWORD));
    ((CEdit*)GetDlgItem(IDC_EXPORT_XML_PASSWORD))->SetPasswordChar(PSSWDCHAR);
    return TRUE;
@@ -58,6 +65,7 @@ void CExportXMLDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CExportXMLDlg, CDialog)
 	//{{AFX_MSG_MAP(CExportXMLDlg)
+  ON_BN_CLICKED(IDC_XML_ADVANCED, OnAdvanced)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -94,4 +102,18 @@ void CExportXMLDlg::OnOK()
   GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
 
   CDialog::OnOK();
+}
+
+void CExportXMLDlg::OnAdvanced()
+{
+	CExportXMLXDlg etx;
+	int rc = etx.DoModal();
+	if (rc == IDOK) {
+		m_bsExport = etx.m_bsExport;
+		m_subgroup = etx.m_exportxml_subgroup_name;
+		if (etx.m_exportxml_subgroup == 1) {
+			m_subgroup_object = etx.m_subgroup_object;
+			m_subgroup_function = etx.m_subgroup_function;
+		}	
+	}
 }

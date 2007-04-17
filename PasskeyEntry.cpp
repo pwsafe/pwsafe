@@ -40,10 +40,11 @@
 
 static TCHAR PSSWDCHAR = TCHAR('*');
 
-int CPasskeyEntry::dialog_lookup[4] = {IDD_PASSKEYENTRY_FIRST, 
-										IDD_PASSKEYENTRY, 
-										IDD_PASSKEYENTRY, 
-										IDD_PASSKEYENTRY_WITHEXIT};
+int CPasskeyEntry::dialog_lookup[5] = {IDD_PASSKEYENTRY_FIRST,
+										IDD_PASSKEYENTRY,
+										IDD_PASSKEYENTRY,
+										IDD_PASSKEYENTRY_WITHEXIT,
+										IDD_PASSKEYENTRY};
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
@@ -56,7 +57,8 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
      m_tries(0),
      m_status(TAR_INVALID),
      m_ReadOnly(bReadOnly ? TRUE : FALSE),
-     m_bForceReadOnly(bForceReadOnly)
+     m_bForceReadOnly(bForceReadOnly),
+     m_bAdvanced(FALSE)
 {
   //{{AFX_DATA_INIT(CPasskeyEntry)
   //}}AFX_DATA_INIT
@@ -65,7 +67,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
   if (m_index == GCP_FIRST) {
     DBGMSG("** FIRST **\n");
   }
-  
+
   m_passkey = _T("");
 
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
@@ -91,7 +93,9 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
 	DDX_Text(pDX, IDC_MESSAGE, m_message);
     if (m_index == GCP_FIRST)
-        DDX_Control(pDX, IDC_COMBO1, m_MRU_combo);
+        DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
+    if (m_index == GCP_ADVANCED)
+        DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
 	DDX_Check(pDX, IDC_READONLY, m_ReadOnly);
 	//}}AFX_DATA_MAP
 }
@@ -101,14 +105,13 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
 ON_BN_CLICKED(ID_HELP, OnHelp)
 ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
 ON_BN_CLICKED(IDC_EXIT, OnExit)
-ON_BN_CLICKED(IDC_READONLY, OnReadOnly)
 #if defined(POCKET_PC)
 ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
 ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
 #endif
 //}}AFX_MSG_MAP
-ON_CBN_EDITCHANGE(IDC_COMBO1, &CPasskeyEntry::OnComboEditChange)
-ON_CBN_SELCHANGE(IDC_COMBO1, &CPasskeyEntry::OnComboSelChange)
+ON_CBN_EDITCHANGE(IDC_DATABASECOMBO, &CPasskeyEntry::OnComboEditChange)
+ON_CBN_SELCHANGE(IDC_DATABASECOMBO, &CPasskeyEntry::OnComboSelChange)
 ON_BN_CLICKED(IDC_BTN_BROWSE, &CPasskeyEntry::OnOpenFileBrowser)
 END_MESSAGE_MAP()
 
@@ -118,7 +121,7 @@ static CString NarrowPathText(const CString &text)
     const int Width = 50;
     CString retval;
     if (text.GetLength() > Width) {
-        retval =  text.Left(Width/2-5) + 
+        retval =  text.Left(Width/2-5) +
             _T(" ... ") + text.Right(Width/2);
     } else {
         retval = text;
@@ -145,6 +148,7 @@ CPasskeyEntry::OnInitDialog(void)
 #endif
   		break;
   	case GCP_NORMAL:
+  	case GCP_ADVANCED:
 		// otherwise during open - user can - again unless file is R/O
   		if (m_bForceReadOnly)
   			GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
@@ -152,6 +156,13 @@ CPasskeyEntry::OnInitDialog(void)
   			GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
 
   		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      if (m_index == GCP_ADVANCED) {
+  		  GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_SHOW);
+        GetDlgItem(IDC_ADVANCED)->EnableWindow(TRUE);
+      } else {
+        GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_ADVANCED)->EnableWindow(FALSE);
+      }
   		break;
   	case GCP_UNMINIMIZE:
   	case GCP_WITHEXIT:
@@ -216,7 +227,7 @@ CPasskeyEntry::OnInitDialog(void)
   } else {
     m_ctlLogo.ReloadBitmap(IDB_CLOGO_SMALL);
   }
-#endif 
+#endif
 
   // Set the icon for this dialog.  The framework does this automatically
   //  when the application's main window is not a dialog
@@ -263,12 +274,6 @@ void CPasskeyEntry::OnPasskeySetfocus()
 #endif
 
 void
-CPasskeyEntry::OnReadOnly() 
-{
-   m_ReadOnly = ((CButton*)GetDlgItem(IDC_READONLY))->GetCheck();
-}
-
-void
 CPasskeyEntry::OnCreateDb()
 {
     // 1. Get a filename from a file dialog box
@@ -300,7 +305,7 @@ CPasskeyEntry::OnCreateDb()
         if (((DboxMain*) GetParent())->ExitRequested()) {
             // If U3ExitNow called while in CFileDialog,
             // PostQuitMessage makes us return here instead
-            // of exiting the app. Try resignalling 
+            // of exiting the app. Try resignalling
             PostQuitMessage(0);
             return;
         }
@@ -327,21 +332,21 @@ CPasskeyEntry::OnCreateDb()
 }
 
 void
-CPasskeyEntry::OnCancel() 
+CPasskeyEntry::OnCancel()
 {
   m_status = TAR_CANCEL;
   super::OnCancel();
 }
 
 void
-CPasskeyEntry::OnExit() 
+CPasskeyEntry::OnExit()
 {
   m_status = TAR_EXIT;
   super::OnCancel();
 }
 
 void
-CPasskeyEntry::OnOK() 
+CPasskeyEntry::OnOK()
 {
   UpdateData(TRUE);
 
@@ -375,7 +380,7 @@ CPasskeyEntry::OnOK()
 }
 
 void
-CPasskeyEntry::OnHelp() 
+CPasskeyEntry::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
@@ -436,7 +441,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
     if (((DboxMain*) GetParent())->ExitRequested()) {
         // If U3ExitNow called while in CFileDialog,
         // PostQuitMessage makes us return here instead
-        // of exiting the app. Try resignalling 
+        // of exiting the app. Try resignalling
         PostQuitMessage(0);
         return;
     }

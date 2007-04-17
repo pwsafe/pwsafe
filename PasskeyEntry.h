@@ -42,12 +42,13 @@ class CPasskeyEntry
 public:
 	typedef	SUPERCLASS	super;
 
-   CPasskeyEntry(CWnd* pParent,
-                 const CString& a_filespec, int index = 1 /* GCP_NORMAL */,
-		         bool bReadOnly = false, bool bForceReadOnly = false); 
+  CPasskeyEntry(CWnd* pParent,
+                const CString& a_filespec, int index = 1 /* GCP_NORMAL */,
+		            bool bReadOnly = false, bool bForceReadOnly = false); 
 
-   int GetStatus() const {return m_status;}
+  int GetStatus() const {return m_status;}
   bool IsReadOnly() const {return m_ReadOnly == TRUE;}
+  bool IsAdvanced() const {return m_bAdvanced == TRUE;}
   const CMyString &GetPasskey() const {return m_passkey;}
   const CString &GetFileName() const {return m_filespec;}
   CString m_appversion;
@@ -65,6 +66,7 @@ private:
 	CEdit m_ctlPasskey;
     CMyString m_passkey;
     BOOL m_ReadOnly;
+    BOOL m_bAdvanced;
     bool m_bForceReadOnly;
 	//}}AFX_DATA
    CString	m_message;
@@ -84,7 +86,7 @@ protected:
    int m_status;
    int m_index;
 
-   static int dialog_lookup[4];
+   static int dialog_lookup[5];
 
    HICON m_hIcon;
 
@@ -95,7 +97,6 @@ protected:
    virtual void OnOK();
    afx_msg void OnHelp();
    afx_msg void OnExit();
-   afx_msg void OnReadOnly();
 #if defined(POCKET_PC)
    afx_msg void OnPasskeySetfocus();
    afx_msg void OnPasskeyKillfocus();

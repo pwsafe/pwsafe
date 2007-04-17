@@ -239,8 +239,11 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 }
 
 int
-PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
-                      const ItemList *il)
+PWScore::WriteXMLFile(const CMyString &filename,
+                      const CItemData::FieldBits &bsFields,
+                      const CString &subgroup,
+                      const int &iObject, const int &iFunction,
+                      const TCHAR delimiter, const ItemList *il)
 {
 	ofstream of(filename);
 
@@ -293,6 +296,12 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 	of << _T("xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">") << endl;
 	of << endl;
 
+  if (bsFields.count() != bsFields.size()) {
+    // Some restrictions - put in a comment to that effect
+    of << _T("<!-- Export of data was restricted to certain fields by the user -->") << endl;
+    of << endl;
+  }
+
 	while (listPos != NULL) {
 		CItemData temp = pwlist.GetAt(listPos);
 #if _MSC_VER >= 1400
@@ -300,34 +309,39 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
 #else
 		_itot( id, buffer, 10 );
 #endif
-		of << _T("\t<entry id=\"") << buffer << _T("\">") << endl;
+
+    if (temp.WantItem(subgroup, iObject, iFunction) == FALSE)
+      goto skip_entry;
+
 		// TODO: need to handle entity escaping of values.
-		tmp =  temp.GetGroup();
-		if (!tmp.IsEmpty())
+    of << _T("\t<entry id=\"") << buffer << _T("\">") << endl;
+
+    tmp = temp.GetGroup();
+		if (bsFields.test(CItemData::GROUP) && !tmp.IsEmpty())
 			of << _T("\t\t<group><![CDATA[") << tmp << _T("]]></group>") << endl;
 
+		// Title mandatory (see pwsafe.xsd)
 		tmp = temp.GetTitle();
-		if (!tmp.IsEmpty())
-			of <<_T("\t\t<title><![CDATA[") << tmp << _T("]]></title>") << endl;
+		of <<_T("\t\t<title><![CDATA[") << tmp << _T("]]></title>") << endl;
 
-		tmp = temp.GetUser();
-		if (!tmp.IsEmpty())
+    tmp = temp.GetUser();
+		if (bsFields.test(CItemData::USER) && !tmp.IsEmpty())
 			of << _T("\t\t<username><![CDATA[") << tmp << _T("]]></username>") << endl;
 
 		tmp = temp.GetPassword();
-		if (!tmp.IsEmpty())
-			of << _T("\t\t<password><![CDATA[") << tmp << _T("]]></password>") << endl;
+		// Password mandatory (see pwsafe.xsd)
+		of << _T("\t\t<password><![CDATA[") << tmp << _T("]]></password>") << endl;
 
-		tmp = temp.GetURL();
-		if (!tmp.IsEmpty())
+    tmp = temp.GetURL();
+		if (bsFields.test(CItemData::URL) && !tmp.IsEmpty())
 			of << _T("\t\t<url><![CDATA[") << tmp << _T("]]></url>") << endl;
 
 		tmp = temp.GetAutoType();
-		if (!tmp.IsEmpty())
+		if (bsFields.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
 			of << _T("\t\t<autotype><![CDATA[") << tmp << _T("]]></autotype>") << endl;
 
-		tmp = temp.GetNotes(delimiter);
-		if (!tmp.IsEmpty())
+    tmp = temp.GetNotes();
+		if (bsFields.test(CItemData::NOTES) && !tmp.IsEmpty())
 			of << _T("\t\t<notes><![CDATA[") << tmp << _T("]]></notes>") << endl;
 
 		temp.GetUUID(uuid_array);
@@ -353,7 +367,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
         time_t t;
 
         temp.GetCTime(t);
-        if ((long)t != 0) {
+        if (bsFields.test(CItemData::CTIME) && (long)t != 0) {
             tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<ctime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
@@ -362,7 +376,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
         }
 
         temp.GetATime(t);
-        if ((long)t != 0) {
+        if (bsFields.test(CItemData::ATIME) && (long)t != 0) {
             tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<atime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
@@ -371,7 +385,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
         }
 
         temp.GetLTime(t);
-        if ((long)t != 0) {
+        if (bsFields.test(CItemData::LTIME) && (long)t != 0) {
             tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<ltime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
@@ -380,7 +394,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
         }
 
         temp.GetPMTime(t);
-        if ((long)t != 0) {
+        if (bsFields.test(CItemData::PMTIME) && (long)t != 0) {
             tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<pmtime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
@@ -389,7 +403,7 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
         }
 
         temp.GetRMTime(t);
-        if ((long)t != 0) {
+        if (bsFields.test(CItemData::RMTIME) && (long)t != 0) {
             tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
             of << _T("\t\t<rmtime>") << endl;
             of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
@@ -397,12 +411,13 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
             of << _T("\t\t</rmtime>") << endl;
         }
 
-        BOOL pwh_status;
-        size_t pwh_max, pwh_num;
-        PWHistList PWHistList;
-        temp.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+        if (bsFields.test(CItemData::PWHIST)) {
+          BOOL pwh_status;
+          size_t pwh_max, pwh_num;
+          PWHistList PWHistList;
+          temp.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
                                  &PWHistList, TMC_XML);
-        if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
+          if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
             of << _T("\t\t<pwhistory>") << endl;
 #if _MSC_VER >= 1400
             _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
@@ -424,35 +439,37 @@ PWScore::WriteXMLFile(const CMyString &filename, const TCHAR delimiter,
             of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
 #endif
             if (!PWHistList.empty()) {
-                of << _T("\t\t\t<history_entries>") << endl;
-                int num = 1;
-                PWHistList::iterator iter;
-                for (iter = PWHistList.begin(); iter != PWHistList.end();
-                     iter++) {
+              of << _T("\t\t\t<history_entries>") << endl;
+              int num = 1;
+              PWHistList::iterator iter;
+              for (iter = PWHistList.begin(); iter != PWHistList.end();
+                   iter++) {
 #if _MSC_VER >= 1400
-                    _itot_s( num, buffer, 8, 10 );
+                _itot_s( num, buffer, 8, 10 );
 #else
-                    _itot( num, buffer, 10 );
+                _itot( num, buffer, 10 );
 #endif
-                    of << _T("\t\t\t\t<history_entry num=\"") << buffer << _T("\">") << endl;
-                    const PWHistEntry pwshe = *iter;
-                    of << _T("\t\t\t\t\t<changed>") << endl;
-                    of << _T("\t\t\t\t\t\t<date>") << pwshe.changedate.Left(10) << _T("</date>") << endl;
-                    of << _T("\t\t\t\t\t\t<time>") << pwshe.changedate.Right(8) << _T("</time>") << endl;
-                    of << _T("\t\t\t\t\t</changed>") << endl;
-                    of << _T("\t\t\t\t\t<oldpassword><![CDATA[") << pwshe.password << _T("]]></oldpassword>") << endl;
-                    of << _T("\t\t\t\t</history_entry>") << endl;
+                of << _T("\t\t\t\t<history_entry num=\"") << buffer << _T("\">") << endl;
+                const PWHistEntry pwshe = *iter;
+                of << _T("\t\t\t\t\t<changed>") << endl;
+                of << _T("\t\t\t\t\t\t<date>") << pwshe.changedate.Left(10) << _T("</date>") << endl;
+                of << _T("\t\t\t\t\t\t<time>") << pwshe.changedate.Right(8) << _T("</time>") << endl;
+                of << _T("\t\t\t\t\t</changed>") << endl;
+                of << _T("\t\t\t\t\t<oldpassword><![CDATA[") << pwshe.password << _T("]]></oldpassword>") << endl;
+                of << _T("\t\t\t\t</history_entry>") << endl;
 
-                    num++;
-                } // for
-                of << _T("\t\t\t</history_entries>") << endl;
+                num++;
+              } // for
+              of << _T("\t\t\t</history_entries>") << endl;
             } // if !empty
             of << _T("\t\t</pwhistory>") << endl;
+          }
         }
 
         of << _T("\t</entry>") << endl;
         of << endl;
 
+skip_entry:
         pwlist.GetNext(listPos);
         id++;
     }
