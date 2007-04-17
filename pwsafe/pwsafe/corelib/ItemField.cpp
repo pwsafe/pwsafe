@@ -106,7 +106,9 @@ void CItemField::Set(const CMyString &value, BlowFish *bf)
 {
   const LPCTSTR plainstr = (const LPCTSTR)value; // use of CString::operator LPCSTR
 
-  Set((const unsigned char *)plainstr, value.GetLength(), bf);
+  Set((const unsigned char *)plainstr,
+      value.GetLength() * sizeof(*plainstr),
+      bf);
 }
 
 void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) const
@@ -133,10 +135,8 @@ void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) c
       bf->Decrypt(m_Data+x, tempmem+x);
 
    for (x=0;x<BlockLength;x++)
-     if (x<int(m_Length))
-       value[x] = tempmem[x];
-     else
-       value[x] = 0;
+       value[x] = (x<int(m_Length)) ? tempmem[x] : 0;
+
    length = m_Length;
    delete [] tempmem;
   }
@@ -152,18 +152,16 @@ void CItemField::Get(CMyString &value, BlowFish *bf) const
   } else { // we have data to decrypt
     int BlockLength = GetBlockSize(m_Length);
     unsigned char *tempmem = new unsigned char[BlockLength];
-    unsigned char *plaintxt = (unsigned char*)value.GetBuffer(BlockLength+1);
+    unsigned char *plaintxt = (unsigned char*)value.GetBuffer(BlockLength+2);
 
    int x;
    for (x=0;x<BlockLength;x+=8)
       bf->Decrypt(m_Data+x, tempmem+x);
 
    for (x=0;x<BlockLength;x++)
-     if (x<int(m_Length))
-       plaintxt[x] = tempmem[x];
-     else
-       plaintxt[x] = 0;
-   plaintxt[BlockLength] = 0;
+       plaintxt[x] = (x<int(m_Length)) ? tempmem[x] : 0;
+
+   plaintxt[BlockLength] = plaintxt[BlockLength+1] = 0;
 
    delete [] tempmem;
    value.ReleaseBuffer();

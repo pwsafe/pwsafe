@@ -1086,7 +1086,7 @@ void PWScore::SetPassKey(const CMyString &new_passkey)
         delete[] m_passkey;
     }
 
-    m_passkey_len = new_passkey.GetLength();
+    m_passkey_len = new_passkey.GetLength() * sizeof(TCHAR);
 
     int BlockLength = ((m_passkey_len + 7)/8)*8;
     m_passkey = new unsigned char[BlockLength];
@@ -1112,9 +1112,9 @@ CMyString PWScore::GetPassKey() const
             for (i = 0; i < BS; i++)
                 curblock[i] = m_passkey[x + i];
             Algorithm->Decrypt(curblock, curblock);
-            for (i = 0; i < BS; i++)
+            for (i = 0; i < BS; i += sizeof(TCHAR))
                 if (x + i < m_passkey_len)
-                    retval += curblock[i];
+                    retval += *((TCHAR*)(curblock + i));
         }
         trashMemory(curblock, sizeof(curblock));
         delete Algorithm;
