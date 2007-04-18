@@ -409,6 +409,7 @@ private:
   CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
   CString m_lock_displaystatus;
+  CString m_minmizedisplaystatus;
   bool m_inExit; // help U3ExitNow
 
   BOOL IsWorkstationLocked() const;
@@ -426,7 +427,7 @@ private:
   void FixListIndexes();
   void UpdateAccessTime(CItemData *ci);
   void SaveDisplayStatus();
-  void RestoreDisplayStatus();
+  void RestoreDisplayStatus(bool bUnMinimize = false);
   void GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet);
   void MakeSortedItemList(ItemList &il);
   void SetColumns();  // default order

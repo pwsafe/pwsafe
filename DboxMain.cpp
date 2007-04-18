@@ -1541,15 +1541,18 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 void
 DboxMain::OnMinimize()
 {
+  // Called when the System Tray Minimize menu option is used
   if (m_bStartHiddenAndMinimized)
 	  m_bStartHiddenAndMinimized = false;
 
+  SaveDisplayStatus();
   ShowWindow(SW_MINIMIZE);
 }
 
 void
 DboxMain::OnUnMinimize()
 {
+  // Called when the System Tray Restore menu option is used
   UnMinimize(true);
 }
 
@@ -1655,7 +1658,7 @@ DboxMain::UnMinimize(bool update_windows)
             if (update_windows) {
                 ShowWindow(SW_RESTORE);
                 m_core.SetDisplayStatus(m_lock_displaystatus);
-                RestoreDisplayStatus();
+                RestoreDisplayStatus(true);
                 BringWindowToTop();
             }
         } else {

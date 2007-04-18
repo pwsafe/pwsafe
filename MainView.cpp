@@ -538,8 +538,11 @@ DboxMain::OnSize(UINT nType,
   // {kjp} Only SIZE_RESTORED is supported on Pocket PC.
 #if !defined(POCKET_PC)
   if (nType == SIZE_MINIMIZED) {
+    // Called when minimize button select on main dialog control box
+    // or by right clicking in the Taskbar (not using System Tray)
     PWSprefs *prefs = PWSprefs::GetInstance();
 
+    SaveDisplayStatus();
     m_selectedAtMinimize = getSelectedItem();
     m_ctlItemList.DeleteAllItems();
     m_ctlItemTree.DeleteAllItems();
