@@ -1898,13 +1898,19 @@ DboxMain::SaveDisplayStatus()
 	GroupDisplayStatus(p_char_displaystatus, i, true);
 
 	m_core.SetDisplayStatus(p_char_displaystatus, i);
+  // Save it for minimize
+  m_minmizedisplaystatus = CString(p_char_displaystatus, i);
 	delete[] p_char_displaystatus;
 }
 
 void
-DboxMain::RestoreDisplayStatus()
+DboxMain::RestoreDisplayStatus(bool bUnMinimize)
 {
-	CString cs_displaystatus = m_core.GetDisplayStatus();
+	CString cs_displaystatus;
+  if (bUnMinimize)
+    cs_displaystatus = m_minmizedisplaystatus;
+  else 
+    cs_displaystatus = m_core.GetDisplayStatus();    
 
 	if (cs_displaystatus.IsEmpty())
 		return;
