@@ -40,8 +40,8 @@ public:
 	//}}AFX_DATA
  
 	CItemData::FieldBits m_bsExport;
-	CString m_subgroup;
-	int m_subgroup_object, m_subgroup_function;
+	CString m_subgroup_name;
+	int m_subgroup_set, m_subgroup_object, m_subgroup_function;
 
 // Overrides
 	// ClassWizard generated virtual function overrides

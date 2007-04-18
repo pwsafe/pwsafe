@@ -149,10 +149,14 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 int
 PWScore::WritePlaintextFile(const CMyString &filename,
                             const CItemData::FieldBits &bsFields,
-							const CString &subgroup,
-							const int &iObject, const int &iFunction,
-							TCHAR &delimiter, const ItemList *il)
+                            const CString &subgroup_name,
+                            const int &subgroup_object, const int &subgroup_function,
+                            TCHAR &delimiter, const ItemList *il)
 {
+  // Check if anything to do! 
+  if (bsFields.count() == 0)
+    return SUCCESS;
+
   ofstreamT ofs(filename);
 
   if (!ofs)
@@ -227,10 +231,14 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 
   while (listPos != NULL) {
     temp = pwlist.GetAt(listPos);
-    const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, subgroup,
-                                             iObject, iFunction, delimiter);
-    if (!line.IsEmpty() != 0)
-    	ofs << line << endl;
+
+    if (subgroup_name.IsEmpty() || 
+        temp.WantEntry(subgroup_name, subgroup_object, subgroup_function) == TRUE) {
+      const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, delimiter);
+      if (!line.IsEmpty() != 0)
+    	  ofs << line << endl;
+    }
+
     pwlist.GetNext(listPos);
   }
   ofs.close();
@@ -241,8 +249,8 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 int
 PWScore::WriteXMLFile(const CMyString &filename,
                       const CItemData::FieldBits &bsFields,
-                      const CString &subgroup,
-                      const int &iObject, const int &iFunction,
+                      const CString &subgroup_name,
+                      const int &subgroup_object, const int &subgroup_function,
                       const TCHAR delimiter, const ItemList *il)
 {
 	ofstream of(filename);
@@ -310,7 +318,8 @@ PWScore::WriteXMLFile(const CMyString &filename,
 		_itot( id, buffer, 10 );
 #endif
 
-    if (temp.WantItem(subgroup, iObject, iFunction) == FALSE)
+    if (!subgroup_name.IsEmpty() &&
+        temp.WantEntry(subgroup_name, subgroup_object, subgroup_function) == FALSE)
       goto skip_entry;
 
 		// TODO: need to handle entity escaping of values.

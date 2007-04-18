@@ -273,3 +273,9 @@
 #define IDS_STRICT_LOCKED               5438
 #define IDS_CPF_CDD                     5439
 #define IDS_NOITEMS                     5440
+#define IDS_COMPAREX                    5441
+#define IDS_MERGEX                      5442
+#define IDS_EXPORT_TEXTX                5443
+#define IDS_EXPORT_XMLX                 5444
+#define IDS_ADVANCED_TITLETEXT          5445
+#define IDS_ADVANCED_PASSWORDTEXT       5446
