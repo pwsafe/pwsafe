@@ -52,7 +52,7 @@ enum {GCP_FIRST = 0,		// At startup of PWS
 	  GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
 	  GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
 	  GCP_WITHEXIT = 3,	// OK, CANCEL, EXIT & HELP buttons
-	  GCP_ADVANCED = 4};	// OK, CANCEL, ADVANCED & HELP buttons
+	  GCP_ADVANCED = 4};	// OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 // Drag and Drop source (TREE not implemented)
 enum { FROMCC, FROMHDR, FROMTREE };
@@ -258,7 +258,7 @@ protected:
   int Close(void);
   int Merge(void);
   int Merge( const CMyString &pszFilename );
-  int Compare( const CMyString &pszFilename );
+  int Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2);
 
   int BackupSafe(void);
   int New(void);

@@ -6,11 +6,11 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 #pragma once
-// CompareXDlg.h : header file
+// AdvancedDlg.h : header file
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CCompareXDlg dialog
+// CAdvancedDlg dialog
 
 // JHF : added PocketPC switch
 #if defined(POCKET_PC)
@@ -24,43 +24,51 @@
 #include "corelib/ItemData.h"
 #include <bitset>
 
-class CCompareXDlg : public CDialog
+enum {ADV_COMPARE = 0, ADV_MERGE, ADV_EXPORT_TEXT, ADV_EXPORT_XML, ADV_LAST};
+
+class CAdvancedDlg : public CDialog
 {
 // Construction
 public:
-	CCompareXDlg(CWnd* pParent = NULL);   // standard constructor
+	CAdvancedDlg(CWnd* pParent = NULL, int iIndex = -1);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CCompareXDlg)
-	enum { IDD = IDD_COMPAREX };
-	CString m_compare_subgroup_name;
-	int m_compare_group, m_compare_title, m_compare_user, m_compare_notes,
-    m_compare_password, m_compare_ctime, m_compare_pmtime, m_compare_atime,
-    m_compare_ltime, m_compare_rmtime, m_compare_url, m_compare_autotype, 
-    m_compare_pwhist, m_compare_subgroup;
-	int m_subgroup_object, m_subgroup_function, m_compare_subgroup_case;
+  enum { IDD_MERGE = IDD_ADVANCEDMERGE };
+	//{{AFX_DATA(CADVANCEDDlg)
+	enum { IDD = IDD_ADVANCED };
+	CString m_subgroup_name;
+	int m_group, m_title, m_user, m_notes, m_password, 
+    m_ctime, m_pmtime, m_atime, m_ltime, m_rmtime,
+    m_url, m_autotype, m_pwhist;
+	int m_subgroup_set, m_subgroup_object, m_subgroup_function, m_subgroup_case;
 
 	//}}AFX_DATA
 
-	CItemData::FieldBits m_bsCompare;
+	CItemData::FieldBits m_bsFields;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CCompareXDlg)
+	//{{AFX_VIRTUAL(CADVANCEDDlg)
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
+   int m_iIndex;
+   static int dialog_lookup[ADV_LAST];
+
+protected:
 	virtual BOOL OnInitDialog();
 	// Generated message map functions
-	//{{AFX_MSG(CCompareXDlg)
+	//{{AFX_MSG(CADVANCEDDlg)
 	afx_msg void OnClearTimes();
 	afx_msg void OnSetTimes();
 	afx_msg void OnClearAll();
 	afx_msg void OnSetAll();
 	afx_msg void OnSetSubGroup();
+  afx_msg void OnSetTitle();
+  afx_msg void OnSetPassword();
 	afx_msg void OnHelp();
 	virtual void OnOK();
 	//}}AFX_MSG

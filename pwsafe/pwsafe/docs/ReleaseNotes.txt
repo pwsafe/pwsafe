@@ -18,6 +18,7 @@ prevents F2 giving the user the feel that they can.
 [1695991] 3.07 - File type Compare now has .bak & .ibak suffixes
 [Open Discussion] Fix issue if PWS is maximized/minimized/then restored
 [1701508] Entry times no longer written out if not set
+[1702623] Compare now shows correct filenames
 
 New Features for 3.07.01
 ========================
@@ -25,6 +26,7 @@ New Features for 3.07.01
 allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
 [] Implement "Advanced" option for Exporting in XML format (as per Export in Text
 format) and for when comparing databases
+[1695968] "Advanced" option now available to improve Merge operation  
 
 Bugs fixed in 3.07
 =====================

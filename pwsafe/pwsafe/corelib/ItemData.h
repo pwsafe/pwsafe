@@ -133,7 +133,6 @@ public:
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
    // it's used for multi-line notes and to replace '.' within the Title field.
    CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
-   						const CString &subgroup, const int &iObject, const int &iFunction,
    						const TCHAR &delimiter) const;
 
    void CreateUUID(); // V20 - generate UUID for new item
@@ -176,8 +175,8 @@ public:
                    uuid_array_t &uuid_array);
   int ValidatePWHistory();
   
-  BOOL WantItem(const CString &subgroup, const int &iObject, 
-                const int &iFunction) const;
+  BOOL WantEntry(const CString &subgroup_name, const int &iObject, 
+                 const int &iFunction) const;
 
 private:
   CItemField m_Name;
