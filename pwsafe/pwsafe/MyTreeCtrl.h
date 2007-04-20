@@ -25,6 +25,7 @@ public:
   enum {NODE=0, LEAF=1, EXPIRED_LEAF = 2, WARNEXPIRED_LEAF = 3};
 
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
+  void DeleteFromSet(HTREEITEM hItem);
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
   bool IsLeafNode(HTREEITEM hItem);
