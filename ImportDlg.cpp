@@ -127,22 +127,21 @@ void CImportDlg::OnHelp()
 
 void CImportDlg::OnOK() 
 {
+  UpdateData(TRUE);
+
   switch (m_tab) {
     case 0: m_Separator = _T("\t"); break;
     case 1: m_Separator = _T(","); break;
-    case 2: GetDlgItemText(IDC_OTHER_SEPARATOR,m_Separator); break;
-    default: break; // m_Separator will get value from edit control
+    case 2: break; // m_Separator will get value from edit control
+    default: 
+      ASSERT(0);
+      break;
   }
 
   if (m_group == 0) {
     m_groupName = _T("");
-    UpdateData(FALSE);
-  } else {
-    GetDlgItemText(IDC_GROUP_NAME,m_groupName);
-    UpdateData(FALSE);
   }
-  
-  GetDlgItemText(IDC_DEFIMPDELIM,m_defimpdelim);
 
+  UpdateData(FALSE);
   CDialog::OnOK();
 }

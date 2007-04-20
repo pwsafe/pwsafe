@@ -307,6 +307,15 @@ void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
   } while (p != TVI_ROOT && p != NULL);
 }
 
+void CMyTreeCtrl::DeleteFromSet(HTREEITEM hItem)
+{
+  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
+  DWORD itemData = GetItemData(hItem);
+  ASSERT(itemData != NULL);
+  CItemData *ci = (CItemData *)itemData;
+  pSet->erase(ci);
+}
+
 // Return the full path leading up to a given item, but
 // not including the name of the item itself.
 CString CMyTreeCtrl::GetGroup(HTREEITEM hItem)

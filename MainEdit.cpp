@@ -198,6 +198,7 @@ DboxMain::Delete(bool inRecursion)
     POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 
     m_ctlItemList.DeleteItem(curSel);
+    m_ctlItemTree.DeleteFromSet(curTree_item);
     m_ctlItemTree.DeleteWithParents(curTree_item);
     delete di;
 

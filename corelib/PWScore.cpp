@@ -660,7 +660,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
     // tokenize into separate elements
     itoken = 0;
-vector<stringT> tokens;
+    vector<stringT> tokens;
     for (size_t startpos = 0; ; ) {
       size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar >= 0 && i_Offset[itoken] != NOTES) {
@@ -714,31 +714,23 @@ vector<stringT> tokens;
         temp.SetPassword(CMyString(tokens[i_Offset[PASSWORD]].c_str()));
 
     // The group and title field are concatenated.
-    // If the title field has periods, then it in doubleqoutes
+    // If the title field has periods, then they have been changed to the delimiter
     const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
-    if (grouptitle[grouptitle.length()-1] == TCHAR('\"')) {
-      size_t leftquote = grouptitle.find(TCHAR('\"'));
-      if (leftquote != grouptitle.length()-1) {
-        temp.SetGroup(grouptitle.substr(0, leftquote-1).c_str());
-        temp.SetTitle(grouptitle.substr(leftquote+1,
-                                        grouptitle.length()-leftquote-2).c_str(), delimiter);
-      } else { // only a single " ?!
-        // probably wrong, but a least we don't lose data
-        temp.SetTitle(grouptitle.c_str(), delimiter);
-      }
-    } else { // title has no period
-      size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
-      if (lastdot != string::npos) {
-        CMyString newgroup(ImportedPrefix.IsEmpty() ?
-                           _T("") : ImportedPrefix + _T("."));
-        newgroup += grouptitle.substr(0, lastdot).c_str();
-        temp.SetGroup(newgroup);
-        temp.SetTitle(grouptitle.substr(lastdot + 1).c_str(), delimiter);
-      } else {
-        temp.SetGroup(ImportedPrefix);
-        temp.SetTitle(grouptitle.c_str(), delimiter);
-      }
+    stringT entrytitle;
+    size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
+    if (lastdot != string::npos) {
+      CMyString newgroup(ImportedPrefix.IsEmpty() ?
+                         _T("") : ImportedPrefix + _T("."));
+      newgroup += grouptitle.substr(0, lastdot).c_str();
+      temp.SetGroup(newgroup);
+      entrytitle = grouptitle.substr(lastdot + 1);
+    } else {
+      temp.SetGroup(ImportedPrefix);
+      entrytitle = grouptitle;
     }
+    std::replace(entrytitle.begin(), entrytitle.end(), delimiter, TCHAR('.'));
+    temp.SetTitle(CMyString(entrytitle.c_str()));
+
     if (i_Offset[URL] >= 0)
         temp.SetURL(tokens[i_Offset[URL]].c_str());
     if (i_Offset[AUTOTYPE] >= 0)
@@ -779,17 +771,24 @@ vector<stringT> tokens;
 			    break;
 	    }
     }
-	strErrors += buffer;
+    strErrors += buffer;
 
     // The notes field begins and ends with a double-quote, with
-    // no special escaping of any other internal characters.
+    // replacement of delimiter by CR-LF.
     if (i_Offset[NOTES] >= 0) {
         stringT quotedNotes = tokens[i_Offset[NOTES]];
         if (!quotedNotes.empty() &&
             *quotedNotes.begin() == TCHAR('\"') &&
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
             quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
-            temp.SetNotes(CMyString(quotedNotes.c_str()), delimiter);
+
+            size_t pos;
+            const TCHAR *CRLF = _T("\r\n");
+            const stringT crlf (CRLF, _tcslen(CRLF) * sizeof(TCHAR));
+            while (string::npos != (pos = quotedNotes.find(delimiter)))
+              quotedNotes.replace(pos, 1, crlf);
+
+            temp.SetNotes(CMyString(quotedNotes.c_str()));
         }
     }
 
