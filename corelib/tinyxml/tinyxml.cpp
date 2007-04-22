@@ -43,7 +43,7 @@ void TiXmlBase::PutString( const TIXML_STRING& str, TIXML_STRING* outString )
 
 	while( i<(int)str.length() )
 	{
-		unsigned char c = (unsigned char) str[i];
+		TCHAR c = str[i];
 
 		if (    c == '&' 
 		     && i < ( (int)str.length() - 2 )
@@ -114,7 +114,7 @@ void TiXmlBase::PutString( const TIXML_STRING& str, TIXML_STRING* outString )
 		{
 			//char realc = (char) c;
 			//outString->append( &realc, 1 );
-			*outString += (char) c;	// somewhat more efficient function call.
+			*outString += c;	// somewhat more efficient function call.
 			++i;
 		}
 	}
@@ -1043,10 +1043,10 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 #ifdef UNICODE
             // translate from lastpos to (p-lastPos+1) to wchar_t
             int nw;
-            nw = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED,
+            nw = MultiByteToWideChar(CP_UTF8, 0,
                                      lastPos, (p-lastPos+1),
                                      wbuf, (length+1));
-            assert(nw == p-lastPos+1);
+            assert(nw > 0 && nw <= p-lastPos+1);
             data.append(wbuf, (p-lastPos+1));
 #else
 			data.append( lastPos, (p-lastPos+1) );  // append, include the newline
@@ -1062,10 +1062,25 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 #ifdef UNICODE
                 // translate from lastpos to (p-lastPos) to wchar_t
                 int nw;
-                nw = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED,
+                nw = MultiByteToWideChar(CP_UTF8, 0,
                                          lastPos, (p-lastPos),
                                          wbuf, (length+1));
-                assert(nw == p-lastPos);
+                if (nw == 0) {
+                    DWORD errCode = GetLastError();
+                    switch (errCode) {
+                        case ERROR_INSUFFICIENT_BUFFER:
+                            break;
+                        case ERROR_INVALID_FLAGS:
+                            break;
+                        case ERROR_INVALID_PARAMETER:
+                            break;
+                        case ERROR_NO_UNICODE_TRANSLATION:
+                            break;
+                        default:
+                            assert(0);
+                    }
+                }
+                assert(nw > 0 && nw <= p-lastPos);
                 data.append(wbuf, (p-lastPos));
 #else
                 data.append( lastPos, (p-lastPos) );	// do not add the CR
@@ -1095,10 +1110,10 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 #ifdef UNICODE
         // translate from lastpos to (p-lastPos) to wchar_t
         int nw;
-        nw = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED,
+        nw = MultiByteToWideChar(CP_UTF8, 0,
                                  lastPos, (p-lastPos),
                                  wbuf, (length+1));
-        assert(nw == p-lastPos);
+        assert(nw > 0 && nw <= p-lastPos);
         data.append(wbuf, (p-lastPos));
 #else
 data.append( lastPos, (p-lastPos) );
@@ -1384,7 +1399,19 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
 	{
 		TIXML_STRING buffer;
 		PutString( value, &buffer );
-		_ftprintf( cfile, _T("%s"), buffer.c_str() );
+#ifndef UNICODE
+        fwrite(buffer.c_str(), buffer.length()*sizeof(TCHAR), 1, cfile);
+#else
+        int utf8bufsize = 2 * buffer.length(); // upper limit
+        char *ut8buf = new char[utf8bufsize];
+        utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
+                                          buffer.c_str(), buffer.length(),
+                                          ut8buf, utf8bufsize,
+                                          0, 0);
+        assert(utf8bufsize != 0);
+        fwrite(ut8buf, utf8bufsize, 1, cfile);
+        delete[] ut8buf;
+#endif
 	}
 }
 
