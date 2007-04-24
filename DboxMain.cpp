@@ -986,7 +986,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         rc = dbox_pkentry->DoModal();
         app.EnableAccelerator();
 
-        if (index == GCP_ADVANCED)
+        if (rc == IDOK && index == GCP_ADVANCED)
           m_bAdvanced = dbox_pkentry->IsAdvanced();
 
     } else { // already present - bring to front
