@@ -1,9 +1,15 @@
+/*
+ * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 /// \file CryptKeyEntry.cpp
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include "PasswordSafe.h"
-#include "corelib/PwsPlatform.h"
+#include "PasswordSafe.h" /// \todo re-check whether this is required, as soon as as ThisMfcApp.h is updated
 
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
@@ -11,6 +17,7 @@
   #include "pocketpc/PocketPC.h"
 #else
   #include "resource.h"
+  #include "resource3.h"  // String resources
 #endif
 #include "corelib/Util.h"
 
@@ -27,8 +34,8 @@ static char THIS_FILE[] = __FILE__;
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
    : super(CCryptKeyEntry::IDD, pParent)
 {
-   m_cryptkey1	= "";
-   m_cryptkey2	= "";
+   m_cryptkey1	= _T("");
+   m_cryptkey2	= _T("");
 }
 
 
@@ -54,7 +61,6 @@ END_MESSAGE_MAP()
 void
 CCryptKeyEntry::OnCancel() 
 {
-   app.m_pMainWnd = NULL;
    super::OnCancel();
 }
 
@@ -66,18 +72,17 @@ CCryptKeyEntry::OnOK()
 
    if (m_cryptkey1 != m_cryptkey2)
    {
-      AfxMessageBox(_T("The two entries do not match."));
+      AfxMessageBox(IDS_ENTRIESDONOTMATCH);
       ((CEdit*)GetDlgItem(IDC_CRYPTKEY2))->SetFocus();
       return;
    }
-   if (m_cryptkey1 == "")
+   if (m_cryptkey1.IsEmpty())
    {
-      AfxMessageBox(_T("Please enter the key and verify it."));
+      AfxMessageBox(IDS_ENTERKEYANDVERIFY);
       ((CEdit*)GetDlgItem(IDC_CRYPTKEY1))->SetFocus();
       return;
    }
 
-   app.m_pMainWnd = NULL;
    super::OnOK();
 }
 
@@ -88,10 +93,9 @@ CCryptKeyEntry::OnHelp()
 #if defined(POCKET_PC)
 	CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
-   //WinHelp(0x20084, HELP_CONTEXT);
-   ::HtmlHelp(NULL,
-              "pwsafe.chm::/html/pws_combo_entry.htm",
-              HH_DISPLAY_TOPIC, 0);
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
+  HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
 

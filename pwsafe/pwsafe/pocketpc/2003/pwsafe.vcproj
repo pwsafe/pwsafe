@@ -1605,6 +1605,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\resource2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\resource3.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\ShowPasswordDlg.h"
 				>
 			</File>

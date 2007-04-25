@@ -116,9 +116,9 @@ CEditDlg::OnOK()
        (m_listindex != listindex))
    {
       CMyString temp =
-         "An item with Title \""
-         + m_title + "\" and User Name \"" + m_username
-         + "\" already exists.";
+         _T("An item with Title \"")
+         + m_title + _T("\" and User Name \"") + m_username
+         + _T("\" already exists.");
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
@@ -189,9 +189,9 @@ void CEditDlg::OnRandom()
    if (m_password != "")
    {
       msg =
-         "The randomly generated password is: \""
+         _T("The randomly generated password is: \"")
          + temp
-         + "\" \n(without the quotes). Would you like to use it?";
+         + _T("\" \n(without the quotes). Would you like to use it?");
       nResponse = MessageBox(msg, 
                              AfxGetAppName(),
                              MB_ICONEXCLAMATION|MB_YESNO);

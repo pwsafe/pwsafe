@@ -53,7 +53,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
       DBGMSG("** FIRST **\n");
    }
 
-   m_passkey = "";
+   m_passkey = _T("");
 
    if (a_filespec.GetLength() > FILE_DISP_LEN) {
 //	   m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display

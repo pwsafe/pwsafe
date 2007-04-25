@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 /// \file ThisMfcApp.h
 /// \brief App object of MFC version of Password Safe
 //-----------------------------------------------------------------------------
@@ -6,6 +13,18 @@
 
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
+
+#if defined(POCKET_PC)
+  #include "pocketpc/PocketPC.h"
+  #include "pocketpc/resource.h"
+  #include "resource3.h"  // String resources
+#else
+  #include <errno.h>
+  #include <io.h>
+  #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
+#endif
 //-----------------------------------------------------------------------------
 class DboxMain;
 

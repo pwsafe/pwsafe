@@ -26,7 +26,7 @@ CUsernameEntry::CUsernameEntry(CWnd* pParent)
    : CDialog(CUsernameEntry::IDD, pParent)
 {
    m_makedefuser = FALSE;
-   m_username = "";
+   m_username = _T("");
 }
 
 
