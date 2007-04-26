@@ -42,6 +42,7 @@ extern void GenRandhash(const CMyString &passkey,
                         const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
 
+unsigned char newrand();
 /*
 svn merge mremains
 <<<<<<< .working

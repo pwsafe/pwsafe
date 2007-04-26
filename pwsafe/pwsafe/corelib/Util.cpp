@@ -120,10 +120,9 @@ GenRandhash(const CMyString &a_passkey,
   keyHash.Final(a_randhash);
 }
 
-/*
-svn merge remains
-<<<<<<< .working
-
+/**
+ * \todo remove soon; only a remains from v1.x
+ */
 unsigned char
 newrand()
 {
@@ -132,6 +131,11 @@ newrand()
       ; // 257?!?
    return (unsigned char)r;
 }
+
+/*
+svn merge remains
+<<<<<<< .working
+
 /* 
  *  RangeRand(len)
  *
@@ -238,7 +242,7 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
   return numWritten;
 }
 
-/*
+/**
  * Reads an encrypted record into buffer.
  * The first block of the record contains the encrypted record length
  * We have the usual ugly problem of fixed buffer lengths in C/C++.

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license.php
+ */
 /// \file DboxMain.cpp
 //
 // {kjp} PocketPC - minimize application when "OK" button top right corner is
@@ -7,6 +14,9 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
+
+#include "corelib/Fish.h"
+#include "corelib/BlowFish.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -18,6 +28,8 @@
 
 #else
   #include "resource.h"
+  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
+  #include "resource3.h"  // String resources
 #endif
 
 // dialog boxen
@@ -58,11 +70,16 @@
   #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
 #endif
 
-/*
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/**
  * This is the string to be displayed instead of the actual password, unless
  * the user chooses to see the password:
  */
-
 const TCHAR *HIDDEN_PASSWORD = _T("**************");
 
 
@@ -605,7 +622,8 @@ DboxMain::OnAdd()
       CItemData temp;
       CMyString temptitle;
       MakeName(temptitle, dataDlg.m_title, dataDlg.m_username);
-      temp.SetName(temptitle);
+	  CMyString emptyStr = _T("");
+      temp.SetName(temptitle, emptyStr);
       temp.SetPassword(dataDlg.m_password);
       temp.SetNotes(dataDlg.m_notes);
       POSITION curPos = m_pwlist.AddTail(temp);
@@ -640,8 +658,7 @@ DboxMain::OnCopyPassword()
    {
       POSITION itemPos = Find(getSelectedItem());
 		
-      CMyString curPassString;
-      m_pwlist.GetAt(itemPos).GetPassword(curPassString);
+      CMyString curPassString = m_pwlist.GetAt(itemPos).GetPassword();
 
 	  // {kjp} fix to use the real amount of storage used
       uGlobalMemSize = (curPassString.GetLength() + 1) * sizeof(TCHAR);
@@ -650,7 +667,7 @@ DboxMain::OnCopyPassword()
 	  // {kjp} fix to use UNICODE safe string definitions and string copy functions
       LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
 
-	  strCopy( pGlobalLock, curPassString );
+	  _tcscpy( pGlobalLock, curPassString );
 #else
       char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
 
@@ -761,9 +778,9 @@ DboxMain::OnEdit()
 
       if (rc == IDOK)
       {
-         CMyString temptitle;
+         CMyString temptitle, emptyStr;
          MakeName(temptitle, dlg_edit.m_title, dlg_edit.m_username);
-         item.SetName(temptitle);
+         item.SetName(temptitle, emptyStr);
 
 #if 0
          // JPRFIXME - P1.2
@@ -901,7 +918,7 @@ DboxMain::ClearClipboard()
          {
 #if 1
 			 // {kjp} fixed to use UNICODE safe functions
-			 trashMemory( lptstr, strLength(lptstr) );
+			 trashMemory( lptstr, _tcslen(lptstr) );
 #else
 			 trashMemory((unsigned char*)lptstr, strlen(lptstr));
 #endif
@@ -924,7 +941,7 @@ DboxMain::Find(const CMyString &a_title, const CMyString &a_user)
 
    while (listPos != NULL)
    {
-      m_pwlist.GetAt(listPos).GetName(curthing);
+      curthing = m_pwlist.GetAt(listPos).GetName();
 	  CMyString title, user;
 	  SplitName(curthing, title, user);
       if (title == a_title && user == a_user)
@@ -995,16 +1012,16 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 
   while (listPos != NULL)
   {
-      m_pwlist.GetAt(listPos).GetName(curname);
+      curname = m_pwlist.GetAt(listPos).GetName();
       savecurname = curname; // keep original for finding in m_listctrl
-      m_pwlist.GetAt(listPos).GetNotes(curnotes);
+      curnotes = m_pwlist.GetAt(listPos).GetNotes();
 
       if (!CaseSensitive) {
           curname.MakeLower();
           curnotes.MakeLower();
       }
 #if 1
-	  if ( strFind( curname, searchstr ) || strFind( curnotes, searchstr ) )
+	  if ( _tcsstr( curname, searchstr ) || _tcsstr( curnotes, searchstr ) )
 	  {
 #else
 #ifdef UNICODE
@@ -1157,12 +1174,11 @@ DboxMain::OnPasswordChange()
       {
          CItemData temp;
          temp = m_pwlist.GetAt(listPos);
-         CMyString str;
-         temp.GetName(str);
+         CMyString str = temp.GetName();
          tempList.AddTail(str);
-         temp.GetPassword(str);
+         str = temp.GetPassword();
          tempList.AddTail(str);
-         temp.GetNotes(str);
+         str = temp.GetNotes();
          tempList.AddTail(str);
          m_pwlist.GetNext(listPos);
       }
@@ -1191,8 +1207,9 @@ DboxMain::OnPasswordChange()
       while (listPos != NULL)
       {
          CItemData temp;
-			
-         temp.SetName(tempList.GetAt(listPos));
+		 
+		 CMyString emptyStr;
+		 temp.SetName(tempList.GetAt(listPos), emptyStr);
          tempList.GetNext(listPos);
 			
          temp.SetPassword(tempList.GetAt(listPos));
@@ -1303,8 +1320,8 @@ DboxMain::OnSize(UINT nType,
          case CANT_OPEN_FILE:
             temp =
                m_currfile
-               + "\n\nCannot open database. It likely does not exist."
-               + "\nA new database will be created.";
+               + _T("\n\nCannot open database. It likely does not exist.")
+               + _T("\nA new database will be created.");
             MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
          case TAR_NEW:
             rc2 = New();
@@ -1368,7 +1385,7 @@ DboxMain::Save()
 
    if (rc == CANT_OPEN_FILE)
    {
-      CMyString temp = m_currfile + "\n\nCould not open file for writing!";
+      CMyString temp = m_currfile + _T("\n\nCould not open file for writing!");
       MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return CANT_OPEN_FILE;
    }
@@ -1434,7 +1451,7 @@ DboxMain::OnCopyUsername()
    POSITION itemPos = Find(getSelectedItem());
 
    CMyString title, junk, username;
-   m_pwlist.GetAt(itemPos).GetName(title);
+   title = m_pwlist.GetAt(itemPos).GetName();
    SplitName(title, junk, username);
 
    if (username.GetLength() == 0)
@@ -1451,7 +1468,7 @@ DboxMain::OnCopyUsername()
 	  // {kjp} fix to use UNICODE safe string definitions and string copy functions
       LPTSTR pGlobalLock = (LPTSTR)GlobalLock(hGlobalMemory);
 
-	  strCopy( pGlobalLock, username );
+	  _tcscpy( pGlobalLock, username );
 #else
       char* pGlobalLock = (char*)GlobalLock(hGlobalMemory);
       
@@ -1617,7 +1634,7 @@ DboxMain::BackupSafe()
    rc = WriteFile(tempname);
    if (rc == CANT_OPEN_FILE)
    {
-      CMyString temp = tempname + "\n\nCould not open file for writing!";
+      CMyString temp = tempname + _T("\n\nCould not open file for writing!");
       MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return CANT_OPEN_FILE;
    }
@@ -1691,9 +1708,9 @@ DboxMain::Open( const CMyString &pszFilename )
 		int rc2;
 		
 		temp =
-			"Do you want to save changes to the password database: "
+			_T("Do you want to save changes to the password database: ")
 			+ m_currfile
-			+ "?";
+			+ _T("?");
 		rc = MessageBox(temp,
 			AfxGetAppName(),
 			MB_ICONQUESTION|MB_YESNOCANCEL);
@@ -1720,7 +1737,7 @@ DboxMain::Open( const CMyString &pszFilename )
 //		app.GetMRU()->Add( LPCTSTR(pszFilename) );
 		break; // Keep going... 
 	case CANT_OPEN_FILE:
-		temp = m_currfile + "\n\nCan't open file. Please choose another.";
+		temp = m_currfile + _T("\n\nCan't open file. Please choose another.");
 		MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
 	case TAR_OPEN:
 		return Open();
@@ -1738,7 +1755,7 @@ DboxMain::Open( const CMyString &pszFilename )
 	if (rc == CANT_OPEN_FILE)
 	{
 		temp = pszFilename;
-		temp += "\n\nCould not open file for reading!";
+		temp += _T("\n\nCould not open file for reading!");
 		MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
 		/*
 		Everything stays as is... Worst case,
@@ -1773,9 +1790,9 @@ DboxMain::New()
    if (m_changed==TRUE)
    {
       CMyString temp =
-         "Do you want to save changes to the password database: "
+         _T("Do you want to save changes to the password database: ")
          + m_currfile
-         + "?";
+         + _T("?");
 
       rc = MessageBox(temp,
                       AfxGetAppName(),
@@ -1806,7 +1823,7 @@ DboxMain::New()
       */
       return USER_CANCEL;
 
-   m_currfile = ""; //Force a save as... 
+   m_currfile = _T(""); //Force a save as... 
    m_changed = FALSE;
 #if !defined(POCKET_PC)
    m_title = "Password Safe - <Untitled>";
@@ -1858,7 +1875,7 @@ DboxMain::Restore()
    case CANT_OPEN_FILE:
       temp =
          m_currfile
-         + "\n\nCan't open file. Please choose another.";
+         + _T("\n\nCan't open file. Please choose another.");
       MessageBox(temp, _T("File open error."), MB_OK|MB_ICONWARNING);
    case TAR_OPEN:
       return Open();
@@ -1876,8 +1893,8 @@ DboxMain::Restore()
    {
       int rc2;
 	
-      temp = "Do you want to save changes to the password list: "
-         + m_currfile + "?";
+      temp = _T("Do you want to save changes to the password list: ")
+         + m_currfile + _T("?");
 
       rc = MessageBox(temp,
                       AfxGetAppName(),
@@ -1901,13 +1918,13 @@ DboxMain::Restore()
    rc = ReadFile(newback, passkey);
    if (rc == CANT_OPEN_FILE)
    {
-      temp = newback + "\n\nCould not open file for reading!";
+      temp = newback + _T("\n\nCould not open file for reading!");
       MessageBox(temp, _T("File read error."), MB_OK|MB_ICONWARNING);
       //Everything stays as is... Worst case, they saved their file....
       return CANT_OPEN_FILE;
    }
 	
-   m_currfile = ""; //Force a save as...
+   m_currfile = _T(""); //Force a save as...
    m_changed = TRUE; //So that the *.dat version of the file will be saved.
 #if !defined(POCKET_PC)
    m_title = "Password Safe - <Untitled Restored Backup>";
@@ -1963,7 +1980,7 @@ DboxMain::SaveAs()
    rc = WriteFile(newfile);
    if (rc == CANT_OPEN_FILE)
    {
-      CMyString temp = newfile + "\n\nCould not open file for writing!";
+      CMyString temp = newfile + _T("\n\nCould not open file for writing!");
       MessageBox(temp, _T("File write error."), MB_OK|MB_ICONWARNING);
       return CANT_OPEN_FILE;
    }
@@ -1993,9 +2010,12 @@ int DboxMain::WriteCBC(FILE *fp, const CString &data, const unsigned char *salt,
 	LPCSTR passstr = LPCSTR(app.m_passkey);
 	LPCSTR datastr = LPCSTR(myData);
 
+	BlowFish *algo = BlowFish::MakeBlowFish((const unsigned char *)passstr,
+                                           app.m_passkey.GetLength(),
+                                           salt, SaltLength);
+	/// it remains unclear what type param is, but is appears safe to set it to zero...
 	return _writecbc(fp, (const unsigned char *)datastr, data.GetLength(),
-		(const unsigned char *)passstr, app.m_passkey.GetLength(),
-		salt, SaltLength, ipthing);
+		0 /* type*/, algo, ipthing);
 }
 #else
 int DboxMain::WriteCBC(int fp, const CString &data, const unsigned char *salt,
@@ -2079,11 +2099,11 @@ DboxMain::WriteFile(const CMyString &filename)
    while (listPos != NULL)
    {
       temp = m_pwlist.GetAt(listPos);
-      temp.GetName(tempdata);
+      tempdata = temp.GetName();
       WriteCBC(out, tempdata, thesalt, ipthing);
-      temp.GetPassword(tempdata);
+      tempdata = temp.GetPassword();
       WriteCBC(out, tempdata, thesalt, ipthing);
-      temp.GetNotes(tempdata);
+      tempdata = temp.GetNotes();
       WriteCBC(out, tempdata, thesalt, ipthing);
       m_pwlist.GetNext(listPos);
    }
@@ -2238,16 +2258,20 @@ int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
   unsigned int buffer_len = 0;
   int retval;
 
+  BlowFish *algo = BlowFish::MakeBlowFish((const unsigned char *)passstr,
+                                           app.m_passkey.GetLength(),
+                                           salt, SaltLength);
+  unsigned char uselessType[10];
   retval = _readcbc(fp, buffer, buffer_len,
-		   (const unsigned char *)passstr, app.m_passkey.GetLength(),
-		   salt, SaltLength, ipthing);
+		   *uselessType, algo, ipthing);
   if (buffer_len > 0) {
-    CMyString str(LPCSTR(buffer), buffer_len);
+	LPCSTR tempBuffer = LPCSTR(buffer);
+    CMyString str(LPCTSTR(tempBuffer), buffer_len);
     data = str;
     trashMemory(buffer, buffer_len);
     delete[] buffer;
   } else {
-    data = "";
+    data = _T("");
   }
   return retval;
 }
@@ -2301,21 +2325,22 @@ DboxMain::ReadFile(const CMyString &a_filename,
    app.m_passkey = a_passkey;
 
    CItemData temp;
-   CMyString tempdata;
+   CMyString tempdata, emptyStr;
 
    int numread = 0;
    numread += ReadCBC(in, tempdata, salt, ipthing);
-   temp.SetName(tempdata);
+   temp.SetName(tempdata,emptyStr);
    numread += ReadCBC(in, tempdata, salt, ipthing);
    temp.SetPassword(tempdata);
    numread += ReadCBC(in, tempdata, salt, ipthing);
    temp.SetNotes(tempdata);
    while (numread > 0)
    {
+      CMyString emptyStr;
       m_pwlist.AddTail(temp);
       numread = 0;
       numread += ReadCBC(in, tempdata, salt, ipthing);
-      temp.SetName(tempdata);
+      temp.SetName(tempdata, emptyStr);
       numread += ReadCBC(in, tempdata, salt, ipthing);
       temp.SetPassword(tempdata);
       numread += ReadCBC(in, tempdata, salt, ipthing);
@@ -2399,9 +2424,9 @@ DboxMain::OnUpdateBackups()
 	
    //We need to use the Win32SDK method because of RegEnumKeyEx
    CMyString subkeyloc =
-      (CMyString)"Software\\" 
+      (CMyString)_T("Software\\" )
       + companyname 
-      + (CMyString) "\\Password Safe\\Backup";
+      + (CMyString) _T("\\Password Safe\\Backup");
    HKEY subkey;
    DWORD disposition;
    LONG result = RegCreateKeyEx(HKEY_CURRENT_USER,
@@ -2438,17 +2463,17 @@ DboxMain::OnUpdateBackups()
       {
          temp =
             (CMyString)
-            "Password Safe has detected the presence of old backup records\n"
-            "from Version 1.1 of this program.  If you wish, you can update\n"
-            "these files to the current version (by simply adding a .bak "
-            "extension).\n"
-            "\nYou will be presented with a list of file locations and the "
-            "opportunity\n"
-            "to save them to a text file for future reference. Also, you can "
-            "rerun this\n"
-            "function at any time through the \"Update V1.1 Backups...\" "
-            "menu item."
-            "\n\nDo you wish to proceed?";
+            _T("Password Safe has detected the presence of old backup records\n")
+			_T("from Version 1.1 of this program.  If you wish, you can update\n")
+			_T("these files to the current version (by simply adding a .bak ")
+			_T("extension).\n")
+			_T("\nYou will be presented with a list of file locations and the ")
+			_T("opportunity\n")
+			_T("to save them to a text file for future reference. Also, you can ")
+			_T("rerun this\n")
+			_T("function at any time through the \"Update V1.1 Backups...\" ")
+			_T("menu item.")
+			_T("\n\nDo you wish to proceed?");
 
          rc = MessageBox(LPCTSTR(temp),
                                 _T("Update Backups"),
@@ -2479,15 +2504,15 @@ DboxMain::OnUpdateBackups()
       while (result != ERROR_NO_MORE_ITEMS)
       {
          temp.name = key;
-         temp.location = value;
+         temp.location = (LPCTSTR)((LPCSTR)value);
 			
-         BOOL resp = CheckExtension(temp.location, (CMyString) ".bak");
+         BOOL resp = CheckExtension(temp.location, (CMyString) _T(".bak"));
          if (resp == FALSE) // File has wrong extension.
          {
-            int ret = rename(temp.location, temp.location + ".bak");
+            int ret = rename(temp.location, temp.location + _T(".bak"));
             if (ret == 0) //Success
             {
-               temp.location = temp.location + ".bak";
+               temp.location = temp.location + _T(".bak");
                backuplist.AddTail(temp);				
             }
             else if (errno == EACCES)
@@ -2497,12 +2522,12 @@ DboxMain::OnUpdateBackups()
                // The old version no longer exists
             {
                CMyString out =
-                  "Please note that the backup named \""
+                  _T("Please note that the backup named \"")
                   + temp.name
-                  + "\"\nno longer exists.It will be removed"
-                  " from the registry.";
+                  + _T("\"\nno longer exists.It will be removed")
+                    _T(" from the registry.");
                MessageBox(out, _T("File not found."), MB_OK|MB_ICONWARNING);
-               temp.location = "";
+               temp.location = _T("");
                backuplist.AddTail(temp);
             }
          }	
@@ -2513,12 +2538,12 @@ DboxMain::OnUpdateBackups()
             if (ret != 0 && errno == ENOENT)
             {
                CMyString out =
-                  "Please note that the backup named \""
+                  _T("Please note that the backup named \"")
                   + temp.name 
-                  + "\"\nno longer exists. It will be removed"
-                  " from the registry.";
+                  + _T("\"\nno longer exists. It will be removed")
+                    _T(" from the registry.");
                MessageBox(out, _T("File not found."), MB_OK|MB_ICONWARNING);
-               temp.location = "";
+               temp.location = _T("");
                backuplist.AddTail(temp);
             }
          }
@@ -2529,27 +2554,27 @@ DboxMain::OnUpdateBackups()
          valuelen = _MAX_PATH;
       }
 
-      CMyString out = "The following files were altered:\n\n";
-      CMyString out2 = "";
+      CMyString out = _T("The following files were altered:\n\n");
+      CMyString out2 = _T("");
       POSITION listpos = backuplist.GetHeadPosition();
       while (listpos != NULL)
       {
          backup_t temp = backuplist.GetAt(listpos);
          if (temp.location != "")
          {
-            out2 = out2 + temp.name + "\t" + temp.location + "\n";
+            out2 = out2 + temp.name + _T("\t") + temp.location + _T("\n");
          }
          backuplist.GetNext(listpos);
       }
 
-      if (out2 == "")
-         out2 = "None.\n";
+      if (out2 == _T(""))
+         out2 = _T("None.\n");
 
       CMyString out3 =
          (CMyString)
-         "\nDo you want to save a text version of this list?\n\n"
-         "(The file will be called changedbackups.txt\n"
-         "and will be saved in the current directory)";
+         _T("\nDo you want to save a text version of this list?\n\n")
+         _T("(The file will be called changedbackups.txt\n")
+         _T("and will be saved in the current directory)");
 
       rc = MessageBox(out+out2+out3,
                              _T("Changed Files"), MB_YESNOCANCEL);
@@ -2809,8 +2834,7 @@ DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
    POSITION listPos = plist->GetHeadPosition();
    while (listPos != NULL)
    {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
+      CMyString temp = plist->GetAt(listPos).GetName();
       //Start MakeFullName
 // {kjp} BUGFIX : these are strings, not byte arrays!
 //      int pos = temp.FindByte(SPLTCHR);
@@ -2821,7 +2845,7 @@ DboxMain::MakeFullNames(CList<CItemData, CItemData>* plist,
       {
          //Insert defusername if string contains defchr but not splitchr
          plist->GetAt(listPos).SetName(
-            (CMyString)temp.Left(pos2) + SPLTSTR + defusername);
+            (CMyString)temp.Left(pos2), defusername);
       }
       // End MakeFullName
       plist->GetNext(listPos);
@@ -2836,15 +2860,14 @@ DboxMain::DropDefUsernames(CList<CItemData, CItemData>* plist, const CMyString &
    POSITION listPos = plist->GetHeadPosition();
    while (listPos != NULL)
    {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
+      CMyString temp = plist->GetAt(listPos).GetName();
       //Start DropDefUsername
       CMyString temptitle, tempusername;
       int pos = SplitName(temp, temptitle, tempusername);
       if ((pos!=-1) && (tempusername == defusername))
       {
          //If name is splitable and username is default
-         plist->GetAt(listPos).SetName(temptitle + DEFUSERCHR);
+         plist->GetAt(listPos).SetName(temptitle + DEFUSERCHR, defusername);
       }
       //End DropDefUsername
       plist->GetNext(listPos);
@@ -2857,8 +2880,7 @@ DboxMain::CheckVersion(CList<CItemData, CItemData>* plist)
    POSITION listPos = plist->GetHeadPosition();
    while (listPos != NULL)
    {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
+      CMyString temp = plist->GetAt(listPos).GetName();
 
 // {kjp} BUGFIX these are strings not byte arrays!
 //    if (temp.FindByte(SPLTCHR) != -1)
@@ -2879,8 +2901,7 @@ DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
    POSITION listPos = plist->GetHeadPosition();
    while (listPos != NULL)
    {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
+      CMyString temp = plist->GetAt(listPos).GetName();
 
       //Start Check
 // {kjp} BUGFIX this is a string not a byte array!
@@ -2889,7 +2910,7 @@ DboxMain::SetBlankToDef(CList<CItemData, CItemData>* plist)
       if ((temp.Find(SPLTCHR) == -1)
           && (temp.Find(DEFUSERCHR) == -1))
       {
-         plist->GetAt(listPos).SetName(temp + DEFUSERCHR);
+         plist->GetAt(listPos).SetName(temp + DEFUSERCHR, _T(""));
       }
       //End Check
 
@@ -2904,14 +2925,13 @@ DboxMain::SetBlankToName(CList<CItemData, CItemData>* plist, const CMyString &us
    POSITION listPos = plist->GetHeadPosition();
    while (listPos != NULL)
    {
-      CMyString temp;
-      plist->GetAt(listPos).GetName(temp);
+      CMyString temp = plist->GetAt(listPos).GetName();
       //Start Check
 	  // {kjp} BUGFIX this is a string not a byte array
 //    if ( (temp.FindByte(SPLTCHR) == -1) && (temp.FindByte(DEFUSERCHR) == -1) )
       if ( (temp.Find(SPLTCHR) == -1) && (temp.Find(DEFUSERCHR) == -1) )
       {
-         plist->GetAt(listPos).SetName(temp + SPLTSTR + username);
+         plist->GetAt(listPos).SetName(temp + SPLTSTR + username, _T(""));
       }
       //End Check
       plist->GetNext(listPos);
@@ -2955,7 +2975,7 @@ DboxMain::SplitName(const CMyString &name, CMyString &title, CMyString &username
 		}
 		else
 		{
-			username = "";
+			username = _T("");
 		}
 	}
 	else
