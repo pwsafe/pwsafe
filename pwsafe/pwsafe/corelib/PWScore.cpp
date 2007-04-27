@@ -80,13 +80,25 @@ PWScore::ClearData(void)
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.RemoveAll();
 }
+void
+PWScore::ReInit(void)
+{
+  // Now reset all values as if created from new
+  m_currfile = _T("");
+  m_changed = false;
+  m_usedefuser = false;
+  m_defusername = _T("");
+  m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
+  m_passkey = NULL;
+  m_passkey_len = 0;
+}
 
 void
 PWScore::NewFile(const CMyString &passkey)
 {
    ClearData();
+   ReInit();
    SetPassKey(passkey);
-   m_changed = false;
 }
 
 int
@@ -875,22 +887,23 @@ PWScore::ReadFile(const CMyString &a_filename,
         return UNKNOWN_VERSION;
     }
 
+    // Get pref string and tree display status & who saved when
+    // all possibly empty!
+    PWSprefs::GetInstance()->Load(in->GetPrefString());
+
     // prepare handling of pre-2.0 DEFUSERCHR conversion
     if (m_ReadFileVersion == PWSfile::V17) {
         in->SetDefUsername(m_defusername);
         m_nCurrentMajorVersion = PWSfile::V17;
         m_nCurrentMinorVersion = 0;
     } else {
-        // for 2.0 & later, get pref string and tree display status
-        // both possibly empty
-        PWSprefs::GetInstance()->Load(in->GetPrefString());
+        // for 2.0 & later...
+        in->SetDefUsername(PWSprefs::GetInstance()->
+                              GetPref(PWSprefs::DefUserName));
         m_nCurrentMajorVersion = in->GetCurrentMajorVersion();
         m_nCurrentMinorVersion = in->GetCurrentMinorVersion();
     }
 
-    // Get pref string and tree display status & who saved when
-    // all possibly empty!
-    PWSprefs::GetInstance()->Load(in->GetPrefString());
     m_displaystatus = in->GetDisplayStatus();
     m_whenlastsaved = in->GetWhenLastSaved();
     m_wholastsaved = in->GetWhoLastSaved();

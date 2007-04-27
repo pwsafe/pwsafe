@@ -475,19 +475,20 @@ DboxMain::RefreshList()
     DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
     if (di != NULL)
       di->list_index = -1; // easier, but less efficient, to delete di
-    insertItem(ci);
+    insertItem(ci, -1, false);
     m_core.GetNextEntry(listPos);
   }
 
-  m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+  if (m_bExplorerTypeTree)
+    SortTree(TVI_ROOT);
+  else
+    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+
 #if defined(POCKET_PC)
   SetCursor( NULL );
 #endif
   m_ctlItemTree.RestoreExpanded();
 
-  if (m_bExplorerTypeTree) {
-      SortTree(TVI_ROOT);
-  }
 
   // re-enable and force redraw!
   m_ctlItemList.SetRedraw( TRUE ); m_ctlItemList.Invalidate();
@@ -721,7 +722,7 @@ DboxMain::OnKillfocusItemlist(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 // {kjp} We could use itemData.GetNotes(CString&) to reduce the number of
 // {kjp} temporary objects created and copied.
 //
-int DboxMain::insertItem(CItemData &itemData, int iIndex)
+int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
 {
   if (itemData.GetDisplayInfo() != NULL &&
       ((DisplayInfo *)itemData.GetDisplayInfo())->list_index != -1) {
@@ -813,7 +814,8 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex)
     } else {
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
       m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
-      SortTree(m_ctlItemTree.GetParentItem(ti));
+      if (bSort)
+        SortTree(m_ctlItemTree.GetParentItem(ti));
     }
     time_t now, warnexptime, tLTime;
     time(&now);

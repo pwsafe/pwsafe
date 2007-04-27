@@ -21,6 +21,7 @@ prevents F2 giving the user the feel that they can.
 [1702623] Compare now shows correct filenames
 [] Fix problem with remembering Tree state on restore after minimize
 [1678527] Line delimiter now works during import of plain text
+[1708099] Default saved username, now shows in new entry
 
 New Features for 3.07.01
 ========================
