@@ -57,6 +57,7 @@ class PWScore {
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
 
   void ClearData();
+  void ReInit();
   void NewFile(const CMyString &passkey);
   int WriteCurFile() {return WriteFile(m_currfile);}
   int WriteFile(const CMyString &filename, PWSfile::VERSION version = PWSfile::VCURRENT);

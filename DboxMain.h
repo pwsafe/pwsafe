@@ -215,7 +215,7 @@ protected:
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
   CMenuTipManager m_menuTipManager;
 
-  int insertItem(CItemData &itemData, int iIndex = -1);
+  int insertItem(CItemData &itemData, int iIndex = -1, bool bSort = true);
   CItemData *getSelectedItem();
 
   void ChangeOkUpdate();

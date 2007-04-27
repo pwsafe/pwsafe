@@ -626,6 +626,24 @@ void PWSprefs::InitializePreferences()
         TRACE(cs_msg);
 }
 
+void PWSprefs::SetDatabasePrefsToDefaults()
+{
+  // set prefs to hardcoded values
+  int i;
+	// Default values only
+	for (i = 0; i < NumBoolPrefs; i++)
+    if (m_bool_prefs[i].isStoredinDB)
+		  m_boolValues[i] = m_bool_prefs[i].defVal != 0;
+
+	for (i = 0; i < NumIntPrefs; i++)
+    if (m_int_prefs[i].isStoredinDB)
+		  m_intValues[i] = m_int_prefs[i].defVal;
+
+	for (i = 0; i < NumStringPrefs; i++)
+    if (m_string_prefs[i].isStoredinDB)
+      m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+}
+
 void PWSprefs::LoadProfileFromDefaults()
 {
     // set prefs to hardcoded values
