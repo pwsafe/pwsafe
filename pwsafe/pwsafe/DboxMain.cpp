@@ -2007,8 +2007,8 @@ int DboxMain::WriteCBC(FILE *fp, const CString &data, const unsigned char *salt,
 
 	CMyString	myData(data);
 
-	LPCSTR passstr = LPCSTR(app.m_passkey);
-	LPCSTR datastr = LPCSTR(myData);
+	LPCTSTR passstr = LPCTSTR(app.m_passkey);
+	LPCTSTR datastr = LPCTSTR(myData);
 
 	BlowFish *algo = BlowFish::MakeBlowFish((const unsigned char *)passstr,
                                            app.m_passkey.GetLength(),
@@ -2252,7 +2252,7 @@ int DboxMain::ReadCBC(int fp, CMyString &data, const unsigned char *salt,
   // We do a double cast because the LPCSTR cast operator is overridden by the CString class
   // to access the pointer we need,
   // but we in fact need it as an unsigned char. Grrrr.
-  LPCSTR passstr = LPCSTR(app.m_passkey);
+  LPCTSTR passstr = LPCTSTR(app.m_passkey);
 
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
