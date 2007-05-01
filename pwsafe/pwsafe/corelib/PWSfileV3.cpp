@@ -929,6 +929,8 @@ bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
   ASSERT(fd != NULL);
   char tag[sizeof(V3TAG)];
   fread(tag, 1, sizeof(tag), fd);
+	fclose(fd);
+
   if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
     v = V30;
     return true;
