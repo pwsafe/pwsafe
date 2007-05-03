@@ -40,13 +40,15 @@ DboxMain::OnTrayLockUnLock()
 {
     switch(app.GetSystemTrayState()) {
 		case ThisMfcApp::LOCKED:					// User clicked UnLock
-            ShowWindow(SW_RESTORE);
+            UnMinimize(true);
 			break;
 		case ThisMfcApp::UNLOCKED:					// User clicked Lock
 			UpdateSystemTray(LOCKED);
 			app.ClearClipboardData();
 			ShowWindow(SW_MINIMIZE);
 			ShowWindow(SW_HIDE);
+            ClearData(false); // bugfix 1709418
+            m_needsreading = true;
 			break;
 		case ThisMfcApp::CLOSED:
 		default:

@@ -1600,6 +1600,7 @@ DboxMain::UnMinimize(bool update_windows)
         app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
         m_passphraseOK = true;
         if (update_windows) {
+            RefreshList();
             ShowWindow(SW_RESTORE);
         }
         return;

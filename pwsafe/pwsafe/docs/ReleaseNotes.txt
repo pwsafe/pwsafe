@@ -1,4 +1,4 @@
-Password Safe 3.07.01 Release Notes - April 2007
+Password Safe 3.07.02 Release Notes - April 2007
 ================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,7 +8,7 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.07.01
+Bugs fixed in 3.07.02
 =====================
 [1691048] Import text file with blank lines or missing fields will no
 longer crash application.
@@ -22,8 +22,9 @@ prevents F2 giving the user the feel that they can.
 [] Fix problem with remembering Tree state on restore after minimize
 [1678527] Line delimiter now works during import of plain text
 [1708099] Default saved username, now shows in new entry
+[1709418] Cancel after Lock Safe from system tray now does Right Thing
 
-New Features for 3.07.01
+New Features for 3.07.02
 ========================
 [1695446] Can't reproduce error "Browse to URL no longer opens new browser" but
 allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
