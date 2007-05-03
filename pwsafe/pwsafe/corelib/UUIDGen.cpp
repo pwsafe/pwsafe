@@ -13,7 +13,7 @@
 //
 
 #include "UUIDGen.h"
-#include "util.h" /* for trashMemory() */
+#include "Util.h" /* for trashMemory() */
 #include <stdio.h> /* for _stprintf() */
 #include <assert.h>
 
@@ -26,50 +26,37 @@
 
 CUUIDGen::CUUIDGen()
 {
-  UuidCreate(&uuid);
+  CoCreateGuid(&guid);
 }
 
 CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array)
 {
   unsigned long *p0 = (unsigned long *)uuid_array;
-  uuid.Data1 = htonl(*p0);
+  guid.Data1 = htonl(*p0);
   unsigned short *p1 = (unsigned short *)&uuid_array[4];
-  uuid.Data2 = htons(*p1);
+  guid.Data2 = htons(*p1);
   unsigned short *p2 = (unsigned short *)&uuid_array[6];
-  uuid.Data3 = htons(*p2);
+  guid.Data3 = htons(*p2);
   for (int i = 0; i < 8; i++)
-    uuid.Data4[i] = uuid_array[i + 8];
+    guid.Data4[i] = uuid_array[i + 8];
 }
 
 
 CUUIDGen::~CUUIDGen()
 {
-  trashMemory((unsigned char *)&uuid, sizeof(uuid));
+  trashMemory((unsigned char *)&guid, sizeof(guid));
 }
 
 void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 {
   unsigned long *p0 = (unsigned long *)uuid_array;
-  *p0 = htonl(uuid.Data1);
+  *p0 = htonl(guid.Data1);
   unsigned short *p1 = (unsigned short *)&uuid_array[4];
-  *p1 = htons(uuid.Data2);
+  *p1 = htons(guid.Data2);
   unsigned short *p2 = (unsigned short *)&uuid_array[6];
-  *p2 = htons(uuid.Data3);
+  *p2 = htons(guid.Data3);
   for (int i = 0; i < 8; i++)
-    uuid_array[i + 8] = uuid.Data4[i];
-}
-
-void CUUIDGen::GetUUIDStr(uuid_str_t &str) const
-{
-// implementation can possibly be replaced by using Microsoft UuidToString()
-  _stprintf(str,
-	  _T("%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
-	  uuid.Data1, uuid.Data2, uuid.Data3,
-	  (unsigned char) uuid.Data4[0], (unsigned char) uuid.Data4[1],
-	  (unsigned char) uuid.Data4[2], (unsigned char) uuid.Data4[3],
-	  (unsigned char) uuid.Data4[4], (unsigned char) uuid.Data4[5],
-	  (unsigned char) uuid.Data4[6], (unsigned char) uuid.Data4[7]);
-  // for a UUID format description see http://msdn2.microsoft.com/en-us/library/aa373931.aspx
+    uuid_array[i + 8] = guid.Data4[i];
 }
 
 #ifdef TEST
@@ -81,7 +68,6 @@ int main()
 
   for (int i = 0; i< 10; i++) {
     CUUIDGen uuid;
-    uuid.GetUUIDStr(str);
     printf("%s\n",str);
     uuid.GetUUID(uuid_array);
     printf("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n",
