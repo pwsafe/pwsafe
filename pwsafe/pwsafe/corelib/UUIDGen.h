@@ -8,23 +8,16 @@
 // UUIDGen.h
 // Silly class for generating UUIDs
 // Each instance has its own unique value, 
-// which can be accessed as an array of bytes or as a human-readable
-// Unicode string.
+// which can be accessed as an array of bytes. 
 //
 
 #ifndef __UUIDGEN_H
 #define __UUIDGEN_H
 
-#include "PwsPlatform.h"
-#include <tchar.h>
-
-#define UUID_ARRAY_LENGTH	16
-#define UUID_STRING_LENGTH	36
-
-// binary representation od a UUID; should not be changed to wide characters
+/// binary representation of a UUID; should not be changed to wide characters
 typedef unsigned char uuid_array_t[16];
-// string representation in Unicode wide characters
-typedef TCHAR uuid_str_t[37]; //"204012e6-600f-4e01-a5eb-515267cb0d50"
+
+#include "PwsPlatform.h"
 
 class CUUIDGen {
  public:

@@ -8,14 +8,11 @@
 // UUIDGen.cpp
 // Silly class for generating UUIDs
 // Each instance has its own unique value, 
-// which can be accessed as an array of bytes or as a human-readable
-// Unicode string.
+// which can be accessed as an array of bytes.
 //
 
 #include "UUIDGen.h"
 #include "Util.h" /* for trashMemory() */
-#include <stdio.h> /* for _stprintf() */
-#include <assert.h>
 
 #ifdef _WIN32
 #include <Winsock2.h> /* for htonl, htons */
@@ -63,12 +60,10 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 #include <stdio.h>
 int main()
 {
-  uuid_str_t str;
   uuid_array_t uuid_array;
 
   for (int i = 0; i< 10; i++) {
     CUUIDGen uuid;
-    printf("%s\n",str);
     uuid.GetUUID(uuid_array);
     printf("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n",
 	   uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3], 
