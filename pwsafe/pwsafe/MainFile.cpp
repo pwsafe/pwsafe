@@ -1154,7 +1154,6 @@ DboxMain::Merge(const CMyString &pszFilename) {
   CString cs_temp, cs_title;
   switch (rc) {
 	case PWScore::SUCCESS:
-      app.AddToMRU(pszFilename);
       break; // Keep going...
 	case PWScore::CANT_OPEN_FILE:
       cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
