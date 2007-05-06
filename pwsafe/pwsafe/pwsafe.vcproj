@@ -23,6 +23,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -57,6 +58,7 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Release/pwsafe.pch"
 				AssemblerListingLocation=".\Release/"
@@ -122,7 +124,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -156,6 +158,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="true"
+				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/pwsafe.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -224,6 +227,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
