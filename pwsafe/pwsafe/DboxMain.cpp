@@ -118,6 +118,7 @@ DboxMain::DboxMain(CWnd* pParent)
 #endif
 
   m_ctlItemTree.SetDboxPointer((void *)this);
+  m_ctlItemTree.SetListPointer(&m_ctlItemList);
   m_bFindWrap = PWSprefs::GetInstance()->GetPref(PWSprefs::FindWraps);
 }
 
@@ -233,12 +234,15 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    
    ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
    ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
-   ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
    ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
    ON_NOTIFY(NM_RCLICK, IDC_LIST_HEADER, OnHeaderRClick)
    ON_NOTIFY(HDN_ENDDRAG, IDC_LIST_HEADER, OnHeaderEndDrag)
    ON_NOTIFY(HDN_ENDTRACK, IDC_LIST_HEADER, OnHeaderNotify)
    ON_NOTIFY(HDN_ITEMCHANGED, IDC_LIST_HEADER, OnHeaderNotify)
+
+   ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_ITEMTREE, OnBeginLabelEdit)
+   ON_NOTIFY(TVN_ENDLABELEDIT, IDC_ITEMTREE, OnEndLabelEdit)
+   ON_NOTIFY(TVN_ITEMEXPANDED, IDC_ITEMTREE, OnExpandCollapse)
 
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
@@ -362,7 +366,7 @@ DboxMain::InitPasswordSafe()
   ASSERT(status != 0);
   CBitmap bitmap;
 
-  // Order of LoadBitmap() calls matches CMyTreeCtrl public enum
+  // Order of LoadBitmap() calls matches CTVTreeCtrl public enum
   bitmap.LoadBitmap(IDB_NODE);
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
@@ -394,6 +398,7 @@ DboxMain::InitPasswordSafe()
 
   // Initialise DropTarget
   m_LVHdrCtrl.Initialize(&m_LVHdrCtrl);
+  m_ctlItemTree.Initialize(&m_ctlItemTree);
 
   // Set up fonts before playing with Tree/List views
   m_pFontTree = new CFont;
@@ -610,6 +615,7 @@ DboxMain::OnDestroy()
 
   // Stop Drag & Drop OLE
   m_LVHdrCtrl.Terminate();
+  m_ctlItemTree.Terminate();
 
   // and goodbye
   CDialog::OnDestroy();
@@ -640,8 +646,13 @@ void DboxMain::FixListIndexes()
   }
 }
 
+void DboxMain::DoItemDoubleClick()
+{
+  OnItemDoubleClick(NULL, NULL);
+}
+
 void
-DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
+DboxMain::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 {
 	// TreeView only - use DoubleClick to Expand/Collapse group
 	if (m_ctlItemTree.IsWindowVisible()) {
@@ -2045,4 +2056,42 @@ void DboxMain::U3ExitNow()
         m_inExit = true;
         PostQuitMessage(0);
     }
+}
+
+CMyString DboxMain::GetUniqueTitle(const CMyString &path, const CMyString &title,
+                                   const CMyString &user, const int IDS_MESSAGE)
+{
+  CMyString new_title(title);
+  if (Find(path, title, user) != NULL) {
+    // Find a unique "Title"
+    int i = 0;
+    CString s_copy;
+    do {
+      i++;
+      s_copy.Format(IDS_MESSAGE, i);
+      new_title = title + CMyString(s_copy);
+    } while (Find(path, new_title, user) != NULL);
+  }
+  return new_title;
+}
+
+void DboxMain::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  // Have to do it this way - MFC does not support (easily) MI and
+  // CTVTreeCtrl is based on CObject more than once!
+  m_ctlItemTree.BeginLabelEdit(pNotifyStruct, pLResult);
+}
+
+void DboxMain::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  // Have to do it this way - MFC does not support (easily) MI and
+  // CTVTreeCtrl is based on CObject more than once!
+  m_ctlItemTree.EndLabelEdit(pNotifyStruct, pLResult);
+}
+
+void DboxMain::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  // Have to do it this way - MFC does not support (easily) MI and
+  // CTVTreeCtrl is based on CObject more than once!
+  m_ctlItemTree.ExpandCollapse(pNotifyStruct, pLResult);
 }

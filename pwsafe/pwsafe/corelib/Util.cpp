@@ -29,8 +29,6 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
     mem1[x] ^= mem2[x];
 }
 
-
-
 //-----------------------------------------------------------------------------
 /*
   Note: A bunch of the encryption-related routines may not be Unicode
@@ -45,23 +43,32 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 void
 trashMemory(void* buffer, size_t length)
 {
-  ASSERT(buffer != NULL);
-  // {kjp} no point in looping around doing nothing is there?
-  if ( length != 0 ) {
-    const int numiter = 30;
-    for (int x=0; x<numiter; x++) {
-      memset(buffer, 0x00, length);
-      memset(buffer, 0xFF, length);
-      memset(buffer, 0x00, length);
+    ASSERT(buffer != NULL);
+    // {kjp} no point in looping around doing nothing is there?
+    if ( length != 0 ) {
+        // used to be a loop here, but this was deemed (1) overly paranoid
+        // (2) The wrong way to scrub DRAM memory
+        // see http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html
+        // and http://www.cypherpunks.to/~peter/usenix01.pdf
+        memset(buffer, 0x00, length);
+        memset(buffer, 0xFF, length);
+        memset(buffer, 0x00, length);
     }
-  }
 }
 #pragma optimize("",on)
 
 void
 trashMemory( LPTSTR buffer, size_t length )
 {
-  trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0])  );
+  trashMemory( (void *) buffer, length * sizeof(buffer[0]));
+}
+
+void
+trashStringMemory( CString cs_buffer )
+{
+  TCHAR *lpszString = cs_buffer.GetBuffer(cs_buffer.GetLength());
+  trashMemory( (void *) lpszString, cs_buffer.GetLength() * sizeof(lpszString[0]));
+  cs_buffer.ReleaseBuffer();
 }
 
 /**
@@ -289,6 +296,225 @@ _readcbc(FILE *fp,
     delete[] buffer;
   }
   return numRead;
+}
+
+// Memory, rather than real file, versions
+void
+_writecbc(CSMemFile *poutmemfile, unsigned char* in_buffer, long in_length,
+             unsigned char type, Fish *Algorithm, unsigned char* cbcbuffer)
+{
+  const unsigned int BS = Algorithm->GetBlockSize();
+
+  // some trickery to avoid new/delete
+  unsigned char block1[16];
+
+  unsigned char *curblock = NULL;
+  ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
+
+  // First encrypt and write the length of the buffer
+  curblock = block1;
+  // Fill unused bytes of length with random data, to make
+  // a dictionary attack harder
+  PWSrand::GetInstance()->GetRandomData(curblock, BS);
+  // block length overwrites 4 bytes of the above randomness.
+  putInt32(curblock, in_length);
+
+  // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
+  curblock[sizeof(in_length)] = type;
+
+  if (BS == 16) {
+    // In this case, we've too many (11) wasted bytes in the length block
+    // So we store actual data there:
+    // (11 = BlockSize - 4 (length) - 1 (type)
+    const int len1 = (in_length > 11) ? 11 : in_length;
+    memcpy(curblock+5, in_buffer, len1);
+    in_length -= len1;
+    in_buffer += len1;
+  }
+
+  xormem(curblock, cbcbuffer, BS); // do the CBC thing
+  Algorithm->Encrypt(curblock, curblock);
+  memcpy(cbcbuffer, curblock, BS); // update CBC for next round
+
+  poutmemfile->Write(curblock, BS);
+
+  if (in_length > 0 ||
+      (BS == 8 && in_length == 0)) { // This part for bwd compat w/pre-3 format
+    unsigned int BlockLength = ((in_length + (BS - 1)) / BS) * BS;
+    if (BlockLength == 0 && BS == 8)
+      BlockLength = BS;
+
+    // Now, encrypt and write the (rest of the) buffer
+    for (unsigned int x = 0; x < BlockLength; x += BS) {
+      if ((in_length == 0) || ((in_length%BS != 0) && (in_length-x<BS))) {
+        //This is for an uneven last block
+        PWSrand::GetInstance()->GetRandomData(curblock, BS);
+        memcpy(curblock, in_buffer+x, in_length % BS);
+      } else
+        memcpy(curblock, in_buffer+x, BS);
+      xormem(curblock, cbcbuffer, BS);
+      Algorithm->Encrypt(curblock, curblock);
+      memcpy(cbcbuffer, curblock, BS);
+      poutmemfile->Write(curblock, BS);
+    }
+  }
+  trashMemory(curblock, BS);
+  return;
+}
+
+size_t
+_readcbc(CSMemFile *pinmemfile, unsigned char* &out_buffer, 
+            long &out_length, unsigned char &type,
+            Fish *Algorithm, unsigned char* cbcbuffer,
+            const unsigned char *TERMINAL_BLOCK)
+{
+  const unsigned int BS = Algorithm->GetBlockSize();
+  size_t numRead = 0;
+  
+  // some trickery to avoid new/delete
+  unsigned char block1[16];
+  unsigned char block2[16];
+  unsigned char block3[16];
+  unsigned char *lengthblock = NULL;
+
+  ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
+  lengthblock = block1;
+
+  out_length = 0;
+  numRead = pinmemfile->Read(lengthblock, BS);
+  if (numRead != BS) {
+    return 0;
+  }
+
+  if (TERMINAL_BLOCK != NULL &&
+      memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
+      return static_cast<size_t>(-1);
+
+  unsigned char *lcpy = block2;
+  memcpy(lcpy, lengthblock, BS);
+
+  Algorithm->Decrypt(lengthblock, lengthblock);
+  xormem(lengthblock, cbcbuffer, BS);
+  memcpy(cbcbuffer, lcpy, BS);
+
+  int length = getInt32(lengthblock);
+
+  // new for 2.0 -- lengthblock[4..7] previously set to zero
+  type = lengthblock[sizeof(int)]; // type is first byte after the length
+
+  if (length < 0) { // sanity check
+    TRACE("_readcbc: Read negative length - aborting\n");
+    out_buffer = NULL;
+    out_length = 0;
+    trashMemory(lengthblock, BS);
+    return 0;
+  }
+
+  out_length = length;
+  out_buffer = new unsigned char[(length / BS) * BS + 2 * BS]; // round upwards
+  memset(out_buffer, 0, (out_length / BS) * BS + 2 * BS);
+  unsigned char *b = out_buffer;
+
+  if (BS == 16) {
+    // length block contains up to 11 (= 16 - 4 - 1) bytes
+    // of data
+    const int len1 = (out_length > 11) ? 11 : out_length;
+    memcpy(b, lengthblock + 5, len1);
+    out_length -= len1;
+    b += len1;
+  }
+
+  unsigned int BlockLength = ((out_length + (BS - 1)) / BS) * BS;
+  // Following is meant for lengths < BS,
+  // but results in a block being read even
+  // if length is zero. This is wasteful,
+  // but fixing it would break all existing pre-3.0 databases.
+  if (BlockLength == 0 && BS == 8)
+    BlockLength = BS;
+
+  trashMemory(lengthblock, BS);
+
+  if (out_length > 0 ||
+      (BS == 8 && out_length == 0)) { // pre-3 pain
+    unsigned char *tempcbc = block3;
+    numRead += pinmemfile->Read(b, BlockLength);
+    for (unsigned int x = 0; x < BlockLength; x += BS) {
+      memcpy(tempcbc, b + x, BS);
+      Algorithm->Decrypt(b + x, b + x);
+      xormem(b + x, cbcbuffer, BS);
+      memcpy(cbcbuffer, tempcbc, BS);
+    }
+  }
+
+  if (out_length == 0) {
+    // delete[] buffer here since caller will see zero length
+    delete[] out_buffer;
+  }
+  return numRead;
+}
+
+void
+EncryptMemory(unsigned char * &in_buffer, long inLen, const CMyString &passwd, CSMemFile *poutMemFile)
+{
+  unsigned char randstuff[StuffSize];
+  unsigned char randhash[SHA1::HASHLEN];   // HashSize
+  PWSrand::GetInstance()->GetRandomData(randstuff, 8);
+  GenRandhash(passwd, randstuff, randhash);
+  poutMemFile->Write(randstuff, 8);
+  poutMemFile->Write(randhash, sizeof(randhash));
+
+  unsigned char thesalt[SaltLength];
+  PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
+  poutMemFile->Write(thesalt, SaltLength);
+
+  unsigned char ipthing[8];
+  PWSrand::GetInstance()->GetRandomData(ipthing, 8);
+  poutMemFile->Write(ipthing, 8);
+
+  LPCTSTR pwd = LPCTSTR(passwd);
+  Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
+                                      thesalt, SaltLength);
+
+  _writecbc(poutMemFile, in_buffer, inLen, (unsigned char)0, fish, ipthing);
+  delete fish;
+}
+
+void
+DecryptMemory(unsigned char * &out_buffer, long &outLen, const CMyString &passwd, CSMemFile *pinMemFile)
+{
+  outLen = 0;
+
+  unsigned char salt[SaltLength];
+  unsigned char ipthing[8];
+  unsigned char randstuff[StuffSize];
+  unsigned char randhash[SHA1::HASHLEN];
+
+  pinMemFile->Read(randstuff, 8);
+  pinMemFile->Read(randhash, sizeof(randhash));
+
+  unsigned char temphash[SHA1::HASHLEN];
+  GenRandhash(passwd, randstuff, temphash);
+
+  if (memcmp((char*)randhash, (char*)temphash, SHA1::HASHLEN) != 0)
+    return;
+
+  out_buffer = NULL; // allocated by _readcbc - see there for apologia
+
+  pinMemFile->Read(salt, SaltLength);
+  pinMemFile->Read(ipthing, 8);
+  LPCTSTR pwd = LPCTSTR(passwd);
+  unsigned char dummyType;
+
+  Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
+                                      salt, SaltLength);
+
+  if (_readcbc(pinMemFile, out_buffer, outLen, dummyType, fish, ipthing) == 0) {
+      delete fish;
+      delete[] out_buffer; // if not yet allocated, delete[] NULL, which is OK
+      return;
+  }
+  delete fish;
+  return;
 }
 
 // PWSUtil implementations

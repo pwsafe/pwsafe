@@ -570,6 +570,8 @@ DboxMain::OnSize(UINT nType,
     }
   } else if (nType == SIZE_MAXIMIZED) {
     RefreshList();
+  } else if (nType == SIZE_MAXIMIZED) {
+    RefreshList();
   } else if (!m_bSizing && nType == SIZE_RESTORED) {
     // gets called even when just resizing window
 #endif
@@ -839,13 +841,13 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     itemData.GetLTime(tLTime);
 	if (tLTime != 0) {
 	    if (tLTime <= now) {
-    	    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
+    	    m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::EXPIRED_LEAF, CTVTreeCtrl::EXPIRED_LEAF);
     	} else if (tLTime < warnexptime) {
-    	    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::WARNEXPIRED_LEAF, CMyTreeCtrl::WARNEXPIRED_LEAF);
+    	    m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::WARNEXPIRED_LEAF, CTVTreeCtrl::WARNEXPIRED_LEAF);
 	    } else
-	        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+	        m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::LEAF, CTVTreeCtrl::LEAF);
 	} else
-	  m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+	  m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::LEAF, CTVTreeCtrl::LEAF);
 	
     ASSERT(ti != NULL);
     itemData.SetDisplayInfo((void *)di);
