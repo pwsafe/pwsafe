@@ -914,7 +914,6 @@ void CTVTreeCtrl::CompleteMove()
   // After we have dragged successfully from our Tree to another Tree
   ((DboxMain *)m_parent)->Delete();
   ((DboxMain *)m_parent)->RefreshList();
-  return;
 }
 
 bool CTVTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
@@ -967,18 +966,17 @@ bool CTVTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
 
   CDDObList in_oblist;
 
-  CSMemFile *pinDDmemfile;
-  pinDDmemfile = new CSMemFile;
-  pinDDmemfile->Attach((BYTE *)clear_buffer, clearLen);
+  CSMemFile inDDmemfile;
 
-  CArchive ar_in (pinDDmemfile, CArchive::load);
+  inDDmemfile.Attach((BYTE *)clear_buffer, clearLen);
+
+  CArchive ar_in (&inDDmemfile, CArchive::load);
   in_oblist.Serialize(ar_in);
   ar_in.Close();
 
-  pinDDmemfile->Detach();
+  inDDmemfile.Detach();
   trashMemory(clear_buffer, clearLen);
   free(clear_buffer);
-  delete pinDDmemfile;
 
   if (!in_oblist.IsEmpty()) {
     ((DboxMain *)m_parent)->AddEntries(in_oblist, DropGroup);
@@ -994,50 +992,41 @@ bool CTVTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
 void CTVTreeCtrl::DecryptReceivedData(BYTE * &in_buffer, const long &inLen,
                                       unsigned char * &out_buffer, long &outLen)
 {
-  CSMemFile *pinMemFile;
+  CSMemFile inMemFile;
   CMyString passwd;
 
   out_buffer = NULL;
   outLen = 0;
 
-  // Create a memory file
-  pinMemFile = new CSMemFile;
-
   // Point to data
-  pinMemFile->Attach((BYTE *)in_buffer, inLen, 0);
+  inMemFile.Attach((BYTE *)in_buffer, inLen, 0);
 
   // Generate password from their classname and the CLIPFORMAT
   passwd.Format(_T("%s%04x"), m_sending_classname, gbl_tcddCPFID);
 
   // Decrypt it
-  DecryptMemory(out_buffer, outLen, passwd, pinMemFile);
+  DecryptMemory(out_buffer, outLen, passwd, &inMemFile);
 
-  pinMemFile->Detach();
-  delete pinMemFile;
+  inMemFile.Detach();
 }
 
 void CTVTreeCtrl::EncryptSendingData(unsigned char * &in_buffer, const long &inLen,
                                      BYTE * &out_buffer, long &outLen)
 {
-  CSMemFile *poutMemFile;
+  CSMemFile outMemFile;
   CMyString passwd;
-
-  // Create a memory file
-  poutMemFile = new CSMemFile;
 
   // Generate password from our classname and the CLIPFORMAT
   passwd.Format(_T("%s%04x"), gbl_classname, gbl_tcddCPFID);
 
   // Encrypt it
-  EncryptMemory(in_buffer, inLen, passwd, poutMemFile);
+  EncryptMemory(in_buffer, inLen, passwd, &outMemFile);
 
-  outLen = (long)poutMemFile->GetLength();
+  outLen = (long)outMemFile.GetLength();
   if (outLen > 0) {
     // Create buffer for clipboard
-    out_buffer = (BYTE *)poutMemFile->Detach();
+    out_buffer = (BYTE *)outMemFile.Detach();
   }
-
-  delete poutMemFile;
 }
 
 void
@@ -1061,9 +1050,7 @@ CTVTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
 void
 CTVTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
 {
-  CDDObject *pDDObject;
-
-  pDDObject = new CDDObject;
+  CDDObject *pDDObject = new CDDObject;
 
   uuid_array_t uuid_array;
   ci->GetUUID(uuid_array);
