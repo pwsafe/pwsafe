@@ -85,41 +85,43 @@ BOOL COptionsMisc::OnInitDialog()
   if(m_dblclk_cbox.GetCount() == 0) {
   	// add the strings in alphabetical order
   	int nIndex;
-  	CString cs_text;
-  	cs_text.LoadString(IDS_DCAAUTOTYPE);
-	nIndex = m_dblclk_cbox.AddString(cs_text);
-	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
-	m_DCA_to_Index[PWSprefs::DoubleClickAutoType] = nIndex;
+    CString cs_text;
 
-	cs_text.LoadString(IDS_DCABROWSE);
-	nIndex = m_dblclk_cbox.AddString(cs_text);
-	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
-	m_DCA_to_Index[PWSprefs::DoubleClickBrowse] = nIndex;
+    cs_text.LoadString(IDS_DCAAUTOTYPE);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+	  m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
+    m_DCA_to_Index[PWSprefs::DoubleClickAutoType] = nIndex;
 
-	cs_text.LoadString(IDS_DCACOPYNOTES);
-	nIndex = m_dblclk_cbox.AddString(cs_text);
-	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
-	m_DCA_to_Index[PWSprefs::DoubleClickCopyNotes] = nIndex;
+	  cs_text.LoadString(IDS_DCABROWSE);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+	  m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
+    m_DCA_to_Index[PWSprefs::DoubleClickBrowse] = nIndex;
 
-	cs_text.LoadString(IDS_DCACOPYPASSWORD);
-	nIndex = m_dblclk_cbox.AddString(cs_text);
-	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
-	m_DCA_to_Index[PWSprefs::DoubleClickCopyPassword] = nIndex;
+	  cs_text.LoadString(IDS_DCACOPYNOTES);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+	  m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
+    m_DCA_to_Index[PWSprefs::DoubleClickCopyNotes] = nIndex;
 
-	cs_text.LoadString(IDS_DCACOPYUSERNAME);
-	nIndex = m_dblclk_cbox.AddString(cs_text);
-	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
-	m_DCA_to_Index[PWSprefs::DoubleClickCopyUsername] = nIndex;
+    cs_text.LoadString(IDS_DCACOPYPASSWORD);
+	  nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
+    m_DCA_to_Index[PWSprefs::DoubleClickCopyPassword] = nIndex;
 
-	cs_text.LoadString(IDS_DCAVIEWEDIT);
-	nIndex = m_dblclk_cbox.AddString(cs_text);
-	m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
-	m_DCA_to_Index[PWSprefs::DoubleClickViewEdit] = nIndex;
+    cs_text.LoadString(IDS_DCACOPYUSERNAME);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
+    m_DCA_to_Index[PWSprefs::DoubleClickCopyUsername] = nIndex;
+
+    cs_text.LoadString(IDS_DCAVIEWEDIT);
+    nIndex = m_dblclk_cbox.AddString(cs_text);
+    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
+    m_DCA_to_Index[PWSprefs::DoubleClickViewEdit] = nIndex;
   }
 
   if (m_doubleclickaction < PWSprefs::minDCA ||
-	  m_doubleclickaction > PWSprefs::maxDCA)
-  	m_doubleclickaction = PWSprefs::DoubleClickCopyPassword;
+      m_doubleclickaction > PWSprefs::maxDCA)
+    m_doubleclickaction = PWSprefs::DoubleClickCopyPassword;
+
   m_dblclk_cbox.SetCurSel(m_DCA_to_Index[m_doubleclickaction]);
 
   // JHF ditto here
@@ -233,7 +235,7 @@ void COptionsMisc::OnBrowseForLocation()
                    NULL,
                    NULL,
                    OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
-				   OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
+                   OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
                    _T("Programs (*.exe)|*.exe|")
                    _T("All files (*.*)|*.*|")
                    _T("|"),
@@ -243,9 +245,9 @@ void COptionsMisc::OnBrowseForLocation()
 	fd.m_ofn.lpstrTitle = cs_title;
 	fd.m_ofn.lpstrInitialDir = cs_initiallocation;
 
-    rc = fd.DoModal();
-    if (rc == IDOK) {
-      m_csBrowser = fd.GetPathName();
+  rc = fd.DoModal();
+  if (rc == IDOK) {
+    m_csBrowser = fd.GetPathName();
 	  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
 	}
 }

@@ -785,8 +785,8 @@ bool PWSprefs::LoadProfileFromFile()
 
     // Load last main window size & pos:
     m_rect.top = m_XML_Config->Get(m_csHKCU_POS, _T("top"), -1);
-	m_rect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
-	m_rect.left = m_XML_Config->Get(m_csHKCU_POS, _T("left"), -1);
+    m_rect.bottom = m_XML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
+    m_rect.left = m_XML_Config->Get(m_csHKCU_POS, _T("left"), -1);
     m_rect.right = m_XML_Config->Get(m_csHKCU_POS, _T("right"), -1);
 
     // Load most recently used file list

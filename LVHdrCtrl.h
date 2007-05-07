@@ -46,7 +46,7 @@ private:
   CDropSource m_HdrDropSource;
   CDropTarget m_HdrDropTarget;
   CImageList* m_pDragImage;
-  int m_dwHDRType;
+  int m_iHDRType;
   int m_iDDType;
   BOOL m_bCCActive;
 };

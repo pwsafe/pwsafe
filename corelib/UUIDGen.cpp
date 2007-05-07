@@ -59,6 +59,20 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
     uuid_array[i + 8] = uuid.Data4[i];
 }
 
+void CUUIDGen::GetUUIDStr(uuid_str_t &str) const
+{
+#if _MSC_VER >= 1400
+  _stprintf_s((TCHAR *)str, sizeof(str)/sizeof(str[0]),
+#else
+  stprintf((TCHAR *)str,
+#endif
+           _T("%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
+	  uuid.Data1, uuid.Data2, uuid.Data3,
+	  (unsigned char) uuid.Data4[0], (unsigned char) uuid.Data4[1],
+	  (unsigned char) uuid.Data4[2], (unsigned char) uuid.Data4[3],
+	  (unsigned char) uuid.Data4[4], (unsigned char) uuid.Data4[5],
+	  (unsigned char) uuid.Data4[6], (unsigned char) uuid.Data4[7]);
+}
 
 #ifdef TEST
 #include <stdio.h>

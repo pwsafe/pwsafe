@@ -15,12 +15,12 @@
 #include <afxdisp.h >       // MFC OLE automation classes
 #include "LVHdrCtrl.h"
 #include "DboxMain.h"       // For WM_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
-#include "PasswordSafe.h"   // For global variables gbl_ccddCPFID and gbl_randID
+#include "PasswordSafe.h"   // For global variables gbl_ccddCPFID and gbl_classname
 
 // LVHdrCtrl
 
 CLVHdrCtrl::CLVHdrCtrl()
- : m_dwHDRType(-1), m_pDragImage(NULL), m_bCCActive(FALSE)
+ : m_iHDRType(-1), m_pDragImage(NULL), m_bCCActive(FALSE)
 {
 }
 
@@ -65,23 +65,28 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
-  DWORD randID;
-  int iDDType, iType;
+  SIZE_T memsize = GlobalSize(hGlobal);
 
-#if _MSC_VER >= 1400
-  _stscanf_s(pData, _T("%08x%02x%02x"), &randID, &iDDType, &iType);
-#else
-  _stscanf(pData, _T("08x%02x%02x"), &randID, &iDDType, &iType);
-#endif
+  if (memsize < DD_MEMORY_MINSIZE)
+    goto ignore;
 
   // Check if it is ours?
   // - we don't accept drop from other instances of PWS
+  if (memcmp(gbl_classname, pData, sizeof(gbl_classname) - 1) != 0)
+    goto ignore;
+
+  int iDDType(0), iLen, iType;
+
+#if _MSC_VER >= 1400
+  _stscanf_s(pData + sizeof(gbl_classname) - 1, _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+#else
+  _stscanf(pData + sizeof(gbl_classname) - 1, _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+#endif
+
   // - we only accept drops from our ColumnChooser or our Header
   // - standard moving within the header only available if CC dialog not visible
-  if ((randID != gbl_randID) || (iDDType != FROMCC)) {
-    GlobalUnlock(hGlobal);
-    return FALSE;
-  }
+  if ((iDDType != FROMCC) || ((long)memsize < (DD_MEMORY_MINSIZE + iLen)))
+    goto ignore;
 
   // Get index of column we are on
   HDHITTESTINFO hdhti;
@@ -98,6 +103,10 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   GetParent()->SetFocus();
   return TRUE;
+
+ignore:
+  GlobalUnlock(hGlobal);
+  return FALSE;
 }
 
 void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
@@ -107,11 +116,10 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   if (!m_bCCActive)
     return;
 
-  // Start of Drag a column (m_dwHDRType) from Header to .....
+  // Start of Drag a column (m_iHDRType) from Header to .....
 
   // Get client window position
-  CPoint currentClientPosition;
-  currentClientPosition = ::GetMessagePos();
+  CPoint currentClientPosition = ::GetMessagePos();
   ScreenToClient(&currentClientPosition);
 
   // Get index of column we are on
@@ -129,16 +137,16 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   hdi.cchTextMax = sizeOfBuffer;
 
   GetItem(hdhti.iItem, &hdi);
-  m_dwHDRType = hdi.lParam;
+  m_iHDRType = hdi.lParam;
 
   // Can't play with TITLE or USER
-  if (m_dwHDRType == CItemData::TITLE || m_dwHDRType == CItemData::USER)
+  if (m_iHDRType == CItemData::TITLE || m_iHDRType == CItemData::USER)
     return;
 
   // Get the data: ColumnChooser Listbox needs the column string
   const int iLen = _tcslen(lpBuffer);
   CString cs_text;
-  cs_text.Format(_T("%08x%02x%02x%04x%s"), gbl_randID, FROMHDR, m_dwHDRType, iLen, lpBuffer);
+  cs_text.Format(_T("%s%02x%04x%04x%s"), gbl_classname, FROMHDR, m_iHDRType, iLen, lpBuffer);
 
   // Set drag image
   m_pDragImage = CreateDragImage(hdhti.iItem);
@@ -163,5 +171,5 @@ void CLVHdrCtrl::CompleteMove()
   // After we have dragged successfully from Header to Column Chooser
   // Now delete it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-      WM_HDRTOCC_DD_COMPLETE, (WPARAM)m_dwHDRType, (LPARAM)0);
+      WM_HDRTOCC_DD_COMPLETE, (WPARAM)m_iHDRType, (LPARAM)0);
 }
