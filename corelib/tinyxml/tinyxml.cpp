@@ -1081,7 +1081,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
                     }
                 }
                 assert(nw > 0 && nw <= p-lastPos);
-                data.append(wbuf, (p-lastPos));
+                data.append(wbuf, nw);
 #else
                 data.append( lastPos, (p-lastPos) );	// do not add the CR
 #endif
