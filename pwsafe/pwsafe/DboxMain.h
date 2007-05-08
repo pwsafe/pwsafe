@@ -372,6 +372,7 @@ protected:
   afx_msg void OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
+  afx_msg void OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *result);
   //}}AFX_MSG
 
   afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);

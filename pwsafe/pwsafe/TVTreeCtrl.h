@@ -46,15 +46,17 @@ public:
   void SetDboxPointer(void *parent) {m_parent = parent;}
   void SetListPointer(CListCtrl *pList) {m_pctlItemList = pList;}
   HTREEITEM GetNextTreeItem(HTREEITEM hItem);
+  // Following are event handlers called by parent, which
+  // actually received the event
   void BeginLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult);
   void EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult);
   void ExpandCollapse(NMHDR *pNotifyStruct, LRESULT * &pLresult);
+  void BeginDrag(NMHDR *pNotifyStruct, LRESULT * &pLresult);
 
  protected:
   virtual void CompleteMove();
 
   //{{AFX_MSG(CTVTreeCtrl)
-  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
   afx_msg void OnDestroy();
   //}}AFX_MSG
