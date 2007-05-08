@@ -150,7 +150,8 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   GetClientRect(&rClient);
 
   // Start dragging
-  StartDragging(cs_text, cs_text.GetLength(), gbl_ccddCPFID, &rClient, &point);
+  StartDragging(cs_text, cs_text.GetLength() * sizeof(TCHAR),
+                gbl_ccddCPFID, &rClient, &point);
 
   // End dragging image
   m_pDragImage->DragLeave(GetDesktopWindow());
