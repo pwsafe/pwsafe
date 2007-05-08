@@ -243,6 +243,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_ITEMTREE, OnBeginLabelEdit)
    ON_NOTIFY(TVN_ENDLABELEDIT, IDC_ITEMTREE, OnEndLabelEdit)
    ON_NOTIFY(TVN_ITEMEXPANDED, IDC_ITEMTREE, OnExpandCollapse)
+   ON_NOTIFY(TVN_BEGINDRAG, IDC_ITEMTREE, OnBeginDrag)
 
    ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
    ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
@@ -2075,23 +2076,26 @@ CMyString DboxMain::GetUniqueTitle(const CMyString &path, const CMyString &title
   return new_title;
 }
 
+// Following is due to MFC dain bramage:
+// MFC does not support (easily) MI and
+// CTVTreeCtrl is based on CObject more than once!
+
 void DboxMain::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  // Have to do it this way - MFC does not support (easily) MI and
-  // CTVTreeCtrl is based on CObject more than once!
   m_ctlItemTree.BeginLabelEdit(pNotifyStruct, pLResult);
 }
 
 void DboxMain::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  // Have to do it this way - MFC does not support (easily) MI and
-  // CTVTreeCtrl is based on CObject more than once!
   m_ctlItemTree.EndLabelEdit(pNotifyStruct, pLResult);
 }
 
 void DboxMain::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  // Have to do it this way - MFC does not support (easily) MI and
-  // CTVTreeCtrl is based on CObject more than once!
   m_ctlItemTree.ExpandCollapse(pNotifyStruct, pLResult);
+}
+
+void DboxMain::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  m_ctlItemTree.BeginDrag(pNotifyStruct, pLResult);
 }

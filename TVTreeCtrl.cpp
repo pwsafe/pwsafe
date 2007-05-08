@@ -56,7 +56,6 @@ CTVTreeCtrl::~CTVTreeCtrl()
 BEGIN_MESSAGE_MAP(CTVTreeCtrl, CTreeCtrl)
   //{{AFX_MSG_MAP(CTVTreeCtrl)
   ON_WM_DESTROY()
-  ON_WM_LBUTTONDOWN()
   ON_WM_LBUTTONDBLCLK()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -203,6 +202,71 @@ void CTVTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
       UpdateLeafsGroup(child, prefix);
     }
   }
+}
+
+
+void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult */)
+{
+    TRACE("CTVTreeCtrl::BeginDrag()\n");
+    // Can drag in read-only mode as it might be to someone else
+    // Can't allow drop in read-only mode
+
+    CPoint      ptAction;
+    GetCursorPos(&ptAction);
+    ScreenToClient(&ptAction);
+
+    UINT uFlags;
+    m_hitemDrag = HitTest(ptAction, &uFlags);
+    if ((m_hitemDrag == NULL) || !(TVHT_ONITEM & uFlags)) {
+        return;
+    }
+
+    SelectItem(m_hitemDrag);
+
+    long lBufLen;
+    BYTE * buffer(NULL);
+    CString cs_text;
+
+    // Start of Drag of entries.....
+    // CollectData allocates buffer - need to free later
+    if (!CollectData(buffer, lBufLen))
+        return;
+
+    cs_text.Format(_T("%s%02x%08x"), gbl_classname, FROMTREE, lBufLen);
+
+    CMemFile mf;
+    mf.Write(cs_text, sizeof(gbl_classname) - 1 + 10);
+    mf.Write(buffer, lBufLen);
+
+    // Finished with (encrypted) buffer - free it
+    free(buffer);
+
+    DWORD dw_mflen = (DWORD)mf.GetLength();
+    LPCTSTR mf_buffer = LPCTSTR(mf.Detach());
+
+    ASSERT(m_pDragImage == NULL);
+    m_pDragImage = CreateDragImage(m_hitemDrag);
+
+    // Get client rectangle
+    RECT rClient;
+    GetClientRect(&rClient);
+
+    // Set our session numbers (should be different!)
+    m_uiSendingSession = PWSrand::GetInstance()->RandUInt();
+    m_uiReceivingSession = PWSrand::GetInstance()->RandUInt();
+
+    // Start dragging
+    StartDragging(mf_buffer, dw_mflen, gbl_tcddCPFID, &rClient, &ptAction);
+
+    // Cleanup
+    free((void *)mf_buffer);
+
+// End dragging image
+    m_pDragImage->DragLeave(GetDesktopWindow());
+    m_pDragImage->EndDrag();
+
+    delete m_pDragImage;
+    m_pDragImage = NULL;
 }
 
 void CTVTreeCtrl::BeginLabelEdit(NMHDR * /* pNotifyStruct */, LRESULT * &pLResult)
@@ -711,67 +775,6 @@ CTVTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
 void CTVTreeCtrl::OnLButtonDblClk(UINT /* nFlags */, CPoint /* point */)
 {
   ((DboxMain *)m_parent)->DoItemDoubleClick();
-}
-
-void CTVTreeCtrl::OnLButtonDown(UINT nFlags, CPoint point)
-{
-  CTreeCtrl::OnLButtonDown(nFlags, point);
-
-  // Can drag in read-only mode as it might be to someone else
-  // Can't allow drop in read-only mode
-
-  UINT uFlags;
-  m_hitemDrag = HitTest(point, &uFlags);
-  if ((m_hitemDrag == NULL) || !(TVHT_ONITEM & uFlags)) {
-    return;
-  }
-
-  SelectItem(m_hitemDrag);
-
-  long lBufLen;
-  BYTE * buffer(NULL);
-  CString cs_text;
-
-  // Start of Drag of entries.....
-  // CollectData allocates buffer - need to free later
-  if (!CollectData(buffer, lBufLen))
-    return;
-
-  cs_text.Format(_T("%s%02x%08x"), gbl_classname, FROMTREE, lBufLen);
-
-  CMemFile mf;
-  mf.Write(cs_text, sizeof(gbl_classname) - 1 + 10);
-  mf.Write(buffer, lBufLen);
-
-  // Finished with (encrypted) buffer - free it
-  free(buffer);
-
-  DWORD dw_mflen = (DWORD)mf.GetLength();
-  LPCTSTR mf_buffer = LPCTSTR(mf.Detach());
-
-  ASSERT(m_pDragImage == NULL);
-  m_pDragImage = CreateDragImage(m_hitemDrag);
-
-  // Get client rectangle
-  RECT rClient;
-  GetClientRect(&rClient);
-
-  // Set our session numbers (should be different!)
-  m_uiSendingSession = PWSrand::GetInstance()->RandUInt();
-  m_uiReceivingSession = PWSrand::GetInstance()->RandUInt();
-
-  // Start dragging
-  StartDragging(mf_buffer, dw_mflen, gbl_tcddCPFID, &rClient, &point);
-
-  // Cleanup
-  free((void *)mf_buffer);
-
-// End dragging image
-  m_pDragImage->DragLeave(GetDesktopWindow());
-  m_pDragImage->EndDrag();
-
-  delete m_pDragImage;
-  m_pDragImage = NULL;
 }
 
 BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
