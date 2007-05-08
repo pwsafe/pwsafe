@@ -241,18 +241,13 @@ DboxMain::setupBars()
 
 void DboxMain::UpdateListItem(const int lindex, const int type, const CString &newText)
 {
-  HDITEM hdi;
-  hdi.mask = HDI_LPARAM;
+    int iSubItem = m_nColumnIndexByType[type];
 
-  int iSubItem = m_nColumnIndexByType[type];
-
-  if (iSubItem > 0) {
     m_ctlItemList.SetItemText(lindex, iSubItem, newText);
-    if (m_iSortedColumn == type) {
-      m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-      FixListIndexes();
+    if (m_iSortedColumn == type) { // resort if necessary
+        m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+        FixListIndexes();
     }
-  }
 }
 
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
@@ -1605,12 +1600,11 @@ DboxMain::SetHeaderInfo()
   ASSERT(m_nColumns > 1);  // Title & User are mandatory!
 
   // re-initialise array
-  for (int i = 0; i < CItemData::LAST; i++) {
-    m_nColumnIndexByType[i] = -1;
-    m_nColumnIndexByOrder[i] = -1;
-    m_nColumnTypeByIndex[i] = -1;
-    m_nColumnWidthByIndex[i] = -1;
-  }
+  for (int i = 0; i < CItemData::LAST; i++)
+      m_nColumnIndexByType[i] = 
+          m_nColumnIndexByOrder[i] =
+          m_nColumnTypeByIndex[i] =
+          m_nColumnWidthByIndex[i] = -1;
 
   m_LVHdrCtrl.GetOrderArray(m_nColumnIndexByOrder, m_nColumns);
 
