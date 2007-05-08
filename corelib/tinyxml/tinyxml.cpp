@@ -35,6 +35,10 @@ distribution.
 #include <Windows.h>
 #endif
 
+const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
+const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
+const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
+
 bool TiXmlBase::condenseWhiteSpace = true;
 
 void TiXmlBase::PutString( const TIXML_STRING& str, TIXML_STRING* outString )
@@ -1034,6 +1038,20 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	const char* lastPos = buf;
 	const char* p = buf;
 
+#ifdef UNICODE
+    // Gross hack - need to handle Unicode BOM
+    // here instead of in parser.
+		const unsigned char* pU = (const unsigned char*)p;
+		if ( *(pU+0) && *(pU+0) == TIXML_UTF_LEAD_0
+			 && *(pU+1) && *(pU+1) == TIXML_UTF_LEAD_1
+			 && *(pU+2) && *(pU+2) == TIXML_UTF_LEAD_2 ) {
+			encoding = TIXML_ENCODING_UTF8;
+			useMicrosoftBOM = true;
+            p += 3; lastPos += 3;
+		}
+
+#endif
+
 	buf[length] = 0;
 	while( *p ) {
 		assert( p < (buf+length) );
@@ -1158,10 +1176,6 @@ bool TiXmlDocument::SaveFile( FILE* fp ) const
 {
 	if ( useMicrosoftBOM ) 
 	{
-		const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
-		const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
-		const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
-
 		fputc( TIXML_UTF_LEAD_0, fp );
 		fputc( TIXML_UTF_LEAD_1, fp );
 		fputc( TIXML_UTF_LEAD_2, fp );
