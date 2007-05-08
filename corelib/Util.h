@@ -15,7 +15,6 @@
 #include "Fish.h"
 #include "PwsPlatform.h"
 #include "typedefs.h"
-#include "SMemFile.h"
 
 #define SaltLength 20
 #define StuffSize 10
@@ -36,8 +35,6 @@
 
 extern void trashMemory(void* buffer, size_t length );
 extern void trashMemory( LPTSTR buffer, size_t length );
-extern void trashStringMemory( CString cs_buffer );
-
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
 extern void GenRandhash(const CMyString &passkey,
@@ -54,20 +51,6 @@ extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
                         unsigned char type, Fish *Algorithm,
                         unsigned char* cbcbuffer);
 
-extern size_t _readcbc(CSMemFile *pinmemfile, unsigned char* &out_buffer,
-                       long &out_length,
-                       unsigned char &type, Fish *Algorithm,
-                       unsigned char* cbcbuffer,
-                       const unsigned char *TERMINAL_BLOCK = NULL);
-extern void _writecbc(CSMemFile *poutmemfile, unsigned char* in_buffer,
-                        long in_length,
-                        unsigned char type, Fish *Algorithm,
-                        unsigned char* cbcbuffer);
-
-extern void DecryptMemory(unsigned char * &out_buffer, long &outLen,
-                        const CMyString &passwd, CSMemFile *pinMemFile);
-extern void EncryptMemory(unsigned char * &in_buffer, long inLen,
-                        const CMyString &passwd, CSMemFile *poutMemFile);
 /*
  * Get an integer that is stored in little-endian format
  */

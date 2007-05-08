@@ -21,12 +21,11 @@
   #include "resource2.h"  // Version, Menu, Toolbar & Accelerator resources
   #include "resource3.h"  // String resources
 #endif
-#include "TVTreeCtrl.h"
+#include "MyTreeCtrl.h"
 #include "RUEList.h"
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
 #include "ColumnChooserDlg.h"
-#include "DDSupport.h"
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -145,12 +144,6 @@ public:
   bool ExitRequested() const {return m_inExit;}
   void SetCapsLock(const bool bState);
   void AutoResizeColumns();
-  int AddEntry(const CItemData &cinew);
-  void Delete(bool inRecursion = false);
-  void DoItemDoubleClick();
-  void AddEntries(CDDObList &in_oblist, const CMyString DropGroup);
-  CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-                           const CMyString &user, const int IDS_MESSAGE);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -159,7 +152,7 @@ public:
 #else
   CListCtrl m_ctlItemList;
 #endif
-  CTVTreeCtrl  m_ctlItemTree;
+  CMyTreeCtrl  m_ctlItemTree;
   CLVHdrCtrl m_LVHdrCtrl;
   CColumnChooserDlg *m_pCC;
   CPoint m_RCMousePos;
@@ -271,6 +264,7 @@ protected:
   int New(void);
   int Restore(void);
 
+  void Delete(bool inRecursion = false);
   void AutoType(const CItemData &ci);
   void EditItem(CItemData *ci);
 
@@ -309,10 +303,10 @@ protected:
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnItemDoubleClick(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnHeaderEndDrag(NMHDR* pNotifyStruct, LRESULT* pResult);
+  afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderEndDrag(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnCopyPassword();
   afx_msg void OnCopyNotes();
   afx_msg void OnNew();
@@ -368,11 +362,6 @@ protected:
   afx_msg void OnInitMenu(CMenu* pMenu);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
   afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
-
-  afx_msg void OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
-  afx_msg void OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *result);
   //}}AFX_MSG
 
   afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
@@ -451,7 +440,7 @@ private:
 
 // Following used to keep track of display vs data
 // stored as opaque data in CItemData.{Get,Set}DisplayInfo()
-// Exposed here because TVTreeCtrl needs to update it after drag&drop
+// Exposed here because MyTreeCtrl needs to update it after drag&drop
 struct DisplayInfo {
   int list_index;
   HTREEITEM tree_item;

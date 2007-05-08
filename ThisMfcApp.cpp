@@ -38,7 +38,6 @@
 #include "corelib/PWSprefs.h"
 
 #include "Shlwapi.h"
-//#include "vld.h" - Visual Leak Detector!
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,9 +51,8 @@ BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
 END_MESSAGE_MAP()
 
 // Need it outside as everyone needs it!
-CLIPFORMAT gbl_ccddCPFID;  // For column chooser D&D
-CLIPFORMAT gbl_tcddCPFID;  // For TreeCtrl D&D
-TCHAR gbl_classname[40];
+CLIPFORMAT gbl_ccddCPFID;
+DWORD gbl_randID;
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
@@ -90,7 +88,7 @@ ThisMfcApp::ThisMfcApp() :
   EnableHtmlHelp();
   CoInitialize(NULL); // Initializes the COM library (for XML processing)
   AfxOleInit();
-  AfxOleGetMessageFilter()->SetMessagePendingDelay(10000); // 10 seconds
+
 }
 
 ThisMfcApp::~ThisMfcApp()
@@ -504,61 +502,12 @@ void ThisMfcApp::LoadLocalizedStuff()
 	m_csHelpFile = cs_HelpPath;
 }
 
-CLIPFORMAT
-ThisMfcApp::RegisterCBFMT(WORD wInteger)
-{
-  CString cs_CPF(MAKEINTRESOURCE(wInteger));
-  CLIPFORMAT ddCPFID = 0;
-
-  if (OpenClipboard(0)) {
-    unsigned int uiFormat = 0;
-
-    while ((uiFormat = EnumClipboardFormats(uiFormat)) != 0) {
-      TCHAR szName[512];
-      GetClipboardFormatName(uiFormat, szName, sizeof(szName)/sizeof(szName[0]));
-      if (cs_CPF.Compare(CString(szName)) == 0) {
-        ddCPFID = (CLIPFORMAT)uiFormat;
-        break;
-      }
-    }
-    CloseClipboard();
-  } 
-
-  if (ddCPFID == 0)
-    ddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
-    
-  return ddCPFID;
-}
-
 BOOL
 ThisMfcApp::InitInstance()
 {
     /*
      * It's always best to start at the beginning.  [Glinda, Witch of the North]
      */
-
-    // Base class version actually does nothing.
-    CWinApp::InitApplication();
-
-    WNDCLASS wndcls;
-
-    // start with NULL defaults
-    memset(&wndcls, 0, sizeof(WNDCLASS));
-
-    // retrieve WNDCLASS structure for default window class
-    ::GetClassInfo(AfxGetInstanceHandle(), _T("AfxFrameOrView"), &wndcls);
-
-    // Give new class a unique name
-    memset(gbl_classname, 0, sizeof(gbl_classname));
-    memcpy(gbl_classname, _T("PWS"), 3 * sizeof(TCHAR));
-    
-    CUUIDGen uuid;
-    uuid_str_t uuid_str;
-    uuid.GetUUIDStr(uuid_str);
-    memcpy(gbl_classname + 3, uuid_str, sizeof(uuid_str) - 1);
-    wndcls.lpszClassName = gbl_classname; 
-
-    VERIFY(::RegisterClass(&wndcls) != 0);
 
     // Get application version information
     GetApplicationVersionData();
@@ -588,11 +537,31 @@ ThisMfcApp::InitInstance()
     */
     SetRegistryKey(_T("Password Safe"));
 
-    // Register a clipboard format for column chooser drag & drop.
-    gbl_ccddCPFID = RegisterCBFMT(IDS_CPF_CDD);
+    // Register a clipboard format for column darg & drop. 
+    CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
+    gbl_ccddCPFID = 0;
 
-    // Register a clipboard format for TreeCtrl drag & drop.
-    gbl_tcddCPFID = RegisterCBFMT(IDS_CPF_TCDD);
+    if (OpenClipboard(0)) {
+      unsigned int uiFormat = 0;
+
+      while ((uiFormat = EnumClipboardFormats(uiFormat)) != 0) {
+        TCHAR szName[512];
+        GetClipboardFormatName(uiFormat, szName, sizeof(szName));
+        if (cs_CPF.Compare(CString(szName)) == 0) {
+          gbl_ccddCPFID = (CLIPFORMAT)uiFormat;
+          break;
+        }
+      }
+      CloseClipboard();
+    } 
+
+    if (gbl_ccddCPFID == 0)
+      gbl_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
+
+    // Create arandom filed to use to check we are only D&D to ourselves
+    unsigned char randstuff[StuffSize];
+    PWSrand::GetInstance()->GetRandomData(randstuff, sizeof(DWORD));
+    memcpy((void *)&gbl_randID, randstuff, sizeof(DWORD));
 
     // MUST (indirectly) create PWSprefs first
     // Ensures all things like saving locations etc. are set up.

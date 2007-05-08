@@ -60,14 +60,9 @@ extern ThisMfcApp app;
 
 extern const TCHAR *HIDDEN_PASSWORD;
 
-// Clipboard format for Column Chooser Drag & Drop
+// Clipboard foramt for Coluimn Chooser Drag & Drop
 extern CLIPFORMAT gbl_ccddCPFID;
-// Clipboard format for TreeCtrl Drag & Drop
-extern CLIPFORMAT gbl_tcddCPFID;
-// PWS Instance (unique) class name
-extern TCHAR gbl_classname[40];  // "PWS" + "UUID string (36)" + NULL
-// Minimum Drag & Drop memory buffer size = sizeof(classname) + 10
-#define DD_MEMORY_MINSIZE 49
+extern DWORD gbl_randID;
 
 //-----------------------------------------------------------------------------
 // Local variables:
