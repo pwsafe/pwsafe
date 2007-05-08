@@ -26,14 +26,14 @@ public:
   DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, 
     DWORD dwKeyState, CPoint point);
 
+  static int CALLBACK CColumnChooserLC::CCLCCompareProc(LPARAM , LPARAM , LPARAM );
+
 public:
    void operator delete(void* p)
         { CDropTarget::operator delete(p); }
 
 protected:
   virtual void CompleteMove();
-  static int CALLBACK CCLCCompareProc(LPARAM lParam1, LPARAM lParam2,
-                                      LPARAM lParamSort);
   //{{AFX_MSG(CColumnChooserLC)
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnDestroy();

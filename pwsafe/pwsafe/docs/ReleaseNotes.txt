@@ -1,15 +1,15 @@
-Password Safe 3.08 Release Notes - May 2007
-===========================================
+Password Safe 3.07.02 Release Notes - April 2007
+================================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.08. For a short description of Password
+with Password Safe version 3.07.01. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.08
-==================
+Bugs fixed in 3.07.02
+=====================
 [1691048] Import text file with blank lines or missing fields will no
 longer crash application.
 [1688994] Although rename is not possible in read-only mode, this change
@@ -31,8 +31,6 @@ allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
 [] Implement "Advanced" option for Exporting in XML format (as per Export in Text
 format) and for when comparing databases
 [1695968] "Advanced" option now available to improve Merge operation  
-[] Drag and drop of entries between instances of the application is
-now supported
 
 Bugs fixed in 3.07
 =====================

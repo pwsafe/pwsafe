@@ -67,46 +67,35 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
-  SIZE_T memsize = GlobalSize(hGlobal);
 
-  if (memsize < DD_MEMORY_MINSIZE)
-    goto ignore;
+  DWORD randID;
+  int iDDType, dw_type, iLen;
 
-  int iDDType, iLen, iType;
+#if _MSC_VER >= 1400
+  _stscanf_s(pData, _T("%08x%02x%02x%04x"), &randID, &iDDType, &dw_type, &iLen);
+#else
+  _stscanf(pData, _T("08x%02x%02x%04x"), &randID, &iDDType, &dw_type, &iLen);
+#endif
 
   // Check if it is ours?
   // - we don't accept drop from other instances of PWS
-  if (memcmp(gbl_classname, pData, 39) != 0)
-    goto ignore;
-
-#if _MSC_VER >= 1400
-  _stscanf_s(pData + 39, _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
-#else
-  _stscanf(pData + 39, _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
-#endif
-
   // Check if it is from List View HeaderCtrl?
   // - we don't accept drop from anything else
-  // Check it is long enough!
-  if ((iDDType != FROMHDR) || ((long)memsize < (DD_MEMORY_MINSIZE + iLen)))
-    goto ignore;
+  if ((randID != gbl_randID) || (iDDType != FROMHDR)) {
+    GlobalUnlock(hGlobal);
+    return FALSE;
+  }
 
   // Now add it
-  {
-  const CString cs_header(pData + DD_MEMORY_MINSIZE, iLen);
+  const CString cs_header(pData + 16, iLen);
   int iItem = InsertItem(0, cs_header);
-  SetItemData(iItem, iType);
+  SetItemData(iItem, dw_type);
   SortItems(CCLCCompareProc, (LPARAM)this);
-  }
 
   GlobalUnlock(hGlobal);
 
   GetParent()->SetFocus();
   return TRUE;
-
-ignore:
-  GlobalUnlock(hGlobal);
-  return FALSE;
 }
 
 void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
@@ -120,13 +109,13 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
 
   // Start of Drag of column (m_iItem) from Column Chooser dialog to.....
   CString cs_text;
-  int iType, iDummyLen(0);
+  DWORD dw_type;
 
-  iType = GetItemData(m_iItem);
+  dw_type = GetItemData(m_iItem);
 
   // ListView HeaderCtrl only needs the type as it uses main routine
-  // to add/delete columns via SendMessage - add dummy length
-  cs_text.Format(_T("%s%02x%04x%04x"), gbl_classname, FROMCC, iType, iDummyLen);
+  // to add/delete columns via SendMessage
+  cs_text.Format(_T("%08x%02x%02x"), gbl_randID, FROMCC, dw_type);
 
   // Get client window position
   CPoint currentClientPosition;
@@ -168,7 +157,7 @@ void CColumnChooserLC::OnDestroy()
 
 // Sort the items based on iType
 int CALLBACK CColumnChooserLC::CCLCCompareProc(LPARAM lParam1, LPARAM lParam2,
-                             LPARAM /* lParamSort */)
+                                               LPARAM /* lParamSort */)
 {
    // lParamSort contains a pointer to the list view control.
    // The lParam of an item is its type.

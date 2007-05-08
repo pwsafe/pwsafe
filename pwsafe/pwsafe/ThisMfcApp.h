@@ -57,7 +57,6 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   void HideIcon() {m_TrayIcon->HideIcon();}
   void ClearClipboardData();
   void SetClipboardData(const CMyString &data);
-  CLIPFORMAT RegisterCBFMT(WORD wInteger);
 
   afx_msg void OnHelp();
   enum STATE {LOCKED, UNLOCKED, CLOSED};
