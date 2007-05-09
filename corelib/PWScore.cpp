@@ -97,8 +97,8 @@ void
 PWScore::NewFile(const CMyString &passkey)
 {
    ClearData();
-   ReInit();
    SetPassKey(passkey);
+   m_changed = false;
 }
 
 int
