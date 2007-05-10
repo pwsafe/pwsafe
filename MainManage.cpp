@@ -243,8 +243,10 @@ DboxMain::OnOptions()
     BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
 
     // Need to compare pre-post values for some:
-    const bool bOldShowPasswordInList = prefs->
-        GetPref(PWSprefs::ShowPWInList);
+    const bool bOldShowUsernameInTree = prefs->
+        GetPref(PWSprefs::ShowUsernameInTree);
+    const bool bOldShowPasswordInTree = prefs->
+        GetPref(PWSprefs::ShowPasswordInTree);
     const bool bOldExplorerTypeTree = prefs->
         GetPref(PWSprefs::ExplorerTypeTree);
     /*
@@ -263,8 +265,10 @@ DboxMain::OnOptions()
     display.m_alwaysontop = m_bAlwaysOnTop;
     display.m_pwshowinedit = prefs->
         GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
-    display.m_pwshowinlist = prefs->
-        GetPref(PWSprefs::ShowPWInList) ? TRUE : FALSE;
+    display.m_showusernameintree = prefs->
+        GetPref(PWSprefs::ShowUsernameInTree) ? TRUE : FALSE;
+    display.m_showpasswordintree = prefs->
+        GetPref(PWSprefs::ShowPasswordInTree) ? TRUE : FALSE;
     display.m_explorertree = prefs->
         GetPref(PWSprefs::ExplorerTypeTree) ? TRUE : FALSE;
     display.m_enablegrid = prefs->
@@ -407,8 +411,10 @@ DboxMain::OnOptions()
                        display.m_alwaysontop == TRUE);
         prefs->SetPref(PWSprefs::ShowPWDefault,
                        display.m_pwshowinedit == TRUE);
-        prefs->SetPref(PWSprefs::ShowPWInList,
-                       display.m_pwshowinlist == TRUE);
+        prefs->SetPref(PWSprefs::ShowUsernameInTree,
+                       display.m_showusernameintree == TRUE);
+        prefs->SetPref(PWSprefs::ShowPasswordInTree,
+                       display.m_showpasswordintree == TRUE);
         prefs->SetPref(PWSprefs::ExplorerTypeTree,
                        display.m_explorertree == TRUE);
         prefs->SetPref(PWSprefs::ListViewGridLines,
@@ -580,8 +586,8 @@ DboxMain::OnOptions()
         */
         m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
         UpdateAlwaysOnTop();
-
-        m_bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
+        m_bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+        m_bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
         m_bExplorerTypeTree = prefs->GetPref(PWSprefs::ExplorerTypeTree);
 
         DWORD dwExtendedStyle = m_ctlItemList.GetExtendedStyle();
@@ -596,7 +602,8 @@ DboxMain::OnOptions()
             m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
         }
 
-        if ((bOldShowPasswordInList != m_bShowPasswordInList) ||
+        if ((bOldShowUsernameInTree != m_bShowUsernameInTree ||
+             bOldShowPasswordInTree != m_bShowPasswordInTree) ||
             (bOldExplorerTypeTree != m_bExplorerTypeTree) ||
             (save_preexpirywarn != display.m_preexpirywarn) ||
             (save_preexpirywarndays != display.m_preexpirywarndays))

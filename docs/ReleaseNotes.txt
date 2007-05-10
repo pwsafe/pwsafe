@@ -23,6 +23,7 @@ prevents F2 giving the user the feel that they can.
 [1678527] Line delimiter now works during import of plain text
 [1708099] Default saved username, now shows in new entry
 [1709418] Cancel after Lock Safe from system tray now does Right Thing
+[] More stringent checking during tree "edit in-place" to prevent DB corruption
 
 New Features for 3.07.02
 ========================
@@ -30,9 +31,9 @@ New Features for 3.07.02
 allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
 [] Implement "Advanced" option for Exporting in XML format (as per Export in Text
 format) and for when comparing databases
-[1695968] "Advanced" option now available to improve Merge operation  
-[] Drag and drop of entries between instances of the application is
-now supported
+[1695968] "Advanced" option now available to improve Merge operation
+[1711524] "Show username in display tree" display option
+
 
 Bugs fixed in 3.07
 =====================

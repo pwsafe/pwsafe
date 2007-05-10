@@ -123,6 +123,8 @@ public:
   {UpdateListItem(lindex, CItemData::TITLE, newTitle);}
   void UpdateListItemUser(const int lindex, const CString &newUser)
   {UpdateListItem(lindex, CItemData::USER, newUser);}
+  void UpdateListItemPassword(const int lindex, const CString &newPassword)
+  {UpdateListItem(lindex, CItemData::PASSWORD, newPassword);}
   void SetHeaderInfo();
   CString GetHeaderText(const int iType);
   int GetHeaderWidth(const int iType);
@@ -406,7 +408,8 @@ private:
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
-  bool m_bShowPasswordInList;
+  bool m_bShowPasswordInTree;
+  bool m_bShowUsernameInTree;
   bool m_bExplorerTypeTree;
   bool m_bUseGridLines;
   int m_iDateTimeFieldWidth;
