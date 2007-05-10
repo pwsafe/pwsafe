@@ -221,7 +221,10 @@ CAddDlg::OnOK()
 
   if (pParent->Find(m_group, m_title, m_username) != NULL) {
     CMyString temp;
-    temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
+    if (m_group.IsEmpty())
+      temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
+    else
+      temp.Format(IDS_ENTRYEXISTS, m_group, m_title, m_username);
     AfxMessageBox(temp);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();

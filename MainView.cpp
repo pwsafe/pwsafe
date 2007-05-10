@@ -243,7 +243,12 @@ void DboxMain::UpdateListItem(const int lindex, const int type, const CString &n
 {
     int iSubItem = m_nColumnIndexByType[type];
 
-    m_ctlItemList.SetItemText(lindex, iSubItem, newText);
+    // Ignore if this column is not being displayed
+    if (iSubItem < 0)
+      return;
+
+    BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText);
+    ASSERT(brc == TRUE);
     if (m_iSortedColumn == type) { // resort if necessary
         m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
         FixListIndexes();
@@ -791,16 +796,18 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
   {
     HTREEITEM ti;
     CMyString treeDispString = title;
-    CMyString user = itemData.GetUser();
-    treeDispString += _T(" [");
-    treeDispString += user;
-    treeDispString += _T("]");
-    if (m_bShowPasswordInList) {
-		CMyString newPassword = itemData.GetPassword();
-		treeDispString += _T(" [");
-		treeDispString += newPassword;
-		treeDispString += _T("]");
-	}
+    if (m_bShowUsernameInTree) {
+      CMyString user = itemData.GetUser();
+      treeDispString += _T(" [");
+      treeDispString += user;
+      treeDispString += _T("]");
+      if (m_bShowPasswordInTree) {
+        CMyString newPassword = itemData.GetPassword();
+        treeDispString += _T(" {");
+        treeDispString += newPassword;
+        treeDispString += _T("}");
+      }
+    }
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     if (!m_bExplorerTypeTree) {
@@ -1371,7 +1378,7 @@ DboxMain::SetColumns()
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
 
-  int ipwd = m_bShowPasswordInList ? 1 : 0;
+  int ipwd = m_bShowPasswordInTree ? 1 : 0;
 
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
@@ -1401,7 +1408,7 @@ DboxMain::SetColumns()
   m_LVHdrCtrl.SetItem(2, &hdi);
   m_ctlItemList.SetColumnWidth(1, i3rdWidth);
     
-  if (m_bShowPasswordInList) {
+  if (m_bShowPasswordInTree) {
     cs_header = GetHeaderText(CItemData::PASSWORD);
     m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;

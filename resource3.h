@@ -279,3 +279,4 @@
 #define IDS_EXPORT_XMLX                 5444
 #define IDS_ADVANCED_TITLETEXT          5445
 #define IDS_ADVANCED_PASSWORDTEXT       5446
+#define IDS_ENTRYEXISTS2                5447
