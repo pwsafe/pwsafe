@@ -143,9 +143,11 @@ void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
   /*
    Allowed formats:
-   1.   title
-   2.   title [username]             if preference ShowUsernameInTree is set
-   3.   title [username] {password}  if preferences ShowUsernameInTree and ShowPWInList are set
+     1.   title
+   If preference ShowUsernameInTree is set:
+     2.   title [username]
+   If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+     3.   title [username] {password}
 
    Neither Title, Username or Password may contain square or curly brackes to be 
    edited in place and visible.
@@ -299,9 +301,11 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   // puts in the new dispay text, it will be ignored.
 
   /* Allowed formats:
-   1.   title
-   2.   title [username]             if preference ShowUsernameInTree is set
-   3.   title [username] {password}  if preferences ShowUsernameInTree and ShowPWInList are set
+     1.   title
+   If preference ShowUsernameInTree is set:
+     2.   title [username]
+   If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+     3.   title [username] {password}
 
    There can only be one of each:
      open square brace
