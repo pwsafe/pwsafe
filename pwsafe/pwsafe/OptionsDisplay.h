@@ -25,13 +25,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDisplay)
 	enum { IDD = IDD_PS_DISPLAY };
-	BOOL	m_alwaysontop;
-	BOOL	m_pwshowinlist;
-	BOOL    m_explorertree;
-	BOOL    m_enablegrid;
-	BOOL	m_pwshowinedit;
-	BOOL    m_notesshowinedit;
-	BOOL    m_preexpirywarn;
+	BOOL m_alwaysontop;
+  BOOL m_showusernameintree;
+	BOOL m_showpasswordintree;
+	BOOL m_explorertree;
+	BOOL m_enablegrid;
+	BOOL m_pwshowinedit;
+	BOOL m_notesshowinedit;
+	BOOL m_preexpirywarn;
 #if defined(POCKET_PC)
 	BOOL	m_dcshowspassword;
 #endif
@@ -53,6 +54,7 @@ protected:
 	//{{AFX_MSG(COptionsDisplay)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPreWarn();
+  afx_msg void OnDisplayUserInTree();
 	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

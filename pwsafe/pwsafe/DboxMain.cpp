@@ -377,9 +377,6 @@ DboxMain::InitPasswordSafe()
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
 
-  // Init stuff for list view
-  m_bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
-
   m_bExplorerTypeTree = prefs->GetPref(PWSprefs::ExplorerTypeTree);
   m_bUseGridLines = prefs->GetPref(PWSprefs::ListViewGridLines);
 
@@ -568,6 +565,11 @@ DboxMain::OnInitDialog()
 
   if (!m_IsStartClosed && !m_IsStartSilent) {
       OpenOnInit();
+      // Init stuff for list/tree view - refresh as stored in DB
+      m_bShowUsernameInTree = PWSprefs::GetInstance()->
+                                  GetPref(PWSprefs::ShowUsernameInTree);
+      m_bShowPasswordInTree = PWSprefs::GetInstance()->
+                                  GetPref(PWSprefs::ShowPasswordInTree);
       RefreshList();
   }
 

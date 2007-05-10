@@ -135,35 +135,187 @@ void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
   }
 }
 
-void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR , LRESULT *pLResult)
+void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  //TV_DISPINFO *ptvinfo = (TV_DISPINFO *)pnmhdr;
-  *pLResult = FALSE; // TRUE cancels label editing
+  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
+
+  *pLResult = TRUE; // TRUE cancels label editing
+
+  /*
+   Allowed formats:
+   1.   title
+   2.   title [username]             if preference ShowUsernameInTree is set
+   3.   title [username] {password}  if preferences ShowUsernameInTree and ShowPWInList are set
+
+   Neither Title, Username or Password may contain square or curly brackes to be 
+   edited in place and visible.
+  */
+  HTREEITEM ti = ptvinfo->item.hItem;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  if (IsLeafNode(ti)) {
+    DWORD itemData = GetItemData(ti);
+    ASSERT(itemData != NULL);
+    CItemData *ci = (CItemData *)itemData;
+    CMyString currentTitle, currentUser, currentPassword;
+
+    // We cannot allow in-place edit if these fields contain braces!
+    currentTitle = ci->GetTitle();
+    if (currentTitle.FindOneOf(_T("[]{}")) != -1)
+      return;
+
+    currentUser = ci->GetUser();
+    if (prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
+        currentUser.FindOneOf(_T("[]{}")) != -1)
+      return;
+
+    currentPassword = ci->GetPassword();
+    if (prefs->GetPref(PWSprefs::ShowPasswordInTree) &&
+        currentPassword.FindOneOf(_T("[]{}")) != -1)
+      return;
+  }  
+  // Allow in-place editing
+  *pLResult = FALSE;
+  return;
 }
 
-static void splitLeafText(const TCHAR *lt, CString &newTitle, CString &newUser)
+static bool splitLeafText(const TCHAR *lt, CString &newTitle, 
+                          CString &newUser, CString &newPassword)
 {
-  CString leafText(lt);
-  int leftBraceIndex = leafText.Find(TCHAR('['));
+  bool bPasswordSet(false);
 
-  if (leftBraceIndex == -1) {
-    newTitle = leafText;
-    newUser = _T("");
-  } else {
-    newTitle = leafText.Left(leftBraceIndex - 1);
-    int rightBraceIndex = leafText.Find(TCHAR(']'));
-    if (rightBraceIndex == -1) {
-      newUser = leafText.Mid(leftBraceIndex + 1);
-    } else {
-      newUser = leafText.Mid(leftBraceIndex + 1, rightBraceIndex - leftBraceIndex - 1);
-    }
+  newTitle = _T("");
+  newUser = _T("");
+  newPassword = _T("");
+
+  CString cs_leafText(lt);
+  cs_leafText.Trim();
+  if (cs_leafText.IsEmpty())
+    return false;
+
+  // Check no duplicate braces
+  int OpenSquareBraceIndex = cs_leafText.Find(TCHAR('['));
+  if (OpenSquareBraceIndex >= 0)
+    if (cs_leafText.Find(TCHAR('['), OpenSquareBraceIndex + 1) != -1)
+      return false;
+
+  int CloseSquareBraceIndex = cs_leafText.Find(TCHAR(']'));
+  if (CloseSquareBraceIndex >= 0)
+    if (cs_leafText.Find(TCHAR(']'), CloseSquareBraceIndex + 1) != -1)
+      return false;
+
+  int OpenCurlyBraceIndex = cs_leafText.Find(TCHAR('{'));
+  if (OpenCurlyBraceIndex >= 0)
+    if (cs_leafText.Find(TCHAR('{'), OpenCurlyBraceIndex + 1) != -1)
+      return false;
+
+  int CloseCurlyBraceIndex = cs_leafText.Find(TCHAR('}'));
+  if (CloseCurlyBraceIndex >= 0)
+    if (cs_leafText.Find(TCHAR('}'), CloseCurlyBraceIndex + 1) != -1)
+      return false;
+
+  // Check we have both open and close brackets
+  if (OpenSquareBraceIndex >= 0 && CloseSquareBraceIndex == -1)
+    return false;
+  if (OpenSquareBraceIndex == -1 && CloseSquareBraceIndex >= 0)
+    return false;
+  if (OpenCurlyBraceIndex >= 0 && CloseCurlyBraceIndex == -1)
+    return false;
+  if (OpenCurlyBraceIndex == -1 && CloseCurlyBraceIndex >= 0)
+    return false;
+
+  // Check we are in the right order - open before close
+  if (OpenSquareBraceIndex >= 0 && CloseSquareBraceIndex < OpenSquareBraceIndex)
+    return false;
+  if (OpenCurlyBraceIndex >= 0 && CloseCurlyBraceIndex < OpenCurlyBraceIndex)
+    return false;
+
+  // Check we are in the right order - square before curly
+  if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex >= 0 &&
+      OpenCurlyBraceIndex < OpenSquareBraceIndex)
+    return false;
+
+  if (OpenSquareBraceIndex == -1 && OpenCurlyBraceIndex == -1) {
+    // title
+    newTitle = cs_leafText;
+    return true;
   }
+
+  if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex == -1) {
+    // title [user]
+    newTitle = cs_leafText.Left(OpenSquareBraceIndex);
+    newTitle.Trim();
+    newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
+                  CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
+    newUser.Trim();
+    goto final_check;
+  }
+
+  if (OpenSquareBraceIndex == -1 && OpenCurlyBraceIndex >= 0) {
+    // title {password}
+    newTitle = cs_leafText.Left(OpenCurlyBraceIndex);
+    newTitle.Trim();
+    newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
+                  CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
+    newPassword.Trim();
+    bPasswordSet = true;
+    goto final_check;
+  }
+
+  if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex >= 0) {
+    // title [user] {password}
+    newTitle = cs_leafText.Left(OpenSquareBraceIndex);
+    newTitle.Trim();
+    newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
+                  CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
+    newUser.Trim();
+    newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
+                  CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
+    newPassword.Trim();
+    bPasswordSet = true;
+    goto final_check;
+  }
+
+  return false; // Should never get here!
+
+final_check:
+  bool bRC(true);
+  if (newTitle.IsEmpty())
+    bRC = false;
+
+  if (bPasswordSet && newPassword.IsEmpty())
+    bRC = false;
+
+  return bRC;
 }
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
   if (((DboxMain *)GetParent())->IsReadOnly())
     return; // don't drag in read-only mode
+
+  // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
+  // Only items visible will be changed - e.g. if password is not shown and the user
+  // puts in the new dispay text, it will be ignored.
+
+  /* Allowed formats:
+   1.   title
+   2.   title [username]             if preference ShowUsernameInTree is set
+   3.   title [username] {password}  if preferences ShowUsernameInTree and ShowPWInList are set
+
+   There can only be one of each:
+     open square brace
+     close square brace
+     open curly brace
+     close curly brace
+
+   If pos_xtb = position of x = open/close, t = square/curly brackes, then
+
+     pos_osb < pos_csb < pos_ocb < pos_ccb
+
+   Title and Password are mandatory fields within the PWS database and so, if specified,
+   these fields cannot be empty.
+  */
 
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
@@ -172,34 +324,49 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     if (IsLeafNode(ptvinfo->item.hItem)) {
-      /*
-       * Leaf text is of the form: title [user]
-       * If edited text contains '[', then the user is updated
-       * If not, then the user is retrieved and the leaf is updated
-       */
-      // Update leaf's title
       DWORD itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
-      CString newTitle, newUser;
-      splitLeafText(ptvinfo->item.pszText, newTitle, newUser);
+      CString group, newTitle, newUser, newPassword;
+
+      if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
+        // errors in user's input - restore text and refresh display
+        goto bad_exit;
+      }
+
+      group = CString(ci->GetGroup());
+      if (((DboxMain *)m_parent)->Find(group, newTitle, newUser) != NULL) {
+        CMyString temp;
+        if (group.IsEmpty())
+          temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
+        else
+          temp.Format(IDS_ENTRYEXISTS, group, newTitle, newUser);
+        AfxMessageBox(temp);
+        goto bad_exit;
+      }
+
       if (newUser.IsEmpty())
         newUser = CString(ci->GetUser());
-      CString treeDispString;
-	  treeDispString = newTitle;
-	  treeDispString += _T(" [");
-	  treeDispString += newUser;
-	  treeDispString += _T("]");
+      if (newPassword.IsEmpty())
+        newPassword = CString(ci->GetPassword());
 
       PWSprefs *prefs = PWSprefs::GetInstance();
-      bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPWInList);
+      CString treeDispString;
+      bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+      bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPasswordInTree);
 
-	  if (bShowPasswordInList) {
-		  CString newPassword = CString(ci->GetPassword());
-		  treeDispString += _T(" [");
-		  treeDispString += newPassword;
-		  treeDispString += _T("]");
-	  }
+      treeDispString = newTitle;
+      if (bShowUsernameInTree) {
+        treeDispString += _T(" [");
+        treeDispString += newUser;
+        treeDispString += _T("]");
+
+        if (bShowPasswordInList) {
+          treeDispString += _T(" {");
+          treeDispString += newPassword;
+          treeDispString += _T("}");
+	      }
+      }
 
       // Update corresponding Tree mode text with the new display text (ie: in case 
       // the username was removed and had to be normalized back in).  Note that
@@ -210,14 +377,22 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
                       treeDispString, ptvinfo->item.cchTextMax);
       ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = TCHAR('\0');
 
-      // update the password database record.
-      ci->SetTitle(newTitle); ci->SetUser(newUser);
       // update corresponding List mode text
       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
       ASSERT(di != NULL);
       int lindex = di->list_index;
-	  ((DboxMain *)m_parent)->UpdateListItemTitle(lindex, newTitle);
-      ((DboxMain *)m_parent)->UpdateListItemUser(lindex, newUser);
+
+      // update the password database record - but only those items visible!!!
+      ci->SetTitle(newTitle);
+      ((DboxMain *)m_parent)->UpdateListItemTitle(lindex, newTitle);
+      if (bShowUsernameInTree) {
+        ci->SetUser(newUser);
+        ((DboxMain *)m_parent)->UpdateListItemUser(lindex, newUser);
+        if (bShowPasswordInList) {
+          ci->SetPassword(newPassword);
+          ((DboxMain *)m_parent)->UpdateListItemPassword(lindex, newPassword);
+        }
+      }
     } else {
       // Update all leaf children with new path element
       // prefix is path up to and NOT including renamed node
@@ -237,13 +412,24 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     }
     // Mark database as modified
     ((DboxMain *)m_parent)->SetChanged(DboxMain::Data);
-    SortChildren(GetParentItem(ti));
+
+    // Sort it as appropriate
+    if (((DboxMain *)GetParent())->IsExplorerTree())
+      ((DboxMain *)GetParent())->SortTree(ti);
+    else
+      SortChildren(GetParentItem(ti));
+
+    // OK
     *pLResult = TRUE;
-  } else {
+    return;
+  }
+
+bad_exit:
+    // Refresh display to show old text - if we don't no one else will
+    ((DboxMain *)m_parent)->RefreshList();
     // restore text
     // (not that this is documented anywhere in MS's docs...)
     *pLResult = FALSE;
-  }
 }
 
 void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
@@ -254,7 +440,7 @@ void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
   }
 
   if (m_bDragging) {
-    UINT                flags;
+    UINT flags;
 
     ASSERT(m_pimagelist != NULL);
     m_pimagelist->DragMove(point);
@@ -448,16 +634,18 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     if (ci_title.Compare(ci_title0) != 0) {
         ci->SetTitle(ci_title);
         CMyString treeDispString;
-	    treeDispString = ci_title;
-	    treeDispString += _T(" [");
-	    treeDispString += ci_user;
-	    treeDispString += _T("]");
-        if( PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWInList)) {
-		    CMyString ci_Password = ci->GetPassword();
-		    treeDispString += _T(" [");
-		    treeDispString += ci_Password;
-		    treeDispString += _T("]");
-	    }
+        treeDispString = ci_title;
+        if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
+          treeDispString += _T(" [");
+          treeDispString += ci_user;
+          treeDispString += _T("]");
+          if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
+            CMyString ci_Password = ci->GetPassword();
+            treeDispString += _T(" {");
+            treeDispString += ci_Password;
+            treeDispString += _T("}");
+          }
+        }
         // Update tree label
         SetItemText(hNewItem, treeDispString);
         // Update list field

@@ -76,7 +76,4 @@ protected:
 	UINT    m_timerticks;
 	UINT	m_nHoverTimerID;
 	POINT	m_HoverPoint;
-
 };
-
-
