@@ -113,6 +113,10 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     return status;
   }
 
+  // Re-use file's UUID and number of hash iterations
+  out->SetFileUUID(m_file_uuid_array);
+  out->SetFileHashIterations(m_nITER);
+
   // preferences are kept in header, which is written in OpenWriteFile,
   // so we need to update the prefernce string here
   out->SetPrefString(PWSprefs::GetInstance()->Store());
@@ -148,6 +152,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   m_wholastsaved = out->GetWhoLastSaved();
   m_whenlastsaved = out->GetWhenLastSaved();
   m_whatlastsaved = out->GetWhatLastSaved();
+  out->GetFileUUID(m_file_uuid_array);
 
   out->Close();
   delete out;
@@ -887,6 +892,11 @@ PWScore::ReadFile(const CMyString &a_filename,
         return UNKNOWN_VERSION;
     }
 
+    // Get file's UUID and number of hash iterations - in case we
+    // rewrite file
+    in->GetFileUUID(m_file_uuid_array);
+    in->GetFileHashIterations(m_nITER);
+
     // Get pref string and tree display status & who saved when
     // all possibly empty!
     PWSprefs::GetInstance()->Load(in->GetPrefString());
@@ -1455,4 +1465,19 @@ PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
     }
 
     return brc;
+}
+
+void PWScore::ClearFileUUID()
+{
+  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
+}
+  
+void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
+{
+  memcpy(m_file_uuid_array, file_uuid_array, sizeof(m_file_uuid_array));
+}
+
+void PWScore::GetFileUUID(uuid_array_t &file_uuid_array)
+{
+  memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
 }

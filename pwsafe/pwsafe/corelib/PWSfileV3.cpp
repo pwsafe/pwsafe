@@ -154,11 +154,13 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   fread(Nb, 1, sizeof(Nb), fd);
   const unsigned int N = getInt32(Nb);
 
-  ASSERT(N >= 2048);
-  if (N < 2048) {
+  ASSERT(N >= MIN_HASH_ITERATIONS);
+  if (N < MIN_HASH_ITERATIONS) {
     retval = FAILURE;
     goto err;
   }
+  m_nITER = N;
+
   unsigned char Ptag[SHA256::HASHLEN];
   if (aPtag == NULL)
     aPtag = Ptag;
@@ -412,7 +414,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   delete[] pstr;
 #endif
 
-  ASSERT(N >= 2048); // minimal value we're willing to use
+  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
     SHA256 H;
     // The 2nd param in next line was sizeof(X) in Beta-1
@@ -429,7 +431,11 @@ const short VersionNum = 0x0301;
 int PWSfileV3::WriteHeader()
 {
   // See formatV3.txt for explanation of what's written here and why
-  const unsigned int NumHashIters = 2048; // At least 2048
+  unsigned int NumHashIters;
+  if (m_nITER < MIN_HASH_ITERATIONS)
+    NumHashIters = MIN_HASH_ITERATIONS;
+  else
+    NumHashIters = m_nITER;
 
   fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
 
@@ -446,7 +452,8 @@ int PWSfileV3::WriteHeader()
   salter.Final(salt);
   fwrite(salt, 1, sizeof(salt), m_fd);
 
-  unsigned char Nb[sizeof(NumHashIters)];;
+  unsigned char Nb[sizeof(NumHashIters)];
+  
   putInt32(Nb, NumHashIters);
   fwrite(Nb, 1, sizeof(Nb), m_fd);
 
@@ -504,15 +511,15 @@ int PWSfileV3::WriteHeader()
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
   
   // Write UUID
-  // We should probably reuse the UUID when saving an existing
-  // database, and generate a new one only from new dbs.
-  // For now, this is Good Enough. XXX
-  uuid_array_t uuid_array;
-  CUUIDGen uuid;
+  uuid_array_t file_uuid_array;
+  memset(file_uuid_array, 0x00, sizeof(file_uuid_array));
+  // If not there or zeroed, create new
+  if (memcmp(m_file_uuid_array, file_uuid_array, sizeof(file_uuid_array)) == 0) {
+    CUUIDGen uuid;
+    uuid.GetUUID(m_file_uuid_array);
+  }
   
-  uuid.GetUUID(uuid_array);
-  
-  numWritten += WriteCBC(HDR_UUID, uuid_array, sizeof(uuid_array));
+  numWritten += WriteCBC(HDR_UUID, m_file_uuid_array, sizeof(m_file_uuid_array));
 
   if (numWritten <= 0) { // WriteCBC writes at least 2 blocks per datum.
     Close();
@@ -657,6 +664,9 @@ int PWSfileV3::ReadHeader()
           Close();
           return FAILURE;
         }
+        LPTSTR pBuffer = headerField.GetBuffer(ulen);
+        memcpy(m_file_uuid_array, pBuffer, sizeof(m_file_uuid_array));
+        headerField.ReleaseBuffer();
       }
       break;
 

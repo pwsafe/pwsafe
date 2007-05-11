@@ -15,6 +15,9 @@
 
 #include "ItemData.h"
 #include "MyString.h"
+#include "UUIDGen.h"
+
+#define MIN_HASH_ITERATIONS 2048
 
 class Fish;
 
@@ -58,6 +61,10 @@ class PWSfile {
   virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
   void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
+  void SetFileUUID(const uuid_array_t &file_uuid_array);
+  void SetFileHashIterations(const int &nITER);
+  void GetFileUUID(uuid_array_t &file_uuid_array);
+  void GetFileHashIterations(int &nITER);
   // The prefstring is read/written along with the rest of the file,
   // see code for details on where it's kept.
   void SetPrefString(const CMyString &prefStr) {m_prefString = prefStr;}
@@ -103,5 +110,7 @@ class PWSfile {
   Fish *m_fish;
   unsigned char *m_terminal;
   bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
+  uuid_array_t m_file_uuid_array;
+  static int m_nITER;
 };
 #endif /* __PWSFILE_H */
