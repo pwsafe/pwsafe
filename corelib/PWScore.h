@@ -15,6 +15,7 @@
 #include "ItemData.h"
 #include "MyString.h"
 #include "PWSfile.h"
+#include "UUIDGen.h"
 
 #define MAXDEMO 10
 
@@ -55,6 +56,9 @@ class PWScore {
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
   const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
+  void ClearFileUUID();
+  void SetFileUUID(uuid_array_t &file_uuid_array);
+  void GetFileUUID(uuid_array_t &file_uuid_array);
 
   void ClearData();
   void ReInit();
@@ -167,5 +171,7 @@ class PWScore {
 
   CString m_displaystatus;
   CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
+  uuid_array_t m_file_uuid_array;
+  int m_nITER;
 };
 #endif /* __PWSCORE_H */

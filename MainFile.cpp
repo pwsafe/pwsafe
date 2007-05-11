@@ -195,6 +195,7 @@ DboxMain::New()
     return PWScore::USER_CANCEL;
 
   m_core.SetCurFile(_T("")); //Force a save as...
+  m_core.ClearFileUUID();
 #if !defined(POCKET_PC)
   m_titlebar.LoadString(IDS_UNTITLED);
   app.SetTooltipText(_T("PasswordSafe"));
@@ -641,8 +642,15 @@ DboxMain::SaveAs()
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     return PWScore::CANT_OPEN_FILE;
   }
+  // Save file UUID, clear it to generate new one, restore if necessary
+  uuid_array_t file_uuid_array;
+  m_core.GetFileUUID(file_uuid_array);
+  m_core.ClearFileUUID();
+
   rc = m_core.WriteFile(newfile);
+  
   if (rc == PWScore::CANT_OPEN_FILE) {
+    m_core.SetFileUUID(file_uuid_array);
     m_core.UnlockFile(newfile);
     cs_temp.Format(IDS_CANTOPENWRITING, newfile);
     cs_title.LoadString(IDS_FILEWRITEERROR);
@@ -1370,6 +1378,20 @@ DboxMain::OnProperties()
 	dlg.m_whenlastsaved.Trim();
   } else
 	dlg.m_whatlastsaved = wls;
+
+  uuid_array_t file_uuid_array, ref_uuid_array;
+  memset(ref_uuid_array, 0x00, sizeof(ref_uuid_array));
+  m_core.GetFileUUID(file_uuid_array);
+
+  if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
+    wls = _T("N/A");
+  else
+    wls.Format(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
+     file_uuid_array[0],  file_uuid_array[1],  file_uuid_array[2],  file_uuid_array[3],
+     file_uuid_array[4],  file_uuid_array[5],  file_uuid_array[6],  file_uuid_array[7],
+     file_uuid_array[8],  file_uuid_array[9],  file_uuid_array[10], file_uuid_array[11],
+     file_uuid_array[12], file_uuid_array[13], file_uuid_array[14], file_uuid_array[15]);
+  dlg.m_file_uuid = wls;
 
   dlg.DoModal();
 }

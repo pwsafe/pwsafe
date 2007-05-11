@@ -17,6 +17,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+int PWSfile::m_nITER;
+
 PWSfile *PWSfile::MakePWSfile(const CMyString &a_filename, VERSION &version,
                               RWmode mode, int &status)
 {
@@ -506,4 +508,25 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 		} // read info from lock file
 	}
 	return bResult;
+}
+
+
+void PWSfile::SetFileUUID(const uuid_array_t &file_uuid_array)
+{
+  memcpy(m_file_uuid_array, file_uuid_array, sizeof(file_uuid_array));
+}
+
+void PWSfile::SetFileHashIterations(const int &nITER)
+{
+  m_nITER = nITER;
+}
+
+void PWSfile::GetFileUUID(uuid_array_t &file_uuid_array)
+{
+  memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
+}
+
+void PWSfile::GetFileHashIterations(int &nITER)
+{
+  nITER = m_nITER;
 }
