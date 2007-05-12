@@ -99,6 +99,10 @@ PWScore::NewFile(const CMyString &passkey)
    ClearData();
    SetPassKey(passkey);
    m_changed = false;
+   // default username is a per-database preference - wipe clean
+   // for new database:
+   m_usedefuser = false;
+   m_defusername = _T("");
 }
 
 int
