@@ -179,7 +179,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, CMyString &data)
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-    CMyString str(LPCTSTR(buffer), (buffer_len / sizeof(TCHAR)));
+    CMyString str(LPCTSTR(buffer), buffer_len);
     data = str;
     trashMemory(buffer, buffer_len);
     delete[] buffer;
@@ -191,7 +191,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, CMyString &data)
   return retval;
 }
 
-size_t PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
+size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
                         unsigned int &length)
 {
 
@@ -204,13 +204,17 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-    if (buffer_len < length)
+    if (buffer_len < length || data == NULL)
       length = buffer_len; // set to length read
     // if buffer_len > length, data is truncated to length
     // probably an error.
-    memcpy(data, buffer, length);
-    trashMemory(buffer, buffer_len);
-    delete[] buffer;
+    if (data != NULL) {
+        memcpy(data, buffer, length);
+        trashMemory(buffer, buffer_len);
+        delete[] buffer;
+    } else { // NULL data means pass buffer directly to caller
+        data = buffer; // caller must trash & delete[]!
+    }
   } else {
     // no need to delete[] buffer, since _readcbc will not allocate if
     // buffer_len is zero

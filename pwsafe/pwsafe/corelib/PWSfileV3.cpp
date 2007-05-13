@@ -266,6 +266,8 @@ PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
         type == CItemData::CTIME || type == CItemData::PMTIME ||
         type == CItemData::ATIME || type == CItemData::LTIME ||
         type == CItemData::RMTIME ||
+        type == HDR_VERSION ||
+        type == HDR_UUID ||
         !m_useUTF8 // E.g., win98 doesn't grok utf8
         ) {
       data = text;
@@ -284,7 +286,7 @@ PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
   return numRead;
 }
 
-size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
+size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
                        unsigned int &length)
 {
   size_t numRead = PWSfile::ReadCBC(type, data, length);
@@ -589,170 +591,154 @@ int PWSfileV3::WriteHeader()
 
 int PWSfileV3::ReadHeader()
 {
-  unsigned char Ptag[SHA256::HASHLEN];
-  int status = CheckPassword(m_filename, m_passkey, m_fd, Ptag);
+    unsigned char Ptag[SHA256::HASHLEN];
+    int status = CheckPassword(m_filename, m_passkey, m_fd, Ptag);
 
-  if (status != SUCCESS) {
-    Close();
-    return status;
-  }
-
-  unsigned char B1B2[sizeof(m_key)];
-  ASSERT(sizeof(B1B2) == 32); // Generalize later
-  fread(B1B2, 1, sizeof(B1B2), m_fd);
-  TwoFish TF(Ptag, sizeof(Ptag));
-  TF.Decrypt(B1B2, m_key);
-  TF.Decrypt(B1B2 + 16, m_key + 16);
-
-  unsigned char L[32]; // for HMAC
-  unsigned char B3B4[sizeof(L)];
-  ASSERT(sizeof(B3B4) == 32); // Generalize later
-  fread(B3B4, 1, sizeof(B3B4), m_fd);
-  TF.Decrypt(B3B4, L);
-  TF.Decrypt(B3B4 + 16, L + 16);
-
-  m_hmac.Init(L, sizeof(L));
-
-  fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
-
-  m_fish = new TwoFish(m_key, sizeof(m_key));
-
-  LPCTSTR headerData;
-  CMyString headerField;
-  unsigned char type;
-  size_t numRead;
-
-  do {
-    numRead = PWSfile::ReadCBC (type, headerField);
-    headerData = LPCTSTR (headerField);
-    m_hmac.Update ((const unsigned char *) headerData, headerField.GetLength());
-
-    if (numRead < 0) {
-      Close ();
-      return FAILURE;
+    if (status != SUCCESS) {
+        Close();
+        return status;
     }
 
-    switch (type) {
-    case HDR_VERSION: /* version */
-      {
-        // in Beta, VersionNum was an int (4 bytes) instead of short (2)
-        // This hack keeps bwd compatability.
+    unsigned char B1B2[sizeof(m_key)];
+    ASSERT(sizeof(B1B2) == 32); // Generalize later
+    fread(B1B2, 1, sizeof(B1B2), m_fd);
+    TwoFish TF(Ptag, sizeof(Ptag));
+    TF.Decrypt(B1B2, m_key);
+    TF.Decrypt(B1B2 + 16, m_key + 16);
 
-        int vlen = headerField.GetLength ();
-        if (vlen != sizeof(VersionNum) && vlen != sizeof(int)) {
-          Close();
-          return FAILURE;
+    unsigned char L[32]; // for HMAC
+    unsigned char B3B4[sizeof(L)];
+    ASSERT(sizeof(B3B4) == 32); // Generalize later
+    fread(B3B4, 1, sizeof(B3B4), m_fd);
+    TF.Decrypt(B3B4, L);
+    TF.Decrypt(B3B4 + 16, L + 16);
+
+    m_hmac.Init(L, sizeof(L));
+
+    fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
+
+    m_fish = new TwoFish(m_key, sizeof(m_key));
+
+    unsigned char fieldType;
+    unsigned int fieldLength = 0;
+    unsigned char *fieldData = NULL;
+    CMyString text;
+    size_t numRead;
+
+    do {
+        numRead = ReadCBC(fieldType, fieldData, fieldLength);
+
+        if (numRead < 0) {
+            Close();
+            return FAILURE;
         }
-        const unsigned char *hv = reinterpret_cast<const unsigned char *>(headerData);
-        if ((hv[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
-          //major version mismatch
-          Close();
-          return UNSUPPORTED_VERSION;
+
+        switch (fieldType) {
+            case HDR_VERSION: /* version */
+                // in Beta, VersionNum was an int (4 bytes) instead of short (2)
+                // This hack keeps bwd compatability.
+                if (fieldLength != sizeof(VersionNum) &&
+                    fieldLength != sizeof(int)) {
+                    delete[] fieldData;
+                    Close();
+                    return FAILURE;
+                }
+                if (fieldData[1] !=
+                    (unsigned char)((VersionNum & 0xff00) >> 8)) {
+                    //major version mismatch
+                    delete[] fieldData;
+                    Close();
+                    return UNSUPPORTED_VERSION;
+                }
+                // for now we assume that minor version changes will
+                // be backward-compatible
+                m_nCurrentMajorVersion = (unsigned short)fieldData[1];
+                m_nCurrentMinorVersion = (unsigned short)fieldData[0];
+                break;
+
+            case HDR_UUID: /* UUID */
+                // Read UUID XXX should save into data member
+                if (fieldLength != sizeof(uuid_array_t)) {
+                    delete[] fieldData;
+                    Close();
+                    return FAILURE;
+                }
+                memcpy(m_file_uuid_array, fieldData, sizeof(m_file_uuid_array));
+                break;
+
+            case HDR_NDPREFS: /* Non-default user preferences */
+            {
+                m_utf8 = fieldData;
+                m_utf8Len = fieldLength;
+                bool status = FromUTF8(m_prefString);
+                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
+                if (!status)
+                    TRACE(_T("FromUTF8(m_prefString) failed\n"));
+            }
+            break;
+
+            case HDR_DISPSTAT: /* Tree Display Status */
+            {
+                m_utf8 = fieldData;
+                m_utf8Len = fieldLength;
+                m_utf8[m_utf8Len] = '\0';
+                bool status = FromUTF8(text);
+                m_file_displaystatus = CString(text);
+                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
+                if (!status)
+                    TRACE(_T("FromUTF8(m_file_displaystatus) failed\n"));
+            }
+            break;
+
+            case HDR_LASTUPDATETIME: /* When last saved */
+            {
+                // THIS SHOULDN'T BE A STRING !!!
+                // BROKE SPEC !!!
+                m_utf8 = fieldData;
+                m_utf8Len = fieldLength;
+                m_utf8[m_utf8Len] = '\0';
+                bool status = FromUTF8(text);
+                m_whenlastsaved = CString(text);
+                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
+                if (!status)
+                    TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
+            }
+            break;
+
+            case HDR_LASTUPDATEUSERHOST: /* and by whom */
+            {
+                m_utf8 = fieldData;
+                m_utf8Len = fieldLength;
+                m_utf8[m_utf8Len] = '\0';
+                bool status = FromUTF8(text);
+                m_wholastsaved = CString(text);
+                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
+                if (!status)
+                    TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
+            }
+            break;
+
+            case HDR_LASTUPDATEAPPLICATION: /* and by what */
+            {
+                m_utf8 = fieldData;
+                m_utf8Len = fieldLength;
+                m_utf8[m_utf8Len] = '\0';
+                bool status = FromUTF8(text);
+                m_whatlastsaved = CString(text);
+                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
+                if (!status)
+                    TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
+            }
+            break;
+
+            default:
+                // ignore fields that may be addded by future versions
+                break;
         }
-        // for now we assume that minor version changes will
-        // be backward-compatible
-        m_nCurrentMajorVersion = (unsigned short)hv[1];
-        m_nCurrentMinorVersion = (unsigned short)hv[0];
-      }
-      break;
+        delete[] fieldData; fieldData = NULL; fieldLength = 0;
+    } while (fieldType != HDR_END);
 
-    case HDR_UUID: /* UUID */
-      {
-        // Read UUID XXX should save into data member
-        int ulen = headerField.GetLength ();
-        if (ulen != sizeof(uuid_array_t)) {
-          Close();
-          return FAILURE;
-        }
-        LPTSTR pBuffer = headerField.GetBuffer(ulen);
-        memcpy(m_file_uuid_array, pBuffer, sizeof(m_file_uuid_array));
-        headerField.ReleaseBuffer();
-      }
-      break;
-
-    case HDR_NDPREFS: /* Non-default user preferences */
-      {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_prefString = headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-      }
-      break;
-
-	case HDR_DISPSTAT: /* Tree Display Status */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_file_displaystatus = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-	  	case HDR_LASTUPDATETIME: /* When last saved */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_whenlastsaved = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-	  	case HDR_LASTUPDATEUSERHOST: /* and by whom */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_wholastsaved = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-	  	case HDR_LASTUPDATEAPPLICATION: /* and by what */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_whatlastsaved = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-    default:
-      // ignore fields that may be addded by future versions
-      break;
-    }
-  }
-  while (type != HDR_END);
-
-  return SUCCESS;
+    return SUCCESS;
 }
 
 bool PWSfileV3::ToUTF8(const CString &data)
