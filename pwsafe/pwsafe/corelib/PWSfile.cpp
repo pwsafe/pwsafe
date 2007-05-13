@@ -179,7 +179,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, CMyString &data)
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-    CMyString str(LPCTSTR(buffer), buffer_len);
+    CMyString str(LPCTSTR(buffer), (buffer_len / sizeof(TCHAR)));
     data = str;
     trashMemory(buffer, buffer_len);
     delete[] buffer;
@@ -485,7 +485,7 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 {
 	bool bResult = false;
 	// read locker data ("user@machine:nnnnnnnn") from file
-	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
+	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + 11];
 	// flags here counter (my) intuition, but see
 	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
 	HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
@@ -500,7 +500,7 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 					&bytesRead, NULL);
 		CloseHandle(h2);
 		if (bytesRead > 0) {
-			lockerStr[bytesRead] = TCHAR('\0');
+			lockerStr[bytesRead/sizeof(TCHAR)] = TCHAR('\0');
 			locker = lockerStr;
 			bResult = true;
 		} else { // read failed for some reason
