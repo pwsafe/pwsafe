@@ -186,17 +186,14 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
  * Reads an encrypted record into buffer.
  * The first block of the record contains the encrypted record length
  * We have the usual ugly problem of fixed buffer lengths in C/C++.
- * Don't want to use CStrings, for future portability.
- * Best solution would be STL strings, but not enough experience with them (yet)
- * So for the meantime, we're going to allocate the buffer here, to ensure that it's long
- * enough.
+ * allocate the buffer here, to ensure that it's long enough.
  * *** THE CALLER MUST delete[] IT AFTER USE *** UGH++
  *
  * (unless buffer_len is zero)
  *
- * An alternative to STL strings would be to accept a buffer, and allocate a replacement
- * iff the buffer is too small. This is serious ugliness, but should be considered if
- * the new/delete performance hit is too big.
+ * Note that the buffer is a byte array, and buffer_len is number of
+ * bytes. This means that any data can be passed, and we don't
+ * care at this level if strings are char or wchar_t.
  *
  * If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
  * and -1 is returned if it matches. (used in V3)
