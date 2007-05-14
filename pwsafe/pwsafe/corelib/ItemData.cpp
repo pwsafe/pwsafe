@@ -594,7 +594,6 @@ CItemData::CreatePWHistoryList(BOOL &status,
   	return (len != 0 ? 1 : 0);
 
   TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
-  TCHAR *lpszPW;
 
 #if _MSC_VER >= 1400
   int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
@@ -602,7 +601,7 @@ CItemData::CreatePWHistoryList(BOOL &status,
   int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #endif
   if (iread != 3)
-	return 1;
+    return 1;
 
   lpszPWHistory += 5;
   for (int i = 0; i < n; i++) {
@@ -619,8 +618,8 @@ CItemData::CreatePWHistoryList(BOOL &status,
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
     if (pwh_ent.changedate.IsEmpty()) {
-		//                       1234567890123456789
-		pwh_ent.changedate = _T("1970-01-01 00:00:00");
+		  //                       1234567890123456789
+      pwh_ent.changedate = _T("1970-01-01 00:00:00");
     }
     lpszPWHistory += 8;
 #if _MSC_VER >= 1400
@@ -633,19 +632,7 @@ CItemData::CreatePWHistoryList(BOOL &status,
     	break;
     }
     lpszPWHistory += 4;
-    lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
-#if _MSC_VER >= 1400
-    memcpy_s(lpszPW, ipwlen + sizeof(TCHAR), lpszPWHistory, ipwlen);
-#else
-    memcpy(lpszPW, lpszPWHistory, ipwlen);
-#endif
-    lpszPW[ipwlen] = TCHAR('\0');
-    tmp.ReleaseBuffer();
-    if (tmp.GetLength() != ipwlen) {
-    	i_error = 1;
-    	break;
-    }
-    pwh_ent.password = tmp;
+    pwh_ent.password = CMyString(lpszPWHistory, ipwlen);
     lpszPWHistory += ipwlen;
     pPWHistList->push_back(pwh_ent);
   }
