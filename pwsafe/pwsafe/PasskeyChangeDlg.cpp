@@ -31,6 +31,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
@@ -41,7 +42,6 @@ CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
    m_oldpasskey = _T("");
 }
 
-
 void
 CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -50,7 +50,6 @@ CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_NEWPASSKEY, (CString &)m_newpasskey);
    DDX_Text(pDX, IDC_OLDPASSKEY, (CString &)m_oldpasskey);
 }
-
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, super)
    ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -72,10 +71,12 @@ CPasskeyChangeDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
   SetPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   SetPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
+  ((CEdit*)GetDlgItem(IDC_CONFIRMNEW))->SetPasswordChar(PSSWDCHAR);
+  ((CEdit*)GetDlgItem(IDC_NEWPASSKEY))->SetPasswordChar(PSSWDCHAR);
+  ((CEdit*)GetDlgItem(IDC_OLDPASSKEY))->SetPasswordChar(PSSWDCHAR);
 
   return TRUE;
 }
-
 
 void
 CPasskeyChangeDlg::OnOK() 
@@ -117,13 +118,11 @@ CPasskeyChangeDlg::OnOK()
   }
 }
 
-
 void
 CPasskeyChangeDlg::OnCancel() 
 {
    super::OnCancel();
 }
-
 
 void
 CPasskeyChangeDlg::OnHelp() 
@@ -136,7 +135,6 @@ CPasskeyChangeDlg::OnHelp()
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 #endif
 }
-
 
 #if defined(POCKET_PC)
 /************************************************************************/
@@ -158,7 +156,3 @@ void CPasskeyChangeDlg::OnPasskeySetfocus()
 	DisableWordCompletion( m_hWnd );
 }
 #endif
-
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
