@@ -83,6 +83,9 @@ public:
   typedef std::bitset<LAST> FieldBits;
 
   static void SetSessionKey(); // call exactly once per session
+
+  static bool IsTextField(unsigned char t);
+
    //Construction
   CItemData();
 
@@ -223,6 +226,14 @@ private:
   void SetField(CItemField &field, const unsigned char *value,
                 unsigned int length);
 };
+
+inline bool CItemData::IsTextField(unsigned char t)
+{
+    return !(t == UUID || t == CTIME || t == PMTIME ||
+             t == ATIME || t == LTIME || t == RMTIME ||
+             t == END);
+}
+
 
 #endif
 //-----------------------------------------------------------------------------
