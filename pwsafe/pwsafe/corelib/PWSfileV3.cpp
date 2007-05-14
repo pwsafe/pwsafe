@@ -253,40 +253,6 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   return status;
 }
 
-size_t
-PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
-{
-  CMyString text;
-  size_t numRead = PWSfile::ReadCBC(type, text);
-
-  if (numRead > 0) {
-    LPCTSTR d = LPCTSTR(text);
-    m_hmac.Update((const unsigned char *)d, text.GetLength());
-    // HACK - following types non-utf-8
-    if (type == CItemData::UUID ||
-        type == CItemData::CTIME || type == CItemData::PMTIME ||
-        type == CItemData::ATIME || type == CItemData::LTIME ||
-        type == CItemData::RMTIME ||
-        type == HDR_VERSION ||
-        type == HDR_UUID ||
-        !m_useUTF8 // E.g., win98 doesn't grok utf8
-        ) {
-      data = text;
-      return numRead;
-    }
-    bool status;
-    m_utf8 = (unsigned char *)d;
-    m_utf8Len = text.GetLength();
-    m_utf8[m_utf8Len] = '\0';
-    status = FromUTF8(data);
-    m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-    if (!status)
-      TRACE(_T("FromUTF8(%s) failed\n"), text);
-  }
-
-  return numRead;
-}
-
 size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
                        unsigned int &length)
 {
@@ -301,88 +267,96 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
 
 int PWSfileV3::ReadRecord(CItemData &item)
 {
-  ASSERT(m_fd != NULL);
-  ASSERT(m_curversion == V30);
+    ASSERT(m_fd != NULL);
+    ASSERT(m_curversion == V30);
 
-  CMyString tempdata;  
-  signed long numread = 0;
-  unsigned char type;
+    CMyString tempdata;  
+    signed long numread = 0;
+    unsigned char type;
 
-  int emergencyExit = 255; // to avoid endless loop.
-  signed long fieldLen; // <= 0 means end of file reached
-  bool endFound = false; // set to true when record end detected - happy end
-  time_t t;
+    int emergencyExit = 255; // to avoid endless loop.
+    signed long fieldLen; // <= 0 means end of file reached
+    bool endFound = false; // set to true when record end detected - happy end
+    time_t t;
 
-  do {
-      fieldLen = static_cast<signed long>(ReadCBC(type, tempdata));
-      if (fieldLen > 0) {
-      numread += fieldLen;
-      switch (type) {
-      case CItemData::TITLE:
-        item.SetTitle(tempdata); break;
-      case CItemData::USER:
-        item.SetUser(tempdata); break;
-      case CItemData::PASSWORD:
-        item.SetPassword(tempdata); break;
-      case CItemData::NOTES:
-        item.SetNotes(tempdata); break;
-      case CItemData::END:
-        endFound = true; break;
-      case CItemData::UUID: {
-        LPCTSTR ptrU = LPCTSTR(tempdata);
-        uuid_array_t uuid_array;
-        for (unsigned i = 0; i < sizeof(uuid_array); i++)
-          uuid_array[i] = (unsigned char)ptrU[i];
-        item.SetUUID(uuid_array); break;
-      }
-      case CItemData::GROUP:
-        item.SetGroup(tempdata); break;
-      case CItemData::URL:
-        item.SetURL(tempdata); break;
-      case CItemData::AUTOTYPE:
-        item.SetAutoType(tempdata); break;
-      case CItemData::CTIME: {
-		LPCTSTR ptrC = LPCTSTR(tempdata);
-        memcpy(&t, ptrC, sizeof(t));
-		item.SetCTime(t); break;
-		}
-	  case CItemData::PMTIME: {
-        LPCTSTR ptrPM = LPCTSTR(tempdata);
-		memcpy(&t, ptrPM, sizeof(t));
-		item.SetPMTime(t); break;
-      }
-	  case CItemData::ATIME: {
-        LPCTSTR ptrA = LPCTSTR(tempdata);
-		memcpy(&t, ptrA, sizeof(t));
-        item.SetATime(t); break;
-		}
-	  case CItemData::LTIME: {
-        LPCTSTR ptrL = LPCTSTR(tempdata);
-		memcpy(&t, ptrL, sizeof(t));
-        item.SetLTime(t); break;
-		}
-	  case CItemData::RMTIME: {
-        LPCTSTR ptrRM = LPCTSTR(tempdata);
-		memcpy(&t, ptrRM, sizeof(t));
-        item.SetRMTime(t); break;
-		}
-	  case CItemData::PWHIST: {
-        item.SetPWHistory(tempdata); break;
-		}
-      // just silently ignore fields we don't support.
-      // this is forward compatability...
-      case CItemData::POLICY:
-      default:
-        // XXX Set a flag here so user can be warned that
-        // XXX we read a file format we don't fully support
-        break;
-      } // switch
-    } // if (fieldLen > 0)
-  } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-  if (numread > 0)
-    return SUCCESS;
-  else
-    return END_OF_FILE;
+    do {
+        fieldLen = static_cast<signed long>(ReadCBC(type, m_utf8,
+                                                    (unsigned int &)m_utf8Len));
+        if (m_utf8 != NULL) m_utf8[m_utf8Len] = '\0';
+
+        if (CItemData::IsTextField(type)) {
+            bool utf8status = FromUTF8(tempdata);
+            if (!utf8status)
+                TRACE(_T("PWSfileV3::ReadRecord(): FromUTF failed!\n"));
+        }
+
+        if (fieldLen > 0) {
+            numread += fieldLen;
+            switch (type) {
+                case CItemData::TITLE:
+                    item.SetTitle(tempdata); break;
+                case CItemData::USER:
+                    item.SetUser(tempdata); break;
+                case CItemData::PASSWORD:
+                    item.SetPassword(tempdata); break;
+                case CItemData::NOTES:
+                    item.SetNotes(tempdata); break;
+                case CItemData::END:
+                    endFound = true; break;
+                case CItemData::UUID: {
+                    uuid_array_t uuid_array;
+                    ASSERT(m_utf8Len == sizeof(uuid_array));
+                    for (unsigned i = 0; i < sizeof(uuid_array); i++)
+                        uuid_array[i] = m_utf8[i];
+                    item.SetUUID(uuid_array); break;
+                }
+                case CItemData::GROUP:
+                    item.SetGroup(tempdata); break;
+                case CItemData::URL:
+                    item.SetURL(tempdata); break;
+                case CItemData::AUTOTYPE:
+                    item.SetAutoType(tempdata); break;
+                case CItemData::CTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetCTime(t); break;
+                case CItemData::PMTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetPMTime(t); break;
+                case CItemData::ATIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetATime(t); break;
+                case CItemData::LTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetLTime(t); break;
+                case CItemData::RMTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetRMTime(t); break;
+                case CItemData::PWHIST:
+                    item.SetPWHistory(tempdata); break;
+
+                    // just silently ignore fields we don't support.
+                    // this is forward compatability...
+                case CItemData::POLICY:
+                default:
+                    // XXX Set a flag here so user can be warned that
+                    // XXX we read a file format we don't fully support
+                    break;
+            } // switch
+        } // if (fieldLen > 0)
+        if (m_utf8 != NULL) {
+            trashMemory(m_utf8, m_utf8Len * sizeof(m_utf8[0]));
+            delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;
+        }
+    } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
+    if (numread > 0)
+        return SUCCESS;
+    else
+        return END_OF_FILE;
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,

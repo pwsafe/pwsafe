@@ -330,6 +330,31 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
   }
 }
 
+size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
+{
+
+  unsigned char *buffer = NULL;
+  unsigned int buffer_len = 0;
+  size_t retval;
+
+  ASSERT(m_fish != NULL && m_IV != NULL);
+  retval = _readcbc(m_fd, buffer, buffer_len, type,
+                    m_fish, m_IV, m_terminal);
+
+  if (buffer_len > 0) {
+    CMyString str(LPCTSTR(buffer), buffer_len);
+    data = str;
+    trashMemory(buffer, buffer_len);
+    delete[] buffer;
+  } else {
+    data = _T("");
+    // no need to delete[] buffer, since _readcbc will not allocate if
+    // buffer_len is zero
+  }
+  return retval;
+}
+
+
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {
     ASSERT(m_fd != NULL);

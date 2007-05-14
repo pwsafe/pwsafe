@@ -89,7 +89,6 @@ class PWSfile {
   virtual size_t WriteCBC(unsigned char type, const CString &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           unsigned int length);
-  virtual size_t ReadCBC(unsigned char &type, CMyString &data);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          unsigned int &length);
   const CMyString m_filename;
