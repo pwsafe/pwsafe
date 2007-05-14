@@ -38,6 +38,7 @@ PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
     || (osvi.dwMajorVersion == 3 && osvi.dwMinorVersion == 51); // NT 3.51
   m_useUTF8 = !oldOS;
 #endif
+  m_useUTF8 = true;
 }
 
 PWSfileV3::~PWSfileV3()
