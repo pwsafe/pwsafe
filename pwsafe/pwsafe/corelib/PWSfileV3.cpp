@@ -667,15 +667,16 @@ int PWSfileV3::ReadHeader()
                 break;
 
             case HDR_NDPREFS: /* Non-default user preferences */
-            {
-                m_utf8 = fieldData;
-                m_utf8Len = fieldLength;
-                m_utf8[m_utf8Len] = '\0';
-                bool status = FromUTF8(m_prefString);
-                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-                if (!status)
-                    TRACE(_T("FromUTF8(m_prefString) failed\n"));
-            }
+                if (fieldLength != 0) {
+                    m_utf8 = fieldData;
+                    m_utf8Len = fieldLength;
+                    m_utf8[m_utf8Len] = '\0';
+                    bool status = FromUTF8(m_prefString);
+                    m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
+                    if (!status)
+                        TRACE(_T("FromUTF8(m_prefString) failed\n"));
+                } else
+                    m_prefString = _T("");
             break;
 
             case HDR_DISPSTAT: /* Tree Display Status */
