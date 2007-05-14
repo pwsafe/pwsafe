@@ -670,6 +670,7 @@ int PWSfileV3::ReadHeader()
             {
                 m_utf8 = fieldData;
                 m_utf8Len = fieldLength;
+                m_utf8[m_utf8Len] = '\0';
                 bool status = FromUTF8(m_prefString);
                 m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
                 if (!status)
