@@ -595,13 +595,14 @@ int PWSfileV3::ReadHeader()
     m_fish = new TwoFish(m_key, sizeof(m_key));
 
     unsigned char fieldType;
-    unsigned int fieldLength = 0;
-    unsigned char *fieldData = NULL;
     CMyString text;
     size_t numRead;
+    bool utf8status;
+
+    m_utf8 = NULL; m_utf8Len = 0;
 
     do {
-        numRead = ReadCBC(fieldType, fieldData, fieldLength);
+        numRead = ReadCBC(fieldType, m_utf8, (unsigned int &)m_utf8Len);
 
         if (numRead < 0) {
             Close();
@@ -612,107 +613,89 @@ int PWSfileV3::ReadHeader()
             case HDR_VERSION: /* version */
                 // in Beta, VersionNum was an int (4 bytes) instead of short (2)
                 // This hack keeps bwd compatability.
-                if (fieldLength != sizeof(VersionNum) &&
-                    fieldLength != sizeof(int)) {
-                    delete[] fieldData;
+                if (m_utf8Len != sizeof(VersionNum) &&
+                    m_utf8Len != sizeof(int)) {
+                    delete[] m_utf8; m_utf8 = NULL;
                     Close();
                     return FAILURE;
                 }
-                if (fieldData[1] !=
+                if (m_utf8[1] !=
                     (unsigned char)((VersionNum & 0xff00) >> 8)) {
                     //major version mismatch
-                    delete[] fieldData;
+                    delete[] m_utf8; m_utf8 = NULL;
                     Close();
                     return UNSUPPORTED_VERSION;
                 }
                 // for now we assume that minor version changes will
                 // be backward-compatible
-                m_nCurrentMajorVersion = (unsigned short)fieldData[1];
-                m_nCurrentMinorVersion = (unsigned short)fieldData[0];
+                m_nCurrentMajorVersion = (unsigned short)m_utf8[1];
+                m_nCurrentMinorVersion = (unsigned short)m_utf8[0];
                 break;
 
             case HDR_UUID: /* UUID */
                 // Read UUID XXX should save into data member
-                if (fieldLength != sizeof(uuid_array_t)) {
-                    delete[] fieldData;
+                if (m_utf8Len != sizeof(uuid_array_t)) {
+                    delete[] m_utf8; m_utf8 = NULL;
                     Close();
                     return FAILURE;
                 }
-                memcpy(m_file_uuid_array, fieldData, sizeof(m_file_uuid_array));
+                memcpy(m_file_uuid_array, m_utf8, sizeof(m_file_uuid_array));
                 break;
 
             case HDR_NDPREFS: /* Non-default user preferences */
-                if (fieldLength != 0) {
-                    m_utf8 = fieldData;
-                    m_utf8Len = fieldLength;
-                    m_utf8[m_utf8Len] = '\0';
-                    bool status = FromUTF8(m_prefString);
-                    m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-                    if (!status)
+                if (m_utf8Len != 0) {
+                    if (m_utf8 != NULL)
+                        m_utf8[m_utf8Len] = '\0';
+                    utf8status = FromUTF8(m_prefString);
+                    if (!utf8status)
                         TRACE(_T("FromUTF8(m_prefString) failed\n"));
                 } else
                     m_prefString = _T("");
             break;
 
             case HDR_DISPSTAT: /* Tree Display Status */
-            {
-                m_utf8 = fieldData;
-                m_utf8Len = fieldLength;
-                m_utf8[m_utf8Len] = '\0';
-                bool status = FromUTF8(text);
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
                 m_file_displaystatus = CString(text);
-                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-                if (!status)
+                if (!utf8status)
                     TRACE(_T("FromUTF8(m_file_displaystatus) failed\n"));
-            }
-            break;
+                break;
 
             case HDR_LASTUPDATETIME: /* When last saved */
-            {
                 // THIS SHOULDN'T BE A STRING !!!
                 // BROKE SPEC !!!
-                m_utf8 = fieldData;
-                m_utf8Len = fieldLength;
-                m_utf8[m_utf8Len] = '\0';
-                bool status = FromUTF8(text);
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
                 m_whenlastsaved = CString(text);
-                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-                if (!status)
+                if (!utf8status)
                     TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
-            }
-            break;
+                break;
 
             case HDR_LASTUPDATEUSERHOST: /* and by whom */
-            {
-                m_utf8 = fieldData;
-                m_utf8Len = fieldLength;
-                m_utf8[m_utf8Len] = '\0';
-                bool status = FromUTF8(text);
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
                 m_wholastsaved = CString(text);
-                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-                if (!status)
+                if (!utf8status)
                     TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
-            }
-            break;
+                break;
 
             case HDR_LASTUPDATEAPPLICATION: /* and by what */
-            {
-                m_utf8 = fieldData;
-                m_utf8Len = fieldLength;
-                m_utf8[m_utf8Len] = '\0';
-                bool status = FromUTF8(text);
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
                 m_whatlastsaved = CString(text);
-                m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-                if (!status)
+                if (!utf8status)
                     TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
-            }
             break;
 
             default:
                 // ignore fields that may be addded by future versions
                 break;
         }
-        delete[] fieldData; fieldData = NULL; fieldLength = 0;
+        delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;
     } while (fieldType != HDR_END);
 
     return SUCCESS;
