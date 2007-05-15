@@ -29,8 +29,6 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
     mem1[x] ^= mem2[x];
 }
 
-
-
 //-----------------------------------------------------------------------------
 /*
   Note: A bunch of the encryption-related routines may not be Unicode
@@ -1032,4 +1030,89 @@ PWSUtil::GetTimeStamp()
 	cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
 
 	return cs_now;
+}
+
+/*
+
+  Produce a printable version of memory dump (hex + ascii)
+
+  paramaters:
+    memory  - pointer to memory to format
+    length  - length to format
+    maxnum  - maximum characters dumped per line
+
+  return:
+    CString containing output buffer
+*/
+CString
+PWSUtil::HexDump(unsigned char *pmemory, const int length, 
+                 const CString cs_prefix, const int maxnum)
+{
+  CString cs_buffer(_T(""));
+#ifdef _DEBUG
+  unsigned char *pmem;
+  CString cs_outbuff, cs_hexbuff, cs_charbuff;
+  int i, j, len(length);
+  unsigned char c;
+
+  pmem = pmemory;
+  while (len > 0) {
+    // Show offset for this line.
+    cs_charbuff.Empty();
+    cs_hexbuff.Empty();
+    cs_outbuff.Format(_T("%s: %08x *"), cs_prefix, pmem);
+
+    // Format hex portion of line and save chars for ascii portion
+    if (len > maxnum)
+      j = maxnum;
+    else
+      j = len;
+
+    for (i = 0; i < j; i++) {
+      c = *pmem++;
+
+      if ((i % 4) == 0 && i != 0)
+        cs_outbuff += _T(' ');
+
+      cs_hexbuff.Format(_T("%02x"), c);
+      cs_outbuff += cs_hexbuff;
+
+      if (c >= 32 && c < 127)
+        cs_charbuff += (TCHAR)c;
+      else
+        cs_charbuff += _T('.');
+    }
+
+    j = maxnum - i;
+
+    // Fill out hex portion of short lines.
+    for (i = j; i > 0; i--) {
+      if ((i % 4) != 0)
+        cs_outbuff += _T("  ");
+      else
+        cs_outbuff += _T("   ");
+    }
+
+    // Add ASCII character portion to line.
+    cs_outbuff += _T("* |");
+    cs_outbuff += cs_charbuff;
+
+    // Fill out end of short lines.
+    for (i = j; i > 0; i--)
+      cs_outbuff += _T(' ');
+
+    cs_outbuff += _T('|');
+
+    // Next line
+    len -= maxnum;
+    if (len > 0)
+      cs_outbuff += _T('\n');
+
+    cs_buffer += cs_outbuff;
+  };
+#else
+  pmemory; length; cs_prefix; maxnum;
+#endif
+
+  return cs_buffer;
 }

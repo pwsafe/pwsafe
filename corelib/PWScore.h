@@ -173,5 +173,6 @@ class PWScore {
   CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
   uuid_array_t m_file_uuid_array;
   int m_nITER;
+  UnknownHeaderFieldList m_UHFL;
 };
 #endif /* __PWSCORE_H */

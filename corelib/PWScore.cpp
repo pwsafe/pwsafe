@@ -67,6 +67,9 @@ PWScore::~PWScore()
     trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
     delete[] m_passkey;
   }
+  if (!m_UHFL.empty()) {
+    m_UHFL.clear();
+  }
 }
 
 void
@@ -120,6 +123,9 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   // Re-use file's UUID and number of hash iterations
   out->SetFileUUID(m_file_uuid_array);
   out->SetFileHashIterations(m_nITER);
+
+  // Give PWSfileV3 the unknown headers to write out
+  out->SetUnknownHeaderFields(m_UHFL);
 
   // preferences are kept in header, which is written in OpenWriteFile,
   // so we need to update the prefernce string here
@@ -899,7 +905,7 @@ PWScore::ReadFile(const CMyString &a_filename,
     // Get file's UUID and number of hash iterations - in case we
     // rewrite file
     in->GetFileUUID(m_file_uuid_array);
-    in->GetFileHashIterations(m_nITER);
+    m_nITER = in->GetFileHashIterations();
 
     // Get pref string and tree display status & who saved when
     // all possibly empty!
@@ -951,6 +957,7 @@ PWScore::ReadFile(const CMyString &a_filename,
     if (status == PWSfile::SUCCESS && numRead > MAXDEMO)
         status = LIMIT_REACHED;
 #endif // DEMO
+    in->GetUnknownHeaderFields(m_UHFL);
     delete in;
     return status;
 }

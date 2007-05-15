@@ -148,6 +148,8 @@ public:
   static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   static const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   static CString GetTimeStamp();
+  static CString HexDump(unsigned char *pmemory, const int length,
+                         const CString cs_prefix = _T(""), const int maxnum = 16);
   static void IssueError(const CString &csFunction);
 };
 #endif /* __UTIL_H */

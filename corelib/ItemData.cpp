@@ -14,6 +14,8 @@
 #include "PWSrand.h"
 
 #include <time.h>
+#include <vector>
+#include <algorithm>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,6 +57,24 @@ CItemData::CItemData(const CItemData &that) :
   m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
+  if (!that.m_URFL.empty()) {
+    UnknownRecordFieldList::const_iterator vi_IterURFE;
+
+    for (vi_IterURFE = that.m_URFL.begin();
+         vi_IterURFE != that.m_URFL.end();
+         vi_IterURFE++) {
+       UnknownFieldEntry unkrfe = *vi_IterURFE;
+       m_URFL.push_back(unkrfe);
+    }
+  } else
+    m_URFL.clear();
+}
+
+CItemData::~CItemData()
+{
+  if (!m_URFL.empty()) {
+    m_URFL.clear();
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -673,6 +693,16 @@ CItemData::operator=(const CItemData &that)
     m_tttRMTime = that.m_tttRMTime;
     m_PWHistory = that.m_PWHistory;
     m_display_info = that.m_display_info;
+    if (!that.m_URFL.empty()) {
+      UnknownRecordFieldList::const_iterator vi_IterURFE;
+      for (vi_IterURFE = that.m_URFL.begin();
+           vi_IterURFE != that.m_URFL.end();
+           vi_IterURFE++) {
+         UnknownFieldEntry unkrfe = *vi_IterURFE;
+         m_URFL.push_back(unkrfe);
+      }
+    } else
+      m_URFL.clear();
 
     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   }
@@ -696,6 +726,7 @@ CItemData::Clear()
   m_tttLTime.Empty();
   m_tttRMTime.Empty();
   m_PWHistory.Empty();
+  m_URFL.clear();
 }
 
 int

@@ -117,7 +117,7 @@ PWSfile::PWSfile(const CMyString &filename, RWmode mode)
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
     m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL),
     m_file_displaystatus(_T("")), m_whenlastsaved(_T("")),
-	m_wholastsaved(_T("")), m_whatlastsaved(_T(""))
+    m_wholastsaved(_T("")), m_whatlastsaved(_T(""))
 {
 }
 
@@ -171,7 +171,6 @@ size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
 size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
                         unsigned int &length)
 {
-
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
   size_t retval;
@@ -491,15 +490,9 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 	return bResult;
 }
 
-
 void PWSfile::SetFileUUID(const uuid_array_t &file_uuid_array)
 {
   memcpy(m_file_uuid_array, file_uuid_array, sizeof(file_uuid_array));
-}
-
-void PWSfile::SetFileHashIterations(const int &nITER)
-{
-  m_nITER = nITER;
 }
 
 void PWSfile::GetFileUUID(uuid_array_t &file_uuid_array)
@@ -507,7 +500,30 @@ void PWSfile::GetFileUUID(uuid_array_t &file_uuid_array)
   memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
 }
 
-void PWSfile::GetFileHashIterations(int &nITER)
+void PWSfile::GetUnknownHeaderFields(UnknownHeaderFieldList &UHFL)
 {
-  nITER = m_nITER;
+  if (!m_UHFL.empty()) {
+    UnknownHeaderFieldList::const_iterator vi_IterUHFE;
+    for (vi_IterUHFE = m_UHFL.begin();
+         vi_IterUHFE != m_UHFL.end();
+         vi_IterUHFE++) {
+       UnknownFieldEntry unkhfe = *vi_IterUHFE;
+       UHFL.push_back(unkhfe);
+    }
+  } else
+    UHFL.clear();
+}
+
+void PWSfile::SetUnknownHeaderFields(UnknownHeaderFieldList &UHFL)
+{
+  if (!UHFL.empty()) {
+    UnknownHeaderFieldList::const_iterator vi_IterUHFE;
+    for (vi_IterUHFE = UHFL.begin();
+         vi_IterUHFE != UHFL.end();
+         vi_IterUHFE++) {
+       UnknownFieldEntry unkhfe = *vi_IterUHFE;
+       m_UHFL.push_back(unkhfe);
+    }
+  } else
+    m_UHFL.clear();
 }
