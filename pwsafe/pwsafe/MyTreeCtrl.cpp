@@ -357,7 +357,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       PWSprefs *prefs = PWSprefs::GetInstance();
       CString treeDispString;
       bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-      bool bShowPasswordInList = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+      bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
 
       treeDispString = newTitle;
       if (bShowUsernameInTree) {
@@ -365,7 +365,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
         treeDispString += newUser;
         treeDispString += _T("]");
 
-        if (bShowPasswordInList) {
+        if (bShowPasswordInTree) {
           treeDispString += _T(" {");
           treeDispString += newPassword;
           treeDispString += _T("}");
@@ -392,7 +392,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       if (bShowUsernameInTree) {
         ci->SetUser(newUser);
         ((DboxMain *)m_parent)->UpdateListItemUser(lindex, newUser);
-        if (bShowPasswordInList) {
+        if (bShowPasswordInTree) {
           ci->SetPassword(newPassword);
           ((DboxMain *)m_parent)->UpdateListItemPassword(lindex, newPassword);
         }

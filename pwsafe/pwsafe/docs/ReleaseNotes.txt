@@ -33,7 +33,7 @@ allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
 format) and for when comparing databases
 [1695968] "Advanced" option now available to improve Merge operation
 [1711524] "Show username in display tree" display option
-
+[] Maintain unknown fields in the database header andr records when DB saved
 
 Bugs fixed in 3.07
 =====================

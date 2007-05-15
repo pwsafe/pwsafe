@@ -14,6 +14,8 @@
 #include "Util.h"
 #include "ItemField.h"
 #include "UUIDGen.h"
+#include "UnknownField.h"
+
 #include <time.h> // for time_t
 #include <bitset>
 #include <vector>
@@ -43,6 +45,8 @@ struct PWHistEntry {
 
 typedef std::vector<PWHistEntry> PWHistList;
 
+typedef std::vector<UnknownFieldEntry> UnknownRecordFieldList;
+
 //-----------------------------------------------------------------------------
 
 /*
@@ -68,14 +72,18 @@ class CItemData
 public:
   enum {
     START = 0x00,
-    NAME = 0x00, UUID=0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
-	PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
-	POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
-    LAST, END = 0xff}; // field types, per formatV{2,3}.txt
+    NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
+    PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
+    POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
+    LAST,        // Start of unknown fields!
+    END = 0xff}; // field types, per formatV{2,3}.txt
 
   // For subgroup processing in GetPlainText from ExportTextXDlg
-  // SubGroup Function
-  enum {SGF_EQUALS = 1, SGF_NOTEQUAL, SGF_BEGINS, SGF_NOTBEGIN, SGF_ENDS, SGF_NOTEND, SGF_CONTAINS, SGF_NOTCONTAIN};
+  // SubGroup Function - if value used is negative, compare IS case sensitive
+  enum {SGF_EQUALS = 1, SGF_NOTEQUAL, 
+    SGF_BEGINS, SGF_NOTBEGIN, 
+    SGF_ENDS, SGF_NOTEND, 
+    SGF_CONTAINS, SGF_NOTCONTAIN};
   // SubGroup Object
   enum {SGO_GROUP, SGO_TITLE, SGO_USER, SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
 
@@ -90,6 +98,8 @@ public:
   CItemData();
 
    CItemData(const CItemData& stuffhere);
+
+   ~CItemData();
 
    //Data retrieval
    CMyString GetName() const; // V17 - deprecated - replaced by GetTitle & GetUser
@@ -180,6 +190,11 @@ public:
   
   BOOL WantEntry(const CString &subgroup_name, const int &iObject, 
                  const int &iFunction) const;
+  void SetUnknownRecordFieldList(UnknownRecordFieldList URFL);
+  UnknownRecordFieldList GetUnknownRecordFieldList()
+    {return m_URFL;}
+  // Save unknown record fields on read to put back on write unchanged
+  UnknownRecordFieldList m_URFL;
 
 private:
   CItemField m_Name;
@@ -231,9 +246,8 @@ inline bool CItemData::IsTextField(unsigned char t)
 {
     return !(t == UUID || t == CTIME || t == PMTIME ||
              t == ATIME || t == LTIME || t == RMTIME ||
-             t == END);
+             t >= LAST);
 }
-
 
 #endif
 //-----------------------------------------------------------------------------

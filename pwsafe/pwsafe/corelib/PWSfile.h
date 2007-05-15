@@ -17,6 +17,8 @@
 #include "MyString.h"
 #include "UUIDGen.h"
 
+typedef std::vector<UnknownFieldEntry> UnknownHeaderFieldList;
+
 #define MIN_HASH_ITERATIONS 2048
 
 class Fish;
@@ -62,9 +64,11 @@ class PWSfile {
   virtual int ReadRecord(CItemData &item) = 0;
   void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
   void SetFileUUID(const uuid_array_t &file_uuid_array);
-  void SetFileHashIterations(const int &nITER);
+  void SetFileHashIterations(const int &nITER)
+    {m_nITER = nITER;}
   void GetFileUUID(uuid_array_t &file_uuid_array);
-  void GetFileHashIterations(int &nITER);
+  int GetFileHashIterations()
+    {return m_nITER;}
   // The prefstring is read/written along with the rest of the file,
   // see code for details on where it's kept.
   void SetPrefString(const CMyString &prefStr) {m_prefString = prefStr;}
@@ -82,6 +86,8 @@ class PWSfile {
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
   unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
   void SetCurVersion(VERSION v) {m_curversion = v;}
+  void GetUnknownHeaderFields(UnknownHeaderFieldList &UHFL);
+  void SetUnknownHeaderFields(UnknownHeaderFieldList &UHFL);
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
@@ -111,5 +117,7 @@ class PWSfile {
   bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
   uuid_array_t m_file_uuid_array;
   static int m_nITER;
+  // Save unknown header fields on read to put back on write unchanged
+  UnknownHeaderFieldList m_UHFL;
 };
 #endif /* __PWSFILE_H */

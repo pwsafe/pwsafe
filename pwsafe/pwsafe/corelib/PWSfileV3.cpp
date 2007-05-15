@@ -8,6 +8,7 @@
 #include "PWSfileV3.h"
 #include "UUIDGen.h"
 #include "PWSrand.h"
+#include "util.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -43,18 +44,18 @@ PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
 
 PWSfileV3::~PWSfileV3()
 {
-    if (m_utf8 != NULL) {
-        trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
-        delete[] m_utf8;
-    }
-    if (m_wc != NULL) {
-        trashMemory(m_wc, m_wcMaxLen);
-        delete[] m_wc;
-    }
-    if (m_tmp != NULL) {
-        trashMemory(m_tmp, m_tmpMaxLen*sizeof(m_tmp[0]));
-        delete[] m_tmp;
-    }
+  if (m_utf8 != NULL) {
+    trashMemory(m_utf8, m_utf8MaxLen * sizeof(m_utf8[0]));
+    delete[] m_utf8;
+  }
+  if (m_wc != NULL) {
+    trashMemory(m_wc, m_wcMaxLen);
+    delete[] m_wc;
+  }
+  if (m_tmp != NULL) {
+    trashMemory(m_tmp, m_tmpMaxLen * sizeof(m_tmp[0]));
+    delete[] m_tmp;
+  }
 }
 
 int PWSfileV3::Open(const CMyString &passkey)
@@ -86,7 +87,7 @@ int PWSfileV3::Close()
     if (m_fd == NULL)
         return SUCCESS; // idempotent
     if (m_utf8 != NULL) {
-        trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
+        trashMemory(m_utf8, m_utf8MaxLen * sizeof(m_utf8[0]));
         delete[] m_utf8; m_utf8 = NULL;
         m_utf8Len = m_utf8MaxLen = 0;
     }
@@ -204,7 +205,6 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
   return PWSfile::WriteCBC(type, data, length);
 }
 
-
 int PWSfileV3::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
@@ -248,6 +248,17 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetPWHistory();
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::PWHIST, tmp);
+
+  if (!item.m_URFL.empty()) {
+    UnknownRecordFieldList::const_iterator vi_IterURFE;
+    for (vi_IterURFE = item.m_URFL.begin();
+         vi_IterURFE != item.m_URFL.end();
+         vi_IterURFE++) {
+       UnknownFieldEntry unkrfe = *vi_IterURFE;
+       WriteCBC(unkrfe.uc_Type, unkrfe.uc_pUField, (unsigned int)unkrfe.st_length);
+    }
+  }
+
   WriteCBC(CItemData::END, _T(""));
 
   return status;
@@ -339,12 +350,27 @@ int PWSfileV3::ReadRecord(CItemData &item)
                 case CItemData::PWHIST:
                     item.SetPWHistory(tempdata); break;
 
-                    // just silently ignore fields we don't support.
-                    // this is forward compatability...
                 case CItemData::POLICY:
                 default:
-                    // XXX Set a flag here so user can be warned that
-                    // XXX we read a file format we don't fully support
+                    // just silently save fields we don't support.
+                    // We ensure copy is NULL terminated
+                    UnknownFieldEntry unkrfe;
+                    unkrfe.uc_Type = type;
+                    unkrfe.st_length = m_utf8Len;
+                    unkrfe.uc_pUField = (unsigned char *)malloc(m_utf8Len + 1);
+                    memcpy(unkrfe.uc_pUField, m_utf8, m_utf8Len);
+                    unkrfe.uc_pUField[m_utf8Len] = '\0';
+                    item.m_URFL.push_back(unkrfe);
+
+                    CString cs_timestamp;
+                    cs_timestamp = PWSUtil::GetTimeStamp();
+                    TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d, value:\n"),
+                               cs_timestamp, item.GetGroup(), item.GetTitle(), item.GetUser(), 
+                               unkrfe.uc_Type, unkrfe.st_length);
+                    CString cs_hexdump;
+                    cs_hexdump = PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length,
+                                                  cs_timestamp);
+                    TRACE(_T("%s\n"), cs_hexdump);
                     break;
             } // switch
         } // if (fieldLen > 0)
@@ -486,7 +512,12 @@ int PWSfileV3::WriteHeader()
   m_nCurrentMinorVersion = (unsigned short) (VersionNum & 0xff);
 
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
-  
+ 
+  if (numWritten <= 0) {
+    Close();
+    return FAILURE;
+  }
+ 
   // Write UUID
   uuid_array_t file_uuid_array;
   memset(file_uuid_array, 0x00, sizeof(file_uuid_array));
@@ -496,9 +527,9 @@ int PWSfileV3::WriteHeader()
     uuid.GetUUID(m_file_uuid_array);
   }
   
-  numWritten += WriteCBC(HDR_UUID, m_file_uuid_array, sizeof(m_file_uuid_array));
+  numWritten = WriteCBC(HDR_UUID, m_file_uuid_array, sizeof(m_file_uuid_array));
 
-  if (numWritten <= 0) { // WriteCBC writes at least 2 blocks per datum.
+  if (numWritten <= 0) {
     Close();
     return FAILURE;
   }
@@ -557,8 +588,21 @@ int PWSfileV3::WriteHeader()
     m_whatlastsaved = cs_what;
   }
 
+  if (!m_UHFL.empty()) {
+    UnknownHeaderFieldList::iterator vi_IterUHFE;
+    for (vi_IterUHFE = m_UHFL.begin();
+         vi_IterUHFE != m_UHFL.end();
+         vi_IterUHFE++) {
+       UnknownFieldEntry &unkhfe = *vi_IterUHFE;
+       numWritten = WriteCBC(unkhfe.uc_Type, unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
+       if (numWritten <= 0) {
+         Close();
+         return FAILURE;
+       }
+    }
+  }
+
   // Write zero-length end-of-record type item
-  // for future-proof (skip possible additional fields in read)
   WriteCBC(HDR_END, NULL, 0);
 
   return SUCCESS;
@@ -633,7 +677,6 @@ int PWSfileV3::ReadHeader()
                 break;
 
             case HDR_UUID: /* UUID */
-                // Read UUID XXX should save into data member
                 if (m_utf8Len != sizeof(uuid_array_t)) {
                     delete[] m_utf8; m_utf8 = NULL;
                     Close();
@@ -689,10 +732,29 @@ int PWSfileV3::ReadHeader()
                 m_whatlastsaved = CString(text);
                 if (!utf8status)
                     TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
-            break;
+                break;
+
+            case HDR_END: /* process END so not to treat it as 'unknown' */
+                break;
 
             default:
-                // ignore fields that may be addded by future versions
+                // Save unknown fields that may be addded by future versions
+                UnknownFieldEntry unkhfe;
+                unkhfe.uc_Type = fieldType;
+                unkhfe.st_length = m_utf8Len;
+                unkhfe.uc_pUField = (unsigned char *)malloc(m_utf8Len + 1);
+                memcpy(unkhfe.uc_pUField, m_utf8, m_utf8Len);
+                unkhfe.uc_pUField[m_utf8Len] = '\0';
+                m_UHFL.push_back(unkhfe);
+
+                CString cs_timestamp;
+                cs_timestamp = PWSUtil::GetTimeStamp();
+                TRACE(_T("%s: Header has unknown field: %02x, length %d, value:\n"), 
+                          cs_timestamp, (int)unkhfe.uc_Type, (int)unkhfe.st_length);
+                CString cs_hexdump;
+                cs_hexdump = PWSUtil::HexDump(unkhfe.uc_pUField, (int)unkhfe.st_length,
+                                              cs_timestamp);
+                TRACE(_T("%s\n"), cs_hexdump);
                 break;
         }
         delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;
@@ -774,7 +836,7 @@ bool PWSfileV3::ToUTF8(const CString &data)
                                     LPSTR(m_utf8), mbLen, // buffer and length
                                     NULL,NULL);   // use system default for unmappables
     ASSERT(m_utf8Len != 0);
-    m_utf8Len--; // remove uneeded null termination
+    m_utf8Len--; // remove unneeded null termination
     return true;
 }
 
@@ -850,7 +912,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     // Allocate buffer (if previous allocation was smaller)
     if (mbLen > m_tmpMaxLen) {
         if (m_tmp != NULL)
-            trashMemory(m_tmp, m_utf8MaxLen);
+            trashMemory(m_tmp, m_tmpMaxLen);
         delete[] m_tmp;
         m_tmp = new unsigned char[mbLen];
         m_tmpMaxLen = mbLen;
@@ -868,7 +930,6 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     ASSERT(data.GetLength() != 0);
     return true;
 }
-
 
 bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
 {

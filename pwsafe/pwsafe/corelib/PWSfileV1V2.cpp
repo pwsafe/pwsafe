@@ -332,7 +332,6 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
 
 size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
 {
-
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
   size_t retval;
@@ -353,7 +352,6 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
   }
   return retval;
 }
-
 
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {
@@ -427,8 +425,6 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
                         case CItemData::RMTIME:
                         case CItemData::POLICY:
                         default:
-                            // XXX Set a flag here so user can be warned that
-                            // XXX we read a file format we don't fully support
                             break;
                     } // switch
                 } // if (fieldLen > 0)
