@@ -845,6 +845,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 		lpszPWHistory += 1;
 		pwleft -= 1;
 
+    tmp = CMyString(lpszPWHistory, 20);
 		lpszPW = tmp.GetBuffer(20);
 #if _MSC_VER >= 1400
 		memcpy_s(lpszPW, 20, lpszPWHistory, 19);
@@ -900,7 +901,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 			break;
 		}
 
-		CMyString tmp;
+    tmp.Empty();
 		lpszPW = tmp.GetBuffer(ipwlen + 1);
 #if _MSC_VER >= 1400
 		memcpy_s(lpszPW, ipwlen + 1, lpszPWHistory, ipwlen);
