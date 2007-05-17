@@ -273,6 +273,21 @@ PWScore::WritePlaintextFile(const CMyString &filename,
   return SUCCESS;
 }
 
+static void WriteXMLTime(ofstreamT &of, int indent, const TCHAR *name, time_t t)
+{
+    int i;
+    const CString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+
+    for (i = 0; i < indent; i++) of << _T("\t");
+    of << _T("<") << name << _T(">") << endl;
+    for (i = 0; i <= indent; i++) of << _T("\t");
+    of << _T("<date>") << LPCTSTR(tmp.Left(10)) << _T("</date>") << endl;
+    for (i = 0; i <= indent; i++) of << _T("\t");
+    of << _T("<time>") << LPCTSTR(tmp.Right(8)) << _T("</time>") << endl;
+    for (i = 0; i < indent; i++) of << _T("\t");
+    of << _T("</") << name << _T(">") << endl;
+}
+
 int
 PWScore::WriteXMLFile(const CMyString &filename,
                       const CItemData::FieldBits &bsFields,
@@ -280,12 +295,12 @@ PWScore::WriteXMLFile(const CMyString &filename,
                       const int &subgroup_object, const int &subgroup_function,
                       const TCHAR delimiter, const ItemList *il)
 {
-	ofstream of(filename);
+	ofstreamT of(filename);
 
 	if (!of)
 		return CANT_OPEN_FILE;
 
-	CMyString tmp, pwh;
+	CMyString pwh, tmp;
 	CString cs_tmp;
 	uuid_array_t uuid_array;
 
@@ -319,14 +334,14 @@ PWScore::WriteXMLFile(const CMyString &filename,
 	tmp = m_currfile;
 	tmp.Replace(_T("&"), _T("&amp;"));
 	of << _T("delimiter=\"") << delimiter << _T("\"") << endl;
-	of << _T("Database=\"") << tmp << _T("\"") << endl;
-	of << _T("ExportTimeStamp=\"") << now << _T("\"") << endl;
+	of << _T("Database=\"") << LPCTSTR(tmp) << _T("\"") << endl;
+	of << _T("ExportTimeStamp=\"") << LPCTSTR(now) << _T("\"") << endl;
 	cs_tmp.Format(_T("%d.%02d"), m_nCurrentMajorVersion, m_nCurrentMinorVersion);
-	of << _T("FromDatabaseFormat=\"") << cs_tmp << _T("\"") << endl;
+	of << _T("FromDatabaseFormat=\"") << LPCTSTR(cs_tmp) << _T("\"") << endl;
 	if (!m_wholastsaved.IsEmpty())
-		of << _T("WhoSaved=\"") << wls << _T("\"") << endl;
+      of << _T("WhoSaved=\"") << LPCTSTR(wls) << _T("\"") << endl;
 	if (!m_whatlastsaved.IsEmpty())
-		of << _T("WhatSaved=\"") << m_whatlastsaved << _T("\"") << endl;
+      of << _T("WhatSaved=\"") << LPCTSTR(m_whatlastsaved) << _T("\"") << endl;
 	of << _T("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") << endl;
 	of << _T("xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">") << endl;
 	of << endl;
@@ -354,31 +369,38 @@ PWScore::WriteXMLFile(const CMyString &filename,
 
     tmp = temp.GetGroup();
 		if (bsFields.test(CItemData::GROUP) && !tmp.IsEmpty())
-			of << _T("\t\t<group><![CDATA[") << tmp << _T("]]></group>") << endl;
+        of << _T("\t\t<group><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></group>") << endl;
 
 		// Title mandatory (see pwsafe.xsd)
 		tmp = temp.GetTitle();
-		of <<_T("\t\t<title><![CDATA[") << tmp << _T("]]></title>") << endl;
+		of <<_T("\t\t<title><![CDATA[") << LPCTSTR(tmp)
+       << _T("]]></title>") << endl;
 
     tmp = temp.GetUser();
 		if (bsFields.test(CItemData::USER) && !tmp.IsEmpty())
-			of << _T("\t\t<username><![CDATA[") << tmp << _T("]]></username>") << endl;
+        of << _T("\t\t<username><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></username>") << endl;
 
 		tmp = temp.GetPassword();
 		// Password mandatory (see pwsafe.xsd)
-		of << _T("\t\t<password><![CDATA[") << tmp << _T("]]></password>") << endl;
+		of << _T("\t\t<password><![CDATA[") << LPCTSTR(tmp)
+       << _T("]]></password>") << endl;
 
     tmp = temp.GetURL();
 		if (bsFields.test(CItemData::URL) && !tmp.IsEmpty())
-			of << _T("\t\t<url><![CDATA[") << tmp << _T("]]></url>") << endl;
+        of << _T("\t\t<url><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></url>") << endl;
 
 		tmp = temp.GetAutoType();
 		if (bsFields.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
-			of << _T("\t\t<autotype><![CDATA[") << tmp << _T("]]></autotype>") << endl;
+        of << _T("\t\t<autotype><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></autotype>") << endl;
 
     tmp = temp.GetNotes();
 		if (bsFields.test(CItemData::NOTES) && !tmp.IsEmpty())
-			of << _T("\t\t<notes><![CDATA[") << tmp << _T("]]></notes>") << endl;
+        of << _T("\t\t<notes><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></notes>") << endl;
 
 		temp.GetUUID(uuid_array);
 		TCHAR uuid_buffer[33];
@@ -403,49 +425,24 @@ PWScore::WriteXMLFile(const CMyString &filename,
         time_t t;
 
         temp.GetCTime(t);
-        if (bsFields.test(CItemData::CTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<ctime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</ctime>") << endl;
-        }
+        if (bsFields.test(CItemData::CTIME) && (long)t != 0)
+            WriteXMLTime(of, 2, _T("ctime"), t);
 
         temp.GetATime(t);
-        if (bsFields.test(CItemData::ATIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<atime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</atime>") << endl;
-        }
+        if (bsFields.test(CItemData::ATIME) && (long)t != 0)
+            WriteXMLTime(of, 2, _T("atime"), t);
 
         temp.GetLTime(t);
-        if (bsFields.test(CItemData::LTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<ltime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</ltime>") << endl;
-        }
+        if (bsFields.test(CItemData::LTIME) && (long)t != 0)
+            WriteXMLTime(of, 2, _T("ltime"), t);
 
         temp.GetPMTime(t);
-        if (bsFields.test(CItemData::PMTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<pmtime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</pmtime>") << endl;
-        }
+        if (bsFields.test(CItemData::PMTIME) && (long)t != 0)
+            WriteXMLTime(of, 2, _T("pmtime"), t);
 
         temp.GetRMTime(t);
-        if (bsFields.test(CItemData::RMTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<rmtime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</rmtime>") << endl;
-        }
+        if (bsFields.test(CItemData::RMTIME) && (long)t != 0)
+            WriteXMLTime(of, 2, _T("rmtime"), t);
 
         if (bsFields.test(CItemData::PWHIST)) {
           BOOL pwh_status;
@@ -488,10 +485,16 @@ PWScore::WriteXMLFile(const CMyString &filename,
                 of << _T("\t\t\t\t<history_entry num=\"") << buffer << _T("\">") << endl;
                 const PWHistEntry pwshe = *iter;
                 of << _T("\t\t\t\t\t<changed>") << endl;
-                of << _T("\t\t\t\t\t\t<date>") << pwshe.changedate.Left(10) << _T("</date>") << endl;
-                of << _T("\t\t\t\t\t\t<time>") << pwshe.changedate.Right(8) << _T("</time>") << endl;
+                of << _T("\t\t\t\t\t\t<date>")
+                   << LPCTSTR(pwshe.changedate.Left(10))
+                   << _T("</date>") << endl;
+                of << _T("\t\t\t\t\t\t<time>")
+                   << LPCTSTR(pwshe.changedate.Right(8))
+                   << _T("</time>") << endl;
                 of << _T("\t\t\t\t\t</changed>") << endl;
-                of << _T("\t\t\t\t\t<oldpassword><![CDATA[") << pwshe.password << _T("]]></oldpassword>") << endl;
+                of << _T("\t\t\t\t\t<oldpassword><![CDATA[")
+                   << LPCTSTR(pwshe.password)
+                   << _T("]]></oldpassword>") << endl;
                 of << _T("\t\t\t\t</history_entry>") << endl;
 
                 num++;
