@@ -77,7 +77,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-	_tcscpy_s(szErrorMessage, MAX_PATH*2, pwchErrorMessage);
+	_tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
 #else
 	_tcscpy(szErrorMessage, pwchErrorMessage);
 #endif
@@ -206,9 +206,9 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-	_tcscpy_s(szCurElement, MAX_PATH+1, pwchRawName);
+  _tcsncpy_s(szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
 #else
-	_tcscpy(szCurElement, pwchRawName);
+	_tcsncpy(szCurElement, pwchRawName, cchRawName);
 #endif
 #else
 #if (_MSC_VER >= 1400)
@@ -233,11 +233,11 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 				pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-				_tcscpy_s(szQName, MAX_PATH+1, QName);
-				_tcscpy_s(szValue, MAX_PATH+1, Value);
+				_tcsncpy_s(szQName, MAX_PATH+1, QName, QName_length);
+				_tcsncpy_s(szValue, MAX_PATH+1, Value, Value_length);
 #else
-				_tcscpy(szQName, QName);
-				_tcscpy(szValue, Value);
+				_tcsncpy(szQName, QName, QName_length);
+				_tcsncpy(szValue, Value, Value_length);
 #endif
 #else
 #if (_MSC_VER >= 1400)
@@ -311,9 +311,9 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-	_tcscpy_s(szData, cchChars+2, pwchChars);
+	_tcsncpy_s(szData, cchChars+2, pwchChars, cchChars);
 #else
-	_tcscpy(szData, pwchChars);
+	_tcsncpy(szData, pwchChars, cchChars);
 #endif
 #else
 #if _MSC_VER >= 1400
@@ -346,9 +346,9 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-	_tcscpy_s(szCurElement, MAX_PATH+1, pwchQName);
+	_tcsncpy_s(szCurElement, MAX_PATH+1, pwchQName, cchQName);
 #else
-	_tcscpy(szCurElement, pwchQName);
+	_tcsncpy(szCurElement, pwchQName, cchQName);
 #endif
 #else
 #if (_MSC_VER >= 1400)
