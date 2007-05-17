@@ -80,18 +80,31 @@ GenRandhash(const CMyString &a_passkey,
             const unsigned char* a_randstuff,
             unsigned char* a_randhash)
 {
-  const LPCTSTR pkey = (const LPCTSTR)a_passkey;
-  /*
-    I'm not quite sure what this is doing, so as I figure out each piece,
-    I'll add more comments {jpr}
-  */
+  LPCTSTR pkey = (LPCTSTR)a_passkey;
+  unsigned long pkeyLen = a_passkey.GetLength();
+  unsigned char *pstr;
+
+#ifdef UNICODE
+  pstr = new unsigned char[2*pkeyLen];
+  int len = WideCharToMultiByte(CP_ACP, 0, pkey, pkeyLen,
+                                LPSTR(pstr), 2*pkeyLen, NULL, NULL);
+  ASSERT(len != 0);
+  pkeyLen = len;
+#else
+  pstr = (unsigned char *)pkey;
+#endif
 
   /*
     tempSalt <- H(a_randstuff + a_passkey)
   */
   SHA1 keyHash;
   keyHash.Update(a_randstuff, StuffSize);
-  keyHash.Update((const unsigned char*)pkey, a_passkey.GetLength());
+  keyHash.Update(pstr, pkeyLen);
+
+#ifdef UNICODE
+  trashMemory(pstr, pkeyLen);
+  delete[] pstr;
+#endif
 
   unsigned char tempSalt[20]; // HashSize
   keyHash.Final(tempSalt);

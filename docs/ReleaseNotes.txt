@@ -1,15 +1,16 @@
-Password Safe 3.07.02 Release Notes - April 2007
-================================================
+Password Safe 3.07.03 Release Notes - May 2007
+==============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.07.01. For a short description of Password
+with Password Safe version 3.07.03. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.07.02
+Bugs fixed in 3.07.03
 =====================
+[] Non-English text in databases fully supported.
 [1691048] Import text file with blank lines or missing fields will no
 longer crash application.
 [1688994] Although rename is not possible in read-only mode, this change
@@ -25,7 +26,7 @@ prevents F2 giving the user the feel that they can.
 [1709418] Cancel after Lock Safe from system tray now does Right Thing
 [] More stringent checking during tree "edit in-place" to prevent DB corruption
 
-New Features for 3.07.02
+New Features for 3.07.03
 ========================
 [1695446] Can't reproduce error "Browse to URL no longer opens new browser" but
 allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox

@@ -28,6 +28,8 @@ class PWSfileV1V2 : public PWSfile {
 
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
+ protected:
+  virtual size_t WriteCBC(unsigned char type, const CString &data);
 
  private:
   size_t ReadCBC(unsigned char &type, CMyString &data);

@@ -92,7 +92,7 @@ class PWSfile {
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
-  virtual size_t WriteCBC(unsigned char type, const CString &data);
+  virtual size_t WriteCBC(unsigned char type, const CString &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           unsigned int length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
