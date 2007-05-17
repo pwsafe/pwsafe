@@ -192,7 +192,7 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 	if ( bsFields.count() == bsFields.size()) {
 	  if (m_hdr.IsEmpty())
 	    m_hdr.LoadString(IDSC_EXPORTHEADER);
-	  ofs << m_hdr << endl;
+	  ofs << LPCTSTR(m_hdr) << endl;
 	} else {
 		CString hdr = _T(""), cs_temp;
 		if (bsFields.test(CItemData::GROUP)) {
@@ -248,7 +248,7 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 		if (hdr.Right(1) == _T("\t"))
 			hdr_len--;
 
-		ofs << hdr.Left(hdr_len) << endl;
+		ofs << LPCTSTR(hdr.Left(hdr_len)) << endl;
   }
 
   CItemData temp;
@@ -262,8 +262,8 @@ PWScore::WritePlaintextFile(const CMyString &filename,
     if (subgroup_name.IsEmpty() || 
         temp.WantEntry(subgroup_name, subgroup_object, subgroup_function) == TRUE) {
       const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, delimiter);
-      if (!line.IsEmpty() != 0)
-    	  ofs << line << endl;
+      if (!line.IsEmpty())
+          ofs << LPCTSTR(line) << endl;
     }
 
     pwlist.GetNext(listPos);
