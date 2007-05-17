@@ -176,7 +176,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ALIGN:4096 /subsystem:$(CESubsystem) /MACHINE:ARM "
-				AdditionalDependencies=" secchk.lib ccrtrtti.lib"
+				AdditionalDependencies="secchk.lib ccrtrtti.lib"
 				OutputFile="$(PlatformName)\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

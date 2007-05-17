@@ -9,7 +9,12 @@
 #include <limits.h>
 #include <stdlib.h>
 #ifndef POCKET_PC
-#include <process.h>
+  #include <process.h>
+#endif
+
+#ifdef POCKET_PC
+  #include <wce_time.h>
+  #define time(timer)	  wceex_time(timer)
 #endif
 
 #include "PWSrand.h"

@@ -23,7 +23,13 @@
 #include "TwoFish.h"
 #include "PWSrand.h"
 
-#include <time.h>
+#ifdef POCKET_PC
+  #include <wce_time.h>
+  #define time(timer)	  wceex_time(timer)
+#else
+  #include <time.h>
+#endif
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

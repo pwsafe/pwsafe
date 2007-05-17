@@ -15,10 +15,13 @@
 #include "corelib.h"
 
 #include <stdio.h>
-#ifndef POCKET_PC
+#ifdef POCKET_PC
+  #include <wce_time.h>
+  #define localtime(timer)	  wceex_localtime(timer)
+#else
+  #include <time.h>
   #include <sys/timeb.h>
 #endif
-#include <time.h>
 
 #include "Util.h"
 

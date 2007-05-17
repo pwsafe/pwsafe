@@ -5,7 +5,7 @@
 
 #if defined(POCKET_PC)
 
-#include "pocketpc.h"
+#include "PocketPC.h"
 
 
 extern int errno = 0;
