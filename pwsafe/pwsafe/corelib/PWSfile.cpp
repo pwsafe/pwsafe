@@ -149,17 +149,6 @@ int PWSfile::Close()
   return SUCCESS;
 }
 
-size_t PWSfile::WriteCBC(unsigned char type, const CString &data)
-{
-  // We do a double cast because the LPCTSTR cast operator is overridden
-  // by the CString class to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCTSTR datastr = LPCTSTR(data);
-
-  return WriteCBC(type, (const unsigned char *)datastr,
-                  data.GetLength());
-}
-
 size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
                          unsigned int length)
 {
