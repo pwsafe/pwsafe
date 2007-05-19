@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="corelib"
 	ProjectGUID="{524EED4C-DA0C-4F4F-85C8-E6B7B5509EB6}"
 	RootNamespace="corelib"
@@ -162,7 +162,6 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				CompileForArchitecture="0"
 				EnableFloatingPointEmulation="false"
 			/>
 			<Tool
@@ -179,7 +178,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				LinkLibraryDependencies="true"
 				AdditionalOptions="/MACHINE:ARM"
 				AdditionalDependencies="secchk.lib ccrtrtti.lib coredll.lib &quot;$(WCELIBCEX_DIR)\..\msvc80\Pocket PC 2003 (ARMV4)\Debug\wcelibcexd.lib&quot;"
 			/>

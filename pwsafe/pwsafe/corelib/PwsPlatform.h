@@ -111,7 +111,7 @@
       #endif
     #endif
   // **********************************************
-  // * Pocket PC 2003                             *
+  // * Pocket PC 2003 w/ Visual Studio 2005       *
   // **********************************************
   #elif (_MSC_VER >= 1400) && (_WIN32_WCE == 0x420)
 	#define PWS_PLATFORM	"Pocket PC"
@@ -126,7 +126,7 @@
       #endif
     #endif
   // **********************************************
-  // * Windows Mobile 5 and later                 *
+  // * Windows Mobile 5 and later w/ VS 2005      *
   // **********************************************
   #elif (_MSC_VER >= 1400) && (_WIN32_WCE >= 0x500)
 	#define PWS_PLATFORM	"Pocket PC"

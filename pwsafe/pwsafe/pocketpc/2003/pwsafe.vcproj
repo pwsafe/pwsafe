@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="pwsafe"
 	ProjectGUID="{B0F07DD8-1B60-4C5A-A5A4-73690E24B043}"
+	RootNamespace="pwsafe"
 	Keyword="MFCProj"
 	>
 	<Platforms>
@@ -22,7 +23,7 @@
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops;.\wcelibcex.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -120,7 +121,7 @@
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops;.\wcelibcex.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -208,7 +209,7 @@
 				ForceDirty="-1"
 				RemoteDirectory=""
 				RegisterOutput="0"
-				AdditionalFiles="msvcr80.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;atl80.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;msvcr80d.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;MFC80UD.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;"
+				AdditionalFiles="msvcr80.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;atl80.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;msvcr80d.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;MFC80UD.dll|$(BINDIR)\$(INSTRUCTIONSET)\|%CSIDL_PROGRAM_FILES%\$(ProjectName)|0;testdb_v1.dat|$(ProjectDir)\..\..\|%CSIDL_PERSONAL%\|0"
 			/>
 			<DebuggerTool
 			/>
@@ -218,7 +219,7 @@
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops;.\wcelibcex.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -317,7 +318,7 @@
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops;.\wcelibcex.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"

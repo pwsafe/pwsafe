@@ -18,6 +18,7 @@
 #ifdef POCKET_PC
   #include <wce_time.h>
   #define localtime(timer)	  wceex_localtime(timer)
+  #define _wasctime(timer)	  wceex__wasctime(timer)
 #else
   #include <time.h>
   #include <sys/timeb.h>

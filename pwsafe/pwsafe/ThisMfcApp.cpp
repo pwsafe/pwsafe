@@ -8,6 +8,8 @@
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
   #include "pocketpc/resource.h"
+  #include <wce_time.h>
+  #define time(timer)	  wceex_time(timer)
 #else
   #include <errno.h>
   #include <io.h>
