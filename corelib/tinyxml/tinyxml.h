@@ -22,6 +22,10 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
+/*
+ * THIS FILE WAS ALTERED BY Rony Shapiro, for intergration into the PasswordSafe
+ * project http://passwordsafe.sourceforge.net/
+ */
 
 #ifndef TINYXML_INCLUDED
 #define TINYXML_INCLUDED
