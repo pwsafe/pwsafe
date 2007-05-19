@@ -16,6 +16,7 @@
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
+#include "corelib/PWSfile.h"
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)
@@ -356,11 +357,19 @@ CPasskeyEntry::OnOK()
     return;
   }
 
+  if (!PWSfile::FileExists(m_filespec)) {
+    AfxMessageBox(IDS_FILEPATHNOTFOUND);
+    if (m_MRU_combo.IsWindowVisible())
+      m_MRU_combo.SetFocus();
+    return;
+  }
+
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
+
   if (pParent->CheckPassword(m_filespec, m_passkey) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
-	  CTryAgainDlg errorDlg(this);
+      CTryAgainDlg errorDlg(this);
 
       int nResponse = errorDlg.DoModal();
       if (nResponse == IDOK) {
@@ -454,5 +463,8 @@ void CPasskeyEntry::OnOpenFileBrowser()
         m_MRU_combo.m_edit.SetWindowText(m_filespec);
         m_ctlPasskey.EnableWindow(TRUE);
         m_ctlOK.EnableWindow(TRUE);
+        if (m_ctlPasskey.IsWindowEnabled() == TRUE) {
+          m_ctlPasskey.SetFocus();
+        }
     }
 }
