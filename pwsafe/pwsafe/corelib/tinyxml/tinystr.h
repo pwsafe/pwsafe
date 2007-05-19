@@ -23,6 +23,12 @@ distribution.
 */
 
 /*
+ * THIS FILE WAS ALTERED BY Rony Shapiro, for intergration into the PasswordSafe
+ * project http://passwordsafe.sourceforge.net/
+ */
+
+
+/*
  * THIS FILE WAS ALTERED BY Tyge Lovset, 7. April 2005.
  *
  * - completely rewritten. compact, clean, and fast implementation.

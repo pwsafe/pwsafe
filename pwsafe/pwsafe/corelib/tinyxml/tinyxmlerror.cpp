@@ -22,6 +22,11 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
+/*
+ * THIS FILE WAS ALTERED BY Rony Shapiro, for intergration into the PasswordSafe
+ * project http://passwordsafe.sourceforge.net/
+ */
+
 #include "tinyxml.h"
 
 // The goal of the seperate error file is to make the first
