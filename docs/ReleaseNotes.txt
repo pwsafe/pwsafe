@@ -25,6 +25,7 @@ prevents F2 giving the user the feel that they can.
 [1708099] Default saved username, now shows in new entry
 [1709418] Cancel after Lock Safe from system tray now does Right Thing
 [] More stringent checking during tree "edit in-place" to prevent DB corruption
+[1721031] Notes field with lots of text now stays in position when focus lost
 
 New Features for 3.07.03
 ========================

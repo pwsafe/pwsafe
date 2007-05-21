@@ -24,6 +24,8 @@ private:
 	CBrush brInFocus;
 	CBrush brNoFocus;
 
+ 	int m_lastposition, m_nStartChar, m_nEndChar;
+
 // Operations
 public:
 
