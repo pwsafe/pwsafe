@@ -353,13 +353,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
                 case CItemData::POLICY:
                 default:
                     // just silently save fields we don't support.
-                    // We ensure copy is NULL terminated
-                    UnknownFieldEntry unkrfe;
-                    unkrfe.uc_Type = type;
-                    unkrfe.st_length = m_utf8Len;
-                    unkrfe.uc_pUField = (unsigned char *)malloc(m_utf8Len + 1);
-                    memcpy(unkrfe.uc_pUField, m_utf8, m_utf8Len);
-                    unkrfe.uc_pUField[m_utf8Len] = '\0';
+                    UnknownFieldEntry unkrfe(type, m_utf8Len, m_utf8);
                     item.m_URFL.push_back(unkrfe);
 
                     CString cs_timestamp;
@@ -739,12 +733,7 @@ int PWSfileV3::ReadHeader()
 
             default:
                 // Save unknown fields that may be addded by future versions
-                UnknownFieldEntry unkhfe;
-                unkhfe.uc_Type = fieldType;
-                unkhfe.st_length = m_utf8Len;
-                unkhfe.uc_pUField = (unsigned char *)malloc(m_utf8Len + 1);
-                memcpy(unkhfe.uc_pUField, m_utf8, m_utf8Len);
-                unkhfe.uc_pUField[m_utf8Len] = '\0';
+                UnknownFieldEntry unkhfe(fieldType, m_utf8Len, m_utf8);
                 m_UHFL.push_back(unkhfe);
 
                 CString cs_timestamp;

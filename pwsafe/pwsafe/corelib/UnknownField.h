@@ -6,11 +6,15 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 
-// UnknownField.h
+/**
+ * UnknownFieldEntry - a small struct for keeping unsupported entry
+ * types across read/write of the database, in order to be compatible
+ * (1) with other implementations of the published format, and
+ * (2) with future versions of PasswordSafe.
+ */
 
-#pragma once
-
-#include "Util.h"
+#ifndef __UNKNOWNFIELD_H
+#define __UNKNOWNFIELD_H
 
 // Unknown Field structure
 struct UnknownFieldEntry {
@@ -18,35 +22,11 @@ struct UnknownFieldEntry {
   size_t st_length;
   unsigned char * uc_pUField;
 
-  UnknownFieldEntry() :uc_Type(0), st_length(0), uc_pUField(NULL) {}
-  ~UnknownFieldEntry()
-    {
-      if (st_length > 0 && uc_pUField != NULL) {
-        trashMemory((void *)uc_pUField, st_length);
-        free(uc_pUField);
-        st_length = 0;
-        uc_pUField = NULL;
-      }
-    }
-
+  UnknownFieldEntry() :uc_Type(0), st_length(0), uc_pUField(0) {}
+  UnknownFieldEntry(unsigned char t, size_t s, unsigned char *d);
+  ~UnknownFieldEntry();
   // copy c'tor and assignment operator, standard idioms
-  UnknownFieldEntry(const UnknownFieldEntry &that)
-    : uc_Type(that.uc_Type), st_length(that.st_length)
-  {
-    if (that.st_length > 0 && that.uc_pUField != NULL) {
-      uc_pUField = (unsigned char *)malloc(st_length + sizeof(TCHAR));
-      memset(uc_pUField, 0x00, st_length + sizeof(TCHAR));
-      memcpy(uc_pUField, that.uc_pUField, st_length);
-    } else
-      uc_pUField = NULL;
-  }
-
-  UnknownFieldEntry &operator=(const UnknownFieldEntry &that)
-    { if (this != &that) {
-        uc_Type = that.uc_Type;
-        st_length = that.st_length;
-        uc_pUField = that.uc_pUField;
-      }
-      return *this;
-    }
+  UnknownFieldEntry(const UnknownFieldEntry &that);
+  UnknownFieldEntry &operator=(const UnknownFieldEntry &that);
 };
+#endif /* __UNKNOWNFIELD_H */
