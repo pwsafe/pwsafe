@@ -132,6 +132,7 @@ private:
   int m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
   int m_cxBSpace, m_cyBSpace, m_cySBar;
   int m_DialogMinWidth, m_DialogMinHeight;
+  int m_DialogMaxWidth, m_DialogMaxHeight;
   int m_row, m_column;
   int m_nCols;
 };

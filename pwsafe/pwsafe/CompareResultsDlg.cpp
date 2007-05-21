@@ -42,7 +42,8 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_bSortAscending(true), m_iSortedColumn(-1),
   m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
   m_ShowIdenticalEntries(BST_UNCHECKED),
-  m_DialogMinWidth(455), m_DialogMinHeight(415)
+  m_DialogMinWidth(455), m_DialogMinHeight(415),
+  m_DialogMaxWidth(999), m_DialogMaxHeight(999)
   // Need to set default values for MinWidth & MinHeight as OnGetMinMaxInfo is 
   // called during Create before set in InitDialog
 {
@@ -250,9 +251,15 @@ BOOL CCompareResultsDlg::OnInitDialog()
   CRect sbRect, ctrlRect, dlgRect;
   int xleft, ytop;
 
+  int itotalwidth = 0;
+  for (int i = 0; i < m_nCols; i++)
+    itotalwidth += m_LCResults.GetColumnWidth(i);
+
   GetClientRect(&dlgRect);
   m_DialogMinWidth = dlgRect.Width();
   m_DialogMinHeight = dlgRect.Height();
+  m_DialogMaxWidth = itotalwidth + 16;
+  m_DialogMaxHeight = 1024;
 
   m_statusBar.GetWindowRect(&sbRect);
 
@@ -863,5 +870,6 @@ void CCompareResultsDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 
   if (this->GetSafeHwnd() != NULL) {
     lpMMI->ptMinTrackSize = CPoint(m_DialogMinWidth, m_DialogMinHeight);
+    lpMMI->ptMaxTrackSize = CPoint(m_DialogMaxWidth, m_DialogMaxHeight);
   }
 }
