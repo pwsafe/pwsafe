@@ -944,11 +944,11 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // replacement of delimiter by CR-LF.
     if (i_Offset[NOTES] >= 0) {
         stringT quotedNotes = tokens[i_Offset[NOTES]];
-        if (!quotedNotes.empty() &&
-            *quotedNotes.begin() == TCHAR('\"') &&
+        if (!quotedNotes.empty()) {
+          if (*quotedNotes.begin() == TCHAR('\"') &&
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
-            quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
-
+              quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
+          }
             size_t pos;
             const TCHAR *CRLF = _T("\r\n");
             const stringT crlf (CRLF, _tcslen(CRLF) * sizeof(TCHAR));

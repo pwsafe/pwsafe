@@ -26,6 +26,8 @@ prevents F2 giving the user the feel that they can.
 [1709418] Cancel after Lock Safe from system tray now does Right Thing
 [] More stringent checking during tree "edit in-place" to prevent DB corruption
 [1721031] Notes field with lots of text now stays in position when focus lost
+[Open Discussion] Allow Notes field to be Imported from text file even if
+it is not enclosed in double quotes
 
 New Features for 3.07.03
 ========================
