@@ -150,6 +150,10 @@ public:
   static CString GetTimeStamp();
   static CString HexDump(unsigned char *pmemory, const int length,
                          const CString cs_prefix = _T(""), const int maxnum = 16);
+#ifdef BASE64
+  static CString Base64Encode(const BYTE *inData, size_t len);
+  static void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
+#endif
   static void IssueError(const CString &csFunction);
 };
 #endif /* __UTIL_H */

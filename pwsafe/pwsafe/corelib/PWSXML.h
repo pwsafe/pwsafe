@@ -11,7 +11,9 @@
 #ifndef __PWSXML_H
 #define __PWSXML_H
 
+#include <vector>
 #include "MyString.h"
+#include "UnknownField.h"
 
 class PWScore;
 
@@ -22,10 +24,12 @@ public:
 
 	void SetCore(PWScore *core);
 	bool XMLProcess(const bool &bvalidation, const CString &ImportedPrefix, 
-					const CString &strXMLFileName, const CString &strXSDFileName);
+					const CString &strXMLFileName, const CString &strXSDFileName,
+          int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);
 
 	CString m_strResultText;
 	int m_numEntriesValidated, m_numEntriesImported, m_MSXML_Version;
+	bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
 
 private:
 	PWScore *m_xmlcore;

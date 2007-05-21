@@ -27,6 +27,9 @@ const LPCTSTR PWS_REG_POSITION = _T("");
 const LPCTSTR PWS_REG_OPTIONS = _T("");
 #endif
 
+HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
+int s_cfgLockCount = 0;
+
 PWSprefs *PWSprefs::self = NULL;
 
 // 1st parameter = name of preference
@@ -600,8 +603,8 @@ void PWSprefs::InitializePreferences()
         // We assume that if we can create a lock file, we can create
         // a config file in the same directory
         CMyString locker;
-        if (PWSfile::LockFile(m_configfilename, locker, false)) {
-            PWSfile::UnlockFile(m_configfilename, false);
+        if (LockCFGFile(m_configfilename, locker)) {
+            UnlockCFGFile(m_configfilename);
         } else {
             m_ConfigOptions = CF_REGISTRY; // CF_FILE_RW_NEW -> CF_REGISTRY
         }

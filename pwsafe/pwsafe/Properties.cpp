@@ -52,6 +52,7 @@ BOOL CProperties::OnInitDialog()
 	GetDlgItem(IDC_SAVEDBY)->SetWindowText(m_wholastsaved);
 	GetDlgItem(IDC_SAVEDAPP)->SetWindowText(m_whatlastsaved);
 	GetDlgItem(IDC_FILEUUID)->SetWindowText(m_file_uuid);
+	GetDlgItem(IDC_UNKNOWNFIELDS)->SetWindowText(m_unknownfields);
 
 	return TRUE;
 }

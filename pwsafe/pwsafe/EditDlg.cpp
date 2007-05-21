@@ -44,8 +44,8 @@ CString CEditDlg::CS_HIDE;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CDialog(CEditDlg::IDD, pParent),
-    m_ci(ci), m_bIsModified(false), m_IsReadOnly(false),
-	m_tttLTime (time_t(0)),
+    m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
+    m_tttLTime (time_t(0)),
     m_locLTime(_T("")), m_oldlocLTime(_T(""))
 {
   ASSERT(ci != NULL);
@@ -311,7 +311,7 @@ BOOL CEditDlg::OnInitDialog()
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
   CString cs_text;
-  if (m_IsReadOnly) {
+  if (m_Edit_IsReadOnly) {
     GetDlgItem(IDOK)->EnableWindow(FALSE);
     cs_text.LoadString(IDS_VIEWENTRY);
 	SetWindowText(cs_text);
@@ -333,13 +333,15 @@ BOOL CEditDlg::OnInitDialog()
     HideNotes();
   }
 
-  // Populate the groups combo box
-  if (m_ex_group.GetCount() == 0) {
-	CStringArray aryGroups;
-	app.m_core.GetUniqueGroups(aryGroups);
-	for(int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
-		m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
-	}
+  if (!m_Edit_IsReadOnly) {
+    // Populate the groups combo box
+    if (m_ex_group.GetCount() == 0) {
+	    CStringArray aryGroups;
+      app.m_core.GetUniqueGroups(aryGroups);
+      for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
+        m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
+      }
+    }
   }
 
   GetDlgItem(IDC_PWHSTATUS)->
@@ -561,7 +563,7 @@ void CEditDlg::OnBnClickedSetLTime()
 
 void CEditDlg::OnBnClickedPwhist()
 {
-  CPWHistDlg dlg(this, m_IsReadOnly,
+  CPWHistDlg dlg(this, m_Edit_IsReadOnly,
                  m_PWHistory, m_PWHistList,
                  m_NumPWHistory, m_MaxPWHistory,
                  m_SavePWHistory);

@@ -31,6 +31,7 @@ public:
 	CString m_wholastsaved;
 	CString m_whatlastsaved;
 	CString m_file_uuid;
+	CString m_unknownfields;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

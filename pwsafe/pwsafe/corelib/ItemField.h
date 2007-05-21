@@ -45,7 +45,6 @@ private:
   //Number of 8 byte blocks needed for size
   int GetBlockSize(int size) const;
 
-
   unsigned char m_Type; // const except for assignment operator
   unsigned int m_Length;
   unsigned char *m_Data;

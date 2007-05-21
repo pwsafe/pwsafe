@@ -20,7 +20,7 @@ static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
 PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
-  : PWSfile(filename,mode), m_utf8(NULL), m_utf8Len(0), m_utf8MaxLen(0),
+  : PWSfile(filename, mode), m_utf8(NULL), m_utf8Len(0), m_utf8MaxLen(0),
     m_wc(NULL), m_wcMaxLen(0), m_tmp(NULL), m_tmpMaxLen(0)
 {
   m_curversion = version;
@@ -249,14 +249,15 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::PWHIST, tmp);
 
-  if (!item.m_URFL.empty()) {
-    UnknownRecordFieldList::const_iterator vi_IterURFE;
-    for (vi_IterURFE = item.m_URFL.begin();
-         vi_IterURFE != item.m_URFL.end();
-         vi_IterURFE++) {
-       UnknownFieldEntry unkrfe = *vi_IterURFE;
-       WriteCBC(unkrfe.uc_Type, unkrfe.uc_pUField, (unsigned int)unkrfe.st_length);
-    }
+  UnknownFieldsConstIter vi_IterURFE;
+  for (vi_IterURFE = item.GetURFIterBegin();
+       vi_IterURFE != item.GetURFIterEnd();
+       vi_IterURFE++) {
+    unsigned char type;
+    unsigned int length;
+    unsigned char *data;
+    item.GetUnknownField(type, length, data, vi_IterURFE);
+    WriteCBC(type, data, length);
   }
 
   WriteCBC(CItemData::END, _T(""));
@@ -353,18 +354,18 @@ int PWSfileV3::ReadRecord(CItemData &item)
                 case CItemData::POLICY:
                 default:
                     // just silently save fields we don't support.
-                    UnknownFieldEntry unkrfe(type, m_utf8Len, m_utf8);
-                    item.m_URFL.push_back(unkrfe);
-
+                    item.SetUnknownField(type, m_utf8Len, m_utf8);
+#ifdef DEBUG
                     CString cs_timestamp;
                     cs_timestamp = PWSUtil::GetTimeStamp();
                     TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d, value:\n"),
                                cs_timestamp, item.GetGroup(), item.GetTitle(), item.GetUser(), 
-                               unkrfe.uc_Type, unkrfe.st_length);
+                               type, m_utf8Len);
                     CString cs_hexdump;
-                    cs_hexdump = PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length,
+                    cs_hexdump = PWSUtil::HexDump(m_utf8, (int)m_utf8Len,
                                                   cs_timestamp);
                     TRACE(_T("%s\n"), cs_hexdump);
+#endif /* DEBUG */
                     break;
             } // switch
         } // if (fieldLen > 0)
@@ -583,7 +584,7 @@ int PWSfileV3::WriteHeader()
   }
 
   if (!m_UHFL.empty()) {
-    UnknownHeaderFieldList::iterator vi_IterUHFE;
+    UnknownFieldList::iterator vi_IterUHFE;
     for (vi_IterUHFE = m_UHFL.begin();
          vi_IterUHFE != m_UHFL.end();
          vi_IterUHFE++) {

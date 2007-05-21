@@ -167,13 +167,12 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 }
 
 void
-DboxMain::SetReadOnly(bool state)
+DboxMain::UpdateToolBar(bool state)
 {
-	m_IsReadOnly = state;
 	if (m_toolbarsSetup == TRUE) {
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, m_IsReadOnly ? FALSE : TRUE);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, m_IsReadOnly ? FALSE : TRUE);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, m_IsReadOnly ? FALSE : TRUE);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, state ? FALSE : TRUE);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, state ? FALSE : TRUE);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, state ? FALSE : TRUE);
 	}
 }
 
@@ -235,7 +234,7 @@ DboxMain::setupBars()
 
   // Set flag
   m_toolbarsSetup = TRUE;
-  SetReadOnly(m_IsReadOnly);
+  UpdateToolBar(m_core.IsReadOnly());
 #endif
 }
 
@@ -1101,7 +1100,7 @@ DboxMain::OnOldToolbar()
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, false);
   SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
-  SetReadOnly(m_IsReadOnly);
+  UpdateToolBar(m_core.IsReadOnly());
 }
 
 void
@@ -1109,7 +1108,7 @@ DboxMain::OnNewToolbar()
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, true);
   SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
-  SetReadOnly(m_IsReadOnly);
+  UpdateToolBar(m_core.IsReadOnly());
 }
 
 void

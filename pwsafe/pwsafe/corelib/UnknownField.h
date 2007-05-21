@@ -16,6 +16,8 @@
 #ifndef __UNKNOWNFIELD_H
 #define __UNKNOWNFIELD_H
 
+#include <vector>
+
 // Unknown Field structure
 struct UnknownFieldEntry {
   unsigned char uc_Type;
@@ -29,4 +31,7 @@ struct UnknownFieldEntry {
   UnknownFieldEntry(const UnknownFieldEntry &that);
   UnknownFieldEntry &operator=(const UnknownFieldEntry &that);
 };
+
+typedef std::vector<UnknownFieldEntry> UnknownFieldList;
+
 #endif /* __UNKNOWNFIELD_H */

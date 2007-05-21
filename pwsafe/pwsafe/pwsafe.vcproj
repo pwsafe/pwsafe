@@ -349,6 +349,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CompareResultsDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ConfirmDeleteDlg.cpp"
 				>
 			</File>

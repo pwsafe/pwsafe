@@ -16,8 +16,7 @@
 #include "ItemData.h"
 #include "MyString.h"
 #include "UUIDGen.h"
-
-typedef std::vector<UnknownFieldEntry> UnknownHeaderFieldList;
+#include "UnknownField.h"
 
 #define MIN_HASH_ITERATIONS 2048
 
@@ -49,10 +48,11 @@ class PWSfile {
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey, VERSION &version);
 
-  enum {DATABASE_LOCK = 0, CONFIG_LOCK};
-  static bool LockFile(const CMyString &filename, CMyString &locker, const bool bDB = true);
-  static bool IsLockedFile(const CMyString &filename, const bool bDB = true);
-  static void UnlockFile(const CMyString &filename, const bool bDB = true);
+  static bool LockFile(const CMyString &filename, CMyString &locker,
+                       HANDLE &lockFileHandle, int &LockCount);
+  static bool IsLockedFile(const CMyString &filename);
+  static void UnlockFile(const CMyString &filename,
+                       HANDLE &lockFileHandle, int &LockCount);
   static bool GetLocker(const CMyString &filename, CMyString &locker);
 
   virtual ~PWSfile();
@@ -86,8 +86,10 @@ class PWSfile {
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
   unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
   void SetCurVersion(VERSION v) {m_curversion = v;}
-  void GetUnknownHeaderFields(UnknownHeaderFieldList &UHFL);
-  void SetUnknownHeaderFields(UnknownHeaderFieldList &UHFL);
+  void GetUnknownHeaderFields(UnknownFieldList &UHFL);
+  void SetUnknownHeaderFields(UnknownFieldList &UHFL);
+  int GetNumRecordsWithUnknownFields()
+    {return m_nRecordsWithUnknownFields;}
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
@@ -118,6 +120,7 @@ class PWSfile {
   uuid_array_t m_file_uuid_array;
   static int m_nITER;
   // Save unknown header fields on read to put back on write unchanged
-  UnknownHeaderFieldList m_UHFL;
+  UnknownFieldList m_UHFL;
+  int m_nRecordsWithUnknownFields;
 };
 #endif /* __PWSFILE_H */

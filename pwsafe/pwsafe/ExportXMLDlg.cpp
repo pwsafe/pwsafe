@@ -29,8 +29,8 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CExportXMLDlg::IDD, pParent),
-          m_subgroup_set(0), m_subgroup_name(_T("")),
-          m_subgroup_object(0), m_subgroup_function(0)
+    m_subgroup_set(BST_UNCHECKED),
+    m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
 {
 	//{{AFX_DATA_INIT(CExportXMLDlg)
 	m_ExportXMLPassword = _T("");
@@ -107,7 +107,8 @@ void CExportXMLDlg::OnOK()
 void CExportXMLDlg::OnAdvanced()
 {
 	CAdvancedDlg *pAdv;
-	pAdv = new CAdvancedDlg(this, ADV_EXPORT_XML);
+	pAdv = new CAdvancedDlg(this, ADV_EXPORT_XML, m_bsExport, m_subgroup_name, 
+              m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
 	int rc = pAdv->DoModal();
 	if (rc == IDOK) {

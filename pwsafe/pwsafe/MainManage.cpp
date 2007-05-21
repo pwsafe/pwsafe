@@ -41,7 +41,7 @@ static char THIS_FILE[] = __FILE__;
 void
 DboxMain::OnPasswordChange()
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
   CPasskeyChangeDlg changeDlg(this);
   app.DisableAccelerator();
@@ -113,7 +113,7 @@ DboxMain::BackupSafe()
 void
 DboxMain::OnRestore()
 {
-  if (!m_IsReadOnly) // disable in read-only mode
+  if (!m_core.IsReadOnly()) // disable in read-only mode
     Restore();
 }
 
@@ -560,7 +560,7 @@ DboxMain::OnOptions()
         */
         if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
             m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-            if (!m_IsReadOnly) {
+            if (!m_core.IsReadOnly()) {
                 // save changed preferences to file
                 // Note that we currently can only write the entire file, so any changes
                 // the user made to the database are also saved here

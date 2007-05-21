@@ -13,10 +13,12 @@
 #include "ItemData.h"
 #include "MyString.h"
 #include "corelib.h"
+#include "PWScore.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <atlcomcli.h>
 #include "xml_import.h"
+#include "UnknownField.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,7 +44,8 @@ PWSXML::SetCore(PWScore *core)
 
 //	---------------------------------------------------------------------------
 bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
-						const CString &strXMLFileName, const CString &strXSDFileName)
+						const CString &strXMLFileName, const CString &strXSDFileName,
+            int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl)
 {
 	HRESULT hr, hr0, hr60, hr40, hr30;
 	bool b_ok = false;
@@ -192,9 +195,29 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 				} else {
 					m_numEntriesImported = pCH->m_numEntries;
 					m_strResultText = pCH->m_strImportErrors;  // Maybe import errors (PWHistory field processing)
-				}
 
-				b_ok = true;
+          m_bRecordHeaderErrors = pCH->m_bRecordHeaderErrors;
+          nRecordsWithUnknownFields = pCH->m_nRecordsWithUnknownFields;
+
+          if (m_xmlcore->GetNumEntries() == 0) {
+            m_bDatabaseHeaderErrors = pCH->m_bDatabaseHeaderErrors;
+            if (pCH->m_nITER > 0)
+              nITER = pCH->m_nITER;
+
+            UnknownFieldList::const_iterator vi_IterUXFE;
+            for (vi_IterUXFE = pCH->m_ukhxl.begin();
+                 vi_IterUXFE != pCH->m_ukhxl.end();
+                 vi_IterUXFE++) {
+              UnknownFieldEntry ukxfe = *vi_IterUXFE;
+              if (ukxfe.st_length > 0) {
+                uhfl.push_back(ukxfe);
+              }
+            }
+          } else
+            m_bDatabaseHeaderErrors = false;
+        }
+
+        b_ok = true;
 			}
 		} else {
 			if(pEH->bErrorsFound == TRUE) {

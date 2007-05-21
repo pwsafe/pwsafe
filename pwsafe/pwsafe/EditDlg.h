@@ -26,12 +26,12 @@ public:
 
   enum { IDD = IDD_EDIT };
   CMyString m_defusername, m_username;
-  bool m_IsReadOnly;
+  bool m_Edit_IsReadOnly;
 
-  void  ShowPassword();
-  void  HidePassword();
-  void  ShowNotes();
-  void  HideNotes();
+  void ShowPassword();
+  void HidePassword();
+  void ShowNotes();
+  void HideNotes();
 
 private:
   CItemData *m_ci; // The entry being edited

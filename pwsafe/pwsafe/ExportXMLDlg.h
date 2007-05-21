@@ -58,6 +58,7 @@ protected:
 	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
 private:
 	void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX, const CString &delimiter);
 };
