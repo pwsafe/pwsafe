@@ -92,7 +92,7 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
   //hitting the F2 key, being in-place editing of an item
   else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
     HTREEITEM hItem = GetSelectedItem();
-    if (hItem != NULL && !((DboxMain *)GetParent())->IsReadOnly())
+    if (hItem != NULL && !((DboxMain *)GetParent())->IsMcoreReadOnly())
       EditLabel(hItem);
     return TRUE;
   }
@@ -293,7 +293,7 @@ final_check:
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  if (((DboxMain *)GetParent())->IsReadOnly())
+  if (((DboxMain *)GetParent())->IsMcoreReadOnly())
     return; // don't drag in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
@@ -737,7 +737,7 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
   *pResult = 0;
 
-  if (((DboxMain *)GetParent())->IsReadOnly())
+  if (((DboxMain *)GetParent())->IsMcoreReadOnly())
       return; // don't drag in read-only mode
 
   GetCursorPos(&ptAction);

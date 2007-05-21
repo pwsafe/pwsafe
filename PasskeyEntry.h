@@ -44,14 +44,21 @@ public:
 
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index = 1 /* GCP_NORMAL */,
-		            bool bReadOnly = false, bool bForceReadOnly = false); 
+		            bool bReadOnly = false,
+                bool bForceReadOnly = false,
+                int adv_type = -1); 
 
   int GetStatus() const {return m_status;}
-  bool IsReadOnly() const {return m_ReadOnly == TRUE;}
-  bool IsAdvanced() const {return m_bAdvanced == TRUE;}
+  bool IsReadOnly() const {return m_PKE_ReadOnly == TRUE;}
   const CMyString &GetPasskey() const {return m_passkey;}
   const CString &GetFileName() const {return m_filespec;}
   CString m_appversion;
+
+  bool m_bAdvanced;
+  CItemData::FieldBits m_bsFields;
+  CString m_subgroup_name;
+  int m_subgroup_set, m_subgroup_object, m_subgroup_function;
+
 private:
 // Dialog Data
    enum { IDD_BASIC = IDD_PASSKEYENTRY };
@@ -65,8 +72,7 @@ private:
 #endif
 	CEdit m_ctlPasskey;
     CMyString m_passkey;
-    BOOL m_ReadOnly;
-    BOOL m_bAdvanced;
+    BOOL m_PKE_ReadOnly;
     bool m_bForceReadOnly;
 	//}}AFX_DATA
    CString	m_message;
@@ -85,6 +91,7 @@ protected:
    int m_tries;
    int m_status;
    int m_index;
+   int m_adv_type;
 
    static int dialog_lookup[5];
 
@@ -96,7 +103,7 @@ protected:
    virtual void OnCancel();
    virtual void OnOK();
    afx_msg void OnHelp();
-   afx_msg void OnExit();
+   afx_msg void OnExitAdvanced();
 #if defined(POCKET_PC)
    afx_msg void OnPasskeySetfocus();
    afx_msg void OnPasskeyKillfocus();
@@ -109,6 +116,8 @@ public:
     afx_msg void OnComboEditChange();
     afx_msg void OnComboSelChange();
     afx_msg void OnOpenFileBrowser();
+
+private:
 };
 
 #undef SUPERCLASS

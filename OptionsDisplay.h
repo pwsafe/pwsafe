@@ -26,7 +26,7 @@ public:
 	//{{AFX_DATA(COptionsDisplay)
 	enum { IDD = IDD_PS_DISPLAY };
 	BOOL m_alwaysontop;
-  BOOL m_showusernameintree;
+    BOOL m_showusernameintree;
 	BOOL m_showpasswordintree;
 	BOOL m_explorertree;
 	BOOL m_enablegrid;
@@ -54,7 +54,7 @@ protected:
 	//{{AFX_MSG(COptionsDisplay)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPreWarn();
-  afx_msg void OnDisplayUserInTree();
+    afx_msg void OnDisplayUserInTree();
 	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

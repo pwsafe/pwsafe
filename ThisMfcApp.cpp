@@ -708,7 +708,7 @@ ThisMfcApp::InitInstance()
                 }
             }
             BOOL status;
-            dbox.SetReadOnly(false);
+            m_core.SetReadOnly(false);
             switch (UC_arg1) {
                 case 'C':
                     dbox.SetStartClosed(true);
@@ -732,7 +732,7 @@ ThisMfcApp::InitInstance()
                     dbox.SetCurFile(_T(""));
                     break;
                 case 'R':
-                    dbox.SetReadOnly(true);
+                    m_core.SetReadOnly(true);
                     dbox.SetCurFile(fn);
                     break;
                 case 'S':

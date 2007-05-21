@@ -23,7 +23,7 @@ distribution.
 */
 
 /*
- * THIS FILE WAS ALTERED BY Rony Shapiro, for intergration into the PasswordSafe
+ * THIS FILE WAS ALTERED BY Rony Shapiro, for integration into the PasswordSafe
  * project http://passwordsafe.sourceforge.net/
  */
 

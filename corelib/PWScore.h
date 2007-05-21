@@ -59,6 +59,18 @@ class PWScore {
   void ClearFileUUID();
   void SetFileUUID(uuid_array_t &file_uuid_array);
   void GetFileUUID(uuid_array_t &file_uuid_array);
+  bool HasHeaderUnknownFields()
+    {return !m_UHFL.empty();}
+  int GetNumRecordsWithUnknownFields()
+    {return m_nRecordsWithUnknownFields;}
+  void SetNumRecordsWithUnknownFields(const int num)
+    {m_nRecordsWithUnknownFields = num;}
+  void DecrementNumRecordsWithUnknownFields()
+    {m_nRecordsWithUnknownFields--;}
+  void IncrementNumRecordsWithUnknownFields()
+    {m_nRecordsWithUnknownFields++;}
+  void SetFileHashIterations(const int &nITER)
+    {m_nITER = nITER;}
 
   void ClearData();
   void ReInit();
@@ -83,7 +95,8 @@ class PWScore {
 			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped);
   int ImportKeePassTextFile(const CMyString &filename);
   int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
-			CString &strErrors, int &numValidated, int &numImported);
+			CString &strErrors, int &numValidated, int &numImported,
+			bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
   bool FileExists(const CMyString &filename, bool &bReadOnly) const 
 	  {return PWSfile::FileExists(filename, bReadOnly);}
@@ -98,13 +111,17 @@ class PWScore {
                      const CString &userBackupPrefix, const CString &userBackupDir);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
-  bool LockFile(const CMyString &filename, CMyString &locker) const
-  {return PWSfile::LockFile(filename, locker);} // legacy/convenience
+  bool LockFile(const CMyString &filename, CMyString &locker)
+    {return PWSfile::LockFile(filename, locker,
+                     m_lockFileHandle, m_LockCount);}
   bool IsLockedFile(const CMyString &filename) const
-  {return PWSfile::IsLockedFile(filename);} // legacy/convenience
-  void UnlockFile(const CMyString &filename) const
-  {return PWSfile::UnlockFile(filename);}
+    {return PWSfile::IsLockedFile(filename);}
+  void UnlockFile(const CMyString &filename)
+    {return PWSfile::UnlockFile(filename, 
+                     m_lockFileHandle, m_LockCount);}
   void SetApplicationMajorMinor(DWORD dwMajorMinor) {m_dwMajorMinor = dwMajorMinor;}
+  void SetReadOnly(bool state) { m_IsReadOnly = state;}
+  bool IsReadOnly() const {return m_IsReadOnly;};
 
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary);
@@ -150,6 +167,8 @@ class PWScore {
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
   static CString m_hdr;
+  HANDLE m_lockFileHandle;
+  int m_LockCount;
 
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
@@ -168,11 +187,13 @@ class PWScore {
   ItemList m_pwlist;
 
   bool m_changed;
+  bool m_IsReadOnly;
 
   CString m_displaystatus;
   CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
   uuid_array_t m_file_uuid_array;
   int m_nITER;
-  UnknownHeaderFieldList m_UHFL;
+  UnknownFieldList m_UHFL;
+  int m_nRecordsWithUnknownFields;
 };
 #endif /* __PWSCORE_H */

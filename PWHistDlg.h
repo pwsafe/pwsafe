@@ -34,7 +34,7 @@ class CPWHistDlg : public CDialog
   virtual void OnOK();
   virtual BOOL OnInitDialog();
  private:
-  const bool m_IsReadOnly;
+  const bool m_PWH_IsReadOnly;
   // Following reference members from EditDlg
   CMyString &m_HistStr;
   PWHistList &m_PWHistList;

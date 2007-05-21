@@ -136,7 +136,7 @@ DboxMain::OnAdd()
 void
 DboxMain::OnAddGroup()
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
   if (m_ctlItemTree.IsWindowVisible()) {
@@ -202,6 +202,9 @@ DboxMain::Delete(bool inRecursion)
     m_ctlItemTree.DeleteWithParents(curTree_item);
     delete di;
 
+    if (ci->NumberUnknownFields() > 0)
+      m_core.DecrementNumRecordsWithUnknownFields();
+
     m_core.RemoveEntryAt(listindex);
     FixListIndexes();
     if (m_ctlItemList.IsWindowVisible()) {
@@ -250,7 +253,7 @@ DboxMain::Delete(bool inRecursion)
 void
 DboxMain::OnRename() 
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
   // Renaming is only allowed while in Tree mode.
@@ -288,7 +291,7 @@ DboxMain::OnEdit()
   }
 }
 
-void
+bool
 DboxMain::EditItem(CItemData *ci)
 {
     // List might be cleared if db locked.
@@ -299,7 +302,7 @@ DboxMain::EditItem(CItemData *ci)
 
     if (m_core.GetUseDefUser())
       dlg_edit.m_defusername = m_core.GetDefUsername();
-    dlg_edit.m_IsReadOnly = m_IsReadOnly;
+    dlg_edit.m_Edit_IsReadOnly = m_core.IsReadOnly();
 
     app.DisableAccelerator();
     int rc = dlg_edit.DoModal();
@@ -338,7 +341,9 @@ DboxMain::EditItem(CItemData *ci)
         SelectEntry(m_ctlItemList.GetItemCount() - 1);
       }
       ChangeOkUpdate();
+      return true;
     } // rc == IDOK
+    return false;
 }
 
 
@@ -346,7 +351,7 @@ DboxMain::EditItem(CItemData *ci)
 void
 DboxMain::OnDuplicateEntry() 
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
   if (SelItemOk() == TRUE) {

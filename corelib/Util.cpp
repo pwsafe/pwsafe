@@ -811,7 +811,6 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 	}
 
 	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
-	TCHAR *lpszPW;
 
 #if _MSC_VER >= 1400
 	int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
@@ -858,15 +857,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 		lpszPWHistory += 1;
 		pwleft -= 1;
 
-    tmp = CMyString(lpszPWHistory, 20);
-		lpszPW = tmp.GetBuffer(20);
-#if _MSC_VER >= 1400
-		memcpy_s(lpszPW, 20, lpszPWHistory, 19);
-#else
-		memcpy(lpszPW, lpszPWHistory, 19);
-#endif
-		lpszPW[19] = TCHAR('\0');
-		tmp.ReleaseBuffer();
+    tmp = CMyString(lpszPWHistory, 19);
 
 		if (tmp.Left(10) == _T("1970-01-01"))
 			t = 0;
@@ -914,15 +905,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 			break;
 		}
 
-    tmp.Empty();
-		lpszPW = tmp.GetBuffer(ipwlen + 1);
-#if _MSC_VER >= 1400
-		memcpy_s(lpszPW, ipwlen + 1, lpszPWHistory, ipwlen);
-#else
-		memcpy(lpszPW, lpszPWHistory, ipwlen);
-#endif
-		lpszPW[ipwlen] = TCHAR('\0');
-		tmp.ReleaseBuffer();
+    tmp = CMyString(lpszPWHistory, ipwlen);
 		buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
 		newPWHistory += CMyString(buffer);
 		buffer.Empty();
@@ -1130,3 +1113,82 @@ PWSUtil::HexDump(unsigned char *pmemory, const int length,
 
   return cs_buffer;
 }
+
+#ifdef BASE64
+CString
+PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
+{
+  CString cs_Out;
+  const static CHAR base64ABC[] = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  
+  cs_Out.Empty();
+  for (DWORD i = 0; i < (DWORD)len; i += 3) {
+    LONG l = ( ((LONG)strIn[i]) << 16 ) | 
+      (((i + 1) < len) ? (((LONG)strIn[i + 1]) << 8) : 0) | 
+      (((i + 2) < len) ? ((LONG)strIn[i + 2]) : 0);
+
+    cs_Out += base64ABC[(l >> 18) & 0x3F];
+    cs_Out += base64ABC[(l >> 12) & 0x3F];
+    if (i + 1 < len) cs_Out += base64ABC[(l >> 6) & 0x3F];
+    if (i + 2 < len) cs_Out += base64ABC[(l ) & 0x3F];
+  }
+  
+  switch (len % 3) {
+    case 1:
+      cs_Out += '=';
+    case 2:
+      cs_Out += '=';
+  } 
+
+  return cs_Out;
+}
+
+void
+PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len)
+{
+  static const char szCS[]=
+    "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  int iDigits[4] = {0,0,0,0};
+
+  ASSERT(sizeof(szCS) == 66);
+
+  CString cs_inString(sz_inString);
+
+  size_t st_length = 0;
+  const int in_length = cs_inString.GetLength();
+
+  int i1, i2, i3;
+  for (i2 = 0; i2 < (int)in_length; i2 += 4) {
+    iDigits[0] = iDigits[1] = iDigits[2] = iDigits[3] = -1;
+
+    for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
+      for (i3 = i2; i3 < i2 + 4; i3++) {
+        if (i3 < (int)in_length &&  cs_inString[i3] == szCS[i1])
+          iDigits[i3 - i2] = i1 - 1;
+      }
+    }
+
+    outData[st_length] = ((BYTE)iDigits[0] << 2);
+
+    if (iDigits[1] >= 0) {
+      outData[st_length] += ((BYTE)iDigits[1] >> 4) & 0x3;
+    }
+
+    st_length++;
+
+    if (iDigits[2] >= 0) {
+      outData[st_length++] = (((BYTE)iDigits[1] & 0x0f) << 4)
+                       | (((BYTE)iDigits[2] >> 2) & 0x0f);
+    }
+
+    if (iDigits[3] >= 0) {
+      outData[st_length++] = (((BYTE)iDigits[2] & 0x03) << 6)
+                       | ((BYTE)iDigits[3] & 0x3f);
+    }
+  }
+
+  out_len = st_length;
+  return;
+}
+#endif

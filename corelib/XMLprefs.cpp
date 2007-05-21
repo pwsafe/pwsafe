@@ -10,7 +10,7 @@
 #include "XMLprefs.h"
 #include "tinyxml/tinyxml.h"
 #include "MyString.h"
-#include "PWSfile.h"
+#include "PWSprefs.h"
 #include "corelib.h"
 
 #ifdef _DEBUG
@@ -39,7 +39,7 @@ bool CXMLprefs::Lock()
 	CMyString locker(_T(""));
     int tries = 10;
     do {
-        m_bIsLocked = PWSfile::LockFile(m_csConfigFile, locker, false);
+        m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile, locker);
         if (!m_bIsLocked)
             Sleep(200);
     } while (!m_bIsLocked && --tries > 0);
@@ -48,7 +48,7 @@ bool CXMLprefs::Lock()
 
 void CXMLprefs::Unlock()
 {
-    PWSfile::UnlockFile(m_csConfigFile, false);
+    PWSprefs::UnlockCFGFile(m_csConfigFile);
     m_bIsLocked = false;
 }
 

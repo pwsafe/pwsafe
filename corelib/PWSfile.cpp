@@ -117,7 +117,8 @@ PWSfile::PWSfile(const CMyString &filename, RWmode mode)
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
     m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL),
     m_file_displaystatus(_T("")), m_whenlastsaved(_T("")),
-    m_wholastsaved(_T("")), m_whatlastsaved(_T(""))
+    m_wholastsaved(_T("")), m_whatlastsaved(_T("")),
+    m_nRecordsWithUnknownFields(0)
 {
 }
 
@@ -229,10 +230,6 @@ int PWSfile::CheckPassword(const CMyString &filename,
  * but *much* easier than setting up a map...
  */
 
-static HANDLE s_lockFileHandle[2] = {INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE};
-static int s_LockCount[2] = {0, 0};
-
-
 static void GetLockFileName(const CMyString &filename,
                             CMyString &lock_filename)
 {
@@ -241,7 +238,8 @@ static void GetLockFileName(const CMyString &filename,
   lock_filename = CMyString(filename.Left(MAX_PATH - 4) + _T(".plk"));
 }
 
-bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool bDB)
+bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, 
+                       HANDLE &lockFileHandle, int &LockCount)
 {
   CMyString lock_filename;
   GetLockFileName(filename, lock_filename);
@@ -306,10 +304,17 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
   const CString host = si->GetCurrentHost();
   const CString pid = si->GetCurrentPID();
 
-  const int iLFHandle = bDB ? DATABASE_LOCK : CONFIG_LOCK;
+  TCHAR fname[_MAX_FNAME];
+  TCHAR ext[_MAX_EXT];
+#if _MSC_VER >= 1400
+  _tsplitpath_s(lock_filename, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+#else
+  _tsplitpath(lock_filename, NULL, NULL, fname, ext);
+#endif
+
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
-  if (s_lockFileHandle[iLFHandle] != INVALID_HANDLE_VALUE) {
+  if (lockFileHandle != INVALID_HANDLE_VALUE) {
     // here if we've open another (or same) dbase previously,
     // need to unlock it. A bit inelegant...
     // If app was minimized and ClearData() called, we've a small
@@ -318,28 +323,27 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
 
     const CString cs_me = user + _T("@") + host + _T(":") + pid;
     GetLockFileName(filename, lock_filename);
-	GetLocker(lock_filename, locker);
+    GetLocker(lock_filename, locker);
 
-	if (cs_me == CString(locker)) {
-      s_LockCount[iLFHandle]++;
-      TRACE(_T("%s Lock1   %s, Count now %d\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			s_LockCount[iLFHandle]);
+	  if (cs_me == CString(locker)) {
+      LockCount++;
+      TRACE(_T("%s Lock1  ; Count now %d; File: %s%s\n"), 
+			      PWSUtil::GetTimeStamp(), LockCount, fname, ext);
       locker.Empty();
       return true;
-	} else {
+    } else {
       // XXX UnlockFile(bDB ? GetCurFile() : filename, bDB);
-      UnlockFile(filename, bDB);
-	}
+      UnlockFile(filename, lockFileHandle, LockCount);
+    }
   }
-  s_lockFileHandle[iLFHandle] = ::CreateFile(LPCTSTR(lock_filename),
+  lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),
                                              GENERIC_WRITE,
                                              FILE_SHARE_READ,
                                              NULL,
                                              CREATE_ALWAYS, // rely on share to fail if exists!
                                              FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
                                              NULL);
-  if (s_lockFileHandle[iLFHandle] == INVALID_HANDLE_VALUE) {
+  if (lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     switch (error) {
     case ERROR_SHARING_VIOLATION: // already open by a live process
@@ -353,36 +357,36 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
   } else { // valid filehandle, write our info
     DWORD numWrit, sumWrit;
     BOOL write_status;
-    write_status = ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status = ::WriteFile(lockFileHandle,
                                user, user.GetLength() * sizeof(TCHAR),
                                &sumWrit, NULL);
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                _T("@"), sizeof(TCHAR),
                                &numWrit, NULL);
     sumWrit += numWrit;
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                 host, host.GetLength() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                _T(":"), sizeof(TCHAR),
                                &numWrit, NULL);
     sumWrit += numWrit;
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                 pid, pid.GetLength() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
-	s_LockCount[iLFHandle]++;
-	TRACE(_T("%s Lock1   %s, Count now %d; File Created\n"), 
-          PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-          s_LockCount[iLFHandle]);
+    LockCount++;
+    TRACE(_T("%s Lock1  ; Count now %d; File Created; File: %s%s\n"), 
+          PWSUtil::GetTimeStamp(), LockCount, fname, ext);
     return (write_status == TRUE);
   }
 #endif // POSIX_FILE_LOCK
 }
 
-void PWSfile::UnlockFile(const CMyString &filename, const bool bDB)
+void PWSfile::UnlockFile(const CMyString &filename,
+                         HANDLE &lockFileHandle, int &LockCount)
 {
 #ifdef POSIX_FILE_LOCK
   CMyString lock_filename;
@@ -394,34 +398,39 @@ void PWSfile::UnlockFile(const CMyString &filename, const bool bDB)
   const CString host = si->GetCurrentHost();
   const CString pid = si->GetCurrentPID();
 
-  const int iLFHandle = bDB ? DATABASE_LOCK : CONFIG_LOCK;
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
-  if (s_lockFileHandle[iLFHandle] != INVALID_HANDLE_VALUE) {
+  if (lockFileHandle != INVALID_HANDLE_VALUE) {
     CMyString lock_filename, locker;
 	const CString cs_me = user + _T("@") + host + _T(":") + pid;
     GetLockFileName(filename, lock_filename);
 	GetLocker(lock_filename, locker);
 
-	if (cs_me == CString(locker) && s_LockCount[iLFHandle] > 1) {
-		s_LockCount[iLFHandle]--;
-		TRACE(_T("%s Unlock2 %s, Count now %d\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			s_LockCount[iLFHandle]);
+  TCHAR fname[_MAX_FNAME];
+  TCHAR ext[_MAX_EXT];
+#if _MSC_VER >= 1400
+  _tsplitpath_s(lock_filename, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+#else
+  _tsplitpath(lock_filename, NULL, NULL, fname, ext);
+#endif
+
+  if (cs_me == CString(locker) && LockCount > 1) {
+		LockCount--;
+      TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
+			      PWSUtil::GetTimeStamp(), LockCount, fname, ext);
 	} else {
-		s_LockCount[iLFHandle] = 0;
-		TRACE(_T("%s Unlock1 %s, Count now %d; File Deleted\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			s_LockCount[iLFHandle]);
-		CloseHandle(s_lockFileHandle[iLFHandle]);
-		s_lockFileHandle[iLFHandle] = INVALID_HANDLE_VALUE;
+		LockCount = 0;
+		TRACE(_T("%s Unlock1; Count now %d; File Deleted; File: %s%s\n"), 
+			PWSUtil::GetTimeStamp(), LockCount, fname, ext);
+		CloseHandle(lockFileHandle);
+		lockFileHandle = INVALID_HANDLE_VALUE;
 		DeleteFile(LPCTSTR(lock_filename));
 	}
   }
 #endif // POSIX_FILE_LOCK
 }
 
-bool PWSfile::IsLockedFile(const CMyString &filename, const bool)
+bool PWSfile::IsLockedFile(const CMyString &filename)
 {
   CMyString lock_filename;
   GetLockFileName(filename, lock_filename);
@@ -435,7 +444,7 @@ bool PWSfile::IsLockedFile(const CMyString &filename, const bool)
 			FILE_SHARE_READ,
 			NULL,
 			OPEN_EXISTING, // don't create one!
-			FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+			FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH,
 			NULL);
   if (h == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
@@ -489,30 +498,18 @@ void PWSfile::GetFileUUID(uuid_array_t &file_uuid_array)
   memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
 }
 
-void PWSfile::GetUnknownHeaderFields(UnknownHeaderFieldList &UHFL)
+void PWSfile::GetUnknownHeaderFields(UnknownFieldList &UHFL)
 {
-  if (!m_UHFL.empty()) {
-    UnknownHeaderFieldList::const_iterator vi_IterUHFE;
-    for (vi_IterUHFE = m_UHFL.begin();
-         vi_IterUHFE != m_UHFL.end();
-         vi_IterUHFE++) {
-       UnknownFieldEntry unkhfe = *vi_IterUHFE;
-       UHFL.push_back(unkhfe);
-    }
-  } else
+  if (!m_UHFL.empty())
+    UHFL = m_UHFL;
+  else
     UHFL.clear();
 }
 
-void PWSfile::SetUnknownHeaderFields(UnknownHeaderFieldList &UHFL)
+void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
 {
-  if (!UHFL.empty()) {
-    UnknownHeaderFieldList::const_iterator vi_IterUHFE;
-    for (vi_IterUHFE = UHFL.begin();
-         vi_IterUHFE != UHFL.end();
-         vi_IterUHFE++) {
-       UnknownFieldEntry unkhfe = *vi_IterUHFE;
-       m_UHFL.push_back(unkhfe);
-    }
-  } else
+  if (!UHFL.empty())
+    m_UHFL = UHFL;
+  else
     m_UHFL.clear();
 }

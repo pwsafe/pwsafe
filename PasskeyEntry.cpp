@@ -18,6 +18,7 @@
 #include "corelib/Pwsdirs.h"
 #include "corelib/PWSfile.h"
 #include "ThisMfcApp.h"
+#include "AdvancedDlg.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -41,25 +42,29 @@
 
 static TCHAR PSSWDCHAR = TCHAR('*');
 
-int CPasskeyEntry::dialog_lookup[5] = {IDD_PASSKEYENTRY_FIRST,
-										IDD_PASSKEYENTRY,
-										IDD_PASSKEYENTRY,
-										IDD_PASSKEYENTRY_WITHEXIT,
-										IDD_PASSKEYENTRY};
+// See DboxMain.h for the relevant enum
+int CPasskeyEntry::dialog_lookup[5] = {
+                    IDD_PASSKEYENTRY_FIRST,          // GCP_FIRST
+										IDD_PASSKEYENTRY,                // GCP_NORMAL
+										IDD_PASSKEYENTRY,                // GCP_UNMINIMIZE
+										IDD_PASSKEYENTRY_WITHEXIT,       // GCP_WITHEXIT
+										IDD_PASSKEYENTRY_WITHEXIT};      // GCP_ADVANCED
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec, int index,
-			                 bool bReadOnly, bool bForceReadOnly)
+			                 bool bReadOnly, bool bForceReadOnly, int adv_type)
    : super(dialog_lookup[index],
              pParent),
      m_index(index),
      m_filespec(a_filespec), m_orig_filespec(a_filespec),
      m_tries(0),
      m_status(TAR_INVALID),
-     m_ReadOnly(bReadOnly ? TRUE : FALSE),
+     m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
      m_bForceReadOnly(bForceReadOnly),
-     m_bAdvanced(FALSE)
+     m_adv_type(adv_type), m_bAdvanced(false),
+     m_subgroup_set(BST_UNCHECKED),
+     m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
 {
   //{{AFX_DATA_INIT(CPasskeyEntry)
   //}}AFX_DATA_INIT
@@ -70,10 +75,9 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
   }
 
   m_passkey = _T("");
-
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
-
   m_message = a_filespec;
+  m_bsFields.set();
 }
 
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
@@ -95,9 +99,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MESSAGE, m_message);
     if (m_index == GCP_FIRST)
         DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
-    if (m_index == GCP_ADVANCED)
-        DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
-	DDX_Check(pDX, IDC_READONLY, m_ReadOnly);
+	DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
 	//}}AFX_DATA_MAP
 }
 
@@ -105,7 +107,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
 //{{AFX_MSG_MAP(CPasskeyEntry)
 ON_BN_CLICKED(ID_HELP, OnHelp)
 ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
-ON_BN_CLICKED(IDC_EXIT, OnExit)
+ON_BN_CLICKED(IDC_EXITADVANCED, OnExitAdvanced)
 #if defined(POCKET_PC)
 ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
 ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
@@ -157,13 +159,6 @@ CPasskeyEntry::OnInitDialog(void)
   			GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
 
   		GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
-      if (m_index == GCP_ADVANCED) {
-  		  GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_SHOW);
-        GetDlgItem(IDC_ADVANCED)->EnableWindow(TRUE);
-      } else {
-        GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_ADVANCED)->EnableWindow(FALSE);
-      }
   		break;
   	case GCP_UNMINIMIZE:
   	case GCP_WITHEXIT:
@@ -214,6 +209,12 @@ CPasskeyEntry::OnInitDialog(void)
                   m_MRU_combo.SetItemData(li, i);
           }
       }
+  }
+
+  // Change Exit button to say "Advanced" if necessary!
+  if (m_index == GCP_ADVANCED) {
+    GetDlgItem(IDC_EXITADVANCED)->
+                SetWindowText(CString(MAKEINTRESOURCE(IDS_ADVANCED)));
   }
 
   /*
@@ -340,10 +341,38 @@ CPasskeyEntry::OnCancel()
 }
 
 void
-CPasskeyEntry::OnExit()
+CPasskeyEntry::OnExitAdvanced()
 {
-  m_status = TAR_EXIT;
-  super::OnCancel();
+  if (m_index == GCP_WITHEXIT) {
+    m_status = TAR_EXIT;
+    super::OnCancel();
+    return;
+  }
+
+  CAdvancedDlg *pAdv;
+  int rc;
+
+  pAdv = new CAdvancedDlg(this, m_adv_type, m_bsFields, m_subgroup_name, m_subgroup_set, 
+              m_subgroup_object, m_subgroup_function);
+
+  app.DisableAccelerator();
+  rc = pAdv->DoModal();
+  app.EnableAccelerator();
+
+  if (rc == IDOK) {
+    m_bAdvanced = true;
+    m_bsFields = pAdv->m_bsFields;
+    m_subgroup_set = pAdv->m_subgroup_set;
+    if (m_subgroup_set == BST_CHECKED) {
+      m_subgroup_name = pAdv->m_subgroup_name;
+      m_subgroup_object = pAdv->m_subgroup_object;
+      m_subgroup_function = pAdv->m_subgroup_function;
+    }
+  } else {
+    m_bAdvanced = false;
+  }
+  delete pAdv;
+  pAdv = NULL;
 }
 
 void
@@ -455,8 +484,8 @@ void CPasskeyEntry::OnOpenFileBrowser()
         return;
     }
     if (rc == IDOK) {
-        m_ReadOnly = fd.GetReadOnlyPref();
-  		((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_ReadOnly == TRUE
+        m_PKE_ReadOnly = fd.GetReadOnlyPref();
+  		((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_PKE_ReadOnly == TRUE
                                                         ? BST_CHECKED
                                                         : BST_UNCHECKED);
         m_filespec = fd.GetPathName();

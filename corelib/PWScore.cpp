@@ -50,7 +50,8 @@ CString PWScore::m_hdr;
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_passkey(NULL), m_passkey_len(0)
+                     m_passkey(NULL), m_passkey_len(0),
+                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0)
 {
   if (!PWScore::m_session_initialized) {
 	CItemData::SetSessionKey(); // per-session initialization
@@ -59,6 +60,8 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 	PWScore::m_session_initialized = true;
   }
+  m_lockFileHandle = INVALID_HANDLE_VALUE;
+  m_LockCount = 0;
 }
 
 PWScore::~PWScore()
@@ -94,6 +97,7 @@ PWScore::ReInit(void)
   m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
   m_passkey = NULL;
   m_passkey_len = 0;
+  m_nRecordsWithUnknownFields = 0;
 }
 
 void
@@ -342,9 +346,88 @@ PWScore::WriteXMLFile(const CMyString &filename,
       of << _T("WhoSaved=\"") << LPCTSTR(wls) << _T("\"") << endl;
 	if (!m_whatlastsaved.IsEmpty())
       of << _T("WhatSaved=\"") << LPCTSTR(m_whatlastsaved) << _T("\"") << endl;
-	of << _T("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") << endl;
+
+  if (m_whenlastsaved.GetLength() == 8) {
+	  long t;
+	  TCHAR *lpszWLS = m_whenlastsaved.GetBuffer(9);
+#if _MSC_VER >= 1400
+	  int iread = _stscanf_s(lpszWLS, _T("%8x"), &t);
+#else
+	  int iread = _stscanf(lpszWLS, _T("%8x"), &t);
+#endif
+	  m_whenlastsaved.ReleaseBuffer();
+	  ASSERT(iread == 1);
+    wls = CString(PWSUtil::ConvertToDateTimeString((time_t) t, TMC_XML));
+    of << _T("WhenLastSaved=\"") << LPCTSTR(wls) << _T("\"") << endl;
+  }
+
+  TCHAR uuid_buffer[37];
+#if _MSC_VER >= 1400
+	_stprintf_s(uuid_buffer, 37,
+                  _T("%02x%02x%02x%02x-%02x%02x-%0x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
+                  m_file_uuid_array[0],  m_file_uuid_array[1],
+                  m_file_uuid_array[2],  m_file_uuid_array[3],
+                  m_file_uuid_array[4],  m_file_uuid_array[5],
+                  m_file_uuid_array[6],  m_file_uuid_array[7],
+                  m_file_uuid_array[8],  m_file_uuid_array[9],
+                  m_file_uuid_array[10], m_file_uuid_array[11],
+                  m_file_uuid_array[12], m_file_uuid_array[13],
+                  m_file_uuid_array[14], m_file_uuid_array[15]);
+#else
+  _stprintf(uuid_buffer,
+                  _T("%02x%02x%02x%02x-%02x%02x-%0x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"), 
+                  m_file_uuid_array[0],  m_file_uuid_array[1],
+                  m_file_uuid_array[2],  m_file_uuid_array[3],
+                  m_file_uuid_array[4],  m_file_uuid_array[5],
+                  m_file_uuid_array[6],  m_file_uuid_array[7],
+                  m_file_uuid_array[8],  m_file_uuid_array[9],
+                  m_file_uuid_array[10], m_file_uuid_array[11],
+                  m_file_uuid_array[12], m_file_uuid_array[13],
+                  m_file_uuid_array[14], m_file_uuid_array[15]);
+#endif
+  uuid_buffer[36] = TCHAR('\0');
+  of << _T("Database_uuid=\"") << uuid_buffer << _T("\"") << endl;
+  of << _T("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") << endl;
 	of << _T("xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">") << endl;
 	of << endl;
+
+  if (m_nITER > MIN_HASH_ITERATIONS) {
+      cs_tmp.Format(_T("%d"), m_nITER);
+      of << _T("\t<NumberHashIterations>") << LPCTSTR(cs_tmp) << _T("</NumberHashIterations>") << endl;
+  }
+
+  if (m_UHFL.size() > 0) {
+    of << _T("\t<unknownheaderfields>") << endl;
+    UnknownFieldList::const_iterator vi_IterUHFE;
+    for (vi_IterUHFE = m_UHFL.begin();
+         vi_IterUHFE != m_UHFL.end();
+         vi_IterUHFE++) {
+      UnknownFieldEntry unkhfe = *vi_IterUHFE;
+      if (unkhfe.st_length == 0)
+        continue;
+#if _MSC_VER >= 1400
+		  _itot_s( (int)unkhfe.uc_Type, buffer, 8, 10 );
+#else
+		  _itot( (int)unkhfe.uc_Type, buffer, 10 );
+#endif
+      unsigned char * pmem;
+      pmem = unkhfe.uc_pUField;
+
+#ifdef BASE64
+      tmp = (CMyString)PWSUtil::Base64Encode(pmem, unkhfe.st_Length);
+#else
+      tmp.Empty();
+      unsigned char c;
+      for (unsigned int i = 0; i < unkhfe.st_length; i++) {
+        c = *pmem++;
+        cs_tmp.Format(_T("%02x"), c);
+        tmp += CMyString(cs_tmp);
+      }
+#endif
+      of << _T("\t\t<field ftype=\"") << buffer << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+    }
+    of << _T("\t</unknownheaderfields>") << endl;  
+  }
 
   if (bsFields.count() != bsFields.size()) {
     // Some restrictions - put in a comment to that effect
@@ -403,7 +486,6 @@ PWScore::WriteXMLFile(const CMyString &filename,
            << _T("]]></notes>") << endl;
 
 		temp.GetUUID(uuid_array);
-		TCHAR uuid_buffer[33];
 #if _MSC_VER >= 1400
 		_stprintf_s(uuid_buffer, 33,
                     _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
@@ -505,6 +587,40 @@ PWScore::WriteXMLFile(const CMyString &filename,
           }
         }
 
+        if (temp.NumberUnknownFields() > 0) {
+          of << _T("\t\t<unknownrecordfields>") << endl;
+          unsigned int length;
+          unsigned char type;
+          unsigned char * pdata(NULL);
+          for (unsigned int i = 0; i != temp.NumberUnknownFields(); i++) {
+            temp.GetUnknownField(type, length, pdata, i);
+            if (length == 0)
+              continue;
+#if _MSC_VER >= 1400
+		        _itot_s( (int)type, buffer, 8, 10 );
+#else
+		        _itot( (int)type, buffer, 10 );
+#endif
+#ifdef BASE64
+            tmp = (CMyString)PWSUtil::Base64Encode(pdata, length);
+#else
+            tmp.Empty();
+            unsigned char * pdata2(pdata);
+            unsigned char c;
+            for (int j = 0; j < (int)length; j++) {
+              c = *pdata2++;
+              cs_tmp.Format(_T("%02x"), c);
+              tmp += CMyString(cs_tmp);
+            }
+#endif
+            of << _T("\t\t\t<field ftype=\"") << buffer << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+            trashMemory(pdata, length);
+            delete[] pdata;
+            pdata = NULL;
+          }
+          of << _T("\t\t</unknownrecordfields>") << endl;  
+        }
+
         of << _T("\t</entry>") << endl;
         of << endl;
 
@@ -521,16 +637,22 @@ skip_entry:
 int
 PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName,
                        const CString &strXSDFileName, CString &strErrors,
-                       int &numValidated, int &numImported)
+                       int &numValidated, int &numImported,
+                       bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields)
 {
     PWSXML *iXML;
     bool status, validation;
+    int nITER;
+    int nRecordsWithUnknownFields;
+    UnknownFieldList uhfl;
+    bool bEmptyDB = (GetNumEntries() == 0);
 
     iXML = new PWSXML;
     strErrors = _T("");
 
     validation = true;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName);
+    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
+                              nITER, nRecordsWithUnknownFields, uhfl);
     strErrors = iXML->m_strResultText;
     if (!status) {
         delete iXML;
@@ -541,7 +663,8 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 
     iXML->SetCore(this);
     validation = false;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName);
+    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
+                              nITER, nRecordsWithUnknownFields, uhfl);
     strErrors = iXML->m_strResultText;
     if (!status) {
         delete iXML;
@@ -549,6 +672,20 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
     }
 
     numImported = iXML->m_numEntriesImported;
+    bBadUnknownFileFields = iXML->m_bDatabaseHeaderErrors;
+    bBadUnknownRecordFields = iXML->m_bRecordHeaderErrors;
+    m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
+    // Only add header unknown fields or change number of iterations
+    // if the database was empty to start with
+    if (bEmptyDB) {
+      m_nITER = nITER;
+      if (uhfl.empty())
+        m_UHFL.clear();
+      else {
+        m_UHFL = uhfl;
+      }
+    }
+    uhfl.clear();
 
     delete iXML;
     m_changed = true;
@@ -945,6 +1082,7 @@ PWScore::ReadFile(const CMyString &a_filename,
         temp.Clear(); // Rather than creating a new one each time.
         status = in->ReadRecord(temp);
     }
+    m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
     status = in->Close(); // in V3 this checks integrity
 #else // DEMO
     unsigned long numRead = 0;

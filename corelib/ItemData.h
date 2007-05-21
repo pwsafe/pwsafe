@@ -14,7 +14,6 @@
 #include "Util.h"
 #include "ItemField.h"
 #include "UUIDGen.h"
-#include "UnknownField.h"
 
 #include <time.h> // for time_t
 #include <bitset>
@@ -44,8 +43,8 @@ struct PWHistEntry {
 };
 
 typedef std::vector<PWHistEntry> PWHistList;
-
-typedef std::vector<UnknownFieldEntry> UnknownRecordFieldList;
+typedef std::vector<CItemField> UnknownFields;
+typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
 //-----------------------------------------------------------------------------
 
@@ -147,10 +146,25 @@ public:
    // it's used for multi-line notes and to replace '.' within the Title field.
    CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
    						const TCHAR &delimiter) const;
+   void GetUnknownField(unsigned char &type, unsigned int &length,
+                        unsigned char * &pdata,
+                        const unsigned int &num) const;
+   void GetUnknownField(unsigned char &type, unsigned int &length,
+                        unsigned char * &pdata,
+                        const UnknownFieldsConstIter &iter) const;
+   void SetUnknownField(const unsigned char type,
+                        const unsigned int length,
+                        const unsigned char * ufield);
+   unsigned int NumberUnknownFields() const
+     {return (unsigned int)m_URFL.size();}
+   void ClearUnknownFields()
+     {return m_URFL.clear();}
+  UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
+  UnknownFieldsConstIter GetURFIterEnd() const {return m_URFL.end();}
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,
-		const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
+	 const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
    void SetTitle(const CMyString &title, TCHAR delimiter = 0);
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
@@ -159,8 +173,8 @@ public:
    void SetGroup(const CMyString &group); // V20
    void SetURL(const CMyString &URL); // V30
    void SetAutoType(const CMyString &autotype); // V30
-   void SetATime() {return SetTime(ATIME);}  // V30
-   void SetATime(time_t t) {return SetTime(ATIME, t);}  // V30
+   void SetATime() {SetTime(ATIME);}  // V30
+   void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
    void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
    void SetCTime() {SetTime(CTIME);}  // V30
    void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
@@ -190,11 +204,6 @@ public:
   
   BOOL WantEntry(const CString &subgroup_name, const int &iObject, 
                  const int &iFunction) const;
-  void SetUnknownRecordFieldList(UnknownRecordFieldList URFL);
-  UnknownRecordFieldList GetUnknownRecordFieldList()
-    {return m_URFL;}
-  // Save unknown record fields on read to put back on write unchanged
-  UnknownRecordFieldList m_URFL;
 
 private:
   CItemField m_Name;
@@ -212,6 +221,9 @@ private:
   CItemField m_tttPMTime;	// last 'P'assword 'M'odification time
   CItemField m_tttRMTime;	// last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
+
+  // Save unknown record fields on read to put back on write unchanged
+  UnknownFields m_URFL;
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase

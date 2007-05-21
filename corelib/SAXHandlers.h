@@ -13,7 +13,11 @@
 
 #include "MyString.h"
 #include "ItemData.h"
+#include "UUIDGen.h"
 #include "xml_import.h"
+
+#include "UnknownField.h"
+
 using namespace MSXML2;
 
 // Local variables
@@ -38,6 +42,7 @@ struct pw_entry {
 	CMyString pwhistory;
 	CMyString notes;
 	CMyString uuid;
+	UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
 };
 
 //	-----------------------------------------------------------------------
@@ -86,6 +91,11 @@ public:
 	CString m_strImportErrors;
 	int m_numEntries;
 	TCHAR m_delimiter;
+  bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
+	int m_nITER;
+	UnknownFieldList m_ukhxl;  // For header unknown fields
+  int m_nRecordsWithUnknownFields;
+
 	void SetVariables(PWScore *core, const bool &bValidation,
 					const CString &ImportedPrefix, const TCHAR &delimiter);
 
@@ -160,6 +170,11 @@ private:
 	PWScore *m_xmlcore;
 	int m_whichtime, m_ipwh;
 	bool m_bValidation;
+
+  bool m_bheader;
+	unsigned char m_ctype;
+	unsigned char * m_pfield;
+  int m_fieldlen;
 
 	// REQUIRED variable
 	ULONG m_refCnt;

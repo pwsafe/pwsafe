@@ -46,7 +46,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	CPropertyPage::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptionsDisplay)
 	DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
-  DDX_Check(pDX, IDC_DEFUNSHOWINTREE, m_showusernameintree);
+    DDX_Check(pDX, IDC_DEFUNSHOWINTREE, m_showusernameintree);
 	DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_showpasswordintree);
 	DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_explorertree);
 	DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
@@ -64,7 +64,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(COptionsDisplay, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsDisplay)
 	ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
-  ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
+    ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

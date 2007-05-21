@@ -39,6 +39,9 @@ DECLARE_HANDLE(HDROP);
 #define WM_CCTOHDR_DD_COMPLETE (WM_APP + 21)
 #define WM_HDRTOCC_DD_COMPLETE (WM_APP + 22)
 
+// Process Compare Result Dialog click/menu functions
+#define WM_COMPARE_RESULT_FUNCTION (WM_APP + 30)
+
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
 // timer event number used to support lock on user-defined timeout
@@ -70,7 +73,7 @@ private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
-    static const CString DEFAULT_AUTOTYPE;
+  static const CString DEFAULT_AUTOTYPE;
 
 public:
   // default constructor
@@ -129,10 +132,10 @@ public:
   int GetHeaderWidth(const int iType);
   void CalcHeaderWidths();
 
-  void SetReadOnly(bool state);
-  bool IsReadOnly() const {return m_IsReadOnly;};
+  void UpdateToolBar(bool state);
+  bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
-  void SetStartClosed(bool state) { m_IsStartClosed = state;}
+  void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
@@ -209,7 +212,12 @@ protected:
   int m_iSessionEndingStatus;
   bool m_bFindActive;
   bool m_bFindWrap;
-  bool m_bAdvanced; // Used by Compare
+
+  // Used for Advanced functions
+  CItemData::FieldBits m_bsFields;
+  bool m_bAdvanced;
+  CString m_subgroup_name;
+  int m_subgroup_set, m_subgroup_object, m_subgroup_function;
 
   WCHAR *m_pwchTip;
   TCHAR *m_pchTip;
@@ -238,6 +246,11 @@ protected:
   void UpdateSystemTray(const STATE s);
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
+  LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
+  LRESULT ViewCompareResult(PWScore *pcore, POSITION pos);
+  LRESULT EditCompareResult(PWScore *pcore, POSITION pos);
+  LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore, POSITION pos);
+
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
@@ -255,6 +268,7 @@ protected:
   //Version of message functions with return values
   int Save(void);
   int SaveAs(void);
+  int SaveCore(PWScore *pcore);
   int Open(void);
   int Open( const CMyString &pszFilename );
   int Close(void);
@@ -268,7 +282,7 @@ protected:
 
   void Delete(bool inRecursion = false);
   void AutoType(const CItemData &ci);
-  void EditItem(CItemData *ci);
+  bool EditItem(CItemData *ci);
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
@@ -383,14 +397,14 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-                          int index, bool bForceReadOnly = false);
+                          int index, bool bForceReadOnly = false,
+                          PWScore *pcore = 0, int adv_type = -1);
 
 private:
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
-  PWScore  &m_core;
+  PWScore &m_core;
   CMyString m_lastFindStr;
   BOOL m_lastFindCS;
-  bool m_IsReadOnly;
   bool m_IsStartSilent;
   bool m_IsStartClosed;
   bool m_bStartHiddenAndMinimized;

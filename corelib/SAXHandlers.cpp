@@ -17,6 +17,7 @@
 #include "UUIDGen.h"
 #include "xml_import.h"
 #include "corelib.h"
+#include "PWSfileV3.h"
 
 // Stop warnings about unused formal parameters!
 #pragma warning(disable : 4100)
@@ -135,11 +136,17 @@ PWSSAXContentHandler::PWSSAXContentHandler()
 	m_numEntries = 0;
 	m_ImportedPrefix = _T("");
 	m_delimiter = _T('^');
+  m_bheader = false;
+  m_bDatabaseHeaderErrors = false;
+  m_bRecordHeaderErrors = false;
+  m_nITER = 0;
+  m_nRecordsWithUnknownFields = 0;
 }
 
 //	-----------------------------------------------------------------------
 PWSSAXContentHandler::~PWSSAXContentHandler()
 {
+  m_ukhxl.clear();
 }
 
 void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
@@ -233,8 +240,8 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 				pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-				_tcsncpy_s(szQName, MAX_PATH+1, QName, QName_length);
-				_tcsncpy_s(szValue, MAX_PATH+1, Value, Value_length);
+				_tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
+				_tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
 #else
 				_tcsncpy(szQName, QName, QName_length);
 				_tcsncpy(szValue, Value, Value_length);
@@ -250,12 +257,53 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 #endif
 				if (_tcscmp(szQName, _T("delimiter")) == 0)
 					m_delimiter = szValue[0];
+
+        // We do not save or copy the imported file_uuid_array
+        //   szQName == _T("Database_uuid")
 			}
 		}
 	}
 
 	if (m_bValidation)
 		return S_OK;
+
+  if (_tcscmp(szCurElement, _T("unknownheaderfields")) == 0) {
+		m_ukhxl.clear();
+    m_bheader = true;
+  }
+
+  if (_tcscmp(szCurElement, _T("field")) == 0) {
+    int iAttribs = 0;
+		pAttributes->getLength(&iAttribs);
+		for (int i = 0; i < iAttribs; i++) {
+			TCHAR szQName[MAX_PATH + 1] = {0};
+			TCHAR szValue[MAX_PATH + 1] = {0};
+			wchar_t *QName, *Value;
+			int QName_length, Value_length;
+
+			pAttributes->getQName(i, &QName, &QName_length);
+			pAttributes->getValue(i, &Value, &Value_length);
+#ifdef _UNICODE
+#if (_MSC_VER >= 1400)
+			_tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
+			_tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
+#else
+			_tcsncpy(szQName, QName, QName_length);
+			_tcsncpy(szValue, Value, Value_length);
+#endif
+#else
+#if (_MSC_VER >= 1400)
+			wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
+			wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
+#else
+			wcstombs(szQName, QName, QName_length);
+			wcstombs(szValue, Value, Value_length);
+#endif
+#endif
+			if (_tcscmp(szQName, _T("ftype")) == 0)
+				m_ctype = (unsigned char)_ttoi(szValue);
+		}
+  }
 
 	if (_tcscmp(szCurElement, _T("entry")) == 0) {
 		cur_entry = new pw_entry;
@@ -340,7 +388,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     unsigned short * pwchLocalName,
     int cchLocalName,
     unsigned short * pwchQName,
-    int cchQName )
+    int cchQName)
 {
 	TCHAR szCurElement[MAX_PATH+1] = {0};
 
@@ -376,7 +424,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
             // _stscanf_s always outputs to an "int" using %x even though
             // target is only 1.  Read into larger buffer to prevent data being
             // overwritten and then copy to where we want it!
-            unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
+      unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
 			int nscanned = 0;
 			TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
  			for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
@@ -461,7 +509,28 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		if (cur_entry->notes.GetLength() != 0)
 			tempitem.SetNotes(cur_entry->notes, m_delimiter);
 
+    if (!cur_entry->uhrxl.empty()) {
+      UnknownFieldList::const_iterator vi_IterUXRFE;
+      for (vi_IterUXRFE = cur_entry->uhrxl.begin();
+           vi_IterUXRFE != cur_entry->uhrxl.end();
+           vi_IterUXRFE++) {
+        UnknownFieldEntry unkrfe = *vi_IterUXRFE;
+#ifdef _DEBUG
+        CString cs_timestamp;
+        cs_timestamp = PWSUtil::GetTimeStamp();
+        TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d, value:\n"),
+          cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username, 
+          unkrfe.uc_Type, (int)unkrfe.st_length);
+        CString cs_hexdump;
+        cs_hexdump = PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
+        TRACE(_T("%s\n"), cs_hexdump);
+#endif
+        tempitem.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
+      }
+    }
+
 		m_xmlcore->AddEntryToTail(tempitem);
+    cur_entry->uhrxl.clear();
 		delete cur_entry;
 		m_numEntries++;
 	}
@@ -613,6 +682,67 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 				ASSERT(0);
 		}
 	}
+
+  if (_tcscmp(szCurElement, _T("unknownheaderfields")) == 0)
+    m_bheader = false;
+
+  if (_tcscmp(szCurElement, _T("unknownrecordfields")) == 0) {
+    if (!cur_entry->uhrxl.empty())
+      m_nRecordsWithUnknownFields++;
+  }
+
+  if (_tcscmp(szCurElement, _T("field")) == 0) {
+    // _stscanf_s always outputs to an "int" using %x even though
+    // target is only 1.  Read into larger buffer to prevent data being
+    // overwritten and then copy to where we want it!
+    const int length = m_strElemContent.GetLength();
+#ifdef BASE64
+    m_pfield = new unsigned char[(length / 3) * 4 + 4];
+    size_t out_len;
+    PWSUtil::Base64Decode(m_strElemContent, m_pfield, out_len);
+    m_fieldlen = (int)out_len;
+#else
+    m_fieldlen = length / 2;
+    m_pfield = new unsigned char[m_fieldlen + sizeof(int)];
+    int nscanned = 0;
+    TCHAR *lpsz_string = m_strElemContent.GetBuffer(length);
+    for (int i = 0; i < m_fieldlen; i++) {
+#if _MSC_VER >= 1400
+      nscanned += _stscanf_s(lpsz_string, _T("%02x"), &m_pfield[i]);
+#else
+      nscanned += _stscanf(lpsz_string, _T("%02x"), &m_pfield[i]);
+#endif
+      lpsz_string += 2;
+    }
+    m_strElemContent.ReleaseBuffer();
+#endif
+    // We will use header field entry and add into proper record field
+    // when we create the complete record entry
+    UnknownFieldEntry ukxfe(m_ctype, m_fieldlen, m_pfield);
+    if (m_bheader) {
+      if (m_ctype >= PWSfileV3::HDR_LAST) {
+        m_ukhxl.push_back(ukxfe);
+      } else {
+        m_bDatabaseHeaderErrors = true;
+      }
+    } else {
+      if (m_ctype >= CItemData::LAST) {
+        cur_entry->uhrxl.push_back(ukxfe);
+      } else {
+        m_bRecordHeaderErrors = true;
+      }
+    }
+    trashMemory(m_pfield, m_fieldlen);
+    delete[] m_pfield;
+    m_pfield = NULL;
+  }
+
+	if (_tcscmp(szCurElement, _T("NumberHashIterations")) == 0) { 
+	  int i = _ttoi(m_strElemContent);
+    if (i > MIN_HASH_ITERATIONS) {
+		  m_nITER = i;
+		}
+  }
 
 	return S_OK;
 }
