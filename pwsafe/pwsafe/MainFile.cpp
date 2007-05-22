@@ -1491,7 +1491,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
   case PWScore::SUCCESS:
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
-    temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+    temp.Format(IDS_CANTOPEN, cs_Filename2);
     cs_title.LoadString(IDS_FILEOPENERROR);
     MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
   case TAR_OPEN:
