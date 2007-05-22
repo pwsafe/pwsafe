@@ -139,8 +139,9 @@ BOOL CCompareResultsDlg::OnInitDialog()
       m_LCResults.SetItemText(iItem, GROUP, st_data.group);
       m_LCResults.SetItemText(iItem, TITLE, st_data.title);
       m_LCResults.SetItemText(iItem, USER, st_data.user);
-      for (i = 0; i < m_nCols - 5; i++)
-        m_LCResults.SetItemText(iItem, USER + 1 + i, _T("-"));
+      for (i = USER + 1; i < m_nCols; i++)
+        m_LCResults.SetItemText(iItem, i, _T("-"));
+
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, (DWORD)&st_data);
       iItem++;
@@ -160,8 +161,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
       m_LCResults.SetItemText(iItem, GROUP, st_data.group);
       m_LCResults.SetItemText(iItem, TITLE, st_data.title);
       m_LCResults.SetItemText(iItem, USER, st_data.user);
-      for (i = 0; i < m_nCols - 5; i++)
-        m_LCResults.SetItemText(iItem, USER + 1 + i, _T("-"));
+      for (i = USER + 1; i < m_nCols; i++)
+        m_LCResults.SetItemText(iItem, i, _T("-"));
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, (DWORD)&st_data);
@@ -260,6 +261,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_DialogMinHeight = dlgRect.Height();
   m_DialogMaxWidth = itotalwidth + 16;
   m_DialogMaxHeight = 1024;
+  if (m_DialogMaxWidth < m_DialogMinWidth)
+    m_DialogMaxWidth = m_DialogMinWidth;
+  if (m_DialogMaxHeight < m_DialogMinHeight)
+    m_DialogMaxHeight = m_DialogMinHeight; 
 
   m_statusBar.GetWindowRect(&sbRect);
 
@@ -339,8 +344,8 @@ CCompareResultsDlg::OnShowIdenticalEntries()
         m_LCResults.SetItemText(iItem, GROUP, st_data.group);
         m_LCResults.SetItemText(iItem, TITLE, st_data.title);
         m_LCResults.SetItemText(iItem, USER, st_data.user);
-        for (i = 0; i < m_nCols - 5; i++)
-          m_LCResults.SetItemText(iItem, USER + 1 + i, _T("-"));
+        for (i = USER + 1; i < m_nCols; i++)
+          m_LCResults.SetItemText(iItem, i, _T("-"));
 
         st_data.listindex = iItem;
         m_LCResults.SetItemData(iItem, (DWORD)&st_data);

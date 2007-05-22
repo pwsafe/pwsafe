@@ -39,7 +39,8 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
   : CDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
     m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
     m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
-    m_subgroup_function(subgroup_function), m_ToolTipCtrl(NULL)
+    m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
+    m_ToolTipCtrl(NULL)
 {
   //{{AFX_DATA_INIT(CAdvancedDlg)
   //}}AFX_DATA_INIT

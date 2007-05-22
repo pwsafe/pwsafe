@@ -952,7 +952,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     if (pcore == 0) pcore = &m_core;
 
     if (!filename.IsEmpty()) {
-        bool exists = m_core.FileExists(filename, bFileIsReadOnly);
+        bool exists = pcore->FileExists(filename, bFileIsReadOnly);
 
         if (!exists) {
             // Used to display an error message, but this is really the caller's business
@@ -1016,7 +1016,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     if (rc == IDOK) {
         DBGMSG("PasskeyEntry returns IDOK\n");
         const CString &curFile = dbox_pkentry->GetFileName();
-        m_core.SetCurFile(curFile);
+        pcore->SetCurFile(curFile);
         CMyString locker(_T("")); // null init is important here
         passkey = dbox_pkentry->GetPasskey();
         // This dialog's setting of read-only overrides file dialog
@@ -1088,12 +1088,12 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         } else { // locker.IsEmpty() means no lock needed or lock was successful
             if (dbox_pkentry->GetStatus() == TAR_NEW) {
                 // Save new file
-                m_core.NewFile(dbox_pkentry->GetPasskey());
-                rc = m_core.WriteCurFile();
+                pcore->NewFile(dbox_pkentry->GetPasskey());
+                rc = pcore->WriteCurFile();
                 
                 if (rc == PWScore::CANT_OPEN_FILE) {
                     CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-                    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile());
+                    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile());
                     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
                     retval = PWScore::USER_CANCEL;
                 } else
