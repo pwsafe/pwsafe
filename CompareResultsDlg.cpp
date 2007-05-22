@@ -43,7 +43,7 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
   m_ShowIdenticalEntries(BST_UNCHECKED),
   m_DialogMinWidth(455), m_DialogMinHeight(415),
-  m_DialogMaxWidth(999), m_DialogMaxHeight(999)
+  m_DialogMaxWidth(999), m_DialogMaxHeight(1024)
   // Need to set default values for MinWidth & MinHeight as OnGetMinMaxInfo is 
   // called during Create before set in InitDialog
 {
@@ -294,6 +294,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
 
   GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_cs_Filename1);
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
+
+  this->SetWindowPos(NULL, NULL, NULL, m_DialogMinWidth, m_DialogMinHeight, 
+                     SWP_NOMOVE | SWP_NOZORDER);
+
   return TRUE;
 }
 
