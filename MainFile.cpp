@@ -1463,14 +1463,6 @@ DboxMain::OnCompare()
   return;
 }
 
-// The following structure needed for compare when record is in
-// both databases but there are differences
-struct st_Conflict {
-  POSITION cPos;
-  POSITION nPos;
-  CItemData::FieldBits bsDiffs;
-};
-
 int
 DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 {
@@ -1948,7 +1940,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore, POSITION fromP
     if (nfromUnknownRecordFields != 0) {
       unsigned int length;
       unsigned char type;
-      unsigned char * pdata;
+      unsigned char *pdata;
 
       for (int i = 0; i < nfromUnknownRecordFields; i++) {
         fromEntry->GetUnknownField(type, length, pdata, i);
@@ -1985,7 +1977,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore, POSITION fromP
       ptocore->IncrementNumRecordsWithUnknownFields();
       unsigned int length;
       unsigned char type;
-      unsigned char * pdata;
+      unsigned char *pdata;
 
       for (int i = 0; i < nfromUnknownRecordFields; i++) {
         fromEntry->GetUnknownField(type, length, pdata, i);
