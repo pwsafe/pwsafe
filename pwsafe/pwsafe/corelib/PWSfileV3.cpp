@@ -255,9 +255,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
        vi_IterURFE++) {
     unsigned char type;
     unsigned int length;
-    unsigned char *data;
-    item.GetUnknownField(type, length, data, vi_IterURFE);
-    WriteCBC(type, data, length);
+    unsigned char *pdata;
+    item.GetUnknownField(type, length, pdata, vi_IterURFE);
+    WriteCBC(type, pdata, length);
   }
 
   WriteCBC(CItemData::END, _T(""));
@@ -736,15 +736,15 @@ int PWSfileV3::ReadHeader()
                 // Save unknown fields that may be addded by future versions
                 UnknownFieldEntry unkhfe(fieldType, m_utf8Len, m_utf8);
                 m_UHFL.push_back(unkhfe);
-
+#ifdef _DEBUG
                 CString cs_timestamp;
                 cs_timestamp = PWSUtil::GetTimeStamp();
                 TRACE(_T("%s: Header has unknown field: %02x, length %d, value:\n"), 
-                          cs_timestamp, (int)unkhfe.uc_Type, (int)unkhfe.st_length);
+                          cs_timestamp, fieldType, m_utf8Len);
                 CString cs_hexdump;
-                cs_hexdump = PWSUtil::HexDump(unkhfe.uc_pUField, (int)unkhfe.st_length,
-                                              cs_timestamp);
+                cs_hexdump = PWSUtil::HexDump(m_utf8, m_utf8Len, cs_timestamp);
                 TRACE(_T("%s\n"), cs_hexdump);
+#endif /* DEBUG */
                 break;
         }
         delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;

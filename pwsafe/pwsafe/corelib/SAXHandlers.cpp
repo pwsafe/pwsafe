@@ -722,6 +722,15 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     if (m_bheader) {
       if (m_ctype >= PWSfileV3::HDR_LAST) {
         m_ukhxl.push_back(ukxfe);
+#ifdef _DEBUG
+        CString cs_timestamp;
+        cs_timestamp = PWSUtil::GetTimeStamp();
+        TRACE(_T("%s: Header has unknown field: %02x, length %d, value:\n"),
+          cs_timestamp, m_ctype, m_fieldlen);
+        CString cs_hexdump;
+        cs_hexdump = PWSUtil::HexDump(m_pfield, m_fieldlen, cs_timestamp);
+        TRACE(_T("%s\n"), cs_hexdump);
+#endif
       } else {
         m_bDatabaseHeaderErrors = true;
       }

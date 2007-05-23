@@ -49,6 +49,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 {
 	HRESULT hr, hr0, hr60, hr40, hr30;
 	bool b_ok = false;
+  bool b_into_empty;
 	const CString cs_validation(MAKEINTRESOURCE(IDSC_XMLVALIDATION));
 	const CString cs_import(MAKEINTRESOURCE(IDSC_XMLIMPORT));
 
@@ -82,6 +83,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 			m_MSXML_Version = 60;
 		}
 	} else {  // XMLImport
+    b_into_empty = m_xmlcore->GetNumEntries() == 0;
 		switch (m_MSXML_Version) {
 			case 60:
 				hr0 = pSAXReader.CreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL);
@@ -199,7 +201,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
           m_bRecordHeaderErrors = pCH->m_bRecordHeaderErrors;
           nRecordsWithUnknownFields = pCH->m_nRecordsWithUnknownFields;
 
-          if (m_xmlcore->GetNumEntries() == 0) {
+          if (b_into_empty) {
             m_bDatabaseHeaderErrors = pCH->m_bDatabaseHeaderErrors;
             if (pCH->m_nITER > 0)
               nITER = pCH->m_nITER;
