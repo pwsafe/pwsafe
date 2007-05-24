@@ -284,6 +284,8 @@ int PWSfileV3::ReadRecord(CItemData &item)
     ASSERT(m_fd != NULL);
     ASSERT(m_curversion == V30);
 
+    int status = SUCCESS;
+
     CMyString tempdata;  
     signed long numread = 0;
     unsigned char type;
@@ -300,8 +302,10 @@ int PWSfileV3::ReadRecord(CItemData &item)
 
         if (CItemData::IsTextField(type)) {
             bool utf8status = FromUTF8(tempdata);
-            if (!utf8status)
+            if (!utf8status) {
                 TRACE(_T("PWSfileV3::ReadRecord(): FromUTF failed!\n"));
+                status = FAILURE;
+            }
         }
 
         if (fieldLen > 0) {
@@ -377,7 +381,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
         }
     } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
     if (numread > 0)
-        return SUCCESS;
+        return status;
     else
         return END_OF_FILE;
 }
@@ -838,6 +842,9 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     // If we're not in Unicode, call WideCharToMultiByte to
     // get to current codepage.
     // Input is in m_utf8 & m_utf8Len
+    //
+    // Due to a bug in pre-3.08 versions, data may be in ACP
+    // instead of utf-8. We try to detect and workaround this.
 
     if (m_utf8Len == 0) {
         data = _T("");
@@ -850,9 +857,11 @@ bool PWSfileV3::FromUTF8(CMyString &data)
                                     -1,           // -1 means null-terminated
                                     NULL, 0);     // get needed buffer size
     if (wcLen == 0) { // uh-oh
-        ASSERT(0);
-        data = _T("");
-        return false;
+      // it seems that this always returns non-zero, even if encoding
+      // broken. Therefore, we'll give a consrevative value here,
+      // and try to recover later
+      TRACE(_T("FromUTF8: Couldn't get buffer size - guessing!"));
+      wcLen = 2 * m_utf8Len;
     }
     // Allocate buffer (if previous allocation was smaller)
     if (wcLen > m_wcMaxLen) {
@@ -878,15 +887,29 @@ bool PWSfileV3::FromUTF8(CMyString &data)
             case ERROR_INVALID_PARAMETER:
                 TRACE("INVALID PARAMETER"); break;
             case ERROR_NO_UNICODE_TRANSLATION:
-                TRACE("NO UNICODE TRANSLATION"); break;
+              // try to recover
+                TRACE("NO UNICODE TRANSLATION");
+                wcLen = MultiByteToWideChar(CP_ACP,      // code page
+                                MB_ERR_INVALID_CHARS,  // character-type options
+                                LPSTR(m_utf8),       // string to map
+                                -1,           // -1 means null-terminated
+                                m_wc, wcLen);       // output buffer
+                if (wcLen > 0) {
+                  TRACE(_T("FromUTF8: recovery succeeded!"));
+                }
+                break;
             default:
                 ASSERT(0);
         }
     }
     ASSERT(wcLen != 0);
 #ifdef UNICODE
-    m_wc[wcLen-1] = TCHAR('\0');
-    data = m_wc;
+    if (wcLen != 0) {
+      m_wc[wcLen-1] = TCHAR('\0');
+      data = m_wc;
+      return true;
+    } else
+      return false;
 #else /* Go from Unicode to Locale encoding */
       // first get needed utf8 buffer size
     int mbLen = WideCharToMultiByte(CP_ACP,       // code page
@@ -918,9 +941,9 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     ASSERT(tmpLen == mbLen);
     m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
     data = m_tmp;
-#endif /* !UNICODE */
     ASSERT(data.GetLength() != 0);
     return true;
+#endif /* !UNICODE */
 }
 
 bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
