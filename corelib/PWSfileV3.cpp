@@ -254,10 +254,12 @@ int PWSfileV3::WriteRecord(const CItemData &item)
        vi_IterURFE != item.GetURFIterEnd();
        vi_IterURFE++) {
     unsigned char type;
-    unsigned int length;
-    unsigned char *pdata;
+    unsigned int length = 0;
+    unsigned char *pdata = NULL;
     item.GetUnknownField(type, length, pdata, vi_IterURFE);
     WriteCBC(type, pdata, length);
+    trashMemory(pdata, length);
+    delete[] pdata;
   }
 
   WriteCBC(CItemData::END, _T(""));

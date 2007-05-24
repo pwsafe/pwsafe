@@ -1938,9 +1938,9 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore, POSITION fromP
 
     toEntry->ClearUnknownFields();
     if (nfromUnknownRecordFields != 0) {
-      unsigned int length;
+      unsigned int length = 0;
       unsigned char type;
-      unsigned char *pdata;
+      unsigned char *pdata = NULL;
 
       for (int i = 0; i < nfromUnknownRecordFields; i++) {
         fromEntry->GetUnknownField(type, length, pdata, i);
@@ -1975,11 +1975,11 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore, POSITION fromP
     temp.SetRMTime(rmt);
     if (nfromUnknownRecordFields != 0) {
       ptocore->IncrementNumRecordsWithUnknownFields();
-      unsigned int length;
-      unsigned char type;
-      unsigned char *pdata;
 
       for (int i = 0; i < nfromUnknownRecordFields; i++) {
+        unsigned int length = 0;
+        unsigned char type;
+        unsigned char *pdata = NULL;
         fromEntry->GetUnknownField(type, length, pdata, i);
         if (length == 0)
           continue;
