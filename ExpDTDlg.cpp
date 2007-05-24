@@ -60,8 +60,9 @@ void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
 
 BOOL CExpDTDlg::OnInitDialog()
 {
-	TCHAR          szBuf[64];               // workspace
+	TCHAR          szBuf[81];               // workspace
 	CString        sTimeFormat;             // the time format being worked on
+  CString        sDateFormat;
 	CString        sSearch;                 // the string to search for
 	int            nIndex;                  // index of the string, if found
 
@@ -84,11 +85,11 @@ BOOL CExpDTDlg::OnInitDialog()
     pspin->SetPos(1);
 
     // First get the time format picture.
-    VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 64));
+    VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
     sTimeFormat = szBuf;
 
     // Next get the separator character.
-    VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 64));
+    VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 80));
     // Search for ":ss".
     sSearch = szBuf;
     sSearch += _T("ss");
@@ -108,11 +109,13 @@ BOOL CExpDTDlg::OnInitDialog()
             sTimeFormat.Delete(nIndex, sSearch.GetLength());
 		}
 	}
+  VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
+  sDateFormat = szBuf;
 
 	CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
 	CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
-    pTimeCtl->SetFormat(sTimeFormat);
-	pDateCtl->SetFormat(_T("ddd dd'/'MM'/'yyyy"));
+  pTimeCtl->SetFormat(sTimeFormat);
+	pDateCtl->SetFormat(sDateFormat);
 
 	CTime ct, xt;
 	CTime now(CTime::GetCurrentTime());
