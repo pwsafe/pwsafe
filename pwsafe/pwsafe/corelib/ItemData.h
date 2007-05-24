@@ -249,6 +249,8 @@ private:
   void GetField(const CItemField &field, CMyString &value) const;
   void GetField(const CItemField &field, unsigned char *value,
                 unsigned int &length) const;
+  void GetUnknownField(unsigned char &type, unsigned int &length,
+                       unsigned char * &pdata, const CItemField &item) const;
   void SetField(CItemField &field, const CMyString &value);
   void SetField(CItemField &field, const unsigned char *value,
                 unsigned int length);

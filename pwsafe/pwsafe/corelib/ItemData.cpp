@@ -209,12 +209,27 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
                                 unsigned char * &pdata,
+                                const CItemField &item) const
+{
+  ASSERT(pdata == NULL && length == 0);
+
+  const unsigned int BLOCKSIZE = 8;
+
+  type = item.GetType();
+  unsigned int flength = item.GetLength();
+  length = flength;
+  flength += BLOCKSIZE; // ensure that we've enough for at least one block
+  pdata = new unsigned char[flength];
+  GetField(item, pdata, flength);
+}
+
+
+void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
+                                unsigned char * &pdata,
                                 const unsigned int &num) const
 {
   const CItemField &unkrfe = m_URFL.at(num);
-
-  type = unkrfe.GetType();
-  GetField(unkrfe, pdata, length);
+  GetUnknownField(type, length, pdata, unkrfe);
 }
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
@@ -222,9 +237,7 @@ void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
                                 const UnknownFieldsConstIter &iter) const
 {
   const CItemField &unkrfe = *iter;
-
-  type = unkrfe.GetType();
-  GetField(unkrfe, pdata, length);
+  GetUnknownField(type, length, pdata, unkrfe);
 }
 
 void

@@ -589,10 +589,10 @@ PWScore::WriteXMLFile(const CMyString &filename,
 
         if (temp.NumberUnknownFields() > 0) {
           of << _T("\t\t<unknownrecordfields>") << endl;
-          unsigned int length;
-          unsigned char type;
-          unsigned char * pdata(NULL);
           for (unsigned int i = 0; i != temp.NumberUnknownFields(); i++) {
+            unsigned int length = 0;
+            unsigned char type;
+            unsigned char *pdata(NULL);
             temp.GetUnknownField(type, length, pdata, i);
             if (length == 0)
               continue;
@@ -616,10 +616,9 @@ PWScore::WriteXMLFile(const CMyString &filename,
             of << _T("\t\t\t<field ftype=\"") << buffer << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
             trashMemory(pdata, length);
             delete[] pdata;
-            pdata = NULL;
-          }
+          } // iteration over unknown fields
           of << _T("\t\t</unknownrecordfields>") << endl;  
-        }
+        } // if there are unknown fields
 
         of << _T("\t</entry>") << endl;
         of << endl;
