@@ -1079,33 +1079,48 @@ PWScore::ReadFile(const CMyString &a_filename,
     SetPassKey(a_passkey); // so user won't be prompted for saves
 
     CItemData temp;
+    bool go = true;
 
-    status = in->ReadRecord(temp);
-#ifndef DEMO
-    while (status == PWSfile::SUCCESS) {
-        m_pwlist.AddTail(temp);
-        temp.Clear(); // Rather than creating a new one each time.
-        status = in->ReadRecord(temp);
-    }
-    m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
-    status = in->Close(); // in V3 this checks integrity
-#else // DEMO
-    unsigned long numRead = 0;
-    while (status == PWSfile::SUCCESS) {
-        if (++numRead <= MAXDEMO) { // don't add to list more than MAXDEMO
-            m_pwlist.AddTail(temp);
+    do {
+      status = in->ReadRecord(temp);
+      switch (status) {
+      case PWSfile::FAILURE:
+        {
+          CString msg(_T("Trouble with non-ASCII data in record"));
+          msg += CString(temp.GetTitle()); // hope title field OK...
+          msg += _T("\" - please check data carefully.");
+          MessageBox(NULL, msg, _T("Read Error"), MB_OK);
         }
-        temp.Clear(); // Rather than creating a new one each time.
-        status = in->ReadRecord(temp);
-    }
-    status = in->Close(); // in V3 this checks integrity
-    // if integrity OK but LIMIT_REACHED, return latter
-    if (status == PWSfile::SUCCESS && numRead > MAXDEMO)
-        status = LIMIT_REACHED;
-#endif // DEMO
+        // deliberate fall-through
+      case PWSfile::SUCCESS:
+#ifdef DEMO
+        if (m_pwlist.GetCount() < MAXDEMO) {
+          m_pwlist.AddTail(temp);
+        } else {
+          status = LIMIT_REACHED;
+          go = false;
+        }
+#else
+        m_pwlist.AddTail(temp);
+#endif
+        break;
+      case PWSfile::END_OF_FILE:
+        go = false;
+        break;
+      } // switch
+      temp.Clear(); // Rather than creating a new one each time.
+    } while (go);
+
+
+    m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
     in->GetUnknownHeaderFields(m_UHFL);
+    int closeStatus = in->Close(); // in V3 this checks integrity
+#ifdef DEMO
+    if (closeStatus == PWSfile::SUCCESS && status == PWSfile::LIMIT_REACHED)
+      closeStatus = status; // if integrity OK but LIMIT_REACHED, return latter
+#endif
     delete in;
-    return status;
+    return closeStatus;
 }
 
 int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
