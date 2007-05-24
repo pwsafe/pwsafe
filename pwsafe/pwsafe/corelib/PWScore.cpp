@@ -98,6 +98,7 @@ PWScore::ReInit(void)
   m_passkey = NULL;
   m_passkey_len = 0;
   m_nRecordsWithUnknownFields = 0;
+  m_UHFL.clear();
 }
 
 void

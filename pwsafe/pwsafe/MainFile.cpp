@@ -203,6 +203,13 @@ DboxMain::New()
   app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
+  UpdateSystemTray(UNLOCKED);
+  m_RUEList.ClearEntries();
+  if (!m_bOpen) {
+    // Previous state was closed - reset DCA in status bar
+    SetDCAText();
+	}
+  UpdateMenuAndToolBar(true);
 
   return PWScore::SUCCESS;
 }
