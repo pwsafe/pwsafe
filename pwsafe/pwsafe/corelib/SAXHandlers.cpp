@@ -696,7 +696,10 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     // target is only 1.  Read into larger buffer to prevent data being
     // overwritten and then copy to where we want it!
     const int length = m_strElemContent.GetLength();
-#ifdef BASE64
+      // UNK_HEX_REP will represent unknown values
+      // as hexadecimal, rather than base64 encoding.
+      // Easier to debug.
+#ifndef UNK_HEX_REP
     m_pfield = new unsigned char[(length / 3) * 4 + 4];
     size_t out_len;
     PWSUtil::Base64Decode(m_strElemContent, m_pfield, out_len);
