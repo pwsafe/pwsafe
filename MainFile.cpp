@@ -133,10 +133,11 @@ DboxMain::OpenOnInit(void)
         CDialog::OnCancel();
       }
       m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
-                                                       FALSE);
-
+                                                 FALSE);
+      
       retval = TRUE;
     }
+      break;
 #endif
     default:
       if (!m_IsStartSilent)

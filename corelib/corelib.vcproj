@@ -201,7 +201,7 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="false"
-				PrecompiledHeaderFile=".\Release/corelib.pch"
+				PrecompiledHeaderFile="$(IntDir)/corelib.pch"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"

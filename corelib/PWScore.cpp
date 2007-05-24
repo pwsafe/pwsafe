@@ -1080,16 +1080,23 @@ PWScore::ReadFile(const CMyString &a_filename,
 
     CItemData temp;
     bool go = true;
+#ifdef DEMO
+    bool limited = false;
+#endif
 
     do {
       status = in->ReadRecord(temp);
       switch (status) {
       case PWSfile::FAILURE:
         {
-          CString msg(_T("Trouble with non-ASCII data in record"));
-          msg += CString(temp.GetTitle()); // hope title field OK...
-          msg += _T("\" - please check data carefully.");
-          MessageBox(NULL, msg, _T("Read Error"), MB_OK);
+          // Show a useful (?) error message - better than
+          // silently losing data (but not by much)
+          // Best if title intact. What to do if not?
+
+          CString cs_msg;
+          CString cs_caption(MAKEINTRESOURCE(IDSC_READ_ERROR));
+          cs_msg.Format(IDSC_ENCODING_PROBLEM, CString(temp.GetTitle()));
+          MessageBox(NULL, cs_msg, cs_caption, MB_OK);
         }
         // deliberate fall-through
       case PWSfile::SUCCESS:
@@ -1097,8 +1104,7 @@ PWScore::ReadFile(const CMyString &a_filename,
         if (m_pwlist.GetCount() < MAXDEMO) {
           m_pwlist.AddTail(temp);
         } else {
-          status = LIMIT_REACHED;
-          go = false;
+          limited = true;
         }
 #else
         m_pwlist.AddTail(temp);
@@ -1116,8 +1122,8 @@ PWScore::ReadFile(const CMyString &a_filename,
     in->GetUnknownHeaderFields(m_UHFL);
     int closeStatus = in->Close(); // in V3 this checks integrity
 #ifdef DEMO
-    if (closeStatus == PWSfile::SUCCESS && status == PWSfile::LIMIT_REACHED)
-      closeStatus = status; // if integrity OK but LIMIT_REACHED, return latter
+    if (closeStatus == PWSfile::SUCCESS && limited)
+      closeStatus = PWScore::LIMIT_REACHED; // if integrity OK but LIMIT_REACHED, return latter
 #endif
     delete in;
     return closeStatus;
