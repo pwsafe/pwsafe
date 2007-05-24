@@ -413,8 +413,11 @@ PWScore::WriteXMLFile(const CMyString &filename,
       unsigned char * pmem;
       pmem = unkhfe.uc_pUField;
 
-#ifdef BASE64
-      tmp = (CMyString)PWSUtil::Base64Encode(pmem, unkhfe.st_Length);
+      // UNK_HEX_REP will represent unknown values
+      // as hexadecimal, rather than base64 encoding.
+      // Easier to debug.
+#ifndef UNK_HEX_REP
+      tmp = (CMyString)PWSUtil::Base64Encode(pmem, unkhfe.st_length);
 #else
       tmp.Empty();
       unsigned char c;
@@ -601,7 +604,10 @@ PWScore::WriteXMLFile(const CMyString &filename,
 #else
 		        _itot( (int)type, buffer, 10 );
 #endif
-#ifdef BASE64
+      // UNK_HEX_REP will represent unknown values
+      // as hexadecimal, rather than base64 encoding.
+      // Easier to debug.
+#ifndef UNK_HEX_REP
             tmp = (CMyString)PWSUtil::Base64Encode(pdata, length);
 #else
             tmp.Empty();

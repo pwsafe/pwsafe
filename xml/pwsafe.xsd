@@ -55,7 +55,7 @@
               <xs:element name="field" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:simpleContent>
-                    <xs:extension base="xs:hexBinary">
+                    <xs:extension base="xs:base64Binary">
                       <xs:attribute name="ftype" type="fieldType" use="required" />
                     </xs:extension>
                   </xs:simpleContent>
@@ -110,7 +110,7 @@
                     <xs:element name="field" minOccurs="0" maxOccurs="unbounded">
                       <xs:complexType>
                         <xs:simpleContent>
-                          <xs:extension base="xs:hexBinary">
+                          <xs:extension base="xs:base64Binary">
                             <xs:attribute name="ftype" type="fieldType" use="required" />
                           </xs:extension>
                         </xs:simpleContent>

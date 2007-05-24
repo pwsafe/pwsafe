@@ -1114,7 +1114,6 @@ PWSUtil::HexDump(unsigned char *pmemory, const int length,
   return cs_buffer;
 }
 
-#ifdef BASE64
 CString
 PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 {
@@ -1149,9 +1148,8 @@ PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len
 {
   static const char szCS[]=
     "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  int iDigits[4] = {0,0,0,0};
 
-  ASSERT(sizeof(szCS) == 66);
+  int iDigits[4] = {0,0,0,0};
 
   CString cs_inString(sz_inString);
 
@@ -1189,6 +1187,5 @@ PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len
   }
 
   out_len = st_length;
-  return;
 }
-#endif
+
