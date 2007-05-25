@@ -14,19 +14,37 @@
 #include "Util.h"
 #include "ItemField.h"
 #include "UUIDGen.h"
+
 #include <time.h> // for time_t
 #include <bitset>
+#include <vector>
 
-// Password History Entry structure for CList
+// Password History Entry structure
 struct PWHistEntry {
-  time_t changetttdate;
-  // "yyyy/mm/mm hh:mm:ss" - format used in ListCtrl & copied to clipboard (best for sorting)
-  // "yyyy-mm-ddThh:mm:ss" - format used in XML
-  CMyString changedate;
-  CMyString password;
+    time_t changetttdate;
+    // "yyyy/mm/mm hh:mm:ss" - format used in ListCtrl & copied to clipboard (best for sorting)
+    // "yyyy-mm-ddThh:mm:ss" - format used in XML
+    CMyString changedate;
+    CMyString password;
+
+    PWHistEntry() :changetttdate(0), changedate(), password() {}
+    // copy c'tor and assignment operator, standard idioms
+    PWHistEntry(const PWHistEntry &that)
+            : changetttdate(that.changetttdate),
+              changedate(that.changedate), password(that.password) {}
+    PWHistEntry &operator=(const PWHistEntry &that)
+        { if (this != &that) {
+                changetttdate = that.changetttdate;
+                changedate = that.changedate;
+                password = that.password;
+            }
+            return *this;
+        }
 };
 
-typedef CList<PWHistEntry, PWHistEntry&> PWHistList;
+typedef std::vector<PWHistEntry> PWHistList;
+typedef std::vector<CItemField> UnknownFields;
+typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
 //-----------------------------------------------------------------------------
 
@@ -53,14 +71,18 @@ class CItemData
 public:
   enum {
     START = 0x00,
-    NAME = 0x00, UUID=0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
-	PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
-	POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
-    LAST, END = 0xff}; // field types, per formatV{2,3}.txt
+    NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
+    PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
+    POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
+    LAST,        // Start of unknown fields!
+    END = 0xff}; // field types, per formatV{2,3}.txt
 
   // For subgroup processing in GetPlainText from ExportTextXDlg
-  // SubGroup Function
-  enum {SGF_EQUALS = 1, SGF_NOTEQUAL, SGF_BEGINS, SGF_NOTBEGIN, SGF_ENDS, SGF_NOTEND, SGF_CONTAINS, SGF_NOTCONTAIN};
+  // SubGroup Function - if value used is negative, compare IS case sensitive
+  enum {SGF_EQUALS = 1, SGF_NOTEQUAL, 
+    SGF_BEGINS, SGF_NOTBEGIN, 
+    SGF_ENDS, SGF_NOTEND, 
+    SGF_CONTAINS, SGF_NOTCONTAIN};
   // SubGroup Object
   enum {SGO_GROUP, SGO_TITLE, SGO_USER, SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
 
@@ -68,10 +90,15 @@ public:
   typedef std::bitset<LAST> FieldBits;
 
   static void SetSessionKey(); // call exactly once per session
+
+  static bool IsTextField(unsigned char t);
+
    //Construction
   CItemData();
 
    CItemData(const CItemData& stuffhere);
+
+   ~CItemData();
 
    //Data retrieval
    CMyString GetName() const; // V17 - deprecated - replaced by GetTitle & GetUser
@@ -118,12 +145,26 @@ public:
    // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
    // it's used for multi-line notes and to replace '.' within the Title field.
    CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
-   						const CString &subgroup, const int &iObject, const int &iFunction,
    						const TCHAR &delimiter) const;
+   void GetUnknownField(unsigned char &type, unsigned int &length,
+                        unsigned char * &pdata,
+                        const unsigned int &num) const;
+   void GetUnknownField(unsigned char &type, unsigned int &length,
+                        unsigned char * &pdata,
+                        const UnknownFieldsConstIter &iter) const;
+   void SetUnknownField(const unsigned char type,
+                        const unsigned int length,
+                        const unsigned char * ufield);
+   unsigned int NumberUnknownFields() const
+     {return (unsigned int)m_URFL.size();}
+   void ClearUnknownFields()
+     {return m_URFL.clear();}
+  UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
+  UnknownFieldsConstIter GetURFIterEnd() const {return m_URFL.end();}
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,
-		const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
+	 const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
    void SetTitle(const CMyString &title, TCHAR delimiter = 0);
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
@@ -132,8 +173,8 @@ public:
    void SetGroup(const CMyString &group); // V20
    void SetURL(const CMyString &URL); // V30
    void SetAutoType(const CMyString &autotype); // V30
-   void SetATime() {return SetTime(ATIME);}  // V30
-   void SetATime(time_t t) {return SetTime(ATIME, t);}  // V30
+   void SetATime() {SetTime(ATIME);}  // V30
+   void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
    void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
    void SetCTime() {SetTime(CTIME);}  // V30
    void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
@@ -148,9 +189,9 @@ public:
    void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
    void SetRMTime(const CString &time_str) {SetTime(RMTIME, time_str);}  // V30
    void SetPWHistory(const CMyString &PWHistory);  // V30
-   int CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
-                            PWHistList* pPWHistList,
-                            const int time_format) const;  // V30
+   int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
+                           PWHistList* pPWHistList,
+                           const int time_format) const;  // V30
    CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
@@ -160,6 +201,9 @@ public:
   int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
                    uuid_array_t &uuid_array);
   int ValidatePWHistory();
+  
+  BOOL WantEntry(const CString &subgroup_name, const int &iObject, 
+                 const int &iFunction) const;
 
 private:
   CItemField m_Name;
@@ -177,6 +221,9 @@ private:
   CItemField m_tttPMTime;	// last 'P'assword 'M'odification time
   CItemField m_tttRMTime;	// last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
+
+  // Save unknown record fields on read to put back on write unchanged
+  UnknownFields m_URFL;
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
@@ -202,10 +249,19 @@ private:
   void GetField(const CItemField &field, CMyString &value) const;
   void GetField(const CItemField &field, unsigned char *value,
                 unsigned int &length) const;
+  void GetUnknownField(unsigned char &type, unsigned int &length,
+                       unsigned char * &pdata, const CItemField &item) const;
   void SetField(CItemField &field, const CMyString &value);
   void SetField(CItemField &field, const unsigned char *value,
                 unsigned int length);
 };
+
+inline bool CItemData::IsTextField(unsigned char t)
+{
+    return !(t == UUID || t == CTIME || t == PMTIME ||
+             t == ATIME || t == LTIME || t == RMTIME ||
+             t >= LAST);
+}
 
 #endif
 //-----------------------------------------------------------------------------

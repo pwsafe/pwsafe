@@ -17,8 +17,8 @@
 #include <stdio.h>
 #ifdef POCKET_PC
   #include <wce_time.h>
-  #define localtime(timer)	  wceex_localtime(timer)
-  #define _wasctime(timer)	  wceex__wasctime(timer)
+  #define localtime	  wceex_localtime
+  #define _tasctime	  wceex__tasctime
 #else
   #include <time.h>
   #include <sys/timeb.h>
@@ -35,8 +35,6 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
     mem1[x] ^= mem2[x];
 }
 
-
-
 //-----------------------------------------------------------------------------
 /*
   Note: A bunch of the encryption-related routines may not be Unicode
@@ -49,7 +47,7 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 
 #pragma optimize("",off)
 void
-trashMemory(void* buffer, long length)
+trashMemory(void* buffer, size_t length)
 {
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
@@ -65,7 +63,7 @@ trashMemory(void* buffer, long length)
 #pragma optimize("",on)
 
 void
-trashMemory( LPTSTR buffer, long length )
+trashMemory( LPTSTR buffer, size_t length )
 {
   trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0])  );
 }
@@ -88,18 +86,31 @@ GenRandhash(const CMyString &a_passkey,
             const unsigned char* a_randstuff,
             unsigned char* a_randhash)
 {
-  const LPCTSTR pkey = (const LPCTSTR)a_passkey;
-  /*
-    I'm not quite sure what this is doing, so as I figure out each piece,
-    I'll add more comments {jpr}
-  */
+  LPCTSTR pkey = (LPCTSTR)a_passkey;
+  unsigned long pkeyLen = a_passkey.GetLength();
+  unsigned char *pstr;
+
+#ifdef UNICODE
+  pstr = new unsigned char[2*pkeyLen];
+  int len = WideCharToMultiByte(CP_ACP, 0, pkey, pkeyLen,
+                                LPSTR(pstr), 2*pkeyLen, NULL, NULL);
+  ASSERT(len != 0);
+  pkeyLen = len;
+#else
+  pstr = (unsigned char *)pkey;
+#endif
 
   /*
     tempSalt <- H(a_randstuff + a_passkey)
   */
   SHA1 keyHash;
   keyHash.Update(a_randstuff, StuffSize);
-  keyHash.Update((const unsigned char*)pkey, a_passkey.GetLength());
+  keyHash.Update(pstr, pkeyLen);
+
+#ifdef UNICODE
+  trashMemory(pstr, pkeyLen);
+  delete[] pstr;
+#endif
 
   unsigned char tempSalt[20]; // HashSize
   keyHash.Final(tempSalt);
@@ -250,17 +261,14 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
  * Reads an encrypted record into buffer.
  * The first block of the record contains the encrypted record length
  * We have the usual ugly problem of fixed buffer lengths in C/C++.
- * Don't want to use CStrings, for future portability.
- * Best solution would be STL strings, but not enough experience with them (yet)
- * So for the meantime, we're going to allocate the buffer here, to ensure that it's long
- * enough.
+ * allocate the buffer here, to ensure that it's long enough.
  * *** THE CALLER MUST delete[] IT AFTER USE *** UGH++
  *
  * (unless buffer_len is zero)
  *
- * An alternative to STL strings would be to accept a buffer, and allocate a replacement
- * iff the buffer is too small. This is serious ugliness, but should be considered if
- * the new/delete performance hit is too big.
+ * Note that the buffer is a byte array, and buffer_len is number of
+ * bytes. This means that any data can be passed, and we don't
+ * care at this level if strings are char or wchar_t.
  *
  * If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
  * and -1 is returned if it matches. (used in V3)
@@ -807,13 +815,8 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
             GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
             _tcscat(datetime_str, time_str);
       		t_str_ptr = datetime_str;
-		} else {
-		  #if defined(UNICODE)
-			t_str_ptr = _wasctime(st);
-		  #else
-			t_str_ptr = asctime(st);
-		  #endif
-		}
+		} else
+			t_str_ptr = _tasctime(st);
 
     	ret = t_str_ptr;
 #endif
@@ -866,7 +869,6 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 	}
 
 	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
-	TCHAR *lpszPW;
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
@@ -913,14 +915,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 		lpszPWHistory += 1;
 		pwleft -= 1;
 
-		lpszPW = tmp.GetBuffer(20);
-#if _MSC_VER >= 1400
-		memcpy_s(lpszPW, 20, lpszPWHistory, 19);
-#else
-		memcpy(lpszPW, lpszPWHistory, 19);
-#endif
-		lpszPW[19] = TCHAR('\0');
-		tmp.ReleaseBuffer();
+    tmp = CMyString(lpszPWHistory, 19);
 
 		if (tmp.Left(10) == _T("1970-01-01"))
 			t = 0;
@@ -968,15 +963,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 			break;
 		}
 
-		CMyString tmp;
-		lpszPW = tmp.GetBuffer(ipwlen + 1);
-#if _MSC_VER >= 1400
-		memcpy_s(lpszPW, ipwlen + 1, lpszPWHistory, ipwlen);
-#else
-		memcpy(lpszPW, lpszPWHistory, ipwlen);
-#endif
-		lpszPW[ipwlen] = TCHAR('\0');
-		tmp.ReleaseBuffer();
+    tmp = CMyString(lpszPWHistory, ipwlen);
 		buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
 		newPWHistory += CMyString(buffer);
 		buffer.Empty();
@@ -1102,3 +1089,163 @@ PWSUtil::GetTimeStamp()
 	return cs_now;
 }
 */
+
+/*
+
+  Produce a printable version of memory dump (hex + ascii)
+
+  paramaters:
+    memory  - pointer to memory to format
+    length  - length to format
+    maxnum  - maximum characters dumped per line
+
+  return:
+    CString containing output buffer
+*/
+CString
+PWSUtil::HexDump(unsigned char *pmemory, const int length, 
+                 const CString cs_prefix, const int maxnum)
+{
+  CString cs_buffer(_T(""));
+#ifdef _DEBUG
+  unsigned char *pmem;
+  CString cs_outbuff, cs_hexbuff, cs_charbuff;
+  int i, j, len(length);
+  unsigned char c;
+
+  pmem = pmemory;
+  while (len > 0) {
+    // Show offset for this line.
+    cs_charbuff.Empty();
+    cs_hexbuff.Empty();
+    cs_outbuff.Format(_T("%s: %08x *"), cs_prefix, pmem);
+
+    // Format hex portion of line and save chars for ascii portion
+    if (len > maxnum)
+      j = maxnum;
+    else
+      j = len;
+
+    for (i = 0; i < j; i++) {
+      c = *pmem++;
+
+      if ((i % 4) == 0 && i != 0)
+        cs_outbuff += _T(' ');
+
+      cs_hexbuff.Format(_T("%02x"), c);
+      cs_outbuff += cs_hexbuff;
+
+      if (c >= 32 && c < 127)
+        cs_charbuff += (TCHAR)c;
+      else
+        cs_charbuff += _T('.');
+    }
+
+    j = maxnum - i;
+
+    // Fill out hex portion of short lines.
+    for (i = j; i > 0; i--) {
+      if ((i % 4) != 0)
+        cs_outbuff += _T("  ");
+      else
+        cs_outbuff += _T("   ");
+    }
+
+    // Add ASCII character portion to line.
+    cs_outbuff += _T("* |");
+    cs_outbuff += cs_charbuff;
+
+    // Fill out end of short lines.
+    for (i = j; i > 0; i--)
+      cs_outbuff += _T(' ');
+
+    cs_outbuff += _T('|');
+
+    // Next line
+    len -= maxnum;
+    if (len > 0)
+      cs_outbuff += _T('\n');
+
+    cs_buffer += cs_outbuff;
+  };
+#else
+  pmemory; length; cs_prefix; maxnum;
+#endif
+
+  return cs_buffer;
+}
+
+CString
+PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
+{
+  CString cs_Out;
+  const static CHAR base64ABC[] = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  
+  cs_Out.Empty();
+  for (DWORD i = 0; i < (DWORD)len; i += 3) {
+    LONG l = ( ((LONG)strIn[i]) << 16 ) | 
+      (((i + 1) < len) ? (((LONG)strIn[i + 1]) << 8) : 0) | 
+      (((i + 2) < len) ? ((LONG)strIn[i + 2]) : 0);
+
+    cs_Out += base64ABC[(l >> 18) & 0x3F];
+    cs_Out += base64ABC[(l >> 12) & 0x3F];
+    if (i + 1 < len) cs_Out += base64ABC[(l >> 6) & 0x3F];
+    if (i + 2 < len) cs_Out += base64ABC[(l ) & 0x3F];
+  }
+  
+  switch (len % 3) {
+    case 1:
+      cs_Out += '=';
+    case 2:
+      cs_Out += '=';
+  } 
+
+  return cs_Out;
+}
+
+void
+PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len)
+{
+  static const char szCS[]=
+    "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+  int iDigits[4] = {0,0,0,0};
+
+  CString cs_inString(sz_inString);
+
+  size_t st_length = 0;
+  const int in_length = cs_inString.GetLength();
+
+  int i1, i2, i3;
+  for (i2 = 0; i2 < (int)in_length; i2 += 4) {
+    iDigits[0] = iDigits[1] = iDigits[2] = iDigits[3] = -1;
+
+    for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
+      for (i3 = i2; i3 < i2 + 4; i3++) {
+        if (i3 < (int)in_length &&  cs_inString[i3] == szCS[i1])
+          iDigits[i3 - i2] = i1 - 1;
+      }
+    }
+
+    outData[st_length] = ((BYTE)iDigits[0] << 2);
+
+    if (iDigits[1] >= 0) {
+      outData[st_length] += ((BYTE)iDigits[1] >> 4) & 0x3;
+    }
+
+    st_length++;
+
+    if (iDigits[2] >= 0) {
+      outData[st_length++] = (((BYTE)iDigits[1] & 0x0f) << 4)
+                       | (((BYTE)iDigits[2] >> 2) & 0x0f);
+    }
+
+    if (iDigits[3] >= 0) {
+      outData[st_length++] = (((BYTE)iDigits[2] & 0x03) << 6)
+                       | ((BYTE)iDigits[3] & 0x3f);
+    }
+  }
+
+  out_len = st_length;
+}

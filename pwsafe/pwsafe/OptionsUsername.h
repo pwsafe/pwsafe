@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // OptionsUsername.h : header file
 //
-
+#include <stdafx.h>
 /////////////////////////////////////////////////////////////////////////////
 // COptionsUsername dialog
 

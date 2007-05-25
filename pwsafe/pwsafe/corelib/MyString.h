@@ -15,109 +15,116 @@
 
 #ifndef _MYSTRING_H_
 #define _MYSTRING_H_
-#include <AFX.H>
+#include <afx.h>
 //-----------------------------------------------------------------------------
 class CMyString
 {
 public:
-   CMyString();
-   CMyString(LPCTSTR lpsz);
-   CMyString(LPCTSTR lpsz, int nLength);
-   CMyString(const CMyString& stringSrc);
-   CMyString(const CString& stringSrc);
-   ~CMyString();
+    CMyString() : m_mystring(_T("")) {}
+    CMyString(LPCTSTR lpsz) : m_mystring(lpsz) {}
+    CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength) {}
+    CMyString(const CMyString& stringSrc) : m_mystring(stringSrc.m_mystring) {}
+    CMyString(const CString& stringSrc) : m_mystring(stringSrc) {}
 
-   TCHAR operator[](int nIndex) const;
-   TCHAR GetAt(int nIndex);
-   void SetAt(int nIndex, TCHAR ch);
-   operator CString() const;
-   operator CString&();
-   operator LPCTSTR() const;
-#ifdef UNICODE
-   operator LPCSTR() const;
-#endif
-   BOOL IsEmpty() const;
+    ~CMyString() {trashstring();}
 
-   const CMyString& operator=(const CMyString& stringSrc);
-   const CMyString& operator=(TCHAR ch);
-   const CMyString& operator=(LPCTSTR lpsz);
+    TCHAR operator[](int nIndex) const {return m_mystring[nIndex];}
+
+    TCHAR GetAt(int nIndex) {return m_mystring.GetAt(nIndex);}
+
+    void SetAt(int nIndex, TCHAR ch) {m_mystring.SetAt(nIndex,ch);}
+
+    operator CString() const {return m_mystring;}
+    operator CString&() {return m_mystring;}
+    operator LPCTSTR() const {return (LPCTSTR)m_mystring;}
+
+    BOOL IsEmpty() const {return m_mystring.IsEmpty();}
+
+    const CMyString& operator=(const CMyString& stringSrc);
+    const CMyString& operator=(TCHAR ch);
+    const CMyString& operator=(LPCTSTR lpsz);
 #ifndef UNICODE // do we need this at all?
-   const CMyString& operator=(const unsigned char* psz);
+    const CMyString& operator=(const unsigned char* psz);
 #endif
-   const CMyString& operator+=(const CMyString& string);
-   const CMyString& operator+=(TCHAR ch);
-   const CMyString& operator+=(LPCTSTR lpsz);
+    const CMyString& operator+=(const CMyString& s) {m_mystring += s.m_mystring; return *this;}
+    const CMyString& operator+=(TCHAR ch) {m_mystring += ch; return *this;}
+    const CMyString& operator+=(LPCTSTR lpsz) {m_mystring += lpsz; return *this;}
 
-   // CMytring operator+(LPCTSTR lpsz);
+    // CMyString operator+(LPCTSTR lpsz);
 
-   friend CMyString AFXAPI operator+(const CMyString& string1,
-                                     const CMyString& string2);
-   friend CMyString AFXAPI operator+(const CMyString& string,
-                                     TCHAR ch);
-   friend CMyString AFXAPI operator+(TCHAR ch,
-                                     const CMyString& string);
-   friend CMyString AFXAPI operator+(const CMyString& string,
-                                     LPCTSTR lpsz);
-   friend CMyString AFXAPI operator+(LPCTSTR lpsz,
-                                     const CMyString& string);
+    friend CMyString AFXAPI operator+(const CMyString& string1,
+                                      const CMyString& string2);
+    friend CMyString AFXAPI operator+(const CMyString& string,
+                                      TCHAR ch);
+    friend CMyString AFXAPI operator+(TCHAR ch,
+                                      const CMyString& string);
+    friend CMyString AFXAPI operator+(const CMyString& string,
+                                      LPCTSTR lpsz);
+    friend CMyString AFXAPI operator+(LPCTSTR lpsz,
+                                      const CMyString& string);
 
-   LPTSTR GetBuffer(int nMinBufLength);
-   void ReleaseBuffer(int nNewLength = -1);
-   int GetLength() const;
+    LPTSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
 
-   int FindByte( char ch ) const;
-   int Find(TCHAR ch) const;
-   int Find(LPCTSTR lpszSub) const;
-   int Find(TCHAR ch, int nstart) const;
-   int Find(LPCTSTR lpszSub, int nstart) const;
-   int FindOneOf(LPCTSTR lpszSub) const;
-   int Replace(const TCHAR chOld, const TCHAR chNew) ;
-   int Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew) ;
-   int Remove(TCHAR ch) ;
-   CMyString Left(int nCount) const;
-   CMyString Right(int nCount) const;
-   CMyString Mid(int nFirst) const;
-   CMyString Mid(int nFirst, int nCount) const;
-  void TrimRight() {m_mystring.TrimRight();}
-  void TrimLeft() {m_mystring.TrimLeft();}
+    void ReleaseBuffer(int nNewLength = -1) {m_mystring.ReleaseBuffer(nNewLength);}
+
+    int GetLength() const {return m_mystring.GetLength();}
+
+    int FindByte( char ch ) const;
+    int Find(TCHAR ch) const {return m_mystring.Find(ch);}
+    int Find(LPCTSTR lpszSub) const {return m_mystring.Find(lpszSub);}
+    int Find(TCHAR ch, int nstart) const {return m_mystring.Find(ch, nstart);}
+    int Find(LPCTSTR lpszSub, int nstart) const {return m_mystring.Find(lpszSub, nstart);}
+    int FindOneOf(LPCTSTR lpszSub) const {return m_mystring.FindOneOf(lpszSub);}
+    int Replace(const TCHAR chOld, const TCHAR chNew) {return m_mystring.Replace(chOld,chNew);}
+    int Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew)
+        {return m_mystring.Replace(lpszOld,lpszNew);}
+    int Remove(TCHAR ch) {return m_mystring.Remove(ch);}
+    CMyString Left(int nCount) const;
+    CMyString Right(int nCount) const;
+    CMyString Mid(int nFirst) const;
+    CMyString Mid(int nFirst, int nCount) const;
+    void TrimRight() {m_mystring.TrimRight();}
+    void TrimLeft() {m_mystring.TrimLeft();}
 #if _MSC_VER >= 1400
-  void Trim() {m_mystring.Trim();}
+    void Trim() {m_mystring.Trim();}
 #else
-  void Trim() {m_mystring.TrimLeft(); m_mystring.TrimRight();}
+    void Trim() {m_mystring.TrimLeft(); m_mystring.TrimRight();}
 #endif
-  void MakeLower() {m_mystring.MakeLower();}
-  int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
-  int CompareNoCase(const LPCTSTR lpszOther) const {return m_mystring.CompareNoCase(lpszOther);}
-  void Empty();
-  BOOL LoadString(const UINT &nID);
-  void Format(LPCTSTR lpszFormat, ... );
-  void Format(UINT nID, ... );
+    void MakeLower() {m_mystring.MakeLower();}
+    int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
+    int CompareNoCase(const LPCTSTR lpszOther) const {return m_mystring.CompareNoCase(lpszOther);}
+    void Empty();
+    BOOL LoadString(const UINT &nID);
+    void Format(LPCTSTR lpszFormat, ... );
+    void Format(UINT nID, ... );
 
-  void Trash() {trashstring();}
+    void Trash() {trashstring();}
 
 private:
-#ifdef UNICODE
-  volatile PCHAR	char_buffer;
-  volatile int		char_buffer_len;
-
-  void trashbuffer();
-#endif
-  CString m_mystring;
-  void trashstring();
-  void init();
+    CString m_mystring;
+    void trashstring();
 };
 //-----------------------------------------------------------------------------
 
-bool operator==(const CMyString& s1, const CMyString& s2);
-bool operator==(const CMyString& s1, LPCTSTR s2);
-bool operator==(LPCTSTR s1, const CMyString& s2);
-bool operator!=(const CMyString& s1, const CMyString& s2);
-bool operator!=(const CMyString& s1, LPCTSTR s2);
-bool operator!=(LPCTSTR s1, const CMyString& s2);
+inline bool operator==(const CMyString& s1, const CMyString& s2)
+{return (const CString)s1 == (const CString)s2;}
+inline bool operator==(const CMyString& s1, LPCTSTR s2)
+{return (const CString)s1==s2;}
+inline bool operator==(LPCTSTR s1, const CMyString& s2)
+{return s1==(const CString)s2;}
+inline bool operator!=(const CMyString& s1, const CMyString& s2)
+{return (const CString)s1 != (const CString)s2;}
+inline bool operator!=(const CMyString& s1, LPCTSTR s2)
+{return (const CString)s1 != s2;}
+inline bool operator!=(LPCTSTR s1, const CMyString& s2)
+{return s1 != (const CString)s2;}
 
 #ifdef UNICODE
-bool operator==(const CMyString& s1, LPCSTR s2);
-bool operator!=(const CMyString& s1, LPCSTR s2);
+inline bool operator==(const CMyString& s1, LPCSTR s2)
+{CString t(s2); return (const CString)s1 == (const CString)t;}
+
+inline bool operator!=(const CMyString& s1, LPCSTR s2)
+{CString t(s2); return (const CString)s1 != (const CString)t;}
 #endif
 
 //-----------------------------------------------------------------------------

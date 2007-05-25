@@ -10,7 +10,7 @@
 // {kjp} PocketPC - minimize application when "OK" button top right corner is
 // pressed.
 //-----------------------------------------------------------------------------
-#include "stdafx.h" // thomas
+#include "stdafx.h"
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
@@ -20,19 +20,17 @@
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
-#include <aygshell.h>
+  #include <aygshell.h>
 
-#pragma message("Linker library-search : aygshell.lib")
-#pragma comment(lib, "aygshell.lib")
-
-
+  #pragma message("Linker library-search : aygshell.lib")
+  #pragma comment(lib, "aygshell.lib")
 #else
   #include "resource.h"
   #include "resource2.h"  // Menu, Toolbar & Accelerator resources
   #include "resource3.h"  // String resources
 #endif
 
-// dialog boxen
+// dialog boxes
 #include "DboxMain.h"
 
 #include "ClearQuestionDlg.h"
@@ -41,7 +39,6 @@
 #include "EditDlg.h"
 #include "FindDlg.h"
 #include "PasskeyChangeDlg.h"
-//#include "OptionsDlg.h"
 #include "PasskeyEntry.h"
 #include "PasskeySetup.h"
 #include "RemindSaveDlg.h"

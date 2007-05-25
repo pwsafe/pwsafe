@@ -53,7 +53,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				PreprocessorDefinitions="DEBUG;ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);_WIN32_WCE=$(CEVER);$(CePlatform);UNICODE"
+				PreprocessorDefinitions="DEBUG;ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);_WIN32_WCE=$(CEVER);$(CePlatform);_WIN32_WCE_PSPC;WINCE;_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile="$(PlatformName)\$(ConfigurationName)/pwsafe.pch"
@@ -79,7 +79,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ALIGN:4096 /subsystem:$(CESubsystem) /MACHINE:ARM "
-				AdditionalDependencies=" secchk.lib ccrtrtti.lib"
+				AdditionalDependencies="secchk.lib ccrtrtti.lib coredll.lib &quot;$(WCELIBCEX_DIR)\..\msvc80\$(PlatformName)\$(ConfigurationName)\wcelibcexd.lib&quot;"
 				OutputFile="$(PlatformName)\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -349,7 +349,7 @@
 				ExecutionBucket="7"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				PreprocessorDefinitions="ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);_WIN32_WCE=$(CEVER);$(CePlatform);UNICODE;NDEBUG"
+				PreprocessorDefinitions="ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);_WIN32_WCE=$(CEVER);_WIN32_WCE_PSPC;WINCE;$(CePlatform);UNICODE;NDEBUG;_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -1586,10 +1586,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\PwsPlatform.h"
-				>
-			</File>
-			<File
 				RelativePath="..\PwsPopupDialog.h"
 				>
 			</File>
@@ -1661,5 +1657,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="\Dokumente und Einstellungen\sryll\Eigene Dateien\Visual Studio Projects\passwordsafe_PPC\pocketpc\PasswordSafe.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

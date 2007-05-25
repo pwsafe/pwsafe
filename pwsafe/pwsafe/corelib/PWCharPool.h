@@ -88,7 +88,7 @@ class CPasswordCharPool
   size_t m_x[NUMTYPES+1]; // spread lengths along X axis
   TCHAR *m_char_arrays[NUMTYPES];
 
-  int m_sumlengths; // sum of all selected chartypes
+  size_t m_sumlengths; // sum of all selected chartypes
 
   // Following state vars set by ctor, used by MakePassword()
   const UINT m_pwlen;

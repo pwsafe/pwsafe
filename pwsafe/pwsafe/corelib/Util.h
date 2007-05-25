@@ -34,8 +34,8 @@
 #define V10 0
 #define V15 1
 
-extern void trashMemory(void* buffer, long length );
-extern void trashMemory( LPTSTR buffer, long length );
+extern void trashMemory(void* buffer, size_t length );
+extern void trashMemory( LPTSTR buffer, size_t length );
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
 extern void GenRandhash(const CMyString &passkey,
@@ -160,6 +160,10 @@ public:
   static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   static const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   //static CString GetTimeStamp();
+  static CString HexDump(unsigned char *pmemory, const int length,
+                         const CString cs_prefix = _T(""), const int maxnum = 16);
+  static CString Base64Encode(const BYTE *inData, size_t len);
+  static void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
   static void IssueError(const CString &csFunction);
 };
 #endif /* __UTIL_H */

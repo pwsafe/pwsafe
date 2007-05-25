@@ -18,11 +18,12 @@ public:
   enum {HASHLEN = 32};
   SHA256();
   ~SHA256();
-  void Update(const unsigned char *in, unsigned long inlen);
+  void Update(const unsigned char *in, size_t inlen);
   void Final(unsigned char digest[HASHLEN]);
 private:
   ulong64 length;
-  ulong32 state[8], curlen;
+  size_t curlen;
+  ulong32 state[8];
   unsigned char buf[64];
 };
 

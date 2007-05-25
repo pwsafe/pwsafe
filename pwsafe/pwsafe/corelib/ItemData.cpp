@@ -11,11 +11,6 @@
 // old includes
 #include "PwsPlatform.h"
 #include "../PasswordSafe.h"
-#include <math.h>
-#include "Util.h"
-#include "Blowfish.h"
-#include "sha1.h"
-//#include "../ThisMfcApp.h"
 
 // current includes
 #include "ItemData.h"
@@ -29,6 +24,8 @@
 #else
   #include <time.h>
 #endif
+#include <vector>
+#include <algorithm>
 
 
 #ifdef _DEBUG
@@ -71,6 +68,17 @@ CItemData::CItemData(const CItemData &that) :
   m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
+  if (!that.m_URFL.empty())
+    m_URFL = that.m_URFL;
+  else
+    m_URFL.clear();
+}
+
+CItemData::~CItemData()
+{
+  if (!m_URFL.empty()) {
+    m_URFL.clear();
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -210,6 +218,49 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
+void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
+                                unsigned char * &pdata,
+                                const CItemField &item) const
+{
+  ASSERT(pdata == NULL && length == 0);
+
+  const unsigned int BLOCKSIZE = 8;
+
+  type = item.GetType();
+  unsigned int flength = item.GetLength();
+  length = flength;
+  flength += BLOCKSIZE; // ensure that we've enough for at least one block
+  pdata = new unsigned char[flength];
+  GetField(item, pdata, flength);
+}
+
+
+void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
+                                unsigned char * &pdata,
+                                const unsigned int &num) const
+{
+  const CItemField &unkrfe = m_URFL.at(num);
+  GetUnknownField(type, length, pdata, unkrfe);
+}
+
+void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
+                                unsigned char * &pdata,
+                                const UnknownFieldsConstIter &iter) const
+{
+  const CItemField &unkrfe = *iter;
+  GetUnknownField(type, length, pdata, unkrfe);
+}
+
+void
+CItemData::SetUnknownField(const unsigned char type,
+                           const unsigned int length,
+                           const unsigned char * ufield)
+{
+  CItemField unkrfe(type);
+  SetField(unkrfe, ufield, length);
+  m_URFL.push_back(unkrfe);
+}
+
 /*
  * Password History (PWH):
  * Password history is represented in the entry record as a textual field
@@ -246,185 +297,39 @@ CItemData::GetPWHistory() const
 
 CMyString CItemData::GetPlaintext(const TCHAR &separator,
                                   const FieldBits &bsFields,
-                                  const CString &subgroup, const int &iObject,
-                                  const int &iFunction,
                                   const TCHAR &delimiter) const
 {
-    CMyString ret(_T(""));
-    CMyString grouptitle;
-    const CMyString title(GetTitle());
-    const CMyString group(GetGroup());
-    const CMyString user(GetUser());
-    const CMyString url(GetURL());
-    const CMyString notes(GetNotes(delimiter));
+  CMyString ret(_T(""));
 
-    if (bsFields.count() == 0)
-        return ret;
-  
-    // a '.' in title gets Import confused re: Groups
-    grouptitle = title;
-    if (grouptitle.Find(TCHAR('.')) != -1)
-        if (delimiter != 0) {
-            grouptitle.Replace(TCHAR('.'), delimiter);
-        } else 
-            grouptitle = TCHAR('\"') + title + TCHAR('\"');
+  CMyString grouptitle;
+  const CMyString title(GetTitle());
+  const CMyString group(GetGroup());
+  const CMyString user(GetUser());
+  const CMyString url(GetURL());
+  const CMyString notes(GetNotes(delimiter));
 
-    if (!group.IsEmpty())
-        grouptitle = group + TCHAR('.') + grouptitle;
-
-    if (!subgroup.IsEmpty()) {
-        CMyString csObject;
-        switch(iObject) {
-            case SGO_GROUP:
-                csObject = group;
-                break;
-            case SGO_TITLE:
-                csObject = title;
-                break;
-            case SGO_USER:
-                csObject = user;
-                break;
-            case SGO_GROUPTITLE:
-                csObject = group + TCHAR('.') + title;
-                break;
-            case SGO_URL:
-                csObject = url;
-                break;
-            case SGO_NOTES:
-                csObject = notes;
-                break;
-            default:
-                ASSERT(0);
-        }
-
-        const int sb_len = subgroup.GetLength();
-        const int ob_len = csObject.GetLength();
-
-        // Negative = Case   Sensitive
-        // Positive = Case INsensitive
-        switch (iFunction) {
-            case -SGF_EQUALS:
-                if ((ob_len != sb_len) ||
-                    (csObject.Compare((LPCTSTR)subgroup) != 0))
-                    return ret;
-                break;
-            case -SGF_NOTEQUAL:
-                if (csObject.Compare((LPCTSTR)subgroup) == 0)
-                    return ret;
-                break;
-            case -SGF_BEGINS:
-                if (ob_len >= sb_len) {
-                    csObject = csObject.Left(sb_len);
-                    if (subgroup.Compare((LPCTSTR)csObject) != 0)
-                        return ret;
-                } else {
-                    return ret;
-                }
-                break;
-            case -SGF_NOTBEGIN:
-                if (ob_len >= sb_len) {
-                    csObject = csObject.Left(sb_len);
-                    if (subgroup.Compare((LPCTSTR)csObject) == 0)
-                        return ret;
-                }
-                break;
-            case -SGF_ENDS:
-                if (ob_len > sb_len) {
-                    csObject = csObject.Right(sb_len);
-                    if (subgroup.Compare((LPCTSTR)csObject) != 0)
-                        return ret;
-                } else {
-                    return ret;
-                }
-                break;
-            case -SGF_NOTEND:
-                if (ob_len > sb_len) {
-                    csObject = csObject.Right(sb_len);
-                    if (subgroup.Compare((LPCTSTR)csObject) == 0)
-                        return ret;
-                }
-                break;
-            case -SGF_CONTAINS:
-                if (csObject.Find((LPCTSTR)subgroup) == -1)
-                    return ret;
-                break;
-            case -SGF_NOTCONTAIN:
-                if (csObject.Find((LPCTSTR)subgroup)  > -1)
-                    return ret;
-                break;
-            case SGF_EQUALS:
-                if ((ob_len != sb_len) ||
-                    (csObject.CompareNoCase((LPCTSTR)subgroup) != 0))
-                    return ret;
-                break;
-            case SGF_NOTEQUAL:
-                if (csObject.CompareNoCase((LPCTSTR)subgroup) == 0)
-                    return ret;
-                break;
-            case SGF_BEGINS:
-                if (ob_len > sb_len) {
-                    csObject = csObject.Left(sb_len);
-                    if (subgroup.CompareNoCase((LPCTSTR)csObject) != 0)
-                        return ret;
-                } else {
-                    return ret;
-                }
-                break;
-            case SGF_NOTBEGIN:
-                if (ob_len > sb_len) {
-                    csObject = csObject.Left(sb_len);
-                    if (subgroup.CompareNoCase((LPCTSTR)csObject) == 0)
-                        return ret;
-                }
-                break;
-            case SGF_ENDS:
-                if (ob_len > sb_len) {
-                    csObject = csObject.Right(sb_len);
-                    if (subgroup.CompareNoCase((LPCTSTR)csObject) != 0)
-                        return ret;
-                } else {
-                    return ret;
-                }
-                break;
-            case SGF_NOTEND:
-                if (ob_len > sb_len) {
-                    csObject = csObject.Right(sb_len);
-                    if (subgroup.CompareNoCase((LPCTSTR)csObject) == 0)
-                        return ret;
-                }
-                break;
-            case SGF_CONTAINS:
-			{
-				csObject.MakeLower();
-				CString subgroupLC(subgroup);
-				subgroupLC.MakeLower();
-  				if (csObject.Find((LPCTSTR)subgroupLC) == -1)
-  					return ret;
-  				break;
-			}
-            case SGF_NOTCONTAIN:
-			{
-  				csObject.MakeLower();
-				CString subgroupLC(subgroup);
-				subgroupLC.MakeLower();
-  				if (csObject.Find((LPCTSTR)subgroupLC) > -1)
-  					return ret;
-  				break;
-			}
-            default:
-                ASSERT(0);
-        }
+  // a '.' in title gets Import confused re: Groups
+  grouptitle = title;
+  if (grouptitle.Find(TCHAR('.')) != -1) {
+    if (delimiter != 0) {
+      grouptitle.Replace(TCHAR('.'), delimiter);
+    } else {
+      grouptitle = TCHAR('\"') + title + TCHAR('\"');
     }
+  }
 
-	CMyString history;
+  if (!group.IsEmpty())
+    grouptitle = group + TCHAR('.') + grouptitle;
+
+	CMyString history(_T(""));
 	if (bsFields.test(CItemData::PWHIST)) {
 	    // History exported as "00000" if empty, to make parsing easier
    		BOOL pwh_status;
-	   	int pwh_max, pwh_num;
-   		PWHistList* pPWHistList;
+	   	size_t pwh_max, pwh_num;
+   		PWHistList PWHistList;
 
-		pPWHistList = new PWHistList;
-   		CreatePWHistoryList(pwh_status, pwh_max, pwh_num, pPWHistList, TMC_EXPORT_IMPORT);
+   		CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+                            &PWHistList, TMC_EXPORT_IMPORT);
 
 		//  Build export string
 		TCHAR buffer[8];
@@ -434,24 +339,19 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 		_stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #endif
 		history = CMyString(buffer);
-		if (pPWHistList->GetCount() > 0) {
-			POSITION listpos = pPWHistList->GetHeadPosition();
-			while (listpos != NULL) {
-				const PWHistEntry pwshe = pPWHistList->GetAt(listpos);
-				history += _T(' ');
-				history += pwshe.changedate;
+        PWHistList::iterator iter;
+        for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
+            const PWHistEntry pwshe = *iter;
+            history += _T(' ');
+            history += pwshe.changedate;
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
-				_stprintf_s(buffer, 8, _T(" %04x "), pwshe.password.GetLength());
+            _stprintf_s(buffer, 8, _T(" %04x "), pwshe.password.GetLength());
 #else
-				_stprintf(buffer, _T("%04x "), pwshe.password.GetLength());
+            _stprintf(buffer, _T("%04x "), pwshe.password.GetLength());
 #endif
-				history += CMyString(buffer);
-				history += pwshe.password;
-
-				pPWHistList->GetNext(listpos);
-			}
-		}
-    	delete pPWHistList;
+            history += CMyString(buffer);
+            history += pwshe.password;
+        }
 	}
 
 	// Notes field must be last, for ease of parsing import
@@ -503,9 +403,9 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     return ret;
 }
 
-  void CItemData::SplitName(const CMyString &name,
+void CItemData::SplitName(const CMyString &name,
                             CMyString &title, CMyString &username)
-  {
+{
     int pos = name.FindByte(SPLTCHR);
     if (pos==-1) {//Not a split name
       int pos2 = name.FindByte(DEFUSERCHR);
@@ -527,37 +427,36 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
       temp.TrimLeft();
       username = temp;
     }
-  }
+}
 
-  //-----------------------------------------------------------------------------
-  // Setters
+//-----------------------------------------------------------------------------
+// Setters
 
-  void CItemData::SetField(CItemField &field, const CMyString &value)
-  {
+void CItemData::SetField(CItemField &field, const CMyString &value)
+{
     BlowFish *bf = MakeBlowFish();
     field.Set(value, bf);
     delete bf;
-  }
+}
 
-  void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
-  {
+void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
+{
     BlowFish *bf = MakeBlowFish();
     field.Set(value, length, bf);
     delete bf;
-  }
+}
 
-  void CItemData::CreateUUID()
-  {
+void CItemData::CreateUUID()
+{
     CUUIDGen uuid;
     uuid_array_t uuid_array;
     uuid.GetUUID(uuid_array);
     SetUUID(uuid_array);
-  }
+}
 
-
-  void
-    CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
-  {
+void
+CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
+{
     // the m_name is from pre-2.0 versions, and may contain the title and user
     // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
     // Here we fill the title and user fields so that
@@ -577,11 +476,11 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     m_Title.Set(title, bf);
     m_User.Set(user, bf);
     delete bf;
-  }
+}
 
-  void
-    CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
-  {
+void
+CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
+{
 	if (delimiter == 0)
       SetField(m_Title, title);
 	else {
@@ -605,23 +504,23 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 
       SetField(m_Title, new_title);
 	}
-  }
+}
 
-  void
-    CItemData::SetUser(const CMyString &user)
-  {
+void
+CItemData::SetUser(const CMyString &user)
+{
     SetField(m_User, user);
-  }
+}
 
-  void
-    CItemData::SetPassword(const CMyString &password)
-  {
+void
+CItemData::SetPassword(const CMyString &password)
+{
     SetField(m_Password, password);
-  }
+}
 
-  void
-    CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
-  {
+void
+CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
+{
     if (delimiter == 0)
       SetField(m_Notes, notes);
     else {
@@ -649,43 +548,43 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 
       SetField(m_Notes, multiline_notes);
     }
-  }
+}
 
-  void
-    CItemData::SetGroup(const CMyString &title)
-  {
+void
+CItemData::SetGroup(const CMyString &title)
+{
     SetField(m_Group, title);
-  }
+}
 
-  void
-    CItemData::SetUUID(const uuid_array_t &UUID)
-  {
+void
+CItemData::SetUUID(const uuid_array_t &UUID)
+{
     SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
-  }
+}
 
-  void
-    CItemData::SetURL(const CMyString &URL)
-  {
+void
+CItemData::SetURL(const CMyString &URL)
+{
     SetField(m_URL, URL);
-  }
+}
 
-  void
-    CItemData::SetAutoType(const CMyString &autotype)
-  {
+void
+CItemData::SetAutoType(const CMyString &autotype)
+{
     SetField(m_AutoType, autotype);
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime)
-  {
+void
+CItemData::SetTime(int whichtime)
+{
     time_t t;
     time(&t);
     SetTime(whichtime, t);
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime, time_t t)
-  {
+void
+CItemData::SetTime(int whichtime, time_t t)
+{
     switch (whichtime) {
     case ATIME:
       SetField(m_tttATime, (const unsigned char *)&t, sizeof(t));
@@ -705,11 +604,11 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     default:
       ASSERT(0);
     }
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime, const CString &time_str)
-  {
+void
+CItemData::SetTime(int whichtime, const CString &time_str)
+{
     if (time_str.GetLength() == 0) {
       SetTime(whichtime, (time_t)0);
       return;
@@ -726,7 +625,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
       return;
 
     SetTime(whichtime, t);
-  }
+}
 
 void
 CItemData::SetPWHistory(const CMyString &PWHistory)
@@ -738,7 +637,8 @@ CItemData::SetPWHistory(const CMyString &PWHistory)
 }
 
 int
-CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
+CItemData::CreatePWHistoryList(BOOL &status,
+                               size_t &pwh_max, size_t &pwh_num,
                                PWHistList* pPWHistList,
 							   const int time_format) const
 {
@@ -760,7 +660,6 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
   	return (len != 0 ? 1 : 0);
 
   TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
-  TCHAR *lpszPW;
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
   int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
@@ -768,7 +667,7 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
   int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #endif
   if (iread != 3)
-	return 1;
+    return 1;
 
   lpszPWHistory += 5;
   for (int i = 0; i < n; i++) {
@@ -785,8 +684,8 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
     if (pwh_ent.changedate.IsEmpty()) {
-		//                       1234567890123456789
-		pwh_ent.changedate = _T("1970-01-01 00:00:00");
+		  //                       1234567890123456789
+      pwh_ent.changedate = _T("1970-01-01 00:00:00");
     }
     lpszPWHistory += 8;
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
@@ -799,21 +698,9 @@ CItemData::CreatePWHistoryList(BOOL &status, int &pwh_max, int &pwh_num,
     	break;
     }
     lpszPWHistory += 4;
-    lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
-#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
-    memcpy_s(lpszPW, ipwlen + sizeof(TCHAR), lpszPWHistory, ipwlen);
-#else
-    memcpy(lpszPW, lpszPWHistory, ipwlen);
-#endif
-    lpszPW[ipwlen] = TCHAR('\0');
-    tmp.ReleaseBuffer();
-    if (tmp.GetLength() != ipwlen) {
-    	i_error = 1;
-    	break;
-    }
-    pwh_ent.password = tmp;
+    pwh_ent.password = CMyString(lpszPWHistory, ipwlen);
     lpszPWHistory += ipwlen;
-    pPWHistList->AddTail(pwh_ent);
+    pPWHistList->push_back(pwh_ent);
   }
 
   status = s;
@@ -852,6 +739,10 @@ CItemData::operator=(const CItemData &that)
     m_tttRMTime = that.m_tttRMTime;
     m_PWHistory = that.m_PWHistory;
     m_display_info = that.m_display_info;
+    if (!that.m_URFL.empty())
+      m_URFL = that.m_URFL;
+    else
+      m_URFL.clear();
 
     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   }
@@ -875,6 +766,7 @@ CItemData::Clear()
   m_tttLTime.Empty();
   m_tttRMTime.Empty();
   m_PWHistory.Empty();
+  m_URFL.clear();
 }
 
 int
@@ -924,25 +816,20 @@ CItemData::ValidatePWHistory()
   }
 
   BOOL pwh_status;
-  int pwh_max, pwh_num;
-  PWHistList* pPWHistList;
-  PWHistEntry pwh_ent;
-
-  pPWHistList = new PWHistList;
+  size_t pwh_max, pwh_num;
+  PWHistList PWHistList;
   int iResult = CreatePWHistoryList(pwh_status, pwh_max,
-                          pwh_num, pPWHistList, TMC_EXPORT_IMPORT);
+                                    pwh_num, &PWHistList, TMC_EXPORT_IMPORT);
   if (iResult == 0) {
-  	delete pPWHistList;
     return 0;
   }
 
-  int listnum = pPWHistList->GetCount();
+  size_t listnum = PWHistList.size();
   if (listnum > pwh_num)
     pwh_num = listnum;
 
   if (pwh_max == 0 && pwh_num == 0) {
     SetPWHistory(_T(""));
-    delete pPWHistList;
     return 1;
   }
 
@@ -964,18 +851,173 @@ CItemData::ValidatePWHistory()
   _stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
 #endif
   history = CMyString(buffer);
-  if (listnum > 0) {
-	  POSITION listpos = pPWHistList->GetHeadPosition();
-  	for (int i = 0; i < listnum; i++) {
-		pwh_ent = pPWHistList->GetAt(listpos);
-  		cs_buffer.Format(_T("%08x%04x%s"), pwh_ent.changetttdate, 
-			pwh_ent.password.GetLength(), pwh_ent.password);
-  		history += (LPCTSTR)cs_buffer;
-  		cs_buffer.Empty();
-		pPWHistList->GetNext(listpos);
-  	}
-    SetPWHistory(history);
+
+  PWHistList::iterator iter;
+  for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
+      PWHistEntry pwh_ent = *iter;
+      cs_buffer.Format(_T("%08x%04x%s"), pwh_ent.changetttdate, 
+                       pwh_ent.password.GetLength(), pwh_ent.password);
+      history += (LPCTSTR)cs_buffer;
+      cs_buffer.Empty();
   }
+  SetPWHistory(history);
 
   return 1;
+}
+
+BOOL
+CItemData::WantEntry(const CString &subgroup_name, const int &iObject,
+                     const int &iFunction) const
+{
+  BOOL retval(FALSE);
+
+  const CMyString title(GetTitle());
+  const CMyString group(GetGroup());
+  const CMyString user(GetUser());
+  const CMyString url(GetURL());
+  const CMyString notes(GetNotes());
+
+  CMyString csObject;
+  switch(iObject) {
+    case SGO_GROUP:
+      csObject = group;
+      break;
+    case SGO_TITLE:
+      csObject = title;
+      break;
+    case SGO_USER:
+      csObject = user;
+      break;
+    case SGO_GROUPTITLE:
+      csObject = group + TCHAR('.') + title;
+      break;
+    case SGO_URL:
+      csObject = url;
+      break;
+    case SGO_NOTES:
+      csObject = notes;
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  const int sb_len = subgroup_name.GetLength();
+  const int ob_len = csObject.GetLength();
+
+  // Negative = Case   Sensitive
+  // Positive = Case INsensitive
+  switch (iFunction) {
+    case -SGF_EQUALS:
+      if ((ob_len != sb_len) ||
+          (csObject.Compare((LPCTSTR)subgroup_name) != 0))
+        return retval;
+      break;
+   case -SGF_NOTEQUAL:
+      if (csObject.Compare((LPCTSTR)subgroup_name) == 0)
+        return retval;
+      break;
+    case -SGF_BEGINS:
+      if (ob_len >= sb_len) {
+        csObject = csObject.Left(sb_len);
+      if (subgroup_name.Compare((LPCTSTR)csObject) != 0)
+        return retval;
+      } else {
+        return retval;
+      }
+      break;
+    case -SGF_NOTBEGIN:
+      if (ob_len >= sb_len) {
+        csObject = csObject.Left(sb_len);
+        if (subgroup_name.Compare((LPCTSTR)csObject) == 0)
+          return retval;
+      }
+      break;
+    case -SGF_ENDS:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        if (subgroup_name.Compare((LPCTSTR)csObject) != 0)
+          return retval;
+      } else {
+        return retval;
+      }
+      break;
+    case -SGF_NOTEND:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        if (subgroup_name.Compare((LPCTSTR)csObject) == 0)
+          return retval;
+      }
+      break;
+    case -SGF_CONTAINS:
+      if (csObject.Find((LPCTSTR)subgroup_name) == -1)
+        return retval;
+      break;
+    case -SGF_NOTCONTAIN:
+      if (csObject.Find((LPCTSTR)subgroup_name)  > -1)
+        return retval;
+      break;
+    case SGF_EQUALS:
+      if ((ob_len != sb_len) ||
+          (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0))
+        return retval;
+      break;
+    case SGF_NOTEQUAL:
+      if (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0)
+        return retval;
+      break;
+    case SGF_BEGINS:
+      if (ob_len > sb_len) {
+        csObject = csObject.Left(sb_len);
+        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)
+          return retval;
+      } else {
+        return retval;
+      }
+      break;
+    case SGF_NOTBEGIN:
+      if (ob_len > sb_len) {
+        csObject = csObject.Left(sb_len);
+        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)
+          return retval;
+      }
+      break;
+    case SGF_ENDS:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)
+          return retval;
+      } else {
+        return retval;
+      }
+      break;
+    case SGF_NOTEND:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)
+          return retval;
+      }
+      break;
+    case SGF_CONTAINS:
+      {
+        csObject.MakeLower();
+        CString subgroupLC(subgroup_name);
+        subgroupLC.MakeLower();
+        if (csObject.Find((LPCTSTR)subgroupLC) == -1)
+          return retval;
+        break;
+      }
+    case SGF_NOTCONTAIN:
+      {
+        csObject.MakeLower();
+        CString subgroupLC(subgroup_name);
+        subgroupLC.MakeLower();
+        if (csObject.Find((LPCTSTR)subgroupLC) > -1)
+          return retval;
+        break;
+      }
+    default:
+      ASSERT(0);
+  }
+  
+  return TRUE;
 }

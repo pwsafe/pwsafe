@@ -39,13 +39,13 @@ public:
   void Get(CMyString &value, BlowFish *bf) const;
   void Get(unsigned char *value, unsigned int &length, BlowFish *bf) const;
   unsigned char GetType() const {return m_Type;}
-  bool IsEmpty() {return m_Length == 0;}
+  unsigned int GetLength() const {return m_Length;}
+  bool IsEmpty() const {return m_Length == 0;}
   void Empty();
 
 private:
   //Number of 8 byte blocks needed for size
   int GetBlockSize(int size) const;
-
 
   unsigned char m_Type; // const except for assignment operator
   unsigned int m_Length;

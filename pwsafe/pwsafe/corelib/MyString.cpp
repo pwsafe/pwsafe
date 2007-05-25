@@ -8,12 +8,12 @@
 /// \file MyString.cpp
 //-----------------------------------------------------------------------------
 
+/// \todo Is this include necessary?
 #include "PwsPlatform.h"
+#include "MyString.h"
 #include "Util.h"
 
-#include "MyString.h"
-#include <stdio.h>
-#include <stdarg.h>
+#include <cstdarg>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,87 +21,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-CMyString::CMyString() : m_mystring(_T(""))
-{
-	init();
-}
-
-CMyString::CMyString(LPCTSTR lpsz) : m_mystring(lpsz)
-{
-	init();
-}
-
-CMyString::CMyString(LPCTSTR lpsz, int nLength) : m_mystring(lpsz, nLength)
-{
-	init();
-}
-
-CMyString::CMyString(const CMyString& stringSrc) : m_mystring(stringSrc.m_mystring)
-{
-	init();
-}
-
-CMyString::CMyString(const CString& stringSrc) : m_mystring(stringSrc)
-{
-	init();
-}
-
-CMyString::~CMyString()
-{
-   trashstring();
-#if defined(UNICODE)
-	trashbuffer();
-#endif
-}
-
-
-void
-CMyString::init()
-{
-#if defined(UNICODE)
-	char_buffer		= 0;
-	char_buffer_len	= 0;
-#endif
-}
-
-#if defined(UNICODE)
-void CMyString::trashbuffer()
-{
-	if ( char_buffer != 0 )
-	{
-		trashMemory((unsigned char*)char_buffer, char_buffer_len * sizeof(char_buffer[0]));
-		delete [] char_buffer;
-		char_buffer		= 0;
-		char_buffer_len	= 0;
-	}
-}
-#endif
-
-
 void
 CMyString::trashstring()
 {
 	trashMemory( m_mystring.GetBuffer(m_mystring.GetLength()), m_mystring.GetLength() );
-}
-
-
-LPTSTR
-CMyString::GetBuffer(int nMinBufLength)
-{
-   return m_mystring.GetBuffer(nMinBufLength);
-}
-
-void
-CMyString::ReleaseBuffer(int nNewLength)
-{
-   m_mystring.ReleaseBuffer(nNewLength);
-}
-
-int
-CMyString::GetLength() const
-{
-   return m_mystring.GetLength();
 }
 
 void
@@ -140,9 +63,6 @@ const CMyString&
 CMyString::operator=(const CMyString& stringSrc)
 {
    trashstring();
-#if defined(UNICODE)
-   trashbuffer();
-#endif
    m_mystring = stringSrc.m_mystring;
    return *this;
 }
@@ -151,9 +71,6 @@ const CMyString&
 CMyString::operator=(TCHAR ch)
 {
    trashstring();
-#if defined(UNICODE)
-   trashbuffer();
-#endif
    m_mystring = ch;
    return *this;
 }
@@ -162,9 +79,6 @@ const CMyString&
 CMyString::operator=(LPCTSTR lpsz)
 {
    trashstring();
-#if defined(UNICODE)
-   trashbuffer();
-#endif
    m_mystring = lpsz;
    return *this;
 }
@@ -181,27 +95,6 @@ CMyString::operator=(const unsigned char* psz)
    return *this;
 }
 #endif
-
-const CMyString&
-CMyString::operator+=(const CMyString& string)
-{
-   m_mystring += string.m_mystring;
-   return *this;
-}
-
-const CMyString&
-CMyString::operator+=(TCHAR ch)
-{
-   m_mystring += ch;
-   return *this;
-}
-
-const CMyString&
-CMyString::operator+=(LPCTSTR lpsz)
-{
-   m_mystring += lpsz;
-   return *this;
-}
 
 CMyString AFXAPI
 operator+(const CMyString& string1,const CMyString& string2)
@@ -243,33 +136,7 @@ operator+(LPCTSTR lpsz, const CMyString& string)
    return s;
 }
 
-TCHAR
-CMyString::operator[](int nIndex) const
-{
-   return m_mystring[nIndex];
-}
 
-TCHAR
-CMyString::GetAt(int nIndex)
-{
-   return m_mystring.GetAt(nIndex);
-}
-
-void
-CMyString::SetAt(int nIndex, TCHAR ch)
-{
-   m_mystring.SetAt(nIndex,ch);
-}
-
-CMyString::operator CString() const
-{
-   return m_mystring;
-}
-
-CMyString::operator CString&()
-{
-   return m_mystring;
-}
 /*
 #ifdef UNICODE
 /*
@@ -297,21 +164,6 @@ CMyString::operator LPCSTR() const
 #endif
 */
 
-/*
- * If compiling to a unicode target this returns a null terminated wide string
- * i.e. a wchar_t array, otherwise ite returns a c-style string.
- */ 
-CMyString::operator LPCTSTR() const
-{
-   return (LPCTSTR)m_mystring;
-}
-
-BOOL
-CMyString::IsEmpty() const
-{
-   return m_mystring.IsEmpty();
-}
-
 int
 CMyString::FindByte(char ch) const
 {
@@ -334,54 +186,6 @@ CMyString::FindByte(char ch) const
   }
 
   return nRetVal;
-}
-
-int
-CMyString::Find(TCHAR ch) const
-{
-   return m_mystring.Find(ch);
-}
-
-int
-CMyString::Find(LPCTSTR lpszSub) const
-{
-   return m_mystring.Find(lpszSub);
-}
-
-int
-CMyString::Find(TCHAR ch, int nstart) const
-{
-   return m_mystring.Find(ch, nstart);
-}
-
-int
-CMyString::Find(LPCTSTR lpszSub, int nstart) const
-{
-   return m_mystring.Find(lpszSub, nstart);
-}
-
-int
-CMyString::FindOneOf(LPCTSTR lpszSub) const
-{
-   return m_mystring.FindOneOf(lpszSub);
-}
-
-int
-CMyString::Replace(const TCHAR chOld, const TCHAR chNew) 
-{
-   return m_mystring.Replace(chOld,chNew);
-}
-
-int
-CMyString::Replace(const LPCTSTR lpszOld, const LPCTSTR lpszNew) 
-{
-   return m_mystring.Replace(lpszOld,lpszNew);
-}
-
-int
-CMyString::Remove(TCHAR ch) 
-{
-   return m_mystring.Remove(ch);
 }
 
 //Can't properly trash the memory here, so it is better to just return a CString
@@ -416,60 +220,6 @@ CMyString::Mid(int nFirst, int nCount) const
    s.m_mystring = m_mystring.Mid(nFirst, nCount);
    return s;
 }
-
-bool
-operator==(const CMyString& s1, const CMyString& s2)
-{
-   return (const CString)s1 == (const CString)s2;
-}
-
-bool
-operator==(const CMyString& s1, LPCTSTR s2)
-{
-   return (const CString)s1==s2;
-}
-
-#ifdef UNICODE
-bool
-operator==(const CMyString& s1, LPCSTR s2)
-{
-	CString	t(s2);
-	return (const CString)s1 == (const CString)t;
-}
-#endif
-
-bool
-operator==(LPCTSTR s1, const CMyString& s2)
-{
-   return s1==(const CString)s2;
-}
-
-bool
-operator!=(const CMyString& s1, const CMyString& s2)
-{
-   return (const CString)s1 != (const CString)s2;
-}
-
-bool
-operator!=(const CMyString& s1, LPCTSTR s2)
-{
-   return (const CString)s1 != s2;
-}
-
-bool
-operator!=(LPCTSTR s1, const CMyString& s2)
-{
-   return s1 != (const CString)s2;
-}
-
-#ifdef UNICODE
-bool
-operator!=(const CMyString& s1, LPCSTR s2)
-{
-	CString	t(s2);
-	return (const CString)s1 != (const CString)t;
-}
-#endif
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

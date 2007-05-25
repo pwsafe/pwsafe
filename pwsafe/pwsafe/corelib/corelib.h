@@ -82,3 +82,5 @@
 #define IDSC_IMPORTHDR                  3242
 #define IDSC_IMPORTMISSINGCOLS          3243
 #define IDSC_IMPORTNOCOLS               3244
+#define IDSC_READ_ERROR                 3245
+#define IDSC_ENCODING_PROBLEM           3246
