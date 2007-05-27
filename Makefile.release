@@ -29,7 +29,7 @@ MD5SUM = /usr/bin/md5sum
 SHA1SUM = /usr/bin/sha1sum
 FTP_PUT = /usr/local/bin/ncftpput -v upload.sourceforge.net incoming
 PYTHON = /usr/bin/python
-SVN2LOG = ../../svn2log.py
+SVN2LOG = ../../python/svn2log.py
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \

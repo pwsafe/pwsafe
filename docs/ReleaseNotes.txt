@@ -10,8 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.08
 ==================
-[1709992, 1692662, 1678711, 1651392, 1626671] Non-English text in
-databases fully supported.
+[1709992, 1692662, 1678711, 1651392, 1626671, 1604806] Non-English
+text in databases fully supported.
 [1691048] Import text file with blank lines or missing fields will no
 longer crash application.
 [1688994] Although rename is not possible in read-only mode, this change
