@@ -459,9 +459,16 @@ DboxMain::Open( const CMyString &pszFilename )
         }
 #ifdef DEMO
         case PWScore::LIMIT_REACHED: {
-            CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG2, MAXDEMO);
+            CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
             CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-            MessageBox(cs_msg, cs_title, MB_ICONWARNING);
+            const int yn = MessageBox(cs_msg, cs_title,
+                                      MB_YESNO|MB_ICONWARNING);
+            if (yn == IDNO) {
+              return PWScore::USER_CANCEL;
+            }
+            rc = PWScore::SUCCESS;
+            m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
+                                                       FALSE);
             break;
         }
 #endif
