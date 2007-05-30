@@ -546,6 +546,8 @@ DboxMain::OnInitDialog()
 
   ConfigureSystemMenu();
   InitPasswordSafe();
+  m_bShowUsernameInTree = true;
+  m_bShowPasswordInTree = false;
   
   // Validation does integrity check & repair on database
   // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
@@ -1999,6 +2001,12 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	// Change Main Menus if a database is Open or not
 	CWnd* pMain = AfxGetMainWnd();
 	CMenu* xmainmenu = pMain->GetMenu();
+
+  if (m_bOpen) {
+    for (unsigned int i = 0; i < xmainmenu->GetMenuItemCount(); i++) {
+      xmainmenu->EnableMenuItem(i, MF_BYPOSITION | MF_ENABLED);
+    }
+  }
 
 	// Look for "File" menu.
 	CString cs_text;
