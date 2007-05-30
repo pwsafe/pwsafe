@@ -737,6 +737,8 @@ ThisMfcApp::InitInstance()
                     break;
                 case 'S':
                     dbox.SetStartSilent(true);
+                    if (fn.IsEmpty())
+                      dbox.SetStartClosed(true);
                     dbox.SetCurFile(fn);
                     break;
                 case 'V':
