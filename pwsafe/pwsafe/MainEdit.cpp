@@ -185,9 +185,9 @@ DboxMain::Delete(bool inRecursion)
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-	//  Needed for DeleteTrayRecentEntry later on
-	uuid_array_t RUEuuid;
-	ci->GetUUID(RUEuuid);
+    //  Needed for DeleteTrayRecentEntry later on
+    uuid_array_t RUEuuid;
+    ci->GetUUID(RUEuuid);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     int curSel = di->list_index;
@@ -197,6 +197,7 @@ DboxMain::Delete(bool inRecursion)
                                                         TVGN_NEXT);
     POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
 
+    UnFindItem();
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteFromSet(curTree_item);
     m_ctlItemTree.DeleteWithParents(curTree_item);
@@ -507,15 +508,6 @@ DboxMain::OnFind()
 {
   // create modeless or popup existing
   CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr, &m_bFindWrap);
-
-  // XXX Gross hack to fix aesthetic bug in tree view
-  // without this, multiple "selected" displayed
-  // if treeview && there's a selected item, then
-#if 0
-  m_ctlItemTree.SetItemState(di->tree_item,
-                             TVIS_SELECTED,
-                             TVIS_DROPHILITED | TVIS_SELECTED);
-#endif
 }
 
 void

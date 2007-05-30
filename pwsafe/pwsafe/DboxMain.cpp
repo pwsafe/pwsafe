@@ -83,7 +83,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
      m_bValidate(false), m_bOpen(false), 
      m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
-     m_bAlreadyToldUserNoSave(false), m_inExit(false), m_pCC(NULL)
+     m_bAlreadyToldUserNoSave(false), m_inExit(false), m_pCC(NULL), m_bBoldItem(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -648,6 +648,8 @@ void DboxMain::FixListIndexes()
 void
 DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 {
+  UnFindItem();
+
 	// TreeView only - use DoubleClick to Expand/Collapse group
 	if (m_ctlItemTree.IsWindowVisible()) {
 		HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();

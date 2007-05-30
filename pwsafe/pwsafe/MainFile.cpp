@@ -2123,6 +2123,8 @@ DboxMain::OnOK()
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
 
+  m_bBoldItem = false;
+
   CDialog::OnOK();
 }
 
