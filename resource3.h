@@ -300,3 +300,5 @@
 #define IDS_XMLUNKNHDRIGNORED           5465
 #define IDS_XMLUNKNRECIGNORED           5466
 #define IDS_COPYUNKNOWNFIELDS           5467
+#define IDS_FINDX                       5468
+#define IDS_NOFIELDSFORSEARCH           5469

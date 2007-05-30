@@ -12,9 +12,12 @@ Bugs fixed in 3.08.01
 =====================
 [] Fix random showing of user and passwords if started in silent mode
 [] Fix Edit and View in main menu not being reset after open after close
+[1727871] Found items remain highlighted if another entry selected - note
+found items now made bold rather than highlighted
 
 New Features for 3.08.01
 ========================
+[] Implement "Advanced" option for Find
 
 
 Bugs fixed in 3.08

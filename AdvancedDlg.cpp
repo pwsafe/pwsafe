@@ -27,15 +27,16 @@ int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
              IDD_ADVANCED,      // ADV_COMPARE
              IDD_ADVANCEDMERGE, // ADV_MERGE (significantly reduced dialog)
              IDD_ADVANCED,      // ADV_EXPORT_TEXT
-             IDD_ADVANCED       // ADV_EXPORT_XML
+             IDD_ADVANCED,      // ADV_EXPORT_XML
+             IDD_ADVANCED       // ADV_FIND
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg dialog
 
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
-                           CItemData::FieldBits bsFields, CString subgroup_name, int subgroup_set, 
-                           int subgroup_object, int subgroup_function)
+                           CItemData::FieldBits bsFields, CString subgroup_name,
+                           int subgroup_set, int subgroup_object, int subgroup_function)
   : CDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
     m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
     m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
@@ -82,6 +83,9 @@ BOOL CAdvancedDlg::OnInitDialog()
       break;
     case ADV_EXPORT_XML:
       cs_text.LoadString(IDS_EXPORT_XMLX);
+      break;
+    case ADV_FIND:
+      cs_text.LoadString(IDS_FINDX);
       break;
     default:
       ASSERT(FALSE);
@@ -183,18 +187,20 @@ BOOL CAdvancedDlg::OnInitDialog()
     iItem = m_pLC_List->InsertItem(++iItem, cs_text);
     m_pLC_List->SetItemData(iItem, CItemData::RMTIME);
   } else {
-    cs_text.LoadString(IDS_CREATED);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::CTIME);
-    cs_text.LoadString(IDS_PASSWORDMODIFIED);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::PMTIME);
-    cs_text.LoadString(IDS_LASTACCESSED);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::ATIME);
-    cs_text.LoadString(IDS_LASTMODIFIED);
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME);
+    if (m_index != ADV_FIND) {
+      cs_text.LoadString(IDS_CREATED);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::CTIME);
+      cs_text.LoadString(IDS_PASSWORDMODIFIED);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PMTIME);
+      cs_text.LoadString(IDS_LASTACCESSED);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::ATIME);
+      cs_text.LoadString(IDS_LASTMODIFIED);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME);
+    }
   }
 
   cs_text.LoadString(IDS_NOTES);
@@ -207,8 +213,10 @@ BOOL CAdvancedDlg::OnInitDialog()
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::AUTOTYPE);
   cs_text.LoadString(IDS_EXPIRYDATETIME);
-  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::LTIME);
+  if (m_index != ADV_FIND) {
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::LTIME);
+  }
   cs_text.LoadString(IDS_PWHIST);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST);
@@ -221,12 +229,12 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_ADVANCED_TITLETEXT); // <-- Special
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::TITLE);
-      cs_text.LoadString(IDS_ADVANCED_PASSWORDTEXT); // <-- Special
-      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
       cs_text.LoadString(IDS_USERNAME);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::USER);
+      cs_text.LoadString(IDS_ADVANCED_PASSWORDTEXT); // <-- Special
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
       break;
     case ADV_COMPARE:
       cs_text.LoadString(IDS_ADVANCED_GROUPTEXT); // <-- Special
@@ -249,12 +257,12 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_TITLE);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::TITLE);
-      cs_text.LoadString(IDS_PASSWORD);
-      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
       cs_text.LoadString(IDS_USERNAME);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::USER);
+      cs_text.LoadString(IDS_PASSWORD);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
   }
 
   if (m_bsFields.count() != 0) {
@@ -361,6 +369,9 @@ void CAdvancedDlg::OnHelp()
     case ADV_EXPORT_XML:
       cs_HelpTopic += _T("::/html/exportxmlx.html");
       break;
+    case ADV_FIND:
+      cs_HelpTopic += _T("::/html/findx.html");
+      break;
     default:
       ASSERT(FALSE);
   }
@@ -393,6 +404,9 @@ void CAdvancedDlg::OnOK()
           break;
         case ADV_EXPORT_TEXT:
           cs_error_msg.LoadString(IDS_NOFIELDSFOREXPORT);
+          break;
+        case ADV_FIND:
+          cs_error_msg.LoadString(IDS_NOFIELDSFORSEARCH);
           break;
         default:
           ASSERT(FALSE);
@@ -550,7 +564,7 @@ CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
 {
   // Prevent TITLE and PASSWORD being deselected in EXPORT_XML function
   // as they are mandatory fields
-  // Prevent group, TITLE and user being deselected in COMPARE function
+  // Prevent group, TITLE and USER being deselected in COMPARE function
   // as they are always checked
   NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR; 
   *pResult = FALSE;
@@ -573,6 +587,7 @@ CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
         *pResult = TRUE;
       }
       break;
+    case ADV_FIND:
     case ADV_MERGE:
     case ADV_EXPORT_TEXT:
       break;

@@ -96,6 +96,10 @@ public:
   // FindAll is used by CFindDlg, returns # of finds.
   // indices allocated by caller
   int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
+  int FindAll(const CString &str, BOOL CaseSensitive, int *indices,
+              const CItemData::FieldBits &bsFields, const int subgroup_set, 
+              const CString &subgroup_name, const int subgroup_object,
+              const int subgroup_function);
 
   // Count the number of total entries.
   int GetNumEntries() const {return m_core.GetNumEntries();}
@@ -106,6 +110,7 @@ public:
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
+  BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
   void RefreshList();
   void SortTree(const HTREEITEM htreeitem);
   bool IsExplorerTree() const {return m_bExplorerTypeTree;}
@@ -131,6 +136,7 @@ public:
   CString GetHeaderText(const int iType);
   int GetHeaderWidth(const int iType);
   void CalcHeaderWidths();
+  void UnFindItem();
 
   void UpdateToolBar(bool state);
   bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
@@ -218,6 +224,9 @@ protected:
   bool m_bAdvanced;
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
+
+  HTREEITEM m_LastFoundItem;
+  bool m_bBoldItem;
 
   WCHAR *m_pwchTip;
   TCHAR *m_pchTip;

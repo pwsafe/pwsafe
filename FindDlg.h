@@ -12,6 +12,7 @@
 
 #include "corelib/PwsPlatform.h"
 #include "corelib/MyString.h"
+#include "corelib/ItemData.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PwsPopupDialog.h"
@@ -42,6 +43,10 @@ class CFindDlg : public SUPERCLASS
   CString	m_status;
 	//}}AFX_DATA
 
+  bool m_bAdvanced;
+  CItemData::FieldBits m_bsFields;
+  CString m_subgroup_name;
+  int m_subgroup_set, m_subgroup_object, m_subgroup_function;
 
   // Overrides
   // ClassWizard generated virtual function overrides
@@ -57,6 +62,7 @@ class CFindDlg : public SUPERCLASS
   //{{AFX_MSG(CFindDlg)
   afx_msg void OnFind();
   afx_msg void OnWrap();
+  afx_msg void OnAdvanced();
 #if defined(POCKET_PC)
   afx_msg void OnCancel();
 #else
@@ -73,6 +79,9 @@ class CFindDlg : public SUPERCLASS
   int m_numFound; // number of items that matched, as returned by DboxMain::FindAll
   CMyString m_last_search_text;
   BOOL m_last_cs_search;
+  CItemData::FieldBits m_last_bsFields;
+  CString m_last_subgroup_name;
+  int m_last_subgroup_set, m_last_subgroup_object, m_last_subgroup_function;
 
   CMyString *m_lastTextPtr;
   BOOL *m_lastCSPtr;
