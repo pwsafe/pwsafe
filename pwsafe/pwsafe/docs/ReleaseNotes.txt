@@ -14,6 +14,7 @@ Bugs fixed in 3.08.01
 [] Fix Edit and View in main menu not being reset after open after close
 [1727871] Found items remain highlighted if another entry selected - note
 found items now made bold rather than highlighted
+[1728612] Column sort arrows, in Flattened List mode, correctly removed
 
 New Features for 3.08.01
 ========================

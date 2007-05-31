@@ -1163,16 +1163,6 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   // Get column index to CItemData value
   int iIndex = pNMListView->iSubItem;
   int isortcolumn = m_nColumnTypeByIndex[iIndex];
-  
-  if (m_iSortedColumn == isortcolumn) {
-    m_bSortAscending = !m_bSortAscending;
-  } else {
-    m_iSortedColumn = isortcolumn;
-    m_bSortAscending = true;
-  }
-
-  m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-  FixListIndexes();
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
 #define HDF_SORTUP 0x0400
@@ -1181,6 +1171,26 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
   HDITEM hdi;
   hdi.mask = HDI_FORMAT;
+
+  if (m_iSortedColumn == isortcolumn) {
+    m_bSortAscending = !m_bSortAscending;
+  } else {
+    // Turn off all previous sort arrrows
+    // Note: not sure where, as user may have played with the columns!
+    for (int i = 0; i < m_LVHdrCtrl.GetItemCount(); i++) {
+      m_LVHdrCtrl.GetItem(i, &hdi);
+      if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
+        hdi.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
+        m_LVHdrCtrl.SetItem(i, &hdi);
+      }
+    }
+
+    m_iSortedColumn = isortcolumn;
+    m_bSortAscending = true;
+  }
+
+  m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+  FixListIndexes();
 
   m_LVHdrCtrl.GetItem(iIndex, &hdi);
   // Turn off all arrows
