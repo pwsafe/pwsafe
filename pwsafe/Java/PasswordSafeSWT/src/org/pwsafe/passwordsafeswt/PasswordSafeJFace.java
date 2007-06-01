@@ -553,7 +553,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	public void setupStatusMessage() {
 
-		if (getPwsFile().getRecordCount() > 0) {
+		final PwsFile pwsf = getPwsFile();
+        if (pwsf != null && pwsf.getRecordCount() > 0) {
 			if (UserPreferences.getInstance().getBoolean(MiscPreferences.DOUBLE_CLICK_COPIES_TO_CLIPBOARD)) {
 				setStatusMessage("Double Click on entry to copy password");
 			} else {
