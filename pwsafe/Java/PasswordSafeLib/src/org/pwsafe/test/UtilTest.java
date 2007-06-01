@@ -20,8 +20,9 @@ public class UtilTest extends TestCase
 	 */
 	public final void testAllocateByteArray()
 	{
-		assertEquals( 16, Util.allocateByteArray(13).length );
-	}
+        final int length = 16;
+        assertEquals(length, Util.allocateByteArray(length).length);
+    }
 
 	/**
 	 * Unit test for {@link Util#bytesAreEqual(byte[], byte[])}.
