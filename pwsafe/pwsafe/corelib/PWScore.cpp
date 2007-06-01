@@ -834,11 +834,12 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // tokenize into separate elements
     itoken = 0;
     vector<stringT> tokens;
-    for (size_t startpos = 0; ; ) {
+    for (size_t startpos = 0; startpos < linebuf.size(); ) {
       size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
+      if (nextchar == string::npos)
+        nextchar = linebuf.size();
       if (nextchar >= 0 && i_Offset[itoken] != NOTES) {
         tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
-        startpos = nextchar + 1;
       } else {
         // Here for the Notes field. Notes may be double-quoted, and
         // if they are, they may span more than one line.
@@ -870,6 +871,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         tokens.push_back(note);
         break;
       }
+      startpos = nextchar + 1;
       itoken++;
     }
 

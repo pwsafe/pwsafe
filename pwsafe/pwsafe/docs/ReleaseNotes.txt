@@ -15,6 +15,7 @@ Bugs fixed in 3.08.01
 [1727871] Found items remain highlighted if another entry selected - note
 found items now made bold rather than highlighted
 [1728612] Column sort arrows, in Flattened List mode, correctly removed
+[1728945] Importing a subset of text data now fixed
 
 New Features for 3.08.01
 ========================
