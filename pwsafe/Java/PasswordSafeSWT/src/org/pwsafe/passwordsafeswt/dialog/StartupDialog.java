@@ -3,7 +3,6 @@ package org.pwsafe.passwordsafeswt.dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -95,7 +94,7 @@ public class StartupDialog extends Dialog {
 		lblPleaseEnter.setText("Please enter the safe combination for the password database:");
 
 		final Label lblFilename = new Label(shell, SWT.NONE);
-		lblFilename.setText("Filename:");
+		lblFilename.setText("&Filename:");
 		final FormData formData_1 = new FormData();
 		formData_1.top = new FormAttachment(lblPleaseEnter, 15, SWT.BOTTOM);
 		formData_1.left = new FormAttachment(lblPleaseEnter, 15, SWT.LEFT);
@@ -113,7 +112,7 @@ public class StartupDialog extends Dialog {
 		formData_2.top = new FormAttachment(lblFilename, 20);
 		formData_2.right = new FormAttachment(lblFilename, 0, SWT.RIGHT);
 		lblSafeCombination.setLayoutData(formData_2);
-		lblSafeCombination.setText("Safe Combination:");
+		lblSafeCombination.setText("&Safe Combination:");
 
 		txtPassword = new Text(shell, SWT.BORDER);
 		txtPassword.setEchoChar('*');
@@ -128,7 +127,7 @@ public class StartupDialog extends Dialog {
 		formData_4.top = new FormAttachment(txtPassword, 15);
 		formData_4.left = new FormAttachment(txtPassword, 0, SWT.LEFT);
 		btnReadOnly.setLayoutData(formData_4);
-		btnReadOnly.setText("Open as read-only");
+		btnReadOnly.setText("&Open as read-only");
 
 		final Button btnCreate = new Button(shell, SWT.NONE);
 		btnCreate.addSelectionListener(new SelectionAdapter() {
@@ -141,7 +140,7 @@ public class StartupDialog extends Dialog {
         formData_5.top = new FormAttachment(cboFilename, 0, SWT.TOP);
 		formData_5.right = new FormAttachment(100, -5);
 		btnCreate.setLayoutData(formData_5);
-		btnCreate.setText("Create new safe...  ");
+		btnCreate.setText("&Create new safe...  ");
 
 		final Button btnOpen = new Button(shell, SWT.NONE);
 		btnOpen.addSelectionListener(new SelectionAdapter() {
@@ -157,7 +156,7 @@ public class StartupDialog extends Dialog {
 		formData_6.left = new FormAttachment(btnCreate, 0, SWT.LEFT);
         formData_6.right = new FormAttachment(btnCreate, 0, SWT.RIGHT);
 		btnOpen.setLayoutData(formData_6);
-		btnOpen.setText("Open other safe...");
+		btnOpen.setText("&Open other safe...");
 
 		final Button btnOk = new Button(shell, SWT.NONE);
 		shell.setDefaultButton(btnOk);
