@@ -49,6 +49,7 @@ public class StartupDialog extends Dialog {
 	}
 	
 	public Object open() {
+	    result = StartupDialog.CANCEL;
 		createContents();
 		ShellHelpers.centreShell(getParent(), shell);
 		shell.open();
@@ -127,7 +128,7 @@ public class StartupDialog extends Dialog {
 		formData_4.top = new FormAttachment(txtPassword, 15);
 		formData_4.left = new FormAttachment(txtPassword, 0, SWT.LEFT);
 		btnReadOnly.setLayoutData(formData_4);
-		btnReadOnly.setText("&Open as read-only");
+		btnReadOnly.setText("Open as &read-only");
 
 		final Button btnCreate = new Button(shell, SWT.NONE);
 		btnCreate.addSelectionListener(new SelectionAdapter() {
@@ -196,6 +197,7 @@ public class StartupDialog extends Dialog {
 		formData_9.left = new FormAttachment(btnCancel, 10);
 		btnHelp.setLayoutData(formData_9);
 		btnHelp.setText("Help");
+		btnHelp.setEnabled(false);    // there is no help yet
 
 		final Label lblVersion = new Label(shell, SWT.NONE);
 		final FormData formData_11 = new FormData();
