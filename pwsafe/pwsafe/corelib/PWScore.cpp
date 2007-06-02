@@ -834,7 +834,9 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // tokenize into separate elements
     itoken = 0;
     vector<stringT> tokens;
-    for (size_t startpos = 0; startpos < linebuf.size(); ) {
+    for (size_t startpos = 0;
+         startpos < linebuf.size();
+         /* startpos advanced in body */) {
       size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar == string::npos)
         nextchar = linebuf.size();
@@ -870,10 +872,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         } // multiline note processed
         tokens.push_back(note);
         break;
-      }
-      startpos = nextchar + 1;
+      } // Notes handling
+      startpos = nextchar + 1; // too complex for for statement
       itoken++;
-    }
+    } // tokenization for loop
 
     // Sanity check
     if (tokens.size() < num_found) {
