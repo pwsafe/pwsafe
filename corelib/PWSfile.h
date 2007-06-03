@@ -118,7 +118,7 @@ class PWSfile {
   unsigned char *m_terminal;
   bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
   uuid_array_t m_file_uuid_array;
-  static int m_nITER;
+  int m_nITER;
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;

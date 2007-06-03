@@ -125,8 +125,8 @@ int PWSfileV3::Close()
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
 int PWSfileV3::CheckPassword(const CMyString &filename,
-                             const CMyString &passkey,
-                             FILE *a_fd, unsigned char *aPtag)
+                             const CMyString &passkey, FILE *a_fd,
+                             unsigned char *aPtag, int *nITER)
 {
   FILE *fd = a_fd;
   int retval = SUCCESS;
@@ -161,7 +161,9 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
     retval = FAILURE;
     goto err;
   }
-  m_nITER = N;
+
+  if (nITER != NULL)
+    *nITER = N;
 
   unsigned char Ptag[SHA256::HASHLEN];
   if (aPtag == NULL)
@@ -612,7 +614,8 @@ int PWSfileV3::WriteHeader()
 int PWSfileV3::ReadHeader()
 {
     unsigned char Ptag[SHA256::HASHLEN];
-    int status = CheckPassword(m_filename, m_passkey, m_fd, Ptag);
+    int status = CheckPassword(m_filename, m_passkey, m_fd,
+                               Ptag, &m_nITER);
 
     if (status != SUCCESS) {
         Close();
