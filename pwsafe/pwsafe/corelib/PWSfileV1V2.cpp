@@ -415,7 +415,10 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
         }
     }
     ASSERT(wcLen != 0);
-    wc[wcLen-1] = TCHAR('\0');
+    if (wcLen < int(buffer_len) + 1)
+      wc[wcLen] = TCHAR('\0');
+    else
+      wc[buffer_len] = TCHAR('\0');
     data = wc;
     trashMemory(wc, wcLen);
     delete[] wc;

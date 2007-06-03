@@ -29,7 +29,7 @@ class PWSfileV3 : public PWSfile {
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey,
                            FILE *a_fd = NULL,
-                           unsigned char *aPtag = NULL);
+                           unsigned char *aPtag = NULL, int *nIter = NULL);
   static bool IsV3x(const CMyString &filename, VERSION &v);
 
   PWSfileV3(const CMyString &filename, RWmode mode, VERSION version);

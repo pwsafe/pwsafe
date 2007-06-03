@@ -17,7 +17,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-int PWSfile::m_nITER;
 
 PWSfile *PWSfile::MakePWSfile(const CMyString &a_filename, VERSION &version,
                               RWmode mode, int &status)
@@ -118,8 +117,9 @@ PWSfile::PWSfile(const CMyString &filename, RWmode mode)
     m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL),
     m_file_displaystatus(_T("")), m_whenlastsaved(_T("")),
     m_wholastsaved(_T("")), m_whatlastsaved(_T("")),
-    m_nRecordsWithUnknownFields(0)
+    m_nITER(0), m_nRecordsWithUnknownFields(0)
 {
+  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
 }
 
 PWSfile::~PWSfile()
