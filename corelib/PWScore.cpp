@@ -365,7 +365,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
   TCHAR uuid_buffer[37];
 #if _MSC_VER >= 1400
 	_stprintf_s(uuid_buffer, 37,
-                  _T("%02x%02x%02x%02x-%02x%02x-%0x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
+                  _T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
                   m_file_uuid_array[0],  m_file_uuid_array[1],
                   m_file_uuid_array[2],  m_file_uuid_array[3],
                   m_file_uuid_array[4],  m_file_uuid_array[5],
@@ -376,7 +376,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
                   m_file_uuid_array[14], m_file_uuid_array[15]);
 #else
   _stprintf(uuid_buffer,
-                  _T("%02x%02x%02x%02x-%02x%02x-%0x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"), 
+                  _T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"), 
                   m_file_uuid_array[0],  m_file_uuid_array[1],
                   m_file_uuid_array[2],  m_file_uuid_array[3],
                   m_file_uuid_array[4],  m_file_uuid_array[5],
