@@ -95,8 +95,12 @@ PWScore::ReInit(void)
   m_usedefuser = false;
   m_defusername = _T("");
   m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
-  m_passkey = NULL;
-  m_passkey_len = 0;
+  if (m_passkey_len > 0) {
+    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    delete[] m_passkey;
+    m_passkey = NULL;
+    m_passkey_len = 0;
+  }
   m_nRecordsWithUnknownFields = 0;
   m_UHFL.clear();
 }

@@ -189,12 +189,13 @@ DboxMain::New()
   }
 
   rc = NewFile();
-  if (rc == PWScore::USER_CANCEL)
+  if (rc == PWScore::USER_CANCEL) {
     /*
       Everything stays as is...
       Worst case, they saved their file....
     */
     return PWScore::USER_CANCEL;
+  }
 
   m_core.SetCurFile(_T("")); //Force a save as...
   m_core.ClearFileUUID();
@@ -223,6 +224,9 @@ DboxMain::NewFile(void)
 
   if (rc == IDCANCEL)
     return PWScore::USER_CANCEL;  //User cancelled password entry
+
+  // Reset core
+  m_core.ReInit();
 
   ClearData();
   PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
