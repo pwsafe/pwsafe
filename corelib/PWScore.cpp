@@ -90,7 +90,6 @@ void
 PWScore::ReInit(void)
 {
   // Now reset all values as if created from new
-  m_currfile = _T("");
   m_changed = false;
   m_usedefuser = false;
   m_defusername = _T("");
