@@ -100,19 +100,10 @@ GenRandhash(const CMyString &a_passkey,
             const unsigned char* a_randstuff,
             unsigned char* a_randhash)
 {
-  LPCTSTR pkey = (LPCTSTR)a_passkey;
-  unsigned long pkeyLen = a_passkey.GetLength();
-  unsigned char *pstr;
+  int pkeyLen = 0;
+  unsigned char *pstr = NULL;
 
-#ifdef UNICODE
-  pstr = new unsigned char[2*pkeyLen];
-  int len = WideCharToMultiByte(CP_ACP, 0, pkey, pkeyLen,
-                                LPSTR(pstr), 2*pkeyLen, NULL, NULL);
-  ASSERT(len != 0);
-  pkeyLen = len;
-#else
-  pstr = (unsigned char *)pkey;
-#endif
+  ConvertString(a_passkey, pstr, pkeyLen);
 
   /*
     tempSalt <- H(a_randstuff + a_passkey)
