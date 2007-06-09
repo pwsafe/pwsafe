@@ -13,8 +13,6 @@
 
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
-#include "corelib/sha256.h"
-#include "corelib/sha1.h"
 #include "corelib/SysInfo.h"
 
 #if defined(POCKET_PC)
@@ -135,194 +133,7 @@ static BOOL CheckFile(const CString &fn)
   }
 }
 
-//Complain if the file has not opened correctly
-
-static void
-ErrorMessages(const CString &fn, FILE *fp)
-{
-#if !defined(POCKET_PC)
-  if (fp == NULL) {
-    CString cs_text1(MAKEINTRESOURCE(IDS_ERRORMESSAGE)), cs_text2;
-
-    switch (errno) {
-    	case EACCES:
-    		cs_text2.LoadString(IDS_FILEREADONLY);
-    		break;
-        case EEXIST:
-        	cs_text2.LoadString(IDS_FILEEXISTS);
-        	break;
-    	case EINVAL:
-    		cs_text2.LoadString(IDS_INVALIDFLAG);
-    		break;
-		case EMFILE:
-			cs_text2.LoadString(IDS_NOMOREHANDLES);
-			break;
-		case ENOENT:
-			cs_text2.LoadString(IDS_FILEPATHNOTFOUND);
-			break;
-		default:
-			break;
-	}
-	cs_text1 += cs_text2;
-    cs_text2.LoadString(IDS_TERMINATE);
-    cs_text1 += cs_text2;
-
-    CString cs_title = _T("Password Safe - ") + fn;
-    AfxGetMainWnd()->MessageBox(cs_text1, cs_title, MB_ICONEXCLAMATION|MB_OK);
-  }
-#endif
-}
-
-static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
-{
-  unsigned int len;
-  unsigned char* buf;
-
-  FILE *in;
-#if _MSC_VER >= 1400
-  _tfopen_s(&in, fn, _T("rb"));
-#else
-  in = _tfopen(fn, _T("rb"));
-#endif
-  if (in != NULL) {
-    len = PWSUtil::fileLength(in);
-    buf = new unsigned char[len];
-
-    fread(buf, 1, len, in);
-    fclose(in);
-  } else {
-    ErrorMessages(fn, in);
-    return FALSE;
-  }
-
-  CString out_fn = fn;
-  out_fn += CIPHERTEXT_SUFFIX;
-
-  FILE *out;
-#if _MSC_VER >= 1400
-  _tfopen_s(&out, out_fn, _T("wb"));
-#else
-  out = _tfopen(out_fn, _T("wb"));
-#endif
-  if (out != NULL) {
-#ifdef KEEP_FILE_MODE_BWD_COMPAT
-    fwrite( &len, 1, sizeof(len), out);
-#else
-    unsigned char randstuff[StuffSize];
-    unsigned char randhash[SHA1::HASHLEN];   // HashSize
-    PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
-    // miserable bug - have to fix this way to avoid breaking existing files
-    randstuff[8] = randstuff[9] = TCHAR('\0');
-    GenRandhash(passwd,
-                randstuff,
-                randhash);
-    fwrite(randstuff, 1,  8, out);
-    fwrite(randhash,  1, sizeof(randhash), out);
-#endif // KEEP_FILE_MODE_BWD_COMPAT
-
-    unsigned char thesalt[SaltLength];
-    PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
-    fwrite(thesalt, 1, SaltLength, out);
-
-    unsigned char ipthing[8];
-    PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
-    fwrite(ipthing, 1, 8, out);
-
-    LPCTSTR pwd = LPCTSTR(passwd);
-    Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
-                                        thesalt, SaltLength);
-    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
-    delete fish;
-    fclose(out);
-
-  } else {
-    ErrorMessages(out_fn, out);
-    delete [] buf;
-    return FALSE;
-  }
-  delete[] buf;
-  return TRUE;
-}
-
-static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
-{
-  unsigned int len;
-  unsigned char* buf;
-
-  FILE *in;
-#if _MSC_VER >= 1400
-  _tfopen_s(&in, fn, _T("rb"));
-#else
-  in = _tfopen(fn, _T("rb"));
-#endif
-  if (in != NULL) {
-    unsigned char salt[SaltLength];
-    unsigned char ipthing[8];
-    unsigned char randstuff[StuffSize];
-    unsigned char randhash[SHA1::HASHLEN];
-
-#ifdef KEEP_FILE_MODE_BWD_COMPAT
-    fread(&len, 1, sizeof(len), in); // XXX portability issue
-#else
-    fread(randstuff, 1, 8, in);
-    randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
-    fread(randhash, 1, sizeof(randhash), in);
-
-    unsigned char temphash[SHA1::HASHLEN];
-    GenRandhash(passwd,
-                randstuff,
-                temphash);
-    if (0 != memcmp((char*)randhash,
-                    (char*)temphash, SHA1::HASHLEN)) {
-      fclose(in);
-      AfxMessageBox(IDS_BADPASSWORD);
-      return FALSE;
-    }
-#endif // KEEP_FILE_MODE_BWD_COMPAT
-    buf = NULL; // allocated by _readcbc - see there for apologia
-
-    fread(salt,    1, SaltLength, in);
-    fread(ipthing, 1, 8,          in);
-    LPCTSTR pwd = LPCTSTR(passwd);
-    unsigned char dummyType;
-
-    Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
-                                        salt, SaltLength);
-    if (_readcbc(in, buf, len,dummyType, fish, ipthing) == 0) {
-      delete fish;
-      delete[] buf; // if not yet allocated, delete[] NULL, which is OK
-      return FALSE;
-    }
-    delete fish;
-    fclose(in);
-  } else {
-    ErrorMessages(fn, in);
-    return FALSE;
-  }
-
-  size_t suffix_len = strlen(CIPHERTEXT_SUFFIX);
-  size_t filepath_len = fn.GetLength();
-
-  CString out_fn = fn;
-  out_fn = out_fn.Left(static_cast<int>(filepath_len - suffix_len));
-
-#if _MSC_VER >= 1400
-  FILE *out;
-  _tfopen_s(&out, out_fn, _T("wb"));
-#else
-  FILE *out = _tfopen(out_fn, _T("wb"));
-#endif
-  if (out != NULL) {
-    fwrite(buf, 1, len, out);
-    fclose(out);
-  } else
-    ErrorMessages(out_fn, out);
-
-  delete[] buf; // allocated by _readcbc
-  return TRUE;
-}
-#endif
-
+#endif // !POCKET_PC
 int
 ThisMfcApp::ExitInstance()
 {
@@ -505,312 +316,312 @@ void ThisMfcApp::LoadLocalizedStuff()
 BOOL
 ThisMfcApp::InitInstance()
 {
-    /*
-     * It's always best to start at the beginning.  [Glinda, Witch of the North]
-     */
+  /*
+   * It's always best to start at the beginning.  [Glinda, Witch of the North]
+   */
 
-    // Get application version information
-    GetApplicationVersionData();
+  // Get application version information
+  GetApplicationVersionData();
 
-    LoadLocalizedStuff();
+  LoadLocalizedStuff();
 
-    // PWScore needs it to get into database header if/when saved
-    m_core.SetApplicationMajorMinor(m_dwMajorMinor);
+  // PWScore needs it to get into database header if/when saved
+  m_core.SetApplicationMajorMinor(m_dwMajorMinor);
 
 #if defined(POCKET_PC)
-    SHInitExtraControls();
+  SHInitExtraControls();
 #endif
 
-    /*
-      this instructs the app to use the registry instead of .ini files.  The
-      path ends up being
+  /*
+    this instructs the app to use the registry instead of .ini files.  The
+    path ends up being
 
-      HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
-      where companyname is what's set here, and appname is taken from
-      AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
+    HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+    where companyname is what's set here, and appname is taken from
+    AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
 
-      Notes:
-      1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
-      member function.
-      2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
-      for discussion on how this is handled.
-    */
-    SetRegistryKey(_T("Password Safe"));
+    Notes:
+    1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
+    member function.
+    2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
+    for discussion on how this is handled.
+  */
+  SetRegistryKey(_T("Password Safe"));
 
-    // Register a clipboard format for column darg & drop. 
-    CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
-    gbl_ccddCPFID = 0;
+  // Register a clipboard format for column darg & drop. 
+  CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
+  gbl_ccddCPFID = 0;
 
-    if (OpenClipboard(0)) {
-      unsigned int uiFormat = 0;
+  if (OpenClipboard(0)) {
+    unsigned int uiFormat = 0;
 
-      while ((uiFormat = EnumClipboardFormats(uiFormat)) != 0) {
-        TCHAR szName[512];
-        GetClipboardFormatName(uiFormat, szName, sizeof(szName));
-        if (cs_CPF.Compare(CString(szName)) == 0) {
-          gbl_ccddCPFID = (CLIPFORMAT)uiFormat;
-          break;
-        }
+    while ((uiFormat = EnumClipboardFormats(uiFormat)) != 0) {
+      TCHAR szName[512];
+      GetClipboardFormatName(uiFormat, szName, sizeof(szName));
+      if (cs_CPF.Compare(CString(szName)) == 0) {
+        gbl_ccddCPFID = (CLIPFORMAT)uiFormat;
+        break;
       }
-      CloseClipboard();
-    } 
+    }
+    CloseClipboard();
+  } 
 
-    if (gbl_ccddCPFID == 0)
-      gbl_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
+  if (gbl_ccddCPFID == 0)
+    gbl_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
 
-    // Create arandom filed to use to check we are only D&D to ourselves
-    unsigned char randstuff[StuffSize];
-    PWSrand::GetInstance()->GetRandomData(randstuff, sizeof(DWORD));
-    memcpy((void *)&gbl_randID, randstuff, sizeof(DWORD));
+  // Create arandom filed to use to check we are only D&D to ourselves
+  unsigned char randstuff[StuffSize];
+  PWSrand::GetInstance()->GetRandomData(randstuff, sizeof(DWORD));
+  memcpy((void *)&gbl_randID, randstuff, sizeof(DWORD));
 
-    // MUST (indirectly) create PWSprefs first
-    // Ensures all things like saving locations etc. are set up.
-    PWSprefs *prefs = PWSprefs::GetInstance();
+  // MUST (indirectly) create PWSprefs first
+  // Ensures all things like saving locations etc. are set up.
+  PWSprefs *prefs = PWSprefs::GetInstance();
 
-    CMenu* new_popupmenu = NULL;
+  CMenu* new_popupmenu = NULL;
 
-    int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
+  int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
 
-    m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
+  m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
 
-    m_clipboard_set = false;
+  m_clipboard_set = false;
 
-    m_mainmenu = new CMenu;
-    m_mainmenu->LoadMenu(IDR_MAINMENU);
-    new_popupmenu = new CMenu;
+  m_mainmenu = new CMenu;
+  m_mainmenu->LoadMenu(IDR_MAINMENU);
+  new_popupmenu = new CMenu;
 
-    // Look for "File" menu.
-    CString cs_text(MAKEINTRESOURCE(IDS_FILEMENU));
-    int pos = FindMenuItem(m_mainmenu, cs_text);
-    if (pos == -1) // E.g., in non-English versions
-        pos = 0; // best guess...
+  // Look for "File" menu.
+  CString cs_text(MAKEINTRESOURCE(IDS_FILEMENU));
+  int pos = FindMenuItem(m_mainmenu, cs_text);
+  if (pos == -1) // E.g., in non-English versions
+    pos = 0; // best guess...
 
-    CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
-    if (file_submenu != NULL)	// Look for "Close Database"
-        pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
-    else
-        pos = -1;
+  CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
+  if (file_submenu != NULL)	// Look for "Close Database"
+    pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
+  else
+    pos = -1;
 
-    m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"),
-                                     ((nMRUItems != 0) ? nMRUItems : 1));
-    if (nMRUItems > 0) {
-        if (pos > -1) {
-            int irc;
-            // Create New Popup Menu
-            new_popupmenu->CreatePopupMenu();
-            CString cs_recent(MAKEINTRESOURCE(IDS_RECENT)), 
-                cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
+  m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"),
+                                   ((nMRUItems != 0) ? nMRUItems : 1));
+  if (nMRUItems > 0) {
+    if (pos > -1) {
+      int irc;
+      // Create New Popup Menu
+      new_popupmenu->CreatePopupMenu();
+      CString cs_recent(MAKEINTRESOURCE(IDS_RECENT)), 
+        cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
           
-            if (!m_mruonfilemenu) {	// MRU entries in popup menu
-                // Insert Item onto new popup
-                irc = new_popupmenu->InsertMenu(0, MF_BYPOSITION,
-                                                ID_FILE_MRU_ENTRY1, cs_recent);
-                ASSERT(irc != 0);
-                // Insert Popup onto main menu
-                irc = file_submenu->InsertMenu(pos + 2,
-                                               MF_BYPOSITION | MF_POPUP,
-                                               UINT_PTR(new_popupmenu->m_hMenu),
-                                               cs_recentsafes);
-                ASSERT(irc != 0);
-            } else {	// MRU entries inline
-                irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
-                                               ID_FILE_MRU_ENTRY1, cs_recent);
-                ASSERT(irc != 0);
-            } // m_mruonfilemenu
+      if (!m_mruonfilemenu) {	// MRU entries in popup menu
+        // Insert Item onto new popup
+        irc = new_popupmenu->InsertMenu(0, MF_BYPOSITION,
+                                        ID_FILE_MRU_ENTRY1, cs_recent);
+        ASSERT(irc != 0);
+        // Insert Popup onto main menu
+        irc = file_submenu->InsertMenu(pos + 2,
+                                       MF_BYPOSITION | MF_POPUP,
+                                       UINT_PTR(new_popupmenu->m_hMenu),
+                                       cs_recentsafes);
+        ASSERT(irc != 0);
+      } else {	// MRU entries inline
+        irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
+                                       ID_FILE_MRU_ENTRY1, cs_recent);
+        ASSERT(irc != 0);
+      } // m_mruonfilemenu
 
-            m_pMRU->ReadList();
-        } // pos > -1
-    } else { // nMRUItems <= 0
-        if (pos > -1) {
-            int irc;
-            // Remove extra separator
-            irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
-            ASSERT( irc != 0);
-            // Remove Clear MRU menu item.
-            irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
-            ASSERT( irc != 0);
-        }
+      m_pMRU->ReadList();
+    } // pos > -1
+  } else { // nMRUItems <= 0
+    if (pos > -1) {
+      int irc;
+      // Remove extra separator
+      irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
+      ASSERT( irc != 0);
+      // Remove Clear MRU menu item.
+      irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
+      ASSERT( irc != 0);
     }
+  }
 #ifdef DEMO
-    // add specific menu item for demo version
-    int hpos = FindMenuItem(m_mainmenu, CString(MAKEINTRESOURCE(IDS_HELPMENU)));
-    if (hpos == -1)
-        hpos = 4; // best guess...
+  // add specific menu item for demo version
+  int hpos = FindMenuItem(m_mainmenu, CString(MAKEINTRESOURCE(IDS_HELPMENU)));
+  if (hpos == -1)
+    hpos = 4; // best guess...
 
-    CMenu* help_submenu = m_mainmenu->GetSubMenu(hpos);
-    if (help_submenu != NULL) {
-        help_submenu->InsertMenu(2, MF_BYPOSITION, ID_U3SHOP_WEBSITE,
-                                 CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
-    }
+  CMenu* help_submenu = m_mainmenu->GetSubMenu(hpos);
+  if (help_submenu != NULL) {
+    help_submenu->InsertMenu(2, MF_BYPOSITION, ID_U3SHOP_WEBSITE,
+                             CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
+  }
 
 #endif /* DEMO */
 
 
-    DboxMain dbox(NULL);
+  DboxMain dbox(NULL);
 
-    /*
-     * Command line processing:
-     * Historically, it appears that if a filename was passed as a commadline argument,
-     * the application would prompt the user for the password, and the encrypt or decrypt
-     * the named file, based on the file's suffix. Ugh.
-     *
-     * What I'll do is as follows:
-     * If a file is given in the command line, it is used as the database, overriding the
-     * registry value. This will allow the user to have several databases, say, one for work
-     * and one for personal use, and to set up a different shortcut for each.
-     *
-     * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
-     * {kjp} ... and I've removed all of it from the Pocket PC build.
-     */
+  /*
+   * Command line processing:
+   * Historically, it appears that if a filename was passed as a commadline argument,
+   * the application would prompt the user for the password, and the encrypt or decrypt
+   * the named file, based on the file's suffix. Ugh.
+   *
+   * What I'll do is as follows:
+   * If a file is given in the command line, it is used as the database, overriding the
+   * registry value. This will allow the user to have several databases, say, one for work
+   * and one for personal use, and to set up a different shortcut for each.
+   *
+   * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
+   * {kjp} ... and I've removed all of it from the Pocket PC build.
+   */
 
 #if !defined(POCKET_PC)
-    if (m_lpCmdLine[0] != TCHAR('\0')) {
-        CString args = m_lpCmdLine;
+  if (m_lpCmdLine[0] != TCHAR('\0')) {
+    CString args = m_lpCmdLine;
 
-        if (args[0] != _T('-')) {
-            StripFileQuotes( args );
+    if (args[0] != _T('-')) {
+      StripFileQuotes( args );
 
-            if (CheckFile(args)) {
-                dbox.SetCurFile(args);
-            } else {
-                return FALSE;
-            }
-        } else { // here if first char of arg is '-'
-            // first, let's check that there's a second arg
-            CString fn = args.Right(args.GetLength()-2);
-            fn.Trim();
+      if (CheckFile(args)) {
+        dbox.SetCurFile(args);
+      } else {
+        return FALSE;
+      }
+    } else { // here if first char of arg is '-'
+      // first, let's check that there's a second arg
+      CString fn = args.Right(args.GetLength()-2);
+      fn.Trim();
 
-            if (!fn.IsEmpty())
-                StripFileQuotes( fn );
+      if (!fn.IsEmpty())
+        StripFileQuotes( fn );
 
-            const int UC_arg1(toupper(args[1]));
-            // The following arguements require the database name and it exists!
-            if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
-                && (fn.IsEmpty() || CheckFile(fn) == FALSE)) {
-                Usage();
-                return FALSE;
-            }
+      const int UC_arg1(toupper(args[1]));
+      // The following arguements require the database name and it exists!
+      if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
+          && (fn.IsEmpty() || CheckFile(fn) == FALSE)) {
+        Usage();
+        return FALSE;
+      }
 
-            if (fn.IsEmpty())
-                fn = (CString)PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentFile);
+      if (fn.IsEmpty())
+        fn = (CString)PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentFile);
 
-            CMyString passkey;
-            if (UC_arg1 == 'E' || UC_arg1 == 'D') {
-                // get password from user if valid flag given. If note, default below will
-                // pop usage message
-                CCryptKeyEntry dlg(NULL);
-                INT_PTR nResponse = dlg.DoModal();
+      CMyString passkey;
+      if (UC_arg1 == 'E' || UC_arg1 == 'D') {
+        // get password from user if valid flag given. If note, default below will
+        // pop usage message
+        CCryptKeyEntry dlg(NULL);
+        INT_PTR nResponse = dlg.DoModal();
 
-                if (nResponse==IDOK) {
-                    passkey = dlg.m_cryptkey1;
-                } else {
-                    return FALSE;
-                }
-            }
-            BOOL status;
-            m_core.SetReadOnly(false);
-            switch (UC_arg1) {
-                case 'C':
-                    dbox.SetStartClosed(true);
-                    dbox.SetCurFile(_T(""));
-                    break;
-                case 'D': // do decryption
-                    status = DecryptFile(fn, passkey);
-                    if (!status) {
-                        // nothing to do - DecryptFile displays its own error messages
-                    }
-                    return TRUE;
-                case 'E': // do encrpytion
-                    status = EncryptFile(fn, passkey);
-                    if (!status) {
-                        AfxMessageBox(IDS_ENCRYPTIONFAILED);
-                    }
-                    return TRUE;
-                case 'M': // closed & minimized
-                    dbox.SetStartClosed(true);
-                    dbox.SetStartSilent(true);
-                    dbox.SetCurFile(_T(""));
-                    break;
-                case 'R':
-                    m_core.SetReadOnly(true);
-                    dbox.SetCurFile(fn);
-                    break;
-                case 'S':
-                    dbox.SetStartSilent(true);
-                    if (fn.IsEmpty())
-                      dbox.SetStartClosed(true);
-                    dbox.SetCurFile(fn);
-                    break;
-                case 'V':
-                    dbox.SetValidate(true);
-                    dbox.SetCurFile(fn);
-                    break;
-                default:
-                    Usage();
-                    return FALSE;
-            } // switch
-        } // else
-    } // m_lpCmdLine[0] != TCHAR('\0');
+        if (nResponse==IDOK) {
+          passkey = dlg.m_cryptkey1;
+        } else {
+          return FALSE;
+        }
+      }
+      BOOL status;
+      m_core.SetReadOnly(false);
+      switch (UC_arg1) {
+      case 'C':
+        dbox.SetStartClosed(true);
+        dbox.SetCurFile(_T(""));
+        break;
+      case 'D': // do decryption
+        status = PWSfile::Decrypt(fn, passkey);
+        if (!status) {
+          // nothing to do - Decrypt displays its own error messages
+        }
+        return TRUE;
+      case 'E': // do encrpytion
+        status = PWSfile::Encrypt(fn, passkey);
+        if (!status) {
+          AfxMessageBox(IDS_ENCRYPTIONFAILED);
+        }
+        return TRUE;
+      case 'M': // closed & minimized
+        dbox.SetStartClosed(true);
+        dbox.SetStartSilent(true);
+        dbox.SetCurFile(_T(""));
+        break;
+      case 'R':
+        m_core.SetReadOnly(true);
+        dbox.SetCurFile(fn);
+        break;
+      case 'S':
+        dbox.SetStartSilent(true);
+        if (fn.IsEmpty())
+          dbox.SetStartClosed(true);
+        dbox.SetCurFile(fn);
+        break;
+      case 'V':
+        dbox.SetValidate(true);
+        dbox.SetCurFile(fn);
+        break;
+      default:
+        Usage();
+        return FALSE;
+      } // switch
+    } // else
+  } // m_lpCmdLine[0] != TCHAR('\0');
 #endif
 
-    /*
-     * normal startup
-     */
+  /*
+   * normal startup
+   */
 
-    /*
-      Here's where PWS currently does DboxMain, which in turn will do
-      the initial PasskeyEntry (the one that looks like a splash screen).
-      This makes things very hard to control.
-      The app object (here) should instead do the initial PasskeyEntry,
-      and, if successful, move on to DboxMain.  I think. {jpr}
-    */
-    m_maindlg = &dbox;
-    m_pMainWnd = m_maindlg;
+  /*
+    Here's where PWS currently does DboxMain, which in turn will do
+    the initial PasskeyEntry (the one that looks like a splash screen).
+    This makes things very hard to control.
+    The app object (here) should instead do the initial PasskeyEntry,
+    and, if successful, move on to DboxMain.  I think. {jpr}
+  */
+  m_maindlg = &dbox;
+  m_pMainWnd = m_maindlg;
 
-    // JHF : no tray icon and menu for PPC
+  // JHF : no tray icon and menu for PPC
 #if !defined(POCKET_PC)
-    //HICON stIcon = app.LoadIcon(IDI_TRAY);
-    //ASSERT(stIcon != NULL);
-    m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
-    m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
-    m_ClosedIcon = app.LoadIcon(IDI_TRAY);
-    m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-                                 m_LockedIcon, dbox.m_RUEList,
-                                 WM_ICON_NOTIFY, IDR_POPTRAY);
-    m_TrayIcon->SetTarget(&dbox);
+  //HICON stIcon = app.LoadIcon(IDI_TRAY);
+  //ASSERT(stIcon != NULL);
+  m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
+  m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
+  m_ClosedIcon = app.LoadIcon(IDI_TRAY);
+  m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
+                               m_LockedIcon, dbox.m_RUEList,
+                               WM_ICON_NOTIFY, IDR_POPTRAY);
+  m_TrayIcon->SetTarget(&dbox);
 
 #endif
 
-    // Set up an Accelerator table
+  // Set up an Accelerator table
 #if !defined(POCKET_PC)
-    m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
-                                      MAKEINTRESOURCE(IDR_ACCS));
+  m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
+                                    MAKEINTRESOURCE(IDR_ACCS));
 #endif
 
-    CLWnd ListenerWnd(dbox);
-    if (SysInfo::IsUnderU3()) {
-        // See comment under CLWnd to understand this.
-        ListenerWnd.m_hWnd = NULL;
-        if (!ListenerWnd.CreateEx(0, AfxRegisterWndClass(0),
-                                  _T("Pwsafe Listener"),
-                                  WS_OVERLAPPED, 0, 0, 0, 0, NULL, NULL)) {
-            ASSERT(0);
-            return FALSE;
-        } 
-    }
+  CLWnd ListenerWnd(dbox);
+  if (SysInfo::IsUnderU3()) {
+    // See comment under CLWnd to understand this.
+    ListenerWnd.m_hWnd = NULL;
+    if (!ListenerWnd.CreateEx(0, AfxRegisterWndClass(0),
+                              _T("Pwsafe Listener"),
+                              WS_OVERLAPPED, 0, 0, 0, 0, NULL, NULL)) {
+      ASSERT(0);
+      return FALSE;
+    } 
+  }
 
-    //Run dialog
-    (void) dbox.DoModal();
+  //Run dialog
+  (void) dbox.DoModal();
 
-    /*
-      note that we don't particularly care what the response was
-    */
+  /*
+    note that we don't particularly care what the response was
+  */
 
-    // Since the dialog has been closed, return FALSE so that we exit the
-    // application, rather than start the application's message pump.
-    delete new_popupmenu;
+  // Since the dialog has been closed, return FALSE so that we exit the
+  // application, rather than start the application's message pump.
+  delete new_popupmenu;
 
-    return FALSE;
+  return FALSE;
 }
 
 void

@@ -118,6 +118,12 @@ BEGIN
     IDSC_FILEEXCEPTION12    "There was an attempt to lock a region that was already locked."
     IDSC_FILEEXCEPTION13    "The disk is full."
     IDSC_FILEEXCEPTION14    "The end of file was reached."
+    IDSC_FILEREADONLY       "Error: File is read-only"
+    IDSC_FILEEXISTS         "Error: A file with this name already exists"
+    IDSC_INVALIDFLAG        "Internal error: An invalid flag was specified"
+    IDSC_NOMOREHANDLES      "Internal error: Out of file handles"
+    IDSC_BADPASSWORD        "Incorrect password"
+
 END
 
 // Status Bar
