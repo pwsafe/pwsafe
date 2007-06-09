@@ -398,18 +398,10 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
    * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
    * as the hash function, and N iterations.
    */
-  LPCTSTR passstr = LPCTSTR(passkey); 
-  unsigned long passLen = passkey.GetLength();
-  unsigned char *pstr;
-#ifdef UNICODE
-  pstr = new unsigned char[2*passLen];
-  int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
-                                LPSTR(pstr), 2*passLen, NULL, NULL);
-  ASSERT(len != 0);
-  passLen = len;
-#else
-  pstr = (unsigned char *)passstr;
-#endif
+  int passLen = 0;
+  unsigned char *pstr = NULL;
+
+  ConvertString(passkey, pstr, passLen);
   unsigned char *X = Ptag;
   SHA256 H0;
   H0.Update(pstr, passLen);
@@ -417,6 +409,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   H0.Final(X);
 
 #ifdef UNICODE
+  trashMemory(pstr, passLen);
   delete[] pstr;
 #endif
 
