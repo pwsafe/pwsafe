@@ -48,9 +48,6 @@
 #define IDS_FILEERROR2                  5210
 #define IDS_ERRORMESSAGE                5211
 #define IDS_FILEREADONLY                5212
-#define IDS_FILEEXISTS                  5213
-#define IDS_INVALIDFLAG                 5214
-#define IDS_NOMOREHANDLES               5215
 #define IDS_FILEPATHNOTFOUND            5216
 #define IDS_TERMINATE                   5217
 #define IDS_BADPASSWORD                 5218

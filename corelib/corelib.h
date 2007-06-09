@@ -84,3 +84,12 @@
 #define IDSC_IMPORTNOCOLS               3244
 #define IDSC_READ_ERROR                 3245
 #define IDSC_ENCODING_PROBLEM           3246
+
+#define IDSC_FILEREADONLY               3247
+#define IDSC_FILEEXISTS                 3248
+#define IDSC_INVALIDFLAG                3249
+#define IDSC_NOMOREHANDLES              3250
+#define IDSC_FILEPATHNOTFOUND IDSC_FILEEXCEPTION02
+#define IDSC_BADPASSWORD                3251
+
+

@@ -11,6 +11,9 @@
 #include "SysInfo.h"
 #include "corelib.h"
 
+#include "sha1.h" // for simple encrypt/decrypt
+#include "PWSrand.h" // ditto
+
 #include <LMCONS.H> // for UNLEN definition
 #include <io.h>
 #include <fcntl.h>
@@ -88,6 +91,7 @@ void PWSfile::FileError(int formatRes, int cause)
 	cs_msg.Format(formatRes, cs_error);
 	AfxMessageBox(cs_msg, MB_OK);
 }
+
 
 PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
 {
@@ -512,4 +516,198 @@ void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
     m_UHFL = UHFL;
   else
     m_UHFL.clear();
+}
+
+// Following for 'legacy' use of pwsafe as file encryptor/decryptor
+
+//Complain if the file has not opened correctly
+
+static void
+ErrorMessages(const CString &fn, FILE *fp)
+{
+  if (fp == NULL) {
+    CString cs_text;
+
+    switch (errno) {
+    case EACCES:
+      cs_text.LoadString(IDSC_FILEREADONLY);
+      break;
+    case EEXIST:
+      cs_text.LoadString(IDSC_FILEEXISTS);
+      break;
+    case EINVAL:
+      cs_text.LoadString(IDSC_INVALIDFLAG);
+      break;
+		case EMFILE:
+			cs_text.LoadString(IDSC_NOMOREHANDLES);
+			break;
+		case ENOENT:
+			cs_text.LoadString(IDSC_FILEPATHNOTFOUND);
+			break;
+		default:
+			break;
+    }
+
+    CString cs_title = _T("Password Safe - ") + fn;
+    AfxGetMainWnd()->MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION|MB_OK);
+  }
+}
+
+bool PWSfile::Encrypt(const CString &fn, const CMyString &passwd)
+{
+  unsigned int len;
+  unsigned char* buf;
+
+  FILE *in;
+#if _MSC_VER >= 1400
+  _tfopen_s(&in, fn, _T("rb"));
+#else
+  in = _tfopen(fn, _T("rb"));
+#endif
+  if (in != NULL) {
+    len = PWSUtil::fileLength(in);
+    buf = new unsigned char[len];
+
+    fread(buf, 1, len, in);
+    fclose(in);
+  } else {
+    ErrorMessages(fn, in);
+    return false;
+  }
+
+  CString out_fn = fn;
+  out_fn += CIPHERTEXT_SUFFIX;
+
+  FILE *out;
+#if _MSC_VER >= 1400
+  _tfopen_s(&out, out_fn, _T("wb"));
+#else
+  out = _tfopen(out_fn, _T("wb"));
+#endif
+  if (out != NULL) {
+#ifdef KEEP_FILE_MODE_BWD_COMPAT
+    fwrite( &len, 1, sizeof(len), out);
+#else
+    unsigned char randstuff[StuffSize];
+    unsigned char randhash[SHA1::HASHLEN];   // HashSize
+    PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
+    // miserable bug - have to fix this way to avoid breaking existing files
+    randstuff[8] = randstuff[9] = TCHAR('\0');
+    GenRandhash(passwd,
+                randstuff,
+                randhash);
+    fwrite(randstuff, 1,  8, out);
+    fwrite(randhash,  1, sizeof(randhash), out);
+#endif // KEEP_FILE_MODE_BWD_COMPAT
+
+    unsigned char thesalt[SaltLength];
+    PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
+    fwrite(thesalt, 1, SaltLength, out);
+
+    unsigned char ipthing[8];
+    PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
+    fwrite(ipthing, 1, 8, out);
+
+    unsigned char *pwd = NULL;
+    int passlen = 0;
+    ConvertString(passwd, pwd, passlen);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
+    trashMemory(pwd, passlen);
+#ifdef UNICODE
+    delete[] pwd; // gross - ConvertString allocates only if UNICODE.
+#endif
+    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
+    delete fish;
+    fclose(out);
+
+  } else {
+    ErrorMessages(out_fn, out);
+    delete [] buf;
+    return false;
+  }
+  delete[] buf;
+  return true;
+}
+
+bool PWSfile::Decrypt(const CString &fn, const CMyString &passwd)
+{
+  unsigned int len;
+  unsigned char* buf;
+
+  FILE *in;
+#if _MSC_VER >= 1400
+  _tfopen_s(&in, fn, _T("rb"));
+#else
+  in = _tfopen(fn, _T("rb"));
+#endif
+  if (in != NULL) {
+    unsigned char salt[SaltLength];
+    unsigned char ipthing[8];
+    unsigned char randstuff[StuffSize];
+    unsigned char randhash[SHA1::HASHLEN];
+
+#ifdef KEEP_FILE_MODE_BWD_COMPAT
+    fread(&len, 1, sizeof(len), in); // XXX portability issue
+#else
+    fread(randstuff, 1, 8, in);
+    randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
+    fread(randhash, 1, sizeof(randhash), in);
+
+    unsigned char temphash[SHA1::HASHLEN];
+    GenRandhash(passwd,
+                randstuff,
+                temphash);
+    if (0 != memcmp((char*)randhash,
+                    (char*)temphash, SHA1::HASHLEN)) {
+      fclose(in);
+      AfxMessageBox(IDSC_BADPASSWORD);
+      return false;
+    }
+#endif // KEEP_FILE_MODE_BWD_COMPAT
+    buf = NULL; // allocated by _readcbc - see there for apologia
+
+    fread(salt,    1, SaltLength, in);
+    fread(ipthing, 1, 8,          in);
+
+    unsigned char dummyType;
+    unsigned char *pwd = NULL;
+    int passlen = 0;
+    ConvertString(passwd, pwd, passlen);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, salt, SaltLength);
+    trashMemory(pwd, passlen);
+#ifdef UNICODE
+    delete[] pwd; // gross - ConvertString allocates only if UNICODE.
+#endif
+    if (_readcbc(in, buf, len,dummyType, fish, ipthing) == 0) {
+      delete fish;
+      delete[] buf; // if not yet allocated, delete[] NULL, which is OK
+      return false;
+    }
+    delete fish;
+    fclose(in);
+  } else {
+    ErrorMessages(fn, in);
+    return false;
+  }
+
+  size_t suffix_len = strlen(CIPHERTEXT_SUFFIX);
+  size_t filepath_len = fn.GetLength();
+
+  CString out_fn = fn;
+  out_fn = out_fn.Left(static_cast<int>(filepath_len - suffix_len));
+
+#if _MSC_VER >= 1400
+  FILE *out;
+  _tfopen_s(&out, out_fn, _T("wb"));
+#else
+  FILE *out = _tfopen(out_fn, _T("wb"));
+#endif
+  if (out != NULL) {
+    fwrite(buf, 1, len, out);
+    fclose(out);
+  } else
+    ErrorMessages(out_fn, out);
+
+  delete[] buf; // allocated by _readcbc
+  return true;
 }

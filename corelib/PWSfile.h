@@ -55,6 +55,10 @@ class PWSfile {
                        HANDLE &lockFileHandle, int &LockCount);
   static bool GetLocker(const CMyString &filename, CMyString &locker);
 
+  // Following for 'legacy' use of pwsafe as file encryptor/decryptor
+  static bool Encrypt(const CString &fn, const CMyString &passwd);
+  static bool Decrypt(const CString &fn, const CMyString &passwd);
+  
   virtual ~PWSfile();
 
   virtual int Open(const CMyString &passkey) = 0;

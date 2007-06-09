@@ -74,6 +74,26 @@ void burnStack(unsigned long len)
     burnStack(len - sizeof(buf));
 }
 
+void ConvertString(const CMyString &text,
+                   unsigned char *&txt,
+                   int &txtlen)
+{
+  LPCTSTR txtstr = LPCTSTR(text); 
+  txtlen = text.GetLength();
+
+#ifndef UNICODE
+  txt = (unsigned char *)txtstr; // don't delete[] (ugh)!!!
+#else
+  txt = new unsigned char[2*txtlen]; // safe upper limit
+  int len = WideCharToMultiByte(CP_ACP, 0, txtstr, txtlen,
+                                LPSTR(txt), 2*txtlen, NULL, NULL);
+  ASSERT(len != 0);
+  txtlen = len;
+  txt[len] = '\0';
+#endif /* UNICODE */
+}
+
+
 //Generates a passkey-based hash from stuff - used to validate the passkey
 void
 GenRandhash(const CMyString &a_passkey,

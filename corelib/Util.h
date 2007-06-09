@@ -37,6 +37,9 @@ extern void trashMemory(void* buffer, size_t length );
 extern void trashMemory( LPTSTR buffer, size_t length );
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
+extern void ConvertString(const CMyString &text,
+                          unsigned char *&txt, int &txtlen);
+
 extern void GenRandhash(const CMyString &passkey,
                         const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
