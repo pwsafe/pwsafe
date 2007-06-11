@@ -81,17 +81,23 @@ public:
   ~DboxMain();
 
   // Find entry by title and user name, exact match
-  POSITION Find(const CMyString &a_group,
-                const CMyString &a_title, const CMyString &a_user)
+  ItemListIter Find(const CMyString &a_group,
+                    const CMyString &a_title, const CMyString &a_user)
   {return m_core.Find(a_group, a_title, a_user);}
 
   // Find entry with same title and user name as the
   // i'th entry in m_ctlItemList
-  POSITION Find(int i);
+  ItemListIter Find(int i);
 
   // Find entry by UUID
-  POSITION Find(const uuid_array_t &uuid)
+  ItemListIter Find(const uuid_array_t &uuid)
   {return m_core.Find(uuid);}
+
+  // End of list markers
+  ItemListConstIter End() const
+  {return m_core.GetEntryEndIter();}
+  ItemListIter End()
+  {return m_core.GetEntryEndIter();}
 
   // FindAll is used by CFindDlg, returns # of finds.
   // indices allocated by caller
@@ -105,8 +111,8 @@ public:
   int GetNumEntries() const {return m_core.GetNumEntries();}
 
   // Get CItemData @ position
-  CItemData &GetEntryAt(POSITION pos)
-    {return m_core.GetEntryAt(pos);}
+  CItemData &GetEntryAt(ItemListIter iter)
+    {return m_core.GetEntry(iter);}
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
@@ -149,7 +155,7 @@ public:
   void SetFindInActive() {m_bFindActive = false;}
   void SetFindWrap(bool bwrap) {m_bFindWrap = bwrap;}
   bool GetCurrentView() {return m_IsListView;}
-  void UpdatePasswordHistory(const int &iAction, const int &num_default);
+  void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
   bool ExitRequested() const {return m_inExit;}
@@ -256,9 +262,10 @@ protected:
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
-  LRESULT ViewCompareResult(PWScore *pcore, POSITION pos);
-  LRESULT EditCompareResult(PWScore *pcore, POSITION pos);
-  LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore, POSITION pos);
+  LRESULT ViewCompareResult(PWScore *pcore, ItemListIter pos);
+  LRESULT EditCompareResult(PWScore *pcore, ItemListIter pos);
+  LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
+                            ItemListIter pos);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 

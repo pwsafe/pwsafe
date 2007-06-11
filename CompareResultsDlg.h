@@ -13,14 +13,15 @@
 #include "afxwin.h"
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
+#include "corelib/PWScore.h"
 
 // The following structure is needed for compare when record is in
 // both databases (column = -1) but there are differences
 // Subset used when record is in only one (column = 0 or 1)
 // If entries made equal by copying, column set to -2.
 struct st_CompareData {
-  POSITION pos0;
-  POSITION pos1;
+  ItemListIter pos0;
+  ItemListIter pos1;
   CItemData::FieldBits bsDiffs;
   CMyString group;
   CMyString title;
@@ -42,8 +43,8 @@ typedef std::vector<st_CompareData> CompareData;
 struct st_CompareInfo {
   PWScore *pcore0;
   PWScore *pcore1;
-  POSITION pos0;
-  POSITION pos1;
+  ItemListIter pos0;
+  ItemListIter pos1;
   int column;
 };
 

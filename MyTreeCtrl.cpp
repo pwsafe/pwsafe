@@ -620,40 +620,41 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
     CMyString ci_title = ci_title0;
-    if (((DboxMain *)m_parent)->Find(path, ci_title0, ci_user) != NULL) {
-        // Find a unique "Title"
-        POSITION listpos = NULL;
-        int i = 0;
-        CString s_copy;
-        do {
-            i++;
-            s_copy.Format(IDS_DRAGNUMBER, i);
-            ci_title = ci_title0 + CMyString(s_copy);
-            listpos = ((DboxMain *)m_parent)->Find(path, ci_title, ci_user);
-        } while (listpos != NULL);
+    DboxMain *dbx = static_cast<DboxMain *>(m_parent);
+    if (dbx->Find(path, ci_title0, ci_user) != dbx->End()) {
+      // Find a unique "Title"
+      ItemListConstIter listpos;
+      int i = 0;
+      CString s_copy;
+      do {
+        i++;
+        s_copy.Format(IDS_DRAGNUMBER, i);
+        ci_title = ci_title0 + CMyString(s_copy);
+        listpos = dbx->Find(path, ci_title, ci_user);
+      } while (listpos != dbx->End());
     }
     ci->SetGroup(path);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     if (ci_title.Compare(ci_title0) != 0) {
-        ci->SetTitle(ci_title);
-        CMyString treeDispString;
-        treeDispString = ci_title;
-        if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
-          treeDispString += _T(" [");
-          treeDispString += ci_user;
-          treeDispString += _T("]");
-          if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
-            CMyString ci_Password = ci->GetPassword();
-            treeDispString += _T(" {");
-            treeDispString += ci_Password;
-            treeDispString += _T("}");
-          }
+      ci->SetTitle(ci_title);
+      CMyString treeDispString;
+      treeDispString = ci_title;
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
+        treeDispString += _T(" [");
+        treeDispString += ci_user;
+        treeDispString += _T("]");
+        if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
+          CMyString ci_Password = ci->GetPassword();
+          treeDispString += _T(" {");
+          treeDispString += ci_Password;
+          treeDispString += _T("}");
         }
-        // Update tree label
-        SetItemText(hNewItem, treeDispString);
-        // Update list field
-        ((DboxMain *)GetParent())->UpdateListItemTitle(di->list_index, (CString)ci_title);
+      }
+      // Update tree label
+      SetItemText(hNewItem, treeDispString);
+      // Update list field
+      ((DboxMain *)GetParent())->UpdateListItemTitle(di->list_index, (CString)ci_title);
     }
     // Mark database as modified!
     ((DboxMain *)GetParent())->SetChanged(DboxMain::Data);

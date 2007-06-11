@@ -10,11 +10,12 @@
 // RUEList.h
 //-----------------------------------------------------------------------------
 
+#include <deque>
+#include <vector>
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
 #include "corelib/PWScore.h"
 #include "corelib/UUIDGen.h"
-
 //-----------------------------------------------------------------------------
 
 /*
@@ -25,39 +26,46 @@
 // Following is Most Recent Entry field separator for dynamic menu:
 #define MRE_FS _T("\xbb")
 
-// Recent Entry structure for CList
+// Recent Entry structure for m_RUEList
 struct RUEntry {
+  RUEntry() {}
+  RUEntry(const uuid_array_t &RUEuuid);
+  bool operator() (const RUEntry &); // for find_if
   uuid_array_t RUEuuid;
 };
+
+typedef std::deque<RUEntry> RUEList;
+typedef RUEList::iterator RUEListIter;
+typedef RUEList::const_iterator RUEListConstIter;
 
 class CRUEList
 {
  public:
   // Construction/Destruction/operators
   CRUEList();
-  ~CRUEList();
+  ~CRUEList() {}
 
   CRUEList& operator=(const CRUEList& second);
 
   // Data retrieval
-  int GetCount() const;
-  int GetMax() const;
-  bool GetAllMenuItemStrings(CList<CMyString, CMyString&> &) const;
-  bool GetMenuItemString(const int &, CMyString &) const;
+  size_t GetCount() const {return m_RUEList.size();}
+  size_t GetMax() const {return m_maxentries;}
+  bool GetAllMenuItemStrings(std::vector<CMyString> &) const;
+  bool GetMenuItemString(size_t, CMyString &) const;
   bool GetMenuItemString(const uuid_array_t &, CMyString &) const;
-  bool GetPWEntry(const int &, CItemData &);
+  bool GetPWEntry(size_t, CItemData &); // NOT const!
 
   // Data setting
-  bool SetMax(const int &);
-  void ClearEntries();
+  void SetMax(size_t);
+  void ClearEntries() {m_RUEList.clear();}
   bool AddRUEntry(const uuid_array_t &);
-  bool DeleteRUEntry(const int &);
+  bool DeleteRUEntry(size_t);
   bool DeleteRUEntry(const uuid_array_t &);
 
  private:
   PWScore &m_core;    // Dboxmain's m_core (which = app.m_core!)
-  int m_maxentries;
-  CList<RUEntry, RUEntry&> m_RUEList;  // Recently Used Entry History List
+  size_t m_maxentries;
+  RUEList m_RUEList;  // Recently Used Entry History List
 };
 
 //-----------------------------------------------------------------------------

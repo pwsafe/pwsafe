@@ -206,13 +206,13 @@ CEditDlg::OnOK()
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
 
-  POSITION listindex = pParent->Find(m_group, m_title, m_username);
+  ItemListIter listindex = pParent->Find(m_group, m_title, m_username);
   /*
    *  If there is a matching entry in our list, and that
    *  entry is not the same one we started editing, tell the
    *  user to try again.
    */
-  if (listindex != NULL) {
+  if (listindex != pParent->End()) {
     const CItemData &listItem = pParent->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
     listItem.GetUUID(list_uuid);

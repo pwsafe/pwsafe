@@ -36,6 +36,7 @@
 #include "RUEList.h"
 #include "corelib/MyString.h"
 #include <afxdisp.h>
+#include <vector>
 
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
@@ -125,7 +126,7 @@ protected:
     CWnd *       m_pTarget; // ronys
     static const UINT m_nTaskbarCreatedMsg; //thedavecollins
     const CRUEList &m_RUEList; // reference set to dboxmain's
-    CList<CMyString, CMyString&> m_menulist;
+    std::vector<CMyString> m_menulist;
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)
