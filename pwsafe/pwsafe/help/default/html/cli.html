@@ -5,12 +5,16 @@
 
 
 
+
 		
 		
 		
 
 		
 		
+  
+
+  
   
 
   
@@ -27,11 +31,13 @@
   
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
 
 
 
@@ -49,6 +55,7 @@
 
 
 
+
 		
 <p>Invoking <span style="font-weight: bold;">Password Safe</span> with
 no arguments will cause the application to prompt you for the
@@ -58,9 +65,8 @@ It is, however, possible to modify this by invoking <span style="font-weight: bo
 
 
 
-<p>
-		
-		</p>
+
+
 
 
 
@@ -69,11 +75,14 @@ It is, however, possible to modify this by invoking <span style="font-weight: bo
 
 
 
+
 			<li><i>pwsafe</i> <b>database</b><br>
 
 
 
+
 This will open the specified database file, instead of the last one opened.<br>
+
 
 
 
@@ -82,13 +91,17 @@ This will open the specified database file, instead of the last one opened.<br>
 
 
 
+
 			<li><i>pwsafe</i> <b>-r database</b><br>
+
 
 
 
 This will open the database in read-only mode.</li>
 
+
   <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-v database<br>
+
 
     <span style="font-weight: bold;"></span></span>This will validate
 the database after the correct passphrase is entered, correcting
@@ -98,11 +111,14 @@ databases written by other applications.<span style="font-weight: bold;"><span s
 
 
 
+
 			<li><i>pwsafe</i> <b>-e filename</b><br>
 
 
 
+
 This will prompt the user for a passphrase, and encrypt the file with a key derived from the passphrase. <b>Note:</b> The file can be <i>any</i> file. The encrypted file will 	have the same name as the original file, with ".PSF" appended to it.<br>
+
 
 
 
@@ -111,23 +127,33 @@ This will prompt the user for a passphrase, and encrypt the file with a key deri
 
 
 
+
 			<li><i>pwsafe</i> <b>-d filename</b><br>
 
 
 
+
 This will prompt the user for a passphrase, and decrypt the file with a key derived from the passphrase. <b>Note:</b> This will work only on files that were encrypted by invoking pwsafe with the '-e' option (see above).</li>
+
   <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-c<br>
+
     </span>This will start the application closed, that is, with no
 database, and without the initial opening dialog (To access a database,
 use the File menu).</li>
+
   <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-s<br>
+
     </span>This will start the application "silently", that is,
 minimized and with no database. When the application is unminimized,
 the user is presented with the opening dialog box (This option is meant
 for starting the application upon login, via a shortcut in the user's
 Startup folder). <b>Note:</b> This implicitly puts the application in
-    the system tray.<span style="font-weight: bold;"></span></li>
+    the system tray.</li>
+  <li><span style="font-style: italic;">pwsafe</span> <span style="font-weight: bold;">-m</span><br>
+    <big><span style="width: 500px;"><font size="-1"><big>This is the same as the '<span style="font-weight: bold;">-c</span>' option, with the addition that the application is started as minimized.</big></font></span></big></li>
+
 </ul>
+
 
 
 
@@ -139,11 +165,14 @@ Startup folder). <b>Note:</b> This implicitly puts the application in
 
 
 
-<br>
-
-
 
 <br>
+
+
+
+
+<br>
+
 
 
 
