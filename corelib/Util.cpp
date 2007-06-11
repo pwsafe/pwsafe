@@ -1129,7 +1129,7 @@ CString
 PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 {
   CString cs_Out;
-  const static CHAR base64ABC[] = 
+  static const CHAR base64ABC[] = 
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   
   cs_Out.Empty();

@@ -844,7 +844,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar == string::npos)
         nextchar = linebuf.size();
-      if (nextchar >= 0 && i_Offset[itoken] != NOTES) {
+      if (nextchar > 0 && i_Offset[itoken] != NOTES) {
         tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
       } else {
         // Here for the Notes field. Notes may be double-quoted, and

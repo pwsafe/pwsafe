@@ -574,19 +574,15 @@ CCompareResultsDlg::OnItemDoubleClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
   if (m_row == -1)
     return;
 
-  bool bSourceRO;
-  CPoint pt;
-  pt = ::GetMessagePos();
+  CPoint pt = ::GetMessagePos();
   ScreenToClient(&pt);
 
   int colwidth0 = m_LCResults.GetColumnWidth(0);
 
   if (pt.x <= colwidth0) {
     m_column = 0;
-    bSourceRO = m_bOriginalDBReadOnly;
   } else if  (pt.x <= (colwidth0 + m_LCResults.GetColumnWidth(1))) {
     m_column = 1;
-    bSourceRO = m_bComparisonDBReadOnly;
   } else
     return;
 
@@ -603,8 +599,7 @@ CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
   if (m_row == -1)
     return;
 
-  CPoint msg_pt;
-  msg_pt = ::GetMessagePos();
+  CPoint msg_pt = ::GetMessagePos();
   CPoint client_pt(msg_pt);
   ScreenToClient(&client_pt);
 
@@ -625,8 +620,7 @@ CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
   } else
     return;
 
-  st_CompareData *st_data;
-  st_data = (st_CompareData *)m_LCResults.GetItemData(m_row);
+  st_CompareData *st_data = (st_CompareData *)m_LCResults.GetItemData(m_row);
   int pos_column = st_data->column;
   if (m_column != pos_column && pos_column != -1)
     return;

@@ -229,23 +229,23 @@ void COptionsMisc::OnBrowseForLocation()
 		cs_initiallocation = CString(path_buffer);
 	}
 
-    CFileDialog fd(TRUE,
-                   NULL,
-                   NULL,
-                   OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
-				   OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
-                   _T("Programs (*.exe)|*.exe|")
-                   _T("All files (*.*)|*.*|")
-                   _T("|"),
-                   this);
+  CFileDialog fd(TRUE,
+                 NULL,
+                 NULL,
+                 OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
+                 OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
+                 _T("Programs (*.exe)|*.exe|")
+                 _T("All files (*.*)|*.*|")
+                 _T("|"),
+                 this);
 
 	cs_title.LoadString(IDS_SELECTBROWSER);
 	fd.m_ofn.lpstrTitle = cs_title;
 	fd.m_ofn.lpstrInitialDir = cs_initiallocation;
 
-    rc = fd.DoModal();
-    if (rc == IDOK) {
-      m_csBrowser = fd.GetPathName();
+  rc = fd.DoModal();
+  if (rc == IDOK) {
+    m_csBrowser = fd.GetPathName();
 	  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_csBrowser);
 	}
 }

@@ -1584,120 +1584,120 @@ DboxMain::OnUnMinimize()
 void
 DboxMain::UnMinimize(bool update_windows)
 {
-    m_passphraseOK = false;
-    if (!m_bOpen) {
-        // first they may be nothing to do!
-        if (update_windows) {
-            if (m_IsStartSilent) {
-                // Show initial dialog ONCE (if succeeds)
-                if (!m_IsStartClosed) {
-                    if (OpenOnInit()) {
-                        m_IsStartSilent = false;
-                        RefreshList();
-                        ShowWindow(SW_RESTORE);
-                        SetInitialDatabaseDisplay();
-                        UpdateSystemTray(UNLOCKED);
-                    }
-                } else { // m_IsStartClosed (&& m_IsStartSilent)
-                    m_IsStartClosed = m_IsStartSilent = false;
-                    ShowWindow(SW_RESTORE);
-                    UpdateSystemTray(UNLOCKED);
-                }
-                return;
-            } // m_IsStartSilent
-            ShowWindow(SW_RESTORE);
-        } // update_windows
-        UpdateSystemTray(CLOSED);
-        return;
-    }
-
-    // Case 1 - data available but is currently locked
-    if (!m_needsreading
-        && (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
-        && (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
-
-        CMyString passkey;
-        int rc;
-        rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
-        if (rc != PWScore::SUCCESS)
-            return;  // don't even think of restoring window!
-
-        app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-        m_passphraseOK = true;
-        if (update_windows) {
+  m_passphraseOK = false;
+  if (!m_bOpen) {
+    // first they may be nothing to do!
+    if (update_windows) {
+      if (m_IsStartSilent) {
+        // Show initial dialog ONCE (if succeeds)
+        if (!m_IsStartClosed) {
+          if (OpenOnInit()) {
+            m_IsStartSilent = false;
             RefreshList();
             ShowWindow(SW_RESTORE);
-        }
-        return;
-    }
-
-    // Case 2 - data unavailable
-    if (m_needsreading && m_windowok) {
-        CMyString passkey, temp;
-        int rc, rc2;
-        const bool useSysTray = PWSprefs::GetInstance()->
-            GetPref(PWSprefs::UseSystemTray);
-
-        rc = PWScore::USER_CANCEL;
-        if (m_bOpen)
-            rc = GetAndCheckPassword(m_core.GetCurFile(),
-                                     passkey,
-                                     useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT);
-        CString cs_temp, cs_title;
-        switch (rc) {
-            case PWScore::SUCCESS:
-                rc2 = m_core.ReadCurFile(passkey);
-#if !defined(POCKET_PC)
-                m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
-#endif
-                break;
-            case PWScore::CANT_OPEN_FILE:
-                cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
-                cs_title.LoadString(IDS_FILEOPEN);
-                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-            case TAR_NEW:
-                rc2 = New();
-                break;
-            case TAR_OPEN:
-                rc2 = Open();
-                break;
-            case PWScore::WRONG_PASSWORD:
-                rc2 = PWScore::NOT_SUCCESS;
-                break;
-            case PWScore::USER_CANCEL:
-                rc2 = PWScore::NOT_SUCCESS;
-                break;
-            case PWScore::USER_EXIT:
-                m_core.UnlockFile(m_core.GetCurFile());
-                PostQuitMessage(0);
-                return;
-            default:
-                rc2 = PWScore::NOT_SUCCESS;
-                break;
-        }
-
-        if (rc2 == PWScore::SUCCESS) {
-            m_needsreading = false;
+            SetInitialDatabaseDisplay();
             UpdateSystemTray(UNLOCKED);
-            startLockCheckTimer();
-            m_passphraseOK = true;
-            if (update_windows) {
-                ShowWindow(SW_RESTORE);
-                m_core.SetDisplayStatus(m_lock_displaystatus);
-                RestoreDisplayStatus(true);
-                BringWindowToTop();
-            }
-        } else {
-            m_needsreading = true;
-            ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+          }
+        } else { // m_IsStartClosed (&& m_IsStartSilent)
+          m_IsStartClosed = m_IsStartSilent = false;
+          ShowWindow(SW_RESTORE);
+          UpdateSystemTray(UNLOCKED);
         }
         return;
-    }
+      } // m_IsStartSilent
+      ShowWindow(SW_RESTORE);
+    } // update_windows
+    UpdateSystemTray(CLOSED);
+    return;
+  }
+
+  // Case 1 - data available but is currently locked
+  if (!m_needsreading
+      && (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
+      && (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
+
+    CMyString passkey;
+    int rc;
+    rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
+    if (rc != PWScore::SUCCESS)
+      return;  // don't even think of restoring window!
+
+    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+    m_passphraseOK = true;
     if (update_windows) {
-        ShowWindow(SW_RESTORE);
-        RestoreDisplayStatus();
-        BringWindowToTop();
+      RefreshList();
+      ShowWindow(SW_RESTORE);
     }
+    return;
+  }
+
+  // Case 2 - data unavailable
+  if (m_needsreading && m_windowok) {
+    CMyString passkey, temp;
+    int rc, rc2;
+    const bool useSysTray = PWSprefs::GetInstance()->
+      GetPref(PWSprefs::UseSystemTray);
+
+    rc = PWScore::USER_CANCEL;
+    if (m_bOpen)
+      rc = GetAndCheckPassword(m_core.GetCurFile(),
+                               passkey,
+                               useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT);
+    CString cs_temp, cs_title;
+    switch (rc) {
+    case PWScore::SUCCESS:
+      rc2 = m_core.ReadCurFile(passkey);
+#if !defined(POCKET_PC)
+      m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+#endif
+      break;
+    case PWScore::CANT_OPEN_FILE:
+      cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+      cs_title.LoadString(IDS_FILEOPEN);
+      MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+    case TAR_NEW:
+      rc2 = New();
+      break;
+    case TAR_OPEN:
+      rc2 = Open();
+      break;
+    case PWScore::WRONG_PASSWORD:
+      rc2 = PWScore::NOT_SUCCESS;
+      break;
+    case PWScore::USER_CANCEL:
+      rc2 = PWScore::NOT_SUCCESS;
+      break;
+    case PWScore::USER_EXIT:
+      m_core.UnlockFile(m_core.GetCurFile());
+      PostQuitMessage(0);
+      return;
+    default:
+      rc2 = PWScore::NOT_SUCCESS;
+      break;
+    }
+
+    if (rc2 == PWScore::SUCCESS) {
+      m_needsreading = false;
+      UpdateSystemTray(UNLOCKED);
+      startLockCheckTimer();
+      m_passphraseOK = true;
+      if (update_windows) {
+        ShowWindow(SW_RESTORE);
+        m_core.SetDisplayStatus(m_lock_displaystatus);
+        RestoreDisplayStatus(true);
+        BringWindowToTop();
+      }
+    } else {
+      m_needsreading = true;
+      ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
+    }
+    return;
+  }
+  if (update_windows) {
+    ShowWindow(SW_RESTORE);
+    RestoreDisplayStatus();
+    BringWindowToTop();
+  }
 }
 
 void
@@ -1780,6 +1780,7 @@ DboxMain::CheckExpiredPasswords()
 #if _MSC_VER >= 1400
     errno_t err;
     err = localtime_s(&st, &now);  // secure version
+    ASSERT(err == 0);
 #else
     st = *localtime(&now);
     ASSERT(st != NULL); // null means invalid time
@@ -1833,13 +1834,13 @@ DboxMain::UpdateAccessTime(CItemData *ci)
     SetChanged(TimeStamp);
     // Need to update view if there
     if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
-       // Get index of entry
-       DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-       // Get value in correct format
-       CString cs_atime = ci->GetATimeL();
-       // Update it
-       m_ctlItemList.SetItemText(di->list_index,
-           m_nColumnIndexByType[CItemData::ATIME], cs_atime);
+      // Get index of entry
+      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+      // Get value in correct format
+      CString cs_atime = ci->GetATimeL();
+      // Update it
+      m_ctlItemList.SetItemText(di->list_index,
+                                m_nColumnIndexByType[CItemData::ATIME], cs_atime);
     }
   }
 }
@@ -2021,7 +2022,7 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 		// Disable/enable Export and Import menu items (skip over separator)
 		xfilesubmenu->EnableMenuItem(pos + 2, MF_BYPOSITION | imenuflags);
 		xfilesubmenu->EnableMenuItem(pos + 3, MF_BYPOSITION | imenuflags);
-    }
+  }
 
 	// Look for "Edit" menu.
 	cs_text.LoadString(IDS_EDITMENU);
@@ -2040,7 +2041,7 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
 
 	// Look for "Manage" menu.
-    cs_text.LoadString(IDS_MANAGEMENU);
+  cs_text.LoadString(IDS_MANAGEMENU);
 	pos = app.FindMenuItem(xmainmenu, cs_text);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 3; // best guess...

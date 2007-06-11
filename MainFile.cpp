@@ -1175,10 +1175,7 @@ DboxMain::Merge()
 int
 DboxMain::Merge(const CMyString &pszFilename) {
   /* open file they want to merge */
-  int rc = PWScore::SUCCESS;
   CMyString passkey, temp;
-  PWScore *pothercore;
-  pothercore = new PWScore;
 
   //Check that this file isn't already open
   if (pszFilename == m_core.GetCurFile()) {
@@ -1188,18 +1185,19 @@ DboxMain::Merge(const CMyString &pszFilename) {
   }
 
   // Force input database into read-only status
-  rc = GetAndCheckPassword(pszFilename, passkey,
-                           GCP_ADVANCED, // OK, CANCEL, HELP
-                           true,         // force readonly
-                           pothercore,   // Use other core
-                           ADV_MERGE);   // Advanced type
+  PWScore othercore;
+  int rc = GetAndCheckPassword(pszFilename, passkey,
+                               GCP_ADVANCED, // OK, CANCEL, HELP
+                               true,         // force readonly
+                               &othercore,   // Use other core
+                               ADV_MERGE);   // Advanced type
 
   CString cs_temp, cs_title;
   switch (rc) {
   case PWScore::SUCCESS:
     break; // Keep going...
   case PWScore::CANT_OPEN_FILE:
-    cs_temp.Format(IDS_CANTOPEN, pothercore->GetCurFile());
+    cs_temp.Format(IDS_CANTOPEN, othercore.GetCurFile());
     cs_title.LoadString(IDS_FILEOPENERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
   case TAR_OPEN:
@@ -1210,13 +1208,11 @@ DboxMain::Merge(const CMyString &pszFilename) {
       If the user just cancelled out of the password dialog,
       assume they want to return to where they were before...
     */
-    pothercore->ClearData();
-    delete pothercore;
-    pothercore = NULL;
+    othercore.ClearData();
     return PWScore::USER_CANCEL;
 	}
 
-  pothercore->ReadFile(pszFilename, passkey);
+  othercore.ReadFile(pszFilename, passkey);
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, pszFilename);
@@ -1226,13 +1222,11 @@ DboxMain::Merge(const CMyString &pszFilename) {
       Everything stays as is... Worst case,
       they saved their file....
     */
-    pothercore->ClearData();
-    delete pothercore;
-    pothercore = NULL;
+    othercore.ClearData();
     return PWScore::CANT_OPEN_FILE;
 	}
 
-  pothercore->SetCurFile(pszFilename);
+  othercore.SetCurFile(pszFilename);
 
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
@@ -1256,10 +1250,10 @@ DboxMain::Merge(const CMyString &pszFilename) {
   int numConflicts = 0;
 
   ItemListConstIter otherPos;
-  for (otherPos = pothercore->GetEntryIter();
-       otherPos != pothercore->GetEntryEndIter();
+  for (otherPos = othercore.GetEntryIter();
+       otherPos != othercore.GetEntryEndIter();
        otherPos++) {
-    CItemData otherItem = pothercore->GetEntry(otherPos);
+    CItemData otherItem = othercore.GetEntry(otherPos);
 
     if (m_subgroup_set == BST_CHECKED &&
         otherItem.WantEntry(m_subgroup_name, m_subgroup_object,
@@ -1309,9 +1303,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
     }
   } // iteration over other core's entries
 
-  pothercore->ClearData();
-  delete pothercore;
-  pothercore = NULL;
+  othercore.ClearData();
 
   waitCursor.Restore(); /* restore normal cursor */
 

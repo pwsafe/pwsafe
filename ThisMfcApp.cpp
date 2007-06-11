@@ -113,23 +113,23 @@ static void Usage()
   AfxMessageBox(IDS_USAGE);
 }
 
-// tests if file exists, returns empty string if so, displays error message if not
-static BOOL CheckFile(const CString &fn)
+// tests if file exists, returns true if so, displays error message if not
+static bool CheckFile(const CString &fn)
 {
   DWORD status = ::GetFileAttributes(fn);
   CString cs_msg(_T(""));
 
-  if (status == -1) {
+  if (status == INVALID_FILE_ATTRIBUTES) {
     cs_msg.Format(IDS_FILEERROR1, fn);
   } else if (status & FILE_ATTRIBUTE_DIRECTORY) {
     cs_msg.Format(IDS_FILEERROR2, fn);
   }
 
   if (cs_msg.IsEmpty()) {
-    return TRUE;
+    return true;
   } else {
     AfxMessageBox(cs_msg);
-    return FALSE;
+    return false;
   }
 }
 
@@ -167,148 +167,148 @@ private:
 
 void ThisMfcApp::LoadLocalizedStuff()
 {
-    /*
-      Looks for localized version of resources and help files, loads them if found
+  /*
+    Looks for localized version of resources and help files, loads them if found
 
-      Format of resource-only DLL names (in dir returned by GetExeDir)
-      pwsafeLL_CC.dll
-      or
-      pwsafeLL.dll
+    Format of resource-only DLL names (in dir returned by GetExeDir)
+    pwsafeLL_CC.dll
+    or
+    pwsafeLL.dll
 
-      where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
-      see http://www.loc.gov/standards/iso639-2/
-      and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
-      see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
+    where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
+    see http://www.loc.gov/standards/iso639-2/
+    and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
+    see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
 
-      Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
-      .NET V2 and later applications (CultureInfo Class)
-      or under Vista (via LOCALE_SNAME).
-      Older native and .NET V1 applications only support the ISO 639-1 two character
-      language codes.
+    Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
+    .NET V2 and later applications (CultureInfo Class)
+    or under Vista (via LOCALE_SNAME).
+    Older native and .NET V1 applications only support the ISO 639-1 two character
+    language codes.
 
-      We will use locale info from ::GetLocaleInfo unless PWS_LANG is defined.
+    We will use locale info from ::GetLocaleInfo unless PWS_LANG is defined.
 
-      Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
-      can't be found, the resources embedded in the executable pwsafe.exe will be used 
-      (US English i.e. equivalent to pwsafeEN_US.dll)).
+    Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
+    can't be found, the resources embedded in the executable pwsafe.exe will be used 
+    (US English i.e. equivalent to pwsafeEN_US.dll)).
 
-      Likewise, we will look for localized versions of pwsafe.chm in GetHelpDir,
-      defaulting to pwsafe.chm if not found.
-    */
+    Likewise, we will look for localized versions of pwsafe.chm in GetHelpDir,
+    defaulting to pwsafe.chm if not found.
+  */
 
 	CString cs_PWS_LANG, cs_LANG, cs_CTRY;
 	BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
 	if (bPLRC == TRUE) { // did user override via PWS_LANG env var?
-        cs_LANG = cs_PWS_LANG;
-        cs_CTRY = _T("");
-    } else { // no override, use Locale info
-        int inum;
-        TCHAR szLang[4], szCtry[4];
-        inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME,
-                               szLang, 4);
-        ASSERT(inum == 3);
-        _tcsupr(szLang);
-        TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"), PWSUtil::GetTimeStamp(), szLang);
+    cs_LANG = cs_PWS_LANG;
+    cs_CTRY = _T("");
+  } else { // no override, use Locale info
+    int inum;
+    TCHAR szLang[4], szCtry[4];
+    inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME,
+                           szLang, 4);
+    ASSERT(inum == 3);
+    _tcsupr(szLang);
+    TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"), PWSUtil::GetTimeStamp(), szLang);
 
-        inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
-                               szCtry, 4);
-        ASSERT(inum == 3);
-        TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"), PWSUtil::GetTimeStamp(), szCtry);
-        cs_LANG = szLang; cs_CTRY = szCtry;
-    }
+    inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
+                           szCtry, 4);
+    ASSERT(inum == 3);
+    TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"), PWSUtil::GetTimeStamp(), szCtry);
+    cs_LANG = szLang; cs_CTRY = szCtry;
+  }
 
-    const CString cs_ExePath(PWSdirs::GetExeDir());
+  const CString cs_ExePath(PWSdirs::GetExeDir());
 	CString cs_ResPath;
 
 	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), cs_ExePath, cs_LANG, cs_CTRY);
-    m_hInstResDLL = LoadLibrary(cs_ResPath);
+  m_hInstResDLL = LoadLibrary(cs_ResPath);
 
 	if(m_hInstResDLL == NULL) {
 		cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_LANG);
 		m_hInstResDLL = LoadLibrary(cs_ResPath);
-    }
-    if(m_hInstResDLL == NULL) {
-        TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
-              PWSUtil::GetTimeStamp());
+  }
+  if(m_hInstResDLL == NULL) {
+    TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
+          PWSUtil::GetTimeStamp());
 	} else { // successfully loaded a resource dll, check version
 		CString csResLibInfo(GetVersionInfoFromFile(cs_ResPath));
 		CString csExeFileInfo(m_csFileVersionString);
 
 		if (csExeFileInfo != csResLibInfo) {
 			TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %s/%s.\n"), 
-                  PWSUtil::GetTimeStamp(), cs_ResPath, csExeFileInfo, csResLibInfo);
+            PWSUtil::GetTimeStamp(), cs_ResPath, csExeFileInfo, csResLibInfo);
 			FreeLibrary(m_hInstResDLL);
 			m_hInstResDLL = NULL;
 		} else { // Passed version check
 			TRACE(_T("%s Using language DLL '%s'.\n"),
-                  PWSUtil::GetTimeStamp(), cs_ResPath);
+            PWSUtil::GetTimeStamp(), cs_ResPath);
 		}
 	} // end of resource dll hunt
 
 	if (m_hInstResDLL != NULL)
 		AfxSetResourceHandle(m_hInstResDLL);
 
-    /**
-     * So far, we've handle the resource dll. Now go for the compiled helpfile
-     * in a similar manner.
-     */
+  /**
+   * So far, we've handle the resource dll. Now go for the compiled helpfile
+   * in a similar manner.
+   */
 
 	CString cs_HelpPath;
-    const CString cs_HelpDir(PWSdirs::GetHelpDir());
-    bool helpFileFound = false;
+  const CString cs_HelpDir(PWSdirs::GetHelpDir());
+  bool helpFileFound = false;
 
 	CString cs_PWS_HELP;
 	BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(_T("PWS_HELP"));
 	if (bPHRC == TRUE) {
 		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_PWS_HELP);
 		if (PathFileExists(cs_HelpPath)) {
-            helpFileFound = true;
+      helpFileFound = true;
 			if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
 			m_pszHelpFilePath = _tcsdup(cs_HelpPath);
 			TRACE(_T("%s Help file overriden by user. Using %s.\n"),
-                  PWSUtil::GetTimeStamp(), cs_HelpPath);
+            PWSUtil::GetTimeStamp(), cs_HelpPath);
 		}
 	}
 
-    if (!helpFileFound) {
-        cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), cs_HelpDir, cs_LANG, cs_CTRY);
-        if (PathFileExists(cs_HelpPath)) {
-            helpFileFound = true;
-        }
+  if (!helpFileFound) {
+    cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), cs_HelpDir, cs_LANG, cs_CTRY);
+    if (PathFileExists(cs_HelpPath)) {
+      helpFileFound = true;
     }
-    if (!helpFileFound) {
+  }
+  if (!helpFileFound) {
 		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_LANG);
 		if (PathFileExists(cs_HelpPath)) {
-            helpFileFound = true;
+      helpFileFound = true;
 		}
-    }
-    if (!helpFileFound) {
+  }
+  if (!helpFileFound) {
 		cs_HelpPath.Format(_T("%spwsafe.chm"), cs_HelpDir);
 		if (PathFileExists(cs_HelpPath)) {
-            helpFileFound = true;
+      helpFileFound = true;
 		}
-    }
-    if (!helpFileFound) { // last resort
-        TCHAR fname[_MAX_FNAME];
-        TCHAR ext[_MAX_EXT];
+  }
+  if (!helpFileFound) { // last resort
+    TCHAR fname[_MAX_FNAME];
+    TCHAR ext[_MAX_EXT];
 #if _MSC_VER >= 1400
-        _tsplitpath_s( m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
-                       _MAX_FNAME, ext, _MAX_EXT );
-        _tcslwr_s(fname, _MAX_FNAME);
-        _tcslwr_s(ext, _MAX_EXT);
+    _tsplitpath_s( m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
+                   _MAX_FNAME, ext, _MAX_EXT );
+    _tcslwr_s(fname, _MAX_FNAME);
+    _tcslwr_s(ext, _MAX_EXT);
 #else
-        _tsplitpath( m_pszHelpFilePath, NULL, NULL, fname, ext );
-        _tcslwr(ext);
-        _tcslwr(fname);
+    _tsplitpath( m_pszHelpFilePath, NULL, NULL, fname, ext );
+    _tcslwr(ext);
+    _tcslwr(fname);
 #endif
-        cs_HelpPath.Format(_T("%s%s"), fname, ext);
-        TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
-    }
-
-    if (m_pszHelpFilePath != NULL)
-        free((void*)m_pszHelpFilePath);
-    m_pszHelpFilePath = _tcsdup(cs_HelpPath);
+    cs_HelpPath.Format(_T("%s%s"), fname, ext);
     TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
+  }
+
+  if (m_pszHelpFilePath != NULL)
+    free((void*)m_pszHelpFilePath);
+  m_pszHelpFilePath = _tcsdup(cs_HelpPath);
+  TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
 
 	m_csHelpFile = cs_HelpPath;
 }
@@ -418,12 +418,14 @@ ThisMfcApp::InitInstance()
                                         ID_FILE_MRU_ENTRY1, cs_recent);
         ASSERT(irc != 0);
         // Insert Popup onto main menu
+        ASSERT(file_submenu != NULL);
         irc = file_submenu->InsertMenu(pos + 2,
                                        MF_BYPOSITION | MF_POPUP,
                                        UINT_PTR(new_popupmenu->m_hMenu),
                                        cs_recentsafes);
         ASSERT(irc != 0);
       } else {	// MRU entries inline
+        ASSERT(file_submenu != NULL);
         irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
                                        ID_FILE_MRU_ENTRY1, cs_recent);
         ASSERT(irc != 0);
@@ -435,6 +437,7 @@ ThisMfcApp::InitInstance()
     if (pos > -1) {
       int irc;
       // Remove extra separator
+      ASSERT(file_submenu != NULL);
       irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
       ASSERT( irc != 0);
       // Remove Clear MRU menu item.
@@ -497,7 +500,7 @@ ThisMfcApp::InitInstance()
       const int UC_arg1(toupper(args[1]));
       // The following arguements require the database name and it exists!
       if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
-          && (fn.IsEmpty() || CheckFile(fn) == FALSE)) {
+          && (fn.IsEmpty() || !CheckFile(fn))) {
         Usage();
         return FALSE;
       }
