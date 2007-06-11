@@ -99,6 +99,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       if (iResult == 0) {
         iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
       }
+      break;
     case CItemData::NOTES:
       iResult = (pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
       break;
@@ -683,7 +684,7 @@ DboxMain::RefreshList()
 
   FixListIndexes();
   //Setup the selection
-  if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
+  if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() == NULL) {
     SelectEntry(0);
   }
 }
@@ -937,38 +938,38 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
 
   // Insert the first column data
   switch (m_nColumnTypeByIndex[0]) {
-    case CItemData::GROUP:
-      cs_fielddata = group;
-      break;
-    case CItemData::TITLE:
-      cs_fielddata = title;
-      break;
-    case CItemData::USER:
-      cs_fielddata = username;
-      break;
-    case CItemData::NOTES:
-      cs_fielddata = strNotes;
-      break;
-    case CItemData::PASSWORD:
-      cs_fielddata = itemData.GetPassword();
-      break;
-    case CItemData::CTIME:
-      cs_fielddata = itemData.GetCTimeL();
-      break;
-    case CItemData::PMTIME:
-      cs_fielddata = itemData.GetPMTimeL();
-      break;
-    case CItemData::ATIME:
-      cs_fielddata = itemData.GetATimeL();
-      break;
-    case CItemData::LTIME:
-      cs_fielddata = itemData.GetLTimeL();
-      break;
-    case CItemData::RMTIME:
-      cs_fielddata = itemData.GetRMTimeL();
-      break;
-    default:
-      ASSERT(0);
+  case CItemData::GROUP:
+    cs_fielddata = group;
+    break;
+  case CItemData::TITLE:
+    cs_fielddata = title;
+    break;
+  case CItemData::USER:
+    cs_fielddata = username;
+    break;
+  case CItemData::NOTES:
+    cs_fielddata = strNotes;
+    break;
+  case CItemData::PASSWORD:
+    cs_fielddata = itemData.GetPassword();
+    break;
+  case CItemData::CTIME:
+    cs_fielddata = itemData.GetCTimeL();
+    break;
+  case CItemData::PMTIME:
+    cs_fielddata = itemData.GetPMTimeL();
+    break;
+  case CItemData::ATIME:
+    cs_fielddata = itemData.GetATimeL();
+    break;
+  case CItemData::LTIME:
+    cs_fielddata = itemData.GetLTimeL();
+    break;
+  case CItemData::RMTIME:
+    cs_fielddata = itemData.GetRMTimeL();
+    break;
+  default:
+    ASSERT(0);
   }
   iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata);
 
@@ -1010,32 +1011,33 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     time_t now, warnexptime, tLTime;
     time(&now);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
-        int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
-        struct tm st;
+      int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+      struct tm st;
 #if _MSC_VER >= 1400
-        errno_t err;
-        err = localtime_s(&st, &now);  // secure version
+      errno_t err;
+      err = localtime_s(&st, &now);  // secure version
+      ASSERT(err == 0);
 #else
-        st = *localtime(&now);
-        ASSERT(st != NULL); // null means invalid time
+      st = *localtime(&now);
+      ASSERT(st != NULL); // null means invalid time
 #endif
-        st.tm_mday += idays;
-        warnexptime = mktime(&st);
-        if (warnexptime == (time_t)-1)
-          warnexptime = (time_t)0;
-    } else
+      st.tm_mday += idays;
+      warnexptime = mktime(&st);
+      if (warnexptime == (time_t)-1)
         warnexptime = (time_t)0;
+    } else
+      warnexptime = (time_t)0;
     
     itemData.GetLTime(tLTime);
-	if (tLTime != 0) {
+    if (tLTime != 0) {
 	    if (tLTime <= now) {
-    	    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
+        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
     	} else if (tLTime < warnexptime) {
-    	    m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::WARNEXPIRED_LEAF, CMyTreeCtrl::WARNEXPIRED_LEAF);
+        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::WARNEXPIRED_LEAF, CMyTreeCtrl::WARNEXPIRED_LEAF);
 	    } else
-	        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
-	} else
-	  m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+    } else
+      m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
 	
     ASSERT(ti != NULL);
     itemData.SetDisplayInfo((void *)di);
@@ -1045,38 +1047,38 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
   // Set the data in the rest of the columns
   for (int i = 1; i < m_nColumns; i++) {
     switch (m_nColumnTypeByIndex[i]) {
-      case CItemData::GROUP:
-        cs_fielddata = group;
-        break;
-      case CItemData::TITLE:
-        cs_fielddata = title;
-        break;
-      case CItemData::USER:
-        cs_fielddata = username;
-        break;
-      case CItemData::NOTES:
-        cs_fielddata = strNotes;
-        break;
-      case CItemData::PASSWORD:
-        cs_fielddata = itemData.GetPassword();
-        break;
-      case CItemData::CTIME:
-        cs_fielddata = itemData.GetCTimeL();
-        break;
-      case CItemData::PMTIME:
-        cs_fielddata = itemData.GetPMTimeL();
-        break;
-      case CItemData::ATIME:
-        cs_fielddata = itemData.GetATimeL();
-        break;
-      case CItemData::LTIME:
-        cs_fielddata = itemData.GetLTimeL();
-        break;
-      case CItemData::RMTIME:
-        cs_fielddata = itemData.GetRMTimeL();
-        break;
-      default:
-        ASSERT(0);
+    case CItemData::GROUP:
+      cs_fielddata = group;
+      break;
+    case CItemData::TITLE:
+      cs_fielddata = title;
+      break;
+    case CItemData::USER:
+      cs_fielddata = username;
+      break;
+    case CItemData::NOTES:
+      cs_fielddata = strNotes;
+      break;
+    case CItemData::PASSWORD:
+      cs_fielddata = itemData.GetPassword();
+      break;
+    case CItemData::CTIME:
+      cs_fielddata = itemData.GetCTimeL();
+      break;
+    case CItemData::PMTIME:
+      cs_fielddata = itemData.GetPMTimeL();
+      break;
+    case CItemData::ATIME:
+      cs_fielddata = itemData.GetATimeL();
+      break;
+    case CItemData::LTIME:
+      cs_fielddata = itemData.GetLTimeL();
+      break;
+    case CItemData::RMTIME:
+      cs_fielddata = itemData.GetRMTimeL();
+      break;
+    default:
+      ASSERT(0);
     }
     m_ctlItemList.SetItemText(iResult, i, cs_fielddata);
   }
@@ -1696,7 +1698,7 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   for (vi_IterColumns = vi_columns.begin();
        vi_IterColumns != vi_columns.end();
        vi_IterColumns++) {
-    int &iType = (int)*vi_IterColumns;
+    int iType = *vi_IterColumns;
     cs_header = GetHeaderText(iType);
     if (!cs_header.IsEmpty()) {
       m_ctlItemList.InsertColumn(icol, cs_header);
@@ -1748,7 +1750,7 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
        vi_IterWidths++) {
     if (icol == (m_nColumns - 1))
       break;
-    int &iWidth = (int)*vi_IterWidths;
+    int iWidth = *vi_IterWidths;
     m_ctlItemList.SetColumnWidth(icol, iWidth);
     index = m_LVHdrCtrl.OrderToIndex(icol);
     m_nColumnWidthByIndex[index] = iWidth;
@@ -1758,8 +1760,6 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   // Last column special
   index = m_LVHdrCtrl.OrderToIndex(m_nColumns - 1);
   m_ctlItemList.SetColumnWidth(index, LVSCW_AUTOSIZE_USEHEADER);
-
-  return;
 }
 
 void DboxMain::AddColumn(const int iType, const int iIndex)
@@ -1870,9 +1870,7 @@ void
 DboxMain::AutoResizeColumns()
 {
   int iIndex, iType;
-  HDITEM hdi_get;
   // CHeaderCtrl get values
-  hdi_get.mask = HDI_LPARAM | HDI_WIDTH | HDI_ORDER;
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     iIndex = m_nColumnIndexByOrder[iOrder];
     iType = m_nColumnTypeByIndex[iIndex];
