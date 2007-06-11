@@ -479,10 +479,9 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
       } else {
         // Build extra popup menus (1 per entry in list)
         m_RUEList.GetAllMenuItemStrings(m_menulist);
-        POSITION ml_pos = m_menulist.GetHeadPosition();
 
         for (int i = 0; i < num_recent_entries; i++) {
-          const CMyString cEntry = m_menulist.GetNext(ml_pos);
+          const CMyString cEntry = m_menulist[i];
 
           pNewRecentEntryMenu[i] = new CMenu;
           pNewRecentEntryMenu[i]->CreatePopupMenu();
@@ -546,26 +545,26 @@ LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam)
         delete pNewRecentEntryMenu[i];
 
       delete[] pNewRecentEntryMenu;
-      m_menulist.RemoveAll();
+      m_menulist.clear();
       menu.DestroyMenu();
     } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
-      ASSERT(pTarget != NULL);
-      // double click received, the default action is to execute default menu item
-      pTarget->SetForegroundWindow();  
+    ASSERT(pTarget != NULL);
+    // double click received, the default action is to execute default menu item
+    pTarget->SetForegroundWindow();  
 
-      UINT uItem;
-      if (m_DefaultMenuItemByPos) {
-        if (!menu.LoadMenu(m_menuID)) return 0;
-        pContextMenu = menu.GetSubMenu(0);
-        if (!pContextMenu) return 0;
-        uItem = pContextMenu->GetMenuItemID(m_DefaultMenuItemID);
-      } else
-        uItem = m_DefaultMenuItemID;
+    UINT uItem;
+    if (m_DefaultMenuItemByPos) {
+      if (!menu.LoadMenu(m_menuID)) return 0;
+      pContextMenu = menu.GetSubMenu(0);
+      if (!pContextMenu) return 0;
+      uItem = pContextMenu->GetMenuItemID(m_DefaultMenuItemID);
+    } else
+      uItem = m_DefaultMenuItemID;
         
-      pTarget->SendMessage(WM_COMMAND, uItem, 0);
+    pTarget->SendMessage(WM_COMMAND, uItem, 0);
 
-      menu.DestroyMenu();
-    }
+    menu.DestroyMenu();
+  }
 
   return 1;
 }

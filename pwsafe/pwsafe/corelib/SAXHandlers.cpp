@@ -383,12 +383,12 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
 
 //	-----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
-    unsigned short * pwchNamespaceUri,
-    int cchNamespaceUri,
-    unsigned short * pwchLocalName,
-    int cchLocalName,
-    unsigned short * pwchQName,
-    int cchQName)
+                                                             unsigned short * pwchNamespaceUri,
+                                                             int cchNamespaceUri,
+                                                             unsigned short * pwchLocalName,
+                                                             int cchLocalName,
+                                                             unsigned short * pwchQName,
+                                                             int cchQName)
 {
 	TCHAR szCurElement[MAX_PATH+1] = {0};
 
@@ -421,44 +421,45 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 			tempitem.CreateUUID();
 		else {
 			uuid_array_t uuid_array;
-            // _stscanf_s always outputs to an "int" using %x even though
-            // target is only 1.  Read into larger buffer to prevent data being
-            // overwritten and then copy to where we want it!
+      // _stscanf_s always outputs to an "int" using %x even though
+      // target is only 1.  Read into larger buffer to prevent data being
+      // overwritten and then copy to where we want it!
       unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
 			int nscanned = 0;
 			TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
  			for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
-			    nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+        nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
-			    nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+        nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #endif
-                lpszuuid += 2;
-            }
-            cur_entry->uuid.ReleaseBuffer(sizeof(uuid_array_t) * 2);
-            memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
-			if (nscanned != sizeof(uuid_array_t) || m_xmlcore->Find(uuid_array) != NULL)
+        lpszuuid += 2;
+      }
+      cur_entry->uuid.ReleaseBuffer(sizeof(uuid_array_t) * 2);
+      memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
+			if (nscanned != sizeof(uuid_array_t) ||
+          m_xmlcore->Find(uuid_array) != m_xmlcore->GetEntryEndIter())
 				tempitem.CreateUUID();
 			else {
 				tempitem.SetUUID(uuid_array);
-            }
+      }
 		}
 		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
 		newgroup += cur_entry->group;
 		if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != NULL) {
-            // Find a unique "Title"
-            CMyString Unique_Title;
-            POSITION listpos = NULL;
-            int i = 0;
-            CString s_import;
-            do {
-                i++;
-                s_import.Format(IDSC_IMPORTNUMBER, i);
-                Unique_Title = cur_entry->title + CMyString(s_import);
-                listpos = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
-            } while (listpos != NULL);
-            cur_entry->title = Unique_Title;
-        }
+      // Find a unique "Title"
+      CMyString Unique_Title;
+      ItemListConstIter iter;
+      int i = 0;
+      CString s_import;
+      do {
+        i++;
+        s_import.Format(IDSC_IMPORTNUMBER, i);
+        Unique_Title = cur_entry->title + CMyString(s_import);
+        iter = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
+      } while (iter != m_xmlcore->GetEntryEndIter());
+      cur_entry->title = Unique_Title;
+    }
 		tempitem.SetGroup(newgroup);
 		if (cur_entry->title.GetLength() != 0)
 			tempitem.SetTitle(cur_entry->title, m_delimiter);
@@ -483,27 +484,27 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		CMyString newPWHistory;
 		CString strPWHErrors, buffer;
 		buffer.Format(IDSC_SAXERRORPWH,
-                      cur_entry->group, cur_entry->title, cur_entry->username);
+                  cur_entry->group, cur_entry->title, cur_entry->username);
 		switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
-			case PWH_OK:
-				tempitem.SetPWHistory(newPWHistory);
-				buffer.Empty();
-				break;
-			case PWH_IGNORE:
-				buffer.Empty();
-				break;
-			case PWH_INVALID_HDR:
-			case PWH_INVALID_STATUS:
-			case PWH_INVALID_NUM:
-			case PWH_INVALID_DATETIME:
-			case PWH_INVALID_PSWD_LENGTH:
-			case PWH_TOO_SHORT:
-			case PWH_TOO_LONG:
-			case PWH_INVALID_CHARACTER:
-				buffer += strPWHErrors;
-				break;
-			default:
-				ASSERT(0);
+    case PWH_OK:
+      tempitem.SetPWHistory(newPWHistory);
+      buffer.Empty();
+      break;
+    case PWH_IGNORE:
+      buffer.Empty();
+      break;
+    case PWH_INVALID_HDR:
+    case PWH_INVALID_STATUS:
+    case PWH_INVALID_NUM:
+    case PWH_INVALID_DATETIME:
+    case PWH_INVALID_PSWD_LENGTH:
+    case PWH_TOO_SHORT:
+    case PWH_TOO_LONG:
+    case PWH_INVALID_CHARACTER:
+      buffer += strPWHErrors;
+      break;
+    default:
+      ASSERT(0);
 		}
 		m_strImportErrors += buffer;
 		if (cur_entry->notes.GetLength() != 0)
@@ -519,8 +520,8 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
         CString cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
         TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d, value:\n"),
-          cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username, 
-          unkrfe.uc_Type, (int)unkrfe.st_length);
+              cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username, 
+              unkrfe.uc_Type, (int)unkrfe.st_length);
         CString cs_hexdump;
         cs_hexdump = PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
         TRACE(_T("%s\n"), cs_hexdump);
@@ -529,7 +530,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       }
     }
 
-		m_xmlcore->AddEntryToTail(tempitem);
+		m_xmlcore->AddEntry(tempitem);
     cur_entry->uhrxl.clear();
 		delete cur_entry;
 		m_numEntries++;
@@ -635,51 +636,51 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
 	if (_tcscmp(szCurElement, _T("date")) == 0 && !m_strElemContent.IsEmpty()) {
 		switch (m_whichtime) {
-			case PW_CTIME:
-				cur_entry->ctime = m_strElemContent;
-				break;
-			case PW_PMTIME:
-				cur_entry->pmtime = m_strElemContent;
-				break;
-			case PW_ATIME:
-				cur_entry->atime = m_strElemContent;
-				break;
-			case PW_LTIME:
-				cur_entry->ltime = m_strElemContent;
-				break;
-			case PW_RMTIME:
-				cur_entry->rmtime = m_strElemContent;
-				break;
-			case PW_CHANGED:
-				cur_entry->changed = m_strElemContent;
-				break;
-			default:
-				ASSERT(0);
+    case PW_CTIME:
+      cur_entry->ctime = m_strElemContent;
+      break;
+    case PW_PMTIME:
+      cur_entry->pmtime = m_strElemContent;
+      break;
+    case PW_ATIME:
+      cur_entry->atime = m_strElemContent;
+      break;
+    case PW_LTIME:
+      cur_entry->ltime = m_strElemContent;
+      break;
+    case PW_RMTIME:
+      cur_entry->rmtime = m_strElemContent;
+      break;
+    case PW_CHANGED:
+      cur_entry->changed = m_strElemContent;
+      break;
+    default:
+      ASSERT(0);
 		}
 	}
 
 	if (_tcscmp(szCurElement, _T("time")) == 0 && !m_strElemContent.IsEmpty()) {
 		switch (m_whichtime) {
-			case PW_CTIME:
-				cur_entry->ctime += _T(" ") + m_strElemContent;
-				break;
-			case PW_PMTIME:
-				cur_entry->pmtime += _T(" ") + m_strElemContent;
-				break;
-			case PW_ATIME:
-				cur_entry->atime += _T(" ") + m_strElemContent;
-				break;
-			case PW_LTIME:
-				cur_entry->ltime += _T(" ") + m_strElemContent;
-				break;
-			case PW_RMTIME:
-				cur_entry->rmtime += _T(" ") + m_strElemContent;
-				break;
-			case PW_CHANGED:
-				cur_entry->changed += _T(" ") + m_strElemContent;
-				break;
-			default:
-				ASSERT(0);
+    case PW_CTIME:
+      cur_entry->ctime += _T(" ") + m_strElemContent;
+      break;
+    case PW_PMTIME:
+      cur_entry->pmtime += _T(" ") + m_strElemContent;
+      break;
+    case PW_ATIME:
+      cur_entry->atime += _T(" ") + m_strElemContent;
+      break;
+    case PW_LTIME:
+      cur_entry->ltime += _T(" ") + m_strElemContent;
+      break;
+    case PW_RMTIME:
+      cur_entry->rmtime += _T(" ") + m_strElemContent;
+      break;
+    case PW_CHANGED:
+      cur_entry->changed += _T(" ") + m_strElemContent;
+      break;
+    default:
+      ASSERT(0);
 		}
 	}
 
@@ -696,9 +697,9 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     // target is only 1.  Read into larger buffer to prevent data being
     // overwritten and then copy to where we want it!
     const int length = m_strElemContent.GetLength();
-      // UNK_HEX_REP will represent unknown values
-      // as hexadecimal, rather than base64 encoding.
-      // Easier to debug.
+    // UNK_HEX_REP will represent unknown values
+    // as hexadecimal, rather than base64 encoding.
+    // Easier to debug.
 #ifndef UNK_HEX_REP
     m_pfield = new unsigned char[(length / 3) * 4 + 4];
     size_t out_len;
@@ -729,7 +730,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
         CString cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
         TRACE(_T("%s: Header has unknown field: %02x, length %d, value:\n"),
-          cs_timestamp, m_ctype, m_fieldlen);
+              cs_timestamp, m_ctype, m_fieldlen);
         CString cs_hexdump;
         cs_hexdump = PWSUtil::HexDump(m_pfield, m_fieldlen, cs_timestamp);
         TRACE(_T("%s\n"), cs_hexdump);

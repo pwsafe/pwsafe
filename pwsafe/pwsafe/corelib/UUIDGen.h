@@ -19,6 +19,7 @@ typedef unsigned char uuid_array_t[16];
 typedef unsigned char uuid_str_t[37]; //"204012e6-600f-4e01-a5eb-515267cb0d50"
 
 #include "PwsPlatform.h"
+#include <memory> // for memcmp
 
 class CUUIDGen {
  public:
@@ -26,6 +27,14 @@ class CUUIDGen {
   CUUIDGen(const uuid_array_t &); // for storing an existing UUID
   ~CUUIDGen();
   void GetUUID(uuid_array_t &) const;
+  // Following is for map<> compare function
+  struct ltuuid {
+    bool operator()(const CUUIDGen &u1, const CUUIDGen &u2) const
+    {
+      return std::memcmp(&u1.uuid,
+                         &u2.uuid, sizeof(u1.uuid)) < 0;
+    }
+  };
  private:
   UUID uuid;
 };

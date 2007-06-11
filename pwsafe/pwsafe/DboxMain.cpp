@@ -1771,13 +1771,7 @@ DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 void
 DboxMain::CheckExpiredPasswords()
 {
-  ExpPWEntry exppwentry;
   time_t now, exptime, LTime;
-
-  CList<ExpPWEntry, ExpPWEntry&>* p_expPWList = new CList<ExpPWEntry, ExpPWEntry&>;
-
-  POSITION listPos = m_core.GetFirstEntryPosition();
-
   time(&now);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
@@ -1795,34 +1789,35 @@ DboxMain::CheckExpiredPasswords()
     if (exptime == (time_t)-1)
       exptime = now;
   } else
-      exptime = now;
+    exptime = now;
 
-  while (listPos != NULL)
-    {
-      const CItemData &curitem = m_core.GetEntryAt(listPos);
-      curitem.GetLTime(LTime);
+  ExpiredList expPWList;
 
-      if (((long)LTime != 0) && (LTime < exptime)) {
-        exppwentry.group = curitem.GetGroup();
-        exppwentry.title = curitem.GetTitle();
-        exppwentry.user = curitem.GetUser();
-        exppwentry.type = LTime <= now ? 0 : 1; // Expired or Warning
-        exppwentry.expirylocdate = curitem.GetLTimeL();
-        exppwentry.expiryexpdate = curitem.GetLTimeExp();
-        exppwentry.expirytttdate = LTime;
-        p_expPWList->AddTail(exppwentry);
-      }
-      m_core.GetNextEntry(listPos);
+  ExpPWEntry exppwentry;
+  ItemListConstIter listPos;
+  for (listPos = m_core.GetEntryIter();
+       listPos != m_core.GetEntryEndIter();
+       listPos++) {
+    const CItemData &curitem = m_core.GetEntry(listPos);
+    curitem.GetLTime(LTime);
+
+    if (((long)LTime != 0) && (LTime < exptime)) {
+      exppwentry.group = curitem.GetGroup();
+      exppwentry.title = curitem.GetTitle();
+      exppwentry.user = curitem.GetUser();
+      exppwentry.type = LTime <= now ? 0 : 1; // Expired or Warning
+      exppwentry.expirylocdate = curitem.GetLTimeL();
+      exppwentry.expiryexpdate = curitem.GetLTimeExp();
+      exppwentry.expirytttdate = LTime;
+      expPWList.push_back(exppwentry);
+    }
 	}
 
-  if (p_expPWList->GetCount() > 0) {
-    CExpPWListDlg dlg(this, m_core.GetCurFile());
-    dlg.m_pexpPWList = p_expPWList;
+  if (!expPWList.empty()) {
+    CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile());
     dlg.DoModal();
-    p_expPWList->RemoveAll();
+    expPWList.clear();
   }
-
-  delete p_expPWList;
 }
 
 void
@@ -1978,8 +1973,11 @@ void DboxMain::MakeSortedItemList(ItemList &il)
   while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
     if (!m_ctlItemTree.ItemHasChildren(hItem)) {
       CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-      if (ci != NULL) // NULL if there's an empty group [bug #1633516]
-          il.AddTail(*ci);
+      if (ci != NULL) {// NULL if there's an empty group [bug #1633516]
+        uuid_array_t uuid;
+        ci->GetUUID(uuid);
+        il[uuid] = *ci;
+      }
     }
   }
 }

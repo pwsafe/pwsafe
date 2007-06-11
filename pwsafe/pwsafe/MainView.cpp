@@ -27,8 +27,13 @@
 #include "ColumnChooserDlg.h"
 
 #include "corelib/pwsprefs.h"
+#include "corelib/UUIDGen.h"
+
 #include "commctrl.h"
 #include <vector>
+#include <algorithm>
+
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -255,7 +260,7 @@ void DboxMain::UpdateListItem(const int lindex, const int type, const CString &n
 }
 
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
-POSITION DboxMain::Find(int i)
+ItemListIter DboxMain::Find(int i)
 {
   CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(ci != NULL);
@@ -300,7 +305,6 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
   ASSERT(!str.IsEmpty());
   ASSERT(indices != NULL);
 
-  POSITION listPos;
   CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT;
   CMyString listTitle, savetitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
@@ -311,90 +315,88 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 
   int ititle(-1);  // Must be there as it is mandatory!
   for (int ic = 0; ic < m_nColumns; ic++) {
-      if (m_nColumnTypeByIndex[ic] == CItemData::TITLE) {
-          ititle = ic;
-          break;
-      }
+    if (m_nColumnTypeByIndex[ic] == CItemData::TITLE) {
+      ititle = ic;
+      break;
+    }
   }
 
+  ItemListConstIter iter;
   if (m_IsListView) {
-	listPos = m_core.GetFirstEntryPosition();
-	while (listPos != NULL) {
-		const  CItemData &curitem = m_core.GetEntryAt(listPos);
+    for (iter = m_core.GetEntryIter();
+         iter != m_core.GetEntryEndIter(); iter++) {
+      const CItemData &curitem = m_core.GetEntry(iter);
 
-		savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
-		curuser =  curitem.GetUser();
-		curnotes = curitem.GetNotes();
-		curgroup = curitem.GetGroup();
-		curURL = curitem.GetURL();
-		curAT = curitem.GetAutoType();
+      savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+      curuser =  curitem.GetUser();
+      curnotes = curitem.GetNotes();
+      curgroup = curitem.GetGroup();
+      curURL = curitem.GetURL();
+      curAT = curitem.GetAutoType();
 
-		if (!CaseSensitive) {
-			curtitle.MakeLower();
-			curuser.MakeLower();
-			curnotes.MakeLower();
-			curgroup.MakeLower();
-			curURL.MakeLower();
-			curAT.MakeLower();
-		}
-		if (::_tcsstr(curtitle, searchstr) ||
-			::_tcsstr(curuser, searchstr) ||
-			::_tcsstr(curnotes, searchstr) ||
-			::_tcsstr(curgroup, searchstr) ||
-			::_tcsstr(curURL, searchstr) ||
-			::_tcsstr(curAT, searchstr)) {
-			// Find index in displayed list
-			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
-			ASSERT(di != NULL);
-			int li = di->list_index;
-			ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
-			// add to indices, bump retval
-			indices[retval++] = li;
-		} // match found in m_pwlist
-		m_core.GetNextEntry(listPos);
-	} // while
-	// Sort indices if in List View
-	if (retval > 1)
-		::qsort((void *)indices, retval, sizeof(indices[0]), compint);
-  } else {
+      if (!CaseSensitive) {
+        curtitle.MakeLower();
+        curuser.MakeLower();
+        curnotes.MakeLower();
+        curgroup.MakeLower();
+        curURL.MakeLower();
+        curAT.MakeLower();
+      }
+      if (::_tcsstr(curtitle, searchstr) ||
+          ::_tcsstr(curuser, searchstr) ||
+          ::_tcsstr(curnotes, searchstr) ||
+          ::_tcsstr(curgroup, searchstr) ||
+          ::_tcsstr(curURL, searchstr) ||
+          ::_tcsstr(curAT, searchstr)) {
+        // Find index in displayed list
+        DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+        ASSERT(di != NULL);
+        int li = di->list_index;
+        ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
+        // add to indices, bump retval
+        indices[retval++] = li;
+      } // match found in m_pwlist
+    } // iteration over entries
+    // Sort indices if in List View
+    if (retval > 1)
+      ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
+  } else { // !m_IsListView
     ItemList sortedItemList;
     MakeSortedItemList(sortedItemList);
-    listPos = sortedItemList.GetHeadPosition();
-	while (listPos != NULL) {
-		const CItemData &curitem = sortedItemList.GetAt(listPos);
+    for (iter = sortedItemList.begin(); iter != sortedItemList.end(); iter++) {
+      const CItemData &curitem = iter->second;
 
-	  savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
-		curuser =  curitem.GetUser();
-		curnotes = curitem.GetNotes();
-		curgroup = curitem.GetGroup();
-		curURL = curitem.GetURL();
-		curAT = curitem.GetAutoType();
+      savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+      curuser =  curitem.GetUser();
+      curnotes = curitem.GetNotes();
+      curgroup = curitem.GetGroup();
+      curURL = curitem.GetURL();
+      curAT = curitem.GetAutoType();
 
-		if (!CaseSensitive) {
-			curtitle.MakeLower();
-			curuser.MakeLower();
-			curnotes.MakeLower();
-			curgroup.MakeLower();
-			curURL.MakeLower();
-			curAT.MakeLower();
-		}
-		if (::_tcsstr(curtitle, searchstr) ||
-			::_tcsstr(curuser, searchstr) ||
-			::_tcsstr(curnotes, searchstr) ||
-			::_tcsstr(curgroup, searchstr) ||
-			::_tcsstr(curURL, searchstr) ||
-			::_tcsstr(curAT, searchstr)) {
-			// Find index in displayed list
-			DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
-			ASSERT(di != NULL);
-			int li = di->list_index;
-			ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
-			// add to indices, bump retval
-			indices[retval++] = li;
-		} // match found in m_pwlist
-		sortedItemList.GetNext(listPos);
-    } // while
-	sortedItemList.RemoveAll();
+      if (!CaseSensitive) {
+        curtitle.MakeLower();
+        curuser.MakeLower();
+        curnotes.MakeLower();
+        curgroup.MakeLower();
+        curURL.MakeLower();
+        curAT.MakeLower();
+      }
+      if (::_tcsstr(curtitle, searchstr) ||
+          ::_tcsstr(curuser, searchstr) ||
+          ::_tcsstr(curnotes, searchstr) ||
+          ::_tcsstr(curgroup, searchstr) ||
+          ::_tcsstr(curURL, searchstr) ||
+          ::_tcsstr(curAT, searchstr)) {
+        // Find index in displayed list
+        DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+        ASSERT(di != NULL);
+        int li = di->list_index;
+        ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
+        // add to indices, bump retval
+        indices[retval++] = li;
+      } // match found in sortedItemList
+    } // iterate over sortedItemList
+    sortedItemList.clear();
   }
 
   return retval;
@@ -409,7 +411,6 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices,
   ASSERT(!str.IsEmpty());
   ASSERT(indices != NULL);
 
-  POSITION listPos;
   CMyString curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT;
   CMyString listTitle, saveTitle;
   bool bFoundit;
@@ -427,21 +428,20 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices,
     }
   }
 
+  ItemListConstIter listPos, listEnd;
   ItemList sortedItemList;
   if (m_IsListView) {
-    listPos = m_core.GetFirstEntryPosition();
+    listPos = m_core.GetEntryIter();
+    listEnd = m_core.GetEntryEndIter();
   } else {
     MakeSortedItemList(sortedItemList);
-    listPos = sortedItemList.GetHeadPosition();
+    listPos = sortedItemList.begin();
+    listEnd = sortedItemList.end();
   }
 
   CItemData curitem;
-  while (listPos != NULL) {
-    if (m_IsListView)
-      curitem = m_core.GetEntryAt(listPos);
-    else
-      curitem = sortedItemList.GetAt(listPos);
-
+  while (listPos != listEnd) {
+    curitem = listPos->second;
     if (subgroup_set == BST_CHECKED &&
         curitem.WantEntry(subgroup_name, subgroup_object, subgroup_function) == FALSE)
       goto nextentry;
@@ -536,10 +536,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices,
     } // match found in m_pwlist
 
 nextentry:
-    if (m_IsListView)
-      m_core.GetNextEntry(listPos);
-    else
-      sortedItemList.GetNext(listPos);
+    listPos++;
   } // while
 
   // Sort indices if in List View
@@ -547,7 +544,7 @@ nextentry:
     ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
 
   if (!m_IsListView)
-    sortedItemList.RemoveAll();
+    sortedItemList.clear();
 
   return retval;
 }
@@ -656,17 +653,17 @@ DboxMain::RefreshList()
   m_ctlItemTree.DeleteAllItems();
   m_bBoldItem = false;
 
-  POSITION listPos = m_core.GetFirstEntryPosition();
+  ItemListIter listPos;
 #if defined(POCKET_PC)
   SetCursor( waitCursor );
 #endif
-  while (listPos != NULL) {
-    CItemData &ci = m_core.GetEntryAt(listPos);
+  for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
+       listPos++) {
+    CItemData &ci = m_core.GetEntry(listPos);
     DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
     if (di != NULL)
       di->list_index = -1; // easier, but less efficient, to delete di
     insertItem(ci, -1, false);
-    m_core.GetNextEntry(listPos);
   }
 
   if (m_bExplorerTypeTree)
@@ -1115,22 +1112,23 @@ CItemData *DboxMain::getSelectedItem()
   return retval;
 }
 
+// functor for ClearData
+struct deleteDisplayInfo {
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {delete p.second.GetDisplayInfo();} // no need to set to NULL
+};
+
 void
 DboxMain::ClearData(bool clearMRE)
 {
   // Iterate over item list, delete DisplayInfo
-  POSITION listPos = m_core.GetFirstEntryPosition();
-  while (listPos != NULL) {
-    CItemData &ci = m_core.GetEntryAt(listPos);
-    delete ci.GetDisplayInfo(); // no need to Set to NULL
-    m_core.GetNextEntry(listPos);
-  }
+  deleteDisplayInfo ddi;
+  for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
+           ddi);
+
   m_core.ClearData();
 
-  if (m_bOpen)
-	  UpdateSystemTray(LOCKED);
-  else
-	  UpdateSystemTray(CLOSED);
+	  UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
 
   // If data is cleared, m_selectedAtMinimize is useless,
   // since it will be deleted and rebuilt from the file.
@@ -1668,8 +1666,8 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
 
-  std::vector<int> vi_columns;
-  std::vector<int>::const_iterator vi_IterColumns;
+  vector<int> vi_columns;
+  vector<int>::const_iterator vi_IterColumns;
   const TCHAR pSep[] = _T(",");
   TCHAR *pTemp;
   
