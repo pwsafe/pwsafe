@@ -446,7 +446,8 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		}
 		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
 		newgroup += cur_entry->group;
-		if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != NULL) {
+		if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != 
+        m_xmlcore->GetEntryEndIter()) {
       // Find a unique "Title"
       CMyString Unique_Title;
       ItemListConstIter iter;

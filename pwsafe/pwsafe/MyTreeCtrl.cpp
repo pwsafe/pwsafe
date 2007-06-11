@@ -339,7 +339,8 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       }
 
       group = CString(ci->GetGroup());
-      if (((DboxMain *)m_parent)->Find(group, newTitle, newUser) != NULL) {
+      DboxMain *dbx = static_cast<DboxMain *>(m_parent);
+      if (dbx->Find(group, newTitle, newUser) != dbx->End()) {
         CMyString temp;
         if (group.IsEmpty())
           temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
