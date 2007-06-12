@@ -1955,7 +1955,8 @@ DboxMain::SetDCAText()
 	m_statusBar.SetPaneText(SB_DBLCLICK, s);
 }
 
-void DboxMain::MakeSortedItemList(ItemList &il)
+// Returns a list of entries as they appear in tree in DFS order
+void DboxMain::MakeOrderedItemList(OrderedItemList &il)
 {
   // Walk the Tree!
   HTREEITEM hItem = NULL;
@@ -1963,9 +1964,7 @@ void DboxMain::MakeSortedItemList(ItemList &il)
     if (!m_ctlItemTree.ItemHasChildren(hItem)) {
       CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
       if (ci != NULL) {// NULL if there's an empty group [bug #1633516]
-        uuid_array_t uuid;
-        ci->GetUUID(uuid);
-        il[uuid] = *ci;
+        il.push_back(*ci);
       }
     }
   }

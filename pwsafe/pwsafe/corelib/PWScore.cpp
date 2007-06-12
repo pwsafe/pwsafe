@@ -193,12 +193,46 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   return SUCCESS;
 }
 
+struct PutText {
+  PutText(const CString &subgroup_name,
+          const int subgroup_object, const int subgroup_function,
+          const CItemData::FieldBits &bsFields,
+          TCHAR delimiter, ofstreamT &ofs) :
+    m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
+    m_subgroup_function(subgroup_function), m_bsFields(bsFields),
+    m_delimiter(delimiter), m_ofs(ofs)
+  {}
+  // operator for ItemList
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {operator()(p.second);}
+  // operator for OrderedItemList
+  void operator()(const CItemData &item)
+  {
+    if (m_subgroup_name.IsEmpty() || 
+        item.WantEntry(m_subgroup_name, m_subgroup_object,
+                       m_subgroup_function) == TRUE) {
+      const CMyString line = item.GetPlaintext(TCHAR('\t'),
+                                               m_bsFields, m_delimiter);
+      if (!line.IsEmpty())
+        m_ofs << LPCTSTR(line) << endl;
+    }
+  }
+private:
+  const CString &m_subgroup_name;
+  const int m_subgroup_object;
+  const int m_subgroup_function;
+  const CItemData::FieldBits &m_bsFields;
+  TCHAR m_delimiter;
+  ofstreamT &m_ofs;
+};
+
 int
 PWScore::WritePlaintextFile(const CMyString &filename,
                             const CItemData::FieldBits &bsFields,
                             const CString &subgroup_name,
-                            const int &subgroup_object, const int &subgroup_function,
-                            TCHAR &delimiter, const ItemList *il)
+                            const int &subgroup_object,
+                            const int &subgroup_function,
+                            TCHAR &delimiter, const OrderedItemList *il)
 {
   // Check if anything to do! 
   if (bsFields.count() == 0)
@@ -271,19 +305,15 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 		ofs << LPCTSTR(hdr.Left(hdr_len)) << endl;
   }
 
-  const ItemList &pwlist = (il == NULL) ? m_pwlist : *il;
-  ItemListConstIter iter;
+  PutText put_text(subgroup_name, subgroup_object, subgroup_function,
+                   bsFields, delimiter, ofs);
 
-  for (iter = pwlist.begin(); iter != pwlist.end(); iter++ ) {
-    if (subgroup_name.IsEmpty() || 
-        iter->second.WantEntry(subgroup_name, subgroup_object,
-                               subgroup_function) == TRUE) {
-      const CMyString line = iter->second.GetPlaintext(TCHAR('\t'),
-                                                       bsFields, delimiter);
-      if (!line.IsEmpty())
-        ofs << LPCTSTR(line) << endl;
-    }
+  if (il != NULL) {
+    for_each(il->begin(), il->end(), put_text);
+  } else {
+    for_each(m_pwlist.begin(), m_pwlist.end(), put_text);
   }
+
   ofs.close();
 
   return SUCCESS;
@@ -304,12 +334,216 @@ static void WriteXMLTime(ofstreamT &of, int indent, const TCHAR *name, time_t t)
     of << _T("</") << name << _T(">") << endl;
 }
 
+struct XMLRecordWriter {
+  XMLRecordWriter(const CString &subgroup_name,
+                  const int subgroup_object, const int subgroup_function,
+                  const CItemData::FieldBits &bsFields,
+                  TCHAR delimiter, ofstreamT &ofs) :
+    m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
+    m_subgroup_function(subgroup_function), m_bsFields(bsFields),
+    m_delimiter(delimiter), m_of(ofs), m_id(0)
+  {}
+  // operator for ItemList
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {operator()(p.second);}
+  // operator for OrderedItemList
+  void operator()(const CItemData &item)
+  {
+    m_id++;
+    if (!m_subgroup_name.IsEmpty() &&
+        item.WantEntry(m_subgroup_name,
+                       m_subgroup_object, m_subgroup_function) == FALSE) {
+      return;
+    }
+
+		// TODO: need to handle entity escaping of values.
+    m_of << _T("\t<entry id=\"") << m_id << _T("\">") << endl;
+
+    CMyString tmp;
+
+    tmp = item.GetGroup();
+		if (m_bsFields.test(CItemData::GROUP) && !tmp.IsEmpty())
+      m_of << _T("\t\t<group><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></group>") << endl;
+
+		// Title mandatory (see pwsafe.xsd)
+		tmp = item.GetTitle();
+		m_of <<_T("\t\t<title><![CDATA[") << LPCTSTR(tmp)
+         << _T("]]></title>") << endl;
+
+    tmp = item.GetUser();
+		if (m_bsFields.test(CItemData::USER) && !tmp.IsEmpty())
+      m_of << _T("\t\t<username><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></username>") << endl;
+
+		tmp = item.GetPassword();
+		// Password mandatory (see pwsafe.xsd)
+		m_of << _T("\t\t<password><![CDATA[") << LPCTSTR(tmp)
+         << _T("]]></password>") << endl;
+
+    tmp = item.GetURL();
+		if (m_bsFields.test(CItemData::URL) && !tmp.IsEmpty())
+      m_of << _T("\t\t<url><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></url>") << endl;
+
+		tmp = item.GetAutoType();
+		if (m_bsFields.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
+      m_of << _T("\t\t<autotype><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></autotype>") << endl;
+
+    tmp = item.GetNotes();
+		if (m_bsFields.test(CItemData::NOTES) && !tmp.IsEmpty())
+      m_of << _T("\t\t<notes><![CDATA[") << LPCTSTR(tmp)
+           << _T("]]></notes>") << endl;
+
+    uuid_array_t uuid_array;
+		item.GetUUID(uuid_array);
+    TCHAR uuid_buffer[37];
+#if _MSC_VER >= 1400
+		_stprintf_s(uuid_buffer, 33,
+                _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+                uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+                uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+                uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+                uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#else
+    _stprintf(uuid_buffer,
+              _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+              uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+              uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+              uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+              uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#endif
+    uuid_buffer[32] = TCHAR('\0');
+    m_of << _T("\t\t<uuid><![CDATA[") << uuid_buffer << _T("]]></uuid>") << endl;
+
+    time_t t;
+    item.GetCTime(t);
+    if (m_bsFields.test(CItemData::CTIME) && (long)t != 0)
+      WriteXMLTime(m_of, 2, _T("ctime"), t);
+
+    item.GetATime(t);
+    if (m_bsFields.test(CItemData::ATIME) && (long)t != 0)
+      WriteXMLTime(m_of, 2, _T("atime"), t);
+
+    item.GetLTime(t);
+    if (m_bsFields.test(CItemData::LTIME) && (long)t != 0)
+      WriteXMLTime(m_of, 2, _T("ltime"), t);
+
+    item.GetPMTime(t);
+    if (m_bsFields.test(CItemData::PMTIME) && (long)t != 0)
+      WriteXMLTime(m_of, 2, _T("pmtime"), t);
+
+    item.GetRMTime(t);
+    if (m_bsFields.test(CItemData::RMTIME) && (long)t != 0)
+      WriteXMLTime(m_of, 2, _T("rmtime"), t);
+
+    if (m_bsFields.test(CItemData::PWHIST)) {
+      BOOL pwh_status;
+      size_t pwh_max, pwh_num;
+      PWHistList PWHistList;
+      item.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+                               &PWHistList, TMC_XML);
+      if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
+        TCHAR buffer[8];
+        m_of << _T("\t\t<pwhistory>") << endl;
+#if _MSC_VER >= 1400
+        _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
+        m_of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+
+        _stprintf_s(buffer, 3, _T("%2d"), pwh_max);
+        m_of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+
+        _stprintf_s(buffer, 3, _T("%2d"), pwh_num);
+        m_of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+#else
+        _stprintf(buffer, _T("%1d"), pwh_status);
+        m_of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+
+        _stprintf(buffer, _T("%2d"), pwh_max);
+        m_of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+
+        _stprintf(buffer, _T("%2d"), pwh_num);
+        m_of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+#endif
+        if (!PWHistList.empty()) {
+          m_of << _T("\t\t\t<history_entries>") << endl;
+          int num = 1;
+          PWHistList::iterator hiter;
+          for (hiter = PWHistList.begin(); hiter != PWHistList.end();
+               hiter++) {
+            m_of << _T("\t\t\t\t<history_entry num=\"") << num << _T("\">") << endl;
+            const PWHistEntry pwshe = *hiter;
+            m_of << _T("\t\t\t\t\t<changed>") << endl;
+            m_of << _T("\t\t\t\t\t\t<date>")
+                 << LPCTSTR(pwshe.changedate.Left(10))
+                 << _T("</date>") << endl;
+            m_of << _T("\t\t\t\t\t\t<time>")
+                 << LPCTSTR(pwshe.changedate.Right(8))
+                 << _T("</time>") << endl;
+            m_of << _T("\t\t\t\t\t</changed>") << endl;
+            m_of << _T("\t\t\t\t\t<oldpassword><![CDATA[")
+                 << LPCTSTR(pwshe.password)
+                 << _T("]]></oldpassword>") << endl;
+            m_of << _T("\t\t\t\t</history_entry>") << endl;
+
+            num++;
+          } // for
+          m_of << _T("\t\t\t</history_entries>") << endl;
+        } // if !empty
+        m_of << _T("\t\t</pwhistory>") << endl;
+      }
+    }
+
+    if (item.NumberUnknownFields() > 0) {
+      m_of << _T("\t\t<unknownrecordfields>") << endl;
+      for (unsigned int i = 0; i != item.NumberUnknownFields(); i++) {
+        unsigned int length = 0;
+        unsigned char type;
+        unsigned char *pdata(NULL);
+        item.GetUnknownField(type, length, pdata, i);
+        if (length == 0)
+          continue;
+        // UNK_HEX_REP will represent unknown values
+        // as hexadecimal, rather than base64 encoding.
+        // Easier to debug.
+#ifndef UNK_HEX_REP
+        tmp = (CMyString)PWSUtil::Base64Encode(pdata, length);
+#else
+        tmp.Empty();
+        unsigned char * pdata2(pdata);
+        unsigned char c;
+        for (int j = 0; j < (int)length; j++) {
+          c = *pdata2++;
+          cs_tmp.Format(_T("%02x"), c);
+          tmp += CMyString(cs_tmp);
+        }
+#endif
+        m_of << _T("\t\t\t<field ftype=\"") << int(type) << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+        trashMemory(pdata, length);
+        delete[] pdata;
+      } // iteration over unknown fields
+      m_of << _T("\t\t</unknownrecordfields>") << endl;  
+    } // if there are unknown fields
+
+    m_of << _T("\t</entry>") << endl << endl;
+  }
+private:
+  const CString &m_subgroup_name;
+  const int m_subgroup_object;
+  const int m_subgroup_function;
+  const CItemData::FieldBits &m_bsFields;
+  TCHAR m_delimiter;
+  ofstreamT &m_of;
+  unsigned m_id;
+};
+
 int
 PWScore::WriteXMLFile(const CMyString &filename,
                       const CItemData::FieldBits &bsFields,
                       const CString &subgroup_name,
                       const int &subgroup_object, const int &subgroup_function,
-                      const TCHAR delimiter, const ItemList *il)
+                      const TCHAR delimiter, const OrderedItemList *il)
 {
 	ofstreamT of(filename);
 
@@ -318,7 +552,6 @@ PWScore::WriteXMLFile(const CMyString &filename,
 
 	CMyString pwh, tmp;
 	CString cs_tmp;
-	uuid_array_t uuid_array;
 
 	TCHAR buffer[8];
 	time_t time_now;
@@ -448,203 +681,20 @@ PWScore::WriteXMLFile(const CMyString &filename,
     of << endl;
   }
 
-	const ItemList &pwlist = (il == NULL) ? m_pwlist : *il;
-  ItemListConstIter iter;
+  XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
+                          bsFields, delimiter, of);
 
-  for (iter = pwlist.begin(); iter != pwlist.end(); iter++ ) {
+  if (il != NULL) {
+    for_each(il->begin(), il->end(), put_xml);
+  } else {
+    for_each(m_pwlist.begin(), m_pwlist.end(), put_xml);
+  }
 #if _MSC_VER >= 1400
 		_itot_s( id, buffer, 8, 10 );
 #else
 		_itot( id, buffer, 10 );
 #endif
 
-    if (!subgroup_name.IsEmpty() &&
-        iter->second.WantEntry(subgroup_name,
-                               subgroup_object, subgroup_function) == FALSE)
-      goto skip_entry;
-
-		// TODO: need to handle entity escaping of values.
-    of << _T("\t<entry id=\"") << buffer << _T("\">") << endl;
-
-    tmp = iter->second.GetGroup();
-		if (bsFields.test(CItemData::GROUP) && !tmp.IsEmpty())
-      of << _T("\t\t<group><![CDATA[") << LPCTSTR(tmp)
-         << _T("]]></group>") << endl;
-
-		// Title mandatory (see pwsafe.xsd)
-		tmp = iter->second.GetTitle();
-		of <<_T("\t\t<title><![CDATA[") << LPCTSTR(tmp)
-       << _T("]]></title>") << endl;
-
-    tmp = iter->second.GetUser();
-		if (bsFields.test(CItemData::USER) && !tmp.IsEmpty())
-      of << _T("\t\t<username><![CDATA[") << LPCTSTR(tmp)
-         << _T("]]></username>") << endl;
-
-		tmp = iter->second.GetPassword();
-		// Password mandatory (see pwsafe.xsd)
-		of << _T("\t\t<password><![CDATA[") << LPCTSTR(tmp)
-       << _T("]]></password>") << endl;
-
-    tmp = iter->second.GetURL();
-		if (bsFields.test(CItemData::URL) && !tmp.IsEmpty())
-      of << _T("\t\t<url><![CDATA[") << LPCTSTR(tmp)
-         << _T("]]></url>") << endl;
-
-		tmp = iter->second.GetAutoType();
-		if (bsFields.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
-      of << _T("\t\t<autotype><![CDATA[") << LPCTSTR(tmp)
-         << _T("]]></autotype>") << endl;
-
-    tmp = iter->second.GetNotes();
-		if (bsFields.test(CItemData::NOTES) && !tmp.IsEmpty())
-      of << _T("\t\t<notes><![CDATA[") << LPCTSTR(tmp)
-         << _T("]]></notes>") << endl;
-
-		iter->second.GetUUID(uuid_array);
-#if _MSC_VER >= 1400
-		_stprintf_s(uuid_buffer, 33,
-                _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
-                uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-                uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-                uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-                uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#else
-    _stprintf(uuid_buffer,
-              _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
-              uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-              uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-              uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-              uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#endif
-    uuid_buffer[32] = TCHAR('\0');
-    of << _T("\t\t<uuid><![CDATA[") << uuid_buffer << _T("]]></uuid>") << endl;
-
-    time_t t;
-
-    iter->second.GetCTime(t);
-    if (bsFields.test(CItemData::CTIME) && (long)t != 0)
-      WriteXMLTime(of, 2, _T("ctime"), t);
-
-    iter->second.GetATime(t);
-    if (bsFields.test(CItemData::ATIME) && (long)t != 0)
-      WriteXMLTime(of, 2, _T("atime"), t);
-
-    iter->second.GetLTime(t);
-    if (bsFields.test(CItemData::LTIME) && (long)t != 0)
-      WriteXMLTime(of, 2, _T("ltime"), t);
-
-    iter->second.GetPMTime(t);
-    if (bsFields.test(CItemData::PMTIME) && (long)t != 0)
-      WriteXMLTime(of, 2, _T("pmtime"), t);
-
-    iter->second.GetRMTime(t);
-    if (bsFields.test(CItemData::RMTIME) && (long)t != 0)
-      WriteXMLTime(of, 2, _T("rmtime"), t);
-
-    if (bsFields.test(CItemData::PWHIST)) {
-      BOOL pwh_status;
-      size_t pwh_max, pwh_num;
-      PWHistList PWHistList;
-      iter->second.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-                                       &PWHistList, TMC_XML);
-      if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
-        of << _T("\t\t<pwhistory>") << endl;
-#if _MSC_VER >= 1400
-        _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
-        of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
-
-        _stprintf_s(buffer, 3, _T("%2d"), pwh_max);
-        of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
-
-        _stprintf_s(buffer, 3, _T("%2d"), pwh_num);
-        of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
-#else
-        _stprintf(buffer, _T("%1d"), pwh_status);
-        of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
-
-        _stprintf(buffer, _T("%2d"), pwh_max);
-        of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
-
-        _stprintf(buffer, _T("%2d"), pwh_num);
-        of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
-#endif
-        if (!PWHistList.empty()) {
-          of << _T("\t\t\t<history_entries>") << endl;
-          int num = 1;
-          PWHistList::iterator hiter;
-          for (hiter = PWHistList.begin(); hiter != PWHistList.end();
-               hiter++) {
-#if _MSC_VER >= 1400
-            _itot_s( num, buffer, 8, 10 );
-#else
-            _itot( num, buffer, 10 );
-#endif
-            of << _T("\t\t\t\t<history_entry num=\"") << buffer << _T("\">") << endl;
-            const PWHistEntry pwshe = *hiter;
-            of << _T("\t\t\t\t\t<changed>") << endl;
-            of << _T("\t\t\t\t\t\t<date>")
-               << LPCTSTR(pwshe.changedate.Left(10))
-               << _T("</date>") << endl;
-            of << _T("\t\t\t\t\t\t<time>")
-               << LPCTSTR(pwshe.changedate.Right(8))
-               << _T("</time>") << endl;
-            of << _T("\t\t\t\t\t</changed>") << endl;
-            of << _T("\t\t\t\t\t<oldpassword><![CDATA[")
-               << LPCTSTR(pwshe.password)
-               << _T("]]></oldpassword>") << endl;
-            of << _T("\t\t\t\t</history_entry>") << endl;
-
-            num++;
-          } // for
-          of << _T("\t\t\t</history_entries>") << endl;
-        } // if !empty
-        of << _T("\t\t</pwhistory>") << endl;
-      }
-    }
-
-    if (iter->second.NumberUnknownFields() > 0) {
-      of << _T("\t\t<unknownrecordfields>") << endl;
-      for (unsigned int i = 0; i != iter->second.NumberUnknownFields(); i++) {
-        unsigned int length = 0;
-        unsigned char type;
-        unsigned char *pdata(NULL);
-        iter->second.GetUnknownField(type, length, pdata, i);
-        if (length == 0)
-          continue;
-#if _MSC_VER >= 1400
-        _itot_s( (int)type, buffer, 8, 10 );
-#else
-        _itot( (int)type, buffer, 10 );
-#endif
-        // UNK_HEX_REP will represent unknown values
-        // as hexadecimal, rather than base64 encoding.
-        // Easier to debug.
-#ifndef UNK_HEX_REP
-        tmp = (CMyString)PWSUtil::Base64Encode(pdata, length);
-#else
-        tmp.Empty();
-        unsigned char * pdata2(pdata);
-        unsigned char c;
-        for (int j = 0; j < (int)length; j++) {
-          c = *pdata2++;
-          cs_tmp.Format(_T("%02x"), c);
-          tmp += CMyString(cs_tmp);
-        }
-#endif
-        of << _T("\t\t\t<field ftype=\"") << buffer << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
-        trashMemory(pdata, length);
-        delete[] pdata;
-      } // iteration over unknown fields
-      of << _T("\t\t</unknownrecordfields>") << endl;  
-    } // if there are unknown fields
-
-    of << _T("\t</entry>") << endl;
-    of << endl;
-
-  skip_entry:
-    id++;
-  } // iteration over list of entries
   of << _T("</passwordsafe>") << endl;
   of.close();
 

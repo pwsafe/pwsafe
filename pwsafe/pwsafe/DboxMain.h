@@ -455,7 +455,7 @@ private:
   void SaveDisplayStatus();
   void RestoreDisplayStatus(bool bUnMinimize = false);
   void GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet);
-  void MakeSortedItemList(ItemList &il);
+  void MakeOrderedItemList(OrderedItemList &il);
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);
