@@ -422,7 +422,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		menuManagerFile.add(new Separator());
 
 		String[] mruFiles = UserPreferences.getInstance().getMRUFiles();
-		if (mruFiles != null & mruFiles.length > 0) {
+		if (mruFiles != null && mruFiles.length > 0) {
 			for (int i = 0; i < mruFiles.length; i++) {
 				String fileName = mruFiles[i];
 				String menuItem = "&" + (i + 1) + " " + new File(fileName).getName();
@@ -582,7 +582,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			SWTResourceManager.dispose();
 			Display.getCurrent().dispose();
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Error Starting PasswordSafe", e);
 		}
 		log.info("PasswordSafe terminating...");
 	}
@@ -917,7 +917,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 */
 	public void updateViewers() {
 		tableViewer.setInput(getPwsFile());
-		tableViewer.refresh();
+		//tableViewer.refresh();
 		treeViewer.setInput(getPwsFile());
 		treeViewer.refresh();
 	}
