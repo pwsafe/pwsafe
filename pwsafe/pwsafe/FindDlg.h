@@ -9,7 +9,7 @@
 
 // FindDlg.h : header file
 //
-
+#include <vector>
 #include "corelib/PwsPlatform.h"
 #include "corelib/MyString.h"
 #include "corelib/ItemData.h"
@@ -74,7 +74,7 @@ class CFindDlg : public SUPERCLASS
  private:
   CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind);
   static CFindDlg *self;
-  int *m_indices; // array of found items
+  std::vector<int> m_indices; // array of found items
   int m_lastshown; // last index selected, -1 indicates no search done yet
   int m_numFound; // number of items that matched, as returned by DboxMain::FindAll
   CMyString m_last_search_text;

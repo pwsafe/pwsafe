@@ -75,7 +75,7 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *bFindW
 }
 
 CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
-  : super(CFindDlg::IDD, pParent), m_indices(NULL),
+  : super(CFindDlg::IDD, pParent),
     m_lastshown(-1), m_numFound(0), m_FindWraps(FALSE),
     m_last_search_text(_T("")), m_last_cs_search(FALSE),
     m_lastCSPtr(isCS), m_lastTextPtr(lastFind), m_bAdvanced(false),
@@ -103,7 +103,7 @@ void CFindDlg::EndIt()
 
 CFindDlg::~CFindDlg()
 {
-  delete[] m_indices;
+  m_indices.clear();
   self = NULL;
 }
 
@@ -183,12 +183,7 @@ void CFindDlg::OnFind()
   }
 
   if (m_lastshown == -1) {
-    if (m_indices != NULL) {
-      // take care of the pathological case where someone added or deleted
-      // an entry while this dialog box is open
-      delete[] m_indices;
-    }
-    m_indices = new int[numEntries];
+    m_indices.clear();
 
     if (m_bAdvanced)
       m_numFound = pParent->FindAll(m_search_text, m_cs_search, m_indices,

@@ -271,28 +271,6 @@ ItemListIter DboxMain::Find(int i)
   return Find(curGroup, curTitle, curUser);
 }
 
-
-#if defined(POCKET_PC)
-  #if (POCKET_PC_VER == 2000)
-    #define PWS_CDECL	__cdecl
-  #else
-    #define PWS_CDECL
-  #endif
-#else
-  #define PWS_CDECL
-#endif
-
-// for qsort in FindAll
-static int PWS_CDECL compint(const void *a1, const void *a2)
-{
-  // since we're sorting a list of indices, v1 == v2 should never happen.
-  const int v1 = *(int *)a1, v2 = *(int *)a2;
-  ASSERT(v1 != v2);
-  return (v1 < v2) ? -1 : (v1 > v2) ? 1 : 0;
-}
-
-#undef PWS_CDECL
-
 /*
  * Finds all entries in m_pwlist that contain str in title, user, group or notes
  * field, returns their sorted indices in m_listctrl via indices, which is
@@ -301,10 +279,11 @@ static int PWS_CDECL compint(const void *a1, const void *a2)
  */
 
 int
-DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
+DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
+                  vector<int> &indices)
 {
   ASSERT(!str.IsEmpty());
-  ASSERT(indices != NULL);
+  ASSERT(indices.empty());
 
   CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT;
   CMyString listTitle, savetitle;
@@ -354,13 +333,14 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
         ASSERT(di != NULL);
         int li = di->list_index;
         ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
-        // add to indices, bump retval
-        indices[retval++] = li;
+        // add to indices
+        indices.push_back(li);
       } // match found in m_pwlist
     } // iteration over entries
+    retval = indices.size();
     // Sort indices if in List View
     if (retval > 1)
-      ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
+      sort(indices.begin(), indices.end());
   } else { // !m_IsListView
     OrderedItemList orderedItemList;
     MakeOrderedItemList(orderedItemList);
@@ -396,22 +376,24 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
         int li = di->list_index;
         ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
         // add to indices, bump retval
-        indices[retval++] = li;
+        indices.push_back(li);
       } // match found in orderedItemList
     } // iterate over orderedItemList
+    retval = indices.size();
     orderedItemList.clear();
   }
   return retval;
 }
 
 int
-DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices,
+DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
+                  vector<int> &indices,
               const CItemData::FieldBits &bsFields, const int subgroup_set, 
               const CString &subgroup_name, const int subgroup_object,
               const int subgroup_function)
 {
   ASSERT(!str.IsEmpty());
-  ASSERT(indices != NULL);
+  ASSERT(indices.empty());
 
   CMyString curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT;
   CMyString listTitle, saveTitle;
@@ -535,7 +517,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices,
       int li = di->list_index;
       ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == saveTitle);
       // add to indices, bump retval
-      indices[retval++] = li;
+      indices.push_back(li);
     } // match found in m_pwlist
 
 nextentry:
@@ -545,9 +527,10 @@ nextentry:
       olistPos++;
   } // while
 
+  retval = indices.size();
   // Sort indices if in List View
   if (m_IsListView && retval > 1)
-    ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
+    sort(indices.begin(), indices.end());
 
   if (!m_IsListView)
     orderedItemList.clear();
