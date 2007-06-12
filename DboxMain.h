@@ -119,7 +119,6 @@ public:
   BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
   void RefreshList();
   void SortTree(const HTREEITEM htreeitem);
-  bool IsExplorerTree() const {return m_bExplorerTypeTree;}
 
   void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
 
@@ -219,7 +218,6 @@ protected:
   bool m_bSortAscending;
   int m_iSortedColumn;
 
-  bool m_bAlwaysOnTop;
   bool m_bTSUpdated;
   int m_iSessionEndingStatus;
   bool m_bFindActive;
@@ -270,7 +268,6 @@ protected:
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
-
   void ClearData(bool clearMRE = true);
   int NewFile(void);
 
@@ -427,10 +424,6 @@ private:
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
-  bool m_bShowPasswordInTree;
-  bool m_bShowUsernameInTree;
-  bool m_bExplorerTypeTree;
-  bool m_bUseGridLines;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItemData::LAST];
