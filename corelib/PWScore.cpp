@@ -319,20 +319,6 @@ PWScore::WritePlaintextFile(const CMyString &filename,
   return SUCCESS;
 }
 
-static void WriteXMLTime(ofstreamT &of, int indent, const TCHAR *name, time_t t)
-{
-    int i;
-    const CString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-
-    for (i = 0; i < indent; i++) of << _T("\t");
-    of << _T("<") << name << _T(">") << endl;
-    for (i = 0; i <= indent; i++) of << _T("\t");
-    of << _T("<date>") << LPCTSTR(tmp.Left(10)) << _T("</date>") << endl;
-    for (i = 0; i <= indent; i++) of << _T("\t");
-    of << _T("<time>") << LPCTSTR(tmp.Right(8)) << _T("</time>") << endl;
-    for (i = 0; i < indent; i++) of << _T("\t");
-    of << _T("</") << name << _T(">") << endl;
-}
 
 struct XMLRecordWriter {
   XMLRecordWriter(const CString &subgroup_name,
@@ -420,23 +406,23 @@ struct XMLRecordWriter {
     time_t t;
     item.GetCTime(t);
     if (m_bsFields.test(CItemData::CTIME) && (long)t != 0)
-      WriteXMLTime(m_of, 2, _T("ctime"), t);
+      WriteXMLTime(2, _T("ctime"), t);
 
     item.GetATime(t);
     if (m_bsFields.test(CItemData::ATIME) && (long)t != 0)
-      WriteXMLTime(m_of, 2, _T("atime"), t);
+      WriteXMLTime(2, _T("atime"), t);
 
     item.GetLTime(t);
     if (m_bsFields.test(CItemData::LTIME) && (long)t != 0)
-      WriteXMLTime(m_of, 2, _T("ltime"), t);
+      WriteXMLTime(2, _T("ltime"), t);
 
     item.GetPMTime(t);
     if (m_bsFields.test(CItemData::PMTIME) && (long)t != 0)
-      WriteXMLTime(m_of, 2, _T("pmtime"), t);
+      WriteXMLTime(2, _T("pmtime"), t);
 
     item.GetRMTime(t);
     if (m_bsFields.test(CItemData::RMTIME) && (long)t != 0)
-      WriteXMLTime(m_of, 2, _T("rmtime"), t);
+      WriteXMLTime(2, _T("rmtime"), t);
 
     if (m_bsFields.test(CItemData::PWHIST)) {
       BOOL pwh_status;
@@ -529,6 +515,20 @@ struct XMLRecordWriter {
     m_of << _T("\t</entry>") << endl << endl;
   }
 private:
+  void WriteXMLTime(int indent, const TCHAR *name, time_t t)
+  {
+    int i;
+    const CString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+
+    for (i = 0; i < indent; i++) m_of << _T("\t");
+    m_of << _T("<") << name << _T(">") << endl;
+    for (i = 0; i <= indent; i++) m_of << _T("\t");
+    m_of << _T("<date>") << LPCTSTR(tmp.Left(10)) << _T("</date>") << endl;
+    for (i = 0; i <= indent; i++) m_of << _T("\t");
+    m_of << _T("<time>") << LPCTSTR(tmp.Right(8)) << _T("</time>") << endl;
+    for (i = 0; i < indent; i++) m_of << _T("\t");
+    m_of << _T("</") << name << _T(">") << endl;
+  }
   const CString &m_subgroup_name;
   const int m_subgroup_object;
   const int m_subgroup_function;
