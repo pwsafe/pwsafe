@@ -26,6 +26,7 @@
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
 #include "ColumnChooserDlg.h"
+#include <vector>
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -100,9 +101,10 @@ public:
   {return m_core.GetEntryEndIter();}
 
   // FindAll is used by CFindDlg, returns # of finds.
-  // indices allocated by caller
-  int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
-  int FindAll(const CString &str, BOOL CaseSensitive, int *indices,
+  int FindAll(const CString &str, BOOL CaseSensitive,
+              std::vector<int> &indices);
+  int FindAll(const CString &str, BOOL CaseSensitive,
+              std::vector<int> &indices,
               const CItemData::FieldBits &bsFields, const int subgroup_set, 
               const CString &subgroup_name, const int subgroup_object,
               const int subgroup_function);
