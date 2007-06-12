@@ -75,6 +75,13 @@ PWScore::~PWScore()
   }
 }
 
+void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
+{
+  m_changed = true;
+  ASSERT(m_pwlist.find(uuid) == m_pwlist.end());
+  m_pwlist[uuid] = item;
+}
+
 void
 PWScore::ClearData(void)
 {
@@ -1109,14 +1116,17 @@ PWScore::ReadFile(const CMyString &a_filename,
         }
         // deliberate fall-through
       case PWSfile::SUCCESS:
+        uuid_array_t uuid;
+        temp.GetUUID(uuid);
+        ASSERT(m_pwlist.find(uuid) == m_pwlist.end());
 #ifdef DEMO
         if (m_pwlist.size() < MAXDEMO) {
-          AddEntry(temp);
+          m_pwlist[uuid] = temp;
         } else {
           limited = true;
         }
 #else
-        AddEntry(temp);
+        m_pwlist[uuid] = temp;
 #endif
         break;
       case PWSfile::END_OF_FILE:

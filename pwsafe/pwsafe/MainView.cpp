@@ -667,7 +667,7 @@ DboxMain::RefreshList()
     insertItem(ci, -1, false);
   }
 
-  if (m_bExplorerTypeTree)
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
     SortTree(TVI_ROOT);
   else
     m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
@@ -985,12 +985,12 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
   {
     HTREEITEM ti;
     CMyString treeDispString = title;
-    if (m_bShowUsernameInTree) {
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
       CMyString user = itemData.GetUser();
       treeDispString += _T(" [");
       treeDispString += user;
       treeDispString += _T("]");
-      if (m_bShowPasswordInTree) {
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
         CMyString newPassword = itemData.GetPassword();
         treeDispString += _T(" {");
         treeDispString += newPassword;
@@ -999,7 +999,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     }
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
-    if (!m_bExplorerTypeTree) {
+    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     } else {
@@ -1582,11 +1582,11 @@ DboxMain::SetColumns()
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
 
-  int ipwd = m_bShowPasswordInTree ? 1 : 0;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  int ipwd = prefs->GetPref(PWSprefs::ShowPasswordInTree) ? 1 : 0;
 
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
-  PWSprefs *prefs = PWSprefs::GetInstance();
   int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
                                  (rect.Width() / 3 + rect.Width() % 3));
   int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
@@ -1612,15 +1612,15 @@ DboxMain::SetColumns()
   m_LVHdrCtrl.SetItem(2, &hdi);
   m_ctlItemList.SetColumnWidth(1, i3rdWidth);
     
-  if (m_bShowPasswordInTree) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
     cs_header = GetHeaderText(CItemData::PASSWORD);
     m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;
     m_LVHdrCtrl.SetItem(3, &hdi);
     m_ctlItemList.SetColumnWidth(3,
-           PWSprefs::GetInstance()->
-           GetPref(PWSprefs::Column4Width,
-           rect.Width() / 4));
+                                 PWSprefs::GetInstance()->
+                                 GetPref(PWSprefs::Column4Width,
+                                         rect.Width() / 4));
   }
 
   cs_header = GetHeaderText(CItemData::CTIME);

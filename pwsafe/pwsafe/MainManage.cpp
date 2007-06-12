@@ -264,7 +264,8 @@ DboxMain::OnOptions()
         GetPref(PWSprefs::MRUOnFileMenu);
     system.m_startup = StartupShortcutExists;
 
-    display.m_alwaysontop = m_bAlwaysOnTop;
+    display.m_alwaysontop = prefs->
+      GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
     display.m_pwshowinedit = prefs->
         GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
     display.m_showusernameintree = prefs->
@@ -586,11 +587,7 @@ DboxMain::OnOptions()
         /*
         **  Now update the application according to the options.
         */
-        m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
         UpdateAlwaysOnTop();
-        m_bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-        m_bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-        m_bExplorerTypeTree = prefs->GetPref(PWSprefs::ExplorerTypeTree);
 
         DWORD dwExtendedStyle = m_ctlItemList.GetExtendedStyle();
         BOOL bGridLines = ((dwExtendedStyle & LVS_EX_GRIDLINES) == LVS_EX_GRIDLINES) ? TRUE : FALSE;
@@ -604,9 +601,12 @@ DboxMain::OnOptions()
             m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
         }
 
-        if ((bOldShowUsernameInTree != m_bShowUsernameInTree ||
-             bOldShowPasswordInTree != m_bShowPasswordInTree) ||
-            (bOldExplorerTypeTree != m_bExplorerTypeTree) ||
+        if ((bOldShowUsernameInTree !=
+             prefs->GetPref(PWSprefs::ShowUsernameInTree) ||
+             bOldShowPasswordInTree !=
+             prefs->GetPref(PWSprefs::ShowPasswordInTree)) ||
+            (bOldExplorerTypeTree !=
+             prefs->GetPref(PWSprefs::ExplorerTypeTree)) ||
             (save_preexpirywarn != display.m_preexpirywarn) ||
             (save_preexpirywarndays != display.m_preexpirywarndays))
             RefreshList();

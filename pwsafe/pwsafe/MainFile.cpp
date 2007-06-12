@@ -487,11 +487,6 @@ DboxMain::Open( const CMyString &pszFilename )
 #endif
     CheckExpiredPasswords();
     ChangeOkUpdate();
-    // Init stuff for list/tree view - refresh as stored in DB
-    m_bShowUsernameInTree = PWSprefs::GetInstance()->
-                                GetPref(PWSprefs::ShowUsernameInTree);
-    m_bShowPasswordInTree = PWSprefs::GetInstance()->
-                                GetPref(PWSprefs::ShowPasswordInTree);
     RefreshList();
     SetInitialDatabaseDisplay();
     m_core.SetDefUsername(PWSprefs::GetInstance()->

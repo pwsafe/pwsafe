@@ -419,7 +419,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     ((DboxMain *)m_parent)->SetChanged(DboxMain::Data);
 
     // Sort it as appropriate
-    if (((DboxMain *)GetParent())->IsExplorerTree())
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
       ((DboxMain *)GetParent())->SortTree(ti);
     else
       SortChildren(GetParentItem(ti));
@@ -595,7 +595,9 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
                         | TVIF_SELECTEDIMAGE | TVIF_TEXT);
   GetItem(&tvstruct.item);  // get information of the dragged element
   tvstruct.hParent = hitemDrop;
-  if (((DboxMain *)GetParent())->IsExplorerTree())
+
+  DboxMain *dbx = static_cast<DboxMain *>(m_parent);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
     tvstruct.hInsertAfter = TVI_LAST;
   else
     tvstruct.hInsertAfter = TVI_SORT;
@@ -621,7 +623,6 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
     CMyString ci_title = ci_title0;
-    DboxMain *dbx = static_cast<DboxMain *>(m_parent);
     if (dbx->Find(path, ci_title0, ci_user) != dbx->End()) {
       // Find a unique "Title"
       ItemListConstIter listpos;
@@ -655,16 +656,16 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
       // Update tree label
       SetItemText(hNewItem, treeDispString);
       // Update list field
-      ((DboxMain *)GetParent())->UpdateListItemTitle(di->list_index, (CString)ci_title);
+      dbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
     }
     // Mark database as modified!
-    ((DboxMain *)GetParent())->SetChanged(DboxMain::Data);
+    dbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
     di->tree_item = hNewItem;
   }
   SetItemData(hNewItem, itemData);
-  if (((DboxMain *)GetParent())->IsExplorerTree())
-    ((DboxMain *)GetParent())->SortTree(hitemDrop);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
+    dbx->SortTree(hitemDrop);
   else
     SortChildren(hitemDrop);
 
