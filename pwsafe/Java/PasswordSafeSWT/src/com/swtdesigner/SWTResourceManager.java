@@ -1,12 +1,28 @@
 package com.swtdesigner;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.CoolItem;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Utility class for managing OS resources associated with SWT controls such as
@@ -137,16 +153,21 @@ public class SWTResourceManager {
      */
     public static Image getImage(String section, String path) {
         String key = section + "|" + SWTResourceManager.class.getName() + "|" + path;
-        Image image = (Image) m_ClassImageMap.get(key);
+//        Image image = (Image) m_ClassImageMap.get(key);
+        final ImageRegistry imageRegistry = JFaceResources.getImageRegistry();
+        Image image = imageRegistry.get(key);
         if (image == null) {
             try {
-                FileInputStream fis = new FileInputStream(path);
-                image = getImage(fis);
-                m_ClassImageMap.put(key, image);
-                fis.close();
+//                FileInputStream fis = new FileInputStream(path);
+//                image = getImage(fis);
+//                m_ClassImageMap.put(key, image);
+//                fis.close();
+                imageRegistry.put(key, ImageDescriptor.createFromURL(new URL(
+                        "file:" + path)));
             } catch (Exception e) {
                 return null;
             }
+            image = imageRegistry.get(key);
         }
         return image;
     }
@@ -159,15 +180,19 @@ public class SWTResourceManager {
      */
     public static Image getImage(Class clazz, String path) {
         String key = clazz.getName() + "|" + path;
-        Image image = (Image) m_ClassImageMap.get(key);
+//        Image image = (Image) m_ClassImageMap.get(key);
+        final ImageRegistry imageRegistry = JFaceResources.getImageRegistry();
+        Image image = imageRegistry.get(key);
         if (image == null) {
-            if (path.length() > 0 && path.charAt(0) == '/') {
-                String newPath = path.substring(1, path.length());
-                image = getImage(new BufferedInputStream(clazz.getClassLoader().getResourceAsStream(newPath)));
-            } else {
-                image = getImage(clazz.getResourceAsStream(path));
-            }
-            m_ClassImageMap.put(key, image);
+//            if (path.length() > 0 && path.charAt(0) == '/') {
+//                String newPath = path.substring(1, path.length());
+//                image = getImage(new BufferedInputStream(clazz.getClassLoader().getResourceAsStream(newPath)));
+//            } else {
+//                image = getImage(clazz.getResourceAsStream(path));
+//            }
+//            m_ClassImageMap.put(key, image);
+            imageRegistry.put(key, ImageDescriptor.createFromFile(clazz, path));
+            image = imageRegistry.get(key);
         }
         return image;
     }
