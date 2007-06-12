@@ -23,6 +23,8 @@ typedef std::map<CUUIDGen, CItemData, CUUIDGen::ltuuid> ItemList;
 typedef ItemList::iterator ItemListIter;
 typedef ItemList::const_iterator ItemListConstIter;
 
+typedef std::vector<CItemData> OrderedItemList;
+
 class PWScore {
  public:
 
@@ -87,12 +89,12 @@ class PWScore {
                          const CItemData::FieldBits &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
-                         const ItemList *il = NULL);
+                         const OrderedItemList *il = NULL);
   int WriteXMLFile(const CMyString &filename,
                    const CItemData::FieldBits &bsExport,
                    const CString &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR delimiter,
-                   const ItemList *il = NULL);
+                   const OrderedItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
                           TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped);
   int ImportKeePassTextFile(const CMyString &filename);

@@ -362,10 +362,12 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
     if (retval > 1)
       ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
   } else { // !m_IsListView
-    ItemList sortedItemList;
-    MakeSortedItemList(sortedItemList);
-    for (iter = sortedItemList.begin(); iter != sortedItemList.end(); iter++) {
-      const CItemData &curitem = iter->second;
+    OrderedItemList orderedItemList;
+    MakeOrderedItemList(orderedItemList);
+    OrderedItemList::const_iterator oiter;
+    for (oiter = orderedItemList.begin();
+         oiter != orderedItemList.end(); oiter++) {
+      const CItemData &curitem = *oiter;
 
       savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
       curuser =  curitem.GetUser();
@@ -395,11 +397,10 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
         ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
         // add to indices, bump retval
         indices[retval++] = li;
-      } // match found in sortedItemList
-    } // iterate over sortedItemList
-    sortedItemList.clear();
+      } // match found in orderedItemList
+    } // iterate over orderedItemList
+    orderedItemList.clear();
   }
-
   return retval;
 }
 
@@ -430,19 +431,20 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices,
   }
 
   ItemListConstIter listPos, listEnd;
-  ItemList sortedItemList;
+
+  OrderedItemList orderedItemList;
+  OrderedItemList::const_iterator olistPos, olistEnd;
   if (m_IsListView) {
     listPos = m_core.GetEntryIter();
     listEnd = m_core.GetEntryEndIter();
   } else {
-    MakeSortedItemList(sortedItemList);
-    listPos = sortedItemList.begin();
-    listEnd = sortedItemList.end();
+    MakeOrderedItemList(orderedItemList);
+    olistPos = orderedItemList.begin();
+    olistEnd = orderedItemList.end();
   }
 
-  CItemData curitem;
-  while (listPos != listEnd) {
-    curitem = listPos->second;
+  while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
+    const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
     if (subgroup_set == BST_CHECKED &&
         curitem.WantEntry(subgroup_name, subgroup_object, subgroup_function) == FALSE)
       goto nextentry;
@@ -537,7 +539,10 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices,
     } // match found in m_pwlist
 
 nextentry:
-    listPos++;
+    if (m_IsListView)
+      listPos++;
+    else
+      olistPos++;
   } // while
 
   // Sort indices if in List View
@@ -545,7 +550,7 @@ nextentry:
     ::qsort((void *)indices, retval, sizeof(indices[0]), compint);
 
   if (!m_IsListView)
-    sortedItemList.clear();
+    orderedItemList.clear();
 
   return retval;
 }

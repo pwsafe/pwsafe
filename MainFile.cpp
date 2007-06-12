@@ -796,13 +796,13 @@ DboxMain::OnExportText()
             const int subgroup_function = et.m_subgroup_function;
             TCHAR delimiter = et.m_defexpdelim[0];
 
-            ItemList sortedItemList;
-            MakeSortedItemList(sortedItemList);
+            OrderedItemList orderedItemList;
+            MakeOrderedItemList(orderedItemList);
       
             rc = m_core.WritePlaintextFile(newfile, bsExport, subgroup_name,
                                            subgroup_object, subgroup_function,
-                                           delimiter, &sortedItemList);
-            sortedItemList.clear(); // cleanup soonest
+                                           delimiter, &orderedItemList);
+            orderedItemList.clear(); // cleanup soonest
 
             if (rc == PWScore::CANT_OPEN_FILE) {
                 cs_temp.Format(IDS_CANTOPENWRITING, newfile);
@@ -864,13 +864,13 @@ DboxMain::OnExportXML()
             TCHAR delimiter;
             delimiter = eXML.m_defexpdelim[0];
       
-            ItemList sortedItemList;
-            MakeSortedItemList(sortedItemList);
+            OrderedItemList orderedItemList;
+            MakeOrderedItemList(orderedItemList);
             rc = m_core.WriteXMLFile(newfile, bsExport, subgroup_name,
                                      subgroup_object, subgroup_function,
-                                     delimiter, &sortedItemList);
+                                     delimiter, &orderedItemList);
 
-            sortedItemList.clear(); // cleanup soonest
+            orderedItemList.clear(); // cleanup soonest
 
             if (rc == PWScore::CANT_OPEN_FILE)        {
                 cs_temp.Format(IDS_CANTOPENWRITING, newfile);
