@@ -349,30 +349,25 @@ CPasskeyEntry::OnExitAdvanced()
     return;
   }
 
-  CAdvancedDlg *pAdv;
-  int rc;
-
-  pAdv = new CAdvancedDlg(this, m_adv_type, m_bsFields, m_subgroup_name, m_subgroup_set, 
-              m_subgroup_object, m_subgroup_function);
+  CAdvancedDlg Adv(this, m_adv_type, m_bsFields, m_subgroup_name,
+                   m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
   app.DisableAccelerator();
-  rc = pAdv->DoModal();
+  int rc = Adv.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
     m_bAdvanced = true;
-    m_bsFields = pAdv->m_bsFields;
-    m_subgroup_set = pAdv->m_subgroup_set;
+    m_bsFields = Adv.m_bsFields;
+    m_subgroup_set = Adv.m_subgroup_set;
     if (m_subgroup_set == BST_CHECKED) {
-      m_subgroup_name = pAdv->m_subgroup_name;
-      m_subgroup_object = pAdv->m_subgroup_object;
-      m_subgroup_function = pAdv->m_subgroup_function;
+      m_subgroup_name = Adv.m_subgroup_name;
+      m_subgroup_object = Adv.m_subgroup_object;
+      m_subgroup_function = Adv.m_subgroup_function;
     }
   } else {
     m_bAdvanced = false;
   }
-  delete pAdv;
-  pAdv = NULL;
 }
 
 void

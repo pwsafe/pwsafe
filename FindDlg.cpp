@@ -78,7 +78,11 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   : super(CFindDlg::IDD, pParent), m_indices(NULL),
     m_lastshown(-1), m_numFound(0), m_FindWraps(FALSE),
     m_last_search_text(_T("")), m_last_cs_search(FALSE),
-    m_lastCSPtr(isCS), m_lastTextPtr(lastFind), m_bAdvanced(false)
+    m_lastCSPtr(isCS), m_lastTextPtr(lastFind), m_bAdvanced(false),
+    m_subgroup_name(_T("")), m_subgroup_set(BST_UNCHECKED),
+    m_subgroup_object(0), m_subgroup_function(0),
+    m_last_subgroup_name(_T("")), m_last_subgroup_set(BST_UNCHECKED),
+    m_last_subgroup_object(0), m_last_subgroup_function(0)
 {
   ASSERT(isCS != NULL);
   ASSERT(lastFind != NULL);
@@ -89,16 +93,7 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   //}}AFX_DATA_INIT
 
   m_bsFields.reset();
-  m_subgroup_name = _T("");
-  m_subgroup_set = BST_UNCHECKED;
-  m_subgroup_object = 0;
-  m_subgroup_function = 0;
-
   m_last_bsFields.reset();
-  m_last_subgroup_name = _T("");
-  m_last_subgroup_set = BST_UNCHECKED;
-  m_last_subgroup_object = 0;
-  m_last_subgroup_function = 0;
 }
 
 void CFindDlg::EndIt()
@@ -127,16 +122,16 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CFindDlg, super)
-	//{{AFX_MSG_MAP(CFindDlg)
-	ON_BN_CLICKED(IDOK, OnFind)
-	ON_BN_CLICKED(IDC_FIND_WRAP, OnWrap)
-	ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
+//{{AFX_MSG_MAP(CFindDlg)
+ON_BN_CLICKED(IDOK, OnFind)
+ON_BN_CLICKED(IDC_FIND_WRAP, OnWrap)
+ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
 #if defined(POCKET_PC)
-	ON_BN_CLICKED(IDCANCEL, OnCancel)
+ON_BN_CLICKED(IDCANCEL, OnCancel)
 #else
-	ON_BN_CLICKED(IDCANCEL, OnClose)
+ON_BN_CLICKED(IDCANCEL, OnClose)
 #endif
-	//}}AFX_MSG_MAP
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -188,7 +183,6 @@ void CFindDlg::OnFind()
   }
 
   if (m_lastshown == -1) {
-
     if (m_indices != NULL) {
       // take care of the pathological case where someone added or deleted
       // an entry while this dialog box is open
@@ -198,8 +192,8 @@ void CFindDlg::OnFind()
 
     if (m_bAdvanced)
       m_numFound = pParent->FindAll(m_search_text, m_cs_search, m_indices,
-                    m_bsFields, m_subgroup_set, 
-                    m_subgroup_name, m_subgroup_object, m_subgroup_function);
+                                    m_bsFields, m_subgroup_set, 
+                                    m_subgroup_name, m_subgroup_object, m_subgroup_function);
     else
       m_numFound = pParent->FindAll(m_search_text, m_cs_search, m_indices);
 
@@ -227,17 +221,17 @@ void CFindDlg::OnFind()
     	if(m_lastshown >= m_numFound) {
     		int rc = IDYES;
     		if (m_FindWraps == FALSE) {  // Ask
-				CString cs_text, cs_title;
+          CString cs_text, cs_title;
     			cs_text.LoadString(IDS_CONTINUESEARCH);
     			cs_title.LoadString(IDS_SEARCHNOTFOUND);
     			rc = MessageBox(cs_text, cs_title, 
-					MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
+                          MB_ICONQUESTION | MB_YESNOCANCEL | MB_DEFBUTTON2);
     		}
     		switch (rc) {
-    			case IDYES:
-    				m_lastshown = 0;
-    				pParent->SelectFindEntry(m_indices[m_lastshown], TRUE);
-    				break;
+        case IDYES:
+          m_lastshown = 0;
+          pParent->SelectFindEntry(m_indices[m_lastshown], TRUE);
+          break;
 				case IDNO:
 #if defined(POCKET_PC)
 					OnCancel();
@@ -245,10 +239,10 @@ void CFindDlg::OnFind()
 					OnClose();
 #endif
 					break;
-    			case IDCANCEL:
-    				break;
-    			default:
-    				ASSERT(FALSE);
+        case IDCANCEL:
+          break;
+        default:
+          ASSERT(FALSE);
     		}
     	} else {
     		pParent->SelectFindEntry(m_indices[m_lastshown], TRUE);
@@ -295,29 +289,23 @@ void CFindDlg::OnClose()
 void
 CFindDlg::OnAdvanced()
 {
-  CAdvancedDlg *pAdv;
-  int rc;
-  const int adv_type(ADV_FIND);
-
-  pAdv = new CAdvancedDlg(this, adv_type, m_bsFields, m_subgroup_name, m_subgroup_set, 
-              m_subgroup_object, m_subgroup_function);
+  CAdvancedDlg Adv(this, ADV_FIND, m_bsFields, m_subgroup_name, m_subgroup_set, 
+                   m_subgroup_object, m_subgroup_function);
 
   app.DisableAccelerator();
-  rc = pAdv->DoModal();
+  int rc = Adv.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
     m_bAdvanced = true;
-    m_bsFields = pAdv->m_bsFields;
-    m_subgroup_set = pAdv->m_subgroup_set;
+    m_bsFields = Adv.m_bsFields;
+    m_subgroup_set = Adv.m_subgroup_set;
     if (m_subgroup_set == BST_CHECKED) {
-      m_subgroup_name = pAdv->m_subgroup_name;
-      m_subgroup_object = pAdv->m_subgroup_object;
-      m_subgroup_function = pAdv->m_subgroup_function;
+      m_subgroup_name = Adv.m_subgroup_name;
+      m_subgroup_object = Adv.m_subgroup_object;
+      m_subgroup_function = Adv.m_subgroup_function;
     }
   } else {
     m_bAdvanced = false;
   }
-  delete pAdv;
-  pAdv = NULL;
 }
