@@ -124,7 +124,7 @@ public class PwsRecordV3 extends PwsRecord
 		new Object [] { new Integer(CREATION_TIME),		"CREATION_TIME",		PwsTimeField.class },
 		new Object [] { new Integer(PASSWORD_MOD_TIME),	"PASSWORD_MOD_TIME",	PwsTimeField.class },
 		new Object [] { new Integer(LAST_ACCESS_TIME),	"LAST_ACCESS_TIME",		PwsTimeField.class },
-		new Object [] { new Integer(PASSWORD_LIFETIME),	"PASSWORD_LIFETIME",	PwsIntegerField.class },
+		new Object [] { new Integer(PASSWORD_LIFETIME),	"PASSWORD_LIFETIME",	PwsTimeField.class },
 		new Object [] { new Integer(PASSWORD_POLICY),	"PASSWORD_POLICY",		PwsStringUnicodeField.class },
 		new Object [] { new Integer(LAST_MOD_TIME),		"LAST_MOD_TIME",		PwsTimeField.class },
 		new Object [] { new Integer(URL),				"URL",					PwsStringUnicodeField.class },
@@ -387,7 +387,7 @@ public class PwsRecordV3 extends PwsRecord
 						break;
 	
 					case PASSWORD_LIFETIME :
-						itemVal	= new PwsIntegerField( item.getType(), item.getByteData() );
+						itemVal	= new PwsTimeField( item.getType(), item.getByteData() );
 						break;
 	
 //					case PASSWORD_POLICY :
