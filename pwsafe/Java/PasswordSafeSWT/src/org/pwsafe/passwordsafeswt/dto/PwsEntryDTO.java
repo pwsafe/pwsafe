@@ -287,6 +287,8 @@ public class PwsEntryDTO {
             
             newEntry.setLastPwChange(getSafeDate(v3, PwsRecordV3.PASSWORD_MOD_TIME));
             
+           	newEntry.setExpires(getSafeDate(v3, PwsRecordV3.PASSWORD_LIFETIME));
+            
             newEntry.setVersion("3");
             
             if (log.isDebugEnabled())
