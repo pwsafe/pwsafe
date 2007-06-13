@@ -854,40 +854,34 @@ CItemData::ValidatePWHistory()
   return 1;
 }
 
-BOOL
-CItemData::WantEntry(const CString &subgroup_name, const int &iObject,
-                     const int &iFunction) const
+bool
+CItemData::Matches(const CString &subgroup_name, int iObject,
+                   int iFunction) const
 {
-  BOOL retval(FALSE);
-
-  const CMyString title(GetTitle());
-  const CMyString group(GetGroup());
-  const CMyString user(GetUser());
-  const CMyString url(GetURL());
-  const CMyString notes(GetNotes());
+  ASSERT(iFunction != 0); // must be positive or negative!
 
   CMyString csObject;
   switch(iObject) {
-    case SGO_GROUP:
-      csObject = group;
-      break;
-    case SGO_TITLE:
-      csObject = title;
-      break;
-    case SGO_USER:
-      csObject = user;
-      break;
-    case SGO_GROUPTITLE:
-      csObject = group + TCHAR('.') + title;
-      break;
-    case SGO_URL:
-      csObject = url;
-      break;
-    case SGO_NOTES:
-      csObject = notes;
-      break;
-    default:
-      ASSERT(0);
+  case SGO_GROUP:
+    csObject = GetGroup();
+    break;
+  case SGO_TITLE:
+    csObject = GetTitle();
+    break;
+  case SGO_USER:
+    csObject = GetUser();
+    break;
+  case SGO_GROUPTITLE:
+    csObject = GetGroup() + TCHAR('.') + GetTitle();
+    break;
+  case SGO_URL:
+    csObject = GetURL();
+    break;
+  case SGO_NOTES:
+    csObject = GetNotes();
+    break;
+  default:
+    ASSERT(0);
   }
 
   const int sb_len = subgroup_name.GetLength();
@@ -896,117 +890,83 @@ CItemData::WantEntry(const CString &subgroup_name, const int &iObject,
   // Negative = Case   Sensitive
   // Positive = Case INsensitive
   switch (iFunction) {
-    case -SGF_EQUALS:
-      if ((ob_len != sb_len) ||
-          (csObject.Compare((LPCTSTR)subgroup_name) != 0))
-        return retval;
-      break;
-   case -SGF_NOTEQUAL:
-      if (csObject.Compare((LPCTSTR)subgroup_name) == 0)
-        return retval;
-      break;
-    case -SGF_BEGINS:
-      if (ob_len >= sb_len) {
-        csObject = csObject.Left(sb_len);
-      if (subgroup_name.Compare((LPCTSTR)csObject) != 0)
-        return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case -SGF_NOTBEGIN:
-      if (ob_len >= sb_len) {
-        csObject = csObject.Left(sb_len);
-        if (subgroup_name.Compare((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case -SGF_ENDS:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.Compare((LPCTSTR)csObject) != 0)
-          return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case -SGF_NOTEND:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.Compare((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case -SGF_CONTAINS:
-      if (csObject.Find((LPCTSTR)subgroup_name) == -1)
-        return retval;
-      break;
-    case -SGF_NOTCONTAIN:
-      if (csObject.Find((LPCTSTR)subgroup_name)  > -1)
-        return retval;
-      break;
-    case SGF_EQUALS:
-      if ((ob_len != sb_len) ||
-          (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0))
-        return retval;
-      break;
-    case SGF_NOTEQUAL:
-      if (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0)
-        return retval;
-      break;
-    case SGF_BEGINS:
-      if (ob_len > sb_len) {
-        csObject = csObject.Left(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)
-          return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case SGF_NOTBEGIN:
-      if (ob_len > sb_len) {
-        csObject = csObject.Left(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case SGF_ENDS:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)
-          return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case SGF_NOTEND:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case SGF_CONTAINS:
-      {
-        csObject.MakeLower();
-        CString subgroupLC(subgroup_name);
-        subgroupLC.MakeLower();
-        if (csObject.Find((LPCTSTR)subgroupLC) == -1)
-          return retval;
-        break;
-      }
-    case SGF_NOTCONTAIN:
-      {
-        csObject.MakeLower();
-        CString subgroupLC(subgroup_name);
-        subgroupLC.MakeLower();
-        if (csObject.Find((LPCTSTR)subgroupLC) > -1)
-          return retval;
-        break;
-      }
-    default:
-      ASSERT(0);
+  case -SGF_EQUALS:
+  case SGF_EQUALS:
+    return ((ob_len == sb_len) &&
+            (((iFunction < 0) &&
+              csObject.Compare((LPCTSTR)subgroup_name) == 0) ||
+             ((iFunction > 0) &&
+              (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0))));
+  case -SGF_NOTEQUAL:
+  case SGF_NOTEQUAL:
+    return (((iFunction < 0) &&
+             csObject.Compare((LPCTSTR)subgroup_name) != 0) ||
+            ((iFunction > 0) &&
+             (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0)));
+  case -SGF_BEGINS:
+  case SGF_BEGINS:
+    if (ob_len >= sb_len) {
+      csObject = csObject.Left(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) == 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
+    } else {
+      return false;
+    }
+  case -SGF_NOTBEGIN:
+  case SGF_NOTBEGIN:
+    if (ob_len >= sb_len) {
+      csObject = csObject.Left(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) != 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
+    } else {
+      return false;
+    }
+  case -SGF_ENDS:
+  case SGF_ENDS:
+    if (ob_len > sb_len) {
+      csObject = csObject.Right(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) == 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
+    } else {
+      return false;
+    }
+  case -SGF_NOTEND:
+  case SGF_NOTEND:
+    if (ob_len > sb_len) {
+      csObject = csObject.Right(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) != 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
+    } else
+      return true;
+  case -SGF_CONTAINS:
+    return (csObject.Find((LPCTSTR)subgroup_name) != -1);
+  case SGF_CONTAINS:
+    {
+      csObject.MakeLower();
+      CString subgroupLC(subgroup_name);
+      subgroupLC.MakeLower();
+      return (csObject.Find((LPCTSTR)subgroupLC) != -1);
+    }
+  case -SGF_NOTCONTAIN:
+    return (csObject.Find((LPCTSTR)subgroup_name)== -1);
+  case SGF_NOTCONTAIN:
+    {
+      csObject.MakeLower();
+      CString subgroupLC(subgroup_name);
+      subgroupLC.MakeLower();
+      return (csObject.Find((LPCTSTR)subgroupLC) == -1);
+    }
+  default:
+    ASSERT(0);
   }
-  
-  return TRUE;
+
+  return true; // should never get here!
 }

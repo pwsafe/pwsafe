@@ -79,120 +79,121 @@ public:
 
   // For subgroup processing in GetPlainText from ExportTextXDlg
   // SubGroup Function - if value used is negative, compare IS case sensitive
-  enum {SGF_EQUALS = 1, SGF_NOTEQUAL, 
-    SGF_BEGINS, SGF_NOTBEGIN, 
-    SGF_ENDS, SGF_NOTEND, 
-    SGF_CONTAINS, SGF_NOTCONTAIN};
+  enum SubGrpFunc {SGF_EQUALS = 1, SGF_NOTEQUAL, 
+                   SGF_BEGINS, SGF_NOTBEGIN, 
+                   SGF_ENDS, SGF_NOTEND, 
+                   SGF_CONTAINS, SGF_NOTCONTAIN};
   // SubGroup Object
-  enum {SGO_GROUP, SGO_TITLE, SGO_USER, SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
+  enum SubGrpObj {SGO_GROUP, SGO_TITLE, SGO_USER,
+                  SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
 
- // a bitset for indicating a subset of an item's fields: 
+  // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
   static void SetSessionKey(); // call exactly once per session
 
   static bool IsTextField(unsigned char t);
 
-   //Construction
+  //Construction
   CItemData();
 
-   CItemData(const CItemData& stuffhere);
+  CItemData(const CItemData& stuffhere);
 
-   ~CItemData();
+  ~CItemData();
 
-   //Data retrieval
-   CMyString GetName() const; // V17 - deprecated - replaced by GetTitle & GetUser
-   CMyString GetTitle() const; // V20
-   CMyString GetUser() const; // V20
-   CMyString GetPassword() const;
-   CMyString GetNotes(TCHAR delimiter = 0) const;
-   void GetUUID(uuid_array_t &) const; // V20
-   CMyString GetGroup() const; // V20
-   CMyString GetURL() const; // V30
-   CMyString GetAutoType() const; // V30
-   CMyString GetATime() const {return GetTime(ATIME, TMC_ASC_UNKNOWN);}  // V30
-   CMyString GetCTime() const {return GetTime(CTIME, TMC_ASC_UNKNOWN);}  // V30
-   CMyString GetLTime() const {return GetTime(LTIME, TMC_ASC_UNKNOWN);}  // V30
-   CMyString GetPMTime() const {return GetTime(PMTIME, TMC_ASC_UNKNOWN);}  // V30
-   CMyString GetRMTime() const {return GetTime(RMTIME, TMC_ASC_UNKNOWN);}  // V30
-   CMyString GetATimeL() const {return GetTime(ATIME, TMC_LOCALE);}  // V30
-   CMyString GetCTimeL() const {return GetTime(CTIME, TMC_LOCALE);}  // V30
-   CMyString GetLTimeL() const {return GetTime(LTIME, TMC_LOCALE);}  // V30
-   CMyString GetPMTimeL() const {return GetTime(PMTIME, TMC_LOCALE);}  // V30
-   CMyString GetRMTimeL() const {return GetTime(RMTIME, TMC_LOCALE);}  // V30
-   CMyString GetATimeN() const {return GetTime(ATIME, TMC_ASC_NULL);}  // V30
-   CMyString GetCTimeN() const {return GetTime(CTIME, TMC_ASC_NULL);}  // V30
-   CMyString GetLTimeN() const {return GetTime(LTIME, TMC_ASC_NULL);}  // V30
-   CMyString GetPMTimeN() const {return GetTime(PMTIME, TMC_ASC_NULL);}  // V30
-   CMyString GetRMTimeN() const {return GetTime(RMTIME, TMC_ASC_NULL);}  // V30
-   CMyString GetATimeExp() const {return GetTime(ATIME, TMC_EXPORT_IMPORT);}  // V30
-   CMyString GetCTimeExp() const {return GetTime(CTIME, TMC_EXPORT_IMPORT);}  // V30
-   CMyString GetLTimeExp() const {return GetTime(LTIME, TMC_EXPORT_IMPORT);}  // V30
-   CMyString GetPMTimeExp() const {return GetTime(PMTIME, TMC_EXPORT_IMPORT);}  // V30
-   CMyString GetRMTimeExp() const {return GetTime(RMTIME, TMC_EXPORT_IMPORT);}  // V30
-   CMyString GetATimeXML() const {return GetTime(ATIME, TMC_XML);}  // V30
-   CMyString GetCTimeXML() const {return GetTime(CTIME, TMC_XML);}  // V30
-   CMyString GetLTimeXML() const {return GetTime(LTIME, TMC_XML);}  // V30
-   CMyString GetPMTimeXML() const {return GetTime(PMTIME, TMC_XML);}  // V30
-   CMyString GetRMTimeXML() const {return GetTime(RMTIME, TMC_XML);}  // V30
-   //  These populate the time structure instead of giving a character string
-   void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
-   void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
-   void GetLTime(time_t &t) const {GetTime(LTIME, t);}  // V30
-   void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
-   void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
-   CMyString GetPWHistory() const;  // V30
-   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
-   // it's used for multi-line notes and to replace '.' within the Title field.
-   CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
-   						const TCHAR &delimiter) const;
-   void GetUnknownField(unsigned char &type, unsigned int &length,
-                        unsigned char * &pdata,
-                        const unsigned int &num) const;
-   void GetUnknownField(unsigned char &type, unsigned int &length,
-                        unsigned char * &pdata,
-                        const UnknownFieldsConstIter &iter) const;
-   void SetUnknownField(const unsigned char type,
-                        const unsigned int length,
-                        const unsigned char * ufield);
-   unsigned int NumberUnknownFields() const
-     {return (unsigned int)m_URFL.size();}
-   void ClearUnknownFields()
-     {return m_URFL.clear();}
+  //Data retrieval
+  CMyString GetName() const; // V17 - deprecated - replaced by GetTitle & GetUser
+  CMyString GetTitle() const; // V20
+  CMyString GetUser() const; // V20
+  CMyString GetPassword() const;
+  CMyString GetNotes(TCHAR delimiter = 0) const;
+  void GetUUID(uuid_array_t &) const; // V20
+  CMyString GetGroup() const; // V20
+  CMyString GetURL() const; // V30
+  CMyString GetAutoType() const; // V30
+  CMyString GetATime() const {return GetTime(ATIME, TMC_ASC_UNKNOWN);}  // V30
+  CMyString GetCTime() const {return GetTime(CTIME, TMC_ASC_UNKNOWN);}  // V30
+  CMyString GetLTime() const {return GetTime(LTIME, TMC_ASC_UNKNOWN);}  // V30
+  CMyString GetPMTime() const {return GetTime(PMTIME, TMC_ASC_UNKNOWN);}  // V30
+  CMyString GetRMTime() const {return GetTime(RMTIME, TMC_ASC_UNKNOWN);}  // V30
+  CMyString GetATimeL() const {return GetTime(ATIME, TMC_LOCALE);}  // V30
+  CMyString GetCTimeL() const {return GetTime(CTIME, TMC_LOCALE);}  // V30
+  CMyString GetLTimeL() const {return GetTime(LTIME, TMC_LOCALE);}  // V30
+  CMyString GetPMTimeL() const {return GetTime(PMTIME, TMC_LOCALE);}  // V30
+  CMyString GetRMTimeL() const {return GetTime(RMTIME, TMC_LOCALE);}  // V30
+  CMyString GetATimeN() const {return GetTime(ATIME, TMC_ASC_NULL);}  // V30
+  CMyString GetCTimeN() const {return GetTime(CTIME, TMC_ASC_NULL);}  // V30
+  CMyString GetLTimeN() const {return GetTime(LTIME, TMC_ASC_NULL);}  // V30
+  CMyString GetPMTimeN() const {return GetTime(PMTIME, TMC_ASC_NULL);}  // V30
+  CMyString GetRMTimeN() const {return GetTime(RMTIME, TMC_ASC_NULL);}  // V30
+  CMyString GetATimeExp() const {return GetTime(ATIME, TMC_EXPORT_IMPORT);}  // V30
+  CMyString GetCTimeExp() const {return GetTime(CTIME, TMC_EXPORT_IMPORT);}  // V30
+  CMyString GetLTimeExp() const {return GetTime(LTIME, TMC_EXPORT_IMPORT);}  // V30
+  CMyString GetPMTimeExp() const {return GetTime(PMTIME, TMC_EXPORT_IMPORT);}  // V30
+  CMyString GetRMTimeExp() const {return GetTime(RMTIME, TMC_EXPORT_IMPORT);}  // V30
+  CMyString GetATimeXML() const {return GetTime(ATIME, TMC_XML);}  // V30
+  CMyString GetCTimeXML() const {return GetTime(CTIME, TMC_XML);}  // V30
+  CMyString GetLTimeXML() const {return GetTime(LTIME, TMC_XML);}  // V30
+  CMyString GetPMTimeXML() const {return GetTime(PMTIME, TMC_XML);}  // V30
+  CMyString GetRMTimeXML() const {return GetTime(RMTIME, TMC_XML);}  // V30
+  //  These populate the time structure instead of giving a character string
+  void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
+  void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
+  void GetLTime(time_t &t) const {GetTime(LTIME, t);}  // V30
+  void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
+  void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
+  CMyString GetPWHistory() const;  // V30
+  // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
+  // it's used for multi-line notes and to replace '.' within the Title field.
+  CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
+                         const TCHAR &delimiter) const;
+  void GetUnknownField(unsigned char &type, unsigned int &length,
+                       unsigned char * &pdata,
+                       const unsigned int &num) const;
+  void GetUnknownField(unsigned char &type, unsigned int &length,
+                       unsigned char * &pdata,
+                       const UnknownFieldsConstIter &iter) const;
+  void SetUnknownField(const unsigned char type,
+                       const unsigned int length,
+                       const unsigned char * ufield);
+  unsigned int NumberUnknownFields() const
+  {return (unsigned int)m_URFL.size();}
+  void ClearUnknownFields()
+  {return m_URFL.clear();}
   UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
   UnknownFieldsConstIter GetURFIterEnd() const {return m_URFL.end();}
 
-   void CreateUUID(); // V20 - generate UUID for new item
-   void SetName(const CMyString &name,
-	 const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
-   void SetTitle(const CMyString &title, TCHAR delimiter = 0);
-   void SetUser(const CMyString &user); // V20
-   void SetPassword(const CMyString &password);
-   void SetNotes(const CMyString &notes, TCHAR delimiter = 0);
-   void SetUUID(const uuid_array_t &UUID); // V20
-   void SetGroup(const CMyString &group); // V20
-   void SetURL(const CMyString &URL); // V30
-   void SetAutoType(const CMyString &autotype); // V30
-   void SetATime() {SetTime(ATIME);}  // V30
-   void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
-   void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
-   void SetCTime() {SetTime(CTIME);}  // V30
-   void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
-   void SetCTime(const CString &time_str) {SetTime(CTIME, time_str);}  // V30
-   void SetLTime() {SetTime(LTIME);}  // V30
-   void SetLTime(time_t t) {SetTime(LTIME, t);}  // V30
-   void SetLTime(const CString &time_str) {SetTime(LTIME, time_str);}  // V30
-   void SetPMTime() {SetTime(PMTIME);}  // V30
-   void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
-   void SetPMTime(const CString &time_str) {SetTime(PMTIME, time_str);}  // V30
-   void SetRMTime() {SetTime(RMTIME);}  // V30
-   void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
-   void SetRMTime(const CString &time_str) {SetTime(RMTIME, time_str);}  // V30
-   void SetPWHistory(const CMyString &PWHistory);  // V30
-   int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
-                           PWHistList* pPWHistList,
-                           const int time_format) const;  // V30
-   CItemData& operator=(const CItemData& second);
+  void CreateUUID(); // V20 - generate UUID for new item
+  void SetName(const CMyString &name,
+               const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
+  void SetTitle(const CMyString &title, TCHAR delimiter = 0);
+  void SetUser(const CMyString &user); // V20
+  void SetPassword(const CMyString &password);
+  void SetNotes(const CMyString &notes, TCHAR delimiter = 0);
+  void SetUUID(const uuid_array_t &UUID); // V20
+  void SetGroup(const CMyString &group); // V20
+  void SetURL(const CMyString &URL); // V30
+  void SetAutoType(const CMyString &autotype); // V30
+  void SetATime() {SetTime(ATIME);}  // V30
+  void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
+  void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
+  void SetCTime() {SetTime(CTIME);}  // V30
+  void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
+  void SetCTime(const CString &time_str) {SetTime(CTIME, time_str);}  // V30
+  void SetLTime() {SetTime(LTIME);}  // V30
+  void SetLTime(time_t t) {SetTime(LTIME, t);}  // V30
+  void SetLTime(const CString &time_str) {SetTime(LTIME, time_str);}  // V30
+  void SetPMTime() {SetTime(PMTIME);}  // V30
+  void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
+  void SetPMTime(const CString &time_str) {SetTime(PMTIME, time_str);}  // V30
+  void SetRMTime() {SetTime(RMTIME);}  // V30
+  void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
+  void SetRMTime(const CString &time_str) {SetTime(RMTIME, time_str);}  // V30
+  void SetPWHistory(const CMyString &PWHistory);  // V30
+  int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
+                          PWHistList* pPWHistList,
+                          const int time_format) const;  // V30
+  CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(void *di) {m_display_info = di;}
@@ -202,8 +203,9 @@ public:
                    uuid_array_t &uuid_array);
   int ValidatePWHistory();
   
-  BOOL WantEntry(const CString &subgroup_name, const int &iObject, 
-                 const int &iFunction) const;
+  // Predicate to determine if item matches given criteria
+  bool Matches(const CString &subgroup_name, int iObject, 
+               int iFunction) const;
 
 private:
   CItemField m_Name;
@@ -236,7 +238,7 @@ private:
 
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const CMyString &name,
-		 CMyString &title, CMyString &username);
+                 CMyString &title, CMyString &username);
   CMyString GetTime(int whichtime, int result_format) const; // V30
   void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
