@@ -14,8 +14,16 @@
 #include "PWSrand.h"
 
 #include <time.h>
-#include <vector>
-#include <algorithm>
+#include <sstream>
+
+using namespace std;
+
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wostringstream ostringstreamT;
+#else
+typedef std::ostringstream ostringstreamT;
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -200,6 +208,25 @@ CItemData::GetTime(int whichtime, time_t &t) const
     t = 0;
   }
 }
+
+CMyString CItemData::GetXMLTime(int indent, const TCHAR *name, time_t t) const
+{
+  int i;
+  const CString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+  ostringstreamT oss;
+
+  for (i = 0; i < indent; i++) oss << _T("\t");
+  oss << _T("<") << name << _T(">") << endl;
+  for (i = 0; i <= indent; i++) oss << _T("\t");
+  oss << _T("<date>") << LPCTSTR(tmp.Left(10)) << _T("</date>") << endl;
+  for (i = 0; i <= indent; i++) oss << _T("\t");
+  oss << _T("<time>") << LPCTSTR(tmp.Right(8)) << _T("</time>") << endl;
+  for (i = 0; i < indent; i++) oss << _T("\t");
+  oss << _T("</") << name << _T(">") << endl;
+  CMyString retval(oss.str().c_str());
+  return retval;
+}
+
 
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
 {
@@ -390,6 +417,184 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 	}
 
     return ret;
+}
+
+CMyString CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
+{
+  ostringstreamT oss;
+  // TODO: need to handle entity escaping of values.
+  oss << _T("\t<entry id=\"") << id << _T("\">") << endl;
+
+  CMyString tmp;
+
+  tmp = GetGroup();
+  if (bsExport.test(CItemData::GROUP) && !tmp.IsEmpty())
+    oss << _T("\t\t<group><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></group>") << endl;
+
+  // Title mandatory (see pwsafe.xsd)
+  tmp = GetTitle();
+  oss <<_T("\t\t<title><![CDATA[") << LPCTSTR(tmp)
+      << _T("]]></title>") << endl;
+
+  tmp = GetUser();
+  if (bsExport.test(CItemData::USER) && !tmp.IsEmpty())
+    oss << _T("\t\t<username><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></username>") << endl;
+
+  tmp = GetPassword();
+  // Password mandatory (see pwsafe.xsd)
+  oss << _T("\t\t<password><![CDATA[") << LPCTSTR(tmp)
+      << _T("]]></password>") << endl;
+
+  tmp = GetURL();
+  if (bsExport.test(CItemData::URL) && !tmp.IsEmpty())
+    oss << _T("\t\t<url><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></url>") << endl;
+
+  tmp = GetAutoType();
+  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
+    oss << _T("\t\t<autotype><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></autotype>") << endl;
+
+  tmp = GetNotes();
+  if (bsExport.test(CItemData::NOTES) && !tmp.IsEmpty())
+    oss << _T("\t\t<notes><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></notes>") << endl;
+
+  uuid_array_t uuid_array;
+  GetUUID(uuid_array);
+  TCHAR uuid_buffer[37];
+#if _MSC_VER >= 1400
+  _stprintf_s(uuid_buffer, 33,
+              _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+              uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+              uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+              uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+              uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#else
+  _stprintf(uuid_buffer,
+            _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#endif
+  uuid_buffer[32] = TCHAR('\0');
+  oss << _T("\t\t<uuid><![CDATA[") << uuid_buffer << _T("]]></uuid>") << endl;
+
+  time_t t;
+  GetCTime(t);
+  if (bsExport.test(CItemData::CTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("ctime"), t);
+
+  GetATime(t);
+  if (bsExport.test(CItemData::ATIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("atime"), t);
+
+  GetLTime(t);
+  if (bsExport.test(CItemData::LTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("ltime"), t);
+
+  GetPMTime(t);
+  if (bsExport.test(CItemData::PMTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("pmtime"), t);
+
+  GetRMTime(t);
+  if (bsExport.test(CItemData::RMTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("rmtime"), t);
+
+  if (bsExport.test(CItemData::PWHIST)) {
+    BOOL pwh_status;
+    size_t pwh_max, pwh_num;
+    PWHistList PWHistList;
+    CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+                        &PWHistList, TMC_XML);
+    if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
+      TCHAR buffer[8];
+      oss << _T("\t\t<pwhistory>") << endl;
+#if _MSC_VER >= 1400
+      _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
+      oss << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+
+      _stprintf_s(buffer, 3, _T("%2d"), pwh_max);
+      oss << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+
+      _stprintf_s(buffer, 3, _T("%2d"), pwh_num);
+      oss << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+#else
+      _stprintf(buffer, _T("%1d"), pwh_status);
+      oss << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+
+      _stprintf(buffer, _T("%2d"), pwh_max);
+      oss << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+
+      _stprintf(buffer, _T("%2d"), pwh_num);
+      oss << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+#endif
+      if (!PWHistList.empty()) {
+        oss << _T("\t\t\t<history_entries>") << endl;
+        int num = 1;
+        PWHistList::iterator hiter;
+        for (hiter = PWHistList.begin(); hiter != PWHistList.end();
+             hiter++) {
+          oss << _T("\t\t\t\t<history_entry num=\"") << num << _T("\">") << endl;
+          const PWHistEntry pwshe = *hiter;
+          oss << _T("\t\t\t\t\t<changed>") << endl;
+          oss << _T("\t\t\t\t\t\t<date>")
+              << LPCTSTR(pwshe.changedate.Left(10))
+              << _T("</date>") << endl;
+          oss << _T("\t\t\t\t\t\t<time>")
+              << LPCTSTR(pwshe.changedate.Right(8))
+              << _T("</time>") << endl;
+          oss << _T("\t\t\t\t\t</changed>") << endl;
+          oss << _T("\t\t\t\t\t<oldpassword><![CDATA[")
+              << LPCTSTR(pwshe.password)
+              << _T("]]></oldpassword>") << endl;
+          oss << _T("\t\t\t\t</history_entry>") << endl;
+
+          num++;
+        } // for
+        oss << _T("\t\t\t</history_entries>") << endl;
+      } // if !empty
+      oss << _T("\t\t</pwhistory>") << endl;
+    }
+  }
+
+  if (NumberUnknownFields() > 0) {
+    oss << _T("\t\t<unknownrecordfields>") << endl;
+    for (unsigned int i = 0; i != NumberUnknownFields(); i++) {
+      unsigned int length = 0;
+      unsigned char type;
+      unsigned char *pdata(NULL);
+      GetUnknownField(type, length, pdata, i);
+      if (length == 0)
+        continue;
+      // UNK_HEX_REP will represent unknown values
+      // as hexadecimal, rather than base64 encoding.
+      // Easier to debug.
+#ifndef UNK_HEX_REP
+      tmp = (CMyString)PWSUtil::Base64Encode(pdata, length);
+#else
+      tmp.Empty();
+      unsigned char * pdata2(pdata);
+      unsigned char c;
+      for (int j = 0; j < (int)length; j++) {
+        c = *pdata2++;
+        cs_tmp.Format(_T("%02x"), c);
+        tmp += CMyString(cs_tmp);
+      }
+#endif
+      oss << _T("\t\t\t<field ftype=\"") << int(type) << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+      trashMemory(pdata, length);
+      delete[] pdata;
+    } // iteration over unknown fields
+    oss << _T("\t\t</unknownrecordfields>") << endl;  
+  } // if there are unknown fields
+
+  oss << _T("\t</entry>") << endl << endl;
+  CMyString retval(oss.str().c_str());
+  return retval;
 }
 
 void CItemData::SplitName(const CMyString &name,

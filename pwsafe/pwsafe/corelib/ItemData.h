@@ -147,6 +147,7 @@ public:
   // it's used for multi-line notes and to replace '.' within the Title field.
   CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
                          const TCHAR &delimiter) const;
+  CMyString GetXML(unsigned id, const FieldBits &bsExport) const;
   void GetUnknownField(unsigned char &type, unsigned int &length,
                        unsigned char * &pdata,
                        const unsigned int &num) const;
@@ -241,6 +242,7 @@ private:
                  CMyString &title, CMyString &username);
   CMyString GetTime(int whichtime, int result_format) const; // V30
   void GetTime(int whichtime, time_t &t) const; // V30
+  CMyString GetXMLTime(int indent, const TCHAR *name, time_t t) const;
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
   void SetTime(const int whichtime, const CString &time_str); // V30
