@@ -1168,7 +1168,16 @@ PWScore::ReadFile(const CMyString &a_filename,
       case PWSfile::SUCCESS:
         uuid_array_t uuid;
         temp.GetUUID(uuid);
-        ASSERT(m_pwlist.find(uuid) == m_pwlist.end());
+        /*
+         * If, for some reason, we're reading in a uuid that we already have
+         * we will change the uuid, rather than overwrite an entry.
+         * This is to protect the user from possible bugs that break
+         * the uniqueness requirement of uuids.
+         */
+        if (m_pwlist.find(uuid) != m_pwlist.end()) {
+          ASSERT(0); // abort in debug build
+          temp.CreateUUID(); // replace duplicated uuid
+        }
 #ifdef DEMO
         if (m_pwlist.size() < MAXDEMO) {
           m_pwlist[uuid] = temp;
