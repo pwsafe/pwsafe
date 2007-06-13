@@ -1251,8 +1251,8 @@ DboxMain::Merge(const CMyString &pszFilename) {
     CItemData otherItem = othercore.GetEntry(otherPos);
 
     if (m_subgroup_set == BST_CHECKED &&
-        otherItem.WantEntry(m_subgroup_name, m_subgroup_object,
-                            m_subgroup_function) == FALSE)
+        !otherItem.Matches(m_subgroup_name, m_subgroup_object,
+                           m_subgroup_function))
       continue;
 
     const CMyString otherGroup = otherItem.GetGroup();
@@ -1601,8 +1601,8 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 		CItemData currentItem = m_core.GetEntry(currentPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
-        currentItem.WantEntry(m_subgroup_name, m_subgroup_object,
-                              m_subgroup_function) == TRUE) {
+        currentItem.Matches(m_subgroup_name, m_subgroup_object,
+                            m_subgroup_function)) {
       const CMyString currentGroup = currentItem.GetGroup();
       const CMyString currentTitle = currentItem.GetTitle();
       const CMyString currentUser = currentItem.GetUser();
@@ -1720,8 +1720,8 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 		CItemData compItem = othercore.GetEntry(compPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
-        compItem.WantEntry(m_subgroup_name, m_subgroup_object,
-                           m_subgroup_function) == FALSE) {
+        !compItem.Matches(m_subgroup_name, m_subgroup_object,
+                          m_subgroup_function)) {
       const CMyString compGroup = compItem.GetGroup();
       const CMyString compTitle = compItem.GetTitle();
       const CMyString compUser = compItem.GetUser();

@@ -428,7 +428,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
     const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
     if (subgroup_set == BST_CHECKED &&
-        curitem.WantEntry(subgroup_name, subgroup_object, subgroup_function) == FALSE)
+        !curitem.Matches(subgroup_name, subgroup_object, subgroup_function))
       goto nextentry;
 
     bFoundit = false;

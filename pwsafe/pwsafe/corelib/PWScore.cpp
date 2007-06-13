@@ -209,8 +209,8 @@ struct PutText {
   void operator()(const CItemData &item)
   {
     if (m_subgroup_name.IsEmpty() || 
-        item.WantEntry(m_subgroup_name, m_subgroup_object,
-                       m_subgroup_function) == TRUE) {
+        item.Matches(m_subgroup_name, m_subgroup_object,
+                     m_subgroup_function)) {
       const CMyString line = item.GetPlaintext(TCHAR('\t'),
                                                m_bsFields, m_delimiter);
       if (!line.IsEmpty())
@@ -337,8 +337,8 @@ struct XMLRecordWriter {
   {
     m_id++;
     if (!m_subgroup_name.IsEmpty() &&
-        item.WantEntry(m_subgroup_name,
-                       m_subgroup_object, m_subgroup_function) == FALSE) {
+        !item.Matches(m_subgroup_name,
+                      m_subgroup_object, m_subgroup_function)) {
       return;
     }
 
