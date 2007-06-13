@@ -773,9 +773,19 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 	for ( i=0; i<depth; i++ ) {
 		_ftprintf( cfile, _T("    ") );
 	}
-
+#ifndef UNICODE
 	_ftprintf( cfile, _T("<%s"), value.c_str() );
-
+#else
+  int utf8bufsize = 2 * value.length(); // upper limit
+  char *utf8buf = new char[utf8bufsize+1];
+  utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
+                                    value.c_str(), value.length(),
+                                    utf8buf, utf8bufsize,
+                                    0, 0);
+  assert(utf8bufsize != 0);
+  utf8buf[utf8bufsize] = '\0';
+	fprintf( cfile, "<%s", utf8buf );
+#endif
 	const TiXmlAttribute* attrib;
 	for ( attrib = attributeSet.First(); attrib; attrib = attrib->Next() )
 	{
@@ -796,7 +806,11 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 	{
 		_ftprintf( cfile, _T(">") );
 		firstChild->Print( cfile, depth + 1 );
+#ifndef UNICODE
 		_ftprintf( cfile, _T("</%s>"), value.c_str() );
+#else
+		fprintf( cfile, "</%s>", utf8buf );
+#endif
 	}
 	else
 	{
@@ -814,8 +828,15 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 		for( i=0; i<depth; ++i ) {
 			_ftprintf( cfile, _T("    ") );
 		}
+#ifndef UNICODE
 		_ftprintf( cfile, _T("</%s>"), value.c_str() );
+#else
+		fprintf( cfile, "</%s>", utf8buf );
+#endif
 	}
+#ifdef UNICODE
+  delete[] utf8buf;
+#endif
 }
 
 
@@ -1422,14 +1443,14 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
         fwrite(buffer.c_str(), buffer.length()*sizeof(TCHAR), 1, cfile);
 #else
         int utf8bufsize = 2 * buffer.length(); // upper limit
-        char *ut8buf = new char[utf8bufsize];
+        char *utf8buf = new char[utf8bufsize];
         utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
                                           buffer.c_str(), buffer.length(),
-                                          ut8buf, utf8bufsize,
+                                          utf8buf, utf8bufsize,
                                           0, 0);
         assert(utf8bufsize != 0);
-        fwrite(ut8buf, utf8bufsize, 1, cfile);
-        delete[] ut8buf;
+        fwrite(utf8buf, utf8bufsize, 1, cfile);
+        delete[] utf8buf;
 #endif
 	}
 }
