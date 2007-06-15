@@ -210,14 +210,10 @@
 #define IDS_COMPARESTATISTICS           5378
 #define IDS_IDENTICALDATABASES          5379
 #define IDS_COMPARECOMPLETE             5380
-#define IDS_COMPAREONLY1                5381
-#define IDS_COMPAREONLY2                5382
-#define IDS_COMPAREBOTHDIFF             5383
-#define IDS_COMPARECOPYRESULT           5384
 #define IDS_COMPARESTATS                5385
 #define IDS_COMPAREENTRIES1             5386
 #define IDS_COMPAREENTRIES2             5387
-#define IDS_COMPAREBOTHDIFF2            5388
+#define IDS_COMPAREBOTHDIFF             5388
 #define IDS_COMPARESTATS2               5389
 #define IDS_COMPPASSWORD                5390
 #define IDS_COMPNOTES                   5391

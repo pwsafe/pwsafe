@@ -1183,7 +1183,8 @@ DboxMain::Merge(const CMyString &pszFilename) {
   PWScore othercore;
   int rc = GetAndCheckPassword(pszFilename, passkey,
                                GCP_ADVANCED, // OK, CANCEL, HELP
-                               true,         // force readonly
+                               true,         // readonly
+                               true,         // user cannot change readonly status
                                &othercore,   // Use other core
                                ADV_MERGE);   // Advanced type
 
@@ -1487,8 +1488,12 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
   const CMyString cs_SavePrefString(PWSprefs::GetInstance()->Store());
 
 	// OK, CANCEL, HELP, ADVANCED + (nolonger force R/O) + use othercore
-	rc = GetAndCheckPassword(cs_Filename2, passkey, GCP_ADVANCED, false,
-                           &othercore, ADV_COMPARE);
+  rc = GetAndCheckPassword(cs_Filename2, passkey,
+                               GCP_ADVANCED, // OK, CANCEL, HELP
+                               true,         // readonly
+                               false,        // user can change readonly status
+                               &othercore,   // Use other core
+                               ADV_COMPARE);   // Advanced type
 	switch (rc) {
   case PWScore::SUCCESS:
     break; // Keep going...

@@ -923,7 +923,8 @@ DboxMain::OnU3ShopWebsite()
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,
                               CMyString& passkey,
-                              int index ,
+                              int index,
+                              bool bReadOnly,
                               bool bForceReadOnly,
                               PWScore *pcore,
                               int adv_type)
@@ -960,14 +961,13 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     if (bFileIsReadOnly || bForceReadOnly) {
         // As file is read-only, we must honour it and not permit user to change it
         pcore->SetReadOnly(true);
-        bFileIsReadOnly = true;
     }
     static CPasskeyEntry *dbox_pkentry = NULL;
     int rc = 0;
     if (dbox_pkentry == NULL) {
         dbox_pkentry = new CPasskeyEntry(this, filename,
-                                         index, pcore->IsReadOnly(),
-                                         bFileIsReadOnly,
+                                         index, bReadOnly | bFileIsReadOnly,
+                                         bFileIsReadOnly | bForceReadOnly,
                                          adv_type);
 
         int nMajor(0), nMinor(0), nBuild(0);
