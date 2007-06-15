@@ -412,7 +412,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-                          int index, bool bForceReadOnly = false,
+                          int index, bool bReadOnly = false, bool bForceReadOnly = false,
                           PWScore *pcore = 0, int adv_type = -1);
 
 private:

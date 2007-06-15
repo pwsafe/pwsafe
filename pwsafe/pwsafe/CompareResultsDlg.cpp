@@ -188,7 +188,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
       m_LCResults.SetItemText(iItem, TITLE, st_data.title);
       m_LCResults.SetItemText(iItem, USER, st_data.user);
 
-      icol = 4;
+      // Start of the 'data' columns (if present)
+      icol = PASSWORD;
       if (m_bsFields.test(CItemData::PASSWORD))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PASSWORD) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::NOTES))
@@ -736,7 +737,7 @@ CCompareResultsDlg::OnCopyToClipboard()
       buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
       resultStr += buffer;
     }
-    resultStr += _T("\n");
+    resultStr += _T("\r\n");
   }
 
   if (m_OnlyInComp.size() > 0) {
@@ -749,11 +750,11 @@ CCompareResultsDlg::OnCopyToClipboard()
       buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
       resultStr += buffer;
     }
-    resultStr += _T("\n");
+    resultStr += _T("\r\n");
   }
 
   if (m_Conflicts.size() > 0) {
-    buffer.Format(IDS_COMPAREBOTHDIFF2, m_cs_Filename1, m_cs_Filename2);
+    buffer.Format(IDS_COMPAREBOTHDIFF, m_cs_Filename1, m_cs_Filename2);
     resultStr += buffer;
 
     const CString csx_password(MAKEINTRESOURCE(IDS_COMPPASSWORD));
@@ -784,6 +785,7 @@ CCompareResultsDlg::OnCopyToClipboard()
       if (st_data.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
       if (st_data.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
       if (st_data.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
+      resultStr += _T("\r\n");
     }
   }
 
