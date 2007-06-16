@@ -271,7 +271,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_WM_CONTEXTMENU()
 #endif
    ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
-	ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
+   ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnListDoubleClick)
    ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
    ON_COMMAND(ID_MENUITEM_NEW, OnNew)
    ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
@@ -325,15 +325,15 @@ END_MESSAGE_MAP()
 BOOL
 DboxMain::OnInitDialog()
 {
-   ConfigureSystemMenu();
-
    CDialog::OnInitDialog();
 
+   ConfigureSystemMenu();
    UpdateAlwaysOnTop();
+//   CItemData temp1;
 
    if (OpenOnInit()==FALSE) // If this function fails, abort launch
       return TRUE;
-
+	
    m_windowok = true;
 	
    // Set the icon for this dialog.  The framework does this automatically
@@ -377,6 +377,7 @@ DboxMain::OnInitDialog()
    if (app.GetProfileInt(_T(PWS_REG_OPTIONS), _T("donebackupchange"), FALSE) == FALSE)
       OnUpdateBackups();
 
+/// \todo re-check, whether this is WM2005-specific
 #if defined(POCKET_PC)
    ::DrawMenuBar(m_hwndMb);
 #endif
@@ -1399,23 +1400,24 @@ DboxMain::ChangeOkUpdate()
    if (! m_windowok)
       return;
 #if defined(POCKET_PC)
-	/*
+   /// \todo investigate why this was commented out
 	CMenu		*menu	= m_wndMenu;
 	
-//	menu = m_wndCommandBar->GetMenuBar( 0 );
-
+	//menu->Attach(m_wndCommandBar->GetMenu());
+	//menu = m_wndCommandBar->GetMenuBar( 0 );
+/*
 	if ( menu != NULL )
 	{
 		if (m_changed == TRUE)
 		{
 			menu->EnableMenuItem(ID_MENUITEM_SAVE, MF_ENABLED);
 		}
-		else if (m_changed == FALSE)
+		else
 		{
 			menu->EnableMenuItem(ID_MENUITEM_SAVE, MF_GRAYED);
 		}
 	}
-	*/
+*/
 #else
    if (m_changed == TRUE)
       GetMenu()->EnableMenuItem(ID_MENUITEM_SAVE, MF_ENABLED);
@@ -3051,6 +3053,7 @@ void
 DboxMain::ConfigureSystemMenu()
 {
 #if defined(WIN32_PLATFORM_WFSP) || defined(POCKET_PC)
+/*
 	SHMENUBARINFO mbi;
                 ZeroMemory(&mbi, sizeof(SHMENUBARINFO));
 
@@ -3093,11 +3096,11 @@ if (!(si.fdwFlags & SIPF_ON) ||
         cy -= (rectMB.bottom - rectMB.top);  
     }
 ::SetWindowPos (this->m_hWnd, NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_NOZORDER);
-
+*/
 #endif
 
 #if defined(POCKET_PC)
-	/*
+	/// comment out?
 	DWORD dwAdornmentFlags = 0;
 
 	
@@ -3109,17 +3112,19 @@ if (!(si.fdwFlags & SIPF_ON) ||
         TRACE0("Failed to create CommandBar\n");
         return;      // fail to create
     }
-
+/*
 	m_wndCommandBar->SetBarStyle(m_wndCommandBar->GetBarStyle() |
            CBRS_SIZE_FIXED);
 
-	m_wndMenu = CMenu::FromHandle(m_wndCommandBar->m_hMenu);
+	HMENU hMenu = m_wndCommandBar->GetMenu();
+	m_wndMenu->Attach(hMenu);
+	//m_wndMenu = CMenu::FromHandle(m_wndCommandBar->m_hMenu);
 
-	 m_wndCommandBar->Show(TRUE);
+	 //m_wndCommandBar->Show(TRUE);
 
-	 BOOL res=m_wndCommandBar->DrawMenuBar(IDR_MAINMENU); // Returns TRUE  
+	 //BOOL res=m_wndCommandBar->DrawMenuBar(IDR_MAINMENU); // Returns TRUE  
   
-     DrawMenuBar();  
+     //DrawMenuBar();  
 */
 
 
@@ -3163,7 +3168,7 @@ DboxMain::OnOpenMRU(UINT nID)
 void
 DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL) 
 {
-/*
+/// investigate why the whole method impl may be commented out
 	// http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
 	// This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
 	ASSERT(pPopupMenu != NULL);
@@ -3265,5 +3270,5 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 		}
 		state.m_nIndexMax = nCount;
 	}
-*/
+
 }

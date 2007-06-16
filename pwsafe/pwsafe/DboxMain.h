@@ -96,7 +96,12 @@ protected:
 #endif
 
 #if defined(POCKET_PC)
-   CCommandBar 	*m_wndCommandBar;
+	#if (POCKET_PC_VER >= 2003)
+		CCommandBar 	*m_wndCommandBar;
+	#else
+		// this WinCE-unique class is available only up to MFC 3.0
+		CCeCommandBar	*m_wndCommandBar;
+	#endif
    HWND m_hwndMb;
    CMenu			*m_wndMenu;
 #else
@@ -113,12 +118,12 @@ protected:
    bool m_bSortAscending;
    int m_iSortedColumn;
 
-	bool m_bShowPasswordInEdit;
-	bool m_bShowPasswordInList;
-	BOOL m_bAlwaysOnTop;
+   bool m_bShowPasswordInEdit;
+   bool m_bShowPasswordInList;
+   BOOL m_bAlwaysOnTop;
 
-	int insertItem(CItemData &itemData, int iIndex = -1);
-	int getSelectedItem();
+   int insertItem(CItemData &itemData, int iIndex = -1);
+   int getSelectedItem();
 
    void ChangeOkUpdate();
    BOOL SelItemOk();
@@ -128,7 +133,7 @@ protected:
 
    void ConfigureSystemMenu();
    void OnSysAlwaysOnTop();
-	afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
+   afx_msg void OnSysCommand( UINT nID, LPARAM lParam );
 
    void UpdateAlwaysOnTop();
 

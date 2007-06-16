@@ -13,6 +13,7 @@
 
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
+#include "corelib/PWScore.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -47,6 +48,7 @@ public:
 
 public:
   DboxMain* m_maindlg;
+  PWScore m_core;
 
   virtual BOOL InitInstance();
 WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);

@@ -154,6 +154,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
+				EnableFloatingPointEmulation="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -546,6 +547,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\corelib\PWScore.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\PWSrand.cpp"
 				>
 			</File>
@@ -664,6 +669,10 @@
 			</File>
 			<File
 				RelativePath="..\..\corelib\PWCharPool.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\PWScore.h"
 				>
 			</File>
 			<File
