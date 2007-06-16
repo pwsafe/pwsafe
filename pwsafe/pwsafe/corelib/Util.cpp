@@ -16,9 +16,11 @@
 
 #include <stdio.h>
 #ifdef POCKET_PC
+  #include <winsock2.h>
   #include <wce_time.h>
   #define localtime	  wceex_localtime
   #define _tasctime	  wceex__tasctime
+  #define gettimeofday	wceex_gettimeofday
 #else
   #include <time.h>
   #include <sys/timeb.h>
@@ -1072,10 +1074,11 @@ PWSUtil::IssueError(const CString &csFunction)
 
 /*
  * introduced in r991, but doesn't compile for PPC
+ */
 CString
 PWSUtil::GetTimeStamp()
 {
-	struct _timeb timebuffer;
+/*	struct _timeb timebuffer;
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	_ftime_s(&timebuffer);
 #else
@@ -1087,8 +1090,18 @@ PWSUtil::GetTimeStamp()
 	cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
 
 	return cs_now;
-}
 */
+	struct timeval timebuffer;
+	struct timezone tz;
+
+	gettimeofday(&timebuffer, &tz);
+	CMyString cmys_now = ConvertToDateTimeString((time_t)(timebuffer.tv_sec), TMC_EXPORT_IMPORT);
+	
+	CString cs_now;
+	cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.tv_usec/1000);
+
+	return cs_now;
+}
 
 /*
 
