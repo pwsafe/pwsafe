@@ -323,7 +323,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
 	if (!m_wholastsaved.IsEmpty()) {
 		int ulen; 
 		TCHAR *lpszWLS = m_wholastsaved.GetBuffer(wls.GetLength() + 1);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 		int iread = _stscanf_s(lpszWLS, _T("%4x"), &ulen);
 #else
 		int iread = _stscanf(lpszWLS, _T("%4x"), &ulen);
@@ -351,7 +351,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
   if (m_whenlastsaved.GetLength() == 8) {
 	  long t;
 	  TCHAR *lpszWLS = m_whenlastsaved.GetBuffer(9);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	  int iread = _stscanf_s(lpszWLS, _T("%8x"), &t);
 #else
 	  int iread = _stscanf(lpszWLS, _T("%8x"), &t);
@@ -363,7 +363,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
   }
 
   TCHAR uuid_buffer[37];
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	_stprintf_s(uuid_buffer, 37,
                   _T("%02x%02x%02x%02x-%02x%02x-%0x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
                   m_file_uuid_array[0],  m_file_uuid_array[1],
@@ -406,7 +406,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
       UnknownFieldEntry unkhfe = *vi_IterUHFE;
       if (unkhfe.st_length == 0)
         continue;
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 		  _itot_s( (int)unkhfe.uc_Type, buffer, 8, 10 );
 #else
 		  _itot( (int)unkhfe.uc_Type, buffer, 10 );
@@ -441,7 +441,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
 
 	while (listPos != NULL) {
 		CItemData temp = pwlist.GetAt(listPos);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 		_itot_s( id, buffer, 8, 10 );
 #else
 		_itot( id, buffer, 10 );
@@ -490,7 +490,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
            << _T("]]></notes>") << endl;
 
 		temp.GetUUID(uuid_array);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 		_stprintf_s(uuid_buffer, 33,
                     _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
                     uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
@@ -538,7 +538,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
                                  &PWHistList, TMC_XML);
           if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
             of << _T("\t\t<pwhistory>") << endl;
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
             _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
             of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
 
@@ -563,7 +563,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
               PWHistList::iterator iter;
               for (iter = PWHistList.begin(); iter != PWHistList.end();
                    iter++) {
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
                 _itot_s( num, buffer, 8, 10 );
 #else
                 _itot( num, buffer, 10 );
@@ -600,7 +600,7 @@ PWScore::WriteXMLFile(const CMyString &filename,
             temp.GetUnknownField(type, length, pdata, i);
             if (length == 0)
               continue;
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 		        _itot_s( (int)type, buffer, 8, 10 );
 #else
 		        _itot( (int)type, buffer, 10 );
@@ -741,7 +741,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   }
 
   pSeps[0] = fieldSeparator;
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
   // Capture individual column titles:
   TCHAR *next_token;
   TCHAR *token = _tcstok_s(pTemp, pTab, &next_token);
@@ -775,7 +775,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   unsigned num_found = 0;
   int itoken = 0;
 
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
   // Capture individual column titles:
   token = _tcstok_s(pTemp, pSeps, &next_token);
   while(token) {
@@ -1135,6 +1135,8 @@ int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
     return PWSfile::RenameFile(oldname, newname);
 }
 
+/// not used yet
+/*
 bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
                             const CString &userBackupPrefix, const CString &userBackupDir)
 {
@@ -1155,7 +1157,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
     if (userBackupPrefix.IsEmpty()) {
         TCHAR fname[_MAX_FNAME];
 
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
         _tsplitpath_s( m_currfile, NULL, 0, NULL, 0, fname, _MAX_FNAME, NULL, 0 );
 #else
         _tsplitpath( m_currfile, NULL, NULL, fname, NULL );
@@ -1184,8 +1186,9 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
         }
         break;
         case 2: // _nnn suffix
-            if (GetIncBackupFileName(cs_temp, maxNumIncBackups, cs_newfile) == FALSE)
-                return false;
+            /// commented out, because not needed on PocketPC
+			//if (GetIncBackupFileName(cs_temp, maxNumIncBackups, cs_newfile) == FALSE)
+            //    return false;
             break;
         case 0: // no suffix
         default:
@@ -1201,7 +1204,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
     TCHAR *lpsz_current = m_currfile.GetBuffer(_MAX_PATH);
     TCHAR *lpsz_new = cs_newfile.GetBuffer(_MAX_PATH);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
     _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
     _tcscpy_s(szDestination, _MAX_PATH, lpsz_new);
 #else
@@ -1231,7 +1234,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
     // CString newname(GetCurFile());
     // newname += TCHAR('~');
     // return PWSfile::RenameFile(GetCurFile(), newname);
-}
+} */
 
 void PWScore::ChangePassword(const CMyString &newPassword)
 {
@@ -1551,7 +1554,7 @@ PWScore::Validate(CString &status)
         n++;
         if (uuid_array[0] == 0x00)
             num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor, uuid_array);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
         memcpy_s(&uuids[n].dw_uuidA, 16, uuid_array, 16);
 #else
         memcpy(&uuids[n].dw_uuidA, uuid_array, 16);
@@ -1573,7 +1576,7 @@ PWScore::Validate(CString &status)
                 CItemData &ci = GetEntryAt(uuids[j].nPos);
                 ci.CreateUUID();
                 ci.GetUUID(uuid_array);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
                 memcpy_s(&uuids[j].dw_uuidA, 16, uuid_array, 16);
 #else
                 memcpy(&uuids[j].dw_uuidA, uuid_array, 16);
@@ -1594,6 +1597,7 @@ PWScore::Validate(CString &status)
     }
 }
 
+/*
 BOOL
 PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
                               int i_maxnumincbackups, CString &cs_newname)
@@ -1644,7 +1648,7 @@ PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
     }
 
     return brc;
-}
+} */
 
 void PWScore::ClearFileUUID()
 {

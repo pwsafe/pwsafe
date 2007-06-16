@@ -1072,7 +1072,7 @@ PWSUtil::IssueError(const CString &csFunction)
 #endif
 }
 
-/*
+/**
  * introduced in r991, but doesn't compile for PPC
  */
 CString
