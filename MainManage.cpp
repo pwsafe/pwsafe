@@ -611,6 +611,12 @@ DboxMain::OnOptions()
             (save_preexpirywarndays != display.m_preexpirywarndays))
             RefreshList();
 
+        // Changing ExplorerTypeTree changes order of items,
+        // which DisplayStatus implcitly depends upon
+        if (bOldExplorerTypeTree !=
+            prefs->GetPref(PWSprefs::ExplorerTypeTree))
+          SaveDisplayStatus();
+
         if (system.m_usesystemtray == TRUE) {
             if (app.IsIconVisible() == FALSE)
                 app.ShowIcon();

@@ -11,11 +11,6 @@
  * Based on MFC sample code from CMNCTRL1
  */
 
-// Need a set to keep track of what nodes are expanded, to re-expand
-// after minimize
-#include <set>
-
-using namespace std ;
 
 #include "stdafx.h"
 #include "MyTreeCtrl.h"
@@ -25,28 +20,24 @@ using namespace std ;
 #include "corelib/Util.h"
 #include "corelib/Pwsprefs.h"
 
+using namespace std;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-typedef set<CItemData *> SetTreeItem_t;
-typedef SetTreeItem_t *SetTreeItemP_t;
-
 static const TCHAR GROUP_SEP = TCHAR('.');
 
-CMyTreeCtrl::CMyTreeCtrl() : m_bDragging(false), m_pimagelist(NULL)
+CMyTreeCtrl::CMyTreeCtrl() :
+  m_bDragging(false), m_pimagelist(NULL), m_isRestoring(false)
 {
-  m_expandedItems = new SetTreeItem_t;
-  m_isRestoring = false;
 }
 
 CMyTreeCtrl::~CMyTreeCtrl()
 {
   delete m_pimagelist;
-  delete (SetTreeItem_t *)m_expandedItems;
 }
 
 
@@ -500,11 +491,10 @@ void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 
 void CMyTreeCtrl::DeleteFromSet(HTREEITEM hItem)
 {
-  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
   DWORD itemData = GetItemData(hItem);
   ASSERT(itemData != NULL);
   CItemData *ci = (CItemData *)itemData;
-  pSet->erase(ci);
+  m_expandedItems.erase(ci);
 }
 
 // Return the full path leading up to a given item, but
@@ -772,46 +762,41 @@ void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
   // need to store the corresponding elements. But groups have none, so
   // we store the first (or any) child element, and upon restore, expand
   // the parent. Ugh++.
+  // Note that we do not support thecase where expanded node has only
+  // tree subnodes, since there's nothing to get a CItemData from.
+  // This borderline case is hereby deemed more trouble than it's
+  // worth to handle correctly.
 
   if (!m_isRestoring) {
-    SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
     NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNotifyStruct;
     // now find a leaf son and add it's CitemData to set.
     HTREEITEM child = GetChildItem(pNMTreeView->itemNew.hItem);
     ASSERT(child != NULL); // can't expand something w/o children, right?
     do {
       if (IsLeafNode(child)) {
-        break; // stop at first leaf child found
-      }
+        DWORD itemData = GetItemData(child);
+        ASSERT(itemData != NULL);
+        CItemData *ci = (CItemData *)itemData;
+        if (pNMTreeView->action == TVE_EXPAND) {
+          m_expandedItems.insert(ci);
+          return; // stop at first leaf child found
+        } else if (pNMTreeView->action == TVE_COLLAPSE) {
+          // order may change, so we need to check each leaf
+          if (m_expandedItems.find(ci) != m_expandedItems.end())
+            m_expandedItems.erase(ci);
+        }
+      } // IsLeafNode
       child = GetNextSiblingItem(child);
     } while (child != NULL);
-    
-    if (child == NULL) {
-      // case where expanded node has only tree subnodes,
-      // nothing to get a CItemData from. This borderline
-      // case is hereby deemed more trouble than it's worth to
-      // handle correctly.
-      return;
-    }
-    DWORD itemData = GetItemData(child);
-    ASSERT(itemData != NULL);
-    CItemData *ci = (CItemData *)itemData;
-    if (pNMTreeView->action == TVE_EXPAND)
-      pSet->insert(ci);
-    else if (pNMTreeView->action == TVE_COLLAPSE) {
-      ASSERT(pSet->find(ci) != pSet->end());
-      pSet->erase(ci);
-    }
-  }
+  } // !m_isRestoring
 }
 
 void CMyTreeCtrl::RestoreExpanded()
 {
   m_isRestoring = true;
-  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
   SetTreeItem_t::iterator it;
 
-  for (it = pSet->begin(); it != pSet->end(); it++) {
+  for (it = m_expandedItems.begin(); it != m_expandedItems.end(); it++) {
     CItemData *ci = *it;
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     HTREEITEM parent = GetParentItem(di->tree_item);
@@ -822,8 +807,7 @@ void CMyTreeCtrl::RestoreExpanded()
 
 void CMyTreeCtrl::ClearExpanded()
 {
-  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
-  pSet->clear();
+  m_expandedItems.clear();
 }
 
 void CMyTreeCtrl::OnExpandAll() 
