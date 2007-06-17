@@ -14,6 +14,11 @@
  */
 
 #include <Afxcmn.h>
+// Need a set to keep track of what nodes are expanded, to re-expand
+// after minimize
+#include <set>
+class CItemData;
+typedef std::set<CItemData *> SetTreeItem_t;
 
 class CMyTreeCtrl : public CTreeCtrl
 {
@@ -61,7 +66,7 @@ private:
   HTREEITEM   m_hitemDrop;
   CImageList  *m_pimagelist;
   void *m_parent;
-  void *m_expandedItems; // Internally this is a SetTreeItem_t, don't want to include stl file here...
+  SetTreeItem_t m_expandedItems;
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore
   
