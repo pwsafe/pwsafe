@@ -7,12 +7,10 @@
  */
 #pragma once
 
-#include "afxcmn.h"
 #include "resource.h"
-#include "resource2.h"  // Menu, Toolbar & Accelerator resources
-#include "resource3.h"  // String resources
 #include "corelib/MyString.h"
-#include "corelib/sha256.h"
+
+#include <vector>
 
 // Expired password Entry structure for CList
 struct ExpPWEntry {
@@ -25,19 +23,22 @@ struct ExpPWEntry {
   int type;
 };
 
+typedef std::vector<ExpPWEntry> ExpiredList;
+
 // CExpPWListDlg dialog
 
 class CExpPWListDlg : public CDialog
 {
 
 public:
-	CExpPWListDlg(CWnd* pParent = NULL,
-		const CString& a_filespec = _T(""));   // standard constructor
+	CExpPWListDlg(CWnd* pParent,
+                const ExpiredList &expPWList,
+                const CString& a_filespec = _T("")
+                );
 	virtual ~CExpPWListDlg();
 
 // Dialog Data
 	enum { IDD = IDD_DISPLAY_EXPIRED_ENTRIES };
-	CList<ExpPWEntry, ExpPWEntry&>* m_pexpPWList;
 	CListCtrl m_expPWListCtrl;
     CImageList *m_pImageList;
 	CString m_message;
@@ -56,5 +57,6 @@ public:
 	afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
 
 private:
+	const ExpiredList &m_expPWList;
   static int CALLBACK ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 };

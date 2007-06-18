@@ -13,12 +13,17 @@
 #include "ExpPWListDlg.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
+
+using namespace std;
 
 // CExpPWListDlg dialog
 
-
-CExpPWListDlg::CExpPWListDlg(CWnd* pParent, const CString& a_filespec)
-	: CDialog(CExpPWListDlg::IDD, pParent)
+CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
+                             const ExpiredList &expPWList,
+                             const CString& a_filespec)
+	: CDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
 {
 	const int FILE_DISP_LEN = 75;
 
@@ -90,19 +95,19 @@ CExpPWListDlg::OnInitDialog()
     m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_NORMAL);
 
     int nPos = 0;
-	POSITION itempos;
+  ExpiredList::const_iterator itempos;
 
-	POSITION listpos = m_pexpPWList->GetHeadPosition();
-	while (listpos != NULL) {
-		itempos = listpos;
-		const ExpPWEntry exppwentry = m_pexpPWList->GetAt(listpos);
+  for (itempos = m_expPWList.begin();
+       itempos != m_expPWList.end();
+       itempos++) {
+		const ExpPWEntry exppwentry = *itempos;
 		nPos = m_expPWListCtrl.InsertItem(nPos, NULL, exppwentry.type);
    m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group);
 		m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title);
 		m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user);
 		m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate);
-		m_expPWListCtrl.SetItemData(nPos, (DWORD)itempos);
-		m_pexpPWList->GetNext(listpos);
+    // original nPos == index in vector: save for Sort
+		m_expPWListCtrl.SetItemData(nPos, static_cast<DWORD>(nPos));
 	}
 
 	m_expPWListCtrl.SetRedraw(FALSE);
@@ -132,15 +137,17 @@ CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 	const CString CRLF = _T("\r\n");
 	const CString TAB = _T('\t');
 
-	POSITION listpos = m_pexpPWList->GetHeadPosition();
-	while (listpos != NULL) {
-		const ExpPWEntry exppwentry = m_pexpPWList->GetAt(listpos);
+  ExpiredList::const_iterator itempos;
+
+  for (itempos = m_expPWList.begin();
+       itempos != m_expPWList.end();
+       itempos++) {
+		const ExpPWEntry exppwentry = *itempos;
 		data = data +
 			(CString)exppwentry.group + TAB + 
 			(CString)exppwentry.title + TAB + 
 			(CString)exppwentry.user + TAB + 
 			(CString)exppwentry.expiryexpdate + CRLF;
-		m_pexpPWList->GetNext(listpos);
 	}
 					
 	app.SetClipboardData(data);
@@ -190,10 +197,8 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
 {
 	CExpPWListDlg *self = (CExpPWListDlg*)closure;
 	int nSortColumn = self->m_iSortedColumn;
-	POSITION Lpos = (POSITION)lParam1;
-	POSITION Rpos = (POSITION)lParam2;
-	const ExpPWEntry pLHS = self->m_pexpPWList->GetAt(Lpos);
-	const ExpPWEntry pRHS = self->m_pexpPWList->GetAt(Rpos);
+	const ExpPWEntry pLHS = self->m_expPWList[lParam1];
+	const ExpPWEntry pRHS = self->m_expPWList[lParam2];
 	CMyString group1, title1, username1;
 	CMyString group2, title2, username2;
     int type1, type2;

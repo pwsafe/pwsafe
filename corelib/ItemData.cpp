@@ -14,6 +14,16 @@
 #include "PWSrand.h"
 
 #include <time.h>
+#include <sstream>
+
+using namespace std;
+
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wostringstream ostringstreamT;
+#else
+typedef std::ostringstream ostringstreamT;
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,6 +65,17 @@ CItemData::CItemData(const CItemData &that) :
   m_display_info(that.m_display_info)
 {
   ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
+  if (!that.m_URFL.empty())
+    m_URFL = that.m_URFL;
+  else
+    m_URFL.clear();
+}
+
+CItemData::~CItemData()
+{
+  if (!m_URFL.empty()) {
+    m_URFL.clear();
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -188,10 +209,72 @@ CItemData::GetTime(int whichtime, time_t &t) const
   }
 }
 
+CMyString CItemData::GetXMLTime(int indent, const TCHAR *name, time_t t) const
+{
+  int i;
+  const CString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+  ostringstreamT oss;
+
+  for (i = 0; i < indent; i++) oss << _T("\t");
+  oss << _T("<") << name << _T(">") << endl;
+  for (i = 0; i <= indent; i++) oss << _T("\t");
+  oss << _T("<date>") << LPCTSTR(tmp.Left(10)) << _T("</date>") << endl;
+  for (i = 0; i <= indent; i++) oss << _T("\t");
+  oss << _T("<time>") << LPCTSTR(tmp.Right(8)) << _T("</time>") << endl;
+  for (i = 0; i < indent; i++) oss << _T("\t");
+  oss << _T("</") << name << _T(">") << endl;
+  CMyString retval(oss.str().c_str());
+  return retval;
+}
+
+
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
 {
   unsigned int length = sizeof(uuid_array);
   GetField(m_UUID, (unsigned char *)uuid_array, length);
+}
+
+void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
+                                unsigned char * &pdata,
+                                const CItemField &item) const
+{
+  ASSERT(pdata == NULL && length == 0);
+
+  const unsigned int BLOCKSIZE = 8;
+
+  type = item.GetType();
+  unsigned int flength = item.GetLength();
+  length = flength;
+  flength += BLOCKSIZE; // ensure that we've enough for at least one block
+  pdata = new unsigned char[flength];
+  GetField(item, pdata, flength);
+}
+
+
+void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
+                                unsigned char * &pdata,
+                                const unsigned int &num) const
+{
+  const CItemField &unkrfe = m_URFL.at(num);
+  GetUnknownField(type, length, pdata, unkrfe);
+}
+
+void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
+                                unsigned char * &pdata,
+                                const UnknownFieldsConstIter &iter) const
+{
+  const CItemField &unkrfe = *iter;
+  GetUnknownField(type, length, pdata, unkrfe);
+}
+
+void
+CItemData::SetUnknownField(const unsigned char type,
+                           const unsigned int length,
+                           const unsigned char * ufield)
+{
+  CItemField unkrfe(type);
+  SetField(unkrfe, ufield, length);
+  m_URFL.push_back(unkrfe);
 }
 
 /*
@@ -336,9 +419,187 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     return ret;
 }
 
-  void CItemData::SplitName(const CMyString &name,
+CMyString CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
+{
+  ostringstreamT oss;
+  // TODO: need to handle entity escaping of values.
+  oss << _T("\t<entry id=\"") << id << _T("\">") << endl;
+
+  CMyString tmp;
+
+  tmp = GetGroup();
+  if (bsExport.test(CItemData::GROUP) && !tmp.IsEmpty())
+    oss << _T("\t\t<group><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></group>") << endl;
+
+  // Title mandatory (see pwsafe.xsd)
+  tmp = GetTitle();
+  oss <<_T("\t\t<title><![CDATA[") << LPCTSTR(tmp)
+      << _T("]]></title>") << endl;
+
+  tmp = GetUser();
+  if (bsExport.test(CItemData::USER) && !tmp.IsEmpty())
+    oss << _T("\t\t<username><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></username>") << endl;
+
+  tmp = GetPassword();
+  // Password mandatory (see pwsafe.xsd)
+  oss << _T("\t\t<password><![CDATA[") << LPCTSTR(tmp)
+      << _T("]]></password>") << endl;
+
+  tmp = GetURL();
+  if (bsExport.test(CItemData::URL) && !tmp.IsEmpty())
+    oss << _T("\t\t<url><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></url>") << endl;
+
+  tmp = GetAutoType();
+  if (bsExport.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
+    oss << _T("\t\t<autotype><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></autotype>") << endl;
+
+  tmp = GetNotes();
+  if (bsExport.test(CItemData::NOTES) && !tmp.IsEmpty())
+    oss << _T("\t\t<notes><![CDATA[") << LPCTSTR(tmp)
+        << _T("]]></notes>") << endl;
+
+  uuid_array_t uuid_array;
+  GetUUID(uuid_array);
+  TCHAR uuid_buffer[37];
+#if _MSC_VER >= 1400
+  _stprintf_s(uuid_buffer, 33,
+              _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+              uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+              uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+              uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+              uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#else
+  _stprintf(uuid_buffer,
+            _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#endif
+  uuid_buffer[32] = TCHAR('\0');
+  oss << _T("\t\t<uuid><![CDATA[") << uuid_buffer << _T("]]></uuid>") << endl;
+
+  time_t t;
+  GetCTime(t);
+  if (bsExport.test(CItemData::CTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("ctime"), t);
+
+  GetATime(t);
+  if (bsExport.test(CItemData::ATIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("atime"), t);
+
+  GetLTime(t);
+  if (bsExport.test(CItemData::LTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("ltime"), t);
+
+  GetPMTime(t);
+  if (bsExport.test(CItemData::PMTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("pmtime"), t);
+
+  GetRMTime(t);
+  if (bsExport.test(CItemData::RMTIME) && (long)t != 0)
+    oss << GetXMLTime(2, _T("rmtime"), t);
+
+  if (bsExport.test(CItemData::PWHIST)) {
+    BOOL pwh_status;
+    size_t pwh_max, pwh_num;
+    PWHistList PWHistList;
+    CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+                        &PWHistList, TMC_XML);
+    if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
+      TCHAR buffer[8];
+      oss << _T("\t\t<pwhistory>") << endl;
+#if _MSC_VER >= 1400
+      _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
+      oss << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+
+      _stprintf_s(buffer, 3, _T("%2d"), pwh_max);
+      oss << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+
+      _stprintf_s(buffer, 3, _T("%2d"), pwh_num);
+      oss << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+#else
+      _stprintf(buffer, _T("%1d"), pwh_status);
+      oss << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+
+      _stprintf(buffer, _T("%2d"), pwh_max);
+      oss << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+
+      _stprintf(buffer, _T("%2d"), pwh_num);
+      oss << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+#endif
+      if (!PWHistList.empty()) {
+        oss << _T("\t\t\t<history_entries>") << endl;
+        int num = 1;
+        PWHistList::iterator hiter;
+        for (hiter = PWHistList.begin(); hiter != PWHistList.end();
+             hiter++) {
+          oss << _T("\t\t\t\t<history_entry num=\"") << num << _T("\">") << endl;
+          const PWHistEntry pwshe = *hiter;
+          oss << _T("\t\t\t\t\t<changed>") << endl;
+          oss << _T("\t\t\t\t\t\t<date>")
+              << LPCTSTR(pwshe.changedate.Left(10))
+              << _T("</date>") << endl;
+          oss << _T("\t\t\t\t\t\t<time>")
+              << LPCTSTR(pwshe.changedate.Right(8))
+              << _T("</time>") << endl;
+          oss << _T("\t\t\t\t\t</changed>") << endl;
+          oss << _T("\t\t\t\t\t<oldpassword><![CDATA[")
+              << LPCTSTR(pwshe.password)
+              << _T("]]></oldpassword>") << endl;
+          oss << _T("\t\t\t\t</history_entry>") << endl;
+
+          num++;
+        } // for
+        oss << _T("\t\t\t</history_entries>") << endl;
+      } // if !empty
+      oss << _T("\t\t</pwhistory>") << endl;
+    }
+  }
+
+  if (NumberUnknownFields() > 0) {
+    oss << _T("\t\t<unknownrecordfields>") << endl;
+    for (unsigned int i = 0; i != NumberUnknownFields(); i++) {
+      unsigned int length = 0;
+      unsigned char type;
+      unsigned char *pdata(NULL);
+      GetUnknownField(type, length, pdata, i);
+      if (length == 0)
+        continue;
+      // UNK_HEX_REP will represent unknown values
+      // as hexadecimal, rather than base64 encoding.
+      // Easier to debug.
+#ifndef UNK_HEX_REP
+      tmp = (CMyString)PWSUtil::Base64Encode(pdata, length);
+#else
+      tmp.Empty();
+      unsigned char * pdata2(pdata);
+      unsigned char c;
+      for (int j = 0; j < (int)length; j++) {
+        c = *pdata2++;
+        cs_tmp.Format(_T("%02x"), c);
+        tmp += CMyString(cs_tmp);
+      }
+#endif
+      oss << _T("\t\t\t<field ftype=\"") << int(type) << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+      trashMemory(pdata, length);
+      delete[] pdata;
+    } // iteration over unknown fields
+    oss << _T("\t\t</unknownrecordfields>") << endl;  
+  } // if there are unknown fields
+
+  oss << _T("\t</entry>") << endl << endl;
+  CMyString retval(oss.str().c_str());
+  return retval;
+}
+
+void CItemData::SplitName(const CMyString &name,
                             CMyString &title, CMyString &username)
-  {
+{
     int pos = name.FindByte(SPLTCHR);
     if (pos==-1) {//Not a split name
       int pos2 = name.FindByte(DEFUSERCHR);
@@ -360,37 +621,36 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
       temp.TrimLeft();
       username = temp;
     }
-  }
+}
 
-  //-----------------------------------------------------------------------------
-  // Setters
+//-----------------------------------------------------------------------------
+// Setters
 
-  void CItemData::SetField(CItemField &field, const CMyString &value)
-  {
+void CItemData::SetField(CItemField &field, const CMyString &value)
+{
     BlowFish *bf = MakeBlowFish();
     field.Set(value, bf);
     delete bf;
-  }
+}
 
-  void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
-  {
+void CItemData::SetField(CItemField &field, const unsigned char *value, unsigned int length)
+{
     BlowFish *bf = MakeBlowFish();
     field.Set(value, length, bf);
     delete bf;
-  }
+}
 
-  void CItemData::CreateUUID()
-  {
+void CItemData::CreateUUID()
+{
     CUUIDGen uuid;
     uuid_array_t uuid_array;
     uuid.GetUUID(uuid_array);
     SetUUID(uuid_array);
-  }
+}
 
-
-  void
-    CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
-  {
+void
+CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
+{
     // the m_name is from pre-2.0 versions, and may contain the title and user
     // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
     // Here we fill the title and user fields so that
@@ -410,11 +670,11 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     m_Title.Set(title, bf);
     m_User.Set(user, bf);
     delete bf;
-  }
+}
 
-  void
-    CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
-  {
+void
+CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
+{
 	if (delimiter == 0)
       SetField(m_Title, title);
 	else {
@@ -438,23 +698,23 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 
       SetField(m_Title, new_title);
 	}
-  }
+}
 
-  void
-    CItemData::SetUser(const CMyString &user)
-  {
+void
+CItemData::SetUser(const CMyString &user)
+{
     SetField(m_User, user);
-  }
+}
 
-  void
-    CItemData::SetPassword(const CMyString &password)
-  {
+void
+CItemData::SetPassword(const CMyString &password)
+{
     SetField(m_Password, password);
-  }
+}
 
-  void
-    CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
-  {
+void
+CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
+{
     if (delimiter == 0)
       SetField(m_Notes, notes);
     else {
@@ -482,43 +742,43 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 
       SetField(m_Notes, multiline_notes);
     }
-  }
+}
 
-  void
-    CItemData::SetGroup(const CMyString &title)
-  {
+void
+CItemData::SetGroup(const CMyString &title)
+{
     SetField(m_Group, title);
-  }
+}
 
-  void
-    CItemData::SetUUID(const uuid_array_t &UUID)
-  {
+void
+CItemData::SetUUID(const uuid_array_t &UUID)
+{
     SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
-  }
+}
 
-  void
-    CItemData::SetURL(const CMyString &URL)
-  {
+void
+CItemData::SetURL(const CMyString &URL)
+{
     SetField(m_URL, URL);
-  }
+}
 
-  void
-    CItemData::SetAutoType(const CMyString &autotype)
-  {
+void
+CItemData::SetAutoType(const CMyString &autotype)
+{
     SetField(m_AutoType, autotype);
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime)
-  {
+void
+CItemData::SetTime(int whichtime)
+{
     time_t t;
     time(&t);
     SetTime(whichtime, t);
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime, time_t t)
-  {
+void
+CItemData::SetTime(int whichtime, time_t t)
+{
     switch (whichtime) {
     case ATIME:
       SetField(m_tttATime, (const unsigned char *)&t, sizeof(t));
@@ -538,11 +798,11 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     default:
       ASSERT(0);
     }
-  }
+}
 
-  void
-    CItemData::SetTime(int whichtime, const CString &time_str)
-  {
+void
+CItemData::SetTime(int whichtime, const CString &time_str)
+{
     if (time_str.GetLength() == 0) {
       SetTime(whichtime, (time_t)0);
       return;
@@ -559,7 +819,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
       return;
 
     SetTime(whichtime, t);
-  }
+}
 
 void
 CItemData::SetPWHistory(const CMyString &PWHistory)
@@ -594,7 +854,6 @@ CItemData::CreatePWHistoryList(BOOL &status,
   	return (len != 0 ? 1 : 0);
 
   TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
-  TCHAR *lpszPW;
 
 #if _MSC_VER >= 1400
   int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
@@ -602,7 +861,7 @@ CItemData::CreatePWHistoryList(BOOL &status,
   int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #endif
   if (iread != 3)
-	return 1;
+    return 1;
 
   lpszPWHistory += 5;
   for (int i = 0; i < n; i++) {
@@ -619,8 +878,8 @@ CItemData::CreatePWHistoryList(BOOL &status,
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
     if (pwh_ent.changedate.IsEmpty()) {
-		//                       1234567890123456789
-		pwh_ent.changedate = _T("1970-01-01 00:00:00");
+		  //                       1234567890123456789
+      pwh_ent.changedate = _T("1970-01-01 00:00:00");
     }
     lpszPWHistory += 8;
 #if _MSC_VER >= 1400
@@ -633,19 +892,7 @@ CItemData::CreatePWHistoryList(BOOL &status,
     	break;
     }
     lpszPWHistory += 4;
-    lpszPW = tmp.GetBuffer(ipwlen + sizeof(TCHAR));
-#if _MSC_VER >= 1400
-    memcpy_s(lpszPW, ipwlen + sizeof(TCHAR), lpszPWHistory, ipwlen);
-#else
-    memcpy(lpszPW, lpszPWHistory, ipwlen);
-#endif
-    lpszPW[ipwlen] = TCHAR('\0');
-    tmp.ReleaseBuffer();
-    if (tmp.GetLength() != ipwlen) {
-    	i_error = 1;
-    	break;
-    }
-    pwh_ent.password = tmp;
+    pwh_ent.password = CMyString(lpszPWHistory, ipwlen);
     lpszPWHistory += ipwlen;
     pPWHistList->push_back(pwh_ent);
   }
@@ -686,6 +933,10 @@ CItemData::operator=(const CItemData &that)
     m_tttRMTime = that.m_tttRMTime;
     m_PWHistory = that.m_PWHistory;
     m_display_info = that.m_display_info;
+    if (!that.m_URFL.empty())
+      m_URFL = that.m_URFL;
+    else
+      m_URFL.clear();
 
     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   }
@@ -709,6 +960,7 @@ CItemData::Clear()
   m_tttLTime.Empty();
   m_tttRMTime.Empty();
   m_PWHistory.Empty();
+  m_URFL.clear();
 }
 
 int
@@ -807,40 +1059,34 @@ CItemData::ValidatePWHistory()
   return 1;
 }
 
-BOOL
-CItemData::WantEntry(const CString &subgroup_name, const int &iObject,
-                     const int &iFunction) const
+bool
+CItemData::Matches(const CString &subgroup_name, int iObject,
+                   int iFunction) const
 {
-  BOOL retval(FALSE);
-
-  const CMyString title(GetTitle());
-  const CMyString group(GetGroup());
-  const CMyString user(GetUser());
-  const CMyString url(GetURL());
-  const CMyString notes(GetNotes());
+  ASSERT(iFunction != 0); // must be positive or negative!
 
   CMyString csObject;
   switch(iObject) {
-    case SGO_GROUP:
-      csObject = group;
-      break;
-    case SGO_TITLE:
-      csObject = title;
-      break;
-    case SGO_USER:
-      csObject = user;
-      break;
-    case SGO_GROUPTITLE:
-      csObject = group + TCHAR('.') + title;
-      break;
-    case SGO_URL:
-      csObject = url;
-      break;
-    case SGO_NOTES:
-      csObject = notes;
-      break;
-    default:
-      ASSERT(0);
+  case SGO_GROUP:
+    csObject = GetGroup();
+    break;
+  case SGO_TITLE:
+    csObject = GetTitle();
+    break;
+  case SGO_USER:
+    csObject = GetUser();
+    break;
+  case SGO_GROUPTITLE:
+    csObject = GetGroup() + TCHAR('.') + GetTitle();
+    break;
+  case SGO_URL:
+    csObject = GetURL();
+    break;
+  case SGO_NOTES:
+    csObject = GetNotes();
+    break;
+  default:
+    ASSERT(0);
   }
 
   const int sb_len = subgroup_name.GetLength();
@@ -849,117 +1095,83 @@ CItemData::WantEntry(const CString &subgroup_name, const int &iObject,
   // Negative = Case   Sensitive
   // Positive = Case INsensitive
   switch (iFunction) {
-    case -SGF_EQUALS:
-      if ((ob_len != sb_len) ||
-          (csObject.Compare((LPCTSTR)subgroup_name) != 0))
-        return retval;
-      break;
-   case -SGF_NOTEQUAL:
-      if (csObject.Compare((LPCTSTR)subgroup_name) == 0)
-        return retval;
-      break;
-    case -SGF_BEGINS:
-      if (ob_len >= sb_len) {
-        csObject = csObject.Left(sb_len);
-      if (subgroup_name.Compare((LPCTSTR)csObject) != 0)
-        return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case -SGF_NOTBEGIN:
-      if (ob_len >= sb_len) {
-        csObject = csObject.Left(sb_len);
-        if (subgroup_name.Compare((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case -SGF_ENDS:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.Compare((LPCTSTR)csObject) != 0)
-          return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case -SGF_NOTEND:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.Compare((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case -SGF_CONTAINS:
-      if (csObject.Find((LPCTSTR)subgroup_name) == -1)
-        return retval;
-      break;
-    case -SGF_NOTCONTAIN:
-      if (csObject.Find((LPCTSTR)subgroup_name)  > -1)
-        return retval;
-      break;
-    case SGF_EQUALS:
-      if ((ob_len != sb_len) ||
-          (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0))
-        return retval;
-      break;
-    case SGF_NOTEQUAL:
-      if (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0)
-        return retval;
-      break;
-    case SGF_BEGINS:
-      if (ob_len > sb_len) {
-        csObject = csObject.Left(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)
-          return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case SGF_NOTBEGIN:
-      if (ob_len > sb_len) {
-        csObject = csObject.Left(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case SGF_ENDS:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)
-          return retval;
-      } else {
-        return retval;
-      }
-      break;
-    case SGF_NOTEND:
-      if (ob_len > sb_len) {
-        csObject = csObject.Right(sb_len);
-        if (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)
-          return retval;
-      }
-      break;
-    case SGF_CONTAINS:
-      {
-        csObject.MakeLower();
-        CString subgroupLC(subgroup_name);
-        subgroupLC.MakeLower();
-        if (csObject.Find((LPCTSTR)subgroupLC) == -1)
-          return retval;
-        break;
-      }
-    case SGF_NOTCONTAIN:
-      {
-        csObject.MakeLower();
-        CString subgroupLC(subgroup_name);
-        subgroupLC.MakeLower();
-        if (csObject.Find((LPCTSTR)subgroupLC) > -1)
-          return retval;
-        break;
-      }
-    default:
-      ASSERT(0);
+  case -SGF_EQUALS:
+  case SGF_EQUALS:
+    return ((ob_len == sb_len) &&
+            (((iFunction < 0) &&
+              csObject.Compare((LPCTSTR)subgroup_name) == 0) ||
+             ((iFunction > 0) &&
+              (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0))));
+  case -SGF_NOTEQUAL:
+  case SGF_NOTEQUAL:
+    return (((iFunction < 0) &&
+             csObject.Compare((LPCTSTR)subgroup_name) != 0) ||
+            ((iFunction > 0) &&
+             (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0)));
+  case -SGF_BEGINS:
+  case SGF_BEGINS:
+    if (ob_len >= sb_len) {
+      csObject = csObject.Left(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) == 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
+    } else {
+      return false;
+    }
+  case -SGF_NOTBEGIN:
+  case SGF_NOTBEGIN:
+    if (ob_len >= sb_len) {
+      csObject = csObject.Left(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) != 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
+    } else {
+      return false;
+    }
+  case -SGF_ENDS:
+  case SGF_ENDS:
+    if (ob_len > sb_len) {
+      csObject = csObject.Right(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) == 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
+    } else {
+      return false;
+    }
+  case -SGF_NOTEND:
+  case SGF_NOTEND:
+    if (ob_len > sb_len) {
+      csObject = csObject.Right(sb_len);
+      return (((iFunction < 0) &&
+               subgroup_name.Compare((LPCTSTR)csObject) != 0) ||
+              ((iFunction > 0) &&
+               (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
+    } else
+      return true;
+  case -SGF_CONTAINS:
+    return (csObject.Find((LPCTSTR)subgroup_name) != -1);
+  case SGF_CONTAINS:
+    {
+      csObject.MakeLower();
+      CString subgroupLC(subgroup_name);
+      subgroupLC.MakeLower();
+      return (csObject.Find((LPCTSTR)subgroupLC) != -1);
+    }
+  case -SGF_NOTCONTAIN:
+    return (csObject.Find((LPCTSTR)subgroup_name)== -1);
+  case SGF_NOTCONTAIN:
+    {
+      csObject.MakeLower();
+      CString subgroupLC(subgroup_name);
+      subgroupLC.MakeLower();
+      return (csObject.Find((LPCTSTR)subgroupLC) == -1);
+    }
+  default:
+    ASSERT(0);
   }
-  
-  return TRUE;
+
+  return true; // should never get here!
 }

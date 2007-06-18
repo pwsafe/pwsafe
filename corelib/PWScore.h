@@ -11,14 +11,19 @@
 // PWScore.h
 //-----------------------------------------------------------------------------
 
-#include <afxtempl.h> // for CList
+#include <map> // for CList
 #include "ItemData.h"
 #include "MyString.h"
 #include "PWSfile.h"
+#include "UUIDGen.h"
 
 #define MAXDEMO 10
 
-typedef CList<CItemData,CItemData> ItemList; 
+typedef std::map<CUUIDGen, CItemData, CUUIDGen::ltuuid> ItemList;
+typedef ItemList::iterator ItemListIter;
+typedef ItemList::const_iterator ItemListConstIter;
+
+typedef std::vector<CItemData> OrderedItemList;
 
 class PWScore {
  public:
@@ -55,6 +60,21 @@ class PWScore {
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
   const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
+  void ClearFileUUID();
+  void SetFileUUID(uuid_array_t &file_uuid_array);
+  void GetFileUUID(uuid_array_t &file_uuid_array);
+  bool HasHeaderUnknownFields()
+    {return !m_UHFL.empty();}
+  int GetNumRecordsWithUnknownFields()
+    {return m_nRecordsWithUnknownFields;}
+  void SetNumRecordsWithUnknownFields(const int num)
+    {m_nRecordsWithUnknownFields = num;}
+  void DecrementNumRecordsWithUnknownFields()
+    {m_nRecordsWithUnknownFields--;}
+  void IncrementNumRecordsWithUnknownFields()
+    {m_nRecordsWithUnknownFields++;}
+  void SetFileHashIterations(const int &nITER)
+    {m_nITER = nITER;}
 
   void ClearData();
   void ReInit();
@@ -69,17 +89,18 @@ class PWScore {
                          const CItemData::FieldBits &bsExport,
                          const CString &subgroup, const int &iObject,
                          const int &iFunction, TCHAR &delimiter,
-                         const ItemList *il = NULL);
+                         const OrderedItemList *il = NULL);
   int WriteXMLFile(const CMyString &filename,
                    const CItemData::FieldBits &bsExport,
                    const CString &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR delimiter,
-                   const ItemList *il = NULL);
+                   const OrderedItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
 			TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped);
   int ImportKeePassTextFile(const CMyString &filename);
   int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
-			CString &strErrors, int &numValidated, int &numImported);
+			CString &strErrors, int &numValidated, int &numImported,
+			bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
   bool FileExists(const CMyString &filename, bool &bReadOnly) const 
 	  {return PWSfile::FileExists(filename, bReadOnly);}
@@ -94,46 +115,53 @@ class PWScore {
                      const CString &userBackupPrefix, const CString &userBackupDir);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
-  bool LockFile(const CMyString &filename, CMyString &locker) const
-  {return PWSfile::LockFile(filename, locker);} // legacy/convenience
+  bool LockFile(const CMyString &filename, CMyString &locker)
+    {return PWSfile::LockFile(filename, locker,
+                     m_lockFileHandle, m_LockCount);}
   bool IsLockedFile(const CMyString &filename) const
-  {return PWSfile::IsLockedFile(filename);} // legacy/convenience
-  void UnlockFile(const CMyString &filename) const
-  {return PWSfile::UnlockFile(filename);}
+    {return PWSfile::IsLockedFile(filename);}
+  void UnlockFile(const CMyString &filename)
+    {return PWSfile::UnlockFile(filename, 
+                     m_lockFileHandle, m_LockCount);}
   void SetApplicationMajorMinor(DWORD dwMajorMinor) {m_dwMajorMinor = dwMajorMinor;}
+  void SetReadOnly(bool state) { m_IsReadOnly = state;}
+  bool IsReadOnly() const {return m_IsReadOnly;};
 
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary);
 
-  POSITION GetFirstEntryPosition() const
-    {return m_pwlist.GetHeadPosition();}
-  POSITION AddEntryToTail(const CItemData &item)
-    {m_changed = true; return m_pwlist.AddTail(item);}
-  CItemData GetEntryAt(POSITION pos) const
-    {return m_pwlist.GetAt(pos);}
-  CItemData &GetEntryAt(POSITION pos)
-    {return m_pwlist.GetAt(pos);}
-  CItemData GetNextEntry(POSITION &pos) const
-    {return m_pwlist.GetNext(pos);}
-  CItemData &GetNextEntry(POSITION &pos)
-    {return m_pwlist.GetNext(pos);}
-  CItemData &GetTailEntry()
-    {return m_pwlist.GetTail();}
-  int GetNumEntries() const {return static_cast<int>(m_pwlist.GetCount());}
-  void RemoveEntryAt(POSITION pos)
-    {m_changed = true; m_pwlist.RemoveAt(pos);}
+  ItemListIter GetEntryIter()
+  {return m_pwlist.begin();}
+  ItemListConstIter GetEntryIter() const
+  {return m_pwlist.begin();}
+  ItemListIter GetEntryEndIter()
+  {return m_pwlist.end();}
+  ItemListConstIter GetEntryEndIter() const
+  {return m_pwlist.end();}
+  CItemData &GetEntry(ItemListIter iter)
+    {return iter->second; }
+  const CItemData &GetEntry(ItemListConstIter iter) const
+  {return iter->second;}
+  void AddEntry(const CItemData &item)
+  {uuid_array_t uuid; item.GetUUID(uuid); AddEntry(uuid, item);}
+  void AddEntry(const uuid_array_t &uuid, const CItemData &item);
+  size_t GetNumEntries() const {return m_pwlist.size();}
+  void RemoveEntryAt(ItemListIter pos)
+  {m_changed = true; m_pwlist.erase(pos);}
  // Find in m_pwlist by title and user name, exact match
-  POSITION Find(const CMyString &a_group,
-		const CMyString &a_title, const CMyString &a_user) const;
-  POSITION Find(const uuid_array_t &uuid) const;
+  ItemListIter Find(const CMyString &a_group,
+                    const CMyString &a_title, const CMyString &a_user);
+  ItemListIter Find(const uuid_array_t &uuid)
+  {return m_pwlist.find(uuid);}
+  ItemListConstIter Find(const uuid_array_t &uuid) const
+  {return m_pwlist.find(uuid);}
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
   void SetPassKey(const CMyString &new_passkey);
 
-  void SetDisplayStatus(TCHAR *p_char_displaystatus, const int length);
-  void SetDisplayStatus(const CString &s) { m_displaystatus = s;}
-  CString GetDisplayStatus() {return m_displaystatus;}
+  void SetDisplayStatus(const std::vector<bool> &s) { m_displaystatus = s;}
+  const std::vector<bool> &GetDisplayStatus() const {return m_displaystatus;}
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
@@ -146,6 +174,8 @@ class PWScore {
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
   static CString m_hdr;
+  HANDLE m_lockFileHandle;
+  int m_LockCount;
 
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
@@ -164,8 +194,13 @@ class PWScore {
   ItemList m_pwlist;
 
   bool m_changed;
+  bool m_IsReadOnly;
 
-  CString m_displaystatus;
+  std::vector<bool> m_displaystatus;
   CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
+  uuid_array_t m_file_uuid_array;
+  int m_nITER;
+  UnknownFieldList m_UHFL;
+  int m_nRecordsWithUnknownFields;
 };
 #endif /* __PWSCORE_H */

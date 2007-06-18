@@ -8,9 +8,13 @@
 
 
 
+
   
 
 
+
+  
+  
 
   
   
@@ -42,11 +46,13 @@
   
   
   
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
+
 
 
 
@@ -66,9 +72,11 @@
 
 
 
+
 <p><span style="font-weight: bold;">Password Safe</span> supports exporting (and importing) of the stored
 passwords to (and from) various formats. To export data use the
 File-&gt;Export To menu. The supported formats are:</p>
+
 
 
 
@@ -86,7 +94,9 @@ File-&gt;Export To menu. The supported formats are:</p>
 
 
 
+
   <li>Password Safe v1 (for use by versions 1.x of Password Safe)</li>
+
 
 
 
@@ -104,7 +114,9 @@ File-&gt;Export To menu. The supported formats are:</p>
 
 
 
+
   <li><a href="#te">Plain text</a></li>
+
 
 
 
@@ -122,7 +134,9 @@ File-&gt;Export To menu. The supported formats are:</p>
 
 
 
+
 </ul>
+
 
 
 
@@ -141,7 +155,9 @@ you wish to create.</p>
 
 
 
+
 <h3><a name="te"></a>Text Export</h3>
+
 
 
 
@@ -164,8 +180,10 @@ of the program.</span><br style="color: rgb(255, 0, 0);">
 
 
 
+
 <span style="color: rgb(255, 0, 0);">Please </span><span style="font-weight: bold; color: rgb(255, 0, 0);">DO NOT </span><span style="color: rgb(255, 0, 0);">use this function unless you
 understand and accept the risks.</span><br>
+
 
 
 
@@ -187,9 +205,11 @@ applications.<br>
 
 
 
+
 You will first be asked to enter the master password or safe
 combination to confirm that you may export the database into a clear
 text unencrypted file.<br>
+
 
 
 
@@ -203,7 +223,9 @@ text unencrypted file.<br>
 
 
 
+
 </p>
+
 
 
 
@@ -220,7 +242,9 @@ text unencrypted file.<br>
 
 
 
+
 <ul>
+
 
 
 
@@ -229,6 +253,7 @@ text unencrypted file.<br>
 
   <li>
 
+    
     
     
     
@@ -255,10 +280,12 @@ database.<br>
 
 
 
+
 If a Notes field multi-line delimiter character is required,
 enter it here so that, during the Export process, multiple lines in
 Notes field will be exported as a single line using this character
 between each of the original lines.<br>
+
 
 
 
@@ -276,7 +303,9 @@ the multi-line delimiter.</p>
 
 
 
+
   </li>
+
 
 
 
@@ -295,9 +324,12 @@ the multi-line delimiter.</p>
 
 
 
+
 <ul>
 
+
   <li>Even more control on the exported format may be specified by clicking on "Advanced". The following dialog box will appear:</li>
+
 
 </ul>
 
@@ -306,7 +338,9 @@ the multi-line delimiter.</p>
 
 
 
-<p><img style="width: 341px; height: 594px;" alt="Export Extra" src="images/export_extra.jpg"></p>
+
+<p><img style="width: 374px; height: 432px;" alt="Advanced Text Export Options" src="images/export_text_adv.jpg"></p>
+
 
 
 
@@ -323,10 +357,12 @@ the Export Text dialog box without any changes.</p>
 
 
 
+
 <p>
 You will then be asked to supply the name of the new file and
 to confirm overwriting a file of the same name if it already exists in
 the directory you specified.</p>
+
 <hr style="width: 100%; height: 2px;"><small>Note: Details on the format of the exported text file may be found in the "<a href="imp_exp_text_details.html">Plain Text Export &amp; Import Format</a>" section.</small>
 <hr style="width: 100%; height: 2px;">
 <p></p>
@@ -335,7 +371,9 @@ the directory you specified.</p>
 
 
 
+
 <h3><a name="xml"></a>XML</h3>
+
 
 
 
@@ -349,10 +387,12 @@ Password Safe when XML data is imported, and should be provided to
 applications that wish to use the exported data.<br>
 
 
+
 <hr style="width: 100%; height: 2px;"><small><b style="color: rgb(255, 0, 0);">Note:</b><span style="color: rgb(255, 0, 0);"> The exported text is an
 unprotected copy</span><span style="font-weight: bold; color: rgb(255, 0, 0);"></span><span style="color: rgb(255, 0, 0);"> of the specified password entries. Deleting this copy after use is </span><span style="font-weight: bold; color: rgb(255, 0, 0);">not </span><span style="color: rgb(255, 0, 0);">sufficient for making it
 inaccesible to a determined attacker, and in effect bypasses the security
 of the program.</span><br style="color: rgb(255, 0, 0);">
+
 
 
 
@@ -372,10 +412,31 @@ modified for your own needs, is supplied as part of the distribution.
 This file is only an example and you can easily modify it to display
 whatever fields you want to show.&nbsp; As this only displays the data
 and will not alter it, you will still be able to import it into
-Password Safe at some later time.
+Password Safe at some later time.<br>
+<br>
+As in the Text Export option, you can control what entries and field to
+export to the XML file by clicking on the Advanced button in the Export
+XML dialog box. This will display the following dialog box:<br>
+<img style="width: 374px; height: 432px;" alt="Advanced XML Export Options" src="images/export_xml_adv.jpg"><br>
+<br>
+<p>This dialog box allows you to&nbsp;export only some of the entries,
+based on the text in specified fields, and/or specify which fields are
+to be exported. Click OK when you have finished, or Cancel to return to
+the Export XML dialog box without any changes. Note that the XML schema
+requires the Title and Password fields, hence these cannot be
+deselected.</p>
 
 
-<!-- Added some white space at the bottom for natural scrolling -->
+
+
+
+
+
+<p>
+You will then be asked to supply the name of the new file and
+to confirm overwriting a file of the same name if it already exists in
+the directory you specified.</p>
+&nbsp;<!-- Added some white space at the bottom for natural scrolling -->
 <br>
 
 
@@ -385,16 +446,19 @@ Password Safe at some later time.
 
 
 
-<br>
-
-
-
-
-
-
-
 
 <br>
+
+
+
+
+
+
+
+
+
+<br>
+
 
 
 

@@ -54,7 +54,7 @@
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
 			/>
@@ -131,7 +131,7 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				CompileAs="0"
 			/>
 			<Tool
@@ -201,10 +201,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="false"
-				PrecompiledHeaderFile=".\Release/corelib.pch"
+				PrecompiledHeaderFile="$(IntDir)/corelib.pch"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				CompileAs="0"
 			/>
 			<Tool
@@ -351,6 +351,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\UnknownField.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Util.cpp"
 				>
 			</File>
@@ -461,6 +465,10 @@
 			</File>
 			<File
 				RelativePath=".\typedefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnknownField.h"
 				>
 			</File>
 			<File

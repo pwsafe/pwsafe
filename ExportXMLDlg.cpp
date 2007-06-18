@@ -29,8 +29,8 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CExportXMLDlg::IDD, pParent),
-          m_subgroup_set(0), m_subgroup_name(_T("")),
-          m_subgroup_object(0), m_subgroup_function(0)
+    m_subgroup_set(BST_UNCHECKED),
+    m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
 {
 	//{{AFX_DATA_INIT(CExportXMLDlg)
 	m_ExportXMLPassword = _T("");
@@ -106,19 +106,17 @@ void CExportXMLDlg::OnOK()
 
 void CExportXMLDlg::OnAdvanced()
 {
-	CAdvancedDlg *pAdv;
-	pAdv = new CAdvancedDlg(this, ADV_EXPORT_XML);
+	CAdvancedDlg Adv(this, ADV_EXPORT_XML, m_bsExport, m_subgroup_name, 
+              m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
-	int rc = pAdv->DoModal();
+	int rc = Adv.DoModal();
 	if (rc == IDOK) {
-		m_bsExport = pAdv->m_bsFields;
-		m_subgroup_set = pAdv->m_subgroup_set;
+		m_bsExport = Adv.m_bsFields;
+		m_subgroup_set = Adv.m_subgroup_set;
 		if (m_subgroup_set == BST_CHECKED) {
-		  m_subgroup_name = pAdv->m_subgroup_name;
-			m_subgroup_object = pAdv->m_subgroup_object;
-			m_subgroup_function = pAdv->m_subgroup_function;
+		  m_subgroup_name = Adv.m_subgroup_name;
+			m_subgroup_object = Adv.m_subgroup_object;
+			m_subgroup_function = Adv.m_subgroup_function;
 		}	
 	}
-	delete pAdv;
-	pAdv = NULL;
 }

@@ -40,6 +40,9 @@ extern void trashStringMemory( CString cs_buffer );
 
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
+extern void ConvertString(const CMyString &text,
+                          unsigned char *&txt, int &txtlen);
+
 extern void GenRandhash(const CMyString &passkey,
                         const unsigned char* m_randstuff,
                         unsigned char* m_randhash);
@@ -165,6 +168,10 @@ public:
   static CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   static const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   static CString GetTimeStamp();
+  static void HexDump(unsigned char *pmemory, const int length,
+                         const CString cs_prefix = _T(""), const int maxnum = 16);
+  static CString Base64Encode(const BYTE *inData, size_t len);
+  static void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
   static void IssueError(const CString &csFunction);
 };
 #endif /* __UTIL_H */

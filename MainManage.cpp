@@ -29,7 +29,9 @@
 #include "OptionsMisc.h"
 #include "OptionsBackup.h"
 
-#include <afxpriv.h>
+#include <algorithm>
+
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 void
 DboxMain::OnPasswordChange()
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
   CPasskeyChangeDlg changeDlg(this);
   app.DisableAccelerator();
@@ -113,7 +115,7 @@ DboxMain::BackupSafe()
 void
 DboxMain::OnRestore()
 {
-  if (!m_IsReadOnly) // disable in read-only mode
+  if (!m_core.IsReadOnly()) // disable in read-only mode
     Restore();
 }
 
@@ -262,7 +264,8 @@ DboxMain::OnOptions()
         GetPref(PWSprefs::MRUOnFileMenu);
     system.m_startup = StartupShortcutExists;
 
-    display.m_alwaysontop = m_bAlwaysOnTop;
+    display.m_alwaysontop = prefs->
+      GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
     display.m_pwshowinedit = prefs->
         GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
     display.m_showusernameintree = prefs->
@@ -560,7 +563,7 @@ DboxMain::OnOptions()
         */
         if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
             m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-            if (!m_IsReadOnly) {
+            if (!m_core.IsReadOnly()) {
                 // save changed preferences to file
                 // Note that we currently can only write the entire file, so any changes
                 // the user made to the database are also saved here
@@ -584,11 +587,7 @@ DboxMain::OnOptions()
         /*
         **  Now update the application according to the options.
         */
-        m_bAlwaysOnTop = display.m_alwaysontop == TRUE;
         UpdateAlwaysOnTop();
-        m_bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-        m_bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-        m_bExplorerTypeTree = prefs->GetPref(PWSprefs::ExplorerTypeTree);
 
         DWORD dwExtendedStyle = m_ctlItemList.GetExtendedStyle();
         BOOL bGridLines = ((dwExtendedStyle & LVS_EX_GRIDLINES) == LVS_EX_GRIDLINES) ? TRUE : FALSE;
@@ -602,12 +601,21 @@ DboxMain::OnOptions()
             m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
         }
 
-        if ((bOldShowUsernameInTree != m_bShowUsernameInTree ||
-             bOldShowPasswordInTree != m_bShowPasswordInTree) ||
-            (bOldExplorerTypeTree != m_bExplorerTypeTree) ||
+        if ((bOldShowUsernameInTree !=
+             prefs->GetPref(PWSprefs::ShowUsernameInTree) ||
+             bOldShowPasswordInTree !=
+             prefs->GetPref(PWSprefs::ShowPasswordInTree)) ||
+            (bOldExplorerTypeTree !=
+             prefs->GetPref(PWSprefs::ExplorerTypeTree)) ||
             (save_preexpirywarn != display.m_preexpirywarn) ||
             (save_preexpirywarndays != display.m_preexpirywarndays))
             RefreshList();
+
+        // Changing ExplorerTypeTree changes order of items,
+        // which DisplayStatus implcitly depends upon
+        if (bOldExplorerTypeTree !=
+            prefs->GetPref(PWSprefs::ExplorerTypeTree))
+          SaveDisplayStatus();
 
         if (system.m_usesystemtray == TRUE) {
             if (app.IsIconVisible() == FALSE)
@@ -684,64 +692,60 @@ DboxMain::OnOptions()
 #endif
 }
 
-void
-DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
+// functor objects for updating password history for each entry
+struct HistoryUpdateResetOff {
+  HistoryUpdateResetOff(int &num_altered) : m_num_altered(num_altered) {}
+  void operator()(pair<CUUIDGen, CItemData> p)
 {
-	CString cs_Msg, cs_Buffer;;
-	POSITION listPos;
-	int status, old_max, num_saved, len;
-	int num_altered = 0;
-	bool bResult = false;
-
-	switch (iAction) {
-		case 1:		// reset off
-			listPos = m_core.GetFirstEntryPosition();
-			while (listPos != NULL) {
-				CItemData &ci = m_core.GetEntryAt(listPos);
+    CItemData &ci = p.second;
 				CMyString cs_tmp = ci.GetPWHistory();
 				if (cs_tmp.GetLength() >= 5 && cs_tmp.GetAt(0) == _T('1')) {
 					cs_tmp.SetAt(0, _T('0'));
 					ci.SetPWHistory(cs_tmp);
-					num_altered++;
+      m_num_altered++;
 				}
-				m_core.GetNextEntry(listPos);
-			} // while
-			cs_Msg.Format(IDS_ENTRIESCHANGEDSTOP, num_altered);
-			AfxMessageBox(cs_Msg);
-			bResult = true;
-			break;
-		case 2:		// reset on
-			cs_Buffer.Format(_T("1%02x00"), new_default_max);
-			listPos = m_core.GetFirstEntryPosition();
-			while (listPos != NULL) {
-				CItemData &ci = m_core.GetEntryAt(listPos);
+  }
+private:
+  int &m_num_altered;
+};
+
+struct HistoryUpdateResetOn {
+  HistoryUpdateResetOn(int &num_altered,
+                       int new_default_max) : m_num_altered(num_altered)
+  {text.Format(_T("1%02x00"), new_default_max);}
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {
+    CItemData &ci = p.second;
 				CMyString cs_tmp = ci.GetPWHistory();
-				len = cs_tmp.GetLength();
 				if (cs_tmp.GetLength() < 5) {
-					ci.SetPWHistory(cs_Buffer);
-					num_altered++;
+      ci.SetPWHistory(text);
+      m_num_altered++;
 				} else {
 					if (cs_tmp.GetAt(0) == _T('0')) {
 							cs_tmp.SetAt(0, _T('1'));
 						ci.SetPWHistory(cs_tmp);
-						num_altered++;
+        m_num_altered++;
+      }
 					}
 				}
-				m_core.GetNextEntry(listPos);
-			} // while
+private:
+  int &m_num_altered;
+	CString text;
+};
 
-			cs_Msg.Format(IDS_ENTRIESCHANGEDSAVE, num_altered);
-			AfxMessageBox(cs_Msg);
-			bResult = true;
-			break;
-		case 3:		// setmax
-			cs_Buffer.Format(_T("1%02x"), new_default_max);
-			listPos = m_core.GetFirstEntryPosition();
-			while (listPos != NULL) {
-				CItemData &ci = m_core.GetEntryAt(listPos);
+struct HistoryUpdateSetMax {
+  HistoryUpdateSetMax(int &num_altered,
+                      int new_default_max) : m_num_altered(num_altered),
+                                             m_new_default_max(new_default_max)
+  {text.Format(_T("1%02x00"), new_default_max);}
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {
+    CItemData &ci = p.second;
 				CMyString cs_tmp = ci.GetPWHistory();
-				len = cs_tmp.GetLength();
+
+    int len = cs_tmp.GetLength();
 				if (len >= 5) {
+      int status, old_max, num_saved;
 					TCHAR *lpszPWHistory = cs_tmp.GetBuffer(len + sizeof(TCHAR));
 #if _MSC_VER >= 1400
 					int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
@@ -751,24 +755,59 @@ DboxMain::UpdatePasswordHistory(const int &iAction, const int &new_default_max)
 						&status, &old_max, &num_saved);
 #endif
 					cs_tmp.ReleaseBuffer();
-					if (iread == 3 && status == 1 && num_saved <= new_default_max) {
-						cs_tmp = CMyString(cs_Buffer) + cs_tmp.Mid(3);
+      if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
+        cs_tmp = CMyString(text) + cs_tmp.Mid(3);
 						ci.SetPWHistory(cs_tmp);
-						num_altered++;
+        m_num_altered++;
+      }
+    }
+  }
+private:
+  int &m_num_altered, m_new_default_max;
+	CString text;
+};
+
+void
+DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
+{
+  int ids = 0;
+	int num_altered = 0;
+	bool bResult = false;
+
+	switch (iAction) {
+  case 1:	{	// reset off
+    HistoryUpdateResetOff reset_off(num_altered);
+    for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
+             reset_off);
+    ids = IDS_ENTRIESCHANGEDSTOP;
+    bResult = true;
+    break;
 					}
+  case 2:	{	// reset on
+    HistoryUpdateResetOn reset_on(num_altered, new_default_max);
+    for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
+             reset_on);
+    ids = IDS_ENTRIESCHANGEDSAVE;
+    bResult = true;
+    break;
 				}
-				m_core.GetNextEntry(listPos);
-			} // while
-			cs_Msg.Format(IDS_ENTRIESRESETMAX, num_altered);
-			AfxMessageBox(cs_Msg);
+  case 3:	{	// setmax
+    HistoryUpdateSetMax set_max(num_altered, new_default_max);
+    for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
+             set_max);
+    ids = IDS_ENTRIESRESETMAX;
 			bResult = true;
 			break;
+  }
 		default:
+    ASSERT(0);
 			break;
-	}
+	} // switch (iAction)
 
-	if (bResult)
+	if (bResult) {
+    CString cs_Msg;
+    cs_Msg.Format(ids, num_altered);
+    AfxMessageBox(cs_Msg);
 		RefreshList();
-
-	return;
+  }
 }

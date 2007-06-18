@@ -30,6 +30,10 @@
  */
 
 #include "MyString.h"
+#include "PWSfile.h"
+
+extern HANDLE s_cfglockFileHandle;
+extern int s_cfgLockCount;
 
 class CXMLprefs;
 
@@ -118,7 +122,16 @@ class PWSprefs {
   // for OptionSystem property sheet - support removing registry traces
   bool OfferDeleteRegistry() const;
   void DeleteRegistryEntries();  
-  
+
+  static bool LockCFGFile(const CMyString &filename, CMyString &locker)
+    {return PWSfile::LockFile(filename, locker, 
+                         s_cfglockFileHandle, s_cfgLockCount);}
+  static void UnlockCFGFile(const CMyString &filename)
+    {return PWSfile::UnlockFile(filename,
+                         s_cfglockFileHandle, s_cfgLockCount);}
+  static bool IsLockedCFGFile(const CMyString &filename)
+    {return PWSfile::IsLockedFile(filename);}
+
  private:
   PWSprefs();
   ~PWSprefs();

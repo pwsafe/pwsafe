@@ -8,6 +8,7 @@
 #include "PWSfileV3.h"
 #include "UUIDGen.h"
 #include "PWSrand.h"
+#include "util.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -19,7 +20,7 @@ static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
 PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
-  : PWSfile(filename,mode), m_utf8(NULL), m_utf8Len(0), m_utf8MaxLen(0),
+  : PWSfile(filename, mode), m_utf8(NULL), m_utf8Len(0), m_utf8MaxLen(0),
     m_wc(NULL), m_wcMaxLen(0), m_tmp(NULL), m_tmpMaxLen(0)
 {
   m_curversion = version;
@@ -38,22 +39,23 @@ PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
     || (osvi.dwMajorVersion == 3 && osvi.dwMinorVersion == 51); // NT 3.51
   m_useUTF8 = !oldOS;
 #endif
+  m_useUTF8 = true;
 }
 
 PWSfileV3::~PWSfileV3()
 {
-    if (m_utf8 != NULL) {
-        trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
-        delete[] m_utf8;
-    }
-    if (m_wc != NULL) {
-        trashMemory(m_wc, m_wcMaxLen);
-        delete[] m_wc;
-    }
-    if (m_tmp != NULL) {
-        trashMemory(m_tmp, m_tmpMaxLen*sizeof(m_tmp[0]));
-        delete[] m_tmp;
-    }
+  if (m_utf8 != NULL) {
+    trashMemory(m_utf8, m_utf8MaxLen * sizeof(m_utf8[0]));
+    delete[] m_utf8;
+  }
+  if (m_wc != NULL) {
+    trashMemory(m_wc, m_wcMaxLen);
+    delete[] m_wc;
+  }
+  if (m_tmp != NULL) {
+    trashMemory(m_tmp, m_tmpMaxLen * sizeof(m_tmp[0]));
+    delete[] m_tmp;
+  }
 }
 
 int PWSfileV3::Open(const CMyString &passkey)
@@ -85,7 +87,7 @@ int PWSfileV3::Close()
     if (m_fd == NULL)
         return SUCCESS; // idempotent
     if (m_utf8 != NULL) {
-        trashMemory(m_utf8, m_utf8MaxLen* sizeof(m_utf8[0]));
+        trashMemory(m_utf8, m_utf8MaxLen * sizeof(m_utf8[0]));
         delete[] m_utf8; m_utf8 = NULL;
         m_utf8Len = m_utf8MaxLen = 0;
     }
@@ -123,8 +125,8 @@ int PWSfileV3::Close()
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
 int PWSfileV3::CheckPassword(const CMyString &filename,
-                             const CMyString &passkey,
-                             FILE *a_fd, unsigned char *aPtag)
+                             const CMyString &passkey, FILE *a_fd,
+                             unsigned char *aPtag, int *nITER)
 {
   FILE *fd = a_fd;
   int retval = SUCCESS;
@@ -154,11 +156,15 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   fread(Nb, 1, sizeof(Nb), fd);
   const unsigned int N = getInt32(Nb);
 
-  ASSERT(N >= 2048);
-  if (N < 2048) {
+  ASSERT(N >= MIN_HASH_ITERATIONS);
+  if (N < MIN_HASH_ITERATIONS) {
     retval = FAILURE;
     goto err;
   }
+
+  if (nITER != NULL)
+    *nITER = N;
+
   unsigned char Ptag[SHA256::HASHLEN];
   if (aPtag == NULL)
     aPtag = Ptag;
@@ -200,7 +206,6 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
   m_hmac.Update(data, length);
   return PWSfile::WriteCBC(type, data, length);
 }
-
 
 int PWSfileV3::WriteRecord(const CItemData &item)
 {
@@ -245,44 +250,26 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetPWHistory();
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::PWHIST, tmp);
+
+  UnknownFieldsConstIter vi_IterURFE;
+  for (vi_IterURFE = item.GetURFIterBegin();
+       vi_IterURFE != item.GetURFIterEnd();
+       vi_IterURFE++) {
+    unsigned char type;
+    unsigned int length = 0;
+    unsigned char *pdata = NULL;
+    item.GetUnknownField(type, length, pdata, vi_IterURFE);
+    WriteCBC(type, pdata, length);
+    trashMemory(pdata, length);
+    delete[] pdata;
+  }
+
   WriteCBC(CItemData::END, _T(""));
 
   return status;
 }
 
-size_t
-PWSfileV3::ReadCBC(unsigned char &type, CMyString &data)
-{
-  CMyString text;
-  size_t numRead = PWSfile::ReadCBC(type, text);
-
-  if (numRead > 0) {
-    LPCTSTR d = LPCTSTR(text);
-    m_hmac.Update((const unsigned char *)d, text.GetLength());
-    // HACK - following types non-utf-8
-    if (type == CItemData::UUID ||
-        type == CItemData::CTIME || type == CItemData::PMTIME ||
-        type == CItemData::ATIME || type == CItemData::LTIME ||
-        type == CItemData::RMTIME ||
-        !m_useUTF8 // E.g., win98 doesn't grok utf8
-        ) {
-      data = text;
-      return numRead;
-    }
-    bool status;
-    m_utf8 = (unsigned char *)d;
-    m_utf8Len = text.GetLength();
-    m_utf8[m_utf8Len] = '\0';
-    status = FromUTF8(data);
-    m_utf8 = NULL; m_utf8Len = 0; // so we don't double delete
-    if (!status)
-      TRACE(_T("FromUTF8(%s) failed\n"), text);
-  }
-
-  return numRead;
-}
-
-size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
+size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
                        unsigned int &length)
 {
   size_t numRead = PWSfile::ReadCBC(type, data, length);
@@ -296,88 +283,106 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char *data,
 
 int PWSfileV3::ReadRecord(CItemData &item)
 {
-  ASSERT(m_fd != NULL);
-  ASSERT(m_curversion == V30);
+    ASSERT(m_fd != NULL);
+    ASSERT(m_curversion == V30);
 
-  CMyString tempdata;  
-  signed long numread = 0;
-  unsigned char type;
+    int status = SUCCESS;
 
-  int emergencyExit = 255; // to avoid endless loop.
-  signed long fieldLen; // <= 0 means end of file reached
-  bool endFound = false; // set to true when record end detected - happy end
-  time_t t;
+    CMyString tempdata;  
+    signed long numread = 0;
+    unsigned char type;
 
-  do {
-      fieldLen = static_cast<signed long>(ReadCBC(type, tempdata));
-      if (fieldLen > 0) {
-      numread += fieldLen;
-      switch (type) {
-      case CItemData::TITLE:
-        item.SetTitle(tempdata); break;
-      case CItemData::USER:
-        item.SetUser(tempdata); break;
-      case CItemData::PASSWORD:
-        item.SetPassword(tempdata); break;
-      case CItemData::NOTES:
-        item.SetNotes(tempdata); break;
-      case CItemData::END:
-        endFound = true; break;
-      case CItemData::UUID: {
-        LPCTSTR ptrU = LPCTSTR(tempdata);
-        uuid_array_t uuid_array;
-        for (unsigned i = 0; i < sizeof(uuid_array); i++)
-          uuid_array[i] = (unsigned char)ptrU[i];
-        item.SetUUID(uuid_array); break;
-      }
-      case CItemData::GROUP:
-        item.SetGroup(tempdata); break;
-      case CItemData::URL:
-        item.SetURL(tempdata); break;
-      case CItemData::AUTOTYPE:
-        item.SetAutoType(tempdata); break;
-      case CItemData::CTIME: {
-		LPCTSTR ptrC = LPCTSTR(tempdata);
-        memcpy(&t, ptrC, sizeof(t));
-		item.SetCTime(t); break;
-		}
-	  case CItemData::PMTIME: {
-        LPCTSTR ptrPM = LPCTSTR(tempdata);
-		memcpy(&t, ptrPM, sizeof(t));
-		item.SetPMTime(t); break;
-      }
-	  case CItemData::ATIME: {
-        LPCTSTR ptrA = LPCTSTR(tempdata);
-		memcpy(&t, ptrA, sizeof(t));
-        item.SetATime(t); break;
-		}
-	  case CItemData::LTIME: {
-        LPCTSTR ptrL = LPCTSTR(tempdata);
-		memcpy(&t, ptrL, sizeof(t));
-        item.SetLTime(t); break;
-		}
-	  case CItemData::RMTIME: {
-        LPCTSTR ptrRM = LPCTSTR(tempdata);
-		memcpy(&t, ptrRM, sizeof(t));
-        item.SetRMTime(t); break;
-		}
-	  case CItemData::PWHIST: {
-        item.SetPWHistory(tempdata); break;
-		}
-      // just silently ignore fields we don't support.
-      // this is forward compatability...
-      case CItemData::POLICY:
-      default:
-        // XXX Set a flag here so user can be warned that
-        // XXX we read a file format we don't fully support
-        break;
-      } // switch
-    } // if (fieldLen > 0)
-  } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-  if (numread > 0)
-    return SUCCESS;
-  else
-    return END_OF_FILE;
+    int emergencyExit = 255; // to avoid endless loop.
+    signed long fieldLen; // <= 0 means end of file reached
+    bool endFound = false; // set to true when record end detected - happy end
+    time_t t;
+
+    do {
+        fieldLen = static_cast<signed long>(ReadCBC(type, m_utf8,
+                                                    (unsigned int &)m_utf8Len));
+        if (m_utf8 != NULL) m_utf8[m_utf8Len] = '\0';
+
+        if (CItemData::IsTextField(type)) {
+            bool utf8status = FromUTF8(tempdata);
+            if (!utf8status) {
+                TRACE(_T("PWSfileV3::ReadRecord(): FromUTF failed!\n"));
+                status = FAILURE;
+            }
+        }
+
+        if (fieldLen > 0) {
+            numread += fieldLen;
+            switch (type) {
+                case CItemData::TITLE:
+                    item.SetTitle(tempdata); break;
+                case CItemData::USER:
+                    item.SetUser(tempdata); break;
+                case CItemData::PASSWORD:
+                    item.SetPassword(tempdata); break;
+                case CItemData::NOTES:
+                    item.SetNotes(tempdata); break;
+                case CItemData::END:
+                    endFound = true; break;
+                case CItemData::UUID: {
+                    uuid_array_t uuid_array;
+                    ASSERT(m_utf8Len == sizeof(uuid_array));
+                    for (unsigned i = 0; i < sizeof(uuid_array); i++)
+                        uuid_array[i] = m_utf8[i];
+                    item.SetUUID(uuid_array); break;
+                }
+                case CItemData::GROUP:
+                    item.SetGroup(tempdata); break;
+                case CItemData::URL:
+                    item.SetURL(tempdata); break;
+                case CItemData::AUTOTYPE:
+                    item.SetAutoType(tempdata); break;
+                case CItemData::CTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetCTime(t); break;
+                case CItemData::PMTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetPMTime(t); break;
+                case CItemData::ATIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetATime(t); break;
+                case CItemData::LTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetLTime(t); break;
+                case CItemData::RMTIME:
+                    ASSERT(m_utf8Len == sizeof(t));
+                    memcpy(&t, m_utf8, sizeof(t));
+                    item.SetRMTime(t); break;
+                case CItemData::PWHIST:
+                    item.SetPWHistory(tempdata); break;
+
+                case CItemData::POLICY:
+                default:
+                    // just silently save fields we don't support.
+                    item.SetUnknownField(type, m_utf8Len, m_utf8);
+#ifdef DEBUG
+                    CString cs_timestamp;
+                    cs_timestamp = PWSUtil::GetTimeStamp();
+                    TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
+                               cs_timestamp, item.GetGroup(), item.GetTitle(), item.GetUser(), 
+                               type, m_utf8Len, m_utf8Len);
+                    PWSUtil::HexDump(m_utf8, (int)m_utf8Len, cs_timestamp);
+#endif /* DEBUG */
+                    break;
+            } // switch
+        } // if (fieldLen > 0)
+        if (m_utf8 != NULL) {
+            trashMemory(m_utf8, m_utf8Len * sizeof(m_utf8[0]));
+            delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;
+        }
+    } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
+    if (numread > 0)
+        return status;
+    else
+        return END_OF_FILE;
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
@@ -390,18 +395,10 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
    * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
    * as the hash function, and N iterations.
    */
-  LPCTSTR passstr = LPCTSTR(passkey); 
-  unsigned long passLen = passkey.GetLength();
-  unsigned char *pstr;
-#ifdef UNICODE
-  pstr = new unsigned char[2*passLen];
-  int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
-                                LPSTR(pstr), 2*passLen, NULL, NULL);
-  ASSERT(len != 0);
-  passLen = len;
-#else
-  pstr = (unsigned char *)passstr;
-#endif
+  int passLen = 0;
+  unsigned char *pstr = NULL;
+
+  ConvertString(passkey, pstr, passLen);
   unsigned char *X = Ptag;
   SHA256 H0;
   H0.Update(pstr, passLen);
@@ -409,10 +406,11 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   H0.Final(X);
 
 #ifdef UNICODE
+  trashMemory(pstr, passLen);
   delete[] pstr;
 #endif
 
-  ASSERT(N >= 2048); // minimal value we're willing to use
+  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
     SHA256 H;
     // The 2nd param in next line was sizeof(X) in Beta-1
@@ -429,7 +427,11 @@ const short VersionNum = 0x0301;
 int PWSfileV3::WriteHeader()
 {
   // See formatV3.txt for explanation of what's written here and why
-  const unsigned int NumHashIters = 2048; // At least 2048
+  unsigned int NumHashIters;
+  if (m_nITER < MIN_HASH_ITERATIONS)
+    NumHashIters = MIN_HASH_ITERATIONS;
+  else
+    NumHashIters = m_nITER;
 
   fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
 
@@ -446,7 +448,8 @@ int PWSfileV3::WriteHeader()
   salter.Final(salt);
   fwrite(salt, 1, sizeof(salt), m_fd);
 
-  unsigned char Nb[sizeof(NumHashIters)];;
+  unsigned char Nb[sizeof(NumHashIters)];
+  
   putInt32(Nb, NumHashIters);
   fwrite(Nb, 1, sizeof(Nb), m_fd);
 
@@ -502,19 +505,24 @@ int PWSfileV3::WriteHeader()
   m_nCurrentMinorVersion = (unsigned short) (VersionNum & 0xff);
 
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
-  
+ 
+  if (numWritten <= 0) {
+    Close();
+    return FAILURE;
+  }
+ 
   // Write UUID
-  // We should probably reuse the UUID when saving an existing
-  // database, and generate a new one only from new dbs.
-  // For now, this is Good Enough. XXX
-  uuid_array_t uuid_array;
-  CUUIDGen uuid;
+  uuid_array_t file_uuid_array;
+  memset(file_uuid_array, 0x00, sizeof(file_uuid_array));
+  // If not there or zeroed, create new
+  if (memcmp(m_file_uuid_array, file_uuid_array, sizeof(file_uuid_array)) == 0) {
+    CUUIDGen uuid;
+    uuid.GetUUID(m_file_uuid_array);
+  }
   
-  uuid.GetUUID(uuid_array);
-  
-  numWritten += WriteCBC(HDR_UUID, uuid_array, sizeof(uuid_array));
+  numWritten = WriteCBC(HDR_UUID, m_file_uuid_array, sizeof(m_file_uuid_array));
 
-  if (numWritten <= 0) { // WriteCBC writes at least 2 blocks per datum.
+  if (numWritten <= 0) {
     Close();
     return FAILURE;
   }
@@ -573,8 +581,21 @@ int PWSfileV3::WriteHeader()
     m_whatlastsaved = cs_what;
   }
 
+  if (!m_UHFL.empty()) {
+    UnknownFieldList::iterator vi_IterUHFE;
+    for (vi_IterUHFE = m_UHFL.begin();
+         vi_IterUHFE != m_UHFL.end();
+         vi_IterUHFE++) {
+       UnknownFieldEntry &unkhfe = *vi_IterUHFE;
+       numWritten = WriteCBC(unkhfe.uc_Type, unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
+       if (numWritten <= 0) {
+         Close();
+         return FAILURE;
+       }
+    }
+  }
+
   // Write zero-length end-of-record type item
-  // for future-proof (skip possible additional fields in read)
   WriteCBC(HDR_END, NULL, 0);
 
   return SUCCESS;
@@ -582,167 +603,151 @@ int PWSfileV3::WriteHeader()
 
 int PWSfileV3::ReadHeader()
 {
-  unsigned char Ptag[SHA256::HASHLEN];
-  int status = CheckPassword(m_filename, m_passkey, m_fd, Ptag);
+    unsigned char Ptag[SHA256::HASHLEN];
+    int status = CheckPassword(m_filename, m_passkey, m_fd,
+                               Ptag, &m_nITER);
 
-  if (status != SUCCESS) {
-    Close();
-    return status;
-  }
-
-  unsigned char B1B2[sizeof(m_key)];
-  ASSERT(sizeof(B1B2) == 32); // Generalize later
-  fread(B1B2, 1, sizeof(B1B2), m_fd);
-  TwoFish TF(Ptag, sizeof(Ptag));
-  TF.Decrypt(B1B2, m_key);
-  TF.Decrypt(B1B2 + 16, m_key + 16);
-
-  unsigned char L[32]; // for HMAC
-  unsigned char B3B4[sizeof(L)];
-  ASSERT(sizeof(B3B4) == 32); // Generalize later
-  fread(B3B4, 1, sizeof(B3B4), m_fd);
-  TF.Decrypt(B3B4, L);
-  TF.Decrypt(B3B4 + 16, L + 16);
-
-  m_hmac.Init(L, sizeof(L));
-
-  fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
-
-  m_fish = new TwoFish(m_key, sizeof(m_key));
-
-  LPCTSTR headerData;
-  CMyString headerField;
-  unsigned char type;
-  size_t numRead;
-
-  do {
-    numRead = PWSfile::ReadCBC (type, headerField);
-    headerData = LPCTSTR (headerField);
-    m_hmac.Update ((const unsigned char *) headerData, headerField.GetLength());
-
-    if (numRead < 0) {
-      Close ();
-      return FAILURE;
+    if (status != SUCCESS) {
+        Close();
+        return status;
     }
 
-    switch (type) {
-    case HDR_VERSION: /* version */
-      {
-        // in Beta, VersionNum was an int (4 bytes) instead of short (2)
-        // This hack keeps bwd compatability.
+    unsigned char B1B2[sizeof(m_key)];
+    ASSERT(sizeof(B1B2) == 32); // Generalize later
+    fread(B1B2, 1, sizeof(B1B2), m_fd);
+    TwoFish TF(Ptag, sizeof(Ptag));
+    TF.Decrypt(B1B2, m_key);
+    TF.Decrypt(B1B2 + 16, m_key + 16);
 
-        int vlen = headerField.GetLength ();
-        if (vlen != sizeof(VersionNum) && vlen != sizeof(int)) {
-          Close();
-          return FAILURE;
+    unsigned char L[32]; // for HMAC
+    unsigned char B3B4[sizeof(L)];
+    ASSERT(sizeof(B3B4) == 32); // Generalize later
+    fread(B3B4, 1, sizeof(B3B4), m_fd);
+    TF.Decrypt(B3B4, L);
+    TF.Decrypt(B3B4 + 16, L + 16);
+
+    m_hmac.Init(L, sizeof(L));
+
+    fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
+
+    m_fish = new TwoFish(m_key, sizeof(m_key));
+
+    unsigned char fieldType;
+    CMyString text;
+    size_t numRead;
+    bool utf8status;
+
+    m_utf8 = NULL; m_utf8Len = 0;
+
+    do {
+        numRead = ReadCBC(fieldType, m_utf8, (unsigned int &)m_utf8Len);
+
+        if (numRead < 0) {
+            Close();
+            return FAILURE;
         }
-        const unsigned char *hv = reinterpret_cast<const unsigned char *>(headerData);
-        if ((hv[1]) != (unsigned char)((VersionNum & 0xff00) >> 8)) {
-          //major version mismatch
-          Close();
-          return UNSUPPORTED_VERSION;
+
+        switch (fieldType) {
+            case HDR_VERSION: /* version */
+                // in Beta, VersionNum was an int (4 bytes) instead of short (2)
+                // This hack keeps bwd compatability.
+                if (m_utf8Len != sizeof(VersionNum) &&
+                    m_utf8Len != sizeof(int)) {
+                    delete[] m_utf8; m_utf8 = NULL;
+                    Close();
+                    return FAILURE;
+                }
+                if (m_utf8[1] !=
+                    (unsigned char)((VersionNum & 0xff00) >> 8)) {
+                    //major version mismatch
+                    delete[] m_utf8; m_utf8 = NULL;
+                    Close();
+                    return UNSUPPORTED_VERSION;
+                }
+                // for now we assume that minor version changes will
+                // be backward-compatible
+                m_nCurrentMajorVersion = (unsigned short)m_utf8[1];
+                m_nCurrentMinorVersion = (unsigned short)m_utf8[0];
+                break;
+
+            case HDR_UUID: /* UUID */
+                if (m_utf8Len != sizeof(uuid_array_t)) {
+                    delete[] m_utf8; m_utf8 = NULL;
+                    Close();
+                    return FAILURE;
+                }
+                memcpy(m_file_uuid_array, m_utf8, sizeof(m_file_uuid_array));
+                break;
+
+            case HDR_NDPREFS: /* Non-default user preferences */
+                if (m_utf8Len != 0) {
+                    if (m_utf8 != NULL)
+                        m_utf8[m_utf8Len] = '\0';
+                    utf8status = FromUTF8(m_prefString);
+                    if (!utf8status)
+                        TRACE(_T("FromUTF8(m_prefString) failed\n"));
+                } else
+                    m_prefString = _T("");
+            break;
+
+            case HDR_DISPSTAT: /* Tree Display Status */
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
+                m_file_displaystatus = CString(text);
+                if (!utf8status)
+                    TRACE(_T("FromUTF8(m_file_displaystatus) failed\n"));
+                break;
+
+            case HDR_LASTUPDATETIME: /* When last saved */
+                // THIS SHOULDN'T BE A STRING !!!
+                // BROKE SPEC !!!
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
+                m_whenlastsaved = CString(text);
+                if (!utf8status)
+                    TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
+                break;
+
+            case HDR_LASTUPDATEUSERHOST: /* and by whom */
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
+                m_wholastsaved = CString(text);
+                if (!utf8status)
+                    TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
+                break;
+
+            case HDR_LASTUPDATEAPPLICATION: /* and by what */
+                if (m_utf8 != NULL)
+                    m_utf8[m_utf8Len] = '\0';
+                utf8status = FromUTF8(text);
+                m_whatlastsaved = CString(text);
+                if (!utf8status)
+                    TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
+                break;
+
+            case HDR_END: /* process END so not to treat it as 'unknown' */
+                break;
+
+            default:
+                // Save unknown fields that may be addded by future versions
+                UnknownFieldEntry unkhfe(fieldType, m_utf8Len, m_utf8);
+                m_UHFL.push_back(unkhfe);
+#ifdef _DEBUG
+                CString cs_timestamp;
+                cs_timestamp = PWSUtil::GetTimeStamp();
+                TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+                          cs_timestamp, fieldType, m_utf8Len, m_utf8Len);
+                PWSUtil::HexDump(m_utf8, m_utf8Len, cs_timestamp);
+#endif /* DEBUG */
+                break;
         }
-        // for now we assume that minor version changes will
-        // be backward-compatible
-        m_nCurrentMajorVersion = (unsigned short)hv[1];
-        m_nCurrentMinorVersion = (unsigned short)hv[0];
-      }
-      break;
+        delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;
+    } while (fieldType != HDR_END);
 
-    case HDR_UUID: /* UUID */
-      {
-        // Read UUID XXX should save into data member
-        int ulen = headerField.GetLength ();
-        if (ulen != sizeof(uuid_array_t)) {
-          Close();
-          return FAILURE;
-        }
-      }
-      break;
-
-    case HDR_NDPREFS: /* Non-default user preferences */
-      {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_prefString = headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-      }
-      break;
-
-	case HDR_DISPSTAT: /* Tree Display Status */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_file_displaystatus = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-	  	case HDR_LASTUPDATETIME: /* When last saved */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_whenlastsaved = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-	  	case HDR_LASTUPDATEUSERHOST: /* and by whom */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_wholastsaved = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-	  	case HDR_LASTUPDATEAPPLICATION: /* and by what */
-	  {
-        m_utf8 = (unsigned char *) headerData;
-        m_utf8Len = headerField.GetLength();
-        m_utf8[m_utf8Len] = '\0';
-        if (!FromUTF8(headerField)) {
-          Close ();
-          return FAILURE;
-        }
-        m_whatlastsaved = (CString)headerField;
-        m_utf8 = NULL;
-        m_utf8Len = 0;
-	  }
-	  break;
-
-    default:
-      // ignore fields that may be addded by future versions
-      break;
-    }
-  }
-  while (type != HDR_END);
-
-  return SUCCESS;
+    return SUCCESS;
 }
 
 bool PWSfileV3::ToUTF8(const CString &data)
@@ -818,7 +823,7 @@ bool PWSfileV3::ToUTF8(const CString &data)
                                     LPSTR(m_utf8), mbLen, // buffer and length
                                     NULL,NULL);   // use system default for unmappables
     ASSERT(m_utf8Len != 0);
-    m_utf8Len--; // remove uneeded null termination
+    m_utf8Len--; // remove unneeded null termination
     return true;
 }
 
@@ -828,6 +833,9 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     // If we're not in Unicode, call WideCharToMultiByte to
     // get to current codepage.
     // Input is in m_utf8 & m_utf8Len
+    //
+    // Due to a bug in pre-3.08 versions, data may be in ACP
+    // instead of utf-8. We try to detect and workaround this.
 
     if (m_utf8Len == 0) {
         data = _T("");
@@ -840,9 +848,11 @@ bool PWSfileV3::FromUTF8(CMyString &data)
                                     -1,           // -1 means null-terminated
                                     NULL, 0);     // get needed buffer size
     if (wcLen == 0) { // uh-oh
-        ASSERT(0);
-        data = _T("");
-        return false;
+      // it seems that this always returns non-zero, even if encoding
+      // broken. Therefore, we'll give a consrevative value here,
+      // and try to recover later
+      TRACE(_T("FromUTF8: Couldn't get buffer size - guessing!"));
+      wcLen = 2 * m_utf8Len;
     }
     // Allocate buffer (if previous allocation was smaller)
     if (wcLen > m_wcMaxLen) {
@@ -868,15 +878,29 @@ bool PWSfileV3::FromUTF8(CMyString &data)
             case ERROR_INVALID_PARAMETER:
                 TRACE("INVALID PARAMETER"); break;
             case ERROR_NO_UNICODE_TRANSLATION:
-                TRACE("NO UNICODE TRANSLATION"); break;
+              // try to recover
+                TRACE("NO UNICODE TRANSLATION");
+                wcLen = MultiByteToWideChar(CP_ACP,      // code page
+                                MB_ERR_INVALID_CHARS,  // character-type options
+                                LPSTR(m_utf8),       // string to map
+                                -1,           // -1 means null-terminated
+                                m_wc, wcLen);       // output buffer
+                if (wcLen > 0) {
+                  TRACE(_T("FromUTF8: recovery succeeded!"));
+                }
+                break;
             default:
                 ASSERT(0);
         }
     }
     ASSERT(wcLen != 0);
 #ifdef UNICODE
-    m_wc[wcLen-1] = TCHAR('\0');
-    data = m_wc;
+    if (wcLen != 0) {
+      m_wc[wcLen-1] = TCHAR('\0');
+      data = m_wc;
+      return true;
+    } else
+      return false;
 #else /* Go from Unicode to Locale encoding */
       // first get needed utf8 buffer size
     int mbLen = WideCharToMultiByte(CP_ACP,       // code page
@@ -894,7 +918,7 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     // Allocate buffer (if previous allocation was smaller)
     if (mbLen > m_tmpMaxLen) {
         if (m_tmp != NULL)
-            trashMemory(m_tmp, m_utf8MaxLen);
+            trashMemory(m_tmp, m_tmpMaxLen);
         delete[] m_tmp;
         m_tmp = new unsigned char[mbLen];
         m_tmpMaxLen = mbLen;
@@ -908,11 +932,10 @@ bool PWSfileV3::FromUTF8(CMyString &data)
     ASSERT(tmpLen == mbLen);
     m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
     data = m_tmp;
-#endif /* !UNICODE */
     ASSERT(data.GetLength() != 0);
     return true;
+#endif /* !UNICODE */
 }
-
 
 bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
 {

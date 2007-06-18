@@ -94,11 +94,29 @@ record data. If the record has less than 11 bytes of data, the extra bytes
 are filled with random values. The type of a field also defines the data
 representation.
 
-3.1 Field types for database header (based on the v2 format):
+3.1 Data representations
+3.1.1 UUID
+ The UUID data type is 16 bytes long, as defined in RFC4122. Windows
+ has functions for this, and the RFC has a sample implementation. 
+
+3.1.2 Text
+ Text is represented in UTF-8 encoding, with no byte order marker
+ (BOM) and no end-of-string mark (e.g., null byte). Note that the
+ latter isn't neccessary since the length of the field is provided
+ explicitly.
+
+3.1.3 Time
+ Timestamps are stored as 32 bit, little endian, unsigned integers,
+ representing the number of seconds since Midnight, January 1, 1970, GMT.
+ (This is equivalent to the time_t type on Windows and POSIX. On the
+ Macintosh, the value needs to be adjusted by the constant value 2082844800
+ to account for the different epoch of its time_t type.)
+
+3.2 Field types for database header (based on the v2 format):
                                                  Currently
 Name                        Value        Type    Implemented      Comments
 --------------------------------------------------------------------------
-Version                     0x00        %02x          Y              [1]
+Version                     0x00        2 bytes       Y              [1]
 UUID                        0x01        UUID          Y              [2]
 Non-default preferences     0x02        Text          Y              [3]
 Tree Display Status         0x03        Text          Y              [4]
@@ -113,9 +131,8 @@ PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 
 [2] A universally unique identifier is needed in order to synchronize
-databases, i.e., between a handheld pocketPC device and a PC. The UUID data
-type is 16 bytes long, as defined in RFC4122. Windows has functions for
-this, and the RFC has a sample implementation.
+databases, i.e., between a handheld pocketPC device and a
+PC. Representation is as described in Section 3.1.1. 
 
 [3] Non-default preferences are encoded in a string as follows: The string
 is of the form "X nn vv X nn vv..." Where X=[BIS] for binary, integer and
@@ -130,11 +147,7 @@ be applied at database open time, if the user wishes, so that the tree is
 displayed as it was. Alternatively, it can be ignored and the tree
 displayed completely expanded or collapsed. Implemented in V3.03 and later.
 
-[5] Timestamps are stored as 32 bit, little endian, unsigned integers,
-representing the number of seconds since Midnight, January 1, 1970, GMT.
-(This is equivalent to the time_t type on Windows and POSIX. On the
-Macintosh, the value needs to be adjusted by the constant value 2082844800
-to account for the different epoch of its time_t type.)
+[5] Representation is as described in Section 3.1.3
 
 [6] Text saved in the format:: nnnnu..uh..h, where: 
     nnnn = 4 hexadecimal digits giving length of following user name field
@@ -151,7 +164,7 @@ to the left with zeroes e.g. "Password Safe V3.02".
 [8] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
-3.2 Field types for database Records (based on the v2 format):
+3.3 Field types for database Records (based on the v2 format):
                                                  Currently
 Name                        Value        Type    Implemented      Comments
 --------------------------------------------------------------------------
@@ -172,7 +185,8 @@ Autotype                    0x0e        Text          Y              [9]
 Password History            0x0f        Text          Y              [10]
 End of Entry                0xff        [empty]       Y              [11]
 
-[1] As per UUID in the HDR above.
+[1] Per-record UUID to assist in sync, merge, etc. Representation is
+as described in Section 3.1.1.
 
 [2] The "Group" supports displaying the entries in a tree-like manner.
 Groups can be heirarchical, with elements separated by a period, supporting
@@ -180,7 +194,7 @@ groups such as "Finance.credit cards.Visa", "Finance.credit
 cards.Mastercard", Finance.bank.web access", etc. Dots entered by the user
 should be "escaped" by the application.
 
-[3] As per 'Timestamp of last save' in the HDR above.
+[3] Representation is as described in Section 3.1.3.
 
 [4] This will be updated whenever any part of this entry is accessed i.e.
 to copy its username, password or notes to the clipboard; to perform

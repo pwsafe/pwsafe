@@ -14,6 +14,12 @@
 #include "corelib/MyString.h"
 #include "DDSupport.h"
 
+// Need a set to keep track of what nodes are expanded, to re-expand
+// after minimize
+#include <set>
+class CItemData;
+typedef std::set<CItemData *> SetTreeItem_t;
+
 class CTVTreeCtrl : public CTreeCtrl, public CDropTarget, public CDropSource
 {
 public:
@@ -53,7 +59,7 @@ public:
   void ExpandCollapse(NMHDR *pNotifyStruct, LRESULT * &pLresult);
   void BeginDrag(NMHDR *pNotifyStruct, LRESULT * &pLresult);
 
- protected:
+protected:
   virtual void CompleteMove();
 
   //{{AFX_MSG(CTVTreeCtrl)
@@ -68,7 +74,7 @@ public:
 private:
   CImageList *m_pimagelist;
   void *m_parent;
-  void *m_expandedItems; // Internally this is a SetTreeItem_t, don't want to include stl file here...
+  SetTreeItem_t m_expandedItems;
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore
 
@@ -82,10 +88,6 @@ private:
   void GetEntryData(CDDObList &out_oblist, CItemData *ci);
   bool CollectData(BYTE * &out_buffer, long &outLen);
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CMyString DropGroup);
-  void DecryptReceivedData(BYTE * &in_buffer, const long &inLen,
-                           unsigned char * &out_buffer, long &outLen);
-  void EncryptSendingData(unsigned char * &in_buffer, const long &inLen,
-                          BYTE * &out_buffer, long &outLen);
   CDropSource m_TCDropSource;
   CDropTarget m_TCDropTarget;
   CImageList* m_pDragImage;
@@ -97,7 +99,6 @@ protected:
   HTREEITEM m_hitemDrop;
   unsigned char m_sending_classname[40];
   int m_nDragPathLen;
-  unsigned int  m_uiSendingSession;
-  unsigned int  m_uiReceivingSession;
+  bool m_bWithinThisInstance;
   int m_calls;
 };

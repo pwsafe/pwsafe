@@ -41,18 +41,18 @@ END
 
 STRINGTABLE
 BEGIN
-	IDSC_IMPMISSINGQUOTE    "\nFile ends on line %d before ending double quote of last entry's note field."
+    IDSC_IMPMISSINGQUOTE    "\nFile ends on line %d before ending double quote of last entry's note field."
     IDSC_IMPINVALIDINPUT    "\nInvalid input on line %d.  Number of fields separated by '%c' is not as expected."
     IDSC_IMPINVALIDPWH      "\nError in Password History on line %d: "
     IDSC_IMPORTFAILURE      "\nInternal error. Import failed.\n\nNo records imported."
-    IDSC_IMPORTHDR          "%d column headers were recognised and processed but %d ignored.\n\n"
+    IDSC_IMPORTHDR          "%d column headers were recognised and processed but %d ignored or missing.\n\n"
     IDSC_IMPORTMISSINGCOLS  "\nEither or both of the Group/Title and Password columns are missing.\n\nNo records imported."
     IDSC_IMPORTNOCOLS       "\nColumn header row not recognised as first record.\n\nNo records imported."
 END
 
 STRINGTABLE
 BEGIN
-	IDSC_NOLOCKACCESS       "Cannot create lock file - no permission in directory?"
+    IDSC_NOLOCKACCESS       "Cannot create lock file - no permission in directory?"
     IDSC_CANTGETLOCKER      "Unable to determine locker?"
     IDSC_CANTREADLOCKER     "Unable to read locker?"
     IDSC_INTERNALLOCKERROR  "Internal error: Invalid oflag or pmode argument"
@@ -63,7 +63,7 @@ END
 
 STRINGTABLE
 BEGIN
-	IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of UUIDs made unique: %d\n\nNumber of Password Histories fixed: %d"
+    IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of UUIDs made unique: %d\n\nNumber of Password Histories fixed: %d"
     IDSC_AUTOTYPE           "autotype:"
     IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
     IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -87,7 +87,7 @@ END
 
 STRINGTABLE
 BEGIN
-	IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
+    IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
     IDSC_XMLPARSEERROR      "SAX Parse%2d Error 0x%08X during %s."
     IDSC_XMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
     IDSC_XMLVALIDATION      "validation"
@@ -97,8 +97,8 @@ BEGIN
     IDSC_XMLFILEERROR       "%s\n%s\nline %d column %d"
     IDSC_XMLLOADFAILURE     "Unable to load configuration file"
     IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
-	IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
-	IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
+    IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%s\xbb%s\xbb%s\xbb: "
+    IDSC_SAXGENERROR        "Error (%08X): line %d character %d %s"
 END
 
 STRINGTABLE
@@ -118,6 +118,12 @@ BEGIN
     IDSC_FILEEXCEPTION12    "There was an attempt to lock a region that was already locked."
     IDSC_FILEEXCEPTION13    "The disk is full."
     IDSC_FILEEXCEPTION14    "The end of file was reached."
+    IDSC_FILEREADONLY       "Error: File is read-only"
+    IDSC_FILEEXISTS         "Error: A file with this name already exists"
+    IDSC_INVALIDFLAG        "Internal error: An invalid flag was specified"
+    IDSC_NOMOREHANDLES      "Internal error: Out of file handles"
+    IDSC_BADPASSWORD        "Incorrect password"
+
 END
 
 // Status Bar
@@ -133,4 +139,11 @@ END
 STRINGTABLE
 BEGIN
     IDSC_IMPORTNUMBER        " Import # %d"
+END
+
+STRINGTABLE
+BEGIN
+    IDSC_READ_ERROR          "Read Error"
+    IDSC_ENCODING_PROBLEM    "Trouble with non-ASCII data in record '%s' - please check data carefully."
+
 END

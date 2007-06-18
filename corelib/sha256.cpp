@@ -178,8 +178,6 @@ static void sha256_compress(ulong32 state[8], unsigned char *buf)
 #endif
 /**
    Initialize the hash state
-   @param md   The hash state you wish to initialize
-   @return CRYPT_OK if successful
 */
 SHA256::SHA256()
 {
@@ -202,10 +200,8 @@ SHA256::~SHA256()
 
 /**
    Process a block of memory though the hash
-   @param md     The hash state
    @param in     The data to hash
    @param inlen  The length of the data (octets)
-   @return CRYPT_OK if successful
 */
 
 void SHA256::Update(const unsigned char *in, size_t inlen)
@@ -236,8 +232,7 @@ void SHA256::Update(const unsigned char *in, size_t inlen)
 }
 /**
    Terminate the hash to get the digest
-   @param md  The hash state
-   @param out [out] The destination of the hash (32 bytes)
+   @param digest The destination of the hash (32 bytes)
 */
 void SHA256::Final(unsigned char digest[HASHLEN])
 {

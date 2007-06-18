@@ -22,6 +22,11 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
+/*
+ * THIS FILE WAS ALTERED BY Rony Shapiro, for integration into the PasswordSafe
+ * project http://passwordsafe.sourceforge.net/
+ */
+
 #include <ctype.h>
 
 #ifdef TIXML_USE_STL
@@ -34,6 +39,10 @@ distribution.
 #ifdef UNICODE
 #include <Windows.h>
 #endif
+
+const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
+const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
+const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
 
 bool TiXmlBase::condenseWhiteSpace = true;
 
@@ -764,9 +773,19 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 	for ( i=0; i<depth; i++ ) {
 		_ftprintf( cfile, _T("    ") );
 	}
-
+#ifndef UNICODE
 	_ftprintf( cfile, _T("<%s"), value.c_str() );
-
+#else
+  int utf8bufsize = 2 * value.length(); // upper limit
+  char *utf8buf = new char[utf8bufsize+1];
+  utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
+                                    value.c_str(), value.length(),
+                                    utf8buf, utf8bufsize,
+                                    0, 0);
+  assert(utf8bufsize != 0);
+  utf8buf[utf8bufsize] = '\0';
+	fprintf( cfile, "<%s", utf8buf );
+#endif
 	const TiXmlAttribute* attrib;
 	for ( attrib = attributeSet.First(); attrib; attrib = attrib->Next() )
 	{
@@ -787,7 +806,11 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 	{
 		_ftprintf( cfile, _T(">") );
 		firstChild->Print( cfile, depth + 1 );
+#ifndef UNICODE
 		_ftprintf( cfile, _T("</%s>"), value.c_str() );
+#else
+		fprintf( cfile, "</%s>", utf8buf );
+#endif
 	}
 	else
 	{
@@ -805,8 +828,15 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 		for( i=0; i<depth; ++i ) {
 			_ftprintf( cfile, _T("    ") );
 		}
+#ifndef UNICODE
 		_ftprintf( cfile, _T("</%s>"), value.c_str() );
+#else
+		fprintf( cfile, "</%s>", utf8buf );
+#endif
 	}
+#ifdef UNICODE
+  delete[] utf8buf;
+#endif
 }
 
 
@@ -1034,6 +1064,20 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	const char* lastPos = buf;
 	const char* p = buf;
 
+#ifdef UNICODE
+    // Gross hack - need to handle Unicode BOM
+    // here instead of in parser.
+		const unsigned char* pU = (const unsigned char*)p;
+		if ( *(pU+0) && *(pU+0) == TIXML_UTF_LEAD_0
+			 && *(pU+1) && *(pU+1) == TIXML_UTF_LEAD_1
+			 && *(pU+2) && *(pU+2) == TIXML_UTF_LEAD_2 ) {
+			encoding = TIXML_ENCODING_UTF8;
+			useMicrosoftBOM = true;
+            p += 3; lastPos += 3;
+		}
+
+#endif
+
 	buf[length] = 0;
 	while( *p ) {
 		assert( p < (buf+length) );
@@ -1158,10 +1202,6 @@ bool TiXmlDocument::SaveFile( FILE* fp ) const
 {
 	if ( useMicrosoftBOM ) 
 	{
-		const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
-		const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
-		const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
-
 		fputc( TIXML_UTF_LEAD_0, fp );
 		fputc( TIXML_UTF_LEAD_1, fp );
 		fputc( TIXML_UTF_LEAD_2, fp );
@@ -1403,14 +1443,14 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
         fwrite(buffer.c_str(), buffer.length()*sizeof(TCHAR), 1, cfile);
 #else
         int utf8bufsize = 2 * buffer.length(); // upper limit
-        char *ut8buf = new char[utf8bufsize];
+        char *utf8buf = new char[utf8bufsize];
         utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
                                           buffer.c_str(), buffer.length(),
-                                          ut8buf, utf8bufsize,
+                                          utf8buf, utf8bufsize,
                                           0, 0);
         assert(utf8bufsize != 0);
-        fwrite(ut8buf, utf8bufsize, 1, cfile);
-        delete[] ut8buf;
+        fwrite(utf8buf, utf8bufsize, 1, cfile);
+        delete[] utf8buf;
 #endif
 	}
 }

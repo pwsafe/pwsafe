@@ -17,10 +17,18 @@ class CSMemFile : public CMemFile
 {
 // Construction
 public:
+  CSMemFile(UINT nGrowBytes = 1024) : m_size(0), CMemFile(nGrowBytes) {}
+
+  CSMemFile(BYTE* lpBuffer, UINT nBufferSize, UINT nGrowBytes = 0)
+  : m_size(0), CMemFile(lpBuffer, nBufferSize, nGrowBytes) {}
 
 // Implementation
 public:
 
+  virtual BYTE* Alloc(SIZE_T nBytes);
   virtual BYTE* Realloc(BYTE* lpMem, SIZE_T nBytes);
   virtual void Free(BYTE * lpMem);
+
+private:
+  size_t m_size;
 };

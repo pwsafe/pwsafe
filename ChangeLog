@@ -1,0 +1,4073 @@
+2007-03-29 [r1331]  c-273:
+
+	* Add missing files after merge and correct resource.h
+
+2007-03-29 [r1330]  ronys:
+
+	* Merged DK's new chooser from branch, sans AutoResizeColumns
+	  preference.
+
+2007-03-27 [r1322]  ronys:
+
+	* Updated display tab image and help description.
+
+2007-03-26 [r1318]  ronys:
+
+	* Added appendix describing prefs logic, or lack of thereof.
+
+2007-03-25 [r1316]  ronys:
+
+	* - Minor reorg to InitInstance - User can now specify non-default
+	  directory for pwsafe.cfg via PWS_PREFSDIR env variable
+
+2007-03-25 [r1315]  ronys:
+
+	* [1687676] Import Help text now refers to detailed format
+	  description, instead of redundant & incorrect data.
+
+2007-03-25 [r1314]  ronys:
+
+	* [1672770] Right-click->unlock on system tray icon now same as
+	  double-clicking on locked system tray icon
+
+2007-03-24 [r1312]  ronys:
+
+	* Cosmetics on autotype options
+
+2007-03-24 [r1311]  ronys:
+
+	* [1684827] No longer crashes after you specify remember 0
+	  databases
+
+2007-03-24 [r1310]  ronys:
+
+	* Refine DK's autotype fix.
+
+2007-03-23 [r1308]  ronys:
+
+	* Moved to statically linked release, prepare for 3.07
+
+2007-03-22 [r1307]  ronys:
+
+	* First steps towards 64-bit build
+
+2007-03-21 [r1306]  c-273:
+
+	* [] - PWS may configured not to minimize during Autotype to stop
+	  annoying process of unlocking from System Tray. 'Always on Top'
+	  takes precedence.
+
+2007-03-20 [r1305]  c-273:
+
+	* Bugs fixed: [1678707] CAPSLOCK no longer flips case using
+	  Autotype [1681366] Now stays on top during autotype New feature:
+	  [1623802] Default Autotype string can be specified per database
+
+2007-03-19 [r1303]  ronys:
+
+	* [1682516] Menu display no longer trashed if accelerator pressed
+	  with an open menu.
+
+2007-03-19 [r1302]  ronys:
+
+	* Updated release notes
+
+2007-03-19 [r1300]  c-273:
+
+	* Fix p & qs (see description of LOGFONT.lfHeight when < 0)
+
+2007-03-19 [r1299]  ronys:
+
+	* Minor cleanup to column management code + document new&improved
+	  same in relnotes
+
+2007-03-18 [r1298]  c-273:
+
+	* Do fonts properly: a. Use MFC CFonts not HFONT and SendMessages
+	  b. Set font correctly in header at startup c. After change font,
+	  make sure entries visible
+
+2007-03-18 [r1297]  ronys:
+
+	* Add support for "strict locking" (#define PWS_STRICT_LOCKING) for
+	  those who don't want to allow the user to "break" a lock on a
+	  pwsafe database.
+
+2007-03-17 [r1296]  c-273:
+
+	* Fix header size when changing font size
+
+2007-03-17 [r1294]  ronys:
+
+	* Added a typedef to make code a bit clearer (continued).
+
+2007-03-16 [r1293]  c-273:
+
+	* Fix reset column code and make more efficient
+
+2007-03-16 [r1292]  ronys:
+
+	* Added a typedef to make code a bit clearer, fixed a one-off
+	  problem in bitset iteration.
+
+2007-03-14 [r1291]  c-273:
+
+	* Fix column widths Put duplicate code in a routine Change name of
+	  variable to make meaning more obvious Update Last Access time in
+	  Listview if being maintained and currently displayed
+
+2007-03-12 [r1290]  ronys:
+
+	* Merged in column-picker code from DK's branch
+
+2007-03-12 [r1289]  ronys:
+
+	* Merged in 1279 from dk's branch: - Option to show grid in list
+	  view - Option to put groups first in tree view (minor changes to
+	  phrasing)
+
+2007-03-12 [r1288]  ronys:
+
+	* Merged in dk's changes 1275-1277 inclusive (plus fix Delete[] to
+	  delete).
+
+2007-03-10 [r1287]  c-273:
+
+	* [1673028] Merge operation now fixed properly and similar problem
+	  in Compare operation also fixed
+
+2007-03-10 [r1285]  c-273:
+
+	* [1673028] Merge operation now fixed
+
+2007-03-10 [r1284]  c-273:
+
+	* [1675716] <ESC> to close application now works Minor fix to misc
+	  property page control placement
+
+2007-02-27 [r1273]  ronys:
+
+	* Wrong text in RefreshList
+
+2007-02-26 [r1272]  arjun_acharya:
+
+	* Summary: CMyTreeCtrl::OnEndLabelEdit has been modified to prevent
+	  editing of group/entry names via click of mouse Detailed: If one
+	  clicks Group/Entry with left mouse button, waits a bit, and
+	  clicks again (i.e. NOT double click), one can edit the name of
+	  group/entry, even in read-only mode. The change of code in this
+	  commit prevents this from being done.
+
+2007-02-25 [r1271]  arjun_acharya:
+
+	* DK's drag&drop patch has made "MoveGroupToTopLevel" functionality
+	  redundant. Therefore all traces of this have been removed from
+	  the current revision. All that remains from additions in revision
+	  1266 is the m_TreeViewGroup = _T("") addition to DboxMain::Delete
+
+2007-02-24 [r1270]  ronys:
+
+	* Removed Move group to toplevel from popup menu - now possible to
+	  do it entirely with D&D
+
+2007-02-24 [r1269]  ronys:
+
+	* Committed DK's drag&drop patch - now possible to drag items &
+	  groups to toplevel of tree
+
+2007-02-24 [r1268]  ronys:
+
+	* cosmetics for relative password expiration feature
+
+2007-02-24 [r1267]  ronys:
+
+	* Minor tweaks to MoveGroupToTop - normalize error handling
+
+2007-02-23 [r1266]  arjun_acharya:
+
+	* 1)Implemented function "Move Group To Top Level" which allows,
+	  upon right click of mouse button, for group (and all
+	  sub-elements) to be returned to top level. 2)Also made minor
+	  modification to DboxMain::Delete so that we have m_TreeViewGroup
+	  = _T("") at end. Without this line, one encounters a few
+	  problems. For example suppose you (in version 3, 6, 1, 1265)
+	  A)you add Group as soon as app opens, via edit menu. This creates
+	  "New Group" folder B)click on whitespace, then highlight "New
+	  Group" and delete this via right click of mouse C)add group again
+	  via edit. This time "New Group" gets opened within "New Group"
+	  instead of top level
+
+2007-02-21 [r1265]  ronys:
+
+	* dk's expiry warning patch - "as-is" (before review & edit)
+
+2007-02-21 [r1264]  ronys:
+
+	* Exported/imported text format is now documented in online help
+
+2007-02-16 [r1262]  ronys:
+
+	* Adjusted title of password entry dialogs to assist tpm usage.
+	  Version bumped to 3.06.01
+
+2007-02-15 [r1261]  ronys:
+
+	* [1660721] Autotype menu & shortcut no longer disabled if field is
+	  empty.
+
+2007-02-15 [r1259]  ronys:
+
+	* Added "Demo" configuration, same as Release, but with -DDEMO
+	  added, and new Demo directories for builds and link.
+
+2007-02-15 [r1258]  ronys:
+
+	* More demo/trail mode support
+
+2007-02-15 [r1256-1257]  ronys:
+
+	* Removed confusing text in import text dialog box.
+
+	* Updated to reflect changes to export/import text and new relative
+	  date pwd expiry.
+
+2007-02-15 [r1254-1255]  ronys:
+
+	* Update relnotes for last commit...
+
+	* Applied DK's time/date locale fix - all time/date info now
+	  displayed in local format
+
+2007-02-15 [r1253]  ronys:
+
+	* Modified Password Expiry dialog box
+
+2007-02-11 [r1252]  ronys:
+
+	* DK's implementation of [1634251] Password expiration date can now
+	  be specified relatively, e.g., "45 days from now" - still needs
+	  GUI review + hepl file update.
+
+2007-02-10 [r1251]  ronys:
+
+	* Disable tree item drag in read-only mode - based on Arjun's
+	  fixes.
+
+2007-02-08 [r1250]  ronys:
+
+	* limited/demo/trail version Good Enough.
+
+2007-02-08 [r1249]  ronys:
+
+	* Merged in DK's menu-related fixes from the copy/paste patch.
+
+2007-02-07 [r1248]  ronys:
+
+	* Started work on limited/demo/trail version
+
+2007-02-07 [r1247]  ronys:
+
+	* Finished xml-spec complaint handling of host/username
+
+2007-02-06 [r1246]  ronys:
+
+	* cleanup lots of nits.
+
+2007-02-06 [r1245]  ronys:
+
+	* Updated to reflect new starting and change combination dialog
+	  boxes.
+
+2007-02-06 [r1244]  ronys:
+
+	* Resize password field in change combination dialog for
+	  consistency.
+
+2007-02-05 [r1243]  ronys:
+
+	* a bit less brute-force in U3 soft eject management
+
+2007-02-04 [r1242]  ronys:
+
+	* More work on U3 support (workaround m'soft bug - grrr.)
+
+2007-02-04 [r1241]  ronys:
+
+	* "Minor" tweaks... (Murphy)
+
+2007-02-04 [r1240]  ronys:
+
+	* Finished reworking opening dalog box
+
+2007-02-02 [r1239]  ronys:
+
+	* Cleaning up opening dialog box.
+
+2007-01-30 [r1238]  ronys:
+
+	* U3 AppStop work.
+
+2007-01-25 [r1236]  ronys:
+
+	* Support U3 ejection in opening dialog box as well as main window.
+
+2007-01-20 [r1235]  ronys:
+
+	* No longer crashes when password history policy changes records.
+
+2007-01-20 [r1234]  ronys:
+
+	* U3 Safe Eject now works correctly. Also, On QueryExit actually
+	  Saves file if user asks to.
+
+2007-01-17 [r1233]  ronys:
+
+	* More attempts to get non-English data to store/retrieve
+	  correctly.
+
+2007-01-12 [r1222]  ronys:
+
+	* [1633516] No longer crashes upon Find with an empty group.
+
+2007-01-09 [r1220-1221]  ronys:
+
+	* Applied DK's patch to fix "buglet"
+
+	* it's 2007
+
+2007-01-09 [r1219]  ronys:
+
+	* From DK - LoadStrings tidying up + XML parse fix.
+
+2007-01-09 [r1218]  ronys:
+
+	* Save config file after OK on Options dialog, in addition to on
+	  exit(for U3).
+
+2007-01-07 [r1217]  ronys:
+
+	* Refined handling of non-XML compliant host/user names.
+
+2007-01-04 [r1216]  ronys:
+
+	* updated copyright notice for 2007
+
+2007-01-04 [r1215]  ronys:
+
+	* Cleaned up locale-specific file loading - help file now loaded
+	  correctly under U3.
+
+2007-01-03 [r1214]  ronys:
+
+	* [1625557] No longer crashes when invoking help after using
+	  Hot-Key.
+
+2006-12-28 [r1213]  ronys:
+
+	* Applied DK's patches to the Compare function.
+
+2006-12-28 [r1212]  ronys:
+
+	* Concentrate directory access in PWSdirs, in preparation for U3
+	  support.
+
+2006-12-17 [r1210]  ronys:
+
+	* bumped version number
+
+2006-12-17 [r1209]  ronys:
+
+	* Updated bugfix list for 3.05.02.
+
+2006-12-17 [r1208]  ronys:
+
+	* Prepare 3.05.02 for release
+
+2006-12-17 [r1207]  ronys:
+
+	* Cleaned up MRU handling
+
+2006-12-13 [r1206]  ronys:
+
+	* [1608255] Point out that -s imples system tray.
+
+2006-12-13 [r1205]  ronys:
+
+	* [1612881] Notes now appear consistently.
+
+2006-12-11 [r1204]  ronys:
+
+	* [1608191] Tree view's state is now preserved across timed lock
+	  and when starting with '-s' flag.
+
+2006-12-08 [r1203]  ronys:
+
+	* Minor cleanup - removed unused state variable.
+
+2006-12-07 [r1202]  ronys:
+
+	* [1609759] "Show Password in display list & tree" setting now
+	  persistent across application exit.
+
+2006-12-07 [r1201]  ronys:
+
+	* Clarified version compatibility, per Mat's comment.
+
+2006-12-06 [r1199]  ronys:
+
+	* - Switched to TinyXML for preference file handling. - [1606265]
+	  No longer terminates after edit when username and/or hostname is
+	  not an XML-compliant name.
+
+2006-12-05 [r1186]  ronys:
+
+	* Fixed path to ncftpput
+
+2006-12-03 [r1185]  ronys:
+
+	* Ready for re-release of 3.05
+
+2006-12-02 [r1184]  minus273c:
+
+	* Don't tell user too often we can't save pref to R-O DB Don't try
+	  and format XML and save if Load fails
+
+2006-12-02 [r1183]  ronys:
+
+	* - XMLprefs instrumentation - Make host/username key 8-bit clean -
+	  Default database name so not saved as ".psafe3" first time
+
+2006-12-02 [r1182]  ronys:
+
+	* 4got these 2 image files.
+
+2006-12-02 [r1181]  minus273c:
+
+	* Stop trying to save database prefs if DB is R-O Fix order of MRU
+	  items (must add in reverse order)
+
+2006-12-01 [r1180]  ronys:
+
+	* Added MSFT's manifest files to the distribution (TYBG).
+
+2006-11-30 [r1179]  minus273c:
+
+	* [1606237] Fixed "Display Initial Tree view expanded" Now works
+	  for every database open not the initial open
+
+2006-11-30 [r1178]  minus273c:
+
+	* [1606232] now remembers Flattened List mode
+
+2006-11-30 [r1177]  minus273c:
+
+	* [1605389] Fix Read-only flag gets stuck when using open MRU
+
+2006-11-30 [r1175]  ronys:
+
+	* Fixed svn location (again).
+
+2006-11-30 [r1174]  ronys:
+
+	* Update Rlease Notes prior to 3.05 release.
+
+2006-11-29 [r1173]  ronys:
+
+	* Fixes to help: Added options & history to contents, fixed image
+	  link in display_tab.html, text in password_history.html.
+
+2006-11-28 [r1172]  minus273c:
+
+	* Change version information for resource-only DLLs
+
+2006-11-28 [r1170]  ronys:
+
+	* Link to project page now opens in external browser (thanks to
+	  Mat).
+
+2006-11-28 [r1169]  ronys:
+
+	* Minor fix to installable target build.
+
+2006-11-28 [r1168]  ronys:
+
+	* Modified XMLPrefs to better match use-case. Updated MRU list
+	  prior to main app d'tor. Removed config UpdateTimeStamp() that
+	  would be overwritten later. Set modified bit if needed in
+	  SetMRUList.
+
+2006-11-27 [r1161-1162]  ronys:
+
+	* More work on XML prefs - one less lock/unlock in the course of
+	  startup.
+
+	* Removed #ifdef DEBUG for i18n code, so translators will be able
+	  to use 3.05.
+
+2006-11-26 [r1160]  ronys:
+
+	* Changed MRU persistence to save (that is, avoid unecessarily)
+	  lock/unlock pref file.
+
+2006-11-26 [r1159]  ronys:
+
+	* Changed main window size&pos persistence to save lock/unlock pref
+	  file.
+
+2006-11-26 [r1158]  ronys:
+
+	* Added support for '-m' option
+
+2006-11-26 [r1157]  minus273c:
+
+	* Use resource handle to load accelerators
+
+2006-11-25 [r1156]  openmateo:
+
+	* Adding translated files.
+
+2006-11-25 [r1155]  openmateo:
+
+	* Adding translated files.
+
+2006-11-25 [r1154]  minus273c:
+
+	* Reduce time config file is locked
+
+2006-11-24 [r1153]  openmateo:
+
+	* adding Polish version of help.
+
+2006-11-23 [r1152]  minus273c:
+
+	* Minor typos
+
+2006-11-23 [r1151]  ronys:
+
+	* Keep our registry clean!
+
+2006-11-23 [r1150]  ronys:
+
+	* Fixed old preference handling
+
+2006-11-23 [r1149]  ronys:
+
+	* Added help file documentation.
+
+2006-11-23 [r1148]  ronys:
+
+	* Folded Intermediate backup functionality into PWScore, plus minor
+	  tweaks.
+
+2006-11-23 [r1147]  ronys:
+
+	* Removed redundant preferences, update backup example correctly.
+
+2006-11-23 [r1146]  ronys:
+
+	* Widen text fields in preparation for i18n
+
+2006-11-21 [r1140]  ronys:
+
+	* - Bumped version to 3.05 - Updated online help
+
+2006-11-21 [r1139]  ronys:
+
+	* Simplify tooltip texts.
+
+2006-11-21 [r1138]  ronys:
+
+	* Hide registry clearing controls in Options->System instead of
+	  disabling them when they're irrelevant.
+
+2006-11-20 [r1137]  ronys:
+
+	* Minor cosmetics to property sheets
+
+2006-11-19 [r1131]  minus273c:
+
+	* Update language DLL properties
+
+2006-11-19 [r1130]  ronys:
+
+	* Reworked preference loading logic per config.txt, not fully
+	  tested.
+
+2006-11-16 [r1127]  minus273c:
+
+	* Delete Russian generated help file
+
+2006-11-16 [r1126]  ronys:
+
+	* Reflect changes to help tree
+
+2006-11-16 [r1125]  ronys:
+
+	* .chm files are generated artifacts, and as such should not be
+	  under revision control.
+
+2006-11-16 [r1124]  ronys:
+
+	* Typos.
+
+2006-11-16 [r1123]  minus273c:
+
+	* Old foreign language help control files updated Compiled help
+	  file produced but it is out of date (V2) Ready for translators
+	  once default help file updated
+
+2006-11-16 [r1122]  minus273c:
+
+	* Finish off changes to default help generation and calling
+
+2006-11-16 [r1121]  minus273c:
+
+	* More help file renames
+
+2006-11-16 [r1120]  minus273c:
+
+	* Move help files Remove obsolete NOINVERT accelerator key
+	  parameter
+
+2006-11-16 [r1119]  ronys:
+
+	* Added config.txt document descibing how preferences are handled.
+
+2006-11-15 [r1112]  minus273c:
+
+	* Remove user file
+
+2006-11-15 [r1111]  minus273c:
+
+	* Support PWS_LANG and PWS_HELP environment variables Update dialog
+	  help to use correct help file
+
+2006-11-15 [r1110]  ronys:
+
+	* Work on preferences - refactored code to isolate knowledge of
+	  preference implementation to PWSprefs as much as possible.
+
+2006-11-15 [r1109]  minus273c:
+
+	* Define the new directory structure Add language DLL into the main
+	  stream Move corelibtest into the new directory structure
+
+2006-11-14 [r1108]  minus273c:
+
+	* Support language help files Update use of language resource-only
+	  DLLs
+
+2006-11-14 [r1107]  ronys:
+
+	* Registry keys (when used) now under HKCU\Password Safe\Password
+	  Safe\ instead of HKCU\Counterpane Systems\Password Safe\ - 1st
+	  step in migration to registry OR config file support.
+
+2006-11-14 [r1106]  ronys:
+
+	* Modified OtherBrowser handling so that per-entry control is
+	  possible, via '[alt]' in URL field. Also added tooltips to
+	  OptionsMisc, reorganized it a bit, and removed an extraneous
+	  intPref.
+
+2006-11-13 [r1105]  ronys:
+
+	* Removed copyright notice from where it shouldn't be...
+
+2006-11-13 [r1104]  ronys:
+
+	* Removed BackupSubDirectoryValue pref, renamed
+	  BackupOtherLocationValue to BackupDir, minor fixes to
+	  CreateIntermediateBackup.cpp
+
+2006-11-13 [r1103]  ronys:
+
+	* Cleanups to Backups page & other minor stuff.
+
+2006-11-13 [r1102]  ronys:
+
+	* Added a separator before the delete toolbar button, makes it a
+	  bit harder to select by mistake instead of edit. (Suggested by
+	  Mike Earp)
+
+2006-11-12 [r1101]  minus273c:
+
+	* Implement support of resource-only DLLs even if none yet exist
+
+2006-11-12 [r1099]  ronys:
+
+	* Tweaked StartSilent semantics.
+
+2006-11-09 [r1089]  ronys:
+
+	* pwsafe.iss is a contributed install script, unrelated to NSIS,
+	  the supported installation tool for this project.
+
+2006-11-09 [r1088]  ronys:
+
+	* Support startup of pwsafe at login via preference.
+
+2006-11-08 [r1086]  minus273c:
+
+	* Use MAKEINTRESOURCE to initial load CStrings
+
+2006-11-08 [r1085]  ronys:
+
+	* 1. Added "green" installation to installation script 2. Added
+	  "start silently" to same 3. Moved install related files to
+	  install subdir
+
+2006-11-07 [r1084]  ronys:
+
+	* 1. Fixed custom prebuild step for all configurations (instead of
+	  Debug only) 2. Don't show config source info in statusbar in
+	  release build.
+
+2006-11-06 [r1083]  minus273c:
+
+	* Move corelib strings to resource fileLength Make "nearly" compile
+	  in unicode Fix password character all requests for passwords Fix
+	  ignore header during text import
+
+2006-11-06 [r1080]  ronys:
+
+	* Added copyright notices, About dialog box now takes copyright
+	  notice from VERSIONINFO.
+
+2006-11-05 [r1079]  minus273c:
+
+	* Fix memory leak
+
+2006-11-03 [r1078]  minus273c:
+
+	* Invalid character in rc2 file
+
+2006-11-03 [r1077]  ronys:
+
+	* Changed call to ::_tstat to PWSfile function.
+
+2006-11-02 [r1076]  ronys:
+
+	* Minor cleanup + documentation
+
+2006-11-02 [r1075]  ronys:
+
+	* Refactored to remove PWSprefs and XMLprefs dependencies on
+	  PWScore.
+
+2006-11-02 [r1074]  ronys:
+
+	* Removed pwsafe.suo from repository - seems that it shouldn't have
+	  been there in the first place...
+
+2006-11-01 [r1073]  minus273c:
+
+	* Move code about application version to ThisMfcApp - not a core
+	  function
+
+2006-11-01 [r1072]  ronys:
+
+	* Made pNewRecentEntryMenu array robust against overrruns -
+	  dynamically allocated to length actually used, rather than
+	  limited to compile-time maximum.
+
+2006-11-01 [r1071]  ronys:
+
+	* - Tweaked version format & display - Made custom build rule a bit
+	  more robust
+
+2006-11-01 [r1070]  minus273c:
+
+	* Correct AboutBox display
+
+2006-10-31 [r1069]  minus273c:
+
+	* Minor update to version.in template
+
+2006-10-31 [r1068]  minus273c:
+
+	* Change how Browse to URL works including adding an option for the
+	  user to select via Misc PP Implement update of revision number in
+	  executable automatically via Pre-event execution of SubWCRev
+
+2006-10-31 [r1067]  ronys:
+
+	* Minor cosmetic fixes.
+
+2006-10-31 [r1066]  ronys:
+
+	* Replaced #include with CXMLpref class declaration, for leaner
+	  dependencies.
+
+2006-10-31 [r1065]  ronys:
+
+	* OnHelp now calls HtmlHelp with correct paths, also, Wnd::HtmlHelp
+	  instead of ::HtmlHelp when possible.
+
+2006-10-30 [r1064]  ronys:
+
+	* Clarified delay semantics
+
+2006-10-30 [r1063]  ronys:
+
+	* [1521684,1504527] Old (V1) databases now read correctly - thanks
+	  to Karel Van der Gucht.
+
+2006-10-30 [r1062]  ronys:
+
+	* Set for MSVS8 redistributables.
+
+2006-10-30 [r1061]  ronys:
+
+	* Fixed erronous uninstall registry key (silly typo).
+
+2006-10-29 [r1059]  minus273c:
+
+	* Missed one LoadString Ensure use _T("...") macro for all
+	  non-Windows strings Delete unused source (FindDialogExt)
+
+2006-10-28 [r1058]  minus273c:
+
+	* Fix some minor problemettes with last update
+
+2006-10-27 [r1057]  minus273c:
+
+	* Major internal change to put all strings in resource files for
+	  future localisation change (not corelib yet) Moved resources to
+	  separate RES sub-directory Simplified version setting to updating
+	  version.h ONLY Another attempt to sort out password masking on
+	  start-up Removed unused QueryAddName files
+
+2006-10-26 [r1056]  minus273c:
+
+	* Make MRU menu tooltips fit on screen
+
+2006-10-22 [r1051]  ronys:
+
+	* Missed this in last commit - part of merge of DK's branch off
+	  3.03
+
+2006-10-22 [r1050]  ronys:
+
+	* First hack at merging in V3-03-dk-temp branch - compiles cleanly,
+	  invoked w/o crashing - no further testing (yet).
+
+2006-10-21 [r1047]  minus273c:
+
+	* Make file names consistent (Dialog = ....Dlg.) Remove unneeded
+	  reference in pwsafe.vcproj to mystring.h
+
+2006-10-20 [r1046]  ronys:
+
+	* Convert from VC7.1 (MSVC2003) to VC8 (MSVS2005)
+
+2006-10-16 [r1039]  minus273c:
+
+	* [1578171] Hotkey works again if window just obscured
+
+2006-10-13 [r1033-1034]  ronys:
+
+	* Tweaked relnotes for 3.04
+
+	* 3.04 release (mainly to fix nasty note lossage bug)
+
+2006-10-12 [r1032]  minus273c:
+
+	* Adjust spin control position and data verification
+
+2006-10-12 [r1030]  ronys:
+
+	* [1575415] Weak master password allowed on password change as well
+	  as new safe.
+
+2006-10-11 [r1029]  minus273c:
+
+	* Only change PWH entries if they need to
+
+2006-10-11 [r1026]  minus273c:
+
+	* [1575279] Database now marked as "changed" after performing
+	  PWHistory operations
+
+2006-10-11 [r1024]  ronys:
+
+	* Added uuid support to XML import/export
+
+2006-10-10 [r1023]  ronys:
+
+	* Set RELEASENAME to 3.03
+
+2006-10-10 [r1022]  ronys:
+
+	* Finalizing 3.03
+
+2006-10-10 [r1021]  ronys:
+
+	* Updated for 3.03
+
+2006-10-10 [r1020]  ronys:
+
+	* More refactoring - made Validate a bit more future-proof
+
+2006-10-10 [r1019]  ronys:
+
+	* Refactored validation code: 1. Broke into gui part and actual
+	  worker 2. Moved latter into PWScore 3. Removed from Manage menu
+	  4. Added "-v" command line option TBD (not for 3.03): 1. Replace
+	  O(N^2) Validate code with O(1) or O(logN) using stl::set 2.
+	  cleanup & replace nonportable DWORD struct
+
+2006-10-09 [r1018]  minus273c:
+
+	* Fix R-O over Merge Correct Validate routine
+
+2006-10-09 [r1017]  ronys:
+
+	* Fixed compiler warning - if can't get app version, don't write
+	  the field at all (should never happen).
+
+2006-10-08 [r1016]  minus273c:
+
+	* Fix XML import - PWH date/time "Unknown" invalid Move SetDraw
+	  during group delete Add trace timing information for Validate
+	  Change DCA assert to defensive programming
+
+2006-10-05 [r1014]  minus273c:
+
+	* Change file format to 0x0301 Add who, what & when saved Database
+	  Project now requires version.dll to read version info Updated
+	  Properties Dialog to show new information Final fixes to DCA &
+	  Hotkey preferences Added Validate menu option - may not get into
+	  next release!
+
+2006-10-05 [r1013]  ronys:
+
+	* Help update (unfinished)
+
+2006-10-03 [r1009]  ronys:
+
+	* - Hide/Show notes w/o explicit button - Tweak appearance and
+	  terminology of options property pages.
+
+2006-10-02 [r1006]  ronys:
+
+	* Start finalized 3.03
+
+2006-10-02 [r1005]  ronys:
+
+	* Open file to be merged readonly.
+
+2006-10-02 [r1004]  ronys:
+
+	* Minor tweak on last commit (disable/enable updates on delete iff
+	  tree view active - for listview it's meaningless, since we'll
+	  never recurse)
+
+2006-10-02 [r1003]  minus273c:
+
+	* Stop screen updates during delete
+
+2006-10-02 [r1001]  ronys:
+
+	* [1527138] Select after deletion no longer surprises
+
+2006-10-01 [r999]  ronys:
+
+	* Work on Delete() - towards resolving 1527138 (better, not there
+	  yet)
+
+2006-10-01 [r998]  minus273c:
+
+	* Make sure we only used DB pref. if still DB related Also need to
+	  input unused/unkown value to keep in step
+
+2006-10-01 [r997]  ronys:
+
+	* Validate records as they are read in - currently only checks for
+	  uuid & creates one if missing.
+
+2006-09-30 [r996]  ronys:
+
+	* Dup'ed entry now has a uuid.
+
+2006-09-29 [r992]  minus273c:
+
+	* Improve PWHistory actions in Options (radio buttons) Make Hotkey
+	  simpler: reduce copies of same code Make passwordentry dialog
+	  have focus via hotkey remove redundant code in Tree startup
+	  option processing
+
+2006-09-28 [r991]  minus273c:
+
+	* Make Init faster. Update XMLprefs ready for XML config file Add 2
+	  PWSUtil functions for error reporting & TRACE timestamping
+
+2006-09-28 [r990]  minus273c:
+
+	* More defensive programming for preferences. In Options, SetFocus
+	  when hot key enabled and disable hotkey around property page
+	  display
+
+2006-09-28 [r987]  ronys:
+
+	* Fixed lock-while-edit crash
+
+2006-09-26 [r983]  minus273c:
+
+	* Missed a file from last update
+
+2006-09-26 [r982]  minus273c:
+
+	* Fix Hotkey modifiers Fix long term inconsistency in ordering of
+	  HotKey and DoubleClickAction preferences
+
+2006-09-26 [r979]  ronys:
+
+	* More work on "silent startup" - not ready yet.
+
+2006-09-25 [r978]  ronys:
+
+	* Added automatic ChangeLog generation from svn for source build
+	  using svn2log.py
+
+2006-09-25 [r977]  minus273c:
+
+	* Change EditDlg caption and text if in R-O mode (saves having a
+	  ViewDlg)
+
+2006-09-24 [r975]  ronys:
+
+	* [1561335, 1373138, 1182406] HotKey now works with SystemTray icon
+
+2006-09-24 [r974]  minus273c:
+
+	* Add missing files Remove "UK" resources (all the rest are US)
+
+2006-09-23 [r973]  minus273c:
+
+	* [] Remove unreferenced code/bmp
+
+2006-09-23 [r972]  minus273c:
+
+	* [] Update comments in PWSRecentFileList.cpp to give reason why we
+	  currently need it with XML config
+
+2006-09-23 [r971]  minus273c:
+
+	* [] Remove redundant Username property page
+
+2006-09-23 [r970]  minus273c:
+
+	* [] Rework Options; Add Show/Hide notes in Edit; [] Add 'Database
+	  Properties' to File menu; [] Update Find; Add ToolTips to
+	  Property Pages [] Allow PWH to be turned on/off for existing
+	  entries [] More work in preparation for XML config file.
+
+2006-09-20 [r966]  minus273c:
+
+	* [] Make times in EditDlg static text, not controls and not
+	  tabstops
+
+2006-09-20 [r963]  ronys:
+
+	* Added colo(u)r to field with focus (DK)
+
+2006-09-19 [r962]  minus273c:
+
+	* [] Error message has wrong file name
+
+2006-09-16 [r957]  ronys:
+
+	* Partial merge of DK's 3.03-, towards XML config, nicer statusbar.
+
+2006-09-16 [r956]  minus273c:
+
+	* Ensure status bar info on number entries is not clipped
+
+2006-09-15 [r955]  ronys:
+
+	* Added XMLprefs files, in preparation to weaning away from the
+	  registry habit.
+
+2006-09-08 [r948]  ronys:
+
+	* [1527144] No more multiple combination dialogs when restoring
+	  window from system tray
+
+2006-09-08 [r947]  ronys:
+
+	* [1554253] Show/Unhide password no longer loses changes to
+	  password
+
+2006-09-07 [r943]  ronys:
+
+	* minor cleanup
+
+2006-09-04 [r942]  minus273c:
+
+	* Fix: [1551034] Modifying records in read-only mode Fix: Long
+	  tooltip implementation
+
+2006-09-03 [r941]  ronys:
+
+	* Allowunstrong master passphrases after due warning.
+
+2006-09-03 [r940]  ronys:
+
+	* [1540106] - Fixed incorrect link to Twofish web page.
+
+2006-09-03 [r939]  minus273c:
+
+	* [] Allow tooltips to be longer than 79 characters + update for
+	  VC8
+
+2006-08-31 [r936]  minus273c:
+
+	* [] ExpandAll and CollapseAll must be disabled if no entries in
+	  Tree
+
+2006-08-18 [r935]  ronys:
+
+	* Refactored sorted text/xml export support.
+
+2006-08-17 [r934]  ronys:
+
+	* Shut up compiler warning - possible reading of uninit'ed value.
+
+2006-08-16 [r933]  minus273c:
+
+	* [] Missed a bit of code for cycling Finds
+
+2006-08-16 [r932]  minus273c:
+
+	* [1528400] Cancel on "Restore from Backup" causes corrupt database
+	  fixed [] Change Find to stop on the last found item and ask
+	  whether to continue from the beginning of the database or the
+	  user may select this previous behavour via a Misc. option. []
+	  User is again offered the option of accepting weak passphrases,
+	  if a Security Option is set.
+
+2006-08-16 [r931]  minus273c:
+
+	* [] Fix long term error in SetPref for boolean preferences
+
+2006-08-12 [r930]  minus273c:
+
+	* [] Change Find processing in Tree view so that entries are shown
+	  in Tree order rather than List order. [] Prevent change of view
+	  (List <-> Tree) during Find operation as the order of found
+	  entries differ in these views. [] DoubleClick did not work on
+	  entries with expired passwords [] Fix long standing memory leak
+	  in Find processing [] Ensure all dialog validation entries are
+	  processed
+
+2006-08-10 [r929]  minus273c:
+
+	* [] Show password history status on main Edit dialog
+
+2006-08-10 [r928]  minus273c:
+
+	* [] DoubleClick did not work on entries with expired passwords
+
+2006-08-10 [r922-927]  minus273c:
+
+	* [1527058] password history user specified default number saved
+
+	* [1249433] Startup state for Nested Tree mode
+
+	* [1532368] increase password history - now maximum is limited by
+	  corresponding field in the database - i.e. 1 byte = 255.
+
+	* [1511833] Better formatting of plain text export files.
+
+	* [1302047] Enable Maximize/Window button
+
+	* [] View Menu item "Collapse All" did not collapse all embedded
+	  groups.
+
+2006-08-09 [r921]  minus273c:
+
+	* Fix [1529305] Crash in Password History
+
+2006-08-07 [r920]  minus273c:
+
+	* [] Fix display of entries & R/O status (update missing from rc
+	  file)
+
+2006-07-26 [r919]  ronys:
+
+	* Source tree re-org in light of comments from Robert Altman.
+
+2006-07-26 [r918]  ronys:
+
+	* Making way for new PPC version
+
+2006-07-21 [r916]  ronys:
+
+	* Update makefile to reflect svn builds
+
+2006-07-21 [r915]  ronys:
+
+	* [1526174] Tab order more friendly in Edit dialog box. Added some
+	  accelerators in Add & Edit dialog boxes Both the above for easier
+	  mouse-free use.
+
+2006-07-20 [r914]  ronys:
+
+	* Update online help & installation script for 3.02
+
+2006-07-19 [r913]  ronys:
+
+	* More work on help, minor fixes to rc.
+
+2006-07-18 [r912]  ronys:
+
+	* More work on help file
+
+2006-07-18 [r910-911]  ronys:
+
+	* Start finalizing release 3.02
+
+	* Moved under html
+
+2006-07-18 [r908]  ronys:
+
+	* Ironing out bugs in EditDlg (not done yet)
+
+2006-07-17 [r907]  ronys:
+
+	* Password edit controls in AddDlg to same look&feel as Edit. Work
+	  on getting Edit to function as well as compile & not crash...
+	  (not done)
+
+2006-07-17 [r906]  ronys:
+
+	* First (second?) hack at separate password history dialog.
+
+2006-07-16 [r905]  ronys:
+
+	* More work on hidden password behavior in EditDlg
+
+2006-07-16 [r904]  ronys:
+
+	* Work on EditDlg password logic
+
+2006-07-15 [r903]  ronys:
+
+	* Redid pwd history header logic
+
+2006-07-15 [r902]  minus273c:
+
+	* [] Tree not refreshed if user decides not to open another DB
+
+2006-07-15 [r901]  minus273c:
+
+	* [1520562] Single entry not displayed in Nested Tree Mode
+
+2006-07-15 [r900]  ronys:
+
+	* Progress on EditDlg - functional, needs more work.
+
+2006-07-14 [r899]  minus273c:
+
+	* Tidy up status bar implementation Tidy up removal of "save on
+	  minimize" option
+
+2006-07-14 [r898]  ronys:
+
+	* Added sanity check
+
+2006-07-14 [r897]  ronys:
+
+	* refactoring EditDlg/MainEdit - done, compiles cleanly, untested
+	  (yet)
+
+2006-07-14 [r896]  ronys:
+
+	* refactoring EditDlg/MainEdit - compiles cleanly but not complete
+	  - checkpoint
+
+2006-07-13 [r895]  minus273c:
+
+	* [1506320] Count of passwords stored in DB on status bar
+
+2006-07-13 [r894]  minus273c:
+
+	* [1519850] Double-click tree More tweaks on handling
+	  shutdown/restart/logoff
+
+2006-07-12 [r893]  minus273c:
+
+	* Move OnOK & OnCancel from MainView to MainFile Tweak dealing with
+	  shutdown/restart/logoff
+
+2006-07-11 [r892]  minus273c:
+
+	* [] Update text re: Last Access Time changes & PW expiry and
+	  implemented fields [] Re-enable drop down calendar for expiry
+	  dates
+
+2006-07-10 [r891]  minus273c:
+
+	* [1519227] Password expires date set wrong - fixed [] Make
+	  password show/hide selection consistent in Add & Edit
+
+2006-07-09 [r890]  ronys:
+
+	* click -> copy to clipboard in pwd history list
+
+2006-07-09 [r889]  ronys:
+
+	* More work on edit dialog, tweak add dialog
+
+2006-07-08 [r888]  ronys:
+
+	* Merged DK's implementation of hide/show password into my work on
+	  edit dialog (STILL in progress)
+
+2006-07-07 [r887]  minus273c:
+
+	* [1516674] Ability to hide password - minor tweak!
+
+2006-07-07 [r886]  minus273c:
+
+	* [1516674] Ability to hide password during Add & Edit entry.
+
+2006-07-06 [r885]  ronys:
+
+	* More work on pwd history interface (Clear History now functions),
+	  still not done. Fixed typo in pwsafe.vcproj
+
+2006-07-05 [r884]  minus273c:
+
+	* New function: Selective export to text file
+
+2006-07-05 [r883]  minus273c:
+
+	* [ 1515994 ] Minor Update
+
+2006-07-05 [r882]  minus273c:
+
+	* [ 1515994 ] Fixed - No Prompt to Save on System Shutdown
+
+2006-07-05 [r881]  ronys:
+
+	* [1504107] Avoid saving cleared list - take #2
+
+2006-07-05 [r880]  ronys:
+
+	* Cleanup - removed RemindSaveDlg (awkward interface).
+
+2006-07-05 [r879]  ronys:
+
+	* Minor refactoring - moved repeated access time code to
+	  DboxMain::UpdateAccessTime
+
+2006-07-04 [r878]  ronys:
+
+	* Avoid saving cleared list (!)
+
+2006-07-01 [r877]  ronys:
+
+	* [ 1513482 ] Preferences now saved in the .psafe3 file
+
+2006-07-01 [r876]  ronys:
+
+	* Snapshot of rework on editdlg
+
+2006-07-01 [r875]  ronys:
+
+	* Frank Pilhofer's changes to header parsing, refined header
+	  definition.
+
+2006-06-29 [r874]  minus273c:
+
+	* [] Simplify XML Import
+
+2006-06-28 [r873]  minus273c:
+
+	* [] Fixed Import XML and enabled use
+
+2006-06-27 [r872]  minus273c:
+
+	* [] XML Import works under WinXP (not under Win2k - as yet)
+
+2006-06-26 [r871]  ronys:
+
+	* Documented password history format
+
+2006-06-26 [r870]  minus273c:
+
+	* [] Missing DDX in ImportXMLDlg.cpp [] pwsafe needs 32-bit time
+	  (not 64-bit) [] Add greying out any unsupported menu features
+	  until fixed/developed just in case someone builds them
+	  unsuspectingly (need to specify they really want it!). To be
+	  removed from specific items when fixed/ready.
+
+2006-06-26 [r869]  ronys:
+
+	* Minor refactoring - PWHistList doesn't need to be a member of
+	  DboxMain
+
+2006-06-25 [r868]  ronys:
+
+	* cosmetics
+
+2006-06-25 [r867]  ronys:
+
+	* minor refactoring & cleanup
+
+2006-06-24 [r866]  ronys:
+
+	* New SaveHistory semantics applied to Edit dialog box.
+
+2006-06-23 [r865]  ronys:
+
+	* Add Dialog box works again, with new SaveHistory semantics
+
+2006-06-22 [r864]  ronys:
+
+	* Cosmetics to Add dialog.
+
+2006-06-22 [r863]  ronys:
+
+	* Refactoring Main dialog box methods (end)
+
+2006-06-22 [r862]  ronys:
+
+	* Refactoring Main dialog box methods (continued)
+
+2006-06-22 [r861]  ronys:
+
+	* Refactoring Main dialog box methods
+
+2006-06-22 [r860]  minus273c:
+
+	* [] Murphy again plus extra XML support
+
+2006-06-21 [r859]  ronys:
+
+	* Cosmetics
+
+2006-06-21 [r858]  ronys:
+
+	* re-instated bFileIsReadOnly in GetAndCheckPassword (Murphy
+	  rules!)
+
+2006-06-21 [r857]  ronys:
+
+	* Merged changes back into DboxMain.cpp, minor cosmetics on Edit
+	  dialog box in rc.
+
+2006-06-20 [r856]  minus273c:
+
+	* [] Save read-only status over Compare [] Correct error message so
+	  displayed correctly
+
+2006-06-20 [r843-855]  ronys:
+
+	* Merge of branch V3-PRE01-PWHIST into trunk. This has: - password
+	  history - XML import/export - Merge databases ready to be
+	  polished for release
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+	* merge into main trunk
+
+2006-06-20 [r841]  ronys:
+
+	* [1503123] Exits cleanly from lock with open dialog box.
+
+2006-06-19 [r838]  ronys:
+
+	* Minimum master passphrase length is now 8 characters, and user is
+	  not offered the option of accepting weak passphrases.
+
+2006-06-19 [r837]  ronys:
+
+	* [1507847] Merge databases now merges all the record's fields.
+
+2006-06-16 [r832]  ronys:
+
+	* Added pwsafe.iss - An input file for the InnoSetup program
+	  (http://www.jrsoftware.org/isinfo.php) as written by Laurent
+	  Salle. Currently PasswordSafe will continue to be built using
+	  NSIS, but it's nice to have alternatives.
+
+2006-06-13 [r830]  minus273c:
+
+	* [1503075] Enhance setting of MRU to allow it to be zero
+
+2006-06-11 [r828]  minus273c:
+
+	* [1503075] Fix setting of MRU to be > 0 [] Ensure all new fields
+	  created when entry duplicated
+
+2006-06-09 [r826]  minus273c:
+
+	* Fix time verification bug (again) Fix changing DB suffix from dat
+	  to psafe3 in SaveAs
+
+2006-06-06 [r824]  ronys:
+
+	* Last minute changes from DK
+
+2006-06-05 [r821]  ronys:
+
+	* Ready for 3.01 release
+
+2006-06-05 [r820]  ronys:
+
+	* Ready for 3.01 release
+
+2006-06-05 [r819]  ronys:
+
+	* Don't prompt user for save if selected track modification times
+	  w/o save after edits
+
+2006-06-04 [r818]  ronys:
+
+	* Changed SaveImmediately default value to TRUE
+
+2006-05-31 [r817]  ronys:
+
+	* Silly bug in time verification
+
+2006-05-31 [r816]  ronys:
+
+	* Preparations for pwd history in import/export
+
+2006-05-31 [r815]  ronys:
+
+	* More work on v3 help
+
+2006-05-30 [r814]  ronys:
+
+	* read-only member in DboxMain now init'ed in c'tor correctly.
+	  Future-proof against history data field... Move clipboard from
+	  DboxMain to app
+
+2006-05-29 [r809]  minus273c:
+
+	* Fix detection of read only attribute of database.
+
+2006-05-27 [r808]  minus273c:
+
+	* Update ReleaseNotes.txt on new features/bug fixes
+
+2006-05-26 [r807]  ronys:
+
+	* [1495670]Find now searches new URL and Autotype fields
+
+2006-05-26 [r806]  ronys:
+
+	* Got rid of m_LockDisabled logic. Works fine w/o it on XP...
+
+2006-05-25 [r805]  ronys:
+
+	* More work on locks & refresh.
+
+2006-05-25 [r804]  ronys:
+
+	* Simplest case - restore after minimize w/o systray & w/o locking
+	  db now works, hopefully w/o breaking anything else. Logic is
+	  *still* way too contorted for comfort.
+
+2006-05-24 [r803]  ronys:
+
+	* online help update to 3.0 (mostly) done
+
+2006-05-22 [r802]  minus273c:
+
+	* Make lockfile name by appending ".plk" to database name. Tify up
+	  new PWSfile::FileExists code.
+
+2006-05-21 [r801]  ronys:
+
+	* Display options cosmetics: replace text describing limits with
+	  spinboxes enforcing them.
+
+2006-05-21 [r800]  minus273c:
+
+	* Fix: [1480440] detect read-only status of database
+
+2006-05-20 [r799]  minus273c:
+
+	* Bugs fixed [1472332] - Read-only command line argument bug [n/a]
+	  - Fix display of entries with expired password twice on opening
+	  Features implemented [ 737878] - Copy notes to clipboard. Url &
+	  Autotype appended, as they are now separate fields also
+	  implemented via the toolbar and System Tray [ 996282] - Clear
+	  recent database list (via new menu item on the File menu)
+	  [1162051] - Toolbar additions (Autotype, Browse URL, Copy Notes
+	  to clipboard) [1465395] - View Passwords in Nested Tree Mode
+
+2006-05-19 [r798]  ronys:
+
+	* Fixed typo in exported text header
+
+2006-05-17 [r797]  minus273c:
+
+	* Fix issue caused by saving last access time when using Autotype.
+
+2006-05-17 [r796]  ronys:
+
+	* document source of compatability bug between beta-1 and beta-2
+	  databasen.
+
+2006-05-16 [r795]  ronys:
+
+	* Compilation error fixed
+
+2006-05-15 [r794]  minus273c:
+
+	* Allow user more options for setting Read-only (especially when
+	  selecting file from recent database list). Also, change toolbar
+	  so that Windows enables/disables buttons according to read-only
+	  status.
+
+2006-05-11 [r793]  ronys:
+
+	* Minor cosmetics, plus update more/less preference.
+
+2006-05-11 [r792]  ronys:
+
+	* minor tweaks and leftovers from merging in DK's work.
+
+2006-05-10 [r791]  ronys:
+
+	* Fixed nasty dependency loop between util.h and sha256.h
+
+2006-05-10 [r790]  ronys:
+
+	* More work on times - refinements
+
+2006-05-09 [r789]  ronys:
+
+	* Forgot to add these in last commit...
+
+2006-05-09 [r788]  ronys:
+
+	* DK's work - implementing all the time-related fields. Bumped
+	  version to 3.1-pre
+
+2006-05-08 [r787]  ronys:
+
+	* Version field in v3 header is two bytes, not 4! (accept both, but
+	  now write correct header) Thanks to Frank Pilhofer
+
+2006-05-04 [r786]  ronys:
+
+	* [1482002] Generated password trashed if > 127 bytes Turns out
+	  that SHA-1 trashes input string in this case! Fixed by getting a
+	  bigger hammer - moved to SHA-256 in this case (the tempting
+	  solution of #defining SHA1HANDSOFF broke the ability to read v2
+	  databases - shudder)
+
+2006-04-22 [r778-779]  ronys:
+
+	* 3.0Beta2
+
+	* [1459326, 1427642] Fixed problems with password prompt (DK)
+
+2006-04-19 [r777]  ronys:
+
+	* Fixed assert under win2k (thanks to DK!)
+
+2006-04-15 [r776]  ronys:
+
+	* more VC8 stuff, cleaner compiles (DK)
+
+2006-04-15 [r775]  ronys:
+
+	* Memory leaks plugged - thanks to DK
+
+2006-04-15 [r774]  ronys:
+
+	* [1446183] Export to v2 format now readable by pwsafe v2.x
+
+2006-04-14 [r773]  ronys:
+
+	* More vc8 stuff
+
+2006-04-13 [r772]  ronys:
+
+	* more VC8 stuff, marked Beta2 in rc
+
+2006-04-13 [r771]  ronys:
+
+	* VC8 ready - thanks to DK
+
+2006-04-12 [r770]  ronys:
+
+	* [1450486] URLs without a protocol now default to http.
+
+2006-04-12 [r769]  ronys:
+
+	* [1463103] Fields in Edit Dialog are wider.
+
+2006-04-11 [r768]  ronys:
+
+	* Fixed weak PRNG vulnerability
+
+2006-04-09 [r767]  ronys:
+
+	* Refactor in preparation for better PRNG on non-XP platforms
+
+2006-04-01 [r766]  davidjchapman:
+
+	* First checkin. Updated return type for strCopy to match VC++ 8
+	  version of _tcsncpy_s so compiles work under Visual Studio 2005 -
+	  nothing checks the return code so this shouldn't break previous
+	  compilers.
+
+2006-03-31 [r765]  ronys:
+
+	* Kinder, gentler src-release build
+
+2006-03-31 [r764]  ronys:
+
+	* Applied DK's VS2005 changes and memory leak cleanups.
+
+2006-03-25 [r763]  ronys:
+
+	* Cleanup in preparation for VS2005
+
+2006-03-25 [r762]  ronys:
+
+	* bugfix 1450484 - trailing garbage in tooltip (DK)
+
+2006-03-25 [r761]  ronys:
+
+	* Minor tweak (calculate max histories @ runtime)
+
+2006-03-25 [r760]  ronys:
+
+	* DK's refactor of recently used entries list (RUEList)
+
+2006-03-25 [r759]  ronys:
+
+	* Minor bug in save-as, plus #1451422 - bug in StretchKey function
+	  pointed out by zindorsky.
+
+2006-03-08 [r757]  ronys:
+
+	* final 3.0beta1 commit
+
+2006-03-08 [r756]  ronys:
+
+	* Last set of bugfixes before 3.0beta1 release.
+
+2006-03-08 [r755]  ronys:
+
+	* [ 1445513 ] Add (u)int* typedef's for FreeBSD (applied Andrew
+	  Turner's patch)
+
+2006-03-07 [r754]  ronys:
+
+	* More work on MRU entries - keep consistent under various
+	  operations.
+
+2006-03-07 [r753]  ronys:
+
+	* Icon state now OK, recentEntries now CMyString, zero terminated
+	  tooltip.
+
+2006-03-06 [r752]  ronys:
+
+	* - Dup and edit entry now updates SystemTray menu (DK) - Minor
+	  stuff caught by DK
+
+2006-03-06 [r751]  ronys:
+
+	* Small commit, mainly to test svn::notify
+
+2006-03-05 [r750]  ronys:
+
+	* More tweaks for system tray MRU
+
+2006-03-04 [r749]  ronys:
+
+	* cleanup+graceful truncation of tooltip text
+
+2006-03-04 [r747-748]  ronys:
+
+	* First hack at merging DK's trayicon MRU. (4got 2 add DboxTray.cpp
+	  last time)
+
+	* First hack at merging DK's trayicon MRU.
+
+2006-03-03 [r746]  ronys:
+
+	* Open V2 file after V3 now works correctly.
+
+2006-03-02 [r745]  ronys:
+
+	* Ported DK's system tray lock/unlock indicator to 3.0 trunk.
+
+2006-03-01 [r744]  ronys:
+
+	* Warn user when auto-converting to v3 format. (informed consent,
+	  sort of...)
+
+2006-03-01 [r743]  ronys:
+
+	* Began working on start at login support (-s option to start app
+	  w/o opening database)
+
+2006-02-27 [r740-741]  ronys:
+
+	* Finished HMAC_SHA256 test vectors
+
+	* [ 1439507 ] Rename *_ENDIAN to PWS_*_ENDIAN - Applied patch
+	  provided by Andrew Turner
+
+2006-02-26 [r739]  ronys:
+
+	* Added HMAC_SHA256 test vectors
+
+2006-02-26 [r737]  ronys:
+
+	* First SVN commit!
+
+2006-02-24 [r736]  ronys:
+
+	* Export/import plaintext works
+
+2006-02-23 [r735]  ronys:
+
+	* Cleaned up import/export text.
+
+2006-02-23 [r734]  ronys:
+
+	* Removed silly dialog box when there's no username to copy.
+
+2006-02-23 [r733]  ronys:
+
+	* Got fstream stuff to compile again!
+
+2006-02-22 [r732]  ronys:
+
+	* Removed unnecessary display option
+
+2006-02-22 [r731]  ronys:
+
+	* Lint
+
+2006-02-22 [r730]  ronys:
+
+	* Added export to v2 format.
+
+2006-02-20 [r729]  ronys:
+
+	* Lint
+
+2006-02-20 [r728]  ronys:
+
+	* Parametrized number of iterations of key-stretching algorithm,
+	  notless than 2048, per Frank Pilhofer's suggestion
+
+2006-02-20 [r727]  ronys:
+
+	* Lint
+
+2006-02-19 [r726]  ronys:
+
+	* First working UTF-8 support!
+
+2006-02-11 [r725]  ronys:
+
+	* Exit upon unlock w/systemtray now works correctly
+
+2006-02-05 [r723]  ronys:
+
+	* Fixed extract functions
+
+2006-02-05 [r722]  ronys:
+
+	* Hack around partial last record (?)
+
+2006-02-05 [r721]  ronys:
+
+	* Remerge autottype & htp into Notes for v1v2 WriteRecord
+
+2006-02-04 [r720]  ronys:
+
+	* Extract v3 autotype & URL fields from v2 Notes
+
+2006-02-03 [r719]  ronys:
+
+	* Handle empty Ctime correctly (for imported v2 databases)
+
+2006-02-03 [r717-718]  ronys:
+
+	* Pad last block with random values, not zeroes.
+
+	* Cosmetics - widen created on field, hide border
+
+2006-02-03 [r716]  ronys:
+
+	* Utilize 16 byte length block more efficiently - saves a LOT of
+	  disk space!
+
+2006-01-29 [r715]  ronys:
+
+	* - Don't save empty fields - Don't re-use previous field values
+	  while reading file
+
+2006-01-28 [r713-714]  ronys:
+
+	* [1414899] - System tray tooltip now reflects the name of the
+	  database. (merged in from 2.16)
+
+	* Work on UTF-8 encoding
+
+2006-01-25 [r707]  ronys:
+
+	* oops - 4got a dialog...
+
+2006-01-25 [r706]  ronys:
+
+	* Merge in DK's cancel/exit change, plus some cosmetics.
+
+2006-01-24 [r704]  ronys:
+
+	* oops
+
+2006-01-23 [r703]  thedavecollins:
+
+	* removed old code no code and added Ctime on edit dialog
+
+2006-01-22 [r702]  ronys:
+
+	* - Merged with Dave Collin's work. - [1412208] Fixed tab order in
+	  opening dialog - More work on formatV3
+
+2006-01-22 [r700]  thedavecollins:
+
+	* Added GUI functionality to use the new database propertities Auto
+	  type text and URL. The changes include Removing extractURL and
+	  Extract AutoTypeText functions. Added text box�s for URL and
+	  AutoType to the Add and Edit dialogs. Added a more/less button to
+	  hide and display the URL and AutoType fields. Added a preference
+	  to displaying the detailed field by default.
+
+2006-01-20 [r699]  ronys:
+
+	* More Unicode work
+
+2006-01-20 [r698]  ronys:
+
+	* Compiles with _UNICODE defined - broke text import/export
+
+2006-01-18 [r697]  ronys:
+
+	* Revised after more comments from dev list.
+
+2006-01-18 [r696]  ronys:
+
+	* Minor changes after format review.
+
+2006-01-14 [r695]  ronys:
+
+	* Added CTIME, URL and AUTOTYPE fields to record.
+
+2006-01-08 [r694]  ronys:
+
+	* Don't expose raw randomness.
+
+2006-01-07 [r693]  ronys:
+
+	* V3 now saves and restores records!
+
+2006-01-06 [r692]  ronys:
+
+	* Write and Read empty v3 file success!
+
+2006-01-06 [r691]  ronys:
+
+	* First hack at v3 ReadRecord
+
+2006-01-06 [r690]  ronys:
+
+	* Correct handling of corrupt v3 database
+
+2006-01-05 [r689]  ronys:
+
+	* First hack at v3 Close()
+
+2006-01-05 [r688]  ronys:
+
+	* Writes 3.0 header. Default suffix now pwsafe3. "Officially"
+	  v3.0BETA1...
+
+2006-01-05 [r687]  ronys:
+
+	* Finished writing v3 read header code
+
+2006-01-03 [r686]  ronys:
+
+	* Implemented general CheckPassword
+
+2006-01-01 [r685]  ronys:
+
+	* More work on v3
+
+2005-12-31 [r684]  ronys:
+
+	* More refactoring & slow progress
+
+2005-12-30 [r681]  ronys:
+
+	* More refactoring
+
+2005-12-30 [r680]  ronys:
+
+	* Virtualize *Fish classes so that _read/_writecbc can work with
+	  both Blow and TwoFish
+
+2005-12-25 [r677]  ronys:
+
+	* When dragging to the top or bottom of the visible tree, it will
+	  scroll up or down; If dragged mouse hovers over a closed node, it
+	  expands the node to see subnodes etc. - code from
+	  www.codeproject.com, thanks to DK.
+
+2005-12-23 [r675]  ronys:
+
+	* First hack at V3 files - basically just compiles.
+
+2005-12-23 [r674]  ronys:
+
+	* Merged in robustness change from V2x branch
+
+2005-12-18 [r672]  ronys:
+
+	* Refactored for V3 support
+
+2005-12-17 [r671]  ronys:
+
+	* Started work on V3 header, still unhappy about OO/SE aspects -
+	  need to refactor a bit
+
+2005-12-17 [r670]  ronys:
+
+	* Cleanup backup API (so that will work with any suffix)
+
+2005-12-17 [r669]  ronys:
+
+	* Added HMAC functionality
+
+2005-12-17 [r666]  ronys:
+
+	* pre-3.0 cosmetics
+
+2005-12-15 [r665]  ronys:
+
+	* [1381729] No longer crashes when restoring with a database
+	  already opened.
+
+2005-12-15 [r664]  ronys:
+
+	* [1312870] Backup filename now updated correctly.
+
+2005-12-14 [r663]  ronys:
+
+	* Added VC7 (visual studio .net) project files
+
+2005-12-14 [r662]  ronys:
+
+	* #1368198 better error message on Open failure.
+
+2005-12-14 [r661]  ronys:
+
+	* Fixed #1363569 - crash after last node deleted.
+
+2005-12-12 [r659]  ronys:
+
+	* checkpoint
+
+2005-12-10 [r658]  ronys:
+
+	* Ammended after comments from dev list.
+
+2005-12-10 [r657]  ronys:
+
+	* More prep for v3 format
+
+2005-12-10 [r656]  ronys:
+
+	* SHA256 and SHA1 now share the same API.
+
+2005-12-09 [r655]  ronys:
+
+	* SHA1 cleanup - preparation for v3
+
+2005-12-09 [r654]  ronys:
+
+	* Added TwoFish & SHA256 implementations + minor cleanups
+
+2005-12-05 [r653]  ronys:
+
+	* Added tests for TwoFish & SHA256, slight reorg of test suite.
+
+2005-12-05 [r652]  ronys:
+
+	* Added TwoFish & SHA256 implementations + minor cleanups
+
+2005-12-04 [r650]  ronys:
+
+	* Checked in first draft
+
+2005-12-02 [r649]  ronys:
+
+	* nitpick
+
+2005-12-02 [r648]  ronys:
+
+	* Added dbl-click to bowse option, thanks to Laszlo Gombos
+
+2005-11-20 [r631]  ronys:
+
+	* Closing release 2.14
+
+2005-11-19 [r628]  ronys:
+
+	* Undid part of security fix that broke bwd compat.
+
+2005-11-19 [r627]  ronys:
+
+	* Enhance security by making first encrypted record more
+	  unpredictable.
+
+2005-11-18 [r626]  ronys:
+
+	* Updated help files, fixed Version info in RC, moved old news to
+	  ChangeLog.txt
+
+2005-11-12 [r625]  ronys:
+
+	* Support deletion of group of items
+
+2005-11-08 [r624]  ronys:
+
+	* bugfix 1197342 - delete now works in edit controls in various
+	  dialog boxen - DK
+
+2005-11-06 [r622]  ronys:
+
+	* Removed assignment of NULL to main window. Historical residue?
+
+2005-10-02 [r598]  ronys:
+
+	* Removed unused file PasswordSafe.cpp
+
+2005-09-26 [r596]  ronys:
+
+	* Expand/Collapse all entries, selectFont added. [DK]
+
+2005-09-24 [r595]  ronys:
+
+	* LaurionB's changes - merged into DboxMain class
+
+2005-09-24 [r594]  ronys:
+
+	* LaurionB's changes - first hack (needs cleanup)
+
+2005-09-18 [r593]  ronys:
+
+	* Bump to 2.14, add'edDK's patches for copy entry function.
+
+2005-09-05 [r591]  ronys:
+
+	* Closing version 2.13 - critical bugfix release
+
+2005-09-03 [r590]  ronys:
+
+	* Added note re diacriticals
+
+2005-09-03 [r589]  ronys:
+
+	* [1275880] - fixde crash when database locked with expanded
+	  groups.
+
+2005-08-26 [r587]  ronys:
+
+	* Ready for release 2.12
+
+2005-08-26 [r586]  ronys:
+
+	* Clear lastSelected whenever ClearData is done, not only when
+	  explicitly cleared.
+
+2005-08-26 [r585]  ronys:
+
+	* Update Help files for 2.12: Autotype on double-click, MRU
+	  configuration
+
+2005-08-26 [r584]  ronys:
+
+	* [1225255] Double-clicking on an entry can now be configured to
+	  Autotype the entry.
+
+2005-08-26 [r583]  ronys:
+
+	* [1217271] Specifiying -r with a filename in command line now
+	  works correctly.
+
+2005-08-26 [r581-582]  ronys:
+
+	* [1214940 ] Changed phrasing of stuff, hopefully for the better
+
+	* Fixed nasty race-condition crash upon exit.
+
+2005-08-26 [r580]  ronys:
+
+	* [1214940] CRITICAL - cancel on password entry with system tray no
+	  longer clears entries, allowing potential overwrite of database.
+
+2005-08-25 [r579]  ronys:
+
+	* Fixed keep select bugfix. More robust, even if doesn't work if
+	  data cleared. Also removed bad assert re file locking
+
+2005-08-07 [r578]  riordanmr:
+
+	* Change the group name from an edit box to a combo box in the Add
+	  and Edit dialogs.
+
+2005-07-31 [r577]  kstudent:
+
+	* fix for bug #1004026 multiple highlights after doing a "Find
+	  Next"
+
+2005-07-30 [r576]  kstudent:
+
+	* //Fixes bug #1179386 Where CTRL-L uses old data.
+
+2005-07-28 [r575]  ronys:
+
+	* Before hiatus
+
+2005-07-27 [r562]  ronys:
+
+	* [1003782,1030077] - reconstruct trees that were expanded after
+	  minimize
+
+2005-07-23 [r560]  ronys:
+
+	* kstudent's fix for #1208955 (autotype problem with shift)
+
+2005-07-20 [r558]  ronys:
+
+	* Updated to refelct 2.11 status + some midifications discussed on
+	  dev list.
+
+2005-07-02 [r557]  ronys:
+
+	* DK's MRU support enhancements
+
+2005-06-26 [r555]  ronys:
+
+	* Tree view will now be the default for new users (about time...)
+
+2005-06-16 [r554]  ronys:
+
+	* Added 1 sec delay between minimize & sendKeys in autotype, per
+	  Karl Student's suggestion
+
+2005-06-16 [r553]  ronys:
+
+	* Help file fixes by Sebastian Juergens
+	  [sebastian.juergens@oleco.net]
+
+2005-06-02 [r552]  ronys:
+
+	* More PPC-related cleanups
+
+2005-05-29 [r551]  ronys:
+
+	* Started merging in PPC changes.
+
+2005-05-28 [r549]  ronys:
+
+	* 2.11 Release
+
+2005-05-28 [r548]  ronys:
+
+	* [1207600] Find dialog not moved off-screen if PasswordSafe takes
+	  up whole screen.
+
+2005-05-27 [r547]  ronys:
+
+	* Closing 2.11
+
+2005-05-25 [r546]  ronys:
+
+	* Merged DK's ExportTextSetting dialog box into ExportText, removed
+	  former from project
+
+2005-05-25 [r545]  ronys:
+
+	* Added DK's fixes and additions
+
+2005-05-21 [r544]  ronys:
+
+	* [1203679] '-r' may now be passed a command line switch
+
+2005-05-17 [r543]  ronys:
+
+	* Redid clipboard logic - clears iff data was put there by pwsafe
+
+2005-05-14 [r542]  ronys:
+
+	* [1197706] Delay argument in autotype now correctly parsed (thanks
+	  to dturland for this!)
+
+2005-05-14 [r541]  ronys:
+
+	* Clicking X in title bar hides, doesn't exit, if system tray
+	  active.
+
+2005-04-24 [r540]  ronys:
+
+	* Compile cleanly under .Net as well as MSVC 6 (thanks to lear)
+
+2005-04-08 [r538]  ronys:
+
+	* Added greyed-out bitmaps for readonly, ready for 2.10
+
+2005-04-07 [r537]  ronys:
+
+	* [1170180] - status bar text now works correctly, plus minor
+	  cleanups
+
+2005-04-07 [r536]  ronys:
+
+	* Update radio button in OnInitDialog
+
+2005-04-07 [r535]  ronys:
+
+	* [1165681] Lock file now deleted if user cancels in unlock dialog
+	  box.
+
+2005-04-07 [r534]  ronys:
+
+	* Fixed some errors in the format descriptions, moved stuff to Misc
+	  directory, removed unused files.
+
+2005-04-06 [r533]  ronys:
+
+	* [1162048, 726521] Hotkey restore
+
+2005-04-06 [r532]  ronys:
+
+	* Updated to describe new hotkey function
+
+2005-04-06 [r531]  ronys:
+
+	* Updated to show hotkey controls
+
+2005-03-29 [r530]  ronys:
+
+	* Ctrl+L now accelerator for BrowseTo function
+
+2005-03-25 [r529]  ronys:
+
+	* removed unused file (stub)
+
+2005-03-25 [r528]  ronys:
+
+	* [1162044] URL "Browse to" feature now documented
+
+2005-03-23 [r527]  ronys:
+
+	* [1145747] The import delimiter is now changeable (Thanks to Roger
+	  Hakansson for the patch).
+
+2005-02-25 [r526]  ronys:
+
+	* [1145173] Main window will be visible even if resolution changes
+	  or multiple screens used between invocations.
+
+2005-02-25 [r525]  ronys:
+
+	* [1076377] Entering the wrong password 3 times no longer allows
+	  you to create an empty database with the same name.
+
+2005-02-25 [r524]  ronys:
+
+	* [1151575] Don't try to unlock empty filename in OnDestroy (ASSERT
+	  failed in debug version - potential problem in released version)
+
+2005-02-25 [r523]  ronys:
+
+	* [1123373] Uninstall will only remove installed files, and will
+	  delete the installation directory if and only if it's empty.
+
+2005-02-20 [r521]  ronys:
+
+	* Bumped release to 2.09
+
+2005-02-18 [r520]  ronys:
+
+	* Re-implement lock functions using win32 API, fixing zombie lock
+	  problems.
+
+2005-02-18 [r519]  ronys:
+
+	* Unlock currently locked file upon successful Open of another.
+
+2005-02-14 [r518]  ronys:
+
+	* Backup database to .dat~ before save - minimal disaster recovery.
+
+2005-02-08 [r517]  ronys:
+
+	* [1103501] It is now possible to forcibly unlock a file from
+	  within the application. Files are now also locked if opened via
+	  "Open existing database".
+
+2005-01-29 [r516]  ronys:
+
+	* [1107971] - no longer (occasional) crash when edit via
+	  doubleclick
+
+2005-01-15 [r514]  ronys:
+
+	* update for 2.08
+
+2005-01-15 [r513]  ronys:
+
+	* Moved 2.03-2.06 from ReleaseNotes.
+
+2005-01-15 [r511-512]  ronys:
+
+	* Update non-English list, add reference to donations.
+
+	* Updated for 2.08
+
+2005-01-15 [r510]  ronys:
+
+	* Shows new read-only checkbox
+
+2005-01-15 [r509]  ronys:
+
+	* Renamed help topics to new help file scheme
+
+2005-01-14 [r508]  ronys:
+
+	* Added lock support around SaveAs
+
+2005-01-11 [r507]  ronys:
+
+	* Added IsUTF8 per Frank Pilhofer's patch
+
+2005-01-09 [r506]  ronys:
+
+	* Elaborate on autotype customization
+
+2005-01-08 [r505]  ronys:
+
+	* [1094005,1083950] Multiple instances of PasswordSafe can now open
+	  the same database - only the first instance will be able to
+	  modify the database, unles explicitly opened read-only.
+
+2005-01-01 [r504]  ronys:
+
+	* [1090153] - delete disabled if main window != focus window (e.g.,
+	  Find dialog active)
+
+2005-01-01 [r503]  ronys:
+
+	* [1082510] - Find dialog recalls last search string & case
+	  sensitivity.
+
+2005-01-01 [r502]  ronys:
+
+	* [1082510] - Find dialog no longer obscures parent.
+
+2005-01-01 [r501]  ronys:
+
+	* [1077638] - replace jpeg with png and fewer colors -> Help file
+	  much smaller.
+
+2004-11-24 [r499]  ronys:
+
+	* Added link to Italian help, plus unix2dos'ed
+
+2004-11-24 [r498]  ronys:
+
+	* Updated for 2.07
+
+2004-11-23 [r496-497]  ronys:
+
+	* Bumped revision to 2.07
+
+	* Changes related to move to new PC.
+
+2004-11-23 [r495]  ronys:
+
+	* Minor corrections
+
+2004-11-23 [r494]  ronys:
+
+	* Andrew Angelopoulos's help files.
+
+2004-11-20 [r493]  ronys:
+
+	* Added KeePass import feature
+
+2004-11-20 [r492]  ronys:
+
+	* Added ImportDlg - more flexibility on import from text file.
+
+2004-11-19 [r491]  ronys:
+
+	* [1055968,1030060] Import text now handles Notes that are more
+	  than one line long (as long as the entire note is "within double
+	  quotes").
+
+2004-11-19 [r490]  ronys:
+
+	* [1055968,1030060] Import text now handles Notes that are more
+	  than one line long (as long as the entire note is "within double
+	  quotes").
+
+2004-11-17 [r489]  ronys:
+
+	* Added jhedding's import KeePass function.
+
+2004-11-15 [r488]  ronys:
+
+	* Added support for new USER_CANCEL return status in Merge
+
+2004-11-15 [r487]  forrestje:
+
+	* Initial add of db merge functionality
+
+2004-11-15 [r486]  forrestje:
+
+	* Only initialize session key once. This makes is possible to open
+	  multiple cores at the same time. Needed for merge functionality.
+
+2004-11-13 [r485]  ronys:
+
+	* [1021879] Enter on a tree-item expands/collapses the list under
+	  that item.
+
+2004-11-12 [r484]  ronys:
+
+	* [1006234] Choosing "Cancel" in the Enter Password dialog box now
+	  exits the application.
+
+2004-11-12 [r483]  ronys:
+
+	* [1065049] Fixed broken link to Blowfish algo. reference.
+
+2004-11-11 [r481-482]  ronys:
+
+	* *** empty log message ***
+
+	* Found these not under CVS in move to new PC
+
+2004-11-11 [r480]  ronys:
+
+	* sync (move to new PC)
+
+2004-11-11 [r479]  ronys:
+
+	* [1055961, 1030775, 947841] The action taken upon double-clicking
+	  an entry can now be configured (via Manage->Misc): Either copy
+	  the password to the clipboard or edit/view the entry.
+
+2004-11-11 [r478]  ronys:
+
+	* Block user input only around sleep() - otherwise deadlocks,
+	  leaving input blocked forever (at least on XP)
+
+2004-11-10 [r477]  ronys:
+
+	* [1006234] Choosing "Cancel" in the Enter Password dialog box now
+	  exits the application.
+
+2004-11-10 [r476]  ronys:
+
+	* [1055961, 1030775, 947841] The action taken upon double-clicking
+	  an entry can now be configured (via Manage->Misc): Either copy
+	  the password to the clipboard or edit/view the entry.
+
+2004-11-10 [r475]  ronys:
+
+	* [1055961, 1030775, 947841] The action taken upon double-clicking
+	  an entry can now be configured (via Manage->Misc): Either copy
+	  the password to the clipboard or edit/view the entry. [1006234]
+	  Choosing "Cancel" in the Enter Password dialog box now exits the
+	  application.
+
+2004-11-09 [r474]  ronys:
+
+	* [1055961, 1030775, 947841] The action taken upon double-clicking
+	  an entry can now be configured (via Manage->Misc): Either copy
+	  the password to the clipboard or edit/view the entry.
+
+2004-11-02 [r473]  ronys:
+
+	* Update to describe 2.06 functionality (by Sebastian Juergens)
+
+2004-11-02 [r472]  ronys:
+
+	* Updated for move to new machine
+
+2004-10-12 [r471]  ronys:
+
+	* [1043438] Idle time lockout now works for idle times other than
+	  one minute.
+
+2004-10-12 [r470]  ronys:
+
+	* [1043438] Idle time lockout now works for idle times other than
+	  one minute.
+
+2004-10-08 [r467-468]  ronys:
+
+	* Updated for 2.06
+
+	* document new features for 2.05/2.06
+
+2004-10-08 [r466]  ronys:
+
+	* [1039214] Behaviour of Esc key is now a configurable preference.
+
+2004-10-05 [r465]  thedavecollins:
+
+	* Added a lock on the keyboard while the username and password are
+	  typed
+
+2004-10-05 [r464]  ronys:
+
+	* Finished idle timeout functionality
+
+2004-09-26 [r462-463]  ronys:
+
+	* Added idle timeout lock support (in progress)
+
+	* Added idle timeout lock support
+
+2004-09-25 [r461]  ronys:
+
+	* Added pointer to French help file.
+
+2004-09-25 [r460]  ronys:
+
+	* Corrections
+
+2004-09-23 [r459]  ronys:
+
+	* First version of French online help, thanks to Laurent Masson
+
+2004-09-22 [r458]  ronys:
+
+	* [1032149] Adding an entry with a group or item selected will fill
+	  the Group field with that currently selected (previously, this
+	  only worked on right-click on group item).
+
+2004-09-21 [r457]  ronys:
+
+	* [1003780, 1026335] Autotype support for AltGr - by Borasio Marco
+
+2004-09-16 [r455-456]  ronys:
+
+	* Minor cleanup of delay autotype functionality
+
+	* Minor cleanups
+
+2004-09-15 [r454]  ronys:
+
+	* [1028394] - export to text working again (move to new STL
+	  ofstream broke it...)
+
+2004-09-13 [r453]  ronys:
+
+	* Bugfix 1026630: Minimize only after getting info from selected
+	  item. Otherwise "lock on minimize" will bite you...
+
+2004-09-11 [r452]  ronys:
+
+	* Added some convenient targets
+
+2004-09-10 [r450]  ronys:
+
+	* Update for 2.05
+
+2004-09-10 [r449]  ronys:
+
+	* added icons
+
+2004-09-10 [r448]  ronys:
+
+	* bump version to 2.05
+
+2004-09-04 [r447]  ronys:
+
+	* [1022367] Screen lock is disabled if a dialog box is open, such
+	  as when editing an exiting entry, adding an entry, etc.
+
+2004-09-03 [r446]  ronys:
+
+	* [987618] The group field of an entry is now also taken into
+	  account when checking for uniqueness.
+
+2004-09-03 [r445]  ronys:
+
+	* Disable & grey out unimplemted XML import/export entries
+
+2004-09-01 [r444]  ronys:
+
+	* [1007283] Unintentional Accidental Erasure of Database fixed.
+
+2004-09-01 [r443]  ronys:
+
+	* Documented 2.05 preference storage format, added modification
+	  time.
+
+2004-08-28 [r440-442]  ronys:
+
+	* Added KeySend.cpp
+
+	* cleaned up warning
+
+	* RFE 951317 - preferences now stored in database as well as
+	  registry.
+
+2004-08-05 [r439]  thedavecollins:
+
+	* Added debugnew to catch memory leaks etc Added corelib in front
+	  of utils.h
+
+2004-08-05 [r437-438]  thedavecollins:
+
+	* Added \d for delay in key stroke. Moved keystroke functionality
+	  into this Ckeysend.
+
+	* Moved keystroke functionality into this class.
+
+2004-08-04 [r436]  ronys:
+
+	* Compiles (with warnings!) under VC6.0
+
+2004-08-03 [r435]  bovineone:
+
+	* menu items for import text, export xml, and import xml.
+
+2004-08-03 [r434]  bovineone:
+
+	* implement new text import command. add temporary todo stubs for
+	  xml import and export.
+
+2004-08-03 [r433]  bovineone:
+
+	* Use different method for updating the itemtext with the
+	  normalized text after finishing editing, since SetItemText inside
+	  OnEndLabelEdit is ignored by Windows.
+
+2004-08-02 [r432]  bovineone:
+
+	* cleanup whitespace. rename OnClearclipboard() to
+	  OnClearClipboard() for consistency. add comments. eliminate WinCE
+	  conditionals by simply using its OnInitMenuPopup() code.
+
+2004-08-02 [r430-431]  bovineone:
+
+	* add "Delete Group" menu item to popup on groups in tree view.
+
+	* whitepace cleanup. enhance behavior of ExtractURL() to return
+	  success, and to return resulting url in a separate output
+	  parameter to reduce number of object constructions. use a local
+	  variable for TrackPopup flags to reduce WinCE conditionals.
+
+2004-08-02 [r429]  bovineone:
+
+	* dynamically enable/disable menu items based on entry selection.
+	  refactor initial toolbar setup code to use existing functions and
+	  reduce duplicated code. use radio buttons on menu mode selections
+	  instead of checkboxes (since modes are exclusive of each other).
+
+2004-08-02 [r428]  bovineone:
+
+	* make IsLeafNode public
+
+2004-08-02 [r427]  bovineone:
+
+	* add comment.
+
+2004-07-29 [r426]  thedavecollins:
+
+	* Added support for non US keyboards as per Bug item #998745. Also
+	  now stopped escape key from exiting the app as per bug #992178
+
+2004-07-29 [r425]  thedavecollins:
+
+	* Added BOOL to stop VC7 from complaining
+
+2004-07-25 [r424]  ronys:
+
+	* Bumped version to 2.05
+
+2004-07-22 [r422]  thedavecollins:
+
+	* Fix bug with locking of database when desktop is locked. Thanks
+	  Don.
+
+2004-07-22 [r421]  ronys:
+
+	* Update for 2.04 (again)
+
+2004-07-22 [r420]  ronys:
+
+	* Update for 2.04
+
+2004-07-21 [r419]  thedavecollins:
+
+	* Made auto type the default "\u\t\p\n" where the username is
+	  defined, and "\p\n" where it's not
+
+2004-07-21 [r418]  thedavecollins:
+
+	* Changing the "put icon in system tray" checkbox now adds/removes
+	  the icon in the systemtray
+
+2004-07-21 [r417]  thedavecollins:
+
+	* Added support for "TaskbarCreated" to redisplay icon in task bar
+	  if explorer clashed also fixed crlf problems
+
+2004-07-21 [r416]  thedavecollins:
+
+	* Added Autotype onto popup menu
+
+2004-07-21 [r415]  ronys:
+
+	* Documented autotype
+
+2004-07-21 [r413-414]  ronys:
+
+	* Lock checking timer interval set to 5 seconds.
+
+	* Default autotype text \u\t\p\n
+
+2004-07-21 [r412]  ronys:
+
+	* Removed ellipsis from AddGroup menu entry
+
+2004-07-19 [r411]  ronys:
+
+	* Update for 2.04, including 978070 - better documentation of
+	  search (Find) function.
+
+2004-07-19 [r410]  ronys:
+
+	* bugfix 986874 - "ooops" no longer displayed in release build, +
+	  fixed compilation warnings.
+
+2004-07-18 [r409]  bovineone:
+
+	* widen checkbox control to prevent text description of "lock on
+	  workstation lock" option from being truncated.
+
+2004-07-17 [r408]  bovineone:
+
+	* fix several issues: - when a new group is created, automatically
+	  start editing it to allow easy renaming. - allow deletion of
+	  empty Groups (bug 872348) - add pulldown and popup menu items to
+	  invoke Rename (bug 899412) - cleanup: remove m_OnEditDisabled and
+	  DisableOnEdit() hack - when right-clicking on a group, ensure
+	  that item becomes selected.
+
+2004-07-17 [r407]  bovineone:
+
+	* Several issues fixed: - allow Esc to cancel a drag operation -
+	  allow dropping outside of window to cancel a drag operation -
+	  allow F2 to invoke renaming (bug 899412) - allow Enter to finish
+	  renaming (bug 899412) - allow Escape to cancel renaming, instead
+	  of exiting application. - cleanup: remove unused m_BeginEditText
+	  that was originally needed for cancelling editing. - cleanup :
+	  remove unnecessary inEdit hack to enforce label updating. -
+	  cleanup : remove unnecessary DisableOnEdit hack to block Enter
+	  while renaming (PreTranslateMessage now handles it).
+
+2004-07-17 [r406]  bovineone:
+
+	* Add the missing hotkey for "Del" to delete an item.
+
+2004-07-17 [r405]  bovineone:
+
+	* use the modern looking flat toolbar style instead.
+
+2004-07-17 [r404]  bovineone:
+
+	* avoid need to wrap static text labels on two lines by widening
+	  dialog.
+
+2004-07-17 [r403]  bovineone:
+
+	* add stock Win95 message box icons to confirmation and warning
+	  dialogs.
+
+2004-07-17 [r402]  bovineone:
+
+	* the Node and Leaf bitmaps should not have been Hebrew-only
+	  resources.
+
+2004-07-17 [r401]  bovineone:
+
+	* reposition the static text controls in the "New Entry" and "Edit
+	  Entry" dialogs to match more closely with the vertical position
+	  of the edit fields.
+
+2004-07-17 [r400]  bovineone:
+
+	* usability improvements to pulldown menus. rename "New..." and
+	  "Open..." items to be "New Database..." and "Open Database..." to
+	  avoid new-user confusion with adding entries. Use the word
+	  "Entry" instead of inconsistently "Item" in some places. rename
+	  the "List" and "Tree" menu items to add a little more verbosity.
+
+2004-07-17 [r399]  bovineone:
+
+	* fix linebreaks
+
+2004-07-17 [r398]  ronys:
+
+	* Jeff's New & Improved version
+
+2004-07-17 [r397]  bovineone:
+
+	* manually load the 16x16 small icon for the title bar, instead of
+	  allowing Windows to rescale the 32x32 version.
+
+2004-07-17 [r396]  bovineone:
+
+	* fix linebreaks
+
+2004-07-17 [r395]  bovineone:
+
+	* bug 871471: add menu item to Help menu to directly visit the
+	  SourceForge home page.
+
+2004-07-16 [r394]  bovineone:
+
+	* bug 871471 (subitem 4): add keyletter mnemonics for Yes and No
+	  buttons on several dialogs.
+
+2004-07-16 [r393]  bovineone:
+
+	* bug 992073: ignore double-clicking on group items in tree-view
+
+2004-07-15 [r392]  bovineone:
+
+	* fix _MSC_VER version check for Visual Studio .NET
+
+2004-07-15 [r391]  bovineone:
+
+	* bug 899400: fix precision of drag-and-drop start detection.
+
+2004-07-15 [r390]  bovineone:
+
+	* bug 864828: fix lack of icon in Windows task bar due to
+	  transparent icon.
+
+2004-07-15 [r389]  bovineone:
+
+	* allow compilation with newer Visual Studio .NET compiler. Fix
+	  linebreaks.
+
+2004-07-15 [r387-388]  thedavecollins:
+
+	* Added code to lock safe on window lock (tested on 2000/XP)
+
+	* updated code for systray (more coming) Added code to lock safe on
+	  window lock (tested on 2000/XP) Added code to autotype
+	  username/password.
+
+2004-07-11 [r386]  ronys:
+
+	* sync for Jeff L.
+
+2004-07-11 [r385]  ronys:
+
+	* Cleardata clears the key
+
+2004-07-10 [r384]  ronys:
+
+	* Removed unused "ibubble" icon
+
+2004-07-10 [r383]  ronys:
+
+	* bugfix 972460 - master passphrase no longer stored in clear
+
+2004-07-07 [r380-382]  ronys:
+
+	* Closer to hiding cleartext passphrase from WinHex et. al.
+
+	* Moved srand() to PWScore::PWScore()
+
+	* [986345] The popup menu for entries now displays the more
+	  frequently used operations (copy username & password) first.
+
+2004-07-05 [r378-379]  ronys:
+
+	* global.h no longer needed
+
+	* no need to refresh list on password change (session key !=
+	  combination)
+
+2004-07-05 [r377]  ronys:
+
+	* last global (password) moved to PWScore (at last!)
+
+2004-07-05 [r376]  ronys:
+
+	* No need to change item password upon combination change;
+	  combination moved to PWScore
+
+2004-06-30 [r374-375]  ronys:
+
+	* make core instance member of app, toward systray support, plus
+	  work towards removing globals
+
+	* More work towards hiding master passphrase in runtime memory
+
+2004-06-28 [r373]  ronys:
+
+	* Moved to random session key instead of passphrase for in-memory
+	  encryption. One less dependency on global passphrase.
+
+2004-06-25 [r371-372]  ronys:
+
+	* First hack at system tray - member of dboxmain
+
+	* Added explicit target window
+
+2004-06-25 [r370]  ronys:
+
+	* Added SystemTray option
+
+2004-06-25 [r367-369]  ronys:
+
+	* Added SystemTray stuff
+
+	* Added SystemTray icon & menu
+
+	* Added useTrayIcon resource
+
+2004-06-18 [r366]  ronys:
+
+	* clean compile
+
+2004-06-18 [r365]  ronys:
+
+	* Original files from
+	  http://www.codeproject.com/shell/systemtray.asp
+
+2004-06-11 [r364]  ronys:
+
+	* [971114] Switch to list view now works with new toolbar (silly
+	  typo in 2.03)
+
+2004-06-11 [r361-363]  ronys:
+
+	* Started work on 2.04
+
+	* Moved older changes from ReleaseNotes to ChangeLog.
+
+	* [970036] 24 bit displays now display toolbar correctly
+
+2004-06-09 [r360]  ronys:
+
+	* Merged dlacykusters fixes into post-2.03
+
+2004-06-08 [r358-359]  ronys:
+
+	* - add unstaller to control panel - cleanup shortcuts on uninstall
+
+	* silly mistakes
+
+2004-06-06 [r356]  ronys:
+
+	* release 2.03
+
+2004-06-05 [r355]  ronys:
+
+	* RFE 940000 - added vertical scrollbar to Notes controls
+
+2004-06-04 [r354]  ronys:
+
+	* fugbixes 957957 940585
+
+2004-06-03 [r353]  ronys:
+
+	* Copied from 1.92 branch.
+
+2004-06-03 [r352]  ronys:
+
+	* Original version of NSIS installation script, as provided by
+	  David Lacy Kusters (dkusters@yahoo.com)
+
+2004-06-03 [r351]  ronys:
+
+	* User can now choose old or new toolbar.
+
+2004-05-23 [r349-350]  ronys:
+
+	* Moved from registry to PWSprefs class. Will evolve into
+	  file-stored preferences.
+
+	* Added PWSprefs class - centralized preference storage/retrieval.
+	  Will evolve into file-stored preferences.
+
+2004-04-30 [r347]  ronys:
+
+	* Updated for 2.02
+
+2004-04-29 [r346]  ronys:
+
+	* Bumped FILEVERSION and PRODUCTVERSION in the Version resource,
+	  thanks to Jim Hyslop
+
+2004-04-27 [r345]  ronys:
+
+	* Updated for 2.02 - Thanks to Sebastian Juergens
+
+2004-04-27 [r343-344]  ronys:
+
+	* Describe new password generation override option
+
+	* Fixed typo
+
+2004-04-27 [r340-342]  ronys:
+
+	* Allow password generation policy override in Add/Edit dialog
+	  boxen
+
+	* Fix silly crash - move SetFont to OnInitDialog
+
+	* Allow password generation policy override
+
+2004-04-07 [r336-338]  ronys:
+
+	* Updated for 2.01
+
+	* added toolbars 2 & 3
+
+	* [912751] If the last database saved is no longer available, ask
+	  the user what to do, rather than force the creation of a new one.
+
+2004-04-07 [r335]  ronys:
+
+	* fugbix - set font in OnInitDialog, not ctor
+
+2004-04-06 [r334]  ronys:
+
+	* enable/disable correctly upon init, taking hex into account.
+
+2004-04-05 [r333]  ronys:
+
+	* [908335, 913684] Icon display problem on XP fixed, thanks to Mike
+	  Batten.
+
+2004-04-05 [r331-332]  ronys:
+
+	* DK's support for hexadecimal password generation plus fix for
+	  password fonts on XP
+
+	* DK's support for hexadecimal password generation
+
+2004-04-03 [r330]  ronys:
+
+	* [916587] - can now invoke edit dialog after inline edit
+
+2004-04-02 [r329]  ronys:
+
+	* Save on change via treeview edits if user checked the option
+
+2004-04-01 [r328]  ronys:
+
+	* RFE 921859 - "ftp://" is also a URL prefix
+
+2004-03-31 [r327]  ronys:
+
+	* Adding German version of online help by Sebastian Juergens
+
+2004-03-31 [r326]  ronys:
+
+	* Announce availability of German version of online help
+
+2004-03-26 [r325]  ronys:
+
+	* [923401] - typo in check for password mixed case.
+
+2004-03-21 [r324]  ronys:
+
+	* Make Release build compile cleanly
+
+2004-03-21 [r323]  ronys:
+
+	* [902003, 905449] No longer crashes when last item is deleted.
+
+2004-02-17 [r288]  ronys:
+
+	* Updated for 2.0
+
+2004-02-17 [r287]  ronys:
+
+	* New graphics from Emilijan Mirceski
+
+2004-02-17 [r286]  ronys:
+
+	* Support 24bit color toolbar
+
+2004-02-13 [r285]  ronys:
+
+	* Added Maxim Tikhonov's Russain rendition of 2.0 help files.
+
+2004-02-01 [r284]  ronys:
+
+	* Fixed Help for 2.0
+
+2004-01-31 [r283]  ronys:
+
+	* Fixed Help for 2.0
+
+2004-01-31 [r281-282]  ronys:
+
+	* Ugly brute-force hack to get display to update on XP.
+
+	* select and Find don't get along in Tree view...
+
+2004-01-31 [r280]  ronys:
+
+	* Update Help for 2.0
+
+2004-01-29 [r279]  ronys:
+
+	* bugfix 777937 - initial compination entry dbox now has icon in
+	  taskbar and switcher
+
+2004-01-28 [r278]  ronys:
+
+	* corrected header format description based on ndade's post.
+
+2004-01-26 [r277]  ronys:
+
+	* More work on tree selection
+
+2004-01-25 [r275-276]  ronys:
+
+	* Cleanup, changed default user semantics.
+
+	* Cleanup, changed default user semantics. Added Browse URL from
+	  context menu
+
+2004-01-20 [r274]  ronys:
+
+	* Change FindAll to use DisplayInfo - more efficient & less code,
+	  fix SelectEntry so that Find highlights tree view as well.
+
+2004-01-19 [r273]  ronys:
+
+	* Added group to FindAll, support tree view in SelectElement (for
+	  Find funtion)
+
+2004-01-15 [r272]  ronys:
+
+	* removed #if 0 code
+
+2004-01-15 [r271]  ronys:
+
+	* bugfix 875288 - reimplemented change password functionality.
+
+2004-01-11 [r270]  ronys:
+
+	* Bugfix [871893] - second save after convert now succeeds
+
+2004-01-11 [r269]  ronys:
+
+	* Right click in tree view now implicitly selects correct item.
+
+2004-01-03 [r267]  ronys:
+
+	* Updated for 2.0-pre2
+
+2004-01-03 [r266]  ronys:
+
+	* added [user] to tree view, improved inline editing, bumped
+	  version to 2.0-pre2
+
+2004-01-03 [r265]  ronys:
+
+	* Support Export Text functionality (ugh)
+
+2004-01-02 [r263-264]  ronys:
+
+	* Add ExportText files (CExportTextDlg) to support same function
+
+	* Fixed export to 1.7 version problem
+
+2004-01-01 [r262]  ronys:
+
+	* Fix selection handling o be more intuitive.
+
+2003-12-16 [r261]  ronys:
+
+	* 1. Fixed XP-specific (?) infinite loop when group changed 2.
+	  Disallow edit that leaves node w/o text
+
+2003-12-13 [r260]  ronys:
+
+	* First post V2-pre1 fix - dblclick on tree view now works
+
+2003-12-13 [r258]  ronys:
+
+	* Release build now OK
+
+2003-12-13 [r257]  ronys:
+
+	* groundwork for minor issues
+
+2003-12-13 [r256]  ronys:
+
+	* Select new group after creation
+
+2003-12-13 [r254-255]  ronys:
+
+	* Removed annoying beep, resort after online edit.
+
+	* Speed up exit time by disabling display update in ClearData()
+
+2003-12-12 [r253]  ronys:
+
+	* Fixed case of new group to root in treeview
+
+2003-12-12 [r252]  ronys:
+
+	* Added popup menus to tree view, also implemented direct editing
+
+2003-12-12 [r251]  ronys:
+
+	* fixed comment
+
+2003-12-08 [r250]  ronys:
+
+	* First release of Perl script to dump a passwordsafe database,
+	  thanks to Paul Pluzhnikov ppluzhnikov@charter.net
+
+2003-11-25 [r249]  ronys:
+
+	* Leaf.bmp added
+
+2003-11-22 [r248]  ronys:
+
+	* delete childless nodes after drag&drop
+
+2003-11-22 [r247]  ronys:
+
+	* Last selected view (tree or list) is now persistent
+
+2003-11-22 [r246]  ronys:
+
+	* Nasty fugbix - 2nd edit no longer crashes
+
+2003-11-22 [r245]  ronys:
+
+	* More work on drag&drop
+
+2003-11-20 [r243-244]  ronys:
+
+	* Removed OnRButtonUp
+
+	* Editing Group now works OK
+
+2003-11-19 [r241-242]  ronys:
+
+	* added node & leaf bitmaps to CVS
+
+	* fixed bitmap file name
+
+2003-11-19 [r240]  ronys:
+
+	* Delete an entry now deletes all parent nodes along the path that
+	  no longer have children.
+
+2003-11-18 [r239]  ronys:
+
+	* Drag & drop works (w/o semantics yet)
+
+2003-11-15 [r238]  ronys:
+
+	* One level grouping works!
+
+2003-10-18 [r236-237]  ronys:
+
+	* Added Group item field support in Add/Edit dialogs (for heirarchy
+	  support)
+
+	* Added Group item field (for heirarchy support)
+
+2003-10-17 [r235]  ronys:
+
+	* mernge in change 1.92c.1->1.92c.2 plus mark revision as pre-2.0
+
+2003-10-11 [r234]  ronys:
+
+	* tree-control related changes - added DisplayInfo to allow GUI
+	  code to add handles & stuff to displayed item - saves *lots* of
+	  iterations, takes a little work to keep consistent & avoid memory
+	  leaks & stuff
+
+2003-10-11 [r233]  ronys:
+
+	* More work on tree control - before changing semantics of
+	  getSelectedItem
+
+2003-10-10 [r231-232]  ronys:
+
+	* First displayable tree control! (does nothing - yet)
+
+	* Break DboxMain into two, so that adding tree control stuff won't
+	  be too painful
+
+2003-10-08 [r229]  ronys:
+
+	* Started work on Tree view - Added View menu
+
+2003-10-06 [r228]  ronys:
+
+	* added pocketpc subtree to main branch
+
+2003-10-06 [r227]  ronys:
+
+	* UUID now fully supported.
+
+2003-10-05 [r226]  ronys:
+
+	* Support for UUID as part of V2 file format.
+
+2003-10-04 [r225]  ronys:
+
+	* First version of UUID wrapper class - doing it the hard way...
+
+2003-09-26 [r224]  ronys:
+
+	* merge of PocketPC changes from V1_92 branch to main trunk - clean
+	  compile - ** UNTESTED **
+
+2003-09-20 [r223]  ronys:
+
+	* checkpoint of merge of PocketPC changes from V1_92 branch to main
+	  trunk.
+
+2003-09-19 [r221]  ronys:
+
+	* Adding PocketPC changes to main trunk
+
+2003-07-26 [r205]  gconklin:
+
+	* BUG 760656 - strips quotations from filenames passed in on
+	  command line (such as files with spaces)
+
+2003-07-25 [r203]  ronys:
+
+	* RFE [754790] The option "Clear the clipboard when minimized" has
+	  been changed to "Clear clipboard upon minimize or exit", and
+	  ClearClipboard() is now called conditionally on this in exit
+	  (OnOK())
+
+2003-07-23 [r198]  gconklin:
+
+	* RFE 772212 - reminimize if user doesn't enter restore password
+
+2003-07-23 [r197]  gconklin:
+
+	* BUG 769820 - if users clicks cancel on copy to clipboard
+	  confirmation, current clipboard remains intact
+
+2003-07-23 [r196]  gconklin:
+
+	* RFE 768870 - added manifest file for winxp support
+
+2003-07-23 [r195]  ronys:
+
+	* 1.7 -> 2.x warning & renaming debugged & working.
+
+2003-07-22 [r190-191]  ronys:
+
+	* Added RenameFile static member function
+
+	* removed unneeded #includes
+
+2003-07-22 [r189]  ronys:
+
+	* Finished coding rename functionality (for saving 1.7 files upon
+	  conversion)
+
+2003-07-19 [r188]  ronys:
+
+	* Support version 1.7 file renaming on save
+
+2003-07-19 [r187]  ronys:
+
+	* Testing complete. Added exact version string in v2 header
+	  password field.
+
+2003-07-18 [r186]  ronys:
+
+	* Read record coding done - ready for testing.
+
+2003-07-17 [r183-185]  ronys:
+
+	* Added type field. compiled cleanly, *Will not run yet* (need to
+	  finish read/write Records)
+
+	* Follow change to _{read,write}cbc() (addition of type argument)
+
+	* Added END field type
+
+2003-07-12 [r182]  ronys:
+
+	* refactored ItemData to support more fields (added ItemField)
+
+2003-07-10 [r181]  ronys:
+
+	* More meaningful title displayed if pre-2.0 pwsafe opens 2.0
+	  database.
+
+2003-07-09 [r180]  ronys:
+
+	* Fixed problem in assignment operator. Can now read v1.7 database
+	  & display correctly. Woohoo.
+
+2003-07-04 [r179]  ronys:
+
+	* 2.0 stuff: migrate from name field to title and user - this is a
+	  checkpoint - compiles cleanly, but not yet fully functional.
+
+2003-06-20 [r177-178]  ronys:
+
+	* autodetect version of file being read
+
+	* Added export (v1.x & plain text) menu items
+
+2003-06-20 [r175-176]  ronys:
+
+	* Added export (v1.x & plain text) nenu items
+
+	* More work on title & user fields
+
+2003-06-13 [r172]  gconklin:
+
+	* give the selected item key focus as well
+
+2003-06-12 [r170-171]  ronys:
+
+	* minor cleanup in prep for V2 support.
+
+	* More v2 support - bottom up
+
+2003-06-08 [r169]  ronys:
+
+	* Preapre for version 2.0 support
+
+2003-06-08 [r166-168]  ronys:
+
+	* Preapre for version 2.0 support
+
+	* Removed files to test subdir
+
+	* File->New now erases displayed list as well as internal list
+	  (unreported bug that happened when New was done after Opening an
+	  existing database)
+
+2003-05-28 [r163]  ronys:
+
+	* Corrected credits
+
+2003-05-27 [r161-162]  ronys:
+
+	* Cover all class members of CMyString, albeit not very
+	  thoroughly...
+
+	* Moved Graham's test framework code from corelib to here
+
+2003-05-25 [r160]  ronys:
+
+	* Added GUID
+
+2003-05-25 [r159]  ronys:
+
+	* Updated after comments on devel mailing list
+
+2003-05-25 [r158]  ronys:
+
+	* Plugged memory leaks, thanks to David Kelvin
+
+2003-05-23 [r157]  ronys:
+
+	* Removed files from main trunk - they've been copied to corelib.
+	  Branch V1_92 should still be able to retrieve these files.
+
+2003-05-23 [r154-156]  grahamu:
+
+	* Added corelib unit test project.
+
+	* Initial corelib unit test. Only a sparse test of CMyString to
+	  start.
+
+	* Lightweight unit testing framework, initial commit.
+
+2003-05-22 [r153]  ronys:
+
+	* First working pre-2.0 Moved non-GUI functionality to
+	  corelib/PWScore.{h,cpp} Still with 1.9x file format.
+
+2003-05-21 [r152]  ronys:
+
+	* Merge of 1.92a fix (FindByte workaround for Chinese XP issue
+	  (Support request [736497] & Bugfix [589536])
+
+2003-05-17 [r147]  ronys:
+
+	* First clean build with new corelib subproject
+
+2003-05-16 [r146]  ronys:
+
+	* Moved version 1.1 from parent directory to here.
+
+2003-05-16 [r145]  ronys:
+
+	* bugfix #738380 - showpwinlist attribute wasn't read correctly
+	  uopn application startup. (merge of post-1.92 fix)
+
+2003-05-14 [r143]  ronys:
+
+	* Empty project file for Core library - will populate once core CVS
+	  files moved here
+
+2003-05-14 [r141]  ronys:
+
+	* post-1.92 merge into main trunk
+
+2003-05-14 [r140]  ronys:
+
+	* First draft of Version 2 file format.
+
+2003-05-08 [r129]  ronys:
+
+	* Make MyCString Unicode-ready
+
+2003-05-07 [r123]  grahamu:
+
+	* Revised so const string length is only determined once.
+
+2003-05-07 [r122]  grahamu:
+
+	* Added password policies. Can now choose to include any of four
+	  character sets for random password generation. May specify the
+	  minimum number of each set which must appear in the password. Can
+	  specify if you want to eliminate 'vision unfriendly' characters
+	  from the character pool.
+
+2003-05-04 [r109-111]  grahamu:
+
+	* Added support for preventing edits from creating duplicate pwlist
+	  entries.
+
+	* Added member variable in support of preventing edits from
+	  creating duplicate pwlist entries.
+
+	* Updated to prevent edits from creating duplicate pwlist entries.
+
+2003-05-03 [r108]  ajmullican:
+
+	* Start to separate GUI from general app logic. Use global object
+	  for general globals instead of ThisMfcApp object. Also now
+	  instantiate ThisMfcApp (start of application) in main.cpp.
+
+2003-05-01 [r107]  gconklin:
+
+	* RFE 730661: fixed the problem when the window was certian heights
+	  (341), the toolbar would not display
+
+2003-05-01 [r105]  ronys:
+
+	* Added fixed bug #730640
+
+2003-04-30 [r104]  ronys:
+
+	* Listed supported platforms
+
+2003-04-30 [r103]  ronys:
+
+	* Added note re required build environment
+
+2003-04-30 [r102]  gconklin:
+
+	* reduced resource leak when calling CreateFontIndirect to just one
+	  leaked item
+
+2003-04-30 [r101]  gconklin:
+
+	* fixed memory leak (oops)
+
+2003-04-30 [r100]  gconklin:
+
+	* speeds up dialog resizing by not running the SIZE_RESTORED which
+	  decrypts every entry through RefreshList() in order to display
+	  them
+
+2003-04-29 [r99]  gconklin:
+
+	* fixed problem of infinite recursion when two entries had the same
+	  title and same username
+
+2003-04-29 [r98]  ronys:
+
+	* First versions of README and Release Notes under CVS for 1.91
+
+2003-04-29 [r96-97]  ronys:
+
+	* replace *-s with TCHAR *HIDDEN_PASSWORD
+
+	* Changed to 14 pixel, and support graceful failure
+
+2003-04-29 [r95]  ronys:
+
+	* Graham's new fixes: non-proportional font for password, show
+	  fixed number of *-s when password is hidden, and fixed nasty edit
+	  passowrd bug when password displayed by default.
+
+2003-04-29 [r94]  ronys:
+
+	* Fixed nasty Find-related bug that Graham found, and improved the
+	  sorting by columns.
+
+2003-04-28 [r93]  gconklin:
+
+	* cleaned up passkeyentry in preparation for MRU drop list
+
+2003-04-28 [r91-92]  gconklin:
+
+	* changed the MRU registry setting from "mruitems" to "maxmruitems"
+
+	* cleaned up warning when compiled with JPRDEBUG
+
+2003-04-28 [r90]  gconklin:
+
+	* added class wizard markers
+
+2003-04-28 [r89]  ronys:
+
+	* Compile cleanly on MSCVC warning level 4 (both release & debug)
+
+2003-04-28 [r88]  gconklin:
+
+	* RFE 728507: initial add of MRU (most recently used) safes
+
+2003-04-28 [r87]  gconklin:
+
+	* changed the way the list control is accessed
+
+2003-04-28 [r86]  gconklin:
+
+	* added class wizard markers
+
+2003-04-27 [r85]  gconklin:
+
+	* Fix gpf in release mode when double clicking an entry (fixed
+	  method signature)
+
+2003-04-27 [r84]  ronys:
+
+	* Added missing RefreshList() in OnSize after restore.
+
+2003-04-27 [r83]  ronys:
+
+	* DboxMain::SelectEntry() now optionally ensures selction is
+	  visible, for Find feature. Find button now changes to "Find Next"
+	  when there's more than on search hit.
+
+2003-04-26 [r82]  ronys:
+
+	* Added HTML help file sources
+
+2003-04-26 [r81]  ronys:
+
+	* Added HTML help file sources
+
+2003-04-25 [r80]  ronys:
+
+	* Added Find text functionality
+
+2003-04-25 [r79]  gconklin:
+
+	* RFE 726583: Added always on top option. Available from options
+	  dialog and system menu.
+
+2003-04-25 [r78]  ronys:
+
+	* Bumped version to 1.91 beta Changed tab order on Find dlg
+
+2003-04-25 [r77]  gconklin:
+
+	* RFE 726487: Added clear clipboard tool bar button. Fixed 1.6 to
+	  1.7 merge problem. Made the Help | About Password Safe hot key
+	  the standard 'A' (was 'P') Lengthened the 'Show password' item in
+	  the options menu so the whole string would show
+
+2003-04-25 [r76]  gconklin:
+
+	* RFE 726487: Added clear clipboard tool bar button
+
+2003-04-25 [r74-75]  gconklin:
+
+	* RFE 553750: copy (ctrl-c) from add and edit dialogs. disable
+	  accelerator keys when entering the Add and Edit dialogs
+
+	* RFE 553750: copy (ctrl-c) from add and edit dialogs. added
+	  ability to turn accelerator keys off
+
+2003-04-24 [r73]  gconklin:
+
+	* fixed gpf due to incorrect ON_NOTIFY method signature for
+	  NM_SET/KILLFOCUS
+
+2003-04-24 [r72]  ronys:
+
+	* Added support for Find
+
+2003-04-24 [r71]  ronys:
+
+	* Added support for Find
+
+2003-04-24 [r70]  ronys:
+
+	* Added MakeLower() to support case-insensitive search of database.
+
+2003-04-24 [r69]  ronys:
+
+	* First implementation of Search functionality (RFE 639439, item
+	  #25 in old todo list)
+
+2003-04-24 [r68]  equackenbush:
+
+	* Added resizing and columnar support
+
+2003-04-23 [r67]  gconklin:
+
+	* made the icons for copying password and username to the clipboard
+	  more distinguishable
+
+2003-04-21 [r66]  ronys:
+
+	* Made CMYString::m_mystring a private member, in preparation of
+	  moving away from ...
+
+2003-04-21 [r65]  ronys:
+
+	* Added description of v1.9 file format, updated note on MyCString
+
+2003-04-17 [r64]  ronys:
+
+	* Added my VisualC++ workspace and project files.
+
+2003-04-15 [r63]  ronys:
+
+	* First commit to project! - code cleanup (mainly changing
+	  parameters to const references to avoid unnecessary object
+	  creation) - Support password file passed as commandline argument,
+	  with support for backward compat. - Fixed a minor bug with
+	  constant being defined inconsistently. - Cleaned up Util.c (files
+	  with this name end up being pretty messy...)
+
+2002-04-24 [r60-61]  jrussell:
+
+	* Remove obsolete modules, add ThisMfcApp
+
+	* cosmetic change
+
+2002-04-24 [r48-59]  jrussell:
+
+	* Make the Mfc application object a separate module
+
+	* Makefile for GNU make, running Visual C++ under Wine to build an
+	  MFC app with a Linux host. Really, it works.
+
+	* my debugging macros
+
+	* this is now officially obsolete
+
+	* code restructuring
+
+	* Some code restructuring, mostly to find out what is obsolete or
+	  static to the module
+
+	* ThisMfcApp header
+
+	* ThisMfcApp header, HtmlHelp
+
+	* add header guards, remove MyString header -- try to make this
+	  header necessary only for Mfc frontend
+
+	* newline at EOF
+
+	* ThisMfcApp header
+
+	* ThisMfcApp header, get rid of 'not' macro
+
+2002-04-24 [r47]  jrussell:
+
+	* new font
+
+2002-04-24 [r40-46]  jrussell:
+
+	* Removed spurious English (Canada) properties, various dialog
+	  tweaks, started removing obsoletes. This and resource.h are the
+	  only things I'm currently using Visual Studio to edit.
+
+	* Made this a global header file, separate from ThisMfcApp object.
+	  This will make other frontends possible.
+
+	* Add BlowFish header
+
+	* Header fixes, HtmlHelp
+
+	* Header fixes, C++ bools
+
+	* Header fixes, code cleanup, C++ bools, HtmlHelp
+
+	* ThisMfcApp header, HtmlHelp
+
+2002-04-24 [r31-39]  jrussell:
+
+	* header fixes, localize 'not' macro, HtmlHelp
+
+	* cosmetic changes
+
+	* header fix
+
+	* cosmetic change to header guard
+
+	* ThisMfcApp header
+
+	* remove obsolete member, start using C++ bools
+
+	* Started paring away obsolete code, restructuring things
+
+	* MyString header
+
+	* ThisMfcApp header, HtmlHelp
+
+2002-04-24 [r28-30]  jrussell:
+
+	* ThisMfcApp header
+
+	* code cleanup
+
+	* ThisMfcApp header, HtmlHelp
+
+2002-04-15 [r27]  jrussell:
+
+	* fix EOLs
+
+2002-04-15 [r26]  jrussell:
+
+	* fix EOLs
+
+2001-12-14 [r24-25]  jrussell:
+
+	* New object, PwsBackend, is intended to be the non-UI app context,
+	  which will allow other front ends besides the MFC one. Purely
+	  skeletal at this point.
+
+	* Added code to accept Drag-n-Drop file drops. Doesn't do anything
+	  but pop up a MessageBox yet.
+
+2001-12-12 [r21-23]  jrussell:
+
+	* This is automatically updated when I edit the .rc in Visual
+	  Studio. I may have temporarily broken things in here, and will
+	  need to tweak it a bit. Caveat coder.
+
+	* Added include for HtmlHelp
+
+	* Added "Create" button to initial passkey entry dialog. (Note that
+	  this is the only file I'm using Visual Studio to edit, and even
+	  so, I do edit it by hand from time to time.)
+
+2001-12-12 [r20]  jrussell:
+
+	* Start adding hooks to HtmlHelp, plus some comments to help me
+	  figure things out. Started marking code with WITH_BACKEND for
+	  when I split off the backend (non-UI) code.
+
+2001-12-12 [r17-19]  jrussell:
+
+	* Add "Create New Database" button and code to handle it. Part of
+	  the bug #3 fix.
+
+	* Add htmlhelp.lib to link
+
+	* Fixes for bug #3 (allow database switch if current can't be
+	  opened) and #8 (PgUp/PgDn didn't work)
+
+2001-12-06 [r16]  jrussell:
+
+	* Preliminary skeletal code for some new objects -- if we're only
+	  going to use MFC for the UI, then CString and CList have to go
+
+2001-12-06 [r13-15]  jrussell:
+
+	* More binary resources added
+
+	* Renamed
+
+	* Adding binary resource files
+
+2001-12-06 [r9-12]  jrussell:
+
+	* Interim checkin after a few days hacking
+
+	* Renamed to Makefile.w32
+
+	* Renamed to DboxMain.h
+
+	* Renamed to DboxMain.cpp
+
+2001-12-04 [r8]  jrussell:
+
+	* Just starting to comment things as I begin to understand them
+
+2001-11-30 [r4]  jrussell:
+
+	* Initial revision
+

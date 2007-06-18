@@ -15,7 +15,7 @@ class CDropSource : protected COleDataSource
 public:
   CDropSource();
   virtual ~CDropSource();
-  virtual DROPEFFECT StartDragging(LPCTSTR szData, DWORD dwLength,
+  virtual DROPEFFECT StartDragging(BYTE * szData, DWORD dwLength,
     CLIPFORMAT cpfmt, RECT* rClient, CPoint* ptMousePos);
 
 protected:

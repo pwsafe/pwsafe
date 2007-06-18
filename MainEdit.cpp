@@ -73,10 +73,10 @@ DboxMain::OnAdd()
     if (!m_core.GetUseDefUser()
         && (prefs->GetPref(PWSprefs::QuerySetDef))
         && (!dataDlg.m_username.IsEmpty())) {
-	  CQuerySetDef defDlg(this);
-	  defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dataDlg.m_username);
-	  int rc2 = defDlg.DoModal();
-	  if (rc2 == IDOK) {
+      CQuerySetDef defDlg(this);
+      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dataDlg.m_username);
+      int rc2 = defDlg.DoModal();
+      if (rc2 == IDOK) {
         prefs->SetPref(PWSprefs::UseDefUser, true);
         prefs->SetPref(PWSprefs::DefUserName,
                        dataDlg.m_username);
@@ -84,7 +84,7 @@ DboxMain::OnAdd()
         m_core.SetDefUsername(dataDlg.m_username);
         RefreshList();
       }
-	}
+    }
     //Finish Check (Does that make any geographical sense?)
     CItemData temp;
     CMyString user;
@@ -101,42 +101,48 @@ DboxMain::OnAdd()
     temp.SetNotes(dataDlg.m_notes);
     temp.SetURL(dataDlg.m_URL);
     temp.SetAutoType(dataDlg.m_autotype);
-   	time(&t);
-   	temp.SetCTime(t);
-   	temp.SetLTime(dataDlg.m_tttLTime);
-	if (dataDlg.m_SavePWHistory == TRUE) {
-		TCHAR buffer[6];
+    time(&t);
+    temp.SetCTime(t);
+    temp.SetLTime(dataDlg.m_tttLTime);
+    if (dataDlg.m_SavePWHistory == TRUE) {
+      TCHAR buffer[6];
 #if _MSC_VER >= 1400
-		_stprintf_s(buffer, 6, _T("1%02x00"), dataDlg.m_MaxPWHistory);
+      _stprintf_s(buffer, 6, _T("1%02x00"), dataDlg.m_MaxPWHistory);
 #else
-		_stprintf(buffer, _T("1%02x00"), dataDlg.m_MaxPWHistory);
+      _stprintf(buffer, _T("1%02x00"), dataDlg.m_MaxPWHistory);
 #endif
-		temp.SetPWHistory(buffer);
-	}
-    m_core.AddEntryToTail(temp);
-    int newpos = insertItem(m_core.GetTailEntry());
-    SelectEntry(newpos);
-    FixListIndexes();
-	if (m_core.GetNumEntries() == 1) {
-		// For some reason, when adding the first entry, it is not visible!
-		m_ctlItemTree.SetRedraw(TRUE);
-	}
-  m_ctlItemList.SetFocus();
-  if (prefs->GetPref(PWSprefs::SaveImmediately))
-    Save();
+      temp.SetPWHistory(buffer);
+    }
+
+    AddEntry(temp);
+
+    if (m_core.GetNumEntries() == 1) {
+      // For some reason, when adding the first entry, it is not visible!
+      m_ctlItemTree.SetRedraw(TRUE);
+    }
+    m_ctlItemList.SetFocus();
+    if (prefs->GetPref(PWSprefs::SaveImmediately))
+      Save();
 
     ChangeOkUpdate();
-	uuid_array_t RUEuuid;
-	temp.GetUUID(RUEuuid);
-	m_RUEList.AddRUEntry(RUEuuid);
+    uuid_array_t uuid;
+    temp.GetUUID(uuid);
+    m_RUEList.AddRUEntry(uuid);
   }
 }
 
 int
 DboxMain::AddEntry(const CItemData &cinew)
 {
-  m_core.AddEntryToTail(cinew);
-  int newpos = insertItem(m_core.GetTailEntry());
+  // This routine is used by Add and also Drag & Drop
+
+  m_core.AddEntry(cinew);
+
+  // AddEntry copies the entry, and we want to work with the inserted copy
+  // Which we'll find by uuid
+  uuid_array_t uuid;
+  cinew.GetUUID(uuid);
+  int newpos = insertItem(m_core.GetEntry(m_core.Find(uuid)));
   SelectEntry(newpos);
   FixListIndexes();
   return newpos;
@@ -146,7 +152,7 @@ DboxMain::AddEntry(const CItemData &cinew)
 void
 DboxMain::OnAddGroup()
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
   if (m_ctlItemTree.IsWindowVisible()) {
@@ -195,22 +201,27 @@ DboxMain::Delete(bool inRecursion)
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
-	//  Needed for DeleteTrayRecentEntry later on
+    //  Needed for DeleteTrayRecentEntry later on
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
-    int curSel = di->list_index;
+    size_t curSel = di->list_index;
     // Find next in treeview, not always curSel after deletion
     HTREEITEM curTree_item = di->tree_item;
     HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
                                                         TVGN_NEXT);
-    POSITION listindex = Find(curSel); // Must Find before delete from m_ctlItemList
+    // Must Find before delete from m_ctlItemList:
+    ItemListIter listindex = Find(curSel);
 
+    UnFindItem();
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteFromSet(curTree_item);
     m_ctlItemTree.DeleteWithParents(curTree_item);
     delete di;
+
+    if (ci->NumberUnknownFields() > 0)
+      m_core.DecrementNumRecordsWithUnknownFields();
 
     m_core.RemoveEntryAt(listindex);
     FixListIndexes();
@@ -260,7 +271,7 @@ DboxMain::Delete(bool inRecursion)
 void
 DboxMain::OnRename() 
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
   // Renaming is only allowed while in Tree mode.
@@ -298,7 +309,7 @@ DboxMain::OnEdit()
   }
 }
 
-void
+bool
 DboxMain::EditItem(CItemData *ci)
 {
     // List might be cleared if db locked.
@@ -309,7 +320,7 @@ DboxMain::EditItem(CItemData *ci)
 
     if (m_core.GetUseDefUser())
       dlg_edit.m_defusername = m_core.GetDefUsername();
-    dlg_edit.m_IsReadOnly = m_IsReadOnly;
+    dlg_edit.m_Edit_IsReadOnly = m_core.IsReadOnly();
 
     app.DisableAccelerator();
     int rc = dlg_edit.DoModal();
@@ -319,8 +330,8 @@ DboxMain::EditItem(CItemData *ci)
       // Out with the old, in with the new
       uuid_array_t uuid;
       editedItem.GetUUID(uuid);
-      POSITION listpos = Find(uuid);
-      ASSERT(listpos != NULL);
+      ItemListIter listpos = Find(uuid);
+      ASSERT(listpos != m_core.GetEntryEndIter());
       CItemData oldElem = GetEntryAt(listpos);
       DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
       ASSERT(di != NULL);
@@ -332,10 +343,12 @@ DboxMain::EditItem(CItemData *ci)
       editedItem.SetDisplayInfo(ndi);
 
       m_core.RemoveEntryAt(listpos);
-      m_core.AddEntryToTail(editedItem);
+      m_core.AddEntry(editedItem);
       m_ctlItemList.DeleteItem(di->list_index);
       m_ctlItemTree.DeleteWithParents(di->tree_item);
-      insertItem(m_core.GetTailEntry());
+      // AddEntry copies the entry, and we want to work with the inserted copy
+      // Which we'll find by uuid
+      insertItem(m_core.GetEntry(m_core.Find(uuid)));
       FixListIndexes();
       // Now delete old entry's DisplayInfo
       delete di;
@@ -348,7 +361,9 @@ DboxMain::EditItem(CItemData *ci)
         SelectEntry(m_ctlItemList.GetItemCount() - 1);
       }
       ChangeOkUpdate();
+      return true;
     } // rc == IDOK
+    return false;
 }
 
 
@@ -356,7 +371,7 @@ DboxMain::EditItem(CItemData *ci)
 void
 DboxMain::OnDuplicateEntry() 
 {
-  if (m_IsReadOnly) // disable in read-only mode
+  if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
   if (SelItemOk() == TRUE) {
@@ -372,8 +387,15 @@ DboxMain::OnDuplicateEntry()
     CMyString ci2_title;
       
     // Find a unique "Title"
-    ci2_title = GetUniqueTitle(ci2_group, ci2_title0,
-                               ci2_user, IDS_COPYNUMBER);
+    ItemListConstIter listpos;
+    int i = 0;
+    CString s_copy;
+    do {
+      i++;
+      s_copy.Format(IDS_COPYNUMBER, i);
+      ci2_title = ci2_title0 + CMyString(s_copy);
+      listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
+    } while (listpos != m_core.GetEntryEndIter());
       
     // Set up new entry
     CItemData ci2;
@@ -405,9 +427,11 @@ DboxMain::OnDuplicateEntry()
     if (tmp.GetLength() >= 5)
     	    ci2.SetPWHistory(tmp);
     // Add it to the end of the list      
-    m_core.AddEntryToTail(ci2);
+    m_core.AddEntry(ci2);
     di->list_index = -1; // so that insertItem will set new values
-    insertItem(m_core.GetTailEntry());
+    uuid_array_t uuid;
+    ci2.GetUUID(uuid);
+    insertItem(m_core.GetEntry(m_core.Find(uuid)));
     FixListIndexes();
     if (PWSprefs::GetInstance()->
         GetPref(PWSprefs::SaveImmediately)) {
@@ -418,9 +442,7 @@ DboxMain::OnDuplicateEntry()
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
     ChangeOkUpdate();
-	uuid_array_t RUEuuid;
-	ci2.GetUUID(RUEuuid);
-	m_RUEList.AddRUEntry(RUEuuid);
+	m_RUEList.AddRUEntry(uuid);
 
   }
 }
@@ -505,15 +527,6 @@ DboxMain::OnFind()
 {
   // create modeless or popup existing
   CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr, &m_bFindWrap);
-
-  // XXX Gross hack to fix aesthetic bug in tree view
-  // without this, multiple "selected" displayed
-  // if treeview && there's a selected item, then
-#if 0
-  m_ctlItemTree.SetItemState(di->tree_item,
-                             TVIS_SELECTED,
-                             TVIS_DROPHILITED | TVIS_SELECTED);
-#endif
 }
 
 void
@@ -665,7 +678,7 @@ DboxMain::AutoType(const CItemData &ci)
     if (bMinOnAuto)
       return;
 
-    if (m_bAlwaysOnTop) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
         SetWindowPos(&wndTopMost, 0, 0, 0, 0,
                      SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
     } else {
@@ -698,7 +711,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString DropGroup)
 
     tempitem.Clear();
 
-    if (m_core.Find(pDDObject->m_DD_UUID) != NULL)
+    if (m_core.Find(pDDObject->m_DD_UUID) != End())
       tempitem.CreateUUID();
     else
       tempitem.SetUUID(pDDObject->m_DD_UUID);
@@ -718,8 +731,12 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString DropGroup)
     tempitem.SetPMTime(pDDObject->m_DD_PMTime);
     tempitem.SetRMTime(pDDObject->m_DD_RMTime);
 
-    m_core.AddEntryToTail(tempitem);
-    insertItem(m_core.GetTailEntry());
+    // AddEntry copies the entry, and we want to work with the inserted copy
+    // Which we'll find by uuid
+    uuid_array_t uuid;
+    tempitem.GetUUID(uuid);
+    int newpos = insertItem(m_core.GetEntry(m_core.Find(uuid)));
+    SelectEntry(newpos);
     FixListIndexes();
     if (PWSprefs::GetInstance()->
              GetPref(PWSprefs::SaveImmediately)) {

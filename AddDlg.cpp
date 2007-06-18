@@ -219,7 +219,7 @@ CAddDlg::OnOK()
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
 
-  if (pParent->Find(m_group, m_title, m_username) != NULL) {
+  if (pParent->Find(m_group, m_title, m_username) != pParent->End()) {
     CMyString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);

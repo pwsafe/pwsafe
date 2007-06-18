@@ -16,6 +16,7 @@
 #include "LVHdrCtrl.h"
 #include "DboxMain.h"       // For WM_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
 #include "PasswordSafe.h"   // For global variables gbl_ccddCPFID and gbl_classname
+#include "corelib/util.h"
 
 // LVHdrCtrl
 
@@ -67,25 +68,33 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   SIZE_T memsize = GlobalSize(hGlobal);
 
+  // In Column D&D, a trailing NULL is appended to the data to allow tracing of pData
+  // without error
+  TRACE(_T("%s LV::Drop memsize: %d; pData:'%s'\n"), PWSUtil::GetTimeStamp(),
+        memsize, pData);
+
   if (memsize < DD_MEMORY_MINSIZE)
     goto ignore;
 
   // Check if it is ours?
   // - we don't accept drop from other instances of PWS
-  if (memcmp(gbl_classname, pData, sizeof(gbl_classname) - 1) != 0)
+  if (memcmp(gbl_classname, pData, DD_CLASSNAME_SIZE) != 0)
     goto ignore;
 
-  int iDDType(0), iLen, iType;
+  // iDDType = D&D type FROMCC, FROMHDR or for entry D&D only FROMTREE
+  // iType   = Column type (as defined in CItemData::GROUP etc.
+  // iLen    = Length of column name appended to this data (only used by CColumnChooserLC)
+  int iDDType(0), iType, iLen;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData + sizeof(gbl_classname) - 1, _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+  _stscanf_s(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
 #else
-  _stscanf(pData + sizeof(gbl_classname) - 1, _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+  _stscanf(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
 #endif
 
   // - we only accept drops from our ColumnChooser or our Header
   // - standard moving within the header only available if CC dialog not visible
-  if ((iDDType != FROMCC) || ((long)memsize < (DD_MEMORY_MINSIZE + iLen)))
+  if ((iDDType != FROMCC) || ((long)memsize < (long)(DD_MEMORY_MINSIZE + iLen)))
     goto ignore;
 
   // Get index of column we are on
@@ -119,7 +128,8 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   // Start of Drag a column (m_iHDRType) from Header to .....
 
   // Get client window position
-  CPoint currentClientPosition = ::GetMessagePos();
+  CPoint currentClientPosition;
+  currentClientPosition = ::GetMessagePos();
   ScreenToClient(&currentClientPosition);
 
   // Get index of column we are on
@@ -144,9 +154,13 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
     return;
 
   // Get the data: ColumnChooser Listbox needs the column string
+  // See OnDrop for more comments
   const int iLen = _tcslen(lpBuffer);
   CString cs_text;
-  cs_text.Format(_T("%s%02x%04x%04x%s"), gbl_classname, FROMHDR, m_iHDRType, iLen, lpBuffer);
+  cs_text.Format(_T("%s%02x%04x%04x%s%c"), gbl_classname, FROMHDR, m_iHDRType,
+                 iLen, lpBuffer, _T('\0'));
+  TRACE(_T("%s LV::LBD textlen: %d; text:'%s'\n"), PWSUtil::GetTimeStamp(),
+        cs_text.GetLength(), cs_text);
 
   // Set drag image
   m_pDragImage = CreateDragImage(hdhti.iItem);
@@ -157,9 +171,13 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   RECT rClient;
   GetClientRect(&rClient);
 
-  // Start dragging
-  StartDragging(cs_text, cs_text.GetLength() * sizeof(TCHAR),
+  TCHAR *lpsz_data = cs_text.GetBuffer(cs_text.GetLength() + 1);
+
+  // Start dragging - note trailing NULL in length parameter
+  StartDragging((BYTE *)lpsz_data, (cs_text.GetLength() + 1) * sizeof(TCHAR),
                 gbl_ccddCPFID, &rClient, &point);
+
+  cs_text.ReleaseBuffer();
 
   // End dragging image
   m_pDragImage->DragLeave(GetDesktopWindow());

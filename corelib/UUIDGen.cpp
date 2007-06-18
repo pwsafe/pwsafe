@@ -61,17 +61,18 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 
 void CUUIDGen::GetUUIDStr(uuid_str_t &str) const
 {
+  uuid_array_t uuid_array;
+  GetUUID(uuid_array);
 #if _MSC_VER >= 1400
   _stprintf_s((TCHAR *)str, sizeof(str)/sizeof(str[0]),
 #else
   stprintf((TCHAR *)str,
 #endif
-           _T("%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
-	  uuid.Data1, uuid.Data2, uuid.Data3,
-	  (unsigned char) uuid.Data4[0], (unsigned char) uuid.Data4[1],
-	  (unsigned char) uuid.Data4[2], (unsigned char) uuid.Data4[3],
-	  (unsigned char) uuid.Data4[4], (unsigned char) uuid.Data4[5],
-	  (unsigned char) uuid.Data4[6], (unsigned char) uuid.Data4[7]);
+           _T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
+           uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+           uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+           uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+           uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 }
 
 #ifdef TEST
@@ -83,6 +84,7 @@ int main()
 
   for (int i = 0; i< 10; i++) {
     CUUIDGen uuid;
+    uuid.GetUUIDStr(str);
     printf("%s\n",str);
     uuid.GetUUID(uuid_array);
     printf("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n",

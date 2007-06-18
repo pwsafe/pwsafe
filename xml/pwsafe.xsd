@@ -26,10 +26,45 @@
   </xs:sequence>
 </xs:complexType>
 
+<xs:simpleType name="fieldType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="16" />
+    <xs:maxExclusive value="255" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="numhashType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="2048" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="fileuuidType">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA­Z]{12}" />
+  </xs:restriction>
+</xs:simpleType>
+
   <xs:element name="passwordsafe">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" name="entry">
+        <xs:element name="NumberHashIterations" type="numhashType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="unknownheaderfields" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:base64Binary">
+                      <xs:attribute name="ftype" type="fieldType" use="required" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="entry" maxOccurs="unbounded">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="group" type="stringType" minOccurs="0" maxOccurs="1" />
@@ -54,7 +89,7 @@
                     <xs:element name="history_entries" minOccurs="0" maxOccurs="1">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="history_entry" minOccurs="0" maxOccurs="25">
+                          <xs:element name="history_entry" minOccurs="0" maxOccurs="255">
                             <xs:complexType>
                               <xs:sequence>
                                 <xs:element name="changed" type="datetimestampType" minOccurs="1" maxOccurs="1" />
@@ -64,6 +99,21 @@
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="unknownrecordfields" minOccurs="0" maxOccurs="1" >
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:base64Binary">
+                            <xs:attribute name="ftype" type="fieldType" use="required" />
+                          </xs:extension>
+                        </xs:simpleContent>
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
@@ -80,6 +130,8 @@
       <xs:attribute name="FromDatabaseFormat" type="stringType" use="optional" />
       <xs:attribute name="WhatSaved" type="stringType" use="optional" />
       <xs:attribute name="WhoSaved" type="stringType" use="optional" />
+      <xs:attribute name="WhenLastSaved" type="xs:dateTime" use="optional" />
+      <xs:attribute name="Database_uuid" type="fileuuidType" use="optional" />
     </xs:complexType>
   </xs:element>
 </xs:schema>

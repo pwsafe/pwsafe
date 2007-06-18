@@ -18,7 +18,7 @@ CDropSource::~CDropSource()
 {
 }
 
-DROPEFFECT CDropSource::StartDragging(LPCTSTR szData, DWORD dwLength, CLIPFORMAT cpfmt,
+DROPEFFECT CDropSource::StartDragging(BYTE * szData, DWORD dwLength, CLIPFORMAT cpfmt,
                                       RECT *rClient, CPoint *ptMousePos)
 {
   HGLOBAL hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwLength);
@@ -33,8 +33,8 @@ DROPEFFECT CDropSource::StartDragging(LPCTSTR szData, DWORD dwLength, CLIPFORMAT
 
   DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE, (LPCRECT)rClient);
 
-if ((dropEffect & DROPEFFECT_MOVE) == DROPEFFECT_MOVE)
-     CompleteMove();
+  if ((dropEffect & DROPEFFECT_MOVE) == DROPEFFECT_MOVE)
+    CompleteMove();
 
   LPARAM lparam = (LPARAM(ptMousePos->y) << 16) | LPARAM(ptMousePos->x);
 

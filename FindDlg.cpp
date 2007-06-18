@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "AdvancedDlg.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
@@ -74,12 +75,16 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *bFindW
 }
 
 CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
-  : super(CFindDlg::IDD, pParent), m_indices(NULL),
-    m_lastshown(-1), m_numFound(0),
+  : super(CFindDlg::IDD, pParent),
+    m_lastshown(-1), m_numFound(0), m_FindWraps(FALSE),
     m_last_search_text(_T("")), m_last_cs_search(FALSE),
-    m_lastCSPtr(isCS), m_lastTextPtr(lastFind)
+    m_lastCSPtr(isCS), m_lastTextPtr(lastFind), m_bAdvanced(false),
+    m_subgroup_name(_T("")), m_subgroup_set(BST_UNCHECKED),
+    m_subgroup_object(0), m_subgroup_function(0),
+    m_last_subgroup_name(_T("")), m_last_subgroup_set(BST_UNCHECKED),
+    m_last_subgroup_object(0), m_last_subgroup_function(0)
 {
-  ASSERT(isCS !=NULL);
+  ASSERT(isCS != NULL);
   ASSERT(lastFind != NULL);
   //{{AFX_DATA_INIT(CFindDlg)
   m_cs_search = *isCS;
@@ -87,6 +92,8 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   m_status = _T("");
   //}}AFX_DATA_INIT
 
+  m_bsFields.reset();
+  m_last_bsFields.reset();
 }
 
 void CFindDlg::EndIt()
@@ -96,7 +103,7 @@ void CFindDlg::EndIt()
 
 CFindDlg::~CFindDlg()
 {
-  delete[] m_indices;
+  m_indices.clear();
   self = NULL;
 }
 
@@ -118,6 +125,7 @@ BEGIN_MESSAGE_MAP(CFindDlg, super)
 	//{{AFX_MSG_MAP(CFindDlg)
 	ON_BN_CLICKED(IDOK, OnFind)
 	ON_BN_CLICKED(IDC_FIND_WRAP, OnWrap)
+	ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
 #if defined(POCKET_PC)
 	ON_BN_CLICKED(IDCANCEL, OnCancel)
 #else
@@ -153,9 +161,19 @@ void CFindDlg::OnFind()
 
   // If the user changes the search text or cs, then this is a new search:
   if (m_search_text != m_last_search_text ||
-      m_cs_search != m_last_cs_search) {
+      m_cs_search != m_last_cs_search ||
+      m_bsFields != m_last_bsFields ||
+      m_subgroup_name != m_last_subgroup_name ||
+      m_subgroup_set != m_last_subgroup_set ||
+      m_subgroup_object != m_last_subgroup_object ||
+      m_subgroup_function != m_last_subgroup_function) {
     m_last_search_text = m_search_text;
     m_last_cs_search = m_cs_search;
+    m_last_bsFields = m_bsFields;
+    m_last_subgroup_name = m_subgroup_name;
+    m_last_subgroup_set = m_subgroup_set;
+    m_last_subgroup_object = m_subgroup_object;
+    m_last_subgroup_function = m_subgroup_function;
     m_lastshown = -1;
   }
 
@@ -165,15 +183,14 @@ void CFindDlg::OnFind()
   }
 
   if (m_lastshown == -1) {
+    m_indices.clear();
 
-    if (m_indices != NULL) {
-      // take care of the pathological case where someone added or deleted
-      // an entry while this dialog box is open
-      delete[] m_indices;
-    }
-    m_indices = new int[numEntries];
-
-    m_numFound = pParent->FindAll(m_search_text, m_cs_search, m_indices);
+    if (m_bAdvanced)
+      m_numFound = pParent->FindAll(m_search_text, m_cs_search, m_indices,
+                    m_bsFields, m_subgroup_set, 
+                    m_subgroup_name, m_subgroup_object, m_subgroup_function);
+    else
+      m_numFound = pParent->FindAll(m_search_text, m_cs_search, m_indices);
 
     switch (m_numFound) {
     case 0:
@@ -193,7 +210,7 @@ void CFindDlg::OnFind()
 
   if (m_numFound > 0) {
     if (m_numFound == 1) {
-    	pParent->SelectEntry(m_indices[0], TRUE);
+    	pParent->SelectFindEntry(m_indices[0], TRUE);
     } else {
     	m_lastshown++;
     	if(m_lastshown >= m_numFound) {
@@ -208,7 +225,7 @@ void CFindDlg::OnFind()
     		switch (rc) {
     			case IDYES:
     				m_lastshown = 0;
-    				pParent->SelectEntry(m_indices[m_lastshown], TRUE);
+    				pParent->SelectFindEntry(m_indices[m_lastshown], TRUE);
     				break;
 				case IDNO:
 #if defined(POCKET_PC)
@@ -223,7 +240,7 @@ void CFindDlg::OnFind()
     				ASSERT(FALSE);
     		}
     	} else {
-    		pParent->SelectEntry(m_indices[m_lastshown], TRUE);
+    		pParent->SelectFindEntry(m_indices[m_lastshown], TRUE);
     	}
     	CString cs_text(MAKEINTRESOURCE(IDS_FINDNEXT));
     	SetDlgItemText(IDOK, cs_text);
@@ -263,3 +280,27 @@ void CFindDlg::OnClose()
   super::OnCancel();
 }
 #endif
+
+void
+CFindDlg::OnAdvanced()
+{
+  CAdvancedDlg Adv(this, ADV_FIND, m_bsFields, m_subgroup_name, m_subgroup_set, 
+              m_subgroup_object, m_subgroup_function);
+
+  app.DisableAccelerator();
+  int rc = Adv.DoModal();
+  app.EnableAccelerator();
+
+  if (rc == IDOK) {
+    m_bAdvanced = true;
+    m_bsFields = Adv.m_bsFields;
+    m_subgroup_set = Adv.m_subgroup_set;
+    if (m_subgroup_set == BST_CHECKED) {
+      m_subgroup_name = Adv.m_subgroup_name;
+      m_subgroup_object = Adv.m_subgroup_object;
+      m_subgroup_function = Adv.m_subgroup_function;
+    }
+  } else {
+    m_bAdvanced = false;
+  }
+}

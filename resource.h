@@ -29,6 +29,8 @@
 #define IDI_MBWARNICON                  124
 #define IDB_LEAF_WARNEXPIRED            125
 #define IDR_POPCOLUMNS                  126
+#define IDR_POPCOPYTOCOMPARISON         127
+#define IDR_POPCOPYTOORIGINAL           128
 #define IDD_ABOUTBOX                    200
 #define IDD_FIND                        201
 #define IDD_PASSWORDSAFE_DIALOG         202
@@ -66,11 +68,12 @@
 #define IDD_PROPERTIES                  234
 #define IDD_COLUMNCHOOSER               236
 #define IDD_ADVANCEDMERGE               237
+#define IDD_COMPARE_RESULTS             238
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
 #define IDC_CREATE_DB                   1003
-#define IDC_EXIT                        1004
+#define IDC_EXITADVANCED                1004
 #define IDC_PASSWORD                    1005
 #define IDC_OLDPASSKEY                  1006
 #define IDC_NEWPASSKEY                  1007
@@ -215,28 +218,17 @@
 #define IDC_PASSWORD2                   1149
 #define IDC_CLEAR_HISTORY               1150
 #define IDC_ADVANCED                    1151
-#define IDC_ADVANCED_GROUP              1152
-#define IDC_ADVANCED_TITLE              1153
-#define IDC_ADVANCED_USER               1154
-#define IDC_ADVANCED_NOTES              1155
-#define IDC_ADVANCED_PASSWORD           1156
-#define IDC_ADVANCED_CTIME              1157
-#define IDC_ADVANCED_PMTIME             1158
-#define IDC_ADVANCED_ATIME              1159
-#define IDC_ADVANCED_LTIME              1160
-#define IDC_ADVANCED_RMTIME             1161
-#define IDC_ADVANCED_URL                1162
-#define IDC_ADVANCED_AUTOTYPE           1163
-#define IDC_ADVANCED_PWHIST             1164
-#define IDC_ADVANCED_SETTIMES           1165
-#define IDC_ADVANCED_CLEARTIMES         1166
-#define IDC_ADVANCED_SUBGROUP_SET       1167
-#define IDC_ADVANCED_SUBGROUP_NAME      1168
-#define IDC_ADVANCED_SETALL             1169
-#define IDC_ADVANCED_CLEARALL           1170
-#define IDC_ADVANCED_SUBGROUP_FUNCTION  1171
-#define IDC_ADVANCED_SUBGROUP_OBJECT    1172
-#define IDC_ADVANCED_SUBGROUP_CASE      1173
+#define IDC_ADVANCED_LIST               1152
+#define IDC_ADVANCED_SELECTED           1153
+#define IDC_ADVANCED_SELECTSOME         1154
+#define IDC_ADVANCED_SELECTALL          1155
+#define IDC_ADVANCED_DESELECTSOME       1156
+#define IDC_ADVANCED_DESELECTALL        1157
+#define IDC_ADVANCED_SUBGROUP_SET       1158
+#define IDC_ADVANCED_SUBGROUP_NAME      1159
+#define IDC_ADVANCED_SUBGROUP_FUNCTION  1160
+#define IDC_ADVANCED_SUBGROUP_OBJECT    1161
+#define IDC_ADVANCED_SUBGROUP_CASE      1162
 #define IDC_PWH_COPY_ALL                1174
 #define IDC_PWHIST                      1175
 #define IDC_TREE_DISPLAY_COLLAPSED      1176
@@ -302,14 +294,22 @@
 #define IDC_EXPORT_ADVANCED             1252
 #define IDC_XML_ADVANCED                1253
 #define IDC_DEFUNSHOWINTREE             1254
+#define IDC_FILEUUID                    1255
+#define IDC_UNKNOWNFIELDS               1256
+#define IDC_RESULTLIST                  1257
+#define IDC_RESULTLISTHDR               1258
+#define IDC_COPYTOCLIPBOARD             1259
+#define IDC_COMPAREORIGINALDB           1260
+#define IDC_COMPARECOMPARISONDB         1261
+#define IDC_SHOW_IDENTICAL_ENTRIES      1262
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        238
+#define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1255
-#define _APS_NEXT_SYMED_VALUE           127
+#define _APS_NEXT_CONTROL_VALUE         1263
+#define _APS_NEXT_SYMED_VALUE           129
 #endif
 #endif

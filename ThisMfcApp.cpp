@@ -13,8 +13,6 @@
 
 #include "corelib/PWSrand.h"
 #include "corelib/PWSdirs.h"
-#include "corelib/sha256.h"
-#include "corelib/sha1.h"
 #include "corelib/SysInfo.h"
 
 #if defined(POCKET_PC)
@@ -38,7 +36,6 @@
 #include "corelib/PWSprefs.h"
 
 #include "Shlwapi.h"
-//#include "vld.h" - Visual Leak Detector!
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -117,214 +114,27 @@ static void Usage()
   AfxMessageBox(IDS_USAGE);
 }
 
-// tests if file exists, returns empty string if so, displays error message if not
-static BOOL CheckFile(const CString &fn)
+// tests if file exists, returns true if so, displays error message if not
+static bool CheckFile(const CString &fn)
 {
   DWORD status = ::GetFileAttributes(fn);
   CString cs_msg(_T(""));
 
-  if (status == -1) {
+  if (status == INVALID_FILE_ATTRIBUTES) {
     cs_msg.Format(IDS_FILEERROR1, fn);
   } else if (status & FILE_ATTRIBUTE_DIRECTORY) {
     cs_msg.Format(IDS_FILEERROR2, fn);
   }
 
   if (cs_msg.IsEmpty()) {
-    return TRUE;
+    return true;
   } else {
     AfxMessageBox(cs_msg);
-    return FALSE;
+    return false;
   }
 }
 
-//Complain if the file has not opened correctly
-
-static void
-ErrorMessages(const CString &fn, FILE *fp)
-{
-#if !defined(POCKET_PC)
-  if (fp == NULL) {
-    CString cs_text1(MAKEINTRESOURCE(IDS_ERRORMESSAGE)), cs_text2;
-
-    switch (errno) {
-    	case EACCES:
-    		cs_text2.LoadString(IDS_FILEREADONLY);
-    		break;
-        case EEXIST:
-        	cs_text2.LoadString(IDS_FILEEXISTS);
-        	break;
-    	case EINVAL:
-    		cs_text2.LoadString(IDS_INVALIDFLAG);
-    		break;
-		case EMFILE:
-			cs_text2.LoadString(IDS_NOMOREHANDLES);
-			break;
-		case ENOENT:
-			cs_text2.LoadString(IDS_FILEPATHNOTFOUND);
-			break;
-		default:
-			break;
-	}
-	cs_text1 += cs_text2;
-    cs_text2.LoadString(IDS_TERMINATE);
-    cs_text1 += cs_text2;
-
-    CString cs_title = _T("Password Safe - ") + fn;
-    AfxGetMainWnd()->MessageBox(cs_text1, cs_title, MB_ICONEXCLAMATION|MB_OK);
-  }
-#endif
-}
-
-static BOOL EncryptFile(const CString &fn, const CMyString &passwd)
-{
-  unsigned int len;
-  unsigned char* buf;
-
-  FILE *in;
-#if _MSC_VER >= 1400
-  _tfopen_s(&in, fn, _T("rb"));
-#else
-  in = _tfopen(fn, _T("rb"));
-#endif
-  if (in != NULL) {
-    len = PWSUtil::fileLength(in);
-    buf = new unsigned char[len];
-
-    fread(buf, 1, len, in);
-    fclose(in);
-  } else {
-    ErrorMessages(fn, in);
-    return FALSE;
-  }
-
-  CString out_fn = fn;
-  out_fn += CIPHERTEXT_SUFFIX;
-
-  FILE *out;
-#if _MSC_VER >= 1400
-  _tfopen_s(&out, out_fn, _T("wb"));
-#else
-  out = _tfopen(out_fn, _T("wb"));
-#endif
-  if (out != NULL) {
-#ifdef KEEP_FILE_MODE_BWD_COMPAT
-    fwrite( &len, 1, sizeof(len), out);
-#else
-    unsigned char randstuff[StuffSize];
-    unsigned char randhash[SHA1::HASHLEN];   // HashSize
-    PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
-    // miserable bug - have to fix this way to avoid breaking existing files
-    randstuff[8] = randstuff[9] = TCHAR('\0');
-    GenRandhash(passwd,
-                randstuff,
-                randhash);
-    fwrite(randstuff, 1,  8, out);
-    fwrite(randhash,  1, sizeof(randhash), out);
-#endif // KEEP_FILE_MODE_BWD_COMPAT
-
-    unsigned char thesalt[SaltLength];
-    PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
-    fwrite(thesalt, 1, SaltLength, out);
-
-    unsigned char ipthing[8];
-    PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
-    fwrite(ipthing, 1, 8, out);
-
-    LPCTSTR pwd = LPCTSTR(passwd);
-    Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
-                                        thesalt, SaltLength);
-    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
-    delete fish;
-    fclose(out);
-
-  } else {
-    ErrorMessages(out_fn, out);
-    delete [] buf;
-    return FALSE;
-  }
-  delete[] buf;
-  return TRUE;
-}
-
-static BOOL DecryptFile(const CString &fn, const CMyString &passwd)
-{
-  unsigned int len;
-  unsigned char* buf;
-
-  FILE *in;
-#if _MSC_VER >= 1400
-  _tfopen_s(&in, fn, _T("rb"));
-#else
-  in = _tfopen(fn, _T("rb"));
-#endif
-  if (in != NULL) {
-    unsigned char salt[SaltLength];
-    unsigned char ipthing[8];
-    unsigned char randstuff[StuffSize];
-    unsigned char randhash[SHA1::HASHLEN];
-
-#ifdef KEEP_FILE_MODE_BWD_COMPAT
-    fread(&len, 1, sizeof(len), in); // XXX portability issue
-#else
-    fread(randstuff, 1, 8, in);
-    randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
-    fread(randhash, 1, sizeof(randhash), in);
-
-    unsigned char temphash[SHA1::HASHLEN];
-    GenRandhash(passwd,
-                randstuff,
-                temphash);
-    if (0 != memcmp((char*)randhash,
-                    (char*)temphash, SHA1::HASHLEN)) {
-      fclose(in);
-      AfxMessageBox(IDS_BADPASSWORD);
-      return FALSE;
-    }
-#endif // KEEP_FILE_MODE_BWD_COMPAT
-    buf = NULL; // allocated by _readcbc - see there for apologia
-
-    fread(salt,    1, SaltLength, in);
-    fread(ipthing, 1, 8,          in);
-    LPCTSTR pwd = LPCTSTR(passwd);
-    unsigned char dummyType;
-
-    Fish *fish = BlowFish::MakeBlowFish((unsigned char *)pwd, passwd.GetLength(),
-                                        salt, SaltLength);
-    if (_readcbc(in, buf, len,dummyType, fish, ipthing) == 0) {
-      delete fish;
-      delete[] buf; // if not yet allocated, delete[] NULL, which is OK
-      return FALSE;
-    }
-    delete fish;
-    fclose(in);
-  } else {
-    ErrorMessages(fn, in);
-    return FALSE;
-  }
-
-  size_t suffix_len = strlen(CIPHERTEXT_SUFFIX);
-  size_t filepath_len = fn.GetLength();
-
-  CString out_fn = fn;
-  out_fn = out_fn.Left(static_cast<int>(filepath_len - suffix_len));
-
-#if _MSC_VER >= 1400
-  FILE *out;
-  _tfopen_s(&out, out_fn, _T("wb"));
-#else
-  FILE *out = _tfopen(out_fn, _T("wb"));
-#endif
-  if (out != NULL) {
-    fwrite(buf, 1, len, out);
-    fclose(out);
-  } else
-    ErrorMessages(out_fn, out);
-
-  delete[] buf; // allocated by _readcbc
-  return TRUE;
-}
-#endif
-
+#endif // !POCKET_PC
 int
 ThisMfcApp::ExitInstance()
 {
@@ -539,6 +349,8 @@ ThisMfcApp::InitInstance()
 
     // Base class version actually does nothing.
     CWinApp::InitApplication();
+    //HANDLE hCurrentProcess = GetCurrentProcess();
+    //int rc = SetProcessAffinityMask(hCurrentProcess, 1); // CPU 0
 
     WNDCLASS wndcls;
 
@@ -549,7 +361,7 @@ ThisMfcApp::InitInstance()
     ::GetClassInfo(AfxGetInstanceHandle(), _T("AfxFrameOrView"), &wndcls);
 
     // Give new class a unique name
-    memset(gbl_classname, 0, sizeof(gbl_classname));
+    memset(gbl_classname, 0, DD_CLASSNAME_SIZE + sizeof(TCHAR));
     memcpy(gbl_classname, _T("PWS"), 3 * sizeof(TCHAR));
     
     CUUIDGen uuid;
@@ -592,7 +404,7 @@ ThisMfcApp::InitInstance()
     gbl_ccddCPFID = RegisterCBFMT(IDS_CPF_CDD);
 
     // Register a clipboard format for TreeCtrl drag & drop.
-    gbl_tcddCPFID = RegisterCBFMT(IDS_CPF_TCDD);
+    gbl_tcddCPFID = RegisterCBFMT(IDS_CPF_TVDD);
 
     // MUST (indirectly) create PWSprefs first
     // Ensures all things like saving locations etc. are set up.
@@ -638,12 +450,14 @@ ThisMfcApp::InitInstance()
                                                 ID_FILE_MRU_ENTRY1, cs_recent);
                 ASSERT(irc != 0);
                 // Insert Popup onto main menu
+        ASSERT(file_submenu != NULL);
                 irc = file_submenu->InsertMenu(pos + 2,
                                                MF_BYPOSITION | MF_POPUP,
                                                UINT_PTR(new_popupmenu->m_hMenu),
                                                cs_recentsafes);
                 ASSERT(irc != 0);
             } else {	// MRU entries inline
+        ASSERT(file_submenu != NULL);
                 irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
                                                ID_FILE_MRU_ENTRY1, cs_recent);
                 ASSERT(irc != 0);
@@ -655,6 +469,7 @@ ThisMfcApp::InitInstance()
         if (pos > -1) {
             int irc;
             // Remove extra separator
+      ASSERT(file_submenu != NULL);
             irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
             ASSERT( irc != 0);
             // Remove Clear MRU menu item.
@@ -717,7 +532,7 @@ ThisMfcApp::InitInstance()
             const int UC_arg1(toupper(args[1]));
             // The following arguements require the database name and it exists!
             if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
-                && (fn.IsEmpty() || CheckFile(fn) == FALSE)) {
+          && (fn.IsEmpty() || !CheckFile(fn))) {
                 Usage();
                 return FALSE;
             }
@@ -739,20 +554,20 @@ ThisMfcApp::InitInstance()
                 }
             }
             BOOL status;
-            dbox.SetReadOnly(false);
+            m_core.SetReadOnly(false);
             switch (UC_arg1) {
                 case 'C':
                     dbox.SetStartClosed(true);
                     dbox.SetCurFile(_T(""));
                     break;
                 case 'D': // do decryption
-                    status = DecryptFile(fn, passkey);
+                    status = PWSfile::Decrypt(fn, passkey);
                     if (!status) {
-                        // nothing to do - DecryptFile displays its own error messages
+                      // nothing to do - Decrypt displays its own error messages
                     }
                     return TRUE;
                 case 'E': // do encrpytion
-                    status = EncryptFile(fn, passkey);
+                    status = PWSfile::Encrypt(fn, passkey);
                     if (!status) {
                         AfxMessageBox(IDS_ENCRYPTIONFAILED);
                     }
@@ -763,11 +578,13 @@ ThisMfcApp::InitInstance()
                     dbox.SetCurFile(_T(""));
                     break;
                 case 'R':
-                    dbox.SetReadOnly(true);
+                    m_core.SetReadOnly(true);
                     dbox.SetCurFile(fn);
                     break;
                 case 'S':
                     dbox.SetStartSilent(true);
+                    if (fn.IsEmpty())
+                      dbox.SetStartClosed(true);
                     dbox.SetCurFile(fn);
                     break;
                 case 'V':

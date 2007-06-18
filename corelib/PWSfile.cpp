@@ -11,11 +11,18 @@
 #include "SysInfo.h"
 #include "corelib.h"
 
+#include "sha1.h" // for simple encrypt/decrypt
+#include "PWSrand.h" // ditto
+
 #include <LMCONS.H> // for UNLEN definition
 #include <io.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+
+#include <vector>
+
+using namespace std;
 
 PWSfile *PWSfile::MakePWSfile(const CMyString &a_filename, VERSION &version,
                               RWmode mode, int &status)
@@ -115,8 +122,10 @@ PWSfile::PWSfile(const CMyString &filename, RWmode mode)
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
     m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL),
     m_file_displaystatus(_T("")), m_whenlastsaved(_T("")),
-	m_wholastsaved(_T("")), m_whatlastsaved(_T(""))
+    m_wholastsaved(_T("")), m_whatlastsaved(_T("")),
+    m_nITER(0), m_nRecordsWithUnknownFields(0)
 {
+  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
 }
 
 PWSfile::~PWSfile()
@@ -147,17 +156,6 @@ int PWSfile::Close()
   return SUCCESS;
 }
 
-size_t PWSfile::WriteCBC(unsigned char type, const CString &data)
-{
-  // We do a double cast because the LPCTSTR cast operator is overridden
-  // by the CString class to access the pointer we need,
-  // but we in fact need it as an unsigned char. Grrrr.
-  LPCTSTR datastr = LPCTSTR(data);
-
-  return WriteCBC(type, (const unsigned char *)datastr,
-                  data.GetLength());
-}
-
 size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
                          unsigned int length)
 {
@@ -165,34 +163,10 @@ size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
   return _writecbc(m_fd, data, length, type, m_fish, m_IV);
 }
 
-size_t PWSfile::ReadCBC(unsigned char &type, CMyString &data)
-{
 
-  unsigned char *buffer = NULL;
-  unsigned int buffer_len = 0;
-  size_t retval;
-
-  ASSERT(m_fish != NULL && m_IV != NULL);
-  retval = _readcbc(m_fd, buffer, buffer_len, type,
-                    m_fish, m_IV, m_terminal);
-
-  if (buffer_len > 0) {
-    CMyString str(LPCTSTR(buffer), buffer_len);
-    data = str;
-    trashMemory(buffer, buffer_len);
-    delete[] buffer;
-  } else {
-    data = _T("");
-    // no need to delete[] buffer, since _readcbc will not allocate if
-    // buffer_len is zero
-  }
-  return retval;
-}
-
-size_t PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
+size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
                         unsigned int &length)
 {
-
   unsigned char *buffer = NULL;
   unsigned int buffer_len = 0;
   size_t retval;
@@ -202,13 +176,17 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char *data,
                     m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
-    if (buffer_len < length)
+    if (buffer_len < length || data == NULL)
       length = buffer_len; // set to length read
     // if buffer_len > length, data is truncated to length
     // probably an error.
-    memcpy(data, buffer, length);
-    trashMemory(buffer, buffer_len);
-    delete[] buffer;
+    if (data != NULL) {
+        memcpy(data, buffer, length);
+        trashMemory(buffer, buffer_len);
+        delete[] buffer;
+    } else { // NULL data means pass buffer directly to caller
+        data = buffer; // caller must trash & delete[]!
+    }
   } else {
     // no need to delete[] buffer, since _readcbc will not allocate if
     // buffer_len is zero
@@ -232,6 +210,28 @@ int PWSfile::CheckPassword(const CMyString &filename,
   }
   return status;
 }
+
+
+void PWSfile::SetDisplayStatus(const vector<bool> &displaystatus)
+{
+  m_file_displaystatus = _T("");
+
+  vector<bool>::const_iterator iter;
+  for (iter = displaystatus.begin(); iter != displaystatus.end(); iter++)
+    m_file_displaystatus += (*iter) ? _T("1") : _T("0");
+}
+
+vector<bool> PWSfile::GetDisplayStatus() const
+{
+  vector<bool> retval;
+  unsigned N = m_file_displaystatus.GetLength();
+  for (unsigned i = 0; i != N; i++) {
+    const TCHAR v = m_file_displaystatus.GetAt(i);
+    retval.push_back(v == TCHAR('1'));
+  }
+  return retval;
+}
+
 
 /*
  * The file lock/unlock functions were first implemented (in 2.08)
@@ -258,10 +258,6 @@ int PWSfile::CheckPassword(const CMyString &filename,
  * but *much* easier than setting up a map...
  */
 
-static HANDLE s_lockFileHandle[2] = {INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE};
-static int s_LockCount[2] = {0, 0};
-
-
 static void GetLockFileName(const CMyString &filename,
                             CMyString &lock_filename)
 {
@@ -270,7 +266,8 @@ static void GetLockFileName(const CMyString &filename,
   lock_filename = CMyString(filename.Left(MAX_PATH - 4) + _T(".plk"));
 }
 
-bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool bDB)
+bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, 
+                       HANDLE &lockFileHandle, int &LockCount)
 {
   CMyString lock_filename;
   GetLockFileName(filename, lock_filename);
@@ -335,10 +332,17 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
   const CString host = si->GetCurrentHost();
   const CString pid = si->GetCurrentPID();
 
-  const int iLFHandle = bDB ? DATABASE_LOCK : CONFIG_LOCK;
+  TCHAR fname[_MAX_FNAME];
+  TCHAR ext[_MAX_EXT];
+#if _MSC_VER >= 1400
+  _tsplitpath_s(lock_filename, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+#else
+  _tsplitpath(lock_filename, NULL, NULL, fname, ext);
+#endif
+
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
-  if (s_lockFileHandle[iLFHandle] != INVALID_HANDLE_VALUE) {
+  if (lockFileHandle != INVALID_HANDLE_VALUE) {
     // here if we've open another (or same) dbase previously,
     // need to unlock it. A bit inelegant...
     // If app was minimized and ClearData() called, we've a small
@@ -347,28 +351,27 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
 
     const CString cs_me = user + _T("@") + host + _T(":") + pid;
     GetLockFileName(filename, lock_filename);
-	GetLocker(lock_filename, locker);
+    GetLocker(lock_filename, locker);
 
-	if (cs_me == CString(locker)) {
-      s_LockCount[iLFHandle]++;
-      TRACE(_T("%s Lock1   %s, Count now %d\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			s_LockCount[iLFHandle]);
+	  if (cs_me == CString(locker)) {
+      LockCount++;
+      TRACE(_T("%s Lock1  ; Count now %d; File: %s%s\n"), 
+			      PWSUtil::GetTimeStamp(), LockCount, fname, ext);
       locker.Empty();
       return true;
-	} else {
+    } else {
       // XXX UnlockFile(bDB ? GetCurFile() : filename, bDB);
-      UnlockFile(filename, bDB);
-	}
+      UnlockFile(filename, lockFileHandle, LockCount);
+    }
   }
-  s_lockFileHandle[iLFHandle] = ::CreateFile(LPCTSTR(lock_filename),
+  lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),
                                              GENERIC_WRITE,
                                              FILE_SHARE_READ,
                                              NULL,
                                              CREATE_ALWAYS, // rely on share to fail if exists!
                                              FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
                                              NULL);
-  if (s_lockFileHandle[iLFHandle] == INVALID_HANDLE_VALUE) {
+  if (lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     switch (error) {
     case ERROR_SHARING_VIOLATION: // already open by a live process
@@ -382,36 +385,36 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, const bool 
   } else { // valid filehandle, write our info
     DWORD numWrit, sumWrit;
     BOOL write_status;
-    write_status = ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status = ::WriteFile(lockFileHandle,
                                user, user.GetLength() * sizeof(TCHAR),
                                &sumWrit, NULL);
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                _T("@"), sizeof(TCHAR),
                                &numWrit, NULL);
     sumWrit += numWrit;
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                 host, host.GetLength() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                _T(":"), sizeof(TCHAR),
                                &numWrit, NULL);
     sumWrit += numWrit;
-    write_status &= ::WriteFile(s_lockFileHandle[iLFHandle],
+    write_status &= ::WriteFile(lockFileHandle,
                                 pid, pid.GetLength() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
-	s_LockCount[iLFHandle]++;
-	TRACE(_T("%s Lock1   %s, Count now %d; File Created\n"), 
-          PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-          s_LockCount[iLFHandle]);
+    LockCount++;
+    TRACE(_T("%s Lock1  ; Count now %d; File Created; File: %s%s\n"), 
+          PWSUtil::GetTimeStamp(), LockCount, fname, ext);
     return (write_status == TRUE);
   }
 #endif // POSIX_FILE_LOCK
 }
 
-void PWSfile::UnlockFile(const CMyString &filename, const bool bDB)
+void PWSfile::UnlockFile(const CMyString &filename,
+                         HANDLE &lockFileHandle, int &LockCount)
 {
 #ifdef POSIX_FILE_LOCK
   CMyString lock_filename;
@@ -423,34 +426,39 @@ void PWSfile::UnlockFile(const CMyString &filename, const bool bDB)
   const CString host = si->GetCurrentHost();
   const CString pid = si->GetCurrentPID();
 
-  const int iLFHandle = bDB ? DATABASE_LOCK : CONFIG_LOCK;
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
-  if (s_lockFileHandle[iLFHandle] != INVALID_HANDLE_VALUE) {
+  if (lockFileHandle != INVALID_HANDLE_VALUE) {
     CMyString lock_filename, locker;
 	const CString cs_me = user + _T("@") + host + _T(":") + pid;
     GetLockFileName(filename, lock_filename);
 	GetLocker(lock_filename, locker);
 
-	if (cs_me == CString(locker) && s_LockCount[iLFHandle] > 1) {
-		s_LockCount[iLFHandle]--;
-		TRACE(_T("%s Unlock2 %s, Count now %d\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			s_LockCount[iLFHandle]);
+  TCHAR fname[_MAX_FNAME];
+  TCHAR ext[_MAX_EXT];
+#if _MSC_VER >= 1400
+  _tsplitpath_s(lock_filename, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
+#else
+  _tsplitpath(lock_filename, NULL, NULL, fname, ext);
+#endif
+
+  if (cs_me == CString(locker) && LockCount > 1) {
+		LockCount--;
+      TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
+			      PWSUtil::GetTimeStamp(), LockCount, fname, ext);
 	} else {
-		s_LockCount[iLFHandle] = 0;
-		TRACE(_T("%s Unlock1 %s, Count now %d; File Deleted\n"), 
-			PWSUtil::GetTimeStamp(), iLFHandle == 0 ? _T("DB") : _T("CF"),
-			s_LockCount[iLFHandle]);
-		CloseHandle(s_lockFileHandle[iLFHandle]);
-		s_lockFileHandle[iLFHandle] = INVALID_HANDLE_VALUE;
+		LockCount = 0;
+		TRACE(_T("%s Unlock1; Count now %d; File Deleted; File: %s%s\n"), 
+			PWSUtil::GetTimeStamp(), LockCount, fname, ext);
+		CloseHandle(lockFileHandle);
+		lockFileHandle = INVALID_HANDLE_VALUE;
 		DeleteFile(LPCTSTR(lock_filename));
 	}
   }
 #endif // POSIX_FILE_LOCK
 }
 
-bool PWSfile::IsLockedFile(const CMyString &filename, const bool)
+bool PWSfile::IsLockedFile(const CMyString &filename)
 {
   CMyString lock_filename;
   GetLockFileName(filename, lock_filename);
@@ -464,7 +472,7 @@ bool PWSfile::IsLockedFile(const CMyString &filename, const bool)
 			FILE_SHARE_READ,
 			NULL,
 			OPEN_EXISTING, // don't create one!
-			FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+			FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH,
 			NULL);
   if (h == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
@@ -483,7 +491,7 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 {
 	bool bResult = false;
 	// read locker data ("user@machine:nnnnnnnn") from file
-	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
+	TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + 11];
 	// flags here counter (my) intuition, but see
 	// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
 	HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
@@ -498,7 +506,7 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 					&bytesRead, NULL);
 		CloseHandle(h2);
 		if (bytesRead > 0) {
-			lockerStr[bytesRead] = TCHAR('\0');
+			lockerStr[bytesRead/sizeof(TCHAR)] = TCHAR('\0');
 			locker = lockerStr;
 			bResult = true;
 		} else { // read failed for some reason
@@ -506,4 +514,224 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 		} // read info from lock file
 	}
 	return bResult;
+}
+
+void PWSfile::SetFileUUID(const uuid_array_t &file_uuid_array)
+{
+  memcpy(m_file_uuid_array, file_uuid_array, sizeof(file_uuid_array));
+}
+
+void PWSfile::GetFileUUID(uuid_array_t &file_uuid_array)
+{
+  memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
+}
+
+void PWSfile::GetUnknownHeaderFields(UnknownFieldList &UHFL)
+{
+  if (!m_UHFL.empty())
+    UHFL = m_UHFL;
+  else
+    UHFL.clear();
+}
+
+void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
+{
+  if (!UHFL.empty())
+    m_UHFL = UHFL;
+  else
+    m_UHFL.clear();
+}
+
+// Following for 'legacy' use of pwsafe as file encryptor/decryptor
+
+//Complain if the file has not opened correctly
+
+static void
+ErrorMessages(const CString &fn, FILE *fp)
+{
+  if (fp == NULL) {
+    CString cs_text;
+
+    switch (errno) {
+    case EACCES:
+      cs_text.LoadString(IDSC_FILEREADONLY);
+      break;
+    case EEXIST:
+      cs_text.LoadString(IDSC_FILEEXISTS);
+      break;
+    case EINVAL:
+      cs_text.LoadString(IDSC_INVALIDFLAG);
+      break;
+		case EMFILE:
+			cs_text.LoadString(IDSC_NOMOREHANDLES);
+			break;
+		case ENOENT:
+			cs_text.LoadString(IDSC_FILEPATHNOTFOUND);
+			break;
+		default:
+			break;
+    }
+
+    CString cs_title = _T("Password Safe - ") + fn;
+    AfxGetMainWnd()->MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION|MB_OK);
+  }
+}
+
+bool PWSfile::Encrypt(const CString &fn, const CMyString &passwd)
+{
+  unsigned int len;
+  unsigned char* buf;
+
+  FILE *in;
+#if _MSC_VER >= 1400
+  _tfopen_s(&in, fn, _T("rb"));
+#else
+  in = _tfopen(fn, _T("rb"));
+#endif
+  if (in != NULL) {
+    len = PWSUtil::fileLength(in);
+    buf = new unsigned char[len];
+
+    fread(buf, 1, len, in);
+    fclose(in);
+  } else {
+    ErrorMessages(fn, in);
+    return false;
+  }
+
+  CString out_fn = fn;
+  out_fn += CIPHERTEXT_SUFFIX;
+
+  FILE *out;
+#if _MSC_VER >= 1400
+  _tfopen_s(&out, out_fn, _T("wb"));
+#else
+  out = _tfopen(out_fn, _T("wb"));
+#endif
+  if (out != NULL) {
+#ifdef KEEP_FILE_MODE_BWD_COMPAT
+    fwrite( &len, 1, sizeof(len), out);
+#else
+    unsigned char randstuff[StuffSize];
+    unsigned char randhash[SHA1::HASHLEN];   // HashSize
+    PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
+    // miserable bug - have to fix this way to avoid breaking existing files
+    randstuff[8] = randstuff[9] = TCHAR('\0');
+    GenRandhash(passwd,
+                randstuff,
+                randhash);
+    fwrite(randstuff, 1,  8, out);
+    fwrite(randhash,  1, sizeof(randhash), out);
+#endif // KEEP_FILE_MODE_BWD_COMPAT
+
+    unsigned char thesalt[SaltLength];
+    PWSrand::GetInstance()->GetRandomData( thesalt, SaltLength );
+    fwrite(thesalt, 1, SaltLength, out);
+
+    unsigned char ipthing[8];
+    PWSrand::GetInstance()->GetRandomData( ipthing, 8 );
+    fwrite(ipthing, 1, 8, out);
+
+    unsigned char *pwd = NULL;
+    int passlen = 0;
+    ConvertString(passwd, pwd, passlen);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
+    trashMemory(pwd, passlen);
+#ifdef UNICODE
+    delete[] pwd; // gross - ConvertString allocates only if UNICODE.
+#endif
+    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
+    delete fish;
+    fclose(out);
+
+  } else {
+    ErrorMessages(out_fn, out);
+    delete [] buf;
+    return false;
+  }
+  delete[] buf;
+  return true;
+}
+
+bool PWSfile::Decrypt(const CString &fn, const CMyString &passwd)
+{
+  unsigned int len;
+  unsigned char* buf;
+
+  FILE *in;
+#if _MSC_VER >= 1400
+  _tfopen_s(&in, fn, _T("rb"));
+#else
+  in = _tfopen(fn, _T("rb"));
+#endif
+  if (in != NULL) {
+    unsigned char salt[SaltLength];
+    unsigned char ipthing[8];
+    unsigned char randstuff[StuffSize];
+    unsigned char randhash[SHA1::HASHLEN];
+
+#ifdef KEEP_FILE_MODE_BWD_COMPAT
+    fread(&len, 1, sizeof(len), in); // XXX portability issue
+#else
+    fread(randstuff, 1, 8, in);
+    randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround
+    fread(randhash, 1, sizeof(randhash), in);
+
+    unsigned char temphash[SHA1::HASHLEN];
+    GenRandhash(passwd,
+                randstuff,
+                temphash);
+    if (0 != memcmp((char*)randhash,
+                    (char*)temphash, SHA1::HASHLEN)) {
+      fclose(in);
+      AfxMessageBox(IDSC_BADPASSWORD);
+      return false;
+    }
+#endif // KEEP_FILE_MODE_BWD_COMPAT
+    buf = NULL; // allocated by _readcbc - see there for apologia
+
+    fread(salt,    1, SaltLength, in);
+    fread(ipthing, 1, 8,          in);
+
+    unsigned char dummyType;
+    unsigned char *pwd = NULL;
+    int passlen = 0;
+    ConvertString(passwd, pwd, passlen);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, salt, SaltLength);
+    trashMemory(pwd, passlen);
+#ifdef UNICODE
+    delete[] pwd; // gross - ConvertString allocates only if UNICODE.
+#endif
+    if (_readcbc(in, buf, len,dummyType, fish, ipthing) == 0) {
+      delete fish;
+      delete[] buf; // if not yet allocated, delete[] NULL, which is OK
+      return false;
+    }
+    delete fish;
+    fclose(in);
+  } else {
+    ErrorMessages(fn, in);
+    return false;
+  }
+
+  size_t suffix_len = strlen(CIPHERTEXT_SUFFIX);
+  size_t filepath_len = fn.GetLength();
+
+  CString out_fn = fn;
+  out_fn = out_fn.Left(static_cast<int>(filepath_len - suffix_len));
+
+#if _MSC_VER >= 1400
+  FILE *out;
+  _tfopen_s(&out, out_fn, _T("wb"));
+#else
+  FILE *out = _tfopen(out_fn, _T("wb"));
+#endif
+  if (out != NULL) {
+    fwrite(buf, 1, len, out);
+    fclose(out);
+  } else
+    ErrorMessages(out_fn, out);
+
+  delete[] buf; // allocated by _readcbc
+  return true;
 }

@@ -76,14 +76,13 @@ DboxMain::DboxMain(CWnd* pParent)
      m_toolbarsSetup(FALSE),
      m_bSortAscending(true), m_iSortedColumn(CItemData::TITLE),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_lock_displaystatus(_T("")),
-     m_pFontTree(NULL), m_IsReadOnly(false),
+     m_core(app.m_core), m_pFontTree(NULL),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
      m_bValidate(false), m_bOpen(false), 
      m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
-     m_bAlreadyToldUserNoSave(false), m_inExit(false), m_pCC(NULL)
+     m_bAlreadyToldUserNoSave(false), m_inExit(false), m_pCC(NULL), m_bBoldItem(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -285,6 +284,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
    ON_MESSAGE(WM_CCTOHDR_DD_COMPLETE, OnCCToHdrDragComplete)
    ON_MESSAGE(WM_HDRTOCC_DD_COMPLETE, OnHdrToCCDragComplete)
    ON_MESSAGE(WM_HDR_DRAG_COMPLETE, OnHeaderDragComplete)
+   ON_MESSAGE(WM_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
    
 	//}}AFX_MSG_MAP
    ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
@@ -313,8 +313,6 @@ DboxMain::InitPasswordSafe()
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
   // Requires OnInitDialog to have passed OK
-  // AlwaysOnTop preference read from database, if possible, hence set after OpenOnInit
-  m_bAlwaysOnTop = prefs->GetPref(PWSprefs::AlwaysOnTop);
   UpdateAlwaysOnTop();
 
   // ... same for UseSystemTray
@@ -382,11 +380,8 @@ DboxMain::InitPasswordSafe()
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
 
-  m_bExplorerTypeTree = prefs->GetPref(PWSprefs::ExplorerTypeTree);
-  m_bUseGridLines = prefs->GetPref(PWSprefs::ListViewGridLines);
-
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
-  if (m_bUseGridLines)
+  if (prefs->GetPref(PWSprefs::ListViewGridLines))
       dw_ExtendedStyle |= LVS_EX_GRIDLINES;
 
   m_ctlItemList.SetExtendedStyle(dw_ExtendedStyle);
@@ -546,7 +541,7 @@ DboxMain::OnInitDialog()
   CHeaderCtrl* pHeader;
   pHeader = m_ctlItemList.GetHeaderCtrl();
   if(pHeader && pHeader->GetSafeHwnd()) {
-    m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd());
+    VERIFY(m_LVHdrCtrl.SubclassWindow(pHeader->GetSafeHwnd()));
   }
 
   ConfigureSystemMenu();
@@ -571,11 +566,6 @@ DboxMain::OnInitDialog()
 
   if (!m_IsStartClosed && !m_IsStartSilent) {
       OpenOnInit();
-      // Init stuff for list/tree view - refresh as stored in DB
-      m_bShowUsernameInTree = PWSprefs::GetInstance()->
-                                  GetPref(PWSprefs::ShowUsernameInTree);
-      m_bShowPasswordInTree = PWSprefs::GetInstance()->
-                                  GetPref(PWSprefs::ShowPasswordInTree);
       RefreshList();
   }
 
@@ -606,19 +596,19 @@ DboxMain::OnDestroy()
 {
   const CMyString filename(m_core.GetCurFile());
   // The only way we're the locker is if it's locked & we're !readonly
-  if (!filename.IsEmpty() && !m_IsReadOnly && m_core.IsLockedFile(filename))
+  if (!filename.IsEmpty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
     m_core.UnlockFile(filename);
 
   // Get rid of hotkey
   UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID);
 
-  // Stop subclassing the ListView HeaderCtrl
-  if (m_LVHdrCtrl.GetSafeHwnd() != NULL)
-      m_LVHdrCtrl.UnsubclassWindow();
-
   // Stop Drag & Drop OLE
   m_LVHdrCtrl.Terminate();
   m_ctlItemTree.Terminate();
+
+  // Stop subclassing the ListView HeaderCtrl
+  if (m_LVHdrCtrl.GetSafeHwnd() != NULL)
+      m_LVHdrCtrl.UnsubclassWindow();
 
   // and goodbye
   CDialog::OnDestroy();
@@ -655,8 +645,10 @@ void DboxMain::DoItemDoubleClick()
 }
 
 void
-DboxMain::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
+DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 {
+  UnFindItem();
+
 	// TreeView only - use DoubleClick to Expand/Collapse group
 	if (m_ctlItemTree.IsWindowVisible()) {
 		HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
@@ -751,9 +743,9 @@ DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
 
   // Use this callback for commands that need to
   // be disabled in read-only mode
-  pCmdUI->Enable(m_IsReadOnly ? FALSE : TRUE);
+  pCmdUI->Enable(m_core.IsReadOnly() ? FALSE : TRUE);
 #ifdef DEMO
-  if (!m_IsReadOnly) {
+  if (!m_core.IsReadOnly()) {
       bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
       if (isLimited) {
           switch (pCmdUI->m_nID) {
@@ -942,14 +934,18 @@ DboxMain::OnU3ShopWebsite()
 int
 DboxMain::GetAndCheckPassword(const CMyString &filename,
                               CMyString& passkey,
-                              int index ,bool bForceReadOnly)
+                              int index ,
+                              bool bReadOnly,
+                              bool bForceReadOnly,
+                              PWScore *pcore,
+                              int adv_type)
 {
     // index:
     //	GCP_FIRST      (0) first
     //	GCP_NORMAL     (1) OK, CANCEL & HELP buttons
     //	GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
     //	GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
-    //	GCP_ADVANCED   (4) OK, CANCEL, HELP buttons + ADVANCED checkbox
+    //	GCP_ADVANCED   (4) OK, CANCEL, HELP & ADVANCED buttons
 
     // Called for an existing database. Prompt user
     // for password, verify against file. Lock file to
@@ -957,8 +953,10 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     int retval;
     bool bFileIsReadOnly = false;
 
+    if (pcore == 0) pcore = &m_core;
+
     if (!filename.IsEmpty()) {
-        bool exists = m_core.FileExists(filename, bFileIsReadOnly);
+        bool exists = pcore->FileExists(filename, bFileIsReadOnly);
 
         if (!exists) {
             // Used to display an error message, but this is really the caller's business
@@ -973,14 +971,15 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 
     if (bFileIsReadOnly || bForceReadOnly) {
         // As file is read-only, we must honour it and not permit user to change it
-        m_IsReadOnly = true;
-        bFileIsReadOnly = true;
+        pcore->SetReadOnly(true);
     }
     static CPasskeyEntry *dbox_pkentry = NULL;
     int rc = 0;
     if (dbox_pkentry == NULL) {
         dbox_pkentry = new CPasskeyEntry(this, filename,
-                                         index, m_IsReadOnly, bFileIsReadOnly);
+                                         index, bReadOnly | bFileIsReadOnly,
+                                         bFileIsReadOnly | bForceReadOnly,
+                                         adv_type);
 
         int nMajor(0), nMinor(0), nBuild(0);
         DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
@@ -1000,8 +999,16 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         rc = dbox_pkentry->DoModal();
         app.EnableAccelerator();
 
-        if (rc == IDOK && index == GCP_ADVANCED)
-          m_bAdvanced = dbox_pkentry->IsAdvanced();
+        if (rc == IDOK && index == GCP_ADVANCED) {
+          m_bAdvanced = dbox_pkentry->m_bAdvanced;
+          m_bsFields = dbox_pkentry->m_bsFields;
+          m_subgroup_set = dbox_pkentry->m_subgroup_set;
+          if (m_subgroup_set == BST_CHECKED) {
+            m_subgroup_name = dbox_pkentry->m_subgroup_name;
+            m_subgroup_object = dbox_pkentry->m_subgroup_object;
+            m_subgroup_function = dbox_pkentry->m_subgroup_function;
+          }
+        }
 
     } else { // already present - bring to front
         dbox_pkentry->BringWindowToTop(); // can happen with systray lock
@@ -1012,24 +1019,24 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     if (rc == IDOK) {
         DBGMSG("PasskeyEntry returns IDOK\n");
         const CString &curFile = dbox_pkentry->GetFileName();
-        m_core.SetCurFile(curFile);
+        pcore->SetCurFile(curFile);
         CMyString locker(_T("")); // null init is important here
         passkey = dbox_pkentry->GetPasskey();
         // This dialog's setting of read-only overrides file dialog
-        m_IsReadOnly = dbox_pkentry->IsReadOnly();
-        SetReadOnly(m_IsReadOnly);
+        bool bIsReadOnly = dbox_pkentry->IsReadOnly();
+        pcore->SetReadOnly(bIsReadOnly);
         // Set read-only mode if user explicitly requested it OR
         // we could not create a lock file.
         switch (index) {
             case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-                SetReadOnly(m_IsReadOnly || !m_core.LockFile(curFile, locker));
+                pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile, locker));
                 break;
             case GCP_NORMAL:
             case GCP_ADVANCED:
-                if (!m_IsReadOnly) // !first, lock if !m_IsReadOnly
-                    SetReadOnly(!m_core.LockFile(curFile, locker));
+                if (!bIsReadOnly) // !first, lock if !bIsReadOnly
+                    pcore->SetReadOnly(!pcore->LockFile(curFile, locker));
                 else
-                    SetReadOnly(m_IsReadOnly);
+                    pcore->SetReadOnly(bIsReadOnly);
                 break;
             case GCP_UNMINIMIZE:
             case GCP_WITHEXIT:
@@ -1037,6 +1044,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
                 // user can't change R-O status
                 break;
         }
+        UpdateToolBar(bIsReadOnly);
         // locker won't be null IFF tried to lock and failed, in which case
         // it shows the current file locker
         if (!locker.IsEmpty()) {
@@ -1064,11 +1072,13 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
             switch(user_choice) {
                 case IDYES:
                 case IDOK:
-                    SetReadOnly(true);
+                    pcore->SetReadOnly(true);
+                    UpdateToolBar(true);
                     retval = PWScore::SUCCESS;
                     break;
                 case IDNO:
-                    SetReadOnly(false); // Caveat Emptor!
+                    pcore->SetReadOnly(false); // Caveat Emptor!
+                    UpdateToolBar(false);
                     retval = PWScore::SUCCESS;
                     break;
                 case IDCANCEL:
@@ -1081,12 +1091,12 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         } else { // locker.IsEmpty() means no lock needed or lock was successful
             if (dbox_pkentry->GetStatus() == TAR_NEW) {
                 // Save new file
-                m_core.NewFile(dbox_pkentry->GetPasskey());
-                rc = m_core.WriteCurFile();
+                pcore->NewFile(dbox_pkentry->GetPasskey());
+                rc = pcore->WriteCurFile();
                 
                 if (rc == PWScore::CANT_OPEN_FILE) {
                     CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
-                    cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile());
+                    cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile());
                     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
                     retval = PWScore::USER_CANCEL;
                 } else
@@ -1275,7 +1285,7 @@ DboxMain::UpdateAlwaysOnTop()
 #if !defined(POCKET_PC)
   CMenu*	sysMenu = GetSystemMenu( FALSE );
 
-  if ( m_bAlwaysOnTop ) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
     SetWindowPos( &wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
     sysMenu->CheckMenuItem( ID_SYSMENU_ALWAYSONTOP, MF_BYCOMMAND | MF_CHECKED );
   } else {
@@ -1290,9 +1300,9 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
     if ( ID_SYSMENU_ALWAYSONTOP == nID ) {
-        m_bAlwaysOnTop = !m_bAlwaysOnTop;
-        PWSprefs::GetInstance()->SetPref(PWSprefs::AlwaysOnTop,
-                                         m_bAlwaysOnTop);
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    bool oldAlwaysOnTop = prefs->GetPref(PWSprefs::AlwaysOnTop);
+    prefs->SetPref(PWSprefs::AlwaysOnTop, !oldAlwaysOnTop);
         UpdateAlwaysOnTop();
         return;
     }
@@ -1391,7 +1401,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
         ID_MENUITEM_DELETE, CS_DELETEENTRY);
     pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
         ID_MENUITEM_RENAME, CS_RENAMEENTRY);
-    if (m_IsReadOnly) {
+    if (m_core.IsReadOnly()) {
       pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
         ID_MENUITEM_EDIT, CS_VIEWENTRY);
     } else {
@@ -1672,7 +1682,7 @@ DboxMain::UnMinimize(bool update_windows)
             m_passphraseOK = true;
             if (update_windows) {
                 ShowWindow(SW_RESTORE);
-                m_core.SetDisplayStatus(m_lock_displaystatus);
+        m_core.SetDisplayStatus(m_treeDispState);
                 RestoreDisplayStatus(true);
                 BringWindowToTop();
             }
@@ -1760,13 +1770,7 @@ DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 void
 DboxMain::CheckExpiredPasswords()
 {
-  ExpPWEntry exppwentry;
   time_t now, exptime, LTime;
-
-  CList<ExpPWEntry, ExpPWEntry&>* p_expPWList = new CList<ExpPWEntry, ExpPWEntry&>;
-
-  POSITION listPos = m_core.GetFirstEntryPosition();
-
   time(&now);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
@@ -1775,6 +1779,7 @@ DboxMain::CheckExpiredPasswords()
 #if _MSC_VER >= 1400
     errno_t err;
     err = localtime_s(&st, &now);  // secure version
+    ASSERT(err == 0);
 #else
     st = *localtime(&now);
     ASSERT(st != NULL); // null means invalid time
@@ -1786,9 +1791,14 @@ DboxMain::CheckExpiredPasswords()
   } else
       exptime = now;
 
-  while (listPos != NULL)
-    {
-      const CItemData &curitem = m_core.GetEntryAt(listPos);
+  ExpiredList expPWList;
+
+  ExpPWEntry exppwentry;
+  ItemListConstIter listPos;
+  for (listPos = m_core.GetEntryIter();
+       listPos != m_core.GetEntryEndIter();
+       listPos++) {
+    const CItemData &curitem = m_core.GetEntry(listPos);
       curitem.GetLTime(LTime);
 
       if (((long)LTime != 0) && (LTime < exptime)) {
@@ -1799,19 +1809,15 @@ DboxMain::CheckExpiredPasswords()
         exppwentry.expirylocdate = curitem.GetLTimeL();
         exppwentry.expiryexpdate = curitem.GetLTimeExp();
         exppwentry.expirytttdate = LTime;
-        p_expPWList->AddTail(exppwentry);
+      expPWList.push_back(exppwentry);
       }
-      m_core.GetNextEntry(listPos);
 	}
 
-  if (p_expPWList->GetCount() > 0) {
-    CExpPWListDlg dlg(this, m_core.GetCurFile());
-    dlg.m_pexpPWList = p_expPWList;
+  if (!expPWList.empty()) {
+    CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile());
     dlg.DoModal();
-    p_expPWList->RemoveAll();
+    expPWList.clear();
   }
-
-  delete p_expPWList;
 }
 
 void
@@ -1822,7 +1828,7 @@ DboxMain::UpdateAccessTime(CItemData *ci)
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
     GetPref(PWSprefs::MaintainDateTimeStamps);
 
-  if (!m_IsReadOnly && bMaintainDateTimeStamps) {
+  if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
     ci->SetATime();
     SetChanged(TimeStamp);
     // Need to update view if there
@@ -1856,7 +1862,7 @@ DboxMain::OnQueryEndSession()
 	// Save Application related preferences
 	prefs->SaveApplicationPreferences();
 
-	if (m_IsReadOnly)
+	if (m_core.IsReadOnly())
 		return TRUE;
 
 	if (m_bTSUpdated && m_core.GetNumEntries() > 0) {
@@ -1919,7 +1925,7 @@ DboxMain::UpdateStatusBar()
   	if (m_bOpen) {
       s = m_core.IsChanged() ? _T("*") : _T(" ");
       m_statusBar.SetPaneText(SB_MODIFIED, s);
-      s = m_IsReadOnly ? _T("R-O") : _T("R/W");
+      s = m_core.IsReadOnly() ? _T("R-O") : _T("R/W");
       m_statusBar.SetPaneText(SB_READONLY, s);
       s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
       m_statusBar.SetPaneText(SB_NUM_ENT, s);
@@ -1960,15 +1966,17 @@ DboxMain::SetDCAText()
 	m_statusBar.SetPaneText(SB_DBLCLICK, s);
 }
 
-void DboxMain::MakeSortedItemList(ItemList &il)
+// Returns a list of entries as they appear in tree in DFS order
+void DboxMain::MakeOrderedItemList(OrderedItemList &il)
 {
   // Walk the Tree!
   HTREEITEM hItem = NULL;
   while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
     if (!m_ctlItemTree.ItemHasChildren(hItem)) {
       CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-      if (ci != NULL) // NULL if there's an empty group [bug #1633516]
-          il.AddTail(*ci);
+      if (ci != NULL) {// NULL if there's an empty group [bug #1633516]
+         il.push_back(*ci);
+      }
     }
   }
 }
@@ -1984,7 +1992,7 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	const BOOL btoolbar1 = bOpen ? TRUE : FALSE;
 	// If open but Read-Only
 	BOOL btoolbar2;
-	if (m_IsReadOnly)
+	if (m_core.IsReadOnly())
 		btoolbar2 = FALSE;
 	else
 		btoolbar2 = btoolbar1;
@@ -1992,6 +2000,12 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	// Change Main Menus if a database is Open or not
 	CWnd* pMain = AfxGetMainWnd();
 	CMenu* xmainmenu = pMain->GetMenu();
+
+  if (m_bOpen) {
+    for (unsigned int i = 0; i < xmainmenu->GetMenuItemCount(); i++) {
+      xmainmenu->EnableMenuItem(i, MF_BYPOSITION | MF_ENABLED);
+    }
+  }
 
 	// Look for "File" menu.
 	CString cs_text;
@@ -2065,15 +2079,17 @@ CMyString DboxMain::GetUniqueTitle(const CMyString &path, const CMyString &title
                                    const CMyString &user, const int IDS_MESSAGE)
 {
   CMyString new_title(title);
-  if (Find(path, title, user) != NULL) {
+  if (Find(path, title, user) != End()) {
     // Find a unique "Title"
+    ItemListConstIter listpos;
     int i = 0;
     CString s_copy;
     do {
       i++;
       s_copy.Format(IDS_MESSAGE, i);
       new_title = title + CMyString(s_copy);
-    } while (Find(path, new_title, user) != NULL);
+      listpos = Find(path, new_title, user);
+    } while (listpos != End());
   }
   return new_title;
 }

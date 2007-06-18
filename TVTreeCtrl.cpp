@@ -35,22 +35,16 @@ using namespace std ;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-typedef set<CItemData *> SetTreeItem_t;
-typedef SetTreeItem_t *SetTreeItemP_t;
-
 static const TCHAR GROUP_SEP = TCHAR('.');
 
 CTVTreeCtrl::CTVTreeCtrl() : m_pimagelist(NULL), m_pDragImage(NULL), m_isRestoring(false),
-m_uiSendingSession(0), m_uiReceivingSession(0)
+m_bWithinThisInstance(false)
 {
-  m_expandedItems = new SetTreeItem_t;
 }
 
 CTVTreeCtrl::~CTVTreeCtrl()
 {
   delete m_pimagelist;
-  delete (SetTreeItem_t *)m_expandedItems;
 }
 
 BEGIN_MESSAGE_MAP(CTVTreeCtrl, CTreeCtrl)
@@ -77,7 +71,8 @@ BOOL CTVTreeCtrl::PreTranslateMessage(MSG* pMsg)
 {
   // When an item is being edited make sure the edit control
   // receives certain important key strokes
-  if (GetEditControl()) {
+  CEdit* pEdit = GetEditControl();
+  if (pEdit != NULL) {
     ::TranslateMessage(pMsg);
     ::DispatchMessage(pMsg);
     return TRUE; // DO NOT process further
@@ -86,7 +81,8 @@ BOOL CTVTreeCtrl::PreTranslateMessage(MSG* pMsg)
   //hitting the F2 key, being in-place editing of an item
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
     HTREEITEM hItem = GetSelectedItem();
-    if (hItem != NULL && !((DboxMain *)GetParent())->IsReadOnly())
+    DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
+    if (hItem != NULL && !(dbx->IsMcoreReadOnly()))
       EditLabel(hItem);
     return TRUE;
   }
@@ -109,9 +105,9 @@ DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
 {
   CTVTreeCtrl *pDestTreeCtrl;
 
-  DROPEFFECT dropeffectRet = DROPEFFECT_COPY;
-  if ((dwKeyState & MK_SHIFT) == MK_SHIFT)
-    dropeffectRet = DROPEFFECT_MOVE;
+  DROPEFFECT dropeffectRet = DROPEFFECT_MOVE;
+  if ((dwKeyState & MK_CONTROL) == MK_CONTROL)
+    dropeffectRet = DROPEFFECT_COPY;
 
   // Doesn't matter that we didn't initialize m_calls
   m_calls++;
@@ -202,70 +198,6 @@ void CTVTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
       UpdateLeafsGroup(child, prefix);
     }
   }
-}
-
-void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult */)
-{
-    TRACE("CTVTreeCtrl::BeginDrag()\n");
-    // Can drag in read-only mode as it might be to someone else
-    // Can't allow drop in read-only mode
-
-    CPoint      ptAction;
-    GetCursorPos(&ptAction);
-    ScreenToClient(&ptAction);
-
-    UINT uFlags;
-    m_hitemDrag = HitTest(ptAction, &uFlags);
-    if ((m_hitemDrag == NULL) || !(TVHT_ONITEM & uFlags)) {
-        return;
-    }
-
-    SelectItem(m_hitemDrag);
-
-    long lBufLen;
-    BYTE * buffer(NULL);
-    CString cs_text;
-
-    // Start of Drag of entries.....
-    // CollectData allocates buffer - need to free later
-    if (!CollectData(buffer, lBufLen))
-        return;
-
-    cs_text.Format(_T("%s%02x%08x"), gbl_classname, FROMTREE, lBufLen);
-
-    CMemFile mf;
-    mf.Write(cs_text, sizeof(gbl_classname) - 1 + 10);
-    mf.Write(buffer, lBufLen);
-
-    // Finished with (encrypted) buffer - free it
-    free(buffer);
-
-    DWORD dw_mflen = (DWORD)mf.GetLength();
-    LPCTSTR mf_buffer = LPCTSTR(mf.Detach());
-
-    ASSERT(m_pDragImage == NULL);
-    m_pDragImage = CreateDragImage(m_hitemDrag);
-
-    // Get client rectangle
-    RECT rClient;
-    GetClientRect(&rClient);
-
-    // Set our session numbers (should be different!)
-    m_uiSendingSession = PWSrand::GetInstance()->RandUInt();
-    m_uiReceivingSession = PWSrand::GetInstance()->RandUInt();
-
-    // Start dragging
-    StartDragging(mf_buffer, dw_mflen, gbl_tcddCPFID, &rClient, &ptAction);
-
-    // Cleanup
-    free((void *)mf_buffer);
-
-// End dragging image
-    m_pDragImage->DragLeave(GetDesktopWindow());
-    m_pDragImage->EndDrag();
-
-    delete m_pDragImage;
-    m_pDragImage = NULL;
 }
 
 void CTVTreeCtrl::BeginLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
@@ -426,7 +358,8 @@ final_check:
 
 void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
 {
-  if (((DboxMain *)GetParent())->IsReadOnly())
+  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
+  if (dbx->IsMcoreReadOnly())
     return; // don't drag in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
@@ -472,7 +405,7 @@ void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
       }
 
       group = CString(ci->GetGroup());
-      if (((DboxMain *)m_parent)->Find(group, newTitle, newUser) != NULL) {
+      if (dbx->Find(group, newTitle, newUser) != dbx->End()) {
         CMyString temp;
         if (group.IsEmpty())
           temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
@@ -521,13 +454,13 @@ void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
 
       // update the password database record - but only those items visible!!!
       ci->SetTitle(newTitle);
-      ((DboxMain *)m_parent)->UpdateListItemTitle(lindex, newTitle);
+      dbx->UpdateListItemTitle(di->list_index, (CString)newTitle);
       if (bShowUsernameInTree) {
         ci->SetUser(newUser);
-        ((DboxMain *)m_parent)->UpdateListItemUser(lindex, newUser);
+        dbx->UpdateListItemUser(lindex, newUser);
         if (bShowPasswordInTree) {
           ci->SetPassword(newPassword);
-          ((DboxMain *)m_parent)->UpdateListItemPassword(lindex, newPassword);
+          dbx->UpdateListItemPassword(lindex, newPassword);
         }
       }
     } else {
@@ -548,11 +481,11 @@ void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
       UpdateLeafsGroup(ti, prefix);
     }
     // Mark database as modified
-    ((DboxMain *)m_parent)->SetChanged(DboxMain::Data);
+    dbx->SetChanged(DboxMain::Data);
 
     // Sort it as appropriate
-    if (((DboxMain *)GetParent())->IsExplorerTree())
-      ((DboxMain *)GetParent())->SortTree(ti);
+     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
+      dbx->SortTree(ti);
     else
       SortChildren(GetParentItem(ti));
 
@@ -563,7 +496,7 @@ void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
 
 bad_exit:
     // Refresh display to show old text - if we don't no one else will
-    ((DboxMain *)m_parent)->RefreshList();
+    dbx->RefreshList();
     // restore text
     // (not that this is documented anywhere in MS's docs...)
     *pLResult = FALSE;
@@ -604,11 +537,10 @@ void CTVTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 
 void CTVTreeCtrl::DeleteFromSet(HTREEITEM hItem)
 {
-  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
   DWORD itemData = GetItemData(hItem);
   ASSERT(itemData != NULL);
   CItemData *ci = (CItemData *)itemData;
-  pSet->erase(ci);
+  m_expandedItems.erase(ci);
 }
 
 // Return the full path leading up to a given item, but
@@ -691,6 +623,8 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   HTREEITEM           hNewItem, hFirstChild;
   DWORD itemData = GetItemData(hitemDrag);
 
+  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
+
   // avoid an infinite recursion
   tvstruct.item.hItem = hitemDrag;
   tvstruct.item.cchTextMax = sizeof(sztBuffer)/sizeof(TCHAR) - 1;
@@ -700,7 +634,8 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   GetItem(&tvstruct.item);  // get information of the dragged element
 
   tvstruct.hParent = hitemDrop;
-  if (((DboxMain *)GetParent())->IsExplorerTree())
+
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) 
     tvstruct.hInsertAfter = TVI_LAST;
   else
     tvstruct.hInsertAfter = TVI_SORT;
@@ -727,40 +662,39 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
     CMyString ci_title;
-    ci_title = ((DboxMain *)m_parent)->GetUniqueTitle(path, 
-                           ci_title0, ci_user, IDS_DRAGNUMBER);
+    ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     ci->SetGroup(path);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     if (ci_title.Compare(ci_title0) != 0) {
-        ci->SetTitle(ci_title);
-        CMyString treeDispString;
-        treeDispString = ci_title;
-        if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
-          treeDispString += _T(" [");
-          treeDispString += ci_user;
-          treeDispString += _T("]");
-          if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
-            CMyString ci_Password = ci->GetPassword();
-            treeDispString += _T(" {");
-            treeDispString += ci_Password;
-            treeDispString += _T("}");
-          }
+      ci->SetTitle(ci_title);
+      CMyString treeDispString;
+      treeDispString = ci_title;
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
+        treeDispString += _T(" [");
+        treeDispString += ci_user;
+        treeDispString += _T("]");
+        if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
+          CMyString ci_Password = ci->GetPassword();
+          treeDispString += _T(" {");
+          treeDispString += ci_Password;
+          treeDispString += _T("}");
         }
+      }
       // Update tree label
       SetItemText(hNewItem, treeDispString);
       // Update list field
-      ((DboxMain *)GetParent())->UpdateListItemTitle(di->list_index, (CString)ci_title);
+      dbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
     }
     // Mark database as modified!
-    ((DboxMain *)GetParent())->SetChanged(DboxMain::Data);
+    dbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
     di->tree_item = hNewItem;
   }
   SetItemData(hNewItem, itemData);
-  if (((DboxMain *)GetParent())->IsExplorerTree())
-    ((DboxMain *)GetParent())->SortTree(hitemDrop);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
+    dbx->SortTree(hitemDrop);
   else
     SortChildren(hitemDrop);
 
@@ -775,6 +709,8 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   HTREEITEM hFirstChild;
   DWORD itemData = GetItemData(hitemDrag);
+
+  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
 
   if (itemData != 0) { // Non-NULL itemData implies Leaf
     CItemData *ci = (CItemData *)itemData;
@@ -800,8 +736,7 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
     CMyString ci_title;
-    ci_title = ((DboxMain *)m_parent)->GetUniqueTitle(path, ci_title0,
-                            ci_user, IDS_DRAGNUMBER);
+    ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     temp.CreateUUID();
     temp.SetGroup(path);
@@ -813,14 +748,14 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     ndi->tree_item = 0;
     temp.SetDisplayInfo(ndi);
 
-    ((DboxMain *)m_parent)->AddEntry(temp);
+    dbx->AddEntry(temp);
 
     // Mark database as modified!
-    ((DboxMain *)GetParent())->SetChanged(DboxMain::Data);
+    dbx->SetChanged(DboxMain::Data);
   }
 
-  if (((DboxMain *)GetParent())->IsExplorerTree())
-    ((DboxMain *)GetParent())->SortTree(hitemDrop);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
+    dbx->SortTree(hitemDrop);
   else
     SortChildren(hitemDrop);
 
@@ -838,48 +773,43 @@ void CTVTreeCtrl::ExpandCollapse(NMHDR *pNotifyStruct, LRESULT * &pLResult)
   // need to store the corresponding elements. But groups have none, so
   // we store the first (or any) child element, and upon restore, expand
   // the parent. Ugh++.
+  // Note that we do not support the case where expanded node has only
+  // tree subnodes, since there's nothing to get a CItemData from.
+  // This borderline case is hereby deemed more trouble than it's
+  // worth to handle correctly.
 
   *pLResult = FALSE;
 
   if (!m_isRestoring) {
-    SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
     NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNotifyStruct;
     // now find a leaf son and add it's CitemData to set.
     HTREEITEM child = GetChildItem(pNMTreeView->itemNew.hItem);
     ASSERT(child != NULL); // can't expand something w/o children, right?
     do {
       if (IsLeafNode(child)) {
-        break; // stop at first leaf child found
-      }
+        DWORD itemData = GetItemData(child);
+        ASSERT(itemData != NULL);
+        CItemData *ci = (CItemData *)itemData;
+        if (pNMTreeView->action == TVE_EXPAND) {
+          m_expandedItems.insert(ci);
+          return; // stop at first leaf child found
+        } else if (pNMTreeView->action == TVE_COLLAPSE) {
+          // order may change, so we need to check each leaf
+          if (m_expandedItems.find(ci) != m_expandedItems.end())
+            m_expandedItems.erase(ci);
+        }
+      } // IsLeafNode
       child = GetNextSiblingItem(child);
     } while (child != NULL);
-
-    if (child == NULL) {
-      // case where expanded node has only tree subnodes,
-      // nothing to get a CItemData from. This borderline
-      // case is hereby deemed more trouble than it's worth to
-      // handle correctly.
-      return;
-    }
-    DWORD itemData = GetItemData(child);
-    ASSERT(itemData != NULL);
-    CItemData *ci = (CItemData *)itemData;
-    if (pNMTreeView->action == TVE_EXPAND)
-      pSet->insert(ci);
-    else if (pNMTreeView->action == TVE_COLLAPSE) {
-      ASSERT(pSet->find(ci) != pSet->end());
-      pSet->erase(ci);
-    }
-  }
+  } // !m_isRestoring
 }
 
 void CTVTreeCtrl::RestoreExpanded()
 {
   m_isRestoring = true;
-  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
   SetTreeItem_t::iterator it;
 
-  for (it = pSet->begin(); it != pSet->end(); it++) {
+  for (it = m_expandedItems.begin(); it != m_expandedItems.end(); it++) {
     CItemData *ci = *it;
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     HTREEITEM parent = GetParentItem(di->tree_item);
@@ -890,8 +820,7 @@ void CTVTreeCtrl::RestoreExpanded()
 
 void CTVTreeCtrl::ClearExpanded()
 {
-  SetTreeItemP_t pSet = SetTreeItemP_t(m_expandedItems);
-  pSet->clear();
+  m_expandedItems.clear();
 }
 
 void CTVTreeCtrl::OnExpandAll()
@@ -920,8 +849,7 @@ void CTVTreeCtrl::OnCollapseAll()
   SetRedraw(FALSE);
   do {
     CollapseBranch(hItem);
-  }
-  while((hItem = this->GetNextSiblingItem(hItem)) != NULL);
+  } while((hItem = this->GetNextSiblingItem(hItem)) != NULL);
   SetRedraw();
 }
 
@@ -933,8 +861,7 @@ void CTVTreeCtrl::CollapseBranch(HTREEITEM hItem)
     hItem = this->GetChildItem(hItem);
     do {
       CollapseBranch(hItem);
-    }
-    while((hItem = this->GetNextSiblingItem(hItem)) != NULL);
+    } while((hItem = this->GetNextSiblingItem(hItem)) != NULL);
   }
 }
 
@@ -944,23 +871,23 @@ CTVTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
   if (NULL == hItem)
     return this->GetRootItem();
 
-    // First, try to go to this item's 1st child
-    HTREEITEM hReturn = this->GetChildItem(hItem);
+  // First, try to go to this item's 1st child
+  HTREEITEM hReturn = this->GetChildItem(hItem);
 
-    // If no more child items...
-    while (hItem && !hReturn) {
-        // Get this item's next sibling
-        hReturn = this->GetNextSiblingItem(hItem);
+  // If no more child items...
+  while (hItem && !hReturn) {
+    // Get this item's next sibling
+    hReturn = this->GetNextSiblingItem(hItem);
 
-        // If hReturn is NULL, then there are no
-        // sibling items, and we're on a leaf node.
-        // Backtrack up the tree one level, and
-        // we'll look for a sibling on the next
-        // iteration (or we'll reach the root and
-        // quit).
-        hItem = this->GetParentItem(hItem);
-    }
-    return hReturn;
+    // If hReturn is NULL, then there are no
+    // sibling items, and we're on a leaf node.
+    // Backtrack up the tree one level, and
+    // we'll look for a sibling on the next
+    // iteration (or we'll reach the root and
+    // quit).
+    hItem = this->GetParentItem(hItem);
+  }
+  return hReturn;
 }
 
 void CTVTreeCtrl::OnLButtonDblClk(UINT /* nFlags */, CPoint /* point */)
@@ -968,10 +895,79 @@ void CTVTreeCtrl::OnLButtonDblClk(UINT /* nFlags */, CPoint /* point */)
   ((DboxMain *)m_parent)->DoItemDoubleClick();
 }
 
+void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult */)
+{
+  TRACE("CTVTreeCtrl::BeginDrag()\n");
+
+  // Can drag in read-only mode as it might be to someone else
+  // Can't allow drop in read-only mode
+
+  CPoint ptAction;
+  GetCursorPos(&ptAction);
+  ScreenToClient(&ptAction);
+
+  UINT uFlags;
+  m_hitemDrag = HitTest(ptAction, &uFlags);
+  if ((m_hitemDrag == NULL) || !(TVHT_ONITEM & uFlags)) {
+    return;
+  }
+
+  SelectItem(m_hitemDrag);
+
+  long lBufLen;
+  BYTE * buffer(NULL);
+  CString cs_text;
+
+  // Start of Drag of entries.....
+  // CollectData allocates buffer - need to free later
+  if (!CollectData(buffer, lBufLen))
+    return;
+
+  cs_text.Format(_T("%s%02x%08x"), gbl_classname, FROMTREE, lBufLen);
+
+  CMemFile mf;
+  mf.Write((LPCTSTR)cs_text, cs_text.GetLength() * sizeof(TCHAR));
+  mf.Write(buffer, lBufLen);
+
+  // Finished with (encrypted) buffer - free it
+  free(buffer);
+
+  DWORD dw_mflen = (DWORD)mf.GetLength();
+  BYTE * mf_buffer = (BYTE *)(mf.Detach());
+
+#ifdef _DEBUG
+   CString cs_timestamp;
+   cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp, dw_mflen, dw_mflen);
+   PWSUtil::HexDump(mf_buffer, dw_mflen, cs_timestamp);
+#endif /* DEBUG */
+
+  ASSERT(m_pDragImage == NULL);
+  m_pDragImage = CreateDragImage(m_hitemDrag);
+
+  // Get client rectangle
+  RECT rClient;
+  GetClientRect(&rClient);
+
+  // Start dragging
+  StartDragging(mf_buffer, dw_mflen, gbl_tcddCPFID, &rClient, &ptAction);
+
+  // Cleanup
+  free((void *)mf_buffer);
+
+  // End dragging image
+  m_pDragImage->DragLeave(GetDesktopWindow());
+  m_pDragImage->EndDrag();
+
+  delete m_pDragImage;
+  m_pDragImage = NULL;
+}
+
 BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
                               DROPEFFECT dropEffect, CPoint point)
 {
-  if (((DboxMain *)GetParent())->IsReadOnly())
+  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
+  if (dbx->IsMcoreReadOnly())
     return FALSE; // don't drop in read-only mode
 
   if (!pDataObject->IsDataAvailable(gbl_tcddCPFID, NULL))
@@ -1009,8 +1005,6 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
       return FALSE;
   }
 
-  m_uiReceivingSession = m_uiSendingSession;
-
   BOOL retval(FALSE);
 
   // On Drop of data from one tree to another
@@ -1025,28 +1019,31 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   if (memsize < DD_MEMORY_MINSIZE)
     goto exit;
 
-  memset(m_sending_classname, 0, sizeof(gbl_classname));
-  memcpy(m_sending_classname, pData, sizeof(gbl_classname) - 1);
-  bool our_data = memcmp(gbl_classname, m_sending_classname, sizeof(gbl_classname) - 1) == 0;
+  memset(m_sending_classname, 0, DD_CLASSNAME_SIZE + sizeof(TCHAR));
+  memcpy(m_sending_classname, pData, DD_CLASSNAME_SIZE);
+  m_bWithinThisInstance = memcmp(gbl_classname, m_sending_classname, DD_CLASSNAME_SIZE) == 0;
 
+  // iDDType = D&D type FROMTREE or for column D&D only FROMCC, FROMHDR
+  // lBufLen = Length of D&D data appended to this data
   int iDDType;
   long lBufLen;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData + sizeof(gbl_classname) - 1, _T("%02x%08x"), &iDDType, &lBufLen);
+  _stscanf_s(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%08x"), &iDDType, &lBufLen);
 #else
-  _stscanf(pData + sizeof(gbl_classname) - 1, _T("%02x%08x"), &iDDType, &lBufLen);
+  _stscanf(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%08x"), &iDDType, &lBufLen);
 #endif
 
   // Check if it is from another TreeCtrl?
   // - we don't accept drop from anything else
-  if (iDDType != FROMTREE || ((long)memsize < (DD_MEMORY_MINSIZE + lBufLen)))
+  if (iDDType != FROMTREE || ((long)memsize < (long)(DD_MEMORY_MINSIZE + lBufLen)))
     goto exit;
 
   if (m_hitemDrop == NULL && GetCount() == 0) {
     // Dropping on to an empty database
     CMyString DropGroup (_T(""));
-    ProcessData((BYTE *)(pData + sizeof(gbl_classname) - 1 + 10), lBufLen, DropGroup);
+    ProcessData((BYTE *)(pData + DD_CLASSNAME_SIZE + DD_REQUIRED_DATA_SIZE),
+                lBufLen, DropGroup);
     SelectItem(GetRootItem());
     retval = TRUE;
     goto exit;
@@ -1055,7 +1052,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   if (IsLeafNode(m_hitemDrop) || bForceRoot)
     m_hitemDrop = GetParentItem(m_hitemDrop);
 
-  if (our_data) {
+  if (m_bWithinThisInstance) {
     // from me! - easy
     HTREEITEM parent = GetParentItem(m_hitemDrag);
     if (m_hitemDrag != m_hitemDrop &&
@@ -1079,7 +1076,8 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     // from someone else!
     // Now add it
     CMyString DropGroup = CMyString(GetGroup(m_hitemDrop));
-    ProcessData((BYTE *)(pData + sizeof(gbl_classname) - 1 + 10), lBufLen, DropGroup);
+    ProcessData((BYTE *)(pData + DD_CLASSNAME_SIZE + DD_REQUIRED_DATA_SIZE),
+                lBufLen, DropGroup);
     SelectItem(m_hitemDrop);
     retval = TRUE;
   }
@@ -1090,24 +1088,25 @@ exit:
   GlobalUnlock(hGlobal);
 
   if (retval == TRUE)
-    ((DboxMain *)m_parent)->SetChanged(DboxMain::Data);
+    dbx->SetChanged(DboxMain::Data);
 
   return retval;
 }
 
 void CTVTreeCtrl::CompleteMove()
 {
+  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
   // If drag within instance - we have already done ths
-  if (m_uiReceivingSession == m_uiSendingSession)
+  if (m_bWithinThisInstance)
     return;
 
   // If drag to another instance, ignore in Read-only mode
-  if (((DboxMain *)GetParent())->IsReadOnly())
+  if (dbx->IsMcoreReadOnly())
     return;
 
   // After we have dragged successfully from our Tree to another Tree
-  ((DboxMain *)m_parent)->Delete();
-  ((DboxMain *)m_parent)->RefreshList();
+  dbx->Delete();
+  dbx->RefreshList();
 }
 
 bool CTVTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
@@ -1129,98 +1128,56 @@ bool CTVTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   }
 
   CSMemFile outDDmemfile;
-  CArchive ar_out (&outDDmemfile, CArchive::store);
+  CArchive ar_out(&outDDmemfile, CArchive::store);
   out_oblist.Serialize(ar_out);
   ar_out.Flush();
   ar_out.Close();
 
-  DWORD dw_outmflen = (DWORD)outDDmemfile.GetLength();
-  unsigned char * outddmemfile_buffer = (unsigned char *)outDDmemfile.Detach();
-  EncryptSendingData(outddmemfile_buffer, dw_outmflen, out_buffer, outLen);
+  outLen = (long)outDDmemfile.GetLength();
+  out_buffer = (BYTE *)outDDmemfile.Detach();
 
   while (!out_oblist.IsEmpty()) {
     delete (CDDObject *)out_oblist.RemoveHead();
   } 
-
-  trashMemory(outddmemfile_buffer, dw_outmflen);
-  free(outddmemfile_buffer);
 
   return (outLen > 0);
 }
 
 bool CTVTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString DropGroup)
 {
-  unsigned char * clear_buffer(NULL);
-  long clearLen(0);
+  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
 
-  DecryptReceivedData(in_buffer, inLen, clear_buffer, clearLen);
+#ifdef _DEBUG
+   CString cs_timestamp;
+   cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: Drop data: length %d/0x%04x, value:\n"), cs_timestamp, inLen, inLen);
+   PWSUtil::HexDump(in_buffer, inLen, cs_timestamp);
+#endif /* DEBUG */
 
-  if (clearLen <= 0)
+  if (inLen <= 0)
     return false;
 
   CDDObList in_oblist;
 
   CSMemFile inDDmemfile;
 
-  inDDmemfile.Attach((BYTE *)clear_buffer, clearLen);
+  inDDmemfile.Attach((BYTE *)in_buffer, inLen);
 
   CArchive ar_in (&inDDmemfile, CArchive::load);
   in_oblist.Serialize(ar_in);
   ar_in.Close();
 
   inDDmemfile.Detach();
-  trashMemory(clear_buffer, clearLen);
-  free(clear_buffer);
 
   if (!in_oblist.IsEmpty()) {
-    ((DboxMain *)m_parent)->AddEntries(in_oblist, DropGroup);
+    dbx->AddEntries(in_oblist, DropGroup);
 
     while (!in_oblist.IsEmpty()) {
       delete (CDDObject *)in_oblist.RemoveHead();
     }
   }
 
-  return (clearLen > 0);
-}
-
-void CTVTreeCtrl::DecryptReceivedData(BYTE * &in_buffer, const long &inLen,
-                                      unsigned char * &out_buffer, long &outLen)
-{
-  CSMemFile inMemFile;
-  CMyString passwd;
-
-  out_buffer = NULL;
-  outLen = 0;
-
-  // Point to data
-  inMemFile.Attach((BYTE *)in_buffer, inLen, 0);
-
-  // Generate password from their classname and the CLIPFORMAT
-  passwd.Format(_T("%s%04x"), m_sending_classname, gbl_tcddCPFID);
-
-  // Decrypt it
-  DecryptMemory(out_buffer, outLen, passwd, &inMemFile);
-
-  inMemFile.Detach();
-}
-
-void CTVTreeCtrl::EncryptSendingData(unsigned char * &in_buffer, const long &inLen,
-                                     BYTE * &out_buffer, long &outLen)
-{
-  CSMemFile outMemFile;
-  CMyString passwd;
-
-  // Generate password from our classname and the CLIPFORMAT
-  passwd.Format(_T("%s%04x"), gbl_classname, gbl_tcddCPFID);
-
-  // Encrypt it
-  EncryptMemory(in_buffer, inLen, passwd, &outMemFile);
-
-  outLen = (long)outMemFile.GetLength();
-  if (outLen > 0) {
-    // Create buffer for clipboard
-    out_buffer = (BYTE *)outMemFile.Detach();
-  }
+  return (inLen > 0);
 }
 
 void

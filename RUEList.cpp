@@ -8,11 +8,15 @@
 /// \file RUEList.cpp
 //-----------------------------------------------------------------------------
 
+#include <algorithm> // for find_if
+
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "RUEList.h"
 #include "corelib/PWScore.h"
 #include "resource3.h"  // String resources
+
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,63 +24,51 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+RUEntry::RUEntry(const uuid_array_t &aRUEuuid)
+{
+  ::memcpy(RUEuuid, aRUEuuid, sizeof(uuid_array_t));
+}
+
+bool RUEntry::operator()(const RUEntry &re)
+{
+  return ::memcmp(RUEuuid, re.RUEuuid,
+                  sizeof(uuid_array_t)) == 0;
+}
+
 //-----------------------------------------------------------------------------
-// Constructors
 
 CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0)
-{
-}
+{}
 
-CRUEList::~CRUEList()
-{
-}
 
-//-----------------------------------------------------------------------------
+
 // Accessors
 
-bool
-CRUEList::SetMax(const int &newmax)
+void
+CRUEList::SetMax(size_t newmax)
 {
-  if (newmax < 0) return false;
-
   m_maxentries = newmax;
 
-  int numentries = m_RUEList.GetCount();
+  size_t numentries = m_RUEList.size();
 
-  if (newmax > numentries) return true;
-
-  for (int i = numentries; i > newmax; i--)
-    m_RUEList.RemoveTail();
-
-  return true;
-}
-
-int
-CRUEList::GetMax() const
-{
-  return m_maxentries;
-}
-
-int
-CRUEList::GetCount() const
-{
-  return m_RUEList.GetCount();
+  if (newmax < numentries)
+    m_RUEList.resize(newmax);
 }
 
 bool
-CRUEList::GetAllMenuItemStrings(CList<CMyString, CMyString&> &ListofAllMenuStrings) const
+CRUEList::GetAllMenuItemStrings(vector<CMyString> &ListofAllMenuStrings) const
 {
   CMyString itemstring;
-  POSITION ruel_pos = m_RUEList.GetHeadPosition();
   bool retval = false;
 
-  while (ruel_pos != NULL) {
-    const RUEntry m_ruentry = m_RUEList.GetNext(ruel_pos);
-    POSITION pw_listpos = m_core.Find(m_ruentry.RUEuuid);
-    if (pw_listpos == NULL) {
+  RUEListConstIter iter;
+
+  for (iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
+    ItemListConstIter pw_listpos = m_core.Find(iter->RUEuuid);
+    if (pw_listpos == m_core.GetEntryEndIter()) {
       itemstring = _T("");
     } else {
-      const CItemData &ci = m_core.GetEntryAt(pw_listpos);
+      const CItemData &ci = m_core.GetEntry(pw_listpos);
       CMyString group = ci.GetGroup();
       CMyString title = ci.GetTitle();
       CMyString user = ci.GetUser();
@@ -92,30 +84,29 @@ CRUEList::GetAllMenuItemStrings(CList<CMyString, CMyString&> &ListofAllMenuStrin
 
       itemstring = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
     }
-    ListofAllMenuStrings.AddTail(itemstring);
+    ListofAllMenuStrings.push_back(itemstring);
     retval = true;
   }
   return retval;
 }
 
 bool
-CRUEList::GetMenuItemString(const int &index, CMyString &itemstring) const
+CRUEList::GetMenuItemString(size_t index, CMyString &itemstring) const
 {
-  if (m_RUEList.GetCount() == 0  || index > m_RUEList.GetCount()) {
+  if (m_RUEList.empty()  || index > m_RUEList.size()) {
     itemstring = _T("");
     return false;
   }
 
-  POSITION re_listpos = m_RUEList.FindIndex(index);
-  RUEntry m_ruentry = m_RUEList.GetAt(re_listpos);
+  RUEntry m_ruentry = m_RUEList[index];
 
-  POSITION pw_listpos = m_core.Find(m_ruentry.RUEuuid);
-  if (pw_listpos == NULL) {
+  ItemListConstIter pw_listpos = m_core.Find(m_ruentry.RUEuuid);
+  if (pw_listpos == m_core.GetEntryEndIter()) {
     itemstring = _T("");
     return false;
   }
 
-  const CItemData ci = m_core.GetEntryAt(pw_listpos);
+  const CItemData ci = m_core.GetEntry(pw_listpos);
   CMyString group = ci.GetGroup();
   CMyString title = ci.GetTitle();
   CMyString user = ci.GetUser();
@@ -134,20 +125,21 @@ CRUEList::GetMenuItemString(const int &index, CMyString &itemstring) const
 }
 
 bool
-CRUEList::GetMenuItemString(const uuid_array_t &RUEuuid, CMyString &itemstring) const
+CRUEList::GetMenuItemString(const uuid_array_t &RUEuuid,
+                            CMyString &itemstring) const
 {
-  if (m_RUEList.GetCount() == 0) {
+  if (m_RUEList.empty()) {
     itemstring = _T("");
     return false;
   }
 
-  POSITION pw_listpos = m_core.Find(RUEuuid);
-  if (pw_listpos == NULL) {
+  ItemListConstIter pw_listpos = m_core.Find(RUEuuid);
+  if (pw_listpos == m_core.GetEntryEndIter()) {
     itemstring = _T("");
     return false;
   }
 
-  const CItemData ci = m_core.GetEntryAt(pw_listpos);
+  const CItemData ci = m_core.GetEntry(pw_listpos);
   CMyString group = ci.GetGroup();
   CMyString title = ci.GetTitle();
   CMyString user = ci.GetUser();
@@ -163,104 +155,81 @@ CRUEList::GetMenuItemString(const uuid_array_t &RUEuuid, CMyString &itemstring) 
 
   itemstring = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
   return true;
-}
-
-void
-CRUEList::ClearEntries()
-{
-  m_RUEList.RemoveAll();
 }
 
 bool
 CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
 {
+  /*
+   * If the entry's already there, do nothing, return true.
+   * Otherwise, add it, removing last entry if needed to
+   * maintain size() <= m_maxentries invariant
+   */
   if (m_maxentries == 0) return false;
 
-  RUEntry re_newEntry;
-  memcpy(re_newEntry.RUEuuid, RUEuuid, sizeof(uuid_array_t));
+  RUEntry match_uuid(RUEuuid);
 
-  POSITION re_listpos = m_RUEList.GetHeadPosition();
-  while (re_listpos != NULL) {
-    const RUEntry &re_FoundEntry = m_RUEList.GetAt(re_listpos);
-    if (memcmp(re_FoundEntry.RUEuuid, re_newEntry.RUEuuid, sizeof(uuid_array_t)) == 0)
-      break;  // found it already there
-    else
-      m_RUEList.GetNext(re_listpos);
-  }
+  RUEListIter iter = find_if(m_RUEList.begin(), m_RUEList.end(), match_uuid);
 
-  if (re_listpos == NULL) {
-    if (m_RUEList.GetCount() == m_maxentries)  // if already maxed out - delete oldest entry
-      m_RUEList.RemoveTail();
+  if (iter == m_RUEList.end()) {
+    if (m_RUEList.size() == m_maxentries)  // if already maxed out - delete oldest entry
+      m_RUEList.pop_back();
 
-    m_RUEList.AddHead(re_newEntry);  // put it at the top
+    m_RUEList.push_front(match_uuid);  // put it at the top
   } else {
-    m_RUEList.RemoveAt(re_listpos);  // take it out
-    m_RUEList.AddHead(re_newEntry);  // put it at the top
+    m_RUEList.erase(iter);  // take it out
+    m_RUEList.push_front(match_uuid);  // put it at the top
   }
   return true;
 }
 
 bool
-CRUEList::DeleteRUEntry(const int &index)
+CRUEList::DeleteRUEntry(size_t index)
 {
   if ((m_maxentries == 0) ||
-      (m_RUEList.GetCount() == 0) ||
+      m_RUEList.empty() ||
       (index > (m_maxentries - 1)) ||
-      (index < 0) ||
-      (index > (m_RUEList.GetCount() - 1))) return false;
+      (index > (m_RUEList.size() - 1))) return false;
 
-  POSITION re_listpos = m_RUEList.FindIndex(index);
-  ASSERT(re_listpos != NULL);
-
-  m_RUEList.RemoveAt(re_listpos);
+  m_RUEList.erase(m_RUEList.begin() + index);
   return true;
 }
 
 bool
 CRUEList::DeleteRUEntry(const uuid_array_t &RUEuuid)
 {
-  if ((m_maxentries == 0) ||
-      (m_RUEList.GetCount() == 0)) return false;
+  if ((m_maxentries == 0) || m_RUEList.empty())
+    return false;
 
-  POSITION re_listpos = m_RUEList.GetHeadPosition();
-  RUEntry re_oldEntry;
-  memcpy(re_oldEntry.RUEuuid, RUEuuid, sizeof(uuid_array_t));
+  RUEntry match_uuid(RUEuuid);
 
-  while (re_listpos != NULL) {
-    const RUEntry &re_FoundEntry = m_RUEList.GetAt(re_listpos);
-    if (memcmp(re_FoundEntry.RUEuuid, re_oldEntry.RUEuuid, sizeof(uuid_array_t)) == 0) {
-      m_RUEList.RemoveAt(re_listpos);
-      break;
-    }
-    else
-      m_RUEList.GetNext(re_listpos);
+  RUEListIter iter = find_if(m_RUEList.begin(), m_RUEList.end(), match_uuid);
+
+  if (iter != m_RUEList.end()) {
+    m_RUEList.erase(iter);
   }
   return true;
 }
 
 bool
-CRUEList::GetPWEntry(const int &index, CItemData &ci)
-{
+CRUEList::GetPWEntry(size_t index, CItemData &ci){
   if ((m_maxentries == 0) ||
-      (m_RUEList.GetCount() == 0) ||
+      m_RUEList.empty() ||
       (index > (m_maxentries - 1)) ||
-      (index < 0) ||
-      (index > (m_RUEList.GetCount() - 1))) return false;
+      (index > (m_RUEList.size() - 1))) return false;
 
-  POSITION re_listpos = m_RUEList.FindIndex(index);
-  ASSERT(re_listpos != NULL);
-  const RUEntry &re_FoundEntry = m_RUEList.GetAt(re_listpos);
+  const RUEntry &re_FoundEntry = m_RUEList[index];
 
-  POSITION pw_listpos = m_core.Find(re_FoundEntry.RUEuuid);
-  if (pw_listpos == NULL) {
+  ItemListConstIter pw_listpos = m_core.Find(re_FoundEntry.RUEuuid);
+  if (pw_listpos == m_core.GetEntryEndIter()) {
     // Entry does not exist anymore!
-    m_RUEList.RemoveAt(re_listpos);
+    m_RUEList.erase(m_RUEList.begin() + index);
     AfxMessageBox(IDS_CANTPROCESSENTRY);
   }
-  if (pw_listpos == NULL)
+  if (pw_listpos == m_core.GetEntryEndIter())
     return false;
 
-  ci = m_core.GetEntryAt(pw_listpos);
+  ci = m_core.GetEntry(pw_listpos);
   return true;
 }
 
@@ -269,11 +238,7 @@ CRUEList::operator=(const CRUEList &that)
 {
   if (this != &that) {
     m_maxentries = that.m_maxentries;
-    POSITION that_pos = that.m_RUEList.GetHeadPosition();
-    while (that_pos != NULL) {
-      RUEntry ruentry = that.m_RUEList.GetNext(that_pos);
-      m_RUEList.AddTail(ruentry);
-    }
+    m_RUEList = that.m_RUEList;
   }
   return *this;
 }

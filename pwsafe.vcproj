@@ -262,8 +262,9 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Release/pwsafe.pch"
+				PrecompiledHeaderFile="$(IntDir)/pwsafe.pch"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -287,7 +288,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories=".\corelib\Demo;C:\local\msvc\HTMLHelpWorkshop\lib"
-				ProgramDatabaseFile=".\Release/pwsafe.pdb"
+				ProgramDatabaseFile=".\Demo/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -346,6 +347,10 @@
 			</File>
 			<File
 				RelativePath=".\ColumnChooserLC.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CompareResultsDlg.cpp"
 				>
 			</File>
 			<File
@@ -807,6 +812,10 @@
 			</File>
 			<File
 				RelativePath=".\TVTreeCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Util.h"
 				>
 			</File>
 			<File

@@ -61,9 +61,11 @@ CMyString::Format(UINT nID, ... )
 const CMyString&
 CMyString::operator=(const CMyString& stringSrc)
 {
-   trashstring();
-   m_mystring = stringSrc.m_mystring;
-   return *this;
+  if (this != &stringSrc) {
+    trashstring();
+    m_mystring = stringSrc.m_mystring;
+  }
+  return *this;
 }
 
 const CMyString&

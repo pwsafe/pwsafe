@@ -50,7 +50,8 @@ CString PWScore::m_hdr;
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_passkey(NULL), m_passkey_len(0)
+                     m_passkey(NULL), m_passkey_len(0),
+                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0)
 {
   if (!PWScore::m_session_initialized) {
 	CItemData::SetSessionKey(); // per-session initialization
@@ -59,6 +60,8 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 	PWScore::m_session_initialized = true;
   }
+  m_lockFileHandle = INVALID_HANDLE_VALUE;
+  m_LockCount = 0;
 }
 
 PWScore::~PWScore()
@@ -67,6 +70,16 @@ PWScore::~PWScore()
     trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
     delete[] m_passkey;
   }
+  if (!m_UHFL.empty()) {
+    m_UHFL.clear();
+  }
+}
+
+void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
+{
+  m_changed = true;
+  ASSERT(m_pwlist.find(uuid) == m_pwlist.end());
+  m_pwlist[uuid] = item;
 }
 
 void
@@ -78,19 +91,24 @@ PWScore::ClearData(void)
     m_passkey_len = 0;
   }
   //Composed of ciphertext, so doesn't need to be overwritten
-  m_pwlist.RemoveAll();
+  m_pwlist.clear();
 }
 void
 PWScore::ReInit(void)
 {
   // Now reset all values as if created from new
-  m_currfile = _T("");
   m_changed = false;
   m_usedefuser = false;
   m_defusername = _T("");
   m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
-  m_passkey = NULL;
-  m_passkey_len = 0;
+  if (m_passkey_len > 0) {
+    trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
+    delete[] m_passkey;
+    m_passkey = NULL;
+    m_passkey_len = 0;
+  }
+  m_nRecordsWithUnknownFields = 0;
+  m_UHFL.clear();
 }
 
 void
@@ -99,7 +117,20 @@ PWScore::NewFile(const CMyString &passkey)
    ClearData();
    SetPassKey(passkey);
    m_changed = false;
+   // default username is a per-database preference - wipe clean
+   // for new database:
+   m_usedefuser = false;
+   m_defusername = _T("");
 }
+
+// functor object type for for_each:
+struct RecordWriter {
+  RecordWriter(PWSfile *out) : m_out(out) {}
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {m_out->WriteRecord(p.second);}
+private:
+  PWSfile *m_out;
+};
 
 int
 PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
@@ -112,6 +143,13 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     delete out;
     return status;
   }
+
+  // Re-use file's UUID and number of hash iterations
+  out->SetFileUUID(m_file_uuid_array);
+  out->SetFileHashIterations(m_nITER);
+
+  // Give PWSfileV3 the unknown headers to write out
+  out->SetUnknownHeaderFields(m_UHFL);
 
   // preferences are kept in header, which is written in OpenWriteFile,
   // so we need to update the prefernce string here
@@ -136,18 +174,15 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     return CANT_OPEN_FILE;
   }
 
-  CItemData temp;
-  POSITION listPos = m_pwlist.GetHeadPosition();
-  while (listPos != NULL) {
-    temp = m_pwlist.GetAt(listPos);
-    out->WriteRecord(temp);
-    m_pwlist.GetNext(listPos);
-  }
+  RecordWriter write_record(out);
+  for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
+
   m_nCurrentMajorVersion = out->GetCurrentMajorVersion();
   m_nCurrentMinorVersion = out->GetCurrentMinorVersion();
   m_wholastsaved = out->GetWhoLastSaved();
   m_whenlastsaved = out->GetWhenLastSaved();
   m_whatlastsaved = out->GetWhatLastSaved();
+  out->GetFileUUID(m_file_uuid_array);
 
   out->Close();
   delete out;
@@ -158,12 +193,46 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   return SUCCESS;
 }
 
+struct PutText {
+  PutText(const CString &subgroup_name,
+          const int subgroup_object, const int subgroup_function,
+          const CItemData::FieldBits &bsFields,
+          TCHAR delimiter, ofstreamT &ofs) :
+    m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
+    m_subgroup_function(subgroup_function), m_bsFields(bsFields),
+    m_delimiter(delimiter), m_ofs(ofs)
+  {}
+  // operator for ItemList
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {operator()(p.second);}
+  // operator for OrderedItemList
+  void operator()(const CItemData &item)
+  {
+    if (m_subgroup_name.IsEmpty() || 
+        item.Matches(m_subgroup_name, m_subgroup_object,
+                       m_subgroup_function)) {
+      const CMyString line = item.GetPlaintext(TCHAR('\t'),
+                                               m_bsFields, m_delimiter);
+      if (!line.IsEmpty())
+        m_ofs << LPCTSTR(line) << endl;
+    }
+  }
+private:
+  const CString &m_subgroup_name;
+  const int m_subgroup_object;
+  const int m_subgroup_function;
+  const CItemData::FieldBits &m_bsFields;
+  TCHAR m_delimiter;
+  ofstreamT &m_ofs;
+};
+
 int
 PWScore::WritePlaintextFile(const CMyString &filename,
                             const CItemData::FieldBits &bsFields,
                             const CString &subgroup_name,
-                            const int &subgroup_object, const int &subgroup_function,
-                            TCHAR &delimiter, const ItemList *il)
+                            const int &subgroup_object,
+                            const int &subgroup_function,
+                            TCHAR &delimiter, const OrderedItemList *il)
 {
   // Check if anything to do! 
   if (bsFields.count() == 0)
@@ -177,7 +246,7 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 	if ( bsFields.count() == bsFields.size()) {
 	  if (m_hdr.IsEmpty())
 	    m_hdr.LoadString(IDSC_EXPORTHEADER);
-	  ofs << m_hdr << endl;
+	  ofs << LPCTSTR(m_hdr) << endl;
 	} else {
 		CString hdr = _T(""), cs_temp;
 		if (bsFields.test(CItemData::GROUP)) {
@@ -233,53 +302,74 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 		if (hdr.Right(1) == _T("\t"))
 			hdr_len--;
 
-		ofs << hdr.Left(hdr_len) << endl;
+		ofs << LPCTSTR(hdr.Left(hdr_len)) << endl;
   }
 
-  CItemData temp;
-  const ItemList &pwlist = (il == NULL) ? m_pwlist : *il;
+  PutText put_text(subgroup_name, subgroup_object, subgroup_function,
+                   bsFields, delimiter, ofs);
 
-  POSITION listPos = pwlist.GetHeadPosition();
-
-  while (listPos != NULL) {
-    temp = pwlist.GetAt(listPos);
-
-    if (subgroup_name.IsEmpty() || 
-        temp.WantEntry(subgroup_name, subgroup_object, subgroup_function) == TRUE) {
-      const CMyString line = temp.GetPlaintext(TCHAR('\t'), bsFields, delimiter);
-      if (!line.IsEmpty() != 0)
-    	  ofs << line << endl;
-    }
-
-    pwlist.GetNext(listPos);
+  if (il != NULL) {
+    for_each(il->begin(), il->end(), put_text);
+  } else {
+    for_each(m_pwlist.begin(), m_pwlist.end(), put_text);
   }
   ofs.close();
 
   return SUCCESS;
 }
 
+
+struct XMLRecordWriter {
+  XMLRecordWriter(const CString &subgroup_name,
+                  const int subgroup_object, const int subgroup_function,
+                  const CItemData::FieldBits &bsFields,
+                  TCHAR delimiter, ofstreamT &ofs) :
+    m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
+    m_subgroup_function(subgroup_function), m_bsFields(bsFields),
+    m_delimiter(delimiter), m_of(ofs), m_id(0)
+  {}
+  // operator for ItemList
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {operator()(p.second);}
+  // operator for OrderedItemList
+  void operator()(const CItemData &item)
+  {
+    m_id++;
+    if (m_subgroup_name.IsEmpty() ||
+        item.Matches(m_subgroup_name,
+                       m_subgroup_object, m_subgroup_function)) {
+      CMyString xml = item.GetXML(m_id, m_bsFields);
+      m_of << LPCTSTR(xml);
+        }
+  }
+private:
+  const CString &m_subgroup_name;
+  const int m_subgroup_object;
+  const int m_subgroup_function;
+  const CItemData::FieldBits &m_bsFields;
+  TCHAR m_delimiter;
+  ofstreamT &m_of;
+  unsigned m_id;
+};
+
 int
 PWScore::WriteXMLFile(const CMyString &filename,
                       const CItemData::FieldBits &bsFields,
                       const CString &subgroup_name,
                       const int &subgroup_object, const int &subgroup_function,
-                      const TCHAR delimiter, const ItemList *il)
+                      const TCHAR delimiter, const OrderedItemList *il)
 {
-	ofstream of(filename);
+	ofstreamT of(filename);
 
 	if (!of)
 		return CANT_OPEN_FILE;
 
-	CMyString tmp, pwh;
+	CMyString pwh, tmp;
 	CString cs_tmp;
-	uuid_array_t uuid_array;
 
 	TCHAR buffer[8];
 	time_t time_now;
 	int id = 1;
-
-	const ItemList &pwlist = (il == NULL) ? m_pwlist : *il;
-	POSITION listPos = pwlist.GetHeadPosition();
 
 	time(&time_now);
 	const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
@@ -295,7 +385,8 @@ PWScore::WriteXMLFile(const CMyString &filename,
 #endif
 		m_wholastsaved.ReleaseBuffer();
 		ASSERT(iread == 1);
-		wls.Format(_T("%s on %s"), m_wholastsaved.Mid(4, ulen), m_wholastsaved.Mid(ulen + 4));
+		wls.Format(_T("%s on %s"),
+               m_wholastsaved.Mid(4, ulen), m_wholastsaved.Mid(ulen + 4));
 	}
 	of << _T("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>") << endl;
 	of << _T("<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>") << endl;
@@ -304,17 +395,99 @@ PWScore::WriteXMLFile(const CMyString &filename,
 	tmp = m_currfile;
 	tmp.Replace(_T("&"), _T("&amp;"));
 	of << _T("delimiter=\"") << delimiter << _T("\"") << endl;
-	of << _T("Database=\"") << tmp << _T("\"") << endl;
-	of << _T("ExportTimeStamp=\"") << now << _T("\"") << endl;
+	of << _T("Database=\"") << LPCTSTR(tmp) << _T("\"") << endl;
+	of << _T("ExportTimeStamp=\"") << LPCTSTR(now) << _T("\"") << endl;
 	cs_tmp.Format(_T("%d.%02d"), m_nCurrentMajorVersion, m_nCurrentMinorVersion);
-	of << _T("FromDatabaseFormat=\"") << cs_tmp << _T("\"") << endl;
+	of << _T("FromDatabaseFormat=\"") << LPCTSTR(cs_tmp) << _T("\"") << endl;
 	if (!m_wholastsaved.IsEmpty())
-		of << _T("WhoSaved=\"") << wls << _T("\"") << endl;
+      of << _T("WhoSaved=\"") << LPCTSTR(wls) << _T("\"") << endl;
 	if (!m_whatlastsaved.IsEmpty())
-		of << _T("WhatSaved=\"") << m_whatlastsaved << _T("\"") << endl;
-	of << _T("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") << endl;
+      of << _T("WhatSaved=\"") << LPCTSTR(m_whatlastsaved) << _T("\"") << endl;
+
+  if (m_whenlastsaved.GetLength() == 8) {
+	  long t;
+	  TCHAR *lpszWLS = m_whenlastsaved.GetBuffer(9);
+#if _MSC_VER >= 1400
+	  int iread = _stscanf_s(lpszWLS, _T("%8x"), &t);
+#else
+	  int iread = _stscanf(lpszWLS, _T("%8x"), &t);
+#endif
+	  m_whenlastsaved.ReleaseBuffer();
+	  ASSERT(iread == 1);
+    wls = CString(PWSUtil::ConvertToDateTimeString((time_t) t, TMC_XML));
+    of << _T("WhenLastSaved=\"") << LPCTSTR(wls) << _T("\"") << endl;
+  }
+
+  TCHAR uuid_buffer[37];
+#if _MSC_VER >= 1400
+	_stprintf_s(uuid_buffer, 37,
+                  _T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
+                  m_file_uuid_array[0],  m_file_uuid_array[1],
+                  m_file_uuid_array[2],  m_file_uuid_array[3],
+                  m_file_uuid_array[4],  m_file_uuid_array[5],
+                  m_file_uuid_array[6],  m_file_uuid_array[7],
+                  m_file_uuid_array[8],  m_file_uuid_array[9],
+                  m_file_uuid_array[10], m_file_uuid_array[11],
+                  m_file_uuid_array[12], m_file_uuid_array[13],
+                  m_file_uuid_array[14], m_file_uuid_array[15]);
+#else
+  _stprintf(uuid_buffer,
+                  _T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"), 
+                  m_file_uuid_array[0],  m_file_uuid_array[1],
+                  m_file_uuid_array[2],  m_file_uuid_array[3],
+                  m_file_uuid_array[4],  m_file_uuid_array[5],
+                  m_file_uuid_array[6],  m_file_uuid_array[7],
+                  m_file_uuid_array[8],  m_file_uuid_array[9],
+                  m_file_uuid_array[10], m_file_uuid_array[11],
+                  m_file_uuid_array[12], m_file_uuid_array[13],
+                  m_file_uuid_array[14], m_file_uuid_array[15]);
+#endif
+  uuid_buffer[36] = TCHAR('\0');
+  of << _T("Database_uuid=\"") << uuid_buffer << _T("\"") << endl;
+  of << _T("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") << endl;
 	of << _T("xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">") << endl;
 	of << endl;
+
+  if (m_nITER > MIN_HASH_ITERATIONS) {
+      cs_tmp.Format(_T("%d"), m_nITER);
+      of << _T("\t<NumberHashIterations>") << LPCTSTR(cs_tmp) << _T("</NumberHashIterations>") << endl;
+  }
+
+  if (m_UHFL.size() > 0) {
+    of << _T("\t<unknownheaderfields>") << endl;
+    UnknownFieldList::const_iterator vi_IterUHFE;
+    for (vi_IterUHFE = m_UHFL.begin();
+         vi_IterUHFE != m_UHFL.end();
+         vi_IterUHFE++) {
+      UnknownFieldEntry unkhfe = *vi_IterUHFE;
+      if (unkhfe.st_length == 0)
+        continue;
+#if _MSC_VER >= 1400
+		  _itot_s( (int)unkhfe.uc_Type, buffer, 8, 10 );
+#else
+		  _itot( (int)unkhfe.uc_Type, buffer, 10 );
+#endif
+      unsigned char * pmem;
+      pmem = unkhfe.uc_pUField;
+
+      // UNK_HEX_REP will represent unknown values
+      // as hexadecimal, rather than base64 encoding.
+      // Easier to debug.
+#ifndef UNK_HEX_REP
+      tmp = (CMyString)PWSUtil::Base64Encode(pmem, unkhfe.st_length);
+#else
+      tmp.Empty();
+      unsigned char c;
+      for (unsigned int i = 0; i < unkhfe.st_length; i++) {
+        c = *pmem++;
+        cs_tmp.Format(_T("%02x"), c);
+        tmp += CMyString(cs_tmp);
+      }
+#endif
+      of << _T("\t\t<field ftype=\"") << buffer << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+    }
+    of << _T("\t</unknownheaderfields>") << endl;  
+  }
 
   if (bsFields.count() != bsFields.size()) {
     // Some restrictions - put in a comment to that effect
@@ -322,178 +495,20 @@ PWScore::WriteXMLFile(const CMyString &filename,
     of << endl;
   }
 
-	while (listPos != NULL) {
-		CItemData temp = pwlist.GetAt(listPos);
+  XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
+                          bsFields, delimiter, of);
+
+  if (il != NULL) {
+    for_each(il->begin(), il->end(), put_xml);
+  } else {
+    for_each(m_pwlist.begin(), m_pwlist.end(), put_xml);
+  }
 #if _MSC_VER >= 1400
 		_itot_s( id, buffer, 8, 10 );
 #else
 		_itot( id, buffer, 10 );
 #endif
 
-    if (!subgroup_name.IsEmpty() &&
-        temp.WantEntry(subgroup_name, subgroup_object, subgroup_function) == FALSE)
-      goto skip_entry;
-
-		// TODO: need to handle entity escaping of values.
-    of << _T("\t<entry id=\"") << buffer << _T("\">") << endl;
-
-    tmp = temp.GetGroup();
-		if (bsFields.test(CItemData::GROUP) && !tmp.IsEmpty())
-			of << _T("\t\t<group><![CDATA[") << tmp << _T("]]></group>") << endl;
-
-		// Title mandatory (see pwsafe.xsd)
-		tmp = temp.GetTitle();
-		of <<_T("\t\t<title><![CDATA[") << tmp << _T("]]></title>") << endl;
-
-    tmp = temp.GetUser();
-		if (bsFields.test(CItemData::USER) && !tmp.IsEmpty())
-			of << _T("\t\t<username><![CDATA[") << tmp << _T("]]></username>") << endl;
-
-		tmp = temp.GetPassword();
-		// Password mandatory (see pwsafe.xsd)
-		of << _T("\t\t<password><![CDATA[") << tmp << _T("]]></password>") << endl;
-
-    tmp = temp.GetURL();
-		if (bsFields.test(CItemData::URL) && !tmp.IsEmpty())
-			of << _T("\t\t<url><![CDATA[") << tmp << _T("]]></url>") << endl;
-
-		tmp = temp.GetAutoType();
-		if (bsFields.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
-			of << _T("\t\t<autotype><![CDATA[") << tmp << _T("]]></autotype>") << endl;
-
-    tmp = temp.GetNotes();
-		if (bsFields.test(CItemData::NOTES) && !tmp.IsEmpty())
-			of << _T("\t\t<notes><![CDATA[") << tmp << _T("]]></notes>") << endl;
-
-		temp.GetUUID(uuid_array);
-		TCHAR uuid_buffer[33];
-#if _MSC_VER >= 1400
-		_stprintf_s(uuid_buffer, 33,
-                    _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
-                    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-                    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-                    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-                    uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#else
-    _stprintf(uuid_buffer,
-                    _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
-                    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-                    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-                    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-                    uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#endif
-        uuid_buffer[32] = TCHAR('\0');
-        of << _T("\t\t<uuid><![CDATA[") << uuid_buffer << _T("]]></uuid>") << endl;
-
-        time_t t;
-
-        temp.GetCTime(t);
-        if (bsFields.test(CItemData::CTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<ctime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</ctime>") << endl;
-        }
-
-        temp.GetATime(t);
-        if (bsFields.test(CItemData::ATIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<atime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</atime>") << endl;
-        }
-
-        temp.GetLTime(t);
-        if (bsFields.test(CItemData::LTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<ltime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</ltime>") << endl;
-        }
-
-        temp.GetPMTime(t);
-        if (bsFields.test(CItemData::PMTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<pmtime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</pmtime>") << endl;
-        }
-
-        temp.GetRMTime(t);
-        if (bsFields.test(CItemData::RMTIME) && (long)t != 0) {
-            tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-            of << _T("\t\t<rmtime>") << endl;
-            of << _T("\t\t\t<date>") << tmp.Left(10) << _T("</date>") << endl;
-            of << _T("\t\t\t<time>") << tmp.Right(8) << _T("</time>") << endl;
-            of << _T("\t\t</rmtime>") << endl;
-        }
-
-        if (bsFields.test(CItemData::PWHIST)) {
-          BOOL pwh_status;
-          size_t pwh_max, pwh_num;
-          PWHistList PWHistList;
-          temp.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-                                 &PWHistList, TMC_XML);
-          if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
-            of << _T("\t\t<pwhistory>") << endl;
-#if _MSC_VER >= 1400
-            _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
-            of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
-
-            _stprintf_s(buffer, 3, _T("%2d"), pwh_max);
-            of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
-
-            _stprintf_s(buffer, 3, _T("%2d"), pwh_num);
-            of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
-#else
-            _stprintf(buffer, _T("%1d"), pwh_status);
-            of << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
-
-            _stprintf(buffer, _T("%2d"), pwh_max);
-            of << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
-
-            _stprintf(buffer, _T("%2d"), pwh_num);
-            of << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
-#endif
-            if (!PWHistList.empty()) {
-              of << _T("\t\t\t<history_entries>") << endl;
-              int num = 1;
-              PWHistList::iterator iter;
-              for (iter = PWHistList.begin(); iter != PWHistList.end();
-                   iter++) {
-#if _MSC_VER >= 1400
-                _itot_s( num, buffer, 8, 10 );
-#else
-                _itot( num, buffer, 10 );
-#endif
-                of << _T("\t\t\t\t<history_entry num=\"") << buffer << _T("\">") << endl;
-                const PWHistEntry pwshe = *iter;
-                of << _T("\t\t\t\t\t<changed>") << endl;
-                of << _T("\t\t\t\t\t\t<date>") << pwshe.changedate.Left(10) << _T("</date>") << endl;
-                of << _T("\t\t\t\t\t\t<time>") << pwshe.changedate.Right(8) << _T("</time>") << endl;
-                of << _T("\t\t\t\t\t</changed>") << endl;
-                of << _T("\t\t\t\t\t<oldpassword><![CDATA[") << pwshe.password << _T("]]></oldpassword>") << endl;
-                of << _T("\t\t\t\t</history_entry>") << endl;
-
-                num++;
-              } // for
-              of << _T("\t\t\t</history_entries>") << endl;
-            } // if !empty
-            of << _T("\t\t</pwhistory>") << endl;
-          }
-        }
-
-        of << _T("\t</entry>") << endl;
-        of << endl;
-
-skip_entry:
-        pwlist.GetNext(listPos);
-        id++;
-    }
     of << _T("</passwordsafe>") << endl;
     of.close();
 
@@ -503,16 +518,22 @@ skip_entry:
 int
 PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName,
                        const CString &strXSDFileName, CString &strErrors,
-                       int &numValidated, int &numImported)
+                       int &numValidated, int &numImported,
+                       bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields)
 {
     PWSXML *iXML;
     bool status, validation;
+    int nITER;
+    int nRecordsWithUnknownFields;
+    UnknownFieldList uhfl;
+    bool bEmptyDB = (GetNumEntries() == 0);
 
     iXML = new PWSXML;
     strErrors = _T("");
 
     validation = true;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName);
+    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
+                              nITER, nRecordsWithUnknownFields, uhfl);
     strErrors = iXML->m_strResultText;
     if (!status) {
         delete iXML;
@@ -523,7 +544,8 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 
     iXML->SetCore(this);
     validation = false;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName);
+    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
+                              nITER, nRecordsWithUnknownFields, uhfl);
     strErrors = iXML->m_strResultText;
     if (!status) {
         delete iXML;
@@ -531,6 +553,20 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
     }
 
     numImported = iXML->m_numEntriesImported;
+    bBadUnknownFileFields = iXML->m_bDatabaseHeaderErrors;
+    bBadUnknownRecordFields = iXML->m_bRecordHeaderErrors;
+    m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
+    // Only add header unknown fields or change number of iterations
+    // if the database was empty to start with
+    if (bEmptyDB) {
+      m_nITER = nITER;
+      if (uhfl.empty())
+        m_UHFL.clear();
+      else {
+        m_UHFL = uhfl;
+      }
+    }
+    uhfl.clear();
 
     delete iXML;
     m_changed = true;
@@ -673,11 +709,14 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // tokenize into separate elements
     itoken = 0;
     vector<stringT> tokens;
-    for (size_t startpos = 0; ; ) {
+    for (size_t startpos = 0;
+         startpos < linebuf.size();
+         /* startpos advanced in body */) {
       size_t nextchar = linebuf.find_first_of(fieldSeparator, startpos);
-      if (nextchar >= 0 && i_Offset[itoken] != NOTES) {
+      if (nextchar == string::npos)
+        nextchar = linebuf.size();
+      if (nextchar > 0 && i_Offset[itoken] != NOTES) {
         tokens.push_back(linebuf.substr(startpos, nextchar - startpos));
-        startpos = nextchar + 1;
       } else {
         // Here for the Notes field. Notes may be double-quoted, and
         // if they are, they may span more than one line.
@@ -708,9 +747,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         } // multiline note processed
         tokens.push_back(note);
         break;
-      }
+      } // Notes handling
+      startpos = nextchar + 1; // too complex for for statement
       itoken++;
-    }
+    } // tokenization for loop
 
     // Sanity check
     if (tokens.size() < num_found) {
@@ -789,11 +829,11 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // replacement of delimiter by CR-LF.
     if (i_Offset[NOTES] >= 0) {
         stringT quotedNotes = tokens[i_Offset[NOTES]];
-        if (!quotedNotes.empty() &&
-            *quotedNotes.begin() == TCHAR('\"') &&
+        if (!quotedNotes.empty()) {
+          if (*quotedNotes.begin() == TCHAR('\"') &&
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
-            quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
-
+              quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
+          }
             size_t pos;
             const TCHAR *CRLF = _T("\r\n");
             const stringT crlf (CRLF, _tcslen(CRLF) * sizeof(TCHAR));
@@ -804,7 +844,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         }
     }
 
-    AddEntryToTail(temp);
+    AddEntry(temp);
     numImported++;
   } // file processing for (;;) loop
   ifs.close();
@@ -887,6 +927,11 @@ PWScore::ReadFile(const CMyString &a_filename,
         return UNKNOWN_VERSION;
     }
 
+    // Get file's UUID and number of hash iterations - in case we
+    // rewrite file
+    in->GetFileUUID(m_file_uuid_array);
+    m_nITER = in->GetFileHashIterations();
+
     // Get pref string and tree display status & who saved when
     // all possibly empty!
     PWSprefs::GetInstance()->Load(in->GetPrefString());
@@ -914,31 +959,66 @@ PWScore::ReadFile(const CMyString &a_filename,
     SetPassKey(a_passkey); // so user won't be prompted for saves
 
     CItemData temp;
+    bool go = true;
+#ifdef DEMO
+    bool limited = false;
+#endif
 
-    status = in->ReadRecord(temp);
-#ifndef DEMO
-    while (status == PWSfile::SUCCESS) {
-        m_pwlist.AddTail(temp);
-        temp.Clear(); // Rather than creating a new one each time.
-        status = in->ReadRecord(temp);
-    }
-    status = in->Close(); // in V3 this checks integrity
-#else // DEMO
-    unsigned long numRead = 0;
-    while (status == PWSfile::SUCCESS) {
-        if (++numRead <= MAXDEMO) { // don't add to list more than MAXDEMO
-            m_pwlist.AddTail(temp);
+    do {
+      status = in->ReadRecord(temp);
+      switch (status) {
+      case PWSfile::FAILURE:
+        {
+          // Show a useful (?) error message - better than
+          // silently losing data (but not by much)
+          // Best if title intact. What to do if not?
+
+          CString cs_msg;
+          CString cs_caption(MAKEINTRESOURCE(IDSC_READ_ERROR));
+          cs_msg.Format(IDSC_ENCODING_PROBLEM, CString(temp.GetTitle()));
+          MessageBox(NULL, cs_msg, cs_caption, MB_OK);
         }
-        temp.Clear(); // Rather than creating a new one each time.
-        status = in->ReadRecord(temp);
-    }
-    status = in->Close(); // in V3 this checks integrity
-    // if integrity OK but LIMIT_REACHED, return latter
-    if (status == PWSfile::SUCCESS && numRead > MAXDEMO)
-        status = LIMIT_REACHED;
-#endif // DEMO
+        // deliberate fall-through
+      case PWSfile::SUCCESS:
+        uuid_array_t uuid;
+        temp.GetUUID(uuid);
+        /*
+         * If, for some reason, we're reading in a uuid that we already have
+         * we will change the uuid, rather than overwrite an entry.
+         * This is to protect the user from possible bugs that break
+         * the uniqueness requirement of uuids.
+         */
+        if (m_pwlist.find(uuid) != m_pwlist.end()) {
+          ASSERT(0); // abort in debug build
+          temp.CreateUUID(); // replace duplicated uuid
+        }
+#ifdef DEMO
+        if (m_pwlist.size() < MAXDEMO) {
+          m_pwlist[uuid] = temp;
+        } else {
+          limited = true;
+        }
+#else
+        m_pwlist[uuid] = temp;
+#endif
+        break;
+      case PWSfile::END_OF_FILE:
+        go = false;
+        break;
+      } // switch
+      temp.Clear(); // Rather than creating a new one each time.
+    } while (go);
+
+
+    m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
+    in->GetUnknownHeaderFields(m_UHFL);
+    int closeStatus = in->Close(); // in V3 this checks integrity
+#ifdef DEMO
+    if (closeStatus == PWSfile::SUCCESS && limited)
+      closeStatus = PWScore::LIMIT_REACHED; // if integrity OK but LIMIT_REACHED, return latter
+#endif
     delete in;
-    return status;
+    return closeStatus;
 }
 
 int PWScore::RenameFile(const CMyString &oldname, const CMyString &newname)
@@ -1050,41 +1130,34 @@ void PWScore::ChangePassword(const CMyString &newPassword)
     m_changed = true;
 }
 
-// Finds stuff based on title & user fields only
-POSITION
+// functor object type for find_if:
+
+struct FieldsMatch {
+  bool operator()(pair<CUUIDGen, CItemData> p) {
+    const CItemData &item = p.second;
+    return (m_group == item.GetGroup() &&
+            m_title == item.GetTitle() &&
+            m_user == item.GetUser());
+  }
+  FieldsMatch(const CMyString &a_group,const CMyString &a_title,
+              const CMyString &a_user) :
+    m_group(a_group), m_title(a_title), m_user(a_user) {}
+private:
+  const CMyString &m_group;
+  const CMyString &m_title;
+  const CMyString &m_user;
+};
+
+// Finds stuff based on title, group & user fields only
+ItemListIter
 PWScore::Find(const CMyString &a_group,const CMyString &a_title,
-              const CMyString &a_user) const
+              const CMyString &a_user)
 {
-    POSITION listPos = m_pwlist.GetHeadPosition();
-    CMyString group, title, user;
+  FieldsMatch fields_match(a_group, a_title, a_user);
 
-    while (listPos != NULL) {
-        const CItemData &item = m_pwlist.GetAt(listPos);
-        group = item.GetGroup();
-        title = item.GetTitle();
-        user = item.GetUser();
-        if (group == a_group && title == a_title && user == a_user)
-            break;
-        m_pwlist.GetNext(listPos);
-    }
-
-    return listPos;
-}
-
-POSITION
-PWScore::Find(const uuid_array_t &uuid) const
-{
-    POSITION listPos = m_pwlist.GetHeadPosition();
-    uuid_array_t pw_uuidEntry;
-
-    while (listPos != NULL) {
-        const CItemData &item = m_pwlist.GetAt(listPos);
-        item.GetUUID(pw_uuidEntry);
-        if (memcmp(pw_uuidEntry, uuid, sizeof(uuid_array_t)) == 0)
-            break;
-        m_pwlist.GetNext(listPos);
-    }
-    return listPos;
+  ItemListIter retval = find_if(m_pwlist.begin(), m_pwlist.end(),
+                                fields_match);
+  return retval;
 }
 
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
@@ -1277,7 +1350,7 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
         temp.SetPassword(passwd.empty() ? _T(" ") : passwd.c_str());
         temp.SetNotes(notes.empty() ? _T("") : notes.c_str());
 
-        AddEntryToTail(temp);
+        AddEntry(temp);
     }
     ifs.close();
 
@@ -1291,10 +1364,12 @@ PWScore::ImportKeePassTextFile(const CMyString &filename)
 void PWScore::GetUniqueGroups(CStringArray &aryGroups)
 {
     aryGroups.RemoveAll();
-    POSITION listPos = GetFirstEntryPosition();
-    while (listPos != NULL) {
-        CItemData &ci = GetEntryAt(listPos);
-        CString strThisGroup = ci.GetGroup();
+
+  ItemListConstIter iter;
+
+  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++ ) {
+    const CItemData &ci = iter->second;
+    const CString strThisGroup = ci.GetGroup();
         // Is this group already in the list?
         bool bAlreadyInList=false;
         for(int igrp=0; igrp<aryGroups.GetSize(); igrp++) {
@@ -1304,100 +1379,54 @@ void PWScore::GetUniqueGroups(CStringArray &aryGroups)
             }
         }
         if(!bAlreadyInList) aryGroups.Add(strThisGroup);
-        GetNextEntry(listPos);
     }
-}
-
-void PWScore::SetDisplayStatus(TCHAR *p_char_displaystatus, const int length)
-{
-    m_displaystatus = CString(p_char_displaystatus, length);
 }
 
 void PWScore::CopyPWList(const ItemList &in)
 {
-    // Clear output
-    m_pwlist.RemoveAll();
-    // Get head of input
-    POSITION listPos = in.GetHeadPosition();
-    // Copy them across in order
-    while (listPos != NULL) {
-        const CItemData ci = in.GetAt(listPos);
-        m_pwlist.AddTail(ci);
-        in.GetNext(listPos);
-    }
+  m_pwlist = in;
     m_changed = true;
 }
-
-// The following structure needed for remembering details of uuids to
-// ensure they are unique
-struct st_uuids {
-    DWORD dw_uuidA;
-    DWORD dw_uuidB;
-    DWORD dw_uuidC;
-    DWORD dw_uuidD;
-    POSITION nPos;
-};
 
 bool
 PWScore::Validate(CString &status)
 {
     // Check uuid is valid
-    // Check uuids are unique
     // Check PWH is valid
+  // Note that with m_pwlist implemented as a map keyed
+  // on uuids, each entry is guaranteed to have
+  // a unique uuid. The uniqueness invariant
+  // should be enforced elsewhere (upon read/import).
+
     uuid_array_t uuid_array;
     int n = -1;
     unsigned num_PWH_fixed = 0;
     unsigned num_uuid_fixed = 0;
-    unsigned num_uuid_notunique = 0;
 
     TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
-    st_uuids *uuids = new st_uuids [GetNumEntries() + 1];
+
     const unsigned short nMajor = GetCurrentMajorVersion();
     const unsigned short nMinor = GetCurrentMinorVersion();
 
-    POSITION listPos = GetFirstEntryPosition();
-    while (listPos != NULL) {
-        CItemData &ci = GetEntryAt(listPos);
+  ItemListIter iter;
+  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+    CItemData &ci = iter->second;
         ci.GetUUID(uuid_array);
         n++;
-        if (uuid_array[0] == 0x00)
-            num_uuid_fixed += ci.ValidateUUID(nMajor, nMinor, uuid_array);
-#if _MSC_VER >= 1400
-        memcpy_s(&uuids[n].dw_uuidA, 16, uuid_array, 16);
-#else
-        memcpy(&uuids[n].dw_uuidA, uuid_array, 16);
-#endif
-        uuids[n].nPos = listPos;
-        num_PWH_fixed += ci.ValidatePWHistory();
-        GetNextEntry(listPos);
-    } // while
-
-    // Curently brute force O(n^2)
-    // Sorting & searching would be O(N*logN)
-    // Best to use a hash or set and test for membership O(1)
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (uuids[i].dw_uuidA == uuids[j].dw_uuidA &&
-                uuids[i].dw_uuidB == uuids[j].dw_uuidB &&
-                uuids[i].dw_uuidC == uuids[j].dw_uuidC && 
-                uuids[i].dw_uuidD == uuids[j].dw_uuidD) {
-                CItemData &ci = GetEntryAt(uuids[j].nPos);
-                ci.CreateUUID();
-                ci.GetUUID(uuid_array);
-#if _MSC_VER >= 1400
-                memcpy_s(&uuids[j].dw_uuidA, 16, uuid_array, 16);
-#else
-                memcpy(&uuids[j].dw_uuidA, uuid_array, 16);
-#endif
-                num_uuid_notunique++;
-            }
-        }
+    if (uuid_array[0] == 0x00) {
+      CItemData fixedItem(ci);
+      num_uuid_fixed += fixedItem.ValidateUUID(nMajor, nMinor, uuid_array);
+      m_pwlist.erase(iter); // erasing item in mid-iteration!
+      AddEntry(fixedItem);
     }
-    delete[] uuids;
+        num_PWH_fixed += ci.ValidatePWHistory();
+  } // iteration over m_pwlist
+
+
     TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
-    if ((num_uuid_fixed + num_uuid_notunique + num_PWH_fixed) > 0) {
+  if ((num_uuid_fixed + num_PWH_fixed) > 0) {
         status.Format(IDSC_NUMPROCESSED,
-                      n + 1, num_uuid_fixed, num_uuid_notunique, num_PWH_fixed);
+                  n + 1, num_uuid_fixed, 0, num_PWH_fixed);
         SetChanged(true);
         return true;
     } else {
@@ -1455,4 +1484,19 @@ PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
     }
 
     return brc;
+}
+
+void PWScore::ClearFileUUID()
+{
+  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
+}
+  
+void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
+{
+  memcpy(m_file_uuid_array, file_uuid_array, sizeof(m_file_uuid_array));
+}
+
+void PWScore::GetFileUUID(uuid_array_t &file_uuid_array)
+{
+  memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
 }

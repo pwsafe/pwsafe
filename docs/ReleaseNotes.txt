@@ -1,21 +1,60 @@
-Password Safe 3.08 Release Notes - May 2007
-===========================================
+Password Safe 3.08.04 Release Notes - June 2007
+===============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.08. For a short description of Password
+with Password Safe version 3.08.04. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
+Bugs fixed in 3.08.04
+=====================
+[] Protect user from losing entries in case of non-unique uuids in read database.
+[Open Discussion] Compare fixed so that 'X' indicating differences are
+in the correct columns and data copied to clipboard ends in CRLF not just LF
+
+Bugs fixed in 3.08.03
+=====================
+[1735290] Configuration file works with non-ASCII user and host
+names.
+
+New Features for 3.08.03
+========================
+[] Use STL library in the core. Hopefully transparent to the user but a
+performance improvement.
+
+Bugs fixed in 3.08.02
+=====================
+[1733911] File mode encryption/decryption (-d/-e) works again
+
+Bugs fixed in 3.08.01
+=====================
+[] Fix random showing of user and passwords if started in silent mode
+[] Fix Edit and View in main menu not being reset after open after close
+[1727871] Found items remain highlighted if another entry selected - note
+found items now made bold rather than highlighted
+[1728612] Column sort arrows, in Flattened List mode, correctly removed
+[1728945] Importing a subset of text data now fixed
+[1728945] Version 2.x databases now read correctly
+[1733740] '-s' option no longer causes sporadic display of passwords
+in tree view.
+
+New Features for 3.08.01
+========================
+[] Implement "Advanced" option for Find
+
+
 Bugs fixed in 3.08
 ==================
+[1709992, 1692662, 1678711, 1651392, 1626671, 1604806] Non-English
+text in databases fully supported.
 [1691048] Import text file with blank lines or missing fields will no
 longer crash application.
 [1688994] Although rename is not possible in read-only mode, this change
 prevents F2 giving the user the feel that they can.
 [1693395] Now Minimize takes precedence over "Always on Top" during Autotype
-[1695991] 3.07 - File type Compare now has .bak & .ibak suffixes
+[1695991] File type Compare now has .bak & .ibak suffixes
 [Open Discussion] Fix issue if PWS is maximized/minimized/then restored
 [1701508] Entry times no longer written out if not set
 [1702623] Compare now shows correct filenames
@@ -24,19 +63,26 @@ prevents F2 giving the user the feel that they can.
 [1708099] Default saved username, now shows in new entry
 [1709418] Cancel after Lock Safe from system tray now does Right Thing
 [] More stringent checking during tree "edit in-place" to prevent DB corruption
+[1721031] Notes field with lots of text now stays in position when focus lost
+[Open Discussion] Allow Notes field to be Imported from text file even if
+it is not enclosed in double quotes
+[1721009] Can now Import into a new database after closing previous database
+[1723936] Expiry date format is now in the user's Short Date format
 
-New Features for 3.07.02
-========================
-[1695446] Can't reproduce error "Browse to URL no longer opens new browser" but
-allow command line parameters for Alt. Browser; e.g. "-new-tab" for Firefox
-[] Implement "Advanced" option for Exporting in XML format (as per Export in Text
-format) and for when comparing databases
+New Features for 3.08
+=====================
+[1695446] It's possible to specify command line parameters for
+Alternate Browser; e.g. "-new-tab" for Firefox. This allows fine
+control of whether or not to open a new browser or not.
+[] Implement "Advanced" option for Exporting in XML format (as per
+Export in Text format) and for when comparing databases.
 [1695968] "Advanced" option now available to improve Merge operation
 [1711524] "Show username in display tree" display option
-
+[] Maintain unknown fields in the database header and records when
+saving database, for compatability with future versions as well as clones.
 
 Bugs fixed in 3.07
-=====================
+==================
 [1684827, 1668493] No longer crashes after you specify to remember 0 databases
 [1675716] <ESC> to close application now works
 [1673028] Merge operation now fixed

@@ -27,8 +27,13 @@
 #include "ColumnChooserDlg.h"
 
 #include "corelib/pwsprefs.h"
+#include "corelib/UUIDGen.h"
+
 #include "commctrl.h"
 #include <vector>
+#include <algorithm>
+
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -94,6 +99,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       if (iResult == 0) {
         iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
       }
+      break;
     case CItemData::NOTES:
       iResult = (pLHS->GetNotes()).CompareNoCase(pRHS->GetNotes());
       break;
@@ -167,13 +173,12 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 }
 
 void
-DboxMain::SetReadOnly(bool state)
+DboxMain::UpdateToolBar(bool state)
 {
-	m_IsReadOnly = state;
 	if (m_toolbarsSetup == TRUE) {
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, m_IsReadOnly ? FALSE : TRUE);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, m_IsReadOnly ? FALSE : TRUE);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, m_IsReadOnly ? FALSE : TRUE);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, state ? FALSE : TRUE);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, state ? FALSE : TRUE);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, state ? FALSE : TRUE);
 	}
 }
 
@@ -235,7 +240,7 @@ DboxMain::setupBars()
 
   // Set flag
   m_toolbarsSetup = TRUE;
-  SetReadOnly(m_IsReadOnly);
+  UpdateToolBar(m_core.IsReadOnly());
 #endif
 }
 
@@ -256,7 +261,7 @@ void DboxMain::UpdateListItem(const int lindex, const int type, const CString &n
 }
 
  // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
-POSITION DboxMain::Find(int i)
+ItemListIter DboxMain::Find(int i)
 {
   CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(ci != NULL);
@@ -266,28 +271,6 @@ POSITION DboxMain::Find(int i)
   return Find(curGroup, curTitle, curUser);
 }
 
-
-#if defined(POCKET_PC)
-  #if (POCKET_PC_VER == 2000)
-    #define PWS_CDECL	__cdecl
-  #else
-    #define PWS_CDECL
-  #endif
-#else
-  #define PWS_CDECL
-#endif
-
-// for qsort in FindAll
-static int PWS_CDECL compint(const void *a1, const void *a2)
-{
-  // since we're sorting a list of indices, v1 == v2 should never happen.
-  const int v1 = *(int *)a1, v2 = *(int *)a2;
-  ASSERT(v1 != v2);
-  return (v1 < v2) ? -1 : (v1 > v2) ? 1 : 0;
-}
-
-#undef PWS_CDECL
-
 /*
  * Finds all entries in m_pwlist that contain str in title, user, group or notes
  * field, returns their sorted indices in m_listctrl via indices, which is
@@ -296,12 +279,12 @@ static int PWS_CDECL compint(const void *a1, const void *a2)
  */
 
 int
-DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
+DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
+                  vector<int> &indices)
 {
   ASSERT(!str.IsEmpty());
-  ASSERT(indices != NULL);
+  ASSERT(indices.empty());
 
-  POSITION listPos;
   CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT;
   CMyString listTitle, savetitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
@@ -318,10 +301,11 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
       }
   }
 
+  ItemListConstIter iter;
   if (m_IsListView) {
-	listPos = m_core.GetFirstEntryPosition();
-	while (listPos != NULL) {
-		const  CItemData &curitem = m_core.GetEntryAt(listPos);
+    for (iter = m_core.GetEntryIter();
+         iter != m_core.GetEntryEndIter(); iter++) {
+      const CItemData &curitem = m_core.GetEntry(iter);
 
 		savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
 		curuser =  curitem.GetUser();
@@ -349,22 +333,23 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 			ASSERT(di != NULL);
 			int li = di->list_index;
 			ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
-			// add to indices, bump retval
-			indices[retval++] = li;
+        // add to indices
+        indices.push_back(li);
 		} // match found in m_pwlist
-		m_core.GetNextEntry(listPos);
-	} // while
+    } // iteration over entries
+    retval = indices.size();
 	// Sort indices if in List View
 	if (retval > 1)
-		::qsort((void *)indices, retval, sizeof(indices[0]), compint);
-  } else {
-    ItemList sortedItemList;
-    MakeSortedItemList(sortedItemList);
-    listPos = sortedItemList.GetHeadPosition();
-	while (listPos != NULL) {
-		const CItemData &curitem = sortedItemList.GetAt(listPos);
+      sort(indices.begin(), indices.end());
+  } else { // !m_IsListView
+    OrderedItemList orderedItemList;
+    MakeOrderedItemList(orderedItemList);
+    OrderedItemList::const_iterator oiter;
+    for (oiter = orderedItemList.begin();
+         oiter != orderedItemList.end(); oiter++) {
+      const CItemData &curitem = *oiter;
 
-	    savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+	  savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
 		curuser =  curitem.GetUser();
 		curnotes = curitem.GetNotes();
 		curgroup = curitem.GetGroup();
@@ -391,16 +376,168 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive, int *indices)
 			int li = di->list_index;
 			ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
 			// add to indices, bump retval
-			indices[retval++] = li;
-		} // match found in m_pwlist
-		sortedItemList.GetNext(listPos);
-    } // while
-	sortedItemList.RemoveAll();
+        indices.push_back(li);
+      } // match found in orderedItemList
+    } // iterate over orderedItemList
+    retval = indices.size();
+    orderedItemList.clear();
   }
 
   return retval;
 }
 
+int
+DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
+                  vector<int> &indices,
+              const CItemData::FieldBits &bsFields, const int subgroup_set, 
+              const CString &subgroup_name, const int subgroup_object,
+              const int subgroup_function)
+{
+  ASSERT(!str.IsEmpty());
+  ASSERT(indices.empty());
+
+  CMyString curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT;
+  CMyString listTitle, saveTitle;
+  bool bFoundit;
+  CString searchstr(str); // Since str is const, and we might need to MakeLower
+  int retval = 0;
+
+  if (!CaseSensitive)
+    searchstr.MakeLower();
+
+  int ititle(-1);  // Must be there as it is mandatory!
+  for (int ic = 0; ic < m_nColumns; ic++) {
+    if (m_nColumnTypeByIndex[ic] == CItemData::TITLE) {
+      ititle = ic;
+      break;
+    }
+  }
+
+  ItemListConstIter listPos, listEnd;
+
+  OrderedItemList orderedItemList;
+  OrderedItemList::const_iterator olistPos, olistEnd;
+  if (m_IsListView) {
+    listPos = m_core.GetEntryIter();
+    listEnd = m_core.GetEntryEndIter();
+  } else {
+    MakeOrderedItemList(orderedItemList);
+    olistPos = orderedItemList.begin();
+    olistEnd = orderedItemList.end();
+  }
+
+  while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
+    const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
+    if (subgroup_set == BST_CHECKED &&
+        !curitem.Matches(subgroup_name, subgroup_object, subgroup_function))
+      goto nextentry;
+
+    bFoundit = false;
+    saveTitle = curTitle = curitem.GetTitle(); // savetitle keeps orig case
+    curGroup = curitem.GetGroup();
+    curUser =  curitem.GetUser();
+    curPassword = curitem.GetPassword();
+    curNotes = curitem.GetNotes();
+    curURL = curitem.GetURL();
+    curAT = curitem.GetAutoType();
+
+    if (!CaseSensitive) {
+      curGroup.MakeLower();
+      curTitle.MakeLower();
+      curUser.MakeLower();
+      curPassword.MakeLower();
+      curNotes.MakeLower();
+      curURL.MakeLower();
+      curAT.MakeLower();
+    }
+
+    // do loop to easily break out as soon as a match is found
+    // saves more checking if entry already selected
+    do {
+      if (bsFields.test(CItemData::GROUP) &&
+          ::_tcsstr(curGroup, searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::TITLE) &&
+          ::_tcsstr(curTitle, searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::USER) &&
+          ::_tcsstr(curUser, searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::PASSWORD) &&
+          ::_tcsstr(curPassword, searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::NOTES) &&
+          ::_tcsstr(curNotes, searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::URL) &&
+          ::_tcsstr(curURL, searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::AUTOTYPE) &&
+          ::_tcsstr(curAT, searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::PWHIST)) {
+        BOOL pwh_status;
+        size_t pwh_max, pwh_num;
+        PWHistList PWHistList;
+        curitem.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
+                                   &PWHistList, TMC_XML);
+        PWHistList::iterator iter;
+        for (iter = PWHistList.begin(); iter != PWHistList.end();
+                   iter++) {
+          PWHistEntry pwshe = *iter;
+          if (!CaseSensitive)
+            pwshe.password.MakeLower();
+          if (::_tcsstr(pwshe.password, searchstr)) {
+            bFoundit = true;
+            break;  // break out of for loop
+          }
+        }
+        PWHistList.clear();
+        break;
+      }
+    } while(FALSE);  // only do it once!
+
+    if (bFoundit) {
+      // Find index in displayed list
+      DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+      ASSERT(di != NULL);
+      int li = di->list_index;
+      ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == saveTitle);
+      // add to indices, bump retval
+      indices.push_back(li);
+    } // match found in m_pwlist
+
+nextentry:
+    if (m_IsListView)
+      listPos++;
+    else
+      olistPos++;
+  } // while
+
+  retval = indices.size();
+  // Sort indices if in List View
+  if (m_IsListView && retval > 1)
+    sort(indices.begin(), indices.end());
+
+  if (!m_IsListView)
+    orderedItemList.clear();
+
+  return retval;
+}
 
 //Checks and sees if everything works and something is selected
 BOOL
@@ -423,6 +560,7 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     if (MakeVisible) {
       m_ctlItemList.EnsureVisible(i, FALSE);
     }
+    m_ctlItemList.Invalidate();
   } else { //Tree view active
     CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
     ASSERT(ci != NULL);
@@ -430,23 +568,61 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     ASSERT(di != NULL);
     ASSERT(di->list_index == i);
 
-	HTREEITEM hti=m_ctlItemTree.GetSelectedItem();  //was there anything selected before?
-	if (hti!=NULL)  //NULL means nothing was selected.
-      {   //time to remove the old "fake selection" (a.k.a. drop-hilite) 
-		m_ctlItemTree.SetItemState(hti,0,TVIS_DROPHILITED);//make sure to undo "MakeVisible" on the previous selection.
-      }
-
+    // Was there anything selected before?
+    HTREEITEM hti = m_ctlItemTree.GetSelectedItem();
+    // NULL means nothing was selected.
+    if (hti != NULL) {
+      // Time to remove the old "fake selection" (a.k.a. drop-hilite)
+      // Make sure to undo "MakeVisible" on the previous selection.
+      m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
+    }
 
     retval = m_ctlItemTree.SelectItem(di->tree_item);
-    if (MakeVisible) {// Following needed to show selection when Find dbox has focus. Ugh.
+    if (MakeVisible) {
+      // Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(di->tree_item,
                                  TVIS_DROPHILITED | TVIS_SELECTED,
                                  TVIS_DROPHILITED | TVIS_SELECTED);
     }
+    m_ctlItemTree.Invalidate();
   }
   return retval;
 }
 
+BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
+{
+  BOOL retval;
+  if (m_ctlItemList.GetItemCount() == 0)
+    return FALSE;
+
+  if (m_ctlItemList.IsWindowVisible()) {
+    retval = m_ctlItemList.SetItemState(i,
+                                        LVIS_FOCUSED | LVIS_SELECTED,
+                                        LVIS_FOCUSED | LVIS_SELECTED);
+    if (MakeVisible) {
+      m_ctlItemList.EnsureVisible(i, FALSE);
+    }
+    m_ctlItemList.Invalidate();
+  } else { //Tree view active
+    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(ci != NULL);
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    ASSERT(di->list_index == i);
+
+    UnFindItem();
+
+    retval = m_ctlItemTree.SelectItem(di->tree_item);
+    if (MakeVisible) {
+      // Following needed to show selection when Find dbox has focus. Ugh.
+      m_ctlItemTree.SetItemState(di->tree_item, TVIS_BOLD, TVIS_BOLD);
+      m_LastFoundItem = di->tree_item;
+      m_bBoldItem = true;
+    }
+    m_ctlItemTree.Invalidate();
+  }
+  return retval;
+}
 
 // Updates m_ctlItemList and m_ctlItemTree from m_pwlist
 // updates of windows suspended until all data is in.
@@ -465,21 +641,22 @@ DboxMain::RefreshList()
   m_ctlItemTree.SetRedraw( FALSE );
   m_ctlItemList.DeleteAllItems();
   m_ctlItemTree.DeleteAllItems();
+  m_bBoldItem = false;
 
-  POSITION listPos = m_core.GetFirstEntryPosition();
+  ItemListIter listPos;
 #if defined(POCKET_PC)
   SetCursor( waitCursor );
 #endif
-  while (listPos != NULL) {
-    CItemData &ci = m_core.GetEntryAt(listPos);
+  for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
+       listPos++) {
+    CItemData &ci = m_core.GetEntry(listPos);
     DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
     if (di != NULL)
       di->list_index = -1; // easier, but less efficient, to delete di
     insertItem(ci, -1, false);
-    m_core.GetNextEntry(listPos);
   }
 
-  if (m_bExplorerTypeTree)
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
     SortTree(TVI_ROOT);
   else
     m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
@@ -496,7 +673,7 @@ DboxMain::RefreshList()
 
   FixListIndexes();
   //Setup the selection
-  if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() < 0) {
+  if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() == NULL) {
     SelectEntry(0);
   }
 }
@@ -547,6 +724,7 @@ DboxMain::OnSize(UINT nType,
     m_selectedAtMinimize = getSelectedItem();
     m_ctlItemList.DeleteAllItems();
     m_ctlItemTree.DeleteAllItems();
+    m_bBoldItem = false;
 
     if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
       app.ClearClipboardData();
@@ -796,12 +974,12 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
   {
     HTREEITEM ti;
     CMyString treeDispString = title;
-    if (m_bShowUsernameInTree) {
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
       CMyString user = itemData.GetUser();
       treeDispString += _T(" [");
       treeDispString += user;
       treeDispString += _T("]");
-      if (m_bShowPasswordInTree) {
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
         CMyString newPassword = itemData.GetPassword();
         treeDispString += _T(" {");
         treeDispString += newPassword;
@@ -810,7 +988,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     }
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
-    if (!m_bExplorerTypeTree) {
+    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
       m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
     } else {
@@ -827,6 +1005,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
 #if _MSC_VER >= 1400
         errno_t err;
         err = localtime_s(&st, &now);  // secure version
+      ASSERT(err == 0);
 #else
         st = *localtime(&now);
         ASSERT(st != NULL); // null means invalid time
@@ -839,16 +1018,16 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
         warnexptime = (time_t)0;
     
     itemData.GetLTime(tLTime);
-	if (tLTime != 0) {
-	    if (tLTime <= now) {
-    	    m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::EXPIRED_LEAF, CTVTreeCtrl::EXPIRED_LEAF);
-    	} else if (tLTime < warnexptime) {
-    	    m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::WARNEXPIRED_LEAF, CTVTreeCtrl::WARNEXPIRED_LEAF);
-	    } else
-	        m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::LEAF, CTVTreeCtrl::LEAF);
-	} else
-	  m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::LEAF, CTVTreeCtrl::LEAF);
-	
+    if (tLTime != 0) {
+      if (tLTime <= now) {
+        m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::EXPIRED_LEAF, CTVTreeCtrl::EXPIRED_LEAF);
+      } else if (tLTime < warnexptime) {
+        m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::WARNEXPIRED_LEAF, CTVTreeCtrl::WARNEXPIRED_LEAF);
+      } else
+        m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::LEAF, CTVTreeCtrl::LEAF);
+    } else
+      m_ctlItemTree.SetItemImage(ti, CTVTreeCtrl::LEAF, CTVTreeCtrl::LEAF);
+
     ASSERT(ti != NULL);
     itemData.SetDisplayInfo((void *)di);
     di->tree_item = ti;
@@ -924,22 +1103,23 @@ CItemData *DboxMain::getSelectedItem()
   return retval;
 }
 
+// functor for ClearData
+struct deleteDisplayInfo {
+  void operator()(pair<CUUIDGen, CItemData> p)
+  {delete p.second.GetDisplayInfo();} // no need to set to NULL
+};
+
 void
 DboxMain::ClearData(bool clearMRE)
 {
   // Iterate over item list, delete DisplayInfo
-  POSITION listPos = m_core.GetFirstEntryPosition();
-  while (listPos != NULL) {
-    CItemData &ci = m_core.GetEntryAt(listPos);
-    delete ci.GetDisplayInfo(); // no need to Set to NULL
-    m_core.GetNextEntry(listPos);
-  }
+  deleteDisplayInfo ddi;
+  for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
+           ddi);
+
   m_core.ClearData();
 
-  if (m_bOpen)
-	  UpdateSystemTray(LOCKED);
-  else
-	  UpdateSystemTray(CLOSED);
+	  UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
 
   // If data is cleared, m_selectedAtMinimize is useless,
   // since it will be deleted and rebuilt from the file.
@@ -961,6 +1141,7 @@ DboxMain::ClearData(bool clearMRE)
     m_ctlItemTree.LockWindowUpdate();
     m_ctlItemTree.DeleteAllItems();
     m_ctlItemTree.UnlockWindowUpdate();
+    m_bBoldItem = false;
   }
 }
 
@@ -971,16 +1152,6 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   // Get column index to CItemData value
   int iIndex = pNMListView->iSubItem;
   int isortcolumn = m_nColumnTypeByIndex[iIndex];
-  
-  if (m_iSortedColumn == isortcolumn) {
-    m_bSortAscending = !m_bSortAscending;
-  } else {
-    m_iSortedColumn = isortcolumn;
-    m_bSortAscending = true;
-  }
-
-  m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-  FixListIndexes();
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
 #define HDF_SORTUP 0x0400
@@ -989,6 +1160,26 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
   HDITEM hdi;
   hdi.mask = HDI_FORMAT;
+
+  if (m_iSortedColumn == isortcolumn) {
+    m_bSortAscending = !m_bSortAscending;
+  } else {
+    // Turn off all previous sort arrrows
+    // Note: not sure where, as user may have played with the columns!
+    for (int i = 0; i < m_LVHdrCtrl.GetItemCount(); i++) {
+      m_LVHdrCtrl.GetItem(i, &hdi);
+      if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
+        hdi.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
+        m_LVHdrCtrl.SetItem(i, &hdi);
+      }
+    }
+
+    m_iSortedColumn = isortcolumn;
+    m_bSortAscending = true;
+  }
+
+  m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+  FixListIndexes();
 
   m_LVHdrCtrl.GetItem(iIndex, &hdi);
   // Turn off all arrows
@@ -1081,6 +1272,7 @@ DboxMain::OnTreeView()
 void
 DboxMain::SetListView()
 {
+  UnFindItem();
   m_ctlItemTree.ShowWindow(SW_HIDE);
   m_ctlItemList.ShowWindow(SW_SHOW);
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
@@ -1090,6 +1282,7 @@ DboxMain::SetListView()
 void
 DboxMain::SetTreeView()
 {
+  UnFindItem();
   m_ctlItemList.ShowWindow(SW_HIDE);
   m_ctlItemTree.ShowWindow(SW_SHOW);
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
@@ -1101,7 +1294,7 @@ DboxMain::OnOldToolbar()
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, false);
   SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
-  SetReadOnly(m_IsReadOnly);
+  UpdateToolBar(m_core.IsReadOnly());
 }
 
 void
@@ -1109,7 +1302,7 @@ DboxMain::OnNewToolbar()
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, true);
   SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
-  SetReadOnly(m_IsReadOnly);
+  UpdateToolBar(m_core.IsReadOnly());
 }
 
 void
@@ -1189,7 +1382,7 @@ DboxMain::OnTimer(UINT nIDEvent )
         Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
       SaveDisplayStatus();
-      m_lock_displaystatus = m_core.GetDisplayStatus();
+      m_treeDispState = m_core.GetDisplayStatus();
       ClearData();
       if(IsWindowVisible()){
         ShowWindow(SW_MINIMIZE);
@@ -1378,11 +1571,11 @@ DboxMain::SetColumns()
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
 
-  int ipwd = m_bShowPasswordInTree ? 1 : 0;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  int ipwd = prefs->GetPref(PWSprefs::ShowPasswordInTree) ? 1 : 0;
 
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
-  PWSprefs *prefs = PWSprefs::GetInstance();
   int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
                                  (rect.Width() / 3 + rect.Width() % 3));
   int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
@@ -1408,7 +1601,7 @@ DboxMain::SetColumns()
   m_LVHdrCtrl.SetItem(2, &hdi);
   m_ctlItemList.SetColumnWidth(1, i3rdWidth);
     
-  if (m_bShowPasswordInTree) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
     cs_header = GetHeaderText(CItemData::PASSWORD);
     m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;
@@ -1464,8 +1657,8 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
 
-  std::vector<int> vi_columns;
-  std::vector<int>::const_iterator vi_IterColumns;
+  vector<int> vi_columns;
+  vector<int>::const_iterator vi_IterColumns;
   const TCHAR pSep[] = _T(",");
   TCHAR *pTemp;
   
@@ -1494,7 +1687,7 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   for (vi_IterColumns = vi_columns.begin();
        vi_IterColumns != vi_columns.end();
        vi_IterColumns++) {
-    int &iType = (int)*vi_IterColumns;
+    int iType = *vi_IterColumns;
     cs_header = GetHeaderText(iType);
     if (!cs_header.IsEmpty()) {
       m_ctlItemList.InsertColumn(icol, cs_header);
@@ -1546,7 +1739,7 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
        vi_IterWidths++) {
     if (icol == (m_nColumns - 1))
       break;
-    int &iWidth = (int)*vi_IterWidths;
+    int iWidth = *vi_IterWidths;
     m_ctlItemList.SetColumnWidth(icol, iWidth);
     index = m_LVHdrCtrl.OrderToIndex(icol);
     m_nColumnWidthByIndex[index] = iWidth;
@@ -1556,8 +1749,6 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   // Last column special
   index = m_LVHdrCtrl.OrderToIndex(m_nColumns - 1);
   m_ctlItemList.SetColumnWidth(index, LVSCW_AUTOSIZE_USEHEADER);
-
-  return;
 }
 
 void DboxMain::AddColumn(const int iType, const int iIndex)
@@ -1607,12 +1798,11 @@ DboxMain::SetHeaderInfo()
   ASSERT(m_nColumns > 1);  // Title & User are mandatory!
 
   // re-initialise array
-  for (int i = 0; i < CItemData::LAST; i++) {
-    m_nColumnIndexByType[i] = -1;
-    m_nColumnIndexByOrder[i] = -1;
-    m_nColumnTypeByIndex[i] = -1;
-    m_nColumnWidthByIndex[i] = -1;
-  }
+  for (int i = 0; i < CItemData::LAST; i++)
+      m_nColumnIndexByType[i] = 
+          m_nColumnIndexByOrder[i] =
+          m_nColumnTypeByIndex[i] =
+          m_nColumnWidthByIndex[i] = -1;
 
   m_LVHdrCtrl.GetOrderArray(m_nColumnIndexByOrder, m_nColumns);
 
@@ -1669,9 +1859,7 @@ void
 DboxMain::AutoResizeColumns()
 {
   int iIndex, iType;
-  HDITEM hdi_get;
   // CHeaderCtrl get values
-  hdi_get.mask = HDI_LPARAM | HDI_WIDTH | HDI_ORDER;
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     iIndex = m_nColumnIndexByOrder[iOrder];
     iType = m_nColumnTypeByIndex[iIndex];
@@ -1907,5 +2095,15 @@ void DboxMain::CalcHeaderWidths()
       m_nColumnHeaderWidthByType[iType] = -4;
 
     m_iheadermaxwidth = max(m_iheadermaxwidth, m_nColumnHeaderWidthByType[iType]);
+  }
+}
+
+void
+DboxMain::UnFindItem()
+{
+  // Entries found are made bold - remove it here.
+  if (m_bBoldItem) {
+    m_ctlItemTree.SetItemState(m_LastFoundItem, 0, TVIS_BOLD);
+    m_bBoldItem = false;
   }
 }

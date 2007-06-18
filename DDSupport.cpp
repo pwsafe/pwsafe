@@ -17,7 +17,9 @@ void CDDObject::Serialize(CArchive& ar)
 {
   if (ar.IsStoring()) {
     ar << m_nVersion;
-    ar.Write(m_DD_UUID, 16);
+
+    ar.Write(m_DD_UUID, sizeof(uuid_array_t));
+
     ar << (CString)m_DD_Group;
     ar << (CString)m_DD_Title;
     ar << (CString)m_DD_User;
@@ -26,26 +28,24 @@ void CDDObject::Serialize(CArchive& ar)
     ar << (CString)m_DD_URL;
     ar << (CString)m_DD_AutoType;
     ar << (CString)m_DD_PWHistory;
+
     ar << m_DD_CTime;
     ar << m_DD_PMTime;
     ar << m_DD_ATime;
     ar << m_DD_LTime;
     ar << m_DD_RMTime;
   } else {
-    CString cs_Group;
-    CString cs_Title;
-    CString cs_User;
-    CString cs_Notes;
-    CString cs_Password;
-    CString cs_URL;
-    CString cs_AutoType;
-    CString cs_PWHistory;
-
     int iVersion;
     ar >> iVersion;
+
     switch(iVersion) {
       case 0x100:
-        ar.Read(m_DD_UUID, 16);
+        {
+        CString cs_Group, cs_Title, cs_User, cs_Notes, cs_Password, 
+                cs_URL, cs_AutoType, cs_PWHistory;
+
+        ar.Read(m_DD_UUID, sizeof(uuid_array_t));
+
         ar >> cs_Group;
         ar >> cs_Title;
         ar >> cs_User;
@@ -54,6 +54,7 @@ void CDDObject::Serialize(CArchive& ar)
         ar >> cs_URL;
         ar >> cs_AutoType;
         ar >> cs_PWHistory;
+
         ar >> m_DD_CTime;
         ar >> m_DD_PMTime;
         ar >> m_DD_ATime;
@@ -77,6 +78,7 @@ void CDDObject::Serialize(CArchive& ar)
         trashStringMemory(cs_URL);
         trashStringMemory(cs_AutoType);
         trashStringMemory(cs_PWHistory);
+        }
 
         break;
       default:

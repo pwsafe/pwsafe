@@ -24,22 +24,23 @@
 #include "corelib/ItemData.h"
 #include <bitset>
 
-enum {ADV_COMPARE = 0, ADV_MERGE, ADV_EXPORT_TEXT, ADV_EXPORT_XML, ADV_LAST};
+enum {ADV_COMPARE = 0, ADV_MERGE, ADV_EXPORT_TEXT, ADV_EXPORT_XML, ADV_FIND, ADV_LAST};
 
 class CAdvancedDlg : public CDialog
 {
 // Construction
 public:
-	CAdvancedDlg(CWnd* pParent = NULL, int iIndex = -1);   // standard constructor
+	CAdvancedDlg(CWnd* pParent = NULL, int iIndex = -1,
+    CItemData::FieldBits bsFields = 0, CString subgroup_name = _T(""),
+    int subgroup_set = BST_UNCHECKED, 
+    int subgroup_object = 0, int subgroup_function = 0);   // standard constructor
+  virtual CAdvancedDlg::~CAdvancedDlg();
 
 // Dialog Data
   enum { IDD_MERGE = IDD_ADVANCEDMERGE };
 	//{{AFX_DATA(CADVANCEDDlg)
 	enum { IDD = IDD_ADVANCED };
 	CString m_subgroup_name;
-	int m_group, m_title, m_user, m_notes, m_password, 
-    m_ctime, m_pmtime, m_atime, m_ltime, m_rmtime,
-    m_url, m_autotype, m_pwhist;
 	int m_subgroup_set, m_subgroup_object, m_subgroup_function, m_subgroup_case;
 
 	//}}AFX_DATA
@@ -62,19 +63,23 @@ protected:
 	virtual BOOL OnInitDialog();
 	// Generated message map functions
 	//{{AFX_MSG(CADVANCEDDlg)
-	afx_msg void OnClearTimes();
-	afx_msg void OnSetTimes();
-	afx_msg void OnClearAll();
-	afx_msg void OnSetAll();
-	afx_msg void OnSetSubGroup();
-  afx_msg void OnSetTitle();
-  afx_msg void OnSetPassword();
+  afx_msg void OnSetSubGroup();
+	afx_msg void OnSelectSome();
+	afx_msg void OnSelectAll();
+	afx_msg void OnDeselectSome();
+	afx_msg void OnDeselectAll();
 	afx_msg void OnHelp();
 	virtual void OnOK();
+  afx_msg void OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult);
+
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
+  BOOL PreTranslateMessage(MSG* pMsg);
+
 private:
-
+  static int CALLBACK AdvCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+  CListCtrl *m_pLC_List, *m_pLC_Selected;
+  CToolTipCtrl* m_ToolTipCtrl;
+  int m_index;
 };
-

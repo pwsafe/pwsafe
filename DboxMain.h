@@ -27,6 +27,7 @@
 #include "LVHdrCtrl.h"
 #include "ColumnChooserDlg.h"
 #include "DDSupport.h"
+#include <vector>
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -39,6 +40,9 @@ DECLARE_HANDLE(HDROP);
 #define WM_HDR_DRAG_COMPLETE (WM_APP + 20)
 #define WM_CCTOHDR_DD_COMPLETE (WM_APP + 21)
 #define WM_HDRTOCC_DD_COMPLETE (WM_APP + 22)
+
+// Process Compare Result Dialog click/menu functions
+#define WM_COMPARE_RESULT_FUNCTION (WM_APP + 30)
 
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
@@ -71,7 +75,7 @@ private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
-    static const CString DEFAULT_AUTOTYPE;
+  static const CString DEFAULT_AUTOTYPE;
 
 public:
   // default constructor
@@ -79,34 +83,45 @@ public:
   ~DboxMain();
 
   // Find entry by title and user name, exact match
-  POSITION Find(const CMyString &a_group,
+  ItemListIter Find(const CMyString &a_group,
                 const CMyString &a_title, const CMyString &a_user)
   {return m_core.Find(a_group, a_title, a_user);}
 
   // Find entry with same title and user name as the
   // i'th entry in m_ctlItemList
-  POSITION Find(int i);
+  ItemListIter Find(int i);
 
   // Find entry by UUID
-  POSITION Find(const uuid_array_t &uuid)
+  ItemListIter Find(const uuid_array_t &uuid)
   {return m_core.Find(uuid);}
 
+  // End of list markers
+  ItemListConstIter End() const
+  {return m_core.GetEntryEndIter();}
+  ItemListIter End()
+  {return m_core.GetEntryEndIter();}
+
   // FindAll is used by CFindDlg, returns # of finds.
-  // indices allocated by caller
-  int FindAll(const CString &str, BOOL CaseSensitive, int *indices);
+  int FindAll(const CString &str, BOOL CaseSensitive,
+              std::vector<int> &indices);
+  int FindAll(const CString &str, BOOL CaseSensitive,
+              std::vector<int> &indices,
+              const CItemData::FieldBits &bsFields, const int subgroup_set, 
+              const CString &subgroup_name, const int subgroup_object,
+              const int subgroup_function);
 
   // Count the number of total entries.
   int GetNumEntries() const {return m_core.GetNumEntries();}
 
   // Get CItemData @ position
-  CItemData &GetEntryAt(POSITION pos)
-    {return m_core.GetEntryAt(pos);}
+  CItemData &GetEntryAt(ItemListIter iter)
+    {return m_core.GetEntry(iter);}
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
+  BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
   void RefreshList();
   void SortTree(const HTREEITEM htreeitem);
-  bool IsExplorerTree() const {return m_bExplorerTypeTree;}
 
   void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
 
@@ -129,11 +144,12 @@ public:
   CString GetHeaderText(const int iType);
   int GetHeaderWidth(const int iType);
   void CalcHeaderWidths();
+  void UnFindItem();
 
-  void SetReadOnly(bool state);
-  bool IsReadOnly() const {return m_IsReadOnly;};
+  void UpdateToolBar(bool state);
+  bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
-  void SetStartClosed(bool state) { m_IsStartClosed = state;}
+  void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
@@ -141,14 +157,14 @@ public:
   void SetFindInActive() {m_bFindActive = false;}
   void SetFindWrap(bool bwrap) {m_bFindWrap = bwrap;}
   bool GetCurrentView() {return m_IsListView;}
-  void UpdatePasswordHistory(const int &iAction, const int &num_default);
+  void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
   bool ExitRequested() const {return m_inExit;}
   void SetCapsLock(const bool bState);
   void AutoResizeColumns();
-  int AddEntry(const CItemData &cinew);
   void Delete(bool inRecursion = false);
+  int AddEntry(const CItemData &cinew);
   void DoItemDoubleClick();
   void AddEntries(CDDObList &in_oblist, const CMyString DropGroup);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
@@ -211,12 +227,19 @@ protected:
   bool m_bSortAscending;
   int m_iSortedColumn;
 
-  bool m_bAlwaysOnTop;
   bool m_bTSUpdated;
   int m_iSessionEndingStatus;
   bool m_bFindActive;
   bool m_bFindWrap;
-  bool m_bAdvanced; // Used by Compare
+
+  // Used for Advanced functions
+  CItemData::FieldBits m_bsFields;
+  bool m_bAdvanced;
+  CString m_subgroup_name;
+  int m_subgroup_set, m_subgroup_object, m_subgroup_function;
+
+  HTREEITEM m_LastFoundItem;
+  bool m_bBoldItem;
 
   WCHAR *m_pwchTip;
   TCHAR *m_pchTip;
@@ -245,6 +268,12 @@ protected:
   void UpdateSystemTray(const STATE s);
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
+  LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
+  LRESULT ViewCompareResult(PWScore *pcore, ItemListIter pos);
+  LRESULT EditCompareResult(PWScore *pcore, ItemListIter pos);
+  LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
+                            ItemListIter pos);
+
   BOOL PreTranslateMessage(MSG* pMsg);
 
   void UpdateAlwaysOnTop();
@@ -262,6 +291,7 @@ protected:
   //Version of message functions with return values
   int Save(void);
   int SaveAs(void);
+  int SaveCore(PWScore *pcore);
   int Open(void);
   int Open( const CMyString &pszFilename );
   int Close(void);
@@ -274,7 +304,7 @@ protected:
   int Restore(void);
 
   void AutoType(const CItemData &ci);
-  void EditItem(CItemData *ci);
+  bool EditItem(CItemData *ci);
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
@@ -394,24 +424,20 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-                          int index, bool bForceReadOnly = false);
+                          int index, bool bReadOnly = false, bool bForceReadOnly = false,
+                          PWScore *pcore = 0, int adv_type = -1);
 
 private:
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
-  PWScore  &m_core;
+  PWScore &m_core;
   CMyString m_lastFindStr;
   BOOL m_lastFindCS;
-  bool m_IsReadOnly;
   bool m_IsStartSilent;
   bool m_IsStartClosed;
   bool m_bStartHiddenAndMinimized;
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
-  bool m_bShowPasswordInTree;
-  bool m_bShowUsernameInTree;
-  bool m_bExplorerTypeTree;
-  bool m_bUseGridLines;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItemData::LAST];
@@ -422,8 +448,7 @@ private:
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
-  CString m_lock_displaystatus;
-  CString m_minmizedisplaystatus;
+  std::vector<bool> m_treeDispState; // true iff item is expanded
   bool m_inExit; // help U3ExitNow
 
   BOOL IsWorkstationLocked() const;
@@ -442,8 +467,8 @@ private:
   void UpdateAccessTime(CItemData *ci);
   void SaveDisplayStatus();
   void RestoreDisplayStatus(bool bUnMinimize = false);
-  void GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet);
-  void MakeSortedItemList(ItemList &il);
+  void GroupDisplayStatus(std::vector<bool> &displaystatus, bool bSet);
+  void MakeOrderedItemList(OrderedItemList &il);
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);

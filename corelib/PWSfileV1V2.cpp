@@ -88,17 +88,17 @@ int PWSfileV1V2::ReadV2Header()
   // restore after reading V17-format header
   m_curversion = sv;
   if (status == SUCCESS) {
-    const CMyString version = header.GetPassword();
-    // Compare to AltVersionString due to silly mistake
-    // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
-    if (version == VersionString || version == AltVersionString) {
-    	status = SUCCESS;
-    	m_nCurrentMajorVersion = 2;
-    } else
-    	status = WRONG_VERSION;
+  const CMyString version = header.GetPassword();
+  // Compare to AltVersionString due to silly mistake
+  // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
+  if (version == VersionString || version == AltVersionString) {
+  	status = SUCCESS;
+  	m_nCurrentMajorVersion = 2;
+  } else
+  	status = WRONG_VERSION;
   }
   if (status == SUCCESS)
-    m_prefString = header.GetNotes();
+  m_prefString = header.GetNotes();
   return status;
 }
 
@@ -109,11 +109,23 @@ int PWSfileV1V2::Open(const CMyString &passkey)
   ASSERT(m_curversion == V17 || m_curversion == V20);
 
   m_passkey = passkey;
-  LPCTSTR passstr = LPCTSTR(m_passkey);
-
   FOpen();
   if (m_fd == NULL)
     return CANT_OPEN_FILE;
+
+  LPCTSTR passstr = LPCTSTR(m_passkey);
+  unsigned long passLen = passkey.GetLength();
+  unsigned char *pstr;
+
+#ifdef UNICODE
+  pstr = new unsigned char[2*passLen];
+  int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
+                  LPSTR(pstr), 2*passLen, NULL, NULL);
+  ASSERT(len != 0);
+  passLen = len;
+#else
+  pstr = (unsigned char *)passstr;
+#endif
 
   if (m_rw == Write) {
     // Following used to verify passkey against file's passkey
@@ -133,27 +145,34 @@ int PWSfileV1V2::Open(const CMyString &passkey)
 
     PWSrand::GetInstance()->GetRandomData( m_ipthing, 8);
     fwrite(m_ipthing, 1, 8, m_fd);
-    m_fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
-                                    m_passkey.GetLength(),
-                                    m_salt, SaltLength);
+
+    m_fish = BlowFish::MakeBlowFish(pstr, passLen,
+                    m_salt, SaltLength);
     if (m_curversion == V20) {
       status = WriteV2Header();
     }
   } else { // open for read
     status = CheckPassword(m_filename, m_passkey, m_fd);
     if (status != SUCCESS) {
+#ifdef UNICODE
+      trashMemory(pstr, 2*passLen);
+      delete[] pstr;
+#endif
       Close();
       return status;
     }
     fread(m_salt, 1, SaltLength, m_fd);
     fread(m_ipthing, 1, 8, m_fd);
 
-    m_fish = BlowFish::MakeBlowFish((const unsigned char *)passstr,
-                                    m_passkey.GetLength(),
-                                    m_salt, SaltLength);
+    m_fish = BlowFish::MakeBlowFish(pstr, passLen,
+                    m_salt, SaltLength);
     if (m_curversion == V20)
       status = ReadV2Header();
   } // read mode
+#ifdef UNICODE
+    trashMemory(pstr, 2*passLen);
+    delete[] pstr;
+#endif
   return status;
 }
 
@@ -164,7 +183,7 @@ int PWSfileV1V2::Close()
 
 
 int PWSfileV1V2::CheckPassword(const CMyString &filename,
-                               const CMyString &passkey, FILE *a_fd)
+                 const CMyString &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
   if (fd == NULL) {
@@ -180,19 +199,19 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
   unsigned char randstuff[StuffSize];
   unsigned char randhash[20];   // HashSize
 
-   fread(randstuff, 1, 8, fd);
-   randstuff[8] = randstuff[9] = TCHAR('\0'); // Gross fugbix
-   fread(randhash, 1, 20, fd);
+  fread(randstuff, 1, 8, fd);
+  randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
+  fread(randhash, 1, 20, fd);
 
-   if (a_fd == NULL) // if we opened the file, we close it...
-     fclose(fd);
+  if (a_fd == NULL) // if we opened the file, we close it...
+    fclose(fd);
 
   unsigned char temphash[20]; // HashSize
   GenRandhash(passkey, randstuff, temphash);
 
   if (0 != ::memcmp((char*)randhash,
-		    (char*)temphash,
-		    20)) {// HashSize
+            (char*)temphash,
+            20)) {// HashSize
     return WRONG_PASSWORD;
   } else {
     return SUCCESS;
@@ -210,10 +229,41 @@ static CMyString ReMergeNotes(const CItemData &item)
   const CMyString at(item.GetAutoType());
   if (!at.IsEmpty()) {
     notes += _T("\r\n");
-	notes += cs_autotype;
+    notes += cs_autotype;
     notes += at;
   }
   return notes;
+}
+
+
+size_t PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
+{
+#ifndef UNICODE
+  // We do a double cast because the LPCTSTR cast operator is overridden
+  // by the CString class to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
+  LPCTSTR datastr = LPCTSTR(data);
+
+  return PWSfile::WriteCBC(type, (const unsigned char *)datastr,
+                           data.GetLength());
+#else
+  // xlate wchar_t to ACP
+    wchar_t *wcPtr = const_cast<CString &>(data).GetBuffer();
+    int wcLen = data.GetLength()+1;
+    int mbLen = 2*wcLen;
+    unsigned char *acp = new unsigned char[mbLen];
+    int acpLen = WideCharToMultiByte(CP_ACP,      // code page
+                                     0, // performance and mapping flags
+                                    wcPtr, wcLen, // wide-character string
+                                    LPSTR(acp), mbLen, // buffer and length
+                                    NULL,NULL); // use sys defs for unmappables
+    ASSERT(acpLen != 0);
+    acpLen--; // remove unneeded null termination
+    size_t retval = PWSfile::WriteCBC(type, acp, acpLen);
+    trashMemory(acp, mbLen);
+    delete[] acp;
+    return retval;
+#endif
 }
 
 int PWSfileV1V2::WriteRecord(const CItemData &item)
@@ -224,61 +274,61 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
 
 
   switch (m_curversion) {
-  case V17: {
-    // 1.x programs totally ignore the type byte, hence safe to write it
-    // (no need for two WriteCBC functions)
-    // Note that 2.0 format still requires that the header be in this format,
-    // So that old programs reading new databases won't crash,
-    // This introduces a small security issue, in that the header is known text,
-    // making the password susceptible to a dictionary attack on the first block,
-    // rather than the hash^n in the beginning of the file.
-    // we can help minimize this here by writing a random byte in the "type"
-    // byte of the first block.
+    case V17: {
+      // 1.x programs totally ignore the type byte, hence safe to write it
+      // (no need for two WriteCBC functions)
+      // Note that 2.0 format still requires that the header be in this format,
+      // So that old programs reading new databases won't crash,
+      // This introduces a small security issue, in that the header is known text,
+      // making the password susceptible to a dictionary attack on the first block,
+      // rather than the hash^n in the beginning of the file.
+      // we can help minimize this here by writing a random byte in the "type"
+      // byte of the first block.
 
-    CMyString name = item.GetName();
-    // If name field already exists - use it. This is for the 2.0 header, as well as for files
-    // that were imported and re-exported.
-    if (name.IsEmpty()) {
-      // The name in 1.7 consists of title + SPLTCHR + username
-      // DEFUSERNAME was used in previous versions, but 2.0 converts this upon import
-      // so it is not an issue here.
-      // Prepend 2.0 group field to name, if not empty
-      // i.e. group "finances" name "broker" -> "finances.broker"
-      CMyString group = item.GetGroup();
-      CMyString title = item.GetTitle();
-      if (!group.IsEmpty()) {
-        group += _T(".");
-        group += title;
-        title = group;
+      CMyString name = item.GetName();
+      // If name field already exists - use it. This is for the 2.0 header, as well as for files
+      // that were imported and re-exported.
+      if (name.IsEmpty()) {
+        // The name in 1.7 consists of title + SPLTCHR + username
+        // DEFUSERNAME was used in previous versions, but 2.0 converts this upon import
+        // so it is not an issue here.
+        // Prepend 2.0 group field to name, if not empty
+        // i.e. group "finances" name "broker" -> "finances.broker"
+        CMyString group = item.GetGroup();
+        CMyString title = item.GetTitle();
+        if (!group.IsEmpty()) {
+          group += _T(".");
+          group += title;
+          title = group;
+        }
+        name = title;
+        name += SPLTCHR;
+        name += item.GetUser();
       }
-      name = title;
-      name += SPLTCHR;
-      name += item.GetUser();
+      unsigned char dummy_type;
+      PWSrand::GetInstance()->GetRandomData(&dummy_type, 1);
+      WriteCBC(dummy_type, name);
+      WriteCBC(CItemData::PASSWORD, item.GetPassword());
+      WriteCBC(CItemData::NOTES, ReMergeNotes(item));
     }
-    unsigned char dummy_type;
-    PWSrand::GetInstance()->GetRandomData(&dummy_type, 1);
-    WriteCBC(dummy_type, name);
-    WriteCBC(CItemData::PASSWORD, item.GetPassword());
-    WriteCBC(CItemData::NOTES, ReMergeNotes(item));
-  }
-    break;
-  case V20: {
-    {
-      uuid_array_t uuid_array;
-      item.GetUUID(uuid_array);
-      WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+      break;
+    case V20: {
+      {
+        uuid_array_t uuid_array;
+        item.GetUUID(uuid_array);
+        PWSfile::WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+      }
+      WriteCBC(CItemData::GROUP, item.GetGroup());
+      WriteCBC(CItemData::TITLE, item.GetTitle());
+      WriteCBC(CItemData::USER, item.GetUser());
+      WriteCBC(CItemData::PASSWORD, item.GetPassword());
+      WriteCBC(CItemData::NOTES, ReMergeNotes(item));
+      WriteCBC(CItemData::END, _T(""));
     }
-    WriteCBC(CItemData::GROUP, item.GetGroup());
-    WriteCBC(CItemData::TITLE, item.GetTitle());
-    WriteCBC(CItemData::USER, item.GetUser());
-    WriteCBC(CItemData::PASSWORD, item.GetPassword());
-    WriteCBC(CItemData::NOTES, ReMergeNotes(item));
-    WriteCBC(CItemData::END, _T(""));
-  }
-    break;
-  default:
-    ASSERT(0);
-    status = UNSUPPORTED_VERSION;
+      break;
+    default:
+      ASSERT(0);
+      status = UNSUPPORTED_VERSION;
   }
   return status;
 }
@@ -323,95 +373,149 @@ static void ExtractURL(CMyString &notesStr, CMyString &outurl)
     int right = url.FindOneOf(_T(" \t\r\n"));
     if (right != -1) {
       instr += url.Mid(right);
-      url = url.Left(right);      
+      url = url.Left(right);    
     }
     outurl = url;
     notesStr = instr;
   }
 }
 
+size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
+{
+  unsigned char *buffer = NULL;
+  unsigned int buffer_len = 0;
+  size_t retval;
+
+  ASSERT(m_fish != NULL && m_IV != NULL);
+  retval = _readcbc(m_fd, buffer, buffer_len, type,
+            m_fish, m_IV, m_terminal);
+
+  if (buffer_len > 0) {
+#ifdef UNICODE
+      wchar_t *wc = new wchar_t[buffer_len+1];
+      
+      int wcLen = MultiByteToWideChar(CP_ACP,      // code page
+                                      MB_ERR_INVALID_CHARS,
+                                      LPCSTR(buffer),       // string to map
+                                      buffer_len,
+                                      wc, buffer_len+1);
+    if (wcLen == 0) {
+        DWORD errCode = GetLastError();
+        switch (errCode) {
+            case ERROR_INSUFFICIENT_BUFFER:
+                TRACE("INSUFFICIENT BUFFER"); break;
+            case ERROR_INVALID_FLAGS:
+                TRACE("INVALID FLAGS"); break;
+            case ERROR_INVALID_PARAMETER:
+                TRACE("INVALID PARAMETER"); break;
+            case ERROR_NO_UNICODE_TRANSLATION:
+                TRACE("NO UNICODE TRANSLATION"); break;
+            default:
+                ASSERT(0);
+        }
+    }
+    ASSERT(wcLen != 0);
+    if (wcLen < int(buffer_len) + 1)
+      wc[wcLen] = TCHAR('\0');
+    else
+      wc[buffer_len] = TCHAR('\0');
+    data = wc;
+    trashMemory(wc, wcLen);
+    delete[] wc;
+#else
+CMyString str(LPCTSTR(buffer), buffer_len);
+    data = str;
+#endif
+    trashMemory(buffer, buffer_len);
+    delete[] buffer;
+  } else {
+    data = _T("");
+    // no need to delete[] buffer, since _readcbc will not allocate if
+    // buffer_len is zero
+  }
+  return retval;
+}
+
 int PWSfileV1V2::ReadRecord(CItemData &item)
 {
-    ASSERT(m_fd != NULL);
-    ASSERT(m_curversion != UNKNOWN_VERSION);
+  ASSERT(m_fd != NULL);
+  ASSERT(m_curversion != UNKNOWN_VERSION);
 
-    CMyString tempdata;  
-    signed long numread = 0;
-    unsigned char type;
-    // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
-    // to access the pointer we need,
-    // but we in fact need it as an unsigned char. Grrrr.
+  CMyString tempdata;  
+  signed long numread = 0;
+  unsigned char type;
+  // We do a double cast because the LPCTSTR cast operator is overridden by the CString class
+  // to access the pointer we need,
+  // but we in fact need it as an unsigned char. Grrrr.
 
-    switch (m_curversion) {
-        case V17: {
-            // type is meaningless, but why write two versions of ReadCBC?
-            numread += static_cast<signed long>(ReadCBC(type, tempdata));
-            item.SetName(tempdata, m_defusername);
-            numread += static_cast<signed long>(ReadCBC(type, tempdata));
-            item.SetPassword(tempdata);
-            numread += static_cast<signed long>(ReadCBC(type, tempdata));
-            item.SetNotes(tempdata);
-            // No UUID, so we create one here
-            item.CreateUUID();
-            // No Group - currently leave empty
-            return (numread > 0) ? SUCCESS : END_OF_FILE;
-        }
-        case V20: {
-            int emergencyExit = 255; // to avoid endless loop.
-            signed long fieldLen; // zero means end of file reached
-            bool endFound = false; // set to true when record end detected - happy end
-            do {
-                fieldLen = static_cast<signed long>(ReadCBC(type, tempdata));
-                if (signed(fieldLen) > 0) {
-                    numread += fieldLen;
-                    switch (type) {
-                        case CItemData::TITLE:
-                            item.SetTitle(tempdata); break;
-                        case CItemData::USER:
-                            item.SetUser(tempdata); break;
-                        case CItemData::PASSWORD:
-                            item.SetPassword(tempdata); break;
-                        case CItemData::NOTES: {
-                            CMyString autotypeStr, URLStr;
-                            ExtractAutoTypeCmd(tempdata, autotypeStr);
-                            ExtractURL(tempdata, URLStr);
-                            item.SetNotes(tempdata);
-                            if (!autotypeStr.IsEmpty())
-                                item.SetAutoType(autotypeStr);
-                            if (!URLStr.IsEmpty())
-                                item.SetURL(URLStr);
-                            break;
-                        }
-                        case CItemData::END:
-                            endFound = true; break;
-                        case CItemData::UUID: {
-                            LPCTSTR ptr = LPCTSTR(tempdata);
-                            uuid_array_t uuid_array;
-                            for (unsigned i = 0; i < sizeof(uuid_array); i++)
-                                uuid_array[i] = (unsigned char)ptr[i];
-                            item.SetUUID(uuid_array); break;
-                        }
-                        case CItemData::GROUP:
-                            item.SetGroup(tempdata); break;
-                            // just silently ignore fields we don't support.
-                            // this is forward compatability...
-                        case CItemData::CTIME:
-                        case CItemData::PMTIME:
-                        case CItemData::ATIME:
-                        case CItemData::LTIME:
-                        case CItemData::RMTIME:
-                        case CItemData::POLICY:
-                        default:
-                            // XXX Set a flag here so user can be warned that
-                            // XXX we read a file format we don't fully support
-                            break;
-                    } // switch
-                } // if (fieldLen > 0)
-            } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-            return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
-        }
-        default:
-            ASSERT(0);
-            return UNSUPPORTED_VERSION;
+  switch (m_curversion) {
+    case V17: {
+      // type is meaningless, but why write two versions of ReadCBC?
+      numread += static_cast<signed long>(ReadCBC(type, tempdata));
+      item.SetName(tempdata, m_defusername);
+      numread += static_cast<signed long>(ReadCBC(type, tempdata));
+      item.SetPassword(tempdata);
+      numread += static_cast<signed long>(ReadCBC(type, tempdata));
+      item.SetNotes(tempdata);
+      // No UUID, so we create one here
+      item.CreateUUID();
+      // No Group - currently leave empty
+      return (numread > 0) ? SUCCESS : END_OF_FILE;
     }
+    case V20: {
+      int emergencyExit = 255; // to avoid endless loop.
+      signed long fieldLen; // zero means end of file reached
+      bool endFound = false; // set to true when record end detected - happy end
+      do {
+        fieldLen = static_cast<signed long>(ReadCBC(type, tempdata));
+        if (signed(fieldLen) > 0) {
+          numread += fieldLen;
+          switch (type) {
+            case CItemData::TITLE:
+              item.SetTitle(tempdata); break;
+            case CItemData::USER:
+              item.SetUser(tempdata); break;
+            case CItemData::PASSWORD:
+              item.SetPassword(tempdata); break;
+            case CItemData::NOTES: {
+              CMyString autotypeStr, URLStr;
+              ExtractAutoTypeCmd(tempdata, autotypeStr);
+              ExtractURL(tempdata, URLStr);
+              item.SetNotes(tempdata);
+              if (!autotypeStr.IsEmpty())
+                item.SetAutoType(autotypeStr);
+              if (!URLStr.IsEmpty())
+                item.SetURL(URLStr);
+              break;
+            }
+            case CItemData::END:
+              endFound = true; break;
+            case CItemData::UUID: {
+              LPCTSTR ptr = LPCTSTR(tempdata);
+              uuid_array_t uuid_array;
+              for (unsigned i = 0; i < sizeof(uuid_array); i++)
+                uuid_array[i] = (unsigned char)ptr[i];
+              item.SetUUID(uuid_array); break;
+            }
+            case CItemData::GROUP:
+              item.SetGroup(tempdata); break;
+              // just silently ignore fields we don't support.
+              // this is forward compatability...
+            case CItemData::CTIME:
+            case CItemData::PMTIME:
+            case CItemData::ATIME:
+            case CItemData::LTIME:
+            case CItemData::RMTIME:
+            case CItemData::POLICY:
+            default:
+              break;
+          } // switch
+        } // if (fieldLen > 0)
+      } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
+      return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
+    }
+    default:
+      ASSERT(0);
+      return UNSUPPORTED_VERSION;
+  }
 }

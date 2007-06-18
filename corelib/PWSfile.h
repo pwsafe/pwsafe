@@ -12,9 +12,14 @@
 //-----------------------------------------------------------------------------
 
 #include <stdio.h> // for FILE *
+#include <vector>
 
 #include "ItemData.h"
 #include "MyString.h"
+#include "UUIDGen.h"
+#include "UnknownField.h"
+
+#define MIN_HASH_ITERATIONS 2048
 
 class Fish;
 
@@ -44,12 +49,17 @@ class PWSfile {
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey, VERSION &version);
 
-  enum {DATABASE_LOCK = 0, CONFIG_LOCK};
-  static bool LockFile(const CMyString &filename, CMyString &locker, const bool bDB = true);
-  static bool IsLockedFile(const CMyString &filename, const bool bDB = true);
-  static void UnlockFile(const CMyString &filename, const bool bDB = true);
+  static bool LockFile(const CMyString &filename, CMyString &locker,
+                       HANDLE &lockFileHandle, int &LockCount);
+  static bool IsLockedFile(const CMyString &filename);
+  static void UnlockFile(const CMyString &filename,
+                       HANDLE &lockFileHandle, int &LockCount);
   static bool GetLocker(const CMyString &filename, CMyString &locker);
 
+  // Following for 'legacy' use of pwsafe as file encryptor/decryptor
+  static bool Encrypt(const CString &fn, const CMyString &passwd);
+  static bool Decrypt(const CString &fn, const CMyString &passwd);
+  
   virtual ~PWSfile();
 
   virtual int Open(const CMyString &passkey) = 0;
@@ -58,12 +68,18 @@ class PWSfile {
   virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
   void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
+  void SetFileUUID(const uuid_array_t &file_uuid_array);
+  void SetFileHashIterations(const int &nITER)
+    {m_nITER = nITER;}
+  void GetFileUUID(uuid_array_t &file_uuid_array);
+  int GetFileHashIterations()
+    {return m_nITER;}
   // The prefstring is read/written along with the rest of the file,
   // see code for details on where it's kept.
   void SetPrefString(const CMyString &prefStr) {m_prefString = prefStr;}
   const CMyString &GetPrefString() const {return m_prefString;}
-  void SetDisplayStatus(const CString &displaystatus) {m_file_displaystatus = displaystatus;}
-  const CString &GetDisplayStatus() const {return m_file_displaystatus;}
+  void SetDisplayStatus(const std::vector<bool> &displaystatus);
+  std::vector<bool> GetDisplayStatus() const;
   void SetUseUTF8(bool flag) { m_useUTF8 = flag; } // nop for v1v2
   void SetUserHost(const CString &user, const CString &sysname)
 		{m_user = user; m_sysname = sysname;}
@@ -75,15 +91,18 @@ class PWSfile {
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
   unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
   void SetCurVersion(VERSION v) {m_curversion = v;}
+  void GetUnknownHeaderFields(UnknownFieldList &UHFL);
+  void SetUnknownHeaderFields(UnknownFieldList &UHFL);
+  int GetNumRecordsWithUnknownFields()
+    {return m_nRecordsWithUnknownFields;}
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
-  virtual size_t WriteCBC(unsigned char type, const CString &data);
+  virtual size_t WriteCBC(unsigned char type, const CString &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           unsigned int length);
-  virtual size_t ReadCBC(unsigned char &type, CMyString &data);
-  virtual size_t ReadCBC(unsigned char &type, unsigned char *data,
+  virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          unsigned int &length);
   const CMyString m_filename;
   CMyString m_passkey;
@@ -93,7 +112,7 @@ class PWSfile {
   const RWmode m_rw;
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
-  CString m_file_displaystatus; // tree display sttaus stored in file
+  CString m_file_displaystatus; // tree display status stored in file
   CString m_whenlastsaved; // When last saved
   CString m_wholastsaved; // and by whom
   CString m_whatlastsaved; // and by what
@@ -103,5 +122,10 @@ class PWSfile {
   Fish *m_fish;
   unsigned char *m_terminal;
   bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
+  uuid_array_t m_file_uuid_array;
+  int m_nITER;
+  // Save unknown header fields on read to put back on write unchanged
+  UnknownFieldList m_UHFL;
+  int m_nRecordsWithUnknownFields;
 };
 #endif /* __PWSFILE_H */

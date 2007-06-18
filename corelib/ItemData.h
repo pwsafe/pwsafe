@@ -14,6 +14,7 @@
 #include "Util.h"
 #include "ItemField.h"
 #include "UUIDGen.h"
+
 #include <time.h> // for time_t
 #include <bitset>
 #include <vector>
@@ -42,6 +43,8 @@ struct PWHistEntry {
 };
 
 typedef std::vector<PWHistEntry> PWHistList;
+typedef std::vector<CItemField> UnknownFields;
+typedef UnknownFields::const_iterator UnknownFieldsConstIter;
 
 //-----------------------------------------------------------------------------
 
@@ -68,25 +71,35 @@ class CItemData
 public:
   enum {
     START = 0x00,
-    NAME = 0x00, UUID=0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
-	PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
-	POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
-    LAST, END = 0xff}; // field types, per formatV{2,3}.txt
+    NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
+    PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
+    POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
+    LAST,        // Start of unknown fields!
+    END = 0xff}; // field types, per formatV{2,3}.txt
 
   // For subgroup processing in GetPlainText from ExportTextXDlg
-  // SubGroup Function
-  enum {SGF_EQUALS = 1, SGF_NOTEQUAL, SGF_BEGINS, SGF_NOTBEGIN, SGF_ENDS, SGF_NOTEND, SGF_CONTAINS, SGF_NOTCONTAIN};
+  // SubGroup Function - if value used is negative, compare IS case sensitive
+  enum SubGrpFunc {SGF_EQUALS = 1, SGF_NOTEQUAL, 
+                   SGF_BEGINS, SGF_NOTBEGIN, 
+                   SGF_ENDS, SGF_NOTEND, 
+                   SGF_CONTAINS, SGF_NOTCONTAIN};
   // SubGroup Object
-  enum {SGO_GROUP, SGO_TITLE, SGO_USER, SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
+  enum SubGrpObj {SGO_GROUP, SGO_TITLE, SGO_USER,
+                  SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
 
  // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
   static void SetSessionKey(); // call exactly once per session
+
+  static bool IsTextField(unsigned char t);
+
    //Construction
   CItemData();
 
    CItemData(const CItemData& stuffhere);
+
+   ~CItemData();
 
    //Data retrieval
    CMyString GetName() const; // V17 - deprecated - replaced by GetTitle & GetUser
@@ -134,10 +147,26 @@ public:
    // it's used for multi-line notes and to replace '.' within the Title field.
    CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
    						const TCHAR &delimiter) const;
+  CMyString GetXML(unsigned id, const FieldBits &bsExport) const;
+   void GetUnknownField(unsigned char &type, unsigned int &length,
+                        unsigned char * &pdata,
+                        const unsigned int &num) const;
+   void GetUnknownField(unsigned char &type, unsigned int &length,
+                        unsigned char * &pdata,
+                        const UnknownFieldsConstIter &iter) const;
+   void SetUnknownField(const unsigned char type,
+                        const unsigned int length,
+                        const unsigned char * ufield);
+   unsigned int NumberUnknownFields() const
+     {return (unsigned int)m_URFL.size();}
+   void ClearUnknownFields()
+     {return m_URFL.clear();}
+  UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
+  UnknownFieldsConstIter GetURFIterEnd() const {return m_URFL.end();}
 
    void CreateUUID(); // V20 - generate UUID for new item
    void SetName(const CMyString &name,
-		const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
+	 const CMyString &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
    void SetTitle(const CMyString &title, TCHAR delimiter = 0);
    void SetUser(const CMyString &user); // V20
    void SetPassword(const CMyString &password);
@@ -146,8 +175,8 @@ public:
    void SetGroup(const CMyString &group); // V20
    void SetURL(const CMyString &URL); // V30
    void SetAutoType(const CMyString &autotype); // V30
-   void SetATime() {return SetTime(ATIME);}  // V30
-   void SetATime(time_t t) {return SetTime(ATIME, t);}  // V30
+   void SetATime() {SetTime(ATIME);}  // V30
+   void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
    void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
    void SetCTime() {SetTime(CTIME);}  // V30
    void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
@@ -175,8 +204,9 @@ public:
                    uuid_array_t &uuid_array);
   int ValidatePWHistory();
   
-  BOOL WantEntry(const CString &subgroup_name, const int &iObject, 
-                 const int &iFunction) const;
+  // Predicate to determine if item matches given criteria
+  bool Matches(const CString &subgroup_name, int iObject, 
+               int iFunction) const;
 
 private:
   CItemField m_Name;
@@ -195,6 +225,9 @@ private:
   CItemField m_tttRMTime;	// last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
 
+  // Save unknown record fields on read to put back on write unchanged
+  UnknownFields m_URFL;
+
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase
   static bool IsSessionKeySet;
@@ -209,6 +242,7 @@ private:
 		 CMyString &title, CMyString &username);
   CMyString GetTime(int whichtime, int result_format) const; // V30
   void GetTime(int whichtime, time_t &t) const; // V30
+  CMyString GetXMLTime(int indent, const TCHAR *name, time_t t) const;
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
   void SetTime(const int whichtime, const CString &time_str); // V30
@@ -219,10 +253,19 @@ private:
   void GetField(const CItemField &field, CMyString &value) const;
   void GetField(const CItemField &field, unsigned char *value,
                 unsigned int &length) const;
+  void GetUnknownField(unsigned char &type, unsigned int &length,
+                       unsigned char * &pdata, const CItemField &item) const;
   void SetField(CItemField &field, const CMyString &value);
   void SetField(CItemField &field, const unsigned char *value,
                 unsigned int length);
 };
+
+inline bool CItemData::IsTextField(unsigned char t)
+{
+    return !(t == UUID || t == CTIME || t == PMTIME ||
+             t == ATIME || t == LTIME || t == RMTIME ||
+             t >= LAST);
+}
 
 #endif
 //-----------------------------------------------------------------------------

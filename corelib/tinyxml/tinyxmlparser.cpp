@@ -22,6 +22,11 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
+/*
+ * THIS FILE WAS ALTERED BY Rony Shapiro, for integration into the PasswordSafe
+ * project http://passwordsafe.sourceforge.net/
+ */
+
 #include <ctype.h>
 #include <stddef.h>
 

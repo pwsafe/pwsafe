@@ -20,15 +20,16 @@
 class PWSfileV3 : public PWSfile {
  public:
 
-  enum {HDR_VERSION=0, HDR_UUID=0x1, HDR_NDPREFS = 0x2, HDR_DISPSTAT = 0x3,
-	HDR_LASTUPDATETIME = 0x4, HDR_LASTUPDATEUSERHOST = 0x5,
-	HDR_LASTUPDATEAPPLICATION = 0x6,
+  enum {HDR_VERSION = 0x00, HDR_UUID = 0x01, HDR_NDPREFS = 0x02, HDR_DISPSTAT = 0x03,
+    HDR_LASTUPDATETIME = 0x04, HDR_LASTUPDATEUSERHOST = 0x05,
+    HDR_LASTUPDATEAPPLICATION = 0x06,
+    HDR_LAST,        // Start of unknown fields!
     HDR_END = 0xff}; // header field types, per formatV{2,3}.txt
 
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey,
                            FILE *a_fd = NULL,
-                           unsigned char *aPtag = NULL);
+                           unsigned char *aPtag = NULL, int *nIter = NULL);
   static bool IsV3x(const CMyString &filename, VERSION &v);
 
   PWSfileV3(const CMyString &filename, RWmode mode, VERSION version);
@@ -47,8 +48,8 @@ class PWSfileV3 : public PWSfile {
   virtual size_t WriteCBC(unsigned char type, const CString &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
                           unsigned int length);
-  virtual size_t ReadCBC(unsigned char &type, CMyString &data);
-  virtual size_t ReadCBC(unsigned char &type, unsigned char *data,
+
+  virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
                          unsigned int &length);
   int WriteHeader();
   int ReadHeader();
