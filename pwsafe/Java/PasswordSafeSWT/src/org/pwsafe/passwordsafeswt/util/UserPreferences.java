@@ -31,7 +31,7 @@ public class UserPreferences {
 	private static final String MRU = "mru.";
 	private static int MAX_MRU = 5;
 
-	private static final String PROPS_DIR = ".passwordsafe";
+	public static final String PROPS_DIR = ".passwordsafe";
 	private static final String PREFS_FILENAME = "preferences.properties";
 
 	/**

@@ -96,6 +96,7 @@ import org.pwsafe.passwordsafeswt.model.PasswordTreeLabelProvider;
 import org.pwsafe.passwordsafeswt.preference.DisplayPreferences;
 import org.pwsafe.passwordsafeswt.preference.MiscPreferences;
 import org.pwsafe.passwordsafeswt.preference.SecurityPreferences;
+import org.pwsafe.passwordsafeswt.preference.WidgetPreferences;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 import org.pwsafe.passwordsafeswt.xml.XMLDataParser;
 
@@ -306,16 +307,19 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		tableColumn.setWidth(100);
 		tableColumn.setText("Title");
 		tableColumn.addSelectionListener(new TableColumnSelectionAdaptor(tableViewer, 1));
+		WidgetPreferences.tuneTableColumn(tableColumn, getClass(), "table/title");
 
 		final TableColumn tableColumn_1 = new TableColumn(table, SWT.NONE);
 		tableColumn_1.setWidth(100);
 		tableColumn_1.setText("User Name");
 		tableColumn_1.addSelectionListener(new TableColumnSelectionAdaptor(tableViewer, 2));
+        WidgetPreferences.tuneTableColumn(tableColumn_1, getClass(), "table/userName");
 
 		final TableColumn tableColumn_2 = new TableColumn(table, SWT.NONE);
 		tableColumn_2.setWidth(100);
 		tableColumn_2.setText("Notes");
 		tableColumn_2.addSelectionListener(new TableColumnSelectionAdaptor(tableViewer, 3));
+        WidgetPreferences.tuneTableColumn(tableColumn_2, getClass(), "table/notes");
 
 		if (UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_LIST)) {
 			final TableColumn tableColumn_3 = new TableColumn(table, SWT.NONE);
@@ -1151,6 +1155,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
 	 */
 	protected void handleShellCloseEvent() {
+        WidgetPreferences.save();
 		boolean cancelled = saveAppIfDirty();
 		if (cancelled) {
 			setReturnCode(OK);
