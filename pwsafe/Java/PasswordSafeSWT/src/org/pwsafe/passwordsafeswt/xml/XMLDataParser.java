@@ -60,7 +60,7 @@ public class XMLDataParser {
 	 * bean.
 	 * 
 	 */
-	public class XMLDataParserHandler extends DefaultHandler {
+	public static class XMLDataParserHandler extends DefaultHandler {
 
 		Stack tagStack = new Stack();
 
@@ -154,7 +154,7 @@ public class XMLDataParser {
 			XMLReader xmlReader = SAXParserFactory.newInstance().newSAXParser()
 					.getXMLReader();
 
-			XMLDataParserHandler xmlHandler = new XMLDataParser().new XMLDataParserHandler();
+			XMLDataParserHandler xmlHandler = new XMLDataParserHandler();
 
 			xmlReader.setContentHandler(xmlHandler);
 			InputSource is = new InputSource(
