@@ -12,6 +12,7 @@
 //-----------------------------------------------------------------------------
 
 #include <stdio.h> // for FILE *
+#include <vector>
 
 #include "ItemData.h"
 #include "MyString.h"
@@ -77,8 +78,8 @@ class PWSfile {
   // see code for details on where it's kept.
   void SetPrefString(const CMyString &prefStr) {m_prefString = prefStr;}
   const CMyString &GetPrefString() const {return m_prefString;}
-  void SetDisplayStatus(const CString &displaystatus) {m_file_displaystatus = displaystatus;}
-  const CString &GetDisplayStatus() const {return m_file_displaystatus;}
+  void SetDisplayStatus(const std::vector<bool> &displaystatus);
+  std::vector<bool> GetDisplayStatus() const;
   void SetUseUTF8(bool flag) { m_useUTF8 = flag; } // nop for v1v2
   void SetUserHost(const CString &user, const CString &sysname)
 		{m_user = user; m_sysname = sysname;}
@@ -111,7 +112,7 @@ class PWSfile {
   const RWmode m_rw;
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
-  CString m_file_displaystatus; // tree display sttaus stored in file
+  CString m_file_displaystatus; // tree display status stored in file
   CString m_whenlastsaved; // When last saved
   CString m_wholastsaved; // and by whom
   CString m_whatlastsaved; // and by what
