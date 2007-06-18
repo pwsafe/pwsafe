@@ -14,6 +14,11 @@ Bugs fixed in 3.08.04
 [Open Discussion] Compare fixed so that 'X' indicating differences are
 in the correct columns and data copied to clipboard ends in CRLF not just LF
 
+Bugs fixed in 3.08.03
+=====================
+[1735290] Configuration file works with non-ASCII user and host
+names.
+
 New Features for 3.08.03
 ========================
 [] Use STL library in the core. Hopefully transparent to the user but a

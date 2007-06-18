@@ -29,6 +29,9 @@
 
 #include <sys/types.h>
 #include <bitset>
+#include <vector>
+
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -2139,60 +2142,41 @@ DboxMain::OnCancel()
 void
 DboxMain::SaveDisplayStatus()
 {
-	const int max_displaystatus_size = m_ctlItemTree.GetCount();
-
-	TCHAR *p_char_displaystatus = new TCHAR[max_displaystatus_size];
-
-	memset(p_char_displaystatus, 0, max_displaystatus_size);
-
-	int i = 0;
-
-	GroupDisplayStatus(p_char_displaystatus, i, true);
-
-	m_core.SetDisplayStatus(p_char_displaystatus, i);
-  // Save it for minimize
-  m_minmizedisplaystatus = CString(p_char_displaystatus, i);
-	delete[] p_char_displaystatus;
+	GroupDisplayStatus(m_treeDispState, true); // get it
+	m_core.SetDisplayStatus(m_treeDispState); // store it
 }
 
 void
 DboxMain::RestoreDisplayStatus(bool bUnMinimize)
 {
-	CString cs_displaystatus;
+	vector<bool> displaystatus;
   if (bUnMinimize)
-    cs_displaystatus = m_minmizedisplaystatus;
+    displaystatus = m_treeDispState;
   else 
-    cs_displaystatus = m_core.GetDisplayStatus();    
+    displaystatus = m_core.GetDisplayStatus();    
 
-	if (cs_displaystatus.IsEmpty())
-		return;
-
-	TCHAR *p_char_displaystatus = cs_displaystatus.GetBuffer(cs_displaystatus.GetLength());
-
-	int i = 0;
-
-	GroupDisplayStatus(p_char_displaystatus, i, false);
+	if (!displaystatus.empty())
+    GroupDisplayStatus(displaystatus, false);
 }
 
 void
-DboxMain::GroupDisplayStatus(TCHAR *p_char_displaystatus, int &i, bool bSet)
+DboxMain::GroupDisplayStatus(vector<bool> &displaystatus, bool bSet)
 {
-	const TCHAR c_one = TCHAR('1');
 	HTREEITEM hItem = NULL;
+  unsigned i = 0;
 	while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
 		if (m_ctlItemTree.ItemHasChildren(hItem)) {
-			if (bSet) {
+			if (bSet) { // update vector
 				if (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED) {
-					p_char_displaystatus[i] = TCHAR('1');
+					displaystatus.push_back(true);
 				} else {
-					p_char_displaystatus[i] = TCHAR('0');
+					displaystatus.push_back(false);
 				}
-			} else {
-				if (memcmp(&p_char_displaystatus[i], &c_one, sizeof(TCHAR)) == 0) {
-					m_ctlItemTree.Expand(hItem, TVE_EXPAND);
-				}
+			} else { // update display
+				if ( (i < displaystatus.size()) && displaystatus[i])
+          m_ctlItemTree.Expand(hItem, TVE_EXPAND);
+        i++;
 			}
-			i++;
 		}
 	}
 }

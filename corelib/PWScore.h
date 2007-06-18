@@ -160,9 +160,8 @@ class PWScore {
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
   void SetPassKey(const CMyString &new_passkey);
 
-  void SetDisplayStatus(TCHAR *p_char_displaystatus, const int length);
-  void SetDisplayStatus(const CString &s) { m_displaystatus = s;}
-  CString GetDisplayStatus() {return m_displaystatus;}
+  void SetDisplayStatus(const std::vector<bool> &s) { m_displaystatus = s;}
+  const std::vector<bool> &GetDisplayStatus() const {return m_displaystatus;}
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
@@ -197,7 +196,7 @@ class PWScore {
   bool m_changed;
   bool m_IsReadOnly;
 
-  CString m_displaystatus;
+  std::vector<bool> m_displaystatus;
   CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
   uuid_array_t m_file_uuid_array;
   int m_nITER;

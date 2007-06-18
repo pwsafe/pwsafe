@@ -1383,11 +1383,6 @@ void PWScore::GetUniqueGroups(CStringArray &aryGroups)
   }
 }
 
-void PWScore::SetDisplayStatus(TCHAR *p_char_displaystatus, const int length)
-{
-  m_displaystatus = CString(p_char_displaystatus, length);
-}
-
 void PWScore::CopyPWList(const ItemList &in)
 {
   m_pwlist = in;

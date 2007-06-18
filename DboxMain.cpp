@@ -76,8 +76,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_toolbarsSetup(FALSE),
      m_bSortAscending(true), m_iSortedColumn(CItemData::TITLE),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
-     m_core(app.m_core), m_lock_displaystatus(_T("")), 
-     m_pFontTree(NULL),
+     m_core(app.m_core), m_pFontTree(NULL),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
@@ -1671,7 +1670,7 @@ DboxMain::UnMinimize(bool update_windows)
       m_passphraseOK = true;
       if (update_windows) {
         ShowWindow(SW_RESTORE);
-        m_core.SetDisplayStatus(m_lock_displaystatus);
+        m_core.SetDisplayStatus(m_treeDispState);
         RestoreDisplayStatus(true);
         BringWindowToTop();
       }

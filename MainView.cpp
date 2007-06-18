@@ -1381,7 +1381,7 @@ DboxMain::OnTimer(UINT nIDEvent )
         Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
       SaveDisplayStatus();
-      m_lock_displaystatus = m_core.GetDisplayStatus();
+      m_treeDispState = m_core.GetDisplayStatus();
       ClearData();
       if(IsWindowVisible()){
         ShowWindow(SW_MINIMIZE);
