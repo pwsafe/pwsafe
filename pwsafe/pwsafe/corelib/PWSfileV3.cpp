@@ -366,13 +366,10 @@ int PWSfileV3::ReadRecord(CItemData &item)
 #ifdef DEBUG
                     CString cs_timestamp;
                     cs_timestamp = PWSUtil::GetTimeStamp();
-                    TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d, value:\n"),
+                    TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
                                cs_timestamp, item.GetGroup(), item.GetTitle(), item.GetUser(), 
-                               type, m_utf8Len);
-                    CString cs_hexdump;
-                    cs_hexdump = PWSUtil::HexDump(m_utf8, (int)m_utf8Len,
-                                                  cs_timestamp);
-                    TRACE(_T("%s\n"), cs_hexdump);
+                               type, m_utf8Len, m_utf8Len);
+                    PWSUtil::HexDump(m_utf8, (int)m_utf8Len, cs_timestamp);
 #endif /* DEBUG */
                     break;
             } // switch
@@ -741,11 +738,9 @@ int PWSfileV3::ReadHeader()
 #ifdef _DEBUG
                 CString cs_timestamp;
                 cs_timestamp = PWSUtil::GetTimeStamp();
-                TRACE(_T("%s: Header has unknown field: %02x, length %d, value:\n"), 
-                          cs_timestamp, fieldType, m_utf8Len);
-                CString cs_hexdump;
-                cs_hexdump = PWSUtil::HexDump(m_utf8, m_utf8Len, cs_timestamp);
-                TRACE(_T("%s\n"), cs_hexdump);
+                TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+                          cs_timestamp, fieldType, m_utf8Len, m_utf8Len);
+                PWSUtil::HexDump(m_utf8, m_utf8Len, cs_timestamp);
 #endif /* DEBUG */
                 break;
         }

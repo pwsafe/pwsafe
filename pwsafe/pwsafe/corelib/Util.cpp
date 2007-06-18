@@ -1052,11 +1052,10 @@ PWSUtil::GetTimeStamp()
   return:
     CString containing output buffer
 */
-CString
+void
 PWSUtil::HexDump(unsigned char *pmemory, const int length, 
                  const CString cs_prefix, const int maxnum)
 {
-  CString cs_buffer(_T(""));
 #ifdef _DEBUG
   unsigned char *pmem;
   CString cs_outbuff, cs_hexbuff, cs_charbuff;
@@ -1091,7 +1090,7 @@ PWSUtil::HexDump(unsigned char *pmemory, const int length,
         cs_charbuff += _T('.');
     }
 
-    j = maxnum - i;
+    j = maxnum - j;
 
     // Fill out hex portion of short lines.
     for (i = j; i > 0; i--) {
@@ -1113,16 +1112,12 @@ PWSUtil::HexDump(unsigned char *pmemory, const int length,
 
     // Next line
     len -= maxnum;
-    if (len > 0)
-      cs_outbuff += _T('\n');
 
-    cs_buffer += cs_outbuff;
+    TRACE(_T("%s\n"), cs_outbuff);
   };
 #else
   pmemory; length; cs_prefix; maxnum;
 #endif
-
-  return cs_buffer;
 }
 
 CString

@@ -520,12 +520,10 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 #ifdef _DEBUG
         CString cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
-        TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d, value:\n"),
+        TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
               cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username, 
-              unkrfe.uc_Type, (int)unkrfe.st_length);
-        CString cs_hexdump;
-        cs_hexdump = PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
-        TRACE(_T("%s\n"), cs_hexdump);
+          unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
+        PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
 #endif
         tempitem.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
       }
@@ -730,11 +728,9 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 #ifdef _DEBUG
         CString cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
-        TRACE(_T("%s: Header has unknown field: %02x, length %d, value:\n"),
-              cs_timestamp, m_ctype, m_fieldlen);
-        CString cs_hexdump;
-        cs_hexdump = PWSUtil::HexDump(m_pfield, m_fieldlen, cs_timestamp);
-        TRACE(_T("%s\n"), cs_hexdump);
+        TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"),
+          cs_timestamp, m_ctype, m_fieldlen, m_fieldlen);
+        PWSUtil::HexDump(m_pfield, m_fieldlen, cs_timestamp);
 #endif
       } else {
         m_bDatabaseHeaderErrors = true;
