@@ -1071,7 +1071,16 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	        	
 		} catch (Exception ioe) {
 			throw new RuntimeException("IO Issues reading XML source file", ioe);
-		}
+		} finally
+        {
+		    try
+            {
+                bis.close();
+            } catch (IOException e)
+            {
+                log.warn("BufferedInputStream.close()", e);
+            }
+        }
 
 		XMLDataParser xdp = new XMLDataParser();
 		PwsEntryDTO[] entries = xdp.parse(utf8String);
