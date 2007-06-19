@@ -579,6 +579,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	public static void main(String args[]) {
 		log.info("PasswordSafe starting...");
 		log.info("java.library.path is: [" + System.getProperty("java.library.path") + "]");
+		log.info("log: " + log.getClass().getName());
 		try {
 			PasswordSafeJFace window = new PasswordSafeJFace();
 			window.setBlockOnOpen(true);
@@ -599,6 +600,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		newShell.setText(PasswordSafeJFace.APP_NAME);
 		newShell.setImage(SWTResourceManager.getImage(PasswordSafeJFace.class,
 				"/org/pwsafe/passwordsafeswt/images/cpane.ico"));
+		WidgetPreferences.tuneShell(newShell, getClass());
 		startOpeningDialogThread(newShell);
 		
 	}
@@ -867,7 +869,8 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 */
 	public void exitApplication() {
 		tidyUpOnExit();
-		getShell().dispose();
+//		getShell().dispose();
+		getShell().close();
 	}
 
 	/**
@@ -1155,7 +1158,6 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
 	 */
 	protected void handleShellCloseEvent() {
-        WidgetPreferences.save();
 		boolean cancelled = saveAppIfDirty();
 		if (cancelled) {
 			setReturnCode(OK);

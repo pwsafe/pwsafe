@@ -11,7 +11,11 @@ import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 
@@ -22,7 +26,7 @@ import org.pwsafe.passwordsafeswt.util.UserPreferences;
  */
 public class WidgetPreferences
 {
-    private static final Log log = LogFactory.getLog(WidgetPreferences.class);
+    static final Log log = LogFactory.getLog(WidgetPreferences.class);
 
     private static final String PREFS_FILENAME = "widget.properties";
 
@@ -47,6 +51,26 @@ public class WidgetPreferences
         }
     }
 
+    public static void tuneShell(final Shell shell, final Class clazz)
+    {
+        WidgetPreferences.restoreLocation(shell, clazz);
+        shell.addShellListener(new ShellAdapter()
+        {
+            public void shellClosed(ShellEvent e)
+            {
+                save();
+            }
+        });
+        
+        shell.addDisposeListener(new DisposeListener()
+        {
+            public void widgetDisposed(DisposeEvent e)
+            {
+                saveLocation(shell, clazz);
+            }
+        });
+    }
+    
     public static void tuneTableColumn(final TableColumn column, final String id)
     {
         final Rectangle rectangle = PreferenceConverter.getRectangle(ps, id);
@@ -59,6 +83,7 @@ public class WidgetPreferences
         {
             public void widgetDisposed(DisposeEvent e)
             {
+                log.debug("saving widget size, id=" + id);
                 PreferenceConverter.setValue(ps, id, new Rectangle(0, 0, column
                         .getWidth(), 0));
             }
@@ -82,6 +107,39 @@ public class WidgetPreferences
         {
             log.warn("Error while saving preferences", e);
         }
+    }
+
+    public static void restoreLocation(Shell shell, String id)
+    {
+        final Rectangle rectangle = PreferenceConverter.getRectangle(ps, id);
+        if (rectangle.x != 0 || rectangle.y != 0)
+        {
+            shell.setLocation(rectangle.x, rectangle.y);
+        }
+
+        if (rectangle.width > 0 && rectangle.height > 0)
+        {
+            shell.setSize(rectangle.width, rectangle.height);
+        }
+    }
+
+    public static void restoreLocation(Shell shell, Class clazz)
+    {
+        restoreLocation(shell, clazz.getName() + "/window");
+    }
+
+    public static void saveLocation(Shell shell, String id)
+    {
+        log.debug("saving window location, id=" + id);
+        final Point location = shell.getLocation();
+        final Point size = shell.getSize();
+        final Rectangle rectangle = new Rectangle(location.x, location.y, size.x, size.y);
+        PreferenceConverter.setValue(ps, id, rectangle);
+    }
+
+    public static void saveLocation(Shell shell, Class clazz)
+    {
+        saveLocation(shell, clazz.getName() + "/window");
     }
 
 }
