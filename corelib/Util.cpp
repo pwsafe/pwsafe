@@ -724,7 +724,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
             systime.wSecond = (WORD)st.tm_sec;
             systime.wMilliseconds = (WORD)0;
             TCHAR szBuf[80];
-            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SLONGDATE, szBuf, 80));
+            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
             GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
             szBuf[0] = _T(' ');  // Put a blank between date and time
             VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
@@ -761,7 +761,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
             systime.wSecond = (WORD)st.tm_sec;
             systime.wMilliseconds = (WORD)0;
             TCHAR szBuf[80];
-            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SLONGDATE, szBuf, 80));
+            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
             GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
             szBuf[0] = _T(' ');  // Put a blank between date and time
             VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));

@@ -26,7 +26,7 @@ public:
 
 	CDateTimeCtrl m_pTimeCtl;                // time picker control
 	CDateTimeCtrl m_pDateCtl;                // date picker control
-	CMyString m_locLTime;                    // format as per user's Long Date/Time
+	CMyString m_locLTime;                    // format as per user's Short Date/Time
 	time_t m_tttLTime;
 
 // Dialog Data
