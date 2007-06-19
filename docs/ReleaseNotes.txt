@@ -14,6 +14,10 @@ Bugs fixed in 3.08.04
 [Open Discussion] Compare fixed so that 'X' indicating differences are
 in the correct columns and data copied to clipboard ends in CRLF not just LF
 
+New Features for 3.08.04
+========================
+[1739979] Add URL column to flattened list
+
 Changes to Existing Features in 3.08.04
 =======================================
 [1732163] Date/time displayed throughout in the users "Short Date" format.

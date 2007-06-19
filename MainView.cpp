@@ -941,6 +941,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
   case CItemData::PASSWORD:
     cs_fielddata = itemData.GetPassword();
     break;
+  case CItemData::URL:
+    cs_fielddata = itemData.GetURL();
+    break;
   case CItemData::CTIME:
     cs_fielddata = itemData.GetCTimeL();
     break;
@@ -1049,6 +1052,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
       break;
     case CItemData::PASSWORD:
       cs_fielddata = itemData.GetPassword();
+      break;
+    case CItemData::URL:
+      cs_fielddata = itemData.GetURL();
       break;
     case CItemData::CTIME:
       cs_fielddata = itemData.GetCTimeL();
@@ -1611,34 +1617,46 @@ DboxMain::SetColumns()
                                          rect.Width() / 4));
   }
 
-  cs_header = GetHeaderText(CItemData::CTIME);
-  m_ctlItemList.InsertColumn(ipwd + 3, cs_header);
+  int ioff = 3;
+  cs_header = GetHeaderText(CItemData::URL);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::CTIME;
-  m_LVHdrCtrl.SetItem(ipwd + 3, &hdi);
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
+
+  cs_header = GetHeaderText(CItemData::CTIME);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
+  hdi.lParam = CItemData::CTIME;
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
   
   cs_header = GetHeaderText(CItemData::PMTIME);
-  m_ctlItemList.InsertColumn(ipwd + 4, cs_header);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::PMTIME;
-  m_LVHdrCtrl.SetItem(ipwd + 4, &hdi);
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
   
   cs_header = GetHeaderText(CItemData::ATIME);
-  m_ctlItemList.InsertColumn(ipwd + 5, cs_header);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::ATIME;
-  m_LVHdrCtrl.SetItem(ipwd + 5, &hdi);
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
   
   cs_header = GetHeaderText(CItemData::LTIME);
-  m_ctlItemList.InsertColumn(ipwd + 6, cs_header);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::LTIME;
-  m_LVHdrCtrl.SetItem(ipwd + 6, &hdi);
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
   
   cs_header = GetHeaderText(CItemData::RMTIME);
-  m_ctlItemList.InsertColumn(ipwd + 7, cs_header);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::RMTIME;
-  m_LVHdrCtrl.SetItem(ipwd + 7, &hdi);
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
 
   m_ctlItemList.SetRedraw(FALSE);
 
-  for (int i = ipwd + 3; i < (ipwd + 8); i++) {
+  for (int i = ipwd + 3; i < (ipwd + ioff); i++) {
     m_ctlItemList.SetColumnWidth(i, m_iDateTimeFieldWidth);
   }
 
@@ -1971,6 +1989,9 @@ CString DboxMain::GetHeaderText(const int iType)
     case CItemData::PASSWORD:
       cs_header.LoadString(IDS_PASSWORD);
       break;
+    case CItemData::URL:
+      cs_header.LoadString(IDS_URL);
+      break;
     case CItemData::NOTES:
       cs_header.LoadString(IDS_NOTES);
       break;
@@ -2005,6 +2026,7 @@ int DboxMain::GetHeaderWidth(const int iType)
     case CItemData::USER:
     case CItemData::PASSWORD:
     case CItemData::NOTES:
+    case CItemData::URL:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
@@ -2065,6 +2087,9 @@ void DboxMain::CalcHeaderWidths()
         break;
       case CItemData::PASSWORD:
         cs_header.LoadString(IDS_PASSWORD);
+        break;
+      case CItemData::URL:
+        cs_header.LoadString(IDS_URL);
         break;
       case CItemData::NOTES:
         cs_header.LoadString(IDS_NOTES);
