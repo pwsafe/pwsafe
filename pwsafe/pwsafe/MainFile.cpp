@@ -2142,6 +2142,7 @@ DboxMain::OnCancel()
 void
 DboxMain::SaveDisplayStatus()
 {
+  m_treeDispState.clear();
 	GroupDisplayStatus(m_treeDispState, true); // get it
 	m_core.SetDisplayStatus(m_treeDispState); // store it
 }
@@ -2173,8 +2174,9 @@ DboxMain::GroupDisplayStatus(vector<bool> &displaystatus, bool bSet)
 					displaystatus.push_back(false);
 				}
 			} else { // update display
-				if ( (i < displaystatus.size()) && displaystatus[i])
-          m_ctlItemTree.Expand(hItem, TVE_EXPAND);
+				if (i < displaystatus.size())
+          m_ctlItemTree.Expand(hItem,
+                               displaystatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
         i++;
 			}
 		}
