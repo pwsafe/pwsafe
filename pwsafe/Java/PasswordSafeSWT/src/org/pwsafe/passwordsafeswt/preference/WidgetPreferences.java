@@ -51,6 +51,15 @@ public class WidgetPreferences
         }
     }
 
+    /**
+     * Restores location of a Shell and adds two listeners to make sure that
+     * current location is saved
+     * 
+     * @param shell
+     *            a shell
+     * @param clazz
+     *            a class that makes an id for saving and restoring location
+     */
     public static void tuneShell(final Shell shell, final Class clazz)
     {
         WidgetPreferences.restoreLocation(shell, clazz);
@@ -71,6 +80,15 @@ public class WidgetPreferences
         });
     }
     
+    /**
+     * Restores width of a TableColumn and adds listener to make sure that
+     * current width is saved
+     * 
+     * @param column
+     *            a TableColumn
+     * @param id
+     *            an id for saving and restoring width of the column
+     */
     public static void tuneTableColumn(final TableColumn column, final String id)
     {
         final Rectangle rectangle = PreferenceConverter.getRectangle(ps, id);
@@ -91,13 +109,22 @@ public class WidgetPreferences
 
     }
 
+    /**
+     * Redirects to {@link #tuneTableColumn(TableColumn, String)} with
+     * <code>id = clazz.getName() + "/" + id</code>
+     */
     public static void tuneTableColumn(final TableColumn column, Class clazz,
             final String id)
     {
         tuneTableColumn(column, clazz.getName() + "/" + id);
     }
 
-    public static void save()
+    /**
+     * Saves all the cached preferences
+     * 
+     * @see #tuneShell(Shell, Class)
+     */
+    static void save()
     {
         log.info("saving preferences ..");
         try
@@ -109,7 +136,10 @@ public class WidgetPreferences
         }
     }
 
-    public static void restoreLocation(Shell shell, String id)
+    /**
+     * Restores location of a Shell
+     */
+    private static void restoreLocation(Shell shell, String id)
     {
         final Rectangle rectangle = PreferenceConverter.getRectangle(ps, id);
         if (rectangle.x != 0 || rectangle.y != 0)
@@ -123,12 +153,19 @@ public class WidgetPreferences
         }
     }
 
-    public static void restoreLocation(Shell shell, Class clazz)
+    /**
+     * Redirects to {@link #restoreLocation(Shell, String)} with
+     * <code>id = clazz.getName() + "/window"</code>
+     */
+    private static void restoreLocation(Shell shell, Class clazz)
     {
         restoreLocation(shell, clazz.getName() + "/window");
     }
 
-    public static void saveLocation(Shell shell, String id)
+    /**
+     * Saves the location of a Shell
+     */
+    private static void saveLocation(Shell shell, String id)
     {
         log.debug("saving window location, id=" + id);
         final Point location = shell.getLocation();
@@ -137,7 +174,11 @@ public class WidgetPreferences
         PreferenceConverter.setValue(ps, id, rectangle);
     }
 
-    public static void saveLocation(Shell shell, Class clazz)
+    /**
+     * Redirects to {@link #saveLocation(Shell, String)} with
+     * <code>id = clazz.getName() + "/window"</code>
+     */
+    static void saveLocation(Shell shell, Class clazz)
     {
         saveLocation(shell, clazz.getName() + "/window");
     }
