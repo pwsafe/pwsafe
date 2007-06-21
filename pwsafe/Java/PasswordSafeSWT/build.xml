@@ -236,7 +236,7 @@
 
 
     <target name="clean" depends="init" description="Remove all class files">
-        <delete dir="${classees.dir}" />
+        <delete dir="${classes.dir}" />
         <delete dir="${deploy.dir}" />
     </target>
 
