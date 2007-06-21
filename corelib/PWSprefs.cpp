@@ -565,9 +565,9 @@ void PWSprefs::InitializePreferences()
     // ensure that they start with letter,
     // and otherwise conforms with
     // http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
-    CString hn = si->GetCurrentHost();
+    CString hn = si->GetEffectiveHost();
     xmlify('H', hn);
-    CString un = si->GetCurrentUser();
+    CString un = si->GetEffectiveUser();
     xmlify('u', un);
     m_csHKCU =  hn + _T("\\") + un;
     // set up other keys

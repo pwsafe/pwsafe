@@ -49,37 +49,37 @@ SysInfo::SysInfo()
 	sysname[1] = TCHAR('\0');
 	slen = 1;
   }
-  m_user = CString(user, ulen);
-  m_sysname = CString(sysname, slen);
+  m_euser = m_ruser = CString(user, ulen);
+  m_esysname = m_rsysname = CString(sysname, slen);
   m_ProcessID.Format(_T("%08d"), GetCurrentProcessId());
 }
 
 CString SysInfo::GetEnv(const char *env)
 {
-    ASSERT(env != NULL);
-    CString retval;
+  ASSERT(env != NULL);
+  CString retval;
 #if _MSC_VER < 1400
-    retval = getenv(env);
+  retval = getenv(env);
 #else
-    char* value;
-    size_t requiredSize;
+  char* value;
+  size_t requiredSize;
 
-    getenv_s(&requiredSize, NULL, 0, env);
-    if (requiredSize > 0) {
-        value = new char[requiredSize];
-        ASSERT(value);
-        if (value != NULL) {
-            getenv_s( &requiredSize, value, requiredSize, env);
-            retval = value;
-            delete[] value;
-            // make sure path has trailing '\'
-            // yeah, this breaks non-dir getenvs - sosueme
-            if (retval[retval.GetLength()-1] != TCHAR('\\'))
-                retval += _T("\\");
-        }
+  getenv_s(&requiredSize, NULL, 0, env);
+  if (requiredSize > 0) {
+    value = new char[requiredSize];
+    ASSERT(value);
+    if (value != NULL) {
+      getenv_s( &requiredSize, value, requiredSize, env);
+      retval = value;
+      delete[] value;
+      // make sure path has trailing '\'
+      // yeah, this breaks non-dir getenvs - sosueme
+      if (retval[retval.GetLength()-1] != TCHAR('\\'))
+        retval += _T("\\");
     }
+  }
 #endif
-    return retval;
+  return retval;
 }
 
 bool SysInfo::IsUnderU3()
