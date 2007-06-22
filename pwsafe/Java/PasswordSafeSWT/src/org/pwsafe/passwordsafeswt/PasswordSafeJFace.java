@@ -97,6 +97,7 @@ import org.pwsafe.passwordsafeswt.preference.DisplayPreferences;
 import org.pwsafe.passwordsafeswt.preference.MiscPreferences;
 import org.pwsafe.passwordsafeswt.preference.SecurityPreferences;
 import org.pwsafe.passwordsafeswt.preference.WidgetPreferences;
+import org.pwsafe.passwordsafeswt.util.IOUtils;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 import org.pwsafe.passwordsafeswt.xml.XMLDataParser;
 
@@ -344,24 +345,32 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
         final TreeColumn treeColumn = new TreeColumn(tree, SWT.CENTER);
         treeColumn.setText("Title");
+        treeColumn.setWidth(100);
+        WidgetPreferences.tuneTreeColumn(treeColumn, getClass(), "tree/title");
 //        treeColumn.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 1));
 
         final TreeColumn treeColumn_1 = new TreeColumn(tree, SWT.LEFT);
         treeColumn_1.setText("User Name");
+        treeColumn_1.setWidth(100);
+        WidgetPreferences.tuneTreeColumn(treeColumn_1, getClass(), "tree/userName");
 //        treeColumn_1.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 2));
 
         final TreeColumn treeColumn_2 = new TreeColumn(tree, SWT.LEFT);
         treeColumn_2.setText("Notes");
+        treeColumn_2.setWidth(100);
+        WidgetPreferences.tuneTreeColumn(treeColumn_2, getClass(), "tree/notes");
 //        treeColumn_2.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 3));
 
         if (UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_LIST)) {
         	final TreeColumn treeColumn_3 = new TreeColumn(tree, SWT.LEFT);
             treeColumn_3.setText("Password");
+            treeColumn_3.setWidth(100);
+            WidgetPreferences.tuneTreeColumn(treeColumn_3, getClass(), "tree/password");
 //            treeColumn_3.addSelectionListener(new TreeColumnSelectionAdaptor(treeViewer, 4));
         }
         TreeColumn[] columns = tree.getColumns();
         for (int i = 0; i < columns.length; i++) {
-        	columns[i].setWidth(100);
+//        	columns[i].setWidth(100);
             columns[i].setMoveable(true);
         }
 
@@ -1080,13 +1089,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			throw new RuntimeException("IO Issues reading XML source file", ioe);
 		} finally
         {
-		    try
-            {
-                bis.close();
-            } catch (IOException e)
-            {
-                log.warn("BufferedInputStream.close()", e);
-            }
+		    IOUtils.closeQuietly(bis);
         }
 
 		XMLDataParser xdp = new XMLDataParser();

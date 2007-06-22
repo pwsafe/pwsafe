@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 
 /**
@@ -117,6 +118,43 @@ public class WidgetPreferences
             final String id)
     {
         tuneTableColumn(column, clazz.getName() + "/" + id);
+    }
+    
+    /**
+     * Restores width of a TreeColumn and adds listener to make sure that
+     * current width is saved
+     * 
+     * @param column
+     *            a TreeColumn
+     * @param id
+     *            an id for saving and restoring width of the column
+     */
+    public static void tuneTreeColumn(final TreeColumn column, final String id)
+    {
+        final Rectangle rectangle = PreferenceConverter.getRectangle(ps, id);
+        if (rectangle.width > 0)
+        {
+            column.setWidth(rectangle.width);
+        }
+
+        column.addDisposeListener(new DisposeListener()
+        {
+            public void widgetDisposed(DisposeEvent e)
+            {
+                log.debug("saving widget size, id=" + id);
+                PreferenceConverter.setValue(ps, id, new Rectangle(0, 0, column.getWidth(), 0));
+            }
+        });
+
+    }
+    
+    /**
+     * Redirects to {@link #tuneTreeColumn(TreeColumn, String)} with
+     * <code>id = clazz.getName() + "/" + id</code>
+     */
+    public static void tuneTreeColumn(final TreeColumn column, Class clazz, final String id)
+    {
+        tuneTreeColumn(column, clazz.getName() + "/" + id);
     }
 
     /**
