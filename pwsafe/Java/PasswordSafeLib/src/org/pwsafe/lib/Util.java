@@ -38,10 +38,11 @@ public class Util
 
 		array = new byte [ length ];
 
-		for ( int ii = 0; ii < length; ++ii )
-		{
-			array[ii] = newRand();
-		}
+//		for ( int ii = 0; ii < length; ++ii )
+//		{
+//			array[ii] = newRand();
+//		}
+		newRandBytes(array);
 		return array;
 	}
 
@@ -100,9 +101,10 @@ public class Util
 	public static byte[] getBytes(byte[] src, int offset, int length) {
 		
 		byte[] output = new byte[length];
-		for (int i=0; i < length; i++) {
-			output[i] = src[offset + i];
-		}
+//		for (int i=0; i < length; i++) {
+//			output[i] = src[offset + i];
+//		}
+		System.arraycopy(src, offset, output, 0, length);
 		return output;
 		
 	}
@@ -116,9 +118,10 @@ public class Util
 	 * @param target second array
 	 */
 	public static void copyBytes(byte[] src, byte[] target) {
-		for (int i = 0; i < src.length; i++) {
-			target[i] = src[i];
-		}
+//		for (int i = 0; i < src.length; i++) {
+//			target[i] = src[i];
+//		}
+		System.arraycopy(src, 0, target, 0, src.length);
 	}
 	
 
@@ -356,6 +359,17 @@ public class Util
 		while ( (rand = (int)(Math.random() * Integer.MAX_VALUE) % 257) == 256);
 		return (byte) rand;
 	}
+	
+	/**
+     * fills <code>bytes[]</code> with random bytes using newRand()
+     */
+	public static void newRandBytes(byte[] bytes)
+    {
+        for (int i = 0; i < bytes.length; i++)
+        {
+            bytes[i] = newRand();
+        }
+    }
 
 	/**
 	 * Returns a random positive integer in the range 0 to <code>Integer.MAX_VALUE</code>.

@@ -58,13 +58,15 @@ public class PwsFileHeaderV3
 	PwsFileHeaderV3()
 	{
 		tag = PwsFileV3.ID_STRING;
-		for (int i=0; i<salt.length; i++) {
-			salt[i] = Util.newRand();
-		}
+//		for (int i=0; i<salt.length; i++) {
+//			salt[i] = Util.newRand();
+//		}
+		Util.newRandBytes(salt);
 		Util.putIntToByteArray(iter, 2048, 0);
-		for (int i=0; i<IV.length; i++) {
-			IV[i] = Util.newRand();
-		}
+//		for (int i=0; i<IV.length; i++) {
+//			IV[i] = Util.newRand();
+//		}
+		Util.newRandBytes(IV);
 	}
 
 	/**
@@ -219,14 +221,16 @@ public class PwsFileHeaderV3
 		password = SHA256Pws.digest(stretchedPassword);
 		
 		byte[] b1pt = new byte[16];
-		for (int i=0; i<b1pt.length; i++) {
-			b1pt[i] = Util.newRand();
-		}
+//		for (int i=0; i<b1pt.length; i++) {
+//			b1pt[i] = Util.newRand();
+//		}
+		Util.newRandBytes(b1pt);
 		
 		byte[] b2pt = new byte[16];
-		for (int i=0; i<b2pt.length; i++) {
-			b2pt[i] = Util.newRand();
-		}
+//		for (int i=0; i<b2pt.length; i++) {
+//			b2pt[i] = Util.newRand();
+//		}
+		Util.newRandBytes(b2pt);
 			
 		b1 = TwofishPws.processECB(stretchedPassword, true, b1pt);
 		b2 = TwofishPws.processECB(stretchedPassword, true, b2pt);
@@ -234,14 +238,16 @@ public class PwsFileHeaderV3
 		file.decryptedRecordKey = Util.mergeBytes(b1pt, b2pt);
 		
 		byte[] b3pt = new byte[16];
-		for (int i=0; i<b3pt.length; i++) {
-			b3pt[i] = Util.newRand();
-		}
+//		for (int i=0; i<b3pt.length; i++) {
+//			b3pt[i] = Util.newRand();
+//		}
+		Util.newRandBytes(b3pt);
 		
 		byte[] b4pt = new byte[16];
-		for (int i=0; i<b4pt.length; i++) {
-			b4pt[i] = Util.newRand();
-		}
+//		for (int i=0; i<b4pt.length; i++) {
+//			b4pt[i] = Util.newRand();
+//		}
+		Util.newRandBytes(b4pt);
 	
 		b3 = TwofishPws.processECB(stretchedPassword, true, b3pt);
 		b4 = TwofishPws.processECB(stretchedPassword, true, b4pt);

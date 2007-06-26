@@ -135,22 +135,25 @@ public class PwsFileHeader
 
 		byte	temp[];
 
-		for ( int ii = 0; ii < RandStuff.length; ++ii )
-		{
-			RandStuff[ii] = Util.newRand();
-		}
+//		for ( int ii = 0; ii < RandStuff.length; ++ii )
+//		{
+//			RandStuff[ii] = Util.newRand();
+//		}
+		Util.newRandBytes(RandStuff);
 		temp		= Util.cloneByteArray( RandStuff, 10 );
 		RandHash	= PwsFileFactory.genRandHash( passphrase, temp );
 		
-		for ( int ii = 0; ii < Salt.length; ++ii )
-		{
-			Salt[ii] = Util.newRand();
-		}
+//		for ( int ii = 0; ii < Salt.length; ++ii )
+//		{
+//			Salt[ii] = Util.newRand();
+//		}
+		Util.newRandBytes(Salt);
 		
-		for ( int ii = 0; ii < IpThing.length; ++ii )
-		{
-			IpThing[ii] = Util.newRand();
-		}
+//		for ( int ii = 0; ii < IpThing.length; ++ii )
+//		{
+//			IpThing[ii] = Util.newRand();
+//		}
+		Util.newRandBytes(IpThing);
 
 		LOG.leaveMethod( "PwsFileHeader.update" );
 	}
