@@ -51,7 +51,7 @@ public abstract class PwsRecord implements Comparable
 	private PwsFile		OwningFile		= null;
 	private boolean		IsLoaded		= false;
 	protected Map		Attributes		= new TreeMap();
-	private Object		ValidTypes []	= null;
+	private final Object ValidTypes[];
 
 	protected boolean ignoreFieldTypes = false;
 	

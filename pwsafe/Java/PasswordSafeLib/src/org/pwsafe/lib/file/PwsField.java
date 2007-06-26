@@ -25,7 +25,7 @@ public abstract class PwsField implements Comparable
 //	private static final Log LOG = Log.getInstance(PwsField.class.getPackage().getName());
 
 	private Object	Value	= null;
-	private int		Type	= 0;
+	private final int Type;
 
 	/**
 	 * Creates the field object.
