@@ -171,7 +171,7 @@ void CExpDTDlg::OnOK()
 	CTime LTime, LDate, LDateTime;
 	DWORD dwResult;
 
-    if (m_how == 0) {
+  if (m_how == 0) {
 	  dwResult = m_pTimeCtl.GetTime(LTime);
 	  ASSERT(dwResult == GDT_VALID);
 
@@ -180,12 +180,30 @@ void CExpDTDlg::OnOK()
 
 	  LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
           LTime.GetHour(), LTime.GetMinute(), 0, -1);
-    } else {
-      LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
-    }
+  } else {
+    LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
+  }
 
 	m_tttLTime = (time_t)LDateTime.GetTime();
-	m_locLTime = (CMyString)LDateTime.Format("%#c");
+
+  SYSTEMTIME systime;
+  TCHAR time_str[80], datetime_str[80];
+  systime.wYear = (WORD)LDateTime.GetYear();
+  systime.wMonth = (WORD)LDateTime.GetMonth();
+  systime.wDay = (WORD)LDateTime.GetDay();
+  systime.wDayOfWeek = (WORD) LDateTime.GetDayOfWeek();
+  systime.wHour = (WORD)LDateTime.GetHour();
+  systime.wMinute = (WORD)LDateTime.GetMinute();
+  systime.wSecond = (WORD)0;
+  systime.wMilliseconds = (WORD)0;
+  TCHAR szBuf[80];
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
+  GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
+  szBuf[0] = _T(' ');  // Put a blank between date and time
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
+  GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
+  _tcscat_s(datetime_str, 80, time_str);
+  m_locLTime = CMyString(datetime_str);
 
 	CDialog::OnOK();
 }

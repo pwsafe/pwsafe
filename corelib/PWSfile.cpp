@@ -328,8 +328,8 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
   }
 #else
   const SysInfo *si = SysInfo::GetInstance();
-  const CString user = si->GetCurrentUser();
-  const CString host = si->GetCurrentHost();
+  const CString user = si->GetRealUser();
+  const CString host = si->GetRealHost();
   const CString pid = si->GetCurrentPID();
 
   TCHAR fname[_MAX_FNAME];
@@ -422,8 +422,8 @@ void PWSfile::UnlockFile(const CMyString &filename,
   _unlink(lock_filename);
 #else
   const SysInfo *si = SysInfo::GetInstance();
-  const CString user = si->GetCurrentUser();
-  const CString host = si->GetCurrentHost();
+  const CString user = si->GetRealUser();
+  const CString host = si->GetRealHost();
   const CString pid = si->GetCurrentPID();
 
   // Use Win32 API for locking - supposedly better at

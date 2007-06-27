@@ -458,15 +458,58 @@ DboxMain::InitPasswordSafe()
     // MS adds 4 pixels around the max screen size so if, maximized, then
     // top/left = (-4,-4) instead of (0,0) and bottom/right = (W+4, H+4)
     // If height/width too big, make them max. allowed values instead.
+    // If off screen - bring it back
+
+    // Too tall
     if (rect.Height() > screenHeight) {
       rect.top = -4;
       rect.bottom = screenHeight + 4;
     }
+
+    // Too wide
     if (rect.Width() > screenWidth) {
       rect.left = -4;
       rect.right = screenWidth + 4;
     }
-    MoveWindow(&rect, TRUE);
+
+    // Too far off to the right
+    if (rect.left > screenWidth) {
+      int iw = rect.Width();
+      rect.right = screenWidth;
+      rect.left = rect.right - iw - 4;
+      if (rect.left < -4) {
+        rect.left = -4;
+        rect.right = rect.left + iw;
+      }      
+    }
+
+    // Too far off to the left
+    if (rect.right < -4) {
+      int iw = rect.Width();
+      rect.left = -4;
+      rect.right = rect.left + iw;
+    }
+
+    // Too far down
+    if (rect.top > screenHeight) {
+      int ih = rect.Height();
+      rect.bottom = screenHeight;
+      rect.top = rect.bottom - ih - 4;
+      if (rect.top < -4) {
+        rect.top = -4;
+        rect.bottom = rect.top + ih;
+      }      
+    }
+
+    // Too far up
+    if (rect.bottom < -4) {
+      int ih = rect.Height();
+      rect.top = -4;
+      rect.bottom = rect.top + ih;
+    }
+
+    // Now move it and size it
+    ::MoveWindow(this->m_hWnd, rect.left, rect.top, rect.Width(), rect.Height(), TRUE);
   }
 #endif
 

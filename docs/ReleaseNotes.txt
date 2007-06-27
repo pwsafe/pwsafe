@@ -13,6 +13,15 @@ Bugs fixed in 3.08.04
 [] Protect user from losing entries in case of non-unique uuids in read database.
 [Open Discussion] Compare fixed so that 'X' indicating differences are
 in the correct columns and data copied to clipboard ends in CRLF not just LF
+[1739364] Window location issue fixed
+
+New Features for 3.08.04
+========================
+[1739979] Add URL column to flattened list
+
+Changes to Existing Features in 3.08.04
+=======================================
+[1732163] Date/time displayed throughout in the users "Short Date" format.
 
 Bugs fixed in 3.08.03
 =====================

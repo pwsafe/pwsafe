@@ -49,8 +49,8 @@ SysInfo::SysInfo()
 	sysname[1] = TCHAR('\0');
 	slen = 1;
   }
-  m_user = CString(user, ulen);
-  m_sysname = CString(sysname, slen);
+  m_euser = m_ruser = CString(user, ulen);
+  m_esysname = m_rsysname = CString(sysname, slen);
   m_ProcessID.Format(_T("%08d"), GetCurrentProcessId());
 }
 

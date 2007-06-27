@@ -13,6 +13,11 @@
 //
 // Singleton class to provide system-specific information,
 // such as hostname, username, pid
+//
+// As in Unix, we support the concept of an "effective" v.s. "real"
+// name. The "real" is read from the system API, and is immutable.
+// The "effecitve" is initially set to be == the real value, but
+// may be overridden by the relevant SetEffective*() member function.
 //-----------------------------------------------------------------
 #include "MyString.h"
 
@@ -22,13 +27,17 @@ public:
   static SysInfo *GetInstance(); // singleton
   static void DeleteInstance();
 
+  static CString GetEnv(const char *env); // wrapper for ::getenv()
   static bool IsUnderU3();
 
-  const CString &GetCurrentUser() const {return m_user;}
-  const CString &GetCurrentHost() const {return m_sysname;}
-  const CString &GetCurrentPID() const {return m_ProcessID;}
+  void SetEffectiveUser(const CString &u) {m_euser = u;}
+  void SetEffectiveHost(const CString &h) {m_esysname = h;}
 
-  static CString GetEnv(const char *env); // wrapper for ::getenv()
+  const CString &GetRealUser() const {return m_ruser;}
+  const CString &GetRealHost() const {return m_rsysname;}
+  const CString &GetEffectiveUser() const {return m_euser;}
+  const CString &GetEffectiveHost() const {return m_rsysname;}
+  const CString &GetCurrentPID() const {return m_ProcessID;}
 
 private:
   SysInfo();
@@ -36,7 +45,9 @@ private:
 
   static SysInfo *self;
 
-  CString m_user, m_sysname, m_ProcessID;
+  CString m_ruser, m_rsysname;
+  CString m_euser, m_esysname;
+  CString m_ProcessID;
 };
 #endif /* __SYSINFO_H */
 //-----------------------------------------------------------------------------

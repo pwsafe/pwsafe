@@ -863,11 +863,11 @@ bool PWSfileV3::FromUTF8(CMyString &data)
         m_wcMaxLen = wcLen;
     }
     // next translate to buffer
-    wcLen = MultiByteToWideChar(CP_UTF8,      // code page
-                                MB_ERR_INVALID_CHARS,  // character-type options
-                                LPSTR(m_utf8),       // string to map
+    wcLen = MultiByteToWideChar(CP_UTF8,           // code page
+                                0,  // character-type options
+                                LPSTR(m_utf8),     // string to map
                                 -1,           // -1 means null-terminated
-                                m_wc, wcLen);       // output buffer
+                                m_wc, wcLen);      // output buffer
     if (wcLen == 0) {
         DWORD errCode = GetLastError();
         switch (errCode) {
@@ -880,10 +880,10 @@ bool PWSfileV3::FromUTF8(CMyString &data)
             case ERROR_NO_UNICODE_TRANSLATION:
               // try to recover
                 TRACE("NO UNICODE TRANSLATION");
-                wcLen = MultiByteToWideChar(CP_ACP,      // code page
-                                MB_ERR_INVALID_CHARS,  // character-type options
-                                LPSTR(m_utf8),       // string to map
-                                -1,           // -1 means null-terminated
+                wcLen = MultiByteToWideChar(CP_ACP, // code page
+                                0,  // character-type options
+                                LPSTR(m_utf8),      // string to map
+                                -1, // -1 means null-terminated
                                 m_wc, wcLen);       // output buffer
                 if (wcLen > 0) {
                   TRACE(_T("FromUTF8: recovery succeeded!"));

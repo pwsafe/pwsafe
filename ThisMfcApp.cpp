@@ -410,8 +410,6 @@ ThisMfcApp::InitInstance()
     // Ensures all things like saving locations etc. are set up.
     PWSprefs *prefs = PWSprefs::GetInstance();
 
-    CMenu* new_popupmenu = NULL;
-
     int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
 
     m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
@@ -420,7 +418,8 @@ ThisMfcApp::InitInstance()
 
     m_mainmenu = new CMenu;
     m_mainmenu->LoadMenu(IDR_MAINMENU);
-    new_popupmenu = new CMenu;
+
+  CMenu new_popupmenu;
 
     // Look for "File" menu.
     CString cs_text(MAKEINTRESOURCE(IDS_FILEMENU));
@@ -440,20 +439,20 @@ ThisMfcApp::InitInstance()
         if (pos > -1) {
             int irc;
             // Create New Popup Menu
-            new_popupmenu->CreatePopupMenu();
+      new_popupmenu.CreatePopupMenu();
             CString cs_recent(MAKEINTRESOURCE(IDS_RECENT)), 
                 cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
           
             if (!m_mruonfilemenu) {	// MRU entries in popup menu
                 // Insert Item onto new popup
-                irc = new_popupmenu->InsertMenu(0, MF_BYPOSITION,
+        irc = new_popupmenu.InsertMenu(0, MF_BYPOSITION,
                                                 ID_FILE_MRU_ENTRY1, cs_recent);
                 ASSERT(irc != 0);
                 // Insert Popup onto main menu
         ASSERT(file_submenu != NULL);
                 irc = file_submenu->InsertMenu(pos + 2,
                                                MF_BYPOSITION | MF_POPUP,
-                                               UINT_PTR(new_popupmenu->m_hMenu),
+                                       UINT_PTR(new_popupmenu.m_hMenu),
                                                cs_recentsafes);
                 ASSERT(irc != 0);
             } else {	// MRU entries inline
@@ -645,17 +644,11 @@ ThisMfcApp::InitInstance()
         } 
     }
 
-    //Run dialog
+  // Run dialog - note that we don't particularly care what the response was
     (void) dbox.DoModal();
-
-    /*
-      note that we don't particularly care what the response was
-    */
 
     // Since the dialog has been closed, return FALSE so that we exit the
     // application, rather than start the application's message pump.
-    delete new_popupmenu;
-
     return FALSE;
 }
 

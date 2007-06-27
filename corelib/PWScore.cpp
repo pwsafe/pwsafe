@@ -160,8 +160,8 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
 
   // Who last saved which is kept in header
   const SysInfo *si = SysInfo::GetInstance();
-  const CString user = si->GetCurrentUser();
-  const CString host = si->GetCurrentHost();
+  const CString user = si->GetRealUser();
+  const CString host = si->GetRealHost();
   out->SetUserHost(user, host);
 
   // What last saved which is kept in  header
