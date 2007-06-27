@@ -18,6 +18,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Demo|Win32 = Demo|Win32
+		NU-Debug|Win32 = NU-Debug|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -25,22 +26,29 @@ Global
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Debug|Win32.Build.0 = Debug|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Demo|Win32.ActiveCfg = Demo|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Demo|Win32.Build.0 = Demo|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.NU-Debug|Win32.ActiveCfg = NU-Debug|Win32
+		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.NU-Debug|Win32.Build.0 = NU-Debug|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Release|Win32.ActiveCfg = Release|Win32
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27}.Release|Win32.Build.0 = Release|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Debug|Win32.Build.0 = Debug|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Demo|Win32.ActiveCfg = Demo|Win32
+		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.NU-Debug|Win32.ActiveCfg = NU-Debug|Win32
 		{0FF1232A-8377-4271-BC22-04E57A39FFB6}.Release|Win32.ActiveCfg = Release|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Debug|Win32.Build.0 = Debug|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Demo|Win32.ActiveCfg = Demo|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Demo|Win32.Build.0 = Demo|Win32
+		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.NU-Debug|Win32.ActiveCfg = NU-Debug|Win32
+		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.NU-Debug|Win32.Build.0 = NU-Debug|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Release|Win32.ActiveCfg = Release|Win32
 		{A3313FA9-CB57-48C2-B660-EE4BF94714D2}.Release|Win32.Build.0 = Release|Win32
 		{FC821168-0D64-45EA-881D-4842A3A670CC}.Debug|Win32.ActiveCfg = Release|Win32
 		{FC821168-0D64-45EA-881D-4842A3A670CC}.Debug|Win32.Build.0 = Release|Win32
 		{FC821168-0D64-45EA-881D-4842A3A670CC}.Demo|Win32.ActiveCfg = Demo|Win32
 		{FC821168-0D64-45EA-881D-4842A3A670CC}.Demo|Win32.Build.0 = Demo|Win32
+		{FC821168-0D64-45EA-881D-4842A3A670CC}.NU-Debug|Win32.ActiveCfg = NU-Debug|Win32
+		{FC821168-0D64-45EA-881D-4842A3A670CC}.NU-Debug|Win32.Build.0 = NU-Debug|Win32
 		{FC821168-0D64-45EA-881D-4842A3A670CC}.Release|Win32.ActiveCfg = Release|Win32
 		{FC821168-0D64-45EA-881D-4842A3A670CC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
