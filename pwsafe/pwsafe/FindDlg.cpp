@@ -68,6 +68,9 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *bFindW
     self->BringWindowToTop();
   }
   self->ShowWindow(SW_SHOW);
+  // Following is bugfix #1620423 by zcecil
+  self->GotoDlgCtrl(self->GetDlgItem(IDC_FIND_TEXT));
+
   self->m_FindWraps = *bFindWraps ? TRUE : FALSE;
   
   ((DboxMain*)pParent)->SetFindActive();  //  Prevent switch tree/list display modes
