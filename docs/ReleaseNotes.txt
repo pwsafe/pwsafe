@@ -18,6 +18,8 @@ read database.
 in the correct columns and data copied to clipboard ends in CRLF not just LF
 [1739364] Window location issue fixed
 [1738477, 1630400] Now works correctly under Windows 98 (again).
+[1620423] Focus on search text in Find Dialog - thank to zcecil for
+the fix for this one. 
 
 New Features for 3.08.04
 ========================
@@ -49,7 +51,7 @@ Bugs fixed in 3.08.01
 found items now made bold rather than highlighted
 [1728612] Column sort arrows, in Flattened List mode, correctly removed
 [1728945] Importing a subset of text data now fixed
-[1728945] Version 2.x databases now read correctly
+[1728945, 1741787] Version 2.x databases now read correctly
 [1733740] '-s' option no longer causes sporadic display of passwords
 in tree view.
 
