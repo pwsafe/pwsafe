@@ -514,6 +514,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\UTF8Conv.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Util.cpp"
 				>
 			</File>
@@ -624,6 +628,10 @@
 			</File>
 			<File
 				RelativePath=".\UnknownField.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UTF8Conv.h"
 				>
 			</File>
 			<File
