@@ -20,8 +20,7 @@ static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
 
 PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
-  : PWSfile(filename, mode), m_utf8(NULL), m_utf8Len(0), m_utf8MaxLen(0),
-    m_wc(NULL), m_wcMaxLen(0), m_tmp(NULL), m_tmpMaxLen(0)
+  : PWSfile(filename, mode)
 {
   m_curversion = version;
   m_IV = m_ipthing;
@@ -44,18 +43,6 @@ PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
 
 PWSfileV3::~PWSfileV3()
 {
-  if (m_utf8 != NULL) {
-    trashMemory(m_utf8, m_utf8MaxLen * sizeof(m_utf8[0]));
-    delete[] m_utf8;
-  }
-  if (m_wc != NULL) {
-    trashMemory(m_wc, m_wcMaxLen);
-    delete[] m_wc;
-  }
-  if (m_tmp != NULL) {
-    trashMemory(m_tmp, m_tmpMaxLen * sizeof(m_tmp[0]));
-    delete[] m_tmp;
-  }
 }
 
 int PWSfileV3::Open(const CMyString &passkey)
@@ -86,19 +73,6 @@ int PWSfileV3::Close()
 {
     if (m_fd == NULL)
         return SUCCESS; // idempotent
-    if (m_utf8 != NULL) {
-        trashMemory(m_utf8, m_utf8MaxLen * sizeof(m_utf8[0]));
-        delete[] m_utf8; m_utf8 = NULL;
-        m_utf8Len = m_utf8MaxLen = 0;
-    }
-    if (m_wc != NULL) {
-        trashMemory(m_wc, m_wcMaxLen);
-        delete[] m_wc; m_wc = NULL; m_wcMaxLen = 0;
-    }
-    if (m_tmp != NULL) {
-        trashMemory(m_tmp, m_tmpMaxLen*sizeof(m_tmp[0]));
-        delete[] m_tmp; m_tmp = NULL; m_tmpMaxLen = 0;
-    }
 
     unsigned char digest[HMAC_SHA256::HASHLEN];
     m_hmac.Final(digest);
@@ -190,10 +164,12 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 {
   if (m_useUTF8) {
     bool status;
-    status = ToUTF8(data);
+    const unsigned char *utf8;
+    int utf8Len;
+    status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
     if (!status)
       TRACE(_T("ToUTF8(%s) failed\n"), data);
-    return WriteCBC(type, m_utf8, m_utf8Len);
+    return WriteCBC(type, utf8, utf8Len);
   } else {
     const LPCTSTR str = (const LPCTSTR)data;
     return WriteCBC(type,(const unsigned char *)str, data.GetLength());
@@ -283,106 +259,108 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
 
 int PWSfileV3::ReadRecord(CItemData &item)
 {
-    ASSERT(m_fd != NULL);
-    ASSERT(m_curversion == V30);
+  ASSERT(m_fd != NULL);
+  ASSERT(m_curversion == V30);
 
-    int status = SUCCESS;
+  int status = SUCCESS;
 
-    CMyString tempdata;  
-    signed long numread = 0;
-    unsigned char type;
+  CMyString tempdata;  
+  signed long numread = 0;
+  unsigned char type;
 
-    int emergencyExit = 255; // to avoid endless loop.
-    signed long fieldLen; // <= 0 means end of file reached
-    bool endFound = false; // set to true when record end detected - happy end
-    time_t t;
+  int emergencyExit = 255; // to avoid endless loop.
+  signed long fieldLen; // <= 0 means end of file reached
+  bool endFound = false; // set to true when record end detected - happy end
+  time_t t;
 
-    do {
-        fieldLen = static_cast<signed long>(ReadCBC(type, m_utf8,
-                                                    (unsigned int &)m_utf8Len));
-        if (m_utf8 != NULL) m_utf8[m_utf8Len] = '\0';
+  do {
+    unsigned char *utf8 = NULL;
+    int utf8Len = 0;
+    fieldLen = static_cast<signed long>(ReadCBC(type, utf8,
+                                                (unsigned int &)utf8Len));
+    if (utf8 != NULL) utf8[utf8Len] = '\0';
 
-        if (CItemData::IsTextField(type)) {
-            bool utf8status = FromUTF8(tempdata);
-            if (!utf8status) {
-                TRACE(_T("PWSfileV3::ReadRecord(): FromUTF failed!\n"));
-                status = FAILURE;
-            }
-        }
+    if (CItemData::IsTextField(type)) {
+      bool utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, tempdata);
+      if (!utf8status) {
+        TRACE(_T("PWSfileV3::ReadRecord(): FromUTF failed!\n"));
+        status = FAILURE;
+      }
+    }
 
-        if (fieldLen > 0) {
-            numread += fieldLen;
-            switch (type) {
-                case CItemData::TITLE:
-                    item.SetTitle(tempdata); break;
-                case CItemData::USER:
-                    item.SetUser(tempdata); break;
-                case CItemData::PASSWORD:
-                    item.SetPassword(tempdata); break;
-                case CItemData::NOTES:
-                    item.SetNotes(tempdata); break;
-                case CItemData::END:
-                    endFound = true; break;
-                case CItemData::UUID: {
-                    uuid_array_t uuid_array;
-                    ASSERT(m_utf8Len == sizeof(uuid_array));
-                    for (unsigned i = 0; i < sizeof(uuid_array); i++)
-                        uuid_array[i] = m_utf8[i];
-                    item.SetUUID(uuid_array); break;
-                }
-                case CItemData::GROUP:
-                    item.SetGroup(tempdata); break;
-                case CItemData::URL:
-                    item.SetURL(tempdata); break;
-                case CItemData::AUTOTYPE:
-                    item.SetAutoType(tempdata); break;
-                case CItemData::CTIME:
-                    ASSERT(m_utf8Len == sizeof(t));
-                    memcpy(&t, m_utf8, sizeof(t));
-                    item.SetCTime(t); break;
-                case CItemData::PMTIME:
-                    ASSERT(m_utf8Len == sizeof(t));
-                    memcpy(&t, m_utf8, sizeof(t));
-                    item.SetPMTime(t); break;
-                case CItemData::ATIME:
-                    ASSERT(m_utf8Len == sizeof(t));
-                    memcpy(&t, m_utf8, sizeof(t));
-                    item.SetATime(t); break;
-                case CItemData::LTIME:
-                    ASSERT(m_utf8Len == sizeof(t));
-                    memcpy(&t, m_utf8, sizeof(t));
-                    item.SetLTime(t); break;
-                case CItemData::RMTIME:
-                    ASSERT(m_utf8Len == sizeof(t));
-                    memcpy(&t, m_utf8, sizeof(t));
-                    item.SetRMTime(t); break;
-                case CItemData::PWHIST:
-                    item.SetPWHistory(tempdata); break;
+    if (fieldLen > 0) {
+      numread += fieldLen;
+      switch (type) {
+      case CItemData::TITLE:
+        item.SetTitle(tempdata); break;
+      case CItemData::USER:
+        item.SetUser(tempdata); break;
+      case CItemData::PASSWORD:
+        item.SetPassword(tempdata); break;
+      case CItemData::NOTES:
+        item.SetNotes(tempdata); break;
+      case CItemData::END:
+        endFound = true; break;
+      case CItemData::UUID: {
+        uuid_array_t uuid_array;
+        ASSERT(utf8Len == sizeof(uuid_array));
+        for (unsigned i = 0; i < sizeof(uuid_array); i++)
+          uuid_array[i] = utf8[i];
+        item.SetUUID(uuid_array); break;
+      }
+      case CItemData::GROUP:
+        item.SetGroup(tempdata); break;
+      case CItemData::URL:
+        item.SetURL(tempdata); break;
+      case CItemData::AUTOTYPE:
+        item.SetAutoType(tempdata); break;
+      case CItemData::CTIME:
+        ASSERT(utf8Len == sizeof(t));
+        memcpy(&t, utf8, sizeof(t));
+        item.SetCTime(t); break;
+      case CItemData::PMTIME:
+        ASSERT(utf8Len == sizeof(t));
+        memcpy(&t, utf8, sizeof(t));
+        item.SetPMTime(t); break;
+      case CItemData::ATIME:
+        ASSERT(utf8Len == sizeof(t));
+        memcpy(&t, utf8, sizeof(t));
+        item.SetATime(t); break;
+      case CItemData::LTIME:
+        ASSERT(utf8Len == sizeof(t));
+        memcpy(&t, utf8, sizeof(t));
+        item.SetLTime(t); break;
+      case CItemData::RMTIME:
+        ASSERT(utf8Len == sizeof(t));
+        memcpy(&t, utf8, sizeof(t));
+        item.SetRMTime(t); break;
+      case CItemData::PWHIST:
+        item.SetPWHistory(tempdata); break;
 
-                case CItemData::POLICY:
-                default:
-                    // just silently save fields we don't support.
-                    item.SetUnknownField(type, m_utf8Len, m_utf8);
+      case CItemData::POLICY:
+      default:
+        // just silently save fields we don't support.
+        item.SetUnknownField(type, utf8Len, utf8);
 #ifdef DEBUG
-                    CString cs_timestamp;
-                    cs_timestamp = PWSUtil::GetTimeStamp();
-                    TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
-                               cs_timestamp, item.GetGroup(), item.GetTitle(), item.GetUser(), 
-                               type, m_utf8Len, m_utf8Len);
-                    PWSUtil::HexDump(m_utf8, (int)m_utf8Len, cs_timestamp);
+        CString cs_timestamp;
+        cs_timestamp = PWSUtil::GetTimeStamp();
+        TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
+              cs_timestamp, item.GetGroup(), item.GetTitle(), item.GetUser(), 
+              type, utf8Len, utf8Len);
+        PWSUtil::HexDump(utf8, utf8Len, cs_timestamp);
 #endif /* DEBUG */
-                    break;
-            } // switch
-        } // if (fieldLen > 0)
-        if (m_utf8 != NULL) {
-            trashMemory(m_utf8, m_utf8Len * sizeof(m_utf8[0]));
-            delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;
-        }
-    } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-    if (numread > 0)
-        return status;
-    else
-        return END_OF_FILE;
+        break;
+      } // switch
+    } // if (fieldLen > 0)
+    if (utf8 != NULL) {
+      trashMemory(utf8, utf8Len * sizeof(utf8[0]));
+      delete[] utf8; utf8 = NULL; utf8Len = 0;
+    }
+  } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
+  if (numread > 0)
+    return status;
+  else
+    return END_OF_FILE;
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
@@ -636,11 +614,11 @@ int PWSfileV3::ReadHeader()
     CMyString text;
     size_t numRead;
     bool utf8status;
-
-    m_utf8 = NULL; m_utf8Len = 0;
+    unsigned char *utf8 = NULL;
+    int utf8Len = 0;
 
     do {
-        numRead = ReadCBC(fieldType, m_utf8, (unsigned int &)m_utf8Len);
+        numRead = ReadCBC(fieldType, utf8, (unsigned int &)utf8Len);
 
         if (numRead < 0) {
             Close();
@@ -651,39 +629,40 @@ int PWSfileV3::ReadHeader()
             case HDR_VERSION: /* version */
                 // in Beta, VersionNum was an int (4 bytes) instead of short (2)
                 // This hack keeps bwd compatability.
-                if (m_utf8Len != sizeof(VersionNum) &&
-                    m_utf8Len != sizeof(int)) {
-                    delete[] m_utf8; m_utf8 = NULL;
+                if (utf8Len != sizeof(VersionNum) &&
+                    utf8Len != sizeof(int)) {
+                    delete[] utf8;
                     Close();
                     return FAILURE;
                 }
-                if (m_utf8[1] !=
+                if (utf8[1] !=
                     (unsigned char)((VersionNum & 0xff00) >> 8)) {
                     //major version mismatch
-                    delete[] m_utf8; m_utf8 = NULL;
+                    delete[] utf8;
                     Close();
                     return UNSUPPORTED_VERSION;
                 }
                 // for now we assume that minor version changes will
                 // be backward-compatible
-                m_nCurrentMajorVersion = (unsigned short)m_utf8[1];
-                m_nCurrentMinorVersion = (unsigned short)m_utf8[0];
+                m_nCurrentMajorVersion = (unsigned short)utf8[1];
+                m_nCurrentMinorVersion = (unsigned short)utf8[0];
                 break;
 
             case HDR_UUID: /* UUID */
-                if (m_utf8Len != sizeof(uuid_array_t)) {
-                    delete[] m_utf8; m_utf8 = NULL;
+                if (utf8Len != sizeof(uuid_array_t)) {
+                    delete[] utf8;
                     Close();
                     return FAILURE;
                 }
-                memcpy(m_file_uuid_array, m_utf8, sizeof(m_file_uuid_array));
+                memcpy(m_file_uuid_array, utf8, sizeof(m_file_uuid_array));
                 break;
 
             case HDR_NDPREFS: /* Non-default user preferences */
-                if (m_utf8Len != 0) {
-                    if (m_utf8 != NULL)
-                        m_utf8[m_utf8Len] = '\0';
-                    utf8status = FromUTF8(m_prefString);
+                if (utf8Len != 0) {
+                    if (utf8 != NULL)
+                        utf8[utf8Len] = '\0';
+                    utf8status = m_utf8conv.FromUTF8(utf8, utf8Len,
+                                                     m_prefString);
                     if (!utf8status)
                         TRACE(_T("FromUTF8(m_prefString) failed\n"));
                 } else
@@ -691,9 +670,9 @@ int PWSfileV3::ReadHeader()
             break;
 
             case HDR_DISPSTAT: /* Tree Display Status */
-                if (m_utf8 != NULL)
-                    m_utf8[m_utf8Len] = '\0';
-                utf8status = FromUTF8(text);
+                if (utf8 != NULL)
+                    utf8[utf8Len] = '\0';
+                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
                 m_file_displaystatus = CString(text);
                 if (!utf8status)
                     TRACE(_T("FromUTF8(m_file_displaystatus) failed\n"));
@@ -702,27 +681,27 @@ int PWSfileV3::ReadHeader()
             case HDR_LASTUPDATETIME: /* When last saved */
                 // THIS SHOULDN'T BE A STRING !!!
                 // BROKE SPEC !!!
-                if (m_utf8 != NULL)
-                    m_utf8[m_utf8Len] = '\0';
-                utf8status = FromUTF8(text);
+                if (utf8 != NULL)
+                    utf8[utf8Len] = '\0';
+                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
                 m_whenlastsaved = CString(text);
                 if (!utf8status)
                     TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
                 break;
 
             case HDR_LASTUPDATEUSERHOST: /* and by whom */
-                if (m_utf8 != NULL)
-                    m_utf8[m_utf8Len] = '\0';
-                utf8status = FromUTF8(text);
+                if (utf8 != NULL)
+                    utf8[utf8Len] = '\0';
+                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
                 m_wholastsaved = CString(text);
                 if (!utf8status)
                     TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
                 break;
 
             case HDR_LASTUPDATEAPPLICATION: /* and by what */
-                if (m_utf8 != NULL)
-                    m_utf8[m_utf8Len] = '\0';
-                utf8status = FromUTF8(text);
+                if (utf8 != NULL)
+                    utf8[utf8Len] = '\0';
+                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
                 m_whatlastsaved = CString(text);
                 if (!utf8status)
                     TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
@@ -733,208 +712,21 @@ int PWSfileV3::ReadHeader()
 
             default:
                 // Save unknown fields that may be addded by future versions
-                UnknownFieldEntry unkhfe(fieldType, m_utf8Len, m_utf8);
+                UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
                 m_UHFL.push_back(unkhfe);
 #ifdef _DEBUG
                 CString cs_timestamp;
                 cs_timestamp = PWSUtil::GetTimeStamp();
                 TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
-                          cs_timestamp, fieldType, m_utf8Len, m_utf8Len);
-                PWSUtil::HexDump(m_utf8, m_utf8Len, cs_timestamp);
+                          cs_timestamp, fieldType, utf8Len, utf8Len);
+                PWSUtil::HexDump(utf8, utf8Len, cs_timestamp);
 #endif /* DEBUG */
                 break;
         }
-        delete[] m_utf8; m_utf8 = NULL; m_utf8Len = 0;
+        delete[] utf8; utf8 = NULL; utf8Len = 0;
     } while (fieldType != HDR_END);
 
     return SUCCESS;
-}
-
-bool PWSfileV3::ToUTF8(const CString &data)
-{
-    // If we're not in Unicode, call MultiByteToWideChar to get from
-    // current codepage to Unicode, and then WideCharToMultiByte to
-    // get to UTF-8 encoding.
-    // Output is in m_utf8 & m_utf8Len
-
-    if (data.IsEmpty()) {
-        m_utf8Len = 0;
-        return true;
-    }
-    wchar_t *wcPtr; // to hide UNICODE differences
-    int wcLen; // number of wide chars needed
-#ifndef UNICODE
-    // first get needed wide char buffer size
-    wcLen = MultiByteToWideChar(CP_ACP,             // code page
-                                MB_PRECOMPOSED,     // character-type options
-                                LPCSTR(data),       // string to map
-                                -1,                 // -1 means null-terminated
-                                NULL, 0);           // get needed buffer size
-    if (wcLen == 0) { // uh-oh
-        ASSERT(0);
-        m_utf8Len = 0;
-        return false;
-    }
-    // Allocate buffer (if previous allocation was smaller)
-    if (wcLen > m_wcMaxLen) {
-        if (m_wc != NULL)
-            trashMemory(m_wc, m_wcMaxLen * sizeof(m_wc[0]));
-        delete[] m_wc;
-        m_wc = new wchar_t[wcLen];
-        m_wcMaxLen = wcLen;
-    }
-    // next translate to buffer
-    wcLen = MultiByteToWideChar(CP_ACP,             // code page
-                                MB_PRECOMPOSED,     // character-type options
-                                LPCSTR(data),       // string to map
-                                -1,                 // -1 means null-terminated
-                                m_wc, wcLen);       // output buffer
-    ASSERT(wcLen != 0);
-    wcPtr = m_wc;
-#else
-    wcPtr = const_cast<CString &>(data).GetBuffer();
-    wcLen = data.GetLength()+1;
-#endif
-    // first get needed utf8 buffer size
-    int mbLen = WideCharToMultiByte(CP_UTF8,       // code page
-                                    0,             // performance and mapping flags
-                                    wcPtr,         // wide-character string
-                                    -1,            // -1 means null-terminated
-                                    NULL, 0,       // get needed buffer size
-                                    NULL,NULL);    // use system default for unmappables
-
-    if (mbLen == 0) { // uh-oh
-        ASSERT(0);
-        m_utf8Len = 0;
-        return false;
-    }
-    // Allocate buffer (if previous allocation was smaller)
-    if (mbLen > m_utf8MaxLen) {
-        if (m_utf8 != NULL)
-            trashMemory(m_utf8, m_utf8MaxLen);
-        delete[] m_utf8;
-        m_utf8 = new unsigned char[mbLen];
-        m_utf8MaxLen = mbLen;
-    }
-    // Finally get result
-    m_utf8Len = WideCharToMultiByte(CP_UTF8,      // code page
-                                    0,            // performance and mapping flags
-                                    wcPtr, wcLen, // wide-character string
-                                    LPSTR(m_utf8), mbLen, // buffer and length
-                                    NULL,NULL);   // use system default for unmappables
-    ASSERT(m_utf8Len != 0);
-    m_utf8Len--; // remove unneeded null termination
-    return true;
-}
-
-bool PWSfileV3::FromUTF8(CMyString &data)
-{
-    // Call MultiByteToWideChar to get from UTF-8 to Unicode.
-    // If we're not in Unicode, call WideCharToMultiByte to
-    // get to current codepage.
-    // Input is in m_utf8 & m_utf8Len
-    //
-    // Due to a bug in pre-3.08 versions, data may be in ACP
-    // instead of utf-8. We try to detect and workaround this.
-
-    if (m_utf8Len == 0) {
-        data = _T("");
-        return true;
-    }
-    // first get needed wide char buffer size
-    int wcLen = MultiByteToWideChar(CP_UTF8,      // code page
-                                    0,            // character-type options
-                                    LPSTR(m_utf8), // string to map
-                                    -1,           // -1 means null-terminated
-                                    NULL, 0);     // get needed buffer size
-    if (wcLen == 0) { // uh-oh
-      // it seems that this always returns non-zero, even if encoding
-      // broken. Therefore, we'll give a consrevative value here,
-      // and try to recover later
-      TRACE(_T("FromUTF8: Couldn't get buffer size - guessing!"));
-      wcLen = 2 * m_utf8Len;
-    }
-    // Allocate buffer (if previous allocation was smaller)
-    if (wcLen > m_wcMaxLen) {
-        if (m_wc != NULL)
-            trashMemory(m_wc, m_wcMaxLen);
-        delete[] m_wc;
-        m_wc = new wchar_t[wcLen];
-        m_wcMaxLen = wcLen;
-    }
-    // next translate to buffer
-    wcLen = MultiByteToWideChar(CP_UTF8,           // code page
-                                0,  // character-type options
-                                LPSTR(m_utf8),     // string to map
-                                -1,           // -1 means null-terminated
-                                m_wc, wcLen);      // output buffer
-    if (wcLen == 0) {
-        DWORD errCode = GetLastError();
-        switch (errCode) {
-            case ERROR_INSUFFICIENT_BUFFER:
-                TRACE("INSUFFICIENT BUFFER"); break;
-            case ERROR_INVALID_FLAGS:
-                TRACE("INVALID FLAGS"); break;
-            case ERROR_INVALID_PARAMETER:
-                TRACE("INVALID PARAMETER"); break;
-            case ERROR_NO_UNICODE_TRANSLATION:
-              // try to recover
-                TRACE("NO UNICODE TRANSLATION");
-                wcLen = MultiByteToWideChar(CP_ACP, // code page
-                                0,  // character-type options
-                                LPSTR(m_utf8),      // string to map
-                                -1, // -1 means null-terminated
-                                m_wc, wcLen);       // output buffer
-                if (wcLen > 0) {
-                  TRACE(_T("FromUTF8: recovery succeeded!"));
-                }
-                break;
-            default:
-                ASSERT(0);
-        }
-    }
-    ASSERT(wcLen != 0);
-#ifdef UNICODE
-    if (wcLen != 0) {
-      m_wc[wcLen-1] = TCHAR('\0');
-      data = m_wc;
-      return true;
-    } else
-      return false;
-#else /* Go from Unicode to Locale encoding */
-      // first get needed utf8 buffer size
-    int mbLen = WideCharToMultiByte(CP_ACP,       // code page
-                                    0, // performance and mapping flags
-                                    m_wc,         // wide-character string
-                                    -1,           // -1 means null-terminated
-                                    NULL, 0,      // get needed buffer size
-                                    NULL,NULL);   // use system default for unmappables
-
-    if (mbLen == 0) { // uh-oh
-        ASSERT(0);
-        data = _T("");
-        return false;
-    }
-    // Allocate buffer (if previous allocation was smaller)
-    if (mbLen > m_tmpMaxLen) {
-        if (m_tmp != NULL)
-            trashMemory(m_tmp, m_tmpMaxLen);
-        delete[] m_tmp;
-        m_tmp = new unsigned char[mbLen];
-        m_tmpMaxLen = mbLen;
-    }
-    // Finally get result
-    int tmpLen = WideCharToMultiByte(CP_ACP,      // code page
-                                     0, // performance and mapping flags
-                                     m_wc, -1, // wide-character string
-                                     LPSTR(m_tmp), mbLen,// buffer and length
-                                     NULL,NULL);   // use system default for unmappables
-    ASSERT(tmpLen == mbLen);
-    m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
-    data = m_tmp;
-    ASSERT(data.GetLength() != 0);
-    return true;
-#endif /* !UNICODE */
 }
 
 bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)

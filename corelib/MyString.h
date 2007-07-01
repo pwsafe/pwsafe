@@ -64,6 +64,7 @@ public:
                                       const CMyString& string);
 
     LPTSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
+    LPTSTR GetBuffer() {return m_mystring.GetBuffer();}
 
     void ReleaseBuffer(int nNewLength = -1) {m_mystring.ReleaseBuffer(nNewLength);}
 
