@@ -542,56 +542,51 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
                        int &numValidated, int &numImported,
                        bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields)
 {
-    PWSXML *iXML;
-    bool status, validation;
-    int nITER;
-    int nRecordsWithUnknownFields;
-    UnknownFieldList uhfl;
-    bool bEmptyDB = (GetNumEntries() == 0);
+  PWSXML iXML(this);
+  bool status, validation;
+  int nITER;
+  int nRecordsWithUnknownFields;
+  UnknownFieldList uhfl;
+  bool bEmptyDB = (GetNumEntries() == 0);
 
-    iXML = new PWSXML;
-    strErrors = _T("");
+  strErrors = _T("");
 
-    validation = true;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
-                              nITER, nRecordsWithUnknownFields, uhfl);
-    strErrors = iXML->m_strResultText;
-    if (!status) {
-        delete iXML;
-        return XML_FAILED_VALIDATION;
+  validation = true;
+  status = iXML.XMLProcess(validation, ImportedPrefix, strXMLFileName,
+                           strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+  strErrors = iXML.m_strResultText;
+  if (!status) {
+    return XML_FAILED_VALIDATION;
+  }
+
+  numValidated = iXML.m_numEntriesValidated;
+
+  validation = false;
+  status = iXML.XMLProcess(validation, ImportedPrefix, strXMLFileName,
+                           strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+  strErrors = iXML.m_strResultText;
+  if (!status) {
+    return XML_FAILED_IMPORT;
+  }
+
+  numImported = iXML.m_numEntriesImported;
+  bBadUnknownFileFields = iXML.m_bDatabaseHeaderErrors;
+  bBadUnknownRecordFields = iXML.m_bRecordHeaderErrors;
+  m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
+  // Only add header unknown fields or change number of iterations
+  // if the database was empty to start with
+  if (bEmptyDB) {
+    m_nITER = nITER;
+    if (uhfl.empty())
+      m_UHFL.clear();
+    else {
+      m_UHFL = uhfl;
     }
+  }
+  uhfl.clear();
 
-    numValidated = iXML->m_numEntriesValidated;
-
-    iXML->SetCore(this);
-    validation = false;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
-                              nITER, nRecordsWithUnknownFields, uhfl);
-    strErrors = iXML->m_strResultText;
-    if (!status) {
-        delete iXML;
-        return XML_FAILED_IMPORT;
-    }
-
-    numImported = iXML->m_numEntriesImported;
-    bBadUnknownFileFields = iXML->m_bDatabaseHeaderErrors;
-    bBadUnknownRecordFields = iXML->m_bRecordHeaderErrors;
-    m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
-    // Only add header unknown fields or change number of iterations
-    // if the database was empty to start with
-    if (bEmptyDB) {
-      m_nITER = nITER;
-      if (uhfl.empty())
-        m_UHFL.clear();
-      else {
-        m_UHFL = uhfl;
-      }
-    }
-    uhfl.clear();
-
-    delete iXML;
-    m_changed = true;
-    return SUCCESS;
+  m_changed = true;
+  return SUCCESS;
 }
 
 int

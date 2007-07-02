@@ -26,20 +26,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-PWSXML::PWSXML() : m_xmlcore(NULL)
+PWSXML::PWSXML(PWScore *core)
+  : m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^'))
 {
-	m_MSXML_Version = 60;
-	m_delimiter = _T('^');
 }
 
 PWSXML::~PWSXML()
 {
-}
-
-void
-PWSXML::SetCore(PWScore *core)
-{
-	m_xmlcore = core;
 }
 
 //	---------------------------------------------------------------------------
