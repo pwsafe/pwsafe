@@ -1109,7 +1109,7 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
             (((iFunction < 0) &&
               csObject.Compare((LPCTSTR)subgroup_name) == 0) ||
              ((iFunction > 0) &&
-              (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0))));
+              (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0))));
   case -SGF_NOTEQUAL:
   case SGF_NOTEQUAL:
     return (((iFunction < 0) &&
