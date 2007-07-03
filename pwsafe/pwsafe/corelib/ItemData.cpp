@@ -429,7 +429,7 @@ static void WriteXMLField(ostream &os, const char *fname,
   const unsigned char * utf8 = NULL;
   int utf8Len = 0;
 
-  os << tabs << "<" << fname << "><[![CDATA[";
+  os << tabs << "<" << fname << "><![CDATA[";
   if(utf8conv.ToUTF8(value, utf8, utf8Len))
       os.write(reinterpret_cast<const char *>(utf8), utf8Len);
     else
