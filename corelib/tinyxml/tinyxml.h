@@ -94,7 +94,7 @@ class TiXmlParsingData;
 
 const int TIXML_MAJOR_VERSION = 2;
 const int TIXML_MINOR_VERSION = 5;
-const int TIXML_PATCH_VERSION = 2;
+const int TIXML_PATCH_VERSION = 3;
 
 /*	Internal structure for tracking location of items 
 	in the XML file.
@@ -258,6 +258,11 @@ public:
 								TiXmlParsingData* data, 
 								TiXmlEncoding encoding /*= TIXML_ENCODING_UNKNOWN */ ) = 0;
 
+	/** Expands entities in a string. Note this should not contian the tag's '<', '>', etc, 
+		or they will be transformed into entities!
+	*/
+	static void EncodeString( const TIXML_STRING& str, TIXML_STRING* out );
+
 	enum
 	{
 		TIXML_NO_ERROR = 0,
@@ -356,10 +361,6 @@ protected:
 			return 0;
 		}
 	}
-
-	// Puts a string to a stream, expanding entities as it goes.
-	// Note this should not contian the '<', '>', etc, or they will be transformed into entities!
-	static void PutString( const TIXML_STRING& str, TIXML_STRING* out );
 
 	// Return true if the next characters in the stream are any of the endTag sequences.
 	// Ignore case only works for english, and should only be relied on when comparing
@@ -494,6 +495,8 @@ public:
 	*/
 	const std::string& ValueStr() const { return value; }
 	#endif
+
+	const TIXML_STRING& ValueTStr() const { return value; }
 
 	/** Changes the value of the node. Defined as:
 		@verbatim
@@ -996,10 +999,13 @@ public:
 		}
 		return result;
 	}
+
     #ifdef TIXML_USE_STL
 	/** Template form of the attribute query which will try to read the
 		attribute into the specified type. Very easy, very powerful, but
 		be careful to make sure to call this with the correct type.
+
+		NOTE: This method doesn't work correctly for 'string' types.
 
 		@return TIXML_SUCCESS, TIXML_WRONG_TYPE, or TIXML_NO_ATTRIBUTE
 	*/
@@ -1015,6 +1021,21 @@ public:
 			return TIXML_SUCCESS;
 		return TIXML_WRONG_TYPE;
 	}
+	/*
+	 This is - in theory - a bug fix for "QueryValueAtribute returns truncated std::string"
+	 but template specialization is hard to get working cross-compiler. Leaving the bug for now.
+	 
+	// The above will fail for std::string because the space character is used as a seperator.
+	// Specialize for strings. Bug [ 1695429 ] QueryValueAtribute returns truncated std::string
+	template<> int QueryValueAttribute( const std::string& name, std::string* outValue ) const
+	{
+		const TiXmlAttribute* node = attributeSet.Find( name );
+		if ( !node )
+			return TIXML_NO_ATTRIBUTE;
+		*outValue = node->ValueStr();
+		return TIXML_SUCCESS;
+	}
+	*/
 	#endif
 
 	/** Sets an attribute of name to a given value. The attribute
