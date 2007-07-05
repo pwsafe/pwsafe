@@ -512,7 +512,7 @@ void
 DboxMain::OnFind()
 {
   // create modeless or popup existing
-  CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr, &m_bFindWrap);
+  CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr);
 }
 
 void

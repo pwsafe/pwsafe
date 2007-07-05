@@ -29,9 +29,8 @@ class CFindDlg : public SUPERCLASS
   // Construction
  public:
 	typedef SUPERCLASS		super;
-
-  static void Doit(CWnd* pParent, BOOL *isCS, CMyString *lastFind,
-                   bool *bFindWraps); // implement Singleton pattern
+ // implement Singleton pattern
+  static void Doit(CWnd* pParent, BOOL *isCS, CMyString *lastFind);
   ~CFindDlg();
   static void EndIt();
   // Dialog Data

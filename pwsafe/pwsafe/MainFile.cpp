@@ -49,7 +49,10 @@ DboxMain::OpenOnInit(void)
     un-minimizing the application
   */
   CMyString passkey;
-  int rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_FIRST);  // First
+  int rc = GetAndCheckPassword(m_core.GetCurFile(),
+                               passkey, GCP_FIRST,
+                               m_core.IsReadOnly(),
+                               m_core.IsReadOnly());  // First
   int rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {

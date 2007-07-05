@@ -36,7 +36,7 @@ public:
   const CString &GetRealUser() const {return m_ruser;}
   const CString &GetRealHost() const {return m_rsysname;}
   const CString &GetEffectiveUser() const {return m_euser;}
-  const CString &GetEffectiveHost() const {return m_rsysname;}
+  const CString &GetEffectiveHost() const {return m_esysname;}
   const CString &GetCurrentPID() const {return m_ProcessID;}
 
 private:
