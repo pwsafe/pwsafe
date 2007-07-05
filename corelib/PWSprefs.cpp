@@ -31,6 +31,7 @@ HANDLE s_cfglockFileHandle = INVALID_HANDLE_VALUE;
 int s_cfgLockCount = 0;
 
 PWSprefs *PWSprefs::self = NULL;
+CString PWSprefs::m_configfilename; // may be set before singleton created
 
 // 1st parameter = name of preference
 // 2nd parameter = default value
@@ -542,6 +543,7 @@ void PWSprefs::InitializePreferences()
  */
     // Set path & name of config file
 
+  if (m_configfilename.IsEmpty())
     m_configfilename = PWSdirs::GetConfigDir() + _T("pwsafe.cfg");
 
     // Start with fallback position: hardcoded defaults
@@ -1039,13 +1041,13 @@ void PWSprefs::ImportOldPrefs()
                                    );
             if (rv == ERROR_SUCCESS && dwType == REG_SZ) {
                 DataLen++;
-                BYTE *pData = new BYTE[DataLen];
+                TCHAR *pData = new TCHAR[DataLen];
                 ::memset(pData, 0, DataLen);
                 rv = ::RegQueryValueEx(hSubkey,
                                        m_string_prefs[i].name,
                                        NULL,
                                        &dwType,
-                                       pData,
+                                       LPBYTE(pData),
                                        &DataLen
                                        );
                 if (rv == ERROR_SUCCESS)

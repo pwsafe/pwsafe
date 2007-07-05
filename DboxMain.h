@@ -122,8 +122,6 @@ public:
   void RefreshList();
   void SortTree(const HTREEITEM htreeitem);
 
-  void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
-
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}
   enum ChangeType {Clear, Data, TimeStamp};
@@ -154,7 +152,6 @@ public:
   BOOL LaunchBrowser(const CString &csURL);
   void SetFindActive() {m_bFindActive = true;}
   void SetFindInActive() {m_bFindActive = false;}
-  void SetFindWrap(bool bwrap) {m_bFindWrap = bwrap;}
   bool GetCurrentView() {return m_IsListView;}
   void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
@@ -223,7 +220,6 @@ protected:
   bool m_bTSUpdated;
   int m_iSessionEndingStatus;
   bool m_bFindActive;
-  bool m_bFindWrap;
 
   // Used for Advanced functions
   CItemData::FieldBits m_bsFields;

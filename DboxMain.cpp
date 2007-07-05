@@ -100,24 +100,12 @@ DboxMain::DboxMain(CWnd* pParent)
 
   ClearData();
 
-  /*
-   * current file and current backup file specs are stored in registry
-   * Note that if m_currfile is non-empty, we will not read the registry value.
-   * This will happen if a filename was given in the command line.
-   */
-  if (m_core.GetCurFile().IsEmpty()) {
-    // If there's no stored preference, this is probably a fresh install.
-    // CheckPassword will catch this and handle it correctly
-    m_core.SetCurFile(PWSprefs::GetInstance()->
-                      GetPref(PWSprefs::CurrentFile));
-  }
 #if !defined(POCKET_PC)
   m_titlebar = _T("");
   m_toolbarsSetup = FALSE;
 #endif
 
   m_ctlItemTree.SetDboxPointer((void *)this);
-  m_bFindWrap = PWSprefs::GetInstance()->GetPref(PWSprefs::FindWraps);
 }
 
 DboxMain::~DboxMain()
@@ -127,8 +115,6 @@ DboxMain::~DboxMain()
   delete m_pFontTree;
 
   CFindDlg::EndIt();
-  // Save Find wrap value
-  PWSprefs::GetInstance()->SetPref(PWSprefs::FindWraps, m_bFindWrap);
 }
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
