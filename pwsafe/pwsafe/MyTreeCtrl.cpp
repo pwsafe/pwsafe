@@ -625,9 +625,14 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
         listpos = dbx->Find(path, ci_title, ci_user);
       } while (listpos != dbx->End());
     }
-    ci->SetGroup(path);
+
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
+
+    // Update group and in the ListView
+    ci->SetGroup(path);
+    dbx->UpdateListItemGroup(di->list_index, (CString)path);
+
     if (ci_title.Compare(ci_title0) != 0) {
       ci->SetTitle(ci_title);
       CMyString treeDispString;
