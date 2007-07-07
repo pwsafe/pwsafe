@@ -17,6 +17,7 @@
 #include "PWSXML.h"
 #include "UUIDGen.h"
 #include "SysInfo.h"
+#include "UTF8Conv.h"
 
 #include <shellapi.h>
 #include <shlwapi.h>
@@ -323,7 +324,7 @@ struct XMLRecordWriter {
   XMLRecordWriter(const CString &subgroup_name,
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
-                  TCHAR delimiter, ofstreamT &ofs) :
+                  TCHAR delimiter, ofstream &ofs) :
     m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
     m_subgroup_function(subgroup_function), m_bsFields(bsFields),
     m_delimiter(delimiter), m_of(ofs), m_id(0)
@@ -338,8 +339,8 @@ struct XMLRecordWriter {
     if (m_subgroup_name.IsEmpty() ||
         item.Matches(m_subgroup_name,
                        m_subgroup_object, m_subgroup_function)) {
-      CMyString xml = item.GetXML(m_id, m_bsFields);
-      m_of << LPCTSTR(xml);
+      string xml = item.GetXML(m_id, m_bsFields);
+      m_of.write(xml.c_str(), xml.length());
         }
   }
 private:
@@ -348,7 +349,7 @@ private:
   const int m_subgroup_function;
   const CItemData::FieldBits &m_bsFields;
   TCHAR m_delimiter;
-  ofstreamT &m_of;
+  ofstream &m_of;
   unsigned m_id;
 };
 
@@ -359,17 +360,17 @@ PWScore::WriteXMLFile(const CMyString &filename,
                       const int &subgroup_object, const int &subgroup_function,
                       const TCHAR delimiter, const OrderedItemList *il)
 {
-	ofstreamT of(filename);
+	ofstream of(filename);
+  CUTF8Conv utf8conv;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
 
 	if (!of)
 		return CANT_OPEN_FILE;
 
 	CMyString pwh, tmp;
 	CString cs_tmp;
-
-	TCHAR buffer[8];
 	time_t time_now;
-	int id = 1;
 
 	time(&time_now);
 	const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
@@ -388,22 +389,44 @@ PWScore::WriteXMLFile(const CMyString &filename,
 		wls.Format(_T("%s on %s"),
                m_wholastsaved.Mid(4, ulen), m_wholastsaved.Mid(ulen + 4));
 	}
-	of << _T("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>") << endl;
-	of << _T("<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>") << endl;
+	of << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
+	of << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
 	of << endl;
-	of << _T("<passwordsafe") << endl;
+	of << "<passwordsafe" << endl;
 	tmp = m_currfile;
 	tmp.Replace(_T("&"), _T("&amp;"));
-	of << _T("delimiter=\"") << delimiter << _T("\"") << endl;
-	of << _T("Database=\"") << LPCTSTR(tmp) << _T("\"") << endl;
-	of << _T("ExportTimeStamp=\"") << LPCTSTR(now) << _T("\"") << endl;
-	cs_tmp.Format(_T("%d.%02d"), m_nCurrentMajorVersion, m_nCurrentMinorVersion);
-	of << _T("FromDatabaseFormat=\"") << LPCTSTR(cs_tmp) << _T("\"") << endl;
-	if (!m_wholastsaved.IsEmpty())
-      of << _T("WhoSaved=\"") << LPCTSTR(wls) << _T("\"") << endl;
-	if (!m_whatlastsaved.IsEmpty())
-      of << _T("WhatSaved=\"") << LPCTSTR(m_whatlastsaved) << _T("\"") << endl;
 
+  CMyString delStr;
+  delStr += delimiter;
+  utf8conv.ToUTF8(delStr, utf8, utf8Len);
+	of << "delimiter=\"";
+  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+	of << "\"" << endl;
+  utf8conv.ToUTF8(tmp, utf8, utf8Len);
+	of << "Database=\"";
+  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  of << "\"" << endl;
+  utf8conv.ToUTF8(now, utf8, utf8Len);
+	of << "ExportTimeStamp=\"";
+  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  of << "\"" << endl;
+	cs_tmp.Format(_T("%d.%02d"), m_nCurrentMajorVersion, m_nCurrentMinorVersion);
+  utf8conv.ToUTF8(cs_tmp, utf8, utf8Len);
+	of << "FromDatabaseFormat=\"";
+  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  of << "\"" << endl;
+	if (!m_wholastsaved.IsEmpty()) {
+    utf8conv.ToUTF8(wls, utf8, utf8Len);
+    of << "WhoSaved=\"";
+    of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    of << "\"" << endl;
+  }
+	if (!m_whatlastsaved.IsEmpty()) {
+    utf8conv.ToUTF8(m_whatlastsaved, utf8, utf8Len);
+    of << "WhatSaved=\"";
+    of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    of << "\"" << endl;
+  }
   if (m_whenlastsaved.GetLength() == 8) {
 	  long t;
 	  TCHAR *lpszWLS = m_whenlastsaved.GetBuffer(9);
@@ -415,13 +438,16 @@ PWScore::WriteXMLFile(const CMyString &filename,
 	  m_whenlastsaved.ReleaseBuffer();
 	  ASSERT(iread == 1);
     wls = CString(PWSUtil::ConvertToDateTimeString((time_t) t, TMC_XML));
-    of << _T("WhenLastSaved=\"") << LPCTSTR(wls) << _T("\"") << endl;
+    utf8conv.ToUTF8(wls, utf8, utf8Len);
+    of << "WhenLastSaved=\"";
+    of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    of << "\"" << endl;
   }
 
-  TCHAR uuid_buffer[37];
+  char uuid_buffer[37];
 #if _MSC_VER >= 1400
-	_stprintf_s(uuid_buffer, 37,
-                  _T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"),
+	sprintf_s(uuid_buffer, 37,
+            "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
                   m_file_uuid_array[0],  m_file_uuid_array[1],
                   m_file_uuid_array[2],  m_file_uuid_array[3],
                   m_file_uuid_array[4],  m_file_uuid_array[5],
@@ -431,8 +457,8 @@ PWScore::WriteXMLFile(const CMyString &filename,
                   m_file_uuid_array[12], m_file_uuid_array[13],
                   m_file_uuid_array[14], m_file_uuid_array[15]);
 #else
-  _stprintf(uuid_buffer,
-                  _T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x"), 
+  sprintf(uuid_buffer,
+          "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
                   m_file_uuid_array[0],  m_file_uuid_array[1],
                   m_file_uuid_array[2],  m_file_uuid_array[3],
                   m_file_uuid_array[4],  m_file_uuid_array[5],
@@ -442,19 +468,19 @@ PWScore::WriteXMLFile(const CMyString &filename,
                   m_file_uuid_array[12], m_file_uuid_array[13],
                   m_file_uuid_array[14], m_file_uuid_array[15]);
 #endif
-  uuid_buffer[36] = TCHAR('\0');
-  of << _T("Database_uuid=\"") << uuid_buffer << _T("\"") << endl;
-  of << _T("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") << endl;
-	of << _T("xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">") << endl;
+  uuid_buffer[36] = '\0';
+  of << "Database_uuid=\"" << uuid_buffer << "\"" << endl;
+  of << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
+	of << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
 	of << endl;
 
   if (m_nITER > MIN_HASH_ITERATIONS) {
-      cs_tmp.Format(_T("%d"), m_nITER);
-      of << _T("\t<NumberHashIterations>") << LPCTSTR(cs_tmp) << _T("</NumberHashIterations>") << endl;
+    of << "\t<NumberHashIterations>" << m_nITER << "</NumberHashIterations>";
+    of << endl;
   }
 
   if (m_UHFL.size() > 0) {
-    of << _T("\t<unknownheaderfields>") << endl;
+    of << "\t<unknownheaderfields>" << endl;
     UnknownFieldList::const_iterator vi_IterUHFE;
     for (vi_IterUHFE = m_UHFL.begin();
          vi_IterUHFE != m_UHFL.end();
@@ -462,13 +488,8 @@ PWScore::WriteXMLFile(const CMyString &filename,
       UnknownFieldEntry unkhfe = *vi_IterUHFE;
       if (unkhfe.st_length == 0)
         continue;
-#if _MSC_VER >= 1400
-		  _itot_s( (int)unkhfe.uc_Type, buffer, 8, 10 );
-#else
-		  _itot( (int)unkhfe.uc_Type, buffer, 10 );
-#endif
-      unsigned char * pmem;
-      pmem = unkhfe.uc_pUField;
+
+      unsigned char *pmem = unkhfe.uc_pUField;
 
       // UNK_HEX_REP will represent unknown values
       // as hexadecimal, rather than base64 encoding.
@@ -484,14 +505,18 @@ PWScore::WriteXMLFile(const CMyString &filename,
         tmp += CMyString(cs_tmp);
       }
 #endif
-      of << _T("\t\t<field ftype=\"") << buffer << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+      utf8conv.ToUTF8(tmp, utf8, utf8Len);
+      of << "\t\t<field ftype=\"" << int(unkhfe.uc_Type) << "\">";
+      of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      of << "</field>" << endl;
     }
-    of << _T("\t</unknownheaderfields>") << endl;  
+    of << "\t</unknownheaderfields>" << endl;  
   }
 
   if (bsFields.count() != bsFields.size()) {
     // Some restrictions - put in a comment to that effect
-    of << _T("<!-- Export of data was restricted to certain fields by the user -->") << endl;
+    of << "<!-- Export of data was restricted to certain fields by the user -->"
+       << endl;
     of << endl;
   }
 
@@ -503,13 +528,8 @@ PWScore::WriteXMLFile(const CMyString &filename,
   } else {
     for_each(m_pwlist.begin(), m_pwlist.end(), put_xml);
   }
-#if _MSC_VER >= 1400
-		_itot_s( id, buffer, 8, 10 );
-#else
-		_itot( id, buffer, 10 );
-#endif
 
-    of << _T("</passwordsafe>") << endl;
+  of << "</passwordsafe>" << endl;
     of.close();
 
     return SUCCESS;
@@ -521,40 +541,36 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
                        int &numValidated, int &numImported,
                        bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields)
 {
-    PWSXML *iXML;
+  PWSXML iXML(this);
     bool status, validation;
     int nITER;
     int nRecordsWithUnknownFields;
     UnknownFieldList uhfl;
     bool bEmptyDB = (GetNumEntries() == 0);
 
-    iXML = new PWSXML;
     strErrors = _T("");
 
     validation = true;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
-                              nITER, nRecordsWithUnknownFields, uhfl);
-    strErrors = iXML->m_strResultText;
+  status = iXML.XMLProcess(validation, ImportedPrefix, strXMLFileName,
+                           strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+  strErrors = iXML.m_strResultText;
     if (!status) {
-        delete iXML;
         return XML_FAILED_VALIDATION;
     }
 
-    numValidated = iXML->m_numEntriesValidated;
+  numValidated = iXML.m_numEntriesValidated;
 
-    iXML->SetCore(this);
     validation = false;
-    status = iXML->XMLProcess(validation, ImportedPrefix, strXMLFileName, strXSDFileName,
-                              nITER, nRecordsWithUnknownFields, uhfl);
-    strErrors = iXML->m_strResultText;
+  status = iXML.XMLProcess(validation, ImportedPrefix, strXMLFileName,
+                           strXSDFileName, nITER, nRecordsWithUnknownFields, uhfl);
+  strErrors = iXML.m_strResultText;
     if (!status) {
-        delete iXML;
         return XML_FAILED_IMPORT;
     }
 
-    numImported = iXML->m_numEntriesImported;
-    bBadUnknownFileFields = iXML->m_bDatabaseHeaderErrors;
-    bBadUnknownRecordFields = iXML->m_bRecordHeaderErrors;
+  numImported = iXML.m_numEntriesImported;
+  bBadUnknownFileFields = iXML.m_bDatabaseHeaderErrors;
+  bBadUnknownRecordFields = iXML.m_bRecordHeaderErrors;
     m_nRecordsWithUnknownFields += nRecordsWithUnknownFields;
     // Only add header unknown fields or change number of iterations
     // if the database was empty to start with
@@ -568,7 +584,6 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
     }
     uhfl.clear();
 
-    delete iXML;
     m_changed = true;
     return SUCCESS;
 }

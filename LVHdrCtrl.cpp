@@ -21,7 +21,7 @@
 // LVHdrCtrl
 
 CLVHdrCtrl::CLVHdrCtrl()
- : m_iHDRType(-1), m_pDragImage(NULL), m_bCCActive(FALSE)
+ : m_iHDRType(-1), m_bCCActive(FALSE)
 {
 }
 
@@ -56,6 +56,11 @@ DROPEFFECT CLVHdrCtrl::OnDragOver(CWnd* /* pWnd */, COleDataObject* /* pDataObje
 BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
                         DROPEFFECT /* dropEffect */, CPoint /* point */)
 {
+  // *****
+  // NOTE: Even in a Unicode build, we work in "unsigned char"
+  //       as all fields are in Latin alphabet PWS + a-z + 0-9!
+  // *****
+
   // On Drop of column from Column Chooser Dialog onto Header
   if (!pDataObject->IsDataAvailable(gbl_ccddCPFID, NULL))
     return FALSE;
@@ -63,15 +68,19 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   HGLOBAL hGlobal;
   hGlobal = pDataObject->GetGlobalData(gbl_ccddCPFID);
 
-  LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
+  BYTE *pData = (BYTE *)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
   SIZE_T memsize = GlobalSize(hGlobal);
 
+#ifdef _DEBUG
   // In Column D&D, a trailing NULL is appended to the data to allow tracing of pData
   // without error
-  TRACE(_T("%s LV::Drop memsize: %d; pData:'%s'\n"), PWSUtil::GetTimeStamp(),
-        memsize, pData);
+   CString cs_timestamp;
+   cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: LV::Drop: length %d/0x%04x, value:\n"), cs_timestamp, memsize, memsize);
+   PWSUtil::HexDump(pData, memsize, cs_timestamp);
+#endif /* DEBUG */
 
   if (memsize < DD_MEMORY_MINSIZE)
     goto ignore;
@@ -83,18 +92,17 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   // iDDType = D&D type FROMCC, FROMHDR or for entry D&D only FROMTREE
   // iType   = Column type (as defined in CItemData::GROUP etc.
-  // iLen    = Length of column name appended to this data (only used by CColumnChooserLC)
-  int iDDType(0), iType, iLen;
+  int iDDType(0), iType;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+  sscanf_s((char *)pData + DD_CLASSNAME_SIZE, "%02x%04x", &iDDType, &iType);
 #else
-  _stscanf(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+  sscanf((char *)pData + DD_CLASSNAME_SIZE, "%02x%04x", &iDDType, &iType);
 #endif
 
   // - we only accept drops from our ColumnChooser or our Header
   // - standard moving within the header only available if CC dialog not visible
-  if ((iDDType != FROMCC) || ((long)memsize < (long)(DD_MEMORY_MINSIZE + iLen)))
+  if (iDDType != FROMCC)
     goto ignore;
 
   // Get index of column we are on
@@ -138,13 +146,9 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   hdhti.flags = 0;
   ::SendMessage(this->GetSafeHwnd(), HDM_HITTEST, 0, (LPARAM) &hdhti);
 
-  // Get column name and type
+  // Get column type
   HD_ITEM hdi;
-  hdi.mask = HDI_WIDTH | HDI_LPARAM | HDI_TEXT;
-  enum { sizeOfBuffer = 256 };
-  TCHAR lpBuffer[sizeOfBuffer];
-  hdi.pszText = lpBuffer;
-  hdi.cchTextMax = sizeOfBuffer;
+  hdi.mask = HDI_LPARAM;
 
   GetItem(hdhti.iItem, &hdi);
   m_iHDRType = hdi.lParam;
@@ -153,36 +157,49 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   if (m_iHDRType == CItemData::TITLE || m_iHDRType == CItemData::USER)
     return;
 
-  // Get the data: ColumnChooser Listbox needs the column string
-  // See OnDrop for more comments
-  const int iLen = _tcslen(lpBuffer);
-  CString cs_text;
-  cs_text.Format(_T("%s%02x%04x%04x%s%c"), gbl_classname, FROMHDR, m_iHDRType,
-                 iLen, lpBuffer, _T('\0'));
-  TRACE(_T("%s LV::LBD textlen: %d; text:'%s'\n"), PWSUtil::GetTimeStamp(),
-        cs_text.GetLength(), cs_text);
+  BYTE *pData = new BYTE[DD_MEMORY_MINSIZE + 2];
+  memset((void *)pData, 0x00, DD_MEMORY_MINSIZE + 2);
+#if _MSC_VER >= 1400
+  sprintf_s((char *)pData, DD_MEMORY_MINSIZE, "%s", gbl_classname);
+  sprintf_s((char *)pData + DD_CLASSNAME_SIZE, DD_REQUIRED_DATA_SIZE + 1,
+            "%02x%04x0000", FROMHDR, m_iHDRType);
+#else
+  sprintf((char *)pData, "%s", gbl_classname);
+  sprintf((char *)pData + DD_CLASSNAME_SIZE, "%02x%04x0000", FROMHDR, m_iHDRType);
+#endif
+
+#ifdef _DEBUG
+  // In Column D&D, a trailing NULL is appended to the data to allow tracing of pData
+  // without error
+   CString cs_timestamp;
+   cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: LV::LBD: length %d/0x%04x, value:\n"), cs_timestamp,
+     DD_MEMORY_MINSIZE, DD_MEMORY_MINSIZE);
+   PWSUtil::HexDump(pData, DD_MEMORY_MINSIZE, cs_timestamp);
+#endif /* DEBUG */
 
   // Set drag image
-  m_pDragImage = CreateDragImage(hdhti.iItem);
-  m_pDragImage->BeginDrag(0, CPoint(8, 8));
-  m_pDragImage->DragEnter(GetDesktopWindow(), point);
+  CImageList* pDragImageList;
+  pDragImageList = CreateDragImage(hdhti.iItem);
+  pDragImageList->BeginDrag(0, CPoint(8, 8));
+  pDragImageList->DragEnter(GetDesktopWindow(), point);
 
   // Get client rectangle
   RECT rClient;
   GetClientRect(&rClient);
 
-  TCHAR *lpsz_data = cs_text.GetBuffer(cs_text.GetLength() + 1);
-
-  // Start dragging - note trailing NULL in length parameter
-  StartDragging((BYTE *)lpsz_data, (cs_text.GetLength() + 1) * sizeof(TCHAR),
+  // Start dragging - note double trailing NULL in length parameter
+  StartDragging(pData, DD_MEMORY_MINSIZE + 2,
                 gbl_ccddCPFID, &rClient, &point);
 
-  cs_text.ReleaseBuffer();
-
   // End dragging image
-  m_pDragImage->DragLeave(GetDesktopWindow());
-  m_pDragImage->EndDrag();
-  //delete m_pDragImage;
+  pDragImageList->DragLeave(GetDesktopWindow());
+  pDragImageList->EndDrag();
+  // For some reason uncommenting this damages the heap but....
+  // The are no reported memory leaks and it works OK in
+  // ColumnChooserLC.cpp and TVTreeCtrl.cpp ???
+  //delete pDragImageList;
+  free(pData);
 }
 
 void CLVHdrCtrl::CompleteMove()

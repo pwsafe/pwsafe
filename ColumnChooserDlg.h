@@ -41,4 +41,5 @@ protected:
 
 public:
   CLVHdrCtrl *m_pLVHdrCtrl;
+  void *m_pDbx;
 };

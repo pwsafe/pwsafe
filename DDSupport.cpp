@@ -112,7 +112,7 @@ void CDDObList::Serialize(CArchive& ar)
     ar >> nCount;
     ar >> m_bDragNode;
 
-    for (n = 0; n < nCount; ++n) {
+    for (n = 0; n < nCount; n++) {
       pDDObject = new CDDObject();
       pDDObject->Serialize(ar);
       AddTail(pDDObject);

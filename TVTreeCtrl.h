@@ -5,6 +5,7 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
+
 #pragma once
 
 #include <Afxcmn.h>
@@ -38,7 +39,6 @@ public:
 
    // indices of bitmaps in ImageList
   enum {NODE=0, LEAF=1, EXPIRED_LEAF = 2, WARNEXPIRED_LEAF = 3};
-  enum {REQUEST_INFO = 0, SEND_INFO = 1};
 
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   void DeleteFromSet(HTREEITEM hItem);
@@ -79,7 +79,7 @@ private:
   bool m_isRestoring; // don't repopulate m_expandedItems in restore
 
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
-  bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
+  bool MoveItem(HTREEITEM hitem, HTREEITEM hNewParent);
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
@@ -90,7 +90,6 @@ private:
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CMyString DropGroup);
   CDropSource m_TCDropSource;
   CDropTarget m_TCDropTarget;
-  CImageList* m_pDragImage;
   HTREEITEM m_iItem;
 
 protected:

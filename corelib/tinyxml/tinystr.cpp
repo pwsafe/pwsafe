@@ -41,7 +41,7 @@ const TiXmlString::size_type TiXmlString::npos = static_cast< TiXmlString::size_
 
 
 // Null rep.
-TiXmlString::Rep TiXmlString::nullrep_ = { 0, 0, TCHAR('\0') };
+TiXmlString::Rep TiXmlString::nullrep_ = { 0, 0, {'\0'} };
 
 
 void TiXmlString::reserve (size_type cap)

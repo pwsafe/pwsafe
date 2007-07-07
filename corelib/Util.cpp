@@ -53,8 +53,8 @@ trashMemory(void* buffer, size_t length)
       memset(buffer, 0x00, length);
       memset(buffer, 0xFF, length);
       memset(buffer, 0x00, length);
-    }
   }
+}
 #pragma optimize("",on)
 
 void
@@ -475,7 +475,8 @@ _readcbc(CSMemFile *pinmemfile, unsigned char* &out_buffer,
 }
 
 void
-EncryptMemory(unsigned char * &in_buffer, long inLen, const CMyString &passwd, CSMemFile *poutMemFile)
+EncryptMemory(unsigned char * &in_buffer, long inLen, const CMyString &passwd,
+              CSMemFile *poutMemFile)
 {
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];   // HashSize
@@ -501,7 +502,8 @@ EncryptMemory(unsigned char * &in_buffer, long inLen, const CMyString &passwd, C
 }
 
 void
-DecryptMemory(unsigned char * &out_buffer, long &outLen, const CMyString &passwd, CSMemFile *pinMemFile)
+DecryptMemory(unsigned char * &out_buffer, long &outLen, const CMyString &passwd,
+              CSMemFile *pinMemFile)
 {
   outLen = 0;
 

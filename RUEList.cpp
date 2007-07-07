@@ -40,8 +40,6 @@ bool RUEntry::operator()(const RUEntry &re)
 CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0)
 {}
 
-
-
 // Accessors
 
 void

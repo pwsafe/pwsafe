@@ -22,7 +22,7 @@
 // CColumnChooserLC
 
 CColumnChooserLC::CColumnChooserLC()
- : m_iItem(-1), m_pDragImage(NULL)
+ : m_iItem(-1)
 {
 }
 
@@ -59,6 +59,11 @@ DROPEFFECT CColumnChooserLC::OnDragOver(CWnd* /* pWnd */, COleDataObject* /* pDa
 BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
                               DROPEFFECT /* dropEffect */, CPoint /* point */)
 {
+  // *****
+  // NOTE: Even in a Unicode build, we work in "unsigned char"
+  //       as all fields are in Latin alphabet PWS + a-z + 0-9!
+  // *****
+
   // On Drop of column from Header onto Column Chooser Dialog
   if (!pDataObject->IsDataAvailable(gbl_ccddCPFID, NULL))
     return FALSE;
@@ -66,22 +71,25 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   HGLOBAL hGlobal;
   hGlobal = pDataObject->GetGlobalData(gbl_ccddCPFID);
 
-  LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
+  BYTE *pData = (BYTE *)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
   SIZE_T memsize = GlobalSize(hGlobal);
 
+#ifdef _DEBUG
   // In Column D&D, a trailing NULL is appended to the data to allow tracing of pData
   // without error
-  TRACE(_T("%s CC::Drop memsize: %d; pData:'%s'\n"), PWSUtil::GetTimeStamp(),
-        memsize, pData);
+   CString cs_timestamp;
+   cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: CC::Drop: length %d/0x%04x, value:\n"), cs_timestamp, memsize, memsize);
+   PWSUtil::HexDump(pData, memsize, cs_timestamp);
+#endif /* DEBUG */
 
   if (memsize < DD_MEMORY_MINSIZE)
     goto ignore;
 
   // iDDType = D&D type FROMCC, FROMHDR or for entry D&D only FROMTREE
   // iType   = Column type (as defined in CItemData::GROUP etc.
-  // iLen    = Length of column name appended to this data (only used by CColumnChooserLC)
-  int iDDType, iType, iLen;
+  int iDDType, iType;
 
   // Check if it is ours?
   // - we don't accept drop from other instances of PWS
@@ -89,20 +97,20 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     goto ignore;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+  sscanf_s((char *)pData + DD_CLASSNAME_SIZE, "%02x%04x", &iDDType, &iType);
 #else
-  _stscanf(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%04x%04x"), &iDDType, &iType, &iLen);
+  sscanf((char *)pData + DD_CLASSNAME_SIZE, "%02x%04x", &iDDType, &iType);
 #endif
 
   // Check if it is from List View HeaderCtrl?
   // - we don't accept drop from anything else
-  // Check it is long enough!
-  if ((iDDType != FROMHDR) || ((long)memsize < (long)(DD_MEMORY_MINSIZE + iLen)))
+  if (iDDType != FROMHDR)
     goto ignore;
 
   // Now add it
   {
-  const CString cs_header(pData + DD_MEMORY_MINSIZE/sizeof(TCHAR), iLen);
+  DboxMain *pDbx = static_cast<DboxMain *>(m_pDbx);
+  const CString cs_header = pDbx->GetHeaderText(iType);
   int iItem = InsertItem(0, cs_header);
   SetItemData(iItem, iType);
   SortItems(CCLCCompareProc, (LPARAM)this);
@@ -128,18 +136,33 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
     return;
 
   // Start of Drag of column (m_iItem) from Column Chooser dialog to.....
-  CString cs_text;
-  int iType, iDummyLen(0);
+  int iType;
 
   iType = GetItemData(m_iItem);
 
   // ListView HeaderCtrl only needs the type as it uses main routine
   // to add/delete columns via SendMessage - add dummy length and trailing NULL
   // See OnDrop for more comments
-  cs_text.Format(_T("%s%02x%04x%04x%c"), gbl_classname, FROMCC, 
-                 iType, iDummyLen, _T('\0'));
-  TRACE(_T("%s CC::LBD textlen: %d; text:'%s'\n"), PWSUtil::GetTimeStamp(),
-        cs_text.GetLength(), cs_text);
+  BYTE *pData = new BYTE[DD_MEMORY_MINSIZE + 2];
+  memset((void *)pData, 0x00, DD_MEMORY_MINSIZE + 2);
+#if _MSC_VER >= 1400
+  sprintf_s((char *)pData, DD_MEMORY_MINSIZE, "%s", gbl_classname);
+  sprintf_s((char *)pData + DD_CLASSNAME_SIZE, DD_REQUIRED_DATA_SIZE + 1,
+            "%02x%04x0000", FROMCC, iType);
+#else
+  sprintf((char *)pData, "%s", gbl_classname);
+  sprintf((char *)pData + DD_CLASSNAME_SIZE, "%02x%04x0000", FROMCC, iType);
+#endif
+
+  #ifdef _DEBUG
+  // In Column D&D, a trailing NULL is appended to the data to allow tracing of pData
+  // without error
+   CString cs_timestamp;
+   cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: CC::LBD: length %d/0x%04x, value:\n"), cs_timestamp, 
+     DD_MEMORY_MINSIZE, DD_MEMORY_MINSIZE);
+   PWSUtil::HexDump(pData, DD_MEMORY_MINSIZE, cs_timestamp);
+#endif /* DEBUG */
 
   // Get client window position
   CPoint currentClientPosition;
@@ -147,26 +170,24 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
   ScreenToClient(&currentClientPosition);
 
   // Set drag image
-  m_pDragImage = CreateDragImage(m_iItem, &currentClientPosition);
-  m_pDragImage->BeginDrag(0, CPoint(8, 8));
-  m_pDragImage->DragEnter(GetDesktopWindow(), point);
+  CImageList* pDragImageList;
+  pDragImageList = CreateDragImage(m_iItem, &currentClientPosition);
+  pDragImageList->BeginDrag(0, CPoint(8, 8));
+  pDragImageList->DragEnter(GetDesktopWindow(), point);
 
   // Get client rectangle
   RECT rClient;
   GetClientRect(&rClient);
 
-  TCHAR *lpsz_data = cs_text.GetBuffer(cs_text.GetLength() + 1);
-
-  // Start dragging - note trailing NULL in length parameter
-  StartDragging((BYTE *)lpsz_data, (cs_text.GetLength() + 1) * sizeof(TCHAR),
+  // Start dragging - note double trailing NULL in length parameter
+  StartDragging(pData, DD_MEMORY_MINSIZE + 2,
                 gbl_ccddCPFID, &rClient, &point);
 
-  cs_text.ReleaseBuffer();
-
   // End dragging image
-  m_pDragImage->DragLeave(GetDesktopWindow());
-  m_pDragImage->EndDrag();
-  delete m_pDragImage;
+  pDragImageList->DragLeave(GetDesktopWindow());
+  pDragImageList->EndDrag();
+  delete pDragImageList;
+  free(pData);
 }
 
 void CColumnChooserLC::CompleteMove()

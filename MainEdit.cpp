@@ -526,7 +526,7 @@ void
 DboxMain::OnFind()
 {
   // create modeless or popup existing
-  CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr, &m_bFindWrap);
+  CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr);
 }
 
 void
@@ -731,13 +731,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString DropGroup)
     tempitem.SetPMTime(pDDObject->m_DD_PMTime);
     tempitem.SetRMTime(pDDObject->m_DD_RMTime);
 
-    // AddEntry copies the entry, and we want to work with the inserted copy
-    // Which we'll find by uuid
-    uuid_array_t uuid;
-    tempitem.GetUUID(uuid);
-    int newpos = insertItem(m_core.GetEntry(m_core.Find(uuid)));
-    SelectEntry(newpos);
-    FixListIndexes();
+    AddEntry(tempitem);
+
     if (PWSprefs::GetInstance()->
              GetPref(PWSprefs::SaveImmediately)) {
       Save();

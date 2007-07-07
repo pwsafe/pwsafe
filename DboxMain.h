@@ -59,8 +59,16 @@ enum {GCP_FIRST = 0,		// At startup of PWS
 	  GCP_WITHEXIT = 3,	// OK, CANCEL, EXIT & HELP buttons
 	  GCP_ADVANCED = 4};	// OK, CANCEL, HELP buttons & ADVANCED checkbox
 
-// Drag and Drop source (TREE not implemented)
-enum { FROMCC, FROMHDR, FROMTREE };
+// Drag and Drop source
+// Note values to stop D&D between instances where data is of different lengths
+enum {
+  FROMCC = 0,
+  FROMHDR = 1, 
+#ifndef _UNICODE
+  FROMTREE = 2 };
+#else
+  FROMTREE = 3 };
+#endif
 
 //-----------------------------------------------------------------------------
 class DboxMain
@@ -121,9 +129,8 @@ public:
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
   BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
   void RefreshList();
+  void FixListIndexes();
   void SortTree(const HTREEITEM htreeitem);
-
-  void SetCurFile(const CString &arg) {m_core.SetCurFile(CMyString(arg));}
 
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}
@@ -155,7 +162,6 @@ public:
   BOOL LaunchBrowser(const CString &csURL);
   void SetFindActive() {m_bFindActive = true;}
   void SetFindInActive() {m_bFindActive = false;}
-  void SetFindWrap(bool bwrap) {m_bFindWrap = bwrap;}
   bool GetCurrentView() {return m_IsListView;}
   void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
@@ -230,7 +236,6 @@ protected:
   bool m_bTSUpdated;
   int m_iSessionEndingStatus;
   bool m_bFindActive;
-  bool m_bFindWrap;
 
   // Used for Advanced functions
   CItemData::FieldBits m_bsFields;
@@ -463,7 +468,6 @@ private:
   int SaveIfChanged();
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);
-  void FixListIndexes();
   void UpdateAccessTime(CItemData *ci);
   void SaveDisplayStatus();
   void RestoreDisplayStatus(bool bUnMinimize = false);

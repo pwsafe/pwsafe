@@ -67,18 +67,18 @@ extern CLIPFORMAT gbl_ccddCPFID;
 extern CLIPFORMAT gbl_tcddCPFID;
 
 // PWS Instance (unique) class name = "PWS" + "UUID string (36)" + NULL
-extern TCHAR gbl_classname[40];
+extern BYTE gbl_classname[40];
 
-// Save all the trailing NULL "sizeof(TCHAR)"
-#define DD_CLASSNAME_SIZE (sizeof(gbl_classname) - sizeof(TCHAR))
+// Save all the trailing NULL
+#define DD_CLASSNAME_SIZE (sizeof(gbl_classname) - 1)
 
 // Size of mandatory data:
 //   D&D type: %02x, bufferlength (entry D&D) %08x = 10
-//   D&D type: %02x, column type: %04x, column name length (column D&D) %04x = 10
-#define DD_REQUIRED_DATA_SIZE (10 * sizeof(TCHAR))
+//   D&D type: %02x, column type: %04x, "0000" = 10
+#define DD_REQUIRED_DATA_SIZE 10
 
 // Minimum Drag & Drop memory buffer size = 
-//   sizeof(classname) + DD_REQUIRED_DATA_SIZE (+ trailing NULL for Column D&D)
+//   sizeof(classname) + DD_REQUIRED_DATA_SIZE (inc. trailing NULL)
 #define DD_MEMORY_MINSIZE (DD_CLASSNAME_SIZE + DD_REQUIRED_DATA_SIZE)
 
 //-----------------------------------------------------------------------------

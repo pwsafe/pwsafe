@@ -10,7 +10,7 @@
 // after minimize
 #include <set>
 
-using namespace std ;
+using namespace std;
 
 #include "stdafx.h"
 #include "TVTreeCtrl.h"
@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 
 static const TCHAR GROUP_SEP = TCHAR('.');
 
-CTVTreeCtrl::CTVTreeCtrl() : m_pimagelist(NULL), m_pDragImage(NULL), m_isRestoring(false),
+CTVTreeCtrl::CTVTreeCtrl() : m_pimagelist(NULL), m_isRestoring(false),
 m_bWithinThisInstance(false)
 {
 }
@@ -360,7 +360,7 @@ void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
 {
   DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
   if (dbx->IsMcoreReadOnly())
-    return; // don't drag in read-only mode
+    return; // don't edit label in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
   // Only items visible will be changed - e.g. if password is not shown and the user
@@ -484,10 +484,7 @@ void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
     dbx->SetChanged(DboxMain::Data);
 
     // Sort it as appropriate
-     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-      dbx->SortTree(ti);
-    else
-      SortChildren(GetParentItem(ti));
+    dbx->SortTree(ti);
 
     // OK
     *pLResult = TRUE;
@@ -616,12 +613,12 @@ HTREEITEM CTVTreeCtrl::AddGroup(const CString &group)
   return ti;
 }
 
-bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
+bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
-  TV_INSERTSTRUCT     tvstruct;
-  TCHAR               sztBuffer[260];  // max visible
-  HTREEITEM           hNewItem, hFirstChild;
-  DWORD itemData = GetItemData(hitemDrag);
+  TV_INSERTSTRUCT  tvstruct;
+  TCHAR sztBuffer[260];  // max visible
+  HTREEITEM hNewItem, hFirstChild;
+  DWORD itemData;
 
   DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
 
@@ -629,9 +626,11 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   tvstruct.item.hItem = hitemDrag;
   tvstruct.item.cchTextMax = sizeof(sztBuffer)/sizeof(TCHAR) - 1;
   tvstruct.item.pszText = sztBuffer;
-  tvstruct.item.mask = (TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE
-                        | TVIF_SELECTEDIMAGE | TVIF_TEXT);
+  tvstruct.item.mask = (TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE |
+                        TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT);
   GetItem(&tvstruct.item);  // get information of the dragged element
+
+  itemData = tvstruct.item.lParam;
 
   tvstruct.hParent = hitemDrop;
 
@@ -640,10 +639,15 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   else
     tvstruct.hInsertAfter = TVI_SORT;
 
-  tvstruct.item.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
+  tvstruct.item.mask = TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
   hNewItem = InsertItem(&tvstruct);
   if (itemData != 0) { // Non-NULL itemData implies Leaf
     CItemData *ci = (CItemData *)itemData;
+
+    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+    ASSERT(di != NULL);
+    ASSERT(di->list_index >= 0);
+
     // Update Group
     CMyString path, elem;
     HTREEITEM p, q = hNewItem;
@@ -658,15 +662,17 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
       } else
         break;
     } while (1);
+
     // Get information from current selected entry
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
     CMyString ci_title;
     ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
+    // Update list field with new group
     ci->SetGroup(path);
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    ASSERT(di != NULL);
+    dbx->UpdateListItemGroup(di->list_index, (CString)path);
+
     if (ci_title.Compare(ci_title0) != 0) {
       ci->SetTitle(ci_title);
       CMyString treeDispString;
@@ -684,7 +690,7 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
       }
       // Update tree label
       SetItemText(hNewItem, treeDispString);
-      // Update list field
+      // Update list field with new title
       dbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
     }
     // Mark database as modified!
@@ -692,16 +698,13 @@ bool CTVTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     // Update DisplayInfo record associated with ItemData
     di->tree_item = hNewItem;
   }
-  SetItemData(hNewItem, itemData);
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-    dbx->SortTree(hitemDrop);
-  else
-    SortChildren(hitemDrop);
 
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
-    TransferItem(hFirstChild, hNewItem);  // recursively transfer all the items
-    DeleteItem(hFirstChild);
+    MoveItem(hFirstChild, hNewItem);  // recursively move all the items
   }
+
+  // We are moving it - so now delete original from TreeCtrl
+  DeleteItem(hitemDrag);
   return true;
 }
 
@@ -738,6 +741,7 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     CMyString ci_title;
     ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
+    // Needs new UUID as they must be unique and this is a copy operation
     temp.CreateUUID();
     temp.SetGroup(path);
     temp.SetTitle(ci_title);
@@ -754,10 +758,7 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     dbx->SetChanged(DboxMain::Data);
   }
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-    dbx->SortTree(hitemDrop);
-  else
-    SortChildren(hitemDrop);
+  dbx->SortTree(hitemDrop);
 
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
     CopyItem(hFirstChild, hitemDrop);  // recursively copy all the items
@@ -902,8 +903,7 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   // Can drag in read-only mode as it might be to someone else
   // Can't allow drop in read-only mode
 
-  CPoint ptAction;
-  GetCursorPos(&ptAction);
+  CPoint ptAction = ::GetMessagePos();
   ScreenToClient(&ptAction);
 
   UINT uFlags;
@@ -915,7 +915,7 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   SelectItem(m_hitemDrag);
 
   long lBufLen;
-  BYTE * buffer(NULL);
+  BYTE *buffer(NULL);
   CString cs_text;
 
   // Start of Drag of entries.....
@@ -923,17 +923,34 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   if (!CollectData(buffer, lBufLen))
     return;
 
-  cs_text.Format(_T("%s%02x%08x"), gbl_classname, FROMTREE, lBufLen);
+  // If you want to encrypt the data - do it here and write out the
+  // new encrypted buffer length here instead of lBufLen
+  BYTE *pData = new BYTE[DD_MEMORY_MINSIZE + 1];
+  memset((void *)pData, 0x00, DD_MEMORY_MINSIZE + 1);
+#if _MSC_VER >= 1400
+  sprintf_s((char *)pData, DD_MEMORY_MINSIZE, "%s", gbl_classname);
+  sprintf_s((char *)pData + DD_CLASSNAME_SIZE, DD_REQUIRED_DATA_SIZE + 1,
+            "%02x%08x", FROMTREE, lBufLen);
+#else
+  sprintf((char *)pData, "%s", gbl_classname);
+  sprintf((char *)pData + DD_CLASSNAME_SIZE, "%02x%08x", FROMTREE, lBufLen);
+#endif
 
   CMemFile mf;
-  mf.Write((LPCTSTR)cs_text, cs_text.GetLength() * sizeof(TCHAR));
+  mf.Write(pData, DD_MEMORY_MINSIZE);
+
+  // If the data has been encrypted - append it here to the "header"
+  // instead of the clear text buffer
   mf.Write(buffer, lBufLen);
 
-  // Finished with (encrypted) buffer - free it
+  // Finished with buffer - trash it and free it
+  // If using an encrypted buffer - only need to free it
+  trashMemory((void *)buffer, lBufLen);
   free(buffer);
+  free(pData);
 
   DWORD dw_mflen = (DWORD)mf.GetLength();
-  BYTE * mf_buffer = (BYTE *)(mf.Detach());
+  BYTE *mf_buffer = (BYTE *)(mf.Detach());
 
 #ifdef _DEBUG
    CString cs_timestamp;
@@ -942,8 +959,10 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
    PWSUtil::HexDump(mf_buffer, dw_mflen, cs_timestamp);
 #endif /* DEBUG */
 
-  ASSERT(m_pDragImage == NULL);
-  m_pDragImage = CreateDragImage(m_hitemDrag);
+  CImageList* pDragImageList;
+  pDragImageList = CreateDragImage(m_hitemDrag);
+  pDragImageList->BeginDrag(0, CPoint(8, 8));
+  pDragImageList->DragEnter(GetDesktopWindow(), ptAction);
 
   // Get client rectangle
   RECT rClient;
@@ -953,14 +972,15 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   StartDragging(mf_buffer, dw_mflen, gbl_tcddCPFID, &rClient, &ptAction);
 
   // Cleanup
+  // Finished with buffer - trash it and free it
+  // If using an encrypted buffer - only need to free it
+  trashMemory((void *)mf_buffer, dw_mflen);
   free((void *)mf_buffer);
 
   // End dragging image
-  m_pDragImage->DragLeave(GetDesktopWindow());
-  m_pDragImage->EndDrag();
-
-  delete m_pDragImage;
-  m_pDragImage = NULL;
+  pDragImageList->DragLeave(GetDesktopWindow());
+  pDragImageList->EndDrag();
+  delete pDragImageList;
 }
 
 BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
@@ -1011,7 +1031,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   HGLOBAL hGlobal;
 
   hGlobal = pDataObject->GetGlobalData(gbl_tcddCPFID);
-  LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
+  BYTE *pData = (BYTE *)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
   SIZE_T memsize = GlobalSize(hGlobal);
@@ -1019,7 +1039,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   if (memsize < DD_MEMORY_MINSIZE)
     goto exit;
 
-  memset(m_sending_classname, 0, DD_CLASSNAME_SIZE + sizeof(TCHAR));
+  memset(m_sending_classname, 0, DD_CLASSNAME_SIZE);
   memcpy(m_sending_classname, pData, DD_CLASSNAME_SIZE);
   m_bWithinThisInstance = memcmp(gbl_classname, m_sending_classname, DD_CLASSNAME_SIZE) == 0;
 
@@ -1029,9 +1049,9 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   long lBufLen;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%08x"), &iDDType, &lBufLen);
+  sscanf_s((char *)pData + DD_CLASSNAME_SIZE, "%02x%08x", &iDDType, &lBufLen);
 #else
-  _stscanf(pData + DD_CLASSNAME_SIZE/sizeof(TCHAR), _T("%02x%08x"), &iDDType, &lBufLen);
+  sscanf((char *)pData + DD_CLASSNAME_SIZE, "%02x%08x", &iDDType, &lBufLen);
 #endif
 
   // Check if it is from another TreeCtrl?
@@ -1058,11 +1078,11 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     if (m_hitemDrag != m_hitemDrop &&
       !IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
       parent != m_hitemDrop) {
-      // drag operation completed successfully.
+      // drag operation allowed
       if (dropEffect == DROPEFFECT_MOVE) {
-        // Transfer them & delete
-        TransferItem(m_hitemDrag, m_hitemDrop);
-        DeleteItem(m_hitemDrag);
+        MoveItem(m_hitemDrag, m_hitemDrop);
+        //dbx->FixListIndexes();
+        //dbx->RefreshList();
       } else if (dropEffect == DROPEFFECT_COPY) {
         CopyItem(m_hitemDrag, m_hitemDrop);
       }
@@ -1082,6 +1102,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     retval = TRUE;
   }
 
+  dbx->SortTree(m_hitemDrop);
   GetParent()->SetFocus();
 
 exit:
@@ -1095,18 +1116,18 @@ exit:
 
 void CTVTreeCtrl::CompleteMove()
 {
-  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
+  DboxMain *pDbx = static_cast<DboxMain *>(m_parent); 
   // If drag within instance - we have already done ths
   if (m_bWithinThisInstance)
     return;
 
   // If drag to another instance, ignore in Read-only mode
-  if (dbx->IsMcoreReadOnly())
+  if (pDbx->IsMcoreReadOnly())
     return;
 
   // After we have dragged successfully from our Tree to another Tree
-  dbx->Delete();
-  dbx->RefreshList();
+  pDbx->Delete();
+  pDbx->RefreshList();
 }
 
 bool CTVTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
@@ -1119,12 +1140,12 @@ bool CTVTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   if (IsLeafNode(m_hitemDrag)) {
     ASSERT(itemData != NULL);
     m_nDragPathLen = 0;
-    GetEntryData(out_oblist, ci);
     out_oblist.m_bDragNode = false;
+    GetEntryData(out_oblist, ci);
   } else {
     m_nDragPathLen = GetGroup(GetParentItem(m_hitemDrag)).GetLength();
-    GetGroupEntriesData(out_oblist, m_hitemDrag);
     out_oblist.m_bDragNode = true;
+    GetGroupEntriesData(out_oblist, m_hitemDrag);
   }
 
   CSMemFile outDDmemfile;
@@ -1145,7 +1166,7 @@ bool CTVTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 
 bool CTVTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString DropGroup)
 {
-  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
+  DboxMain *pDbx = static_cast<DboxMain *>(m_parent); 
 
 #ifdef _DEBUG
    CString cs_timestamp;
@@ -1170,7 +1191,7 @@ bool CTVTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
   inDDmemfile.Detach();
 
   if (!in_oblist.IsEmpty()) {
-    dbx->AddEntries(in_oblist, DropGroup);
+    pDbx->AddEntries(in_oblist, DropGroup);
 
     while (!in_oblist.IsEmpty()) {
       delete (CDDObject *)in_oblist.RemoveHead();

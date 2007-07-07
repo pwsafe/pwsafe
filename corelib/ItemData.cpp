@@ -12,18 +12,12 @@
 #include "BlowFish.h"
 #include "TwoFish.h"
 #include "PWSrand.h"
+#include "UTF8Conv.h"
 
 #include <time.h>
 #include <sstream>
 
 using namespace std;
-
-// hide w_char/char differences where possible:
-#ifdef UNICODE
-typedef std::wostringstream ostringstreamT;
-#else
-typedef std::ostringstream ostringstreamT;
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -207,24 +201,6 @@ CItemData::GetTime(int whichtime, time_t &t) const
   } else {
     t = 0;
   }
-}
-
-CMyString CItemData::GetXMLTime(int indent, const TCHAR *name, time_t t) const
-{
-  int i;
-  const CString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
-  ostringstreamT oss;
-
-  for (i = 0; i < indent; i++) oss << _T("\t");
-  oss << _T("<") << name << _T(">") << endl;
-  for (i = 0; i <= indent; i++) oss << _T("\t");
-  oss << _T("<date>") << LPCTSTR(tmp.Left(10)) << _T("</date>") << endl;
-  for (i = 0; i <= indent; i++) oss << _T("\t");
-  oss << _T("<time>") << LPCTSTR(tmp.Right(8)) << _T("</time>") << endl;
-  for (i = 0; i < indent; i++) oss << _T("\t");
-  oss << _T("</") << name << _T(">") << endl;
-  CMyString retval(oss.str().c_str());
-  return retval;
 }
 
 
@@ -419,90 +395,124 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     return ret;
 }
 
-CMyString CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
+static string GetXMLTime(int indent, const char *name,
+                         time_t t, CUTF8Conv &utf8conv)
 {
-  ostringstreamT oss;
+  int i;
+  const CMyString tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+  ostringstream oss;
+  const unsigned char *utf8 = NULL;
+  int utf8Len = 0;
+  
+
+  for (i = 0; i < indent; i++) oss << "\t";
+  oss << "<" << name << ">" << endl;
+  for (i = 0; i <= indent; i++) oss << "\t";
+  utf8conv.ToUTF8(tmp.Left(10), utf8, utf8Len);
+  oss << "<date>";
+  oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  oss << "</date>" << endl;
+  for (i = 0; i <= indent; i++) oss << "\t";
+  utf8conv.ToUTF8(tmp.Right(8), utf8, utf8Len);
+  oss << "<time>";
+  oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  oss << "</time>" << endl;
+  for (i = 0; i < indent; i++) oss << "\t";
+  oss << "</" << name << ">" << endl;
+  return oss.str();
+}
+
+static void WriteXMLField(ostream &os, const char *fname,
+                          const CMyString &value, CUTF8Conv &utf8conv,
+                          const char *tabs = "\t\t")
+{
+  const unsigned char * utf8 = NULL;
+  int utf8Len = 0;
+
+  os << tabs << "<" << fname << "><![CDATA[";
+  if(utf8conv.ToUTF8(value, utf8, utf8Len))
+      os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    else
+      os << "Internal error - unable to convert field to utf-8";
+  os << "]]></" << fname << ">" << endl;
+}
+
+string CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
+{
+  ostringstream oss; // ALWAYS a string of chars, never wchar_t!
   // TODO: need to handle entity escaping of values.
-  oss << _T("\t<entry id=\"") << id << _T("\">") << endl;
+  oss << "\t<entry id=\"" << id << "\">" << endl;
 
   CMyString tmp;
+  CUTF8Conv utf8conv;
 
   tmp = GetGroup();
   if (bsExport.test(CItemData::GROUP) && !tmp.IsEmpty())
-    oss << _T("\t\t<group><![CDATA[") << LPCTSTR(tmp)
-        << _T("]]></group>") << endl;
+    WriteXMLField(oss, "group", tmp, utf8conv);
 
   // Title mandatory (see pwsafe.xsd)
-  tmp = GetTitle();
-  oss <<_T("\t\t<title><![CDATA[") << LPCTSTR(tmp)
-      << _T("]]></title>") << endl;
+  WriteXMLField(oss, "title", GetTitle(), utf8conv);
 
   tmp = GetUser();
   if (bsExport.test(CItemData::USER) && !tmp.IsEmpty())
-    oss << _T("\t\t<username><![CDATA[") << LPCTSTR(tmp)
-        << _T("]]></username>") << endl;
+    WriteXMLField(oss, "username", tmp, utf8conv);
 
-  tmp = GetPassword();
   // Password mandatory (see pwsafe.xsd)
-  oss << _T("\t\t<password><![CDATA[") << LPCTSTR(tmp)
-      << _T("]]></password>") << endl;
+  WriteXMLField(oss, "password", GetPassword(), utf8conv);
 
   tmp = GetURL();
   if (bsExport.test(CItemData::URL) && !tmp.IsEmpty())
-    oss << _T("\t\t<url><![CDATA[") << LPCTSTR(tmp)
-        << _T("]]></url>") << endl;
+    WriteXMLField(oss, "url", tmp, utf8conv);
 
   tmp = GetAutoType();
   if (bsExport.test(CItemData::AUTOTYPE) && !tmp.IsEmpty())
-    oss << _T("\t\t<autotype><![CDATA[") << LPCTSTR(tmp)
-        << _T("]]></autotype>") << endl;
+    WriteXMLField(oss, "autotype", tmp, utf8conv);
 
   tmp = GetNotes();
   if (bsExport.test(CItemData::NOTES) && !tmp.IsEmpty())
-    oss << _T("\t\t<notes><![CDATA[") << LPCTSTR(tmp)
-        << _T("]]></notes>") << endl;
+    WriteXMLField(oss, "notes", tmp, utf8conv);
 
   uuid_array_t uuid_array;
   GetUUID(uuid_array);
-  TCHAR uuid_buffer[37];
+  char uuid_buffer[37];
 #if _MSC_VER >= 1400
-  _stprintf_s(uuid_buffer, 33,
-              _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+  sprintf_s(uuid_buffer, 33,
+            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
               uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
               uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
               uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
               uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #else
-  _stprintf(uuid_buffer,
-            _T("%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"), 
+  sprintf(uuid_buffer,
+          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
             uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
             uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
             uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
             uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #endif
-  uuid_buffer[32] = TCHAR('\0');
-  oss << _T("\t\t<uuid><![CDATA[") << uuid_buffer << _T("]]></uuid>") << endl;
+  uuid_buffer[32] = '\0';
+  oss << "\t\t<uuid><![CDATA[" << uuid_buffer << "]]></uuid>" << endl;
 
   time_t t;
   GetCTime(t);
   if (bsExport.test(CItemData::CTIME) && (long)t != 0)
-    oss << GetXMLTime(2, _T("ctime"), t);
+    oss << GetXMLTime(2, "ctime", t, utf8conv);
 
   GetATime(t);
   if (bsExport.test(CItemData::ATIME) && (long)t != 0)
-    oss << GetXMLTime(2, _T("atime"), t);
+    oss << GetXMLTime(2, "atime", t, utf8conv);
 
   GetLTime(t);
   if (bsExport.test(CItemData::LTIME) && (long)t != 0)
-    oss << GetXMLTime(2, _T("ltime"), t);
+    oss << GetXMLTime(2, "ltime", t, utf8conv);
 
   GetPMTime(t);
   if (bsExport.test(CItemData::PMTIME) && (long)t != 0)
-    oss << GetXMLTime(2, _T("pmtime"), t);
+    oss << GetXMLTime(2, "pmtime", t, utf8conv);
 
   GetRMTime(t);
   if (bsExport.test(CItemData::RMTIME) && (long)t != 0)
-    oss << GetXMLTime(2, _T("rmtime"), t);
+    oss << GetXMLTime(2, "rmtime", t, utf8conv);
 
   if (bsExport.test(CItemData::PWHIST)) {
     BOOL pwh_status;
@@ -511,58 +521,57 @@ CMyString CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
     CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
                         &PWHistList, TMC_XML);
     if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
-      TCHAR buffer[8];
-      oss << _T("\t\t<pwhistory>") << endl;
+      char buffer[8];
+      oss << "\t\t<pwhistory>" << endl;
 #if _MSC_VER >= 1400
-      _stprintf_s(buffer, 3, _T("%1d"), pwh_status);
-      oss << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+      sprintf_s(buffer, 3, "%1d", pwh_status);
+      oss << "\t\t\t<status>" << buffer << "</status>" << endl;
 
-      _stprintf_s(buffer, 3, _T("%2d"), pwh_max);
-      oss << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+      sprintf_s(buffer, 3, "%2d", pwh_max);
+      oss << "\t\t\t<max>" << buffer << "</max>" << endl;
 
-      _stprintf_s(buffer, 3, _T("%2d"), pwh_num);
-      oss << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+      sprintf_s(buffer, 3, "%2d", pwh_num);
+      oss << "\t\t\t<num>" << buffer << "</num>" << endl;
 #else
-      _stprintf(buffer, _T("%1d"), pwh_status);
-      oss << _T("\t\t\t<status>") << buffer << _T("</status>") << endl;
+      sprintf(buffer, "%1d", pwh_status);
+      oss << "\t\t\t<status>" << buffer << "</status>" << endl;
 
-      _stprintf(buffer, _T("%2d"), pwh_max);
-      oss << _T("\t\t\t<max>") << buffer << _T("</max>") << endl;
+      sprintf(buffer, "%2d", pwh_max);
+      oss << "\t\t\t<max>" << buffer << "</max>" << endl;
 
-      _stprintf(buffer, _T("%2d"), pwh_num);
-      oss << _T("\t\t\t<num>") << buffer << _T("</num>") << endl;
+      sprintf(buffer, "%2d", pwh_num);
+      oss << "\t\t\t<num>" << buffer << "</num>" << endl;
 #endif
       if (!PWHistList.empty()) {
-        oss << _T("\t\t\t<history_entries>") << endl;
+        oss << "\t\t\t<history_entries>" << endl;
         int num = 1;
         PWHistList::iterator hiter;
         for (hiter = PWHistList.begin(); hiter != PWHistList.end();
              hiter++) {
-          oss << _T("\t\t\t\t<history_entry num=\"") << num << _T("\">") << endl;
+          oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
           const PWHistEntry pwshe = *hiter;
-          oss << _T("\t\t\t\t\t<changed>") << endl;
-          oss << _T("\t\t\t\t\t\t<date>")
+          oss << "\t\t\t\t\t<changed>" << endl;
+          oss << "\t\t\t\t\t\t<date>"
               << LPCTSTR(pwshe.changedate.Left(10))
-              << _T("</date>") << endl;
-          oss << _T("\t\t\t\t\t\t<time>")
+              << "</date>" << endl;
+          oss << "\t\t\t\t\t\t<time>"
               << LPCTSTR(pwshe.changedate.Right(8))
-              << _T("</time>") << endl;
-          oss << _T("\t\t\t\t\t</changed>") << endl;
-          oss << _T("\t\t\t\t\t<oldpassword><![CDATA[")
-              << LPCTSTR(pwshe.password)
-              << _T("]]></oldpassword>") << endl;
-          oss << _T("\t\t\t\t</history_entry>") << endl;
+              << "</time>" << endl;
+          oss << "\t\t\t\t\t</changed>" << endl;
+          WriteXMLField(oss, "oldpassword", pwshe.password,
+                        utf8conv, "\t\t\t\t\t");
+          oss << "\t\t\t\t</history_entry>" << endl;
 
           num++;
         } // for
-        oss << _T("\t\t\t</history_entries>") << endl;
+        oss << "\t\t\t</history_entries>" << endl;
       } // if !empty
-      oss << _T("\t\t</pwhistory>") << endl;
+      oss << "\t\t</pwhistory>" << endl;
     }
   }
 
   if (NumberUnknownFields() > 0) {
-    oss << _T("\t\t<unknownrecordfields>") << endl;
+    oss << "\t\t<unknownrecordfields>" << endl;
     for (unsigned int i = 0; i != NumberUnknownFields(); i++) {
       unsigned int length = 0;
       unsigned char type;
@@ -585,16 +594,15 @@ CMyString CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
         tmp += CMyString(cs_tmp);
       }
 #endif
-      oss << _T("\t\t\t<field ftype=\"") << int(type) << _T("\">") <<  LPCTSTR(tmp) << _T("</field>") << endl;
+      oss << "\t\t\t<field ftype=\"" << int(type) << "\">" <<  LPCTSTR(tmp) << "</field>" << endl;
       trashMemory(pdata, length);
       delete[] pdata;
     } // iteration over unknown fields
-    oss << _T("\t\t</unknownrecordfields>") << endl;  
+    oss << "\t\t</unknownrecordfields>" << endl;  
   } // if there are unknown fields
 
-  oss << _T("\t</entry>") << endl << endl;
-  CMyString retval(oss.str().c_str());
-  return retval;
+  oss << "\t</entry>" << endl << endl;
+  return oss.str();
 }
 
 void CItemData::SplitName(const CMyString &name,
@@ -1101,7 +1109,7 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
             (((iFunction < 0) &&
               csObject.Compare((LPCTSTR)subgroup_name) == 0) ||
              ((iFunction > 0) &&
-              (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0))));
+              (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0))));
   case -SGF_NOTEQUAL:
   case SGF_NOTEQUAL:
     return (((iFunction < 0) &&

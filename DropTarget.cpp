@@ -45,7 +45,7 @@ BOOL CDropTarget::OnDrop(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
   return TRUE;
 }
 
-BOOL CDropTarget::Initialize(CWnd* wnd)
+BOOL CDropTarget::Initialize(CWnd *wnd)
 {
   if (m_bRegistered == TRUE)
     return FALSE;

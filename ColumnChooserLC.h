@@ -18,6 +18,7 @@ class CColumnChooserLC : public CListCtrl, public CDropTarget, public CDropSourc
 public:
   CColumnChooserLC();
   ~CColumnChooserLC();
+  void SetDboxPointer(void *pDbx) {m_pDbx = pDbx;}
 
   BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
     DROPEFFECT dropEffect, CPoint point);
@@ -45,6 +46,6 @@ protected:
 private:
   CDropSource m_CCDropSource;
   CDropTarget m_CCDropTarget;
-  CImageList* m_pDragImage;
+  void *m_pDbx;
   int m_iItem;
 };

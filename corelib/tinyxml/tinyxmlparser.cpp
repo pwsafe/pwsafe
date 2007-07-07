@@ -1119,8 +1119,12 @@ const TCHAR* TiXmlElement::Parse( const TCHAR* p, TiXmlParsingData* data, TiXmlE
 			// elements -- read the end tag, and return.
 			++p;
 			p = ReadValue( p, data, encoding );		// Note this is an Element method, and will set the error if one happens.
-			if ( !p || !*p )
+			if ( !p || !*p ) {
+				// We were looking for the end tag, but found nothing.
+				// Fix for [ 1663758 ] Failure to report error on bad XML
+				if ( document ) document->SetError( TIXML_ERROR_READING_END_TAG, p, data, encoding );
 				return 0;
+			}
 
 			// We should find the end tag now
 			if ( StringEqual( p, endTag.c_str(), false, encoding ) )
@@ -1354,7 +1358,35 @@ const TCHAR* TiXmlComment::Parse( const TCHAR* p, TiXmlParsingData* data, TiXmlE
 		return 0;
 	}
 	p += _tcsclen( startTag );
-	p = ReadText( p, &value, false, endTag, false, encoding );
+ 
+ 	// [ 1475201 ] TinyXML parses entities in comments
+ 	// Oops - ReadText doesn't work, because we don't want to parse the entities.
+ 	// p = ReadText( p, &value, false, endTag, false, encoding );
+ 	//
+ 	// from the XML spec:
+ 	/*
+ 	 [Definition: Comments may appear anywhere in a document outside other markup; in addition, 
+ 	              they may appear within the document type declaration at places allowed by the grammar. 
+ 				  They are not part of the document's character data; an XML processor MAY, but need not, 
+ 				  make it possible for an application to retrieve the text of comments. For compatibility, 
+ 				  the string "--" (double-hyphen) MUST NOT occur within comments.] Parameter entity 
+ 				  references MUST NOT be recognized within comments.
+ 
+ 				  An example of a comment:
+ 
+ 				  <!-- declarations for <head> & <body> -->
+ 	*/
+ 
+  value = _T("");
+ 	// Keep all the white space.
+ 	while (	p && *p && !StringEqual( p, endTag, false, encoding ) )
+ 	{
+ 		value.append( p, 1 );
+ 		++p;
+ 	}
+ 	if ( p ) 
+ 		p += _tcsclen( endTag );
+ 
 	return p;
 }
 

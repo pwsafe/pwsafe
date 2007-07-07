@@ -63,7 +63,6 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   enum STATE {LOCKED, UNLOCKED, CLOSED};
   void SetSystemTrayState(STATE);
   STATE GetSystemTrayState() const {return m_TrayLockedState;}
-  static void StripFileQuotes( CString& strFilename );
   bool WasHotKeyPressed() {return m_HotKeyPressed;}
   void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
   int FindMenuItem(CMenu* Menu, int MenuID);

@@ -119,6 +119,7 @@
 ;Variables
 
   Var INSTALL_TYPE
+  Var HOST_OS
 
 ;--------------------------------
 ; General
@@ -155,7 +156,6 @@
   
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
-  
 
 ;--------------------------------
 ; Languages
@@ -186,6 +186,7 @@ Section "Program Files" ProgramFiles
   ; Get all of the files.  This list should be modified when additional
   ; files are added to the release.
   File "..\Release\pwsafe.exe"
+  File /oname=p98.exe "..\NU-Release\pwsafe.exe" 
   File "..\help\default\pwsafe.chm"
   File "..\LICENSE"
   File "..\README.TXT"
@@ -193,6 +194,18 @@ Section "Program Files" ProgramFiles
   File "..\docs\ChangeLog.txt"
   File "..\xml\pwsafe.xsd"
   File "..\xml\pwsafe.xsl"
+
+  ; If installing under Windows98, delete pwsafe.exe, rename
+  ; p98.exe pwsafe.exe
+  ; Otherwise, delete p98.exe
+  StrCmp $HOST_OS '98' is_98 isnt_98
+  is_98:
+    Delete $INSTDIR\pwsafe.exe
+    Rename $INSTDIR\p98.exe $INSTDIR\pwsafe.exe
+    Goto lbl_cont
+  isnt_98:
+    Delete $INSTDIR\p98.exe
+  lbl_cont:
 
   ; skip over registry writes if 'Green' installation selected
   IntCmp $INSTALL_TYPE 1 GreenInstall
@@ -346,7 +359,18 @@ Function .onInit
 
   ;Extract InstallOptions INI files
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT "pws-install.ini"
-
+ Call GetWindowsVersion
+ Pop $R0
+ StrCmp $R0 '95' is_win95
+ StrCmp $R0 'ME' is_winME
+ StrCpy $HOST_OS $R0
+ Return
+is_win95:
+  MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+  Quit
+is_winME:
+  MessageBox MB_OK|MB_ICONSTOP "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+  Quit
 FunctionEnd
 
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
@@ -356,3 +380,98 @@ Function GreenOrRegular
   !insertmacro MUI_HEADER_TEXT "$(TEXT_GC_TITLE)" "$(TEXT_GC_SUBTITLE)"
   !insertmacro MUI_INSTALLOPTIONS_DISPLAY "pws-install.ini"
 FunctionEnd
+  
+ ;--------------------------------
+ ;
+ ; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
+ ; Updated by Joost Verburg
+ ;
+ ; Returns on top of stack
+ ;
+ ; Windows Version (95, 98, ME, NT x.x, 2000, XP, 2003, Vista)
+ ; or
+ ; '' (Unknown Windows Version)
+ ;
+ ; Usage:
+ ;   Call GetWindowsVersion
+ ;   Pop $R0
+ ;   ; at this point $R0 is "NT 4.0" or whatnot
+ 
+ Function GetWindowsVersion
+ 
+   Push $R0
+   Push $R1
+ 
+   ClearErrors
+ 
+   ReadRegStr $R0 HKLM \
+   "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
+
+   IfErrors 0 lbl_winnt
+   
+   ; we are not NT
+   ReadRegStr $R0 HKLM \
+   "SOFTWARE\Microsoft\Windows\CurrentVersion" VersionNumber
+ 
+   StrCpy $R1 $R0 1
+   StrCmp $R1 '4' 0 lbl_error
+ 
+   StrCpy $R1 $R0 3
+ 
+   StrCmp $R1 '4.0' lbl_win32_95
+   StrCmp $R1 '4.9' lbl_win32_ME lbl_win32_98
+ 
+   lbl_win32_95:
+     StrCpy $R0 '95'
+   Goto lbl_done
+ 
+   lbl_win32_98:
+     StrCpy $R0 '98'
+   Goto lbl_done
+ 
+   lbl_win32_ME:
+     StrCpy $R0 'ME'
+   Goto lbl_done
+ 
+   lbl_winnt:
+ 
+   StrCpy $R1 $R0 1
+ 
+   StrCmp $R1 '3' lbl_winnt_x
+   StrCmp $R1 '4' lbl_winnt_x
+ 
+   StrCpy $R1 $R0 3
+ 
+   StrCmp $R1 '5.0' lbl_winnt_2000
+   StrCmp $R1 '5.1' lbl_winnt_XP
+   StrCmp $R1 '5.2' lbl_winnt_2003
+   StrCmp $R1 '6.0' lbl_winnt_vista lbl_error
+ 
+   lbl_winnt_x:
+     StrCpy $R0 "NT $R0" 6
+   Goto lbl_done
+ 
+   lbl_winnt_2000:
+     Strcpy $R0 '2000'
+   Goto lbl_done
+ 
+   lbl_winnt_XP:
+     Strcpy $R0 'XP'
+   Goto lbl_done
+ 
+   lbl_winnt_2003:
+     Strcpy $R0 '2003'
+   Goto lbl_done
+ 
+   lbl_winnt_vista:
+     Strcpy $R0 'Vista'
+   Goto lbl_done
+ 
+   lbl_error:
+     Strcpy $R0 ''
+   lbl_done:
+ 
+   Pop $R1
+   Exch $R0
+ 
+ FunctionEnd

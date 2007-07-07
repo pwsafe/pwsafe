@@ -656,10 +656,7 @@ DboxMain::RefreshList()
     insertItem(ci, -1, false);
   }
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-    SortTree(TVI_ROOT);
-  else
-    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+  SortTree(TVI_ROOT);
 
 #if defined(POCKET_PC)
   SetCursor( NULL );
@@ -681,17 +678,25 @@ DboxMain::RefreshList()
 void
 DboxMain::SortTree(const HTREEITEM htreeitem)
 {
-  TVSORTCB tvs;
-  HTREEITEM hti(htreeitem);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
+    TVSORTCB tvs;
+    HTREEITEM hti(htreeitem);
 
-  if (hti == NULL)
-      hti = TVI_ROOT;
+    if (hti == NULL)
+        hti = TVI_ROOT;
 
-  tvs.hParent = hti;
-  tvs.lpfnCompare = ExplorerCompareProc;
-  tvs.lParam = (LPARAM)this;
+    tvs.hParent = hti;
+    tvs.lpfnCompare = ExplorerCompareProc;
+    tvs.lParam = (LPARAM)this;
 
-  m_ctlItemTree.SortChildrenCB(&tvs);
+    m_ctlItemTree.SortChildrenCB(&tvs);
+  } else {
+    if (htreeitem == TVI_ROOT) {
+      m_ctlItemTree.SortChildren(TVI_ROOT);
+    } else {
+      m_ctlItemTree.SortChildren(m_ctlItemTree.GetParentItem(htreeitem));
+    }
+  }
 }
 
 void
@@ -969,6 +974,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     // TODO: issue error here...
     return iResult;
   }
+
   DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
   if (di == NULL)
     di = new DisplayInfo;
@@ -989,6 +995,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
         treeDispString += _T("}");
       }
     }
+
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
@@ -1000,6 +1007,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
       if (bSort)
         SortTree(m_ctlItemTree.GetParentItem(ti));
     }
+
     time_t now, warnexptime, tLTime;
     time(&now);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {

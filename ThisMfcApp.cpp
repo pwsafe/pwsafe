@@ -37,6 +37,10 @@
 
 #include "Shlwapi.h"
 
+#include <vector>
+
+using namespace std;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -51,7 +55,7 @@ END_MESSAGE_MAP()
 // Need it outside as everyone needs it!
 CLIPFORMAT gbl_ccddCPFID;  // For column chooser D&D
 CLIPFORMAT gbl_tcddCPFID;  // For TreeCtrl D&D
-TCHAR gbl_classname[40];
+BYTE gbl_classname[40];
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
@@ -360,17 +364,30 @@ ThisMfcApp::InitInstance()
     // retrieve WNDCLASS structure for default window class
     ::GetClassInfo(AfxGetInstanceHandle(), _T("AfxFrameOrView"), &wndcls);
 
+    TCHAR classname[sizeof(gbl_classname)];
+
     // Give new class a unique name
-    memset(gbl_classname, 0, DD_CLASSNAME_SIZE + sizeof(TCHAR));
-    memcpy(gbl_classname, _T("PWS"), 3 * sizeof(TCHAR));
+    memset(classname, 0, (DD_CLASSNAME_SIZE + 1) * sizeof(TCHAR));
+    memcpy(classname, _T("PWS"), 3 * sizeof(TCHAR));
     
     CUUIDGen uuid;
     uuid_str_t uuid_str;
     uuid.GetUUIDStr(uuid_str);
-    memcpy(gbl_classname + 3, uuid_str, sizeof(uuid_str) - 1);
-    wndcls.lpszClassName = gbl_classname; 
+    memcpy(classname + 3, uuid_str, sizeof(uuid_str) - 1);
+    wndcls.lpszClassName = classname;
 
     VERIFY(::RegisterClass(&wndcls) != 0);
+
+    // Note: gbl_classname is always char not TCHAR!
+#ifdef _UNICODE
+    int numconverted = WideCharToMultiByte(CP_ACP, 0,
+                          classname, - 1,
+                          (char *)gbl_classname, sizeof(gbl_classname), 
+                          NULL, NULL);
+    ASSERT(numconverted == sizeof(gbl_classname));
+#else
+    memcpy(gbl_classname, classname, DD_CLASSNAME_SIZE);
+#endif
 
     // Get application version information
     GetApplicationVersionData();
@@ -405,10 +422,167 @@ ThisMfcApp::InitInstance()
 
     // Register a clipboard format for TreeCtrl drag & drop.
     gbl_tcddCPFID = RegisterCBFMT(IDS_CPF_TVDD);
+  DboxMain dbox(NULL);
+  m_core.SetReadOnly(false);
+
+  /*
+   * Command line processing:
+   * Historically, it appears that if a filename was passed as a commadline argument,
+   * the application would prompt the user for the password, and the encrypt or decrypt
+   * the named file, based on the file's suffix. Ugh.
+   *
+   * What I'll do is as follows:
+   * If a file is given in the command line, it is used as the database, overriding the
+   * registry value. This will allow the user to have several databases, say, one for work
+   * and one for personal use, and to set up a different shortcut for each.
+   *
+   * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
+   * {kjp} ... and I've removed all of it from the Pocket PC build.
+   */
+
+#if !defined(POCKET_PC)
+  if (m_lpCmdLine[0] != TCHAR('\0')) {
+    CString args = m_lpCmdLine;
+
+    // Start command line parsing by pushing each argument into a vector
+    // Quotes are stripped here
+    vector<CString> argvec;
+    int pos = 0;
+    CString tok;
+    do {
+      if (args[pos] == TCHAR('\"'))
+        tok = args.Tokenize(_T("\""), pos);
+      else
+        tok = args.Tokenize(_T(" "),pos);
+      if (!tok.IsEmpty())
+        argvec.push_back(tok);
+    } while (pos != -1 && pos < args.GetLength());
+
+    vector<CString>::iterator arg = argvec.begin();
+    bool isEncrypt = false; // for -e/-d handling
+    bool startSilent = false;
+    bool fileGiven = false;
+
+    while (arg != argvec.end()) {
+      // everything starting with '-' is a flag,
+      // everything else is the name of a file.
+      if ((*arg)[0] == TCHAR('-')) {
+        switch ((*arg)[1]) {
+        case TCHAR('E'): case TCHAR('e'):
+          isEncrypt = true;
+        // deliberate fallthru
+        case TCHAR('D'): case TCHAR('d'):
+          {
+            // Make sure there's another argument
+            // and it's not a flag, and it is an existing file
+            if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-') ||
+                !CheckFile(*(arg + 1))) {
+              Usage();
+              return FALSE;
+            }
+            // get password from user
+            CMyString passkey;
+            CCryptKeyEntry dlg(NULL);
+            INT_PTR nResponse = dlg.DoModal();
+
+            if (nResponse == IDOK) {
+              passkey = dlg.m_cryptkey1;
+            } else {
+              return FALSE;
+            }
+
+            BOOL status;
+            if (isEncrypt) {
+              status = PWSfile::Encrypt(*(arg + 1), passkey);
+              if (!status) {
+                AfxMessageBox(IDS_ENCRYPTIONFAILED);
+              }
+              return TRUE;
+            } else {
+              status = PWSfile::Decrypt(*(arg+1), passkey);
+              if (!status) {
+                // nothing to do - Decrypt displays its own error messages
+              }
+              return TRUE;
+            }
+          } // -e or -d flag
+        case TCHAR('C'): case TCHAR('c'):
+          m_core.SetCurFile(_T(""));
+          dbox.SetStartClosed(true);
+        break;
+        case TCHAR('M'): case TCHAR('m'):// closed & minimized
+          m_core.SetCurFile(_T(""));
+          dbox.SetStartClosed(true);
+          dbox.SetStartSilent(true);
+          break;
+        case TCHAR('R'): case TCHAR('r'):
+          m_core.SetReadOnly(true);
+          break;
+        case TCHAR('S'): case TCHAR('s'):
+          startSilent = true;
+          dbox.SetStartSilent(true);
+          break;
+        case TCHAR('V'): case TCHAR('v'):
+          dbox.SetValidate(true);
+          break;
+        case TCHAR('U'): case TCHAR('u'): // set effective user
+          // ensure there's another non-flag argument
+          if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
+            Usage();
+            return FALSE;
+          } else {
+            arg++;
+            SysInfo::GetInstance()->SetEffectiveUser(*arg);
+          }
+        break;
+        case TCHAR('H'): case TCHAR('h'): // set effective host
+          // ensure there's another non-flag argument
+          if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
+            Usage();
+            return FALSE;
+          } else {
+            arg++;
+            SysInfo::GetInstance()->SetEffectiveHost(*arg);
+          }
+        break;
+        case TCHAR('G'): case TCHAR('g'): // override default config file
+          // ensure there's another non-flag argument
+          if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
+            Usage();
+            return FALSE;
+          } else {
+            arg++;
+            PWSprefs::SetConfigFile(*arg);
+          }
+        break;
+        default:
+          Usage();
+          return FALSE;
+        } // switch on flag
+      } else { // arg isn't a flag, treat it as a filename
+        if (CheckFile(*arg)) {
+          fileGiven = true;
+          m_core.SetCurFile(*arg);
+        } else {
+          return FALSE;
+        }
+      } // if arg is a flag or not
+      arg++;
+    } // while argvec
+    // If start silent && no filename specified, start closed as well
+    if (startSilent && !fileGiven)
+      dbox.SetStartClosed(true);
+  } // Command line not empty
+#endif
 
     // MUST (indirectly) create PWSprefs first
     // Ensures all things like saving locations etc. are set up.
     PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Can't GetPref before command line processing since
+  // user/host/config file may be overriden!
+  if (m_core.GetCurFile().IsEmpty())
+    m_core.SetCurFile(prefs->GetPref(PWSprefs::CurrentFile));
 
     int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
 
@@ -489,114 +663,6 @@ ThisMfcApp::InitInstance()
     }
 
 #endif /* DEMO */
-
-
-    DboxMain dbox(NULL);
-
-    /*
-     * Command line processing:
-     * Historically, it appears that if a filename was passed as a commadline argument,
-     * the application would prompt the user for the password, and the encrypt or decrypt
-     * the named file, based on the file's suffix. Ugh.
-     *
-     * What I'll do is as follows:
-     * If a file is given in the command line, it is used as the database, overriding the
-     * registry value. This will allow the user to have several databases, say, one for work
-     * and one for personal use, and to set up a different shortcut for each.
-     *
-     * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
-     * {kjp} ... and I've removed all of it from the Pocket PC build.
-     */
-
-#if !defined(POCKET_PC)
-    if (m_lpCmdLine[0] != TCHAR('\0')) {
-        CString args = m_lpCmdLine;
-
-        if (args[0] != _T('-')) {
-            StripFileQuotes( args );
-
-            if (CheckFile(args)) {
-                dbox.SetCurFile(args);
-            } else {
-                return FALSE;
-            }
-        } else { // here if first char of arg is '-'
-            // first, let's check that there's a second arg
-            CString fn = args.Right(args.GetLength()-2);
-            fn.Trim();
-
-            if (!fn.IsEmpty())
-                StripFileQuotes( fn );
-
-            const int UC_arg1(toupper(args[1]));
-            // The following arguements require the database name and it exists!
-            if ((UC_arg1 == 'D' || UC_arg1 == 'E' || UC_arg1 == 'R' || UC_arg1 == 'V')
-          && (fn.IsEmpty() || !CheckFile(fn))) {
-                Usage();
-                return FALSE;
-            }
-
-            if (fn.IsEmpty())
-                fn = (CString)PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentFile);
-
-            CMyString passkey;
-            if (UC_arg1 == 'E' || UC_arg1 == 'D') {
-                // get password from user if valid flag given. If note, default below will
-                // pop usage message
-                CCryptKeyEntry dlg(NULL);
-                INT_PTR nResponse = dlg.DoModal();
-
-                if (nResponse==IDOK) {
-                    passkey = dlg.m_cryptkey1;
-                } else {
-                    return FALSE;
-                }
-            }
-            BOOL status;
-            m_core.SetReadOnly(false);
-            switch (UC_arg1) {
-                case 'C':
-                    dbox.SetStartClosed(true);
-                    dbox.SetCurFile(_T(""));
-                    break;
-                case 'D': // do decryption
-                    status = PWSfile::Decrypt(fn, passkey);
-                    if (!status) {
-                      // nothing to do - Decrypt displays its own error messages
-                    }
-                    return TRUE;
-                case 'E': // do encrpytion
-                    status = PWSfile::Encrypt(fn, passkey);
-                    if (!status) {
-                        AfxMessageBox(IDS_ENCRYPTIONFAILED);
-                    }
-                    return TRUE;
-                case 'M': // closed & minimized
-                    dbox.SetStartClosed(true);
-                    dbox.SetStartSilent(true);
-                    dbox.SetCurFile(_T(""));
-                    break;
-                case 'R':
-                    m_core.SetReadOnly(true);
-                    dbox.SetCurFile(fn);
-                    break;
-                case 'S':
-                    dbox.SetStartSilent(true);
-                    if (fn.IsEmpty())
-                      dbox.SetStartClosed(true);
-                    dbox.SetCurFile(fn);
-                    break;
-                case 'V':
-                    dbox.SetValidate(true);
-                    dbox.SetCurFile(fn);
-                    break;
-                default:
-                    Usage();
-                    return FALSE;
-            } // switch
-        } // else
-    } // m_lpCmdLine[0] != TCHAR('\0');
-#endif
 
     /*
      * normal startup
@@ -762,29 +828,6 @@ ThisMfcApp::ClearClipboardData()
                                               m_pMainWnd->m_hWnd);
 }
 
-#if !defined(POCKET_PC)
-// Removes quotation marks from file name parameters
-// as in "file with spaces.pws"
-void
-ThisMfcApp::StripFileQuotes( CString& strFilename )
-{
-  const TCHAR* szFilename	= strFilename;
-  int			nLen		= strFilename.GetLength();
-
-  // if the filenames starts with a quote...
-  if ( *szFilename == TCHAR('\"') ) {
-    // remove leading quote
-    ++szFilename;
-    --nLen;
-
-    // trailing quote is optional, remove if present
-    if ( szFilename[nLen - 1] == TCHAR('\"') )
-      --nLen;
-
-    strFilename = CString( szFilename, nLen );
-  }
-}
-#endif
 
 #if !defined(POCKET_PC)
 //Copied from Knowledge Base article Q100770

@@ -1,58 +1,55 @@
-Password Safe 3.08.04 Release Notes - June 2007
-===============================================
+Password Safe 3.09 Release Notes - July 2007
+============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.08.04. For a short description of Password
+with Password Safe version 3.09. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.08.04
-=====================
-[] Protect user from losing entries in case of non-unique uuids in read database.
+Bugs fixed in 3.09
+==================
+[] A note on possible problems with the autotype functionality and
+some 3rd party popup-blockers. Thanks to mrttoo for the heads-up.
+[] Protect user from losing entries in case of non-unique uuids in
+read database. 
 [Open Discussion] Compare fixed so that 'X' indicating differences are
 in the correct columns and data copied to clipboard ends in CRLF not just LF
 [1739364] Window location issue fixed
-
-New Features for 3.08.04
-========================
-[1739979] Add URL column to flattened list
-
-Changes to Existing Features in 3.08.04
-=======================================
-[1732163] Date/time displayed throughout in the users "Short Date" format.
-
-Bugs fixed in 3.08.03
-=====================
+[1620423] Focus on search text in Find Dialog - thank to zcecil for
+the fix for this one. 
+[1738477, 1630400] A version for Windows98 is now installed by the
+installer on machines running Windows98. This version is NOT part of
+the binaries in the zip file.
+[] The installer will detect and notify the user if attempts to
+install on an unsupported version of Windows (95 & ME).
 [1735290] Configuration file works with non-ASCII user and host
 names.
-
-New Features for 3.08.03
-========================
-[] Use STL library in the core. Hopefully transparent to the user but a
-performance improvement.
-
-Bugs fixed in 3.08.02
-=====================
 [1733911] File mode encryption/decryption (-d/-e) works again
-
-Bugs fixed in 3.08.01
-=====================
-[] Fix random showing of user and passwords if started in silent mode
+[1743706] Fix random showing of user and passwords if started in
+silent mode.
 [] Fix Edit and View in main menu not being reset after open after close
-[1727871] Found items remain highlighted if another entry selected - note
-found items now made bold rather than highlighted
+[1727871] Found items remain highlighted if another entry selected -
+note that found items now ddisplayed in bold font rather than
+highlighted.
 [1728612] Column sort arrows, in Flattened List mode, correctly removed
 [1728945] Importing a subset of text data now fixed
-[1728945] Version 2.x databases now read correctly
+[1728945, 1741787] Version 2.x databases now read correctly
 [1733740] '-s' option no longer causes sporadic display of passwords
 in tree view.
 
-New Features for 3.08.01
-========================
+New Features for 3.09
+=====================
+[1739979] Add URL column to flattened list
+[] It's now possible to override the username and hostname used to
+load and store preferences, as well as specify an alternate
+preferences file, via new command line options.
 [] Implement "Advanced" option for Find
 
+Changes to Existing Features in 3.09
+====================================
+[1732163] Date/time displayed throughout in the users "Short Date" format.
 
 Bugs fixed in 3.08
 ==================

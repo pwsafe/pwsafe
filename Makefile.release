@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.08
+RELEASENAME = 3.09
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -79,6 +79,7 @@ bin-release:
 src-release: ChangeLog
 	$(SVN) export --non-interactive . $(RELEASEDIR)/$(SRCRELNAME)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
+	$(CP) version.h $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
 	@$(RM) -rf $(RELEASEDIR)/$(SRCRELNAME)

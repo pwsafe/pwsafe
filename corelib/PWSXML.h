@@ -19,10 +19,9 @@ class PWScore;
 
 class PWSXML {
 public:
-	PWSXML();
+	PWSXML(PWScore *core);
 	~PWSXML();
 
-	void SetCore(PWScore *core);
 	bool XMLProcess(const bool &bvalidation, const CString &ImportedPrefix, 
 					const CString &strXMLFileName, const CString &strXSDFileName,
           int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);

@@ -22,6 +22,7 @@
 #include "FindDlg.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h" // for disable/enable accel.
+#include "corelib/PWSprefs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,7 +35,7 @@ static char THIS_FILE[] = __FILE__;
 
 CFindDlg *CFindDlg::self = NULL; // for Singleton pattern
 
-void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *bFindWraps)
+void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
 {
   if (self == NULL) {
     self = new CFindDlg(pParent, isCS, lastFind);
@@ -68,15 +69,16 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind, bool *bFindW
     self->BringWindowToTop();
   }
   self->ShowWindow(SW_SHOW);
-  self->m_FindWraps = *bFindWraps ? TRUE : FALSE;
-  
+  // Following is bugfix #1620423 by zcecil
+  self->GotoDlgCtrl(self->GetDlgItem(IDC_FIND_TEXT));
+
   ((DboxMain*)pParent)->SetFindActive();  //  Prevent switch tree/list display modes
   app.DisableAccelerator(); // don't accel Del when this dlg is shown
 }
 
 CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   : super(CFindDlg::IDD, pParent),
-    m_lastshown(-1), m_numFound(0), m_FindWraps(FALSE),
+    m_lastshown(-1), m_numFound(0),
     m_last_search_text(_T("")), m_last_cs_search(FALSE),
     m_lastCSPtr(isCS), m_lastTextPtr(lastFind), m_bAdvanced(false),
     m_subgroup_name(_T("")), m_subgroup_set(BST_UNCHECKED),
@@ -88,6 +90,8 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   ASSERT(lastFind != NULL);
   //{{AFX_DATA_INIT(CFindDlg)
   m_cs_search = *isCS;
+  m_FindWraps = PWSprefs::GetInstance()->GetPref(PWSprefs::FindWraps);
+
   m_search_text = *lastFind;
   m_status = _T("");
   //}}AFX_DATA_INIT
@@ -98,7 +102,12 @@ CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
 
 void CFindDlg::EndIt()
 {
+  if (self != NULL) {
+    // Save Find wrap value
+    PWSprefs::GetInstance()->SetPref(PWSprefs::FindWraps,
+                                     self->m_FindWraps == TRUE);
   delete self;
+}
 }
 
 CFindDlg::~CFindDlg()
@@ -251,8 +260,9 @@ void CFindDlg::OnFind()
 
 void CFindDlg::OnWrap()
 {
-  DboxMain* pParent = (DboxMain*)GetParent();
-  pParent->SetFindWrap(((CButton*)GetDlgItem(IDC_FIND_WRAP))->GetCheck() == 1);
+  // Save Find wrap value
+  PWSprefs::GetInstance()->SetPref(PWSprefs::FindWraps,
+                                   ((CButton*)GetDlgItem(IDC_FIND_WRAP))->GetCheck() == 1);
 }
 
 #if defined(POCKET_PC)

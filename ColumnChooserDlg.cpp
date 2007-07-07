@@ -37,12 +37,16 @@ END_MESSAGE_MAP()
 BOOL CColumnChooserDlg::Create(UINT nID, CWnd *parent)
 {
   m_pLVHdrCtrl = NULL;
+  m_pDbx = (void *)parent;
   return CDialog::Create(nID, parent);
 }
 
 BOOL CColumnChooserDlg::OnInitDialog()
 {
   CDialog::OnInitDialog();
+
+  // Pass on pointer to DboxMain
+  m_ccListCtrl.SetDboxPointer(m_pDbx);
 
   // Initialise DropTarget
   m_ccListCtrl.Initialize(&m_ccListCtrl);

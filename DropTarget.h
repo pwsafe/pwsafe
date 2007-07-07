@@ -21,7 +21,7 @@ public:
 
 // Implementation
 public:
-  BOOL Initialize(CWnd* wnd);
+  BOOL Initialize(CWnd *wnd);
   void Terminate();
   virtual ~CDropTarget();
 

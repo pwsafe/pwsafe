@@ -41,7 +41,7 @@ class PWSprefs {
  public:
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
-
+  static void SetConfigFile(const CString &fn) {m_configfilename = fn;}
   // prefString is stored on file, format described in PWSprefs.cpp
   void Load(const CMyString &prefString);
   CMyString Store(); // returns string for saving in file
@@ -156,9 +156,9 @@ class PWSprefs {
   void DeleteOldPrefs();
   
   static PWSprefs *self; // singleton
+  static CString m_configfilename; // may be set before singleton created
   CXMLprefs *m_XML_Config;
 
-  CString m_configfilename;
   bool m_bRegistryKeyExists;
   enum {CF_NONE, CF_REGISTRY, CF_FILE_RO,
         CF_FILE_RW, CF_FILE_RW_NEW} m_ConfigOptions;
