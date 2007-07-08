@@ -428,19 +428,53 @@ static void WriteXMLField(ostream &os, const char *fname,
 {
   const unsigned char * utf8 = NULL;
   int utf8Len = 0;
-
-  os << tabs << "<" << fname << "><![CDATA[";
-  if(utf8conv.ToUTF8(value, utf8, utf8Len))
+  int p = value.Find(_T("]]>")); // special handling required
+  if (p == -1) {
+    // common case
+    os << tabs << "<" << fname << "><![CDATA[";
+    if(utf8conv.ToUTF8(value, utf8, utf8Len))
       os.write(reinterpret_cast<const char *>(utf8), utf8Len);
     else
       os << "Internal error - unable to convert field to utf-8";
-  os << "]]></" << fname << ">" << endl;
+    os << "]]></" << fname << ">" << endl;
+  } else {
+    // value has "]]>" sequence(s) that need(s) to be escaped
+    // Each "]]>" splits the field into two CDATA sections, one ending with
+    // ']]', the other starting with '>'
+    os << tabs << "<" << fname << ">";
+    int from = 0, to = p + 2;
+    do {
+      CMyString slice = value.Mid(from, (to - from));
+      os << "<![CDATA[";
+      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
+        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      else
+        os << "Internal error - unable to convert field to utf-8";
+      os << "]]><![CDATA[";
+      from = to;
+      p = value.Find(_T("]]>"), from); // are there more?
+      if (p == -1) {
+        to = value.GetLength();
+        slice = value.Mid(from, (to - from));
+      } else {
+        to = p + 2;
+        slice = value.Mid(from, (to - from));
+        from = to;
+        to = value.GetLength();
+      }
+      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
+        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      else
+        os << "Internal error - unable to convert field to utf-8";
+      os << "]]>";
+    } while (p != -1);
+    os << "</" << fname << ">" << endl;
+  } // special handling of "]]>" in value.
 }
 
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
-  // TODO: need to handle entity escaping of values.
   oss << "\t<entry id=\"" << id << "\">" << endl;
 
   CMyString tmp;
