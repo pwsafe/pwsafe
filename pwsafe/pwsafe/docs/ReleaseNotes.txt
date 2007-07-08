@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.09
 ==================
+[1748665] Number of passwords to rememeber (password history) can now
+be set to more than 99 by tying rather than only by spinbox.
 [] A note on possible problems with the autotype functionality and
 some 3rd party popup-blockers. Thanks to mrttoo for the heads-up.
 [] Protect user from losing entries in case of non-unique uuids in
@@ -42,8 +44,8 @@ in tree view.
 New Features for 3.09
 =====================
 [1739979] Add URL column to flattened list
-[] It's now possible to override the username and hostname used to
-load and store preferences, as well as specify an alternate
+[1732198] It's now possible to override the username and hostname used
+to load and store preferences, as well as specify an alternate
 preferences file, via new command line options.
 [] Implement "Advanced" option for Find
 
