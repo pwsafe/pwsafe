@@ -10,8 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.09
 ==================
-[1748665] Number of passwords to rememeber (password history) can now
-be set to more than 99 by tying rather than only by spinbox.
+[1748665] Number of passwords to remember (password history) can now
+be set to more than 99 by typing rather than only by spinbox.
 [] A note on possible problems with the autotype functionality and
 some 3rd party popup-blockers. Thanks to mrttoo for the heads-up.
 [] Protect user from losing entries in case of non-unique uuids in
