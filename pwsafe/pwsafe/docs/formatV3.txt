@@ -13,7 +13,8 @@ storage of passwords and related data. The format is designed
 according to current cryptographic best practices, and is beleived to
 be secure, in the sense that without knowledge of the master
 passphrase, only a brute-force attack or a flaw in the underlying
-cryptograhic algorithm will result in unauthorized access to the data.
+cryptographic algorithm will result in unauthorized access to the
+data.
 
 1.1 Design Goals: The PasswordSafe database format is designed to be
 secure, extensible and platform-independent.
