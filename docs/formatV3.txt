@@ -30,10 +30,11 @@ with more advanced versions.
 corrupted/tampered database.
 
 Meeting these goals is impossible without breaking compatibility: This
-format is NOT compatible with previous versions. Note, however, that
-since the data stored in previous versions is a proper subset of the
-data described here, implementers may read a database written in an
-older version and store the result in the format described here.
+format is NOT compatible with previous (major) versions. Note,
+however, that since the data stored in previous versions is a proper
+subset of the data described here, implementers may read a database
+written in an older version and store the result in the format
+described here.
 
 2. Format: A V3 format PasswordSafe will be structured as follows:
 
