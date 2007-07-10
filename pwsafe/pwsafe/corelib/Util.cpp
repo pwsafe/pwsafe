@@ -343,7 +343,7 @@ long PWSUtil::fileLength(FILE *fp)
   return len;
 }
 bool
-PWSUtil::VerifyImportDateTimeString(const CString time_str, time_t &t)
+PWSUtil::VerifyImportDateTimeString(const CString &time_str, time_t &t)
 {
   //  String format must be "yyyy/mm/dd hh:mm:ss"
   //                        "0123456789012345678"
@@ -421,7 +421,7 @@ PWSUtil::VerifyImportDateTimeString(const CString time_str, time_t &t)
 }
 
 bool
-PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
+PWSUtil::VerifyASCDateTimeString(const CString &time_str, time_t &t)
 {
   //  String format must be "ddd MMM dd hh:mm:ss yyyy"
   //                        "012345678901234567890123"
@@ -516,7 +516,7 @@ PWSUtil::VerifyASCDateTimeString(const CString time_str, time_t &t)
 }
 
 bool
-PWSUtil::VerifyXMLDateTimeString(const CString time_str, time_t &t)
+PWSUtil::VerifyXMLDateTimeString(const CString &time_str, time_t &t)
 {
   //  String format must be "yyyy-mm-ddThh:mm:ss"
   //                        "0123456789012345678"
