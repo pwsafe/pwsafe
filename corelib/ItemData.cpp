@@ -845,21 +845,18 @@ CItemData::SetTime(int whichtime, time_t t)
 void
 CItemData::SetTime(int whichtime, const CString &time_str)
 {
-    if (time_str.GetLength() == 0) {
-      SetTime(whichtime, (time_t)0);
-      return;
-    }
-  
-    time_t t;
+  time_t t = 0;
 
-    if (!PWSUtil::VerifyImportDateTimeString(time_str, t))
-      if (!PWSUtil::VerifyXMLDateTimeString(time_str, t))
-        if (!PWSUtil::VerifyASCDateTimeString(time_str, t))
-      return;
-
-    if (t == (time_t)-1)	// error despite all our verification!
-      return;
-
+  if (time_str.IsEmpty()) {
+    SetTime(whichtime, t);
+  } else if (time_str == _T("now")) {
+   	time(&t);
+    SetTime(whichtime, t);
+  } else if ((PWSUtil::VerifyImportDateTimeString(time_str, t) ||
+              PWSUtil::VerifyXMLDateTimeString(time_str, t) ||
+              PWSUtil::VerifyASCDateTimeString(time_str, t)) &&
+             (t != (time_t)-1)	// checkerror despite all our verification!
+             )
     SetTime(whichtime, t);
 }
 
