@@ -36,7 +36,7 @@ subset of the data described here, implementers may read a database
 written in an older version and store the result in the format
 described here.
 
-2. Format: A V3 format PasswordSafe will be structured as follows:
+2. Format: A V3 format PasswordSafe is structured as follows:
 
     TAG|SALT|ITER|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
 
@@ -49,10 +49,9 @@ version 3 file. This tag has no cryptographic value.
 2.1 SALT is a 256 bit random value, generated at file creation time.
 
 2.3 P' is the "stretched key" generated from the user's passphrase and
-the SALT, as defined by the hash-function-based key stretching
-algorithm in http://www.schneier.com/paper-low-entropy.pdf (Section
-4.1), with SHA-256 as the hash function, and ITER iterations (at least
-2048, i.e., t = 11).
+the SALT, as defined in by the hash-function-based key stretching
+algorithm in [KEYSTRETCH] (Section 4.1), with SHA-256 [SHA256] as the
+hash function, and ITER iterations (at least 2048, i.e., t = 11).
 
 2.4 ITER is the number of iterations on the hash function to calculate P',
 stored as a 32 bit little-endian value. This value is stored here in order
@@ -61,12 +60,13 @@ to future-proof the file format against increases in processing power.
 2.5 H(P') is SHA-256(P'), and is used to verify that the user has the
 correct passphrase.
 
-2.6 B1 and B2 are two 128-bit blocks encrypted with Twofish using P' as the
-key, in ECB mode. These blocks contain the 256 bit random key K that is
-used to encrypt the actual records. (This has the property that there is no
-known or guessable information on the plaintext encrypted with the
-passphrase-derived key that allows an attacker to mount an attack that
-bypasses the key stretching algorithm.)
+2.6 B1 and B2 are two 128-bit blocks encrypted with Twofish [TWOFISH]
+using P' as the key, in ECB mode. These blocks contain the 256 bit
+random key K that is used to encrypt the actual records. (This has the
+property that there is no known or guessable information on the
+plaintext encrypted with the passphrase-derived key that allows an
+attacker to mount an attack that bypasses the key stretching
+algorithm.)
 
 2.7 B3 and B4 are two 128-bit blocks encrypted with Twofish using P' as the
 key, in ECB mode. These blocks contain the 256 bit random key L that is
@@ -114,8 +114,9 @@ representation.
 
 3.1 Data representations
 3.1.1 UUID
- The UUID data type is 16 bytes long, as defined in RFC4122. Windows
- has functions for this, and the RFC has a sample implementation. 
+ The UUID data type is 16 bytes long, as defined in RFC4122. Microsoft
+ Windows has functions for this, and the RFC has a sample
+ implementation.
 
 3.1.2 Text
  Text is represented in UTF-8 encoding (as defined in RFC3629), with
@@ -130,8 +131,8 @@ representation.
  (This is equivalent to the time_t type on Windows and POSIX. On the
  Macintosh, the value needs to be adjusted by the constant value 2082844800
  to account for the different epoch of its time_t type.)
- (Note that future versions of this format may allow time to be
- specifed in 64 bits as well.)
+ Note that future versions of this format may allow time to be
+ specifed in 64 bits as well.
 
 3.2 Field types for the PasswordSafe database header:
                                                  Currently
@@ -157,8 +158,8 @@ PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
 
 [2] A universally unique identifier is needed in order to synchronize
-databases, i.e., between a handheld pocketPC device and a
-PC. Representation is as described in Section 3.1.1. 
+databases, e.g., between a handheld pocketPC device and a
+PC. Representation is as described in Section 3.1.1.
 
 [3] Non-default preferences are encoded in a string as follows: The string
 is of the form "X nn vv X nn vv..." Where X=[BIS] for binary, integer and
@@ -171,8 +172,9 @@ details.
 expanded state of the tree display when the database was saved. This can
 be applied at database open time, if the user wishes, so that the tree is
 displayed as it was. Alternatively, it can be ignored and the tree
-displayed completely expanded or collapsed. Introduced in format
-0x0301.
+displayed completely expanded or collapsed. Note that the mapping of
+the string to the display state is implementation-specific. Introduced
+in format 0x0301.
 
 [5] Representation is as described in Section 3.1.3. Note that prior
 to PasswordSafe 3.09, this field was mistakenly represented as an
@@ -184,7 +186,7 @@ representation of the timestamp value.
     nnnn = 4 hexadecimal digits giving length of following user name field
     u..u = user name
     h..h = host computer name
-    Note: As of format 0x0302, this filed is deprecated, and should be
+    Note: As of format 0x0302, this field is deprecated, and should be
     replaced by fields 0x07 and 0x08. In databases prior to format
     0x0302, this field should be maintained. 0x0302 and later may
     either maintain this field in addition to fields 0x07 and 0x08,
@@ -254,9 +256,9 @@ should be "escaped" by the application.
 
 [3] Representation is as described in Section 3.1.3.
 
-[4] This will be updated whenever any part of this entry is accessed i.e.
-to copy its username, password or notes to the clipboard; to perform
-autotype or to browse to url.
+[4] This will be updated whenever any part of this entry is accessed
+i.e., to copy its username, password or notes to the clipboard; to
+perform autotype or to browse to url.
 
 [5] This will allow the user to enter a lifetime for an entry. The
 application can then prompt the user about passwords that need to be
@@ -315,9 +317,26 @@ when the database is saved.
 identifiers for the current version of the format. Compliant
 implementations MUST support the mandatory fields, and SHOULD support
 the other fields described herein. Future versions of the format may
-specify other type identifiers. The type identifiers 0xe0-0xfe,
-however, are reserved for implementation-specific purposes, and will
+specify other type identifiers.
+4.2.1 Application-unique type identifiers: The type identifiers
+0xc0-0xdf are available for application developers on a first-come
+first-serve basis. Application developers interested in reserving a
+type identifier for their application should contact the maintainer of
+this document (Currently the PasswordSafe project administrator at
+SourceForge).
+4.2.2 Application-specific type identifiers: The type identifiers
+0xe0-0xfe are reserved for implementation-specific purposes, and will
 NOT be specified in this or future versions of the format
 description.
+4.2.3 All unassigned identifiers except as listed in the previous two
+subsections are reserved, and should not be used by other
+implementations of this format specification in the interest of
+interoperablity.
+
+5. References:
+[TWOFISH] http://www.schneier.com/paper-twofish-paper.html
+[SHA256]
+http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
+[KEYSTRETCH] http://www.schneier.com/paper-low-entropy.pdf
 
 End of Format description.
