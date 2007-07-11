@@ -710,7 +710,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   }
 
   if (num_found < vs_Header.size())
-    strErrors.Format(IDSC_IMPORTHDR, num_found, vs_Header.size() - num_found);
+    strErrors.Format(IDSC_IMPORTHDR, num_found);
 
   // Finished parsing header, go get the data!
   for (;;) {
