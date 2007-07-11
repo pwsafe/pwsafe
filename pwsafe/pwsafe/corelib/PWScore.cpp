@@ -428,17 +428,8 @@ PWScore::WriteXMLFile(const CMyString &filename,
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
     of << "\"" << endl;
   }
-  if (m_whenlastsaved.GetLength() == 8) {
-	  long t;
-	  TCHAR *lpszWLS = m_whenlastsaved.GetBuffer(9);
-#if _MSC_VER >= 1400
-	  int iread = _stscanf_s(lpszWLS, _T("%8x"), &t);
-#else
-	  int iread = _stscanf(lpszWLS, _T("%8x"), &t);
-#endif
-	  m_whenlastsaved.ReleaseBuffer();
-	  ASSERT(iread == 1);
-    wls = CString(PWSUtil::ConvertToDateTimeString((time_t) t, TMC_XML));
+  if (m_whenlastsaved != 0) {
+    wls = CString(PWSUtil::ConvertToDateTimeString(m_whenlastsaved, TMC_XML));
     utf8conv.ToUTF8(wls, utf8, utf8Len);
     of << "WhenLastSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);

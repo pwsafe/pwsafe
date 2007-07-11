@@ -85,7 +85,7 @@ class PWSfile {
 		{m_user = user; m_sysname = sysname;}
   void SetApplicationVersion(const DWORD dwMajorMinor) 
 		{m_dwMajorMinor = dwMajorMinor;}
-  const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
+  time_t GetWhenLastSaved() const {return m_whenlastsaved;}
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
   unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
@@ -113,7 +113,7 @@ class PWSfile {
   CMyString m_defusername; // for V17 conversion (read) only
   CMyString m_prefString; // prefererences stored in the file
   CString m_file_displaystatus; // tree display status stored in file
-  CString m_whenlastsaved; // When last saved
+  time_t m_whenlastsaved; // When last saved
   CString m_wholastsaved; // and by whom
   CString m_whatlastsaved; // and by what
   CString m_user, m_sysname; // current user & host

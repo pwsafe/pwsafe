@@ -1343,26 +1343,17 @@ DboxMain::OnProperties()
 
   dlg.m_numentries.Format(_T("%d"), m_core.GetNumEntries());
 
-  CString wls = m_core.GetWhenLastSaved();
-  if (wls.GetLength() != 8) {
+  time_t twls = m_core.GetWhenLastSaved();
+  if (twls == 0) {
 	  dlg.m_whenlastsaved.LoadString(IDS_UNKNOWN);
 	  dlg.m_whenlastsaved.Trim();
   } else {
-	  long t;
-	  TCHAR *lpszWLS = wls.GetBuffer(9);
-#if _MSC_VER >= 1400
-	  int iread = _stscanf_s(lpszWLS, _T("%8x"), &t);
-#else
-	  int iread = _stscanf(lpszWLS, _T("%8x"), &t);
-#endif
-	  wls.ReleaseBuffer();
-	  ASSERT(iread == 1);
     dlg.m_whenlastsaved =
-          CString(PWSUtil::ConvertToDateTimeString((time_t) t, TMC_EXPORT_IMPORT));
+          CString(PWSUtil::ConvertToDateTimeString(twls, TMC_EXPORT_IMPORT));
   }
 
-  wls = m_core.GetWhoLastSaved();
-  if (wls.GetLength() == 0) {
+  CString wls = m_core.GetWhoLastSaved();
+  if (wls.IsEmpty()) {
 	  dlg.m_wholastsaved.LoadString(IDS_UNKNOWN);
 	  dlg.m_whenlastsaved.Trim();
   } else {
