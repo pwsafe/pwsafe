@@ -524,14 +524,18 @@ int PWSfileV3::WriteHeader()
   // Write out time of this update
   time_t time_now;
   time(&time_now);
+#if 0  // BUGBUGBUG
   CString cs_update_time;
   cs_update_time.Format(_T("%08x"), time_now);
   numWritten = WriteCBC(HDR_LASTUPDATETIME, cs_update_time);
+#endif
+  numWritten = WriteCBC(HDR_LASTUPDATETIME,
+                        (unsigned char *)&time_now, sizeof(time_now));
   if (numWritten <= 0) {
     Close();
     return FAILURE;
   } else {
-    m_whenlastsaved = cs_update_time;
+    m_whenlastsaved = time_now;
   }
 
   // Write out who saved it!
@@ -679,14 +683,25 @@ int PWSfileV3::ReadHeader()
                 break;
 
             case HDR_LASTUPDATETIME: /* When last saved */
-                // THIS SHOULDN'T BE A STRING !!!
-                // BROKE SPEC !!!
+              if (utf8Len == 8) {
+                // Handle pre-3.09 implementations that mistakenly
+                // stored this as a hex value
                 if (utf8 != NULL)
-                    utf8[utf8Len] = '\0';
+                  utf8[utf8Len] = '\0';
                 utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-                m_whenlastsaved = CString(text);
                 if (!utf8status)
-                    TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
+                  TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
+#if _MSC_VER >= 1400
+                _stscanf_s(text, _T("%8x"), &m_whenlastsaved);
+#else
+                _stscanf(text, _T("%8x"), &m_whenlastsaved);
+#endif
+              } else if (utf8Len == 4) {
+                // retrieve time_t
+                m_whenlastsaved = *reinterpret_cast<time_t*>(utf8);
+              } else {
+                m_whenlastsaved = 0;
+              }
                 break;
 
             case HDR_LASTUPDATEUSERHOST: /* and by whom */

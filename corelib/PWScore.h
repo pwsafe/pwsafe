@@ -58,7 +58,7 @@ class PWScore {
   void SetDefUsername(const CMyString &du) {m_defusername = du;}
 
   const CString &GetWhoLastSaved() const {return m_wholastsaved;}
-  const CString &GetWhenLastSaved() const {return m_whenlastsaved;}
+  time_t GetWhenLastSaved() const {return m_whenlastsaved;}
   const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
   void ClearFileUUID();
   void SetFileUUID(uuid_array_t &file_uuid_array);
@@ -197,7 +197,8 @@ class PWScore {
   bool m_IsReadOnly;
 
   std::vector<bool> m_displaystatus;
-  CString m_wholastsaved, m_whenlastsaved, m_whatlastsaved;
+  CString m_wholastsaved, m_whatlastsaved;
+  time_t m_whenlastsaved;
   uuid_array_t m_file_uuid_array;
   int m_nITER;
   UnknownFieldList m_UHFL;
