@@ -159,6 +159,7 @@ public:
   bool ExitRequested() const {return m_inExit;}
   void SetCapsLock(const bool bState);
   void AutoResizeColumns();
+  void ResetIdleLockCounter();
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -439,7 +440,6 @@ private:
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
-  void ResetIdleLockCounter();
   bool DecrementAndTestIdleLockCounter();
   void ToClipboard(const CMyString &data);
   void ExtractFont(CString& str, LOGFONT *ptreefont);
