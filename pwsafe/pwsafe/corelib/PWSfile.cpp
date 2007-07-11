@@ -121,17 +121,84 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 PWSfile::PWSfile(const CMyString &filename, RWmode mode)
   : m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
     m_curversion(UNKNOWN_VERSION), m_rw(mode),
-    m_fd(NULL), m_prefString(_T("")), m_fish(NULL), m_terminal(NULL),
-    m_file_displaystatus(_T("")), m_whenlastsaved(0),
-    m_wholastsaved(_T("")), m_whatlastsaved(_T("")),
-    m_nITER(0), m_nRecordsWithUnknownFields(0)
+    m_fd(NULL), m_fish(NULL), m_terminal(NULL),
+    m_nRecordsWithUnknownFields(0)
 {
-  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
 }
 
 PWSfile::~PWSfile()
 {
   Close(); // idempotent
+}
+
+PWSfile::HeaderRecord::HeaderRecord() :
+  m_dwAppMajorMinor(0), m_nCurrentMajorVersion(0), m_nCurrentMinorVersion(0),
+  m_nITER(0), m_file_displaystatus(_T("")),
+  m_prefString(_T("")), m_whenlastsaved(0),
+  m_lastsavedby(_T("")), m_lastsavedon(_T("")),
+  m_user(_T("")), m_sysname(_T("")), m_whatlastsaved(_T("")),
+  m_dbname(_T("")), m_dbdesc(_T(""))
+{
+  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
+}
+
+PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) :
+  m_dwAppMajorMinor(h.m_dwAppMajorMinor),
+  m_nCurrentMajorVersion(h.m_nCurrentMajorVersion),
+  m_nCurrentMinorVersion(h.m_nCurrentMinorVersion),
+  m_nITER(h.m_nITER), m_file_displaystatus(h.m_file_displaystatus),
+  m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
+  m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
+  m_user(h.m_user), m_sysname(h.m_sysname),
+  m_whatlastsaved(h.m_whatlastsaved),
+  m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc)
+{
+  memcpy(m_file_uuid_array, h.m_file_uuid_array,
+         sizeof(m_file_uuid_array));
+}
+
+PWSfile::HeaderRecord &
+PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
+{
+  if (this != &h) {
+    m_dwAppMajorMinor = h.m_dwAppMajorMinor;
+    m_nCurrentMajorVersion = h.m_nCurrentMajorVersion;
+    m_nCurrentMinorVersion = h.m_nCurrentMinorVersion;
+    m_nITER = h.m_nITER;
+    m_file_displaystatus = h.m_file_displaystatus;
+    m_prefString = h.m_prefString;
+    m_whenlastsaved = h.m_whenlastsaved;
+    m_lastsavedby = h.m_lastsavedby;
+    m_lastsavedon = h.m_lastsavedon;
+    m_user = h.m_user;
+    m_sysname = h.m_sysname;
+    m_whatlastsaved = h.m_whatlastsaved;
+    m_dbname = h.m_dbname;
+    m_dbdesc = h.m_dbdesc;
+    memcpy(m_file_uuid_array, h.m_file_uuid_array,
+           sizeof(m_file_uuid_array));
+  }
+  return *this;
+}
+
+void PWSfile::HeaderRecord::SetDisplayStatus(const vector<bool> &displaystatus)
+{
+  m_file_displaystatus = _T("");
+
+  vector<bool>::const_iterator iter;
+  for (iter = displaystatus.begin(); iter != displaystatus.end(); iter++)
+    m_file_displaystatus += (*iter) ? _T("1") : _T("0");
+}
+
+vector<bool> PWSfile::HeaderRecord::GetDisplayStatus() const
+{
+  vector<bool> retval;
+  unsigned N = m_file_displaystatus.GetLength();
+  for (unsigned i = 0; i != N; i++) {
+    const TCHAR v = m_file_displaystatus.GetAt(i);
+    retval.push_back(v == TCHAR('1'));
+  }
+  return retval;
 }
 
 void PWSfile::FOpen()
@@ -144,7 +211,6 @@ void PWSfile::FOpen()
   m_fd = _tfopen((LPCTSTR) m_filename, m);
 #endif
 }
-
 
 int PWSfile::Close()
 {
@@ -213,27 +279,6 @@ int PWSfile::CheckPassword(const CMyString &filename,
 }
 
 
-void PWSfile::SetDisplayStatus(const vector<bool> &displaystatus)
-{
-  m_file_displaystatus = _T("");
-
-  vector<bool>::const_iterator iter;
-  for (iter = displaystatus.begin(); iter != displaystatus.end(); iter++)
-    m_file_displaystatus += (*iter) ? _T("1") : _T("0");
-}
-
-vector<bool> PWSfile::GetDisplayStatus() const
-{
-  vector<bool> retval;
-  unsigned N = m_file_displaystatus.GetLength();
-  for (unsigned i = 0; i != N; i++) {
-    const TCHAR v = m_file_displaystatus.GetAt(i);
-    retval.push_back(v == TCHAR('1'));
-  }
-  return retval;
-}
-
-
 /*
  * The file lock/unlock functions were first implemented (in 2.08)
  * with Posix semantics (using open(_O_CREATE|_O_EXCL) to detect
@@ -281,7 +326,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     case EACCES:
       // Tried to open read-only file for writing, or file’s
       // sharing mode does not allow specified operations, or given path is directory
-	  locker.LoadString(IDSC_NOLOCKACCESS);
+      locker.LoadString(IDSC_NOLOCKACCESS);
       break;
     case EEXIST: // filename already exists
       {
@@ -366,17 +411,17 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     }
   }
   lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),
-                                             GENERIC_WRITE,
-                                             FILE_SHARE_READ,
-                                             NULL,
-                                             CREATE_ALWAYS, // rely on share to fail if exists!
-                                             FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
-                                             NULL);
+                                GENERIC_WRITE,
+                                FILE_SHARE_READ,
+                                NULL,
+                                CREATE_ALWAYS, // rely on share to fail if exists!
+                                FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+                                NULL);
   if (lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     switch (error) {
     case ERROR_SHARING_VIOLATION: // already open by a live process
-	  GetLocker(lock_filename, locker);
+      GetLocker(lock_filename, locker);
       break;
     default:
       locker = _T("Cannot create lock file - no permission in directory?");
@@ -390,16 +435,16 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
                                user, user.GetLength() * sizeof(TCHAR),
                                &sumWrit, NULL);
     write_status &= ::WriteFile(lockFileHandle,
-                               _T("@"), sizeof(TCHAR),
-                               &numWrit, NULL);
+                                _T("@"), sizeof(TCHAR),
+                                &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
                                 host, host.GetLength() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-                               _T(":"), sizeof(TCHAR),
-                               &numWrit, NULL);
+                                _T(":"), sizeof(TCHAR),
+                                &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
                                 pid, pid.GetLength() * sizeof(TCHAR),
@@ -515,16 +560,6 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
 		} // read info from lock file
 	}
 	return bResult;
-}
-
-void PWSfile::SetFileUUID(const uuid_array_t &file_uuid_array)
-{
-  memcpy(m_file_uuid_array, file_uuid_array, sizeof(file_uuid_array));
-}
-
-void PWSfile::GetFileUUID(uuid_array_t &file_uuid_array)
-{
-  memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
 }
 
 void PWSfile::GetUnknownHeaderFields(UnknownFieldList &UHFL)

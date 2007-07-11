@@ -46,13 +46,14 @@ typedef std::ofstream ofstreamT;
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
 unsigned char PWScore::m_session_initialized = false;
-CString PWScore::m_hdr;
+CString PWScore::m_impexphdr;
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_passkey(NULL), m_passkey_len(0),
-                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0)
+                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
+                     m_dwAppMajorMinor(0)
 {
   if (!PWScore::m_session_initialized) {
 	CItemData::SetSessionKey(); // per-session initialization
@@ -145,28 +146,20 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
     return status;
   }
 
-  // Re-use file's UUID and number of hash iterations
-  out->SetFileUUID(m_file_uuid_array);
-  out->SetFileHashIterations(m_nITER);
-
-  // Give PWSfileV3 the unknown headers to write out
-  out->SetUnknownHeaderFields(m_UHFL);
-
-  // preferences are kept in header, which is written in OpenWriteFile,
-  // so we need to update the prefernce string here
-  out->SetPrefString(PWSprefs::GetInstance()->Store());
-
+  m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   // Tree Display Status is kept in header
-  out->SetDisplayStatus(m_displaystatus);
+  m_hdr.SetDisplayStatus(m_displaystatus);
 
   // Who last saved which is kept in header
   const SysInfo *si = SysInfo::GetInstance();
-  const CString user = si->GetRealUser();
-  const CString host = si->GetRealHost();
-  out->SetUserHost(user, host);
+  m_hdr.m_user = si->GetRealUser();
+  m_hdr.m_sysname = si->GetRealHost();
+  m_hdr.m_dwAppMajorMinor = m_dwAppMajorMinor;
 
-  // What last saved which is kept in  header
-  out->SetApplicationVersion(m_dwMajorMinor);
+  out->SetHeader(m_hdr);
+
+  // Give PWSfileV3 the unknown headers to write out
+  out->SetUnknownHeaderFields(m_UHFL);
 
   status = out->Open(GetPassKey());
 
@@ -178,12 +171,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   RecordWriter write_record(out);
   for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
-  m_nCurrentMajorVersion = out->GetCurrentMajorVersion();
-  m_nCurrentMinorVersion = out->GetCurrentMinorVersion();
-  m_wholastsaved = out->GetWhoLastSaved();
-  m_whenlastsaved = out->GetWhenLastSaved();
-  m_whatlastsaved = out->GetWhatLastSaved();
-  out->GetFileUUID(m_file_uuid_array);
+  m_hdr = out->GetHeader(); // update time saved, etc.
 
   out->Close();
   delete out;
@@ -245,9 +233,9 @@ PWScore::WritePlaintextFile(const CMyString &filename,
     return CANT_OPEN_FILE;
 
 	if ( bsFields.count() == bsFields.size()) {
-	  if (m_hdr.IsEmpty())
-	    m_hdr.LoadString(IDSC_EXPORTHEADER);
-	  ofs << LPCTSTR(m_hdr) << endl;
+	  if (m_impexphdr.IsEmpty())
+	    m_impexphdr.LoadString(IDSC_EXPORTHEADER);
+	  ofs << LPCTSTR(m_impexphdr) << endl;
 	} else {
 		CString hdr = _T(""), cs_temp;
 		if (bsFields.test(CItemData::GROUP)) {
@@ -376,20 +364,6 @@ PWScore::WriteXMLFile(const CMyString &filename,
 	time(&time_now);
 	const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
-	CString wls(_T(""));
-	if (!m_wholastsaved.IsEmpty()) {
-		int ulen; 
-		TCHAR *lpszWLS = m_wholastsaved.GetBuffer(wls.GetLength() + 1);
-#if _MSC_VER >= 1400
-		int iread = _stscanf_s(lpszWLS, _T("%4x"), &ulen);
-#else
-		int iread = _stscanf(lpszWLS, _T("%4x"), &ulen);
-#endif
-		m_wholastsaved.ReleaseBuffer();
-		ASSERT(iread == 1);
-		wls.Format(_T("%s on %s"),
-               m_wholastsaved.Mid(4, ulen), m_wholastsaved.Mid(ulen + 4));
-	}
 	of << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
 	of << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
 	of << endl;
@@ -411,25 +385,30 @@ PWScore::WriteXMLFile(const CMyString &filename,
 	of << "ExportTimeStamp=\"";
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
   of << "\"" << endl;
-	cs_tmp.Format(_T("%d.%02d"), m_nCurrentMajorVersion, m_nCurrentMinorVersion);
+	cs_tmp.Format(_T("%d.%02d"),
+                m_hdr.m_nCurrentMajorVersion, m_hdr.m_nCurrentMinorVersion);
   utf8conv.ToUTF8(cs_tmp, utf8, utf8Len);
 	of << "FromDatabaseFormat=\"";
   of.write(reinterpret_cast<const char *>(utf8), utf8Len);
   of << "\"" << endl;
-	if (!m_wholastsaved.IsEmpty()) {
+	if (!m_hdr.m_lastsavedby.IsEmpty() || !m_hdr.m_lastsavedon.IsEmpty()) {
+    CString wls(_T(""));
+    wls.Format(_T("%s on %s"),
+               m_hdr.m_lastsavedby, m_hdr.m_lastsavedon);
     utf8conv.ToUTF8(wls, utf8, utf8Len);
     of << "WhoSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
     of << "\"" << endl;
   }
-	if (!m_whatlastsaved.IsEmpty()) {
-    utf8conv.ToUTF8(m_whatlastsaved, utf8, utf8Len);
+	if (!m_hdr.m_whatlastsaved.IsEmpty()) {
+    utf8conv.ToUTF8(m_hdr.m_whatlastsaved, utf8, utf8Len);
     of << "WhatSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
     of << "\"" << endl;
   }
-  if (m_whenlastsaved != 0) {
-    wls = CString(PWSUtil::ConvertToDateTimeString(m_whenlastsaved, TMC_XML));
+  if (m_hdr.m_whenlastsaved != 0) {
+    CString wls = CString(PWSUtil::ConvertToDateTimeString(m_hdr.m_whenlastsaved,
+                                                   TMC_XML));
     utf8conv.ToUTF8(wls, utf8, utf8Len);
     of << "WhenLastSaved=\"";
     of.write(reinterpret_cast<const char *>(utf8), utf8Len);
@@ -440,25 +419,25 @@ PWScore::WriteXMLFile(const CMyString &filename,
 #if _MSC_VER >= 1400
 	sprintf_s(uuid_buffer, 37,
             "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
-            m_file_uuid_array[0],  m_file_uuid_array[1],
-            m_file_uuid_array[2],  m_file_uuid_array[3],
-            m_file_uuid_array[4],  m_file_uuid_array[5],
-            m_file_uuid_array[6],  m_file_uuid_array[7],
-            m_file_uuid_array[8],  m_file_uuid_array[9],
-            m_file_uuid_array[10], m_file_uuid_array[11],
-            m_file_uuid_array[12], m_file_uuid_array[13],
-            m_file_uuid_array[14], m_file_uuid_array[15]);
+            m_hdr.m_file_uuid_array[0],  m_hdr.m_file_uuid_array[1],
+            m_hdr.m_file_uuid_array[2],  m_hdr.m_file_uuid_array[3],
+            m_hdr.m_file_uuid_array[4],  m_hdr.m_file_uuid_array[5],
+            m_hdr.m_file_uuid_array[6],  m_hdr.m_file_uuid_array[7],
+            m_hdr.m_file_uuid_array[8],  m_hdr.m_file_uuid_array[9],
+            m_hdr.m_file_uuid_array[10], m_hdr.m_file_uuid_array[11],
+            m_hdr.m_file_uuid_array[12], m_hdr.m_file_uuid_array[13],
+            m_hdr.m_file_uuid_array[14], m_hdr.m_file_uuid_array[15]);
 #else
   sprintf(uuid_buffer,
           "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
-          m_file_uuid_array[0],  m_file_uuid_array[1],
-          m_file_uuid_array[2],  m_file_uuid_array[3],
-          m_file_uuid_array[4],  m_file_uuid_array[5],
-          m_file_uuid_array[6],  m_file_uuid_array[7],
-          m_file_uuid_array[8],  m_file_uuid_array[9],
-          m_file_uuid_array[10], m_file_uuid_array[11],
-          m_file_uuid_array[12], m_file_uuid_array[13],
-          m_file_uuid_array[14], m_file_uuid_array[15]);
+          m_hdr.m_file_uuid_array[0],  m_hdr.m_file_uuid_array[1],
+          m_hdr.m_file_uuid_array[2],  m_hdr.m_file_uuid_array[3],
+          m_hdr.m_file_uuid_array[4],  m_hdr.m_file_uuid_array[5],
+          m_hdr.m_file_uuid_array[6],  m_hdr.m_file_uuid_array[7],
+          m_hdr.m_file_uuid_array[8],  m_hdr.m_file_uuid_array[9],
+          m_hdr.m_file_uuid_array[10], m_hdr.m_file_uuid_array[11],
+          m_hdr.m_file_uuid_array[12], m_hdr.m_file_uuid_array[13],
+          m_hdr.m_file_uuid_array[14], m_hdr.m_file_uuid_array[15]);
 #endif
   uuid_buffer[36] = '\0';
   of << "Database_uuid=\"" << uuid_buffer << "\"" << endl;
@@ -466,8 +445,8 @@ PWScore::WriteXMLFile(const CMyString &filename,
 	of << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
 	of << endl;
 
-  if (m_nITER > MIN_HASH_ITERATIONS) {
-    of << "\t<NumberHashIterations>" << m_nITER << "</NumberHashIterations>";
+  if (m_hdr.m_nITER > MIN_HASH_ITERATIONS) {
+    of << "\t<NumberHashIterations>" << m_hdr.m_nITER << "</NumberHashIterations>";
     of << endl;
   }
 
@@ -567,7 +546,7 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
   // Only add header unknown fields or change number of iterations
   // if the database was empty to start with
   if (bEmptyDB) {
-    m_nITER = nITER;
+    m_hdr.m_nITER = nITER;
     if (uhfl.empty())
       m_UHFL.clear();
     else {
@@ -594,15 +573,15 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   numImported = numSkipped = 0;
   strErrors = _T("");
 
-  if (m_hdr.IsEmpty())
-    m_hdr.LoadString(IDSC_EXPORTHEADER);
+  if (m_impexphdr.IsEmpty())
+    m_impexphdr.LoadString(IDSC_EXPORTHEADER);
 
   int numlines = 0;
 
   CItemData temp;
   CString buffer;
   vector<stringT> vs_Header;
-  const stringT s_hdr(m_hdr);
+  const stringT s_hdr(m_impexphdr);
   const TCHAR pTab[] = _T("\t");
   TCHAR pSeps[] = _T(" ");
   TCHAR *pTemp;
@@ -942,35 +921,24 @@ PWScore::ReadFile(const CMyString &a_filename,
         return UNKNOWN_VERSION;
     }
 
-    // Get file's UUID and number of hash iterations - in case we
-    // rewrite file
-    in->GetFileUUID(m_file_uuid_array);
-    m_nITER = in->GetFileHashIterations();
+    m_hdr = in->GetHeader();
 
     // Get pref string and tree display status & who saved when
     // all possibly empty!
-    PWSprefs::GetInstance()->Load(in->GetPrefString());
+    PWSprefs::GetInstance()->Load(m_hdr.m_prefString);
 
     // prepare handling of pre-2.0 DEFUSERCHR conversion
     if (m_ReadFileVersion == PWSfile::V17) {
         in->SetDefUsername(m_defusername);
-        m_nCurrentMajorVersion = PWSfile::V17;
-        m_nCurrentMinorVersion = 0;
+        m_hdr.m_nCurrentMajorVersion = PWSfile::V17;
+        m_hdr.m_nCurrentMinorVersion = 0;
     } else {
         // for 2.0 & later...
         in->SetDefUsername(PWSprefs::GetInstance()->
                               GetPref(PWSprefs::DefUserName));
-        m_nCurrentMajorVersion = in->GetCurrentMajorVersion();
-        m_nCurrentMinorVersion = in->GetCurrentMinorVersion();
     }
 
-    m_displaystatus = in->GetDisplayStatus();
-    m_whenlastsaved = in->GetWhenLastSaved();
-    m_wholastsaved = in->GetWhoLastSaved();
-    m_whatlastsaved = in->GetWhatLastSaved();
-
     ClearData(); //Before overwriting old data, but after opening the file...
-
     SetPassKey(a_passkey); // so user won't be prompted for saves
 
     CItemData temp;
@@ -1420,9 +1388,6 @@ PWScore::Validate(CString &status)
 
   TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 
-  const unsigned short nMajor = GetCurrentMajorVersion();
-  const unsigned short nMinor = GetCurrentMinorVersion();
-
   ItemListIter iter;
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     CItemData &ci = iter->second;
@@ -1430,7 +1395,9 @@ PWScore::Validate(CString &status)
     n++;
     if (uuid_array[0] == 0x00) {
       CItemData fixedItem(ci);
-      num_uuid_fixed += fixedItem.ValidateUUID(nMajor, nMinor, uuid_array);
+      num_uuid_fixed += fixedItem.ValidateUUID(m_hdr.m_nCurrentMajorVersion,
+                                               m_hdr.m_nCurrentMinorVersion,
+                                               uuid_array);
       m_pwlist.erase(iter); // erasing item in mid-iteration!
       AddEntry(fixedItem);
     }
@@ -1503,15 +1470,16 @@ PWScore::GetIncBackupFileName(const CString &cs_filenamebase,
 
 void PWScore::ClearFileUUID()
 {
-  memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
+  memset(m_hdr.m_file_uuid_array, 0x00, sizeof(m_hdr.m_file_uuid_array));
 }
   
 void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
 {
-  memcpy(m_file_uuid_array, file_uuid_array, sizeof(m_file_uuid_array));
+  memcpy(m_hdr.m_file_uuid_array, file_uuid_array,
+         sizeof(m_hdr.m_file_uuid_array));
 }
 
 void PWScore::GetFileUUID(uuid_array_t &file_uuid_array)
 {
-  memcpy(file_uuid_array, m_file_uuid_array, sizeof(file_uuid_array));
+  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
 }

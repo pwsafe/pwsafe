@@ -400,16 +400,16 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0301;
+const short VersionNum = 0x0302;
 
 int PWSfileV3::WriteHeader()
 {
   // See formatV3.txt for explanation of what's written here and why
   unsigned int NumHashIters;
-  if (m_nITER < MIN_HASH_ITERATIONS)
+  if (m_hdr.m_nITER < MIN_HASH_ITERATIONS)
     NumHashIters = MIN_HASH_ITERATIONS;
   else
-    NumHashIters = m_nITER;
+    NumHashIters = m_hdr.m_nITER;
 
   fwrite(V3TAG, 1, sizeof(V3TAG), m_fd);
 
@@ -479,8 +479,8 @@ int PWSfileV3::WriteHeader()
   unsigned char vnb[sizeof(VersionNum)];;
   vnb[0] = (unsigned char) (VersionNum & 0xff);
   vnb[1] = (unsigned char) ((VersionNum & 0xff00) >> 8);
-  m_nCurrentMajorVersion = (unsigned short) ((VersionNum & 0xff00) >> 8);
-  m_nCurrentMinorVersion = (unsigned short) (VersionNum & 0xff);
+  m_hdr.m_nCurrentMajorVersion = (unsigned short) ((VersionNum & 0xff00) >> 8);
+  m_hdr.m_nCurrentMinorVersion = (unsigned short) (VersionNum & 0xff);
 
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
  
@@ -493,12 +493,14 @@ int PWSfileV3::WriteHeader()
   uuid_array_t file_uuid_array;
   memset(file_uuid_array, 0x00, sizeof(file_uuid_array));
   // If not there or zeroed, create new
-  if (memcmp(m_file_uuid_array, file_uuid_array, sizeof(file_uuid_array)) == 0) {
+  if (memcmp(m_hdr.m_file_uuid_array,
+             file_uuid_array, sizeof(file_uuid_array)) == 0) {
     CUUIDGen uuid;
-    uuid.GetUUID(m_file_uuid_array);
+    uuid.GetUUID(m_hdr.m_file_uuid_array);
   }
   
-  numWritten = WriteCBC(HDR_UUID, m_file_uuid_array, sizeof(m_file_uuid_array));
+  numWritten = WriteCBC(HDR_UUID,
+                        m_hdr.m_file_uuid_array, sizeof(m_hdr.m_file_uuid_array));
 
   if (numWritten <= 0) {
     Close();
@@ -506,15 +508,15 @@ int PWSfileV3::WriteHeader()
   }
 
   // Write (non default) user preferences
-  numWritten = WriteCBC(HDR_NDPREFS, m_prefString);
+  numWritten = WriteCBC(HDR_NDPREFS, m_hdr.m_prefString);
   if (numWritten <= 0) {
     Close();
     return FAILURE;
   }
 
   // Write out display status
-  if (!m_file_displaystatus.IsEmpty()) {
-  	numWritten = WriteCBC(HDR_DISPSTAT, m_file_displaystatus);
+  if (!m_hdr.m_file_displaystatus.IsEmpty()) {
+  	numWritten = WriteCBC(HDR_DISPSTAT, m_hdr.m_file_displaystatus);
     if (numWritten <= 0) {
       Close();
       return FAILURE;
@@ -535,24 +537,31 @@ int PWSfileV3::WriteHeader()
     Close();
     return FAILURE;
   } else {
-    m_whenlastsaved = time_now;
+    m_hdr.m_whenlastsaved = time_now;
   }
 
   // Write out who saved it!
+  // Following DEPRECATED in format 0x0302
+#if 0
   CString cs_who;
   cs_who.Format(_T("%04x%s%s"), m_user.GetLength(), m_user, m_sysname);
   numWritten = WriteCBC(HDR_LASTUPDATEUSERHOST, cs_who);
+#endif
+  numWritten = WriteCBC(HDR_LASTUPDATEUSER, m_hdr.m_user);
+  if (numWritten > 0)
+    numWritten = WriteCBC(HDR_LASTUPDATEHOST, m_hdr.m_sysname);
   if (numWritten <= 0) {
     Close();
     return FAILURE;
   } else {
-    m_wholastsaved = cs_who;
+    m_hdr.m_lastsavedby = m_hdr.m_user;
+    m_hdr.m_lastsavedon = m_hdr.m_sysname;
   }
 
   // Write out what saved it!
   // First get the application Version number (NOT the file format version)
-  int nMajor = HIWORD(m_dwMajorMinor);
-  int nMinor = LOWORD(m_dwMajorMinor);
+  int nMajor = HIWORD(m_hdr.m_dwAppMajorMinor);
+  int nMinor = LOWORD(m_hdr.m_dwAppMajorMinor);
   CString cs_what;
   cs_what.Format(_T("%s V%d.%02d"), AfxGetAppName(), nMajor, nMinor);
   numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION, cs_what);
@@ -560,7 +569,7 @@ int PWSfileV3::WriteHeader()
     Close();
     return FAILURE;
   } else {
-    m_whatlastsaved = cs_what;
+    m_hdr.m_whatlastsaved = cs_what;
   }
 
   if (!m_UHFL.empty()) {
@@ -568,12 +577,12 @@ int PWSfileV3::WriteHeader()
     for (vi_IterUHFE = m_UHFL.begin();
          vi_IterUHFE != m_UHFL.end();
          vi_IterUHFE++) {
-       UnknownFieldEntry &unkhfe = *vi_IterUHFE;
-       numWritten = WriteCBC(unkhfe.uc_Type, unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
-       if (numWritten <= 0) {
-         Close();
-         return FAILURE;
-       }
+      UnknownFieldEntry &unkhfe = *vi_IterUHFE;
+      numWritten = WriteCBC(unkhfe.uc_Type, unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
+      if (numWritten <= 0) {
+        Close();
+        return FAILURE;
+      }
     }
   }
 
@@ -585,163 +594,173 @@ int PWSfileV3::WriteHeader()
 
 int PWSfileV3::ReadHeader()
 {
-    unsigned char Ptag[SHA256::HASHLEN];
-    int status = CheckPassword(m_filename, m_passkey, m_fd,
-                               Ptag, &m_nITER);
+  unsigned char Ptag[SHA256::HASHLEN];
+  int status = CheckPassword(m_filename, m_passkey, m_fd,
+                             Ptag, &m_hdr.m_nITER);
 
-    if (status != SUCCESS) {
-        Close();
-        return status;
+  if (status != SUCCESS) {
+    Close();
+    return status;
+  }
+
+  unsigned char B1B2[sizeof(m_key)];
+  ASSERT(sizeof(B1B2) == 32); // Generalize later
+  fread(B1B2, 1, sizeof(B1B2), m_fd);
+  TwoFish TF(Ptag, sizeof(Ptag));
+  TF.Decrypt(B1B2, m_key);
+  TF.Decrypt(B1B2 + 16, m_key + 16);
+
+  unsigned char L[32]; // for HMAC
+  unsigned char B3B4[sizeof(L)];
+  ASSERT(sizeof(B3B4) == 32); // Generalize later
+  fread(B3B4, 1, sizeof(B3B4), m_fd);
+  TF.Decrypt(B3B4, L);
+  TF.Decrypt(B3B4 + 16, L + 16);
+
+  m_hmac.Init(L, sizeof(L));
+
+  fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
+
+  m_fish = new TwoFish(m_key, sizeof(m_key));
+
+  unsigned char fieldType;
+  CMyString text;
+  size_t numRead;
+  bool utf8status;
+  unsigned char *utf8 = NULL;
+  int utf8Len = 0;
+
+  do {
+    numRead = ReadCBC(fieldType, utf8, (unsigned int &)utf8Len);
+
+    if (numRead < 0) {
+      Close();
+      return FAILURE;
     }
 
-    unsigned char B1B2[sizeof(m_key)];
-    ASSERT(sizeof(B1B2) == 32); // Generalize later
-    fread(B1B2, 1, sizeof(B1B2), m_fd);
-    TwoFish TF(Ptag, sizeof(Ptag));
-    TF.Decrypt(B1B2, m_key);
-    TF.Decrypt(B1B2 + 16, m_key + 16);
+    switch (fieldType) {
+    case HDR_VERSION: /* version */
+      // in Beta, VersionNum was an int (4 bytes) instead of short (2)
+      // This hack keeps bwd compatability.
+      if (utf8Len != sizeof(VersionNum) &&
+          utf8Len != sizeof(int)) {
+        delete[] utf8;
+        Close();
+        return FAILURE;
+      }
+      if (utf8[1] !=
+          (unsigned char)((VersionNum & 0xff00) >> 8)) {
+        //major version mismatch
+        delete[] utf8;
+        Close();
+        return UNSUPPORTED_VERSION;
+      }
+      // for now we assume that minor version changes will
+      // be backward-compatible
+      m_hdr.m_nCurrentMajorVersion = (unsigned short)utf8[1];
+      m_hdr.m_nCurrentMinorVersion = (unsigned short)utf8[0];
+      break;
 
-    unsigned char L[32]; // for HMAC
-    unsigned char B3B4[sizeof(L)];
-    ASSERT(sizeof(B3B4) == 32); // Generalize later
-    fread(B3B4, 1, sizeof(B3B4), m_fd);
-    TF.Decrypt(B3B4, L);
-    TF.Decrypt(B3B4 + 16, L + 16);
+    case HDR_UUID: /* UUID */
+      if (utf8Len != sizeof(uuid_array_t)) {
+        delete[] utf8;
+        Close();
+        return FAILURE;
+      }
+      memcpy(m_hdr.m_file_uuid_array, utf8,
+             sizeof(m_hdr.m_file_uuid_array));
+      break;
 
-    m_hmac.Init(L, sizeof(L));
+    case HDR_NDPREFS: /* Non-default user preferences */
+      if (utf8Len != 0) {
+        if (utf8 != NULL)
+          utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len,
+                                         m_hdr.m_prefString);
+        if (!utf8status)
+          TRACE(_T("FromUTF8(m_prefString) failed\n"));
+      } else
+        m_hdr.m_prefString = _T("");
+      break;
 
-    fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
+    case HDR_DISPSTAT: /* Tree Display Status */
+      if (utf8 != NULL)
+        utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      m_hdr.m_file_displaystatus = CString(text);
+      if (!utf8status)
+        TRACE(_T("FromUTF8(m_file_displaystatus) failed\n"));
+      break;
 
-    m_fish = new TwoFish(m_key, sizeof(m_key));
-
-    unsigned char fieldType;
-    CMyString text;
-    size_t numRead;
-    bool utf8status;
-    unsigned char *utf8 = NULL;
-    int utf8Len = 0;
-
-    do {
-        numRead = ReadCBC(fieldType, utf8, (unsigned int &)utf8Len);
-
-        if (numRead < 0) {
-            Close();
-            return FAILURE;
-        }
-
-        switch (fieldType) {
-            case HDR_VERSION: /* version */
-                // in Beta, VersionNum was an int (4 bytes) instead of short (2)
-                // This hack keeps bwd compatability.
-                if (utf8Len != sizeof(VersionNum) &&
-                    utf8Len != sizeof(int)) {
-                    delete[] utf8;
-                    Close();
-                    return FAILURE;
-                }
-                if (utf8[1] !=
-                    (unsigned char)((VersionNum & 0xff00) >> 8)) {
-                    //major version mismatch
-                    delete[] utf8;
-                    Close();
-                    return UNSUPPORTED_VERSION;
-                }
-                // for now we assume that minor version changes will
-                // be backward-compatible
-                m_nCurrentMajorVersion = (unsigned short)utf8[1];
-                m_nCurrentMinorVersion = (unsigned short)utf8[0];
-                break;
-
-            case HDR_UUID: /* UUID */
-                if (utf8Len != sizeof(uuid_array_t)) {
-                    delete[] utf8;
-                    Close();
-                    return FAILURE;
-                }
-                memcpy(m_file_uuid_array, utf8, sizeof(m_file_uuid_array));
-                break;
-
-            case HDR_NDPREFS: /* Non-default user preferences */
-                if (utf8Len != 0) {
-                    if (utf8 != NULL)
-                        utf8[utf8Len] = '\0';
-                    utf8status = m_utf8conv.FromUTF8(utf8, utf8Len,
-                                                     m_prefString);
-                    if (!utf8status)
-                        TRACE(_T("FromUTF8(m_prefString) failed\n"));
-                } else
-                    m_prefString = _T("");
-            break;
-
-            case HDR_DISPSTAT: /* Tree Display Status */
-                if (utf8 != NULL)
-                    utf8[utf8Len] = '\0';
-                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-                m_file_displaystatus = CString(text);
-                if (!utf8status)
-                    TRACE(_T("FromUTF8(m_file_displaystatus) failed\n"));
-                break;
-
-            case HDR_LASTUPDATETIME: /* When last saved */
-              if (utf8Len == 8) {
-                // Handle pre-3.09 implementations that mistakenly
-                // stored this as a hex value
-                if (utf8 != NULL)
-                  utf8[utf8Len] = '\0';
-                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-                if (!utf8status)
-                  TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
+    case HDR_LASTUPDATETIME: /* When last saved */
+      if (utf8Len == 8) {
+        // Handle pre-3.09 implementations that mistakenly
+        // stored this as a hex value
+        if (utf8 != NULL)
+          utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (!utf8status)
+          TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
 #if _MSC_VER >= 1400
-                _stscanf_s(text, _T("%8x"), &m_whenlastsaved);
+        _stscanf_s(text, _T("%8x"), &m_hdr.m_whenlastsaved);
 #else
-                _stscanf(text, _T("%8x"), &m_whenlastsaved);
+        _stscanf(text, _T("%8x"), &m_hdr.m_whenlastsaved);
 #endif
-              } else if (utf8Len == 4) {
-                // retrieve time_t
-                m_whenlastsaved = *reinterpret_cast<time_t*>(utf8);
-              } else {
-                m_whenlastsaved = 0;
-              }
-                break;
+      } else if (utf8Len == 4) {
+        // retrieve time_t
+        m_hdr.m_whenlastsaved = *reinterpret_cast<time_t*>(utf8);
+      } else {
+        m_hdr.m_whenlastsaved = 0;
+      }
+      break;
 
-            case HDR_LASTUPDATEUSERHOST: /* and by whom */
-                if (utf8 != NULL)
-                    utf8[utf8Len] = '\0';
-                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-                m_wholastsaved = CString(text);
-                if (!utf8status)
-                    TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
-                break;
+    case HDR_LASTUPDATEUSERHOST: /* and by whom */
+      // DEPRECATED, but we still know how to read this
+      if (utf8 != NULL)
+        utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      if (utf8status) {
+        int ulen = 0;
+#if _MSC_VER >= 1400
+        _stscanf_s(text, _T("%4x"), &ulen);
+#else
+        _stscanf(text, _T("%4x"), &ulen);
+#endif
+        m_hdr.m_lastsavedby = CString(text.Mid(4, ulen));
+        m_hdr.m_lastsavedon = CString(text.Mid(ulen + 4));
+      } else
+        TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
+      break;
 
-            case HDR_LASTUPDATEAPPLICATION: /* and by what */
-                if (utf8 != NULL)
-                    utf8[utf8Len] = '\0';
-                utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-                m_whatlastsaved = CString(text);
-                if (!utf8status)
-                    TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
-                break;
+    case HDR_LASTUPDATEAPPLICATION: /* and by what */
+      if (utf8 != NULL)
+        utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      m_hdr.m_whatlastsaved = CString(text);
+      if (!utf8status)
+        TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
+      break;
 
-            case HDR_END: /* process END so not to treat it as 'unknown' */
-                break;
+    case HDR_END: /* process END so not to treat it as 'unknown' */
+      break;
 
-            default:
-                // Save unknown fields that may be addded by future versions
-                UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-                m_UHFL.push_back(unkhfe);
+    default:
+      // Save unknown fields that may be addded by future versions
+      UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+      m_UHFL.push_back(unkhfe);
 #ifdef _DEBUG
-                CString cs_timestamp;
-                cs_timestamp = PWSUtil::GetTimeStamp();
-                TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
-                          cs_timestamp, fieldType, utf8Len, utf8Len);
-                PWSUtil::HexDump(utf8, utf8Len, cs_timestamp);
+      CString cs_timestamp;
+      cs_timestamp = PWSUtil::GetTimeStamp();
+      TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 
+            cs_timestamp, fieldType, utf8Len, utf8Len);
+      PWSUtil::HexDump(utf8, utf8Len, cs_timestamp);
 #endif /* DEBUG */
-                break;
-        }
-        delete[] utf8; utf8 = NULL; utf8Len = 0;
-    } while (fieldType != HDR_END);
+      break;
+    }
+    delete[] utf8; utf8 = NULL; utf8Len = 0;
+  } while (fieldType != HDR_END);
 
-    return SUCCESS;
+  return SUCCESS;
 }
 
 bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)

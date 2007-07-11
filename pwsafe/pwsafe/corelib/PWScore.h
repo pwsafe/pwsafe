@@ -57,9 +57,6 @@ class PWScore {
   CMyString GetDefUsername() const {return m_defusername;}
   void SetDefUsername(const CMyString &du) {m_defusername = du;}
 
-  const CString &GetWhoLastSaved() const {return m_wholastsaved;}
-  time_t GetWhenLastSaved() const {return m_whenlastsaved;}
-  const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
   void ClearFileUUID();
   void SetFileUUID(uuid_array_t &file_uuid_array);
   void GetFileUUID(uuid_array_t &file_uuid_array);
@@ -73,8 +70,6 @@ class PWScore {
   {m_nRecordsWithUnknownFields--;}
   void IncrementNumRecordsWithUnknownFields()
   {m_nRecordsWithUnknownFields++;}
-  void SetFileHashIterations(const int &nITER)
-  {m_nITER = nITER;}
 
   void ClearData();
   void ReInit();
@@ -108,8 +103,6 @@ class PWScore {
   {return ReadFile(m_currfile, passkey);}
   int ReadFile(const CMyString &filename, const CMyString &passkey);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
-  unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
-  unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
   int RenameFile(const CMyString &oldname, const CMyString &newname);
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const CString &userBackupPrefix, const CString &userBackupDir);
@@ -123,7 +116,8 @@ class PWScore {
   void UnlockFile(const CMyString &filename)
   {return PWSfile::UnlockFile(filename, 
                               m_lockFileHandle, m_LockCount);}
-  void SetApplicationMajorMinor(DWORD dwMajorMinor) {m_dwMajorMinor = dwMajorMinor;}
+  void SetApplicationMajorMinor(DWORD dwMajorMinor)
+  {m_dwAppMajorMinor = dwMajorMinor;}
   void SetReadOnly(bool state) { m_IsReadOnly = state;}
   bool IsReadOnly() const {return m_IsReadOnly;};
 
@@ -165,7 +159,8 @@ class PWScore {
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
-
+  const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
+  
  private:
   CMyString m_currfile; // current pw db filespec
   unsigned char *m_passkey; // encrypted by session key
@@ -173,7 +168,7 @@ class PWScore {
   static unsigned char m_session_key[20];
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
-  static CString m_hdr;
+  static CString m_impexphdr;
   HANDLE m_lockFileHandle;
   int m_LockCount;
 
@@ -187,9 +182,9 @@ class PWScore {
   bool m_usedefuser;
   CMyString m_defusername;
   PWSfile::VERSION m_ReadFileVersion;
-  unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
-  DWORD m_dwMajorMinor;
-
+  PWSfile::HeaderRecord m_hdr;
+  DWORD m_dwAppMajorMinor; // version numbers of THIS application
+  
   // the password database
   ItemList m_pwlist;
 
@@ -197,10 +192,6 @@ class PWScore {
   bool m_IsReadOnly;
 
   std::vector<bool> m_displaystatus;
-  CString m_wholastsaved, m_whatlastsaved;
-  time_t m_whenlastsaved;
-  uuid_array_t m_file_uuid_array;
-  int m_nITER;
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
 };
