@@ -62,7 +62,7 @@ int PWSfileV1V2::WriteV2Header()
   header.SetName(V2ItemName, _T(""));
 #endif /* BREAK_PRE_2_14_COMPATIBILITY */
   header.SetPassword(VersionString);
-  header.SetNotes(m_prefString);
+  header.SetNotes(m_hdr.m_prefString);
   // need to fallback to V17, since the record
   // won't be readable otherwise!
   VERSION sv = m_curversion;
@@ -70,15 +70,15 @@ int PWSfileV1V2::WriteV2Header()
   int status = WriteRecord(header);
   // restore after writing V17-format header
   m_curversion = sv;
-  m_nCurrentMajorVersion = 2;
-  m_nCurrentMinorVersion = 0;
+  m_hdr.m_nCurrentMajorVersion = 2;
+  m_hdr.m_nCurrentMinorVersion = 0;
   return status;
 }
 
 int PWSfileV1V2::ReadV2Header()
 {
-  m_nCurrentMajorVersion = 1;
-  m_nCurrentMinorVersion = 0;
+  m_hdr.m_nCurrentMajorVersion = 1;
+  m_hdr.m_nCurrentMinorVersion = 0;
   CItemData header;
   // need to fallback to V17, since the header
   // is always written in this format
@@ -93,12 +93,12 @@ int PWSfileV1V2::ReadV2Header()
   // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
   if (version == VersionString || version == AltVersionString) {
   	status = SUCCESS;
-  	m_nCurrentMajorVersion = 2;
+  	m_hdr.m_nCurrentMajorVersion = 2;
   } else
   	status = WRONG_VERSION;
   }
   if (status == SUCCESS)
-  m_prefString = header.GetNotes();
+  m_hdr.m_prefString = header.GetNotes();
   return status;
 }
 

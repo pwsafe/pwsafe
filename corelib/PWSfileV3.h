@@ -21,11 +21,16 @@
 class PWSfileV3 : public PWSfile {
  public:
 
-  enum {HDR_VERSION = 0x00, HDR_UUID = 0x01, HDR_NDPREFS = 0x02, HDR_DISPSTAT = 0x03,
-    HDR_LASTUPDATETIME = 0x04, HDR_LASTUPDATEUSERHOST = 0x05,
-    HDR_LASTUPDATEAPPLICATION = 0x06,
-    HDR_LAST,        // Start of unknown fields!
-    HDR_END = 0xff}; // header field types, per formatV{2,3}.txt
+  enum {HDR_VERSION = 0x00, HDR_UUID = 0x01, HDR_NDPREFS = 0x02,
+        HDR_DISPSTAT = 0x03, HDR_LASTUPDATETIME = 0x04,
+        HDR_LASTUPDATEUSERHOST = 0x05, // DEPRECATED in format 0x0302
+        HDR_LASTUPDATEAPPLICATION = 0x06,
+        HDR_LASTUPDATEUSER = 0x07, // added in format 0x0302
+        HDR_LASTUPDATEHOST = 0x08, // added in format 0x0302
+        HDR_DBNAME = 0x09, // added in format 0x0302
+        HDR_DBDESC = 0x0a, // added in format 0x0302
+        HDR_LAST,        // Start of unknown fields!
+        HDR_END = 0xff}; // header field types, per formatV{2,3}.txt
 
   static int CheckPassword(const CMyString &filename,
                            const CMyString &passkey,

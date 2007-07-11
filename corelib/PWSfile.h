@@ -26,16 +26,44 @@ class Fish;
 class PWSfile {
  public:
   enum VERSION {V17, V20, V30, VCURRENT = V30,
-		UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
+                UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
   enum {SUCCESS = 0, FAILURE = 1, 
-  		CANT_OPEN_FILE,					//  2
+        CANT_OPEN_FILE,					//  2
         UNSUPPORTED_VERSION,			//  3
         WRONG_VERSION,					//  4
         NOT_PWS3_FILE,					//  5
         WRONG_PASSWORD,					//  6 - see PWScore.h
         BAD_DIGEST,						//  7 - see PWScore.h
         END_OF_FILE						//  8
+  };
+
+  /**
+   * The format defines a handful of fields in the file's header
+   * Since the application needs these after the PWSfile object's
+   * lifetime, it makes sense to define a nested header structure that
+   * the app. can keep a copy of, rather than duplicating
+   * data members, getters and setters willy-nilly.
+   */
+  struct HeaderRecord {
+    HeaderRecord();
+    HeaderRecord(const HeaderRecord &hdr);
+    HeaderRecord &operator =(const HeaderRecord &hdr);
+    
+    DWORD m_dwAppMajorMinor;
+    unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
+    uuid_array_t m_file_uuid_array;
+    int m_nITER; // Formally not part of the header.
+    void SetDisplayStatus(const std::vector<bool> &displaystatus);
+    std::vector<bool> GetDisplayStatus() const;
+    CString m_file_displaystatus; // tree display status stored in file
+    CMyString m_prefString; // prefererences stored in the file
+    time_t m_whenlastsaved; // When last saved
+    CString m_lastsavedby; // and by whom
+    CString m_lastsavedon; // and by which machine
+    CString m_user, m_sysname; // current user & host
+    CString m_whatlastsaved; // and by what application
+    CString m_dbname, m_dbdesc; // descriptive name, description
   };
 
   static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,
@@ -53,7 +81,7 @@ class PWSfile {
                        HANDLE &lockFileHandle, int &LockCount);
   static bool IsLockedFile(const CMyString &filename);
   static void UnlockFile(const CMyString &filename,
-                       HANDLE &lockFileHandle, int &LockCount);
+                         HANDLE &lockFileHandle, int &LockCount);
   static bool GetLocker(const CMyString &filename, CMyString &locker);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
@@ -67,34 +95,17 @@ class PWSfile {
 
   virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
+
+  const HeaderRecord &GetHeader() const {return m_hdr;}
+  void SetHeader(const HeaderRecord &h) {m_hdr = h;}
+
   void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
-  void SetFileUUID(const uuid_array_t &file_uuid_array);
-  void SetFileHashIterations(const int &nITER)
-    {m_nITER = nITER;}
-  void GetFileUUID(uuid_array_t &file_uuid_array);
-  int GetFileHashIterations()
-    {return m_nITER;}
-  // The prefstring is read/written along with the rest of the file,
-  // see code for details on where it's kept.
-  void SetPrefString(const CMyString &prefStr) {m_prefString = prefStr;}
-  const CMyString &GetPrefString() const {return m_prefString;}
-  void SetDisplayStatus(const std::vector<bool> &displaystatus);
-  std::vector<bool> GetDisplayStatus() const;
   void SetUseUTF8(bool flag) { m_useUTF8 = flag; } // nop for v1v2
-  void SetUserHost(const CString &user, const CString &sysname)
-		{m_user = user; m_sysname = sysname;}
-  void SetApplicationVersion(const DWORD dwMajorMinor) 
-		{m_dwMajorMinor = dwMajorMinor;}
-  time_t GetWhenLastSaved() const {return m_whenlastsaved;}
-  const CString &GetWhoLastSaved() const {return m_wholastsaved;}
-  const CString &GetWhatLastSaved() const {return m_whatlastsaved;}
-  unsigned short GetCurrentMajorVersion() const {return m_nCurrentMajorVersion;}
-  unsigned short GetCurrentMinorVersion() const {return m_nCurrentMinorVersion;}
   void SetCurVersion(VERSION v) {m_curversion = v;}
   void GetUnknownHeaderFields(UnknownFieldList &UHFL);
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
   int GetNumRecordsWithUnknownFields()
-    {return m_nRecordsWithUnknownFields;}
+  {return m_nRecordsWithUnknownFields;}
 
  protected:
   PWSfile(const CMyString &filename, RWmode mode);
@@ -108,22 +119,13 @@ class PWSfile {
   CMyString m_passkey;
   FILE *m_fd;
   VERSION m_curversion;
-  unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
   const RWmode m_rw;
   CMyString m_defusername; // for V17 conversion (read) only
-  CMyString m_prefString; // prefererences stored in the file
-  CString m_file_displaystatus; // tree display status stored in file
-  time_t m_whenlastsaved; // When last saved
-  CString m_wholastsaved; // and by whom
-  CString m_whatlastsaved; // and by what
-  CString m_user, m_sysname; // current user & host
-  DWORD m_dwMajorMinor;
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
-  bool m_useUTF8; // turn off for none-unicode os's, e.g. win98
-  uuid_array_t m_file_uuid_array;
-  int m_nITER;
+  bool m_useUTF8; // turn off for non-unicode os's, e.g. win98
+  HeaderRecord m_hdr;
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
