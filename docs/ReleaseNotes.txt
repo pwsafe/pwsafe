@@ -40,6 +40,7 @@ highlighted.
 [1728945, 1741787] Version 2.x databases now read correctly
 [1733740] '-s' option no longer causes sporadic display of passwords
 in tree view.
+[1752318] V3.09 no longer duplicates and mislabels columns
 
 New Features for 3.09
 =====================

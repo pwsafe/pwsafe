@@ -1620,7 +1620,7 @@ DboxMain::SetColumns()
   int ioff = 3;
   cs_header = GetHeaderText(CItemData::URL);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::CTIME;
+  hdi.lParam = CItemData::URL;
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
 
