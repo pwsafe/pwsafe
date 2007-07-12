@@ -50,7 +50,6 @@ class PWSfile {
     HeaderRecord(const HeaderRecord &hdr);
     HeaderRecord &operator =(const HeaderRecord &hdr);
     
-    DWORD m_dwAppMajorMinor;
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     uuid_array_t m_file_uuid_array;
     int m_nITER; // Formally not part of the header.
@@ -61,7 +60,6 @@ class PWSfile {
     time_t m_whenlastsaved; // When last saved
     CString m_lastsavedby; // and by whom
     CString m_lastsavedon; // and by which machine
-    CString m_user, m_sysname; // current user & host
     CString m_whatlastsaved; // and by what application
     CString m_dbname, m_dbdesc; // descriptive name, description
   };

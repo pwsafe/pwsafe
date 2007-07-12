@@ -116,8 +116,7 @@ class PWScore {
   void UnlockFile(const CMyString &filename)
   {return PWSfile::UnlockFile(filename, 
                               m_lockFileHandle, m_LockCount);}
-  void SetApplicationMajorMinor(DWORD dwMajorMinor)
-  {m_dwAppMajorMinor = dwMajorMinor;}
+  void SetApplicationNameAndVersion(const CString &appName, DWORD dwMajorMinor);
   void SetReadOnly(bool state) { m_IsReadOnly = state;}
   bool IsReadOnly() const {return m_IsReadOnly;};
 
@@ -181,9 +180,10 @@ class PWScore {
 
   bool m_usedefuser;
   CMyString m_defusername;
+  CString m_AppNameAndVersion;
+  
   PWSfile::VERSION m_ReadFileVersion;
   PWSfile::HeaderRecord m_hdr;
-  DWORD m_dwAppMajorMinor; // version numbers of THIS application
   
   // the password database
   ItemList m_pwlist;
