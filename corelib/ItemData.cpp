@@ -582,15 +582,20 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
         PWHistList::iterator hiter;
         for (hiter = PWHistList.begin(); hiter != PWHistList.end();
              hiter++) {
+          const unsigned char * utf8 = NULL;
+          int utf8Len = 0;
+
           oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
           const PWHistEntry pwshe = *hiter;
           oss << "\t\t\t\t\t<changed>" << endl;
-          oss << "\t\t\t\t\t\t<date>"
-              << LPCTSTR(pwshe.changedate.Left(10))
-              << "</date>" << endl;
-          oss << "\t\t\t\t\t\t<time>"
-              << LPCTSTR(pwshe.changedate.Right(8))
-              << "</time>" << endl;
+          oss << "\t\t\t\t\t\t<date>";
+          if (utf8conv.ToUTF8(pwshe.changedate.Left(10), utf8, utf8Len))
+            oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+          oss << "</date>" << endl;
+          oss << "\t\t\t\t\t\t<time>";
+          if (utf8conv.ToUTF8(pwshe.changedate.Right(8), utf8, utf8Len))
+            oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+          oss << "</time>" << endl;
           oss << "\t\t\t\t\t</changed>" << endl;
           WriteXMLField(oss, "oldpassword", pwshe.password,
                         utf8conv, "\t\t\t\t\t");
