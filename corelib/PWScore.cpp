@@ -52,8 +52,7 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_passkey(NULL), m_passkey_len(0),
-                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
-                     m_dwAppMajorMinor(0)
+                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0)
 {
   if (!PWScore::m_session_initialized) {
 	CItemData::SetSessionKey(); // per-session initialization
@@ -76,6 +75,15 @@ PWScore::~PWScore()
     m_UHFL.clear();
   }
 }
+
+void PWScore::SetApplicationNameAndVersion(const CString &appName,
+                                           DWORD dwMajorMinor)
+{
+  int nMajor = HIWORD(dwMajorMinor);
+  int nMinor = LOWORD(dwMajorMinor);
+  m_AppNameAndVersion.Format(_T("%s V%d.%02d"), appName, nMajor, nMinor);
+}
+
 
 void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
 {
@@ -149,12 +157,7 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   // Tree Display Status is kept in header
   m_hdr.SetDisplayStatus(m_displaystatus);
-
-  // Who last saved which is kept in header
-  const SysInfo *si = SysInfo::GetInstance();
-  m_hdr.m_user = si->GetRealUser();
-  m_hdr.m_sysname = si->GetRealHost();
-  m_hdr.m_dwAppMajorMinor = m_dwAppMajorMinor;
+  m_hdr.m_whatlastsaved = m_AppNameAndVersion;
 
   out->SetHeader(m_hdr);
 

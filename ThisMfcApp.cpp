@@ -330,7 +330,7 @@ ThisMfcApp::InitInstance()
   LoadLocalizedStuff();
 
   // PWScore needs it to get into database header if/when saved
-  m_core.SetApplicationMajorMinor(m_dwMajorMinor);
+  m_core.SetApplicationNameAndVersion(AfxGetAppName(), m_dwMajorMinor);
 
 #if defined(POCKET_PC)
   SHInitExtraControls();

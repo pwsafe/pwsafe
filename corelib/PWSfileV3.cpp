@@ -9,6 +9,7 @@
 #include "UUIDGen.h"
 #include "PWSrand.h"
 #include "util.h"
+#include "SysInfo.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -404,6 +405,8 @@ const short VersionNum = 0x0302;
 
 int PWSfileV3::WriteHeader()
 {
+  int status = SUCCESS;
+
   // See formatV3.txt for explanation of what's written here and why
   unsigned int NumHashIters;
   if (m_hdr.m_nITER < MIN_HASH_ITERATIONS)
@@ -484,10 +487,7 @@ int PWSfileV3::WriteHeader()
 
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
  
-  if (numWritten <= 0) {
-    Close();
-    return FAILURE;
-  }
+  if (numWritten <= 0) { status = FAILURE; goto end; }
  
   // Write UUID
   uuid_array_t file_uuid_array;
@@ -499,28 +499,18 @@ int PWSfileV3::WriteHeader()
     uuid.GetUUID(m_hdr.m_file_uuid_array);
   }
   
-  numWritten = WriteCBC(HDR_UUID,
-                        m_hdr.m_file_uuid_array, sizeof(m_hdr.m_file_uuid_array));
-
-  if (numWritten <= 0) {
-    Close();
-    return FAILURE;
-  }
+  numWritten = WriteCBC(HDR_UUID, m_hdr.m_file_uuid_array,
+                        sizeof(m_hdr.m_file_uuid_array));
+  if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write (non default) user preferences
   numWritten = WriteCBC(HDR_NDPREFS, m_hdr.m_prefString);
-  if (numWritten <= 0) {
-    Close();
-    return FAILURE;
-  }
+  if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write out display status
   if (!m_hdr.m_file_displaystatus.IsEmpty()) {
   	numWritten = WriteCBC(HDR_DISPSTAT, m_hdr.m_file_displaystatus);
-    if (numWritten <= 0) {
-      Close();
-      return FAILURE;
-    }
+    if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
   // Write out time of this update
@@ -533,43 +523,40 @@ int PWSfileV3::WriteHeader()
 #endif
   numWritten = WriteCBC(HDR_LASTUPDATETIME,
                         (unsigned char *)&time_now, sizeof(time_now));
-  if (numWritten <= 0) {
-    Close();
-    return FAILURE;
-  } else {
-    m_hdr.m_whenlastsaved = time_now;
-  }
+  if (numWritten <= 0) { status = FAILURE; goto end; }
+  m_hdr.m_whenlastsaved = time_now;
 
   // Write out who saved it!
-  // Following DEPRECATED in format 0x0302
+  {
+    const SysInfo *si = SysInfo::GetInstance();
+    CString user = si->GetRealUser();
+    CString sysname = si->GetRealHost();
+    // Following DEPRECATED in format 0x0302
 #if 0
-  CString cs_who;
-  cs_who.Format(_T("%04x%s%s"), m_user.GetLength(), m_user, m_sysname);
-  numWritten = WriteCBC(HDR_LASTUPDATEUSERHOST, cs_who);
+    CString cs_who;
+    cs_who.Format(_T("%04x%s%s"), m_user.GetLength(), m_user, m_sysname);
+    numWritten = WriteCBC(HDR_LASTUPDATEUSERHOST, cs_who);
 #endif
-  numWritten = WriteCBC(HDR_LASTUPDATEUSER, m_hdr.m_user);
-  if (numWritten > 0)
-    numWritten = WriteCBC(HDR_LASTUPDATEHOST, m_hdr.m_sysname);
-  if (numWritten <= 0) {
-    Close();
-    return FAILURE;
-  } else {
-    m_hdr.m_lastsavedby = m_hdr.m_user;
-    m_hdr.m_lastsavedon = m_hdr.m_sysname;
+    numWritten = WriteCBC(HDR_LASTUPDATEUSER, user);
+    if (numWritten > 0)
+      numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname);
+    if (numWritten <= 0) { status = FAILURE; goto end; }
+    m_hdr.m_lastsavedby = user;
+    m_hdr.m_lastsavedon = sysname;
   }
 
   // Write out what saved it!
-  // First get the application Version number (NOT the file format version)
-  int nMajor = HIWORD(m_hdr.m_dwAppMajorMinor);
-  int nMinor = LOWORD(m_hdr.m_dwAppMajorMinor);
-  CString cs_what;
-  cs_what.Format(_T("%s V%d.%02d"), AfxGetAppName(), nMajor, nMinor);
-  numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION, cs_what);
-  if (numWritten <= 0) {
-    Close();
-    return FAILURE;
-  } else {
-    m_hdr.m_whatlastsaved = cs_what;
+  numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION,
+                        m_hdr.m_whatlastsaved);
+  if (numWritten <= 0) { status = FAILURE; goto end; }
+
+  if (!m_hdr.m_dbname.IsEmpty()) {
+    numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_dbname);
+    if (numWritten <= 0) { status = FAILURE; goto end; }
+  }
+  if (!m_hdr.m_dbdesc.IsEmpty()) {
+    numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
+    if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
   if (!m_UHFL.empty()) {
@@ -578,18 +565,18 @@ int PWSfileV3::WriteHeader()
          vi_IterUHFE != m_UHFL.end();
          vi_IterUHFE++) {
       UnknownFieldEntry &unkhfe = *vi_IterUHFE;
-      numWritten = WriteCBC(unkhfe.uc_Type, unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
-      if (numWritten <= 0) {
-        Close();
-        return FAILURE;
-      }
+      numWritten = WriteCBC(unkhfe.uc_Type,
+                            unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
+      if (numWritten <= 0) { status = FAILURE; goto end; }
     }
   }
 
   // Write zero-length end-of-record type item
   WriteCBC(HDR_END, NULL, 0);
-
-  return SUCCESS;
+ end:
+  if (status != SUCCESS)
+    Close();
+  return status;
 }
 
 int PWSfileV3::ReadHeader()
@@ -629,6 +616,7 @@ int PWSfileV3::ReadHeader()
   bool utf8status;
   unsigned char *utf8 = NULL;
   int utf8Len = 0;
+  bool found0302UserHost = false; // to resolve potential conflicts
 
   do {
     numRead = ReadCBC(fieldType, utf8, (unsigned int &)utf8Len);
@@ -673,8 +661,7 @@ int PWSfileV3::ReadHeader()
 
     case HDR_NDPREFS: /* Non-default user preferences */
       if (utf8Len != 0) {
-        if (utf8 != NULL)
-          utf8[utf8Len] = '\0';
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len,
                                          m_hdr.m_prefString);
         if (!utf8status)
@@ -684,8 +671,7 @@ int PWSfileV3::ReadHeader()
       break;
 
     case HDR_DISPSTAT: /* Tree Display Status */
-      if (utf8 != NULL)
-        utf8[utf8Len] = '\0';
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       m_hdr.m_file_displaystatus = CString(text);
       if (!utf8status)
@@ -696,8 +682,7 @@ int PWSfileV3::ReadHeader()
       if (utf8Len == 8) {
         // Handle pre-3.09 implementations that mistakenly
         // stored this as a hex value
-        if (utf8 != NULL)
-          utf8[utf8Len] = '\0';
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
         utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
         if (!utf8status)
           TRACE(_T("FromUTF8(m_whenlastsaved) failed\n"));
@@ -715,32 +700,54 @@ int PWSfileV3::ReadHeader()
       break;
 
     case HDR_LASTUPDATEUSERHOST: /* and by whom */
-      // DEPRECATED, but we still know how to read this
-      if (utf8 != NULL)
-        utf8[utf8Len] = '\0';
-      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      if (utf8status) {
-        int ulen = 0;
+        // DEPRECATED, but we still know how to read this
+      if (!found0302UserHost) { // if new fields also found, don't overwrite
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8status) {
+          int ulen = 0;
 #if _MSC_VER >= 1400
-        _stscanf_s(text, _T("%4x"), &ulen);
+          _stscanf_s(text, _T("%4x"), &ulen);
 #else
-        _stscanf(text, _T("%4x"), &ulen);
+          _stscanf(text, _T("%4x"), &ulen);
 #endif
-        m_hdr.m_lastsavedby = CString(text.Mid(4, ulen));
-        m_hdr.m_lastsavedon = CString(text.Mid(ulen + 4));
-      } else
-        TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
+          m_hdr.m_lastsavedby = CString(text.Mid(4, ulen));
+          m_hdr.m_lastsavedon = CString(text.Mid(ulen + 4));
+        } else
+          TRACE(_T("FromUTF8(m_wholastsaved) failed\n"));
+      }
       break;
 
     case HDR_LASTUPDATEAPPLICATION: /* and by what */
-      if (utf8 != NULL)
-        utf8[utf8Len] = '\0';
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       m_hdr.m_whatlastsaved = CString(text);
       if (!utf8status)
         TRACE(_T("FromUTF8(m_whatlastsaved) failed\n"));
       break;
 
+    case HDR_LASTUPDATEUSER:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
+      m_hdr.m_lastsavedby = CString(text);
+      break;
+    case HDR_LASTUPDATEHOST:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      found0302UserHost = true; // so HDR_LASTUPDATEUSERHOST won't override
+      m_hdr.m_lastsavedon = CString(text);
+      break;
+    case HDR_DBNAME:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      m_hdr.m_dbname = CString(text);
+      break;
+    case HDR_DBDESC:
+      if (utf8 != NULL) utf8[utf8Len] = '\0';
+      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+      m_hdr.m_dbdesc = CString(text);
+      break;
     case HDR_END: /* process END so not to treat it as 'unknown' */
       break;
 
@@ -763,28 +770,28 @@ int PWSfileV3::ReadHeader()
   return SUCCESS;
 }
 
-bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
-{
-  // This is written so as to support V30, V31, V3x...
+  bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
+  {
+    // This is written so as to support V30, V31, V3x...
 
-  ASSERT(FileExists(filename));
-  FILE *fd;
+    ASSERT(FileExists(filename));
+    FILE *fd;
 #if _MSC_VER >= 1400
-  _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
+    _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
 #else
-  fd = _tfopen((LPCTSTR) filename, _T("rb") );
+    fd = _tfopen((LPCTSTR) filename, _T("rb") );
 #endif
 
-  ASSERT(fd != NULL);
-  char tag[sizeof(V3TAG)];
-  fread(tag, 1, sizeof(tag), fd);
-	fclose(fd);
+    ASSERT(fd != NULL);
+    char tag[sizeof(V3TAG)];
+    fread(tag, 1, sizeof(tag), fd);
+    fclose(fd);
 
-  if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
-    v = V30;
-    return true;
-  } else {
-    v = UNKNOWN_VERSION;
-    return false;
+    if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
+      v = V30;
+      return true;
+    } else {
+      v = UNKNOWN_VERSION;
+      return false;
+    }
   }
-}
