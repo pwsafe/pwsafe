@@ -24,6 +24,12 @@
 #include "PWHistDlg.h"
 #include "ControlExtns.h"
 
+#include <shlwapi.h>
+#include <ios>
+#include <iostream>
+#include <fstream>
+using namespace std;
+
 #if defined(POCKET_PC)
 #include "pocketpc/PocketPC.h"
 #include "editdlg.h"
@@ -33,6 +39,17 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
+#endif
+
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wstring stringT;
+typedef std::wifstream ifstreamT;
+typedef std::wofstream ofstreamT;
+#else
+typedef std::string stringT;
+typedef std::ifstream ifstreamT;
+typedef std::ofstream ofstreamT;
 #endif
 
 static TCHAR PSSWDCHAR = TCHAR('*');
@@ -143,6 +160,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 	ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
   ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
+  ON_BN_CLICKED(IDC_VIEWNOTES, &CEditDlg::OnBnClickedViewnotes)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -481,20 +499,20 @@ void CEditDlg::ResizeDialog()
     IDC_STATIC_URL,
     IDC_AUTOTYPE,
     IDC_STATIC_AUTO,
-	IDC_CTIME,
-	IDC_STATIC_CTIME,
-	IDC_PMTIME,
-	IDC_STATIC_PMTIME,
-	IDC_ATIME,
-	IDC_STATIC_ATIME,
-	IDC_LTIME,
-	IDC_STATIC_LTIME,
-	IDC_RMTIME,
-	IDC_STATIC_RMTIME,
-	IDC_LTIME_CLEAR,
-	IDC_LTIME_SET,
-	IDC_STATIC_DTGROUP,
-	IDC_STATIC_DTEXPGROUP,    
+    IDC_CTIME,
+    IDC_STATIC_CTIME,
+    IDC_PMTIME,
+    IDC_STATIC_PMTIME,
+    IDC_ATIME,
+    IDC_STATIC_ATIME,
+    IDC_LTIME,
+    IDC_STATIC_LTIME,
+    IDC_RMTIME,
+    IDC_STATIC_RMTIME,
+    IDC_LTIME_CLEAR,
+    IDC_LTIME_SET,
+    IDC_STATIC_DTGROUP,
+    IDC_STATIC_DTEXPGROUP,    
   };
 
   int windows_state = m_isExpanded ? SW_SHOW : SW_HIDE;
@@ -598,4 +616,115 @@ void CEditDlg::OnEnKillfocusNotes()
     HideNotes();
   }
   UpdateData(FALSE);
+}
+
+void CEditDlg::OnBnClickedViewnotes()
+{
+  TCHAR szTempName[MAX_PATH + 1];
+  TCHAR szExecName[MAX_PATH + 1];
+  TCHAR lpPathBuffer[4096];
+  DWORD dwBufSize(4096);
+
+  // Get the temp path
+  GetTempPath(dwBufSize,   // length of the buffer
+       lpPathBuffer);      // buffer for path
+
+  // Create a temporary file.
+  GetTempFileName(lpPathBuffer, // directory for temp files
+      _T("NTE"),                // temp file name prefix
+      0,                        // create unique name
+      szTempName);              // buffer for name
+
+  // Open it and put the Notes field in it
+  ofstreamT ofs(szTempName);
+  if (ofs.bad())
+    return;
+
+  ofs << LPCTSTR(m_realnotes) << std::endl;
+  ofs.flush();
+  ofs.close();
+
+  // Find out the users default editor for "txt" files
+  DWORD dwSize(MAX_PATH);
+  HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, _T(".txt"), _T("Open"),
+    szExecName, &dwSize);
+  if (int(stat) != S_OK) {  
+#ifdef _DEBUG
+    AfxMessageBox(_T("oops"));
+#endif
+    return;
+  }
+
+  // Create an Edit process
+  STARTUPINFO si;
+  PROCESS_INFORMATION pi;
+
+  ZeroMemory( &si, sizeof(si) );
+  si.cb = sizeof(si);
+  ZeroMemory( &pi, sizeof(pi) );
+
+  DWORD dwCreationFlags(0);
+#ifdef _UNICODE
+  dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
+#endif
+
+  CString cs_CommandLine;
+
+  // Make the command line = "<program>" "file" 
+  cs_CommandLine.Format(_T("\"%s\" \"%s\""), szExecName, szTempName);
+  int ilen = cs_CommandLine.GetLength();
+  LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
+
+  if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
+       NULL, lpPathBuffer, &si, &pi)) {
+    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+  }
+
+  // Wait until child process exits.
+  WaitForSingleObject(pi.hProcess, INFINITE);
+
+  // Close process and thread handles. 
+  CloseHandle(pi.hProcess);
+  CloseHandle(pi.hThread);
+  cs_CommandLine.ReleaseBuffer();
+
+  // Now get what the user saved in this file and put it back into Notes field
+  ifstreamT ifs(szTempName);
+  if (ifs.bad())
+    return;
+
+  m_realnotes.Empty();
+  stringT linebuf, note;
+
+  // Get first line
+  getline(ifs, note, TCHAR('\n'));
+
+  // Now get the rest (if any)
+  while (!ifs.eof()) {
+    getline(ifs, linebuf, TCHAR('\n'));
+    note += _T("\r\n");
+    note += linebuf;
+  }
+
+  ifs.close();
+
+  // Set Notes field
+  m_realnotes = note.c_str();
+
+  // Find the length and now overwrite the temp file
+  int ifilesize = m_realnotes.GetLength();
+  ofstreamT xfs(szTempName);
+  if (xfs.bad())
+    return;
+
+  memset(szExecName, 0x00, MAX_PATH * sizeof(TCHAR));
+  while (ifilesize > 0) {
+    xfs.write(szExecName, MAX_PATH);
+    ifilesize -= MAX_PATH;
+  }
+
+  xfs.close();
+
+  // Delete temporary file
+  _tremove(szTempName);
 }
