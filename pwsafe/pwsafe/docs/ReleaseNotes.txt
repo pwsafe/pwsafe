@@ -52,6 +52,8 @@ preferences file, via new command line options.
 [1751451] Add extra warning when deleting entire group, including the 
 number of entries that will be deleted.  Unlike warning for single entries,
 the user cannot turn this warning off.
+[1752896} Add ability to edit an entry's notes field using user's default 
+text editor.
 
 Changes to Existing Features in 3.09
 ====================================
