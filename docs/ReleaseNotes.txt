@@ -49,6 +49,9 @@ New Features for 3.09
 to load and store preferences, as well as specify an alternate
 preferences file, via new command line options.
 [] Implement "Advanced" option for Find
+[1751451] Add extra warning when deleting entire group, including the 
+number of entries that will be deleted.  Unlike warning for single entries,
+the user cannot turn this warning off.
 
 Changes to Existing Features in 3.09
 ====================================
