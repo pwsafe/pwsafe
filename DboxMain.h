@@ -453,6 +453,7 @@ private:
   void RestoreDisplayStatus(bool bUnMinimize = false);
   void GroupDisplayStatus(std::vector<bool> &displaystatus, bool bSet);
   void MakeOrderedItemList(OrderedItemList &il);
+  int CountChildren(HTREEITEM hStartItem);
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);
