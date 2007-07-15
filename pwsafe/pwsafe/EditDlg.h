@@ -98,7 +98,6 @@ public:
 
   afx_msg void OnEnSetfocusNotes();
   afx_msg void OnEnKillfocusNotes();
-  afx_msg void OnBnClickedViewnotes();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

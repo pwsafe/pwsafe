@@ -52,7 +52,7 @@ BOOL
 CConfirmDeleteDlg::OnInitDialog(void)
 {
   CString cs_text;
-  if (m_numchildren > 0) {
+  if (m_numchildren > 1) {
     cs_text.Format(IDS_NUMCHILDREN, m_numchildren);
     GetDlgItem(IDC_DELETECHILDREN)->EnableWindow(TRUE);
     GetDlgItem(IDC_DELETECHILDREN)->SetWindowText(cs_text);
