@@ -304,16 +304,14 @@
 #define IDC_SHOW_IDENTICAL_ENTRIES      1262
 #define IDC_STATIC_UNK_FIELDS           1263
 #define IDC_DELETECHILDREN              1264
-#define IDC_BUTTON1                     1265
-#define IDC_VIEWNOTES                   1265
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        240
+#define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1266
+#define _APS_NEXT_CONTROL_VALUE         1265
 #define _APS_NEXT_SYMED_VALUE           129
 #endif
 #endif
