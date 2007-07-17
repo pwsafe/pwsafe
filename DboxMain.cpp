@@ -924,7 +924,7 @@ DboxMain::OnPasswordSafeWebsite()
 {
   HINSTANCE stat = ::ShellExecute(NULL, NULL, _T("http://passwordsafe.sourceforge.net/"),
                                   NULL, _T("."), SW_SHOWNORMAL);
-  if (int(stat) < 32) {
+  if (int(stat) <= 32) {
 #ifdef _DEBUG
     AfxMessageBox(_T("oops"));
 #endif
