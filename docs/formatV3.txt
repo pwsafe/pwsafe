@@ -1,5 +1,5 @@
-PasswordSafe database format description version 3
---------------------------------------------------
+PasswordSafe database format description version 3.02
+-----------------------------------------------------
 
 Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
 All rights reserved. Use of the code is allowed under the Artistic
@@ -8,17 +8,35 @@ code, or available from
 http://www.opensource.org/licenses/artistic-license.php 
 
 
-1. Introduction: The format described below has the following goals:
-a. To fix a minor design flaw in previous versions of the PasswordSafe
-database format.
-b. To replace the underlying cryptographic functions with more advanced
-versions.
-c. To allow detection of a truncated or corrupted/tampered database.
+1. Introduction: This document defines a file format for the secure
+storage of passwords and related data. The format is designed
+according to current cryptographic best practices, and is beleived to
+be secure, in the sense that without knowledge of the master
+passphrase, only a brute-force attack or a flaw in the underlying
+cryptographic algorithm will result in unauthorized access to the
+data.
 
-Meeting these goals is impossible without breaking compatibility: The new
-format will NOT be compatible with existing implementations.
+1.1 Design Goals: The PasswordSafe database format is designed to be
+secure, extensible and platform-independent.
 
-2. Format: A V3 format PasswordSafe will be structured as follows:
+1.2 History: This specification is an evolution of previous
+formats. The main differences between version 3 of the format and
+previous versions are:
+1.2.1. This version addresses a minor design flaw in previous versions
+of the PasswordSafe database format.
+1.2.3. This version replaces the underlying cryptographic functions
+with more advanced versions.
+1.2.4. This version allows the detection of a truncated or
+corrupted/tampered database.
+
+Meeting these goals is impossible without breaking compatibility: This
+format is NOT compatible with previous (major) versions. Note,
+however, that since the data stored in previous versions is a proper
+subset of the data described here, implementers may read a database
+written in an older version and store the result in the format
+described here.
+
+2. Format: A V3 format PasswordSafe is structured as follows:
 
     TAG|SALT|ITER|H(P')|B1|B2|B3|B4|IV|HDR|R1|R2|...|Rn|EOF|HMAC
 
@@ -26,17 +44,14 @@ Where:
 
 2.1 TAG is the sequence of 4 ASCII characters "PWS3". This is to serve as a
 quick way for the application to identify the database as a PasswordSafe
-version 3 file. This tag has no cryptographic value. Changing or removing
-it will cause the database to be unreadable, and adding it to a non-
-database file will only cause the application to attempt to validate the
-passphrase as described below.
+version 3 file. This tag has no cryptographic value.
 
 2.1 SALT is a 256 bit random value, generated at file creation time.
 
-2.3 P' is the "stretched key" of the user's passphrase and the SALT, as
-defined by the hash-function-based key stretching algorithm in
-http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
-as the hash function, and ITER iterations (at least 2048, i.e., t = 11).
+2.3 P' is the "stretched key" generated from the user's passphrase and
+the SALT, as defined in by the hash-function-based key stretching
+algorithm in [KEYSTRETCH] (Section 4.1), with SHA-256 [SHA256] as the
+hash function, and ITER iterations (at least 2048, i.e., t = 11).
 
 2.4 ITER is the number of iterations on the hash function to calculate P',
 stored as a 32 bit little-endian value. This value is stored here in order
@@ -45,12 +60,13 @@ to future-proof the file format against increases in processing power.
 2.5 H(P') is SHA-256(P'), and is used to verify that the user has the
 correct passphrase.
 
-2.6 B1 and B2 are two 128-bit blocks encrypted with Twofish using P' as the
-key, in ECB mode. These blocks contain the 256 bit random key K that is
-used to encrypt the actual records. (This has the property that there is no
-known or guessable information on the plaintext encrypted with the
-passphrase-derived key that allows an attacker to mount an attack that
-bypasses the key stretching algorithm.)
+2.6 B1 and B2 are two 128-bit blocks encrypted with Twofish [TWOFISH]
+using P' as the key, in ECB mode. These blocks contain the 256 bit
+random key K that is used to encrypt the actual records. (This has the
+property that there is no known or guessable information on the
+plaintext encrypted with the passphrase-derived key that allows an
+attacker to mount an attack that bypasses the key stretching
+algorithm.)
 
 2.7 B3 and B4 are two 128-bit blocks encrypted with Twofish using P' as the
 key, in ECB mode. These blocks contain the 256 bit random key L that is
@@ -64,14 +80,16 @@ Implementation Note: K and L must NOT be related.
 as the encryption key.
 
 2.9.1 HDR: The database header. The header consists of one or more typed
-fields (as defined in section 3.1), terminated by the 'END' type field. The
-version number field is mandatory.
+fields (as defined in section 3.2), terminated by the 'END' type field. The
+version number field is mandatory. Aside from the 'END' field, no
+order is assumed on the field types.
 
 2.9.2 R1..Rn: The actual database records. Each record consists of one or
 more typed fields (as defined in Section 3.2), terminated by the 'END' type
 field. The UUID, Title, and Password fields are mandatory. All non-
 mandatory fields may either be absent or have zero length. When a field is
-absent or zero-length, its default value shall be used.
+absent or zero-length, its default value shall be used. Aside from the
+'END' field, no order is assumed on the field types.
 
 2.10 EOF: The ASCII characters "PWS3-EOFPWS3-EOF" (note that this is
 exactly one block long), unencrypted. This is an implementation convenience
@@ -96,14 +114,16 @@ representation.
 
 3.1 Data representations
 3.1.1 UUID
- The UUID data type is 16 bytes long, as defined in RFC4122. Windows
- has functions for this, and the RFC has a sample implementation. 
+ The UUID data type is 16 bytes long, as defined in RFC4122. Microsoft
+ Windows has functions for this, and the RFC has a sample
+ implementation.
 
 3.1.2 Text
- Text is represented in UTF-8 encoding, with no byte order marker
- (BOM) and no end-of-string mark (e.g., null byte). Note that the
- latter isn't neccessary since the length of the field is provided
- explicitly.
+ Text is represented in UTF-8 encoding (as defined in RFC3629), with
+ no byte order marker (BOM) and no end-of-string mark (e.g., null
+ byte). Note that the latter isn't neccessary since the length of the
+ field is provided explicitly. Note that ALL fields described as
+ "text" are UTF-8 encoded unless explicitly stated otherwise.
 
 3.1.3 Time
  Timestamps are stored as 32 bit, little endian, unsigned integers,
@@ -111,8 +131,10 @@ representation.
  (This is equivalent to the time_t type on Windows and POSIX. On the
  Macintosh, the value needs to be adjusted by the constant value 2082844800
  to account for the different epoch of its time_t type.)
+ Note that future versions of this format may allow time to be
+ specifed in 64 bits as well.
 
-3.2 Field types for database header (based on the v2 format):
+3.2 Field types for the PasswordSafe database header:
                                                  Currently
 Name                        Value        Type    Implemented      Comments
 --------------------------------------------------------------------------
@@ -121,18 +143,23 @@ UUID                        0x01        UUID          Y              [2]
 Non-default preferences     0x02        Text          Y              [3]
 Tree Display Status         0x03        Text          Y              [4]
 Timestamp of last save      0x04        time_t        Y              [5]
-Who performed last save     0x05        Text          Y              [6]
+Who performed last save     0x05        Text          Y   [DEPRECATED 6]
 What performed last save    0x06        Text          Y              [7]
-End of Entry                0xff        [empty]       Y              [8]
+Last saved by user          0x07        Text          Y              [8]
+Last saved on host          0x08        Text          Y              [9]
+Database Name               0x09        Text          Y              [10]
+Database Description        0x0a        Text          Y              [11]
+End of Entry                0xff        [empty]       Y              [12]
 
 [1] The version number of the database format. For this version, the value
-is 0x0301 (stored in little-endian format, that is, 0x01, 0x03).
+is 0x0302 (stored in little-endian format, that is, 0x02, 0x03).
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
+PasswordSafe V3.09 introduced Format 0x0302
 
 [2] A universally unique identifier is needed in order to synchronize
-databases, i.e., between a handheld pocketPC device and a
-PC. Representation is as described in Section 3.1.1. 
+databases, e.g., between a handheld pocketPC device and a
+PC. Representation is as described in Section 3.1.1.
 
 [3] Non-default preferences are encoded in a string as follows: The string
 is of the form "X nn vv X nn vv..." Where X=[BIS] for binary, integer and
@@ -145,26 +172,59 @@ details.
 expanded state of the tree display when the database was saved. This can
 be applied at database open time, if the user wishes, so that the tree is
 displayed as it was. Alternatively, it can be ignored and the tree
-displayed completely expanded or collapsed. Implemented in V3.03 and later.
+displayed completely expanded or collapsed. Note that the mapping of
+the string to the display state is implementation-specific. Introduced
+in format 0x0301.
 
-[5] Representation is as described in Section 3.1.3
+[5] Representation is as described in Section 3.1.3. Note that prior
+to PasswordSafe 3.09, this field was mistakenly represented as an
+eight-byte hexadecimal ASCII string. Implementations SHOULD attempt to
+parse 8-byte long timestamps as a hexadecimal ASCII string
+representation of the timestamp value.
 
-[6] Text saved in the format:: nnnnu..uh..h, where: 
+[6] Text saved in the format: nnnnu..uh..h, where: 
     nnnn = 4 hexadecimal digits giving length of following user name field
     u..u = user name
     h..h = host computer name
+    Note: As of format 0x0302, this field is deprecated, and should be
+    replaced by fields 0x07 and 0x08. In databases prior to format
+    0x0302, this field should be maintained. 0x0302 and later may
+    either maintain this field in addition to fields 0x07 and 0x08,
+    for backwards compatability, or not write this field. If both this
+    field and 0x07, 0x08 exist, they MUST represent the same values.
 
 [7] Free form text giving the application that saved the database.
-PasswordSafe will use the text "Password Safe Vnn.mm", where nn and mm are the
-major and minor version numbers ("Password Safe" is the application name defined 
-in the projects resource file as string "AFX_IDS_APP_TITLE").  The major version
-will contain only the significant digits whereas the minor version will be padded
-to the left with zeroes e.g. "Password Safe V3.02".
+For example, the Windows PasswordSafe application will use the text
+"Password Safe Vnn.mm", where nn and mm are the major and minor
+version numbers. The major version will contain only the significant
+digits whereas the minor version will be padded to the left with
+zeroes e.g. "Password Safe V3.02".
 
-[8] An explicit end of entry field is useful for supporting new fields
+[8] Text containing the username (e.g., login, userid, etc.) of the
+user who last saved the database, as determined by the appropriate
+operating-system dependent function. This field was introduced in
+format version 0x0302, as a replacement for field 0x05. See Comment
+[6].
+
+[9] Text containing the hostname (e.g., machine name, hostid, etc.) of the
+machine on which the database was last saved, as determined by the
+appropriate operating-system dependent function. This field was
+introduced in format version 0x0302, as a replacement for field
+0x05. See Comment [6].
+
+[10] Database name. A logical name for a database which can be used by
+applications in place of the possibly lengthy filepath notion. Note
+that this field SHOULD be limited to what can be displayed in a single
+line. This field was introduced in format version 0x0302.
+
+[11] Database Description. A purely informative description concerning
+the purpose or other practical use of the database. This field was
+introduced in format version 0x0302.
+
+[12] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
-3.3 Field types for database Records (based on the v2 format):
+3.3 Field types for database Records:
                                                  Currently
 Name                        Value        Type    Implemented      Comments
 --------------------------------------------------------------------------
@@ -196,9 +256,9 @@ should be "escaped" by the application.
 
 [3] Representation is as described in Section 3.1.3.
 
-[4] This will be updated whenever any part of this entry is accessed i.e.
-to copy its username, password or notes to the clipboard; to perform
-autotype or to browse to url.
+[4] This will be updated whenever any part of this entry is accessed
+i.e., to copy its username, password or notes to the clipboard; to
+perform autotype or to browse to url.
 
 [5] This will allow the user to enter a lifetime for an entry. The
 application can then prompt the user about passwords that need to be
@@ -245,5 +305,38 @@ in the past and has then been disabled but the history hasn't been cleared.
 
 [11] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
+
+4. Extensibility
+
+4.1 Forward compatability: Implementations of this format SHOULD NOT
+discard or report an error when encountering a filed of an unknown
+type. Rather, the field(s) type and data should be read, and perserved
+when the database is saved.
+
+4.2 Field type identifiers: This document specifies the field type
+identifiers for the current version of the format. Compliant
+implementations MUST support the mandatory fields, and SHOULD support
+the other fields described herein. Future versions of the format may
+specify other type identifiers.
+4.2.1 Application-unique type identifiers: The type identifiers
+0xc0-0xdf are available for application developers on a first-come
+first-serve basis. Application developers interested in reserving a
+type identifier for their application should contact the maintainer of
+this document (Currently the PasswordSafe project administrator at
+SourceForge).
+4.2.2 Application-specific type identifiers: The type identifiers
+0xe0-0xfe are reserved for implementation-specific purposes, and will
+NOT be specified in this or future versions of the format
+description.
+4.2.3 All unassigned identifiers except as listed in the previous two
+subsections are reserved, and should not be used by other
+implementations of this format specification in the interest of
+interoperablity.
+
+5. References:
+[TWOFISH] http://www.schneier.com/paper-twofish-paper.html
+[SHA256]
+http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
+[KEYSTRETCH] http://www.schneier.com/paper-low-entropy.pdf
 
 End of Format description.

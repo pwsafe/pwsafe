@@ -69,6 +69,8 @@ class CFindDlg : public SUPERCLASS
 #endif
 	//}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+  // override following to reset idle timeout on any event
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
  private:
   CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind);

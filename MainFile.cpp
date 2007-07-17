@@ -1333,9 +1333,9 @@ DboxMain::OnProperties()
 
   dlg.m_database = CString(m_core.GetCurFile());
 
-  int nmajor = m_core.GetCurrentMajorVersion();
-  int nminor = m_core.GetCurrentMinorVersion();
-  dlg.m_databaseformat.Format(_T("%d.%02d"), nmajor, nminor);
+  dlg.m_databaseformat.Format(_T("%d.%02d"),
+                              m_core.GetHeader().m_nCurrentMajorVersion,
+                              m_core.GetHeader().m_nCurrentMinorVersion);
 
   CStringArray aryGroups;
   app.m_core.GetUniqueGroups(aryGroups);
@@ -1343,43 +1343,29 @@ DboxMain::OnProperties()
 
   dlg.m_numentries.Format(_T("%d"), m_core.GetNumEntries());
 
-  CString wls = m_core.GetWhenLastSaved();
-  if (wls.GetLength() != 8) {
+  time_t twls = m_core.GetHeader().m_whenlastsaved;
+  if (twls == 0) {
 	  dlg.m_whenlastsaved.LoadString(IDS_UNKNOWN);
 	  dlg.m_whenlastsaved.Trim();
   } else {
-	  long t;
-	  TCHAR *lpszWLS = wls.GetBuffer(9);
-#if _MSC_VER >= 1400
-	  int iread = _stscanf_s(lpszWLS, _T("%8x"), &t);
-#else
-	  int iread = _stscanf(lpszWLS, _T("%8x"), &t);
-#endif
-	  wls.ReleaseBuffer();
-	  ASSERT(iread == 1);
     dlg.m_whenlastsaved =
-          CString(PWSUtil::ConvertToDateTimeString((time_t) t, TMC_EXPORT_IMPORT));
+          CString(PWSUtil::ConvertToDateTimeString(twls, TMC_EXPORT_IMPORT));
   }
 
-  wls = m_core.GetWhoLastSaved();
-  if (wls.GetLength() == 0) {
+  if (m_core.GetHeader().m_lastsavedby.IsEmpty() &&
+      m_core.GetHeader().m_lastsavedon.IsEmpty()) {
 	  dlg.m_wholastsaved.LoadString(IDS_UNKNOWN);
 	  dlg.m_whenlastsaved.Trim();
   } else {
-	  int ulen;
-	  TCHAR *lpszWLS = wls.GetBuffer(wls.GetLength() + 1);
-#if _MSC_VER >= 1400
-	  int iread = _stscanf_s(lpszWLS, _T("%4x"), &ulen);
-#else
-	  int iread = _stscanf(lpszWLS, _T("%4x"), &ulen);
-#endif
-    wls.ReleaseBuffer();
-	  ASSERT(iread == 1);
-    dlg.m_wholastsaved.Format(_T("%s on %s"), wls.Mid(4, ulen), wls.Mid(ulen + 4));
+    CString user = m_core.GetHeader().m_lastsavedby.IsEmpty() ?
+      _T("?") : m_core.GetHeader().m_lastsavedby;
+    CString host = m_core.GetHeader().m_lastsavedon.IsEmpty() ?
+      _T("?") : m_core.GetHeader().m_lastsavedon;
+    dlg.m_wholastsaved.Format(_T("%s on %s"), user, host);
   }
 
-  wls = m_core.GetWhatLastSaved();
-  if (wls.GetLength() == 0) {
+  CString wls = m_core.GetHeader().m_whatlastsaved;
+  if (wls.IsEmpty()) {
     dlg.m_whatlastsaved.LoadString(IDS_UNKNOWN);
     dlg.m_whenlastsaved.Trim();
   } else
@@ -1399,17 +1385,22 @@ DboxMain::OnProperties()
      file_uuid_array[12], file_uuid_array[13], file_uuid_array[14], file_uuid_array[15]);
   dlg.m_file_uuid = wls;
 
+  int num = m_core.GetNumRecordsWithUnknownFields();
+  if (num != 0 || m_core.HasHeaderUnknownFields()) {
   const CString cs_Yes(MAKEINTRESOURCE(IDS_YES));
   const CString cs_No(MAKEINTRESOURCE(IDS_NO));
-  const CString cs_HdrYesNo = m_core.HasHeaderUnknownFields() ? cs_Yes : cs_No;
+    const CString cs_HdrYesNo = m_core.HasHeaderUnknownFields() ?
+      cs_Yes : cs_No;
 
   dlg.m_unknownfields.Format(IDS_UNKNOWNFIELDS, cs_HdrYesNo);
-  int num = m_core.GetNumRecordsWithUnknownFields();
   if (num == 0)
     dlg.m_unknownfields += cs_No + _T(")");
   else {
     wls.Format(_T("%d"), num);
     dlg.m_unknownfields += wls +_T(")");
+  }
+  } else {
+    dlg.m_unknownfields.LoadString(IDS_NONE);
   }
 
   dlg.DoModal();

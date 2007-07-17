@@ -428,19 +428,53 @@ static void WriteXMLField(ostream &os, const char *fname,
 {
   const unsigned char * utf8 = NULL;
   int utf8Len = 0;
-
+  int p = value.Find(_T("]]>")); // special handling required
+  if (p == -1) {
+    // common case
   os << tabs << "<" << fname << "><![CDATA[";
   if(utf8conv.ToUTF8(value, utf8, utf8Len))
       os.write(reinterpret_cast<const char *>(utf8), utf8Len);
     else
       os << "Internal error - unable to convert field to utf-8";
   os << "]]></" << fname << ">" << endl;
+  } else {
+    // value has "]]>" sequence(s) that need(s) to be escaped
+    // Each "]]>" splits the field into two CDATA sections, one ending with
+    // ']]', the other starting with '>'
+    os << tabs << "<" << fname << ">";
+    int from = 0, to = p + 2;
+    do {
+      CMyString slice = value.Mid(from, (to - from));
+      os << "<![CDATA[";
+      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
+        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      else
+        os << "Internal error - unable to convert field to utf-8";
+      os << "]]><![CDATA[";
+      from = to;
+      p = value.Find(_T("]]>"), from); // are there more?
+      if (p == -1) {
+        to = value.GetLength();
+        slice = value.Mid(from, (to - from));
+      } else {
+        to = p + 2;
+        slice = value.Mid(from, (to - from));
+        from = to;
+        to = value.GetLength();
+      }
+      if(utf8conv.ToUTF8(slice, utf8, utf8Len))
+        os.write(reinterpret_cast<const char *>(utf8), utf8Len);
+      else
+        os << "Internal error - unable to convert field to utf-8";
+      os << "]]>";
+    } while (p != -1);
+    os << "</" << fname << ">" << endl;
+  } // special handling of "]]>" in value.
 }
 
 string CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
-  // TODO: need to handle entity escaping of values.
   oss << "\t<entry id=\"" << id << "\">" << endl;
 
   CMyString tmp;
@@ -548,15 +582,20 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
         PWHistList::iterator hiter;
         for (hiter = PWHistList.begin(); hiter != PWHistList.end();
              hiter++) {
+          const unsigned char * utf8 = NULL;
+          int utf8Len = 0;
+
           oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
           const PWHistEntry pwshe = *hiter;
           oss << "\t\t\t\t\t<changed>" << endl;
-          oss << "\t\t\t\t\t\t<date>"
-              << LPCTSTR(pwshe.changedate.Left(10))
-              << "</date>" << endl;
-          oss << "\t\t\t\t\t\t<time>"
-              << LPCTSTR(pwshe.changedate.Right(8))
-              << "</time>" << endl;
+          oss << "\t\t\t\t\t\t<date>";
+          if (utf8conv.ToUTF8(pwshe.changedate.Left(10), utf8, utf8Len))
+            oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+          oss << "</date>" << endl;
+          oss << "\t\t\t\t\t\t<time>";
+          if (utf8conv.ToUTF8(pwshe.changedate.Right(8), utf8, utf8Len))
+            oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+          oss << "</time>" << endl;
           oss << "\t\t\t\t\t</changed>" << endl;
           WriteXMLField(oss, "oldpassword", pwshe.password,
                         utf8conv, "\t\t\t\t\t");
@@ -811,21 +850,18 @@ CItemData::SetTime(int whichtime, time_t t)
 void
 CItemData::SetTime(int whichtime, const CString &time_str)
 {
-    if (time_str.GetLength() == 0) {
-      SetTime(whichtime, (time_t)0);
-      return;
-    }
-  
-    time_t t;
+  time_t t = 0;
 
-    if (!PWSUtil::VerifyImportDateTimeString(time_str, t))
-      if (!PWSUtil::VerifyXMLDateTimeString(time_str, t))
-        if (!PWSUtil::VerifyASCDateTimeString(time_str, t))
-      return;
-
-    if (t == (time_t)-1)	// error despite all our verification!
-      return;
-
+  if (time_str.IsEmpty()) {
+    SetTime(whichtime, t);
+  } else if (time_str == _T("now")) {
+   	time(&t);
+    SetTime(whichtime, t);
+  } else if ((PWSUtil::VerifyImportDateTimeString(time_str, t) ||
+              PWSUtil::VerifyXMLDateTimeString(time_str, t) ||
+              PWSUtil::VerifyASCDateTimeString(time_str, t)) &&
+             (t != (time_t)-1)	// checkerror despite all our verification!
+             )
     SetTime(whichtime, t);
 }
 

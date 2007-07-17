@@ -154,9 +154,9 @@ namespace PWSUtil {
   void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   size_t strLength(const LPCTSTR str);
   long fileLength(FILE *fp);
-  bool VerifyASCDateTimeString(const CString time_str, time_t &t);
-  bool VerifyXMLDateTimeString(const CString time_str, time_t &t);
-  bool VerifyImportDateTimeString(const CString time_str, time_t &t);
+  bool VerifyASCDateTimeString(const CString &time_str, time_t &t);
+  bool VerifyXMLDateTimeString(const CString &time_str, time_t &t);
+  bool VerifyImportDateTimeString(const CString &time_str, time_t &t);
   CMyString ConvertToDateTimeString(const time_t &t, const int result_format);
   bool ToClipboard(const CMyString &data,
                           unsigned char clipboard_digest[SHA256::HASHLEN],

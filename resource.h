@@ -302,6 +302,8 @@
 #define IDC_COMPAREORIGINALDB           1260
 #define IDC_COMPARECOMPARISONDB         1261
 #define IDC_SHOW_IDENTICAL_ENTRIES      1262
+#define IDC_STATIC_UNK_FIELDS           1263
+#define IDC_DELETECHILDREN              1264
 
 // Next default values for new objects
 // 
@@ -309,7 +311,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1263
+#define _APS_NEXT_CONTROL_VALUE         1265
 #define _APS_NEXT_SYMED_VALUE           129
 #endif
 #endif

@@ -169,6 +169,7 @@ public:
   bool ExitRequested() const {return m_inExit;}
   void SetCapsLock(const bool bState);
   void AutoResizeColumns();
+  void ResetIdleLockCounter();
   void Delete(bool inRecursion = false);
   int AddEntry(const CItemData &cinew);
   void DoItemDoubleClick();
@@ -460,7 +461,6 @@ private:
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
-  void ResetIdleLockCounter();
   bool DecrementAndTestIdleLockCounter();
   void ToClipboard(const CMyString &data);
   void ExtractFont(CString& str, LOGFONT *ptreefont);
@@ -473,6 +473,7 @@ private:
   void RestoreDisplayStatus(bool bUnMinimize = false);
   void GroupDisplayStatus(std::vector<bool> &displaystatus, bool bSet);
   void MakeOrderedItemList(OrderedItemList &il);
+  int CountChildren(HTREEITEM hStartItem);
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);

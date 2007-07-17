@@ -295,5 +295,7 @@
 #define IDS_COPYUNKNOWNFIELDS           5467
 #define IDS_FINDX                       5468
 #define IDS_NOFIELDSFORSEARCH           5469
-#define IDS_CPF_TVDD                    5470
+#define IDS_NUMCHILDREN                 5470
+#define IDS_DELITEM                     5471
+#define IDS_CPF_TVDD                    5472
 

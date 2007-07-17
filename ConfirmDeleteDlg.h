@@ -28,12 +28,13 @@ class CConfirmDeleteDlg : public SUPERCLASS
 
 // Construction
 public:
-   CConfirmDeleteDlg(CWnd* pParent = NULL);   // standard constructor
+   CConfirmDeleteDlg(CWnd* pParent = NULL, int numchildren = 0);
 private:
 // Dialog Data
    //{{AFX_DATA(CConfirmDeleteDlg)
    enum { IDD = IDD_CONFIRMDELETE_DIALOG };
    bool	m_dontaskquestion;
+   int m_numchildren;
    //}}AFX_DATA
 
 // Overrides
@@ -47,6 +48,7 @@ protected:
 protected:
    // Generated message map functions
    //{{AFX_MSG(CConfirmDeleteDlg)
+   virtual BOOL OnInitDialog();
    virtual void OnCancel();
    virtual void OnOK();
    //}}AFX_MSG

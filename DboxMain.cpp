@@ -936,7 +936,7 @@ DboxMain::OnPasswordSafeWebsite()
 {
   HINSTANCE stat = ::ShellExecute(NULL, NULL, _T("http://passwordsafe.sourceforge.net/"),
                                   NULL, _T("."), SW_SHOWNORMAL);
-  if (int(stat) < 32) {
+  if (int(stat) <= 32) {
 #ifdef _DEBUG
     AfxMessageBox(_T("oops"));
 #endif
@@ -2008,6 +2008,27 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &il)
       }
     }
   }
+}
+
+// Returns the number of children of this group
+int DboxMain::CountChildren(HTREEITEM hStartItem)
+{
+  // Walk the Tree!
+  int num = 0;
+  if (hStartItem != NULL && m_ctlItemTree.ItemHasChildren(hStartItem)) {
+    HTREEITEM hChildItem = m_ctlItemTree.GetChildItem(hStartItem);
+
+    while (hChildItem != NULL) {
+      if (m_ctlItemTree.ItemHasChildren(hChildItem)) {
+        num += CountChildren(hChildItem);
+        hChildItem = m_ctlItemTree.GetNextSiblingItem(hChildItem);
+      } else {
+        hChildItem = m_ctlItemTree.GetNextSiblingItem(hChildItem);
+        num++;
+      }
+    }
+  }
+  return num;
 }
 
 void

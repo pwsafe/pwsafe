@@ -45,7 +45,7 @@ BEGIN
     IDSC_IMPINVALIDINPUT    "\nInvalid input on line %d.  Number of fields separated by '%c' is not as expected."
     IDSC_IMPINVALIDPWH      "\nError in Password History on line %d: "
     IDSC_IMPORTFAILURE      "\nInternal error. Import failed.\n\nNo records imported."
-    IDSC_IMPORTHDR          "%d column headers were recognised and processed but %d ignored or missing.\n\n"
+    IDSC_IMPORTHDR          "Found %d known column headers\n"
     IDSC_IMPORTMISSINGCOLS  "\nEither or both of the Group/Title and Password columns are missing.\n\nNo records imported."
     IDSC_IMPORTNOCOLS       "\nColumn header row not recognised as first record.\n\nNo records imported."
 END

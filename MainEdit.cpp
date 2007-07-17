@@ -176,14 +176,30 @@ DboxMain::OnAddGroup()
 void
 DboxMain::OnDelete() 
 {
-  const bool dontaskquestion = PWSprefs::GetInstance()->
+  bool dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
 
   bool dodelete = true;
+  int num_children = 0;
+
+  if (m_ctlItemTree.IsWindowVisible()) {
+    HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
+    if (hStartItem != NULL) {
+      CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
+      if (ci == NULL) {  // group node
+        dontaskquestion = false; // ALWAYS ask if deleting a group
+        // Find number of child items
+        num_children = 0;
+        if (m_ctlItemTree.ItemHasChildren(hStartItem)) {
+          num_children = CountChildren(hStartItem);
+        }  // if has children
+      }
+    } 
+  }
     
   //Confirm whether to delete the item
   if (!dontaskquestion) {
-    CConfirmDeleteDlg deleteDlg(this);
+    CConfirmDeleteDlg deleteDlg(this, num_children);
     int rc = deleteDlg.DoModal();
     if (rc == IDCANCEL) {
       dodelete = false;
