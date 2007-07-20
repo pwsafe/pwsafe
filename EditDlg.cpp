@@ -23,6 +23,11 @@
 #include "ExpDTDlg.h"
 #include "PWHistDlg.h"
 #include "ControlExtns.h"
+#include "ExtThread.h"
+
+#include <shlwapi.h>
+#include <fstream>
+using namespace std;
 
 #if defined(POCKET_PC)
 #include "pocketpc/PocketPC.h"
@@ -33,6 +38,17 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
+#endif
+
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wstring stringT;
+typedef std::wifstream ifstreamT;
+typedef std::wofstream ofstreamT;
+#else
+typedef std::string stringT;
+typedef std::ifstream ifstreamT;
+typedef std::ofstream ofstreamT;
 #endif
 
 static TCHAR PSSWDCHAR = TCHAR('*');
@@ -55,11 +71,11 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
     CS_ON.LoadString(IDS_ON);
     CS_OFF.LoadString(IDS_OFF);
 #if defined(POCKET_PC)
-	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
-	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
+  CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
+  CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
 #else
-	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
-	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
+  CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
+  CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
 #endif
   }
 
@@ -92,10 +108,14 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
     ci->GetLTime(m_tttLTime);
 
   m_oldlocLTime = m_locLTime;
+
+  m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
+                              _T("! &Edit externally"));
 }
 
 CEditDlg::~CEditDlg()
 {
+  delete m_pex_notes;
 }
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
@@ -120,7 +140,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
-  DDX_Control(pDX, IDC_NOTES, m_ex_notes);
+  DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
@@ -128,21 +148,23 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
-	ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
-	ON_BN_CLICKED(ID_HELP, OnHelp)
-	ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+  ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 #if defined(POCKET_PC)
-	ON_WM_SHOWWINDOW()
+  ON_WM_SHOWWINDOW()
 #endif
-	ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
-	ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
-	ON_BN_CLICKED(IDOK, OnBnClickedOk)
-	ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
-	ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
-	ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
-	ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
+  ON_EN_SETFOCUS(IDC_PASSWORD, OnPasskeySetfocus)
+  ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
+  ON_BN_CLICKED(IDOK, OnBnClickedOk)
+  ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
+  ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
+  ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+  ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
   ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
+  ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
+  ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -152,7 +174,7 @@ void CEditDlg::OnShowPassword()
   if (m_isPwHidden) {
     ShowPassword();
   } else {
-  	m_realpassword = m_password; // save new password
+    m_realpassword = m_password; // save new password
     HidePassword();
   }
   UpdateData(FALSE);
@@ -314,9 +336,9 @@ BOOL CEditDlg::OnInitDialog()
   if (m_Edit_IsReadOnly) {
     GetDlgItem(IDOK)->EnableWindow(FALSE);
     cs_text.LoadString(IDS_VIEWENTRY);
-	SetWindowText(cs_text);
-	cs_text.LoadString(IDS_DATABASEREADONLY);
-	GetDlgItem(IDC_EDITEXPLANATION)->SetWindowText(cs_text);
+    SetWindowText(cs_text);
+    cs_text.LoadString(IDS_DATABASEREADONLY);
+    GetDlgItem(IDC_EDITEXPLANATION)->SetWindowText(cs_text);
   }
 
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
@@ -336,7 +358,7 @@ BOOL CEditDlg::OnInitDialog()
   if (!m_Edit_IsReadOnly) {
     // Populate the groups combo box
     if (m_ex_group.GetCount() == 0) {
-	    CStringArray aryGroups;
+      CStringArray aryGroups;
       app.m_core.GetUniqueGroups(aryGroups);
       for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
         m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
@@ -345,12 +367,12 @@ BOOL CEditDlg::OnInitDialog()
   }
 
   GetDlgItem(IDC_PWHSTATUS)->
-	  SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
+  SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
   CString buffer;
   if (m_SavePWHistory == TRUE)
-	  buffer.Format(_T("%d"), m_MaxPWHistory);
+    buffer.Format(_T("%d"), m_MaxPWHistory);
   else
-	  buffer = _T("n/a");
+    buffer = _T("n/a");
 
   GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
 
@@ -428,7 +450,7 @@ void CEditDlg::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), 
-	  NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+    NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");
@@ -481,20 +503,20 @@ void CEditDlg::ResizeDialog()
     IDC_STATIC_URL,
     IDC_AUTOTYPE,
     IDC_STATIC_AUTO,
-	IDC_CTIME,
-	IDC_STATIC_CTIME,
-	IDC_PMTIME,
-	IDC_STATIC_PMTIME,
-	IDC_ATIME,
-	IDC_STATIC_ATIME,
-	IDC_LTIME,
-	IDC_STATIC_LTIME,
-	IDC_RMTIME,
-	IDC_STATIC_RMTIME,
-	IDC_LTIME_CLEAR,
-	IDC_LTIME_SET,
-	IDC_STATIC_DTGROUP,
-	IDC_STATIC_DTEXPGROUP,    
+    IDC_CTIME,
+    IDC_STATIC_CTIME,
+    IDC_PMTIME,
+    IDC_STATIC_PMTIME,
+    IDC_ATIME,
+    IDC_STATIC_ATIME,
+    IDC_LTIME,
+    IDC_STATIC_LTIME,
+    IDC_RMTIME,
+    IDC_STATIC_RMTIME,
+    IDC_LTIME_CLEAR,
+    IDC_LTIME_SET,
+    IDC_STATIC_DTGROUP,
+    IDC_STATIC_DTEXPGROUP,    
   };
 
   int windows_state = m_isExpanded ? SW_SHOW : SW_HIDE;
@@ -529,7 +551,7 @@ void CEditDlg::ResizeDialog()
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
     newHeight = curLowestCtlRect.top + 5 - newDialogRect.top;
 
-	cs_text.LoadString(IDS_MORE);
+    cs_text.LoadString(IDS_MORE);
     m_MoreLessBtn.SetWindowText(cs_text);
   }
   
@@ -598,4 +620,133 @@ void CEditDlg::OnEnKillfocusNotes()
     HideNotes();
   }
   UpdateData(FALSE);
+}
+
+LRESULT CEditDlg::OnCallExternalEditor(WPARAM, LPARAM)
+{
+  // Warn the user about sensitive data lying around
+  int rc = AfxMessageBox(IDS_EXTERNAL_EDITOR_WARNING, 
+                         MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+  if (rc != IDYES)
+    return 0L;
+
+  GetDlgItem(IDOK)->EnableWindow(FALSE);
+  GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+
+  m_thread = CExtThread::BeginThread(ExternalEditorThread, this);
+  return 0L;
+}
+
+UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
+{
+  CEditDlg *self = (CEditDlg *)me;
+
+  TCHAR szExecName[MAX_PATH + 1];
+  TCHAR lpPathBuffer[4096];
+  DWORD dwBufSize(4096);
+
+  // Get the temp path
+  GetTempPath(dwBufSize,   // length of the buffer
+       lpPathBuffer);      // buffer for path
+
+  // Create a temporary file.
+  GetTempFileName(lpPathBuffer, // directory for temp files
+      _T("NTE"),                // temp file name prefix
+      0,                        // create unique name
+      self->m_szTempName);            // buffer for name
+
+  // Open it and put the Notes field in it
+  ofstreamT ofs(self->m_szTempName);
+  if (ofs.bad())
+    return 16;
+
+  ofs << LPCTSTR(self->m_realnotes) << std::endl;
+  ofs.flush();
+  ofs.close();
+
+  // Find out the users default editor for "txt" files
+  DWORD dwSize(MAX_PATH);
+  HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, _T(".txt"), _T("Open"),
+                                    szExecName, &dwSize);
+  if (int(stat) != S_OK) {  
+#ifdef _DEBUG
+    AfxMessageBox(_T("oops"));
+#endif
+    return 16;
+  }
+
+  // Create an Edit process
+  STARTUPINFO si;
+  PROCESS_INFORMATION pi;
+
+  ZeroMemory( &si, sizeof(si) );
+  si.cb = sizeof(si);
+  ZeroMemory( &pi, sizeof(pi) );
+
+  DWORD dwCreationFlags(0);
+#ifdef _UNICODE
+  dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
+#endif
+
+  CString cs_CommandLine;
+
+  // Make the command line = "<program>" "file" 
+  cs_CommandLine.Format(_T("\"%s\" \"%s\""), szExecName, self->m_szTempName);
+  int ilen = cs_CommandLine.GetLength();
+  LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
+
+  if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
+       NULL, lpPathBuffer, &si, &pi)) {
+    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+  }
+
+  // Wait until child process exits.
+  WaitForSingleObject(pi.hProcess, INFINITE);
+
+  // Close process and thread handles. 
+  CloseHandle(pi.hProcess);
+  CloseHandle(pi.hThread);
+  cs_CommandLine.ReleaseBuffer();
+
+  self->PostMessage(WM_EXTERNAL_EDITOR_ENDED, 0, 0);
+  return 0;
+}
+
+LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
+{
+  if (!m_Edit_IsReadOnly)
+    GetDlgItem(IDOK)->EnableWindow(TRUE);
+
+  GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
+
+  // Now get what the user saved in this file and put it back into Notes field
+  ifstreamT ifs(m_szTempName);
+  if (ifs.bad())
+    return 16;
+
+  m_realnotes.Empty();
+  stringT linebuf, note;
+
+  // Get first line
+  getline(ifs, note, TCHAR('\n'));
+
+  // Now get the rest (if any)
+  while (!ifs.eof()) {
+    getline(ifs, linebuf, TCHAR('\n'));
+    note += _T("\r\n");
+    note += linebuf;
+  }
+
+  ifs.close();
+
+  // Set real notes field
+  m_realnotes = note.c_str();
+  // We are still displaying the old text, so replace that too
+  m_notes = m_realnotes;
+  UpdateData(FALSE);
+  ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
+
+  // Delete temporary file
+  _tremove(m_szTempName);
+  return 0;
 }

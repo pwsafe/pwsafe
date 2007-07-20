@@ -612,6 +612,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ExtThread.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FindDlg.cpp"
 				>
 			</File>
@@ -842,6 +846,10 @@
 			</File>
 			<File
 				RelativePath=".\ExpPWListDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ExtThread.h"
 				>
 			</File>
 			<File

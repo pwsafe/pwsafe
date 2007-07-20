@@ -43,6 +43,10 @@ DECLARE_HANDLE(HDROP);
 // Process Compare Result Dialog click/menu functions
 #define WM_COMPARE_RESULT_FUNCTION (WM_APP + 30)
 
+// External Editor has Ended
+#define WM_CALL_EXTERNAL_EDITOR  (WM_APP + 40)
+#define WM_EXTERNAL_EDITOR_ENDED (WM_APP + 41)
+
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
 // timer event number used to support lock on user-defined timeout

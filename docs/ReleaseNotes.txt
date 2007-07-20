@@ -8,6 +8,11 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
+New Features for 3.09.01
+=======================-
+[1752896] Add ability to edit an entry's notes field using user's default 
+text editor via right click on Notes field.
+
 Bugs fixed in 3.09
 ==================
 [1748665] Number of passwords to remember (password history) can now

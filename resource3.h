@@ -297,4 +297,5 @@
 #define IDS_NOFIELDSFORSEARCH           5469
 #define IDS_NUMCHILDREN                 5470
 #define IDS_DELITEM                     5471
+#define IDS_EXTERNAL_EDITOR_WARNING     5472
 
