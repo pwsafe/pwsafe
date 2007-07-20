@@ -12,6 +12,7 @@
 
 #include "afxwin.h"
 #include "ControlExtns.h"
+#include "ExtThread.h"
 
 class CItemData;
 
@@ -65,14 +66,18 @@ private:
   CComboBoxExtn m_ex_group;
   CEditExtn m_ex_password;
   CEditExtn m_ex_password2;
-  CEditExtn m_ex_notes;
   CEditExtn m_ex_username;
   CEditExtn m_ex_title;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_autotype;
+  CEditExtn *m_pex_notes;
 
   static CMyString HIDDEN_NOTES;
   static CString CS_SHOW, CS_HIDE, CS_ON, CS_OFF;
+
+  CExtThread *m_thread; // worker thread
+  static UINT ExternalEditorThread(LPVOID me);
+  TCHAR m_szTempName[MAX_PATH + 1];
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -84,6 +89,8 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskeyKillfocus();
+  afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
+  afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
 
   DECLARE_MESSAGE_MAP()
 
