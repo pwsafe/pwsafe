@@ -148,6 +148,7 @@ public:
   void UnFindItem();
 
   void UpdateToolBar(bool state);
+  void UpdateToolBarForSelectedItem(CItemData *ci);
   bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
@@ -334,6 +335,7 @@ protected:
   afx_msg void OnBrowse();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* result);

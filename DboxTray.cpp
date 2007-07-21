@@ -201,9 +201,8 @@ DboxMain::OnTrayBrowse(UINT nID)
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
 	  return;
 
-  CMyString browseURL = ci.GetURL();
-  if (!browseURL.IsEmpty()) {
-    LaunchBrowser(browseURL);
+  if (!ci.IsURLEmpty()) {
+    LaunchBrowser(ci.GetURL());
   }
   UpdateAccessTime(&ci);
 }
@@ -221,7 +220,7 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 	  return;
 
   // Has it an embedded URL
-  if (ci.GetURL().IsEmpty()) {
+  if (ci.IsURLEmpty()) {
     pCmdUI->Enable(FALSE);
   }
 }
