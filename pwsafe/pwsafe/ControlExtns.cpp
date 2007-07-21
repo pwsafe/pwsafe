@@ -56,6 +56,9 @@ CEditExtn::CEditExtn(int message_number, LPCTSTR menustring)
 {
 	brInFocus.CreateSolidBrush(crefInFocus);
 	brNoFocus.CreateSolidBrush(crefNoFocus);
+  // Don't allow if menu string is empty.
+  if (m_menustring.IsEmpty())
+    m_message_number = -1;
 }
 
 CEditExtn::~CEditExtn()
@@ -110,80 +113,84 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 	}
 }
 
-void CEditExtn::OnContextMenu(CWnd* /* pWnd*/, CPoint point)
+void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-    SetFocus();
-    CMenu menu;
-    menu.CreatePopupMenu();
+  if (m_message_number < 0) {
+    CEdit::OnContextMenu(pWnd, point);
+    return;
+  }
 
-    BOOL bReadOnly = GetStyle() & ES_READONLY;
-    DWORD flags = CanUndo() && !bReadOnly ? 0 : MF_GRAYED;
+  SetFocus();
+  CMenu menu;
+  menu.CreatePopupMenu();
 
-    menu.InsertMenu(0, MF_BYPOSITION | flags, EM_UNDO, MENUSTRING_UNDO);
+  BOOL bReadOnly = GetStyle() & ES_READONLY;
+  DWORD flags = CanUndo() && !bReadOnly ? 0 : MF_GRAYED;
 
-    menu.InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
+  menu.InsertMenu(0, MF_BYPOSITION | flags, EM_UNDO, MENUSTRING_UNDO);
 
-    DWORD sel = GetSel();
-    flags = LOWORD(sel) == HIWORD(sel) ? MF_GRAYED : 0;
-    // Add it in position 2 but adding the next will make it 3
-    menu.InsertMenu(2, MF_BYPOSITION | flags, WM_COPY, MENUSTRING_COPY);
+  menu.InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
 
-    flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
-    menu.InsertMenu(2, MF_BYPOSITION | flags, WM_CUT, MENUSTRING_CUT);
+  DWORD sel = GetSel();
+  flags = LOWORD(sel) == HIWORD(sel) ? MF_GRAYED : 0;
+  // Add it in position 2 but adding the next will make it 3
+  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_COPY, MENUSTRING_COPY);
 
-    flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
-    // Add it in position 4 but adding the next will make it 5
-    menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR, MENUSTRING_DELETE);
+  flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
+  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_CUT, MENUSTRING_CUT);
 
-    flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
+  flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
+  // Add it in position 4 but adding the next will make it 5
+  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR, MENUSTRING_DELETE);
+
+  flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
                  !bReadOnly ? 0 : MF_GRAYED;
-    menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE, MENUSTRING_PASTE);
+  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE, MENUSTRING_PASTE);
 
-    menu.InsertMenu(6, MF_BYPOSITION | MF_SEPARATOR);
+  menu.InsertMenu(6, MF_BYPOSITION | MF_SEPARATOR);
 
-    int len = GetWindowTextLength();
-    flags = (!len || (LOWORD(sel) == 0 && HIWORD(sel) == len)) ? MF_GRAYED : 0;
+  int len = GetWindowTextLength();
+  flags = (!len || (LOWORD(sel) == 0 && HIWORD(sel) == len)) ? MF_GRAYED : 0;
 
-    menu.InsertMenu(7, MF_BYPOSITION | flags, EM_SELECTALL, MENUSTRING_SELECTALL);
+  menu.InsertMenu(7, MF_BYPOSITION | flags, EM_SELECTALL, MENUSTRING_SELECTALL);
 
-    if (m_message_number > 0) {
-      menu.InsertMenu(8, MF_BYPOSITION | MF_SEPARATOR);
+  menu.InsertMenu(8, MF_BYPOSITION | MF_SEPARATOR);
 
-      menu.InsertMenu(9, MF_BYPOSITION , m_message_number, m_menustring);
-    }
+  menu.InsertMenu(9, MF_BYPOSITION , m_message_number, m_menustring);
 
-    if (point.x == -1 || point.y == -1) {
-      CRect rc;
-      GetClientRect(&rc);
-      point = rc.CenterPoint();
-      ClientToScreen(&point);
-    }
 
-    int nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
+  if (point.x == -1 || point.y == -1) {
+    CRect rc;
+    GetClientRect(&rc);
+    point = rc.CenterPoint();
+    ClientToScreen(&point);
+  }
+
+  int nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
                      TPM_RETURNCMD | TPM_RIGHTBUTTON, point.x, point.y, this);
 
-    if (nCmd < 0)
-      return;
+  if (nCmd < 0)
+    return;
 
-    if (nCmd == m_message_number) {
-      this->GetParent()->SendMessage(nCmd);
-      return;
-    }
+  if (nCmd == m_message_number) {
+    this->GetParent()->SendMessage(nCmd);
+    return;
+  }
 
-    switch (nCmd) {
-      case EM_UNDO:
-      case WM_CUT:
-      case WM_COPY:
-      case WM_CLEAR:
-      case WM_PASTE:
-        SendMessage(nCmd);
-        break;
-      case EM_SELECTALL:
-        SendMessage(EM_SETSEL, 0, -1);
-        break;
-      default:
-        SendMessage(WM_COMMAND, nCmd);
-    }
+  switch (nCmd) {
+    case EM_UNDO:
+    case WM_CUT:
+    case WM_COPY:
+    case WM_CLEAR:
+    case WM_PASTE:
+      SendMessage(nCmd);
+      break;
+    case EM_SELECTALL:
+      SendMessage(EM_SETSEL, 0, -1);
+      break;
+    default:
+      break;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////
