@@ -633,6 +633,11 @@ LRESULT CEditDlg::OnCallExternalEditor(WPARAM, LPARAM)
   GetDlgItem(IDOK)->EnableWindow(FALSE);
   GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
+  const CString cs_text(MAKEINTRESOURCE(IDS_NOTES_IN_EXTERNAL_EDITOR));
+  CWnd *pwnotes = GetDlgItem(IDC_NOTES);
+  pwnotes->EnableWindow(FALSE);
+  pwnotes->SetWindowText(cs_text);
+
   m_thread = CExtThread::BeginThread(ExternalEditorThread, this);
   return 0L;
 }
@@ -718,6 +723,7 @@ LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
     GetDlgItem(IDOK)->EnableWindow(TRUE);
 
   GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
+  GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
 
   // Now get what the user saved in this file and put it back into Notes field
   ifstreamT ifs(m_szTempName);

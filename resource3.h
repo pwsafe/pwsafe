@@ -298,4 +298,5 @@
 #define IDS_NUMCHILDREN                 5470
 #define IDS_DELITEM                     5471
 #define IDS_EXTERNAL_EDITOR_WARNING     5472
+#define IDS_NOTES_IN_EXTERNAL_EDITOR    5473
 
