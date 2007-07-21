@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
 	ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
+  ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
 	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONUP()
@@ -759,6 +760,16 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   m_nTimerID = SetTimer(1, 75, NULL);
 }
 
+void CMyTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  *pLResult = 0L;
+  NMTREEVIEW *ptv = (NMTREEVIEW *)pNotifyStruct;
+  HTREEITEM hti = ptv->itemNew.hItem;
+  ASSERT(hti != NULL);
+
+  CItemData *ci = (CItemData *)GetItemData(hti);
+  ((DboxMain *)GetParent())->UpdateToolBarForSelectedItem(ci);
+}
 
 void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
 {

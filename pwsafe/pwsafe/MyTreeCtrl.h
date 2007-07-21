@@ -46,6 +46,7 @@ public:
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
+  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point);

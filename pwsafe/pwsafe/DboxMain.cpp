@@ -215,7 +215,8 @@ ON_WM_SIZE()
 ON_WM_SYSCOMMAND()
 ON_WM_TIMER()
 ON_WM_WINDOWPOSCHANGING()
-   
+
+ON_NOTIFY(NM_CLICK, IDC_ITEMLIST, OnListItemSelected)
 ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
 ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
 ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
@@ -390,13 +391,10 @@ DboxMain::InitPasswordSafe()
   }
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView);
-  m_IsListView = true;
-  if (lastView != _T("list")) {
-    // not list mode, so start in tree view.
-    m_ctlItemList.ShowWindow(SW_HIDE);
-    m_ctlItemTree.ShowWindow(SW_SHOW);
-    m_IsListView = false;
-  }
+  if (lastView != _T("list"))
+    OnTreeView();
+  else
+    OnListView();
 
   CalcHeaderWidths();
 
@@ -716,13 +714,13 @@ void DboxMain::OnBrowse()
 {
   CItemData *ci = getSelectedItem();
   if(ci != NULL) {
-	if (!ci->GetURL().IsEmpty()) {
+    if (!ci->IsURLEmpty()) {
       LaunchBrowser(ci->GetURL());
       UpdateAccessTime(ci);
       uuid_array_t RUEuuid;
       ci->GetUUID(RUEuuid);
       m_RUEList.AddRUEntry(RUEuuid);
-	}
+    }
   }
 }
 
@@ -1431,7 +1429,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
 
-    if (ci->GetURL().IsEmpty()) {
+    if (ci->IsURLEmpty()) {
       pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
     } else {
       pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
