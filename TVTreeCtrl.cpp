@@ -6,12 +6,6 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 
-// Need a set to keep track of what nodes are expanded, to re-expand
-// after minimize
-#include <set>
-
-using namespace std;
-
 #include "stdafx.h"
 #include "TVTreeCtrl.h"
 #include "DboxMain.h"
@@ -56,9 +50,7 @@ END_MESSAGE_MAP()
 
 void CTVTreeCtrl::OnDestroy()
 {
-  CImageList  *pimagelist;
-
-  pimagelist = GetImageList(TVSIL_NORMAL);
+  CImageList *pimagelist = GetImageList(TVSIL_NORMAL);
   if (pimagelist != NULL) {
     pimagelist->DeleteImageList();
     delete pimagelist;
@@ -101,13 +93,9 @@ DROPEFFECT CTVTreeCtrl::OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
 #define SCROLL_SPEED_ZONE_WIDTH 20
 
 DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
-                  DWORD dwKeyState, CPoint point)
+                                   DWORD dwKeyState, CPoint point)
 {
   CTVTreeCtrl *pDestTreeCtrl;
-
-  DROPEFFECT dropeffectRet = DROPEFFECT_MOVE;
-  if ((dwKeyState & MK_CONTROL) == MK_CONTROL)
-    dropeffectRet = DROPEFFECT_COPY;
 
   // Doesn't matter that we didn't initialize m_calls
   m_calls++;
@@ -126,8 +114,10 @@ DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   pWnd->ClientToScreen(rectClient);
   pWnd->ClientToScreen(&point);
 
-  int slowscroll_up = 6 - (rectClient.top + SCROLL_BORDER - point.y) / SCROLL_SPEED_ZONE_WIDTH;
-  int slowscroll_down = 6 - (point.y - rectClient.bottom + SCROLL_BORDER ) / SCROLL_SPEED_ZONE_WIDTH;
+  int slowscroll_up = (6 - (rectClient.top + SCROLL_BORDER - point.y)
+                       / SCROLL_SPEED_ZONE_WIDTH);
+  int slowscroll_down = (6 - (point.y - rectClient.bottom + SCROLL_BORDER )
+                         / SCROLL_SPEED_ZONE_WIDTH);
 
   // Scroll Tree control depending on mouse position
   int iMaxV = GetScrollLimit(SB_VERT);
@@ -137,9 +127,8 @@ DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   if ((point.y > rectClient.bottom - SCROLL_BORDER) && (iPosV != iMaxV) &&
       (m_calls % (slowscroll_down > 0 ? slowscroll_down : 1)) == 0)
     nScrollDir = SB_LINEDOWN;
-  else
-  if ((point.y < rectClient.top + SCROLL_BORDER) && (iPosV != 0) &&
-      (m_calls % (slowscroll_up > 0 ? slowscroll_up : 1)) == 0)
+  else if ((point.y < rectClient.top + SCROLL_BORDER) && (iPosV != 0) &&
+           (m_calls % (slowscroll_up > 0 ? slowscroll_up : 1)) == 0)
     nScrollDir = SB_LINEUP;
 
   if (nScrollDir != -1) {
@@ -154,8 +143,7 @@ DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   nScrollDir = -1;
   if ((point.x < rectClient.left + SCROLL_BORDER) && (iPosH != 0))
     nScrollDir = SB_LINELEFT;
-  else
-  if ((point.x > rectClient.right - SCROLL_BORDER) && (iPosH != iMaxH))
+  else if ((point.x > rectClient.right - SCROLL_BORDER) && (iPosH != iMaxH))
     nScrollDir = SB_LINERIGHT;
   
   if (nScrollDir != -1) {
@@ -164,14 +152,15 @@ DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
     pWnd->SendMessage(WM_HSCROLL, wParam);
   }
   
-  return dropeffectRet;  
+  DROPEFFECT dropeffectRet = ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
+    DROPEFFECT_COPY : DROPEFFECT_MOVE;
+  
+  return dropeffectRet;
 }
 
 void CTVTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
 {
-  long        lStyleOld;
-
-  lStyleOld = GetWindowLong(CWnd::m_hWnd, GWL_STYLE);
+  long lStyleOld = GetWindowLong(CWnd::m_hWnd, GWL_STYLE);
   lStyleOld &= ~lStyleMask;
   if (bSetBits)
     lStyleOld |= lStyleMask;
@@ -224,19 +213,18 @@ void CTVTreeCtrl::BeginLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
     DWORD itemData = GetItemData(ti);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
-    CMyString currentTitle, currentUser, currentPassword;
 
     // We cannot allow in-place edit if these fields contain braces!
-    currentTitle = ci->GetTitle();
+    CMyString currentTitle = ci->GetTitle();
     if (currentTitle.FindOneOf(_T("[]{}")) != -1)
       return;
 
-    currentUser = ci->GetUser();
+    CMyString currentUser = ci->GetUser();
     if (prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
         currentUser.FindOneOf(_T("[]{}")) != -1)
       return;
 
-    currentPassword = ci->GetPassword();
+    CMyString currentPassword = ci->GetPassword();
     if (prefs->GetPref(PWSprefs::ShowPasswordInTree) &&
         currentPassword.FindOneOf(_T("[]{}")) != -1)
       return;
@@ -251,9 +239,7 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
 {
   bool bPasswordSet(false);
 
-  newTitle = _T("");
-  newUser = _T("");
-  newPassword = _T("");
+  newTitle = newUser = newPassword = _T("");
 
   CString cs_leafText(lt);
   cs_leafText.Trim();
@@ -421,11 +407,10 @@ void CTVTreeCtrl::EndLabelEdit(NMHDR *pNotifyStruct, LRESULT * &pLResult)
         newPassword = CString(ci->GetPassword());
 
       PWSprefs *prefs = PWSprefs::GetInstance();
-      CString treeDispString;
       bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
       bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-
-      treeDispString = newTitle;
+      CString treeDispString = newTitle;
+      
       if (bShowUsernameInTree) {
         treeDispString += _T(" [");
         treeDispString += newUser;
@@ -617,7 +602,6 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   TV_INSERTSTRUCT  tvstruct;
   TCHAR sztBuffer[260];  // max visible
-  HTREEITEM hNewItem, hFirstChild;
   DWORD itemData;
 
   DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
@@ -631,7 +615,6 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   GetItem(&tvstruct.item);  // get information of the dragged element
 
   itemData = tvstruct.item.lParam;
-
   tvstruct.hParent = hitemDrop;
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) 
@@ -640,7 +623,7 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     tvstruct.hInsertAfter = TVI_SORT;
 
   tvstruct.item.mask = TVIF_PARAM | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-  hNewItem = InsertItem(&tvstruct);
+  HTREEITEM hNewItem = InsertItem(&tvstruct);
   if (itemData != 0) { // Non-NULL itemData implies Leaf
     CItemData *ci = (CItemData *)itemData;
 
@@ -666,8 +649,7 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     // Get information from current selected entry
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title;
-    ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CMyString ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
     ci->SetGroup(path);
@@ -678,14 +660,10 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
       CMyString treeDispString;
       treeDispString = ci_title;
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
-        treeDispString += _T(" [");
-        treeDispString += ci_user;
-        treeDispString += _T("]");
+        treeDispString += _T(" [") + ci_user + _T("]");
         if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
           CMyString ci_Password = ci->GetPassword();
-          treeDispString += _T(" {");
-          treeDispString += ci_Password;
-          treeDispString += _T("}");
+          treeDispString += _T(" {") + ci_Password + _T("}");
         }
       }
       // Update tree label
@@ -699,6 +677,7 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     di->tree_item = hNewItem;
   }
 
+  HTREEITEM hFirstChild;
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
     MoveItem(hFirstChild, hNewItem);  // recursively move all the items
   }
@@ -710,7 +689,6 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 
 bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
-  HTREEITEM hFirstChild;
   DWORD itemData = GetItemData(hitemDrag);
 
   DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
@@ -738,8 +716,7 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     // Get information from current selected entry
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title;
-    ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CMyString ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Needs new UUID as they must be unique and this is a copy operation
     temp.CreateUUID();
@@ -760,8 +737,14 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 
   dbx->SortTree(hitemDrop);
 
-  while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
-    CopyItem(hFirstChild, hitemDrop);  // recursively copy all the items
+  // Recursive logic is more complex than for MoveItem, since
+  // children aren't removed from source.
+
+  HTREEITEM hChild = GetChildItem(hitemDrag);
+
+  while (hChild != NULL) {
+    CopyItem(hChild, hitemDrop);
+    hChild = GetNextItem(hChild, TVGN_NEXT);
   }
 
   return true;
@@ -834,8 +817,7 @@ void CTVTreeCtrl::OnExpandAll()
   do {
     this->Expand(hItem,TVE_EXPAND);
     hItem = this->GetNextItem(hItem,TVGN_NEXTVISIBLE);
-  }
-  while (hItem);
+  } while (hItem);
   this->EnsureVisible(this->GetSelectedItem());
   SetRedraw();
 }
@@ -947,20 +929,18 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   // If using an encrypted buffer - only need to free it
   trashMemory((void *)buffer, lBufLen);
   free(buffer);
-  free(pData);
+  delete[] pData;
 
   DWORD dw_mflen = (DWORD)mf.GetLength();
   BYTE *mf_buffer = (BYTE *)(mf.Detach());
 
 #ifdef _DEBUG
-   CString cs_timestamp;
-   cs_timestamp = PWSUtil::GetTimeStamp();
+   CString cs_timestamp = PWSUtil::GetTimeStamp();
    TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp, dw_mflen, dw_mflen);
    PWSUtil::HexDump(mf_buffer, dw_mflen, cs_timestamp);
 #endif /* DEBUG */
 
-  CImageList* pDragImageList;
-  pDragImageList = CreateDragImage(m_hitemDrag);
+  CImageList *pDragImageList = CreateDragImage(m_hitemDrag);
   pDragImageList->BeginDrag(0, CPoint(8, 8));
   pDragImageList->DragEnter(GetDesktopWindow(), ptAction);
 
@@ -1028,9 +1008,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   BOOL retval(FALSE);
 
   // On Drop of data from one tree to another
-  HGLOBAL hGlobal;
-
-  hGlobal = pDataObject->GetGlobalData(gbl_tcddCPFID);
+  HGLOBAL hGlobal = pDataObject->GetGlobalData(gbl_tcddCPFID);
   BYTE *pData = (BYTE *)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
@@ -1041,7 +1019,8 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   memset(m_sending_classname, 0, DD_CLASSNAME_SIZE);
   memcpy(m_sending_classname, pData, DD_CLASSNAME_SIZE);
-  m_bWithinThisInstance = memcmp(gbl_classname, m_sending_classname, DD_CLASSNAME_SIZE) == 0;
+  m_bWithinThisInstance = memcmp(gbl_classname, m_sending_classname,
+                                 DD_CLASSNAME_SIZE) == 0;
 
   // iDDType = D&D type FROMTREE or for column D&D only FROMCC, FROMHDR
   // lBufLen = Length of D&D data appended to this data
@@ -1179,7 +1158,6 @@ bool CTVTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
     return false;
 
   CDDObList in_oblist;
-
   CSMemFile inDDmemfile;
 
   inDDmemfile.Attach((BYTE *)in_buffer, inLen);
