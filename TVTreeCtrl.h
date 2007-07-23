@@ -80,9 +80,10 @@ private:
 
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool MoveItem(HTREEITEM hitem, HTREEITEM hNewParent);
-  bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent);
+  bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CMyString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
+  CMyString GetPrefix(HTREEITEM hItem) const;
   void CollapseBranch(HTREEITEM hItem);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
   void GetEntryData(CDDObList &out_oblist, CItemData *ci);
@@ -95,9 +96,8 @@ private:
 protected:
   CListCtrl *m_pctlItemList;
   HTREEITEM m_hitemDrag;
-  HTREEITEM m_hitemDrop;
   unsigned char m_sending_classname[40];
   int m_nDragPathLen;
   bool m_bWithinThisInstance;
-  int m_calls;
+  unsigned m_calls;
 };

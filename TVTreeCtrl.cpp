@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 static const TCHAR GROUP_SEP = TCHAR('.');
 
 CTVTreeCtrl::CTVTreeCtrl() : m_pimagelist(NULL), m_isRestoring(false),
-m_bWithinThisInstance(false)
+                             m_bWithinThisInstance(false), m_calls(0)
 {
 }
 
@@ -95,19 +95,14 @@ DROPEFFECT CTVTreeCtrl::OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
 DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
                                    DWORD dwKeyState, CPoint point)
 {
-  CTVTreeCtrl *pDestTreeCtrl;
-
-  // Doesn't matter that we didn't initialize m_calls
-  m_calls++;
-
   // Expand and highlight the item under the mouse and 
-  pDestTreeCtrl = (CTVTreeCtrl *)pWnd;
+  CTVTreeCtrl *pDestTreeCtrl = (CTVTreeCtrl *)pWnd;
   HTREEITEM hTItem = pDestTreeCtrl->HitTest(point);
   // Use m_calls to slow down expanding nodes
-  if (hTItem != NULL && (m_calls % 32 == 0)) {
+  if ((++m_calls % 32 == 0) && hTItem != NULL) {
     pDestTreeCtrl->Expand(hTItem, TVE_EXPAND);
     pDestTreeCtrl->SelectDropTarget(hTItem);
-  }  
+  }
 
   CRect rectClient;
   pWnd->GetClientRect(&rectClient);
@@ -675,7 +670,7 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     dbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
     di->tree_item = hNewItem;
-  }
+  } // leaf processing
 
   HTREEITEM hFirstChild;
   while ((hFirstChild = GetChildItem(hitemDrag)) != NULL) {
@@ -687,17 +682,49 @@ bool CTVTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   return true;
 }
 
-bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
+CMyString CTVTreeCtrl::GetPrefix(HTREEITEM hItem) const
+{
+  // return all path components beween hItem and root.
+  // e.g., if hItem is X in a.b.c.X.y.z, then return a.b.c
+  CMyString retval;
+  HTREEITEM p = GetParentItem(hItem);
+  while ( p != NULL) {
+    retval = CMyString(GetItemText(p)) + retval;
+    p = GetParentItem(p);
+    if (p != NULL)
+      retval = CMyString(GROUP_SEP) + retval;
+  }
+  return retval;
+}
+
+bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
+                           const CMyString &prefix)
 {
   DWORD itemData = GetItemData(hitemDrag);
 
-  DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
+  if (itemData == 0) { // we're dragging a group
+    CMyString localPrefix(prefix);
+    if (localPrefix.IsEmpty())
+      localPrefix = GetPrefix(hitemDrag);
+    else
+      localPrefix += CMyString(GROUP_SEP) + CMyString(GetItemText(hitemDrag));
 
-  if (itemData != 0) { // Non-NULL itemData implies Leaf
+    HTREEITEM hChild = GetChildItem(hitemDrag);
+
+    while (hChild != NULL) {
+      CopyItem(hChild, hitemDrop, localPrefix);
+      hChild = GetNextItem(hChild, TVGN_NEXT);
+    }
+  } else { // we're dragging a leaf
     CItemData *ci = (CItemData *)itemData;
-    CItemData temp(*ci);
+    CItemData temp(*ci); // copy construct a duplicate
 
-    // Update Group
+    // Update Group: chop away prefix, replace
+    CMyString oldPath(temp.GetGroup());
+    if (!prefix.IsEmpty()) {
+      oldPath = oldPath.Right(oldPath.GetLength() - prefix.GetLength() - 1);
+    }
+    // with new path
     CMyString path, elem;
     path = CMyString(GetItemText(hitemDrop));
     HTREEITEM p, q = hitemDrop;
@@ -713,14 +740,23 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
         break;
     } while (1);
 
+    CMyString newPath;
+    if (path.IsEmpty())
+      newPath = oldPath;
+    else {
+      newPath = path;
+      if (!oldPath.IsEmpty())
+        newPath += GROUP_SEP + oldPath;
+    }
     // Get information from current selected entry
+    DboxMain *dbx = static_cast<DboxMain *>(m_parent); 
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title = dbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CMyString ci_title = dbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Needs new UUID as they must be unique and this is a copy operation
     temp.CreateUUID();
-    temp.SetGroup(path);
+    temp.SetGroup(newPath);
     temp.SetTitle(ci_title);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
@@ -733,20 +769,7 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 
     // Mark database as modified!
     dbx->SetChanged(DboxMain::Data);
-  }
-
-  dbx->SortTree(hitemDrop);
-
-  // Recursive logic is more complex than for MoveItem, since
-  // children aren't removed from source.
-
-  HTREEITEM hChild = GetChildItem(hitemDrag);
-
-  while (hChild != NULL) {
-    CopyItem(hChild, hitemDrop);
-    hChild = GetNextItem(hChild, TVGN_NEXT);
-  }
-
+  } // leaf handling
   return true;
 }
 
@@ -974,7 +997,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     return FALSE;
 
   UINT uFlags;
-  m_hitemDrop = HitTest(point, &uFlags);
+  HTREEITEM hitemDrop = HitTest(point, &uFlags);
 
   bool bForceRoot(false);
   switch (uFlags) {
@@ -984,9 +1007,9 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     case TVHT_TORIGHT:
       return FALSE;
     case TVHT_NOWHERE:
-      if (m_hitemDrop == NULL) {
+      if (hitemDrop == NULL) {
         // Treat as drop in root
-        m_hitemDrop = GetRootItem();
+        hitemDrop = GetRootItem();
         bForceRoot = true;
       } else
         return FALSE;
@@ -998,7 +1021,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     case TVHT_ONITEMLABEL:
     case TVHT_ONITEMRIGHT:
     case TVHT_ONITEMSTATEICON:
-      if (m_hitemDrop == NULL)
+      if (hitemDrop == NULL)
         return FALSE;
       break;
     default :
@@ -1038,7 +1061,7 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   if (iDDType != FROMTREE || ((long)memsize < (long)(DD_MEMORY_MINSIZE + lBufLen)))
     goto exit;
 
-  if (m_hitemDrop == NULL && GetCount() == 0) {
+  if (hitemDrop == NULL && GetCount() == 0) {
     // Dropping on to an empty database
     CMyString DropGroup (_T(""));
     ProcessData((BYTE *)(pData + DD_CLASSNAME_SIZE + DD_REQUIRED_DATA_SIZE),
@@ -1048,24 +1071,25 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     goto exit;
   }
 
-  if (IsLeafNode(m_hitemDrop) || bForceRoot)
-    m_hitemDrop = GetParentItem(m_hitemDrop);
+  if (IsLeafNode(hitemDrop) || bForceRoot)
+    hitemDrop = GetParentItem(hitemDrop);
 
   if (m_bWithinThisInstance) {
     // from me! - easy
     HTREEITEM parent = GetParentItem(m_hitemDrag);
-    if (m_hitemDrag != m_hitemDrop &&
-      !IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
-      parent != m_hitemDrop) {
+    if (m_hitemDrag != hitemDrop &&
+      !IsChildNodeOf(hitemDrop, m_hitemDrag) &&
+      parent != hitemDrop) {
       // drag operation allowed
       if (dropEffect == DROPEFFECT_MOVE) {
-        MoveItem(m_hitemDrag, m_hitemDrop);
+        MoveItem(m_hitemDrag, hitemDrop);
         //dbx->FixListIndexes();
         //dbx->RefreshList();
       } else if (dropEffect == DROPEFFECT_COPY) {
-        CopyItem(m_hitemDrag, m_hitemDrop);
+        CopyItem(m_hitemDrag, hitemDrop, _T(""));
+        dbx->SortTree(hitemDrop);
       }
-      SelectItem(m_hitemDrop);
+      SelectItem(hitemDrop);
       retval = TRUE;
     } else {
       // drag failed or cancelled, revert to last selected
@@ -1074,14 +1098,14 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   } else {
     // from someone else!
     // Now add it
-    CMyString DropGroup = CMyString(GetGroup(m_hitemDrop));
+    CMyString DropGroup = CMyString(GetGroup(hitemDrop));
     ProcessData((BYTE *)(pData + DD_CLASSNAME_SIZE + DD_REQUIRED_DATA_SIZE),
                 lBufLen, DropGroup);
-    SelectItem(m_hitemDrop);
+    SelectItem(hitemDrop);
     retval = TRUE;
   }
 
-  dbx->SortTree(m_hitemDrop);
+  dbx->SortTree(hitemDrop);
   GetParent()->SetFocus();
 
 exit:
@@ -1095,11 +1119,11 @@ exit:
 
 void CTVTreeCtrl::CompleteMove()
 {
-  DboxMain *pDbx = static_cast<DboxMain *>(m_parent); 
   // If drag within instance - we have already done ths
   if (m_bWithinThisInstance)
     return;
 
+  DboxMain *pDbx = static_cast<DboxMain *>(m_parent); 
   // If drag to another instance, ignore in Read-only mode
   if (pDbx->IsMcoreReadOnly())
     return;
