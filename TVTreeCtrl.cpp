@@ -99,7 +99,8 @@ DROPEFFECT CTVTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   CTVTreeCtrl *pDestTreeCtrl = (CTVTreeCtrl *)pWnd;
   HTREEITEM hTItem = pDestTreeCtrl->HitTest(point);
   // Use m_calls to slow down expanding nodes
-  if ((++m_calls % 32 == 0) && hTItem != NULL) {
+  m_calls++;
+  if ((m_calls % 32 == 0) && hTItem != NULL) {
     pDestTreeCtrl->Expand(hTItem, TVE_EXPAND);
     pDestTreeCtrl->SelectDropTarget(hTItem);
   }
@@ -703,16 +704,10 @@ bool CTVTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
   DWORD itemData = GetItemData(hitemDrag);
 
   if (itemData == 0) { // we're dragging a group
-    CMyString localPrefix(prefix);
-    if (localPrefix.IsEmpty())
-      localPrefix = GetPrefix(hitemDrag);
-    else
-      localPrefix += CMyString(GROUP_SEP) + CMyString(GetItemText(hitemDrag));
-
     HTREEITEM hChild = GetChildItem(hitemDrag);
 
     while (hChild != NULL) {
-      CopyItem(hChild, hitemDrop, localPrefix);
+      CopyItem(hChild, hitemDrop, prefix);
       hChild = GetNextItem(hChild, TVGN_NEXT);
     }
   } else { // we're dragging a leaf
@@ -1083,10 +1078,8 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
       // drag operation allowed
       if (dropEffect == DROPEFFECT_MOVE) {
         MoveItem(m_hitemDrag, hitemDrop);
-        //dbx->FixListIndexes();
-        //dbx->RefreshList();
       } else if (dropEffect == DROPEFFECT_COPY) {
-        CopyItem(m_hitemDrag, hitemDrop, _T(""));
+        CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
         dbx->SortTree(hitemDrop);
       }
       SelectItem(hitemDrop);
@@ -1105,7 +1098,9 @@ BOOL CTVTreeCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     retval = TRUE;
   }
 
-  dbx->SortTree(hitemDrop);
+  dbx->SortTree(TVI_ROOT);
+  dbx->FixListIndexes();
+  dbx->RefreshList();
   GetParent()->SetFocus();
 
 exit:
