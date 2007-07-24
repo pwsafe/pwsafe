@@ -23,6 +23,11 @@
 #include "ExpDTDlg.h"
 #include "PWHistDlg.h"
 #include "ControlExtns.h"
+#include "ExtThread.h"
+
+#include <shlwapi.h>
+#include <fstream>
+using namespace std;
 
 #if defined(POCKET_PC)
 #include "pocketpc/PocketPC.h"
@@ -33,6 +38,17 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
+#endif
+
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wstring stringT;
+typedef std::wifstream ifstreamT;
+typedef std::wofstream ofstreamT;
+#else
+typedef std::string stringT;
+typedef std::ifstream ifstreamT;
+typedef std::ofstream ofstreamT;
 #endif
 
 static TCHAR PSSWDCHAR = TCHAR('*');
@@ -92,10 +108,14 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
     ci->GetLTime(m_tttLTime);
 
   m_oldlocLTime = m_locLTime;
+
+  m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
+                              _T("! &Edit externally"));
 }
 
 CEditDlg::~CEditDlg()
 {
+  delete m_pex_notes;
 }
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
@@ -120,7 +140,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
-  DDX_Control(pDX, IDC_NOTES, m_ex_notes);
+  DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
@@ -143,6 +163,8 @@ BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
 	ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
   ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
+  ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
+  ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -598,4 +620,139 @@ void CEditDlg::OnEnKillfocusNotes()
     HideNotes();
   }
   UpdateData(FALSE);
+}
+
+LRESULT CEditDlg::OnCallExternalEditor(WPARAM, LPARAM)
+{
+  // Warn the user about sensitive data lying around
+  int rc = AfxMessageBox(IDS_EXTERNAL_EDITOR_WARNING, 
+                         MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+  if (rc != IDYES)
+    return 0L;
+
+  GetDlgItem(IDOK)->EnableWindow(FALSE);
+  GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+
+  const CString cs_text(MAKEINTRESOURCE(IDS_NOTES_IN_EXTERNAL_EDITOR));
+  CWnd *pwnotes = GetDlgItem(IDC_NOTES);
+  pwnotes->EnableWindow(FALSE);
+  pwnotes->SetWindowText(cs_text);
+
+  m_thread = CExtThread::BeginThread(ExternalEditorThread, this);
+  return 0L;
+}
+
+UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
+{
+  CEditDlg *self = (CEditDlg *)me;
+
+  TCHAR szExecName[MAX_PATH + 1];
+  TCHAR lpPathBuffer[4096];
+  DWORD dwBufSize(4096);
+
+  // Get the temp path
+  GetTempPath(dwBufSize,   // length of the buffer
+       lpPathBuffer);      // buffer for path
+
+  // Create a temporary file.
+  GetTempFileName(lpPathBuffer, // directory for temp files
+      _T("NTE"),                // temp file name prefix
+      0,                        // create unique name
+      self->m_szTempName);            // buffer for name
+
+  // Open it and put the Notes field in it
+  ofstreamT ofs(self->m_szTempName);
+  if (ofs.bad())
+    return 16;
+
+  ofs << LPCTSTR(self->m_realnotes) << std::endl;
+  ofs.flush();
+  ofs.close();
+
+  // Find out the users default editor for "txt" files
+  DWORD dwSize(MAX_PATH);
+  HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, _T(".txt"), _T("Open"),
+                                    szExecName, &dwSize);
+  if (int(stat) != S_OK) {  
+#ifdef _DEBUG
+    AfxMessageBox(_T("oops"));
+#endif
+    return 16;
+  }
+
+  // Create an Edit process
+  STARTUPINFO si;
+  PROCESS_INFORMATION pi;
+
+  ZeroMemory( &si, sizeof(si) );
+  si.cb = sizeof(si);
+  ZeroMemory( &pi, sizeof(pi) );
+
+  DWORD dwCreationFlags(0);
+#ifdef _UNICODE
+  dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
+#endif
+
+  CString cs_CommandLine;
+
+  // Make the command line = "<program>" "file" 
+  cs_CommandLine.Format(_T("\"%s\" \"%s\""), szExecName, self->m_szTempName);
+  int ilen = cs_CommandLine.GetLength();
+  LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
+
+  if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
+       NULL, lpPathBuffer, &si, &pi)) {
+    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+  }
+
+  // Wait until child process exits.
+  WaitForSingleObject(pi.hProcess, INFINITE);
+
+  // Close process and thread handles. 
+  CloseHandle(pi.hProcess);
+  CloseHandle(pi.hThread);
+  cs_CommandLine.ReleaseBuffer();
+
+  self->PostMessage(WM_EXTERNAL_EDITOR_ENDED, 0, 0);
+  return 0;
+}
+
+LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
+{
+  if (!m_Edit_IsReadOnly)
+    GetDlgItem(IDOK)->EnableWindow(TRUE);
+
+  GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
+  GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
+
+  // Now get what the user saved in this file and put it back into Notes field
+  ifstreamT ifs(m_szTempName);
+  if (ifs.bad())
+    return 16;
+
+  m_realnotes.Empty();
+  stringT linebuf, note;
+
+  // Get first line
+  getline(ifs, note, TCHAR('\n'));
+
+  // Now get the rest (if any)
+  while (!ifs.eof()) {
+    getline(ifs, linebuf, TCHAR('\n'));
+    note += _T("\r\n");
+    note += linebuf;
+  }
+
+  ifs.close();
+
+  // Set real notes field
+  m_realnotes = note.c_str();
+  // We are still displaying the old text, so replace that too
+  m_notes = m_realnotes;
+  UpdateData(FALSE);
+  ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
+
+  // Delete temporary file
+  _tremove(m_szTempName);
+  return 0;
 }

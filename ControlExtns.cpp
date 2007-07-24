@@ -17,6 +17,24 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// Right-click Edit Context Menu
+#define MENUSTRING_UNDO        _T("&Undo")
+// Separator
+#define MENUSTRING_CUT         _T("Cu&t")
+#define MENUSTRING_COPY        _T("&Copy")
+#define MENUSTRING_PASTE       _T("&Paste")
+#define MENUSTRING_DELETE      _T("&Delete")
+// Separator
+#define MENUSTRING_SELECTALL   _T("Select &All")
+// Separator
+// Custom menu goes here!
+
+#if defined(UNICODE)
+  #define EDIT_CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
+#else
+  #define EDIT_CLIPBOARD_TEXT_FORMAT	CF_TEXT
+#endif
+
 const COLORREF crefInFocus = (RGB(222,255,222));  // Light green
 const COLORREF crefNoFocus = (RGB(255,255,255));  // White
 const COLORREF crefBlack = (RGB(0,0,0));          // Black
@@ -24,10 +42,23 @@ const COLORREF crefBlack = (RGB(0,0,0));          // Black
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn
 
-CEditExtn::CEditExtn() : m_bIsFocused(FALSE), m_lastposition(-1)
+CEditExtn::CEditExtn()
+  : m_bIsFocused(FALSE), m_lastposition(-1),
+  m_message_number(-1), m_menustring("")
 {
 	brInFocus.CreateSolidBrush(crefInFocus);
 	brNoFocus.CreateSolidBrush(crefNoFocus);
+}
+
+CEditExtn::CEditExtn(int message_number, LPCTSTR menustring)
+ : m_bIsFocused(FALSE), m_lastposition(-1),
+   m_message_number(message_number), m_menustring(menustring)
+{
+	brInFocus.CreateSolidBrush(crefInFocus);
+	brNoFocus.CreateSolidBrush(crefNoFocus);
+  // Don't allow if menu string is empty.
+  if (m_menustring.IsEmpty())
+    m_message_number = -1;
 }
 
 CEditExtn::~CEditExtn()
@@ -39,6 +70,7 @@ BEGIN_MESSAGE_MAP(CEditExtn, CEdit)
 	ON_WM_SETFOCUS()
 	ON_WM_KILLFOCUS()
 	ON_WM_CTLCOLOR_REFLECT()
+	ON_WM_CONTEXTMENU()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -79,6 +111,86 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 		pDC->SetBkColor(crefNoFocus);
 		return brNoFocus;
 	}
+}
+
+void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+  if (m_message_number < 0) {
+    CEdit::OnContextMenu(pWnd, point);
+    return;
+  }
+
+  SetFocus();
+  CMenu menu;
+  menu.CreatePopupMenu();
+
+  BOOL bReadOnly = GetStyle() & ES_READONLY;
+  DWORD flags = CanUndo() && !bReadOnly ? 0 : MF_GRAYED;
+
+  menu.InsertMenu(0, MF_BYPOSITION | flags, EM_UNDO, MENUSTRING_UNDO);
+
+  menu.InsertMenu(1, MF_BYPOSITION | MF_SEPARATOR);
+
+  DWORD sel = GetSel();
+  flags = LOWORD(sel) == HIWORD(sel) ? MF_GRAYED : 0;
+  // Add it in position 2 but adding the next will make it 3
+  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_COPY, MENUSTRING_COPY);
+
+  flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
+  menu.InsertMenu(2, MF_BYPOSITION | flags, WM_CUT, MENUSTRING_CUT);
+
+  flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
+  // Add it in position 4 but adding the next will make it 5
+  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR, MENUSTRING_DELETE);
+
+  flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
+                 !bReadOnly ? 0 : MF_GRAYED;
+  menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE, MENUSTRING_PASTE);
+
+  menu.InsertMenu(6, MF_BYPOSITION | MF_SEPARATOR);
+
+  int len = GetWindowTextLength();
+  flags = (!len || (LOWORD(sel) == 0 && HIWORD(sel) == len)) ? MF_GRAYED : 0;
+
+  menu.InsertMenu(7, MF_BYPOSITION | flags, EM_SELECTALL, MENUSTRING_SELECTALL);
+
+  menu.InsertMenu(8, MF_BYPOSITION | MF_SEPARATOR);
+
+  menu.InsertMenu(9, MF_BYPOSITION , m_message_number, m_menustring);
+
+
+  if (point.x == -1 || point.y == -1) {
+    CRect rc;
+    GetClientRect(&rc);
+    point = rc.CenterPoint();
+    ClientToScreen(&point);
+  }
+
+  int nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
+                     TPM_RETURNCMD | TPM_RIGHTBUTTON, point.x, point.y, this);
+
+  if (nCmd < 0)
+    return;
+
+  if (nCmd == m_message_number) {
+    this->GetParent()->SendMessage(nCmd);
+    return;
+  }
+
+  switch (nCmd) {
+    case EM_UNDO:
+    case WM_CUT:
+    case WM_COPY:
+    case WM_CLEAR:
+    case WM_PASTE:
+      SendMessage(nCmd);
+      break;
+    case EM_SELECTALL:
+      SendMessage(EM_SETSEL, 0, -1);
+      break;
+    default:
+      break;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////

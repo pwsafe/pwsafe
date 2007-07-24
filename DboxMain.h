@@ -44,6 +44,10 @@ DECLARE_HANDLE(HDROP);
 // Process Compare Result Dialog click/menu functions
 #define WM_COMPARE_RESULT_FUNCTION (WM_APP + 30)
 
+// External Editor has Ended
+#define WM_CALL_EXTERNAL_EDITOR  (WM_APP + 40)
+#define WM_EXTERNAL_EDITOR_ENDED (WM_APP + 41)
+
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
 // timer event number used to support lock on user-defined timeout
@@ -154,6 +158,7 @@ public:
   void UnFindItem();
 
   void UpdateToolBar(bool state);
+  void UpdateToolBarForSelectedItem(CItemData *ci);
   bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
@@ -346,6 +351,8 @@ protected:
   afx_msg void OnBrowse();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnItemDoubleClick(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* pResult);

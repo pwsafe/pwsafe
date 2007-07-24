@@ -183,6 +183,25 @@ DboxMain::UpdateToolBar(bool state)
 }
 
 void
+DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
+{
+  if (m_toolbarsSetup != TRUE)
+    return;
+
+  bool bIsNode = ci == NULL;
+  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYPASSWORD, bIsNode ? FALSE : TRUE);
+  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYUSERNAME, bIsNode ? FALSE : TRUE);
+  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYNOTESFLD, bIsNode ? FALSE : TRUE);
+  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_AUTOTYPE,     bIsNode ? FALSE : TRUE);
+  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_EDIT,         bIsNode ? FALSE : TRUE);
+
+  if (bIsNode || ci->IsURLEmpty())
+    m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
+  else
+    m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+}
+
+void
 DboxMain::setupBars()
 {
 #if !defined(POCKET_PC)
@@ -836,17 +855,34 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 
     ASSERT(itemData != NULL);
 
-    if (itemData->GetURL().IsEmpty()) {
-      ASSERT(itemData->GetURL().IsEmpty());
+    if (itemData->IsURLEmpty())
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
-    } else {
-      ASSERT(!itemData->GetURL().IsEmpty());
+    else
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
-    }
 
     pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
 
   } // if (item >= 0)
+}
+
+void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  *pLResult = 0L;
+  NMITEMACTIVATE *plv = (NMITEMACTIVATE *)pNotifyStruct;
+
+  CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(plv->iItem);
+  UpdateToolBarForSelectedItem(ci);
+}
+
+void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  *pLResult = 0L;
+  NMTREEVIEW *ptv = (NMTREEVIEW *)pNotifyStruct;
+  HTREEITEM hti = ptv->itemNew.hItem;
+  ASSERT(hti != NULL);
+
+  CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hti);
+  UpdateToolBarForSelectedItem(ci);
 }
 
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)

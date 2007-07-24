@@ -1,5 +1,5 @@
-Password Safe 3.09 Release Notes - July 2007
-============================================
+Password Safe 3.09.01 Release Notes - xxxx 2007
+===============================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.09. For a short description of Password
@@ -7,6 +7,16 @@ Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.09.01
+=====================
+[1757110] Toolbar now correctly disables images according to type of entry
+selected and if URL is populated
+
+New Features for 3.09.01
+=======================-
+[1752896] Add ability to edit an entry's notes field using user's default 
+text editor via right click on Notes field.
 
 Bugs fixed in 3.09
 ==================

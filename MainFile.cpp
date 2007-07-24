@@ -2110,6 +2110,11 @@ DboxMain::OnOK()
 		app.ClearClipboardData();
   }
 
+  // Necessary to stop "UpdateToolBarForSelectedItem" processing during exit processing
+  // No idea why OnTreeItemSelected or OnListItemSelected is being called at this point but,
+  // if called, CItemData is invalid.
+  m_toolbarsSetup = FALSE;
+
   ClearData();
 
   // Save Application related preferences

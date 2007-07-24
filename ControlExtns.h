@@ -10,11 +10,15 @@
 // ControlExtns.h : header file
 // Extensions to standard Edit, ListBox and Combobox Controls
 
+// Pick a number at the end of the WM_USER range
+#define EM_SELECTALL (WM_APP - 1)
+
 class CEditExtn : public CEdit
 {
 // Construction
 public:
 	CEditExtn();
+	CEditExtn(int message_number, LPCTSTR szmenustring);
 	void ChangeColour() {m_bIsFocused = TRUE;}
 
 // Attributes
@@ -25,6 +29,8 @@ private:
 	CBrush brNoFocus;
 
  	int m_lastposition, m_nStartChar, m_nEndChar;
+    int m_message_number;
+    CString m_menustring;
 
 // Operations
 public:
@@ -44,6 +50,7 @@ protected:
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

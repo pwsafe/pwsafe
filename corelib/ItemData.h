@@ -208,6 +208,7 @@ public:
   // Predicate to determine if item matches given criteria
   bool Matches(const CString &subgroup_name, int iObject, 
                int iFunction) const;
+  BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
 
 private:
   CItemField m_Name;
