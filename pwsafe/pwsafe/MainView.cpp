@@ -175,30 +175,32 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 void
 DboxMain::UpdateToolBar(bool state)
 {
-  if (m_toolbarsSetup == TRUE) {
-    m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, state ? FALSE : TRUE);
-    m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, state ? FALSE : TRUE);
-    m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, state ? FALSE : TRUE);
-  }
+	if (m_toolbarsSetup == TRUE) {
+    BOOL State = (state) ? FALSE : TRUE;
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, State);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, State);
+		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, State);
+	}
 }
 
 void
 DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
 {
-  if (m_toolbarsSetup != TRUE)
-    return;
+  // Following test required since this can be called on exit, with a ci
+  // from ItemData that's already been deleted. Ugh.
+  if (m_core.GetNumEntries() != 0) {
+    BOOL State = (ci == NULL) ? FALSE : TRUE;
+    int IDs[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
+                 ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_EDIT};
 
-  bool bIsNode = ci == NULL;
-  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYPASSWORD, bIsNode ? FALSE : TRUE);
-  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYUSERNAME, bIsNode ? FALSE : TRUE);
-  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYNOTESFLD, bIsNode ? FALSE : TRUE);
-  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_AUTOTYPE,     bIsNode ? FALSE : TRUE);
-  m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_EDIT,         bIsNode ? FALSE : TRUE);
+    for (int i = 0; i < sizeof(IDs)/sizeof(IDs[0]); i++)
+      m_wndToolBar.GetToolBarCtrl().EnableButton(IDs[i], State);
 
-  if (bIsNode || ci->IsURLEmpty())
-    m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
-  else
-    m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+    if (ci == NULL || ci->IsURLEmpty())
+      m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
+    else
+      m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+  }
 }
 
 void
