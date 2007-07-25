@@ -952,11 +952,11 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   DWORD dw_mflen = (DWORD)mf.GetLength();
   BYTE *mf_buffer = (BYTE *)(mf.Detach());
 
-#ifdef _DEBUG
+#ifdef DUMP_DATA
    CString cs_timestamp = PWSUtil::GetTimeStamp();
    TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp, dw_mflen, dw_mflen);
    PWSUtil::HexDump(mf_buffer, dw_mflen, cs_timestamp);
-#endif /* DEBUG */
+#endif /* DUMP_DATA */
 
   CImageList *pDragImageList = CreateDragImage(m_hitemDrag);
   pDragImageList->BeginDrag(0, CPoint(8, 8));
@@ -1166,12 +1166,12 @@ bool CTVTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
 {
   DboxMain *pDbx = static_cast<DboxMain *>(m_parent); 
 
-#ifdef _DEBUG
+#ifdef DUMP_DATA
    CString cs_timestamp;
    cs_timestamp = PWSUtil::GetTimeStamp();
    TRACE(_T("%s: Drop data: length %d/0x%04x, value:\n"), cs_timestamp, inLen, inLen);
    PWSUtil::HexDump(in_buffer, inLen, cs_timestamp);
-#endif /* DEBUG */
+#endif /* DUMP_DATA */
 
   if (inLen <= 0)
     return false;
