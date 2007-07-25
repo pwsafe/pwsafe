@@ -2112,13 +2112,10 @@ DboxMain::OnOK()
 		app.ClearClipboardData();
   }
 
+  // wipe data, save prefs, go home.
   ClearData();
-
-  // Save Application related preferences
   prefs->SaveApplicationPreferences();
-
   m_bBoldItem = false;
-
   CDialog::OnOK();
 }
 
