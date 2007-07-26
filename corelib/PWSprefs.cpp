@@ -541,8 +541,13 @@ void PWSprefs::InitializePreferences()
  *   host/user
  * - If config file can't be created, fallback to "Password Safe" registry
  */
-    // Set path & name of config file
 
+  // change to config dir
+  // dirs' d'tor will put us back when we leave
+  // needed for case where m_configfilename was passed relatively
+  PWSdirs dirs(PWSdirs::GetConfigDir());
+
+  // Set path & name of config file
   if (m_configfilename.IsEmpty())
     m_configfilename = PWSdirs::GetConfigDir() + _T("pwsafe.cfg");
 
@@ -810,28 +815,33 @@ bool PWSprefs::LoadProfileFromFile()
 
 void PWSprefs::SaveApplicationPreferences()
 {
-    int i;
+  int i;
 	if (!m_prefs_changed[APP_PREF])
 		return;
 
+  // change to config dir
+  // dirs' d'tor will put us back when we leave
+  // needed for case where m_configfilename was passed relatively
+  PWSdirs dirs(PWSdirs::GetConfigDir());
+
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW) {
-        // Load prefs file in case it was changed elsewhere
-        // Here we need to explicitly lock from before
-        // load to after store
-        m_XML_Config = new CXMLprefs(m_configfilename);
+    // Load prefs file in case it was changed elsewhere
+    // Here we need to explicitly lock from before
+    // load to after store
+    m_XML_Config = new CXMLprefs(m_configfilename);
 		if (!m_XML_Config->Lock()) {
-            // punt to registry!
-            m_ConfigOptions = CF_REGISTRY;
-            delete m_XML_Config;
-            m_XML_Config = NULL;
-        } else { // acquired lock
-            // if file exists, load to get other values
-            if (PWSfile::FileExists(m_configfilename))
-                m_XML_Config->Load();
-        }
+      // punt to registry!
+      m_ConfigOptions = CF_REGISTRY;
+      delete m_XML_Config;
+      m_XML_Config = NULL;
+    } else { // acquired lock
+      // if file exists, load to get other values
+      if (PWSfile::FileExists(m_configfilename))
+        m_XML_Config->Load();
     }
-    UpdateTimeStamp();
+  }
+  UpdateTimeStamp();
 	
 	// Write values to XML file or registry
 	for (i = 0; i < NumBoolPrefs; i++) {
@@ -867,61 +877,62 @@ void PWSprefs::SaveApplicationPreferences()
 		}
 	}
 
-    if (m_rect.changed) {
-        switch (m_ConfigOptions) {
-            case CF_REGISTRY:
-                m_app->WriteProfileInt(PWS_REG_POSITION,
-                                       _T("top"), m_rect.top);
-                m_app->WriteProfileInt(PWS_REG_POSITION,
-                                       _T("bottom"), m_rect.bottom);
-                m_app->WriteProfileInt(PWS_REG_POSITION,
-                                       _T("left"), m_rect.left);
-                m_app->WriteProfileInt(PWS_REG_POSITION,
-                                       _T("right"), m_rect.right);
-                break;
-            case CF_FILE_RW:
-            case CF_FILE_RW_NEW: {
-                CString obuff;
-                obuff.Format(_T("%d"), m_rect.top);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-                obuff.Format(_T("%d"), m_rect.bottom);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-                obuff.Format(_T("%d"), m_rect.left);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-                obuff.Format(_T("%d"), m_rect.right);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
-            }
-                break;
-            case CF_FILE_RO:
-            case CF_NONE:
-            default:
-                break;
-        }
-        m_rect.changed = false;
-    } // m_rect.changed
+  if (m_rect.changed) {
+    switch (m_ConfigOptions) {
+    case CF_REGISTRY:
+      m_app->WriteProfileInt(PWS_REG_POSITION,
+                             _T("top"), m_rect.top);
+      m_app->WriteProfileInt(PWS_REG_POSITION,
+                             _T("bottom"), m_rect.bottom);
+      m_app->WriteProfileInt(PWS_REG_POSITION,
+                             _T("left"), m_rect.left);
+      m_app->WriteProfileInt(PWS_REG_POSITION,
+                             _T("right"), m_rect.right);
+      break;
+    case CF_FILE_RW:
+    case CF_FILE_RW_NEW: {
+      CString obuff;
+      obuff.Format(_T("%d"), m_rect.top);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+      obuff.Format(_T("%d"), m_rect.bottom);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
+      obuff.Format(_T("%d"), m_rect.left);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
+      obuff.Format(_T("%d"), m_rect.right);
+      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+    }
+      break;
+    case CF_FILE_RO:
+    case CF_NONE:
+    default:
+      break;
+    }
+    m_rect.changed = false;
+  } // m_rect.changed
 
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW) {
-        int i;
-        const int n = GetPref(PWSprefs::MaxMRUItems);
+    int i;
+    const int n = GetPref(PWSprefs::MaxMRUItems);
 		// Delete ALL entries
 		m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
 		// Now put back the ones we want
-        CString csSubkey;
-        for (i = 0; i < n; i++)
-            if (!m_MRUitems[i].IsEmpty()) {
-                csSubkey.Format(_T("Safe%02d"), i+1);
-                m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
-            }
-    }
+    CString csSubkey;
+    for (i = 0; i < n; i++)
+      if (!m_MRUitems[i].IsEmpty()) {
+        csSubkey.Format(_T("Safe%02d"), i+1);
+        m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
+      }
+  }
 
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW) {
-        m_XML_Config->Store();
-        m_XML_Config->Unlock();
-        delete m_XML_Config;
-        m_XML_Config = NULL;
-    }
+    if (m_XML_Config->Store()) // can't be new after succ. store
+      m_ConfigOptions = CF_FILE_RW;
+    m_XML_Config->Unlock();
+    delete m_XML_Config;
+    m_XML_Config = NULL;
+  }
 
 	m_prefs_changed[APP_PREF] = false;
 }
@@ -957,14 +968,14 @@ void PWSprefs::DeleteRegistryEntries()
 
 int PWSprefs::GetConfigIndicator() const
 {
-    switch (m_ConfigOptions) {
-	   	case CF_NONE: return IDSC_CONFIG_NONE;
-	    case CF_REGISTRY: return IDSC_CONFIG_REGISTRY;
-	    case CF_FILE_RW:
-		case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW;
-	    case CF_FILE_RO: return IDSC_CONFIG_FILE_RO;
-    	default: ASSERT(0); return 0;
-    }
+  switch (m_ConfigOptions) {
+  case CF_NONE: return IDSC_CONFIG_NONE;
+  case CF_REGISTRY: return IDSC_CONFIG_REGISTRY;
+  case CF_FILE_RW:
+  case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW;
+  case CF_FILE_RO: return IDSC_CONFIG_FILE_RO;
+  default: ASSERT(0); return 0;
+  }
 }
 
 // Old registry handling code:

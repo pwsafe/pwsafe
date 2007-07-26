@@ -16,17 +16,27 @@
 //-----------------------------------------------------------------------------
 #include "MyString.h"
 #include "SysInfo.h"
+#include <stack>
 
 class PWSdirs
 {
-  public:
-    static CString GetSafeDir(); // default database location
-    static CString GetConfigDir(); // pwsafe.cfg location
-    static CString GetXMLDir(); // XML .xsd .xsl files
-    static CString GetHelpDir(); // help file(s)
-    static CString GetExeDir(); // location of executable
-  private:
-    static CString GetEnv(const char *env) {return SysInfo::GetEnv(env);}
-    static CString GetMFNDir(); // wrapper for ::GetModuleFileName()
+ public:
+  PWSdirs() {} // only need to create an object for push/pop
+  PWSdirs(const CString &dir) {Push(dir);} // convenience: create & push
+  ~PWSdirs(); // does a repeated Pop, so we're back where we started
+  
+  static CString GetSafeDir(); // default database location
+  static CString GetConfigDir(); // pwsafe.cfg location
+  static CString GetXMLDir(); // XML .xsd .xsl files
+  static CString GetHelpDir(); // help file(s)
+  static CString GetExeDir(); // location of executable
+
+  void Push(const CString &dir); // cd to dir after saving current dir
+  void Pop(); // cd to last dir, nop if stack empty
+  
+ private:
+  static CString GetEnv(const char *env) {return SysInfo::GetEnv(env);}
+  static CString GetMFNDir(); // wrapper for ::GetModuleFileName()
+  std::stack<CString> dirs;
 };
 #endif /* __PWSDIRS_H */
