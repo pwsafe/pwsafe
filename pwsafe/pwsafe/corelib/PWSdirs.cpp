@@ -94,3 +94,30 @@ CString PWSdirs::GetExeDir()
     }
     return retval;
 }
+
+void PWSdirs::Push(const CString &dir)
+{
+  TCHAR *curdir = _tgetcwd(NULL, 512); // NULL means 512 doesn't matter
+  CString CurDir(curdir);
+  free(curdir);
+  if (CurDir != dir) { // minor optimization
+    dirs.push(CurDir);
+    _tchdir(dir);
+  }
+}
+
+void PWSdirs::Pop()
+{
+  if (!dirs.empty()) {
+    _tchdir(dirs.top());
+    dirs.pop();
+  }
+}
+
+PWSdirs::~PWSdirs()
+{
+  while (!dirs.empty()) {
+    _tchdir(dirs.top());
+    dirs.pop();
+  }
+}
