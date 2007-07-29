@@ -640,7 +640,7 @@ DboxMain::OnDestroy()
 void DboxMain::OnWindowPosChanging( WINDOWPOS* lpwndpos )
 {
 	if (m_bStartHiddenAndMinimized) {
-		lpwndpos->flags |= (SWP_HIDEWINDOW + SWP_NOACTIVATE);
+		lpwndpos->flags |= (SWP_HIDEWINDOW | SWP_NOACTIVATE);
 		lpwndpos->flags &= ~SWP_SHOWWINDOW;
 		PostMessage(WM_COMMAND, ID_MENUITEM_MINIMIZE);
 	}
