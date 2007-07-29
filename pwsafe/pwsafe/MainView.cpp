@@ -747,7 +747,7 @@ DboxMain::OnSize(UINT nType,
     m_bBoldItem = false;
 
     if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
-      app.ClearClipboardData();
+      ClearClipboardData();
     if (prefs->GetPref(PWSprefs::DatabaseClear)) {
       if (m_core.IsChanged() ||  m_bTSUpdated)
         if (Save() != PWScore::SUCCESS) {

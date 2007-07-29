@@ -115,12 +115,6 @@ inline void putInt32(unsigned char buf[4], const int val )
 #endif
 }
 
-#if defined(UNICODE)
-  #define CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
-#else
-  #define CLIPBOARD_TEXT_FORMAT	CF_TEXT
-#endif
-
 // Time conversion result formats - powers of 2 as they can be combined!
 enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8,
       TMC_LOCALE = 16};
@@ -141,11 +135,6 @@ namespace PWSUtil {
   bool VerifyXMLDateTimeString(const CString &time_str, time_t &t);
   bool VerifyImportDateTimeString(const CString &time_str, time_t &t);
   CMyString ConvertToDateTimeString(const time_t &t, const int result_format);
-  bool ToClipboard(const CMyString &data,
-                   unsigned char clipboard_digest[SHA256::HASHLEN],
-                   HWND hWindow);
-  bool ClearClipboard(unsigned char clipboard_digest[SHA256::HASHLEN],
-                      HWND hWindow);
   int VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, CString &strErrors);
   CMyString GetNewFileName(const CMyString &oldfilename, const CString &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;

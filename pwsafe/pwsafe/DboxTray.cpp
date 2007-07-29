@@ -44,7 +44,7 @@ DboxMain::OnTrayLockUnLock()
 			break;
 		case ThisMfcApp::UNLOCKED:					// User clicked Lock
 			UpdateSystemTray(LOCKED);
-			app.ClearClipboardData();
+			ClearClipboardData();
 			ShowWindow(SW_MINIMIZE);
 			ShowWindow(SW_HIDE);
             ClearData(false); // bugfix 1709418
@@ -125,7 +125,7 @@ DboxMain::OnTrayCopyUsername(UINT nID)
 
   const CMyString username = ci.GetUser();
   if (!username.IsEmpty()) {
-    ToClipboard(username);
+    SetClipboardData(username);
     UpdateAccessTime(&ci);
   }
 }
@@ -145,8 +145,8 @@ DboxMain::OnTrayCopyPassword(UINT nID)
 		return;
 
 	const CMyString curPassString = ci.GetPassword();
-	ToClipboard(curPassString);
-    UpdateAccessTime(&ci);
+	SetClipboardData(curPassString);
+  UpdateAccessTime(&ci);
 }
 
 void
@@ -182,7 +182,7 @@ DboxMain::OnTrayCopyNotes(UINT nID)
   }
 
   if (!clipboard_data.IsEmpty()) {
-    ToClipboard(clipboard_data);
+    SetClipboardData(clipboard_data);
     UpdateAccessTime(&ci);
   }
 }

@@ -543,7 +543,6 @@ ThisMfcApp::InitInstance()
 
   int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
   m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
-  m_clipboard_set = false;
   m_mainmenu = new CMenu;
   m_mainmenu->LoadMenu(IDR_MAINMENU);
 
@@ -764,24 +763,6 @@ ThisMfcApp::SetSystemTrayState(STATE s)
 	m_TrayIcon->SetIcon(hIcon);
   }
 }
-
-void
-ThisMfcApp::SetClipboardData(const CMyString &data)
-{
-	m_clipboard_set = PWSUtil::ToClipboard(data, m_clipboard_digest, m_pMainWnd->m_hWnd);
-}
-
-void
-ThisMfcApp::ClearClipboardData()
-{
-    // Clear the clipboard IFF its value is the same as last set by this app.
-    if (!m_clipboard_set)
-        return;
-
-	m_clipboard_set = PWSUtil::ClearClipboard(m_clipboard_digest,
-                                              m_pMainWnd->m_hWnd);
-}
-
 
 #if !defined(POCKET_PC)
 //Copied from Knowledge Base article Q100770

@@ -81,8 +81,10 @@ DboxMain::DboxMain(CWnd* pParent)
      m_iSessionEndingStatus(IDIGNORE),
      m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
      m_bValidate(false), m_bOpen(false), 
-     m_IsStartClosed(false), m_IsStartSilent(false), m_bStartHiddenAndMinimized(false),
-     m_bAlreadyToldUserNoSave(false), m_inExit(false), m_pCC(NULL), m_bBoldItem(false)
+     m_IsStartClosed(false), m_IsStartSilent(false),
+     m_bStartHiddenAndMinimized(false),
+     m_bAlreadyToldUserNoSave(false), m_inExit(false),
+     m_pCC(NULL), m_bBoldItem(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -724,11 +726,6 @@ void DboxMain::OnBrowse()
   }
 }
 
-void
-DboxMain::ToClipboard(const CMyString &data)
-{
-	app.SetClipboardData(data);
-}
 
 // this tells OnSize that the user is currently
 // changing the size of the dialog, and not restoring it

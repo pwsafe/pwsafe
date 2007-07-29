@@ -463,7 +463,7 @@ DboxMain::OnCopyPassword()
 
   CItemData *ci = getSelectedItem();
   ASSERT(ci != NULL);
-  ToClipboard(ci->GetPassword());
+  SetClipboardData(ci->GetPassword());
   UpdateAccessTime(ci);
   uuid_array_t RUEuuid;
   ci->GetUUID(RUEuuid);
@@ -481,7 +481,7 @@ DboxMain::OnCopyUsername()
   const CMyString username = ci->GetUser();
 
   if (!username.IsEmpty()) {
-    ToClipboard(username);
+    SetClipboardData(username);
     UpdateAccessTime(ci);
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
@@ -516,7 +516,7 @@ DboxMain::OnCopyNotes()
 	  clipboard_data += autotype;
   }
   if (!clipboard_data.IsEmpty()) {
-    ToClipboard(clipboard_data);
+    SetClipboardData(clipboard_data);
     UpdateAccessTime(ci);
     uuid_array_t RUEuuid;
     ci->GetUUID(RUEuuid);
@@ -534,7 +534,7 @@ DboxMain::OnFind()
 void
 DboxMain::OnClearClipboard()
 {
-   app.ClearClipboardData();
+   ClearClipboardData();
 }
 
 void

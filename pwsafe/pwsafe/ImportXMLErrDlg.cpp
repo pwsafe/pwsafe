@@ -9,7 +9,7 @@
 //
 
 #include "ImportXMLErrDlg.h"
-#include "ThisMfcApp.h"
+#include "corelib/PWSclipboard.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,5 +56,6 @@ void CImportXMLErrDlg::OnOK()
 void
 CImportXMLErrDlg::OnBnClickedCopyToClipboard()
 {
-	app.SetClipboardData(m_strResultText);
+  PWSclipboard cb;
+	cb.SetData(m_strResultText, false);
 }

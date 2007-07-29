@@ -91,7 +91,7 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
 
     if( IDYES == nResponse ) {
       password = temp;
-      ToClipboard( password );
+      SetClipboardData( password );
       return true;
     } else if( IDCANCEL == nResponse ) {
       return false;

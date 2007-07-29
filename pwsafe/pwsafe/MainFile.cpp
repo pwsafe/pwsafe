@@ -2109,7 +2109,7 @@ DboxMain::OnOK()
   if ((!IsWindowVisible() && prefs->GetPref(PWSprefs::UseSystemTray)) ||
       prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo) ||
       (m_iSessionEndingStatus == IDYES)) {
-		app.ClearClipboardData();
+		ClearClipboardData();
   }
 
   // wipe data, save prefs, go home.
