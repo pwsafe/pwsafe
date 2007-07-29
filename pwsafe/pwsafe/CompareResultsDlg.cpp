@@ -789,7 +789,7 @@ CCompareResultsDlg::OnCopyToClipboard()
     }
   }
 
-  DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
   dbx->SetClipboardData(resultStr);
 }
 
