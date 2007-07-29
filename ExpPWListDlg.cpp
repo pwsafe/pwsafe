@@ -9,8 +9,8 @@
 //
 
 #include "stdafx.h"
-#include "ThisMfcApp.h"
 #include "ExpPWListDlg.h"
+#include "DboxMain.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -150,7 +150,8 @@ CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 			(CString)exppwentry.expiryexpdate + CRLF;
 	}
 					
-	app.SetClipboardData(data);
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());
+  dbx->SetClipboardData(data);
 }
 
 void

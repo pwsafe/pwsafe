@@ -13,6 +13,7 @@
 #include "corelib/PWScore.h"
 #include "corelib/sha256.h"
 #include "corelib/PwsPlatform.h"
+#include "corelib/PWSClipboard.h"
 #if defined(POCKET_PC)
   #include "pocketpc/resource.h"
   #include "pocketpc/MyListCtrl.h"
@@ -165,6 +166,9 @@ public:
   void SetCapsLock(const bool bState);
   void AutoResizeColumns();
   void ResetIdleLockCounter();
+  bool ClearClipboardData() {return m_clipboard.ClearData();}
+  bool SetClipboardData(const CMyString &data)
+  {return m_clipboard.SetData(data);}
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -442,12 +446,13 @@ private:
   std::vector<bool> m_treeDispState; // true iff item is expanded
   bool m_inExit; // help U3ExitNow
 
+  PWSclipboard m_clipboard;
+
   BOOL IsWorkstationLocked() const;
   void startLockCheckTimer();
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
   bool DecrementAndTestIdleLockCounter();
-  void ToClipboard(const CMyString &data);
   void ExtractFont(CString& str, LOGFONT *ptreefont);
   CString GetToken(CString& str, LPCTSTR c);
   int SaveIfChanged();

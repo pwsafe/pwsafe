@@ -12,7 +12,7 @@
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
-#include "DboxMain.h"  // For WM_VIEW_COMPARE_RESULT
+#include "DboxMain.h"
 #include "CompareResultsDlg.h"
 #include "corelib/PWScore.h"
 #include <vector>
@@ -789,7 +789,8 @@ CCompareResultsDlg::OnCopyToClipboard()
     }
   }
 
-  app.SetClipboardData(resultStr);
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());
+  dbx->SetClipboardData(resultStr);
 }
 
 void

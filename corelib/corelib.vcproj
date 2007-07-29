@@ -442,6 +442,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWSclipboard.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWScore.cpp"
 				>
 			</File>
@@ -560,6 +564,10 @@
 			</File>
 			<File
 				RelativePath=".\PWCharPool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWSclipboard.h"
 				>
 			</File>
 			<File
