@@ -903,7 +903,8 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   // Can drag in read-only mode as it might be to someone else
   // Can't allow drop in read-only mode
 
-  CPoint ptAction = ::GetMessagePos();
+  CPoint ptActionScr = ::GetMessagePos();
+  CPoint ptAction(ptActionScr);
   ScreenToClient(&ptAction);
 
   UINT uFlags;
@@ -959,8 +960,8 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
 #endif /* DUMP_DATA */
 
   CImageList *pDragImageList = CreateDragImage(m_hitemDrag);
-  pDragImageList->BeginDrag(0, CPoint(8, 8));
-  pDragImageList->DragEnter(GetDesktopWindow(), ptAction);
+  pDragImageList->BeginDrag(0, CPoint(2, 2)); // (2, 2) is "hotspot"
+  pDragImageList->DragEnter(GetDesktopWindow(), ptActionScr);
 
   // Get client rectangle
   RECT rClient;
@@ -975,7 +976,7 @@ void CTVTreeCtrl::BeginDrag(NMHDR * /* pNotifyStruct */, LRESULT * &/* pLResult 
   trashMemory((void *)mf_buffer, dw_mflen);
   free((void *)mf_buffer);
 
-  // End dragging image
+  // End dragging image XXX shouldn't be here!
   pDragImageList->DragLeave(GetDesktopWindow());
   pDragImageList->EndDrag();
   delete pDragImageList;
