@@ -1688,10 +1688,10 @@ DboxMain::UnMinimize(bool update_windows)
     }
 
     if (rc2 == PWScore::SUCCESS) {
-      m_needsreading = false;
       UpdateSystemTray(UNLOCKED);
       startLockCheckTimer();
       m_passphraseOK = true;
+      m_needsreading = false;
       if (update_windows) {
         ShowWindow(SW_RESTORE);
         m_core.SetDisplayStatus(m_treeDispState);
@@ -1699,7 +1699,6 @@ DboxMain::UnMinimize(bool update_windows)
         BringWindowToTop();
       }
     } else {
-      m_needsreading = true;
       ShowWindow(useSysTray ? SW_HIDE : SW_MINIMIZE);
     }
     return;
@@ -1804,7 +1803,6 @@ DboxMain::CheckExpiredPasswords()
 
   ExpiredList expPWList;
 
-  ExpPWEntry exppwentry;
   ItemListConstIter listPos;
   for (listPos = m_core.GetEntryIter();
        listPos != m_core.GetEntryEndIter();
@@ -1813,13 +1811,7 @@ DboxMain::CheckExpiredPasswords()
     curitem.GetLTime(LTime);
 
     if (((long)LTime != 0) && (LTime < exptime)) {
-      exppwentry.group = curitem.GetGroup();
-      exppwentry.title = curitem.GetTitle();
-      exppwentry.user = curitem.GetUser();
-      exppwentry.type = LTime <= now ? 0 : 1; // Expired or Warning
-      exppwentry.expirylocdate = curitem.GetLTimeL();
-      exppwentry.expiryexpdate = curitem.GetLTimeExp();
-      exppwentry.expirytttdate = LTime;
+      ExpPWEntry exppwentry(curitem, now, LTime);
       expPWList.push_back(exppwentry);
     }
 	}
