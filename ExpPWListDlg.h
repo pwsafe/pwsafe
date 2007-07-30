@@ -13,7 +13,9 @@
 #include <vector>
 
 // Expired password Entry structure for CList
+class CItemData;
 struct ExpPWEntry {
+  ExpPWEntry(const CItemData &ci, time_t now, time_t LTime);
   CMyString group;
   CMyString title;
   CMyString user;

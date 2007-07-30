@@ -38,22 +38,21 @@ static char THIS_FILE[] = __FILE__;
 void
 DboxMain::OnTrayLockUnLock()
 {
-    switch(app.GetSystemTrayState()) {
-		case ThisMfcApp::LOCKED:					// User clicked UnLock
-            UnMinimize(true);
-			break;
-		case ThisMfcApp::UNLOCKED:					// User clicked Lock
-			UpdateSystemTray(LOCKED);
-			ClearClipboardData();
-			ShowWindow(SW_MINIMIZE);
-			ShowWindow(SW_HIDE);
-            ClearData(false); // bugfix 1709418
-            m_needsreading = true;
-			break;
-		case ThisMfcApp::CLOSED:
-		default:
-            ASSERT(0);
-			break;
+  switch(app.GetSystemTrayState()) {
+  case ThisMfcApp::LOCKED:					// User clicked UnLock
+    UnMinimize(true);
+    break;
+  case ThisMfcApp::UNLOCKED:					// User clicked Lock
+    UpdateSystemTray(LOCKED);
+    ClearClipboardData();
+    ShowWindow(SW_MINIMIZE);
+    ShowWindow(SW_HIDE);
+    ClearData(false); // bugfix 1709418
+    break;
+  case ThisMfcApp::CLOSED:
+  default:
+    ASSERT(0);
+    break;
 	}
 }
 

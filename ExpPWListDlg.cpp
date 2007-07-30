@@ -13,10 +13,23 @@
 #include "DboxMain.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
+#include "corelib/ItemData.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 
 using namespace std;
+
+ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t LTime)
+{
+  group = ci.GetGroup();
+  title = ci.GetTitle();
+  user = ci.GetUser();
+  type = LTime <= now ? 0 : 1; // Expired or Warning
+  expirylocdate = ci.GetLTimeL();
+  expiryexpdate = ci.GetLTimeExp();
+  expirytttdate = LTime;
+}
+
 
 // CExpPWListDlg dialog
 
