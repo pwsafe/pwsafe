@@ -47,4 +47,6 @@ private:
   CDropTarget m_CCDropTarget;
   CImageList* m_pDragImage;
   int m_iItem;
+  // Clipboard format for Column Chooser Drag & Drop
+  CLIPFORMAT m_ccddCPFID;
 };

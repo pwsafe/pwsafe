@@ -16,13 +16,20 @@
 #include <afxdisp.h >       // MFC OLE automation classes
 #include "ColumnChooserLC.h"
 #include "DboxMain.h"       // For WM_HDR_DD_COMPLETE and enum FROMCC & FROMHDR
-#include "PasswordSafe.h"   // for access to external gbl_ccddCPFID
 
 // CColumnChooserLC
 
 CColumnChooserLC::CColumnChooserLC()
- : m_iItem(-1), m_pDragImage(NULL)
+  : m_iItem(-1), m_pDragImage(NULL)
 {
+  // Register a clipboard format for column drag & drop. 
+  // Note that it's OK to register same format more than once:
+  // "If a registered format with the specified name already exists,
+  // a new format is not registered and the return value identifies the existing format."
+
+  CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
+  m_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
+  ASSERT(m_ccddCPFID != 0);
 }
 
 CColumnChooserLC::~CColumnChooserLC()
@@ -59,11 +66,11 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
                               DROPEFFECT /* dropEffect */, CPoint /* point */)
 {
   // On Drop of column from Header onto Column Chooser Dialog
-  if (!pDataObject->IsDataAvailable(gbl_ccddCPFID, NULL))
+  if (!pDataObject->IsDataAvailable(m_ccddCPFID, NULL))
     return FALSE;
 
   HGLOBAL hGlobal;
-  hGlobal = pDataObject->GetGlobalData(gbl_ccddCPFID);
+  hGlobal = pDataObject->GetGlobalData(m_ccddCPFID);
 
   LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
@@ -133,7 +140,7 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
 
   // Start dragging
   StartDragging(cs_text, cs_text.GetLength() * sizeof(TCHAR),
-                gbl_ccddCPFID, &rClient, &point);
+                m_ccddCPFID, &rClient, &point);
 
   // End dragging image
   m_pDragImage->DragLeave(GetDesktopWindow());
