@@ -60,9 +60,6 @@ extern ThisMfcApp app;
 
 extern const TCHAR *HIDDEN_PASSWORD;
 
-// Clipboard format for Column Chooser Drag & Drop
-extern CLIPFORMAT gbl_ccddCPFID;
-
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

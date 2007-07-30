@@ -52,9 +52,6 @@ BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
    ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
-// Need it outside as everyone needs it!
-CLIPFORMAT gbl_ccddCPFID;
-
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
 	m_bUseAccelerator( false ),
@@ -350,27 +347,6 @@ ThisMfcApp::InitInstance()
     for discussion on how this is handled.
   */
   SetRegistryKey(_T("Password Safe"));
-
-  // Register a clipboard format for column drag & drop. 
-  CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_CDD));
-  gbl_ccddCPFID = 0;
-
-  if (OpenClipboard(0)) {
-    unsigned int uiFormat = 0;
-
-    while ((uiFormat = EnumClipboardFormats(uiFormat)) != 0) {
-      TCHAR szName[512];
-      GetClipboardFormatName(uiFormat, szName, sizeof(szName));
-      if (cs_CPF.Compare(CString(szName)) == 0) {
-        gbl_ccddCPFID = (CLIPFORMAT)uiFormat;
-        break;
-      }
-    }
-    CloseClipboard();
-  } 
-
-  if (gbl_ccddCPFID == 0)
-    gbl_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
 
   DboxMain dbox(NULL);
   m_core.SetReadOnly(false);

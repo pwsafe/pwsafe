@@ -49,4 +49,6 @@ private:
   int m_dwHDRType;
   int m_iDDType;
   BOOL m_bCCActive;
+  // Clipboard format for Column Chooser Drag & Drop
+  CLIPFORMAT m_ccddCPFID;
 };
