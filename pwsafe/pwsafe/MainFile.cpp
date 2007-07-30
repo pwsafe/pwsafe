@@ -499,6 +499,7 @@ DboxMain::Open( const CMyString &pszFilename )
                 GetPref(PWSprefs::DefUserName));
     m_core.SetUseDefUser(PWSprefs::GetInstance()->
                 GetPref(PWSprefs::UseDefUser) ? true : false);
+    m_needsreading = false;
     return rc;
 }
 

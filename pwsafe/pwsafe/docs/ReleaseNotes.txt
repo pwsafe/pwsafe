@@ -12,6 +12,7 @@ Bugs fixed in 3.09.01
 =====================
 [1757110] Toolbar now correctly disables images according to type of entry
 selected and if URL is populated
+[1758025, 1759364] '-s' option now works correctly
 
 New Features for 3.09.01
 =======================-

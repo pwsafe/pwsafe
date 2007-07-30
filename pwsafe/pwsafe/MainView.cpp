@@ -753,13 +753,12 @@ DboxMain::OnSize(UINT nType,
         if (Save() != PWScore::SUCCESS) {
           // If we don't warn the user, data may be lost!
           CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
-              cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
+            cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
           MessageBox(cs_text, cs_title, MB_ICONSTOP);
           ShowWindow(SW_SHOW);
           return;
         }
       ClearData(false);
-      m_needsreading = true;
     }
     if (PWSprefs::GetInstance()->
         GetPref(PWSprefs::UseSystemTray)) {      
@@ -1151,7 +1150,7 @@ DboxMain::ClearData(bool clearMRE)
 
   m_core.ClearData();
 
-	  UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
+  UpdateSystemTray(m_bOpen ? LOCKED : CLOSED);
 
   // If data is cleared, m_selectedAtMinimize is useless,
   // since it will be deleted and rebuilt from the file.
@@ -1175,6 +1174,7 @@ DboxMain::ClearData(bool clearMRE)
     m_ctlItemTree.UnlockWindowUpdate();
     m_bBoldItem = false;
   }
+  m_needsreading = true;
 }
 
 void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -1419,7 +1419,6 @@ DboxMain::OnTimer(UINT nIDEvent )
       if(IsWindowVisible()){
         ShowWindow(SW_MINIMIZE);
       }
-      m_needsreading = true;
       if (nIDEvent == TIMER_CHECKLOCK)
         KillTimer(TIMER_CHECKLOCK);
     }

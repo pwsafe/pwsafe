@@ -1794,7 +1794,6 @@ DboxMain::CheckExpiredPasswords()
     ASSERT(err == 0);
 #else
     st = *localtime(&now);
-    ASSERT(st != NULL); // null means invalid time
 #endif
     st.tm_mday += idays;
     exptime = mktime(&st);
@@ -1828,7 +1827,6 @@ DboxMain::CheckExpiredPasswords()
   if (!expPWList.empty()) {
     CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile());
     dlg.DoModal();
-    expPWList.clear();
   }
 }
 
@@ -1861,16 +1859,16 @@ DboxMain::OnQueryEndSession()
 {
 	m_iSessionEndingStatus = IDOK;
 
-    //Store current filename for next time
+  //Store current filename for next time
 	PWSprefs *prefs = PWSprefs::GetInstance();
-    if (!m_core.GetCurFile().IsEmpty())
-        prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-    // Save last size & pos for next time
-    if (!IsIconic()) {
-        CRect rect;
-        GetWindowRect(&rect);
-        prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
-    }
+  if (!m_core.GetCurFile().IsEmpty())
+    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  // Save last size & pos for next time
+  if (!IsIconic()) {
+    CRect rect;
+    GetWindowRect(&rect);
+    prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+  }
 	// Save Application related preferences
 	prefs->SaveApplicationPreferences();
 
@@ -1888,16 +1886,16 @@ DboxMain::OnQueryEndSession()
 		int rc = AfxMessageBox(cs_msg, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
 		m_iSessionEndingStatus = rc;
 		switch (rc) {
-			case IDCANCEL:
-				// Cancel shutdown\restart\logoff
-				return FALSE;
-			case IDYES:
-				// Save the changes and say OK to shutdown\restart\logoff
-                Save();
-				return TRUE;
-			case IDNO:
-				// Don't save the changes but say OK to shutdown\restart\logoff
-				return TRUE;
+    case IDCANCEL:
+      // Cancel shutdown\restart\logoff
+      return FALSE;
+    case IDYES:
+      // Save the changes and say OK to shutdown\restart\logoff
+      Save();
+      return TRUE;
+    case IDNO:
+      // Don't save the changes but say OK to shutdown\restart\logoff
+      return TRUE;
 		}
 	}
 
@@ -2022,13 +2020,6 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 
 	// For open/close
 	const UINT imenuflags = bOpen ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
-	const BOOL btoolbar1 = bOpen ? TRUE : FALSE;
-	// If open but Read-Only
-	BOOL btoolbar2;
-	if (m_core.IsReadOnly())
-		btoolbar2 = FALSE;
-	else
-		btoolbar2 = btoolbar1;
 
 	// Change Main Menus if a database is Open or not
 	CWnd* pMain = AfxGetMainWnd();
@@ -2044,7 +2035,7 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	CString cs_text;
 	cs_text.LoadString(IDS_FILEMENU);
 	int pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // E.g., in non-English versions
+	if (pos == -1) // Couldn't find it - wrong language?
 		pos = 0; // best guess...
 
 	CMenu* xfilesubmenu = xmainmenu->GetSubMenu(pos);
@@ -2058,26 +2049,24 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	// Look for "Edit" menu.
 	cs_text.LoadString(IDS_EDITMENU);
 	pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // E.g., in non-English versions
+	if (pos == -1) // Couldn't find it - wrong language?
 		pos = 1; // best guess...
-
-	xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
+  xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
 
 	// Look for "View" menu.
 	cs_text.LoadString(IDS_VIEWMENU);
 	pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // E.g., in non-English versions
+	if (pos == -1) // Couldn't find it - wrong language?
 		pos = 2; // best guess...
-
-	xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
+  xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
 
 	// Look for "Manage" menu.
   cs_text.LoadString(IDS_MANAGEMENU);
 	pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // E.g., in non-English versions
+	if (pos == -1) // Couldn't find it - wrong language?
 		pos = 3; // best guess...
+  xfilesubmenu = xmainmenu->GetSubMenu(pos);
 
-	xfilesubmenu = xmainmenu->GetSubMenu(pos);
 	// Disable/enable menu items:
 	//   "Change Safe Combination", "Make Backup" & "Restore from Backup"
 	xfilesubmenu->EnableMenuItem(ID_MENUITEM_CHANGECOMBO, MF_BYCOMMAND | imenuflags);
@@ -2085,17 +2074,18 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	xfilesubmenu->EnableMenuItem(ID_MENUITEM_RESTORE, MF_BYCOMMAND | imenuflags);
 
 	if (m_toolbarsSetup == TRUE) {
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYPASSWORD, btoolbar1);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYUSERNAME, btoolbar1);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_COPYNOTESFLD, btoolbar1);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_CLEARCLIPBOARD, btoolbar1);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_AUTOTYPE, btoolbar1);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, btoolbar1);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_EDIT, btoolbar1);
+    const BOOL enableIfOpen = bOpen ? TRUE : FALSE;
+    const BOOL enableIfOpenAndRW = m_core.IsReadOnly() ? FALSE : enableIfOpen;
+    int condOpen[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
+                      ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_CLEARCLIPBOARD,
+                      ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_BROWSEURL, ID_TOOLBUTTON_EDIT};
+    int condOpenRW[] = {ID_TOOLBUTTON_SAVE, ID_TOOLBUTTON_ADD, ID_TOOLBUTTON_DELETE};
+    int i;
 
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, btoolbar2);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, btoolbar2);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, btoolbar2);
+    for (i = 0; i < sizeof(condOpen)/sizeof(condOpen[0]); i++)
+      m_wndToolBar.GetToolBarCtrl().EnableButton(condOpen[i], enableIfOpen);
+    for (i = 0; i < sizeof(condOpenRW)/sizeof(condOpenRW[0]); i++)
+      m_wndToolBar.GetToolBarCtrl().EnableButton(condOpenRW[i], enableIfOpenAndRW);
 	}
 }
 
