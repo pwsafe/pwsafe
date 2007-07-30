@@ -15,7 +15,7 @@
 #include <afxdisp.h >       // MFC OLE automation classes
 #include "LVHdrCtrl.h"
 #include "DboxMain.h"       // For WM_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
-#include "PasswordSafe.h"   // For global variables gbl_ccddCPFID and gbl_randID
+#include "PasswordSafe.h"   // For global variable gbl_ccddCPFID
 
 // LVHdrCtrl
 
@@ -78,7 +78,7 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   // - we don't accept drop from other instances of PWS
   // - we only accept drops from our ColumnChooser or our Header
   // - standard moving within the header only available if CC dialog not visible
-  if ((randID != gbl_randID) || (iDDType != FROMCC)) {
+  if ((randID != GetCurrentProcessId()) || (iDDType != FROMCC)) {
     GlobalUnlock(hGlobal);
     return FALSE;
   }
@@ -138,7 +138,8 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   // Get the data: ColumnChooser Listbox needs the column string
   const int iLen = _tcslen(lpBuffer);
   CString cs_text;
-  cs_text.Format(_T("%08x%02x%02x%04x%s"), gbl_randID, FROMHDR, m_dwHDRType, iLen, lpBuffer);
+  cs_text.Format(_T("%08x%02x%02x%04x%s"), GetCurrentProcessId(),
+                 FROMHDR, m_dwHDRType, iLen, lpBuffer);
 
   // Set drag image
   m_pDragImage = CreateDragImage(hdhti.iItem);

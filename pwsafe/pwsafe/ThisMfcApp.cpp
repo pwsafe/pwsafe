@@ -54,7 +54,6 @@ END_MESSAGE_MAP()
 
 // Need it outside as everyone needs it!
 CLIPFORMAT gbl_ccddCPFID;
-DWORD gbl_randID;
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
@@ -372,12 +371,6 @@ ThisMfcApp::InitInstance()
 
   if (gbl_ccddCPFID == 0)
     gbl_ccddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
-
-  // Create a random filed to use to check we are only D&D to ourselves
-  unsigned char randstuff[StuffSize];
-  PWSrand::GetInstance()->GetRandomData(randstuff, sizeof(DWORD));
-  memcpy((void *)&gbl_randID, randstuff, sizeof(DWORD));
-
 
   DboxMain dbox(NULL);
   m_core.SetReadOnly(false);
