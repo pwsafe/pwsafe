@@ -81,7 +81,7 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   // - we don't accept drop from other instances of PWS
   // Check if it is from List View HeaderCtrl?
   // - we don't accept drop from anything else
-  if ((randID != gbl_randID) || (iDDType != FROMHDR)) {
+  if ((randID != GetCurrentProcessId()) || (iDDType != FROMHDR)) {
     GlobalUnlock(hGlobal);
     return FALSE;
   }
@@ -115,7 +115,7 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
 
   // ListView HeaderCtrl only needs the type as it uses main routine
   // to add/delete columns via SendMessage
-  cs_text.Format(_T("%08x%02x%02x"), gbl_randID, FROMCC, dw_type);
+  cs_text.Format(_T("%08x%02x%02x"), GetCurrentProcessId(), FROMCC, dw_type);
 
   // Get client window position
   CPoint currentClientPosition;
