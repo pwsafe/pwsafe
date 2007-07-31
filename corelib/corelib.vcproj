@@ -490,6 +490,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SMemFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SysInfo.cpp"
 				>
 			</File>
@@ -616,6 +620,10 @@
 			</File>
 			<File
 				RelativePath=".\sha256.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SMemFile.h"
 				>
 			</File>
 			<File

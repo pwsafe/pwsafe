@@ -584,6 +584,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DDSupport.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DropSource.cpp"
 				>
 			</File>
@@ -818,6 +822,10 @@
 			</File>
 			<File
 				RelativePath=".\DboxMain.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DDSupport.h"
 				>
 			</File>
 			<File

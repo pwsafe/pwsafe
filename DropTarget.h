@@ -13,7 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // COleDropWndTarget window
 
-class CDropTarget : protected COleDropTarget
+class CDropTarget : public COleDropTarget
 {
 // Construction
 public:

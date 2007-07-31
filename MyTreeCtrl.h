@@ -7,18 +7,22 @@
  */
 #pragma once
 
-/*
+/** \file
  * Silly subclass of CTreeCtrl just to implement Drag&Drop.
- *
- * Based on MFC sample code from CMNCTRL1
  */
 
 #include <Afxcmn.h>
+#include "DropTarget.h"
+#include "DropSource.h"
+#include "corelib/MyString.h"
+
 // Need a set to keep track of what nodes are expanded, to re-expand
 // after minimize
 #include <set>
 class CItemData;
 typedef std::set<CItemData *> SetTreeItem_t;
+
+class CDDObList;
 
 class CMyTreeCtrl : public CTreeCtrl
 {
@@ -39,6 +43,13 @@ public:
   void OnCollapseAll();
   void OnExpandAll();
   HTREEITEM GetNextTreeItem(HTREEITEM hItem);
+  // Drag-n-Drop interface:
+  BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
+              DROPEFFECT dropEffect, CPoint point);
+  DROPEFFECT OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject,
+                         DWORD dwKeyState, CPoint point);
+  DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject,
+                        DWORD dwKeyState, CPoint point);
 
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
@@ -68,16 +79,29 @@ private:
   SetTreeItem_t m_expandedItems;
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore
-  
+  int m_nDragPathLen;
+
+  // in an ideal world, following would be is-a, rather than has-a (multiple inheretance)
+  // Microsoft doesn't really support this, however...
+  CDropTarget m_DropTarget;
+  CDropSource m_DropSource;
+  // Clipboard format for our Drag & Drop
+  CLIPFORMAT m_tcddCPFID;
+
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);
+
+  bool CollectData(BYTE * &out_buffer, long &outLen);
+  bool ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup);
+  void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
+  void GetEntryData(CDDObList &out_oblist, CItemData *ci);
   
 protected:
 	UINT    m_nTimerID;
 	UINT    m_timerticks;
-	UINT	m_nHoverTimerID;
+	UINT_PTR	m_nHoverTimerID;
 	POINT	m_HoverPoint;
 };
