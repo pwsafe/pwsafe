@@ -106,8 +106,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_titlebar = _T("");
   m_toolbarsSetup = FALSE;
 #endif
-
-  m_ctlItemTree.SetDboxPointer((void *)this);
 }
 
 DboxMain::~DboxMain()
