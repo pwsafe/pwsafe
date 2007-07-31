@@ -62,6 +62,14 @@ trashMemory( LPTSTR buffer, size_t length )
   trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0])  );
 }
 
+void
+trashMemory( CString &cs_buffer )
+{
+  TCHAR *lpszString = cs_buffer.GetBuffer(cs_buffer.GetLength());
+  trashMemory( (void *) lpszString, cs_buffer.GetLength() * sizeof(lpszString[0]));
+  cs_buffer.ReleaseBuffer();
+}
+
 /**
    Burn some stack memory
    @param len amount of stack to burn in bytes

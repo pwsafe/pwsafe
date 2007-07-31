@@ -11,14 +11,12 @@
 //-----------------------------------------------------------------------------
 
 #include "PasswordSafe.h"
-
 #include "ThisMfcApp.h"
-
 #include "corelib/pwsprefs.h"
+#include "DDSupport.h"
 
 // dialog boxen
 #include "DboxMain.h"
-
 #include "AddDlg.h"
 #include "ConfirmDeleteDlg.h"
 #include "QuerySetDef.h"
@@ -113,14 +111,9 @@ DboxMain::OnAdd()
 #endif
       temp.SetPWHistory(buffer);
     }
-    m_core.AddEntry(temp);
-    // AddEntry copies the entry, and we want to work with the inserted copy
-    // Which we'll find by uuid
-    uuid_array_t uuid;
-    temp.GetUUID(uuid);
-    int newpos = insertItem(m_core.GetEntry(m_core.Find(uuid)));
-    SelectEntry(newpos);
-    FixListIndexes();
+
+    AddEntry(temp);
+
     if (m_core.GetNumEntries() == 1) {
       // For some reason, when adding the first entry, it is not visible!
       m_ctlItemTree.SetRedraw(TRUE);
@@ -130,8 +123,27 @@ DboxMain::OnAdd()
       Save();
 
     ChangeOkUpdate();
+    uuid_array_t uuid;
+    temp.GetUUID(uuid);
     m_RUEList.AddRUEntry(uuid);
   }
+}
+
+int
+DboxMain::AddEntry(const CItemData &cinew)
+{
+  // This routine is used by Add and also Drag & Drop
+
+  m_core.AddEntry(cinew);
+
+  // AddEntry copies the entry, and we want to work with the inserted copy
+  // Which we'll find by uuid
+  uuid_array_t uuid;
+  cinew.GetUUID(uuid);
+  int newpos = insertItem(m_core.GetEntry(m_core.Find(uuid)));
+  SelectEntry(newpos);
+  FixListIndexes();
+  return newpos;
 }
 
 //Add a group (tree view only)
@@ -689,3 +701,60 @@ DboxMain::AutoType(const CItemData &ci)
   }
 }
 
+void
+DboxMain::AddEntries(CDDObList &in_oblist, const CMyString DropGroup)
+{
+  CItemData tempitem;
+  CDDObject *pDDObject;
+  CMyString Group, Title, User;
+  POSITION pos;
+  TCHAR *dot;
+
+  for (pos = in_oblist.GetHeadPosition(); pos != NULL;) {
+    pDDObject = (CDDObject *)in_oblist.GetAt(pos);
+
+    if (in_oblist.m_bDragNode) {
+      dot = (!DropGroup.IsEmpty() && !pDDObject->m_DD_Group.IsEmpty()) ? _T(".") : _T("");
+      Group = DropGroup + dot + pDDObject->m_DD_Group;
+    } else {
+      Group = DropGroup;
+    }
+
+    Title = GetUniqueTitle(Group, pDDObject->m_DD_Title, pDDObject->m_DD_User,
+                           IDS_DRAGNUMBER);
+
+    tempitem.Clear();
+
+    if (m_core.Find(pDDObject->m_DD_UUID) != End())
+      tempitem.CreateUUID();
+    else
+      tempitem.SetUUID(pDDObject->m_DD_UUID);
+
+    tempitem.SetGroup(Group);
+    tempitem.SetTitle(Title);
+    tempitem.SetUser(pDDObject->m_DD_User);
+    tempitem.SetNotes(pDDObject->m_DD_Notes);
+    tempitem.SetPassword(pDDObject->m_DD_Password);
+    tempitem.SetURL(pDDObject->m_DD_URL);
+    tempitem.SetAutoType(pDDObject->m_DD_AutoType);
+    tempitem.SetPWHistory(pDDObject->m_DD_PWHistory);
+
+    tempitem.SetATime(pDDObject->m_DD_ATime);
+    tempitem.SetCTime(pDDObject->m_DD_CTime);
+    tempitem.SetLTime(pDDObject->m_DD_LTime);
+    tempitem.SetPMTime(pDDObject->m_DD_PMTime);
+    tempitem.SetRMTime(pDDObject->m_DD_RMTime);
+
+    AddEntry(tempitem);
+
+    if (PWSprefs::GetInstance()->
+        GetPref(PWSprefs::SaveImmediately)) {
+      Save();
+    }
+    ChangeOkUpdate();
+    in_oblist.GetNext(pos);
+  }
+
+  FixListIndexes();
+  RefreshList();
+}

@@ -15,10 +15,12 @@
 #include "stdafx.h"
 #include "MyTreeCtrl.h"
 #include "DboxMain.h"
+#include "DDSupport.h"
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
 #include "corelib/Pwsprefs.h"
+#include "corelib/SMemFile.h"
 
 using namespace std;
 
@@ -31,8 +33,17 @@ static char THIS_FILE[] = __FILE__;
 static const TCHAR GROUP_SEP = TCHAR('.');
 
 CMyTreeCtrl::CMyTreeCtrl() :
-  m_bDragging(false), m_pimagelist(NULL), m_isRestoring(false)
+  m_bDragging(false), m_pimagelist(NULL), m_isRestoring(false),
+  m_nHoverTimerID(0)
 {
+  // Register a clipboard format for column drag & drop. 
+  // Note that it's OK to register same format more than once:
+  // "If a registered format with the specified name already exists,
+  // a new format is not registered and the return value identifies the existing format."
+
+  CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_TVDD));
+  m_tcddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
+  ASSERT(m_tcddCPFID != 0);
 }
 
 CMyTreeCtrl::~CMyTreeCtrl()
@@ -64,6 +75,7 @@ void CMyTreeCtrl::OnDestroy()
     pimagelist->DeleteImageList();
     delete pimagelist;
   }
+  m_DropTarget.Revoke();
 }
 
 BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg) 
@@ -76,12 +88,12 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
     return TRUE; // DO NOT process further
   }
 
-  //Hitting the Escape key, Cancelling drag & drop
+  // Escape key -> Cancel drag & drop
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE && m_bDragging) {
     EndDragging(TRUE);
     return TRUE;
   }
-  //hitting the F2 key, being in-place editing of an item
+  // F2 key -> begin in-place editing of an item
   else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
     HTREEITEM hItem = GetSelectedItem();
     if (hItem != NULL && !((DboxMain *)GetParent())->IsMcoreReadOnly())
@@ -89,8 +101,68 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
     return TRUE;
   }
 
-  //Let the parent class do its thing
+  // Let the parent class do its thing
   return CTreeCtrl::PreTranslateMessage(pMsg);
+}
+
+DROPEFFECT CMyTreeCtrl::OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
+                                    DWORD dwKeyState, CPoint point)
+{
+  return m_DropTarget.OnDragEnter(pWnd, pDataObject, dwKeyState, point);
+}
+
+DROPEFFECT CMyTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
+                                   DWORD dwKeyState, CPoint point)
+{
+  // Expand and highlight the item under the mouse and 
+  CMyTreeCtrl *pDestTreeCtrl = (CMyTreeCtrl *)pWnd;
+  HTREEITEM hTItem = pDestTreeCtrl->HitTest(point);
+  if (hTItem != NULL) {
+    pDestTreeCtrl->Expand(hTItem, TVE_EXPAND);
+    pDestTreeCtrl->SelectDropTarget(hTItem);
+  }
+
+  CRect rectClient;
+  pWnd->GetClientRect(&rectClient);
+  pWnd->ClientToScreen(rectClient);
+  pWnd->ClientToScreen(&point);
+
+  // Scroll Tree control depending on mouse position
+  int iMaxV = GetScrollLimit(SB_VERT);
+  int iPosV = GetScrollPos(SB_VERT);
+
+  const int SCROLL_BORDER = 10;
+  int nScrollDir = -1;
+  if ((point.y > rectClient.bottom - SCROLL_BORDER) && (iPosV != iMaxV))
+    nScrollDir = SB_LINEDOWN;
+  else if ((point.y < rectClient.top + SCROLL_BORDER) && (iPosV != 0))
+    nScrollDir = SB_LINEUP;
+
+  if (nScrollDir != -1) {
+    int nScrollPos = pWnd->GetScrollPos(SB_VERT);
+    WPARAM wParam = MAKELONG(nScrollDir, nScrollPos);
+    pWnd->SendMessage(WM_VSCROLL, wParam);
+  }
+  
+  int iPosH = GetScrollPos(SB_HORZ);
+  int iMaxH = GetScrollLimit(SB_HORZ);
+
+  nScrollDir = -1;
+  if ((point.x < rectClient.left + SCROLL_BORDER) && (iPosH != 0))
+    nScrollDir = SB_LINELEFT;
+  else if ((point.x > rectClient.right - SCROLL_BORDER) && (iPosH != iMaxH))
+    nScrollDir = SB_LINERIGHT;
+  
+  if (nScrollDir != -1) {
+    int nScrollPos = pWnd->GetScrollPos(SB_VERT);
+    WPARAM wParam = MAKELONG(nScrollDir, nScrollPos);
+    pWnd->SendMessage(WM_HSCROLL, wParam);
+  }
+  
+  DROPEFFECT dropeffectRet = ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
+    DROPEFFECT_COPY : DROPEFFECT_MOVE;
+  
+  return dropeffectRet;
 }
 
 
@@ -704,7 +776,7 @@ void CMyTreeCtrl::EndDragging(BOOL bCancel)
         SelectItem(m_hitemDrag);
       }
     ReleaseCapture();
-    m_bDragging = FALSE;
+    m_bDragging = false;
     SelectDropTarget(NULL);
 
   }
@@ -737,13 +809,10 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
   *pResult = 0;
 
-  if (static_cast<DboxMain *>(GetParent())->IsMcoreReadOnly())
-      return; // don't drag in read-only mode
-
   GetCursorPos(&ptAction);
   ScreenToClient(&ptAction);
   ASSERT(!m_bDragging);
-  m_bDragging = TRUE;
+  m_bDragging = true;
   m_hitemDrag = pNMTreeView->itemNew.hItem;
   m_hitemDrop = NULL;
   SelectItem(m_hitemDrag);
@@ -756,9 +825,68 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   m_pimagelist->DragMove(ptAction);
   m_pimagelist->DragEnter(this, ptAction);
   SetCapture();
-  
+
+  long lBufLen;
+  BYTE *buffer = NULL;
+
+  // Start of Drag of entries.....
+  // CollectData allocates buffer - need to free later
+  if (!CollectData(buffer, lBufLen))
+    return;
+
+  // If you want to encrypt the data - do it here and write out the
+  // new encrypted buffer length here instead of lBufLen
+  CString cs_text;
+  cs_text.Format(_T("%08x%02x%02x"), GetCurrentProcessId(), FROMTREE, lBufLen);
+
+  CMemFile mf;
+  mf.Write(cs_text, cs_text.GetLength() * sizeof(TCHAR));
+
+  // If the data has been encrypted - append it here to the "header"
+  // instead of the clear text buffer
+  mf.Write(buffer, lBufLen);
+
+  // Finished with buffer - trash it and free it
+  // If using an encrypted buffer - only need to free it
+  trashMemory((void *)buffer, lBufLen);
+  free(buffer);
+
+  DWORD dw_mflen = (DWORD)mf.GetLength();
+  BYTE *mf_buffer = (BYTE *)(mf.Detach());
+
+#ifdef DUMP_DATA
+   CString cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp, dw_mflen, dw_mflen);
+   PWSUtil::HexDump(mf_buffer, dw_mflen, cs_timestamp);
+#endif /* DUMP_DATA */
+
+  // Get client rectangle
+  RECT rClient;
+  GetClientRect(&rClient);
+
+  // Start dragging
+  DROPEFFECT de = m_DropSource.StartDragging(mf_buffer, dw_mflen,
+                                             m_tcddCPFID, &rClient, &ptAction);
+
+  // Cleanup
+  // Finished with buffer - trash it and free it
+  // If using an encrypted buffer - only need to free it
+  trashMemory((void *)mf_buffer, dw_mflen);
+  free((void *)mf_buffer);
+
+  if (SUCCEEDED(de)) { // ?? should we handle _MOVE, _COPY here?
+    m_pimagelist->DragLeave(GetDesktopWindow());
+    m_pimagelist->EndDrag();
+    delete m_pimagelist;
+    m_pimagelist = NULL;
+    m_bDragging = false;
+  } else {
+    TRACE(_T("m_DropSource.StartDragging() failed"));
+  }
+#ifdef PROBABLY_NOT_NEEDED  
   // Set up the timer
   m_nTimerID = SetTimer(1, 75, NULL);
+#endif
 }
 
 void CMyTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -998,3 +1126,124 @@ CMyTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
     }
     return hReturn;
 } 
+
+bool CMyTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
+{
+  DWORD itemData = GetItemData(m_hitemDrag);
+  CItemData *ci = (CItemData *)itemData;
+
+  CDDObList out_oblist;
+
+  if (IsLeafNode(m_hitemDrag)) {
+    ASSERT(itemData != NULL);
+    m_nDragPathLen = 0;
+    out_oblist.m_bDragNode = false;
+    GetEntryData(out_oblist, ci);
+  } else {
+    m_nDragPathLen = GetGroup(GetParentItem(m_hitemDrag)).GetLength();
+    out_oblist.m_bDragNode = true;
+    GetGroupEntriesData(out_oblist, m_hitemDrag);
+  }
+
+  CSMemFile outDDmemfile;
+  CArchive ar_out(&outDDmemfile, CArchive::store);
+  out_oblist.Serialize(ar_out);
+  ar_out.Flush();
+  ar_out.Close();
+
+  outLen = (long)outDDmemfile.GetLength();
+  out_buffer = (BYTE *)outDDmemfile.Detach();
+
+  while (!out_oblist.IsEmpty()) {
+    delete (CDDObject *)out_oblist.RemoveHead();
+  } 
+
+  return (outLen > 0);
+}
+
+bool CMyTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup)
+{
+  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
+
+#ifdef DUMP_DATA
+   CString cs_timestamp;
+   cs_timestamp = PWSUtil::GetTimeStamp();
+   TRACE(_T("%s: Drop data: length %d/0x%04x, value:\n"), cs_timestamp, inLen, inLen);
+   PWSUtil::HexDump(in_buffer, inLen, cs_timestamp);
+#endif /* DUMP_DATA */
+
+  if (inLen <= 0)
+    return false;
+
+  CDDObList in_oblist;
+  CSMemFile inDDmemfile;
+
+  inDDmemfile.Attach((BYTE *)in_buffer, inLen);
+
+  CArchive ar_in (&inDDmemfile, CArchive::load);
+  in_oblist.Serialize(ar_in);
+  ar_in.Close();
+
+  inDDmemfile.Detach();
+
+  if (!in_oblist.IsEmpty()) {
+    pDbx->AddEntries(in_oblist, DropGroup);
+
+    while (!in_oblist.IsEmpty()) {
+      delete (CDDObject *)in_oblist.RemoveHead();
+    }
+  }
+
+  return (inLen > 0);
+}
+
+void
+CMyTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
+{
+  if (IsLeafNode(hItem)) {
+    DWORD itemData = GetItemData(hItem);
+    ASSERT(itemData != NULL);
+    CItemData *ci = (CItemData *)itemData;
+    GetEntryData(out_oblist, ci);
+  } else {
+    HTREEITEM child;
+    for (child = GetChildItem(hItem);
+      child != NULL;
+      child = GetNextSiblingItem(child)) {
+      GetGroupEntriesData(out_oblist, child);
+    }
+  }
+}
+
+void
+CMyTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
+{
+  CDDObject *pDDObject = new CDDObject;
+
+  uuid_array_t uuid_array;
+  ci->GetUUID(uuid_array);
+
+  memcpy(pDDObject->m_DD_UUID, uuid_array, sizeof(uuid_array));
+
+  const CMyString cs_Group = ci->GetGroup();
+  if (out_oblist.m_bDragNode && m_nDragPathLen > 0)
+    pDDObject->m_DD_Group = cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1);
+  else
+    pDDObject->m_DD_Group = cs_Group;
+
+  pDDObject->m_DD_Title= ci->GetTitle();
+  pDDObject->m_DD_User= ci->GetUser();
+  pDDObject->m_DD_Notes = ci->GetNotes();
+  pDDObject->m_DD_Password = ci->GetPassword();
+  pDDObject->m_DD_URL = ci->GetURL();
+  pDDObject->m_DD_AutoType= ci->GetAutoType();
+  pDDObject->m_DD_PWHistory = ci->GetPWHistory();
+
+  ci->GetCTime(pDDObject->m_DD_CTime);
+  ci->GetPMTime(pDDObject->m_DD_PMTime);
+  ci->GetATime(pDDObject->m_DD_ATime);
+  ci->GetLTime(pDDObject->m_DD_LTime);
+  ci->GetRMTime(pDDObject->m_DD_RMTime);
+
+  out_oblist.AddTail(pDDObject);
+}

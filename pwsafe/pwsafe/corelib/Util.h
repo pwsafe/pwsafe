@@ -35,6 +35,7 @@
 
 extern void trashMemory(void* buffer, size_t length );
 extern void trashMemory( LPTSTR buffer, size_t length );
+extern void trashMemory( CString &cs_buffer );
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
 extern void ConvertString(const CMyString &text,

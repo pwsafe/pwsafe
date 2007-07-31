@@ -9,14 +9,25 @@
 #pragma once
 
 #include "afxole.h"
+// Drag and Drop source
+// Note values to stop D&D between instances where data is of different lengths
+enum {
+  FROMCC = 0,
+  FROMHDR = 1, 
+#ifndef UNICODE
+  FROMTREE = 2,
+#else
+  FROMTREE = 3,
+#endif
+};
 
 class CDropSource : protected COleDataSource
 {
 public:
   CDropSource();
   virtual ~CDropSource();
-  virtual DROPEFFECT StartDragging(LPCTSTR szData, DWORD dwLength,
-    CLIPFORMAT cpfmt, RECT* rClient, CPoint* ptMousePos);
+  virtual DROPEFFECT StartDragging(BYTE *szData, DWORD dwLength,
+                                   CLIPFORMAT cpfmt, RECT* rClient, CPoint* ptMousePos);
 
 protected:
   virtual void CompleteMove() {};

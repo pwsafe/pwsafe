@@ -139,7 +139,8 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
   GetClientRect(&rClient);
 
   // Start dragging
-  StartDragging(cs_text, cs_text.GetLength() * sizeof(TCHAR),
+  StartDragging((BYTE *)LPCTSTR(cs_text),
+                cs_text.GetLength() * sizeof(TCHAR),
                 m_ccddCPFID, &rClient, &point);
 
   // End dragging image

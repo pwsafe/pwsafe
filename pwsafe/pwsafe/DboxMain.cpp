@@ -2087,3 +2087,22 @@ void DboxMain::U3ExitNow()
         PostQuitMessage(0);
     }
 }
+
+CMyString DboxMain::GetUniqueTitle(const CMyString &path, const CMyString &title,
+                                   const CMyString &user, const int IDS_MESSAGE)
+{
+  CMyString new_title(title);
+  if (Find(path, title, user) != End()) {
+    // Find a unique "Title"
+    ItemListConstIter listpos;
+    int i = 0;
+    CString s_copy;
+    do {
+      i++;
+      s_copy.Format(IDS_MESSAGE, i);
+      new_title = title + CMyString(s_copy);
+      listpos = Find(path, new_title, user);
+    } while (listpos != End());
+  }
+  return new_title;
+}
