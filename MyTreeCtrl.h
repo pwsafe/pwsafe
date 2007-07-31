@@ -38,7 +38,6 @@ public:
   void ClearExpanded(); // use when items will be invalid
   void OnCollapseAll();
   void OnExpandAll();
-  void SetDboxPointer(void *parent) {m_parent = parent;}
   HTREEITEM GetNextTreeItem(HTREEITEM hItem);
 
  protected:
@@ -66,7 +65,6 @@ private:
   HTREEITEM   m_hitemDrag;
   HTREEITEM   m_hitemDrop;
   CImageList  *m_pimagelist;
-  void *m_parent;
   SetTreeItem_t m_expandedItems;
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore

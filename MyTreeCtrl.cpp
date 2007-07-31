@@ -285,7 +285,8 @@ final_check:
 
 void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  if (((DboxMain *)GetParent())->IsMcoreReadOnly())
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+  if (dbx->IsMcoreReadOnly())
     return; // don't drag in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
@@ -331,7 +332,6 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       }
 
       group = CString(ci->GetGroup());
-      DboxMain *dbx = static_cast<DboxMain *>(m_parent);
       if (dbx->Find(group, newTitle, newUser) != dbx->End()) {
         CMyString temp;
         if (group.IsEmpty())
@@ -381,13 +381,14 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
       // update the password database record - but only those items visible!!!
       ci->SetTitle(newTitle);
-      ((DboxMain *)m_parent)->UpdateListItemTitle(lindex, newTitle);
+      DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+      dbx->UpdateListItemTitle(lindex, newTitle);
       if (bShowUsernameInTree) {
         ci->SetUser(newUser);
-        ((DboxMain *)m_parent)->UpdateListItemUser(lindex, newUser);
+        dbx->UpdateListItemUser(lindex, newUser);
         if (bShowPasswordInTree) {
           ci->SetPassword(newPassword);
-          ((DboxMain *)m_parent)->UpdateListItemPassword(lindex, newPassword);
+          dbx->UpdateListItemPassword(lindex, newPassword);
         }
       }
     } else {
@@ -408,11 +409,11 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       UpdateLeafsGroup(ti, prefix);
     }
     // Mark database as modified
-    ((DboxMain *)m_parent)->SetChanged(DboxMain::Data);
+    dbx->SetChanged(DboxMain::Data);
 
     // Sort it as appropriate
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-      ((DboxMain *)GetParent())->SortTree(ti);
+      dbx->SortTree(ti);
     else
       SortChildren(GetParentItem(ti));
 
@@ -423,7 +424,7 @@ void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
 bad_exit:
     // Refresh display to show old text - if we don't no one else will
-    ((DboxMain *)m_parent)->RefreshList();
+    dbx->RefreshList();
     // restore text
     // (not that this is documented anywhere in MS's docs...)
     *pLResult = FALSE;
@@ -587,7 +588,7 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   GetItem(&tvstruct.item);  // get information of the dragged element
   tvstruct.hParent = hitemDrop;
 
-  DboxMain *dbx = static_cast<DboxMain *>(m_parent);
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
     tvstruct.hInsertAfter = TVI_LAST;
   else
@@ -736,7 +737,7 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
   *pResult = 0;
 
-  if (((DboxMain *)GetParent())->IsMcoreReadOnly())
+  if (static_cast<DboxMain *>(GetParent())->IsMcoreReadOnly())
       return; // don't drag in read-only mode
 
   GetCursorPos(&ptAction);
@@ -765,10 +766,10 @@ void CMyTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = 0L;
   NMTREEVIEW *ptv = (NMTREEVIEW *)pNotifyStruct;
   HTREEITEM hti = ptv->itemNew.hItem;
-  ASSERT(hti != NULL);
-
-  CItemData *ci = (CItemData *)GetItemData(hti);
-  ((DboxMain *)GetParent())->UpdateToolBarForSelectedItem(ci);
+  if (hti != NULL) {
+    CItemData *ci = (CItemData *)GetItemData(hti);
+    static_cast<DboxMain *>(GetParent())->UpdateToolBarForSelectedItem(ci);
+  }
 }
 
 void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
