@@ -1048,13 +1048,13 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     itemData.GetLTime(tLTime);
     if (tLTime != 0) {
 	    if (tLTime <= now) {
-        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::EXPIRED_LEAF, CMyTreeCtrl::EXPIRED_LEAF);
+        m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::EXPIRED_LEAF, CPWTreeCtrl::EXPIRED_LEAF);
     	} else if (tLTime < warnexptime) {
-        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::WARNEXPIRED_LEAF, CMyTreeCtrl::WARNEXPIRED_LEAF);
+        m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::WARNEXPIRED_LEAF, CPWTreeCtrl::WARNEXPIRED_LEAF);
 	    } else
-        m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+        m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::LEAF, CPWTreeCtrl::LEAF);
     } else
-      m_ctlItemTree.SetItemImage(ti, CMyTreeCtrl::LEAF, CMyTreeCtrl::LEAF);
+      m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::LEAF, CPWTreeCtrl::LEAF);
 	
     ASSERT(ti != NULL);
     itemData.SetDisplayInfo((void *)di);

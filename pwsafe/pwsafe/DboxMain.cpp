@@ -347,7 +347,7 @@ DboxMain::InitPasswordSafe()
   ASSERT(status != 0);
   CBitmap bitmap;
 
-  // Order of LoadBitmap() calls matches CMyTreeCtrl public enum
+  // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   bitmap.LoadBitmap(IDB_NODE);
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();

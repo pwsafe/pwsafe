@@ -672,10 +672,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MyTreeCtrl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OptionsBackup.cpp"
 				>
 			</File>
@@ -733,6 +729,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSRecentFileList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PWTreeCtrl.cpp"
 				>
 			</File>
 			<File
@@ -897,10 +897,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MyTreeCtrl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OptionsBackup.h"
 				>
 			</File>
@@ -974,6 +970,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSRecentFileList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWTreeCtrl.h"
 				>
 			</File>
 			<File
