@@ -20,9 +20,9 @@ DROPEFFECT CDropTarget::OnDragEnter(CWnd* /* pWnd */,
                   COleDataObject* /* pDataObject */, DWORD dwKeyState, CPoint /* point */ )
 {
   if ((dwKeyState & MK_CONTROL) == MK_CONTROL)
-    return DROPEFFECT_COPY; // Copy the source text
+    return DROPEFFECT_COPY; // Copy the source
   else
-    return DROPEFFECT_MOVE; // Move the source text
+    return DROPEFFECT_MOVE; // Move the source
 }
 
 void CDropTarget::OnDragLeave(CWnd* pWnd)

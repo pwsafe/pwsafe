@@ -10,15 +10,15 @@
 #include "afxole.h"
 #include "DropSource.h"
 
-CDropSource::CDropSource()
+CDataSource::CDataSource()
 {
 }
 
-CDropSource::~CDropSource()
+CDataSource::~CDataSource()
 {
 }
 
-DROPEFFECT CDropSource::StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT cpfmt,
+DROPEFFECT CDataSource::StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT cpfmt,
                                       RECT *rClient, CPoint *ptMousePos)
 {
   HGLOBAL hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwLength);
@@ -28,13 +28,13 @@ DROPEFFECT CDropSource::StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT c
   ASSERT(lpData != NULL);
 
   memcpy((void *)lpData, szData, dwLength);
-
   CacheGlobalData(cpfmt, hgData);
 
-  DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE, (LPCRECT)rClient);
+  DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
+                                     (LPCRECT)rClient);
 
-if (dropEffect == DROPEFFECT_MOVE)
-     CompleteMove();
+  if ((dropEffect & DROPEFFECT_MOVE) == DROPEFFECT_MOVE)
+    CompleteMove();
 
   LPARAM lparam = (LPARAM(ptMousePos->y) << 16) | LPARAM(ptMousePos->x);
   SendMessage(GetActiveWindow(), WM_LBUTTONUP, 0, lparam);

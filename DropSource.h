@@ -21,11 +21,11 @@ enum {
 #endif
 };
 
-class CDropSource : protected COleDataSource
+class CDataSource : protected COleDataSource
 {
 public:
-  CDropSource();
-  virtual ~CDropSource();
+  CDataSource();
+  virtual ~CDataSource();
   virtual DROPEFFECT StartDragging(BYTE *szData, DWORD dwLength,
                                    CLIPFORMAT cpfmt, RECT* rClient, CPoint* ptMousePos);
 
@@ -33,6 +33,5 @@ protected:
   virtual void CompleteMove() {};
 
 private:
-
 };
 

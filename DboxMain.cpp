@@ -371,8 +371,9 @@ DboxMain::InitPasswordSafe()
   // Override default HeaderCtrl ID of 0
   m_LVHdrCtrl.SetDlgCtrlID(IDC_LIST_HEADER);
 
-  // Initialise DropTarget
+  // Initialise DropTargets - should be in OnCreate()s, really
   m_LVHdrCtrl.Initialize(&m_LVHdrCtrl);
+  m_ctlItemTree.Initialize();
 
   // Set up fonts before playing with Tree/List views
   m_pFontTree = new CFont;
