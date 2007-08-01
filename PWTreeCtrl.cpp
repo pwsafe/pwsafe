@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "MyTreeCtrl.h"
+#include "PWTreeCtrl.h"
 #include "DboxMain.h"
 #include "DDSupport.h"
 #include "corelib/ItemData.h"
@@ -33,10 +33,10 @@ static const TCHAR GROUP_SEP = TCHAR('.');
 
 /**
  * Following classes are used to "Fake" multiple inheritance:
- * Ideally, CMyTreeCtrl should derive from CTreeCtrl, COleDropTarget
+ * Ideally, CPWTreeCtrl should derive from CTreeCtrl, COleDropTarget
  * and COleDropSource. However, since m'soft, in their infinite
  * wisdom, couldn't get this common use-case straight,
- * we use the following classes as proxies: CMyTreeCtrl
+ * we use the following classes as proxies: CPWTreeCtrl
  * has a member var for each, registers said member appropriately
  * for D&D, and member calls parent's method to do the grunt work.
  */
@@ -44,7 +44,7 @@ static const TCHAR GROUP_SEP = TCHAR('.');
 class CPWTDropTarget : public COleDropTarget
 {
  public:
- CPWTDropTarget(CMyTreeCtrl *parent) : m_tree(*parent) {}
+ CPWTDropTarget(CPWTreeCtrl *parent) : m_tree(*parent) {}
   DROPEFFECT OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
                          DWORD dwKeyState, CPoint point)
   {return m_tree.OnDragEnter(pWnd, pDataObject, dwKeyState, point);}
@@ -57,23 +57,23 @@ class CPWTDropTarget : public COleDropTarget
               DROPEFFECT dropEffect, CPoint point)
   {return m_tree.OnDrop(pWnd, pDataObject, dropEffect, point);}
  private:
-  CMyTreeCtrl &m_tree;
+  CPWTreeCtrl &m_tree;
 };
 
 class CPWTDropSource : public COleDropSource
 {
  public:
- CPWTDropSource(CMyTreeCtrl *parent) : m_tree(*parent) {}
+ CPWTDropSource(CPWTreeCtrl *parent) : m_tree(*parent) {}
   virtual SCODE GiveFeedback(DROPEFFECT dropEffect )
   {return m_tree.GiveFeedback(dropEffect);}
  private:
-  CMyTreeCtrl &m_tree;
+  CPWTreeCtrl &m_tree;
 };
 
 class CPWTDataSource : public COleDataSource
 {
  public:
-  CPWTDataSource(CMyTreeCtrl *parent, COleDropSource *ds)
+  CPWTDataSource(CPWTreeCtrl *parent, COleDropSource *ds)
     : m_tree(*parent), m_DropSource(ds) {}
   DROPEFFECT StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT cpfmt,
                            RECT *rClient, CPoint *ptMousePos)
@@ -92,15 +92,15 @@ class CPWTDataSource : public COleDataSource
   return dropEffect;
 }
  private:
-  CMyTreeCtrl &m_tree;
+  CPWTreeCtrl &m_tree;
   COleDropSource *m_DropSource;
 };
 
 /**
- * Impleemntat5ion of CMyTreeCtrl begins here
+ * Impleemntat5ion of CPWTreeCtrl begins here
  */
 
-CMyTreeCtrl::CMyTreeCtrl() : m_isRestoring(false)
+CPWTreeCtrl::CPWTreeCtrl() : m_isRestoring(false)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:
@@ -115,7 +115,7 @@ CMyTreeCtrl::CMyTreeCtrl() : m_isRestoring(false)
   m_DataSource = new CPWTDataSource(this, m_DropSource);
 }
 
-CMyTreeCtrl::~CMyTreeCtrl()
+CPWTreeCtrl::~CPWTreeCtrl()
 {
   delete m_DropTarget;
   delete m_DropSource;
@@ -123,8 +123,8 @@ CMyTreeCtrl::~CMyTreeCtrl()
 }
 
 
-BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
-	//{{AFX_MSG_MAP(CMyTreeCtrl)
+BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
+	//{{AFX_MSG_MAP(CPWTreeCtrl)
 	ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
@@ -134,12 +134,12 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CMyTreeCtrl::Initialize()
+void CPWTreeCtrl::Initialize()
 {
   m_DropTarget->Register(this);
 }
 
-void CMyTreeCtrl::OnDestroy()
+void CPWTreeCtrl::OnDestroy()
 {
   CImageList  *pimagelist;
 
@@ -151,7 +151,7 @@ void CMyTreeCtrl::OnDestroy()
   m_DropTarget->Revoke();
 }
 
-BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg) 
+BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg) 
 {
   // When an item is being edited make sure the edit control
   // receives certain important key strokes
@@ -173,7 +173,7 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
   return CTreeCtrl::PreTranslateMessage(pMsg);
 }
 
-SCODE CMyTreeCtrl::GiveFeedback(DROPEFFECT de )
+SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT de )
 {
   // If user chooses copy, show d&d cursor with '+'
   // For move, ghost cursor's enough
@@ -184,14 +184,14 @@ SCODE CMyTreeCtrl::GiveFeedback(DROPEFFECT de )
   }
 }
 
-DROPEFFECT CMyTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
+DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
                                     DWORD dwKeyState, CPoint )
 {
   return ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
     DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
 
-DROPEFFECT CMyTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
+DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
                                    DWORD dwKeyState, CPoint point)
 {
   if (this != pWnd) {
@@ -203,7 +203,7 @@ DROPEFFECT CMyTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
 
   pil->DragMove(point);
   // Expand and highlight the item under the mouse and 
-  CMyTreeCtrl *pDestTreeCtrl = (CMyTreeCtrl *)pWnd;
+  CPWTreeCtrl *pDestTreeCtrl = (CPWTreeCtrl *)pWnd;
   HTREEITEM hTItem = pDestTreeCtrl->HitTest(point);
   if (hTItem != NULL) {
     pil->DragLeave(this);
@@ -256,12 +256,12 @@ DROPEFFECT CMyTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   return dropeffectRet;
 }
 
-void CMyTreeCtrl::OnDragLeave()
+void CPWTreeCtrl::OnDragLeave()
 {
   ShowCursor(TRUE);
 }
 
-void CMyTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
+void CPWTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
 {
   long        lStyleOld;
 
@@ -274,7 +274,7 @@ void CMyTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
   SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
 }
 
-void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
+void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
 {
   // Starting with hItem, update the Group field of all of hItem's
   // children. Called after a label has been edited.
@@ -294,7 +294,7 @@ void CMyTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
   }
 }
 
-void CMyTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
+void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
 
@@ -450,7 +450,7 @@ final_check:
   return bRC;
 }
 
-void CMyTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
+void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
   DboxMain *dbx = static_cast<DboxMain *>(GetParent());
   if (dbx->IsMcoreReadOnly())
@@ -597,7 +597,7 @@ bad_exit:
     *pLResult = FALSE;
 }
 
-bool CMyTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent)
+bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent)
 {
   do {
     if (hitemChild == hitemSuspectedParent)
@@ -607,7 +607,7 @@ bool CMyTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedPa
   return (hitemChild != NULL);
 }
 
-bool CMyTreeCtrl::IsLeafNode(HTREEITEM hItem)
+bool CPWTreeCtrl::IsLeafNode(HTREEITEM hItem)
 {
   // ItemHasChildren() won't work in the general case
   BOOL status;
@@ -617,7 +617,7 @@ bool CMyTreeCtrl::IsLeafNode(HTREEITEM hItem)
   return (i != NODE);
 }
 
-void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
+void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 {
   // We don't want nodes that have no children to remain
   HTREEITEM p;
@@ -630,7 +630,7 @@ void CMyTreeCtrl::DeleteWithParents(HTREEITEM hItem)
   } while (p != TVI_ROOT && p != NULL);
 }
 
-void CMyTreeCtrl::DeleteFromSet(HTREEITEM hItem)
+void CPWTreeCtrl::DeleteFromSet(HTREEITEM hItem)
 {
   DWORD itemData = GetItemData(hItem);
   ASSERT(itemData != NULL);
@@ -640,7 +640,7 @@ void CMyTreeCtrl::DeleteFromSet(HTREEITEM hItem)
 
 // Return the full path leading up to a given item, but
 // not including the name of the item itself.
-CString CMyTreeCtrl::GetGroup(HTREEITEM hItem)
+CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
 {
   CString retval;
   CString nodeText;
@@ -691,7 +691,7 @@ static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
   return false;
 }
 
-HTREEITEM CMyTreeCtrl::AddGroup(const CString &group)
+HTREEITEM CPWTreeCtrl::AddGroup(const CString &group)
 {
   // Add a group at the end of path
   HTREEITEM ti = TVI_ROOT;
@@ -703,7 +703,7 @@ HTREEITEM CMyTreeCtrl::AddGroup(const CString &group)
       s = GetPathElem(path);
       if (!ExistsInTree(*this, ti, s, si)) {
         ti = InsertItem(s, ti, TVI_SORT);
-        SetItemImage(ti, CMyTreeCtrl::NODE, CMyTreeCtrl::NODE);
+        SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
       } else
         ti = si;
     } while (!path.IsEmpty());
@@ -711,7 +711,7 @@ HTREEITEM CMyTreeCtrl::AddGroup(const CString &group)
   return ti;
 }
 
-bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
+bool CPWTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 {
   TV_INSERTSTRUCT     tvstruct;
   TCHAR               sztBuffer[260];  // max visible
@@ -812,7 +812,7 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   return true;
 }
 
-BOOL CMyTreeCtrl::OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
+BOOL CPWTreeCtrl::OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
   POINT p, hs;
@@ -849,7 +849,7 @@ BOOL CMyTreeCtrl::OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
 }
 
 
-void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
   // This method is called when a drag action is detected.
   // It set the whole D&D mechanism in motion...
@@ -932,7 +932,7 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   }
 }
 
-void CMyTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0L;
   NMTREEVIEW *ptv = (NMTREEVIEW *)pNotifyStruct;
@@ -943,7 +943,7 @@ void CMyTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
+void CPWTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
 {
   // The hItem that is expanded isn't the one that will be restored,
   // since the tree is rebuilt in DboxMain::RefreshList. Therefore, we
@@ -979,7 +979,7 @@ void CMyTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
   } // !m_isRestoring
 }
 
-void CMyTreeCtrl::RestoreExpanded()
+void CPWTreeCtrl::RestoreExpanded()
 {
   m_isRestoring = true;
   SetTreeItem_t::iterator it;
@@ -993,12 +993,12 @@ void CMyTreeCtrl::RestoreExpanded()
   m_isRestoring = false;
 }
 
-void CMyTreeCtrl::ClearExpanded()
+void CPWTreeCtrl::ClearExpanded()
 {
   m_expandedItems.clear();
 }
 
-void CMyTreeCtrl::OnExpandAll() 
+void CPWTreeCtrl::OnExpandAll() 
 {
   // Updated to test for zero entries!
   HTREEITEM hItem = this->GetRootItem();
@@ -1014,7 +1014,7 @@ void CMyTreeCtrl::OnExpandAll()
   SetRedraw();
 }
 
-void CMyTreeCtrl::OnCollapseAll() 
+void CPWTreeCtrl::OnCollapseAll() 
 {
   // Courtesy of Zafir Anjum from www.codeguru.com
   // Updated to test for zero entries!
@@ -1029,7 +1029,7 @@ void CMyTreeCtrl::OnCollapseAll()
   SetRedraw();
 }
 
-void CMyTreeCtrl::CollapseBranch(HTREEITEM hItem)
+void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
 {
 	// Courtesy of Zafir Anjumfrom www.codeguru.com
 	if(ItemHasChildren(hItem)) {
@@ -1042,7 +1042,7 @@ void CMyTreeCtrl::CollapseBranch(HTREEITEM hItem)
 }
 
 HTREEITEM
-CMyTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 
+CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 
 {
 	if (NULL == hItem)
 		return GetRootItem(); 
@@ -1066,7 +1066,7 @@ CMyTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
   return hReturn;
 } 
 
-bool CMyTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
+bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 {
   DWORD itemData = GetItemData(m_hitemDrag);
   CItemData *ci = (CItemData *)itemData;
@@ -1100,7 +1100,7 @@ bool CMyTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   return (outLen > 0);
 }
 
-bool CMyTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup)
+bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup)
 {
   DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
 
@@ -1137,7 +1137,7 @@ bool CMyTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
 }
 
 void
-CMyTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
+CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
 {
   if (IsLeafNode(hItem)) {
     DWORD itemData = GetItemData(hItem);
@@ -1155,7 +1155,7 @@ CMyTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
 }
 
 void
-CMyTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
+CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
 {
   CDDObject *pDDObject = new CDDObject;
 

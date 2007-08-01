@@ -22,7 +22,7 @@
   #include "resource2.h"  // Version, Menu, Toolbar & Accelerator resources
   #include "resource3.h"  // String resources
 #endif
-#include "MyTreeCtrl.h"
+#include "PWTreeCtrl.h"
 #include "RUEList.h"
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
@@ -177,7 +177,7 @@ public:
 #else
   CListCtrl m_ctlItemList;
 #endif
-  CMyTreeCtrl  m_ctlItemTree;
+  CPWTreeCtrl  m_ctlItemTree;
   CLVHdrCtrl m_LVHdrCtrl;
   CColumnChooserDlg *m_pCC;
   CPoint m_RCMousePos;
@@ -478,7 +478,7 @@ private:
 
 // Following used to keep track of display vs data
 // stored as opaque data in CItemData.{Get,Set}DisplayInfo()
-// Exposed here because MyTreeCtrl needs to update it after drag&drop
+// Exposed here because PWTreeCtrl needs to update it after drag&drop
 struct DisplayInfo {
   int list_index;
   HTREEITEM tree_item;

@@ -26,11 +26,11 @@ class CPWTDropTarget;
 class CPWTDataSource;
 class CPWTDropSource;
 
-class CMyTreeCtrl : public CTreeCtrl
+class CPWTreeCtrl : public CTreeCtrl
 {
  public:
-  CMyTreeCtrl();
-  ~CMyTreeCtrl();
+  CPWTreeCtrl();
+  ~CPWTreeCtrl();
 
   // indices of bitmaps in ImageList
   enum {NODE=0, LEAF=1, EXPIRED_LEAF = 2, WARNEXPIRED_LEAF = 3};
@@ -59,7 +59,7 @@ class CMyTreeCtrl : public CTreeCtrl
   void OnDragLeave();
 
  protected:
-  //{{AFX_MSG(CMyTreeCtrl)
+  //{{AFX_MSG(CPWTreeCtrl)
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
