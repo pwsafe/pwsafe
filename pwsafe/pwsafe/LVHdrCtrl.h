@@ -13,7 +13,7 @@
 #include "DropTarget.h"
 #include "DropSource.h"
 
-class CLVHdrCtrl : public CHeaderCtrl, public CDropTarget, public CDropSource
+class CLVHdrCtrl : public CHeaderCtrl, public CDropTarget, public CDataSource
 {
 public:
   CLVHdrCtrl();
@@ -43,7 +43,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CDropSource m_HdrDropSource;
+  CDataSource m_HdrDataSource;
   CDropTarget m_HdrDropTarget;
   CImageList* m_pDragImage;
   int m_dwHDRType;

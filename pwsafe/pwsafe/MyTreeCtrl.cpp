@@ -8,7 +8,6 @@
 /*
  * Silly subclass of CTreeCtrl just to implement Drag&Drop.
  *
- * Based on MFC sample code from CMNCTRL1
  */
 
 
@@ -32,9 +31,76 @@ static char THIS_FILE[] = __FILE__;
 
 static const TCHAR GROUP_SEP = TCHAR('.');
 
-CMyTreeCtrl::CMyTreeCtrl() :
-  m_bDragging(false), m_pimagelist(NULL), m_isRestoring(false),
-  m_nHoverTimerID(0)
+/**
+ * Following classes are used to "Fake" multiple inheritance:
+ * Ideally, CMyTreeCtrl should derive from CTreeCtrl, COleDropTarget
+ * and COleDropSource. However, since m'soft, in their infinite
+ * wisdom, couldn't get this common use-case straight,
+ * we use the following classes as proxies: CMyTreeCtrl
+ * has a member var for each, registers said member appropriately
+ * for D&D, and member calls parent's method to do the grunt work.
+ */
+
+class CPWTDropTarget : public COleDropTarget
+{
+ public:
+ CPWTDropTarget(CMyTreeCtrl *parent) : m_tree(*parent) {}
+  DROPEFFECT OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
+                         DWORD dwKeyState, CPoint point)
+  {return m_tree.OnDragEnter(pWnd, pDataObject, dwKeyState, point);}
+  DROPEFFECT OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
+                        DWORD dwKeyState, CPoint point)
+  {return m_tree.OnDragOver(pWnd, pDataObject, dwKeyState, point);}
+  void OnDragLeave(CWnd*)
+  {m_tree.OnDragLeave();}
+  BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
+              DROPEFFECT dropEffect, CPoint point)
+  {return m_tree.OnDrop(pWnd, pDataObject, dropEffect, point);}
+ private:
+  CMyTreeCtrl &m_tree;
+};
+
+class CPWTDropSource : public COleDropSource
+{
+ public:
+ CPWTDropSource(CMyTreeCtrl *parent) : m_tree(*parent) {}
+  virtual SCODE GiveFeedback(DROPEFFECT dropEffect )
+  {return m_tree.GiveFeedback(dropEffect);}
+ private:
+  CMyTreeCtrl &m_tree;
+};
+
+class CPWTDataSource : public COleDataSource
+{
+ public:
+  CPWTDataSource(CMyTreeCtrl *parent, COleDropSource *ds)
+    : m_tree(*parent), m_DropSource(ds) {}
+  DROPEFFECT StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT cpfmt,
+                           RECT *rClient, CPoint *ptMousePos)
+{
+  HGLOBAL hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwLength);
+  ASSERT(hgData != NULL);
+
+  LPCSTR lpData = (LPCSTR)GlobalLock(hgData);
+  ASSERT(lpData != NULL);
+
+  memcpy((void *)lpData, szData, dwLength);
+  CacheGlobalData(cpfmt, hgData);
+
+  DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
+                                     (LPCRECT)rClient, m_DropSource);
+  return dropEffect;
+}
+ private:
+  CMyTreeCtrl &m_tree;
+  COleDropSource *m_DropSource;
+};
+
+/**
+ * Impleemntat5ion of CMyTreeCtrl begins here
+ */
+
+CMyTreeCtrl::CMyTreeCtrl() : m_isRestoring(false)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:
@@ -44,11 +110,16 @@ CMyTreeCtrl::CMyTreeCtrl() :
   CString cs_CPF(MAKEINTRESOURCE(IDS_CPF_TVDD));
   m_tcddCPFID = (CLIPFORMAT)RegisterClipboardFormat(cs_CPF);
   ASSERT(m_tcddCPFID != 0);
+  m_DropTarget = new CPWTDropTarget(this);
+  m_DropSource = new CPWTDropSource(this);
+  m_DataSource = new CPWTDataSource(this, m_DropSource);
 }
 
 CMyTreeCtrl::~CMyTreeCtrl()
 {
-  delete m_pimagelist;
+  delete m_DropTarget;
+  delete m_DropSource;
+  delete m_DataSource;
 }
 
 
@@ -59,12 +130,14 @@ BEGIN_MESSAGE_MAP(CMyTreeCtrl, CTreeCtrl)
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
 	ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
-	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
-	ON_WM_LBUTTONUP()
-	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CMyTreeCtrl::Initialize()
+{
+  m_DropTarget->Register(this);
+}
 
 void CMyTreeCtrl::OnDestroy()
 {
@@ -75,7 +148,7 @@ void CMyTreeCtrl::OnDestroy()
     pimagelist->DeleteImageList();
     delete pimagelist;
   }
-  m_DropTarget.Revoke();
+  m_DropTarget->Revoke();
 }
 
 BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg) 
@@ -88,13 +161,8 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
     return TRUE; // DO NOT process further
   }
 
-  // Escape key -> Cancel drag & drop
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE && m_bDragging) {
-    EndDragging(TRUE);
-    return TRUE;
-  }
   // F2 key -> begin in-place editing of an item
-  else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
     HTREEITEM hItem = GetSelectedItem();
     if (hItem != NULL && !((DboxMain *)GetParent())->IsMcoreReadOnly())
       EditLabel(hItem);
@@ -105,21 +173,44 @@ BOOL CMyTreeCtrl::PreTranslateMessage(MSG* pMsg)
   return CTreeCtrl::PreTranslateMessage(pMsg);
 }
 
-DROPEFFECT CMyTreeCtrl::OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
-                                    DWORD dwKeyState, CPoint point)
+SCODE CMyTreeCtrl::GiveFeedback(DROPEFFECT de )
 {
-  return m_DropTarget.OnDragEnter(pWnd, pDataObject, dwKeyState, point);
+  // If user chooses copy, show d&d cursor with '+'
+  // For move, ghost cursor's enough
+  if ((de & DROPEFFECT_COPY) == DROPEFFECT_COPY) {
+    return DRAGDROP_S_USEDEFAULTCURSORS;
+  } else {
+    return S_OK;
+  }
+}
+
+DROPEFFECT CMyTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
+                                    DWORD dwKeyState, CPoint )
+{
+  return ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
+    DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
 
 DROPEFFECT CMyTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
                                    DWORD dwKeyState, CPoint point)
 {
+  if (this != pWnd) {
+    TRACE(_T("Inter-process Drag&Drop"));
+  }
+  POINT p, hs;
+  CImageList* pil = CImageList::GetDragImage(&p, &hs);
+  ASSERT(pil != NULL);
+
+  pil->DragMove(point);
   // Expand and highlight the item under the mouse and 
   CMyTreeCtrl *pDestTreeCtrl = (CMyTreeCtrl *)pWnd;
   HTREEITEM hTItem = pDestTreeCtrl->HitTest(point);
   if (hTItem != NULL) {
+    pil->DragLeave(this);
     pDestTreeCtrl->Expand(hTItem, TVE_EXPAND);
     pDestTreeCtrl->SelectDropTarget(hTItem);
+    m_hitemDrop = hTItem;
+    pil->DragEnter(this, point);
   }
 
   CRect rectClient;
@@ -165,6 +256,10 @@ DROPEFFECT CMyTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   return dropeffectRet;
 }
 
+void CMyTreeCtrl::OnDragLeave()
+{
+  ShowCursor(TRUE);
+}
 
 void CMyTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
 {
@@ -502,34 +597,6 @@ bad_exit:
     *pLResult = FALSE;
 }
 
-void CMyTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
-{
-  if (m_nHoverTimerID) {
-  	KillTimer( m_nHoverTimerID );
-  	m_nHoverTimerID = 0;
-  }
-
-  if (m_bDragging) {
-    UINT flags;
-
-    ASSERT(m_pimagelist != NULL);
-    m_pimagelist->DragMove(point);
-
-	m_nHoverTimerID = SetTimer(2, 750, NULL);
-	m_HoverPoint = point;
-
-    HTREEITEM hitem = HitTest(point, &flags);
-    if (hitem != NULL) {
-      m_pimagelist->DragLeave(this);
-      SelectDropTarget(hitem);
-      m_hitemDrop = hitem;
-      m_pimagelist->DragEnter(this, point);
-    }
-    m_pimagelist->DragShowNolock(TRUE);
-  }
-  CTreeCtrl::OnMouseMove(nFlags, point);
-}
-
 bool CMyTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent)
 {
   do {
@@ -745,65 +812,47 @@ bool CMyTreeCtrl::TransferItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   return true;
 }
 
-void CMyTreeCtrl::EndDragging(BOOL bCancel)
+BOOL CMyTreeCtrl::OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
+                         DROPEFFECT dropEffect, CPoint point)
 {
-  if (m_bDragging) {
-    ASSERT(m_pimagelist != NULL);
-    m_pimagelist->DragLeave(this);
-    m_pimagelist->EndDrag();
-    delete m_pimagelist;
-    m_pimagelist = NULL;
-    HTREEITEM parent = GetParentItem(m_hitemDrag);
-    if (IsLeafNode(m_hitemDrop))
-        m_hitemDrop = GetParentItem(m_hitemDrop);
+  POINT p, hs;
+  CImageList* pil = CImageList::GetDragImage(&p, &hs);
+  ASSERT(pil != NULL);
 
-    if (!bCancel &&
-        m_hitemDrag != m_hitemDrop &&
-        !IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
-        parent != m_hitemDrop)
-      {
-        // drag operation completed successfully.
-        TransferItem(m_hitemDrag, m_hitemDrop);
-        DeleteItem(m_hitemDrag);
-        while (parent != NULL && !ItemHasChildren(parent)) {
-          HTREEITEM grandParent = GetParentItem(parent);
-          DeleteItem(parent);
-          parent = grandParent;
-        }
-        SelectItem(m_hitemDrop);
-      } else {
-        // drag failed or cancelled, revert to last selected
-        SelectItem(m_hitemDrag);
-      }
-    ReleaseCapture();
-    m_bDragging = false;
-    SelectDropTarget(NULL);
+  pil->DragLeave(this);
+  pil->EndDrag();
+  pil->DeleteImageList();
 
+  HTREEITEM parent = GetParentItem(m_hitemDrag);
+  if (IsLeafNode(m_hitemDrop))
+    m_hitemDrop = GetParentItem(m_hitemDrop);
+
+  if (m_hitemDrag != m_hitemDrop &&
+      !IsChildNodeOf(m_hitemDrop, m_hitemDrag) &&
+      parent != m_hitemDrop) {
+    // drag operation completed successfully.
+    TransferItem(m_hitemDrag, m_hitemDrop);
+    DeleteItem(m_hitemDrag);
+    while (parent != NULL && !ItemHasChildren(parent)) {
+      HTREEITEM grandParent = GetParentItem(parent);
+      DeleteItem(parent);
+      parent = grandParent;
+    }
+    SelectItem(m_hitemDrop);
+  } else {
+    // drag failed or cancelled, revert to last selected
+    SelectItem(m_hitemDrag);
   }
-  KillTimer(m_nTimerID);
-  KillTimer(m_nHoverTimerID);
-}
-
-
-void CMyTreeCtrl::OnLButtonUp(UINT nFlags, CPoint point)
-{
-  if (m_bDragging) {
-    // Dragging operation should be ended, but first check to see
-    // if the mouse is outside the window to decide if the 
-    // drag operation should be aborted.
-    CRect clientRect;
-    GetClientRect(&clientRect);
-    if (clientRect.PtInRect(point))
-      EndDragging(FALSE);
-    else
-      EndDragging(TRUE);
-  }
-  CTreeCtrl::OnLButtonUp(nFlags, point);
+  ReleaseCapture();
+  SelectDropTarget(NULL);
+  return TRUE;
 }
 
 
 void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
+  // This method is called when a drag action is detected.
+  // It set the whole D&D mechanism in motion...
   CPoint      ptAction;
 
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
@@ -811,19 +860,16 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
   GetCursorPos(&ptAction);
   ScreenToClient(&ptAction);
-  ASSERT(!m_bDragging);
-  m_bDragging = true;
   m_hitemDrag = pNMTreeView->itemNew.hItem;
   m_hitemDrop = NULL;
   SelectItem(m_hitemDrag);
 
-  ASSERT(m_pimagelist == NULL);
-  m_pimagelist = CreateDragImage(m_hitemDrag);
-  m_pimagelist->DragShowNolock(TRUE);
-  m_pimagelist->SetDragCursorImage(0, CPoint(0, 0));
-  m_pimagelist->BeginDrag(0, CPoint(0,0));
-  m_pimagelist->DragMove(ptAction);
-  m_pimagelist->DragEnter(this, ptAction);
+  CImageList *pil = CreateDragImage(m_hitemDrag);
+  pil->SetDragCursorImage(0, CPoint(0, 0));
+  pil->BeginDrag(0, CPoint(0,0));
+  pil->DragMove(ptAction);
+  pil->DragEnter(this, ptAction);
+  ShowCursor(FALSE);
   SetCapture();
 
   long lBufLen;
@@ -865,8 +911,8 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   GetClientRect(&rClient);
 
   // Start dragging
-  DROPEFFECT de = m_DropSource.StartDragging(mf_buffer, dw_mflen,
-                                             m_tcddCPFID, &rClient, &ptAction);
+  DROPEFFECT de = m_DataSource->StartDragging(mf_buffer, dw_mflen, m_tcddCPFID,
+                                              &rClient, &ptAction);
 
   // Cleanup
   // Finished with buffer - trash it and free it
@@ -874,19 +920,16 @@ void CMyTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   trashMemory((void *)mf_buffer, dw_mflen);
   free((void *)mf_buffer);
 
-  if (SUCCEEDED(de)) { // ?? should we handle _MOVE, _COPY here?
-    m_pimagelist->DragLeave(GetDesktopWindow());
-    m_pimagelist->EndDrag();
-    delete m_pimagelist;
-    m_pimagelist = NULL;
-    m_bDragging = false;
+  if (SUCCEEDED(de)) { // If inter-process Move, we need to delete original
+    // wrong place to clean up imagelist?
+    pil->DragLeave(GetDesktopWindow());
+    pil->EndDrag();
+    pil->DeleteImageList();
+    delete pil;
+    ShowCursor(TRUE);
   } else {
-    TRACE(_T("m_DropSource.StartDragging() failed"));
+    TRACE(_T("m_DataSource->StartDragging() failed"));
   }
-#ifdef PROBABLY_NOT_NEEDED  
-  // Set up the timer
-  m_nTimerID = SetTimer(1, 75, NULL);
-#endif
 }
 
 void CMyTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -989,142 +1032,38 @@ void CMyTreeCtrl::OnCollapseAll()
 void CMyTreeCtrl::CollapseBranch(HTREEITEM hItem)
 {
 	// Courtesy of Zafir Anjumfrom www.codeguru.com
-	if(this->ItemHasChildren(hItem)) {
-		this->Expand(hItem, TVE_COLLAPSE);
-		hItem = this->GetChildItem(hItem);
+	if(ItemHasChildren(hItem)) {
+		Expand(hItem, TVE_COLLAPSE);
+		hItem = GetChildItem(hItem);
 		do {
 			CollapseBranch(hItem);
-		}
-		while((hItem = this->GetNextSiblingItem(hItem)) != NULL);
+		} while((hItem = GetNextSiblingItem(hItem)) != NULL);
 	}
-}
-
-void CMyTreeCtrl::OnTimer(UINT nIDEvent)
-{
-  const int SCROLL_BORDER = 10;
-  const int SCROLL_SPEED_ZONE_WIDTH = 20;
-
-  if (nIDEvent == m_nHoverTimerID) {
-    KillTimer(m_nHoverTimerID);
-    m_nHoverTimerID = 0;
-
-    HTREEITEM	trItem	= 0;
-    UINT		uFlag	= 0;
-
-    trItem = HitTest(m_HoverPoint, &uFlag);
-
-    if (trItem) {
-      SelectItem(trItem);
-      Expand(trItem,TVE_EXPAND);
-    }
-    return;
-  }
-
-  if (nIDEvent != m_nTimerID) {
-    CTreeCtrl::OnTimer(nIDEvent);
-    return;
-  }
-
-  // Doesn't matter that we didn't initialize m_timerticks
-  m_timerticks++;
-
-  POINT pt;
-  GetCursorPos(&pt);
-  CRect rect;
-  GetClientRect(&rect);
-  ClientToScreen(&rect);
-
-  // NOTE: Screen coordinate is being used because the call
-  // to DragEnter had used the Desktop window.
-  POINT pttemp = POINT(pt);
-  ClientToScreen(&pttemp);
-  CImageList::DragMove(pttemp);
-
-  int iMaxV = GetScrollLimit(SB_VERT);
-  int iPosV = GetScrollPos(SB_VERT);
-  HTREEITEM hitem = GetFirstVisibleItem();
-
-  // The cursor must not only be SOMEWHERE above/beneath the tree control
-  // BUT RIGHT above or beneath it
-  // i.e. the x-coordinates must be those of the control (+/- SCROLL_BORDER)
-  if ( pt.x < rect.left - SCROLL_BORDER )
-    ; // Too much to the left
-  else if ( pt.x > rect.right + SCROLL_BORDER )
-    ; // Too much to the right
-  else if( (pt.y < rect.top + SCROLL_BORDER) && iPosV ) {
-    // We need to scroll up
-    // Scroll slowly if cursor near the treeview control
-    int slowscroll = 6 - (rect.top + SCROLL_BORDER - pt.y) / SCROLL_SPEED_ZONE_WIDTH;
-    if (0 == (m_timerticks % (slowscroll > 0 ? slowscroll : 1)))
-      {
-        CImageList::DragShowNolock(FALSE);
-        SendMessage(WM_VSCROLL, SB_LINEUP);
-        SelectDropTarget(hitem);
-        m_hitemDrop = hitem;
-        CImageList::DragShowNolock(TRUE);
-      }
-  }
-  else if( (pt.y > rect.bottom - SCROLL_BORDER) && (iPosV!=iMaxV) )
-	{
-      // We need to scroll down
-      // Scroll slowly if cursor near the treeview control
-      int slowscroll = 6 - (pt.y - rect.bottom + SCROLL_BORDER ) / SCROLL_SPEED_ZONE_WIDTH;
-      if (0 == (m_timerticks % (slowscroll > 0 ? slowscroll : 1)))
-		{
-          CImageList::DragShowNolock(FALSE);
-          SendMessage(WM_VSCROLL, SB_LINEDOWN);
-          int nCount = GetVisibleCount();
-          for (int i=0; i<nCount-1; ++i)
-            hitem = GetNextVisibleItem(hitem);
-          if(hitem)
-            SelectDropTarget(hitem);
-          m_hitemDrop = hitem;
-          CImageList::DragShowNolock(TRUE);
-		}
-	}
-
-  // The cursor must be in a small zone IN the treecontrol at the left/right
-  int iPosH = GetScrollPos(SB_HORZ);
-  int iMaxH = GetScrollLimit(SB_HORZ);
-
-  if (!rect.PtInRect(pt)) return; // not in TreeCtrl
-  else if ((pt.x < rect.left + SCROLL_BORDER) && (iPosH != 0)) {
-    // We need to scroll to the left
-    CImageList::DragShowNolock(FALSE);
-    SendMessage(WM_HSCROLL, SB_LINELEFT);
-    CImageList::DragShowNolock(TRUE);
-  }
-  else if ((pt.x > rect.right - SCROLL_BORDER) && (iPosH != iMaxH)) {
-    // We need to scroll to the right
-    CImageList::DragShowNolock(FALSE);
-    SendMessage(WM_HSCROLL, SB_LINERIGHT);
-    CImageList::DragShowNolock(TRUE);
-  }
 }
 
 HTREEITEM
 CMyTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 
 {
 	if (NULL == hItem)
-		return this->GetRootItem(); 
+		return GetRootItem(); 
 
-    // First, try to go to this item's 1st child 
-    HTREEITEM hReturn = this->GetChildItem(hItem); 
+  // First, try to go to this item's 1st child 
+  HTREEITEM hReturn = GetChildItem(hItem); 
 
-    // If no more child items... 
-    while (hItem && !hReturn) { 
-        // Get this item's next sibling 
-        hReturn = this->GetNextSiblingItem(hItem); 
+  // If no more child items... 
+  while (hItem && !hReturn) { 
+    // Get this item's next sibling 
+    hReturn = GetNextSiblingItem(hItem); 
 
-        // If hReturn is NULL, then there are no 
-        // sibling items, and we're on a leaf node. 
-        // Backtrack up the tree one level, and 
-        // we'll look for a sibling on the next 
-        // iteration (or we'll reach the root and 
-        // quit). 
-        hItem = this->GetParentItem(hItem); 
-    }
-    return hReturn;
+    // If hReturn is NULL, then there are no 
+    // sibling items, and we're on a leaf node. 
+    // Backtrack up the tree one level, and 
+    // we'll look for a sibling on the next 
+    // iteration (or we'll reach the root and 
+    // quit). 
+    hItem = GetParentItem(hItem); 
+  }
+  return hReturn;
 } 
 
 bool CMyTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)

@@ -12,8 +12,6 @@
  */
 
 #include <Afxcmn.h>
-#include "DropTarget.h"
-#include "DropSource.h"
 #include "corelib/MyString.h"
 
 // Need a set to keep track of what nodes are expanded, to re-expand
@@ -22,17 +20,22 @@
 class CItemData;
 typedef std::set<CItemData *> SetTreeItem_t;
 
+// classes for implementing D&D
 class CDDObList;
+class CPWTDropTarget;
+class CPWTDataSource;
+class CPWTDropSource;
 
 class CMyTreeCtrl : public CTreeCtrl
 {
-public:
+ public:
   CMyTreeCtrl();
   ~CMyTreeCtrl();
 
-   // indices of bitmaps in ImageList
+  // indices of bitmaps in ImageList
   enum {NODE=0, LEAF=1, EXPIRED_LEAF = 2, WARNEXPIRED_LEAF = 3};
 
+  void Initialize();
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   void DeleteFromSet(HTREEITEM hItem);
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
@@ -43,13 +46,17 @@ public:
   void OnCollapseAll();
   void OnExpandAll();
   HTREEITEM GetNextTreeItem(HTREEITEM hItem);
-  // Drag-n-Drop interface:
+  // Drag-n-Drop interface - called indirectly via src/tgt member functions
+  // Source methods
+  SCODE GiveFeedback(DROPEFFECT dropEffect );
+  // target methods
   BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
               DROPEFFECT dropEffect, CPoint point);
   DROPEFFECT OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject,
                          DWORD dwKeyState, CPoint point);
   DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject,
                         DWORD dwKeyState, CPoint point);
+  void OnDragLeave();
 
  protected:
   //{{AFX_MSG(CMyTreeCtrl)
@@ -58,33 +65,28 @@ public:
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
-  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-  afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
   afx_msg void OnDestroy();
-  afx_msg void OnTimer(UINT nIDEvent);
   //
   //afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
 
-  void EndDragging(BOOL bCancel);
   BOOL PreTranslateMessage(MSG* pMsg);
 
   DECLARE_MESSAGE_MAP()
 
 private:
-  bool        m_bDragging;
   HTREEITEM   m_hitemDrag;
   HTREEITEM   m_hitemDrop;
-  CImageList  *m_pimagelist;
   SetTreeItem_t m_expandedItems;
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore
   int m_nDragPathLen;
 
-  // in an ideal world, following would be is-a, rather than has-a (multiple inheretance)
+  // in an ideal world, following would be is-a, rather than has-a (multiple inheritance)
   // Microsoft doesn't really support this, however...
-  CDropTarget m_DropTarget;
-  CDropSource m_DropSource;
+  CPWTDropTarget *m_DropTarget;
+  CPWTDropSource *m_DropSource;
+  CPWTDataSource *m_DataSource;
   // Clipboard format for our Drag & Drop
   CLIPFORMAT m_tcddCPFID;
 
@@ -98,10 +100,4 @@ private:
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
   void GetEntryData(CDDObList &out_oblist, CItemData *ci);
-  
-protected:
-	UINT    m_nTimerID;
-	UINT    m_timerticks;
-	UINT_PTR	m_nHoverTimerID;
-	POINT	m_HoverPoint;
 };

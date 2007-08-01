@@ -13,7 +13,7 @@
 #include "DropTarget.h"
 #include "DropSource.h"
 
-class CColumnChooserLC : public CListCtrl, public CDropTarget, public CDropSource
+class CColumnChooserLC : public CListCtrl, public CDropTarget, public CDataSource
 {
 public:
   CColumnChooserLC();
@@ -43,7 +43,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CDropSource m_CCDropSource;
+  CDataSource m_CCDataSource;
   CDropTarget m_CCDropTarget;
   CImageList* m_pDragImage;
   int m_iItem;
