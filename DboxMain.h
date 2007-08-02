@@ -169,6 +169,10 @@ public:
   bool SetClipboardData(const CMyString &data)
   {return m_clipboard.SetData(data);}
   void AddEntries(CDDObList &in_oblist, const CMyString DropGroup);
+  int AddEntry(const CItemData &cinew);
+  CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
+                           const CMyString &user, const int IDS_MESSAGE);
+  void FixListIndexes();
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -458,7 +462,6 @@ private:
   int SaveIfChanged();
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);
-  void FixListIndexes();
   void UpdateAccessTime(CItemData *ci);
   void SaveDisplayStatus();
   void RestoreDisplayStatus(bool bUnMinimize = false);
@@ -471,9 +474,6 @@ private:
   void SetupColumnChooser(const bool bShowHide);
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);
-  int AddEntry(const CItemData &cinew);
-  CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-                           const CMyString &user, const int IDS_MESSAGE);
 };
 
 // Following used to keep track of display vs data

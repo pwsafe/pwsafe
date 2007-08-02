@@ -91,11 +91,12 @@ private:
   CLIPFORMAT m_tcddCPFID;
 
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
-  bool TransferItem(HTREEITEM hitem, HTREEITEM hNewParent);
+  bool MoveItem(HTREEITEM hitem, HTREEITEM hNewParent);
+  bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CMyString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent);
   void UpdateLeafsGroup(HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);
-
+  CMyString GetPrefix(HTREEITEM hItem) const;
   bool CollectData(BYTE * &out_buffer, long &outLen);
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
