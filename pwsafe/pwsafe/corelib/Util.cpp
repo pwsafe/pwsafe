@@ -30,14 +30,11 @@ xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 }
 
 //-----------------------------------------------------------------------------
-/*
-  Note: A bunch of the encryption-related routines may not be Unicode
-  compliant.  Which really isn't a huge problem, since they are actually
-  using MFC routines anyway
-*/
-
-//-----------------------------------------------------------------------------
 //Overwrite the memory
+// used to be a loop here, but this was deemed (1) overly paranoid 
+// (2) The wrong way to scrub DRAM memory 
+// see http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html 
+// and http://www.cypherpunks.to/~peter/usenix01.pdf 
 
 #pragma optimize("",off)
 void
@@ -46,12 +43,9 @@ trashMemory(void* buffer, size_t length)
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
   if ( length != 0 ) {
-    const int numiter = 30;
-    for (int x=0; x<numiter; x++) {
-      memset(buffer, 0x00, length);
-      memset(buffer, 0xFF, length);
-      memset(buffer, 0x00, length);
-    }
+    memset(buffer, 0x55, length);
+    memset(buffer, 0xAA, length);
+    memset(buffer, 0x00, length);
   }
 }
 #pragma optimize("",on)
