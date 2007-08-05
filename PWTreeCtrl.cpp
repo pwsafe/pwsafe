@@ -187,20 +187,20 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
   return CTreeCtrl::PreTranslateMessage(pMsg);
 }
 
-SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT de )
+SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
 {
-  // If user chooses copy, show d&d cursor with '+'
-  // For move, ghost cursor's enough
-  if ((de & DROPEFFECT_COPY) == DROPEFFECT_COPY) {
-    return DRAGDROP_S_USEDEFAULTCURSORS;
-  } else {
-    return S_OK;
-  }
+  return DRAGDROP_S_USEDEFAULTCURSORS;
 }
 
 DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
                                     DWORD dwKeyState, CPoint )
 {
+  POINT p, hs;
+  CImageList* pil = CImageList::GetDragImage(&p, &hs);
+  if (pil != NULL) {
+    while (ShowCursor(FALSE) >= 0)
+      ;
+  }
   return ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
     DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
@@ -208,14 +208,11 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
 DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
                                    DWORD dwKeyState, CPoint point)
 {
-  if (this != pWnd) {
-    TRACE(_T("Inter-process Drag&Drop"));
-  }
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
-  // pil will be NULL if we're the target of inter-process D&D
 
   if (pil != NULL) pil->DragMove(point);
+
   // Expand and highlight the item under the mouse and 
   CPWTreeCtrl *pDestTreeCtrl = (CPWTreeCtrl *)pWnd;
   HTREEITEM hTItem = pDestTreeCtrl->HitTest(point);
@@ -272,7 +269,9 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
 
 void CPWTreeCtrl::OnDragLeave()
 {
-  ShowCursor(TRUE);
+  // ShowCursor's semantics are VERY odd - RTFM
+  while (ShowCursor(TRUE) < 0)
+    ;
 }
 
 void CPWTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
@@ -881,6 +880,8 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
 BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
+  while (ShowCursor(TRUE) < 0)
+    ;
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   // pil will be NULL if we're the target of inter-process D&D
@@ -1033,7 +1034,8 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   pil->BeginDrag(0, CPoint(0,0));
   pil->DragMove(ptAction);
   pil->DragEnter(this, ptAction);
-  ShowCursor(FALSE);
+  while (ShowCursor(FALSE) >= 0)
+    ;
   SetCapture();
 
   long lBufLen;
@@ -1089,7 +1091,8 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
     pil->EndDrag();
     pil->DeleteImageList();
     delete pil;
-    ShowCursor(TRUE);
+    while (ShowCursor(TRUE) < 0)
+      ;
   } else {
     TRACE(_T("m_DataSource->StartDragging() failed"));
   }
