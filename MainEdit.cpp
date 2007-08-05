@@ -174,6 +174,9 @@ DboxMain::OnAddGroup()
 void
 DboxMain::OnDelete() 
 {
+  if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
+    return;
+
   bool dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
 
@@ -183,8 +186,7 @@ DboxMain::OnDelete()
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
     if (hStartItem != NULL) {
-      CItemData *ci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
-      if (ci == NULL) {  // group node
+      if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         dontaskquestion = false; // ALWAYS ask if deleting a group
         // Find number of child items
         num_children = 0;

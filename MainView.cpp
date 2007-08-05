@@ -864,9 +864,11 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0L;
   NMITEMACTIVATE *plv = (NMITEMACTIVATE *)pNotifyStruct;
-
-  CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(plv->iItem);
-  UpdateToolBarForSelectedItem(ci);
+  int item = plv->iItem;
+  if (item != -1) { // -1 if nothing selected, e.g., empty list
+    CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(item);
+    UpdateToolBarForSelectedItem(ci);
+  }
 }
 
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)

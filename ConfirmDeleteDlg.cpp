@@ -78,7 +78,7 @@ CConfirmDeleteDlg::OnCancel()
 void
 CConfirmDeleteDlg::OnOK() 
 {
-  if (m_numchildren > 0) {
+  if (m_numchildren == 0) {
     UpdateData(TRUE);
     PWSprefs::GetInstance()->
        SetPref(PWSprefs::DeleteQuestion, m_dontaskquestion);
