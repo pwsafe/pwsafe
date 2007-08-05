@@ -704,57 +704,43 @@ DboxMain::AutoType(const CItemData &ci)
 }
 
 void
-DboxMain::AddEntries(CDDObList &in_oblist, const CMyString DropGroup)
+DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 {
   CItemData tempitem;
-  CDDObject *pDDObject;
   CMyString Group, Title, User;
   POSITION pos;
   TCHAR *dot;
 
-  for (pos = in_oblist.GetHeadPosition(); pos != NULL;) {
-    pDDObject = (CDDObject *)in_oblist.GetAt(pos);
+  for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
+    CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
+    tempitem.Clear();
+    pDDObject->ToItem(tempitem);
 
     if (in_oblist.m_bDragNode) {
-      dot = (!DropGroup.IsEmpty() && !pDDObject->m_DD_Group.IsEmpty()) ? _T(".") : _T("");
-      Group = DropGroup + dot + pDDObject->m_DD_Group;
+      dot = (!DropGroup.IsEmpty() && !tempitem.GetGroup().IsEmpty()) ? _T(".") : _T("");
+      Group = DropGroup + dot + tempitem.GetGroup();
     } else {
       Group = DropGroup;
     }
 
-    Title = GetUniqueTitle(Group, pDDObject->m_DD_Title, pDDObject->m_DD_User,
+    Title = GetUniqueTitle(Group, tempitem.GetTitle(), tempitem.GetUser(),
                            IDS_DRAGNUMBER);
 
-    tempitem.Clear();
-
-    if (m_core.Find(pDDObject->m_DD_UUID) != End())
+    uuid_array_t uuid;
+    tempitem.GetUUID(uuid);
+    if (m_core.Find(uuid) != End())
       tempitem.CreateUUID();
-    else
-      tempitem.SetUUID(pDDObject->m_DD_UUID);
 
     tempitem.SetGroup(Group);
     tempitem.SetTitle(Title);
-    tempitem.SetUser(pDDObject->m_DD_User);
-    tempitem.SetNotes(pDDObject->m_DD_Notes);
-    tempitem.SetPassword(pDDObject->m_DD_Password);
-    tempitem.SetURL(pDDObject->m_DD_URL);
-    tempitem.SetAutoType(pDDObject->m_DD_AutoType);
-    tempitem.SetPWHistory(pDDObject->m_DD_PWHistory);
-
-    tempitem.SetATime(pDDObject->m_DD_ATime);
-    tempitem.SetCTime(pDDObject->m_DD_CTime);
-    tempitem.SetLTime(pDDObject->m_DD_LTime);
-    tempitem.SetPMTime(pDDObject->m_DD_PMTime);
-    tempitem.SetRMTime(pDDObject->m_DD_RMTime);
-
     AddEntry(tempitem);
 
-    if (PWSprefs::GetInstance()->
-        GetPref(PWSprefs::SaveImmediately)) {
-      Save();
-    }
+  } // iteration over in_oblist
+
+  if (PWSprefs::GetInstance()->
+      GetPref(PWSprefs::SaveImmediately)) {
+    Save();
     ChangeOkUpdate();
-    in_oblist.GetNext(pos);
   }
 
   FixListIndexes();

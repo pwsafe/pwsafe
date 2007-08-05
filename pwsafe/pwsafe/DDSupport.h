@@ -7,9 +7,7 @@
  */
 
 #pragma once
-
-#include "corelib/MyString.h"
-#include "corelib/UUIDGen.h"
+#include "corelib/ItemData.h"
 
 // Drag & Drop Object written to SMemFile
 
@@ -27,31 +25,18 @@ public:
   CDDObject()
     : m_nVersion(CDDObject_Version) {};
 
-// Implementation
-public:
   virtual void Serialize(CArchive& ar);
+  void FromItem(const CItemData &item) {m_item = item;}
+  void ToItem(CItemData &item) const {item = m_item;}
 
-public:
-  uuid_array_t m_DD_UUID;
-  CMyString m_DD_Group;
-  CMyString m_DD_Title;
-  CMyString m_DD_User;
-  CMyString m_DD_Notes;
-  CMyString m_DD_Password;
-  CMyString m_DD_URL;
-  CMyString m_DD_AutoType;
-  CMyString m_DD_PWHistory;
-  long m_DD_CTime;
-  long m_DD_PMTime;
-  long m_DD_ATime;
-  long m_DD_LTime;
-  long m_DD_RMTime;
+ private:
+  CItemData m_item;
   int m_nVersion;
 
   DECLARE_SERIAL(CDDObject)
 };
 
-// List of Drag & Drop Object written to DDMemFile
+// A list of Drag & Drop Objects
 
 class CDDObList : public CObList
 {
