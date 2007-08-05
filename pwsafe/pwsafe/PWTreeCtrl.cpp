@@ -1085,7 +1085,12 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   trashMemory((void *)mf_buffer, dw_mflen);
   free((void *)mf_buffer);
 
-  if (SUCCEEDED(de)) { // If inter-process Move, we need to delete original
+  if (SUCCEEDED(de)) {
+    // If inter-process Move, we need to delete original
+    if ((de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
+        !((DboxMain *)GetParent())->IsMcoreReadOnly()) {
+      DeleteItem(m_hitemDrag);
+    }
     // wrong place to clean up imagelist?
     pil->DragLeave(GetDesktopWindow());
     pil->EndDrag();
@@ -1116,7 +1121,7 @@ void CPWTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
   // need to store the corresponding elements. But groups have none, so
   // we store the first (or any) child element, and upon restore, expand
   // the parent. Ugh++.
-  // Note that we do not support thecase where expanded node has only
+  // Note that we do not support the case where an expanded node has only
   // tree subnodes, since there's nothing to get a CItemData from.
   // This borderline case is hereby deemed more trouble than it's
   // worth to handle correctly.
@@ -1174,8 +1179,7 @@ void CPWTreeCtrl::OnExpandAll()
   do {
     Expand(hItem,TVE_EXPAND);
     hItem = GetNextItem(hItem,TVGN_NEXTVISIBLE);
-  }
-  while (hItem);
+  } while (hItem);
   EnsureVisible(GetSelectedItem());
   SetRedraw(TRUE);
 }
@@ -1190,8 +1194,7 @@ void CPWTreeCtrl::OnCollapseAll()
   SetRedraw(FALSE);
   do {
 	  CollapseBranch(hItem);
-  }
-  while((hItem = GetNextSiblingItem(hItem)) != NULL);
+  } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   SetRedraw(TRUE);
 }
 
