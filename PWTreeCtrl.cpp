@@ -1325,32 +1325,16 @@ CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
 void
 CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
 {
+  ASSERT(ci != NULL);
   CDDObject *pDDObject = new CDDObject;
 
-  uuid_array_t uuid_array;
-  ci->GetUUID(uuid_array);
-
-  memcpy(pDDObject->m_DD_UUID, uuid_array, sizeof(uuid_array));
-
-  const CMyString cs_Group = ci->GetGroup();
-  if (out_oblist.m_bDragNode && m_nDragPathLen > 0)
-    pDDObject->m_DD_Group = cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1);
-  else
-    pDDObject->m_DD_Group = cs_Group;
-
-  pDDObject->m_DD_Title= ci->GetTitle();
-  pDDObject->m_DD_User= ci->GetUser();
-  pDDObject->m_DD_Notes = ci->GetNotes();
-  pDDObject->m_DD_Password = ci->GetPassword();
-  pDDObject->m_DD_URL = ci->GetURL();
-  pDDObject->m_DD_AutoType= ci->GetAutoType();
-  pDDObject->m_DD_PWHistory = ci->GetPWHistory();
-
-  ci->GetCTime(pDDObject->m_DD_CTime);
-  ci->GetPMTime(pDDObject->m_DD_PMTime);
-  ci->GetATime(pDDObject->m_DD_ATime);
-  ci->GetLTime(pDDObject->m_DD_LTime);
-  ci->GetRMTime(pDDObject->m_DD_RMTime);
+  if (out_oblist.m_bDragNode && m_nDragPathLen > 0) {
+    CItemData ci2(*ci); // we need a copy since to modify the group
+    const CMyString cs_Group = ci->GetGroup();
+    ci2.SetGroup(cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1));
+    pDDObject->FromItem(ci2);
+  } else
+    pDDObject->FromItem(*ci);
 
   out_oblist.AddTail(pDDObject);
 }

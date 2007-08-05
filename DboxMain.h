@@ -168,7 +168,7 @@ public:
   bool ClearClipboardData() {return m_clipboard.ClearData();}
   bool SetClipboardData(const CMyString &data)
   {return m_clipboard.SetData(data);}
-  void AddEntries(CDDObList &in_oblist, const CMyString DropGroup);
+  void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
   int AddEntry(const CItemData &cinew);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
                            const CMyString &user, const int IDS_MESSAGE);

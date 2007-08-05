@@ -18,70 +18,57 @@ void CDDObject::Serialize(CArchive& ar)
   if (ar.IsStoring()) {
     ar << m_nVersion;
 
-    ar.Write(m_DD_UUID, sizeof(uuid_array_t));
+    uuid_array_t uuid;
+    m_item.GetUUID(uuid);
+    ar.Write(uuid, sizeof(uuid_array_t));
 
-    ar << (CString)m_DD_Group;
-    ar << (CString)m_DD_Title;
-    ar << (CString)m_DD_User;
-    ar << (CString)m_DD_Notes;
-    ar << (CString)m_DD_Password;
-    ar << (CString)m_DD_URL;
-    ar << (CString)m_DD_AutoType;
-    ar << (CString)m_DD_PWHistory;
+    ar << (CString)m_item.GetGroup();
+    ar << (CString)m_item.GetTitle();
+    ar << (CString)m_item.GetUser();
+    ar << (CString)m_item.GetNotes();
+    ar << (CString)m_item.GetPassword();
+    ar << (CString)m_item.GetURL();
+    ar << (CString)m_item.GetAutoType();
+    ar << (CString)m_item.GetPWHistory();
 
-    ar << m_DD_CTime;
-    ar << m_DD_PMTime;
-    ar << m_DD_ATime;
-    ar << m_DD_LTime;
-    ar << m_DD_RMTime;
-  } else {
+    time_t t;
+    m_item.GetCTime(t);  ar << t;
+    m_item.GetPMTime(t); ar << t;
+    m_item.GetATime(t);  ar << t;
+    m_item.GetLTime(t);  ar << t;
+    m_item.GetRMTime(t); ar << t;
+    // XXX TBD - Unknown fields
+  } else { // !Storing
     int iVersion;
     ar >> iVersion;
 
     switch(iVersion) {
     case 0x100:
       {
-        CString cs_Group, cs_Title, cs_User, cs_Notes, cs_Password, 
-          cs_URL, cs_AutoType, cs_PWHistory;
+        CString cs;
+        uuid_array_t uuid;
+        ar.Read(uuid, sizeof(uuid_array_t));
+        m_item.SetUUID(uuid);
+        ar >> cs; m_item.SetGroup(cs);
+        ar >> cs; m_item.SetTitle(cs);
+        ar >> cs; m_item.SetUser(cs);
+        ar >> cs; m_item.SetNotes(cs);
+        ar >> cs; m_item.SetPassword(cs);
+        ar >> cs; m_item.SetURL(cs);
+        ar >> cs; m_item.SetAutoType(cs);
+        ar >> cs; m_item.SetPWHistory(cs);
+        trashMemory(cs);
 
-        ar.Read(m_DD_UUID, sizeof(uuid_array_t));
-
-        ar >> cs_Group;
-        ar >> cs_Title;
-        ar >> cs_User;
-        ar >> cs_Notes;
-        ar >> cs_Password;
-        ar >> cs_URL;
-        ar >> cs_AutoType;
-        ar >> cs_PWHistory;
-
-        ar >> m_DD_CTime;
-        ar >> m_DD_PMTime;
-        ar >> m_DD_ATime;
-        ar >> m_DD_LTime;
-        ar >> m_DD_RMTime;
-
-        m_DD_Group = CMyString(cs_Group);
-        m_DD_Title = CMyString(cs_Title);
-        m_DD_User = CMyString(cs_User);
-        m_DD_Notes = CMyString(cs_Notes);
-        m_DD_Password = CMyString(cs_Password);
-        m_DD_URL = CMyString(cs_URL);
-        m_DD_AutoType = CMyString(cs_AutoType);
-        m_DD_PWHistory = CMyString(cs_PWHistory);
-
-        trashMemory(cs_Group);
-        trashMemory(cs_Title);
-        trashMemory(cs_User);
-        trashMemory(cs_Notes);
-        trashMemory(cs_Password);
-        trashMemory(cs_URL);
-        trashMemory(cs_AutoType);
-        trashMemory(cs_PWHistory);
+        time_t t;
+        ar >> t; m_item.SetCTime(t);
+        ar >> t; m_item.SetPMTime(t);
+        ar >> t; m_item.SetATime(t);
+        ar >> t; m_item.SetLTime(t);
+        ar >> t; m_item.SetRMTime(t);
       }
-
       break;
     default:
+      TRACE(_T("CDDObject::Serialize() - unsupported version %x\n"), iVersion);
       break;
     }
   }
@@ -106,7 +93,7 @@ void CDDObList::Serialize(CArchive& ar)
       pDDObject = (CDDObject *)GetNext(Pos);
       pDDObject->Serialize(ar);
     }
-  } else {
+  } else { // !IsStoring
     ASSERT(GetCount() == 0);
 
     ar >> nCount;
