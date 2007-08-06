@@ -767,16 +767,22 @@ DboxMain::OnSize(UINT nType,
     }
   } else if (nType == SIZE_MAXIMIZED) {
     RefreshList();
-  } else if (!m_bSizing && nType == SIZE_RESTORED) {
-    // gets called even when just resizing window
+  } else if (nType == SIZE_RESTORED) {
+    if (!m_bSizing) { // here if actually restored
 #endif
-    app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
-    UnMinimize(false);
-    RefreshList();
-    if (m_selectedAtMinimize != NULL)
-      SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
+      app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
+      UnMinimize(false);
+      RefreshList();
+      if (m_selectedAtMinimize != NULL)
+        SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
 #if !defined(POCKET_PC)
-  } // !m_bSizing && nType == SIZE_RESTORED
+    } else { // m_bSizing == true: here if size changed
+      CRect rect;
+      GetWindowRect(&rect);
+      PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
+                                           rect.left, rect.right);
+    }
+  } // nType == SIZE_RESTORED
 #endif
   m_bSizing = false;
 }

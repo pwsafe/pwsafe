@@ -2045,13 +2045,6 @@ DboxMain::OnOK()
     cs_columnswidths += _T(",");
   }
 
-#if !defined(POCKET_PC)
-  if (!IsIconic()) {
-    CRect rect;
-    GetWindowRect(&rect);
-    prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
-  }
-#endif
   prefs->SetPref(PWSprefs::SortedColumn, m_iSortedColumn);
   prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
   prefs->SetPref(PWSprefs::ListColumns, cs_columns);

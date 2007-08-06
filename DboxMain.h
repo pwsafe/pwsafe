@@ -335,6 +335,7 @@ protected:
   afx_msg BOOL OnQueryEndSession();
   afx_msg void OnEndSession(BOOL bEnding);
   afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
+  afx_msg void OnMove(int x, int y);
   virtual void OnCancel();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnAbout();

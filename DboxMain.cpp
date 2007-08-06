@@ -211,6 +211,7 @@ ON_WM_ENDSESSION()
 ON_WM_INITMENU()
 ON_WM_INITMENUPOPUP()
 ON_WM_QUERYENDSESSION()
+ON_WM_MOVE()
 ON_WM_SIZE()
 ON_WM_SYSCOMMAND()
 ON_WM_TIMER()
@@ -645,6 +646,20 @@ void DboxMain::OnWindowPosChanging( WINDOWPOS* lpwndpos )
 	}
 
 	CDialog::OnWindowPosChanging(lpwndpos);
+}
+
+void DboxMain::OnMove(int x, int y)
+{
+  CDialog::OnMove(x, y);
+  // turns out that minimizing calls this
+  // with x = y = -32000. Oh joy.
+  if (m_windowok && IsWindowVisible() == TRUE &&
+      x >= 0 && y >= 0) {
+    CRect rect;
+    GetWindowRect(&rect);
+    PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
+                                         rect.left, rect.right);
+  }
 }
 
 void DboxMain::FixListIndexes()
@@ -1854,12 +1869,6 @@ DboxMain::OnQueryEndSession()
 	PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().IsEmpty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-  // Save last size & pos for next time
-  if (!IsIconic()) {
-    CRect rect;
-    GetWindowRect(&rect);
-    prefs->SetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
-  }
 	// Save Application related preferences
 	prefs->SaveApplicationPreferences();
 
