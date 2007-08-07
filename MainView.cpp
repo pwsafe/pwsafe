@@ -906,17 +906,9 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
 
 #if !defined(POCKET_PC)
 void
-DboxMain::OnSetfocusItemlist(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
+DboxMain::OnChangeItemFocus(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
 {
-  // Seems excessive to do this all the time
-  // Should be done only on Open and on Change (Add, Delete, Modify)
-  if (m_toolbarsSetup == TRUE)
-    UpdateStatusBar();
-}
-
-void
-DboxMain::OnKillfocusItemlist(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
-{
+  // Called on NM_{SET,KILL}FOCUS for IDC_ITEM{LIST,TREE}
   // Seems excessive to do this all the time
   // Should be done only on Open and on Change (Add, Delete, Modify)
   if (m_toolbarsSetup == TRUE)

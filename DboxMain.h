@@ -391,8 +391,7 @@ protected:
 #if defined(POCKET_PC)
   afx_msg void OnShowPassword();
 #else
-  afx_msg void OnSetfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
-  afx_msg void OnKillfocusItemlist( NMHDR * pNotifyStruct, LRESULT * result );
+  afx_msg void OnChangeItemFocus( NMHDR * pNotifyStruct, LRESULT * result );
   afx_msg void OnDropFiles(HDROP hDrop);
 #endif
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
