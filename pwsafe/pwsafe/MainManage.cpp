@@ -29,8 +29,6 @@
 #include "OptionsMisc.h"
 #include "OptionsBackup.h"
 
-#include <algorithm>
-
 using namespace std;
 
 #ifdef _DEBUG
@@ -693,11 +691,19 @@ DboxMain::OnOptions()
 }
 
 // functor objects for updating password history for each entry
-struct HistoryUpdateResetOff {
-  HistoryUpdateResetOff(int &num_altered) : m_num_altered(num_altered) {}
-  void operator()(pair<CUUIDGen, CItemData> p)
+
+struct HistoryUpdater {
+  HistoryUpdater(int &num_altered) : m_num_altered(num_altered)
+  {}
+  virtual void operator() (CItemData &ci) = 0;
+protected:
+  int &m_num_altered;
+};
+
+struct HistoryUpdateResetOff : public HistoryUpdater {
+  HistoryUpdateResetOff(int &num_altered) : HistoryUpdater(num_altered) {}
+  void operator()(CItemData &ci)
   {
-    CItemData &ci = p.second;
     CMyString cs_tmp = ci.GetPWHistory();
     if (cs_tmp.GetLength() >= 5 && cs_tmp.GetAt(0) == _T('1')) {
       cs_tmp.SetAt(0, _T('0'));
@@ -705,17 +711,14 @@ struct HistoryUpdateResetOff {
       m_num_altered++;
     }
   }
-private:
-  int &m_num_altered;
 };
 
-struct HistoryUpdateResetOn {
+struct HistoryUpdateResetOn : public HistoryUpdater {
   HistoryUpdateResetOn(int &num_altered,
-                       int new_default_max) : m_num_altered(num_altered)
+                       int new_default_max) : HistoryUpdater(num_altered)
   {text.Format(_T("1%02x00"), new_default_max);}
-  void operator()(pair<CUUIDGen, CItemData> p)
+  void operator()(CItemData &ci)
   {
-    CItemData &ci = p.second;
     CMyString cs_tmp = ci.GetPWHistory();
     if (cs_tmp.GetLength() < 5) {
       ci.SetPWHistory(text);
@@ -729,18 +732,16 @@ struct HistoryUpdateResetOn {
     }
   }
 private:
-  int &m_num_altered;
 	CString text;
 };
 
-struct HistoryUpdateSetMax {
+struct HistoryUpdateSetMax : public HistoryUpdater {
   HistoryUpdateSetMax(int &num_altered,
-                      int new_default_max) : m_num_altered(num_altered),
+                      int new_default_max) : HistoryUpdater(num_altered),
                                              m_new_default_max(new_default_max)
   {text.Format(_T("1%02x00"), new_default_max);}
-  void operator()(pair<CUUIDGen, CItemData> p)
+  void operator()(CItemData &ci)
   {
-    CItemData &ci = p.second;
     CMyString cs_tmp = ci.GetPWHistory();
 
     int len = cs_tmp.GetLength();
@@ -763,7 +764,7 @@ struct HistoryUpdateSetMax {
     }
   }
 private:
-  int &m_num_altered, m_new_default_max;
+  int m_new_default_max;
 	CString text;
 };
 
@@ -772,42 +773,53 @@ DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
 {
   int ids = 0;
 	int num_altered = 0;
-	bool bResult = false;
+  HistoryUpdater *updater = NULL;
 
-	switch (iAction) {
-  case 1:	{	// reset off
-    HistoryUpdateResetOff reset_off(num_altered);
-    for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
-             reset_off);
+  HistoryUpdateResetOff reset_off(num_altered);
+  HistoryUpdateResetOn reset_on(num_altered, new_default_max);
+  HistoryUpdateSetMax set_max(num_altered, new_default_max);
+
+  switch (iAction) {
+  case 1:		// reset off
+    updater = &reset_off;
     ids = IDS_ENTRIESCHANGEDSTOP;
-    bResult = true;
     break;
-  }
-  case 2:	{	// reset on
-    HistoryUpdateResetOn reset_on(num_altered, new_default_max);
-    for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
-             reset_on);
+  case 2:	// reset on
+    updater = &reset_on;
     ids = IDS_ENTRIESCHANGEDSAVE;
-    bResult = true;
     break;
-  }
-  case 3:	{	// setmax
-    HistoryUpdateSetMax set_max(num_altered, new_default_max);
-    for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
-             set_max);
+  case 3:	// setmax
+    updater = &set_max;
     ids = IDS_ENTRIESRESETMAX;
-    bResult = true;
     break;
-  }
   default:
     ASSERT(0);
     break;
-	} // switch (iAction)
+  } // switch (iAction)
 
-	if (bResult) {
+  /**
+   * Interesting problem - a for_each iterator
+   * cause a copy c'tor of the pair to be invoked, resulting
+   * in a temporary copy of the CItemDatum being modified.
+   * Couldn't find a handy way to workaround this (e.g.,
+   * operator()(pair<...> &p) failed to compile
+   * so reverted to slightly less elegant for loop
+   * using polymorphism for the history updater
+   * is an unrelated tweak.
+   */
+
+  if (updater != NULL) {
+    ItemListIter listPos;
+    for (listPos = m_core.GetEntryIter();
+         listPos != m_core.GetEntryEndIter();
+         listPos++) {
+      CItemData &curitem = m_core.GetEntry(listPos);
+      (*updater)(curitem);
+    }
+      
     CString cs_Msg;
     cs_Msg.Format(ids, num_altered);
     AfxMessageBox(cs_Msg);
-		RefreshList();
+    RefreshList();
   }
 }
