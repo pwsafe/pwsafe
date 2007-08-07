@@ -173,6 +173,7 @@ public:
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
                            const CMyString &user, const int IDS_MESSAGE);
   void FixListIndexes();
+  void Delete(bool inRecursion = false);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -305,7 +306,6 @@ protected:
   int New(void);
   int Restore(void);
 
-  void Delete(bool inRecursion = false);
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *ci);
 

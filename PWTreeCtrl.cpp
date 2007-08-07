@@ -107,7 +107,8 @@ class CPWTDataSource : public COleDataSource
  * Implementation of CPWTreeCtrl begins here
  */
 
-CPWTreeCtrl::CPWTreeCtrl() : m_isRestoring(false)
+CPWTreeCtrl::CPWTreeCtrl()
+  : m_isRestoring(false), m_bWithinThisInstance(true)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:
@@ -201,6 +202,7 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
     while (ShowCursor(FALSE) >= 0)
       ;
   }
+  m_bWithinThisInstance = true;
   return ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
     DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
@@ -269,6 +271,7 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
 
 void CPWTreeCtrl::OnDragLeave()
 {
+  m_bWithinThisInstance = false;
   // ShowCursor's semantics are VERY odd - RTFM
   while (ShowCursor(TRUE) < 0)
     ;
@@ -954,7 +957,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   // However, plugging the process ID in the header
   // is the most direct and straightforward way to do this,
   // and probably the most robust...
-  bool bWithinThisInstance = (lPid == GetCurrentProcessId());
+  m_bWithinThisInstance = (lPid == GetCurrentProcessId());
 
   // Check if it is from another TreeCtrl?
   // - we don't accept drop from anything else
@@ -973,7 +976,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   if (IsLeafNode(hitemDrop) || bForceRoot)
     hitemDrop = GetParentItem(hitemDrop);
 
-  if (bWithinThisInstance) {
+  if (m_bWithinThisInstance) {
     // from me! - easy
     HTREEITEM parent = GetParentItem(m_hitemDrag);
     if (m_hitemDrag != hitemDrop &&
@@ -1086,10 +1089,12 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   free((void *)mf_buffer);
 
   if (SUCCEEDED(de)) {
+    DboxMain *dbx = static_cast<DboxMain *>(GetParent());
     // If inter-process Move, we need to delete original
     if ((de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
-        !((DboxMain *)GetParent())->IsMcoreReadOnly()) {
-      DeleteItem(m_hitemDrag);
+        !m_bWithinThisInstance && !dbx->IsMcoreReadOnly()) {
+      // DeleteItem(m_hitemDrag);
+      dbx->Delete();
     }
     // wrong place to clean up imagelist?
     pil->DragLeave(GetDesktopWindow());
