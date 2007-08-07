@@ -81,9 +81,10 @@ private:
 
   bool m_isRestoring; // don't repopulate m_expandedItems in restore
   int m_nDragPathLen;
+  bool m_bWithinThisInstance;
 
-  // in an ideal world, following would be is-a, rather than has-a (multiple inheritance)
-  // Microsoft doesn't really support this, however...
+  // in an ideal world, following would be is-a, rather than has-a
+  // (multiple inheritance) Microsoft doesn't really support this, however...
   CPWTDropTarget *m_DropTarget;
   CPWTDropSource *m_DropSource;
   CPWTDataSource *m_DataSource;
