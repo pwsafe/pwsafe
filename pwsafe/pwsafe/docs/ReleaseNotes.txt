@@ -17,9 +17,10 @@ selected and if URL is populated
 [1768822] Manage->Options->Password History 'apply' works again.
 
 New Features for 3.09.01
-=======================-
+========================
 [1752896] Add ability to edit an entry's notes field using user's default 
 text editor via right click on Notes field.
+[1750010] Drag&Drop between databases now supported.
 
 Bugs fixed in 3.09
 ==================
