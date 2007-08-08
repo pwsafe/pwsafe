@@ -15,6 +15,7 @@ selected and if URL is populated
 [1758025, 1759364] '-s' option now works correctly
 [] Window's position and size now updated correctly
 [1768822] Manage->Options->Password History 'apply' works again.
+[] Lock timeout after manual lock no longer saves empty database.
 
 New Features for 3.09.01
 ========================
