@@ -263,8 +263,17 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
     pWnd->SendMessage(WM_HSCROLL, wParam);
   }
   
-  DROPEFFECT dropeffectRet = ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
-    DROPEFFECT_COPY : DROPEFFECT_MOVE;
+  DROPEFFECT dropeffectRet;
+  // If we're dragging between processes, default is to COPY, Ctrl key
+  // changes this to MOVE.
+  // If we're dragging in the same process, default is to MOVE, Ctrl
+  // key changes this to COPY
+  if (pil == NULL)
+    dropeffectRet = ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
+      DROPEFFECT_MOVE : DROPEFFECT_COPY;
+  else
+    dropeffectRet = ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
+      DROPEFFECT_COPY : DROPEFFECT_MOVE;
   
   return dropeffectRet;
 }
