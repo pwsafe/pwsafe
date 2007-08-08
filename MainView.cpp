@@ -1415,7 +1415,7 @@ DboxMain::OnTimer(UINT nIDEvent )
       TRACE("locking database\n");
       SaveDisplayStatus();
       m_treeDispState = m_core.GetDisplayStatus();
-      ClearData();
+      ClearData(false);
       if(IsWindowVisible()){
         ShowWindow(SW_MINIMIZE);
       }

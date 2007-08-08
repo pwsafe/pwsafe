@@ -45,9 +45,9 @@ DboxMain::OnTrayLockUnLock()
   case ThisMfcApp::UNLOCKED:					// User clicked Lock
     UpdateSystemTray(LOCKED);
     ClearClipboardData();
-    ShowWindow(SW_MINIMIZE);
     ShowWindow(SW_HIDE);
-    ClearData(false); // bugfix 1709418
+    m_IdleLockCountDown = 1; // lock the same way as a timer lock
+    OnTimer(TIMER_USERLOCK); // save db if needed, etc.
     break;
   case ThisMfcApp::CLOSED:
   default:
