@@ -51,6 +51,7 @@ int PWSfileV3::Open(const CMyString &passkey)
   int status = SUCCESS;
 
   ASSERT(m_curversion == V30);
+  ASSERT(!passkey.IsEmpty());
 
   m_passkey = passkey;
 

@@ -788,19 +788,12 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 
     if (ci_title.Compare(ci_title0) != 0) {
       ci->SetTitle(ci_title);
-      CMyString treeDispString = ci_title;
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
-        treeDispString += _T(" [") + ci_user + _T("]");
-        if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
-          CMyString ci_Password = ci->GetPassword();
-          treeDispString += _T(" {") + ci_Password + _T("}");
-        }
-      }
-      // Update tree label
-      SetItemText(hNewItem, treeDispString);
-      // Update list field with new title
-      dbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
     }
+    // Update tree label
+    SetItemText(hNewItem, MakeTreeDisplayString(*ci));
+    // Update list field with new title
+    dbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
+
     // Mark database as modified!
     dbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
@@ -1366,4 +1359,25 @@ CMyString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
       retval = CMyString(GROUP_SEP) + retval;
   }
   return retval;
+}
+
+CMyString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+
+  CMyString treeDispString = ci.GetTitle();
+  if (bShowUsernameInTree) {
+    treeDispString += _T(" [");
+    treeDispString += ci.GetUser();
+    treeDispString += _T("]");
+
+    if (bShowPasswordInTree) {
+      treeDispString += _T(" {");
+      treeDispString += ci.GetPassword();
+      treeDispString += _T("}");
+    }
+  }
+  return treeDispString;
 }

@@ -1219,6 +1219,15 @@ CMyString PWScore::GetPassKey() const
     return retval;
 }
 
+void PWScore::SetDisplayStatus(const std::vector<bool> &s)
+{ 
+  if (m_displaystatus != s) {
+    m_displaystatus = s;
+    m_changed = true;
+  }
+}
+
+
 /*
   Thought this might be useful to others...
   I made the mistake of using another password safe for a while...
