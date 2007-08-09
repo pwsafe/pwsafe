@@ -41,6 +41,7 @@ class CPWTreeCtrl : public CTreeCtrl
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
   bool IsLeafNode(HTREEITEM hItem);
+  CMyString MakeTreeDisplayString(const CItemData &ci) const;
   void RestoreExpanded();
   void ClearExpanded(); // use when items will be invalid
   void OnCollapseAll();

@@ -153,7 +153,7 @@ class PWScore {
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
   void SetPassKey(const CMyString &new_passkey);
 
-  void SetDisplayStatus(const std::vector<bool> &s) { m_displaystatus = s;}
+  void SetDisplayStatus(const std::vector<bool> &s);
   const std::vector<bool> &GetDisplayStatus() const {return m_displaystatus;}
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK

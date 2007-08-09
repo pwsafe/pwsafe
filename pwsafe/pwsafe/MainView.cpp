@@ -1001,19 +1001,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
 
   {
     HTREEITEM ti;
-    CMyString treeDispString = title;
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowUsernameInTree)) {
-      CMyString user = itemData.GetUser();
-      treeDispString += _T(" [");
-      treeDispString += user;
-      treeDispString += _T("]");
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
-        CMyString newPassword = itemData.GetPassword();
-        treeDispString += _T(" {");
-        treeDispString += newPassword;
-        treeDispString += _T("}");
-      }
-    }
+    CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
     // get path, create if necessary, add title as last node
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
@@ -1410,15 +1398,17 @@ DboxMain::OnTimer(UINT nIDEvent )
      * so we force a save if database is modified, and fail
      * to lock if the save fails.
      */
+    if(IsWindowVisible()) {
+      SaveDisplayStatus(); // might set IsChanged, so have to do this 1st
+      m_treeDispState = m_core.GetDisplayStatus();
+    }
     if (!(m_core.IsChanged() || m_bTSUpdated) ||
         Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
-      SaveDisplayStatus();
-      m_treeDispState = m_core.GetDisplayStatus();
-      ClearData(false);
       if(IsWindowVisible()){
         ShowWindow(SW_MINIMIZE);
       }
+      ClearData(false);
       if (nIDEvent == TIMER_CHECKLOCK)
         KillTimer(TIMER_CHECKLOCK);
     }
