@@ -1400,7 +1400,6 @@ DboxMain::OnTimer(UINT nIDEvent )
      */
     if(IsWindowVisible()) {
       SaveDisplayStatus(); // might set IsChanged, so have to do this 1st
-      m_treeDispState = m_core.GetDisplayStatus();
     }
     if (!(m_core.IsChanged() || m_bTSUpdated) ||
         Save() == PWScore::SUCCESS) {

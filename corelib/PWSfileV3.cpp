@@ -16,6 +16,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+using namespace std;
+
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F'};
@@ -509,8 +511,13 @@ int PWSfileV3::WriteHeader()
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write out display status
-  if (!m_hdr.m_file_displaystatus.IsEmpty()) {
-  	numWritten = WriteCBC(HDR_DISPSTAT, m_hdr.m_file_displaystatus);
+  if (!m_hdr.m_displaystatus.empty()) {
+    CString ds(_T(""));
+    vector<bool>::const_iterator iter;
+    for (iter = m_hdr.m_displaystatus.begin();
+         iter != m_hdr.m_displaystatus.end(); iter++)
+      ds += (*iter) ? _T("1") : _T("0");
+  	numWritten = WriteCBC(HDR_DISPSTAT, ds);
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
@@ -674,9 +681,12 @@ int PWSfileV3::ReadHeader()
     case HDR_DISPSTAT: /* Tree Display Status */
       if (utf8 != NULL) utf8[utf8Len] = '\0';
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      m_hdr.m_file_displaystatus = CString(text);
+      for (int i = 0; i != text.GetLength(); i++) {
+        const TCHAR v = text.GetAt(i);
+        m_hdr.m_displaystatus.push_back(v == TCHAR('1'));
+      }
       if (!utf8status)
-        TRACE(_T("FromUTF8(m_file_displaystatus) failed\n"));
+        TRACE(_T("FromUTF8(m_displaystatus) failed\n"));
       break;
 
     case HDR_LASTUPDATETIME: /* When last saved */

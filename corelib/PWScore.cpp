@@ -155,8 +155,6 @@ PWScore::WriteFile(const CMyString &filename, PWSfile::VERSION version)
   }
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
-  // Tree Display Status is kept in header
-  m_hdr.SetDisplayStatus(m_displaystatus);
   m_hdr.m_whatlastsaved = m_AppNameAndVersion;
 
   out->SetHeader(m_hdr);
@@ -1221,10 +1219,15 @@ CMyString PWScore::GetPassKey() const
 
 void PWScore::SetDisplayStatus(const std::vector<bool> &s)
 { 
-  if (m_displaystatus != s) {
-    m_displaystatus = s;
+  if (m_hdr.m_displaystatus != s) {
+    m_hdr.m_displaystatus = s;
     m_changed = true;
   }
+}
+
+const vector<bool> &PWScore::GetDisplayStatus() const
+{
+  return m_hdr.m_displaystatus;
 }
 
 

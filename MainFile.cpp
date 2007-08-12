@@ -512,7 +512,6 @@ DboxMain::OnClearMRU()
 void
 DboxMain::OnSave()
 {
-  SaveDisplayStatus();
   Save();
 }
 
@@ -553,6 +552,7 @@ DboxMain::Save()
     app.SetTooltipText(m_core.GetCurFile());
 #endif
   }
+  SaveDisplayStatus();
   rc = m_core.WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
@@ -601,7 +601,6 @@ int DboxMain::SaveIfChanged()
 void
 DboxMain::OnSaveAs()
 {
-  SaveDisplayStatus();
   SaveAs();
 }
 
@@ -669,6 +668,7 @@ DboxMain::SaveAs()
   m_core.GetFileUUID(file_uuid_array);
   m_core.ClearFileUUID();
 
+  SaveDisplayStatus();
   rc = m_core.WriteFile(newfile);
   
   if (rc == PWScore::CANT_OPEN_FILE) {
@@ -2049,6 +2049,11 @@ DboxMain::OnOK()
   prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
   prefs->SetPref(PWSprefs::ListColumns, cs_columns);
   prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
+
+  // See if user changed tree view - calling this sets
+  // modified flag, so it's not redundant here, even though
+  // Save() calls it as well.
+  SaveDisplayStatus();
 
   // If MaintainDateTimeStamps set and not read-only,
   // save without asking user: "they get what it says on the tin"
