@@ -53,9 +53,7 @@ class PWSfile {
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     uuid_array_t m_file_uuid_array;
     int m_nITER; // Formally not part of the header.
-    void SetDisplayStatus(const std::vector<bool> &displaystatus);
-    std::vector<bool> GetDisplayStatus() const;
-    CString m_file_displaystatus; // tree display status stored in file
+    std::vector<bool> m_displaystatus; // tree expansion  state vector
     CMyString m_prefString; // prefererences stored in the file
     time_t m_whenlastsaved; // When last saved
     CString m_lastsavedby; // and by whom

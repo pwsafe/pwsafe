@@ -154,7 +154,7 @@ class PWScore {
   void SetPassKey(const CMyString &new_passkey);
 
   void SetDisplayStatus(const std::vector<bool> &s);
-  const std::vector<bool> &GetDisplayStatus() const {return m_displaystatus;}
+  const std::vector<bool> &GetDisplayStatus() const;
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
@@ -191,7 +191,6 @@ class PWScore {
   bool m_changed;
   bool m_IsReadOnly;
 
-  std::vector<bool> m_displaystatus;
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
 };

@@ -133,8 +133,7 @@ PWSfile::~PWSfile()
 
 PWSfile::HeaderRecord::HeaderRecord() :
   m_nCurrentMajorVersion(0), m_nCurrentMinorVersion(0),
-  m_nITER(0), m_file_displaystatus(_T("")),
-  m_prefString(_T("")), m_whenlastsaved(0),
+  m_nITER(0), m_prefString(_T("")), m_whenlastsaved(0),
   m_lastsavedby(_T("")), m_lastsavedon(_T("")),
   m_whatlastsaved(_T("")),
   m_dbname(_T("")), m_dbdesc(_T(""))
@@ -145,7 +144,7 @@ PWSfile::HeaderRecord::HeaderRecord() :
 PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) :
   m_nCurrentMajorVersion(h.m_nCurrentMajorVersion),
   m_nCurrentMinorVersion(h.m_nCurrentMinorVersion),
-  m_nITER(h.m_nITER), m_file_displaystatus(h.m_file_displaystatus),
+  m_nITER(h.m_nITER), m_displaystatus(h.m_displaystatus),
   m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
   m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
   m_whatlastsaved(h.m_whatlastsaved),
@@ -162,7 +161,7 @@ PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
     m_nCurrentMajorVersion = h.m_nCurrentMajorVersion;
     m_nCurrentMinorVersion = h.m_nCurrentMinorVersion;
     m_nITER = h.m_nITER;
-    m_file_displaystatus = h.m_file_displaystatus;
+    m_displaystatus = h.m_displaystatus;
     m_prefString = h.m_prefString;
     m_whenlastsaved = h.m_whenlastsaved;
     m_lastsavedby = h.m_lastsavedby;
@@ -174,26 +173,6 @@ PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
            sizeof(m_file_uuid_array));
   }
   return *this;
-}
-
-void PWSfile::HeaderRecord::SetDisplayStatus(const vector<bool> &displaystatus)
-{
-  m_file_displaystatus = _T("");
-
-  vector<bool>::const_iterator iter;
-  for (iter = displaystatus.begin(); iter != displaystatus.end(); iter++)
-    m_file_displaystatus += (*iter) ? _T("1") : _T("0");
-}
-
-vector<bool> PWSfile::HeaderRecord::GetDisplayStatus() const
-{
-  vector<bool> retval;
-  unsigned N = m_file_displaystatus.GetLength();
-  for (unsigned i = 0; i != N; i++) {
-    const TCHAR v = m_file_displaystatus.GetAt(i);
-    retval.push_back(v == TCHAR('1'));
-  }
-  return retval;
 }
 
 void PWSfile::FOpen()
