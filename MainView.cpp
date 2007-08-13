@@ -684,7 +684,7 @@ DboxMain::RefreshList()
 #if defined(POCKET_PC)
   SetCursor( NULL );
 #endif
-  m_ctlItemTree.RestoreExpanded();
+  //  m_ctlItemTree.RestoreExpanded();
 
 
   // re-enable and force redraw!
@@ -740,7 +740,6 @@ DboxMain::OnSize(UINT nType,
     // or by right clicking in the Taskbar (not using System Tray)
     PWSprefs *prefs = PWSprefs::GetInstance();
 
-    SaveDisplayStatus();
     m_selectedAtMinimize = getSelectedItem();
     m_ctlItemList.DeleteAllItems();
     m_ctlItemTree.DeleteAllItems();
@@ -772,9 +771,12 @@ DboxMain::OnSize(UINT nType,
 #endif
       app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
       UnMinimize(false);
+      RestoreDisplayStatus();
+      m_ctlItemTree.SetRestoreMode(true);
       RefreshList();
       if (m_selectedAtMinimize != NULL)
         SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
+      m_ctlItemTree.SetRestoreMode(false);
 #if !defined(POCKET_PC)
     } else { // m_bSizing == true: here if size changed
       CRect rect;
@@ -1145,8 +1147,6 @@ DboxMain::ClearData(bool clearMRE)
   // This means that selection won't be restored in this case.
   // Tough.
   m_selectedAtMinimize = NULL;
-  // Ditto for expanded groups, unfortunately
-  m_ctlItemTree.ClearExpanded();
 
   if (clearMRE)
     m_RUEList.ClearEntries();
@@ -1398,9 +1398,7 @@ DboxMain::OnTimer(UINT nIDEvent )
      * so we force a save if database is modified, and fail
      * to lock if the save fails.
      */
-    if(IsWindowVisible()) {
-      SaveDisplayStatus(); // might set IsChanged, so have to do this 1st
-    }
+    // XXX check DisplayStatus change
     if (!(m_core.IsChanged() || m_bTSUpdated) ||
         Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");

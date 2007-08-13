@@ -155,6 +155,7 @@ class PWScore {
 
   void SetDisplayStatus(const std::vector<bool> &s);
   const std::vector<bool> &GetDisplayStatus() const;
+  bool WasDisplayStatusChanged() const;
   void CopyPWList(const ItemList &in);
   // Validate() returns true if data modified, false if all OK
   bool Validate(CString &status);
@@ -184,7 +185,7 @@ class PWScore {
   
   PWSfile::VERSION m_ReadFileVersion;
   PWSfile::HeaderRecord m_hdr;
-  
+  std::vector<bool> m_OrigDisplayStatus;
   // the password database
   ItemList m_pwlist;
 

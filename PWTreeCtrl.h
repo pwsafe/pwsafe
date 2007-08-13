@@ -14,11 +14,7 @@
 #include <Afxcmn.h>
 #include "corelib/MyString.h"
 
-// Need a set to keep track of what nodes are expanded, to re-expand
-// after minimize
-#include <set>
 class CItemData;
-typedef std::set<CItemData *> SetTreeItem_t;
 
 // classes for implementing D&D
 class CDDObList;
@@ -37,13 +33,11 @@ class CPWTreeCtrl : public CTreeCtrl
 
   void Initialize();
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
-  void DeleteFromSet(HTREEITEM hItem);
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
   bool IsLeafNode(HTREEITEM hItem);
   CMyString MakeTreeDisplayString(const CItemData &ci) const;
-  void RestoreExpanded();
-  void ClearExpanded(); // use when items will be invalid
+  void SetRestoreMode(bool flag) {m_isRestoring = flag;}
   void OnCollapseAll();
   void OnExpandAll();
   HTREEITEM GetNextTreeItem(HTREEITEM hItem);
@@ -78,9 +72,8 @@ class CPWTreeCtrl : public CTreeCtrl
 private:
   HTREEITEM   m_hitemDrag;
   HTREEITEM   m_hitemDrop;
-  SetTreeItem_t m_expandedItems;
 
-  bool m_isRestoring; // don't repopulate m_expandedItems in restore
+  bool m_isRestoring; // don't update state vector when restoring state
   int m_nDragPathLen;
   bool m_bWithinThisInstance;
 
