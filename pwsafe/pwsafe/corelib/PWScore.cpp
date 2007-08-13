@@ -923,6 +923,7 @@ PWScore::ReadFile(const CMyString &a_filename,
     }
 
     m_hdr = in->GetHeader();
+    m_OrigDisplayStatus = m_hdr.m_displaystatus; // for WasDisplayStatusChanged
 
     // Get pref string and tree display status & who saved when
     // all possibly empty!
@@ -1219,15 +1220,23 @@ CMyString PWScore::GetPassKey() const
 
 void PWScore::SetDisplayStatus(const std::vector<bool> &s)
 { 
-  if (m_hdr.m_displaystatus != s) {
-    m_hdr.m_displaystatus = s;
-    m_changed = true;
-  }
+  // DON'T set m_changed!
+  // Application should use WasDisplayStatusChanged()
+  // to determine if state has changed.
+  // This allows app to silently save without nagging user
+  m_hdr.m_displaystatus = s;
 }
 
 const vector<bool> &PWScore::GetDisplayStatus() const
 {
   return m_hdr.m_displaystatus;
+}
+
+bool PWScore::WasDisplayStatusChanged() const
+{
+  // m_OrigDisplayStatus is set while reading file.
+  // m_hdr.m_displaystatus may be changed via SetDisplayStatus
+  return m_hdr.m_displaystatus != m_OrigDisplayStatus;
 }
 
 

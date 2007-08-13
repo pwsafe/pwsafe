@@ -174,6 +174,7 @@ public:
                            const CMyString &user, const int IDS_MESSAGE);
   void FixListIndexes();
   void Delete(bool inRecursion = false);
+  void SaveDisplayStatus(); // call when tree expansion state changes
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -447,7 +448,6 @@ private:
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
   CItemData *m_selectedAtMinimize; // to restore selection upon un-minimize
-  std::vector<bool> m_treeDispState; // true iff item is expanded
   bool m_inExit; // help U3ExitNow
 
   PWSclipboard m_clipboard;
@@ -463,9 +463,10 @@ private:
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);
   void UpdateAccessTime(CItemData *ci);
-  void SaveDisplayStatus();
-  void RestoreDisplayStatus(bool bUnMinimize = false);
-  void GroupDisplayStatus(std::vector<bool> &displaystatus, bool bSet);
+  void RestoreDisplayStatus();
+  std::vector<bool>
+  GetGroupDisplayStatus(); // get current display state from window
+  void SetGroupDisplayStatus(const std::vector<bool> &displaystatus); // changes display
   void MakeOrderedItemList(OrderedItemList &il);
   int CountChildren(HTREEITEM hStartItem);
   void SetColumns();  // default order

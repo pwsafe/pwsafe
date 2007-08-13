@@ -652,13 +652,6 @@ void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
   } while (p != TVI_ROOT && p != NULL);
 }
 
-void CPWTreeCtrl::DeleteFromSet(HTREEITEM hItem)
-{
-  CItemData *ci = (CItemData *)GetItemData(hItem);
-  ASSERT(ci != NULL);
-  m_expandedItems.erase(ci);
-}
-
 // Return the full path leading up to a given item, but
 // not including the name of the item itself.
 CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
@@ -1121,60 +1114,18 @@ void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-void CPWTreeCtrl::OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *)
+void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
 {
-  // The hItem that is expanded isn't the one that will be restored,
-  // since the tree is rebuilt in DboxMain::RefreshList. Therefore, we
-  // need to store the corresponding elements. But groups have none, so
-  // we store the first (or any) child element, and upon restore, expand
-  // the parent. Ugh++.
-  // Note that we do not support the case where an expanded node has only
-  // tree subnodes, since there's nothing to get a CItemData from.
-  // This borderline case is hereby deemed more trouble than it's
-  // worth to handle correctly.
+  // We need to update the parent's state vector of expanded nodes
+  // so that it will be persistent across miminize, lock, save, etc.
+  // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
-    NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNotifyStruct;
-    // now find a leaf son and add it's CitemData to set.
-    HTREEITEM child = GetChildItem(pNMTreeView->itemNew.hItem);
-    ASSERT(child != NULL); // can't expand something w/o children, right?
-    do {
-      if (IsLeafNode(child)) {
-        DWORD itemData = GetItemData(child);
-        ASSERT(itemData != NULL);
-        CItemData *ci = (CItemData *)itemData;
-        if (pNMTreeView->action == TVE_EXPAND) {
-          m_expandedItems.insert(ci);
-          return; // stop at first leaf child found
-        } else if (pNMTreeView->action == TVE_COLLAPSE) {
-          // order may change, so we need to check each leaf
-          if (m_expandedItems.find(ci) != m_expandedItems.end())
-            m_expandedItems.erase(ci);
-        }
-      } // IsLeafNode
-      child = GetNextSiblingItem(child);
-    } while (child != NULL);
-  } // !m_isRestoring
-}
-
-void CPWTreeCtrl::RestoreExpanded()
-{
-  m_isRestoring = true;
-  SetTreeItem_t::iterator it;
-
-  for (it = m_expandedItems.begin(); it != m_expandedItems.end(); it++) {
-    CItemData *ci = *it;
-    DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-    HTREEITEM parent = GetParentItem(di->tree_item);
-    Expand(parent, TVE_EXPAND);
+    DboxMain *dbx = static_cast<DboxMain *>(GetParent()); 
+    dbx->SaveDisplayStatus();
   }
-  m_isRestoring = false;
 }
 
-void CPWTreeCtrl::ClearExpanded()
-{
-  m_expandedItems.clear();
-}
 
 void CPWTreeCtrl::OnExpandAll() 
 {

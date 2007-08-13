@@ -584,12 +584,14 @@ DboxMain::OnInitDialog()
   if (m_IsStartClosed) {
     Close();
     if (!m_IsStartSilent)
-        ShowWindow(SW_SHOW);
+      ShowWindow(SW_SHOW);
   }
 
   if (!m_IsStartClosed && !m_IsStartSilent) {
-      OpenOnInit();
-      RefreshList();
+    OpenOnInit();
+    m_ctlItemTree.SetRestoreMode(true);
+    RefreshList();
+    m_ctlItemTree.SetRestoreMode(false);
   }
 
   SetInitialDatabaseDisplay();
@@ -1595,7 +1597,6 @@ DboxMain::OnMinimize()
   if (m_bStartHiddenAndMinimized)
 	  m_bStartHiddenAndMinimized = false;
 
-  SaveDisplayStatus();
   ShowWindow(SW_MINIMIZE);
 }
 
@@ -1708,8 +1709,7 @@ DboxMain::UnMinimize(bool update_windows)
       m_needsreading = false;
       if (update_windows) {
         ShowWindow(SW_RESTORE);
-        m_core.SetDisplayStatus(m_treeDispState);
-        RestoreDisplayStatus(true);
+        RestoreDisplayStatus();
         BringWindowToTop();
       }
     } else {

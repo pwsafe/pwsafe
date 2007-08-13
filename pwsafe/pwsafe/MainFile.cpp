@@ -552,7 +552,6 @@ DboxMain::Save()
     app.SetTooltipText(m_core.GetCurFile());
 #endif
   }
-  SaveDisplayStatus();
   rc = m_core.WriteCurFile();
 
   if (rc == PWScore::CANT_OPEN_FILE) {
@@ -668,7 +667,6 @@ DboxMain::SaveAs()
   m_core.GetFileUUID(file_uuid_array);
   m_core.ClearFileUUID();
 
-  SaveDisplayStatus();
   rc = m_core.WriteFile(newfile);
   
   if (rc == PWScore::CANT_OPEN_FILE) {
@@ -2050,18 +2048,22 @@ DboxMain::OnOK()
   prefs->SetPref(PWSprefs::ListColumns, cs_columns);
   prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
 
-  // See if user changed tree view - calling this sets
-  // modified flag, so it's not redundant here, even though
-  // Save() calls it as well.
-  SaveDisplayStatus();
-
+  // Save silently (without asking user) iff:
+  // 1. NOT read-only AND
+  // 2. (timestamp updates OR tree view display vector changed) AND
+  // 3. database NOT empty
+  // Less formally:
+  //
   // If MaintainDateTimeStamps set and not read-only,
   // save without asking user: "they get what it says on the tin"
   // Note that if database was cleared (e.g., locked), it might be
   // possible to save an empty list :-(
   // Protect against this both here and in OnSize (where we minimize
   // & possibly ClearData).
-  if (!m_core.IsReadOnly() && m_bTSUpdated && m_core.GetNumEntries() > 0)
+
+  if (!m_core.IsReadOnly() &&
+      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+      m_core.GetNumEntries() > 0)
     Save();
 
   if (m_core.IsChanged()) {
@@ -2132,43 +2134,46 @@ DboxMain::OnCancel()
 void
 DboxMain::SaveDisplayStatus()
 {
-  m_treeDispState.clear();
-	GroupDisplayStatus(m_treeDispState, true); // get it
-	m_core.SetDisplayStatus(m_treeDispState); // store it
+	vector <bool> v = GetGroupDisplayStatus(); // update it
+	m_core.SetDisplayStatus(v); // store it
 }
 
 void
-DboxMain::RestoreDisplayStatus(bool bUnMinimize)
+DboxMain::RestoreDisplayStatus()
 {
-	vector<bool> displaystatus;
-  if (bUnMinimize)
-    displaystatus = m_treeDispState;
-  else 
-    displaystatus = m_core.GetDisplayStatus();    
+	const vector<bool> &displaystatus = m_core.GetDisplayStatus();    
 
 	if (!displaystatus.empty())
-    GroupDisplayStatus(displaystatus, false);
+    SetGroupDisplayStatus(displaystatus);
+}
+
+vector<bool>
+DboxMain::GetGroupDisplayStatus()
+{
+	HTREEITEM hItem = NULL;
+  vector<bool> v;
+
+  while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
+    if (m_ctlItemTree.ItemHasChildren(hItem)) {
+      bool state = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED)
+                    & TVIS_EXPANDED) != 0;
+      v.push_back(state);
+    }
+  }
+  return v;
 }
 
 void
-DboxMain::GroupDisplayStatus(vector<bool> &displaystatus, bool bSet)
+DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
 {
 	HTREEITEM hItem = NULL;
   unsigned i = 0;
 	while ( NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem)) ) {
 		if (m_ctlItemTree.ItemHasChildren(hItem)) {
-			if (bSet) { // update vector
-				if (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED) {
-					displaystatus.push_back(true);
-				} else {
-					displaystatus.push_back(false);
-				}
-			} else { // update display
-				if (i < displaystatus.size())
-          m_ctlItemTree.Expand(hItem,
-                               displaystatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
-        i++;
-			}
-		}
+      if (i < displaystatus.size())
+        m_ctlItemTree.Expand(hItem,
+                             displaystatus[i] ? TVE_EXPAND : TVE_COLLAPSE);
+      i++;
+    }
 	}
 }

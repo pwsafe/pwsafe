@@ -232,7 +232,6 @@ DboxMain::Delete(bool inRecursion)
 
     UnFindItem();
     m_ctlItemList.DeleteItem(curSel);
-    m_ctlItemTree.DeleteFromSet(curTree_item);
     m_ctlItemTree.DeleteWithParents(curTree_item);
     delete di;
 
