@@ -692,10 +692,6 @@ DboxMain::RefreshList()
   m_ctlItemTree.SetRedraw( TRUE ); m_ctlItemTree.Invalidate();
 
   FixListIndexes();
-  //Setup the selection
-  if (m_ctlItemList.GetItemCount() > 0 && getSelectedItem() == NULL) {
-    SelectEntry(0);
-  }
 }
 
 void
