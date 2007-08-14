@@ -1396,10 +1396,11 @@ DboxMain::OnTimer(UINT nIDEvent )
     /*
      * Since we clear the data, any unchanged changes will be lost,
      * so we force a save if database is modified, and fail
-     * to lock if the save fails.
+     * to lock if the save fails (unless db is r-o).
      */
-    // XXX check DisplayStatus change
-    if (!(m_core.IsChanged() || m_bTSUpdated) ||
+    if (m_core.IsReadOnly() ||
+        !(m_core.IsChanged() || m_bTSUpdated ||
+          m_core.WasDisplayStatusChanged()) ||
         Save() == PWScore::SUCCESS) {
       TRACE("locking database\n");
       if(IsWindowVisible()){
