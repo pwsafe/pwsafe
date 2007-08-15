@@ -96,6 +96,7 @@ class CPWTDataSource : public COleDataSource
 
   DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
                                      (LPCRECT)rClient, m_DropSource);
+  GlobalUnlock(hgData);
   return dropEffect;
 }
  private:
@@ -1079,7 +1080,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
   // Cleanup
   // Finished with buffer - trash it and free it
-  // If using an encrypted buffer - only need to free it
   trashMemory((void *)mf_buffer, dw_mflen);
   free((void *)mf_buffer);
 
@@ -1088,7 +1088,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
     // If inter-process Move, we need to delete original
     if ((de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
         !m_bWithinThisInstance && !dbx->IsMcoreReadOnly()) {
-      // DeleteItem(m_hitemDrag);
       dbx->Delete();
     }
     // wrong place to clean up imagelist?

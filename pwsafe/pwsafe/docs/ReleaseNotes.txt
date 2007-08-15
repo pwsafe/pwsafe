@@ -16,6 +16,8 @@ selected and if URL is populated
 [] Window's position and size now updated correctly
 [1768822] Manage->Options->Password History 'apply' works again.
 [] Lock timeout after manual lock no longer saves empty database.
+[1754566] State of tree view is now persistent across minimize, lock &
+save.
 
 New Features for 3.09.01
 ========================
