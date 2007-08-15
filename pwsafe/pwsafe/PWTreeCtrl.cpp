@@ -79,29 +79,47 @@ class CPWTDropSource : public COleDropSource
 
 class CPWTDataSource : public COleDataSource
 {
- public:
+public:
   CPWTDataSource(CPWTreeCtrl *parent, COleDropSource *ds)
-    : m_tree(*parent), m_DropSource(ds) {}
+    : m_tree(*parent), m_DropSource(ds), m_hgData(NULL) {}
   DROPEFFECT StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT cpfmt,
                            RECT *rClient, CPoint *)
-{
-  HGLOBAL hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwLength);
-  ASSERT(hgData != NULL);
+  {
+    m_hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwLength);
+    ASSERT(m_hgData != NULL);
 
-  LPCSTR lpData = (LPCSTR)GlobalLock(hgData);
-  ASSERT(lpData != NULL);
+    LPCSTR lpData = (LPCSTR)GlobalLock(m_hgData);
+    ASSERT(lpData != NULL);
 
-  memcpy((void *)lpData, szData, dwLength);
-  CacheGlobalData(cpfmt, hgData);
+    memcpy((void *)lpData, szData, dwLength);
+    //CacheGlobalData(cpfmt, hgData);
+    DelayRenderData(cpfmt);
+    DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
+                                       (LPCRECT)rClient, m_DropSource);
+    GlobalUnlock(m_hgData);
+    GlobalFree(m_hgData); m_hgData = NULL;
+    return dropEffect;
+  }
+  virtual BOOL OnRenderGlobalData(LPFORMATETC , HGLOBAL* phGlobal)
+  {
+    ASSERT(m_hgData != NULL);
+    if (*phGlobal == NULL) {
+      *phGlobal = m_hgData;
+    } else {
+      SIZE_T inSize = GlobalSize(*phGlobal);
+      SIZE_T ourSize = GlobalSize(m_hgData);
+      if (inSize < ourSize) {
+        return FALSE;
+      }
+      ASSERT(0); // not ready to handle this yet. Is it possible in our case?
+    }
+    return TRUE;
+  }
 
-  DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
-                                     (LPCRECT)rClient, m_DropSource);
-  GlobalUnlock(hgData);
-  return dropEffect;
-}
- private:
+private:
   CPWTreeCtrl &m_tree;
   COleDropSource *m_DropSource;
+  HGLOBAL m_hgData;
 };
 
 /**
