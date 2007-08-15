@@ -419,11 +419,11 @@ const TCHAR* TiXmlBase::ReadName( const TCHAR* p, TIXML_STRING * name, TiXmlEnco
 	// hyphens, or colons. (Colons are valid ony for namespaces,
 	// but tinyxml can't tell namespaces from names.)
 	if (    p && *p 
-		 && ( IsAlpha( (unsigned char) *p, encoding ) || *p == '_' ) )
+		 && ( IsAlpha( *p, encoding ) || *p == '_' ) )
 	{
 		const TCHAR* start = p;
 		while(		p && *p
-				&&	(		IsAlphaNum( (unsigned char ) *p, encoding ) 
+				&&	(		IsAlphaNum( *p, encoding ) 
 						 || *p == '_'
 						 || *p == '-'
 						 || *p == '.'
