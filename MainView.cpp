@@ -1394,7 +1394,7 @@ DboxMain::OnTimer(UINT nIDEvent )
      * so we force a save if database is modified, and fail
      * to lock if the save fails (unless db is r-o).
      */
-    if (m_core.IsReadOnly() ||
+    if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
         !(m_core.IsChanged() || m_bTSUpdated ||
           m_core.WasDisplayStatusChanged()) ||
         Save() == PWScore::SUCCESS) {
@@ -1412,10 +1412,9 @@ DboxMain::OnTimer(UINT nIDEvent )
 // This function determines if the workstation is locked.
 BOOL DboxMain::IsWorkstationLocked() const
 {
-  HDESK hDesktop; 
   BOOL Result = false;
-
-  hDesktop = OpenDesktop(_T("default"), 0, false, DESKTOP_SWITCHDESKTOP);
+  HDESK hDesktop = OpenDesktop(_T("default"), 0, false,
+                               DESKTOP_SWITCHDESKTOP);
   if( hDesktop != 0 ) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
     Result = ! SwitchDesktop(hDesktop);
@@ -1472,6 +1471,16 @@ DboxMain::OnChangeFont()
   }
 }
 
+static CString GetToken(CString& str, LPCTSTR c)
+{
+  // helper function for DboxMain::ExtractFont()
+  int pos = str.Find(c);
+  CString token = str.Left(pos);
+  str = str.Mid(pos + 1);
+
+  return token;
+}
+
 void
 DboxMain::ExtractFont(CString& str, LOGFONT *ptreefont)
 {
@@ -1498,19 +1507,6 @@ DboxMain::ExtractFont(CString& str, LOGFONT *ptreefont)
 #else
   _tcscpy(ptreefont->lfFaceName, str);
 #endif  
-}
-
-CString
-DboxMain::GetToken(CString& str, LPCTSTR c)
-{
-  int pos;
-  CString token;
-
-  pos = str.Find(c);
-  token = str.Left(pos);
-  str = str.Mid(pos + 1);
-
-  return token;
 }
 
 void
