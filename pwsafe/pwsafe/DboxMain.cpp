@@ -1865,41 +1865,52 @@ DboxMain::OnQueryEndSession()
 {
 	m_iSessionEndingStatus = IDOK;
 
-  //Store current filename for next time
-	PWSprefs *prefs = PWSprefs::GetInstance();
+  PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().IsEmpty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-	// Save Application related preferences
-	prefs->SaveApplicationPreferences();
+  // Save Application related preferences
+  prefs->SaveApplicationPreferences();
 
 	if (m_core.IsReadOnly())
 		return TRUE;
 
-	if (m_bTSUpdated && m_core.GetNumEntries() > 0) {
-		Save();
-		return TRUE;
-	}
+  bool autoSave = true; // false if user saved or decided not to 
+  BOOL retval = TRUE;
 
 	if (m_core.IsChanged()) {
 		CString cs_msg;
 		cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile());
-		int rc = AfxMessageBox(cs_msg, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
-		m_iSessionEndingStatus = rc;
-		switch (rc) {
+		m_iSessionEndingStatus = AfxMessageBox(cs_msg,
+                                           (MB_ICONWARNING |
+                                            MB_YESNOCANCEL | MB_DEFBUTTON3));
+		switch (m_iSessionEndingStatus) {
     case IDCANCEL:
       // Cancel shutdown\restart\logoff
       return FALSE;
     case IDYES:
       // Save the changes and say OK to shutdown\restart\logoff
       Save();
-      return TRUE;
+      autoSave = false;
+      retval = TRUE;
+      break;
     case IDNO:
       // Don't save the changes but say OK to shutdown\restart\logoff
-      return TRUE;
+      autoSave = false;
+      retval = TRUE;
+      break;
 		}
-	}
+	} // database was changed
 
-	return TRUE;
+  if (autoSave) {
+    //Store current filename for next time
+    if ((m_bTSUpdated || m_core.WasDisplayStatusChanged())
+        && m_core.GetNumEntries() > 0) {
+      Save();
+      return TRUE;
+    }
+  }
+
+	return retval;
 }
 
 void

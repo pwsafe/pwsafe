@@ -567,7 +567,7 @@ DboxMain::Save()
 
 int DboxMain::SaveIfChanged()
 {
-  // offer to save existing database ifit was modified.
+  // offer to save existing database if it was modified.
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
@@ -2048,27 +2048,14 @@ DboxMain::OnOK()
   prefs->SetPref(PWSprefs::ListColumns, cs_columns);
   prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
 
-  // Save silently (without asking user) iff:
-  // 1. NOT read-only AND
-  // 2. (timestamp updates OR tree view display vector changed) AND
-  // 3. database NOT empty
-  // Less formally:
-  //
-  // If MaintainDateTimeStamps set and not read-only,
-  // save without asking user: "they get what it says on the tin"
-  // Note that if database was cleared (e.g., locked), it might be
-  // possible to save an empty list :-(
-  // Protect against this both here and in OnSize (where we minimize
-  // & possibly ClearData).
+  //Store current filename for next time...
+  if (!m_core.GetCurFile().IsEmpty())
+    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
-  if (!m_core.IsReadOnly() &&
-      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-      m_core.GetNumEntries() > 0)
-    Save();
-
+  bool autoSave = true; // false if user saved or decided not to 
   if (m_core.IsChanged()) {
   	CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
-	switch (m_iSessionEndingStatus) {
+    switch (m_iSessionEndingStatus) {
 		case IDIGNORE:
 			// Session is not ending - user has an option to cancel
 			rc = MessageBox(cs_msg, AfxGetAppName(), MB_ICONQUESTION | MB_YESNOCANCEL);
@@ -2086,22 +2073,39 @@ DboxMain::OnOK()
 		default: 
 			ASSERT(0); // should never happen... 
 			rc = IDCANCEL; // ...but if it does, behave conservatively. 
-	}
-	switch (rc) {
+    }
+    switch (rc) {
 		case IDCANCEL:
 			return;
 		case IDYES:
+      autoSave = false;
 			rc2 = Save();
 			if (rc2 != PWScore::SUCCESS)
 				return;
 		case IDNO:
+      autoSave = false;
 			break;
-	}
+    }
   } // core.IsChanged()
 
-  //Store current filename for next time...
-  if (!m_core.GetCurFile().IsEmpty())
-    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+  // Save silently (without asking user) iff:
+  // 0. User didn't explicitly save OR say that she doesn't want to AND
+  // 1. NOT read-only AND
+  // 2. (timestamp updates OR tree view display vector changed) AND
+  // 3. database NOT empty
+  // Less formally:
+  //
+  // If MaintainDateTimeStamps set and not read-only,
+  // save without asking user: "they get what it says on the tin"
+  // Note that if database was cleared (e.g., locked), it might be
+  // possible to save an empty list :-(
+  // Protect against this both here and in OnSize (where we minimize
+  // & possibly ClearData).
+
+  if (autoSave && !m_core.IsReadOnly() &&
+      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+      m_core.GetNumEntries() > 0)
+    Save();
 
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
@@ -2116,7 +2120,6 @@ DboxMain::OnOK()
   // wipe data, save prefs, go home.
   ClearData();
   prefs->SaveApplicationPreferences();
-  m_bBoldItem = false;
   CDialog::OnOK();
 }
 
