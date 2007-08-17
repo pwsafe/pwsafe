@@ -10,23 +10,11 @@
 /// \file AboutDlg.h
 //-----------------------------------------------------------------------------
 
-#include "afxwin.h"
-#include "resource.h"
+#include "PWDialog.h"
 
-class CAboutDlg
-#if defined(POCKET_PC)
-   : public CPwsPopupDialog
-#else
-   : public CDialog
-#endif
+class CAboutDlg : public CPWDialog
 {
 public:
-#if defined(POCKET_PC)
-  typedef CPwsPopupDialog	super;
-#else
-  typedef CDialog			super;
-#endif
-
   CAboutDlg(CWnd* pParent = NULL);
 
     // Dialog Data
@@ -39,7 +27,7 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX)    // DDX/DDV support
   {
-    super::DoDataExchange(pDX);
+    CPWDialog::DoDataExchange(pDX);
   }
 
 protected:

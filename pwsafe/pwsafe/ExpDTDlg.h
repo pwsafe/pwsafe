@@ -8,33 +8,30 @@
 #pragma once
 
 #include "afxwin.h"
-#include "resource.h"
-#include "resource2.h"  // Menu, Toolbar & Accelerator resources
-#include "resource3.h"  // String resources
 #include "afxdtctl.h" // only needed for date/time controls
 #include "corelib\MyString.h"
+#include "PWDialog.h"
 
 void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how, 
                              int &numDays, const int &maxDays);
 
-class CExpDTDlg
-	: public CDialog
+class CExpDTDlg : public CPWDialog
 {
 
-public:
+ public:
 	CExpDTDlg(CWnd* pParent = NULL);  // standard constructor
 
-	CDateTimeCtrl m_pTimeCtl;                // time picker control
-	CDateTimeCtrl m_pDateCtl;                // date picker control
-	CMyString m_locLTime;                    // format as per user's Short Date/Time
+	CDateTimeCtrl m_pTimeCtl;         // time picker control
+	CDateTimeCtrl m_pDateCtl;         // date picker control
+	CMyString m_locLTime;             // format as per user's Short Date/Time
 	time_t m_tttLTime;
 
-// Dialog Data
+  // Dialog Data
 	//{{AFX_DATA(CImportDlg)
 	enum { IDD = IDD_PICKEXPDATETIME };
-    int m_how;
-    int m_numDays;
-    int m_maxDays;
+  int m_how;
+  int m_numDays;
+  int m_maxDays;
 	//}}AFX_DATA
 
 
@@ -44,7 +41,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-    afx_msg void OnDateTime();
+  afx_msg void OnDateTime();
 	afx_msg void OnDays();
 	afx_msg void OnOK();
 

@@ -33,7 +33,7 @@ CString CAddDlg::CS_HIDE;
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
-  : CDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
+  : CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
     m_URL(_T("")), m_autotype(_T("")),
 	m_tttLTime((time_t)0),
@@ -60,7 +60,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
 
 BOOL CAddDlg::OnInitDialog() 
 {
-  CDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
@@ -99,7 +99,7 @@ BOOL CAddDlg::OnInitDialog()
 
 void CAddDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
   DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
@@ -127,7 +127,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
 }
 
-BEGIN_MESSAGE_MAP(CAddDlg, CDialog)
+BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
@@ -142,7 +142,7 @@ END_MESSAGE_MAP()
 void
 CAddDlg::OnCancel() 
 {
-  CDialog::OnCancel();
+  CPWDialog::OnCancel();
 }
 
 void
@@ -229,7 +229,7 @@ CAddDlg::OnOK()
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
   } else {
-    CDialog::OnOK();
+    CPWDialog::OnOK();
   }
 }
 

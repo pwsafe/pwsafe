@@ -21,7 +21,7 @@ static char THIS_FILE[] = __FILE__;
 // CImportXMLErrDlg dialog
 
 CImportXMLErrDlg::CImportXMLErrDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CImportXMLErrDlg::IDD, pParent)
+	: CPWDialog(CImportXMLErrDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CImportXMLErrDlg)
 	//}}AFX_DATA_INIT
@@ -30,14 +30,14 @@ CImportXMLErrDlg::CImportXMLErrDlg(CWnd* pParent /*=NULL*/)
 
 void CImportXMLErrDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CPWDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CImportXMLErrDlg)
 	DDX_Text(pDX, IDC_XML_IMPORT_ACTION, m_strActionText);
 	DDX_Text(pDX, IDC_XML_IMPORT_RESULTS, m_strResultText);
 	//}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CImportXMLErrDlg, CDialog)
+BEGIN_MESSAGE_MAP(CImportXMLErrDlg, CPWDialog)
 	//{{AFX_MSG_MAP(CImportXMLErrDlg)
 	ON_BN_CLICKED(IDOK, OnOK)
 	ON_BN_CLICKED(IDC_COPY_ERRORS_TO_CLIPBOARD, OnBnClickedCopyToClipboard)
@@ -50,7 +50,7 @@ END_MESSAGE_MAP()
 //	---------------------------------------------------------------------------
 void CImportXMLErrDlg::OnOK()
 {
-	CDialog::OnOK();
+	CPWDialog::OnOK();
 }
 
 void

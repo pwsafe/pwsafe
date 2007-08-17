@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include "resource.h"
 #include "corelib/MyString.h"
+#include "PWDialog.h"
 
 #include <vector>
 
@@ -29,7 +29,7 @@ typedef std::vector<ExpPWEntry> ExpiredList;
 
 // CExpPWListDlg dialog
 
-class CExpPWListDlg : public CDialog
+class CExpPWListDlg : public CPWDialog
 {
 
  public:

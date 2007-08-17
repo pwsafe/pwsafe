@@ -54,7 +54,7 @@ int CPasskeyEntry::dialog_lookup[5] = {
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
                              const CString& a_filespec, int index,
 			                 bool bReadOnly, bool bForceReadOnly, int adv_type)
-   : super(dialog_lookup[index],
+   : CPWDialog(dialog_lookup[index],
              pParent),
      m_index(index),
      m_filespec(a_filespec), m_orig_filespec(a_filespec),
@@ -82,7 +82,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
 
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-    super::DoDataExchange(pDX);
+    CPWDialog::DoDataExchange(pDX);
     DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
 
 #if !defined(POCKET_PC)
@@ -103,7 +103,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CPasskeyEntry, super)
+BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
 //{{AFX_MSG_MAP(CPasskeyEntry)
 ON_BN_CLICKED(ID_HELP, OnHelp)
 ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
@@ -175,12 +175,12 @@ CPasskeyEntry::OnInitDialog(void)
   // directly to CDialog::OnInitDialog() and display the dialog fullscreen
   // otherwise display as a centred dialogue.
   if ( m_nIDHelp == IDD ) {
-      super::super::OnInitDialog();
+      CDialog::OnInitDialog();
   } else {
-      super::OnInitDialog();
+      CPWDialog::OnInitDialog();
   }
 #else
-  super::OnInitDialog();
+  CPWDialog::OnInitDialog();
 #endif
 
   if (m_message.IsEmpty() && m_index == GCP_FIRST) {
@@ -330,14 +330,14 @@ CPasskeyEntry::OnCreateDb()
     m_passkey = dbox_pksetup.m_passkey;
     ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
     m_status = TAR_NEW;
-    super::OnOK();
+    CPWDialog::OnOK();
 }
 
 void
 CPasskeyEntry::OnCancel()
 {
   m_status = TAR_CANCEL;
-  super::OnCancel();
+  CPWDialog::OnCancel();
 }
 
 void
@@ -345,7 +345,7 @@ CPasskeyEntry::OnExitAdvanced()
 {
   if (m_index == GCP_WITHEXIT) {
     m_status = TAR_EXIT;
-    super::OnCancel();
+    CPWDialog::OnCancel();
     return;
   }
 
@@ -399,7 +399,7 @@ CPasskeyEntry::OnOK()
       if (nResponse == IDOK) {
       } else if (nResponse == IDCANCEL) {
         m_status = errorDlg.GetCancelReturnValue();
-        super::OnCancel();
+        CPWDialog::OnCancel();
       }
     } else {
       m_tries++;
@@ -408,7 +408,7 @@ CPasskeyEntry::OnOK()
       m_ctlPasskey.SetFocus();
     }
   } else {
-    super::OnOK();
+    CPWDialog::OnOK();
   }
 }
 

@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
-   : super(CClearQuestionDlg::IDD, pParent)
+   : CPWDialog(CClearQuestionDlg::IDD, pParent)
 {
   m_dontaskquestion =PWSprefs::GetInstance()->
     GetPref(PWSprefs::DontAskQuestion);
@@ -34,20 +34,20 @@ void CClearQuestionDlg::DoDataExchange(CDataExchange* pDX)
 {
   BOOL B_dontaskquestion = m_dontaskquestion ? TRUE : FALSE;
 
-  super::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Check(pDX, IDC_CLEARCHECK, B_dontaskquestion);
   m_dontaskquestion = B_dontaskquestion == TRUE;
 }
 
 
-BEGIN_MESSAGE_MAP(CClearQuestionDlg, super)
+BEGIN_MESSAGE_MAP(CClearQuestionDlg, CPWDialog)
 END_MESSAGE_MAP()
 
 
 void
 CClearQuestionDlg::OnCancel() 
 {
-   super::OnCancel();
+  CPWDialog::OnCancel();
 }
 
 void
@@ -57,7 +57,7 @@ CClearQuestionDlg::OnOK()
 
    PWSprefs::GetInstance()->
      SetPref(PWSprefs::DontAskQuestion, m_dontaskquestion);
-   super::OnOK();
+   CPWDialog::OnOK();
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

@@ -27,7 +27,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CConfirmDeleteDlg::CConfirmDeleteDlg(CWnd* pParent, int numchildren)
-   : super(CConfirmDeleteDlg::IDD, pParent),
+   : CPWDialog(CConfirmDeleteDlg::IDD, pParent),
    m_numchildren(numchildren)
 {
   m_dontaskquestion = PWSprefs::GetInstance()->
@@ -39,13 +39,13 @@ void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
 {
   BOOL B_dontaskquestion = m_dontaskquestion ? TRUE : FALSE;
 
-  super::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Check(pDX, IDC_CLEARCHECK, B_dontaskquestion);
   m_dontaskquestion = B_dontaskquestion == TRUE;
 }
 
 
-BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, super)
+BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, CPWDialog)
 END_MESSAGE_MAP()
 
 BOOL
@@ -71,7 +71,7 @@ CConfirmDeleteDlg::OnInitDialog(void)
 void
 CConfirmDeleteDlg::OnCancel() 
 {
-  super::OnCancel();
+  CPWDialog::OnCancel();
 }
 
 
@@ -83,7 +83,7 @@ CConfirmDeleteDlg::OnOK()
     PWSprefs::GetInstance()->
        SetPref(PWSprefs::DeleteQuestion, m_dontaskquestion);
   }
-  super::OnOK();
+  CPWDialog::OnOK();
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

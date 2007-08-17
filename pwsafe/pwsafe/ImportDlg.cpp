@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CImportDlg::IDD, pParent)
+	: CPWDialog(CImportDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CImportDlg)
 	m_groupName.LoadString(IDS_IMPORTED);

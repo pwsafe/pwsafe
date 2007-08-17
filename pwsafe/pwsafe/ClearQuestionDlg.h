@@ -11,24 +11,11 @@
 //-----------------------------------------------------------------------------
 
 #include "corelib/PwsPlatform.h"
+#include "PWDialog.h"
 
-#if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-  #include "pocketpc/PwsPopupDialog.h"
-  #define SUPERCLASS	CPwsPopupDialog
-#else
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
-  #define SUPERCLASS	CDialog
-#endif
-
-
-class CClearQuestionDlg : public SUPERCLASS
+class CClearQuestionDlg : public CPWDialog
 {
 public:
-	typedef SUPERCLASS	super;
-
    CClearQuestionDlg(CWnd* pParent = NULL);   // standard constructor
 
    enum { IDD = IDD_SECURECLEAR };
@@ -43,8 +30,6 @@ protected:
 
    DECLARE_MESSAGE_MAP()
 };
-
-#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

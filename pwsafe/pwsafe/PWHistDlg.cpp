@@ -26,7 +26,7 @@ CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
              CMyString &HistStr, PWHistList &PWHistList,
              size_t NumPWHistory, size_t &MaxPWHistory,
              BOOL &SavePWHistory)
-: CDialog(CPWHistDlg::IDD, pParent),
+: CPWDialog(CPWHistDlg::IDD, pParent),
   m_PWH_IsReadOnly(IsReadOnly),
   m_HistStr(HistStr), m_PWHistList(PWHistList),
   m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
@@ -43,7 +43,7 @@ CPWHistDlg::~CPWHistDlg()
 
 void CPWHistDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
   DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
   DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
@@ -51,7 +51,7 @@ void CPWHistDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CPWHistDlg, CDialog)
+BEGIN_MESSAGE_MAP(CPWHistDlg, CPWDialog)
   ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnBnClickedClearPWHist)
   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
   ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
@@ -62,7 +62,7 @@ END_MESSAGE_MAP()
 
 BOOL CPWHistDlg::OnInitDialog() 
 {
-    CDialog::OnInitDialog();
+    CPWDialog::OnInitDialog();
 
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
 
@@ -183,7 +183,7 @@ CPWHistDlg::OnOK()
       m_HistStr = buffer;
     }
   }
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }
 
 void

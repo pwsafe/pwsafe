@@ -10,15 +10,12 @@
 // ImportXMLErrDlg.h : header file
 //
 
-#include "afxwin.h"
-#include "resource.h"
-#include "resource2.h"  // Menu, Toolbar & Accelerator resources
-#include "resource3.h"  // String resources
+#include "PWDialog.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CImportXMLErrDlg dialog
 
-class CImportXMLErrDlg : public CDialog
+class CImportXMLErrDlg : public CPWDialog
 {
 // Construction
 public:

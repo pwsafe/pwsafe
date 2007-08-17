@@ -13,22 +13,15 @@
 #include "corelib/PwsPlatform.h"
 #include "corelib/MyString.h"
 #include "corelib/ItemData.h"
-
-#if defined(POCKET_PC)
-  #include "pocketpc/PwsPopupDialog.h"
-  #define SUPERCLASS	CPwsPopupDialog
-#else
-  #define SUPERCLASS	CDialog
-#endif
+#include "PWDialog.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CFindDlg dialog
 
-class CFindDlg : public SUPERCLASS
+class CFindDlg : public CPWDialog
 {
   // Construction
  public:
-	typedef SUPERCLASS		super;
  // implement Singleton pattern
   static void Doit(CWnd* pParent, BOOL *isCS, CMyString *lastFind);
   ~CFindDlg();
@@ -69,8 +62,6 @@ class CFindDlg : public SUPERCLASS
 #endif
 	//}}AFX_MSG
   DECLARE_MESSAGE_MAP()
-  // override following to reset idle timeout on any event
-  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
  private:
   CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind);
@@ -89,4 +80,3 @@ class CFindDlg : public SUPERCLASS
   bool m_bLastView;
 };
 
-#undef SUPERCLASS

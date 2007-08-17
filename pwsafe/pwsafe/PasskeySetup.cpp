@@ -37,7 +37,7 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd* pParent)
-   : super(CPasskeySetup::IDD, pParent)
+   : CPWDialog(CPasskeySetup::IDD, pParent)
 {
    m_passkey = _T("");
    m_verify = _T("");
@@ -45,7 +45,7 @@ CPasskeySetup::CPasskeySetup(CWnd* pParent)
 
 BOOL CPasskeySetup::OnInitDialog() 
 {
-   CDialog::OnInitDialog();
+   CPWDialog::OnInitDialog();
    SetPasswordFont(GetDlgItem(IDC_PASSKEY));
    SetPasswordFont(GetDlgItem(IDC_VERIFY));
    ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
@@ -56,13 +56,13 @@ BOOL CPasskeySetup::OnInitDialog()
 
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 {
-   super::DoDataExchange(pDX);
+   CPWDialog::DoDataExchange(pDX);
    DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
    DDX_Text(pDX, IDC_VERIFY, (CString &)m_verify);
 }
 
 
-BEGIN_MESSAGE_MAP(CPasskeySetup, super)
+BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
 #if defined(POCKET_PC)
    ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
@@ -75,7 +75,7 @@ END_MESSAGE_MAP()
 
 void CPasskeySetup::OnCancel() 
 {
-   super::OnCancel();
+   CPWDialog::OnCancel();
 }
 
 
@@ -121,7 +121,7 @@ void CPasskeySetup::OnOK()
   }
 #endif // _DEBUG
 
-  super::OnOK();
+  CPWDialog::OnOK();
 }
 
 

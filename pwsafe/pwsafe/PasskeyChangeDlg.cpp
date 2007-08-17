@@ -35,7 +35,7 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
-   : super(CPasskeyChangeDlg::IDD, pParent)
+   : CPWDialog(CPasskeyChangeDlg::IDD, pParent)
 {
    m_confirmnew = _T("");
    m_newpasskey = _T("");
@@ -45,13 +45,13 @@ CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
 void
 CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
-   super::DoDataExchange(pDX);
+   CPWDialog::DoDataExchange(pDX);
    DDX_Text(pDX, IDC_CONFIRMNEW, (CString &)m_confirmnew);
    DDX_Text(pDX, IDC_NEWPASSKEY, (CString &)m_newpasskey);
    DDX_Text(pDX, IDC_OLDPASSKEY, (CString &)m_oldpasskey);
 }
 
-BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, super)
+BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPWDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
 #if defined(POCKET_PC)
    ON_EN_SETFOCUS(IDC_OLDPASSKEY, OnPasskeySetfocus)
@@ -66,7 +66,7 @@ END_MESSAGE_MAP()
 BOOL
 CPasskeyChangeDlg::OnInitDialog()
 {
-  super::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   SetPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
   SetPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
@@ -107,21 +107,21 @@ CPasskeyChangeDlg::OnOK()
     cs_msg += cs_text;
     int rc = AfxMessageBox(cs_msg, MB_YESNO | MB_ICONSTOP);
     if (rc == IDYES)
-      super::OnOK();
+      CPWDialog::OnOK();
 #else
     cs_text.LoadString(IDS_TRYANOTHER);
     cs_msg += cs_text;
     AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   } else {
-    super::OnOK();
+    CPWDialog::OnOK();
   }
 }
 
 void
 CPasskeyChangeDlg::OnCancel() 
 {
-   super::OnCancel();
+   CPWDialog::OnCancel();
 }
 
 void

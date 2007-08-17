@@ -21,17 +21,17 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CAboutDlg::CAboutDlg(CWnd* pParent)
-   : super(CAboutDlg::IDD, pParent)
+   : CPWDialog(CAboutDlg::IDD, pParent)
 {
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, super)
+BEGIN_MESSAGE_MAP(CAboutDlg, CPWDialog)
 END_MESSAGE_MAP()
 
 BOOL
 CAboutDlg::OnInitDialog()
 {
-  super::OnInitDialog();
+  CPWDialog::OnInitDialog();
 #ifdef DEMO
   m_appversion += _T(" ") + CString(MAKEINTRESOURCE(IDS_DEMO));
 #endif

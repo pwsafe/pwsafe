@@ -31,22 +31,21 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
-   : super(CCryptKeyEntry::IDD, pParent)
+  : CPWDialog(CCryptKeyEntry::IDD, pParent),
+    m_cryptkey1(_T("")), m_cryptkey2(_T(""))
 {
-   m_cryptkey1	= _T("");
-   m_cryptkey2	= _T("");
 }
 
 
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-   super::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_CRYPTKEY1, (CString &)m_cryptkey1);
-   DDX_Text(pDX, IDC_CRYPTKEY2, (CString &)m_cryptkey2);
+  CPWDialog::DoDataExchange(pDX);
+  DDX_Text(pDX, IDC_CRYPTKEY1, (CString &)m_cryptkey1);
+  DDX_Text(pDX, IDC_CRYPTKEY2, (CString &)m_cryptkey2);
 }
 
 
-BEGIN_MESSAGE_MAP(CCryptKeyEntry, super)
+BEGIN_MESSAGE_MAP(CCryptKeyEntry, CPWDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
 #if defined(POCKET_PC)
    ON_EN_SETFOCUS(IDC_CRYPTKEY1, OnPasskeySetfocus)
@@ -60,7 +59,7 @@ END_MESSAGE_MAP()
 void
 CCryptKeyEntry::OnCancel() 
 {
-   super::OnCancel();
+   CPWDialog::OnCancel();
 }
 
 
@@ -82,7 +81,7 @@ CCryptKeyEntry::OnOK()
       return;
    }
 
-   super::OnOK();
+   CPWDialog::OnOK();
 }
 
 

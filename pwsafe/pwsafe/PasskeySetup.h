@@ -11,20 +11,12 @@
 //-----------------------------------------------------------------------------
 
 #include "corelib/PwsPlatform.h"
+#include "PWDialog.h"
 
-#if defined(POCKET_PC)
-  #include "pocketpc/PwsPopupDialog.h"
-  #define SUPERCLASS	CPwsPopupDialog
-#else
-  #define SUPERCLASS	CDialog
-#endif
-
-class CPasskeySetup : public SUPERCLASS
+class CPasskeySetup : public CPWDialog
 {
 // Construction
 public:
-	typedef SUPERCLASS	super;
-
    CPasskeySetup(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
@@ -33,7 +25,6 @@ public:
    CMyString	m_passkey;
    CMyString	m_verify;
    //}}AFX_DATA
-
 
 protected:
    virtual BOOL OnInitDialog();
@@ -55,8 +46,6 @@ protected:
    //}}AFX_MSG
    DECLARE_MESSAGE_MAP()
 };
-
-#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

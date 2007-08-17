@@ -10,7 +10,7 @@
 /// CompareResultsDlg.h
 //-----------------------------------------------------------------------------
 
-#include "afxwin.h"
+#include "PWDialog.h"
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
 #include "corelib/PWScore.h"
@@ -48,7 +48,7 @@ struct st_CompareInfo {
   int column;
 };
 
-class CCompareResultsDlg : public CDialog
+class CCompareResultsDlg : public CPWDialog
 {
   DECLARE_DYNAMIC(CCompareResultsDlg)
 

@@ -10,14 +10,13 @@
 
 #pragma once
 
-#include "afxwin.h"
+#include "PWDialog.h"
 #include "ControlExtns.h"
 #include "ExtThread.h"
 
 class CItemData;
 
-class CEditDlg
-  : public CDialog
+class CEditDlg : public CPWDialog
 {
 
 public:

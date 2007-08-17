@@ -13,18 +13,10 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExportXML dialog
 
-// JHF : added PocketPC switch
-#if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-#else
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
-#endif
-
+#include "PWDialog.h"
 #include "corelib/ItemData.h"
 
-class CExportXMLDlg : public CDialog
+class CExportXMLDlg : public CPWDialog
 {
 // Construction
 public:
@@ -60,5 +52,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX, const CString &delimiter);
+	void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX,
+                                    const CString &delimiter);
 };

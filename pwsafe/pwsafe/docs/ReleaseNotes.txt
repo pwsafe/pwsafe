@@ -18,6 +18,8 @@ selected and if URL is populated
 [] Lock timeout after manual lock no longer saves empty database.
 [1754566] State of tree view is now persistent across minimize, lock &
 save.
+[1771357] Timeout timer now reset in all dialog boxes - PasswordSafe
+will no longer minimize in the middle of work with an open dialog box.
 
 New Features for 3.09.01
 ========================

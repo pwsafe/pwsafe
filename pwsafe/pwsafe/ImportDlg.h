@@ -9,16 +9,14 @@
 // ImportDlg.h : header file
 //
 
-#include "resource.h"
-#include "resource2.h"  // Menu, Toolbar & Accelerator resources
-#include "resource3.h"  // String resources
+#include "PWDialog.h"
 
 void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter);
 
 /////////////////////////////////////////////////////////////////////////////
 // CImportDlg dialog
 
-class CImportDlg : public CDialog
+class CImportDlg : public CPWDialog
 {
 // Construction
 public:

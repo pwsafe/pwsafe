@@ -6,10 +6,10 @@
 
 // CColumnChooserDlg dialog
 
-IMPLEMENT_DYNAMIC(CColumnChooserDlg, CDialog)
+IMPLEMENT_DYNAMIC(CColumnChooserDlg, CPWDialog)
 
 CColumnChooserDlg::CColumnChooserDlg(CWnd* pParent /*=NULL*/)
-  : CDialog(CColumnChooserDlg::IDD, pParent)
+  : CPWDialog(CColumnChooserDlg::IDD, pParent)
 {
 }
 
@@ -19,7 +19,7 @@ CColumnChooserDlg::~CColumnChooserDlg()
 
 void CColumnChooserDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_CPLIST, m_ccListCtrl);
 }
 
@@ -42,7 +42,7 @@ BOOL CColumnChooserDlg::Create(UINT nID, CWnd *parent)
 
 BOOL CColumnChooserDlg::OnInitDialog()
 {
-  CDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   // Initialise DropTarget
   m_ccListCtrl.Initialize(&m_ccListCtrl);
@@ -55,7 +55,7 @@ void CColumnChooserDlg::OnSysCommand(UINT nID, LPARAM lParam)
   if ((nID & 0xFFF0) == SC_CLOSE)
     ShowWindow(SW_HIDE);
   else
-    CDialog::OnSysCommand(nID, lParam);
+    CPWDialog::OnSysCommand(nID, lParam);
 }
 
 void CColumnChooserDlg::OnShowWindow(BOOL bShow, UINT nStatus)
@@ -63,7 +63,7 @@ void CColumnChooserDlg::OnShowWindow(BOOL bShow, UINT nStatus)
   if (m_pLVHdrCtrl != NULL && nStatus == 0)
     m_pLVHdrCtrl->SetLVState(bShow);
 
-  CDialog::OnShowWindow(bShow, nStatus);
+  CPWDialog::OnShowWindow(bShow, nStatus);
 }
 
 void CColumnChooserDlg::OnStyleChanged(int nStyleType, LPSTYLESTRUCT lpStyleStruct)

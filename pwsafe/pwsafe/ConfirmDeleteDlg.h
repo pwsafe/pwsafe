@@ -11,22 +11,9 @@
 //-----------------------------------------------------------------------------
 #include "corelib/PwsPlatform.h"
 
-#if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-  #include "pocketpc/PwsPopupDialog.h"
-  #define SUPERCLASS	CPwsPopupDialog
-#else
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
-  #define SUPERCLASS	CDialog
-#endif
-
-class CConfirmDeleteDlg : public SUPERCLASS
+#include "PWDialog.h"
+class CConfirmDeleteDlg : public CPWDialog
 {
-	typedef SUPERCLASS		super;
-
-// Construction
 public:
    CConfirmDeleteDlg(CWnd* pParent = NULL, int numchildren = 0);
 private:
@@ -55,7 +42,6 @@ protected:
    DECLARE_MESSAGE_MAP()
 };
 
-#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++
