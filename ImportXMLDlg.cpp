@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CImportXMLDlg::CImportXMLDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CImportXMLDlg::IDD, pParent)
+	: CPWDialog(CImportXMLDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CImportXMLDlg)
 	m_groupName.LoadString(IDS_IMPORTED);
@@ -35,14 +35,14 @@ CImportXMLDlg::CImportXMLDlg(CWnd* pParent /*=NULL*/)
 
 void CImportXMLDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CPWDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CImportXMLDlg)
 	DDX_Radio(pDX, IDC_NO_GROUP, m_group);
 	DDX_Text(pDX, IDC_GROUP_NAME, m_groupName);
 	//}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CImportXMLDlg, CDialog)
+BEGIN_MESSAGE_MAP(CImportXMLDlg, CPWDialog)
 	//{{AFX_MSG_MAP(CImportXMLDlg)
 	ON_BN_CLICKED(IDC_NO_GROUP, OnNoGroup)
 	ON_BN_CLICKED(IDC_YES_GROUP, OnYesGroup)
@@ -84,5 +84,5 @@ void CImportXMLDlg::OnOK()
 		UpdateData(FALSE);
 	}
 
-	CDialog::OnOK();
+	CPWDialog::OnOK();
 }

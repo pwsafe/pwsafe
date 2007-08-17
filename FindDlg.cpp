@@ -77,7 +77,7 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
 }
 
 CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
-  : super(CFindDlg::IDD, pParent),
+  : CPWDialog(CFindDlg::IDD, pParent),
     m_lastshown(-1), m_numFound(0),
     m_last_search_text(_T("")), m_last_cs_search(FALSE),
     m_lastCSPtr(isCS), m_lastTextPtr(lastFind), m_bAdvanced(false),
@@ -118,7 +118,7 @@ CFindDlg::~CFindDlg()
 
 void CFindDlg::DoDataExchange(CDataExchange* pDX)
 {
-  super::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CFindDlg)
   DDX_Check(pDX, IDC_FIND_CS, m_cs_search);
   DDX_Check(pDX, IDC_FIND_WRAP, m_FindWraps);
@@ -130,7 +130,7 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CFindDlg, super)
+BEGIN_MESSAGE_MAP(CFindDlg, CPWDialog)
 //{{AFX_MSG_MAP(CFindDlg)
 ON_BN_CLICKED(IDOK, OnFind)
 ON_BN_CLICKED(IDC_FIND_WRAP, OnWrap)
@@ -255,7 +255,7 @@ void CFindDlg::OnFind()
     	SetDlgItemText(IDOK, cs_text);
     }
   }
-  // don't call super::OnOK - user will Cancel() to close dbox
+  // don't call CDialog::OnOK - user will Cancel() to close dbox
 }
 
 void CFindDlg::OnWrap()
@@ -273,7 +273,7 @@ void CFindDlg::OnCancel()
   *m_lastCSPtr = m_cs_search;
 
   app.EnableAccelerator(); // restore accel table
-  super::DestroyWindow();
+  CPWDialog::DestroyWindow();
 }
 #else
 void CFindDlg::OnClose() 
@@ -287,7 +287,7 @@ void CFindDlg::OnClose()
   m_bLastView = pParent->GetCurrentView();
 
   app.EnableAccelerator(); // restore accel table
-  super::OnCancel();
+  CPWDialog::OnCancel();
 }
 #endif
 
@@ -313,27 +313,4 @@ CFindDlg::OnAdvanced()
   } else {
     m_bAdvanced = false;
   }
-}
-
-LRESULT
-CFindDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
-{
-  // list of all the events that signify actual user activity, as opposed
-  // to Windows internal events...
-  if (message == WM_KEYDOWN ||
-      message == WM_COMMAND ||
-      message == WM_SYSCOMMAND ||
-      message == WM_MOUSEMOVE ||
-      message == WM_MOVE ||
-      message == WM_LBUTTONDOWN ||
-      message == WM_LBUTTONDBLCLK ||
-      message == WM_CONTEXTMENU ||
-      // JHF undeclared identifier -> removed to get code to compile
-#if !defined(POCKET_PC)
-      message == WM_MENUSELECT ||
-#endif
-      message == WM_VSCROLL
-      )
-    ((DboxMain*)GetParent())->ResetIdleLockCounter();
-  return super::WindowProc(message, wParam, lParam);
 }

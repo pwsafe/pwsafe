@@ -9,11 +9,9 @@
 
 // CProperties dialog
 
-#include "resource.h"
-#include "resource2.h"  // Menu, Toolbar & Accelerator resources
-#include "resource3.h"  // String resources
+#include "PWDialog.h"
 
-class CProperties : public CDialog
+class CProperties : public CPWDialog
 {
 	DECLARE_DYNAMIC(CProperties)
 

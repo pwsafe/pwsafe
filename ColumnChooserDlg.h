@@ -1,17 +1,14 @@
 #pragma once
 
-#include "resource.h"
+#include "PWDialog.h"
 #include "ColumnChooserLC.h"
 #include "LVHdrCtrl.h"
 
 // CColumnChooserDlg dialog
 
-class CColumnChooserDlg : public CDialog
+class CColumnChooserDlg : public CPWDialog
 {
   DECLARE_DYNAMIC(CColumnChooserDlg)
-
-private:
-    //using CDialog::Create
 
 public:
   CColumnChooserDlg(CWnd* pParent = NULL);   // standard constructor

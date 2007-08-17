@@ -14,17 +14,7 @@
 #include "ControlExtns.h"
 #include "corelib/MyString.h"
 #include "corelib/PwsPlatform.h"
-
-#if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-  #include "pocketpc/PwsPopupDialog.h"
-  #define SUPERCLASS	CPwsPopupDialog
-#else
-  #include "resource.h" //ronys
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
-  #define SUPERCLASS	CDialog
-#endif
+#include "PWDialog.h"
 
 //-----------------------------------------------------------------------------
 /**
@@ -36,12 +26,10 @@
  */
 
 class CPasskeyEntry
-   : public SUPERCLASS
+   : public CPWDialog
 {
 // Construction
 public:
-	typedef	SUPERCLASS	super;
-
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index = 1 /* GCP_NORMAL */,
 		            bool bReadOnly = false,
@@ -119,8 +107,6 @@ public:
 
 private:
 };
-
-#undef SUPERCLASS
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

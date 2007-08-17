@@ -28,7 +28,7 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 
 CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CExportXMLDlg::IDD, pParent),
+	: CPWDialog(CExportXMLDlg::IDD, pParent),
     m_subgroup_set(BST_UNCHECKED),
     m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
 {
@@ -41,7 +41,7 @@ CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
 
 BOOL CExportXMLDlg::OnInitDialog() 
 {
-   CDialog::OnInitDialog();
+   CPWDialog::OnInitDialog();
 
    m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
    m_subgroup_name.Empty();
@@ -54,7 +54,7 @@ BOOL CExportXMLDlg::OnInitDialog()
 
 void CExportXMLDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CPWDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CExportXMLDlg)
 	DDX_Text(pDX, IDC_EXPORT_XML_PASSWORD, m_ExportXMLPassword);
 	DDX_Text(pDX, IDC_DEFEXPDELIM, m_defexpdelim);
@@ -63,7 +63,7 @@ void CExportXMLDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_CheckExpDelimiter(pDX, m_defexpdelim);
 }
 
-BEGIN_MESSAGE_MAP(CExportXMLDlg, CDialog)
+BEGIN_MESSAGE_MAP(CExportXMLDlg, CPWDialog)
 	//{{AFX_MSG_MAP(CExportXMLDlg)
   ON_BN_CLICKED(IDC_XML_ADVANCED, OnAdvanced)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -101,7 +101,7 @@ void CExportXMLDlg::OnOK()
 	  return;
   GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
 
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }
 
 void CExportXMLDlg::OnAdvanced()

@@ -12,21 +12,13 @@
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg dialog
 
-// JHF : added PocketPC switch
-#if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-#else
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
-#endif
-
+#include "PWDialog.h"
 #include "corelib/ItemData.h"
 #include <bitset>
 
 enum {ADV_COMPARE = 0, ADV_MERGE, ADV_EXPORT_TEXT, ADV_EXPORT_XML, ADV_FIND, ADV_LAST};
 
-class CAdvancedDlg : public CDialog
+class CAdvancedDlg : public CPWDialog
 {
 // Construction
 public:

@@ -36,7 +36,7 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t LTime)
 CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
                              const ExpiredList &expPWList,
                              const CString& a_filespec)
-	: CDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
+	: CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
 {
 	const int FILE_DISP_LEN = 75;
 
@@ -59,13 +59,13 @@ CExpPWListDlg::~CExpPWListDlg()
 
 void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CPWDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_EXPIRED_PASSWORD_LIST, m_expPWListCtrl);
 	DDX_Text(pDX, IDC_MESSAGE, m_message);
 }
 
 
-BEGIN_MESSAGE_MAP(CExpPWListDlg, CDialog)
+BEGIN_MESSAGE_MAP(CExpPWListDlg, CPWDialog)
 ON_BN_CLICKED(IDC_COPY_EXP_TO_CLIPBOARD, OnBnClickedCopyExpToClipboard)
 ON_BN_CLICKED(IDOK, OnOK)
 ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
@@ -78,7 +78,7 @@ END_MESSAGE_MAP()
 BOOL
 CExpPWListDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CPWDialog::OnInitDialog();
 
   //m_expPWListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_SUBITEMIMAGES );
 
@@ -139,8 +139,8 @@ CExpPWListDlg::OnInitDialog()
 void
 CExpPWListDlg::OnOK() 
 {
-	CDialog::OnOK();
-    delete m_pImageList;
+  delete m_pImageList;
+	CPWDialog::OnOK();
 }
 
 void

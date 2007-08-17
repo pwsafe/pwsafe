@@ -9,6 +9,7 @@
 
 // TryAgainDlg.h
 //-----------------------------------------------------------------------------
+#include "PWDialog.h"
 
 //Globally useful values...
 enum
@@ -23,7 +24,7 @@ enum
 
 
 //-----------------------------------------------------------------------------
-class CTryAgainDlg : public CDialog
+class CTryAgainDlg : public CPWDialog
 {
 // Construction
 public:
@@ -34,7 +35,6 @@ public:
    //{{AFX_DATA(CTryAgainDlg)
    enum { IDD = IDD_TRYAGAIN };
    //}}AFX_DATA
-
 
 // Overrides
    // ClassWizard generated virtual function overrides

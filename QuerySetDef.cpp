@@ -31,7 +31,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CQuerySetDef::CQuerySetDef(CWnd* pParent)
-   : super(CQuerySetDef::IDD, pParent)
+   : CPWDialog(CQuerySetDef::IDD, pParent)
 {
    m_querycheck = FALSE;
    m_message = _T("");
@@ -40,13 +40,13 @@ CQuerySetDef::CQuerySetDef(CWnd* pParent)
 
 void CQuerySetDef::DoDataExchange(CDataExchange* pDX)
 {
-   super::DoDataExchange(pDX);
+   CPWDialog::DoDataExchange(pDX);
    DDX_Check(pDX, IDC_QUERYCHECK, m_querycheck);
    DDX_Text(pDX, IDC_MESSAGE, m_message);
 }
 
 
-BEGIN_MESSAGE_MAP(CQuerySetDef, super)
+BEGIN_MESSAGE_MAP(CQuerySetDef, CPWDialog)
 END_MESSAGE_MAP()
 
 
@@ -55,7 +55,7 @@ void CQuerySetDef::OnOK()
    UpdateData(TRUE);
    PWSprefs::GetInstance()->SetPref(PWSprefs::QuerySetDef,
 				    m_querycheck == FALSE);
-   super::OnOK();
+   CPWDialog::OnOK();
 }
 
 
@@ -64,7 +64,7 @@ void CQuerySetDef::OnCancel()
    UpdateData(TRUE);
    PWSprefs::GetInstance()->SetPref(PWSprefs::QuerySetDef,
 				    m_querycheck == FALSE);
-   super::OnCancel();
+   CPWDialog::OnCancel();
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

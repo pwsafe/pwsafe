@@ -28,7 +28,7 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 
 CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
-  : CDialog(CExportTextDlg::IDD, pParent),
+  : CPWDialog(CExportTextDlg::IDD, pParent),
     m_subgroup_set(BST_UNCHECKED),
     m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
 {
@@ -41,7 +41,7 @@ CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
 
 BOOL CExportTextDlg::OnInitDialog() 
 {
-   CDialog::OnInitDialog();
+   CPWDialog::OnInitDialog();
    SetPasswordFont(GetDlgItem(IDC_EXPORT_TEXT_PASSWORD));
    ((CEdit*)GetDlgItem(IDC_EXPORT_TEXT_PASSWORD))->SetPasswordChar(PSSWDCHAR);
 
@@ -67,7 +67,7 @@ BOOL CExportTextDlg::OnInitDialog()
 
 void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CPWDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CExportTextDlg)
 	DDX_Text(pDX, IDC_EXPORT_TEXT_PASSWORD, m_exportTextPassword);
 	DDX_Text(pDX, IDC_DEFEXPDELIM, m_defexpdelim);
@@ -77,7 +77,7 @@ void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CExportTextDlg, CDialog)
+BEGIN_MESSAGE_MAP(CExportTextDlg, CPWDialog)
 	//{{AFX_MSG_MAP(CExportTextDlg)
 	ON_BN_CLICKED(IDC_EXPORT_ADVANCED, OnAdvanced)
 	ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -115,7 +115,7 @@ void CExportTextDlg::OnOK()
 	  return;
 
   GetDlgItemText(IDC_DEFEXPDELIM, m_defexpdelim);
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }
 
 void CExportTextDlg::OnAdvanced()

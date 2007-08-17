@@ -10,10 +10,10 @@
 /// \file AddDlg.h
 //-----------------------------------------------------------------------------
 
-#include "afxwin.h"
+#include "PWDialog.h"
 #include "ControlExtns.h"
 
-class CAddDlg : public CDialog
+class CAddDlg : public CPWDialog
 {
   // Construction
 public:

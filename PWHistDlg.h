@@ -10,11 +10,11 @@
 // PWHisDlg.h CPWHistDlg
 //-----------------------------------------------------------------
 
-#include "afxwin.h"
+#include "PWDialog.h"
 
 class CItemData;
 
-class CPWHistDlg : public CDialog
+class CPWHistDlg : public CPWDialog
 {
  DECLARE_DYNAMIC(CPWHistDlg)
 

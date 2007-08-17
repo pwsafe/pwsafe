@@ -24,20 +24,19 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CTryAgainDlg::CTryAgainDlg(CWnd* pParent)
-   : CDialog(CTryAgainDlg::IDD, pParent)
+  : CPWDialog(CTryAgainDlg::IDD, pParent), cancelreturnval(TAR_INVALID)
 {
-   cancelreturnval = TAR_INVALID;
 }
 
 
 void
 CTryAgainDlg::DoDataExchange(CDataExchange* pDX)
 {
-   CDialog::DoDataExchange(pDX);
+   CPWDialog::DoDataExchange(pDX);
 }
 
 
-BEGIN_MESSAGE_MAP(CTryAgainDlg, CDialog)
+BEGIN_MESSAGE_MAP(CTryAgainDlg, CPWDialog)
    ON_BN_CLICKED(IDC_QUIT, OnQuit)
    ON_BN_CLICKED(IDC_TRYAGAIN, OnTryagain)
    ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -49,14 +48,14 @@ END_MESSAGE_MAP()
 void
 CTryAgainDlg::OnQuit() 
 {
-   CDialog::OnCancel();
+   CPWDialog::OnCancel();
 }
 
 
 void
 CTryAgainDlg::OnTryagain() 
 {
-   CDialog::OnOK();
+   CPWDialog::OnOK();
 }
 
 
@@ -73,7 +72,7 @@ void
 CTryAgainDlg::OnOpen() 
 {
    cancelreturnval = TAR_OPEN;
-   CDialog::OnCancel();
+   CPWDialog::OnCancel();
 }
 
 
@@ -81,7 +80,7 @@ void
 CTryAgainDlg::OnNew() 
 {
    cancelreturnval = TAR_NEW;
-   CDialog::OnCancel();
+   CPWDialog::OnCancel();
 }
 
 

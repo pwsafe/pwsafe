@@ -15,18 +15,10 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExportText dialog
 
-// JHF : added PocketPC switch
-#if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-#else
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
-#endif
-
 #include "corelib/ItemData.h"
+#include "PWDialog.h"
 
-class CExportTextDlg : public CDialog
+class CExportTextDlg : public CPWDialog
 {
 // Construction
 public:

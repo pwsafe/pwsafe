@@ -15,27 +15,27 @@
 // CExpDTDlg dialog
 
 CExpDTDlg::CExpDTDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CExpDTDlg::IDD, pParent)
+	: CPWDialog(CExpDTDlg::IDD, pParent), m_tttLTime(0)
 {
 	//{{AFX_DATA_INIT(CImportDlg)
 	m_how = 0;
-    m_numDays = 1;
+  m_numDays = 1;
 	//}}AFX_DATA_INIT
 }
 
 void CExpDTDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CExpDTDlg)
+	CPWDialog::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(CExpDTDlg)
 	DDX_Control(pDX, IDC_EXPIRYDATE, m_pDateCtl);
 	DDX_Control(pDX, IDC_EXPIRYTIME, m_pTimeCtl);
-    DDX_Radio(pDX, IDC_SELECTBYDATETIME, m_how);
-    DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
-    //{{AFX_DATA_MAP
-    DDV_CheckMaxDays(pDX, m_how, m_numDays, m_maxDays);
+  DDX_Radio(pDX, IDC_SELECTBYDATETIME, m_how);
+  DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
+  //{{AFX_DATA_MAP
+  DDV_CheckMaxDays(pDX, m_how, m_numDays, m_maxDays);
 }
 
-BEGIN_MESSAGE_MAP(CExpDTDlg, CDialog)
+BEGIN_MESSAGE_MAP(CExpDTDlg, CPWDialog)
 	ON_BN_CLICKED(IDOK, &CExpDTDlg::OnOK)
     ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
     ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
@@ -66,47 +66,47 @@ BOOL CExpDTDlg::OnInitDialog()
 	CString        sSearch;                 // the string to search for
 	int            nIndex;                  // index of the string, if found
 
-	CDialog::OnInitDialog();
+	CPWDialog::OnInitDialog();
 
-    GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+  GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
 
-    // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
-    // Find number of days from now to 2038/01/18 = max value here
-    const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
-    const CTime ct_Now(CTime::GetCurrentTime());
-    CTimeSpan elapsedTime = ct_Latest - ct_Now;
-    m_maxDays = (int)elapsedTime.GetDays();
+  // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
+  // Find number of days from now to 2038/01/18 = max value here
+  const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
+  const CTime ct_Now(CTime::GetCurrentTime());
+  CTimeSpan elapsedTime = ct_Latest - ct_Now;
+  m_maxDays = (int)elapsedTime.GetDays();
 
-    CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
 
-    pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
-    pspin->SetRange32(1, m_maxDays);
-    pspin->SetBase(10);
-    pspin->SetPos(1);
+  pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
+  pspin->SetRange32(1, m_maxDays);
+  pspin->SetBase(10);
+  pspin->SetPos(1);
 
-    // First get the time format picture.
-    VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
-    sTimeFormat = szBuf;
+  // First get the time format picture.
+  VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
+  sTimeFormat = szBuf;
 
-    // Next get the separator character.
-    VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 80));
-    // Search for ":ss".
+  // Next get the separator character.
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 80));
+  // Search for ":ss".
+  sSearch = szBuf;
+  sSearch += _T("ss");
+  nIndex = sTimeFormat.Find(sSearch);
+
+  if (nIndex != -1) {
+    // Found it!  Remove it from the format picture.
+    sTimeFormat.Delete(nIndex, sSearch.GetLength());
+	} else {
+    // No ":ss", so try ":s".
     sSearch = szBuf;
-    sSearch += _T("ss");
+    sSearch += _T("s");
     nIndex = sTimeFormat.Find(sSearch);
 
-    if (nIndex != -1) {
-        // Found it!  Remove it from the format picture.
-        sTimeFormat.Delete(nIndex, sSearch.GetLength());
-	} else {
-        // No ":ss", so try ":s".
-        sSearch = szBuf;
-        sSearch += _T("s");
-        nIndex = sTimeFormat.Find(sSearch);
-
-        if (nIndex != -1 ) {
-            // Found it!  Remove it from the format picture.
-            sTimeFormat.Delete(nIndex, sSearch.GetLength());
+    if (nIndex != -1 ) {
+      // Found it!  Remove it from the format picture.
+      sTimeFormat.Delete(nIndex, sSearch.GetLength());
 		}
 	}
   VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
@@ -131,7 +131,7 @@ BOOL CExpDTDlg::OnInitDialog()
 	} else {
 		xt = CTime(m_tttLTime);
 		ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
-					xt.GetHour(), xt.GetMinute(), 0, -1);
+               xt.GetHour(), xt.GetMinute(), 0, -1);
 		m_locLTime = CMyString(ct.Format(_T("%#c")));
 	}
 
@@ -205,5 +205,5 @@ void CExpDTDlg::OnOK()
   _tcscat_s(datetime_str, 80, time_str);
   m_locLTime = CMyString(datetime_str);
 
-	CDialog::OnOK();
+	CPWDialog::OnOK();
 }

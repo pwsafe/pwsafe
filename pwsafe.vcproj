@@ -720,6 +720,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PwFont.cpp"
 				>
 			</File>
@@ -954,6 +958,10 @@
 			</File>
 			<File
 				RelativePath=".\PWCharPool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWDialog.h"
 				>
 			</File>
 			<File

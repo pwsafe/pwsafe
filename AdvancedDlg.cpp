@@ -37,7 +37,7 @@ int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
                            CItemData::FieldBits bsFields, CString subgroup_name,
                            int subgroup_set, int subgroup_object, int subgroup_function)
-  : CDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
+  : CPWDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
     m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
     m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
     m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
@@ -66,7 +66,7 @@ CAdvancedDlg::~CAdvancedDlg()
 
 BOOL CAdvancedDlg::OnInitDialog()
 {
-  CDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   CString cs_text;
   int iItem(-1), i;
@@ -330,7 +330,7 @@ BOOL CAdvancedDlg::OnInitDialog()
 
 void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CAdvancedDlg)
   DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
   DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
@@ -338,7 +338,7 @@ void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CAdvancedDlg, CDialog)
+BEGIN_MESSAGE_MAP(CAdvancedDlg, CPWDialog)
   //{{AFX_MSG_MAP(CAdvancedDlg)
   ON_BN_CLICKED(IDC_ADVANCED_SUBGROUP_SET, OnSetSubGroup)
   ON_BN_CLICKED(IDC_ADVANCED_SELECTSOME, OnSelectSome)
@@ -444,7 +444,7 @@ void CAdvancedDlg::OnOK()
   if (m_subgroup_name == _T("*"))
     m_subgroup_name.Empty();
 
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }
 
 void CAdvancedDlg::OnSetSubGroup()
@@ -605,7 +605,7 @@ BOOL CAdvancedDlg::PreTranslateMessage(MSG* pMsg)
 	if (m_ToolTipCtrl != NULL)
 		m_ToolTipCtrl->RelayEvent(pMsg);
 
-	return CDialog::PreTranslateMessage(pMsg);
+	return CPWDialog::PreTranslateMessage(pMsg);
 }
 
 int CALLBACK CAdvancedDlg::AdvCompareFunc(LPARAM lParam1, LPARAM lParam2,

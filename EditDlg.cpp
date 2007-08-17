@@ -59,7 +59,7 @@ CString CEditDlg::CS_SHOW;
 CString CEditDlg::CS_HIDE;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
-  : CDialog(CEditDlg::IDD, pParent),
+  : CPWDialog(CEditDlg::IDD, pParent),
     m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
     m_tttLTime (time_t(0)),
     m_locLTime(_T("")), m_oldlocLTime(_T(""))
@@ -120,7 +120,7 @@ CEditDlg::~CEditDlg()
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
   DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
@@ -147,7 +147,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
 }
 
-BEGIN_MESSAGE_MAP(CEditDlg, CDialog)
+BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
@@ -271,7 +271,7 @@ CEditDlg::OnOK()
   if (m_oldlocLTime != m_locLTime)
     m_ci->SetLTime(m_tttLTime);
 
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }
 
 void CEditDlg::UpdateHistory()
@@ -327,7 +327,7 @@ void CEditDlg::UpdateHistory()
 
 BOOL CEditDlg::OnInitDialog() 
 {
-  CDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   SetPasswordFont(GetDlgItem(IDC_PASSWORD));
   SetPasswordFont(GetDlgItem(IDC_PASSWORD2));

@@ -28,14 +28,14 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-IMPLEMENT_DYNAMIC(CCompareResultsDlg, CDialog)
+IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWDialog)
 
 //-----------------------------------------------------------------------------
 CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   CompareData &OnlyInCurrent, CompareData &OnlyInComp,
   CompareData &Conflicts, CompareData &Identical,
   CItemData::FieldBits &bsFields, PWScore *pcore0, PWScore *pcore1)
-  : CDialog(CCompareResultsDlg::IDD, pParent),
+  : CPWDialog(CCompareResultsDlg::IDD, pParent),
   m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
   m_Conflicts(Conflicts), m_Identical(Identical),
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
@@ -51,7 +51,7 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
 
 BOOL CCompareResultsDlg::OnInitDialog()
 {
-  CDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   m_LCResults.GetHeaderCtrl()->SetDlgCtrlID(IDC_RESULTLISTHDR);
 
@@ -304,11 +304,11 @@ BOOL CCompareResultsDlg::OnInitDialog()
 
 void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_RESULTLIST, m_LCResults);
 }
 
-BEGIN_MESSAGE_MAP(CCompareResultsDlg, CDialog)
+BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWDialog)
   ON_WM_SIZE()
   ON_WM_GETMINMAXINFO()
   ON_NOTIFY(NM_DBLCLK, IDC_RESULTLIST, OnItemDoubleClick)
@@ -383,13 +383,13 @@ CCompareResultsDlg::OnShowIdenticalEntries()
 void
 CCompareResultsDlg::OnCancel()
 {
-  CDialog::OnCancel();
+  CPWDialog::OnCancel();
 }
 
 void
 CCompareResultsDlg::OnOK()
 {
-  CDialog::OnOK();
+  CPWDialog::OnOK();
 }
 
 void
@@ -796,7 +796,7 @@ CCompareResultsDlg::OnCopyToClipboard()
 void
 CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
 {
-  CDialog::OnSize(nType, cx, cy);
+  CPWDialog::OnSize(nType, cx, cy);
 
   CWnd *pwndListCtrl = GetDlgItem(IDC_RESULTLIST);
   CWnd *pwndODBText = GetDlgItem(IDC_COMPAREORIGINALDB);
@@ -872,7 +872,7 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
 
 void CCompareResultsDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
-  CDialog::OnGetMinMaxInfo(lpMMI);
+  CPWDialog::OnGetMinMaxInfo(lpMMI);
 
   if (this->GetSafeHwnd() != NULL) {
     lpMMI->ptMinTrackSize = CPoint(m_DialogMinWidth, m_DialogMinHeight);
