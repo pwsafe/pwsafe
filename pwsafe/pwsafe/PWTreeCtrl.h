@@ -82,6 +82,7 @@ private:
   CPWTDropTarget *m_DropTarget;
   CPWTDropSource *m_DropSource;
   CPWTDataSource *m_DataSource;
+  friend class CPWTDataSource;
   // Clipboard format for our Drag & Drop
   CLIPFORMAT m_tcddCPFID;
 

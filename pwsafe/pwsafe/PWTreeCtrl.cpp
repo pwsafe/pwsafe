@@ -81,28 +81,75 @@ class CPWTDataSource : public COleDataSource
 {
 public:
   CPWTDataSource(CPWTreeCtrl *parent, COleDropSource *ds)
-    : m_tree(*parent), m_DropSource(ds), m_hgData(NULL) {}
-  DROPEFFECT StartDragging(BYTE *szData, DWORD dwLength, CLIPFORMAT cpfmt,
-                           RECT *rClient, CPoint *)
+    : m_tree(*parent), m_DropSource(ds),
+      m_mfBuffer(NULL), m_mfBufLen(0), m_hgData(NULL) {}
+  DROPEFFECT StartDragging(CLIPFORMAT cpfmt, LPCRECT rClient)
   {
-    m_hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwLength);
+    DelayRenderData(cpfmt);
+    DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
+                                       rClient, m_DropSource);
+    // Cleanup:
+    // It is not clear if we can cleanup m_mfBuffer
+    // in OnRenderGlobalData, so better to err
+    // on the side of safety, and cleanup after
+    // DoDragDrop has completed.
+
+    if (m_mfBufLen != 0) {
+      trashMemory((void *)m_mfBuffer, m_mfBufLen);
+      free((void *)m_mfBuffer);
+      m_mfBuffer = NULL; m_mfBufLen = 0;
+    }
+    if (m_hgData != NULL) {
+      GlobalUnlock(m_hgData);
+      GlobalFree(m_hgData); m_hgData = NULL;
+    }
+    return dropEffect;
+  }
+  virtual BOOL OnRenderGlobalData(LPFORMATETC , HGLOBAL* phGlobal)
+  {
+    long lBufLen;
+    BYTE *buffer = NULL;
+
+    ASSERT(m_mfBuffer == NULL && m_mfBufLen == 0);
+    ASSERT(m_hgData == NULL);
+    // CollectData allocates buffer - need to free later
+    if (!m_tree.CollectData(buffer, lBufLen))
+      return FALSE;
+
+    char header[OLE_HDR_LEN+1];
+#if _MSC_VER >= 1400
+    sprintf_s(header, sizeof(header),
+              OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
+#else
+    sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
+#endif
+    CMemFile mf;
+    mf.Write(header, OLE_HDR_LEN);
+    mf.Write(buffer, lBufLen);
+
+    // Finished with buffer - trash it and free it
+    trashMemory((void *)buffer, lBufLen);
+    free(buffer);
+
+    m_mfBufLen = (DWORD)mf.GetLength();
+    m_mfBuffer = (BYTE *)(mf.Detach());
+
+#ifdef DUMP_DATA
+    CString cs_timestamp = PWSUtil::GetTimeStamp();
+    TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp,
+          m_mfBufLen, m_mfBufLen);
+    PWSUtil::HexDump(m_mfBuffer, m_mfBufLen, cs_timestamp);
+#endif /* DUMP_DATA */
+
+
+    m_hgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, m_mfBufLen);
     ASSERT(m_hgData != NULL);
 
     LPCSTR lpData = (LPCSTR)GlobalLock(m_hgData);
     ASSERT(lpData != NULL);
 
-    memcpy((void *)lpData, szData, dwLength);
-    //CacheGlobalData(cpfmt, hgData);
-    DelayRenderData(cpfmt);
-    DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
-                                       (LPCRECT)rClient, m_DropSource);
-    GlobalUnlock(m_hgData);
-    GlobalFree(m_hgData); m_hgData = NULL;
-    return dropEffect;
-  }
-  virtual BOOL OnRenderGlobalData(LPFORMATETC , HGLOBAL* phGlobal)
-  {
-    ASSERT(m_hgData != NULL);
+    memcpy((void *)lpData, m_mfBuffer, m_mfBufLen);
+    
     if (*phGlobal == NULL) {
       *phGlobal = m_hgData;
     } else {
@@ -119,6 +166,8 @@ public:
 private:
   CPWTreeCtrl &m_tree;
   COleDropSource *m_DropSource;
+  BYTE *m_mfBuffer;
+  DWORD m_mfBufLen;
   HGLOBAL m_hgData;
 };
 
@@ -1055,51 +1104,11 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
     ;
   SetCapture();
 
-  long lBufLen;
-  BYTE *buffer = NULL;
-
-  // Start of Drag of entries.....
-  // CollectData allocates buffer - need to free later
-  if (!CollectData(buffer, lBufLen))
-    return;
-
-  char header[OLE_HDR_LEN+1];
-#if _MSC_VER >= 1400
-  sprintf_s(header, sizeof(header),
-            OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
-#else
-  sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
-#endif
-  CMemFile mf;
-  mf.Write(header, OLE_HDR_LEN);
-
-  mf.Write(buffer, lBufLen);
-
-  // Finished with buffer - trash it and free it
-  trashMemory((void *)buffer, lBufLen);
-  free(buffer);
-
-  DWORD dw_mflen = (DWORD)mf.GetLength();
-  BYTE *mf_buffer = (BYTE *)(mf.Detach());
-
-#ifdef DUMP_DATA
-   CString cs_timestamp = PWSUtil::GetTimeStamp();
-   TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp, dw_mflen, dw_mflen);
-   PWSUtil::HexDump(mf_buffer, dw_mflen, cs_timestamp);
-#endif /* DUMP_DATA */
-
-  // Get client rectangle
   RECT rClient;
   GetClientRect(&rClient);
 
   // Start dragging
-  DROPEFFECT de = m_DataSource->StartDragging(mf_buffer, dw_mflen, m_tcddCPFID,
-                                              &rClient, &ptAction);
-
-  // Cleanup
-  // Finished with buffer - trash it and free it
-  trashMemory((void *)mf_buffer, dw_mflen);
-  free((void *)mf_buffer);
+  DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
 
   if (SUCCEEDED(de)) {
     DboxMain *dbx = static_cast<DboxMain *>(GetParent());
