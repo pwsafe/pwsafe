@@ -341,6 +341,19 @@ BOOL CEditDlg::OnInitDialog()
     GetDlgItem(IDC_EDITEXPLANATION)->SetWindowText(cs_text);
   }
 
+  const int n = m_ci->NumberUnknownFields();
+  if (n > 0) {
+    cs_text.Format(IDS_RECORDUNKNOWNFIELDS, n);
+    GetDlgItem(IDC_RECORDUNKNOWNFIELDS)->SetWindowText(cs_text);
+    GetDlgItem(IDC_RECORDUNKNOWNFIELDS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_STATIC_RECORDUNKNOWNFIELDS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_STATICGROUPRUNKNFLDS)->ShowWindow(SW_SHOW);
+  } else {
+    GetDlgItem(IDC_RECORDUNKNOWNFIELDS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_RECORDUNKNOWNFIELDS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATICGROUPRUNKNFLDS)->ShowWindow(SW_HIDE);
+  }
+
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
