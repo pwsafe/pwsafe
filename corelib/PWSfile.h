@@ -96,7 +96,6 @@ class PWSfile {
   void SetHeader(const HeaderRecord &h) {m_hdr = h;}
 
   void SetDefUsername(const CMyString &du) {m_defusername = du;} // for V17 conversion (read) only
-  void SetUseUTF8(bool flag) { m_useUTF8 = flag; } // nop for v1v2
   void SetCurVersion(VERSION v) {m_curversion = v;}
   void GetUnknownHeaderFields(UnknownFieldList &UHFL);
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
@@ -120,7 +119,6 @@ class PWSfile {
   unsigned char *m_IV; // points to correct m_ipthing for *CBC()
   Fish *m_fish;
   unsigned char *m_terminal;
-  bool m_useUTF8; // turn off for non-unicode os's, e.g. win98
   HeaderRecord m_hdr;
   // Save unknown header fields on read to put back on write unchanged
   UnknownFieldList m_UHFL;
