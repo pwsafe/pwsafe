@@ -20,7 +20,6 @@ PWSfileV1V2::PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version
 {
   m_curversion = version;
   m_IV = m_ipthing;
-  m_useUTF8 = false;
 }
 
 PWSfileV1V2::~PWSfileV1V2()

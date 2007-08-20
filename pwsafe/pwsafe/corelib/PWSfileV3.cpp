@@ -28,20 +28,6 @@ PWSfileV3::PWSfileV3(const CMyString &filename, RWmode mode, VERSION version)
   m_curversion = version;
   m_IV = m_ipthing;
   m_terminal = TERMINAL_BLOCK;
-#ifdef NOTDEF // defined for troubleshooting only
-  // determine UTF8 support here for now
-  // we assume that 95, 98 and NT 3.51 do not support it
-  OSVERSIONINFO osvi;
-  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-  BOOL osvstat = GetVersionEx (&osvi);
-  ASSERT(osvstat == TRUE);
-
-  bool oldOS = (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0) // 95
-    || (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10) // 98
-    || (osvi.dwMajorVersion == 3 && osvi.dwMinorVersion == 51); // NT 3.51
-  m_useUTF8 = !oldOS;
-#endif
-  m_useUTF8 = true;
 }
 
 PWSfileV3::~PWSfileV3()
@@ -166,18 +152,13 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
 
 size_t PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 {
-  if (m_useUTF8) {
-    bool status;
-    const unsigned char *utf8;
-    int utf8Len;
-    status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
-    if (!status)
-      TRACE(_T("ToUTF8(%s) failed\n"), data);
-    return WriteCBC(type, utf8, utf8Len);
-  } else {
-    const LPCTSTR str = (const LPCTSTR)data;
-    return WriteCBC(type,(const unsigned char *)str, data.GetLength());
-  }
+  bool status;
+  const unsigned char *utf8;
+  int utf8Len;
+  status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
+  if (!status)
+    TRACE(_T("ToUTF8(%s) failed\n"), data);
+  return WriteCBC(type, utf8, utf8Len);
 }
 
 size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
