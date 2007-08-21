@@ -48,12 +48,12 @@ public class PwsEntryDTO {
      *
      */
     public PwsEntryDTO() {
-        
+        super();
     }
     
     
     public PwsEntryDTO(String group, String username, String password, String notes) {
-     
+    	this();
         this.group = group;
         this.username = username;
         this.password = password;
@@ -277,7 +277,7 @@ public class PwsEntryDTO {
             newEntry.setUrl(url);
 
             String autotype = getSafeValue(v3,PwsRecordV3.AUTOTYPE);
-            newEntry.setUrl(autotype);
+            newEntry.setAutotype(autotype);
 
             newEntry.setLastChange(getSafeDate(v3, PwsRecordV3.LAST_MOD_TIME));
             

@@ -1,6 +1,7 @@
 package org.pwsafe.passwordsafeswt.dialog;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Random;
 
@@ -10,6 +11,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
@@ -113,6 +116,15 @@ public class EditDialog extends Dialog {
 				setDirty(true);
 			}
 		};
+		
+		//use a modify listener as the password field drops letter key events on Linux
+		ModifyListener entryEdited = new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				setDirty(true);				
+			}
+			
+		};
 
 		final Composite compositeLabel = new Composite(shell, SWT.NONE);
 		final GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
@@ -201,9 +213,9 @@ public class EditDialog extends Dialog {
 		if (!UserPreferences.getInstance().getBoolean(DisplayPreferences.SHOW_PASSWORD_IN_EDIT_MODE)) {
         txtPassword.setEchoChar('*');
 		}
-		
         if (entryToEdit.getPassword() != null)
             txtPassword.setText(entryToEdit.getPassword());
+		txtPassword.addModifyListener(entryEdited);// important: add after setting content
 
 		final Button btnShowPassword = new Button(compositeFields, SWT.NONE);
 		btnShowPassword.addSelectionListener(new SelectionAdapter() {
@@ -281,7 +293,7 @@ public class EditDialog extends Dialog {
 		txtAutotype.setLayoutData(formDataTemp);
 		txtAutotype.addKeyListener(dirtyKeypress);
         if (entryToEdit.getAutotype() != null)
-    		txtUrl.setText(entryToEdit.getAutotype());
+    		txtAutotype.setText(entryToEdit.getAutotype());
 
 		final Label lblPasswordExpire = new Label(compositeFields, SWT.NONE);
 		final FormData fd_lblPasswordExpire = new FormData();
@@ -314,11 +326,24 @@ public class EditDialog extends Dialog {
 		btnOk.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
                 if (isDirty()) {
+                	entryToEdit.setLastChange(new Date());
                     entryToEdit.setGroup(txtGroup.getText());
                     entryToEdit.setTitle(txtTitle.getText());
                     entryToEdit.setUsername(txtUsername.getText());
-                    entryToEdit.setPassword(txtPassword.getText());
+                    if (! txtPassword.getText().equals(entryToEdit.getPassword())) {
+                    	entryToEdit.setPassword(txtPassword.getText());
+                    	entryToEdit.setLastPwChange(new Date ());
+                    }
                     entryToEdit.setNotes(txtNotes.getText());
+                    String fieldText = txtPasswordExpire.getText();
+					try {
+						Date expireDate = DateFormat.getDateInstance().parse(fieldText);
+						entryToEdit.setExpires(expireDate);
+					} catch (ParseException e1) {
+						//if it's no date - ignore
+					}
+					entryToEdit.setUrl(txtUrl.getText());
+                    entryToEdit.setAutotype(txtAutotype.getText());
                     result = entryToEdit;   
                 } else {
                 	result = null;
