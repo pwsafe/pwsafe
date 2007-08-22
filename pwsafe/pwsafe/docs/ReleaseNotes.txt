@@ -26,6 +26,9 @@ New Features for 3.09.01
 [1752896] Add ability to edit an entry's notes field using user's default 
 text editor via right click on Notes field.
 [1750010] Drag&Drop between databases now supported.
+[1517048] PasswordSafe can now be installed as an msi package (Windows
+installer). This allows site administrators to 'push' PasswordSafe to
+client machines with group policy. Thanks to xenophonf.
 
 Bugs fixed in 3.09
 ==================
