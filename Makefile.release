@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.09
+RELEASENAME = 3.09.01
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -20,6 +20,7 @@ SRCRELNAME = pwsafe-$(RELEASENAME)-src
 RM = /usr/bin/rm
 CP = /usr/bin/cp
 MV = /usr/bin/mv
+SED = /usr/bin/sed
 ZIP = /usr/bin/zip
 SVN = /usr/local/bin/svn
 GPG = /usr/local/bin/gpg
@@ -31,41 +32,60 @@ FTP_PUT = /usr/local/bin/ncftpput -v upload.sourceforge.net incoming
 PYTHON = /usr/bin/python
 SVN2LOG = ../../python/svn2log.py
 MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
+WIXDIR = /cygdrive/c/local/WIX/bin
+CANDLE = $(WIXDIR)/candle.exe
+LIGHT = $(WIXDIR)/light.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe.xsl \
 	docs/ChangeLog.txt Release/pwsafe.exe help/default/pwsafe.chm
 
-.PHONY: all release bin-release src-release installable signatures \
-	upload md5sums sha1sums
+.PHONY: all release bin-release src-release installables signatures \
+	upload md5sums sha1sums msi nsis
 
-all: release installable signatures sha1sums
+all: release installables signatures sha1sums
 
 upload:
 	(cd $(RELEASEDIR); \
 	 $(FTP_PUT) pwsafe-$(RELEASENAME).exe \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip \
+	 pwsafe-$(RELEASENAME).msi \
+	 pwsafe-$(RELEASENAME).msi.sig \
 	 pwsafe-$(RELEASENAME).exe.sig \
 	 $(BINRELNAME).zip.sig $(SRCRELNAME).zip.sig)
 
 md5sums:
 	(cd $(RELEASEDIR); \
 	 $(MD5SUM) pwsafe-$(RELEASENAME).exe \
+	 pwsafe-$(RELEASENAME).msi \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip)
 
 sha1sums:
 	(cd $(RELEASEDIR); \
 	 $(SHA1SUM) pwsafe-$(RELEASENAME).exe \
+	 pwsafe-$(RELEASENAME).msi \
 	 $(BINRELNAME).zip $(SRCRELNAME).zip)
 
 signatures:
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).exe
+	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 	$(GPG_SIGN) $(RELEASEDIR)/$(BINRELNAME).zip
 	$(GPG_SIGN) $(RELEASEDIR)/$(SRCRELNAME).zip
 
-installable:
+installables: nsis msi
+
+nsis:
 	$(MAKENSIS) /DVERSION=$(RELEASENAME) install/pwsafe.nsi
 	$(MV) install/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
+
+msi:
+	$(SED) 's/PWSAFE_VERSION/$(RELEASENAME)/' \
+		< install/pwsafe-template.wxs > install/pwsafe.wxs
+	$(CANDLE) install/pwsafe.wxs
+	$(LIGHT) -ext WixUIExtension -cultures:en-us pwsafe.wixobj \
+					-out pwsafe.msi
+	$(RM) pwsafe.wixobj
+	$(MV) pwsafe.msi $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 
 release: bin-release src-release
 
