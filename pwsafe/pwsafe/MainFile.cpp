@@ -1249,6 +1249,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
   */
   int numAdded = 0;
   int numConflicts = 0;
+  uuid_array_t uuid;
 
   ItemListConstIter otherPos;
   for (otherPos = othercore.GetEntryIter();
@@ -1292,6 +1293,11 @@ DboxMain::Merge(const CMyString &pszFilename) {
         cs_title.LoadString(IDS_MERGECONFLICTS2);
         MessageBox(warnMsg, cs_title, MB_OK|MB_ICONWARNING);
 
+        /* Check no conflict of unique uuid */
+        otherItem.GetUUID(uuid);
+        if (m_core.Find(uuid) != m_core.GetEntryEndIter())
+          otherItem.CreateUUID();
+
         /* do it */
         otherItem.SetTitle(newTitle);
         m_core.AddEntry(otherItem);
@@ -1299,6 +1305,11 @@ DboxMain::Merge(const CMyString &pszFilename) {
       }
     } else {
       /* didn't find any match...add it directly */
+      /* Check no conflict of unique uuid */
+      otherItem.GetUUID(uuid);
+      if (m_core.Find(uuid) != m_core.GetEntryEndIter())
+        otherItem.CreateUUID();
+
       m_core.AddEntry(otherItem);
       numAdded++;
     }
