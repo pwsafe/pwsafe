@@ -7,6 +7,7 @@
 package org.pwsafe.lib.file;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.pwsafe.lib.Log;
@@ -143,6 +144,8 @@ public class PwsRecordV3 extends PwsRecord
 		setField( new PwsUUIDField(UUID, new UUID()) );
 		setField( new PwsStringUnicodeField(TITLE,    "") );
 		setField( new PwsStringUnicodeField(PASSWORD, "") );
+		setField( new PwsTimeField(CREATION_TIME, new Date()) );
+	       
 	}
 	
 	/**

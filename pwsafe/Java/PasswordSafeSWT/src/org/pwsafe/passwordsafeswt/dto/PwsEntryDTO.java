@@ -242,7 +242,7 @@ public class PwsEntryDTO {
      * @return the Field as Date
      */
 	public static Date getSafeDate(final PwsRecordV3 v3, final int type) {
-		PwsTimeField field = (PwsTimeField) v3.getField(type);
+		final PwsTimeField field = (PwsTimeField) v3.getField(type);
 
 		return field != null ? (Date) field.getValue() : null; 
 	}
@@ -335,6 +335,20 @@ public class PwsEntryDTO {
         return newEntry;
     }
     
+    /**
+     * Only set a date into a PwsTimeField if the date != null.  
+     * @param v3
+     * @param type
+     * @param aDate
+     * @return true if the date != null, else false 
+     */
+	private boolean setSafeDate(final PwsRecordV3 v3, final int type, final Date aDate) {
+		if (aDate == null)
+			return false;
+		v3.setField(new PwsTimeField(type, aDate));
+		return true;
+	}
+
     
 	/**
      * Moves the contents of the DTO into the supplied PwsRecord.
@@ -351,16 +365,17 @@ public class PwsEntryDTO {
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.USERNAME , getUsername()));
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.PASSWORD , getPassword()));
             v3.setField(new PwsStringUnicodeField(PwsRecordV3.NOTES , getNotes()));
-            // roxon: Commented out until proven ok ;-)
-//            v3.setField(new PwsUUIDField(PwsRecordV3.UUID, getId()));
-//            v3.setField(new PwsStringUnicodeField(PwsRecordV3.URL , getUrl()));
-//            v3.setField(new PwsStringUnicodeField(PwsRecordV3.AUTOTYPE , getAutotype()));
-//            v3.setField(new PwsTimeField(PwsRecordV3.CREATION_TIME, getCreated()));
-//            v3.setField(new PwsTimeField(PwsRecordV3.LAST_ACCESS_TIME, getLastAccess()));
-//            v3.setField(new PwsTimeField(PwsRecordV3.LAST_MOD_TIME, getLastChange()));
-//            v3.setField(new PwsTimeField(PwsRecordV3.PASSWORD_MOD_TIME, getLastPwChange()));
-//            v3.setField(new PwsTimeField(PwsRecordV3.PASSWORD_LIFETIME, getExpires()));
-			
+            
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.URL , getUrl()));
+            v3.setField(new PwsStringUnicodeField(PwsRecordV3.AUTOTYPE , getAutotype()));
+            setSafeDate(v3,PwsRecordV3.LAST_ACCESS_TIME, getLastAccess());
+            setSafeDate(v3,PwsRecordV3.LAST_MOD_TIME, getLastChange());
+            setSafeDate(v3,PwsRecordV3.PASSWORD_MOD_TIME, getLastPwChange());
+            setSafeDate(v3,PwsRecordV3.PASSWORD_LIFETIME, getExpires());
+            // never changes, so dont't mess:
+//          v3.setField(new PwsUUIDField(PwsRecordV3.UUID, getId()));
+//          v3.setField(new PwsTimeField(PwsRecordV3.CREATION_TIME, getCreated()));
+
 		} else if (nextRecord instanceof PwsRecordV2) {
             
             PwsRecordV2 v2 = (PwsRecordV2) nextRecord;

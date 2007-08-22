@@ -26,7 +26,7 @@ public class AddRecordAction extends Action {
      */
     public void run() {
         PasswordSafeJFace app = PasswordSafeJFace.getApp();
-        PwsEntryDTO newEntry = new PwsEntryDTO();
+        PwsEntryDTO newEntry = PwsEntryDTO.fromPwsRecord(app.getPwsFile().newRecord());     
 		UserPreferences prefs = UserPreferences.getInstance();
 		if (prefs.getBoolean(UsernamePreferences.USE_DEFAULT_USERNAME)) {
 			newEntry.setUsername(prefs.getString(UsernamePreferences.DEFAULT_USERNAME));
