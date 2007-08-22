@@ -1069,7 +1069,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
 
   dbx->SortTree(TVI_ROOT);
   dbx->FixListIndexes();
-  dbx->RefreshList();
   GetParent()->SetFocus();
 
 exit:
@@ -1129,9 +1128,8 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   }
 }
 
-void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
+void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *)
 {
-  *pLResult = 0L;
   NMTREEVIEW *ptv = (NMTREEVIEW *)pNotifyStruct;
   HTREEITEM hti = ptv->itemNew.hItem;
   if (hti != NULL) {
