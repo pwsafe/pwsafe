@@ -1219,3 +1219,229 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
 
   return true; // should never get here!
 }
+
+static bool
+pull_string(CMyString &str, unsigned char *data, size_t len)
+{
+  CUTF8Conv utf8conv;
+  vector<unsigned char> v(data, (data + len));
+  v.push_back(0); // null terminate for FromUTF8.
+  bool utf8status = utf8conv.FromUTF8((unsigned char *)&v[0],
+                                      len, str);
+  if (!utf8status) {
+    TRACE(_T("CItemData::DeserializePlainText(): FromUTF8 failed!\n"));
+  }
+  trashMemory(&v[0], len);
+  return utf8status;
+}
+
+static bool
+pull_time(time_t &t, unsigned char *data, size_t len)
+{
+  if (len != sizeof(t)) {
+    ASSERT(0);
+    return false;
+  }
+  t = *((time_t *)data);
+  return true;
+}
+
+bool CItemData::DeserializePlainText(const std::vector<char> &v)
+{
+  vector<char>::const_iterator iter = v.begin();
+  int emergencyExit = 255;
+
+  while (iter != v.end()) {
+    int type = (*iter++ & 0xff); // required since enum is an int
+    if ((v.end() - iter) < sizeof(size_t)) {
+      ASSERT(0); // type must ALWAYS be followed by length
+      return false;
+    }
+
+    if (type == END)
+      return true; // happy end
+
+    size_t len = *((size_t *)&(*iter));
+    ASSERT(len < v.size()); // sanity check
+    iter += sizeof(size_t);
+
+    if (--emergencyExit == 0) {
+      ASSERT(0);
+      return false;
+    }
+    if (!SetField(type, (unsigned char *)&(*iter), len))
+      return false;
+    iter += len;
+  }
+  return false; // END tag not found!
+}
+
+bool CItemData::SetField(int type, unsigned char *data, size_t len)
+{
+  CMyString str;
+  time_t t;
+  switch (type) {
+  case NAME:
+    ASSERT(0); // not serialized, or in v3 format
+    return false;
+  case UUID:
+    {
+      uuid_array_t uuid_array;
+      ASSERT(len == sizeof(uuid_array));
+      for (unsigned i = 0; i < sizeof(uuid_array); i++)
+        uuid_array[i] = data[i];
+      SetUUID(uuid_array);
+    }
+    break;
+  case GROUP:
+    if (!pull_string(str, data, len)) return false;
+    SetGroup(str);
+    break;
+  case TITLE:
+    if (!pull_string(str, data, len)) return false;
+    SetTitle(str);
+    break;
+  case USER:
+    if (!pull_string(str, data, len)) return false;
+    SetUser(str);
+    break;
+  case NOTES:
+    if (!pull_string(str, data, len)) return false;
+    SetNotes(str);
+    break;
+  case PASSWORD:
+    if (!pull_string(str, data, len)) return false;
+    SetPassword(str);
+    break;
+  case CTIME:
+    if (!pull_time(t, data, len)) return false;
+    SetCTime(t);
+    break;
+  case  PMTIME:
+    if (!pull_time(t, data, len)) return false;
+    SetPMTime(t);
+    break;
+  case ATIME:
+    if (!pull_time(t, data, len)) return false;
+    SetATime(t);
+    break;
+  case LTIME:
+    if (!pull_time(t, data, len)) return false;
+    SetLTime(t);
+    break;
+  case POLICY:
+    ASSERT(0); // not used, so can't get here
+    return false;
+  case RMTIME:
+    if (!pull_time(t, data, len)) return false;
+    SetRMTime(t);
+    break;
+  case URL:
+    if (!pull_string(str, data, len)) return false;
+    SetURL(str);
+    break;
+  case AUTOTYPE:
+    if (!pull_string(str, data, len)) return false;
+    SetAutoType(str);
+    break;
+  case PWHIST:
+    if (!pull_string(str, data, len)) return false;
+    SetPWHistory(str);
+    break;
+  case END:
+    break;
+  default:
+    // unknowns!
+    SetUnknownField(char(type), len, data);
+    break;
+  }
+  return true;
+}
+
+
+static void
+push_length(vector<char> &v, size_t s)
+{
+  v.insert(v.end(),
+           (char *)&s, (char *)&s + sizeof(size_t));
+}
+
+static void
+push_string(vector<char> &v, char type,
+            const CMyString &str)
+{
+  if (!str.IsEmpty()) {
+    CUTF8Conv utf8conv;
+    bool status;
+    const unsigned char *utf8;
+    int utf8Len;
+    status = utf8conv.ToUTF8(str, utf8, utf8Len);
+    if (status) {
+      v.push_back(type);
+      push_length(v, utf8Len);
+      v.insert(v.end(), (char *)utf8, (char *)utf8 + utf8Len);
+    } else
+      TRACE(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"), str);
+  }
+}
+
+static void
+push_time(vector<char> &v, char type, time_t t)
+{
+  if (t != 0) {
+    v.push_back(type);
+    push_length(v, sizeof(t));
+    v.insert(v.end(),
+             (char *)&t, (char *)&t + sizeof(time_t));
+  }
+}
+
+void CItemData::SerializePlainText(vector<char> &v)  const
+{
+  CMyString tmp;
+  uuid_array_t uuid_array;
+  time_t t = 0;
+
+  v.clear();
+  GetUUID(uuid_array);
+  v.push_back(UUID);
+  push_length(v, sizeof(uuid_array));
+  v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array)));
+  push_string(v, GROUP, GetGroup());
+  push_string(v, TITLE, GetTitle());
+  push_string(v, USER, GetUser());
+  push_string(v, PASSWORD, GetPassword());
+  push_string(v, NOTES, GetNotes());
+  push_string(v, URL, GetURL());
+  push_string(v, AUTOTYPE, GetAutoType());
+
+  GetCTime(t);   push_time(v, CTIME, t);
+  GetPMTime(t);  push_time(v, PMTIME, t);
+  GetATime(t);   push_time(v, ATIME, t);
+  GetLTime(t);   push_time(v, LTIME, t);
+  GetRMTime(t);  push_time(v, RMTIME, t);
+
+  push_string(v, PWHIST, GetPWHistory());
+  UnknownFieldsConstIter vi_IterURFE;
+  for (vi_IterURFE = GetURFIterBegin();
+       vi_IterURFE != GetURFIterEnd();
+       vi_IterURFE++) {
+    unsigned char type;
+    unsigned int length = 0;
+    unsigned char *pdata = NULL;
+    GetUnknownField(type, length, pdata, vi_IterURFE);
+    if (length != 0) {
+      v.push_back((char)type);
+      push_length(v, length);
+      v.insert(v.end(), (char *)pdata, (char *)pdata + length);
+      trashMemory(pdata, length);
+    }
+    delete[] pdata;
+  }
+
+#pragma warning( push )
+#pragma warning( disable : 4310 ) // can't shut up compiler otherwise!
+  v.push_back((const char)END);
+#pragma warning( pop )
+  push_length(v, 0);
+}

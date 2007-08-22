@@ -11,98 +11,64 @@
 #include "corelib/util.h"
 #include "corelib/UUIDGen.h"
 
-IMPLEMENT_SERIAL(CDDObject, CObject, VERSIONABLE_SCHEMA | CDDObject_Version)
+#include <vector>
 
-void CDDObject::Serialize(CArchive& ar)
+using namespace std;
+
+void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
 {
-  if (ar.IsStoring()) {
-    ar << m_nVersion;
-
-    uuid_array_t uuid;
-    m_item.GetUUID(uuid);
-    ar.Write(uuid, sizeof(uuid_array_t));
-
-    ar << (CString)m_item.GetGroup();
-    ar << (CString)m_item.GetTitle();
-    ar << (CString)m_item.GetUser();
-    ar << (CString)m_item.GetNotes();
-    ar << (CString)m_item.GetPassword();
-    ar << (CString)m_item.GetURL();
-    ar << (CString)m_item.GetAutoType();
-    ar << (CString)m_item.GetPWHistory();
-
-    time_t t;
-    m_item.GetCTime(t);  ar << t;
-    m_item.GetPMTime(t); ar << t;
-    m_item.GetATime(t);  ar << t;
-    m_item.GetLTime(t);  ar << t;
-    m_item.GetRMTime(t); ar << t;
-    // XXX TBD - Unknown fields
-  } else { // !Storing
-    int iVersion;
-    ar >> iVersion;
-
-    switch(iVersion) {
-    case 0x100:
-      {
-        CString cs;
-        uuid_array_t uuid;
-        ar.Read(uuid, sizeof(uuid_array_t));
-        m_item.SetUUID(uuid);
-        ar >> cs; m_item.SetGroup(cs);
-        ar >> cs; m_item.SetTitle(cs);
-        ar >> cs; m_item.SetUser(cs);
-        ar >> cs; m_item.SetNotes(cs);
-        ar >> cs; m_item.SetPassword(cs);
-        ar >> cs; m_item.SetURL(cs);
-        ar >> cs; m_item.SetAutoType(cs);
-        ar >> cs; m_item.SetPWHistory(cs);
-        trashMemory(cs);
-
-        time_t t;
-        ar >> t; m_item.SetCTime(t);
-        ar >> t; m_item.SetPMTime(t);
-        ar >> t; m_item.SetATime(t);
-        ar >> t; m_item.SetLTime(t);
-        ar >> t; m_item.SetRMTime(t);
-      }
-      break;
-    default:
-      TRACE(_T("CDDObject::Serialize() - unsupported version %x\n"), iVersion);
-      break;
-    }
-  }
-  CObject::Serialize(ar);
+  vector<char> v;
+  m_item.SerializePlainText(v);
+  size_t len = v.size();
+  outDDmemfile.Write(&len, sizeof(len));
+  outDDmemfile.Write(&(*v.begin()), v.size());
+  trashMemory(&(*v.begin()), v.size());
 }
 
-void CDDObList::Serialize(CArchive& ar)
+void CDDObject::DDUnSerialize(CSMemFile &inDDmemfile)
+{
+  size_t len = 0;
+  size_t lenlen = inDDmemfile.Read(&len, sizeof(len));
+  ASSERT(lenlen == sizeof(len) && len != 0);
+  vector<char> v(len);
+  size_t lenRead = inDDmemfile.Read(&(*v.begin()), len);
+  ASSERT(lenRead == len);
+  bool status = m_item.DeserializePlainText(v);
+  ASSERT(status);
+  trashMemory(&(*v.begin()), v.size());
+}
+
+void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
 {
   // NOTE:  Do not call the base class!
-  int n, nCount;
+  int nCount;
   POSITION Pos;
   CDDObject* pDDObject;
 
-  if (ar.IsStoring()) {
-    nCount = GetCount();
+  nCount = GetCount();
 
-    ar << nCount;
-    ar << m_bDragNode;
+  outDDmemfile.Write((void *)&nCount, sizeof(nCount));
+  outDDmemfile.Write((void *)&m_bDragNode, sizeof(bool));
 
-    Pos = GetHeadPosition();
-    while (Pos != NULL) {
-      pDDObject = (CDDObject *)GetNext(Pos);
-      pDDObject->Serialize(ar);
-    }
-  } else { // !IsStoring
-    ASSERT(GetCount() == 0);
+  Pos = GetHeadPosition();
+  while (Pos != NULL) {
+    pDDObject = (CDDObject *)GetNext(Pos);
+    pDDObject->DDSerialize(outDDmemfile);
+  }
+}
 
-    ar >> nCount;
-    ar >> m_bDragNode;
+void CDDObList::DDUnSerialize(CSMemFile &inDDmemfile)
+{
+  ASSERT(GetCount() == 0);
+  int n, nCount;
+  CDDObject* pDDObject;
 
-    for (n = 0; n < nCount; n++) {
-      pDDObject = new CDDObject();
-      pDDObject->Serialize(ar);
-      AddTail(pDDObject);
-    }
+  inDDmemfile.Read((void *)&nCount, sizeof(nCount));
+  inDDmemfile.Read((void *)&m_bDragNode, sizeof(bool));
+
+  for (n = 0; n < nCount; n++) {
+    pDDObject = new CDDObject();
+    pDDObject->DDUnSerialize(inDDmemfile);
+    AddTail(pDDObject);
   }
 }
