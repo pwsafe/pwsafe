@@ -88,6 +88,9 @@ public:
   enum SubGrpObj {SGO_GROUP, SGO_TITLE, SGO_USER,
                   SGO_GROUPTITLE, SGO_URL, SGO_NOTES};
 
+  // status returns from "ProcessInputRecordField"
+  enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
+
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
@@ -209,6 +212,9 @@ public:
   bool Matches(const CString &subgroup_name, int iObject, 
                int iFunction) const;
   BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
+  void SerializePlainText(std::vector<char> &v) const;
+  bool DeserializePlainText(const std::vector<char> &v);
+  bool SetField(int type, unsigned char *data, size_t len);
 
 private:
   CItemField m_Name;
@@ -273,3 +279,4 @@ inline bool CItemData::IsTextField(unsigned char t)
 // Local variables:
 // mode: c++
 // End:
+

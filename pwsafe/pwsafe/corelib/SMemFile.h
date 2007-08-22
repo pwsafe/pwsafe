@@ -24,11 +24,10 @@ public:
 
 // Implementation
 public:
-
   virtual BYTE* Alloc(SIZE_T nBytes);
   virtual BYTE* Realloc(BYTE* lpMem, SIZE_T nBytes);
   virtual void Free(BYTE * lpMem);
 
-private:
+ private:
   size_t m_size;
 };

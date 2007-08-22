@@ -249,99 +249,31 @@ int PWSfileV3::ReadRecord(CItemData &item)
 
   int status = SUCCESS;
 
-  CMyString tempdata;  
   signed long numread = 0;
   unsigned char type;
 
   int emergencyExit = 255; // to avoid endless loop.
   signed long fieldLen; // <= 0 means end of file reached
-  bool endFound = false; // set to true when record end detected - happy end
-  time_t t;
 
   do {
     unsigned char *utf8 = NULL;
     int utf8Len = 0;
     fieldLen = static_cast<signed long>(ReadCBC(type, utf8,
                                                 (unsigned int &)utf8Len));
-    if (utf8 != NULL) utf8[utf8Len] = '\0';
-
-    if (CItemData::IsTextField(type)) {
-      bool utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, tempdata);
-      if (!utf8status) {
-        TRACE(_T("PWSfileV3::ReadRecord(): FromUTF failed!\n"));
-        status = FAILURE;
-      }
-    }
 
     if (fieldLen > 0) {
       numread += fieldLen;
-      switch (type) {
-      case CItemData::TITLE:
-        item.SetTitle(tempdata); break;
-      case CItemData::USER:
-        item.SetUser(tempdata); break;
-      case CItemData::PASSWORD:
-        item.SetPassword(tempdata); break;
-      case CItemData::NOTES:
-        item.SetNotes(tempdata); break;
-      case CItemData::END:
-        endFound = true; break;
-      case CItemData::UUID: {
-        uuid_array_t uuid_array;
-        ASSERT(utf8Len == sizeof(uuid_array));
-        for (unsigned i = 0; i < sizeof(uuid_array); i++)
-          uuid_array[i] = utf8[i];
-        item.SetUUID(uuid_array); break;
-      }
-      case CItemData::GROUP:
-        item.SetGroup(tempdata); break;
-      case CItemData::URL:
-        item.SetURL(tempdata); break;
-      case CItemData::AUTOTYPE:
-        item.SetAutoType(tempdata); break;
-      case CItemData::CTIME:
-        ASSERT(utf8Len == sizeof(t));
-        memcpy(&t, utf8, sizeof(t));
-        item.SetCTime(t); break;
-      case CItemData::PMTIME:
-        ASSERT(utf8Len == sizeof(t));
-        memcpy(&t, utf8, sizeof(t));
-        item.SetPMTime(t); break;
-      case CItemData::ATIME:
-        ASSERT(utf8Len == sizeof(t));
-        memcpy(&t, utf8, sizeof(t));
-        item.SetATime(t); break;
-      case CItemData::LTIME:
-        ASSERT(utf8Len == sizeof(t));
-        memcpy(&t, utf8, sizeof(t));
-        item.SetLTime(t); break;
-      case CItemData::RMTIME:
-        ASSERT(utf8Len == sizeof(t));
-        memcpy(&t, utf8, sizeof(t));
-        item.SetRMTime(t); break;
-      case CItemData::PWHIST:
-        item.SetPWHistory(tempdata); break;
-
-      case CItemData::POLICY:
-      default:
-        // just silently save fields we don't support.
-        item.SetUnknownField(type, utf8Len, utf8);
-#ifdef DEBUG
-        CString cs_timestamp;
-        cs_timestamp = PWSUtil::GetTimeStamp();
-        TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
-              cs_timestamp, item.GetGroup(), item.GetTitle(), item.GetUser(), 
-              type, utf8Len, utf8Len);
-        PWSUtil::HexDump(utf8, utf8Len, cs_timestamp);
-#endif /* DEBUG */
+      if (!item.SetField(type, utf8, utf8Len)) {
+        status = FAILURE;
         break;
-      } // switch
+      }
     } // if (fieldLen > 0)
+
     if (utf8 != NULL) {
       trashMemory(utf8, utf8Len * sizeof(utf8[0]));
       delete[] utf8; utf8 = NULL; utf8Len = 0;
     }
-  } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
+  } while (type != CItemData::END && fieldLen > 0 && --emergencyExit > 0);
   if (numread > 0)
     return status;
   else
