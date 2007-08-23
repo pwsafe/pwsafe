@@ -124,7 +124,6 @@ public:
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
   BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
   void RefreshList();
-  void SortTree(const HTREEITEM htreeitem);
 
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}

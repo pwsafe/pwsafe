@@ -141,26 +141,6 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
-static int CALLBACK ExplorerCompareProc(LPARAM lParam1, LPARAM lParam2, LPARAM /*closure*/)
-{
-  int iResult;
-  CItemData* pLHS = (CItemData *)lParam1;
-  CItemData* pRHS = (CItemData *)lParam2;
-  //DboxMain *self = (DboxMain*)closure;
-  if (pLHS == NULL)
-      return -1;
-  if (pRHS == NULL)
-      return 1;
-  
-  iResult = (pLHS->GetGroup()).CompareNoCase(pRHS->GetGroup());
-  if (iResult == 0) {
-    iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
-    if (iResult == 0) {
-      iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
-    }
-  }
-  return iResult;
-}
 
 void
 DboxMain::DoDataExchange(CDataExchange* pDX)
@@ -663,28 +643,30 @@ DboxMain::RefreshList()
   m_ctlItemTree.DeleteAllItems();
   m_bBoldItem = false;
 
-  ItemListIter listPos;
+  if (m_core.GetNumEntries() != 0) {
+    ItemListIter listPos;
 #if defined(POCKET_PC)
-  SetCursor( waitCursor );
+    SetCursor( waitCursor );
 #endif
-  for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
-       listPos++) {
-    CItemData &ci = m_core.GetEntry(listPos);
-    DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
-    if (di != NULL)
-      di->list_index = -1; // easier, but less efficient, to delete di
-    insertItem(ci, -1, false);
-  }
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-    SortTree(TVI_ROOT);
-  else
-    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-
+    for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
+         listPos++) {
+      CItemData &ci = m_core.GetEntry(listPos);
+      DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
+      if (di != NULL)
+        di->list_index = -1; // easier, but less efficient, to delete di
+      insertItem(ci, -1, false);
+    }
+    
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
+      m_ctlItemTree.SortTree(TVI_ROOT);
+    else
+      m_ctlItemTree.SortChildren(TVI_ROOT);
+    //      m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+    
 #if defined(POCKET_PC)
-  SetCursor( NULL );
+    SetCursor( NULL );
 #endif
-  //  m_ctlItemTree.RestoreExpanded();
+  } // we have entries
 
 
   // re-enable and force redraw!
@@ -692,22 +674,6 @@ DboxMain::RefreshList()
   m_ctlItemTree.SetRedraw( TRUE ); m_ctlItemTree.Invalidate();
 
   FixListIndexes();
-}
-
-void
-DboxMain::SortTree(const HTREEITEM htreeitem)
-{
-  TVSORTCB tvs;
-  HTREEITEM hti(htreeitem);
-
-  if (hti == NULL)
-      hti = TVI_ROOT;
-
-  tvs.hParent = hti;
-  tvs.lpfnCompare = ExplorerCompareProc;
-  tvs.lParam = (LPARAM)this;
-
-  m_ctlItemTree.SortChildrenCB(&tvs);
 }
 
 void
@@ -1009,7 +975,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
       m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
       if (bSort)
-        SortTree(m_ctlItemTree.GetParentItem(ti));
+        m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
     }
     time_t now, warnexptime, tLTime;
     time(&now);
