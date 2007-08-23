@@ -35,6 +35,7 @@ class CPWTreeCtrl : public CTreeCtrl
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
+  void SortTree(const HTREEITEM htreeitem);
   bool IsLeafNode(HTREEITEM hItem);
   CMyString MakeTreeDisplayString(const CItemData &ci) const;
   void SetRestoreMode(bool flag) {m_isRestoring = flag;}

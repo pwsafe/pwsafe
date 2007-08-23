@@ -671,7 +671,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
     // Sort it as appropriate
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-      dbx->SortTree(ti);
+      SortTree(ti);
     else
       SortChildren(GetParentItem(ti));
 
@@ -1050,7 +1050,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
         MoveItem(m_hitemDrag, hitemDrop);
       } else if (dropEffect == DROPEFFECT_COPY) {
         CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
-        dbx->SortTree(hitemDrop);
+        SortTree(hitemDrop);
       }
       SelectItem(hitemDrop);
       retval = TRUE;
@@ -1067,7 +1067,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
     retval = TRUE;
   }
 
-  dbx->SortTree(TVI_ROOT);
+  SortTree(TVI_ROOT);
   dbx->FixListIndexes();
   GetParent()->SetFocus();
 
@@ -1351,3 +1351,59 @@ CMyString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
   }
   return treeDispString;
 }
+
+static int CALLBACK ExplorerCompareProc(LPARAM lParam1, LPARAM lParam2,
+                                        LPARAM /* closure */)
+{
+  int iResult;
+  CItemData* pLHS = (CItemData *)lParam1;
+  CItemData* pRHS = (CItemData *)lParam2;
+  if (pLHS == pRHS) { // probably both null, in any case, equal
+    iResult = 0;
+  } else if (pLHS == NULL) {
+    iResult = -1;
+  } else if (pRHS == NULL) {
+    iResult = 1;
+  } else {
+
+    iResult = (pLHS->GetGroup()).CompareNoCase(pRHS->GetGroup());
+    if (iResult == 0) {
+      iResult = (pLHS->GetTitle()).CompareNoCase(pRHS->GetTitle());
+      if (iResult == 0) {
+        iResult = (pLHS->GetUser()).CompareNoCase(pRHS->GetUser());
+      }
+    }
+  }
+  return iResult;
+}
+
+void
+CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
+{
+  TVSORTCB tvs;
+  HTREEITEM hti(htreeitem);
+
+  if (hti == NULL)
+      hti = TVI_ROOT;
+
+  // unbelievable, but we have to recurse ourselves!
+  // foreach child of hti
+  //  if !IsLeafNode
+  //   SortTree(child)
+  if (hti == TVI_ROOT || !IsLeafNode(hti)) {
+    HTREEITEM hChildItem = GetChildItem(hti);
+
+    while (hChildItem != NULL) {
+      if (ItemHasChildren(hChildItem))
+        SortTree(hChildItem);
+      hChildItem = GetNextItem(hChildItem, TVGN_NEXT);
+    }
+  }
+
+  tvs.hParent = hti;
+  tvs.lpfnCompare = ExplorerCompareProc;
+  tvs.lParam = (LPARAM)this;
+
+  SortChildrenCB(&tvs);
+}
+

@@ -20,6 +20,8 @@ selected and if URL is populated
 save.
 [1771357] Timeout timer now reset in all dialog boxes - PasswordSafe
 will no longer minimize in the middle of work with an open dialog box.
+[1754054, 1754611] Items are now fully sorted when "put groups first
+in display tree" selected.
 
 New Features for 3.09.01
 ========================
