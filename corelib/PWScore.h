@@ -16,6 +16,7 @@
 #include "MyString.h"
 #include "PWSfile.h"
 #include "UUIDGen.h"
+#include "Report.h"
 
 #define MAXDEMO 10
 
@@ -91,7 +92,8 @@ class PWScore {
                    const int &iFunction, const TCHAR delimiter,
                    const OrderedItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
-                          TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped);
+                          TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped,
+                          CReport &rpt);
   int ImportKeePassTextFile(const CMyString &filename);
   int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
                     CString &strErrors, int &numValidated, int &numImported,
@@ -122,6 +124,8 @@ class PWScore {
 
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary);
+  CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
+                           const CMyString &user, const int IDS_MESSAGE);
 
   ItemListIter GetEntryIter()
   {return m_pwlist.begin();}

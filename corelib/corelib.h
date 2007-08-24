@@ -99,3 +99,12 @@
 #define IDSC_END_REPORT1                3256
 #define IDSC_END_REPORT2                3257
 
+#define IDSC_IMPORTNOHEADER             3258
+#define IDSC_IMPORTLINESKIPPED          3259
+#define IDSC_IMPORTKNOWNHDRS            3260
+#define IDSC_IMPORTEMPTYLINESKIPPED     3261
+#define IDSC_PWHERRORLINE               3262
+#define IDSC_PWHISTORYSKIPPED           3263
+#define IDSC_IMPORTCONFLICTS1           3264
+#define IDSC_IMPORTCONFLICTS2           3265
+#define IDSC_READNUMBER                 3266

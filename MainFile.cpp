@@ -924,13 +924,19 @@ DboxMain::OnImportText()
         return;
     }
     if (rc == IDOK) {
-        CString strErrors;
+        CString strError;
         CMyString newfile = (CMyString)fd.GetPathName();
         int numImported = 0, numSkipped = 0;
         TCHAR delimiter = dlg.m_defimpdelim[0];
 
-        rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strErrors, fieldSeparator,
-                                        delimiter, numImported, numSkipped);
+        /* Create report as we go */
+        CReport rpt;
+        rpt.StartReport(_T("Import_Text"), m_core.GetCurFile());
+        cs_temp.Format(IDS_IMPORTFILE, newfile);
+        rpt.WriteLine(cs_temp);
+
+        rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strError, fieldSeparator,
+                                        delimiter, numImported, numSkipped, rpt);
 
         cs_title.LoadString(IDS_FILEREADERROR);
         switch (rc) {
@@ -948,7 +954,7 @@ DboxMain::OnImportText()
             break;
             case PWScore::FAILURE:
             {
-                MessageBox(strErrors, cs_title, MB_OK|MB_ICONWARNING);
+                MessageBox(strError, cs_title, MB_OK|MB_ICONWARNING);
             }
             break;
             case PWScore::SUCCESS:
@@ -960,12 +966,15 @@ DboxMain::OnImportText()
                     temp2.Format(IDS_RECORDSNOTREAD, numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
 
                 cs_title.LoadString(IDS_STATUS);
-                MessageBox(strErrors + temp1 + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
+                cs_temp = temp1 + temp2;
+                MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
+                rpt.WriteLine(cs_temp);
                 ChangeOkUpdate();
             }
             RefreshList();
             break;
         } // switch
+        rpt.EndReport();
     }
 }
 
