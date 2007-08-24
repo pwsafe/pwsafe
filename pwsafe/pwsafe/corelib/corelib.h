@@ -93,7 +93,9 @@
 #define IDSC_BADPASSWORD                3251
 
 #define IDSC_REPORTFILENAME             3252
-#define IDSC_REPORT_TITLE               3253
-#define IDSC_START_REPORT               3254
-#define IDSC_END_REPORT                 3255
+#define IDSC_REPORT_TITLE1              3253
+#define IDSC_REPORT_TITLE2              3254
+#define IDSC_START_REPORT               3255
+#define IDSC_END_REPORT1                3256
+#define IDSC_END_REPORT2                3257
 

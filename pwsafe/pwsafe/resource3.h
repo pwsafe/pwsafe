@@ -201,7 +201,7 @@
 #define IDS_XMLIMPORTOK                 5369
 #define IDS_PICKMERGEFILE               5370
 #define IDS_MERGECONFLICTS              5371
-#define IDS_MERGECONFLICTS2             5372
+#define IDS_MERGINGDATABASE             5372
 #define IDS_MERGECOMPLETED              5373
 #define IDS_MERGECOMPLETED2             5374
 #define IDS_NOCOMPAREFILE               5375

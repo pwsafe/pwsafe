@@ -151,7 +151,9 @@ END
 STRINGTABLE
 BEGIN
     IDSC_REPORTFILENAME      "%s%s%s_Report.txt"
-    IDSC_REPORT_TITLE        "Report of %s function on database %s started at %s"
+    IDSC_REPORT_TITLE1       "Report of %s function started at %s"
+    IDSC_REPORT_TITLE2       "on database %s"
     IDSC_START_REPORT        "Start Report"
-    IDSC_END_REPORT          "End Report"
+    IDSC_END_REPORT1         "End Report"
+    IDSC_END_REPORT2         "--------------------------------------------------------------------------------"
 END

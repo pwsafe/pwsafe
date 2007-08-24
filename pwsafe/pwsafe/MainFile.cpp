@@ -26,6 +26,7 @@
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
 #include "corelib/PWSdirs.h"
+#include "corelib/Report.h"
 
 #include <sys/types.h>
 #include <bitset>
@@ -38,7 +39,6 @@ using namespace std;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
 
 BOOL
 DboxMain::OpenOnInit(void)
@@ -1232,6 +1232,12 @@ DboxMain::Merge(const CMyString &pszFilename) {
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
 
+  /* Create report as we go */
+  CReport rpt;
+  rpt.StartReport(_T("Merge"), m_core.GetCurFile());
+  cs_temp.Format(IDS_MERGINGDATABASE, pszFilename);
+  rpt.WriteLine(cs_temp);
+
   /*
     Purpose:
     Merge entries from otherCore to m_core
@@ -1243,7 +1249,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
     if pw, notes, & group also matches
     no merge
     else
-    add to m_core with new title suffixed with -merged-HHMMSS-DDMMYY
+    add to m_core with new title suffixed with -merged-YYYYMMDD-HHMMSS
     else
     add to m_core directly
   */
@@ -1276,22 +1282,25 @@ DboxMain::Merge(const CMyString &pszFilename) {
           otherItem.GetAutoType() != curItem.GetAutoType()) {
 
         /* have a match on title/user, but not on other fields
-           add an entry suffixed with -merged-HHMMSS-DDMMYY */
+           add an entry suffixed with -merged-YYYYMMDD-HHMMSS */
         CTime curTime = CTime::GetCurrentTime();
         CMyString newTitle = otherItem.GetTitle();
         newTitle += _T("-merged-");
-        CMyString timeStr = curTime.Format(_T("%H%M%S-%m%d%y"));
+        CMyString timeStr = curTime.Format(_T("%Y%m%d-%H%M%S"));
         newTitle = newTitle + timeStr;
 
         /* note it as an issue for the user */
         CString warnMsg;
-        warnMsg.Format(IDS_MERGECONFLICTS, otherItem.GetGroup(), otherItem.GetTitle(),
-                       otherItem.GetUser(), newTitle, otherItem.GetUser());
+        warnMsg.Format(IDS_MERGECONFLICTS, 
+                       otherItem.GetGroup(), 
+                       otherItem.GetTitle(),
+                       otherItem.GetUser(),
+                       otherItem.GetGroup(), 
+                       newTitle, 
+                       otherItem.GetUser());
 
-        /* tell the user the bad news */
-        CString cs_title;
-        cs_title.LoadString(IDS_MERGECONFLICTS2);
-        MessageBox(warnMsg, cs_title, MB_OK|MB_ICONWARNING);
+        /* log it */
+        rpt.WriteLine(warnMsg);
 
         /* Check no conflict of unique uuid */
         otherItem.GetUUID(uuid);
@@ -1329,6 +1338,8 @@ DboxMain::Merge(const CMyString &pszFilename) {
                    numConflicts == 1 ? _T("") : _T("s"));
   cs_title.LoadString(IDS_MERGECOMPLETED2);
   MessageBox(resultStr, cs_title, MB_OK);
+  rpt.WriteLine(resultStr);
+  rpt.EndReport();
 
   ChangeOkUpdate();
   RefreshList();
