@@ -59,8 +59,10 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
   }
 
   CString cs_title;
-  cs_title.Format(IDSC_REPORT_TITLE, tcAction, csDataBase, PWSUtil::GetTimeStamp());
+  cs_title.Format(IDSC_REPORT_TITLE1, tcAction, PWSUtil::GetTimeStamp());
   WriteLine();
+  WriteLine(cs_title);
+  cs_title.Format(IDSC_REPORT_TITLE2, csDataBase);
   WriteLine(cs_title);
   WriteLine();
   cs_title.LoadString(IDSC_START_REPORT);
@@ -130,7 +132,9 @@ CReport::EndReport()
 {
   WriteLine();
   CString cs_title;
-  cs_title.LoadString(IDSC_END_REPORT);
+  cs_title.LoadString(IDSC_END_REPORT1);
+  WriteLine(cs_title);
+  cs_title.LoadString(IDSC_END_REPORT2);
   WriteLine(cs_title);
 
   if (m_fd != NULL)

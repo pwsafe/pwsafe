@@ -22,6 +22,7 @@ save.
 will no longer minimize in the middle of work with an open dialog box.
 [1754054, 1754611] Items are now fully sorted when "put groups first
 in display tree" selected.
+[1757298, 1774428] Merge nolonger loses data
 
 New Features for 3.09.01
 ========================
@@ -31,6 +32,7 @@ text editor via right click on Notes field.
 [1517048] PasswordSafe can now be installed as an msi package (Windows
 installer). This allows site administrators to 'push' PasswordSafe to
 client machines with group policy. Thanks to xenophonf.
+[1751484] Error log file produced when Merging.
 
 Bugs fixed in 3.09
 ==================
