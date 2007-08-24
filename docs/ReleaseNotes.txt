@@ -24,6 +24,7 @@ will no longer minimize in the middle of work with an open dialog box.
 in display tree" selected.
 [1757298, 1774428] Merge nolonger loses data
 [] Ensure group/title/user combination is unique during text import.
+[] Ensure group/title/user combination is unique when opening a database.
 
 New Features for 3.09.01
 ========================
