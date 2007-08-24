@@ -478,6 +478,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Report.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SAXHandlers.cpp"
 				>
 			</File>
@@ -608,6 +612,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSXML.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Report.h"
 				>
 			</File>
 			<File
