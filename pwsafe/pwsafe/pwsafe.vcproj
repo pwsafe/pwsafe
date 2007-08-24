@@ -881,10 +881,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ItemData.h"
-				>
-			</File>
-			<File
 				RelativePath=".\jprdebug.h"
 				>
 			</File>

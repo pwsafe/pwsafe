@@ -147,3 +147,11 @@ BEGIN
     IDSC_ENCODING_PROBLEM    "Trouble with non-ASCII data in record '%s' - please check data carefully."
 
 END
+
+STRINGTABLE
+BEGIN
+    IDSC_REPORTFILENAME      "%s%s%s_Report.txt"
+    IDSC_REPORT_TITLE        "Report of %s function on database %s started at %s"
+    IDSC_START_REPORT        "Start Report"
+    IDSC_END_REPORT          "End Report"
+END

@@ -92,4 +92,8 @@
 #define IDSC_FILEPATHNOTFOUND IDSC_FILEEXCEPTION02
 #define IDSC_BADPASSWORD                3251
 
+#define IDSC_REPORTFILENAME             3252
+#define IDSC_REPORT_TITLE               3253
+#define IDSC_START_REPORT               3254
+#define IDSC_END_REPORT                 3255
 
