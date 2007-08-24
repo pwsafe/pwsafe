@@ -18,6 +18,7 @@
 #include "UUIDGen.h"
 #include "SysInfo.h"
 #include "UTF8Conv.h"
+#include "Report.h"
 
 #include <shellapi.h>
 #include <shlwapi.h>
@@ -83,7 +84,6 @@ void PWScore::SetApplicationNameAndVersion(const CString &appName,
   int nMinor = LOWORD(dwMajorMinor);
   m_AppNameAndVersion.Format(_T("%s V%d.%02d"), appName, nMajor, nMinor);
 }
-
 
 void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
 {
@@ -562,17 +562,18 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 
 int
 PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
-                             const CMyString &filename, CString &strErrors,
+                             const CMyString &filename, CString &strError,
                              TCHAR fieldSeparator, TCHAR delimiter,
-                             int &numImported, int &numSkipped)
+                             int &numImported, int &numSkipped,
+                             CReport &rpt)
 {
+  CString csError;
   ifstreamT ifs(filename);
 
   if (!ifs)
     return CANT_OPEN_FILE;
 
   numImported = numSkipped = 0;
-  strErrors = _T("");
 
   if (m_impexphdr.IsEmpty())
     m_impexphdr.LoadString(IDSC_EXPORTHEADER);
@@ -580,7 +581,6 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   int numlines = 0;
 
   CItemData temp;
-  CString buffer;
   vector<stringT> vs_Header;
   const stringT s_hdr(m_impexphdr);
   const TCHAR pTab[] = _T("\t");
@@ -598,7 +598,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   // Duplicate as c_str is R-O and strtok modifies the string
   pTemp = _tcsdup(s_hdr.c_str());
   if (pTemp == NULL) {
-    strErrors.LoadString(IDSC_IMPORTFAILURE);
+    strError.LoadString(IDSC_IMPORTFAILURE);
+    rpt.WriteLine(strError);
     return FAILURE;
   }
 
@@ -628,13 +629,17 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   stringT s_title, linebuf;
 
   // Get title record
-  if (!getline(ifs, s_title, TCHAR('\n')))
+  if (!getline(ifs, s_title, TCHAR('\n'))) {
+    strError.LoadString(IDSC_IMPORTNOHEADER);
+    rpt.WriteLine(strError);
     return SUCCESS;  // not even a title record! - succeeded but none imported!
+  }
 
   // Duplicate as c_str is R-O and strtok modifies the string
   pTemp = _tcsdup(s_title.c_str());
   if (pTemp == NULL) {
-    strErrors.LoadString(IDSC_IMPORTFAILURE);
+    strError.LoadString(IDSC_IMPORTFAILURE);
+    rpt.WriteLine(strError);
     return FAILURE;
   }
 
@@ -670,18 +675,32 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
   free(pTemp);
   if (num_found == 0) {
-    strErrors.LoadString(IDSC_IMPORTNOCOLS);
+    strError.LoadString(IDSC_IMPORTNOCOLS);
+    rpt.WriteLine(strError);
     return FAILURE;
   }
 
   // These are "must haves"!
   if (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1) {
-    strErrors.LoadString(IDSC_IMPORTMISSINGCOLS);
+    strError.LoadString(IDSC_IMPORTMISSINGCOLS);
+    rpt.WriteLine(strError);
     return FAILURE;
   }
 
-  if (num_found < vs_Header.size())
-    strErrors.Format(IDSC_IMPORTHDR, num_found);
+  if (num_found < vs_Header.size()) {
+    csError.Format(IDSC_IMPORTHDR, num_found);
+    rpt.WriteLine(csError);
+    csError.LoadString(IDSC_IMPORTKNOWNHDRS);
+    rpt.WriteLine(csError, false);
+    for (int i = 0; i < NUMFIELDS; i++) {
+      if (i_Offset[i] >= 0) {
+        const stringT &sHdr = vs_Header.at(i);
+        csError.Format(_T(" %s,"), sHdr.c_str());
+        rpt.WriteLine(csError, false);
+      }
+    }
+    rpt.WriteLine();
+  }
 
   // Finished parsing header, go get the data!
   for (;;) {
@@ -695,8 +714,12 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     }
 
     // skip blank lines
-    if (linebuf.empty())
+    if (linebuf.empty()) {
+      csError.Format(IDSC_IMPORTEMPTYLINESKIPPED, numlines);
+      rpt.WriteLine(csError);
+      numSkipped++;
       continue;
+    }
 
     // tokenize into separate elements
     itoken = 0;
@@ -721,8 +744,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
             bool noteClosed = false;
             do {
               if (!getline(ifs, linebuf, TCHAR('\n'))) {
-                buffer.Format(IDSC_IMPMISSINGQUOTE, numlines);
-                strErrors += buffer;
+                csError.Format(IDSC_IMPMISSINGQUOTE, numlines);
+                rpt.WriteLine(csError);
                 ifs.close(); // file ends before note closes
                 return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
               }
@@ -747,6 +770,8 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
     // Sanity check
     if (tokens.size() < num_found) {
+      csError.Format(IDSC_IMPORTLINESKIPPED, numlines);
+      rpt.WriteLine(csError);
       numSkipped++;
       continue;
     }
@@ -776,6 +801,20 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     std::replace(entrytitle.begin(), entrytitle.end(), delimiter, TCHAR('.'));
     temp.SetTitle(CMyString(entrytitle.c_str()));
 
+    // Now make sure it is unique
+    const CMyString group = temp.GetGroup();
+    const CMyString title = temp.GetTitle();
+    const CMyString user = temp.GetUser();
+    CMyString newtitle = GetUniqueTitle(group, title, user, IDSC_IMPORTNUMBER);
+    temp.SetTitle(newtitle);
+    if (newtitle.Compare(title) != 0) {
+      if (group.GetLength() == 0)
+    	  csError.Format(IDSC_IMPORTCONFLICTS2, numlines, title, user, newtitle);
+      else
+        csError.Format(IDSC_IMPORTCONFLICTS1, numlines, group, title, user, newtitle);
+    	rpt.WriteLine(csError);
+    }
+
     if (i_Offset[URL] >= 0)
       temp.SetURL(tokens[i_Offset[URL]].c_str());
     if (i_Offset[AUTOTYPE] >= 0)
@@ -793,15 +832,13 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     if (i_Offset[HISTORY] >= 0) {
       CMyString newPWHistory;
       CString strPWHErrors;
-	    buffer.Format(IDSC_IMPINVALIDPWH, numlines);
+	    csError.Format(IDSC_IMPINVALIDPWH, numlines);
 	    switch (PWSUtil::VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
                                                    newPWHistory, strPWHErrors)) {
       case PWH_OK:
         temp.SetPWHistory(newPWHistory);
-        buffer.Empty();
         break;
       case PWH_IGNORE:
-        buffer.Empty();
         break;
       case PWH_INVALID_HDR:
       case PWH_INVALID_STATUS:
@@ -812,11 +849,13 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       case PWH_TOO_LONG:
       case PWH_INVALID_CHARACTER:
       default:
-        buffer += strPWHErrors;
+        rpt.WriteLine(csError, false);
+        rpt.WriteLine(strPWHErrors, false);
+        csError.LoadString(IDSC_PWHISTORYSKIPPED);
+        rpt.WriteLine(strPWHErrors);
         break;
 	    }
     }
-    strErrors += buffer;
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
@@ -993,7 +1032,6 @@ PWScore::ReadFile(const CMyString &a_filename,
       } // switch
       temp.Clear(); // Rather than creating a new one each time.
     } while (go);
-
 
     m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
     in->GetUnknownHeaderFields(m_UHFL);
@@ -1506,4 +1544,23 @@ void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
 void PWScore::GetFileUUID(uuid_array_t &file_uuid_array)
 {
   memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
+}
+
+CMyString PWScore::GetUniqueTitle(const CMyString &path, const CMyString &title,
+                                  const CMyString &user, const int IDS_MESSAGE)
+{
+  CMyString new_title(title);
+  if (Find(path, title, user) != m_pwlist.end()) {
+    // Find a unique "Title"
+    ItemListConstIter listpos;
+    int i = 0;
+    CString s_copy;
+    do {
+      i++;
+      s_copy.Format(IDS_MESSAGE, i);
+      new_title = title + CMyString(s_copy);
+      listpos = Find(path, new_title, user);
+    } while (listpos != m_pwlist.end());
+  }
+  return new_title;
 }

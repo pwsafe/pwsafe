@@ -170,7 +170,8 @@ public:
   void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
   int AddEntry(const CItemData &cinew);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-                           const CMyString &user, const int IDS_MESSAGE);
+                           const CMyString &user, const int IDS_MESSAGE) {
+      return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(bool inRecursion = false);
   void SaveDisplayStatus(); // call when tree expansion state changes

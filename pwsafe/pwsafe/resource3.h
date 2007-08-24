@@ -301,3 +301,4 @@
 #define IDS_NOTES_IN_EXTERNAL_EDITOR    5473
 #define IDS_CPF_TVDD                    5474
 #define IDS_RECORDUNKNOWNFIELDS         5475
+#define IDS_IMPORTFILE                  5476

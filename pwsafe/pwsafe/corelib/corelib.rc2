@@ -41,13 +41,19 @@ END
 
 STRINGTABLE
 BEGIN
-    IDSC_IMPMISSINGQUOTE    "\nFile ends on line %d before ending double quote of last entry's note field."
-    IDSC_IMPINVALIDINPUT    "\nInvalid input on line %d.  Number of fields separated by '%c' is not as expected."
-    IDSC_IMPINVALIDPWH      "\nError in Password History on line %d: "
-    IDSC_IMPORTFAILURE      "\nInternal error. Import failed.\n\nNo records imported."
-    IDSC_IMPORTHDR          "Found %d known column headers\n"
-    IDSC_IMPORTMISSINGCOLS  "\nEither or both of the Group/Title and Password columns are missing.\n\nNo records imported."
-    IDSC_IMPORTNOCOLS       "\nColumn header row not recognised as first record.\n\nNo records imported."
+    IDSC_IMPMISSINGQUOTE    "File ends on line %d before ending double quote of last entry's note field."
+    IDSC_IMPINVALIDINPUT    "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
+    IDSC_IMPINVALIDPWH      "Line %d: "
+    IDSC_IMPORTFAILURE      "Internal error. Import failed. No records imported."
+    IDSC_IMPORTHDR          "Found %d known column headers:"
+    IDSC_IMPORTKNOWNHDRS    "The following columns will be processed: "
+    IDSC_IMPORTMISSINGCOLS  "Either or both of the Group/Title and Password columns are missing. No records imported."
+    IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
+    IDSC_IMPORTNOHEADER     "No records in import file!"
+    IDSC_IMPORTLINESKIPPED  "Line %d skipped"
+    IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
+    IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"", Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
+    IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group, Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
 END
 
 STRINGTABLE
@@ -74,15 +80,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDSC_PWHERROR           "Error in Password History field at offset %d: "
+    IDSC_PWHERROR           "Error in Password History field at offset within this field of %d: "
     IDSC_INVALIDHEADER      "Invalid header: %s"
     IDSC_INVALIDPWHSTATUS   "Invalid status value: %d"
-    IDSC_INVALIDNUMOLDPW    "Invalid number of saved old passwords %d (max. set to %d)"
-    IDSC_INVALIDDATETIME    "Invalid date/time value"
-    IDSC_INVALIDPWLENGTH    "Invalid password length found"
-    IDSC_FIELDTOOSHORT      "Field is too short. Minimum required per old password entry is 26 + the actual password"
-    IDSC_FIELDTOOLONG       "Field is too long"
-    IDSC_INVALIDSEPARATER   "Invalid field separator character found - only a single blank is allowed between fields"
+    IDSC_INVALIDNUMOLDPW    "Invalid number of saved old passwords %d (current max. is set to %d)."
+    IDSC_INVALIDDATETIME    "Invalid date/time value."
+    IDSC_INVALIDPWLENGTH    "Invalid password length found."
+    IDSC_FIELDTOOSHORT      "Field is too short. Minimum required per old password entry is 26 + the actual password."
+    IDSC_FIELDTOOLONG       "Field is too long."
+    IDSC_INVALIDSEPARATER   "Invalid field separator character found - only a single blank is allowed between fields."
+    IDSC_PWHISTORYSKIPPED   "Password History ignored"
 END
 
 STRINGTABLE
