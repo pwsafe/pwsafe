@@ -12,6 +12,7 @@
  * of the data that we put on the clipboard, so that
  * ClearData() only clears the clipboard if it has what we put on it, and
  * if isSensitive was true when we added it.
+ * UnilateralyClearData clears the clipboard of data of all formats
  */
 
 #include "sha256.h"
@@ -31,8 +32,12 @@ public:
   ~PWSclipboard();
 
   bool SetData(const CMyString &data,
-               bool isSensitive = true); // returns true if succeeded
+               bool isSensitive = true,
+               CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
+               // returns true if succeeded
   bool ClearData(); // return true if cleared or if data wasn't ours
+  void UnilaterallyClearData(); // Clear it unilaterally - data ours or not
+
 private:
   bool m_set;
   unsigned char m_digest[SHA256::HASHLEN];
