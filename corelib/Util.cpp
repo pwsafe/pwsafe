@@ -699,7 +699,8 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 }
 
 int
-PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, CString &strErrors)
+PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, 
+                                     CString &strErrors)
 {
 	// Format is (! == mandatory blank, unless at the end of the record):
 	//    sxx00
@@ -765,7 +766,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 	for (int i = 0; i < n; i++) {
 		if (pwleft < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
 			rc = PWH_TOO_SHORT;
-			break;
+			goto relbuf;
 		}
 
 		if (lpszPWHistory[0] != _T(' ')) {
@@ -783,7 +784,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 		else {
 			if (!VerifyImportDateTimeString(tmp, t)) {
 				rc = PWH_INVALID_DATETIME;
-				break;
+				goto relbuf;
 			}
 		}
 
@@ -805,7 +806,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 #endif
 		if (iread != 1) {
 			rc = PWH_INVALID_PSWD_LENGTH;
-			break;
+			goto relbuf;
 		}
 
 		lpszPWHistory += 4;
@@ -821,7 +822,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 
 		if (pwleft < ipwlen) {
 			rc = PWH_INVALID_PSWD_LENGTH;
-			break;
+			goto relbuf;
 		}
 
     tmp = CMyString(lpszPWHistory, ipwlen);
@@ -837,7 +838,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 
 	relbuf: pwh.ReleaseBuffer();
 
-	exit: buffer.Format(IDSC_PWHERROR, len - pwleft);
+	exit: buffer.Format(IDSC_PWHERROR, len - pwleft + 1);
 	CString temp;
 	switch (rc) {
 		case PWH_OK:
@@ -872,8 +873,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
 		default:
 			ASSERT(0);
 	}
-	buffer += temp;
-	strErrors += buffer;
+	strErrors = buffer + temp;
 	if (rc != PWH_OK)
 		newPWHistory = _T("");
 

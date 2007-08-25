@@ -181,19 +181,19 @@ public:
   void SetAutoType(const CMyString &autotype); // V30
   void SetATime() {SetTime(ATIME);}  // V30
   void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
-  void SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
+  bool SetATime(const CString &time_str) {return SetTime(ATIME, time_str);}  // V30
   void SetCTime() {SetTime(CTIME);}  // V30
   void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
-  void SetCTime(const CString &time_str) {SetTime(CTIME, time_str);}  // V30
+  bool SetCTime(const CString &time_str) {return SetTime(CTIME, time_str);}  // V30
   void SetLTime() {SetTime(LTIME);}  // V30
   void SetLTime(time_t t) {SetTime(LTIME, t);}  // V30
-  void SetLTime(const CString &time_str) {SetTime(LTIME, time_str);}  // V30
+  bool SetLTime(const CString &time_str) {return SetTime(LTIME, time_str);}  // V30
   void SetPMTime() {SetTime(PMTIME);}  // V30
   void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
-  void SetPMTime(const CString &time_str) {SetTime(PMTIME, time_str);}  // V30
+  bool SetPMTime(const CString &time_str) {return SetTime(PMTIME, time_str);}  // V30
   void SetRMTime() {SetTime(RMTIME);}  // V30
   void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
-  void SetRMTime(const CString &time_str) {SetTime(RMTIME, time_str);}  // V30
+  bool SetRMTime(const CString &time_str) {return SetTime(RMTIME, time_str);}  // V30
   void SetPWHistory(const CMyString &PWHistory);  // V30
   int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
                           PWHistList* pPWHistList,
@@ -252,7 +252,7 @@ private:
   void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
-  void SetTime(const int whichtime, const CString &time_str); // V30
+  bool SetTime(const int whichtime, const CString &time_str); // V30
 
   // Create local Encryption/Decryption object
   BlowFish *MakeBlowFish() const;
