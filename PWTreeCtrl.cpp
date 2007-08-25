@@ -1130,8 +1130,12 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *)
 {
+  HTREEITEM hti = GetDropHilightItem();
+  if (hti != NULL)
+    SetItemState(hti, 0, TVIS_DROPHILITED);
+
   NMTREEVIEW *ptv = (NMTREEVIEW *)pNotifyStruct;
-  HTREEITEM hti = ptv->itemNew.hItem;
+  hti = ptv->itemNew.hItem;
   if (hti != NULL) {
     CItemData *ci = (CItemData *)GetItemData(hti);
     static_cast<DboxMain *>(GetParent())->UpdateToolBarForSelectedItem(ci);
