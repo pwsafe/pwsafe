@@ -27,7 +27,7 @@ PWSclipboard::~PWSclipboard()
 }
 
 bool
-PWSclipboard::SetData(const CMyString &data, bool isSensitive)
+PWSclipboard::SetData(const CMyString &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
   unsigned int uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
   HGLOBAL hGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uGlobalMemSize);
@@ -37,7 +37,7 @@ PWSclipboard::SetData(const CMyString &data, bool isSensitive)
   ::GlobalUnlock(hGlobalMemory);
 
   COleDataSource *pods = new COleDataSource; // deleted automagically
-  pods->CacheGlobalData(CLIPBOARD_TEXT_FORMAT, hGlobalMemory);
+  pods->CacheGlobalData(cfFormat, hGlobalMemory);
   pods->SetClipboard();
   m_set = isSensitive; // don't set if !isSensitive, so won't be cleared
   if (m_set) {
@@ -62,14 +62,14 @@ PWSclipboard::ClearData()
     HANDLE hData = odo.GetGlobalData(CLIPBOARD_TEXT_FORMAT);
     if (hData != NULL) {
       LPCTSTR pData = (LPCTSTR)::GlobalLock(hData);
-      data = pData;
+      DWORD dwlength =  ::GlobalSize(hData) - sizeof(TCHAR); // less trailing null
       // check if the data on the clipboard is the same we put there
       unsigned char digest[SHA256::HASHLEN];
       SHA256 ctx;
-      ctx.Update((unsigned char *)pData, data.GetLength()*sizeof(TCHAR));
+      ctx.Update((unsigned char *)pData, dwlength);
       ctx.Final(digest);
       if (memcmp(digest, m_digest, SHA256::HASHLEN) == 0) {
-        trashMemory((void *)pData, data.GetLength()*sizeof(TCHAR));
+        trashMemory((void *)pData, dwlength);
         CMyString blank(_T(""));
         SetData(blank, false);
         memset(m_digest, '\0', SHA256::HASHLEN);
@@ -79,4 +79,31 @@ PWSclipboard::ClearData()
     }
   }
   return !m_set;
+}
+
+void
+PWSclipboard::UnilaterallyClearData()
+{
+  COleDataObject odo;
+  CMyString data;
+  FORMATETC etc; 
+
+  odo.AttachClipboard();
+  odo.BeginEnumFormats(); 
+
+  while(odo.GetNextFormat(&etc)) {
+    if (odo.IsDataAvailable(etc.cfFormat)) {
+      HGLOBAL hGlobal = odo.GetGlobalData(etc.cfFormat, &etc);
+      if (hGlobal != NULL) {
+        LPTSTR pData = (LPTSTR)::GlobalLock(hGlobal);
+        SIZE_T length =  ::GlobalSize(hGlobal);
+        trashMemory((void *)pData, length);
+        CMyString blank(_T(""));
+        SetData(blank, false, etc.cfFormat);
+        ::GlobalUnlock(hGlobal);
+      }
+      ::GlobalFree(hGlobal);
+    }
+  }
+  memset(m_digest, '\0', SHA256::HASHLEN);
 }
