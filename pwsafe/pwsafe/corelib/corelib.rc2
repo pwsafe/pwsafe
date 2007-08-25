@@ -54,6 +54,7 @@ BEGIN
     IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
     IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"", Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
     IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group, Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
+    IDSC_IMPORTIFIELD       "Entry of line %d has an invalid ""%s"" field.  It has been ignored."
 END
 
 STRINGTABLE
@@ -80,16 +81,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDSC_PWHERROR           "Error in Password History field at offset within this field of %d: "
-    IDSC_INVALIDHEADER      "Invalid header: %s"
-    IDSC_INVALIDPWHSTATUS   "Invalid status value: %d"
-    IDSC_INVALIDNUMOLDPW    "Invalid number of saved old passwords %d (current max. is set to %d)."
-    IDSC_INVALIDDATETIME    "Invalid date/time value."
-    IDSC_INVALIDPWLENGTH    "Invalid password length found."
-    IDSC_FIELDTOOSHORT      "Field is too short. Minimum required per old password entry is 26 + the actual password."
-    IDSC_FIELDTOOLONG       "Field is too long."
-    IDSC_INVALIDSEPARATER   "Invalid field separator character found - only a single blank is allowed between fields."
-    IDSC_PWHISTORYSKIPPED   "Password History ignored"
+    IDSC_PWHERROR           "Error in a Password History sub-field starting at position %d (within the History field): "
+    IDSC_INVALIDHEADER      "  Invalid header: ""%s""."
+    IDSC_INVALIDPWHSTATUS   "  Invalid status value: %d"
+    IDSC_INVALIDNUMOLDPW    "  Invalid number of saved old passwords %d."
+    IDSC_INVALIDDATETIME    "  Invalid date/time value."
+    IDSC_INVALIDPWLENGTH    "  Invalid password length found."
+    IDSC_FIELDTOOSHORT      "  Field is too short."
+    IDSC_FIELDTOOLONG       "  Field is too long."
+    IDSC_INVALIDSEPARATER   "  Invalid field separator character found - only a single blank is allowed between fields."
+    IDSC_PWHISTORYSKIPPED   "  All Password History ignored."
 END
 
 STRINGTABLE

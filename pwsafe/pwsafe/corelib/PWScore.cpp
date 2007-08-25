@@ -820,15 +820,35 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     if (i_Offset[AUTOTYPE] >= 0)
       temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
     if (i_Offset[CTIME] >= 0)
-      temp.SetCTime(tokens[i_Offset[CTIME]].c_str());
+      if (!temp.SetCTime(tokens[i_Offset[CTIME]].c_str())) {
+        const stringT &time_value = vs_Header.at(CTIME);
+        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        rpt.WriteLine(csError);
+      }
     if (i_Offset[PMTIME] >= 0)
-      temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str());
+      if (!temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str())) {
+        const stringT &time_value = vs_Header.at(PMTIME);
+        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        rpt.WriteLine(csError);
+      }
     if (i_Offset[ATIME] >= 0)
-      temp.SetATime(tokens[i_Offset[ATIME]].c_str());
+      if (!temp.SetATime(tokens[i_Offset[ATIME]].c_str())) {
+        const stringT &time_value = vs_Header.at(ATIME);
+        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        rpt.WriteLine(csError);
+      }
     if (i_Offset[LTIME] >= 0)
-      temp.SetLTime(tokens[i_Offset[LTIME]].c_str());
+      if (!temp.SetLTime(tokens[i_Offset[LTIME]].c_str())) {
+        const stringT &time_value = vs_Header.at(LTIME);
+        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        rpt.WriteLine(csError);
+      }
     if (i_Offset[RMTIME] >= 0)
-      temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str());
+      if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str())) {
+        const stringT &time_value = vs_Header.at(RMTIME);
+        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        rpt.WriteLine(csError);
+      }
     if (i_Offset[HISTORY] >= 0) {
       CMyString newPWHistory;
       CString strPWHErrors;
@@ -852,7 +872,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         rpt.WriteLine(csError, false);
         rpt.WriteLine(strPWHErrors, false);
         csError.LoadString(IDSC_PWHISTORYSKIPPED);
-        rpt.WriteLine(strPWHErrors);
+        rpt.WriteLine(csError);
         break;
 	    }
     }

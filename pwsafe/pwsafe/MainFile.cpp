@@ -934,6 +934,7 @@ DboxMain::OnImportText()
         rpt.StartReport(_T("Import_Text"), m_core.GetCurFile());
         cs_temp.Format(IDS_IMPORTFILE, newfile);
         rpt.WriteLine(cs_temp);
+        rpt.WriteLine();
 
         rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strError, fieldSeparator,
                                         delimiter, numImported, numSkipped, rpt);
@@ -960,15 +961,17 @@ DboxMain::OnImportText()
             case PWScore::SUCCESS:
             default:
             {
+                rpt.WriteLine();
                 CString temp1, temp2 = _T("");
                 temp1.Format(IDS_RECORDSIMPORTED, numImported, (numImported != 1) ? _T("s") : _T(""));
-                if (numSkipped != 0)
+                rpt.WriteLine(temp1);
+                if (numSkipped != 0) {
                     temp2.Format(IDS_RECORDSNOTREAD, numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
+                    rpt.WriteLine(temp2);
+                }
 
                 cs_title.LoadString(IDS_STATUS);
-                cs_temp = temp1 + temp2;
-                MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
-                rpt.WriteLine(cs_temp);
+                MessageBox(temp1 + CString("\n") + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
                 ChangeOkUpdate();
             }
             RefreshList();
