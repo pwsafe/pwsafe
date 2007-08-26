@@ -87,9 +87,10 @@ public:
     void TrimRight() {m_mystring.TrimRight();}
     void TrimLeft() {m_mystring.TrimLeft();}
 #if _MSC_VER >= 1400
-    void Trim() {m_mystring.Trim();}
+  CMyString &Trim() {m_mystring.Trim(); return *this;}
 #else
-    void Trim() {m_mystring.TrimLeft(); m_mystring.TrimRight();}
+    CMyString &Trim()
+      {m_mystring.TrimLeft(); m_mystring.TrimRight(); return *this}
 #endif
     void MakeLower() {m_mystring.MakeLower();}
     int Compare(const LPCTSTR lpszOther) const {return m_mystring.Compare(lpszOther);}
@@ -98,7 +99,10 @@ public:
     BOOL LoadString(const UINT &nID);
     void Format(LPCTSTR lpszFormat, ... );
     void Format(UINT nID, ... );
-
+    BOOL IsOnlyWhiteSpace() const
+             {CMyString t(*this); return t.Trim().IsEmpty();}
+  void EmptyIfOnlyWhiteSpace()
+             {if (IsOnlyWhiteSpace() == TRUE) Empty();}
     void Trash() {trashstring();}
 
 private:

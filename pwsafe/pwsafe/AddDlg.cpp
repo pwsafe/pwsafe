@@ -186,36 +186,23 @@ CAddDlg::HidePassword()
    m_password2 = m_password;
 }
 
-inline static bool
-IsWhiteSpace(const CString &cs)
-{
-  CString cs_test(cs);
-  return cs_test.Trim().IsEmpty();
-}
-
 void
 CAddDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
 	  return;
 
-  if (IsWhiteSpace(m_group))
-    m_group.Empty();
-  if (IsWhiteSpace(m_title))
-    m_title.Empty();
-  if (IsWhiteSpace(m_username))
-    m_username.Empty();
-  if (IsWhiteSpace(m_password)) {
+  m_group.EmptyIfOnlyWhiteSpace();
+  m_title.EmptyIfOnlyWhiteSpace();
+  m_username.EmptyIfOnlyWhiteSpace();
+  if (m_password.IsOnlyWhiteSpace()) {
     m_password.Empty();
     if (m_isPwHidden)
       m_password2.Empty();
   }
-  if (IsWhiteSpace(m_notes))
-    m_notes.Empty();
-  if (IsWhiteSpace(m_URL))
-    m_URL.Empty();
-  if (IsWhiteSpace(m_autotype))
-    m_autotype.Empty();
+  m_notes.EmptyIfOnlyWhiteSpace();
+  m_URL.EmptyIfOnlyWhiteSpace();
+  m_autotype.EmptyIfOnlyWhiteSpace();
 
   UpdateData(FALSE);
 
