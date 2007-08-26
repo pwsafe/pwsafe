@@ -14,11 +14,7 @@
 enum {
   FROMCC = 0,
   FROMHDR = 1, 
-#ifndef UNICODE
   FROMTREE = 2,
-#else
-  FROMTREE = 3,
-#endif
 };
 
 class CDataSource : protected COleDataSource

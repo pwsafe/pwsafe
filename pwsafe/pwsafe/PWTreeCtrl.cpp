@@ -33,7 +33,7 @@ static const TCHAR GROUP_SEP = TCHAR('.');
 
 // following header for D&D data passed over OLE:
 // Process ID of sender (to determine if src == tgt)
-// Type of data - also differentiate unicode from non-unicode src/tgt
+// Type of data
 // Length of actual payload, in bytes.
 static const char *OLE_HDR_FMT = "%08x%02x%08x";
 static const int OLE_HDR_LEN = 18;
