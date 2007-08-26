@@ -180,13 +180,41 @@ void CEditDlg::OnShowPassword()
   UpdateData(FALSE);
 }
 
+inline static bool
+IsWhiteSpace(const CString &cs)
+{
+  CString cs_test(cs);
+  return cs_test.Trim().IsEmpty();
+}
+
 void
 CEditDlg::OnOK() 
 {
   UpdateData(TRUE);
-  if (m_password != HIDDEN_PASSWORD)
+
+  if (IsWhiteSpace(m_group))
+    m_group.Empty();
+  if (IsWhiteSpace(m_title))
+    m_title.Empty();
+  if (IsWhiteSpace(m_username))
+    m_username.Empty();
+  if (IsWhiteSpace(m_password)) {
+    m_password.Empty();
+    if (m_isPwHidden)
+      m_password2.Empty();
+  }
+  if (IsWhiteSpace(m_realnotes))
+    m_realnotes.Empty();
+  if (IsWhiteSpace(m_URL))
+    m_URL.Empty();
+  if (IsWhiteSpace(m_autotype))
+    m_autotype.Empty();
+
+  UpdateData(FALSE);
+
+  if (!m_isPwHidden)
     m_realpassword = m_password;
-  if (m_notes != HIDDEN_NOTES)
+  if (!m_isNotesHidden)
     m_realnotes = m_notes;
 
   m_bIsModified |= (
@@ -380,7 +408,7 @@ BOOL CEditDlg::OnInitDialog()
   }
 
   GetDlgItem(IDC_PWHSTATUS)->
-  SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
+    SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
   CString buffer;
   if (m_SavePWHistory == TRUE)
     buffer.Format(_T("%d"), m_MaxPWHistory);
@@ -430,7 +458,6 @@ void CEditDlg::HidePassword()
 void CEditDlg::ShowNotes()
 {
   m_isNotesHidden = false;
-
   m_notes = m_realnotes;
 
   ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();

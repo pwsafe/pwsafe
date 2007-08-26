@@ -25,6 +25,9 @@ in display tree" selected.
 [1757298, 1774428] Merge nolonger loses data
 [] Ensure group/title/user combination is unique during text import.
 [] Ensure group/title/user combination is unique when opening a database.
+[] During Add/Edit, fields containing only whitespace characters (space,
+horzontal tab, vertical tab, carriage return, new line and form feed) are
+considered empty fields.
 
 New Features for 3.09.01
 ========================
