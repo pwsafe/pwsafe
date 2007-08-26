@@ -20,7 +20,7 @@ selected and if URL is populated
 save.
 [1771357] Timeout timer now reset in all dialog boxes - PasswordSafe
 will no longer minimize in the middle of work with an open dialog box.
-[1754054, 1754611] Items are now fully sorted when "put groups first
+[1754054, 1754611, 1740704] Items are now fully sorted when "put groups first
 in display tree" selected.
 [1757298, 1774428] Merge nolonger loses data
 [] Ensure group/title/user combination is unique during text import.
