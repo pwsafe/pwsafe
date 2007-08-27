@@ -1081,19 +1081,6 @@ PWScore::ReadFile(const CMyString &a_filename,
           ASSERT(0); // abort in debug build
           temp.CreateUUID(); // replace duplicated uuid
         }
-        /*
-         * If, for some reason, we're reading in a group/title/user combination
-         * that we already have, we will change the title rather than overwrite
-         * an entry.
-         * This is to protect the user from possible bugs that break
-         * the uniqueness requirement of the group/title/user combination.
-         */
-        if (Find(temp.GetGroup(), temp.GetTitle(), temp.GetUser()) != m_pwlist.end()) {
-          ASSERT(0); // abort in debug build
-          CMyString newtitle = GetUniqueTitle(temp.GetGroup(), temp.GetTitle(),
-                                              temp.GetUser(), IDSC_READNUMBER);
-          temp.SetTitle(newtitle); // replace duplicated title
-        }
 #ifdef DEMO
         if (m_pwlist.size() < MAXDEMO) {
           m_pwlist[uuid] = temp;
