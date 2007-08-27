@@ -54,7 +54,9 @@ BEGIN
     IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
     IDSC_IMPORTCONFLICTS1   "Entry on line %d with Group=""%s"", Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
     IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group, Title=""%s"", User=""%s"" already exists. Added imported entry with title=""%s""."
-    IDSC_IMPORTIFIELD       "Entry of line %d has an invalid ""%s"" field.  It has been ignored."
+    IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
+    IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."
+    IDSC_IMPORTNOTITLE      "Line %d skipped. It has an empty mandatory Title field."
 END
 
 STRINGTABLE

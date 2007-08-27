@@ -805,6 +805,13 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       free(pTemp);
     }
 
+    if (tokens[i_Offset[PASSWORD]].empty()) {
+      csError.Format(IDSC_IMPORTNOPASSWORD, numlines);
+      rpt.WriteLine(csError);
+      numSkipped++;
+      continue;
+    }
+
     // Start initializing the new record.
     temp.Clear();
     temp.CreateUUID();
@@ -828,7 +835,15 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       temp.SetGroup(ImportedPrefix);
       entrytitle = grouptitle;
     }
+
     std::replace(entrytitle.begin(), entrytitle.end(), delimiter, TCHAR('.'));
+    if (entrytitle.empty()) {
+      csError.Format(IDSC_IMPORTNOTITLE, numlines);
+      rpt.WriteLine(csError);
+      numSkipped++;
+      continue;
+    }
+
     temp.SetTitle(CMyString(entrytitle.c_str()));
 
     // Now make sure it is unique
@@ -852,31 +867,31 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     if (i_Offset[CTIME] >= 0)
       if (!temp.SetCTime(tokens[i_Offset[CTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(CTIME);
-        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[PMTIME] >= 0)
       if (!temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(PMTIME);
-        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[ATIME] >= 0)
       if (!temp.SetATime(tokens[i_Offset[ATIME]].c_str())) {
         const stringT &time_value = vs_Header.at(ATIME);
-        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[LTIME] >= 0)
       if (!temp.SetLTime(tokens[i_Offset[LTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(LTIME);
-        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[RMTIME] >= 0)
       if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(RMTIME);
-        csError.Format(IDSC_IMPORTIFIELD, numlines, time_value.c_str());
+        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[HISTORY] >= 0) {
