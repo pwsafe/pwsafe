@@ -214,12 +214,11 @@ DboxMain::OnDelete()
 void
 DboxMain::Delete(bool inRecursion) 
 {
-  if (SelItemOk() == TRUE) {
-    CItemData *ci = getSelectedItem();
-    ASSERT(ci != NULL);
-    //  Needed for DeleteTrayRecentEntry later on
-    uuid_array_t RUEuuid;
-    ci->GetUUID(RUEuuid);
+  CItemData *ci = getSelectedItem();
+
+  if (ci != NULL) {
+    uuid_array_t uuid;
+    ci->GetUUID(uuid);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     size_t curSel = di->list_index;
@@ -228,7 +227,8 @@ DboxMain::Delete(bool inRecursion)
     HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
                                                         TVGN_NEXT);
     // Must Find before delete from m_ctlItemList:
-    ItemListIter listindex = Find(curSel);
+    ItemListIter listindex = m_core.Find(uuid);
+    ASSERT(listindex !=  m_core.GetEntryEndIter());
 
     UnFindItem();
     m_ctlItemList.DeleteItem(curSel);
@@ -253,7 +253,7 @@ DboxMain::Delete(bool inRecursion)
       m_ctlItemTree.SetFocus();
     }
     ChangeOkUpdate();
-    m_RUEList.DeleteRUEntry(RUEuuid);
+    m_RUEList.DeleteRUEntry(uuid);
   } else { // !SelItemOk()
     if (m_ctlItemTree.IsWindowVisible()) {
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
