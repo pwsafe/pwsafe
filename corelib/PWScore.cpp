@@ -33,11 +33,13 @@ using namespace std;
 // hide w_char/char differences where possible:
 #ifdef UNICODE
 typedef std::vector<std::wstring>::const_iterator vciter;
+typedef std::vector<std::wstring>::iterator viter;
 typedef std::wstring stringT;
 typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
 #else
 typedef std::vector<std::string>::const_iterator vciter;
+typedef std::vector<std::string>::iterator viter;
 typedef std::string stringT;
 typedef std::ifstream ifstreamT;
 typedef std::ofstream ofstreamT;
@@ -775,6 +777,34 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       numSkipped++;
       continue;
     }
+
+    const TCHAR *tc_whitespace = _T(" \t\r\n\f\v");
+    // Make fileds that are *only* whitespace = empty
+    viter tokenIter;
+    for (tokenIter = tokens.begin(); tokenIter != tokens.end(); tokenIter++) {
+      const int len = (*tokenIter).length();
+
+      // Don't bother if already empty
+      if (len == 0)
+        continue;
+
+      pTemp = _tcsdup((*tokenIter).c_str());
+
+      // Dequote if: value big enough to have opening and closing quotes (len >=2)
+      // and the first and last characters are doublequotes.
+      if (len > 1 && pTemp[0] == _T('\"') && pTemp[len - 1] == _T('\"')) {
+        const stringT dequoted = (*tokenIter).substr(1, len - 2);
+        (*tokenIter).assign(dequoted);
+      }
+
+      // Empty field if purely whitespace
+      if ((*tokenIter).find_first_not_of(tc_whitespace) == stringT::npos) {
+        (*tokenIter).clear();
+      }
+
+      free(pTemp);
+    }
+
     // Start initializing the new record.
     temp.Clear();
     temp.CreateUUID();
