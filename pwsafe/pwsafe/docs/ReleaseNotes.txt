@@ -28,6 +28,8 @@ in display tree" selected.
 [] During Add/Edit, fields containing only whitespace characters (space,
 horzontal tab, vertical tab, carriage return, new line and form feed) are
 considered empty fields.
+[1751465] Fields containing only whitespace or whitespace between double quotes
+are now treated as empty during plain text import.
 
 New Features for 3.09.01
 ========================
