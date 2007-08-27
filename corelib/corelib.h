@@ -111,3 +111,5 @@
 #define IDSC_READNUMBER                 3267
 #define IDSC_IMPORTNOPASSWORD           3268
 #define IDSC_IMPORTNOTITLE              3269
+#define IDSC_VALIDATEUUID               3270
+#define IDSC_VALIDATEPWH                3271

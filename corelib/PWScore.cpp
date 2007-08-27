@@ -1526,6 +1526,10 @@ PWScore::Validate(CString &status)
   unsigned num_PWH_fixed = 0;
   unsigned num_uuid_fixed = 0;
 
+  CReport rpt;
+  CString cs_Error;
+  rpt.StartReport(_T("Validate"), GetCurFile());
+
   TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 
   ItemListIter iter;
@@ -1538,14 +1542,22 @@ PWScore::Validate(CString &status)
       num_uuid_fixed += fixedItem.ValidateUUID(m_hdr.m_nCurrentMajorVersion,
                                                m_hdr.m_nCurrentMinorVersion,
                                                uuid_array);
+      cs_Error.Format(IDSC_VALIDATEUUID, ci.GetGroup(), ci.GetTitle(), ci.GetUser());
+      rpt.WriteLine(cs_Error);
+
       m_pwlist.erase(iter); // erasing item in mid-iteration!
       AddEntry(fixedItem);
     }
-    num_PWH_fixed += ci.ValidatePWHistory();
+    if (ci.ValidatePWHistory() != 0) {
+      cs_Error.Format(IDSC_VALIDATEPWH, ci.GetGroup(), ci.GetTitle(), ci.GetUser());
+      rpt.WriteLine(cs_Error);
+      num_PWH_fixed++;
+    }
   } // iteration over m_pwlist
 
-
   TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
+  rpt.EndReport();
+
   if ((num_uuid_fixed + num_PWH_fixed) > 0) {
     status.Format(IDSC_NUMPROCESSED,
                   n + 1, num_uuid_fixed, 0, num_PWH_fixed);
