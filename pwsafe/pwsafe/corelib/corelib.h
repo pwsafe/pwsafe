@@ -107,5 +107,7 @@
 #define IDSC_PWHISTORYSKIPPED           3263
 #define IDSC_IMPORTCONFLICTS1           3264
 #define IDSC_IMPORTCONFLICTS2           3265
-#define IDSC_IMPORTIFIELD               3266
+#define IDSC_IMPORTINVALIDFIELD         3266
 #define IDSC_READNUMBER                 3267
+#define IDSC_IMPORTNOPASSWORD           3268
+#define IDSC_IMPORTNOTITLE              3269
