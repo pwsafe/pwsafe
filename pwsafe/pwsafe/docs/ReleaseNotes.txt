@@ -40,8 +40,6 @@ text editor via right click on Notes field.
 installer). This allows site administrators to 'push' PasswordSafe to
 client machines with group policy. Thanks to xenophonf.
 [1751484] Error log file produced when Merging and Importing text file.
-[1765240] Add "Clear clipboard" item to tray icon context menu. This 
-unconditionally clears all data in the Windows clipboard.
 
 Bugs fixed in 3.09
 ==================

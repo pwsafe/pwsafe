@@ -36,7 +36,6 @@ public:
                CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
                // returns true if succeeded
   bool ClearData(); // return true if cleared or if data wasn't ours
-  void UnconditionallyClearData(); // Clear it unconditionally - data ours or not
 
 private:
   bool m_set;

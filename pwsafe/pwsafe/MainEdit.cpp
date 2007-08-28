@@ -551,12 +551,6 @@ DboxMain::OnClearClipboard()
 }
 
 void
-DboxMain::OnUnconditionallyClearClipboard()
-{
-   UnconditionallyClearClipboard();
-}
-
-void
 DboxMain::OnAutoType()
 {
   if (SelItemOk() == TRUE) {

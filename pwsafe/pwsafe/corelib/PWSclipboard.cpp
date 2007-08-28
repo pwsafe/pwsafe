@@ -80,30 +80,3 @@ PWSclipboard::ClearData()
   }
   return !m_set;
 }
-
-void
-PWSclipboard::UnconditionallyClearData()
-{
-  COleDataObject odo;
-  CMyString data;
-  FORMATETC etc; 
-
-  odo.AttachClipboard();
-  odo.BeginEnumFormats(); 
-
-  while(odo.GetNextFormat(&etc)) {
-    if (odo.IsDataAvailable(etc.cfFormat)) {
-      HGLOBAL hGlobal = odo.GetGlobalData(etc.cfFormat, &etc);
-      if (hGlobal != NULL) {
-        LPTSTR pData = (LPTSTR)::GlobalLock(hGlobal);
-        SIZE_T length =  ::GlobalSize(hGlobal);
-        trashMemory((void *)pData, length);
-        CMyString blank(_T(""));
-        SetData(blank, false, etc.cfFormat);
-        ::GlobalUnlock(hGlobal);
-      }
-      ::GlobalFree(hGlobal);
-    }
-  }
-  memset(m_digest, '\0', SHA256::HASHLEN);
-}
