@@ -1,5 +1,5 @@
-Password Safe 3.09.01 Release Notes - xxxx 2007
-===============================================
+Password Safe 3.10 Release Notes - xxxx 2007
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.09. For a short description of Password
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.09.01
-=====================
+Bugs fixed in 3.10
+==================
 [1757110] Toolbar now correctly disables images according to type of entry
 selected and if URL is populated
 [1758025, 1759364] '-s' option now works correctly
@@ -31,8 +31,8 @@ considered empty fields.
 [1751465] Fields containing only whitespace or whitespace between double quotes
 are now treated as empty during plain text import.
 
-New Features for 3.09.01
-========================
+New Features for 3.10
+=====================
 [1752896] Add ability to edit an entry's notes field using user's default 
 text editor via right click on Notes field.
 [1750010] Drag&Drop between databases now supported.
@@ -41,7 +41,7 @@ installer). This allows site administrators to 'push' PasswordSafe to
 client machines with group policy. Thanks to xenophonf.
 [1751484] Error log file produced when Merging and Importing text file.
 [1765240] Add "Clear clipboard" item to tray icon context menu. This 
-unilaterally clears all data in the Windows clipboard.
+unconditionally clears all data in the Windows clipboard.
 
 Bugs fixed in 3.09
 ==================

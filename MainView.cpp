@@ -657,11 +657,7 @@ DboxMain::RefreshList()
       insertItem(ci, -1, false);
     }
     
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-      m_ctlItemTree.SortTree(TVI_ROOT);
-    else
-      m_ctlItemTree.SortChildren(TVI_ROOT);
-    //      m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+    m_ctlItemTree.SortTree(TVI_ROOT);
     
 #if defined(POCKET_PC)
     SetCursor( NULL );

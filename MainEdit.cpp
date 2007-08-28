@@ -551,9 +551,9 @@ DboxMain::OnClearClipboard()
 }
 
 void
-DboxMain::OnUnilaterallyClearClipboard()
+DboxMain::OnUnconditionallyClearClipboard()
 {
-   UnilaterallyClearClipboard();
+   UnconditionallyClearClipboard();
 }
 
 void

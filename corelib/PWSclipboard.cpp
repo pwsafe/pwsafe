@@ -82,7 +82,7 @@ PWSclipboard::ClearData()
 }
 
 void
-PWSclipboard::UnilaterallyClearData()
+PWSclipboard::UnconditionallyClearData()
 {
   COleDataObject odo;
   CMyString data;

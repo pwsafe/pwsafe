@@ -669,11 +669,8 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     // Mark database as modified
     dbx->SetChanged(DboxMain::Data);
 
-    // Sort it as appropriate
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
-      SortTree(ti);
-    else
-      SortChildren(GetParentItem(ti));
+    // put edited text in right order by sorting
+      SortTree(GetParentItem(ti));
 
     // OK
     *pLResult = TRUE;
@@ -1389,6 +1386,15 @@ CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
 
   if (hti == NULL)
       hti = TVI_ROOT;
+
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
+    SortChildren(hti);
+    return;
+  }
+
+  // here iff user prefers "explorer type view", that is,
+  // groups first.
+
 
   // unbelievable, but we have to recurse ourselves!
   // foreach child of hti
