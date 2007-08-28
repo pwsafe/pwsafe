@@ -165,7 +165,7 @@ public:
   void AutoResizeColumns();
   void ResetIdleLockCounter();
   bool ClearClipboardData() {return m_clipboard.ClearData();}
-  void UnilaterallyClearClipboard() {m_clipboard.UnilaterallyClearData();}
+  void UnconditionallyClearClipboard() {m_clipboard.UnconditionallyClearData();}
   bool SetClipboardData(const CMyString &data)
   {return m_clipboard.SetData(data);}
   void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
@@ -314,7 +314,7 @@ protected:
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
   afx_msg void OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI);
-  afx_msg void OnUnilaterallyClearClipboard();
+  afx_msg void OnUnconditionallyClearClipboard();
   afx_msg void OnTrayClearRecentEntries();
   afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
 	afx_msg void OnTrayCopyUsername(UINT nID);

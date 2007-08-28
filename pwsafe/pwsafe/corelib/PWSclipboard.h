@@ -12,7 +12,7 @@
  * of the data that we put on the clipboard, so that
  * ClearData() only clears the clipboard if it has what we put on it, and
  * if isSensitive was true when we added it.
- * UnilateralyClearData clears the clipboard of data of all formats
+ * UnconditionalyClearData clears the clipboard of data of all formats
  */
 
 #include "sha256.h"
@@ -36,7 +36,7 @@ public:
                CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
                // returns true if succeeded
   bool ClearData(); // return true if cleared or if data wasn't ours
-  void UnilaterallyClearData(); // Clear it unilaterally - data ours or not
+  void UnconditionallyClearData(); // Clear it unconditionally - data ours or not
 
 private:
   bool m_set;

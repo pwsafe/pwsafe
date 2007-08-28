@@ -779,10 +779,10 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     }
 
     const TCHAR *tc_whitespace = _T(" \t\r\n\f\v");
-    // Make fileds that are *only* whitespace = empty
+    // Make fields that are *only* whitespace = empty
     viter tokenIter;
     for (tokenIter = tokens.begin(); tokenIter != tokens.end(); tokenIter++) {
-      const int len = (*tokenIter).length();
+      const int len = tokenIter->length();
 
       // Don't bother if already empty
       if (len == 0)
