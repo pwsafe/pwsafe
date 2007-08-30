@@ -30,6 +30,7 @@ horzontal tab, vertical tab, carriage return, new line and form feed) are
 considered empty fields.
 [1751465] Fields containing only whitespace or whitespace between double quotes
 are now treated as empty during plain text import.
+[1783905] Read-only status maintained after unlocking a database.
 
 New Features for 3.10
 =====================
