@@ -1005,8 +1005,8 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     int rc = 0;
     if (dbox_pkentry == NULL) {
         dbox_pkentry = new CPasskeyEntry(this, filename,
-                                         index, bReadOnly | bFileIsReadOnly,
-                                         bFileIsReadOnly | bForceReadOnly,
+                                         index, bReadOnly || bFileIsReadOnly,
+                                         bFileIsReadOnly || bForceReadOnly,
                                          adv_type);
 
         int nMajor(0), nMinor(0), nBuild(0);
@@ -1019,9 +1019,11 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
             nBuild = HIWORD(dwBuildRevision);
         }
         if (nBuild == 0)
-            dbox_pkentry->m_appversion.Format(_T("Version %d.%02d"), nMajor, nMinor);
+            dbox_pkentry->m_appversion.Format(_T("Version %d.%02d"),
+                                              nMajor, nMinor);
         else
-            dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d"), nMajor, nMinor, nBuild);
+            dbox_pkentry->m_appversion.Format(_T("Version %d.%02d.%02d"),
+                                              nMajor, nMinor, nBuild);
 
         app.DisableAccelerator();
         rc = dbox_pkentry->DoModal();
@@ -1037,7 +1039,6 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
             m_subgroup_function = dbox_pkentry->m_subgroup_function;
           }
         }
-
     } else { // already present - bring to front
         dbox_pkentry->BringWindowToTop(); // can happen with systray lock
         return PWScore::USER_CANCEL; // multi-thread,
@@ -1668,7 +1669,8 @@ DboxMain::UnMinimize(bool update_windows)
     if (m_bOpen)
       rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey,
-                               useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT);
+                               useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT,
+                               m_core.IsReadOnly());
     CString cs_temp, cs_title;
     switch (rc) {
     case PWScore::SUCCESS:
