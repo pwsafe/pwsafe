@@ -258,6 +258,8 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
 
 SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
 {
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+  dbx->ResetIdleLockCounter();
   return DRAGDROP_S_USEDEFAULTCURSORS;
 }
 
