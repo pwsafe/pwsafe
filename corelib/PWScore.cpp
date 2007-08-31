@@ -788,22 +788,24 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       if (len == 0)
         continue;
 
-      pTemp = _tcsdup((*tokenIter).c_str());
+      pTemp = _tcsdup(tokenIter->c_str());
 
-      // Dequote if: value big enough to have opening and closing quotes (len >=2)
-      // and the first and last characters are doublequotes.
+      // Dequote if: value big enough to have opening and closing quotes
+      // (len >=2) and the first and last characters are doublequotes.
+      // UNLESS there's at least one quote in the text itself
       if (len > 1 && pTemp[0] == _T('\"') && pTemp[len - 1] == _T('\"')) {
-        const stringT dequoted = (*tokenIter).substr(1, len - 2);
-        (*tokenIter).assign(dequoted);
+        const stringT dequoted = tokenIter->substr(1, len - 2);
+        if (dequoted.find_first_of(_T('\"')) == stringT::npos)
+          tokenIter->assign(dequoted);
       }
 
       // Empty field if purely whitespace
-      if ((*tokenIter).find_first_not_of(tc_whitespace) == stringT::npos) {
-        (*tokenIter).clear();
+      if (tokenIter->find_first_not_of(tc_whitespace) == stringT::npos) {
+        tokenIter->clear();
       }
 
       free(pTemp);
-    }
+    } // loop over tokens
 
     if (tokens[i_Offset[PASSWORD]].empty()) {
       csError.Format(IDSC_IMPORTNOPASSWORD, numlines);
