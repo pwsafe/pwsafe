@@ -22,7 +22,7 @@ save.
 will no longer minimize in the middle of work with an open dialog box.
 [1754054, 1754611, 1740704] Items are now fully sorted when "put groups first
 in display tree" selected.
-[1757298, 1774428] Merge nolonger loses data
+[1757298, 1774428, 1609474] Merge nolonger loses data
 [] Ensure group/title/user combination is unique during text import.
 [] During Add/Edit, fields containing only whitespace characters (space,
 horzontal tab, vertical tab, carriage return, new line and form feed) are
@@ -33,6 +33,8 @@ are now treated as empty during plain text import.
 [1782407] Export to text file now includes "title", if selected.
 [1734220] XML Export line of Notes fields containing CRLF now works correctly.
 The default delimeter has been made the same as for Export to a Text file
+[1632634] Compare no longer changes database settings when the databases are
+identical.
 
 New Features for 3.10
 =====================
