@@ -241,11 +241,19 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 	  ofs << LPCTSTR(m_impexphdr) << endl;
 	} else {
 		CString hdr = _T(""), cs_temp;
-		if (bsFields.test(CItemData::GROUP)) {
-			cs_temp.LoadString(IDSC_EXPHDRGROUPTITLE);
-			hdr += cs_temp;
-		}
-		if (bsFields.test(CItemData::USER)) {
+    if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE)) {
+      cs_temp.LoadString(IDSC_EXPHDRGROUPTITLE);
+      hdr += cs_temp;
+    }
+    else if (bsFields.test(CItemData::GROUP)) {
+      cs_temp.LoadString(IDSC_EXPHDRGROUP);
+      hdr += cs_temp;
+    }
+    else if (bsFields.test(CItemData::TITLE)) {
+      cs_temp.LoadString(IDSC_EXPHDRTITLE);
+      hdr += cs_temp;
+    }
+    if (bsFields.test(CItemData::USER)) {
 			cs_temp.LoadString(IDSC_EXPHDRUSERNAME);
 			hdr += cs_temp;
 		}
