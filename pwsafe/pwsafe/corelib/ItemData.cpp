@@ -476,7 +476,7 @@ static void WriteXMLField(ostream &os, const char *fname,
   } // special handling of "]]>" in value.
 }
 
-string CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
+string CItemData::GetXML(unsigned id, const FieldBits &bsExport, TCHAR delimiter) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
   oss << "\t<entry id=\"" << id << "\">" << endl;
@@ -507,8 +507,11 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport) const
     WriteXMLField(oss, "autotype", tmp, utf8conv);
 
   tmp = GetNotes();
-  if (bsExport.test(CItemData::NOTES) && !tmp.IsEmpty())
+  if (bsExport.test(CItemData::NOTES) && !tmp.IsEmpty()) {
+    tmp.Remove(_T('\r'));
+    tmp.Replace(_T('\n'), delimiter);
     WriteXMLField(oss, "notes", tmp, utf8conv);
+  }
 
   uuid_array_t uuid_array;
   GetUUID(uuid_array);

@@ -339,7 +339,7 @@ struct XMLRecordWriter {
     if (m_subgroup_name.IsEmpty() ||
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
-      string xml = item.GetXML(m_id, m_bsFields);
+      string xml = item.GetXML(m_id, m_bsFields, m_delimiter);
       m_of.write(xml.c_str(), xml.length());
     }
   }
