@@ -63,6 +63,9 @@ PWSclipboard::ClearData()
     if (hData != NULL) {
       LPCTSTR pData = (LPCTSTR)::GlobalLock(hData);
       DWORD dwlength =  ::GlobalSize(hData) - sizeof(TCHAR); // less trailing null
+      if (dwlength < 1)
+        return !m_set;
+
       // check if the data on the clipboard is the same we put there
       unsigned char digest[SHA256::HASHLEN];
       SHA256 ctx;
