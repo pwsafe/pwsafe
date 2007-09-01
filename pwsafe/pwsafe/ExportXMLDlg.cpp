@@ -109,7 +109,10 @@ void CExportXMLDlg::OnAdvanced()
 	CAdvancedDlg Adv(this, ADV_EXPORT_XML, m_bsExport, m_subgroup_name, 
                    m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
-	int rc = Adv.DoModal();
+  app.DisableAccelerator();
+  int rc = Adv.DoModal();
+  app.EnableAccelerator();
+
 	if (rc == IDOK) {
 		m_bsExport = Adv.m_bsFields;
 		m_subgroup_set = Adv.m_subgroup_set;
