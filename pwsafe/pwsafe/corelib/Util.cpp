@@ -42,7 +42,7 @@ trashMemory(void* buffer, size_t length)
 {
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
-  if ( length != 0 ) {
+  if (length > 0) {
     memset(buffer, 0x55, length);
     memset(buffer, 0xAA, length);
     memset(buffer, 0x00, length);
@@ -51,13 +51,13 @@ trashMemory(void* buffer, size_t length)
 #pragma optimize("",on)
 
 void
-trashMemory( LPTSTR buffer, size_t length )
+trashMemory(LPTSTR buffer, size_t length)
 {
-  trashMemory( (unsigned char *) buffer, length * sizeof(buffer[0])  );
+  trashMemory((unsigned char *) buffer, length * sizeof(buffer[0]));
 }
 
 void
-trashMemory( CString &cs_buffer )
+trashMemory(CString &cs_buffer)
 {
   TCHAR *lpszString = cs_buffer.GetBuffer(cs_buffer.GetLength());
   trashMemory( (void *) lpszString, cs_buffer.GetLength() * sizeof(lpszString[0]));
