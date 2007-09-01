@@ -37,6 +37,8 @@ BEGIN
     IDSC_EXPHDRRMTIME       "Record Modified Time\t"
     IDSC_EXPHDRPWHISTORY    "History\t"
     IDCS_EXPHDRNOTES        "Notes"
+    IDSC_EXPHDRGROUP        "Group\t"
+    IDSC_EXPHDRTITLE        "Title\t"
 END
 
 STRINGTABLE

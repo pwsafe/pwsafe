@@ -361,8 +361,12 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 			_T("\"") + notes + _T("\"");
 	} else {
 		// Not everything
-		if (bsFields.test(CItemData::GROUP))
-			ret += grouptitle + separator;
+    if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE))
+      ret += grouptitle + separator;
+    else if (bsFields.test(CItemData::GROUP))
+      ret += group + separator;
+    else if (bsFields.test(CItemData::TITLE))
+      ret += title + separator;
 		if (bsFields.test(CItemData::USER))
 			ret += user + separator;
 		if (bsFields.test(CItemData::PASSWORD))
