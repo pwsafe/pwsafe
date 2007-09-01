@@ -34,7 +34,7 @@ CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
 {
 	//{{AFX_DATA_INIT(CExportXMLDlg)
 	m_ExportXMLPassword = _T("");
-	m_defexpdelim = _T("^");
+	m_defexpdelim = _T("\xbb");
 	//}}AFX_DATA_INIT
 }
 

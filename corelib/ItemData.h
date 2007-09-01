@@ -151,7 +151,7 @@ public:
   // it's used for multi-line notes and to replace '.' within the Title field.
   CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
                          const TCHAR &delimiter) const;
-  std::string GetXML(unsigned id, const FieldBits &bsExport) const;
+  std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter) const;
   void GetUnknownField(unsigned char &type, unsigned int &length,
                        unsigned char * &pdata,
                        const unsigned int &num) const;
