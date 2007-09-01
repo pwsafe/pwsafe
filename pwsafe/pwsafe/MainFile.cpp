@@ -1791,26 +1791,25 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 		cs_text.LoadString(IDS_IDENTICALDATABASES);
 		resultStr += buffer + cs_text;
 		MessageBox(resultStr, cs_title, MB_OK);
-		return rc;
-	}
+  } else {
+    CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
+                              list_Conflicts, list_Identical, 
+                              m_bsFields, &m_core, &othercore);
 
-  CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
-                            list_Conflicts, list_Identical, 
-                            m_bsFields, &m_core, &othercore);
+    CmpRes.m_cs_Filename1 = cs_Filename1;
+    CmpRes.m_cs_Filename2 = cs_Filename2;
+    CmpRes.m_bOriginalDBReadOnly = m_core.IsReadOnly();
+    CmpRes.m_bComparisonDBReadOnly = othercore.IsReadOnly();
 
-  CmpRes.m_cs_Filename1 = cs_Filename1;
-  CmpRes.m_cs_Filename2 = cs_Filename2;
-  CmpRes.m_bOriginalDBReadOnly = m_core.IsReadOnly();
-  CmpRes.m_bComparisonDBReadOnly = othercore.IsReadOnly();
+    CmpRes.DoModal();
+    if (CmpRes.m_OriginalDBChanged) {
+      FixListIndexes();
+      RefreshList();
+    }
 
-  CmpRes.DoModal();
-  if (CmpRes.m_OriginalDBChanged) {
-    FixListIndexes();
-    RefreshList();
-  }
-
-  if (CmpRes.m_ComparisonDBChanged) {
-    SaveCore(&othercore);
+    if (CmpRes.m_ComparisonDBChanged) {
+      SaveCore(&othercore);
+    }
   }
 
   if (othercore.IsLockedFile(othercore.GetCurFile()))
