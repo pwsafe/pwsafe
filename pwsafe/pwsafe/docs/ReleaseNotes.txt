@@ -31,6 +31,8 @@ considered empty fields.
 are now treated as empty during plain text import.
 [1783905] Read-only status maintained after unlocking a database.
 [1782407] Export to text file now includes "title", if selected.
+[1734220] XML Export line of Notes fields containing CRLF now works correctly.
+The default delimeter has been made the same as for Export to a Text file
 
 New Features for 3.10
 =====================
