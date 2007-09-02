@@ -896,7 +896,6 @@ DboxMain::OnAbout()
 {
   CAboutDlg about;
   int nMajor(0), nMinor(0), nBuild(0);
-  // int nRevision(0);
 
   DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
   DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
@@ -905,17 +904,19 @@ DboxMain::OnAbout()
 	  nMajor = HIWORD(dwMajorMinor);
 	  nMinor = LOWORD(dwMajorMinor);
 	  nBuild = HIWORD(dwBuildRevision);
-//	  nRevision = LOWORD(dwBuildRevision);
   }
 
+  // revision is either a number or a number with '+',
+  // so we need to get it from the file version string
+  // which is of the form "MM, NN, BB, rev"
   CString csFileVersionString, csRevision;
-  int itok = 4; // number of tokens in version string
-
   csFileVersionString = app.GetFileVersionString();
-
-  csFileVersionString.Tokenize(_T(","), itok);
-  csRevision = csFileVersionString.Tokenize(_T(","), itok);
-  csRevision.Trim();
+  int revIndex = csFileVersionString.ReverseFind(TCHAR(','));
+  if (revIndex >= 0) {
+    int len = csFileVersionString.GetLength();
+    csRevision = csFileVersionString.Right(len - revIndex - 1);
+    csRevision.Trim();
+  }
   if (nBuild == 0) { // hide build # if zero (formal release)
     about.m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
                               nMajor, nMinor, csRevision);
