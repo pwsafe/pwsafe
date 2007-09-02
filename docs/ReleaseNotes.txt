@@ -1,8 +1,8 @@
-Password Safe 3.10 Release Notes - xxxx 2007
-============================================
+Password Safe 3.10 Release Notes - September 2007
+=================================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.09. For a short description of Password
+with Password Safe version 3.10. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
@@ -22,7 +22,7 @@ save.
 will no longer minimize in the middle of work with an open dialog box.
 [1754054, 1754611, 1740704] Items are now fully sorted when "put groups first
 in display tree" selected.
-[1757298, 1774428, 1609474] Merge nolonger loses data
+[1757298, 1774428, 1609474] Merge no longer loses data
 [] Ensure group/title/user combination is unique during text import.
 [] During Add/Edit, fields containing only whitespace characters (space,
 horzontal tab, vertical tab, carriage return, new line and form feed) are
@@ -44,7 +44,8 @@ text editor via right click on Notes field.
 [1517048] PasswordSafe can now be installed as an msi package (Windows
 installer). This allows site administrators to 'push' PasswordSafe to
 client machines with group policy. Thanks to xenophonf.
-[1751484] Error log file produced when Merging and Importing text file.
+[1751484] Errors detected while merging or importing a text file are
+now described in detail in a log file.
 
 Bugs fixed in 3.09
 ==================
