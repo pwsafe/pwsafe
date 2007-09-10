@@ -8,6 +8,20 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
+
+Bugs fixed in 3.10.01
+=====================
+[1790286] All String preferences stored within the database are now restored
+
+
+New Features for 3.10.01
+========================
+
+
+Changes to Existing Features in 3.10.01
+======================================
+
+
 Bugs fixed in 3.10
 ==================
 [1757110] Toolbar now correctly disables images according to type of entry
