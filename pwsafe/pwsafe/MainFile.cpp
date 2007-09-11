@@ -151,9 +151,9 @@ DboxMain::OpenOnInit(void)
   }
   if (retval == TRUE) {
     m_core.SetDefUsername(PWSprefs::GetInstance()->
-                GetPref(PWSprefs::DefUserName));
+                GetPref(PWSprefs::DefaultUsername));
     m_core.SetUseDefUser(PWSprefs::GetInstance()->
-                GetPref(PWSprefs::UseDefUser) ? true : false);
+                GetPref(PWSprefs::UseDefaultUser) ? true : false);
   }
 
   return retval;
@@ -496,9 +496,9 @@ DboxMain::Open( const CMyString &pszFilename )
     RefreshList();
     SetInitialDatabaseDisplay();
     m_core.SetDefUsername(PWSprefs::GetInstance()->
-                GetPref(PWSprefs::DefUserName));
+                GetPref(PWSprefs::DefaultUsername));
     m_core.SetUseDefUser(PWSprefs::GetInstance()->
-                GetPref(PWSprefs::UseDefUser) ? true : false);
+                GetPref(PWSprefs::UseDefaultUser) ? true : false);
     m_needsreading = false;
     return rc;
 }

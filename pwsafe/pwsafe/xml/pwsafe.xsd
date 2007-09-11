@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+<!-- Special types to allow easier processing of Password Safe data -->
 <xs:simpleType name="characterType">
   <xs:restriction base="xs:string">
     <xs:length value="1" />
@@ -45,10 +46,81 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="boolType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="1" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="passwordlengthType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="4" />
+    <xs:maxInclusive value="1024" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="timeoutType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="1" />
+    <xs:maxInclusive value="120" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="displaystatusType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="AllCollapsed" />
+    <xs:enumeration value="AllExpanded" />
+    <xs:enumeration value="AsPerLastSave" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="pwhistoryType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="255" />
+  </xs:restriction>
+</xs:simpleType>
+<!-- End of Special types -->
+
+<!-- Start of proper Password Safe validation XSD -->
   <xs:element name="passwordsafe">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="NumberHashIterations" type="numhashType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Preferences" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:all>
+              <!-- Boolean Database Preferences -->
+              <xs:element name="DisplayExpandedAddEditDlg" type="boolType" minOccurs="0" />
+              <xs:element name="MaintainDateTimeStamps" type="boolType" minOccurs="0" />
+              <xs:element name="PWUseDigits" type="boolType" minOccurs="0" />
+              <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" />
+              <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" />
+              <xs:element name="PWUseLowercase" type="boolType" minOccurs="0" />
+              <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" />
+              <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" />
+              <xs:element name="SaveImmediately" type="boolType" minOccurs="0" />
+              <xs:element name="SavePasswordHistory" type="boolType" minOccurs="0" />
+              <xs:element name="ShowNotesDefault" type="boolType" minOccurs="0" />
+              <xs:element name="ShowPWDefault" type="boolType" minOccurs="0" />
+              <xs:element name="ShowPasswordInTree" type="boolType" minOccurs="0" />
+              <xs:element name="ShowUsernameInTree" type="boolType" minOccurs="0" />
+              <xs:element name="SortAscending" type="boolType" minOccurs="0" />
+              <xs:element name="UseDefaultUser" type="boolType" minOccurs="0" />
+  
+              <!-- Integer Database Preferences -->
+              <xs:element name="PWLengthDefault" type="passwordlengthType" minOccurs="0" />
+              <xs:element name="IdleTimeout" type="timeoutType" minOccurs="0" />
+              <xs:element name="TreeDisplayStatusAtOpen" type="displaystatusType" minOccurs="0" />
+              <xs:element name="NumPWHistoryDefault" type="pwhistoryType" minOccurs="0" />
+  
+              <!-- String Database Preferences -->
+              <xs:element name="DefaultUsername" type="stringType" minOccurs="0" />
+              <xs:element name="DefaultAutotypeString" type="stringType" minOccurs="0" />
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="unknownheaderfields" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
@@ -135,3 +207,4 @@
     </xs:complexType>
   </xs:element>
 </xs:schema>
+<!-- End of proper Password Safe validation XSD -->

@@ -304,8 +304,8 @@ DboxMain::OnOptions()
     security.m_IdleTimeOut = prefs->
         GetPref(PWSprefs::IdleTimeout);
 
-    passwordpolicy.m_pwlendefault = prefs->
-        GetPref(PWSprefs::PWLenDefault);
+    passwordpolicy.m_pwdefaultlength = prefs->
+        GetPref(PWSprefs::PWDefaultLength);
     passwordpolicy.m_pwuselowercase = prefs->
         GetPref(PWSprefs::PWUseLowercase);
     passwordpolicy.m_pwuseuppercase = prefs->
@@ -317,7 +317,7 @@ DboxMain::OnOptions()
     passwordpolicy.m_pwusehexdigits = prefs->
         GetPref(PWSprefs::PWUseHexDigits);
     passwordpolicy.m_pweasyvision = prefs->
-        GetPref(PWSprefs::PWEasyVision);
+        GetPref(PWSprefs::PWUseEasyVision);
 
     passwordhistory.m_savepwhistory = prefs->
         GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
@@ -345,9 +345,9 @@ DboxMain::OnOptions()
             GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
     misc.m_usedefuser = prefs->
-        GetPref(PWSprefs::UseDefUser) ? TRUE : FALSE;
+        GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
     misc.m_defusername = CString(prefs->
-                                 GetPref(PWSprefs::DefUserName));
+                                 GetPref(PWSprefs::DefaultUsername));
     misc.m_querysetdef = prefs->
         GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
     misc.m_csBrowser = CString(prefs->
@@ -457,8 +457,8 @@ DboxMain::OnOptions()
         prefs->SetPref(PWSprefs::IdleTimeout,
                        security.m_IdleTimeOut);
 
-        prefs->SetPref(PWSprefs::PWLenDefault,
-                       passwordpolicy.m_pwlendefault);
+        prefs->SetPref(PWSprefs::PWDefaultLength,
+                       passwordpolicy.m_pwdefaultlength);
         prefs->SetPref(PWSprefs::PWUseLowercase,
                        passwordpolicy.m_pwuselowercase == TRUE);
         prefs->SetPref(PWSprefs::PWUseUppercase,
@@ -469,7 +469,7 @@ DboxMain::OnOptions()
                        passwordpolicy.m_pwusesymbols == TRUE);
         prefs->SetPref(PWSprefs::PWUseHexDigits,
                        passwordpolicy.m_pwusehexdigits == TRUE);
-        prefs-> SetPref(PWSprefs::PWEasyVision,
+        prefs-> SetPref(PWSprefs::PWUseEasyVision,
                         passwordpolicy.m_pweasyvision == TRUE);
 
         prefs->SetPref(PWSprefs::SavePasswordHistory,
@@ -500,9 +500,9 @@ DboxMain::OnOptions()
 
         prefs->SetPref(PWSprefs::HotKeyEnabled,
                        misc.m_hotkey_enabled == TRUE);
-        prefs->SetPref(PWSprefs::UseDefUser,
+        prefs->SetPref(PWSprefs::UseDefaultUser,
                        misc.m_usedefuser == TRUE);
-        prefs->SetPref(PWSprefs::DefUserName,
+        prefs->SetPref(PWSprefs::DefaultUsername,
                        misc.m_defusername);
         prefs->SetPref(PWSprefs::QuerySetDef,
                        misc.m_querysetdef == TRUE);
@@ -510,8 +510,9 @@ DboxMain::OnOptions()
                        misc.m_csBrowser);
         prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
                        misc.m_csBrowserCmdLineParms);
-        if (!misc.m_csAutotype.IsEmpty() &&
-            misc.m_csAutotype != DEFAULT_AUTOTYPE)
+        if (misc.m_csAutotype.IsEmpty() || misc.m_csAutotype == DEFAULT_AUTOTYPE)
+            prefs->SetPref(PWSprefs::DefaultAutotypeString, _T(""));
+        else if (misc.m_csAutotype != DEFAULT_AUTOTYPE)
             prefs->SetPref(PWSprefs::DefaultAutotypeString,
                            misc.m_csAutotype);
         prefs->SetPref(PWSprefs::MinimizeOnAutotype,

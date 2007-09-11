@@ -51,8 +51,8 @@ class PWSprefs {
   enum  BoolPrefs {AlwaysOnTop, ShowPWDefault,
        ShowPasswordInTree,
        SortAscending,
-		   UseDefUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
-		   PWUseDigits, PWUseSymbols, PWUseHexDigits, PWEasyVision,
+		   UseDefaultUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
+		   PWUseDigits, PWUseSymbols, PWUseHexDigits, PWUseEasyVision,
 		   DontAskQuestion, DeleteQuestion, DCShowsPassword,
 		   DontAskMinimizeClearYesNo, DatabaseClear,
        DontAskSaveMinimize, // Obsoleted in 3.02
@@ -66,12 +66,12 @@ class PWSprefs {
        ShowUsernameInTree,
 		   NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
-		  SortedColumn, PWLenDefault, MaxMRUItems, IdleTimeout,
+		  SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
 		  DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
 		  NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
 		  PreExpiryWarnDays,
       NumIntPrefs};
-  enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefUserName,
+  enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
 		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
       ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
 		  NumStringPrefs};
@@ -115,6 +115,9 @@ class PWSprefs {
 
   // CPSWRecentFileList needs to know if it can use registry or not:
   bool IsUsingRegistry() const {return m_ConfigOptions == CF_REGISTRY;}
+
+  // Get database preferences in XML format for export
+  CString GetXMLPreferences();
 
   // for display in status bar (debug)
   int GetConfigIndicator() const;

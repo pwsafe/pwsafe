@@ -45,7 +45,6 @@ typedef std::ifstream ifstreamT;
 typedef std::ofstream ofstreamT;
 #endif
 
-
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
 unsigned char PWScore::m_session_initialized = false;
@@ -461,6 +460,11 @@ PWScore::WriteXMLFile(const CMyString &filename,
     of << endl;
   }
 
+  // write out preferences stored in database
+  CString prefs = PWSprefs::GetInstance()->GetXMLPreferences();
+  utf8conv.ToUTF8(prefs, utf8, utf8Len);
+  of.write(reinterpret_cast<const char *>(utf8), utf8Len);
+ 
   if (m_UHFL.size() > 0) {
     of << "\t<unknownheaderfields>" << endl;
     UnknownFieldList::const_iterator vi_IterUHFE;
@@ -1051,7 +1055,7 @@ PWScore::ReadFile(const CMyString &a_filename,
     } else {
         // for 2.0 & later...
         in->SetDefUsername(PWSprefs::GetInstance()->
-                              GetPref(PWSprefs::DefUserName));
+                              GetPref(PWSprefs::DefaultUsername));
     }
 
     ClearData(); //Before overwriting old data, but after opening the file...

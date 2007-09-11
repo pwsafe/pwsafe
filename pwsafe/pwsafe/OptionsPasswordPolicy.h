@@ -25,7 +25,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsPasswordPolicy)
 	enum { IDD = IDD_PS_PASSWORDPOLICY };
-	UINT	m_pwlendefault;
+	UINT	m_pwdefaultlength;
 	BOOL	m_pwuselowercase;
 	BOOL	m_pwuseuppercase;
 	BOOL	m_pwusedigits;

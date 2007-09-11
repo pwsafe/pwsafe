@@ -75,8 +75,8 @@ DboxMain::OnAdd()
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dataDlg.m_username);
       int rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
-        prefs->SetPref(PWSprefs::UseDefUser, true);
-        prefs->SetPref(PWSprefs::DefUserName,
+        prefs->SetPref(PWSprefs::UseDefaultUser, true);
+        prefs->SetPref(PWSprefs::DefaultUsername,
                        dataDlg.m_username);
         m_core.SetUseDefUser(true);
         m_core.SetDefUsername(dataDlg.m_username);
