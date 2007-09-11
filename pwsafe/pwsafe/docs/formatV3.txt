@@ -164,9 +164,11 @@ PC. Representation is as described in Section 3.1.1.
 [3] Non-default preferences are encoded in a string as follows: The string
 is of the form "X nn vv X nn vv..." Where X=[BIS] for binary, integer and
 string respectively, nn is the numeric value of the enum, and vv is the
-value, {1 or 0} for bool, unsigned integer for int, and quoted string for
-String. Only non-default values are stored. See PWSprefs.cpp for more
-details.
+value, {1 or 0} for bool, unsigned integer for int, and a delimited string
+for String. Only non-default values are stored. See PWSprefs.cpp for more
+details.  Note: normally strings are delimited by the doublequote character.
+However, if this character is in the string value, an arbitrary character
+will be chosen to delimit the string.
 
 [4] If requested to be saved, this is a string of 1s and 0s indicating the
 expanded state of the tree display when the database was saved. This can

@@ -19,7 +19,11 @@ New Features for 3.10.01
 
 
 Changes to Existing Features in 3.10.01
-======================================
+=======================================
+[] Saved string preferences within the database header will not be delimited by 
+a doublequote if this character is part of the string variable.  An arbitrary
+symbol type character will be used in this case.  If one cannot be found, the
+string preference will not be saved in the database.
 
 
 Bugs fixed in 3.10
