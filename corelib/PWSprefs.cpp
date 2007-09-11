@@ -396,13 +396,13 @@ void PWSprefs::SetPrefRect(long top, long bottom,
 CMyString PWSprefs::Store()
 {
 	/*
-	 * Create a string of values that are (1) different from the defaults, &&
-     * (2) are isStoredinDB
-	 * String is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
-     * integer and string, resp.,
-	 * nn is the numeric value of the enum, and vv is the value,
-     * {1,0} for bool, unsigned integer for int, and quoted string for String.
-	 */
+   * Create a string of values that are (1) different from the defaults, &&
+   * (2) are isStoredinDB
+   * String is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
+   * integer and string, resp.,
+   * nn is the numeric value of the enum, and vv is the value,
+   * {1,0} for bool, unsigned integer for int, and delimited string for String.
+   */
 
 	CString retval(_T(""));
 #ifdef _UNICODE
@@ -411,6 +411,9 @@ CMyString PWSprefs::Store()
 	ostringstream os;
 #endif
   int i;
+  TCHAR delim;
+  TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xbb");
+  const int NumDelimiters = _countof(Delimiters);
   for (i = 0; i < NumBoolPrefs; i++) {
 		if (m_boolValues[i] != m_bool_prefs[i].defVal &&
 			m_bool_prefs[i].isStoredinDB)
@@ -425,8 +428,19 @@ CMyString PWSprefs::Store()
 
   for (i = 0; i < NumStringPrefs; i++) {
 		if (m_stringValues[i] != m_string_prefs[i].defVal &&
-			m_string_prefs[i].isStoredinDB)
-			os << _T("S ") << i << _T(" \"") << LPCTSTR(m_stringValues[i]) << _T("\" ");
+			m_string_prefs[i].isStoredinDB) {
+			const CMyString svalue = m_stringValues[i];
+			delim = _T(' ');
+		  for (int j = 0; j < NumDelimiters; j++) {
+		    if (svalue.Find(Delimiters[j]) < 0) {
+		      delim = Delimiters[j];
+		      break;
+        }
+		  }
+		  if (delim == _T(' '))
+		    continue;  // We tried, but just can't save it!
+			os << _T("S ") << i << _T(' ') << delim << LPCTSTR(m_stringValues[i]) << delim << _T(' ');
+		}
   }
 
 	os << ends;
@@ -464,7 +478,7 @@ void PWSprefs::Load(const CMyString &prefString)
   string sps(prefString);
 	istringstream is(sps);
 #endif
-	TCHAR type;
+  TCHAR type, delim[1];
   int index, ival;
   unsigned int iuval;
   CMyString msval;
@@ -494,10 +508,11 @@ void PWSprefs::Load(const CMyString &prefString)
           m_intValues[index] = iuval;
         break;
 		  case TCHAR('S'):
-			  // Need to get value - even of not understood or wanted
-			  is.ignore(2, TCHAR('\"')); // skip over space and leading "
-        is.get(buf, N, TCHAR('\"')); // get string value
-        is.ignore(1, TCHAR(' ')); // skip over trailing "
+        // Need to get value - even of not understood or wanted
+        is.ignore(1, TCHAR(' ')); // skip over space
+        is.get(delim[0]);         // get string delimiter
+        is.get(buf, N, delim[0]); // get string value
+        is.ignore(1, TCHAR(' ')); // skip over trailing delimiter
         // forward compatibility and check whether still in DB
         if (index < NumStringPrefs && m_string_prefs[index].isStoredinDB) {
           msval= buf;
@@ -505,10 +520,10 @@ void PWSprefs::Load(const CMyString &prefString)
         }
         break;
 		  default:
-        // deal with last space
-        // Can't be forward compatibility as don't know how to process other types!
+        // Can't be forward compatibility as don't know how to process other newer types!
 			  continue;
 	  } // switch
+    is.ignore(1, TCHAR(' ')); // skip over space after each entry
 	} // while
 	delete[] buf;
 }
