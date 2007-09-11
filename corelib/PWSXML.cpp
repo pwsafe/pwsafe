@@ -19,6 +19,7 @@
 #include <atlcomcli.h>
 #include "xml_import.h"
 #include "UnknownField.h"
+#include "PWSprefs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -208,6 +209,51 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
                 uhfl.push_back(ukxfe);
               }
             }
+            PWSprefs *prefs = PWSprefs::GetInstance();
+            if (pCH->m_bDisplayExpandedAddEditDlg != -1)
+              prefs->SetPref(PWSprefs::DisplayExpandedAddEditDlg, pCH->m_bDisplayExpandedAddEditDlg == 1);
+            if (pCH->m_bMaintainDateTimeStamps != -1)
+              prefs->SetPref(PWSprefs::MaintainDateTimeStamps, pCH->m_bMaintainDateTimeStamps == 1);
+            if (pCH->m_bPWUseDigits != -1)
+              prefs->SetPref(PWSprefs::PWUseDigits, pCH->m_bPWUseDigits == 1);
+            if (pCH->m_bPWUseEasyVision != -1)
+              prefs->SetPref(PWSprefs::PWUseEasyVision, pCH->m_bPWUseEasyVision == 1);
+            if (pCH->m_bPWUseHexDigits != -1)
+              prefs->SetPref(PWSprefs::PWUseHexDigits, pCH->m_bPWUseHexDigits == 1);
+            if (pCH->m_bPWUseLowercase != -1)
+              prefs->SetPref(PWSprefs::PWUseLowercase, pCH->m_bPWUseLowercase == 1);
+            if (pCH->m_bPWUseSymbols != -1)
+              prefs->SetPref(PWSprefs::PWUseSymbols, pCH->m_bPWUseSymbols == 1);
+            if (pCH->m_bPWUseUppercase != -1)
+              prefs->SetPref(PWSprefs::PWUseUppercase, pCH->m_bPWUseUppercase == 1);
+            if (pCH->m_bSaveImmediately != -1)
+              prefs->SetPref(PWSprefs::SaveImmediately, pCH->m_bSaveImmediately == 1);
+            if (pCH->m_bSavePasswordHistory != -1)
+              prefs->SetPref(PWSprefs::SavePasswordHistory, pCH->m_bSavePasswordHistory == 1);
+            if (pCH->m_bShowNotesDefault != -1)
+              prefs->SetPref(PWSprefs::ShowNotesDefault, pCH->m_bShowNotesDefault == 1);
+            if (pCH->m_bShowPasswordInTree != -1)
+              prefs->SetPref(PWSprefs::ShowPasswordInTree, pCH->m_bShowPasswordInTree == 1);
+            if (pCH->m_bShowPWDefault != -1)
+              prefs->SetPref(PWSprefs::ShowPWDefault, pCH->m_bShowPWDefault == 1);
+            if (pCH->m_bShowUsernameInTree != -1)
+              prefs->SetPref(PWSprefs::ShowUsernameInTree, pCH->m_bShowUsernameInTree == 1);
+            if (pCH->m_bSortAscending != -1)
+              prefs->SetPref(PWSprefs::SortAscending, pCH->m_bSortAscending == 1);
+            if (pCH->m_bUseDefaultUser != -1)
+              prefs->SetPref(PWSprefs::UseDefaultUser, pCH->m_bUseDefaultUser == 1);
+            if (pCH->m_iIdleTimeout != -1)
+              prefs->SetPref(PWSprefs::IdleTimeout, pCH->m_iIdleTimeout);
+            if (pCH->m_iNumPWHistoryDefault != -1)
+              prefs->SetPref(PWSprefs::NumPWHistoryDefault, pCH->m_iNumPWHistoryDefault);
+            if (pCH->m_iPWDefaultLength != -1)
+              prefs->SetPref(PWSprefs::PWDefaultLength, pCH->m_iPWDefaultLength);
+            if (pCH->m_iTreeDisplayStatusAtOpen != -1)
+              prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, pCH->m_iTreeDisplayStatusAtOpen);
+            if (!pCH->m_sDefaultAutotypeString.IsEmpty())
+              prefs->SetPref(PWSprefs::DefaultAutotypeString, pCH->m_sDefaultAutotypeString);
+            if (!pCH->m_sDefaultUsername.IsEmpty())
+              prefs->SetPref(PWSprefs::DefaultUsername, pCH->m_sDefaultUsername);
           } else
             m_bDatabaseHeaderErrors = false;
         }

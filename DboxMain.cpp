@@ -493,8 +493,8 @@ DboxMain::InitPasswordSafe()
   }
 #endif
 
-  m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefUser));
-  m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefUserName));
+  m_core.SetUseDefUser(prefs->GetPref(PWSprefs::UseDefaultUser));
+  m_core.SetDefUsername(prefs->GetPref(PWSprefs::DefaultUsername));
 
   SetMenu(app.m_mainmenu);  // Now show menu...
 

@@ -37,18 +37,18 @@ CString PWSprefs::m_configfilename; // may be set before singleton created
 // 2nd parameter = default value
 // 3rd parameter if 'true' means value stored in db, if 'false' means application related
 const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
-	{_T("alwaysontop"), false, false},								// application
-	{_T("showpwdefault"), false, true},								// database
+	{_T("AlwaysOnTop"), false, false},								// application
+	{_T("ShowPWDefault"), false, true},								// database
 	{_T("ShowPasswordInTree"), false, true},					// database
-	{_T("sortascending"), true, true},								// database
-	{_T("usedefuser"), false, true},								// database
-	{_T("saveimmediately"), true, true},							// database
-	{_T("pwuselowercase"), true, true},								// database
-	{_T("pwuseuppercase"), true, true},								// database
-	{_T("pwusedigits"), true, true},								// database
-	{_T("pwusesymbols"), false, true},								// database
-	{_T("pwusehexdigits"), false, true},							// database
-	{_T("pweasyvision"), false, true},								// database
+	{_T("SortAscending"), true, true},								// database
+	{_T("UseDefaultUser"), false, true},								// database
+	{_T("SaveImmediately"), true, true},							// database
+	{_T("PWUseLowercase"), true, true},								// database
+	{_T("PWUseUppercase"), true, true},								// database
+	{_T("PWUseDigits"), true, true},								// database
+	{_T("PWUseSymbols"), false, true},								// database
+	{_T("PWUseHexDigits"), false, true},							// database
+	{_T("PWUseEasyVision"), false, true},								// database
 	{_T("dontaskquestion"), false, false},							// application
 	{_T("deletequestion"), false, false},							// application
 	{_T("DCShowsPassword"), false, false},							// application
@@ -85,7 +85,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	{_T("column3width"), (unsigned int)-1, false, -1, -1}, 					// application
 	{_T("column4width"), (unsigned int)-1, false, -1, -1}, 					// application
 	{_T("sortedcolumn"), 0, false, 0, 15},									// application
-	{_T("pwlendefault"), 8, true, 4, 1024},									// database
+	{_T("PWDefaultLength"), 8, true, 4, 1024},									// database
 	// maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
 	{_T("maxmruitems"), 4, false, 0, 20},									// application
 	{_T("IdleTimeout"), 5, true, 1, 120},									// database
@@ -105,7 +105,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
 	{_T("currentbackup"), _T(""), false},							// application
 	{_T("currentfile"), _T(""), false},								// application
 	{_T("lastview"), _T("tree"), false},							// application
-	{_T("defusername"), _T(""), true},								// database
+	{_T("DefaultUsername"), _T(""), true},						// database
 	{_T("treefont"), _T(""), false},								// application
 	{_T("BackupPrefixValue"), _T(""), false},						// application
 	{_T("BackupDir"), _T(""), false},                   // application
@@ -1132,4 +1132,87 @@ void PWSprefs::DeleteOldPrefs()
 
 	dw = ::RegCloseKey(hSubkey);
 	ASSERT(dw == ERROR_SUCCESS);
+}
+
+CString PWSprefs::GetXMLPreferences()
+{
+	CString retval(_T(""));
+#ifdef _UNICODE
+	wostringstream os;
+#else
+	ostringstream os;
+#endif
+
+  os << "\t<Preferences>" << endl;
+  int i;
+  for (i = 0; i < NumBoolPrefs; i++) {
+    if (m_boolValues[i] != m_bool_prefs[i].defVal &&
+      m_bool_prefs[i].isStoredinDB)
+      os << "\t\t<" << m_bool_prefs[i].name << ">" << (m_boolValues[i] ? "1</" : "0</") << 
+                       m_bool_prefs[i].name << ">" << endl;
+  }
+
+  for (i = 0; i < NumIntPrefs; i++) {
+    if (m_intValues[i] != m_int_prefs[i].defVal &&
+      m_int_prefs[i].isStoredinDB) {
+      os << "\t\t<" << m_int_prefs[i].name << ">" ;
+      if (i == TreeDisplayStatusAtOpen) {
+        switch (m_intValues[i]) {
+        	case AllExpanded:
+        	  os << "AllExpanded";
+        	  break;
+        	case AsPerLastSave:
+        	  os << "AsPerLastSave";
+        	  break;
+          case AllCollapsed:
+        	default:
+        	  os << "AllCollapsed";
+        	  break;
+        }
+      } else
+        os << m_intValues[i];
+      os << "</" << m_int_prefs[i].name << ">" << endl;
+    }
+  }
+
+  for (i = 0; i < NumStringPrefs; i++) {
+    if (m_stringValues[i] != m_string_prefs[i].defVal &&
+      m_string_prefs[i].isStoredinDB) {
+      int p = m_stringValues[i].Find(_T("]]>")); // special handling required
+      if (p == -1) {
+         // common case
+        os << "\t\t<" << m_string_prefs[i].name << "><![CDATA[" <<
+                      LPCTSTR(m_stringValues[i]) << "]]></" << 
+                      m_string_prefs[i].name << ">" << endl;
+      } else {
+        // value has "]]>" sequence(s) that need(s) to be escaped
+        // Each "]]>" splits the field into two CDATA sections, one ending with
+        // ']]', the other starting with '>'
+        const CMyString value = m_stringValues[i];
+        os << "\t\t<" << m_string_prefs[i].name << ">";
+        int from = 0, to = p + 2;
+        do {
+          CMyString slice = value.Mid(from, (to - from));
+          os << "<![CDATA[" << LPCTSTR(slice) << "]]><![CDATA[";
+          from = to;
+          p = value.Find(_T("]]>"), from); // are there more?
+          if (p == -1) {
+            to = value.GetLength();
+            slice = value.Mid(from, (to - from));
+          } else {
+            to = p + 2;
+            slice = value.Mid(from, (to - from));
+            from = to;
+            to = value.GetLength();
+          }
+          os <<  LPCTSTR(slice) << "]]>";
+        } while (p != -1);
+        os << "</" << m_string_prefs[i].name << ">" << endl;      
+      }
+    }
+  }
+  os << "\t</Preferences>" << endl << endl;
+	os << ends;
+	retval = os.str().c_str();
+	return retval;
 }

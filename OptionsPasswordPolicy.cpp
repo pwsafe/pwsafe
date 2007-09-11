@@ -45,7 +45,7 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
 {
   CPropertyPage::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(COptionsPasswordPolicy)
-  DDX_Text(pDX, IDC_DEFPWLENGTH, m_pwlendefault);
+  DDX_Text(pDX, IDC_DEFPWLENGTH, m_pwdefaultlength);
   DDX_Check(pDX, IDC_USELOWERCASE, m_pwuselowercase);
   DDX_Check(pDX, IDC_USEUPPERCASE, m_pwuseuppercase);
   DDX_Check(pDX, IDC_USEDIGITS, m_pwusedigits);
@@ -74,7 +74,7 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWLENGTH));
   pspin->SetRange(4, 1024);
   pspin->SetBase(10);
-  pspin->SetPos(m_pwlendefault);
+  pspin->SetPos(m_pwdefaultlength);
 
   if (IsDlgButtonChecked(IDC_USEHEXDIGITS)) {
     GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(TRUE);
@@ -146,7 +146,7 @@ BOOL COptionsPasswordPolicy::OnKillActive()
   }
 
   if (m_pwusehexdigits) {
-    if (m_pwlendefault % 2 != 0) {
+    if (m_pwdefaultlength % 2 != 0) {
       AfxMessageBox(IDS_HEXMUSTBEEVEN);
       return FALSE;
     }
@@ -156,7 +156,7 @@ BOOL COptionsPasswordPolicy::OnKillActive()
     return FALSE;
   }
   
-  if ((m_pwlendefault < 4) || (m_pwlendefault > 1024)) {
+  if ((m_pwdefaultlength < 4) || (m_pwdefaultlength > 1024)) {
   	AfxMessageBox(IDS_DEFAULTPWLENGTH);
   	((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
   	return FALSE;

@@ -42,8 +42,8 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   COptionsPasswordPolicy  passwordpolicy;
-  passwordpolicy.m_pwlendefault = prefs->
-    GetPref(PWSprefs::PWLenDefault);
+  passwordpolicy.m_pwdefaultlength = prefs->
+    GetPref(PWSprefs::PWDefaultLength);
   passwordpolicy.m_pwuselowercase = prefs->
     GetPref(PWSprefs::PWUseLowercase);
   passwordpolicy.m_pwuseuppercase = prefs->
@@ -55,7 +55,7 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
   passwordpolicy.m_pwusehexdigits = prefs->
     GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
-    GetPref(PWSprefs::PWEasyVision);
+    GetPref(PWSprefs::PWUseEasyVision);
 
   if (is_override) {
     // Start with existing password policy
@@ -73,7 +73,7 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
 
   while(1) {
     CPasswordCharPool pwchars(
-			      passwordpolicy.m_pwlendefault,
+			      passwordpolicy.m_pwdefaultlength,
 			      passwordpolicy.m_pwuselowercase,
 			      passwordpolicy.m_pwuseuppercase,
 			      passwordpolicy.m_pwusedigits,

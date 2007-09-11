@@ -99,6 +99,31 @@ public:
 	void SetVariables(PWScore *core, const bool &bValidation,
 					const CString &ImportedPrefix, const TCHAR &delimiter);
 
+  // Preferences posibly stored in database
+  // Note: boolean is integer to allow an 'not set' value of '-1'
+  int m_bDisplayExpandedAddEditDlg;
+  int m_bMaintainDateTimeStamps;
+  int m_bPWUseDigits;
+  int m_bPWUseEasyVision;
+  int m_bPWUseHexDigits;
+  int m_bPWUseLowercase;
+  int m_bPWUseSymbols;
+  int m_bPWUseUppercase;
+  int m_bSaveImmediately;
+  int m_bSavePasswordHistory;
+  int m_bShowNotesDefault;
+  int m_bShowPasswordInTree;
+  int m_bShowPWDefault;
+  int m_bShowUsernameInTree;
+  int m_bSortAscending;
+  int m_bUseDefaultUser;
+  int m_iIdleTimeout;
+  int m_iNumPWHistoryDefault;
+  int m_iPWDefaultLength;
+  int m_iTreeDisplayStatusAtOpen;
+  CString m_sDefaultAutotypeString;
+  CString m_sDefaultUsername;
+
 	// Standard functions
 	PWSSAXContentHandler();
 	virtual ~PWSSAXContentHandler();

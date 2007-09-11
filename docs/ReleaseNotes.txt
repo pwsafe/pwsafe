@@ -1,4 +1,4 @@
-Password Safe 3.10 Release Notes - September 2007
+Password Safe 3.10.01 Release Notes - ?????? 2007
 =================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,11 +8,12 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-
 Bugs fixed in 3.10.01
 =====================
-[1790286] All String preferences stored within the database are now restored
-
+[1790286] All String preferences stored within the database are now 
+correctly read during database open
+[1791482] All preferences stored within the database are now exported/imported
+via XML
 
 New Features for 3.10.01
 ========================
@@ -24,7 +25,6 @@ Changes to Existing Features in 3.10.01
 a doublequote if this character is part of the string variable.  An arbitrary
 symbol type character will be used in this case.  If one cannot be found, the
 string preference will not be saved in the database.
-
 
 Bugs fixed in 3.10
 ==================

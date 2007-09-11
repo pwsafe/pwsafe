@@ -18,6 +18,7 @@
 #include "xml_import.h"
 #include "corelib.h"
 #include "PWSfileV3.h"
+#include "PWSprefs.h"
 
 // Stop warnings about unused formal parameters!
 #pragma warning(disable : 4100)
@@ -141,6 +142,29 @@ PWSSAXContentHandler::PWSSAXContentHandler()
   m_bRecordHeaderErrors = false;
   m_nITER = 0;
   m_nRecordsWithUnknownFields = 0;
+
+  m_bDisplayExpandedAddEditDlg = -1;
+  m_bMaintainDateTimeStamps = -1;
+  m_bPWUseDigits = -1;
+  m_bPWUseEasyVision = -1;
+  m_bPWUseHexDigits = -1;
+  m_bPWUseLowercase = -1;
+  m_bPWUseSymbols = -1;
+  m_bPWUseUppercase = -1;
+  m_bSaveImmediately = -1;
+  m_bSavePasswordHistory = -1;
+  m_bShowNotesDefault = -1;
+  m_bShowPasswordInTree = -1;
+  m_bShowPWDefault = -1;
+  m_bShowUsernameInTree = -1;
+  m_bSortAscending = -1;
+  m_bUseDefaultUser = -1;
+  m_iIdleTimeout = -1;
+  m_iNumPWHistoryDefault = -1;
+  m_iPWDefaultLength = -1;
+  m_iTreeDisplayStatusAtOpen = -1;
+  m_sDefaultAutotypeString = _T("");
+  m_sDefaultUsername = _T("");
 }
 
 //	-----------------------------------------------------------------------
@@ -753,6 +777,78 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 		  m_nITER = i;
 		}
   }
+
+  if (_tcscmp(szCurElement, _T("DisplayExpandedAddEditDlg")) == 0)
+    m_bDisplayExpandedAddEditDlg = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("MaintainDateTimeStamps")) == 0)
+    m_bMaintainDateTimeStamps = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWUseDigits")) == 0)
+    m_bPWUseDigits = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWUseEasyVision")) == 0)
+    m_bPWUseEasyVision = _ttoi(m_strElemContent);
+  
+  if (_tcscmp(szCurElement, _T("PWUseHexDigits")) == 0)
+    m_bPWUseHexDigits = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWUseLowercase")) == 0)
+    m_bPWUseLowercase = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWUseSymbols")) == 0)
+    m_bPWUseSymbols = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWUseUppercase")) == 0)
+    m_bPWUseUppercase = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("SaveImmediately")) == 0)
+    m_bSaveImmediately = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("SavePasswordHistory")) == 0)
+    m_bSavePasswordHistory = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("ShowNotesDefault")) == 0)
+    m_bShowNotesDefault = _ttoi(m_strElemContent);
+  
+  if (_tcscmp(szCurElement, _T("ShowPWDefault")) == 0)
+    m_bShowPWDefault = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("ShowPasswordInTree")) == 0)
+    m_bShowPasswordInTree = _ttoi(m_strElemContent);
+  
+  if (_tcscmp(szCurElement, _T("ShowUsernameInTree")) == 0)
+    m_bShowUsernameInTree = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("SortAscending")) == 0)
+    m_bSortAscending = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("UseDefaultUser")) == 0)
+    m_bUseDefaultUser = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWLengthDefault")) == 0)
+    m_iPWDefaultLength = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("IdleTimeout")) == 0)
+    m_iIdleTimeout = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("TreeDisplayStatusAtOpen")) == 0) {
+    if (m_strElemContent == _T("AllCollapsed"))
+      m_iTreeDisplayStatusAtOpen = PWSprefs::AllCollapsed;
+    else if (m_strElemContent == _T("AllExpanded"))
+      m_iTreeDisplayStatusAtOpen = PWSprefs::AllExpanded;
+    else if (m_strElemContent == _T("AsPerLastSave"))
+      m_iTreeDisplayStatusAtOpen = PWSprefs::AsPerLastSave;
+  }
+
+  if (_tcscmp(szCurElement, _T("NumPWHistoryDefault")) == 0)
+    m_iNumPWHistoryDefault = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("DefaultUsername")) == 0)
+    m_sDefaultUsername = CString(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("DefaultAutotypeString")) == 0)
+    m_sDefaultAutotypeString = CString(m_strElemContent);
 
 	return S_OK;
 }
