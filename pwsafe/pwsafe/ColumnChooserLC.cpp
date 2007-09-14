@@ -75,20 +75,20 @@ BOOL CColumnChooserLC::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
-  DWORD randID;
+  DWORD procID;
   int iDDType, dw_type, iLen;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData, _T("%08x%02x%02x%04x"), &randID, &iDDType, &dw_type, &iLen);
+  _stscanf_s(pData, _T("%08x%02x%02x%04x"), &procID, &iDDType, &dw_type, &iLen);
 #else
-  _stscanf(pData, _T("08x%02x%02x%04x"), &randID, &iDDType, &dw_type, &iLen);
+  _stscanf(pData, _T("08x%02x%02x%04x"), &procID, &iDDType, &dw_type, &iLen);
 #endif
 
   // Check if it is ours?
   // - we don't accept drop from other instances of PWS
   // Check if it is from List View HeaderCtrl?
   // - we don't accept drop from anything else
-  if ((randID != GetCurrentProcessId()) || (iDDType != FROMHDR)) {
+  if ((procID != GetCurrentProcessId()) || (iDDType != FROMHDR)) {
     GlobalUnlock(hGlobal);
     return FALSE;
   }

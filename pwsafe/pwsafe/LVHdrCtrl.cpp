@@ -72,20 +72,20 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   LPCTSTR pData = (LPCTSTR)GlobalLock(hGlobal);
   ASSERT(pData != NULL);
 
-  DWORD randID;
+  DWORD procID;
   int iDDType, iType;
 
 #if _MSC_VER >= 1400
-  _stscanf_s(pData, _T("%08x%02x%02x"), &randID, &iDDType, &iType);
+  _stscanf_s(pData, _T("%08x%02x%02x"), &procID, &iDDType, &iType);
 #else
-  _stscanf(pData, _T("08x%02x%02x"), &randID, &iDDType, &iType);
+  _stscanf(pData, _T("08x%02x%02x"), &procID, &iDDType, &iType);
 #endif
 
   // Check if it is ours?
   // - we don't accept drop from other instances of PWS
   // - we only accept drops from our ColumnChooser or our Header
   // - standard moving within the header only available if CC dialog not visible
-  if ((randID != GetCurrentProcessId()) || (iDDType != FROMCC)) {
+  if ((procID != GetCurrentProcessId()) || (iDDType != FROMCC)) {
     GlobalUnlock(hGlobal);
     return FALSE;
   }
