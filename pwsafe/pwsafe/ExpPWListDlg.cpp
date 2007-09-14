@@ -163,7 +163,7 @@ CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 			(CString)exppwentry.expiryexpdate + CRLF;
 	}
 					
-  DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
   dbx->SetClipboardData(data);
 }
 

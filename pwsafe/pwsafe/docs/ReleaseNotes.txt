@@ -14,6 +14,7 @@ Bugs fixed in 3.10.01
 correctly read during database open
 [1791482] All preferences stored within the database are now exported/imported
 via XML
+[1793224] Copy for expired passwords no longer causes PWS crashes
 
 New Features for 3.10.01
 ========================
