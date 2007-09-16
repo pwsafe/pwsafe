@@ -5,6 +5,7 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
+#include "../stdafx.h"
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "corelib.h"

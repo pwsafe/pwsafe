@@ -7,6 +7,7 @@
  */
 /// \file RUEList.cpp
 //-----------------------------------------------------------------------------
+#include "stdafx.h"
 
 #include <algorithm> // for find_if
 

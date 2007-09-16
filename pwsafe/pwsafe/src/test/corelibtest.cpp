@@ -5,6 +5,8 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
+#include "stdafx.h"
+
 #define TEST_MYSTRING
 #define TEST_TWOFISH
 #define TEST_SHA256

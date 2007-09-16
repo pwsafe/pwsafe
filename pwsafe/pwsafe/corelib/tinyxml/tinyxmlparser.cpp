@@ -27,6 +27,8 @@ distribution.
  * project http://passwordsafe.sourceforge.net/
  */
 
+#include "../../stdafx.h"
+
 #include <ctype.h>
 #include <stddef.h>
 

@@ -9,6 +9,7 @@
 //
 // Manage-related methods of DboxMain
 //-----------------------------------------------------------------------------
+#include "stdafx.h"
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
@@ -45,7 +46,7 @@ DboxMain::OnPasswordChange()
     return;
   CPasskeyChangeDlg changeDlg(this);
   app.DisableAccelerator();
-  int rc = changeDlg.DoModal();
+  INT_PTR rc = changeDlg.DoModal();
   app.EnableAccelerator();
   if (rc == IDOK) {
     m_core.ChangePassword(changeDlg.m_newpasskey);
@@ -61,7 +62,7 @@ DboxMain::OnBackupSafe()
 int
 DboxMain::BackupSafe()
 {
-  int rc;
+  INT_PTR rc;
   PWSprefs *prefs = PWSprefs::GetInstance();
   CMyString tempname;
   CMyString currbackup =
@@ -145,7 +146,7 @@ DboxMain::Restore()
     CString dir = PWSdirs::GetSafeDir();
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
-    rc = fd.DoModal();
+    INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
         // If U3ExitNow called while in CFileDialog,
         // PostQuitMessage makes us return here instead
@@ -153,7 +154,7 @@ DboxMain::Restore()
         PostQuitMessage(0);
         return PWScore::USER_CANCEL;
     }
-    if (rc == IDOK) {
+    if (rc2 == IDOK) {
       backup = (CMyString)fd.GetPathName();
       break;
     } else
@@ -401,7 +402,7 @@ DboxMain::OnOptions()
 
     passwordhistory.m_pDboxMain = this;
     app.DisableAccelerator();
-    int rc = optionsDlg.DoModal();
+    INT_PTR rc = optionsDlg.DoModal();
     app.EnableAccelerator();
 
     if (rc == IDOK) {
@@ -487,7 +488,7 @@ DboxMain::OnOptions()
         // by strange coincidence, the values of the enums match the indices
         // of the radio buttons in the following :-)
         prefs->SetPref(PWSprefs::DoubleClickAction,
-                       misc.m_doubleclickaction);
+                       (unsigned int)misc.m_doubleclickaction);
 
         // Need to update previous values as we use these variables to re-instate
         // the hotkey environment at the end whether the user changed it or not.
@@ -525,7 +526,7 @@ DboxMain::OnOptions()
         prefs->SetPref(PWSprefs::BackupPrefixValue,
                        backup.m_userbackupprefix);
         prefs->SetPref(PWSprefs::BackupSuffix,
-                       backup.m_backupsuffix);
+                       (unsigned int)backup.m_backupsuffix);
         prefs->SetPref(PWSprefs::BackupMaxIncremented,
                        backup.m_maxnumincbackups);
         prefs->SetPref(PWSprefs::BackupDir,

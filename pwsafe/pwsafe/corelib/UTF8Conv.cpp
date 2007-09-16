@@ -9,6 +9,7 @@
 /** \file
  * Implementation of CUTF8Conv
  */
+#include "../stdafx.h"
 #include "UTF8Conv.h"
 #include "Util.h"
 

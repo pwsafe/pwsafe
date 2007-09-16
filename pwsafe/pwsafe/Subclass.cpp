@@ -12,6 +12,7 @@
 //
 // CSubclassWnd is a generic class for hooking another window's messages.
 //
+
 #include "StdAfx.h"
 #include "Subclass.h"
 
@@ -205,6 +206,7 @@ CSubclassWndMap& CSubclassWndMap::GetHookMap()
 /////////////////
 // Add hook to map; i.e., associate hook with window
 //
+
 void CSubclassWndMap::Add(HWND hwnd, CSubclassWnd* pSubclassWnd)
 {
 	ASSERT(hwnd && ::IsWindow(hwnd));
@@ -216,7 +218,7 @@ void CSubclassWndMap::Add(HWND hwnd, CSubclassWnd* pSubclassWnd)
 	if (pSubclassWnd->m_pNext == NULL) {
 		// If this is the first hook added, subclass the window
 		pSubclassWnd->m_pOldWndProc =
-			SetWindowLongPtr(hwnd, GWL_WNDPROC, LONG_PTR(HookWndProc));
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, LONG_PTR(HookWndProc));
 	} else {
 		// just copy wndproc from next hook
 		pSubclassWnd->m_pOldWndProc = pSubclassWnd->m_pNext->m_pOldWndProc;
@@ -241,7 +243,7 @@ void CSubclassWndMap::Remove(CSubclassWnd* pUnHook)
 		else {
 			// This is the last hook for this window: restore wnd proc
 			RemoveKey(hwnd);
-			SetWindowLong(hwnd, GWL_WNDPROC, (DWORD)pHook->m_pOldWndProc);
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, pHook->m_pOldWndProc);
 		}
 	} else {
 		// Hook to remove is in the middle: just remove from linked list

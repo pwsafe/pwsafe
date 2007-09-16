@@ -8,6 +8,7 @@
 // PWSXML.cpp : implementation file
 //
 
+#include "../stdafx.h"
 #include "PWSXML.h"
 #include "SAXHandlers.h"
 #include "ItemData.h"

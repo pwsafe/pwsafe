@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 // test.cpp
-
+#include "stdafx.h"
 #include "test.h"
 #include <iostream>
 #include <typeinfo>     // Visual Studio requires /GR""

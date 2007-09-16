@@ -47,6 +47,6 @@ public:
 
 	// Call these handlers from your main window
 	void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu);
-	void OnEnterIdle(UINT nWhy, HWND hwndWho);
+	void OnEnterIdle(WPARAM nWhy, HWND hwndWho);
 };
 

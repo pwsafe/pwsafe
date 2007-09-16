@@ -8,6 +8,7 @@
 // SAXHandlers.cpp : implementation file
 //
 
+#include "../stdafx.h"
 #include "corelib.h"
 #include "PWScore.h"
 #include "ItemData.h"

@@ -5,6 +5,7 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
+#include "../stdafx.h"
 #include "hmac.h"
 #include "Util.h" // for ASSERT
 #include <string.h>

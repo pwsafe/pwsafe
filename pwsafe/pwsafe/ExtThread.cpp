@@ -6,6 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 
+#include "stdafx.h"
 #include <afxwin.h>
 #include "ExtThread.h"
 

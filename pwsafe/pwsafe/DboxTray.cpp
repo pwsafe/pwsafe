@@ -10,6 +10,7 @@
 // Tray-related methods of DboxMain
 //-----------------------------------------------------------------------------
 
+#include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 

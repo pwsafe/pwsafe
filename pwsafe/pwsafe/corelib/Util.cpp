@@ -8,6 +8,8 @@
 /// \file Util.cpp
 //-----------------------------------------------------------------------------
 
+#include "../stdafx.h"
+
 #include "sha1.h"
 #include "BlowFish.h"
 #include "PWSrand.h"

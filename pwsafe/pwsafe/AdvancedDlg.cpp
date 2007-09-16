@@ -269,7 +269,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     LVFINDINFO findinfo;
     CString cs_text;
     int iItem;
-    DWORD dw_data;
+    DWORD_PTR dw_data;
 
     memset(&findinfo, 0, sizeof(findinfo));
 
@@ -381,7 +381,7 @@ void CAdvancedDlg::OnHelp()
 void CAdvancedDlg::OnOK()
 {
   CString cs_text;
-  DWORD dw_data;
+  DWORD_PTR dw_data;
 
   UpdateData();
   m_bsFields.reset();
@@ -435,8 +435,8 @@ void CAdvancedDlg::OnOK()
       return;
     }
 
-    m_subgroup_object = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetItemData(nObject);
-    m_subgroup_function = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->GetItemData(nFunction);
+    m_subgroup_object = int(((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetItemData(nObject));
+    m_subgroup_function = int(((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->GetItemData(nFunction));
     if (m_subgroup_case == BST_CHECKED)
       m_subgroup_function *= (-1);
   }
@@ -462,7 +462,7 @@ void CAdvancedDlg::OnSelectSome()
 {
   CString cs_text;
   int iItem;
-  DWORD dw_data;
+  DWORD_PTR dw_data;
 
   int num_selected = m_pLC_List->GetItemCount();
   if (num_selected == 0)
@@ -488,7 +488,7 @@ void CAdvancedDlg::OnSelectAll()
 {
   CString cs_text;
   int iItem;
-  DWORD dw_data;
+  DWORD_PTR dw_data;
 
   int num_in_list = m_pLC_List->GetItemCount();
   if (num_in_list == 0)
@@ -508,7 +508,7 @@ void CAdvancedDlg::OnDeselectSome()
 {
   CString cs_text;
   int iItem;
-  DWORD dw_data;
+  DWORD_PTR dw_data;
 
   int num_selected = m_pLC_Selected->GetItemCount();
   if (num_selected == 0)
@@ -534,7 +534,7 @@ void CAdvancedDlg::OnDeselectAll()
 {
   CString cs_text;
   int iItem;
-  DWORD dw_data;
+  DWORD_PTR dw_data;
 
   int num_selected = m_pLC_Selected->GetItemCount();
   if (num_selected == 0)
