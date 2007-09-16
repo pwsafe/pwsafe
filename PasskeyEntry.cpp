@@ -12,6 +12,7 @@
   Passkey?  That's Russian for 'pass'.  You know, passkey
   down the streetsky.  [Groucho Marx]
 */
+#include "stdafx.h"
 
 #include "PasswordSafe.h"
 #include "corelib/PwsPlatform.h"
@@ -281,7 +282,7 @@ CPasskeyEntry::OnCreateDb()
     // 1. Get a filename from a file dialog box
     // 2. Get a password
     // 3. Set m_filespec && m_passkey to returned value!
-    int rc;
+    INT_PTR rc;
     CString newfile;
     CString cs_msg, cs_title, cs_temp;
     CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
@@ -353,7 +354,7 @@ CPasskeyEntry::OnExitAdvanced()
                    m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
   app.DisableAccelerator();
-  int rc = Adv.DoModal();
+  INT_PTR rc = Adv.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
@@ -395,7 +396,7 @@ CPasskeyEntry::OnOK()
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 
-      int nResponse = errorDlg.DoModal();
+      INT_PTR nResponse = errorDlg.DoModal();
       if (nResponse == IDOK) {
       } else if (nResponse == IDCANCEL) {
         m_status = errorDlg.GetCancelReturnValue();
@@ -470,7 +471,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
     CString dir = PWSdirs::GetSafeDir();
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
-    int rc = fd.DoModal();
+    INT_PTR rc = fd.DoModal();
     if (((DboxMain*) GetParent())->ExitRequested()) {
         // If U3ExitNow called while in CFileDialog,
         // PostQuitMessage makes us return here instead

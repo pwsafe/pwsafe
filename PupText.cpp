@@ -153,7 +153,7 @@ void CPopupText::Cancel()
 //////////////////
 // Timer popped: display myself and kill timer
 //
-void CPopupText::OnTimer(UINT )
+void CPopupText::OnTimer(UINT_PTR )
 {
 	ShowWindow(SW_SHOWNA);
 	Invalidate();

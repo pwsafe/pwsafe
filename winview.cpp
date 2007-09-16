@@ -6,6 +6,8 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 
+#include "stdafx.h"
+
 #include "winview.h"
 #include "ThisMfcApp.h"
 #include "model.h"

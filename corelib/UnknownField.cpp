@@ -1,3 +1,4 @@
+#include "../stdafx.h"
 #include "UnknownField.h"
 
 #include "Util.h"

@@ -110,7 +110,7 @@ void CExportXMLDlg::OnAdvanced()
                    m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
   app.DisableAccelerator();
-  int rc = Adv.DoModal();
+  INT_PTR rc = Adv.DoModal();
   app.EnableAccelerator();
 
 	if (rc == IDOK) {

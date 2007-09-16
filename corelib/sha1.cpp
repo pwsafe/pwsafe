@@ -7,6 +7,7 @@
  */
 /// \file sha1.cpp
 //-----------------------------------------------------------------------------
+#include "../stdafx.h"
 
 /* based on SHA-1 in C By Steve Reid <steve@edmweb.com> */
 

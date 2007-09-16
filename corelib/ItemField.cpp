@@ -8,6 +8,7 @@
 /// \file ItemField.cpp
 //-----------------------------------------------------------------------------
 
+#include "../stdafx.h"
 #include <math.h>
 
 #include "ItemField.h"

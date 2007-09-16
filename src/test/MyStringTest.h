@@ -174,7 +174,7 @@ class CMyStringTest : public Test
       // CString Right(int nCount) const;
       _test(s1.Right(3) == _T("890"));
       // void TrimRight();
-      CMyString s2("   blablaBLA   ");
+      CMyString s2(_T("   blablaBLA   "));
       s2.TrimRight();
       _test(s2 == _T("   blablaBLA"));
       // void TrimLeft();

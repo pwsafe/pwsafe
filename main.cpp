@@ -6,6 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license.php
  */
 
+#include "stdafx.h"
 #include "model.h"
 #include "view.h"
 

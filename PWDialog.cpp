@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "PWDialog.h"
 #include "DboxMain.h"
 

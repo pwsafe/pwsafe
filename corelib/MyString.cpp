@@ -8,6 +8,7 @@
 /// \file MyString.cpp
 //-----------------------------------------------------------------------------
 
+#include "../stdafx.h"
 #include "MyString.h"
 #include "Util.h"
 

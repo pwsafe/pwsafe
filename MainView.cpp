@@ -10,6 +10,7 @@
 // View-related methods of DboxMain
 //-----------------------------------------------------------------------------
 
+#include "stdafx.h"
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
@@ -282,7 +283,7 @@ ItemListIter DboxMain::Find(int i)
  * FindAll returns the number of entries that matched.
  */
 
-int
+size_t
 DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
                   vector<int> &indices)
 {
@@ -292,7 +293,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT;
   CMyString listTitle, savetitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
-  int retval = 0;
+  size_t retval = 0;
 
   if (!CaseSensitive)
     searchstr.MakeLower();
@@ -389,7 +390,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   return retval;
 }
 
-int
+size_t
 DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
                   vector<int> &indices,
               const CItemData::FieldBits &bsFields, const int subgroup_set, 
@@ -403,7 +404,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   CMyString listTitle, saveTitle;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
-  int retval = 0;
+  size_t retval = 0;
 
   if (!CaseSensitive)
     searchstr.MakeLower();
@@ -970,10 +971,10 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
     if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
-      m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
+      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
     } else {
       ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
-      m_ctlItemTree.SetItemData(ti, (DWORD)&itemData);
+      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
       if (bSort)
         m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
     }
@@ -1055,7 +1056,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     m_ctlItemList.SetItemText(iResult, i, cs_fielddata);
   }
 
-  m_ctlItemList.SetItemData(iResult, (DWORD)&itemData);
+  m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&itemData);
   return iResult;
 }
 
@@ -1355,7 +1356,7 @@ DboxMain::OnCollapseAll()
 }
 
 void
-DboxMain::OnTimer(UINT nIDEvent )
+DboxMain::OnTimer(UINT_PTR nIDEvent )
 {
   if ((nIDEvent == TIMER_CHECKLOCK && IsWorkstationLocked()) ||
       (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
@@ -1507,7 +1508,7 @@ DboxMain::LaunchBrowser(const CString &csURL)
   CString csAltBrowser;
   CString csCmdLineParms;
   bool useAltBrowser;
-  long hinst;
+  HINSTANCE hinst;
   CString theURL(csURL);
 
   // If csURL contains "[alt]" then we'll use the alternate browser (if defined),
@@ -1527,16 +1528,16 @@ DboxMain::LaunchBrowser(const CString &csURL)
   useAltBrowser = (altReplacements > 0) && !csAltBrowser.IsEmpty();
 
   if (!useAltBrowser) {
-    hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
-                                NULL, SW_SHOWNORMAL));
+    hinst = ::ShellExecute(NULL, NULL, theURL, NULL,
+                           NULL, SW_SHOWNORMAL);
   } else {
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
-    hinst = long(::ShellExecute(NULL, NULL, csAltBrowser, theURL,
-                                NULL, SW_SHOWNORMAL));
+    hinst = ::ShellExecute(NULL, NULL, csAltBrowser, theURL,
+                           NULL, SW_SHOWNORMAL);
   }
 
-  if(hinst < 32) {
+  if(hinst < HINSTANCE(32)) {
     AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
     return FALSE;
   }
@@ -1805,7 +1806,7 @@ DboxMain::SetHeaderInfo()
     m_LVHdrCtrl.GetItem(iIndex, &hdi_get);
     ASSERT(iOrder == hdi_get.iOrder);
     m_nColumnIndexByType[hdi_get.lParam] = iIndex;
-    m_nColumnTypeByIndex[iIndex] = hdi_get.lParam;
+    m_nColumnTypeByIndex[iIndex] = (int)hdi_get.lParam;
   }
 
   // Check sort column still there; if not TITLE always is!
@@ -1846,7 +1847,8 @@ DboxMain::OnResetColumns()
 void
 DboxMain::AutoResizeColumns()
 {
-  int iIndex, iType;
+  int iIndex;
+  LPARAM iType;
   // CHeaderCtrl get values
   for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     iIndex = m_nColumnIndexByOrder[iOrder];

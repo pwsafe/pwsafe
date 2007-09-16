@@ -27,6 +27,7 @@ distribution.
  * project http://passwordsafe.sourceforge.net/
  */
 
+#include "../../stdafx.h"
 #include "tinyxml.h"
 
 // The goal of the seperate error file is to make the first

@@ -2,6 +2,7 @@
 //
 // File-related methods of DboxMain
 //-----------------------------------------------------------------------------
+#include "stdafx.h"
 
 #include "PasswordSafe.h"
 
@@ -226,7 +227,7 @@ DboxMain::NewFile(void)
 {
   CPasskeySetup dbox_pksetup(this);
   //app.m_pMainWnd = &dbox_pksetup;
-  int rc = dbox_pksetup.DoModal();
+  INT_PTR rc = dbox_pksetup.DoModal();
 
   if (rc == IDCANCEL)
     return PWScore::USER_CANCEL;  //User cancelled password entry
@@ -361,7 +362,7 @@ DboxMain::Open()
     CString dir = PWSdirs::GetSafeDir();
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
-    rc = fd.DoModal();
+    INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
         // If U3ExitNow called while in CFileDialog,
         // PostQuitMessage makes us return here instead
@@ -371,7 +372,7 @@ DboxMain::Open()
     }
     const bool last_ro = m_core.IsReadOnly(); // restore if user cancels
     m_core.SetReadOnly(fd.GetReadOnlyPref() == TRUE);
-    if (rc == IDOK) {
+    if (rc2 == IDOK) {
       newfile = (CMyString)fd.GetPathName();
 
       rc = Open( newfile );
@@ -606,7 +607,7 @@ DboxMain::OnSaveAs()
 int
 DboxMain::SaveAs()
 {
-  int rc;
+  INT_PTR rc;
   CMyString newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
 
@@ -701,7 +702,7 @@ DboxMain::SaveAs()
 void
 DboxMain::OnExportVx(UINT nID)
 {
-  int rc;
+  INT_PTR rc;
   CMyString newfile;
   CString cs_text, cs_title, cs_temp;
 
@@ -759,7 +760,7 @@ DboxMain::OnExportText()
     CExportTextDlg et;
     CString cs_text, cs_temp, cs_title;
 
-    int rc = et.DoModal();
+    INT_PTR rc = et.DoModal();
     if (rc == IDOK) {
         CMyString newfile;
         CMyString pw(et.m_exportTextPassword);
@@ -827,7 +828,7 @@ DboxMain::OnExportXML()
     CExportXMLDlg eXML;
     CString cs_text, cs_title, cs_temp;
 
-    int rc = eXML.DoModal();
+    INT_PTR rc = eXML.DoModal();
     if (rc == IDOK) {
         CMyString newfile;
         CMyString pw(eXML.m_ExportXMLPassword);
@@ -896,7 +897,7 @@ DboxMain::OnImportText()
         return;
 
     CImportDlg dlg;
-    int status = dlg.DoModal();
+    INT_PTR status = dlg.DoModal();
 
     if (status == IDCANCEL)
         return;
@@ -915,7 +916,7 @@ DboxMain::OnImportText()
                    this);
     cs_text.LoadString(IDS_PICKTEXTFILE);
     fd.m_ofn.lpstrTitle = cs_text;
-    int rc = fd.DoModal();
+    INT_PTR rc = fd.DoModal();
     if (m_inExit) {
         // If U3ExitNow called while in CFileDialog,
         // PostQuitMessage makes us return here instead
@@ -999,7 +1000,7 @@ DboxMain::OnImportKeePass()
                    this);
     cs_text.LoadString(IDS_PICKKEEPASSFILE);
     fd.m_ofn.lpstrTitle = cs_text;
-    int rc = fd.DoModal();
+    INT_PTR rc = fd.DoModal();
     if (m_inExit) {
         // If U3ExitNow called while in CFileDialog,
         // PostQuitMessage makes us return here instead
@@ -1051,7 +1052,7 @@ DboxMain::OnImportXML()
     }
 
     CImportXMLDlg dlg;
-    int status = dlg.DoModal();
+    INT_PTR status = dlg.DoModal();
 
     if (status == IDCANCEL)
         return;
@@ -1067,7 +1068,7 @@ DboxMain::OnImportXML()
     cs_text.LoadString(IDS_PICKXMLFILE);
     fd.m_ofn.lpstrTitle = cs_text;
 
-    int rc = fd.DoModal();
+    INT_PTR rc = fd.DoModal();
     if (m_inExit) {
         // If U3ExitNow called while in CFileDialog,
         // PostQuitMessage makes us return here instead
@@ -1162,7 +1163,7 @@ DboxMain::Merge()
         CString dir = PWSdirs::GetSafeDir();
         if (!dir.IsEmpty())
             fd.m_ofn.lpstrInitialDir = dir;
-        rc = fd.DoModal();
+        INT_PTR rc2 = fd.DoModal();
         if (m_inExit) {
             // If U3ExitNow called while in CFileDialog,
             // PostQuitMessage makes us return here instead
@@ -1170,7 +1171,7 @@ DboxMain::Merge()
             PostQuitMessage(0);
             return PWScore::USER_CANCEL;
         }
-        if (rc == IDOK) {
+        if (rc2 == IDOK) {
             newfile = (CMyString)fd.GetPathName();
 
             rc = Merge(newfile);
@@ -1451,7 +1452,7 @@ DboxMain::OnMerge()
 void
 DboxMain::OnCompare()
 {
-  int rc = PWScore::SUCCESS;
+  INT_PTR rc = PWScore::SUCCESS;
   if (m_core.GetCurFile().IsEmpty()) {
     AfxMessageBox(IDS_NOCOMPAREFILE, MB_OK|MB_ICONWARNING);
     return;
