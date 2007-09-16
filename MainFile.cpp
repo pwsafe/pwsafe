@@ -2076,7 +2076,7 @@ DboxMain::OnOK()
     cs_columnswidths += _T(",");
   }
 
-  prefs->SetPref(PWSprefs::SortedColumn, m_iSortedColumn);
+  prefs->SetPref(PWSprefs::SortedColumn, m_iTypeSortColumn);
   prefs->SetPref(PWSprefs::SortAscending, m_bSortAscending);
   prefs->SetPref(PWSprefs::ListColumns, cs_columns);
   prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);

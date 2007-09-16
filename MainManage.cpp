@@ -821,6 +821,5 @@ DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
     CString cs_Msg;
     cs_Msg.Format(ids, num_altered);
     AfxMessageBox(cs_Msg);
-    RefreshList();
   }
 }

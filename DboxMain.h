@@ -29,6 +29,11 @@
 #include "ColumnChooserDlg.h"
 #include <vector>
 
+#if (WINVER < 0x0501)  // These are already defined for WinXP and later
+#define HDF_SORTUP 0x0400
+#define HDF_SORTDOWN 0x0200
+#endif
+
 class CDDObList;
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
@@ -231,7 +236,7 @@ protected:
   bool m_passphraseOK;
 
   bool m_bSortAscending;
-  int m_iSortedColumn;
+  int m_iTypeSortColumn;
 
   bool m_bTSUpdated;
   int m_iSessionEndingStatus;
@@ -291,6 +296,7 @@ protected:
   void UpdateStatusBar();
   void UpdateMenuAndToolBar(const bool bOpen);
   void SetDCAText();
+  void SortListView();
 
   //Version of message functions with return values
   int Save(void);
