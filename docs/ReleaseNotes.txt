@@ -19,7 +19,7 @@ via XML
 
 New Features for 3.10.01
 ========================
-
+[1765240] Add "Clear clipboard" item to tray icon context menu
 
 Changes to Existing Features in 3.10.01
 =======================================
