@@ -74,7 +74,7 @@ DboxMain::DboxMain(CWnd* pParent)
    : CDialog(DboxMain::IDD, pParent),
      m_bSizing(false), m_needsreading(true), m_windowok(false),
      m_toolbarsSetup(FALSE),
-     m_bSortAscending(true), m_iSortedColumn(CItemData::TITLE),
+     m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
      m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_pFontTree(NULL),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
@@ -408,9 +408,28 @@ DboxMain::InitPasswordSafe()
   else
     SetColumns(cs_ListColumns);
 
-  m_iSortedColumn = prefs->GetPref(PWSprefs::SortedColumn);
-  if (m_iSortedColumn == 0)
-    m_iSortedColumn = CItemData::TITLE;
+  m_iTypeSortColumn = prefs->GetPref(PWSprefs::SortedColumn);
+  switch (m_iTypeSortColumn) {
+    case CItemData::GROUP:
+    case CItemData::TITLE:
+    case CItemData::USER:
+    case CItemData::NOTES:
+    case CItemData::PASSWORD:
+    case CItemData::CTIME:
+    case CItemData::PMTIME:
+    case CItemData::ATIME:
+    case CItemData::LTIME:
+    case CItemData::RMTIME:
+    case CItemData::URL:
+    case CItemData::AUTOTYPE:
+      break;
+    case CItemData::POLICY:  // Not implemented
+    case CItemData::PWHIST:  // Not displayed in ListView
+    default:
+      // Title is a mandatory column - so can't go wrong!
+      m_iTypeSortColumn = CItemData::TITLE;
+      break;
+  }
   m_bSortAscending = prefs->GetPref(PWSprefs::SortAscending);
 
   // refresh list will add and size password column if necessary...

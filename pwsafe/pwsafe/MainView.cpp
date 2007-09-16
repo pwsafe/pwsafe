@@ -57,22 +57,19 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 				   LPARAM closure)
 {
   // closure is "this" of the calling DboxMain, from which we use:
-  // m_iSortedColumn to determine which column is getting sorted:
-  // 0 - title
-  // 1 - user name
-  // 2 - note
-  // 3 - password
+  // m_iTypeSortColumn to determine which column is getting sorted
+  // which is by column data TYPE and NOT by column index!
   // m_bSortAscending to determine the direction of the sort (duh)
 
   DboxMain *self = (DboxMain*)closure;
-  int nSortColumn = self->m_iSortedColumn;
+  const int nTypeSortColumn = self->m_iTypeSortColumn;
   CItemData* pLHS = (CItemData *)lParam1;
   CItemData* pRHS = (CItemData *)lParam2;
   CMyString	group1, group2;
   time_t t1, t2;
 
   int iResult;
-  switch(nSortColumn) {
+  switch(nTypeSortColumn) {
     case CItemData::GROUP:
       group1 = pLHS->GetGroup();
       group2 = pRHS->GetGroup();
@@ -105,6 +102,12 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       break;
     case CItemData::PASSWORD:
       iResult = (pLHS->GetPassword()).CompareNoCase(pRHS->GetPassword());
+      break;
+    case CItemData::URL:
+      iResult = (pLHS->GetURL()).CompareNoCase(pRHS->GetURL());
+      break;
+    case CItemData::AUTOTYPE:
+      iResult = (pLHS->GetAutoType()).CompareNoCase(pRHS->GetAutoType());
       break;
     case CItemData::CTIME:
       pLHS->GetCTime(t1);
@@ -255,7 +258,7 @@ void DboxMain::UpdateListItem(const int lindex, const int type, const CString &n
 
     BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText);
     ASSERT(brc == TRUE);
-    if (m_iSortedColumn == type) { // resort if necessary
+    if (m_iTypeSortColumn == type) { // resort if necessary
         m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
         FixListIndexes();
     }
@@ -658,6 +661,7 @@ DboxMain::RefreshList()
     }
     
     m_ctlItemTree.SortTree(TVI_ROOT);
+    SortListView();
     
 #if defined(POCKET_PC)
     SetCursor( NULL );
@@ -1129,17 +1133,12 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
   // Get column index to CItemData value
   int iIndex = pNMListView->iSubItem;
-  int isortcolumn = m_nColumnTypeByIndex[iIndex];
-
-#if (WINVER < 0x0501)  // These are already defined for WinXP and later
-#define HDF_SORTUP 0x0400
-#define HDF_SORTDOWN 0x0200
-#endif
+  int iTypeSortColumn = m_nColumnTypeByIndex[iIndex];
 
   HDITEM hdi;
   hdi.mask = HDI_FORMAT;
 
-  if (m_iSortedColumn == isortcolumn) {
+  if (m_iTypeSortColumn == iTypeSortColumn) {
     m_bSortAscending = !m_bSortAscending;
   } else {
     // Turn off all previous sort arrrows
@@ -1152,21 +1151,30 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
       }
     }
 
-    m_iSortedColumn = isortcolumn;
+    m_iTypeSortColumn = iTypeSortColumn;
     m_bSortAscending = true;
   }
+  SortListView();
+
+  *pResult = TRUE;
+}
+
+void DboxMain::SortListView()
+{
+
+  HDITEM hdi;
+  hdi.mask = HDI_FORMAT;
 
   m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
   FixListIndexes();
 
+  const int iIndex = m_nColumnIndexByType[m_iTypeSortColumn];
   m_LVHdrCtrl.GetItem(iIndex, &hdi);
   // Turn off all arrows
   hdi.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN);
   // Turn on the correct arrow
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   m_LVHdrCtrl.SetItem(iIndex, &hdi);
-
-  *pResult = TRUE;
 }
 
 void
@@ -1800,16 +1808,11 @@ DboxMain::SetHeaderInfo()
     m_nColumnTypeByIndex[iIndex] = hdi_get.lParam;
   }
 
-  // Check sort column still there
-  if (m_nColumnIndexByType[m_iSortedColumn] == -1) {
-    // No - take highest visible
-      for (int itype = 0; itype < CItemData::LAST; itype++) {
-          if (m_nColumnIndexByType[itype] != -1) {
-              m_iSortedColumn = itype;
-              break;
-          }
-      }
-  }
+  // Check sort column still there; if not TITLE always is!
+  if (m_nColumnIndexByType[m_iTypeSortColumn] == -1)
+    m_iTypeSortColumn = CItemData::TITLE;
+
+  SortListView();
 
   AutoResizeColumns();
 }
