@@ -1507,15 +1507,23 @@ DboxMain::LaunchBrowser(const CString &csURL)
   CString csAltBrowser;
   CString csCmdLineParms;
   bool useAltBrowser;
-  long hinst;
+  HINSTANCE hinst;
   CString theURL(csURL);
 
-  // If csURL contains "[alt]" then we'll use the alternate browser (if defined),
-  // and remove the "[alt]" from the URL.
+  // csURL may contain "[alt]" or "[ssh]".
+  // If csURL contains "[alt]" then we'll use the alternate browser
+  // (if defined), and remove the "[alt]" from the URL.
+  // "[ssh]" does same, EXCEPT that the following is NOT applied:
+  //
   // If csURL doesn't contain "://", then we'll prepend "http://" to it,
   // e.g., change "www.mybank.com" to "http://www.mybank.com".
+  //
+  // The "[ssh]" handling allows one to specify, for example,
+  // Putty as the ssh client, and user@host as the "url".
+
   int altReplacements = theURL.Replace(_T("[alt]"), _T(""));
-  if (theURL.Find(_T("://")) == -1)
+  int sshReplacements = theURL.Replace(_T("[ssh]"), _T(""));
+  if (sshReplacements <= 0 && theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
 
   csCmdLineParms = CString(PWSprefs::GetInstance()->
@@ -1524,19 +1532,20 @@ DboxMain::LaunchBrowser(const CString &csURL)
   csAltBrowser = CString(PWSprefs::GetInstance()->
                          GetPref(PWSprefs::AltBrowser));
 
-  useAltBrowser = (altReplacements > 0) && !csAltBrowser.IsEmpty();
+  useAltBrowser = (altReplacements > 0 || sshReplacements > 0) &&
+    !csAltBrowser.IsEmpty();
 
   if (!useAltBrowser) {
-    hinst = long(::ShellExecute(NULL, NULL, theURL, NULL,
-                                NULL, SW_SHOWNORMAL));
+    hinst = ::ShellExecute(NULL, NULL, theURL, NULL,
+                           NULL, SW_SHOWNORMAL);
   } else {
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
-    hinst = long(::ShellExecute(NULL, NULL, csAltBrowser, theURL,
-                                NULL, SW_SHOWNORMAL));
+    hinst = ::ShellExecute(NULL, NULL, csAltBrowser, theURL,
+                           NULL, SW_SHOWNORMAL);
   }
 
-  if(hinst < 32) {
+  if(hinst < HINSTANCE(32)) {
     AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
     return FALSE;
   }
