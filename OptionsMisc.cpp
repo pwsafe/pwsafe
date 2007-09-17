@@ -214,7 +214,7 @@ void COptionsMisc::OnBrowseForLocation()
 	TCHAR path_buffer[_MAX_PATH];
 	TCHAR drive[_MAX_DRIVE];
 	TCHAR dir[_MAX_DIR];
-	INT_PTR rc;
+	int rc;
 
 	if (m_csBrowser.IsEmpty())
 		cs_initiallocation = _T("C:\\");

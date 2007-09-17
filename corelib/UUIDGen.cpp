@@ -12,7 +12,6 @@
 // ASCII string.
 //
 
-#include "../stdafx.h"
 #include "UUIDGen.h"
 #include "util.h" /* for trashMemory() */
 #include <stdio.h> /* for _stprintf() */

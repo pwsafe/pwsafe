@@ -9,7 +9,6 @@
 // SHA256 for PasswordSafe, based on LibTomCrypt by
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
 //-----------------------------------------------------------------------------
-#include "../stdafx.h"
 #include "sha256.h"
 #include "PwsPlatform.h"
 #include "Util.h"

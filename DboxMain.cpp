@@ -15,7 +15,6 @@
 //This file contains what's left.
 //-----------------------------------------------------------------------------
 
-#include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "AboutDlg.h"
@@ -956,7 +955,7 @@ DboxMain::OnPasswordSafeWebsite()
 {
   HINSTANCE stat = ::ShellExecute(NULL, NULL, _T("http://passwordsafe.sourceforge.net/"),
                                   NULL, _T("."), SW_SHOWNORMAL);
-  if (stat <= reinterpret_cast<HINSTANCE>(32)) {
+  if (int(stat) <= 32) {
 #ifdef _DEBUG
     AfxMessageBox(_T("oops"));
 #endif
@@ -1023,7 +1022,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         pcore->SetReadOnly(true);
     }
     static CPasskeyEntry *dbox_pkentry = NULL;
-    INT_PTR rc = 0;
+    int rc = 0;
     if (dbox_pkentry == NULL) {
         dbox_pkentry = new CPasskeyEntry(this, filename,
                                          index, bReadOnly || bFileIsReadOnly,
@@ -1196,13 +1195,12 @@ DboxMain::OnToolTipText(UINT,
   TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
   TCHAR tc_FullText[4096];  // Maxsize of a string in a resource file
   CString cs_TipText;
-  UINT nID;
+  UINT nID = pNMHDR->idFrom;
   if (pNMHDR->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
       pNMHDR->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
     // idFrom is actually the HWND of the tool
-    nID = (UINT)(WORD)::GetDlgCtrlID((HWND)pNMHDR->idFrom);
-  } else
-	  nID = (UINT)pNMHDR->idFrom;
+    nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
+  }
 
   if (nID != 0) { // will be zero on a separator
     if (AfxLoadString(nID, tc_FullText, 4095) == 0)

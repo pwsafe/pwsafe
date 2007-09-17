@@ -116,7 +116,7 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
 
   // Start of Drag of column (m_iItem) from Column Chooser dialog to.....
   CString cs_text;
-  DWORD_PTR dw_type;
+  DWORD dw_type;
 
   dw_type = GetItemData(m_iItem);
 

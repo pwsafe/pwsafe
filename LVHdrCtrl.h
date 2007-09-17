@@ -46,7 +46,7 @@ private:
   CDataSource m_HdrDataSource;
   CDropTarget m_HdrDropTarget;
   CImageList* m_pDragImage;
-  LPARAM m_dwHDRType;
+  int m_dwHDRType;
   int m_iDDType;
   BOOL m_bCCActive;
   // Clipboard format for Column Chooser Drag & Drop

@@ -47,7 +47,7 @@ protected:
 	void DrawText(CDC& dc, LPCTSTR lpText, CRect& rc, UINT flags);
 
 	afx_msg void OnPaint();
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg LRESULT OnSetText(WPARAM wp, LPARAM lp);
 	DECLARE_DYNAMIC(CPopupText);
 	DECLARE_MESSAGE_MAP();

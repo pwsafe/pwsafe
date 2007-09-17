@@ -142,7 +142,7 @@ class PWScore {
   void AddEntry(const CItemData &item)
   {uuid_array_t uuid; item.GetUUID(uuid); AddEntry(uuid, item);}
   void AddEntry(const uuid_array_t &uuid, const CItemData &item);
-  ItemList::size_type GetNumEntries() const {return m_pwlist.size();}
+  size_t GetNumEntries() const {return m_pwlist.size();}
   void RemoveEntryAt(ItemListIter pos)
   {m_changed = true; m_pwlist.erase(pos);}
   // Find in m_pwlist by title and user name, exact match

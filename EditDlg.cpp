@@ -600,7 +600,7 @@ void CEditDlg::OnBnClickedSetLTime()
   dlg_expDT.m_tttLTime = m_tttLTime;
 
   app.DisableAccelerator();
-  INT_PTR rc = dlg_expDT.DoModal();
+  int rc = dlg_expDT.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {

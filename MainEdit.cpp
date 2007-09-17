@@ -10,7 +10,6 @@
 // Edit-related methods of DboxMain
 //-----------------------------------------------------------------------------
 
-#include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "corelib/pwsprefs.h"
@@ -63,7 +62,7 @@ DboxMain::OnAdd()
   dataDlg.m_group = m_TreeViewGroup;
   m_TreeViewGroup = _T(""); // for next time
   app.DisableAccelerator();
-  INT_PTR rc = dataDlg.DoModal();
+  int rc = dataDlg.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
@@ -74,7 +73,7 @@ DboxMain::OnAdd()
         && (!dataDlg.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
       defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dataDlg.m_username);
-      INT_PTR rc2 = defDlg.DoModal();
+      int rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
         prefs->SetPref(PWSprefs::UseDefaultUser, true);
         prefs->SetPref(PWSprefs::DefaultUsername,
@@ -201,7 +200,7 @@ DboxMain::OnDelete()
   //Confirm whether to delete the item
   if (!dontaskquestion) {
     CConfirmDeleteDlg deleteDlg(this, num_children);
-    INT_PTR rc = deleteDlg.DoModal();
+    int rc = deleteDlg.DoModal();
     if (rc == IDCANCEL) {
       dodelete = false;
     }
@@ -222,7 +221,7 @@ DboxMain::Delete(bool inRecursion)
     ci->GetUUID(uuid);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
-    int curSel = di->list_index;
+    size_t curSel = di->list_index;
     // Find next in treeview, not always curSel after deletion
     HTREEITEM curTree_item = di->tree_item;
     HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
@@ -243,8 +242,8 @@ DboxMain::Delete(bool inRecursion)
     FixListIndexes();
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
-        SelectEntry(curSel < (int)m_core.GetNumEntries() ? 
-                    curSel : (int)(m_core.GetNumEntries() - 1));
+        SelectEntry(curSel < m_core.GetNumEntries() ? 
+                    curSel : m_core.GetNumEntries() - 1);
       }
       m_ctlItemList.SetFocus();
     } else {// tree view visible
@@ -339,7 +338,7 @@ DboxMain::EditItem(CItemData *ci)
     dlg_edit.m_Edit_IsReadOnly = m_core.IsReadOnly();
 
     app.DisableAccelerator();
-    INT_PTR rc = dlg_edit.DoModal();
+    int rc = dlg_edit.DoModal();
     app.EnableAccelerator();
 
     if (rc == IDOK) {
