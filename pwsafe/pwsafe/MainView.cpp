@@ -820,10 +820,13 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 
     ASSERT(itemData != NULL);
 
-    if (itemData->IsURLEmpty())
+    if (itemData->IsURLEmpty()) {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
-    else
+      pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
+    } else {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
+      pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
+    }
 
     pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
 

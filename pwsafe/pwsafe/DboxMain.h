@@ -359,6 +359,7 @@ protected:
   afx_msg void OnHeaderEndDrag(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnCopyPassword();
   afx_msg void OnCopyNotes();
+  afx_msg void OnCopyURL();
   afx_msg void OnNew();
   afx_msg void OnOpen();
   afx_msg void OnClose();

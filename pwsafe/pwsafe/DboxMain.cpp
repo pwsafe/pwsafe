@@ -156,6 +156,7 @@ ON_COMMAND(ID_MENUITEM_BROWSE, OnBrowse)
 ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
 ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
 ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
+ON_COMMAND(ID_MENUITEM_COPYURL, OnCopyURL)
 ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
 ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
 ON_UPDATE_COMMAND_UI(ID_MENUITEM_DELETE, OnUpdateROCommand)
@@ -1465,8 +1466,10 @@ DboxMain::OnInitMenu(CMenu* pMenu)
 
     if (ci->IsURLEmpty()) {
       pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
+      pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
     } else {
       pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
+      pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
     }
 
     pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);
@@ -1474,6 +1477,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
   } else {
     pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
     pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
+    pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
   }
 
   pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
