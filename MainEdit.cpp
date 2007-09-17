@@ -538,6 +538,25 @@ DboxMain::OnCopyNotes()
 }
 
 void
+DboxMain::OnCopyURL()
+{
+  if (SelItemOk() != TRUE)
+    return;
+
+  CItemData *ci = getSelectedItem();
+  ASSERT(ci != NULL);
+  const CMyString cs_URL = ci->GetURL();
+
+  if (!cs_URL.IsEmpty()) {
+    SetClipboardData(cs_URL);
+    UpdateAccessTime(ci);
+    uuid_array_t RUEuuid;
+    ci->GetUUID(RUEuuid);
+    m_RUEList.AddRUEntry(RUEuuid);
+  }
+}
+
+void
 DboxMain::OnFind()
 {
   // create modeless or popup existing

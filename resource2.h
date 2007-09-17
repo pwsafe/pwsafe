@@ -37,6 +37,8 @@
 #define ID_MENUITEM_CLEARCLIPBOARD      32060
 #define ID_MENUITEM_BROWSE              32061
 #define ID_MENUITEM_AUTOTYPE            32062
+#define ID_MENUITEM_COPYURL             32063
+#define ID_MENUITEM_COPYEMAIL           32064
 
 // View menu
 #define ID_MENUITEM_LIST_VIEW           32101

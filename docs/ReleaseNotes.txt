@@ -20,6 +20,10 @@ via XML
 New Features for 3.10.01
 ========================
 [1765240] Add "Clear clipboard" item to tray icon context menu
+[1727768] Copy URL to clipboard added to menus (Ctrl+Alt+L)
+[1790342] Allow Ctrl+Alt+E(xpand) or Ctrl+Alt+C(ollapse) instead of
+Ctl-Alt-+/- key shortcuts (useful for laptops with smaller keyboards)
+[1526169] Add shortcut keys to add/edit dialog  
 
 Changes to Existing Features in 3.10.01
 =======================================
