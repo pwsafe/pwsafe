@@ -8,7 +8,6 @@
 /// \file PWCharPool.cpp
 //-----------------------------------------------------------------------------
 
-#include "../stdafx.h"
 #include "PWCharPool.h"
 #include "Util.h"
 #include "corelib.h"
@@ -105,7 +104,7 @@ CPasswordCharPool::CPasswordCharPool(UINT pwlen,
   ASSERT(m_sumlengths > 0);
 }
 
-CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int rand) const
+CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(size_t rand) const
 {
   /*
    * Following is needed in order to choose a char type with a probability
@@ -131,7 +130,7 @@ CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int ra
 }
 
 
-TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned int rand) const
+TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, size_t rand) const
 {
   ASSERT(t < NUMTYPES);
   ASSERT(m_lengths[t] > 0);
@@ -176,7 +175,7 @@ CPasswordCharPool::MakePassword() const
             temp = _T("");    // empty the password string
 
             for (UINT x = 0; x < m_pwlen; x++) {
-                unsigned int rand = PWSrand::GetInstance()->RangeRand((unsigned int)m_sumlengths);
+                size_t rand = PWSrand::GetInstance()->RangeRand(m_sumlengths);
                 // The only reason for passing rand as a parameter is to
                 // avoid having to generate two random numbers for each
                 // character. Alternately, we could have had a m_rand

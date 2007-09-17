@@ -8,7 +8,6 @@
 // BlowFish.cpp
 //-----------------------------------------------------------------------------
 
-#include "../stdafx.h"
 #include "BlowFish.h"
 #include "sha1.h"
 #include "PwsPlatform.h"

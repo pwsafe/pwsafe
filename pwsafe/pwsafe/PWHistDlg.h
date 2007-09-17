@@ -38,14 +38,14 @@ class CPWHistDlg : public CPWDialog
   // Following reference members from EditDlg
   CMyString &m_HistStr;
   PWHistList &m_PWHistList;
-  const size_t m_NumPWHistory;
+  const int m_NumPWHistory;
   size_t &m_MaxPWHistory;
   BOOL &m_SavePWHistory;
 
   CListCtrl m_PWHistListCtrl;
   int m_iSortedColumn;
   BOOL m_bSortAscending;
-  size_t m_oldMaxPWHistory;
+  int m_oldMaxPWHistory;
   bool m_ClearPWHistory;
 
   afx_msg void OnCheckedSavePasswordHistory();

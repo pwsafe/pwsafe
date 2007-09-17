@@ -38,7 +38,7 @@ public:
 	int		m_backuplocation;
 	int		m_maxnumincbackups;
 	//}}AFX_DATA
-	DWORD_PTR	m_backupsuffix;
+	int		m_backupsuffix;
 	int		m_BKSFX_to_Index[PWSprefs::maxBKSFX + 1];
     CString m_currentFileDir;
     CString m_currentFileBasename;

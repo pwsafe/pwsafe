@@ -5,7 +5,6 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
-#include "../stdafx.h"
 
 #include "SMemFile.h"
 #include "util.h"

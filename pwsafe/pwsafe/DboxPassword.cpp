@@ -8,7 +8,6 @@
 /// \file DboxPassword.cpp
 //-----------------------------------------------------------------------------
 
-#include "stdafx.h"
 #include "PasswordSafe.h"
 
 #include "resource.h"

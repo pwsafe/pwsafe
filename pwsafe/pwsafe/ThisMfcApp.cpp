@@ -9,7 +9,6 @@
 /// \brief App object of MFC version of Password Safe
 //-----------------------------------------------------------------------------
 
-#include "stdafx.h"
 #include "PasswordSafe.h"
 
 #include "corelib/PWSrand.h"
@@ -349,7 +348,7 @@ ThisMfcApp::InitInstance()
   */
   SetRegistryKey(_T("Password Safe"));
 
-  DboxMain dbox;
+  DboxMain dbox(NULL);
   m_core.SetReadOnly(false);
 
   /*

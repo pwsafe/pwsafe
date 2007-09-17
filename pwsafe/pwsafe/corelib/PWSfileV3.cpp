@@ -5,7 +5,6 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
-#include "../stdafx.h"
 #include "PWSfileV3.h"
 #include "UUIDGen.h"
 #include "PWSrand.h"
@@ -194,32 +193,21 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::AUTOTYPE, tmp);
   time_t t = 0;
-  int t32;
   item.GetCTime(t);
-  if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::CTIME, (unsigned char *)&t32, sizeof(t32));
-  }
+  if (t != 0)
+    WriteCBC(CItemData::CTIME, (unsigned char *)&t, sizeof(t));
   item.GetPMTime(t);
-  if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::PMTIME, (unsigned char *)&t32, sizeof(t32));
-  }
+  if (t != 0)
+    WriteCBC(CItemData::PMTIME, (unsigned char *)&t, sizeof(t));
   item.GetATime(t);
-  if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::ATIME, (unsigned char *)&t32, sizeof(t32));
-  }
+  if (t != 0)
+    WriteCBC(CItemData::ATIME, (unsigned char *)&t, sizeof(t));
   item.GetLTime(t);
-  if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::LTIME, (unsigned char *)&t32, sizeof(t32));
-  }
+  if (t != 0)
+    WriteCBC(CItemData::LTIME, (unsigned char *)&t, sizeof(t));
   item.GetRMTime(t);
-  if (t != 0) {
-    t32 = (int)t;
-    WriteCBC(CItemData::RMTIME, (unsigned char *)&t32, sizeof(t32));
-  }
+  if (t != 0)
+    WriteCBC(CItemData::RMTIME, (unsigned char *)&t, sizeof(t));
   tmp = item.GetPWHistory();
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::PWHIST, tmp);

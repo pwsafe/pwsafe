@@ -27,8 +27,6 @@ distribution.
  * project http://passwordsafe.sourceforge.net/
  */
 
-#include "../../stdafx.h"
-
 #include <ctype.h>
 
 #ifdef TIXML_USE_STL
@@ -792,13 +790,11 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 #ifndef UNICODE
 	_ftprintf( cfile, _T("<%s"), value.c_str() );
 #else
-  size_t utf8bufsize = 2 * value.length(); // upper limit
+  int utf8bufsize = 2 * value.length(); // upper limit
   char *utf8buf = new char[utf8bufsize+1];
   utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
-                                    value.c_str(),
-                                    static_cast<int>(value.length()),
-                                    utf8buf,
-                                    static_cast<int>(utf8bufsize),
+                                    value.c_str(), value.length(),
+                                    utf8buf, utf8bufsize,
                                     0, 0);
   assert(utf8bufsize != 0);
   utf8buf[utf8bufsize] = '\0';
@@ -1101,8 +1097,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
             int nw;
             nw = MultiByteToWideChar(CP_UTF8, 0,
                                      lastPos, (p-lastPos+1),
-                                     wbuf,
-                                     static_cast<int>(length+1));
+                                     wbuf, (length+1));
             assert(nw > 0 && nw <= p-lastPos+1);
             data.append(wbuf, (p-lastPos+1));
 #else
@@ -1453,13 +1448,11 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
 #ifndef UNICODE
         fwrite(buffer.c_str(), buffer.length()*sizeof(TCHAR), 1, cfile);
 #else
-        size_t utf8bufsize = 2 * buffer.length(); // upper limit
+        int utf8bufsize = 2 * buffer.length(); // upper limit
         char *utf8buf = new char[utf8bufsize];
         utf8bufsize = WideCharToMultiByte(CP_UTF8, 0,
-                                          buffer.c_str(),
-                                          static_cast<int>(buffer.length()),
-                                          utf8buf,
-                                          static_cast<int>(utf8bufsize),
+                                          buffer.c_str(), buffer.length(),
+                                          utf8buf, utf8bufsize,
                                           0, 0);
         assert(utf8bufsize != 0);
         fwrite(utf8buf, utf8bufsize, 1, cfile);

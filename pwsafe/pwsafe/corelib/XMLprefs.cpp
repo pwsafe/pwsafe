@@ -7,7 +7,6 @@
  */
 // XMLprefs.cpp : implementation file
 //
-#include "../stdafx.h"
 #include "XMLprefs.h"
 #include "tinyxml/tinyxml.h"
 #include "MyString.h"

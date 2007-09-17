@@ -5,7 +5,6 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
-#include "../stdafx.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <process.h>
@@ -134,7 +133,7 @@ unsigned int PWSrand::RandUInt()
  *  Returns a random number in the range 0 to (len-1).
  *  For example, RangeRand(256) returns a value from 0 to 255.
  */
-unsigned int PWSrand::RangeRand(unsigned int len)
+unsigned int PWSrand::RangeRand(size_t len)
 {
   unsigned int      r;
   const unsigned int ceil = UINT_MAX - (UINT_MAX % len) - 1;

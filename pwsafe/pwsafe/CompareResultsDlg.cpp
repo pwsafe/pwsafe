@@ -114,10 +114,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
   }
   m_nCols = m_LCResults.GetHeaderCtrl()->GetItemCount();
 
-  m_LCResults.SetItemCount(int(m_OnlyInCurrent.size() +
-                               m_OnlyInComp.size() +
-                               m_Conflicts.size() +
-                               m_Identical.size()));
+  m_LCResults.SetItemCount(m_OnlyInCurrent.size() +
+                           m_OnlyInComp.size() +
+                           m_Conflicts.size() +
+                           m_Identical.size());
 
   int i, iItem = 0;
   CompareData::iterator cd_iter;
@@ -143,7 +143,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
         m_LCResults.SetItemText(iItem, i, _T("-"));
 
       st_data.listindex = iItem;
-      m_LCResults.SetItemData(iItem, (DWORD_PTR)&st_data);
+      m_LCResults.SetItemData(iItem, (DWORD)&st_data);
       iItem++;
     }
   }
@@ -165,7 +165,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
         m_LCResults.SetItemText(iItem, i, _T("-"));
 
       st_data.listindex = iItem;
-      m_LCResults.SetItemData(iItem, (DWORD_PTR)&st_data);
+      m_LCResults.SetItemData(iItem, (DWORD)&st_data);
       iItem++;
     }
   }
@@ -212,7 +212,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RMTIME) ? _T("X") : _T("-"));
 
       st_data.listindex = iItem;
-      m_LCResults.SetItemData(iItem, (DWORD_PTR)&st_data);
+      m_LCResults.SetItemData(iItem, (DWORD)&st_data);
       iItem++;
     }
   }
@@ -353,7 +353,7 @@ CCompareResultsDlg::OnShowIdenticalEntries()
           m_LCResults.SetItemText(iItem, i, _T("-"));
 
         st_data.listindex = iItem;
-        m_LCResults.SetItemData(iItem, (DWORD_PTR)&st_data);
+        m_LCResults.SetItemData(iItem, (DWORD)&st_data);
         iItem++;
       }
     }
@@ -557,7 +557,7 @@ CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
       ASSERT(0);
   }
   m_numIdentical++;
-  st_newdata.id = static_cast<int>(m_numIdentical);
+  st_newdata.id = m_numIdentical;
   m_Identical.push_back(st_newdata);
   UpdateStatusBar();
 

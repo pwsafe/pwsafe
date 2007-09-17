@@ -426,9 +426,9 @@ BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
 END_MESSAGE_MAP()
 
 #ifdef _DEBUG
-void CSystemTray::OnTimer(UINT_PTR nIDEvent) 
+void CSystemTray::OnTimer(UINT nIDEvent) 
 #else
-void CSystemTray::OnTimer(UINT_PTR ) 
+void CSystemTray::OnTimer(UINT ) 
 #endif
 {
   ASSERT(nIDEvent == m_nIDEvent);
@@ -443,7 +443,7 @@ void CSystemTray::OnTimer(UINT_PTR )
   StepAnimation();
 }
 
-LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam) 
+LRESULT CSystemTray::OnTrayNotification(UINT wParam, LONG lParam) 
 {
   //Return quickly if its not for this tray icon
   if (wParam != m_tnd.uID)
@@ -467,7 +467,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
       pMainRecentEntriesMenu = pContextMenu->GetSubMenu(2);
 
-      size_t num_recent_entries = m_RUEList.GetCount();
+      int num_recent_entries = m_RUEList.GetCount();
       typedef CMenu* CMenuPtr;
       CMenu **pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
 
@@ -480,7 +480,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         // Build extra popup menus (1 per entry in list)
         m_RUEList.GetAllMenuItemStrings(m_menulist);
 
-        for (size_t i = 0; i < num_recent_entries; i++) {
+        for (int i = 0; i < num_recent_entries; i++) {
           const CMyString cEntry = m_menulist[i];
 
           pNewRecentEntryMenu[i] = new CMenu;
@@ -541,7 +541,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
       pTarget->PostMessage(WM_NULL, 0, 0);
         
-      for (size_t i = 0; i < num_recent_entries; i++)
+      for (int i = 0; i < num_recent_entries; i++)
         delete pNewRecentEntryMenu[i];
 
       delete[] pNewRecentEntryMenu;

@@ -122,7 +122,7 @@
 // * Windows 32                                 *
 // **********************************************
 #elif defined(_WIN32)
-  #if defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_) || defined(_M_IX86) || defined(_M_X64)
+  #if defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_)
     #define PWS_PLATFORM	"Windows"
     #define PWS_LITTLE_ENDIAN
   #endif

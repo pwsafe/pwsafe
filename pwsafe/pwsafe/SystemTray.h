@@ -130,7 +130,7 @@ protected:
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnTimer(UINT nIDEvent);
 
 	//}}AFX_MSG
     LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);

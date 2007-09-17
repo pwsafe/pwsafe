@@ -5,7 +5,6 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
-#include "../stdafx.h"
 #include <direct.h> // for _getcwd & _chdir
 #include <stdlib.h> // for getenv()
 #include "PWSdirs.h"

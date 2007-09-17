@@ -67,8 +67,8 @@ class CFindDlg : public CPWDialog
   CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind);
   static CFindDlg *self;
   std::vector<int> m_indices; // array of found items
-  size_t m_lastshown; // last index selected, -1 indicates no search done yet
-  size_t m_numFound; // number of matched items, as returned by DboxMain::FindAll
+  int m_lastshown; // last index selected, -1 indicates no search done yet
+  int m_numFound; // number of items that matched, as returned by DboxMain::FindAll
   CMyString m_last_search_text;
   BOOL m_last_cs_search;
   CItemData::FieldBits m_last_bsFields;

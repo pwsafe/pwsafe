@@ -24,7 +24,7 @@ class PWSrand {
 
   unsigned int RandUInt(); // generate a random uint
   //  generate a random number between 0 and len
-  unsigned int RangeRand(unsigned int len);
+  unsigned int RangeRand(size_t len);
  private:
   PWSrand(); // start with some minimal entropy
   ~PWSrand();

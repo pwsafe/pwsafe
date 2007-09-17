@@ -8,7 +8,6 @@
 // ImportXMLErrDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
 #include "ImportXMLErrDlg.h"
 #include "corelib/PWSclipboard.h"
 

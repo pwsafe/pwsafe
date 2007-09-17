@@ -43,7 +43,7 @@
 	  <Component Id='MainProgram'
 	  Guid='25c2da5c-d483-4ca7-84f6-d28e17a59188'>
 	    <File Id='file5' Name='pwsafe.exe' DiskId='1'
-	      Source='bin\win32\release\pwsafe.exe' Vital='yes'> 
+	      Source='Release\pwsafe.exe' Vital='yes'> 
 	      <Shortcut Id='startmenu0' Directory='ProgramMenuFolder'
 	      Name='Password Safe PWSAFE_VERSION' ShortName='pwsafe'
 	      Icon='pwsafe.exe' IconIndex='0' Advertise='yes' />
@@ -61,7 +61,7 @@
       <Directory Id='ProgramMenuFolder' Name='Programs' />
     </Directory>
 
-    <Icon Id='pwsafe.exe' SourceFile='bin\win32\release\pwsafe.exe' />
+    <Icon Id='pwsafe.exe' SourceFile='Release\pwsafe.exe' />
 
     <Feature Id='Complete' Level='1'>
       <ComponentRef Id='Documentation' />

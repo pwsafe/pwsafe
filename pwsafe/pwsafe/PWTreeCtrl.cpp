@@ -373,7 +373,7 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
   // Starting with hItem, update the Group field of all of hItem's
   // children. Called after a label has been edited.
   if (IsLeafNode(hItem)) {
-    DWORD_PTR itemData = GetItemData(hItem);
+    DWORD itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
     ci->SetGroup(CMyString(prefix));
@@ -409,7 +409,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   if (IsLeafNode(ti)) {
-    DWORD_PTR itemData = GetItemData(ti);
+    DWORD itemData = GetItemData(ti);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
     CMyString currentTitle, currentUser, currentPassword;
@@ -581,7 +581,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
     if (IsLeafNode(ptvinfo->item.hItem)) {
-      DWORD_PTR itemData = GetItemData(ti);
+      DWORD itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
       CString group, newTitle, newUser, newPassword;
@@ -805,7 +805,7 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
                         TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT);
   GetItem(&tvstruct.item);  // get information of the dragged element
 
-  LPARAM itemData = tvstruct.item.lParam;
+  DWORD itemData = tvstruct.item.lParam;
   tvstruct.hParent = hitemDrop;
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) 
@@ -875,7 +875,7 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
                            const CMyString &prefix)
 {
-  DWORD_PTR itemData = GetItemData(hitemDrag);
+  DWORD itemData = GetItemData(hitemDrag);
 
   if (itemData == 0) { // we're dragging a group
     HTREEITEM hChild = GetChildItem(hitemDrag);
@@ -1222,7 +1222,7 @@ CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
 
 bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 {
-  DWORD_PTR itemData = GetItemData(m_hitemDrag);
+  DWORD itemData = GetItemData(m_hitemDrag);
   CItemData *ci = (CItemData *)itemData;
 
   CDDObList out_oblist;
@@ -1288,7 +1288,7 @@ void
 CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
 {
   if (IsLeafNode(hItem)) {
-    DWORD_PTR itemData = GetItemData(hItem);
+    DWORD itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
     GetEntryData(out_oblist, ci);

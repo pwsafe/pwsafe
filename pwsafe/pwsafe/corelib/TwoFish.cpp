@@ -10,7 +10,6 @@
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
 //-----------------------------------------------------------------------------
 
-#include "../stdafx.h"
 #include "TwoFish.h"
 #include "PwsPlatform.h"
 #include "Util.h"
