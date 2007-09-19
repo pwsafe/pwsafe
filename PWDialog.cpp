@@ -22,11 +22,17 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       message == WM_MENUSELECT ||
       message == WM_VSCROLL
       ) {
-    DboxMain *dbx = dynamic_cast<DboxMain *>(GetParent());
-    if (dbx != NULL)
-      dbx->ResetIdleLockCounter();
-    else
-      TRACE(_T("CPWDialog::WindowProc - parent NULL or not a DboxMain\n"));
+    CWnd *p = GetParent();
+    while (p != NULL) {
+      DboxMain *dbx = dynamic_cast<DboxMain *>(p);
+      if (dbx != NULL) {
+        dbx->ResetIdleLockCounter();
+        break;
+      } else
+        p = p->GetParent();
+    }
+    if (p == NULL)
+      TRACE(_T("CPWDialog::WindowProc - couldn't find DboxMain ancestor\n"));
   }
   return CDialog::WindowProc(message, wParam, lParam);
 }
