@@ -14,6 +14,7 @@
 #include "ConfirmDeleteDlg.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
+#include "resource3.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
@@ -52,8 +53,11 @@ BOOL
 CConfirmDeleteDlg::OnInitDialog(void)
 {
   CString cs_text;
-  if (m_numchildren > 1) {
-    cs_text.Format(IDS_NUMCHILDREN, m_numchildren);
+  if (m_numchildren > 0) {
+    if (m_numchildren == 1)
+      cs_text.LoadString(IDS_NUMCHILD);
+    else
+      cs_text.Format(IDS_NUMCHILDREN, m_numchildren);
     GetDlgItem(IDC_DELETECHILDREN)->EnableWindow(TRUE);
     GetDlgItem(IDC_DELETECHILDREN)->SetWindowText(cs_text);
     GetDlgItem(IDC_CLEARCHECK)->EnableWindow(FALSE);
