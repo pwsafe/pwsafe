@@ -14,7 +14,6 @@
 #include "ConfirmDeleteDlg.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
-#include "resource3.h"
 
 #if defined(POCKET_PC)
   #include "pocketpc/PocketPC.h"
