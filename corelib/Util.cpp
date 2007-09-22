@@ -660,13 +660,13 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
       		t_str_ptr = datetime_str;
     	} else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
             SYSTEMTIME systime;
-            systime.wYear = (WORD)st.tm_year+1900;
-            systime.wMonth = (WORD)st.tm_mon+1;
-            systime.wDay = (WORD)st.tm_mday;
-            systime.wDayOfWeek = (WORD) st.tm_wday;
-            systime.wHour = (WORD)st.tm_hour;
-            systime.wMinute = (WORD)st.tm_min;
-            systime.wSecond = (WORD)st.tm_sec;
+			systime.wYear = (WORD)st->tm_year+1900;
+            systime.wMonth = (WORD)st->tm_mon+1;
+            systime.wDay = (WORD)st->tm_mday;
+            systime.wDayOfWeek = (WORD) st->tm_wday;
+            systime.wHour = (WORD)st->tm_hour;
+            systime.wMinute = (WORD)st->tm_min;
+            systime.wSecond = (WORD)st->tm_sec;
             systime.wMilliseconds = (WORD)0;
             TCHAR szBuf[80];
             VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
@@ -674,7 +674,7 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
             szBuf[0] = _T(' ');  // Put a blank between date and time
             VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
             GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
-            _tcscat(datetime_str, 80, time_str);
+            _tcscat(datetime_str, time_str);
       		t_str_ptr = datetime_str;
     	} else
       		t_str_ptr = _tasctime(st);
