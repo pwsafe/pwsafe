@@ -15,7 +15,8 @@ correctly read during database open
 [1791482] All preferences stored within the database are now exported/imported
 via XML
 [1793224] Copy for expired passwords no longer causes PWS crashes
-[1789983] List View now correct after Group removed  
+[1789983] List View now correct after Group removed
+[1313440] Can new add/edit entries with long group names
 
 New Features for 3.10.01
 ========================
