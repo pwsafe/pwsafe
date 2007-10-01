@@ -33,55 +33,75 @@ void CKeySend::SendString(const CMyString &data)
 
 void CKeySend::SendChar(TCHAR c)
 {
-       BOOL shiftDown=false; //assume shift key is up at start.
-       BOOL ctrlDown=false;
-       BOOL altDown=false;
-       SHORT keyScanCode=VkKeyScanEx(c, m_hlocale );
+  /*
+   * "UNICODE" version works for WinXP on non-English keyboards, e.g., German
+   * Non-Unicode version appears to work OK on all keyboard for Win98.
+   * Since non-Unicode is currently released for Win98 support, this is Good
+   * Enough.
+   */
+#ifdef UNICODE
+  UINT status;
+  INPUT input[1];
 
-       // high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
-       if(keyScanCode & 0x100){
-              shiftDown=true;      
-              //send a shift down
-              keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), 0,3); //Fixes bug #1208955
-       } 
- 
-       if(keyScanCode & 0x200){
-              ctrlDown=true;       
-              //send a ctrl down
-              keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale ), KEYEVENTF_EXTENDEDKEY, 0); 
-       } 
- 
-       if(keyScanCode & 0x400){
-              altDown=true; 
-              //send a alt down
-              keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_EXTENDEDKEY, 0);    
-       } 
- 
-       // the lower order byte has the key scan code we need.
-       keyScanCode =(SHORT)( keyScanCode & 0xFF);
- 
-       keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale ), 0, 0);      
-       keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale ), KEYEVENTF_KEYUP, 0);    
- 
-       if(shiftDown){
-              //send a shift up
-              keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
-              shiftDown=false;
-       }
- 
-       if(ctrlDown){
-                     
-              //send a ctrl up
-              keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
-              ctrlDown=false;
-       } 
- 
-       if(altDown){
-              //send a alt up
-              keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
-              altDown=false;       
-       } 
-       ::Sleep(m_delay);
+  input[0].type = INPUT_KEYBOARD;
+  input[0].ki.wVk = 0;
+  input[0].ki.wScan = c;
+  input[0].ki.dwFlags = KEYEVENTF_UNICODE;
+  
+  status = ::SendInput(1, input, sizeof(INPUT));
+  if (status != 1)
+    TRACE(_T("CKeySend::SendChar: SendInput failed\n"));
+#else
+  BOOL shiftDown=false; //assume shift key is up at start.
+  BOOL ctrlDown=false;
+  BOOL altDown=false;
+  SHORT keyScanCode=VkKeyScanEx(c, m_hlocale );
+  // high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
+  if(keyScanCode & 0x100){
+    shiftDown=true;      
+    //send a shift down
+    keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), 0,3); //Fixes bug #1208955
+  } 
+
+  if(keyScanCode & 0x200){
+    ctrlDown=true;       
+    //send a ctrl down
+    keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale ), KEYEVENTF_EXTENDEDKEY, 0); 
+  } 
+
+  if(keyScanCode & 0x400){
+    altDown=true; 
+    //send a alt down
+    keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_EXTENDEDKEY, 0);    
+  } 
+
+  // the lower order byte has the key scan code we need.
+  keyScanCode =(SHORT)( keyScanCode & 0xFF);
+
+  keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale ), 0, 0);      
+  keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale ), KEYEVENTF_KEYUP, 0);    
+
+  if(shiftDown){
+    //send a shift up
+    keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
+    shiftDown=false;
+  }
+
+  if(ctrlDown){
+                    
+    //send a ctrl up
+    keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
+    ctrlDown=false;
+  } 
+
+  if(altDown){
+    //send a alt up
+    keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
+    altDown=false;       
+  } 
+  ::Sleep(m_delay);
+#endif /* UNICODE */
+  ::Sleep(m_delay);
 }
 
 
