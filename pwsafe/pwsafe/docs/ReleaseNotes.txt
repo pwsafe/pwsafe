@@ -17,6 +17,8 @@ via XML
 [1793224] Copy for expired passwords no longer causes PWS crashes
 [1789983] List View now correct after Group removed
 [1313440] Can new add/edit entries with long group names
+[1664219] Autotype now works correctly with '@' in German keyboards,
+and non-English keyboards in general.
 
 New Features for 3.10.01
 ========================
