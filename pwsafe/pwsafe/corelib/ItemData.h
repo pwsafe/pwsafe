@@ -214,7 +214,7 @@ public:
   BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
   void SerializePlainText(std::vector<char> &v) const;
   bool DeserializePlainText(const std::vector<char> &v);
-  bool SetField(int type, unsigned char *data, size_t len);
+  bool SetField(int type, unsigned char *data, int len);
 
 private:
   CItemField m_Name;

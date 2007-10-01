@@ -196,8 +196,10 @@ CItemData::GetTime(int whichtime, time_t &t) const
   }
 
   if (tlen != 0) {
-    ASSERT(tlen == sizeof(t));
-    memcpy(&t, in, sizeof(t));
+    int t32;
+    ASSERT(tlen == sizeof(t32));
+    memcpy(&t32, in, sizeof(t32));
+	t = t32;
   } else {
     t = 0;
   }
@@ -833,21 +835,22 @@ CItemData::SetTime(int whichtime)
 void
 CItemData::SetTime(int whichtime, time_t t)
 {
+	int t32 = (int)t;
     switch (whichtime) {
     case ATIME:
-      SetField(m_tttATime, (const unsigned char *)&t, sizeof(t));
+      SetField(m_tttATime, (const unsigned char *)&t32, sizeof(t32));
       break;
     case CTIME:
-      SetField(m_tttCTime, (const unsigned char *)&t, sizeof(t));
+      SetField(m_tttCTime, (const unsigned char *)&t32, sizeof(t32));
       break;
     case LTIME:
-      SetField(m_tttLTime, (const unsigned char *)&t, sizeof(t));
+      SetField(m_tttLTime, (const unsigned char *)&t32, sizeof(t32));
       break;
     case PMTIME:
-      SetField(m_tttPMTime, (const unsigned char *)&t, sizeof(t));
+      SetField(m_tttPMTime, (const unsigned char *)&t32, sizeof(t32));
       break;
     case RMTIME:
-      SetField(m_tttRMTime, (const unsigned char *)&t, sizeof(t));
+      SetField(m_tttRMTime, (const unsigned char *)&t32, sizeof(t32));
       break;
     default:
       ASSERT(0);
@@ -1233,7 +1236,7 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
 }
 
 static bool
-pull_string(CMyString &str, unsigned char *data, size_t len)
+pull_string(CMyString &str, unsigned char *data, int len)
 {
   CUTF8Conv utf8conv;
   vector<unsigned char> v(data, (data + len));
@@ -1250,11 +1253,11 @@ pull_string(CMyString &str, unsigned char *data, size_t len)
 static bool
 pull_time(time_t &t, unsigned char *data, size_t len)
 {
-  if (len != sizeof(t)) {
+  if (len != sizeof(__time32_t)) {
     ASSERT(0);
     return false;
   }
-  t = *((time_t *)data);
+  t = *((__time32_t *)data);
   return true;
 }
 
@@ -1273,9 +1276,9 @@ bool CItemData::DeserializePlainText(const std::vector<char> &v)
     if (type == END)
       return true; // happy end
 
-    size_t len = *((size_t *)&(*iter));
+    unsigned int len = *((unsigned int *)&(*iter));
     ASSERT(len < v.size()); // sanity check
-    iter += sizeof(size_t);
+    iter += sizeof(unsigned int);
 
     if (--emergencyExit == 0) {
       ASSERT(0);
@@ -1288,7 +1291,7 @@ bool CItemData::DeserializePlainText(const std::vector<char> &v)
   return false; // END tag not found!
 }
 
-bool CItemData::SetField(int type, unsigned char *data, size_t len)
+bool CItemData::SetField(int type, unsigned char *data, int len)
 {
   CMyString str;
   time_t t;
@@ -1372,10 +1375,10 @@ bool CItemData::SetField(int type, unsigned char *data, size_t len)
 
 
 static void
-push_length(vector<char> &v, size_t s)
+push_length(vector<char> &v, unsigned int s)
 {
   v.insert(v.end(),
-           (char *)&s, (char *)&s + sizeof(size_t));
+           (char *)&s, (char *)&s + sizeof(s));
 }
 
 static void
@@ -1401,10 +1404,11 @@ static void
 push_time(vector<char> &v, char type, time_t t)
 {
   if (t != 0) {
+	  __time32_t t32 = (__time32_t)t;
     v.push_back(type);
-    push_length(v, sizeof(t));
+    push_length(v, sizeof(t32));
     v.insert(v.end(),
-             (char *)&t, (char *)&t + sizeof(time_t));
+             (char *)&t32, (char *)&t32 + sizeof(t32));
   }
 }
 
