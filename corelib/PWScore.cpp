@@ -339,7 +339,8 @@ struct XMLRecordWriter {
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
       string xml = item.GetXML(m_id, m_bsFields, m_delimiter);
-      m_of.write(xml.c_str(), xml.length());
+      m_of.write(xml.c_str(),
+                 static_cast<streamsize>(xml.length()));
     }
   }
 private:
@@ -794,7 +795,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // Make fields that are *only* whitespace = empty
     viter tokenIter;
     for (tokenIter = tokens.begin(); tokenIter != tokens.end(); tokenIter++) {
-      const int len = tokenIter->length();
+		const vector<stringT>::size_type len = tokenIter->length();
 
       // Don't bother if already empty
       if (len == 0)
