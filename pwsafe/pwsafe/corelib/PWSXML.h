@@ -14,12 +14,15 @@
 #include <vector>
 #include "MyString.h"
 #include "UnknownField.h"
+#include "UUIDGen.h"
+
+typedef std::vector<CUUIDGen> UUIDList;
 
 class PWScore;
 
 class PWSXML {
 public:
-	PWSXML(PWScore *core);
+	PWSXML(PWScore *core, UUIDList *possible_aliases);
 	~PWSXML();
 
 	bool XMLProcess(const bool &bvalidation, const CString &ImportedPrefix, 
@@ -32,6 +35,7 @@ public:
 
 private:
 	PWScore *m_xmlcore;
+  UUIDList *m_possible_aliases;
 	TCHAR m_delimiter;
 	bool m_bValidation;
 };

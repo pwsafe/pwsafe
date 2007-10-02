@@ -26,6 +26,19 @@ typedef ItemList::const_iterator ItemListConstIter;
 
 typedef std::vector<CItemData> OrderedItemList;
 
+typedef std::vector<CUUIDGen> UUIDList;
+typedef UUIDList::iterator UUIDListIter;
+
+typedef std::multimap<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMMap;
+typedef ItemMMap::iterator ItemMMapIter;
+typedef ItemMMap::const_iterator ItemMMapConstIter;
+typedef std::pair <CUUIDGen, CUUIDGen> ItemMMap_Pair;
+
+typedef std::map<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMap;
+typedef ItemMap::iterator ItemMapIter;
+typedef ItemMap::const_iterator ItemMapConstIter;
+typedef std::pair <CUUIDGen, CUUIDGen> ItemMap_Pair;
+
 class PWScore {
  public:
 
@@ -91,13 +104,18 @@ class PWScore {
                    const CString &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR delimiter,
                    const OrderedItemList *il = NULL);
-  int ImportPlaintextFile(const CMyString &ImportedPrefix, const CMyString &filename, CString &strErrors,
-                          TCHAR fieldSeparator, TCHAR delimiter, int &numImported, int &numSkipped,
+  int ImportPlaintextFile(const CMyString &ImportedPrefix,
+                          const CMyString &filename, CString &strErrors,
+                          TCHAR fieldSeparator, TCHAR delimiter,
+                          int &numImported, int &numSkipped,
                           CReport &rpt);
   int ImportKeePassTextFile(const CMyString &filename);
-  int ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileName, const CString &strXSDFileName,
+  int ImportXMLFile(const CString &ImportedPrefix,
+                    const CString &strXMLFileName,
+                    const CString &strXSDFileName,
                     CString &strErrors, int &numValidated, int &numImported,
-                    bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields);
+                    bool &bBadUnknownFileFields,
+                    bool &bBadUnknownRecordFields, CReport &rpt);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
   bool FileExists(const CMyString &filename, bool &bReadOnly) const 
   {return PWSfile::FileExists(filename, bReadOnly);}
@@ -136,7 +154,7 @@ class PWScore {
   ItemListConstIter GetEntryEndIter() const
   {return m_pwlist.end();}
   CItemData &GetEntry(ItemListIter iter)
-    {return iter->second; }
+  {return iter->second;}
   const CItemData &GetEntry(ItemListConstIter iter) const
   {return iter->second;}
   void AddEntry(const CItemData &item)
@@ -148,10 +166,33 @@ class PWScore {
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const CMyString &a_group,
                     const CMyString &a_title, const CMyString &a_user);
+  // Find all users with same group & title
+  int Find_Users(const CMyString &a_group,const CMyString &a_title,
+                 std::vector<CMyString> &userlist);
   ItemListIter Find(const uuid_array_t &uuid)
   {return m_pwlist.find(uuid);}
   ItemListConstIter Find(const uuid_array_t &uuid) const
   {return m_pwlist.find(uuid);}
+
+  // Actions relating to base/alias multimap
+  void AddAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t &alias_uuid);
+  void ResetAllAliasPasswords(const uuid_array_t &base_uuid);
+  void RemoveAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t &alias_uuid);
+  void RemoveAllAliasEntries(const uuid_array_t &base_uuid);
+  void GetAllAliasEntries(const uuid_array_t &base_uuid, UUIDList &aliaslist);
+  void MoveAliases(const uuid_array_t &from_baseuuid, 
+                   const uuid_array_t &to_baseuuid);
+  int AddAliasesViaBaseUUID(UUIDList &possible_aliases, CReport *rpt);
+  int AddAliasesViaPassword(UUIDList &possible_aliases, CReport *rpt);
+  int GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bBase_was_Alias,
+    CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser);
+
+  // Actions relating to alias/base map
+  void AddBaseEntry(const uuid_array_t &alias_uuid, const uuid_array_t &base_uuid)
+  {m_alias2base_map[alias_uuid] = base_uuid;}
+  bool GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid);
+  void SetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
+    {m_alias2base_map[alias_uuid] = base_uuid;}
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
@@ -186,12 +227,28 @@ class PWScore {
   bool m_usedefuser;
   CMyString m_defusername;
   CString m_AppNameAndVersion;
-  
+
   PWSfile::VERSION m_ReadFileVersion;
   PWSfile::HeaderRecord m_hdr;
   std::vector<bool> m_OrigDisplayStatus;
-  // the password database
+
+  // THE password database
+  //  Key = entry's uuid; Value = entry's CItemData
   ItemList m_pwlist;
+
+  // Alias structures
+  // Permanent Multimap: since potentially more than one alias per base
+  //  Key = base uuid; Value = multiple alias uuids
+  ItemMMap m_base2aliases_mmap;
+
+  // Permanent Map: since an alias only has one base
+  //  Key = alias uuid; Value = base uuid
+  ItemMap m_alias2base_map;
+
+  // List of possible aliases created during reading a database, importing text or XML,
+  // or OnDrop during D&D - needs to be confirmed that base exists after operation 
+  // complete - then cleared.
+  // UUIDList possible_aliases; - NOW a local variable
 
   bool m_changed;
   bool m_IsReadOnly;

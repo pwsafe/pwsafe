@@ -45,7 +45,7 @@ CItemData::CItemData()
     m_URL(URL), m_AutoType(AUTOTYPE),
     m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
     m_tttLTime(LTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-    m_display_info(NULL)
+    m_display_info(NULL), m_entrytype(Normal)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -56,9 +56,9 @@ CItemData::CItemData(const CItemData &that) :
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
   m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
   m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
-  m_display_info(that.m_display_info)
+  m_display_info(that.m_display_info), m_entrytype(that.m_entrytype)
 {
-  ::memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
+  memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
     m_URFL = that.m_URFL;
   else
@@ -291,7 +291,8 @@ CItemData::GetPWHistory() const
 
 CMyString CItemData::GetPlaintext(const TCHAR &separator,
                                   const FieldBits &bsFields,
-                                  const TCHAR &delimiter) const
+                                  const TCHAR &delimiter,
+                                  const CItemData *cibase) const
 {
   CMyString ret(_T(""));
 
@@ -348,21 +349,32 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
         }
 	}
 
-	// Notes field must be last, for ease of parsing import
-	if (bsFields.count() == bsFields.size()) {
-		// Everything - note can't actually set all bits via dialog!
-		ret = grouptitle + separator + user + separator +
-			GetPassword() + separator + url +
-			separator + GetAutoType() + separator +
-			GetCTimeExp() + separator +
-			GetPMTimeExp() + separator +
-			GetATimeExp() + separator +
-			GetLTimeExp() + separator +
-			GetRMTimeExp() + separator +
-			history + separator +
-			_T("\"") + notes + _T("\"");
-	} else {
-		// Not everything
+  CMyString csPassword;
+  if (cibase != NULL) {
+    csPassword = _T("[") + 
+                cibase->GetGroup() + _T(":") + 
+                cibase->GetTitle() + _T(":") + 
+                cibase->GetUser() + _T("]") ;
+  } else
+    csPassword = GetPassword();
+
+  // Notes field must be last, for ease of parsing import
+  if (bsFields.count() == bsFields.size()) {
+    // Everything - note can't actually set all bits via dialog!
+    ret = grouptitle + separator + 
+          user + separator +
+          csPassword + separator + 
+          url + separator + 
+          GetAutoType() + separator +
+          GetCTimeExp() + separator +
+          GetPMTimeExp() + separator +
+          GetATimeExp() + separator +
+          GetLTimeExp() + separator +
+          GetRMTimeExp() + separator +
+          history + separator +
+      _T("\"") + notes + _T("\"");
+  } else {
+    // Not everything
     if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE))
       ret += grouptitle + separator;
     else if (bsFields.test(CItemData::GROUP))
@@ -372,7 +384,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 		if (bsFields.test(CItemData::USER))
 			ret += user + separator;
 		if (bsFields.test(CItemData::PASSWORD))
-			ret += GetPassword() + separator;
+			ret += csPassword + separator;
 		if (bsFields.test(CItemData::URL))
 			ret += url + separator;
 		if (bsFields.test(CItemData::AUTOTYPE))
@@ -478,7 +490,8 @@ static void WriteXMLField(ostream &os, const char *fname,
   } // special handling of "]]>" in value.
 }
 
-string CItemData::GetXML(unsigned id, const FieldBits &bsExport, TCHAR delimiter) const
+string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
+                         TCHAR delimiter, const CItemData *cibase) const
 {
   ostringstream oss; // ALWAYS a string of chars, never wchar_t!
   oss << "\t<entry id=\"" << id << "\">" << endl;
@@ -498,7 +511,14 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport, TCHAR delimiter
     WriteXMLField(oss, "username", tmp, utf8conv);
 
   // Password mandatory (see pwsafe.xsd)
-  WriteXMLField(oss, "password", GetPassword(), utf8conv);
+  if (cibase != NULL) {
+    tmp = _T("[") + 
+          cibase->GetGroup() + _T(":") + 
+          cibase->GetTitle() + _T(":") + 
+          cibase->GetUser() + _T("]") ;
+  } else
+    tmp = GetPassword();
+  WriteXMLField(oss, "password", tmp, utf8conv);
 
   tmp = GetURL();
   if (bsExport.test(CItemData::URL) && !tmp.IsEmpty())
@@ -996,21 +1016,21 @@ CItemData::operator=(const CItemData &that)
       m_URFL = that.m_URFL;
     else
       m_URFL.clear();
-
+    m_entrytype = that.m_entrytype;      
     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   }
-  
+
   return *this;
 }
 
 void
 CItemData::Clear()
 {
+  m_Group.Empty();
   m_Title.Empty();
   m_User.Empty();
   m_Password.Empty();
   m_Notes.Empty();
-  m_Group.Empty();
   m_URL.Empty();
   m_AutoType.Empty();
   m_tttCTime.Empty();
@@ -1020,6 +1040,7 @@ CItemData::Clear()
   m_tttRMTime.Empty();
   m_PWHistory.Empty();
   m_URFL.clear();
+  m_entrytype = Normal;
 }
 
 int
@@ -1412,7 +1433,7 @@ push_time(vector<char> &v, char type, time_t t)
   }
 }
 
-void CItemData::SerializePlainText(vector<char> &v)  const
+void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 {
   CMyString tmp;
   uuid_array_t uuid_array;
@@ -1426,7 +1447,15 @@ void CItemData::SerializePlainText(vector<char> &v)  const
   push_string(v, GROUP, GetGroup());
   push_string(v, TITLE, GetTitle());
   push_string(v, USER, GetUser());
-  push_string(v, PASSWORD, GetPassword());
+
+  if (m_entrytype == Alias) {
+    // I am an alias entry
+    ASSERT(cibase != NULL);
+    tmp = _T("[") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("]");
+  } else
+    tmp = GetPassword();
+
+  push_string(v, PASSWORD, tmp);
   push_string(v, NOTES, GetNotes());
   push_string(v, URL, GetURL());
   push_string(v, AUTOTYPE, GetAutoType());
@@ -1461,3 +1490,4 @@ void CItemData::SerializePlainText(vector<char> &v)  const
 #pragma warning( pop )
   push_length(v, 0);
 }
+

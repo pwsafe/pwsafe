@@ -87,7 +87,7 @@ public:
     void TrimRight() {m_mystring.TrimRight();}
     void TrimLeft() {m_mystring.TrimLeft();}
 #if _MSC_VER >= 1400
-  CMyString &Trim() {m_mystring.Trim(); return *this;}
+    CMyString &Trim() {m_mystring.Trim(); return *this;}
 #else
     CMyString &Trim()
       {m_mystring.TrimLeft(); m_mystring.TrimRight(); return *this}
@@ -100,10 +100,14 @@ public:
     void Format(LPCTSTR lpszFormat, ... );
     void Format(UINT nID, ... );
     BOOL IsOnlyWhiteSpace() const
-             {CMyString t(*this); return t.Trim().IsEmpty();}
-  void EmptyIfOnlyWhiteSpace()
-             {if (IsOnlyWhiteSpace() == TRUE) Empty();}
+      {CMyString t(*this); return t.Trim().IsEmpty();}
+    void EmptyIfOnlyWhiteSpace()
+      {if (IsOnlyWhiteSpace() == TRUE) Empty();}
     void Trash() {trashstring();}
+    CMyString SpanIncluding(LPCTSTR lpszCharSet)
+      {return CMyString(m_mystring.SpanIncluding(lpszCharSet));}
+    CMyString SpanExcluding(LPCTSTR lpszCharSet)
+      {return CMyString(m_mystring.SpanExcluding(lpszCharSet));}
 
 private:
     CString m_mystring;

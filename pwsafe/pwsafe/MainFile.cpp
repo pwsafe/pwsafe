@@ -1081,9 +1081,15 @@ DboxMain::OnImportXML()
         int numValidated, numImported;
         bool bBadUnknownFileFields, bBadUnknownRecordFields;
         CWaitCursor waitCursor;  // This may take a while!
+        /* Create report as we go */
+        CReport rpt;
+        rpt.StartReport(_T("Import_XML"), m_core.GetCurFile());
+        cs_temp.Format(IDS_IMPORTFILE, _T("XML"), XMLFilename);
+        rpt.WriteLine(cs_temp);
+        rpt.WriteLine();
         rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename, XSDFilename, strErrors,
                                   numValidated, numImported,
-                                  bBadUnknownFileFields, bBadUnknownRecordFields);
+                                  bBadUnknownFileFields, bBadUnknownRecordFields, rpt);
         waitCursor.Restore();  // Restore normal cursor
 
         switch (rc) {
@@ -1101,6 +1107,8 @@ DboxMain::OnImportXML()
                 dlg.m_strActionText.Format(IDS_XMLERRORS, XMLFilename);
                 dlg.m_strResultText = strErrors;
                 dlg.DoModal();
+                rpt.WriteLine(dlg.m_strActionText);
+                rpt.WriteLine(dlg.m_strResultText);
             }
               break;
             case PWScore::SUCCESS:
@@ -1120,12 +1128,15 @@ DboxMain::OnImportXML()
                     if (bBadUnknownRecordFields)
                       dlg.m_strResultText += CString(MAKEINTRESOURCE(IDS_XMLUNKNRECIGNORED));
                     dlg.DoModal();
+                    rpt.WriteLine(dlg.m_strActionText);
+                    rpt.WriteLine(dlg.m_strResultText);
                     ChangeOkUpdate();
                 } else {
                     cs_temp.Format(IDS_XMLIMPORTOK,
                                    numValidated, (numValidated != 1) ? _T("s") : _T(""),
                                    numImported, (numImported != 1) ? _T("s") : _T(""));
                     cs_title.LoadString(IDS_STATUS);
+                    rpt.WriteLine(cs_temp);
                     MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
                     ChangeOkUpdate();
                 }
@@ -1135,6 +1146,7 @@ DboxMain::OnImportXML()
             default:
               ASSERT(0);
         } // switch
+        rpt.EndReport();
     }
 }
 

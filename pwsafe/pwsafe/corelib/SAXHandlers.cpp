@@ -174,12 +174,14 @@ PWSSAXContentHandler::~PWSSAXContentHandler()
 }
 
 void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
-									  const CString &ImportedPrefix, const TCHAR &delimiter)
+									  const CString &ImportedPrefix, const TCHAR &delimiter,
+                    UUIDList *possible_aliases)
 {
 	m_bValidation = bValidation;
 	m_ImportedPrefix = ImportedPrefix;
 	m_delimiter = delimiter;
 	m_xmlcore = core;
+  m_possible_aliases = possible_aliases;
 }
 
 long __stdcall PWSSAXContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
@@ -346,6 +348,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 		cur_entry->pwhistory = _T("");
 		cur_entry->notes = _T("");
 		cur_entry->uuid = _T("");
+		cur_entry->alias = false;
 	}
 
 	if (_tcscmp(szCurElement, _T("ctime")) == 0)
@@ -439,12 +442,12 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 	}
 
 	if (_tcscmp(szCurElement, _T("entry")) == 0) {
-		CItemData tempitem;
+		uuid_array_t uuid_array;
+    CItemData tempitem;
 		tempitem.Clear();
 		if (cur_entry->uuid.IsEmpty())
 			tempitem.CreateUUID();
 		else {
-			uuid_array_t uuid_array;
       // _stscanf_s always outputs to an "int" using %x even though
       // target is only 1.  Read into larger buffer to prevent data being
       // overwritten and then copy to where we want it!
@@ -553,6 +556,12 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       }
     }
 
+    // If a potential alias, add to the vector for later verification and processing
+    if (cur_entry->alias) {
+      tempitem.GetUUID(uuid_array);
+      m_possible_aliases->push_back(uuid_array);
+    }
+    
 		m_xmlcore->AddEntry(tempitem);
     cur_entry->uhrxl.clear();
 		delete cur_entry;
@@ -572,7 +581,14 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 	}
 
 	if (_tcscmp(szCurElement, _T("password")) == 0) {
-		cur_entry->password = m_strElemContent;
+	  cur_entry->password = m_strElemContent;
+    const int n = CMyString(m_strElemContent).Replace(_T(':'), _T(';'));
+		if (m_strElemContent.Left(1) == _T("[") &&
+		    m_strElemContent.Right(1) == _T("]") &&
+		    n <= 2) {
+		  cur_entry->alias = true;
+		} else
+		  cur_entry->alias = false;
 	}
 
 	if (_tcscmp(szCurElement, _T("url")) == 0) {
