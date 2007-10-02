@@ -585,7 +585,7 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
   UUIDList possible_aliases;
   PWSXML iXML(this, &possible_aliases);
   bool status, validation;
-  int nITER;
+  int nITER(0);
   int nRecordsWithUnknownFields;
   UnknownFieldList uhfl;
   bool bEmptyDB = (GetNumEntries() == 0);
