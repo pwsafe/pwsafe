@@ -27,8 +27,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-PWSXML::PWSXML(PWScore *core)
-  : m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^'))
+PWSXML::PWSXML(PWScore *core,UUIDList *possible_aliases)
+  : m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
+  m_possible_aliases(possible_aliases)
 {
 }
 
@@ -97,9 +98,11 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 	//	Create ContentHandlerImpl object
 	PWSSAXContentHandler* pCH = new PWSSAXContentHandler();
 	if (m_bValidation)
-		pCH->SetVariables(NULL, m_bValidation, ImportedPrefix, m_delimiter);
+		pCH->SetVariables(NULL, m_bValidation, ImportedPrefix, m_delimiter,
+                      m_possible_aliases);
 	else
-		pCH->SetVariables(m_xmlcore, m_bValidation, ImportedPrefix, m_delimiter);
+		pCH->SetVariables(m_xmlcore, m_bValidation, ImportedPrefix, m_delimiter, 
+                      m_possible_aliases);
 
 	//	Create ErrorHandlerImpl object
 	PWSSAXErrorHandler* pEH = new PWSSAXErrorHandler();

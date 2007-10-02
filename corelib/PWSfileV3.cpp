@@ -10,6 +10,7 @@
 #include "PWSrand.h"
 #include "util.h"
 #include "SysInfo.h"
+#include "PWScore.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -174,9 +175,10 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   ASSERT(m_curversion == V30);
   int status = SUCCESS;
   CMyString tmp;
-  uuid_array_t uuid_array;
-  item.GetUUID(uuid_array);
-  WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+  uuid_array_t item_uuid;
+
+  item.GetUUID(item_uuid);
+  WriteCBC(CItemData::UUID, item_uuid, sizeof(uuid_array_t));
   tmp = item.GetGroup();
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::GROUP, tmp);

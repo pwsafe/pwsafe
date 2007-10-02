@@ -43,6 +43,7 @@ struct pw_entry {
 	CMyString notes;
 	CMyString uuid;
 	UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
+	bool alias;
 };
 
 //	-----------------------------------------------------------------------
@@ -97,7 +98,8 @@ public:
   int m_nRecordsWithUnknownFields;
 
 	void SetVariables(PWScore *core, const bool &bValidation,
-					const CString &ImportedPrefix, const TCHAR &delimiter);
+					const CString &ImportedPrefix, const TCHAR &delimiter,
+          UUIDList *possible_aliases);
 
   // Preferences posibly stored in database
   // Note: boolean is integer to allow an 'not set' value of '-1'
@@ -193,6 +195,7 @@ private:
 	CMyString m_strElemContent;
 	CString m_ImportedPrefix;
 	PWScore *m_xmlcore;
+  UUIDList *m_possible_aliases;
 	int m_whichtime, m_ipwh;
 	bool m_bValidation;
 

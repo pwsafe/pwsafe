@@ -91,6 +91,9 @@ public:
   // status returns from "ProcessInputRecordField"
   enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
+  // entry type
+  enum EntryType {Normal, Alias, Base};
+
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
@@ -150,8 +153,9 @@ public:
   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
   // it's used for multi-line notes and to replace '.' within the Title field.
   CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
-                         const TCHAR &delimiter) const;
-  std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter) const;
+                         const TCHAR &delimiter, const CItemData *cibase) const;
+  std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
+                     const CItemData *cibase) const;
   void GetUnknownField(unsigned char &type, unsigned int &length,
                        unsigned char * &pdata,
                        const unsigned int &num) const;
@@ -212,9 +216,22 @@ public:
   bool Matches(const CString &subgroup_name, int iObject, 
                int iFunction) const;
   BOOL IsURLEmpty() const {return m_URL.IsEmpty();}
-  void SerializePlainText(std::vector<char> &v) const;
+  void SerializePlainText(std::vector<char> &v, CItemData *cibase = NULL) const;
   bool DeserializePlainText(const std::vector<char> &v);
   bool SetField(int type, unsigned char *data, int len);
+
+  bool IsAlias() const
+  {return (m_entrytype == Alias);}
+
+  bool IsBase() const
+  {return (m_entrytype == Base);}
+  
+  void SetNormal()
+  {m_entrytype = Normal;}
+  void SetAlias()
+  {m_entrytype = Alias;}
+  void SetBase()
+  {m_entrytype = Base;}
 
 private:
   CItemField m_Name;
@@ -235,6 +252,8 @@ private:
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
+
+  enum EntryType m_entrytype;
 
   // random key for storing stuff in memory, just to remove dependence
   // on passphrase

@@ -24,9 +24,9 @@ typedef unsigned char uuid_str_t[37]; //"204012e6-600f-4e01-a5eb-515267cb0d50"
 class CUUIDGen {
  public:
   CUUIDGen(); // UUID generated at creation time
-  CUUIDGen(const uuid_array_t &); // for storing an existing UUID
+  CUUIDGen(const uuid_array_t &uuid_array); // for storing an existing UUID
   ~CUUIDGen();
-  void GetUUID(uuid_array_t &) const;
+  void GetUUID(uuid_array_t &uuid_array) const;
   // Following is for map<> compare function
   struct ltuuid {
     bool operator()(const CUUIDGen &u1, const CUUIDGen &u2) const
