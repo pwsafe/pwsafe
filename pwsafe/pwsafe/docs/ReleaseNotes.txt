@@ -19,6 +19,12 @@ via XML
 [1313440] Can new add/edit entries with long group names
 [1664219] Autotype now works correctly with '@' in German keyboards,
 and non-English keyboards in general.
+[1806201] Prevent loss of entries with duplicate uuid values
+[1799523] Fix PWS taking a long time saving after XML Import into new DB by
+using an extremely large number of hash iterations.  Users who have imported
+XML into a new database should export again and re-import after deleting the
+<NumberHashIterations>...</NumberHashIterations> entry from the XML file.
+[] Use the Confirm Delete message even when there is only one child.
 
 New Features for 3.10.01
 ========================

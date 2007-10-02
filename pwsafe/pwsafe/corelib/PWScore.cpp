@@ -1168,6 +1168,7 @@ PWScore::ReadFile(const CMyString &a_filename,
         if (m_pwlist.find(uuid) != m_pwlist.end()) {
           ASSERT(0); // abort in debug build
           temp.CreateUUID(); // replace duplicated uuid
+          temp.GetUUID(uuid); // refresh uuid_array
         }
 #ifdef DEMO
         if (m_pwlist.size() < MAXDEMO) {
