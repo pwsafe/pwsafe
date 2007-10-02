@@ -140,9 +140,10 @@ PWSSAXContentHandler::PWSSAXContentHandler()
   m_bheader = false;
   m_bDatabaseHeaderErrors = false;
   m_bRecordHeaderErrors = false;
-  m_nITER = 0;
+  m_nITER = MIN_HASH_ITERATIONS;
   m_nRecordsWithUnknownFields = 0;
 
+  // Following are user preferences stored in the database
   m_bDisplayExpandedAddEditDlg = -1;
   m_bMaintainDateTimeStamps = -1;
   m_bPWUseDigits = -1;

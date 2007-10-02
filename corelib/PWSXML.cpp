@@ -200,8 +200,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 
           if (b_into_empty) {
             m_bDatabaseHeaderErrors = pCH->m_bDatabaseHeaderErrors;
-            if (pCH->m_nITER > 0)
-              nITER = pCH->m_nITER;
+            nITER = pCH->m_nITER;
 
             UnknownFieldList::const_iterator vi_IterUXFE;
             for (vi_IterUXFE = pCH->m_ukhxl.begin();
