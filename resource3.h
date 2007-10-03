@@ -303,3 +303,13 @@
 #define IDS_CPF_TVDD                    5475
 #define IDS_RECORDUNKNOWNFIELDS         5476
 #define IDS_IMPORTFILE                  5477
+#define IDS_VIEWALIASES                 5478
+#define IDS_DELETEBASE                  5479
+#define IDS_DELETEBASET                 5480
+#define IDS_ALIASNOTFOUNDA              5481
+#define IDS_ALIASNOTFOUND0              5482
+#define IDS_ALIASNOTFOUND1              5483
+#define IDS_ALIASNOTFOUND2              5484
+#define IDS_ALIASNOTFOUNDZ              5485
+#define IDS_DDBASEISALIAS               5486
+#define IDS_BASEISALIAS                 5487
