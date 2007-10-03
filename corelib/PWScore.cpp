@@ -1166,17 +1166,16 @@ PWScore::ReadFile(const CMyString &a_filename,
          * the uniqueness requirement of uuids.
          */
         if (m_pwlist.find(uuid) != m_pwlist.end()) {
-          ASSERT(0); // abort in debug build
+#ifdef DEBUG
+          TRACE(_T("Non-Unique uuid detected:\n"));
+          CItemData::FieldBits bf;
+          bf.flip();
+          CMyString dump = temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
+          TRACE(_T("%s\n"), dump);
+#endif
           temp.CreateUUID(); // replace duplicated uuid
           temp.GetUUID(uuid); // refresh uuid_array
         }
-#ifdef DEMO
-        if (m_pwlist.size() < MAXDEMO) {
-          m_pwlist[uuid] = temp;
-        } else {
-          limited = true;
-        }
-#else
         csMyPassword = temp.GetPassword();
         csMyPassword.MakeLower();
         if (csMyPassword.Left(2) == _T("[[") || 
@@ -1203,6 +1202,13 @@ PWScore::ReadFile(const CMyString &a_filename,
           m_alias2base_map[temp_uuid] = base_uuid;
           possible_aliases.push_back(temp_uuid);
         }
+#ifdef DEMO
+        if (m_pwlist.size() < MAXDEMO) {
+          m_pwlist[uuid] = temp;
+        } else {
+          limited = true;
+        }
+#else
         m_pwlist[uuid] = temp;
 #endif
         break;
