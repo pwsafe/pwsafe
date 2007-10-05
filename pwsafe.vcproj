@@ -632,10 +632,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ImportXMLErrDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\KeySend.cpp"
 				>
 			</File>
@@ -874,10 +870,6 @@
 			</File>
 			<File
 				RelativePath=".\ImportXMLDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ImportXMLErrDlg.h"
 				>
 			</File>
 			<File

@@ -19,7 +19,6 @@
 #include "ExportXMLDlg.h"
 #include "ImportDlg.h"
 #include "ImportXMLDlg.h"
-#include "ImportXMLErrDlg.h"
 #include "AdvancedDlg.h"
 #include "CompareResultsDlg.h"
 #include "Properties.h"
@@ -1076,7 +1075,7 @@ DboxMain::OnImportXML()
         return;
     }
     if (rc == IDOK) {
-        CString strErrors;
+        CString strErrors, csErrors(_T(""));
         CString XMLFilename = (CMyString)fd.GetPathName();
         int numValidated, numImported;
         bool bBadUnknownFileFields, bBadUnknownRecordFields;
@@ -1095,49 +1094,43 @@ DboxMain::OnImportXML()
         switch (rc) {
             case PWScore::XML_FAILED_VALIDATION:
             {
-                CImportXMLErrDlg dlg;
-                dlg.m_strActionText.Format(IDS_FAILEDXMLVALIDATE, XMLFilename);
-                dlg.m_strResultText = strErrors;
-                dlg.DoModal();
+                cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName());
+                csErrors = strErrors;
+                cs_title.LoadString(IDS_XMLSEEREPORT);
             }
               break;
             case PWScore::XML_FAILED_IMPORT:
             {
-                CImportXMLErrDlg dlg;
-                dlg.m_strActionText.Format(IDS_XMLERRORS, XMLFilename);
-                dlg.m_strResultText = strErrors;
-                dlg.DoModal();
-                rpt.WriteLine(dlg.m_strActionText);
-                rpt.WriteLine(dlg.m_strResultText);
+                cs_temp.Format(IDS_XMLERRORS, fd.GetFileName());
+                csErrors = strErrors;
+                cs_title.LoadString(IDS_XMLSEEREPORT);
             }
               break;
             case PWScore::SUCCESS:
             {
                 if (!strErrors.IsEmpty() ||
                     bBadUnknownFileFields || bBadUnknownRecordFields) {
-                    cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                                   XMLFilename, numValidated, numImported);
-                    CImportXMLErrDlg dlg;
-
-                    dlg.m_strActionText = cs_temp;
-                    dlg.m_strActionText.Empty();
                     if (!strErrors.IsEmpty())
-                      dlg.m_strResultText = strErrors + _T("\n");
-                    if (bBadUnknownFileFields)
-                      dlg.m_strResultText += CString(MAKEINTRESOURCE(IDS_XMLUNKNHDRIGNORED)) + _T("\n");
-                    if (bBadUnknownRecordFields)
-                      dlg.m_strResultText += CString(MAKEINTRESOURCE(IDS_XMLUNKNRECIGNORED));
-                    dlg.DoModal();
-                    rpt.WriteLine(dlg.m_strActionText);
-                    rpt.WriteLine(dlg.m_strResultText);
+                      csErrors = strErrors + _T("\n");
+                    if (bBadUnknownFileFields) {
+                      cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("header"));
+                      csErrors += cs_temp + _T("\n");
+                    }
+                    if (bBadUnknownRecordFields) {
+                      cs_temp.Format(IDS_XMLUNKNFLDIGNORED, _T("record"));
+                      csErrors += cs_temp;
+                    }
+
+                    cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
+                                   fd.GetFileName(), numValidated, numImported);
+
+                    cs_title.LoadString(IDS_XMLSEEREPORT);
                     ChangeOkUpdate();
                 } else {
                     cs_temp.Format(IDS_XMLIMPORTOK,
                                    numValidated, (numValidated != 1) ? _T("s") : _T(""),
                                    numImported, (numImported != 1) ? _T("s") : _T(""));
                     cs_title.LoadString(IDS_STATUS);
-                    rpt.WriteLine(cs_temp);
-                    MessageBox(cs_temp, cs_title, MB_ICONINFORMATION|MB_OK);
                     ChangeOkUpdate();
                 }
             }
@@ -1146,6 +1139,10 @@ DboxMain::OnImportXML()
             default:
               ASSERT(0);
         } // switch
+        MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
+        rpt.WriteLine(cs_temp);
+        rpt.WriteLine();
+        rpt.WriteLine(csErrors);
         rpt.EndReport();
     }
 }

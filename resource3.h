@@ -290,8 +290,8 @@
 #define IDS_UNKNOWNFIELDS               5462
 #define IDS_YES                         5463
 #define IDS_NO                          5464
-#define IDS_XMLUNKNHDRIGNORED           5465
-#define IDS_XMLUNKNRECIGNORED           5466
+#define IDS_XMLUNKNFLDIGNORED           5465
+#define IDS_XMLSEEREPORT                5466
 #define IDS_COPYUNKNOWNFIELDS           5467
 #define IDS_FINDX                       5468
 #define IDS_NOFIELDSFORSEARCH           5469
