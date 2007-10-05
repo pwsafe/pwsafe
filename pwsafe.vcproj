@@ -392,7 +392,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories=".\corelib\NU-Debug,C:\local\msvc\HTMLHelpWorkshop\lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/pwsafe.pdb"
+				ProgramDatabaseFile=".\NU-Debug/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
