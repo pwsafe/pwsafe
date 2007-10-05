@@ -61,7 +61,6 @@
 #define IDD_PICKEXPDATETIME             227
 #define IDD_DISPLAY_EXPIRED_ENTRIES     228
 #define IDD_IMPORT_XML                  229
-#define IDD_IMPORT_XML_ERRORS           230
 #define IDD_ADVANCED                    231
 #define IDD_DLG_PWHIST                  232
 #define IDD_PS_SYSTEM                   233
@@ -212,9 +211,7 @@
 #define IDC_SAVE_PWHIST                 1143
 #define IDC_STATIC_OLDPW1               1144
 #define IDC_SHOW_PWHIST                 1145
-#define IDC_XML_IMPORT_ACTION           1146
 #define IDC_XML_IMPORT_RESULTS          1147
-#define IDC_COPY_ERRORS_TO_CLIPBOARD    1148
 #define IDC_PASSWORD2                   1149
 #define IDC_CLEAR_HISTORY               1150
 #define IDC_ADVANCED                    1151
