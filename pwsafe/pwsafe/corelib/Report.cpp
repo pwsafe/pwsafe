@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <share.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -53,10 +55,162 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
 
   cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, tcAction);
 
-  if ((m_fd = _tfsopen((LPCTSTR) cs_filename, _T("ab"), _SH_DENYWR)) == NULL) {
+  if ((m_fd = _tfsopen((LPCTSTR) cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
   	PWSUtil::IssueError(_T("StartReport: Opening log file"));
   	return false;
   }
+
+  // **** MOST LIKELY ACTION ****
+  // If file is new/emtpy AND we are UNICODE, write BOM, as some text editors insist!
+
+  // **** LEAST LIKELY ACTIONS as it requires the user to use both U & NU versions ****
+  // Test editors really don't like files with both UNICODE and ASCII characters, so -
+  // If we are UNICODE and file is not, convert file to UNICODE before appending
+  // If we are not UNICODE but file is, convert file to ASCII before appending
+  
+  bool bFileIsUnicode(false);
+
+  struct _stat statbuf;
+  
+  ::_tstat(cs_filename, &statbuf);
+
+  // No need to check result of _tstat, since the _tfsopen above would have failed if 
+  // the file/directory did not exist
+  if (statbuf.st_size >= 2) {
+    // Has data - but is it UNICODE or not?
+    fpos_t pos;
+    BYTE buffer[] = {0x00, 0x00, 0x00};
+
+    fgetpos(m_fd, &pos);
+    rewind(m_fd);
+
+    int numread = fread(buffer, sizeof(BYTE), 2, m_fd);
+    ASSERT(numread == 2);
+
+    if (buffer[0] == 0xff && buffer[1] == 0xfe) {
+      // BOM present - File is UNICODE
+      bFileIsUnicode = true;
+    }
+    fsetpos(m_fd, &pos);
+  }
+
+#ifdef UNICODE
+  const unsigned int iBOM = 0xFEFF;
+  if (statbuf.st_size == 0) {
+    // File is empty - write BOM
+	  putwc(iBOM, m_fd);
+  } else
+  if (!bFileIsUnicode) {
+    // Convert ASCII contents to UNICODE
+    FILE *f_in, *f_out;
+
+    // Close original first
+    fclose(m_fd);
+
+    // Open again to read
+    f_in = _wfsopen((LPCWSTR)cs_filename, L"rb", _SH_DENYWR);
+
+    // Open new file
+    CString cs_out = cs_filename + _T(".tmp");
+    f_out = _wfsopen((LPCWSTR)cs_out, L"wb", _SH_DENYWR);
+
+    // Write BOM
+    putwc(iBOM, f_out);
+
+    UINT nBytesRead;
+    unsigned char *pinbuffer;
+    WCHAR *poutwbuffer;
+    pinbuffer = new unsigned char[4096];
+    poutwbuffer = new WCHAR[4096];
+
+    // Now copy
+    do {
+      nBytesRead = fread(pinbuffer, sizeof(char), 4096, f_in);
+
+      if (nBytesRead > 0) {
+        int len = MultiByteToWideChar(CP_ACP, 0, (LPSTR)pinbuffer, 
+                      nBytesRead, (LPWSTR)poutwbuffer, 4096);
+        if (len > 0)
+          fwrite(poutwbuffer, sizeof(wchar_t), len, f_out);
+      } else
+        break;
+
+    } while(nBytesRead > 0);
+
+    delete [] pinbuffer;
+    delete [] poutwbuffer;
+
+    // Close files
+    fclose(f_in);
+    fclose(f_out);
+
+    // Swap them
+    _tremove(cs_filename);
+    _trename(cs_out, cs_filename);
+
+    // Re-open file
+    if ((m_fd = _wfsopen((LPCTSTR)cs_filename, L"ab", _SH_DENYWR)) == NULL) {
+  	  PWSUtil::IssueError(_T("StartReport: Opening log file"));
+    	return false;
+    }
+  }
+#else
+  if (bFileIsUnicode) {
+    // Convert UNICODE contents to ASCII
+    FILE *f_in, *f_out;
+
+    // Close original first
+    fclose(m_fd);
+
+    // Open again to read
+    f_in = _fsopen((LPCSTR)cs_filename, "rb", _SH_DENYWR);
+
+    // Open new file
+    CString cs_out = cs_filename + _T(".tmp");
+    f_out = _fsopen((LPCSTR)cs_out, "wb", _SH_DENYWR);
+
+    UINT nBytesRead;
+    WCHAR *pinwbuffer;
+    unsigned char *poutbuffer;
+    pinwbuffer = new WCHAR[4096];
+    poutbuffer = new unsigned char[4096];
+
+    // Skip over BOM
+    fseek(f_in, 2, SEEK_SET);
+
+    // Now copy
+    do {
+      nBytesRead = fread(pinwbuffer, sizeof(WCHAR), 4096, f_in);
+
+      if (nBytesRead > 0) {
+        int len = WideCharToMultiByte(CP_ACP, 0, (LPWSTR)pinwbuffer, 
+                      nBytesRead,
+                      (LPSTR)poutbuffer, 4096, NULL, NULL);
+        if (len > 0)
+          fwrite(poutbuffer, sizeof(char), len, f_out);
+      } else
+        break;
+
+    } while(nBytesRead > 0);
+
+    delete [] pinwbuffer;
+    delete [] poutbuffer;
+
+    // Close files
+    fclose(f_in);
+    fclose(f_out);
+
+    // Swap them
+    _tremove(cs_filename);
+    _trename(cs_out, cs_filename);
+
+    // Re-open file
+    if ((m_fd = _fsopen((LPCSTR) cs_filename, "ab", _SH_DENYWR)) == NULL) {
+  	  PWSUtil::IssueError(_T("StartReport: Opening log file"));
+    	return false;
+    }
+  }
+#endif
 
   CString cs_title;
   cs_title.Format(IDSC_REPORT_TITLE1, tcAction, PWSUtil::GetTimeStamp());
