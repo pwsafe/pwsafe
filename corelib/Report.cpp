@@ -118,27 +118,22 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     putwc(iBOM, f_out);
 
     UINT nBytesRead;
-    unsigned char *pinbuffer;
-    WCHAR *poutwbuffer;
-    pinbuffer = new unsigned char[4096];
-    poutwbuffer = new WCHAR[4096];
+    unsigned char inbuffer[4096];
+    WCHAR outwbuffer[4096];
 
     // Now copy
     do {
-      nBytesRead = fread(pinbuffer, sizeof(char), 4096, f_in);
+      nBytesRead = fread(inbuffer, sizeof(inbuffer), 1, f_in);
 
       if (nBytesRead > 0) {
-        int len = MultiByteToWideChar(CP_ACP, 0, (LPSTR)pinbuffer, 
-                      nBytesRead, (LPWSTR)poutwbuffer, 4096);
+        int len = MultiByteToWideChar(CP_ACP, 0, (LPSTR)inbuffer, 
+                      nBytesRead, (LPWSTR)outwbuffer, 4096);
         if (len > 0)
-          fwrite(poutwbuffer, sizeof(wchar_t), len, f_out);
+          fwrite(outwbuffer, sizeof(outwbuffer[0])*len, 1, f_out);
       } else
         break;
 
     } while(nBytesRead > 0);
-
-    delete [] pinbuffer;
-    delete [] poutwbuffer;
 
     // Close files
     fclose(f_in);
@@ -170,31 +165,27 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     f_out = _fsopen((LPCSTR)cs_out, "wb", _SH_DENYWR);
 
     UINT nBytesRead;
-    WCHAR *pinwbuffer;
-    unsigned char *poutbuffer;
-    pinwbuffer = new WCHAR[4096];
-    poutbuffer = new unsigned char[4096];
+    WCHAR inwbuffer[4096];
+    unsigned char outbuffer[4096];
 
     // Skip over BOM
     fseek(f_in, 2, SEEK_SET);
 
     // Now copy
     do {
-      nBytesRead = fread(pinwbuffer, sizeof(WCHAR), 4096, f_in);
+      nBytesRead = fread(inwbuffer, sizeof(inwbuffer[0])*sizeof(inwbuffer),
+                         1, f_in);
 
       if (nBytesRead > 0) {
-        int len = WideCharToMultiByte(CP_ACP, 0, (LPWSTR)pinwbuffer, 
+        int len = WideCharToMultiByte(CP_ACP, 0, (LPWSTR)inwbuffer, 
                       nBytesRead,
-                      (LPSTR)poutbuffer, 4096, NULL, NULL);
+                      (LPSTR)outbuffer, 4096, NULL, NULL);
         if (len > 0)
-          fwrite(poutbuffer, sizeof(char), len, f_out);
+          fwrite(outbuffer, len, 1, f_out);
       } else
         break;
 
     } while(nBytesRead > 0);
-
-    delete [] pinwbuffer;
-    delete [] poutbuffer;
 
     // Close files
     fclose(f_in);
