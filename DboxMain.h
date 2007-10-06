@@ -51,7 +51,7 @@ DECLARE_HANDLE(HDROP);
 // Process Compare Result Dialog click/menu functions
 #define WM_COMPARE_RESULT_FUNCTION (WM_APP + 30)
 
-// External Editor has Ended
+// External Editor
 #define WM_CALL_EXTERNAL_EDITOR  (WM_APP + 40)
 #define WM_EXTERNAL_EDITOR_ENDED (WM_APP + 41)
 
@@ -390,6 +390,8 @@ protected:
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeFont();
+  afx_msg void OnViewReports(UINT nID);
+  afx_msg void OnUpdateViewReports(CCmdUI *pCmdUI);
   afx_msg void OnMinimize();
   afx_msg void OnUnMinimize();
   afx_msg void OnTimer(UINT nIDEvent);
@@ -470,8 +472,7 @@ private:
   void UnMinimize(bool update_windows);
   void UpdateAccessTime(CItemData *ci);
   void RestoreDisplayStatus();
-  std::vector<bool>
-  GetGroupDisplayStatus(); // get current display state from window
+  std::vector<bool> GetGroupDisplayStatus(); // get current display state from window
   void SetGroupDisplayStatus(const std::vector<bool> &displaystatus); // changes display
   void MakeOrderedItemList(OrderedItemList &il);
   int CountChildren(HTREEITEM hStartItem);

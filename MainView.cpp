@@ -28,10 +28,13 @@
 
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
+#include "corelib/corelib.h"
 
 #include "commctrl.h"
+#include <shlwapi.h>
 #include <vector>
 #include <algorithm>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -2113,4 +2116,148 @@ DboxMain::UnFindItem()
     m_ctlItemTree.SetItemState(m_LastFoundItem, 0, TVIS_BOLD);
     m_bBoldItem = false;
   }
+}
+
+void
+DboxMain::OnViewReports(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_REPORT_IMPORTTEXT) &&
+         (nID <= ID_MENUITEM_REPORT_VALIDATE));
+
+  CString cs_filename, cs_path, csAction;
+  TCHAR tc_drive[_MAX_DRIVE];
+  TCHAR tc_dir[_MAX_DIR];
+
+#if _MSC_VER >= 1400
+  errno_t err;
+  err = _tsplitpath_s(m_core.GetCurFile(), tc_drive, _MAX_DRIVE, 
+                                           tc_dir, _MAX_DIR, 
+                                           NULL, 0, NULL, 0);
+  if (err != 0) {
+    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+    return;
+  }
+#else
+  _tsplitpath(m_core.GetCurFile(), sz_drive, sz_dir, NULL, NULL);
+#endif
+
+  switch (nID) {
+    case ID_MENUITEM_REPORT_IMPORTTEXT:
+      csAction = _T("Import_Text");
+      break;
+    case ID_MENUITEM_REPORT_IMPORTXML:
+      csAction = _T("Import_XML");
+      break;
+    case ID_MENUITEM_REPORT_MERGE:
+      csAction = _T("Merge");
+      break;
+    case ID_MENUITEM_REPORT_VALIDATE:
+      csAction = _T("Validate");
+      break;
+    default:
+      ASSERT(0);
+  }
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, csAction);
+  cs_path.Format(_T("%s%s"), tc_drive, tc_dir);
+
+  TCHAR szExecName[MAX_PATH + 1];
+
+  // Find out the users default editor for "txt" files
+  DWORD dwSize(MAX_PATH);
+  HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, _T(".txt"), _T("Open"),
+                                    szExecName, &dwSize);
+  if (int(stat) != S_OK) {  
+#ifdef _DEBUG
+    AfxMessageBox(_T("oops"));
+#endif
+    return;
+  }
+
+  // Create an Edit process
+  STARTUPINFO si;
+  PROCESS_INFORMATION pi;
+
+  ZeroMemory( &si, sizeof(si) );
+  si.cb = sizeof(si);
+  ZeroMemory( &pi, sizeof(pi) );
+
+  DWORD dwCreationFlags(0);
+#ifdef _UNICODE
+  dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
+#endif
+
+  CString cs_CommandLine;
+
+  // Make the command line = "<program>" "file" 
+  cs_CommandLine.Format(_T("\"%s\" \"%s\""), szExecName, cs_filename);
+  int ilen = cs_CommandLine.GetLength();
+  LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
+
+  if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
+       NULL, cs_path, &si, &pi)) {
+    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+  }
+
+  // Close process and thread handles. 
+  CloseHandle(pi.hProcess);
+  CloseHandle(pi.hThread);
+  cs_CommandLine.ReleaseBuffer();
+
+  return;
+}
+
+void
+DboxMain::OnUpdateViewReports(CCmdUI *pCmdUI)
+{
+  int nID = pCmdUI->m_nID;
+
+  ASSERT((nID >= ID_MENUITEM_REPORT_IMPORTTEXT) && (nID <= ID_MENUITEM_REPORT_VALIDATE));
+
+  CMyString cs_Database(m_core.GetCurFile());
+  
+  if (cs_Database.IsEmpty()) {
+    pCmdUI->Enable(FALSE);
+    return;
+  }
+
+  CString cs_filename, csAction;
+  TCHAR tc_drive[_MAX_DRIVE];
+  TCHAR tc_dir[_MAX_DIR];
+
+#if _MSC_VER >= 1400
+  errno_t err;
+  err = _tsplitpath_s(cs_Database, tc_drive, _MAX_DRIVE, tc_dir, _MAX_DIR, NULL, 0, NULL, 0);
+  if (err != 0) {
+    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+    return;
+  }
+#else
+  _tsplitpath(cs_Database, sz_drive, sz_dir, NULL, NULL);
+#endif
+
+  switch (nID) {
+    case ID_MENUITEM_REPORT_IMPORTTEXT:
+      csAction = _T("Import_Text");
+      break;
+    case ID_MENUITEM_REPORT_IMPORTXML:
+      csAction = _T("Import_XML");
+      break;
+    case ID_MENUITEM_REPORT_MERGE:
+      csAction = _T("Merge");
+      break;
+    case ID_MENUITEM_REPORT_VALIDATE:
+      csAction = _T("Validate");
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, csAction);
+
+  struct _stat statbuf;
+
+  // Only allow selection if file exists!
+  int status = ::_tstat(cs_filename, &statbuf);
+  if (status != 0)
+    pCmdUI->Enable(FALSE);
 }
