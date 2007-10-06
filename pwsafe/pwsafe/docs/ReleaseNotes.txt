@@ -11,6 +11,13 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.10.02
 =====================
 [1806201] Non-unique uuids in database now handled correctly.
+[] Prevent mixed Unicode/ASCII report files and ensure Unicode reports
+have BOM as some text editors insist!
+
+New Features for 3.10.02
+========================
+[] Give user access to Reports from View menu (only in the same directory
+as current open database), since more information is being written there.
 
 Bugs fixed in 3.10.01
 =====================
