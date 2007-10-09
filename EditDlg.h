@@ -13,6 +13,7 @@
 #include "PWDialog.h"
 #include "ControlExtns.h"
 #include "ExtThread.h"
+#include "corelib/ItemData.h"
 
 class CItemData;
 
@@ -25,8 +26,12 @@ public:
   virtual ~CEditDlg();
 
   enum { IDD = IDD_EDIT };
-  CMyString m_defusername, m_username;
+  CMyString m_defusername, m_username, m_aliases, m_base;
   bool m_Edit_IsReadOnly;
+  int m_numaliases;
+  enum CItemData::EntryType m_original_entrytype;
+  int m_ibasedata;
+  uuid_array_t m_base_uuid;
 
   void ShowPassword();
   void HidePassword();
@@ -96,11 +101,13 @@ protected:
 public:
   afx_msg void OnBnClickedOk();
   afx_msg void OnBnClickedMore();
+  afx_msg void OnBnClickViewAliases();
   afx_msg void OnBnClickedClearLTime();
   afx_msg void OnBnClickedSetLTime();
   afx_msg void OnBnClickedPwhist();
 
   CButton m_MoreLessBtn;
+  CButton m_ViewAliasesBtn;
 
   afx_msg void OnEnSetfocusNotes();
   afx_msg void OnEnKillfocusNotes();

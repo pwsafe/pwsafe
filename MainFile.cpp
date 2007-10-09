@@ -924,31 +924,31 @@ DboxMain::OnImportText()
     }
     if (rc == IDOK) {
         CString strError;
-        CMyString newfile = (CMyString)fd.GetPathName();
+        CMyString TxtFileName = (CMyString)fd.GetPathName();
         int numImported = 0, numSkipped = 0;
         TCHAR delimiter = dlg.m_defimpdelim[0];
 
         /* Create report as we go */
         CReport rpt;
         rpt.StartReport(_T("Import_Text"), m_core.GetCurFile());
-        cs_temp.Format(IDS_IMPORTFILE, newfile);
+        cs_temp.Format(IDS_IMPORTFILE, _T("Text"), TxtFileName);
         rpt.WriteLine(cs_temp);
         rpt.WriteLine();
 
-        rc = m_core.ImportPlaintextFile(ImportedPrefix, newfile, strError, fieldSeparator,
+        rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, strError, fieldSeparator,
                                         delimiter, numImported, numSkipped, rpt);
 
         cs_title.LoadString(IDS_FILEREADERROR);
         switch (rc) {
             case PWScore::CANT_OPEN_FILE:
             {
-                cs_temp.Format(IDS_CANTOPENREADING, newfile);
+                cs_temp.Format(IDS_CANTOPENREADING, TxtFileName);
                 MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
             }
             break;
             case PWScore::INVALID_FORMAT:
             {
-                cs_temp.Format(IDS_INVALIDFORMAT, newfile);
+                cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName);
                 MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
             }
             break;
@@ -1007,19 +1007,19 @@ DboxMain::OnImportKeePass()
         return;
     }
     if (rc == IDOK) {
-        CMyString newfile = (CMyString)fd.GetPathName();
-        rc = m_core.ImportKeePassTextFile(newfile);
+        CMyString KPsFileName = (CMyString)fd.GetPathName();
+        rc = m_core.ImportKeePassTextFile(KPsFileName);
         switch (rc) {
             case PWScore::CANT_OPEN_FILE:
             {
-                cs_temp.Format(IDS_CANTOPENREADING, newfile);
+                cs_temp.Format(IDS_CANTOPENREADING, KPsFileName);
                 cs_title.LoadString(IDS_FILEOPENERROR);
                 MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
             }
             break;
             case PWScore::INVALID_FORMAT:
             {
-                cs_temp.Format(IDS_INVALIDFORMAT, newfile);
+                cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName);
                 cs_title.LoadString(IDS_FILEREADERROR);
                 MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
             }

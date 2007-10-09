@@ -25,6 +25,9 @@
 #include "ClearQuestionDlg.h"
 #include "FindDlg.h"
 
+#include <vector>
+#include <algorithm>
+
 #include  <Winable.h>
 
 #ifdef _DEBUG
@@ -37,10 +40,10 @@ static char THIS_FILE[] = __FILE__;
 void
 DboxMain::OnAdd() 
 {
-  CAddDlg dataDlg(this);
+  CAddDlg dlg_add(this);
   
   if (m_core.GetUseDefUser()) {
-    dataDlg.m_username = m_core.GetDefUsername();
+    dlg_add.m_username = m_core.GetDefUsername();
   }
   // m_TreeViewGroup may be set by OnContextMenu, if not, try to grok it
   if (m_TreeViewGroup.IsEmpty()) {
@@ -59,10 +62,10 @@ DboxMain::OnAdd()
       // XXX TBD - get group name of currently selected list entry
     }
   }
-  dataDlg.m_group = m_TreeViewGroup;
+  dlg_add.m_group = m_TreeViewGroup;
   m_TreeViewGroup = _T(""); // for next time
   app.DisableAccelerator();
-  INT_PTR rc = dataDlg.DoModal();
+  INT_PTR rc = dlg_add.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
@@ -70,44 +73,60 @@ DboxMain::OnAdd()
     //Check if they wish to set a default username
     if (!m_core.GetUseDefUser()
         && (prefs->GetPref(PWSprefs::QuerySetDef))
-        && (!dataDlg.m_username.IsEmpty())) {
+        && (!dlg_add.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dataDlg.m_username);
+      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_add.m_username);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
         prefs->SetPref(PWSprefs::UseDefaultUser, true);
         prefs->SetPref(PWSprefs::DefaultUsername,
-                       dataDlg.m_username);
+                       dlg_add.m_username);
         m_core.SetUseDefUser(true);
-        m_core.SetDefUsername(dataDlg.m_username);
+        m_core.SetDefUsername(dlg_add.m_username);
         RefreshList();
       }
     }
+
     //Finish Check (Does that make any geographical sense?)
     CItemData temp;
     CMyString user;
     time_t t;
-    if (dataDlg.m_username.IsEmpty() && m_core.GetUseDefUser())
+
+    if (dlg_add.m_username.IsEmpty() && m_core.GetUseDefUser())
       user = m_core.GetDefUsername();
     else
-      user = dataDlg.m_username;
+      user = dlg_add.m_username;
     temp.CreateUUID();
-    temp.SetGroup(dataDlg.m_group);
-    temp.SetTitle(dataDlg.m_title);
+    temp.SetGroup(dlg_add.m_group);
+    temp.SetTitle(dlg_add.m_title);
     temp.SetUser(user);
-    temp.SetPassword(dataDlg.m_password);
-    temp.SetNotes(dataDlg.m_notes);
-    temp.SetURL(dataDlg.m_URL);
-    temp.SetAutoType(dataDlg.m_autotype);
+
+    if (dlg_add.m_ibasedata > 0) {
+      // Password in alias format AND base entry exists
+      // No need to check if base is an alias as already done in
+      // call to PWScore::GetBaseEntry
+      uuid_array_t alias_uuid;
+      temp.GetUUID(alias_uuid);
+      m_core.AddAliasEntry(dlg_add.m_base_uuid, alias_uuid);
+      temp.SetPassword(CMyString(_T("[Alias]")));
+      temp.SetAlias();
+    } else {
+      temp.SetPassword(dlg_add.m_password);
+      temp.SetNormal();
+    }
+
+    temp.SetNotes(dlg_add.m_notes);
+    temp.SetURL(dlg_add.m_URL);
+    temp.SetAutoType(dlg_add.m_autotype);
    	time(&t);
    	temp.SetCTime(t);
-   	temp.SetLTime(dataDlg.m_tttLTime);
-    if (dataDlg.m_SavePWHistory == TRUE) {
+   	temp.SetLTime(dlg_add.m_tttLTime);
+    if (dlg_add.m_SavePWHistory == TRUE) {
       TCHAR buffer[6];
 #if _MSC_VER >= 1400
-      _stprintf_s(buffer, 6, _T("1%02x00"), dataDlg.m_MaxPWHistory);
+      _stprintf_s(buffer, 6, _T("1%02x00"), dlg_add.m_MaxPWHistory);
 #else
-      _stprintf(buffer, _T("1%02x00"), dataDlg.m_MaxPWHistory);
+      _stprintf(buffer, _T("1%02x00"), dlg_add.m_MaxPWHistory);
 #endif
       temp.SetPWHistory(buffer);
     }
@@ -219,6 +238,25 @@ DboxMain::Delete(bool inRecursion)
   if (ci != NULL) {
     uuid_array_t uuid;
     ci->GetUUID(uuid);
+
+    UUIDList aliaslist;
+    int num_aliases;
+
+    m_core.GetAllAliasEntries(uuid, aliaslist);
+    num_aliases = aliaslist.size();
+    if (num_aliases > 0) {
+      CMyString csAliases;
+      SortAliasEntries(aliaslist, csAliases);
+
+      CString cs_msg;
+      const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
+      cs_msg.Format(IDS_DELETEBASE, aliaslist.size(),
+                    aliaslist.size() == 1 ? _T("") : _T("es"), csAliases);
+      aliaslist.clear();
+      if (MessageBox(cs_msg, cs_title, MB_ICONQUESTION | MB_YESNO) == IDNO)
+        return;
+    }
+      
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     int curSel = di->list_index;
@@ -237,6 +275,21 @@ DboxMain::Delete(bool inRecursion)
 
     if (ci->NumberUnknownFields() > 0)
       m_core.DecrementNumRecordsWithUnknownFields();
+
+    uuid_array_t base_uuid;
+    if (ci->IsAlias()) {
+      // I'm an alias entry
+      // Get corresponding base uuid
+      m_core.GetBaseUUID(uuid, base_uuid);
+      // Delete from both map and multimap
+      m_core.RemoveAliasEntry(base_uuid, uuid);
+    }
+
+    if (num_aliases > 0) {
+      // I'm a base entry
+      m_core.ResetAllAliasPasswords(uuid);
+      m_core.RemoveAllAliasEntries(uuid);
+    }
 
     m_core.RemoveEntryAt(listindex);
     FixListIndexes();
@@ -337,15 +390,51 @@ DboxMain::EditItem(CItemData *ci)
       dlg_edit.m_defusername = m_core.GetDefUsername();
     dlg_edit.m_Edit_IsReadOnly = m_core.IsReadOnly();
 
+    uuid_array_t original_uuid, base_uuid, alias_uuid;
+
+    ci->GetUUID(original_uuid);
+    if (ci->IsBase()) {
+      // Base entry
+      UUIDList aliaslist;
+      CMyString csAliases(_T(""));
+
+      m_core.GetAllAliasEntries(original_uuid, aliaslist);
+      int num_aliases = aliaslist.size();
+      if (num_aliases > 0) {
+        SortAliasEntries(aliaslist, csAliases);
+      }
+
+      dlg_edit.m_numaliases = num_aliases;
+      dlg_edit.m_aliases = csAliases;
+      dlg_edit.m_original_entrytype = CItemData::Base;
+      aliaslist.clear();
+    }
+
+    if (ci->IsAlias()) {
+      // Alias entry
+      // Get corresponding base uuid
+      m_core.GetBaseUUID(original_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        const CItemData &cibase = iter->second;
+        dlg_edit.m_base = _T("[") + 
+                 cibase.GetGroup() + _T(":") + 
+                 cibase.GetTitle() + _T(":") + 
+                 cibase.GetUser()  + _T("]");
+        dlg_edit.m_original_entrytype = CItemData::Alias;
+      }
+    }
+
     app.DisableAccelerator();
     INT_PTR rc = dlg_edit.DoModal();
     app.EnableAccelerator();
 
     if (rc == IDOK) {
       // Out with the old, in with the new
-      uuid_array_t uuid;
-      editedItem.GetUUID(uuid);
-      ItemListIter listpos = Find(uuid);
+      uuid_array_t new_uuid;
+      editedItem.GetUUID(new_uuid);
+      ItemListIter listpos = Find(new_uuid);
       ASSERT(listpos != m_core.GetEntryEndIter());
       CItemData oldElem = GetEntryAt(listpos);
       DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
@@ -356,6 +445,68 @@ DboxMain::EditItem(CItemData *ci)
       ndi->list_index = -1; // so that insertItem will set new values
       ndi->tree_item = 0;
       editedItem.SetDisplayInfo(ndi);
+      CMyString newPassword = editedItem.GetPassword();
+
+      if (dlg_edit.m_original_entrytype == CItemData::Normal &&
+          ci->GetPassword() != newPassword) {
+        // Original was a 'normal' entry and the password has changed
+        if (dlg_edit.m_ibasedata > 0) {
+          // Now an alias
+          editedItem.GetUUID(alias_uuid);
+          m_core.AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+          editedItem.SetPassword(CMyString(_T("[Alias]")));
+          editedItem.SetAlias();          
+        } else {
+          // Still 'normal'
+          editedItem.SetPassword(newPassword);
+          editedItem.SetNormal();
+        }
+      }
+
+      if (dlg_edit.m_original_entrytype == CItemData::Alias) {
+        // Original was an alias - delete it from multimap
+        uuid_array_t original_base_uuid;
+        // Get corresponding base uuid
+        m_core.GetBaseUUID(original_uuid, original_base_uuid);
+        // Remove it from map & multimap
+        m_core.RemoveAliasEntry(original_base_uuid, original_uuid);
+        if (newPassword == dlg_edit.m_base) {
+          // Password (i.e. base) unchanged - put it back with new uuid
+          m_core.AddAliasEntry(original_base_uuid, new_uuid);
+        } else {
+          // Password changed so might be an alias of another entry!
+          if (dlg_edit.m_ibasedata > 0) {
+            // Still an alias
+            editedItem.GetUUID(alias_uuid);
+            m_core.AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+            editedItem.SetPassword(CMyString(_T("[Alias]")));
+            editedItem.SetAlias();
+          } else {
+            // No longer an alias
+            editedItem.SetPassword(newPassword);
+            editedItem.SetNormal();
+          }
+        }
+      }
+
+      if (dlg_edit.m_original_entrytype == CItemData::Base && 
+          ci->GetPassword() != newPassword) {
+        // Original was a base but might now be an alias of another entry!
+        if (dlg_edit.m_ibasedata > 0) {
+          // Now an alias
+          editedItem.GetUUID(alias_uuid);
+          // Make this one an alias
+          m_core.AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+          editedItem.SetPassword(CMyString(_T("[Alias]")));
+          editedItem.SetAlias();
+          // Move old aliases across
+          m_core.MoveAliases(original_uuid, dlg_edit.m_base_uuid);
+        } else {
+          // Still a base entry but with a new password
+          editedItem.SetPassword(newPassword);
+          editedItem.SetBase();
+        }
+      }
 
       m_core.RemoveEntryAt(listpos);
       m_core.AddEntry(editedItem);
@@ -363,7 +514,7 @@ DboxMain::EditItem(CItemData *ci)
       m_ctlItemTree.DeleteWithParents(di->tree_item);
       // AddEntry copies the entry, and we want to work with the inserted copy
       // Which we'll find by uuid
-      insertItem(m_core.GetEntry(m_core.Find(uuid)));
+      insertItem(m_core.GetEntry(m_core.Find(new_uuid)));
       FixListIndexes();
       // Now delete old entry's DisplayInfo
       delete di;
@@ -380,7 +531,6 @@ DboxMain::EditItem(CItemData *ci)
     } // rc == IDOK
     return false;
 }
-
 
 // Duplicate selected entry but make title unique
 void
@@ -418,10 +568,10 @@ DboxMain::OnDuplicateEntry()
     ci2.SetGroup(ci2_group);
     ci2.SetTitle(ci2_title);
     ci2.SetUser(ci2_user);
-    ci2.SetPassword( ci->GetPassword() );
-    ci2.SetURL( ci->GetURL() );
-    ci2.SetAutoType( ci->GetAutoType() );
-    ci2.SetNotes( ci->GetNotes() );
+    ci2.SetPassword(ci->GetPassword());
+    ci2.SetURL(ci->GetURL());
+    ci2.SetAutoType(ci->GetAutoType());
+    ci2.SetNotes(ci->GetNotes());
     time_t t;
     ci->GetCTime(t);
     if ((long) t != 0)
@@ -441,6 +591,24 @@ DboxMain::OnDuplicateEntry()
     CMyString tmp = ci->GetPWHistory();
     if (tmp.GetLength() >= 5)
     	    ci2.SetPWHistory(tmp);
+
+    uuid_array_t base_uuid, alias_uuid;
+    if (ci->IsAlias()) {
+      ci2.SetAlias();
+      ci2.GetUUID(alias_uuid);
+      m_core.AddAliasEntry(alias_uuid, base_uuid);
+      
+      ItemListIter iter;
+      iter = m_core.Find(base_uuid);
+      if (iter != m_core.GetEntryEndIter()) {
+        CMyString cs_tmp;
+        cs_tmp = _T("[") + 
+          iter->second.GetGroup() + _T(":") + 
+          iter->second.GetTitle() + _T(":") + 
+          iter->second.GetUser()  + _T("]");
+        ci2.SetPassword(cs_tmp);
+      }
+    }
     // Add it to the end of the list      
     m_core.AddEntry(ci2);
     di->list_index = -1; // so that insertItem will set new values
@@ -458,7 +626,6 @@ DboxMain::OnDuplicateEntry()
     }
     ChangeOkUpdate();
 	m_RUEList.AddRUEntry(uuid);
-
   }
 }
 
@@ -476,7 +643,19 @@ DboxMain::OnCopyPassword()
 
   CItemData *ci = getSelectedItem();
   ASSERT(ci != NULL);
+
+  uuid_array_t base_uuid, alias_uuid;
+  if (ci->IsAlias()) {
+    // This is an alias
+    ci->GetUUID(alias_uuid);
+    m_core.GetBaseUUID(alias_uuid, base_uuid);
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      SetClipboardData(iter->second.GetPassword());
+    }
+  } else
   SetClipboardData(ci->GetPassword());
+
   UpdateAccessTime(ci);
   uuid_array_t RUEuuid;
   ci->GetUUID(RUEuuid);
@@ -587,13 +766,25 @@ DboxMain::OnAutoType()
 
 const CString DboxMain::DEFAULT_AUTOTYPE = _T("\\u\\t\\p\\n");
 
-
 void
 DboxMain::AutoType(const CItemData &ci)
 {
   CMyString AutoCmd = ci.GetAutoType();
   const CMyString user(ci.GetUser());
-  const CMyString pwd(ci.GetPassword());
+  CMyString pwd;
+
+  uuid_array_t base_uuid, alias_uuid;
+  if (ci.IsAlias()) {
+    // This is an alias
+    ci.GetUUID(alias_uuid);
+    m_core.GetBaseUUID(alias_uuid, base_uuid);
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      pwd = iter->second.GetPassword();
+    }
+  } else {
+    pwd = ci.GetPassword();
+  }
 
   // If empty, try the database default
   if (AutoCmd.IsEmpty()) {
@@ -725,6 +916,7 @@ void
 DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 {
   CItemData tempitem;
+  UUIDList possible_aliases;
   CMyString Group, Title, User;
   POSITION pos;
   TCHAR *dot;
@@ -741,19 +933,55 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       Group = DropGroup;
     }
 
-    Title = GetUniqueTitle(Group, tempitem.GetTitle(), tempitem.GetUser(),
-                           IDS_DRAGNUMBER);
+    User = tempitem.GetUser();
+    Title = GetUniqueTitle(Group, tempitem.GetTitle(), User, IDS_DRAGNUMBER);
 
-    uuid_array_t uuid;
-    tempitem.GetUUID(uuid);
-    if (m_core.Find(uuid) != End())
+    uuid_array_t entry_uuid;
+    tempitem.GetUUID(entry_uuid);
+    if (m_core.Find(entry_uuid) != End())
       tempitem.CreateUUID();
 
     tempitem.SetGroup(Group);
     tempitem.SetTitle(Title);
+
+    uuid_array_t base_uuid, alias_uuid;
+    CMyString cs_tmp = tempitem.GetPassword();
+    CMyString csPwdGroup, csPwdTitle, csPwdUser;
+    bool bBase_was_Alias(false);
+    int ialias = GetBaseEntry(cs_tmp, base_uuid, bBase_was_Alias,
+                     csPwdGroup, csPwdTitle, csPwdUser);
+    if (ialias > 0) {
+      // Password in alias format AND base entry exists
+      ItemListIter iter = m_core.Find(base_uuid);
+      ASSERT(iter != End());
+      if (bBase_was_Alias) {
+        // This base is in fact an alias. GetBaseEntry already found 'proper base'
+        // So dropped entry will point to the 'proper base' and tell the user.
+        CString cs_msg;
+        cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
+        AfxMessageBox(cs_msg, MB_OK);
+      }
+      tempitem.GetUUID(alias_uuid);
+      m_core.AddAliasEntry(base_uuid, alias_uuid);
+      tempitem.SetPassword(CMyString(_T("[Alias]")));
+      tempitem.SetAlias();
+    } else 
+    if (ialias == 0) {
+      // Password NOT in alias format
+      tempitem.SetNormal();
+    } else
+    if (ialias < 0) {
+      // Password in alias format AND base entry does not exist
+      tempitem.GetUUID(alias_uuid);
+      possible_aliases.push_back(alias_uuid);
+    }
+
     AddEntry(tempitem);
 
   } // iteration over in_oblist
+
+  // Now try to add aliases we couldn't add in previous processing
+  m_core.AddAliasesViaPassword(possible_aliases, NULL);
 
   if (PWSprefs::GetInstance()->
       GetPref(PWSprefs::SaveImmediately)) {
@@ -763,4 +991,58 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 
   FixListIndexes();
   RefreshList();
+}
+
+// Return whether first [g:t:u] is greater than the second [g:t:u]
+// used in std::sort in SortAliasEntries below.
+bool GTUCompare(CMyString elem1, CMyString elem2)
+{
+  CMyString g1, t1, u1, g2, t2, u2, tmp1, tmp2;
+
+  g1 = elem1.SpanExcluding(_T(":"));
+  g2 = elem2.SpanExcluding(_T(":"));
+  if (g1 != g2)
+    return g1.Compare(g2) < 0;
+
+  tmp1 = elem1.Mid(g1.GetLength() + 1);
+  tmp2 = elem2.Mid(g2.GetLength() + 1);
+  t1 = tmp1.SpanExcluding(_T(":"));
+  t2 = tmp2.SpanExcluding(_T(":"));
+  if (t1 != t2)
+    return t1.Compare(t2) < 0;
+
+  tmp1 = tmp1.Mid(t1.GetLength() + 1);
+  tmp2 = tmp2.Mid(t2.GetLength() + 1);
+  u1 = tmp1.SpanExcluding(_T(":"));
+  u2 = tmp2.SpanExcluding(_T(":"));
+  return u1.Compare(u2) < 0;
+}
+
+void DboxMain::SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases)
+{
+  std::vector<CMyString> sorted_aliases;
+  std::vector<CMyString>::iterator sa_iter;
+      
+  ItemListIter iter;
+  UUIDListIter aiter;
+  CMyString cs_alias;
+
+  for (aiter = aliaslist.begin(); aiter != aliaslist.end(); aiter++) {
+    uuid_array_t alias_uuid;
+    aiter->GetUUID(alias_uuid);
+    iter = m_core.Find(alias_uuid);
+    if (iter != m_core.GetEntryEndIter()) {
+      cs_alias = iter->second.GetGroup() + _T(":") + 
+                 iter->second.GetTitle() + _T(":") + 
+                 iter->second.GetUser();
+      sorted_aliases.push_back(cs_alias);
+    }
+  }
+
+  std::sort(sorted_aliases.begin(), sorted_aliases.end(), GTUCompare);
+  csAliases.Empty();
+
+  for (sa_iter = sorted_aliases.begin(); sa_iter != sorted_aliases.end(); sa_iter++) {
+    csAliases += _T("\t[") +  *sa_iter + _T("]\r\n");
+  }
 }

@@ -16,15 +16,20 @@ class CDDObject : public CObject
 {
 // Construction
 public:
-  CDDObject() {};
+  CDDObject() {m_pbaseitem = NULL;};
 
   void DDSerialize(CSMemFile &outDDmemfile);
   void DDUnSerialize(CSMemFile &inDDmemfile);
   void FromItem(const CItemData &item) {m_item = item;}
   void ToItem(CItemData &item) const {item = m_item;}
 
+  void SetBaseItem(CItemData *item) {m_pbaseitem = item;}
+  CItemData * GetBaseItem() const {return m_pbaseitem;}
+  bool IsAlias() const {return (m_pbaseitem != NULL);}
+
  private:
   CItemData m_item;
+  CItemData *m_pbaseitem;
 };
 
 // A list of Drag & Drop Objects

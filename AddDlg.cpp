@@ -228,12 +228,59 @@ CAddDlg::OnOK()
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
   }
+
+  DboxMain* dbx = static_cast<DboxMain *>(GetParent());
+  ASSERT(dbx != NULL);
+
+  CMyString csPwdGroup, csPwdTitle, csPwdUser;
+  bool bBase_was_Alias(false);
+  m_ibasedata = dbx->GetBaseEntry(m_password, m_base_uuid, bBase_was_Alias,
+                         csPwdGroup, csPwdTitle, csPwdUser);
+
+  // m_ibasedata:
+  //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
+  //   0: password not in alias format
+  //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
+  if (m_ibasedata < 0) {
+    CString cs_msg;
+    const CString cs_msgA(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDA));
+    const CString cs_msgZ(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDZ));
+    int rc(IDNO);
+    switch (m_ibasedata) {
+      case -1:
+        cs_msg.Format(IDS_ALIASNOTFOUND0, csPwdTitle);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      case -2:
+        // In this case the 2 fields from the password are in Title & User
+        cs_msg.Format(IDS_ALIASNOTFOUND1, csPwdTitle, csPwdUser, csPwdTitle, csPwdUser);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      case -3:
+        cs_msg.Format(IDS_ALIASNOTFOUND2, csPwdGroup, csPwdTitle, csPwdUser);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      default:
+        ASSERT(0);
+    }
+    if (rc == IDNO) {
+      UpdateData(FALSE);
+      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+      return;
+    }
+  }
+  if (m_ibasedata > 0 && bBase_was_Alias) {
+    CString cs_msg;
+    cs_msg.Format(IDS_BASEISALIAS, csPwdGroup, csPwdTitle, csPwdUser);
+    if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
+      UpdateData(FALSE);
+      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+      return;
+    }
+  }
   //End check
 
-  DboxMain* pParent = (DboxMain*) GetParent();
-  ASSERT(pParent != NULL);
-
-  if (pParent->Find(m_group, m_title, m_username) != pParent->End()) {
+  if (dbx->Find(m_group, m_title, m_username) != dbx->End()) {
     CMyString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);

@@ -1209,6 +1209,32 @@ PWScore::ReadFile(const CMyString &a_filename,
           limited = true;
         }
 #else
+        csMyPassword = temp.GetPassword();
+        csMyPassword.MakeLower();
+        if (csMyPassword.Left(2) == _T("[[") || 
+            csMyPassword.Right(2) == _T("]]") ||
+            csMyPassword.GetLength() == 36 ||
+            csMyPassword.SpanIncluding(_T("[]0123456789abcdef")) == csMyPassword) {
+          // _stscanf_s always outputs to an "int" using %x even though
+          // target is only 1.  Read into larger buffer to prevent data being
+          // overwritten and then copy to where we want it!
+          unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
+          int nscanned = 0;
+          TCHAR *lpszuuid = csMyPassword.GetBuffer(sizeof(uuid_array_t) * 2 + 4) + 2;
+          for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
+#if _MSC_VER >= 1400
+            nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+#else
+            nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
+#endif
+            lpszuuid += 2;
+          }
+          csMyPassword.ReleaseBuffer(sizeof(uuid_array_t) * 2 + 4);
+          memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
+          temp.GetUUID(temp_uuid);
+          m_alias2base_map[temp_uuid] = base_uuid;
+          possible_aliases.push_back(temp_uuid);
+        }
         m_pwlist[uuid] = temp;
 #endif
         break;

@@ -62,7 +62,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
     m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
     m_tttLTime (time_t(0)),
-    m_locLTime(_T("")), m_oldlocLTime(_T(""))
+    m_locLTime(_T("")), m_oldlocLTime(_T("")),
+    m_original_entrytype(CItemData::Normal)
 {
   ASSERT(ci != NULL);
 
@@ -111,6 +112,9 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 
   m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
                               _T("! &Edit externally"));
+  m_numaliases = 0;
+  m_aliases = _T("");
+  m_base = _T("");
 }
 
 CEditDlg::~CEditDlg()
@@ -136,6 +140,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 
   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
   DDX_Control(pDX, IDC_MORE, m_MoreLessBtn);
+  DDX_Control(pDX, IDC_VIEWALIASES, m_ViewAliasesBtn);
 
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
@@ -158,6 +163,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
   ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
+  ON_BN_CLICKED(IDC_VIEWALIASES, OnBnClickViewAliases)
   ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
   ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
   ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
@@ -240,17 +246,17 @@ CEditDlg::OnOK()
   }
   //End check
 
-  DboxMain* pParent = (DboxMain*) GetParent();
-  ASSERT(pParent != NULL);
+  DboxMain* dbx = static_cast<DboxMain *>(GetParent());
+  ASSERT(dbx != NULL);
 
-  ItemListIter listindex = pParent->Find(m_group, m_title, m_username);
+  ItemListIter listindex = dbx->Find(m_group, m_title, m_username);
   /*
    *  If there is a matching entry in our list, and that
    *  entry is not the same one we started editing, tell the
    *  user to try again.
    */
-  if (listindex != pParent->End()) {
-    const CItemData &listItem = pParent->GetEntryAt(listindex);
+  if (listindex != dbx->End()) {
+    const CItemData &listItem = dbx->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
     listItem.GetUUID(list_uuid);
     m_ci->GetUUID(elem_uuid);
@@ -264,6 +270,54 @@ CEditDlg::OnOK()
       return;
     }
   }
+  
+  CMyString csPwdGroup, csPwdTitle, csPwdUser;
+  bool bBase_was_Alias(false);
+  m_ibasedata = dbx->GetBaseEntry(m_password, m_base_uuid, bBase_was_Alias,
+                         csPwdGroup, csPwdTitle, csPwdUser);
+
+  // m_ibasedata:
+  //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
+  //   0: password not in alias format
+  //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
+  if (m_ibasedata < 0) {
+    CString cs_msg;
+    const CString cs_msgA(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDA));
+    const CString cs_msgZ(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDZ));
+    int rc(IDNO);
+    switch (m_ibasedata) {
+      case -1:
+        cs_msg.Format(IDS_ALIASNOTFOUND0, csPwdTitle);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      case -2:
+        // In this case the 2 fields from the password are in Title & User
+        cs_msg.Format(IDS_ALIASNOTFOUND1, csPwdTitle, csPwdUser, csPwdTitle, csPwdUser);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      case -3:
+        cs_msg.Format(IDS_ALIASNOTFOUND2, csPwdGroup, csPwdTitle, csPwdUser);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      default:
+        ASSERT(0);
+    }
+    if (rc == IDNO) {
+      UpdateData(FALSE);
+      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+      return;
+    }
+  }
+  if (m_ibasedata > 0 && bBase_was_Alias) {
+    CString cs_msg;
+    cs_msg.Format(IDS_BASEISALIAS, csPwdGroup, csPwdTitle, csPwdUser);
+    if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
+      UpdateData(FALSE);
+      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+      return;
+    }
+  }
+
   // Everything OK, update fields
   m_ci->SetGroup(m_group);
   m_ci->SetTitle(m_title);
@@ -367,6 +421,27 @@ BOOL CEditDlg::OnInitDialog()
     GetDlgItem(IDC_RECORDUNKNOWNFIELDS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_RECORDUNKNOWNFIELDS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATICGROUPRUNKNFLDS)->ShowWindow(SW_HIDE);
+  }
+
+  if (m_original_entrytype == CItemData::Base) {
+    // Show button to allow users to view aliases
+    GetDlgItem(IDC_VIEWALIASES)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
+  } else
+  if (m_original_entrytype == CItemData::Alias) {
+    // Update password to alias form
+    // SHow text stating that it is an alias
+    m_realpassword = m_oldRealPassword = m_base;
+    GetDlgItem(IDC_VIEWALIASES)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_SHOW);
+  } else
+  if (m_original_entrytype == CItemData::Normal) {
+    // Normal - do none of the above
+    GetDlgItem(IDC_VIEWALIASES)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
   }
 
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
@@ -782,4 +857,11 @@ LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
   // Delete temporary file
   _tremove(m_szTempName);
   return 0;
+}
+
+void CEditDlg::OnBnClickViewAliases()
+{
+  CString cs_msg;
+  cs_msg.Format(IDS_VIEWALIASES, m_numaliases, m_numaliases == 1 ? _T("") : _T("es"), m_aliases);
+  MessageBox(cs_msg, AfxGetAppName(), MB_OK);
 }

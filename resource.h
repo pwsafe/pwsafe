@@ -304,6 +304,9 @@
 #define IDC_RECORDUNKNOWNFIELDS         1265
 #define IDC_STATIC_RECORDUNKNOWNFIELDS  1266
 #define IDC_STATICGROUPRUNKNFLDS        1267
+#define IDC_VIEWALIASES                 1268
+#define IDC_STATIC_ISANALIAS            1269
+#define IDC_STATIC_ALIASGRP             1270
 
 // Next default values for new objects
 // 
@@ -311,7 +314,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1268
+#define _APS_NEXT_CONTROL_VALUE         1271
 #define _APS_NEXT_SYMED_VALUE           129
 #endif
 #endif

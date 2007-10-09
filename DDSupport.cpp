@@ -18,7 +18,11 @@ using namespace std;
 void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
 {
   vector<char> v;
-  m_item.SerializePlainText(v);
+  CItemData *cibase(NULL);
+  if (m_item.IsAlias()) {
+    cibase = GetBaseItem();
+  }
+  m_item.SerializePlainText(v, cibase);
   size_t len = v.size();
   outDDmemfile.Write(&len, sizeof(len));
   outDDmemfile.Write(&(*v.begin()), (UINT)v.size());
