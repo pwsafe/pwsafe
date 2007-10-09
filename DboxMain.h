@@ -110,16 +110,16 @@ public:
   {return m_core.GetEntryEndIter();}
 
   // FindAll is used by CFindDlg, returns # of finds.
-  int FindAll(const CString &str, BOOL CaseSensitive,
+  size_t FindAll(const CString &str, BOOL CaseSensitive,
               std::vector<int> &indices);
-  int FindAll(const CString &str, BOOL CaseSensitive,
+  size_t FindAll(const CString &str, BOOL CaseSensitive,
               std::vector<int> &indices,
               const CItemData::FieldBits &bsFields, const int subgroup_set, 
               const CString &subgroup_name, const int subgroup_object,
               const int subgroup_function);
 
   // Count the number of total entries.
-  int GetNumEntries() const {return m_core.GetNumEntries();}
+  size_t GetNumEntries() const {return m_core.GetNumEntries();}
 
   // Get CItemData @ position
   CItemData &GetEntryAt(ItemListIter iter)
@@ -210,9 +210,6 @@ protected:
   bool	m_bSizing;
   bool  m_bOpen;
   bool m_bValidate; // do validation after reading db
-
-  unsigned int uGlobalMemSize;
-  HGLOBAL hGlobalMemory;
 
 #if !defined(POCKET_PC)
   CMyString m_titlebar; // what's displayed in the title bar
@@ -394,7 +391,7 @@ protected:
   afx_msg void OnUpdateViewReports(CCmdUI *pCmdUI);
   afx_msg void OnMinimize();
   afx_msg void OnUnMinimize();
-  afx_msg void OnTimer(UINT nIDEvent);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
   afx_msg void OnColumnPicker();
   afx_msg void OnResetColumns();

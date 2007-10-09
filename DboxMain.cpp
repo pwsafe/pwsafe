@@ -1025,7 +1025,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         pcore->SetReadOnly(true);
     }
     static CPasskeyEntry *dbox_pkentry = NULL;
-    int rc = 0;
+    INT_PTR rc = 0;
     if (dbox_pkentry == NULL) {
         dbox_pkentry = new CPasskeyEntry(this, filename,
                                          index, bReadOnly || bFileIsReadOnly,

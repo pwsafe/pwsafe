@@ -143,7 +143,7 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
     return;
 
   // Get the data: ColumnChooser Listbox needs the column string
-  const int iLen = _tcslen(lpBuffer);
+  const size_t iLen = _tcslen(lpBuffer);
   CString cs_text;
   cs_text.Format(_T("%08x%02x%02x%04x%s"), GetCurrentProcessId(),
                  FROMHDR, m_dwHDRType, iLen, lpBuffer);

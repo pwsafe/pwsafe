@@ -40,7 +40,7 @@ public:
 	CString m_otherbrowserlocation;
 	//}}AFX_DATA
 	DWORD m_hotkey_value;
-	int     m_doubleclickaction;
+	DWORD_PTR     m_doubleclickaction;
 	int		m_DCA_to_Index[PWSprefs::maxDCA + 1];
 	CString m_csBrowser;
   CString m_csBrowserCmdLineParms;
