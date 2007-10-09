@@ -110,7 +110,7 @@
               <xs:element name="UseDefaultUser" type="boolType" minOccurs="0" />
   
               <!-- Integer Database Preferences -->
-              <xs:element name="PWLengthDefault" type="passwordlengthType" minOccurs="0" />
+              <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="0" />
               <xs:element name="IdleTimeout" type="timeoutType" minOccurs="0" />
               <xs:element name="TreeDisplayStatusAtOpen" type="displaystatusType" minOccurs="0" />
               <xs:element name="NumPWHistoryDefault" type="pwhistoryType" minOccurs="0" />
