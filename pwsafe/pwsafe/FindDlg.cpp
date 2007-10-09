@@ -78,7 +78,7 @@ void CFindDlg::Doit(CWnd *pParent, BOOL *isCS, CMyString *lastFind)
 
 CFindDlg::CFindDlg(CWnd* pParent, BOOL *isCS, CMyString *lastFind)
   : CPWDialog(CFindDlg::IDD, pParent),
-    m_lastshown(-1), m_numFound(0),
+    m_lastshown(size_t(-1)), m_numFound(0),
     m_last_search_text(_T("")), m_last_cs_search(FALSE),
     m_lastCSPtr(isCS), m_lastTextPtr(lastFind), m_bAdvanced(false),
     m_subgroup_name(_T("")), m_subgroup_set(BST_UNCHECKED),
@@ -151,7 +151,7 @@ void CFindDlg::OnFind()
   DboxMain* pParent = (DboxMain*) GetParent();
   ASSERT(pParent != NULL);
 
-  const int numEntries = pParent->GetNumEntries();
+  const size_t numEntries = pParent->GetNumEntries();
 
   if (numEntries == 0) {
     // Right Thing would be to disable find menu item if list is empty
@@ -183,12 +183,12 @@ void CFindDlg::OnFind()
     m_last_subgroup_set = m_subgroup_set;
     m_last_subgroup_object = m_subgroup_object;
     m_last_subgroup_function = m_subgroup_function;
-    m_lastshown = -1;
+    m_lastshown = size_t(-1);
   }
 
   if (m_bLastView != pParent->GetCurrentView()) {
 	  m_bLastView = pParent->GetCurrentView();
-	  m_lastshown = -1;  // Indices will be in different order even if search the same
+	  m_lastshown = size_t(-1);  // Indices will be in different order even if search the same
   }
 
   if (m_lastshown == -1) {
@@ -298,7 +298,7 @@ CFindDlg::OnAdvanced()
                    m_subgroup_object, m_subgroup_function);
 
   app.DisableAccelerator();
-  int rc = Adv.DoModal();
+  INT_PTR rc = Adv.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {

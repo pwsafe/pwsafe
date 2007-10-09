@@ -21,7 +21,7 @@ void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
   m_item.SerializePlainText(v);
   size_t len = v.size();
   outDDmemfile.Write(&len, sizeof(len));
-  outDDmemfile.Write(&(*v.begin()), v.size());
+  outDDmemfile.Write(&(*v.begin()), (UINT)v.size());
   trashMemory(&(*v.begin()), v.size());
 }
 
@@ -31,7 +31,7 @@ void CDDObject::DDUnSerialize(CSMemFile &inDDmemfile)
   size_t lenlen = inDDmemfile.Read(&len, sizeof(len));
   ASSERT(lenlen == sizeof(len) && len != 0);
   vector<char> v(len);
-  size_t lenRead = inDDmemfile.Read(&(*v.begin()), len);
+  size_t lenRead = inDDmemfile.Read(&(*v.begin()), (UINT)len);
   ASSERT(lenRead == len);
   bool status = m_item.DeserializePlainText(v);
   ASSERT(status);
@@ -45,7 +45,7 @@ void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
   POSITION Pos;
   CDDObject* pDDObject;
 
-  nCount = GetCount();
+  nCount = (int)GetCount();
 
   outDDmemfile.Write((void *)&nCount, sizeof(nCount));
   outDDmemfile.Write((void *)&m_bDragNode, sizeof(bool));

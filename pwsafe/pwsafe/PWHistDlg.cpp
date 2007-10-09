@@ -47,7 +47,7 @@ void CPWHistDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
   DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
   DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
-  DDV_MinMaxInt(pDX, m_MaxPWHistory, 1, 255);
+  DDV_MinMaxInt(pDX, int(m_MaxPWHistory), 1, 255);
 }
 
 
@@ -127,7 +127,7 @@ BOOL CPWHistDlg::OnInitDialog()
     pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
     pspin->SetRange(1, 255);
     pspin->SetBase(10);
-    pspin->SetPos(m_MaxPWHistory);
+    pspin->SetPos((int)m_MaxPWHistory);
  
     return TRUE;
 }
