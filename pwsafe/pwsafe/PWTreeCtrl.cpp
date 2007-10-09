@@ -5,11 +5,6 @@
  * distributed with this code, or available from
  * http://www.opensource.org/licenses/artistic-license.php
  */
-/*
- * Silly subclass of CTreeCtrl just to implement Drag&Drop.
- *
- */
-
 
 #include "stdafx.h"
 #include "PWTreeCtrl.h"
@@ -1313,8 +1308,22 @@ CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
     const CMyString cs_Group = ci->GetGroup();
     ci2.SetGroup(cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1));
     pDDObject->FromItem(ci2);
-  } else
+  } else {
     pDDObject->FromItem(*ci);
+  }
+
+  if (ci->IsAlias()) {
+    // I'm and alias; pass on ptr to my base item to retrieve its group/title/user
+    CItemData *cibase(NULL);
+    uuid_array_t base_uuid, alias_uuid;
+    ci->GetUUID(alias_uuid);
+    DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+    dbx->GetBaseUUID(alias_uuid, base_uuid);
+    ItemListIter iter = dbx->Find(base_uuid);
+    ASSERT(iter != dbx->End());
+    cibase = &(iter->second);
+    pDDObject->SetBaseItem(cibase);
+  }
 
   out_oblist.AddTail(pDDObject);
 }

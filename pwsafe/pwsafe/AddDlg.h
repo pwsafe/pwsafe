@@ -33,6 +33,8 @@ public:
   time_t m_tttLTime;
   BOOL m_SavePWHistory;
   int m_MaxPWHistory;
+  int m_ibasedata;
+  uuid_array_t m_base_uuid;
 
   void  ShowPassword();
   void  HidePassword();

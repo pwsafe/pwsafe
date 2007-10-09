@@ -175,11 +175,17 @@ public:
   void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
   int AddEntry(const CItemData &cinew);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-                           const CMyString &user, const int IDS_MESSAGE) {
-      return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
+                           const CMyString &user, const int IDS_MESSAGE)
+  {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(bool inRecursion = false);
   void SaveDisplayStatus(); // call when tree expansion state changes
+  int GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bBase_was_Alias,
+      CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser)
+  {return m_core.GetBaseEntry(Password, base_uuid, bBase_was_Alias,
+                              csPwdGroup, csPwdTitle, csPwdUser);}
+  void GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
+  {m_core.GetBaseUUID(alias_uuid, base_uuid);}
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -312,6 +318,7 @@ protected:
 
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *ci);
+  void SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases);
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
