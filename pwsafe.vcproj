@@ -805,6 +805,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CompareResultsDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ConfirmDeleteDlg.h"
 				>
 			</File>

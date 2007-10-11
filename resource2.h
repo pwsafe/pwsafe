@@ -102,7 +102,9 @@
 #define ID_TOOLBUTTON_ADD               32609
 #define ID_TOOLBUTTON_EDIT              32610
 #define ID_TOOLBUTTON_DELETE            32611
-#define ID_TOOLBUTTON_HELP              32612
+#define ID_TOOLBUTTON_EXPANDALL         32612
+#define ID_TOOLBUTTON_COLLAPSEALL       32613
+#define ID_TOOLBUTTON_HELP              32614
 
 // System menu
 #define ID_SYSMENU_ALWAYSONTOP          32650

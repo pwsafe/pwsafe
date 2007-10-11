@@ -19,6 +19,12 @@ New Features for 3.10.02
 [] Give user access to Reports from View menu (only in the same directory
 as current open database), since more information is being written there.
 
+Changes to Existing Features in 3.10.01
+=======================================
+[1790342] Replaced additional key shortcuts for ExpandAll and CollapseAll
+[introduced in rev. 1678] by toolbar buttons.  Now there is only one set 
+(the original) of key shortcut + toolbar buttons.
+
 Bugs fixed in 3.10.01
 =====================
 [1790286] All String preferences stored within the database are now 
