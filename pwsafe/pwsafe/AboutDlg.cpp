@@ -26,6 +26,7 @@ CAboutDlg::CAboutDlg(CWnd* pParent)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CPWDialog)
+   ON_BN_CLICKED(IDC_CHECKNEWVER, &CAboutDlg::OnBnClickedCheckNewVer)
 END_MESSAGE_MAP()
 
 BOOL
@@ -39,4 +40,29 @@ CAboutDlg::OnInitDialog()
   GetDlgItem(IDC_APPCOPYRIGHT)->SetWindowText(m_appcopyright);
 
   return TRUE;
+}
+
+void CAboutDlg::OnBnClickedCheckNewVer()
+{
+  // Get the latest.xml file from our site, compare to version,
+  // and notify the user
+  // First, make sure database is closed: Sensitive data with an
+  // open socket makes me uneasy...
+  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+
+  if (dbx->GetNumEntries() != 0) {
+    const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
+    const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
+    int rc = MessageBox(cs_txt, cs_title,
+                        (MB_ICONQUESTION | MB_OKCANCEL));
+    if (rc == IDCANCEL)
+      return; // no hard feelings
+    // Close database, prompt for save if changed
+    dbx->SendMessage(WM_COMMAND, ID_MENUITEM_CLOSE);
+    // User could have cancelled save, need to check if really closed:
+    if (dbx->GetNumEntries() != 0)
+      return;
+  }
+  ASSERT(dbx->GetNumEntries() == 0);
+  // safe to open external connection
 }

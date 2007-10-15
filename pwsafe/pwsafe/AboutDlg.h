@@ -11,6 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "PWDialog.h"
+#include "DboxMain.h"
 
 class CAboutDlg : public CPWDialog
 {
@@ -37,4 +38,5 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+    public:afx_msg void OnBnClickedCheckNewVer();
 };
