@@ -313,3 +313,5 @@
 #define IDS_ALIASNOTFOUNDZ              5485
 #define IDS_DDBASEISALIAS               5486
 #define IDS_BASEISALIAS                 5487
+#define IDS_CLOSE_B4_CHECK              5488
+#define IDS_CONFIRM_CLOSE               5489
