@@ -86,7 +86,7 @@ class PWScore {
   {m_nRecordsWithUnknownFields++;}
 
   void ClearData();
-  void ReInit();
+  void ReInit(bool bNewfile = false);
   void NewFile(const CMyString &passkey);
   int WriteCurFile() {return WriteFile(m_currfile);}
   int WriteFile(const CMyString &filename, PWSfile::VERSION version = PWSfile::VCURRENT);

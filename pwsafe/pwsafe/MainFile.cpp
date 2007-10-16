@@ -200,7 +200,8 @@ DboxMain::New()
     }
   }
 
-  rc = NewFile();
+  CMyString cs_newfile;
+  rc = NewFile(cs_newfile);
   if (rc == PWScore::USER_CANCEL) {
     /*
       Everything stays as is...
@@ -209,11 +210,10 @@ DboxMain::New()
     return PWScore::USER_CANCEL;
   }
 
-  m_core.SetCurFile(_T("")); //Force a save as...
+  m_core.SetCurFile(cs_newfile);
   m_core.ClearFileUUID();
 #if !defined(POCKET_PC)
-  m_titlebar.LoadString(IDS_UNTITLED);
-  app.SetTooltipText(_T("PasswordSafe"));
+  m_titlebar = _T("Password Safe - ") + cs_newfile;
 #endif
   ChangeOkUpdate();
   UpdateSystemTray(UNLOCKED);
@@ -228,24 +228,70 @@ DboxMain::New()
 }
 
 int
-DboxMain::NewFile(void)
+DboxMain::NewFile(CMyString &newfilename)
 {
+  CString cs_msg, cs_title, cs_temp;
+  CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
+
+  CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
+  CString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX);
+  CString dir = PWSdirs::GetSafeDir();
+  INT_PTR rc;
+
+  while (1) {
+    CFileDialog fd(FALSE,
+                   DEFAULT_SUFFIX,
+                   v3FileName,
+                   OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                   OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                   SUFFIX3_FILTERS
+                   _T("All files (*.*)|*.*|")
+                   _T("|"),
+                   this);
+    fd.m_ofn.lpstrTitle = cs_text;
+    fd.m_ofn.Flags &= ~OFN_READONLY;
+    if (!dir.IsEmpty())
+      fd.m_ofn.lpstrInitialDir = dir;
+
+    rc = fd.DoModal();
+
+    if (m_inExit) {
+      // If U3ExitNow called while in CFileDialog,
+      // PostQuitMessage makes us return here instead
+      // of exiting the app. Try resignalling
+      PostQuitMessage(0);
+      return PWScore::USER_CANCEL;
+    }
+    if (rc == IDOK) {
+      newfilename = (CMyString)fd.GetPathName();
+      break;
+    } else
+      return PWScore::USER_CANCEL;
+  }
+
   CPasskeySetup dbox_pksetup(this);
   //app.m_pMainWnd = &dbox_pksetup;
-  INT_PTR rc = dbox_pksetup.DoModal();
+  rc = dbox_pksetup.DoModal();
 
   if (rc == IDCANCEL)
     return PWScore::USER_CANCEL;  //User cancelled password entry
 
   // Reset core
-  m_core.ReInit();
+  m_core.ReInit(true);
 
   ClearData();
   PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
-  const CMyString filename(m_core.GetCurFile());
+  CString oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
-  if (!filename.IsEmpty() && !m_core.IsReadOnly() && m_core.IsLockedFile(filename))
-    m_core.UnlockFile(filename);
+  if (!oldfilename.IsEmpty() && !m_core.IsReadOnly() && m_core.IsLockedFile(oldfilename))
+    m_core.UnlockFile(oldfilename);
+
+  m_core.SetCurFile(newfilename);
+
+  // Now lock the new file
+  CMyString locker(_T("")); // null init is important here
+  m_core.LockFile(newfilename, locker);
+
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
   m_needsreading = false;
@@ -533,8 +579,8 @@ DboxMain::Save()
   if (m_core.GetCurFile().IsEmpty())
     return SaveAs();
 
-
-  if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+  int iver = (int)m_core.GetReadFileVersion();
+  if (iver == PWSfile::VCURRENT) {
       if (prefs->GetPref(PWSprefs::BackupBeforeEverySave)) {
           int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
           int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
@@ -544,7 +590,9 @@ DboxMain::Save()
                                     userBackupPrefix, userBackupDir))
               AfxMessageBox(IDS_NOIBACKUP, MB_OK);
       }
-  } else { // file version mis-match
+  } 
+  else if (iver != PWSfile::NEWFILE) {
+    // file version mis-match
   	CMyString NewName = PWSUtil::GetNewFileName(m_core.GetCurFile(), DEFAULT_SUFFIX );
 
     cs_msg.Format(IDS_NEWFORMAT, m_core.GetCurFile(), NewName);

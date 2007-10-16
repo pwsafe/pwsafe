@@ -107,12 +107,15 @@ PWScore::ClearData(void)
   m_alias2base_map.clear();
 }
 void
-PWScore::ReInit(void)
+PWScore::ReInit(bool bNewFile)
 {
   // Now reset all values as if created from new
   m_changed = false;
   m_usedefuser = false;
   m_defusername = _T("");
+  if (bNewFile)
+    m_ReadFileVersion = PWSfile::NEWFILE;
+  else
   m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);

@@ -26,6 +26,7 @@ class Fish;
 class PWSfile {
  public:
   enum VERSION {V17, V20, V30, VCURRENT = V30,
+                NEWFILE = 98,
                 UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
   enum {SUCCESS = 0, FAILURE = 1, 
