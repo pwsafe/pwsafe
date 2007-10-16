@@ -165,7 +165,6 @@
 #define	IDS_FILECORRUPT                 5333
 #define IDS_FILEREADERROR               5334
 #define IDS_SAVEDATABASE                5335
-#define IDS_UNTITLED                    5336
 #define IDS_CHOOSEDATABASE              5337
 #define IDS_ALREADYOPEN                 5338
 #define IDS_OPENDATABASE                5339
@@ -327,3 +326,4 @@
 #define IDS_TEXTIMPORTFAILED            5499
 #define IDS_COMPARINGDATABASE           5500
 #define IDS_COPYENTRY                   5501
+

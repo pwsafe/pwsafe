@@ -291,7 +291,7 @@ protected:
 
   void UpdateAlwaysOnTop();
   void ClearData(bool clearMRE = true);
-  int NewFile(void);
+  int NewFile(CMyString &filename);
 
   void SetListView();
   void SetTreeView();
