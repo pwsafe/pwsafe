@@ -2121,7 +2121,7 @@ DboxMain::UnFindItem()
 void
 DboxMain::OnViewReports(UINT nID)
 {
-  ASSERT((nID >= ID_MENUITEM_REPORT_IMPORTTEXT) &&
+  ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) &&
          (nID <= ID_MENUITEM_REPORT_VALIDATE));
 
   CString cs_filename, cs_path, csAction;
@@ -2142,6 +2142,9 @@ DboxMain::OnViewReports(UINT nID)
 #endif
 
   switch (nID) {
+    case ID_MENUITEM_REPORT_COMPARE:
+      csAction = _T("Compare");
+      break;
     case ID_MENUITEM_REPORT_IMPORTTEXT:
       csAction = _T("Import_Text");
       break;
@@ -2243,7 +2246,7 @@ DboxMain::OnUpdateViewReports(CCmdUI *pCmdUI)
 {
   int nID = pCmdUI->m_nID;
 
-  ASSERT((nID >= ID_MENUITEM_REPORT_IMPORTTEXT) && (nID <= ID_MENUITEM_REPORT_VALIDATE));
+  ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) && (nID <= ID_MENUITEM_REPORT_VALIDATE));
 
   CMyString cs_Database(m_core.GetCurFile());
   
@@ -2268,6 +2271,9 @@ DboxMain::OnUpdateViewReports(CCmdUI *pCmdUI)
 #endif
 
   switch (nID) {
+    case ID_MENUITEM_REPORT_COMPARE:
+      csAction = _T("Compare");
+      break;
     case ID_MENUITEM_REPORT_IMPORTTEXT:
       csAction = _T("Import_Text");
       break;

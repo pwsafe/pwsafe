@@ -325,3 +325,5 @@
 #define IDS_NEWER_AVAILABLE             5497
 #define IDS_NEWER_AVAILABLE_U3          5498
 #define IDS_TEXTIMPORTFAILED            5499
+#define IDS_COMPARINGDATABASE           5500
+#define IDS_COPYENTRY                   5501

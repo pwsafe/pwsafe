@@ -378,17 +378,20 @@ DboxMain::OnEdit()
 }
 
 bool
-DboxMain::EditItem(CItemData *ci)
+DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 {
+    if (pcore == NULL)
+      pcore = &m_core;
+
     // List might be cleared if db locked.
     // Need to take care that we handle a rebuilt list.
     CItemData editedItem(*ci);
 
     CEditDlg dlg_edit(&editedItem, this);
 
-    if (m_core.GetUseDefUser())
-      dlg_edit.m_defusername = m_core.GetDefUsername();
-    dlg_edit.m_Edit_IsReadOnly = m_core.IsReadOnly();
+    if (pcore->GetUseDefUser())
+      dlg_edit.m_defusername = pcore->GetDefUsername();
+    dlg_edit.m_Edit_IsReadOnly = pcore->IsReadOnly();
 
     uuid_array_t original_uuid, base_uuid, alias_uuid;
 
@@ -453,7 +456,7 @@ DboxMain::EditItem(CItemData *ci)
         if (dlg_edit.m_ibasedata > 0) {
           // Now an alias
           editedItem.GetUUID(alias_uuid);
-          m_core.AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+          pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
           editedItem.SetPassword(CMyString(_T("[Alias]")));
           editedItem.SetAlias();          
         } else {
@@ -467,18 +470,18 @@ DboxMain::EditItem(CItemData *ci)
         // Original was an alias - delete it from multimap
         uuid_array_t original_base_uuid;
         // Get corresponding base uuid
-        m_core.GetBaseUUID(original_uuid, original_base_uuid);
+        pcore->GetBaseUUID(original_uuid, original_base_uuid);
         // Remove it from map & multimap
-        m_core.RemoveAliasEntry(original_base_uuid, original_uuid);
+        pcore->RemoveAliasEntry(original_base_uuid, original_uuid);
         if (newPassword == dlg_edit.m_base) {
           // Password (i.e. base) unchanged - put it back with new uuid
-          m_core.AddAliasEntry(original_base_uuid, new_uuid);
+          pcore->AddAliasEntry(original_base_uuid, new_uuid);
         } else {
           // Password changed so might be an alias of another entry!
           if (dlg_edit.m_ibasedata > 0) {
             // Still an alias
             editedItem.GetUUID(alias_uuid);
-            m_core.AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+            pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
             editedItem.SetPassword(CMyString(_T("[Alias]")));
             editedItem.SetAlias();
           } else {
@@ -496,11 +499,11 @@ DboxMain::EditItem(CItemData *ci)
           // Now an alias
           editedItem.GetUUID(alias_uuid);
           // Make this one an alias
-          m_core.AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+          pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
           editedItem.SetPassword(CMyString(_T("[Alias]")));
           editedItem.SetAlias();
           // Move old aliases across
-          m_core.MoveAliases(original_uuid, dlg_edit.m_base_uuid);
+          pcore->MoveAliases(original_uuid, dlg_edit.m_base_uuid);
         } else {
           // Still a base entry but with a new password
           editedItem.SetPassword(newPassword);
@@ -508,13 +511,13 @@ DboxMain::EditItem(CItemData *ci)
         }
       }
 
-      m_core.RemoveEntryAt(listpos);
-      m_core.AddEntry(editedItem);
+      pcore->RemoveEntryAt(listpos);
+      pcore->AddEntry(editedItem);
       m_ctlItemList.DeleteItem(di->list_index);
       m_ctlItemTree.DeleteWithParents(di->tree_item);
       // AddEntry copies the entry, and we want to work with the inserted copy
       // Which we'll find by uuid
-      insertItem(m_core.GetEntry(m_core.Find(new_uuid)));
+      insertItem(pcore->GetEntry(m_core.Find(new_uuid)));
       FixListIndexes();
       // Now delete old entry's DisplayInfo
       delete di;
