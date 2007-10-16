@@ -20,6 +20,7 @@
 #include <afxinet.h>
 #include "corelib/UTF8Conv.h"
 #include "corelib/tinyxml/tinyxml.h"
+#include "corelib/SysInfo.h"
 
 #include "resource.h"
 #include "resource3.h"
@@ -34,7 +35,8 @@ static char THIS_FILE[] = __FILE__;
 
 CAboutDlg::CAboutDlg(CWnd* pParent)
   : CPWDialog(CAboutDlg::IDD, pParent),
-    m_nMajor(0), m_nMinor(0), m_nBuild(0)
+    m_nMajor(0), m_nMinor(0), m_nBuild(0),
+    m_newVerStatus(MAKEINTRESOURCE(IDS_LATEST_VERSION))
 {
 }
 
@@ -111,18 +113,35 @@ void CAboutDlg::OnBnClickedCheckNewVer()
   }
   ASSERT(dbx->GetNumEntries() == 0);
   // safe to open external connection
-  switch (CheckLatestVersion()) {
+  m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
+  UpdateData(FALSE);
+  CString latest;
+  switch (CheckLatestVersion(latest)) {
   case CANT_CONNECT:
+    m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
     break;
   case UP2DATE:
+    m_newVerStatus.LoadString(IDS_UP2DATE);
     break;
   case NEWER_AVAILABLE:
+    {
+      CString newer;
+      newer.Format(SysInfo::IsUnderU3() ?
+                   IDS_NEWER_AVAILABLE_U3 :IDS_NEWER_AVAILABLE,
+                   m_appversion, latest);
+      m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
+      MessageBox(newer,
+                 CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)),
+                 MB_ICONEXCLAMATION);
+    }
     break;
   case CANT_READ:
+    m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
     break;
   default:
     break;
   }
+  UpdateData(FALSE);
 }
 
 static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
@@ -147,23 +166,27 @@ static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
  *    build=0 rev=1230 />
  * </VersionInfo>
  *
+ * Note: The "rev" is the svn commit number. Not using it (for now),
+ *       as I think it's too volatile.
  */
 
 
 CAboutDlg::CheckStatus 
-CAboutDlg::CheckLatestVersion()
+CAboutDlg::CheckLatestVersion(CString &latest)
 {
   CInternetSession session(_T("PasswordSafe Version Check"));
   CStdioFile *fh;
 	// Put up hourglass...this might take a while
 	CWaitCursor waitCursor;
   try {
+    // Loading the file as binary since we're treating it as UTF-8
     fh = session.OpenURL(_T("http://passwordsafe.sourceforge.net/latest.xml"),
                          1,
                          (INTERNET_FLAG_TRANSFER_BINARY |
                           INTERNET_FLAG_RELOAD));
-  } catch (...) {
-    throw;
+  } catch (CInternetException *) {
+    // throw;
+    return CANT_CONNECT;
   }
   ASSERT(fh != NULL);
   CString latest_xml;
@@ -208,13 +231,33 @@ CAboutDlg::CheckLatestVersion()
         const TCHAR *pVariant = pElem->Attribute(_T("variant"));
         if (pVariant == NULL) continue;
         const CString variant(pVariant);
-        int major(0), minor(0), build(0), revision(0);
-        pElem->QueryIntAttribute(_T("major"), &major);
-        pElem->QueryIntAttribute(_T("minor"), &minor);
-        pElem->QueryIntAttribute(_T("build"), &build);
-        pElem->QueryIntAttribute(_T("revision"), &revision);
+        // Determine which variant is relevant for us
+        if ((SysInfo::IsUnderU3() && variant == _T("U3")) ||
+            variant == _T("PC")) {
+          int major(0), minor(0), build(0), revision(0);
+          pElem->QueryIntAttribute(_T("major"), &major);
+          pElem->QueryIntAttribute(_T("minor"), &minor);
+          pElem->QueryIntAttribute(_T("build"), &build);
+          pElem->QueryIntAttribute(_T("rev"), &revision);
+          // Not using svn rev info - too volatile
+          if ((major > m_nMajor) ||
+              (major == m_nMajor && minor > m_nMinor) ||
+              (major == m_nMajor && minor == m_nMinor &&
+               build > m_nBuild)
+              ) {
+            if (build == 0) { // hide build # if zero (formal release)
+              latest.Format(_T("%s V%d.%02d (%d)"), AfxGetAppName(), 
+                            major, minor, revision);
+            } else {
+              latest.Format(_T("%s V%d.%02d.%02d (%d)"), AfxGetAppName(), 
+                            major, minor, build, revision);
+            }
+            return NEWER_AVAILABLE;
+          }
+          return UP2DATE;
+        } // handled our variant
       } // Product name == PasswordSafe
     } // Product element
   } // IterateChildren
-  return UP2DATE;
+  return CANT_READ;
 }

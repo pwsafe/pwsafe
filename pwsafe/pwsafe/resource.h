@@ -309,6 +309,7 @@
 #define IDC_STATIC_ALIASGRP             1270
 #define IDC_BUTTON1                     1271
 #define IDC_CHECKNEWVER                 1271
+#define IDC_NEWVER_STATUS               1272
 
 // Next default values for new objects
 // 
@@ -316,7 +317,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1272
+#define _APS_NEXT_CONTROL_VALUE         1273
 #define _APS_NEXT_SYMED_VALUE           129
 #endif
 #endif
