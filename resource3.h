@@ -315,3 +315,12 @@
 #define IDS_BASEISALIAS                 5487
 #define IDS_CLOSE_B4_CHECK              5488
 #define IDS_CONFIRM_CLOSE               5489
+#define IDS_LATEST_VERSION              5490
+#define IDS_CANT_CONTACT_SERVER         5491
+#define IDS_UP2DATE                     5492
+#define IDS_NEWER_AVAILABLE_SHORT       5493
+#define IDS_CANT_READ_VERINFO           5494
+#define IDS_TRYING2CONTACT_SERVER       5495
+#define IDS_NEWER_CAPTION               5496
+#define IDS_NEWER_AVAILABLE             5497
+#define IDS_NEWER_AVAILABLE_U3          5498

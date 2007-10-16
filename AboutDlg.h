@@ -26,7 +26,8 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX)    // DDX/DDV support
   {
-    CPWDialog::DoDataExchange(pDX);
+     CPWDialog::DoDataExchange(pDX);
+     DDX_Text(pDX, IDC_NEWVER_STATUS, m_newVerStatus);
   }
 
 protected:
@@ -43,7 +44,8 @@ protected:
   int m_nBuild;
   CString m_appversion;
   CString m_appcopyright;
+  CString m_newVerStatus;
 
   enum CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
-  CheckStatus CheckLatestVersion();
+  CheckStatus CheckLatestVersion(CString &latest);
 };
