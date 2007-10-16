@@ -26,7 +26,10 @@ public:
   void WriteLine(CString &cs_line, bool bCRLF = true);
   void WriteLine(LPTSTR &tc_line, bool bCRLF = true);
   void WriteLine();
+  CString GetReportFileName()
+    {return m_cs_filename;}
  
 private:
   FILE *m_fd;
+  CString m_cs_filename;
 };
