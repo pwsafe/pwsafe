@@ -11,8 +11,20 @@
 #include "stdafx.h"
 
 #include "AboutDlg.h"
+// following 2 includes to allow querying
+// the current version details
+#include "PasswordSafe.h"
+#include "ThisMfcApp.h"
+
+// for fetching & reading version xml file:
+#include <afxinet.h>
+#include "corelib/UTF8Conv.h"
+#include "corelib/tinyxml/tinyxml.h"
+
 #include "resource.h"
 #include "resource3.h"
+
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,7 +33,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CAboutDlg::CAboutDlg(CWnd* pParent)
-   : CPWDialog(CAboutDlg::IDD, pParent)
+  : CPWDialog(CAboutDlg::IDD, pParent),
+    m_nMajor(0), m_nMinor(0), m_nBuild(0)
 {
 }
 
@@ -33,6 +46,39 @@ BOOL
 CAboutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
+  DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
+
+  if (dwMajorMinor > 0) {
+	  m_nMajor = HIWORD(dwMajorMinor);
+	  m_nMinor = LOWORD(dwMajorMinor);
+	  m_nBuild = HIWORD(dwBuildRevision);
+  }
+
+  // revision is either a number or a number with '+',
+  // so we need to get it from the file version string
+  // which is of the form "MM, NN, BB, rev"
+  CString csFileVersionString, csRevision;
+  csFileVersionString = app.GetFileVersionString();
+  int revIndex = csFileVersionString.ReverseFind(TCHAR(','));
+  if (revIndex >= 0) {
+    int len = csFileVersionString.GetLength();
+    csRevision = csFileVersionString.Right(len - revIndex - 1);
+    csRevision.Trim();
+  }
+  if (m_nBuild == 0) { // hide build # if zero (formal release)
+    m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
+                        m_nMajor, m_nMinor, csRevision);
+  } else {
+    m_appversion.Format(_T("%s V%d.%02d.%02d (%s)"), AfxGetAppName(), 
+                        m_nMajor, m_nMinor, m_nBuild, csRevision);
+  }
+#ifdef _DEBUG
+  m_appversion += _T(" [Debug]");
+#endif
+  m_appcopyright = app.GetCopyrightString();
+
 #ifdef DEMO
   m_appversion += _T(" ") + CString(MAKEINTRESOURCE(IDS_DEMO));
 #endif
@@ -65,4 +111,110 @@ void CAboutDlg::OnBnClickedCheckNewVer()
   }
   ASSERT(dbx->GetNumEntries() == 0);
   // safe to open external connection
+  switch (CheckLatestVersion()) {
+  case CANT_CONNECT:
+    break;
+  case UP2DATE:
+    break;
+  case NEWER_AVAILABLE:
+    break;
+  case CANT_READ:
+    break;
+  default:
+    break;
+  }
+}
+
+static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
+{
+  ASSERT(v2 != NULL);
+  return (v1 != NULL &&
+          CString(v1) == v2);
+}
+
+/*
+ * The latest version information is in
+ * http://passwordsafe.sourceforge.net/latest.xml
+ *
+ * And is of the form:
+ * <VersionInfo>
+ *  <Product name=PasswordSafe variant=PC major=3 minor=10 build=2 rev=1710 />
+ *  <Product name=PasswordSafe variant=PPc major=1 minor=9 build=2
+ *    rev=100 />
+ *  <Product name=PasswordSafe variant=U3 major=3 minor=10 build=2
+ *    rev=1710 />
+ *  <Product name=SWTPasswordSafe variant=Java major=0 minor=6
+ *    build=0 rev=1230 />
+ * </VersionInfo>
+ *
+ */
+
+
+CAboutDlg::CheckStatus 
+CAboutDlg::CheckLatestVersion()
+{
+  CInternetSession session(_T("PasswordSafe Version Check"));
+  CStdioFile *fh;
+	// Put up hourglass...this might take a while
+	CWaitCursor waitCursor;
+  try {
+    fh = session.OpenURL(_T("http://passwordsafe.sourceforge.net/latest.xml"),
+                         1,
+                         (INTERNET_FLAG_TRANSFER_BINARY |
+                          INTERNET_FLAG_RELOAD));
+  } catch (...) {
+    throw;
+  }
+  ASSERT(fh != NULL);
+  CString latest_xml;
+#ifndef UNICODE
+  CString line;
+  while (fh->ReadString(line) == TRUE)
+    latest_xml += line;
+#else
+  unsigned char buff[BUFSIZ+1];
+  CMyString chunk;
+  UINT nRead;
+  CUTF8Conv conv;
+  while ((nRead = fh->Read(buff, BUFSIZ)) != 0) {
+    buff[nRead] = '\0';
+    // change to widechar representation
+    if (!conv.FromUTF8(buff, nRead, chunk))
+      return CANT_READ;
+    else
+      latest_xml += chunk;
+  }
+#endif /* UNICODE */
+  delete fh;
+  session.Close();
+	waitCursor.Restore(); // restore normal cursor
+  // Parse the file we just retrieved
+  TiXmlDocument doc; 
+  if (doc.Parse(latest_xml) == NULL)
+    return CANT_READ;
+  TiXmlNode *pRoot = doc.FirstChildElement();
+
+  if (!pRoot || !SafeCompare(pRoot->Value(), _T("VersionInfo")))
+    return CANT_READ;
+
+  TiXmlNode *pProduct = 0;
+  while((pProduct = pRoot->IterateChildren(pProduct)) != NULL) {
+    if (SafeCompare(pProduct->Value(), _T("Product"))) {
+      TiXmlElement *pElem = pProduct->ToElement();
+      if (pElem == NULL)
+        return CANT_READ;
+      const TCHAR *prodName = pElem->Attribute(_T("name"));
+      if (SafeCompare(prodName, _T("PasswordSafe"))) {
+        const TCHAR *pVariant = pElem->Attribute(_T("variant"));
+        if (pVariant == NULL) continue;
+        const CString variant(pVariant);
+        int major(0), minor(0), build(0), revision(0);
+        pElem->QueryIntAttribute(_T("major"), &major);
+        pElem->QueryIntAttribute(_T("minor"), &minor);
+        pElem->QueryIntAttribute(_T("build"), &build);
+        pElem->QueryIntAttribute(_T("revision"), &revision);
+      } // Product name == PasswordSafe
+    } // Product element
+  } // IterateChildren
+  return UP2DATE;
 }

@@ -22,8 +22,6 @@ public:
   //{{AFX_DATA(CAddDlg)
   enum { IDD = IDD_ABOUTBOX };
   //}}AFX_DATA
-  CString m_appversion;
-  CString m_appcopyright;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX)    // DDX/DDV support
@@ -39,4 +37,13 @@ protected:
 
   DECLARE_MESSAGE_MAP()
     public:afx_msg void OnBnClickedCheckNewVer();
+ private:
+  int m_nMajor;
+  int m_nMinor;
+  int m_nBuild;
+  CString m_appversion;
+  CString m_appcopyright;
+
+  enum CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
+  CheckStatus CheckLatestVersion();
 };
