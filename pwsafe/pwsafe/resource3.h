@@ -291,7 +291,7 @@
 #define IDS_YES                         5463
 #define IDS_NO                          5464
 #define IDS_XMLUNKNFLDIGNORED           5465
-#define IDS_XMLSEEREPORT                5466
+#define IDS_XMLIMPORTFAILED             5466
 #define IDS_COPYUNKNOWNFIELDS           5467
 #define IDS_FINDX                       5468
 #define IDS_NOFIELDSFORSEARCH           5469
@@ -324,3 +324,4 @@
 #define IDS_NEWER_CAPTION               5496
 #define IDS_NEWER_AVAILABLE             5497
 #define IDS_NEWER_AVAILABLE_U3          5498
+#define IDS_TEXTIMPORTFAILED            5499
