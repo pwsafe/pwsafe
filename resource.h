@@ -307,7 +307,6 @@
 #define IDC_VIEWALIASES                 1268
 #define IDC_STATIC_ISANALIAS            1269
 #define IDC_STATIC_ALIASGRP             1270
-#define IDC_BUTTON1                     1271
 #define IDC_CHECKNEWVER                 1271
 #define IDC_NEWVER_STATUS               1272
 

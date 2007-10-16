@@ -624,6 +624,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GeneralMsgBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ImportDlg.cpp"
 				>
 			</File>
@@ -866,6 +870,10 @@
 			</File>
 			<File
 				RelativePath=".\FindDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GeneralMsgBox.h"
 				>
 			</File>
 			<File

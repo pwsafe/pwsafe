@@ -38,7 +38,6 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     m_fd = NULL;
   }
 
-  CString cs_filename;
   TCHAR tc_drive[_MAX_DRIVE];
   TCHAR tc_dir[_MAX_DIR];
   errno_t err;
@@ -53,9 +52,9 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
   _tsplitpath(csDataBase, sz_drive, sz_dir, NULL, NULL);
 #endif
 
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, tcAction);
+  m_cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, tcAction);
 
-  if ((m_fd = _tfsopen((LPCTSTR) cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
+  if ((m_fd = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
   	PWSUtil::IssueError(_T("StartReport: Opening log file"));
   	return false;
   }
@@ -72,7 +71,7 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
 
   struct _stat statbuf;
   
-  ::_tstat(cs_filename, &statbuf);
+  ::_tstat(m_cs_filename, &statbuf);
 
   // No need to check result of _tstat, since the _tfsopen above would have failed if 
   // the file/directory did not exist
@@ -108,10 +107,10 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     fclose(m_fd);
 
     // Open again to read
-    f_in = _wfsopen((LPCWSTR)cs_filename, L"rb", _SH_DENYWR);
+    f_in = _wfsopen((LPCWSTR)m_cs_filename, L"rb", _SH_DENYWR);
 
     // Open new file
-    CString cs_out = cs_filename + _T(".tmp");
+    CString cs_out = m_cs_filename + _T(".tmp");
     f_out = _wfsopen((LPCWSTR)cs_out, L"wb", _SH_DENYWR);
 
     // Write BOM
@@ -140,11 +139,11 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     fclose(f_out);
 
     // Swap them
-    _tremove(cs_filename);
-    _trename(cs_out, cs_filename);
+    _tremove(m_cs_filename);
+    _trename(cs_out, m_cs_filename);
 
     // Re-open file
-    if ((m_fd = _wfsopen((LPCTSTR)cs_filename, L"ab", _SH_DENYWR)) == NULL) {
+    if ((m_fd = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
   	  PWSUtil::IssueError(_T("StartReport: Opening log file"));
     	return false;
     }
@@ -158,10 +157,10 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     fclose(m_fd);
 
     // Open again to read
-    f_in = _fsopen((LPCSTR)cs_filename, "rb", _SH_DENYWR);
+    f_in = _fsopen((LPCSTR)m_cs_filename, "rb", _SH_DENYWR);
 
     // Open new file
-    CString cs_out = cs_filename + _T(".tmp");
+    CString cs_out = m_cs_filename + _T(".tmp");
     f_out = _fsopen((LPCSTR)cs_out, "wb", _SH_DENYWR);
 
     UINT nBytesRead;
@@ -192,11 +191,11 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     fclose(f_out);
 
     // Swap them
-    _tremove(cs_filename);
-    _trename(cs_out, cs_filename);
+    _tremove(m_cs_filename);
+    _trename(cs_out, m_cs_filename);
 
     // Re-open file
-    if ((m_fd = _fsopen((LPCSTR) cs_filename, "ab", _SH_DENYWR)) == NULL) {
+    if ((m_fd = _fsopen((LPCSTR) m_cs_filename, "ab", _SH_DENYWR)) == NULL) {
   	  PWSUtil::IssueError(_T("StartReport: Opening log file"));
     	return false;
     }
