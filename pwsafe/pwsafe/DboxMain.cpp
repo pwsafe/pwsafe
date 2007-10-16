@@ -921,39 +921,6 @@ void
 DboxMain::OnAbout()
 {
   CAboutDlg about;
-  int nMajor(0), nMinor(0), nBuild(0);
-
-  DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
-  DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
-
-  if (dwMajorMinor > 0) {
-	  nMajor = HIWORD(dwMajorMinor);
-	  nMinor = LOWORD(dwMajorMinor);
-	  nBuild = HIWORD(dwBuildRevision);
-  }
-
-  // revision is either a number or a number with '+',
-  // so we need to get it from the file version string
-  // which is of the form "MM, NN, BB, rev"
-  CString csFileVersionString, csRevision;
-  csFileVersionString = app.GetFileVersionString();
-  int revIndex = csFileVersionString.ReverseFind(TCHAR(','));
-  if (revIndex >= 0) {
-    int len = csFileVersionString.GetLength();
-    csRevision = csFileVersionString.Right(len - revIndex - 1);
-    csRevision.Trim();
-  }
-  if (nBuild == 0) { // hide build # if zero (formal release)
-    about.m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
-                              nMajor, nMinor, csRevision);
-  } else {
-    about.m_appversion.Format(_T("%s V%d.%02d.%02d (%s)"), AfxGetAppName(), 
-                              nMajor, nMinor, nBuild, csRevision);
-  }
-#ifdef _DEBUG
-  about.m_appversion += _T(" [Debug]");
-#endif
-  about.m_appcopyright = app.GetCopyrightString();
   about.DoModal();
 }
 
