@@ -282,10 +282,10 @@ protected:
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
-  LRESULT ViewCompareResult(PWScore *pcore, ItemListIter pos);
-  LRESULT EditCompareResult(PWScore *pcore, ItemListIter pos);
+  LRESULT ViewCompareResult(PWScore *pcore, uuid_array_t &uuid);
+  LRESULT EditCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                            ItemListIter pos);
+                            uuid_array_t &fromuuid, uuid_array_t &touuid);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -317,7 +317,7 @@ protected:
   int Restore(void);
 
   void AutoType(const CItemData &ci);
-  bool EditItem(CItemData *ci);
+  bool EditItem(CItemData *ci, PWScore *pcore = NULL);
   void SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases);
   void ViewReport(const CString cs_ReportFileName);
 

@@ -1637,6 +1637,12 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 	CompareData list_Conflicts;
   CompareData list_Identical;
 
+  /* Create report as we go */
+  CReport rpt;
+  rpt.StartReport(_T("Compare"), m_core.GetCurFile());
+  temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
+  rpt.WriteLine(temp);
+  rpt.WriteLine();
 
 	// Put up hourglass...this might take a while
 	CWaitCursor waitCursor;
@@ -1673,6 +1679,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 
 	CItemData::FieldBits bsConflicts(0);
 	st_CompareData st_data;
+    uuid_array_t xuuid;
 
 	ItemListIter currentPos;
   for (currentPos = m_core.GetEntryIter();
@@ -1683,12 +1690,12 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
     if (m_subgroup_set == BST_UNCHECKED ||
         currentItem.Matches(m_subgroup_name, m_subgroup_object,
                             m_subgroup_function)) {
-      const CMyString currentGroup = currentItem.GetGroup();
-      const CMyString currentTitle = currentItem.GetTitle();
-      const CMyString currentUser = currentItem.GetUser();
+      st_data.group = currentItem.GetGroup();
+      st_data.title = currentItem.GetTitle();
+      st_data.user = currentItem.GetUser();
 
-      ItemListIter foundPos = othercore.Find(currentGroup,
-                                             currentTitle, currentUser);
+      ItemListIter foundPos = othercore.Find(st_data.group,
+                                             st_data.title, st_data.user);
       if (foundPos != othercore.GetEntryEndIter()) {
         // found a match, see if all other fields also match
         // Difference flags:
@@ -1748,43 +1755,32 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
             currentItem.GetPWHistory() != compItem.GetPWHistory())
           bsConflicts.flip(CItemData::PWHIST);
 
-        if (bsConflicts.any()) {
-          numConflicts++;
-          st_data.pos0 = currentPos;
-          st_data.pos1 = foundPos;
+        currentPos->first.GetUUID(xuuid);
+        memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
+        foundPos->first.GetUUID(xuuid);
+        memcpy(st_data.uuid1, xuuid, sizeof(uuid_array_t));
           st_data.bsDiffs = bsConflicts;
-          st_data.group = currentGroup;
-          st_data.title = currentTitle;
-          st_data.user = currentUser;
-          st_data.column = -1;
+        st_data.indatabase = CCompareResultsDlg::BOTH;
           st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
           st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
+
+        if (bsConflicts.any()) {
+          numConflicts++;
           st_data.id = numConflicts;
           list_Conflicts.push_back(st_data);
         } else {
           numIdentical++;
-          st_data.pos0 = currentPos;
-          st_data.pos1 = foundPos;
-          st_data.bsDiffs = bsConflicts;
-          st_data.group = currentGroup;
-          st_data.title = currentTitle;
-          st_data.user = currentUser;
-          st_data.column = -1;
-          st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
-          st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
           st_data.id = numIdentical;
           list_Identical.push_back(st_data);
         }
       } else {
         /* didn't find any match... */
         numOnlyInCurrent++;
-        st_data.pos0 = currentPos;
-        st_data.pos1 = othercore.GetEntryEndIter();
+        currentPos->first.GetUUID(xuuid);
+        memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
+        memset(st_data.uuid1, 0x00, sizeof(uuid_array_t));
         st_data.bsDiffs.reset();
-        st_data.group = currentGroup;
-        st_data.title = currentTitle;
-        st_data.user = currentUser;
-        st_data.column = 0;
+        st_data.indatabase = CCompareResultsDlg::CURRENT;
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
         st_data.unknflds1 = false;
         st_data.id = numOnlyInCurrent;
@@ -1802,21 +1798,19 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
     if (m_subgroup_set == BST_UNCHECKED ||
         !compItem.Matches(m_subgroup_name, m_subgroup_object,
                           m_subgroup_function)) {
-      const CMyString compGroup = compItem.GetGroup();
-      const CMyString compTitle = compItem.GetTitle();
-      const CMyString compUser = compItem.GetUser();
+      st_data.group = compItem.GetGroup();
+      st_data.title = compItem.GetTitle();
+      st_data.user = compItem.GetUser();
   
-      if (m_core.Find(compGroup, compTitle, compUser) ==
+      if (m_core.Find(st_data.group, st_data.title, st_data.user) ==
           m_core.GetEntryEndIter()) {
         /* didn't find any match... */
         numOnlyInComp++;
-        st_data.pos0 = m_core.GetEntryEndIter();
-        st_data.pos1 = compPos;
+        memset(st_data.uuid0, 0x00, sizeof(uuid_array_t));
+        compPos->first.GetUUID(xuuid);
+        memcpy(st_data.uuid1, xuuid, sizeof(uuid_array_t));
         st_data.bsDiffs.reset();
-        st_data.group = compGroup;
-        st_data.title = compTitle;
-        st_data.user = compUser;
-        st_data.column = 1;
+        st_data.indatabase = CCompareResultsDlg::COMPARE;
         st_data.unknflds0 = false;
         st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
         st_data.id = numOnlyInComp;
@@ -1836,10 +1830,11 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 		cs_text.LoadString(IDS_IDENTICALDATABASES);
 		resultStr += buffer + cs_text;
 		MessageBox(resultStr, cs_title, MB_OK);
+    rpt.WriteLine(resultStr);
   } else {
     CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
                               list_Conflicts, list_Identical, 
-                              m_bsFields, &m_core, &othercore);
+                              m_bsFields, &m_core, &othercore, &rpt);
 
     CmpRes.m_cs_Filename1 = cs_Filename1;
     CmpRes.m_cs_Filename2 = cs_Filename2;
@@ -1865,6 +1860,8 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
   
   // Reset database preferences - first to defaults then add saved changes!
   PWSprefs::GetInstance()->Load(cs_SavePrefString);
+
+  rpt.EndReport();
 
 	return rc;
 }
@@ -1916,27 +1913,38 @@ DboxMain::SaveCore(PWScore *pcore)
 }
 
 LRESULT
-DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam)
+DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
 {
+  PWScore *pcore;
   st_CompareInfo *st_info;
   LRESULT lres(FALSE);
+  uuid_array_t entryUUID;
 
   st_info = (st_CompareInfo *)wParam;
 
-  PWScore *pcore = (st_info->column == 0) ? st_info->pcore0 : st_info->pcore1;
-  ItemListIter pos = (st_info->column == 0) ? st_info->pos0 : st_info->pos1;
-  switch ((int)lParam) {
+  if (st_info->clicked_column == CCompareResultsDlg::CURRENT) {
+    pcore = st_info->pcore0;
+    memcpy(entryUUID, st_info->uuid0, sizeof(uuid_array_t));
+  } else {
+    pcore = st_info->pcore1;
+    memcpy(entryUUID, st_info->uuid1, sizeof(uuid_array_t));
+  }
+
+  st_info->Dump();
+  switch ((int)lFunction) {
     case CCompareResultsDlg::EDIT:
-      lres = EditCompareResult(pcore, pos);
+      lres = EditCompareResult(pcore, entryUUID);
       break;      
     case CCompareResultsDlg::VIEW:
-      lres = ViewCompareResult(pcore, pos);
+      lres = ViewCompareResult(pcore, entryUUID);
       break;
     case CCompareResultsDlg::COPY_TO_ORIGINALDB:
-      lres = CopyCompareResult(st_info->pcore1, st_info->pcore0, st_info->pos1);
+      lres = CopyCompareResult(st_info->pcore1, st_info->pcore0,
+                               st_info->uuid1, st_info->uuid0);
       break;
     case CCompareResultsDlg::COPY_TO_COMPARISONDB:
-      lres = CopyCompareResult(st_info->pcore0, st_info->pcore1, st_info->pos0);
+      lres = CopyCompareResult(st_info->pcore0, st_info->pcore1,
+                               st_info->uuid0, st_info->uuid1);
       break;
     default:
       ASSERT(0);
@@ -1945,45 +1953,50 @@ DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam)
 }
 
 LRESULT
-DboxMain::ViewCompareResult(PWScore *pcore, ItemListIter pos)
+DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 {  
-  CItemData *ci = &pcore->GetEntry(pos);
+  ItemListIter pos = pcore->Find(entryUUID);
+  ASSERT(pos != pcore->GetEntryEndIter());
+  CItemData *ci = &pos->second;
 
   // View the correct entry and make sure R/O
-  bool bSaveRO = m_core.IsReadOnly();
-  m_core.SetReadOnly(true);
+  bool bSaveRO = pcore->IsReadOnly();
+  pcore->SetReadOnly(true);
 
-  EditItem(ci);
+  EditItem(ci, pcore);
 
-  m_core.SetReadOnly(bSaveRO);
+  pcore->SetReadOnly(bSaveRO);
 
   return FALSE;
 }
 
 LRESULT
-DboxMain::EditCompareResult(PWScore *pcore, ItemListIter pos)
+DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 {
-  CItemData *ci = &pcore->GetEntry(pos);
+  ItemListIter pos = pcore->Find(entryUUID);
+  ASSERT(pos != pcore->GetEntryEndIter());
+  CItemData *ci = &pos->second;
 
   // Edit the correct entry
-  return EditItem(ci) ? TRUE : FALSE;
+  return EditItem(ci, pcore) ? TRUE : FALSE;
 }
 
 LRESULT
 DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                            ItemListIter fromPos)
+                            uuid_array_t &fromUUID, uuid_array_t &toUUID)
 {
   // Copy *pfromcore -> *ptocore entry at fromPos
 
-  ItemListIter toPos, touuidPos;
+  ItemListIter toPos;
   CMyString group, title, user, notes, password, url, autotype, pwhistory;
-  uuid_array_t fromUUID;
   time_t ct, at, lt, pmt, rmt;
   int nfromUnknownRecordFields;
+  bool bFromUUIDIsNotInTo;
 
-  const CItemData *fromEntry = &pfromcore->GetEntry(fromPos);
+  ItemListIter fromPos = pfromcore->Find(fromUUID);
+  ASSERT(fromPos != pfromcore->GetEntryEndIter());
+  const CItemData *fromEntry = &fromPos->second;
 
-  fromEntry->GetUUID(fromUUID);
   group = fromEntry->GetGroup();
   title = fromEntry->GetTitle();
   user = fromEntry->GetUser();
@@ -1999,7 +2012,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   fromEntry->GetRMTime(rmt);
   nfromUnknownRecordFields = fromEntry->NumberUnknownFields();
 
-  touuidPos = ptocore->Find(fromUUID);
+  bFromUUIDIsNotInTo = (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter());
 
   // Is it already there:?
   toPos = ptocore->Find(group, title, user);
@@ -2019,8 +2032,10 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     toEntry->SetRMTime(rmt);
 
     // If the UUID is not in use, copy it too, otherwise reuse current
-    if (touuidPos == ptocore->GetEntryEndIter())
+    if (bFromUUIDIsNotInTo)
       toEntry->SetUUID(fromUUID);
+
+    toEntry->GetUUID(toUUID);
 
     // Delete any old unknown records and copy these if present
     int ntoUnknownRecordFields = toEntry->NumberUnknownFields();
@@ -2049,11 +2064,12 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     CItemData temp;
 
     // If the UUID is not in use, copy it too otherwise create it
-    if (touuidPos == ptocore->GetEntryEndIter())
+    if (bFromUUIDIsNotInTo)
       temp.SetUUID(fromUUID);
     else
       temp.CreateUUID();
 
+    temp.GetUUID(toUUID);
     temp.SetGroup(group);
     temp.SetTitle(title);
     temp.SetUser(user);
