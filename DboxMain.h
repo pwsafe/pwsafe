@@ -319,6 +319,7 @@ protected:
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *ci);
   void SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases);
+  void ViewReport(const CString cs_ReportFileName);
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();

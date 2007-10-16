@@ -2158,6 +2158,38 @@ DboxMain::OnViewReports(UINT nID)
       ASSERT(0);
   }
   cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, csAction);
+
+  ViewReport(cs_filename);
+
+  return;
+}
+
+void
+DboxMain::ViewReport(const CString cs_ReportFileName)
+{
+  CString cs_path, csAction;
+  TCHAR tc_drive[_MAX_DRIVE];
+  TCHAR tc_dir[_MAX_DIR];
+
+#if _MSC_VER >= 1400
+  errno_t err;
+  err = _tsplitpath_s(cs_ReportFileName, tc_drive, _MAX_DRIVE, 
+                                           tc_dir, _MAX_DIR, 
+                                           NULL, 0, NULL, 0);
+
+  if (err != 0 || _tcslen(tc_drive) == 0 || _tcslen(tc_dir) == 0) {
+    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+    return;
+  }
+#else
+  _tsplitpath(cs_ReportFileName, sz_drive, sz_dir, NULL, NULL);
+
+  if (_tcslen(tc_drive) == 0 || _tcslen(tc_dir) == 0) {
+    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+    return;
+  }
+#endif
+
   cs_path.Format(_T("%s%s"), tc_drive, tc_dir);
 
   TCHAR szExecName[MAX_PATH + 1];
@@ -2189,7 +2221,7 @@ DboxMain::OnViewReports(UINT nID)
   CString cs_CommandLine;
 
   // Make the command line = "<program>" "file" 
-  cs_CommandLine.Format(_T("\"%s\" \"%s\""), szExecName, cs_filename);
+  cs_CommandLine.Format(_T("\"%s\" \"%s\""), szExecName, cs_ReportFileName);
   int ilen = cs_CommandLine.GetLength();
   LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 

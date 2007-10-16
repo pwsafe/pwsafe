@@ -22,6 +22,7 @@
 #include "AdvancedDlg.h"
 #include "CompareResultsDlg.h"
 #include "Properties.h"
+#include "GeneralMsgBox.h"
 #include "corelib/pwsprefs.h"
 #include "corelib/util.h"
 #include "corelib/PWSdirs.h"
@@ -73,15 +74,21 @@ DboxMain::OpenOnInit(void)
       // be opened. It was either removed or renamed, so ask the user what to do
 	  CString cs_msg;
       cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile());
-      int rc3 = MessageBox(cs_msg, AfxGetAppName(), (MB_ICONQUESTION | MB_YESNOCANCEL));
+      CGeneralMsgBox gmb;
+      gmb.SetMsg(cs_msg);
+      gmb.SetStandardIcon(MB_ICONQUESTION);
+      gmb.AddButton(1, _T("Search"));
+      gmb.AddButton(2, _T("New"));
+      gmb.AddButton(3, _T("Exit"), TRUE, TRUE);
+      INT_PTR rc3 = gmb.DoModal();
       switch (rc3) {
-      case IDYES:
+        case 1:
         rc2 = Open();
         break;
-      case IDNO:
+        case 2:
         rc2 = New();
         break;
-      case IDCANCEL:
+        case 3:
         rc2 = PWScore::USER_CANCEL;
         break;
       }
@@ -130,11 +137,11 @@ DboxMain::OpenOnInit(void)
       break;
 #ifdef DEMO
     case PWScore::LIMIT_REACHED: {
-      CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
+      CString cs_msg, cs_msga(MAKEINTRESOURCE(IDS_LIMIT_MSGA)), cs_msgb(MAKEINTRESOURCE(IDS_LIMIT_MSGB));
+      cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
       CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-      const int yn = MessageBox(cs_msg, cs_title,
-                                MB_YESNO|MB_ICONWARNING);
-      if (yn == IDNO) {
+      if (MessageBox(cs_msg + cs_msga + cs_msgb, cs_title,
+                     MB_YESNO | MB_ICONWARNING) == IDNO) {
         CDialog::OnCancel();
       }
       m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
@@ -342,6 +349,7 @@ DboxMain::Open()
   int rc = PWScore::SUCCESS;
   CMyString newfile;
   CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
+  CString dir = PWSdirs::GetSafeDir();
 
   //Open-type dialog box
   while (1) {
@@ -357,7 +365,6 @@ DboxMain::Open()
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     fd.m_ofn.Flags &= ~OFN_READONLY;
-    CString dir = PWSdirs::GetSafeDir();
     if (!dir.IsEmpty())
         fd.m_ofn.lpstrInitialDir = dir;
     INT_PTR rc2 = fd.DoModal();
@@ -395,14 +402,13 @@ DboxMain::Open( const CMyString &pszFilename )
     CString cs_title, cs_text;
 
     //Check that this file isn't already open
-    if (pszFilename == m_core.GetCurFile() && !m_needsreading)
-        {
+    if (pszFilename == m_core.GetCurFile() && !m_needsreading) {
             //It is the same damn file
             cs_text.LoadString(IDS_ALREADYOPEN);
             cs_title.LoadString(IDS_OPENDATABASE);
             MessageBox(cs_text, cs_title, MB_OK|MB_ICONWARNING);
             return PWScore::ALREADY_OPEN;
-        }
+    }
 
     rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS)
@@ -543,7 +549,15 @@ DboxMain::Save()
 
     cs_msg.Format(IDS_NEWFORMAT, m_core.GetCurFile(), NewName);
     cs_title.LoadString(IDS_VERSIONWARNING);
-    if (MessageBox(cs_msg, cs_title, MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
+
+    CGeneralMsgBox gmb;
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_msg);
+    gmb.SetStandardIcon(MB_ICONWARNING);
+    gmb.AddButton(1, _T("Continue"));
+    gmb.AddButton(2, _T("Cancel"), TRUE, TRUE);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == 2)
       return PWScore::USER_CANCEL;
     m_core.SetCurFile(NewName);
 #if !defined(POCKET_PC)
@@ -613,8 +627,14 @@ DboxMain::SaveAs()
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
     cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile());
     cs_title.LoadString(IDS_VERSIONWARNING);
-    if (MessageBox(cs_msg, cs_title,
-                   MB_OKCANCEL|MB_ICONWARNING) == IDCANCEL)
+    CGeneralMsgBox gmb;
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_msg);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(1, _T("Continue"));
+    gmb.AddButton(2, _T("Cancel"), TRUE, TRUE);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == 2)
       return PWScore::USER_CANCEL;
   }
   //SaveAs-type dialog box
@@ -931,6 +951,7 @@ DboxMain::OnImportText()
         /* Create report as we go */
         CReport rpt;
         rpt.StartReport(_T("Import_Text"), m_core.GetCurFile());
+        CString cs_ReportFileName = rpt.GetReportFileName();
         cs_temp.Format(IDS_IMPORTFILE, _T("Text"), TxtFileName);
         rpt.WriteLine(cs_temp);
         rpt.WriteLine();
@@ -941,21 +962,13 @@ DboxMain::OnImportText()
         cs_title.LoadString(IDS_FILEREADERROR);
         switch (rc) {
             case PWScore::CANT_OPEN_FILE:
-            {
                 cs_temp.Format(IDS_CANTOPENREADING, TxtFileName);
-                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-            }
             break;
             case PWScore::INVALID_FORMAT:
-            {
                 cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName);
-                MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-            }
             break;
             case PWScore::FAILURE:
-            {
-                MessageBox(strError, cs_title, MB_OK|MB_ICONWARNING);
-            }
+            cs_title.LoadString(IDS_TEXTIMPORTFAILED);
             break;
             case PWScore::SUCCESS:
             default:
@@ -976,7 +989,17 @@ DboxMain::OnImportText()
             RefreshList();
             break;
         } // switch
-        rpt.EndReport();
+        if (rc != PWScore::SUCCESS) {
+          CGeneralMsgBox gmb;
+          gmb.SetTitle(cs_title);
+          gmb.SetMsg(cs_temp);
+          gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+          gmb.AddButton(1, _T("OK"), TRUE, TRUE);
+          gmb.AddButton(2, _T("View Report"));
+          INT_PTR rc = gmb.DoModal();
+          if (rc == 2)
+            ViewReport(cs_ReportFileName);
+        }
     }
 }
 
@@ -1083,6 +1106,7 @@ DboxMain::OnImportXML()
         /* Create report as we go */
         CReport rpt;
         rpt.StartReport(_T("Import_XML"), m_core.GetCurFile());
+        CString cs_ReportFileName = rpt.GetReportFileName();
         cs_temp.Format(IDS_IMPORTFILE, _T("XML"), XMLFilename);
         rpt.WriteLine(cs_temp);
         rpt.WriteLine();
@@ -1091,19 +1115,18 @@ DboxMain::OnImportXML()
                                   bBadUnknownFileFields, bBadUnknownRecordFields, rpt);
         waitCursor.Restore();  // Restore normal cursor
 
+        cs_title.LoadString(IDS_XMLIMPORTFAILED);
         switch (rc) {
             case PWScore::XML_FAILED_VALIDATION:
             {
                 cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName());
                 csErrors = strErrors;
-                cs_title.LoadString(IDS_XMLSEEREPORT);
             }
               break;
             case PWScore::XML_FAILED_IMPORT:
             {
                 cs_temp.Format(IDS_XMLERRORS, fd.GetFileName());
                 csErrors = strErrors;
-                cs_title.LoadString(IDS_XMLSEEREPORT);
             }
               break;
             case PWScore::SUCCESS:
@@ -1124,7 +1147,6 @@ DboxMain::OnImportXML()
                     cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
                                    fd.GetFileName(), numValidated, numImported);
 
-                    cs_title.LoadString(IDS_XMLSEEREPORT);
                     ChangeOkUpdate();
                 } else {
                     cs_temp.Format(IDS_XMLIMPORTOK,
@@ -1139,11 +1161,25 @@ DboxMain::OnImportXML()
             default:
               ASSERT(0);
         } // switch
-        MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
+
+        // Finish Report
         rpt.WriteLine(cs_temp);
         rpt.WriteLine();
         rpt.WriteLine(csErrors);
         rpt.EndReport();
+
+        if (rc != PWScore::SUCCESS || !strErrors.IsEmpty()) {
+          CGeneralMsgBox gmb;
+          gmb.SetTitle(cs_title);
+          gmb.SetMsg(cs_temp);
+          gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+          gmb.AddButton(1, _T("OK"), TRUE, TRUE);
+          gmb.AddButton(2, _T("View Report"));
+          INT_PTR rc = gmb.DoModal();
+          if (rc == 2)
+            ViewReport(cs_ReportFileName);
+        } else
+          MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
     }
 }
 
@@ -1855,7 +1891,15 @@ DboxMain::SaveCore(PWScore *pcore)
     CMyString NewName = PWSUtil::GetNewFileName(pcore->GetCurFile(), DEFAULT_SUFFIX );
     cs_msg.Format(IDS_NEWFORMAT, pcore->GetCurFile(), NewName);
     cs_title.LoadString(IDS_VERSIONWARNING);
-    if (MessageBox(cs_msg, cs_title, MB_OKCANCEL | MB_ICONWARNING) == IDCANCEL)
+
+    CGeneralMsgBox gmb;
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_msg);
+    gmb.SetStandardIcon(MB_ICONWARNING);
+    gmb.AddButton(1, _T("Continue"));
+    gmb.AddButton(2, _T("Cancel"), FALSE, TRUE);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == 2)
       return PWScore::USER_CANCEL;
     pcore->SetCurFile(NewName);
   }

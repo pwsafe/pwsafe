@@ -37,6 +37,7 @@
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
 #include "FindDlg.h"
+#include "GeneralMsgBox.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -1082,29 +1083,35 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
             } else
                 cs_PID = _T("");
             const CString cs_title(MAKEINTRESOURCE(IDS_FILEINUSE));
-            CString cs_str;
+            CString cs_msg;
+            CGeneralMsgBox gmb;
+            gmb.SetTitle(cs_title);
+            gmb.SetStandardIcon(MB_ICONQUESTION);
 #ifdef PWS_STRICT_LOCKING // define if you don't want to allow user override
-            cs_str.Format(IDS_STRICT_LOCKED, curFile, cs_user_and_host, cs_PID);
-            int user_choice = MessageBox(cs_str, cs_title,
-                                         MB_OKCANCEL|MB_ICONQUESTION);
+            cs_msg.Format(IDS_STRICT_LOCKED, curFile, cs_user_and_host, cs_PID);
+            gmb.SetMsg(cs_msg);
+            gmb.AddButton(1, _T("Read-Only"));
+            gmb.AddButton(3, _T("Exit"), TRUE, TRUE);
 #else
-            cs_str.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
-            int user_choice = MessageBox(cs_str, cs_title,
-                                         MB_YESNOCANCEL|MB_ICONQUESTION);
+            cs_msg.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
+            gmb.SetMsg(cs_msg);
+            gmb.AddButton(1, _T("Read-Only"));
+            gmb.AddButton(2, _T("Read-Write"));
+            gmb.AddButton(3, _T("Exit"), TRUE, TRUE);
 #endif
+            int user_choice = gmb.DoModal();
             switch(user_choice) {
-                case IDYES:
-                case IDOK:
+                case 1:
                     pcore->SetReadOnly(true);
                     UpdateToolBar(true);
                     retval = PWScore::SUCCESS;
                     break;
-                case IDNO:
+                case 2:
                     pcore->SetReadOnly(false); // Caveat Emptor!
                     UpdateToolBar(false);
                     retval = PWScore::SUCCESS;
                     break;
-                case IDCANCEL:
+                case 3:
                     retval = PWScore::USER_CANCEL;
                     break;
                 default:
