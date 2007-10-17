@@ -1842,7 +1842,6 @@ CMyString PWScore::GetUniqueTitle(const CMyString &path, const CMyString &title,
 
 void PWScore::AddAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t &alias_uuid)
 {
-  TRACE(_T("AddAliasEntry entered\n"));
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
 
@@ -1918,7 +1917,6 @@ void PWScore::RemoveAllAliasEntries(const uuid_array_t &base_uuid)
 void PWScore::MoveAliases(const uuid_array_t &from_base_uuid,
                           const uuid_array_t &to_base_uuid)
 {
-  TRACE(_T("MoveAliases entered\n"));
   ItemMMapIter from_itr;
   ItemMMapIter lastfromElement;
 
@@ -1946,7 +1944,6 @@ int PWScore::AddAliasesViaBaseUUID(UUIDList &possible_aliases, CReport *rpt)
   // When called during validation of a database  - *rpt is valid
   // When called during the opening of a database - *rpt is NULL and no report generated
   // In this case, the password was "[[uuidstr]]", giving the associated base entry
-  TRACE(_T("AddAliasesViaBaseUUID entered\n"));
   int num_warnings(0);
   if (!possible_aliases.empty()) {
     UUIDListIter paiter;
@@ -2024,7 +2021,6 @@ int PWScore::AddAliasesViaPassword(UUIDList &possible_aliases, CReport *rpt)
   // This is only called when importing entrys from Text or XML.
   // In this case, the password is expected to be in the full format [g:t:u]
   // where g and/or u may be empty.
-  TRACE(_T("AddAliasesViaPassword entered\n"));
   int num_warnings(0);
   if (!possible_aliases.empty()) {
     UUIDListIter paiter;
