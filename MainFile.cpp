@@ -212,9 +212,19 @@ DboxMain::New()
 
   m_core.SetCurFile(cs_newfile);
   m_core.ClearFileUUID();
+
+  rc = m_core.WriteCurFile();
+  if (rc == PWScore::CANT_OPEN_FILE) {
+    CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
+    cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
+    MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+    return PWScore::USER_CANCEL;
+  }
+
 #if !defined(POCKET_PC)
   m_titlebar = _T("Password Safe - ") + cs_newfile;
 #endif
+
   ChangeOkUpdate();
   UpdateSystemTray(UNLOCKED);
   m_RUEList.ClearEntries();
