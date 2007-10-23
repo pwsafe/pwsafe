@@ -1037,6 +1037,9 @@ DboxMain::OnImportText()
             RefreshList();
             break;
         } // switch
+        // Finish Report
+        rpt.EndReport();
+
         if (rc != PWScore::SUCCESS) {
           CGeneralMsgBox gmb;
           gmb.SetTitle(cs_title);
