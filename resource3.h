@@ -50,7 +50,6 @@
 #define IDS_FILEREADONLY                5212
 #define IDS_FILEPATHNOTFOUND            5216
 #define IDS_TERMINATE                   5217
-#define IDS_BADPASSWORD                 5218
 #define IDS_RECENT                      5219
 #define IDS_RECENTSAFES                 5220
 #define IDS_FILEMENU                    5221
