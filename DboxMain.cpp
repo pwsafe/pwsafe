@@ -2095,7 +2095,9 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     const BOOL enableIfOpenAndRW = m_core.IsReadOnly() ? FALSE : enableIfOpen;
     int condOpen[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
                       ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_CLEARCLIPBOARD,
-                      ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_BROWSEURL, ID_TOOLBUTTON_EDIT};
+                      ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_BROWSEURL,
+                      ID_TOOLBUTTON_EXPANDALL, ID_TOOLBUTTON_COLLAPSEALL, 
+                      ID_TOOLBUTTON_EDIT};
     int condOpenRW[] = {ID_TOOLBUTTON_SAVE, ID_TOOLBUTTON_ADD, ID_TOOLBUTTON_DELETE};
     int i;
 
