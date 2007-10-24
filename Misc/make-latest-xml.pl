@@ -12,7 +12,6 @@ my ($Major, $Minor, $Build, $Revision);
 
 while (<FILE>) {
     if (/#define\sPRODUCTVER/) {
-        print;
         s/,/ /g;
         @verline = split;
         shift @verline; shift @verline;
