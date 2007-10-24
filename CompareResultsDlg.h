@@ -74,64 +74,6 @@ struct st_CompareData {
     }
     return *this;
   }
-
-#ifdef _DEBUG
-  void Dump()
-  {
-    char uuid0_buffer[33], uuid1_buffer[33];
-#if _MSC_VER >= 1400
-    sprintf_s(uuid0_buffer, 33,
-            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-            uuid0[0],  uuid0[1],  uuid0[2],  uuid0[3],
-            uuid0[4],  uuid0[5],  uuid0[6],  uuid0[7],
-            uuid0[8],  uuid0[9],  uuid0[10], uuid0[11],
-            uuid0[12], uuid0[13], uuid0[14], uuid0[15]);
-    sprintf_s(uuid1_buffer, 33,
-            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-            uuid1[0],  uuid1[1],  uuid1[2],  uuid1[3],
-            uuid1[4],  uuid1[5],  uuid1[6],  uuid1[7],
-            uuid1[8],  uuid1[9],  uuid1[10], uuid1[11],
-            uuid1[12], uuid1[13], uuid1[14], uuid1[15]);
-#else
-    sprintf(uuid0_buffer,
-          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-          uuid0[0],  uuid0[1],  uuid0[2],  uuid0[3],
-          uuid0[4],  uuid0[5],  uuid0[6],  uuid0[7],
-          uuid0[8],  uuid0[9],  uuid0[10], uuid0[11],
-          uuid0[12], uuid0[13], uuid0[14], uuid0[15]);
-    sprintf(uuid1_buffer,
-          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-          uuid1[0],  uuid1[1],  uuid1[2],  uuid1[3],
-          uuid1[4],  uuid1[5],  uuid1[6],  uuid1[7],
-          uuid1[8],  uuid1[9],  uuid1[10], uuid1[11],
-          uuid1[12], uuid1[13], uuid1[14], uuid1[15]);
-#endif
-    uuid0_buffer[32] = '\0';
-    uuid1_buffer[32] = '\0';
-    std::string sDiffs;
-    sDiffs =  bsDiffs.to_string();
-    CString csDiffs(sDiffs.c_str());
-    CString cs_InDatabase;
-    if (indatabase == -1)
-      cs_InDatabase = _T("BOTH");
-    else if (indatabase == 0)
-      cs_InDatabase = _T("CURRENT");
-    else if (indatabase == 1)
-      cs_InDatabase = _T("COMPARE");
-    else
-      cs_InDatabase = _T("ERROR");
-
-    TRACE(_T("\nst_CompareData:\n"));
-    TRACE("uuid0: %s\n", uuid0_buffer);
-    TRACE("uuid1: %s\n", uuid1_buffer);
-    TRACE(_T("bsDiffs: %s\n"), csDiffs);
-    TRACE(_T("Group: %s; Title: %s; User: %s\n"), group, title, user);
-    TRACE(_T("id: %d; indatabase: %s; listindex: %d; unknflds0: %c; unknflds1: %c\n"),
-             id, cs_InDatabase, listindex, unknflds0 ? _T('T') : _T('F'), unknflds1 ? _T('T') : _T('F'));
-  }
-#else
-  void Dump() {}
-#endif
 };
 
 struct equal_id
@@ -158,48 +100,6 @@ struct st_CompareInfo {
   uuid_array_t uuid0;  // original DB
   uuid_array_t uuid1;  // comparison DB
   int  clicked_column;
-
-#ifdef _DEBUG
-  void Dump()
-  {
-    char uuid0_buffer[33], uuid1_buffer[33];
-#if _MSC_VER >= 1400
-    sprintf_s(uuid0_buffer, 33,
-            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-            uuid0[0],  uuid0[1],  uuid0[2],  uuid0[3],
-            uuid0[4],  uuid0[5],  uuid0[6],  uuid0[7],
-            uuid0[8],  uuid0[9],  uuid0[10], uuid0[11],
-            uuid0[12], uuid0[13], uuid0[14], uuid0[15]);
-    sprintf_s(uuid1_buffer, 33,
-            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-            uuid1[0],  uuid1[1],  uuid1[2],  uuid1[3],
-            uuid1[4],  uuid1[5],  uuid1[6],  uuid1[7],
-            uuid1[8],  uuid1[9],  uuid1[10], uuid1[11],
-            uuid1[12], uuid1[13], uuid1[14], uuid1[15]);
-#else
-    sprintf(uuid0_buffer,
-          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-          uuid0[0],  uuid0[1],  uuid0[2],  uuid0[3],
-          uuid0[4],  uuid0[5],  uuid0[6],  uuid0[7],
-          uuid0[8],  uuid0[9],  uuid0[10], uuid0[11],
-          uuid0[12], uuid0[13], uuid0[14], uuid0[15]);
-    sprintf(uuid1_buffer,
-          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-          uuid1[0],  uuid1[1],  uuid1[2],  uuid1[3],
-          uuid1[4],  uuid1[5],  uuid1[6],  uuid1[7],
-          uuid1[8],  uuid1[9],  uuid1[10], uuid1[11],
-          uuid1[12], uuid1[13], uuid1[14], uuid1[15]);
-#endif
-    uuid0_buffer[32] = '\0';
-    uuid1_buffer[32] = '\0';
-    TRACE(_T("\nst_CompareInfo:\n"));
-    TRACE("uuid0: %s\n", uuid0_buffer);
-    TRACE("uuid1: %s\n", uuid1_buffer);
-    TRACE(_T("pcore0: %p; pcore1: %p; clicked column: %d\n"), pcore0, pcore1, clicked_column);
-  }
-#else
-  void Dump() {}
-#endif
 };
 
 class CCompareResultsDlg : public CPWDialog
@@ -267,6 +167,7 @@ protected:
   virtual void OnCancel();
   virtual void OnOK();
   afx_msg void OnHelp();
+  afx_msg void OnViewCompareReport();
   afx_msg void OnShowIdenticalEntries();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);

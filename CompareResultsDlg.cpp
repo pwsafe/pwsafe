@@ -148,7 +148,6 @@ BOOL CCompareResultsDlg::OnInitDialog()
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(CURRENT, st_data.id));
-      st_data.Dump();
       iItem++;
     }
   }
@@ -172,7 +171,6 @@ BOOL CCompareResultsDlg::OnInitDialog()
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(COMPARE, st_data.id));
-      st_data.Dump();
       iItem++;
     }
   }
@@ -221,7 +219,6 @@ BOOL CCompareResultsDlg::OnInitDialog()
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(BOTH, st_data.id));
-      st_data.Dump();
       iItem++;
     }
   }
@@ -323,6 +320,7 @@ BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_BN_CLICKED(IDC_SHOW_IDENTICAL_ENTRIES, OnShowIdenticalEntries)
+  ON_BN_CLICKED(IDC_VIEWCOMPAREREPORT, OnViewCompareReport)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_RESULTLISTHDR, OnColumnClick)
   ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
   ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
@@ -361,7 +359,6 @@ CCompareResultsDlg::OnShowIdenticalEntries()
 
         st_data.listindex = iItem;
         m_LCResults.SetItemData(iItem, MAKELONG(IDENTICAL, st_data.id));
-        st_data.Dump();
         iItem++;
       }
     }
@@ -405,6 +402,12 @@ CCompareResultsDlg::OnHelp()
 {
   CString cs_HelpTopic = app.GetHelpFileName() + _T("::/html/compare_results.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
+
+void
+CCompareResultsDlg::OnViewCompareReport()
+{
+  EndDialog(2);
 }
 
 void
@@ -882,6 +885,7 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   CWnd *pwndListCtrl = GetDlgItem(IDC_RESULTLIST);
   CWnd *pwndODBText = GetDlgItem(IDC_COMPAREORIGINALDB);
   CWnd *pwndCDBText = GetDlgItem(IDC_COMPARECOMPARISONDB);
+  CWnd *pwndVWR = GetDlgItem(IDC_VIEWCOMPAREREPORT);
   CWnd *pwndOK = GetDlgItem(IDOK);
 
   if (!IsWindow(pwndListCtrl->GetSafeHwnd()))
@@ -929,10 +933,14 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   // Keep buttons in the bottom area
   int xleft, ytop;
 
-  pwndOK->GetWindowRect(&ctrlRect);
-  xleft = (cx / 2) - (ctrlRect.Width() / 2);
-  ytop = dlgRect.Height() - m_cyBSpace/2 - m_cySBar;
+  ytop = dlgRect.Height() - m_cyBSpace / 2 - m_cySBar;   
 
+  pwndVWR->GetWindowRect(&ctrlRect);   
+  xleft = (cx / 4) - (ctrlRect.Width() / 2);   
+  pwndVWR->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER); 
+
+  pwndOK->GetWindowRect(&ctrlRect);
+  xleft = (3 * cx / 4) - (ctrlRect.Width() / 2);
   pwndOK->SetWindowPos(NULL, xleft, ytop, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
 
   m_statusBar.GetWindowRect(&ctrlRect);
