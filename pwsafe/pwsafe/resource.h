@@ -295,6 +295,7 @@
 #define IDC_UNKNOWNFIELDS               1256
 #define IDC_RESULTLIST                  1257
 #define IDC_RESULTLISTHDR               1258
+#define IDC_VIEWCOMPAREREPORT           1259
 #define IDC_COMPAREORIGINALDB           1260
 #define IDC_COMPARECOMPARISONDB         1261
 #define IDC_SHOW_IDENTICAL_ENTRIES      1262

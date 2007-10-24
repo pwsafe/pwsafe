@@ -1701,6 +1701,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
   /* Create report as we go */
   CReport rpt;
   rpt.StartReport(_T("Compare"), m_core.GetCurFile());
+  CString cs_ReportFileName = rpt.GetReportFileName();
   temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
   rpt.WriteLine(temp);
   rpt.WriteLine();
@@ -1892,6 +1893,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 		resultStr += buffer + cs_text;
 		MessageBox(resultStr, cs_title, MB_OK);
     rpt.WriteLine(resultStr);
+    rpt.EndReport();
   } else {
     CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
                               list_Conflicts, list_Identical, 
@@ -1902,7 +1904,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
     CmpRes.m_bOriginalDBReadOnly = m_core.IsReadOnly();
     CmpRes.m_bComparisonDBReadOnly = othercore.IsReadOnly();
 
-    CmpRes.DoModal();
+    INT_PTR rc = CmpRes.DoModal();
     if (CmpRes.m_OriginalDBChanged) {
       FixListIndexes();
       RefreshList();
@@ -1911,6 +1913,11 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
     if (CmpRes.m_ComparisonDBChanged) {
       SaveCore(&othercore);
     }
+
+    rpt.EndReport();
+
+    if (rc == 2)
+      ViewReport(cs_ReportFileName);
   }
 
   if (othercore.IsLockedFile(othercore.GetCurFile()))
@@ -1922,9 +1929,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
   // Reset database preferences - first to defaults then add saved changes!
   PWSprefs::GetInstance()->Load(cs_SavePrefString);
 
-  rpt.EndReport();
-
-	return rc;
+  return rc;
 }
 
 int
@@ -1991,7 +1996,6 @@ DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
     memcpy(entryUUID, st_info->uuid1, sizeof(uuid_array_t));
   }
 
-  st_info->Dump();
   switch ((int)lFunction) {
     case CCompareResultsDlg::EDIT:
       lres = EditCompareResult(pcore, entryUUID);
