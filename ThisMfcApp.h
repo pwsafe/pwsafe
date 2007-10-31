@@ -66,7 +66,6 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   int FindMenuItem(CMenu* Menu, int MenuID);
   int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
   void GetApplicationVersionData();
-  CString GetVersionInfoFromFile(const CString &csFileName);
   CString GetFileVersionString() const {return m_csFileVersionString;}
   CString GetCopyrightString() const {return m_csCopyrightString;}
   CString GetHelpFileName() const {return m_csHelpFile;}
