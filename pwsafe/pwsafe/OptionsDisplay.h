@@ -38,6 +38,9 @@ public:
 #endif
 	int     m_treedisplaystatusatopen;
 	int     m_preexpirywarndays;
+    int m_trayiconcolour;
+    CComboBox m_cbx_trayiconcolour;
+    CStatic m_ic_trayiconcolour;
 	//}}AFX_DATA
 
 
@@ -55,6 +58,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPreWarn();
     afx_msg void OnDisplayUserInTree();
+    afx_msg void OnComboChanged();
 	afx_msg BOOL OnKillActive();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

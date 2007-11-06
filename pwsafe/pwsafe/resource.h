@@ -31,6 +31,9 @@
 #define IDR_POPCOLUMNS                  126
 #define IDR_POPCOPYTOCOMPARISON         127
 #define IDR_POPCOPYTOORIGINAL           128
+#define IDI_TRAY_BLUE                   129
+#define IDI_TRAY_WHITE                  130
+#define IDI_TRAY_YELLOW                 131
 #define IDD_ABOUTBOX                    200
 #define IDD_FIND                        201
 #define IDD_PASSWORDSAFE_DIALOG         202
@@ -309,6 +312,8 @@
 #define IDC_STATIC_ALIASGRP             1270
 #define IDC_CHECKNEWVER                 1271
 #define IDC_NEWVER_STATUS               1272
+#define IDC_TRAYICONCOLOUR              1273
+#define IDC_TRAYICON                    1274
 
 // Next default values for new objects
 // 
@@ -316,7 +321,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1273
-#define _APS_NEXT_SYMED_VALUE           129
+#define _APS_NEXT_CONTROL_VALUE         1275
+#define _APS_NEXT_SYMED_VALUE           132
 #endif
 #endif

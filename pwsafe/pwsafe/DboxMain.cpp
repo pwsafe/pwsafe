@@ -162,7 +162,7 @@ ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
 ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
 ON_UPDATE_COMMAND_UI(ID_MENUITEM_DELETE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_RENAME, OnUpdateROCommand)
+ON_UPDATE_COMMAND_UI(ID_MENUITEM_RENAME, OnUpdateRenameCommand)
 ON_COMMAND(ID_MENUITEM_FIND, OnFind)
 ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
 ON_UPDATE_COMMAND_UI(ID_MENUITEM_DUPLICATEENTRY, OnUpdateROCommand)
@@ -233,7 +233,9 @@ ON_NOTIFY(HDN_ITEMCHANGED, IDC_LIST_HEADER, OnHeaderNotify)
 
 ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
 ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
+ON_UPDATE_COMMAND_UI(ID_MENUITEM_MINIMIZE, OnUpdateTrayMinimizeCommand)
 ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
+ON_UPDATE_COMMAND_UI(ID_MENUITEM_UNMINIMIZE, OnUpdateTrayUnMinimizeCommand)
 
 #if defined(POCKET_PC)
 ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
@@ -782,6 +784,14 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 }
 
 void
+DboxMain::OnUpdateEmptyDB(CCmdUI *pCmdUI)
+{
+  // Note: Disable if database is empty
+  if (m_core.GetNumEntries() == 0)
+  	pCmdUI->Enable(FALSE);
+}
+
+void
 DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
 {
   // Note: This first checks if a DB is Open before checking R-O status
@@ -842,6 +852,19 @@ DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
   // Use this callback  for commands that need to
   // be disabled if not supported (yet)
   pCmdUI->Enable(FALSE);
+}
+
+void
+DboxMain::OnUpdateRenameCommand(CCmdUI *pCmdUI)
+{
+  // Rename command
+  // First check R/O
+  OnUpdateROCommand(pCmdUI);
+  
+  // The disable in ListView mode
+  if (m_IsListView)
+    pCmdUI->Enable(FALSE);
+
 }
 
 void
@@ -2091,7 +2114,7 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	xfilesubmenu->EnableMenuItem(ID_MENUITEM_RESTORE, MF_BYCOMMAND | imenuflags);
 
 	if (m_toolbarsSetup == TRUE) {
-    const BOOL enableIfOpen = bOpen ? TRUE : FALSE;
+    const BOOL enableIfOpen = (bOpen && m_core.GetNumEntries() > 0) ? TRUE : FALSE;
     const BOOL enableIfOpenAndRW = m_core.IsReadOnly() ? FALSE : enableIfOpen;
     int condOpen[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
                       ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_CLEARCLIPBOARD,

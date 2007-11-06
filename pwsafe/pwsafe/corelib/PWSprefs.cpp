@@ -54,7 +54,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 	{_T("DCShowsPassword"), false, false},							// application
 	{_T("DontAskMinimizeClearYesNo"), true, false},					// application
 	{_T("DatabaseClear"), false, false},							// application
-	{_T("DontAskSaveMinimize"), false, false},						// application
+	{_T("DontAskSaveMinimize"), false, false},						// application - obsoleted in 3.02
 	{_T("QuerySetDef"), true, false},								// application
 	{_T("UseNewToolbar"), true, false},								// application
 	{_T("UseSystemTray"), true, false},								// application
@@ -99,6 +99,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	{_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},						// application
 	{_T("BackupMaxIncremented"), 1, false, 1, 999},							// application
   {_T("PreExpiryWarnDays"), 1, false, 1, 30},                             // application
+  {_T("ClosedTrayIconColour"), 0, false, 0, 3},                    // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

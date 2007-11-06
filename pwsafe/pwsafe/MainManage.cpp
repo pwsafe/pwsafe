@@ -290,6 +290,8 @@ DboxMain::OnOptions()
     // of the radio buttons in the following :-)
     display.m_treedisplaystatusatopen = prefs->
         GetPref(PWSprefs::TreeDisplayStatusAtOpen);
+    display.m_trayiconcolour = prefs->
+        GetPref(PWSprefs::ClosedTrayIconColour);
 
     security.m_clearclipboard = prefs->
         GetPref(PWSprefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
@@ -434,6 +436,9 @@ DboxMain::OnOptions()
         // of the radio buttons in the following :-)
         prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen,
                        display.m_treedisplaystatusatopen);
+        prefs->SetPref(PWSprefs::ClosedTrayIconColour,
+                       display.m_trayiconcolour);
+        app.SetClosedTrayIcon(display.m_trayiconcolour);
 
         prefs->SetPref(PWSprefs::UseSystemTray,
                        system.m_usesystemtray == TRUE);

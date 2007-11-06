@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * All rights reserved. Use of the code is allowed under the
+ * Artistic License 2.0 terms, as specified in the LICENSE file
+ * distributed with this code, or available from
+ * http://www.opensource.org/licenses/artistic-license-2.0.php
+ */
 /// file MainFile.cpp
 //
 // File-related methods of DboxMain
@@ -137,10 +144,10 @@ DboxMain::OpenOnInit(void)
       break;
 #ifdef DEMO
     case PWScore::LIMIT_REACHED: {
-      CString cs_msg, cs_msga(MAKEINTRESOURCE(IDS_LIMIT_MSGA)), cs_msgb(MAKEINTRESOURCE(IDS_LIMIT_MSGB));
+      CString cs_msg;
       cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
       CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-      if (MessageBox(cs_msg + cs_msga + cs_msgb, cs_title,
+      if (MessageBox(cs_msg, cs_title,
                      MB_YESNO | MB_ICONWARNING) == IDNO) {
         CDialog::OnCancel();
       }
@@ -1762,25 +1769,25 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
         // found a match, see if all other fields also match
         // Difference flags:
         /*
-                First word (values in square brackets taken from ItemData.h)
-                1... ....  NAME     [0x0] - n/a - depreciated
-                .1.. ....  UUID     [0x1] - n/a - unique
-                ..1. ....  GROUP    [0x2] - not checked - must be identical
-                ...1 ....  TITLE    [0x3] - not checked - must be identical
-                .... 1...  USER     [0x4] - not checked - must be identical
-                .... .1..  NOTES    [0x5]
-                .... ..1.  PASSWORD [0x6]
-                .... ...1  CTIME    [0x7] - not checked - immaterial
+                First byte (values in square brackets taken from ItemData.h)
+                1... ....  NAME     [0x00] - n/a - depreciated
+                .1.. ....  UUID     [0x01] - n/a - unique
+                ..1. ....  GROUP    [0x02] - not checked - must be identical
+                ...1 ....  TITLE    [0x03] - not checked - must be identical
+                .... 1...  USER     [0x04] - not checked - must be identical
+                .... .1..  NOTES    [0x05]
+                .... ..1.  PASSWORD [0x06]
+                .... ...1  CTIME    [0x07] - not checked - immaterial
 
-                Second word
-                1... ....  PMTIME   [0x8] - not checked - immaterial
-                .1.. ....  ATIME    [0x9] - not checked - immaterial
-                ..1. ....  LTIME    [0xa]
-                ...1 ....  POLICY   [0xb] - not yet implemented
-                .... 1...  RMTIME   [0xc] - not checked - immaterial
-                .... .1..  URL      [0xd]
-                .... ..1.  AUTOTYPE [0xe]
-                .... ...1  PWHIST   [0xf]
+                Second byte
+                1... ....  PMTIME   [0x08] - not checked - immaterial
+                .1.. ....  ATIME    [0x09] - not checked - immaterial
+                ..1. ....  LTIME    [0x0a]
+                ...1 ....  POLICY   [0x0b] - not yet implemented
+                .... 1...  RMTIME   [0x0c] - not checked - immaterial
+                .... .1..  URL      [0x0d]
+                .... ..1.  AUTOTYPE [0x0e]
+                .... ...1  PWHIST   [0x0f]
         */
 
         bsConflicts.reset();

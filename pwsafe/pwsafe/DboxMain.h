@@ -398,7 +398,9 @@ protected:
   afx_msg void OnViewReports(UINT nID);
   afx_msg void OnUpdateViewReports(CCmdUI *pCmdUI);
   afx_msg void OnMinimize();
+  afx_msg void OnUpdateTrayMinimizeCommand(CCmdUI* pCmdUI);
   afx_msg void OnUnMinimize();
+  afx_msg void OnUpdateTrayUnMinimizeCommand(CCmdUI* pCmdUI);
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
   afx_msg void OnColumnPicker();
@@ -415,6 +417,8 @@ protected:
   afx_msg void OnUpdateClosedCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateTVCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateViewCommand(CCmdUI *pCmdUI);
+  afx_msg void OnUpdateRenameCommand(CCmdUI *pCmdUI);
+  afx_msg void OnUpdateEmptyDB(CCmdUI *pCmdUI);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenu(CMenu* pMenu);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);

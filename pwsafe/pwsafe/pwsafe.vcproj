@@ -1126,6 +1126,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\tray_blue.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\tray_white.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\tray_yellow.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\unlocked_tray.ico"
 				>
 			</File>

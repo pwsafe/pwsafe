@@ -69,7 +69,7 @@ class PWSprefs {
 		  SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
 		  DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
 		  NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
-		  PreExpiryWarnDays,
+		  PreExpiryWarnDays, ClosedTrayIconColour,
       NumIntPrefs};
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
 		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
