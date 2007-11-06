@@ -642,7 +642,8 @@ ThisMfcApp::InitInstance()
   //ASSERT(stIcon != NULL);
   m_LockedIcon = app.LoadIcon(IDI_LOCKEDICON);
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
-  m_ClosedIcon = app.LoadIcon(IDI_TRAY);
+  int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
+  SetClosedTrayIcon(iData);
   m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
                                m_LockedIcon, dbox.m_RUEList,
                                WM_ICON_NOTIFY, IDR_POPTRAY);
@@ -742,6 +743,34 @@ ThisMfcApp::ClearMRU()
 
 		return;
 	}
+}
+
+int
+ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
+{
+  int icon;
+  switch (iData) {
+    case 0:
+      icon = IDI_TRAY;  // This is black.
+      break;
+    case 1:
+      icon = IDI_TRAY_BLUE;
+      break;
+    case 2:
+      icon = IDI_TRAY_WHITE;
+      break;
+    case 3:
+      icon = IDI_TRAY_YELLOW;
+      break;
+    default:
+      iData = 0;
+      icon = IDI_TRAY;
+      break;
+  }
+  if (bSet)
+    m_ClosedIcon = app.LoadIcon(icon);
+
+  return icon;
 }
 
 void
@@ -926,4 +955,3 @@ ThisMfcApp::GetApplicationVersionData()
     delete[] pVersionInfo;
   }
 }
-

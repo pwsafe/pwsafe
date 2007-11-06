@@ -769,8 +769,29 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
   CItemData *itemData = NULL;
   CMenu menu;
 
+  // Get client window position
+  CPoint mp;
+  CRect rect, appl_rect;
+  mp = ::GetMessagePos();
+  GetWindowRect(&appl_rect);
+  m_wndToolBar.GetWindowRect(&rect);
+
+  // RClick over Main Toolbar
+  if (mp.x > appl_rect.left && mp.x < appl_rect.right &&
+      mp.y > rect.top && mp.y < rect.bottom) {
+    return;
+  }
+
+  // RClick over ListView
   if (m_ctlItemList.IsWindowVisible()) {
     // currently in flattened list view.
+    m_ctlItemList.GetWindowRect(&rect);
+    if (mp.x < rect.left || mp.x > appl_rect.right ||
+        mp.y < rect.top || mp.y > rect.bottom) {
+      // But not in the window
+      return;
+    }
+
     m_ctlItemList.ScreenToClient(&local);
     item = m_ctlItemList.HitTest(local);
     if (item < 0)
@@ -781,8 +802,17 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       return; // ? is this possible ?
     }
     m_ctlItemList.SetFocus();
-  } else {
+  }
+
+  // RClick over TreeView
+  if (m_ctlItemTree.IsWindowVisible()) {
     // currently in tree view
+    m_ctlItemTree.GetWindowRect(&rect);
+    if (mp.x < rect.left || mp.x > appl_rect.right ||
+        mp.y < rect.top || mp.y > rect.bottom) {
+      // But not in the window
+      return;
+    }
     ASSERT(m_ctlItemTree.IsWindowVisible());
     m_ctlItemTree.ScreenToClient(&local);
     HTREEITEM ti = m_ctlItemTree.HitTest(local);
@@ -807,7 +837,7 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       }
     } else {
       // not over anything
-      if (menu.LoadMenu(IDR_POPTREE)) {
+      if (menu.LoadMenu(IDR_POPTREE)) {  // "Add Group"
         CMenu* pPopup = menu.GetSubMenu(0);
         ASSERT(pPopup != NULL);
         pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
@@ -816,6 +846,7 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     m_ctlItemTree.SetFocus();
   } // tree view handling
 
+  // RClick over an entry
   if (item >= 0) {
     menu.LoadMenu(IDR_POPMENU);
     CMenu* pPopup = menu.GetSubMenu(0);

@@ -8,16 +8,25 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
+Changes to Existing Features in 3.10.02
+=======================================
+[1756385] Black Idle Icon in task tray is not visible in Vista. Allow 
+user to choose one of Black, Blue, White or Yellow.
+
 Bugs fixed in 3.10.02
 =====================
 [1806201] Non-unique uuids in database now handled correctly.
 [] Prevent mixed Unicode/ASCII report files and ensure Unicode reports
 have BOM as some text editors insist!
+[] Disable Rename menu item in List View (only appropriate in Tree View)
+[] Disable Tray Minimize/Restore menu items if already Minimized/Visible
+[] Ignore mouse right click not in Tree/List view area.
 
 New Features for 3.10.02
 ========================
 [] Give user access to Reports from View menu (only in the same directory
 as current open database), since more information is being written there.
+[] Give user access to the Compare report from the Compare results dialog
 
 Changes to Existing Features in 3.10.01
 =======================================

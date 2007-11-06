@@ -57,6 +57,24 @@ DboxMain::OnTrayLockUnLock()
 }
 
 void
+DboxMain::OnUpdateTrayMinimizeCommand(CCmdUI* pCmdUI)
+{
+  // If already minimized, don't enable Minimize menu item
+  WINDOWPLACEMENT wndpl;
+  GetWindowPlacement(&wndpl);
+  pCmdUI->Enable(wndpl.showCmd == SW_SHOWMINIMIZED ? FALSE : TRUE);
+}
+
+void
+DboxMain::OnUpdateTrayUnMinimizeCommand(CCmdUI* pCmdUI)
+{
+  // If not minimized, don't enable Restore menu item
+  WINDOWPLACEMENT wndpl;
+  GetWindowPlacement(&wndpl);
+  pCmdUI->Enable(wndpl.showCmd != SW_SHOWMINIMIZED ? FALSE : TRUE);
+}
+
+void
 DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
 {
 	const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));

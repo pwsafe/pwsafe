@@ -343,9 +343,9 @@ void CAddDlg::ResizeDialog()
   int controls[]={
     IDC_STATIC_URL,
     IDC_URL,
+    IDC_STATIC_AUTO,
     IDC_AUTOTYPE,
     IDC_SAVE_PWHIST,
-    IDC_STATIC_AUTO,
     IDC_LTIME,
     IDC_STATIC_LTIME,
     IDC_LTIME_CLEAR,

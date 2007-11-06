@@ -19,6 +19,7 @@
 #endif
 #include "OptionsDisplay.h"
 #include "corelib\pwsprefs.h"
+#include "ThisMfcApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -58,6 +59,8 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif
 	DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_treedisplaystatusatopen); // only first!
+  DDX_Control(pDX, IDC_TRAYICONCOLOUR, m_cbx_trayiconcolour);
+  DDX_Control(pDX, IDC_TRAYICON, m_ic_trayiconcolour);
 	//}}AFX_DATA_MAP
 }
 
@@ -65,6 +68,7 @@ BEGIN_MESSAGE_MAP(COptionsDisplay, CPropertyPage)
 	//{{AFX_MSG_MAP(COptionsDisplay)
 	ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
     ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
+  ON_CBN_SELCHANGE(IDC_TRAYICONCOLOUR, OnComboChanged)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -95,6 +99,28 @@ BOOL COptionsDisplay::OnInitDialog()
     GetDlgItem(IDC_DEFPWSHOWINLIST)->EnableWindow(FALSE);
   }
 
+  // For some reason, MFC calls us twice when initializing.
+  // Populate the combo box only once.
+  if(m_cbx_trayiconcolour.GetCount() == 0) {
+  	// add the strings in alphabetical order
+    // These must agree with app.SetClosedTrayIcon
+    int nIndex;
+    nIndex = m_cbx_trayiconcolour.AddString(_T("Black"));
+    m_cbx_trayiconcolour.SetItemData(nIndex, 0);
+    nIndex = m_cbx_trayiconcolour.AddString(_T("Blue"));
+    m_cbx_trayiconcolour.SetItemData(nIndex, 1);
+    nIndex = m_cbx_trayiconcolour.AddString(_T("White"));
+    m_cbx_trayiconcolour.SetItemData(nIndex, 2);
+    nIndex = m_cbx_trayiconcolour.AddString(_T("Yellow"));
+    m_cbx_trayiconcolour.SetItemData(nIndex, 3);
+  }
+
+  m_cbx_trayiconcolour.SetCurSel(m_trayiconcolour);
+  int icon = app.SetClosedTrayIcon(m_trayiconcolour, false);
+  HICON closedIcon;
+  closedIcon = app.LoadIcon(icon);
+  m_ic_trayiconcolour.SetIcon(closedIcon);
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -121,4 +147,17 @@ void COptionsDisplay::OnDisplayUserInTree()
     ((CButton*)GetDlgItem(IDC_DEFPWSHOWINLIST))->SetCheck(BST_UNCHECKED);
   } else
     GetDlgItem(IDC_DEFPWSHOWINLIST)->EnableWindow(TRUE);
+}
+
+void COptionsDisplay::OnComboChanged()
+{
+  HICON closedIcon;
+  int icon, nIndex, iData;
+
+  nIndex  = m_cbx_trayiconcolour.GetCurSel();
+  iData = m_cbx_trayiconcolour.GetItemData(nIndex);
+  icon = app.SetClosedTrayIcon(iData, false);
+  closedIcon = app.LoadIcon(icon);
+  m_ic_trayiconcolour.SetIcon(closedIcon);
+  m_trayiconcolour = iData;
 }
