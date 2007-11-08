@@ -29,14 +29,15 @@ class CPWTreeCtrl : public CTreeCtrl
   ~CPWTreeCtrl();
 
   // indices of bitmaps in ImageList
-  enum {NODE=0, LEAF=1, EXPIRED_LEAF = 2, WARNEXPIRED_LEAF = 3};
+  enum {NODE = 0, LEAF, EXPIRED_LEAF, WARNEXPIRED_LEAF, 
+                  BASE, EXPIRED_BASE, WARNEXPIRED_BASE, ALIAS};
 
   void Initialize();
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
   void SortTree(const HTREEITEM htreeitem);
-  bool IsLeafNode(HTREEITEM hItem);
+  bool IsLeaf(HTREEITEM hItem);
   CMyString MakeTreeDisplayString(const CItemData &ci) const;
   void SetRestoreMode(bool flag) {m_isRestoring = flag;}
   void OnCollapseAll();

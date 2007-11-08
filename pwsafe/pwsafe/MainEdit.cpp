@@ -120,7 +120,10 @@ DboxMain::OnAdd()
     temp.SetAutoType(dlg_add.m_autotype);
    	time(&t);
    	temp.SetCTime(t);
-   	temp.SetLTime(dlg_add.m_tttLTime);
+    if (temp.IsAlias())
+      temp.SetLTime((time_t)0);
+    else
+      temp.SetLTime(dlg_add.m_tttLTime);
     if (dlg_add.m_SavePWHistory == TRUE) {
       TCHAR buffer[6];
 #if _MSC_VER >= 1400
@@ -311,7 +314,7 @@ DboxMain::Delete(bool inRecursion)
     if (m_ctlItemTree.IsWindowVisible()) {
       HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
       if (ti != NULL) {
-        if (!m_ctlItemTree.IsLeafNode(ti)) {
+        if (!m_ctlItemTree.IsLeaf(ti)) {
           HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);
 
           m_ctlItemTree.SetRedraw( FALSE );
@@ -510,6 +513,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
           editedItem.SetBase();
         }
       }
+
+      if (editedItem.IsAlias())
+        editedItem.SetLTime((time_t)0);
 
       pcore->RemoveEntryAt(listpos);
       pcore->AddEntry(editedItem);

@@ -24,12 +24,12 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t LTime)
   group = ci.GetGroup();
   title = ci.GetTitle();
   user = ci.GetUser();
-  type = LTime <= now ? 0 : 1; // Expired or Warning
+  // Expired or Warning / Normal or Base - see image list below
+  type = (LTime <= now ? 0 : 1) + (ci.IsBase() ? 2 : 0);
   expirylocdate = ci.GetLTimeL();
   expiryexpdate = ci.GetLTimeExp();
   expirytttdate = LTime;
 }
-
 
 // CExpPWListDlg dialog
 
@@ -94,7 +94,8 @@ CExpPWListDlg::OnInitDialog()
 	m_expPWListCtrl.InsertColumn(4, cs_text);
 
   m_pImageList = new CImageList();
-  BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 2, 0);
+  // Number (4) same as total of warn/expired images below
+  BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 4, 0);
   ASSERT(status != 0);
   CBitmap bitmap;
 
@@ -102,6 +103,12 @@ CExpPWListDlg::OnInitDialog()
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_WARNEXPIRED);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_BASE_EXPIRED);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_BASE_WARNEXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_SMALL);

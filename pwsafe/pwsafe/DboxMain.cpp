@@ -354,7 +354,8 @@ DboxMain::InitPasswordSafe()
   SetIcon(m_hIconSm, FALSE); // Set small icon
   // Init stuff for tree view
   CImageList *pImageList = new CImageList();
-  BOOL status = pImageList->Create(9, 9, ILC_COLOR, 4, 0);
+  // Number (8) corresponds to number in CPWTreeCtrl public enum
+  BOOL status = pImageList->Create(9, 9, ILC_COLOR, 8, 0);
   ASSERT(status != 0);
   CBitmap bitmap;
 
@@ -369,6 +370,18 @@ DboxMain::InitPasswordSafe()
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_WARNEXPIRED);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_BASE);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_BASE_EXPIRED);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_BASE_WARNEXPIRED);
+  pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_LEAF_ALIAS);
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
@@ -715,7 +728,7 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 	if (m_ctlItemTree.IsWindowVisible()) {
 		HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
 		// Only if a group is selected
-		if ((hItem != NULL && !m_ctlItemTree.IsLeafNode(hItem))) {
+		if ((hItem != NULL && !m_ctlItemTree.IsLeaf(hItem))) {
 			// Do standard double-click processing - i.e. toggle expand/collapse!
 			return;
 		}
@@ -1427,7 +1440,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
   bool bEmptyGroupSelected = false;
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
-    bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeafNode(hi));
+    bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
     bEmptyGroupSelected = (bGroupSelected && !m_ctlItemTree.ItemHasChildren(hi));
   }
 
@@ -1851,6 +1864,9 @@ DboxMain::CheckExpiredPasswords()
        listPos != m_core.GetEntryEndIter();
        listPos++) {
     const CItemData &curitem = m_core.GetEntry(listPos);
+    if (curitem.IsAlias())
+      continue;
+
     curitem.GetLTime(LTime);
 
     if (((long)LTime != 0) && (LTime < exptime)) {
