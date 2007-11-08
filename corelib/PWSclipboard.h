@@ -7,12 +7,11 @@
  */
 #ifndef __PWSCLIPBOARD_H
 /** \file
- * A small utility class to hadle the clipboard
+ * A small utility class to handle the clipboard
  * securely. Specifically, we keep a hash
  * of the data that we put on the clipboard, so that
  * ClearData() only clears the clipboard if it has what we put on it, and
  * if isSensitive was true when we added it.
- * UnconditionalyClearData clears the clipboard of data of all formats
  */
 
 #include "sha256.h"

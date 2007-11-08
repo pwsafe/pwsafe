@@ -1014,37 +1014,49 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
       if (bSort)
         m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
     }
-    time_t now, warnexptime, tLTime;
-    time(&now);
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
-      int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
-      struct tm st;
+
+    if (itemData.IsAlias()) {
+      m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::ALIAS, CPWTreeCtrl::ALIAS);
+    } else {
+      time_t now, warnexptime, tLTime;
+      time(&now);
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
+        int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+        struct tm st;
 #if _MSC_VER >= 1400
-      errno_t err;
-      err = localtime_s(&st, &now);  // secure version
-      ASSERT(err == 0);
+        errno_t err;
+        err = localtime_s(&st, &now);  // secure version
+        ASSERT(err == 0);
 #else
-      st = *localtime(&now);
-      ASSERT(st != NULL); // null means invalid time
+        st = *localtime(&now);
+        ASSERT(st != NULL); // null means invalid time
 #endif
-      st.tm_mday += idays;
-      warnexptime = mktime(&st);
-      if (warnexptime == (time_t)-1)
+        st.tm_mday += idays;
+        warnexptime = mktime(&st);
+        if (warnexptime == (time_t)-1)
+          warnexptime = (time_t)0;
+      } else
         warnexptime = (time_t)0;
-    } else
-      warnexptime = (time_t)0;
-    
-    itemData.GetLTime(tLTime);
-    if (tLTime != 0) {
-	    if (tLTime <= now) {
-        m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::EXPIRED_LEAF, CPWTreeCtrl::EXPIRED_LEAF);
-    	} else if (tLTime < warnexptime) {
-        m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::WARNEXPIRED_LEAF, CPWTreeCtrl::WARNEXPIRED_LEAF);
-	    } else
-        m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::LEAF, CPWTreeCtrl::LEAF);
-    } else
-      m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::LEAF, CPWTreeCtrl::LEAF);
-	
+
+      itemData.GetLTime(tLTime);
+      const bool bIsBase = itemData.IsBase();
+      if (tLTime != 0) {
+        if (tLTime <= now) {
+          int nImage = bIsBase ? CPWTreeCtrl::EXPIRED_BASE : CPWTreeCtrl::EXPIRED_LEAF;
+          m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+        } else if (tLTime < warnexptime) {
+          int nImage = bIsBase ? CPWTreeCtrl::WARNEXPIRED_BASE : CPWTreeCtrl::WARNEXPIRED_LEAF;
+          m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+        } else {
+          int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
+          m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+        }
+      } else {
+        int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
+        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+      }
+    }
+
     ASSERT(ti != NULL);
     itemData.SetDisplayInfo((void *)di);
     di->tree_item = ti;

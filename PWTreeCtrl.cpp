@@ -367,7 +367,7 @@ void CPWTreeCtrl::UpdateLeafsGroup(HTREEITEM hItem, CString prefix)
 {
   // Starting with hItem, update the Group field of all of hItem's
   // children. Called after a label has been edited.
-  if (IsLeafNode(hItem)) {
+  if (IsLeaf(hItem)) {
     DWORD_PTR itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
@@ -403,7 +403,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   HTREEITEM ti = ptvinfo->item.hItem;
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  if (IsLeafNode(ti)) {
+  if (IsLeaf(ti)) {
     DWORD_PTR itemData = GetItemData(ti);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
@@ -575,7 +575,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       ptvinfo->item.pszText[0] != TCHAR('\0')) { // empty if text deleted - not allowed
     ptvinfo->item.mask = TVIF_TEXT;
     SetItem(&ptvinfo->item);
-    if (IsLeafNode(ptvinfo->item.hItem)) {
+    if (IsLeaf(ptvinfo->item.hItem)) {
       DWORD_PTR itemData = GetItemData(ti);
       ASSERT(itemData != NULL);
       CItemData *ci = (CItemData *)itemData;
@@ -692,7 +692,7 @@ bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedPa
   return (hitemChild != NULL);
 }
 
-bool CPWTreeCtrl::IsLeafNode(HTREEITEM hItem)
+bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem)
 {
   // ItemHasChildren() won't work in the general case
   int i, dummy;
@@ -1030,7 +1030,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
     goto exit;
   }
 
-  if (IsLeafNode(hitemDrop) || bForceRoot)
+  if (IsLeaf(hitemDrop) || bForceRoot)
     hitemDrop = GetParentItem(hitemDrop);
 
   if (m_bWithinThisInstance) {
@@ -1222,7 +1222,7 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 
   CDDObList out_oblist;
 
-  if (IsLeafNode(m_hitemDrag)) {
+  if (IsLeaf(m_hitemDrag)) {
     ASSERT(itemData != NULL);
     m_nDragPathLen = 0;
     out_oblist.m_bDragNode = false;
@@ -1282,7 +1282,7 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
 void
 CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
 {
-  if (IsLeafNode(hItem)) {
+  if (IsLeaf(hItem)) {
     DWORD_PTR itemData = GetItemData(hItem);
     ASSERT(itemData != NULL);
     CItemData *ci = (CItemData *)itemData;
@@ -1409,9 +1409,9 @@ CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
 
   // unbelievable, but we have to recurse ourselves!
   // foreach child of hti
-  //  if !IsLeafNode
+  //  if !IsLeaf
   //   SortTree(child)
-  if (hti == TVI_ROOT || !IsLeafNode(hti)) {
+  if (hti == TVI_ROOT || !IsLeaf(hti)) {
     HTREEITEM hChildItem = GetChildItem(hti);
 
     while (hChildItem != NULL) {

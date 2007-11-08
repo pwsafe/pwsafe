@@ -1078,6 +1078,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\leaf_alias.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\leaf_base.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\leaf_base_exp.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\leaf_base_warn.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\leaf_exp.bmp"
 				>
 			</File>

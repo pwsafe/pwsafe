@@ -34,6 +34,10 @@
 #define IDI_TRAY_BLUE                   129
 #define IDI_TRAY_WHITE                  130
 #define IDI_TRAY_YELLOW                 131
+#define IDB_LEAF_ALIAS                  132
+#define IDB_LEAF_BASE                   133
+#define IDB_LEAF_BASE_EXPIRED           134
+#define IDB_LEAF_BASE_WARNEXPIRED       135
 #define IDD_ABOUTBOX                    200
 #define IDD_FIND                        201
 #define IDD_PASSWORDSAFE_DIALOG         202
@@ -322,6 +326,6 @@
 #define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         30000
 #define _APS_NEXT_CONTROL_VALUE         1275
-#define _APS_NEXT_SYMED_VALUE           132
+#define _APS_NEXT_SYMED_VALUE           136
 #endif
 #endif
