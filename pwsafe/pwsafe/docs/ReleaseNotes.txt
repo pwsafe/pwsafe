@@ -1,4 +1,4 @@
-Password Safe 3.10.02 Release Notes - ?????? 2007
+Password Safe 3.10.03 Release Notes - ?????? 2007
 =================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -7,6 +7,22 @@ Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.10.03
+=====================
+
+
+New Features for 3.10.03
+========================
+[] New email field allowed in URL field. To be treated as email, the data
+must be prefixed by the characters "[email]". The data following this 
+corresponds to the '[mailto:]' standard RFC2368.
+For example: "info@example.com?subject=PasswordSafe".
+[] Main toolbar can be customized via MS's standard dialog via right
+click on this toolbar.
+[1815192] New Find toolbar added at bottom of application above the status
+bar activated by the user doing a "Find".  Replaces the previous Find dialog.
+Button shortcuts: Ctrl+Alt+A = Advanced, Ctrl+Alt+S = Sensitivity, Ctrl+Alt+C = Clear
 
 Changes to Existing Features in 3.10.02
 =======================================

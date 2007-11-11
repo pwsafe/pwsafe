@@ -23,7 +23,6 @@
 #include "EditDlg.h"
 #include "KeySend.h"
 #include "ClearQuestionDlg.h"
-#include "FindDlg.h"
 
 #include <vector>
 #include <algorithm>
@@ -747,8 +746,9 @@ DboxMain::OnCopyURL()
 void
 DboxMain::OnFind()
 {
-  // create modeless or popup existing
-  CFindDlg::Doit(this, &m_lastFindCS, &m_lastFindStr);
+  // Note that this "toggles" the Find Tool Bar so that the user can use Ctrl+F 
+  // to show it and then hide it.
+  SetFindToolBar(!m_FindToolBar.IsVisible());
 }
 
 void
@@ -1055,3 +1055,19 @@ void DboxMain::SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases)
     csAliases += _T("\t[") +  *sa_iter + _T("]\r\n");
   }
 }
+
+LRESULT
+DboxMain::OnToolBarFindMessage(WPARAM /* wParam */, LPARAM /* lParam */)
+{
+  // Called when user types into the Find search edit control on the Find Toolbar
+  // and presses enter.
+  OnToolBarFind();
+  return 0L;
+}
+
+void DboxMain::OnToolBarFind()
+{
+  // Called when the user presses the Find button on the Find Toolbar
+  m_FindToolBar.Find();
+}
+

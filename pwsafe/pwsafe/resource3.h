@@ -119,13 +119,11 @@
 #define IDS_NOFIELDSFOREXPORT           5285
 #define IDS_NOOBJECT                    5286
 #define IDS_NOFUNCTION                  5287
-#define IDS_PASSWORDLISTEMPTY           5288
 #define IDS_ENTERSEARCHSTRING           5289
 #define IDS_NOMATCHFOUND                5290
 #define IDS_FOUNDAMATCH                 5291
 #define IDS_FOUNDMATCHES                5292
-#define IDS_CONTINUESEARCH              5293
-#define IDS_SEARCHNOTFOUND              5294
+#define IDS_SEARCHWRAPPED               5293
 #define IDS_FINDNEXT                    5295
 #define IDS_IMPORTED                    5296
 #define IDS_NOCURRENTSAFE               5297
@@ -325,4 +323,6 @@
 #define IDS_TEXTIMPORTFAILED            5499
 #define IDS_COMPARINGDATABASE           5500
 #define IDS_COPYENTRY                   5501
-
+#define IDS_CASE_INSENSITIVE            5502
+#define IDS_CASE_SENSITIVE              5503
+#define IDS_CANTEMAIL                   5504

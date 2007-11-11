@@ -67,7 +67,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 	{_T("DisplayExpandedAddEditDlg"), true, true},					// database
 	{_T("MaintainDateTimeStamps"), false, true},					// database
 	{_T("SavePasswordHistory"), false, true},						// database
-	{_T("FindWraps"), false, false},								// application
+	{_T("FindWraps"), false, false},								// application - obsoleted in 3.11
 	{_T("ShowNotesDefault"), false, true},							// database
 	{_T("BackupBeforeEverySave"), true, false},					    // application
 	{_T("PreExpiryWarn"), false, false},                            // application
@@ -115,6 +115,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("ColumnWidths"), _T(""), false},							// application
   {_T("DefaultAutotypeString"), _T(""), true},					// database
 	{_T("AltBrowserCmdLineParms"), _T(""), false},				// application
+	{_T("MainToolBarButtons"), _T(""), false},                  // application
 };
 
 

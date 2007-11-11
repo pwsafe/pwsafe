@@ -620,10 +620,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FindDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\GeneralMsgBox.cpp"
 				>
 			</File>
@@ -724,6 +720,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWFindToolBar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PwFont.cpp"
 				>
 			</File>
@@ -733,6 +733,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSRecentFileList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PWToolBar.cpp"
 				>
 			</File>
 			<File
@@ -869,10 +873,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FindDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\GeneralMsgBox.h"
 				>
 			</File>
@@ -965,6 +965,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWFindToolBar.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PwFont.h"
 				>
 			</File>
@@ -978,6 +982,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSRecentFileList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWToolBar.h"
 				>
 			</File>
 			<File
@@ -1074,39 +1082,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\leaf.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_alias.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_base.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_base_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_base_warn.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_warn.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\res\locked_tray.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\res\node.bmp"
 				>
 			</File>
 			<File
@@ -1123,18 +1099,6 @@
 			</File>
 			<File
 				RelativePath=".\res\psafetxt.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar1.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar2.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar3.bmp"
 				>
 			</File>
 			<File

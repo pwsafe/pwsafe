@@ -60,7 +60,9 @@ class PWSprefs {
 		   LockOnWindowLock, LockOnIdleTimeout,
 		   EscExits, IsUTF8, HotKeyEnabled, MRUOnFileMenu,
 		   DisplayExpandedAddEditDlg, MaintainDateTimeStamps,
-		   SavePasswordHistory, FindWraps, ShowNotesDefault,
+		   SavePasswordHistory, 
+       FindWraps, // Obsoleted in 3.11
+       ShowNotesDefault,
 		   BackupBeforeEverySave, PreExpiryWarn,
        ExplorerTypeTree, ListViewGridLines, MinimizeOnAutotype,
        ShowUsernameInTree,
@@ -74,6 +76,7 @@ class PWSprefs {
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
 		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
       ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
+      MainToolBarButtons,
 		  NumStringPrefs};
 
   // for DoubleClickAction

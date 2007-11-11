@@ -54,7 +54,9 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_usedefuser(false), m_defusername(_T("")),
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_passkey(NULL), m_passkey_len(0),
-                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0)
+                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
+                     m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
+                     m_bNotify(false)
 {
   if (!PWScore::m_session_initialized) {
 	CItemData::SetSessionKey(); // per-session initialization
@@ -91,6 +93,7 @@ void PWScore::AddEntry(const uuid_array_t &uuid, const CItemData &item)
   m_changed = true;
   ASSERT(m_pwlist.find(uuid) == m_pwlist.end());
   m_pwlist[uuid] = item;
+  NotifyListModified();
 }
 
 void
@@ -105,6 +108,7 @@ PWScore::ClearData(void)
   m_pwlist.clear();
   m_base2aliases_mmap.clear();
   m_alias2base_map.clear();
+  NotifyListModified();
 }
 void
 PWScore::ReInit(bool bNewFile)
@@ -125,6 +129,7 @@ PWScore::ReInit(bool bNewFile)
   }
   m_nRecordsWithUnknownFields = 0;
   m_UHFL.clear();
+  NotifyListModified();
 }
 
 void
@@ -1231,6 +1236,7 @@ PWScore::ReadFile(const CMyString &a_filename,
     delete in;
 
     AddAliasesViaBaseUUID(possible_aliases, NULL);
+    NotifyListModified();
 
     return closeStatus;
 }
@@ -2228,4 +2234,30 @@ bool PWScore::GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uui
     memset(base_uuid, 0x00, sizeof(uuid_array_t));
     return false;
   }
+}
+
+bool PWScore::RegisterOnListModified(void (*pfcn) (LPARAM), LPARAM instance)
+{
+  if (m_pfcnNotifyListModified != NULL)
+    return false;
+
+  m_pfcnNotifyListModified = pfcn;
+  m_NotifyInstance = instance;
+  m_bNotify = true;
+  return true;
+}
+
+void PWScore::UnRegisterOnListModified()
+{
+  m_pfcnNotifyListModified = NULL;
+  m_NotifyInstance = NULL;
+  m_bNotify = false;
+}
+
+void PWScore::NotifyListModified()
+{
+  if (!m_bNotify || m_pfcnNotifyListModified == NULL)
+    return;
+
+  m_pfcnNotifyListModified(m_NotifyInstance);
 }
