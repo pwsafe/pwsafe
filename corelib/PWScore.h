@@ -162,7 +162,7 @@ class PWScore {
   void AddEntry(const uuid_array_t &uuid, const CItemData &item);
   ItemList::size_type GetNumEntries() const {return m_pwlist.size();}
   void RemoveEntryAt(ItemListIter pos)
-  {m_changed = true; m_pwlist.erase(pos);}
+  {m_changed = true; NotifyListModified(); m_pwlist.erase(pos);}
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const CMyString &a_group,
                     const CMyString &a_title, const CMyString &a_user);
@@ -196,6 +196,16 @@ class PWScore {
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
+
+  // (Un)Register to be notified if the password list changes
+  bool RegisterOnListModified(void (*pfcn) (LPARAM), LPARAM);
+  void UnRegisterOnListModified();
+  void NotifyListModified();
+  void SuspendOnListNotification()
+    {m_bNotify = false;}
+  void ResumeOnListNotification()
+    {m_bNotify = true;}
+
   void SetPassKey(const CMyString &new_passkey);
 
   void SetDisplayStatus(const std::vector<bool> &s);
@@ -255,5 +265,10 @@ class PWScore {
 
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;
+
+  // Call back if password list has been modified
+  void (*m_pfcnNotifyListModified) (LPARAM);
+  LPARAM m_NotifyInstance;
+  bool m_bNotify;
 };
 #endif /* __PWSCORE_H */

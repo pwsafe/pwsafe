@@ -14,6 +14,41 @@
 // Pick a number at the end of the WM_USER range
 #define EM_SELECTALL (WM_APP - 1)
 
+class CStaticExtn : public CStatic
+{
+// Construction
+public:
+	CStaticExtn();
+  void SetColour(COLORREF cfUser)
+    {m_bUserColour = TRUE; m_cfUser = cfUser;}
+  void ResetColour()
+    {m_bUserColour = FALSE;}
+
+// Attributes
+private:
+	BOOL m_bUserColour;
+	COLORREF m_cfUser;
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CEditEx)
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CStaticExtn();
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CEditExtn)
+	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
 class CEditExtn : public CEdit
 {
 // Construction
@@ -26,8 +61,8 @@ public:
 private:
 	BOOL m_bIsFocused;
 
-	CBrush brInFocus;
-	CBrush brNoFocus;
+	CBrush m_brInFocus;
+	CBrush m_brNoFocus;
 
  	int m_lastposition, m_nStartChar, m_nEndChar;
   int m_message_number;
@@ -67,8 +102,8 @@ public:
 private:
 	BOOL m_bIsFocused;
 
-	CBrush brInFocus;
-	CBrush brNoFocus;
+	CBrush m_brInFocus;
+	CBrush m_brNoFocus;
 
 // Operations
 public:

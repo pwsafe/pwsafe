@@ -500,13 +500,13 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           pNewRecentEntryMenu[i]->InsertMenu(2, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYCOPYNOTES1 + i,
                                              cs_text);
-          cs_text.LoadString(IDS_TRAYBROWSE);
-          pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
-                                             ID_MENUITEM_TRAYBROWSE1 + i,
-                                             cs_text);
           cs_text.LoadString(IDS_TRAYAUTOTYPE);
-          pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
+          pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
                                              ID_MENUITEM_TRAYAUTOTYPE1 + i,
+                                             cs_text);
+          cs_text.LoadString(IDS_TRAYBROWSE);
+          pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
+                                             ID_MENUITEM_TRAYBROWSE1 + i,
                                              cs_text);
           cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
           pNewRecentEntryMenu[i]->InsertMenu(5, MF_BYPOSITION | MF_STRING,

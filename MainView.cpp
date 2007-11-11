@@ -44,6 +44,13 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+void DboxMain::StopFind(LPARAM instance)
+{
+  // Callback from PWScore if the password list has been changed invalidating the 
+  // indices vector
+  DboxMain *self = (DboxMain*)instance;
+  self->OnHideFindToolBar();
+}
 
 //-----------------------------------------------------------------------------
 
@@ -147,7 +154,6 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
-
 void
 DboxMain::DoDataExchange(CDataExchange* pDX)
 {
@@ -163,9 +169,10 @@ DboxMain::UpdateToolBar(bool state)
 {
 	if (m_toolbarsSetup == TRUE) {
     BOOL State = (state) ? FALSE : TRUE;
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, State);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_DELETE, State);
-		m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE, State);
+    CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
+		mainTBCtrl.EnableButton(ID_TOOLBUTTON_ADD, State);
+		mainTBCtrl.EnableButton(ID_TOOLBUTTON_DELETE, State);
+		mainTBCtrl.EnableButton(ID_TOOLBUTTON_SAVE, State);
 	}
 }
 
@@ -179,13 +186,15 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     int IDs[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
                  ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_EDIT};
 
-    for (int i = 0; i < sizeof(IDs)/sizeof(IDs[0]); i++)
-      m_wndToolBar.GetToolBarCtrl().EnableButton(IDs[i], State);
+    CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
+    for (int i = 0; i < sizeof(IDs)/sizeof(IDs[0]); i++) {
+      mainTBCtrl.EnableButton(IDs[i], State);
+    }
 
     if (ci == NULL || ci->IsURLEmpty())
-      m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
+      mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
     else
-      m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+      mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
   }
 }
 
@@ -227,25 +236,51 @@ DboxMain::setupBars()
       m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
   }             
 
-  // Add the ToolBar.
-  if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
-                             WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-      !m_wndToolBar.LoadToolBar(IDB_TOOLBAR1))
-    {
-      TRACE0("Failed to create toolbar\n");
+  CDC* pDC = this->GetDC();
+  int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
+  m_MainToolBar.Init(NumBits);
+  m_FindToolBar.Init(NumBits, this, WM_TOOLBAR_FIND);
+
+  // Add the Main ToolBar.
+  if (!m_MainToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
+                              WS_CHILD | WS_VISIBLE | CCS_ADJUSTABLE |
+                              CBRS_TOP | CBRS_SIZE_DYNAMIC,
+                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 1)) {
+    TRACE("Failed to create Main toolbar\n");
+    return;      // fail to create
+  }
+  DWORD dwStyle = m_MainToolBar.GetBarStyle();
+  dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
+                      CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
+                      CBRS_TOOLTIPS | CBRS_FLYBY;
+  m_MainToolBar.SetBarStyle(dwStyle);
+  m_MainToolBar.SetWindowText(_T("Standard"));
+
+  // Add the Find ToolBar.
+  if (!m_FindToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
+                              WS_CHILD | WS_VISIBLE |
+                              CBRS_BOTTOM | CBRS_SIZE_DYNAMIC,
+                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 2)) {
+    TRACE("Failed to create Find toolbar\n");
       return;      // fail to create
     }
+  dwStyle = m_FindToolBar.GetBarStyle();
+  dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
+                      CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
+                      CBRS_TOOLTIPS | CBRS_FLYBY;
+  m_FindToolBar.SetBarStyle(dwStyle);
+  m_FindToolBar.SetWindowText(_T("Find"));
 
   // Set toolbar according to graphic capabilities, overridable by user choice.
-  CDC* pDC = this->GetDC();
-  int NumBits = ( pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32 );
   if (NumBits < 16 || !PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar))  {
-    SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
+    SetToolbar(ID_MENUITEM_OLD_TOOLBAR, true);
   } else {
-    SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
+    SetToolbar(ID_MENUITEM_NEW_TOOLBAR, true);
   }
 
-  // Set flag
+  m_FindToolBar.ShowFindToolBar(false);
+
+  // Set flag - we're done
   m_toolbarsSetup = TRUE;
   UpdateToolBar(m_core.IsReadOnly());
 #endif
@@ -620,7 +655,6 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
 
     retval = m_ctlItemTree.SelectItem(di->tree_item);
     if (MakeVisible) {
-      // Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(di->tree_item, TVIS_BOLD, TVIS_BOLD);
       m_LastFoundItem = di->tree_item;
       m_bBoldItem = true;
@@ -705,6 +739,9 @@ DboxMain::OnSize(UINT nType,
     // or by right clicking in the Taskbar (not using System Tray)
     PWSprefs *prefs = PWSprefs::GetInstance();
 
+    // Suspend notification of changes
+    m_core.SuspendOnListNotification();
+
     m_selectedAtMinimize = getSelectedItem();
     m_ctlItemList.DeleteAllItems();
     m_ctlItemTree.DeleteAllItems();
@@ -738,16 +775,29 @@ DboxMain::OnSize(UINT nType,
       UnMinimize(false);
       RestoreDisplayStatus();
       m_ctlItemTree.SetRestoreMode(true);
+      m_bIsRestoring = true;
       RefreshList();
       if (m_selectedAtMinimize != NULL)
         SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
       m_ctlItemTree.SetRestoreMode(false);
+      m_bIsRestoring = false;
+      
+      // Resume notification of changes
+      m_core.ResumeOnListNotification();
+      if (m_FindToolBar.IsVisible()) {
+        SetFindToolBar(true);
+      }
 #if !defined(POCKET_PC)
     } else { // m_bSizing == true: here if size changed
       CRect rect;
       GetWindowRect(&rect);
       PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
                                            rect.left, rect.right);
+
+      // Make sure Find toolbar is above Status bar
+      if (m_FindToolBar.IsVisible()) {
+        SetToolBarPositions();
+      }
     }
   } // nType == SIZE_RESTORED
 #endif
@@ -774,11 +824,16 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
   CRect rect, appl_rect;
   mp = ::GetMessagePos();
   GetWindowRect(&appl_rect);
-  m_wndToolBar.GetWindowRect(&rect);
+  m_MainToolBar.GetWindowRect(&rect);
 
-  // RClick over Main Toolbar
+  // RClick over Main Toolbar - allow Customize Main toolbar
   if (mp.x > appl_rect.left && mp.x < appl_rect.right &&
       mp.y > rect.top && mp.y < rect.bottom) {
+    if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
+      CMenu* pPopup = menu.GetSubMenu(0);
+      ASSERT(pPopup != NULL);
+      pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+    }
     return;
   }
 
@@ -1204,13 +1259,13 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
     m_bSortAscending = true;
   }
   SortListView();
+  OnHideFindToolBar();
 
   *pResult = TRUE;
 }
 
 void DboxMain::SortListView()
 {
-
   HDITEM hdi;
   hdi.mask = HDI_FORMAT;
 
@@ -1224,6 +1279,9 @@ void DboxMain::SortListView()
   // Turn on the correct arrow
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   m_LVHdrCtrl.SetItem(iIndex, &hdi);
+
+ if (!m_bIsRestoring && m_FindToolBar.IsVisible())
+   OnHideFindToolBar();
 }
 
 void
@@ -1295,6 +1353,8 @@ DboxMain::OnListView()
 {
   SetListView();
   m_IsListView = true;
+  if (m_FindToolBar.IsVisible())
+    OnHideFindToolBar();
 }
 
 void
@@ -1302,6 +1362,8 @@ DboxMain::OnTreeView()
 {
   SetTreeView();
   m_IsListView = false;
+  if (m_FindToolBar.IsVisible())
+    OnHideFindToolBar();
 }
 
 void
@@ -1341,54 +1403,26 @@ DboxMain::OnNewToolbar()
 }
 
 void
-DboxMain::SetToolbar(int menuItem)
+DboxMain::SetToolbar(const int menuItem, bool bInit)
 {
-  UINT Flags = 0;
-  CBitmap bmTemp; 
-  COLORREF Background = RGB(192, 192, 192);
-
-  switch (menuItem) {
-  case ID_MENUITEM_NEW_TOOLBAR: {
-    int NumBits = 32;
-    CDC* pDC = this->GetDC();
-    if ( pDC )  {
-      NumBits = pDC->GetDeviceCaps(12 /*BITSPIXEL*/);
-    }
-    if (NumBits >= 32) {
-      bmTemp.LoadBitmap(IDB_TOOLBAR1);
-      Flags = ILC_MASK | ILC_COLOR32;
-    } else {
-      bmTemp.LoadBitmap(IDB_TOOLBAR2);
-      Flags = ILC_MASK | ILC_COLOR8;
-      Background = RGB( 196,198,196 );
-    }
-    break;
-  }
-  case ID_MENUITEM_OLD_TOOLBAR:
-    bmTemp.LoadBitmap(IDB_TOOLBAR3);
-    Flags = ILC_MASK | ILC_COLOR8;
-    break;
-  default:
-    ASSERT(false);
-    return;
-  }
+  // Toolbar
   m_toolbarMode = menuItem;
 
-  CToolBarCtrl& tbcTemp = m_wndToolBar.GetToolBarCtrl();
-  CImageList ilTemp; 
-  ilTemp.Create(16, 16, Flags, 10, 10);
-  ilTemp.Add(&bmTemp, Background);
-  tbcTemp.SetImageList(&ilTemp);
-  ilTemp.Detach();
-  bmTemp.Detach();
+  if (bInit) {
+    m_MainToolBar.LoadDefaultToolBar(m_toolbarMode);
+    m_FindToolBar.LoadDefaultToolBar(m_toolbarMode);
+    CString csButtonNames = PWSprefs::GetInstance()->
+                                    GetPref(PWSprefs::MainToolBarButtons);
+    m_MainToolBar.CustomizeButtons(csButtonNames);
+  } else {
+    m_MainToolBar.ChangeImages(m_toolbarMode);
+    m_FindToolBar.ChangeImages(m_toolbarMode);
+  }
 
-  m_wndToolBar.Invalidate();
+  m_MainToolBar.Invalidate();
+  m_FindToolBar.Invalidate();
 
-  CRect rect;
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
-  m_ctlItemList.MoveWindow(&rect, TRUE);
-  m_ctlItemTree.MoveWindow(&rect, TRUE); // Fix Bug 940585
+  SetToolBarPositions();
 }
 
 void
@@ -1559,7 +1593,7 @@ DboxMain::LaunchBrowser(const CString &csURL)
   HINSTANCE hinst;
   CString theURL(csURL);
 
-  // csURL may contain "[alt]" or "[ssh]".
+  // csURL may contain "[alt]", "[ssh]" or "[email]".
   // If csURL contains "[alt]" then we'll use the alternate browser
   // (if defined), and remove the "[alt]" from the URL.
   // "[ssh]" does same, EXCEPT that the following is NOT applied:
@@ -1569,6 +1603,20 @@ DboxMain::LaunchBrowser(const CString &csURL)
   //
   // The "[ssh]" handling allows one to specify, for example,
   // Putty as the ssh client, and user@host as the "url".
+
+  if (theURL.Left(7) == _T("[email")) {
+    CString cs_command = _T("mailto:") + theURL.Mid(7);
+    cs_command.Remove(_T('\r'));
+    cs_command.Remove(_T('\n'));
+    cs_command.Remove(_T('\t'));
+    HINSTANCE hinst = ::ShellExecute(NULL, NULL, cs_command, NULL,
+                           NULL, SW_SHOWNORMAL);
+    if(hinst < HINSTANCE(32)) {
+      AfxMessageBox(IDS_CANTEMAIL, MB_ICONSTOP);
+      return FALSE;
+    }
+    return TRUE;
+  }
 
   int altReplacements = theURL.Replace(_T("[alt]"), _T(""));
   int sshReplacements = theURL.Replace(_T("[ssh]"), _T(""));
@@ -2341,4 +2389,99 @@ DboxMain::OnUpdateViewReports(CCmdUI *pCmdUI)
   int status = ::_tstat(cs_filename, &statbuf);
   if (status != 0)
     pCmdUI->Enable(FALSE);
+}
+
+void
+DboxMain::OnCustomizeToolbar()
+{
+  CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
+  mainTBCtrl.Customize();
+
+  CString cs_temp = m_MainToolBar.GetButtonString();
+  PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
+}
+
+void
+DboxMain::OnHideFindToolBar()
+{
+  SetFindToolBar(false);
+}
+
+
+void
+DboxMain::SetFindToolBar(bool bShow)
+{
+  if (m_FindToolBar.GetSafeHwnd() == NULL)
+    return;
+
+  if (bShow)
+    m_core.RegisterOnListModified(StopFind, (LPARAM)this);
+  else
+    m_core.UnRegisterOnListModified();
+
+  m_FindToolBar.ShowFindToolBar(bShow);
+
+  SetToolBarPositions();
+}
+
+void
+DboxMain::SetToolBarPositions()
+{
+  if (m_FindToolBar.GetSafeHwnd() == NULL)
+    return;
+
+  CRect rect;
+  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+  RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
+  m_ctlItemList.MoveWindow(&rect, TRUE);
+  m_ctlItemTree.MoveWindow(&rect, TRUE);
+
+  if (m_FindToolBar.IsVisible()) {
+    // Is visible.  Try to get FindToolBar "above" the StatusBar!
+    ASSERT(m_FindToolBar.GetParent() == m_statusBar.GetParent());
+
+    CRect ftb_rect, stb_rect;
+    m_FindToolBar.GetWindowRect(&ftb_rect);
+    m_statusBar.GetWindowRect(&stb_rect);
+
+    if (ftb_rect.top > stb_rect.top) {
+      // FindToolBar is "below" the StatusBar
+      ScreenToClient(&ftb_rect);
+      ScreenToClient(&stb_rect);
+      // Move FindToolBar up by the height of the Statusbar
+      m_FindToolBar.MoveWindow(ftb_rect.left, ftb_rect.top - stb_rect.Height(),
+                               ftb_rect.Width(), ftb_rect.Height());
+      // Move Statusbar down by the height of the FindToolBar
+      m_statusBar.MoveWindow(stb_rect.left, stb_rect.top + ftb_rect.Height(),
+                             stb_rect.Width(), stb_rect.Height());
+      m_FindToolBar.Invalidate();
+      m_statusBar.Invalidate();
+    }
+  }
+}
+
+void
+DboxMain::OnToolBarClearFind()
+{
+  m_FindToolBar.ClearFind();
+}
+
+void
+DboxMain::OnToolBarFindCase()
+{
+  m_FindToolBar.ToggleToolBarFindCase();
+}
+
+void 
+DboxMain::OnToolBarFindAdvanced()
+{
+  m_FindToolBar.ShowFindAdvanced();
+}
+
+void 
+DboxMain::OnUpdateToolBarFindCase(CCmdUI * /*pCmdUI */)
+{
+  m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
+                                  ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
+                                  m_FindToolBar.IsFindCaseSet());
 }

@@ -27,6 +27,9 @@
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
 #include "ColumnChooserDlg.h"
+#include "PWToolBar.h"
+#include "PWFindToolBar.h"
+#include "ControlExtns.h"
 #include <vector>
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
@@ -55,6 +58,9 @@ DECLARE_HANDLE(HDROP);
 #define WM_CALL_EXTERNAL_EDITOR  (WM_APP + 40)
 #define WM_EXTERNAL_EDITOR_ENDED (WM_APP + 41)
 
+// Simulate Ctrl+F from Find Toolbar "enter"
+#define WM_TOOLBAR_FIND (WM_APP + 50)
+
 // timer event number used to check if the workstation is locked
 #define TIMER_CHECKLOCK 0x04
 // timer event number used to support lock on user-defined timeout
@@ -80,6 +86,7 @@ class DboxMain
 
   // static methods and variables
 private:
+  static void StopFind(LPARAM instance);
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
@@ -109,7 +116,7 @@ public:
   ItemListIter End()
   {return m_core.GetEntryEndIter();}
 
-  // FindAll is used by CFindDlg, returns # of finds.
+  // FindAll is used by CPWFindToolBar, returns # of finds.
   size_t FindAll(const CString &str, BOOL CaseSensitive,
               std::vector<int> &indices);
   size_t FindAll(const CString &str, BOOL CaseSensitive,
@@ -153,15 +160,13 @@ public:
 
   void UpdateToolBar(bool state);
   void UpdateToolBarForSelectedItem(CItemData *ci);
+  void SetToolBarPositions();
   bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
   BOOL LaunchBrowser(const CString &csURL);
-  void SetFindActive() {m_bFindActive = true;}
-  void SetFindInActive() {m_bFindActive = false;}
-  bool GetCurrentView() {return m_IsListView;}
   void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
   void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
@@ -214,6 +219,7 @@ protected:
 
   // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
   bool	m_bSizing;
+  bool m_bIsRestoring;
   bool  m_bOpen;
   bool m_bValidate; // do validation after reading db
 
@@ -225,7 +231,8 @@ protected:
   CCeCommandBar	*m_wndCommandBar;
   CMenu			*m_wndMenu;
 #else
-  CToolBar m_wndToolBar;
+  CPWToolBar m_MainToolBar;   // main toolbar
+  CPWFindToolBar m_FindToolBar;  // Find toolbar
   CStatusBar m_statusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
@@ -243,7 +250,6 @@ protected:
 
   bool m_bTSUpdated;
   int m_iSessionEndingStatus;
-  bool m_bFindActive;
 
   // Used for Advanced functions
   CItemData::FieldBits m_bsFields;
@@ -286,6 +292,7 @@ protected:
   LRESULT EditCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
                             uuid_array_t &fromuuid, uuid_array_t &touuid);
+  LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -295,7 +302,7 @@ protected:
 
   void SetListView();
   void SetTreeView();
-  void SetToolbar(int menuItem);
+  void SetToolbar(const int menuItem, bool bInit = false);
   void UpdateStatusBar();
   void UpdateMenuAndToolBar(const bool bOpen);
   void SetDCAText();
@@ -320,6 +327,7 @@ protected:
   bool EditItem(CItemData *ci, PWScore *pcore = NULL);
   void SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases);
   void ViewReport(const CString cs_ReportFileName);
+  void SetFindToolBar(bool bShow);
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
@@ -416,7 +424,6 @@ protected:
   afx_msg void OnUpdateROCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateClosedCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateTVCommand(CCmdUI *pCmdUI);
-  afx_msg void OnUpdateViewCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateRenameCommand(CCmdUI *pCmdUI);
   afx_msg void OnUpdateEmptyDB(CCmdUI *pCmdUI);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
@@ -433,6 +440,14 @@ protected:
   afx_msg void OnImportKeePass();
   afx_msg void OnImportXML();
 
+  afx_msg void OnToolBarFind();
+  afx_msg void OnCustomizeToolbar();
+  afx_msg void OnToolBarFindCase();
+  afx_msg void OnUpdateToolBarFindCase(CCmdUI *pCmdUI);
+  afx_msg void OnToolBarFindAdvanced();
+  afx_msg void OnToolBarClearFind();
+  afx_msg void OnHideFindToolBar();
+
 #if _MFC_VER > 1200
   afx_msg BOOL OnOpenMRU(UINT nID);
 #else
@@ -448,8 +463,6 @@ protected:
 private:
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   PWScore &m_core;
-  CMyString m_lastFindStr;
-  BOOL m_lastFindCS;
   bool m_IsStartSilent;
   bool m_IsStartClosed;
   bool m_bStartHiddenAndMinimized;

@@ -35,9 +35,37 @@ static char THIS_FILE[] = __FILE__;
   #define EDIT_CLIPBOARD_TEXT_FORMAT	CF_TEXT
 #endif
 
-const COLORREF crefInFocus = (RGB(222,255,222));  // Light green
-const COLORREF crefNoFocus = (RGB(255,255,255));  // White
-const COLORREF crefBlack = (RGB(0,0,0));          // Black
+const COLORREF crefInFocus = (RGB(222, 255, 222));  // Light green
+const COLORREF crefNoFocus = (RGB(255, 255, 255));  // White
+const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
+
+/////////////////////////////////////////////////////////////////////////////
+// CEditExtn
+
+CStaticExtn::CStaticExtn()
+  : m_bUserColour(FALSE)
+{
+}
+
+CStaticExtn::~CStaticExtn()
+{
+}
+
+BEGIN_MESSAGE_MAP(CStaticExtn, CStatic)
+	//{{AFX_MSG_MAP(CStaticExtn)
+	ON_WM_CTLCOLOR_REFLECT()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
+{
+	if (!this->IsWindowEnabled() || !m_bUserColour)
+		return NULL;
+
+	pDC->SetTextColor(m_cfUser);
+  pDC->SetBkColor(GetSysColor(COLOR_BTNFACE));
+	return GetSysColorBrush(COLOR_BTNFACE);
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn
@@ -46,16 +74,16 @@ CEditExtn::CEditExtn()
   : m_bIsFocused(FALSE), m_lastposition(-1),
   m_message_number(-1), m_menustring("")
 {
-	brInFocus.CreateSolidBrush(crefInFocus);
-	brNoFocus.CreateSolidBrush(crefNoFocus);
+	m_brInFocus.CreateSolidBrush(crefInFocus);
+	m_brNoFocus.CreateSolidBrush(crefNoFocus);
 }
 
 CEditExtn::CEditExtn(int message_number, LPCTSTR menustring)
  : m_bIsFocused(FALSE), m_lastposition(-1),
    m_message_number(message_number), m_menustring(menustring)
 {
-	brInFocus.CreateSolidBrush(crefInFocus);
-	brNoFocus.CreateSolidBrush(crefNoFocus);
+	m_brInFocus.CreateSolidBrush(crefInFocus);
+	m_brNoFocus.CreateSolidBrush(crefNoFocus);
   // Don't allow if menu string is empty.
   if (m_menustring.IsEmpty())
     m_message_number = -1;
@@ -106,10 +134,10 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 	pDC->SetTextColor(crefBlack);
 	if (m_bIsFocused == TRUE) {
 		pDC->SetBkColor(crefInFocus);
-		return brInFocus;
+		return m_brInFocus;
 	} else {
 		pDC->SetBkColor(crefNoFocus);
-		return brNoFocus;
+		return m_brNoFocus;
 	}
 }
 
@@ -198,8 +226,8 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
 
 CListBoxExtn::CListBoxExtn() : m_bIsFocused(FALSE)
 {
-	brInFocus.CreateSolidBrush(crefInFocus);
-	brNoFocus.CreateSolidBrush(crefNoFocus);
+	m_brInFocus.CreateSolidBrush(crefInFocus);
+	m_brNoFocus.CreateSolidBrush(crefNoFocus);
 }
 
 CListBoxExtn::~CListBoxExtn()
@@ -238,10 +266,10 @@ HBRUSH CListBoxExtn::CtlColor(CDC* pDC, UINT /* nCtlColor */)
 
 	if (m_bIsFocused == TRUE) {
 		pDC->SetBkColor(crefInFocus);
-		return brInFocus;
+		return m_brInFocus;
 	} else {
 		pDC->SetBkColor(crefNoFocus);
-		return brNoFocus;
+		return m_brNoFocus;
 	}
 }
 

@@ -151,7 +151,7 @@ DboxMain::OpenOnInit(void)
                      MB_YESNO | MB_ICONWARNING) == IDNO) {
         CDialog::OnCancel();
       }
-      m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
+      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
                                                  FALSE);
       
       retval = TRUE;
@@ -545,7 +545,7 @@ DboxMain::Open( const CMyString &pszFilename )
               return PWScore::USER_CANCEL;
             }
             rc = PWScore::SUCCESS;
-            m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
+            m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
                                                        FALSE);
             break;
         }

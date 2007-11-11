@@ -36,7 +36,6 @@
 #include "TryAgainDlg.h"
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
-#include "FindDlg.h"
 #include "GeneralMsgBox.h"
 
 // widget override?
@@ -76,16 +75,15 @@ DboxMain::DboxMain(CWnd* pParent)
      m_bSizing(false), m_needsreading(true), m_windowok(false),
      m_toolbarsSetup(FALSE),
      m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
-     m_lastFindCS(FALSE), m_lastFindStr(_T("")),
      m_core(app.m_core), m_pFontTree(NULL),
      m_selectedAtMinimize(NULL), m_bTSUpdated(false),
      m_iSessionEndingStatus(IDIGNORE),
-     m_bFindActive(false), m_pchTip(NULL), m_pwchTip(NULL),
+     m_pchTip(NULL), m_pwchTip(NULL),
      m_bValidate(false), m_bOpen(false), 
      m_IsStartClosed(false), m_IsStartSilent(false),
      m_bStartHiddenAndMinimized(false),
      m_bAlreadyToldUserNoSave(false), m_inExit(false),
-     m_pCC(NULL), m_bBoldItem(false)
+     m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -114,8 +112,6 @@ DboxMain::~DboxMain()
   delete m_pchTip;
   delete m_pwchTip;
   delete m_pFontTree;
-
-  CFindDlg::EndIt();
 }
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
@@ -164,15 +160,14 @@ ON_UPDATE_COMMAND_UI(ID_MENUITEM_DELETE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
 ON_UPDATE_COMMAND_UI(ID_MENUITEM_RENAME, OnUpdateRenameCommand)
 ON_COMMAND(ID_MENUITEM_FIND, OnFind)
+ON_UPDATE_COMMAND_UI(ID_MENUITEM_FIND, OnUpdateEmptyDB)
 ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
 ON_UPDATE_COMMAND_UI(ID_MENUITEM_DUPLICATEENTRY, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
 
 // View Menu
 ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_LIST_VIEW, OnUpdateViewCommand)
 ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_TREE_VIEW, OnUpdateViewCommand)
 ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
 ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
 ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
@@ -186,9 +181,9 @@ ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDA
 // Manage Menu
 ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
 ON_UPDATE_COMMAND_UI(ID_MENUITEM_CHANGECOMBO, OnUpdateROCommand)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
 ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
+ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
 
 // Help Menu
@@ -252,6 +247,7 @@ ON_COMMAND(ID_TRAYRECENT_ENTRY_CLEAR, OnTrayClearRecentEntries)
 ON_UPDATE_COMMAND_UI(ID_TRAYRECENT_ENTRY_CLEAR, OnUpdateTrayClearRecentEntries)
 ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
 ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
+ON_COMMAND(ID_TOOLBUTTON_CLOSE, OnClose)
 ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
 ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
 ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
@@ -266,6 +262,17 @@ ON_COMMAND(ID_TOOLBUTTON_EXPANDALL, OnExpandAll)
 ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_EXPANDALL, OnUpdateTVCommand)
 ON_COMMAND(ID_TOOLBUTTON_COLLAPSEALL, OnCollapseAll)
 ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_COLLAPSEALL, OnUpdateTVCommand)
+
+ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
+ON_COMMAND(ID_TOOLBUTTON_FIND, OnToolBarFind)
+ON_COMMAND(ID_TOOLBUTTON_FINDCASE, OnToolBarFindCase)
+ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_FINDCASE, OnUpdateToolBarFindCase)
+ON_COMMAND(ID_TOOLBUTTON_FINDCASE_I, OnToolBarFindCase)
+ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_FINDCASE_I, OnUpdateToolBarFindCase)
+ON_COMMAND(ID_TOOLBUTTON_FINDCASE_S, OnToolBarFindCase)
+ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_FINDCASE_S, OnUpdateToolBarFindCase)
+ON_COMMAND(ID_TOOLBUTTON_FINDADVANCED, OnToolBarFindAdvanced)
+ON_COMMAND(ID_TOOLBUTTON_CLEARFIND, OnToolBarClearFind)
 #endif
 
 #ifndef POCKET_PC
@@ -278,6 +285,9 @@ ON_MESSAGE(WM_CCTOHDR_DD_COMPLETE, OnCCToHdrDragComplete)
 ON_MESSAGE(WM_HDRTOCC_DD_COMPLETE, OnHdrToCCDragComplete)
 ON_MESSAGE(WM_HDR_DRAG_COMPLETE, OnHeaderDragComplete)
 ON_MESSAGE(WM_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
+ON_MESSAGE(WM_TOOLBAR_FIND, OnToolBarFindMessage)
+
+ON_COMMAND(ID_MENUITEM_CUSTOMIZETOOLBAR, OnCustomizeToolbar)
    
 //}}AFX_MSG_MAP
 ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
@@ -637,6 +647,8 @@ DboxMain::OnInitDialog()
   }
 
   SetInitialDatabaseDisplay();
+  OnHideFindToolBar();
+
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -784,7 +796,6 @@ void DboxMain::OnBrowse()
   }
 }
 
-
 // this tells OnSize that the user is currently
 // changing the size of the dialog, and not restoring it
 void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
@@ -799,9 +810,13 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 void
 DboxMain::OnUpdateEmptyDB(CCmdUI *pCmdUI)
 {
-  // Note: Disable if database is empty
+  // Note: Disable if database is empty, but have to re-enable every time
+  // if not, as user might have done a "Ctrl+F" whilst no entries there 
+  // (closed or new database) and it would not have been reset.
   if (m_core.GetNumEntries() == 0)
   	pCmdUI->Enable(FALSE);
+  else
+    pCmdUI->Enable(TRUE);
 }
 
 void
@@ -841,14 +856,6 @@ DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
       }
   }
 #endif
-}
-
-void
-DboxMain::OnUpdateViewCommand(CCmdUI *pCmdUI)
-{
-  // Use this callback to disable swap between Tree and List modes
-  // during a Find operation
-  pCmdUI->Enable(m_bFindActive ? FALSE : TRUE);
 }
 
 void
@@ -943,13 +950,13 @@ DboxMain::ChangeOkUpdate()
   menu->EnableMenuItem(ID_MENUITEM_SAVE,
                        m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
   if (m_toolbarsSetup == TRUE) {
-	m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE,
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE,
 	                   m_core.IsChanged() ? TRUE : FALSE);
   }
 #ifdef DEMO
   bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
   if (isLimited)
-      m_wndToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, FALSE);
+      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, FALSE);
 #endif
   UpdateStatusBar();
 }
@@ -2130,20 +2137,25 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	xfilesubmenu->EnableMenuItem(ID_MENUITEM_RESTORE, MF_BYCOMMAND | imenuflags);
 
 	if (m_toolbarsSetup == TRUE) {
-    const BOOL enableIfOpen = (bOpen && m_core.GetNumEntries() > 0) ? TRUE : FALSE;
+    const BOOL enableIfOpen = (bOpen /*&& m_core.GetNumEntries() > 0 */) ? TRUE : FALSE;
     const BOOL enableIfOpenAndRW = m_core.IsReadOnly() ? FALSE : enableIfOpen;
     int condOpen[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
                       ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_CLEARCLIPBOARD,
                       ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_BROWSEURL,
-                      ID_TOOLBUTTON_EXPANDALL, ID_TOOLBUTTON_COLLAPSEALL, 
-                      ID_TOOLBUTTON_EDIT};
+                      ID_TOOLBUTTON_EXPANDALL, ID_TOOLBUTTON_COLLAPSEALL,
+                      ID_TOOLBUTTON_EDIT, ID_TOOLBUTTON_CLOSE, ID_TOOLBUTTON_FIND};
     int condOpenRW[] = {ID_TOOLBUTTON_SAVE, ID_TOOLBUTTON_ADD, ID_TOOLBUTTON_DELETE};
     int i;
+    CToolBarCtrl &tbCtrl = m_MainToolBar.GetToolBarCtrl();
 
     for (i = 0; i < sizeof(condOpen)/sizeof(condOpen[0]); i++)
-      m_wndToolBar.GetToolBarCtrl().EnableButton(condOpen[i], enableIfOpen);
+      tbCtrl.EnableButton(condOpen[i], enableIfOpen);
     for (i = 0; i < sizeof(condOpenRW)/sizeof(condOpenRW[0]); i++)
-      m_wndToolBar.GetToolBarCtrl().EnableButton(condOpenRW[i], enableIfOpenAndRW);
+      tbCtrl.EnableButton(condOpenRW[i], enableIfOpenAndRW);
+
+    if (m_FindToolBar.IsVisible() && enableIfOpen == FALSE) {
+      OnHideFindToolBar();
+    }
 	}
 }
 
