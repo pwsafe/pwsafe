@@ -239,6 +239,13 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   // Has it an embedded URL
   if (ci.IsURLEmpty()) {
     pCmdUI->Enable(FALSE);
+  } else {
+    const bool bIsEmail = ci.GetURL().Left(7) == _T("[email]");
+    CString cs_text = bIsEmail ? CS_SENDEMAIL : CS_BROWSEURL;
+    int nPos = cs_text.Find(_T("\t"));
+    if (nPos > 0)
+      cs_text = cs_text.Left(nPos);
+    pCmdUI->SetText(cs_text);
   }
 }
 

@@ -90,6 +90,7 @@ private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
+  static CString CS_BROWSEURL, CS_SENDEMAIL;
   static const CString DEFAULT_AUTOTYPE;
 
 public:
@@ -307,6 +308,7 @@ protected:
   void UpdateMenuAndToolBar(const bool bOpen);
   void SetDCAText();
   void SortListView();
+  void UpdateBrowseURLSendEmailButton(const bool bIsEmail);
 
   //Version of message functions with return values
   int Save(void);

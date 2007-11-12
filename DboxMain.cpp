@@ -67,6 +67,8 @@ CString DboxMain::CS_RENAMEENTRY;
 CString DboxMain::CS_RENAMEGROUP;
 CString DboxMain::CS_EDITENTRY;
 CString DboxMain::CS_VIEWENTRY;
+CString DboxMain::CS_BROWSEURL;
+CString DboxMain::CS_SENDEMAIL;
 CString DboxMain::CS_EXPCOLGROUP;
 
 //-----------------------------------------------------------------------------
@@ -92,6 +94,8 @@ DboxMain::DboxMain(CWnd* pParent)
   CS_DELETEGROUP.LoadString(IDS_MENUDELETEGROUP);
   CS_RENAMEENTRY.LoadString(IDS_MENURENAMEENTRY);
   CS_RENAMEGROUP.LoadString(IDS_MENURENAMEGROUP);
+  CS_BROWSEURL.LoadString(IDS_MENUBROWSEURL);
+  CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
   //}}AFX_DATA_INIT
@@ -262,6 +266,7 @@ ON_COMMAND(ID_TOOLBUTTON_EXPANDALL, OnExpandAll)
 ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_EXPANDALL, OnUpdateTVCommand)
 ON_COMMAND(ID_TOOLBUTTON_COLLAPSEALL, OnCollapseAll)
 ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_COLLAPSEALL, OnUpdateTVCommand)
+ON_COMMAND(ID_TOOLBUTTON_OPTIONS, OnOptions)
 
 ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
 ON_COMMAND(ID_TOOLBUTTON_FIND, OnToolBarFind)
@@ -1493,6 +1498,15 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     } else {
       pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
       pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
+      const bool bIsEmail = ci->GetURL().Left(7) == _T("[email]");
+      if (bIsEmail) {
+        pMenu->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
+        ID_MENUITEM_BROWSE, CS_SENDEMAIL);
+      } else {
+        pMenu->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
+        ID_MENUITEM_BROWSE, CS_BROWSEURL);
+      }
+      UpdateBrowseURLSendEmailButton(bIsEmail);
     }
 
     pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);

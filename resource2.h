@@ -4,6 +4,8 @@
 
 // Menus and Toolbars
 
+#define ID_MENUTOOLBAR_START            32000
+
 // File menu
 #define ID_MENUITEM_OPEN                32001
 #define ID_MENUITEM_NEW                 32002
@@ -105,7 +107,8 @@
 #define ID_TOOLBUTTON_DELETE            32612
 #define ID_TOOLBUTTON_EXPANDALL         32613
 #define ID_TOOLBUTTON_COLLAPSEALL       32614
-#define ID_TOOLBUTTON_HELP              32615
+#define ID_TOOLBUTTON_OPTIONS           32615
+#define ID_TOOLBUTTON_HELP              32616
 
 // Find Toolbar
 #define ID_TOOLBUTTON_CLOSEFIND         32630
@@ -120,8 +123,10 @@
 
 #define ID_MENUITEM_CUSTOMIZETOOLBAR    32640
 
+#define ID_MENUTOOLBAR_END              32999
+
 // System menu
-#define ID_SYSMENU_ALWAYSONTOP          32650
+#define ID_SYSMENU_ALWAYSONTOP          33000
 
 // Menu item ranges
 #define ID_FILE_MRU_ENTRY1              33001
