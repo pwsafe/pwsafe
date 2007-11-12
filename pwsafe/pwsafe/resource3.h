@@ -326,3 +326,5 @@
 #define IDS_CASE_INSENSITIVE            5502
 #define IDS_CASE_SENSITIVE              5503
 #define IDS_CANTEMAIL                   5504
+#define IDS_MENUBROWSEURL               5505
+#define IDS_MENUSENDEMAIL               5506

@@ -706,14 +706,14 @@ DboxMain::OnCopyNotes()
 
   clipboard_data = notes;
   if (!url.IsEmpty()) {
-  	  cs_text.LoadString(IDS_COPYURL);
-	  clipboard_data += CMyString(cs_text);
-	  clipboard_data += url;
+    cs_text.LoadString(IDS_COPYURL);
+    clipboard_data += CMyString(cs_text);
+    clipboard_data += url;
   }
   if (!autotype.IsEmpty()) {
-	  cs_text.LoadString(IDS_COPYAUTOTYPE);
-	  clipboard_data += CMyString(cs_text);
-	  clipboard_data += autotype;
+    cs_text.LoadString(IDS_COPYAUTOTYPE);
+    clipboard_data += CMyString(cs_text);
+    clipboard_data += autotype;
   }
   if (!clipboard_data.IsEmpty()) {
     SetClipboardData(clipboard_data);

@@ -193,8 +193,11 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
 
     if (ci == NULL || ci->IsURLEmpty())
       mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
-    else
+    else {
       mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+      const bool bIsEmail = ci->GetURL().Left(7) == _T("[email]");
+      UpdateBrowseURLSendEmailButton(bIsEmail);
+    }
   }
 }
 
@@ -915,6 +918,15 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     } else {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
+      const bool bIsEmail = itemData->GetURL().Left(7) == _T("[email]");
+      if (bIsEmail) {
+        pPopup->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
+                           ID_MENUITEM_BROWSE, CS_SENDEMAIL);
+      } else {
+        pPopup->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
+                           ID_MENUITEM_BROWSE, CS_BROWSEURL);
+      }
+      UpdateBrowseURLSendEmailButton(bIsEmail);
     }
 
     pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
@@ -2484,4 +2496,25 @@ DboxMain::OnUpdateToolBarFindCase(CCmdUI * /*pCmdUI */)
   m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
                                   ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
                                   m_FindToolBar.IsFindCaseSet());
+}
+
+void
+DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
+{
+  CToolBarCtrl &mainTBCtrl =  m_MainToolBar.GetToolBarCtrl();
+  if (mainTBCtrl.IsButtonHidden(ID_TOOLBUTTON_BROWSEURL) == TRUE)
+    return;
+
+  TBBUTTONINFO tbinfo;
+  memset(&tbinfo, 0x00, sizeof(tbinfo));
+  tbinfo.cbSize = sizeof(tbinfo);
+  mainTBCtrl.HideButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+  if (bIsEmail) {
+    tbinfo.iImage = m_MainToolBar.GetSendEmailImageIndex();
+  } else {
+    tbinfo.iImage = m_MainToolBar.GetBrowseURLImageIndex();
+  }
+  tbinfo.dwMask = TBIF_IMAGE;
+  mainTBCtrl.SetButtonInfo(ID_TOOLBUTTON_BROWSEURL, &tbinfo);
+  mainTBCtrl.HideButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
 }

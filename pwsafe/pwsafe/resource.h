@@ -138,7 +138,13 @@
 #define IDB_FIND_CLASSIC                303
 #define IDB_FIND_NEW32                  304
 #define IDB_FIND_NEW8                   305
-#define IDR_POPCUSTOMIZETOOLBAR         306
+#define IDB_SENDEMAIL_CLASSIC           306
+#define IDB_SENDEMAIL_NEW8              307
+#define IDB_SENDEMAIL_NEW32             308
+#define IDB_OPTIONS_CLASSIC             309
+#define IDB_OPTIONS_NEW8                310
+#define IDB_OPTIONS_NEW32               311
+#define IDR_POPCUSTOMIZETOOLBAR         312
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -382,7 +388,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        307
+#define _APS_NEXT_RESOURCE_VALUE        313
 #define _APS_NEXT_COMMAND_VALUE         30000
 #define _APS_NEXT_CONTROL_VALUE         1275
 #define _APS_NEXT_SYMED_VALUE           132

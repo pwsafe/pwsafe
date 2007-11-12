@@ -52,6 +52,7 @@ const CString CPWToolBar::m_csMainButtons[] = {
   _T("add"), _T("viewedit"), _T("~"),
   _T("delete"), _T("~"),
   _T("expandall"), _T("collapseall"), _T("~"),
+  _T("options"), _T("~"),
   _T("help")
 };
 
@@ -77,6 +78,8 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_TOOLBUTTON_EXPANDALL,
   ID_TOOLBUTTON_COLLAPSEALL,
   ID_SEPARATOR,
+  ID_TOOLBUTTON_OPTIONS,
+  ID_SEPARATOR,
   ID_HELP
 };
 
@@ -96,7 +99,11 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_DELETE_CLASSIC,
   IDB_EXPANDALL_CLASSIC,
   IDB_COLLAPSEALL_CLASSIC,
-  IDB_HELP_CLASSIC
+  IDB_OPTIONS_CLASSIC,
+  IDB_HELP_CLASSIC,
+
+  // Additional bitmap for swapping image on if entry's URL == email
+  IDB_SENDEMAIL_CLASSIC
 };
 
 const UINT CPWToolBar::m_MainToolBarNew8BMs[] = {
@@ -115,7 +122,11 @@ const UINT CPWToolBar::m_MainToolBarNew8BMs[] = {
   IDB_DELETE_NEW8,
   IDB_EXPANDALL_NEW8,
   IDB_COLLAPSEALL_NEW8,
-  IDB_HELP_NEW8
+  IDB_OPTIONS_NEW8,
+  IDB_HELP_NEW8,
+
+  // Additional bitmap for swapping image on if entry's URL == email
+  IDB_SENDEMAIL_NEW8
 };
 
 const UINT CPWToolBar::m_MainToolBarNew32BMs[] = {
@@ -134,13 +145,18 @@ const UINT CPWToolBar::m_MainToolBarNew32BMs[] = {
   IDB_DELETE_NEW32,
   IDB_EXPANDALL_NEW32,
   IDB_COLLAPSEALL_NEW32,
-  IDB_HELP_NEW32
+  IDB_OPTIONS_NEW32,
+  IDB_HELP_NEW32,
+
+  // Additional bitmap for swapping image on if entry's URL == email
+  IDB_SENDEMAIL_NEW32
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)
 
 CPWToolBar::CPWToolBar()
-  :  m_ClassicFlags(0), m_NewFlags(0), m_bitmode(1)
+  :  m_ClassicFlags(0), m_NewFlags(0), m_bitmode(1),
+     m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
 {
   ASSERT(sizeof(m_MainToolBarIDs) / sizeof(UINT) ==
          sizeof(m_csMainButtons) / sizeof(m_csMainButtons[0]));
@@ -255,6 +271,10 @@ CPWToolBar::Init(const int NumBits)
     bmTemp.LoadBitmap(m_MainToolBarClassicBMs[i]);
     m_ImageList.Add(&bmTemp, m_ClassicBackground);
     bmTemp.Detach();
+    if (m_MainToolBarClassicBMs[i] == IDB_BROWSEURL_CLASSIC)
+      m_iBrowseURL_BM_offset = i;
+    if (m_MainToolBarClassicBMs[i] == IDB_SENDEMAIL_CLASSIC)
+      m_iSendEmail_BM_offset = i;
   }
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {

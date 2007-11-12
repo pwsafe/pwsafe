@@ -25,6 +25,8 @@ public:
   void Reset();
 
   CString GetButtonString();
+  int GetBrowseURLImageIndex() {return m_iBrowseURL_BM_offset;}
+  int GetSendEmailImageIndex() {return m_iSendEmail_BM_offset;}
 
 protected:
   //{{AFX_MSG(CPWToolBar)
@@ -52,4 +54,6 @@ private:
   int m_toolbarMode, m_bitmode;
   COLORREF m_ClassicBackground, m_NewBackground;
   bool m_bIsDefault;
+
+  int m_iBrowseURL_BM_offset, m_iSendEmail_BM_offset;
 };
