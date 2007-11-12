@@ -1604,7 +1604,7 @@ DboxMain::LaunchBrowser(const CString &csURL)
   // The "[ssh]" handling allows one to specify, for example,
   // Putty as the ssh client, and user@host as the "url".
 
-  if (theURL.Left(7) == _T("[email")) {
+  if (theURL.Left(7) == _T("[email]")) {
     CString cs_command = _T("mailto:") + theURL.Mid(7);
     cs_command.Remove(_T('\r'));
     cs_command.Remove(_T('\n'));
