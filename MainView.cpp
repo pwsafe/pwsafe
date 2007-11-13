@@ -1082,47 +1082,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
         m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
     }
 
-    if (itemData.IsAlias()) {
-      m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::ALIAS, CPWTreeCtrl::ALIAS);
-    } else {
-      time_t now, warnexptime, tLTime;
-      time(&now);
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
-        int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
-        struct tm st;
-#if _MSC_VER >= 1400
-        errno_t err;
-        err = localtime_s(&st, &now);  // secure version
-        ASSERT(err == 0);
-#else
-        st = *localtime(&now);
-        ASSERT(st != NULL); // null means invalid time
-#endif
-        st.tm_mday += idays;
-        warnexptime = mktime(&st);
-        if (warnexptime == (time_t)-1)
-          warnexptime = (time_t)0;
-      } else
-        warnexptime = (time_t)0;
-
-      itemData.GetLTime(tLTime);
-      const bool bIsBase = itemData.IsBase();
-      if (tLTime != 0) {
-        if (tLTime <= now) {
-          int nImage = bIsBase ? CPWTreeCtrl::EXPIRED_BASE : CPWTreeCtrl::EXPIRED_LEAF;
-          m_ctlItemTree.SetItemImage(ti, nImage, nImage);
-        } else if (tLTime < warnexptime) {
-          int nImage = bIsBase ? CPWTreeCtrl::WARNEXPIRED_BASE : CPWTreeCtrl::WARNEXPIRED_LEAF;
-          m_ctlItemTree.SetItemImage(ti, nImage, nImage);
-        } else {
-          int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
-          m_ctlItemTree.SetItemImage(ti, nImage, nImage);
-        }
-      } else {
-        int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
-        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
-      }
-    }
+    SetEntryImage(itemData, ti);
 
     ASSERT(ti != NULL);
     itemData.SetDisplayInfo((void *)di);
@@ -2521,4 +2481,55 @@ DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
   tbinfo.dwMask = TBIF_IMAGE;
   mainTBCtrl.SetButtonInfo(ID_TOOLBUTTON_BROWSEURL, &tbinfo);
   mainTBCtrl.HideButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
+}
+
+void
+DboxMain::SetEntryImage(CItemData ci, HTREEITEM &ti, const bool bOneEntry)
+{
+  if (ci.IsAlias()) {
+    m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::ALIAS, CPWTreeCtrl::ALIAS);
+  } else {
+    time_t now, warnexptime, tLTime;
+    time(&now);
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
+      int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+      struct tm st;
+#if _MSC_VER >= 1400
+      errno_t err;
+      err = localtime_s(&st, &now);  // secure version
+      ASSERT(err == 0);
+#else
+      st = *localtime(&now);
+      ASSERT(st != NULL); // null means invalid time
+#endif
+      st.tm_mday += idays;
+      warnexptime = mktime(&st);
+      if (warnexptime == (time_t)-1)
+        warnexptime = (time_t)0;
+    } else
+      warnexptime = (time_t)0;
+
+    ci.GetLTime(tLTime);
+    const bool bIsBase = ci.IsBase();
+    if (tLTime != 0) {
+      if (tLTime <= now) {
+        int nImage = bIsBase ? CPWTreeCtrl::EXPIRED_BASE : CPWTreeCtrl::EXPIRED_LEAF;
+        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+      } else if (tLTime < warnexptime) {
+        int nImage = bIsBase ? CPWTreeCtrl::WARNEXPIRED_BASE : CPWTreeCtrl::WARNEXPIRED_LEAF;
+        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+      } else {
+        int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
+        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+      }
+    } else {
+      int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
+      m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+    }
+  }
+  if (bOneEntry) {
+    CRect rect;
+    m_ctlItemTree.GetItemRect(ti, &rect, FALSE);
+    m_ctlItemTree.InvalidateRect(&rect);
+  }
 }

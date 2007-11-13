@@ -193,6 +193,8 @@ class PWScore {
   bool GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid);
   void SetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
     {m_alias2base_map[alias_uuid] = base_uuid;}
+  int NumAliases(const uuid_array_t &base_uuid)
+    {return m_base2aliases_mmap.count(base_uuid);}
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...

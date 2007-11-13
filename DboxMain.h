@@ -309,6 +309,7 @@ protected:
   void SetDCAText();
   void SortListView();
   void UpdateBrowseURLSendEmailButton(const bool bIsEmail);
+  void SetEntryImage(CItemData ci, HTREEITEM &ti, const bool bOneEntry = false);
 
   //Version of message functions with return values
   int Save(void);

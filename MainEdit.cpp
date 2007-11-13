@@ -37,10 +37,10 @@ static char THIS_FILE[] = __FILE__;
 
 //Add an item
 void
-DboxMain::OnAdd() 
+DboxMain::OnAdd()
 {
   CAddDlg dlg_add(this);
-  
+
   if (m_core.GetUseDefUser()) {
     dlg_add.m_username = m_core.GetDefUsername();
   }
@@ -109,6 +109,13 @@ DboxMain::OnAdd()
       m_core.AddAliasEntry(dlg_add.m_base_uuid, alias_uuid);
       temp.SetPassword(CMyString(_T("[Alias]")));
       temp.SetAlias();
+      ItemListIter iter = m_core.Find(dlg_add.m_base_uuid);
+      if (iter != End()) {
+        const CItemData &cibase = iter->second;
+        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        HTREEITEM bti = di->tree_item;
+        SetEntryImage(cibase, bti, true);
+      }
     } else {
       temp.SetPassword(dlg_add.m_password);
       temp.SetNormal();
@@ -193,7 +200,7 @@ DboxMain::OnAddGroup()
 
 // Delete key was pressed (in list view or tree view) to delete an entry.
 void
-DboxMain::OnDelete() 
+DboxMain::OnDelete()
 {
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
     return;
@@ -215,7 +222,7 @@ DboxMain::OnDelete()
           num_children = CountChildren(hStartItem);
         }  // if has children
       }
-    } 
+    }
   }
 
   //Confirm whether to delete the item
@@ -226,14 +233,14 @@ DboxMain::OnDelete()
       dodelete = false;
     }
   }
-  
+
   if (dodelete) {
 	Delete();
   }
 }
 
 void
-DboxMain::Delete(bool inRecursion) 
+DboxMain::Delete(bool inRecursion)
 {
   CItemData *ci = getSelectedItem();
 
@@ -254,11 +261,12 @@ DboxMain::Delete(bool inRecursion)
       const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
       cs_msg.Format(IDS_DELETEBASE, aliaslist.size(),
                     aliaslist.size() == 1 ? _T("") : _T("es"), csAliases);
-      aliaslist.clear();
-      if (MessageBox(cs_msg, cs_title, MB_ICONQUESTION | MB_YESNO) == IDNO)
+      if (MessageBox(cs_msg, cs_title, MB_ICONQUESTION | MB_YESNO) == IDNO) {
+        aliaslist.clear();
         return;
+      }
     }
-      
+
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
     int curSel = di->list_index;
@@ -285,19 +293,43 @@ DboxMain::Delete(bool inRecursion)
       m_core.GetBaseUUID(uuid, base_uuid);
       // Delete from both map and multimap
       m_core.RemoveAliasEntry(base_uuid, uuid);
+
+      // Does my base now become a normal entry?
+      if (m_core.NumAliases(base_uuid) == 0) {
+        ItemListIter iter = m_core.Find(base_uuid);
+        CItemData &cibase = iter->second;
+        cibase.SetNormal();
+        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        HTREEITEM bti = di->tree_item;
+        SetEntryImage(cibase, bti, true);
+      }
     }
 
     if (num_aliases > 0) {
       // I'm a base entry
       m_core.ResetAllAliasPasswords(uuid);
       m_core.RemoveAllAliasEntries(uuid);
+
+      // Now make all my aliases Normal
+      ItemListIter iter;
+      UUIDListIter UUIDiter;
+      for (UUIDiter = aliaslist.begin(); UUIDiter != aliaslist.end(); UUIDiter++) {
+        uuid_array_t auuid;
+        UUIDiter->GetUUID(auuid);
+        iter = m_core.Find(auuid);
+        CItemData &cialias = iter->second;
+        DisplayInfo *di = (DisplayInfo *)cialias.GetDisplayInfo();
+        HTREEITEM ati = di->tree_item;
+        SetEntryImage(cialias, ati, true);
+      }
+      aliaslist.clear();
     }
 
     m_core.RemoveEntryAt(listindex);
     FixListIndexes();
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
-        SelectEntry(curSel < (int)m_core.GetNumEntries() ? 
+        SelectEntry(curSel < (int)m_core.GetNumEntries() ?
                     curSel : (int)(m_core.GetNumEntries() - 1));
       }
       m_ctlItemList.SetFocus();
@@ -328,18 +360,18 @@ DboxMain::Delete(bool inRecursion)
           m_ctlItemTree.Invalidate();
 
           //  delete an empty group.
-          HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);            
+          HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
           m_ctlItemTree.DeleteItem(ti);
           m_ctlItemTree.SelectItem(parent);
         }
       }
-    }  
+    }
   }
   m_TreeViewGroup = _T("");
 }
 
 void
-DboxMain::OnRename() 
+DboxMain::OnRename()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -353,7 +385,7 @@ DboxMain::OnRename()
 }
 
 void
-DboxMain::OnEdit() 
+DboxMain::OnEdit()
 {
   // Note that Edit is also used for just viewing - don't want to disable
   // viewing in read-only mode
@@ -423,9 +455,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       ItemListIter iter = m_core.Find(base_uuid);
       if (iter != End()) {
         const CItemData &cibase = iter->second;
-        dlg_edit.m_base = _T("[") + 
-                 cibase.GetGroup() + _T(":") + 
-                 cibase.GetTitle() + _T(":") + 
+        dlg_edit.m_base = _T("[") +
+                 cibase.GetGroup() + _T(":") +
+                 cibase.GetTitle() + _T(":") +
                  cibase.GetUser()  + _T("]");
         dlg_edit.m_original_entrytype = CItemData::Alias;
       }
@@ -452,6 +484,7 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       editedItem.SetDisplayInfo(ndi);
       CMyString newPassword = editedItem.GetPassword();
 
+      ItemListIter iter;
       if (dlg_edit.m_original_entrytype == CItemData::Normal &&
           ci->GetPassword() != newPassword) {
         // Original was a 'normal' entry and the password has changed
@@ -460,7 +493,14 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
           editedItem.GetUUID(alias_uuid);
           pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
           editedItem.SetPassword(CMyString(_T("[Alias]")));
-          editedItem.SetAlias();          
+          editedItem.SetAlias();
+          iter = m_core.Find(dlg_edit.m_base_uuid);
+          if (iter != End()) {
+            const CItemData &cibase = iter->second;
+            DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+            HTREEITEM bti = di->tree_item;
+            SetEntryImage(cibase, bti, true);
+          }
         } else {
           // Still 'normal'
           editedItem.SetPassword(newPassword);
@@ -486,15 +526,44 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
             pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
             editedItem.SetPassword(CMyString(_T("[Alias]")));
             editedItem.SetAlias();
+            if (memcmp(original_base_uuid, dlg_edit.m_base_uuid, sizeof(uuid_array_t)) != 0) {
+              // Not the same base entry.
+              // Original base may have reverted to a Normal if it has no more aliases?
+              iter = m_core.Find(original_base_uuid);
+              if (iter != End()) {
+                const CItemData &cibase = iter->second;
+                if (!cibase.IsBase()) {
+                  DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+                  HTREEITEM bti = di->tree_item;
+                  SetEntryImage(cibase, bti, true);
+                }
+              }
+              // New base image may need changing
+              iter = m_core.Find(dlg_edit.m_base_uuid);
+              if (iter != End()) {
+                const CItemData &cibase = iter->second;
+                DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+                HTREEITEM bti = di->tree_item;
+                SetEntryImage(cibase, bti, true);
+              }
+            }
           } else {
             // No longer an alias
             editedItem.SetPassword(newPassword);
             editedItem.SetNormal();
+            // Base may have reverted to a Normal if it has no more aliases?
+            iter = m_core.Find(dlg_edit.m_base_uuid);
+            if (iter != End()) {
+              const CItemData &cibase = iter->second;
+              DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+              HTREEITEM bti = di->tree_item;
+              SetEntryImage(cibase, bti, true);
+            }
           }
         }
       }
 
-      if (dlg_edit.m_original_entrytype == CItemData::Base && 
+      if (dlg_edit.m_original_entrytype == CItemData::Base &&
           ci->GetPassword() != newPassword) {
         // Original was a base but might now be an alias of another entry!
         if (dlg_edit.m_ibasedata > 0) {
@@ -506,6 +575,14 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
           editedItem.SetAlias();
           // Move old aliases across
           pcore->MoveAliases(original_uuid, dlg_edit.m_base_uuid);
+          // Update new Base image
+          iter = m_core.Find(dlg_edit.m_base_uuid);
+          if (iter != End()) {
+            const CItemData &cibase = iter->second;
+            DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+            HTREEITEM bti = di->tree_item;
+            SetEntryImage(cibase, bti, true);
+          }
         } else {
           // Still a base entry but with a new password
           editedItem.SetPassword(newPassword);
@@ -542,7 +619,7 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
 // Duplicate selected entry but make title unique
 void
-DboxMain::OnDuplicateEntry() 
+DboxMain::OnDuplicateEntry()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -552,13 +629,13 @@ DboxMain::OnDuplicateEntry()
     ASSERT(ci != NULL);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
     ASSERT(di != NULL);
-      
+
     // Get information from current selected entry
     CMyString ci2_group = ci->GetGroup();
     CMyString ci2_user = ci->GetUser();
     CMyString ci2_title0 = ci->GetTitle();
     CMyString ci2_title;
-      
+
     // Find a unique "Title"
     ItemListConstIter listpos;
     int i = 0;
@@ -569,7 +646,7 @@ DboxMain::OnDuplicateEntry()
       ci2_title = ci2_title0 + CMyString(s_copy);
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != m_core.GetEntryEndIter());
-      
+
     // Set up new entry
     CItemData ci2;
     ci2.CreateUUID();
@@ -605,19 +682,19 @@ DboxMain::OnDuplicateEntry()
       ci2.SetAlias();
       ci2.GetUUID(alias_uuid);
       m_core.AddAliasEntry(alias_uuid, base_uuid);
-      
+
       ItemListIter iter;
       iter = m_core.Find(base_uuid);
       if (iter != m_core.GetEntryEndIter()) {
         CMyString cs_tmp;
-        cs_tmp = _T("[") + 
-          iter->second.GetGroup() + _T(":") + 
-          iter->second.GetTitle() + _T(":") + 
+        cs_tmp = _T("[") +
+          iter->second.GetGroup() + _T(":") +
+          iter->second.GetTitle() + _T(":") +
           iter->second.GetUser()  + _T("]");
         ci2.SetPassword(cs_tmp);
       }
     }
-    // Add it to the end of the list      
+    // Add it to the end of the list
     m_core.AddEntry(ci2);
     di->list_index = -1; // so that insertItem will set new values
     uuid_array_t uuid;
@@ -746,7 +823,7 @@ DboxMain::OnCopyURL()
 void
 DboxMain::OnFind()
 {
-  // Note that this "toggles" the Find Tool Bar so that the user can use Ctrl+F 
+  // Note that this "toggles" the Find Tool Bar so that the user can use Ctrl+F
   // to show it and then hide it.
   SetFindToolBar(!m_FindToolBar.IsVisible());
 }
@@ -901,9 +978,9 @@ DboxMain::AutoType(const CItemData &ci)
   }
   ks.SendString(tmp);
   // If we turned off CAPSLOCK, put it back
-  if (bCapsLock) 
+  if (bCapsLock)
     ks.SetCapsLock(true);
- 
+
   Sleep(100);
 
   ::BlockInput(false);
@@ -974,7 +1051,7 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       m_core.AddAliasEntry(base_uuid, alias_uuid);
       tempitem.SetPassword(CMyString(_T("[Alias]")));
       tempitem.SetAlias();
-    } else 
+    } else
     if (ialias == 0) {
       // Password NOT in alias format
       tempitem.SetNormal();
@@ -1031,7 +1108,7 @@ void DboxMain::SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases)
 {
   std::vector<CMyString> sorted_aliases;
   std::vector<CMyString>::iterator sa_iter;
-      
+
   ItemListIter iter;
   UUIDListIter aiter;
   CMyString cs_alias;
@@ -1041,8 +1118,8 @@ void DboxMain::SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases)
     aiter->GetUUID(alias_uuid);
     iter = m_core.Find(alias_uuid);
     if (iter != m_core.GetEntryEndIter()) {
-      cs_alias = iter->second.GetGroup() + _T(":") + 
-                 iter->second.GetTitle() + _T(":") + 
+      cs_alias = iter->second.GetGroup() + _T(":") +
+                 iter->second.GetTitle() + _T(":") +
                  iter->second.GetUser();
       sorted_aliases.push_back(cs_alias);
     }
