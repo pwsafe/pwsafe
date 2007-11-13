@@ -166,9 +166,6 @@ class PWScore {
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const CMyString &a_group,
                     const CMyString &a_title, const CMyString &a_user);
-  // Find all users with same group & title
-  int Find_Users(const CMyString &a_group,const CMyString &a_title,
-                 std::vector<CMyString> &userlist);
   ItemListIter Find(const uuid_array_t &uuid)
   {return m_pwlist.find(uuid);}
   ItemListConstIter Find(const uuid_array_t &uuid) const
@@ -195,6 +192,7 @@ class PWScore {
     {m_alias2base_map[alias_uuid] = base_uuid;}
   int NumAliases(const uuid_array_t &base_uuid)
     {return m_base2aliases_mmap.count(base_uuid);}
+  bool GetUniqueBase(const CMyString &title, uuid_array_t &uuid);
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
