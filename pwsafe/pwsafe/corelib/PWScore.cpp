@@ -1380,45 +1380,44 @@ PWScore::Find(const CMyString &a_group,const CMyString &a_title,
   return retval;
 }
 
-struct GroupAndTitleMatch {
+struct TitleMatch {
   bool operator()(pair<CUUIDGen, CItemData> p) {
     const CItemData &item = p.second;
-    return (m_group == item.GetGroup() &&
-            m_title == item.GetTitle());
+    return (m_title == item.GetTitle());
   }
-  GroupAndTitleMatch(const CMyString &a_group,const CMyString &a_title) :
-    m_group(a_group), m_title(a_title) {}
+  TitleMatch(const CMyString &a_title) :
+    m_title(a_title) {}
 private:
-  const CMyString &m_group;
   const CMyString &m_title;
 };
 
-// Finds stuff based on title, group & user fields only
-int
-PWScore::Find_Users(const CMyString &a_group,const CMyString &a_title,
-                    std::vector<CMyString> &userlist)
+bool PWScore::GetUniqueBase(const CMyString &a_title, uuid_array_t &uuid)
 {
   int num(0);
+  memset(uuid, 0x00, sizeof(uuid_array_t));
 
-  userlist.clear();
+  TitleMatch TitleMatch(a_title);
 
-  GroupAndTitleMatch GroupAndTitleMatch(a_group, a_title);
-
-  ItemListIter start(m_pwlist.begin()), found;
+  ItemListIter found(m_pwlist.begin());
   do {
-    found = find_if(start, m_pwlist.end(), GroupAndTitleMatch);
+    found = find_if(found, m_pwlist.end(), TitleMatch);
     if (found != m_pwlist.end()) {
       num++;
-      userlist.push_back(found->second.GetUser());
-      start = found++;
+      if (num == 1) {
+        // Save first
+        found->first.GetUUID(uuid);
+      } else {
+        // More than 1, clear uuid
+        memset(uuid, 0x00, sizeof(uuid_array_t));
+        break;
+      }
+      found++;
     } else
       break;
-  } while(start != m_pwlist.end());
+  } while(found != m_pwlist.end());
 
-  if (userlist.size() > 0)
-    sort(userlist.begin(), userlist.end());
-
-  return num;
+  // It is 1 if only 1, but 0 if none & 2 if more than 1 (we just stopped at the second)
+  return (num == 1);
 }
 
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
@@ -2161,7 +2160,7 @@ void PWScore::GetAllAliasEntries(const uuid_array_t &base_uuid, UUIDList &aliasl
 }
 
 int PWScore::GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bBase_was_Alias,
-                           CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser)
+                          CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser)
 {
   // Either returns:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
@@ -2179,6 +2178,14 @@ int PWScore::GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bB
         csPwdGroup = csPwdUser = _T("");
         csPwdTitle = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
         iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+        if (iter == m_pwlist.end()) {
+          // Let's see if there is only one entry with this title!
+          uuid_array_t unique_uuid;
+          if (GetUniqueBase(csPwdTitle, unique_uuid)) {
+            // Yes there is!
+            iter = m_pwlist.find(unique_uuid);
+          }
+        }
         break;
       case 2:
         // [x:y]
