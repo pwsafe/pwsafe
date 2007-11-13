@@ -1498,7 +1498,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     } else {
       pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
       pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
-      const bool bIsEmail = ci->GetURL().Left(7) == _T("[email]");
+      const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
         pMenu->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
         ID_MENUITEM_BROWSE, CS_SENDEMAIL);

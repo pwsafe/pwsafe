@@ -195,7 +195,7 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
       mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
     else {
       mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
-      const bool bIsEmail = ci->GetURL().Left(7) == _T("[email]");
+      const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
   }
@@ -918,7 +918,7 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     } else {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
-      const bool bIsEmail = itemData->GetURL().Left(7) == _T("[email]");
+      const bool bIsEmail = itemData->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
         pPopup->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
                            ID_MENUITEM_BROWSE, CS_SENDEMAIL);
@@ -1599,55 +1599,59 @@ DboxMain::UpdateSystemTray(const STATE s)
 BOOL
 DboxMain::LaunchBrowser(const CString &csURL)
 {
-  CString csAltBrowser;
-  CString csCmdLineParms;
-  bool useAltBrowser;
   HINSTANCE hinst;
   CString theURL(csURL);
 
-  // csURL may contain "[alt]", "[ssh]" or "[email]".
-  // If csURL contains "[alt]" then we'll use the alternate browser
-  // (if defined), and remove the "[alt]" from the URL.
-  // "[ssh]" does same, EXCEPT that the following is NOT applied:
+  // csURL should be a well-formed URL as defined in RFC3986 with
+  // the exceptions listed below.
+  // 
+  // The default behaviour of this function is to pass the URL to the Windows shell.
+  // This will invoke a the default browser for http: and https: schema, the default
+  // mailer for mailto: schema, etc.
   //
-  // If csURL doesn't contain "://", then we'll prepend "http://" to it,
-  // e.g., change "www.mybank.com" to "http://www.mybank.com".
-  //
-  // The "[ssh]" handling allows one to specify, for example,
-  // Putty as the ssh client, and user@host as the "url".
+  // The exceptions to the csURL syntax are as follows:
+  // 0. csURL is "sanitized" - newlines, tabs & carriage returns are removed.
+  // 1. If csURL doesn't contain "://" OR "mailto:" or [ssh], then we prepend
+  //    "http://" to it. This is to allow users to enter "amazon.com" and get the
+  //    behaviour the expect.
+  // 2. If csURL contains [alt], then the rest of the text is passed to the "alternate"
+  //    browser defined in the preferences, along with the command-line parameters.
+  //    For example, if AltBrowser is "CoolBrowser.exe" and AltBrowserCmdLineParms
+  //    is "-x", then the csURL "[alt] supersite.com" will cause the following to
+  //    be invoked:
+  //          CoolBrowser.exe -x http://supersite.com
+  // 3. If csURL contains {alt} or [ssh], then the behaviour is the same as in (2),
+  //    except that "http://" is NOT prepended to the rest of the text. This allows
+  //    one to specify an ssh client (such as Putty) as the alternate browser,
+  //    and user@machine as the URL.
 
-  if (theURL.Left(7) == _T("[email]")) {
-    CString cs_command = _T("mailto:") + theURL.Mid(7);
-    cs_command.Remove(_T('\r'));
-    cs_command.Remove(_T('\n'));
-    cs_command.Remove(_T('\t'));
-    HINSTANCE hinst = ::ShellExecute(NULL, NULL, cs_command, NULL,
-                           NULL, SW_SHOWNORMAL);
-    if(hinst < HINSTANCE(32)) {
-      AfxMessageBox(IDS_CANTEMAIL, MB_ICONSTOP);
-      return FALSE;
-    }
-    return TRUE;
-  }
+  theURL.Remove(_T('\r'));
+  theURL.Remove(_T('\n'));
+  theURL.Remove(_T('\t'));
+
+  bool isMailto = (theURL.Find(_T("mailto:")) != -1);
+  UINT errID = isMailto ? IDS_CANTEMAIL : IDS_CANTBROWSE;
 
   int altReplacements = theURL.Replace(_T("[alt]"), _T(""));
-  int sshReplacements = theURL.Replace(_T("[ssh]"), _T(""));
-  if (sshReplacements <= 0 && theURL.Find(_T("://")) == -1)
+  int alt2Replacements = (theURL.Replace(_T("[ssh]"), _T("")) +
+                          theURL.Replace(_T("{alt}"), _T("")));
+
+  if (alt2Replacements <= 0 && !isMailto && theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
 
-  csCmdLineParms = CString(PWSprefs::GetInstance()->
-                         GetPref(PWSprefs::AltBrowserCmdLineParms));
-  
-  csAltBrowser = CString(PWSprefs::GetInstance()->
-                         GetPref(PWSprefs::AltBrowser));
+  CString csAltBrowser(PWSprefs::GetInstance()->
+                       GetPref(PWSprefs::AltBrowser));
 
-  useAltBrowser = (altReplacements > 0 || sshReplacements > 0) &&
-    !csAltBrowser.IsEmpty();
+  bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) &&
+                        !csAltBrowser.IsEmpty());
 
   if (!useAltBrowser) {
     hinst = ::ShellExecute(NULL, NULL, theURL, NULL,
                            NULL, SW_SHOWNORMAL);
-  } else {
+  } else { // alternate browser specified, invoke w/optional args
+    CString csCmdLineParms(PWSprefs::GetInstance()->
+                           GetPref(PWSprefs::AltBrowserCmdLineParms));
+  
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
     hinst = ::ShellExecute(NULL, NULL, csAltBrowser, theURL,
@@ -1655,7 +1659,7 @@ DboxMain::LaunchBrowser(const CString &csURL)
   }
 
   if(hinst < HINSTANCE(32)) {
-    AfxMessageBox(IDS_CANTBROWSE, MB_ICONSTOP);
+    AfxMessageBox(errID, MB_ICONSTOP);
     return FALSE;
   }
   return TRUE;

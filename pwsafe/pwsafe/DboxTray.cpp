@@ -240,7 +240,7 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   if (ci.IsURLEmpty()) {
     pCmdUI->Enable(FALSE);
   } else {
-    const bool bIsEmail = ci.GetURL().Left(7) == _T("[email]");
+    const bool bIsEmail = ci.GetURL().Find(_T("mailto:")) != -1;
     CString cs_text = bIsEmail ? CS_SENDEMAIL : CS_BROWSEURL;
     int nPos = cs_text.Find(_T("\t"));
     if (nPos > 0)
