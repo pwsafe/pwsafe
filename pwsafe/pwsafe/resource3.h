@@ -328,3 +328,7 @@
 #define IDS_CANTEMAIL                   5504
 #define IDS_MENUBROWSEURL               5505
 #define IDS_MENUSENDEMAIL               5506
+#define IDS_ALIASCANTREFERTOITSELF      5507
+#define IDS_ALIASNOTFOUND2A             5508
+#define IDS_ALIASNOTFOUND2B             5509
+#define IDS_BASEHASNOTITLE              5510

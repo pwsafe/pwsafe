@@ -276,6 +276,13 @@ CEditDlg::OnOK()
   m_ibasedata = dbx->GetBaseEntry(m_password, m_base_uuid, bBase_was_Alias,
                          csPwdGroup, csPwdTitle, csPwdUser);
 
+  if (csPwdGroup == m_group && csPwdTitle == m_title && csPwdUser == m_username) {
+    AfxMessageBox(IDS_ALIASCANTREFERTOITSELF);
+    UpdateData(FALSE);
+    ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
+    return;
+  }
+
   // m_ibasedata:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
   //   0: password not in alias format
@@ -286,18 +293,35 @@ CEditDlg::OnOK()
     const CString cs_msgZ(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDZ));
     int rc(IDNO);
     switch (m_ibasedata) {
-      case -1:
+      case -1: // [x]
         cs_msg.Format(IDS_ALIASNOTFOUND0, csPwdTitle);
         rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
         break;
-      case -2:
+      case -2: // [g,t], [t:u]
         // In this case the 2 fields from the password are in Title & User
         cs_msg.Format(IDS_ALIASNOTFOUND1, csPwdTitle, csPwdUser, csPwdTitle, csPwdUser);
         rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
         break;
-      case -3:
-        cs_msg.Format(IDS_ALIASNOTFOUND2, csPwdGroup, csPwdTitle, csPwdUser);
+      case -3: // [x:y:z], [x:y:], [:y:z], [:y:] (title cannot be empty)
+        {
+        const bool bGE = csPwdGroup.IsEmpty() == TRUE;
+        const bool bTE = csPwdTitle.IsEmpty() == TRUE;
+        const bool bUE = csPwdUser.IsEmpty() == TRUE;
+        if (bTE) {
+          // Title is mandatory for all entries!
+          AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
+          rc = IDNO;
+          break;
+        } else if (!bGE && !bUE)  // [x:y:z]
+          cs_msg.Format(IDS_ALIASNOTFOUND2, csPwdGroup, csPwdTitle, csPwdUser);
+        else if (!bGE && bUE)     // [x:y:]
+          cs_msg.Format(IDS_ALIASNOTFOUND2A, csPwdGroup, csPwdTitle);
+        else if (bGE && !bUE)     // [:y:z]
+          cs_msg.Format(IDS_ALIASNOTFOUND2B, csPwdTitle, csPwdUser);
+        else if (bGE && bUE)      // [:y:]
+          cs_msg.Format(IDS_ALIASNOTFOUND0, csPwdTitle);
         rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        }
         break;
       default:
         ASSERT(0);

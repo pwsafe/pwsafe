@@ -2136,6 +2136,7 @@ void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
     alias_itr = m_pwlist.find(alias_uuid);
     if (alias_itr != m_pwlist.end()) {
       alias_itr->second.SetPassword(csBasePassword);
+      alias_itr->second.SetNormal();
     }
   }
   m_base2aliases_mmap.erase(base_uuid);
@@ -2194,7 +2195,7 @@ int PWScore::GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bB
         }
         break;
       case 3:
-        // [x:y:z]
+        // [x:y:z], [x:y:], [:y:z], [:y:] (title cannot be empty)
         tmp = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
         csPwdGroup = tmp.SpanExcluding(_T(":"));
         tmp = tmp.Mid(csPwdGroup.GetLength() + 1);  // Skip over 'group:'
