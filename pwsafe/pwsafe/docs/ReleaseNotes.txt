@@ -1,57 +1,21 @@
-Password Safe 3.10.03 Release Notes - ?????? 2007
-=================================================
+Password Safe 3.11 Release Notes - ?????? 2007
+==============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.10. For a short description of Password
+with Password Safe version 3.11. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
 
-Bugs fixed in 3.10.03
-=====================
-
-
-New Features for 3.10.03
-========================
-[] New email field allowed in URL field. To be treated as email, the data
-must be prefixed by the characters "[email]". The data following this 
-corresponds to the '[mailto:]' standard RFC2368.
-For example: "info@example.com?subject=PasswordSafe".
-[] Main toolbar can be customized via MS's standard dialog via right
-click on this toolbar.
-[1815192] New Find toolbar added at bottom of application above the status
-bar activated by the user doing a "Find".  Replaces the previous Find dialog.
-Button shortcuts: Ctrl+Alt+A = Advanced, Ctrl+Alt+S = Sensitivity, Ctrl+Alt+C = Clear
-
-Changes to Existing Features in 3.10.02
-=======================================
-[1756385] Black Idle Icon in task tray is not visible in Vista. Allow 
-user to choose one of Black, Blue, White or Yellow.
-
-Bugs fixed in 3.10.02
-=====================
+Bugs fixed in 3.11
+==================
 [1806201] Non-unique uuids in database now handled correctly.
 [] Prevent mixed Unicode/ASCII report files and ensure Unicode reports
 have BOM as some text editors insist!
 [] Disable Rename menu item in List View (only appropriate in Tree View)
 [] Disable Tray Minimize/Restore menu items if already Minimized/Visible
 [] Ignore mouse right click not in Tree/List view area.
-
-New Features for 3.10.02
-========================
-[] Give user access to Reports from View menu (only in the same directory
-as current open database), since more information is being written there.
-[] Give user access to the Compare report from the Compare results dialog
-
-Changes to Existing Features in 3.10.01
-=======================================
-[1790342] Replaced additional key shortcuts for ExpandAll and CollapseAll
-[introduced in rev. 1678] by toolbar buttons.  Now there is only one set 
-(the original) of key shortcut + toolbar buttons.
-
-Bugs fixed in 3.10.01
-=====================
 [1790286] All String preferences stored within the database are now 
 correctly read during database open
 [1791482] All preferences stored within the database are now exported/imported
@@ -67,15 +31,37 @@ using an extremely large number of hash iterations.  Users who have imported
 XML into a new database should export again and re-import after deleting the
 <NumberHashIterations>...</NumberHashIterations> entry from the XML file.
 [] Use the Confirm Delete message even when there is only one child.
+[1726181] Save of a new database is no loger required to export entries.
 
-New Features for 3.10.01
-========================
+New Features for 3.11
+=====================
+[] Give user access to Reports from View menu (only in the same directory
+as current open database), since more information is being written there.
+[] Give user access to the Compare report from the Compare results dialog
+[] New email action allowed in URL field. To be treated as email, the
+data must be prefixed by the characters "[email]". The data following
+this corresponds to the '[mailto:]' standard RFC2368.
+For example: "info@example.com?subject=PasswordSafe".
+[] Main toolbar can be customized via MS's standard dialog via right
+click on this toolbar.
+[1815192] New Find toolbar added at bottom of application above the
+status bar activated by the user doing a "Find".  Replaces the
+previous Find dialog.
+Button shortcuts: Ctrl+Alt+A = Advanced find,
+Ctrl+Alt+S = toggle case Sensitivity, Ctrl+Alt+C = Clear find text
 [1765240] Add "Clear clipboard" item to tray icon context menu
 [1727768] Copy URL to clipboard added to menus (Ctrl+Alt+L)
-[1526169] Add shortcut keys to add/edit dialog  
+[1526169] Add shortcut keys to add/edit dialog
+[] Several entries may be "aliased" to a single entry, sharing its
+password. See online help for details.  
 
-Changes to Existing Features in 3.10.01
-=======================================
+Changes to Existing Features in 3.11
+====================================
+[1756385] Black Idle Icon in task tray is not visible in Vista. Allow 
+user to choose one of Black, Blue, White or Yellow.
+[1790342] Replaced additional key shortcuts for ExpandAll and CollapseAll
+[introduced in rev. 1678] by toolbar buttons.  Now there is only one set 
+(the original) of key shortcut + toolbar buttons.
 [] Saved string preferences within the database header will not be delimited by 
 a doublequote if this character is part of the string variable.  An arbitrary
 symbol type character will be used in this case.  If one cannot be found, the
