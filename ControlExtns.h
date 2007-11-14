@@ -9,7 +9,7 @@
 #pragma once
 
 // ControlExtns.h : header file
-// Extensions to standard Edit, ListBox and Combobox Controls
+// Extensions to standard Static, Edit, ListBox and Combobox Controls
 
 // Pick a number at the end of the WM_USER range
 #define EM_SELECTALL (WM_APP - 1)

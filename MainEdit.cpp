@@ -1033,9 +1033,9 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     uuid_array_t base_uuid, alias_uuid;
     CMyString cs_tmp = tempitem.GetPassword();
     CMyString csPwdGroup, csPwdTitle, csPwdUser;
-    bool bBase_was_Alias(false);
-    int ialias = GetBaseEntry(cs_tmp, base_uuid, bBase_was_Alias,
-                     csPwdGroup, csPwdTitle, csPwdUser);
+    bool bBase_was_Alias(false), bMultiple(false);
+    int ialias = m_core.GetBaseEntry(cs_tmp, base_uuid, bBase_was_Alias, bMultiple,
+                              csPwdGroup, csPwdTitle, csPwdUser);
     if (ialias > 0) {
       // Password in alias format AND base entry exists
       ItemListIter iter = m_core.Find(base_uuid);
@@ -1057,7 +1057,11 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       tempitem.SetNormal();
     } else
     if (ialias < 0) {
-      // Password in alias format AND base entry does not exist
+      // Password in alias format AND base entry does not exist or multiple possible
+      // base entries exit.
+      // Note: As more entries are added, what was "not exist" may become "no unique exists"
+      // or "multiple exist".  Let the code that processes the possible aliases after all
+      // have been added sort this out.
       tempitem.GetUUID(alias_uuid);
       possible_aliases.push_back(alias_uuid);
     }
@@ -1148,3 +1152,92 @@ void DboxMain::OnToolBarFind()
   m_FindToolBar.Find();
 }
 
+bool
+DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
+                           const CMyString &user, const CMyString &password,
+                           const bool bIsEdit, uuid_array_t &base_uuid, int &ibasedata)
+{
+  // Called from Add and Edit dialog
+  CMyString csPwdGroup, csPwdTitle, csPwdUser;
+  bool bBase_was_Alias(false), bMultiple(false);
+  ibasedata = m_core.GetBaseEntry(password, base_uuid, bBase_was_Alias, bMultiple,
+                                  csPwdGroup, csPwdTitle, csPwdUser);
+
+  if (bIsEdit && (csPwdGroup == group && csPwdTitle == title && csPwdUser == user)) {
+    // In Edit, check user isn't changing entry to point to itself (circular/self reference)
+    // Can't happen during Add as already checked entry does not exist so if accepted the
+    // password would be treated as an unusal "normal" password
+    AfxMessageBox(IDS_ALIASCANTREFERTOITSELF);
+    return false;
+  }
+
+  // ibasedata:
+  //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
+  //   0: password not in alias format
+  //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
+
+  // "bBase_was_Alias" is set if the user specified a base entry that is an alias.  The real base is returned
+  // "bMultiple" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
+
+  if (ibasedata < 0) {
+    CString cs_msg;
+    const CString cs_msgA(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDA));
+    const CString cs_msgZ(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDZ));
+    int rc(IDNO);
+    switch (ibasedata) {
+      case -1: // [x]
+        if (bMultiple)
+          cs_msg.Format(IDS_ALIASNOTFOUND0A, csPwdTitle);  // multiple entries exist with title=x
+        else
+          cs_msg.Format(IDS_ALIASNOTFOUND0B, csPwdTitle);  // no entry exists with title=x
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      case -2: // [g,t], [t:u]
+        // In this case the 2 fields from the password are in Group & Title
+        if (bMultiple)
+          cs_msg.Format(IDS_ALIASNOTFOUND1A, csPwdGroup, csPwdTitle, csPwdGroup, csPwdTitle);
+        else
+          cs_msg.Format(IDS_ALIASNOTFOUND1B, csPwdGroup, csPwdTitle, csPwdGroup, csPwdTitle);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        break;
+      case -3: // [x:y:z], [x:y:], [:y:z], [:y:] (title cannot be empty)
+        {
+        const bool bGE = csPwdGroup.IsEmpty() == TRUE;
+        const bool bTE = csPwdTitle.IsEmpty() == TRUE;
+        const bool bUE = csPwdUser.IsEmpty() == TRUE;
+        if (bTE) {
+          // Title is mandatory for all entries!
+          AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
+          rc = IDNO;
+          break;
+        } else if (!bGE && !bUE)  // [x:y:z]
+          cs_msg.Format(IDS_ALIASNOTFOUND2A, csPwdGroup, csPwdTitle, csPwdUser);
+        else if (!bGE && bUE)     // [x:y:]
+          cs_msg.Format(IDS_ALIASNOTFOUND2B, csPwdGroup, csPwdTitle);
+        else if (bGE && !bUE)     // [:y:z]
+          cs_msg.Format(IDS_ALIASNOTFOUND2C, csPwdTitle, csPwdUser);
+        else if (bGE && bUE)      // [:y:]
+          cs_msg.Format(IDS_ALIASNOTFOUND0B, csPwdTitle);
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+        }
+        break;
+      default:
+        // Never happens
+        ASSERT(0);
+    }
+    if (rc == IDNO) {
+      return false;
+    }
+  }
+
+  if (ibasedata > 0 && bBase_was_Alias) {
+    CString cs_msg;
+    cs_msg.Format(IDS_BASEISALIAS, csPwdGroup, csPwdTitle, csPwdUser);
+    if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
+      return false;
+    }
+  }
+
+  // All OK
+  return true;
+}
