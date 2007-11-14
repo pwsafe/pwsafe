@@ -57,77 +57,9 @@ DboxMain::OnTrayLockUnLock()
 }
 
 void
-DboxMain::OnUpdateTrayMinimizeCommand(CCmdUI* pCmdUI)
-{
-  // If already minimized, don't enable Minimize menu item
-  WINDOWPLACEMENT wndpl;
-  GetWindowPlacement(&wndpl);
-  pCmdUI->Enable(wndpl.showCmd == SW_SHOWMINIMIZED ? FALSE : TRUE);
-}
-
-void
-DboxMain::OnUpdateTrayUnMinimizeCommand(CCmdUI* pCmdUI)
-{
-  // If not minimized, don't enable Restore menu item
-  WINDOWPLACEMENT wndpl;
-  GetWindowPlacement(&wndpl);
-  pCmdUI->Enable(wndpl.showCmd != SW_SHOWMINIMIZED ? FALSE : TRUE);
-}
-
-void
-DboxMain::OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI)
-{
-	const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
-	const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
-	const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
-
-	const int i_state = app.GetSystemTrayState();
-	// Set text to "UnLock" or "Lock"
-	switch (i_state) {
-		case ThisMfcApp::UNLOCKED:
-			pCmdUI->SetText(csLock);
-			break;
-		case ThisMfcApp::LOCKED:
-			pCmdUI->SetText(csUnLock);
-			break;
-		case ThisMfcApp::CLOSED:
-			pCmdUI->Enable(FALSE);
-			pCmdUI->SetText(csClosed);
-			break;
-		default:
-            ASSERT(0);
-			break;
-	}
-
-	if (i_state != ThisMfcApp::CLOSED) {
-		// If dialog visible - obviously unlocked and no need to have option to lock
-		if (this->IsWindowVisible() == FALSE)
-			pCmdUI->Enable(TRUE);
-		else
-			pCmdUI->Enable(FALSE);
-	}
-}
-
-void
 DboxMain::OnTrayClearRecentEntries()
 {
 	m_RUEList.ClearEntries();
-}
-
-void
-DboxMain::OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI)
-{
-	if (pCmdUI->m_pSubMenu != NULL) {
-        // disable or enable entire popup for "Recent Entries"
-        // CCmdUI::Enable is a no-op for this case, so we
-        //   must do what it would have done.
-        pCmdUI->m_pMenu->EnableMenuItem(pCmdUI->m_nIndex,
-            MF_BYPOSITION |
-			(app.GetSystemTrayState() == ThisMfcApp::UNLOCKED ? MF_ENABLED : MF_GRAYED));
-        return;
-    }
-    // otherwise enable
-    pCmdUI->Enable((m_RUEList.GetCount() != 0) ? TRUE : FALSE);
 }
 
 void

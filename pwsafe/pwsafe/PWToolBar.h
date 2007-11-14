@@ -50,7 +50,7 @@ private:
   TBBUTTON *m_pOriginalTBinfo;
   CImageList m_ImageList;
   UINT m_ClassicFlags, m_NewFlags;
-  int m_iMaxNumButtons, m_iNum_Bitmaps;
+  int m_iMaxNumButtons, m_iNum_Bitmaps, m_iNumDefaultButtons;
   int m_toolbarMode, m_bitmode;
   COLORREF m_ClassicBackground, m_NewBackground;
   bool m_bIsDefault;

@@ -90,17 +90,17 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
         DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
 #endif
 
-    //{{AFX_DATA_MAP(CPasskeyEntry)
+  //{{AFX_DATA_MAP(CPasskeyEntry)
 #if !defined(POCKET_PC)
-	DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
-	DDX_Control(pDX, IDOK, m_ctlOK);
+  DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
+  DDX_Control(pDX, IDOK, m_ctlOK);
 #endif
-	DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
-	DDX_Text(pDX, IDC_MESSAGE, m_message);
-    if (m_index == GCP_FIRST)
-        DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
-	DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
-	//}}AFX_DATA_MAP
+  DDX_Control(pDX, IDC_PASSKEY, m_ctlPasskey);
+  DDX_Text(pDX, IDC_MESSAGE, m_message);
+  if (m_index == GCP_FIRST)
+    DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
+  DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
+  //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)

@@ -79,7 +79,7 @@ DboxMain::OpenOnInit(void)
     } else {
       // Here if there was a filename saved from last invocation, but it couldn't
       // be opened. It was either removed or renamed, so ask the user what to do
-	  CString cs_msg;
+      CString cs_msg;
       cs_msg.Format(IDS_CANTOPENSAFE, m_core.GetCurFile());
       CGeneralMsgBox gmb;
       gmb.SetMsg(cs_msg);

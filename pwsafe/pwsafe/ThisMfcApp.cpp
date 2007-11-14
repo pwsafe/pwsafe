@@ -616,7 +616,7 @@ ThisMfcApp::InitInstance()
 
   CMenu* help_submenu = m_mainmenu->GetSubMenu(hpos);
   if (help_submenu != NULL) {
-    help_submenu->InsertMenu(2, MF_BYPOSITION, ID_U3SHOP_WEBSITE,
+    help_submenu->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
                              CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
   }
 

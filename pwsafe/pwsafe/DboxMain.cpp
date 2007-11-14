@@ -121,37 +121,28 @@ DboxMain::~DboxMain()
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 //{{AFX_MSG_MAP(DboxMain)
 
+ON_UPDATE_COMMAND_UI_RANGE(ID_MENUTOOLBAR_START, ID_MENUTOOLBAR_END, OnUpdateMenuToolbar)
+
 // File Menu
 ON_COMMAND(ID_MENUITEM_NEW, OnNew)
 ON_COMMAND(ID_MENUITEM_OPEN, OnOpen)
 ON_COMMAND(ID_MENUITEM_CLOSE, OnClose)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_CLOSE, OnUpdateClosedCommand)
 ON_COMMAND(ID_MENUITEM_CLEAR_MRU, OnClearMRU)
 ON_COMMAND(ID_MENUITEM_SAVE, OnSave)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_SAVEAS, OnSaveAs)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_SAVEAS, OnUpdateClosedCommand)
 ON_COMMAND_RANGE(ID_MENUITEM_EXPORT2OLD1XFORMAT, ID_MENUITEM_EXPORT2V2FORMAT, OnExportVx)
 ON_COMMAND(ID_MENUITEM_EXPORT2PLAINTEXT, OnExportText)
 ON_COMMAND(ID_MENUITEM_EXPORT2XML, OnExportXML)
 ON_COMMAND(ID_MENUITEM_IMPORT_PLAINTEXT, OnImportText)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_IMPORT_PLAINTEXT, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_IMPORT_KEEPASS, OnImportKeePass)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_IMPORT_KEEPASS, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_IMPORT_XML, OnImportXML)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_IMPORT_XML, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_MERGE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_COMPARE, OnUpdateClosedCommand)
 ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_PROPERTIES, OnUpdateClosedCommand)
 
 // Edit Menu
 ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADD, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_ADDGROUP, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
 ON_COMMAND(ID_MENUITEM_BROWSE, OnBrowse)
 ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
@@ -160,13 +151,9 @@ ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
 ON_COMMAND(ID_MENUITEM_COPYURL, OnCopyURL)
 ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
 ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_DELETE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_RENAME, OnUpdateRenameCommand)
 ON_COMMAND(ID_MENUITEM_FIND, OnFind)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_FIND, OnUpdateEmptyDB)
 ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_DUPLICATEENTRY, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_AUTOTYPE, OnAutoType)
 
 // View Menu
@@ -175,25 +162,20 @@ ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
 ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
 ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
 ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_EXPANDALL, OnUpdateTVCommand)
 ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_COLLAPSEALL, OnUpdateTVCommand)
 ON_COMMAND(ID_MENUITEM_CHANGEFONT, OnChangeFont)
 ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
-ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnUpdateViewReports)
 
 // Manage Menu
 ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_CHANGECOMBO, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
 ON_COMMAND(ID_MENUITEM_RESTORE, OnRestore)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_RESTORE, OnUpdateROCommand)
 ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
 
 // Help Menu
 ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
-ON_COMMAND(ID_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
-ON_COMMAND(ID_U3SHOP_WEBSITE, OnU3ShopWebsite)
+ON_COMMAND(ID_MENUITEM_PWSAFE_WEBSITE, OnPasswordSafeWebsite)
+ON_COMMAND(ID_MENUITEM_U3SHOP_WEBSITE, OnU3ShopWebsite)
 
 // List view Column Picker
 ON_COMMAND(ID_MENUITEM_COLUMNPICKER, OnColumnPicker)
@@ -232,9 +214,7 @@ ON_NOTIFY(HDN_ITEMCHANGED, IDC_LIST_HEADER, OnHeaderNotify)
 
 ON_COMMAND(ID_MENUITEM_EXIT, OnOK)
 ON_COMMAND(ID_MENUITEM_MINIMIZE, OnMinimize)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_MINIMIZE, OnUpdateTrayMinimizeCommand)
 ON_COMMAND(ID_MENUITEM_UNMINIMIZE, OnUnMinimize)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_UNMINIMIZE, OnUpdateTrayUnMinimizeCommand)
 
 #if defined(POCKET_PC)
 ON_COMMAND(ID_MENUITEM_SHOWPASSWORD, OnShowPassword)
@@ -246,9 +226,7 @@ ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnChangeItemFocus)
 ON_NOTIFY(NM_SETFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
 ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
 ON_COMMAND(ID_MENUITEM_TRAYLOCKUNLOCK, OnTrayLockUnLock)
-ON_UPDATE_COMMAND_UI(ID_MENUITEM_TRAYLOCKUNLOCK, OnUpdateTrayLockUnLockCommand)
-ON_COMMAND(ID_TRAYRECENT_ENTRY_CLEAR, OnTrayClearRecentEntries)
-ON_UPDATE_COMMAND_UI(ID_TRAYRECENT_ENTRY_CLEAR, OnUpdateTrayClearRecentEntries)
+ON_COMMAND(ID_MENUITEM_CLEARRECENTENTRIES, OnTrayClearRecentEntries)
 ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
 ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
 ON_COMMAND(ID_TOOLBUTTON_CLOSE, OnClose)
@@ -263,19 +241,23 @@ ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
 ON_COMMAND(ID_TOOLBUTTON_EDIT, OnEdit)
 ON_COMMAND(ID_TOOLBUTTON_DELETE, OnDelete)
 ON_COMMAND(ID_TOOLBUTTON_EXPANDALL, OnExpandAll)
-ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_EXPANDALL, OnUpdateTVCommand)
 ON_COMMAND(ID_TOOLBUTTON_COLLAPSEALL, OnCollapseAll)
-ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_COLLAPSEALL, OnUpdateTVCommand)
 ON_COMMAND(ID_TOOLBUTTON_OPTIONS, OnOptions)
+ON_COMMAND(ID_TOOLBUTTON_EXPORTTEXT, OnExportText)
+ON_COMMAND(ID_TOOLBUTTON_EXPORTXML, OnExportXML)
+ON_COMMAND(ID_TOOLBUTTON_IMPORTTEXT, OnImportText)
+ON_COMMAND(ID_TOOLBUTTON_IMPORTXML, OnExportXML)
+ON_COMMAND(ID_TOOLBUTTON_SAVEAS, OnSaveAs)
+ON_COMMAND(ID_TOOLBUTTON_COMPARE, OnCompare)
+ON_COMMAND(ID_TOOLBUTTON_MERGE, OnMerge)
+ON_COMMAND(ID_TOOLBUTTON_LISTTREE, OnToggleView)
+ON_COMMAND(ID_TOOLBUTTON_VIEWREPORTS, OnViewReports)
 
 ON_COMMAND(ID_TOOLBUTTON_CLOSEFIND, OnHideFindToolBar)
 ON_COMMAND(ID_TOOLBUTTON_FIND, OnToolBarFind)
 ON_COMMAND(ID_TOOLBUTTON_FINDCASE, OnToolBarFindCase)
-ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_FINDCASE, OnUpdateToolBarFindCase)
 ON_COMMAND(ID_TOOLBUTTON_FINDCASE_I, OnToolBarFindCase)
-ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_FINDCASE_I, OnUpdateToolBarFindCase)
 ON_COMMAND(ID_TOOLBUTTON_FINDCASE_S, OnToolBarFindCase)
-ON_UPDATE_COMMAND_UI(ID_TOOLBUTTON_FINDCASE_S, OnUpdateToolBarFindCase)
 ON_COMMAND(ID_TOOLBUTTON_FINDADVANCED, OnToolBarFindAdvanced)
 ON_COMMAND(ID_TOOLBUTTON_CLEARFIND, OnToolBarClearFind)
 #endif
@@ -296,7 +278,7 @@ ON_COMMAND(ID_MENUITEM_CUSTOMIZETOOLBAR, OnCustomizeToolbar)
    
 //}}AFX_MSG_MAP
 ON_COMMAND_EX_RANGE(ID_FILE_MRU_ENTRY1, ID_FILE_MRU_ENTRYMAX, OnOpenMRU)
-ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)
+ON_UPDATE_COMMAND_UI(ID_FILE_MRU_ENTRY1, OnUpdateMRU)  // Note: can't be in OnUpdateMenuToolbar!
 #ifndef POCKET_PC
 ON_COMMAND_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnTrayCopyUsername)
 ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYCOPYUSERNAME1, ID_MENUITEM_TRAYCOPYUSERNAMEMAX, OnUpdateTrayCopyUsername)
@@ -314,6 +296,123 @@ ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
 ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
 END_MESSAGE_MAP()
+
+// Command ID, OpenRW, OpenRO, Empty, Closed
+const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
+  // File menu
+  {ID_MENUITEM_OPEN, true, true, true, true},
+  {ID_MENUITEM_NEW, true, true, true, true},
+  {ID_MENUITEM_CLOSE, true, true, true, false},
+  {ID_MENUITEM_SAVE, true, false, true, false},
+  {ID_MENUITEM_SAVEAS, true, true, true, false},
+  {ID_MENUITEM_CLEAR_MRU, true, true, true, true},
+  {ID_MENUITEM_EXPORT2PLAINTEXT, true, true, false, false},
+  {ID_MENUITEM_EXPORT2OLD1XFORMAT, true, true, false, false},
+  {ID_MENUITEM_EXPORT2V2FORMAT, true, true, false, false},
+  {ID_MENUITEM_EXPORT2XML, true, true, false, false},
+  {ID_MENUITEM_IMPORT_XML, true, false, true, false},
+  {ID_MENUITEM_IMPORT_PLAINTEXT, true, false, true, false},
+  {ID_MENUITEM_IMPORT_KEEPASS, true, false, true, false},
+  {ID_MENUITEM_MERGE, true, false, true, false},
+  {ID_MENUITEM_COMPARE, true, true, false, false},
+  {ID_MENUITEM_PROPERTIES, true, true, true, false},
+  {ID_MENUITEM_EXIT, true, true, true, true},
+  // Edit menu
+  {ID_MENUITEM_ADD, true, false, true, false},
+  {ID_MENUITEM_EDIT, true, true, false, false},
+  {ID_MENUITEM_DELETE, true, false, false, false},
+  {ID_MENUITEM_RENAME, true, false, false, false},
+  {ID_MENUITEM_FIND, true, true, false, false},
+  {ID_MENUITEM_DUPLICATEENTRY, true, false, false, false},
+  {ID_MENUITEM_ADDGROUP, true, false, true, false},
+  {ID_MENUITEM_COPYPASSWORD, true, true, false, false},
+  {ID_MENUITEM_COPYUSERNAME, true, true, false, false},
+  {ID_MENUITEM_COPYNOTESFLD, true, true, false, false},
+  {ID_MENUITEM_CLEARCLIPBOARD, true, true, true, false},
+  {ID_MENUITEM_BROWSE, true, true, false, false},
+  {ID_MENUITEM_AUTOTYPE, true, true, false, false},
+  {ID_MENUITEM_COPYURL, true, true, false, false},
+  // View menu
+  {ID_MENUITEM_LIST_VIEW, true, true, true, false},
+  {ID_MENUITEM_TREE_VIEW, true, true, true, false},
+  {ID_MENUITEM_NEW_TOOLBAR, true, true, true, true},
+  {ID_MENUITEM_OLD_TOOLBAR, true, true, true, true},
+  {ID_MENUITEM_EXPANDALL, true, true, true, false},
+  {ID_MENUITEM_COLLAPSEALL, true, true, true, false},
+  {ID_MENUITEM_CHANGEFONT, true, true, true, false},
+  {ID_MENUITEM_REPORT_COMPARE, true, true, true, true},
+  {ID_MENUITEM_REPORT_IMPORTTEXT, true, true, true, true},
+  {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
+  {ID_MENUITEM_REPORT_MERGE, true, true, true, true},
+  {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
+  // Manage menu
+  {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
+  {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
+  {ID_MENUITEM_RESTORE, true, false, true, false},
+  {ID_MENUITEM_OPTIONS, true, true, true, true},
+  // Help Menu
+  {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
+  {ID_MENUITEM_ABOUT, true, true, true, true},
+  {ID_MENUITEM_U3SHOP_WEBSITE, true, true, true, true},
+  // Column popup menu
+  {ID_MENUITEM_COLUMNPICKER, true, true, true, false},
+  {ID_MENUITEM_RESETCOLUMNS, true, true, true, false},
+  // Compare popup menu
+  {ID_MENUITEM_COMPVIEWEDIT, true, false, true, false},
+  {ID_MENUITEM_COPY_TO_ORIGINAL, true, false, true, false},
+  {ID_MENUITEM_COPY_TO_COMPARISON, true, true, true, false},
+  // Tray popup menu
+  {ID_MENUITEM_TRAYLOCKUNLOCK, true, true, true, false},
+  {ID_MENUITEM_CLEARRECENTENTRIES, true, true, true, false},
+  {ID_MENUITEM_MINIMIZE, true, true, true, true},
+  {ID_MENUITEM_UNMINIMIZE, true, true, true, true},
+  {ID_MENUITEM_TRAYAUTOTYPE, true, true, false, false},
+  {ID_MENUITEM_TRAYBROWSE, true, true, false, false},
+  {ID_MENUITEM_TRAYCOPYNOTES, true, true, false, false},
+  {ID_MENUITEM_TRAYCOPYPASSWORD, true, true, false, false},
+  {ID_MENUITEM_TRAYCOPYUSERNAME, true, true, false, false},
+  {ID_MENUITEM_TRAYDELETE, true, false, false, false},
+  {ID_MENUITEM_TRAYVIEWEDIT, true, true, false, false},
+  // Default Main Toolbar buttons
+  {ID_TOOLBUTTON_NEW, true, true, true, true},
+  {ID_TOOLBUTTON_OPEN, true, true, true, true},
+  {ID_TOOLBUTTON_CLOSE, true, true, true, false},
+  {ID_TOOLBUTTON_SAVE, true, false, true, false},
+  {ID_TOOLBUTTON_COPYPASSWORD, true, true, false, false},
+  {ID_TOOLBUTTON_COPYUSERNAME, true, true, false, false},
+  {ID_TOOLBUTTON_COPYNOTESFLD, true, true, false, false},
+  {ID_TOOLBUTTON_CLEARCLIPBOARD, true, true, true, true},
+  {ID_TOOLBUTTON_AUTOTYPE, true, true, false, false},
+  {ID_TOOLBUTTON_BROWSEURL, true, true, false, false},
+  {ID_TOOLBUTTON_ADD, true, false, true, false},
+  {ID_TOOLBUTTON_EDIT, true, true, false, false},
+  {ID_TOOLBUTTON_DELETE, true, false, false, false},
+  {ID_TOOLBUTTON_EXPANDALL, true, true, false, false},
+  {ID_TOOLBUTTON_COLLAPSEALL, true, true, false, false},
+  {ID_TOOLBUTTON_OPTIONS, true, true, true, true},
+  {ID_TOOLBUTTON_HELP, true, true, true, true},
+  // Optional Main Toolbar buttons
+  {ID_TOOLBUTTON_EXPORTTEXT, true, true, false, false},
+  {ID_TOOLBUTTON_EXPORTXML, true, true, false, false},
+  {ID_TOOLBUTTON_IMPORTTEXT, true, false, true, false},
+  {ID_TOOLBUTTON_IMPORTXML, true, false, true, false},
+  {ID_TOOLBUTTON_SAVEAS, true, true, true, false},
+  {ID_TOOLBUTTON_COMPARE, true, true, false, false},
+  {ID_TOOLBUTTON_MERGE, true, false, true, false},
+  {ID_TOOLBUTTON_LISTTREE, true, true, true, false},
+  {ID_TOOLBUTTON_VIEWREPORTS, true, true, true, false},
+  // Find Toolbar
+  {ID_TOOLBUTTON_CLOSEFIND, true, true, true, false},
+  {ID_TOOLBUTTON_FINDEDITCTRL, true, true, false, false},
+  {ID_TOOLBUTTON_FIND, true, true, false, false},
+  {ID_TOOLBUTTON_FINDCASE, true, true, false, false},
+  {ID_TOOLBUTTON_FINDCASE_I, true, true, false, false},
+  {ID_TOOLBUTTON_FINDCASE_S, true, true, false, false},
+  {ID_TOOLBUTTON_FINDADVANCED, true, true, false, false},
+  {ID_TOOLBUTTON_CLEARFIND, true, true, false, false},
+  // Customize Main Toolbar
+  {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
+};
 
 void
 DboxMain::InitPasswordSafe()
@@ -558,6 +657,17 @@ DboxMain::InitPasswordSafe()
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
     SetColumnWidths(cs_ListColumnsWidths);
+
+  // Now set up UPDATE_UI data
+  const int num_CommandTable_entries = sizeof(m_UICommandTable) / sizeof(UICommandTableEntry);
+  for (int i = 0; i < num_CommandTable_entries; i++) {
+    MapUICommandTableEntry map_entry;
+    map_entry.bTypes[0] = m_UICommandTable[i].bOKInOpenRW;
+    map_entry.bTypes[1] = m_UICommandTable[i].bOKInOpenRO;
+    map_entry.bTypes[2] = m_UICommandTable[i].bOKInEmpty;
+    map_entry.bTypes[3] = m_UICommandTable[i].bOKInClosed;
+    m_MapUICommandTable[m_UICommandTable[i].ID] = map_entry;
+  }
 }
 
 LRESULT
@@ -812,36 +922,6 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 #endif
 }
 
-void
-DboxMain::OnUpdateEmptyDB(CCmdUI *pCmdUI)
-{
-  // Note: Disable if database is empty, but have to re-enable every time
-  // if not, as user might have done a "Ctrl+F" whilst no entries there 
-  // (closed or new database) and it would not have been reset.
-  if (m_core.GetNumEntries() == 0)
-  	pCmdUI->Enable(FALSE);
-  else
-    pCmdUI->Enable(TRUE);
-}
-
-void
-DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
-{
-  // Note: This first checks if a DB is Open before checking R-O status
-	// since CLOSED is a superset of Read-only
-  if (!m_bOpen) {
-  	pCmdUI->Enable(FALSE);
-  	return;
-  }
-
-  if (pCmdUI->m_pMenu != NULL)
-    if (pCmdUI->m_nID == ID_MENUITEM_DUPLICATEENTRY &&
-          pCmdUI->m_pMenu->GetMenuState(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND) == MF_GRAYED)
-        return;
-
-  // Use this callback for commands that need to
-  // be disabled in read-only mode
-  pCmdUI->Enable(m_core.IsReadOnly() ? FALSE : TRUE);
 #ifdef DEMO
   if (!m_core.IsReadOnly()) {
       bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
@@ -861,15 +941,6 @@ DboxMain::OnUpdateROCommand(CCmdUI *pCmdUI)
       }
   }
 #endif
-}
-
-void
-DboxMain::OnUpdateClosedCommand(CCmdUI *pCmdUI)
-{
-  // Use this callback  for commands that need to
-  // be disabled if no DB is open
-  pCmdUI->Enable(m_bOpen ? TRUE : FALSE);
-}
 
 void
 DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
@@ -877,32 +948,6 @@ DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
   // Use this callback  for commands that need to
   // be disabled if not supported (yet)
   pCmdUI->Enable(FALSE);
-}
-
-void
-DboxMain::OnUpdateRenameCommand(CCmdUI *pCmdUI)
-{
-  // Rename command
-  // First check R/O
-  OnUpdateROCommand(pCmdUI);
-  
-  // The disable in ListView mode
-  if (m_IsListView)
-    pCmdUI->Enable(FALSE);
-
-}
-
-void
-DboxMain::OnUpdateTVCommand(CCmdUI *pCmdUI)
-{
-  // Use this callback for commands that need to
-  // be disabled in ListView mode
-  if (m_IsListView) {
-    pCmdUI->Enable(FALSE);
-  } else {
-  	// Should be TRUE in TreeView but only if there are entries
-    pCmdUI->Enable(m_ctlItemTree.GetCount() > 0 ? TRUE : FALSE);
-  }
 }
 
 void 
@@ -1411,8 +1456,6 @@ DboxMain::ConfigureSystemMenu()
   sysMenu->InsertMenu( 5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCTSTR)str );
 #endif
 }
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 
 void
 DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
@@ -2092,7 +2135,8 @@ int DboxMain::CountChildren(HTREEITEM hStartItem)
 void
 DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 {
-	// Set new open/close status
+  // Initial setup of menu items and toolbar butons
+	// First set new open/close status
 	m_bOpen = bOpen;
 
 	// For open/close
@@ -2151,23 +2195,30 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	xfilesubmenu->EnableMenuItem(ID_MENUITEM_RESTORE, MF_BYCOMMAND | imenuflags);
 
 	if (m_toolbarsSetup == TRUE) {
-    const BOOL enableIfOpen = (bOpen /*&& m_core.GetNumEntries() > 0 */) ? TRUE : FALSE;
-    const BOOL enableIfOpenAndRW = m_core.IsReadOnly() ? FALSE : enableIfOpen;
-    int condOpen[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
-                      ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_CLEARCLIPBOARD,
-                      ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_BROWSEURL,
-                      ID_TOOLBUTTON_EXPANDALL, ID_TOOLBUTTON_COLLAPSEALL,
-                      ID_TOOLBUTTON_EDIT, ID_TOOLBUTTON_CLOSE, ID_TOOLBUTTON_FIND};
-    int condOpenRW[] = {ID_TOOLBUTTON_SAVE, ID_TOOLBUTTON_ADD, ID_TOOLBUTTON_DELETE};
-    int i;
+    TBBUTTONINFO tbinfo;
+    int i, nCount, iEnable;
     CToolBarCtrl &tbCtrl = m_MainToolBar.GetToolBarCtrl();
+    nCount = tbCtrl.GetButtonCount();
 
-    for (i = 0; i < sizeof(condOpen)/sizeof(condOpen[0]); i++)
-      tbCtrl.EnableButton(condOpen[i], enableIfOpen);
-    for (i = 0; i < sizeof(condOpenRW)/sizeof(condOpenRW[0]); i++)
-      tbCtrl.EnableButton(condOpenRW[i], enableIfOpenAndRW);
+    memset(&tbinfo, 0x00, sizeof(tbinfo));
+    tbinfo.cbSize = sizeof(tbinfo);
+    tbinfo.dwMask = TBIF_BYINDEX | TBIF_COMMAND | TBIF_STYLE;
 
-    if (m_FindToolBar.IsVisible() && enableIfOpen == FALSE) {
+    for (i = 0; i < nCount; i++) {
+      tbCtrl.GetButtonInfo(i, &tbinfo);
+
+      if (tbinfo.fsStyle & TBSTYLE_SEP || 
+          tbinfo.idCommand < ID_MENUTOOLBAR_START ||
+          tbinfo.idCommand > ID_MENUTOOLBAR_END)
+        continue;
+
+      iEnable = OnUpdateMenuToolbar(tbinfo.idCommand);
+      if (iEnable < 0)
+        continue;
+      tbCtrl.EnableButton(tbinfo.idCommand, iEnable);
+    }
+
+    if (m_FindToolBar.IsVisible() && !bOpen) {
       OnHideFindToolBar();
     }
 	}
@@ -2180,4 +2231,147 @@ void DboxMain::U3ExitNow()
         m_inExit = true;
         PostQuitMessage(0);
     }
+}
+
+void
+DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
+{
+  int iEnable(-1);
+
+  switch (pCmdUI->m_nID) {
+    // Set menu text to "UnLock" or "Lock" according to state
+    case ID_MENUITEM_TRAYLOCKUNLOCK:
+      {
+        const int i_state = app.GetSystemTrayState();
+        switch (i_state) {
+          case ThisMfcApp::UNLOCKED:
+            {
+              const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
+              pCmdUI->SetText(csLock);
+            }
+            break;
+          case ThisMfcApp::LOCKED:
+            {
+              const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
+              pCmdUI->SetText(csUnLock);
+            }
+            break;
+          case ThisMfcApp::CLOSED:
+            {
+              const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
+              pCmdUI->SetText(csClosed);
+              iEnable = FALSE;
+            }
+            break;
+          default:
+            ASSERT(0);
+            break;
+        }
+        if (i_state != ThisMfcApp::CLOSED) {
+          // If dialog visible - obviously unlocked and no need to have option to lock
+          iEnable = this->IsWindowVisible() == FALSE ? TRUE : FALSE;
+        }
+      }
+      break;
+    // Enable/Disable menu item depending on data supplied
+    case ID_MENUITEM_CLEARRECENTENTRIES:
+      if (pCmdUI->m_pSubMenu != NULL) {
+        // disable or enable entire popup for "Recent Entries"
+        // CCmdUI::Enable is a no-op for this case, so we
+        //   must do what it would have done.
+        pCmdUI->m_pMenu->EnableMenuItem(pCmdUI->m_nIndex, MF_BYPOSITION |
+           (app.GetSystemTrayState() == ThisMfcApp::UNLOCKED ? MF_ENABLED : MF_GRAYED));
+        return;
+      }
+      // otherwise enable
+      iEnable = m_RUEList.GetCount() != 0 ? TRUE : FALSE;
+      break;
+    default:
+      // "Standard" processing!
+      iEnable = OnUpdateMenuToolbar(pCmdUI->m_nID);
+  }
+  if (iEnable < 0)
+    return;
+
+  pCmdUI->Enable(iEnable);
+}
+
+int
+DboxMain::OnUpdateMenuToolbar(const UINT nID)
+{
+  // Return codes:
+  // < 0     : don't set pCmdUI->Enable
+  // = FALSE : set pCmdUI-Enable(FALSE)
+  // > TRUE  : set pCmdUI-Enable(TRUE)
+
+  MapUICommandTableConstIter it;
+  it = m_MapUICommandTable.find(nID);
+
+  if (it == m_MapUICommandTable.end()) {
+    // Don't have it - allow by default
+    return TRUE;
+  }
+
+  int item, iEnable;
+  if (!m_bOpen)
+    item = 3;  // Closed
+  else if (m_core.IsReadOnly())
+    item = 1;  // OpenRO
+  else
+    item = 0;  // OpenRW
+
+  if (item == 0 && m_core.GetNumEntries() == 0)
+    item = 2;  // OpenRW + empty
+
+  iEnable = it->second.bTypes[item] ? TRUE : FALSE;
+
+  // Special processing!
+  switch (nID) {
+    // Items not allowed in List View
+    case ID_MENUITEM_RENAME:
+    case ID_MENUITEM_EXPANDALL:
+    case ID_MENUITEM_COLLAPSEALL:
+    case ID_TOOLBUTTON_EXPANDALL:
+    case ID_TOOLBUTTON_COLLAPSEALL:
+      if (m_IsListView)
+        iEnable = FALSE;
+      break;
+    // Disable Minimize if already minimized
+    case ID_MENUITEM_MINIMIZE:
+      {
+        WINDOWPLACEMENT wndpl;
+        GetWindowPlacement(&wndpl);
+        if (wndpl.showCmd == SW_SHOWMINIMIZED)
+          iEnable = FALSE;
+      }
+      break;
+    // Disable Restore if already visible
+    case ID_MENUITEM_UNMINIMIZE:
+      {
+        WINDOWPLACEMENT wndpl;
+        GetWindowPlacement(&wndpl);
+        if (wndpl.showCmd != SW_SHOWMINIMIZED)
+          iEnable = FALSE;
+      }
+      break;
+    // Special processing for viewing reports if they exist
+    case ID_MENUITEM_REPORT_COMPARE:
+    case ID_MENUITEM_REPORT_IMPORTTEXT:
+    case ID_MENUITEM_REPORT_IMPORTXML:
+    case ID_MENUITEM_REPORT_MERGE:
+    case ID_MENUITEM_REPORT_VALIDATE:
+      iEnable = OnUpdateViewReports(nID);
+      break;
+    // Set the state of the "Case Sensitivity" button
+    case ID_TOOLBUTTON_FINDCASE:
+    case ID_TOOLBUTTON_FINDCASE_I:
+    case ID_TOOLBUTTON_FINDCASE_S:
+      m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
+                                  ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
+                                  m_FindToolBar.IsFindCaseSet());
+      return -1;
+    default:
+      break;
+  }
+  return iEnable;
 }

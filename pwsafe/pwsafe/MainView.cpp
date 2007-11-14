@@ -25,6 +25,7 @@
 #include "DboxMain.h"
 #include "TryAgainDlg.h"
 #include "ColumnChooserDlg.h"
+#include "GeneralMsgBox.h"
 
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
@@ -1321,6 +1322,15 @@ DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
 }
 
 void
+DboxMain::OnToggleView() 
+{
+  if (m_IsListView)
+    OnTreeView();
+  else
+    OnListView();
+}
+
+void
 DboxMain::OnListView() 
 {
   SetListView();
@@ -2186,6 +2196,91 @@ DboxMain::UnFindItem()
 }
 
 void
+DboxMain::OnViewReports()
+{
+  CString cs_filename, cs_path, csAction;
+  TCHAR tc_drive[_MAX_DRIVE];
+  TCHAR tc_dir[_MAX_DIR];
+
+#if _MSC_VER >= 1400
+  errno_t err;
+  err = _tsplitpath_s(m_core.GetCurFile(), tc_drive, _MAX_DRIVE, tc_dir, _MAX_DIR,
+                      NULL, 0, NULL, 0);
+  if (err != 0) {
+    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+    return;
+  }
+#else
+  _tsplitpath(m_core.GetCurFile(), sz_drive, sz_dir, NULL, NULL);
+#endif
+
+  CGeneralMsgBox gmb;
+  CString cs_msg(MAKEINTRESOURCE(IDS_SELECTREPORT));
+  gmb.SetMsg(cs_msg);
+
+  struct _stat statbuf;
+  bool bReportExists(false);
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Compare"));
+  if (::_tstat(cs_filename, &statbuf) == 0) {
+     gmb.AddButton(1, _T("Compare"));
+     bReportExists = true;
+  }
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Import_Text"));
+  if (::_tstat(cs_filename, &statbuf) == 0) {
+     gmb.AddButton(2, _T("Import Text"));
+     bReportExists = true;
+  }
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Import_XML"));
+  if (::_tstat(cs_filename, &statbuf) == 0) {
+     gmb.AddButton(3, _T("Import XML"));
+     bReportExists = true;
+  }
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Merge"));
+  if (::_tstat(cs_filename, &statbuf) == 0) {
+     gmb.AddButton(4, _T("Merge"));
+     bReportExists = true;
+  }
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Validate"));
+  if (::_tstat(cs_filename, &statbuf) == 0) {
+     gmb.AddButton(5, _T("Validate"));
+     bReportExists = true;
+  }
+
+  if (!bReportExists) {
+    AfxMessageBox(IDS_NOREPORTSEXIST);
+    return;
+  }
+
+  gmb.AddButton(6, _T("Cancel"), TRUE, TRUE);
+  gmb.SetStandardIcon(MB_ICONQUESTION);
+
+  INT_PTR rc = gmb.DoModal();
+  switch (rc) {
+    case 1:
+      csAction = _T("Compare");
+      break;
+    case 2:
+      csAction = _T("Import_Text");
+      break;
+    case 3:
+      csAction = _T("Import_XML");
+      break;
+    case 4:
+      csAction = _T("Merge");
+      break;
+    case 5:
+      csAction = _T("Validate");
+      break;
+    default:
+      return;
+  }
+  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, csAction);
+
+  ViewReport(cs_filename);
+  return;
+}
+
+void
 DboxMain::OnViewReports(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) &&
@@ -2308,18 +2403,13 @@ DboxMain::ViewReport(const CString cs_ReportFileName)
   return;
 }
 
-void
-DboxMain::OnUpdateViewReports(CCmdUI *pCmdUI)
+int
+DboxMain::OnUpdateViewReports(const int nID)
 {
-  int nID = pCmdUI->m_nID;
-
-  ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) && (nID <= ID_MENUITEM_REPORT_VALIDATE));
-
   CMyString cs_Database(m_core.GetCurFile());
   
   if (cs_Database.IsEmpty()) {
-    pCmdUI->Enable(FALSE);
-    return;
+    return FALSE;
   }
 
   CString cs_filename, csAction;
@@ -2331,7 +2421,7 @@ DboxMain::OnUpdateViewReports(CCmdUI *pCmdUI)
   err = _tsplitpath_s(cs_Database, tc_drive, _MAX_DRIVE, tc_dir, _MAX_DIR, NULL, 0, NULL, 0);
   if (err != 0) {
     PWSUtil::IssueError(_T("View Report: Error finding path to database"));
-    return;
+    return FALSE;
   }
 #else
   _tsplitpath(cs_Database, sz_drive, sz_dir, NULL, NULL);
@@ -2363,8 +2453,7 @@ DboxMain::OnUpdateViewReports(CCmdUI *pCmdUI)
 
   // Only allow selection if file exists!
   int status = ::_tstat(cs_filename, &statbuf);
-  if (status != 0)
-    pCmdUI->Enable(FALSE);
+  return (status != 0) ? FALSE : TRUE;
 }
 
 void
@@ -2455,14 +2544,6 @@ DboxMain::OnToolBarFindAdvanced()
 }
 
 void 
-DboxMain::OnUpdateToolBarFindCase(CCmdUI * /*pCmdUI */)
-{
-  m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
-                                  ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
-                                  m_FindToolBar.IsFindCaseSet());
-}
-
-void
 DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
 {
   CToolBarCtrl &mainTBCtrl =  m_MainToolBar.GetToolBarCtrl();

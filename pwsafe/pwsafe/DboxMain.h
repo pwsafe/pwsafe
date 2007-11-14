@@ -31,6 +31,7 @@
 #include "PWFindToolBar.h"
 #include "ControlExtns.h"
 #include <vector>
+#include <map>
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later
 #define HDF_SORTUP 0x0400
@@ -68,6 +69,13 @@ DECLARE_HANDLE(HDROP);
 
 // Hotkey value ID
 #define PWS_HOTKEY_ID 5767
+
+struct MapUICommandTableEntry {
+  bool bTypes[4];
+};
+  
+typedef std::map<UINT, MapUICommandTableEntry> MapUICommandTable;
+typedef MapUICommandTable::const_iterator MapUICommandTableConstIter;
 
 // Index values for which dialog to show during GetAndCheckPassword
 enum {GCP_FIRST = 0,		// At startup of PWS
@@ -275,6 +283,12 @@ protected:
   void setupBars();
   BOOL OpenOnInit();
   void InitPasswordSafe();
+
+  // For UPDATE_UI
+  int OnUpdateMenuToolbar(const UINT nID);
+  int OnUpdateViewReports(const int nID);
+  void OnUpdateMRU(CCmdUI* pCmdUI);
+
   // override following to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -334,7 +348,6 @@ protected:
 
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
-  afx_msg void OnUpdateTrayLockUnLockCommand(CCmdUI *pCmdUI);
   afx_msg void OnTrayClearRecentEntries();
   afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
 	afx_msg void OnTrayCopyUsername(UINT nID);
@@ -354,6 +367,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(DboxMain)
   virtual BOOL OnInitDialog();
+  afx_msg void OnUpdateMenuToolbar(CCmdUI *pCmdUI);
   afx_msg void OnDestroy();
   afx_msg BOOL OnQueryEndSession();
   afx_msg void OnEndSession(BOOL bEnding);
@@ -385,6 +399,7 @@ protected:
   afx_msg void OnProperties();
   afx_msg void OnRestore();
   afx_msg void OnSaveAs();
+  afx_msg void OnToggleView();
   afx_msg void OnListView();
   afx_msg void OnTreeView();
   afx_msg void OnBackupSafe();
@@ -406,12 +421,10 @@ protected:
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
   afx_msg void OnChangeFont();
-  afx_msg void OnViewReports(UINT nID);
-  afx_msg void OnUpdateViewReports(CCmdUI *pCmdUI);
+  afx_msg void OnViewReports(UINT nID);  // From View->Reports menu
+  afx_msg void OnViewReports();          // From Toolbar button
   afx_msg void OnMinimize();
-  afx_msg void OnUpdateTrayMinimizeCommand(CCmdUI* pCmdUI);
   afx_msg void OnUnMinimize();
-  afx_msg void OnUpdateTrayUnMinimizeCommand(CCmdUI* pCmdUI);
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnAutoType();
   afx_msg void OnColumnPicker();
@@ -423,12 +436,6 @@ protected:
   afx_msg void OnDropFiles(HDROP hDrop);
 #endif
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnUpdateMRU(CCmdUI* pCmdUI);
-  afx_msg void OnUpdateROCommand(CCmdUI *pCmdUI);
-  afx_msg void OnUpdateClosedCommand(CCmdUI *pCmdUI);
-  afx_msg void OnUpdateTVCommand(CCmdUI *pCmdUI);
-  afx_msg void OnUpdateRenameCommand(CCmdUI *pCmdUI);
-  afx_msg void OnUpdateEmptyDB(CCmdUI *pCmdUI);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenu(CMenu* pMenu);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
@@ -446,7 +453,6 @@ protected:
   afx_msg void OnToolBarFind();
   afx_msg void OnCustomizeToolbar();
   afx_msg void OnToolBarFindCase();
-  afx_msg void OnUpdateToolBarFindCase(CCmdUI *pCmdUI);
   afx_msg void OnToolBarFindAdvanced();
   afx_msg void OnToolBarClearFind();
   afx_msg void OnHideFindToolBar();
@@ -507,6 +513,17 @@ private:
   void SetupColumnChooser(const bool bShowHide);
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);
+
+  MapUICommandTable m_MapUICommandTable;
+
+  static const struct UICommandTableEntry {
+    UINT ID;
+    bool bOKInOpenRW;
+    bool bOKInOpenRO;
+    bool bOKInEmpty;
+    bool bOKInClosed;
+  } m_UICommandTable[];
+
 };
 
 // Following used to keep track of display vs data
@@ -517,8 +534,3 @@ struct DisplayInfo {
   HTREEITEM tree_item;
 };
 
-
-//-----------------------------------------------------------------------------
-// Local variables:
-// mode: c++
-// End:

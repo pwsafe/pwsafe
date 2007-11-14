@@ -40,10 +40,11 @@
 
 */
 
-// The following is the Default toolbar - buttons and separators.
-// It should really be in PWSprefs but this is the only reoutine that uses it and
+// The following is the Default toolbar up to HELP - buttons and separators.
+// It should really be in PWSprefs but this is the only routine that uses it and
 // it is best to keep it together.  These strings should NOT be translated to other
 // languagues as they are used only in the configuration file.
+// They should match m_MainToolBarIDs below.
 // Note a separator is denoted by '~'
 const CString CPWToolBar::m_csMainButtons[] = {
   _T("new"), _T("open"), _T("close"), _T("save"), _T("~"),
@@ -53,7 +54,10 @@ const CString CPWToolBar::m_csMainButtons[] = {
   _T("delete"), _T("~"),
   _T("expandall"), _T("collapseall"), _T("~"),
   _T("options"), _T("~"),
-  _T("help")
+  _T("help"),
+  // Optional (non-default) buttons next
+  _T("exporttext"), _T("exportxml"), _T("importtext"), _T("importxml"), 
+  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("viewreports")
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -80,7 +84,18 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_SEPARATOR,
   ID_TOOLBUTTON_OPTIONS,
   ID_SEPARATOR,
-  ID_HELP
+  ID_HELP,
+  // End of Default Toolbar
+  // Following are not in the "default" toolbar but can be selected by the user
+  ID_TOOLBUTTON_EXPORTTEXT,
+  ID_TOOLBUTTON_EXPORTXML,
+  ID_TOOLBUTTON_IMPORTTEXT,
+  ID_TOOLBUTTON_IMPORTXML,
+  ID_TOOLBUTTON_SAVEAS,
+  ID_TOOLBUTTON_COMPARE,
+  ID_TOOLBUTTON_MERGE,
+  ID_TOOLBUTTON_LISTTREE,
+  ID_TOOLBUTTON_VIEWREPORTS
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -101,8 +116,19 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_COLLAPSEALL_CLASSIC,
   IDB_OPTIONS_CLASSIC,
   IDB_HELP_CLASSIC,
+  // End of Default Toolbar
+  // Following are not in the "default" toolbar but can be selected by the user
+  IDB_EXPORTTEXT_CLASSIC,
+  IDB_EXPORTXML_CLASSIC,
+  IDB_IMPORTTEXT_CLASSIC,
+  IDB_IMPORTXML_CLASSIC,
+  IDB_SAVEAS_CLASSIC,
+  IDB_COMPARE_CLASSIC,
+  IDB_MERGE_CLASSIC,
+  IDB_LISTTREE_CLASSIC,
+  IDB_VIEWREPORTS_CLASSIC,
 
-  // Additional bitmap for swapping image on if entry's URL == email
+  // Additional bitmap for swapping image if entry's URL == email
   IDB_SENDEMAIL_CLASSIC
 };
 
@@ -124,8 +150,19 @@ const UINT CPWToolBar::m_MainToolBarNew8BMs[] = {
   IDB_COLLAPSEALL_NEW8,
   IDB_OPTIONS_NEW8,
   IDB_HELP_NEW8,
+  // End of Default Toolbar
+  // Following are not in the "default" toolbar but can be selected by the user
+  IDB_EXPORTTEXT_NEW8,
+  IDB_EXPORTXML_NEW8,
+  IDB_IMPORTTEXT_NEW8,
+  IDB_IMPORTXML_NEW8,
+  IDB_SAVEAS_NEW8,
+  IDB_COMPARE_NEW8,
+  IDB_MERGE_NEW8,
+  IDB_LISTTREE_NEW8,
+  IDB_VIEWREPORTS_NEW8,
 
-  // Additional bitmap for swapping image on if entry's URL == email
+  // Additional bitmap for swapping image if entry's URL == email
   IDB_SENDEMAIL_NEW8
 };
 
@@ -147,8 +184,19 @@ const UINT CPWToolBar::m_MainToolBarNew32BMs[] = {
   IDB_COLLAPSEALL_NEW32,
   IDB_OPTIONS_NEW32,
   IDB_HELP_NEW32,
+  // End of Default Toolbar
+  // Following are not in the "default" toolbar but can be selected by the user
+  IDB_EXPORTTEXT_NEW32,
+  IDB_EXPORTXML_NEW32,
+  IDB_IMPORTTEXT_NEW32,
+  IDB_IMPORTXML_NEW32,
+  IDB_SAVEAS_NEW32,
+  IDB_COMPARE_NEW32,
+  IDB_MERGE_NEW32,
+  IDB_LISTTREE_NEW32,
+  IDB_VIEWREPORTS_NEW32,
 
-  // Additional bitmap for swapping image on if entry's URL == email
+  // Additional bitmap for swapping image if entry's URL == email
   IDB_SENDEMAIL_NEW32
 };
 
@@ -291,6 +339,7 @@ CPWToolBar::Init(const int NumBits)
 
   j = 0;
   m_csDefaultButtonString.Empty();
+  m_iNumDefaultButtons = m_iMaxNumButtons;
   for (i = 0; i < m_iMaxNumButtons; i++) {
     const bool bIsSeparator = m_MainToolBarIDs[i] == ID_SEPARATOR;
     BYTE fsStyle = bIsSeparator ? TBSTYLE_SEP : TBSTYLE_BUTTON;
@@ -305,7 +354,11 @@ CPWToolBar::Init(const int NumBits)
     m_pOriginalTBinfo[i].dwData = 0;
     m_pOriginalTBinfo[i].iString = bIsSeparator ? -1 : j;
 
-    m_csDefaultButtonString += m_csMainButtons[i] + _T(" ");
+    if (i <= m_iNumDefaultButtons)
+      m_csDefaultButtonString += m_csMainButtons[i] + _T(" ");
+
+    if (m_MainToolBarIDs[i] == ID_HELP)
+      m_iNumDefaultButtons = i;
 
     if (!bIsSeparator)
       j++;
@@ -415,7 +468,7 @@ CPWToolBar::Reset()
   }
 
   // Restore the buttons
-  for (i = 0; i < m_iMaxNumButtons; i++) {
+  for (i = 0; i <= m_iNumDefaultButtons; i++) {
     tbCtrl.AddButtons(1, &m_pOriginalTBinfo[i]);
   }
 
