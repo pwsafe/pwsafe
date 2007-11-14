@@ -332,3 +332,5 @@
 #define IDS_ALIASNOTFOUND2A             5508
 #define IDS_ALIASNOTFOUND2B             5509
 #define IDS_BASEHASNOTITLE              5510
+#define IDS_SELECTREPORT                5511
+#define IDS_NOREPORTSEXIST              5512

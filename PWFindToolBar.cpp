@@ -379,7 +379,7 @@ void CPWFindToolBar::ToggleToolBarFindCase()
 
   m_bCaseSensitive = !m_bCaseSensitive;
   tbCtrl.CheckButton(ID, m_bCaseSensitive ? TRUE : FALSE);
-
+  
   TBBUTTONINFO tbinfo;
   memset(&tbinfo, 0x00, sizeof(tbinfo));
   tbinfo.cbSize = sizeof(tbinfo);
