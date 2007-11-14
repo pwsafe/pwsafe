@@ -748,6 +748,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RichEditCtrlExtn.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\RUEList.cpp"
 				>
 			</File>
@@ -1006,6 +1010,10 @@
 			</File>
 			<File
 				RelativePath=".\resource3.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RichEditCtrlExtn.h"
 				>
 			</File>
 			<File

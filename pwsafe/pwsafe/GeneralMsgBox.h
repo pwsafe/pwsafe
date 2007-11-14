@@ -10,22 +10,19 @@
  * GeneralMsgBox.h
  *
  * Defines a extended Message Box class with fancy features as:
- * - HTML Format support
+ * - HTML Format support via CRichEditCtrlExtn.
  * - Customizable buttons
  * - Customizable icon
  *
  * This is a cut down version of TcxMsgBox by Thales P. Carvalho but then
- * significantly enhanced to support text with HTML formatting and links.
- * instead of a RTF string.
+ * significantly enhanced to support text with HTML formatting and links
+ * instead of a RTF string by using a CRichEditCtrlExtn control.
  * See www.codeproject.com for the original code
 */
 
 #pragma once
 
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <bitset>
+#include "RichEditCtrlExtn.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox
@@ -82,39 +79,6 @@ public:
   int GetMetric(int iMetric);
 
 private:
-
-// HTML formatting functiond
-  CString GetTextFormatting(CString csHTML, int &iError);
-  COLORREF ConvertColourToColorRef(CString &csValue);
-  int ConvertSizeToPoints(CString &csValue, int &iCurrentSize);
-  int ConvertPointsToSize(const int iCurrentPoints);
-
-  enum {FACENAMECHANGED = 0, SIZECHANGED, COLOURCHANGED};
-
-  enum EntryType {Bold, Italic, Underline, Font, Colour, Size, Name, Link};
-
-// Formating for Bold, Italic, Underline, Colour, Font Size & Font Name
-  struct st_format {
-    int iStart;
-    int iEnd;
-    enum EntryType entrytype;
-    COLORREF cr;                       // Only valid if entrytype = Colour
-    int iSize;                         // Only valid if entrytype = Size
-    TCHAR tcszFACENAME[LF_FACESIZE];   // Only valid if entrytype = Name
-  };
-
-// URL for friendly name in text
-  struct ALink {
-    int iStart;
-    int iEnd;
-    TCHAR tcszURL[_MAX_PATH];
-  };
-
-// Vectors of format changes to be applied to the text string
-  std::vector<st_format> m_vFormat;
-  std::vector<ALink> m_vALink;
-
-  static bool iStartCompare(st_format elem1, st_format elem2);
 // Graphical attributes
   int m_aMetrics[NUM_OF_METRICS];  // basic metrics (dialog units)
   CSize m_dimMsg;                  // message dimension (pixels)
@@ -128,10 +92,10 @@ private:
   CSize m_dimDlgUnit;
 
 // Controls' attributes
-  UINT m_uDefCmdId;          // default command ID: <Return>
-  UINT m_uEscCmdId;          // escape command ID: <ESC> or box close
-  CStatic m_stIconCtrl;      // the icon control
-  CRichEditCtrl m_edCtrl;    // the RTF control
+  UINT m_uDefCmdId;            // default command ID: <Return>
+  UINT m_uEscCmdId;            // escape command ID: <ESC> or box close
+  CStatic m_stIconCtrl;        // the icon control
+  CRichEditCtrlExtn m_edCtrl;  // the RTF control
 
 // Button's attributes
   struct BTNDATA {
