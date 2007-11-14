@@ -1391,11 +1391,10 @@ private:
   const CMyString &m_title;
 };
 
-bool PWScore::GetUniqueBase(const CMyString &a_title, uuid_array_t &uuid)
+ItemListIter PWScore::GetUniqueBase(const CMyString &a_title, bool &bMultiple)
 {
+  ItemListIter retval(m_pwlist.end());
   int num(0);
-  memset(uuid, 0x00, sizeof(uuid_array_t));
-
   TitleMatch TitleMatch(a_title);
 
   ItemListIter found(m_pwlist.begin());
@@ -1405,19 +1404,63 @@ bool PWScore::GetUniqueBase(const CMyString &a_title, uuid_array_t &uuid)
       num++;
       if (num == 1) {
         // Save first
-        found->first.GetUUID(uuid);
+        retval = found;
       } else {
-        // More than 1, clear uuid
-        memset(uuid, 0x00, sizeof(uuid_array_t));
+        // More than 1, set to end()
+        retval = m_pwlist.end();
         break;
       }
       found++;
     } else
       break;
-  } while(found != m_pwlist.end());
+  } while (found != m_pwlist.end());
 
   // It is 1 if only 1, but 0 if none & 2 if more than 1 (we just stopped at the second)
-  return (num == 1);
+  bMultiple = (num > 1);
+  return retval;
+}
+
+struct GroupTitle_TitleUserMatch {
+  bool operator()(pair<CUUIDGen, CItemData> p) {
+    const CItemData &item = p.second;
+    return ((m_gt == item.GetGroup() && m_tu == item.GetTitle()) ||
+            (m_gt == item.GetTitle() && m_tu == item.GetUser()));
+  }
+  GroupTitle_TitleUserMatch(const CMyString &a_grouptitle, const CMyString &a_titleuser) :
+    m_gt(a_grouptitle),  m_tu(a_titleuser) {}
+private:
+  const CMyString &m_gt;
+  const CMyString &m_tu;
+};
+
+ItemListIter PWScore::GetUniqueBase(const CMyString &grouptitle, 
+                                    const CMyString &titleuser, bool &bMultiple)
+{
+  ItemListIter retval(m_pwlist.end());
+  int num(0);
+  GroupTitle_TitleUserMatch GroupTitle_TitleUserMatch(grouptitle, titleuser);
+
+  ItemListIter found(m_pwlist.begin());
+  do {
+    found = find_if(found, m_pwlist.end(), GroupTitle_TitleUserMatch);
+    if (found != m_pwlist.end()) {
+      num++;
+      if (num == 1) {
+        // Save first
+        retval = found;
+      } else {
+        // More than 1, set to end()
+        retval = m_pwlist.end();
+        break;
+      }
+      found++;
+    } else
+      break;
+  } while (found != m_pwlist.end());
+
+  // It is 1 if only 1, but 0 if none & 2 if more than 1 (we just stopped at the second)
+  bMultiple = (num > 1);
+  return retval;
 }
 
 void PWScore::EncryptPassword(const unsigned char *plaintext, int len,
@@ -2159,13 +2202,20 @@ void PWScore::GetAllAliasEntries(const uuid_array_t &base_uuid, UUIDList &aliasl
   }
 }
 
-int PWScore::GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bBase_was_Alias,
+int PWScore::GetBaseEntry(const CMyString &Password, uuid_array_t &base_uuid,
+                          bool &bBase_was_Alias, bool &bMultiple,
                           CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser)
 {
   // Either returns:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
   //   0: password not in alias format
-  //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
+  //  -n: password contains (n-1) colons but either no base entry found or no unique entry found (n = 1, 2 or 3)
+  
+  // "bBase_was_Alias" is set if the user specified a base entry that is an alias.  The real base is returned
+  // "bMultiple" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
+
+  bBase_was_Alias = false;
+  bMultiple = false;
   int num_colonsP1 = CMyString(Password).Replace(_T(':'), _T(';')) + 1;
   if (Password.Left(1) == CMyString(_T("[")) &&
       Password.Right(1) == CMyString(_T("]")) &&
@@ -2174,40 +2224,35 @@ int PWScore::GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bB
     ItemListIter iter;
     switch (num_colonsP1) {
       case 1:
-        // [x]
-        csPwdGroup = csPwdUser = _T("");
+        // [X] - OK if unique entry [g:X:u], [g:X:], [:X:u] or [:X:] exists for any value of g or u
         csPwdTitle = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
-        iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
-        if (iter == m_pwlist.end()) {
-          // Let's see if there is only one entry with this title!
-          uuid_array_t unique_uuid;
-          if (GetUniqueBase(csPwdTitle, unique_uuid)) {
-            // Yes there is!
-            iter = m_pwlist.find(unique_uuid);
-          }
+        iter = GetUniqueBase(csPwdTitle, bMultiple);
+        if (iter != m_pwlist.end()) {
+          // Fill in the fields found during search
+          csPwdGroup = iter->second.GetGroup();
+          csPwdUser = iter->second.GetUser();
         }
         break;
       case 2:
-        // [x:y]
+        // [X:Y] - OK if unique entry [X:Y:u] or [g:X:Y] exists for any value of g or u
         csPwdUser = _T("");
         tmp = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
         csPwdGroup = tmp.SpanExcluding(_T(":"));
         csPwdTitle = tmp.Mid(csPwdGroup.GetLength() + 1);  // Skip over 'group:'
-        iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
-        if (iter == m_pwlist.end()) {
-          csPwdUser = csPwdTitle;
-          csPwdTitle = csPwdGroup;
-          csPwdGroup = _T("");
-          iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+        iter = GetUniqueBase(csPwdGroup, csPwdTitle, bMultiple);
+        if (iter != m_pwlist.end()) {
+          // Fill in the fields found during search
+          csPwdGroup = iter->second.GetGroup();
+          csPwdTitle = iter->second.GetTitle();
+          csPwdUser = iter->second.GetUser();
         }
         break;
       case 3:
-        // [x:y:z], [x:y:], [:y:z], [:y:] (title cannot be empty)
+        // [X:Y:Z], [X:Y:], [:Y:Z], [:Y:] (title cannot be empty)
         tmp = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
         csPwdGroup = tmp.SpanExcluding(_T(":"));
         tmp = tmp.Mid(csPwdGroup.GetLength() + 1);  // Skip over 'group:'
-        csPwdTitle = tmp.SpanExcluding(_T(":"));
-        // Skip over 'title:'
+        csPwdTitle = tmp.SpanExcluding(_T(":"));    // Skip over 'title:'
         csPwdUser = tmp.Mid(csPwdTitle.GetLength() + 1);
         iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
         break;
@@ -2222,14 +2267,16 @@ int PWScore::GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bB
         iter->second.GetUUID(temp_uuid);
         GetBaseUUID(temp_uuid, base_uuid);
       } else {
-        bBase_was_Alias = false;
         iter->second.GetUUID(base_uuid);
       }
-      return num_colonsP1; // valid and found
+      // Valid and found
+      return num_colonsP1;
     }
-    return (-num_colonsP1); // valid but not found
+    // Valid but either exact [g:t:u] not found or
+    //  no or multiple entries satisfy [x] or [x:y]
+    return (-num_colonsP1);
   }
-  return 0; // invalid
+  return 0; // invalid password format for an alias
 }
 
 bool PWScore::GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)

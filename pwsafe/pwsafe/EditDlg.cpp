@@ -210,41 +210,42 @@ CEditDlg::OnOK()
   if (!m_isNotesHidden)
     m_realnotes = m_notes;
 
-  m_bIsModified |= (
-                    m_group != m_ci->GetGroup() ||
+  m_bIsModified |= (m_group != m_ci->GetGroup() ||
                     m_title != m_ci->GetTitle() ||
                     m_username != m_ci->GetUser() ||
                     m_realnotes != m_ci->GetNotes() ||
                     m_URL != m_ci->GetURL() ||
                     m_autotype != m_ci->GetAutoType() ||
                     m_PWHistory != m_ci->GetPWHistory() ||
-                    m_locLTime != m_oldlocLTime
-                    );
+                    m_locLTime != m_oldlocLTime);
 
   bool IsPswdModified = m_realpassword != m_oldRealPassword;
+
   //Check that data is valid
   if (m_title.IsEmpty()) {
     AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;
   }
+
   if (m_password.IsEmpty()) {
     AfxMessageBox(IDS_MUSTHAVEPASSWORD);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
   }
+
   if (!m_group.IsEmpty() && m_group[0] == '.') {
     AfxMessageBox(IDS_DOTINVALID);
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
     return;
   }
+
   if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
     AfxMessageBox(IDS_PASSWORDSNOTMATCH);
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
   }
-  //End check
 
   DboxMain* dbx = static_cast<DboxMain *>(GetParent());
   ASSERT(dbx != NULL);
@@ -270,77 +271,14 @@ CEditDlg::OnOK()
       return;
     }
   }
-  
-  CMyString csPwdGroup, csPwdTitle, csPwdUser;
-  bool bBase_was_Alias(false);
-  m_ibasedata = dbx->GetBaseEntry(m_password, m_base_uuid, bBase_was_Alias,
-                         csPwdGroup, csPwdTitle, csPwdUser);
 
-  if (csPwdGroup == m_group && csPwdTitle == m_title && csPwdUser == m_username) {
-    AfxMessageBox(IDS_ALIASCANTREFERTOITSELF);
+  if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_password, true, m_base_uuid, m_ibasedata)) {
+    // Already issued error message to user
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
   }
-
-  // m_ibasedata:
-  //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
-  //   0: password not in alias format
-  //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
-  if (m_ibasedata < 0) {
-    CString cs_msg;
-    const CString cs_msgA(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDA));
-    const CString cs_msgZ(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDZ));
-    int rc(IDNO);
-    switch (m_ibasedata) {
-      case -1: // [x]
-        cs_msg.Format(IDS_ALIASNOTFOUND0, csPwdTitle);
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
-        break;
-      case -2: // [g,t], [t:u]
-        // In this case the 2 fields from the password are in Title & User
-        cs_msg.Format(IDS_ALIASNOTFOUND1, csPwdTitle, csPwdUser, csPwdTitle, csPwdUser);
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
-        break;
-      case -3: // [x:y:z], [x:y:], [:y:z], [:y:] (title cannot be empty)
-        {
-        const bool bGE = csPwdGroup.IsEmpty() == TRUE;
-        const bool bTE = csPwdTitle.IsEmpty() == TRUE;
-        const bool bUE = csPwdUser.IsEmpty() == TRUE;
-        if (bTE) {
-          // Title is mandatory for all entries!
-          AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
-          rc = IDNO;
-          break;
-        } else if (!bGE && !bUE)  // [x:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2, csPwdGroup, csPwdTitle, csPwdUser);
-        else if (!bGE && bUE)     // [x:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND2A, csPwdGroup, csPwdTitle);
-        else if (bGE && !bUE)     // [:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2B, csPwdTitle, csPwdUser);
-        else if (bGE && bUE)      // [:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND0, csPwdTitle);
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
-        }
-        break;
-      default:
-        ASSERT(0);
-    }
-    if (rc == IDNO) {
-      UpdateData(FALSE);
-      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
-      return;
-    }
-  }
-  if (m_ibasedata > 0 && bBase_was_Alias) {
-    CString cs_msg;
-    cs_msg.Format(IDS_BASEISALIAS, csPwdGroup, csPwdTitle, csPwdUser);
-    if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
-      UpdateData(FALSE);
-      ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
-      return;
-    }
-  }
+  //End check
 
   // Everything OK, update fields
   m_ci->SetGroup(m_group);

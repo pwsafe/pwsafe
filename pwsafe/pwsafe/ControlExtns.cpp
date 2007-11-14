@@ -40,7 +40,7 @@ const COLORREF crefNoFocus = (RGB(255, 255, 255));  // White
 const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 
 /////////////////////////////////////////////////////////////////////////////
-// CEditExtn
+// CStaticExtn
 
 CStaticExtn::CStaticExtn()
   : m_bUserColour(FALSE)

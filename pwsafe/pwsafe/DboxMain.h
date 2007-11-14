@@ -194,10 +194,9 @@ public:
   void FixListIndexes();
   void Delete(bool inRecursion = false);
   void SaveDisplayStatus(); // call when tree expansion state changes
-  int GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bBase_was_Alias,
-      CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser)
-  {return m_core.GetBaseEntry(Password, base_uuid, bBase_was_Alias,
-                              csPwdGroup, csPwdTitle, csPwdUser);}
+  bool CheckNewPassword(const CMyString &group, const CMyString &title,
+                        const CMyString &user, const CMyString &password,
+                        const bool bIsEdit, uuid_array_t &base_uuid, int &ibasedata);
   void GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
   {m_core.GetBaseUUID(alias_uuid, base_uuid);}
 

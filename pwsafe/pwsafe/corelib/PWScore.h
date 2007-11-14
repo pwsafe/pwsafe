@@ -181,8 +181,9 @@ class PWScore {
                    const uuid_array_t &to_baseuuid);
   int AddAliasesViaBaseUUID(UUIDList &possible_aliases, CReport *rpt);
   int AddAliasesViaPassword(UUIDList &possible_aliases, CReport *rpt);
-  int GetBaseEntry(CMyString &Password, uuid_array_t &base_uuid, bool &bBase_was_Alias,
-    CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser);
+  int GetBaseEntry(const CMyString &Password, uuid_array_t &base_uuid,
+                   bool &bBase_was_Alias, bool &bMultiple,
+                   CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser);
 
   // Actions relating to alias/base map
   void AddBaseEntry(const uuid_array_t &alias_uuid, const uuid_array_t &base_uuid)
@@ -192,7 +193,9 @@ class PWScore {
     {m_alias2base_map[alias_uuid] = base_uuid;}
   int NumAliases(const uuid_array_t &base_uuid)
     {return m_base2aliases_mmap.count(base_uuid);}
-  bool GetUniqueBase(const CMyString &title, uuid_array_t &uuid);
+  ItemListIter GetUniqueBase(const CMyString &title, bool &bMultiple);
+  ItemListIter GetUniqueBase(const CMyString &grouptitle, 
+                             const CMyString &titleuser, bool &bMultiple);
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
