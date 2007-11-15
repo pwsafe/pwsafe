@@ -750,20 +750,20 @@ ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
 {
   int icon;
   switch (iData) {
-    case 0:
+  case PWSprefs::stiBlack:
       icon = IDI_TRAY;  // This is black.
       break;
-    case 1:
+  case PWSprefs::stiBlue:
       icon = IDI_TRAY_BLUE;
       break;
-    case 2:
+  case PWSprefs::stiWhite:
       icon = IDI_TRAY_WHITE;
       break;
-    case 3:
+  case PWSprefs::stiYellow:
       icon = IDI_TRAY_YELLOW;
       break;
     default:
-      iData = 0;
+      iData = PWSprefs::stiBlack;
       icon = IDI_TRAY;
       break;
   }

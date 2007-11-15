@@ -93,7 +93,8 @@ class PWSprefs {
   enum {minBKSFX = 0, BKSFX_None = 0, BKSFX_DateTime = 1, BKSFX_IncNumber = 2,
 	  maxBKSFX = 2};
 
-
+  // for System Tray icon color
+  enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
   bool IsDBprefsChanged() const {return m_prefs_changed[DB_PREF];}
   bool IsAPPprefsChanged() const {return m_prefs_changed[APP_PREF];}
   void ClearDBprefsChanged() {m_prefs_changed[DB_PREF] = false;}

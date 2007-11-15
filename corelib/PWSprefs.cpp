@@ -96,10 +96,12 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 	{_T("TreeDisplayStatusAtOpen"), AllCollapsed, true, minTDS, maxTDS},	// database
 	{_T("NumPWHistoryDefault"), 3, true, 0, 255},							// database
 	// Specified by supported masks
-	{_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},						// application
-	{_T("BackupMaxIncremented"), 1, false, 1, 999},							// application
-  {_T("PreExpiryWarnDays"), 1, false, 1, 30},                             // application
-  {_T("ClosedTrayIconColour"), 0, false, 0, 3},                    // application
+	{_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},				// application
+	{_T("BackupMaxIncremented"), 1, false, 1, 999},						// application
+  {_T("PreExpiryWarnDays"), 1, false, 1, 30},               // application
+
+  {_T("ClosedTrayIconColour"), stiBlack, false,
+   stiBlack, stiYellow},                                    // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
