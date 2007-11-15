@@ -2,15 +2,20 @@
 <html>
 <head>
 
+
   
 
 
+
+  
+  
 
   
   <title>Auto Type</title>
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
+  
   
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -19,9 +24,11 @@
 <body>
 
 
+
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Auto Type</h2>
+
 
 
 <p><b>Auto Type </b>provides a means for users to
@@ -29,41 +36,51 @@ easily and quickly
 enter user name and password information. With a single click, the user
 name and password are entered and the data is submitted to the host for
 approval. By default, the formula followed by the automated keystrokes
-is as follows: the user name, followed by a tab key, followed by the
+is as follows: <a name="defautotext"></a>the user name, followed by a tab key, followed by the
 password, another tab, and then the enter key (<i>username</i>
 <b>TAB</b> <i>password</i> <b>TAB </b><b>ENTER</b>). This works fine for most web sites that require username/password authentication.</p>
 
 
+
 <p>For web sites or applications that require different data, it is possible to
 tailor the autotype behaviour as described in the <a href="#autotype_details">Customizing Auto Type</a>
-section below.</p>
+section below. Note that you can also customize the&nbsp;<span style="font-style: italic;"><a href="#defautotext">default</a>&nbsp;</span>autotype text via the <span style="font-style: italic;"><a href="misc_tab.html">Misc</a>. </span>tab in the Options dialog box. This can be useful if, for example, the autotype is too fast for your machine.&nbsp;</p>
+
 
 
 <div class="instr">
 <h3>Using Auto Type</h3>
 
 
+
 <ol>
+
 
 
   <li>Place cursor in the form's user name field</li>
 
 
+
   <li>Maximize or open Password Safe</li>
 
 
+
   <li>Select a password entry</li>
+
 
 
   <li><b>Ctrl -T</b> or right-click and select <b>Perform
 Auto Type</b> to or click on the Toolbar button to initiate.</li>
 
 
+
 </ol>
+
 
 
 <h3><a name="autotype_details"></a>Customizing
 Auto Type</h3>
+
 
 
 <p>For web sites or applications that do not have the username field followed by
@@ -73,44 +90,60 @@ behaviour by filling in the <a href="#N1">"Autotype" field</a>&nbsp;with text th
 specifies the desired behavior as follows:</p>
 
 
+
 <ul>
+
 
 
   <li><span style="font-weight: bold;">\u</span>
 is replaced by the username associated with the entry.&nbsp;</li>
 
 
+
   <li><span style="font-weight: bold;">\p</span>
 is replaced by the password associated with the entry.&nbsp;</li>
+
 
 
   <li><span style="font-weight: bold;">\t</span>
 is replaced by the Tab key, in effect skipping a field.&nbsp;</li>
 
 
+
   <li><span style="font-weight: bold;">\n</span>
 is replaced by the enter key, in effect pressing a button.&nbsp;</li>
+
 
 
   <li><span style="font-weight: bold;">\\</span>
 is replaced by the backslash (\) key.&nbsp;</li>
 
 
+
   <li><span style="font-weight: bold;">\d<span style="font-style: italic;">NNN</span></span>
 sets the delay between characters to <span style="font-style: italic;">NNN</span> milliseconds,
 instead of 10 (the default).<br>
-<hr> <small><b>Note</b> that you can string together a number of the \d commands. For example, \d999\d999\d999\d010 gives you 3 seconds delay. The \d command both sets the character delay and also does a delay on its own.</small><hr>
+
+    <hr> <small><b>Note</b> that you can string together a number of
+the \d commands. For example, \d999\d999\d999\d010 gives you 3 seconds
+delay. The \d command both sets the character delay and also does a
+delay on its own.</small>
+    <hr>
 
   </li>
+
 
 
   <li>All other text is typed as-is.<br>
 
 
+
   </li>
 
 
+
 </ul>
+
 
 
 <p><span style="font-weight: bold;">Example:</span>
@@ -118,36 +151,47 @@ The following can be used where the bank account number (12345) must be
 entered before the user and password:<br>
 
 
+
 <br>
+
 
 
 <span style="font-style: italic;">12345\t\u\t\p\t\n</span></p>
 
 
+
 <p><span style="font-style: italic;"></span></p>
+
 
 
 </div>
 
 
-<hr> <small><b></a>Notes:</b>&nbsp;<a name="N1">By default, the
+
+<hr> <small><b>Notes:</b>&nbsp;<a name="N1">By default, the
 Autotype field is not displayed in the Add or Edit dialog boxes.
 To access the Autotype field, you may have to click on the
-"More&gt;&gt;" button in the dialog box.<br><br>If you are having
+"More&gt;&gt;" button in the dialog box.<br>
+<br>
+If you are having
   problems with autotype, you might want to disable 3rd-party
   popup-blockers. Users have reported problems with the interaction
-  of popup-blockers with the autotype functionality.</small>
+  of popup-blockers with the autotype functionality.</a></small>
 <hr><!-- Added some white space at the bottom for natural scrolling -->
-<b><br>
+<a name="N1"><b><br>
+
+
+
+<br>
+
 
 
 <br>
 
-
-<br>
 
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Auto Type"> <param name="Keyword" value="Using Auto Type"> </object>
 </b>
+</a>
 </body>
 </html>
