@@ -57,8 +57,9 @@ password. See online help for details.
 
 Changes to Existing Features in 3.11
 ====================================
-[1756385] Black Idle Icon in task tray is not visible in Vista. Allow 
-user to choose one of Black, Blue, White or Yellow.
+[1756385] The color of the application's system tray icon is now user
+configurable, allowing easy differentiation between different
+databases and fixing a visibility problem under Vista.
 [1790342] Replaced additional key shortcuts for ExpandAll and CollapseAll
 [introduced in rev. 1678] by toolbar buttons.  Now there is only one set 
 (the original) of key shortcut + toolbar buttons.
