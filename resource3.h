@@ -336,3 +336,4 @@
 #define IDS_MENUSENDEMAIL               5512
 #define IDS_SELECTREPORT                5513
 #define IDS_NOREPORTSEXIST              5514
+#define IDS_VISIT_WEBSITE               5515

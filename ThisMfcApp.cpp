@@ -356,6 +356,9 @@ ThisMfcApp::InitInstance()
    * It's always best to start at the beginning.  [Glinda, Witch of the North]
    */
 
+  // Needed for RichEditCtrls in Dialogs (i.e. not explicitly "created").
+  AfxInitRichEdit2();
+
   // Get application version information
   GetApplicationVersionData();
 
