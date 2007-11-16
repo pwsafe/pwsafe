@@ -406,11 +406,10 @@
 #define IDC_VIEWALIASES                 1268
 #define IDC_STATIC_ISANALIAS            1269
 #define IDC_STATIC_ALIASGRP             1270
-#define IDC_CHECKNEWVER                 1271
 #define IDC_NEWVER_STATUS               1272
-#define IDC_TRAYICONCOLOUR              1273
-#define IDC_TRAYICON                    1274
-#define IDC_COMBO1                      1275
+#define IDC_VISIT_WEBSITE               1273
+#define IDC_TRAYICONCOLOUR              1274
+#define IDC_TRAYICON                    1275
 #define IDC_RST_BLK                     1276
 #define IDC_RST_BLUE                    1277
 #define IDC_RST_WHITE                   1278

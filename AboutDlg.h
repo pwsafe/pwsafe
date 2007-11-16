@@ -12,6 +12,7 @@
 
 #include "PWDialog.h"
 #include "DboxMain.h"
+#include "RichEditCtrlExtn.h"
 
 class CAboutDlg : public CPWDialog
 {
@@ -24,11 +25,7 @@ public:
   //}}AFX_DATA
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX)    // DDX/DDV support
-  {
-     CPWDialog::DoDataExchange(pDX);
-     DDX_Text(pDX, IDC_NEWVER_STATUS, m_newVerStatus);
-  }
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 protected:
   virtual BOOL OnInitDialog();
@@ -37,15 +34,22 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-    public:afx_msg void OnBnClickedCheckNewVer();
- private:
+
+public:
+
+private:
   int m_nMajor;
   int m_nMinor;
   int m_nBuild;
   CString m_appversion;
   CString m_appcopyright;
   CString m_newVerStatus;
+  CRichEditCtrlExtn m_RECExNewVerStatus;
+  CRichEditCtrlExtn m_RECExWebSite;
 
   enum CheckStatus {UP2DATE, NEWER_AVAILABLE, CANT_CONNECT, CANT_READ};
   CheckStatus CheckLatestVersion(CString &latest);
+  void CheckNewVer();
+  
+  static bool OnCheckVersion(LPTSTR lpszURL, LPTSTR lpszFName, LPARAM instance);
 };

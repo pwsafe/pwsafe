@@ -15,6 +15,7 @@
 // the current version details
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "RichEditCtrlExtn.h"
 
 // for fetching & reading version xml file:
 #include <afxinet.h>
@@ -24,8 +25,6 @@
 
 #include "resource.h"
 #include "resource3.h"
-
-
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,8 +39,14 @@ CAboutDlg::CAboutDlg(CWnd* pParent)
 {
 }
 
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+{
+  CPWDialog::DoDataExchange(pDX);
+  DDX_Control(pDX, IDC_NEWVER_STATUS, m_RECExNewVerStatus);
+  DDX_Control(pDX, IDC_VISIT_WEBSITE, m_RECExWebSite);
+}
+
 BEGIN_MESSAGE_MAP(CAboutDlg, CPWDialog)
-   ON_BN_CLICKED(IDC_CHECKNEWVER, &CAboutDlg::OnBnClickedCheckNewVer)
 END_MESSAGE_MAP()
 
 BOOL
@@ -84,13 +89,30 @@ CAboutDlg::OnInitDialog()
 #ifdef DEMO
   m_appversion += _T(" ") + CString(MAKEINTRESOURCE(IDS_DEMO));
 #endif
+
   GetDlgItem(IDC_APPVERSION)->SetWindowText(m_appversion);
   GetDlgItem(IDC_APPCOPYRIGHT)->SetWindowText(m_appcopyright);
+
+  m_RECExNewVerStatus.SetWindowText(m_newVerStatus);
+  m_RECExNewVerStatus.RegisterOnLink(OnCheckVersion, (LPARAM)this);
+
+  m_RECExWebSite.SetWindowText(CString(MAKEINTRESOURCE(IDS_VISIT_WEBSITE)));
 
   return TRUE;
 }
 
-void CAboutDlg::OnBnClickedCheckNewVer()
+bool
+CAboutDlg::OnCheckVersion(LPTSTR lpszURL, LPTSTR /* lpszFName */, LPARAM instance)
+{
+  if (_tcscmp(lpszURL, _T("check_version")) == 0) {
+    CAboutDlg *self = (CAboutDlg *)instance;
+    self->CheckNewVer();
+    return true;
+  } else
+    return false;
+}
+
+void CAboutDlg::CheckNewVer()
 {
   // Get the latest.xml file from our site, compare to version,
   // and notify the user
@@ -141,7 +163,12 @@ void CAboutDlg::OnBnClickedCheckNewVer()
   default:
     break;
   }
+
+  m_RECExNewVerStatus.SetFont(GetFont());
+  m_RECExNewVerStatus.SetWindowText(m_newVerStatus);
+  m_RECExNewVerStatus.Invalidate();
   UpdateData(FALSE);
+  GetDlgItem(IDOK)->SetFocus();
 }
 
 static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
@@ -169,7 +196,6 @@ static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
  * Note: The "rev" is the svn commit number. Not using it (for now),
  *       as I think it's too volatile.
  */
-
 
 CAboutDlg::CheckStatus 
 CAboutDlg::CheckLatestVersion(CString &latest)
@@ -202,12 +228,16 @@ CAboutDlg::CheckLatestVersion(CString &latest)
   while ((nRead = fh->Read(buff, BUFSIZ)) != 0) {
     buff[nRead] = '\0';
     // change to widechar representation
-    if (!conv.FromUTF8(buff, nRead, chunk))
+    if (!conv.FromUTF8(buff, nRead, chunk)) {
+      fh->Close();
+      delete fh;
+      session.Close();
       return CANT_READ;
-    else
+    } else
       latest_xml += chunk;
   }
 #endif /* UNICODE */
+  fh->Close();
   delete fh;
   session.Close();
 	waitCursor.Restore(); // restore normal cursor
