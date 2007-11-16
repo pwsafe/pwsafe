@@ -427,9 +427,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       dlg_edit.m_defusername = pcore->GetDefUsername();
     dlg_edit.m_Edit_IsReadOnly = pcore->IsReadOnly();
 
-    uuid_array_t original_uuid, base_uuid, alias_uuid;
+    uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
 
-    ci->GetUUID(original_uuid);
+    ci->GetUUID(original_uuid);  // Edit doesn't change this!
     if (ci->IsBase()) {
       // Base entry
       UUIDList aliaslist;
@@ -450,9 +450,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     if (ci->IsAlias()) {
       // Alias entry
       // Get corresponding base uuid
-      m_core.GetBaseUUID(original_uuid, base_uuid);
+      m_core.GetBaseUUID(original_uuid, original_base_uuid);
 
-      ItemListIter iter = m_core.Find(base_uuid);
+      ItemListIter iter = m_core.Find(original_base_uuid);
       if (iter != End()) {
         const CItemData &cibase = iter->second;
         dlg_edit.m_base = _T("[") +
@@ -469,9 +469,7 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
     if (rc == IDOK) {
       // Out with the old, in with the new
-      uuid_array_t new_uuid;
-      editedItem.GetUUID(new_uuid);
-      ItemListIter listpos = Find(new_uuid);
+      ItemListIter listpos = Find(original_uuid);
       ASSERT(listpos != m_core.GetEntryEndIter());
       CItemData oldElem = GetEntryAt(listpos);
       DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
@@ -483,6 +481,7 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       ndi->tree_item = 0;
       editedItem.SetDisplayInfo(ndi);
       CMyString newPassword = editedItem.GetPassword();
+      memcpy(new_base_uuid, dlg_edit.m_base_uuid, sizeof(uuid_array_t));
 
       ItemListIter iter;
       if (dlg_edit.m_original_entrytype == CItemData::Normal &&
@@ -490,17 +489,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         // Original was a 'normal' entry and the password has changed
         if (dlg_edit.m_ibasedata > 0) {
           // Now an alias
-          editedItem.GetUUID(alias_uuid);
-          pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+          pcore->AddAliasEntry(new_base_uuid, original_uuid);
           editedItem.SetPassword(CMyString(_T("[Alias]")));
           editedItem.SetAlias();
-          iter = m_core.Find(dlg_edit.m_base_uuid);
-          if (iter != End()) {
-            const CItemData &cibase = iter->second;
-            DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-            HTREEITEM bti = di->tree_item;
-            SetEntryImage(cibase, bti, true);
-          }
         } else {
           // Still 'normal'
           editedItem.SetPassword(newPassword);
@@ -510,55 +501,23 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
       if (dlg_edit.m_original_entrytype == CItemData::Alias) {
         // Original was an alias - delete it from multimap
-        uuid_array_t original_base_uuid;
-        // Get corresponding base uuid
-        pcore->GetBaseUUID(original_uuid, original_base_uuid);
-        // Remove it from map & multimap
+        // RemoveAliasEntry also resets base to normal if the last alias is delete
         pcore->RemoveAliasEntry(original_base_uuid, original_uuid);
         if (newPassword == dlg_edit.m_base) {
-          // Password (i.e. base) unchanged - put it back with new uuid
-          pcore->AddAliasEntry(original_base_uuid, new_uuid);
+          // Password (i.e. base) unchanged - put it back
+          pcore->AddAliasEntry(original_base_uuid, original_uuid);
         } else {
           // Password changed so might be an alias of another entry!
+          // Could also be the same entry i.e. [:t:] == [t] !
           if (dlg_edit.m_ibasedata > 0) {
             // Still an alias
-            editedItem.GetUUID(alias_uuid);
-            pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+            pcore->AddAliasEntry(new_base_uuid, original_uuid);
             editedItem.SetPassword(CMyString(_T("[Alias]")));
             editedItem.SetAlias();
-            if (memcmp(original_base_uuid, dlg_edit.m_base_uuid, sizeof(uuid_array_t)) != 0) {
-              // Not the same base entry.
-              // Original base may have reverted to a Normal if it has no more aliases?
-              iter = m_core.Find(original_base_uuid);
-              if (iter != End()) {
-                const CItemData &cibase = iter->second;
-                if (!cibase.IsBase()) {
-                  DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-                  HTREEITEM bti = di->tree_item;
-                  SetEntryImage(cibase, bti, true);
-                }
-              }
-              // New base image may need changing
-              iter = m_core.Find(dlg_edit.m_base_uuid);
-              if (iter != End()) {
-                const CItemData &cibase = iter->second;
-                DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-                HTREEITEM bti = di->tree_item;
-                SetEntryImage(cibase, bti, true);
-              }
-            }
           } else {
             // No longer an alias
             editedItem.SetPassword(newPassword);
             editedItem.SetNormal();
-            // Base may have reverted to a Normal if it has no more aliases?
-            iter = m_core.Find(dlg_edit.m_base_uuid);
-            if (iter != End()) {
-              const CItemData &cibase = iter->second;
-              DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-              HTREEITEM bti = di->tree_item;
-              SetEntryImage(cibase, bti, true);
-            }
           }
         }
       }
@@ -568,25 +527,44 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         // Original was a base but might now be an alias of another entry!
         if (dlg_edit.m_ibasedata > 0) {
           // Now an alias
-          editedItem.GetUUID(alias_uuid);
           // Make this one an alias
-          pcore->AddAliasEntry(dlg_edit.m_base_uuid, alias_uuid);
+          pcore->AddAliasEntry(new_base_uuid, original_uuid);
           editedItem.SetPassword(CMyString(_T("[Alias]")));
           editedItem.SetAlias();
           // Move old aliases across
-          pcore->MoveAliases(original_uuid, dlg_edit.m_base_uuid);
-          // Update new Base image
-          iter = m_core.Find(dlg_edit.m_base_uuid);
-          if (iter != End()) {
-            const CItemData &cibase = iter->second;
-            DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-            HTREEITEM bti = di->tree_item;
-            SetEntryImage(cibase, bti, true);
-          }
+          pcore->MoveAliases(original_uuid, new_base_uuid);
         } else {
           // Still a base entry but with a new password
           editedItem.SetPassword(newPassword);
           editedItem.SetBase();
+        }
+      }
+
+      // Reset all images!
+      // First the edited entry
+      iter = m_core.Find(original_uuid);
+      if (iter != End()) {
+        const CItemData &cibase = iter->second;
+        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        HTREEITEM bti = di->tree_item;
+        SetEntryImage(cibase, bti, true);
+      }
+      // Next the original base entry
+      iter = m_core.Find(original_base_uuid);
+      if (iter != End()) {
+        const CItemData &cibase = iter->second;
+        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        HTREEITEM bti = di->tree_item;
+        SetEntryImage(cibase, bti, true);
+      }
+      // Last the new base entry (only if different to the one we have done!
+      if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
+        iter = m_core.Find(new_base_uuid);
+        if (iter != End()) {
+          const CItemData &cibase = iter->second;
+          DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+          HTREEITEM bti = di->tree_item;
+          SetEntryImage(cibase, bti, true);
         }
       }
 
@@ -599,7 +577,7 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       m_ctlItemTree.DeleteWithParents(di->tree_item);
       // AddEntry copies the entry, and we want to work with the inserted copy
       // Which we'll find by uuid
-      insertItem(pcore->GetEntry(m_core.Find(new_uuid)));
+      insertItem(pcore->GetEntry(m_core.Find(original_uuid)));
       FixListIndexes();
       // Now delete old entry's DisplayInfo
       delete di;
