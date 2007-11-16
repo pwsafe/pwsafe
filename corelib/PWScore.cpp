@@ -1901,7 +1901,7 @@ void PWScore::RemoveAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t
   }
 
   // Reset base entry to normal if it has no more aliases
-  if (m_base2aliases_mmap.find(base_uuid) != m_base2aliases_mmap.end()) {
+  if (m_base2aliases_mmap.find(base_uuid) == m_base2aliases_mmap.end()) {
     ItemListIter iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end())
       iter->second.SetNormal();
@@ -2190,6 +2190,8 @@ int PWScore::GetBaseEntry(const CMyString &Password, uuid_array_t &base_uuid,
 
   bBase_was_Alias = false;
   bMultiple = false;
+  memset(base_uuid, 0x00, sizeof(uuid_array_t));
+
   int num_colonsP1 = CMyString(Password).Replace(_T(':'), _T(';')) + 1;
   if (Password.Left(1) == CMyString(_T("[")) &&
       Password.Right(1) == CMyString(_T("]")) &&
