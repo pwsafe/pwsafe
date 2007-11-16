@@ -411,6 +411,11 @@
 #define IDC_TRAYICONCOLOUR              1273
 #define IDC_TRAYICON                    1274
 #define IDC_COMBO1                      1275
+#define IDC_RST_BLK                     1276
+#define IDC_RST_BLUE                    1277
+#define IDC_RST_WHITE                   1278
+#define IDC_RST_BLK4                    1279
+#define IDC_RST_YELLOW                  1279
 
 // Next default values for new objects
 // 
@@ -418,7 +423,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        340
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1276
+#define _APS_NEXT_CONTROL_VALUE         1277
 #define _APS_NEXT_SYMED_VALUE           132
 #endif
 #endif
