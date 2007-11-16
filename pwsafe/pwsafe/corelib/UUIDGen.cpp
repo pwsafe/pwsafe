@@ -59,6 +59,47 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
     uuid_array[i + 8] = uuid.Data4[i];
 }
 
+void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_NH_t &uuid_buffer)
+{
+  // No hyphens
+  memset(uuid_buffer, 0x00, sizeof(uuid_str_NH_t));
+#if _MSC_VER >= 1400
+  sprintf_s(uuid_buffer, sizeof(uuid_str_NH_t),
+            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#else
+  sprintf(uuid_buffer,
+          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+          uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+          uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+          uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+          uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#endif
+ }
+
+void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_WH_t &uuid_buffer)
+{
+  // With hyphens!
+  memset(uuid_buffer, 0x00, sizeof(uuid_str_WH_t));
+#if _MSC_VER >= 1400
+  sprintf_s(uuid_buffer, sizeof(uuid_str_WH_t),
+            "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
+            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#else
+  sprintf(uuid_buffer,
+          "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
+          uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+          uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+          uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+          uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+#endif
+ }
 
 #ifdef TEST
 #include <stdio.h>
@@ -71,7 +112,7 @@ int main()
     CUUIDGen uuid;
     printf("%s\n",str);
     uuid.GetUUID(uuid_array);
-    printf("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n",
+    printf(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n"),
 	   uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3], 
 	   uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7], 
 	   uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11], 

@@ -178,6 +178,16 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   uuid_array_t item_uuid;
 
   item.GetUUID(item_uuid);
+#ifdef DEBUG
+  uuid_str_NH_t uuid_buffer;
+  CUUIDGen::GetUUIDStr(item_uuid, uuid_buffer);
+#ifdef UNICODE
+  TRACE(_T("WriteRecord: UUID=%S, G=%s, T=%s, U=%s, P=%s\n"), uuid_buffer,
+#else
+  TRACE(_T("WriteRecord: UUID=%s, G=%s, T=%s, U=%s, P=%s\n"), uuid_buffer,
+#endif  // UNICODE
+        item.GetGroup(), item.GetTitle(), item.GetUser(), item.GetPassword());
+#endif // Debug
   WriteCBC(CItemData::UUID, item_uuid, sizeof(uuid_array_t));
   tmp = item.GetGroup();
   if (!tmp.IsEmpty())

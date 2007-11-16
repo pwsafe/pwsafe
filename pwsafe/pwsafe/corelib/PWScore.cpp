@@ -155,24 +155,10 @@ struct RecordWriter {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
       m_core->GetBaseUUID(item_uuid, base_uuid);
-      char uuid_buffer[33];
-#if _MSC_VER >= 1400
-      sprintf_s(uuid_buffer, 33,
-                "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-                base_uuid[0],  base_uuid[1],  base_uuid[2],  base_uuid[3],
-                base_uuid[4],  base_uuid[5],  base_uuid[6],  base_uuid[7],
-                base_uuid[8],  base_uuid[9],  base_uuid[10], base_uuid[11],
-                base_uuid[12], base_uuid[13], base_uuid[14], base_uuid[15]);
-#else
-      sprintf(uuid_buffer,
-              "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-              base_uuid[0],  base_uuid[1],  base_uuid[2],  base_uuid[3],
-              base_uuid[4],  base_uuid[5],  base_uuid[6],  base_uuid[7],
-              base_uuid[8],  base_uuid[9],  base_uuid[10], base_uuid[11],
-              base_uuid[12], base_uuid[13], base_uuid[14], base_uuid[15]);
-#endif
-      uuid_buffer[32] = '\0';
-      p.second.SetPassword(_T("[[") + CMyString(uuid_buffer) + _T("]]"));
+
+      uuid_str_NH_t base_uuid_buffer;
+      CUUIDGen::GetUUIDStr(base_uuid, base_uuid_buffer);
+      p.second.SetPassword(_T("[[") + CMyString(base_uuid_buffer) + _T("]]"));
     }
     m_out->WriteRecord(p.second);
     p.second.SetPassword(savePassword);
@@ -487,32 +473,10 @@ PWScore::WriteXMLFile(const CMyString &filename,
     of << "\"" << endl;
   }
 
-  char uuid_buffer[37];
-#if _MSC_VER >= 1400
-	sprintf_s(uuid_buffer, 37,
-            "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
-            m_hdr.m_file_uuid_array[0],  m_hdr.m_file_uuid_array[1],
-            m_hdr.m_file_uuid_array[2],  m_hdr.m_file_uuid_array[3],
-            m_hdr.m_file_uuid_array[4],  m_hdr.m_file_uuid_array[5],
-            m_hdr.m_file_uuid_array[6],  m_hdr.m_file_uuid_array[7],
-            m_hdr.m_file_uuid_array[8],  m_hdr.m_file_uuid_array[9],
-            m_hdr.m_file_uuid_array[10], m_hdr.m_file_uuid_array[11],
-            m_hdr.m_file_uuid_array[12], m_hdr.m_file_uuid_array[13],
-            m_hdr.m_file_uuid_array[14], m_hdr.m_file_uuid_array[15]);
-#else
-  sprintf(uuid_buffer,
-          "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
-          m_hdr.m_file_uuid_array[0],  m_hdr.m_file_uuid_array[1],
-          m_hdr.m_file_uuid_array[2],  m_hdr.m_file_uuid_array[3],
-          m_hdr.m_file_uuid_array[4],  m_hdr.m_file_uuid_array[5],
-          m_hdr.m_file_uuid_array[6],  m_hdr.m_file_uuid_array[7],
-          m_hdr.m_file_uuid_array[8],  m_hdr.m_file_uuid_array[9],
-          m_hdr.m_file_uuid_array[10], m_hdr.m_file_uuid_array[11],
-          m_hdr.m_file_uuid_array[12], m_hdr.m_file_uuid_array[13],
-          m_hdr.m_file_uuid_array[14], m_hdr.m_file_uuid_array[15]);
-#endif
-  uuid_buffer[36] = '\0';
-  of << "Database_uuid=\"" << uuid_buffer << "\"" << endl;
+  uuid_str_WH_t hdr_uuid_buffer;
+  CUUIDGen::GetUUIDStr(m_hdr.m_file_uuid_array, hdr_uuid_buffer);
+
+  of << "Database_uuid=\"" << hdr_uuid_buffer << "\"" << endl;
   of << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
 	of << "xsi:noNamespaceSchemaLocation=\"pwsafe.xsd\">" << endl;
 	of << endl;
@@ -1184,6 +1148,16 @@ PWScore::ReadFile(const CMyString &a_filename,
           temp.CreateUUID(); // replace duplicated uuid
           temp.GetUUID(uuid); // refresh uuid_array
         }
+#ifdef DEBUG
+        uuid_str_NH_t uuid_buffer;
+        CUUIDGen::GetUUIDStr(uuid, uuid_buffer);
+#ifdef UNICODE
+        TRACE(_T("ReadRecord: UUID=%S, G=%s, T=%s, U=%s, P=%s\n"), uuid_buffer,
+#else
+        TRACE(_T("ReadRecord: UUID=%s, G=%s, T=%s, U=%s, P=%s\n"), uuid_buffer,
+#endif  // UNICODE
+          temp.GetGroup(), temp.GetTitle(), temp.GetUser(), temp.GetPassword());
+#endif // DEBUG
         csMyPassword = temp.GetPassword();
         csMyPassword.MakeLower();
         if (csMyPassword.Left(2) == _T("[[") || 

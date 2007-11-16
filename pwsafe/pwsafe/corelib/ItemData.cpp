@@ -205,7 +205,6 @@ CItemData::GetTime(int whichtime, time_t &t) const
   }
 }
 
-
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
 {
   unsigned int length = sizeof(uuid_array);
@@ -537,23 +536,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   uuid_array_t uuid_array;
   GetUUID(uuid_array);
-  char uuid_buffer[37];
-#if _MSC_VER >= 1400
-  sprintf_s(uuid_buffer, 33,
-            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#else
-  sprintf(uuid_buffer,
-          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-          uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-          uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-          uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-          uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#endif
-  uuid_buffer[32] = '\0';
+  uuid_str_NH_t uuid_buffer;
+  CUUIDGen::GetUUIDStr(uuid_array, uuid_buffer);
   oss << "\t\t<uuid><![CDATA[" << uuid_buffer << "]]></uuid>" << endl;
 
   time_t t;
