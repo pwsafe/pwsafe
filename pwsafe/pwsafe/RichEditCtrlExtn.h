@@ -23,6 +23,18 @@ public:
   CRichEditCtrlExtn();
   void SetWindowText(LPCTSTR lpszString);
 
+  // (Un)Register to be notified if the link clicked
+  bool RegisterOnLink(bool (*pfcn) (LPTSTR, LPTSTR, LPARAM), LPARAM);
+  void UnRegisterOnLink();
+  void NotifyListModified();
+
+  // URL for friendly name in text
+  struct ALink {
+    int iStart;
+    int iEnd;
+    TCHAR tcszURL[_MAX_PATH];
+  };
+
 private:
 // HTML formatting functions
   CString GetTextFormatting(CString csHTML, int &iError);
@@ -44,18 +56,17 @@ private:
     TCHAR tcszFACENAME[LF_FACESIZE];   // Only valid if entrytype = Name
   };
 
-// URL for friendly name in text
-  struct ALink {
-    int iStart;
-    int iEnd;
-    TCHAR tcszURL[_MAX_PATH];
-  };
-
 // Vectors of format changes to be applied to the text string
   std::vector<st_format> m_vFormat;
   std::vector<ALink> m_vALink;
 
   static bool iStartCompare(st_format elem1, st_format elem2);
+  
+// Callback if link has been clicked
+//   parameters = link text clicked, instance that registered for callback
+// Callback returns "true" if it processed the link
+  bool (*m_pfcnNotifyLinkClicked) (LPTSTR, LPTSTR, LPARAM);
+  LPARAM m_NotifyInstance;
 
 // Attributes
 private:
@@ -66,7 +77,7 @@ public:
 
 // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CEditEx)
+  //{{AFX_VIRTUAL(CRichEditCtrlExtn)
   //}}AFX_VIRTUAL
 
 // Implementation
@@ -75,8 +86,8 @@ public:
 
   // Generated message map functions
 protected:
-  //{{AFX_MSG(CEditExtn)
-  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  //{{AFX_MSG(CRichEditCtrlExtn)
+  afx_msg void OnLink(NMHDR *pNotifyStruct, LRESULT *pResult);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 };

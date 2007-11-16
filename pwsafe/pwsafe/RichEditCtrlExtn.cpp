@@ -22,6 +22,15 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+/*
+   Note that there is a callback function available to allow the parent to process
+   clicks on any link in the text.
+
+    bool pfcnNotifyLinkClicked (LPTSTR lpszURL, LPTSTR lpszFriendlyName, LPARAM self);
+   
+   If the parent has not registered for the callback, the link is processed by this
+   control and it should open the appropriate URL in the user's default browser.
+ */
 
 /*
   Supports the following HTML formatting in a RichEditCtrl:
@@ -47,25 +56,124 @@ static char THIS_FILE[] = __FILE__;
 
   4. Any unsupported HTML tags will be retained e.g. "<q>test</q>" will be
      still be "<q>test</q>" in the final text string.
-*/
+ */
 
 /////////////////////////////////////////////////////////////////////////////
 // CRichEditCtrlExtn
 
 CRichEditCtrlExtn::CRichEditCtrlExtn()
+  : m_pfcnNotifyLinkClicked(NULL)
 {
 }
 
 CRichEditCtrlExtn::~CRichEditCtrlExtn()
 {
+  m_vFormat.clear();
+  m_vALink.clear();
 }
 
 BEGIN_MESSAGE_MAP(CRichEditCtrlExtn, CRichEditCtrl)
 	//{{AFX_MSG_MAP(CRichEditCtrlExtn)
+	ON_NOTIFY_REFLECT(EN_LINK, OnLink) 
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-// Return whether first starting point is greater than the second
+// Find "Friendly Name" from link vector
+struct StartEndMatch {
+  bool operator()(CRichEditCtrlExtn::ALink &al) {
+    return (al.iStart == m_iStart && al.iEnd == m_iEnd);
+  }
+
+  StartEndMatch(const int &i_start, const int &i_end) :
+    m_iStart(i_start),  m_iEnd(i_end) {}
+
+private:
+  const int &m_iStart;
+  const int &m_iEnd;
+};
+
+void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
+{
+  ENLINK* pENLink = (ENLINK*)pNotifyStruct;
+  CString cs_FName, cs_URL;
+  CHARRANGE saveRange;
+  *pResult = 0;
+
+  if (pNotifyStruct->code == EN_LINK) {
+    if (pENLink->msg == WM_LBUTTONDOWN || pENLink->msg == WM_LBUTTONDBLCLK) {
+      // Find "Friendly Name"
+      if (m_vALink.empty())
+        return;
+
+      StartEndMatch StartEndMatch(pENLink->chrg.cpMin, pENLink->chrg.cpMax);
+      std::vector<ALink>::const_iterator found;
+      found = std::find_if(m_vALink.begin(), m_vALink.end(), StartEndMatch);
+
+      if (found == m_vALink.end())
+        return;
+
+      // Save current selected text
+      saveRange.cpMin = 0;
+      saveRange.cpMax = 0;
+      GetSel(saveRange);
+
+      // Select link
+      SetSel(pENLink->chrg);
+
+      // Retrieve Friendly Name
+      cs_FName = GetSelText();
+
+      // Restore selection
+      SetSel(saveRange);
+
+      // Retrieve the URL
+      cs_URL = CString(found->tcszURL);
+      CWaitCursor waitCursor;
+
+      bool bCallbackProcessed(false);
+      if (m_pfcnNotifyLinkClicked != NULL) {
+        // Call the supplied Callback routine; if it returns "true", it has processed the link
+        LPTSTR lpszFName = cs_FName.GetBuffer(cs_FName.GetLength() + 1);
+        LPTSTR lpszURL = cs_URL.GetBuffer(cs_FName.GetLength() + 1);
+        bCallbackProcessed = m_pfcnNotifyLinkClicked(lpszURL, lpszFName, m_NotifyInstance);
+        cs_URL.ReleaseBuffer();
+        cs_FName.ReleaseBuffer();
+      }
+
+      if (bCallbackProcessed) {
+        *pResult = 1;
+      } else {
+        // We do it!
+        if (!cs_URL.IsEmpty()) {
+          ::ShellExecute(NULL, NULL, cs_URL, NULL, NULL, SW_SHOWNORMAL);
+          *pResult = 1;
+        }
+      }
+      SetSel(-1, -1);
+    } else 
+    if (pENLink->msg == WM_LBUTTONUP) {
+      *pResult = 1;
+    }
+  }
+}
+
+bool CRichEditCtrlExtn::RegisterOnLink(bool (*pfcn) (LPTSTR, LPTSTR, LPARAM), LPARAM instance)
+{
+  if (m_pfcnNotifyLinkClicked != NULL)
+    return false;
+
+  m_pfcnNotifyLinkClicked = pfcn;
+  m_NotifyInstance = instance;
+  return true;
+}
+
+void CRichEditCtrlExtn::UnRegisterOnLink()
+{
+  m_pfcnNotifyLinkClicked = NULL;
+  m_NotifyInstance = NULL;
+}
+
+// Return whether first starting point is greater than the second when sorting links
 bool CRichEditCtrlExtn::iStartCompare(st_format elem1, st_format elem2)
 {
   if (elem1.iStart != elem2.iStart)
@@ -78,6 +186,9 @@ void
 CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
 {
   int iError;
+  CRichEditCtrl::SetWindowText(_T(""));
+  ShowWindow(SW_HIDE);
+
   CString cs_formatstring(lpszString);
   CString cs_plaintext = GetTextFormatting(cs_formatstring, iError);
   if (iError != 0) {
@@ -128,6 +239,7 @@ CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
     }
 
     if (!m_vALink.empty()) {
+      SetEventMask(GetEventMask() | ENM_LINK); 
       std::vector<ALink>::const_iterator ALink_iter;
       memset((void *)&cf2, 0x00, sizeof(cf2));
       cf2.cbSize = sizeof(cf2);
@@ -138,10 +250,11 @@ CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
         SetSel(ALink_iter->iStart, ALink_iter->iEnd);
         SetSelectionCharFormat(cf2);
       }
+    } else {
+      SetEventMask(GetEventMask() & ~ENM_LINK);
     }
   }
-  m_vFormat.clear();
-  m_vALink.clear();
+  ShowWindow(SW_SHOW);
 }
 
 CString
@@ -155,6 +268,9 @@ CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
 
   int ierrorcode(0);
   bool bHTMLTag;
+
+  m_vFormat.clear();
+  m_vALink.clear();
 
   st_format this_format;
 
@@ -452,22 +568,18 @@ vnext:
       // <a href="http://www.microsoft.com">Friendly name</a>
 
       if (csHTMLTag.Left(7) == _T("a href=")) {
-        long dwTStart, dwTEnd;
-        dwTStart = csHTMLTag.Find(_T("href="), 0);
-        if (dwTStart >= 0) {
-          CString csURL;
-          dwTEnd = csHTMLTag.Find(_T("\""), dwTStart + sizeof(_T("href=")));
-          if (dwTEnd >= 0) {
-            csURL = csHTMLTag.Mid(dwTStart + sizeof(_T("href=")),
-                                 dwTEnd - (dwTStart + sizeof(_T("href="))));
-            if (!csURL.IsEmpty()) {
-              csURL.MakeLower();
+        long dwTEnd;
+        CString csURL;
+        dwTEnd = csHTMLTag.Find(_T("\""), 8);
+        if (dwTEnd >= 0) {
+          csURL = csHTMLTag.Mid(8, dwTEnd - 8);
+          if (!csURL.IsEmpty()) {
+            csURL.MakeLower();
 #if (_MSC_VER >= 1400)
-              _tcscpy_s(this_ALink.tcszURL, _MAX_PATH, csURL);
+            _tcscpy_s(this_ALink.tcszURL, _MAX_PATH, csURL);
 #else
-              _tcscpy(this_ALink.tcszURL, csURL);
+            _tcscpy(this_ALink.tcszURL, csURL);
 #endif
-            }
           }
         }
         // Now get Friendly Name (note doing this within the while loop!)
