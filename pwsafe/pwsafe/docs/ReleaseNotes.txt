@@ -57,9 +57,9 @@ password. See online help for details.
 
 Changes to Existing Features in 3.11
 ====================================
-[1756385] The color of the application's system tray icon is now user
-configurable, allowing easy differentiation between different
-databases and fixing a visibility problem under Vista.
+[1756385] The color of the application's system tray icon (when the
+application is started and when there's no open database) is now user
+configurable, fixing a visibility problem under Vista.
 [1790342] Replaced additional key shortcuts for ExpandAll and CollapseAll
 [introduced in rev. 1678] by toolbar buttons.  Now there is only one set 
 (the original) of key shortcut + toolbar buttons.
