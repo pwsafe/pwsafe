@@ -1148,16 +1148,6 @@ PWScore::ReadFile(const CMyString &a_filename,
           temp.CreateUUID(); // replace duplicated uuid
           temp.GetUUID(uuid); // refresh uuid_array
         }
-#ifdef DEBUG
-        uuid_str_NH_t uuid_buffer;
-        CUUIDGen::GetUUIDStr(uuid, uuid_buffer);
-#ifdef UNICODE
-        TRACE(_T("ReadRecord: UUID=%S, G=%s, T=%s, U=%s, P=%s\n"), uuid_buffer,
-#else
-        TRACE(_T("ReadRecord: UUID=%s, G=%s, T=%s, U=%s, P=%s\n"), uuid_buffer,
-#endif  // UNICODE
-          temp.GetGroup(), temp.GetTitle(), temp.GetUser(), temp.GetPassword());
-#endif // DEBUG
         csMyPassword = temp.GetPassword();
         csMyPassword.MakeLower();
         if (csMyPassword.Left(2) == _T("[[") || 
