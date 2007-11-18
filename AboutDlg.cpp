@@ -34,9 +34,12 @@ static char THIS_FILE[] = __FILE__;
 
 CAboutDlg::CAboutDlg(CWnd* pParent)
   : CPWDialog(CAboutDlg::IDD, pParent),
-    m_nMajor(0), m_nMinor(0), m_nBuild(0),
-    m_newVerStatus(MAKEINTRESOURCE(IDS_LATEST_VERSION))
+    m_nMajor(0), m_nMinor(0), m_nBuild(0)
 {
+  CString verstat;
+  // Following since text in quotes is not to be translated
+  verstat.Format(IDS_LATEST_VERSION, _T("[check_version]"));
+  m_newVerStatus = verstat;
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
@@ -133,6 +136,7 @@ void CAboutDlg::CheckNewVer()
     if (dbx->GetNumEntries() != 0)
       return;
   }
+  dbx->UpdateWindow(); // show user that we closed database
   ASSERT(dbx->GetNumEntries() == 0);
   // safe to open external connection
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
