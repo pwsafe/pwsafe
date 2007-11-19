@@ -1479,55 +1479,36 @@ DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 void
 DboxMain::OnInitMenu(CMenu* pMenu)
 {
-  const BOOL bTreeView = m_ctlItemTree.IsWindowVisible();
-  const BOOL bItemSelected = SelItemOk();
-
-  UINT uiItemCmdFlags = MF_BYCOMMAND | (bItemSelected ? MF_ENABLED : MF_GRAYED);
-  pMenu->EnableMenuItem(ID_MENUITEM_COPYPASSWORD, uiItemCmdFlags);
-  pMenu->EnableMenuItem(ID_MENUITEM_COPYUSERNAME, uiItemCmdFlags);
-  pMenu->EnableMenuItem(ID_MENUITEM_COPYNOTESFLD, uiItemCmdFlags);
-  pMenu->EnableMenuItem(ID_MENUITEM_EDIT, uiItemCmdFlags);
-#if defined(POCKET_PC)
-  pMenu->EnableMenuItem(ID_MENUITEM_SHOWPASSWORD, uiItemCmdFlags);
-#endif
+  // This routine just changes the text in the menu via "ModifyMenu" and
+  // adds the "check" mark via CheckMenuRadioItem for view type and toolbar
+  // "EnableMenuItem" is handled by the UPDATE_UI routines
+  const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
+  const bool bItemSelected = (SelItemOk() == TRUE);
 
   bool bGroupSelected = false;
-  bool bEmptyGroupSelected = false;
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
     bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
-    bEmptyGroupSelected = (bGroupSelected && !m_ctlItemTree.ItemHasChildren(hi));
   }
 
-  pMenu->EnableMenuItem(ID_MENUITEM_DELETE,
-                        ((bItemSelected || bEmptyGroupSelected) ?
-                         MF_ENABLED : MF_GRAYED));
-  pMenu->EnableMenuItem(ID_MENUITEM_RENAME,
-                        ((bTreeView && (bItemSelected || bGroupSelected)) ?
-                         MF_ENABLED : MF_GRAYED));
-  pMenu->EnableMenuItem(ID_MENUITEM_ADDGROUP,
-                        (bTreeView ? MF_ENABLED : MF_GRAYED));
-
   if (bGroupSelected) {
-    pMenu->EnableMenuItem(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND | MF_GRAYED);
     pMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
-        ID_MENUITEM_DELETE, CS_DELETEGROUP);
+                      ID_MENUITEM_DELETE, CS_DELETEGROUP);
     pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
-        ID_MENUITEM_RENAME, CS_RENAMEGROUP);
+                      ID_MENUITEM_RENAME, CS_RENAMEGROUP);
     pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
-        ID_MENUITEM_EDIT, CS_EXPCOLGROUP);
+                      ID_MENUITEM_EDIT, CS_EXPCOLGROUP);
   } else {
-    pMenu->EnableMenuItem(ID_MENUITEM_DUPLICATEENTRY, MF_BYCOMMAND | MF_ENABLED);
     pMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
-        ID_MENUITEM_DELETE, CS_DELETEENTRY);
+                      ID_MENUITEM_DELETE, CS_DELETEENTRY);
     pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
-        ID_MENUITEM_RENAME, CS_RENAMEENTRY);
+                      ID_MENUITEM_RENAME, CS_RENAMEENTRY);
     if (m_core.IsReadOnly()) {
       pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
-        ID_MENUITEM_EDIT, CS_VIEWENTRY);
+                        ID_MENUITEM_EDIT, CS_VIEWENTRY);
     } else {
       pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
-        ID_MENUITEM_EDIT, CS_EDITENTRY);
+                        ID_MENUITEM_EDIT, CS_EDITENTRY);
     }
   }
 
@@ -1535,58 +1516,27 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
 
-    if (ci->IsURLEmpty()) {
-      pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
-      pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
-    } else {
-      pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
-      pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
+    if (!ci->IsURLEmpty()) {
       const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
         pMenu->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
-        ID_MENUITEM_BROWSE, CS_SENDEMAIL);
+                          ID_MENUITEM_BROWSE, CS_SENDEMAIL);
       } else {
         pMenu->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
-        ID_MENUITEM_BROWSE, CS_BROWSEURL);
+                          ID_MENUITEM_BROWSE, CS_BROWSEURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
-
-    pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_ENABLED);
-
-  } else {
-    pMenu->EnableMenuItem(ID_MENUITEM_AUTOTYPE, MF_GRAYED);
-    pMenu->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
-    pMenu->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
   }
 
   pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW), MF_BYCOMMAND);
-
-  CDC* pDC = this->GetDC();
-  int NumBits = ( pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32 );
+  
   // JHF m_toolbarMode is not for WinCE (as in .h)
 #if !defined(POCKET_PC)
-  if (NumBits < 16 && m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) {
-    // Less that 16 color bits available, no choice, disable menu items
-    pMenu->EnableMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_GRAYED | MF_BYCOMMAND);
-    pMenu->EnableMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_GRAYED | MF_BYCOMMAND);
-  } else {
-    // High-color screen mode so all choices available.
-    // (or a low-color screen, but leave choices enabled so that the user still can switch.)
-    pMenu->EnableMenuItem(ID_MENUITEM_NEW_TOOLBAR, MF_ENABLED | MF_BYCOMMAND);
-    pMenu->EnableMenuItem(ID_MENUITEM_OLD_TOOLBAR, MF_ENABLED | MF_BYCOMMAND);
-  }
-
   pMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, ID_MENUITEM_OLD_TOOLBAR,
                             m_toolbarMode, MF_BYCOMMAND);
 #endif
-
-  pMenu->EnableMenuItem(ID_MENUITEM_SAVE,
-                        m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
-
-  // enable/disable w.r.t read-only mode
-  // is handled via ON_UPDATE_COMMAND_UI/OnUpdateROCommand
 }
 
 // helps with MRU by allowing ON_UPDATE_COMMAND_UI
@@ -2287,7 +2237,7 @@ DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
       iEnable = m_RUEList.GetCount() != 0 ? TRUE : FALSE;
       break;
     default:
-      // "Standard" processing!
+      // "Standard" processing for everything else!!!
       iEnable = OnUpdateMenuToolbar(pCmdUI->m_nID);
   }
   if (iEnable < 0)
@@ -2300,9 +2250,9 @@ int
 DboxMain::OnUpdateMenuToolbar(const UINT nID)
 {
   // Return codes:
-  // < 0     : don't set pCmdUI->Enable
-  // = FALSE : set pCmdUI-Enable(FALSE)
-  // > TRUE  : set pCmdUI-Enable(TRUE)
+  // = -1       : don't set pCmdUI->Enable
+  // = FALSE(0) : set pCmdUI-Enable(FALSE)
+  // = TRUE(1)  : set pCmdUI-Enable(TRUE)
 
   MapUICommandTableConstIter it;
   it = m_MapUICommandTable.find(nID);
@@ -2325,9 +2275,48 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   iEnable = it->second.bTypes[item] ? TRUE : FALSE;
 
+  // All following special processing will only ever DISABLE an item
+  // The previous lookup table is the only mechanism to ENABLE an item
+
+  const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
+  bool bGroupSelected = false;
+  if (bTreeView) {
+    HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
+    bGroupSelected = (hi != NULL && !m_ctlItemTree.IsLeaf(hi));
+  }
+
   // Special processing!
   switch (nID) {
+    // Items not allowed if a Group is selected
+    case ID_MENUITEM_DUPLICATEENTRY:
+    case ID_MENUITEM_COPYPASSWORD:
+    case ID_MENUITEM_COPYUSERNAME:
+    case ID_MENUITEM_COPYNOTESFLD:
+    case ID_MENUITEM_AUTOTYPE:
+    case ID_MENUITEM_EDIT:
+#if defined(POCKET_PC)
+    case ID_MENUITEM_SHOWPASSWORD:
+#endif
+       if (bGroupSelected)
+         iEnable = FALSE;
+      break;
+    // Not allowed if Group selected or the item selected has an empty URL
+    case ID_MENUITEM_BROWSE:
+    case ID_MENUITEM_COPYURL:
+       if (bGroupSelected) {
+         // Not allowed if a Group is selected
+         iEnable = FALSE;
+       } else {
+         CItemData *ci = getSelectedItem();
+         ASSERT(ci != NULL);
+
+        if (ci->IsURLEmpty()) {
+          iEnable = FALSE;
+        }
+      }
+      break;
     // Items not allowed in List View
+    case ID_MENUITEM_ADDGROUP:
     case ID_MENUITEM_RENAME:
     case ID_MENUITEM_EXPANDALL:
     case ID_MENUITEM_COLLAPSEALL:
@@ -2335,6 +2324,34 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_TOOLBUTTON_COLLAPSEALL:
       if (m_IsListView)
         iEnable = FALSE;
+      break;
+    // If not changed, no need to allow Save!
+    case ID_MENUITEM_SAVE:
+      if (!m_core.IsChanged())
+        iEnable = FALSE;
+      break;
+    // Special processing for viewing reports, if they exist
+    case ID_MENUITEM_REPORT_COMPARE:
+    case ID_MENUITEM_REPORT_IMPORTTEXT:
+    case ID_MENUITEM_REPORT_IMPORTXML:
+    case ID_MENUITEM_REPORT_MERGE:
+    case ID_MENUITEM_REPORT_VALIDATE:
+      iEnable = OnUpdateViewReports(nID);
+      break;
+    // Disable choice of toolbar if at low resolution
+    case ID_MENUITEM_OLD_TOOLBAR:
+    case ID_MENUITEM_NEW_TOOLBAR:
+      {
+#if !defined(POCKET_PC)
+      // JHF m_toolbarMode is not for WinCE (as in .h)
+      CDC* pDC = this->GetDC();
+      int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
+      if (NumBits < 16 && m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) {
+        // Less that 16 color bits available, no choice, disable menu items
+        iEnable = FALSE;
+      }
+#endif
+      }
       break;
     // Disable Minimize if already minimized
     case ID_MENUITEM_MINIMIZE:
@@ -2353,14 +2370,6 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
         if (wndpl.showCmd != SW_SHOWMINIMIZED)
           iEnable = FALSE;
       }
-      break;
-    // Special processing for viewing reports if they exist
-    case ID_MENUITEM_REPORT_COMPARE:
-    case ID_MENUITEM_REPORT_IMPORTTEXT:
-    case ID_MENUITEM_REPORT_IMPORTXML:
-    case ID_MENUITEM_REPORT_MERGE:
-    case ID_MENUITEM_REPORT_VALIDATE:
-      iEnable = OnUpdateViewReports(nID);
       break;
     // Set the state of the "Case Sensitivity" button
     case ID_TOOLBUTTON_FINDCASE:
