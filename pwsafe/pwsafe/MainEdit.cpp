@@ -655,11 +655,13 @@ DboxMain::OnDuplicateEntry()
     if (tmp.GetLength() >= 5)
     	    ci2.SetPWHistory(tmp);
 
-    uuid_array_t base_uuid, alias_uuid;
+    uuid_array_t base_uuid, original_alias_uuid, new_alias_uuid;
     if (ci->IsAlias()) {
+      ci->GetUUID(original_alias_uuid);
+      m_core.GetBaseUUID(original_alias_uuid, base_uuid);
       ci2.SetAlias();
-      ci2.GetUUID(alias_uuid);
-      m_core.AddAliasEntry(alias_uuid, base_uuid);
+      ci2.GetUUID(new_alias_uuid);
+      m_core.AddAliasEntry(base_uuid, new_alias_uuid);
 
       ItemListIter iter;
       iter = m_core.Find(base_uuid);
