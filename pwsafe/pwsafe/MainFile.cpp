@@ -1008,6 +1008,7 @@ DboxMain::OnImportText()
         return;
     }
     if (rc == IDOK) {
+        bool bWasEmpty = m_core.GetNumEntries() == 0;
         CString strError;
         CMyString TxtFileName = (CMyString)fd.GetPathName();
         int numImported = 0, numSkipped = 0;
@@ -1068,6 +1069,9 @@ DboxMain::OnImportText()
           if (rc == 2)
             ViewReport(cs_ReportFileName);
         }
+        // May need to update menu/toolbar if original database was empty
+        if (bWasEmpty)
+          UpdateMenuAndToolBar(m_bOpen);
     }
 }
 
@@ -1098,6 +1102,7 @@ DboxMain::OnImportKeePass()
         return;
     }
     if (rc == IDOK) {
+        bool bWasEmpty = m_core.GetNumEntries() == 0;
         CMyString KPsFileName = (CMyString)fd.GetPathName();
         rc = m_core.ImportKeePassTextFile(KPsFileName);
         switch (rc) {
@@ -1119,6 +1124,9 @@ DboxMain::OnImportKeePass()
             default:
                 RefreshList();
                 ChangeOkUpdate();
+                // May need to update menu/toolbar if original database was empty
+                if (bWasEmpty)
+                  UpdateMenuAndToolBar(m_bOpen);
                 break;
         } // switch
     }
@@ -1166,6 +1174,7 @@ DboxMain::OnImportXML()
         return;
     }
     if (rc == IDOK) {
+        bool bWasEmpty = m_core.GetNumEntries() == 0;
         CString strErrors, csErrors(_T(""));
         CString XMLFilename = (CMyString)fd.GetPathName();
         int numValidated, numImported;
@@ -1248,6 +1257,9 @@ DboxMain::OnImportXML()
             ViewReport(cs_ReportFileName);
         } else
           MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
+        // May need to update menu/toolbar if original database was empty
+        if (bWasEmpty)
+          UpdateMenuAndToolBar(m_bOpen);
     }
 }
 
@@ -1356,6 +1368,8 @@ DboxMain::Merge(const CMyString &pszFilename) {
 
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
+
+  bool bWasEmpty = m_core.GetNumEntries() == 0;
 
   /* Create report as we go */
   CReport rpt;
@@ -1468,6 +1482,9 @@ DboxMain::Merge(const CMyString &pszFilename) {
 
   ChangeOkUpdate();
   RefreshList();
+  // May need to update menu/toolbar if original database was empty
+  if (bWasEmpty)
+    UpdateMenuAndToolBar(m_bOpen);
 
   return rc;
 }

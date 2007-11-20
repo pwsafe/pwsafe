@@ -349,11 +349,12 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 	}
 
   CMyString csPassword;
-  if (cibase != NULL) {
-    csPassword = _T("[") + 
+  if (m_entrytype == Alias) {
+    ASSERT(cibase != NULL);
+    csPassword = _T("[[") + 
                 cibase->GetGroup() + _T(":") + 
                 cibase->GetTitle() + _T(":") + 
-                cibase->GetUser() + _T("]") ;
+                cibase->GetUser() + _T("]]") ;
   } else
     csPassword = GetPassword();
 
@@ -510,11 +511,12 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     WriteXMLField(oss, "username", tmp, utf8conv);
 
   // Password mandatory (see pwsafe.xsd)
-  if (cibase != NULL) {
-    tmp = _T("[") + 
+  if (m_entrytype == Alias) {
+    ASSERT(cibase != NULL);
+    tmp = _T("[[") + 
           cibase->GetGroup() + _T(":") + 
           cibase->GetTitle() + _T(":") + 
-          cibase->GetUser() + _T("]") ;
+          cibase->GetUser() + _T("]]") ;
   } else
     tmp = GetPassword();
   WriteXMLField(oss, "password", tmp, utf8conv);
@@ -1435,7 +1437,7 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   if (m_entrytype == Alias) {
     // I am an alias entry
     ASSERT(cibase != NULL);
-    tmp = _T("[") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("]");
+    tmp = _T("[[") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("]]");
   } else
     tmp = GetPassword();
 

@@ -68,6 +68,7 @@ DboxMain::OnAdd()
   app.EnableAccelerator();
 
   if (rc == IDOK) {
+    bool bWasEmpty = m_core.GetNumEntries() == 0;
     PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
     if (!m_core.GetUseDefUser()
@@ -154,6 +155,9 @@ DboxMain::OnAdd()
     uuid_array_t uuid;
     temp.GetUUID(uuid);
     m_RUEList.AddRUEntry(uuid);
+    // May need to update menu/toolbar if database was previously empty
+    if (bWasEmpty)
+      UpdateMenuAndToolBar(m_bOpen);
   }
 }
 
@@ -981,6 +985,7 @@ DboxMain::AutoType(const CItemData &ci)
 void
 DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 {
+  // Add Drop entries
   CItemData tempitem;
   UUIDList possible_aliases;
   CMyString Group, Title, User;
@@ -1012,6 +1017,14 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 
     uuid_array_t base_uuid, alias_uuid;
     CMyString cs_tmp = tempitem.GetPassword();
+
+    // Potentially remove outer single square brackets as GetBaseEntry expects only
+    // one set of square brackets (processing import and user edit of entries)
+    if (cs_tmp.Left(2) == _T("[[") && cs_tmp.Right(2) == _T("]]")) {
+      cs_tmp = cs_tmp.Mid(1, cs_tmp.GetLength() - 2);
+      tempitem.SetPassword(cs_tmp);
+    }
+
     CMyString csPwdGroup, csPwdTitle, csPwdUser;
     bool bBase_was_Alias(false), bMultiple(false);
     int ialias = m_core.GetBaseEntry(cs_tmp, base_uuid, bBase_was_Alias, bMultiple,
