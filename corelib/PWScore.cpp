@@ -2056,8 +2056,8 @@ int PWScore::AddAliasesViaPassword(UUIDList &possible_aliases, CReport *rpt)
       m_alias2base_map.erase(alias_uuid);
 
       tmp = curitem->GetPassword();
-      // Remove leading '[' & trailing ']'
-      tmp = tmp.Mid(1, tmp.GetLength() - 2);
+      // Remove leading '[[' & trailing ']]'
+      tmp = tmp.Mid(2, tmp.GetLength() - 4);
       csPwdGroup = tmp.SpanExcluding(_T(":"));
       // Skip over 'group:'
       tmp = tmp.Mid(csPwdGroup.GetLength() + 1);

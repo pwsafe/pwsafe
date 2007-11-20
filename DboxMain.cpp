@@ -246,7 +246,7 @@ ON_COMMAND(ID_TOOLBUTTON_OPTIONS, OnOptions)
 ON_COMMAND(ID_TOOLBUTTON_EXPORTTEXT, OnExportText)
 ON_COMMAND(ID_TOOLBUTTON_EXPORTXML, OnExportXML)
 ON_COMMAND(ID_TOOLBUTTON_IMPORTTEXT, OnImportText)
-ON_COMMAND(ID_TOOLBUTTON_IMPORTXML, OnExportXML)
+ON_COMMAND(ID_TOOLBUTTON_IMPORTXML, OnImportXML)
 ON_COMMAND(ID_TOOLBUTTON_SAVEAS, OnSaveAs)
 ON_COMMAND(ID_TOOLBUTTON_COMPARE, OnCompare)
 ON_COMMAND(ID_TOOLBUTTON_MERGE, OnMerge)
@@ -1226,6 +1226,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
                     retval = PWScore::SUCCESS;
             } else // no need to create file
                 retval = PWScore::SUCCESS;
+            UpdateMenuAndToolBar(true);
         }
     } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
         int cancelreturn = dbox_pkentry->GetStatus();
@@ -2085,7 +2086,7 @@ int DboxMain::CountChildren(HTREEITEM hStartItem)
 void
 DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 {
-  // Initial setup of menu items and toolbar butons
+  // Initial setup of menu items and toolbar buttons
 	// First set new open/close status
 	m_bOpen = bOpen;
 
