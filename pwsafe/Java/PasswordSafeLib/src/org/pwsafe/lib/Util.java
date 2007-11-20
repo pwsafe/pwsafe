@@ -422,4 +422,51 @@ public class Util
 		}
 		return result;
 	}
+
+	/**
+	 * Extracts an milliseconds from seconds strored in a byte array. 
+	 * The value is four bytes in little-endian order starting
+	 * at <code>offset</code>.
+	 * 
+	 * @param buff   the array to extract the millis from.
+	 * @param offset the offset to start reading from. 
+	 * 
+	 * @return The value extracted.
+	 * 
+	 * @throws IndexOutOfBoundsException if offset is negative or <code>buff.length</code> &lt; <code>offset + 4</code>.
+	 */
+	public static long getMillisFromByteArray( byte [] buff, int offset )
+	{
+	
+		long result;
+	
+		result = (buff[offset+0] & 0x000000ff) 
+			| ((buff[offset+1] & 0x000000ff) << 8 )
+			| ((buff[offset+2] & 0x000000ff) << 16 )
+			| ((buff[offset+3] & 0x000000ff) << 24 );
+		
+		result *= 1000L; // convert from seconds to millis
+		
+		return result;
+	}
+
+	/**
+	 * Stores a long milliseconds as seconds in a byte array. 
+	 * The value is four bytes in little-endian order starting
+	 * at <code>offset</code>.
+	 * 
+	 * @param buff   the buffer to store the seconds into.
+	 * @param value  the millis long value to store.
+	 * @param offset the offset at which to store the value.
+	 */
+	public static void putMillisToByteArray( byte [] buff, long value, int offset )
+	{
+		value /= 1000L; // convert from millis to seconds
+		
+		buff[offset+0]	= (byte)(value & 0xff);
+		buff[offset+1]	= (byte)((value & 0xff00) >>> 8);
+		buff[offset+2]	= (byte)((value & 0xff0000) >>> 16);
+		buff[offset+3]	= (byte)((value & 0xff000000) >>> 24);
+		
+	}
 }
