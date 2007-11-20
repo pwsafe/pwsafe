@@ -4,13 +4,13 @@ Compatibility=1.1 or later
 Compiled file=pwsafe.chm
 Contents file=pwsafe.hhc
 Default topic=html\Welcome.html
-Display compile notes=Yes
 Display compile progress=Yes
 Error log file=pwsafe.log
 Full-text search=Yes
 Index file=pwsafe.hhk
 Language=0x409 English (United States)
 Title=HTML Help for Password Safe
+
 
 [FILES]
 html\popups.js
@@ -45,5 +45,7 @@ html\system_tab.html
 html\upgrade_from_v1x.html
 html\view_menu.html
 html\Welcome.html
+html\aliases.html
 
 [INFOTYPES]
+
