@@ -31,7 +31,8 @@ using an extremely large number of hash iterations.  Users who have imported
 XML into a new database should export again and re-import after deleting the
 <NumberHashIterations>...</NumberHashIterations> entry from the XML file.
 [] Use the Confirm Delete message even when there is only one child.
-[1726181] Save of a new database is no loger required to export entries.
+[1726181] Save of a new database is no longer required to export entries.
+[1798588] Users can now change an entry's password with passwords hidden.
 
 New Features for 3.11
 =====================
