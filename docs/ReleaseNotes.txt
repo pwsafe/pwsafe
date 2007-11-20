@@ -45,11 +45,6 @@ this corresponds to the '[mailto:]' standard RFC2368.
 For example: "info@example.com?subject=PasswordSafe".
 [] Main toolbar can be customized via MS's standard dialog via right
 click on this toolbar.
-[1815192] New Find toolbar added at bottom of application above the
-status bar activated by the user doing a "Find".  Replaces the
-previous Find dialog.
-Button shortcuts: Ctrl+Alt+A = Advanced find,
-Ctrl+Alt+S = toggle case Sensitivity, Ctrl+Alt+C = Clear find text
 [1765240] Add "Clear clipboard" item to tray icon context menu
 [1727768] Copy URL to clipboard added to menus (Ctrl+Alt+L)
 [1526169] Add shortcut keys to add/edit dialog
@@ -58,6 +53,10 @@ password. See online help for details.
 
 Changes to Existing Features in 3.11
 ====================================
+[1815192] The Find function has been re-implemented as a toolbar at
+bottom of application.
+Button shortcuts: Ctrl+Alt+A = Advanced find,
+Ctrl+Alt+S = toggle case Sensitivity, Ctrl+Alt+C = Clear find text
 [1756385] The color of the application's system tray icon (when the
 application is started and when there's no open database) is now user
 configurable, fixing a visibility problem under Vista.

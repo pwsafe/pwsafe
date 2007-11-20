@@ -35,13 +35,14 @@ MAKENSIS = /cygdrive/c/local/NSIS/makensis.exe
 WIXDIR = /cygdrive/c/local/WIX/bin
 CANDLE = $(WIXDIR)/candle.exe
 LIGHT = $(WIXDIR)/light.exe
+RESTEXT = ../../I18N/bin/ResText.exe
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
     xml/pwsafe.xsd xml/pwsafe.xsl \
 	docs/ChangeLog.txt Release/pwsafe.exe help/default/pwsafe.chm
 
 .PHONY: all release bin-release src-release installables signatures \
-	upload md5sums sha1sums msi nsis upload-latest
+	upload md5sums sha1sums msi nsis upload-latest pot
 
 all: release installables signatures sha1sums
 
@@ -113,6 +114,11 @@ src-release: ChangeLog
 
 ChangeLog:
 	$(SVN) log -v --xml | $(PYTHON) $(SVN2LOG) -L -H -s -O
+
+pot: Docs/pwsafe.pot
+
+Docs/pwsafe.pot: bin/language/pwsafe_base.dll
+	$(RESTEXT) extract $^ $@
 
 # Local variables:
 # mode: Makefile
