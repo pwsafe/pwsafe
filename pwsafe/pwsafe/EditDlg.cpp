@@ -205,8 +205,7 @@ CEditDlg::OnOK()
 
   UpdateData(FALSE);
 
-  if (!m_isPwHidden)
-    m_realpassword = m_password;
+  m_realpassword = m_password;
   if (!m_isNotesHidden)
     m_realnotes = m_notes;
 
