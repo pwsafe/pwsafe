@@ -294,3 +294,8 @@ inline bool CItemData::IsTextField(unsigned char t)
 }
 
 #endif
+//-----------------------------------------------------------------------------
+// Local variables:
+// mode: c++
+// End:
+
