@@ -47,6 +47,19 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static const int MAX_TTT_LEN = 64; // Max tooltip text length
+CMyString DboxMain::NormalizeTTT(const CMyString in)
+{
+  CMyString ttt;
+  if (in.GetLength() >= MAX_TTT_LEN) {
+    ttt = in.Left(MAX_TTT_LEN/2-6) + 
+      _T(" ... ") + in.Right(MAX_TTT_LEN/2);
+  } else {
+    ttt = in;
+  }
+  return ttt;
+}
+
 BOOL
 DboxMain::OpenOnInit(void)
 {
@@ -66,7 +79,7 @@ DboxMain::OpenOnInit(void)
   case PWScore::SUCCESS:
     rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-    m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+    m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
     UpdateSystemTray(UNLOCKED);
 #endif
 	CheckExpiredPasswords();
@@ -140,6 +153,7 @@ DboxMain::OpenOnInit(void)
 	    }
 	    m_bOpen = true;
       app.AddToMRU(m_core.GetCurFile());
+      UpdateMenuAndToolBar(true);
       retval = TRUE;
       break;
 #ifdef DEMO
@@ -229,7 +243,7 @@ DboxMain::New()
   }
 
 #if !defined(POCKET_PC)
-  m_titlebar = _T("Password Safe - ") + cs_newfile;
+  m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + cs_newfile);
 #endif
 
   ChangeOkUpdate();
@@ -557,7 +571,7 @@ DboxMain::Open( const CMyString &pszFilename )
     }
     m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
-    m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+    m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
 #endif
     CheckExpiredPasswords();
     ChangeOkUpdate();
@@ -626,7 +640,7 @@ DboxMain::Save()
       return PWScore::USER_CANCEL;
     m_core.SetCurFile(NewName);
 #if !defined(POCKET_PC)
-    m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+    m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
     app.SetTooltipText(m_core.GetCurFile());
 #endif
   }
@@ -765,7 +779,7 @@ DboxMain::SaveAs()
     m_core.UnlockFile(m_core.GetCurFile());
   m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
-  m_titlebar = _T("Password Safe - ") + m_core.GetCurFile();
+  m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
   app.SetTooltipText(m_core.GetCurFile());
 #endif
   SetChanged(Clear);
