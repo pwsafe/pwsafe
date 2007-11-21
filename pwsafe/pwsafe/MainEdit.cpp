@@ -994,6 +994,10 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
+#ifdef DEMO
+    if (m_core.GetNumEntries() >= MAXDEMO)
+      break;
+#endif /* DEMO */
     tempitem.Clear();
     pDDObject->ToItem(tempitem);
 

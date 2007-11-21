@@ -70,13 +70,6 @@ DECLARE_HANDLE(HDROP);
 // Hotkey value ID
 #define PWS_HOTKEY_ID 5767
 
-struct MapUICommandTableEntry {
-  bool bTypes[4];
-};
-  
-typedef std::map<UINT, MapUICommandTableEntry> MapUICommandTable;
-typedef MapUICommandTable::const_iterator MapUICommandTableConstIter;
-
 // Index values for which dialog to show during GetAndCheckPassword
 enum {GCP_FIRST = 0,		// At startup of PWS
 	  GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
@@ -513,16 +506,19 @@ private:
   void SetupColumnChooser(const bool bShowHide);
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);
-
-  MapUICommandTable m_MapUICommandTable;
-
+  
   static const struct UICommandTableEntry {
     UINT ID;
-    bool bOKInOpenRW;
-    bool bOKInOpenRO;
-    bool bOKInEmpty;
-    bool bOKInClosed;
+    enum {InOpenRW=0, InOpenRO=1, InEmpty=2, InClosed=3, bOK_LAST};
+    bool bOK[bOK_LAST];
   } m_UICommandTable[];
+
+  // For efficiency & general coolness, we use a map
+  // between the ID and the index in the above array
+  // rather than a sequential search
+  typedef std::map<UINT, int> MapUICommandTable;
+  typedef MapUICommandTable::const_iterator MapUICommandTableConstIter;
+  MapUICommandTable m_MapUICommandTable;
 
 };
 
