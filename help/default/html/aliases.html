@@ -4,24 +4,24 @@
 
 
 
-  
 
 
 
-  
-  
 
-  
-  
 
-  
+
+
+
+
+
+
   <title>Aliases</title>
 <!-- pwsafe version: 3.11--><!-- Modified: 20/11/2007 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
   </script>
-  
-  
-  
+
+
+
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
@@ -31,14 +31,19 @@
 <h3>Password Aliases</h3>
 <p>If you're using a "single sign-on" system that allows you to share
 the same password across different machines/servers/applications, etc.
-you can setup <span style="font-weight: bold;">Password Safe</span> entries accordingly, so that changing one password affects all other related entries. This is called "aliasing" entries.</p>
+you can setup <span style="font-weight: bold;">Password Safe</span>
+entries accordingly, so that changing one password affects all other
+related entries. This is called "aliasing" entries.</p>
 <h4>Summary</h4>
-<p>The basic idea is to allow one entry's password to be referred to by another. The "referred to" entry&nbsp;
-is called the <span style="font-weight: bold;">base</span>, and the "referring" entry (or entries) is (are) called the <span style="font-weight: bold;">alias(es)</span>.
+<p>The basic idea is to allow one entry's password to be referred to
+by another. The "referred to" entry is called the 
+<span style="font-weight: bold;">base</span>, and the
+"referring" entry (or entries) is (are) called the
+<span style="font-weight: bold;">alias(es)</span>.
 When an entry is set to be the alias of another entry, the alias's
 password effectively "follows" that entry's password: If you copy the
-aliase's password to the clipboard, the password that gets copied is
-the base's. If you change the base's password, this is immeidately
+alias' password to the clipboard, the password that gets copied is
+the base's. If you change the base's password, this is immediately
 reflected in all the alias entries associated with the base. Although
 this may sound complicated, in fact it's quite simple and intuitive to
 use. The hardest part is setting up the aliases, as described below.</p>
@@ -47,29 +52,43 @@ use. The hardest part is setting up the aliases, as described below.</p>
 of a specially formatted password in the referring entry. The format is
 the "name" of the referred-to entry enclosed in square brackets. "Name"
 in this context means all of the following fields that make an entry
-unique: Group, title and user name. If the title is unique, then the
+unique: Group, Title and User name. If the title is unique, then the
 other fields don't need to be specified. Likewise, if the group and
-title together specify a unique entry, then the user doesn't have to be
-specified. In any case, the fields are separated by colons. The
-following examples should make this clear.</p>
+title together or title and user together specify a unique entry, then
+the corresponding user or group doesn't have to be
+specified. In any case, the fields are separated by colons.</p>
+<p>In Password Safe, only the Title field is mandatory.  Group and User name 
+fields are optional as long as the resulting combination of "group/title/user&nbsp;name"
+is unique. As indicated above, the alias' password is in the form [g:t:u] but
+in fact you only have to specify sufficient information to uniquely identify
+the base entry.  So, if there is only one entry in the database with title 't',
+then [t] would be sufficient - since title is mandatory and only one item is given,
+it is assumed to be the title.  If there were more than one entry with this title,
+you would be warned that this is the case and you would need to be more specific to
+identify the base entry by adding either its group or its user name or both!
+As long as there is a unique entry that fits the information provided, any of
+the following formats are accepted: [g:t:u], [g:t], [t:u] or [t].  Specifying a
+colon without a value implies an empty field, e.g. [g:t:] says entry with
+title 't' in group 'g' and with no user name value and [:t:] says entry with 
+title 't' in the root with no user name value etc.</p>
+<p>The following examples should make this clear.</p>
 <h4>Examples</h4>
 <p>1. If the base entry's title is "LDAP Server", and there are no
 other entries with that title, then an alias will be defined by an
 entry that has "[LDAP Server]" in the password field.</p>
 <p>2. If there are "LDAP Server" entries in two different groups, say
 "Dept. A" and "Dept. B", then one can specify an alias to the latter by
-"[Dept. A:LDAP Server:]" (Note the colon on the right followed by the
-right bracket, signifying that the username isn't specified in this
-case).</p>
+"[Dept. A:LDAP Server]". Note you do not have to specify the user name if 
+the information you have provided uniquely identifies the base entry.</p>
 <p>3. Different user names can also be used to differentiate between
-similar base entries, e.g., "[:LDAP Server:Joe]" and "[:LDAP
+similar base entries, e.g., "[LDAP Server:Joe]" and "[LDAP
 Server:Mary]".</p>
 <p>4. Finally, all three fields may be specified, as in "[Dept. A:LDAP Server:Joe]"</p>
 <h4>Display</h4>
 <p>Base entries, that is, entries with at least one alias "pointing" to
 them, are displayed with a green triangle instead of a green square in
-the nested tree view.Alias entries are shown with white triangles. All this is shown below: </p>
-<p><img src="images/alias_example.jpg" style="border: 1px solid ; width: 163px; height: 127px;" alt="Alias example"></p>
+the nested tree view.</p>
+<p>Alias entries are shown with white triangles.</p>
 <p><br>
 
 
