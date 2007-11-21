@@ -258,7 +258,7 @@ should be "escaped" by the application.
 
 [3] If the entry is an alias, the password will be saved in a special form 
 of "[[uuidstr]]", where "uuidstr" is a 32-character representation of the 
-alias's associated base entry's UUID (field type 0x01).  This representation
+alias' associated base entry's UUID (field type 0x01).  This representation
 is the same as the standard 36-character string representation as defined in 
 RFC4122 but with the four hyphens removed. If an entry with this UUID is not
 in the database, this is treated just as an 'unusual' password.
