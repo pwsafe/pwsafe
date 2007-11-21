@@ -660,14 +660,8 @@ DboxMain::InitPasswordSafe()
 
   // Now set up UPDATE_UI data
   const int num_CommandTable_entries = sizeof(m_UICommandTable) / sizeof(UICommandTableEntry);
-  for (int i = 0; i < num_CommandTable_entries; i++) {
-    MapUICommandTableEntry map_entry;
-    map_entry.bTypes[0] = m_UICommandTable[i].bOKInOpenRW;
-    map_entry.bTypes[1] = m_UICommandTable[i].bOKInOpenRO;
-    map_entry.bTypes[2] = m_UICommandTable[i].bOKInEmpty;
-    map_entry.bTypes[3] = m_UICommandTable[i].bOKInClosed;
-    m_MapUICommandTable[m_UICommandTable[i].ID] = map_entry;
-  }
+  for (int i = 0; i < num_CommandTable_entries; i++)
+    m_MapUICommandTable[m_UICommandTable[i].ID] = i;
 }
 
 LRESULT
@@ -921,26 +915,6 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
   m_bSizing = true;
 #endif
 }
-
-#ifdef DEMO
-  if (!m_core.IsReadOnly()) {
-      bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
-      if (isLimited) {
-          switch (pCmdUI->m_nID) {
-              case ID_MENUITEM_ADD:
-              case ID_MENUITEM_ADDGROUP:
-              case ID_MENUITEM_DUPLICATEENTRY:
-              case ID_MENUITEM_IMPORT_KEEPASS:
-              case ID_MENUITEM_IMPORT_PLAINTEXT:
-              case ID_MENUITEM_IMPORT_XML:
-              case ID_MENUITEM_MERGE:
-                  pCmdUI->Enable(FALSE);
-              default:
-                  break;
-          }
-      }
-  }
-#endif
 
 void
 DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
@@ -2259,21 +2233,22 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   if (it == m_MapUICommandTable.end()) {
     // Don't have it - allow by default
+    ASSERT(0); // means m_UICommandTable is out of date!
     return TRUE;
   }
 
   int item, iEnable;
   if (!m_bOpen)
-    item = 3;  // Closed
+    item = UICommandTableEntry::InClosed;
   else if (m_core.IsReadOnly())
-    item = 1;  // OpenRO
+    item = UICommandTableEntry::InOpenRO;
   else
-    item = 0;  // OpenRW
+    item = UICommandTableEntry::InOpenRW;
 
-  if (item == 0 && m_core.GetNumEntries() == 0)
-    item = 2;  // OpenRW + empty
+  if (item == UICommandTableEntry::InOpenRW && m_core.GetNumEntries() == 0)
+    item = UICommandTableEntry::InEmpty;  // OpenRW + empty
 
-  iEnable = it->second.bTypes[item] ? TRUE : FALSE;
+  iEnable = m_UICommandTable[it->second].bOK[item] ? TRUE : FALSE;
 
   // All following special processing will only ever DISABLE an item
   // The previous lookup table is the only mechanism to ENABLE an item
@@ -2288,60 +2263,60 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // Special processing!
   switch (nID) {
     // Items not allowed if a Group is selected
-    case ID_MENUITEM_DUPLICATEENTRY:
-    case ID_MENUITEM_COPYPASSWORD:
-    case ID_MENUITEM_COPYUSERNAME:
-    case ID_MENUITEM_COPYNOTESFLD:
-    case ID_MENUITEM_AUTOTYPE:
-    case ID_MENUITEM_EDIT:
+  case ID_MENUITEM_DUPLICATEENTRY:
+  case ID_MENUITEM_COPYPASSWORD:
+  case ID_MENUITEM_COPYUSERNAME:
+  case ID_MENUITEM_COPYNOTESFLD:
+  case ID_MENUITEM_AUTOTYPE:
+  case ID_MENUITEM_EDIT:
 #if defined(POCKET_PC)
-    case ID_MENUITEM_SHOWPASSWORD:
+  case ID_MENUITEM_SHOWPASSWORD:
 #endif
-       if (bGroupSelected)
-         iEnable = FALSE;
-      break;
+    if (bGroupSelected)
+      iEnable = FALSE;
+    break;
     // Not allowed if Group selected or the item selected has an empty URL
-    case ID_MENUITEM_BROWSE:
-    case ID_MENUITEM_COPYURL:
-       if (bGroupSelected) {
-         // Not allowed if a Group is selected
-         iEnable = FALSE;
-       } else {
-         CItemData *ci = getSelectedItem();
-         ASSERT(ci != NULL);
+  case ID_MENUITEM_BROWSE:
+  case ID_MENUITEM_COPYURL:
+    if (bGroupSelected) {
+      // Not allowed if a Group is selected
+      iEnable = FALSE;
+    } else {
+      CItemData *ci = getSelectedItem();
+      ASSERT(ci != NULL);
 
-        if (ci->IsURLEmpty()) {
-          iEnable = FALSE;
-        }
+      if (ci->IsURLEmpty()) {
+        iEnable = FALSE;
       }
-      break;
+    }
+    break;
     // Items not allowed in List View
-    case ID_MENUITEM_ADDGROUP:
-    case ID_MENUITEM_RENAME:
-    case ID_MENUITEM_EXPANDALL:
-    case ID_MENUITEM_COLLAPSEALL:
-    case ID_TOOLBUTTON_EXPANDALL:
-    case ID_TOOLBUTTON_COLLAPSEALL:
-      if (m_IsListView)
-        iEnable = FALSE;
-      break;
+  case ID_MENUITEM_ADDGROUP:
+  case ID_MENUITEM_RENAME:
+  case ID_MENUITEM_EXPANDALL:
+  case ID_MENUITEM_COLLAPSEALL:
+  case ID_TOOLBUTTON_EXPANDALL:
+  case ID_TOOLBUTTON_COLLAPSEALL:
+    if (m_IsListView)
+      iEnable = FALSE;
+    break;
     // If not changed, no need to allow Save!
-    case ID_MENUITEM_SAVE:
-      if (!m_core.IsChanged())
-        iEnable = FALSE;
-      break;
+  case ID_MENUITEM_SAVE:
+    if (!m_core.IsChanged())
+      iEnable = FALSE;
+    break;
     // Special processing for viewing reports, if they exist
-    case ID_MENUITEM_REPORT_COMPARE:
-    case ID_MENUITEM_REPORT_IMPORTTEXT:
-    case ID_MENUITEM_REPORT_IMPORTXML:
-    case ID_MENUITEM_REPORT_MERGE:
-    case ID_MENUITEM_REPORT_VALIDATE:
-      iEnable = OnUpdateViewReports(nID);
-      break;
+  case ID_MENUITEM_REPORT_COMPARE:
+  case ID_MENUITEM_REPORT_IMPORTTEXT:
+  case ID_MENUITEM_REPORT_IMPORTXML:
+  case ID_MENUITEM_REPORT_MERGE:
+  case ID_MENUITEM_REPORT_VALIDATE:
+    iEnable = OnUpdateViewReports(nID);
+    break;
     // Disable choice of toolbar if at low resolution
-    case ID_MENUITEM_OLD_TOOLBAR:
-    case ID_MENUITEM_NEW_TOOLBAR:
-      {
+  case ID_MENUITEM_OLD_TOOLBAR:
+  case ID_MENUITEM_NEW_TOOLBAR:
+    {
 #if !defined(POCKET_PC)
       // JHF m_toolbarMode is not for WinCE (as in .h)
       CDC* pDC = this->GetDC();
@@ -2351,36 +2326,57 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       }
 #endif
-      }
-      break;
+    }
+    break;
     // Disable Minimize if already minimized
-    case ID_MENUITEM_MINIMIZE:
-      {
-        WINDOWPLACEMENT wndpl;
-        GetWindowPlacement(&wndpl);
-        if (wndpl.showCmd == SW_SHOWMINIMIZED)
-          iEnable = FALSE;
-      }
-      break;
+  case ID_MENUITEM_MINIMIZE:
+    {
+      WINDOWPLACEMENT wndpl;
+      GetWindowPlacement(&wndpl);
+      if (wndpl.showCmd == SW_SHOWMINIMIZED)
+        iEnable = FALSE;
+    }
+    break;
     // Disable Restore if already visible
-    case ID_MENUITEM_UNMINIMIZE:
-      {
-        WINDOWPLACEMENT wndpl;
-        GetWindowPlacement(&wndpl);
-        if (wndpl.showCmd != SW_SHOWMINIMIZED)
-          iEnable = FALSE;
-      }
-      break;
+  case ID_MENUITEM_UNMINIMIZE:
+    {
+      WINDOWPLACEMENT wndpl;
+      GetWindowPlacement(&wndpl);
+      if (wndpl.showCmd != SW_SHOWMINIMIZED)
+        iEnable = FALSE;
+    }
+    break;
     // Set the state of the "Case Sensitivity" button
-    case ID_TOOLBUTTON_FINDCASE:
-    case ID_TOOLBUTTON_FINDCASE_I:
-    case ID_TOOLBUTTON_FINDCASE_S:
-      m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
-                                  ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
-                                  m_FindToolBar.IsFindCaseSet());
-      return -1;
-    default:
-      break;
+  case ID_TOOLBUTTON_FINDCASE:
+  case ID_TOOLBUTTON_FINDCASE_I:
+  case ID_TOOLBUTTON_FINDCASE_S:
+    m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
+                                               ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
+                                               m_FindToolBar.IsFindCaseSet());
+    return -1;
+  default:
+    break;
   }
+  // Last but not least, DEMO build support:
+#ifdef DEMO
+  if (!m_core.IsReadOnly()) {
+    bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
+    if (isLimited) {
+      switch (nID) {
+      case ID_MENUITEM_ADD: case ID_TOOLBUTTON_ADD:
+      case ID_MENUITEM_ADDGROUP:
+      case ID_MENUITEM_DUPLICATEENTRY:
+      case ID_MENUITEM_IMPORT_KEEPASS:
+      case ID_MENUITEM_IMPORT_PLAINTEXT: case ID_TOOLBUTTON_IMPORTTEXT:
+      case ID_MENUITEM_IMPORT_XML: case ID_TOOLBUTTON_IMPORTXML:
+      case ID_MENUITEM_MERGE: case ID_TOOLBUTTON_MERGE:
+        iEnable = FALSE;
+        break;
+      default:
+        break;
+      }
+    }
+  }
+#endif
   return iEnable;
 }
