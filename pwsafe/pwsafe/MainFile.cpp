@@ -131,59 +131,59 @@ DboxMain::OpenOnInit(void)
     break;
   }
 
-  BOOL retval(FALSE);
-  switch (rc2) {
-    case PWScore::BAD_DIGEST: {
-      CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile());
-      CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
-      const int yn = MessageBox(cs_msg, cs_title, MB_YESNO|MB_ICONERROR);
-      if (yn == IDNO) {
-        CDialog::OnCancel();
-        break;
-      }
+  bool go_ahead = false;
+  /*
+   * If BAD_DIGEST or LIMIT_REACHED,
+   * the we prompt the user, and continue or not per user's input.
+   * A bit too subtle for switch/case on rc2...
+   */
+  if (rc2 == PWScore::BAD_DIGEST) {
+    CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile());
+    CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
+    const int yn = MessageBox(cs_msg, cs_title, MB_YESNO|MB_ICONERROR);
+    if (yn == IDNO) {
+      CDialog::OnCancel();
+      return FALSE;
     }
-    // DELIBERATE FALL-THRU if user chose YES
-    case PWScore::SUCCESS:
-      m_needsreading = false;
-      startLockCheckTimer();
-      UpdateSystemTray(UNLOCKED);
-    	if (!m_bOpen) {
-        // Previous state was closed - reset DCA in status bar
-        SetDCAText();
-	    }
-	    m_bOpen = true;
-      app.AddToMRU(m_core.GetCurFile());
-      UpdateMenuAndToolBar(true);
-      retval = TRUE;
-      break;
+    go_ahead = true;
+  } // BAD_DIGEST
 #ifdef DEMO
-    case PWScore::LIMIT_REACHED: {
-      CString cs_msg;
-      cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
-      CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-      if (MessageBox(cs_msg, cs_title,
-                     MB_YESNO | MB_ICONWARNING) == IDNO) {
-        CDialog::OnCancel();
-      }
-      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
-                                                 FALSE);
-      
-      retval = TRUE;
+  if (rc2 == PWScore::LIMIT_REACHED) {
+    CString cs_msg;
+    cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
+    CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
+    if (MessageBox(cs_msg, cs_title,
+                   MB_YESNO | MB_ICONWARNING) == IDNO) {
+      CDialog::OnCancel();
+      return FALSE;
     }
-      break;
-#endif
-    default:
-      if (!m_IsStartSilent)
-        CDialog::OnCancel();
-  }
-  if (retval == TRUE) {
-    m_core.SetDefUsername(PWSprefs::GetInstance()->
-                GetPref(PWSprefs::DefaultUsername));
-    m_core.SetUseDefUser(PWSprefs::GetInstance()->
-                GetPref(PWSprefs::UseDefaultUser) ? true : false);
+    go_ahead = true;
+  } // LIMIT_REACHED
+#endif /* DEMO */
+
+  if (rc2 != PWScore::SUCCESS && !go_ahead) {
+    // not a good return status, fold.
+    if (!m_IsStartSilent)
+      CDialog::OnCancel();
+    return FALSE;
   }
 
-  return retval;
+  // Status OK or user chose to forge ahead...
+  m_needsreading = false;
+  startLockCheckTimer();
+  UpdateSystemTray(UNLOCKED);
+  if (!m_bOpen) {
+    // Previous state was closed - reset DCA in status bar
+    SetDCAText();
+  }
+  app.AddToMRU(m_core.GetCurFile());
+  UpdateMenuAndToolBar(true); // sets m_bOpen too...
+
+  m_core.SetDefUsername(PWSprefs::GetInstance()->
+                        GetPref(PWSprefs::DefaultUsername));
+  m_core.SetUseDefUser(PWSprefs::GetInstance()->
+                       GetPref(PWSprefs::UseDefaultUser) ? true : false);
+  return TRUE;
 }
 
 void

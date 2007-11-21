@@ -658,10 +658,6 @@ DboxMain::InitPasswordSafe()
   if (!cs_ListColumns.IsEmpty())
     SetColumnWidths(cs_ListColumnsWidths);
 
-  // Now set up UPDATE_UI data
-  const int num_CommandTable_entries = sizeof(m_UICommandTable) / sizeof(UICommandTableEntry);
-  for (int i = 0; i < num_CommandTable_entries; i++)
-    m_MapUICommandTable[m_UICommandTable[i].ID] = i;
 }
 
 LRESULT
@@ -717,6 +713,11 @@ BOOL
 DboxMain::OnInitDialog()
 {
   CDialog::OnInitDialog();
+
+  // Set up UPDATE_UI data map.
+  const int num_CommandTable_entries = sizeof(m_UICommandTable) / sizeof(UICommandTableEntry);
+  for (int i = 0; i < num_CommandTable_entries; i++)
+    m_MapUICommandTable[m_UICommandTable[i].ID] = i;
 
   // Install menu popups for full path on MRU entries
   m_menuTipManager.Install(AfxGetMainWnd());
@@ -978,9 +979,16 @@ DboxMain::ChangeOkUpdate()
 	                   m_core.IsChanged() ? TRUE : FALSE);
   }
 #ifdef DEMO
-  bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
-  if (isLimited)
-      m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, FALSE);
+  int update = OnUpdateMenuToolbar(ID_TOOLBUTTON_ADD);
+  // Cheat, as we know that the logic for ADD applies to others, in DEMO mode
+  // see OnUpdateMenuToolbar
+  if (m_MainToolBar.GetSafeHwnd() != NULL && update != -1) {
+    BOOL state = update ? TRUE : FALSE;
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_IMPORTTEXT, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_IMPORTXML, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_MERGE, state);
+  }
 #endif
   UpdateStatusBar();
 }
