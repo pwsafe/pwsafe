@@ -15,6 +15,10 @@
 
 
 
+
+  
+
+  
   <title>Aliases</title>
 <!-- pwsafe version: 3.11--><!-- Modified: 20/11/2007 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
@@ -22,19 +26,24 @@
 
 
 
+  
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 
 <body>
 
+
 <h3>Password Aliases</h3>
+
 <p>If you're using a "single sign-on" system that allows you to share
 the same password across different machines/servers/applications, etc.
 you can setup <span style="font-weight: bold;">Password Safe</span>
 entries accordingly, so that changing one password affects all other
 related entries. This is called "aliasing" entries.</p>
+
 <h4>Summary</h4>
+
 <p>The basic idea is to allow one entry's password to be referred to
 by another. The "referred to" entry is called the 
 <span style="font-weight: bold;">base</span>, and the
@@ -47,7 +56,9 @@ the base's. If you change the base's password, this is immediately
 reflected in all the alias entries associated with the base. Although
 this may sound complicated, in fact it's quite simple and intuitive to
 use. The hardest part is setting up the aliases, as described below.</p>
+
 <h4>Defining an alias</h4>
+
 <p>In Password Safe, an entry can refer to another's password by means
 of a specially formatted password in the referring entry. The format is
 the "name" of the referred-to entry enclosed in square brackets. "Name"
@@ -57,6 +68,7 @@ other fields don't need to be specified. Likewise, if the group and
 title together or title and user together specify a unique entry, then
 the corresponding user or group doesn't have to be
 specified. In any case, the fields are separated by colons.</p>
+
 <p>In Password Safe, only the Title field is mandatory.  Group and User name 
 fields are optional as long as the resulting combination of "group/title/user&nbsp;name"
 is unique. As indicated above, the alias' password is in the form [g:t:u] but
@@ -71,30 +83,42 @@ the following formats are accepted: [g:t:u], [g:t], [t:u] or [t].  Specifying a
 colon without a value implies an empty field, e.g. [g:t:] says entry with
 title 't' in group 'g' and with no user name value and [:t:] says entry with 
 title 't' in the root with no user name value etc.</p>
+
 <p>The following examples should make this clear.</p>
+
 <h4>Examples</h4>
+
 <p>1. If the base entry's title is "LDAP Server", and there are no
 other entries with that title, then an alias will be defined by an
 entry that has "[LDAP Server]" in the password field.</p>
+
 <p>2. If there are "LDAP Server" entries in two different groups, say
 "Dept. A" and "Dept. B", then one can specify an alias to the latter by
 "[Dept. A:LDAP Server]". Note you do not have to specify the user name if 
 the information you have provided uniquely identifies the base entry.</p>
+
 <p>3. Different user names can also be used to differentiate between
 similar base entries, e.g., "[LDAP Server:Joe]" and "[LDAP
 Server:Mary]".</p>
+
 <p>4. Finally, all three fields may be specified, as in "[Dept. A:LDAP Server:Joe]"</p>
+
 <h4>Display</h4>
+
 <p>Base entries, that is, entries with at least one alias "pointing" to
 them, are displayed with a green triangle instead of a green square in
 the nested tree view.</p>
+
 <p>Alias entries are shown with white triangles.</p>
-<p><br>
+
+<p><img style="border: 1px solid ; width: 163px; height: 127px;" alt="Alias example" src="images/alias_example.jpg"><br>
+
 
 
 
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Alias"> <param name="Keyword" value="Password"> </object>
 </p>
+
 </body>
 </html>
