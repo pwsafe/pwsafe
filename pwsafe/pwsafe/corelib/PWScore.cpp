@@ -1115,6 +1115,7 @@ PWScore::ReadFile(const CMyString &a_filename,
     do {
       temp.Clear(); // Rather than creating a new one each time.
       status = in->ReadRecord(temp);
+      CMyString cs_possibleUUID;
       switch (status) {
       case PWSfile::FAILURE:
         {
@@ -1149,11 +1150,12 @@ PWScore::ReadFile(const CMyString &a_filename,
           temp.GetUUID(uuid); // refresh uuid_array
         }
         csMyPassword = temp.GetPassword();
-        csMyPassword.MakeLower();
-        if (csMyPassword.Left(2) == _T("[[") || 
-            csMyPassword.Right(2) == _T("]]") ||
-            csMyPassword.GetLength() == 36 ||
-            csMyPassword.SpanIncluding(_T("[]0123456789abcdef")) == csMyPassword) {
+        cs_possibleUUID = csMyPassword.Mid(2, 32);  // Extract possible uuid
+        cs_possibleUUID.MakeLower();
+        if (csMyPassword.Left(2) == _T("[[") && 
+            csMyPassword.Right(2) == _T("]]") &&
+            csMyPassword.GetLength() == 36 &&
+            cs_possibleUUID.SpanIncluding(_T("0123456789abcdef")) == cs_possibleUUID) {
           // _stscanf_s always outputs to an "int" using %x even though
           // target is only 1.  Read into larger buffer to prevent data being
           // overwritten and then copy to where we want it!
@@ -1723,11 +1725,12 @@ PWScore::Validate(CString &status)
       num_PWH_fixed++;
     }
     CMyString csMyPassword = ci.GetPassword();
-    csMyPassword.MakeLower();
-    if (csMyPassword.Left(2) == _T("[[") || 
-        csMyPassword.Right(2) == _T("]]") ||
-        csMyPassword.GetLength() == 36 ||
-        csMyPassword.SpanIncluding(_T("[]0123456789abcdef")) == csMyPassword) {
+    CMyString cs_possibleUUID = csMyPassword.Mid(2, 32);  // Extract possible uuid
+    cs_possibleUUID.MakeLower();
+    if (csMyPassword.Left(2) == _T("[[") && 
+        csMyPassword.Right(2) == _T("]]") &&
+        csMyPassword.GetLength() == 36 &&
+        cs_possibleUUID.SpanIncluding(_T("0123456789abcdef")) == cs_possibleUUID) {
       // _stscanf_s always outputs to an "int" using %x even though
       // target is only 1.  Read into larger buffer to prevent data being
       // overwritten and then copy to where we want it!
