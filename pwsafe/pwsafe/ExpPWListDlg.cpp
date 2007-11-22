@@ -87,7 +87,7 @@ CExpPWListDlg::OnInitDialog()
 	cs_text.LoadString(IDS_GROUP);
 	m_expPWListCtrl.InsertColumn(1, cs_text);
 	cs_text.LoadString(IDS_TITLE);
-	m_expPWListCtrl.InsertColumn(3, cs_text);
+	m_expPWListCtrl.InsertColumn(2, cs_text);
 	cs_text.LoadString(IDS_USERNAME);
 	m_expPWListCtrl.InsertColumn(3, cs_text);
 	cs_text.LoadString(IDS_EXPIRYDATETIME);
