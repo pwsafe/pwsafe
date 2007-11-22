@@ -67,16 +67,16 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 {
   ASSERT(ci != NULL);
 
-  if (HIDDEN_NOTES.IsEmpty()) {
+  if (HIDDEN_NOTES.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
     CS_ON.LoadString(IDS_ON);
     CS_OFF.LoadString(IDS_OFF);
 #if defined(POCKET_PC)
-  CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
-  CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
 #else
-  CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
-  CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
 #endif
   }
 
@@ -180,7 +180,7 @@ void CEditDlg::OnShowPassword()
   if (m_isPwHidden) {
     ShowPassword();
   } else {
-    m_realpassword = m_password; // save new password
+    m_realpassword = m_password; // save visible password
     HidePassword();
   }
   UpdateData(FALSE);
@@ -189,8 +189,9 @@ void CEditDlg::OnShowPassword()
 void
 CEditDlg::OnOK() 
 {
-  UpdateData(TRUE);
+  ItemListIter listindex;
 
+  UpdateData(TRUE);
   m_group.EmptyIfOnlyWhiteSpace();
   m_title.EmptyIfOnlyWhiteSpace();
   m_username.EmptyIfOnlyWhiteSpace();
@@ -203,9 +204,9 @@ CEditDlg::OnOK()
   m_URL.EmptyIfOnlyWhiteSpace();
   m_autotype.EmptyIfOnlyWhiteSpace();
 
-  UpdateData(FALSE);
+  if (!m_isPwHidden || m_password != HIDDEN_PASSWORD)
+    m_realpassword = m_password;
 
-  m_realpassword = m_password;
   if (!m_isNotesHidden)
     m_realnotes = m_notes;
 
@@ -224,32 +225,31 @@ CEditDlg::OnOK()
   if (m_title.IsEmpty()) {
     AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
-    return;
+    goto dont_close;
   }
 
   if (m_password.IsEmpty()) {
     AfxMessageBox(IDS_MUSTHAVEPASSWORD);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
-    return;
+    goto dont_close;
   }
 
   if (!m_group.IsEmpty() && m_group[0] == '.') {
     AfxMessageBox(IDS_DOTINVALID);
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
-    return;
+    goto dont_close;
   }
 
   if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
     AfxMessageBox(IDS_PASSWORDSNOTMATCH);
-    UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
-    return;
+    goto dont_close;
   }
 
   DboxMain* dbx = static_cast<DboxMain *>(GetParent());
   ASSERT(dbx != NULL);
 
-  ItemListIter listindex = dbx->Find(m_group, m_title, m_username);
+  listindex = dbx->Find(m_group, m_title, m_username);
   /*
    *  If there is a matching entry in our list, and that
    *  entry is not the same one we started editing, tell the
@@ -267,7 +267,7 @@ CEditDlg::OnOK()
       AfxMessageBox(temp);
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetSel(MAKEWORD(-1, 0));
       ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
-      return;
+      goto dont_close;
     }
   }
 
@@ -276,7 +276,7 @@ CEditDlg::OnOK()
     // Already issued error message to user
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
-    return;
+    goto dont_close;
   }
   //End check
 
@@ -303,6 +303,11 @@ CEditDlg::OnOK()
     m_ci->SetLTime(m_tttLTime);
 
   CPWDialog::OnOK();
+  return;
+  // If we don't close, then update controls, as some of the fields
+  // may have been modified (e.g., spaces removed).
+ dont_close:
+  UpdateData(FALSE);
 }
 
 void CEditDlg::UpdateHistory()
