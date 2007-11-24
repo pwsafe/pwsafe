@@ -51,5 +51,5 @@ private:
   CheckStatus CheckLatestVersion(CString &latest);
   void CheckNewVer();
   
-  static bool OnCheckVersion(LPTSTR lpszURL, LPTSTR lpszFName, LPARAM instance);
+  static bool OnCheckVersion(const CString &URL, const CString &FName, LPARAM instance);
 };

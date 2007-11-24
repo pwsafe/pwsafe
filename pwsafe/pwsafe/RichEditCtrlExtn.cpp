@@ -133,11 +133,7 @@ void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
       bool bCallbackProcessed(false);
       if (m_pfcnNotifyLinkClicked != NULL) {
         // Call the supplied Callback routine; if it returns "true", it has processed the link
-        LPTSTR lpszFName = cs_FName.GetBuffer(cs_FName.GetLength() + 1);
-        LPTSTR lpszURL = cs_URL.GetBuffer(cs_URL.GetLength() + 1);
-        bCallbackProcessed = m_pfcnNotifyLinkClicked(lpszURL, lpszFName, m_NotifyInstance);
-        cs_URL.ReleaseBuffer();
-        cs_FName.ReleaseBuffer();
+        bCallbackProcessed = m_pfcnNotifyLinkClicked(cs_URL, cs_FName, m_NotifyInstance);
       }
 
       if (bCallbackProcessed) {
@@ -157,7 +153,7 @@ void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
   }
 }
 
-bool CRichEditCtrlExtn::RegisterOnLink(bool (*pfcn) (LPTSTR, LPTSTR, LPARAM), LPARAM instance)
+bool CRichEditCtrlExtn::RegisterOnLink(bool (*pfcn) (const CString &, const CString &, LPARAM), LPARAM instance)
 {
   if (m_pfcnNotifyLinkClicked != NULL)
     return false;
