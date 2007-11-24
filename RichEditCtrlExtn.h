@@ -24,7 +24,7 @@ public:
   void SetWindowText(LPCTSTR lpszString);
 
   // (Un)Register to be notified if the link clicked
-  bool RegisterOnLink(bool (*pfcn) (LPTSTR, LPTSTR, LPARAM), LPARAM);
+  bool RegisterOnLink(bool (*pfcn) (const CString &, const CString &, LPARAM), LPARAM);
   void UnRegisterOnLink();
   void NotifyListModified();
 
@@ -65,7 +65,7 @@ private:
 // Callback if link has been clicked
 //   parameters = link text clicked, instance that registered for callback
 // Callback returns "true" if it processed the link
-  bool (*m_pfcnNotifyLinkClicked) (LPTSTR, LPTSTR, LPARAM);
+  bool (*m_pfcnNotifyLinkClicked) (const CString &, const CString &, LPARAM);
   LPARAM m_NotifyInstance;
 
 // Attributes

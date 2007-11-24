@@ -105,9 +105,9 @@ CAboutDlg::OnInitDialog()
 }
 
 bool
-CAboutDlg::OnCheckVersion(LPTSTR lpszURL, LPTSTR /* lpszFName */, LPARAM instance)
+CAboutDlg::OnCheckVersion(const CString &URL, const CString & /* lpszFName */, LPARAM instance)
 {
-  if (_tcscmp(lpszURL, _T("[check_version]")) == 0) {
+  if (URL == _T("[check_version]")) {
     CAboutDlg *self = (CAboutDlg *)instance;
     self->CheckNewVer();
     return true;
