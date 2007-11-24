@@ -1,5 +1,5 @@
-Password Safe 3.11 Release Notes - ?????? 2007
-==============================================
+Password Safe 3.11 Release Notes - November 2007
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.11. For a short description of Password
