@@ -84,12 +84,11 @@ struct StartEndMatch {
     return (al.iStart == m_iStart && al.iEnd == m_iEnd);
   }
 
-  StartEndMatch(const int &i_start, const int &i_end) :
+  StartEndMatch(const int i_start, const int i_end) :
     m_iStart(i_start),  m_iEnd(i_end) {}
 
-private:
-  const int &m_iStart;
-  const int &m_iEnd;
+  const int m_iStart;
+  const int m_iEnd;
 };
 
 void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
@@ -113,8 +112,7 @@ void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
         return;
 
       // Save current selected text
-      saveRange.cpMin = 0;
-      saveRange.cpMax = 0;
+      saveRange.cpMin = saveRange.cpMax = 0;
       GetSel(saveRange);
 
       // Select link
@@ -416,8 +414,7 @@ vnext:
   iDefaultFontSize = ConvertPointsToSize(iCurrentFontPointSize);
   iCurrentFontSize = iDefaultFontSize;
 
-  curPos = 0;
-  oldPos = 0;
+  curPos = oldPos = 0;
 
   csToken = csHTML.Tokenize(_T("<>"), curPos);
   while (csToken != "" && curPos != -1) {
