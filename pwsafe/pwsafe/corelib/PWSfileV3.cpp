@@ -692,7 +692,7 @@ int PWSfileV3::ReadHeader()
       // Save unknown fields that may be addded by future versions
       UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
       m_UHFL.push_back(unkhfe);
-#ifdef _DEBUG
+/* #ifdef _DEBUG
       CString cs_timestamp;
       cs_timestamp = PWSUtil::GetTimeStamp();
       TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"), 

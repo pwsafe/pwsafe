@@ -316,7 +316,9 @@ protected:
   void SetDCAText();
   void SortListView();
   void UpdateBrowseURLSendEmailButton(const bool bIsEmail);
-  void SetEntryImage(CItemData ci, HTREEITEM &ti, const bool bOneEntry = false);
+  int GetEntryImage(CItemData ci);
+  void SetEntryImage(const int &index, const int nImage, const bool bOneEntry = false);
+  void SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry = false);
 
   //Version of message functions with return values
   int Save(void);
@@ -379,6 +381,7 @@ protected:
   afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderBeginDrag(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnHeaderEndDrag(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnCopyPassword();
   afx_msg void OnCopyNotes();

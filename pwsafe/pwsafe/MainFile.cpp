@@ -2223,8 +2223,9 @@ DboxMain::OnOK()
 
   LVCOLUMN lvColumn;
   lvColumn.mask = LVCF_WIDTH;
+  // Ignore first column (Image)
   for (int i = 0; i < 4; i++) {
-    if (m_ctlItemList.GetColumn(i, &lvColumn)) {
+    if (m_ctlItemList.GetColumn(i + 1, &lvColumn)) {
       prefs->SetPref(WidthPrefs[i], lvColumn.cx);
     }
   }
@@ -2233,7 +2234,9 @@ DboxMain::OnOK()
   CString cs_columnswidths(_T(""));
   TCHAR buffer[8], widths[8];
 
-  for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
+  // Do NOT include first column (Image) as it is mandatory and would
+  // cause compatibility issues with prior releases.
+  for (int iOrder = 1; iOrder < m_nColumns; iOrder++) {
     int iIndex = m_nColumnIndexByOrder[iOrder];
 #if _MSC_VER >= 1400
     _itot_s(m_nColumnTypeByIndex[iIndex], buffer, 8, 10);
