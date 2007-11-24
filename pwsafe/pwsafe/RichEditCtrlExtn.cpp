@@ -134,7 +134,7 @@ void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
       if (m_pfcnNotifyLinkClicked != NULL) {
         // Call the supplied Callback routine; if it returns "true", it has processed the link
         LPTSTR lpszFName = cs_FName.GetBuffer(cs_FName.GetLength() + 1);
-        LPTSTR lpszURL = cs_URL.GetBuffer(cs_FName.GetLength() + 1);
+        LPTSTR lpszURL = cs_URL.GetBuffer(cs_URL.GetLength() + 1);
         bCallbackProcessed = m_pfcnNotifyLinkClicked(lpszURL, lpszFName, m_NotifyInstance);
         cs_URL.ReleaseBuffer();
         cs_FName.ReleaseBuffer();
