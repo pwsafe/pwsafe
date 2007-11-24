@@ -97,6 +97,9 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
   ScreenToClient(&hdhti.pt);
   ::SendMessage(this->GetSafeHwnd(), HDM_HITTEST, 0, (LPARAM) &hdhti);
 
+  if (hdhti.iItem == 0)  // Can't drop in front of Image
+    return FALSE;
+
   // Now add it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
       WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)hdhti.iItem);
@@ -138,8 +141,10 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   GetItem(hdhti.iItem, &hdi);
   m_dwHDRType = hdi.lParam;
 
-  // Can't play with TITLE or USER
-  if (m_dwHDRType == CItemData::TITLE || m_dwHDRType == CItemData::USER)
+  // Can't play with UUID (image), TITLE or USER
+  if (m_dwHDRType == CItemData::UUID ||
+      m_dwHDRType == CItemData::TITLE ||
+      m_dwHDRType == CItemData::USER)
     return;
 
   // Get the data: ColumnChooser Listbox needs the column string

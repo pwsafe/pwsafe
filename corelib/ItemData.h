@@ -226,6 +226,9 @@ public:
   bool IsBase() const
   {return (m_entrytype == Base);}
   
+  EntryType GetEntryType() const
+  {return m_entrytype;}
+  
   void SetNormal()
   {m_entrytype = Normal;}
   void SetAlias()

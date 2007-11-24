@@ -208,6 +208,7 @@ ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
 ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
 ON_NOTIFY(LVN_COLUMNCLICK, IDC_ITEMLIST, OnColumnClick)
 ON_NOTIFY(NM_RCLICK, IDC_LIST_HEADER, OnHeaderRClick)
+ON_NOTIFY(HDN_BEGINDRAG, IDC_LIST_HEADER, OnHeaderBeginDrag)
 ON_NOTIFY(HDN_ENDDRAG, IDC_LIST_HEADER, OnHeaderEndDrag)
 ON_NOTIFY(HDN_ENDTRACK, IDC_LIST_HEADER, OnHeaderNotify)
 ON_NOTIFY(HDN_ITEMCHANGED, IDC_LIST_HEADER, OnHeaderNotify)
@@ -474,6 +475,7 @@ DboxMain::InitPasswordSafe()
   CBitmap bitmap;
 
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
+  // Also now used by CListCtrl!
   bitmap.LoadBitmap(IDB_NODE);
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
@@ -499,6 +501,9 @@ DboxMain::InitPasswordSafe()
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
+  m_ctlItemTree.SetImageList(pImageList, LVSIL_SMALL);
+  m_ctlItemList.SetImageList(pImageList, TVSIL_NORMAL);
+  m_ctlItemList.SetImageList(pImageList, LVSIL_SMALL);
 
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
   if (prefs->GetPref(PWSprefs::ListViewGridLines))
@@ -547,6 +552,7 @@ DboxMain::InitPasswordSafe()
 
   m_iTypeSortColumn = prefs->GetPref(PWSprefs::SortedColumn);
   switch (m_iTypeSortColumn) {
+    case CItemData::UUID:  // Used for sorting on Image!
     case CItemData::GROUP:
     case CItemData::TITLE:
     case CItemData::USER:

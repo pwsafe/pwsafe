@@ -114,8 +114,9 @@ DboxMain::OnAdd()
       if (iter != End()) {
         const CItemData &cibase = iter->second;
         DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-        HTREEITEM bti = di->tree_item;
-        SetEntryImage(cibase, bti, true);
+        int nImage = GetEntryImage(cibase);
+        SetEntryImage(di->list_index, nImage, true);
+        SetEntryImage(di->tree_item, nImage, true);
       }
     } else {
       temp.SetPassword(dlg_add.m_password);
@@ -304,8 +305,9 @@ DboxMain::Delete(bool inRecursion)
         CItemData &cibase = iter->second;
         cibase.SetNormal();
         DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-        HTREEITEM bti = di->tree_item;
-        SetEntryImage(cibase, bti, true);
+        int nImage = GetEntryImage(cibase);
+        SetEntryImage(di->list_index, nImage, true);
+        SetEntryImage(di->tree_item, nImage, true);
       }
     }
 
@@ -323,8 +325,9 @@ DboxMain::Delete(bool inRecursion)
         iter = m_core.Find(auuid);
         CItemData &cialias = iter->second;
         DisplayInfo *di = (DisplayInfo *)cialias.GetDisplayInfo();
-        HTREEITEM ati = di->tree_item;
-        SetEntryImage(cialias, ati, true);
+        int nImage = GetEntryImage(cialias);
+        SetEntryImage(di->list_index, nImage, true);
+        SetEntryImage(di->tree_item, nImage, true);
       }
       aliaslist.clear();
     }
@@ -550,16 +553,18 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       if (iter != End()) {
         const CItemData &cibase = iter->second;
         DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-        HTREEITEM bti = di->tree_item;
-        SetEntryImage(cibase, bti, true);
+        int nImage = GetEntryImage(cibase);
+        SetEntryImage(di->list_index, nImage, true);
+        SetEntryImage(di->tree_item, nImage, true);
       }
       // Next the original base entry
       iter = m_core.Find(original_base_uuid);
       if (iter != End()) {
         const CItemData &cibase = iter->second;
         DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-        HTREEITEM bti = di->tree_item;
-        SetEntryImage(cibase, bti, true);
+        int nImage = GetEntryImage(cibase);
+        SetEntryImage(di->list_index, nImage, true);
+        SetEntryImage(di->tree_item, nImage, true);
       }
       // Last the new base entry (only if different to the one we have done!
       if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
@@ -567,8 +572,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         if (iter != End()) {
           const CItemData &cibase = iter->second;
           DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-          HTREEITEM bti = di->tree_item;
-          SetEntryImage(cibase, bti, true);
+          int nImage = GetEntryImage(cibase);
+          SetEntryImage(di->list_index, nImage, true);
+          SetEntryImage(di->tree_item, nImage, true);
         }
       }
 

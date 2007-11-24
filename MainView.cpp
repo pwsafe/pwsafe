@@ -81,6 +81,9 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 
   int iResult;
   switch(nTypeSortColumn) {
+    case CItemData::UUID:  // Image
+      iResult = (pLHS->GetEntryType() < pRHS->GetEntryType()) ? -1 : 1;
+      break;
     case CItemData::GROUP:
       group1 = pLHS->GetGroup();
       group2 = pRHS->GetGroup();
@@ -1019,76 +1022,39 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
   }
   CMyString cs_fielddata;
 
-  // Insert the first column data
-  switch (m_nColumnTypeByIndex[0]) {
-  case CItemData::GROUP:
-    cs_fielddata = group;
-    break;
-  case CItemData::TITLE:
-    cs_fielddata = title;
-    break;
-  case CItemData::USER:
-    cs_fielddata = username;
-    break;
-  case CItemData::NOTES:
-    cs_fielddata = strNotes;
-    break;
-  case CItemData::PASSWORD:
-    cs_fielddata = itemData.GetPassword();
-    break;
-  case CItemData::URL:
-    cs_fielddata = itemData.GetURL();
-    break;
-  case CItemData::CTIME:
-    cs_fielddata = itemData.GetCTimeL();
-    break;
-  case CItemData::PMTIME:
-    cs_fielddata = itemData.GetPMTimeL();
-    break;
-  case CItemData::ATIME:
-    cs_fielddata = itemData.GetATimeL();
-    break;
-  case CItemData::LTIME:
-    cs_fielddata = itemData.GetLTimeL();
-    break;
-  case CItemData::RMTIME:
-    cs_fielddata = itemData.GetRMTimeL();
-    break;
-  default:
-    ASSERT(0);
-  }
-  iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata);
+  // Insert the first column data - always Image
+  int nImage = GetEntryImage(itemData);
+  iResult = m_ctlItemList.InsertItem(iResult, _T(""), nImage);
 
   if (iResult < 0) {
     // TODO: issue error here...
     return iResult;
   }
+
   DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
   if (di == NULL)
     di = new DisplayInfo;
   di->list_index = iResult;
 
-  {
-    HTREEITEM ti;
-    CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
-    // get path, create if necessary, add title as last node
-    ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
-    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
-      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
-      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
-    } else {
-      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
-      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
-      if (bSort)
-        m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
-    }
-
-    SetEntryImage(itemData, ti);
-
-    ASSERT(ti != NULL);
-    itemData.SetDisplayInfo((void *)di);
-    di->tree_item = ti;
+  HTREEITEM ti;
+  CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
+  // get path, create if necessary, add title as last node
+  ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
+    ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
+    m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
+  } else {
+    ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
+    m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
+    if (bSort)
+      m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
   }
+
+  SetEntryImage(ti, nImage);
+
+  ASSERT(ti != NULL);
+  itemData.SetDisplayInfo((void *)di);
+  di->tree_item = ti;
 
   // Set the data in the rest of the columns
   for (int i = 1; i < m_nColumns; i++) {
@@ -1284,23 +1250,47 @@ DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 }
 
 void
-DboxMain::OnHeaderEndDrag(NMHDR* /* pNMHDR */, LRESULT *pResult)
+DboxMain::OnHeaderBeginDrag(NMHDR* pNMHDR, LRESULT *pResult)
+{
+  // Called for HDN_BEGINDRAG which changes the column order when CC not visible
+  // Stop drag of first column (image)
+
+  NMHEADER *phdn = (NMHEADER *) pNMHDR;
+
+  if (phdn->iItem == 0)
+    *pResult = TRUE;
+  else
+    *pResult = FALSE;
+}
+
+void
+DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
 {
   // Called for HDN_ENDDRAG which changes the column order when CC not visible
   // Unfortunately the changes are only really done when this call returns,
   // hence the PostMessage to get the information later
 
   // Get control after operation is really complete
+
+  // Stop drag of first column (image)
+  NMHEADER *phdn = (NMHEADER *) pNMHDR;
+  if (phdn->iItem == 0 || 
+      (((phdn->pitem->mask & HDI_ORDER) == HDI_ORDER) && 
+        phdn->pitem->iOrder == 0)) {
+    *pResult = TRUE;
+    return;
+  }
+
+  // Otherwise allow
   PostMessage(WM_HDR_DRAG_COMPLETE);
 
-  // Go do it
   *pResult = FALSE;
 }
 
 void
 DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
 {
-  HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+  NMHEADER *phdn = (NMHEADER *) pNMHDR;
   *pResult = FALSE;
 
   if (m_nColumnWidthByIndex == NULL || phdn->pitem == NULL)
@@ -1655,37 +1645,41 @@ DboxMain::SetColumns()
                                  rect.Width() / 3);
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
                                  rect.Width() / 3);
-  
-  cs_header = GetHeaderText(CItemData::TITLE);
-  m_ctlItemList.InsertColumn(0, cs_header);
-  hdi.lParam = CItemData::TITLE;
+
+  m_ctlItemList.InsertColumn(0, _T(" "));  // Image
+  hdi.lParam = CItemData::UUID;
   m_LVHdrCtrl.SetItem(0, &hdi);
-  m_ctlItemList.SetColumnWidth(0, i1stWidth);
+
+  cs_header = GetHeaderText(CItemData::TITLE);
+  m_ctlItemList.InsertColumn(1, cs_header);
+  hdi.lParam = CItemData::TITLE;
+  m_LVHdrCtrl.SetItem(1, &hdi);
+  m_ctlItemList.SetColumnWidth(1, i1stWidth);
   
   cs_header = GetHeaderText(CItemData::USER);
-  m_ctlItemList.InsertColumn(1, cs_header);
+  m_ctlItemList.InsertColumn(2, cs_header);
   hdi.lParam = CItemData::USER;
-  m_LVHdrCtrl.SetItem(1, &hdi);
-  m_ctlItemList.SetColumnWidth(1, i2ndWidth);
+  m_LVHdrCtrl.SetItem(2, &hdi);
+  m_ctlItemList.SetColumnWidth(2, i2ndWidth);
 
   cs_header = GetHeaderText(CItemData::NOTES);
-  m_ctlItemList.InsertColumn(2, cs_header);
+  m_ctlItemList.InsertColumn(3, cs_header);
   hdi.lParam = CItemData::NOTES;
-  m_LVHdrCtrl.SetItem(2, &hdi);
-  m_ctlItemList.SetColumnWidth(1, i3rdWidth);
+  m_LVHdrCtrl.SetItem(3, &hdi);
+  m_ctlItemList.SetColumnWidth(3, i3rdWidth);
     
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
     cs_header = GetHeaderText(CItemData::PASSWORD);
-    m_ctlItemList.InsertColumn(3, cs_header);
+    m_ctlItemList.InsertColumn(4, cs_header);
     hdi.lParam = CItemData::PASSWORD;
-    m_LVHdrCtrl.SetItem(3, &hdi);
-    m_ctlItemList.SetColumnWidth(3,
+    m_LVHdrCtrl.SetItem(4, &hdi);
+    m_ctlItemList.SetColumnWidth(4,
                                  PWSprefs::GetInstance()->
                                  GetPref(PWSprefs::Column4Width,
                                          rect.Width() / 4));
   }
 
-  int ioff = 3;
+  int ioff = 4;
   cs_header = GetHeaderText(CItemData::URL);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::URL;
@@ -1767,8 +1761,16 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   }
 #endif
   free(pTemp);
- 
-  int icol = 0;
+  
+  // Prior to V3.12, the Image columns was not present.
+  // Post V3.11, the image column is ALWAYS present but not in the user list
+
+  // Add Image column
+  m_ctlItemList.InsertColumn(0, _T(""));
+  hdi.lParam = CItemData::UUID;
+  m_LVHdrCtrl.SetItem(0, &hdi);
+
+  int icol = 1;
   for (vi_IterColumns = vi_columns.begin();
        vi_IterColumns != vi_columns.end();
        vi_IterColumns++) {
@@ -1817,7 +1819,7 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
 #endif
   free(pWidths);
   
-  int icol = 0, index;
+  int icol = 1, index;
 
   for (vi_IterWidths = vi_widths.begin();
        vi_IterWidths != vi_widths.end();
@@ -1831,6 +1833,8 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
     icol++;
   }
 
+  // First column special
+  m_ctlItemList.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   // Last column special
   index = m_LVHdrCtrl.OrderToIndex(m_nColumns - 1);
   m_ctlItemList.SetColumnWidth(index, LVSCW_AUTOSIZE_USEHEADER);
@@ -1839,6 +1843,9 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
 void DboxMain::AddColumn(const int iType, const int iIndex)
 {
   // Add new column of type iType after current column index iIndex
+  if (iIndex == 0)  // Can't put before Image
+    return;
+
   CString cs_header;
   HDITEM hdi;
   int iNewIndex(iIndex);
@@ -2074,7 +2081,7 @@ CString DboxMain::GetHeaderText(const int iType)
       cs_header.LoadString(IDS_LASTMODIFIED);
       break;
     default:
-      cs_header.Empty();
+      cs_header.Empty();  // Includes CItemData::UUID == Image
   }
   return cs_header;
 }
@@ -2564,11 +2571,12 @@ DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
   mainTBCtrl.HideButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
 }
 
-void
-DboxMain::SetEntryImage(CItemData ci, HTREEITEM &ti, const bool bOneEntry)
+int
+DboxMain::GetEntryImage(CItemData ci)
 {
+  int nImage;
   if (ci.IsAlias()) {
-    m_ctlItemTree.SetItemImage(ti, CPWTreeCtrl::ALIAS, CPWTreeCtrl::ALIAS);
+    nImage = CPWTreeCtrl::ALIAS;
   } else {
     time_t now, warnexptime, tLTime;
     time(&now);
@@ -2594,20 +2602,36 @@ DboxMain::SetEntryImage(CItemData ci, HTREEITEM &ti, const bool bOneEntry)
     const bool bIsBase = ci.IsBase();
     if (tLTime != 0) {
       if (tLTime <= now) {
-        int nImage = bIsBase ? CPWTreeCtrl::EXPIRED_BASE : CPWTreeCtrl::EXPIRED_LEAF;
-        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+        nImage = bIsBase ? CPWTreeCtrl::EXPIRED_BASE : CPWTreeCtrl::EXPIRED_LEAF;
       } else if (tLTime < warnexptime) {
-        int nImage = bIsBase ? CPWTreeCtrl::WARNEXPIRED_BASE : CPWTreeCtrl::WARNEXPIRED_LEAF;
-        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+        nImage = bIsBase ? CPWTreeCtrl::WARNEXPIRED_BASE : CPWTreeCtrl::WARNEXPIRED_LEAF;
       } else {
-        int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
-        m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+        nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
       }
     } else {
-      int nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
-      m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+      nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
     }
   }
+  return nImage;
+}
+
+void
+DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOneEntry)
+{
+  m_ctlItemList.SetItem(index, 0, LVIF_IMAGE, NULL, nImage, 0, 0, 0);
+
+  if (bOneEntry) {
+    CRect rect;
+    m_ctlItemList.GetItemRect(index, &rect, FALSE);
+    m_ctlItemList.InvalidateRect(&rect);
+  }
+}
+
+void
+DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
+{
+  m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+
   if (bOneEntry) {
     CRect rect;
     m_ctlItemTree.GetItemRect(ti, &rect, FALSE);
