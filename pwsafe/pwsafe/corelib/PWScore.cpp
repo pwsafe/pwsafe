@@ -108,6 +108,7 @@ PWScore::ClearData(void)
   m_pwlist.clear();
   m_base2aliases_mmap.clear();
   m_alias2base_map.clear();
+  m_UHFL.clear();
   NotifyListModified();
 }
 void
