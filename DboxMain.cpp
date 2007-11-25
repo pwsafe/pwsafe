@@ -2297,9 +2297,7 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
       iEnable = FALSE;
     } else {
       CItemData *ci = getSelectedItem();
-      ASSERT(ci != NULL);
-
-      if (ci->IsURLEmpty()) {
+      if (ci == NULL || ci->IsURLEmpty()) {
         iEnable = FALSE;
       }
     }

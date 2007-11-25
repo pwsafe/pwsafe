@@ -42,12 +42,20 @@ void CKeySend::SendChar(TCHAR c)
 #ifdef UNICODE
   UINT status;
   INPUT input[1];
-
   input[0].type = INPUT_KEYBOARD;
-  input[0].ki.wVk = 0;
-  input[0].ki.wScan = c;
-  input[0].ki.dwFlags = KEYEVENTF_UNICODE;
-  
+  switch (c) {
+  case TCHAR('\t'):
+  case TCHAR('\r'):
+    input[0].ki.wVk = c == TCHAR('\t') ? VK_TAB : VK_RETURN;
+    input[0].ki.wScan = 0;
+    input[0].ki.dwFlags = 0;
+    break;
+  default:
+    input[0].ki.wVk = 0;
+    input[0].ki.wScan = c;
+    input[0].ki.dwFlags = KEYEVENTF_UNICODE;
+    break;
+  }  
   status = ::SendInput(1, input, sizeof(INPUT));
   if (status != 1)
     TRACE(_T("CKeySend::SendChar: SendInput failed\n"));
