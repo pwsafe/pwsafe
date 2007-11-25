@@ -15,6 +15,11 @@ entry selected.
 [1837534] Autotype handles tab correctly when typing to Internet
 Explorer.
 
+Changes to Existing Features in 3.11.1
+======================================
+[] You can now check for newer version via Help->About
+[] List view displays an icon in each row showing the type of entry
+
 New Features for 3.11
 =====================
 [1765240] Add "Clear clipboard" item to tray icon context menu.
