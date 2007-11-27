@@ -829,6 +829,7 @@ LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
 void CEditDlg::OnBnClickViewAliases()
 {
   CString cs_msg;
-  cs_msg.Format(IDS_VIEWALIASES, m_numaliases, m_numaliases == 1 ? _T("") : _T("es"), m_aliases);
+  const CString cs_type(MAKEINTRESOURCE(m_numaliases == 1 ? IDS_ALIAS : IDS_ALIASES));
+  cs_msg.Format(IDS_VIEWALIASES, m_numaliases, cs_type, m_aliases);
   MessageBox(cs_msg, AfxGetAppName(), MB_OK);
 }
