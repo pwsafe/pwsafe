@@ -124,7 +124,6 @@
 #define IDS_FOUNDAMATCH                 5291
 #define IDS_FOUNDMATCHES                5292
 #define IDS_SEARCHWRAPPED               5293
-#define IDS_FINDNEXT                    5295
 #define IDS_IMPORTED                    5296
 #define IDS_NOCURRENTSAFE               5297
 #define IDS_CANNOTBEBLANK               5298
@@ -337,3 +336,9 @@
 #define IDS_SELECTREPORT                5513
 #define IDS_NOREPORTSEXIST              5514
 #define IDS_VISIT_WEBSITE               5515
+#define IDS_ENTRY                       5516
+#define IDS_ENTRIES                     5517
+#define IDS_ALIAS                       5518
+#define IDS_ALIASES                     5519
+#define IDS_CONFLICT                    5520
+#define IDS_CONFLICTS                   5521

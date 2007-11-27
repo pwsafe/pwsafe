@@ -1054,11 +1054,13 @@ DboxMain::OnImportText()
             default:
             {
                 rpt.WriteLine();
-                CString temp1, temp2 = _T("");
-                temp1.Format(IDS_RECORDSIMPORTED, numImported, (numImported != 1) ? _T("s") : _T(""));
+                CString cs_type, temp1, temp2 = _T("");
+                cs_type.LoadString(numImported == 1 ? IDS_ENTRY : IDS_ENTRIES);
+                temp1.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
                 rpt.WriteLine(temp1);
                 if (numSkipped != 0) {
-                    temp2.Format(IDS_RECORDSNOTREAD, numSkipped, (numSkipped != 1) ? _T("s") : _T(""));
+                    cs_type.LoadString(numSkipped == 1 ? IDS_ENTRY : IDS_ENTRIES);
+                    temp2.Format(IDS_RECORDSNOTREAD, numSkipped, cs_type);
                     rpt.WriteLine(temp2);
                 }
 
@@ -1240,9 +1242,9 @@ DboxMain::OnImportXML()
 
                     ChangeOkUpdate();
                 } else {
-                    cs_temp.Format(IDS_XMLIMPORTOK,
-                                   numValidated, (numValidated != 1) ? _T("s") : _T(""),
-                                   numImported, (numImported != 1) ? _T("s") : _T(""));
+                    const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
+                    const CString cs_imported(MAKEINTRESOURCE(numValidated == 1 ? IDS_ENTRY : IDS_ENTRIES));
+                    cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
                     cs_title.LoadString(IDS_STATUS);
                     ChangeOkUpdate();
                 }
@@ -1484,11 +1486,9 @@ DboxMain::Merge(const CMyString &pszFilename) {
   /* tell the user we're done & provide short merge report */
   int totalAdded = numAdded+numConflicts;
   CString resultStr;
-  resultStr.Format(IDS_MERGECOMPLETED,
-                   totalAdded,
-                   totalAdded == 1 ? _T("y") : _T("ies"),
-                   numConflicts,
-                   numConflicts == 1 ? _T("") : _T("s"));
+  const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
+  const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ? IDS_CONFLICT : IDS_CONFLICTS));
+  resultStr.Format(IDS_MERGECOMPLETED, totalAdded, cs_entries, numConflicts, cs_conflicts);
   cs_title.LoadString(IDS_MERGECOMPLETED2);
   MessageBox(resultStr, cs_title, MB_OK);
   rpt.WriteLine(resultStr);

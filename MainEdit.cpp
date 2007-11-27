@@ -264,8 +264,8 @@ DboxMain::Delete(bool inRecursion)
 
       CString cs_msg;
       const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
-      cs_msg.Format(IDS_DELETEBASE, aliaslist.size(),
-                    aliaslist.size() == 1 ? _T("") : _T("es"), csAliases);
+      const CString cs_type(MAKEINTRESOURCE(aliaslist.size() == 1 ? IDS_ALIAS : IDS_ALIASES));
+      cs_msg.Format(IDS_DELETEBASE, aliaslist.size(), cs_type, csAliases);
       if (MessageBox(cs_msg, cs_title, MB_ICONQUESTION | MB_YESNO) == IDNO) {
         aliaslist.clear();
         return;
