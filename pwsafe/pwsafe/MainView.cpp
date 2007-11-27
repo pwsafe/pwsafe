@@ -587,6 +587,69 @@ nextentry:
   return retval;
 }
 
+bool
+DboxMain::FindNext(const CString &cs_char)
+{
+  int iItem;
+  bool bFound(false);
+
+  TCHAR tcsItemText[2];
+  LVITEM lvi;
+  memset(&lvi, 0x00, sizeof(LVITEM));
+
+  lvi.mask = LVIF_TEXT;
+  lvi.iSubItem = m_nColumnIndexByType[m_iTypeSortColumn];
+  lvi.cchTextMax = sizeof(tcsItemText) / sizeof(TCHAR);
+  lvi.pszText = tcsItemText;
+
+  // Get selected item, if any
+  POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+
+  // First search down.
+  if (pos == NULL)
+    iItem = 0;
+  else
+    iItem = (int)pos;
+
+  do {
+    lvi.iItem = iItem;
+    memset(tcsItemText, 0x00, sizeof(tcsItemText));
+    if (m_ctlItemList.GetItem(&lvi) == 0)
+      break;
+
+    const CString cs_text(tcsItemText);
+    if (cs_text.GetLength() > 0 && cs_char.CompareNoCase(cs_text) == 0) {
+      bFound = true;
+      break;
+    }
+    iItem++;
+  } while (true);
+
+  // Not found searching down and we didn't start from the top, now start from the top until
+  // we get to where we started!
+  if (!bFound && pos != NULL) {
+    iItem = 0;
+    do {
+      lvi.iItem = iItem;
+      memset(tcsItemText, 0x00, sizeof(TCHAR) * 2);
+      if (m_ctlItemList.GetItem(&lvi) == 0)
+        break;
+
+      const CString cs_text(tcsItemText);
+      if (cs_text.GetLength() > 0 && cs_char.CompareNoCase(cs_text) == 0) {
+        bFound = true;
+        break;
+      }
+      iItem++;
+    } while (iItem != (int)pos);
+  }
+
+  if (bFound)
+    SelectFindEntry(iItem, TRUE);
+
+  return bFound;
+}
+
 //Checks and sees if everything works and something is selected
 BOOL
 DboxMain::SelItemOk()
@@ -953,27 +1016,37 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
 {
   LV_KEYDOWN *pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
 
-  // FALSE = call next in line to process event
-  *pResult = FALSE;
+  // TRUE = we have processed the key stroke - don't call anyone else
+  *pResult = TRUE;
+
+  bool bControl = (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000;
+  bool bAlt     = (GetKeyState(VK_MENU)    & 0x8000) == 0x8000;
 
   switch (pLVKeyDow->wVKey) {
     case VK_DELETE:
       OnDelete();
-      break;
+      return;
     case VK_INSERT:
       OnAdd();
-      break;
+      return;
     case VK_ADD:
-      if ((GetKeyState(VK_CONTROL) & 0x8000) == 0)
+      if (bControl) {
+        SetHeaderInfo();
         return;
-      SetHeaderInfo();
+      }
       break;
     default:
-      return;    
+      break;    
   }
 
-  // We have processed the key stroke - don't call anyone else
-  *pResult = TRUE;
+  if (!bControl && !bAlt) {
+    CString cs_char = TCHAR(pLVKeyDow->wVKey);
+    FindNext(cs_char);
+    return;
+  }
+
+  // FALSE = call next in line to process event
+  *pResult = FALSE;
 }
 
 #if !defined(POCKET_PC)
