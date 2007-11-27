@@ -127,6 +127,9 @@ public:
               const CString &subgroup_name, const int subgroup_object,
               const int subgroup_function);
 
+  // Used by ListCtrl KeyDown
+  bool FindNext(const CString &cs_char);
+
   // Count the number of total entries.
   size_t GetNumEntries() const {return m_core.GetNumEntries();}
 
@@ -200,7 +203,7 @@ public:
 #else
   CListCtrl m_ctlItemList;
 #endif
-  CPWTreeCtrl  m_ctlItemTree;
+  CPWTreeCtrl m_ctlItemTree;
   CLVHdrCtrl m_LVHdrCtrl;
   CColumnChooserDlg *m_pCC;
   CPoint m_RCMousePos;
