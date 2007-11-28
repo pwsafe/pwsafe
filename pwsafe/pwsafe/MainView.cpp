@@ -1418,7 +1418,8 @@ DboxMain::SetListView()
   m_ctlItemTree.ShowWindow(SW_HIDE);
   m_ctlItemList.ShowWindow(SW_SHOW);
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
-				   _T("list"));
+                                   _T("list"));
+  m_ctlItemList.SetFocus();
 }
 
 void
@@ -1429,6 +1430,7 @@ DboxMain::SetTreeView()
   m_ctlItemTree.ShowWindow(SW_SHOW);
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
                                    _T("tree"));
+  m_ctlItemTree.SetFocus();
 }
 
 void

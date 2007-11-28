@@ -14,6 +14,8 @@ Bugs fixed in 3.11.2
 with text beginning with that character in the second column. This
 is a change from previous behaviour which only looked in the first column,
 now occupied by the icon.
+[] Allow Expand/Collapse for R/O databases via toolbar.
+[] Set focus to new view on switching between Tree <-> List views.
 
 Changes to Existing Features in 3.11.2
 ======================================

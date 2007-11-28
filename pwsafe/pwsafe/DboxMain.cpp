@@ -388,8 +388,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_TOOLBUTTON_ADD, true, false, true, false},
   {ID_TOOLBUTTON_EDIT, true, true, false, false},
   {ID_TOOLBUTTON_DELETE, true, false, false, false},
-  {ID_TOOLBUTTON_EXPANDALL, true, true, false, false},
-  {ID_TOOLBUTTON_COLLAPSEALL, true, true, false, false},
+  {ID_TOOLBUTTON_EXPANDALL, true, true, true, false},
+  {ID_TOOLBUTTON_COLLAPSEALL, true, true, true, false},
   {ID_TOOLBUTTON_OPTIONS, true, true, true, true},
   {ID_TOOLBUTTON_HELP, true, true, true, true},
   // Optional Main Toolbar buttons
