@@ -1,4 +1,4 @@
-Password Safe 3.11.2 Release Notes - ???????? 2007
+Password Safe 3.11.2 Release Notes - December 2007
 ==================================================
 
 This note describe the new features, fixed bugs and known problems
