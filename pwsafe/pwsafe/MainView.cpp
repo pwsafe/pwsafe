@@ -598,7 +598,7 @@ DboxMain::FindNext(const CString &cs_char)
   memset(&lvi, 0x00, sizeof(LVITEM));
 
   lvi.mask = LVIF_TEXT;
-  lvi.iSubItem = m_nColumnIndexByType[m_iTypeSortColumn];
+  lvi.iSubItem = 1;
   lvi.cchTextMax = sizeof(tcsItemText) / sizeof(TCHAR);
   lvi.pszText = tcsItemText;
 
