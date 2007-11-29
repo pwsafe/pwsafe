@@ -1014,15 +1014,12 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
 {
-  LV_KEYDOWN *pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
+  LV_KEYDOWN *pLVKeyDown = (LV_KEYDOWN*)pNMHDR;
 
   // TRUE = we have processed the key stroke - don't call anyone else
   *pResult = TRUE;
 
-  bool bControl = (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000;
-  bool bAlt     = (GetKeyState(VK_MENU)    & 0x8000) == 0x8000;
-
-  switch (pLVKeyDow->wVKey) {
+  switch (pLVKeyDown->wVKey) {
     case VK_DELETE:
       OnDelete();
       return;
@@ -1030,19 +1027,13 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
       OnAdd();
       return;
     case VK_ADD:
-      if (bControl) {
+      if ((GetKeyState(VK_CONTROL) & 0x8000) == 0x8000) {
         SetHeaderInfo();
         return;
       }
       break;
     default:
       break;    
-  }
-
-  if (!bControl && !bAlt) {
-    CString cs_char = TCHAR(pLVKeyDow->wVKey);
-    FindNext(cs_char);
-    return;
   }
 
   // FALSE = call next in line to process event

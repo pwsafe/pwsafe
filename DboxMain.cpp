@@ -501,8 +501,8 @@ DboxMain::InitPasswordSafe()
   pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
-  m_ctlItemTree.SetImageList(pImageList, LVSIL_SMALL);
-  m_ctlItemList.SetImageList(pImageList, TVSIL_NORMAL);
+  m_ctlItemTree.SetImageList(pImageList, TVSIL_STATE);
+  m_ctlItemList.SetImageList(pImageList, LVSIL_NORMAL);
   m_ctlItemList.SetImageList(pImageList, LVSIL_SMALL);
 
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
@@ -510,6 +510,7 @@ DboxMain::InitPasswordSafe()
     dw_ExtendedStyle |= LVS_EX_GRIDLINES;
 
   m_ctlItemList.SetExtendedStyle(dw_ExtendedStyle);
+  m_ctlItemList.Initialize(this);
 
   // Override default HeaderCtrl ID of 0
   m_LVHdrCtrl.SetDlgCtrlID(IDC_LIST_HEADER);

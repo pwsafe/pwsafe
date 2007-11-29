@@ -23,6 +23,7 @@
   #include "resource3.h"  // String resources
 #endif
 #include "PWTreeCtrl.h"
+#include "PWListCtrl.h"
 #include "RUEList.h"
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
@@ -201,7 +202,7 @@ public:
 #if defined(POCKET_PC)
   CMyListCtrl m_ctlItemList;
 #else
-  CListCtrl m_ctlItemList;
+  CPWListCtrl m_ctlItemList;
 #endif
   CPWTreeCtrl m_ctlItemTree;
   CLVHdrCtrl m_LVHdrCtrl;
