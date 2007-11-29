@@ -732,6 +732,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWListCtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWSRecentFileList.cpp"
 				>
 			</File>
@@ -978,6 +982,10 @@
 			</File>
 			<File
 				RelativePath=".\PWHistDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWListCtrl.h"
 				>
 			</File>
 			<File
