@@ -18,7 +18,8 @@
 	<property name="srcdir" location="src" />
 	<property name="bindir" location="bin" />
 	<property name="docdir" location="doc" />
-	<property name="apidocdir" location="${docdir}/api" />
+    <property name="libdir" location="lib" />
+    <property name="apidocdir" location="${docdir}/api" />
 	<property name="resourcedir" location="resources" />
 
 	<property name="jar.doc" value="passwordsafe-doc.zip" />
@@ -28,10 +29,9 @@
 		<pathelement path="${java.class.path}" />
 		<pathelement location="../BlowfishJ/bin" />
 		<pathelement location="bin" />
-		<!--
-		<pathelement location="=== path to log4j ===" />
-		<pathelement location="=== path to JUnit ===" />
-		-->
+        <fileset dir="${libdir}">
+            <include name="*.jar"/>
+        </fileset>
 	</path>
 
 	<fileset id="resources-1" dir="${resourcedir}">
@@ -100,12 +100,12 @@ runtests   - Runs the JUnit tests.
 		<javadoc destdir="${apidocdir}" access="private" use="true" notree="false" nonavbar="false" noindex="false" splitindex="true" author="true" version="true" nodeprecatedlist="false" nodeprecated="false" packagenames="org.pwsafe.lib.exception,org.pwsafe.lib.file,org.pwsafe.lib.crypto,org.pwsafe.test,org.pwsafe.lib" sourcepath="src;resources" classpath="bin;C:\Java\jakarta-log4j-1.2.8\dist\lib\log4j-1.2.8.jar;D:\Projects\Java\BlowfishJ\bin;C:\Java\junit3.8.1\junit.jar;C:\Java\eclipse-3.0M6\plugins\org.junit_3.8.1\junit.jar"/>
 	</target>
 
-	<target name="jar">
+	<target name="jar" depends="compile">
 		<zip  destfile="${jar.doc}" basedir="${docdir}" />
 		<jar destfile="${jar.bin}" basedir="${bindir}" />
 	</target>
 
-	<target name="runtests">
+	<target name="runtests" depends="compile">
 		<junit>
 			<formatter type="plain" usefile="false" />
 
