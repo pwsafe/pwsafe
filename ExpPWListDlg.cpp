@@ -99,18 +99,22 @@ CExpPWListDlg::OnInitDialog()
   ASSERT(status != 0);
   CBitmap bitmap;
 
-  bitmap.LoadBitmap(IDB_LEAF_EXPIRED);
+  bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_WARNEXPIRED);
+  bitmap.LoadBitmap(IDB_NORMAL_EXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_BASE_EXPIRED);
+  bitmap.LoadBitmap(IDB_ABASE_WARNEXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_BASE_WARNEXPIRED);
+  bitmap.LoadBitmap(IDB_ABASE_EXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_ABASE_WARNEXPIRED);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+
   m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_SMALL);
   m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_NORMAL);
 

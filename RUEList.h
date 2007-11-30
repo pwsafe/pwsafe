@@ -34,9 +34,16 @@ struct RUEntry {
   uuid_array_t RUEuuid;
 };
 
+struct RUEntryStringImage {
+  CMyString string;
+  int image;
+};
+
 typedef std::deque<RUEntry> RUEList;
 typedef RUEList::iterator RUEListIter;
 typedef RUEList::const_iterator RUEListConstIter;
+
+class DboxMain;
 
 class CRUEList
 {
@@ -50,7 +57,7 @@ class CRUEList
   // Data retrieval
   size_t GetCount() const {return m_RUEList.size();}
   size_t GetMax() const {return m_maxentries;}
-  bool GetAllMenuItemStrings(std::vector<CMyString> &) const;
+  bool GetAllMenuItemStrings(std::vector<RUEntryStringImage> &) const;
   bool GetMenuItemString(size_t, CMyString &) const;
   bool GetMenuItemString(const uuid_array_t &, CMyString &) const;
   bool GetPWEntry(size_t, CItemData &); // NOT const!
@@ -66,6 +73,7 @@ class CRUEList
   PWScore &m_core;    // Dboxmain's m_core (which = app.m_core!)
   size_t m_maxentries;
   RUEList m_RUEList;  // Recently Used Entry History List
+  DboxMain *m_pDbx;
 };
 
 //-----------------------------------------------------------------------------

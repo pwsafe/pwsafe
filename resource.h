@@ -12,8 +12,8 @@
 #define IDB_CLOGO                       107
 #define IDB_CLOGO_SMALL                 108
 #define IDB_CTEXT                       109
-#define IDB_LEAF                        110
-#define IDB_LEAF_EXPIRED                111
+#define IDB_NORMAL                      110
+#define IDB_NORMAL_EXPIRED              111
 #define IDB_NODE                        112
 #define IDB_PSLOGO                      113
 #define IDI_TRAY                        117
@@ -24,17 +24,24 @@
 #define IDI_MBINFOICON                  122
 #define IDI_MBSTOPICON                  123
 #define IDI_MBWARNICON                  124
-#define IDB_LEAF_WARNEXPIRED            125
+#define IDB_NORMAL_WARNEXPIRED          125
 #define IDR_POPCOLUMNS                  126
 #define IDR_POPCOPYTOCOMPARISON         127
 #define IDR_POPCOPYTOORIGINAL           128
 #define IDI_TRAY_BLUE                   129
 #define IDI_TRAY_WHITE                  130
 #define IDI_TRAY_YELLOW                 131
-#define IDB_LEAF_ALIAS                  132
-#define IDB_LEAF_BASE                   133
-#define IDB_LEAF_BASE_EXPIRED           134
-#define IDB_LEAF_BASE_WARNEXPIRED       135
+#define IDB_ALIAS                       132
+#define IDB_ABASE                       133
+#define IDB_ABASE_EXPIRED               134
+#define IDB_ABASE_WARNEXPIRED           135
+#define IDI_NORMAL                      140
+#define IDI_NORMAL_EXPIRED              141
+#define IDI_NORMAL_WARNEXPIRED          142
+#define IDI_ALIAS                       143
+#define IDI_ABASE                       144
+#define IDI_ABASE_EXPIRED               145
+#define IDI_ABASE_WARNEXPIRED           146
 #define IDD_ABOUTBOX                    200
 #define IDD_PASSWORDSAFE_DIALOG         202
 #define IDD_KEYCHANGE_DIALOG            203
@@ -413,7 +420,6 @@
 #define IDC_RST_BLK                     1276
 #define IDC_RST_BLUE                    1277
 #define IDC_RST_WHITE                   1278
-#define IDC_RST_BLK4                    1279
 #define IDC_RST_YELLOW                  1279
 
 // Next default values for new objects
@@ -422,7 +428,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        340
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1277
-#define _APS_NEXT_SYMED_VALUE           132
+#define _APS_NEXT_CONTROL_VALUE         1280
+#define _APS_NEXT_SYMED_VALUE           151
 #endif
 #endif

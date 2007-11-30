@@ -480,8 +480,20 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         // Build extra popup menus (1 per entry in list)
         m_RUEList.GetAllMenuItemStrings(m_menulist);
 
+        MENUINFO minfo;
+        memset(&minfo, 0x00, sizeof(minfo));
+        minfo.cbSize = sizeof(MENUINFO);
+        minfo.fMask = MIM_MENUDATA;
+        minfo.dwMenuData = 1;
+        pMainRecentEntriesMenu->SetMenuInfo(&minfo);
+
+        MENUITEMINFO miinfo;
+        memset(&miinfo, 0x00, sizeof(miinfo));
+        miinfo.cbSize = sizeof(MENUITEMINFO);
+        miinfo.fMask = MIIM_DATA;
+
         for (size_t i = 0; i < num_recent_entries; i++) {
-          const CMyString cEntry = m_menulist[i];
+          const CMyString cEntry = m_menulist[i].string;
 
           pNewRecentEntryMenu[i] = new CMenu;
           pNewRecentEntryMenu[i]->CreatePopupMenu();
@@ -519,10 +531,12 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           // pos 2  = Note on missing fields in entry
           // pos 3  = Separator
           // pos 4+ = entries.....
-          irc = pMainRecentEntriesMenu->InsertMenu(i + 4,
-                                                   MF_BYPOSITION | MF_POPUP,
+          irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
                                                    UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
                                                    cEntry);
+          ASSERT(irc != 0);
+          miinfo.dwItemData = m_menulist[i].image; // Needed by OnInitMenuPopup
+          irc = pMainRecentEntriesMenu->SetMenuItemInfo(i + 4, &miinfo, TRUE);
           ASSERT(irc != 0);
         }
       }
