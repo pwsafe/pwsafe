@@ -1,38 +1,22 @@
 package org.pwsafe.passwordsafeswt.dialog;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Random;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
 import org.pwsafe.passwordsafeswt.dto.PwsEntryDTO;
 import org.pwsafe.passwordsafeswt.preference.DisplayPreferences;
 import org.pwsafe.passwordsafeswt.preference.PasswordPolicyPreferences;
 import org.pwsafe.passwordsafeswt.util.ShellHelpers;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * The Dialog that allows a user to edit password entries.
@@ -55,6 +39,7 @@ public class EditDialog extends Dialog {
 	private CLabel lastAccess;
 	private CLabel createTime;
 	private Text txtPasswordExpire;
+    private DateTime dtPasswordExpire;
     private boolean dirty;
 	protected Object result;
 	protected Shell shell;
@@ -310,8 +295,15 @@ public class EditDialog extends Dialog {
 		txtPasswordExpire.setLayoutData(fd_txtPasswordExpire);
 		txtPasswordExpire.setText(format(entryToEdit.getExpires()));
 		txtPasswordExpire.addKeyListener(dirtyKeypress);
-		
-		shell.setDefaultButton(createButtons(compositeFields, btnShowPassword));
+
+        dtPasswordExpire = new DateTime(compositeFields, SWT.CALENDAR | SWT.SHORT);
+        final FormData fd_dtPasswordExpire = new FormData();
+        fd_dtPasswordExpire.left = new FormAttachment(txtPasswordExpire, 10, SWT.RIGHT);
+        fd_dtPasswordExpire.top = new FormAttachment(txtAutotype, 0, SWT.BOTTOM);
+        dtPasswordExpire.setLayoutData(fd_dtPasswordExpire);
+        dtPasswordExpire.addKeyListener(dirtyKeypress);
+
+        shell.setDefaultButton(createButtons(compositeFields, btnShowPassword));
 
 		createTimesComposite(shell);
 	}
