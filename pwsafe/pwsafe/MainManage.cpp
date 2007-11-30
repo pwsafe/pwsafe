@@ -722,12 +722,12 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
 struct HistoryUpdateResetOn : public HistoryUpdater {
   HistoryUpdateResetOn(int &num_altered,
                        int new_default_max) : HistoryUpdater(num_altered)
-  {text.Format(_T("1%02x00"), new_default_max);}
+  {m_text.Format(_T("1%02x00"), new_default_max);}
   void operator()(CItemData &ci)
   {
     CMyString cs_tmp = ci.GetPWHistory();
     if (cs_tmp.GetLength() < 5) {
-      ci.SetPWHistory(text);
+      ci.SetPWHistory(m_text);
       m_num_altered++;
     } else {
       if (cs_tmp.GetAt(0) == _T('0')) {
@@ -738,14 +738,14 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
     }
   }
 private:
-	CString text;
+  CString m_text;
 };
 
 struct HistoryUpdateSetMax : public HistoryUpdater {
   HistoryUpdateSetMax(int &num_altered,
                       int new_default_max) : HistoryUpdater(num_altered),
                                              m_new_default_max(new_default_max)
-  {text.Format(_T("1%02x00"), new_default_max);}
+  {m_text.Format(_T("1%02x"), new_default_max);}
   void operator()(CItemData &ci)
   {
     CMyString cs_tmp = ci.GetPWHistory();
@@ -763,7 +763,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
 #endif
       cs_tmp.ReleaseBuffer();
       if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
-        cs_tmp = CMyString(text) + cs_tmp.Mid(3);
+        cs_tmp = CMyString(m_text) + cs_tmp.Mid(3);
         ci.SetPWHistory(cs_tmp);
         m_num_altered++;
       }
@@ -771,7 +771,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   }
 private:
   int m_new_default_max;
-	CString text;
+  CString m_text;
 };
 
 void
