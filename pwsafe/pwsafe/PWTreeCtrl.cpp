@@ -676,7 +676,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
 bad_exit:
     // Refresh display to show old text - if we don't no one else will
-    dbx->RefreshList();
+    dbx->RefreshViews();
     // restore text
     // (not that this is documented anywhere in MS's docs...)
     *pLResult = FALSE;

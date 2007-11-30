@@ -83,7 +83,7 @@ DboxMain::OnAdd()
                        dlg_add.m_username);
         m_core.SetUseDefUser(true);
         m_core.SetDefUsername(dlg_add.m_username);
-        RefreshList();
+        RefreshViews();
       }
     }
 
@@ -1083,7 +1083,7 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
   }
 
   FixListIndexes();
-  RefreshList();
+  RefreshViews();
 }
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]

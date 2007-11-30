@@ -85,7 +85,7 @@ DboxMain::DboxMain(CWnd* pParent)
      m_IsStartClosed(false), m_IsStartSilent(false),
      m_bStartHiddenAndMinimized(false),
      m_bAlreadyToldUserNoSave(false), m_inExit(false),
-     m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false)
+     m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -502,8 +502,6 @@ DboxMain::InitPasswordSafe()
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
   m_ctlItemTree.SetImageList(pImageList, TVSIL_STATE);
-  m_ctlItemList.SetImageList(pImageList, LVSIL_NORMAL);
-  m_ctlItemList.SetImageList(pImageList, LVSIL_SMALL);
 
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
   if (prefs->GetPref(PWSprefs::ListViewGridLines))
@@ -577,7 +575,7 @@ DboxMain::InitPasswordSafe()
   m_bSortAscending = prefs->GetPref(PWSprefs::SortAscending);
 
   // refresh list will add and size password column if necessary...
-  RefreshList();
+  RefreshViews();
 
   ChangeOkUpdate();
 
@@ -703,6 +701,13 @@ DboxMain::OnHeaderDragComplete(WPARAM /* wParam */, LPARAM /* lParam */)
 LRESULT
 DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
 {
+  if (wType == CItemData::UUID) {
+    m_bImageInLV = true;
+    CImageList *pImageList = m_ctlItemTree.GetImageList(TVSIL_NORMAL);
+    m_ctlItemList.SetImageList(pImageList, LVSIL_NORMAL);
+    m_ctlItemList.SetImageList(pImageList, LVSIL_SMALL);
+  }
+
   AddColumn((int)wType, (int)afterIndex);
 
   return 0L;
@@ -711,7 +716,15 @@ DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
 LRESULT
 DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 {
+  if (wType == CItemData::UUID) {
+    m_bImageInLV = false;
+    m_ctlItemList.SetImageList(NULL, LVSIL_NORMAL);
+    m_ctlItemList.SetImageList(NULL, LVSIL_SMALL);
+  }
+
   DeleteColumn((int)wType);
+ 
+  RefreshViews(iListOnly);
 
   return 0L;
 }
@@ -759,7 +772,7 @@ DboxMain::OnInitDialog()
   if (!m_IsStartClosed && !m_IsStartSilent) {
     OpenOnInit();
     m_ctlItemTree.SetRestoreMode(true);
-    RefreshList();
+    RefreshViews();
     m_ctlItemTree.SetRestoreMode(false);
   }
 
@@ -1663,7 +1676,7 @@ DboxMain::UnMinimize(bool update_windows)
         if (!m_IsStartClosed) {
           if (OpenOnInit()) {
             m_IsStartSilent = false;
-            RefreshList();
+            RefreshViews();
             ShowWindow(SW_RESTORE);
             SetInitialDatabaseDisplay();
             UpdateSystemTray(UNLOCKED);
@@ -1695,7 +1708,7 @@ DboxMain::UnMinimize(bool update_windows)
     app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
     m_passphraseOK = true;
     if (update_windows) {
-      RefreshList();
+      RefreshViews();
       ShowWindow(SW_RESTORE);
     }
     return;

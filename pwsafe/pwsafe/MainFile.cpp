@@ -183,6 +183,11 @@ DboxMain::OpenOnInit(void)
                         GetPref(PWSprefs::DefaultUsername));
   m_core.SetUseDefUser(PWSprefs::GetInstance()->
                        GetPref(PWSprefs::UseDefaultUser) ? true : false);
+#if !defined(POCKET_PC)
+  m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+  SetWindowText(LPCTSTR(m_titlebar));
+  app.SetTooltipText(m_core.GetCurFile());
+#endif
   return TRUE;
 }
 
@@ -244,6 +249,7 @@ DboxMain::New()
 
 #if !defined(POCKET_PC)
   m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + cs_newfile);
+  SetWindowText(LPCTSTR(m_titlebar));
 #endif
 
   ChangeOkUpdate();
@@ -572,10 +578,11 @@ DboxMain::Open( const CMyString &pszFilename )
     m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
     m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+    SetWindowText(LPCTSTR(m_titlebar));
 #endif
     CheckExpiredPasswords();
     ChangeOkUpdate();
-    RefreshList();
+    RefreshViews();
     SetInitialDatabaseDisplay();
     m_core.SetDefUsername(PWSprefs::GetInstance()->
                 GetPref(PWSprefs::DefaultUsername));
@@ -641,6 +648,7 @@ DboxMain::Save()
     m_core.SetCurFile(NewName);
 #if !defined(POCKET_PC)
     m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+    SetWindowText(LPCTSTR(m_titlebar));
     app.SetTooltipText(m_core.GetCurFile());
 #endif
   }
@@ -780,6 +788,7 @@ DboxMain::SaveAs()
   m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
   m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+  SetWindowText(LPCTSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile());
 #endif
   SetChanged(Clear);
@@ -1068,7 +1077,7 @@ DboxMain::OnImportText()
                 MessageBox(temp1 + CString("\n") + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
                 ChangeOkUpdate();
             }
-            RefreshList();
+            RefreshViews();
             break;
         } // switch
         // Finish Report
@@ -1138,7 +1147,7 @@ DboxMain::OnImportKeePass()
             break;
             case PWScore::SUCCESS:
             default:
-                RefreshList();
+                RefreshViews();
                 ChangeOkUpdate();
                 // May need to update menu/toolbar if original database was empty
                 if (bWasEmpty)
@@ -1249,7 +1258,7 @@ DboxMain::OnImportXML()
                     ChangeOkUpdate();
                 }
             }
-              RefreshList();
+              RefreshViews();
               break;
             default:
               ASSERT(0);
@@ -1495,7 +1504,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
   rpt.EndReport();
 
   ChangeOkUpdate();
-  RefreshList();
+  RefreshViews();
   // May need to update menu/toolbar if original database was empty
   if (bWasEmpty)
     UpdateMenuAndToolBar(m_bOpen);
@@ -1945,7 +1954,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
     INT_PTR rc = CmpRes.DoModal();
     if (CmpRes.m_OriginalDBChanged) {
       FixListIndexes();
-      RefreshList();
+      RefreshViews();
     }
 
     if (CmpRes.m_ComparisonDBChanged) {
@@ -2223,9 +2232,9 @@ DboxMain::OnOK()
 
   LVCOLUMN lvColumn;
   lvColumn.mask = LVCF_WIDTH;
-  // Ignore first column (Image)
+
   for (int i = 0; i < 4; i++) {
-    if (m_ctlItemList.GetColumn(i + 1, &lvColumn)) {
+    if (m_ctlItemList.GetColumn(i, &lvColumn)) {
       prefs->SetPref(WidthPrefs[i], lvColumn.cx);
     }
   }
@@ -2234,9 +2243,7 @@ DboxMain::OnOK()
   CString cs_columnswidths(_T(""));
   TCHAR buffer[8], widths[8];
 
-  // Do NOT include first column (Image) as it is mandatory and would
-  // cause compatibility issues with prior releases.
-  for (int iOrder = 1; iOrder < m_nColumns; iOrder++) {
+  for (int iOrder = 0; iOrder < m_nColumns; iOrder++) {
     int iIndex = m_nColumnIndexByOrder[iOrder];
 #if _MSC_VER >= 1400
     _itot_s(m_nColumnTypeByIndex[iIndex], buffer, 8, 10);

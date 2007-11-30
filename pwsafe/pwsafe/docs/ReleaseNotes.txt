@@ -16,10 +16,15 @@ is a change from previous behaviour which only looked in the first column,
 now occupied by the icon.
 [] Allow Expand/Collapse for R/O databases via toolbar.
 [] Set focus to new view on switching between Tree <-> List views.
+[] Update toolbar when view changes (List <-> Tree)
+[] Set PWS title when opening a database at startup
+[] Allow List view to process all characters e.g. Page Up/Down, Home, End,
+Arrows etc.
 
 Changes to Existing Features in 3.11.2
 ======================================
-None
+[] Icon column now eligible for Column Picker.  Can be displayed at user's
+discretion.
 
 New Features for 3.11.2
 =======================

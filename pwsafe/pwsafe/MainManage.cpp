@@ -206,7 +206,7 @@ DboxMain::Restore()
   app.SetTooltipText(_T("PasswordSafe"));
 #endif
   ChangeOkUpdate();
-  RefreshList();
+  RefreshViews();
 
   return PWScore::SUCCESS;
 }
@@ -613,7 +613,7 @@ DboxMain::OnOptions()
              prefs->GetPref(PWSprefs::ExplorerTypeTree)) ||
             (save_preexpirywarn != display.m_preexpirywarn) ||
             (save_preexpirywarndays != display.m_preexpirywarndays))
-            RefreshList();
+            RefreshViews();
 
         // Changing ExplorerTypeTree changes order of items,
         // which DisplayStatus implcitly depends upon

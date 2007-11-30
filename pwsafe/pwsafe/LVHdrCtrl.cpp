@@ -15,6 +15,7 @@
 #include <afxdisp.h >       // MFC OLE automation classes
 #include "LVHdrCtrl.h"
 #include "DboxMain.h"       // For WM_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
+#include "corelib/itemdata.h" // For CItemData::UUID
 
 // LVHdrCtrl
 
@@ -90,19 +91,21 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
     return FALSE;
   }
 
-  // Get index of column we are on
-  HDHITTESTINFO hdhti;
-  hdhti.pt = CPoint(::GetMessagePos());
-  hdhti.flags = 0;
-  ScreenToClient(&hdhti.pt);
-  ::SendMessage(this->GetSafeHwnd(), HDM_HITTEST, 0, (LPARAM) &hdhti);
-
-  if (hdhti.iItem == 0)  // Can't drop in front of Image
-    return FALSE;
+  int iAfterIndex;
+  if (iType != CItemData::UUID) {
+    // Get index of column we are on
+    HDHITTESTINFO hdhti;
+    hdhti.pt = CPoint(::GetMessagePos());
+    hdhti.flags = 0;
+    ScreenToClient(&hdhti.pt);
+    ::SendMessage(this->GetSafeHwnd(), HDM_HITTEST, 0, (LPARAM) &hdhti);
+    iAfterIndex = hdhti.iItem;
+  } else
+    iAfterIndex = 0;
 
   // Now add it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-      WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)hdhti.iItem);
+      WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
 
   GlobalUnlock(hGlobal);
 
@@ -141,10 +144,8 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   GetItem(hdhti.iItem, &hdi);
   m_dwHDRType = hdi.lParam;
 
-  // Can't play with UUID (image), TITLE or USER
-  if (m_dwHDRType == CItemData::UUID ||
-      m_dwHDRType == CItemData::TITLE ||
-      m_dwHDRType == CItemData::USER)
+  // Can't play with TITLE or USER
+  if (m_dwHDRType == CItemData::TITLE || m_dwHDRType == CItemData::USER)
     return;
 
   // Get the data: ColumnChooser Listbox needs the column string
