@@ -468,40 +468,46 @@ DboxMain::InitPasswordSafe()
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIconSm, FALSE); // Set small icon
   // Init stuff for tree view
-  CImageList *pImageList = new CImageList();
+  m_pImageList = new CImageList();
   // Number (8) corresponds to number in CPWTreeCtrl public enum
-  BOOL status = pImageList->Create(9, 9, ILC_COLOR, 8, 0);
+  BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 8, 0);
   ASSERT(status != 0);
+
+  // Dummy Imagelist needed if user adds then removes Icon column
+  m_pImageList0 = new CImageList();
+  status = m_pImageList0->Create(1, 1, ILC_COLOR, 0, 1);
+  ASSERT(status != 0);
+
   CBitmap bitmap;
 
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   // Also now used by CListCtrl!
   bitmap.LoadBitmap(IDB_NODE);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_EXPIRED);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_WARNEXPIRED);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_BASE);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_BASE_EXPIRED);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_BASE_WARNEXPIRED);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   bitmap.LoadBitmap(IDB_LEAF_ALIAS);
-  pImageList->Add(&bitmap, (COLORREF)0x0);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  m_ctlItemTree.SetImageList(pImageList, TVSIL_NORMAL);
-  m_ctlItemTree.SetImageList(pImageList, TVSIL_STATE);
+  m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
+  m_ctlItemTree.SetImageList(m_pImageList, TVSIL_STATE);
 
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
   if (prefs->GetPref(PWSprefs::ListViewGridLines))
@@ -703,9 +709,8 @@ DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
 {
   if (wType == CItemData::UUID) {
     m_bImageInLV = true;
-    CImageList *pImageList = m_ctlItemTree.GetImageList(TVSIL_NORMAL);
-    m_ctlItemList.SetImageList(pImageList, LVSIL_NORMAL);
-    m_ctlItemList.SetImageList(pImageList, LVSIL_SMALL);
+    m_ctlItemList.SetImageList(m_pImageList, LVSIL_NORMAL);
+    m_ctlItemList.SetImageList(m_pImageList, LVSIL_SMALL);
   }
 
   AddColumn((int)wType, (int)afterIndex);
@@ -718,8 +723,8 @@ DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 {
   if (wType == CItemData::UUID) {
     m_bImageInLV = false;
-    m_ctlItemList.SetImageList(NULL, LVSIL_NORMAL);
-    m_ctlItemList.SetImageList(NULL, LVSIL_SMALL);
+    m_ctlItemList.SetImageList(m_pImageList0, LVSIL_NORMAL);
+    m_ctlItemList.SetImageList(m_pImageList0, LVSIL_SMALL);
   }
 
   DeleteColumn((int)wType);

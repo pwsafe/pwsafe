@@ -22,6 +22,7 @@ public:
 
 protected:
   //{{AFX_MSG(CPWListCtrl)
+  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

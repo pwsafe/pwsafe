@@ -209,6 +209,8 @@ public:
   CPWListCtrl m_ctlItemList;
 #endif
   CPWTreeCtrl m_ctlItemTree;
+  CImageList *m_pImageList;
+  CImageList *m_pImageList0;
   CLVHdrCtrl m_LVHdrCtrl;
   CColumnChooserDlg *m_pCC;
   CPoint m_RCMousePos;
