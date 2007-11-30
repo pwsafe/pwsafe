@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.11.2
 ====================
+[1841525] Increasing the number of passwords saved no longer deletes the
+existing Password History.
 [] Pressing a character in the List view will now jump to the next entry
 with text beginning with that character in the second column. This
 is a change from previous behaviour which only looked in the first column,
