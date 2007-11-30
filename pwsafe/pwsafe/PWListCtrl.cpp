@@ -27,11 +27,11 @@ CPWListCtrl::~CPWListCtrl()
 }
 
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
-	//{{AFX_MSG_MAP(CPWListCtrl)
-	ON_MESSAGE(WM_CHAR, OnCharItemlist)
-	//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(CPWListCtrl)
+  ON_MESSAGE(WM_CHAR, OnCharItemlist)
+  ON_WM_DESTROY()
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 {
@@ -41,3 +41,9 @@ LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
   return 0L;
 }
 
+void CPWListCtrl::OnDestroy()
+{
+  // Remove dummy ImageList. PWTreeCtrl removes the real one!
+  m_pDbx->m_pImageList0->DeleteImageList();
+  delete m_pDbx->m_pImageList0;
+}

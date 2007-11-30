@@ -1901,9 +1901,8 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   int iType= *vi_columns.begin();
   if (iType == CItemData::UUID) {
     m_bImageInLV = true;
-    CImageList *pImageList = m_ctlItemTree.GetImageList(TVSIL_NORMAL);
-    m_ctlItemList.SetImageList(pImageList, LVSIL_NORMAL);
-    m_ctlItemList.SetImageList(pImageList, LVSIL_SMALL);
+    m_ctlItemList.SetImageList(m_pImageList, LVSIL_NORMAL);
+    m_ctlItemList.SetImageList(m_pImageList, LVSIL_SMALL);
   }
   
   int icol(0);
