@@ -18,7 +18,6 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 CPWListCtrl::CPWListCtrl()
 {
 }
@@ -26,7 +25,6 @@ CPWListCtrl::CPWListCtrl()
 CPWListCtrl::~CPWListCtrl()
 {
 }
-
 
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
 	//{{AFX_MSG_MAP(CPWListCtrl)
@@ -42,3 +40,4 @@ LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
   m_pDbx->FindNext(cs_char);
   return 0L;
 }
+

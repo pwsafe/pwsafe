@@ -141,7 +141,11 @@ public:
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
   BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
-  void RefreshList();
+
+  // For insertItem and RefreshViews (mainly when refreshing views)
+  // Note: iBothViews = iListOnly + iTreeOnly
+  enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
+  void RefreshViews(const int iView = iBothViews);
 
   int CheckPassword(const CMyString &filename, CMyString &passkey)
   {return m_core.CheckPassword(filename, passkey);}
@@ -271,7 +275,8 @@ protected:
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
   CMenuTipManager m_menuTipManager;
 
-  int insertItem(CItemData &itemData, int iIndex = -1, bool bSort = true);
+  int insertItem(CItemData &itemData, int iIndex = -1, 
+                 const bool bSort = true, const int iView = iBothViews);
   CItemData *getSelectedItem();
 
   void ChangeOkUpdate();
@@ -527,6 +532,7 @@ private:
   typedef MapUICommandTable::const_iterator MapUICommandTableConstIter;
   MapUICommandTable m_MapUICommandTable;
 
+  bool m_bImageInLV;
 };
 
 // Following used to keep track of display vs data

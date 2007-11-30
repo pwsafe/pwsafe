@@ -598,7 +598,10 @@ DboxMain::FindNext(const CString &cs_char)
   memset(&lvi, 0x00, sizeof(LVITEM));
 
   lvi.mask = LVIF_TEXT;
-  lvi.iSubItem = 1;
+  if (m_bImageInLV)
+    lvi.iSubItem = 1;
+  else
+    lvi.iSubItem = 0;
   lvi.cchTextMax = sizeof(tcsItemText) / sizeof(TCHAR);
   lvi.pszText = tcsItemText;
 
@@ -737,7 +740,7 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
 // Updates m_ctlItemList and m_ctlItemTree from m_pwlist
 // updates of windows suspended until all data is in.
 void
-DboxMain::RefreshList()
+DboxMain::RefreshViews(const int iView)
 {
   if (!m_windowok)
     return;
@@ -747,10 +750,14 @@ DboxMain::RefreshList()
 #endif
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked
-  m_ctlItemList.SetRedraw( FALSE );
-  m_ctlItemTree.SetRedraw( FALSE );
-  m_ctlItemList.DeleteAllItems();
-  m_ctlItemTree.DeleteAllItems();
+  if (iView & iListOnly) {
+    m_ctlItemList.SetRedraw( FALSE );
+    m_ctlItemList.DeleteAllItems();
+  }
+  if (iView & iTreeOnly) {
+    m_ctlItemTree.SetRedraw( FALSE );
+    m_ctlItemTree.DeleteAllItems();
+  }
   m_bBoldItem = false;
 
   if (m_core.GetNumEntries() != 0) {
@@ -764,7 +771,7 @@ DboxMain::RefreshList()
       DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
       if (di != NULL)
         di->list_index = -1; // easier, but less efficient, to delete di
-      insertItem(ci, -1, false);
+      insertItem(ci, -1, false, iView);
     }
     
     m_ctlItemTree.SortTree(TVI_ROOT);
@@ -775,10 +782,19 @@ DboxMain::RefreshList()
 #endif
   } // we have entries
 
+  if (m_bImageInLV) {
+    m_ctlItemList.SetColumnWidth(0, LVSCW_AUTOSIZE);
+  }
 
   // re-enable and force redraw!
-  m_ctlItemList.SetRedraw( TRUE ); m_ctlItemList.Invalidate();
-  m_ctlItemTree.SetRedraw( TRUE ); m_ctlItemTree.Invalidate();
+  if (iView & iListOnly) {
+    m_ctlItemList.SetRedraw( TRUE ); 
+    m_ctlItemList.Invalidate();
+  }
+  if (iView & iTreeOnly) {
+    m_ctlItemTree.SetRedraw( TRUE );
+    m_ctlItemTree.Invalidate();
+  }
 
   FixListIndexes();
 }
@@ -837,7 +853,7 @@ DboxMain::OnSize(UINT nType,
       ShowWindow(SW_HIDE);
     }
   } else if (nType == SIZE_MAXIMIZED) {
-    RefreshList();
+    RefreshViews();
   } else if (nType == SIZE_RESTORED) {
     if (!m_bSizing) { // here if actually restored
 #endif
@@ -846,7 +862,7 @@ DboxMain::OnSize(UINT nType,
       RestoreDisplayStatus();
       m_ctlItemTree.SetRestoreMode(true);
       m_bIsRestoring = true;
-      RefreshList();
+      RefreshViews();
       if (m_selectedAtMinimize != NULL)
         SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
       m_ctlItemTree.SetRestoreMode(false);
@@ -1061,7 +1077,8 @@ DboxMain::OnChangeItemFocus(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 // {kjp} We could use itemData.GetNotes(CString&) to reduce the number of
 // {kjp} temporary objects created and copied.
 //
-int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
+int DboxMain::insertItem(CItemData &itemData, int iIndex, 
+                         const bool bSort, const int iView)
 {
   if (itemData.GetDisplayInfo() != NULL &&
       ((DisplayInfo *)itemData.GetDisplayInfo())->list_index != -1) {
@@ -1074,6 +1091,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
     iResult = m_ctlItemList.GetItemCount();
   }
 
+  int nImage = GetEntryImage(itemData);
   CMyString group = itemData.GetGroup();
   CMyString title = itemData.GetTitle();
   CMyString username = itemData.GetUser();
@@ -1086,84 +1104,132 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex, bool bSort)
   }
   CMyString cs_fielddata;
 
-  // Insert the first column data - always Image
-  int nImage = GetEntryImage(itemData);
-  iResult = m_ctlItemList.InsertItem(iResult, _T(""), nImage);
-
-  if (iResult < 0) {
-    // TODO: issue error here...
-    return iResult;
-  }
-
   DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
   if (di == NULL)
     di = new DisplayInfo;
-  di->list_index = iResult;
 
-  HTREEITEM ti;
-  CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
-  // get path, create if necessary, add title as last node
-  ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
-  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
-    ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
-    m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
-  } else {
-    ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
-    m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
-    if (bSort)
-      m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
-  }
-
-  SetEntryImage(ti, nImage);
-
-  ASSERT(ti != NULL);
-  itemData.SetDisplayInfo((void *)di);
-  di->tree_item = ti;
-
-  // Set the data in the rest of the columns
-  for (int i = 1; i < m_nColumns; i++) {
-    switch (m_nColumnTypeByIndex[i]) {
-    case CItemData::GROUP:
-      cs_fielddata = group;
-      break;
-    case CItemData::TITLE:
-      cs_fielddata = title;
-      break;
-    case CItemData::USER:
-      cs_fielddata = username;
-      break;
-    case CItemData::NOTES:
-      cs_fielddata = strNotes;
-      break;
-    case CItemData::PASSWORD:
-      cs_fielddata = itemData.GetPassword();
-      break;
-    case CItemData::URL:
-      cs_fielddata = itemData.GetURL();
-      break;
-    case CItemData::CTIME:
-      cs_fielddata = itemData.GetCTimeL();
-      break;
-    case CItemData::PMTIME:
-      cs_fielddata = itemData.GetPMTimeL();
-      break;
-    case CItemData::ATIME:
-      cs_fielddata = itemData.GetATimeL();
-      break;
-    case CItemData::LTIME:
-      cs_fielddata = itemData.GetLTimeL();
-      break;
-    case CItemData::RMTIME:
-      cs_fielddata = itemData.GetRMTimeL();
-      break;
-    default:
-      ASSERT(0);
+  if (iView & iListOnly) {
+    // Insert the first column data
+    switch (m_nColumnTypeByIndex[0]) {
+      case CItemData::UUID:
+        cs_fielddata = _T("");
+         break;
+      case CItemData::GROUP:
+        cs_fielddata = group;
+        break;
+      case CItemData::TITLE:
+        cs_fielddata = title;
+        break;
+      case CItemData::USER:
+        cs_fielddata = username;
+        break;
+      case CItemData::NOTES:
+        cs_fielddata = strNotes;
+        break;
+      case CItemData::PASSWORD:
+        cs_fielddata = itemData.GetPassword();
+        break;
+      case CItemData::URL:
+        cs_fielddata = itemData.GetURL();
+        break;
+      case CItemData::CTIME:
+        cs_fielddata = itemData.GetCTimeL();
+        break;
+      case CItemData::PMTIME:
+        cs_fielddata = itemData.GetPMTimeL();
+        break;
+      case CItemData::ATIME:
+        cs_fielddata = itemData.GetATimeL();
+        break;
+      case CItemData::LTIME:
+        cs_fielddata = itemData.GetLTimeL();
+        break;
+      case CItemData::RMTIME:
+        cs_fielddata = itemData.GetRMTimeL();
+        break;
+      default:
+        ASSERT(0);
     }
-    m_ctlItemList.SetItemText(iResult, i, cs_fielddata);
+    iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata);
+
+    if (iResult < 0) {
+      // TODO: issue error here...
+      return iResult;
+    }
+
+    di->list_index = iResult;
+    if (m_bImageInLV)
+      SetEntryImage(iResult, nImage);
   }
 
-  m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&itemData);
-  return iResult;
+  if (iView & iTreeOnly) {
+    HTREEITEM ti;
+    CMyString treeDispString = m_ctlItemTree.MakeTreeDisplayString(itemData);
+    // get path, create if necessary, add title as last node
+    ti = m_ctlItemTree.AddGroup(itemData.GetGroup());
+    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
+      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_SORT);
+      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
+    } else {
+      ti = m_ctlItemTree.InsertItem(treeDispString, ti, TVI_LAST);
+      m_ctlItemTree.SetItemData(ti, (DWORD_PTR)&itemData);
+      if (bSort)
+        m_ctlItemTree.SortTree(m_ctlItemTree.GetParentItem(ti));
+    }
+
+    SetEntryImage(ti, nImage);
+
+    ASSERT(ti != NULL);
+    itemData.SetDisplayInfo((void *)di);
+    di->tree_item = ti;
+  }
+
+  if (iView & iListOnly) {
+    // Set the data in the rest of the columns
+    for (int i = 1; i < m_nColumns; i++) {
+      switch (m_nColumnTypeByIndex[i]) {
+        case CItemData::GROUP:
+          cs_fielddata = group;
+          break;
+        case CItemData::TITLE:
+          cs_fielddata = title;
+          break;
+        case CItemData::USER:
+          cs_fielddata = username;
+          break;
+        case CItemData::NOTES:
+          cs_fielddata = strNotes;
+          break;
+        case CItemData::PASSWORD:
+          cs_fielddata = itemData.GetPassword();
+          break;
+        case CItemData::URL:
+          cs_fielddata = itemData.GetURL();
+          break;
+        case CItemData::CTIME:
+          cs_fielddata = itemData.GetCTimeL();
+          break;
+        case CItemData::PMTIME:
+          cs_fielddata = itemData.GetPMTimeL();
+          break;
+        case CItemData::ATIME:
+          cs_fielddata = itemData.GetATimeL();
+          break;
+        case CItemData::LTIME:
+          cs_fielddata = itemData.GetLTimeL();
+          break;
+        case CItemData::RMTIME:
+          cs_fielddata = itemData.GetRMTimeL();
+          break;
+        default:
+          ASSERT(0);
+      }
+      m_ctlItemList.SetItemText(iResult, i, cs_fielddata);
+    }
+
+    m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&itemData);
+  }
+    return iResult;
 }
 
 CItemData *DboxMain::getSelectedItem()
@@ -1321,7 +1387,7 @@ DboxMain::OnHeaderBeginDrag(NMHDR* pNMHDR, LRESULT *pResult)
 
   NMHEADER *phdn = (NMHEADER *) pNMHDR;
 
-  if (phdn->iItem == 0)
+  if (m_bImageInLV && phdn->iItem == 0)
     *pResult = TRUE;
   else
     *pResult = FALSE;
@@ -1337,6 +1403,9 @@ DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
   // Get control after operation is really complete
 
   // Stop drag of first column (image)
+  if (!m_bImageInLV)
+    return;
+
   NMHEADER *phdn = (NMHEADER *) pNMHDR;
   if (phdn->iItem == 0 || 
       (((phdn->pitem->mask & HDI_ORDER) == HDI_ORDER) && 
@@ -1388,7 +1457,6 @@ void
 DboxMain::OnListView() 
 {
   SetListView();
-  m_IsListView = true;
   if (m_FindToolBar.IsVisible())
     OnHideFindToolBar();
 }
@@ -1397,7 +1465,6 @@ void
 DboxMain::OnTreeView() 
 {
   SetTreeView();
-  m_IsListView = false;
   if (m_FindToolBar.IsVisible())
     OnHideFindToolBar();
 }
@@ -1411,6 +1478,9 @@ DboxMain::SetListView()
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
                                    _T("list"));
   m_ctlItemList.SetFocus();
+  m_IsListView = true;
+  // Some items may change on change of view
+  UpdateMenuAndToolBar(m_bOpen);
 }
 
 void
@@ -1422,6 +1492,9 @@ DboxMain::SetTreeView()
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
                                    _T("tree"));
   m_ctlItemTree.SetFocus();
+  m_IsListView = false;
+  // Some items may change on change of view
+  UpdateMenuAndToolBar(m_bOpen);
 }
 
 void
@@ -1712,40 +1785,36 @@ DboxMain::SetColumns()
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
                                  rect.Width() / 3);
 
-  m_ctlItemList.InsertColumn(0, _T(" "));  // Image
-  hdi.lParam = CItemData::UUID;
-  m_LVHdrCtrl.SetItem(0, &hdi);
-
   cs_header = GetHeaderText(CItemData::TITLE);
-  m_ctlItemList.InsertColumn(1, cs_header);
+  m_ctlItemList.InsertColumn(0, cs_header);
   hdi.lParam = CItemData::TITLE;
-  m_LVHdrCtrl.SetItem(1, &hdi);
-  m_ctlItemList.SetColumnWidth(1, i1stWidth);
+  m_LVHdrCtrl.SetItem(0, &hdi);
+  m_ctlItemList.SetColumnWidth(0, i1stWidth);
   
   cs_header = GetHeaderText(CItemData::USER);
-  m_ctlItemList.InsertColumn(2, cs_header);
+  m_ctlItemList.InsertColumn(1, cs_header);
   hdi.lParam = CItemData::USER;
-  m_LVHdrCtrl.SetItem(2, &hdi);
-  m_ctlItemList.SetColumnWidth(2, i2ndWidth);
+  m_LVHdrCtrl.SetItem(1, &hdi);
+  m_ctlItemList.SetColumnWidth(1, i2ndWidth);
 
   cs_header = GetHeaderText(CItemData::NOTES);
-  m_ctlItemList.InsertColumn(3, cs_header);
+  m_ctlItemList.InsertColumn(2, cs_header);
   hdi.lParam = CItemData::NOTES;
-  m_LVHdrCtrl.SetItem(3, &hdi);
-  m_ctlItemList.SetColumnWidth(3, i3rdWidth);
+  m_LVHdrCtrl.SetItem(2, &hdi);
+  m_ctlItemList.SetColumnWidth(2, i3rdWidth);
     
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
     cs_header = GetHeaderText(CItemData::PASSWORD);
-    m_ctlItemList.InsertColumn(4, cs_header);
+    m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;
-    m_LVHdrCtrl.SetItem(4, &hdi);
-    m_ctlItemList.SetColumnWidth(4,
+    m_LVHdrCtrl.SetItem(3, &hdi);
+    m_ctlItemList.SetColumnWidth(3,
                                  PWSprefs::GetInstance()->
                                  GetPref(PWSprefs::Column4Width,
                                          rect.Width() / 4));
   }
 
-  int ioff = 4;
+  int ioff = 3;
   cs_header = GetHeaderText(CItemData::URL);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::URL;
@@ -1827,21 +1896,26 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   }
 #endif
   free(pTemp);
+
+  // If present, the images are always first
+  int iType= *vi_columns.begin();
+  if (iType == CItemData::UUID) {
+    m_bImageInLV = true;
+    CImageList *pImageList = m_ctlItemTree.GetImageList(TVSIL_NORMAL);
+    m_ctlItemList.SetImageList(pImageList, LVSIL_NORMAL);
+    m_ctlItemList.SetImageList(pImageList, LVSIL_SMALL);
+  }
   
-  // Prior to V3.12, the Image columns was not present.
-  // Post V3.11, the image column is ALWAYS present but not in the user list
-
-  // Add Image column
-  m_ctlItemList.InsertColumn(0, _T(""));
-  hdi.lParam = CItemData::UUID;
-  m_LVHdrCtrl.SetItem(0, &hdi);
-
-  int icol = 1;
+  int icol(0);
   for (vi_IterColumns = vi_columns.begin();
        vi_IterColumns != vi_columns.end();
        vi_IterColumns++) {
-    int iType = *vi_IterColumns;
+    iType = *vi_IterColumns;
     cs_header = GetHeaderText(iType);
+    // Images (if present) must be the first column!
+    if (iType == CItemData::UUID && icol != 0)
+      continue;
+
     if (!cs_header.IsEmpty()) {
       m_ctlItemList.InsertColumn(icol, cs_header);
       hdi.lParam = iType;
@@ -1885,7 +1959,7 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
 #endif
   free(pWidths);
   
-  int icol = 1, index;
+  int icol = 0, index;
 
   for (vi_IterWidths = vi_widths.begin();
        vi_IterWidths != vi_widths.end();
@@ -1899,8 +1973,10 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
     icol++;
   }
 
-  // First column special
-  m_ctlItemList.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
+  // First column special if the Image
+  if (m_bImageInLV) {
+    m_ctlItemList.SetColumnWidth(0, LVSCW_AUTOSIZE);
+  }
   // Last column special
   index = m_LVHdrCtrl.OrderToIndex(m_nColumns - 1);
   m_ctlItemList.SetColumnWidth(index, LVSCW_AUTOSIZE_USEHEADER);
@@ -1909,9 +1985,6 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
 void DboxMain::AddColumn(const int iType, const int iIndex)
 {
   // Add new column of type iType after current column index iIndex
-  if (iIndex == 0)  // Can't put before Image
-    return;
-
   CString cs_header;
   HDITEM hdi;
   int iNewIndex(iIndex);
@@ -1933,14 +2006,14 @@ void DboxMain::AddColumn(const int iType, const int iIndex)
   SetHeaderInfo();
 
   // Now show the user
-  RefreshList();
+  RefreshViews(iListOnly);
 }
 
 void DboxMain::DeleteColumn(const int iType)
 {
   // Delete column
   m_ctlItemList.DeleteColumn(m_nColumnIndexByType[iType]);
-  
+
   // Reset values
   SetHeaderInfo();
 }
@@ -1990,6 +2063,12 @@ DboxMain::OnResetColumns()
     m_ctlItemList.DeleteColumn(0);
   }
 
+  if (m_bImageInLV) {
+    m_bImageInLV = false;
+    m_ctlItemList.SetImageList(NULL, LVSIL_NORMAL);
+    m_ctlItemList.SetImageList(NULL, LVSIL_SMALL);
+  }
+
   // re-initialise array
   for (int itype = 0; itype < CItemData::LAST; itype++)
     m_nColumnIndexByType[itype] = -1;
@@ -2001,7 +2080,7 @@ DboxMain::OnResetColumns()
   AutoResizeColumns();
 
   // Refresh the ListView
-  RefreshList();
+  RefreshViews(iListOnly);
 
   // Reset Column Chooser dialog but only if already created
   if (m_pCC != NULL)
@@ -2028,6 +2107,10 @@ DboxMain::AutoResizeColumns()
 
   m_ctlItemList.UpdateWindow();
 
+  // First column is special if an image
+  if (m_bImageInLV) {
+    m_ctlItemList.SetColumnWidth(0, LVSCW_AUTOSIZE);
+  }
   // Last column is special
   iIndex = m_nColumnIndexByOrder[m_nColumns - 1];
   m_ctlItemList.SetColumnWidth(iIndex, LVSCW_AUTOSIZE);
@@ -2113,6 +2196,9 @@ CString DboxMain::GetHeaderText(const int iType)
 {
   CString cs_header;
   switch (iType) {
+    case CItemData::UUID:
+      cs_header.LoadString(IDS_ICON);
+      break;
     case CItemData::GROUP:
       cs_header.LoadString(IDS_GROUP);
       break;
@@ -2147,7 +2233,7 @@ CString DboxMain::GetHeaderText(const int iType)
       cs_header.LoadString(IDS_LASTMODIFIED);
       break;
     default:
-      cs_header.Empty();  // Includes CItemData::UUID == Image
+      cs_header.Empty();
   }
   return cs_header;
 }
@@ -2157,6 +2243,7 @@ int DboxMain::GetHeaderWidth(const int iType)
   int nWidth(0);
 
   switch (iType) {
+    case CItemData::UUID:
     case CItemData::GROUP:
     case CItemData::TITLE:
     case CItemData::USER:
@@ -2212,6 +2299,9 @@ void DboxMain::CalcHeaderWidths()
 
   for (int iType = 0; iType < CItemData::LAST; iType++) {
     switch (iType) {
+      case CItemData::UUID:
+        cs_header.LoadString(IDS_ICON);
+        break;
       case CItemData::GROUP:
         cs_header.LoadString(IDS_GROUP);
         break;
@@ -2684,6 +2774,9 @@ DboxMain::GetEntryImage(CItemData ci)
 void
 DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOneEntry)
 {
+  if (!m_bImageInLV)
+    return;
+
   m_ctlItemList.SetItem(index, 0, LVIF_IMAGE, NULL, nImage, 0, 0, 0);
 
   if (bOneEntry) {

@@ -342,3 +342,4 @@
 #define IDS_ALIASES                     5519
 #define IDS_CONFLICT                    5520
 #define IDS_CONFLICTS                   5521
+#define IDS_ICON                        5522
