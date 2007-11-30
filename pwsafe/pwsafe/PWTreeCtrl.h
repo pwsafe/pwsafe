@@ -29,8 +29,13 @@ class CPWTreeCtrl : public CTreeCtrl
   ~CPWTreeCtrl();
 
   // indices of bitmaps in ImageList
-  enum {NODE = 0, LEAF, EXPIRED_LEAF, WARNEXPIRED_LEAF, 
-                  BASE, EXPIRED_BASE, WARNEXPIRED_BASE, ALIAS};
+  // NOTE for normal and base entries items, order MUST be: 
+  //    Not-Expired, Warn-Expired, Expired
+  // used by DboxMain::GetEntryImage & ExpPWListDlg
+  enum {NODE = 0,
+        NORMAL, WARNEXPIRED_NORMAL, EXPIRED_NORMAL,
+        ALIASBASE, WARNEXPIRED_ALIASBASE, EXPIRED_ALIASBASE,
+        ALIAS};
 
   void Initialize();
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf

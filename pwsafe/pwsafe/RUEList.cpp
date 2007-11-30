@@ -12,6 +12,7 @@
 
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
 #include "RUEList.h"
 #include "corelib/PWScore.h"
 #include "resource3.h"  // String resources
@@ -37,10 +38,9 @@ bool RUEntry::operator()(const RUEntry &re)
 
 //-----------------------------------------------------------------------------
 
-CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0)
-{}
-
-
+CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0), m_pDbx(app.m_maindlg)
+{
+}
 
 // Accessors
 
@@ -56,9 +56,9 @@ CRUEList::SetMax(size_t newmax)
 }
 
 bool
-CRUEList::GetAllMenuItemStrings(vector<CMyString> &ListofAllMenuStrings) const
+CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuStrings) const
 {
-  CMyString itemstring;
+  RUEntryStringImage itemstringimage;
   bool retval = false;
 
   RUEListConstIter iter;
@@ -66,7 +66,8 @@ CRUEList::GetAllMenuItemStrings(vector<CMyString> &ListofAllMenuStrings) const
   for (iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
     ItemListConstIter pw_listpos = m_core.Find(iter->RUEuuid);
     if (pw_listpos == m_core.GetEntryEndIter()) {
-      itemstring = _T("");
+      itemstringimage.string = _T("");
+      itemstringimage.image = -1;
     } else {
       const CItemData &ci = m_core.GetEntry(pw_listpos);
       CMyString group = ci.GetGroup();
@@ -82,9 +83,10 @@ CRUEList::GetAllMenuItemStrings(vector<CMyString> &ListofAllMenuStrings) const
       if (user.IsEmpty())
         user = _T("*");
 
-      itemstring = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
+      itemstringimage.string = MRE_FS + group + MRE_FS + title + MRE_FS + user + MRE_FS;
+      itemstringimage.image = m_pDbx->GetEntryImage(ci);
     }
-    ListofAllMenuStrings.push_back(itemstring);
+    ListofAllMenuStrings.push_back(itemstringimage);
     retval = true;
   }
   return retval;

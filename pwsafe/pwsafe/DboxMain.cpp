@@ -202,6 +202,9 @@ ON_WM_SYSCOMMAND()
 ON_WM_TIMER()
 ON_WM_WINDOWPOSCHANGING()
 
+ON_WM_DRAWITEM()
+ON_WM_MEASUREITEM()
+
 ON_NOTIFY(NM_CLICK, IDC_ITEMLIST, OnListItemSelected)
 ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
 ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
@@ -485,25 +488,25 @@ DboxMain::InitPasswordSafe()
   bitmap.LoadBitmap(IDB_NODE);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF);
+  bitmap.LoadBitmap(IDB_NORMAL);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_EXPIRED);
+  bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_WARNEXPIRED);
+  bitmap.LoadBitmap(IDB_NORMAL_EXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_BASE);
+  bitmap.LoadBitmap(IDB_ABASE);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_BASE_EXPIRED);
+  bitmap.LoadBitmap(IDB_ABASE_WARNEXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_BASE_WARNEXPIRED);
+  bitmap.LoadBitmap(IDB_ABASE_EXPIRED);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_LEAF_ALIAS);
+  bitmap.LoadBitmap(IDB_ALIAS);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
@@ -924,9 +927,6 @@ void DboxMain::OnBrowse()
     if (!ci->IsURLEmpty()) {
       LaunchBrowser(ci->GetURL());
       UpdateAccessTime(ci);
-      uuid_array_t RUEuuid;
-      ci->GetUUID(RUEuuid);
-      m_RUEList.AddRUEntry(RUEuuid);
     }
   }
 }
@@ -1615,6 +1615,38 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     }
     state.m_nIndexMax = nCount;
   }
+
+  if (!m_bImageInLV)
+    return;
+
+  MENUINFO minfo;
+  memset(&minfo, 0x00, sizeof(minfo));
+  minfo.cbSize = sizeof(minfo);
+  minfo.fMask = MIM_MENUDATA;
+  pPopupMenu->GetMenuInfo(&minfo);
+  if (minfo.dwMenuData != 1)  // Set by SystemTray for its menu only
+    return;
+
+  minfo.fMask = MIM_STYLE;
+  minfo.dwStyle = MNS_CHECKORBMP | MNS_AUTODISMISS;
+  pPopupMenu->SetMenuInfo(&minfo);
+
+  MENUITEMINFO miinfo;
+  memset(&miinfo, 0x00, sizeof(miinfo));
+  miinfo.cbSize = sizeof(miinfo);
+
+  for (UINT pos = 0; pos < pPopupMenu->GetMenuItemCount(); pos++) {
+    miinfo.fMask = MIIM_FTYPE | MIIM_DATA;
+    pPopupMenu->GetMenuItemInfo(pos, &miinfo, TRUE);
+
+    if (miinfo.dwItemData > 0 && !(miinfo.fType & MFT_OWNERDRAW)) {
+      miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
+      miinfo.hbmpItem = HBMMENU_CALLBACK;
+      miinfo.fType = MFT_STRING;
+
+      pPopupMenu->SetMenuItemInfo(pos, &miinfo, TRUE);
+    }
+  }
 }
 
 #if defined(POCKET_PC)
@@ -1907,6 +1939,12 @@ DboxMain::UpdateAccessTime(CItemData *ci)
 {
   // Mark access time if so configured
   ASSERT(ci != NULL);
+
+  // First add to RUE List
+  uuid_array_t RUEuuid;
+  ci->GetUUID(RUEuuid);
+  m_RUEList.AddRUEntry(RUEuuid);
+
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
     GetPref(PWSprefs::MaintainDateTimeStamps);
 
@@ -2394,7 +2432,8 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
     bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
     if (isLimited) {
       switch (nID) {
-      case ID_MENUITEM_ADD: case ID_TOOLBUTTON_ADD:
+      case ID_MENUITEM_ADD: 
+      case ID_TOOLBUTTON_ADD:
       case ID_MENUITEM_ADDGROUP:
       case ID_MENUITEM_DUPLICATEENTRY:
       case ID_MENUITEM_IMPORT_KEEPASS:

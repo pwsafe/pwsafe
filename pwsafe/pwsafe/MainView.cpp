@@ -937,6 +937,7 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     item = m_ctlItemList.HitTest(local);
     if (item < 0)
       return; // right click on empty list
+
     itemData = (CItemData *)m_ctlItemList.GetItemData(item);
     int rc = SelectEntry(item);
     if (rc == LB_ERR) {
@@ -960,7 +961,7 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     if (ti != NULL) {
       itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (itemData != NULL) {
-        // right-click was on an item (LEAF)
+        // right-click was on an item (LEAF of some kind: normal, alias)
         DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
         ASSERT(di != NULL);
         ASSERT(di->tree_item == ti);
@@ -2727,44 +2728,51 @@ DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
 }
 
 int
-DboxMain::GetEntryImage(CItemData ci)
+DboxMain::GetEntryImage(const CItemData &ci)
 {
-  int nImage;
-  if (ci.IsAlias()) {
-    nImage = CPWTreeCtrl::ALIAS;
-  } else {
-    time_t now, warnexptime, tLTime;
-    time(&now);
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
-      int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
-      struct tm st;
-#if _MSC_VER >= 1400
-      errno_t err;
-      err = localtime_s(&st, &now);  // secure version
-      ASSERT(err == 0);
-#else
-      st = *localtime(&now);
-      ASSERT(st != NULL); // null means invalid time
-#endif
-      st.tm_mday += idays;
-      warnexptime = mktime(&st);
-      if (warnexptime == (time_t)-1)
-        warnexptime = (time_t)0;
-    } else
-      warnexptime = (time_t)0;
+  int entrytype = ci.GetEntryType();
+  if (entrytype == CItemData::Alias) {
+    return CPWTreeCtrl::ALIAS;
+  }
 
-    ci.GetLTime(tLTime);
-    const bool bIsBase = ci.IsBase();
-    if (tLTime != 0) {
-      if (tLTime <= now) {
-        nImage = bIsBase ? CPWTreeCtrl::EXPIRED_BASE : CPWTreeCtrl::EXPIRED_LEAF;
-      } else if (tLTime < warnexptime) {
-        nImage = bIsBase ? CPWTreeCtrl::WARNEXPIRED_BASE : CPWTreeCtrl::WARNEXPIRED_LEAF;
-      } else {
-        nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
-      }
-    } else {
-      nImage = bIsBase ? CPWTreeCtrl::BASE : CPWTreeCtrl::LEAF;
+  time_t tLTime, now, warnexptime((time_t)0);
+  time(&now);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
+    int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+    struct tm st;
+#if _MSC_VER >= 1400
+    errno_t err;
+    err = localtime_s(&st, &now);  // secure version
+    ASSERT(err == 0);
+#else
+    st = *localtime(&now);
+    ASSERT(st != NULL); // null means invalid time
+#endif
+    st.tm_mday += idays;
+    warnexptime = mktime(&st);
+
+    if (warnexptime == (time_t)-1)
+      warnexptime = (time_t)0;
+  }
+
+  int nImage;
+  switch (entrytype) {
+    case CItemData::Normal:
+      nImage = CPWTreeCtrl::NORMAL;
+      break;
+    case CItemData::Base:
+      nImage = CPWTreeCtrl::ALIASBASE;
+      break;
+    default:
+      nImage = CPWTreeCtrl::NORMAL;
+  }
+
+  ci.GetLTime(tLTime);
+  if (tLTime != 0) {
+    if (tLTime <= now) {
+      nImage += 1;  // Expired
+    } else if (tLTime < warnexptime) {
+      nImage += 2;  // Warn neary expired
     }
   }
   return nImage;
@@ -2795,4 +2803,102 @@ DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
     m_ctlItemTree.GetItemRect(ti, &rect, FALSE);
     m_ctlItemTree.InvalidateRect(&rect);
   }
+}
+
+void
+DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
+{
+  if (lpdis == NULL || lpdis->CtlType != ODT_MENU) {
+    // not for an ownerdrawn menu
+    CDialog::OnDrawItem(nIDCtl, lpdis);
+    return;
+  }
+
+  if (lpdis->rcItem.left != 2) {
+    lpdis->rcItem.left -= (lpdis->rcItem.left - 2);
+    lpdis->rcItem.right -= 60;
+    if (lpdis->itemState & ODS_SELECTED) {
+      lpdis->rcItem.left++;
+      lpdis->rcItem.right++;
+    }
+  }
+
+  HICON hIcon = GetEntryIcon((int)lpdis->itemData);
+  if (hIcon) {
+    ICONINFO iconinfo;
+    ::GetIconInfo(hIcon, &iconinfo);
+
+    BITMAP bitmap;
+    ::GetObject(iconinfo.hbmColor, sizeof(bitmap), &bitmap);
+
+		::DeleteObject(iconinfo.hbmColor);
+		::DeleteObject(iconinfo.hbmMask);
+
+		::DrawIconEx(lpdis->hDC, lpdis->rcItem.left, lpdis->rcItem.top, hIcon,
+                 bitmap.bmWidth, bitmap.bmHeight, 
+		             0, NULL, DI_IMAGE /*NORMAL*/);
+  }
+}
+
+void
+DboxMain::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpmis)
+{
+  if (lpmis == NULL || lpmis->CtlType != ODT_MENU) {
+    // not for an ownerdrawn menu
+    CDialog::OnMeasureItem(nIDCtl, lpmis);
+    return;
+  }
+
+  lpmis->itemWidth = 16;
+  lpmis->itemHeight = 16;
+
+  HICON hIcon = GetEntryIcon((int)lpmis->itemData);
+  if (hIcon) {
+    ICONINFO iconinfo;
+    ::GetIconInfo(hIcon, &iconinfo);
+
+    BITMAP bitmap;
+    ::GetObject(iconinfo.hbmColor, sizeof(bitmap), &bitmap);
+
+		::DeleteObject(iconinfo.hbmColor);
+		::DeleteObject(iconinfo.hbmMask);
+
+    lpmis->itemWidth = bitmap.bmWidth;
+    lpmis->itemHeight = bitmap.bmHeight;
+  }
+}
+
+HICON
+DboxMain::GetEntryIcon(const int nImage) const
+{
+  int nID;
+  switch (nImage) {
+    case CPWTreeCtrl::NORMAL:
+      nID = IDI_NORMAL;
+      break;
+    case CPWTreeCtrl::WARNEXPIRED_NORMAL:
+      nID = IDI_NORMAL_WARNEXPIRED;
+      break;
+    case CPWTreeCtrl::EXPIRED_NORMAL:
+      nID = IDI_NORMAL_EXPIRED;
+      break;
+    case CPWTreeCtrl::ALIASBASE:
+      nID = IDI_ABASE;
+      break;
+    case CPWTreeCtrl::WARNEXPIRED_ALIASBASE:
+      nID = IDI_ABASE_WARNEXPIRED;
+      break;
+    case CPWTreeCtrl::EXPIRED_ALIASBASE:
+      nID = IDI_ABASE_EXPIRED;
+      break;
+    case CPWTreeCtrl::ALIAS:
+      nID = IDI_ALIAS;
+      break;
+    default:
+      nID = IDI_NORMAL;
+  }
+  HICON hIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(nID), 
+                                   IMAGE_ICON, 0, 0, 
+                                   LR_LOADMAP3DCOLORS | LR_SHARED);
+  return hIcon;
 }

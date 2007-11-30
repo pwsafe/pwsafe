@@ -126,7 +126,7 @@ protected:
     CWnd *       m_pTarget; // ronys
     static const UINT m_nTaskbarCreatedMsg; //thedavecollins
     const CRUEList &m_RUEList; // reference set to dboxmain's
-    std::vector<CMyString> m_menulist;
+    std::vector<RUEntryStringImage> m_menulist;
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)

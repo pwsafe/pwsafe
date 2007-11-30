@@ -200,6 +200,8 @@ public:
                         const bool bIsEdit, uuid_array_t &base_uuid, int &ibasedata);
   void GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
   {m_core.GetBaseUUID(alias_uuid, base_uuid);}
+  int GetEntryImage(const CItemData &ci);
+  HICON GetEntryIcon(const int nImage) const;
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -327,7 +329,6 @@ protected:
   void SetDCAText();
   void SortListView();
   void UpdateBrowseURLSendEmailButton(const bool bIsEmail);
-  int GetEntryImage(CItemData ci);
   void SetEntryImage(const int &index, const int nImage, const bool bOneEntry = false);
   void SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry = false);
 
@@ -463,6 +464,9 @@ protected:
   afx_msg void OnToolBarFindAdvanced();
   afx_msg void OnToolBarClearFind();
   afx_msg void OnHideFindToolBar();
+
+  afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+  afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 #if _MFC_VER > 1200
   afx_msg BOOL OnOpenMRU(UINT nID);
