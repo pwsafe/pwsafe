@@ -565,7 +565,7 @@ DboxMain::Open( const CMyString &pszFilename )
               return PWScore::USER_CANCEL;
             }
             rc = PWScore::SUCCESS;
-            m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD,
+            m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD,
                                                        FALSE);
             break;
         }

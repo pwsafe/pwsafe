@@ -26,14 +26,16 @@
   2. Add them to PaswordSafe.rc as BITMAPs
   3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC", "IDB_<new name>_NEW8" &
      "IDB_<new name>_NEW32"
-  4. Assign a new resource ID for the corresponding button e.g. "ID_TOOLBUTTON_<new name>"
+  4. Assign a new resource ID for the corresponding button e.g. "ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>"
+     if also on a Menu.
   5. Add the resource ID in the appropriate place in the m_MainToolBarIDs array
   6. Add the new bitmap IDs in the appropriate place in m_MainToolBarClassicBMs & m_MainToolBarNewBMs arrays
      (these should correspond to the position of the "resource ID" in step 4 (ignoring separators)).
   7. Add the new name in the appropriate place in the m_csMainButtons array (used for customization/preferences
      and '~' represents a separator).
-  8. Add the new resource ID ("ID_TOOLBUTTON_<new name>") in PasswordSafe.rc2 "Toolbar Tooltips" section
-     as these are used during ToolBar customization to describe the button in the standard Customization dialog.
+  8. Add the new resource ID ("ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>") in PasswordSafe.rc2 
+     "Toolbar Tooltips" section as these are used during ToolBar customization to describe the button in the 
+     standard Customization dialog.
 
  NOTE: In message handlers, the toolbar control ALWAYS asks for information based on the ORIGINAL configuration!!!
  This is not documented by MS.
@@ -57,44 +59,45 @@ const CString CPWToolBar::m_csMainButtons[] = {
   _T("help"),
   // Optional (non-default) buttons next
   _T("exporttext"), _T("exportxml"), _T("importtext"), _T("importxml"), 
-  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("viewreports")
+  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("find"), _T("viewreports")
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
-  ID_TOOLBUTTON_NEW,
-  ID_TOOLBUTTON_OPEN,
-  ID_TOOLBUTTON_CLOSE,
-  ID_TOOLBUTTON_SAVE,
+  ID_MENUITEM_NEW,
+  ID_MENUITEM_OPEN,
+  ID_MENUITEM_CLOSE,
+  ID_MENUITEM_SAVE,
   ID_SEPARATOR,
-  ID_TOOLBUTTON_COPYPASSWORD,
-  ID_TOOLBUTTON_COPYUSERNAME,
-  ID_TOOLBUTTON_COPYNOTESFLD,
-  ID_TOOLBUTTON_CLEARCLIPBOARD,
+  ID_MENUITEM_COPYPASSWORD,
+  ID_MENUITEM_COPYUSERNAME,
+  ID_MENUITEM_COPYNOTESFLD,
+  ID_MENUITEM_CLEARCLIPBOARD,
   ID_SEPARATOR,
-  ID_TOOLBUTTON_AUTOTYPE,
-  ID_TOOLBUTTON_BROWSEURL,
+  ID_MENUITEM_AUTOTYPE,
+  ID_MENUITEM_BROWSEURL,
   ID_SEPARATOR,
-  ID_TOOLBUTTON_ADD,
-  ID_TOOLBUTTON_EDIT,
+  ID_MENUITEM_ADD,
+  ID_MENUITEM_EDIT,
   ID_SEPARATOR,
-  ID_TOOLBUTTON_DELETE,
+  ID_MENUITEM_DELETE,
   ID_SEPARATOR,
-  ID_TOOLBUTTON_EXPANDALL,
-  ID_TOOLBUTTON_COLLAPSEALL,
+  ID_MENUITEM_EXPANDALL,
+  ID_MENUITEM_COLLAPSEALL,
   ID_SEPARATOR,
-  ID_TOOLBUTTON_OPTIONS,
+  ID_MENUITEM_OPTIONS,
   ID_SEPARATOR,
   ID_HELP,
   // End of Default Toolbar
   // Following are not in the "default" toolbar but can be selected by the user
-  ID_TOOLBUTTON_EXPORTTEXT,
-  ID_TOOLBUTTON_EXPORTXML,
-  ID_TOOLBUTTON_IMPORTTEXT,
-  ID_TOOLBUTTON_IMPORTXML,
-  ID_TOOLBUTTON_SAVEAS,
-  ID_TOOLBUTTON_COMPARE,
-  ID_TOOLBUTTON_MERGE,
+  ID_MENUITEM_EXPORT2PLAINTEXT,
+  ID_MENUITEM_EXPORT2XML,
+  ID_MENUITEM_IMPORT_PLAINTEXT,
+  ID_MENUITEM_IMPORT_XML,
+  ID_MENUITEM_SAVEAS,
+  ID_MENUITEM_COMPARE,
+  ID_MENUITEM_MERGE,
   ID_TOOLBUTTON_LISTTREE,
+  ID_MENUITEM_FIND,
   ID_TOOLBUTTON_VIEWREPORTS
 };
 
@@ -126,6 +129,7 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_COMPARE_CLASSIC,
   IDB_MERGE_CLASSIC,
   IDB_LISTTREE_CLASSIC,
+  IDB_FIND_CLASSIC,
   IDB_VIEWREPORTS_CLASSIC,
 
   // Additional bitmap for swapping image if entry's URL == email
@@ -160,6 +164,7 @@ const UINT CPWToolBar::m_MainToolBarNew8BMs[] = {
   IDB_COMPARE_NEW8,
   IDB_MERGE_NEW8,
   IDB_LISTTREE_NEW8,
+  IDB_FIND_NEW8,
   IDB_VIEWREPORTS_NEW8,
 
   // Additional bitmap for swapping image if entry's URL == email
@@ -194,6 +199,7 @@ const UINT CPWToolBar::m_MainToolBarNew32BMs[] = {
   IDB_COMPARE_NEW32,
   IDB_MERGE_NEW32,
   IDB_LISTTREE_NEW32,
+  IDB_FIND_NEW32,
   IDB_VIEWREPORTS_NEW32,
 
   // Additional bitmap for swapping image if entry's URL == email

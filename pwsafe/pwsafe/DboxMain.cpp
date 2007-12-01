@@ -144,7 +144,7 @@ ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
 ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
 ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
 ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
-ON_COMMAND(ID_MENUITEM_BROWSE, OnBrowse)
+ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
 ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
 ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
 ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
@@ -231,29 +231,6 @@ ON_NOTIFY(NM_SETFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
 ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
 ON_COMMAND(ID_MENUITEM_TRAYLOCKUNLOCK, OnTrayLockUnLock)
 ON_COMMAND(ID_MENUITEM_CLEARRECENTENTRIES, OnTrayClearRecentEntries)
-ON_COMMAND(ID_TOOLBUTTON_NEW, OnNew)
-ON_COMMAND(ID_TOOLBUTTON_OPEN, OnOpen)
-ON_COMMAND(ID_TOOLBUTTON_CLOSE, OnClose)
-ON_COMMAND(ID_TOOLBUTTON_SAVE, OnSave)
-ON_COMMAND(ID_TOOLBUTTON_COPYPASSWORD, OnCopyPassword)
-ON_COMMAND(ID_TOOLBUTTON_COPYUSERNAME, OnCopyUsername)
-ON_COMMAND(ID_TOOLBUTTON_COPYNOTESFLD, OnCopyNotes)
-ON_COMMAND(ID_TOOLBUTTON_CLEARCLIPBOARD, OnClearClipboard)
-ON_COMMAND(ID_TOOLBUTTON_AUTOTYPE, OnAutoType)
-ON_COMMAND(ID_TOOLBUTTON_BROWSEURL, OnBrowse)
-ON_COMMAND(ID_TOOLBUTTON_ADD, OnAdd)
-ON_COMMAND(ID_TOOLBUTTON_EDIT, OnEdit)
-ON_COMMAND(ID_TOOLBUTTON_DELETE, OnDelete)
-ON_COMMAND(ID_TOOLBUTTON_EXPANDALL, OnExpandAll)
-ON_COMMAND(ID_TOOLBUTTON_COLLAPSEALL, OnCollapseAll)
-ON_COMMAND(ID_TOOLBUTTON_OPTIONS, OnOptions)
-ON_COMMAND(ID_TOOLBUTTON_EXPORTTEXT, OnExportText)
-ON_COMMAND(ID_TOOLBUTTON_EXPORTXML, OnExportXML)
-ON_COMMAND(ID_TOOLBUTTON_IMPORTTEXT, OnImportText)
-ON_COMMAND(ID_TOOLBUTTON_IMPORTXML, OnImportXML)
-ON_COMMAND(ID_TOOLBUTTON_SAVEAS, OnSaveAs)
-ON_COMMAND(ID_TOOLBUTTON_COMPARE, OnCompare)
-ON_COMMAND(ID_TOOLBUTTON_MERGE, OnMerge)
 ON_COMMAND(ID_TOOLBUTTON_LISTTREE, OnToggleView)
 ON_COMMAND(ID_TOOLBUTTON_VIEWREPORTS, OnViewReports)
 
@@ -333,7 +310,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COPYUSERNAME, true, true, false, false},
   {ID_MENUITEM_COPYNOTESFLD, true, true, false, false},
   {ID_MENUITEM_CLEARCLIPBOARD, true, true, true, false},
-  {ID_MENUITEM_BROWSE, true, true, false, false},
+  {ID_MENUITEM_BROWSEURL, true, true, false, false},
   {ID_MENUITEM_AUTOTYPE, true, true, false, false},
   {ID_MENUITEM_COPYURL, true, true, false, false},
   // View menu
@@ -377,32 +354,9 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_TRAYCOPYUSERNAME, true, true, false, false},
   {ID_MENUITEM_TRAYDELETE, true, false, false, false},
   {ID_MENUITEM_TRAYVIEWEDIT, true, true, false, false},
-  // Default Main Toolbar buttons
-  {ID_TOOLBUTTON_NEW, true, true, true, true},
-  {ID_TOOLBUTTON_OPEN, true, true, true, true},
-  {ID_TOOLBUTTON_CLOSE, true, true, true, false},
-  {ID_TOOLBUTTON_SAVE, true, false, true, false},
-  {ID_TOOLBUTTON_COPYPASSWORD, true, true, false, false},
-  {ID_TOOLBUTTON_COPYUSERNAME, true, true, false, false},
-  {ID_TOOLBUTTON_COPYNOTESFLD, true, true, false, false},
-  {ID_TOOLBUTTON_CLEARCLIPBOARD, true, true, true, true},
-  {ID_TOOLBUTTON_AUTOTYPE, true, true, false, false},
-  {ID_TOOLBUTTON_BROWSEURL, true, true, false, false},
-  {ID_TOOLBUTTON_ADD, true, false, true, false},
-  {ID_TOOLBUTTON_EDIT, true, true, false, false},
-  {ID_TOOLBUTTON_DELETE, true, false, false, false},
-  {ID_TOOLBUTTON_EXPANDALL, true, true, true, false},
-  {ID_TOOLBUTTON_COLLAPSEALL, true, true, true, false},
-  {ID_TOOLBUTTON_OPTIONS, true, true, true, true},
-  {ID_TOOLBUTTON_HELP, true, true, true, true},
+  // Default Main Toolbar buttons - if not menu items
+  //   None
   // Optional Main Toolbar buttons
-  {ID_TOOLBUTTON_EXPORTTEXT, true, true, false, false},
-  {ID_TOOLBUTTON_EXPORTXML, true, true, false, false},
-  {ID_TOOLBUTTON_IMPORTTEXT, true, false, true, false},
-  {ID_TOOLBUTTON_IMPORTXML, true, false, true, false},
-  {ID_TOOLBUTTON_SAVEAS, true, true, true, false},
-  {ID_TOOLBUTTON_COMPARE, true, true, false, false},
-  {ID_TOOLBUTTON_MERGE, true, false, true, false},
   {ID_TOOLBUTTON_LISTTREE, true, true, true, false},
   {ID_TOOLBUTTON_VIEWREPORTS, true, true, true, false},
   // Find Toolbar
@@ -899,7 +853,7 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
     PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
     break;
   case PWSprefs::DoubleClickBrowse:
-    PostMessage(WM_COMMAND, ID_MENUITEM_BROWSE);
+    PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
     break;
   case PWSprefs::DoubleClickCopyNotes:
     OnCopyNotes();
@@ -1000,19 +954,19 @@ DboxMain::ChangeOkUpdate()
   menu->EnableMenuItem(ID_MENUITEM_SAVE,
                        m_core.IsChanged() ? MF_ENABLED : MF_GRAYED);
   if (m_toolbarsSetup == TRUE) {
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_SAVE,
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_SAVE,
 	                   m_core.IsChanged() ? TRUE : FALSE);
   }
 #ifdef DEMO
-  int update = OnUpdateMenuToolbar(ID_TOOLBUTTON_ADD);
+  int update = OnUpdateMenuToolbar(ID_MENUITEM_ADD);
   // Cheat, as we know that the logic for ADD applies to others, in DEMO mode
   // see OnUpdateMenuToolbar
   if (m_MainToolBar.GetSafeHwnd() != NULL && update != -1) {
     BOOL state = update ? TRUE : FALSE;
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_ADD, state);
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_IMPORTTEXT, state);
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_IMPORTXML, state);
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_TOOLBUTTON_MERGE, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_PLAINTEXT, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_XML, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MERGE, state);
   }
 #endif
   UpdateStatusBar();
@@ -1526,11 +1480,11 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     if (!ci->IsURLEmpty()) {
       const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
-        pMenu->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
-                          ID_MENUITEM_BROWSE, CS_SENDEMAIL);
+        pMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
+                          ID_MENUITEM_BROWSEURL, CS_SENDEMAIL);
       } else {
-        pMenu->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
-                          ID_MENUITEM_BROWSE, CS_BROWSEURL);
+        pMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
+                          ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
@@ -2347,7 +2301,7 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
       iEnable = FALSE;
     break;
     // Not allowed if Group selected or the item selected has an empty URL
-  case ID_MENUITEM_BROWSE:
+  case ID_MENUITEM_BROWSEURL:
   case ID_MENUITEM_COPYURL:
     if (bGroupSelected) {
       // Not allowed if a Group is selected
@@ -2364,8 +2318,6 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
   case ID_MENUITEM_RENAME:
   case ID_MENUITEM_EXPANDALL:
   case ID_MENUITEM_COLLAPSEALL:
-  case ID_TOOLBUTTON_EXPANDALL:
-  case ID_TOOLBUTTON_COLLAPSEALL:
     if (m_IsListView)
       iEnable = FALSE;
     break;
@@ -2433,13 +2385,12 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
     if (isLimited) {
       switch (nID) {
       case ID_MENUITEM_ADD: 
-      case ID_TOOLBUTTON_ADD:
       case ID_MENUITEM_ADDGROUP:
       case ID_MENUITEM_DUPLICATEENTRY:
       case ID_MENUITEM_IMPORT_KEEPASS:
-      case ID_MENUITEM_IMPORT_PLAINTEXT: case ID_TOOLBUTTON_IMPORTTEXT:
-      case ID_MENUITEM_IMPORT_XML: case ID_TOOLBUTTON_IMPORTXML:
-      case ID_MENUITEM_MERGE: case ID_TOOLBUTTON_MERGE:
+      case ID_MENUITEM_IMPORT_PLAINTEXT:
+      case ID_MENUITEM_IMPORT_XML:
+      case ID_MENUITEM_MERGE:
         iEnable = FALSE;
         break;
       default:
