@@ -174,9 +174,9 @@ DboxMain::UpdateToolBar(bool state)
 	if (m_toolbarsSetup == TRUE) {
     BOOL State = (state) ? FALSE : TRUE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
-		mainTBCtrl.EnableButton(ID_TOOLBUTTON_ADD, State);
-		mainTBCtrl.EnableButton(ID_TOOLBUTTON_DELETE, State);
-		mainTBCtrl.EnableButton(ID_TOOLBUTTON_SAVE, State);
+		mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
+		mainTBCtrl.EnableButton(ID_MENUITEM_DELETE, State);
+		mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, State);
 	}
 }
 
@@ -187,8 +187,8 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
   // from ItemData that's already been deleted. Ugh.
   if (m_core.GetNumEntries() != 0) {
     BOOL State = (ci == NULL) ? FALSE : TRUE;
-    int IDs[] = {ID_TOOLBUTTON_COPYPASSWORD, ID_TOOLBUTTON_COPYUSERNAME,
-                 ID_TOOLBUTTON_COPYNOTESFLD, ID_TOOLBUTTON_AUTOTYPE, ID_TOOLBUTTON_EDIT};
+    int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
+                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT};
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     for (int i = 0; i < sizeof(IDs)/sizeof(IDs[0]); i++) {
@@ -196,9 +196,9 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
     }
 
     if (ci == NULL || ci->IsURLEmpty())
-      mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
     else {
-      mainTBCtrl.EnableButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
       const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
@@ -997,18 +997,18 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     ASSERT(itemData != NULL);
 
     if (itemData->IsURLEmpty()) {
-      pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_GRAYED);
+      pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_GRAYED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
     } else {
-      pPopup->EnableMenuItem(ID_MENUITEM_BROWSE, MF_ENABLED);
+      pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_ENABLED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
       const bool bIsEmail = itemData->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
-        pPopup->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
-                           ID_MENUITEM_BROWSE, CS_SENDEMAIL);
+        pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
+                           ID_MENUITEM_BROWSEURL, CS_SENDEMAIL);
       } else {
-        pPopup->ModifyMenu(ID_MENUITEM_BROWSE, MF_BYCOMMAND,
-                           ID_MENUITEM_BROWSE, CS_BROWSEURL);
+        pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
+                           ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
@@ -2710,21 +2710,21 @@ void
 DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
 {
   CToolBarCtrl &mainTBCtrl =  m_MainToolBar.GetToolBarCtrl();
-  if (mainTBCtrl.IsButtonHidden(ID_TOOLBUTTON_BROWSEURL) == TRUE)
+  if (mainTBCtrl.IsButtonHidden(ID_MENUITEM_BROWSEURL) == TRUE)
     return;
 
   TBBUTTONINFO tbinfo;
   memset(&tbinfo, 0x00, sizeof(tbinfo));
   tbinfo.cbSize = sizeof(tbinfo);
-  mainTBCtrl.HideButton(ID_TOOLBUTTON_BROWSEURL, TRUE);
+  mainTBCtrl.HideButton(ID_MENUITEM_BROWSEURL, TRUE);
   if (bIsEmail) {
     tbinfo.iImage = m_MainToolBar.GetSendEmailImageIndex();
   } else {
     tbinfo.iImage = m_MainToolBar.GetBrowseURLImageIndex();
   }
   tbinfo.dwMask = TBIF_IMAGE;
-  mainTBCtrl.SetButtonInfo(ID_TOOLBUTTON_BROWSEURL, &tbinfo);
-  mainTBCtrl.HideButton(ID_TOOLBUTTON_BROWSEURL, FALSE);
+  mainTBCtrl.SetButtonInfo(ID_MENUITEM_BROWSEURL, &tbinfo);
+  mainTBCtrl.HideButton(ID_MENUITEM_BROWSEURL, FALSE);
 }
 
 int

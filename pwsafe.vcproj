@@ -1078,6 +1078,30 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath=".\res\abase.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\abase.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\abase_exp.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\abase_exp.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\abase_warn.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\abase_warn.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\add_classic.bmp"
 				>
 			</File>
@@ -1087,6 +1111,14 @@
 			</File>
 			<File
 				RelativePath=".\res\toolbar\add_new8.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\alias.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\alias.ico"
 				>
 			</File>
 			<File
@@ -1378,34 +1410,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\leaf.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_alias.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_base.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_base_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_base_warn.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\leaf_warn.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\res\toolbar\listtree_classic.bmp"
 				>
 			</File>
@@ -1447,6 +1451,30 @@
 			</File>
 			<File
 				RelativePath=".\res\node.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal_exp.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal_exp.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal_warn.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal_warn.ico"
 				>
 			</File>
 			<File
