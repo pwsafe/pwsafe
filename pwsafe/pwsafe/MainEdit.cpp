@@ -600,6 +600,10 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         SelectEntry(m_ctlItemList.GetItemCount() - 1);
       }
       ChangeOkUpdate();
+      // Order may have changed as a result of edit
+      m_ctlItemTree.SortTree(TVI_ROOT);
+      SortListView();
+
       return true;
     } // rc == IDOK
     return false;
