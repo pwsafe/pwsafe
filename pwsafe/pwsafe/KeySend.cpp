@@ -41,7 +41,7 @@ void CKeySend::SendChar(TCHAR c)
    */
 #ifdef UNICODE
   UINT status;
-  INPUT input[1];
+  INPUT input[2];
   input[0].type = INPUT_KEYBOARD;
   switch (c) {
   case TCHAR('\t'):
@@ -56,7 +56,11 @@ void CKeySend::SendChar(TCHAR c)
     input[0].ki.dwFlags = KEYEVENTF_UNICODE;
     break;
   }  
-  status = ::SendInput(1, input, sizeof(INPUT));
+  // add the key-up event
+  input[1].ki = input[0].ki;
+  input[1].ki.dwFlags |= KEYEVENTF_KEYUP;
+
+  status = ::SendInput(2, input, sizeof(INPUT));
   if (status != 1)
     TRACE(_T("CKeySend::SendChar: SendInput failed\n"));
 #else
