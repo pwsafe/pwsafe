@@ -1155,8 +1155,11 @@ DboxMain::OnToolBarFindMessage(WPARAM /* wParam */, LPARAM /* lParam */)
 
 void DboxMain::OnToolBarFind()
 {
-  // Called when the user presses the Find button on the Find Toolbar
-  m_FindToolBar.Find();
+  // Called when the user presses the Find button on the Find Toolbar or
+  // when they press enter when the search string has focus or
+  // when they press F3 with the Find Toolbar visible
+  if (m_FindToolBar.IsVisible())
+    m_FindToolBar.Find();
 }
 
 bool

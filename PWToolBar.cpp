@@ -101,6 +101,11 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_TOOLBUTTON_VIEWREPORTS
 };
 
+// Additional Control IDs not on ToolBar
+const UINT CPWToolBar::m_OtherIDs[] = {
+  ID_MENUITEM_SENDEMAIL    // MUST be first to allow Browse URL <-> Send Email switching
+};
+
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_NEW_CLASSIC,
   IDB_OPEN_CLASSIC,
@@ -130,10 +135,12 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_MERGE_CLASSIC,
   IDB_LISTTREE_CLASSIC,
   IDB_FIND_CLASSIC,
-  IDB_VIEWREPORTS_CLASSIC,
+  IDB_VIEWREPORTS_CLASSIC
+};
 
-  // Additional bitmap for swapping image if entry's URL == email
-  IDB_SENDEMAIL_CLASSIC
+// Additional bitmaps not on ToolBar
+const UINT CPWToolBar::m_OtherClassicBMs[] = {
+  IDB_SENDEMAIL_CLASSIC    // MUST be first to allow Browse URL <-> Send Email switching
 };
 
 const UINT CPWToolBar::m_MainToolBarNew8BMs[] = {
@@ -166,9 +173,11 @@ const UINT CPWToolBar::m_MainToolBarNew8BMs[] = {
   IDB_LISTTREE_NEW8,
   IDB_FIND_NEW8,
   IDB_VIEWREPORTS_NEW8,
+};
 
-  // Additional bitmap for swapping image if entry's URL == email
-  IDB_SENDEMAIL_NEW8
+// Additional bitmaps not on ToolBar
+const UINT CPWToolBar::m_OtherNew8BMs[] = {
+  IDB_SENDEMAIL_NEW8       // MUST be first to allow Browse URL <-> Send Email switching
 };
 
 const UINT CPWToolBar::m_MainToolBarNew32BMs[] = {
@@ -201,8 +210,10 @@ const UINT CPWToolBar::m_MainToolBarNew32BMs[] = {
   IDB_LISTTREE_NEW32,
   IDB_FIND_NEW32,
   IDB_VIEWREPORTS_NEW32,
+};
 
-  // Additional bitmap for swapping image if entry's URL == email
+// Additional bitmaps not on ToolBar
+const UINT CPWToolBar::m_OtherNew32BMs[] = {
   IDB_SENDEMAIL_NEW32
 };
 
@@ -212,18 +223,26 @@ CPWToolBar::CPWToolBar()
   :  m_ClassicFlags(0), m_NewFlags(0), m_bitmode(1),
      m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
 {
+  // Make sure the developer has kept everything in step!
   ASSERT(sizeof(m_MainToolBarIDs) / sizeof(UINT) ==
          sizeof(m_csMainButtons) / sizeof(m_csMainButtons[0]));
-
-  m_iMaxNumButtons = sizeof(m_MainToolBarIDs) / sizeof(UINT);
-  m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
 
   ASSERT(sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) ==
          sizeof(m_MainToolBarNew8BMs) / sizeof(UINT));
   ASSERT(sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) ==
          sizeof(m_MainToolBarNew32BMs) / sizeof(UINT));
 
-  m_iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT);
+  ASSERT(sizeof(m_OtherIDs) / sizeof(UINT) ==
+         sizeof(m_OtherClassicBMs) / sizeof(UINT));
+  ASSERT(sizeof(m_OtherClassicBMs) / sizeof(UINT) ==
+         sizeof(m_OtherNew8BMs) / sizeof(UINT));
+  ASSERT(sizeof(m_OtherClassicBMs) / sizeof(UINT) ==
+         sizeof(m_OtherNew32BMs) / sizeof(UINT));
+
+  m_iMaxNumButtons = sizeof(m_MainToolBarIDs) / sizeof(UINT);
+  m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
+  m_iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) +
+                   sizeof(m_OtherClassicBMs) / sizeof(UINT);
 }
 
 CPWToolBar::~CPWToolBar()
@@ -306,40 +325,61 @@ CPWToolBar::Init(const int NumBits)
 {
   int i, j;
   m_ClassicBackground = RGB(192, 192, 192);
-  m_NewBackground = RGB(192, 192, 192);
+  m_NewBackground1 = RGB(192, 192, 192);
+  m_NewBackground2 = RGB(196, 196, 196);
 
   m_ClassicFlags = ILC_MASK | ILC_COLOR8;
 
   if (NumBits >= 32) {
     m_NewFlags = ILC_MASK | ILC_COLOR32;
-    m_NewBackground = RGB(196, 196, 196);
     m_bitmode = 2;
   } else {
     m_NewFlags = ILC_MASK | ILC_COLOR8;
+    m_bitmode = 1;
   }
 
   CBitmap bmTemp;
   // Classic images are first in the ImageList followed by the New8 and then New32 images.
   m_ImageList.Create(16, 16, m_ClassicFlags, m_iNum_Bitmaps * 3, 2);
-  for (i = 0; i < m_iNum_Bitmaps; i++) {
+  int iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT);
+  int iNum_Others  = sizeof(m_OtherClassicBMs) / sizeof(UINT);
+  for (i = 0; i < iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_MainToolBarClassicBMs[i]);
     m_ImageList.Add(&bmTemp, m_ClassicBackground);
     bmTemp.Detach();
     if (m_MainToolBarClassicBMs[i] == IDB_BROWSEURL_CLASSIC)
       m_iBrowseURL_BM_offset = i;
-    if (m_MainToolBarClassicBMs[i] == IDB_SENDEMAIL_CLASSIC)
-      m_iSendEmail_BM_offset = i;
   }
 
-  for (i = 0; i < m_iNum_Bitmaps; i++) {
-    bmTemp.LoadBitmap(m_MainToolBarNew8BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground);
+  m_iSendEmail_BM_offset = iNum_Bitmaps;
+
+  for (i = 0; i < iNum_Others; i++) {
+    bmTemp.LoadBitmap(m_OtherClassicBMs[i]);
+    m_ImageList.Add(&bmTemp, m_ClassicBackground);
     bmTemp.Detach();
   }
 
-  for (i = 0; i < m_iNum_Bitmaps; i++) {
+  for (i = 0; i < iNum_Bitmaps; i++) {
+    bmTemp.LoadBitmap(m_MainToolBarNew8BMs[i]);
+    m_ImageList.Add(&bmTemp, m_NewBackground1);
+    bmTemp.Detach();
+  }
+
+  for (i = 0; i < iNum_Others; i++) {
+    bmTemp.LoadBitmap(m_OtherNew8BMs[i]);
+    m_ImageList.Add(&bmTemp, m_NewBackground1);
+    bmTemp.Detach();
+  }
+
+  for (i = 0; i < iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_MainToolBarNew32BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground);
+    m_ImageList.Add(&bmTemp, m_NewBackground2);
+    bmTemp.Detach();
+  }
+
+  for (i = 0; i < iNum_Others; i++) {
+    bmTemp.LoadBitmap(m_OtherNew8BMs[i]);
+    m_ImageList.Add(&bmTemp, m_NewBackground1);
     bmTemp.Detach();
   }
 

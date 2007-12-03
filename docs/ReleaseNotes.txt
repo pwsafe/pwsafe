@@ -32,7 +32,7 @@ show them too.
 
 New Features for 3.11.2
 =======================
-None
+[1842449] Implement standard F3 for repeat Find shortcut.
 
 Bugs fixed in 3.11.1
 ====================
