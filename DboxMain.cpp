@@ -145,7 +145,7 @@ ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
 ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
 ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
 ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
-ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnSendEmail)
+ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnBrowse)
 ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
 ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
 ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
@@ -877,17 +877,6 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 
 // Called to open a web browser to the URL associated with an entry.
 void DboxMain::OnBrowse()
-{
-  CItemData *ci = getSelectedItem();
-  if(ci != NULL) {
-    if (!ci->IsURLEmpty()) {
-      LaunchBrowser(ci->GetURL());
-      UpdateAccessTime(ci);
-    }
-  }
-}
-
-void DboxMain::OnSendEmail()
 {
   CItemData *ci = getSelectedItem();
   if(ci != NULL) {

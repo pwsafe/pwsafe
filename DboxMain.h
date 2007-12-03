@@ -386,7 +386,6 @@ protected:
   afx_msg void OnU3ShopWebsite();
   afx_msg void OnPasswordSafeWebsite();
   afx_msg void OnBrowse();
-  afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
