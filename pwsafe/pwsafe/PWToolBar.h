@@ -46,13 +46,18 @@ private:
   static const UINT m_MainToolBarNew8BMs[];
   static const UINT m_MainToolBarNew32BMs[];
 
+  static const UINT m_OtherIDs[];
+  static const UINT m_OtherClassicBMs[];
+  static const UINT m_OtherNew8BMs[];
+  static const UINT m_OtherNew32BMs[];
+
   CString m_csDefaultButtonString;
   TBBUTTON *m_pOriginalTBinfo;
   CImageList m_ImageList;
   UINT m_ClassicFlags, m_NewFlags;
   int m_iMaxNumButtons, m_iNum_Bitmaps, m_iNumDefaultButtons;
   int m_toolbarMode, m_bitmode;
-  COLORREF m_ClassicBackground, m_NewBackground;
+  COLORREF m_ClassicBackground, m_NewBackground1, m_NewBackground2;
   bool m_bIsDefault;
 
   int m_iBrowseURL_BM_offset, m_iSendEmail_BM_offset;

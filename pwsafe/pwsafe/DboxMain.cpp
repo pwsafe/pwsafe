@@ -145,6 +145,7 @@ ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
 ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
 ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
 ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
+ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnSendEmail)
 ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
 ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
 ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
@@ -311,6 +312,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COPYNOTESFLD, true, true, false, false},
   {ID_MENUITEM_CLEARCLIPBOARD, true, true, true, false},
   {ID_MENUITEM_BROWSEURL, true, true, false, false},
+  {ID_MENUITEM_SENDEMAIL, true, true, false, false},
   {ID_MENUITEM_AUTOTYPE, true, true, false, false},
   {ID_MENUITEM_COPYURL, true, true, false, false},
   // View menu
@@ -875,6 +877,17 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 
 // Called to open a web browser to the URL associated with an entry.
 void DboxMain::OnBrowse()
+{
+  CItemData *ci = getSelectedItem();
+  if(ci != NULL) {
+    if (!ci->IsURLEmpty()) {
+      LaunchBrowser(ci->GetURL());
+      UpdateAccessTime(ci);
+    }
+  }
+}
+
+void DboxMain::OnSendEmail()
 {
   CItemData *ci = getSelectedItem();
   if(ci != NULL) {
@@ -1481,12 +1494,15 @@ DboxMain::OnInitMenu(CMenu* pMenu)
       const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
         pMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
-                          ID_MENUITEM_BROWSEURL, CS_SENDEMAIL);
+                          ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
       } else {
-        pMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
+        pMenu->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
                           ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
+    } else {
+      pMenu->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
+                        ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
     }
   }
 
@@ -2302,6 +2318,7 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
     break;
     // Not allowed if Group selected or the item selected has an empty URL
   case ID_MENUITEM_BROWSEURL:
+  case ID_MENUITEM_SENDEMAIL:
   case ID_MENUITEM_COPYURL:
     if (bGroupSelected) {
       // Not allowed if a Group is selected

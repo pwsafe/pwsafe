@@ -195,9 +195,10 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
       mainTBCtrl.EnableButton(IDs[i], State);
     }
 
-    if (ci == NULL || ci->IsURLEmpty())
+    if (ci == NULL || ci->IsURLEmpty()) {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
-    else {
+      UpdateBrowseURLSendEmailButton(false);
+    } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
       const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
       UpdateBrowseURLSendEmailButton(bIsEmail);
@@ -997,17 +998,20 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     ASSERT(itemData != NULL);
 
     if (itemData->IsURLEmpty()) {
+      pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
+                         ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_GRAYED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
+      UpdateBrowseURLSendEmailButton(false);
     } else {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_ENABLED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
       const bool bIsEmail = itemData->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
         pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
-                           ID_MENUITEM_BROWSEURL, CS_SENDEMAIL);
+                           ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
       } else {
-        pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
+        pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
                            ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
