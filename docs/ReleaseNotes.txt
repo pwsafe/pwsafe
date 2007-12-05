@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.11.2
 ====================
+[1843631] "Browse to Icon" now correctly shown using new Toolbar.
 [1841525] Increasing the number of passwords saved no longer deletes the
 existing Password History.
 [] Pressing a character in the List view will now jump to the next entry

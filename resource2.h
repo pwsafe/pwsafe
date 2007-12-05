@@ -41,6 +41,7 @@
 #define ID_MENUITEM_AUTOTYPE            32062
 #define ID_MENUITEM_COPYURL             32063
 #define ID_MENUITEM_SENDEMAIL           32064
+#define ID_MENUITEM_GROUPENTER          32065
 
 // View menu
 #define ID_MENUITEM_LIST_VIEW           32101

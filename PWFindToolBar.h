@@ -54,15 +54,13 @@ private:
   static const UINT m_FindToolBarNew8BMs[];
   static const UINT m_FindToolBarNew32BMs[];
 
-  CImageList m_ImageList;
+  CImageList m_ImageLists[3];  // 1st = Classic; 2nd = New 8; 3rd = New 32;
   TBBUTTON *m_pOriginalTBinfo;
   CWnd *m_pDbx;
   CFont m_FindTextFont;
   int m_iMaxNumButtons, m_iNum_Bitmaps;
   int m_iWMSGID;
   int m_toolbarMode, m_bitmode;
-  UINT m_ClassicFlags, m_NewFlags;
-  COLORREF m_ClassicBackground, m_NewBackground;
   bool m_bVisible, m_bCaseSensitive, m_bAdvanced;
 
   std::vector<int> m_indices; // array of found items

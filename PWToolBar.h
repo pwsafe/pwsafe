@@ -53,7 +53,7 @@ private:
 
   CString m_csDefaultButtonString;
   TBBUTTON *m_pOriginalTBinfo;
-  CImageList m_ImageList;
+  CImageList m_ImageLists[3];  // 1st = Classic; 2nd = New 8; 3rd = New 32;
   UINT m_ClassicFlags, m_NewFlags;
   int m_iMaxNumButtons, m_iNum_Bitmaps, m_iNumDefaultButtons;
   int m_toolbarMode, m_bitmode;

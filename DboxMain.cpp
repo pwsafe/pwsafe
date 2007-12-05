@@ -144,6 +144,7 @@ ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
 ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
 ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
 ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
+ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
 ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
 ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnBrowse)
 ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
@@ -302,6 +303,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Edit menu
   {ID_MENUITEM_ADD, true, false, true, false},
   {ID_MENUITEM_EDIT, true, true, false, false},
+  {ID_MENUITEM_GROUPENTER, true, true, false, false},
   {ID_MENUITEM_DELETE, true, false, false, false},
   {ID_MENUITEM_RENAME, true, false, false, false},
   {ID_MENUITEM_FIND, true, true, false, false},
@@ -1460,17 +1462,23 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
                       ID_MENUITEM_RENAME, CS_RENAMEGROUP);
     pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
-                      ID_MENUITEM_EDIT, CS_EXPCOLGROUP);
+                      ID_MENUITEM_GROUPENTER, CS_EXPCOLGROUP);
   } else {
     pMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
                       ID_MENUITEM_DELETE, CS_DELETEENTRY);
     pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
                       ID_MENUITEM_RENAME, CS_RENAMEENTRY);
     if (m_core.IsReadOnly()) {
+      // Do both - not sure what was last selected!
       pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
                         ID_MENUITEM_EDIT, CS_VIEWENTRY);
+      pMenu->ModifyMenu(ID_MENUITEM_GROUPENTER, MF_BYCOMMAND,
+                        ID_MENUITEM_EDIT, CS_VIEWENTRY);
     } else {
+      // Do both - not sure what was last selected!
       pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
+                        ID_MENUITEM_EDIT, CS_EDITENTRY);
+      pMenu->ModifyMenu(ID_MENUITEM_GROUPENTER, MF_BYCOMMAND,
                         ID_MENUITEM_EDIT, CS_EDITENTRY);
     }
   }
