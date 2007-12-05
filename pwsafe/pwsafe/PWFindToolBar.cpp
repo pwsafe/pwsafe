@@ -93,7 +93,7 @@ const UINT CPWFindToolBar::m_FindToolBarNew32BMs[] = {
 IMPLEMENT_DYNAMIC(CPWFindToolBar, CToolBar)
 
 CPWFindToolBar::CPWFindToolBar()
-  : m_ClassicFlags(0), m_NewFlags(0), m_bitmode(1), m_bVisible(true),
+  : m_bitmode(1), m_bVisible(true),
     m_bCaseSensitive(false), m_bAdvanced(false),
     m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
     m_last_search_text(_T("")), m_last_cs_search(false),
@@ -131,7 +131,9 @@ CPWFindToolBar::CPWFindToolBar()
 CPWFindToolBar::~CPWFindToolBar()
 {
   delete [] m_pOriginalTBinfo;
-  m_ImageList.DeleteImageList();
+  m_ImageLists[0].DeleteImageList();
+  m_ImageLists[1].DeleteImageList();
+  m_ImageLists[2].DeleteImageList();
   m_FindTextFont.DeleteObject();
   m_findedit.DestroyWindow();
 }
@@ -182,25 +184,25 @@ void
 CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
 {
   int i, j;
-  m_ClassicBackground = RGB(192, 192, 192);
-  m_NewBackground = RGB(192, 192, 192);
+  COLORREF crClassicBackground = RGB(192, 192, 192);
+  COLORREF crNewBackground1 = RGB(192, 192, 192);
+  COLORREF crNewBackground2 = RGB(196, 196, 196);
 
-  m_ClassicFlags = ILC_MASK | ILC_COLOR8;
+  UINT iClassicFlags = ILC_MASK | ILC_COLOR8;
+  UINT iNewFlags1 = ILC_MASK | ILC_COLOR8;
+  UINT iNewFlags2 = ILC_MASK | ILC_COLOR32;
 
   if (NumBits >= 32) {
-    m_NewFlags = ILC_MASK | ILC_COLOR32;
-    m_NewBackground = RGB(196, 196, 196);
     m_bitmode = 2;
-  } else {
-    m_NewFlags = ILC_MASK | ILC_COLOR8;
   }
 
   CBitmap bmTemp;
-  // Classic images are first in the ImageList followed by the New8 and then New32 images.
-  m_ImageList.Create(16, 16, m_ClassicFlags, m_iNum_Bitmaps * 3, 2);
+  m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
+  m_ImageLists[1].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
+  m_ImageLists[2].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarClassicBMs[i]);
-    m_ImageList.Add(&bmTemp, m_ClassicBackground);
+    m_ImageLists[0].Add(&bmTemp, crClassicBackground);
     bmTemp.Detach();
     if (m_FindToolBarClassicBMs[i] == IDB_FINDCASE_I_CLASSIC)
       m_iCase_Insensitive_BM_offset = i;
@@ -210,13 +212,13 @@ CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarNew8BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground);
+    m_ImageLists[1].Add(&bmTemp, crNewBackground1);
     bmTemp.Detach();
   }
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarNew32BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground);
+    m_ImageLists[2].Add(&bmTemp, crNewBackground2);
     bmTemp.Detach();
   }
 
@@ -245,22 +247,10 @@ CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
 void
 CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
 {
-  m_toolbarMode = toolbarMode;
-
-  int i, j;
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
-
-  tbCtrl.SetImageList(&m_ImageList);
-  m_ImageList.Detach();
-
-  j = 0;
-  const int iOffset = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode * m_iNum_Bitmaps;
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    if (m_FindToolBarIDs[i] != ID_SEPARATOR) {
-      m_pOriginalTBinfo[i].iBitmap = j + iOffset;
-      j++;
-    }
-  }
+  m_toolbarMode = toolbarMode;
+  const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
+  tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
 
   tbCtrl.AddButtons(m_iMaxNumButtons, &m_pOriginalTBinfo[0]);
 
@@ -386,11 +376,9 @@ void CPWFindToolBar::ToggleToolBarFindCase()
   tbinfo.dwMask = TBIF_IMAGE;
   tbCtrl.GetButtonInfo(ID, &tbinfo);
 
-  const int iOffset = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode * m_iNum_Bitmaps;
   // Note: The case_sensitive bitmap MUST be the LAST in the array of bitmaps
   // Note: "m_iCase_Insensitive_BM_offset" points to the case_insensitive bitmap in the array
-  int j = m_bCaseSensitive ? m_iNum_Bitmaps - 1 : m_iCase_Insensitive_BM_offset;
-  tbinfo.iImage = j + iOffset;
+  tbinfo.iImage = m_bCaseSensitive ? m_iNum_Bitmaps - 1 : m_iCase_Insensitive_BM_offset;
   tbinfo.dwMask = TBIF_IMAGE;
   tbCtrl.SetButtonInfo(ID, &tbinfo);
 
@@ -400,36 +388,10 @@ void CPWFindToolBar::ToggleToolBarFindCase()
 void
 CPWFindToolBar::ChangeImages(const int toolbarMode)
 {
-  m_toolbarMode = toolbarMode;
-
-  int nCount, i, j;
-  // Classic images are first in the ImageList followed by the New images.
-  const int iOffset = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode * m_iNum_Bitmaps;
-
-  j = 0;
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    if (m_FindToolBarIDs[i] != ID_SEPARATOR) {
-      m_pOriginalTBinfo[i].iBitmap = j + iOffset;
-      j++;
-    }
-  }
-
-  TBBUTTONINFO tbinfo;
-  memset(&tbinfo, 0x00, sizeof(tbinfo));
-  tbinfo.cbSize = sizeof(tbinfo);
-  tbinfo.dwMask = TBIF_BYINDEX | TBIF_IMAGE | TBIF_COMMAND | TBIF_STYLE;
-
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
-  nCount = tbCtrl.GetButtonCount();
-  for (i = 0; i < nCount; i++) {
-    tbCtrl.GetButtonInfo(i, &tbinfo);
-    if (tbinfo.fsStyle & TBSTYLE_SEP)
-      continue;
-
-    tbinfo.iImage %= m_iNum_Bitmaps;
-    tbinfo.iImage += iOffset;
-    tbCtrl.SetButtonInfo(i, &tbinfo);
-  }
+  m_toolbarMode = toolbarMode;
+  const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
+  tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
 }
 
 void

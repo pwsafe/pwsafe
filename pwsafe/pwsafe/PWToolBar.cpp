@@ -247,7 +247,9 @@ CPWToolBar::CPWToolBar()
 
 CPWToolBar::~CPWToolBar()
 {
-  m_ImageList.DeleteImageList();
+  m_ImageLists[0].DeleteImageList();
+  m_ImageLists[1].DeleteImageList();
+  m_ImageLists[2].DeleteImageList();
   delete [] m_pOriginalTBinfo;
 }
 
@@ -324,28 +326,29 @@ void
 CPWToolBar::Init(const int NumBits)
 {
   int i, j;
-  m_ClassicBackground = RGB(192, 192, 192);
-  m_NewBackground1 = RGB(192, 192, 192);
-  m_NewBackground2 = RGB(196, 196, 196);
+  const COLORREF crClassicBackground = RGB(192, 192, 192);
+  const COLORREF crNewBackground1 = RGB(192, 192, 192);
+  const COLORREF crNewBackground2 = RGB(196, 196, 196);
 
-  m_ClassicFlags = ILC_MASK | ILC_COLOR8;
+  const UINT iClassicFlags = ILC_MASK | ILC_COLOR8;
+  const UINT iNewFlags1 = ILC_MASK | ILC_COLOR8;
+  const UINT iNewFlags2 = ILC_MASK | ILC_COLOR32;
 
   if (NumBits >= 32) {
-    m_NewFlags = ILC_MASK | ILC_COLOR32;
     m_bitmode = 2;
-  } else {
-    m_NewFlags = ILC_MASK | ILC_COLOR8;
-    m_bitmode = 1;
   }
 
   CBitmap bmTemp;
-  // Classic images are first in the ImageList followed by the New8 and then New32 images.
-  m_ImageList.Create(16, 16, m_ClassicFlags, m_iNum_Bitmaps * 3, 2);
+  m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
+  m_ImageLists[1].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
+  m_ImageLists[2].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
+
   int iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT);
   int iNum_Others  = sizeof(m_OtherClassicBMs) / sizeof(UINT);
+
   for (i = 0; i < iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_MainToolBarClassicBMs[i]);
-    m_ImageList.Add(&bmTemp, m_ClassicBackground);
+    m_ImageLists[0].Add(&bmTemp, crClassicBackground);
     bmTemp.Detach();
     if (m_MainToolBarClassicBMs[i] == IDB_BROWSEURL_CLASSIC)
       m_iBrowseURL_BM_offset = i;
@@ -355,31 +358,31 @@ CPWToolBar::Init(const int NumBits)
 
   for (i = 0; i < iNum_Others; i++) {
     bmTemp.LoadBitmap(m_OtherClassicBMs[i]);
-    m_ImageList.Add(&bmTemp, m_ClassicBackground);
+    m_ImageLists[0].Add(&bmTemp, crClassicBackground);
     bmTemp.Detach();
   }
 
   for (i = 0; i < iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_MainToolBarNew8BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground1);
+    m_ImageLists[1].Add(&bmTemp, crNewBackground1);
     bmTemp.Detach();
   }
 
   for (i = 0; i < iNum_Others; i++) {
     bmTemp.LoadBitmap(m_OtherNew8BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground1);
+    m_ImageLists[1].Add(&bmTemp, crNewBackground1);
     bmTemp.Detach();
   }
 
   for (i = 0; i < iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_MainToolBarNew32BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground2);
+    m_ImageLists[2].Add(&bmTemp, crNewBackground2);
     bmTemp.Detach();
   }
 
   for (i = 0; i < iNum_Others; i++) {
     bmTemp.LoadBitmap(m_OtherNew8BMs[i]);
-    m_ImageList.Add(&bmTemp, m_NewBackground1);
+    m_ImageLists[2].Add(&bmTemp, crNewBackground2);
     bmTemp.Detach();
   }
 
@@ -524,36 +527,10 @@ CPWToolBar::Reset()
 void
 CPWToolBar::ChangeImages(const int toolbarMode)
 {
-  m_toolbarMode = toolbarMode;
-
-  int nCount, i, j;
-  // Classic images are first in the ImageList followed by the New images.
-  const int iOffset = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode * m_iNum_Bitmaps;
-
-  j = 0;
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    if (m_MainToolBarIDs[i] != ID_SEPARATOR) {
-      m_pOriginalTBinfo[i].iBitmap = j + iOffset;
-      j++;
-    }
-  }
-
-  TBBUTTONINFO tbinfo;
-  memset(&tbinfo, 0x00, sizeof(tbinfo));
-  tbinfo.cbSize = sizeof(tbinfo);
-  tbinfo.dwMask = TBIF_BYINDEX | TBIF_IMAGE | TBIF_COMMAND | TBIF_STYLE;
-
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
-  nCount = tbCtrl.GetButtonCount();
-  for (i = 0; i < nCount; i++) {
-    tbCtrl.GetButtonInfo(i, &tbinfo);
-    if (tbinfo.fsStyle & TBSTYLE_SEP)
-      continue;
-
-    tbinfo.iImage %= m_iNum_Bitmaps;
-    tbinfo.iImage += iOffset;
-    tbCtrl.SetButtonInfo(i, &tbinfo);
-  }
+  m_toolbarMode = toolbarMode;
+  const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
+  tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
 }
 
 void
@@ -569,17 +546,9 @@ CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
     tbCtrl.DeleteButton(i);
   }
 
-  tbCtrl.SetImageList(&m_ImageList);
-  m_ImageList.Detach();
-
-  j = 0;
-  const int iOffset = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode * m_iNum_Bitmaps;
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    if (m_MainToolBarIDs[i] != ID_SEPARATOR) {
-      m_pOriginalTBinfo[i].iBitmap = j + iOffset;
-      j++;
-    }
-  }
+  m_toolbarMode = toolbarMode;
+  const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
+  tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
 
   // Create text for customization dialog using button tooltips.
   // Assume no button tooltip description exceeds 64 characters, also m_iMaxNumButtons
