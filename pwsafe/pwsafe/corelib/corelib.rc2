@@ -157,7 +157,7 @@ END
 STRINGTABLE
 BEGIN
     IDSC_READ_ERROR          "Read Error"
-    IDSC_ENCODING_PROBLEM    "Trouble with non-ASCII data in record '%s' - please check data carefully."
+    IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
     IDSC_VALIDATEUUID        "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid UUID field.  This has been corrected."
     IDSC_VALIDATEPWH         "Entry Group=""%s"", Title=""%s"", User=""%s"" had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
 
