@@ -1260,11 +1260,22 @@ pull_string(CMyString &str, unsigned char *data, int len)
 static bool
 pull_time(time_t &t, unsigned char *data, size_t len)
 {
-  if (len != sizeof(__time32_t)) {
-    ASSERT(0);
-    return false;
+  if (len == sizeof(__time32_t)) {
+    t = *reinterpret_cast<__time32_t *>(data);
+  } else if (len == sizeof(__time64_t)) {
+    // convert from 64 bit time to currently supported 32 bit
+    struct tm ts;
+    __time64_t *t64 = reinterpret_cast<__time64_t *>(data);
+    if (_gmtime64_s(&ts, t64) != 0) {
+      ASSERT(0); return false;
+    }
+    t = _mkgmtime32(&ts);
+    if (t == time_t(-1)) { // time is past 2038!
+      t = 0; return false;
+    }
+  } else {
+    ASSERT(0); return false;
   }
-  t = *((__time32_t *)data);
   return true;
 }
 
