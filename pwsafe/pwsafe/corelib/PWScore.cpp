@@ -71,6 +71,9 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 PWScore::~PWScore()
 {
+  trashMemory(m_session_key, sizeof(m_session_key));
+  trashMemory(m_session_salt, sizeof(m_session_salt));
+
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
     delete[] m_passkey;
