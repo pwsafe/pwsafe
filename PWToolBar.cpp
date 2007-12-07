@@ -15,30 +15,32 @@
 #include "resource2.h"
 
 #include <vector>
+#include <map>
 #include <algorithm>
 
 // CPWToolBar
 
 /*
   To add a new Toolbar button to this class:
-  1. Design new bitmaps ('Classic' and 2 x 'New' designs - ILC_COLOR8 and ILC_COLOR32).  ILC_COLOR8 has a
-     background colour of RGB(192, 192, 192) and ILC_COLOR32 one of RGB(196, 196, 196) due to MS!
+  1. Design new bitmaps (1 x 'Classic' and 1 x 'New' designs).  Both have a
+     background colour of RGB(192, 192, 192).
   2. Add them to PaswordSafe.rc as BITMAPs
-  3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC", "IDB_<new name>_NEW8" &
-     "IDB_<new name>_NEW32"
-  4. Assign a new resource ID for the corresponding button e.g. "ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>"
-     if also on a Menu.
+  3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC",
+     "IDB_<new name>_NEW"
+  4. Assign a new resource ID for the corresponding button e.g. 
+     "ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>" if also on a Menu.
   5. Add the resource ID in the appropriate place in the m_MainToolBarIDs array
-  6. Add the new bitmap IDs in the appropriate place in m_MainToolBarClassicBMs & m_MainToolBarNewBMs arrays
-     (these should correspond to the position of the "resource ID" in step 4 (ignoring separators)).
-  7. Add the new name in the appropriate place in the m_csMainButtons array (used for customization/preferences
-     and '~' represents a separator).
-  8. Add the new resource ID ("ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>") in PasswordSafe.rc2 
-     "Toolbar Tooltips" section as these are used during ToolBar customization to describe the button in the 
-     standard Customization dialog.
+  6. Add the new bitmap IDs in the appropriate place in m_MainToolBarClassicBMs & 
+     m_MainToolBarNewBMs arrays (these should correspond to the position of the 
+     "resource ID" in step 4 (ignoring separators)).
+  7. Add the new name in the appropriate place in the m_csMainButtons array (used 
+     for customization/preferences and '~' represents a separator).
+  8. Add the new resource ID ("ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>")
+     in PasswordSafe.rc2 "Toolbar Tooltips" section as these are used during ToolBar
+     customization to describe the button in the standard Customization dialog.
 
- NOTE: In message handlers, the toolbar control ALWAYS asks for information based on the ORIGINAL configuration!!!
- This is not documented by MS.
+ NOTE: In message handlers, the toolbar control ALWAYS asks for information based 
+ on the ORIGINAL configuration!!! This is not documented by MS.
 
 */
 
@@ -103,7 +105,24 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
 
 // Additional Control IDs not on ToolBar
 const UINT CPWToolBar::m_OtherIDs[] = {
-  ID_MENUITEM_SENDEMAIL    // MUST be first to allow Browse URL <-> Send Email switching
+  ID_MENUITEM_SENDEMAIL,   // MUST be first to allow Browse URL <-> Send Email switching
+  ID_MENUITEM_PROPERTIES,
+  ID_MENUITEM_GROUPENTER,
+  ID_MENUITEM_DUPLICATEENTRY,
+  ID_MENUITEM_CHANGEFONT,
+  ID_MENUITEM_REPORT_COMPARE,
+  ID_MENUITEM_REPORT_IMPORTTEXT,
+  ID_MENUITEM_REPORT_IMPORTXML,
+  ID_MENUITEM_REPORT_MERGE,
+  ID_MENUITEM_REPORT_VALIDATE,
+  ID_MENUITEM_CHANGECOMBO,
+  ID_MENUITEM_BACKUPSAFE,
+  ID_MENUITEM_RESTORE,
+  ID_MENUITEM_VALIDATE,
+  ID_MENUITEM_EXIT,
+  ID_MENUITEM_ABOUT,
+  ID_MENUITEM_TRAYUNLOCK,
+  ID_MENUITEM_TRAYLOCK
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -140,104 +159,96 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
 
 // Additional bitmaps not on ToolBar
 const UINT CPWToolBar::m_OtherClassicBMs[] = {
-  IDB_SENDEMAIL_CLASSIC    // MUST be first to allow Browse URL <-> Send Email switching
+  IDB_SENDEMAIL_CLASSIC,   // MUST be first to allow Browse URL <-> Send Email switching
+  IDB_PROPERTIES_CLASSIC,
+  IDB_GROUPENTER_CLASSIC,
+  IDB_DUPLICATE_CLASSIC,
+  IDB_CHANGEFONT_CLASSIC,
+  IDB_COMPARE_CLASSIC,
+  IDB_IMPORTTEXT_CLASSIC,
+  IDB_IMPORTXML_CLASSIC,
+  IDB_MERGE_CLASSIC,
+  IDB_VALIDATE_CLASSIC,
+  IDB_CHANGECOMBO_CLASSIC,
+  IDB_BACKUPSAFE_CLASSIC,
+  IDB_RESTORE_CLASSIC,
+  IDB_VALIDATE_CLASSIC,    // Yes, it is correct to be here twice!
+  IDB_EXIT_CLASSIC,
+  IDB_ABOUT_CLASSIC,
+  IDB_TRAYUNLOCK_CLASSIC,
+  IDB_TRAYLOCK_CLASSIC
 };
 
-const UINT CPWToolBar::m_MainToolBarNew8BMs[] = {
-  IDB_NEW_NEW8,
-  IDB_OPEN_NEW8,
-  IDB_CLOSE_NEW8,
-  IDB_SAVE_NEW8,
-  IDB_COPYPASSWORD_NEW8,
-  IDB_COPYUSER_NEW8,
-  IDB_COPYNOTES_NEW8,
-  IDB_CLEARCLIPBOARD_NEW8,
-  IDB_AUTOTYPE_NEW8,
-  IDB_BROWSEURL_NEW8,
-  IDB_ADD_NEW8,
-  IDB_VIEWEDIT_NEW8,
-  IDB_DELETE_NEW8,
-  IDB_EXPANDALL_NEW8,
-  IDB_COLLAPSEALL_NEW8,
-  IDB_OPTIONS_NEW8,
-  IDB_HELP_NEW8,
+const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
+  IDB_NEW_NEW,
+  IDB_OPEN_NEW,
+  IDB_CLOSE_NEW,
+  IDB_SAVE_NEW,
+  IDB_COPYPASSWORD_NEW,
+  IDB_COPYUSER_NEW,
+  IDB_COPYNOTES_NEW,
+  IDB_CLEARCLIPBOARD_NEW,
+  IDB_AUTOTYPE_NEW,
+  IDB_BROWSEURL_NEW,
+  IDB_ADD_NEW,
+  IDB_VIEWEDIT_NEW,
+  IDB_DELETE_NEW,
+  IDB_EXPANDALL_NEW,
+  IDB_COLLAPSEALL_NEW,
+  IDB_OPTIONS_NEW,
+  IDB_HELP_NEW,
   // End of Default Toolbar
   // Following are not in the "default" toolbar but can be selected by the user
-  IDB_EXPORTTEXT_NEW8,
-  IDB_EXPORTXML_NEW8,
-  IDB_IMPORTTEXT_NEW8,
-  IDB_IMPORTXML_NEW8,
-  IDB_SAVEAS_NEW8,
-  IDB_COMPARE_NEW8,
-  IDB_MERGE_NEW8,
-  IDB_LISTTREE_NEW8,
-  IDB_FIND_NEW8,
-  IDB_VIEWREPORTS_NEW8,
+  IDB_EXPORTTEXT_NEW,
+  IDB_EXPORTXML_NEW,
+  IDB_IMPORTTEXT_NEW,
+  IDB_IMPORTXML_NEW,
+  IDB_SAVEAS_NEW,
+  IDB_COMPARE_NEW,
+  IDB_MERGE_NEW,
+  IDB_LISTTREE_NEW,
+  IDB_FIND_NEW,
+  IDB_VIEWREPORTS_NEW
 };
 
 // Additional bitmaps not on ToolBar
-const UINT CPWToolBar::m_OtherNew8BMs[] = {
-  IDB_SENDEMAIL_NEW8       // MUST be first to allow Browse URL <-> Send Email switching
-};
-
-const UINT CPWToolBar::m_MainToolBarNew32BMs[] = {
-  IDB_NEW_NEW32,
-  IDB_OPEN_NEW32,
-  IDB_CLOSE_NEW32,
-  IDB_SAVE_NEW32,
-  IDB_COPYPASSWORD_NEW32,
-  IDB_COPYUSER_NEW32,
-  IDB_COPYNOTES_NEW32,
-  IDB_CLEARCLIPBOARD_NEW32,
-  IDB_AUTOTYPE_NEW32,
-  IDB_BROWSEURL_NEW32,
-  IDB_ADD_NEW32,
-  IDB_VIEWEDIT_NEW32,
-  IDB_DELETE_NEW32,
-  IDB_EXPANDALL_NEW32,
-  IDB_COLLAPSEALL_NEW32,
-  IDB_OPTIONS_NEW32,
-  IDB_HELP_NEW32,
-  // End of Default Toolbar
-  // Following are not in the "default" toolbar but can be selected by the user
-  IDB_EXPORTTEXT_NEW32,
-  IDB_EXPORTXML_NEW32,
-  IDB_IMPORTTEXT_NEW32,
-  IDB_IMPORTXML_NEW32,
-  IDB_SAVEAS_NEW32,
-  IDB_COMPARE_NEW32,
-  IDB_MERGE_NEW32,
-  IDB_LISTTREE_NEW32,
-  IDB_FIND_NEW32,
-  IDB_VIEWREPORTS_NEW32,
-};
-
-// Additional bitmaps not on ToolBar
-const UINT CPWToolBar::m_OtherNew32BMs[] = {
-  IDB_SENDEMAIL_NEW32
+const UINT CPWToolBar::m_OtherNewBMs[] = {
+  IDB_SENDEMAIL_NEW,      // MUST be first to allow Browse URL <-> Send Email switching
+  IDB_PROPERTIES_NEW,
+  IDB_GROUPENTER_NEW,
+  IDB_DUPLICATE_NEW,
+  IDB_CHANGEFONT_NEW,
+  IDB_COMPARE_NEW,
+  IDB_IMPORTTEXT_NEW,
+  IDB_IMPORTXML_NEW,
+  IDB_MERGE_NEW,
+  IDB_VALIDATE_NEW,
+  IDB_CHANGECOMBO_NEW,
+  IDB_BACKUPSAFE_NEW,
+  IDB_RESTORE_NEW,
+  IDB_VALIDATE_NEW,       // Yes, it is correct to be here twice!
+  IDB_EXIT_NEW,
+  IDB_ABOUT_NEW,
+  IDB_TRAYUNLOCK_NEW,
+  IDB_TRAYLOCK_NEW
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)
 
 CPWToolBar::CPWToolBar()
-  :  m_ClassicFlags(0), m_NewFlags(0), m_bitmode(1),
-     m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
+  :  m_bitmode(1), m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
 {
   // Make sure the developer has kept everything in step!
   ASSERT(sizeof(m_MainToolBarIDs) / sizeof(UINT) ==
          sizeof(m_csMainButtons) / sizeof(m_csMainButtons[0]));
 
   ASSERT(sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) ==
-         sizeof(m_MainToolBarNew8BMs) / sizeof(UINT));
-  ASSERT(sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) ==
-         sizeof(m_MainToolBarNew32BMs) / sizeof(UINT));
+         sizeof(m_MainToolBarNewBMs) / sizeof(UINT));
 
   ASSERT(sizeof(m_OtherIDs) / sizeof(UINT) ==
          sizeof(m_OtherClassicBMs) / sizeof(UINT));
   ASSERT(sizeof(m_OtherClassicBMs) / sizeof(UINT) ==
-         sizeof(m_OtherNew8BMs) / sizeof(UINT));
-  ASSERT(sizeof(m_OtherClassicBMs) / sizeof(UINT) ==
-         sizeof(m_OtherNew32BMs) / sizeof(UINT));
+         sizeof(m_OtherNewBMs) / sizeof(UINT));
 
   m_iMaxNumButtons = sizeof(m_MainToolBarIDs) / sizeof(UINT);
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
@@ -262,6 +273,18 @@ BEGIN_MESSAGE_MAP(CPWToolBar, CToolBar)
 END_MESSAGE_MAP()
 
 // CPWToolBar message handlers
+
+void
+CPWToolBar::RefreshImages()
+{
+  m_ImageLists[0].DeleteImageList();
+  m_ImageLists[1].DeleteImageList();
+  m_ImageLists[2].DeleteImageList();
+
+  Init(m_NumBits, true);
+
+  ChangeImages(m_toolbarMode);
+}
 
 void
 CPWToolBar::OnToolBarQueryInsert(NMHDR* /* pNotifyStruct */, LRESULT *pResult)
@@ -323,16 +346,14 @@ CPWToolBar::OnToolBarReset(NMHDR* /* pNotifyStruct */, LRESULT* /* pResult */)
 //  Other routines
 
 void
-CPWToolBar::Init(const int NumBits)
+CPWToolBar::Init(const int NumBits, bool bRefresh)
 {
   int i, j;
-  const COLORREF crClassicBackground = RGB(192, 192, 192);
-  const COLORREF crNewBackground1 = RGB(192, 192, 192);
-  const COLORREF crNewBackground2 = RGB(196, 196, 196);
-
   const UINT iClassicFlags = ILC_MASK | ILC_COLOR8;
   const UINT iNewFlags1 = ILC_MASK | ILC_COLOR8;
-  const UINT iNewFlags2 = ILC_MASK | ILC_COLOR32;
+  const UINT iNewFlags2 = ILC_MASK | ILC_COLOR24;
+  
+  m_NumBits = NumBits;
 
   if (NumBits >= 32) {
     m_bitmode = 2;
@@ -347,44 +368,25 @@ CPWToolBar::Init(const int NumBits)
   int iNum_Others  = sizeof(m_OtherClassicBMs) / sizeof(UINT);
 
   for (i = 0; i < iNum_Bitmaps; i++) {
-    bmTemp.LoadBitmap(m_MainToolBarClassicBMs[i]);
-    m_ImageLists[0].Add(&bmTemp, crClassicBackground);
-    bmTemp.Detach();
-    if (m_MainToolBarClassicBMs[i] == IDB_BROWSEURL_CLASSIC)
+    if (m_MainToolBarClassicBMs[i] == IDB_BROWSEURL_CLASSIC) {
       m_iBrowseURL_BM_offset = i;
+      break;
+    }
   }
 
-  m_iSendEmail_BM_offset = iNum_Bitmaps;
+  m_iSendEmail_BM_offset = iNum_Bitmaps;  // First of the "Others"
 
-  for (i = 0; i < iNum_Others; i++) {
-    bmTemp.LoadBitmap(m_OtherClassicBMs[i]);
-    m_ImageLists[0].Add(&bmTemp, crClassicBackground);
-    bmTemp.Detach();
-  }
+  SetupImageList(&m_MainToolBarClassicBMs[0], iNum_Bitmaps, 0);
+  SetupImageList(&m_OtherClassicBMs[0], iNum_Others, 0);
 
-  for (i = 0; i < iNum_Bitmaps; i++) {
-    bmTemp.LoadBitmap(m_MainToolBarNew8BMs[i]);
-    m_ImageLists[1].Add(&bmTemp, crNewBackground1);
-    bmTemp.Detach();
-  }
+  SetupImageList(&m_MainToolBarNewBMs[0], iNum_Bitmaps, 1);
+  SetupImageList(&m_OtherNewBMs[0], iNum_Others, 1);
 
-  for (i = 0; i < iNum_Others; i++) {
-    bmTemp.LoadBitmap(m_OtherNew8BMs[i]);
-    m_ImageLists[1].Add(&bmTemp, crNewBackground1);
-    bmTemp.Detach();
-  }
+  SetupImageList(&m_MainToolBarNewBMs[0], iNum_Bitmaps, 2);
+  SetupImageList(&m_OtherNewBMs[0], iNum_Others, 2);
 
-  for (i = 0; i < iNum_Bitmaps; i++) {
-    bmTemp.LoadBitmap(m_MainToolBarNew32BMs[i]);
-    m_ImageLists[2].Add(&bmTemp, crNewBackground2);
-    bmTemp.Detach();
-  }
-
-  for (i = 0; i < iNum_Others; i++) {
-    bmTemp.LoadBitmap(m_OtherNew8BMs[i]);
-    m_ImageLists[2].Add(&bmTemp, crNewBackground2);
-    bmTemp.Detach();
-  }
+  if (bRefresh)
+    return;
 
   j = 0;
   m_csDefaultButtonString.Empty();
@@ -536,8 +538,6 @@ CPWToolBar::ChangeImages(const int toolbarMode)
 void
 CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
 {
-  m_toolbarMode = toolbarMode;
-
   int nCount, i, j;
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
   nCount = tbCtrl.GetButtonCount();
@@ -594,4 +594,71 @@ CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
 
   dwStyleEx = tbCtrl.GetExtendedStyle();
   tbCtrl.SetExtendedStyle(dwStyleEx | TBSTYLE_EX_MIXEDBUTTONS);
+}
+
+void
+CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
+{
+  int i, j(0);
+  int iNum_ToolBarIDs = sizeof(m_MainToolBarIDs) / sizeof(UINT);
+  for (i = 0; i < iNum_ToolBarIDs; i++) {
+    UINT ID = m_MainToolBarIDs[i];
+    if (ID == ID_SEPARATOR)
+      continue;
+    IDtoImages[ID] = j;
+    j++;
+  }
+
+  int iNum_OtherIDs  = sizeof(m_OtherIDs) / sizeof(UINT);
+  for (i = 0; i < iNum_OtherIDs; i++) {
+    UINT ID = m_OtherIDs[i];
+    IDtoImages[ID] = j;
+    j++;
+  }
+}
+
+void
+CPWToolBar::SetupImageList(const UINT *pBM_IDs, const int numBMs, const int nImageList)
+{
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_BTNFACE);
+
+  CBitmap bmNormal;
+  for (int i = 0; i < numBMs; i++) {
+    bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pBM_IDs[i]), RT_BITMAP),
+                                MAKEINTRESOURCE(pBM_IDs[i]), IMAGE_BITMAP, 0, 0,
+                                (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+
+    SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
+    m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
+    bmNormal.Detach();
+  }
+}
+  
+void
+CPWToolBar::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
+{
+  // Get how many pixels in the bitmap
+  BITMAP bmInfo;
+  bm.GetBitmap(&bmInfo);
+
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(bm.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  ASSERT(pixels != NULL);
+
+  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(newbkgrndColour),
+                                        GetGValue(newbkgrndColour),
+                                        GetRValue(newbkgrndColour)};
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
 }

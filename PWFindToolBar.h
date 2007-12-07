@@ -36,6 +36,7 @@ public:
   void ToggleToolBarFindCase();
   BOOL IsFindCaseSet()
     {return m_bCaseSensitive ? TRUE : FALSE;}
+  void RefreshImages();
 
   CEditExtn m_findedit;
   CStaticExtn m_findresults;
@@ -51,14 +52,13 @@ protected:
 private:
   static const UINT m_FindToolBarIDs[];
   static const UINT m_FindToolBarClassicBMs[];
-  static const UINT m_FindToolBarNew8BMs[];
-  static const UINT m_FindToolBarNew32BMs[];
+  static const UINT m_FindToolBarNewBMs[];
 
   CImageList m_ImageLists[3];  // 1st = Classic; 2nd = New 8; 3rd = New 32;
   TBBUTTON *m_pOriginalTBinfo;
   CWnd *m_pDbx;
   CFont m_FindTextFont;
-  int m_iMaxNumButtons, m_iNum_Bitmaps;
+  int m_iMaxNumButtons, m_iNum_Bitmaps, m_NumBits;
   int m_iWMSGID;
   int m_toolbarMode, m_bitmode;
   bool m_bVisible, m_bCaseSensitive, m_bAdvanced;

@@ -117,7 +117,7 @@ protected:
     static UINT  m_nIDEvent;
     UINT_PTR     m_uIDTimer;
     int          m_nCurrentIcon;
-	UINT		 m_menuID;
+    UINT         m_menuID;
     COleDateTime m_StartTime;
     int          m_nAnimationPeriod;
     HICON        m_hSavedIcon;

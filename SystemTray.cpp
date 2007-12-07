@@ -61,6 +61,7 @@
     
 #include "stdafx.h"
 #include "SystemTray.h"
+#include "ThisMfcApp.h"
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
@@ -453,14 +454,33 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
   CWnd* pTarget = m_pTarget; // AfxGetMainWnd();
 
   // Clicking with right button brings up a context menu
-  if (LOWORD(lParam) == WM_RBUTTONUP)
-    {    
+  if (LOWORD(lParam) == WM_RBUTTONUP) {    
       ASSERT(pTarget != NULL);
       if (!menu.LoadMenu(m_menuID)) return 0;
 
       // Get pointer to the real menu (must be POPUP for TrackPopupMenu)
       pContextMenu = menu.GetSubMenu(0);
       if (!pContextMenu) return 0;
+
+      const int i_state = app.GetSystemTrayState();
+      switch (i_state) {
+        case ThisMfcApp::UNLOCKED:
+          {
+          const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
+          pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
+                                   ID_MENUITEM_TRAYLOCK, csLock);
+          }
+          break;
+        case ThisMfcApp::LOCKED:
+          {
+          const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
+          pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
+                                   ID_MENUITEM_TRAYUNLOCK, csUnLock);
+          }
+          break;
+        default:
+          break;
+      }
 
       CMenu *pMainRecentEntriesMenu;
       int irc;
@@ -471,6 +491,20 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       typedef CMenu* CMenuPtr;
       CMenu **pNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
 
+      MENUINFO minfo;
+      memset(&minfo, 0x00, sizeof(minfo));
+      minfo.cbSize = sizeof(MENUINFO);
+      minfo.fMask = MIM_MENUDATA;
+      minfo.dwMenuData = 1;
+      pMainRecentEntriesMenu->SetMenuInfo(&minfo);
+
+      MENUITEMINFO miinfo;
+      memset(&miinfo, 0x00, sizeof(miinfo));
+      miinfo.cbSize = sizeof(MENUITEMINFO);
+      miinfo.fMask = MIIM_DATA;
+
+      CRUEItemData* pmd;
+
       if (num_recent_entries == 0) {
         // Only leave the "Clear Entries" menu item (greyed out in ON_UPDATE_COMMAND_UI function)
         pMainRecentEntriesMenu->RemoveMenu(3, MF_BYPOSITION);  // Separator
@@ -479,18 +513,6 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       } else {
         // Build extra popup menus (1 per entry in list)
         m_RUEList.GetAllMenuItemStrings(m_menulist);
-
-        MENUINFO minfo;
-        memset(&minfo, 0x00, sizeof(minfo));
-        minfo.cbSize = sizeof(MENUINFO);
-        minfo.fMask = MIM_MENUDATA;
-        minfo.dwMenuData = 1;
-        pMainRecentEntriesMenu->SetMenuInfo(&minfo);
-
-        MENUITEMINFO miinfo;
-        memset(&miinfo, 0x00, sizeof(miinfo));
-        miinfo.cbSize = sizeof(MENUITEMINFO);
-        miinfo.fMask = MIIM_DATA;
 
         for (size_t i = 0; i < num_recent_entries; i++) {
           const CMyString cEntry = m_menulist[i].string;
@@ -535,7 +557,9 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
                                                    UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
                                                    cEntry);
           ASSERT(irc != 0);
-          miinfo.dwItemData = m_menulist[i].image; // Needed by OnInitMenuPopup
+          pmd = new CRUEItemData;
+          pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup
+          miinfo.dwItemData = (ULONG_PTR)pmd;
           irc = pMainRecentEntriesMenu->SetMenuItemInfo(i + 4, &miinfo, TRUE);
           ASSERT(irc != 0);
         }
@@ -555,8 +579,13 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
       pTarget->PostMessage(WM_NULL, 0, 0);
         
-      for (size_t i = 0; i < num_recent_entries; i++)
+      for (size_t i = 0; i < num_recent_entries; i++) {
+        irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miinfo, TRUE);
+        ASSERT(irc != 0);
+        pmd = (CRUEItemData*)miinfo.dwItemData;
+        delete pmd;
         delete pNewRecentEntryMenu[i];
+      }
 
       delete[] pNewRecentEntryMenu;
       m_menulist.clear();

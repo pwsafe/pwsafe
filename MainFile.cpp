@@ -2335,6 +2335,7 @@ DboxMain::OnOK()
   // wipe data, save prefs, go home.
   ClearData();
   prefs->SaveApplicationPreferences();
+  m_menuManager.CleanUp();
   CDialog::OnOK();
 }
 

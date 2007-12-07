@@ -291,6 +291,8 @@ DboxMain::setupBars()
   // Set flag - we're done
   m_toolbarsSetup = TRUE;
   UpdateToolBar(m_core.IsReadOnly());
+  m_menuManager.SetImageList(&m_MainToolBar);
+  m_menuManager.SetMapping(&m_MainToolBar);
 #endif
 }
 
@@ -1534,6 +1536,7 @@ DboxMain::SetToolbar(const int menuItem, bool bInit)
     m_MainToolBar.ChangeImages(m_toolbarMode);
     m_FindToolBar.ChangeImages(m_toolbarMode);
   }
+  m_menuManager.SetImageList(&m_MainToolBar);
 
   m_MainToolBar.Invalidate();
   m_FindToolBar.Invalidate();
@@ -2827,7 +2830,12 @@ DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
     }
   }
 
-  HICON hIcon = GetEntryIcon((int)lpdis->itemData);
+  CRUEItemData *pmd;
+  pmd = (CRUEItemData *)lpdis->itemData;
+  if (!pmd || !pmd->IsRUEID())
+    return;
+
+  HICON hIcon = GetEntryIcon(pmd->nImage);
   if (hIcon) {
     ICONINFO iconinfo;
     ::GetIconInfo(hIcon, &iconinfo);
@@ -2855,8 +2863,12 @@ DboxMain::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpmis)
 
   lpmis->itemWidth = 16;
   lpmis->itemHeight = 16;
+  CRUEItemData *pmd;
+  pmd = (CRUEItemData *)lpmis->itemData;
+  if (!pmd || !pmd->IsRUEID())
+    return;
 
-  HICON hIcon = GetEntryIcon((int)lpmis->itemData);
+  HICON hIcon = GetEntryIcon(pmd->nImage);
   if (hIcon) {
     ICONINFO iconinfo;
     ::GetIconInfo(hIcon, &iconinfo);

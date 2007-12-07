@@ -231,7 +231,8 @@ ON_NOTIFY(NM_SETFOCUS, IDC_ITEMLIST, OnChangeItemFocus)
 ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMLIST, OnChangeItemFocus)
 ON_NOTIFY(NM_SETFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
 ON_NOTIFY(NM_KILLFOCUS, IDC_ITEMTREE, OnChangeItemFocus)
-ON_COMMAND(ID_MENUITEM_TRAYLOCKUNLOCK, OnTrayLockUnLock)
+ON_COMMAND(ID_MENUITEM_TRAYLOCK, OnTrayLockUnLock)
+ON_COMMAND(ID_MENUITEM_TRAYUNLOCK, OnTrayLockUnLock)
 ON_COMMAND(ID_MENUITEM_CLEARRECENTENTRIES, OnTrayClearRecentEntries)
 ON_COMMAND(ID_TOOLBUTTON_LISTTREE, OnToggleView)
 ON_COMMAND(ID_TOOLBUTTON_VIEWREPORTS, OnViewReports)
@@ -347,7 +348,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COPY_TO_ORIGINAL, true, false, true, false},
   {ID_MENUITEM_COPY_TO_COMPARISON, true, true, true, false},
   // Tray popup menu
-  {ID_MENUITEM_TRAYLOCKUNLOCK, true, true, true, false},
+  {ID_MENUITEM_TRAYUNLOCK, true, true, true, false},
+  {ID_MENUITEM_TRAYLOCK, true, true, true, false},
   {ID_MENUITEM_CLEARRECENTENTRIES, true, true, true, false},
   {ID_MENUITEM_MINIMIZE, true, true, true, true},
   {ID_MENUITEM_UNMINIMIZE, true, true, true, true},
@@ -706,6 +708,7 @@ DboxMain::OnInitDialog()
     m_MapUICommandTable[m_UICommandTable[i].ID] = i;
 
   // Install menu popups for full path on MRU entries
+  m_menuManager.Install(AfxGetMainWnd());
   m_menuTipManager.Install(AfxGetMainWnd());
 
   // Subclass the ListView HeaderCtrl
@@ -1591,7 +1594,7 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   minfo.cbSize = sizeof(minfo);
   minfo.fMask = MIM_MENUDATA;
   pPopupMenu->GetMenuInfo(&minfo);
-  if (minfo.dwMenuData != 1)  // Set by SystemTray for its menu only
+  if (minfo.dwMenuData != 1)  // Set by SystemTray for its RUE list menu only
     return;
 
   minfo.fMask = MIM_STYLE;
@@ -1601,12 +1604,14 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   MENUITEMINFO miinfo;
   memset(&miinfo, 0x00, sizeof(miinfo));
   miinfo.cbSize = sizeof(miinfo);
+  CRUEItemData *pmd;
 
   for (UINT pos = 0; pos < pPopupMenu->GetMenuItemCount(); pos++) {
     miinfo.fMask = MIIM_FTYPE | MIIM_DATA;
     pPopupMenu->GetMenuItemInfo(pos, &miinfo, TRUE);
+    pmd = (CRUEItemData *)miinfo.dwItemData;
 
-    if (miinfo.dwItemData > 0 && !(miinfo.fType & MFT_OWNERDRAW)) {
+    if (pmd && pmd->IsRUEID() && !(miinfo.fType & MFT_OWNERDRAW)) {
       miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
       miinfo.hbmpItem = HBMMENU_CALLBACK;
       miinfo.fType = MFT_STRING;
@@ -1848,10 +1853,22 @@ DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 #if !defined(POCKET_PC)
       message == WM_MENUSELECT ||
 #endif
-      message == WM_VSCROLL
-      )
+      message == WM_VSCROLL)
     ResetIdleLockCounter();
+
+  if (message == WM_SYSCOLORCHANGE ||
+      message == WM_SETTINGCHANGE)
+    RefreshImages();
+
   return CDialog::WindowProc(message, wParam, lParam);
+}
+
+void
+DboxMain::RefreshImages()
+{
+  m_MainToolBar.RefreshImages();
+  m_FindToolBar.RefreshImages();
+  m_menuManager.SetImageList(&m_MainToolBar);
 }
 
 void
@@ -2202,21 +2219,13 @@ DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
 
   switch (pCmdUI->m_nID) {
     // Set menu text to "UnLock" or "Lock" according to state
-    case ID_MENUITEM_TRAYLOCKUNLOCK:
+    case ID_MENUITEM_TRAYUNLOCK:
+    case ID_MENUITEM_TRAYLOCK:
       {
         const int i_state = app.GetSystemTrayState();
         switch (i_state) {
           case ThisMfcApp::UNLOCKED:
-            {
-              const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
-              pCmdUI->SetText(csLock);
-            }
-            break;
           case ThisMfcApp::LOCKED:
-            {
-              const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
-              pCmdUI->SetText(csUnLock);
-            }
             break;
           case ThisMfcApp::CLOSED:
             {
