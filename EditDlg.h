@@ -26,9 +26,9 @@ public:
   virtual ~CEditDlg();
 
   enum { IDD = IDD_EDIT };
-  CMyString m_defusername, m_username, m_aliases, m_base;
+  CMyString m_defusername, m_username, m_dependents, m_base;
   bool m_Edit_IsReadOnly;
-  int m_numaliases;
+  int m_num_dependents;
   enum CItemData::EntryType m_original_entrytype;
   int m_ibasedata;
   uuid_array_t m_base_uuid;
@@ -101,13 +101,13 @@ protected:
 public:
   afx_msg void OnBnClickedOk();
   afx_msg void OnBnClickedMore();
-  afx_msg void OnBnClickViewAliases();
+  afx_msg void OnBnClickViewDependents();
   afx_msg void OnBnClickedClearLTime();
   afx_msg void OnBnClickedSetLTime();
   afx_msg void OnBnClickedPwhist();
 
   CButton m_MoreLessBtn;
-  CButton m_ViewAliasesBtn;
+  CButton m_ViewDependentsBtn;
 
   afx_msg void OnEnSetfocusNotes();
   afx_msg void OnEnKillfocusNotes();

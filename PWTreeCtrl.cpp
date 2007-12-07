@@ -1313,12 +1313,24 @@ CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
   }
 
   if (ci->IsAlias()) {
-    // I'm and alias; pass on ptr to my base item to retrieve its group/title/user
+    // I'm an alias; pass on ptr to my base item to retrieve its group/title/user
     CItemData *cibase(NULL);
-    uuid_array_t base_uuid, alias_uuid;
-    ci->GetUUID(alias_uuid);
+    uuid_array_t base_uuid, entry_uuid;
+    ci->GetUUID(entry_uuid);
     DboxMain *dbx = static_cast<DboxMain *>(GetParent());
-    dbx->GetBaseUUID(alias_uuid, base_uuid);
+    dbx->GetAliasBaseUUID(entry_uuid, base_uuid);
+    ItemListIter iter = dbx->Find(base_uuid);
+    ASSERT(iter != dbx->End());
+    cibase = &(iter->second);
+    pDDObject->SetBaseItem(cibase);
+  } else
+  if (ci->IsShortcut()) {
+    // I'm a shortcut; pass on ptr to my base item to retrieve its group/title/user
+    CItemData *cibase(NULL);
+    uuid_array_t base_uuid, entry_uuid;
+    ci->GetUUID(entry_uuid);
+    DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+    dbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
     ItemListIter iter = dbx->Find(base_uuid);
     ASSERT(iter != dbx->End());
     cibase = &(iter->second);

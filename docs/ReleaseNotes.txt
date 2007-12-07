@@ -18,6 +18,8 @@ None
 
 New Features for 3.12
 =======================
+[] Several entries may be shorcuts to a single entry, sharing all its
+data (c.f. aliases only share passwords). See online help for details.
 Bitmaps on menus.
 
 Bugs fixed in 3.11.2

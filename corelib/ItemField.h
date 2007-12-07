@@ -16,7 +16,7 @@
 //-----------------------------------------------------------------------------
 
 /*
- * CItemField contains the data for a given CitemData field in encrypted
+ * CItemField contains the data for a given CItemData field in encrypted
  * form.
  * Set() encrypts, Get() decrypts
  */

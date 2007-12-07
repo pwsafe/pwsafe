@@ -355,7 +355,13 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
                 cibase->GetGroup() + _T(":") + 
                 cibase->GetTitle() + _T(":") + 
                 cibase->GetUser() + _T("]]") ;
-  } else
+  } else if (m_entrytype == Shortcut) {
+    ASSERT(cibase != NULL);
+    csPassword = _T("[~") + 
+                cibase->GetGroup() + _T(":") + 
+                cibase->GetTitle() + _T(":") + 
+                cibase->GetUser() + _T("~]") ;
+  }
     csPassword = GetPassword();
 
   // Notes field must be last, for ease of parsing import
@@ -517,6 +523,12 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
           cibase->GetGroup() + _T(":") + 
           cibase->GetTitle() + _T(":") + 
           cibase->GetUser() + _T("]]") ;
+  } else if (m_entrytype == Shortcut) {
+    ASSERT(cibase != NULL);
+    tmp = _T("[~") + 
+          cibase->GetGroup() + _T(":") + 
+          cibase->GetTitle() + _T(":") + 
+          cibase->GetUser() + _T("~]") ;
   } else
     tmp = GetPassword();
   WriteXMLField(oss, "password", tmp, utf8conv);
@@ -1449,7 +1461,11 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
     // I am an alias entry
     ASSERT(cibase != NULL);
     tmp = _T("[[") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("]]");
-  } else
+  } else if (m_entrytype == Shortcut) {
+    // I am a shortcut entry
+    ASSERT(cibase != NULL);
+    tmp = _T("[~") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("~]");
+  } 
     tmp = GetPassword();
 
   push_string(v, PASSWORD, tmp);

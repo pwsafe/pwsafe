@@ -35,7 +35,9 @@ class CPWTreeCtrl : public CTreeCtrl
   enum {NODE = 0,
         NORMAL, WARNEXPIRED_NORMAL, EXPIRED_NORMAL,
         ALIASBASE, WARNEXPIRED_ALIASBASE, EXPIRED_ALIASBASE,
-        ALIAS};
+        ALIAS,
+        SHORTCUTBASE, WARNEXPIRED_SHORTCUTBASE, EXPIRED_SHORTCUTBASE,
+        SHORTCUT};
 
   void Initialize();
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf

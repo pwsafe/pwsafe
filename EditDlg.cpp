@@ -112,8 +112,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 
   m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
                               _T("! &Edit externally"));
-  m_numaliases = 0;
-  m_aliases = _T("");
+  m_num_dependents = 0;
+  m_dependents = _T("");
   m_base = _T("");
 }
 
@@ -140,7 +140,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
 
   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
   DDX_Control(pDX, IDC_MORE, m_MoreLessBtn);
-  DDX_Control(pDX, IDC_VIEWALIASES, m_ViewAliasesBtn);
+  DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
 
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
@@ -163,7 +163,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_EN_KILLFOCUS(IDC_PASSWORD, OnPasskeyKillfocus)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
   ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
-  ON_BN_CLICKED(IDC_VIEWALIASES, OnBnClickViewAliases)
+  ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnBnClickViewDependents)
   ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
   ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
   ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
@@ -271,8 +271,9 @@ CEditDlg::OnOK()
     }
   }
 
-  if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_password, true,
-                             m_base_uuid, m_ibasedata)) {
+  bool brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
+                             true, CItemData::Alias, m_base_uuid, m_ibasedata);
+  if (!brc && m_ibasedata != 0) {
     // Already issued error message to user
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
@@ -390,23 +391,28 @@ BOOL CEditDlg::OnInitDialog()
     GetDlgItem(IDC_STATICGROUPRUNKNFLDS)->ShowWindow(SW_HIDE);
   }
 
-  if (m_original_entrytype == CItemData::Base) {
-    // Show button to allow users to view aliases
-    GetDlgItem(IDC_VIEWALIASES)->ShowWindow(SW_SHOW);
+  // Note shortcuts have their own dialog for edit.
+  if (m_original_entrytype == CItemData::AliasBase ||
+      m_original_entrytype == CItemData::ShortcutBase) {
+    // Show button to allow users to view dependents
+    CString csButtonText;
+    csButtonText.LoadString(m_original_entrytype == CItemData::AliasBase ? IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
+    GetDlgItem(IDC_VIEWDEPENDENTS)->SetWindowText(csButtonText);
+    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
   } else
   if (m_original_entrytype == CItemData::Alias) {
     // Update password to alias form
-    // SHow text stating that it is an alias
+    // Show text stating that it is an alias
     m_realpassword = m_oldRealPassword = m_base;
-    GetDlgItem(IDC_VIEWALIASES)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_SHOW);
   } else
   if (m_original_entrytype == CItemData::Normal) {
     // Normal - do none of the above
-    GetDlgItem(IDC_VIEWALIASES)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
   }
@@ -826,10 +832,16 @@ LRESULT CEditDlg::OnExternalEditorEnded(WPARAM, LPARAM)
   return 0;
 }
 
-void CEditDlg::OnBnClickViewAliases()
+void CEditDlg::OnBnClickViewDependents()
 {
-  CString cs_msg;
-  const CString cs_type(MAKEINTRESOURCE(m_numaliases == 1 ? IDS_ALIAS : IDS_ALIASES));
-  cs_msg.Format(IDS_VIEWALIASES, m_numaliases, cs_type, m_aliases);
+  CString cs_msg, cs_type;
+
+  if (m_original_entrytype == CItemData::AliasBase)
+    cs_type.LoadString(m_num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
+  else
+    cs_type.LoadString(m_num_dependents == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
+
+  const UINT iMsg_Num = (m_original_entrytype == CItemData::AliasBase) ? IDS_VIEWALIASES : IDS_VIEWSHORTCUTS;
+  cs_msg.Format(iMsg_Num, m_num_dependents, cs_type, m_dependents);
   MessageBox(cs_msg, AfxGetAppName(), MB_OK);
 }

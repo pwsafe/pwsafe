@@ -39,6 +39,19 @@ typedef ItemMap::iterator ItemMapIter;
 typedef ItemMap::const_iterator ItemMapConstIter;
 typedef std::pair <CUUIDGen, CUUIDGen> ItemMap_Pair;
 
+// Parameter list for GetBaseEntry
+struct GetBaseEntryPL {
+  // All fields except "InputType" are 'output'.
+  CMyString csPwdGroup;
+  CMyString csPwdTitle;
+  CMyString csPwdUser;
+  uuid_array_t base_uuid;
+  CItemData::EntryType InputType;
+  CItemData::EntryType TargetType;
+  int ibasedata;
+  bool bMultipleEntriesFound;
+};
+
 class PWScore {
  public:
 
@@ -158,41 +171,59 @@ class PWScore {
   const CItemData &GetEntry(ItemListConstIter iter) const
   {return iter->second;}
   void AddEntry(const CItemData &item)
-  {uuid_array_t uuid; item.GetUUID(uuid); AddEntry(uuid, item);}
-  void AddEntry(const uuid_array_t &uuid, const CItemData &item);
+  {uuid_array_t entry_uuid; item.GetUUID(entry_uuid); AddEntry(entry_uuid, item);}
+  void AddEntry(const uuid_array_t &entry_uuid, const CItemData &item);
   ItemList::size_type GetNumEntries() const {return m_pwlist.size();}
   void RemoveEntryAt(ItemListIter pos)
   {m_changed = true; NotifyListModified(); m_pwlist.erase(pos);}
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const CMyString &a_group,
                     const CMyString &a_title, const CMyString &a_user);
-  ItemListIter Find(const uuid_array_t &uuid)
-  {return m_pwlist.find(uuid);}
-  ItemListConstIter Find(const uuid_array_t &uuid) const
-  {return m_pwlist.find(uuid);}
+  ItemListIter Find(const uuid_array_t &entry_uuid)
+  {return m_pwlist.find(entry_uuid);}
+  ItemListConstIter Find(const uuid_array_t &entry_uuid) const
+  {return m_pwlist.find(entry_uuid);}
 
-  // Actions relating to base/alias multimap
-  void AddAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t &alias_uuid);
+  // General routines for aliases and shortcuts
+  void AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid,
+                         const CItemData::EntryType type);
+  void RemoveDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid, 
+                            const CItemData::EntryType type);
+  void RemoveAllDependentEntries(const uuid_array_t &base_uuid, 
+                                 const CItemData::EntryType type);
+  void GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &dependentslist, 
+                              const CItemData::EntryType type);
+  void MoveDependentEntries(const uuid_array_t &from_baseuuid, 
+                            const uuid_array_t &to_baseuuid, 
+                            const CItemData::EntryType type);
+  int  AddDependentEntries(UUIDList &dependentslist, CReport *rpt, 
+                           const CItemData::EntryType type, 
+                           const int &iVia);
+  bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid, 
+                                 const CItemData::EntryType type);
+  bool GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl);
+
+  // Actions for Aliases only
   void ResetAllAliasPasswords(const uuid_array_t &base_uuid);
-  void RemoveAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t &alias_uuid);
-  void RemoveAllAliasEntries(const uuid_array_t &base_uuid);
-  void GetAllAliasEntries(const uuid_array_t &base_uuid, UUIDList &aliaslist);
-  void MoveAliases(const uuid_array_t &from_baseuuid, 
-                   const uuid_array_t &to_baseuuid);
-  int AddAliasesViaBaseUUID(UUIDList &possible_aliases, CReport *rpt);
-  int AddAliasesViaPassword(UUIDList &possible_aliases, CReport *rpt);
-  int GetBaseEntry(const CMyString &Password, uuid_array_t &base_uuid,
-                   bool &bBase_was_Alias, bool &bMultiple,
-                   CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser);
 
-  // Actions relating to alias/base map
-  void AddBaseEntry(const uuid_array_t &alias_uuid, const uuid_array_t &base_uuid)
-  {m_alias2base_map[alias_uuid] = base_uuid;}
-  bool GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid);
-  void SetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
+  // Actions relating to alias/base and shortcut/base maps
+  void AddAliasBaseEntry(const uuid_array_t &alias_uuid, const uuid_array_t &base_uuid)
     {m_alias2base_map[alias_uuid] = base_uuid;}
+  void AddShortcutBaseEntry(const uuid_array_t &shortcut_uuid, const uuid_array_t &base_uuid)
+    {m_shortcut2base_map[shortcut_uuid] = base_uuid;}
+  bool GetAliasBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
+    {return GetDependentEntryBaseUUID(alias_uuid, base_uuid, CItemData::Alias);}
+  bool GetShortcutBaseUUID(const uuid_array_t &shortcut_uuid, uuid_array_t &base_uuid)
+    {return GetDependentEntryBaseUUID(shortcut_uuid, base_uuid, CItemData::Shortcut);}
+  void SetAliasBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
+    {m_alias2base_map[alias_uuid] = base_uuid;}
+  void SetShortcutBaseUUID(const uuid_array_t &shortcut_uuid, uuid_array_t &base_uuid)
+    {m_shortcut2base_map[shortcut_uuid] = base_uuid;}
   int NumAliases(const uuid_array_t &base_uuid)
     {return m_base2aliases_mmap.count(base_uuid);}
+  int NumShortcuts(const uuid_array_t &base_uuid)
+    {return m_base2shortcuts_mmap.count(base_uuid);}
+
   ItemListIter GetUniqueBase(const CMyString &title, bool &bMultiple);
   ItemListIter GetUniqueBase(const CMyString &grouptitle, 
                              const CMyString &titleuser, bool &bMultiple);
@@ -250,17 +281,19 @@ class PWScore {
   ItemList m_pwlist;
 
   // Alias structures
-  // Permanent Multimap: since potentially more than one alias per base
-  //  Key = base uuid; Value = multiple alias uuids
+  // Permanent Multimap: since potentially more than one alias/shortcut per base
+  //  Key = base uuid; Value = multiple alias/shortcut uuids
   ItemMMap m_base2aliases_mmap;
+  ItemMMap m_base2shortcuts_mmap;
 
   // Permanent Map: since an alias only has one base
-  //  Key = alias uuid; Value = base uuid
+  //  Key = alias/shortcut uuid; Value = base uuid
   ItemMap m_alias2base_map;
+  ItemMap m_shortcut2base_map;
 
-  // List of possible aliases created during reading a database, importing text or XML,
-  // or OnDrop during D&D - needs to be confirmed that base exists after operation 
-  // complete - then cleared.
+  // List of possible aliases/shortcuts created during reading a database, 
+  // importing text or XML, or OnDrop during D&D - needs to be confirmed 
+  // that base exists after operation complete - then cleared.
   // UUIDList possible_aliases; - NOW a local variable
 
   bool m_changed;

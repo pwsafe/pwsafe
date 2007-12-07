@@ -185,8 +185,9 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
 {
   // Following test required since this can be called on exit, with a ci
   // from ItemData that's already been deleted. Ugh.
+  CItemData *entry(ci);
   if (m_core.GetNumEntries() != 0) {
-    BOOL State = (ci == NULL) ? FALSE : TRUE;
+    BOOL State = (entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
                  ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT};
 
@@ -195,12 +196,24 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
       mainTBCtrl.EnableButton(IDs[i], State);
     }
 
-    if (ci == NULL || ci->IsURLEmpty()) {
+    uuid_array_t entry_uuid, base_uuid;
+    if (entry != NULL && entry->IsShortcut()) {
+      // This is an shortcut
+      entry->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        entry = &iter->second;
+      }
+    }
+
+    if (entry == NULL || entry->IsURLEmpty()) {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
       UpdateBrowseURLSendEmailButton(false);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
-      const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
+      const bool bIsEmail = entry->GetURL().Find(_T("mailto:")) != -1;
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
   }
@@ -964,7 +977,7 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     if (ti != NULL) {
       itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (itemData != NULL) {
-        // right-click was on an item (LEAF of some kind: normal, alias)
+        // right-click was on an item (LEAF of some kind: normal, alias, shortcut)
         DisplayInfo *di = (DisplayInfo *)itemData->GetDisplayInfo();
         ASSERT(di != NULL);
         ASSERT(di->tree_item == ti);
@@ -998,6 +1011,18 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     ASSERT(pPopup != NULL);
 
     ASSERT(itemData != NULL);
+
+    uuid_array_t entry_uuid, base_uuid;
+    if (itemData->IsShortcut()) {
+      // This is an shortcut
+      itemData->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        itemData = &iter->second;
+      }
+    }
 
     if (itemData->IsURLEmpty()) {
       pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
@@ -2741,6 +2766,9 @@ DboxMain::GetEntryImage(const CItemData &ci)
   if (entrytype == CItemData::Alias) {
     return CPWTreeCtrl::ALIAS;
   }
+  if (entrytype == CItemData::Shortcut) {
+    return CPWTreeCtrl::SHORTCUT;
+  }
 
   time_t tLTime, now, warnexptime((time_t)0);
   time(&now);
@@ -2767,8 +2795,11 @@ DboxMain::GetEntryImage(const CItemData &ci)
     case CItemData::Normal:
       nImage = CPWTreeCtrl::NORMAL;
       break;
-    case CItemData::Base:
+    case CItemData::AliasBase:
       nImage = CPWTreeCtrl::ALIASBASE;
+      break;
+    case CItemData::ShortcutBase:
+      nImage = CPWTreeCtrl::SHORTCUTBASE;
       break;
     default:
       nImage = CPWTreeCtrl::NORMAL;
@@ -2777,9 +2808,9 @@ DboxMain::GetEntryImage(const CItemData &ci)
   ci.GetLTime(tLTime);
   if (tLTime != 0) {
     if (tLTime <= now) {
-      nImage += 1;  // Expired
+      nImage += 2;  // Expired
     } else if (tLTime < warnexptime) {
-      nImage += 2;  // Warn neary expired
+      nImage += 1;  // Warn nearly expired
     }
   }
   return nImage;
@@ -2909,6 +2940,18 @@ DboxMain::GetEntryIcon(const int nImage) const
       break;
     case CPWTreeCtrl::ALIAS:
       nID = IDI_ALIAS;
+      break;
+    case CPWTreeCtrl::SHORTCUTBASE:
+      nID = IDI_SBASE;
+      break;
+    case CPWTreeCtrl::WARNEXPIRED_SHORTCUTBASE:
+      nID = IDI_SBASE_WARNEXPIRED;
+      break;
+    case CPWTreeCtrl::EXPIRED_SHORTCUTBASE:
+      nID = IDI_SBASE_EXPIRED;
+      break;
+    case CPWTreeCtrl::SHORTCUT:
+      nID = IDI_SHORTCUT;
       break;
     default:
       nID = IDI_NORMAL;

@@ -198,9 +198,12 @@ public:
   void SaveDisplayStatus(); // call when tree expansion state changes
   bool CheckNewPassword(const CMyString &group, const CMyString &title,
                         const CMyString &user, const CMyString &password,
-                        const bool bIsEdit, uuid_array_t &base_uuid, int &ibasedata);
-  void GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
-  {m_core.GetBaseUUID(alias_uuid, base_uuid);}
+                        const bool bIsEdit, const CItemData::EntryType &InputType, 
+                        uuid_array_t &base_uuid, int &ibasedata);
+  void GetAliasBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
+  {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
+  void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
+  {m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);}
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
   void RefreshImages();
@@ -352,7 +355,8 @@ protected:
 
   void AutoType(const CItemData &ci);
   bool EditItem(CItemData *ci, PWScore *pcore = NULL);
-  void SortAliasEntries(UUIDList &aliaslist, CMyString &csAliases);
+  bool EditShortcut(CItemData *ci, PWScore *pcore = NULL);
+  void SortDependents(UUIDList &dlist, CMyString &csDependents);
   void ViewReport(const CString cs_ReportFileName);
   void SetFindToolBar(bool bShow);
 
@@ -426,6 +430,7 @@ protected:
   afx_msg void OnSave();
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
+  afx_msg void OnAddShortcut();
   afx_msg void OnOK();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();

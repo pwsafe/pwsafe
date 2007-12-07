@@ -158,11 +158,20 @@ struct RecordWriter {
     if (p.second.IsAlias()) {
       uuid_array_t item_uuid, base_uuid;
       p.second.GetUUID(item_uuid);
-      m_core->GetBaseUUID(item_uuid, base_uuid);
+      m_core->GetAliasBaseUUID(item_uuid, base_uuid);
 
       uuid_str_NH_t base_uuid_buffer;
       CUUIDGen::GetUUIDStr(base_uuid, base_uuid_buffer);
       p.second.SetPassword(_T("[[") + CMyString(base_uuid_buffer) + _T("]]"));
+    } else 
+    if (p.second.IsShortcut()) {
+      uuid_array_t item_uuid, base_uuid;
+      p.second.GetUUID(item_uuid);
+      m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
+
+      uuid_str_NH_t base_uuid_buffer;
+      CUUIDGen::GetUUIDStr(base_uuid, base_uuid_buffer);
+      p.second.SetPassword(_T("[~") + CMyString(base_uuid_buffer) + _T("~]"));
     }
     m_out->WriteRecord(p.second);
     p.second.SetPassword(savePassword);
@@ -235,7 +244,16 @@ struct PutText {
       if (item.IsAlias()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
-        m_core->GetBaseUUID(item_uuid, base_uuid);
+        m_core->GetAliasBaseUUID(item_uuid, base_uuid);
+        ItemListIter iter;
+        iter = m_core->Find(base_uuid);
+        if (iter !=  m_core->GetEntryEndIter())
+          cibase = &iter->second;
+      }
+      if (item.IsShortcut()) {
+        uuid_array_t base_uuid, item_uuid;
+        item.GetUUID(item_uuid);
+        m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
         ItemListIter iter;
         iter = m_core->Find(base_uuid);
         if (iter !=  m_core->GetEntryEndIter())
@@ -382,7 +400,16 @@ struct XMLRecordWriter {
       if (item.IsAlias()) {
         uuid_array_t base_uuid, item_uuid;
         item.GetUUID(item_uuid);
-        m_core->GetBaseUUID(item_uuid, base_uuid);
+        m_core->GetAliasBaseUUID(item_uuid, base_uuid);
+        ItemListIter iter;
+        iter = m_core->Find(base_uuid);
+        if (iter != m_core->GetEntryEndIter())
+          cibase = &iter->second;
+      }
+      if (item.IsShortcut()) {
+        uuid_array_t base_uuid, item_uuid;
+        item.GetUUID(item_uuid);
+        m_core->GetShortcutBaseUUID(item_uuid, base_uuid);
         ItemListIter iter;
         iter = m_core->Find(base_uuid);
         if (iter != m_core->GetEntryEndIter())
@@ -602,7 +629,7 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
   }
   uhfl.clear();
 
-  AddAliasesViaPassword(possible_aliases, &rpt);
+  AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
 
   m_changed = true;
   return SUCCESS;
@@ -1008,7 +1035,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   } // file processing for (;;) loop
   ifs.close();
 
-  AddAliasesViaPassword(possible_aliases, &rpt);
+  AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
   m_changed = true;
   return SUCCESS;
 }
@@ -1109,17 +1136,16 @@ PWScore::ReadFile(const CMyString &a_filename,
 
     CItemData temp;
     uuid_array_t base_uuid, temp_uuid;
-    CMyString csMyPassword;
+    CMyString csMyPassword, cs_possibleUUID;
     bool go = true;
 #ifdef DEMO
     bool limited = false;
 #endif
 
-    UUIDList possible_aliases;
+    UUIDList possible_aliases, possible_shortcuts;
     do {
       temp.Clear(); // Rather than creating a new one each time.
       status = in->ReadRecord(temp);
-      CMyString cs_possibleUUID;
       switch (status) {
       case PWSfile::FAILURE:
         {
@@ -1156,8 +1182,8 @@ PWScore::ReadFile(const CMyString &a_filename,
         csMyPassword = temp.GetPassword();
         cs_possibleUUID = csMyPassword.Mid(2, 32);  // Extract possible uuid
         cs_possibleUUID.MakeLower();
-        if (csMyPassword.Left(2) == _T("[[") && 
-            csMyPassword.Right(2) == _T("]]") &&
+        if (((csMyPassword.Left(2) == _T("[[") && csMyPassword.Right(2) == _T("]]")) ||
+             (csMyPassword.Left(2) == _T("[~") && csMyPassword.Right(2) == _T("~]"))) &&
             csMyPassword.GetLength() == 36 &&
             cs_possibleUUID.SpanIncluding(_T("0123456789abcdef")) == cs_possibleUUID) {
           // _stscanf_s always outputs to an "int" using %x even though
@@ -1177,8 +1203,13 @@ PWScore::ReadFile(const CMyString &a_filename,
           csMyPassword.ReleaseBuffer(sizeof(uuid_array_t) * 2 + 4);
           memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
           temp.GetUUID(temp_uuid);
-          m_alias2base_map[temp_uuid] = base_uuid;
-          possible_aliases.push_back(temp_uuid);
+          if (csMyPassword.Mid(1, 1) == _T("[")) {
+            m_alias2base_map[temp_uuid] = base_uuid;
+            possible_aliases.push_back(temp_uuid);
+          } else {
+            m_shortcut2base_map[temp_uuid] = base_uuid;
+            possible_shortcuts.push_back(temp_uuid);
+          }
         }
 #ifdef DEMO
         if (m_pwlist.size() < MAXDEMO) {
@@ -1205,7 +1236,8 @@ PWScore::ReadFile(const CMyString &a_filename,
 #endif
     delete in;
 
-    AddAliasesViaBaseUUID(possible_aliases, NULL);
+    AddDependentEntries(possible_aliases, NULL, CItemData::Alias, CItemData::UUID);
+    AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, CItemData::UUID);
     NotifyListModified();
 
     return closeStatus;
@@ -1706,7 +1738,7 @@ PWScore::Validate(CString &status)
 
   TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 
-  UUIDList possible_aliases;
+  UUIDList possible_aliases, possible_shortcuts;
   ItemListIter iter;
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     CItemData &ci = iter->second;
@@ -1752,12 +1784,17 @@ PWScore::Validate(CString &status)
       csMyPassword.ReleaseBuffer(sizeof(uuid_array_t) * 2 + 4);
       memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
       ci.GetUUID(temp_uuid);
+      if (csMyPassword.Mid(2, 1) == _T("[")) {
       m_alias2base_map[temp_uuid] = base_uuid;
       possible_aliases.push_back(temp_uuid);
+      } else {
+        m_shortcut2base_map[temp_uuid] = base_uuid;
+        possible_shortcuts.push_back(temp_uuid);
+      }
     }
   } // iteration over m_pwlist
 
-  num_alias_warnings = AddAliasesViaBaseUUID(possible_aliases, &rpt);
+  num_alias_warnings = AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::UUID);
 
   TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
   rpt.EndReport();
@@ -1859,73 +1896,115 @@ CMyString PWScore::GetUniqueTitle(const CMyString &path, const CMyString &title,
   return new_title;
 }
 
-void PWScore::AddAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t &alias_uuid)
+void PWScore::AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid, 
+                        const CItemData::EntryType type)
 {
+  ItemMMap *pmmap;
+  ItemMap *pmap;
+  if (type == CItemData::Alias) {
+    pmap = &m_alias2base_map;
+    pmmap = &m_base2aliases_mmap;
+  } else if (type == CItemData::Shortcut) {
+    pmap = &m_shortcut2base_map;
+    pmmap = &m_base2shortcuts_mmap;
+  } else
+    return;
+ 
   ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
 
-  // Mark base entry as a base entry - check not an alias first
-  ASSERT(!iter->second.IsAlias());
-  iter->second.SetBase();
+  if (type == CItemData::Alias) {
+  // Mark base entry as a base entry - must be a normal entry or already an alias base
+    ASSERT(iter->second.IsNormal() || iter->second.IsAliasBase());
+    iter->second.SetAliasBase();
+  } else if (type == CItemData::Shortcut) {
+  // Mark base entry as a base entry - must be a normal entry or already a shortcut base
+    ASSERT(iter->second.IsNormal() || iter->second.IsShortcutBase());
+    iter->second.SetShortcutBase();
+  }
 
-  // Add to both the base->alias multimap and the alias->base map
-  m_base2aliases_mmap.insert(ItemMMap_Pair(base_uuid, alias_uuid));
-  m_alias2base_map[alias_uuid] = base_uuid;
+  // Add to both the base->type multimap and the type->base map
+  pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
+  pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
 }
 
-void PWScore::RemoveAliasEntry(const uuid_array_t &base_uuid, const uuid_array_t &alias_uuid)
+void PWScore::RemoveDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid,
+                           const CItemData::EntryType type)
 {
-  // Remove from alias -> base map
-  m_alias2base_map.erase(alias_uuid);
+  ItemMMap *pmmap;
+  ItemMap *pmap;
+  if (type == CItemData::Alias) {
+    pmap = &m_alias2base_map;
+    pmmap = &m_base2aliases_mmap;
+  } else if (type == CItemData::Shortcut) {
+    pmap = &m_shortcut2base_map;
+    pmmap = &m_base2shortcuts_mmap;
+  } else
+    return;
 
-  // Remove from base -> alias multimap
+  // Remove from entry -> base map
+  pmap->erase(entry_uuid);
+
+  // Remove from base -> entry multimap
   ItemMMapIter mmiter;
   ItemMMapIter mmlastElement;
 
-  mmiter = m_base2aliases_mmap.find(base_uuid);
-  if (mmiter == m_base2aliases_mmap.end())
+  mmiter = pmmap->find(base_uuid);
+  if (mmiter == pmmap->end())
     return;
 
-  mmlastElement = m_base2aliases_mmap.upper_bound(base_uuid);
+  mmlastElement = pmmap->upper_bound(base_uuid);
   uuid_array_t mmiter_uuid;
 
   for ( ; mmiter != mmlastElement; mmiter++) {
     mmiter->second.GetUUID(mmiter_uuid);
-    if (memcmp(alias_uuid, mmiter_uuid, sizeof(uuid_array_t)) == 0) {
-      m_base2aliases_mmap.erase(mmiter);
+    if (memcmp(entry_uuid, mmiter_uuid, sizeof(uuid_array_t)) == 0) {
+      pmmap->erase(mmiter);
       break;
     }
   }
 
   // Reset base entry to normal if it has no more aliases
-  if (m_base2aliases_mmap.find(base_uuid) == m_base2aliases_mmap.end()) {
+  if (pmmap->find(base_uuid) == pmmap->end()) {
     ItemListIter iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end())
       iter->second.SetNormal();
   }
 }
 
-void PWScore::RemoveAllAliasEntries(const uuid_array_t &base_uuid)
+void PWScore::RemoveAllDependentEntries(const uuid_array_t &base_uuid, 
+                                const CItemData::EntryType type)
 {
-  // Remove from alias -> base map for each alias
+  ItemMMap *pmmap;
+  ItemMap *pmap;
+  if (type == CItemData::Alias) {
+    pmap = &m_alias2base_map;
+    pmmap = &m_base2aliases_mmap;
+  } else if (type == CItemData::Shortcut) {
+    pmap = &m_shortcut2base_map;
+    pmmap = &m_base2shortcuts_mmap;
+  } else
+    return;
+
+  // Remove from entry -> base map for each entry
   ItemMMapIter itr;
   ItemMMapIter lastElement;
 
-  itr = m_base2aliases_mmap.find(base_uuid);
-  if (itr == m_base2aliases_mmap.end())
+  itr = pmmap->find(base_uuid);
+  if (itr == pmmap->end())
     return;
 
-  lastElement = m_base2aliases_mmap.upper_bound(base_uuid);
+  lastElement = pmmap->upper_bound(base_uuid);
   uuid_array_t itr_uuid;
 
   for ( ; itr != lastElement; itr++) {
     itr->second.GetUUID(itr_uuid);
-    // Remove from alias -> base map
-    m_alias2base_map.erase(itr_uuid);
+    // Remove from entry -> base map
+    pmap->erase(itr_uuid);
   }
 
-  // Remove from base -> alias multimap
-  m_base2aliases_mmap.erase(base_uuid);
+  // Remove from base -> entry multimap
+  pmmap->erase(base_uuid);
 
   // Reset base entry to normal
   ItemListIter iter = m_pwlist.find(base_uuid);
@@ -1933,197 +2012,180 @@ void PWScore::RemoveAllAliasEntries(const uuid_array_t &base_uuid)
     iter->second.SetNormal();
 }
 
-void PWScore::MoveAliases(const uuid_array_t &from_base_uuid,
-                          const uuid_array_t &to_base_uuid)
+void PWScore::MoveDependentEntries(const uuid_array_t &from_baseuuid,
+                           const uuid_array_t &to_baseuuid, 
+                           const CItemData::EntryType type)
 {
+  ItemMMap *pmmap;
+  ItemMap *pmap;
+  if (type == CItemData::Alias) {
+    pmap = &m_alias2base_map;
+    pmmap = &m_base2aliases_mmap;
+  } else if (type == CItemData::Shortcut) {
+    pmap = &m_shortcut2base_map;
+    pmmap = &m_base2shortcuts_mmap;
+  } else
+    return;
+
   ItemMMapIter from_itr;
   ItemMMapIter lastfromElement;
 
-  from_itr = m_base2aliases_mmap.find(from_base_uuid);
-  if (from_itr == m_base2aliases_mmap.end())
+  from_itr = pmmap->find(from_baseuuid);
+  if (from_itr == pmmap->end())
     return;
 
-  lastfromElement = m_base2aliases_mmap.upper_bound(from_base_uuid);
+  lastfromElement = pmmap->upper_bound(from_baseuuid);
 
   for ( ; from_itr != lastfromElement; from_itr++) {
-    // Add to new base in base -> alias multimap
-    m_base2aliases_mmap.insert(ItemMMap_Pair(to_base_uuid, from_itr->second));
-    // Remove from alias -> base map
-    m_alias2base_map.erase(from_itr->second);
-    // Add to alias -> base map (new base)
-    m_alias2base_map[from_itr->second] = to_base_uuid;    
+    // Add to new base in base -> entry multimap
+    pmmap->insert(ItemMMap_Pair(to_baseuuid, from_itr->second));
+    // Remove from entry -> base map
+    pmap->erase(from_itr->second);
+    // Add to entry -> base map (new base)
+    pmmap->insert(ItemMap_Pair(from_itr->second, to_baseuuid));    
   }
 
   // Now delete all old base entries
-  m_base2aliases_mmap.erase(from_base_uuid);
+  pmmap->erase(from_baseuuid);
 }
 
-int PWScore::AddAliasesViaBaseUUID(UUIDList &possible_aliases, CReport *rpt)
+int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
+                                 const CItemData::EntryType type, const int &iVia)
 {
   // When called during validation of a database  - *rpt is valid
   // When called during the opening of a database - *rpt is NULL and no report generated
-  // In this case, the password was "[[uuidstr]]", giving the associated base entry
+  // If iVia == CItemData::UUID, the password was "[[uuidstr]]" or "[~uuidstr~]" of the
+  //   associated base entry
+  // If iVia == CItemData::PASSWORD, the password is expected to be in the full format 
+  // [g:t:u], where g and/or u may be empty.
+
+  ItemMap *pmap;
+  ItemMMap *pmmap;
+  if (type == CItemData::Alias) {
+    pmap = &m_alias2base_map;
+    pmmap = &m_base2aliases_mmap;
+  } else if (type == CItemData::Shortcut) {
+    pmap = &m_shortcut2base_map;
+    pmmap = &m_base2shortcuts_mmap;
+  } else
+    return -1;
+
   int num_warnings(0);
-  if (!possible_aliases.empty()) {
+
+  if (!dependentlist.empty()) {
     UUIDListIter paiter;
     ItemListIter iter;
-    uuid_array_t base_uuid, alias_uuid;
-    bool bwarnings(false);
-    CString strError;
-
-    for (paiter = possible_aliases.begin();
-         paiter != possible_aliases.end(); paiter++) {
-      iter = m_pwlist.find(*paiter);
-      if (iter == m_pwlist.end())
-        return num_warnings;
-
-      CItemData *curitem = &iter->second;
-      curitem->GetUUID(alias_uuid);
-      GetBaseUUID(alias_uuid, base_uuid);
-
-      // Delete it - we will put it back if it is an alias
-      m_alias2base_map.erase(alias_uuid);
-
-      iter = m_pwlist.find(base_uuid);
-      if (iter != m_pwlist.end()) {
-        if (iter->second.IsAlias()) {
-          // This is an alias too!  Not allowed!  Make new one point to original base
-          // Note: this may be random as who knows the order of reading records?
-          uuid_array_t temp_uuid;
-          iter->second.GetUUID(temp_uuid);
-          GetBaseUUID(temp_uuid, base_uuid);
-          if (rpt != NULL) {
-            if (!bwarnings) {
-              bwarnings = true;
-              strError.LoadString(IDSC_ALIASWARNINGHDR);
-              rpt->WriteLine(strError);
-            }
-            strError.Format(IDSC_ALIASWARNING1, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
-            rpt->WriteLine(strError);
-            strError.LoadString(IDSC_ALIASWARNING1A);
-            rpt->WriteLine(strError);
-          }
-
-          num_warnings++;
-        } else {
-          iter->second.GetUUID(base_uuid);
-          iter->second.SetBase();
-        }
-        m_base2aliases_mmap.insert(ItemMMap_Pair(base_uuid, alias_uuid));
-        m_alias2base_map[alias_uuid] = base_uuid;
-        curitem->SetPassword(CMyString(_T("[Alias]")));
-        curitem->SetAlias();
-      } else {
-        // Specified base does not exist!
-        if (rpt != NULL) {
-          if (!bwarnings) {
-            bwarnings = true;
-            strError.LoadString(IDSC_ALIASWARNINGHDR);
-            rpt->WriteLine(strError);
-          }
-          strError.Format(IDSC_ALIASWARNING2, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
-          rpt->WriteLine(strError);
-          strError.LoadString(IDSC_ALIASWARNING2A);
-          rpt->WriteLine(strError);
-        }
-        curitem->SetNormal();
-        num_warnings++;
-      }
-    }
-    possible_aliases.clear();
-  }
-  return num_warnings;
-}
-
-int PWScore::AddAliasesViaPassword(UUIDList &possible_aliases, CReport *rpt)
-{
-  // This is only called when importing entrys from Text or XML.
-  // In this case, the password is expected to be in the full format [g:t:u]
-  // where g and/or u may be empty.
-  int num_warnings(0);
-  if (!possible_aliases.empty()) {
-    UUIDListIter paiter;
-    ItemListIter iter;
-
     CMyString csPwdGroup, csPwdTitle, csPwdUser, tmp;
-    uuid_array_t base_uuid, alias_uuid;
+    uuid_array_t base_uuid, entry_uuid;
     bool bwarnings(false);
     CString strError;
 
-    for (paiter = possible_aliases.begin();
-         paiter != possible_aliases.end(); paiter++) {
+    for (paiter = dependentlist.begin();
+         paiter != dependentlist.end(); paiter++) {
       iter = m_pwlist.find(*paiter);
       if (iter == m_pwlist.end())
         return num_warnings;
 
       CItemData *curitem = &iter->second;
-      curitem->GetUUID(alias_uuid);
+      curitem->GetUUID(entry_uuid);
+      GetDependentEntryBaseUUID(entry_uuid, base_uuid, type);
 
-      // Delete it - we will put it back if it is an alias
-      m_alias2base_map.erase(alias_uuid);
+      // Delete it - we will put it back if it is an alias/shortcut
+      pmap->erase(entry_uuid);
 
-      tmp = curitem->GetPassword();
-      // Remove leading '[[' & trailing ']]'
-      tmp = tmp.Mid(2, tmp.GetLength() - 4);
-      csPwdGroup = tmp.SpanExcluding(_T(":"));
-      // Skip over 'group:'
-      tmp = tmp.Mid(csPwdGroup.GetLength() + 1);
-      csPwdTitle = tmp.SpanExcluding(_T(":"));
-      // Skip over 'title:'
-      csPwdUser = tmp.Mid(csPwdTitle.GetLength() + 1);
-      iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+      if (iVia == CItemData::UUID) {
+        iter = m_pwlist.find(base_uuid);
+      } else {
+        tmp = curitem->GetPassword();
+        // Remove leading '[['/'[~' & trailing ']]'/'~]'
+        tmp = tmp.Mid(2, tmp.GetLength() - 4);
+        csPwdGroup = tmp.SpanExcluding(_T(":"));
+        // Skip over 'group:'
+        tmp = tmp.Mid(csPwdGroup.GetLength() + 1);
+        csPwdTitle = tmp.SpanExcluding(_T(":"));
+        // Skip over 'title:'
+        csPwdUser = tmp.Mid(csPwdTitle.GetLength() + 1);
+        iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+      }
       if (iter != m_pwlist.end()) {
+        if (type == CItemData::Shortcut) {
+          const CItemData::EntryType type2 = iter->second.GetEntryType();
+          if (type2 != CItemData::Normal && type2 != CItemData::ShortcutBase) {
+            // Bad news!
+            if (!bwarnings) {
+              bwarnings = true;
+              strError.LoadString(IDSC_IMPORTWARNINGHDR);
+              rpt->WriteLine(strError);
+            }
+            strError.Format(IDSC_IMPORTWARNING3, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
+            rpt->WriteLine(strError);
+            // Invalid - delete!
+            RemoveEntryAt(m_pwlist.find(entry_uuid));
+            continue;
+          } 
+        }
         if (iter->second.IsAlias()) {
           // This is an alias too!  Not allowed!  Make new one point to original base
           // Note: this may be random as who knows the order of reading records?
           uuid_array_t temp_uuid;
           iter->second.GetUUID(temp_uuid);
-          GetBaseUUID(temp_uuid, base_uuid);
+          GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
           if (rpt != NULL) {
             if (!bwarnings) {
               bwarnings = true;
-              strError.LoadString(IDSC_ALIASWARNINGHDR);
+              strError.LoadString(IDSC_IMPORTWARNINGHDR);
               rpt->WriteLine(strError);
             }
-            strError.Format(IDSC_ALIASWARNING1, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
+            strError.Format(IDSC_IMPORTWARNING1, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
             rpt->WriteLine(strError);
-            strError.LoadString(IDSC_ALIASWARNING1A);
+            strError.LoadString(IDSC_IMPORTWARNING1A);
             rpt->WriteLine(strError);
           }
           curitem->SetAlias();
           num_warnings++;
         } else {
           iter->second.GetUUID(base_uuid);
-          iter->second.SetBase();
+          if (type == CItemData::Alias) {
+            iter->second.SetAliasBase();
+          } else if (type == CItemData::Shortcut) {
+            iter->second.SetShortcutBase();
+          }
         }
-        m_base2aliases_mmap.insert(ItemMMap_Pair(base_uuid, alias_uuid));
-        m_alias2base_map[alias_uuid] = base_uuid;
-        curitem->SetPassword(CMyString(_T("[Alias]")));
-        curitem->SetAlias();
+        pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
+        pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
+        if (type == CItemData::Alias) {
+          curitem->SetPassword(CMyString(_T("[Alias]")));
+          curitem->SetAlias();
+        } else if (type == CItemData::Shortcut) {
+          curitem->SetPassword(CMyString(_T("[Shortcut]")));
+          curitem->SetShortcut();
+        }
       } else {
         // Specified base does not exist!
         if (rpt != NULL) {
           if (!bwarnings) {
             bwarnings = true;
-            strError.LoadString(IDSC_ALIASWARNINGHDR);
+            strError.LoadString(IDSC_IMPORTWARNINGHDR);
             rpt->WriteLine(strError);
           }
-          strError.Format(IDSC_ALIASWARNING2, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
+          strError.Format(IDSC_IMPORTWARNING2, curitem->GetGroup(), 
+                          curitem->GetTitle(), curitem->GetUser());
           rpt->WriteLine(strError);
-          strError.LoadString(IDSC_ALIASWARNING2A);
+          strError.LoadString(IDSC_IMPORTWARNING2A);
           rpt->WriteLine(strError);
         }
         curitem->SetNormal();
         num_warnings++;
       }
     }
-    possible_aliases.clear();
+    dependentlist.clear();
   }
   return num_warnings;
 }
 
 void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
 {
+  // Alias ONLY - no shortcut version needed
   ItemMMapIter itr;
   ItemMMapIter lastElement;
   ItemListIter base_itr, alias_itr;
@@ -2155,39 +2217,43 @@ void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
   m_base2aliases_mmap.erase(base_uuid);
 }
 
-void PWScore::GetAllAliasEntries(const uuid_array_t &base_uuid, UUIDList &aliaslist)
+void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &tlist, const CItemData::EntryType type)
 {
   ItemMMapIter itr;
   ItemMMapIter lastElement;
-  uuid_array_t alias_uuid;
+  uuid_array_t uuid;
 
-  itr = m_base2aliases_mmap.find(base_uuid);
-  if (itr == m_base2aliases_mmap.end())
+  ItemMMap *pmmap;
+  if (type == CItemData::Alias)
+    pmmap = &m_base2aliases_mmap;
+  else if (type == CItemData::Shortcut)
+    pmmap = &m_base2shortcuts_mmap;
+  else
     return;
 
-  lastElement = m_base2aliases_mmap.upper_bound(base_uuid);
+  itr = pmmap->find(base_uuid);
+  if (itr == pmmap->end())
+    return;
+
+  lastElement = pmmap->upper_bound(base_uuid);
 
   for ( ; itr != lastElement; itr++) {
-    itr->second.GetUUID(alias_uuid);
-    aliaslist.push_back(alias_uuid);
+    itr->second.GetUUID(uuid);
+    tlist.push_back(uuid);
   }
 }
 
-int PWScore::GetBaseEntry(const CMyString &Password, uuid_array_t &base_uuid,
-                          bool &bBase_was_Alias, bool &bMultiple,
-                          CMyString &csPwdGroup, CMyString &csPwdTitle, CMyString &csPwdUser)
+bool PWScore::GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl)
 {
-  // Either returns:
+  // pl.ibasedata is:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
   //   0: password not in alias format
   //  -n: password contains (n-1) colons but either no base entry found or no unique entry found (n = 1, 2 or 3)
-  
-  // "bBase_was_Alias" is set if the user specified a base entry that is an alias.  The real base is returned
-  // "bMultiple" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
 
-  bBase_was_Alias = false;
-  bMultiple = false;
-  memset(base_uuid, 0x00, sizeof(uuid_array_t));
+  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
+
+  pl.bMultipleEntriesFound = false;
+  memset(pl.base_uuid, 0x00, sizeof(uuid_array_t));
 
   int num_colonsP1 = CMyString(Password).Replace(_T(':'), _T(';')) + 1;
   if (Password.Left(1) == CMyString(_T("[")) &&
@@ -2198,68 +2264,82 @@ int PWScore::GetBaseEntry(const CMyString &Password, uuid_array_t &base_uuid,
     switch (num_colonsP1) {
       case 1:
         // [X] - OK if unique entry [g:X:u], [g:X:], [:X:u] or [:X:] exists for any value of g or u
-        csPwdTitle = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
-        iter = GetUniqueBase(csPwdTitle, bMultiple);
+        pl.csPwdTitle = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
+        iter = GetUniqueBase(pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
           // Fill in the fields found during search
-          csPwdGroup = iter->second.GetGroup();
-          csPwdUser = iter->second.GetUser();
+          pl.csPwdGroup = iter->second.GetGroup();
+          pl.csPwdUser = iter->second.GetUser();
         }
         break;
       case 2:
         // [X:Y] - OK if unique entry [X:Y:u] or [g:X:Y] exists for any value of g or u
-        csPwdUser = _T("");
+        pl.csPwdUser = _T("");
         tmp = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
-        csPwdGroup = tmp.SpanExcluding(_T(":"));
-        csPwdTitle = tmp.Mid(csPwdGroup.GetLength() + 1);  // Skip over 'group:'
-        iter = GetUniqueBase(csPwdGroup, csPwdTitle, bMultiple);
+        pl.csPwdGroup = tmp.SpanExcluding(_T(":"));
+        pl.csPwdTitle = tmp.Mid(pl.csPwdGroup.GetLength() + 1);  // Skip over 'group:'
+        iter = GetUniqueBase(pl.csPwdGroup, pl.csPwdTitle, pl.bMultipleEntriesFound);
         if (iter != m_pwlist.end()) {
           // Fill in the fields found during search
-          csPwdGroup = iter->second.GetGroup();
-          csPwdTitle = iter->second.GetTitle();
-          csPwdUser = iter->second.GetUser();
+          pl.csPwdGroup = iter->second.GetGroup();
+          pl.csPwdTitle = iter->second.GetTitle();
+          pl.csPwdUser = iter->second.GetUser();
         }
         break;
       case 3:
         // [X:Y:Z], [X:Y:], [:Y:Z], [:Y:] (title cannot be empty)
         tmp = Password.Mid(1, Password.GetLength() - 2);  // Skip over '[' & ']'
-        csPwdGroup = tmp.SpanExcluding(_T(":"));
-        tmp = tmp.Mid(csPwdGroup.GetLength() + 1);  // Skip over 'group:'
-        csPwdTitle = tmp.SpanExcluding(_T(":"));    // Skip over 'title:'
-        csPwdUser = tmp.Mid(csPwdTitle.GetLength() + 1);
-        iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+        pl.csPwdGroup = tmp.SpanExcluding(_T(":"));
+        tmp = tmp.Mid(pl.csPwdGroup.GetLength() + 1);  // Skip over 'group:'
+        pl.csPwdTitle = tmp.SpanExcluding(_T(":"));    // Skip over 'title:'
+        pl.csPwdUser = tmp.Mid(pl.csPwdTitle.GetLength() + 1);
+        iter = Find(pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
         break;
       default:
         ASSERT(0);
     }
     if (iter != m_pwlist.end()) {
-      // Check if base is already an alias, if so, set this entry -> real base entry
-      if (iter->second.IsAlias()) {
-        bBase_was_Alias = true;
+      pl.TargetType = iter->second.GetEntryType();
+      if (pl.InputType == CItemData::Alias && pl.TargetType == CItemData::Alias) {
+        // Check if base is already an alias, if so, set this entry -> real base entry
         uuid_array_t temp_uuid;
         iter->second.GetUUID(temp_uuid);
-        GetBaseUUID(temp_uuid, base_uuid);
+        GetAliasBaseUUID(temp_uuid, pl.base_uuid);
       } else {
-        iter->second.GetUUID(base_uuid);
+        // This may not be a valid combination of source+target entries - sorted out by caller
+        iter->second.GetUUID(pl.base_uuid);
       }
       // Valid and found
-      return num_colonsP1;
+      pl.ibasedata = num_colonsP1;
+      return true;
     }
     // Valid but either exact [g:t:u] not found or
     //  no or multiple entries satisfy [x] or [x:y]
-    return (-num_colonsP1);
+    pl.ibasedata  = -num_colonsP1;
+    return true;
   }
-  return 0; // invalid password format for an alias
+  pl.ibasedata = 0; // invalid password format for an alias
+  return false;
 }
 
-bool PWScore::GetBaseUUID(const uuid_array_t &alias_uuid, uuid_array_t &base_uuid)
+bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid, 
+                                const CItemData::EntryType type)
 {
-  ItemMapIter iter = m_alias2base_map.find(alias_uuid);
-  if (iter != m_alias2base_map.end()) {
+  memset(base_uuid, 0x00, sizeof(uuid_array_t));
+
+  ItemMap *pmap;
+  if (type == CItemData::Alias)
+    pmap = &m_alias2base_map;
+  else if (type == CItemData::Shortcut)
+    pmap = &m_shortcut2base_map;
+  else
+    return false;
+
+  ItemMapIter iter = pmap->find(entry_uuid);
+  if (iter != pmap->end()) {
     iter->second.GetUUID(base_uuid);
     return true;
   } else {
-    memset(base_uuid, 0x00, sizeof(uuid_array_t));
     return false;
   }
 }
@@ -2289,3 +2369,35 @@ void PWScore::NotifyListModified()
 
   m_pfcnNotifyListModified(m_NotifyInstance);
 }
+
+
+/*
+
+  ItemMap *pmap;
+  if (type == CItemData::Alias)
+    pmap = &m_alias2base_map;
+  else if (type == CItemData::Shortcut)
+    pmap = &m_shortcut2base_map;
+  else
+    return false;
+
+  ItemMMap *pmmap;
+  if (type == CItemData::Alias)
+    pmmap = &m_base2aliases_mmap;
+  else if (type == CItemData::Shortcut)
+    pmmap = &m_base2shortcuts_mmap;
+  else
+    return false;
+
+  ItemMMap *pmmap;
+  ItemMap *pmap;
+  if (type == CItemData::Alias) {
+    pmap = &m_alias2base_map;
+    pmmap = &m_base2aliases_mmap;
+  } else if (type == CItemData::Shortcut) {
+    pmap = &m_shortcut2base_map;
+    pmmap = &m_base2shortcuts_mmap;
+  } else
+    return;
+
+*/

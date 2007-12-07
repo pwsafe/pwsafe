@@ -513,7 +513,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       } else {
         // Build extra popup menus (1 per entry in list)
         m_RUEList.GetAllMenuItemStrings(m_menulist);
-
+        
         for (size_t i = 0; i < num_recent_entries; i++) {
           const CMyString cEntry = m_menulist[i].string;
 

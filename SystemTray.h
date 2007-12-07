@@ -61,7 +61,7 @@ public:
 
     // Create the tray icon
     BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
-		UINT uID, UINT menuID);
+                UINT uID, UINT menuID);
 
     // Change or retrieve the Tooltip text
     BOOL    SetTooltipText(LPCTSTR pszTooltipText);
@@ -101,9 +101,9 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSystemTray)
-	protected:
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
+protected:
+    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
@@ -129,10 +129,10 @@ protected:
     std::vector<RUEntryStringImage> m_menulist;
 // Generated message map functions
 protected:
-	//{{AFX_MSG(CSystemTray)
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
+    //{{AFX_MSG(CSystemTray)
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
 
-	//}}AFX_MSG
+    //}}AFX_MSG
     LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
     DECLARE_MESSAGE_MAP()
 };

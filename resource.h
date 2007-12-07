@@ -35,6 +35,10 @@
 #define IDB_ABASE                       133
 #define IDB_ABASE_EXPIRED               134
 #define IDB_ABASE_WARNEXPIRED           135
+#define IDB_SHORTCUT                    136
+#define IDB_SBASE                       137
+#define IDB_SBASE_EXPIRED               138
+#define IDB_SBASE_WARNEXPIRED           139
 #define IDI_NORMAL                      140
 #define IDI_NORMAL_EXPIRED              141
 #define IDI_NORMAL_WARNEXPIRED          142
@@ -42,6 +46,10 @@
 #define IDI_ABASE                       144
 #define IDI_ABASE_EXPIRED               145
 #define IDI_ABASE_WARNEXPIRED           146
+#define IDI_SHORTCUT                    147
+#define IDI_SBASE                       148
+#define IDI_SBASE_EXPIRED               149
+#define IDI_SBASE_WARNEXPIRED           150
 #define IDD_ABOUTBOX                    200
 #define IDD_PASSWORDSAFE_DIALOG         202
 #define IDD_KEYCHANGE_DIALOG            203
@@ -172,6 +180,10 @@
 #define IDB_TRAYUNLOCK_NEW              330
 #define IDB_TRAYLOCK_CLASSIC            331
 #define IDB_TRAYLOCK_NEW                332
+#define IDB_ADDSHORTCUT_CLASSIC         333
+#define IDB_ADDSHORTCUT_NEW             334
+#define IDD_ADD_SHORTCUT                335
+#define IDD_EDIT_SHORTCUT               336
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -403,7 +415,7 @@
 #define IDC_RECORDUNKNOWNFIELDS         1265
 #define IDC_STATIC_RECORDUNKNOWNFIELDS  1266
 #define IDC_STATICGROUPRUNKNFLDS        1267
-#define IDC_VIEWALIASES                 1268
+#define IDC_VIEWDEPENDENTS              1268
 #define IDC_STATIC_ISANALIAS            1269
 #define IDC_STATIC_ALIASGRP             1270
 #define IDC_NEWVER_STATUS               1272
@@ -414,14 +426,15 @@
 #define IDC_RST_BLUE                    1277
 #define IDC_RST_WHITE                   1278
 #define IDC_RST_YELLOW                  1279
+#define IDC_TARGET                      1280
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        333
+#define _APS_NEXT_RESOURCE_VALUE        337
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1280
+#define _APS_NEXT_CONTROL_VALUE         1281
 #define _APS_NEXT_SYMED_VALUE           151
 #endif
 #endif
