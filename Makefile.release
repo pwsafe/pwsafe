@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.11.2
+RELEASENAME = 3.12.0
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
