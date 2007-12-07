@@ -568,6 +568,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CoolMenu.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CryptKeyEntry.cpp"
 				>
 			</File>
@@ -830,6 +834,10 @@
 			</File>
 			<File
 				RelativePath=".\ControlExtns.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CoolMenu.h"
 				>
 			</File>
 			<File
@@ -1102,15 +1110,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\about_new.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\add_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\add_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\add_new8.bmp"
+				RelativePath=".\res\toolbar\add_new.bmp"
 				>
 			</File>
 			<File
@@ -1126,11 +1134,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\autotype_new32.bmp"
+				RelativePath=".\res\toolbar\autotype_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\autotype_new8.bmp"
+				RelativePath=".\res\toolbar\backup_new.bmp"
 				>
 			</File>
 			<File
@@ -1138,11 +1146,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\browseurl_new32.bmp"
+				RelativePath=".\res\toolbar\browseurl_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\browseurl_new8.bmp"
+				RelativePath=".\res\toolbar\changecombo_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\changefont_new.bmp"
 				>
 			</File>
 			<File
@@ -1150,11 +1162,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\clearclipboard_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\clearclipboard_new8.bmp"
+				RelativePath=".\res\toolbar\clearclipboard_new.bmp"
 				>
 			</File>
 			<File
@@ -1162,11 +1170,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\close_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\close_new8.bmp"
+				RelativePath=".\res\toolbar\close_new.bmp"
 				>
 			</File>
 			<File
@@ -1174,11 +1178,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\collapseall_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\collapseall_new8.bmp"
+				RelativePath=".\res\toolbar\collapseall_new.bmp"
 				>
 			</File>
 			<File
@@ -1186,11 +1186,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\compare_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\compare_new8.bmp"
+				RelativePath=".\res\toolbar\compare_new.bmp"
 				>
 			</File>
 			<File
@@ -1198,11 +1194,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copynotes_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\copynotes_new8.bmp"
+				RelativePath=".\res\toolbar\copynotes_new.bmp"
 				>
 			</File>
 			<File
@@ -1210,11 +1202,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copypassword_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\copypassword_new8.bmp"
+				RelativePath=".\res\toolbar\copypassword_new.bmp"
 				>
 			</File>
 			<File
@@ -1222,11 +1210,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\copyuser_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\copyuser_new8.bmp"
+				RelativePath=".\res\toolbar\copyuser_new.bmp"
 				>
 			</File>
 			<File
@@ -1254,11 +1238,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\delete_new32.bmp"
+				RelativePath=".\res\toolbar\delete_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\delete_new8.bmp"
+				RelativePath=".\res\toolbar\duplicate_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\exit_new.bmp"
 				>
 			</File>
 			<File
@@ -1266,11 +1254,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\expandall_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\expandall_new8.bmp"
+				RelativePath=".\res\toolbar\expandall_new.bmp"
 				>
 			</File>
 			<File
@@ -1278,11 +1262,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exporttext_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\exporttext_new8.bmp"
+				RelativePath=".\res\toolbar\exporttext_new.bmp"
 				>
 			</File>
 			<File
@@ -1290,11 +1270,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\exportXML_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\exportXML_new8.bmp"
+				RelativePath=".\res\toolbar\exportXML_new.bmp"
 				>
 			</File>
 			<File
@@ -1302,11 +1278,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\find_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\find_new8.bmp"
+				RelativePath=".\res\toolbar\find_new.bmp"
 				>
 			</File>
 			<File
@@ -1314,11 +1286,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findadvanced_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\findadvanced_new8.bmp"
+				RelativePath=".\res\toolbar\findadvanced_new.bmp"
 				>
 			</File>
 			<File
@@ -1326,11 +1294,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findcase_i_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\findcase_i_new8.bmp"
+				RelativePath=".\res\toolbar\findcase_i_new.bmp"
 				>
 			</File>
 			<File
@@ -1338,11 +1302,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findcase_s_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\findcase_s_new8.bmp"
+				RelativePath=".\res\toolbar\findcase_s_new.bmp"
 				>
 			</File>
 			<File
@@ -1350,11 +1310,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findclear_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\findclear_new8.bmp"
+				RelativePath=".\res\toolbar\findclear_new.bmp"
 				>
 			</File>
 			<File
@@ -1362,11 +1318,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\findclose_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\findclose_new8.bmp"
+				RelativePath=".\res\toolbar\findclose_new.bmp"
 				>
 			</File>
 			<File
@@ -1374,15 +1326,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\groupenter_new.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\help_classic.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\help_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\help_new8.bmp"
+				RelativePath=".\res\toolbar\help_new.bmp"
 				>
 			</File>
 			<File
@@ -1390,11 +1342,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importtext_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\importtext_new8.bmp"
+				RelativePath=".\res\toolbar\importtext_new.bmp"
 				>
 			</File>
 			<File
@@ -1402,11 +1350,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\importXML_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\importXML_new8.bmp"
+				RelativePath=".\res\toolbar\importXML_new.bmp"
 				>
 			</File>
 			<File
@@ -1414,11 +1358,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\listtree_new32.bmp"
+				RelativePath=".\res\toolbar\listtree_new.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\listtree_new8.bmp"
+				RelativePath=".\res\toolbar\lock_new.bmp"
 				>
 			</File>
 			<File
@@ -1430,11 +1374,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\merge_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\merge_new8.bmp"
+				RelativePath=".\res\toolbar\merge_new.bmp"
 				>
 			</File>
 			<File
@@ -1442,11 +1382,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\new_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\new_new8.bmp"
+				RelativePath=".\res\toolbar\new_new.bmp"
 				>
 			</File>
 			<File
@@ -1482,11 +1418,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\open_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\open_new8.bmp"
+				RelativePath=".\res\toolbar\open_new.bmp"
 				>
 			</File>
 			<File
@@ -1494,11 +1426,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\options_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\options_new8.bmp"
+				RelativePath=".\res\toolbar\options_new.bmp"
 				>
 			</File>
 			<File
@@ -1514,7 +1442,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\properties_new.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\psafetxt.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\restore_new.bmp"
 				>
 			</File>
 			<File
@@ -1522,11 +1458,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\save_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\save_new8.bmp"
+				RelativePath=".\res\toolbar\save_new.bmp"
 				>
 			</File>
 			<File
@@ -1534,11 +1466,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\saveas_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\saveas_new8.bmp"
+				RelativePath=".\res\toolbar\saveas_new.bmp"
 				>
 			</File>
 			<File
@@ -1546,11 +1474,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\sendemail_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\sendemail_new8.bmp"
+				RelativePath=".\res\toolbar\sendemail_new.bmp"
 				>
 			</File>
 			<File
@@ -1570,7 +1494,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\unlock_new.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\unlocked_tray.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\validate_new.bmp"
 				>
 			</File>
 			<File
@@ -1578,11 +1510,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewedit_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\viewedit_new8.bmp"
+				RelativePath=".\res\toolbar\viewedit_new.bmp"
 				>
 			</File>
 			<File
@@ -1590,11 +1518,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\viewreports_new32.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\viewreports_new8.bmp"
+				RelativePath=".\res\toolbar\viewreports_new.bmp"
 				>
 			</File>
 			<File

@@ -25,6 +25,7 @@
 #include "PWTreeCtrl.h"
 #include "PWListCtrl.h"
 #include "RUEList.h"
+#include "CoolMenu.h"
 #include "MenuTipper.h"
 #include "LVHdrCtrl.h"
 #include "ColumnChooserDlg.h"
@@ -202,6 +203,7 @@ public:
   {m_core.GetBaseUUID(alias_uuid, base_uuid);}
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
+  void RefreshImages();
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -277,6 +279,7 @@ protected:
   TCHAR *m_pchTip;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
+  CCoolMenuManager m_menuManager;
   CMenuTipManager m_menuTipManager;
 
   int insertItem(CItemData &itemData, int iIndex = -1, 

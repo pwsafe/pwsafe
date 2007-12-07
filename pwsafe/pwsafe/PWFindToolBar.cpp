@@ -64,36 +64,23 @@ const UINT CPWFindToolBar::m_FindToolBarClassicBMs[] = {
   IDB_FINDCASE_S_CLASSIC        // Must be last!
 };
 
-const UINT CPWFindToolBar::m_FindToolBarNew8BMs[] = {
-  IDB_FINDCLOSE_NEW8,
+const UINT CPWFindToolBar::m_FindToolBarNewBMs[] = {
+  IDB_FINDCLOSE_NEW,
   IDB_FINDCTRLPLACEHOLDER,
-  IDB_FIND_NEW8,
-  IDB_FINDCASE_I_NEW8,          // m_iCase_Insensitive_BM_offset contains this offset
-  IDB_FINDADVANCED_NEW8,
-  IDB_FINDCLEAR_NEW8,
-  IDB_FINDCTRLPLACEHOLDER,
-
-  // Additional bitmap for swapping image on "Case" button
-  IDB_FINDCASE_S_NEW8           // Must be last!
-};
-
-const UINT CPWFindToolBar::m_FindToolBarNew32BMs[] = {
-  IDB_FINDCLOSE_NEW32,
-  IDB_FINDCTRLPLACEHOLDER,
-  IDB_FIND_NEW32,
-  IDB_FINDCASE_I_NEW32,         // m_iCase_Insensitive_BM_offset contains this offset
-  IDB_FINDADVANCED_NEW32,
-  IDB_FINDCLEAR_NEW32,
+  IDB_FIND_NEW,
+  IDB_FINDCASE_I_NEW,           // m_iCase_Insensitive_BM_offset contains this offset
+  IDB_FINDADVANCED_NEW,
+  IDB_FINDCLEAR_NEW,
   IDB_FINDCTRLPLACEHOLDER,
 
   // Additional bitmap for swapping image on "Case" button
-  IDB_FINDCASE_S_NEW32          // Must be last!
+  IDB_FINDCASE_S_NEW            // Must be last!
 };
 
 IMPLEMENT_DYNAMIC(CPWFindToolBar, CToolBar)
 
 CPWFindToolBar::CPWFindToolBar()
-  : m_bitmode(1), m_bVisible(true),
+  : m_bitmode(1), m_bVisible(true), 
     m_bCaseSensitive(false), m_bAdvanced(false),
     m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
     m_last_search_text(_T("")), m_last_cs_search(false),
@@ -110,9 +97,7 @@ CPWFindToolBar::CPWFindToolBar()
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
 
   ASSERT(sizeof(m_FindToolBarClassicBMs) / sizeof(UINT) ==
-         sizeof(m_FindToolBarNew8BMs) / sizeof(UINT));
-  ASSERT(sizeof(m_FindToolBarClassicBMs) / sizeof(UINT) ==
-         sizeof(m_FindToolBarNew32BMs) / sizeof(UINT));
+         sizeof(m_FindToolBarNewBMs) / sizeof(UINT));
 
   m_iNum_Bitmaps = sizeof(m_FindToolBarClassicBMs) / sizeof(UINT);
 
@@ -130,10 +115,10 @@ CPWFindToolBar::CPWFindToolBar()
 
 CPWFindToolBar::~CPWFindToolBar()
 {
-  delete [] m_pOriginalTBinfo;
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
   m_ImageLists[2].DeleteImageList();
+  delete [] m_pOriginalTBinfo;
   m_FindTextFont.DeleteObject();
   m_findedit.DestroyWindow();
 }
@@ -142,6 +127,18 @@ BEGIN_MESSAGE_MAP(CPWFindToolBar, CToolBar)
 END_MESSAGE_MAP()
 
 // CPWFindToolBar message handlers
+
+void
+CPWFindToolBar::RefreshImages()
+{
+  m_ImageLists[0].DeleteImageList();
+  m_ImageLists[1].DeleteImageList();
+  m_ImageLists[2].DeleteImageList();
+
+  Init(m_NumBits, m_pDbx, m_iWMSGID);
+  
+  ChangeImages(m_toolbarMode);
+}
 
 BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
 {
@@ -185,12 +182,12 @@ CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
 {
   int i, j;
   COLORREF crClassicBackground = RGB(192, 192, 192);
-  COLORREF crNewBackground1 = RGB(192, 192, 192);
-  COLORREF crNewBackground2 = RGB(196, 196, 196);
-
+  COLORREF crNewBackground = RGB(192, 192, 192);
   UINT iClassicFlags = ILC_MASK | ILC_COLOR8;
   UINT iNewFlags1 = ILC_MASK | ILC_COLOR8;
   UINT iNewFlags2 = ILC_MASK | ILC_COLOR32;
+
+  m_NumBits = NumBits;
 
   if (NumBits >= 32) {
     m_bitmode = 2;
@@ -211,14 +208,14 @@ CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
   }
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
-    bmTemp.LoadBitmap(m_FindToolBarNew8BMs[i]);
-    m_ImageLists[1].Add(&bmTemp, crNewBackground1);
+    bmTemp.LoadBitmap(m_FindToolBarNewBMs[i]);
+    m_ImageLists[1].Add(&bmTemp, crNewBackground);
     bmTemp.Detach();
   }
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
-    bmTemp.LoadBitmap(m_FindToolBarNew32BMs[i]);
-    m_ImageLists[2].Add(&bmTemp, crNewBackground2);
+    bmTemp.LoadBitmap(m_FindToolBarNewBMs[i]);
+    m_ImageLists[2].Add(&bmTemp, crNewBackground);
     bmTemp.Detach();
   }
 
@@ -369,7 +366,7 @@ void CPWFindToolBar::ToggleToolBarFindCase()
 
   m_bCaseSensitive = !m_bCaseSensitive;
   tbCtrl.CheckButton(ID, m_bCaseSensitive ? TRUE : FALSE);
-  
+
   TBBUTTONINFO tbinfo;
   memset(&tbinfo, 0x00, sizeof(tbinfo));
   tbinfo.cbSize = sizeof(tbinfo);
