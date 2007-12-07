@@ -115,8 +115,11 @@
 #define IDSC_IMPORTNOTITLE              3269
 #define IDSC_VALIDATEUUID               3270
 #define IDSC_VALIDATEPWH                3271
-#define IDSC_ALIASWARNINGHDR            3272
-#define IDSC_ALIASWARNING1              3273
-#define IDSC_ALIASWARNING1A             3274
-#define IDSC_ALIASWARNING2              3275
-#define IDSC_ALIASWARNING2A             3276
+#define IDSC_IMPORTWARNINGHDR           3272
+#define IDSC_IMPORTWARNING1             3273
+#define IDSC_IMPORTWARNING1A            3274
+#define IDSC_IMPORTWARNING2             3275
+#define IDSC_IMPORTWARNING2A            3276
+#define IDSC_IMPORTWARNING3             3277
+#define IDSC_ALIAS                      3278
+#define IDSC_SHORTCUT                   3279

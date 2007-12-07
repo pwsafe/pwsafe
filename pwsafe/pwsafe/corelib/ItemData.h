@@ -92,7 +92,9 @@ public:
   enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
   // entry type
-  enum EntryType {Normal, Alias, Base};
+  enum EntryType {Normal = 0, 
+                  AliasBase = 1, Alias = 2, 
+                  ShortcutBase = 4, Shortcut = 8};
 
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
@@ -220,21 +222,31 @@ public:
   bool DeserializePlainText(const std::vector<char> &v);
   bool SetField(int type, unsigned char *data, int len);
 
-  bool IsAlias() const
-  {return (m_entrytype == Alias);}
-
-  bool IsBase() const
-  {return (m_entrytype == Base);}
-  
   EntryType GetEntryType() const
   {return m_entrytype;}
   
+  bool IsNormal() const
+  {return (m_entrytype == Normal);}
+  bool IsAliasBase() const
+  {return (m_entrytype == AliasBase);}
+  bool IsShortcutBase() const
+  {return (m_entrytype == ShortcutBase);}
+  bool IsAlias() const
+  {return (m_entrytype == Alias);}
+  bool IsShortcut() const
+  {return (m_entrytype == Shortcut);}
+
   void SetNormal()
   {m_entrytype = Normal;}
+  void SetAliasBase()
+  {m_entrytype = AliasBase;}
+  void SetShortcutBase()
+  {m_entrytype = ShortcutBase;}
   void SetAlias()
   {m_entrytype = Alias;}
-  void SetBase()
-  {m_entrytype = Base;}
+  void SetShortcut()
+  {m_entrytype = Shortcut;}
+
 
 private:
   CItemField m_Name;

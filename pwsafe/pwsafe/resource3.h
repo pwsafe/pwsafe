@@ -343,3 +343,14 @@
 #define IDS_CONFLICT                    5520
 #define IDS_CONFLICTS                   5521
 #define IDS_ICON                        5522
+#define IDS_SHORTCUT                    5523
+#define IDS_SHORTCUTS                   5524
+#define IDS_ABASEINVALID                5525
+#define IDS_SBASEINVALID                5526
+#define IDS_SHTCTCANTREFERTOITSELF      5527
+#define IDS_MUSTHAVETARGET              5528
+#define IDS_VIEWSHORTCUTS               5529
+#define IDS_VIEWALIASESBTN              5530
+#define IDS_VIEWSHORTCUTSBTN            5531
+#define IDS_MULTIPLETARGETSFOUND        5532
+#define IDS_TARGETNOTFOUND              5533

@@ -143,6 +143,7 @@ ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
 // Edit Menu
 ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
 ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
+ON_COMMAND(ID_MENUITEM_ADDSHORTCUT, OnAddShortcut)
 ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
 ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
 ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
@@ -303,6 +304,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
   {ID_MENUITEM_ADD, true, false, true, false},
+  {ID_MENUITEM_ADDSHORTCUT, true, false, true, false},
   {ID_MENUITEM_EDIT, true, true, false, false},
   {ID_MENUITEM_GROUPENTER, true, true, false, false},
   {ID_MENUITEM_DELETE, true, false, false, false},
@@ -432,8 +434,8 @@ DboxMain::InitPasswordSafe()
   SetIcon(m_hIconSm, FALSE); // Set small icon
   // Init stuff for tree view
   m_pImageList = new CImageList();
-  // Number (8) corresponds to number in CPWTreeCtrl public enum
-  BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 8, 0);
+  // Number (12) corresponds to number in CPWTreeCtrl public enum
+  BOOL status = m_pImageList->Create(9, 9, ILC_COLOR, 12, 0);
   ASSERT(status != 0);
 
   // Dummy Imagelist needed if user adds then removes Icon column
@@ -469,6 +471,19 @@ DboxMain::InitPasswordSafe()
   bitmap.LoadBitmap(IDB_ALIAS);
   m_pImageList->Add(&bitmap, (COLORREF)0x0);
   bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_SBASE);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_SBASE_WARNEXPIRED);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_SBASE_EXPIRED);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+  bitmap.LoadBitmap(IDB_SHORTCUT);
+  m_pImageList->Add(&bitmap, (COLORREF)0x0);
+  bitmap.DeleteObject();
+
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_STATE);
 
@@ -884,10 +899,24 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 void DboxMain::OnBrowse()
 {
   CItemData *ci = getSelectedItem();
+  CItemData *ci_original(ci);
+
   if(ci != NULL) {
+    if (ci->IsShortcut()) {
+      // This is an shortcut
+      uuid_array_t entry_uuid, base_uuid;
+      ci->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        ci = &iter->second;
+      }
+    }
+
     if (!ci->IsURLEmpty()) {
       LaunchBrowser(ci->GetURL());
-      UpdateAccessTime(ci);
+      UpdateAccessTime(ci_original);
     }
   }
 }
@@ -971,6 +1000,7 @@ DboxMain::ChangeOkUpdate()
   if (m_MainToolBar.GetSafeHwnd() != NULL && update != -1) {
     BOOL state = update ? TRUE : FALSE;
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, state);
+    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADDSHORTCUT, state);
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_PLAINTEXT, state);
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_XML, state);
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MERGE, state);
@@ -1489,6 +1519,18 @@ DboxMain::OnInitMenu(CMenu* pMenu)
   if (bItemSelected) {
     CItemData *ci = getSelectedItem();
     ASSERT(ci != NULL);
+
+    if (ci->IsShortcut()) {
+      // This is an shortcut
+      uuid_array_t entry_uuid, base_uuid;
+      ci->GetUUID(entry_uuid);
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = m_core.Find(base_uuid);
+      if (iter != End()) {
+        ci = &iter->second;
+      }
+    }
 
     if (!ci->IsURLEmpty()) {
       const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
@@ -2331,8 +2373,24 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
       iEnable = FALSE;
     } else {
       CItemData *ci = getSelectedItem();
-      if (ci == NULL || ci->IsURLEmpty()) {
+      if (ci == NULL) {
         iEnable = FALSE;
+      } else {
+        if (ci->IsShortcut()) {
+          // This is an shortcut
+          uuid_array_t entry_uuid, base_uuid;
+          ci->GetUUID(entry_uuid);
+          m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+          ItemListIter iter = m_core.Find(base_uuid);
+          if (iter != End()) {
+            ci = &iter->second;
+          }
+        }
+
+        if (ci->IsURLEmpty()) {
+          iEnable = FALSE;
+        }
       }
     }
     break;
@@ -2407,7 +2465,8 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
     bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
     if (isLimited) {
       switch (nID) {
-      case ID_MENUITEM_ADD: 
+      case ID_MENUITEM_ADD:
+      case ID_MENUITEM_ADDSHORTCUT:
       case ID_MENUITEM_ADDGROUP:
       case ID_MENUITEM_DUPLICATEENTRY:
       case ID_MENUITEM_IMPORT_KEEPASS:

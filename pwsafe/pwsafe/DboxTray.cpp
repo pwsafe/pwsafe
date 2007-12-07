@@ -150,6 +150,18 @@ DboxMain::OnTrayBrowse(UINT nID)
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
 	  return;
 
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
   if (!ci.IsURLEmpty()) {
     LaunchBrowser(ci.GetURL());
   }
@@ -167,6 +179,18 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   CItemData ci;
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
 	  return;
+
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
 
   // Has it an embedded URL
   if (ci.IsURLEmpty()) {

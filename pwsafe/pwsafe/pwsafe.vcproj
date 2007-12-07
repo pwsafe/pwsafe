@@ -540,6 +540,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AddShortcutDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AdvancedDlg.cpp"
 				>
 			</File>
@@ -601,6 +605,10 @@
 			</File>
 			<File
 				RelativePath=".\EditDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditShortcutDlg.cpp"
 				>
 			</File>
 			<File
@@ -805,6 +813,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AddShortcutDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\AdvancedDlg.h"
 				>
 			</File>
@@ -866,6 +878,10 @@
 			</File>
 			<File
 				RelativePath=".\EditDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditShortcutDlg.h"
 				>
 			</File>
 			<File
@@ -1122,6 +1138,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\addshortcut_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\addshortcut_new.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\alias.bmp"
 				>
 			</File>
@@ -1138,6 +1162,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\backup_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\backup_new.bmp"
 				>
 			</File>
@@ -1150,7 +1178,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\changecombo_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\changecombo_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\changefont_classic.bmp"
 				>
 			</File>
 			<File
@@ -1242,7 +1278,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\duplicate_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\duplicate_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\exit_classic.bmp"
 				>
 			</File>
 			<File
@@ -1326,6 +1370,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\groupenter_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\groupenter_new.bmp"
 				>
 			</File>
@@ -1362,6 +1410,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\lock_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\lock_new.bmp"
 				>
 			</File>
@@ -1394,7 +1446,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\normal.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\normal.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal_exp.bmp"
 				>
 			</File>
 			<File
@@ -1406,7 +1470,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\normal_exp.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\normal_warn.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal_warn.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\normal_warn.ico"
 				>
 			</File>
 			<File
@@ -1442,6 +1518,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\properties_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\properties_new.bmp"
 				>
 			</File>
@@ -1470,11 +1550,43 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\sbase.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\sbase.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\sbase_exp.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\sbase_exp.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\sbase_warn.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\sbase_warn.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\sendemail_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\sendemail_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\shortcut.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\shortcut.ico"
 				>
 			</File>
 			<File
@@ -1494,11 +1606,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\unlock_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\unlock_new.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\unlocked_tray.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\validate_classic.bmp"
 				>
 			</File>
 			<File
