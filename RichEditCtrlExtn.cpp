@@ -494,7 +494,8 @@ vnext:
           m_vFormat.push_back(cur_format);
           vLastSizes.pop_back();
           if (!vLastSizes.empty()) {
-            iCurrentFontPointSize = vLastSizes.back();
+            int &i = vLastSizes.back();
+            iCurrentFontPointSize = i;
             iCurrentFontSize = ConvertPointsToSize(iCurrentFontPointSize);
           } else {
             iCurrentFontPointSize = iDefaultFontPointSize;
