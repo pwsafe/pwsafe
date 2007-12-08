@@ -29,7 +29,10 @@ public:
     void SetCapsLock(const bool bstate);
 
 private:
+  void OldSendChar(TCHAR c);
+  void NewSendChar(TCHAR c);
 	int m_delay;
 	HKL m_hlocale;
+  bool m_isOldOS;
 };
 
