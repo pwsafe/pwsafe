@@ -67,6 +67,8 @@ DECLARE_HANDLE(HDROP);
 #define TIMER_CHECKLOCK 0x04
 // timer event number used to support lock on user-defined timeout
 #define TIMER_USERLOCK 0x05
+// timer event number used to support Find in PWListCtrl when icons visible
+#define TIMER_FIND 0x06
 
 // Hotkey value ID
 #define PWS_HOTKEY_ID 5767
@@ -129,7 +131,7 @@ public:
               const int subgroup_function);
 
   // Used by ListCtrl KeyDown
-  bool FindNext(const CString &cs_char);
+  bool FindNext(const CString &cs_find);
   bool IsImageVisible() {return m_bImageInLV;}
 
   // Count the number of total entries.
