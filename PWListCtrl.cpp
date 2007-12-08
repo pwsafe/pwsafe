@@ -33,11 +33,16 @@ BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
+LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM lParam)
 {
   //DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-  CString cs_char = (TCHAR)wParam;
-  m_pDbx->FindNext(cs_char);
+  if (m_pDbx->IsImageVisible()) {
+    CString cs_char = (TCHAR)wParam;
+    m_pDbx->FindNext(cs_char);
+  } else {
+    UINT nRepCnt = LOWORD(lParam);
+    CListCtrl::OnChar((UINT)wParam, nRepCnt, (UINT)lParam);
+  }
   return 0L;
 }
 

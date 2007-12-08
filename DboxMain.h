@@ -130,6 +130,7 @@ public:
 
   // Used by ListCtrl KeyDown
   bool FindNext(const CString &cs_char);
+  bool IsImageVisible() {return m_bImageInLV;}
 
   // Count the number of total entries.
   size_t GetNumEntries() const {return m_core.GetNumEntries();}
