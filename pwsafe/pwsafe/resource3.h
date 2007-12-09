@@ -95,7 +95,6 @@
 #define IDS_ENTRIESDONOTMATCH           5261
 #define IDS_ENTERKEYANDVERIFY           5262
 #define IDS_PASSWORDOVERRIDE            5263
-#define IDS_RANDOMPASSWORD              5264
 #define IDS_LOCKSAFE                    5265
 #define IDS_UNLOCKSAFE                  5266
 #define IDS_NOSAFE                      5267

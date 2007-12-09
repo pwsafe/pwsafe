@@ -37,7 +37,6 @@ bool
 DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
 {
   bool is_override = (pDialog->IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
-  CMyString temp;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -71,33 +70,18 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
     (void)optionsDlg.DoModal();
   }
 
-  while(1) {
-    CPasswordCharPool pwchars(
-			      passwordpolicy.m_pwdefaultlength,
-			      passwordpolicy.m_pwuselowercase,
-			      passwordpolicy.m_pwuseuppercase,
-			      passwordpolicy.m_pwusedigits,
-			      passwordpolicy.m_pwusesymbols,
-			      passwordpolicy.m_pwusehexdigits,
-			      passwordpolicy.m_pweasyvision);
+  CPasswordCharPool pwchars(
+                            passwordpolicy.m_pwdefaultlength,
+                            passwordpolicy.m_pwuselowercase,
+                            passwordpolicy.m_pwuseuppercase,
+                            passwordpolicy.m_pwusedigits,
+                            passwordpolicy.m_pwusesymbols,
+                            passwordpolicy.m_pwusehexdigits,
+                            passwordpolicy.m_pweasyvision);
 
-    temp = pwchars.MakePassword();
-
-    int nResponse;
-    CMyString msg;
-    msg.Format(IDS_RANDOMPASSWORD, temp);
-    nResponse = pDialog->MessageBox(msg, AfxGetAppName(),
-				    MB_ICONQUESTION|MB_YESNOCANCEL);
-
-    if( IDYES == nResponse ) {
-      password = temp;
-      SetClipboardData( password );
-      return true;
-    } else if( IDCANCEL == nResponse ) {
-      return false;
-    }
-    ASSERT( IDNO == nResponse );
-  }
+  password = pwchars.MakePassword();
+  SetClipboardData( password );
+  return true;
 }
 
 
