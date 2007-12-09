@@ -35,29 +35,26 @@ BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM lParam)
+LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 {
+  const int iSubItem = m_pDbx->IsImageVisible() ? 1 : 0;
   bool bFirst;
-  if (m_pDbx->IsImageVisible()) {
-    if (m_FindTimerID != 0) {
-      KillTimer(TIMER_FIND);
-      m_csFind += (TCHAR)wParam;
-      bFirst = false;
-    } else {
-      m_csFind = (TCHAR)wParam;
-      bFirst = true;
-    }
-    m_FindTimerID = SetTimer(TIMER_FIND, 500, NULL);
-    if (!m_pDbx->FindNext(m_csFind) && !bFirst) {
-      // Didn't find a match when more than one character
-      // Emulate CListCtrl and try again (once) with this matching the first character
-      m_csFind = (TCHAR)wParam;
-      m_pDbx->FindNext(m_csFind);
-    }
+  if (m_FindTimerID != 0) {
+    KillTimer(TIMER_FIND);
+    m_csFind += (TCHAR)wParam;
+    bFirst = false;
   } else {
-    UINT nRepCnt = LOWORD(lParam);
-    CListCtrl::OnChar((UINT)wParam, nRepCnt, (UINT)lParam);
+    m_csFind = (TCHAR)wParam;
+    bFirst = true;
   }
+  if (!FindNext(m_csFind, iSubItem) && !bFirst) {
+    // Didn't find a match when more than one character
+    // Emulate CListCtrl and try again (once) with this matching the first character
+    m_csFind = (TCHAR)wParam;
+    FindNext(m_csFind, iSubItem);
+  }
+  // Set timer going again
+  m_FindTimerID = SetTimer(TIMER_FIND, 1000, NULL);
   return 0L;
 }
 
@@ -74,4 +71,56 @@ void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
     KillTimer(TIMER_FIND);
     m_FindTimerID = 0;
   }
+}
+
+bool
+CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
+{
+  int iItem;
+  bool bFound(false);
+  CString cs_text;
+  const int iNum = GetItemCount();
+  const int iFindLen = cs_find.GetLength();
+
+  // Get selected item, if any
+  POSITION pos = GetFirstSelectedItemPosition();
+
+  // First search down.
+  if (pos == NULL)
+    iItem = 0;
+  else
+    iItem = (int)pos;
+
+  do {
+    cs_text = GetItemText(iItem, iSubItem);
+    cs_text = cs_text.Mid(0, iFindLen);
+    if (cs_text.GetLength() > 0 && cs_find.CompareNoCase(cs_text) == 0) {
+      bFound = true;
+      break;
+    }
+    iItem++;
+  } while (iItem <= iNum);
+
+  // Not found searching down and we didn't start from the top, now start from the top until
+  // we get to where we started!
+  if (!bFound && pos != NULL) {
+    iItem = 0;
+    do {
+      cs_text = GetItemText(iItem, iSubItem);
+      cs_text = cs_text.Mid(0, iFindLen);
+      if (cs_text.GetLength() > 0 && cs_find.CompareNoCase(cs_text) == 0) {
+        bFound = true;
+        break;
+      }
+      iItem++;
+    } while (iItem != (int)pos);
+  }
+
+  if (bFound) {
+    SetItemState(iItem, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+    EnsureVisible(iItem, FALSE);
+    Invalidate();
+  }
+
+  return bFound;
 }

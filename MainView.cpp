@@ -588,55 +588,6 @@ nextentry:
   return retval;
 }
 
-bool
-DboxMain::FindNext(const CString &cs_find)
-{
-  int iItem;
-  bool bFound(false);
-  CString cs_text;
-  const int iNum = m_ctlItemList.GetItemCount();
-  const int iFindLen = cs_find.GetLength();
-
-  // Get selected item, if any
-  POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
-
-  // First search down.
-  if (pos == NULL)
-    iItem = 0;
-  else
-    iItem = (int)pos;
-
-  do {
-    cs_text = m_ctlItemList.GetItemText(iItem, m_bImageInLV ? 1 : 0);
-    cs_text = cs_text.Mid(0, iFindLen);
-    if (cs_text.GetLength() > 0 && cs_find.CompareNoCase(cs_text) == 0) {
-      bFound = true;
-      break;
-    }
-    iItem++;
-  } while (iItem <= iNum);
-
-  // Not found searching down and we didn't start from the top, now start from the top until
-  // we get to where we started!
-  if (!bFound && pos != NULL) {
-    iItem = 0;
-    do {
-      cs_text = m_ctlItemList.GetItemText(iItem, m_bImageInLV ? 1 : 0);
-      cs_text = cs_text.Mid(0, iFindLen);
-      if (cs_text.GetLength() > 0 && cs_find.CompareNoCase(cs_text) == 0) {
-        bFound = true;
-        break;
-      }
-      iItem++;
-    } while (iItem != (int)pos);
-  }
-
-  if (bFound)
-    SelectFindEntry(iItem, TRUE);
-
-  return bFound;
-}
-
 //Checks and sees if everything works and something is selected
 BOOL
 DboxMain::SelItemOk()
@@ -1336,6 +1287,7 @@ void DboxMain::SortListView()
   // Turn on the correct arrow
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   m_LVHdrCtrl.SetItem(iIndex, &hdi);
+  m_LVHdrCtrl.Invalidate();
 
  if (!m_bIsRestoring && m_FindToolBar.IsVisible())
    OnHideFindToolBar();

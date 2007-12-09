@@ -19,6 +19,7 @@ public:
   {m_pDbx = (DboxMain *)pWnd;}
 
   LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
+  bool FindNext(const CString &cs_find, const int iSubItem);
 
 protected:
   //{{AFX_MSG(CPWListCtrl)

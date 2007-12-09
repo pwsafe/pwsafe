@@ -131,7 +131,6 @@ public:
               const int subgroup_function);
 
   // Used by ListCtrl KeyDown
-  bool FindNext(const CString &cs_find);
   bool IsImageVisible() {return m_bImageInLV;}
 
   // Count the number of total entries.
@@ -541,6 +540,7 @@ private:
   typedef MapUICommandTable::const_iterator MapUICommandTableConstIter;
   MapUICommandTable m_MapUICommandTable;
 
+  // Images in List View
   bool m_bImageInLV;
 };
 
