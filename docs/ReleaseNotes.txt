@@ -1,8 +1,8 @@
-Password Safe 3.12 Release Notes - ???????? 2007
-================================================
+Password Safe 3.12 Release Notes - January 2008
+===============================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.11.2. For a short description of Password
+with Password Safe version 3.12. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
@@ -10,20 +10,6 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12
 ==================
-None
-
-Changes to Existing Features in 3.12
-====================================
-None
-
-New Features for 3.12
-=======================
-[] Several entries may be shorcuts to a single entry, sharing all its
-data (c.f. aliases only share passwords). See online help for details.
-Bitmaps on menus.
-
-Bugs fixed in 3.11.2
-====================
 [1843631] "Browse to Icon" now correctly shown using new Toolbar.
 [1841525] Increasing the number of passwords saved no longer deletes the
 existing Password History.
@@ -38,15 +24,18 @@ now occupied by the icon.
 [] Allow List view to process all characters e.g. Page Up/Down, Home, End,
 Arrows etc.
 
-Changes to Existing Features in 3.11.2
-======================================
-[] Icon column now eligible for Column Picker.  Can be displayed at user's
-discretion.
-[] If user has icon column in List view, the Recent Entries popup menu will
-show them too.
+Changes to Existing Features in 3.12
+====================================
+[1846688] When generating a new password, it is no longer displayed in
+a separate window for approval. If you want to genrate another
+password, just click on Generate again. If you want to revert to the
+existing password when editing an entry, just click on Cancel.
 
-New Features for 3.11.2
+New Features for 3.12
 =======================
+[] Several entries may be shorcuts to a single entry, sharing all its
+data (c.f. aliases only share passwords). See online help for details.
+Bitmaps on menus.
 [1842449] Implement standard F3 for repeat Find shortcut.
 
 Bugs fixed in 3.11.1
