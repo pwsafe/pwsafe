@@ -23,7 +23,7 @@ class PWSrand {
   void GetRandomData( void * const buffer, unsigned long length );
 
   unsigned int RandUInt(); // generate a random uint
-  //  generate a random number between 0 and len
+  //  generate a random integer in [0, len)
   unsigned int RangeRand(unsigned int len);
  private:
   PWSrand(); // start with some minimal entropy
