@@ -643,6 +643,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\trigram.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TwoFish.h"
 				>
 			</File>

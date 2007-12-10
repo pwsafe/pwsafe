@@ -12,6 +12,10 @@
 #include "Util.h"
 #include "corelib.h"
 #include "PWSrand.h"
+#include "trigram.h" // for pronounceable passwords
+#include <string>
+
+using namespace std;
 
 // Following macro get length of std_*_chars less the trailing \0
 // compile time equivalent of strlen()
@@ -143,93 +147,164 @@ TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned i
 CMyString
 CPasswordCharPool::MakePassword() const
 {
-    ASSERT(m_pwlen > 0);
-    ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
+  ASSERT(m_pwlen > 0);
+  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
 
-    int lowercaseneeded;
-    int uppercaseneeded;
-    int digitsneeded;
-    int symbolsneeded;
-    int hexdigitsneeded;
+  int lowercaseneeded;
+  int uppercaseneeded;
+  int digitsneeded;
+  int symbolsneeded;
+  int hexdigitsneeded;
 
-    CMyString password = _T("");
+  CMyString password = _T("");
 
-    bool pwRulesMet;
-    CMyString temp;
+  bool pwRulesMet;
+  CMyString temp;
 
-    do
-        {
-            TCHAR ch;
-            CharType type;
+  do
+    {
+      TCHAR ch;
+      CharType type;
 
-            lowercaseneeded = (m_uselowercase) ? 1 : 0;
-            uppercaseneeded = (m_useuppercase) ? 1 : 0;
-            digitsneeded = (m_usedigits) ? 1 : 0;
-            symbolsneeded = (m_usesymbols) ? 1 : 0;
-            hexdigitsneeded = (m_usehexdigits) ? 1 : 0;
+      lowercaseneeded = (m_uselowercase) ? 1 : 0;
+      uppercaseneeded = (m_useuppercase) ? 1 : 0;
+      digitsneeded = (m_usedigits) ? 1 : 0;
+      symbolsneeded = (m_usesymbols) ? 1 : 0;
+      hexdigitsneeded = (m_usehexdigits) ? 1 : 0;
 
-            // If following assertion doesn't hold, we'll never exit the do loop!
-            ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
-                   digitsneeded + symbolsneeded + hexdigitsneeded);
+      // If following assertion doesn't hold, we'll never exit the do loop!
+      ASSERT(int(m_pwlen) >= lowercaseneeded + uppercaseneeded +
+             digitsneeded + symbolsneeded + hexdigitsneeded);
 
-            temp = _T("");    // empty the password string
+      temp = _T("");    // empty the password string
 
-            for (UINT x = 0; x < m_pwlen; x++) {
-                unsigned int rand = PWSrand::GetInstance()->RangeRand((unsigned int)m_sumlengths);
-                // The only reason for passing rand as a parameter is to
-                // avoid having to generate two random numbers for each
-                // character. Alternately, we could have had a m_rand
-                // data member. Which solution is uglier is debatable.
-                type = GetRandomCharType(rand);
-                ch = GetRandomChar(type, rand);
-                temp += ch;
-                /*
-                **  Decrement the appropriate needed character type count.
-                */
-                switch (type) {
-                    case LOWERCASE:
-                        lowercaseneeded--;
-                        break;
+      for (UINT x = 0; x < m_pwlen; x++) {
+        unsigned int rand = PWSrand::GetInstance()->RangeRand((unsigned int)m_sumlengths);
+        // The only reason for passing rand as a parameter is to
+        // avoid having to generate two random numbers for each
+        // character. Alternately, we could have had a m_rand
+        // data member. Which solution is uglier is debatable.
+        type = GetRandomCharType(rand);
+        ch = GetRandomChar(type, rand);
+        temp += ch;
+        /*
+        **  Decrement the appropriate needed character type count.
+        */
+        switch (type) {
+        case LOWERCASE:
+          lowercaseneeded--;
+          break;
 
-                    case UPPERCASE:
-                        uppercaseneeded--;
-                        break;
+        case UPPERCASE:
+          uppercaseneeded--;
+          break;
 
-                    case DIGIT:
-                        digitsneeded--;
-                        break;
+        case DIGIT:
+          digitsneeded--;
+          break;
 
-                    case SYMBOL:
-                        symbolsneeded--;
-                        break;
+        case SYMBOL:
+          symbolsneeded--;
+          break;
 
-                    case HEXDIGIT:
-                        hexdigitsneeded--;
-                        break;
+        case HEXDIGIT:
+          hexdigitsneeded--;
+          break;
 
-                    default:
-                        ASSERT(0); // should never happen!
-                        break;
-                }
-            } // for
+        default:
+          ASSERT(0); // should never happen!
+          break;
+        }
+      } // for
 
-            /*
-             * Make sure we have at least one representative of each required type
-             * after the for loop. If not, try again. Arguably, recursion would have
-             * been more elegant than a do loop, but this takes less stack...
-             */
-            pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
-                          digitsneeded <= 0 && symbolsneeded <= 0 && 
-                          hexdigitsneeded <= 0);
+      /*
+       * Make sure we have at least one representative of each required type
+       * after the for loop. If not, try again. Arguably, recursion would have
+       * been more elegant than a do loop, but this takes less stack...
+       */
+      pwRulesMet = (lowercaseneeded <= 0 && uppercaseneeded <= 0 &&
+                    digitsneeded <= 0 && symbolsneeded <= 0 && 
+                    hexdigitsneeded <= 0);
 
-            if (pwRulesMet) {
-                password = temp;
-            }
-            // Otherwise, do not exit, do not collect $200, try again...
-        } while (!pwRulesMet);
-    ASSERT(password.GetLength() == int(m_pwlen));
-    return password;
+      if (pwRulesMet) {
+        password = temp;
+      }
+      // Otherwise, do not exit, do not collect $200, try again...
+    } while (!pwRulesMet);
+  ASSERT(password.GetLength() == int(m_pwlen));
+  return password;
 }
+
+CMyString CPasswordCharPool::MakePronounceable(UINT pwlen) const
+{
+  /**
+   * Following based on gpw.C from
+   * http://www.multicians.org/thvv/tvvtools.html
+   * Thanks to Tom Van Vleck, Morrie Gasser, and Dan Edwards.
+   */
+  TCHAR c1, c2, c3;		/* array indices */
+  long sumfreq;		/* total frequencies[c1][c2][*] */
+  long ranno;			/* random number in [0,sumfreq] */
+  long sum;			/* running total of frequencies */
+  UINT nchar;			/* number of chars in password so far */
+  PWSrand *pwsrnd = PWSrand::GetInstance();
+#ifdef UNICODE
+  wstring password(pwlen, 0);
+#else
+  string password(pwlen, 0);
+#endif
+  /* Pick a random starting point. */
+  /* (This cheats a little; the statistics for three-letter
+     combinations beginning a word are different from the stats
+     for the general population.  For example, this code happily
+     generates "mmitify" even though no word in my dictionary
+     begins with mmi. So what.) */
+  sumfreq = sigma;	// sigma calculated by loadtris
+  ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
+  sum = 0;
+  for (c1=0; c1 < 26; c1++) {
+    for (c2=0; c2 < 26; c2++) {
+      for (c3=0; c3 < 26; c3++) {
+        sum += tris[c1][c2][c3];
+        if (sum > ranno) { // Pick first value
+          password[0] = TCHAR('a') + c1;
+          password[1] = TCHAR('a') + c2;
+          password[2] = TCHAR('a') + c3;
+          c1 = c2 = c3 = 26; // Break all loops.
+        } // if sum
+      } // for c3
+    } // for c2
+  } // for c1
+
+    /* Do a random walk. */
+  nchar = 3;		// We have three chars so far.
+  while (nchar < pwlen) {
+    c1 = password[nchar-2] - TCHAR('a'); // Take the last 2 chars
+    c2 = password[nchar-1] - TCHAR('a'); // .. and find the next one.
+    sumfreq = 0;
+    for (c3=0; c3 < 26; c3++)
+      sumfreq += tris[c1][c2][c3];
+    /* Note that sum < duos[c1][c2] because
+       duos counts all digraphs, not just those
+       in a trigraph. We want sum. */
+    if (sumfreq == 0) { // If there is no possible extension..
+      break;	// Break while nchar loop & print what we have.
+    }
+    /* Choose a continuation. */
+    ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
+    sum = 0;
+    for (c3=0; c3 < 26; c3++) {
+      sum += tris[c1][c2][c3];
+      if (sum > ranno) {
+        password[nchar++] = TCHAR('a') + c3;
+        c3 = 26;	// Break the for c3 loop.
+      }
+    } // for c3
+  } // while nchar
+  CMyString retval = password.c_str();
+  return retval;
+}
+
 
 bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
 {
