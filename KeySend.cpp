@@ -11,6 +11,20 @@
 
 CKeySend::CKeySend(void) : m_delay(10)
 {
+  // We want to use keybd_event (OldSendChar) for Win2K & older,
+  // SendInput (NewSendChar) for newer versions.
+  // For non-Unicode builds, only OldSendChar.
+#ifdef UNICODE
+  OSVERSIONINFO os;
+  os.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+  if (GetVersionEx(&os) == FALSE) {
+    ASSERT(0);
+  }
+  m_isOldOS = ((os.dwMajorVersion == 4) ||
+               (os.dwMajorVersion == 5 && os.dwMinorVersion == 0));
+#else
+  m_isOldOS = true;
+#endif /* UNICODE */
 	// get the locale of the current thread.
 	// we are assuming that all window and threading in the 
 	// current users desktop have the same locale.
@@ -20,7 +34,6 @@ CKeySend::CKeySend(void) : m_delay(10)
 CKeySend::~CKeySend(void)
 {
 }
-
 
 void CKeySend::SendString(const CMyString &data)
 {
@@ -33,13 +46,14 @@ void CKeySend::SendString(const CMyString &data)
 
 void CKeySend::SendChar(TCHAR c)
 {
-  /*
-   * "UNICODE" version works for WinXP on non-English keyboards, e.g., German
-   * Non-Unicode version appears to work OK on all keyboard for Win98.
-   * Since non-Unicode is currently released for Win98 support, this is Good
-   * Enough.
-   */
-#ifdef UNICODE
+  if (m_isOldOS)
+    OldSendChar(c);
+  else
+    NewSendChar(c);
+}
+
+void CKeySend::NewSendChar(TCHAR c)
+{
   UINT status;
   INPUT input[2];
   input[0].type = INPUT_KEYBOARD;
@@ -63,7 +77,11 @@ void CKeySend::SendChar(TCHAR c)
   status = ::SendInput(2, input, sizeof(INPUT));
   if (status != 1)
     TRACE(_T("CKeySend::SendChar: SendInput failed\n"));
-#else
+  ::Sleep(m_delay);
+}
+
+void CKeySend::OldSendChar(TCHAR c)
+{
   BOOL shiftDown=false; //assume shift key is up at start.
   BOOL ctrlDown=false;
   BOOL altDown=false;
@@ -112,11 +130,7 @@ void CKeySend::SendChar(TCHAR c)
     altDown=false;       
   } 
   ::Sleep(m_delay);
-#endif /* UNICODE */
-  ::Sleep(m_delay);
 }
-
-
 
 void CKeySend::ResetKeyboardState()
 {
@@ -144,7 +158,6 @@ void CKeySend::ResetKeyboardState()
 			if (!AfxGetThread()->PumpMessage())
 				break;
 		}
-
 
 		Sleep(10);
 		memset((void*)&keys,0,256);
