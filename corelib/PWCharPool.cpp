@@ -14,8 +14,16 @@
 #include "PWSrand.h"
 #include "trigram.h" // for pronounceable passwords
 #include <string>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
+
+#ifdef UNICODE
+typedef std::wstring stringT;
+#else
+typedef std::string stringT;
+#endif
 
 // Following macro get length of std_*_chars less the trailing \0
 // compile time equivalent of strlen()
@@ -65,14 +73,17 @@ CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexdigit_chars);
 //-----------------------------------------------------------------------------
 
 CPasswordCharPool::CPasswordCharPool(UINT pwlen,
-				     BOOL uselowercase, BOOL useuppercase,
-				     BOOL usedigits, BOOL usesymbols, BOOL usehexdigits,
-				     BOOL easyvision) :
+                                     BOOL uselowercase, BOOL useuppercase,
+                                     BOOL usedigits, BOOL usesymbols,
+                                     BOOL usehexdigits, BOOL easyvision,
+                                     BOOL pronounceable) :
   m_pwlen(pwlen), m_uselowercase(uselowercase), m_useuppercase(useuppercase),
-  m_usedigits(usedigits), m_usesymbols(usesymbols), m_usehexdigits(usehexdigits)
+  m_usedigits(usedigits), m_usesymbols(usesymbols),
+  m_usehexdigits(usehexdigits), m_pronounceable(pronounceable)
 {
   ASSERT(m_pwlen > 0);
-  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
+  ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
+         m_usesymbols || m_usehexdigits || m_pronounceable);
 
   if (easyvision) {
     m_char_arrays[LOWERCASE] = (TCHAR *)easyvision_lowercase_chars;
@@ -148,7 +159,8 @@ CMyString
 CPasswordCharPool::MakePassword() const
 {
   ASSERT(m_pwlen > 0);
-  ASSERT(m_uselowercase || m_useuppercase || m_usedigits || m_usesymbols || m_usehexdigits);
+  ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
+         m_usesymbols || m_usehexdigits || m_pronounceable);
 
   int lowercaseneeded;
   int uppercaseneeded;
@@ -157,6 +169,10 @@ CPasswordCharPool::MakePassword() const
   int hexdigitsneeded;
 
   CMyString password = _T("");
+
+  // pronounceable passwords are handled separately:
+  if (m_pronounceable)
+    return MakePronounceable();
 
   bool pwRulesMet;
   CMyString temp;
@@ -235,7 +251,64 @@ CPasswordCharPool::MakePassword() const
   return password;
 }
 
-CMyString CPasswordCharPool::MakePronounceable(UINT pwlen) const
+static const struct {
+  TCHAR num; TCHAR sym;
+} leets[26] = {
+  {TCHAR('4'), TCHAR('@')}, {TCHAR('8'), TCHAR('&')}, // a, b
+  {0, TCHAR('(')}, {0, 0},                            // c, d
+  {TCHAR('3'), 0}, {0, 0},                            // e, f
+  {TCHAR('6'), 0}, {0, TCHAR('#')},                   // g, h
+  {TCHAR('1'), TCHAR('!')}, {0, 0},                   // i, j
+  {0, 0}, {TCHAR('1'), TCHAR('|')},                   // k, l
+  {0, 0}, {0, 0},                                     // m, n
+  {TCHAR('0'), 0}, {0, 0},                            // o, p
+  {0, 0}, {0, 0},                                     // q, r
+  {TCHAR('5'), TCHAR('$')}, {TCHAR('7'), TCHAR('+')}, // s, t
+  {0, 0}, {0, 0},                                     // u, v
+  {0, 0}, {0, 0},                                     // w, x
+  {0, 0}, {TCHAR('2'), 0}};                           // y, z
+
+class FillSC {
+  // used in for_each to find Substitution Candidates
+  // for "leet" alphabet for pronounceable passwords
+  // with usesymbols and/or usedigits specified
+public:
+  FillSC(vector<int> &sc, bool digits, bool symbols)
+    : m_sc(sc), m_digits(digits), m_symbols(symbols), m_i(0) {}
+  void operator()(TCHAR t) {
+    if ((m_digits && leets[t - TCHAR('a')].num != 0) ||
+        (m_symbols &&leets[t - TCHAR('a')].sym != 0))
+      m_sc.push_back(m_i);
+    m_i++;
+  }
+private:
+  vector<int> &m_sc;
+  bool m_digits, m_symbols;
+  int m_i;
+};
+
+struct RandomWrapper {
+  unsigned int operator()(unsigned int i)
+  {return PWSrand::GetInstance()->RangeRand(i);}
+};
+
+static void leet_replace(stringT &password, unsigned int i,
+                         BOOL usedigits, BOOL usesymbols)
+{
+  ASSERT(i < password.size());
+  ASSERT(usedigits || usesymbols);
+
+  TCHAR digsub = usedigits ? leets[password[i] - TCHAR('a')].num : 0;
+  TCHAR symsub = usesymbols ? leets[password[i] - TCHAR('a')].sym : 0;
+
+  // if both substitutions possible, select one randomly
+  if (digsub != 0 && symsub != 0 && PWSrand::GetInstance()->RandUInt() % 2)
+    digsub = 0;
+  password[i] = (digsub != 0) ? digsub : symsub;
+  ASSERT(password[i] != 0);
+}
+
+CMyString CPasswordCharPool::MakePronounceable() const
 {
   /**
    * Following based on gpw.C from
@@ -248,11 +321,8 @@ CMyString CPasswordCharPool::MakePronounceable(UINT pwlen) const
   long sum;			/* running total of frequencies */
   UINT nchar;			/* number of chars in password so far */
   PWSrand *pwsrnd = PWSrand::GetInstance();
-#ifdef UNICODE
-  wstring password(pwlen, 0);
-#else
-  string password(pwlen, 0);
-#endif
+  stringT password(m_pwlen, 0);
+
   /* Pick a random starting point. */
   /* (This cheats a little; the statistics for three-letter
      combinations beginning a word are different from the stats
@@ -278,7 +348,7 @@ CMyString CPasswordCharPool::MakePronounceable(UINT pwlen) const
 
     /* Do a random walk. */
   nchar = 3;		// We have three chars so far.
-  while (nchar < pwlen) {
+  while (nchar < m_pwlen) {
     c1 = password[nchar-2] - TCHAR('a'); // Take the last 2 chars
     c2 = password[nchar-1] - TCHAR('a'); // .. and find the next one.
     sumfreq = 0;
@@ -301,6 +371,43 @@ CMyString CPasswordCharPool::MakePronounceable(UINT pwlen) const
       }
     } // for c3
   } // while nchar
+  /*
+   * password now has an all-lowercase pronounceable password
+   * We now want to modify it per policy:
+   * If m_usedigits and/or m_usesymbols, replace some chars with
+   * corresponding 'leet' values
+   * Also enforce m_useuppercase & m_uselowercase policies
+   */
+
+  if (m_usesymbols || m_usedigits) {
+    // fill a vector with indices of substitution candidates
+    vector<int> sc;
+    FillSC fill_sc(sc, (m_usedigits == TRUE), (m_usesymbols == TRUE));
+    for_each(password.begin(), password.end(), fill_sc);
+    if (!sc.empty()) {
+      // choose how many to replace (at least one)
+      unsigned int rn = pwsrnd->RangeRand(sc.size() - 1) + 1;
+      // replace some of them
+      random_shuffle(sc.begin(), sc.end(), RandomWrapper());
+      for (unsigned int i = 0; i < rn; i++)
+        leet_replace(password, sc[i], m_usedigits, m_usesymbols);
+    }
+  }
+  // case
+  UINT i;
+  if (m_uselowercase && !m_useuppercase)
+    ; // nothing to do here
+  else if (!m_uselowercase && m_useuppercase)
+    for (i = 0; i < m_pwlen; i++) {
+      if (_istalpha(password[i]))
+        password[i] = _totupper(password[i]);
+    }
+  else if (m_uselowercase && m_useuppercase) // mixed case
+    for (i = 0; i < m_pwlen; i++) {
+      if (_istalpha(password[i]) && pwsrnd->RandUInt() % 2)
+        password[i] = _totupper(password[i]);
+    }
+
   CMyString retval = password.c_str();
   return retval;
 }
