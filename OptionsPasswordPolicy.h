@@ -6,6 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 #pragma once
+#include "afxwin.h"
 
 // OptionsPasswordPolicy.h : header file
 //
@@ -32,6 +33,7 @@ public:
 	BOOL	m_pwusesymbols;
 	BOOL	m_pweasyvision;
 	BOOL	m_pwusehexdigits;
+  BOOL  m_pwmakepronounceable;
 	//}}AFX_DATA
 
 
@@ -53,9 +55,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	BOOL	m_savepwuselowercase;
-	BOOL	m_savepwuseuppercase;
-	BOOL	m_savepwusedigits;
-	BOOL	m_savepwusesymbols;
-	BOOL	m_savepweasyvision;
+  void do_nohex(bool mode); // mode == true enable non-hex
+  enum {N_NOHEX = 6}; // number of checkboxes disabled when hex chosen
+  static const int nonHex[N_NOHEX]; // IDs of said checkboxes
+  BOOL m_save[N_NOHEX]; // save cb's state when disabling hex
 };

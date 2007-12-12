@@ -77,7 +77,8 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
                             passwordpolicy.m_pwusedigits,
                             passwordpolicy.m_pwusesymbols,
                             passwordpolicy.m_pwusehexdigits,
-                            passwordpolicy.m_pweasyvision, false);
+                            passwordpolicy.m_pweasyvision,
+                            passwordpolicy.m_pwmakepronounceable);
 
   password = pwchars.MakePassword();
   SetClipboardData( password );
