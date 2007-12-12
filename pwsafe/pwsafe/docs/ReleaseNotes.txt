@@ -25,20 +25,23 @@ i.e. 'a' followed by 'b' will look for entry starting 'ab' etc.
 [] Set PWS title when opening a database at startup
 [] Allow List view to process all characters e.g. Page Up/Down, Home, End,
 Arrows etc.
-[] Fix program abend on clicking CompareResults dialog header.
+[] Fix program crash on clicking CompareResults dialog header.
 
 Changes to Existing Features in 3.12
 ====================================
 [1846688] When generating a new password, it is no longer displayed in
-a separate window for approval. If you want to genrate another
+a separate window for approval. If you want to generate another
 password, just click on Generate again. If you want to revert to the
 existing password when editing an entry, just click on Cancel.
+[] New password generation option: Pronounceable passwords. Thanks to
+Tom Van Vleck, Morrie Gasser, and Dan Edwards.
 
 New Features for 3.12
 =======================
-[] Several entries may be shorcuts to a single entry, sharing all its
-data (c.f. aliases only share passwords). See online help for details.
-Bitmaps on menus.
+[] An entry may have multiple references, or "shortcuts" to it. These
+may be thought of as "synonyms" of the entry. See online help for
+details.
+[] Graphics added to menus.
 [1842449] Implement standard F3 for repeat Find shortcut.
 
 Bugs fixed in 3.11.1

@@ -75,6 +75,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ListViewGridLines"), false, false},                        // application
   {_T("MinimizeOnAutotype"), true, false},                        // application
   {_T("ShowUsernameInTree"), true, true},								// database
+	{_T("PWMakePronounceable"), false, true}, // database - 3.12 password policy
 };
 
 // Default value = -1 means set at runtime

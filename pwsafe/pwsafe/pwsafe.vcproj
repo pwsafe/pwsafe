@@ -1126,6 +1126,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\about_classic.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\about_new.bmp"
 				>
 			</File>
@@ -1527,6 +1531,10 @@
 			</File>
 			<File
 				RelativePath=".\res\psafetxt.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\restore_classic.bmp"
 				>
 			</File>
 			<File

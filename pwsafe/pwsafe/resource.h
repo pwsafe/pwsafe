@@ -248,6 +248,8 @@
 #define IDC_SPINSYMBOLS                 1064
 #define IDC_EASYVISION                  1065
 #define IDC_ITEMTREE                    1066
+#define IDC_EASYVISION2                 1066
+#define IDC_PRONOUNCEABLE               1066
 #define IDC_GROUP                       1067
 #define IDC_EXPORT_XML_PASSWORD         1068
 #define IDC_EXPORT_TEXT_PASSWORD        1069

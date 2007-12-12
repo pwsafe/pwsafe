@@ -320,6 +320,8 @@ DboxMain::OnOptions()
         GetPref(PWSprefs::PWUseHexDigits);
     passwordpolicy.m_pweasyvision = prefs->
         GetPref(PWSprefs::PWUseEasyVision);
+    passwordpolicy.m_pwmakepronounceable = prefs->
+        GetPref(PWSprefs::PWMakePronounceable);
 
     passwordhistory.m_savepwhistory = prefs->
         GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
@@ -476,6 +478,8 @@ DboxMain::OnOptions()
                        passwordpolicy.m_pwusehexdigits == TRUE);
         prefs-> SetPref(PWSprefs::PWUseEasyVision,
                         passwordpolicy.m_pweasyvision == TRUE);
+        prefs-> SetPref(PWSprefs::PWMakePronounceable,
+                        passwordpolicy.m_pwmakepronounceable == TRUE);
 
         prefs->SetPref(PWSprefs::SavePasswordHistory,
                        passwordhistory.m_savepwhistory == TRUE);
