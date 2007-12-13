@@ -13,8 +13,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy dialog
+#include "PWPropertyPage.h"
 
-class COptionsPasswordPolicy : public CPropertyPage
+class COptionsPasswordPolicy : public CPWPropertyPage
 {
 	DECLARE_DYNCREATE(COptionsPasswordPolicy)
 
@@ -23,6 +24,8 @@ public:
 	COptionsPasswordPolicy();
 	~COptionsPasswordPolicy();
 
+  const TCHAR *GetHelpName() const {return _T("password_policies");}
+    
 // Dialog Data
 	//{{AFX_DATA(COptionsPasswordPolicy)
 	enum { IDD = IDD_PS_PASSWORDPOLICY };

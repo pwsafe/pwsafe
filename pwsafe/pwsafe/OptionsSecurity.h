@@ -12,8 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity dialog
+#include "PWPropertyPage.h"
 
-class COptionsSecurity : public CPropertyPage
+class COptionsSecurity : public CPWPropertyPage
 {
 	DECLARE_DYNCREATE(COptionsSecurity)
 
@@ -22,6 +23,8 @@ public:
 	COptionsSecurity();
 	~COptionsSecurity();
 
+  const TCHAR *GetHelpName() const {return _T("security_tab");}
+    
 // Dialog Data
 	//{{AFX_DATA(COptionsSecurity)
 	enum { IDD = IDD_PS_SECURITY };

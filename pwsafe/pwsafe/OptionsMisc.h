@@ -12,8 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc dialog
+#include "PWPropertyPage.h"
 
-class COptionsMisc : public CPropertyPage
+class COptionsMisc : public CPWPropertyPage
 {
 	DECLARE_DYNCREATE(COptionsMisc)
 
@@ -22,7 +23,9 @@ public:
 	COptionsMisc();
 	~COptionsMisc();
 
-// Dialog Data
+  const TCHAR *GetHelpName() const {return _T("misc_tab");}
+
+  // Dialog Data
 	//{{AFX_DATA(COptionsMisc)
 	enum { IDD = IDD_PS_MISC };
 	BOOL	m_confirmdelete;

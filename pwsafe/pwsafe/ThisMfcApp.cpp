@@ -38,6 +38,8 @@
 #include "Shlwapi.h"
 
 #include <vector>
+ // for finding current propertysheet:
+#include "PWPropertyPage.h"
 
 using namespace std;
 
@@ -842,14 +844,20 @@ ThisMfcApp::OnHelp()
   if (wnd != NULL) {
     wnd->GetWindowText(cs_title);
   }
-  CString cs_text(MAKEINTRESOURCE(IDS_OPTIONS));
-  if (cs_title != cs_text) {
+  const CString cs_option_text(MAKEINTRESOURCE(IDS_OPTIONS));
+  if (cs_title != cs_option_text) {
       ::HtmlHelp(wnd != NULL ? wnd->m_hWnd : NULL,
                (LPCTSTR)m_csHelpFile,
                HH_DISPLAY_TOPIC, 0);
-  } else {
+  } else { // Options propertysheet - find out active page
+    CString helptab;
+    CPropertySheet *ps = dynamic_cast<CPropertySheet *>(wnd);
+    ASSERT(ps != NULL);
+    CPWPropertyPage *pp = dynamic_cast<CPWPropertyPage *>(ps->GetActivePage());
+    if (pp != NULL)
+      helptab = pp->GetHelpName();
     CString cs_HelpTopic;
-    cs_HelpTopic = m_csHelpFile + _T("::/html/display_tab.html");
+    cs_HelpTopic = m_csHelpFile + _T("::/html/") + helptab +_T(".html");
     ::HtmlHelp(NULL, (LPCTSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
   }
 

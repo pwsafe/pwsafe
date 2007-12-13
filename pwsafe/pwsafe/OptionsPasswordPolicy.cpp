@@ -35,7 +35,8 @@ const int COptionsPasswordPolicy::nonHex[COptionsPasswordPolicy::N_NOHEX] = {
   IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
   IDC_USESYMBOLS, IDC_EASYVISION, IDC_PRONOUNCEABLE};
 
-COptionsPasswordPolicy::COptionsPasswordPolicy() : CPropertyPage(COptionsPasswordPolicy::IDD)
+COptionsPasswordPolicy::COptionsPasswordPolicy() :
+  CPWPropertyPage(COptionsPasswordPolicy::IDD)
 {
   //{{AFX_DATA_INIT(COptionsPasswordPolicy)
   //}}AFX_DATA_INIT

@@ -12,8 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup dialog
+#include "PWPropertyPage.h"
 
-class COptionsBackup : public CPropertyPage
+class COptionsBackup : public CPWPropertyPage
 {
 	DECLARE_DYNCREATE(COptionsBackup)
 
@@ -22,6 +23,8 @@ public:
 	COptionsBackup();
 	~COptionsBackup();
 
+  const TCHAR *GetHelpName() const {return _T("backups_tab");}
+    
     // Should be part of ctor, but MFC doesn't requires
     // default ctor. Grrr.
     void SetCurFile(const CString &currentFile);
