@@ -21,6 +21,8 @@
 #include "StdAfx.h"
 #include "CoolMenu.h"
 #include "PWToolbar.h"
+#include "resource2.h"
+#include "resource3.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,6 +54,8 @@ CCoolMenuManager::CCoolMenuManager()
 CCoolMenuManager::~CCoolMenuManager()
 {
   m_ImageList.DeleteImageList();
+  if (!m_bNoDIL)
+    m_DisabledImageList.DeleteImageList();
   m_IDtoImages.clear(); 
   m_fontMenu.DeleteObject();
 }
@@ -87,7 +91,7 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
         return TRUE; // handled
       break;
     case WM_INITMENUPOPUP:
-      // Very important: must let frame window handle it first!
+      // Very important: must let dialog window handle it first!
       // Because if someone calls CCmdUI::SetText, MFC will change item to
       // MFT_STRING, so I must change back to MFT_OWNERDRAW.
       //
@@ -225,8 +229,11 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
         m_ImageList.Draw(&dc, iButton, p, ILD_TRANSPARENT);
 
       } else {
-        // use DrawEmbossed to draw disabled button in colour
+        // use DrawEmbossed to draw disabled button in colour for Classic menu
+        if (m_bNoDIL)
         DrawEmbossed(dc, m_ImageList, iButton, p);
+        else
+          m_DisabledImageList.Draw(&dc, iButton, p, ILD_TRANSPARENT);
       }
 
     } else {
@@ -373,7 +380,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
 {
   ASSERT_VALID(pMenu);
 
-  CString sItemName;
+  CString sItemName, cs_text;
 
   UINT nItem = pMenu->GetMenuItemCount();
   for (UINT i = 0; i < nItem; i++) {  // loop over each item in menu
@@ -411,9 +418,42 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
         if (!pmd) {                           // if no item data:
           pmd = new CMenuItemData;            //   create one
           ASSERT(pmd);                        //   (I hope)
-          m_pmdList.push_back(pmd);
+          m_pmdList.push_back(pmd);           // Save it for deleting later
           pmd->fType = miinfo.fType;          //   handy when drawing
-          pmd->iButton = GetButtonIndex(miinfo.wID);
+          UINT iCtrlID = miinfo.wID;          // Get Control ID
+          if (iCtrlID >= ID_MENUITEM_TRAYAUTOTYPE1 &&
+              iCtrlID <= ID_MENUITEM_TRAYAUTOTYPEMAX)
+            iCtrlID = ID_MENUITEM_AUTOTYPE;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYBROWSE1 &&
+              iCtrlID <= ID_MENUITEM_TRAYBROWSEMAX) {
+            cs_text.LoadString(IDS_TRAYBROWSE);
+            if (cs_text.Compare(miinfo.dwTypeData) == 0)
+              iCtrlID = ID_MENUITEM_BROWSEURL;
+            else
+              iCtrlID = ID_MENUITEM_SENDEMAIL;
+          } else
+          if (iCtrlID >= ID_MENUITEM_TRAYDELETE1 &&
+              iCtrlID <= ID_MENUITEM_TRAYDELETEMAX)
+            iCtrlID = ID_MENUITEM_DELETE;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYCOPYNOTES1 &&
+              iCtrlID <= ID_MENUITEM_TRAYCOPYNOTESMAX)
+            iCtrlID = ID_MENUITEM_COPYNOTESFLD;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYCOPYPASSWORD1 &&
+              iCtrlID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX)
+            iCtrlID = ID_MENUITEM_COPYPASSWORD;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYCOPYUSERNAME1 &&
+              iCtrlID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX)
+            iCtrlID = ID_MENUITEM_COPYUSERNAME;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYVIEWEDIT1 &&
+              iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
+            iCtrlID = ID_MENUITEM_EDIT;
+
+          pmd->iButton = GetButtonIndex(iCtrlID);
           miinfo.dwItemData = (ULONG_PTR)pmd; //   set in menu item data
           miinfo.fMask |= MIIM_DATA;          //   set item data
         }
@@ -426,6 +466,7 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       MenuVectorIter iter = std::find(m_menuList.begin(), m_menuList.end(), hmenu);
       if (iter == m_menuList.end())
         m_menuList.push_back(hmenu);
+
     } else {
       // no buttons -- I'm converting to strings
       if (miinfo.fType & MFT_OWNERDRAW) {     // if ownerdraw:
@@ -436,7 +477,6 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       } else                                // otherwise:
         sItemName = miinfo.dwTypeData;        //   use name from MENUITEMINFO
 
-      if (pmd) {
         // NOTE: pmd (item data) could still be left hanging around even
         // if MFT_OWNERDRAW is not set, in case mentioned above where app
         // calls pCmdUI->SetText to set text of item and MFC sets the type
@@ -448,7 +488,6 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
         PMDVectorIter iter = std::find(m_pmdList.begin(), m_pmdList.end(), pmd);
         if (iter != m_pmdList.end())
           m_pmdList.erase(iter);
-      }
 
       if (miinfo.fMask & MIIM_TYPE) {
         // if setting name, copy name from CString to buffer and set cch
@@ -588,9 +627,20 @@ void
 CCoolMenuManager::SetImageList(CPWToolBar *pwtoolbar)
 {
   m_ImageList.DeleteImageList();
+  if (!m_bNoDIL)
+    m_DisabledImageList.DeleteImageList();
+
   CToolBarCtrl &tbCtrl = pwtoolbar->GetToolBarCtrl();
+
   CImageList *pil = tbCtrl.GetImageList();
   m_ImageList.Create(pil);
+
+  CImageList *pdil = tbCtrl.GetDisabledImageList();
+  if (pdil != NULL) {
+    m_DisabledImageList.Create(pdil);
+    m_bNoDIL = false;
+  } else
+    m_bNoDIL = true;
 }
 
 ////////////////////////////////////////////////////////////////

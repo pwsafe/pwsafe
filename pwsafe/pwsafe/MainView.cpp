@@ -2829,7 +2829,7 @@ DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
 
   CRUEItemData *pmd;
   pmd = (CRUEItemData *)lpdis->itemData;
-  if (!pmd || !pmd->IsRUEID())
+  if (!pmd || !pmd->IsRUEID() || pmd->nImage < 0)
     return;
 
   HICON hIcon = GetEntryIcon(pmd->nImage);
@@ -2860,9 +2860,10 @@ DboxMain::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpmis)
 
   lpmis->itemWidth = 16;
   lpmis->itemHeight = 16;
+
   CRUEItemData *pmd;
   pmd = (CRUEItemData *)lpmis->itemData;
-  if (!pmd || !pmd->IsRUEID())
+  if (!pmd || !pmd->IsRUEID() || pmd->nImage < 0)
     return;
 
   HICON hIcon = GetEntryIcon(pmd->nImage);

@@ -40,6 +40,7 @@ password, just click on Generate again. If you want to revert to the
 existing password when editing an entry, just click on Cancel.
 [] New password generation option: Pronounceable passwords. Thanks to
 Tom Van Vleck, Morrie Gasser, and Dan Edwards.
+[] New disabled buttons for New Toolbar.
 
 New Features for 3.12
 =======================
