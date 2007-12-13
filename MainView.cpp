@@ -994,6 +994,33 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
+void DboxMain::OnTreeItemSelected(NMHDR * /*pNotifyStruct */, LRESULT *pLResult)
+{
+  // Seems that under Vista with Windows Common Controls V6, it is ignoring
+  // the single click on the button (+/-) of a node and only processing the 
+  // double click, which generates a copy of whatever the user selected
+  // for a duble click (except that it invalid for a node!) and then does
+  // the expand/collapse as appropriate.
+  // This codes attemts to fix this.  There may be better solutions but I 
+  // don't know them and have very limited testing facilities on Vista.
+
+  *pLResult = 0L;
+  TVHITTESTINFO htinfo = {0};
+
+  CPoint local;
+  local = ::GetMessagePos();
+  m_ctlItemTree.ScreenToClient(&local);
+  htinfo.pt = local;
+  m_ctlItemTree.HitTest(&htinfo);
+
+  if (htinfo.hItem != NULL && 
+      (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) &&
+      !m_ctlItemTree.IsLeaf(htinfo.hItem)) {
+    m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+    *pLResult = 1L;  // We did it!
+  }
+}
+
 void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
 {
   LV_KEYDOWN *pLVKeyDown = (LV_KEYDOWN*)pNMHDR;

@@ -398,7 +398,8 @@ protected:
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
   afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pResult);
   afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* result);
   afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* result);
