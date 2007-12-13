@@ -401,12 +401,12 @@ CMyString CPasswordCharPool::MakePronounceable() const
   else if (!m_uselowercase && m_useuppercase)
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]))
-        password[i] = _totupper(password[i]);
+        password[i] = (TCHAR)_totupper(password[i]);
     }
   else if (m_uselowercase && m_useuppercase) // mixed case
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]) && pwsrnd->RandUInt() % 2)
-        password[i] = _totupper(password[i]);
+        password[i] = (TCHAR)_totupper(password[i]);
     }
 
   CMyString retval = password.c_str();
