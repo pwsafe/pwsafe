@@ -111,6 +111,7 @@ public:
   int m_bPWUseLowercase;
   int m_bPWUseSymbols;
   int m_bPWUseUppercase;
+  int m_bPWMakePronounceable;
   int m_bSaveImmediately;
   int m_bSavePasswordHistory;
   int m_bShowNotesDefault;

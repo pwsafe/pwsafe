@@ -26,6 +26,8 @@ i.e. 'a' followed by 'b' will look for entry starting 'ab' etc.
 [] Allow List view to process all characters e.g. Page Up/Down, Home, End,
 Arrows etc.
 [] Fix program crash on clicking CompareResults dialog header.
+[1849818] Browse-to would occasionally falsely report "failed to
+browse to URL".
 
 Changes to Existing Features in 3.12
 ====================================

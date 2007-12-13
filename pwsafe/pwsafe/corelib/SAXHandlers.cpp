@@ -152,6 +152,7 @@ PWSSAXContentHandler::PWSSAXContentHandler()
   m_bPWUseLowercase = -1;
   m_bPWUseSymbols = -1;
   m_bPWUseUppercase = -1;
+  m_bPWMakePronounceable = -1;
   m_bSaveImmediately = -1;
   m_bSavePasswordHistory = -1;
   m_bShowNotesDefault = -1;
@@ -818,6 +819,9 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("PWUseUppercase")) == 0)
     m_bPWUseUppercase = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWMakePronounceable")) == 0)
+    m_bPWMakePronounceable = _ttoi(m_strElemContent);
 
   if (_tcscmp(szCurElement, _T("SaveImmediately")) == 0)
     m_bSaveImmediately = _ttoi(m_strElemContent);
