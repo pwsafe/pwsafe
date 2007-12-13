@@ -28,6 +28,8 @@ Arrows etc.
 [] Fix program crash on clicking CompareResults dialog header.
 [1849818] Browse-to would occasionally falsely report "failed to
 browse to URL".
+[1849830] Help now works properly for Manage->Option, displaying the
+relevant topic.
 
 Changes to Existing Features in 3.12
 ====================================

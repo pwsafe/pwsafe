@@ -40,7 +40,8 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 
 IMPLEMENT_DYNCREATE(COptionsBackup, CPropertyPage)
 
-COptionsBackup::COptionsBackup() : CPropertyPage(COptionsBackup::IDD), m_ToolTipCtrl(NULL)
+COptionsBackup::COptionsBackup(): CPWPropertyPage(COptionsBackup::IDD),
+  m_ToolTipCtrl(NULL)
 {
 	//{{AFX_DATA_INIT(COptionsBackup)
 	//}}AFX_DATA_INIT

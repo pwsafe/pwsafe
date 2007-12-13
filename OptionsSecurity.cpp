@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNCREATE(COptionsSecurity, CPropertyPage)
 
-COptionsSecurity::COptionsSecurity() : CPropertyPage(COptionsSecurity::IDD)
+COptionsSecurity::COptionsSecurity() : CPWPropertyPage(COptionsSecurity::IDD)
 {
 	//{{AFX_DATA_INIT(COptionsSecurity)
 	//}}AFX_DATA_INIT

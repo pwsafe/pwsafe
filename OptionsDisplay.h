@@ -12,8 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay dialog
+#include "PWPropertyPage.h"
 
-class COptionsDisplay : public CPropertyPage
+class COptionsDisplay : public CPWPropertyPage
 {
 	DECLARE_DYNCREATE(COptionsDisplay)
 
@@ -22,6 +23,7 @@ public:
 	COptionsDisplay();
 	~COptionsDisplay();
 
+  const TCHAR *GetHelpName() const {return _T("display_tab");}
 // Dialog Data
 	//{{AFX_DATA(COptionsDisplay)
 	enum { IDD = IDD_PS_DISPLAY };

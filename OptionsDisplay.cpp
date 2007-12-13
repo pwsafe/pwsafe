@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNCREATE(COptionsDisplay, CPropertyPage)
 
-COptionsDisplay::COptionsDisplay() : CPropertyPage(COptionsDisplay::IDD)
+COptionsDisplay::COptionsDisplay() : CPWPropertyPage(COptionsDisplay::IDD)
 {
 	//{{AFX_DATA_INIT(COptionsDisplay)
 	//}}AFX_DATA_INIT

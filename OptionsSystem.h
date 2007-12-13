@@ -12,8 +12,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSystem dialog
+#include "PWPropertyPage.h"
 
-class COptionsSystem : public CPropertyPage
+class COptionsSystem : public CPWPropertyPage
 {
 	DECLARE_DYNCREATE(COptionsSystem)
 
@@ -22,7 +23,9 @@ public:
 	COptionsSystem();
 	~COptionsSystem();
 
-// Dialog Data
+  const TCHAR *GetHelpName() const {return _T("system_tab");}
+    
+  // Dialog Data
 	//{{AFX_DATA(COptionsSystem)
 	enum { IDD = IDD_PS_SYSTEM };
 	int		m_maxreitems;

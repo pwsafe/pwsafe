@@ -14,8 +14,9 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory dialog
+#include "PWPropertyPage.h"
 
-class COptionsPasswordHistory : public CPropertyPage
+class COptionsPasswordHistory : public CPWPropertyPage
 {
 	DECLARE_DYNCREATE(COptionsPasswordHistory)
 
@@ -25,6 +26,8 @@ public:
 	~COptionsPasswordHistory();
 	DboxMain *m_pDboxMain;
 
+  const TCHAR *GetHelpName() const {return _T("password_history_tab");}
+    
 // Dialog Data
 	//{{AFX_DATA(COptionsPasswordHistory)
 	enum { IDD = IDD_PS_PASSWORDHISTORY };
