@@ -22,17 +22,21 @@
 
 /*
   To add a new Toolbar button to this class:
-  1. Design new bitmaps (1 x 'Classic' and 1 x 'New' designs).  Both have a
-     background colour of RGB(192, 192, 192).
+  1. Design new bitmaps (1 x 'Classic', 1 x 'New' designs & 1 x 'New Disabled' 
+     design).  All have a background colour of RGB(192, 192, 192).  Note: Create
+     the 'New Disabled' from the 'New' by using a program to convert the bitmap
+     to 8-bit greyscale.
   2. Add them to PaswordSafe.rc as BITMAPs
   3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC",
-     "IDB_<new name>_NEW"
+     "IDB_<new name>_NEW" and "IDB_<new name>_NEW_D"
   4. Assign a new resource ID for the corresponding button e.g. 
      "ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>" if also on a Menu.
   5. Add the resource ID in the appropriate place in the m_MainToolBarIDs array
-  6. Add the new bitmap IDs in the appropriate place in m_MainToolBarClassicBMs & 
-     m_MainToolBarNewBMs arrays (these should correspond to the position of the 
-     "resource ID" in step 4 (ignoring separators)).
+  6. Add the new bitmap IDs in the appropriate place in m_MainToolBarClassicBMs, 
+     m_MainToolBarNewBMs & m_MainToolBarNewDisBMs arrays (these should correspond
+     to the position of the "resource ID" in step 4 (ignoring separators)) - OR -
+     m_OtherClassicBMs, m_OtherNewBMs or m_OtherNewDisBMs arrays if not on the 
+     Toolbar but is on a menu.
   7. Add the new name in the appropriate place in the m_csMainButtons array (used 
      for customization/preferences and '~' represents a separator).
   8. Add the new resource ID ("ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>")
@@ -215,6 +219,39 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_ADDSHORTCUT_NEW
 };
 
+const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
+  IDB_NEW_NEW_D,
+  IDB_OPEN_NEW_D,
+  IDB_CLOSE_NEW_D,
+  IDB_SAVE_NEW_D,
+  IDB_COPYPASSWORD_NEW_D,
+  IDB_COPYUSER_NEW_D,
+  IDB_COPYNOTES_NEW_D,
+  IDB_CLEARCLIPBOARD_NEW_D,
+  IDB_AUTOTYPE_NEW_D,
+  IDB_BROWSEURL_NEW_D,
+  IDB_ADD_NEW_D,
+  IDB_VIEWEDIT_NEW_D,
+  IDB_DELETE_NEW_D,
+  IDB_EXPANDALL_NEW_D,
+  IDB_COLLAPSEALL_NEW_D,
+  IDB_OPTIONS_NEW_D,
+  IDB_HELP_NEW_D,
+  // End of Default Toolbar
+  // Following are not in the "default" toolbar but can be selected by the user
+  IDB_EXPORTTEXT_NEW_D,
+  IDB_EXPORTXML_NEW_D,
+  IDB_IMPORTTEXT_NEW_D,
+  IDB_IMPORTXML_NEW_D,
+  IDB_SAVEAS_NEW_D,
+  IDB_COMPARE_NEW_D,
+  IDB_MERGE_NEW_D,
+  IDB_LISTTREE_NEW_D,
+  IDB_FIND_NEW_D,
+  IDB_VIEWREPORTS_NEW_D,
+  IDB_ADDSHORTCUT_NEW_D
+};
+
 // Additional bitmaps not on ToolBar
 const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_SENDEMAIL_NEW,      // MUST be first to allow Browse URL <-> Send Email switching
@@ -237,6 +274,28 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_TRAYLOCK_NEW
 };
 
+// Additional bitmaps not on ToolBar
+const UINT CPWToolBar::m_OtherNewDisBMs[] = {
+  IDB_SENDEMAIL_NEW_D,      // MUST be first to allow Browse URL <-> Send Email switching
+  IDB_PROPERTIES_NEW_D,
+  IDB_GROUPENTER_NEW_D,
+  IDB_DUPLICATE_NEW_D,
+  IDB_CHANGEFONT_NEW_D,
+  IDB_COMPARE_NEW_D,
+  IDB_IMPORTTEXT_NEW_D,
+  IDB_IMPORTXML_NEW_D,
+  IDB_MERGE_NEW_D,
+  IDB_VALIDATE_NEW_D,
+  IDB_CHANGECOMBO_NEW_D,
+  IDB_BACKUPSAFE_NEW_D,
+  IDB_RESTORE_NEW_D,
+  IDB_VALIDATE_NEW_D,       // Yes, it is correct to be here twice!
+  IDB_EXIT_NEW_D,
+  IDB_ABOUT_NEW_D,
+  IDB_TRAYUNLOCK_NEW_D,
+  IDB_TRAYLOCK_NEW_D
+};
+
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)
 
 CPWToolBar::CPWToolBar()
@@ -248,11 +307,15 @@ CPWToolBar::CPWToolBar()
 
   ASSERT(sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) ==
          sizeof(m_MainToolBarNewBMs) / sizeof(UINT));
+  ASSERT(sizeof(m_MainToolBarNewBMs) / sizeof(UINT) ==
+         sizeof(m_MainToolBarNewDisBMs) / sizeof(UINT));
 
   ASSERT(sizeof(m_OtherIDs) / sizeof(UINT) ==
          sizeof(m_OtherClassicBMs) / sizeof(UINT));
   ASSERT(sizeof(m_OtherClassicBMs) / sizeof(UINT) ==
          sizeof(m_OtherNewBMs) / sizeof(UINT));
+  ASSERT(sizeof(m_OtherNewBMs) / sizeof(UINT) ==
+         sizeof(m_OtherNewDisBMs) / sizeof(UINT));
 
   m_iMaxNumButtons = sizeof(m_MainToolBarIDs) / sizeof(UINT);
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
@@ -265,6 +328,8 @@ CPWToolBar::~CPWToolBar()
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
   m_ImageLists[2].DeleteImageList();
+  m_DisabledImageLists[0].DeleteImageList();
+  m_DisabledImageLists[1].DeleteImageList();
   delete [] m_pOriginalTBinfo;
 }
 
@@ -284,6 +349,8 @@ CPWToolBar::RefreshImages()
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
   m_ImageLists[2].DeleteImageList();
+  m_DisabledImageLists[0].DeleteImageList();
+  m_DisabledImageLists[1].DeleteImageList();
 
   Init(m_NumBits, true);
 
@@ -367,6 +434,8 @@ CPWToolBar::Init(const int NumBits, bool bRefresh)
   m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
   m_ImageLists[1].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
   m_ImageLists[2].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
+  m_DisabledImageLists[0].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
+  m_DisabledImageLists[1].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
 
   int iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT);
   int iNum_Others  = sizeof(m_OtherClassicBMs) / sizeof(UINT);
@@ -380,14 +449,14 @@ CPWToolBar::Init(const int NumBits, bool bRefresh)
 
   m_iSendEmail_BM_offset = iNum_Bitmaps;  // First of the "Others"
 
-  SetupImageList(&m_MainToolBarClassicBMs[0], iNum_Bitmaps, 0);
-  SetupImageList(&m_OtherClassicBMs[0], iNum_Others, 0);
+  SetupImageList(&m_MainToolBarClassicBMs[0], NULL, iNum_Bitmaps, 0);
+  SetupImageList(&m_OtherClassicBMs[0], NULL, iNum_Others, 0);
 
-  SetupImageList(&m_MainToolBarNewBMs[0], iNum_Bitmaps, 1);
-  SetupImageList(&m_OtherNewBMs[0], iNum_Others, 1);
+  SetupImageList(&m_MainToolBarNewBMs[0], &m_MainToolBarNewDisBMs[0], iNum_Bitmaps, 1);
+  SetupImageList(&m_OtherNewBMs[0], &m_OtherNewDisBMs[0], iNum_Others, 1);
 
-  SetupImageList(&m_MainToolBarNewBMs[0], iNum_Bitmaps, 2);
-  SetupImageList(&m_OtherNewBMs[0], iNum_Others, 2);
+  SetupImageList(&m_MainToolBarNewBMs[0], &m_MainToolBarNewDisBMs[0], iNum_Bitmaps, 2);
+  SetupImageList(&m_OtherNewBMs[0], &m_OtherNewDisBMs[0], iNum_Others, 2);
 
   if (bRefresh)
     return;
@@ -537,6 +606,11 @@ CPWToolBar::ChangeImages(const int toolbarMode)
   m_toolbarMode = toolbarMode;
   const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
   tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
+  // We only do the New toolbar disabled images.  MS can handle the Classic OK
+  if (nImageListNum != 0)
+    tbCtrl.SetDisabledImageList(&m_DisabledImageLists[nImageListNum - 1]);
+  else
+    tbCtrl.SetDisabledImageList(NULL);
 }
 
 void
@@ -553,6 +627,11 @@ CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
   m_toolbarMode = toolbarMode;
   const int nImageListNum = (m_toolbarMode == ID_MENUITEM_OLD_TOOLBAR) ? 0 : m_bitmode;
   tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
+  // We only do the New toolbar disabled images.  MS can handle the Classic OK
+  if (nImageListNum != 0)
+    tbCtrl.SetDisabledImageList(&m_DisabledImageLists[nImageListNum - 1]);
+  else
+    tbCtrl.SetDisabledImageList(NULL);
 
   // Create text for customization dialog using button tooltips.
   // Assume no button tooltip description exceeds 64 characters, also m_iMaxNumButtons
@@ -622,19 +701,29 @@ CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
 }
 
 void
-CPWToolBar::SetupImageList(const UINT *pBM_IDs, const int numBMs, const int nImageList)
+CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
+                           const int numBMs, const int nImageList)
 {
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_BTNFACE);
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
 
-  CBitmap bmNormal;
+  CBitmap bmNormal, bmDisabled;
+
   for (int i = 0; i < numBMs; i++) {
     bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pBM_IDs[i]), RT_BITMAP),
                                 MAKEINTRESOURCE(pBM_IDs[i]), IMAGE_BITMAP, 0, 0,
                                 (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
-
     SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
     m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
     bmNormal.Detach();
+
+    if (nImageList != 0) {
+      bmDisabled.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pDisBM_IDs[i]), RT_BITMAP),
+                                    MAKEINTRESOURCE(pDisBM_IDs[i]), IMAGE_BITMAP, 0, 0,
+                                    (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+      SetBitmapBackground(bmDisabled, crCOLOR_3DFACE);
+      m_DisabledImageLists[nImageList - 1].Add(&bmDisabled, crCOLOR_3DFACE);
+      bmDisabled.Detach();
+    }
   }
 }
   

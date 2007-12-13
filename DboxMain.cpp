@@ -356,13 +356,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CLEARRECENTENTRIES, true, true, true, false},
   {ID_MENUITEM_MINIMIZE, true, true, true, true},
   {ID_MENUITEM_UNMINIMIZE, true, true, true, true},
-  {ID_MENUITEM_TRAYAUTOTYPE, true, true, false, false},
-  {ID_MENUITEM_TRAYBROWSE, true, true, false, false},
-  {ID_MENUITEM_TRAYCOPYNOTES, true, true, false, false},
-  {ID_MENUITEM_TRAYCOPYPASSWORD, true, true, false, false},
-  {ID_MENUITEM_TRAYCOPYUSERNAME, true, true, false, false},
-  {ID_MENUITEM_TRAYDELETE, true, false, false, false},
-  {ID_MENUITEM_TRAYVIEWEDIT, true, true, false, false},
   // Default Main Toolbar buttons - if not menu items
   //   None
   // Optional Main Toolbar buttons
@@ -1658,7 +1651,8 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     pPopupMenu->GetMenuItemInfo(pos, &miinfo, TRUE);
     pmd = (CRUEItemData *)miinfo.dwItemData;
 
-    if (pmd && pmd->IsRUEID() && !(miinfo.fType & MFT_OWNERDRAW)) {
+    if (pmd && pmd->IsRUEID() && !(miinfo.fType & MFT_OWNERDRAW) &&
+        pmd->nImage >= 0) {
       miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
       miinfo.hbmpItem = HBMMENU_CALLBACK;
       miinfo.fType = MFT_STRING;
@@ -2172,12 +2166,6 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	CWnd* pMain = AfxGetMainWnd();
 	CMenu* xmainmenu = pMain->GetMenu();
 
-  if (m_bOpen) {
-    for (unsigned int i = 0; i < xmainmenu->GetMenuItemCount(); i++) {
-      xmainmenu->EnableMenuItem(i, MF_BYPOSITION | MF_ENABLED);
-    }
-  }
-
 	// Look for "File" menu.
 	CString cs_text;
 	cs_text.LoadString(IDS_FILEMENU);
@@ -2192,33 +2180,6 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 		xfilesubmenu->EnableMenuItem(pos + 2, MF_BYPOSITION | imenuflags);
 		xfilesubmenu->EnableMenuItem(pos + 3, MF_BYPOSITION | imenuflags);
   }
-
-	// Look for "Edit" menu.
-	cs_text.LoadString(IDS_EDITMENU);
-	pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // Couldn't find it - wrong language?
-		pos = 1; // best guess...
-  xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
-
-	// Look for "View" menu.
-	cs_text.LoadString(IDS_VIEWMENU);
-	pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // Couldn't find it - wrong language?
-		pos = 2; // best guess...
-  xmainmenu->EnableMenuItem(pos, MF_BYPOSITION | imenuflags);
-
-	// Look for "Manage" menu.
-  cs_text.LoadString(IDS_MANAGEMENU);
-	pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // Couldn't find it - wrong language?
-		pos = 3; // best guess...
-  xfilesubmenu = xmainmenu->GetSubMenu(pos);
-
-	// Disable/enable menu items:
-	//   "Change Safe Combination", "Make Backup" & "Restore from Backup"
-	xfilesubmenu->EnableMenuItem(ID_MENUITEM_CHANGECOMBO, MF_BYCOMMAND | imenuflags);
-	xfilesubmenu->EnableMenuItem(ID_MENUITEM_BACKUPSAFE, MF_BYCOMMAND | imenuflags);
-	xfilesubmenu->EnableMenuItem(ID_MENUITEM_RESTORE, MF_BYCOMMAND | imenuflags);
 
 	if (m_toolbarsSetup == TRUE) {
     TBBUTTONINFO tbinfo;

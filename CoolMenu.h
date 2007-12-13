@@ -6,6 +6,8 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
+#pragma once
+
 ////////////////////////////////////////////////////////////////
 // 1997 Microsoft Systems Journal.
 // If this code works, it was written by Paul DiLascia.
@@ -32,7 +34,7 @@
 //
 
 // identifies owner-draw data as mine
-const LONG COOLMENUITEMID = MAKELONG(MAKEWORD('C', 'M'),MAKEWORD('I', 'D'));
+const long COOLMENUITEMID = MAKELONG(MAKEWORD('C', 'M'),MAKEWORD('I', 'D'));
 
 // private struct: one of these for each owner-draw menu item
 struct CMenuItemData {
@@ -72,12 +74,14 @@ public:
 
 protected:
   CImageList     m_ImageList;   // image list for all buttons
+  CImageList     m_DisabledImageList; // disabled image list for all buttons
   MenuVector     m_menuList;    // list of HMENU's initialized
-  PMDVector      m_pmdList;
+  PMDVector      m_pmdList;     // Vector of ptrs to CMenuItemData
   CSize          m_szBitmap;    // size of button bitmap
   CSize          m_szButton;    // size of button (including shadow)
   CFont          m_fontMenu;    // menu font
-  ID2ImageMap    m_IDtoImages;
+  ID2ImageMap    m_IDtoImages;  // To obtain image ID from Control ID
+  bool           m_bNoDIL;      // "true" if No Disabled Image List i.e. Classic toolbar
 
   // helpers
   void DrawMenuText(CDC& dc, CRect rc, CString text, COLORREF color);
