@@ -1665,7 +1665,6 @@ DboxMain::UpdateSystemTray(const STATE s)
 BOOL
 DboxMain::LaunchBrowser(const CString &csURL)
 {
-  HINSTANCE hinst;
   CString theURL(csURL);
 
   // csURL should be a well-formed URL as defined in RFC3986 with
@@ -1707,24 +1706,30 @@ DboxMain::LaunchBrowser(const CString &csURL)
 
   CString csAltBrowser(PWSprefs::GetInstance()->
                        GetPref(PWSprefs::AltBrowser));
-
   bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) &&
                         !csAltBrowser.IsEmpty());
 
+  SHELLEXECUTEINFO si;
+  si.cbSize = sizeof(SHELLEXECUTEINFO);
+  si.fMask = 0;
+  si.hwnd = 0;
+  si.lpVerb = si.lpFile = si.lpParameters = si.lpDirectory = 0;
+  si.nShow = SW_SHOWNORMAL;
+
   if (!useAltBrowser) {
-    hinst = ::ShellExecute(NULL, NULL, theURL, NULL,
-                           NULL, SW_SHOWNORMAL);
+    si.lpFile = theURL;
   } else { // alternate browser specified, invoke w/optional args
     CString csCmdLineParms(PWSprefs::GetInstance()->
                            GetPref(PWSprefs::AltBrowserCmdLineParms));
   
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
-    hinst = ::ShellExecute(NULL, NULL, csAltBrowser, theURL,
-                           NULL, SW_SHOWNORMAL);
+    si.lpFile = csAltBrowser;
+    si.lpParameters = theURL;
   }
 
-  if(hinst < HINSTANCE(32)) {
+  BOOL shellExecStatus = ::ShellExecuteEx(&si);
+  if(shellExecStatus != TRUE) {
     AfxMessageBox(errID, MB_ICONSTOP);
     return FALSE;
   }
