@@ -100,6 +100,7 @@
               <xs:element name="PWUseLowercase" type="boolType" minOccurs="0" />
               <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" />
               <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" />
+              <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" />
               <xs:element name="SaveImmediately" type="boolType" minOccurs="0" />
               <xs:element name="SavePasswordHistory" type="boolType" minOccurs="0" />
               <xs:element name="ShowNotesDefault" type="boolType" minOccurs="0" />
