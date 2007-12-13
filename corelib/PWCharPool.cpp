@@ -388,7 +388,8 @@ CMyString CPasswordCharPool::MakePronounceable() const
       // choose how many to replace (at least one)
       unsigned int rn = pwsrnd->RangeRand(sc.size() - 1) + 1;
       // replace some of them
-      random_shuffle(sc.begin(), sc.end(), RandomWrapper());
+      RandomWrapper rnw;
+      random_shuffle(sc.begin(), sc.end(), rnw);
       for (unsigned int i = 0; i < rn; i++)
         leet_replace(password, sc[i], m_usedigits, m_usesymbols);
     }
