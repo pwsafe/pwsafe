@@ -209,6 +209,7 @@ ON_WM_DRAWITEM()
 ON_WM_MEASUREITEM()
 
 ON_NOTIFY(NM_CLICK, IDC_ITEMLIST, OnListItemSelected)
+ON_NOTIFY(NM_CLICK, IDC_ITEMTREE, OnTreeItemSelected)
 ON_NOTIFY(LVN_KEYDOWN, IDC_ITEMLIST, OnKeydownItemlist)
 ON_NOTIFY(NM_DBLCLK, IDC_ITEMLIST, OnItemDoubleClick)
 ON_NOTIFY(NM_DBLCLK, IDC_ITEMTREE, OnItemDoubleClick)
@@ -846,8 +847,9 @@ void DboxMain::FixListIndexes()
 }
 
 void
-DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
+DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
 {
+  *pLResult = 0L;
   UnFindItem();
 
 	// TreeView only - use DoubleClick to Expand/Collapse group
@@ -859,6 +861,9 @@ DboxMain::OnItemDoubleClick( NMHDR *, LRESULT *)
 			return;
 		}
 	}
+
+  // Now set we have processed the event
+  *pLResult = 1L;
 
 	// Continue if in ListView  or Leaf in TreeView
 

@@ -10,6 +10,10 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12
 ==================
+[1849830] Help now works properly for Manage->Option, displaying the
+relevant topic.
+[1849818] Browse-to would occasionally falsely report "failed to
+browse to URL".
 [1843631] "Browse to Icon" now correctly shown using new Toolbar.
 [1841525] Increasing the number of passwords saved no longer deletes the
 existing Password History.
@@ -26,10 +30,7 @@ i.e. 'a' followed by 'b' will look for entry starting 'ab' etc.
 [] Allow List view to process all characters e.g. Page Up/Down, Home, End,
 Arrows etc.
 [] Fix program crash on clicking CompareResults dialog header.
-[1849818] Browse-to would occasionally falsely report "failed to
-browse to URL".
-[1849830] Help now works properly for Manage->Option, displaying the
-relevant topic.
+[] Allow use of Windows Common Controls V6 with Vista.
 
 Changes to Existing Features in 3.12
 ====================================
@@ -42,18 +43,18 @@ Tom Van Vleck, Morrie Gasser, and Dan Edwards.
 
 New Features for 3.12
 =======================
+[1842449] Implement standard F3 for repeat Find shortcut.
 [] An entry may have multiple references, or "shortcuts" to it. These
 may be thought of as "synonyms" of the entry. See online help for
 details.
 [] Graphics added to menus.
-[1842449] Implement standard F3 for repeat Find shortcut.
 
 Bugs fixed in 3.11.1
 ====================
-[] No longer crashes when pulling down Edit menu in List view with no
-entry selected.
 [1837534] Autotype handles tab correctly when typing to Internet
 Explorer.
+[] No longer crashes when pulling down Edit menu in List view with no
+entry selected.
 [] Copy Username and Copy Password new toolbar icons swapped back.
 
 Changes to Existing Features in 3.11.1
