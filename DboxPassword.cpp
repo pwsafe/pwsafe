@@ -55,6 +55,8 @@ DboxMain::MakeRandomPassword( CDialog * const pDialog, CMyString& password)
     GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
     GetPref(PWSprefs::PWUseEasyVision);
+  passwordpolicy.m_pwmakepronounceable = prefs->
+    GetPref(PWSprefs::PWMakePronounceable);
 
   if (is_override) {
     // Start with existing password policy
