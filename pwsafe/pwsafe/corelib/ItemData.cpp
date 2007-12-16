@@ -361,7 +361,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
                 cibase->GetGroup() + _T(":") + 
                 cibase->GetTitle() + _T(":") + 
                 cibase->GetUser() + _T("~]") ;
-  }
+  } else
     csPassword = GetPassword();
 
   // Notes field must be last, for ease of parsing import

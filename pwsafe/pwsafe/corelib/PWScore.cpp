@@ -778,7 +778,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     rpt.WriteLine();
   }
 
-  UUIDList possible_aliases;
+  UUIDList possible_aliases, possible_shortcuts;
 
   // Finished parsing header, go get the data!
   for (;;) {
@@ -1022,14 +1022,18 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       }
     }
 
-    const int n = CMyString(csPassword).Replace(_T(':'), _T(';'));
-		if (csPassword.Left(1) == _T("[") &&
-		    csPassword.Right(1) == _T("]") &&
-		    n <= 2) {
+    if (CMyString(csPassword).Replace(_T(':'), _T(';')) <= 2) {
       uuid_array_t temp_uuid;
       temp.GetUUID(temp_uuid);
-		  possible_aliases.push_back(temp_uuid);
-		}
+      if (csPassword.Left(2) == _T("[[") &&
+          csPassword.Right(2) == _T("]]")) {
+        possible_aliases.push_back(temp_uuid);
+      }
+      if (csPassword.Left(2) == _T("[~") &&
+          csPassword.Right(2) == _T("~]")) {
+        possible_shortcuts.push_back(temp_uuid);
+      }
+    }
 
     AddEntry(temp);
     numImported++;
@@ -1037,6 +1041,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
   ifs.close();
 
   AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
+  AddDependentEntries(possible_shortcuts, &rpt, CItemData::Shortcut, CItemData::PASSWORD);
   m_changed = true;
   return SUCCESS;
 }
