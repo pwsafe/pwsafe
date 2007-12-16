@@ -26,6 +26,8 @@ enum {PASSWORDSAFE = 0, PW_ENTRY, PW_GROUP, PW_TITLE, PW_USERNAME, PW_PASSWORD, 
 		PW_HISTORY, PW_STATUS, PW_MAX, PW_NUM, PW_HISTORY_ENTRY,
 		PW_CHANGED, PW_OLDPASSWORD, PW_DATE, PW_TIME, PW_UUID};
 
+enum {NORMAL = 0, ALIAS, SHORTCUT};
+
 struct pw_entry {
 	CMyString group;
 	CMyString title;
@@ -43,7 +45,7 @@ struct pw_entry {
 	CMyString notes;
 	CMyString uuid;
 	UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
-	bool alias;
+	int entrytype;
 };
 
 //	-----------------------------------------------------------------------
@@ -99,7 +101,7 @@ public:
 
 	void SetVariables(PWScore *core, const bool &bValidation,
 					const CString &ImportedPrefix, const TCHAR &delimiter,
-          UUIDList *possible_aliases);
+          UUIDList *possible_aliases, UUIDList *possible_shortcuts);
 
   // Preferences posibly stored in database
   // Note: boolean is integer to allow an 'not set' value of '-1'
@@ -197,6 +199,7 @@ private:
 	CString m_ImportedPrefix;
 	PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;
+  UUIDList *m_possible_shortcuts;
 	int m_whichtime, m_ipwh;
 	bool m_bValidation;
 

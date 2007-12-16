@@ -585,8 +585,8 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
                        bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields,
                        CReport &rpt)
 {
-  UUIDList possible_aliases;
-  PWSXML iXML(this, &possible_aliases);
+  UUIDList possible_aliases, possible_shortcuts;
+  PWSXML iXML(this, &possible_aliases, &possible_shortcuts);
   bool status, validation;
   int nITER(0);
   int nRecordsWithUnknownFields;
@@ -630,6 +630,7 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
   uhfl.clear();
 
   AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
+  AddDependentEntries(possible_shortcuts, &rpt, CItemData::Shortcut, CItemData::PASSWORD);
 
   m_changed = true;
   return SUCCESS;

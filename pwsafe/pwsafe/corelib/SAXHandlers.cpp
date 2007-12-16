@@ -177,13 +177,14 @@ PWSSAXContentHandler::~PWSSAXContentHandler()
 
 void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
 									  const CString &ImportedPrefix, const TCHAR &delimiter,
-                    UUIDList *possible_aliases)
+                    UUIDList *possible_aliases, UUIDList *possible_shortcuts)
 {
 	m_bValidation = bValidation;
 	m_ImportedPrefix = ImportedPrefix;
 	m_delimiter = delimiter;
 	m_xmlcore = core;
   m_possible_aliases = possible_aliases;
+  m_possible_shortcuts = possible_shortcuts;
 }
 
 long __stdcall PWSSAXContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
@@ -350,7 +351,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 		cur_entry->pwhistory = _T("");
 		cur_entry->notes = _T("");
 		cur_entry->uuid = _T("");
-		cur_entry->alias = false;
+		cur_entry->entrytype = 0;
 	}
 
 	if (_tcscmp(szCurElement, _T("ctime")) == 0)
@@ -559,9 +560,13 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     }
 
     // If a potential alias, add to the vector for later verification and processing
-    if (cur_entry->alias) {
+    if (cur_entry->entrytype == ALIAS) {
       tempitem.GetUUID(uuid_array);
       m_possible_aliases->push_back(uuid_array);
+    }
+    if (cur_entry->entrytype == SHORTCUT) {
+      tempitem.GetUUID(uuid_array);
+      m_possible_shortcuts->push_back(uuid_array);
     }
     
 		m_xmlcore->AddEntry(tempitem);
@@ -584,13 +589,16 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
 	if (_tcscmp(szCurElement, _T("password")) == 0) {
 	  cur_entry->password = m_strElemContent;
-    const int n = CMyString(m_strElemContent).Replace(_T(':'), _T(';'));
-		if (m_strElemContent.Left(1) == _T("[") &&
-		    m_strElemContent.Right(1) == _T("]") &&
-		    n <= 2) {
-		  cur_entry->alias = true;
-		} else
-		  cur_entry->alias = false;
+    if (CMyString(m_strElemContent).Replace(_T(':'), _T(';')) <= 2) {
+      if (m_strElemContent.Left(2) == _T("[[") &&
+          m_strElemContent.Right(2) == _T("]]")) {
+        cur_entry->entrytype = ALIAS;
+      }
+      if (m_strElemContent.Left(2) == _T("[~") &&
+          m_strElemContent.Right(2) == _T("~]")) {
+        cur_entry->entrytype = SHORTCUT;
+      }
+    }
 	}
 
 	if (_tcscmp(szCurElement, _T("url")) == 0) {
