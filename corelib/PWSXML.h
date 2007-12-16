@@ -22,7 +22,7 @@ class PWScore;
 
 class PWSXML {
 public:
-	PWSXML(PWScore *core, UUIDList *possible_aliases);
+	PWSXML(PWScore *core, UUIDList *possible_aliases, UUIDList *possible_shortcuts);
 	~PWSXML();
 
 	bool XMLProcess(const bool &bvalidation, const CString &ImportedPrefix, 
@@ -36,6 +36,7 @@ public:
 private:
 	PWScore *m_xmlcore;
   UUIDList *m_possible_aliases;
+  UUIDList *m_possible_shortcuts;
 	TCHAR m_delimiter;
 	bool m_bValidation;
 };
