@@ -228,6 +228,8 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
               prefs->SetPref(PWSprefs::PWUseSymbols, pCH->m_bPWUseSymbols == 1);
             if (pCH->m_bPWUseUppercase != -1)
               prefs->SetPref(PWSprefs::PWUseUppercase, pCH->m_bPWUseUppercase == 1);
+            if (pCH->m_bPWMakePronounceable != -1)
+              prefs->SetPref(PWSprefs::PWMakePronounceable, pCH->m_bPWMakePronounceable == 1);
             if (pCH->m_bSaveImmediately != -1)
               prefs->SetPref(PWSprefs::SaveImmediately, pCH->m_bSaveImmediately == 1);
             if (pCH->m_bSavePasswordHistory != -1)
