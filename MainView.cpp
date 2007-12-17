@@ -2356,24 +2356,59 @@ DboxMain::UnFindItem()
   }
 }
 
+
+bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive,
+                                    CString &cs_directory)
+{
+  TCHAR tc_applicationpath[_MAX_PATH];
+  TCHAR tc_appdrive[_MAX_DRIVE];
+  TCHAR tc_appdir[_MAX_DIR];
+  TCHAR tc_drive[_MAX_DRIVE];
+  TCHAR tc_dir[_MAX_DIR];
+
+  memset(tc_appdrive, 0x00, _MAX_DRIVE * sizeof(TCHAR));
+  memset(tc_appdir, 0x00, _MAX_DIR * sizeof(TCHAR));
+  memset(tc_drive, 0x00, _MAX_DRIVE * sizeof(TCHAR));
+  memset(tc_dir, 0x00, _MAX_DIR * sizeof(TCHAR));
+
+  ::GetModuleFileName(NULL, tc_applicationpath, _MAX_PATH);
+
+#if _MSC_VER >= 1400
+  errno_t err;
+  _tsplitpath_s(tc_applicationpath, tc_appdrive, _MAX_DRIVE, tc_appdir, 
+                                                 _MAX_DIR, NULL, 0, NULL, 0);
+  err = _tsplitpath_s(cs_infile, tc_drive, _MAX_DRIVE, tc_dir, 
+                                           _MAX_DIR, NULL, 0, NULL, 0);
+  if (err != 0) {
+    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+    return false;
+  }
+#else
+  _tsplitpath(tc_applicationpath, tc_appdrive, tc_appdir, NULL, NULL);
+  _tsplitpath(cs_Database, sz_drive, sz_dir, NULL, NULL);
+#endif
+
+  if (_tcslen(tc_drive) == 0) {
+    memset(tc_drive, 0x00, _MAX_DRIVE * sizeof(TCHAR));
+    memcpy(tc_drive, tc_appdrive, _MAX_DRIVE * sizeof(TCHAR));
+  }
+  if (_tcslen(tc_dir) == 0) {
+    memset(tc_dir, 0x00, _MAX_DIR * sizeof(TCHAR));
+    memcpy(tc_dir, tc_appdir, _MAX_DIR * sizeof(TCHAR));
+  }
+  cs_directory = CString(tc_dir);
+  cs_drive = CString(tc_drive);
+  return true;
+}
+
 void
 DboxMain::OnViewReports()
 {
   CString cs_filename, cs_path, csAction;
-  TCHAR tc_drive[_MAX_DRIVE];
-  TCHAR tc_dir[_MAX_DIR];
+  CString cs_directory, cs_drive;
 
-#if _MSC_VER >= 1400
-  errno_t err;
-  err = _tsplitpath_s(m_core.GetCurFile(), tc_drive, _MAX_DRIVE, tc_dir, _MAX_DIR,
-                      NULL, 0, NULL, 0);
-  if (err != 0) {
-    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+  if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
     return;
-  }
-#else
-  _tsplitpath(m_core.GetCurFile(), sz_drive, sz_dir, NULL, NULL);
-#endif
 
   CGeneralMsgBox gmb;
   CString cs_msg(MAKEINTRESOURCE(IDS_SELECTREPORT));
@@ -2381,27 +2416,27 @@ DboxMain::OnViewReports()
 
   struct _stat statbuf;
   bool bReportExists(false);
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Compare"));
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Compare"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
      gmb.AddButton(1, _T("Compare"));
      bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Import_Text"));
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Import_Text"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
      gmb.AddButton(2, _T("Import Text"));
      bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Import_XML"));
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Import_XML"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
      gmb.AddButton(3, _T("Import XML"));
      bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Merge"));
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Merge"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
      gmb.AddButton(4, _T("Merge"));
      bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, _T("Validate"));
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Validate"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
      gmb.AddButton(5, _T("Validate"));
      bReportExists = true;
@@ -2435,7 +2470,7 @@ DboxMain::OnViewReports()
     default:
       return;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, csAction);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   ViewReport(cs_filename);
   return;
@@ -2448,21 +2483,10 @@ DboxMain::OnViewReports(UINT nID)
          (nID <= ID_MENUITEM_REPORT_VALIDATE));
 
   CString cs_filename, cs_path, csAction;
-  TCHAR tc_drive[_MAX_DRIVE];
-  TCHAR tc_dir[_MAX_DIR];
+  CString cs_drive, cs_directory;
 
-#if _MSC_VER >= 1400
-  errno_t err;
-  err = _tsplitpath_s(m_core.GetCurFile(), tc_drive, _MAX_DRIVE, 
-                                           tc_dir, _MAX_DIR, 
-                                           NULL, 0, NULL, 0);
-  if (err != 0) {
-    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+  if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
     return;
-  }
-#else
-  _tsplitpath(m_core.GetCurFile(), sz_drive, sz_dir, NULL, NULL);
-#endif
 
   switch (nID) {
     case ID_MENUITEM_REPORT_COMPARE:
@@ -2483,7 +2507,7 @@ DboxMain::OnViewReports(UINT nID)
     default:
       ASSERT(0);
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, csAction);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   ViewReport(cs_filename);
 
@@ -2494,29 +2518,12 @@ void
 DboxMain::ViewReport(const CString cs_ReportFileName)
 {
   CString cs_path, csAction;
-  TCHAR tc_drive[_MAX_DRIVE];
-  TCHAR tc_dir[_MAX_DIR];
+  CString cs_drive, cs_directory;
 
-#if _MSC_VER >= 1400
-  errno_t err;
-  err = _tsplitpath_s(cs_ReportFileName, tc_drive, _MAX_DRIVE, 
-                                           tc_dir, _MAX_DIR, 
-                                           NULL, 0, NULL, 0);
-
-  if (err != 0 || _tcslen(tc_drive) == 0 || _tcslen(tc_dir) == 0) {
-    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+  if (!GetDriveAndDirectory(cs_ReportFileName, cs_drive, cs_directory))
     return;
-  }
-#else
-  _tsplitpath(cs_ReportFileName, sz_drive, sz_dir, NULL, NULL);
 
-  if (_tcslen(tc_drive) == 0 || _tcslen(tc_dir) == 0) {
-    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
-    return;
-  }
-#endif
-
-  cs_path.Format(_T("%s%s"), tc_drive, tc_dir);
+  cs_path.Format(_T("%s%s"), cs_drive, cs_directory);
 
   TCHAR szExecName[MAX_PATH + 1];
 
@@ -2574,19 +2581,10 @@ DboxMain::OnUpdateViewReports(const int nID)
   }
 
   CString cs_filename, csAction;
-  TCHAR tc_drive[_MAX_DRIVE];
-  TCHAR tc_dir[_MAX_DIR];
+  CString cs_drive, cs_directory;
 
-#if _MSC_VER >= 1400
-  errno_t err;
-  err = _tsplitpath_s(cs_Database, tc_drive, _MAX_DRIVE, tc_dir, _MAX_DIR, NULL, 0, NULL, 0);
-  if (err != 0) {
-    PWSUtil::IssueError(_T("View Report: Error finding path to database"));
+  if (!GetDriveAndDirectory(cs_Database, cs_drive, cs_directory))
     return FALSE;
-  }
-#else
-  _tsplitpath(cs_Database, sz_drive, sz_dir, NULL, NULL);
-#endif
 
   switch (nID) {
     case ID_MENUITEM_REPORT_COMPARE:
@@ -2605,10 +2603,11 @@ DboxMain::OnUpdateViewReports(const int nID)
       csAction = _T("Validate");
       break;
     default:
+      TRACE(_T("ID=%d\n"), nID);
       ASSERT(0);
   }
 
-  cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, csAction);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   struct _stat statbuf;
 

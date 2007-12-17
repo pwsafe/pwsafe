@@ -360,6 +360,8 @@ protected:
   bool EditShortcut(CItemData *ci, PWScore *pcore = NULL);
   void SortDependents(UUIDList &dlist, CMyString &csDependents);
   void ViewReport(const CString cs_ReportFileName);
+  bool GetDriveAndDirectory(const CMyString cs_infile, CString &cs_directory,
+                            CString &cs_drive);
   void SetFindToolBar(bool bShow);
 
 #if !defined(POCKET_PC)
