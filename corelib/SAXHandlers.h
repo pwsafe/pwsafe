@@ -44,6 +44,7 @@ struct pw_entry {
 	CMyString pwhistory;
 	CMyString notes;
 	CMyString uuid;
+  DWORD policy;
 	UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
 	int entrytype;
 };
@@ -207,6 +208,7 @@ private:
 	unsigned char m_ctype;
 	unsigned char * m_pfield;
   int m_fieldlen;
+  bool m_bentrybeingprocessed;
 
 	// REQUIRED variable
 	ULONG m_refCnt;

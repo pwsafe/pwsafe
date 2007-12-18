@@ -74,7 +74,8 @@ public:
     START = 0x00,
     NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
     PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
-    POLICY = 0x0b, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e, PWHIST = 0x0f,
+    RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
+    PWHIST = 0x0f, POLICY = 0x10,
     LAST,        // Start of unknown fields!
     END = 0xff}; // field types, per formatV{2,3}.txt
 
@@ -152,6 +153,8 @@ public:
   void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
   void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
   CMyString GetPWHistory() const;  // V30
+  void GetPWPolicy(DWORD &dw_policy) const;
+  CMyString GetPWPolicy() const;
   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
   // it's used for multi-line notes and to replace '.' within the Title field.
   CMyString GetPlaintext(const TCHAR &separator, const FieldBits &bsExport,
@@ -204,6 +207,8 @@ public:
   int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
                           PWHistList* pPWHistList,
                           const int time_format) const;  // V30
+  void SetPWPolicy(DWORD dw_policy);
+  bool SetPWPolicy(const CString &dword_string);
   CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}
@@ -264,6 +269,7 @@ private:
   CItemField m_tttPMTime;	// last 'P'assword 'M'odification time
   CItemField m_tttRMTime;	// last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
+  CItemField m_PWPolicy;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
@@ -313,4 +319,5 @@ inline bool CItemData::IsTextField(unsigned char t)
 // Local variables:
 // mode: c++
 // End:
+
 

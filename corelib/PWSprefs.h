@@ -95,6 +95,18 @@ class PWSprefs {
 
   // for System Tray icon color
   enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
+
+  // For Password Polict
+  enum {PWPolicyUseLowercase =      0x80000000, 
+        PWPolicyUseUppercase =      0x40000000,
+        PWPolicyUseDigits =         0x20000000, 
+        PWPolicyUseSymbols =        0x10000000,
+        PWPolicyUseHexDigits =      0x08000000,
+        PWPolicyUseEasyVision =     0x04000000,
+        PWPolicyMakePronounceable = 0x02000000,
+        PWPolicyMaxLength =         0x000003ff,
+        PWPolicyFlags =             0xfffffc00};
+
   bool IsDBprefsChanged() const {return m_prefs_changed[DB_PREF];}
   bool IsAPPprefsChanged() const {return m_prefs_changed[APP_PREF];}
   void ClearDBprefsChanged() {m_prefs_changed[DB_PREF] = false;}

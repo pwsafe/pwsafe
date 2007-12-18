@@ -57,6 +57,7 @@
 #define IDSC_SAXGENERROR                3053
 #define IDSC_EXPHDRGROUP                3054
 #define IDSC_EXPHDRTITLE                3055
+#define IDSC_EXPHDRPWPOLICY             3056
                                         
 #define IDSC_FILEEXCEPTION00            3100
 #define IDSC_FILEEXCEPTION01            3101

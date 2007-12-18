@@ -125,7 +125,7 @@ public:
   // BOTH means CURRENT + COMPARE but with differences
   enum {IDENTICAL = -2, BOTH = -1 , CURRENT = 0, COMPARE, 
         GROUP, TITLE, USER, PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
-        CTIME, ATIME, LTIME, PMTIME, RMTIME,
+        CTIME, ATIME, LTIME, PMTIME, RMTIME, POLICY,
         LAST};
 
   // Dialog Data

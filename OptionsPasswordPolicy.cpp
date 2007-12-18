@@ -75,7 +75,7 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
 {
   CPropertyPage::OnInitDialog();
 
-  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWLENGTH));
   pspin->SetRange(4, 1024);
