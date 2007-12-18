@@ -1823,11 +1823,14 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
                 1... ....  PMTIME   [0x08] - not checked - immaterial
                 .1.. ....  ATIME    [0x09] - not checked - immaterial
                 ..1. ....  LTIME    [0x0a]
-                ...1 ....  POLICY   [0x0b] - not yet implemented
+                ...1 ....  RESERVED [0x0b] - not used
                 .... 1...  RMTIME   [0x0c] - not checked - immaterial
                 .... .1..  URL      [0x0d]
                 .... ..1.  AUTOTYPE [0x0e]
                 .... ...1  PWHIST   [0x0f]
+
+                Third byte
+                1... ....  POLICY   [0x10]
         */
 
         bsConflicts.reset();
@@ -1863,15 +1866,18 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
         if (m_bsFields.test(CItemData::PWHIST) &&
             currentItem.GetPWHistory() != compItem.GetPWHistory())
           bsConflicts.flip(CItemData::PWHIST);
+        if (m_bsFields.test(CItemData::POLICY) &&
+            currentItem.GetPWPolicy() != compItem.GetPWPolicy())
+          bsConflicts.flip(CItemData::POLICY);
 
         currentPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(uuid_array_t));
         foundPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid1, xuuid, sizeof(uuid_array_t));
-          st_data.bsDiffs = bsConflicts;
+        st_data.bsDiffs = bsConflicts;
         st_data.indatabase = CCompareResultsDlg::BOTH;
-          st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
-          st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
+        st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
+        st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
 
         if (bsConflicts.any()) {
           numConflicts++;
@@ -2102,6 +2108,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   ItemListIter toPos;
   CMyString group, title, user, notes, password, url, autotype, pwhistory;
   time_t ct, at, lt, pmt, rmt;
+  DWORD dw_policy;
   int nfromUnknownRecordFields;
   bool bFromUUIDIsNotInTo;
 
@@ -2122,6 +2129,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   fromEntry->GetLTime(lt);
   fromEntry->GetPMTime(pmt);
   fromEntry->GetRMTime(rmt);
+  fromEntry->GetPWPolicy(dw_policy);
   nfromUnknownRecordFields = fromEntry->NumberUnknownFields();
 
   bFromUUIDIsNotInTo = (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter());
@@ -2142,6 +2150,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     toEntry->SetLTime(lt);
     toEntry->SetPMTime(pmt);
     toEntry->SetRMTime(rmt);
+    toEntry->SetPWPolicy(dw_policy);
 
     // If the UUID is not in use, copy it too, otherwise reuse current
     if (bFromUUIDIsNotInTo)
@@ -2195,6 +2204,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     temp.SetLTime(lt);
     temp.SetPMTime(pmt);
     temp.SetRMTime(rmt);
+    temp.SetPWPolicy(dw_policy);
     if (nfromUnknownRecordFields != 0) {
       ptocore->IncrementNumRecordsWithUnknownFields();
 

@@ -12,6 +12,7 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
+#include "corelib/ItemData.h"
 
 class CAddDlg : public CPWDialog
 {
@@ -35,6 +36,7 @@ public:
   int m_MaxPWHistory;
   int m_ibasedata;
   uuid_array_t m_base_uuid;
+  DWORD m_dwpolicy;
 
   void  ShowPassword();
   void  HidePassword();
@@ -72,6 +74,8 @@ protected:
   virtual void OnOK();
   afx_msg void OnHelp();
   afx_msg void OnRandom();
+  afx_msg void OnSetPolicy();
+  afx_msg void OnClearPolicy();
   afx_msg void OnShowpassword();
   //}}AFX_MSG
 

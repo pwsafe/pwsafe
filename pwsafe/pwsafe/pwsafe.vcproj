@@ -1134,6 +1134,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\about_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\add_classic.bmp"
 				>
 			</File>
@@ -1142,11 +1146,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\add_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\addshortcut_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\addshortcut_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\addshortcut_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1166,11 +1178,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\autotype_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\backup_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\backup_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\backup_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1182,11 +1202,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\browseurl_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\changecombo_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\changecombo_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\changecombo_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1198,11 +1226,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\changefont_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\clearclipboard_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\clearclipboard_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\clearclipboard_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1214,11 +1250,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\close_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\collapseall_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\collapseall_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\collapseall_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1230,11 +1274,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\compare_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\copynotes_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\copynotes_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\copynotes_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1246,11 +1298,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\copypassword_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\copyuser_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\copyuser_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\copyuser_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1282,11 +1342,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\delete_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\duplicate_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\duplicate_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\duplicate_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1298,11 +1366,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\exit_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\expandall_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\expandall_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\expandall_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1314,6 +1390,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\exporttext_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\exportXML_classic.bmp"
 				>
 			</File>
@@ -1322,11 +1402,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\exportXML_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\find_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\find_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\find_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1382,11 +1470,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\groupenter_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\help_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\help_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\help_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1398,11 +1494,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\importtext_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\importXML_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\importXML_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\importXML_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1414,11 +1518,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\listtree_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\lock_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\lock_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\lock_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1434,11 +1546,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\merge_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\new_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\new_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\new_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1502,11 +1622,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\open_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\options_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\options_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\options_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1530,6 +1658,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\properties_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\psafetxt.bmp"
 				>
 			</File>
@@ -1542,6 +1674,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\restore_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\save_classic.bmp"
 				>
 			</File>
@@ -1550,11 +1686,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\save_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\saveas_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\saveas_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\saveas_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1590,6 +1734,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\sendemail_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\shortcut.bmp"
 				>
 			</File>
@@ -1622,6 +1770,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\unlock_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\unlocked_tray.ico"
 				>
 			</File>
@@ -1634,6 +1786,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\validate_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\viewedit_classic.bmp"
 				>
 			</File>
@@ -1642,11 +1798,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\viewedit_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\viewreports_classic.bmp"
 				>
 			</File>
 			<File
 				RelativePath=".\res\toolbar\viewreports_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\viewreports_new_disabled.bmp"
 				>
 			</File>
 			<File

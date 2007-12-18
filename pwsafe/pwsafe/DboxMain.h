@@ -178,7 +178,9 @@ public:
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
-  bool MakeRandomPassword(CDialog * const pDialog, CMyString& password);
+  bool MakeRandomPassword(CDialog * const pDialog, CMyString& password,
+                          DWORD &dw_policy);
+  bool SetPasswordPolicy(DWORD &dw_policy);
   BOOL LaunchBrowser(const CString &csURL);
   void UpdatePasswordHistory(int iAction, int num_default);
   void SetInitialDatabaseDisplay();
@@ -562,4 +564,5 @@ struct DisplayInfo {
   int list_index;
   HTREEITEM tree_item;
 };
+
 

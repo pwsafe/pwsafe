@@ -221,6 +221,11 @@ int PWSfileV3::WriteRecord(const CItemData &item)
     t32 = (int)t;
     WriteCBC(CItemData::RMTIME, (unsigned char *)&t32, sizeof(t32));
   }
+  DWORD policy;
+  item.GetPWPolicy(policy);
+  if (policy != 0) {
+    WriteCBC(CItemData::POLICY, (unsigned char *)&policy, sizeof(policy));
+  }
   tmp = item.GetPWHistory();
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::PWHIST, tmp);
@@ -330,7 +335,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0302;
+const short VersionNum = 0x0303;
 
 int PWSfileV3::WriteHeader()
 {

@@ -27,6 +27,8 @@
 
 #include <shlwapi.h>
 #include <fstream>
+#include <bitset>
+
 using namespace std;
 
 #if defined(POCKET_PC)
@@ -61,7 +63,7 @@ CString CEditDlg::CS_HIDE;
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
     m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
-    m_tttLTime (time_t(0)),
+    m_tttLTime (time_t(0)), m_dwpolicy(0),
     m_locLTime(_T("")), m_oldlocLTime(_T("")),
     m_original_entrytype(CItemData::Normal)
 {
@@ -156,6 +158,8 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+  ON_BN_CLICKED(IDC_SETPWPOLICY, OnSetPolicy)
+  ON_BN_CLICKED(IDC_CLEARPWPOLICY, OnClearPolicy)
 #if defined(POCKET_PC)
   ON_WM_SHOWWINDOW()
 #endif
@@ -513,12 +517,27 @@ void CEditDlg::OnRandom()
 {
   DboxMain* pParent = (DboxMain*)GetParent();
   ASSERT(pParent != NULL);
+
   UpdateData(TRUE);
-  if (pParent->MakeRandomPassword(this, m_realpassword) &&
+
+  if (pParent->MakeRandomPassword(this, m_realpassword, m_dwpolicy) &&
       !m_isPwHidden) {
     m_password = m_realpassword;
     UpdateData(FALSE);
   }
+}
+
+void CEditDlg::OnSetPolicy() 
+{
+  DboxMain* pParent = (DboxMain*)GetParent();
+  ASSERT(pParent != NULL);
+
+  pParent->SetPasswordPolicy(m_dwpolicy);
+}
+
+void CEditDlg::OnClearPolicy() 
+{
+  m_dwpolicy = 0;
 }
 
 void CEditDlg::OnHelp() 

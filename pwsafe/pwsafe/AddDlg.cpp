@@ -36,8 +36,8 @@ CAddDlg::CAddDlg(CWnd* pParent)
   : CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
     m_URL(_T("")), m_autotype(_T("")),
-	m_tttLTime((time_t)0),
-	m_isPwHidden(false)
+    m_tttLTime((time_t)0), m_dwpolicy(0),
+    m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -131,6 +131,8 @@ BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
    ON_BN_CLICKED(ID_HELP, OnHelp)
    ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
    ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+   ON_BN_CLICKED(IDC_SETPWPOLICY, OnSetPolicy)
+   ON_BN_CLICKED(IDC_CLEARPWPOLICY, OnClearPolicy)
    ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
    ON_BN_CLICKED(IDOK, OnBnClickedOk)
    ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
@@ -273,20 +275,34 @@ void CAddDlg::OnHelp()
 #endif
 }
 
-
 void CAddDlg::OnRandom() 
 {
   DboxMain* pParent = (DboxMain*)GetParent();
   ASSERT(pParent != NULL);
 
   UpdateData(TRUE);
-  if (pParent->MakeRandomPassword(this, m_password)) {
+
+  if (pParent->MakeRandomPassword(this, m_password, m_dwpolicy)) {
     if (m_isPwHidden) {
     	m_password2 = m_password;
     }
     UpdateData(FALSE);
   }
 }
+
+void CAddDlg::OnSetPolicy() 
+{
+  DboxMain* pParent = (DboxMain*)GetParent();
+  ASSERT(pParent != NULL);
+
+  pParent->SetPasswordPolicy(m_dwpolicy);
+}
+
+void CAddDlg::OnClearPolicy() 
+{
+  m_dwpolicy = 0;
+}
+
 //-----------------------------------------------------------------------------
 
 void CAddDlg::OnBnClickedMore()

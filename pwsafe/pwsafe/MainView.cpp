@@ -78,6 +78,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   CItemData* pRHS = (CItemData *)lParam2;
   CMyString	group1, group2;
   time_t t1, t2;
+  DWORD dw1, dw2;
 
   int iResult;
   switch(nTypeSortColumn) {
@@ -147,6 +148,11 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       pLHS->GetRMTime(t1);
       pRHS->GetRMTime(t2);
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    case CItemData::POLICY:
+      pLHS->GetPWPolicy(dw1);
+      pRHS->GetPWPolicy(dw2);
+      iResult = (dw1 < dw2) ? -1 : 1;
       break;
     default:
       iResult = 0; // should never happen - just keep compiler happy
@@ -1140,6 +1146,32 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
       case CItemData::RMTIME:
         cs_fielddata = itemData.GetRMTimeL();
         break;
+      case CItemData::POLICY:
+        {
+        DWORD dw;
+        itemData.GetPWPolicy(dw);
+        if (dw != 0) {
+          CString cs_policy(_T(""));
+          if (dw & PWSprefs::PWPolicyUseLowercase)
+            cs_policy += _T("L");
+          if (dw & PWSprefs::PWPolicyUseUppercase)
+            cs_policy += _T("U");
+          if (dw & PWSprefs::PWPolicyUseDigits)
+            cs_policy += _T("D");
+          if (dw & PWSprefs::PWPolicyUseSymbols)
+            cs_policy += _T("S");
+          if (dw & PWSprefs::PWPolicyUseHexDigits)
+            cs_policy += _T("H");
+          if (dw & PWSprefs::PWPolicyUseEasyVision)
+            cs_policy += _T("E");
+          if (dw & PWSprefs::PWPolicyMakePronounceable)
+            cs_policy += _T("P");
+          int pwlen = (dw & PWSprefs::PWPolicyMaxLength) + 1;
+          cs_fielddata.Format(_T("%s:%d"), cs_policy, pwlen);
+        } else
+          cs_fielddata = _T("");
+        }
+        break;
       default:
         ASSERT(0);
     }
@@ -1213,6 +1245,32 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
           break;
         case CItemData::RMTIME:
           cs_fielddata = itemData.GetRMTimeL();
+          break;
+        case CItemData::POLICY:
+          {
+          DWORD dw;
+          itemData.GetPWPolicy(dw);
+          if (dw != 0) {
+            CString cs_policy(_T(""));
+            if (dw & PWSprefs::PWPolicyUseLowercase)
+              cs_policy += _T("L");
+            if (dw & PWSprefs::PWPolicyUseUppercase)
+              cs_policy += _T("U");
+            if (dw & PWSprefs::PWPolicyUseDigits)
+              cs_policy += _T("D");
+            if (dw & PWSprefs::PWPolicyUseSymbols)
+              cs_policy += _T("S");
+            if (dw & PWSprefs::PWPolicyUseHexDigits)
+              cs_policy += _T("H");
+            if (dw & PWSprefs::PWPolicyUseEasyVision)
+              cs_policy += _T("E");
+            if (dw & PWSprefs::PWPolicyMakePronounceable)
+              cs_policy += _T("P");
+            int pwlen = (dw & PWSprefs::PWPolicyMaxLength) + 1;
+            cs_fielddata.Format(_T("%s:%d"), cs_policy, pwlen);
+          } else
+            cs_fielddata = _T("");
+          }
           break;
         default:
           ASSERT(0);
@@ -1850,6 +1908,12 @@ DboxMain::SetColumns()
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
 
+  cs_header = GetHeaderText(CItemData::POLICY);
+  m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
+  hdi.lParam = CItemData::POLICY;
+  m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
+  ioff++;
+
   m_ctlItemList.SetRedraw(FALSE);
 
   for (int i = ipwd + 3; i < (ipwd + ioff); i++) {
@@ -2230,6 +2294,9 @@ CString DboxMain::GetHeaderText(const int iType)
     case CItemData::RMTIME:
       cs_header.LoadString(IDS_LASTMODIFIED);
       break;
+    case CItemData::POLICY:        
+      cs_header.LoadString(IDS_PWPOLICY);
+      break;
     default:
       cs_header.Empty();
   }
@@ -2248,6 +2315,7 @@ int DboxMain::GetHeaderWidth(const int iType)
     case CItemData::PASSWORD:
     case CItemData::NOTES:
     case CItemData::URL:
+    case CItemData::POLICY:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
@@ -2332,6 +2400,9 @@ void DboxMain::CalcHeaderWidths()
         break;
       case CItemData::RMTIME:
         cs_header.LoadString(IDS_LASTMODIFIED);
+        break;
+      case CItemData::POLICY:        
+        cs_header.LoadString(IDS_PWPOLICY);
         break;
       default:
         cs_header.Empty();

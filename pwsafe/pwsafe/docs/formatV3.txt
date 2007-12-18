@@ -1,4 +1,4 @@
-PasswordSafe database format description version 3.02
+PasswordSafe database format description version 3.03
 -----------------------------------------------------
 
 Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
@@ -240,12 +240,13 @@ Creation Time               0x07        time_t        Y              [5]
 Password Modification Time  0x08        time_t        Y              [5]
 Last Access Time            0x09        time_t        Y              [5,6]
 Password Lifetime           0x0a        time_t        Y              [5,7]
-Password Policy             0x0b        4 bytes       N              [8]
+*RESERVED*                  0x0b        4 bytes       -              [8]
 Last Modification Time      0x0c        time_t        Y              [5,9]
 URL                         0x0d        Text          Y              [10]
 Autotype                    0x0e        Text          Y              [11]
 Password History            0x0f        Text          Y              [12]
-End of Entry                0xff        [empty]       Y              [13]
+Password Policy             0x10        4 bytes       Y              [13]
+End of Entry                0xff        [empty]       Y              [14]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -285,9 +286,11 @@ application can then prompt the user about passwords that need to be
 changed. Password lifetime is the expiry a date/time field in the same
 manner as the other time fields and a value of zero means "forever".
 
-[8] Currently, the password policy is a global property. It makes sense,
-however, to want to control this on a per-entry basis. Four bytes seems
-sufficient to store the policy. Exact encoding TBD.
+[8] Although earmarked for Password Policy, the coding in versions prior
+to V3.12 does not correctly handle the presence of this field.  For this
+reason, this value cannot be used for any future V3 field without causing
+a potential issue when a user opens a V3.12 or later database with program
+version V3.11 or earlier.  See note [13].
 
 [9] This is the time that any field of the record was modified, useful for
 merging databases.
@@ -323,7 +326,22 @@ the PWH field (preferred), or by a header of _T("00000"):
 Note that 0aabb, where bb <= aa, is possible if password history was enabled
 in the past and has then been disabled but the history hasn't been cleared.
 
-[13] An explicit end of entry field is useful for supporting new fields
+[13] This field allows a specific Password Policy per entry.  The format is:
+a. the lowest 10 bits correspond to the default password length minus one,
+which supports the range from 1-1024 (i.e. 0-1023 or 0x000-0x3ff).
+b. the highest 22 bits correspond to flags.  Should no flags be set, the
+whole field is ignored and will not be saved if the database is re-written.
+Flag values are:
+    UseLowercase =      0x80000000
+    UseUppercase =      0x40000000
+    UseDigits =         0x20000000 
+    UseSymbols =        0x10000000
+    UseHexDigits =      0x08000000 (if set, then no other flags can be set)
+    UseEasyVision =     0x04000000
+    MakePronounceable = 0x02000000
+    Unused              0x01fffc00
+
+[14] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility

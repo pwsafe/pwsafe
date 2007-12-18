@@ -350,6 +350,10 @@ PWScore::WritePlaintextFile(const CMyString &filename,
 			cs_temp.LoadString(IDSC_EXPHDRPWHISTORY);
 			hdr += cs_temp;
 		}
+		if (bsFields.test(CItemData::POLICY)) {
+			cs_temp.LoadString(IDSC_EXPHDRPWPOLICY);
+			hdr += cs_temp;
+		}
 		if (bsFields.test(CItemData::NOTES)) {
 			cs_temp.LoadString(IDCS_EXPHDRNOTES);
 			hdr += cs_temp;
@@ -665,7 +669,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
-               CTIME, PMTIME, ATIME, LTIME, RMTIME,
+               CTIME, PMTIME, ATIME, LTIME, RMTIME, POLICY,
                HISTORY, NOTES, NUMFIELDS};
   int i_Offset[NUMFIELDS];
   for (int i = 0; i < NUMFIELDS; i++)
@@ -858,7 +862,7 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
     // Make fields that are *only* whitespace = empty
     viter tokenIter;
     for (tokenIter = tokens.begin(); tokenIter != tokens.end(); tokenIter++) {
-		const vector<stringT>::size_type len = tokenIter->length();
+		  const vector<stringT>::size_type len = tokenIter->length();
 
       // Don't bother if already empty
       if (len == 0)
@@ -971,6 +975,12 @@ PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
       if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(RMTIME);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
+        rpt.WriteLine(csError);
+      }
+    if (i_Offset[POLICY] >= 0)
+      if (!temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str())) {
+        const stringT &dword_value = vs_Header.at(POLICY);
+        csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, dword_value.c_str());
         rpt.WriteLine(csError);
       }
     if (i_Offset[HISTORY] >= 0) {

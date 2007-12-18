@@ -32,6 +32,7 @@ public:
   enum CItemData::EntryType m_original_entrytype;
   int m_ibasedata;
   uuid_array_t m_base_uuid;
+  DWORD m_dwpolicy;
 
   void ShowPassword();
   void HidePassword();
@@ -93,6 +94,8 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskeyKillfocus();
+  afx_msg void OnSetPolicy();
+  afx_msg void OnClearPolicy();
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
 

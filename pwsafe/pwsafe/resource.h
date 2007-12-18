@@ -470,6 +470,8 @@
 #define IDC_RST_WHITE                   1278
 #define IDC_RST_YELLOW                  1279
 #define IDC_TARGET                      1280
+#define IDC_SETPWPOLICY                 1281
+#define IDC_CLEARPWPOLICY               1282
 
 // Next default values for new objects
 // 
@@ -477,7 +479,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        405
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1281
+#define _APS_NEXT_CONTROL_VALUE         1283
 #define _APS_NEXT_SYMED_VALUE           151
 #endif
 #endif

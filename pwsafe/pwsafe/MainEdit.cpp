@@ -29,7 +29,7 @@
 #include <vector>
 #include <algorithm>
 
-#include  <Winable.h>
+#include <Winable.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -130,10 +130,15 @@ DboxMain::OnAdd()
     temp.SetAutoType(dlg_add.m_autotype);
    	time(&t);
    	temp.SetCTime(t);
-    if (temp.IsAlias())
+
+    if (temp.IsAlias()) {
       temp.SetLTime((time_t)0);
-    else
+      temp.SetPWPolicy(0);
+    } else {
       temp.SetLTime(dlg_add.m_tttLTime);
+      temp.SetPWPolicy(dlg_add.m_dwpolicy);
+    }
+
     if (dlg_add.m_SavePWHistory == TRUE) {
       TCHAR buffer[6];
 #if _MSC_VER >= 1400
@@ -550,6 +555,7 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
     if (pcore->GetUseDefUser())
       dlg_edit.m_defusername = pcore->GetDefUsername();
+
     dlg_edit.m_Edit_IsReadOnly = pcore->IsReadOnly();
 
     uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
@@ -588,7 +594,12 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
                  cibase.GetUser()  + _T("]");
         dlg_edit.m_original_entrytype = CItemData::Alias;
       }
+    } else {
+      DWORD dw_policy;
+      editedItem.GetPWPolicy(dw_policy);
+      dlg_edit.m_dwpolicy = dw_policy;
     }
+
 
     app.DisableAccelerator();
     INT_PTR rc = dlg_edit.DoModal();
@@ -692,8 +703,12 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         }
       }
 
-      if (editedItem.IsAlias())
+      if (editedItem.IsAlias() || editedItem.IsShortcut()) {
         editedItem.SetLTime((time_t)0);
+        editedItem.SetPWPolicy(0);
+      } else {
+        editedItem.SetPWPolicy(dlg_edit.m_dwpolicy);
+      }
 
       pcore->RemoveEntryAt(listpos);
       pcore->AddEntry(editedItem);

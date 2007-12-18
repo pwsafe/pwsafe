@@ -90,23 +90,23 @@ CPasswordCharPool::CPasswordCharPool(UINT pwlen,
     m_char_arrays[UPPERCASE] = (TCHAR *)easyvision_uppercase_chars;
     m_char_arrays[DIGIT] = (TCHAR *)easyvision_digit_chars;
     m_char_arrays[SYMBOL] = (TCHAR *)easyvision_symbol_chars;
-	m_char_arrays[HEXDIGIT] = (TCHAR *)easyvision_hexdigit_chars;
+    m_char_arrays[HEXDIGIT] = (TCHAR *)easyvision_hexdigit_chars;
     m_lengths[LOWERCASE] = uselowercase ? easyvision_lowercase_len : 0;
     m_lengths[UPPERCASE] = useuppercase ? easyvision_uppercase_len : 0;
     m_lengths[DIGIT] = usedigits ? easyvision_digit_len : 0;
     m_lengths[SYMBOL] = usesymbols ? easyvision_symbol_len : 0;
-	m_lengths[HEXDIGIT] = usehexdigits ? easyvision_hexdigit_len : 0;
+    m_lengths[HEXDIGIT] = usehexdigits ? easyvision_hexdigit_len : 0;
   } else { // !easyvision
     m_char_arrays[LOWERCASE] = (TCHAR *)std_lowercase_chars;
     m_char_arrays[UPPERCASE] = (TCHAR *)std_uppercase_chars;
     m_char_arrays[DIGIT] = (TCHAR *)std_digit_chars;
     m_char_arrays[SYMBOL] = (TCHAR *)std_symbol_chars;
-	m_char_arrays[HEXDIGIT] = (TCHAR *)std_hexdigit_chars;
+    m_char_arrays[HEXDIGIT] = (TCHAR *)std_hexdigit_chars;
     m_lengths[LOWERCASE] = uselowercase ? std_lowercase_len : 0;
     m_lengths[UPPERCASE] = useuppercase ? std_uppercase_len : 0;
     m_lengths[DIGIT] = usedigits ? std_digit_len : 0;
     m_lengths[SYMBOL] = usesymbols ? std_symbol_len : 0;
-	m_lengths[HEXDIGIT] = usehexdigits ? std_hexdigit_len : 0;
+    m_lengths[HEXDIGIT] = usehexdigits ? std_hexdigit_len : 0;
   }
 
   // See GetRandomCharType to understand what this does and why

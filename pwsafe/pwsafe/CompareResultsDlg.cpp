@@ -115,6 +115,10 @@ BOOL CCompareResultsDlg::OnInitDialog()
     cs_header.LoadString(IDS_LASTMODIFIED);
     m_LCResults.InsertColumn(RMTIME, cs_header, LVCFMT_CENTER);
   }
+  if (m_bsFields.test(CItemData::POLICY)) {
+    cs_header.LoadString(IDS_PWPOLICY);
+    m_LCResults.InsertColumn(POLICY, cs_header, LVCFMT_CENTER);
+  }
   m_nCols = m_LCResults.GetHeaderCtrl()->GetItemCount();
 
   m_numOnlyInCurrent = m_OnlyInCurrent.size();
@@ -347,6 +351,8 @@ void CCompareResultsDlg::AddEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PMTIME) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::RMTIME))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RMTIME) ? _T("X") : _T("-"));
+      if (m_bsFields.test(CItemData::POLICY))
+        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::POLICY) ? _T("X") : _T("-"));
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(BOTH, st_data.id));
@@ -868,7 +874,8 @@ CCompareResultsDlg::GetReportData(CString &data)
     const CString csx_ltime(MAKEINTRESOURCE(IDS_COMPLTIME));
     const CString csx_rmtime(MAKEINTRESOURCE(IDS_COMPRMTIME));
     const CString csx_pwhistory(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
-
+    const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
+    
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
          cd_iter++) {
       const st_CompareData &st_data = *cd_iter;
@@ -886,6 +893,7 @@ CCompareResultsDlg::GetReportData(CString &data)
       if (st_data.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
       if (st_data.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
       if (st_data.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
+      if (st_data.bsDiffs.test(CItemData::POLICY)) resultStr += csx_policy;
       resultStr += _T("\r\n");
     }
   }

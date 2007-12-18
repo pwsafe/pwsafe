@@ -13,6 +13,7 @@
 #include "TwoFish.h"
 #include "PWSrand.h"
 #include "UTF8Conv.h"
+#include "PWSprefs.h"
 
 #include <time.h>
 #include <sstream>
@@ -45,6 +46,7 @@ CItemData::CItemData()
     m_URL(URL), m_AutoType(AUTOTYPE),
     m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
     m_tttLTime(LTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
+    m_PWPolicy(POLICY),
     m_display_info(NULL), m_entrytype(Normal)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
@@ -56,6 +58,7 @@ CItemData::CItemData(const CItemData &that) :
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
   m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
   m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
+  m_PWPolicy(that.m_PWPolicy),
   m_display_info(that.m_display_info), m_entrytype(that.m_entrytype)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -199,7 +202,7 @@ CItemData::GetTime(int whichtime, time_t &t) const
     int t32;
     ASSERT(tlen == sizeof(t32));
     memcpy(&t32, in, sizeof(t32));
-	t = t32;
+    t = t32;
   } else {
     t = 0;
   }
@@ -209,6 +212,36 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
 {
   unsigned int length = sizeof(uuid_array);
   GetField(m_UUID, (unsigned char *)uuid_array, length);
+}
+
+void
+CItemData::GetPWPolicy(DWORD &dw_policy) const
+{
+  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+  unsigned int tlen = sizeof(in); // ditto
+
+  GetField(m_PWPolicy, (unsigned char *)in, tlen);
+  if (tlen != 0) {
+    DWORD pwp;
+    ASSERT(tlen == sizeof(pwp));
+    memcpy(&pwp, in, sizeof(pwp));
+	  dw_policy = pwp;
+  } else {
+    dw_policy = 0;
+  }
+}
+
+CMyString 
+CItemData::GetPWPolicy() const
+{
+  CMyString retval(_T(""));
+  DWORD pwp;
+
+  GetPWPolicy(pwp);
+  if (pwp != 0)
+    retval.Format(_T("0x%08x"), pwp);
+
+  return retval;
 }
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
@@ -377,6 +410,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
           GetATimeExp() + separator +
           GetLTimeExp() + separator +
           GetRMTimeExp() + separator +
+          GetPWPolicy() + separator +
           history + separator +
       _T("\"") + notes + _T("\"");
   } else {
@@ -405,7 +439,9 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
 			ret += GetLTimeExp() + separator;
 		if (bsFields.test(CItemData::RMTIME))
 			ret += GetRMTimeExp() + separator;
-		if (bsFields.test(CItemData::PWHIST))
+		if (bsFields.test(CItemData::POLICY))
+			ret += GetPWPolicy() + separator;
+    if (bsFields.test(CItemData::PWHIST))
 			ret += history + separator;
 		if (bsFields.test(CItemData::NOTES))
 			ret += _T("\"") + notes + _T("\"");
@@ -574,6 +610,37 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   GetRMTime(t);
   if (bsExport.test(CItemData::RMTIME) && (long)t != 0)
     oss << GetXMLTime(2, "rmtime", t, utf8conv);
+
+  DWORD dw_policy;
+  GetPWPolicy(dw_policy);
+  if (bsExport.test(CItemData::RMTIME) && dw_policy != 0) {
+    oss << "\t\t<PasswordPolicy>" << endl;
+    int length = (dw_policy & PWSprefs::PWPolicyMaxLength) + 1;
+    char buffer[8];
+#if _MSC_VER >= 1400
+    sprintf_s(buffer, 7, "%1d", length);
+    oss << "\t\t\t<PWDefaultLength>" << buffer << "</PWDefaultLength>" << endl;
+#else
+    sprintf(buffer, "%1d", length);
+    oss << "\t\t\t<PWDefaultLength>" << buffer << "</PWDefaultLength>" << endl;
+#endif
+    if (dw_policy & PWSprefs::PWPolicyUseLowercase)
+      oss << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
+    if (dw_policy & PWSprefs::PWPolicyUseUppercase)
+      oss << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
+    if (dw_policy & PWSprefs::PWPolicyUseDigits)
+      oss << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
+    if (dw_policy & PWSprefs::PWPolicyUseSymbols)
+      oss << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
+    if (dw_policy & PWSprefs::PWPolicyUseHexDigits)
+      oss << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
+    if (dw_policy & PWSprefs::PWPolicyUseEasyVision)
+      oss << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
+    if (dw_policy & PWSprefs::PWPolicyMakePronounceable)
+      oss << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
+
+    oss << "\t\t</PasswordPolicy>" << endl;
+  }
 
   if (bsExport.test(CItemData::PWHIST)) {
     BOOL pwh_status;
@@ -981,6 +1048,53 @@ CItemData::CreatePWHistoryList(BOOL &status,
   return i_error;
 }
 
+void CItemData::SetPWPolicy(DWORD dw_policy)
+{
+  // Must be some flags; however hex incompatible with other flags
+  bool bany_flag = (dw_policy & PWSprefs::PWPolicyFlags) != 0;
+  bool bhex_flag = (dw_policy & PWSprefs::PWPolicyUseHexDigits) != 0;
+  bool bother_flags = (dw_policy & (PWSprefs::PWPolicyFlags & ~PWSprefs::PWPolicyUseHexDigits)) != 0;
+
+  if (!bany_flag || (bhex_flag && bother_flags)) {
+    dw_policy = 0;
+    SetField(m_PWPolicy, (const unsigned char *)&dw_policy, sizeof(dw_policy));
+  } else
+    SetField(m_PWPolicy, (const unsigned char *)&dw_policy, sizeof(dw_policy));
+}
+
+bool CItemData::SetPWPolicy(const CString &dword_string)
+{
+  if (dword_string.GetLength() == 0)
+    return true;
+
+  ASSERT(dword_string.GetLength() == 10);  // string = "0x12345678"
+  CString cs_policyhdr = dword_string.Left(2);
+  cs_policyhdr.MakeLower();
+  CString cs_policy = dword_string.Right(8);
+  if (dword_string.GetLength() != 10 || cs_policyhdr != _T("0x") || 
+    cs_policy.SpanIncluding(_T("0123456789abcdefABCDEF")) != cs_policy)
+    return false;
+
+  DWORD dw_policy(0);
+#if _MSC_VER >= 1400
+  int iread = _stscanf_s(cs_policy, _T("%08x"), &dw_policy);
+#else
+  int iread = _stscanf(cs_policy, _T("%08x"), &dw_policy);
+#endif
+  if (iread != 1)
+    return false;
+
+  // Must be some flags; however hex incompatible with other flags
+  bool bany_flag = (dw_policy & PWSprefs::PWPolicyFlags) != 0;
+  bool bhex_flag = (dw_policy & PWSprefs::PWPolicyUseHexDigits) != 0;
+  bool bother_flags = (dw_policy & (PWSprefs::PWPolicyFlags & ~PWSprefs::PWPolicyUseHexDigits)) != 0;
+  if (!bany_flag || (bhex_flag && bother_flags))
+    return false;
+
+  SetPWPolicy(dw_policy);
+  return true;
+}
+
 BlowFish *
 CItemData::MakeBlowFish() const
 {
@@ -1009,6 +1123,7 @@ CItemData::operator=(const CItemData &that)
     m_tttLTime = that.m_tttLTime;
     m_tttRMTime = that.m_tttRMTime;
     m_PWHistory = that.m_PWHistory;
+    m_PWPolicy = that.m_PWPolicy;
     m_display_info = that.m_display_info;
     if (!that.m_URFL.empty())
       m_URFL = that.m_URFL;
@@ -1037,6 +1152,7 @@ CItemData::Clear()
   m_tttLTime.Empty();
   m_tttRMTime.Empty();
   m_PWHistory.Empty();
+  m_PWPolicy.Empty();
   m_URFL.clear();
   m_entrytype = Normal;
 }
@@ -1291,6 +1407,18 @@ pull_time(time_t &t, unsigned char *data, size_t len)
   return true;
 }
 
+static bool
+pull_dword(DWORD &dw, unsigned char *data, size_t len)
+{
+  if (len == sizeof(DWORD)) {
+    memcpy(&dw, data, sizeof(DWORD));
+  } else {
+    ASSERT(0);
+    return false;
+  }
+  return true;
+}
+
 bool CItemData::DeserializePlainText(const std::vector<char> &v)
 {
   vector<char>::const_iterator iter = v.begin();
@@ -1325,6 +1453,7 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
 {
   CMyString str;
   time_t t;
+  DWORD dw;
   switch (type) {
   case NAME:
     ASSERT(0); // not serialized, or in v3 format
@@ -1375,8 +1504,9 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
     SetLTime(t);
     break;
   case POLICY:
-    ASSERT(0); // not used, so can't get here
-    return false;
+    if (!pull_dword(dw, data, len)) return false;
+    SetPWPolicy(dw);
+    break;
   case RMTIME:
     if (!pull_time(t, data, len)) return false;
     SetRMTime(t);
@@ -1442,11 +1572,23 @@ push_time(vector<char> &v, char type, time_t t)
   }
 }
 
+static void
+push_dword(vector<char> &v, char type, DWORD dw)
+{
+  if (dw != 0) {
+    v.push_back(type);
+    push_length(v, sizeof(dw));
+    v.insert(v.end(),
+             (char *)&dw, (char *)&dw + sizeof(dw));
+  }
+}
+
 void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 {
   CMyString tmp;
   uuid_array_t uuid_array;
   time_t t = 0;
+  DWORD dw;
 
   v.clear();
   GetUUID(uuid_array);
@@ -1478,6 +1620,7 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   GetATime(t);   push_time(v, ATIME, t);
   GetLTime(t);   push_time(v, LTIME, t);
   GetRMTime(t);  push_time(v, RMTIME, t);
+  GetPWPolicy(dw);  push_dword(v, POLICY, dw);
 
   push_string(v, PWHIST, GetPWHistory());
   UnknownFieldsConstIter vi_IterURFE;
@@ -1503,4 +1646,5 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 #pragma warning( pop )
   push_length(v, 0);
 }
+
 

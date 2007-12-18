@@ -177,6 +177,20 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
+              <xs:element name="PasswordPolicy" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="PWUseDigits" type="boolType" minOccurs="0" />
+                    <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" />
+                    <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" />
+                    <xs:element name="PWUseLowercase" type="boolType" minOccurs="0" />
+                    <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" />
+                    <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" />
+                    <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" />
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
               <xs:element name="unknownrecordfields" minOccurs="0" maxOccurs="1" >
                 <xs:complexType>
                   <xs:sequence>
