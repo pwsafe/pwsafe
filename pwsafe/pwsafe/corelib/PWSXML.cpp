@@ -254,6 +254,14 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
               prefs->SetPref(PWSprefs::PWDefaultLength, pCH->m_iPWDefaultLength);
             if (pCH->m_iTreeDisplayStatusAtOpen != -1)
               prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, pCH->m_iTreeDisplayStatusAtOpen);
+            if (pCH->m_iPWDigitMinLength != -1)
+              prefs->SetPref(PWSprefs::PWDigitMinLength, pCH->m_iPWDigitMinLength);
+            if (pCH->m_iPWLowercaseMinLength != -1)
+              prefs->SetPref(PWSprefs::PWLowercaseMinLength, pCH->m_iPWLowercaseMinLength);
+            if (pCH->m_iPWSymbolMinLength != -1)
+              prefs->SetPref(PWSprefs::PWSymbolMinLength, pCH->m_iPWSymbolMinLength);
+            if (pCH->m_iPWUppercaseMinLength != -1)
+              prefs->SetPref(PWSprefs::PWUppercaseMinLength, pCH->m_iPWUppercaseMinLength);
             if (!pCH->m_sDefaultAutotypeString.IsEmpty())
               prefs->SetPref(PWSprefs::DefaultAutotypeString, pCH->m_sDefaultAutotypeString);
             if (!pCH->m_sDefaultUsername.IsEmpty())

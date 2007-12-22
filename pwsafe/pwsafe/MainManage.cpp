@@ -306,8 +306,6 @@ DboxMain::OnOptions()
     security.m_IdleTimeOut = prefs->
         GetPref(PWSprefs::IdleTimeout);
 
-    passwordpolicy.m_pwdefaultlength = prefs->
-        GetPref(PWSprefs::PWDefaultLength);
     passwordpolicy.m_pwuselowercase = prefs->
         GetPref(PWSprefs::PWUseLowercase);
     passwordpolicy.m_pwuseuppercase = prefs->
@@ -320,8 +318,16 @@ DboxMain::OnOptions()
         GetPref(PWSprefs::PWUseHexDigits);
     passwordpolicy.m_pweasyvision = prefs->
         GetPref(PWSprefs::PWUseEasyVision);
-    passwordpolicy.m_pwmakepronounceable = prefs->
-        GetPref(PWSprefs::PWMakePronounceable);
+    passwordpolicy.m_pwdefaultlength = prefs->
+      GetPref(PWSprefs::PWDefaultLength);
+    passwordpolicy.m_pwdigitminlength = prefs->
+      GetPref(PWSprefs::PWDigitMinLength);
+    passwordpolicy.m_pwlowerminlength = prefs->
+      GetPref(PWSprefs::PWLowercaseMinLength);
+    passwordpolicy.m_pwsymbolminlength = prefs->
+      GetPref(PWSprefs::PWSymbolMinLength);
+    passwordpolicy.m_pwupperminlength = prefs->
+      GetPref(PWSprefs::PWUppercaseMinLength);
 
     passwordhistory.m_savepwhistory = prefs->
         GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
@@ -464,8 +470,6 @@ DboxMain::OnOptions()
         prefs->SetPref(PWSprefs::IdleTimeout,
                        security.m_IdleTimeOut);
 
-        prefs->SetPref(PWSprefs::PWDefaultLength,
-                       passwordpolicy.m_pwdefaultlength);
         prefs->SetPref(PWSprefs::PWUseLowercase,
                        passwordpolicy.m_pwuselowercase == TRUE);
         prefs->SetPref(PWSprefs::PWUseUppercase,
@@ -478,8 +482,16 @@ DboxMain::OnOptions()
                        passwordpolicy.m_pwusehexdigits == TRUE);
         prefs-> SetPref(PWSprefs::PWUseEasyVision,
                         passwordpolicy.m_pweasyvision == TRUE);
-        prefs-> SetPref(PWSprefs::PWMakePronounceable,
-                        passwordpolicy.m_pwmakepronounceable == TRUE);
+        prefs->SetPref(PWSprefs::PWDefaultLength,
+                       passwordpolicy.m_pwdefaultlength);
+        prefs->SetPref(PWSprefs::PWDigitMinLength,
+                       passwordpolicy.m_pwdigitminlength);
+        prefs->SetPref(PWSprefs::PWLowercaseMinLength,
+                       passwordpolicy.m_pwlowerminlength);
+        prefs->SetPref(PWSprefs::PWSymbolMinLength,
+                       passwordpolicy.m_pwsymbolminlength);
+        prefs->SetPref(PWSprefs::PWUppercaseMinLength,
+                       passwordpolicy.m_pwupperminlength);
 
         prefs->SetPref(PWSprefs::SavePasswordHistory,
                        passwordhistory.m_savepwhistory == TRUE);

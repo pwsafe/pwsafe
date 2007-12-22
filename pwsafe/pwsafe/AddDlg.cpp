@@ -36,7 +36,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
   : CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
     m_username(_T("")), m_title(_T("")), m_group(_T("")),
     m_URL(_T("")), m_autotype(_T("")),
-    m_tttLTime((time_t)0), m_dwpolicy(0),
+    m_tttLTime((time_t)0),
     m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
@@ -56,6 +56,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
 	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
 #endif
   }
+  m_pwp.Empty();
 }
 
 BOOL CAddDlg::OnInitDialog() 
@@ -282,7 +283,7 @@ void CAddDlg::OnRandom()
 
   UpdateData(TRUE);
 
-  if (pParent->MakeRandomPassword(this, m_password, m_dwpolicy)) {
+  if (pParent->MakeRandomPassword(this, m_password, m_pwp)) {
     if (m_isPwHidden) {
     	m_password2 = m_password;
     }
@@ -295,12 +296,12 @@ void CAddDlg::OnSetPolicy()
   DboxMain* pParent = (DboxMain*)GetParent();
   ASSERT(pParent != NULL);
 
-  pParent->SetPasswordPolicy(m_dwpolicy);
+  pParent->SetPasswordPolicy(m_pwp);
 }
 
 void CAddDlg::OnClearPolicy() 
 {
-  m_dwpolicy = 0;
+  m_pwp.Empty();
 }
 
 //-----------------------------------------------------------------------------

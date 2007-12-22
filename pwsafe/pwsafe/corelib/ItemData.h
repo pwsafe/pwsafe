@@ -28,7 +28,7 @@ struct PWHistEntry {
     CMyString changedate;
     CMyString password;
 
-    PWHistEntry() :changetttdate(0), changedate(), password() {}
+    PWHistEntry() : changetttdate(0), changedate(), password() {}
     // copy c'tor and assignment operator, standard idioms
     PWHistEntry(const PWHistEntry &that)
             : changetttdate(that.changetttdate),
@@ -40,6 +40,44 @@ struct PWHistEntry {
                 password = that.password;
             }
             return *this;
+        }
+};
+
+struct PWPolicy {
+    WORD flags;
+    int length;
+    int digitminlength;
+    int lowerminlength;
+    int symbolminlength;
+    int upperminlength;
+
+    PWPolicy() : flags(0), length(0), 
+                 digitminlength(0), lowerminlength(0),
+                 symbolminlength(0), upperminlength(0) {}
+
+    // copy c'tor and assignment operator, standard idioms
+    PWPolicy(const PWPolicy &that)
+            : flags(that.flags), length(that.length),
+              digitminlength(that.digitminlength),
+              lowerminlength(that.lowerminlength),
+              symbolminlength(that.symbolminlength),
+              upperminlength(that.upperminlength) {}
+
+    PWPolicy &operator=(const PWPolicy &that)
+        { if (this != &that) {
+            flags = that.flags;
+            length = that.length;
+            digitminlength = that.digitminlength;
+            lowerminlength = that.lowerminlength;
+            symbolminlength = that.symbolminlength;
+            upperminlength = that.upperminlength;
+          }
+          return *this;
+        }
+    void Empty()
+        { flags = 0; length = 0;
+          digitminlength = 0; lowerminlength = 0;
+          symbolminlength = 0; upperminlength = 0;
         }
 };
 
@@ -153,7 +191,7 @@ public:
   void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
   void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
   CMyString GetPWHistory() const;  // V30
-  void GetPWPolicy(DWORD &dw_policy) const;
+  void GetPWPolicy(PWPolicy &pwp) const;
   CMyString GetPWPolicy() const;
   // GetPlaintext returns all fields separated by separator, if delimiter is != 0, then
   // it's used for multi-line notes and to replace '.' within the Title field.
@@ -207,8 +245,8 @@ public:
   int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
                           PWHistList* pPWHistList,
                           const int time_format) const;  // V30
-  void SetPWPolicy(DWORD dw_policy);
-  bool SetPWPolicy(const CString &dword_string);
+  void SetPWPolicy(PWPolicy pwp);
+  bool SetPWPolicy(const CString &cs_pwp);
   CItemData& operator=(const CItemData& second);
   // Following used by display methods - we just keep it handy
   void *GetDisplayInfo() const {return m_display_info;}

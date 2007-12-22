@@ -152,10 +152,11 @@ Database Description        0x0a        Text          Y              [11]
 End of Entry                0xff        [empty]       Y              [12]
 
 [1] The version number of the database format. For this version, the value
-is 0x0302 (stored in little-endian format, that is, 0x02, 0x03).
+is 0x0303 (stored in little-endian format, that is, 0x03, 0x03).
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
+PasswordSafe V3.12 introduced Format 0x0303
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -245,14 +246,14 @@ Last Modification Time      0x0c        time_t        Y              [5,9]
 URL                         0x0d        Text          Y              [10]
 Autotype                    0x0e        Text          Y              [11]
 Password History            0x0f        Text          Y              [12]
-Password Policy             0x10        4 bytes       Y              [13]
+Password Policy             0x10        Text          Y              [13]
 End of Entry                0xff        [empty]       Y              [14]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
 
 [2] The "Group" supports displaying the entries in a tree-like manner.
-Groups can be heirarchical, with elements separated by a period, supporting
+Groups can be hierarchical, with elements separated by a period, supporting
 groups such as "Finance.credit cards.Visa", "Finance.credit
 cards.Mastercard", Finance.bank.web access", etc. Dots entered by the user
 should be "escaped" by the application.
@@ -327,19 +328,22 @@ Note that 0aabb, where bb <= aa, is possible if password history was enabled
 in the past and has then been disabled but the history hasn't been cleared.
 
 [13] This field allows a specific Password Policy per entry.  The format is:
-a. the lowest 10 bits correspond to the default password length minus one,
-which supports the range from 1-1024 (i.e. 0-1023 or 0x000-0x3ff).
-b. the highest 22 bits correspond to flags.  Should no flags be set, the
-whole field is ignored and will not be saved if the database is re-written.
-Flag values are:
-    UseLowercase =      0x80000000
-    UseUppercase =      0x40000000
-    UseDigits =         0x20000000 
-    UseSymbols =        0x10000000
-    UseHexDigits =      0x08000000 (if set, then no other flags can be set)
-    UseEasyVision =     0x04000000
-    MakePronounceable = 0x02000000
-    Unused              0x01fffc00
+    "ffffnnnllluuudddsss"
+where:
+     ffff = 4 hexadecimal digits representing the following flags
+        UseLowercase =      0x8000  - can have a minimum length
+        UseUppercase =      0x4000  - can have a minimum length
+        UseDigits =         0x2000  - can have a minimum length
+        UseSymbols =        0x1000  - can have a minimum length
+        UseHexDigits =      0x0800 (if set, then no other flags can be set)
+        UseEasyVision =     0x0400
+        MakePronounceable = 0x0200
+        Unused              0x01ff
+    nnn  = 3 hexadecimal digits password total length
+    lll  = 3 hexadecimal digits password minimum number of lowercase characters
+    uuu  = 3 hexadecimal digits password minimum number of uppercase characters
+    ddd  = 3 hexadecimal digits password minimum number of digit characters
+    sss  = 3 hexadecimal digits password minimum number of symbol characters
 
 [14] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.

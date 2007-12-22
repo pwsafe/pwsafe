@@ -45,6 +45,12 @@ Tom Van Vleck, Morrie Gasser, and Dan Edwards.
 New Features for 3.12
 =======================
 [1842449] Implement standard F3 for repeat Find shortcut.
+[1838738] Implement minimum lengths of types of characters in the
+password policy i.e. 3 uppercase + 2 lowercase + 1 digit etc.  Feature
+is incompatible with 'pronounceable' or 'easy-to-read' passwords.
+[] Implement individual password policy for entries that will override
+the current database policy.  User can still override the individual
+policy or the database policy.
 [] An entry may have multiple references, or "shortcuts" to it. These
 may be thought of as "synonyms" of the entry. See online help for
 details.

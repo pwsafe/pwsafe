@@ -133,10 +133,10 @@ DboxMain::OnAdd()
 
     if (temp.IsAlias()) {
       temp.SetLTime((time_t)0);
-      temp.SetPWPolicy(0);
+      temp.SetPWPolicy(_T(""));
     } else {
       temp.SetLTime(dlg_add.m_tttLTime);
-      temp.SetPWPolicy(dlg_add.m_dwpolicy);
+      temp.SetPWPolicy(dlg_add.m_pwp);
     }
 
     if (dlg_add.m_SavePWHistory == TRUE) {
@@ -595,9 +595,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         dlg_edit.m_original_entrytype = CItemData::Alias;
       }
     } else {
-      DWORD dw_policy;
-      editedItem.GetPWPolicy(dw_policy);
-      dlg_edit.m_dwpolicy = dw_policy;
+      PWPolicy pwp;
+      editedItem.GetPWPolicy(pwp);
+      dlg_edit.m_pwp = pwp;
     }
 
 
@@ -705,9 +705,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
       if (editedItem.IsAlias() || editedItem.IsShortcut()) {
         editedItem.SetLTime((time_t)0);
-        editedItem.SetPWPolicy(0);
+        editedItem.SetPWPolicy(_T(""));
       } else {
-        editedItem.SetPWPolicy(dlg_edit.m_dwpolicy);
+        editedItem.SetPWPolicy(dlg_edit.m_pwp);
       }
 
       pcore->RemoveEntryAt(listpos);

@@ -32,7 +32,7 @@ public:
   enum CItemData::EntryType m_original_entrytype;
   int m_ibasedata;
   uuid_array_t m_base_uuid;
-  DWORD m_dwpolicy;
+  PWPolicy m_pwp;
 
   void ShowPassword();
   void HidePassword();

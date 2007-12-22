@@ -73,17 +73,23 @@ CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexdigit_chars);
 //-----------------------------------------------------------------------------
 
 CPasswordCharPool::CPasswordCharPool(UINT pwlen,
-                                     BOOL uselowercase, BOOL useuppercase,
-                                     BOOL usedigits, BOOL usesymbols,
+                                     UINT numlowercase, UINT numuppercase,
+                                     UINT numdigits, UINT numsymbols,
                                      BOOL usehexdigits, BOOL easyvision,
                                      BOOL pronounceable) :
-  m_pwlen(pwlen), m_uselowercase(uselowercase), m_useuppercase(useuppercase),
-  m_usedigits(usedigits), m_usesymbols(usesymbols),
+  m_pwlen(pwlen),
+  m_numlowercase(numlowercase), m_numuppercase(numuppercase),
+  m_numdigits(numdigits), m_numsymbols(numsymbols),
+  m_uselowercase(numlowercase > 0 ? TRUE : FALSE),
+  m_useuppercase(numuppercase > 0 ? TRUE : FALSE),
+  m_usedigits(numdigits > 0 ? TRUE : FALSE),
+  m_usesymbols(numsymbols > 0 ? TRUE : FALSE),
   m_usehexdigits(usehexdigits), m_pronounceable(pronounceable)
 {
   ASSERT(m_pwlen > 0);
-  ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
-         m_usesymbols || m_usehexdigits || m_pronounceable);
+  ASSERT(m_uselowercase || m_useuppercase || 
+         m_usedigits || m_usesymbols || 
+         m_usehexdigits || m_pronounceable);
 
   if (easyvision) {
     m_char_arrays[LOWERCASE] = (TCHAR *)easyvision_lowercase_chars;
@@ -91,22 +97,22 @@ CPasswordCharPool::CPasswordCharPool(UINT pwlen,
     m_char_arrays[DIGIT] = (TCHAR *)easyvision_digit_chars;
     m_char_arrays[SYMBOL] = (TCHAR *)easyvision_symbol_chars;
     m_char_arrays[HEXDIGIT] = (TCHAR *)easyvision_hexdigit_chars;
-    m_lengths[LOWERCASE] = uselowercase ? easyvision_lowercase_len : 0;
-    m_lengths[UPPERCASE] = useuppercase ? easyvision_uppercase_len : 0;
-    m_lengths[DIGIT] = usedigits ? easyvision_digit_len : 0;
-    m_lengths[SYMBOL] = usesymbols ? easyvision_symbol_len : 0;
-    m_lengths[HEXDIGIT] = usehexdigits ? easyvision_hexdigit_len : 0;
+    m_lengths[LOWERCASE] = m_uselowercase ? easyvision_lowercase_len : 0;
+    m_lengths[UPPERCASE] = m_useuppercase ? easyvision_uppercase_len : 0;
+    m_lengths[DIGIT] = m_usedigits ? easyvision_digit_len : 0;
+    m_lengths[SYMBOL] = m_usesymbols ? easyvision_symbol_len : 0;
+    m_lengths[HEXDIGIT] = m_usehexdigits ? easyvision_hexdigit_len : 0;
   } else { // !easyvision
     m_char_arrays[LOWERCASE] = (TCHAR *)std_lowercase_chars;
     m_char_arrays[UPPERCASE] = (TCHAR *)std_uppercase_chars;
     m_char_arrays[DIGIT] = (TCHAR *)std_digit_chars;
     m_char_arrays[SYMBOL] = (TCHAR *)std_symbol_chars;
     m_char_arrays[HEXDIGIT] = (TCHAR *)std_hexdigit_chars;
-    m_lengths[LOWERCASE] = uselowercase ? std_lowercase_len : 0;
-    m_lengths[UPPERCASE] = useuppercase ? std_uppercase_len : 0;
-    m_lengths[DIGIT] = usedigits ? std_digit_len : 0;
-    m_lengths[SYMBOL] = usesymbols ? std_symbol_len : 0;
-    m_lengths[HEXDIGIT] = usehexdigits ? std_hexdigit_len : 0;
+    m_lengths[LOWERCASE] = m_uselowercase ? std_lowercase_len : 0;
+    m_lengths[UPPERCASE] = m_useuppercase ? std_uppercase_len : 0;
+    m_lengths[DIGIT] = m_usedigits ? std_digit_len : 0;
+    m_lengths[SYMBOL] = m_usesymbols ? std_symbol_len : 0;
+    m_lengths[HEXDIGIT] = m_usehexdigits ? std_hexdigit_len : 0;
   }
 
   // See GetRandomCharType to understand what this does and why
@@ -162,10 +168,7 @@ CPasswordCharPool::MakePassword() const
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
          m_usesymbols || m_usehexdigits || m_pronounceable);
 
-  int lowercaseneeded;
-  int uppercaseneeded;
-  int digitsneeded;
-  int symbolsneeded;
+  int lowercaseneeded, uppercaseneeded, digitsneeded, symbolsneeded;
   int hexdigitsneeded;
 
   CMyString password = _T("");
@@ -182,10 +185,10 @@ CPasswordCharPool::MakePassword() const
       TCHAR ch;
       CharType type;
 
-      lowercaseneeded = (m_uselowercase) ? 1 : 0;
-      uppercaseneeded = (m_useuppercase) ? 1 : 0;
-      digitsneeded = (m_usedigits) ? 1 : 0;
-      symbolsneeded = (m_usesymbols) ? 1 : 0;
+      lowercaseneeded = m_numlowercase;
+      uppercaseneeded = m_numuppercase;
+      digitsneeded = m_numdigits;
+      symbolsneeded = m_numsymbols;
       hexdigitsneeded = (m_usehexdigits) ? 1 : 0;
 
       // If following assertion doesn't hold, we'll never exit the do loop!

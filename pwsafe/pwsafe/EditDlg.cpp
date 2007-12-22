@@ -63,7 +63,7 @@ CString CEditDlg::CS_HIDE;
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
     m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
-    m_tttLTime (time_t(0)), m_dwpolicy(0),
+    m_tttLTime (time_t(0)),
     m_locLTime(_T("")), m_oldlocLTime(_T("")),
     m_original_entrytype(CItemData::Normal)
 {
@@ -81,6 +81,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
     CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
 #endif
   }
+
+  m_pwp.Empty();
 
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
@@ -294,6 +296,7 @@ CEditDlg::OnOK()
   m_ci->SetURL(m_URL);
   m_ci->SetAutoType(m_autotype);
   m_ci->SetPWHistory(m_PWHistory);
+  m_ci->SetPWPolicy(m_pwp);
 
   time_t t;
   time(&t);
@@ -520,7 +523,7 @@ void CEditDlg::OnRandom()
 
   UpdateData(TRUE);
 
-  if (pParent->MakeRandomPassword(this, m_realpassword, m_dwpolicy) &&
+  if (pParent->MakeRandomPassword(this, m_realpassword, m_pwp) &&
       !m_isPwHidden) {
     m_password = m_realpassword;
     UpdateData(FALSE);
@@ -532,12 +535,12 @@ void CEditDlg::OnSetPolicy()
   DboxMain* pParent = (DboxMain*)GetParent();
   ASSERT(pParent != NULL);
 
-  pParent->SetPasswordPolicy(m_dwpolicy);
+  pParent->SetPasswordPolicy(m_pwp);
 }
 
 void CEditDlg::OnClearPolicy() 
 {
-  m_dwpolicy = 0;
+  m_pwp.Empty();
 }
 
 void CEditDlg::OnHelp() 

@@ -75,7 +75,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ListViewGridLines"), false, false},                        // application
   {_T("MinimizeOnAutotype"), true, false},                        // application
   {_T("ShowUsernameInTree"), true, true},								// database
-	{_T("PWMakePronounceable"), false, true}, // database - 3.12 password policy
+  {_T("PWMakePronounceable"), false, true}, // database - 3.12 password policy
 };
 
 // Default value = -1 means set at runtime
@@ -103,6 +103,10 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
 
   {_T("ClosedTrayIconColour"), stiBlack, false,
    stiBlack, stiYellow},                                    // application
+  {_T("PWDigitMinLength"), 0, true, 0, 1024},               // database
+  {_T("PWLowercaseMinLength"), 0, true, 0, 1024},           // database
+  {_T("PWSymbolMinLength"), 0, true, 0, 1024},              // database
+  {_T("PWUppercaseMinLength"), 0, true, 0, 1024},           // database
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

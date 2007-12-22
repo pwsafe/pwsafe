@@ -16,6 +16,7 @@
 #include "corelib/Util.h"
 #include "corelib/PWCharPool.h"
 #include "corelib/PWSprefs.h"
+#include "corelib/itemdata.h"
 
 #include "DboxMain.h"
 
@@ -35,7 +36,7 @@ static char THIS_FILE[] = __FILE__;
 
 bool
 DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
-                             DWORD &dw_policy)
+                             PWPolicy &pwp)
 {
   bool is_override = (pDialog->IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
 
@@ -43,25 +44,27 @@ DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
 
   COptionsPasswordPolicy passwordpolicy;
 
-  if (dw_policy != 0) {
-    passwordpolicy.m_pwdefaultlength = (dw_policy & PWSprefs::PWPolicyMaxLength) + 1;
+  if (pwp.flags != 0) {
     passwordpolicy.m_pwuselowercase = 
-      (dw_policy & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
     passwordpolicy.m_pwuseuppercase = 
-      (dw_policy & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
     passwordpolicy.m_pwusedigits = 
-      (dw_policy & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
     passwordpolicy.m_pwusesymbols = 
-      (dw_policy & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
     passwordpolicy.m_pwusehexdigits = 
-      (dw_policy & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
     passwordpolicy.m_pweasyvision = 
-      (dw_policy & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
     passwordpolicy.m_pwmakepronounceable = 
-      (dw_policy & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
+    passwordpolicy.m_pwdefaultlength = pwp.length;
+    passwordpolicy.m_pwdigitminlength = pwp.digitminlength;
+    passwordpolicy.m_pwlowerminlength = pwp.lowerminlength;
+    passwordpolicy.m_pwsymbolminlength = pwp.symbolminlength;
+    passwordpolicy.m_pwupperminlength = pwp.upperminlength;
   } else {
-    passwordpolicy.m_pwdefaultlength = prefs->
-      GetPref(PWSprefs::PWDefaultLength);
     passwordpolicy.m_pwuselowercase = prefs->
       GetPref(PWSprefs::PWUseLowercase);
     passwordpolicy.m_pwuseuppercase = prefs->
@@ -76,6 +79,16 @@ DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
       GetPref(PWSprefs::PWUseEasyVision);
     passwordpolicy.m_pwmakepronounceable = prefs->
       GetPref(PWSprefs::PWMakePronounceable);
+    passwordpolicy.m_pwdefaultlength = prefs->
+      GetPref(PWSprefs::PWDefaultLength);
+    passwordpolicy.m_pwdigitminlength = prefs->
+      GetPref(PWSprefs::PWDigitMinLength);
+    passwordpolicy.m_pwlowerminlength = prefs->
+      GetPref(PWSprefs::PWLowercaseMinLength);
+    passwordpolicy.m_pwsymbolminlength = prefs->
+      GetPref(PWSprefs::PWSymbolMinLength);
+    passwordpolicy.m_pwupperminlength = prefs->
+      GetPref(PWSprefs::PWUppercaseMinLength);
   }
 
   if (is_override) {
@@ -92,48 +105,59 @@ DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
     (void)optionsDlg.DoModal();
   }
 
-  CPasswordCharPool pwchars(
-                            passwordpolicy.m_pwdefaultlength,
-                            passwordpolicy.m_pwuselowercase,
-                            passwordpolicy.m_pwuseuppercase,
-                            passwordpolicy.m_pwusedigits,
-                            passwordpolicy.m_pwusesymbols,
+  UINT numlowercase(0), numuppercase(0), numdigits(0), numsymbols(0);
+  if (passwordpolicy.m_pwuselowercase)
+    numlowercase = (passwordpolicy.m_pwlowerminlength == 0) ? 1 : passwordpolicy.m_pwlowerminlength;
+  if (passwordpolicy.m_pwuseuppercase)
+    numuppercase = (passwordpolicy.m_pwupperminlength == 0) ? 1 : passwordpolicy.m_pwupperminlength;
+  if (passwordpolicy.m_pwusedigits)
+    numdigits = (passwordpolicy.m_pwdigitminlength == 0) ? 1 : passwordpolicy.m_pwdigitminlength;
+  if (passwordpolicy.m_pwusesymbols)
+    numsymbols = (passwordpolicy.m_pwsymbolminlength == 0) ? 1 : passwordpolicy.m_pwsymbolminlength;  
+
+  CPasswordCharPool pwchars(passwordpolicy.m_pwdefaultlength,
+                            numlowercase,
+                            numuppercase,
+                            numdigits,
+                            numsymbols,
                             passwordpolicy.m_pwusehexdigits,
                             passwordpolicy.m_pweasyvision,
                             passwordpolicy.m_pwmakepronounceable);
 
   password = pwchars.MakePassword();
 
-  SetClipboardData( password );
+  SetClipboardData(password);
   return true;
 }
 
 bool
-DboxMain::SetPasswordPolicy(DWORD &dw_policy)
+DboxMain::SetPasswordPolicy(PWPolicy &pwp)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   COptionsPasswordPolicy passwordpolicy;
 
-  if (dw_policy != 0) {
-    passwordpolicy.m_pwdefaultlength = (dw_policy & PWSprefs::PWPolicyMaxLength) + 1;
+  if (pwp.flags != 0) {
     passwordpolicy.m_pwuselowercase = 
-      (dw_policy & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
     passwordpolicy.m_pwuseuppercase = 
-      (dw_policy & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
     passwordpolicy.m_pwusedigits = 
-      (dw_policy & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
     passwordpolicy.m_pwusesymbols = 
-      (dw_policy & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
     passwordpolicy.m_pwusehexdigits = 
-      (dw_policy & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
     passwordpolicy.m_pweasyvision = 
-      (dw_policy & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
     passwordpolicy.m_pwmakepronounceable = 
-      (dw_policy & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
+      (pwp.flags & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
+    passwordpolicy.m_pwdefaultlength = pwp.length;
+    passwordpolicy.m_pwdigitminlength = pwp.digitminlength;
+    passwordpolicy.m_pwlowerminlength = pwp.lowerminlength;
+    passwordpolicy.m_pwsymbolminlength = pwp.symbolminlength;
+    passwordpolicy.m_pwupperminlength = pwp.upperminlength;
   } else {
-    passwordpolicy.m_pwdefaultlength = prefs->
-      GetPref(PWSprefs::PWDefaultLength);
     passwordpolicy.m_pwuselowercase = prefs->
       GetPref(PWSprefs::PWUseLowercase);
     passwordpolicy.m_pwuseuppercase = prefs->
@@ -148,6 +172,16 @@ DboxMain::SetPasswordPolicy(DWORD &dw_policy)
       GetPref(PWSprefs::PWUseEasyVision);
     passwordpolicy.m_pwmakepronounceable = prefs->
       GetPref(PWSprefs::PWMakePronounceable);
+    passwordpolicy.m_pwdefaultlength = prefs->
+      GetPref(PWSprefs::PWDefaultLength);
+    passwordpolicy.m_pwdigitminlength = prefs->
+      GetPref(PWSprefs::PWDigitMinLength);
+    passwordpolicy.m_pwlowerminlength = prefs->
+      GetPref(PWSprefs::PWLowercaseMinLength);
+    passwordpolicy.m_pwsymbolminlength = prefs->
+      GetPref(PWSprefs::PWSymbolMinLength);
+    passwordpolicy.m_pwupperminlength = prefs->
+      GetPref(PWSprefs::PWUppercaseMinLength);
   }
 
   // Start with existing password policy
@@ -161,22 +195,25 @@ DboxMain::SetPasswordPolicy(DWORD &dw_policy)
   if (rc == IDCANCEL)
     return false;
 
-  dw_policy = 0;
+  pwp.Empty();
   if (passwordpolicy.m_pwuselowercase)
-    dw_policy |= PWSprefs::PWPolicyUseLowercase;
+    pwp.flags |= PWSprefs::PWPolicyUseLowercase;
   if (passwordpolicy.m_pwuseuppercase)
-    dw_policy |= PWSprefs::PWPolicyUseUppercase;
+    pwp.flags |= PWSprefs::PWPolicyUseUppercase;
   if (passwordpolicy.m_pwusedigits)
-    dw_policy |= PWSprefs::PWPolicyUseDigits;
+    pwp.flags |= PWSprefs::PWPolicyUseDigits;
   if (passwordpolicy.m_pwusesymbols)
-    dw_policy |= PWSprefs::PWPolicyUseSymbols;
+    pwp.flags |= PWSprefs::PWPolicyUseSymbols;
   if (passwordpolicy.m_pwusehexdigits)
-    dw_policy |= PWSprefs::PWPolicyUseHexDigits;
+    pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
   if (passwordpolicy.m_pweasyvision)
-    dw_policy |= PWSprefs::PWPolicyUseEasyVision;
+    pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
   if (passwordpolicy.m_pwmakepronounceable)
-    dw_policy |= PWSprefs::PWPolicyMakePronounceable;
-  dw_policy |= ((passwordpolicy.m_pwdefaultlength - 1) & PWSprefs::PWPolicyMaxLength);
-
+    pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+  pwp.length = passwordpolicy.m_pwdefaultlength;
+  pwp.digitminlength = passwordpolicy.m_pwdigitminlength;
+  pwp.lowerminlength = passwordpolicy.m_pwlowerminlength;
+  pwp.symbolminlength = passwordpolicy.m_pwsymbolminlength;
+  pwp.upperminlength = passwordpolicy.m_pwupperminlength;
   return true;
 }

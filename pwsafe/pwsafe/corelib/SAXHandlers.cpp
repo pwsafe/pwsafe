@@ -165,6 +165,10 @@ PWSSAXContentHandler::PWSSAXContentHandler()
   m_iNumPWHistoryDefault = -1;
   m_iPWDefaultLength = -1;
   m_iTreeDisplayStatusAtOpen = -1;
+  m_iPWDigitMinLength = -1;
+  m_iPWLowercaseMinLength = -1;
+  m_iPWSymbolMinLength = -1;
+  m_iPWUppercaseMinLength = -1;
   m_sDefaultAutotypeString = _T("");
   m_sDefaultUsername = _T("");
 }
@@ -352,7 +356,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 		cur_entry->pwhistory = _T("");
 		cur_entry->notes = _T("");
 		cur_entry->uuid = _T("");
-    cur_entry->policy = 0;
+    cur_entry->pwp.Empty();
 		cur_entry->entrytype = NORMAL;
     m_bentrybeingprocessed = true;
 	}
@@ -515,8 +519,10 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 			tempitem.SetLTime(cur_entry->ltime);
 		if (cur_entry->rmtime.GetLength() != 0)
 			tempitem.SetRMTime(cur_entry->rmtime);
-    if (cur_entry->policy != 0)
-      tempitem.SetPWPolicy(cur_entry->policy);
+
+    if (cur_entry->pwp.flags != 0) {
+      tempitem.SetPWPolicy(cur_entry->pwp);
+    }
 
 		CMyString newPWHistory;
 		CString strPWHErrors, buffer;
@@ -818,43 +824,43 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("PWUseDigits")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->policy |= PWSprefs::PWPolicyUseDigits;
+      cur_entry->pwp.flags |= PWSprefs::PWPolicyUseDigits;
     else
       m_bPWUseDigits = _ttoi(m_strElemContent);
 
   if (_tcscmp(szCurElement, _T("PWUseEasyVision")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->policy |= PWSprefs::PWPolicyUseEasyVision;
+      cur_entry->pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
     else
       m_bPWUseEasyVision = _ttoi(m_strElemContent);
   
   if (_tcscmp(szCurElement, _T("PWUseHexDigits")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->policy |= PWSprefs::PWPolicyUseHexDigits;
+      cur_entry->pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
     else
       m_bPWUseHexDigits = _ttoi(m_strElemContent);
 
   if (_tcscmp(szCurElement, _T("PWUseLowercase")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->policy |= PWSprefs::PWPolicyUseLowercase;
+      cur_entry->pwp.flags |= PWSprefs::PWPolicyUseLowercase;
     else
       m_bPWUseLowercase = _ttoi(m_strElemContent);
 
   if (_tcscmp(szCurElement, _T("PWUseSymbols")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->policy |= PWSprefs::PWPolicyUseSymbols;
+      cur_entry->pwp.flags |= PWSprefs::PWPolicyUseSymbols;
     else
       m_bPWUseSymbols = _ttoi(m_strElemContent);
 
   if (_tcscmp(szCurElement, _T("PWUseUppercase")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->policy |= PWSprefs::PWPolicyUseUppercase;
+      cur_entry->pwp.flags |= PWSprefs::PWPolicyUseUppercase;
     else
       m_bPWUseUppercase = _ttoi(m_strElemContent);
 
   if (_tcscmp(szCurElement, _T("PWMakePronounceable")) == 0)
     if (m_bentrybeingprocessed)
-      cur_entry->policy |= PWSprefs::PWPolicyMakePronounceable;
+      cur_entry->pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
     else
       m_bPWMakePronounceable = _ttoi(m_strElemContent);
 
@@ -882,11 +888,8 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
   if (_tcscmp(szCurElement, _T("UseDefaultUser")) == 0)
     m_bUseDefaultUser = _ttoi(m_strElemContent);
 
-  if (_tcscmp(szCurElement, _T("PWDefaultLength")) == 0) {
+  if (_tcscmp(szCurElement, _T("PWDefaultLength")) == 0)
     m_iPWDefaultLength = _ttoi(m_strElemContent);
-    if (m_bentrybeingprocessed)
-      cur_entry->policy |= (m_iPWDefaultLength - 1) & PWSprefs::PWPolicyMaxLength;
-  }
 
   if (_tcscmp(szCurElement, _T("IdleTimeout")) == 0)
     m_iIdleTimeout = _ttoi(m_strElemContent);
@@ -908,6 +911,33 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("DefaultAutotypeString")) == 0)
     m_sDefaultAutotypeString = CString(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWLength")) == 0)
+    cur_entry->pwp.length = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWDigitMinLength")) == 0)
+    if (m_bentrybeingprocessed)
+      cur_entry->pwp.digitminlength = _ttoi(m_strElemContent);
+    else
+      m_iPWDigitMinLength = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWLowercaseMinLength")) == 0)
+    if (m_bentrybeingprocessed)
+      cur_entry->pwp.lowerminlength = _ttoi(m_strElemContent);
+    else
+      m_iPWLowercaseMinLength = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWSymbolMinLength")) == 0)
+    if (m_bentrybeingprocessed)
+      cur_entry->pwp.symbolminlength = _ttoi(m_strElemContent);
+    else
+      m_iPWSymbolMinLength = _ttoi(m_strElemContent);
+
+  if (_tcscmp(szCurElement, _T("PWUppercaseMinLength")) == 0)
+    if (m_bentrybeingprocessed)
+      cur_entry->pwp.upperminlength = _ttoi(m_strElemContent);
+    else
+      m_iPWUppercaseMinLength = _ttoi(m_strElemContent);
 
 	return S_OK;
 }
