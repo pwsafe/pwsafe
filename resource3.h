@@ -357,3 +357,5 @@
 #define IDS_PWPOLICY                    5535
 #define IDS_COMPPWPOLICY                5536
 #define IDS_SETPASSWORDPOLICY           5537
+#define IDS_DEFAULTPWLENGTHTOOSMALL     5538
+#define IDS_CANTSPECIFYMINNUMBER        5539

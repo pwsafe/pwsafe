@@ -44,7 +44,7 @@ struct pw_entry {
 	CMyString pwhistory;
 	CMyString notes;
 	CMyString uuid;
-  DWORD policy;
+  PWPolicy pwp;
 	UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
 	int entrytype;
 };
@@ -127,6 +127,10 @@ public:
   int m_iNumPWHistoryDefault;
   int m_iPWDefaultLength;
   int m_iTreeDisplayStatusAtOpen;
+  int m_iPWDigitMinLength;
+  int m_iPWLowercaseMinLength;
+  int m_iPWSymbolMinLength;
+  int m_iPWUppercaseMinLength;
   CString m_sDefaultAutotypeString;
   CString m_sDefaultUsername;
 

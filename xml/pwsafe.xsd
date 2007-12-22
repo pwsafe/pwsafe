@@ -60,6 +60,13 @@
   </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="passwordlengthType2">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="1024" />
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="timeoutType">
   <xs:restriction base="xs:integer">
     <xs:minInclusive value="1" />
@@ -115,6 +122,10 @@
               <xs:element name="IdleTimeout" type="timeoutType" minOccurs="0" />
               <xs:element name="TreeDisplayStatusAtOpen" type="displaystatusType" minOccurs="0" />
               <xs:element name="NumPWHistoryDefault" type="pwhistoryType" minOccurs="0" />
+              <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" />
+              <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" />
+              <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" />
+              <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" />
   
               <!-- String Database Preferences -->
               <xs:element name="DefaultUsername" type="stringType" minOccurs="0" />
@@ -180,7 +191,7 @@
               <xs:element name="PasswordPolicy" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
                   <xs:all>
-                    <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="PWLength" type="passwordlengthType" minOccurs="1" maxOccurs="1" />
                     <xs:element name="PWUseDigits" type="boolType" minOccurs="0" />
                     <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" />
                     <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" />
@@ -188,6 +199,10 @@
                     <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" />
                     <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" />
                     <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" />
+                    <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" />
+                    <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" />
+                    <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" />
+                    <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" />
                   </xs:all>
                 </xs:complexType>
               </xs:element>

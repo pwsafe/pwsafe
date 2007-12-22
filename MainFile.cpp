@@ -2108,7 +2108,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   ItemListIter toPos;
   CMyString group, title, user, notes, password, url, autotype, pwhistory;
   time_t ct, at, lt, pmt, rmt;
-  DWORD dw_policy;
+  PWPolicy pwp;
   int nfromUnknownRecordFields;
   bool bFromUUIDIsNotInTo;
 
@@ -2129,7 +2129,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   fromEntry->GetLTime(lt);
   fromEntry->GetPMTime(pmt);
   fromEntry->GetRMTime(rmt);
-  fromEntry->GetPWPolicy(dw_policy);
+  fromEntry->GetPWPolicy(pwp);
   nfromUnknownRecordFields = fromEntry->NumberUnknownFields();
 
   bFromUUIDIsNotInTo = (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter());
@@ -2150,7 +2150,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     toEntry->SetLTime(lt);
     toEntry->SetPMTime(pmt);
     toEntry->SetRMTime(rmt);
-    toEntry->SetPWPolicy(dw_policy);
+    toEntry->SetPWPolicy(pwp);
 
     // If the UUID is not in use, copy it too, otherwise reuse current
     if (bFromUUIDIsNotInTo)
@@ -2204,7 +2204,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     temp.SetLTime(lt);
     temp.SetPMTime(pmt);
     temp.SetRMTime(rmt);
-    temp.SetPWPolicy(dw_policy);
+    temp.SetPWPolicy(pwp);
     if (nfromUnknownRecordFields != 0) {
       ptocore->IncrementNumRecordsWithUnknownFields();
 

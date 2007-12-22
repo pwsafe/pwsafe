@@ -45,8 +45,8 @@ class CPasswordCharPool
 {
  public:
   CPasswordCharPool(UINT pwlen,
-                    BOOL uselowercase, BOOL useuppercase,
-                    BOOL usedigits, BOOL usesymbols, BOOL usehexdigits,
+                    UINT numlowercase, UINT numuppercase,
+                    UINT numdigits, UINT numsymbols, BOOL usehexdigits,
                     BOOL easyvision, BOOL pronounceable);
   CMyString MakePassword() const;
 
@@ -93,6 +93,10 @@ class CPasswordCharPool
 
   // Following state vars set by ctor, used by MakePassword()
   const UINT m_pwlen;
+  const UINT m_numlowercase;
+  const UINT m_numuppercase;
+  const UINT m_numdigits;
+  const UINT m_numsymbols;
   const BOOL m_uselowercase;
   const BOOL m_useuppercase;
   const BOOL m_usedigits;

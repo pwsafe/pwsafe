@@ -221,11 +221,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
     t32 = (int)t;
     WriteCBC(CItemData::RMTIME, (unsigned char *)&t32, sizeof(t32));
   }
-  DWORD policy;
-  item.GetPWPolicy(policy);
-  if (policy != 0) {
-    WriteCBC(CItemData::POLICY, (unsigned char *)&policy, sizeof(policy));
-  }
+  tmp = item.GetPWPolicy();
+  if (!tmp.IsEmpty())
+    WriteCBC(CItemData::POLICY, tmp);
   tmp = item.GetPWHistory();
   if (!tmp.IsEmpty())
     WriteCBC(CItemData::PWHIST, tmp);

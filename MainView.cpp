@@ -78,7 +78,6 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   CItemData* pRHS = (CItemData *)lParam2;
   CMyString	group1, group2;
   time_t t1, t2;
-  DWORD dw1, dw2;
 
   int iResult;
   switch(nTypeSortColumn) {
@@ -150,9 +149,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
     case CItemData::POLICY:
-      pLHS->GetPWPolicy(dw1);
-      pRHS->GetPWPolicy(dw2);
-      iResult = (dw1 < dw2) ? -1 : 1;
+      iResult = (pLHS->GetPWPolicy()).CompareNoCase(pRHS->GetPWPolicy());
       break;
     default:
       iResult = 0; // should never happen - just keep compiler happy
@@ -1148,26 +1145,46 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
         break;
       case CItemData::POLICY:
         {
-        DWORD dw;
-        itemData.GetPWPolicy(dw);
-        if (dw != 0) {
-          CString cs_policy(_T(""));
-          if (dw & PWSprefs::PWPolicyUseLowercase)
-            cs_policy += _T("L");
-          if (dw & PWSprefs::PWPolicyUseUppercase)
-            cs_policy += _T("U");
-          if (dw & PWSprefs::PWPolicyUseDigits)
-            cs_policy += _T("D");
-          if (dw & PWSprefs::PWPolicyUseSymbols)
-            cs_policy += _T("S");
-          if (dw & PWSprefs::PWPolicyUseHexDigits)
-            cs_policy += _T("H");
-          if (dw & PWSprefs::PWPolicyUseEasyVision)
-            cs_policy += _T("E");
-          if (dw & PWSprefs::PWPolicyMakePronounceable)
-            cs_policy += _T("P");
-          int pwlen = (dw & PWSprefs::PWPolicyMaxLength) + 1;
-          cs_fielddata.Format(_T("%s:%d"), cs_policy, pwlen);
+        PWPolicy pwp;
+        itemData.GetPWPolicy(pwp);
+        if (pwp.flags != 0) {
+          CString cs_pwp(_T("")), cs_text;
+          if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
+            cs_pwp += _T("L");
+            if (pwp.lowerminlength > 1) {
+              cs_text.Format(_T("(%d)"), pwp.lowerminlength);
+              cs_pwp += cs_text;
+            }
+          }
+          if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
+            cs_pwp += _T("U");
+            if (pwp.upperminlength > 1) {
+              cs_text.Format(_T("(%d)"), pwp.upperminlength);
+              cs_pwp += cs_text;
+            }
+          }
+          if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
+            cs_pwp += _T("D");
+            if (pwp.digitminlength > 1) {
+              cs_text.Format(_T("(%d)"), pwp.digitminlength);
+              cs_pwp += cs_text;
+            }
+          }
+          if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
+            cs_pwp += _T("S");
+            if (pwp.symbolminlength > 1) {
+              cs_text.Format(_T("(%d)"), pwp.symbolminlength);
+              cs_pwp += cs_text;
+            }
+          }
+          if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+            cs_pwp += _T("H");
+          if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+            cs_pwp += _T("E");
+          if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+            cs_pwp += _T("P");
+
+          cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
         } else
           cs_fielddata = _T("");
         }
@@ -1248,26 +1265,46 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
           break;
         case CItemData::POLICY:
           {
-          DWORD dw;
-          itemData.GetPWPolicy(dw);
-          if (dw != 0) {
-            CString cs_policy(_T(""));
-            if (dw & PWSprefs::PWPolicyUseLowercase)
-              cs_policy += _T("L");
-            if (dw & PWSprefs::PWPolicyUseUppercase)
-              cs_policy += _T("U");
-            if (dw & PWSprefs::PWPolicyUseDigits)
-              cs_policy += _T("D");
-            if (dw & PWSprefs::PWPolicyUseSymbols)
-              cs_policy += _T("S");
-            if (dw & PWSprefs::PWPolicyUseHexDigits)
-              cs_policy += _T("H");
-            if (dw & PWSprefs::PWPolicyUseEasyVision)
-              cs_policy += _T("E");
-            if (dw & PWSprefs::PWPolicyMakePronounceable)
-              cs_policy += _T("P");
-            int pwlen = (dw & PWSprefs::PWPolicyMaxLength) + 1;
-            cs_fielddata.Format(_T("%s:%d"), cs_policy, pwlen);
+          PWPolicy pwp;
+          itemData.GetPWPolicy(pwp);
+          if (pwp.flags != 0) {
+            CString cs_pwp(_T("")), cs_text;
+            if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
+              cs_pwp += _T("L");
+              if (pwp.lowerminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.lowerminlength);
+                cs_pwp += cs_text;
+              }
+            }
+            if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
+              cs_pwp += _T("U");
+              if (pwp.upperminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.upperminlength);
+                cs_pwp += cs_text;
+              }
+            }
+            if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
+              cs_pwp += _T("D");
+              if (pwp.digitminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.digitminlength);
+                cs_pwp += cs_text;
+              }
+            }
+            if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
+              cs_pwp += _T("S");
+              if (pwp.symbolminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.symbolminlength);
+                cs_pwp += cs_text;
+              }
+            }
+            if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+              cs_pwp += _T("H");
+            if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+              cs_pwp += _T("E");
+            if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+              cs_pwp += _T("P");
+
+            cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
           } else
             cs_fielddata = _T("");
           }
