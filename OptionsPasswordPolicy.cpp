@@ -186,6 +186,11 @@ void COptionsPasswordPolicy::do_nohex(const bool bNonHex)
 void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
 {
   // Can't have minimum lengths!
+  if ((m_pweasyvision == TRUE || m_pwmakepronounceable == TRUE) &&
+      (m_pwdigitminlength > 1  || m_pwlowerminlength > 1 || 
+       m_pwsymbolminlength > 1 || m_pwupperminlength > 1))
+  	AfxMessageBox(IDS_CANTSPECIFYMINNUMBER);
+  
   CString cs_value;
   int i;
   if (bSet) {
