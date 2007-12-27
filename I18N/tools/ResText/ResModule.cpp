@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -239,10 +239,8 @@ BOOL CResModule::ExtractString(UINT nID)
 		if (wcslen(pBuf))
 		{
 			std::wstring str = std::wstring(pBuf);
-			TCHAR szTempBuf[1024];
-			_stprintf(szTempBuf, _T("#: ID:%d,"), nID);
 			RESOURCEENTRY entry = m_StringEntries[str];
-			entry.reference = entry.reference.append(szTempBuf);
+			entry.resourceIDs.insert(nID);
 			if (wcschr(str.c_str(), '%'))
 				entry.flag = _T("#, c-format");
 			m_StringEntries[str] = entry;
@@ -540,7 +538,8 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 
 			std::wstring wstr = std::wstring(pBuf);
 			RESOURCEENTRY entry = m_StringEntries[wstr];
-			entry.reference += _T("#: MenuEntry");
+			if (id)
+				entry.resourceIDs.insert(id);
 
 			m_StringEntries[wstr] = entry;
 			delete [] pBuf;
@@ -557,7 +556,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 
 			std::wstring wstr = std::wstring(pBuf);
 			RESOURCEENTRY entry = m_StringEntries[wstr];
-			entry.reference = _T("#: MenuEntry");
+			entry.resourceIDs.insert(id);
 
 			TCHAR szTempBuf[1024];
 			_stprintf(szTempBuf, _T("#: MenuEntry; ID:%d"), id);
@@ -741,8 +740,6 @@ BOOL CResModule::ExtractAccelerator(UINT nID)
 		{
 			wmenu = pME_iter->second.msgstr;
 		}
-		_stprintf(szTempBuf, _T("#: Corresponding Menu ID:%d; '%s'"), wID, wmenu.c_str());
-		AKey_entry.reference = std::wstring(szTempBuf);
 		_stprintf(szTempBuf, _T("#. Accelerator Entry for Menu ID:%d; '%s'"), wID, wmenu.c_str());
 		AKey_entry.automaticcomments.push_back(std::wstring(szTempBuf));
 
@@ -929,11 +926,9 @@ BOOL CResModule::ExtractDialog(UINT nID)
 		_tcscpy(pBuf, dlg.caption);
 		CUtils::StringExtend(pBuf);
 
-		TCHAR szTempBuf[1024];
-		_stprintf(szTempBuf, _T("#: Dlg-ID:%d,"), nID);
 		std::wstring wstr = std::wstring(pBuf);
 		RESOURCEENTRY entry = m_StringEntries[wstr];
-		entry.reference = entry.reference.append(szTempBuf);
+		entry.resourceIDs.insert(nID);
 
 		m_StringEntries[wstr] = entry;
 		delete [] pBuf;
@@ -954,11 +949,9 @@ BOOL CResModule::ExtractDialog(UINT nID)
 		{
 			CUtils::StringExtend(szTitle);
 
-			TCHAR szTempBuf[1024];
-			_stprintf(szTempBuf, _T("#: Control-ID:%d,"), dlgItem.id);
 			std::wstring wstr = std::wstring(szTitle);
 			RESOURCEENTRY entry = m_StringEntries[wstr];
-			entry.reference = entry.reference.append(szTempBuf);
+			entry.resourceIDs.insert(dlgItem.id);
 
 			m_StringEntries[wstr] = entry;
 		}
