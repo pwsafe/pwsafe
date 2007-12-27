@@ -83,21 +83,6 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting /* = TRUE */)
 					resEntry.automaticcomments.push_back(I->c_str());
 					type = 0;
 				}
-				if (_tcsncmp(I->c_str(), _T("#:"), 2)==0)
-				{
-					//reference
-					resEntry.reference = I->c_str();
-					std::wstring temp = I->c_str();
-					int i_offsetID = temp.find(_T("ID:"));
-					int iID = 0;
-					if (i_offsetID > 0 && ((int)temp.length() >= (i_offsetID + 4))) 
-					{
-						temp = temp.substr(i_offsetID + 3, temp.length() - i_offsetID - 3);
-						_stscanf(temp.c_str(), _T("%d"), &iID);
-					}
-					resEntry.menuID = (WORD)iID;
-					type = 0;
-				}
 				if (_tcsncmp(I->c_str(), _T("#,"), 2)==0)
 				{
 					//flag
@@ -140,14 +125,10 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting /* = TRUE */)
 				}
 			}
 			entry.clear();
-			if ((!bUpdateExisting)||(this->count(msgid) != 0))
-			{
-				RESOURCEENTRY e = (*this)[msgid];
-				resEntry.reference = e.reference;
-				(*this)[msgid] = resEntry;
-			}
-			else
+			if ((bUpdateExisting)&&(this->count(msgid) == 0))
 				nDeleted++;
+			else
+				(*this)[msgid] = resEntry;
 			msgid.clear();
 		}
 		else
@@ -227,8 +208,21 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath)
 		{
 			File << II->c_str() << _T("\n");
 		}
-		if (I->second.reference.length() > 0)
-			File << (I->second.reference.c_str()) << _T("\n");
+		if (I->second.resourceIDs.size() > 0)
+		{
+			File << _T("#. Resource IDs: (");
+
+			std::set<DWORD>::const_iterator II = I->second.resourceIDs.begin();
+			File << (*II);
+			++II;
+			while (II != I->second.resourceIDs.end())
+			{
+				File << _T(", ");
+				File << (*II);
+				++II;
+			};
+			File << _T(")\n");
+		}
 		if (I->second.flag.length() > 0)
 			File << (I->second.flag.c_str()) << _T("\n");
 		File << (_T("msgid \"")) << (I->first.c_str()) << _T("\"\n");
