@@ -361,3 +361,6 @@
 #define IDS_CANTSPECIFYMINNUMBER        5539
 #define IDS_SAMPLETEXT                  5540
 #define IDS_EMPTYSAMPLETEXT             5541
+#define IDS_MENUCOPYURL                 5542
+#define IDS_MENUCOPYEMAIL               5543
+#define IDS_COPYEMAIL                   5544

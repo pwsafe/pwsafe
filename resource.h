@@ -470,7 +470,6 @@
 #define IDC_SETPWPOLICY                 1281
 #define IDC_CLEARPWPOLICY               1282
 #define IDC_SAMPLETEXT                  1283
-#define IDC_EDIT1                       1285
 
 // Next default values for new objects
 // 
@@ -478,7 +477,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        406
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1286
+#define _APS_NEXT_CONTROL_VALUE         1284
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif
