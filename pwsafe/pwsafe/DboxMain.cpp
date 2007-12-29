@@ -69,6 +69,8 @@ CString DboxMain::CS_EDITENTRY;
 CString DboxMain::CS_VIEWENTRY;
 CString DboxMain::CS_BROWSEURL;
 CString DboxMain::CS_SENDEMAIL;
+CString DboxMain::CS_COPYURL;
+CString DboxMain::CS_COPYEMAIL;
 CString DboxMain::CS_EXPCOLGROUP;
 
 //-----------------------------------------------------------------------------
@@ -96,6 +98,8 @@ DboxMain::DboxMain(CWnd* pParent)
   CS_RENAMEGROUP.LoadString(IDS_MENURENAMEGROUP);
   CS_BROWSEURL.LoadString(IDS_MENUBROWSEURL);
   CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
+  CS_COPYURL.LoadString(IDS_MENUCOPYURL);
+  CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
   //}}AFX_DATA_INIT
@@ -153,6 +157,7 @@ ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
 ON_COMMAND(ID_MENUITEM_COPYNOTESFLD, OnCopyNotes)
 ON_COMMAND(ID_MENUITEM_COPYUSERNAME, OnCopyUsername)
 ON_COMMAND(ID_MENUITEM_COPYURL, OnCopyURL)
+ON_COMMAND(ID_MENUITEM_COPYEMAIL, OnCopyURL)
 ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
 ON_COMMAND(ID_MENUITEM_DELETE, OnDelete)
 ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
@@ -323,6 +328,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_SENDEMAIL, true, true, false, false},
   {ID_MENUITEM_AUTOTYPE, true, true, false, false},
   {ID_MENUITEM_COPYURL, true, true, false, false},
+  {ID_MENUITEM_COPYEMAIL, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -1550,9 +1556,13 @@ DboxMain::OnInitMenu(CMenu* pMenu)
       if (bIsEmail) {
         pMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
                           ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
+        pMenu->ModifyMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND,
+                          ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
       } else {
         pMenu->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
                           ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+        pMenu->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
+                          ID_MENUITEM_COPYURL, CS_COPYURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     } else {
@@ -2349,6 +2359,7 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
   case ID_MENUITEM_BROWSEURL:
   case ID_MENUITEM_SENDEMAIL:
   case ID_MENUITEM_COPYURL:
+  case ID_MENUITEM_COPYEMAIL:
     if (bGroupSelected) {
       // Not allowed if a Group is selected
       iEnable = FALSE;

@@ -966,6 +966,8 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     if (itemData->IsURLEmpty()) {
       pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
                          ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+      pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
+                         ID_MENUITEM_COPYURL, CS_COPYURL);
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_GRAYED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
       UpdateBrowseURLSendEmailButton(false);
@@ -976,9 +978,13 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       if (bIsEmail) {
         pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
                            ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
+        pPopup->ModifyMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND,
+                           ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
       } else {
         pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
                            ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+        pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
+                           ID_MENUITEM_COPYURL, CS_COPYURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
