@@ -19,15 +19,33 @@ static char THIS_FILE[] = __FILE__;
 #include "PwFont.h"
 #include "corelib/PwsPlatform.h"
 
-void
-SetPasswordFont(CWnd* pDlgItem)
+static CFont *pPasswordFont(NULL);
+
+void GetPasswordFont(LOGFONT *plogfont)
+{
+  ASSERT(plogfont != NULL);
+  pPasswordFont->GetLogFont(plogfont);
+}
+
+void SetPasswordFont(LOGFONT *plogfont)
+{
+  ASSERT(plogfont != NULL);
+  if (pPasswordFont == NULL) {
+    pPasswordFont = new CFont;
+  } else {
+    pPasswordFont->DeleteObject();
+  }
+  pPasswordFont->CreateFontIndirect(plogfont);
+}
+
+void ApplyPasswordFont(CWnd* pDlgItem)
 {
 #if !defined(POCKET_PC)
-	CFont *pw_font;
-    HFONT hfont;
+  ASSERT(pDlgItem != NULL);
+  if (pPasswordFont == NULL) {
+    pPasswordFont = new CFont;
     TCHAR* tch_fontname;
-    const int ifontsize = -16;
-    tch_fontname = _T("MS Sans Serif");
+    tch_fontname = _T("Courier");
 
     // Note these font names are less than the max. permitted length (LF_FACESIZE = 31 + null)
     // no need to check length before copy.
@@ -35,16 +53,20 @@ SetPasswordFont(CWnd* pDlgItem)
     // Initialize a CFont object with the characteristics given
     // in a LOGFONT structure.
     LOGFONT lf;
-    memset(&lf, 0, sizeof(LOGFONT));	  // clear out structure
-    lf.lfHeight = ifontsize;
-    _tcsncpy(lf.lfFaceName, tch_fontname, _tcslen(tch_fontname));      // UNICODE safe string copy
-	lf.lfPitchAndFamily = FF_SWISS;
-    hfont = ::CreateFontIndirect(&lf);	  // create the font (must be deleted with ::DeleteObject()
-    // Convert the existing HFONT to CFont*.
-    pw_font = CFont::FromHandle(hfont);
-	pDlgItem->SetFont(pw_font);
-	::DeleteObject(pw_font);
-    ::DeleteObject(hfont);
+    memset(&lf, 0, sizeof(LOGFONT));
+    lf.lfHeight = -16;
+    lf.lfWeight = FW_NORMAL;
+    _tcsncpy(lf.lfFaceName, tch_fontname, _tcslen(tch_fontname));
+    lf.lfPitchAndFamily = FF_MODERN | FIXED_PITCH;
+    pPasswordFont->CreateFontIndirect(&lf);
+  }
+
+	pDlgItem->SetFont(pPasswordFont);
 #endif
 }
 
+void DeletePasswordFont()
+{
+  delete pPasswordFont;
+  pPasswordFont = NULL;
+}

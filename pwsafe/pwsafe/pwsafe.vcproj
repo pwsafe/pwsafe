@@ -740,6 +740,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWFontDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PWHistDlg.cpp"
 				>
 			</File>
@@ -769,6 +773,10 @@
 			</File>
 			<File
 				RelativePath=".\RUEList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SampleTextDlg.cpp"
 				>
 			</File>
 			<File
@@ -1005,6 +1013,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PWFontDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PWHistDlg.h"
 				>
 			</File>
@@ -1050,6 +1062,10 @@
 			</File>
 			<File
 				RelativePath=".\RUEList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SampleTextDlg.h"
 				>
 			</File>
 			<File

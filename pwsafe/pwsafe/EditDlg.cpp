@@ -373,8 +373,8 @@ BOOL CEditDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  SetPasswordFont(GetDlgItem(IDC_PASSWORD));
-  SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
+  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
   CString cs_text;
   if (m_Edit_IsReadOnly) {

@@ -42,7 +42,7 @@ CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
 BOOL CExportTextDlg::OnInitDialog() 
 {
    CPWDialog::OnInitDialog();
-   SetPasswordFont(GetDlgItem(IDC_EXPORT_TEXT_PASSWORD));
+   ApplyPasswordFont(GetDlgItem(IDC_EXPORT_TEXT_PASSWORD));
    ((CEdit*)GetDlgItem(IDC_EXPORT_TEXT_PASSWORD))->SetPasswordChar(PSSWDCHAR);
 
    m_bsExport.set();  // note: impossible to set them all even via the advanced dialog

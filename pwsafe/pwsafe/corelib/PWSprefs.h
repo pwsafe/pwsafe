@@ -77,7 +77,7 @@ class PWSprefs {
   enum  StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
 		  TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
       ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,
-      MainToolBarButtons,
+      MainToolBarButtons, PasswordFont,
 		  NumStringPrefs};
 
   // for DoubleClickAction
