@@ -116,6 +116,7 @@ DboxMain::~DboxMain()
   delete m_pchTip;
   delete m_pwchTip;
   delete m_pFontTree;
+  DeletePasswordFont();
 }
 
 BEGIN_MESSAGE_MAP(DboxMain, CDialog)
@@ -166,7 +167,8 @@ ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
 ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
 ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
 ON_COMMAND(ID_MENUITEM_COLLAPSEALL, OnCollapseAll)
-ON_COMMAND(ID_MENUITEM_CHANGEFONT, OnChangeFont)
+ON_COMMAND(ID_MENUITEM_CHANGETREEFONT, OnChangeTreeFont)
+ON_COMMAND(ID_MENUITEM_CHANGEPSWDFONT, OnChangePswdFont)
 ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
 
 // Manage Menu
@@ -328,7 +330,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OLD_TOOLBAR, true, true, true, true},
   {ID_MENUITEM_EXPANDALL, true, true, true, false},
   {ID_MENUITEM_COLLAPSEALL, true, true, true, false},
-  {ID_MENUITEM_CHANGEFONT, true, true, true, false},
+  {ID_MENUITEM_CHANGETREEFONT, true, true, true, false},
+  {ID_MENUITEM_CHANGEPSWDFONT, true, true, true, false},
   {ID_MENUITEM_REPORT_COMPARE, true, true, true, true},
   {ID_MENUITEM_REPORT_IMPORTTEXT, true, true, true, true},
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
@@ -510,6 +513,17 @@ DboxMain::InitPasswordSafe()
     m_ctlItemList.SetFont(m_pFontTree);
     m_LVHdrCtrl.SetFont(m_pFontTree);
     delete ptreefont;
+  }
+
+  // Set up fonts before playing with Tree/List views
+  CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont);
+
+  if (szPasswordFont != _T("")) {
+    LOGFONT *pPasswordfont = new LOGFONT;
+    memset(pPasswordfont, 0, sizeof(LOGFONT)); 
+    ExtractFont(szPasswordFont, pPasswordfont);
+    SetPasswordFont(pPasswordfont);
+    delete pPasswordfont;
   }
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView);

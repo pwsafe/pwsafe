@@ -443,7 +443,8 @@ protected:
   afx_msg void OnNewToolbar();
   afx_msg void OnExpandAll();
   afx_msg void OnCollapseAll();
-  afx_msg void OnChangeFont();
+  afx_msg void OnChangeTreeFont();
+  afx_msg void OnChangePswdFont();
   afx_msg void OnViewReports(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();          // From Toolbar button
   afx_msg void OnMinimize();
@@ -523,7 +524,7 @@ private:
   UINT m_IdleLockCountDown;
   void SetIdleLockCounter(UINT i) {m_IdleLockCountDown = i;}
   bool DecrementAndTestIdleLockCounter();
-  void ExtractFont(CString& str, LOGFONT *ptreefont);
+  void ExtractFont(CString& str, LOGFONT *plogfont);
   int SaveIfChanged();
   void CheckExpiredPasswords();
   void UnMinimize(bool update_windows);
@@ -564,5 +565,3 @@ struct DisplayInfo {
   int list_index;
   HTREEITEM tree_item;
 };
-
-

@@ -26,6 +26,8 @@
 #include "TryAgainDlg.h"
 #include "ColumnChooserDlg.h"
 #include "GeneralMsgBox.h"
+#include "PWFontDialog.h"
+#include "PWFont.h"
 
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
@@ -1678,7 +1680,7 @@ BOOL DboxMain::IsWorkstationLocked() const
 
 
 void
-DboxMain::OnChangeFont() 
+DboxMain::OnChangeTreeFont() 
 {
   CFont *pOldFontTree;
   pOldFontTree = m_ctlItemTree.GetFont();
@@ -1687,9 +1689,18 @@ DboxMain::OnChangeFont()
   LOGFONT lf;
   pOldFontTree->GetLogFont(&lf);
 
-  // present it and possibly change it
-  CFontDialog dlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
-  if(dlg.DoModal() == IDOK) {
+  // present Tree/List view font and possibly change it
+  // Allow user to apply changes to font
+  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
+
+  if(fontdlg.DoModal() == IDOK) {
+    CString treefont_str;
+    treefont_str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
+                        lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
+                        lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
+                        lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
+                        lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
+
     m_pFontTree->DeleteObject();
     m_pFontTree->CreateFontIndirect(&lf);
     // transfer the fonts to the tree and list windows
@@ -1702,25 +1713,32 @@ DboxMain::OnChangeFont()
     // Reset column widths
     AutoResizeColumns();
 
-    CString str;
-    str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
-               lf.lfHeight,
-               lf.lfWidth,
-               lf.lfEscapement,
-               lf.lfOrientation,
-               lf.lfWeight,
-               lf.lfItalic,
-               lf.lfUnderline,
-               lf.lfStrikeOut,
-               lf.lfCharSet,
-               lf.lfOutPrecision,
-               lf.lfClipPrecision,
-               lf.lfQuality,
-               lf.lfPitchAndFamily,
-               lf.lfFaceName);
+    PWSprefs::GetInstance()->SetPref(PWSprefs::TreeFont, treefont_str);
+  }
+}
 
-    PWSprefs *prefs = PWSprefs::GetInstance();
-    prefs->SetPref(PWSprefs::TreeFont, str);
+void
+DboxMain::OnChangePswdFont() 
+{
+  LOGFONT lf;
+  // Get Password font in case the user wants to change this.
+  GetPasswordFont(&lf);
+
+  // present Password font and possibly change it
+  // Allow user to apply changes to font
+  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
+
+  if(fontdlg.DoModal() == IDOK) {
+    CString pswdfont_str;
+    pswdfont_str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
+                        lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
+                        lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
+                        lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
+                        lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
+
+    // transfer the new font to the passwords
+    SetPasswordFont(&lf);
+    PWSprefs::GetInstance()->SetPref(PWSprefs::PasswordFont, pswdfont_str);
   }
 }
 
@@ -1735,30 +1753,30 @@ static CString GetToken(CString& str, LPCTSTR c)
 }
 
 void
-DboxMain::ExtractFont(CString& str, LOGFONT *ptreefont)
+DboxMain::ExtractFont(CString& str, LOGFONT *plogfont)
 {
-  ptreefont->lfHeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfWidth = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfEscapement = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfOrientation = _ttol((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfWeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfHeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfWidth = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfEscapement = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfOrientation = _ttol((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfWeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
 
 #pragma warning(push)
 #pragma warning(disable:4244) //conversion from 'int' to 'BYTE', possible loss of data
-  ptreefont->lfItalic = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfUnderline = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfStrikeOut = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfCharSet = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfOutPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfClipPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfQuality = _ttoi((LPCTSTR)GetToken(str, _T(",")));
-  ptreefont->lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfItalic = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfUnderline = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfStrikeOut = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfCharSet = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfOutPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfClipPrecision = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfQuality = _ttoi((LPCTSTR)GetToken(str, _T(",")));
+  plogfont->lfPitchAndFamily = _ttoi((LPCTSTR)GetToken(str, _T(",")));
 #pragma warning(pop)
 
 #if (_MSC_VER >= 1400)
-  _tcscpy_s(ptreefont->lfFaceName, LF_FACESIZE, str);
+  _tcscpy_s(plogfont->lfFaceName, LF_FACESIZE, str);
 #else
-  _tcscpy(ptreefont->lfFaceName, str);
+  _tcscpy(plogfont->lfFaceName, str);
 #endif  
 }
 

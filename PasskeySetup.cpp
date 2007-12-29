@@ -46,8 +46,8 @@ CPasskeySetup::CPasskeySetup(CWnd* pParent)
 BOOL CPasskeySetup::OnInitDialog() 
 {
    CPWDialog::OnInitDialog();
-   SetPasswordFont(GetDlgItem(IDC_PASSKEY));
-   SetPasswordFont(GetDlgItem(IDC_VERIFY));
+   ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+   ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
    ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
    ((CEdit*)GetDlgItem(IDC_VERIFY))->SetPasswordChar(PSSWDCHAR);
 

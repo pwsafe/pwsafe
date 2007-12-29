@@ -135,7 +135,7 @@ static CString NarrowPathText(const CString &text)
 BOOL
 CPasskeyEntry::OnInitDialog(void)
 {
-  SetPasswordFont(GetDlgItem(IDC_PASSKEY));
+  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
   ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
   switch(m_index) {

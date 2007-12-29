@@ -123,6 +123,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("DefaultAutotypeString"), _T(""), true},					// database
 	{_T("AltBrowserCmdLineParms"), _T(""), false},				// application
 	{_T("MainToolBarButtons"), _T(""), false},                  // application
+	{_T("PasswordFont"), _T(""), false},								// application
 };
 
 

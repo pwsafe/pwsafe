@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12
 ==================
+[1855658, 1436850] Implement font for password display correctly.
 [1849830] Help now works properly for Manage->Option, displaying the
 relevant topic.
 [1849818] Browse-to would occasionally falsely report "failed to
@@ -43,7 +44,7 @@ Tom Van Vleck, Morrie Gasser, and Dan Edwards.
 [] New disabled buttons for New Toolbar.
 
 New Features for 3.12
-=======================
+=====================
 [1842449] Implement standard F3 for repeat Find shortcut.
 [1838738] Implement minimum lengths of types of characters in the
 password policy i.e. 3 uppercase + 2 lowercase + 1 digit etc.  Feature
@@ -55,6 +56,8 @@ policy or the database policy.
 may be thought of as "synonyms" of the entry. See online help for
 details.
 [] Graphics added to menus.
+[] Allow user to select a font for Passwords as well as for the Tree/List
+view so that similar characters can be distinguished e.g. 0 & O, 1, I & l.
 
 Bugs fixed in 3.11.1
 ====================

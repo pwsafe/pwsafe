@@ -68,9 +68,9 @@ CPasskeyChangeDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  SetPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
-  SetPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
-  SetPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
+  ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
+  ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
+  ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
   ((CEdit*)GetDlgItem(IDC_CONFIRMNEW))->SetPasswordChar(PSSWDCHAR);
   ((CEdit*)GetDlgItem(IDC_NEWPASSKEY))->SetPasswordChar(PSSWDCHAR);
   ((CEdit*)GetDlgItem(IDC_OLDPASSKEY))->SetPasswordChar(PSSWDCHAR);

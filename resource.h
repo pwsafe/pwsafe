@@ -43,6 +43,7 @@
 #define IDD_SECURECLEAR                 145
 #define IDD_TRYAGAIN                    146
 #define IDD_USERNAMEENTRY               147
+#define IDD_PWFONTDIALOG                148
 #define IDR_POPCOLUMNS                  160
 #define IDR_POPCOPYTOCOMPARISON         161
 #define IDR_POPCOPYTOORIGINAL           162
@@ -121,9 +122,9 @@
 #define IDB_CHANGECOMBO_CLASSIC         298
 #define IDB_CHANGECOMBO_NEW             299
 #define IDB_CHANGECOMBO_NEW_D           300
-#define IDB_CHANGEFONT_CLASSIC          301
-#define IDB_CHANGEFONT_NEW              302
-#define IDB_CHANGEFONT_NEW_D            303
+#define IDB_CHANGEFONTMENU_CLASSIC      301
+#define IDB_CHANGEFONTMENU_NEW          302
+#define IDB_CHANGEFONTMENU_NEW_D        303
 #define IDB_CLEARCLIPBOARD_CLASSIC      304
 #define IDB_CLEARCLIPBOARD_NEW          305
 #define IDB_CLEARCLIPBOARD_NEW_D        306
@@ -225,6 +226,7 @@
 #define IDB_VIEWREPORTS_CLASSIC         402
 #define IDB_VIEWREPORTS_NEW             403
 #define IDB_VIEWREPORTS_NEW_D           404
+#define IDD_SAMPLETEXT                  405
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -270,7 +272,7 @@
 #define IDC_STATIC_LOGO                 1042
 #define IDC_ALWAYSONTOP                 1043
 #define IDC_STATIC_LOGOTEXT             1044
-#define IDC_SAVEIMMEDIATELY             1055
+#define IDC_SAVEIMMEDIATELY             1045
 #define IDC_PWLENSPIN                   1046
 #define IDC_USELOWERCASE                1047
 #define IDC_USEUPPERCASE                1048
@@ -467,14 +469,16 @@
 #define IDC_TARGET                      1280
 #define IDC_SETPWPOLICY                 1281
 #define IDC_CLEARPWPOLICY               1282
+#define IDC_SAMPLETEXT                  1283
+#define IDC_EDIT1                       1285
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        405
+#define _APS_NEXT_RESOURCE_VALUE        406
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1283
-#define _APS_NEXT_SYMED_VALUE           151
+#define _APS_NEXT_CONTROL_VALUE         1286
+#define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

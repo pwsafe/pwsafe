@@ -63,8 +63,8 @@ BOOL CAddDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  SetPasswordFont(GetDlgItem(IDC_PASSWORD));
-  SetPasswordFont(GetDlgItem(IDC_PASSWORD2));
+  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 

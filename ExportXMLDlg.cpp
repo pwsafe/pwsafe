@@ -46,7 +46,7 @@ BOOL CExportXMLDlg::OnInitDialog()
    m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
    m_subgroup_name.Empty();
 
-   SetPasswordFont(GetDlgItem(IDC_EXPORT_XML_PASSWORD));
+   ApplyPasswordFont(GetDlgItem(IDC_EXPORT_XML_PASSWORD));
    ((CEdit*)GetDlgItem(IDC_EXPORT_XML_PASSWORD))->SetPasswordChar(PSSWDCHAR);
    return TRUE;
 }

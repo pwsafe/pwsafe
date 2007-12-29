@@ -16,6 +16,7 @@
 #include <afxpriv.h>
 
 #include <htmlhelp.h>
+#include <afxdlgs.h>
 
 //Don't show warning for automatic inline conversion
 #pragma warning(disable: 4711)

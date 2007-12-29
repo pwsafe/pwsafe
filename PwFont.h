@@ -10,7 +10,10 @@
 // PwFont.h
 //-----------------------------------------------------------------------------
 
-void SetPasswordFont(CWnd* pDlgItem);
+void GetPasswordFont(LOGFONT *plogfont);
+void SetPasswordFont(LOGFONT *plogfont);
+void ApplyPasswordFont(CWnd* pDlgItem);
+void DeletePasswordFont();
 
 //-----------------------------------------------------------------------------
 // Local variables:
