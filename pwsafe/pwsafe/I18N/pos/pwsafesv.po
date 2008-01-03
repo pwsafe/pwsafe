@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: 3.11\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2007-11-27 12:14+0100\n"
+"PO-Revision-Date: 2007-12-31 16:07+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: Swedish <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -116,7 +116,7 @@ msgstr " 'URL'"
 #: ID:334,
 #, c-format
 msgid " Copy # %d"
-msgstr " Kopiera # %d"
+msgstr " Kopia # %d"
 
 #: ID:340,
 #, c-format
@@ -374,7 +374,7 @@ msgstr "&Lägg till post..\tCtrl+L"
 #: Control-ID:1107,#:
 #: Control-ID:1107,
 msgid "&Autotype:"
-msgstr "&Autoskrift:"
+msgstr "Auto&skrift:"
 
 #: MenuEntry
 msgid "&Browse to URL"
@@ -388,14 +388,16 @@ msgstr "&Gå till URL\tCtrl+G"
 msgid "&Change Safe Combination..."
 msgstr "&Ändra Safe-nyckel..."
 
+# Button size to small. Add 2 positions
 #: Control-ID:1118,#:
 #: Control-ID:1118,
+#, fuzzy
 msgid "&Clear"
 msgstr "&Rensa"
 
 #: MenuEntry
 msgid "&Clear Recent History"
-msgstr "&Rensa senaste historik"
+msgstr "&Rensa post-historiken"
 
 #: MenuEntry
 msgid "&Clear Recent Safe List"
@@ -565,7 +567,7 @@ msgstr "&Avsluta"
 
 #: MenuEntry
 msgid "&Recent Entries History"
-msgstr "&Senaste Safer"
+msgstr "&Senast använda poster"
 
 #: ID:327,
 msgid "&Recent Safes"
@@ -602,8 +604,10 @@ msgstr "&Titel:"
 msgid "&Try Again"
 msgstr "&Försök igen"
 
+# The translation needs 1 more space position
 #: Control-ID:65535,#:
 #: Control-ID:65535,
+#, fuzzy
 msgid "&Username:"
 msgstr "&Användare:"
 
@@ -688,19 +692,19 @@ msgstr ""
 
 #: ID:344,
 msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr "<b><fontfärg=\"green\">Detta är den senaste versionen!</font></b>"
+msgstr "<b><font color=\"green\">Detta är den senaste versionen!</font></b>"
 
 #: ID:344,
 msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><fontfärg=\"red\">En senare version finns tillgänglig.</font></b>"
+msgstr "<b><font color=\"red\">En senare version finns tillgänglig.</font></b>"
 
 #: ID:344,
 msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr "<b><fontfärg=\"red\">Kunde inte läsa serverns versionsuppgifter.</font></b>"
+msgstr "<b><font color=\"red\">Kunde inte läsa serverns versionsdata.</font></b>"
 
 #: ID:344,
 msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr "<b><fontfärg=\"red\">Kunde inte kontakta servern.</font></b>"
+msgstr "<b><font color=\"red\">Kunde inte kontakta servern.</font></b>"
 
 #: Control-ID:1154,
 msgid ">"
@@ -830,7 +834,7 @@ msgstr "Växla Browser"
 
 #: Control-ID:1053,
 msgid "Always keep Password Safe on top"
-msgstr "Visal alltid Password Safe överst"
+msgstr "Visa alltid Password Safe överst"
 
 #: ID:314,
 msgid "Always on top"
@@ -905,7 +909,7 @@ msgstr "En åtgärd som inte stöds prövades."
 
 #: Control-ID:1116,
 msgid "Any field last changed on:"
-msgstr "Någon post ändrades den:"
+msgstr "Någon post ändrades:"
 
 #: Control-ID:1187,#:
 #: Control-ID:1216,
@@ -942,7 +946,7 @@ msgstr "Autoskrift\t"
 #: ID:341,#:
 #: Control-ID:65535,
 msgid "Autotype"
-msgstr "Autoskrift"
+msgstr "Autoskrivning"
 
 #: Control-ID:65535,
 msgid "Available Fields:"
@@ -961,8 +965,9 @@ msgid "Backups"
 msgstr "Säkerhetskopior"
 
 #: Control-ID:65535,
+#, fuzzy
 msgid "Base:"
-msgstr "Bas:"
+msgstr "Huvud:"
 
 #: Control-ID:1213,#:
 #: Control-ID:1213,
@@ -1050,7 +1055,7 @@ msgid ""
 "\n"
 "Entries with more than this new maximum already saved will remain unchanged."
 msgstr ""
-"Ändra det maximala antalet sparade lösenord till poster som nu sparar lösenordshistorik upp till det nya antalet om det nu sparas färre.\n"
+"Ändra det maximala antalet sparade lösenord till poster, som nu sparar lösenordshistorik upp till det nya antalet, om det nu sparas färre.\n"
 "\n"
 "Poster med fler redan sparade lösenord än det nya maximala antalet kvarstår oförändrade."
 
@@ -1065,11 +1070,13 @@ msgstr "Klassisk verktygsrad"
 #: Dlg-ID:205,#:
 #: Dlg-ID:210,
 msgid "Clear Clipboard"
-msgstr "&Rensa klippbordet"
+msgstr "Rensa klippbordet"
 
+# Button needs to be a little bigger!
 #: Control-ID:1141,
+#, fuzzy
 msgid "Clear History"
-msgstr "Ta bort historiken"
+msgstr "Rensa historiken"
 
 #: Control-ID:1019,
 msgid "Clear clipboard upon minimize or exit"
@@ -1137,7 +1144,7 @@ msgstr "Jämförd databas:"
 #: Control-ID:65535,#:
 #: Control-ID:65535,
 msgid "Con&firm Password:"
-msgstr "Bekrä&fta lösenord:"
+msgstr "&Bekräfta lösenord:"
 
 #: Control-ID:1221,
 msgid "Configuration Information"
@@ -1145,7 +1152,7 @@ msgstr "Information om konfigureringen"
 
 #: ID:344,
 msgid "Confirm Close Dialog"
-msgstr "Bekräfta stängningsdialogen"
+msgstr "Bekräfta stängningsdialog"
 
 #: Control-ID:1018,
 msgid "Confirm deletion of items"
@@ -1193,7 +1200,7 @@ msgstr "Kopierar användare till klippbordet"
 
 #: Control-ID:1129,
 msgid "Copy"
-msgstr "Kopiera"
+msgstr "Kopia"
 
 #: MenuEntry
 msgid "Copy &Notes to Clipboard"
@@ -1355,7 +1362,7 @@ msgstr "Förvald längd:"
 
 #: Dlg-ID:207,
 msgid "Delete Confirmation"
-msgstr "Bekräfta radering"
+msgstr "Radera bekräftelse"
 
 #: MenuEntry
 msgid "Delete Entry"
@@ -1371,7 +1378,7 @@ msgstr "Ta bort gruppen\tDel"
 
 #: ID:343,
 msgid "Delete a Base Entry Confirmation?"
-msgstr "Bekräfta radering av en basposten?"
+msgstr "Radera en bekräftelse av en baspost?"
 
 #: ID:342,
 msgid "Deselect all entries"
@@ -1518,7 +1525,7 @@ msgstr "För in nyckel:"
 #: Dlg-ID:216,#:
 #: Dlg-ID:217,
 msgid "Enter Safe Combination"
-msgstr "För in Safe-nyckeln"
+msgstr "Safe-nyckel"
 
 #: ID:337,
 msgid "Entries in both databases but with differences:\r\n"
@@ -1933,7 +1940,7 @@ msgstr "ID:32647:VAC +C"
 
 #: ID:320,
 msgid "If enabled, a 'snapshot' will be taken before every save, and named according to the options listed below."
-msgstr "Om vald, kommer en 'snapshot' att tas innan varje filsparande och namnges enligt val nedan."
+msgstr "Om vald, kommer en 'snapshot' att tas innan varje fil sparas. Filen namnges och sparas enligt valen nedan."
 
 #: ID:330,
 msgid "If requested, then a delimiter character must be entered!"
@@ -2058,7 +2065,9 @@ msgstr "Ogiltig inmatning på rad %d. Antalet fält separerade med '%c' förvän
 msgid "KeePass..."
 msgstr "KeePass..."
 
+# Can you move the time window a little to the right?
 #: Control-ID:1143,
+#, fuzzy
 msgid "Keep"
 msgstr "Behåll"
 
@@ -2066,9 +2075,11 @@ msgstr "Behåll"
 msgid "Last Access Time\t"
 msgstr "Senast använd tidpunkt\t"
 
+# : is missing in English text
 #: ID:328,
+#, fuzzy
 msgid "Last Accessed"
-msgstr "Senast använd"
+msgstr "Senast använd:"
 
 #: ID:328,
 msgid "Last Modified"
@@ -2089,7 +2100,7 @@ msgstr "Senast sparad den:"
 #: ID:344,
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-msgstr "Senaste version? Tryck <a href=\"%s\">här</a> för att kontrollera."
+msgstr "Senaste version? Klicka <a href=\"%s\">här</a> för att kontrollera."
 
 #: ID:204,
 #, c-format
@@ -2415,8 +2426,10 @@ msgstr "Öppna"
 msgid "Open Password Database:"
 msgstr "Öppna lösenordsdatabas:"
 
+# Need 5 more positions extra space for the translated text.
 #: Control-ID:1086,#:
 #: Control-ID:1086,
+#, fuzzy
 msgid "Open as read-only"
 msgstr "Öppna bara som läsbar"
 
@@ -2716,7 +2729,7 @@ msgstr "För in nyckeln och verifiera den."
 #: Control-ID:65535,#:
 #: Control-ID:65535,
 msgid "Please enter the safe combination for this password database."
-msgstr "För in Safe-nyckeln till denna lösenordsdatabas."
+msgstr "För in Safe-nyckeln till lösenordsdatabasen."
 
 #: ID:339,
 msgid "Please enter your backup database prefix!"
@@ -2924,7 +2937,7 @@ msgstr "Säkerhet"
 
 #: Control-ID:65535,
 msgid "See LICENSE for open source details."
-msgstr "Titta i LICENSE för öppna kälkodsvillkor."
+msgstr "Se villkoren i LICENSE för öppen kälkod."
 
 #: ID:3867,
 #, c-format
@@ -3374,7 +3387,7 @@ msgstr "För att lägga till en ny post, fyll i fälten nedan. Åtminstone en ti
 
 #: Control-ID:1198,
 msgid "To edit this entry from the current password file, simply make the desired changes in the fields below.  Note that at least a title and a password are required."
-msgstr "För att ändra denna post i den aktuella lösenordsfilen, gör de önskade ändringarna i fälten nedan. Notera att åminstone en titel och ett lösenord krävs."
+msgstr "För att ändra posten i den aktuella lösenordsfilen så gör de önskade ändringarna i fälten nedan. Notera att åminstone en titel och ett lösenord krävs."
 
 #: ID:195,
 msgid "Too many open files."
