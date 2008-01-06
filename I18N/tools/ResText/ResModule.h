@@ -105,6 +105,8 @@ private:
 
 	const WORD*	ParseMenuResource(const WORD * res);
 	const WORD*	CountMemReplaceMenuResource(const WORD * res, size_t * wordcount, WORD * newMenu);
+	const WORD*	ParseMenuExResource(const WORD * res);
+	const WORD*	CountMemReplaceMenuExResource(const WORD * res, size_t * wordcount, WORD * newMenu);
 	const WORD* GetControlInfo(const WORD* p, LPDLGITEMINFO lpDlgItemInfo, BOOL dialogEx, LPBOOL bIsID);
 	const WORD*	GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlgInfo);
 	const WORD*	CountMemReplaceDialogResource(const WORD * res, size_t * wordcount, WORD * newMenu);
