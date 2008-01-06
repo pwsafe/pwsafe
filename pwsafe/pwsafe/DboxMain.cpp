@@ -2191,19 +2191,14 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 	CWnd* pMain = AfxGetMainWnd();
 	CMenu* xmainmenu = pMain->GetMenu();
 
-	// Look for "File" menu.
-	CString cs_text;
-	cs_text.LoadString(IDS_FILEMENU);
-	int pos = app.FindMenuItem(xmainmenu, cs_text);
-	if (pos == -1) // Couldn't find it - wrong language?
-		pos = 0; // best guess...
+	// Look for "File" menu - no longer language dependent
+	int pos = app.FindMenuItem(xmainmenu, ID_FILEMENU);
 
 	CMenu* xfilesubmenu = xmainmenu->GetSubMenu(pos);
-	if (xfilesubmenu != NULL) {	// Look for "Save As"
-		pos = app.FindMenuItem(xfilesubmenu, ID_MENUITEM_SAVEAS);
-		// Disable/enable Export and Import menu items (skip over separator)
-		xfilesubmenu->EnableMenuItem(pos + 2, MF_BYPOSITION | imenuflags);
-		xfilesubmenu->EnableMenuItem(pos + 3, MF_BYPOSITION | imenuflags);
+	if (xfilesubmenu != NULL) {
+		// Disable/enable Export and Import menu items
+		xfilesubmenu->EnableMenuItem(ID_EXPORTMENU, imenuflags);
+		xfilesubmenu->EnableMenuItem(ID_IMPORTMENU, imenuflags);
   }
 
 	if (m_toolbarsSetup == TRUE) {

@@ -116,6 +116,8 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_GROUPENTER,
   ID_MENUITEM_DUPLICATEENTRY,
   ID_CHANGEFONTMENU,
+  ID_MENUITEM_CHANGETREEFONT,
+  ID_MENUITEM_CHANGEPSWDFONT,
   ID_MENUITEM_REPORT_COMPARE,
   ID_MENUITEM_REPORT_IMPORTTEXT,
   ID_MENUITEM_REPORT_IMPORTXML,
@@ -129,7 +131,10 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_ABOUT,
   ID_MENUITEM_TRAYUNLOCK,
   ID_MENUITEM_TRAYLOCK,
-  ID_REPORTSMENU
+  ID_REPORTSMENU,
+  ID_MENUITEM_MRUENTRY,
+  ID_EXPORTMENU,
+  ID_IMPORTMENU
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -172,11 +177,13 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_GROUPENTER_CLASSIC,
   IDB_DUPLICATE_CLASSIC,
   IDB_CHANGEFONTMENU_CLASSIC,
-  IDB_COMPARE_CLASSIC,
-  IDB_IMPORTTEXT_CLASSIC,
-  IDB_IMPORTXML_CLASSIC,
-  IDB_MERGE_CLASSIC,
-  IDB_VALIDATE_CLASSIC,
+  IDB_CHANGEFONTMENU_CLASSIC,
+  IDB_CHANGEPSWDFONTMENU_CLASSIC,
+  IDB_COMPARE_CLASSIC,     // For report of the same name
+  IDB_IMPORTTEXT_CLASSIC,  // For report of the same name
+  IDB_IMPORTXML_CLASSIC,   // For report of the same name
+  IDB_MERGE_CLASSIC,       // For report of the same name
+  IDB_VALIDATE_CLASSIC,    // For report of the same name
   IDB_CHANGECOMBO_CLASSIC,
   IDB_BACKUPSAFE_CLASSIC,
   IDB_RESTORE_CLASSIC,
@@ -185,7 +192,10 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_ABOUT_CLASSIC,
   IDB_TRAYUNLOCK_CLASSIC,
   IDB_TRAYLOCK_CLASSIC,
-  IDB_VIEWREPORTS_CLASSIC
+  IDB_VIEWREPORTS_CLASSIC,
+  IDB_PWSDB,
+  IDB_EXPORT_CLASSIC,
+  IDB_IMPORT_CLASSIC
 };
 
 const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
@@ -261,11 +271,13 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_GROUPENTER_NEW,
   IDB_DUPLICATE_NEW,
   IDB_CHANGEFONTMENU_NEW,
-  IDB_COMPARE_NEW,
-  IDB_IMPORTTEXT_NEW,
-  IDB_IMPORTXML_NEW,
-  IDB_MERGE_NEW,
-  IDB_VALIDATE_NEW,
+  IDB_CHANGEFONTMENU_NEW,
+  IDB_CHANGEPSWDFONTMENU_NEW,
+  IDB_COMPARE_NEW,         // For report of the same name
+  IDB_IMPORTTEXT_NEW,      // For report of the same name
+  IDB_IMPORTXML_NEW,       // For report of the same name
+  IDB_MERGE_NEW,           // For report of the same name
+  IDB_VALIDATE_NEW,        // For report of the same name
   IDB_CHANGECOMBO_NEW,
   IDB_BACKUPSAFE_NEW,
   IDB_RESTORE_NEW,
@@ -274,7 +286,10 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_ABOUT_NEW,
   IDB_TRAYUNLOCK_NEW,
   IDB_TRAYLOCK_NEW,
-  IDB_VIEWREPORTS_NEW
+  IDB_VIEWREPORTS_NEW,
+  IDB_PWSDB,
+  IDB_EXPORT_NEW,
+  IDB_IMPORT_NEW
 };
 
 // Additional bitmaps not on ToolBar
@@ -284,11 +299,13 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_GROUPENTER_NEW_D,
   IDB_DUPLICATE_NEW_D,
   IDB_CHANGEFONTMENU_NEW_D,
-  IDB_COMPARE_NEW_D,
-  IDB_IMPORTTEXT_NEW_D,
-  IDB_IMPORTXML_NEW_D,
-  IDB_MERGE_NEW_D,
-  IDB_VALIDATE_NEW_D,
+  IDB_CHANGEFONTMENU_NEW_D,
+  IDB_CHANGEPSWDFONTMENU_NEW_D,
+  IDB_COMPARE_NEW_D,       // For report of the same name
+  IDB_IMPORTTEXT_NEW_D,    // For report of the same name
+  IDB_IMPORTXML_NEW_D,     // For report of the same name
+  IDB_MERGE_NEW_D,         // For report of the same name
+  IDB_VALIDATE_NEW_D,      // For report of the same name
   IDB_CHANGECOMBO_NEW_D,
   IDB_BACKUPSAFE_NEW_D,
   IDB_RESTORE_NEW_D,
@@ -297,7 +314,10 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_ABOUT_NEW_D,
   IDB_TRAYUNLOCK_NEW_D,
   IDB_TRAYLOCK_NEW_D,
-  IDB_VIEWREPORTS_NEW_D
+  IDB_VIEWREPORTS_NEW_D,
+  IDB_PWSDB,
+  IDB_EXPORT_NEW_D,
+  IDB_IMPORT_NEW_D
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)
@@ -713,9 +733,10 @@ CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
   CBitmap bmNormal, bmDisabled;
 
   for (int i = 0; i < numBMs; i++) {
-    bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pBM_IDs[i]), RT_BITMAP),
+    BOOL brc = bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pBM_IDs[i]), RT_BITMAP),
                                 MAKEINTRESOURCE(pBM_IDs[i]), IMAGE_BITMAP, 0, 0,
                                 (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+    ASSERT(brc);
     SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
     m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
     bmNormal.Detach();

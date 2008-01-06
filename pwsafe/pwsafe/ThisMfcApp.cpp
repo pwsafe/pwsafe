@@ -559,8 +559,7 @@ ThisMfcApp::InitInstance()
   CMenu new_popupmenu;
 
   // Look for "File" menu.
-  CString cs_text(MAKEINTRESOURCE(IDS_FILEMENU));
-  int pos = FindMenuItem(m_mainmenu, cs_text);
+  int pos = FindMenuItem(m_mainmenu, ID_FILEMENU);
   if (pos == -1) // E.g., in non-English versions
     pos = 0; // best guess...
 
@@ -615,7 +614,7 @@ ThisMfcApp::InitInstance()
   }
 #ifdef DEMO
   // add specific menu item for demo version
-  int hpos = FindMenuItem(m_mainmenu, CString(MAKEINTRESOURCE(IDS_HELPMENU)));
+  int hpos = FindMenuItem(m_mainmenu, ID_HELPMENU);
   if (hpos == -1)
     hpos = 4; // best guess...
 
@@ -715,8 +714,7 @@ ThisMfcApp::ClearMRU()
 	CMenu* xmainmenu = pMain->GetMenu();
 
 	// Look for "File" menu.
-	CString cs_text(MAKEINTRESOURCE(IDS_FILEMENU));
-	int pos = FindMenuItem(xmainmenu, cs_text);
+	int pos = FindMenuItem(xmainmenu, ID_FILEMENU);
 	if (pos == -1) // E.g., in non-English versions
 		pos = 0; // best guess...
 
@@ -886,17 +884,23 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 // FindMenuItem() will find a menu item ID from the specified
 // popup menu and returns its position (0-based) in the specified
 // popup menu. It returns -1 if no such menu item string is found.
-int ThisMfcApp::FindMenuItem(CMenu* Menu, int MenuID)
+int ThisMfcApp::FindMenuItem(CMenu* Menu, UINT MenuID)
 {
   ASSERT(Menu);
   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
 
   int count = Menu->GetMenuItemCount();
-  int id;
+
+  // Can't use GetMenuItemID as it does not understand that with the MENUEX
+  // format, Popup menus can have IDs
+  MENUITEMINFO info;
+  memset(&info, 0x00, sizeof(MENUITEMINFO));
+  info.cbSize = sizeof(MENUITEMINFO);
+  info.fMask = MIIM_ID;                // only want the wID of the menu item
 
   for (int i = 0; i < count; i++) {
-    id = Menu->GetMenuItemID(i);  // id = 0 for Separator; 1 for popup
-    if ( id > 1 && id == MenuID)
+    Menu->GetMenuItemInfo(MenuID, &info);
+    if (info.wID >= 1 && info.wID == MenuID)
       return i;
   }
 
