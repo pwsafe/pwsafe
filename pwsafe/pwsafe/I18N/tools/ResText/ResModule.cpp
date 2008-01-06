@@ -373,7 +373,8 @@ BOOL CResModule::ExtractMenu(UINT nID)
 	HRSRC		hrsrc = FindResource(m_hResDll, MAKEINTRESOURCE(nID), RT_MENU);
 	HGLOBAL		hglMenuTemplate;
 	WORD		version, offset;
-	const WORD*	p;
+	DWORD dwHelpId;
+	const WORD *p, *p0;
 
 	if (!hrsrc)
 		MYERROR;
@@ -388,11 +389,19 @@ BOOL CResModule::ExtractMenu(UINT nID)
 	if (p == NULL)
 		MYERROR;
 
+	// Standard MENU resource
 	//struct MenuHeader { 
 	//	WORD   wVersion;           // Currently zero 
 	//	WORD   cbHeaderSize;       // Also zero 
 	//}; 
 
+	// MENUEX resource
+	//struct MenuExHeader {
+	//    WORD wVersion;           // One
+	//    WORD wOffset;
+	//    DWORD dwHelpId;
+	//};
+	p0 = p;
 	version = GET_WORD(p);
 
 	p++;
@@ -405,6 +414,15 @@ BOOL CResModule::ExtractMenu(UINT nID)
 			p += offset;
 			p++;
 			if (!ParseMenuResource(p))
+				goto DONE_ERROR;
+		}
+		break;
+	case 1:
+		{
+			offset = GET_WORD(p);
+			p++;
+			dwHelpId = GET_DWORD(p);
+			if (!ParseMenuExResource(p0 + offset))
 				goto DONE_ERROR;
 		}
 		break;
@@ -428,6 +446,8 @@ BOOL CResModule::ReplaceMenu(UINT nID, WORD wLanguage)
 	HGLOBAL		hglMenuTemplate;
 	WORD		version, offset;
 	LPWSTR		p;
+	WORD *p0;
+	DWORD dwHelpId;
 
 	if (!hrsrc)
 		MYERROR;	//just the language wasn't found
@@ -445,7 +465,15 @@ BOOL CResModule::ReplaceMenu(UINT nID, WORD wLanguage)
 	//struct MenuHeader { 
 	//	WORD   wVersion;           // Currently zero 
 	//	WORD   cbHeaderSize;       // Also zero 
-	//}; 
+	//};
+
+	// MENUEX resource
+	//struct MenuExHeader {
+	//    WORD wVersion;           // One
+	//    WORD wOffset;
+	//    DWORD dwHelpId;
+	//};
+	p0 = (WORD *)p;
 	version = GET_WORD(p);
 
 	p++;
@@ -483,6 +511,38 @@ BOOL CResModule::ReplaceMenu(UINT nID, WORD wLanguage)
 			delete [] newMenu;
 		}
 		break;
+	case 1:
+		{
+			offset = GET_WORD(p);
+			p++;
+			dwHelpId = GET_DWORD(p);
+			size_t nMem = 0;
+			if (!CountMemReplaceMenuExResource((WORD *)(p0 + offset), &nMem, NULL))
+				goto DONE_ERROR;
+			WORD * newMenu = new WORD[nMem + (nMem % 2) + 4];
+			ZeroMemory(newMenu, (nMem + (nMem % 2) + 4) * 2);
+			CopyMemory(newMenu, p0, 2 * sizeof(WORD) + sizeof(DWORD));
+			size_t index = 4;		// MenuExHeader has 2 x WORD + 1 x DWORD
+			if (!CountMemReplaceMenuExResource((WORD *)(p0 + offset), &index, newMenu))
+			{
+				delete [] newMenu;
+				goto DONE_ERROR;
+			} 
+
+			if (!UpdateResource(m_hUpdateRes, RT_MENU, MAKEINTRESOURCE(nID), (m_wTargetLang ? m_wTargetLang : wLanguage), newMenu, (DWORD)(nMem + (nMem % 2) + 4) * 2))
+			{
+				delete [] newMenu;
+				goto DONE_ERROR;
+			}
+
+			if ((m_wTargetLang)&&(!UpdateResource(m_hUpdateRes, RT_MENU, MAKEINTRESOURCE(nID), wLanguage, NULL, 0)))
+			{
+				delete [] newMenu;
+				goto DONE_ERROR;
+			} 
+			delete [] newMenu;
+		}
+		break;
 	default:
 		goto DONE_ERROR;
 	}
@@ -502,6 +562,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 	WORD		flags;
 	WORD		id = 0;
 	LPCWSTR		str;
+	WORD *p0;
 
 	//struct PopupMenuItem { 
 	//	WORD   fItemFlags; 
@@ -515,6 +576,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 
 	do
 	{
+		p0 = (WORD *)res;
 		flags = GET_WORD(res);
 		res++;
 		if (!(flags & MF_POPUP))
@@ -629,6 +691,173 @@ const WORD* CResModule::CountMemReplaceMenuResource(const WORD * res, size_t * w
 			res += wcslen((LPCWSTR)res) + 1;
 		}
 	} while (!(flags & MF_END));
+	return res;
+}
+
+const WORD* CResModule::ParseMenuExResource(const WORD * res)
+{
+	DWORD dwType, dwState, menuId;
+	WORD bResInfo;
+	LPCWSTR		str;
+	WORD *p0;
+
+	//struct MenuExItem {
+	//    DWORD dwType;
+	//    DWORD dwState;
+	//    DWORD menuId;
+	//    WORD bResInfo;
+	//    WCHAR szText[];
+	//    DWORD dwHelpId; - Popup menu only
+	//};
+
+	do
+	{
+		p0 = (WORD *)res;
+		dwType = GET_DWORD(res);
+		res += 2;
+		dwState = GET_DWORD(res);
+		res += 2;
+		menuId = GET_DWORD(res);
+		res += 2;
+		bResInfo = GET_WORD(res);
+		res++;
+
+		str = (LPCWSTR)res;
+		size_t l = wcslen(str)+1;
+		res += l;
+		// Align to DWORD boundary
+		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+
+		if (dwType & MFT_SEPARATOR)
+			continue;
+
+		if (bResInfo & 0x01)
+		{
+			// Popup menu - note this can also have a non-zero ID
+			if (menuId == 0)
+				menuId = (WORD)-1;
+			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
+			ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+			_tcscpy(pBuf, str);
+			CUtils::StringExtend(pBuf);
+
+			std::wstring wstr = std::wstring(pBuf);
+			RESOURCEENTRY entry = m_StringEntries[wstr];
+			// Popup has a DWORD help entry on a DWORD boundary - skip over it
+			res += 2;
+
+			entry.resourceIDs.insert(menuId);
+			TCHAR szTempBuf[1024];
+			_stprintf(szTempBuf, _T("#: MenuExPopupEntry; ID:%d"), menuId);
+			MENUENTRY menu_entry;
+			menu_entry.wID = (WORD)menuId;
+			menu_entry.reference = szTempBuf;
+			menu_entry.msgstr = wstr;
+			m_StringEntries[wstr] = entry;
+			m_MenuEntries[(WORD)menuId] = menu_entry;
+			delete [] pBuf;
+
+			if ((res = ParseMenuExResource(res)) == 0)
+				return NULL;
+		} else if (menuId != 0)
+		{
+			TCHAR * pBuf = new TCHAR[MAX_STRING_LENGTH];
+			ZeroMemory(pBuf, MAX_STRING_LENGTH * sizeof(TCHAR));
+			_tcscpy(pBuf, str);
+			CUtils::StringExtend(pBuf);
+
+			std::wstring wstr = std::wstring(pBuf);
+			RESOURCEENTRY entry = m_StringEntries[wstr];
+			entry.resourceIDs.insert(menuId);
+
+			TCHAR szTempBuf[1024];
+			_stprintf(szTempBuf, _T("#: MenuExEntry; ID:%d"), menuId);
+			MENUENTRY menu_entry;
+			menu_entry.wID = (WORD)menuId;
+			menu_entry.reference = szTempBuf;
+			menu_entry.msgstr = wstr;
+			m_StringEntries[wstr] = entry;
+			m_MenuEntries[(WORD)menuId] = menu_entry;
+			delete [] pBuf;
+		}
+	} while (!(bResInfo & 0x80));
+	return res;
+}
+
+const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t * wordcount, WORD * newMenu)
+{
+	DWORD dwType, dwState, menuId;
+	WORD bResInfo;
+	WORD *p0;
+
+	//struct MenuExItem {
+	//    DWORD dwType;
+	//    DWORD dwState;
+	//    DWORD menuId;
+	//    WORD bResInfo;
+	//    WCHAR szText[];
+	//    DWORD dwHelpId; - Popup menu only
+	//};
+
+	do
+	{
+		p0 = (WORD *)res;
+		dwType = GET_DWORD(res);
+		res += 2;
+		dwState = GET_DWORD(res);
+		res += 2;
+		menuId = GET_DWORD(res);
+		res += 2;
+		bResInfo = GET_WORD(res);
+		res++;
+
+		if (newMenu != NULL) {
+			CopyMemory(&newMenu[*wordcount], p0, 7 * sizeof(WORD));
+		}
+		(*wordcount) += 7;
+
+		if (dwType & MFT_SEPARATOR) {
+			// Align to DWORD
+			(*wordcount)++;
+			res++;
+			continue;
+		}
+
+		if (bResInfo & 0x01)
+		{
+			ReplaceStr((LPCWSTR)res, newMenu, wordcount, &m_bTranslatedMenuStrings, &m_bDefaultMenuStrings);
+			res += wcslen((LPCWSTR)res) + 1;
+			// Align to DWORD
+			res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+			if ((*wordcount) & 0x01)
+				(*wordcount)++;
+
+			if (newMenu != NULL)
+				CopyMemory(&newMenu[*wordcount], res, sizeof(DWORD));  // Copy Help ID
+
+			res += 2;
+			(*wordcount) += 2;
+
+			if ((res = CountMemReplaceMenuExResource(res, wordcount, newMenu)) == 0)
+				return NULL;
+		}
+		else if (menuId != 0)
+		{
+			ReplaceStr((LPCWSTR)res, newMenu, wordcount, &m_bTranslatedMenuStrings, &m_bDefaultMenuStrings);
+			res += wcslen((LPCWSTR)res) + 1;
+		}
+		else
+		{
+			if (newMenu)
+				wcscpy((wchar_t *)&newMenu[(*wordcount)], (LPCWSTR)res);
+			(*wordcount) += wcslen((LPCWSTR)res) + 1;
+			res += wcslen((LPCWSTR)res) + 1;
+		}
+		// Align to DWORD
+		res += ((((WORD)res + 3) & ~3) - (WORD)res)/sizeof(WORD);
+		if ((*wordcount) & 0x01)
+			(*wordcount)++;
+	} while (!(bResInfo & 0x80));
 	return res;
 }
 
