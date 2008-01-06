@@ -1067,7 +1067,7 @@ DboxMain::OnCopyNotes()
   clipboard_data = notes;
   if (!url.IsEmpty()) {
     if (ci->GetURL().Find(_T("mailto:")) == -1)
-    cs_text.LoadString(IDS_COPYURL);
+      cs_text.LoadString(IDS_COPYURL);
     else
       cs_text.LoadString(IDS_COPYEMAIL);
     clipboard_data += CMyString(cs_text);
