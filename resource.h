@@ -78,6 +78,7 @@
 #define IDB_CLOGO_SMALL                 221
 #define IDB_CTEXT                       222
 #define IDB_PSLOGO                      223
+#define IDB_PWSDB                       224
 #define IDB_ALIAS                       230
 #define IDB_ABASE                       231
 #define IDB_ABASE_EXPIRED               232
@@ -226,7 +227,15 @@
 #define IDB_VIEWREPORTS_CLASSIC         402
 #define IDB_VIEWREPORTS_NEW             403
 #define IDB_VIEWREPORTS_NEW_D           404
-#define IDD_SAMPLETEXT                  405
+#define IDB_CHANGEPSWDFONTMENU_CLASSIC  405
+#define IDB_CHANGEPSWDFONTMENU_NEW      406
+#define IDB_CHANGEPSWDFONTMENU_NEW_D    407
+#define IDB_EXPORT_CLASSIC              408
+#define IDB_EXPORT_NEW                  409
+#define IDB_EXPORT_NEW_D                410
+#define IDB_IMPORT_CLASSIC              411
+#define IDB_IMPORT_NEW                  412
+#define IDB_IMPORT_NEW_D                413
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -475,7 +484,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        406
+#define _APS_NEXT_RESOURCE_VALUE        414
 #define _APS_NEXT_COMMAND_VALUE         30000
 #define _APS_NEXT_CONTROL_VALUE         1284
 #define _APS_NEXT_SYMED_VALUE           149

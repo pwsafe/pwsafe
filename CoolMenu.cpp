@@ -452,6 +452,10 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
           if (iCtrlID >= ID_MENUITEM_TRAYVIEWEDIT1 &&
               iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
             iCtrlID = ID_MENUITEM_EDIT;
+          else
+          if (iCtrlID >= ID_FILE_MRU_ENTRY1 &&
+              iCtrlID <= ID_FILE_MRU_ENTRYMAX)
+            iCtrlID = ID_MENUITEM_MRUENTRY;
 
           pmd->iButton = GetButtonIndex(iCtrlID);
           miinfo.dwItemData = (ULONG_PTR)pmd; //   set in menu item data

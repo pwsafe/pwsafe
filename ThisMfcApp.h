@@ -64,7 +64,7 @@ WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
   int SetClosedTrayIcon(int &icon, bool bSet = true);
   bool WasHotKeyPressed() {return m_HotKeyPressed;}
   void SetHotKeyPressed(bool state) {m_HotKeyPressed = state;}
-  int FindMenuItem(CMenu* Menu, int MenuID);
+  int FindMenuItem(CMenu* Menu, UINT MenuID);
   int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
   void GetApplicationVersionData();
   CString GetFileVersionString() const {return m_csFileVersionString;}

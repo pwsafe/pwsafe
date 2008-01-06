@@ -52,10 +52,6 @@
 #define IDS_TERMINATE                   5217
 #define IDS_RECENT                      5219
 #define IDS_RECENTSAFES                 5220
-#define IDS_FILEMENU                    5221
-#define IDS_EDITMENU                    5222
-#define IDS_VIEWMENU                    5223
-#define IDS_MANAGEMENU                  5224
 #define IDS_OPTIONS                     5225
 #define IDS_ENCRYPTIONFAILED            5226
 #define IDS_GROUPTITLE                  5227
