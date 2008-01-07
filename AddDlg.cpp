@@ -251,9 +251,10 @@ CAddDlg::OnOK()
     return;
   }
 
-  if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                             false, CItemData::Alias,
-                             m_base_uuid, m_ibasedata)) {
+  bool brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
+                             false, CItemData::Alias, m_base_uuid, m_ibasedata);
+
+  if (!brc && m_ibasedata != 0) {
     // Already issued error message to the user
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
