@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -122,8 +122,10 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("ColumnWidths"), _T(""), false},							// application
   {_T("DefaultAutotypeString"), _T(""), true},					// database
 	{_T("AltBrowserCmdLineParms"), _T(""), false},				// application
-	{_T("MainToolBarButtons"), _T(""), false},                  // application
-	{_T("PasswordFont"), _T(""), false},								// application
+	{_T("MainToolBarButtons"), _T(""), false},                // application
+	{_T("PasswordFont"), _T(""), false},		                  // application
+	{_T("TreeListSampleText"), _T("AaBbYyZz 0O1IlL"), false}, // application
+	{_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), false},     // application
 };
 
 

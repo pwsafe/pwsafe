@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -1688,6 +1688,7 @@ BOOL DboxMain::IsWorkstationLocked() const
 void
 DboxMain::OnChangeTreeFont() 
 {
+  PWSprefs *prefs = PWSprefs::GetInstance();
   CFont *pOldFontTree;
   pOldFontTree = m_ctlItemTree.GetFont();
 
@@ -1697,7 +1698,11 @@ DboxMain::OnChangeTreeFont()
 
   // present Tree/List view font and possibly change it
   // Allow user to apply changes to font
-  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
+  CString cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
+
+  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL);
+
+  fontdlg.m_sampletext = cs_TreeListSampleText;
 
   if(fontdlg.DoModal() == IDOK) {
     CString treefont_str;
@@ -1709,6 +1714,7 @@ DboxMain::OnChangeTreeFont()
 
     m_pFontTree->DeleteObject();
     m_pFontTree->CreateFontIndirect(&lf);
+
     // transfer the fonts to the tree and list windows
     m_ctlItemTree.SetFont(m_pFontTree);
     m_ctlItemList.SetFont(m_pFontTree);
@@ -1719,20 +1725,28 @@ DboxMain::OnChangeTreeFont()
     // Reset column widths
     AutoResizeColumns();
 
-    PWSprefs::GetInstance()->SetPref(PWSprefs::TreeFont, treefont_str);
+    // save user's choice of Tree/List font
+    prefs->SetPref(PWSprefs::TreeFont, treefont_str);
+    // save user's sample text
+    prefs->SetPref(PWSprefs::TreeListSampleText, fontdlg.m_sampletext);
   }
 }
 
 void
 DboxMain::OnChangePswdFont() 
 {
+  PWSprefs *prefs = PWSprefs::GetInstance();
   LOGFONT lf;
   // Get Password font in case the user wants to change this.
   GetPasswordFont(&lf);
 
   // present Password font and possibly change it
   // Allow user to apply changes to font
+  CString cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
+
   CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT);
+
+  fontdlg.m_sampletext = cs_PswdSampleText;
 
   if(fontdlg.DoModal() == IDOK) {
     CString pswdfont_str;
@@ -1744,7 +1758,10 @@ DboxMain::OnChangePswdFont()
 
     // transfer the new font to the passwords
     SetPasswordFont(&lf);
-    PWSprefs::GetInstance()->SetPref(PWSprefs::PasswordFont, pswdfont_str);
+    // save user's choice of password font
+    prefs->SetPref(PWSprefs::PasswordFont, pswdfont_str);
+    // save user's sample text
+    prefs->SetPref(PWSprefs::PswdSampleText, fontdlg.m_sampletext);
   }
 }
 

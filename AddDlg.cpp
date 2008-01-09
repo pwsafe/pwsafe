@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -251,11 +251,14 @@ CAddDlg::OnOK()
     return;
   }
 
-  bool brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                             false, CItemData::Alias, m_base_uuid, m_ibasedata);
+  bool brc, b_msg_issued;
+  brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
+                              false, CItemData::Alias,
+                              m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
-    // Already issued error message to the user
+    if (!b_msg_issued)
+      AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
     UpdateData(FALSE);
     ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetFocus();
     return;
