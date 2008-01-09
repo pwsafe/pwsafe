@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -1515,18 +1515,26 @@ bool
 DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
                            const CMyString &user, const CMyString &password,
                            const bool bIsEdit, const CItemData::EntryType &InputType, 
-                           uuid_array_t &base_uuid, int &ibasedata)
+                           uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued)
 {
+  // bmsgissued - whether this routine issued a message
+  b_msg_issued = false;
+
   // Called from Add and Edit entry + Add and Edit shortcut dialogs
   // Returns false if not a special alias or shortcut password
   GetBaseEntryPL pl;
   pl.InputType = InputType;
 
   bool brc = m_core.GetBaseEntry(password, pl);
+
+  // Copy data back before possibly returning
   ibasedata = pl.ibasedata;
   memcpy(base_uuid, pl.base_uuid, sizeof(uuid_array_t));
   if (!brc)    
     return false;
+
+  // if we ever return 'false', this routine will have issued a message to the user
+  b_msg_issued = true;
 
   if (bIsEdit && 
       (pl.csPwdGroup == group && pl.csPwdTitle == title && pl.csPwdUser == user)) {
@@ -1534,9 +1542,9 @@ DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
     // Can't happen during Add as already checked entry does not exist so if accepted the
     // password would be treated as an unusal "normal" password
     if (InputType == CItemData::Alias)
-      AfxMessageBox(IDS_ALIASCANTREFERTOITSELF);
+      AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
     else
-      AfxMessageBox(IDS_SHTCTCANTREFERTOITSELF);
+      AfxMessageBox(IDS_SHTCTCANTREFERTOITSELF, MB_OK);
     return false;
   }
 
@@ -1554,7 +1562,6 @@ DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
         AfxMessageBox(IDS_MULTIPLETARGETSFOUND, MB_OK);
       else
         AfxMessageBox(IDS_TARGETNOTFOUND, MB_OK);
-
       return false;
     }
 

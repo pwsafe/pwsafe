@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2007 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -203,7 +203,7 @@ public:
   bool CheckNewPassword(const CMyString &group, const CMyString &title,
                         const CMyString &user, const CMyString &password,
                         const bool bIsEdit, const CItemData::EntryType &InputType, 
-                        uuid_array_t &base_uuid, int &ibasedata);
+                        uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
   void GetAliasBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
   {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
   void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
