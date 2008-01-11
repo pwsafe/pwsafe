@@ -588,68 +588,11 @@ DboxMain::InitPasswordSafe()
   CRect rect;
   prefs->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
-  if (rect.top == -1 || rect.bottom == -1 || rect.left == -1 || rect.right == -1) {
+  if (rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) {
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
   } else {
-    // Sanity checks on stored rect - displays change...
-    const int screenWidth = GetSystemMetrics(SM_CXSCREEN);
-    const int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    // MS adds 4 pixels around the max screen size so if, maximized, then
-    // top/left = (-4,-4) instead of (0,0) and bottom/right = (W+4, H+4)
-    // If height/width too big, make them max. allowed values instead.
-    // If off screen - bring it back
-
-    // Too tall
-    if (rect.Height() > screenHeight) {
-      rect.top = -4;
-      rect.bottom = screenHeight + 4;
-    }
-
-    // Too wide
-    if (rect.Width() > screenWidth) {
-      rect.left = -4;
-      rect.right = screenWidth + 4;
-    }
-
-    // Too far off to the right
-    if (rect.left > screenWidth) {
-      int iw = rect.Width();
-      rect.right = screenWidth;
-      rect.left = rect.right - iw - 4;
-      if (rect.left < -4) {
-        rect.left = -4;
-        rect.right = rect.left + iw;
-      }      
-    }
-
-    // Too far off to the left
-    if (rect.right < -4) {
-      int iw = rect.Width();
-      rect.left = -4;
-      rect.right = rect.left + iw;
-    }
-
-    // Too far down
-    if (rect.top > screenHeight) {
-      int ih = rect.Height();
-      rect.bottom = screenHeight;
-      rect.top = rect.bottom - ih - 4;
-      if (rect.top < -4) {
-        rect.top = -4;
-        rect.bottom = rect.top + ih;
-      }      
-    }
-
-    // Too far up
-    if (rect.bottom < -4) {
-      int ih = rect.Height();
-      rect.top = -4;
-      rect.bottom = rect.top + ih;
-    }
-
-    // Now move it and size it
-    ::MoveWindow(this->m_hWnd, rect.left, rect.top, rect.Width(), rect.Height(), TRUE);
+    PlaceWindow(&rect, SW_HIDE);
   }
 #endif
 
@@ -661,7 +604,6 @@ DboxMain::InitPasswordSafe()
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
     SetColumnWidths(cs_ListColumnsWidths);
-
 }
 
 LRESULT
@@ -2469,4 +2411,94 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
   }
 #endif
   return iEnable;
+}
+
+void DboxMain::PlaceWindow(CRect *prect, UINT showCmd)
+{
+  WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
+  HRGN hrgnWork = GetWorkAreaRegion();
+
+  GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
+  wp.flags = 0;
+  wp.showCmd = showCmd;
+  wp.rcNormalPosition = *prect;
+
+  if (!RectInRegion(hrgnWork, &wp.rcNormalPosition)) {
+    if (GetSystemMetrics(SM_CMONITORS) > 1)
+      GetMonitorRect(NULL, &wp.rcNormalPosition, FALSE);
+    else
+      ClipRectToMonitor(NULL, &wp.rcNormalPosition, FALSE);
+  }
+
+  SetWindowPlacement(&wp);
+  DeleteObject(hrgnWork);
+}
+
+HRGN DboxMain::GetWorkAreaRegion()
+{
+  HRGN hrgn;
+  hrgn = CreateRectRgn(0, 0, 0, 0);
+
+  HDC hdc = ::GetDC(NULL);
+  EnumDisplayMonitors(hdc, NULL, EnumScreens, (LPARAM)&hrgn);
+  ::ReleaseDC(NULL, hdc);
+
+  return hrgn;
+}
+
+void DboxMain::GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork)
+{
+  MONITORINFO mi;
+
+  mi.cbSize = sizeof(mi);
+  GetMonitorInfo(MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST), &mi);
+
+  if (fWork)
+    *prc = mi.rcWork;
+  else
+    *prc = mi.rcMonitor;
+}
+
+void DboxMain::ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork)
+{
+  RECT rc;
+  int w = prc->right  - prc->left;
+  int h = prc->bottom - prc->top;
+
+  if (hwnd != NULL) {
+    GetMonitorRect(hwnd, &rc, fWork);
+  } else {
+    MONITORINFO mi;
+
+    mi.cbSize = sizeof(mi);
+    GetMonitorInfo(MonitorFromRect(prc, MONITOR_DEFAULTTONEAREST), &mi);
+
+    if (fWork)
+      rc = mi.rcWork;
+    else
+      rc = mi.rcMonitor;
+  }
+
+  prc->left = max(rc.left, min(rc.right-w, prc->left));
+  prc->top = max(rc.top, min(rc.bottom-h, prc->top));
+  prc->right = prc->left + w;
+  prc->bottom = prc->top + h;
+}
+
+BOOL CALLBACK DboxMain::EnumScreens(HMONITOR hMonitor, HDC /* hdc */, 
+                                    LPRECT /* prc */, LPARAM lParam)
+{
+  MONITORINFO mi;
+  HRGN hrgn2;
+
+  HRGN *phrgn = (HRGN *)lParam;
+
+  mi.cbSize = sizeof(mi);
+  GetMonitorInfo(hMonitor, &mi);
+
+  hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
+  CombineRgn(*phrgn, *phrgn, hrgn2, RGN_OR);
+  DeleteObject(hrgn2);
+
+  return TRUE;
 }
