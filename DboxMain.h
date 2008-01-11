@@ -366,6 +366,12 @@ protected:
                             CString &cs_drive);
   void SetFindToolBar(bool bShow);
 
+  void PlaceWindow(CRect *prect, UINT showCmd);
+  HRGN GetWorkAreaRegion();
+  void GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork);
+  void ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork);
+  static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC hdc, LPRECT prc, LPARAM lParam);
+
 #if !defined(POCKET_PC)
 	afx_msg void OnTrayLockUnLock();
   afx_msg void OnTrayClearRecentEntries();
