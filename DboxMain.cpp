@@ -1080,6 +1080,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
           m_bAdvanced = dbox_pkentry->m_bAdvanced;
           m_bsFields = dbox_pkentry->m_bsFields;
           m_subgroup_set = dbox_pkentry->m_subgroup_set;
+          m_treatwhitespaceasempty = dbox_pkentry->m_treatwhitespaceasempty;
           if (m_subgroup_set == BST_CHECKED) {
             m_subgroup_name = dbox_pkentry->m_subgroup_name;
             m_subgroup_object = dbox_pkentry->m_subgroup_object;

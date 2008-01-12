@@ -34,6 +34,7 @@ public:
 	enum { IDD = IDD_ADVANCED };
 	CString m_subgroup_name;
 	int m_subgroup_set, m_subgroup_object, m_subgroup_function, m_subgroup_case;
+  int m_treatwhitespaceasempty;
 
 	//}}AFX_DATA
 

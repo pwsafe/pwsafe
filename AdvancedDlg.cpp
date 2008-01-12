@@ -41,7 +41,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
     m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
     m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
     m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
-    m_ToolTipCtrl(NULL)
+    m_ToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
 {
   //{{AFX_DATA_INIT(CAdvancedDlg)
   //}}AFX_DATA_INIT
@@ -300,6 +300,13 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
   m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
 
+  if (m_iIndex != ADV_COMPARE) {
+    GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
+  } else {
+    ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->SetCheck(BST_CHECKED);
+  }
+
 	// Tooltips
 	EnableToolTips();
 
@@ -446,6 +453,9 @@ void CAdvancedDlg::OnOK()
 
   if (m_subgroup_name == _T("*"))
     m_subgroup_name.Empty();
+
+  if (m_iIndex == ADV_COMPARE)
+    m_treatwhitespaceasempty = ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->GetCheck();
 
   CPWDialog::OnOK();
 }

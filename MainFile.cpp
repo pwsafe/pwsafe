@@ -1837,7 +1837,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 
         CItemData compItem = othercore.GetEntry(foundPos);
         if (m_bsFields.test(CItemData::NOTES) &&
-            currentItem.GetNotes() != compItem.GetNotes())
+            FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes()))
           bsConflicts.flip(CItemData::NOTES);
         if (m_bsFields.test(CItemData::PASSWORD) &&
             currentItem.GetPassword() != compItem.GetPassword())
@@ -1858,10 +1858,10 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
             currentItem.GetRMTime() != compItem.GetRMTime())
           bsConflicts.flip(CItemData::RMTIME);
         if (m_bsFields.test(CItemData::URL) &&
-            currentItem.GetURL() != compItem.GetURL())
+          FieldsNotEqual(currentItem.GetURL(), compItem.GetURL()))
           bsConflicts.flip(CItemData::URL);
         if (m_bsFields.test(CItemData::AUTOTYPE) &&
-            currentItem.GetAutoType() != compItem.GetAutoType())
+          FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType()))
           bsConflicts.flip(CItemData::AUTOTYPE);
         if (m_bsFields.test(CItemData::PWHIST) &&
             currentItem.GetPWHistory() != compItem.GetPWHistory())

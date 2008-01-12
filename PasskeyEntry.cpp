@@ -64,7 +64,8 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent,
      m_bForceReadOnly(bForceReadOnly),
      m_adv_type(adv_type), m_bAdvanced(false),
      m_subgroup_set(BST_UNCHECKED),
-     m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
+     m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0),
+     m_treatwhitespaceasempty(BST_CHECKED)
 {
   //{{AFX_DATA_INIT(CPasskeyEntry)
   //}}AFX_DATA_INIT
@@ -360,6 +361,7 @@ CPasskeyEntry::OnExitAdvanced()
     m_bAdvanced = true;
     m_bsFields = Adv.m_bsFields;
     m_subgroup_set = Adv.m_subgroup_set;
+    m_treatwhitespaceasempty = Adv.m_treatwhitespaceasempty;
     if (m_subgroup_set == BST_CHECKED) {
       m_subgroup_name = Adv.m_subgroup_name;
       m_subgroup_object = Adv.m_subgroup_object;
