@@ -11,6 +11,8 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.12
 ==================
 [1866515] Again able to add entries to database in V3.12 early beta.
+[1865009] Give user advanced option to treat purely whitespace fields 
+as empty during compare.
 [1855658, 1436850] Implement font for password display correctly.
 [1849830] Help now works properly for Manage->Option, displaying the
 relevant topic.

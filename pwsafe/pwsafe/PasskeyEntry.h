@@ -46,6 +46,7 @@ public:
   CItemData::FieldBits m_bsFields;
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
+  int m_treatwhitespaceasempty;
 
 private:
 // Dialog Data

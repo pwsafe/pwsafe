@@ -211,6 +211,7 @@ public:
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
   void RefreshImages();
+  bool FieldsNotEqual(CMyString a, CMyString b);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -278,6 +279,7 @@ protected:
   bool m_bAdvanced;
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
+  int m_treatwhitespaceasempty;
 
   HTREEITEM m_LastFoundItem;
   bool m_bBoldItem;
@@ -563,6 +565,15 @@ private:
   // Images in List View
   bool m_bImageInLV;
 };
+
+inline bool DboxMain::FieldsNotEqual(CMyString a, CMyString b)
+{
+  if (m_treatwhitespaceasempty == TRUE) {
+    a.EmptyIfOnlyWhiteSpace();
+    b.EmptyIfOnlyWhiteSpace();
+  }
+  return a != b;
+}
 
 // Following used to keep track of display vs data
 // stored as opaque data in CItemData.{Get,Set}DisplayInfo()

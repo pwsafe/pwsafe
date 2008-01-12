@@ -1246,6 +1246,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\changepswdfont_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\changepswdfont_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\changepswdfont_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\clearclipboard_classic.bmp"
 				>
 			</File>
@@ -1398,6 +1410,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\export_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\export_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\export_new_disabled.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\exporttext_classic.bmp"
 				>
 			</File>
@@ -1499,6 +1523,18 @@
 			</File>
 			<File
 				RelativePath=".\res\toolbar\help_new_disabled.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\import_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\import_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\import_new_disabled.bmp"
 				>
 			</File>
 			<File
@@ -1679,6 +1715,10 @@
 			</File>
 			<File
 				RelativePath=".\res\psafetxt.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\pws_db.bmp"
 				>
 			</File>
 			<File
