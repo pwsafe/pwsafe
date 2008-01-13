@@ -482,6 +482,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       }
 		}
 		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
+    cur_entry->group.EmptyIfOnlyWhiteSpace();
 		newgroup += cur_entry->group;
 		if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != 
         m_xmlcore->GetEntryEndIter()) {
@@ -499,14 +500,18 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       cur_entry->title = Unique_Title;
     }
 		tempitem.SetGroup(newgroup);
+    cur_entry->title.EmptyIfOnlyWhiteSpace();
 		if (cur_entry->title.GetLength() != 0)
 			tempitem.SetTitle(cur_entry->title, m_delimiter);
+    cur_entry->username.EmptyIfOnlyWhiteSpace();
 		if (cur_entry->username.GetLength() != 0)
 			tempitem.SetUser(cur_entry->username);
 		if (cur_entry->password.GetLength() != 0)
 			tempitem.SetPassword(cur_entry->password);
+    cur_entry->url.EmptyIfOnlyWhiteSpace();
 		if (cur_entry->url.GetLength() != 0)
 			tempitem.SetURL(cur_entry->url);
+    cur_entry->autotype.EmptyIfOnlyWhiteSpace();
 		if (cur_entry->autotype.GetLength() != 0)
 			tempitem.SetAutoType(cur_entry->autotype);
 		if (cur_entry->ctime.GetLength() != 0)
@@ -550,6 +555,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       ASSERT(0);
 		}
 		m_strImportErrors += buffer;
+    cur_entry->notes.EmptyIfOnlyWhiteSpace();
 		if (cur_entry->notes.GetLength() != 0)
 			tempitem.SetNotes(cur_entry->notes, m_delimiter);
 
