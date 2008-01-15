@@ -345,6 +345,8 @@ void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
   DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
   DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
+  if (m_iIndex == ADV_COMPARE)
+    DDX_Check(pDX, IDC_TREATWHITESPACEASEMPTY, m_treatwhitespaceasempty);
   //}}AFX_DATA_MAP
 }
 
@@ -453,9 +455,6 @@ void CAdvancedDlg::OnOK()
 
   if (m_subgroup_name == _T("*"))
     m_subgroup_name.Empty();
-
-  if (m_iIndex == ADV_COMPARE)
-    m_treatwhitespaceasempty = ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->GetCheck();
 
   CPWDialog::OnOK();
 }
