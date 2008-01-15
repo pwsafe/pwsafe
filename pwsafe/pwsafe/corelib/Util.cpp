@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file Util.cpp
 //-----------------------------------------------------------------------------
 
@@ -65,8 +65,8 @@ trashMemory(CString &cs_buffer)
 }
 
 /**
-   Burn some stack memory
-   @param len amount of stack to burn in bytes
+Burn some stack memory
+@param len amount of stack to burn in bytes
 */
 void burnStack(unsigned long len)
 {
@@ -88,7 +88,7 @@ void ConvertString(const CMyString &text,
 #else
   txt = new unsigned char[2*txtlen]; // safe upper limit
   int len = WideCharToMultiByte(CP_ACP, 0, txtstr, txtlen,
-                                LPSTR(txt), 2*txtlen, NULL, NULL);
+    LPSTR(txt), 2*txtlen, NULL, NULL);
   ASSERT(len != 0);
   txtlen = len;
   txt[len] = '\0';
@@ -108,7 +108,7 @@ GenRandhash(const CMyString &a_passkey,
   ConvertString(a_passkey, pstr, pkeyLen);
 
   /*
-    tempSalt <- H(a_randstuff + a_passkey)
+  tempSalt <- H(a_randstuff + a_passkey)
   */
   SHA1 keyHash;
   keyHash.Update(a_randstuff, StuffSize);
@@ -123,7 +123,7 @@ GenRandhash(const CMyString &a_passkey,
   keyHash.Final(tempSalt);
 
   /*
-    tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
+  tempbuf <- a_randstuff encrypted 1000 times using tempSalt as key?
   */
 
   BlowFish Cipher(tempSalt, sizeof(tempSalt));
@@ -135,8 +135,8 @@ GenRandhash(const CMyString &a_passkey,
     Cipher.Encrypt(tempbuf, tempbuf);
 
   /*
-    hmm - seems we're not done with this context
-    we throw the tempbuf into the hasher, and extract a_randhash
+  hmm - seems we're not done with this context
+  we throw the tempbuf into the hasher, and extract a_randhash
   */
   keyHash.Update(tempbuf, StuffSize);
   keyHash.Final(a_randhash);
@@ -183,45 +183,45 @@ _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned char type,
   numWritten = fwrite(curblock, 1, BS, fp);
 
   if (length > 0 ||
-      (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
-    unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
-    if (BlockLength == 0 && BS == 8)
-      BlockLength = BS;
+    (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
+      unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
+      if (BlockLength == 0 && BS == 8)
+        BlockLength = BS;
 
-    // Now, encrypt and write the (rest of the) buffer
-    for (unsigned int x=0; x<BlockLength; x+=BS) {
-      if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
-        //This is for an uneven last block
-        PWSrand::GetInstance()->GetRandomData(curblock, BS);
-        memcpy(curblock, buffer+x, length % BS);
-      } else
-        memcpy(curblock, buffer+x, BS);
-      xormem(curblock, cbcbuffer, BS);
-      Algorithm->Encrypt(curblock, curblock);
-      memcpy(cbcbuffer, curblock, BS);
-      numWritten += fwrite(curblock, 1, BS, fp);
-    }
+      // Now, encrypt and write the (rest of the) buffer
+      for (unsigned int x=0; x<BlockLength; x+=BS) {
+        if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
+          //This is for an uneven last block
+          PWSrand::GetInstance()->GetRandomData(curblock, BS);
+          memcpy(curblock, buffer+x, length % BS);
+        } else
+          memcpy(curblock, buffer+x, BS);
+        xormem(curblock, cbcbuffer, BS);
+        Algorithm->Encrypt(curblock, curblock);
+        memcpy(cbcbuffer, curblock, BS);
+        numWritten += fwrite(curblock, 1, BS, fp);
+      }
   }
   trashMemory(curblock, BS);
   return numWritten;
 }
 
 /*
- * Reads an encrypted record into buffer.
- * The first block of the record contains the encrypted record length
- * We have the usual ugly problem of fixed buffer lengths in C/C++.
- * allocate the buffer here, to ensure that it's long enough.
- * *** THE CALLER MUST delete[] IT AFTER USE *** UGH++
- *
- * (unless buffer_len is zero)
- *
- * Note that the buffer is a byte array, and buffer_len is number of
- * bytes. This means that any data can be passed, and we don't
- * care at this level if strings are char or wchar_t.
- *
- * If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
- * and -1 is returned if it matches. (used in V3)
- */
+* Reads an encrypted record into buffer.
+* The first block of the record contains the encrypted record length
+* We have the usual ugly problem of fixed buffer lengths in C/C++.
+* allocate the buffer here, to ensure that it's long enough.
+* *** THE CALLER MUST delete[] IT AFTER USE *** UGH++
+*
+* (unless buffer_len is zero)
+*
+* Note that the buffer is a byte array, and buffer_len is number of
+* bytes. This means that any data can be passed, and we don't
+* care at this level if strings are char or wchar_t.
+*
+* If TERMINAL_BLOCK is non-NULL, the first block read is tested against it,
+* and -1 is returned if it matches. (used in V3)
+*/
 size_t
 _readcbc(FILE *fp,
          unsigned char* &buffer, unsigned int &buffer_len, unsigned char &type,
@@ -230,7 +230,7 @@ _readcbc(FILE *fp,
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   size_t numRead = 0;
-  
+
   // some trickery to avoid new/delete
   unsigned char block1[16];
   unsigned char block2[16];
@@ -247,8 +247,8 @@ _readcbc(FILE *fp,
   }
 
   if (TERMINAL_BLOCK != NULL &&
-      memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
-      return static_cast<size_t>(-1);
+    memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
+    return static_cast<size_t>(-1);
 
   unsigned char *lcpy = block2;
   memcpy(lcpy, lengthblock, BS);
@@ -294,15 +294,15 @@ _readcbc(FILE *fp,
   trashMemory(lengthblock, BS);
 
   if (length > 0 ||
-      (BS == 8 && length == 0)) { // pre-3 pain
-    unsigned char *tempcbc = block3;
-    numRead += fread(b, 1, BlockLength, fp);
-    for (unsigned int x=0; x<BlockLength; x+=BS) {
-      memcpy(tempcbc, b + x, BS);
-      Algorithm->Decrypt(b + x, b + x);
-      xormem(b + x, cbcbuffer, BS);
-      memcpy(cbcbuffer, tempcbc, BS);
-    }
+    (BS == 8 && length == 0)) { // pre-3 pain
+      unsigned char *tempcbc = block3;
+      numRead += fread(b, 1, BlockLength, fp);
+      for (unsigned int x=0; x<BlockLength; x+=BS) {
+        memcpy(tempcbc, b + x, BS);
+        Algorithm->Decrypt(b + x, b + x);
+        xormem(b + x, cbcbuffer, BS);
+        memcpy(cbcbuffer, tempcbc, BS);
+      }
   }
 
   if (buffer_len == 0) {
@@ -330,8 +330,8 @@ size_t PWSUtil::strLength(const LPCTSTR str)
 }
 
 /**
- * Returns the current length of a file.
- */
+* Returns the current length of a file.
+*/
 long PWSUtil::fileLength(FILE *fp)
 {
   long	pos;
@@ -363,10 +363,10 @@ PWSUtil::VerifyImportDateTimeString(const CString &time_str, time_t &t)
 
   // Validate time_str
   if (time_str.Mid(4,1) != '/' ||
-      time_str.Mid(7,1) != '/' ||
-      time_str.Mid(10,1) != ' ' ||
-      time_str.Mid(13,1) != ':' ||
-      time_str.Mid(16,1) != ':')
+    time_str.Mid(7,1) != '/' ||
+    time_str.Mid(10,1) != ' ' ||
+    time_str.Mid(13,1) != ':' ||
+    time_str.Mid(16,1) != ':')
     return false;
 
   for (int i = 0;  i < ndigits; i++)
@@ -384,10 +384,10 @@ PWSUtil::VerifyImportDateTimeString(const CString &time_str, time_t &t)
 
 #if _MSC_VER >= 1400
   nscanned = _stscanf_s(xtime_str, _T("%4d/%2d/%2d#%2d:%2d:%2d"),
-                      &yyyy, &mon, &dd, &hh, &min, &ss);
+    &yyyy, &mon, &dd, &hh, &min, &ss);
 #else
   nscanned = _stscanf(xtime_str, _T("%4d/%2d/%2d#%2d:%2d:%2d"),
-                    &yyyy, &mon, &dd, &hh, &min, &ss);
+    &yyyy, &mon, &dd, &hh, &min, &ss);
 #endif
 
   if (nscanned != 6)
@@ -411,8 +411,8 @@ PWSUtil::VerifyImportDateTimeString(const CString &time_str, time_t &t)
   }
 
   if ((hh < 0 || hh > 23) ||
-      (min < 0 || min > 59) ||
-      (ss < 0 || ss > 59))
+    (min < 0 || min > 59) ||
+    (ss < 0 || ss > 59))
     return false;
 
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
@@ -447,7 +447,7 @@ PWSUtil::VerifyASCDateTimeString(const CString &time_str, time_t &t)
 
   // Validate time_str
   if (time_str.Mid(13,1) != ':' ||
-      time_str.Mid(16,1) != ':')
+    time_str.Mid(16,1) != ':')
     return false;
 
   for (int i = 0; i < ndigits; i++)
@@ -465,10 +465,10 @@ PWSUtil::VerifyASCDateTimeString(const CString &time_str, time_t &t)
 
 #if _MSC_VER >= 1400
   nscanned = _stscanf_s(xtime_str, _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
-                      cdayofweek, sizeof(cdayofweek), cmonth, sizeof(cmonth), &dd, &hh, &min, &ss, &yyyy);
+    cdayofweek, sizeof(cdayofweek), cmonth, sizeof(cmonth), &dd, &hh, &min, &ss, &yyyy);
 #else
   nscanned = _stscanf(xtime_str, _T("%3c#%3c#%2d#%2d:%2d:%2d#%4d"),
-                    cdayofweek, cmonth, &dd, &hh, &min, &ss, &yyyy);
+    cdayofweek, cmonth, &dd, &hh, &min, &ss, &yyyy);
 #endif
 
   if (nscanned != 7)
@@ -498,8 +498,8 @@ PWSUtil::VerifyASCDateTimeString(const CString &time_str, time_t &t)
   }
 
   if ((hh < 0 || hh > 23) ||
-      (min < 0 || min > 59) ||
-      (ss < 0 || ss > 59))
+    (min < 0 || min > 59) ||
+    (ss < 0 || ss > 59))
     return false;
 
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
@@ -536,10 +536,10 @@ PWSUtil::VerifyXMLDateTimeString(const CString &time_str, time_t &t)
 
   // Validate time_str
   if (time_str.Mid(4,1) != '-' ||
-      time_str.Mid(7,1) != '-' ||
-      time_str.Mid(10,1) != 'T' ||
-      time_str.Mid(13,1) != ':' ||
-      time_str.Mid(16,1) != ':')
+    time_str.Mid(7,1) != '-' ||
+    time_str.Mid(10,1) != 'T' ||
+    time_str.Mid(13,1) != ':' ||
+    time_str.Mid(16,1) != ':')
     return false;
 
   for (int i = 0;  i < ndigits; i++)
@@ -561,10 +561,10 @@ PWSUtil::VerifyXMLDateTimeString(const CString &time_str, time_t &t)
 
 #if _MSC_VER >= 1400
   nscanned = _stscanf_s(xtime_str, _T("%4d#%2d#%2d#%2d:%2d:%2d"),
-                      &yyyy, &mon, &dd, &hh, &min, &ss);
+    &yyyy, &mon, &dd, &hh, &min, &ss);
 #else
   nscanned = _stscanf(xtime_str, _T("%4d#%2d#%2d#%2d:%2d:%2d"),
-                    &yyyy, &mon, &dd, &hh, &min, &ss);
+    &yyyy, &mon, &dd, &hh, &min, &ss);
 #endif
 
   if (nscanned != 6)
@@ -588,8 +588,8 @@ PWSUtil::VerifyXMLDateTimeString(const CString &time_str, time_t &t)
   }
 
   if ((hh < 0 || hh > 23) ||
-      (min < 0 || min > 59) ||
-      (ss < 0 || ss > 59))
+    (min < 0 || min > 59) ||
+    (ss < 0 || ss > 59))
     return false;
 
   const CTime ct(yyyy, mon, dd, hh, min, ss, -1);
@@ -607,91 +607,91 @@ PWSUtil::ConvertToDateTimeString(const time_t &t, const int result_format)
 {
   CMyString ret;
   if (t != 0) {
-		TCHAR time_str[80], datetime_str[80];
+    TCHAR time_str[80], datetime_str[80];
 #if _MSC_VER >= 1400
-		struct tm st;
-		errno_t err;
-    	err = localtime_s(&st, &t);  // secure version
-    	ASSERT(err == 0);
-    	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
-      		_stprintf_s(datetime_str, 20, _T("%04d/%02d/%02d %02d:%02d:%02d"),
-            		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
-                		st.tm_min, st.tm_sec);
-    	else if ((result_format & TMC_XML) == TMC_XML)
-      		_stprintf_s(datetime_str, 20, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
-            		    st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
-                		st.tm_min, st.tm_sec);
-        else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
-            SYSTEMTIME systime;
-            systime.wYear = (WORD)st.tm_year+1900;
-            systime.wMonth = (WORD)st.tm_mon+1;
-            systime.wDay = (WORD)st.tm_mday;
-            systime.wDayOfWeek = (WORD) st.tm_wday;
-            systime.wHour = (WORD)st.tm_hour;
-            systime.wMinute = (WORD)st.tm_min;
-            systime.wSecond = (WORD)st.tm_sec;
-            systime.wMilliseconds = (WORD)0;
-            TCHAR szBuf[80];
-            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
-            GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
-            szBuf[0] = _T(' ');  // Put a blank between date and time
-            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
-            GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
-            _tcscat_s(datetime_str, 80, time_str);
-        } else {
-      		err = _tasctime_s(datetime_str, 32, &st);  // secure version
-    		ASSERT(err == 0);
-      	}
-    	ret = datetime_str;
+    struct tm st;
+    errno_t err;
+    err = localtime_s(&st, &t);  // secure version
+    ASSERT(err == 0);
+    if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
+      _stprintf_s(datetime_str, 20, _T("%04d/%02d/%02d %02d:%02d:%02d"),
+      st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
+      st.tm_min, st.tm_sec);
+    else if ((result_format & TMC_XML) == TMC_XML)
+      _stprintf_s(datetime_str, 20, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
+      st.tm_year+1900, st.tm_mon+1, st.tm_mday, st.tm_hour,
+      st.tm_min, st.tm_sec);
+    else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
+      SYSTEMTIME systime;
+      systime.wYear = (WORD)st.tm_year+1900;
+      systime.wMonth = (WORD)st.tm_mon+1;
+      systime.wDay = (WORD)st.tm_mday;
+      systime.wDayOfWeek = (WORD) st.tm_wday;
+      systime.wHour = (WORD)st.tm_hour;
+      systime.wMinute = (WORD)st.tm_min;
+      systime.wSecond = (WORD)st.tm_sec;
+      systime.wMilliseconds = (WORD)0;
+      TCHAR szBuf[80];
+      VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
+      GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
+      szBuf[0] = _T(' ');  // Put a blank between date and time
+      VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
+      GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
+      _tcscat_s(datetime_str, 80, time_str);
+    } else {
+      err = _tasctime_s(datetime_str, 32, &st);  // secure version
+      ASSERT(err == 0);
+    }
+    ret = datetime_str;
 #else
-    	TCHAR *t_str_ptr;
-		struct tm *st;
-    	st = localtime(&t);
-        ASSERT(st != NULL); // null means invalid time
-    	if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT) {
-      		_stprintf(datetime_str, _T("%04d/%02d/%02d %02d:%02d:%02d"),
-            	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
-            	  st->tm_hour, st->tm_min, st->tm_sec);
-      		t_str_ptr = datetime_str;
-    	} else if ((result_format & TMC_XML) == TMC_XML) {
-      		_stprintf(time_str, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
-            	  st->tm_year+1900, st->tm_mon+1, st->tm_mday,
-            	  st->tm_hour, st->tm_min, st->tm_sec);
-      		t_str_ptr = datetime_str;
-    	} else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
-            SYSTEMTIME systime;
-			systime.wYear = (WORD)st->tm_year+1900;
-            systime.wMonth = (WORD)st->tm_mon+1;
-            systime.wDay = (WORD)st->tm_mday;
-            systime.wDayOfWeek = (WORD) st->tm_wday;
-            systime.wHour = (WORD)st->tm_hour;
-            systime.wMinute = (WORD)st->tm_min;
-            systime.wSecond = (WORD)st->tm_sec;
-            systime.wMilliseconds = (WORD)0;
-            TCHAR szBuf[80];
-            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
-            GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
-            szBuf[0] = _T(' ');  // Put a blank between date and time
-            VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
-            GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
-            _tcscat(datetime_str, time_str);
-      		t_str_ptr = datetime_str;
-    	} else
-      		t_str_ptr = _tasctime(st);
+    TCHAR *t_str_ptr;
+    struct tm *st;
+    st = localtime(&t);
+    ASSERT(st != NULL); // null means invalid time
+    if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT) {
+      _stprintf(datetime_str, _T("%04d/%02d/%02d %02d:%02d:%02d"),
+        st->tm_year+1900, st->tm_mon+1, st->tm_mday,
+        st->tm_hour, st->tm_min, st->tm_sec);
+      t_str_ptr = datetime_str;
+    } else if ((result_format & TMC_XML) == TMC_XML) {
+      _stprintf(time_str, _T("%04d-%02d-%02dT%02d:%02d:%02d"),
+        st->tm_year+1900, st->tm_mon+1, st->tm_mday,
+        st->tm_hour, st->tm_min, st->tm_sec);
+      t_str_ptr = datetime_str;
+    } else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
+      SYSTEMTIME systime;
+      systime.wYear = (WORD)st->tm_year+1900;
+      systime.wMonth = (WORD)st->tm_mon+1;
+      systime.wDay = (WORD)st->tm_mday;
+      systime.wDayOfWeek = (WORD) st->tm_wday;
+      systime.wHour = (WORD)st->tm_hour;
+      systime.wMinute = (WORD)st->tm_min;
+      systime.wSecond = (WORD)st->tm_sec;
+      systime.wMilliseconds = (WORD)0;
+      TCHAR szBuf[80];
+      VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
+      GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
+      szBuf[0] = _T(' ');  // Put a blank between date and time
+      VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
+      GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
+      _tcscat(datetime_str, time_str);
+      t_str_ptr = datetime_str;
+    } else
+      t_str_ptr = _tasctime(st);
 
-    	ret = t_str_ptr;
+    ret = t_str_ptr;
 #endif
   } else {
-	  switch (result_format) {
-		case TMC_ASC_UNKNOWN:
-			ret = UNKNOWN_ASC_TIME_STR;
-			break;
-		case TMC_XML:
-			ret = UNKNOWN_XML_TIME_STR;
-			break;
-		default:
-			ret = _T("");
-	  }
+    switch (result_format) {
+    case TMC_ASC_UNKNOWN:
+      ret = UNKNOWN_ASC_TIME_STR;
+      break;
+    case TMC_XML:
+      ret = UNKNOWN_XML_TIME_STR;
+      break;
+    default:
+      ret = _T("");
+    }
   }
   // remove the trailing EOL char.
   ret.TrimRight();
@@ -702,263 +702,263 @@ int
 PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHistory, 
                                      CString &strErrors)
 {
-	// Format is (! == mandatory blank, unless at the end of the record):
-	//    sxx00
-	// or
-	//    sxxnn!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!.........
-	// Note:
-	//    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
+  // Format is (! == mandatory blank, unless at the end of the record):
+  //    sxx00
+  // or
+  //    sxxnn!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!yyyy/mm/dd!hh:mm:ss!llll!pppp...pppp!.........
+  // Note:
+  //    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
 
-	CMyString tmp, pwh;
-	CString buffer;
-	int ipwlen, s = -1, m = -1, n = -1;
-	int rc = PWH_OK;
-	time_t t;
+  CMyString tmp, pwh;
+  CString buffer;
+  int ipwlen, s = -1, m = -1, n = -1;
+  int rc = PWH_OK;
+  time_t t;
 
-	newPWHistory = _T("");
-	strErrors = _T("");
+  newPWHistory = _T("");
+  strErrors = _T("");
 
-	pwh = CMyString(PWHistory);
-	int len = pwh.GetLength();
-	int pwleft = len;
+  pwh = CMyString(PWHistory);
+  int len = pwh.GetLength();
+  int pwleft = len;
 
-	if (pwleft == 0)
-		return PWH_OK;
+  if (pwleft == 0)
+    return PWH_OK;
 
-	if (pwleft < 5) {
-		rc = PWH_INVALID_HDR;
-		goto exit;
-	}
+  if (pwleft < 5) {
+    rc = PWH_INVALID_HDR;
+    goto exit;
+  }
 
-	TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
+  TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
 
 #if _MSC_VER >= 1400
-	int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
+  int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #else
-	int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
+  int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
 #endif
-	if (iread != 3) {
-		rc = PWH_INVALID_HDR;
-		goto relbuf;
-	}
+  if (iread != 3) {
+    rc = PWH_INVALID_HDR;
+    goto relbuf;
+  }
 
-	if (s != 0 && s != 1) {
-		rc = PWH_INVALID_STATUS;
-		goto relbuf;
-	}
+  if (s != 0 && s != 1) {
+    rc = PWH_INVALID_STATUS;
+    goto relbuf;
+  }
 
-	if (n > m) {
-		rc = PWH_INVALID_NUM;
-		goto relbuf;
-	}
+  if (n > m) {
+    rc = PWH_INVALID_NUM;
+    goto relbuf;
+  }
 
-	lpszPWHistory += 5;
-	pwleft -= 5;
+  lpszPWHistory += 5;
+  pwleft -= 5;
 
-	if (pwleft == 0 && s == 0 && m == 0 && n == 0) {
-		rc = PWH_IGNORE;
-		goto relbuf;
-	}
+  if (pwleft == 0 && s == 0 && m == 0 && n == 0) {
+    rc = PWH_IGNORE;
+    goto relbuf;
+  }
 
-	buffer.Format(_T("%01d%02x%02x"), s, m, n);
-	newPWHistory = CMyString(buffer);
+  buffer.Format(_T("%01d%02x%02x"), s, m, n);
+  newPWHistory = CMyString(buffer);
 
-	for (int i = 0; i < n; i++) {
-		if (pwleft < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
-			rc = PWH_TOO_SHORT;
-			goto relbuf;
-		}
+  for (int i = 0; i < n; i++) {
+    if (pwleft < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
+      rc = PWH_TOO_SHORT;
+      goto relbuf;
+    }
 
-		if (lpszPWHistory[0] != _T(' ')) {
-			rc = PWH_INVALID_CHARACTER;
-			goto relbuf;
-		}
+    if (lpszPWHistory[0] != _T(' ')) {
+      rc = PWH_INVALID_CHARACTER;
+      goto relbuf;
+    }
 
-		lpszPWHistory += 1;
-		pwleft -= 1;
+    lpszPWHistory += 1;
+    pwleft -= 1;
 
     tmp = CMyString(lpszPWHistory, 19);
 
-		if (tmp.Left(10) == _T("1970-01-01"))
-			t = 0;
-		else {
-			if (!VerifyImportDateTimeString(tmp, t)) {
-				rc = PWH_INVALID_DATETIME;
-				goto relbuf;
-			}
-		}
+    if (tmp.Left(10) == _T("1970-01-01"))
+      t = 0;
+    else {
+      if (!VerifyImportDateTimeString(tmp, t)) {
+        rc = PWH_INVALID_DATETIME;
+        goto relbuf;
+      }
+    }
 
-		lpszPWHistory += 19;
-		pwleft -= 19;
+    lpszPWHistory += 19;
+    pwleft -= 19;
 
-		if (lpszPWHistory[0] != _T(' ')) {
-			rc = PWH_INVALID_CHARACTER;
-			goto relbuf;
-		}
+    if (lpszPWHistory[0] != _T(' ')) {
+      rc = PWH_INVALID_CHARACTER;
+      goto relbuf;
+    }
 
-		lpszPWHistory += 1;
-		pwleft -= 1;
+    lpszPWHistory += 1;
+    pwleft -= 1;
 
 #if _MSC_VER >= 1400
-		iread = _stscanf_s(lpszPWHistory, _T("%04x"), &ipwlen);
+    iread = _stscanf_s(lpszPWHistory, _T("%04x"), &ipwlen);
 #else
-		iread = _stscanf(lpszPWHistory, _T("%04x"), &ipwlen);
+    iread = _stscanf(lpszPWHistory, _T("%04x"), &ipwlen);
 #endif
-		if (iread != 1) {
-			rc = PWH_INVALID_PSWD_LENGTH;
-			goto relbuf;
-		}
+    if (iread != 1) {
+      rc = PWH_INVALID_PSWD_LENGTH;
+      goto relbuf;
+    }
 
-		lpszPWHistory += 4;
-		pwleft -= 4;
+    lpszPWHistory += 4;
+    pwleft -= 4;
 
-		if (lpszPWHistory[0] != _T(' ')) {
-			rc = PWH_INVALID_CHARACTER;
-			goto relbuf;
-		}
+    if (lpszPWHistory[0] != _T(' ')) {
+      rc = PWH_INVALID_CHARACTER;
+      goto relbuf;
+    }
 
-		lpszPWHistory += 1;
-		pwleft -= 1;
+    lpszPWHistory += 1;
+    pwleft -= 1;
 
-		if (pwleft < ipwlen) {
-			rc = PWH_INVALID_PSWD_LENGTH;
-			goto relbuf;
-		}
+    if (pwleft < ipwlen) {
+      rc = PWH_INVALID_PSWD_LENGTH;
+      goto relbuf;
+    }
 
     tmp = CMyString(lpszPWHistory, ipwlen);
-		buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
-		newPWHistory += CMyString(buffer);
-		buffer.Empty();
-		lpszPWHistory += ipwlen;
-		pwleft -= ipwlen;
-	}
+    buffer.Format(_T("%08x%04x%s"), (long) t, ipwlen, tmp);
+    newPWHistory += CMyString(buffer);
+    buffer.Empty();
+    lpszPWHistory += ipwlen;
+    pwleft -= ipwlen;
+  }
 
-	if (pwleft > 0)
-		rc = PWH_TOO_LONG;
+  if (pwleft > 0)
+    rc = PWH_TOO_LONG;
 
-	relbuf: pwh.ReleaseBuffer();
+relbuf: pwh.ReleaseBuffer();
 
-	exit: buffer.Format(IDSC_PWHERROR, len - pwleft + 1);
-	CString temp;
-	switch (rc) {
-		case PWH_OK:
-		case PWH_IGNORE:
-			temp.Empty();
-			buffer.Empty();
-			break;
-		case PWH_INVALID_HDR:
-			temp.Format(IDSC_INVALIDHEADER, PWHistory);
-			break;
-		case PWH_INVALID_STATUS:
-			temp.Format(IDSC_INVALIDPWHSTATUS, s);
-			break;
-		case PWH_INVALID_NUM:
-			temp.Format(IDSC_INVALIDNUMOLDPW, n, m);
-			break;
-		case PWH_INVALID_DATETIME:
-			temp.LoadString(IDSC_INVALIDDATETIME);
-			break;
-		case PWH_INVALID_PSWD_LENGTH:
-			temp.LoadString(IDSC_INVALIDPWLENGTH);
-			break;
-		case PWH_TOO_SHORT:
-			temp.LoadString(IDSC_FIELDTOOSHORT);
-			break;
-		case PWH_TOO_LONG:
-			temp.LoadString(IDSC_FIELDTOOLONG);
-			break;
-		case PWH_INVALID_CHARACTER:
-			temp.LoadString(IDSC_INVALIDSEPARATER);
-			break;
-		default:
-			ASSERT(0);
-	}
-	strErrors = buffer + temp;
-	if (rc != PWH_OK)
-		newPWHistory = _T("");
+exit: buffer.Format(IDSC_PWHERROR, len - pwleft + 1);
+  CString temp;
+  switch (rc) {
+    case PWH_OK:
+    case PWH_IGNORE:
+      temp.Empty();
+      buffer.Empty();
+      break;
+    case PWH_INVALID_HDR:
+      temp.Format(IDSC_INVALIDHEADER, PWHistory);
+      break;
+    case PWH_INVALID_STATUS:
+      temp.Format(IDSC_INVALIDPWHSTATUS, s);
+      break;
+    case PWH_INVALID_NUM:
+      temp.Format(IDSC_INVALIDNUMOLDPW, n, m);
+      break;
+    case PWH_INVALID_DATETIME:
+      temp.LoadString(IDSC_INVALIDDATETIME);
+      break;
+    case PWH_INVALID_PSWD_LENGTH:
+      temp.LoadString(IDSC_INVALIDPWLENGTH);
+      break;
+    case PWH_TOO_SHORT:
+      temp.LoadString(IDSC_FIELDTOOSHORT);
+      break;
+    case PWH_TOO_LONG:
+      temp.LoadString(IDSC_FIELDTOOLONG);
+      break;
+    case PWH_INVALID_CHARACTER:
+      temp.LoadString(IDSC_INVALIDSEPARATER);
+      break;
+    default:
+      ASSERT(0);
+  }
+  strErrors = buffer + temp;
+  if (rc != PWH_OK)
+    newPWHistory = _T("");
 
-	return rc;
+  return rc;
 }
 
 CMyString
 PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &newExtn)
 {
-	TCHAR path_buffer[_MAX_PATH];
-	TCHAR drive[_MAX_DRIVE];
-	TCHAR dir[_MAX_DIR];
-	TCHAR fname[_MAX_FNAME];
-	TCHAR ext[_MAX_EXT];
+  TCHAR path_buffer[_MAX_PATH];
+  TCHAR drive[_MAX_DRIVE];
+  TCHAR dir[_MAX_DIR];
+  TCHAR fname[_MAX_FNAME];
+  TCHAR ext[_MAX_EXT];
 
 #if _MSC_VER >= 1400
-	_tsplitpath_s( oldfilename, drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
-                       _MAX_FNAME, ext, _MAX_EXT );
-	_tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, newExtn );
+  _tsplitpath_s( oldfilename, drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+    _MAX_FNAME, ext, _MAX_EXT );
+  _tmakepath_s( path_buffer, _MAX_PATH, drive, dir, fname, newExtn );
 #else
-	_tsplitpath( oldfilename, drive, dir, fname, ext );
-	_tmakepath( path_buffer, drive, dir, fname, newExtn );
+  _tsplitpath( oldfilename, drive, dir, fname, ext );
+  _tmakepath( path_buffer, drive, dir, fname, newExtn );
 #endif
-	return CMyString(path_buffer);
+  return CMyString(path_buffer);
 }
 
 void
 PWSUtil::IssueError(const CString &csFunction)
 {
 #ifdef _DEBUG
-    LPVOID lpMsgBuf;
-    LPVOID lpDisplayBuf;
+  LPVOID lpMsgBuf;
+  LPVOID lpDisplayBuf;
 
-    const DWORD dw = GetLastError();
+  const DWORD dw = GetLastError();
 
-    FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-        FORMAT_MESSAGE_FROM_SYSTEM,
-        NULL,
-        dw,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (LPTSTR) &lpMsgBuf,
-        0, NULL );
+  FormatMessage(
+    FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+    FORMAT_MESSAGE_FROM_SYSTEM,
+    NULL,
+    dw,
+    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+    (LPTSTR) &lpMsgBuf,
+    0, NULL );
 
-    lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT, 
-        (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.GetLength() + 40) * sizeof(TCHAR)); 
-    wsprintf((LPTSTR)lpDisplayBuf, TEXT("%s failed with error %d: %s"), 
-        csFunction, dw, lpMsgBuf); 
-    MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK); 
+  lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT, 
+    (lstrlen((LPCTSTR)lpMsgBuf) + csFunction.GetLength() + 40) * sizeof(TCHAR)); 
+  wsprintf((LPTSTR)lpDisplayBuf, TEXT("%s failed with error %d: %s"), 
+    csFunction, dw, lpMsgBuf); 
+  MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK); 
 
-    LocalFree(lpMsgBuf);
-    LocalFree(lpDisplayBuf);
+  LocalFree(lpMsgBuf);
+  LocalFree(lpDisplayBuf);
 #else
-	csFunction;
+  csFunction;
 #endif
 }
 
 CString
 PWSUtil::GetTimeStamp()
 {
-	struct _timeb timebuffer;
+  struct _timeb timebuffer;
 #if (_MSC_VER >= 1400)
-	_ftime_s(&timebuffer);
+  _ftime_s(&timebuffer);
 #else
-	_ftime(&timebuffer);
+  _ftime(&timebuffer);
 #endif
-	CMyString cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
+  CMyString cmys_now = ConvertToDateTimeString(timebuffer.time, TMC_EXPORT_IMPORT);
 
-	CString cs_now;
-	cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
+  CString cs_now;
+  cs_now.Format(_T("%s.%03hu"), cmys_now, timebuffer.millitm);
 
-	return cs_now;
+  return cs_now;
 }
 
 /*
 
-  Produce a printable version of memory dump (hex + ascii)
+Produce a printable version of memory dump (hex + ascii)
 
-  paramaters:
-    memory  - pointer to memory to format
-    length  - length to format
-    maxnum  - maximum characters dumped per line
+paramaters:
+memory  - pointer to memory to format
+length  - length to format
+maxnum  - maximum characters dumped per line
 
-  return:
-    CString containing output buffer
+return:
+CString containing output buffer
 */
 void
 PWSUtil::HexDump(unsigned char *pmemory, const int length, 
@@ -1034,7 +1034,7 @@ PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   CString cs_Out;
   static const CHAR base64ABC[] = 
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  
+
   cs_Out.Empty();
   for (DWORD i = 0; i < (DWORD)len; i += 3) {
     LONG l = ( ((LONG)strIn[i]) << 16 ) | 
@@ -1046,7 +1046,7 @@ PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
     if (i + 1 < len) cs_Out += base64ABC[(l >> 6) & 0x3F];
     if (i + 2 < len) cs_Out += base64ABC[(l ) & 0x3F];
   }
-  
+
   switch (len % 3) {
     case 1:
       cs_Out += '=';
@@ -1091,12 +1091,12 @@ PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len
 
     if (iDigits[2] >= 0) {
       outData[st_length++] = (((BYTE)iDigits[1] & 0x0f) << 4)
-                       | (((BYTE)iDigits[2] >> 2) & 0x0f);
+        | (((BYTE)iDigits[2] >> 2) & 0x0f);
     }
 
     if (iDigits[3] >= 0) {
       outData[st_length++] = (((BYTE)iDigits[2] & 0x03) << 6)
-                       | ((BYTE)iDigits[3] & 0x3f);
+        | ((BYTE)iDigits[3] & 0x3f);
     }
   }
 

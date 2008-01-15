@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 // CColumnChooserLC.cpp : implementation file
 
@@ -20,7 +20,7 @@
 // CColumnChooserLC
 
 CColumnChooserLC::CColumnChooserLC()
-  : m_iItem(-1), m_pDragImage(NULL)
+: m_iItem(-1), m_pDragImage(NULL)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:
@@ -49,14 +49,14 @@ END_MESSAGE_MAP()
 // CColumnChooserLC message handlers
 
 DROPEFFECT CColumnChooserLC::OnDragEnter(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
-                  DWORD /* dwKeyState */, CPoint /* point */ )
+                                         DWORD /* dwKeyState */, CPoint /* point */ )
 {
   // We only allow MOVE - not COPY
   return DROPEFFECT_MOVE;
 }
 
 DROPEFFECT CColumnChooserLC::OnDragOver(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
-                  DWORD /* dwKeyState */, CPoint /* point */)
+                                        DWORD /* dwKeyState */, CPoint /* point */)
 {
   // We only allow MOVE - not COPY
   return DROPEFFECT_MOVE;
@@ -140,8 +140,8 @@ void CColumnChooserLC::OnLButtonDown(UINT nFlags, CPoint point)
 
   // Start dragging
   StartDragging((BYTE *)LPCTSTR(cs_text),
-                cs_text.GetLength() * sizeof(TCHAR),
-                m_ccddCPFID, &rClient, &point);
+    cs_text.GetLength() * sizeof(TCHAR),
+    m_ccddCPFID, &rClient, &point);
 
   // End dragging image
   m_pDragImage->DragLeave(GetDesktopWindow());
@@ -168,8 +168,8 @@ void CColumnChooserLC::OnDestroy()
 int CALLBACK CColumnChooserLC::CCLCCompareProc(LPARAM lParam1, LPARAM lParam2,
                                                LPARAM /* lParamSort */)
 {
-   // lParamSort contains a pointer to the list view control.
-   // The lParam of an item is its type.
+  // lParamSort contains a pointer to the list view control.
+  // The lParam of an item is its type.
   if (lParam1 < lParam2)
     return -1;
   else if (lParam1 > lParam2)
@@ -199,25 +199,25 @@ BOOL CColumnChooserLC::OnEraseBkgnd(CDC* pDC)
       rc.top += rcH.bottom;
     }
 
-   // Here is the string we want to display (or you can use a StringTable entry
-   const CString cs_emptytext(MAKEINTRESOURCE(IDS_NOITEMS));
+    // Here is the string we want to display (or you can use a StringTable entry
+    const CString cs_emptytext(MAKEINTRESOURCE(IDS_NOITEMS));
 
-   // Now we actually display the text
-   // set the text color
-   pDC->SetTextColor(clrText);
-   // set the background color
-   pDC->SetBkColor(clrBack);
-   // fill the client area rect
-   pDC->FillRect(&rc, &cbBack);
-   // select a font
-   pDC->SelectStockObject(ANSI_VAR_FONT);
-   // and draw the text
-   pDC->DrawText(cs_emptytext, -1, rc,
-                 DT_CENTER | DT_VCENTER | DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
+    // Now we actually display the text
+    // set the text color
+    pDC->SetTextColor(clrText);
+    // set the background color
+    pDC->SetBkColor(clrBack);
+    // fill the client area rect
+    pDC->FillRect(&rc, &cbBack);
+    // select a font
+    pDC->SelectStockObject(ANSI_VAR_FONT);
+    // and draw the text
+    pDC->DrawText(cs_emptytext, -1, rc,
+      DT_CENTER | DT_VCENTER | DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
 
-   // Restore dc
-   pDC->RestoreDC(nSavedDC);
-   ReleaseDC(pDC);
+    // Restore dc
+    pDC->RestoreDC(nSavedDC);
+    ReleaseDC(pDC);
   } else {
     //  If there are items in the ListCtrl, we need to call the base class function
     CListCtrl::OnEraseBkgnd(pDC);

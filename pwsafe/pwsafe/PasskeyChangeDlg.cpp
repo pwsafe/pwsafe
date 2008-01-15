@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file PasskeyChangeDlg.cpp
 //-----------------------------------------------------------------------------
 
@@ -15,11 +15,11 @@
 #include "corelib/PWCharPool.h" // for CheckPassword()
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-  #include "pocketpc/PocketPC.h"
+#include "pocketpc/resource.h"
+#include "pocketpc/PocketPC.h"
 #else
-  #include "resource.h"
-  #include "resource3.h"  // String resources
+#include "resource.h"
+#include "resource3.h"  // String resources
 #endif
 
 #include "PasskeyChangeDlg.h"
@@ -35,31 +35,31 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
-   : CPWDialog(CPasskeyChangeDlg::IDD, pParent)
+: CPWDialog(CPasskeyChangeDlg::IDD, pParent)
 {
-   m_confirmnew = _T("");
-   m_newpasskey = _T("");
-   m_oldpasskey = _T("");
+  m_confirmnew = _T("");
+  m_newpasskey = _T("");
+  m_oldpasskey = _T("");
 }
 
 void
 CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
-   CPWDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_CONFIRMNEW, (CString &)m_confirmnew);
-   DDX_Text(pDX, IDC_NEWPASSKEY, (CString &)m_newpasskey);
-   DDX_Text(pDX, IDC_OLDPASSKEY, (CString &)m_oldpasskey);
+  CPWDialog::DoDataExchange(pDX);
+  DDX_Text(pDX, IDC_CONFIRMNEW, (CString &)m_confirmnew);
+  DDX_Text(pDX, IDC_NEWPASSKEY, (CString &)m_newpasskey);
+  DDX_Text(pDX, IDC_OLDPASSKEY, (CString &)m_oldpasskey);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPWDialog)
-   ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
 #if defined(POCKET_PC)
-   ON_EN_SETFOCUS(IDC_OLDPASSKEY, OnPasskeySetfocus)
-   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnPasskeySetfocus)
-   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnPasskeySetfocus)
-   ON_EN_KILLFOCUS(IDC_OLDPASSKEY, OnPasskeyKillfocus)
-   ON_EN_KILLFOCUS(IDC_NEWPASSKEY, OnPasskeyKillfocus)
-   ON_EN_KILLFOCUS(IDC_CONFIRMNEW, OnPasskeyKillfocus)
+  ON_EN_SETFOCUS(IDC_OLDPASSKEY, OnPasskeySetfocus)
+  ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnPasskeySetfocus)
+  ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnPasskeySetfocus)
+  ON_EN_KILLFOCUS(IDC_OLDPASSKEY, OnPasskeyKillfocus)
+  ON_EN_KILLFOCUS(IDC_NEWPASSKEY, OnPasskeyKillfocus)
+  ON_EN_KILLFOCUS(IDC_CONFIRMNEW, OnPasskeyKillfocus)
 #endif
 END_MESSAGE_MAP()
 
@@ -121,7 +121,7 @@ CPasskeyChangeDlg::OnOK()
 void
 CPasskeyChangeDlg::OnCancel() 
 {
-   CPWDialog::OnCancel();
+  CPWDialog::OnCancel();
 }
 
 void
@@ -143,7 +143,7 @@ CPasskeyChangeDlg::OnHelp()
 /************************************************************************/
 void CPasskeyChangeDlg::OnPasskeyKillfocus()
 {
-	EnableWordCompletion( m_hWnd );
+  EnableWordCompletion( m_hWnd );
 }
 
 
@@ -153,6 +153,6 @@ void CPasskeyChangeDlg::OnPasskeyKillfocus()
 /************************************************************************/
 void CPasskeyChangeDlg::OnPasskeySetfocus()
 {
-	DisableWordCompletion( m_hWnd );
+  DisableWordCompletion( m_hWnd );
 }
 #endif

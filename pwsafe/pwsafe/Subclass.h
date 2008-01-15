@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 ////////////////////////////////////////////////////////////////
 // PixieLib(TM) Copyright 1997-1998 Paul DiLascia
 // If this code works, it was written by Paul DiLascia.
@@ -36,30 +36,30 @@
 //
 class CSubclassWnd : public CObject {
 public:
-	CSubclassWnd();
-	~CSubclassWnd();
+  CSubclassWnd();
+  ~CSubclassWnd();
 
-	// Subclass a window. Hook(NULL) to unhook (automatic on WM_NCDESTROY)
-	BOOL	HookWindow(HWND  hwnd);
-	BOOL	HookWindow(CWnd* pWnd)	{ return HookWindow(pWnd->GetSafeHwnd()); }
-	void	Unhook()				{ HookWindow((HWND)NULL); }
-	BOOL	IsHooked()				{ return m_hWnd!=NULL; }
+  // Subclass a window. Hook(NULL) to unhook (automatic on WM_NCDESTROY)
+  BOOL	HookWindow(HWND  hwnd);
+  BOOL	HookWindow(CWnd* pWnd)	{ return HookWindow(pWnd->GetSafeHwnd()); }
+  void	Unhook()				{ HookWindow((HWND)NULL); }
+  BOOL	IsHooked()				{ return m_hWnd!=NULL; }
 
-	friend LRESULT CALLBACK HookWndProc(HWND, UINT, WPARAM, LPARAM);
-	friend class CSubclassWndMap;
+  friend LRESULT CALLBACK HookWndProc(HWND, UINT, WPARAM, LPARAM);
+  friend class CSubclassWndMap;
 
-	virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
-	LRESULT Default();				// call this at the end of handler fns
+  virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
+  LRESULT Default();				// call this at the end of handler fns
 
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext& dc) const;
 #endif
 
 protected:
-	HWND			m_hWnd;				// the window hooked
-	LONG_PTR        m_pOldWndProc;		// ..and original window proc
-	CSubclassWnd*	m_pNext;			// next in chain of hooks for this window
+  HWND			m_hWnd;				// the window hooked
+  LONG_PTR        m_pOldWndProc;		// ..and original window proc
+  CSubclassWnd*	m_pNext;			// next in chain of hooks for this window
 
-	DECLARE_DYNAMIC(CSubclassWnd);
+  DECLARE_DYNAMIC(CSubclassWnd);
 };

@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // OptionsSecurity.cpp : implementation file
 //
 
@@ -14,10 +14,10 @@
 
 
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
+#include "pocketpc/resource.h"
 #else
-  #include "resource.h"
-  #include "resource3.h"  // String resources
+#include "resource.h"
+#include "resource3.h"  // String resources
 #endif
 #include "OptionsSecurity.h"
 
@@ -34,8 +34,8 @@ IMPLEMENT_DYNCREATE(COptionsSecurity, CPropertyPage)
 
 COptionsSecurity::COptionsSecurity() : CPWPropertyPage(COptionsSecurity::IDD)
 {
-	//{{AFX_DATA_INIT(COptionsSecurity)
-	//}}AFX_DATA_INIT
+  //{{AFX_DATA_INIT(COptionsSecurity)
+  //}}AFX_DATA_INIT
 }
 
 COptionsSecurity::~COptionsSecurity()
@@ -44,23 +44,23 @@ COptionsSecurity::~COptionsSecurity()
 
 void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 {
-	CPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(COptionsSecurity)
-	DDX_Check(pDX, IDC_CLEARBOARD, m_clearclipboard);
-	DDX_Check(pDX, IDC_LOCKBASE, m_lockdatabase);
-	DDX_Check(pDX, IDC_CONFIRMCOPY, m_confirmcopy);
-	DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
-	DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
-	DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
-	//}}AFX_DATA_MAP
+  CPropertyPage::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(COptionsSecurity)
+  DDX_Check(pDX, IDC_CLEARBOARD, m_clearclipboard);
+  DDX_Check(pDX, IDC_LOCKBASE, m_lockdatabase);
+  DDX_Check(pDX, IDC_CONFIRMCOPY, m_confirmcopy);
+  DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
+  DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
+  DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
+  //}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, CPropertyPage)
-	//{{AFX_MSG_MAP(COptionsSecurity)
-	ON_BN_CLICKED(IDC_LOCKBASE, OnLockbase)
-	ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockbase)
-	//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(COptionsSecurity)
+  ON_BN_CLICKED(IDC_LOCKBASE, OnLockbase)
+  ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockbase)
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -95,9 +95,9 @@ BOOL COptionsSecurity::OnKillActive()
 
   // Check that options, as set, are valid.
   if ((m_IdleTimeOut < 1) || (m_IdleTimeOut > 120)) {
-  	AfxMessageBox(IDS_INVALIDTIMEOUT);
-  	((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
-  	return FALSE;
+    AfxMessageBox(IDS_INVALIDTIMEOUT);
+    ((CEdit*)GetDlgItem(IDC_IDLE_TIMEOUT))->SetFocus();
+    return FALSE;
   }
 
   return TRUE;

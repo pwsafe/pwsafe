@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // RichEditCtrlExtns.cpp
 //
 
@@ -23,46 +23,46 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /*
-   Note that there is a callback function available to allow the parent to process
-   clicks on any link in the text.
+Note that there is a callback function available to allow the parent to process
+clicks on any link in the text.
 
-    bool pfcnNotifyLinkClicked (LPTSTR lpszURL, LPTSTR lpszFriendlyName, LPARAM self);
-   
-   If the parent has not registered for the callback, the link is processed by this
-   control and it should open the appropriate URL in the user's default browser.
- */
+bool pfcnNotifyLinkClicked (LPTSTR lpszURL, LPTSTR lpszFriendlyName, LPARAM self);
+
+If the parent has not registered for the callback, the link is processed by this
+control and it should open the appropriate URL in the user's default browser.
+*/
 
 /*
-  Supports the following HTML formatting in a RichEditCtrl:
-    Bold:          <b>.....</b>
-    Italic:        <i>.....</i>
-    Underline:     <u>.....</u>
-    Font:          <font face="FN" size="S" color="C">.....</font>
-    Web reference: <a href="...url...">Friendly Name</a>
+Supports the following HTML formatting in a RichEditCtrl:
+Bold:          <b>.....</b>
+Italic:        <i>.....</i>
+Underline:     <u>.....</u>
+Font:          <font face="FN" size="S" color="C">.....</font>
+Web reference: <a href="...url...">Friendly Name</a>
 
-  Notes:
-  1. If you wish to use the "less than" or "greater than" symbols in the
-     message, use "&lt;" and "&gt;" instead.  These will be converted to the
-     '<' and '>' symbols in the final text string.
+Notes:
+1. If you wish to use the "less than" or "greater than" symbols in the
+message, use "&lt;" and "&gt;" instead.  These will be converted to the
+'<' and '>' symbols in the final text string.
 
-  2. Bold, Italic, Underline and Font can be nested but MUST NOT overlap - i.e.
-     "<b>bold</b> and <i>italic</i>" is OK
-     "<b>bold and <i>bold & italic</i> and more bold</b>" is OK
-     "<b>bold and <i>bold italic</b> & italic</i>" is NOT OK, since the bold end
-      tag is in the middle of the italic tags.
+2. Bold, Italic, Underline and Font can be nested but MUST NOT overlap - i.e.
+"<b>bold</b> and <i>italic</i>" is OK
+"<b>bold and <i>bold & italic</i> and more bold</b>" is OK
+"<b>bold and <i>bold italic</b> & italic</i>" is NOT OK, since the bold end
+tag is in the middle of the italic tags.
 
-  3. Fonts can also be nested. i.e.
-     <font face="FN1">test1<font face="FN2">test2<font color="Red">red2</font></font></font>
+3. Fonts can also be nested. i.e.
+<font face="FN1">test1<font face="FN2">test2<font color="Red">red2</font></font></font>
 
-  4. Any unsupported HTML tags will be retained e.g. "<q>test</q>" will be
-     still be "<q>test</q>" in the final text string.
- */
+4. Any unsupported HTML tags will be retained e.g. "<q>test</q>" will be
+still be "<q>test</q>" in the final text string.
+*/
 
 /////////////////////////////////////////////////////////////////////////////
 // CRichEditCtrlExtn
 
 CRichEditCtrlExtn::CRichEditCtrlExtn()
-  : m_pfcnNotifyLinkClicked(NULL)
+: m_pfcnNotifyLinkClicked(NULL)
 {
 }
 
@@ -73,9 +73,9 @@ CRichEditCtrlExtn::~CRichEditCtrlExtn()
 }
 
 BEGIN_MESSAGE_MAP(CRichEditCtrlExtn, CRichEditCtrl)
-	//{{AFX_MSG_MAP(CRichEditCtrlExtn)
-	ON_NOTIFY_REFLECT(EN_LINK, OnLink) 
-	//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(CRichEditCtrlExtn)
+  ON_NOTIFY_REFLECT(EN_LINK, OnLink) 
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 // Find "Friendly Name" from link vector
@@ -85,7 +85,7 @@ struct StartEndMatch {
   }
 
   StartEndMatch(const int i_start, const int i_end) :
-    m_iStart(i_start),  m_iEnd(i_end) {}
+  m_iStart(i_start),  m_iEnd(i_end) {}
 
   const int m_iStart;
   const int m_iEnd;
@@ -145,9 +145,9 @@ void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
       }
       SetSel(-1, -1);
     } else 
-    if (pENLink->msg == WM_LBUTTONUP) {
-      *pResult = 1;
-    }
+      if (pENLink->msg == WM_LBUTTONUP) {
+        *pResult = 1;
+      }
   }
 }
 
@@ -200,35 +200,35 @@ CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
       cf2.cbSize = sizeof(cf2);
 
       for (format_iter = m_vFormat.begin();
-           format_iter != m_vFormat.end(); format_iter++) {
-        SetSel(format_iter->iStart, format_iter->iEnd);
-        GetSelectionCharFormat(cf2);
-        if (format_iter->entrytype == Bold) {
-          cf2.dwMask |= CFM_BOLD;
-          cf2.dwEffects |= CFE_BOLD;
-        } else if (format_iter->entrytype == Italic) {
-          cf2.dwMask |= CFM_ITALIC;
-          cf2.dwEffects |= CFE_ITALIC;
-        } else if (format_iter->entrytype == Underline) {
-          cf2.dwMask |= CFM_UNDERLINE;
-          cf2.dwEffects |= CFE_UNDERLINE;
-        } else if (format_iter->entrytype == Colour) {
-          cf2.dwMask = CFM_COLOR;
-          cf2.crTextColor = format_iter->cr;
-          cf2.dwEffects &= ~CFE_AUTOCOLOR;
-        } else if (format_iter->entrytype == Size) {
-          cf2.dwMask = CFM_SIZE;
-          cf2.yHeight = (format_iter->iSize) * 20;
-        } else if (format_iter->entrytype == Name) {
-          cf2.dwMask = CFM_FACE;
+        format_iter != m_vFormat.end(); format_iter++) {
+          SetSel(format_iter->iStart, format_iter->iEnd);
+          GetSelectionCharFormat(cf2);
+          if (format_iter->entrytype == Bold) {
+            cf2.dwMask |= CFM_BOLD;
+            cf2.dwEffects |= CFE_BOLD;
+          } else if (format_iter->entrytype == Italic) {
+            cf2.dwMask |= CFM_ITALIC;
+            cf2.dwEffects |= CFE_ITALIC;
+          } else if (format_iter->entrytype == Underline) {
+            cf2.dwMask |= CFM_UNDERLINE;
+            cf2.dwEffects |= CFE_UNDERLINE;
+          } else if (format_iter->entrytype == Colour) {
+            cf2.dwMask = CFM_COLOR;
+            cf2.crTextColor = format_iter->cr;
+            cf2.dwEffects &= ~CFE_AUTOCOLOR;
+          } else if (format_iter->entrytype == Size) {
+            cf2.dwMask = CFM_SIZE;
+            cf2.yHeight = (format_iter->iSize) * 20;
+          } else if (format_iter->entrytype == Name) {
+            cf2.dwMask = CFM_FACE;
 #if (_MSC_VER >= 1400)
-          memcpy_s(cf2.szFaceName, LF_FACESIZE * sizeof(TCHAR),
-                   format_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
+            memcpy_s(cf2.szFaceName, LF_FACESIZE * sizeof(TCHAR),
+              format_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
 #else
-          memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
+            memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
 #endif
-        }
-        SetSelectionCharFormat(cf2);
+          }
+          SetSelectionCharFormat(cf2);
       }
     }
 
@@ -285,7 +285,7 @@ CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
   oldPos = 0;
   int iBold(0), iItalic(0), iUnderline(0), iFont(0), iAnchor(0);
   bool bNestedBold(false), bNestedItalic(false), bNestedUnderline(false),
-       bNestedAnchor(false), bOverlapped(false);
+    bNestedAnchor(false), bOverlapped(false);
 
   csToken = csHTML.Tokenize(_T("<>"), curPos);
   while (csToken != "" && curPos != -1) {
@@ -293,8 +293,8 @@ CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
     CString a = csHTML.Mid(oldPos - 1, 1);
     CString b = csHTML.Mid(curPos - 1, 1);
     if (csHTML.Mid(oldPos - 1, 1) == _T("<") &&
-        csHTML.Mid(curPos - 1, 1) == _T(">")) {
-      bHTMLTag = true;
+      csHTML.Mid(curPos - 1, 1) == _T(">")) {
+        bHTMLTag = true;
     } else
       bHTMLTag = false;
 
@@ -402,7 +402,7 @@ vnext:
   ncm.cbSize = sizeof(NONCLIENTMETRICS);
 
   SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-                       sizeof(NONCLIENTMETRICS), &ncm, NULL);
+    sizeof(NONCLIENTMETRICS), &ncm, NULL);
 
   CWnd *pWndDesk = GetDesktopWindow();
   CDC *pDCDesk = pWndDesk->GetWindowDC();
@@ -422,8 +422,8 @@ vnext:
     CString a = csHTML.Mid(oldPos - 1, 1);
     CString b = csHTML.Mid(curPos - 1, 1);
     if (csHTML.Mid(oldPos - 1, 1) == _T("<") &&
-        csHTML.Mid(curPos - 1, 1) == _T(">")) {
-      bHTMLTag = true;
+      csHTML.Mid(curPos - 1, 1) == _T(">")) {
+        bHTMLTag = true;
     } else
       bHTMLTag = false;
 
@@ -536,21 +536,21 @@ vnext:
             bsFontChange.set(FACENAMECHANGED);
             vLastFacenames.push_back(csFontVerbValue);
           } else
-          if (csFontVerb == _T("size=")) {
-            bsFontChange.set(SIZECHANGED);
-            iCurrentFontPointSize = ConvertSizeToPoints(csFontVerbValue, iCurrentFontSize);
-            vLastSizes.push_back(iCurrentFontPointSize);
-          } else
-          if (csFontVerb == _T("color=")) {
-            bsFontChange.set(COLOURCHANGED);
-            COLORREF crNewFontColour = ConvertColourToColorRef(csFontVerbValue);
-            vLastColours.push_back(crNewFontColour);
-          }
+            if (csFontVerb == _T("size=")) {
+              bsFontChange.set(SIZECHANGED);
+              iCurrentFontPointSize = ConvertSizeToPoints(csFontVerbValue, iCurrentFontSize);
+              vLastSizes.push_back(iCurrentFontPointSize);
+            } else
+              if (csFontVerb == _T("color=")) {
+                bsFontChange.set(COLOURCHANGED);
+                COLORREF crNewFontColour = ConvertColourToColorRef(csFontVerbValue);
+                vLastColours.push_back(crNewFontColour);
+              }
 
-          csFontVerb = csHTMLTag.Tokenize(_T("\""), curFontPos);
-          if (csFontVerb.IsEmpty() && curFontPos == -1)
-            break;
-          csFontVerbValue = csHTMLTag.Tokenize(_T("\""), curFontPos);
+              csFontVerb = csHTMLTag.Tokenize(_T("\""), curFontPos);
+              if (csFontVerb.IsEmpty() && curFontPos == -1)
+                break;
+              csFontVerbValue = csHTMLTag.Tokenize(_T("\""), curFontPos);
         };
         vFontChange.push_back(bsFontChange);
         vFontChangeStart.push_back(iTextPosition);
@@ -681,33 +681,33 @@ CRichEditCtrlExtn::ConvertSizeToPoints(CString &csValue, int &iCurrentSize)
     if (iSize < 1)
       iSize = 1;
     else
-    if (iSize > 7)
-      iSize = 7;
+      if (iSize > 7)
+        iSize = 7;
   }
   switch (iSize) {
-    case 1:
-      retval = 15;  // "7.5"
-      break;
-    case 2:
-      retval = 20;  // "10"
-      break;
-    case 3:
-      retval = 24;  // "12"
-      break;
-    case 4:
-      retval = 27;  // "13.5"
-      break;
-    case 5:
-      retval = 36;  // "18"
-      break;
-    case 6:
-      retval = 48;  // "24"
-      break;
-    case 7:
-      retval = 72;  // "36"
-      break;
-    default:
-      ASSERT(0);
+case 1:
+  retval = 15;  // "7.5"
+  break;
+case 2:
+  retval = 20;  // "10"
+  break;
+case 3:
+  retval = 24;  // "12"
+  break;
+case 4:
+  retval = 27;  // "13.5"
+  break;
+case 5:
+  retval = 36;  // "18"
+  break;
+case 6:
+  retval = 48;  // "24"
+  break;
+case 7:
+  retval = 72;  // "36"
+  break;
+default:
+  ASSERT(0);
   }
 
   // Return value in "size"

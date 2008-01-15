@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // OptionsPasswordHistory.cpp : implementation file
 //
 
@@ -13,10 +13,10 @@
 #include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
+#include "pocketpc/resource.h"
 #else
-  #include "resource.h"
-  #include "resource3.h"  // String resources
+#include "resource.h"
+#include "resource3.h"  // String resources
 #endif
 #include "OptionsPasswordHistory.h"
 #include "DboxMain.h"  // needed for DboxMain::UpdatePasswordHistory
@@ -33,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(COptionsPasswordHistory, CPropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory() :
-  CPWPropertyPage(COptionsPasswordHistory::IDD)
+CPWPropertyPage(COptionsPasswordHistory::IDD)
 {
   //{{AFX_DATA_INIT(COptionsPasswordHistory)
   //}}AFX_DATA_INIT
@@ -43,7 +43,7 @@ COptionsPasswordHistory::COptionsPasswordHistory() :
 
 COptionsPasswordHistory::~COptionsPasswordHistory()
 {
-	delete m_ToolTipCtrl;
+  delete m_ToolTipCtrl;
 }
 
 void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
@@ -57,14 +57,14 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(COptionsPasswordHistory, CPropertyPage)
-	//{{AFX_MSG_MAP(COptionsPasswordHistory)
-	ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
-	ON_BN_CLICKED(IDC_APPLYPWHCHANGESNOW, OnApplyPWHChanges)
-	//}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_PWHISTORYNOACTION, OnPWHistoryNoAction)
-	ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnPWHistoryDoAction)
-	ON_BN_CLICKED(IDC_RESETPWHISTORYON, OnPWHistoryDoAction)
-	ON_BN_CLICKED(IDC_SETMAXPWHISTORY, OnPWHistoryDoAction)
+  //{{AFX_MSG_MAP(COptionsPasswordHistory)
+  ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
+  ON_BN_CLICKED(IDC_APPLYPWHCHANGESNOW, OnApplyPWHChanges)
+  //}}AFX_MSG_MAP
+  ON_BN_CLICKED(IDC_PWHISTORYNOACTION, OnPWHistoryNoAction)
+  ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnPWHistoryDoAction)
+  ON_BN_CLICKED(IDC_RESETPWHISTORYON, OnPWHistoryDoAction)
+  ON_BN_CLICKED(IDC_SETMAXPWHISTORY, OnPWHistoryDoAction)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -117,9 +117,9 @@ BOOL COptionsPasswordHistory::OnKillActive()
 
   // Check that options, as set, are valid.
   if (m_savepwhistory && ((m_pwhistorynumdefault < 1) || (m_pwhistorynumdefault > 255))) {
-  	AfxMessageBox(IDS_DEFAULTNUMPWH);
-  	((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
-  	return FALSE;
+    AfxMessageBox(IDS_DEFAULTNUMPWH);
+    ((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
+    return FALSE;
   }
 
   //End check
@@ -151,18 +151,18 @@ void COptionsPasswordHistory::OnApplyPWHChanges()
 // tooltip control for processing.
 BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg) 
 {
-	if (m_ToolTipCtrl != NULL)
-		m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_ToolTipCtrl != NULL)
+    m_ToolTipCtrl->RelayEvent(pMsg);
 
-	return CPropertyPage::PreTranslateMessage(pMsg);
+  return CPropertyPage::PreTranslateMessage(pMsg);
 }
 
 void COptionsPasswordHistory::OnPWHistoryNoAction()
 {
-	GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
+  GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(FALSE);
 }
 
 void COptionsPasswordHistory::OnPWHistoryDoAction() 
 {
-	GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(TRUE);
+  GetDlgItem(IDC_APPLYPWHCHANGESNOW)->EnableWindow(TRUE);
 }

@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // OptionsDisplay.cpp : implementation file
 //
 
@@ -12,10 +12,10 @@
 #include "passwordsafe.h"
 
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
+#include "pocketpc/resource.h"
 #else
-  #include "resource.h"
-  #include "resource3.h"
+#include "resource.h"
+#include "resource3.h"
 #endif
 #include "OptionsDisplay.h"
 #include "corelib\pwsprefs.h"
@@ -34,8 +34,8 @@ IMPLEMENT_DYNCREATE(COptionsDisplay, CPropertyPage)
 
 COptionsDisplay::COptionsDisplay() : CPWPropertyPage(COptionsDisplay::IDD)
 {
-	//{{AFX_DATA_INIT(COptionsDisplay)
-	//}}AFX_DATA_INIT
+  //{{AFX_DATA_INIT(COptionsDisplay)
+  //}}AFX_DATA_INIT
 }
 
 COptionsDisplay::~COptionsDisplay()
@@ -44,30 +44,30 @@ COptionsDisplay::~COptionsDisplay()
 
 void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 {
-	CPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(COptionsDisplay)
-	DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
+  CPropertyPage::DoDataExchange(pDX);
+  //{{AFX_DATA_MAP(COptionsDisplay)
+  DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
   DDX_Check(pDX, IDC_DEFUNSHOWINTREE, m_showusernameintree);
-	DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_showpasswordintree);
-	DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_explorertree);
-	DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
-	DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
-	DDX_Check(pDX, IDC_DEFENABLEGRIDLINES, m_enablegrid);
-	DDX_Check(pDX, IDC_PREWARNEXPIRY, m_preexpirywarn);
-	DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_preexpirywarndays);
+  DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_showpasswordintree);
+  DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_explorertree);
+  DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
+  DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
+  DDX_Check(pDX, IDC_DEFENABLEGRIDLINES, m_enablegrid);
+  DDX_Check(pDX, IDC_PREWARNEXPIRY, m_preexpirywarn);
+  DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_preexpirywarndays);
 #if defined(POCKET_PC)
-	DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
+  DDX_Check(pDX, IDC_DCSHOWSPASSWORD, m_dcshowspassword);
 #endif
-	DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_treedisplaystatusatopen); // only first!
-	DDX_Radio(pDX, IDC_RST_BLK, m_trayiconcolour); // only first!
-	//}}AFX_DATA_MAP
+  DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_treedisplaystatusatopen); // only first!
+  DDX_Radio(pDX, IDC_RST_BLK, m_trayiconcolour); // only first!
+  //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, CPropertyPage)
-	//{{AFX_MSG_MAP(COptionsDisplay)
+  //{{AFX_MSG_MAP(COptionsDisplay)
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
   ON_BN_CLICKED(IDC_DEFUNSHOWINTREE, OnDisplayUserInTree)
-	//}}AFX_MSG_MAP
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -106,9 +106,9 @@ BOOL COptionsDisplay::OnKillActive()
 
   // Check that options, as set, are valid.
   if ((m_preexpirywarndays < 1) || (m_preexpirywarndays > 30)) {
-  	AfxMessageBox(IDS_INVALIDEXPIRYWARNDAYS);
-  	((CEdit*)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
-  	return FALSE;
+    AfxMessageBox(IDS_INVALIDEXPIRYWARNDAYS);
+    ((CEdit*)GetDlgItem(IDC_PREEXPIRYWARNDAYS))->SetFocus();
+    return FALSE;
   }
 
   return TRUE;

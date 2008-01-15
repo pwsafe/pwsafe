@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 ////////////////////////////////////////////////////////////////
 // CoolMenu 1997 Microsoft Systems Journal.
@@ -103,7 +103,7 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
       break;
     case WM_MENUCHAR:
       LRESULT lr = OnMenuChar((TCHAR)LOWORD(wp), (UINT)HIWORD(wp), 
-                              CMenu::FromHandle((HMENU)lp));
+        CMenu::FromHandle((HMENU)lp));
       if (lr != 0)
         return lr;
       break;
@@ -231,7 +231,7 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
       } else {
         // use DrawEmbossed to draw disabled button in colour for Classic menu
         if (m_bNoDIL)
-        DrawEmbossed(dc, m_ImageList, iButton, p);
+          DrawEmbossed(dc, m_ImageList, iButton, p);
         else
           m_DisabledImageList.Draw(&dc, iButton, p, ILD_TRANSPARENT);
       }
@@ -290,7 +290,7 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
 // draw everything after the tab right-aligned
 //
 void CCoolMenuManager::DrawMenuText(CDC& dc, CRect rc, CString text,
-  COLORREF color)
+                                    COLORREF color)
 {
   CString left = text;
   CString right;
@@ -422,44 +422,44 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
           pmd->fType = miinfo.fType;          //   handy when drawing
           UINT iCtrlID = miinfo.wID;          // Get Control ID
           if (iCtrlID >= ID_MENUITEM_TRAYAUTOTYPE1 &&
-              iCtrlID <= ID_MENUITEM_TRAYAUTOTYPEMAX)
+            iCtrlID <= ID_MENUITEM_TRAYAUTOTYPEMAX)
             iCtrlID = ID_MENUITEM_AUTOTYPE;
           else
-          if (iCtrlID >= ID_MENUITEM_TRAYBROWSE1 &&
+            if (iCtrlID >= ID_MENUITEM_TRAYBROWSE1 &&
               iCtrlID <= ID_MENUITEM_TRAYBROWSEMAX) {
-            cs_text.LoadString(IDS_TRAYBROWSE);
-            if (cs_text.Compare(miinfo.dwTypeData) == 0)
-              iCtrlID = ID_MENUITEM_BROWSEURL;
-            else
-              iCtrlID = ID_MENUITEM_SENDEMAIL;
-          } else
-          if (iCtrlID >= ID_MENUITEM_TRAYDELETE1 &&
-              iCtrlID <= ID_MENUITEM_TRAYDELETEMAX)
-            iCtrlID = ID_MENUITEM_DELETE;
-          else
-          if (iCtrlID >= ID_MENUITEM_TRAYCOPYNOTES1 &&
-              iCtrlID <= ID_MENUITEM_TRAYCOPYNOTESMAX)
-            iCtrlID = ID_MENUITEM_COPYNOTESFLD;
-          else
-          if (iCtrlID >= ID_MENUITEM_TRAYCOPYPASSWORD1 &&
-              iCtrlID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX)
-            iCtrlID = ID_MENUITEM_COPYPASSWORD;
-          else
-          if (iCtrlID >= ID_MENUITEM_TRAYCOPYUSERNAME1 &&
-              iCtrlID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX)
-            iCtrlID = ID_MENUITEM_COPYUSERNAME;
-          else
-          if (iCtrlID >= ID_MENUITEM_TRAYVIEWEDIT1 &&
-              iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
-            iCtrlID = ID_MENUITEM_EDIT;
-          else
-          if (iCtrlID >= ID_FILE_MRU_ENTRY1 &&
-              iCtrlID <= ID_FILE_MRU_ENTRYMAX)
-            iCtrlID = ID_MENUITEM_MRUENTRY;
+                cs_text.LoadString(IDS_TRAYBROWSE);
+                if (cs_text.Compare(miinfo.dwTypeData) == 0)
+                  iCtrlID = ID_MENUITEM_BROWSEURL;
+                else
+                  iCtrlID = ID_MENUITEM_SENDEMAIL;
+            } else
+              if (iCtrlID >= ID_MENUITEM_TRAYDELETE1 &&
+                iCtrlID <= ID_MENUITEM_TRAYDELETEMAX)
+                iCtrlID = ID_MENUITEM_DELETE;
+              else
+                if (iCtrlID >= ID_MENUITEM_TRAYCOPYNOTES1 &&
+                  iCtrlID <= ID_MENUITEM_TRAYCOPYNOTESMAX)
+                  iCtrlID = ID_MENUITEM_COPYNOTESFLD;
+                else
+                  if (iCtrlID >= ID_MENUITEM_TRAYCOPYPASSWORD1 &&
+                    iCtrlID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX)
+                    iCtrlID = ID_MENUITEM_COPYPASSWORD;
+                  else
+                    if (iCtrlID >= ID_MENUITEM_TRAYCOPYUSERNAME1 &&
+                      iCtrlID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX)
+                      iCtrlID = ID_MENUITEM_COPYUSERNAME;
+                    else
+                      if (iCtrlID >= ID_MENUITEM_TRAYVIEWEDIT1 &&
+                        iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
+                        iCtrlID = ID_MENUITEM_EDIT;
+                      else
+                        if (iCtrlID >= ID_FILE_MRU_ENTRY1 &&
+                          iCtrlID <= ID_FILE_MRU_ENTRYMAX)
+                          iCtrlID = ID_MENUITEM_MRUENTRY;
 
-          pmd->iButton = GetButtonIndex(iCtrlID);
-          miinfo.dwItemData = (ULONG_PTR)pmd; //   set in menu item data
-          miinfo.fMask |= MIIM_DATA;          //   set item data
+            pmd->iButton = GetButtonIndex(iCtrlID);
+            miinfo.dwItemData = (ULONG_PTR)pmd; //   set in menu item data
+            miinfo.fMask |= MIIM_DATA;          //   set item data
         }
         pmd->text = miinfo.dwTypeData;        // copy menu item string
       }
@@ -481,17 +481,17 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
       } else                                // otherwise:
         sItemName = miinfo.dwTypeData;        //   use name from MENUITEMINFO
 
-        // NOTE: pmd (item data) could still be left hanging around even
-        // if MFT_OWNERDRAW is not set, in case mentioned above where app
-        // calls pCmdUI->SetText to set text of item and MFC sets the type
-        // to MFT_STRING.
-        //
-        miinfo.dwItemData = NULL;             // item data is NULL
-        miinfo.fMask |= MIIM_DATA;            // change it
-        delete pmd;                           // and item data too
-        PMDVectorIter iter = std::find(m_pmdList.begin(), m_pmdList.end(), pmd);
-        if (iter != m_pmdList.end())
-          m_pmdList.erase(iter);
+      // NOTE: pmd (item data) could still be left hanging around even
+      // if MFT_OWNERDRAW is not set, in case mentioned above where app
+      // calls pCmdUI->SetText to set text of item and MFC sets the type
+      // to MFT_STRING.
+      //
+      miinfo.dwItemData = NULL;             // item data is NULL
+      miinfo.fMask |= MIIM_DATA;            // change it
+      delete pmd;                           // and item data too
+      PMDVectorIter iter = std::find(m_pmdList.begin(), m_pmdList.end(), pmd);
+      if (iter != m_pmdList.end())
+        m_pmdList.erase(iter);
 
       if (miinfo.fMask & MIIM_TYPE) {
         // if setting name, copy name from CString to buffer and set cch

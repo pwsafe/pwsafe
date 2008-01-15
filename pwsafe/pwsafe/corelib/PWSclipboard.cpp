@@ -1,21 +1,21 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 /** \file
- * Implementation file for the PWSclipboard class
- */
+* Implementation file for the PWSclipboard class
+*/
 
 #include <afxole.h>
 #include "PWSclipboard.h"
 #include "util.h"
 
 PWSclipboard::PWSclipboard()
-  : m_set(false)
+: m_set(false)
 {
   memset(m_digest, 0, sizeof(m_digest));
 }

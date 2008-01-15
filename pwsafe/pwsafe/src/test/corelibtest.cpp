@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2006 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #define TEST_MYSTRING
 #define TEST_TWOFISH
 #define TEST_SHA256
@@ -28,28 +28,28 @@ using namespace std;
 int main()
 {
 #ifdef TEST_MYSTRING
-   CMyStringTest t1;
-   t1.setStream(&cout);
-   t1.run();
-   t1.report();
+  CMyStringTest t1;
+  t1.setStream(&cout);
+  t1.run();
+  t1.report();
 #endif
 #ifdef TEST_TWOFISH
-   CTwoFishTest t2;
-   t2.setStream(&cout);
-   t2.run();
-   t2.report();
+  CTwoFishTest t2;
+  t2.setStream(&cout);
+  t2.run();
+  t2.report();
 #endif
 #ifdef TEST_SHA256
-   CSHA256Test t3;
-   t3.setStream(&cout);
-   t3.run();
-   t3.report();
+  CSHA256Test t3;
+  t3.setStream(&cout);
+  t3.run();
+  t3.report();
 #endif
 #ifdef TEST_HMAC_SHA256
-   CHMAC_SHA256Test t4;
-   t4.setStream(&cout);
-   t4.run();
-   t4.report();
+  CHMAC_SHA256Test t4;
+  t4.setStream(&cout);
+  t4.run();
+  t4.report();
 #endif
-   return 0;
+  return 0;
 }

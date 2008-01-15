@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 #include "stdafx.h"
 #include "PWTreeCtrl.h"
@@ -34,41 +34,41 @@ static const char *OLE_HDR_FMT = "%08x%02x%08x";
 static const int OLE_HDR_LEN = 18;
 
 /**
- * Following classes are used to "Fake" multiple inheritance:
- * Ideally, CPWTreeCtrl should derive from CTreeCtrl, COleDropTarget
- * and COleDropSource. However, since m'soft, in their infinite
- * wisdom, couldn't get this common use-case straight,
- * we use the following classes as proxies: CPWTreeCtrl
- * has a member var for each, registers said member appropriately
- * for D&D, and member calls parent's method to do the grunt work.
- */
+* Following classes are used to "Fake" multiple inheritance:
+* Ideally, CPWTreeCtrl should derive from CTreeCtrl, COleDropTarget
+* and COleDropSource. However, since m'soft, in their infinite
+* wisdom, couldn't get this common use-case straight,
+* we use the following classes as proxies: CPWTreeCtrl
+* has a member var for each, registers said member appropriately
+* for D&D, and member calls parent's method to do the grunt work.
+*/
 
 class CPWTDropTarget : public COleDropTarget
 {
- public:
- CPWTDropTarget(CPWTreeCtrl *parent) : m_tree(*parent) {}
+public:
+  CPWTDropTarget(CPWTreeCtrl *parent) : m_tree(*parent) {}
   DROPEFFECT OnDragEnter(CWnd* pWnd , COleDataObject* pDataObject,
-                         DWORD dwKeyState, CPoint point)
+    DWORD dwKeyState, CPoint point)
   {return m_tree.OnDragEnter(pWnd, pDataObject, dwKeyState, point);}
   DROPEFFECT OnDragOver(CWnd* pWnd , COleDataObject* pDataObject,
-                        DWORD dwKeyState, CPoint point)
+    DWORD dwKeyState, CPoint point)
   {return m_tree.OnDragOver(pWnd, pDataObject, dwKeyState, point);}
   void OnDragLeave(CWnd*)
   {m_tree.OnDragLeave();}
   BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
-              DROPEFFECT dropEffect, CPoint point)
+    DROPEFFECT dropEffect, CPoint point)
   {return m_tree.OnDrop(pWnd, pDataObject, dropEffect, point);}
- private:
+private:
   CPWTreeCtrl &m_tree;
 };
 
 class CPWTDropSource : public COleDropSource
 {
- public:
- CPWTDropSource(CPWTreeCtrl *parent) : m_tree(*parent) {}
+public:
+  CPWTDropSource(CPWTreeCtrl *parent) : m_tree(*parent) {}
   virtual SCODE GiveFeedback(DROPEFFECT dropEffect )
   {return m_tree.GiveFeedback(dropEffect);}
- private:
+private:
   CPWTreeCtrl &m_tree;
 };
 
@@ -77,12 +77,12 @@ class CPWTDataSource : public COleDataSource
 public:
   CPWTDataSource(CPWTreeCtrl *parent, COleDropSource *ds)
     : m_tree(*parent), m_DropSource(ds),
-      m_mfBuffer(NULL), m_mfBufLen(0), m_hgData(NULL) {}
+    m_mfBuffer(NULL), m_mfBufLen(0), m_hgData(NULL) {}
   DROPEFFECT StartDragging(CLIPFORMAT cpfmt, LPCRECT rClient)
   {
     DelayRenderData(cpfmt);
     DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY | DROPEFFECT_MOVE,
-                                       rClient, m_DropSource);
+      rClient, m_DropSource);
     // Cleanup:
     // It is not clear if we can cleanup m_mfBuffer
     // in OnRenderGlobalData, so better to err
@@ -114,7 +114,7 @@ public:
     char header[OLE_HDR_LEN+1];
 #if _MSC_VER >= 1400
     sprintf_s(header, sizeof(header),
-              OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
+      OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
 #else
     sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
 #endif
@@ -132,7 +132,7 @@ public:
 #ifdef DUMP_DATA
     CString cs_timestamp = PWSUtil::GetTimeStamp();
     TRACE(_T("%s: Drag data: length %d/0x%04x, value:\n"), cs_timestamp,
-          m_mfBufLen, m_mfBufLen);
+      m_mfBufLen, m_mfBufLen);
     PWSUtil::HexDump(m_mfBuffer, m_mfBufLen, cs_timestamp);
 #endif /* DUMP_DATA */
 
@@ -144,7 +144,7 @@ public:
     ASSERT(lpData != NULL);
 
     memcpy((void *)lpData, m_mfBuffer, m_mfBufLen);
-    
+
     if (*phGlobal == NULL) {
       *phGlobal = m_hgData;
     } else {
@@ -167,11 +167,11 @@ private:
 };
 
 /**
- * Implementation of CPWTreeCtrl begins here
- */
+* Implementation of CPWTreeCtrl begins here
+*/
 
 CPWTreeCtrl::CPWTreeCtrl()
-  : m_isRestoring(false), m_bWithinThisInstance(true)
+: m_isRestoring(false), m_bWithinThisInstance(true)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:
@@ -202,14 +202,14 @@ CPWTreeCtrl::~CPWTreeCtrl()
 
 
 BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
-	//{{AFX_MSG_MAP(CPWTreeCtrl)
-	ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
-	ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
-	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
-	ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
+  //{{AFX_MSG_MAP(CPWTreeCtrl)
+  ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
+  ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
+  ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
+  ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
-	ON_WM_DESTROY()
-	//}}AFX_MSG_MAP
+  ON_WM_DESTROY()
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 void CPWTreeCtrl::Initialize()
@@ -269,7 +269,7 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
   }
   m_bWithinThisInstance = true;
   return ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
-    DROPEFFECT_COPY : DROPEFFECT_MOVE;
+DROPEFFECT_COPY : DROPEFFECT_MOVE;
 }
 
 DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
@@ -312,7 +312,7 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
     WPARAM wParam = MAKELONG(nScrollDir, nScrollPos);
     pWnd->SendMessage(WM_VSCROLL, wParam);
   }
-  
+
   int iPosH = GetScrollPos(SB_HORZ);
   int iMaxH = GetScrollLimit(SB_HORZ);
 
@@ -321,13 +321,13 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
     nScrollDir = SB_LINELEFT;
   else if ((point.x > rectClient.right - SCROLL_BORDER) && (iPosH != iMaxH))
     nScrollDir = SB_LINERIGHT;
-  
+
   if (nScrollDir != -1) {
     int nScrollPos = pWnd->GetScrollPos(SB_VERT);
     WPARAM wParam = MAKELONG(nScrollDir, nScrollPos);
     pWnd->SendMessage(WM_HSCROLL, wParam);
   }
-  
+
   DROPEFFECT dropeffectRet;
   // If we're dragging between processes, default is to COPY, Ctrl key
   // changes this to MOVE.
@@ -335,11 +335,11 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   // key changes this to COPY
   if (pil == NULL)
     dropeffectRet = ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
-      DROPEFFECT_MOVE : DROPEFFECT_COPY;
+DROPEFFECT_MOVE : DROPEFFECT_COPY;
   else
     dropeffectRet = ((dwKeyState & MK_CONTROL) == MK_CONTROL) ?
-      DROPEFFECT_COPY : DROPEFFECT_MOVE;
-  
+DROPEFFECT_COPY : DROPEFFECT_MOVE;
+
   return dropeffectRet;
 }
 
@@ -390,15 +390,15 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   *pLResult = TRUE; // TRUE cancels label editing
 
   /*
-   Allowed formats:
-     1.   title
-   If preference ShowUsernameInTree is set:
-     2.   title [username]
-   If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-     3.   title [username] {password}
+  Allowed formats:
+  1.   title
+  If preference ShowUsernameInTree is set:
+  2.   title [username]
+  If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+  3.   title [username] {password}
 
-   Neither Title, Username or Password may contain square or curly brackes to be 
-   edited in place and visible.
+  Neither Title, Username or Password may contain square or curly brackes to be 
+  edited in place and visible.
   */
   HTREEITEM ti = ptvinfo->item.hItem;
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -416,12 +416,12 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
     currentUser = ci->GetUser();
     if (prefs->GetPref(PWSprefs::ShowUsernameInTree) &&
-        currentUser.FindOneOf(_T("[]{}")) != -1)
+      currentUser.FindOneOf(_T("[]{}")) != -1)
       return;
 
     currentPassword = ci->GetPassword();
     if (prefs->GetPref(PWSprefs::ShowPasswordInTree) &&
-        currentPassword.FindOneOf(_T("[]{}")) != -1)
+      currentPassword.FindOneOf(_T("[]{}")) != -1)
       return;
   }  
   // Allow in-place editing
@@ -481,7 +481,7 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
 
   // Check we are in the right order - square before curly
   if (OpenSquareBraceIndex >= 0 && OpenCurlyBraceIndex >= 0 &&
-      OpenCurlyBraceIndex < OpenSquareBraceIndex)
+    OpenCurlyBraceIndex < OpenSquareBraceIndex)
     return false;
 
   if (OpenSquareBraceIndex == -1 && OpenCurlyBraceIndex == -1) {
@@ -495,7 +495,7 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
     newTitle = cs_leafText.Left(OpenSquareBraceIndex);
     newTitle.Trim();
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
-                  CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
+      CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
     newUser.Trim();
     goto final_check;
   }
@@ -505,7 +505,7 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
     newTitle = cs_leafText.Left(OpenCurlyBraceIndex);
     newTitle.Trim();
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
-                  CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
+      CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
     newPassword.Trim();
     bPasswordSet = true;
     goto final_check;
@@ -516,10 +516,10 @@ static bool splitLeafText(const TCHAR *lt, CString &newTitle,
     newTitle = cs_leafText.Left(OpenSquareBraceIndex);
     newTitle.Trim();
     newUser = cs_leafText.Mid(OpenSquareBraceIndex + 1, 
-                  CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
+      CloseSquareBraceIndex - OpenSquareBraceIndex - 1);
     newUser.Trim();
     newPassword = cs_leafText.Mid(OpenCurlyBraceIndex + 1, 
-                  CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
+      CloseCurlyBraceIndex - OpenCurlyBraceIndex - 1);
     newPassword.Trim();
     bPasswordSet = true;
     goto final_check;
@@ -549,137 +549,137 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   // puts in the new dispay text, it will be ignored.
 
   /* Allowed formats:
-     1.   title
-   If preference ShowUsernameInTree is set:
-     2.   title [username]
-   If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-     3.   title [username] {password}
+  1.   title
+  If preference ShowUsernameInTree is set:
+  2.   title [username]
+  If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+  3.   title [username] {password}
 
-   There can only be one of each:
-     open square brace
-     close square brace
-     open curly brace
-     close curly brace
+  There can only be one of each:
+  open square brace
+  close square brace
+  open curly brace
+  close curly brace
 
-   If pos_xtb = position of x = open/close, t = square/curly brackes, then
+  If pos_xtb = position of x = open/close, t = square/curly brackes, then
 
-     pos_osb < pos_csb < pos_ocb < pos_ccb
+  pos_osb < pos_csb < pos_ocb < pos_ccb
 
-   Title and Password are mandatory fields within the PWS database and so, if specified,
-   these fields cannot be empty.
+  Title and Password are mandatory fields within the PWS database and so, if specified,
+  these fields cannot be empty.
   */
 
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pnmhdr;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText != NULL && // NULL if edit cancelled,
-      ptvinfo->item.pszText[0] != TCHAR('\0')) { // empty if text deleted - not allowed
-    ptvinfo->item.mask = TVIF_TEXT;
-    SetItem(&ptvinfo->item);
-    if (IsLeaf(ptvinfo->item.hItem)) {
-      DWORD_PTR itemData = GetItemData(ti);
-      ASSERT(itemData != NULL);
-      CItemData *ci = (CItemData *)itemData;
-      CString group, newTitle, newUser, newPassword;
+    ptvinfo->item.pszText[0] != TCHAR('\0')) { // empty if text deleted - not allowed
+      ptvinfo->item.mask = TVIF_TEXT;
+      SetItem(&ptvinfo->item);
+      if (IsLeaf(ptvinfo->item.hItem)) {
+        DWORD_PTR itemData = GetItemData(ti);
+        ASSERT(itemData != NULL);
+        CItemData *ci = (CItemData *)itemData;
+        CString group, newTitle, newUser, newPassword;
 
-      if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
-        // errors in user's input - restore text and refresh display
-        goto bad_exit;
-      }
-
-      group = CString(ci->GetGroup());
-      if (dbx->Find(group, newTitle, newUser) != dbx->End()) {
-        CMyString temp;
-        if (group.IsEmpty())
-          temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
-        else
-          temp.Format(IDS_ENTRYEXISTS, group, newTitle, newUser);
-        AfxMessageBox(temp);
-        goto bad_exit;
-      }
-
-      if (newUser.IsEmpty())
-        newUser = CString(ci->GetUser());
-      if (newPassword.IsEmpty())
-        newPassword = CString(ci->GetPassword());
-
-      PWSprefs *prefs = PWSprefs::GetInstance();
-      CString treeDispString;
-      bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-      bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-
-      treeDispString = newTitle;
-      if (bShowUsernameInTree) {
-        treeDispString += _T(" [");
-        treeDispString += newUser;
-        treeDispString += _T("]");
-
-        if (bShowPasswordInTree) {
-          treeDispString += _T(" {");
-          treeDispString += newPassword;
-          treeDispString += _T("}");
-	      }
-      }
-
-      // Update corresponding Tree mode text with the new display text (ie: in case 
-      // the username was removed and had to be normalized back in).  Note that
-      // we cannot do "SetItemText(ti, treeDispString)" here since Windows will
-      // automatically overwrite and update the item text with the contents from 
-      // the "ptvinfo->item.pszText" buffer.
-      PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
-                      treeDispString, ptvinfo->item.cchTextMax);
-      ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = TCHAR('\0');
-
-      // update corresponding List mode text
-      DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
-      ASSERT(di != NULL);
-      int lindex = di->list_index;
-
-      // update the password database record - but only those items visible!!!
-      ci->SetTitle(newTitle);
-      DboxMain *dbx = static_cast<DboxMain *>(GetParent());
-      dbx->UpdateListItemTitle(lindex, newTitle);
-      if (bShowUsernameInTree) {
-        ci->SetUser(newUser);
-        dbx->UpdateListItemUser(lindex, newUser);
-        if (bShowPasswordInTree) {
-          ci->SetPassword(newPassword);
-          dbx->UpdateListItemPassword(lindex, newPassword);
+        if (!splitLeafText(ptvinfo->item.pszText, newTitle, newUser, newPassword)) {
+          // errors in user's input - restore text and refresh display
+          goto bad_exit;
         }
-      }
-    } else {
-      // Update all leaf children with new path element
-      // prefix is path up to and NOT including renamed node
-      CString prefix;
-      HTREEITEM parent, current = ti;
-      do {
-        parent = GetParentItem(current);
-        if (parent == NULL) {
-          break;
-        }
-        current = parent;
-        if (!prefix.IsEmpty())
-          prefix = GROUP_SEP + prefix;
-        prefix = GetItemText(current) + prefix;
-      } while (1);
-      UpdateLeafsGroup(ti, prefix);
-    }
-    // Mark database as modified
-    dbx->SetChanged(DboxMain::Data);
 
-    // put edited text in right order by sorting
+        group = CString(ci->GetGroup());
+        if (dbx->Find(group, newTitle, newUser) != dbx->End()) {
+          CMyString temp;
+          if (group.IsEmpty())
+            temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
+          else
+            temp.Format(IDS_ENTRYEXISTS, group, newTitle, newUser);
+          AfxMessageBox(temp);
+          goto bad_exit;
+        }
+
+        if (newUser.IsEmpty())
+          newUser = CString(ci->GetUser());
+        if (newPassword.IsEmpty())
+          newPassword = CString(ci->GetPassword());
+
+        PWSprefs *prefs = PWSprefs::GetInstance();
+        CString treeDispString;
+        bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
+        bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
+
+        treeDispString = newTitle;
+        if (bShowUsernameInTree) {
+          treeDispString += _T(" [");
+          treeDispString += newUser;
+          treeDispString += _T("]");
+
+          if (bShowPasswordInTree) {
+            treeDispString += _T(" {");
+            treeDispString += newPassword;
+            treeDispString += _T("}");
+          }
+        }
+
+        // Update corresponding Tree mode text with the new display text (ie: in case 
+        // the username was removed and had to be normalized back in).  Note that
+        // we cannot do "SetItemText(ti, treeDispString)" here since Windows will
+        // automatically overwrite and update the item text with the contents from 
+        // the "ptvinfo->item.pszText" buffer.
+        PWSUtil::strCopy(ptvinfo->item.pszText, ptvinfo->item.cchTextMax,
+          treeDispString, ptvinfo->item.cchTextMax);
+        ptvinfo->item.pszText[ptvinfo->item.cchTextMax - 1] = TCHAR('\0');
+
+        // update corresponding List mode text
+        DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
+        ASSERT(di != NULL);
+        int lindex = di->list_index;
+
+        // update the password database record - but only those items visible!!!
+        ci->SetTitle(newTitle);
+        DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+        dbx->UpdateListItemTitle(lindex, newTitle);
+        if (bShowUsernameInTree) {
+          ci->SetUser(newUser);
+          dbx->UpdateListItemUser(lindex, newUser);
+          if (bShowPasswordInTree) {
+            ci->SetPassword(newPassword);
+            dbx->UpdateListItemPassword(lindex, newPassword);
+          }
+        }
+      } else {
+        // Update all leaf children with new path element
+        // prefix is path up to and NOT including renamed node
+        CString prefix;
+        HTREEITEM parent, current = ti;
+        do {
+          parent = GetParentItem(current);
+          if (parent == NULL) {
+            break;
+          }
+          current = parent;
+          if (!prefix.IsEmpty())
+            prefix = GROUP_SEP + prefix;
+          prefix = GetItemText(current) + prefix;
+        } while (1);
+        UpdateLeafsGroup(ti, prefix);
+      }
+      // Mark database as modified
+      dbx->SetChanged(DboxMain::Data);
+
+      // put edited text in right order by sorting
       SortTree(GetParentItem(ti));
 
-    // OK
-    *pLResult = TRUE;
-    return;
+      // OK
+      *pLResult = TRUE;
+      return;
   }
 
 bad_exit:
-    // Refresh display to show old text - if we don't no one else will
-    dbx->RefreshViews();
-    // restore text
-    // (not that this is documented anywhere in MS's docs...)
-    *pLResult = FALSE;
+  // Refresh display to show old text - if we don't no one else will
+  dbx->RefreshViews();
+  // restore text
+  // (not that this is documented anywhere in MS's docs...)
+  *pLResult = FALSE;
 }
 
 bool CPWTreeCtrl::IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent)
@@ -750,11 +750,11 @@ static CMyString GetPathElem(CMyString &path)
 }
 
 static bool ExistsInTree(CTreeCtrl &Tree, HTREEITEM node,
-			 const CMyString &s, HTREEITEM &si)
+                         const CMyString &s, HTREEITEM &si)
 {
   // returns true iff s is a direct descendant of node
   HTREEITEM ti = Tree.GetChildItem(node);
-  
+
   while (ti != NULL) {
     const CMyString itemText = Tree.GetItemText(ti);
     if (itemText == s) {
@@ -797,7 +797,7 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   tvstruct.item.cchTextMax = sizeof(sztBuffer)/sizeof(TCHAR) - 1;
   tvstruct.item.pszText = sztBuffer;
   tvstruct.item.mask = (TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE |
-                        TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT);
+    TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT);
   GetItem(&tvstruct.item);  // get information of the dragged element
 
   LPARAM itemData = tvstruct.item.lParam;
@@ -964,24 +964,24 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
 
   bool bForceRoot(false);
   switch (uFlags) {
-    case TVHT_ABOVE: case TVHT_BELOW: case TVHT_TOLEFT: case TVHT_TORIGHT:
-      return FALSE;
-    case TVHT_NOWHERE:
-      if (hitemDrop == NULL) {
-        // Treat as drop in root
-        hitemDrop = GetRootItem();
-        bForceRoot = true;
-      } else
-        return FALSE;
-      break;
-    case TVHT_ONITEM: case TVHT_ONITEMBUTTON: case TVHT_ONITEMICON:
-    case TVHT_ONITEMINDENT: case TVHT_ONITEMLABEL: case TVHT_ONITEMRIGHT:
-    case TVHT_ONITEMSTATEICON:
-      if (hitemDrop == NULL)
-        return FALSE;
-      break;
-    default:
-      return FALSE;
+case TVHT_ABOVE: case TVHT_BELOW: case TVHT_TOLEFT: case TVHT_TORIGHT:
+  return FALSE;
+case TVHT_NOWHERE:
+  if (hitemDrop == NULL) {
+    // Treat as drop in root
+    hitemDrop = GetRootItem();
+    bForceRoot = true;
+  } else
+    return FALSE;
+  break;
+case TVHT_ONITEM: case TVHT_ONITEMBUTTON: case TVHT_ONITEMICON:
+case TVHT_ONITEMINDENT: case TVHT_ONITEMLABEL: case TVHT_ONITEMRIGHT:
+case TVHT_ONITEMSTATEICON:
+  if (hitemDrop == NULL)
+    return FALSE;
+  break;
+default:
+  return FALSE;
   }
 
   BOOL retval(FALSE);
@@ -1039,15 +1039,15 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
     if (m_hitemDrag != hitemDrop &&
       !IsChildNodeOf(hitemDrop, m_hitemDrag) &&
       parent != hitemDrop) {
-      // drag operation allowed
-      if (dropEffect == DROPEFFECT_MOVE) {
-        MoveItem(m_hitemDrag, hitemDrop);
-      } else if (dropEffect == DROPEFFECT_COPY) {
-        CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
-        SortTree(hitemDrop);
-      }
-      SelectItem(hitemDrop);
-      retval = TRUE;
+        // drag operation allowed
+        if (dropEffect == DROPEFFECT_MOVE) {
+          MoveItem(m_hitemDrag, hitemDrop);
+        } else if (dropEffect == DROPEFFECT_COPY) {
+          CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
+          SortTree(hitemDrop);
+        }
+        SelectItem(hitemDrop);
+        retval = TRUE;
     } else {
       // drag failed or cancelled, revert to last selected
       SelectItem(m_hitemDrag);
@@ -1107,8 +1107,8 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
     DboxMain *dbx = static_cast<DboxMain *>(GetParent());
     // If inter-process Move, we need to delete original
     if ((de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
-        !m_bWithinThisInstance && !dbx->IsMcoreReadOnly()) {
-      dbx->Delete();
+      !m_bWithinThisInstance && !dbx->IsMcoreReadOnly()) {
+        dbx->Delete();
     }
     // wrong place to clean up imagelist?
     pil->DragLeave(GetDesktopWindow());
@@ -1173,28 +1173,28 @@ void CPWTreeCtrl::OnCollapseAll()
     return;
   SetRedraw(FALSE);
   do {
-	  CollapseBranch(hItem);
+    CollapseBranch(hItem);
   } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   SetRedraw(TRUE);
 }
 
 void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)
 {
-	// Courtesy of Zafir Anjumfrom www.codeguru.com
-	if(ItemHasChildren(hItem)) {
-		Expand(hItem, TVE_COLLAPSE);
-		hItem = GetChildItem(hItem);
-		do {
-			CollapseBranch(hItem);
-		} while((hItem = GetNextSiblingItem(hItem)) != NULL);
-	}
+  // Courtesy of Zafir Anjumfrom www.codeguru.com
+  if(ItemHasChildren(hItem)) {
+    Expand(hItem, TVE_COLLAPSE);
+    hItem = GetChildItem(hItem);
+    do {
+      CollapseBranch(hItem);
+    } while((hItem = GetNextSiblingItem(hItem)) != NULL);
+  }
 }
 
 HTREEITEM
 CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem) 
 {
-	if (NULL == hItem)
-		return GetRootItem(); 
+  if (NULL == hItem)
+    return GetRootItem(); 
 
   // First, try to go to this item's 1st child 
   HTREEITEM hReturn = GetChildItem(hItem); 
@@ -1251,10 +1251,10 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
   DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
 
 #ifdef DUMP_DATA
-   CString cs_timestamp;
-   cs_timestamp = PWSUtil::GetTimeStamp();
-   TRACE(_T("%s: Drop data: length %d/0x%04x, value:\n"), cs_timestamp, inLen, inLen);
-   PWSUtil::HexDump(in_buffer, inLen, cs_timestamp);
+  CString cs_timestamp;
+  cs_timestamp = PWSUtil::GetTimeStamp();
+  TRACE(_T("%s: Drop data: length %d/0x%04x, value:\n"), cs_timestamp, inLen, inLen);
+  PWSUtil::HexDump(in_buffer, inLen, cs_timestamp);
 #endif /* DUMP_DATA */
 
   if (inLen <= 0)
@@ -1292,7 +1292,7 @@ CPWTreeCtrl::GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem)
     for (child = GetChildItem(hItem);
       child != NULL;
       child = GetNextSiblingItem(child)) {
-      GetGroupEntriesData(out_oblist, child);
+        GetGroupEntriesData(out_oblist, child);
     }
   }
 }
@@ -1324,20 +1324,20 @@ CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
     cibase = &(iter->second);
     pDDObject->SetBaseItem(cibase);
   } else
-  if (ci->IsShortcut()) {
-    // I'm a shortcut; pass on ptr to my base item to retrieve its group/title/user
-    CItemData *cibase(NULL);
-    uuid_array_t base_uuid, entry_uuid;
-    ci->GetUUID(entry_uuid);
-    DboxMain *dbx = static_cast<DboxMain *>(GetParent());
-    dbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
-    ItemListIter iter = dbx->Find(base_uuid);
-    ASSERT(iter != dbx->End());
-    cibase = &(iter->second);
-    pDDObject->SetBaseItem(cibase);
-  }
+    if (ci->IsShortcut()) {
+      // I'm a shortcut; pass on ptr to my base item to retrieve its group/title/user
+      CItemData *cibase(NULL);
+      uuid_array_t base_uuid, entry_uuid;
+      ci->GetUUID(entry_uuid);
+      DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+      dbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
+      ItemListIter iter = dbx->Find(base_uuid);
+      ASSERT(iter != dbx->End());
+      cibase = &(iter->second);
+      pDDObject->SetBaseItem(cibase);
+    }
 
-  out_oblist.AddTail(pDDObject);
+    out_oblist.AddTail(pDDObject);
 }
 
 CMyString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
@@ -1408,7 +1408,7 @@ CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
   HTREEITEM hti(htreeitem);
 
   if (hti == NULL)
-      hti = TVI_ROOT;
+    hti = TVI_ROOT;
 
   if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) {
     SortChildren(hti);

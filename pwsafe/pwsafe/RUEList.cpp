@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file RUEList.cpp
 //-----------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ RUEntry::RUEntry(const uuid_array_t &aRUEuuid)
 bool RUEntry::operator()(const RUEntry &re)
 {
   return ::memcmp(RUEuuid, re.RUEuuid,
-                  sizeof(uuid_array_t)) == 0;
+    sizeof(uuid_array_t)) == 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -163,10 +163,10 @@ bool
 CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
 {
   /*
-   * If the entry's already there, do nothing, return true.
-   * Otherwise, add it, removing last entry if needed to
-   * maintain size() <= m_maxentries invariant
-   */
+  * If the entry's already there, do nothing, return true.
+  * Otherwise, add it, removing last entry if needed to
+  * maintain size() <= m_maxentries invariant
+  */
   if (m_maxentries == 0) return false;
 
   RUEntry match_uuid(RUEuuid);
@@ -189,9 +189,9 @@ bool
 CRUEList::DeleteRUEntry(size_t index)
 {
   if ((m_maxentries == 0) ||
-      m_RUEList.empty() ||
-      (index > (m_maxentries - 1)) ||
-      (index > (m_RUEList.size() - 1))) return false;
+    m_RUEList.empty() ||
+    (index > (m_maxentries - 1)) ||
+    (index > (m_RUEList.size() - 1))) return false;
 
   m_RUEList.erase(m_RUEList.begin() + index);
   return true;
@@ -216,9 +216,9 @@ CRUEList::DeleteRUEntry(const uuid_array_t &RUEuuid)
 bool
 CRUEList::GetPWEntry(size_t index, CItemData &ci){
   if ((m_maxentries == 0) ||
-      m_RUEList.empty() ||
-      (index > (m_maxentries - 1)) ||
-      (index > (m_RUEList.size() - 1))) return false;
+    m_RUEList.empty() ||
+    (index > (m_maxentries - 1)) ||
+    (index > (m_RUEList.size() - 1))) return false;
 
   const RUEntry &re_FoundEntry = m_RUEList[index];
 

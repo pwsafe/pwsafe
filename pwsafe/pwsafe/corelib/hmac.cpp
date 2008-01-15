@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #include "hmac.h"
 #include "Util.h" // for ASSERT
 #include <string.h>
@@ -55,7 +55,7 @@ void HMAC_SHA256::Update(const unsigned char *in, unsigned long inlen)
 
 void HMAC_SHA256::Final(unsigned char digest[SHA256::HASHLEN])
 {
-    unsigned char d[HASHLEN];
+  unsigned char d[HASHLEN];
 
   H.Final(d);
   unsigned char k_opad[B];

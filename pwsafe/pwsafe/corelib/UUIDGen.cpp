@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // UUIDGen.cpp
 // Silly class for generating UUIDs
 // Each instance has its own unique value, 
@@ -65,20 +65,20 @@ void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_NH_t &uuid_buffer)
   memset(uuid_buffer, 0x00, sizeof(uuid_str_NH_t));
 #if _MSC_VER >= 1400
   sprintf_s(uuid_buffer, sizeof(uuid_str_NH_t),
-            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+    "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+    uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #else
   sprintf(uuid_buffer,
-          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-          uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-          uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-          uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-          uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+    "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
+    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+    uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #endif
- }
+}
 
 void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_WH_t &uuid_buffer)
 {
@@ -86,20 +86,20 @@ void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_WH_t &uuid_buffer)
   memset(uuid_buffer, 0x00, sizeof(uuid_str_WH_t));
 #if _MSC_VER >= 1400
   sprintf_s(uuid_buffer, sizeof(uuid_str_WH_t),
-            "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
-            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+    "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
+    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+    uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #else
   sprintf(uuid_buffer,
-          "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
-          uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-          uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-          uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-          uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+    "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
+    uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
+    uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
+    uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
+    uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
 #endif
- }
+}
 
 #ifdef TEST
 #include <stdio.h>
@@ -113,10 +113,10 @@ int main()
     printf("%s\n",str);
     uuid.GetUUID(uuid_array);
     printf(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n"),
-	   uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3], 
-	   uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7], 
-	   uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11], 
-	   uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+      uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3], 
+      uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7], 
+      uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11], 
+      uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
   }
   return 0;
 }

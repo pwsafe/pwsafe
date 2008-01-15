@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file ThisMfcApp.cpp
 /// \brief App object of MFC version of Password Safe
 //-----------------------------------------------------------------------------
@@ -16,14 +16,14 @@
 #include "corelib/SysInfo.h"
 
 #if defined(POCKET_PC)
-  #include "pocketpc/PocketPC.h"
-  #include "pocketpc/resource.h"
+#include "pocketpc/PocketPC.h"
+#include "pocketpc/resource.h"
 #else
-  #include <errno.h>
-  #include <io.h>
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
+#include <errno.h>
+#include <io.h>
+#include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #endif
 
 #include "ThisMfcApp.h"
@@ -38,7 +38,7 @@
 #include "Shlwapi.h"
 
 #include <vector>
- // for finding current propertysheet:
+// for finding current propertysheet:
 #include "PWPropertyPage.h"
 
 using namespace std;
@@ -50,18 +50,18 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 BEGIN_MESSAGE_MAP(ThisMfcApp, CWinApp)
-//   ON_COMMAND(ID_HELP, CWinApp::OnHelp)
-   ON_COMMAND(ID_HELP, OnHelp)
+  //   ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+  ON_COMMAND(ID_HELP, OnHelp)
 END_MESSAGE_MAP()
 
 ThisMfcApp::ThisMfcApp() :
 #if defined(POCKET_PC)
-	m_bUseAccelerator( false ),
+m_bUseAccelerator( false ),
 #else
-	m_bUseAccelerator( true ),
+m_bUseAccelerator( true ),
 #endif
-	m_pMRU( NULL ), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
-	m_HotKeyPressed(false)
+m_pMRU( NULL ), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
+m_HotKeyPressed(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
 #if defined(POCKET_PC)
@@ -78,10 +78,10 @@ ThisMfcApp::ThisMfcApp() :
 #define ENDIANNESS2	0 // Little
 #endif
   if (*(unsigned int*)buf != ii) {
-  	CString cs_msg, cs_e1, cs_e2;
-  	cs_e1.LoadString(ENDIANNESS1 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
-  	cs_e2.LoadString(ENDIANNESS2 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
-  	cs_msg.Format(IDS_ENDIANERROR, cs_e1, cs_e2);
+    CString cs_msg, cs_e1, cs_e2;
+    cs_e1.LoadString(ENDIANNESS1 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
+    cs_e2.LoadString(ENDIANNESS2 == 0 ? IDS_LITTLEENDIAN : IDS_BIGENDIAN);
+    cs_msg.Format(IDS_ENDIANERROR, cs_e1, cs_e2);
     AfxMessageBox(cs_msg);
   }
 #endif
@@ -153,18 +153,18 @@ ThisMfcApp::ExitInstance()
 class CLWnd : public CWnd
 {
 public:
-    CLWnd(DboxMain &dbox) : m_dbox(dbox) {}
-    virtual LRESULT WindowProc(UINT message,
-                               WPARAM wParam, LPARAM lParam)
-        {
-            if (message != (WM_APP+0x765))
-                return CWnd::WindowProc(message, wParam, lParam);
-            else
-                m_dbox.U3ExitNow();
-            return 0L;
-        }
+  CLWnd(DboxMain &dbox) : m_dbox(dbox) {}
+  virtual LRESULT WindowProc(UINT message,
+    WPARAM wParam, LPARAM lParam)
+  {
+    if (message != (WM_APP+0x765))
+      return CWnd::WindowProc(message, wParam, lParam);
+    else
+      m_dbox.U3ExitNow();
+    return 0L;
+  }
 private:
-    DboxMain &m_dbox;
+  DboxMain &m_dbox;
 };
 
 
@@ -177,20 +177,20 @@ GetVersionInfoFromFile(const CString &csFileName,
 
   // Get version information from the given file
   dwVerInfoSize = ::GetFileVersionInfoSize((LPTSTR)(LPCTSTR)csFileName,
-                                           &dwVerHnd);
+    &dwVerHnd);
   if (dwVerInfoSize > 0) {
     char* pVersionInfo = new char[dwVerInfoSize];
     if(pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPTSTR)(LPCTSTR)csFileName,
-                                       (DWORD)dwVerHnd,
-                                       (DWORD)dwVerInfoSize,
-                                       (LPVOID)pVersionInfo);
+        (DWORD)dwVerHnd,
+        (DWORD)dwVerInfoSize,
+        (LPVOID)pVersionInfo);
       if (bRet) {
         // get binary file version information
         VS_FIXEDFILEINFO *szVer = NULL;
         UINT uVerLength; 
         bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
-                               (LPVOID*)&szVer, &uVerLength);
+          (LPVOID*)&szVer, &uVerLength);
         if (bRet) {
           MajorMinor = szVer->dwProductVersionMS;
           BuildRevision = szVer->dwProductVersionLS;
@@ -205,108 +205,108 @@ GetVersionInfoFromFile(const CString &csFileName,
 void ThisMfcApp::LoadLocalizedStuff()
 {
   /*
-    Looks for localized version of resources and help files, loads them if found
+  Looks for localized version of resources and help files, loads them if found
 
-    Format of resource-only DLL names (in dir returned by GetExeDir)
-    pwsafeLL_CC.dll
-    or
-    pwsafeLL.dll
+  Format of resource-only DLL names (in dir returned by GetExeDir)
+  pwsafeLL_CC.dll
+  or
+  pwsafeLL.dll
 
-    where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
-    see http://www.loc.gov/standards/iso639-2/
-    and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
-    see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
+  where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
+  see http://www.loc.gov/standards/iso639-2/
+  and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
+  see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
 
-    Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
-    .NET V2 and later applications (CultureInfo Class)
-    or under Vista (via LOCALE_SNAME).
-    Older native and .NET V1 applications only support the ISO 639-1 two character
-    language codes.
+  Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
+  .NET V2 and later applications (CultureInfo Class)
+  or under Vista (via LOCALE_SNAME).
+  Older native and .NET V1 applications only support the ISO 639-1 two character
+  language codes.
 
-    We will use locale info from ::GetLocaleInfo unless PWS_LANG is defined.
+  We will use locale info from ::GetLocaleInfo unless PWS_LANG is defined.
 
-    Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
-    can't be found, the resources embedded in the executable pwsafe.exe will be used 
-    (US English i.e. equivalent to pwsafeEN_US.dll)).
+  Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
+  can't be found, the resources embedded in the executable pwsafe.exe will be used 
+  (US English i.e. equivalent to pwsafeEN_US.dll)).
 
-    Likewise, we will look for localized versions of pwsafe.chm in GetHelpDir,
-    defaulting to pwsafe.chm if not found.
+  Likewise, we will look for localized versions of pwsafe.chm in GetHelpDir,
+  defaulting to pwsafe.chm if not found.
   */
 
-	CString cs_PWS_LANG, cs_LANG, cs_CTRY;
-	BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
-	if (bPLRC == TRUE) { // did user override via PWS_LANG env var?
+  CString cs_PWS_LANG, cs_LANG, cs_CTRY;
+  BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(_T("PWS_LANG"));
+  if (bPLRC == TRUE) { // did user override via PWS_LANG env var?
     cs_LANG = cs_PWS_LANG;
     cs_CTRY = _T("");
   } else { // no override, use Locale info
     int inum;
     TCHAR szLang[4], szCtry[4];
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME,
-                           szLang, 4);
+      szLang, 4);
     ASSERT(inum == 3);
     _tcsupr(szLang);
     TRACE(_T("%s LOCALE_SISO639LANGNAME=%s\n"), PWSUtil::GetTimeStamp(), szLang);
 
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
-                           szCtry, 4);
+      szCtry, 4);
     ASSERT(inum == 3);
     TRACE(_T("%s LOCALE_SISO3166CTRYNAME=%s\n"), PWSUtil::GetTimeStamp(), szCtry);
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
   const CString cs_ExePath(PWSdirs::GetExeDir());
-	CString cs_ResPath;
+  CString cs_ResPath;
 
-	cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), cs_ExePath, cs_LANG, cs_CTRY);
+  cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), cs_ExePath, cs_LANG, cs_CTRY);
   m_hInstResDLL = LoadLibrary(cs_ResPath);
 
-	if(m_hInstResDLL == NULL) {
-		cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_LANG);
-		m_hInstResDLL = LoadLibrary(cs_ResPath);
+  if(m_hInstResDLL == NULL) {
+    cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_LANG);
+    m_hInstResDLL = LoadLibrary(cs_ResPath);
   }
   if(m_hInstResDLL == NULL) {
     TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
-          PWSUtil::GetTimeStamp());
-	} else { // successfully loaded a resource dll, check version
+      PWSUtil::GetTimeStamp());
+  } else { // successfully loaded a resource dll, check version
     DWORD MajorMinor, BuildRevision;
     GetVersionInfoFromFile(cs_ResPath, MajorMinor, BuildRevision);
 
-		if (MajorMinor != GetFileVersionMajorMinor()) { // ignore build for now
-			TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %d/%d.\n"), 
-            PWSUtil::GetTimeStamp(), cs_ResPath,
-            GetFileVersionMajorMinor(), MajorMinor);
-			FreeLibrary(m_hInstResDLL);
-			m_hInstResDLL = NULL;
-		} else { // Passed version check
-			TRACE(_T("%s Using language DLL '%s'.\n"),
-            PWSUtil::GetTimeStamp(), cs_ResPath);
-		}
-	} // end of resource dll hunt
+    if (MajorMinor != GetFileVersionMajorMinor()) { // ignore build for now
+      TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %d/%d.\n"), 
+        PWSUtil::GetTimeStamp(), cs_ResPath,
+        GetFileVersionMajorMinor(), MajorMinor);
+      FreeLibrary(m_hInstResDLL);
+      m_hInstResDLL = NULL;
+    } else { // Passed version check
+      TRACE(_T("%s Using language DLL '%s'.\n"),
+        PWSUtil::GetTimeStamp(), cs_ResPath);
+    }
+  } // end of resource dll hunt
 
-	if (m_hInstResDLL != NULL)
-		AfxSetResourceHandle(m_hInstResDLL);
+  if (m_hInstResDLL != NULL)
+    AfxSetResourceHandle(m_hInstResDLL);
 
   /**
-   * So far, we've handle the resource dll. Now go for the compiled helpfile
-   * in a similar manner.
-   */
+  * So far, we've handle the resource dll. Now go for the compiled helpfile
+  * in a similar manner.
+  */
 
-	CString cs_HelpPath;
+  CString cs_HelpPath;
   const CString cs_HelpDir(PWSdirs::GetHelpDir());
   bool helpFileFound = false;
 
-	CString cs_PWS_HELP;
-	BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(_T("PWS_HELP"));
-	if (bPHRC == TRUE) {
-		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_PWS_HELP);
-		if (PathFileExists(cs_HelpPath)) {
+  CString cs_PWS_HELP;
+  BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(_T("PWS_HELP"));
+  if (bPHRC == TRUE) {
+    cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_PWS_HELP);
+    if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
-			if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
-			m_pszHelpFilePath = _tcsdup(cs_HelpPath);
-			TRACE(_T("%s Help file overriden by user. Using %s.\n"),
-            PWSUtil::GetTimeStamp(), cs_HelpPath);
-		}
-	}
+      if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
+      m_pszHelpFilePath = _tcsdup(cs_HelpPath);
+      TRACE(_T("%s Help file overriden by user. Using %s.\n"),
+        PWSUtil::GetTimeStamp(), cs_HelpPath);
+    }
+  }
 
   if (!helpFileFound) {
     cs_HelpPath.Format(_T("%spwsafe%s_%s.chm"), cs_HelpDir, cs_LANG, cs_CTRY);
@@ -315,23 +315,23 @@ void ThisMfcApp::LoadLocalizedStuff()
     }
   }
   if (!helpFileFound) {
-		cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_LANG);
-		if (PathFileExists(cs_HelpPath)) {
+    cs_HelpPath.Format(_T("%spwsafe%s.chm"), cs_HelpDir, cs_LANG);
+    if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
-		}
+    }
   }
   if (!helpFileFound) {
-		cs_HelpPath.Format(_T("%spwsafe.chm"), cs_HelpDir);
-		if (PathFileExists(cs_HelpPath)) {
+    cs_HelpPath.Format(_T("%spwsafe.chm"), cs_HelpDir);
+    if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
-		}
+    }
   }
   if (!helpFileFound) { // last resort
     TCHAR fname[_MAX_FNAME];
     TCHAR ext[_MAX_EXT];
 #if _MSC_VER >= 1400
     _tsplitpath_s( m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
-                   _MAX_FNAME, ext, _MAX_EXT );
+      _MAX_FNAME, ext, _MAX_EXT );
     _tcslwr_s(fname, _MAX_FNAME);
     _tcslwr_s(ext, _MAX_EXT);
 #else
@@ -348,15 +348,15 @@ void ThisMfcApp::LoadLocalizedStuff()
   m_pszHelpFilePath = _tcsdup(cs_HelpPath);
   TRACE(_T("%s Using help file: %s\n"), PWSUtil::GetTimeStamp(), cs_HelpPath);
 
-	m_csHelpFile = cs_HelpPath;
+  m_csHelpFile = cs_HelpPath;
 }
 
 BOOL
 ThisMfcApp::InitInstance()
 {
   /*
-   * It's always best to start at the beginning.  [Glinda, Witch of the North]
-   */
+  * It's always best to start at the beginning.  [Glinda, Witch of the North]
+  */
 
   // Needed for RichEditCtrls in Dialogs (i.e. not explicitly "created").
   AfxInitRichEdit2();
@@ -374,18 +374,18 @@ ThisMfcApp::InitInstance()
 #endif
 
   /*
-    this instructs the app to use the registry instead of .ini files.  The
-    path ends up being
+  this instructs the app to use the registry instead of .ini files.  The
+  path ends up being
 
-    HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
-    where companyname is what's set here, and appname is taken from
-    AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
+  HKEY_CURRENT_USER\Software\(companyname)\(appname)\(sectionname)\(valuename)
+  where companyname is what's set here, and appname is taken from
+  AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
 
-    Notes:
-    1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
-    member function.
-    2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
-    for discussion on how this is handled.
+  Notes:
+  1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
+  member function.
+  2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
+  for discussion on how this is handled.
   */
   SetRegistryKey(_T("Password Safe"));
 
@@ -393,19 +393,19 @@ ThisMfcApp::InitInstance()
   m_core.SetReadOnly(false);
 
   /*
-   * Command line processing:
-   * Historically, it appears that if a filename was passed as a commadline argument,
-   * the application would prompt the user for the password, and the encrypt or decrypt
-   * the named file, based on the file's suffix. Ugh.
-   *
-   * What I'll do is as follows:
-   * If a file is given in the command line, it is used as the database, overriding the
-   * registry value. This will allow the user to have several databases, say, one for work
-   * and one for personal use, and to set up a different shortcut for each.
-   *
-   * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
-   * {kjp} ... and I've removed all of it from the Pocket PC build.
-   */
+  * Command line processing:
+  * Historically, it appears that if a filename was passed as a commadline argument,
+  * the application would prompt the user for the password, and the encrypt or decrypt
+  * the named file, based on the file's suffix. Ugh.
+  *
+  * What I'll do is as follows:
+  * If a file is given in the command line, it is used as the database, overriding the
+  * registry value. This will allow the user to have several databases, say, one for work
+  * and one for personal use, and to set up a different shortcut for each.
+  *
+  * I think I'll keep the old functionality, but activate it with a "-e" or "-d" flag. (ronys)
+  * {kjp} ... and I've removed all of it from the Pocket PC build.
+  */
 
 #if !defined(POCKET_PC)
   if (m_lpCmdLine[0] != TCHAR('\0')) {
@@ -435,96 +435,96 @@ ThisMfcApp::InitInstance()
       // everything else is the name of a file.
       if ((*arg)[0] == TCHAR('-')) {
         switch ((*arg)[1]) {
-        case TCHAR('E'): case TCHAR('e'):
-          isEncrypt = true;
-        // deliberate fallthru
-        case TCHAR('D'): case TCHAR('d'):
-          {
-            // Make sure there's another argument
-            // and it's not a flag, and it is an existing file
-            if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-') ||
-                !CheckFile(*(arg + 1))) {
-              Usage();
-              return FALSE;
-            }
-            // get password from user
-            CMyString passkey;
-            CCryptKeyEntry dlg(NULL);
-            INT_PTR nResponse = dlg.DoModal();
+case TCHAR('E'): case TCHAR('e'):
+  isEncrypt = true;
+  // deliberate fallthru
+case TCHAR('D'): case TCHAR('d'):
+  {
+    // Make sure there's another argument
+    // and it's not a flag, and it is an existing file
+    if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-') ||
+      !CheckFile(*(arg + 1))) {
+        Usage();
+        return FALSE;
+    }
+    // get password from user
+    CMyString passkey;
+    CCryptKeyEntry dlg(NULL);
+    INT_PTR nResponse = dlg.DoModal();
 
-            if (nResponse == IDOK) {
-              passkey = dlg.m_cryptkey1;
-            } else {
-              return FALSE;
-            }
+    if (nResponse == IDOK) {
+      passkey = dlg.m_cryptkey1;
+    } else {
+      return FALSE;
+    }
 
-            BOOL status;
-            if (isEncrypt) {
-              status = PWSfile::Encrypt(*(arg + 1), passkey);
-              if (!status) {
-                AfxMessageBox(IDS_ENCRYPTIONFAILED);
-              }
-              return TRUE;
-            } else {
-              status = PWSfile::Decrypt(*(arg+1), passkey);
-              if (!status) {
-                // nothing to do - Decrypt displays its own error messages
-              }
-              return TRUE;
-            }
-          } // -e or -d flag
-        case TCHAR('C'): case TCHAR('c'):
-          m_core.SetCurFile(_T(""));
-          dbox.SetStartClosed(true);
-        break;
-        case TCHAR('M'): case TCHAR('m'):// closed & minimized
-          m_core.SetCurFile(_T(""));
-          dbox.SetStartClosed(true);
-          dbox.SetStartSilent(true);
-          break;
-        case TCHAR('R'): case TCHAR('r'):
-          m_core.SetReadOnly(true);
-          break;
-        case TCHAR('S'): case TCHAR('s'):
-          startSilent = true;
-          dbox.SetStartSilent(true);
-          break;
-        case TCHAR('V'): case TCHAR('v'):
-          dbox.SetValidate(true);
-          break;
-        case TCHAR('U'): case TCHAR('u'): // set effective user
-          // ensure there's another non-flag argument
-          if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
-            Usage();
-            return FALSE;
-          } else {
-            arg++;
-            SysInfo::GetInstance()->SetEffectiveUser(*arg);
-          }
-        break;
-        case TCHAR('H'): case TCHAR('h'): // set effective host
-          // ensure there's another non-flag argument
-          if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
-            Usage();
-            return FALSE;
-          } else {
-            arg++;
-            SysInfo::GetInstance()->SetEffectiveHost(*arg);
-          }
-        break;
-        case TCHAR('G'): case TCHAR('g'): // override default config file
-          // ensure there's another non-flag argument
-          if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
-            Usage();
-            return FALSE;
-          } else {
-            arg++;
-            PWSprefs::SetConfigFile(*arg);
-          }
-        break;
-        default:
-          Usage();
-          return FALSE;
+    BOOL status;
+    if (isEncrypt) {
+      status = PWSfile::Encrypt(*(arg + 1), passkey);
+      if (!status) {
+        AfxMessageBox(IDS_ENCRYPTIONFAILED);
+      }
+      return TRUE;
+    } else {
+      status = PWSfile::Decrypt(*(arg+1), passkey);
+      if (!status) {
+        // nothing to do - Decrypt displays its own error messages
+      }
+      return TRUE;
+    }
+  } // -e or -d flag
+case TCHAR('C'): case TCHAR('c'):
+  m_core.SetCurFile(_T(""));
+  dbox.SetStartClosed(true);
+  break;
+case TCHAR('M'): case TCHAR('m'):// closed & minimized
+  m_core.SetCurFile(_T(""));
+  dbox.SetStartClosed(true);
+  dbox.SetStartSilent(true);
+  break;
+case TCHAR('R'): case TCHAR('r'):
+  m_core.SetReadOnly(true);
+  break;
+case TCHAR('S'): case TCHAR('s'):
+  startSilent = true;
+  dbox.SetStartSilent(true);
+  break;
+case TCHAR('V'): case TCHAR('v'):
+  dbox.SetValidate(true);
+  break;
+case TCHAR('U'): case TCHAR('u'): // set effective user
+  // ensure there's another non-flag argument
+  if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
+    Usage();
+    return FALSE;
+  } else {
+    arg++;
+    SysInfo::GetInstance()->SetEffectiveUser(*arg);
+  }
+  break;
+case TCHAR('H'): case TCHAR('h'): // set effective host
+  // ensure there's another non-flag argument
+  if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
+    Usage();
+    return FALSE;
+  } else {
+    arg++;
+    SysInfo::GetInstance()->SetEffectiveHost(*arg);
+  }
+  break;
+case TCHAR('G'): case TCHAR('g'): // override default config file
+  // ensure there's another non-flag argument
+  if ((arg + 1) == argvec.end() || (arg + 1)[0] == TCHAR('-')) {
+    Usage();
+    return FALSE;
+  } else {
+    arg++;
+    PWSprefs::SetConfigFile(*arg);
+  }
+  break;
+default:
+  Usage();
+  return FALSE;
         } // switch on flag
       } else { // arg isn't a flag, treat it as a filename
         if (CheckFile(*arg)) {
@@ -570,7 +570,7 @@ ThisMfcApp::InitInstance()
     pos = -1;
 
   m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"),
-                                   ((nMRUItems != 0) ? nMRUItems : 1));
+    ((nMRUItems != 0) ? nMRUItems : 1));
   if (nMRUItems > 0) {
     if (pos > -1) {
       int irc;
@@ -578,23 +578,23 @@ ThisMfcApp::InitInstance()
       new_popupmenu.CreatePopupMenu();
       CString cs_recent(MAKEINTRESOURCE(IDS_RECENT)), 
         cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
-          
+
       if (!m_mruonfilemenu) {	// MRU entries in popup menu
         // Insert Item onto new popup
         irc = new_popupmenu.InsertMenu(0, MF_BYPOSITION,
-                                       ID_FILE_MRU_ENTRY1, cs_recent);
+          ID_FILE_MRU_ENTRY1, cs_recent);
         ASSERT(irc != 0);
         // Insert Popup onto main menu
         ASSERT(file_submenu != NULL);
         irc = file_submenu->InsertMenu(pos + 2,
-                                       MF_BYPOSITION | MF_POPUP,
-                                       UINT_PTR(new_popupmenu.m_hMenu),
-                                       cs_recentsafes);
+          MF_BYPOSITION | MF_POPUP,
+          UINT_PTR(new_popupmenu.m_hMenu),
+          cs_recentsafes);
         ASSERT(irc != 0);
       } else {	// MRU entries inline
         ASSERT(file_submenu != NULL);
         irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
-                                       ID_FILE_MRU_ENTRY1, cs_recent);
+          ID_FILE_MRU_ENTRY1, cs_recent);
         ASSERT(irc != 0);
       } // m_mruonfilemenu
 
@@ -621,21 +621,21 @@ ThisMfcApp::InitInstance()
   CMenu* help_submenu = m_mainmenu->GetSubMenu(hpos);
   if (help_submenu != NULL) {
     help_submenu->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
-                             CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
+      CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
   }
 
 #endif /* DEMO */
 
   /*
-   * normal startup
-   */
+  * normal startup
+  */
 
   /*
-    Here's where PWS currently does DboxMain, which in turn will do
-    the initial PasskeyEntry (the one that looks like a splash screen).
-    This makes things very hard to control.
-    The app object (here) should instead do the initial PasskeyEntry,
-    and, if successful, move on to DboxMain.  I think. {jpr}
+  Here's where PWS currently does DboxMain, which in turn will do
+  the initial PasskeyEntry (the one that looks like a splash screen).
+  This makes things very hard to control.
+  The app object (here) should instead do the initial PasskeyEntry,
+  and, if successful, move on to DboxMain.  I think. {jpr}
   */
   m_maindlg = &dbox;
   m_pMainWnd = m_maindlg;
@@ -649,8 +649,8 @@ ThisMfcApp::InitInstance()
   int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   SetClosedTrayIcon(iData);
   m_TrayIcon = new CSystemTray(NULL, WM_ICON_NOTIFY, _T("PasswordSafe"),
-                               m_LockedIcon, dbox.m_RUEList,
-                               WM_ICON_NOTIFY, IDR_POPTRAY);
+    m_LockedIcon, dbox.m_RUEList,
+    WM_ICON_NOTIFY, IDR_POPTRAY);
   m_TrayIcon->SetTarget(&dbox);
 
 #endif
@@ -658,7 +658,7 @@ ThisMfcApp::InitInstance()
   // Set up an Accelerator table
 #if !defined(POCKET_PC)
   m_ghAccelTable = LoadAccelerators(AfxGetResourceHandle(),
-                                    MAKEINTRESOURCE(IDR_ACCS));
+    MAKEINTRESOURCE(IDR_ACCS));
 #endif
 
   CLWnd ListenerWnd(dbox);
@@ -666,10 +666,10 @@ ThisMfcApp::InitInstance()
     // See comment under CLWnd to understand this.
     ListenerWnd.m_hWnd = NULL;
     if (!ListenerWnd.CreateEx(0, AfxRegisterWndClass(0),
-                              _T("Pwsafe Listener"),
-                              WS_OVERLAPPED, 0, 0, 0, 0, NULL, NULL)) {
-      ASSERT(0);
-      return FALSE;
+      _T("Pwsafe Listener"),
+      WS_OVERLAPPED, 0, 0, 0, 0, NULL, NULL)) {
+        ASSERT(0);
+        return FALSE;
     } 
   }
 
@@ -684,68 +684,68 @@ ThisMfcApp::InitInstance()
 void
 ThisMfcApp::AddToMRU(const CString &pszFilename)
 {
-	if (m_pMRU == NULL)
-		return;
+  if (m_pMRU == NULL)
+    return;
 
-	CString csMRUFilename(pszFilename);
-	csMRUFilename.Trim();
-	if (!csMRUFilename.IsEmpty()) {
-		m_pMRU->Add(csMRUFilename);
-		m_pMRU->WriteList();
-    }
+  CString csMRUFilename(pszFilename);
+  csMRUFilename.Trim();
+  if (!csMRUFilename.IsEmpty()) {
+    m_pMRU->Add(csMRUFilename);
+    m_pMRU->WriteList();
+  }
 }
 
 void
 ThisMfcApp::ClearMRU()
 {
-	if (m_pMRU == NULL)
-		return;
+  if (m_pMRU == NULL)
+    return;
 
-	int numMRU = m_pMRU->GetSize();
-	for (int i = numMRU; i > 0; i--)
-		m_pMRU->Remove(i - 1);
+  int numMRU = m_pMRU->GetSize();
+  for (int i = numMRU; i > 0; i--)
+    m_pMRU->Remove(i - 1);
 
-    m_pMRU->WriteList();
+  m_pMRU->WriteList();
 
-     // Can't get the MRU list on the menu to tidy up automatically
-	// Do it manually!
-	CWnd* pMain = AfxGetMainWnd();
+  // Can't get the MRU list on the menu to tidy up automatically
+  // Do it manually!
+  CWnd* pMain = AfxGetMainWnd();
 
-	CMenu* xmainmenu = pMain->GetMenu();
+  CMenu* xmainmenu = pMain->GetMenu();
 
-	// Look for "File" menu.
-	int pos = FindMenuItem(xmainmenu, ID_FILEMENU);
-	if (pos == -1) // E.g., in non-English versions
-		pos = 0; // best guess...
+  // Look for "File" menu.
+  int pos = FindMenuItem(xmainmenu, ID_FILEMENU);
+  if (pos == -1) // E.g., in non-English versions
+    pos = 0; // best guess...
 
-	CMenu* xfile_submenu = xmainmenu->GetSubMenu(pos);
-	if (xfile_submenu != NULL)  // Look for MRU first entry
-		pos = FindMenuItem(xfile_submenu, ID_FILE_MRU_ENTRY1);
-	else
-		return;
+  CMenu* xfile_submenu = xmainmenu->GetSubMenu(pos);
+  if (xfile_submenu != NULL)  // Look for MRU first entry
+    pos = FindMenuItem(xfile_submenu, ID_FILE_MRU_ENTRY1);
+  else
+    return;
 
-	if (pos > -1) {
-		// Recent databases are on the main File menu
-		for (int nID = numMRU; nID > 1; nID--)
-			xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
+  if (pos > -1) {
+    // Recent databases are on the main File menu
+    for (int nID = numMRU; nID > 1; nID--)
+      xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
-		return;
-	}
+    return;
+  }
 
-	// Recent databases are on the popup menu off the main File menu
-	CMenu* xpopupmenu = xfile_submenu->GetSubMenu(3);
-	if (xpopupmenu != NULL)  // Look for MRU first entry
-		pos = FindMenuItem(xpopupmenu, ID_FILE_MRU_ENTRY1);
-	else
-		return;
+  // Recent databases are on the popup menu off the main File menu
+  CMenu* xpopupmenu = xfile_submenu->GetSubMenu(3);
+  if (xpopupmenu != NULL)  // Look for MRU first entry
+    pos = FindMenuItem(xpopupmenu, ID_FILE_MRU_ENTRY1);
+  else
+    return;
 
-	if (pos > -1) {
-		// Recent databases are on the main File menu
-		for (int nID = numMRU; nID > 1; nID--)
-			xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
+  if (pos > -1) {
+    // Recent databases are on the main File menu
+    for (int nID = numMRU; nID > 1; nID--)
+      xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
-		return;
-	}
+    return;
+  }
 }
 
 int
@@ -753,22 +753,22 @@ ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
 {
   int icon;
   switch (iData) {
-  case PWSprefs::stiBlack:
-      icon = IDI_TRAY;  // This is black.
-      break;
-  case PWSprefs::stiBlue:
-      icon = IDI_TRAY_BLUE;
-      break;
-  case PWSprefs::stiWhite:
-      icon = IDI_TRAY_WHITE;
-      break;
-  case PWSprefs::stiYellow:
-      icon = IDI_TRAY_YELLOW;
-      break;
-    default:
-      iData = PWSprefs::stiBlack;
-      icon = IDI_TRAY;
-      break;
+case PWSprefs::stiBlack:
+  icon = IDI_TRAY;  // This is black.
+  break;
+case PWSprefs::stiBlue:
+  icon = IDI_TRAY_BLUE;
+  break;
+case PWSprefs::stiWhite:
+  icon = IDI_TRAY_WHITE;
+  break;
+case PWSprefs::stiYellow:
+  icon = IDI_TRAY_YELLOW;
+  break;
+default:
+  iData = PWSprefs::stiBlack;
+  icon = IDI_TRAY;
+  break;
   }
   if (bSet)
     m_ClosedIcon = app.LoadIcon(icon);
@@ -783,21 +783,21 @@ ThisMfcApp::SetSystemTrayState(STATE s)
   // tricky initialization order
   if (m_TrayIcon != NULL && s != m_TrayLockedState) {
     m_TrayLockedState = s;
-	HICON hIcon(m_LockedIcon);
-	switch (s) {
-		case LOCKED:
-			hIcon = m_LockedIcon;
-			break;
-		case UNLOCKED:
-			hIcon = m_UnLockedIcon;
-			break;
-		case CLOSED:
-			hIcon = m_ClosedIcon;
-			break;
-		default:
-			break;
-	}
-	m_TrayIcon->SetIcon(hIcon);
+    HICON hIcon(m_LockedIcon);
+    switch (s) {
+case LOCKED:
+  hIcon = m_LockedIcon;
+  break;
+case UNLOCKED:
+  hIcon = m_UnLockedIcon;
+  break;
+case CLOSED:
+  hIcon = m_ClosedIcon;
+  break;
+default:
+  break;
+    }
+    m_TrayIcon->SetIcon(hIcon);
   }
 }
 
@@ -811,11 +811,11 @@ ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
     CWinApp::ProcessMessageFilter(code, lpMsg);
 
   if (m_bUseAccelerator &&
-      m_maindlg != NULL &&
-      m_ghAccelTable != NULL &&
-      code != MSGF_MENU) {
-    if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))
-      return TRUE;
+    m_maindlg != NULL &&
+    m_ghAccelTable != NULL &&
+    code != MSGF_MENU) {
+      if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))
+        return TRUE;
   }
   return CWinApp::ProcessMessageFilter(code, lpMsg);
 }
@@ -829,10 +829,10 @@ ThisMfcApp::OnHelp()
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#mainhelp"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   /*
-   * Following mess because CPropertySheet is too smart for its own
-   * good. The "Help" button there is mapped to the App framework,
-   * and that's that...
-   */
+  * Following mess because CPropertySheet is too smart for its own
+  * good. The "Help" button there is mapped to the App framework,
+  * and that's that...
+  */
   CString cs_title;
   CWnd *wnd = CWnd::GetCapture();
   if (wnd == NULL)
@@ -844,9 +844,9 @@ ThisMfcApp::OnHelp()
   }
   const CString cs_option_text(MAKEINTRESOURCE(IDS_OPTIONS));
   if (cs_title != cs_option_text) {
-      ::HtmlHelp(wnd != NULL ? wnd->m_hWnd : NULL,
-               (LPCTSTR)m_csHelpFile,
-               HH_DISPLAY_TOPIC, 0);
+    ::HtmlHelp(wnd != NULL ? wnd->m_hWnd : NULL,
+      (LPCTSTR)m_csHelpFile,
+      HH_DISPLAY_TOPIC, 0);
   } else { // Options propertysheet - find out active page
     CString helptab;
     CPropertySheet *ps = dynamic_cast<CPropertySheet *>(wnd);
@@ -874,7 +874,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
   for (int i = 0; i < count; i++) {
     CString str;
     if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
-        (_tcscmp(str, MenuString) == 0))
+      (_tcscmp(str, MenuString) == 0))
       return i;
   }
 
@@ -920,15 +920,15 @@ ThisMfcApp::GetApplicationVersionData()
     char* pVersionInfo = new char[dwVerInfoSize];
     if(pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
-                                       (DWORD)dwVerHnd,
-                                       (DWORD)dwVerInfoSize,
-                                       (LPVOID)pVersionInfo);
+        (DWORD)dwVerHnd,
+        (DWORD)dwVerInfoSize,
+        (LPVOID)pVersionInfo);
       VS_FIXEDFILEINFO *szVer = NULL;
       UINT uVerLength; 
       if (bRet) {
         // get binary file version information
         bRet = ::VerQueryValue(pVersionInfo, TEXT("\\"),
-                               (LPVOID*)&szVer, &uVerLength);
+          (LPVOID*)&szVer, &uVerLength);
         if (bRet) {
           m_dwMajorMinor = szVer->dwProductVersionMS;
           m_dwBuildRevision = szVer->dwProductVersionLS;
@@ -947,24 +947,24 @@ ThisMfcApp::GetApplicationVersionData()
         TRANSARRAY* lpTransArray;
 
         VerQueryValue(pVersionInfo, _T("\\VarFileInfo\\Translation"),
-                      (LPVOID*)&buffer, &buflen);
+          (LPVOID*)&buffer, &buflen);
         lpTransArray = (TRANSARRAY*) buffer;
 
         // Get string File Version information 
         cs_text.Format(_T("\\StringFileInfo\\%04x%04x\\FileVersion"),
-                       lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
-				lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(TCHAR));
+          lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
+        lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(TCHAR));
         bRet = ::VerQueryValue(pVersionInfo, lpsztext, (LPVOID*)&buffer, &buflen); 
         m_csFileVersionString = bRet ? buffer : _T("");
-				cs_text.ReleaseBuffer();
+        cs_text.ReleaseBuffer();
 
         // Get string Legal Copyright information 
         cs_text.Format(_T("\\StringFileInfo\\%04x%04x\\LegalCopyright"),
-                       lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
-				lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(TCHAR));
+          lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
+        lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(TCHAR));
         bRet = ::VerQueryValue(pVersionInfo, lpsztext, (LPVOID*)&buffer, &buflen); 
         m_csCopyrightString = bRet ? buffer : _T("All rights reserved.");
-				cs_text.ReleaseBuffer();
+        cs_text.ReleaseBuffer();
       }
     }
     delete[] pVersionInfo;

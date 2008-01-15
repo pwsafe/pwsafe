@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 /// CompareResultsDlg.cpp
 //-----------------------------------------------------------------------------
@@ -34,21 +34,21 @@ IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWDialog)
 
 //-----------------------------------------------------------------------------
 CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
-  CompareData &OnlyInCurrent, CompareData &OnlyInComp,
-  CompareData &Conflicts, CompareData &Identical,
-  CItemData::FieldBits &bsFields, PWScore *pcore0, PWScore *pcore1,
-  CReport *prpt)
-  : CPWDialog(CCompareResultsDlg::IDD, pParent),
-  m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
-  m_Conflicts(Conflicts), m_Identical(Identical),
-  m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
-  m_prpt(prpt), m_bSortAscending(true), m_iSortedColumn(0),
-  m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
-  m_ShowIdenticalEntries(BST_UNCHECKED),
-  m_DialogMinWidth(455), m_DialogMinHeight(415),
-  m_DialogMaxWidth(999), m_DialogMaxHeight(1024)
-  // Need to set default values for MinWidth & MinHeight as OnGetMinMaxInfo is 
-  // called during Create before set in InitDialog
+                                       CompareData &OnlyInCurrent, CompareData &OnlyInComp,
+                                       CompareData &Conflicts, CompareData &Identical,
+                                       CItemData::FieldBits &bsFields, PWScore *pcore0, PWScore *pcore1,
+                                       CReport *prpt)
+                                       : CPWDialog(CCompareResultsDlg::IDD, pParent),
+                                       m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
+                                       m_Conflicts(Conflicts), m_Identical(Identical),
+                                       m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
+                                       m_prpt(prpt), m_bSortAscending(true), m_iSortedColumn(0),
+                                       m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
+                                       m_ShowIdenticalEntries(BST_UNCHECKED),
+                                       m_DialogMinWidth(455), m_DialogMinHeight(415),
+                                       m_DialogMaxWidth(999), m_DialogMaxHeight(1024)
+                                       // Need to set default values for MinWidth & MinHeight as OnGetMinMaxInfo is 
+                                       // called during Create before set in InitDialog
 {
 }
 
@@ -126,9 +126,9 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_numConflicts = m_Conflicts.size();
   m_numIdentical = m_Identical.size();
   m_LCResults.SetItemCount(m_numOnlyInCurrent +
-                           m_numOnlyInComp +
-                           m_numConflicts +
-                           m_numIdentical);
+    m_numOnlyInComp +
+    m_numConflicts +
+    m_numIdentical);
 
   AddEntries(false);
 
@@ -192,9 +192,9 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_cySBar = sbRect.Size().cy;
 
   pwndListCtrl->SetWindowPos(NULL, NULL, NULL,
-                        dlgRect.Size().cx - (2 * ctrlRect.TopLeft().x),
-                        dlgRect.Size().cy - m_cyBSpace,
-                        SWP_NOMOVE | SWP_NOZORDER);
+    dlgRect.Size().cx - (2 * ctrlRect.TopLeft().x),
+    dlgRect.Size().cy - m_cyBSpace,
+    SWP_NOMOVE | SWP_NOZORDER);
 
   GetWindowRect(&dlgRect);
 
@@ -208,7 +208,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
 
   this->SetWindowPos(NULL, NULL, NULL, m_DialogMinWidth, m_DialogMinHeight, 
-                     SWP_NOMOVE | SWP_NOZORDER);
+    SWP_NOMOVE | SWP_NOZORDER);
 
   CString resultStr;
   GetReportData(resultStr);
@@ -243,29 +243,29 @@ void CCompareResultsDlg::AddEntries(const bool bAddIdentical)
   CompareData::iterator cd_iter;
 
   if (bAddIdentical && m_numIdentical > 0) {
-      for (cd_iter = m_Identical.begin(); cd_iter != m_Identical.end(); cd_iter++) {
-        st_CompareData &st_data = *cd_iter;
+    for (cd_iter = m_Identical.begin(); cd_iter != m_Identical.end(); cd_iter++) {
+      st_CompareData &st_data = *cd_iter;
 
-        if (st_data.unknflds0)
-          m_LCResults.InsertItem(iItem, _T("=*"));
-        else
-          m_LCResults.InsertItem(iItem, _T("="));
-        if (st_data.unknflds1)
-          m_LCResults.SetItemText(iItem, COMPARE, _T("=*"));
-        else
-          m_LCResults.SetItemText(iItem, COMPARE, _T("="));
+      if (st_data.unknflds0)
+        m_LCResults.InsertItem(iItem, _T("=*"));
+      else
+        m_LCResults.InsertItem(iItem, _T("="));
+      if (st_data.unknflds1)
+        m_LCResults.SetItemText(iItem, COMPARE, _T("=*"));
+      else
+        m_LCResults.SetItemText(iItem, COMPARE, _T("="));
 
-        m_LCResults.SetItemText(iItem, GROUP, st_data.group);
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title);
-        m_LCResults.SetItemText(iItem, USER, st_data.user);
-        for (i = USER + 1; i < m_nCols; i++)
-          m_LCResults.SetItemText(iItem, i, _T("-"));
+      m_LCResults.SetItemText(iItem, GROUP, st_data.group);
+      m_LCResults.SetItemText(iItem, TITLE, st_data.title);
+      m_LCResults.SetItemText(iItem, USER, st_data.user);
+      for (i = USER + 1; i < m_nCols; i++)
+        m_LCResults.SetItemText(iItem, i, _T("-"));
 
-        st_data.listindex = iItem;
-        m_LCResults.SetItemData(iItem, MAKELONG(IDENTICAL, st_data.id));
-        iItem++;
-      }
+      st_data.listindex = iItem;
+      m_LCResults.SetItemData(iItem, MAKELONG(IDENTICAL, st_data.id));
+      iItem++;
     }
+  }
 
   if (m_numOnlyInCurrent > 0) {
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end(); cd_iter++) {
@@ -357,9 +357,9 @@ void CCompareResultsDlg::AddEntries(const bool bAddIdentical)
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(BOTH, st_data.id));
       iItem++;
-      }
     }
   }
+}
 
 void
 CCompareResultsDlg::OnShowIdenticalEntries()
@@ -426,7 +426,7 @@ CCompareResultsDlg::UpdateStatusBar()
 {
   CString s;
   s.Format(IDS_COMPARERESULTS, m_numOnlyInCurrent, m_numOnlyInComp,
-                               m_numConflicts, m_numIdentical);
+    m_numConflicts, m_numIdentical);
   m_statusBar.SetPaneText(0, s, TRUE);
   m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
   m_statusBar.UpdateWindow();
@@ -449,7 +449,7 @@ CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st_data
     st_info->clicked_column = m_column;
 
     LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-                  WM_COMPARE_RESULT_FUNCTION, (WPARAM)st_info, (LPARAM)ifunction);
+      WM_COMPARE_RESULT_FUNCTION, (WPARAM)st_info, (LPARAM)ifunction);
     if (lres == TRUE) {
       CMyString group, title, user, buffer;
       ItemListIter pos;
@@ -512,25 +512,25 @@ CCompareResultsDlg::GetCompareData(const DWORD dwItemData, CCompareResultsDlg *s
   switch (iList) {
     case IDENTICAL:
       cd_iter = std::find_if(self->m_Identical.begin(), self->m_Identical.end(),
-                             equal_id(id));
+        equal_id(id));
       if (cd_iter != self->m_Identical.end())
         retval = &*cd_iter;
       break;
     case BOTH:
       cd_iter = std::find_if(self->m_Conflicts.begin(), self->m_Conflicts.end(),
-                             equal_id(id));
+        equal_id(id));
       if (cd_iter != self->m_Conflicts.end())
         retval = &*cd_iter;
       break;
     case CURRENT:
       cd_iter = std::find_if(self->m_OnlyInCurrent.begin(), self->m_OnlyInCurrent.end(),
-                             equal_id(id));
+        equal_id(id));
       if (cd_iter != self->m_OnlyInCurrent.end())
         retval = &*cd_iter;
       break;
     case COMPARE:
       cd_iter = std::find_if(self->m_OnlyInComp.begin(), self->m_OnlyInComp.end(),
-                             equal_id(id));
+        equal_id(id));
       if (cd_iter != self->m_OnlyInComp.end())
         retval = &*cd_iter;
       break;
@@ -728,7 +728,7 @@ CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
 
   int indatabase = st_data->indatabase;
   if (m_column != indatabase && 
-      (indatabase != BOTH && indatabase != IDENTICAL))
+    (indatabase != BOTH && indatabase != IDENTICAL))
     return;
 
   CMenu menu;
@@ -744,7 +744,7 @@ CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
     if (bSourceRO || m_column == COMPARE) {
       const CString cs_View_Entry(MAKEINTRESOURCE(IDS_VIEWENTRY));
       pPopup->ModifyMenu(ID_MENUITEM_COMPVIEWEDIT, MF_BYCOMMAND,
-                         ID_MENUITEM_COMPVIEWEDIT, cs_View_Entry);
+        ID_MENUITEM_COMPVIEWEDIT, cs_View_Entry);
     }
 
     pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, msg_pt.x, msg_pt.y, this);
@@ -797,14 +797,14 @@ CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   *pResult = TRUE;
 }
 
-  /*
-   * Compare function used by m_LCResults.SortItems()
-   * "The comparison function must return a negative value if the first item should precede
-   * the second, a positive value if the first item should follow the second, or zero if
-   * the two items are equivalent."
-   */
+/*
+* Compare function used by m_LCResults.SortItems()
+* "The comparison function must return a negative value if the first item should precede
+* the second, a positive value if the first item should follow the second, or zero if
+* the two items are equivalent."
+*/
 int CALLBACK CCompareResultsDlg::CRCompareFunc(LPARAM lParam1, LPARAM lParam2,
-           LPARAM lParamSort)
+                                               LPARAM lParamSort)
 {
 
   // m_bSortAscending to determine the direction of the sort (duh)
@@ -838,11 +838,11 @@ CCompareResultsDlg::GetReportData(CString &data)
     buffer.Format(IDS_COMPAREENTRIES1, m_cs_Filename1);
     resultStr += buffer;
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end();
-         cd_iter++) {
-      const st_CompareData &st_data = *cd_iter;
+      cd_iter++) {
+        const st_CompareData &st_data = *cd_iter;
 
-      buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-      resultStr += buffer;
+        buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
+        resultStr += buffer;
     }
     resultStr += _T("\r\n");
   }
@@ -851,11 +851,11 @@ CCompareResultsDlg::GetReportData(CString &data)
     buffer.Format(IDS_COMPAREENTRIES2, m_cs_Filename2);
     resultStr += buffer;
     for (cd_iter = m_OnlyInComp.begin(); cd_iter != m_OnlyInComp.end();
-         cd_iter++) {
-      const st_CompareData &st_data = *cd_iter;
+      cd_iter++) {
+        const st_CompareData &st_data = *cd_iter;
 
-      buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-      resultStr += buffer;
+        buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
+        resultStr += buffer;
     }
     resultStr += _T("\r\n");
   }
@@ -875,26 +875,26 @@ CCompareResultsDlg::GetReportData(CString &data)
     const CString csx_rmtime(MAKEINTRESOURCE(IDS_COMPRMTIME));
     const CString csx_pwhistory(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
-    
+
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
-         cd_iter++) {
-      const st_CompareData &st_data = *cd_iter;
+      cd_iter++) {
+        const st_CompareData &st_data = *cd_iter;
 
-      buffer.Format(IDS_COMPARESTATS2, st_data.group, st_data.title, st_data.user);
-      resultStr += buffer;
+        buffer.Format(IDS_COMPARESTATS2, st_data.group, st_data.title, st_data.user);
+        resultStr += buffer;
 
-      if (st_data.bsDiffs.test(CItemData::PASSWORD)) resultStr += csx_password;
-      if (st_data.bsDiffs.test(CItemData::NOTES)) resultStr += csx_notes;
-      if (st_data.bsDiffs.test(CItemData::URL)) resultStr += csx_url;
-      if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += csx_autotype;
-      if (st_data.bsDiffs.test(CItemData::CTIME)) resultStr += csx_ctime;
-      if (st_data.bsDiffs.test(CItemData::PMTIME)) resultStr += csx_pmtime;
-      if (st_data.bsDiffs.test(CItemData::ATIME)) resultStr += csx_atime;
-      if (st_data.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
-      if (st_data.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
-      if (st_data.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
-      if (st_data.bsDiffs.test(CItemData::POLICY)) resultStr += csx_policy;
-      resultStr += _T("\r\n");
+        if (st_data.bsDiffs.test(CItemData::PASSWORD)) resultStr += csx_password;
+        if (st_data.bsDiffs.test(CItemData::NOTES)) resultStr += csx_notes;
+        if (st_data.bsDiffs.test(CItemData::URL)) resultStr += csx_url;
+        if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += csx_autotype;
+        if (st_data.bsDiffs.test(CItemData::CTIME)) resultStr += csx_ctime;
+        if (st_data.bsDiffs.test(CItemData::PMTIME)) resultStr += csx_pmtime;
+        if (st_data.bsDiffs.test(CItemData::ATIME)) resultStr += csx_atime;
+        if (st_data.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
+        if (st_data.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
+        if (st_data.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
+        if (st_data.bsDiffs.test(CItemData::POLICY)) resultStr += csx_policy;
+        resultStr += _T("\r\n");
     }
   }
   data = resultStr;
@@ -925,9 +925,9 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   pt_top.y = ctrlRect.top;
   ScreenToClient(&pt_top);
   pwndODBText->MoveWindow(pt_top.x, pt_top.y,
-                    cx - pt_top.x - 5,
-                    ctrlRect.Height(),
-                    TRUE);
+    cx - pt_top.x - 5,
+    ctrlRect.Height(),
+    TRUE);
 
   GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_cs_Filename1);
 
@@ -936,9 +936,9 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   pt_top.y = ctrlRect.top;
   ScreenToClient(&pt_top);
   pwndCDBText->MoveWindow(pt_top.x, pt_top.y,
-                    cx - pt_top.x - 5,
-                    ctrlRect.Height(),
-                    TRUE);
+    cx - pt_top.x - 5,
+    ctrlRect.Height(),
+    TRUE);
 
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
 
@@ -949,9 +949,9 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   ScreenToClient(&pt_top);
 
   pwndListCtrl->MoveWindow(pt_top.x, pt_top.y,
-                        cx - (2 * pt_top.x),
-                        cy - m_cyBSpace,
-                        TRUE);
+    cx - (2 * pt_top.x),
+    cy - m_cyBSpace,
+    TRUE);
 
   // Keep buttons in the bottom area
   int xleft, ytop;
@@ -972,9 +972,9 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   ScreenToClient(&pt_top);
 
   m_statusBar.MoveWindow(pt_top.x, cy - ctrlRect.Height(),
-                        cx - (2 * pt_top.x),
-                        ctrlRect.Height(),
-                        TRUE);
+    cx - (2 * pt_top.x),
+    ctrlRect.Height(),
+    TRUE);
 }
 
 void CCompareResultsDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)

@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file DboxPassword.cpp
 //-----------------------------------------------------------------------------
 
@@ -116,13 +116,13 @@ DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
     numsymbols = (passwordpolicy.m_pwsymbolminlength == 0) ? 1 : passwordpolicy.m_pwsymbolminlength;  
 
   CPasswordCharPool pwchars(passwordpolicy.m_pwdefaultlength,
-                            numlowercase,
-                            numuppercase,
-                            numdigits,
-                            numsymbols,
-                            passwordpolicy.m_pwusehexdigits,
-                            passwordpolicy.m_pweasyvision,
-                            passwordpolicy.m_pwmakepronounceable);
+    numlowercase,
+    numuppercase,
+    numdigits,
+    numsymbols,
+    passwordpolicy.m_pwusehexdigits,
+    passwordpolicy.m_pweasyvision,
+    passwordpolicy.m_pwmakepronounceable);
 
   password = pwchars.MakePassword();
 

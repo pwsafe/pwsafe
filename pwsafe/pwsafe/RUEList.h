@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #pragma once
 
 // RUEList.h
@@ -19,9 +19,9 @@
 //-----------------------------------------------------------------------------
 
 /*
- * CRUEList is a class that contains the recently used entries
- *
- */
+* CRUEList is a class that contains the recently used entries
+*
+*/
 
 // Following is Most Recent Entry field separator for dynamic menu:
 #define MRE_FS _T("\xbb")
@@ -58,7 +58,7 @@ class DboxMain;
 
 class CRUEList
 {
- public:
+public:
   // Construction/Destruction/operators
   CRUEList();
   ~CRUEList() {}
@@ -80,7 +80,7 @@ class CRUEList
   bool DeleteRUEntry(size_t);
   bool DeleteRUEntry(const uuid_array_t &);
 
- private:
+private:
   PWScore &m_core;    // Dboxmain's m_core (which = app.m_core!)
   size_t m_maxentries;
   RUEList m_RUEList;  // Recently Used Entry History List

@@ -15,38 +15,38 @@
 class CVersionInfoBuffer : public CObject  
 {
 public:
-	
-	CVersionInfoBuffer();
-	virtual ~CVersionInfoBuffer();
 
-	// Writes data to the buffer
-	void Write(LPVOID lpData, DWORD dwSize);
-	
-	// Writes string to the buffer (converts to Unicode)
-	WORD WriteString(const CString& strValue);
+  CVersionInfoBuffer();
+  virtual ~CVersionInfoBuffer();
 
-	// Writes a WORD to the buffer
-	void WriteWord(WORD wData);
+  // Writes data to the buffer
+  void Write(LPVOID lpData, DWORD dwSize);
 
-	// Writes the difference between specified offset and current length to a WORD at given offset
-	// this writing the structure size wLength
-	void WriteStructSize(DWORD dwOffsetOfSizeMemember);
+  // Writes string to the buffer (converts to Unicode)
+  WORD WriteString(const CString& strValue);
 
-	// Returns current position
-	DWORD GetPosition();
-	
-	// Allings to DWORD (pads with 0s)
-	DWORD PadToDWORD();
+  // Writes a WORD to the buffer
+  void WriteWord(WORD wData);
 
-	// Pads with zeroes 
-	DWORD Pad(WORD wLength);
+  // Writes the difference between specified offset and current length to a WORD at given offset
+  // this writing the structure size wLength
+  void WriteStructSize(DWORD dwOffsetOfSizeMemember);
 
-	// Get pointer to data (pointer can not be used after any writes made after calling GetData() due to possible relocation)
-	const LPBYTE GetData();
+  // Returns current position
+  DWORD GetPosition();
+
+  // Allings to DWORD (pads with 0s)
+  DWORD PadToDWORD();
+
+  // Pads with zeroes 
+  DWORD Pad(WORD wLength);
+
+  // Get pointer to data (pointer can not be used after any writes made after calling GetData() due to possible relocation)
+  const LPBYTE GetData();
 private:
-	DWORD m_dwPosition;
-	DWORD m_dwBufSize;
-	LPBYTE m_lpData;
+  DWORD m_dwPosition;
+  DWORD m_dwBufSize;
+  LPBYTE m_lpData;
 protected:
-	void ReallocBuffer(DWORD dwMinimumSize);
+  void ReallocBuffer(DWORD dwMinimumSize);
 };

@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// file MainView.cpp
 //
 // View-related methods of DboxMain
@@ -15,11 +15,11 @@
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
+#include "pocketpc/resource.h"
 #else
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
+#include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #endif
 
 #include "DboxMain.h"
@@ -57,17 +57,17 @@ void DboxMain::StopFind(LPARAM instance)
 
 //-----------------------------------------------------------------------------
 
-  /*
-   * Compare function used by m_ctlItemList.SortItems()
-   * "The comparison function must return a negative value if the first item should precede 
-   * the second, a positive value if the first item should follow the second, or zero if
-   * the two items are equivalent."
-   *
-   * If sorting is by group (title/user), title (username), username (title) 
-   * fields in brackets are the secondary fields if the primary fields are identical.
-   */
+/*
+* Compare function used by m_ctlItemList.SortItems()
+* "The comparison function must return a negative value if the first item should precede 
+* the second, a positive value if the first item should follow the second, or zero if
+* the two items are equivalent."
+*
+* If sorting is by group (title/user), title (username), username (title) 
+* fields in brackets are the secondary fields if the primary fields are identical.
+*/
 int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
-				   LPARAM closure)
+                                   LPARAM closure)
 {
   // closure is "this" of the calling DboxMain, from which we use:
   // m_iTypeSortColumn to determine which column is getting sorted
@@ -176,13 +176,13 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
 void
 DboxMain::UpdateToolBar(bool state)
 {
-	if (m_toolbarsSetup == TRUE) {
+  if (m_toolbarsSetup == TRUE) {
     BOOL State = (state) ? FALSE : TRUE;
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
-		mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
-		mainTBCtrl.EnableButton(ID_MENUITEM_DELETE, State);
-		mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, State);
-	}
+    mainTBCtrl.EnableButton(ID_MENUITEM_ADD, State);
+    mainTBCtrl.EnableButton(ID_MENUITEM_DELETE, State);
+    mainTBCtrl.EnableButton(ID_MENUITEM_SAVE, State);
+  }
 }
 
 void
@@ -194,7 +194,7 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
   if (m_core.GetNumEntries() != 0) {
     BOOL State = (entry == NULL) ? FALSE : TRUE;
     int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
-                 ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT};
+      ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, ID_MENUITEM_EDIT};
 
     CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
     for (int i = 0; i < sizeof(IDs)/sizeof(IDs[0]); i++) {
@@ -229,37 +229,37 @@ DboxMain::setupBars()
 {
 #if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
-  
+
   // Add the status bar
   if (m_statusBar.Create(this)) {
-	  // Set up DoubleClickAction text
-	  const int dca = int(PWSprefs::GetInstance()->
-		  GetPref(PWSprefs::DoubleClickAction));
-	  switch (dca) {
-		case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
-		case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
-		case PWSprefs::DoubleClickCopyNotes: statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
-		case PWSprefs::DoubleClickCopyPassword: statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
-      	case PWSprefs::DoubleClickCopyUsername: statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
-		case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
-		default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
-	  }
-	  // Set up Configuration source indicator (debug only)
+    // Set up DoubleClickAction text
+    const int dca = int(PWSprefs::GetInstance()->
+      GetPref(PWSprefs::DoubleClickAction));
+    switch (dca) {
+    case PWSprefs::DoubleClickAutoType: statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+    case PWSprefs::DoubleClickBrowse: statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
+    case PWSprefs::DoubleClickCopyNotes: statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
+    case PWSprefs::DoubleClickCopyPassword: statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
+    case PWSprefs::DoubleClickCopyUsername: statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
+    case PWSprefs::DoubleClickViewEdit: statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
+    default: statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
+    }
+    // Set up Configuration source indicator (debug only)
 #ifdef DEBUG
-      statustext[SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
+    statustext[SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
 #else
-      statustext[SB_CONFIG] = IDS_CONFIG_BLANK;
+    statustext[SB_CONFIG] = IDS_CONFIG_BLANK;
 #endif /* DEBUG */
-	  // Set up the rest
-	  statustext[SB_MODIFIED] = IDS_MODIFIED;
-	  statustext[SB_READONLY] = IDS_READ_ONLY;
-	  statustext[SB_NUM_ENT] = IDS_STAT_NUM_IN_DB;
+    // Set up the rest
+    statustext[SB_MODIFIED] = IDS_MODIFIED;
+    statustext[SB_READONLY] = IDS_READ_ONLY;
+    statustext[SB_NUM_ENT] = IDS_STAT_NUM_IN_DB;
 
-	  // And show
-	  m_statusBar.SetIndicators(statustext, SB_TOTAL);
+    // And show
+    m_statusBar.SetIndicators(statustext, SB_TOTAL);
 
-      // Make a sunken or recessed border around the first pane
-      m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
+    // Make a sunken or recessed border around the first pane
+    m_statusBar.SetPaneInfo(SB_DBLCLICK, m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
   }             
 
   CDC* pDC = this->GetDC();
@@ -269,31 +269,31 @@ DboxMain::setupBars()
 
   // Add the Main ToolBar.
   if (!m_MainToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
-                              WS_CHILD | WS_VISIBLE | CCS_ADJUSTABLE |
-                              CBRS_TOP | CBRS_SIZE_DYNAMIC,
-                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 1)) {
-    TRACE("Failed to create Main toolbar\n");
-    return;      // fail to create
+    WS_CHILD | WS_VISIBLE | CCS_ADJUSTABLE |
+    CBRS_TOP | CBRS_SIZE_DYNAMIC,
+    CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 1)) {
+      TRACE("Failed to create Main toolbar\n");
+      return;      // fail to create
   }
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
-                      CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
-                      CBRS_TOOLTIPS | CBRS_FLYBY;
+    CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
+    CBRS_TOOLTIPS | CBRS_FLYBY;
   m_MainToolBar.SetBarStyle(dwStyle);
   m_MainToolBar.SetWindowText(_T("Standard"));
 
   // Add the Find ToolBar.
   if (!m_FindToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
-                              WS_CHILD | WS_VISIBLE |
-                              CBRS_BOTTOM | CBRS_SIZE_DYNAMIC,
-                              CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 2)) {
-    TRACE("Failed to create Find toolbar\n");
+    WS_CHILD | WS_VISIBLE |
+    CBRS_BOTTOM | CBRS_SIZE_DYNAMIC,
+    CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 2)) {
+      TRACE("Failed to create Find toolbar\n");
       return;      // fail to create
-    }
+  }
   dwStyle = m_FindToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
-                      CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
-                      CBRS_TOOLTIPS | CBRS_FLYBY;
+    CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
+    CBRS_TOOLTIPS | CBRS_FLYBY;
   m_FindToolBar.SetBarStyle(dwStyle);
   m_FindToolBar.SetWindowText(_T("Find"));
 
@@ -316,21 +316,21 @@ DboxMain::setupBars()
 
 void DboxMain::UpdateListItem(const int lindex, const int type, const CString &newText)
 {
-    int iSubItem = m_nColumnIndexByType[type];
+  int iSubItem = m_nColumnIndexByType[type];
 
-    // Ignore if this column is not being displayed
-    if (iSubItem < 0)
-      return;
+  // Ignore if this column is not being displayed
+  if (iSubItem < 0)
+    return;
 
-    BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText);
-    ASSERT(brc == TRUE);
-    if (m_iTypeSortColumn == type) { // resort if necessary
-        m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
-        FixListIndexes();
-    }
+  BOOL brc = m_ctlItemList.SetItemText(lindex, iSubItem, newText);
+  ASSERT(brc == TRUE);
+  if (m_iTypeSortColumn == type) { // resort if necessary
+    m_ctlItemList.SortItems(CompareFunc, (LPARAM)this);
+    FixListIndexes();
+  }
 }
 
- // Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
+// Find in m_pwlist entry with same title and user name as the i'th entry in m_ctlItemList
 ItemListIter DboxMain::Find(int i)
 {
   CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(i);
@@ -342,11 +342,11 @@ ItemListIter DboxMain::Find(int i)
 }
 
 /*
- * Finds all entries in m_pwlist that contain str in title, user, group or notes
- * field, returns their sorted indices in m_listctrl via indices, which is
- * assumed to be allocated by caller to DboxMain::GetNumEntries() ints.
- * FindAll returns the number of entries that matched.
- */
+* Finds all entries in m_pwlist that contain str in title, user, group or notes
+* field, returns their sorted indices in m_listctrl via indices, which is
+* assumed to be allocated by caller to DboxMain::GetNumEntries() ints.
+* FindAll returns the number of entries that matched.
+*/
 
 size_t
 DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
@@ -374,38 +374,38 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ItemListConstIter iter;
   if (m_IsListView) {
     for (iter = m_core.GetEntryIter();
-         iter != m_core.GetEntryEndIter(); iter++) {
-      const CItemData &curitem = m_core.GetEntry(iter);
+      iter != m_core.GetEntryEndIter(); iter++) {
+        const CItemData &curitem = m_core.GetEntry(iter);
 
-      savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
-      curuser =  curitem.GetUser();
-      curnotes = curitem.GetNotes();
-      curgroup = curitem.GetGroup();
-      curURL = curitem.GetURL();
-      curAT = curitem.GetAutoType();
+        savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+        curuser =  curitem.GetUser();
+        curnotes = curitem.GetNotes();
+        curgroup = curitem.GetGroup();
+        curURL = curitem.GetURL();
+        curAT = curitem.GetAutoType();
 
-      if (!CaseSensitive) {
-        curtitle.MakeLower();
-        curuser.MakeLower();
-        curnotes.MakeLower();
-        curgroup.MakeLower();
-        curURL.MakeLower();
-        curAT.MakeLower();
-      }
-      if (::_tcsstr(curtitle, searchstr) ||
+        if (!CaseSensitive) {
+          curtitle.MakeLower();
+          curuser.MakeLower();
+          curnotes.MakeLower();
+          curgroup.MakeLower();
+          curURL.MakeLower();
+          curAT.MakeLower();
+        }
+        if (::_tcsstr(curtitle, searchstr) ||
           ::_tcsstr(curuser, searchstr) ||
           ::_tcsstr(curnotes, searchstr) ||
           ::_tcsstr(curgroup, searchstr) ||
           ::_tcsstr(curURL, searchstr) ||
           ::_tcsstr(curAT, searchstr)) {
-        // Find index in displayed list
-        DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
-        ASSERT(di != NULL);
-        int li = di->list_index;
-        ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
-        // add to indices
-        indices.push_back(li);
-      } // match found in m_pwlist
+            // Find index in displayed list
+            DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+            ASSERT(di != NULL);
+            int li = di->list_index;
+            ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
+            // add to indices
+            indices.push_back(li);
+        } // match found in m_pwlist
     } // iteration over entries
     retval = indices.size();
     // Sort indices if in List View
@@ -416,38 +416,38 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     MakeOrderedItemList(orderedItemList);
     OrderedItemList::const_iterator oiter;
     for (oiter = orderedItemList.begin();
-         oiter != orderedItemList.end(); oiter++) {
-      const CItemData &curitem = *oiter;
+      oiter != orderedItemList.end(); oiter++) {
+        const CItemData &curitem = *oiter;
 
-      savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
-      curuser =  curitem.GetUser();
-      curnotes = curitem.GetNotes();
-      curgroup = curitem.GetGroup();
-      curURL = curitem.GetURL();
-      curAT = curitem.GetAutoType();
+        savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
+        curuser =  curitem.GetUser();
+        curnotes = curitem.GetNotes();
+        curgroup = curitem.GetGroup();
+        curURL = curitem.GetURL();
+        curAT = curitem.GetAutoType();
 
-      if (!CaseSensitive) {
-        curtitle.MakeLower();
-        curuser.MakeLower();
-        curnotes.MakeLower();
-        curgroup.MakeLower();
-        curURL.MakeLower();
-        curAT.MakeLower();
-      }
-      if (::_tcsstr(curtitle, searchstr) ||
+        if (!CaseSensitive) {
+          curtitle.MakeLower();
+          curuser.MakeLower();
+          curnotes.MakeLower();
+          curgroup.MakeLower();
+          curURL.MakeLower();
+          curAT.MakeLower();
+        }
+        if (::_tcsstr(curtitle, searchstr) ||
           ::_tcsstr(curuser, searchstr) ||
           ::_tcsstr(curnotes, searchstr) ||
           ::_tcsstr(curgroup, searchstr) ||
           ::_tcsstr(curURL, searchstr) ||
           ::_tcsstr(curAT, searchstr)) {
-        // Find index in displayed list
-        DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
-        ASSERT(di != NULL);
-        int li = di->list_index;
-        ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
-        // add to indices, bump retval
-        indices.push_back(li);
-      } // match found in orderedItemList
+            // Find index in displayed list
+            DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
+            ASSERT(di != NULL);
+            int li = di->list_index;
+            ASSERT(CMyString(m_ctlItemList.GetItemText(li, ititle)) == savetitle);
+            // add to indices, bump retval
+            indices.push_back(li);
+        } // match found in orderedItemList
     } // iterate over orderedItemList
     retval = indices.size();
     orderedItemList.clear();
@@ -458,9 +458,9 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 size_t
 DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
                   vector<int> &indices,
-              const CItemData::FieldBits &bsFields, const int subgroup_set, 
-              const CString &subgroup_name, const int subgroup_object,
-              const int subgroup_function)
+                  const CItemData::FieldBits &bsFields, const int subgroup_set, 
+                  const CString &subgroup_name, const int subgroup_object,
+                  const int subgroup_function)
 {
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
@@ -498,7 +498,7 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
     const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
     if (subgroup_set == BST_CHECKED &&
-        !curitem.Matches(subgroup_name, subgroup_object, subgroup_function))
+      !curitem.Matches(subgroup_name, subgroup_object, subgroup_function))
       goto nextentry;
 
     bFoundit = false;
@@ -524,56 +524,56 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     // saves more checking if entry already selected
     do {
       if (bsFields.test(CItemData::GROUP) &&
-          ::_tcsstr(curGroup, searchstr)) {
-        bFoundit = true;
-        break;
+        ::_tcsstr(curGroup, searchstr)) {
+          bFoundit = true;
+          break;
       }
       if (bsFields.test(CItemData::TITLE) &&
-          ::_tcsstr(curTitle, searchstr)) {
-        bFoundit = true;
-        break;
+        ::_tcsstr(curTitle, searchstr)) {
+          bFoundit = true;
+          break;
       }
       if (bsFields.test(CItemData::USER) &&
-          ::_tcsstr(curUser, searchstr)) {
-        bFoundit = true;
-        break;
+        ::_tcsstr(curUser, searchstr)) {
+          bFoundit = true;
+          break;
       }
       if (bsFields.test(CItemData::PASSWORD) &&
-          ::_tcsstr(curPassword, searchstr)) {
-        bFoundit = true;
-        break;
+        ::_tcsstr(curPassword, searchstr)) {
+          bFoundit = true;
+          break;
       }
       if (bsFields.test(CItemData::NOTES) &&
-          ::_tcsstr(curNotes, searchstr)) {
-        bFoundit = true;
-        break;
+        ::_tcsstr(curNotes, searchstr)) {
+          bFoundit = true;
+          break;
       }
       if (bsFields.test(CItemData::URL) &&
-          ::_tcsstr(curURL, searchstr)) {
-        bFoundit = true;
-        break;
+        ::_tcsstr(curURL, searchstr)) {
+          bFoundit = true;
+          break;
       }
       if (bsFields.test(CItemData::AUTOTYPE) &&
-          ::_tcsstr(curAT, searchstr)) {
-        bFoundit = true;
-        break;
+        ::_tcsstr(curAT, searchstr)) {
+          bFoundit = true;
+          break;
       }
       if (bsFields.test(CItemData::PWHIST)) {
         BOOL pwh_status;
         size_t pwh_max, pwh_num;
         PWHistList PWHistList;
         curitem.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-                                   &PWHistList, TMC_XML);
+          &PWHistList, TMC_XML);
         PWHistList::iterator iter;
         for (iter = PWHistList.begin(); iter != PWHistList.end();
-                   iter++) {
-          PWHistEntry pwshe = *iter;
-          if (!CaseSensitive)
-            pwshe.password.MakeLower();
-          if (::_tcsstr(pwshe.password, searchstr)) {
-            bFoundit = true;
-            break;  // break out of for loop
-          }
+          iter++) {
+            PWHistEntry pwshe = *iter;
+            if (!CaseSensitive)
+              pwshe.password.MakeLower();
+            if (::_tcsstr(pwshe.password, searchstr)) {
+              bFoundit = true;
+              break;  // break out of for loop
+            }
         }
         PWHistList.clear();
         break;
@@ -624,8 +624,8 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 
   if (m_ctlItemList.IsWindowVisible()) {
     retval = m_ctlItemList.SetItemState(i,
-                                        LVIS_FOCUSED | LVIS_SELECTED,
-                                        LVIS_FOCUSED | LVIS_SELECTED);
+      LVIS_FOCUSED | LVIS_SELECTED,
+      LVIS_FOCUSED | LVIS_SELECTED);
     if (MakeVisible) {
       m_ctlItemList.EnsureVisible(i, FALSE);
     }
@@ -650,8 +650,8 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     if (MakeVisible) {
       // Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(di->tree_item,
-                                 TVIS_DROPHILITED | TVIS_SELECTED,
-                                 TVIS_DROPHILITED | TVIS_SELECTED);
+        TVIS_DROPHILITED | TVIS_SELECTED,
+        TVIS_DROPHILITED | TVIS_SELECTED);
     }
     m_ctlItemTree.Invalidate();
   }
@@ -666,8 +666,8 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
 
   if (m_ctlItemList.IsWindowVisible()) {
     retval = m_ctlItemList.SetItemState(i,
-                                        LVIS_FOCUSED | LVIS_SELECTED,
-                                        LVIS_FOCUSED | LVIS_SELECTED);
+      LVIS_FOCUSED | LVIS_SELECTED,
+      LVIS_FOCUSED | LVIS_SELECTED);
     if (MakeVisible) {
       m_ctlItemList.EnsureVisible(i, FALSE);
     }
@@ -721,17 +721,17 @@ DboxMain::RefreshViews(const int iView)
     SetCursor( waitCursor );
 #endif
     for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
-         listPos++) {
-      CItemData &ci = m_core.GetEntry(listPos);
-      DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
-      if (di != NULL)
-        di->list_index = -1; // easier, but less efficient, to delete di
-      insertItem(ci, -1, false, iView);
+      listPos++) {
+        CItemData &ci = m_core.GetEntry(listPos);
+        DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
+        if (di != NULL)
+          di->list_index = -1; // easier, but less efficient, to delete di
+        insertItem(ci, -1, false, iView);
     }
-    
+
     m_ctlItemTree.SortTree(TVI_ROOT);
     SortListView();
-    
+
 #if defined(POCKET_PC)
     SetCursor( NULL );
 #endif
@@ -758,9 +758,9 @@ void
 DboxMain::OnSize(UINT nType,
                  int cx,
                  int cy) 
-//Note that onsize runs before InitDialog (Gee, I love MFC)
-//  Also, OnSize is called AFTER the function has been peformed.
-//  To verify IF the fucntion should be done at all, it must be checked in OnSysCommand.
+                 //Note that onsize runs before InitDialog (Gee, I love MFC)
+                 //  Also, OnSize is called AFTER the function has been peformed.
+                 //  To verify IF the fucntion should be done at all, it must be checked in OnSysCommand.
 {
   CDialog::OnSize(nType, cx, cy);
 
@@ -800,12 +800,12 @@ DboxMain::OnSize(UINT nType,
           ShowWindow(SW_SHOW);
           return;
         }
-      ClearData(false);
+        ClearData(false);
     }
     if (PWSprefs::GetInstance()->
-        GetPref(PWSprefs::UseSystemTray)) {      
-      app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
-      ShowWindow(SW_HIDE);
+      GetPref(PWSprefs::UseSystemTray)) {      
+        app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
+        ShowWindow(SW_HIDE);
     }
   } else if (nType == SIZE_MAXIMIZED) {
     RefreshViews();
@@ -822,7 +822,7 @@ DboxMain::OnSize(UINT nType,
         SelectEntry(((DisplayInfo *)m_selectedAtMinimize->GetDisplayInfo())->list_index, false);
       m_ctlItemTree.SetRestoreMode(false);
       m_bIsRestoring = false;
-      
+
       // Resume notification of changes
       m_core.ResumeOnListNotification();
       if (m_FindToolBar.IsVisible()) {
@@ -833,7 +833,7 @@ DboxMain::OnSize(UINT nType,
       CRect rect;
       GetWindowRect(&rect);
       PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
-                                           rect.left, rect.right);
+        rect.left, rect.right);
 
       // Make sure Find toolbar is above Status bar
       if (m_FindToolBar.IsVisible()) {
@@ -869,13 +869,13 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 
   // RClick over Main Toolbar - allow Customize Main toolbar
   if (mp.x > appl_rect.left && mp.x < appl_rect.right &&
-      mp.y > rect.top && mp.y < rect.bottom) {
-    if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
-      CMenu* pPopup = menu.GetSubMenu(0);
-      ASSERT(pPopup != NULL);
-      pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
-    }
-    return;
+    mp.y > rect.top && mp.y < rect.bottom) {
+      if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
+        CMenu* pPopup = menu.GetSubMenu(0);
+        ASSERT(pPopup != NULL);
+        pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+      }
+      return;
   }
 
   // RClick over ListView
@@ -883,9 +883,9 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     // currently in flattened list view.
     m_ctlItemList.GetWindowRect(&rect);
     if (mp.x < rect.left || mp.x > appl_rect.right ||
-        mp.y < rect.top || mp.y > rect.bottom) {
-      // But not in the window
-      return;
+      mp.y < rect.top || mp.y > rect.bottom) {
+        // But not in the window
+        return;
     }
 
     m_ctlItemList.ScreenToClient(&local);
@@ -906,9 +906,9 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     // currently in tree view
     m_ctlItemTree.GetWindowRect(&rect);
     if (mp.x < rect.left || mp.x > appl_rect.right ||
-        mp.y < rect.top || mp.y > rect.bottom) {
-      // But not in the window
-      return;
+      mp.y < rect.top || mp.y > rect.bottom) {
+        // But not in the window
+        return;
     }
     ASSERT(m_ctlItemTree.IsWindowVisible());
     m_ctlItemTree.ScreenToClient(&local);
@@ -965,9 +965,9 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 
     if (itemData->IsURLEmpty()) {
       pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
-                         ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+        ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
-                         ID_MENUITEM_COPYURL, CS_COPYURL);
+        ID_MENUITEM_COPYURL, CS_COPYURL);
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_GRAYED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
       UpdateBrowseURLSendEmailButton(false);
@@ -977,14 +977,14 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       const bool bIsEmail = itemData->GetURL().Find(_T("mailto:")) != -1;
       if (bIsEmail) {
         pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
-                           ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
+          ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
         pPopup->ModifyMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND,
-                           ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
+          ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
       } else {
         pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
-                           ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+          ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
         pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
-                           ID_MENUITEM_COPYURL, CS_COPYURL);
+          ID_MENUITEM_COPYURL, CS_COPYURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
@@ -1025,10 +1025,10 @@ void DboxMain::OnTreeItemSelected(NMHDR * /*pNotifyStruct */, LRESULT *pLResult)
   m_ctlItemTree.HitTest(&htinfo);
 
   if (htinfo.hItem != NULL && 
-      (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) &&
-      !m_ctlItemTree.IsLeaf(htinfo.hItem)) {
-    m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-    *pLResult = 1L;  // We did it!
+    (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) &&
+    !m_ctlItemTree.IsLeaf(htinfo.hItem)) {
+      m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+      *pLResult = 1L;  // We did it!
   }
 }
 
@@ -1085,9 +1085,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
                          const bool bSort, const int iView)
 {
   if (itemData.GetDisplayInfo() != NULL &&
-      ((DisplayInfo *)itemData.GetDisplayInfo())->list_index != -1) {
-    // true iff item already displayed
-    return iIndex;
+    ((DisplayInfo *)itemData.GetDisplayInfo())->list_index != -1) {
+      // true iff item already displayed
+      return iIndex;
   }
 
   int iResult = iIndex;
@@ -1117,7 +1117,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
     switch (m_nColumnTypeByIndex[0]) {
       case CItemData::UUID:
         cs_fielddata = _T("");
-         break;
+        break;
       case CItemData::GROUP:
         cs_fielddata = group;
         break;
@@ -1153,48 +1153,48 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
         break;
       case CItemData::POLICY:
         {
-        PWPolicy pwp;
-        itemData.GetPWPolicy(pwp);
-        if (pwp.flags != 0) {
-          CString cs_pwp(_T("")), cs_text;
-          if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
-            cs_pwp += _T("L");
-            if (pwp.lowerminlength > 1) {
-              cs_text.Format(_T("(%d)"), pwp.lowerminlength);
-              cs_pwp += cs_text;
+          PWPolicy pwp;
+          itemData.GetPWPolicy(pwp);
+          if (pwp.flags != 0) {
+            CString cs_pwp(_T("")), cs_text;
+            if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
+              cs_pwp += _T("L");
+              if (pwp.lowerminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.lowerminlength);
+                cs_pwp += cs_text;
+              }
             }
-          }
-          if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
-            cs_pwp += _T("U");
-            if (pwp.upperminlength > 1) {
-              cs_text.Format(_T("(%d)"), pwp.upperminlength);
-              cs_pwp += cs_text;
+            if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
+              cs_pwp += _T("U");
+              if (pwp.upperminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.upperminlength);
+                cs_pwp += cs_text;
+              }
             }
-          }
-          if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
-            cs_pwp += _T("D");
-            if (pwp.digitminlength > 1) {
-              cs_text.Format(_T("(%d)"), pwp.digitminlength);
-              cs_pwp += cs_text;
+            if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
+              cs_pwp += _T("D");
+              if (pwp.digitminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.digitminlength);
+                cs_pwp += cs_text;
+              }
             }
-          }
-          if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
-            cs_pwp += _T("S");
-            if (pwp.symbolminlength > 1) {
-              cs_text.Format(_T("(%d)"), pwp.symbolminlength);
-              cs_pwp += cs_text;
+            if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
+              cs_pwp += _T("S");
+              if (pwp.symbolminlength > 1) {
+                cs_text.Format(_T("(%d)"), pwp.symbolminlength);
+                cs_pwp += cs_text;
+              }
             }
-          }
-          if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
-            cs_pwp += _T("H");
-          if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
-            cs_pwp += _T("E");
-          if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
-            cs_pwp += _T("P");
+            if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+              cs_pwp += _T("H");
+            if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+              cs_pwp += _T("E");
+            if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+              cs_pwp += _T("P");
 
-          cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
-        } else
-          cs_fielddata = _T("");
+            cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
+          } else
+            cs_fielddata = _T("");
         }
         break;
       default:
@@ -1273,48 +1273,48 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
           break;
         case CItemData::POLICY:
           {
-          PWPolicy pwp;
-          itemData.GetPWPolicy(pwp);
-          if (pwp.flags != 0) {
-            CString cs_pwp(_T("")), cs_text;
-            if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
-              cs_pwp += _T("L");
-              if (pwp.lowerminlength > 1) {
-                cs_text.Format(_T("(%d)"), pwp.lowerminlength);
-                cs_pwp += cs_text;
+            PWPolicy pwp;
+            itemData.GetPWPolicy(pwp);
+            if (pwp.flags != 0) {
+              CString cs_pwp(_T("")), cs_text;
+              if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
+                cs_pwp += _T("L");
+                if (pwp.lowerminlength > 1) {
+                  cs_text.Format(_T("(%d)"), pwp.lowerminlength);
+                  cs_pwp += cs_text;
+                }
               }
-            }
-            if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
-              cs_pwp += _T("U");
-              if (pwp.upperminlength > 1) {
-                cs_text.Format(_T("(%d)"), pwp.upperminlength);
-                cs_pwp += cs_text;
+              if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
+                cs_pwp += _T("U");
+                if (pwp.upperminlength > 1) {
+                  cs_text.Format(_T("(%d)"), pwp.upperminlength);
+                  cs_pwp += cs_text;
+                }
               }
-            }
-            if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
-              cs_pwp += _T("D");
-              if (pwp.digitminlength > 1) {
-                cs_text.Format(_T("(%d)"), pwp.digitminlength);
-                cs_pwp += cs_text;
+              if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
+                cs_pwp += _T("D");
+                if (pwp.digitminlength > 1) {
+                  cs_text.Format(_T("(%d)"), pwp.digitminlength);
+                  cs_pwp += cs_text;
+                }
               }
-            }
-            if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
-              cs_pwp += _T("S");
-              if (pwp.symbolminlength > 1) {
-                cs_text.Format(_T("(%d)"), pwp.symbolminlength);
-                cs_pwp += cs_text;
+              if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
+                cs_pwp += _T("S");
+                if (pwp.symbolminlength > 1) {
+                  cs_text.Format(_T("(%d)"), pwp.symbolminlength);
+                  cs_pwp += cs_text;
+                }
               }
-            }
-            if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
-              cs_pwp += _T("H");
-            if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
-              cs_pwp += _T("E");
-            if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
-              cs_pwp += _T("P");
+              if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+                cs_pwp += _T("H");
+              if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+                cs_pwp += _T("E");
+              if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+                cs_pwp += _T("P");
 
-            cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
-          } else
-            cs_fielddata = _T("");
+              cs_fielddata.Format(_T("%s:%d"), cs_pwp, pwp.length);
+            } else
+              cs_fielddata = _T("");
           }
           break;
         default:
@@ -1325,7 +1325,7 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
 
     m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&itemData);
   }
-    return iResult;
+  return iResult;
 }
 
 CItemData *DboxMain::getSelectedItem()
@@ -1367,7 +1367,7 @@ DboxMain::ClearData(bool clearMRE)
   // Iterate over item list, delete DisplayInfo
   deleteDisplayInfo ddi;
   for_each(m_core.GetEntryIter(), m_core. GetEntryEndIter(),
-           ddi);
+    ddi);
 
   m_core.ClearData();
 
@@ -1445,8 +1445,8 @@ void DboxMain::SortListView()
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   m_LVHdrCtrl.SetItem(iIndex, &hdi);
 
- if (!m_bIsRestoring && m_FindToolBar.IsVisible())
-   OnHideFindToolBar();
+  if (!m_bIsRestoring && m_FindToolBar.IsVisible())
+    OnHideFindToolBar();
 }
 
 void
@@ -1466,7 +1466,7 @@ DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
     ASSERT(pPopup != NULL);
     if (m_pCC != NULL)
       pPopup->CheckMenuItem(ID_MENUITEM_COLUMNPICKER,
-        m_pCC->IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
+      m_pCC->IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED);
     else
       pPopup->CheckMenuItem(ID_MENUITEM_COLUMNPICKER, MF_UNCHECKED);
 
@@ -1504,10 +1504,10 @@ DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
 
   NMHEADER *phdn = (NMHEADER *) pNMHDR;
   if (phdn->iItem == 0 || 
-      (((phdn->pitem->mask & HDI_ORDER) == HDI_ORDER) && 
-        phdn->pitem->iOrder == 0)) {
-    *pResult = TRUE;
-    return;
+    (((phdn->pitem->mask & HDI_ORDER) == HDI_ORDER) && 
+    phdn->pitem->iOrder == 0)) {
+      *pResult = TRUE;
+      return;
   }
 
   // Otherwise allow
@@ -1531,12 +1531,12 @@ DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
 
   // column width changed
   switch (phdn->hdr.code) {
-    case HDN_ENDTRACK:
-    case HDN_ITEMCHANGED:
-      m_nColumnWidthByIndex[phdn->iItem] = phdn->pitem->cxy;
-      break;
-    default:
-      break;
+case HDN_ENDTRACK:
+case HDN_ITEMCHANGED:
+  m_nColumnWidthByIndex[phdn->iItem] = phdn->pitem->cxy;
+  break;
+default:
+  break;
   }
 }
 
@@ -1572,7 +1572,7 @@ DboxMain::SetListView()
   m_ctlItemTree.ShowWindow(SW_HIDE);
   m_ctlItemList.ShowWindow(SW_SHOW);
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
-                                   _T("list"));
+    _T("list"));
   m_ctlItemList.SetFocus();
   m_IsListView = true;
   // Some items may change on change of view
@@ -1586,7 +1586,7 @@ DboxMain::SetTreeView()
   m_ctlItemList.ShowWindow(SW_HIDE);
   m_ctlItemTree.ShowWindow(SW_SHOW);
   PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
-                                   _T("tree"));
+    _T("tree"));
   m_ctlItemTree.SetFocus();
   m_IsListView = false;
   // Some items may change on change of view
@@ -1619,7 +1619,7 @@ DboxMain::SetToolbar(const int menuItem, bool bInit)
     m_MainToolBar.LoadDefaultToolBar(m_toolbarMode);
     m_FindToolBar.LoadDefaultToolBar(m_toolbarMode);
     CString csButtonNames = PWSprefs::GetInstance()->
-                                    GetPref(PWSprefs::MainToolBarButtons);
+      GetPref(PWSprefs::MainToolBarButtons);
     m_MainToolBar.CustomizeButtons(csButtonNames);
   } else {
     m_MainToolBar.ChangeImages(m_toolbarMode);
@@ -1649,24 +1649,24 @@ void
 DboxMain::OnTimer(UINT_PTR nIDEvent )
 {
   if ((nIDEvent == TIMER_CHECKLOCK && IsWorkstationLocked()) ||
-      (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
-    /*
-     * Since we clear the data, any unchanged changes will be lost,
-     * so we force a save if database is modified, and fail
-     * to lock if the save fails (unless db is r-o).
-     */
-    if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
+    (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
+      /*
+      * Since we clear the data, any unchanged changes will be lost,
+      * so we force a save if database is modified, and fail
+      * to lock if the save fails (unless db is r-o).
+      */
+      if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
         !(m_core.IsChanged() || m_bTSUpdated ||
-          m_core.WasDisplayStatusChanged()) ||
+        m_core.WasDisplayStatusChanged()) ||
         Save() == PWScore::SUCCESS) {
-      TRACE("locking database\n");
-      if(IsWindowVisible()){
-        ShowWindow(SW_MINIMIZE);
+          TRACE("locking database\n");
+          if(IsWindowVisible()){
+            ShowWindow(SW_MINIMIZE);
+          }
+          ClearData(false);
+          if (nIDEvent == TIMER_CHECKLOCK)
+            KillTimer(TIMER_CHECKLOCK);
       }
-      ClearData(false);
-      if (nIDEvent == TIMER_CHECKLOCK)
-        KillTimer(TIMER_CHECKLOCK);
-    }
   }
 }
 
@@ -1675,7 +1675,7 @@ BOOL DboxMain::IsWorkstationLocked() const
 {
   BOOL Result = false;
   HDESK hDesktop = OpenDesktop(_T("default"), 0, false,
-                               DESKTOP_SWITCHDESKTOP);
+    DESKTOP_SWITCHDESKTOP);
   if( hDesktop != 0 ) {
     // SwitchDesktop fails if hDesktop invisible, screensaver or winlogin.
     Result = ! SwitchDesktop(hDesktop);
@@ -1707,10 +1707,10 @@ DboxMain::OnChangeTreeFont()
   if(fontdlg.DoModal() == IDOK) {
     CString treefont_str;
     treefont_str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
-                        lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
-                        lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
-                        lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
-                        lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
+      lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
+      lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
+      lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
+      lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
 
     m_pFontTree->DeleteObject();
     m_pFontTree->CreateFontIndirect(&lf);
@@ -1751,10 +1751,10 @@ DboxMain::OnChangePswdFont()
   if(fontdlg.DoModal() == IDOK) {
     CString pswdfont_str;
     pswdfont_str.Format(_T("%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%s"),
-                        lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
-                        lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
-                        lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
-                        lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
+      lf.lfHeight, lf.lfWidth, lf.lfEscapement, lf.lfOrientation,
+      lf.lfWeight, lf.lfItalic, lf.lfUnderline, lf.lfStrikeOut,
+      lf.lfCharSet, lf.lfOutPrecision, lf.lfClipPrecision,
+      lf.lfQuality, lf.lfPitchAndFamily, lf.lfFaceName);
 
     // transfer the new font to the passwords
     SetPasswordFont(&lf);
@@ -1807,21 +1807,21 @@ void
 DboxMain::UpdateSystemTray(const STATE s)
 {
   switch (s) {
-  case LOCKED:
-    app.SetSystemTrayState(ThisMfcApp::LOCKED);
-    if (!m_core.GetCurFile().IsEmpty())
-      app.SetTooltipText(_T("[") + m_core.GetCurFile() + _T("]"));
-    break;
-  case UNLOCKED:
-    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-    if (!m_core.GetCurFile().IsEmpty())
-      app.SetTooltipText(m_core.GetCurFile());
-    break;
-  case CLOSED:
-    app.SetSystemTrayState(ThisMfcApp::CLOSED);
-    break;
-  default:
-    ASSERT(0);
+case LOCKED:
+  app.SetSystemTrayState(ThisMfcApp::LOCKED);
+  if (!m_core.GetCurFile().IsEmpty())
+    app.SetTooltipText(_T("[") + m_core.GetCurFile() + _T("]"));
+  break;
+case UNLOCKED:
+  app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+  if (!m_core.GetCurFile().IsEmpty())
+    app.SetTooltipText(m_core.GetCurFile());
+  break;
+case CLOSED:
+  app.SetSystemTrayState(ThisMfcApp::CLOSED);
+  break;
+default:
+  ASSERT(0);
   }
 }
 
@@ -1862,15 +1862,15 @@ DboxMain::LaunchBrowser(const CString &csURL)
 
   int altReplacements = theURL.Replace(_T("[alt]"), _T(""));
   int alt2Replacements = (theURL.Replace(_T("[ssh]"), _T("")) +
-                          theURL.Replace(_T("{alt}"), _T("")));
+    theURL.Replace(_T("{alt}"), _T("")));
 
   if (alt2Replacements <= 0 && !isMailto && theURL.Find(_T("://")) == -1)
     theURL = _T("http://") + theURL;
 
   CString csAltBrowser(PWSprefs::GetInstance()->
-                       GetPref(PWSprefs::AltBrowser));
+    GetPref(PWSprefs::AltBrowser));
   bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) &&
-                        !csAltBrowser.IsEmpty());
+    !csAltBrowser.IsEmpty());
 
   SHELLEXECUTEINFO si;
   si.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -1883,8 +1883,8 @@ DboxMain::LaunchBrowser(const CString &csURL)
     si.lpFile = theURL;
   } else { // alternate browser specified, invoke w/optional args
     CString csCmdLineParms(PWSprefs::GetInstance()->
-                           GetPref(PWSprefs::AltBrowserCmdLineParms));
-  
+      GetPref(PWSprefs::AltBrowserCmdLineParms));
+
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
     si.lpFile = csAltBrowser;
@@ -1914,18 +1914,18 @@ DboxMain::SetColumns()
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
   int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
-                                 (rect.Width() / 3 + rect.Width() % 3));
+    (rect.Width() / 3 + rect.Width() % 3));
   int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
-                                 rect.Width() / 3);
+    rect.Width() / 3);
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
-                                 rect.Width() / 3);
+    rect.Width() / 3);
 
   cs_header = GetHeaderText(CItemData::TITLE);
   m_ctlItemList.InsertColumn(0, cs_header);
   hdi.lParam = CItemData::TITLE;
   m_LVHdrCtrl.SetItem(0, &hdi);
   m_ctlItemList.SetColumnWidth(0, i1stWidth);
-  
+
   cs_header = GetHeaderText(CItemData::USER);
   m_ctlItemList.InsertColumn(1, cs_header);
   hdi.lParam = CItemData::USER;
@@ -1937,16 +1937,16 @@ DboxMain::SetColumns()
   hdi.lParam = CItemData::NOTES;
   m_LVHdrCtrl.SetItem(2, &hdi);
   m_ctlItemList.SetColumnWidth(2, i3rdWidth);
-    
+
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPasswordInTree)) {
     cs_header = GetHeaderText(CItemData::PASSWORD);
     m_ctlItemList.InsertColumn(3, cs_header);
     hdi.lParam = CItemData::PASSWORD;
     m_LVHdrCtrl.SetItem(3, &hdi);
     m_ctlItemList.SetColumnWidth(3,
-                                 PWSprefs::GetInstance()->
-                                 GetPref(PWSprefs::Column4Width,
-                                         rect.Width() / 4));
+      PWSprefs::GetInstance()->
+      GetPref(PWSprefs::Column4Width,
+      rect.Width() / 4));
   }
 
   int ioff = 3;
@@ -1961,25 +1961,25 @@ DboxMain::SetColumns()
   hdi.lParam = CItemData::CTIME;
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
-  
+
   cs_header = GetHeaderText(CItemData::PMTIME);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::PMTIME;
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
-  
+
   cs_header = GetHeaderText(CItemData::ATIME);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::ATIME;
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
-  
+
   cs_header = GetHeaderText(CItemData::LTIME);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::LTIME;
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
-  
+
   cs_header = GetHeaderText(CItemData::RMTIME);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
   hdi.lParam = CItemData::RMTIME;
@@ -2016,10 +2016,10 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   vector<int>::const_iterator vi_IterColumns;
   const TCHAR pSep[] = _T(",");
   TCHAR *pTemp;
-  
+
   // Duplicate as strtok modifies the string
   pTemp = _tcsdup((LPCTSTR)cs_ListColumns);
-  
+
 #if _MSC_VER >= 1400
   // Capture columns shown:
   TCHAR *next_token;
@@ -2045,23 +2045,23 @@ DboxMain::SetColumns(const CString cs_ListColumns)
     m_ctlItemList.SetImageList(m_pImageList, LVSIL_NORMAL);
     m_ctlItemList.SetImageList(m_pImageList, LVSIL_SMALL);
   }
-  
+
   int icol(0);
   for (vi_IterColumns = vi_columns.begin();
-       vi_IterColumns != vi_columns.end();
-       vi_IterColumns++) {
-    iType = *vi_IterColumns;
-    cs_header = GetHeaderText(iType);
-    // Images (if present) must be the first column!
-    if (iType == CItemData::UUID && icol != 0)
-      continue;
+    vi_IterColumns != vi_columns.end();
+    vi_IterColumns++) {
+      iType = *vi_IterColumns;
+      cs_header = GetHeaderText(iType);
+      // Images (if present) must be the first column!
+      if (iType == CItemData::UUID && icol != 0)
+        continue;
 
-    if (!cs_header.IsEmpty()) {
-      m_ctlItemList.InsertColumn(icol, cs_header);
-      hdi.lParam = iType;
-      m_LVHdrCtrl.SetItem(icol, &hdi);
-      icol++;
-    }
+      if (!cs_header.IsEmpty()) {
+        m_ctlItemList.InsertColumn(icol, cs_header);
+        hdi.lParam = iType;
+        m_LVHdrCtrl.SetItem(icol, &hdi);
+        icol++;
+      }
   }
 
   SetHeaderInfo();
@@ -2077,10 +2077,10 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   std::vector<int>::const_iterator vi_IterWidths;
   const TCHAR pSep[] = _T(",");
   TCHAR *pWidths;
-  
+
   // Duplicate as strtok modifies the string
   pWidths = _tcsdup((LPCTSTR)cs_ListColumnsWidths);
-  
+
 #if _MSC_VER >= 1400
   // Capture column widths shown:
   TCHAR *next_token;
@@ -2098,19 +2098,19 @@ DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   }
 #endif
   free(pWidths);
-  
+
   int icol = 0, index;
 
   for (vi_IterWidths = vi_widths.begin();
-       vi_IterWidths != vi_widths.end();
-       vi_IterWidths++) {
-    if (icol == (m_nColumns - 1))
-      break;
-    int iWidth = *vi_IterWidths;
-    m_ctlItemList.SetColumnWidth(icol, iWidth);
-    index = m_LVHdrCtrl.OrderToIndex(icol);
-    m_nColumnWidthByIndex[index] = iWidth;
-    icol++;
+    vi_IterWidths != vi_widths.end();
+    vi_IterWidths++) {
+      if (icol == (m_nColumns - 1))
+        break;
+      int iWidth = *vi_IterWidths;
+      m_ctlItemList.SetColumnWidth(icol, iWidth);
+      index = m_LVHdrCtrl.OrderToIndex(icol);
+      m_nColumnWidthByIndex[index] = iWidth;
+      icol++;
   }
 
   // First column special if the Image
@@ -2170,10 +2170,10 @@ DboxMain::SetHeaderInfo()
 
   // re-initialise array
   for (int i = 0; i < CItemData::LAST; i++)
-      m_nColumnIndexByType[i] = 
-          m_nColumnIndexByOrder[i] =
-          m_nColumnTypeByIndex[i] =
-          m_nColumnWidthByIndex[i] = -1;
+    m_nColumnIndexByType[i] = 
+    m_nColumnIndexByOrder[i] =
+    m_nColumnTypeByIndex[i] =
+    m_nColumnWidthByIndex[i] = -1;
 
   m_LVHdrCtrl.GetOrderArray(m_nColumnIndexByOrder, m_nColumns);
 
@@ -2336,47 +2336,47 @@ CString DboxMain::GetHeaderText(const int iType)
 {
   CString cs_header;
   switch (iType) {
-    case CItemData::UUID:
-      cs_header.LoadString(IDS_ICON);
-      break;
-    case CItemData::GROUP:
-      cs_header.LoadString(IDS_GROUP);
-      break;
-    case CItemData::TITLE:
-      cs_header.LoadString(IDS_TITLE);
-      break;
-    case CItemData::USER:
-      cs_header.LoadString(IDS_USERNAME);
-      break;
-    case CItemData::PASSWORD:
-      cs_header.LoadString(IDS_PASSWORD);
-      break;
-    case CItemData::URL:
-      cs_header.LoadString(IDS_URL);
-      break;
-    case CItemData::NOTES:
-      cs_header.LoadString(IDS_NOTES);
-      break;
-    case CItemData::CTIME:        
-      cs_header.LoadString(IDS_CREATED);
-      break;
-    case CItemData::PMTIME:
-      cs_header.LoadString(IDS_PASSWORDMODIFIED);
-      break;
-    case CItemData::ATIME:
-      cs_header.LoadString(IDS_LASTACCESSED);
-      break;
-    case CItemData::LTIME:
-      cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
-      break;
-    case CItemData::RMTIME:
-      cs_header.LoadString(IDS_LASTMODIFIED);
-      break;
-    case CItemData::POLICY:        
-      cs_header.LoadString(IDS_PWPOLICY);
-      break;
-    default:
-      cs_header.Empty();
+case CItemData::UUID:
+  cs_header.LoadString(IDS_ICON);
+  break;
+case CItemData::GROUP:
+  cs_header.LoadString(IDS_GROUP);
+  break;
+case CItemData::TITLE:
+  cs_header.LoadString(IDS_TITLE);
+  break;
+case CItemData::USER:
+  cs_header.LoadString(IDS_USERNAME);
+  break;
+case CItemData::PASSWORD:
+  cs_header.LoadString(IDS_PASSWORD);
+  break;
+case CItemData::URL:
+  cs_header.LoadString(IDS_URL);
+  break;
+case CItemData::NOTES:
+  cs_header.LoadString(IDS_NOTES);
+  break;
+case CItemData::CTIME:        
+  cs_header.LoadString(IDS_CREATED);
+  break;
+case CItemData::PMTIME:
+  cs_header.LoadString(IDS_PASSWORDMODIFIED);
+  break;
+case CItemData::ATIME:
+  cs_header.LoadString(IDS_LASTACCESSED);
+  break;
+case CItemData::LTIME:
+  cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+  break;
+case CItemData::RMTIME:
+  cs_header.LoadString(IDS_LASTMODIFIED);
+  break;
+case CItemData::POLICY:        
+  cs_header.LoadString(IDS_PWPOLICY);
+  break;
+default:
+  cs_header.Empty();
   }
   return cs_header;
 }
@@ -2386,25 +2386,25 @@ int DboxMain::GetHeaderWidth(const int iType)
   int nWidth(0);
 
   switch (iType) {
-    case CItemData::UUID:
-    case CItemData::GROUP:
-    case CItemData::TITLE:
-    case CItemData::USER:
-    case CItemData::PASSWORD:
-    case CItemData::NOTES:
-    case CItemData::URL:
-    case CItemData::POLICY:
-      nWidth = m_nColumnHeaderWidthByType[iType];
-      break;
-    case CItemData::CTIME:        
-    case CItemData::PMTIME:
-    case CItemData::ATIME:
-    case CItemData::LTIME:
-    case CItemData::RMTIME:
-      nWidth = m_iDateTimeFieldWidth;
-      break;
-    default:
-      break;
+case CItemData::UUID:
+case CItemData::GROUP:
+case CItemData::TITLE:
+case CItemData::USER:
+case CItemData::PASSWORD:
+case CItemData::NOTES:
+case CItemData::URL:
+case CItemData::POLICY:
+  nWidth = m_nColumnHeaderWidthByType[iType];
+  break;
+case CItemData::CTIME:        
+case CItemData::PMTIME:
+case CItemData::ATIME:
+case CItemData::LTIME:
+case CItemData::RMTIME:
+  nWidth = m_iDateTimeFieldWidth;
+  break;
+default:
+  break;
   }
 
   return nWidth;
@@ -2443,47 +2443,47 @@ void DboxMain::CalcHeaderWidths()
 
   for (int iType = 0; iType < CItemData::LAST; iType++) {
     switch (iType) {
-      case CItemData::UUID:
-        cs_header.LoadString(IDS_ICON);
-        break;
-      case CItemData::GROUP:
-        cs_header.LoadString(IDS_GROUP);
-        break;
-      case CItemData::TITLE:
-        cs_header.LoadString(IDS_TITLE);
-        break;
-      case CItemData::USER:
-        cs_header.LoadString(IDS_USERNAME);
-        break;
-      case CItemData::PASSWORD:
-        cs_header.LoadString(IDS_PASSWORD);
-        break;
-      case CItemData::URL:
-        cs_header.LoadString(IDS_URL);
-        break;
-      case CItemData::NOTES:
-        cs_header.LoadString(IDS_NOTES);
-        break;
-      case CItemData::CTIME:        
-        cs_header.LoadString(IDS_CREATED);
-        break;
-      case CItemData::PMTIME:
-        cs_header.LoadString(IDS_PASSWORDMODIFIED);
-        break;
-      case CItemData::ATIME:
-        cs_header.LoadString(IDS_LASTACCESSED);
-        break;
-      case CItemData::LTIME:
-        cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
-        break;
-      case CItemData::RMTIME:
-        cs_header.LoadString(IDS_LASTMODIFIED);
-        break;
-      case CItemData::POLICY:        
-        cs_header.LoadString(IDS_PWPOLICY);
-        break;
-      default:
-        cs_header.Empty();
+case CItemData::UUID:
+  cs_header.LoadString(IDS_ICON);
+  break;
+case CItemData::GROUP:
+  cs_header.LoadString(IDS_GROUP);
+  break;
+case CItemData::TITLE:
+  cs_header.LoadString(IDS_TITLE);
+  break;
+case CItemData::USER:
+  cs_header.LoadString(IDS_USERNAME);
+  break;
+case CItemData::PASSWORD:
+  cs_header.LoadString(IDS_PASSWORD);
+  break;
+case CItemData::URL:
+  cs_header.LoadString(IDS_URL);
+  break;
+case CItemData::NOTES:
+  cs_header.LoadString(IDS_NOTES);
+  break;
+case CItemData::CTIME:        
+  cs_header.LoadString(IDS_CREATED);
+  break;
+case CItemData::PMTIME:
+  cs_header.LoadString(IDS_PASSWORDMODIFIED);
+  break;
+case CItemData::ATIME:
+  cs_header.LoadString(IDS_LASTACCESSED);
+  break;
+case CItemData::LTIME:
+  cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+  break;
+case CItemData::RMTIME:
+  cs_header.LoadString(IDS_LASTMODIFIED);
+  break;
+case CItemData::POLICY:        
+  cs_header.LoadString(IDS_PWPOLICY);
+  break;
+default:
+  cs_header.Empty();
     }
 
     if (!cs_header.IsEmpty())
@@ -2525,9 +2525,9 @@ bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive
 #if _MSC_VER >= 1400
   errno_t err;
   _tsplitpath_s(tc_applicationpath, tc_appdrive, _MAX_DRIVE, tc_appdir, 
-                                                 _MAX_DIR, NULL, 0, NULL, 0);
+    _MAX_DIR, NULL, 0, NULL, 0);
   err = _tsplitpath_s(cs_infile, tc_drive, _MAX_DRIVE, tc_dir, 
-                                           _MAX_DIR, NULL, 0, NULL, 0);
+    _MAX_DIR, NULL, 0, NULL, 0);
   if (err != 0) {
     PWSUtil::IssueError(_T("View Report: Error finding path to database"));
     return false;
@@ -2567,28 +2567,28 @@ DboxMain::OnViewReports()
   bool bReportExists(false);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Compare"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
-     gmb.AddButton(1, _T("Compare"));
-     bReportExists = true;
+    gmb.AddButton(1, _T("Compare"));
+    bReportExists = true;
   }
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Import_Text"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
-     gmb.AddButton(2, _T("Import Text"));
-     bReportExists = true;
+    gmb.AddButton(2, _T("Import Text"));
+    bReportExists = true;
   }
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Import_XML"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
-     gmb.AddButton(3, _T("Import XML"));
-     bReportExists = true;
+    gmb.AddButton(3, _T("Import XML"));
+    bReportExists = true;
   }
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Merge"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
-     gmb.AddButton(4, _T("Merge"));
-     bReportExists = true;
+    gmb.AddButton(4, _T("Merge"));
+    bReportExists = true;
   }
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Validate"));
   if (::_tstat(cs_filename, &statbuf) == 0) {
-     gmb.AddButton(5, _T("Validate"));
-     bReportExists = true;
+    gmb.AddButton(5, _T("Validate"));
+    bReportExists = true;
   }
 
   if (!bReportExists) {
@@ -2601,23 +2601,23 @@ DboxMain::OnViewReports()
 
   INT_PTR rc = gmb.DoModal();
   switch (rc) {
-    case 1:
-      csAction = _T("Compare");
-      break;
-    case 2:
-      csAction = _T("Import_Text");
-      break;
-    case 3:
-      csAction = _T("Import_XML");
-      break;
-    case 4:
-      csAction = _T("Merge");
-      break;
-    case 5:
-      csAction = _T("Validate");
-      break;
-    default:
-      return;
+case 1:
+  csAction = _T("Compare");
+  break;
+case 2:
+  csAction = _T("Import_Text");
+  break;
+case 3:
+  csAction = _T("Import_XML");
+  break;
+case 4:
+  csAction = _T("Merge");
+  break;
+case 5:
+  csAction = _T("Validate");
+  break;
+default:
+  return;
   }
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
@@ -2629,7 +2629,7 @@ void
 DboxMain::OnViewReports(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) &&
-         (nID <= ID_MENUITEM_REPORT_VALIDATE));
+    (nID <= ID_MENUITEM_REPORT_VALIDATE));
 
   CString cs_filename, cs_path, csAction;
   CString cs_drive, cs_directory;
@@ -2638,23 +2638,23 @@ DboxMain::OnViewReports(UINT nID)
     return;
 
   switch (nID) {
-    case ID_MENUITEM_REPORT_COMPARE:
-      csAction = _T("Compare");
-      break;
-    case ID_MENUITEM_REPORT_IMPORTTEXT:
-      csAction = _T("Import_Text");
-      break;
-    case ID_MENUITEM_REPORT_IMPORTXML:
-      csAction = _T("Import_XML");
-      break;
-    case ID_MENUITEM_REPORT_MERGE:
-      csAction = _T("Merge");
-      break;
-    case ID_MENUITEM_REPORT_VALIDATE:
-      csAction = _T("Validate");
-      break;
-    default:
-      ASSERT(0);
+case ID_MENUITEM_REPORT_COMPARE:
+  csAction = _T("Compare");
+  break;
+case ID_MENUITEM_REPORT_IMPORTTEXT:
+  csAction = _T("Import_Text");
+  break;
+case ID_MENUITEM_REPORT_IMPORTXML:
+  csAction = _T("Import_XML");
+  break;
+case ID_MENUITEM_REPORT_MERGE:
+  csAction = _T("Merge");
+  break;
+case ID_MENUITEM_REPORT_VALIDATE:
+  csAction = _T("Validate");
+  break;
+default:
+  ASSERT(0);
   }
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
@@ -2679,7 +2679,7 @@ DboxMain::ViewReport(const CString cs_ReportFileName)
   // Find out the users default editor for "txt" files
   DWORD dwSize(MAX_PATH);
   HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, _T(".txt"), _T("Open"),
-                                    szExecName, &dwSize);
+    szExecName, &dwSize);
   if (int(stat) != S_OK) {  
 #ifdef _DEBUG
     AfxMessageBox(_T("oops"));
@@ -2708,8 +2708,8 @@ DboxMain::ViewReport(const CString cs_ReportFileName)
   LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
-       NULL, cs_path, &si, &pi)) {
-    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+    NULL, cs_path, &si, &pi)) {
+      TRACE( "CreateProcess failed (%d).\n", GetLastError() );
   }
 
   // Close process and thread handles. 
@@ -2724,7 +2724,7 @@ int
 DboxMain::OnUpdateViewReports(const int nID)
 {
   CMyString cs_Database(m_core.GetCurFile());
-  
+
   if (cs_Database.IsEmpty()) {
     return FALSE;
   }
@@ -2736,24 +2736,24 @@ DboxMain::OnUpdateViewReports(const int nID)
     return FALSE;
 
   switch (nID) {
-    case ID_MENUITEM_REPORT_COMPARE:
-      csAction = _T("Compare");
-      break;
-    case ID_MENUITEM_REPORT_IMPORTTEXT:
-      csAction = _T("Import_Text");
-      break;
-    case ID_MENUITEM_REPORT_IMPORTXML:
-      csAction = _T("Import_XML");
-      break;
-    case ID_MENUITEM_REPORT_MERGE:
-      csAction = _T("Merge");
-      break;
-    case ID_MENUITEM_REPORT_VALIDATE:
-      csAction = _T("Validate");
-      break;
-    default:
-      TRACE(_T("ID=%d\n"), nID);
-      ASSERT(0);
+case ID_MENUITEM_REPORT_COMPARE:
+  csAction = _T("Compare");
+  break;
+case ID_MENUITEM_REPORT_IMPORTTEXT:
+  csAction = _T("Import_Text");
+  break;
+case ID_MENUITEM_REPORT_IMPORTXML:
+  csAction = _T("Import_XML");
+  break;
+case ID_MENUITEM_REPORT_MERGE:
+  csAction = _T("Merge");
+  break;
+case ID_MENUITEM_REPORT_VALIDATE:
+  csAction = _T("Validate");
+  break;
+default:
+  TRACE(_T("ID=%d\n"), nID);
+  ASSERT(0);
   }
 
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
@@ -2824,10 +2824,10 @@ DboxMain::SetToolBarPositions()
       ScreenToClient(&stb_rect);
       // Move FindToolBar up by the height of the Statusbar
       m_FindToolBar.MoveWindow(ftb_rect.left, ftb_rect.top - stb_rect.Height(),
-                               ftb_rect.Width(), ftb_rect.Height());
+        ftb_rect.Width(), ftb_rect.Height());
       // Move Statusbar down by the height of the FindToolBar
       m_statusBar.MoveWindow(stb_rect.left, stb_rect.top + ftb_rect.Height(),
-                             stb_rect.Width(), stb_rect.Height());
+        stb_rect.Width(), stb_rect.Height());
       m_FindToolBar.Invalidate();
       m_statusBar.Invalidate();
     }
@@ -2906,17 +2906,17 @@ DboxMain::GetEntryImage(const CItemData &ci)
 
   int nImage;
   switch (entrytype) {
-    case CItemData::Normal:
-      nImage = CPWTreeCtrl::NORMAL;
-      break;
-    case CItemData::AliasBase:
-      nImage = CPWTreeCtrl::ALIASBASE;
-      break;
-    case CItemData::ShortcutBase:
-      nImage = CPWTreeCtrl::SHORTCUTBASE;
-      break;
-    default:
-      nImage = CPWTreeCtrl::NORMAL;
+case CItemData::Normal:
+  nImage = CPWTreeCtrl::NORMAL;
+  break;
+case CItemData::AliasBase:
+  nImage = CPWTreeCtrl::ALIASBASE;
+  break;
+case CItemData::ShortcutBase:
+  nImage = CPWTreeCtrl::SHORTCUTBASE;
+  break;
+default:
+  nImage = CPWTreeCtrl::NORMAL;
   }
 
   ci.GetLTime(tLTime);
@@ -2988,12 +2988,12 @@ DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
     BITMAP bitmap;
     ::GetObject(iconinfo.hbmColor, sizeof(bitmap), &bitmap);
 
-		::DeleteObject(iconinfo.hbmColor);
-		::DeleteObject(iconinfo.hbmMask);
+    ::DeleteObject(iconinfo.hbmColor);
+    ::DeleteObject(iconinfo.hbmMask);
 
-		::DrawIconEx(lpdis->hDC, lpdis->rcItem.left, lpdis->rcItem.top, hIcon,
-                 bitmap.bmWidth, bitmap.bmHeight, 
-		             0, NULL, DI_IMAGE /*NORMAL*/);
+    ::DrawIconEx(lpdis->hDC, lpdis->rcItem.left, lpdis->rcItem.top, hIcon,
+      bitmap.bmWidth, bitmap.bmHeight, 
+      0, NULL, DI_IMAGE /*NORMAL*/);
   }
 }
 
@@ -3022,8 +3022,8 @@ DboxMain::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpmis)
     BITMAP bitmap;
     ::GetObject(iconinfo.hbmColor, sizeof(bitmap), &bitmap);
 
-		::DeleteObject(iconinfo.hbmColor);
-		::DeleteObject(iconinfo.hbmMask);
+    ::DeleteObject(iconinfo.hbmColor);
+    ::DeleteObject(iconinfo.hbmMask);
 
     lpmis->itemWidth = bitmap.bmWidth;
     lpmis->itemHeight = bitmap.bmHeight;
@@ -3035,44 +3035,44 @@ DboxMain::GetEntryIcon(const int nImage) const
 {
   int nID;
   switch (nImage) {
-    case CPWTreeCtrl::NORMAL:
-      nID = IDI_NORMAL;
-      break;
-    case CPWTreeCtrl::WARNEXPIRED_NORMAL:
-      nID = IDI_NORMAL_WARNEXPIRED;
-      break;
-    case CPWTreeCtrl::EXPIRED_NORMAL:
-      nID = IDI_NORMAL_EXPIRED;
-      break;
-    case CPWTreeCtrl::ALIASBASE:
-      nID = IDI_ABASE;
-      break;
-    case CPWTreeCtrl::WARNEXPIRED_ALIASBASE:
-      nID = IDI_ABASE_WARNEXPIRED;
-      break;
-    case CPWTreeCtrl::EXPIRED_ALIASBASE:
-      nID = IDI_ABASE_EXPIRED;
-      break;
-    case CPWTreeCtrl::ALIAS:
-      nID = IDI_ALIAS;
-      break;
-    case CPWTreeCtrl::SHORTCUTBASE:
-      nID = IDI_SBASE;
-      break;
-    case CPWTreeCtrl::WARNEXPIRED_SHORTCUTBASE:
-      nID = IDI_SBASE_WARNEXPIRED;
-      break;
-    case CPWTreeCtrl::EXPIRED_SHORTCUTBASE:
-      nID = IDI_SBASE_EXPIRED;
-      break;
-    case CPWTreeCtrl::SHORTCUT:
-      nID = IDI_SHORTCUT;
-      break;
-    default:
-      nID = IDI_NORMAL;
+case CPWTreeCtrl::NORMAL:
+  nID = IDI_NORMAL;
+  break;
+case CPWTreeCtrl::WARNEXPIRED_NORMAL:
+  nID = IDI_NORMAL_WARNEXPIRED;
+  break;
+case CPWTreeCtrl::EXPIRED_NORMAL:
+  nID = IDI_NORMAL_EXPIRED;
+  break;
+case CPWTreeCtrl::ALIASBASE:
+  nID = IDI_ABASE;
+  break;
+case CPWTreeCtrl::WARNEXPIRED_ALIASBASE:
+  nID = IDI_ABASE_WARNEXPIRED;
+  break;
+case CPWTreeCtrl::EXPIRED_ALIASBASE:
+  nID = IDI_ABASE_EXPIRED;
+  break;
+case CPWTreeCtrl::ALIAS:
+  nID = IDI_ALIAS;
+  break;
+case CPWTreeCtrl::SHORTCUTBASE:
+  nID = IDI_SBASE;
+  break;
+case CPWTreeCtrl::WARNEXPIRED_SHORTCUTBASE:
+  nID = IDI_SBASE_WARNEXPIRED;
+  break;
+case CPWTreeCtrl::EXPIRED_SHORTCUTBASE:
+  nID = IDI_SBASE_EXPIRED;
+  break;
+case CPWTreeCtrl::SHORTCUT:
+  nID = IDI_SHORTCUT;
+  break;
+default:
+  nID = IDI_NORMAL;
   }
   HICON hIcon = (HICON)::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(nID), 
-                                   IMAGE_ICON, 0, 0, 
-                                   LR_LOADMAP3DCOLORS | LR_SHARED);
+    IMAGE_ICON, 0, 0, 
+    LR_LOADMAP3DCOLORS | LR_SHARED);
   return hIcon;
 }

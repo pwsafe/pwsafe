@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// file DboxTray.cpp
 //
 // Tray-related methods of DboxMain
@@ -14,12 +14,12 @@
 #include "ThisMfcApp.h"
 
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
+#include "pocketpc/resource.h"
 #else
-  #include <errno.h>
-  #include "resource.h"
-  #include "resource2.h"  // Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
+#include <errno.h>
+#include "resource.h"
+#include "resource2.h"  // Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #endif
 
 #include "DboxMain.h"
@@ -53,24 +53,24 @@ DboxMain::OnTrayLockUnLock()
   default:
     ASSERT(0);
     break;
-	}
+  }
 }
 
 void
 DboxMain::OnTrayClearRecentEntries()
 {
-	m_RUEList.ClearEntries();
+  m_RUEList.ClearEntries();
 }
 
 void
 DboxMain::OnTrayCopyUsername(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYUSERNAME1) &&
-         (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
+    (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
 
   CItemData ci;
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
-	  return;
+    return;
 
   const CMyString username = ci.GetUser();
   if (!username.IsEmpty()) {
@@ -87,14 +87,14 @@ DboxMain::OnUpdateTrayCopyUsername(CCmdUI *)
 void
 DboxMain::OnTrayCopyPassword(UINT nID)
 {
-	ASSERT((nID >= ID_MENUITEM_TRAYCOPYPASSWORD1) && (nID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYCOPYPASSWORD1) && (nID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX));
 
-	CItemData ci;
-	if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
-		return;
+  CItemData ci;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
+    return;
 
-	const CMyString curPassString = ci.GetPassword();
-	SetClipboardData(curPassString);
+  const CMyString curPassString = ci.GetPassword();
+  SetClipboardData(curPassString);
   UpdateAccessTime(&ci);
 }
 
@@ -111,7 +111,7 @@ DboxMain::OnTrayCopyNotes(UINT nID)
   CItemData ci;
   CString cs_text;
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTES1, ci))
-	  return;
+    return;
 
   const CMyString notes = ci.GetNotes();
   const CMyString url = ci.GetURL();
@@ -128,7 +128,7 @@ DboxMain::OnTrayCopyNotes(UINT nID)
     clipboard_data += url;
   }
   if (!autotype.IsEmpty()) {
-  	cs_text.LoadString(IDS_COPYAUTOTYPE);
+    cs_text.LoadString(IDS_COPYAUTOTYPE);
     clipboard_data += CMyString(cs_text);
     clipboard_data += autotype;
   }
@@ -151,7 +151,7 @@ DboxMain::OnTrayBrowse(UINT nID)
 
   CItemData ci;
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
-	  return;
+    return;
 
   if (ci.IsShortcut()) {
     // This is an shortcut
@@ -181,7 +181,7 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 
   CItemData ci;
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYBROWSE1, ci))
-	  return;
+    return;
 
   if (ci.IsShortcut()) {
     // This is an shortcut
@@ -211,9 +211,9 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 void
 DboxMain::OnTrayDeleteEntry(UINT nID)
 {
-	ASSERT((nID >= ID_MENUITEM_TRAYDELETE1) && (nID <= ID_MENUITEM_TRAYDELETEMAX));
+  ASSERT((nID >= ID_MENUITEM_TRAYDELETE1) && (nID <= ID_MENUITEM_TRAYDELETEMAX));
 
-	m_RUEList.DeleteRUEntry(nID - ID_MENUITEM_TRAYDELETE1);
+  m_RUEList.DeleteRUEntry(nID - ID_MENUITEM_TRAYDELETE1);
 }
 
 void
@@ -228,7 +228,7 @@ DboxMain::OnTrayAutoType(UINT nID)
 
   CItemData ci;
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYAUTOTYPE1, ci))
-	  return;
+    return;
 
   AutoType(ci);
   UpdateAccessTime(&ci);

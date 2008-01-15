@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // SAXHandlers.cpp : implementation file
 //
 
@@ -27,10 +27,10 @@
 //	PWSSAXErrorHandler Methods
 //	-----------------------------------------------------------------------
 PWSSAXErrorHandler::PWSSAXErrorHandler():
-	bErrorsFound(FALSE),
-	m_strValidationResult("")
+bErrorsFound(FALSE),
+m_strValidationResult("")
 {
-	m_refCnt = 0;
+  m_refCnt = 0;
 }
 
 PWSSAXErrorHandler::~PWSSAXErrorHandler()
@@ -39,92 +39,92 @@ PWSSAXErrorHandler::~PWSSAXErrorHandler()
 
 long __stdcall PWSSAXErrorHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-	*ppvObject = NULL;
-	if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler))
-	{
-		*ppvObject = static_cast<ISAXErrorHandler *>(this);
-	}
+  *ppvObject = NULL;
+  if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler))
+  {
+    *ppvObject = static_cast<ISAXErrorHandler *>(this);
+  }
 
-	if (*ppvObject)
-	{
-		AddRef();
-		return S_OK;
-	}
-	else return E_NOINTERFACE;
+  if (*ppvObject)
+  {
+    AddRef();
+    return S_OK;
+  }
+  else return E_NOINTERFACE;
 }
 
 unsigned long __stdcall PWSSAXErrorHandler::AddRef()
 {
-	 return ++m_refCnt; // NOT thread-safe
+  return ++m_refCnt; // NOT thread-safe
 }
 
 unsigned long __stdcall PWSSAXErrorHandler::Release()
 {
-	--m_refCnt; // NOT thread-safe
-   if (m_refCnt == 0) {
-	  delete this;
-	  return 0; // Can't return the member of a deleted object.
-   }
-   else return m_refCnt;
+  --m_refCnt; // NOT thread-safe
+  if (m_refCnt == 0) {
+    delete this;
+    return 0; // Can't return the member of a deleted object.
+  }
+  else return m_refCnt;
 }
 
 HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
-        struct ISAXLocator * pLocator,
-        unsigned short * pwchErrorMessage,
-        HRESULT hrErrorCode )
+struct ISAXLocator * pLocator,
+  unsigned short * pwchErrorMessage,
+  HRESULT hrErrorCode )
 {
-	TCHAR szErrorMessage[MAX_PATH*2] = {0};
-	TCHAR szFormatString[MAX_PATH*2] = {0};
-	int iLineNumber, iCharacter;
+  TCHAR szErrorMessage[MAX_PATH*2] = {0};
+  TCHAR szFormatString[MAX_PATH*2] = {0};
+  int iLineNumber, iCharacter;
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-	_tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
+  _tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
 #else
-	_tcscpy(szErrorMessage, pwchErrorMessage);
+  _tcscpy(szErrorMessage, pwchErrorMessage);
 #endif
 #else
 #if (_MSC_VER >= 1400)
-	size_t num_converted;
-	wcstombs_s(&num_converted, szErrorMessage, MAX_PATH*2, pwchErrorMessage, MAX_PATH);
+  size_t num_converted;
+  wcstombs_s(&num_converted, szErrorMessage, MAX_PATH*2, pwchErrorMessage, MAX_PATH);
 #else
-	wcstombs(szErrorMessage, pwchErrorMessage, MAX_PATH);
+  wcstombs(szErrorMessage, pwchErrorMessage, MAX_PATH);
 #endif
 #endif
-	pLocator->getLineNumber(&iLineNumber);
-	pLocator->getColumnNumber(&iCharacter);
+  pLocator->getLineNumber(&iLineNumber);
+  pLocator->getColumnNumber(&iCharacter);
 
-	const CString cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
+  const CString cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
 
 #if (_MSC_VER >= 1400)
-	_stprintf_s(szFormatString, MAX_PATH*2, cs_format,
-		hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
+  _stprintf_s(szFormatString, MAX_PATH*2, cs_format,
+    hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #else
-	_stprintf(szFormatString, cs_format,
-		hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
+  _stprintf(szFormatString, cs_format,
+    hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #endif
 
-	m_strValidationResult += szFormatString;
+  m_strValidationResult += szFormatString;
 
-	bErrorsFound = TRUE;
+  bErrorsFound = TRUE;
 
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::fatalError (
-		struct ISAXLocator * pLocator,
-        unsigned short * pwchErrorMessage,
-        HRESULT hrErrorCode )
+struct ISAXLocator * pLocator,
+  unsigned short * pwchErrorMessage,
+  HRESULT hrErrorCode )
 {
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::ignorableWarning (
-		struct ISAXLocator * pLocator,
-        unsigned short * pwchErrorMessage,
-        HRESULT hrErrorCode )
+struct ISAXLocator * pLocator,
+  unsigned short * pwchErrorMessage,
+  HRESULT hrErrorCode )
 {
-	return S_OK;
+  return S_OK;
 }
 
 //	-----------------------------------------------------------------------
@@ -132,11 +132,11 @@ HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::ignorableWarning (
 //	-----------------------------------------------------------------------
 PWSSAXContentHandler::PWSSAXContentHandler()
 {
-	m_refCnt = 0;
-	m_strElemContent.Empty();
-	m_numEntries = 0;
-	m_ImportedPrefix = _T("");
-	m_delimiter = _T('^');
+  m_refCnt = 0;
+  m_strElemContent.Empty();
+  m_numEntries = 0;
+  m_ImportedPrefix = _T("");
+  m_delimiter = _T('^');
   m_bheader = false;
   m_bDatabaseHeaderErrors = false;
   m_bRecordHeaderErrors = false;
@@ -180,291 +180,291 @@ PWSSAXContentHandler::~PWSSAXContentHandler()
 }
 
 void PWSSAXContentHandler::SetVariables(PWScore *core, const bool &bValidation,
-									  const CString &ImportedPrefix, const TCHAR &delimiter,
-                    UUIDList *possible_aliases, UUIDList *possible_shortcuts)
+                                        const CString &ImportedPrefix, const TCHAR &delimiter,
+                                        UUIDList *possible_aliases, UUIDList *possible_shortcuts)
 {
-	m_bValidation = bValidation;
-	m_ImportedPrefix = ImportedPrefix;
-	m_delimiter = delimiter;
-	m_xmlcore = core;
+  m_bValidation = bValidation;
+  m_ImportedPrefix = ImportedPrefix;
+  m_delimiter = delimiter;
+  m_xmlcore = core;
   m_possible_aliases = possible_aliases;
   m_possible_shortcuts = possible_shortcuts;
 }
 
 long __stdcall PWSSAXContentHandler::QueryInterface(const struct _GUID &riid,void ** ppvObject)
 {
-	*ppvObject = NULL;
-	if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler)) {
-		*ppvObject = static_cast<ISAXContentHandler *>(this);
-	}
+  *ppvObject = NULL;
+  if (riid == IID_IUnknown ||riid == __uuidof(ISAXContentHandler)) {
+    *ppvObject = static_cast<ISAXContentHandler *>(this);
+  }
 
-	if (*ppvObject) {
-		AddRef();
-		return S_OK;
-	}
-	else return E_NOINTERFACE;
+  if (*ppvObject) {
+    AddRef();
+    return S_OK;
+  }
+  else return E_NOINTERFACE;
 }
 
 unsigned long __stdcall PWSSAXContentHandler::AddRef()
 {
-	 return ++m_refCnt; // NOT thread-safe
+  return ++m_refCnt; // NOT thread-safe
 }
 
 unsigned long __stdcall PWSSAXContentHandler::Release()
 {
-	--m_refCnt; // NOT thread-safe
-   if (m_refCnt == 0) {
-	  delete this;
-	  return 0; // Can't return the member of a deleted object.
-   }
-   else return m_refCnt;
+  --m_refCnt; // NOT thread-safe
+  if (m_refCnt == 0) {
+    delete this;
+    return 0; // Can't return the member of a deleted object.
+  }
+  else return m_refCnt;
 }
 
 //	-----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::startDocument ( )
 {
-	m_strImportErrors = _T("");
+  m_strImportErrors = _T("");
   m_bentrybeingprocessed = false;
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::putDocumentLocator (struct ISAXLocator * pLocator )
 {
-	return S_OK;
+  return S_OK;
 }
 
 //	---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
-    /* [in] */ wchar_t __RPC_FAR *pwchNamespaceUri,
-    /* [in] */ int cchNamespaceUri,
-    /* [in] */ wchar_t __RPC_FAR *pwchLocalName,
-    /* [in] */ int cchLocalName,
-    /* [in] */ wchar_t __RPC_FAR *pwchRawName,
-    /* [in] */ int cchRawName,
-    /* [in] */ ISAXAttributes __RPC_FAR *pAttributes)
+  /* [in] */ wchar_t __RPC_FAR *pwchNamespaceUri,
+  /* [in] */ int cchNamespaceUri,
+  /* [in] */ wchar_t __RPC_FAR *pwchLocalName,
+  /* [in] */ int cchLocalName,
+  /* [in] */ wchar_t __RPC_FAR *pwchRawName,
+  /* [in] */ int cchRawName,
+  /* [in] */ ISAXAttributes __RPC_FAR *pAttributes)
 {
-	TCHAR szCurElement[MAX_PATH+1] = {0};
+  TCHAR szCurElement[MAX_PATH+1] = {0};
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
   _tcsncpy_s(szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
 #else
-	_tcsncpy(szCurElement, pwchRawName, cchRawName);
+  _tcsncpy(szCurElement, pwchRawName, cchRawName);
 #endif
 #else
 #if (_MSC_VER >= 1400)
-	size_t num_converted;
-	wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
+  size_t num_converted;
+  wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
 #else
-	wcstombs(szCurElement, pwchRawName, cchRawName);
+  wcstombs(szCurElement, pwchRawName, cchRawName);
 #endif
 #endif
 
-	if (_tcscmp(szCurElement, _T("passwordsafe")) == 0) {
-		if (m_bValidation) {
-			int iAttribs = 0;
-			pAttributes->getLength(&iAttribs);
-			for (int i = 0; i < iAttribs; i++) {
-				TCHAR szQName[MAX_PATH + 1] = {0};
-				TCHAR szValue[MAX_PATH + 1] = {0};
-				wchar_t *QName, *Value;
-				int QName_length, Value_length;
+  if (_tcscmp(szCurElement, _T("passwordsafe")) == 0) {
+    if (m_bValidation) {
+      int iAttribs = 0;
+      pAttributes->getLength(&iAttribs);
+      for (int i = 0; i < iAttribs; i++) {
+        TCHAR szQName[MAX_PATH + 1] = {0};
+        TCHAR szValue[MAX_PATH + 1] = {0};
+        wchar_t *QName, *Value;
+        int QName_length, Value_length;
 
-				pAttributes->getQName(i, &QName, &QName_length);
-				pAttributes->getValue(i, &Value, &Value_length);
+        pAttributes->getQName(i, &QName, &QName_length);
+        pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-				_tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
-				_tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
+        _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
+        _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
 #else
-				_tcsncpy(szQName, QName, QName_length);
-				_tcsncpy(szValue, Value, Value_length);
+        _tcsncpy(szQName, QName, QName_length);
+        _tcsncpy(szValue, Value, Value_length);
 #endif
 #else
 #if (_MSC_VER >= 1400)
-				wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
-				wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
+        wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
+        wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
 #else
-				wcstombs(szQName, QName, QName_length);
-				wcstombs(szValue, Value, Value_length);
+        wcstombs(szQName, QName, QName_length);
+        wcstombs(szValue, Value, Value_length);
 #endif
 #endif
-				if (_tcscmp(szQName, _T("delimiter")) == 0)
-					m_delimiter = szValue[0];
+        if (_tcscmp(szQName, _T("delimiter")) == 0)
+          m_delimiter = szValue[0];
 
         // We do not save or copy the imported file_uuid_array
         //   szQName == _T("Database_uuid")
-			}
-		}
-	}
+      }
+    }
+  }
 
-	if (m_bValidation)
-		return S_OK;
+  if (m_bValidation)
+    return S_OK;
 
   if (_tcscmp(szCurElement, _T("unknownheaderfields")) == 0) {
-		m_ukhxl.clear();
+    m_ukhxl.clear();
     m_bheader = true;
   }
 
   if (_tcscmp(szCurElement, _T("field")) == 0) {
     int iAttribs = 0;
-		pAttributes->getLength(&iAttribs);
-		for (int i = 0; i < iAttribs; i++) {
-			TCHAR szQName[MAX_PATH + 1] = {0};
-			TCHAR szValue[MAX_PATH + 1] = {0};
-			wchar_t *QName, *Value;
-			int QName_length, Value_length;
+    pAttributes->getLength(&iAttribs);
+    for (int i = 0; i < iAttribs; i++) {
+      TCHAR szQName[MAX_PATH + 1] = {0};
+      TCHAR szValue[MAX_PATH + 1] = {0};
+      wchar_t *QName, *Value;
+      int QName_length, Value_length;
 
-			pAttributes->getQName(i, &QName, &QName_length);
-			pAttributes->getValue(i, &Value, &Value_length);
+      pAttributes->getQName(i, &QName, &QName_length);
+      pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-			_tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
-			_tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
+      _tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
+      _tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
 #else
-			_tcsncpy(szQName, QName, QName_length);
-			_tcsncpy(szValue, Value, Value_length);
+      _tcsncpy(szQName, QName, QName_length);
+      _tcsncpy(szValue, Value, Value_length);
 #endif
 #else
 #if (_MSC_VER >= 1400)
-			wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
-			wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
+      wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
+      wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
 #else
-			wcstombs(szQName, QName, QName_length);
-			wcstombs(szValue, Value, Value_length);
+      wcstombs(szQName, QName, QName_length);
+      wcstombs(szValue, Value, Value_length);
 #endif
 #endif
-			if (_tcscmp(szQName, _T("ftype")) == 0)
-				m_ctype = (unsigned char)_ttoi(szValue);
-		}
+      if (_tcscmp(szQName, _T("ftype")) == 0)
+        m_ctype = (unsigned char)_ttoi(szValue);
+    }
   }
 
-	if (_tcscmp(szCurElement, _T("entry")) == 0) {
-		cur_entry = new pw_entry;
-		cur_entry->group = _T("");
-		cur_entry->title = _T("");
-		cur_entry->username = _T("");
-		cur_entry->password = _T("");
-		cur_entry->url = _T("");
-		cur_entry->autotype = _T("");
-		cur_entry->ctime = _T("");
-		cur_entry->atime = _T("");
-		cur_entry->ltime = _T("");
-		cur_entry->pmtime = _T("");
-		cur_entry->rmtime = _T("");
-		cur_entry->changed = _T("");
-		cur_entry->pwhistory = _T("");
-		cur_entry->notes = _T("");
-		cur_entry->uuid = _T("");
+  if (_tcscmp(szCurElement, _T("entry")) == 0) {
+    cur_entry = new pw_entry;
+    cur_entry->group = _T("");
+    cur_entry->title = _T("");
+    cur_entry->username = _T("");
+    cur_entry->password = _T("");
+    cur_entry->url = _T("");
+    cur_entry->autotype = _T("");
+    cur_entry->ctime = _T("");
+    cur_entry->atime = _T("");
+    cur_entry->ltime = _T("");
+    cur_entry->pmtime = _T("");
+    cur_entry->rmtime = _T("");
+    cur_entry->changed = _T("");
+    cur_entry->pwhistory = _T("");
+    cur_entry->notes = _T("");
+    cur_entry->uuid = _T("");
     cur_entry->pwp.Empty();
-		cur_entry->entrytype = NORMAL;
+    cur_entry->entrytype = NORMAL;
     m_bentrybeingprocessed = true;
-	}
+  }
 
-	if (_tcscmp(szCurElement, _T("ctime")) == 0)
-		m_whichtime = PW_CTIME;
+  if (_tcscmp(szCurElement, _T("ctime")) == 0)
+    m_whichtime = PW_CTIME;
 
-	if (_tcscmp(szCurElement, _T("atime")) == 0)
-		m_whichtime = PW_ATIME;
+  if (_tcscmp(szCurElement, _T("atime")) == 0)
+    m_whichtime = PW_ATIME;
 
-	if (_tcscmp(szCurElement, _T("ltime")) == 0)
-		m_whichtime = PW_LTIME;
+  if (_tcscmp(szCurElement, _T("ltime")) == 0)
+    m_whichtime = PW_LTIME;
 
-	if (_tcscmp(szCurElement, _T("pmtime")) == 0)
-		m_whichtime = PW_PMTIME;
+  if (_tcscmp(szCurElement, _T("pmtime")) == 0)
+    m_whichtime = PW_PMTIME;
 
-	if (_tcscmp(szCurElement, _T("rmtime")) == 0)
-		m_whichtime = PW_RMTIME;
+  if (_tcscmp(szCurElement, _T("rmtime")) == 0)
+    m_whichtime = PW_RMTIME;
 
-	if (_tcscmp(szCurElement, _T("changed")) == 0)
-		m_whichtime = PW_CHANGED;
+  if (_tcscmp(szCurElement, _T("changed")) == 0)
+    m_whichtime = PW_CHANGED;
 
-	m_strElemContent = _T("");
+  m_strElemContent = _T("");
 
-	return S_OK;
+  return S_OK;
 }
 
 //	---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
-            /* [in] */ wchar_t __RPC_FAR *pwchChars,
-            /* [in] */ int cchChars)
+  /* [in] */ wchar_t __RPC_FAR *pwchChars,
+  /* [in] */ int cchChars)
 {
-	if (m_bValidation)
-		return S_OK;
+  if (m_bValidation)
+    return S_OK;
 
-	TCHAR* szData = new TCHAR[cchChars+2];
+  TCHAR* szData = new TCHAR[cchChars+2];
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-	_tcsncpy_s(szData, cchChars+2, pwchChars, cchChars);
+  _tcsncpy_s(szData, cchChars+2, pwchChars, cchChars);
 #else
-	_tcsncpy(szData, pwchChars, cchChars);
+  _tcsncpy(szData, pwchChars, cchChars);
 #endif
 #else
 #if _MSC_VER >= 1400
-	size_t num_converted;
-	wcstombs_s(&num_converted, szData, cchChars+2, pwchChars, cchChars);
+  size_t num_converted;
+  wcstombs_s(&num_converted, szData, cchChars+2, pwchChars, cchChars);
 #else
-	wcstombs(szData, pwchChars, cchChars);
+  wcstombs(szData, pwchChars, cchChars);
 #endif
 #endif
 
-	szData[cchChars]=0;
-	m_strElemContent += szData;
+  szData[cchChars]=0;
+  m_strElemContent += szData;
 
-	delete [] szData;
-	szData = NULL;
+  delete [] szData;
+  szData = NULL;
 
-	return S_OK;
+  return S_OK;
 }
 
 //	-----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
-                                                             unsigned short * pwchNamespaceUri,
-                                                             int cchNamespaceUri,
-                                                             unsigned short * pwchLocalName,
-                                                             int cchLocalName,
-                                                             unsigned short * pwchQName,
-                                                             int cchQName)
+  unsigned short * pwchNamespaceUri,
+  int cchNamespaceUri,
+  unsigned short * pwchLocalName,
+  int cchLocalName,
+  unsigned short * pwchQName,
+  int cchQName)
 {
-	TCHAR szCurElement[MAX_PATH+1] = {0};
+  TCHAR szCurElement[MAX_PATH+1] = {0};
 
 #ifdef _UNICODE
 #if (_MSC_VER >= 1400)
-	_tcsncpy_s(szCurElement, MAX_PATH+1, pwchQName, cchQName);
+  _tcsncpy_s(szCurElement, MAX_PATH+1, pwchQName, cchQName);
 #else
-	_tcsncpy(szCurElement, pwchQName, cchQName);
+  _tcsncpy(szCurElement, pwchQName, cchQName);
 #endif
 #else
 #if (_MSC_VER >= 1400)
-	size_t num_converted;
-	wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchQName, cchQName);
+  size_t num_converted;
+  wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchQName, cchQName);
 #else
-	wcstombs(szCurElement, pwchQName, cchQName);
+  wcstombs(szCurElement, pwchQName, cchQName);
 #endif
 #endif
 
-	if (m_bValidation) {
-		if (_tcscmp(szCurElement, _T("entry")) == 0)
-			m_numEntries++;
+  if (m_bValidation) {
+    if (_tcscmp(szCurElement, _T("entry")) == 0)
+      m_numEntries++;
 
-		return S_OK;
-	}
+    return S_OK;
+  }
 
-	if (_tcscmp(szCurElement, _T("entry")) == 0) {
-		uuid_array_t uuid_array;
+  if (_tcscmp(szCurElement, _T("entry")) == 0) {
+    uuid_array_t uuid_array;
     CItemData tempitem;
-		tempitem.Clear();
-		if (cur_entry->uuid.IsEmpty())
-			tempitem.CreateUUID();
-		else {
+    tempitem.Clear();
+    if (cur_entry->uuid.IsEmpty())
+      tempitem.CreateUUID();
+    else {
       // _stscanf_s always outputs to an "int" using %x even though
       // target is only 1.  Read into larger buffer to prevent data being
       // overwritten and then copy to where we want it!
       unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
-			int nscanned = 0;
-			TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
- 			for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
+      int nscanned = 0;
+      TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
+      for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
 #if _MSC_VER >= 1400
         nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
@@ -474,106 +474,106 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       }
       cur_entry->uuid.ReleaseBuffer(sizeof(uuid_array_t) * 2);
       memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
-			if (nscanned != sizeof(uuid_array_t) ||
-          m_xmlcore->Find(uuid_array) != m_xmlcore->GetEntryEndIter())
-				tempitem.CreateUUID();
-			else {
-				tempitem.SetUUID(uuid_array);
+      if (nscanned != sizeof(uuid_array_t) ||
+        m_xmlcore->Find(uuid_array) != m_xmlcore->GetEntryEndIter())
+        tempitem.CreateUUID();
+      else {
+        tempitem.SetUUID(uuid_array);
       }
-		}
-		CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
-    cur_entry->group.EmptyIfOnlyWhiteSpace();
-		newgroup += cur_entry->group;
-		if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != 
-        m_xmlcore->GetEntryEndIter()) {
-      // Find a unique "Title"
-      CMyString Unique_Title;
-      ItemListConstIter iter;
-      int i = 0;
-      CString s_import;
-      do {
-        i++;
-        s_import.Format(IDSC_IMPORTNUMBER, i);
-        Unique_Title = cur_entry->title + CMyString(s_import);
-        iter = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
-      } while (iter != m_xmlcore->GetEntryEndIter());
-      cur_entry->title = Unique_Title;
     }
-		tempitem.SetGroup(newgroup);
+    CMyString newgroup(m_ImportedPrefix.IsEmpty() ? _T("") : m_ImportedPrefix + _T("."));
+    cur_entry->group.EmptyIfOnlyWhiteSpace();
+    newgroup += cur_entry->group;
+    if (m_xmlcore->Find(newgroup, cur_entry->title, cur_entry->username) != 
+      m_xmlcore->GetEntryEndIter()) {
+        // Find a unique "Title"
+        CMyString Unique_Title;
+        ItemListConstIter iter;
+        int i = 0;
+        CString s_import;
+        do {
+          i++;
+          s_import.Format(IDSC_IMPORTNUMBER, i);
+          Unique_Title = cur_entry->title + CMyString(s_import);
+          iter = m_xmlcore->Find(newgroup, Unique_Title, cur_entry->username);
+        } while (iter != m_xmlcore->GetEntryEndIter());
+        cur_entry->title = Unique_Title;
+    }
+    tempitem.SetGroup(newgroup);
     cur_entry->title.EmptyIfOnlyWhiteSpace();
-		if (cur_entry->title.GetLength() != 0)
-			tempitem.SetTitle(cur_entry->title, m_delimiter);
+    if (cur_entry->title.GetLength() != 0)
+      tempitem.SetTitle(cur_entry->title, m_delimiter);
     cur_entry->username.EmptyIfOnlyWhiteSpace();
-		if (cur_entry->username.GetLength() != 0)
-			tempitem.SetUser(cur_entry->username);
-		if (cur_entry->password.GetLength() != 0)
-			tempitem.SetPassword(cur_entry->password);
+    if (cur_entry->username.GetLength() != 0)
+      tempitem.SetUser(cur_entry->username);
+    if (cur_entry->password.GetLength() != 0)
+      tempitem.SetPassword(cur_entry->password);
     cur_entry->url.EmptyIfOnlyWhiteSpace();
-		if (cur_entry->url.GetLength() != 0)
-			tempitem.SetURL(cur_entry->url);
+    if (cur_entry->url.GetLength() != 0)
+      tempitem.SetURL(cur_entry->url);
     cur_entry->autotype.EmptyIfOnlyWhiteSpace();
-		if (cur_entry->autotype.GetLength() != 0)
-			tempitem.SetAutoType(cur_entry->autotype);
-		if (cur_entry->ctime.GetLength() != 0)
-			tempitem.SetCTime(cur_entry->ctime);
-		if (cur_entry->pmtime.GetLength() != 0)
-			tempitem.SetPMTime(cur_entry->pmtime);
-		if (cur_entry->atime.GetLength() != 0)
-			tempitem.SetATime(cur_entry->atime);
-		if (cur_entry->ltime.GetLength() != 0)
-			tempitem.SetLTime(cur_entry->ltime);
-		if (cur_entry->rmtime.GetLength() != 0)
-			tempitem.SetRMTime(cur_entry->rmtime);
+    if (cur_entry->autotype.GetLength() != 0)
+      tempitem.SetAutoType(cur_entry->autotype);
+    if (cur_entry->ctime.GetLength() != 0)
+      tempitem.SetCTime(cur_entry->ctime);
+    if (cur_entry->pmtime.GetLength() != 0)
+      tempitem.SetPMTime(cur_entry->pmtime);
+    if (cur_entry->atime.GetLength() != 0)
+      tempitem.SetATime(cur_entry->atime);
+    if (cur_entry->ltime.GetLength() != 0)
+      tempitem.SetLTime(cur_entry->ltime);
+    if (cur_entry->rmtime.GetLength() != 0)
+      tempitem.SetRMTime(cur_entry->rmtime);
 
     if (cur_entry->pwp.flags != 0) {
       tempitem.SetPWPolicy(cur_entry->pwp);
     }
 
-		CMyString newPWHistory;
-		CString strPWHErrors, buffer;
-		buffer.Format(IDSC_SAXERRORPWH,
-                  cur_entry->group, cur_entry->title, cur_entry->username);
-		switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
-    case PWH_OK:
-      tempitem.SetPWHistory(newPWHistory);
-      buffer.Empty();
-      break;
-    case PWH_IGNORE:
-      buffer.Empty();
-      break;
-    case PWH_INVALID_HDR:
-    case PWH_INVALID_STATUS:
-    case PWH_INVALID_NUM:
-    case PWH_INVALID_DATETIME:
-    case PWH_INVALID_PSWD_LENGTH:
-    case PWH_TOO_SHORT:
-    case PWH_TOO_LONG:
-    case PWH_INVALID_CHARACTER:
-      buffer += strPWHErrors;
-      break;
-    default:
-      ASSERT(0);
-		}
-		m_strImportErrors += buffer;
+    CMyString newPWHistory;
+    CString strPWHErrors, buffer;
+    buffer.Format(IDSC_SAXERRORPWH,
+      cur_entry->group, cur_entry->title, cur_entry->username);
+    switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
+case PWH_OK:
+  tempitem.SetPWHistory(newPWHistory);
+  buffer.Empty();
+  break;
+case PWH_IGNORE:
+  buffer.Empty();
+  break;
+case PWH_INVALID_HDR:
+case PWH_INVALID_STATUS:
+case PWH_INVALID_NUM:
+case PWH_INVALID_DATETIME:
+case PWH_INVALID_PSWD_LENGTH:
+case PWH_TOO_SHORT:
+case PWH_TOO_LONG:
+case PWH_INVALID_CHARACTER:
+  buffer += strPWHErrors;
+  break;
+default:
+  ASSERT(0);
+    }
+    m_strImportErrors += buffer;
     cur_entry->notes.EmptyIfOnlyWhiteSpace();
-		if (cur_entry->notes.GetLength() != 0)
-			tempitem.SetNotes(cur_entry->notes, m_delimiter);
+    if (cur_entry->notes.GetLength() != 0)
+      tempitem.SetNotes(cur_entry->notes, m_delimiter);
 
     if (!cur_entry->uhrxl.empty()) {
       UnknownFieldList::const_iterator vi_IterUXRFE;
       for (vi_IterUXRFE = cur_entry->uhrxl.begin();
-           vi_IterUXRFE != cur_entry->uhrxl.end();
-           vi_IterUXRFE++) {
-        UnknownFieldEntry unkrfe = *vi_IterUXRFE;
-/* #ifdef _DEBUG
-        CString cs_timestamp;
-        cs_timestamp = PWSUtil::GetTimeStamp();
-        TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
-              cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username, 
+        vi_IterUXRFE != cur_entry->uhrxl.end();
+        vi_IterUXRFE++) {
+          UnknownFieldEntry unkrfe = *vi_IterUXRFE;
+          /* #ifdef _DEBUG
+          CString cs_timestamp;
+          cs_timestamp = PWSUtil::GetTimeStamp();
+          TRACE(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n"),
+          cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username, 
           unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
-        PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
-#endif /* DEBUG */
-        tempitem.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
+          PWSUtil::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
+          #endif /* DEBUG */
+          tempitem.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
       }
     }
 
@@ -587,169 +587,169 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       m_possible_shortcuts->push_back(uuid_array);
     }
 
-		m_xmlcore->AddEntry(tempitem);
+    m_xmlcore->AddEntry(tempitem);
     cur_entry->uhrxl.clear();
-		delete cur_entry;
-		m_numEntries++;
-	}
+    delete cur_entry;
+    m_numEntries++;
+  }
 
-	if (_tcscmp(szCurElement, _T("group")) == 0) {
-		cur_entry->group = m_strElemContent;
-	}
+  if (_tcscmp(szCurElement, _T("group")) == 0) {
+    cur_entry->group = m_strElemContent;
+  }
 
-	if (_tcscmp(szCurElement, _T("title")) == 0) {
-		cur_entry->title = m_strElemContent;
-	}
+  if (_tcscmp(szCurElement, _T("title")) == 0) {
+    cur_entry->title = m_strElemContent;
+  }
 
-	if (_tcscmp(szCurElement, _T("username")) == 0) {
-		cur_entry->username = m_strElemContent;
-	}
+  if (_tcscmp(szCurElement, _T("username")) == 0) {
+    cur_entry->username = m_strElemContent;
+  }
 
-	if (_tcscmp(szCurElement, _T("password")) == 0) {
-	  cur_entry->password = m_strElemContent;
+  if (_tcscmp(szCurElement, _T("password")) == 0) {
+    cur_entry->password = m_strElemContent;
     if (CMyString(m_strElemContent).Replace(_T(':'), _T(';')) <= 2) {
       if (m_strElemContent.Left(2) == _T("[[") &&
-          m_strElemContent.Right(2) == _T("]]")) {
-        cur_entry->entrytype = ALIAS;
+        m_strElemContent.Right(2) == _T("]]")) {
+          cur_entry->entrytype = ALIAS;
       }
       if (m_strElemContent.Left(2) == _T("[~") &&
-          m_strElemContent.Right(2) == _T("~]")) {
-        cur_entry->entrytype = SHORTCUT;
+        m_strElemContent.Right(2) == _T("~]")) {
+          cur_entry->entrytype = SHORTCUT;
       }
     }
-	}
+  }
 
-	if (_tcscmp(szCurElement, _T("url")) == 0) {
-		cur_entry->url = m_strElemContent;
-	}
+  if (_tcscmp(szCurElement, _T("url")) == 0) {
+    cur_entry->url = m_strElemContent;
+  }
 
-	if (_tcscmp(szCurElement, _T("autotype")) == 0) {
-		cur_entry->autotype = m_strElemContent;
-	}
+  if (_tcscmp(szCurElement, _T("autotype")) == 0) {
+    cur_entry->autotype = m_strElemContent;
+  }
 
-	if (_tcscmp(szCurElement, _T("notes")) == 0) {
-		cur_entry->notes = m_strElemContent;
-	}
+  if (_tcscmp(szCurElement, _T("notes")) == 0) {
+    cur_entry->notes = m_strElemContent;
+  }
 
-	if (_tcscmp(szCurElement, _T("uuid")) == 0) {
-		cur_entry->uuid = m_strElemContent;
-	}
+  if (_tcscmp(szCurElement, _T("uuid")) == 0) {
+    cur_entry->uuid = m_strElemContent;
+  }
 
-	if (_tcscmp(szCurElement, _T("status")) == 0) {
-		CString buffer;
-		int i = _ttoi(m_strElemContent);
-		buffer.Format(_T("%01x"), i);
-		cur_entry->pwhistory = CMyString(buffer);
-	}
+  if (_tcscmp(szCurElement, _T("status")) == 0) {
+    CString buffer;
+    int i = _ttoi(m_strElemContent);
+    buffer.Format(_T("%01x"), i);
+    cur_entry->pwhistory = CMyString(buffer);
+  }
 
-	if (_tcscmp(szCurElement, _T("max")) == 0) {
-		CString buffer;
-		int i = _ttoi(m_strElemContent);
-		buffer.Format(_T("%02x"), i);
-		cur_entry->pwhistory += CMyString(buffer);
-	}
+  if (_tcscmp(szCurElement, _T("max")) == 0) {
+    CString buffer;
+    int i = _ttoi(m_strElemContent);
+    buffer.Format(_T("%02x"), i);
+    cur_entry->pwhistory += CMyString(buffer);
+  }
 
-	if (_tcscmp(szCurElement, _T("num")) == 0) {
-		CString buffer;
-		int i = _ttoi(m_strElemContent);
-		buffer.Format(_T("%02x"), i);
-		cur_entry->pwhistory += CMyString(buffer);
-	}
+  if (_tcscmp(szCurElement, _T("num")) == 0) {
+    CString buffer;
+    int i = _ttoi(m_strElemContent);
+    buffer.Format(_T("%02x"), i);
+    cur_entry->pwhistory += CMyString(buffer);
+  }
 
-	if (_tcscmp(szCurElement, _T("ctime")) == 0) {
-		cur_entry->ctime.Replace(_T('-'), _T('/'));
-		m_whichtime = -1;
-	}
+  if (_tcscmp(szCurElement, _T("ctime")) == 0) {
+    cur_entry->ctime.Replace(_T('-'), _T('/'));
+    m_whichtime = -1;
+  }
 
-	if (_tcscmp(szCurElement, _T("pmtime")) == 0) {
-		cur_entry->pmtime.Replace(_T('-'), _T('/'));
-		m_whichtime = -1;
-	}
+  if (_tcscmp(szCurElement, _T("pmtime")) == 0) {
+    cur_entry->pmtime.Replace(_T('-'), _T('/'));
+    m_whichtime = -1;
+  }
 
-	if (_tcscmp(szCurElement, _T("atime")) == 0) {
-		cur_entry->atime.Replace(_T('-'), _T('/'));
-		m_whichtime = -1;
-	}
+  if (_tcscmp(szCurElement, _T("atime")) == 0) {
+    cur_entry->atime.Replace(_T('-'), _T('/'));
+    m_whichtime = -1;
+  }
 
-	if (_tcscmp(szCurElement, _T("ltime")) == 0) {
-		cur_entry->ltime.Replace(_T('-'), _T('/'));
-		m_whichtime = -1;
-	}
+  if (_tcscmp(szCurElement, _T("ltime")) == 0) {
+    cur_entry->ltime.Replace(_T('-'), _T('/'));
+    m_whichtime = -1;
+  }
 
-	if (_tcscmp(szCurElement, _T("rmtime")) == 0) {
-		cur_entry->rmtime.Replace(_T('-'), _T('/'));
-		m_whichtime = -1;
-	}
+  if (_tcscmp(szCurElement, _T("rmtime")) == 0) {
+    cur_entry->rmtime.Replace(_T('-'), _T('/'));
+    m_whichtime = -1;
+  }
 
-	if (_tcscmp(szCurElement, _T("changed")) == 0) {
-		cur_entry->changed.Replace(_T('-'), _T('/'));
-		m_whichtime = -1;
-	}
+  if (_tcscmp(szCurElement, _T("changed")) == 0) {
+    cur_entry->changed.Replace(_T('-'), _T('/'));
+    m_whichtime = -1;
+  }
 
-	if (_tcscmp(szCurElement, _T("oldpassword")) == 0) {
-		cur_entry->changed.TrimLeft();
-		cur_entry->changed.TrimRight();
-		if (cur_entry->changed.IsEmpty()) {
-			//                       1234567890123456789
-			cur_entry->changed = _T("1970-01-01 00:00:00");
-		}
-		cur_entry->pwhistory += _T(" ") + cur_entry->changed;
-		//cur_entry->changed.Empty();
-		CString buffer;
-		buffer.Format(_T(" %04x %s"), m_strElemContent.GetLength(), m_strElemContent);
-		cur_entry->pwhistory += CMyString(buffer);
-		buffer.Empty();
-	}
+  if (_tcscmp(szCurElement, _T("oldpassword")) == 0) {
+    cur_entry->changed.TrimLeft();
+    cur_entry->changed.TrimRight();
+    if (cur_entry->changed.IsEmpty()) {
+      //                       1234567890123456789
+      cur_entry->changed = _T("1970-01-01 00:00:00");
+    }
+    cur_entry->pwhistory += _T(" ") + cur_entry->changed;
+    //cur_entry->changed.Empty();
+    CString buffer;
+    buffer.Format(_T(" %04x %s"), m_strElemContent.GetLength(), m_strElemContent);
+    cur_entry->pwhistory += CMyString(buffer);
+    buffer.Empty();
+  }
 
-	if (_tcscmp(szCurElement, _T("date")) == 0 && !m_strElemContent.IsEmpty()) {
-		switch (m_whichtime) {
-    case PW_CTIME:
-      cur_entry->ctime = m_strElemContent;
-      break;
-    case PW_PMTIME:
-      cur_entry->pmtime = m_strElemContent;
-      break;
-    case PW_ATIME:
-      cur_entry->atime = m_strElemContent;
-      break;
-    case PW_LTIME:
-      cur_entry->ltime = m_strElemContent;
-      break;
-    case PW_RMTIME:
-      cur_entry->rmtime = m_strElemContent;
-      break;
-    case PW_CHANGED:
-      cur_entry->changed = m_strElemContent;
-      break;
-    default:
-      ASSERT(0);
-		}
-	}
+  if (_tcscmp(szCurElement, _T("date")) == 0 && !m_strElemContent.IsEmpty()) {
+    switch (m_whichtime) {
+case PW_CTIME:
+  cur_entry->ctime = m_strElemContent;
+  break;
+case PW_PMTIME:
+  cur_entry->pmtime = m_strElemContent;
+  break;
+case PW_ATIME:
+  cur_entry->atime = m_strElemContent;
+  break;
+case PW_LTIME:
+  cur_entry->ltime = m_strElemContent;
+  break;
+case PW_RMTIME:
+  cur_entry->rmtime = m_strElemContent;
+  break;
+case PW_CHANGED:
+  cur_entry->changed = m_strElemContent;
+  break;
+default:
+  ASSERT(0);
+    }
+  }
 
-	if (_tcscmp(szCurElement, _T("time")) == 0 && !m_strElemContent.IsEmpty()) {
-		switch (m_whichtime) {
-    case PW_CTIME:
-      cur_entry->ctime += _T(" ") + m_strElemContent;
-      break;
-    case PW_PMTIME:
-      cur_entry->pmtime += _T(" ") + m_strElemContent;
-      break;
-    case PW_ATIME:
-      cur_entry->atime += _T(" ") + m_strElemContent;
-      break;
-    case PW_LTIME:
-      cur_entry->ltime += _T(" ") + m_strElemContent;
-      break;
-    case PW_RMTIME:
-      cur_entry->rmtime += _T(" ") + m_strElemContent;
-      break;
-    case PW_CHANGED:
-      cur_entry->changed += _T(" ") + m_strElemContent;
-      break;
-    default:
-      ASSERT(0);
-		}
-	}
+  if (_tcscmp(szCurElement, _T("time")) == 0 && !m_strElemContent.IsEmpty()) {
+    switch (m_whichtime) {
+case PW_CTIME:
+  cur_entry->ctime += _T(" ") + m_strElemContent;
+  break;
+case PW_PMTIME:
+  cur_entry->pmtime += _T(" ") + m_strElemContent;
+  break;
+case PW_ATIME:
+  cur_entry->atime += _T(" ") + m_strElemContent;
+  break;
+case PW_LTIME:
+  cur_entry->ltime += _T(" ") + m_strElemContent;
+  break;
+case PW_RMTIME:
+  cur_entry->rmtime += _T(" ") + m_strElemContent;
+  break;
+case PW_CHANGED:
+  cur_entry->changed += _T(" ") + m_strElemContent;
+  break;
+default:
+  ASSERT(0);
+    }
+  }
 
   if (_tcscmp(szCurElement, _T("unknownheaderfields")) == 0)
     m_bheader = false;
@@ -793,13 +793,13 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     if (m_bheader) {
       if (m_ctype >= PWSfileV3::HDR_LAST) {
         m_ukhxl.push_back(ukxfe);
-/* #ifdef _DEBUG
+        /* #ifdef _DEBUG
         CString cs_timestamp;
         cs_timestamp = PWSUtil::GetTimeStamp();
         TRACE(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n"),
-          cs_timestamp, m_ctype, m_fieldlen, m_fieldlen);
+        cs_timestamp, m_ctype, m_fieldlen, m_fieldlen);
         PWSUtil::HexDump(m_pfield, m_fieldlen, cs_timestamp);
-#endif /* DEBUG */
+        #endif /* DEBUG */
       } else {
         m_bDatabaseHeaderErrors = true;
       }
@@ -815,11 +815,11 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     m_pfield = NULL;
   }
 
-	if (_tcscmp(szCurElement, _T("NumberHashIterations")) == 0) { 
-	  int i = _ttoi(m_strElemContent);
+  if (_tcscmp(szCurElement, _T("NumberHashIterations")) == 0) { 
+    int i = _ttoi(m_strElemContent);
     if (i > MIN_HASH_ITERATIONS) {
-		  m_nITER = i;
-		}
+      m_nITER = i;
+    }
   }
 
   if (_tcscmp(szCurElement, _T("DisplayExpandedAddEditDlg")) == 0)
@@ -839,7 +839,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
     else
       m_bPWUseEasyVision = _ttoi(m_strElemContent);
-  
+
   if (_tcscmp(szCurElement, _T("PWUseHexDigits")) == 0)
     if (m_bentrybeingprocessed)
       cur_entry->pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
@@ -878,13 +878,13 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 
   if (_tcscmp(szCurElement, _T("ShowNotesDefault")) == 0)
     m_bShowNotesDefault = _ttoi(m_strElemContent);
-  
+
   if (_tcscmp(szCurElement, _T("ShowPWDefault")) == 0)
     m_bShowPWDefault = _ttoi(m_strElemContent);
 
   if (_tcscmp(szCurElement, _T("ShowPasswordInTree")) == 0)
     m_bShowPasswordInTree = _ttoi(m_strElemContent);
-  
+
   if (_tcscmp(szCurElement, _T("ShowUsernameInTree")) == 0)
     m_bShowUsernameInTree = _ttoi(m_strElemContent);
 
@@ -945,50 +945,50 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     else
       m_iPWUppercaseMinLength = _ttoi(m_strElemContent);
 
-	return S_OK;
+  return S_OK;
 }
 
 //	---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endDocument ( )
 {
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::startPrefixMapping (
-    unsigned short * pwchPrefix,
-    int cchPrefix,
-    unsigned short * pwchUri,
-    int cchUri )
+  unsigned short * pwchPrefix,
+  int cchPrefix,
+  unsigned short * pwchUri,
+  int cchUri )
 {
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endPrefixMapping (
-    unsigned short * pwchPrefix,
-    int cchPrefix )
+  unsigned short * pwchPrefix,
+  int cchPrefix )
 {
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::ignorableWhitespace (
-    unsigned short * pwchChars,
-    int cchChars )
+  unsigned short * pwchChars,
+  int cchChars )
 {
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::processingInstruction (
-    unsigned short * pwchTarget,
-    int cchTarget,
-    unsigned short * pwchData,
-    int cchData )
+  unsigned short * pwchTarget,
+  int cchTarget,
+  unsigned short * pwchData,
+  int cchData )
 {
-	return S_OK;
+  return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::skippedEntity (
-    unsigned short * pwchName,
-    int cchName )
+  unsigned short * pwchName,
+  int cchName )
 {
-	return S_OK;
+  return S_OK;
 }

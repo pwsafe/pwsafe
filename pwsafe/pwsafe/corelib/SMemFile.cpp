@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 #include "SMemFile.h"
 #include "util.h"
 #include "UTF8Conv.h"
 
 /*
- * Override normal CMemFile to allow the contents to be trashed
- * during Realloc and Free.  Otherwise identical to CMemFile
- */
+* Override normal CMemFile to allow the contents to be trashed
+* during Realloc and Free.  Otherwise identical to CMemFile
+*/
 
 BYTE* CSMemFile::Alloc(SIZE_T nBytes)
 {

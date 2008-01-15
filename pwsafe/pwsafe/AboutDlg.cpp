@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file AboutDlg.cpp
 //-----------------------------------------------------------------------------
 
@@ -33,8 +33,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CAboutDlg::CAboutDlg(CWnd* pParent)
-  : CPWDialog(CAboutDlg::IDD, pParent),
-    m_nMajor(0), m_nMinor(0), m_nBuild(0)
+: CPWDialog(CAboutDlg::IDD, pParent),
+m_nMajor(0), m_nMinor(0), m_nBuild(0)
 {
   CString verstat;
   // Following since text in quotes is not to be translated
@@ -61,9 +61,9 @@ CAboutDlg::OnInitDialog()
   DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
 
   if (dwMajorMinor > 0) {
-	  m_nMajor = HIWORD(dwMajorMinor);
-	  m_nMinor = LOWORD(dwMajorMinor);
-	  m_nBuild = HIWORD(dwBuildRevision);
+    m_nMajor = HIWORD(dwMajorMinor);
+    m_nMinor = LOWORD(dwMajorMinor);
+    m_nBuild = HIWORD(dwBuildRevision);
   }
 
   // revision is either a number or a number with '+',
@@ -79,10 +79,10 @@ CAboutDlg::OnInitDialog()
   }
   if (m_nBuild == 0) { // hide build # if zero (formal release)
     m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
-                        m_nMajor, m_nMinor, csRevision);
+      m_nMajor, m_nMinor, csRevision);
   } else {
     m_appversion.Format(_T("%s V%d.%02d.%02d (%s)"), AfxGetAppName(), 
-                        m_nMajor, m_nMinor, m_nBuild, csRevision);
+      m_nMajor, m_nMinor, m_nBuild, csRevision);
   }
 #ifdef _DEBUG
   m_appversion += _T(" [Debug]");
@@ -127,7 +127,7 @@ void CAboutDlg::CheckNewVer()
     const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
     const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
     int rc = MessageBox(cs_txt, cs_title,
-                        (MB_ICONQUESTION | MB_OKCANCEL));
+      (MB_ICONQUESTION | MB_OKCANCEL));
     if (rc == IDCANCEL)
       return; // no hard feelings
     // Close database, prompt for save if changed
@@ -153,12 +153,12 @@ void CAboutDlg::CheckNewVer()
     {
       CString newer;
       newer.Format(SysInfo::IsUnderU3() ?
-                   IDS_NEWER_AVAILABLE_U3 :IDS_NEWER_AVAILABLE,
-                   m_appversion, latest);
+IDS_NEWER_AVAILABLE_U3 :IDS_NEWER_AVAILABLE,
+                        m_appversion, latest);
       m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
       MessageBox(newer,
-                 CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)),
-                 MB_ICONEXCLAMATION);
+        CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)),
+        MB_ICONEXCLAMATION);
     }
     break;
   case CANT_READ:
@@ -179,41 +179,41 @@ static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
 {
   ASSERT(v2 != NULL);
   return (v1 != NULL &&
-          CString(v1) == v2);
+    CString(v1) == v2);
 }
 
 /*
- * The latest version information is in
- * http://passwordsafe.sourceforge.net/latest.xml
- *
- * And is of the form:
- * <VersionInfo>
- *  <Product name=PasswordSafe variant=PC major=3 minor=10 build=2 rev=1710 />
- *  <Product name=PasswordSafe variant=PPc major=1 minor=9 build=2
- *    rev=100 />
- *  <Product name=PasswordSafe variant=U3 major=3 minor=10 build=2
- *    rev=1710 />
- *  <Product name=SWTPasswordSafe variant=Java major=0 minor=6
- *    build=0 rev=1230 />
- * </VersionInfo>
- *
- * Note: The "rev" is the svn commit number. Not using it (for now),
- *       as I think it's too volatile.
- */
+* The latest version information is in
+* http://passwordsafe.sourceforge.net/latest.xml
+*
+* And is of the form:
+* <VersionInfo>
+*  <Product name=PasswordSafe variant=PC major=3 minor=10 build=2 rev=1710 />
+*  <Product name=PasswordSafe variant=PPc major=1 minor=9 build=2
+*    rev=100 />
+*  <Product name=PasswordSafe variant=U3 major=3 minor=10 build=2
+*    rev=1710 />
+*  <Product name=SWTPasswordSafe variant=Java major=0 minor=6
+*    build=0 rev=1230 />
+* </VersionInfo>
+*
+* Note: The "rev" is the svn commit number. Not using it (for now),
+*       as I think it's too volatile.
+*/
 
 CAboutDlg::CheckStatus 
 CAboutDlg::CheckLatestVersion(CString &latest)
 {
   CInternetSession session(_T("PasswordSafe Version Check"));
   CStdioFile *fh;
-	// Put up hourglass...this might take a while
-	CWaitCursor waitCursor;
+  // Put up hourglass...this might take a while
+  CWaitCursor waitCursor;
   try {
     // Loading the file as binary since we're treating it as UTF-8
     fh = session.OpenURL(_T("http://passwordsafe.sourceforge.net/latest.xml"),
-                         1,
-                         (INTERNET_FLAG_TRANSFER_BINARY |
-                          INTERNET_FLAG_RELOAD));
+      1,
+      (INTERNET_FLAG_TRANSFER_BINARY |
+      INTERNET_FLAG_RELOAD));
   } catch (CInternetException *) {
     // throw;
     return CANT_CONNECT;
@@ -244,7 +244,7 @@ CAboutDlg::CheckLatestVersion(CString &latest)
   fh->Close();
   delete fh;
   session.Close();
-	waitCursor.Restore(); // restore normal cursor
+  waitCursor.Restore(); // restore normal cursor
   // Parse the file we just retrieved
   TiXmlDocument doc; 
   if (doc.Parse(latest_xml) == NULL)
@@ -267,28 +267,28 @@ CAboutDlg::CheckLatestVersion(CString &latest)
         const CString variant(pVariant);
         // Determine which variant is relevant for us
         if ((SysInfo::IsUnderU3() && variant == _T("U3")) ||
-            variant == _T("PC")) {
-          int major(0), minor(0), build(0), revision(0);
-          pElem->QueryIntAttribute(_T("major"), &major);
-          pElem->QueryIntAttribute(_T("minor"), &minor);
-          pElem->QueryIntAttribute(_T("build"), &build);
-          pElem->QueryIntAttribute(_T("rev"), &revision);
-          // Not using svn rev info - too volatile
-          if ((major > m_nMajor) ||
+          variant == _T("PC")) {
+            int major(0), minor(0), build(0), revision(0);
+            pElem->QueryIntAttribute(_T("major"), &major);
+            pElem->QueryIntAttribute(_T("minor"), &minor);
+            pElem->QueryIntAttribute(_T("build"), &build);
+            pElem->QueryIntAttribute(_T("rev"), &revision);
+            // Not using svn rev info - too volatile
+            if ((major > m_nMajor) ||
               (major == m_nMajor && minor > m_nMinor) ||
               (major == m_nMajor && minor == m_nMinor &&
-               build > m_nBuild)
+              build > m_nBuild)
               ) {
-            if (build == 0) { // hide build # if zero (formal release)
-              latest.Format(_T("%s V%d.%02d (%d)"), AfxGetAppName(), 
-                            major, minor, revision);
-            } else {
-              latest.Format(_T("%s V%d.%02d.%02d (%d)"), AfxGetAppName(), 
-                            major, minor, build, revision);
+                if (build == 0) { // hide build # if zero (formal release)
+                  latest.Format(_T("%s V%d.%02d (%d)"), AfxGetAppName(), 
+                    major, minor, revision);
+                } else {
+                  latest.Format(_T("%s V%d.%02d.%02d (%d)"), AfxGetAppName(), 
+                    major, minor, build, revision);
+                }
+                return NEWER_AVAILABLE;
             }
-            return NEWER_AVAILABLE;
-          }
-          return UP2DATE;
+            return UP2DATE;
         } // handled our variant
       } // Product name == PasswordSafe
     } // Product element

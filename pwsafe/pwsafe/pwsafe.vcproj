@@ -829,10 +829,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BlowFish.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ClearQuestionDlg.h"
 				>
 			</File>
@@ -929,6 +925,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\KeySend.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LVHdrCtrl.h"
 				>
 			</File>
@@ -997,10 +997,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PWCharPool.h"
-				>
-			</File>
-			<File
 				RelativePath=".\PWDialog.h"
 				>
 			</File>
@@ -1025,7 +1021,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PwsBackend.h"
+				RelativePath=".\PWPropertyPage.h"
 				>
 			</File>
 			<File
@@ -1069,10 +1065,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\sha1.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Shortcut.h"
 				>
 			</File>
@@ -1098,10 +1090,6 @@
 			</File>
 			<File
 				RelativePath=".\TryAgainDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Util.h"
 				>
 			</File>
 			<File

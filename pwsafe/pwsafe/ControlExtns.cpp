@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // ControlExtns.cpp
 //
 
@@ -30,9 +30,9 @@ static char THIS_FILE[] = __FILE__;
 // Custom menu goes here!
 
 #if defined(UNICODE)
-  #define EDIT_CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
+#define EDIT_CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
 #else
-  #define EDIT_CLIPBOARD_TEXT_FORMAT	CF_TEXT
+#define EDIT_CLIPBOARD_TEXT_FORMAT	CF_TEXT
 #endif
 
 const COLORREF crefInFocus = (RGB(222, 255, 222));  // Light green
@@ -43,7 +43,7 @@ const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 // CStaticExtn
 
 CStaticExtn::CStaticExtn()
-  : m_bUserColour(FALSE)
+: m_bUserColour(FALSE)
 {
 }
 
@@ -52,38 +52,38 @@ CStaticExtn::~CStaticExtn()
 }
 
 BEGIN_MESSAGE_MAP(CStaticExtn, CStatic)
-	//{{AFX_MSG_MAP(CStaticExtn)
-	ON_WM_CTLCOLOR_REFLECT()
-	//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(CStaticExtn)
+  ON_WM_CTLCOLOR_REFLECT()
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
-	if (!this->IsWindowEnabled() || !m_bUserColour)
-		return NULL;
+  if (!this->IsWindowEnabled() || !m_bUserColour)
+    return NULL;
 
-	pDC->SetTextColor(m_cfUser);
+  pDC->SetTextColor(m_cfUser);
   pDC->SetBkColor(GetSysColor(COLOR_BTNFACE));
-	return GetSysColorBrush(COLOR_BTNFACE);
+  return GetSysColorBrush(COLOR_BTNFACE);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CEditExtn
 
 CEditExtn::CEditExtn()
-  : m_bIsFocused(FALSE), m_lastposition(-1),
-  m_message_number(-1), m_menustring("")
+: m_bIsFocused(FALSE), m_lastposition(-1),
+m_message_number(-1), m_menustring("")
 {
-	m_brInFocus.CreateSolidBrush(crefInFocus);
-	m_brNoFocus.CreateSolidBrush(crefNoFocus);
+  m_brInFocus.CreateSolidBrush(crefInFocus);
+  m_brNoFocus.CreateSolidBrush(crefNoFocus);
 }
 
 CEditExtn::CEditExtn(int message_number, LPCTSTR menustring)
- : m_bIsFocused(FALSE), m_lastposition(-1),
-   m_message_number(message_number), m_menustring(menustring)
+: m_bIsFocused(FALSE), m_lastposition(-1),
+m_message_number(message_number), m_menustring(menustring)
 {
-	m_brInFocus.CreateSolidBrush(crefInFocus);
-	m_brNoFocus.CreateSolidBrush(crefNoFocus);
+  m_brInFocus.CreateSolidBrush(crefInFocus);
+  m_brNoFocus.CreateSolidBrush(crefNoFocus);
   // Don't allow if menu string is empty.
   if (m_menustring.IsEmpty())
     m_message_number = -1;
@@ -94,12 +94,12 @@ CEditExtn::~CEditExtn()
 }
 
 BEGIN_MESSAGE_MAP(CEditExtn, CEdit)
-	//{{AFX_MSG_MAP(CEditExtn)
-	ON_WM_SETFOCUS()
-	ON_WM_KILLFOCUS()
-	ON_WM_CTLCOLOR_REFLECT()
-	ON_WM_CONTEXTMENU()
-	//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(CEditExtn)
+  ON_WM_SETFOCUS()
+  ON_WM_KILLFOCUS()
+  ON_WM_CTLCOLOR_REFLECT()
+  ON_WM_CONTEXTMENU()
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -107,38 +107,38 @@ END_MESSAGE_MAP()
 
 void CEditExtn::OnSetFocus(CWnd* pOldWnd)
 {
-	m_bIsFocused = TRUE;
+  m_bIsFocused = TRUE;
   CEdit::OnSetFocus(pOldWnd);
-	if (m_lastposition >= 0) {
+  if (m_lastposition >= 0) {
     int iLine = LineFromChar(m_lastposition);
-	  LineScroll(iLine);
-	  SetSel(m_nStartChar, m_nEndChar); 
+    LineScroll(iLine);
+    SetSel(m_nStartChar, m_nEndChar); 
   }
-	Invalidate(TRUE);
+  Invalidate(TRUE);
 }
 
 void CEditExtn::OnKillFocus(CWnd* pNewWnd)
 {
-	m_bIsFocused = FALSE;
-	m_lastposition = LineIndex();
+  m_bIsFocused = FALSE;
+  m_lastposition = LineIndex();
   GetSel(m_nStartChar, m_nEndChar);
-	CEdit::OnKillFocus(pNewWnd);
-	Invalidate(TRUE);
+  CEdit::OnKillFocus(pNewWnd);
+  Invalidate(TRUE);
 }
 
 HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
-	if (!this->IsWindowEnabled())
-		return NULL;
+  if (!this->IsWindowEnabled())
+    return NULL;
 
-	pDC->SetTextColor(crefBlack);
-	if (m_bIsFocused == TRUE) {
-		pDC->SetBkColor(crefInFocus);
-		return m_brInFocus;
-	} else {
-		pDC->SetBkColor(crefNoFocus);
-		return m_brNoFocus;
-	}
+  pDC->SetTextColor(crefBlack);
+  if (m_bIsFocused == TRUE) {
+    pDC->SetBkColor(crefInFocus);
+    return m_brInFocus;
+  } else {
+    pDC->SetBkColor(crefNoFocus);
+    return m_brNoFocus;
+  }
 }
 
 void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -172,7 +172,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR, MENUSTRING_DELETE);
 
   flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
-                 !bReadOnly ? 0 : MF_GRAYED;
+    !bReadOnly ? 0 : MF_GRAYED;
   menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE, MENUSTRING_PASTE);
 
   menu.InsertMenu(6, MF_BYPOSITION | MF_SEPARATOR);
@@ -195,7 +195,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   }
 
   int nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
-                     TPM_RETURNCMD | TPM_RIGHTBUTTON, point.x, point.y, this);
+    TPM_RETURNCMD | TPM_RIGHTBUTTON, point.x, point.y, this);
 
   if (nCmd < 0)
     return;
@@ -226,8 +226,8 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
 
 CListBoxExtn::CListBoxExtn() : m_bIsFocused(FALSE)
 {
-	m_brInFocus.CreateSolidBrush(crefInFocus);
-	m_brNoFocus.CreateSolidBrush(crefNoFocus);
+  m_brInFocus.CreateSolidBrush(crefInFocus);
+  m_brNoFocus.CreateSolidBrush(crefNoFocus);
 }
 
 CListBoxExtn::~CListBoxExtn()
@@ -235,11 +235,11 @@ CListBoxExtn::~CListBoxExtn()
 }
 
 BEGIN_MESSAGE_MAP(CListBoxExtn, CListBox)
-	//{{AFX_MSG_MAP(CListBoxExtn)
-	ON_WM_SETFOCUS()
-	ON_WM_KILLFOCUS()
-	ON_WM_CTLCOLOR_REFLECT()
-	//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(CListBoxExtn)
+  ON_WM_SETFOCUS()
+  ON_WM_KILLFOCUS()
+  ON_WM_CTLCOLOR_REFLECT()
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -247,40 +247,40 @@ END_MESSAGE_MAP()
 
 void CListBoxExtn::OnSetFocus(CWnd* pOldWnd)
 {
-	m_bIsFocused = TRUE;
-	CListBox::OnSetFocus(pOldWnd);
-	Invalidate(TRUE);
+  m_bIsFocused = TRUE;
+  CListBox::OnSetFocus(pOldWnd);
+  Invalidate(TRUE);
 }
 
 void CListBoxExtn::OnKillFocus(CWnd* pNewWnd)
 {
-	m_bIsFocused = FALSE;
-	CListBox::OnKillFocus(pNewWnd);
-	Invalidate(TRUE);
+  m_bIsFocused = FALSE;
+  CListBox::OnKillFocus(pNewWnd);
+  Invalidate(TRUE);
 }
 
 HBRUSH CListBoxExtn::CtlColor(CDC* pDC, UINT /* nCtlColor */)
 {
-	if (!this->IsWindowEnabled())
-		return NULL;
+  if (!this->IsWindowEnabled())
+    return NULL;
 
-	if (m_bIsFocused == TRUE) {
-		pDC->SetBkColor(crefInFocus);
-		return m_brInFocus;
-	} else {
-		pDC->SetBkColor(crefNoFocus);
-		return m_brNoFocus;
-	}
+  if (m_bIsFocused == TRUE) {
+    pDC->SetBkColor(crefInFocus);
+    return m_brInFocus;
+  } else {
+    pDC->SetBkColor(crefNoFocus);
+    return m_brNoFocus;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CComboBoxExtn
 
 BEGIN_MESSAGE_MAP(CComboBoxExtn, CComboBox)
-	//{{AFX_MSG_MAP(CComboBoxExtn)
-	ON_WM_CTLCOLOR()
-	ON_WM_DESTROY()
-	//}}AFX_MSG_MAP
+  //{{AFX_MSG_MAP(CComboBoxExtn)
+  ON_WM_CTLCOLOR()
+  ON_WM_DESTROY()
+  //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -288,33 +288,33 @@ END_MESSAGE_MAP()
 
 HBRUSH CComboBoxExtn::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-	if (nCtlColor == CTLCOLOR_EDIT) {
-		// Extended Edit control
-		if (m_edit.GetSafeHwnd() == NULL)
-			m_edit.SubclassWindow(pWnd->GetSafeHwnd());
-	}
-	else if (nCtlColor == CTLCOLOR_LISTBOX) {
-		// Extended ListBox control
-		if (m_listbox.GetSafeHwnd() == NULL)
-			m_listbox.SubclassWindow(pWnd->GetSafeHwnd());
-	}
+  if (nCtlColor == CTLCOLOR_EDIT) {
+    // Extended Edit control
+    if (m_edit.GetSafeHwnd() == NULL)
+      m_edit.SubclassWindow(pWnd->GetSafeHwnd());
+  }
+  else if (nCtlColor == CTLCOLOR_LISTBOX) {
+    // Extended ListBox control
+    if (m_listbox.GetSafeHwnd() == NULL)
+      m_listbox.SubclassWindow(pWnd->GetSafeHwnd());
+  }
 
-	return CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
+  return CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
 void CComboBoxExtn::OnDestroy()
 {
-	if (m_edit.GetSafeHwnd() != NULL)
-		m_edit.UnsubclassWindow();
+  if (m_edit.GetSafeHwnd() != NULL)
+    m_edit.UnsubclassWindow();
 
-	if (m_listbox.GetSafeHwnd() != NULL)
-		m_listbox.UnsubclassWindow();
+  if (m_listbox.GetSafeHwnd() != NULL)
+    m_listbox.UnsubclassWindow();
 
-	CComboBox::OnDestroy();
+  CComboBox::OnDestroy();
 }
 
 void CComboBoxExtn::ChangeColour()
 {
-	m_edit.ChangeColour();
-	m_listbox.ChangeColour();
+  m_edit.ChangeColour();
+  m_listbox.ChangeColour();
 }

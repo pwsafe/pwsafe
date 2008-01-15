@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #ifndef __PWSFILE_H
 #define __PWSFILE_H
 // PWSfile.h
@@ -24,33 +24,33 @@
 class Fish;
 
 class PWSfile {
- public:
+public:
   enum VERSION {V17, V20, V30, VCURRENT = V30,
-                NEWFILE = 98,
-                UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
+    NEWFILE = 98,
+    UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
   enum {SUCCESS = 0, FAILURE = 1, 
-        CANT_OPEN_FILE,					//  2
-        UNSUPPORTED_VERSION,			//  3
-        WRONG_VERSION,					//  4
-        NOT_PWS3_FILE,					//  5
-        WRONG_PASSWORD,					//  6 - see PWScore.h
-        BAD_DIGEST,						//  7 - see PWScore.h
-        END_OF_FILE						//  8
+    CANT_OPEN_FILE,					//  2
+    UNSUPPORTED_VERSION,			//  3
+    WRONG_VERSION,					//  4
+    NOT_PWS3_FILE,					//  5
+    WRONG_PASSWORD,					//  6 - see PWScore.h
+    BAD_DIGEST,						//  7 - see PWScore.h
+    END_OF_FILE						//  8
   };
 
   /**
-   * The format defines a handful of fields in the file's header
-   * Since the application needs these after the PWSfile object's
-   * lifetime, it makes sense to define a nested header structure that
-   * the app. can keep a copy of, rather than duplicating
-   * data members, getters and setters willy-nilly.
-   */
+  * The format defines a handful of fields in the file's header
+  * Since the application needs these after the PWSfile object's
+  * lifetime, it makes sense to define a nested header structure that
+  * the app. can keep a copy of, rather than duplicating
+  * data members, getters and setters willy-nilly.
+  */
   struct HeaderRecord {
     HeaderRecord();
     HeaderRecord(const HeaderRecord &hdr);
     HeaderRecord &operator =(const HeaderRecord &hdr);
-    
+
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     uuid_array_t m_file_uuid_array;
     int m_nITER; // Formally not part of the header.
@@ -64,7 +64,7 @@ class PWSfile {
   };
 
   static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,
-                              RWmode mode, int &status);
+    RWmode mode, int &status);
 
   static bool FileExists(const CMyString &filename);
   static bool FileExists(const CMyString &filename, bool &bReadOnly);
@@ -72,19 +72,19 @@ class PWSfile {
   static VERSION ReadVersion(const CMyString &filename);
   static int RenameFile(const CMyString &oldname, const CMyString &newname);
   static int CheckPassword(const CMyString &filename,
-                           const CMyString &passkey, VERSION &version);
+    const CMyString &passkey, VERSION &version);
 
   static bool LockFile(const CMyString &filename, CMyString &locker,
-                       HANDLE &lockFileHandle, int &LockCount);
+    HANDLE &lockFileHandle, int &LockCount);
   static bool IsLockedFile(const CMyString &filename);
   static void UnlockFile(const CMyString &filename,
-                         HANDLE &lockFileHandle, int &LockCount);
+    HANDLE &lockFileHandle, int &LockCount);
   static bool GetLocker(const CMyString &filename, CMyString &locker);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
   static bool Encrypt(const CString &fn, const CMyString &passwd);
   static bool Decrypt(const CString &fn, const CMyString &passwd);
-  
+
   virtual ~PWSfile();
 
   virtual int Open(const CMyString &passkey) = 0;
@@ -103,14 +103,14 @@ class PWSfile {
   int GetNumRecordsWithUnknownFields()
   {return m_nRecordsWithUnknownFields;}
 
- protected:
+protected:
   PWSfile(const CMyString &filename, RWmode mode);
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual size_t WriteCBC(unsigned char type, const CString &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length);
+    unsigned int length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
-                         unsigned int &length);
+    unsigned int &length);
   const CMyString m_filename;
   CMyString m_passkey;
   FILE *m_fd;

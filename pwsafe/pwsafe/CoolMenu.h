@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 #pragma once
 
@@ -66,7 +66,7 @@ public:
   void Install(CWnd* pWnd) { HookWindow(pWnd); }
   void SetImageList(CPWToolBar *pwtoolbar);
   void SetMapping(CPWToolBar *pwtoolbar)
-    {pwtoolbar->MapControlIDtoImage(m_IDtoImages);}
+  {pwtoolbar->MapControlIDtoImage(m_IDtoImages);}
 
   // should never need to call:
   static  HBITMAP GetMFCDotBitmap();  // get..
@@ -86,7 +86,7 @@ protected:
   // helpers
   void DrawMenuText(CDC& dc, CRect rc, CString text, COLORREF color);
   BOOL Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
-                       HBITMAP hbmCheck = NULL);
+    HBITMAP hbmCheck = NULL);
   void ConvertMenu(CMenu* pMenu,UINT nIndex,BOOL bSysMenu,BOOL bShowButtons);
   CFont* GetMenuFont();
 
@@ -116,6 +116,6 @@ protected:
 struct CMenuItemInfo : public MENUITEMINFO {
   CMenuItemInfo()
   { memset(this, 0, sizeof(MENUITEMINFO));
-    cbSize = sizeof(MENUITEMINFO);
+  cbSize = sizeof(MENUITEMINFO);
   }
 };

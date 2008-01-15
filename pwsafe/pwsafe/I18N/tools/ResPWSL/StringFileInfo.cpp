@@ -29,12 +29,12 @@ CStringFileInfo::CStringFileInfo()
 
 CStringFileInfo::CStringFileInfo(StringFileInfo* pStringFI)
 {
-	FromStringFileInfo(pStringFI);
+  FromStringFileInfo(pStringFI);
 }
 
 CStringFileInfo::~CStringFileInfo()
 {
-	Reset();
+  Reset();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -42,46 +42,46 @@ CStringFileInfo::~CStringFileInfo()
 
 void CStringFileInfo::FromStringFileInfo(StringFileInfo* pStringFI)
 {
-	ASSERT(pStringFI);
+  ASSERT(pStringFI);
 
-	StringTable* pStringTable = (StringTable*) DWORDALIGN(&pStringFI->szKey[wcslen(pStringFI->szKey)+1]);
-	while ((DWORD)pStringTable < ((DWORD) pStringFI + pStringFI->wLength)) {
-		CStringTable* pObStringTable = new CStringTable(pStringTable);
-		AddStringTable(pObStringTable);
+  StringTable* pStringTable = (StringTable*) DWORDALIGN(&pStringFI->szKey[wcslen(pStringFI->szKey)+1]);
+  while ((DWORD)pStringTable < ((DWORD) pStringFI + pStringFI->wLength)) {
+    CStringTable* pObStringTable = new CStringTable(pStringTable);
+    AddStringTable(pObStringTable);
 
-		pStringTable = (StringTable*) DWORDALIGN((DWORD)pStringTable + pStringTable->wLength);
+    pStringTable = (StringTable*) DWORDALIGN((DWORD)pStringTable + pStringTable->wLength);
 
-	}
+  }
 }
 
 void CStringFileInfo::Write(CVersionInfoBuffer & viBuf)
 {
-	//Check string tables
-	if (m_lstStringTables.IsEmpty())
-		return;
+  //Check string tables
+  if (m_lstStringTables.IsEmpty())
+    return;
 
-	//Pad to DWORD and save position for wLength
-	DWORD pos = viBuf.PadToDWORD();
-	
-	//Skip size for now;
-	viBuf.Pad(sizeof WORD);
+  //Pad to DWORD and save position for wLength
+  DWORD pos = viBuf.PadToDWORD();
 
-	//Write wValueLength
-	viBuf.WriteWord(0);
+  //Skip size for now;
+  viBuf.Pad(sizeof WORD);
 
-	//Write wType
-	viBuf.WriteWord(1);
+  //Write wValueLength
+  viBuf.WriteWord(0);
 
-	//Write key
-	viBuf.WriteString(L"StringFileInfo");
+  //Write wType
+  viBuf.WriteWord(1);
 
-	POSITION posString = m_lstStringTables.GetHeadPosition();
-	while (posString) {
-		CStringTable * pString = (CStringTable*) m_lstStringTables.GetNext(posString);
-		pString->Write(viBuf);
-	}
-	//Set the size of the structure based on current offset from the position
-	viBuf.WriteStructSize(pos);
+  //Write key
+  viBuf.WriteString(L"StringFileInfo");
+
+  POSITION posString = m_lstStringTables.GetHeadPosition();
+  while (posString) {
+    CStringTable * pString = (CStringTable*) m_lstStringTables.GetNext(posString);
+    pString->Write(viBuf);
+  }
+  //Set the size of the structure based on current offset from the position
+  viBuf.WriteStructSize(pos);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -89,104 +89,104 @@ void CStringFileInfo::Write(CVersionInfoBuffer & viBuf)
 
 BOOL CStringFileInfo::IsEmpty()
 {
-	return m_lstStringTables.IsEmpty();
+  return m_lstStringTables.IsEmpty();
 }
 
 DWORD CStringFileInfo::GetStringTableCount()
 {
-	return m_lstStringTables.GetCount();
+  return m_lstStringTables.GetCount();
 }
 
 CStringTable& CStringFileInfo::GetFirstStringTable()
 {
-	return (CStringTable&)*m_lstStringTables.GetHead();
+  return (CStringTable&)*m_lstStringTables.GetHead();
 }
 
 const CStringTable& CStringFileInfo::GetFirstStringTable() const
 {
-	return (CStringTable&)*m_lstStringTables.GetHead();
+  return (CStringTable&)*m_lstStringTables.GetHead();
 }
 
 CStringTable& CStringFileInfo::GetStringTable(const CString& strKey)
 {
-	CStringTable *pStringTable = NULL;
-	if (!m_mapStringTables.Lookup(strKey, (CObject*&)pStringTable)) {
-		pStringTable = new CStringTable(strKey);
-		AddStringTable(pStringTable);
-	}
+  CStringTable *pStringTable = NULL;
+  if (!m_mapStringTables.Lookup(strKey, (CObject*&)pStringTable)) {
+    pStringTable = new CStringTable(strKey);
+    AddStringTable(pStringTable);
+  }
 
-	return *pStringTable;
+  return *pStringTable;
 }
 
 const CStringTable& CStringFileInfo::GetStringTable(const CString& strKey) const
 {
-	CStringTable *pStringTable = NULL;
-	m_mapStringTables.Lookup(strKey, (CObject*&)pStringTable);
-	// This may return *NULL, be carefull
-	return *pStringTable;	
+  CStringTable *pStringTable = NULL;
+  m_mapStringTables.Lookup(strKey, (CObject*&)pStringTable);
+  // This may return *NULL, be carefull
+  return *pStringTable;	
 }
 
 CStringTable& CStringFileInfo::operator [] (const CString &strKey)
 {
-	return GetStringTable(strKey);
+  return GetStringTable(strKey);
 }
 
 const CStringTable& CStringFileInfo::operator [] (const CString &strKey) const
 {
-	return GetStringTable(strKey);
+  return GetStringTable(strKey);
 }
 
 BOOL CStringFileInfo::HasStringTable(const CString &strKey) const
 {
-	CObject *pDummyObject;
-	return m_mapStringTables.Lookup(strKey, pDummyObject);
+  CObject *pDummyObject;
+  return m_mapStringTables.Lookup(strKey, pDummyObject);
 }
 
 CStringTable& CStringFileInfo::AddStringTable(const CString &strKey)
 {
-	return GetStringTable(strKey);
+  return GetStringTable(strKey);
 }
 
 CStringTable& CStringFileInfo::AddStringTable(CStringTable* pStringTable)
 {
-	m_lstStringTables.AddTail(pStringTable);
-	m_mapStringTables.SetAt(pStringTable->GetKey(), pStringTable);
-	return *pStringTable;
+  m_lstStringTables.AddTail(pStringTable);
+  m_mapStringTables.SetAt(pStringTable->GetKey(), pStringTable);
+  return *pStringTable;
 }
 
 POSITION CStringFileInfo::GetFirstStringTablePosition() const
 {
-	return m_lstStringTables.GetHeadPosition();
+  return m_lstStringTables.GetHeadPosition();
 }
 
 CStringTable* CStringFileInfo::GetNextStringTable(POSITION &pos)
 {
-	return (CStringTable*) m_lstStringTables.GetNext(pos);
+  return (CStringTable*) m_lstStringTables.GetNext(pos);
 }
 
 const CStringTable* CStringFileInfo::GetNextStringTable(POSITION &pos) const
 {
-	return (CStringTable*) m_lstStringTables.GetNext(pos);
+  return (CStringTable*) m_lstStringTables.GetNext(pos);
 }
 
 BOOL CStringFileInfo::SetStringTableKey(const CString &strOldKey, const CString &strNewKey)
 {
-	CStringTable *pStringTable = NULL;
-	if (m_mapStringTables.Lookup(strOldKey, (CObject*&)pStringTable)) {
-		pStringTable->SetKey(strNewKey);
-		m_mapStringTables.RemoveKey(strOldKey);
-		m_mapStringTables.SetAt(strNewKey, pStringTable);
+  CStringTable *pStringTable = NULL;
+  if (m_mapStringTables.Lookup(strOldKey, (CObject*&)pStringTable)) {
+    pStringTable->SetKey(strNewKey);
+    m_mapStringTables.RemoveKey(strOldKey);
+    m_mapStringTables.SetAt(strNewKey, pStringTable);
 
-		return TRUE;
-	}
+    return TRUE;
+  }
 
-	return FALSE;
+  return FALSE;
 }
 
 void CStringFileInfo::Reset()
 {
-	while (!m_lstStringTables.IsEmpty())
-		delete m_lstStringTables.RemoveTail();
+  while (!m_lstStringTables.IsEmpty())
+    delete m_lstStringTables.RemoveTail();
 
-	m_mapStringTables.RemoveAll();
+  m_mapStringTables.RemoveAll();
 }

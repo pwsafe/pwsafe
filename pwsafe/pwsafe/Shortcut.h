@@ -30,12 +30,12 @@
 ******************************************************************
 AfxEnableControlContainer();
 
-	// initialize OLE:
-	if (!AfxOleInit())
-	{
-		AfxMessageBox("Unable to initialize OLE.\nTerminating application!");
-		return FALSE;
-	}
+// initialize OLE:
+if (!AfxOleInit())
+{
+AfxMessageBox("Unable to initialize OLE.\nTerminating application!");
+return FALSE;
+}
 
 */
 
@@ -43,25 +43,25 @@ AfxEnableControlContainer();
 
 class CShortcut  
 {
- public:
+public:
   CShortcut();
- ~CShortcut();
+  ~CShortcut();
 
   /*  This routine resolves the lnk destination: */	
   HRESULT ResolveLink(const CString &LnkName, UINT SpecialFolder,
-                      HWND hwnd, CString &LnkPath, CString &LnkDescription);
+    HWND hwnd, CString &LnkPath, CString &LnkDescription);
   /* Looks if the link with name LnkName already exists in the special folder */
   BOOL isLinkExist(const CString &LnkName, UINT SpecialFolder) const;
   /* set argument(s) that will be used when a file is send (SendTo): */
   void SetCmdArguments(const CString &sArg) {m_sCmdArg = sArg;}
   /*! Use this routine to create a ShortCut (ShellLink) for this Application */
   BOOL CreateShortCut(const CString &LnkTarget, const CString &LnkName,
-                      UINT SpecialFolder, const CString &LnkDescription = _T(""),
-                      const CString &IconLocation = _T(""), UINT IconIndex = 1);
+    UINT SpecialFolder, const CString &LnkDescription = _T(""),
+    const CString &IconLocation = _T(""), UINT IconIndex = 1);
   /*! Use this routine to delete any Shortcut */
   BOOL DeleteShortCut(const CString &LnkName, UINT SpecialFolder);
 
- private:
+private:
   /*  This routine is a helper that finds the path to the special folder: */
   BOOL GetSpecialFolder(UINT SpecialFolder, CString &SpecialFolderString) const;
   /*  This routine is a helper that builds a long path from 8+3 one */

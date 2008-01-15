@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file AddDlg.cpp
 //-----------------------------------------------------------------------------
 
@@ -33,11 +33,11 @@ CString CAddDlg::CS_HIDE;
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
-  : CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
-    m_username(_T("")), m_title(_T("")), m_group(_T("")),
-    m_URL(_T("")), m_autotype(_T("")),
-    m_tttLTime((time_t)0),
-    m_isPwHidden(false)
+: CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
+m_username(_T("")), m_title(_T("")), m_group(_T("")),
+m_URL(_T("")), m_autotype(_T("")),
+m_tttLTime((time_t)0),
+m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -49,11 +49,11 @@ CAddDlg::CAddDlg(CWnd* pParent)
 
   if (CS_SHOW.IsEmpty()) {
 #if defined(POCKET_PC)
-	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
-	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT1);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT1);
 #else
-	CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
-	CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
+    CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT2);
+    CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT2);
 #endif
   }
   m_pwp.Empty();
@@ -129,16 +129,16 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
-   ON_BN_CLICKED(ID_HELP, OnHelp)
-   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
-   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
-   ON_BN_CLICKED(IDC_SETPWPOLICY, OnSetPolicy)
-   ON_BN_CLICKED(IDC_CLEARPWPOLICY, OnClearPolicy)
-   ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
-   ON_BN_CLICKED(IDOK, OnBnClickedOk)
-   ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
-   ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
-   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowpassword)
+  ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+  ON_BN_CLICKED(IDC_SETPWPOLICY, OnSetPolicy)
+  ON_BN_CLICKED(IDC_CLEARPWPOLICY, OnClearPolicy)
+  ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
+  ON_BN_CLICKED(IDOK, OnBnClickedOk)
+  ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
+  ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+  ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
 END_MESSAGE_MAP()
 
 
@@ -164,36 +164,36 @@ CAddDlg::OnShowpassword()
 void
 CAddDlg::ShowPassword()
 {
-   m_isPwHidden = false;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
-   // Remove password character so that the password is displayed
-   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
-   ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
-   // Don't need verification as the user can see the password entered
-   GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
-   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
-   m_password2.Empty();
+  m_isPwHidden = false;
+  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
+  // Remove password character so that the password is displayed
+  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
+  ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+  // Don't need verification as the user can see the password entered
+  GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
+  ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
+  m_password2.Empty();
 }
 
 void
 CAddDlg::HidePassword()
 {
-   m_isPwHidden = true;
-   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
-   // Set password character so that the password is not displayed
-   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(PSSWDCHAR);
-   ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
-   // Need verification as the user can not see the password entered
-   GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
-   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
-   m_password2 = m_password;
+  m_isPwHidden = true;
+  GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
+  // Set password character so that the password is not displayed
+  ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(PSSWDCHAR);
+  ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+  // Need verification as the user can not see the password entered
+  GetDlgItem(IDC_PASSWORD2)->EnableWindow(TRUE);
+  ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
+  m_password2 = m_password;
 }
 
 void
 CAddDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
-	  return;
+    return;
 
   m_group.EmptyIfOnlyWhiteSpace();
   m_title.EmptyIfOnlyWhiteSpace();
@@ -227,7 +227,7 @@ CAddDlg::OnOK()
     ((CEdit*)GetDlgItem(IDC_GROUP))->SetFocus();
     return;
   }
-  
+
   if (m_isPwHidden && (m_password.Compare(m_password2) != 0)) {
     AfxMessageBox(IDS_PASSWORDSNOTMATCH);
     UpdateData(FALSE);
@@ -253,8 +253,8 @@ CAddDlg::OnOK()
 
   bool brc, b_msg_issued;
   brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                              false, CItemData::Alias,
-                              m_base_uuid, m_ibasedata, b_msg_issued);
+    false, CItemData::Alias,
+    m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
     if (!b_msg_issued)
@@ -289,7 +289,7 @@ void CAddDlg::OnRandom()
 
   if (pParent->MakeRandomPassword(this, m_password, m_pwp)) {
     if (m_isPwHidden) {
-    	m_password2 = m_password;
+      m_password2 = m_password;
     }
     UpdateData(FALSE);
   }
@@ -321,7 +321,7 @@ void CAddDlg::OnBnClickedMore()
 
 void CAddDlg::OnBnClickedOk()
 {
-	OnOK();
+  OnOK();
 }
 
 void CAddDlg::ResizeDialog()
@@ -362,7 +362,7 @@ void CAddDlg::ResizeDialog()
   if (m_isExpanded) {
     // from less to more
     pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
-	  
+
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
     newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
@@ -375,46 +375,46 @@ void CAddDlg::ResizeDialog()
 
     newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
 
-	cs_text.LoadString(IDS_MORE);
+    cs_text.LoadString(IDS_MORE);
     m_moreLessBtn.SetWindowText(cs_text);
   }
-  
+
 
   this->SetWindowPos(NULL,0,0,
-                     newDialogRect.right - newDialogRect.left ,
-                     newHeight , 
-                     SWP_NOMOVE );
+    newDialogRect.right - newDialogRect.left ,
+    newHeight , 
+    SWP_NOMOVE );
 
 }
 
 void CAddDlg::OnBnClickedClearLTime()
 {
-	m_locLTime.LoadString(IDS_NEVER);
-	GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_locLTime);
-	m_tttLTime = (time_t)0;
+  m_locLTime.LoadString(IDS_NEVER);
+  GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_locLTime);
+  m_tttLTime = (time_t)0;
 }
 
 void CAddDlg::OnBnClickedSetLTime()
 {
-	CExpDTDlg dlg_expDT(this);
+  CExpDTDlg dlg_expDT(this);
 
-	dlg_expDT.m_locLTime = m_locLTime;
+  dlg_expDT.m_locLTime = m_locLTime;
 
-	app.DisableAccelerator();
-	INT_PTR rc = dlg_expDT.DoModal();
-	app.EnableAccelerator();
+  app.DisableAccelerator();
+  INT_PTR rc = dlg_expDT.DoModal();
+  app.EnableAccelerator();
 
-	if (rc == IDOK) {
-		m_tttLTime = dlg_expDT.m_tttLTime;
-		m_locLTime = dlg_expDT.m_locLTime;
-		GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
-	}
+  if (rc == IDOK) {
+    m_tttLTime = dlg_expDT.m_tttLTime;
+    m_locLTime = dlg_expDT.m_locLTime;
+    GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
+  }
 }
 
 void
 CAddDlg::OnCheckedSavePasswordHistory()
 {
-	m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
+  m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
 
-	GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
+  GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
 }

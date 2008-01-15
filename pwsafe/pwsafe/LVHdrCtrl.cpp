@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 // LVHdrCtrl.cpp : implementation file
 //
@@ -20,7 +20,7 @@
 // LVHdrCtrl
 
 CLVHdrCtrl::CLVHdrCtrl()
- : m_dwHDRType(-1), m_pDragImage(NULL), m_bCCActive(FALSE)
+: m_dwHDRType(-1), m_pDragImage(NULL), m_bCCActive(FALSE)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:
@@ -47,14 +47,14 @@ END_MESSAGE_MAP()
 // CLVHdrCtrl message handlers
 
 DROPEFFECT CLVHdrCtrl::OnDragEnter(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
-                  DWORD /* dwKeyState */, CPoint /* point */ )
+                                   DWORD /* dwKeyState */, CPoint /* point */ )
 {
   // We only allow MOVE - not COPY
   return DROPEFFECT_MOVE;
 }
 
 DROPEFFECT CLVHdrCtrl::OnDragOver(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
-                  DWORD /* dwKeyState */, CPoint /* point */)
+                                  DWORD /* dwKeyState */, CPoint /* point */)
 {
   // We only allow MOVE - not COPY
   return DROPEFFECT_MOVE;
@@ -105,7 +105,7 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   // Now add it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-      WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
+    WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
 
   GlobalUnlock(hGlobal);
 
@@ -152,7 +152,7 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   const size_t iLen = _tcslen(lpBuffer);
   CString cs_text;
   cs_text.Format(_T("%08x%02x%02x%04x%s"), GetCurrentProcessId(),
-                 FROMHDR, m_dwHDRType, iLen, lpBuffer);
+    FROMHDR, m_dwHDRType, iLen, lpBuffer);
 
   // Set drag image
   m_pDragImage = CreateDragImage(hdhti.iItem);
@@ -165,7 +165,7 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 
   // Start dragging
   StartDragging((BYTE *)LPCTSTR(cs_text), cs_text.GetLength() * sizeof(TCHAR),
-                m_ccddCPFID, &rClient, &point);
+    m_ccddCPFID, &rClient, &point);
 
   // End dragging image
   m_pDragImage->DragLeave(GetDesktopWindow());
@@ -178,5 +178,5 @@ void CLVHdrCtrl::CompleteMove()
   // After we have dragged successfully from Header to Column Chooser
   // Now delete it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-      WM_HDRTOCC_DD_COMPLETE, (WPARAM)m_dwHDRType, (LPARAM)0);
+    WM_HDRTOCC_DD_COMPLETE, (WPARAM)m_dwHDRType, (LPARAM)0);
 }

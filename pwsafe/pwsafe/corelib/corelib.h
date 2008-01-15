@@ -58,7 +58,7 @@
 #define IDSC_EXPHDRGROUP                3054
 #define IDSC_EXPHDRTITLE                3055
 #define IDSC_EXPHDRPWPOLICY             3056
-                                        
+
 #define IDSC_FILEEXCEPTION00            3100
 #define IDSC_FILEEXCEPTION01            3101
 #define IDSC_FILEEXCEPTION02            3102
@@ -74,7 +74,7 @@
 #define IDSC_FILEEXCEPTION12            3112
 #define IDSC_FILEEXCEPTION13            3113
 #define IDSC_FILEEXCEPTION14            3114
-                                        
+
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
 #define IDSC_CONFIG_FILE_RO             3232

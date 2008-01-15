@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #include "SysInfo.h"
 //-----------------------------------------------------------------
 //
@@ -37,8 +37,8 @@ SysInfo::SysInfo()
   DWORD ulen = UNLEN + sizeof(TCHAR);
   if (::GetUserName(user, &ulen)== FALSE) {
     user[0] = TCHAR('?');
-	user[1] = TCHAR('\0');
-	ulen = 2;
+    user[1] = TCHAR('\0');
+    ulen = 2;
   }
   ulen--;
 
@@ -46,8 +46,8 @@ SysInfo::SysInfo()
   DWORD slen = MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR);
   if (::GetComputerName(sysname, &slen) == FALSE) {
     sysname[0] = TCHAR('?');
-	sysname[1] = TCHAR('\0');
-	slen = 1;
+    sysname[1] = TCHAR('\0');
+    slen = 1;
   }
   m_euser = m_ruser = CString(user, ulen);
   m_esysname = m_rsysname = CString(sysname, slen);
@@ -84,5 +84,5 @@ CString SysInfo::GetEnv(const char *env)
 
 bool SysInfo::IsUnderU3()
 {
-    return !GetEnv("U3_ENV_VERSION").IsEmpty();
+  return !GetEnv("U3_ENV_VERSION").IsEmpty();
 }
