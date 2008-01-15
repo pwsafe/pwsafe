@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 #pragma once
 
@@ -16,137 +16,137 @@
 
 class CStaticExtn : public CStatic
 {
-// Construction
+  // Construction
 public:
-	CStaticExtn();
+  CStaticExtn();
   void SetColour(COLORREF cfUser)
-    {m_bUserColour = TRUE; m_cfUser = cfUser;}
+  {m_bUserColour = TRUE; m_cfUser = cfUser;}
   void ResetColour()
-    {m_bUserColour = FALSE;}
+  {m_bUserColour = FALSE;}
 
-// Attributes
+  // Attributes
 private:
-	BOOL m_bUserColour;
-	COLORREF m_cfUser;
+  BOOL m_bUserColour;
+  COLORREF m_cfUser;
 
-// Operations
+  // Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CEditEx)
-	//}}AFX_VIRTUAL
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CEditEx)
+  //}}AFX_VIRTUAL
 
-// Implementation
+  // Implementation
 public:
-	virtual ~CStaticExtn();
+  virtual ~CStaticExtn();
 
-	// Generated message map functions
+  // Generated message map functions
 protected:
-	//{{AFX_MSG(CEditExtn)
-	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CEditExtn)
+  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 class CEditExtn : public CEdit
 {
-// Construction
+  // Construction
 public:
-	CEditExtn();
-	CEditExtn(int message_number, LPCTSTR szmenustring);
-	void ChangeColour() {m_bIsFocused = TRUE;}
+  CEditExtn();
+  CEditExtn(int message_number, LPCTSTR szmenustring);
+  void ChangeColour() {m_bIsFocused = TRUE;}
 
-// Attributes
+  // Attributes
 private:
-	BOOL m_bIsFocused;
+  BOOL m_bIsFocused;
 
-	CBrush m_brInFocus;
-	CBrush m_brNoFocus;
+  CBrush m_brInFocus;
+  CBrush m_brNoFocus;
 
- 	int m_lastposition, m_nStartChar, m_nEndChar;
+  int m_lastposition, m_nStartChar, m_nEndChar;
   int m_message_number;
   CString m_menustring;
 
-// Operations
+  // Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CEditEx)
-	//}}AFX_VIRTUAL
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CEditEx)
+  //}}AFX_VIRTUAL
 
-// Implementation
+  // Implementation
 public:
-	virtual ~CEditExtn();
+  virtual ~CEditExtn();
 
-	// Generated message map functions
+  // Generated message map functions
 protected:
-	//{{AFX_MSG(CEditExtn)
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CEditExtn)
+  afx_msg void OnSetFocus(CWnd* pOldWnd);
+  afx_msg void OnKillFocus(CWnd* pNewWnd);
+  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 class CListBoxExtn : public CListBox
 {
-// Construction
+  // Construction
 public:
-	CListBoxExtn();
-	void ChangeColour() {m_bIsFocused = TRUE;}
+  CListBoxExtn();
+  void ChangeColour() {m_bIsFocused = TRUE;}
 
-// Attributes
+  // Attributes
 private:
-	BOOL m_bIsFocused;
+  BOOL m_bIsFocused;
 
-	CBrush m_brInFocus;
-	CBrush m_brNoFocus;
+  CBrush m_brInFocus;
+  CBrush m_brNoFocus;
 
-// Operations
+  // Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CEditEx)
-	//}}AFX_VIRTUAL
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CEditEx)
+  //}}AFX_VIRTUAL
 
-// Implementation
+  // Implementation
 public:
-	virtual ~CListBoxExtn();
+  virtual ~CListBoxExtn();
 
-	// Generated message map functions
+  // Generated message map functions
 protected:
-	//{{AFX_MSG(CListBoxExtn)
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CListBoxExtn)
+  afx_msg void OnSetFocus(CWnd* pOldWnd);
+  afx_msg void OnKillFocus(CWnd* pNewWnd);
+  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 class CComboBoxExtn : public CComboBox
 {
 public:
-	CEditExtn m_edit;
-	CListBoxExtn m_listbox;
+  CEditExtn m_edit;
+  CListBoxExtn m_listbox;
 
-// Operations
+  // Operations
 public:
-	void ChangeColour();
+  void ChangeColour();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CComboBoxExtn)
-	//}}AFX_VIRTUAL
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CComboBoxExtn)
+  //}}AFX_VIRTUAL
 
-// Implementation
+  // Implementation
 protected:
-	//{{AFX_MSG(CComboBoxExtn)
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnDestroy();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CComboBoxExtn)
+  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+  afx_msg void OnDestroy();
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };

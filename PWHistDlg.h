@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #pragma once
 
 // PWHisDlg.h CPWHistDlg
@@ -16,24 +16,24 @@ class CItemData;
 
 class CPWHistDlg : public CPWDialog
 {
- DECLARE_DYNAMIC(CPWHistDlg)
+  DECLARE_DYNAMIC(CPWHistDlg)
 
-   public:
+public:
   CPWHistDlg(CWnd* pParent, bool IsReadOnly,
-             CMyString &HistStr, PWHistList &PWHistList,
-             size_t NumPWHistory, size_t &MaxPWHistory,
-             BOOL &SavePWHistory);
+    CMyString &HistStr, PWHistList &PWHistList,
+    size_t NumPWHistory, size_t &MaxPWHistory,
+    BOOL &SavePWHistory);
 
   virtual ~CPWHistDlg();
 
   // Dialog Data
   enum { IDD = IDD_DLG_PWHIST };
 
- protected:
+protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual void OnOK();
   virtual BOOL OnInitDialog();
- private:
+private:
   const bool m_PWH_IsReadOnly;
   // Following reference members from EditDlg
   CMyString &m_HistStr;
@@ -53,12 +53,12 @@ class CPWHistDlg : public CPWDialog
   afx_msg void OnHistListClick(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnBnClickedPwhCopyAll();
 
- DECLARE_MESSAGE_MAP()
-   public:
+  DECLARE_MESSAGE_MAP()
+public:
   afx_msg void OnBnClickedClearPWHist();
 private:
   static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
-                                  LPARAM lParamSort);
+    LPARAM lParamSort);
 };
 //-----------------------------------------------------------------------------
 // Local variables:

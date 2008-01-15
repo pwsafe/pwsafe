@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "corelib.h"
@@ -16,7 +16,7 @@
 
 
 PWSfileV1V2::PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version)
-  : PWSfile(filename,mode)
+: PWSfile(filename,mode)
 {
   m_curversion = version;
   m_IV = m_ipthing;
@@ -28,8 +28,8 @@ PWSfileV1V2::~PWSfileV1V2()
 
 // Used to warn pre-2.0 users, and to identify the database as 2.x:
 static const CMyString V2ItemName(" !!!Version 2 File Format!!! "
-				  "Please upgrade to PasswordSafe 2.0"
-				  " or later");
+                                  "Please upgrade to PasswordSafe 2.0"
+                                  " or later");
 // Used to specify the exact version
 static const CMyString VersionString("2.0");
 static const CMyString AltVersionString("pre-2.0"); 
@@ -87,17 +87,17 @@ int PWSfileV1V2::ReadV2Header()
   // restore after reading V17-format header
   m_curversion = sv;
   if (status == SUCCESS) {
-  const CMyString version = header.GetPassword();
-  // Compare to AltVersionString due to silly mistake
-  // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
-  if (version == VersionString || version == AltVersionString) {
-  	status = SUCCESS;
-  	m_hdr.m_nCurrentMajorVersion = 2;
-  } else
-  	status = WRONG_VERSION;
+    const CMyString version = header.GetPassword();
+    // Compare to AltVersionString due to silly mistake
+    // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
+    if (version == VersionString || version == AltVersionString) {
+      status = SUCCESS;
+      m_hdr.m_nCurrentMajorVersion = 2;
+    } else
+      status = WRONG_VERSION;
   }
   if (status == SUCCESS)
-  m_hdr.m_prefString = header.GetNotes();
+    m_hdr.m_prefString = header.GetNotes();
   return status;
 }
 
@@ -119,7 +119,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
 #ifdef UNICODE
   pstr = new unsigned char[2*passLen];
   int len = WideCharToMultiByte(CP_ACP, 0, passstr, passLen,
-                  LPSTR(pstr), 2*passLen, NULL, NULL);
+    LPSTR(pstr), 2*passLen, NULL, NULL);
   ASSERT(len != 0);
   passLen = len;
 #else
@@ -146,7 +146,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     fwrite(m_ipthing, 1, 8, m_fd);
 
     m_fish = BlowFish::MakeBlowFish(pstr, passLen,
-                    m_salt, SaltLength);
+      m_salt, SaltLength);
     if (m_curversion == V20) {
       status = WriteV2Header();
     }
@@ -164,13 +164,13 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     fread(m_ipthing, 1, 8, m_fd);
 
     m_fish = BlowFish::MakeBlowFish(pstr, passLen,
-                    m_salt, SaltLength);
+      m_salt, SaltLength);
     if (m_curversion == V20)
       status = ReadV2Header();
   } // read mode
 #ifdef UNICODE
-    trashMemory(pstr, 2*passLen);
-    delete[] pstr;
+  trashMemory(pstr, 2*passLen);
+  delete[] pstr;
 #endif
   return status;
 }
@@ -182,7 +182,7 @@ int PWSfileV1V2::Close()
 
 
 int PWSfileV1V2::CheckPassword(const CMyString &filename,
-                 const CMyString &passkey, FILE *a_fd)
+                               const CMyString &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
   if (fd == NULL) {
@@ -209,9 +209,9 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
   GenRandhash(passkey, randstuff, temphash);
 
   if (0 != ::memcmp((char*)randhash,
-            (char*)temphash,
-            20)) {// HashSize
-    return WRONG_PASSWORD;
+    (char*)temphash,
+    20)) {// HashSize
+      return WRONG_PASSWORD;
   } else {
     return SUCCESS;
   }
@@ -244,24 +244,24 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
   LPCTSTR datastr = LPCTSTR(data);
 
   return PWSfile::WriteCBC(type, (const unsigned char *)datastr,
-                           data.GetLength());
+    data.GetLength());
 #else
   // xlate wchar_t to ACP
-    wchar_t *wcPtr = const_cast<CString &>(data).GetBuffer();
-    int wcLen = data.GetLength()+1;
-    int mbLen = 2*wcLen;
-    unsigned char *acp = new unsigned char[mbLen];
-    int acpLen = WideCharToMultiByte(CP_ACP,      // code page
-                                     0, // performance and mapping flags
-                                    wcPtr, wcLen, // wide-character string
-                                    LPSTR(acp), mbLen, // buffer and length
-                                    NULL,NULL); // use sys defs for unmappables
-    ASSERT(acpLen != 0);
-    acpLen--; // remove unneeded null termination
-    size_t retval = PWSfile::WriteCBC(type, acp, acpLen);
-    trashMemory(acp, mbLen);
-    delete[] acp;
-    return retval;
+  wchar_t *wcPtr = const_cast<CString &>(data).GetBuffer();
+  int wcLen = data.GetLength()+1;
+  int mbLen = 2*wcLen;
+  unsigned char *acp = new unsigned char[mbLen];
+  int acpLen = WideCharToMultiByte(CP_ACP,      // code page
+    0, // performance and mapping flags
+    wcPtr, wcLen, // wide-character string
+    LPSTR(acp), mbLen, // buffer and length
+    NULL,NULL); // use sys defs for unmappables
+  ASSERT(acpLen != 0);
+  acpLen--; // remove unneeded null termination
+  size_t retval = PWSfile::WriteCBC(type, acp, acpLen);
+  trashMemory(acp, mbLen);
+  delete[] acp;
+  return retval;
 #endif
 }
 
@@ -309,22 +309,22 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
       WriteCBC(dummy_type, name);
       WriteCBC(CItemData::PASSWORD, item.GetPassword());
       WriteCBC(CItemData::NOTES, ReMergeNotes(item));
-    }
-      break;
+              }
+              break;
     case V20: {
-      {
-        uuid_array_t uuid_array;
-        item.GetUUID(uuid_array);
-        PWSfile::WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
-      }
-      WriteCBC(CItemData::GROUP, item.GetGroup());
-      WriteCBC(CItemData::TITLE, item.GetTitle());
-      WriteCBC(CItemData::USER, item.GetUser());
-      WriteCBC(CItemData::PASSWORD, item.GetPassword());
-      WriteCBC(CItemData::NOTES, ReMergeNotes(item));
-      WriteCBC(CItemData::END, _T(""));
-    }
-      break;
+                {
+                  uuid_array_t uuid_array;
+                  item.GetUUID(uuid_array);
+                  PWSfile::WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+                }
+                WriteCBC(CItemData::GROUP, item.GetGroup());
+                WriteCBC(CItemData::TITLE, item.GetTitle());
+                WriteCBC(CItemData::USER, item.GetUser());
+                WriteCBC(CItemData::PASSWORD, item.GetPassword());
+                WriteCBC(CItemData::NOTES, ReMergeNotes(item));
+                WriteCBC(CItemData::END, _T(""));
+              }
+              break;
     default:
       ASSERT(0);
       status = UNSUPPORTED_VERSION;
@@ -387,31 +387,31 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
 
   ASSERT(m_fish != NULL && m_IV != NULL);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
-            m_fish, m_IV, m_terminal);
+    m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
 #ifdef UNICODE
-      wchar_t *wc = new wchar_t[buffer_len+1];
-      
-      int wcLen = MultiByteToWideChar(CP_ACP,      // code page
-                                      MB_ERR_INVALID_CHARS,
-                                      LPCSTR(buffer),       // string to map
-                                      buffer_len,
-                                      wc, buffer_len+1);
+    wchar_t *wc = new wchar_t[buffer_len+1];
+
+    int wcLen = MultiByteToWideChar(CP_ACP,      // code page
+      MB_ERR_INVALID_CHARS,
+      LPCSTR(buffer),       // string to map
+      buffer_len,
+      wc, buffer_len+1);
     if (wcLen == 0) {
-        DWORD errCode = GetLastError();
-        switch (errCode) {
+      DWORD errCode = GetLastError();
+      switch (errCode) {
             case ERROR_INSUFFICIENT_BUFFER:
-                TRACE("INSUFFICIENT BUFFER"); break;
+              TRACE("INSUFFICIENT BUFFER"); break;
             case ERROR_INVALID_FLAGS:
-                TRACE("INVALID FLAGS"); break;
+              TRACE("INVALID FLAGS"); break;
             case ERROR_INVALID_PARAMETER:
-                TRACE("INVALID PARAMETER"); break;
+              TRACE("INVALID PARAMETER"); break;
             case ERROR_NO_UNICODE_TRANSLATION:
-                TRACE("NO UNICODE TRANSLATION"); break;
+              TRACE("NO UNICODE TRANSLATION"); break;
             default:
-                ASSERT(0);
-        }
+              ASSERT(0);
+      }
     }
     ASSERT(wcLen != 0);
     if (wcLen < int(buffer_len) + 1)
@@ -422,7 +422,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
     trashMemory(wc, wcLen);
     delete[] wc;
 #else
-CMyString str(LPCTSTR(buffer), buffer_len);
+    CMyString str(LPCTSTR(buffer), buffer_len);
     data = str;
 #endif
     trashMemory(buffer, buffer_len);
@@ -460,7 +460,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
       item.CreateUUID();
       // No Group - currently leave empty
       return (numread > 0) ? SUCCESS : END_OF_FILE;
-    }
+              }
     case V20: {
       int emergencyExit = 255; // to avoid endless loop.
       signed long fieldLen; // zero means end of file reached
@@ -470,49 +470,49 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
         if (signed(fieldLen) > 0) {
           numread += fieldLen;
           switch (type) {
-            case CItemData::TITLE:
-              item.SetTitle(tempdata); break;
-            case CItemData::USER:
-              item.SetUser(tempdata); break;
-            case CItemData::PASSWORD:
-              item.SetPassword(tempdata); break;
-            case CItemData::NOTES: {
-              CMyString autotypeStr, URLStr;
-              ExtractAutoTypeCmd(tempdata, autotypeStr);
-              ExtractURL(tempdata, URLStr);
-              item.SetNotes(tempdata);
-              if (!autotypeStr.IsEmpty())
-                item.SetAutoType(autotypeStr);
-              if (!URLStr.IsEmpty())
-                item.SetURL(URLStr);
-              break;
-            }
-            case CItemData::END:
-              endFound = true; break;
-            case CItemData::UUID: {
-              LPCTSTR ptr = LPCTSTR(tempdata);
-              uuid_array_t uuid_array;
-              for (unsigned i = 0; i < sizeof(uuid_array); i++)
-                uuid_array[i] = (unsigned char)ptr[i];
-              item.SetUUID(uuid_array); break;
-            }
-            case CItemData::GROUP:
-              item.SetGroup(tempdata); break;
-              // just silently ignore fields we don't support.
-              // this is forward compatability...
-            case CItemData::CTIME:
-            case CItemData::PMTIME:
-            case CItemData::ATIME:
-            case CItemData::LTIME:
-            case CItemData::RMTIME:
-            case CItemData::POLICY:
-            default:
-              break;
+    case CItemData::TITLE:
+      item.SetTitle(tempdata); break;
+    case CItemData::USER:
+      item.SetUser(tempdata); break;
+    case CItemData::PASSWORD:
+      item.SetPassword(tempdata); break;
+    case CItemData::NOTES: {
+      CMyString autotypeStr, URLStr;
+      ExtractAutoTypeCmd(tempdata, autotypeStr);
+      ExtractURL(tempdata, URLStr);
+      item.SetNotes(tempdata);
+      if (!autotypeStr.IsEmpty())
+        item.SetAutoType(autotypeStr);
+      if (!URLStr.IsEmpty())
+        item.SetURL(URLStr);
+      break;
+                           }
+    case CItemData::END:
+      endFound = true; break;
+    case CItemData::UUID: {
+      LPCTSTR ptr = LPCTSTR(tempdata);
+      uuid_array_t uuid_array;
+      for (unsigned i = 0; i < sizeof(uuid_array); i++)
+        uuid_array[i] = (unsigned char)ptr[i];
+      item.SetUUID(uuid_array); break;
+                          }
+    case CItemData::GROUP:
+      item.SetGroup(tempdata); break;
+      // just silently ignore fields we don't support.
+      // this is forward compatability...
+    case CItemData::CTIME:
+    case CItemData::PMTIME:
+    case CItemData::ATIME:
+    case CItemData::LTIME:
+    case CItemData::RMTIME:
+    case CItemData::POLICY:
+    default:
+      break;
           } // switch
         } // if (fieldLen > 0)
       } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
       return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
-    }
+              }
     default:
       ASSERT(0);
       return UNSUPPORTED_VERSION;

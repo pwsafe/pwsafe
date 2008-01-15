@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file PasskeySetup.cpp
 //-----------------------------------------------------------------------------
 
@@ -15,11 +15,11 @@
 #include "corelib/PwsPlatform.h"
 
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-  #include "pocketpc/PocketPC.h"
+#include "pocketpc/resource.h"
+#include "pocketpc/PocketPC.h"
 #else
-  #include "resource.h"
-  #include "resource3.h"  // String resources
+#include "resource.h"
+#include "resource3.h"  // String resources
 #endif
 
 #include "corelib/util.h"
@@ -37,45 +37,45 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd* pParent)
-   : CPWDialog(CPasskeySetup::IDD, pParent)
+: CPWDialog(CPasskeySetup::IDD, pParent)
 {
-   m_passkey = _T("");
-   m_verify = _T("");
+  m_passkey = _T("");
+  m_verify = _T("");
 }
 
 BOOL CPasskeySetup::OnInitDialog() 
 {
-   CPWDialog::OnInitDialog();
-   ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-   ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
-   ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
-   ((CEdit*)GetDlgItem(IDC_VERIFY))->SetPasswordChar(PSSWDCHAR);
+  CPWDialog::OnInitDialog();
+  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
+  ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetPasswordChar(PSSWDCHAR);
+  ((CEdit*)GetDlgItem(IDC_VERIFY))->SetPasswordChar(PSSWDCHAR);
 
-   return TRUE;
+  return TRUE;
 }
 
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 {
-   CPWDialog::DoDataExchange(pDX);
-   DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
-   DDX_Text(pDX, IDC_VERIFY, (CString &)m_verify);
+  CPWDialog::DoDataExchange(pDX);
+  DDX_Text(pDX, IDC_PASSKEY, (CString &)m_passkey);
+  DDX_Text(pDX, IDC_VERIFY, (CString &)m_verify);
 }
 
 
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
-   ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
 #if defined(POCKET_PC)
-   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
-   ON_EN_SETFOCUS(IDC_VERIFY, OnPasskeySetfocus)
-   ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
-   ON_EN_KILLFOCUS(IDC_VERIFY, OnPasskeyKillfocus)
+  ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
+  ON_EN_SETFOCUS(IDC_VERIFY, OnPasskeySetfocus)
+  ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
+  ON_EN_KILLFOCUS(IDC_VERIFY, OnPasskeyKillfocus)
 #endif
 END_MESSAGE_MAP()
 
 
 void CPasskeySetup::OnCancel() 
 {
-   CPWDialog::OnCancel();
+  CPWDialog::OnCancel();
 }
 
 
@@ -83,18 +83,18 @@ void CPasskeySetup::OnOK()
 {
   UpdateData(TRUE);
   if (m_passkey != m_verify)
-    {
-      AfxMessageBox(IDS_ENTRIESDONOTMATCH);
-      ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
-      return;
-    }
+  {
+    AfxMessageBox(IDS_ENTRIESDONOTMATCH);
+    ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
+    return;
+  }
 
   if (m_passkey.IsEmpty())
-    {
-      AfxMessageBox(IDS_ENTERKEYANDVERIFY);
-      ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
-      return;
-    }
+  {
+    AfxMessageBox(IDS_ENTERKEYANDVERIFY);
+    ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
+    return;
+  }
   // Vox populi vox dei - folks want the ability to use a weak
   // passphrase, best we can do is warn them...
   // If someone want to build a version that insists on proper
@@ -104,7 +104,7 @@ void CPasskeySetup::OnOK()
 #ifndef _DEBUG // for debug, we want no checks at all, to save time
   CMyString errmess;
   if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
-  	CString cs_msg, cs_text;
+    CString cs_msg, cs_text;
     cs_msg.Format(IDS_WEAKPASSPHRASE, errmess);
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
@@ -144,7 +144,7 @@ void CPasskeySetup::OnHelp()
 /************************************************************************/
 void CPasskeySetup::OnPasskeyKillfocus()
 {
-	EnableWordCompletion( m_hWnd );
+  EnableWordCompletion( m_hWnd );
 }
 
 
@@ -154,7 +154,7 @@ void CPasskeySetup::OnPasskeyKillfocus()
 /************************************************************************/
 void CPasskeySetup::OnPasskeySetfocus()
 {
-	DisableWordCompletion( m_hWnd );
+  DisableWordCompletion( m_hWnd );
 }
 #endif
 

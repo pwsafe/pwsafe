@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // PWHistDlg.cpp : implementation file
 //
 
@@ -23,16 +23,16 @@
 
 IMPLEMENT_DYNAMIC(CPWHistDlg, CDialog)
 CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
-             CMyString &HistStr, PWHistList &PWHistList,
-             size_t NumPWHistory, size_t &MaxPWHistory,
-             BOOL &SavePWHistory)
-: CPWDialog(CPWHistDlg::IDD, pParent),
-  m_PWH_IsReadOnly(IsReadOnly),
-  m_HistStr(HistStr), m_PWHistList(PWHistList),
-  m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
-  m_SavePWHistory(SavePWHistory),
-  m_ClearPWHistory(false),
-  m_iSortedColumn(-1), m_bSortAscending(TRUE)
+                       CMyString &HistStr, PWHistList &PWHistList,
+                       size_t NumPWHistory, size_t &MaxPWHistory,
+                       BOOL &SavePWHistory)
+                       : CPWDialog(CPWHistDlg::IDD, pParent),
+                       m_PWH_IsReadOnly(IsReadOnly),
+                       m_HistStr(HistStr), m_PWHistList(PWHistList),
+                       m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
+                       m_SavePWHistory(SavePWHistory),
+                       m_ClearPWHistory(false),
+                       m_iSortedColumn(-1), m_bSortAscending(TRUE)
 {
   m_oldMaxPWHistory = m_MaxPWHistory;
 }
@@ -62,74 +62,74 @@ END_MESSAGE_MAP()
 
 BOOL CPWHistDlg::OnInitDialog() 
 {
-    CPWDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
-    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
+  GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
 
-    BOOL bpwh_count = m_PWHistList.empty() ? FALSE : TRUE;
-    GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bpwh_count);
-    GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
+  BOOL bpwh_count = m_PWHistList.empty() ? FALSE : TRUE;
+  GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bpwh_count);
+  GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
 
-    if (m_PWH_IsReadOnly) {
-        GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
-        GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
-        GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
-        GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);  // overrides count
-    }
+  if (m_PWH_IsReadOnly) {
+    GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(FALSE);  // overrides count
+  }
 
-    m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-    CString cs_text;
-    cs_text.LoadString(IDS_SETDATETIME);
-    m_PWHistListCtrl.InsertColumn(0, cs_text);
-    cs_text.LoadString(IDS_PASSWORD);
-    m_PWHistListCtrl.InsertColumn(1, cs_text);
+  m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+  CString cs_text;
+  cs_text.LoadString(IDS_SETDATETIME);
+  m_PWHistListCtrl.InsertColumn(0, cs_text);
+  cs_text.LoadString(IDS_PASSWORD);
+  m_PWHistListCtrl.InsertColumn(1, cs_text);
 
-    PWHistList::iterator iter;
-    DWORD nIdx;
-    for (iter = m_PWHistList.begin(), nIdx = 0;
-         iter != m_PWHistList.end(); iter++, nIdx++) {
-        int nPos = 0;
-        const PWHistEntry pwhentry = *iter;
-        if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
-            nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
-        else {
-            cs_text.LoadString(IDS_UNKNOWN);
-            cs_text.Trim();
-            nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
-        }
-        m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
-        m_PWHistListCtrl.SetItemData(nPos, nIdx);
-    }
+  PWHistList::iterator iter;
+  DWORD nIdx;
+  for (iter = m_PWHistList.begin(), nIdx = 0;
+    iter != m_PWHistList.end(); iter++, nIdx++) {
+      int nPos = 0;
+      const PWHistEntry pwhentry = *iter;
+      if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
+        nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
+      else {
+        cs_text.LoadString(IDS_UNKNOWN);
+        cs_text.Trim();
+        nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
+      }
+      m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
+      m_PWHistListCtrl.SetItemData(nPos, nIdx);
+  }
 
-    m_PWHistListCtrl.SetRedraw(FALSE);
-    for (int i = 0; i < 2; i++) {
-        m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
-        int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
-        m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-        int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
-        m_PWHistListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
-    }
-    m_PWHistListCtrl.SetRedraw(TRUE);
+  m_PWHistListCtrl.SetRedraw(FALSE);
+  for (int i = 0; i < 2; i++) {
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
+    int nColumnWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+    int nHeaderWidth = m_PWHistListCtrl.GetColumnWidth(i);
+    m_PWHistListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+  }
+  m_PWHistListCtrl.SetRedraw(TRUE);
 
-    TCHAR buffer[10];
+  TCHAR buffer[10];
 #if _MSC_VER >= 1400
-    _stprintf_s(buffer, 10, _T("%d"), m_NumPWHistory);
+  _stprintf_s(buffer, 10, _T("%d"), m_NumPWHistory);
 #else
-    _stprintf(buffer, _T("%d"), m_NumPWHistory);
+  _stprintf(buffer, _T("%d"), m_NumPWHistory);
 #endif
 
-    CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
-    if (m_MaxPWHistory == 0)
-        m_MaxPWHistory = PWSprefs::GetInstance()->
-  			GetPref(PWSprefs::NumPWHistoryDefault);
+  if (m_MaxPWHistory == 0)
+    m_MaxPWHistory = PWSprefs::GetInstance()->
+    GetPref(PWSprefs::NumPWHistoryDefault);
 
-    pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
-    pspin->SetRange(1, 255);
-    pspin->SetBase(10);
-    pspin->SetPos((int)m_MaxPWHistory);
- 
-    return TRUE;
+  pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
+  pspin->SetRange(1, 255);
+  pspin->SetBase(10);
+  pspin->SetPos((int)m_MaxPWHistory);
+
+  return TRUE;
 }
 
 
@@ -144,21 +144,21 @@ void
 CPWHistDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
-	  return;
+    return;
 
   /* Handle history header.
-   * Header is in the form fmmnn, where:
-   * f = {0,1} if password history is on/off
-   * mm = 2 digits max size of history list
-   * nn = 2 digits current size of history list
-   *
-   * Special case: history empty and password history off - do nothing
-   */
+  * Header is in the form fmmnn, where:
+  * f = {0,1} if password history is on/off
+  * mm = 2 digits max size of history list
+  * nn = 2 digits current size of history list
+  *
+  * Special case: history empty and password history off - do nothing
+  */
 
 
   if (m_ClearPWHistory == TRUE) {
-      m_PWHistList.erase(m_PWHistList.begin(), m_PWHistList.end());
-      m_HistStr = m_HistStr.Left(5);
+    m_PWHistList.erase(m_PWHistList.begin(), m_PWHistList.end());
+    m_HistStr = m_HistStr.Left(5);
   }
 
   if (!(m_HistStr.IsEmpty() && m_SavePWHistory == FALSE)) {
@@ -166,17 +166,17 @@ CPWHistDlg::OnOK()
 #if _MSC_VER >= 1400
     _stprintf_s
 #else
-      _stprintf
+    _stprintf
 #endif
       (buffer,
 #if _MSC_VER >= 1400
-       6,
+      6,
 #endif
-       _T("%1x%02x%02x"),
-       (m_SavePWHistory == FALSE) ? 0 : 1,
-       m_MaxPWHistory,
-       m_PWHistList.size()
-       );
+      _T("%1x%02x%02x"),
+      (m_SavePWHistory == FALSE) ? 0 : 1,
+      m_MaxPWHistory,
+      m_PWHistList.size()
+      );
     if (m_HistStr.GetLength() >= 5) {
       for (int i = 0; i < 5; i++) m_HistStr.SetAt(i, buffer[i]);
     } else {
@@ -200,7 +200,7 @@ CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
   ASSERT(lpnmitem != NULL);
   int item = lpnmitem->iItem;
   if (item == -1)
-	  return;
+    return;
   size_t itempos = size_t(m_PWHistListCtrl.GetItemData(item));
   const PWHistEntry pwhentry = m_PWHistList[itempos];
   DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());
@@ -247,7 +247,7 @@ CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 int CALLBACK CPWHistDlg::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
-                                     LPARAM closure)
+                                           LPARAM closure)
 {
   CPWHistDlg *self = (CPWHistDlg*)closure;
   int nSortColumn = self->m_iSortedColumn;
@@ -288,11 +288,11 @@ void CPWHistDlg::OnBnClickedPwhCopyAll()
   PWHistList::iterator iter;
 
   for (iter = m_PWHistList.begin(); iter != m_PWHistList.end(); iter++) {
-      const PWHistEntry &ent = *iter;
-      HistStr += ent.changedate;
-      HistStr += _T("\t");
-      HistStr += ent.password;
-      HistStr += _T("\r\n");
+    const PWHistEntry &ent = *iter;
+    HistStr += ent.changedate;
+    HistStr += _T("\t");
+    HistStr += ent.password;
+    HistStr += _T("\r\n");
   }
 
   DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());

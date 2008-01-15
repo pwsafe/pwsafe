@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 #include "Report.h"
 #include "Util.h"
@@ -25,11 +25,11 @@ static char THIS_FILE[] = __FILE__;
 const TCHAR *CRLF = _T("\r\n");
 
 /*
-   StartReport creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
-   in the same directory as the current database.
-   
-   It writes a header record and a "Start Report" record.
- */
+StartReport creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
+in the same directory as the current database.
+
+It writes a header record and a "Start Report" record.
+*/
 bool
 CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
 {
@@ -55,8 +55,8 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
   m_cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, tcAction);
 
   if ((m_fd = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
-  	PWSUtil::IssueError(_T("StartReport: Opening log file"));
-  	return false;
+    PWSUtil::IssueError(_T("StartReport: Opening log file"));
+    return false;
   }
 
   // **** MOST LIKELY ACTION ****
@@ -66,11 +66,11 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
   // Test editors really don't like files with both UNICODE and ASCII characters, so -
   // If we are UNICODE and file is not, convert file to UNICODE before appending
   // If we are not UNICODE but file is, convert file to ASCII before appending
-  
+
   bool bFileIsUnicode(false);
 
   struct _stat statbuf;
-  
+
   ::_tstat(m_cs_filename, &statbuf);
 
   // No need to check result of _tstat, since the _tfsopen above would have failed if 
@@ -97,57 +97,57 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
   const unsigned int iBOM = 0xFEFF;
   if (statbuf.st_size == 0) {
     // File is empty - write BOM
-	  putwc(iBOM, m_fd);
+    putwc(iBOM, m_fd);
   } else
-  if (!bFileIsUnicode) {
-    // Convert ASCII contents to UNICODE
-    FILE *f_in, *f_out;
+    if (!bFileIsUnicode) {
+      // Convert ASCII contents to UNICODE
+      FILE *f_in, *f_out;
 
-    // Close original first
-    fclose(m_fd);
+      // Close original first
+      fclose(m_fd);
 
-    // Open again to read
-    f_in = _wfsopen((LPCWSTR)m_cs_filename, L"rb", _SH_DENYWR);
+      // Open again to read
+      f_in = _wfsopen((LPCWSTR)m_cs_filename, L"rb", _SH_DENYWR);
 
-    // Open new file
-    CString cs_out = m_cs_filename + _T(".tmp");
-    f_out = _wfsopen((LPCWSTR)cs_out, L"wb", _SH_DENYWR);
+      // Open new file
+      CString cs_out = m_cs_filename + _T(".tmp");
+      f_out = _wfsopen((LPCWSTR)cs_out, L"wb", _SH_DENYWR);
 
-    // Write BOM
-    putwc(iBOM, f_out);
+      // Write BOM
+      putwc(iBOM, f_out);
 
-    UINT nBytesRead;
-    unsigned char inbuffer[4096];
-    WCHAR outwbuffer[4096];
+      UINT nBytesRead;
+      unsigned char inbuffer[4096];
+      WCHAR outwbuffer[4096];
 
-    // Now copy
-    do {
-      nBytesRead = fread(inbuffer, sizeof(inbuffer), 1, f_in);
+      // Now copy
+      do {
+        nBytesRead = fread(inbuffer, sizeof(inbuffer), 1, f_in);
 
-      if (nBytesRead > 0) {
-        int len = MultiByteToWideChar(CP_ACP, 0, (LPSTR)inbuffer, 
-                      nBytesRead, (LPWSTR)outwbuffer, 4096);
-        if (len > 0)
-          fwrite(outwbuffer, sizeof(outwbuffer[0])*len, 1, f_out);
-      } else
-        break;
+        if (nBytesRead > 0) {
+          int len = MultiByteToWideChar(CP_ACP, 0, (LPSTR)inbuffer, 
+            nBytesRead, (LPWSTR)outwbuffer, 4096);
+          if (len > 0)
+            fwrite(outwbuffer, sizeof(outwbuffer[0])*len, 1, f_out);
+        } else
+          break;
 
-    } while(nBytesRead > 0);
+      } while(nBytesRead > 0);
 
-    // Close files
-    fclose(f_in);
-    fclose(f_out);
+      // Close files
+      fclose(f_in);
+      fclose(f_out);
 
-    // Swap them
-    _tremove(m_cs_filename);
-    _trename(cs_out, m_cs_filename);
+      // Swap them
+      _tremove(m_cs_filename);
+      _trename(cs_out, m_cs_filename);
 
-    // Re-open file
-    if ((m_fd = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
-  	  PWSUtil::IssueError(_T("StartReport: Opening log file"));
-    	return false;
+      // Re-open file
+      if ((m_fd = _wfsopen((LPCTSTR)m_cs_filename, L"ab", _SH_DENYWR)) == NULL) {
+        PWSUtil::IssueError(_T("StartReport: Opening log file"));
+        return false;
+      }
     }
-  }
 #else
   if (bFileIsUnicode) {
     // Convert UNICODE contents to ASCII
@@ -173,12 +173,12 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
     // Now copy
     do {
       nBytesRead = fread(inwbuffer, sizeof(inwbuffer[0])*sizeof(inwbuffer),
-                         1, f_in);
+        1, f_in);
 
       if (nBytesRead > 0) {
         int len = WideCharToMultiByte(CP_ACP, 0, (LPWSTR)inwbuffer, 
-                      nBytesRead,
-                      (LPSTR)outbuffer, 4096, NULL, NULL);
+          nBytesRead,
+          (LPSTR)outbuffer, 4096, NULL, NULL);
         if (len > 0)
           fwrite(outbuffer, len, 1, f_out);
       } else
@@ -196,8 +196,8 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
 
     // Re-open file
     if ((m_fd = _fsopen((LPCSTR) m_cs_filename, "ab", _SH_DENYWR)) == NULL) {
-  	  PWSUtil::IssueError(_T("StartReport: Opening log file"));
-    	return false;
+      PWSUtil::IssueError(_T("StartReport: Opening log file"));
+      return false;
     }
   }
 #endif
@@ -212,7 +212,7 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
   cs_title.LoadString(IDSC_START_REPORT);
   WriteLine(cs_title);
   WriteLine();
-  
+
   return true;
 }
 
@@ -225,15 +225,15 @@ CReport::WriteLine(CString &cs_line, bool bCRLF)
 
   LPTSTR tc_line = cs_line.GetBuffer(cs_line.GetLength() + sizeof(TCHAR));
 #if _MSC_VER >= 1400
-	_ftprintf_s(m_fd, _T("%s"), tc_line);
+  _ftprintf_s(m_fd, _T("%s"), tc_line);
   if (bCRLF)
     _ftprintf_s(m_fd, _T("%s"), CRLF);
 #else
-	_ftprintf(m_fd, _T("%s"), tc_line);
+  _ftprintf(m_fd, _T("%s"), tc_line);
   if (bCRLF)
     _ftprintf(m_fd, _T("%s"), CRLF);
 #endif
-	cs_line.ReleaseBuffer();
+  cs_line.ReleaseBuffer();
 }
 
 // Write a record with(default) or without a CRLF
@@ -244,11 +244,11 @@ CReport::WriteLine(LPTSTR &tc_line, bool bCRLF)
     return;
 
 #if _MSC_VER >= 1400
-	_ftprintf_s(m_fd, _T("%s"), tc_line);
+  _ftprintf_s(m_fd, _T("%s"), tc_line);
   if (bCRLF)
     _ftprintf_s(m_fd, _T("%s"), CRLF);
 #else
-	_ftprintf(m_fd, _T("%s"), tc_line);
+  _ftprintf(m_fd, _T("%s"), tc_line);
   if (bCRLF)
     _ftprintf(m_fd, _T("%s"), CRLF);
 #endif
@@ -269,8 +269,8 @@ CReport::WriteLine()
 }
 
 /*
-   EndReport writes a "End Report" record and closes the report file.
- */
+EndReport writes a "End Report" record and closes the report file.
+*/
 void
 CReport::EndReport()
 {

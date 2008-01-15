@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #include "UnknownField.h"
 
 #include "Util.h"
 
 UnknownFieldEntry::UnknownFieldEntry(unsigned char t, size_t s,
-                                                 unsigned char *d)
+                                     unsigned char *d)
 {
   uc_Type = t;
   st_length =s;
@@ -34,7 +34,7 @@ UnknownFieldEntry::~UnknownFieldEntry()
 }
 
 UnknownFieldEntry::UnknownFieldEntry(const UnknownFieldEntry &that)
-  : uc_Type(that.uc_Type), st_length(that.st_length)
+: uc_Type(that.uc_Type), st_length(that.st_length)
 {
   if (that.uc_pUField != NULL) {
     ASSERT(that.st_length != 0);

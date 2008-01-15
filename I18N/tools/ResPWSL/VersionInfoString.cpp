@@ -28,49 +28,49 @@ CVersionInfoString::CVersionInfoString(const CString& strKey, const CString& str
 
 CVersionInfoString::CVersionInfoString(String* pString)
 {
-	FromString(pString);
+  FromString(pString);
 }
 
 //////////////////////////////////////////////////////////////////////
 // Loading/saving
 void CVersionInfoString::FromString(String* pString)
 {
-	m_strKey = pString->szKey;
-	LPWSTR lpwszValue = (LPWSTR) DWORDALIGN(&pString->szKey[wcslen(pString->szKey)+1]);
-	CString strValue;
-	if (pString->wValueLength)
-		m_strValue = lpwszValue;
+  m_strKey = pString->szKey;
+  LPWSTR lpwszValue = (LPWSTR) DWORDALIGN(&pString->szKey[wcslen(pString->szKey)+1]);
+  CString strValue;
+  if (pString->wValueLength)
+    m_strValue = lpwszValue;
 }
 
 void CVersionInfoString::Write(CVersionInfoBuffer & viBuf)
 {
-	//Pad to DWORD and save position for wLength
-	DWORD pos = viBuf.PadToDWORD();
-	
-	//Skip size for now;
-	viBuf.Pad(sizeof WORD);
+  //Pad to DWORD and save position for wLength
+  DWORD pos = viBuf.PadToDWORD();
 
-	//Write wValueLength
-	if (!m_strValue.IsEmpty())
-		viBuf.WriteWord(m_strValue.GetLength() + 1);
-	else
-		viBuf.WriteWord(0);
+  //Skip size for now;
+  viBuf.Pad(sizeof WORD);
 
-	//Write wType (Text)
-	viBuf.WriteWord(1);
+  //Write wValueLength
+  if (!m_strValue.IsEmpty())
+    viBuf.WriteWord(m_strValue.GetLength() + 1);
+  else
+    viBuf.WriteWord(0);
 
-	//Write key
-	viBuf.WriteString(m_strKey);
+  //Write wType (Text)
+  viBuf.WriteWord(1);
 
-	//Pad for Value
-	viBuf.PadToDWORD();
+  //Write key
+  viBuf.WriteString(m_strKey);
 
-	//Write the value
-	if (!m_strValue.IsEmpty())
-		viBuf.WriteString(m_strValue);
+  //Pad for Value
+  viBuf.PadToDWORD();
 
-	//Set the size of the structure based on current offset from the position
-	viBuf.WriteStructSize(pos);
+  //Write the value
+  if (!m_strValue.IsEmpty())
+    viBuf.WriteString(m_strValue);
+
+  //Set the size of the structure based on current offset from the position
+  viBuf.WriteStructSize(pos);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,15 +78,15 @@ void CVersionInfoString::Write(CVersionInfoBuffer & viBuf)
 
 const CString& CVersionInfoString::GetKey() const
 {
-	return m_strKey;
+  return m_strKey;
 }
 
 const CString& CVersionInfoString::GetValue() const
 {
-	return m_strValue;
+  return m_strValue;
 }
 
 CString& CVersionInfoString::GetValue()
 {
-	return m_strValue;
+  return m_strValue;
 }

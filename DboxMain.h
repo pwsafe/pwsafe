@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #pragma once
 
 // DboxMain.h
@@ -15,12 +15,12 @@
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSClipboard.h"
 #if defined(POCKET_PC)
-  #include "pocketpc/resource.h"
-  #include "pocketpc/MyListCtrl.h"
+#include "pocketpc/resource.h"
+#include "pocketpc/MyListCtrl.h"
 #else
-  #include "resource.h"
-  #include "resource2.h"  // Version, Menu, Toolbar & Accelerator resources
-  #include "resource3.h"  // String resources
+#include "resource.h"
+#include "resource2.h"  // Version, Menu, Toolbar & Accelerator resources
+#include "resource3.h"  // String resources
 #endif
 #include "PWTreeCtrl.h"
 #include "PWListCtrl.h"
@@ -76,14 +76,14 @@ DECLARE_HANDLE(HDROP);
 
 // Index values for which dialog to show during GetAndCheckPassword
 enum {GCP_FIRST = 0,		// At startup of PWS
-	  GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
-	  GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
-	  GCP_WITHEXIT = 3,	// OK, CANCEL, EXIT & HELP buttons
-	  GCP_ADVANCED = 4};	// OK, CANCEL, HELP buttons & ADVANCED checkbox
+GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
+GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
+GCP_WITHEXIT = 3,	// OK, CANCEL, EXIT & HELP buttons
+GCP_ADVANCED = 4};	// OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 //-----------------------------------------------------------------------------
 class DboxMain
-   : public CDialog
+  : public CDialog
 {
 #if defined(POCKET_PC)
   friend class CMyListCtrl;
@@ -105,7 +105,7 @@ public:
 
   // Find entry by title and user name, exact match
   ItemListIter Find(const CMyString &a_group,
-                    const CMyString &a_title, const CMyString &a_user)
+    const CMyString &a_title, const CMyString &a_user)
   {return m_core.Find(a_group, a_title, a_user);}
 
   // Find entry with same title and user name as the
@@ -124,12 +124,12 @@ public:
 
   // FindAll is used by CPWFindToolBar, returns # of finds.
   size_t FindAll(const CString &str, BOOL CaseSensitive,
-              std::vector<int> &indices);
+    std::vector<int> &indices);
   size_t FindAll(const CString &str, BOOL CaseSensitive,
-              std::vector<int> &indices,
-              const CItemData::FieldBits &bsFields, const int subgroup_set, 
-              const CString &subgroup_name, const int subgroup_object,
-              const int subgroup_function);
+    std::vector<int> &indices,
+    const CItemData::FieldBits &bsFields, const int subgroup_set, 
+    const CString &subgroup_name, const int subgroup_object,
+    const int subgroup_function);
 
   // Used by ListCtrl KeyDown
   bool IsImageVisible() {return m_bImageInLV;}
@@ -139,7 +139,7 @@ public:
 
   // Get CItemData @ position
   CItemData &GetEntryAt(ItemListIter iter)
-    {return m_core.GetEntry(iter);}
+  {return m_core.GetEntry(iter);}
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
@@ -179,7 +179,7 @@ public:
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
   bool MakeRandomPassword(CDialog * const pDialog, CMyString& password,
-                          PWPolicy &pwp);
+    PWPolicy &pwp);
   bool SetPasswordPolicy(PWPolicy &pwp);
   BOOL LaunchBrowser(const CString &csURL);
   void UpdatePasswordHistory(int iAction, int num_default);
@@ -195,15 +195,15 @@ public:
   void AddEntries(CDDObList &in_oblist, const CMyString &DropGroup);
   int AddEntry(const CItemData &cinew);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-                           const CMyString &user, const int IDS_MESSAGE)
+    const CMyString &user, const int IDS_MESSAGE)
   {return m_core.GetUniqueTitle(path, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(bool inRecursion = false);
   void SaveDisplayStatus(); // call when tree expansion state changes
   bool CheckNewPassword(const CMyString &group, const CMyString &title,
-                        const CMyString &user, const CMyString &password,
-                        const bool bIsEdit, const CItemData::EntryType &InputType, 
-                        uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
+    const CMyString &user, const CMyString &password,
+    const bool bIsEdit, const CItemData::EntryType &InputType, 
+    uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued);
   void GetAliasBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
   {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
   void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
@@ -260,7 +260,7 @@ protected:
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
   enum {SB_DBLCLICK = 0, SB_CONFIG, SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
-        SB_TOTAL /* this must be the last entry */};
+    SB_TOTAL /* this must be the last entry */};
   UINT statustext[SB_TOTAL];
 #endif
 
@@ -292,7 +292,7 @@ protected:
   CMenuTipManager m_menuTipManager;
 
   int insertItem(CItemData &itemData, int iIndex = -1, 
-                 const bool bSort = true, const int iView = iBothViews);
+    const bool bSort = true, const int iView = iBothViews);
   CItemData *getSelectedItem();
 
   void ChangeOkUpdate();
@@ -324,7 +324,7 @@ protected:
   LRESULT ViewCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT EditCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                            uuid_array_t &fromuuid, uuid_array_t &touuid);
+    uuid_array_t &fromuuid, uuid_array_t &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
 
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -365,7 +365,7 @@ protected:
   void SortDependents(UUIDList &dlist, CMyString &csDependents);
   void ViewReport(const CString cs_ReportFileName);
   bool GetDriveAndDirectory(const CMyString cs_infile, CString &cs_directory,
-                            CString &cs_drive);
+    CString &cs_drive);
   void SetFindToolBar(bool bShow);
 
   void PlaceWindow(CRect *prect, UINT showCmd);
@@ -375,21 +375,21 @@ protected:
   static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC hdc, LPRECT prc, LPARAM lParam);
 
 #if !defined(POCKET_PC)
-	afx_msg void OnTrayLockUnLock();
+  afx_msg void OnTrayLockUnLock();
   afx_msg void OnTrayClearRecentEntries();
   afx_msg void OnUpdateTrayClearRecentEntries(CCmdUI *pCmdUI);
-	afx_msg void OnTrayCopyUsername(UINT nID);
-	afx_msg void OnUpdateTrayCopyUsername(CCmdUI *pCmdUI);
-	afx_msg void OnTrayCopyPassword(UINT nID);
-	afx_msg void OnUpdateTrayCopyPassword(CCmdUI *pCmdUI);
-	afx_msg void OnTrayCopyNotes(UINT nID);
-	afx_msg void OnUpdateTrayCopyNotes(CCmdUI *pCmdUI);
-	afx_msg void OnTrayBrowse(UINT nID);
-	afx_msg void OnUpdateTrayBrowse(CCmdUI *pCmdUI);
-	afx_msg void OnTrayDeleteEntry(UINT nID);
-	afx_msg void OnUpdateTrayDeleteEntry(CCmdUI *pCmdUI);
-	afx_msg void OnTrayAutoType(UINT nID);
-	afx_msg void OnUpdateTrayAutoType(CCmdUI *pCmdUI);
+  afx_msg void OnTrayCopyUsername(UINT nID);
+  afx_msg void OnUpdateTrayCopyUsername(CCmdUI *pCmdUI);
+  afx_msg void OnTrayCopyPassword(UINT nID);
+  afx_msg void OnUpdateTrayCopyPassword(CCmdUI *pCmdUI);
+  afx_msg void OnTrayCopyNotes(UINT nID);
+  afx_msg void OnUpdateTrayCopyNotes(CCmdUI *pCmdUI);
+  afx_msg void OnTrayBrowse(UINT nID);
+  afx_msg void OnUpdateTrayBrowse(CCmdUI *pCmdUI);
+  afx_msg void OnTrayDeleteEntry(UINT nID);
+  afx_msg void OnUpdateTrayDeleteEntry(CCmdUI *pCmdUI);
+  afx_msg void OnTrayAutoType(UINT nID);
+  afx_msg void OnUpdateTrayAutoType(CCmdUI *pCmdUI);
 #endif
 
   // Generated message map functions
@@ -501,8 +501,8 @@ protected:
   DECLARE_MESSAGE_MAP()
 
   int GetAndCheckPassword(const CMyString &filename, CMyString& passkey,
-                          int index, bool bReadOnly = false, bool bForceReadOnly = false,
-                          PWScore *pcore = 0, int adv_type = -1);
+    int index, bool bReadOnly = false, bool bForceReadOnly = false,
+    PWScore *pcore = 0, int adv_type = -1);
 
 private:
   CMyString m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
@@ -548,7 +548,7 @@ private:
   void SetupColumnChooser(const bool bShowHide);
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);
-  
+
   static const struct UICommandTableEntry {
     UINT ID;
     enum {InOpenRW=0, InOpenRO=1, InEmpty=2, InClosed=3, bOK_LAST};

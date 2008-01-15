@@ -555,6 +555,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Fish.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hmac.h"
 				>
 			</File>
@@ -636,6 +640,10 @@
 			</File>
 			<File
 				RelativePath=".\SysInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinystr.h"
 				>
 			</File>
 			<File

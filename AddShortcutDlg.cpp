@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file AddShortcutDlg.cpp
 //-----------------------------------------------------------------------------
 
@@ -24,8 +24,8 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CAddShortcutDlg::CAddShortcutDlg(CWnd* pParent)
-  : CPWDialog(CAddShortcutDlg::IDD, pParent), m_target(_T("")), 
-    m_username(_T("")), m_title(_T("")), m_group(_T(""))
+: CPWDialog(CAddShortcutDlg::IDD, pParent), m_target(_T("")), 
+m_username(_T("")), m_title(_T("")), m_group(_T(""))
 {
 }
 
@@ -63,8 +63,8 @@ void CAddShortcutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAddShortcutDlg, CPWDialog)
-   ON_BN_CLICKED(ID_HELP, OnHelp)
-   ON_BN_CLICKED(IDOK, OnBnClickedOk)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -79,7 +79,7 @@ void
 CAddShortcutDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
-	  return;
+    return;
 
   m_group.EmptyIfOnlyWhiteSpace();
   m_title.EmptyIfOnlyWhiteSpace();
@@ -127,13 +127,13 @@ CAddShortcutDlg::OnOK()
 
   bool b_msg_issued;
   if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_target,
-                             false, CItemData::Shortcut,
-                             m_base_uuid, m_ibasedata, b_msg_issued)) {
-    if (!b_msg_issued)
-      AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
-    UpdateData(FALSE);
-    ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
-    return;
+    false, CItemData::Shortcut,
+    m_base_uuid, m_ibasedata, b_msg_issued)) {
+      if (!b_msg_issued)
+        AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
+      UpdateData(FALSE);
+      ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
+      return;
   }
   //End check
 
@@ -154,5 +154,5 @@ void CAddShortcutDlg::OnHelp()
 
 void CAddShortcutDlg::OnBnClickedOk()
 {
-	OnOK();
+  OnOK();
 }

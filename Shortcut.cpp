@@ -34,7 +34,7 @@ static char THIS_FILE[]=__FILE__;
 
 CShortcut::CShortcut()
 {
-	m_sCmdArg.Empty();
+  m_sCmdArg.Empty();
 }
 
 CShortcut::~CShortcut()
@@ -52,25 +52,25 @@ CShortcut::~CShortcut()
 \param LnkName		  - The name of the ShortCut
 \param SpecialFolder  - where to put the shortcut (See #defines below)
 \param LnkDescription - an application can use it to store\n
-						any text information and can retrieve\n
-						it with "IShellLink::GetDescription"\n
+any text information and can retrieve\n
+it with "IShellLink::GetDescription"\n
 \param IconLocation   - path to the file where the icon is located\n
-					    that should be used. Can be an empty string\n
+that should be used. Can be an empty string\n
 \param IconIndex	  - the # of the icon in the file\n
 
 \return BOOL - ShortCut created or not\n
 
-  Defines for Special Folders:
+Defines for Special Folders:
 
-	SendTo Menu/Folder:				CSIDL_SENDTO
-	Desktop for current User		CSIDL_DESKTOP
-	Desktop:						CSIDL_COMMON_DESKTOPDIRECTORY
-	Autostart for current User:		CSIDL_STARTUP
-	Autostart:						CSIDL_COMMON_STARTUP
-	Start-menu for current User:	CSIDL_STARTMENU
-	Start-menu:						CSIDL_STARTMENU
-	Programms-menu for current User:CSIDL_COMMON_STARTMENU	
-	and some more.....
+SendTo Menu/Folder:				CSIDL_SENDTO
+Desktop for current User		CSIDL_DESKTOP
+Desktop:						CSIDL_COMMON_DESKTOPDIRECTORY
+Autostart for current User:		CSIDL_STARTUP
+Autostart:						CSIDL_COMMON_STARTUP
+Start-menu for current User:	CSIDL_STARTMENU
+Start-menu:						CSIDL_STARTMENU
+Programms-menu for current User:CSIDL_COMMON_STARTMENU	
+and some more.....
 *****************************************************************/
 BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
                                const CString &LnkName, UINT SpecialFolder,
@@ -90,9 +90,9 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
   // Find the Special Folder:
   if(!GetSpecialFolder(SpecialFolder, sSpecialFolder))
     return FALSE;
-	
+
   sSpecialFolder += LnkName + _T(".") + _T("lnk");
-				
+
   if(LnkTarget == _T("_this")) {
     cfFull.SetFilePath(sExePath);
     sExe = cfFull.GetFileName();
@@ -107,54 +107,54 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
   IShellLink* psl;
 
   if (SUCCEEDED(CoCreateInstance(CLSID_ShellLink,
-                                 NULL,
-                                 CLSCTX_INPROC_SERVER,
-                                 IID_IShellLink,
-                                 (LPVOID*) &psl))) {
-    IPersistFile* ppf;
-    // 
-    psl->SetPath(sExePath);
-    psl->SetDescription(LnkDescription);
+    NULL,
+    CLSCTX_INPROC_SERVER,
+    IID_IShellLink,
+    (LPVOID*) &psl))) {
+      IPersistFile* ppf;
+      // 
+      psl->SetPath(sExePath);
+      psl->SetDescription(LnkDescription);
 
-    if(!m_sCmdArg.IsEmpty())
-      psl->SetArguments(m_sCmdArg);
+      if(!m_sCmdArg.IsEmpty())
+        psl->SetArguments(m_sCmdArg);
 
-    if (SUCCEEDED(psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf))) {
+      if (SUCCEEDED(psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf))) {
 #ifndef UNICODE
-      WCHAR wsz[MAX_PATH];
+        WCHAR wsz[MAX_PATH];
 
-      MultiByteToWideChar(CP_ACP,
-                          MB_PRECOMPOSED,
-                          sSpecialFolder,
-                          -1,
-                          wsz,
-                          MAX_PATH);
+        MultiByteToWideChar(CP_ACP,
+          MB_PRECOMPOSED,
+          sSpecialFolder,
+          -1,
+          wsz,
+          MAX_PATH);
 #endif
-      /* Call IShellLink::SetIconLocation with the file containing
-         the icon and the index of the icon */
-      if(!IconLocation.IsEmpty()) {
-        hr = psl->SetIconLocation(IconLocation, IconIndex);	
+        /* Call IShellLink::SetIconLocation with the file containing
+        the icon and the index of the icon */
+        if(!IconLocation.IsEmpty()) {
+          hr = psl->SetIconLocation(IconLocation, IconIndex);	
 #ifdef _DEBUG
-        if(FAILED(hr))
-          TRACE(_T("IconLocation not changed!\n"));
+          if(FAILED(hr))
+            TRACE(_T("IconLocation not changed!\n"));
 #endif
-      }
-				
+        }
+
 #ifndef UNICODE
-      if(SUCCEEDED(ppf->Save(wsz, TRUE)))
+        if(SUCCEEDED(ppf->Save(wsz, TRUE)))
 #else
-      if(SUCCEEDED(ppf->Save(sSpecialFolder, TRUE)))
+        if(SUCCEEDED(ppf->Save(sSpecialFolder, TRUE)))
 #endif
- {
-        bRet = TRUE;
+        {
+          bRet = TRUE;
+        }
+        ppf->Release();
       }
-      ppf->Release();
-    }
-    psl->Release();
+      psl->Release();
   } 
 
   TRACE(bRet ? _T("Lnk Written!\n") :
-        _T("Lnk NOT Written! CreateShortCut(...) failed!\n"));
+    _T("Lnk NOT Written! CreateShortCut(...) failed!\n"));
   return bRet;
 }
 
@@ -162,22 +162,22 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
 /*!
 ***************************************************************
 
-  \param LnkName - The name of the ShortCut
-  \param SpecialFolder - Location of the shortcut (See #defines below)
+\param LnkName - The name of the ShortCut
+\param SpecialFolder - Location of the shortcut (See #defines below)
 
-  \return void
+\return void
 
-  Defines for Special Folders:
+Defines for Special Folders:
 
-	SendTo Menu/Folder:				CSIDL_SENDTO
-	Desktop for current User		CSIDL_DESKTOP
-	Desktop:						CSIDL_COMMON_DESKTOPDIRECTORY
-	Autostart for current User:		CSIDL_STARTUP
-	Autostart:						CSIDL_COMMON_STARTUP
-	Start-menu for current User:	CSIDL_STARTMENU
-	Start-menu:						CSIDL_STARTMENU
-	Programms-menu for current User:CSIDL_COMMON_STARTMENU	
-	and some more.....
+SendTo Menu/Folder:				CSIDL_SENDTO
+Desktop for current User		CSIDL_DESKTOP
+Desktop:						CSIDL_COMMON_DESKTOPDIRECTORY
+Autostart for current User:		CSIDL_STARTUP
+Autostart:						CSIDL_COMMON_STARTUP
+Start-menu for current User:	CSIDL_STARTMENU
+Start-menu:						CSIDL_STARTMENU
+Programms-menu for current User:CSIDL_COMMON_STARTMENU	
+and some more.....
 *****************************************************************/
 BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
 {
@@ -203,7 +203,7 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
   //  FIO.pTo=NULL; // MUST be NULL
   FIO.wFunc=FO_DELETE;
   FIO.fFlags=FOF_NOERRORUI|FOF_NOCONFIRMATION;
-		
+
   if(sSpecialFolder.Find(TCHAR('\0'))!=sSpecialFolder.GetLength()) {
     FIO.fFlags|=FOF_MULTIDESTFILES;
   }
@@ -211,7 +211,7 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
     sSpecialFolder+=TCHAR('\0');
   }
   FIO.pFrom=&*sSpecialFolder;
-		
+
   int bD = SHFileOperation(&FIO);
 
   if(!bD) {
@@ -224,8 +224,8 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
 }
 
 /*********************************************
- This routine tests if a link already exists:
- *********************************************/
+This routine tests if a link already exists:
+*********************************************/
 BOOL CShortcut::isLinkExist(const CString &LnkName,
                             UINT SpecialFolder) const
 {
@@ -254,19 +254,19 @@ BOOL CShortcut::isLinkExist(const CString &LnkName,
 
 
 /*********************************************
- This routine resolves the lnk destination:
+This routine resolves the lnk destination:
 
-  \param LnkName		  - The name of the ShortCut\n
-  \param SpecialFolder    - where to put the shortcut (See #defines above (MSDN))\n
-  \param hwnd			  - handle of the parent window for MessageBoxes\n
-                            the shell may need to display\n
-  \param LnkPath		  - Reference to a CString that receives the linkpath if\n
-                            routine is successful else the string will be empty\n
-  \param LnkDescription   - Reference to a CString that receives the Description\n
-                           of the link else the string will be empty\n
+\param LnkName		  - The name of the ShortCut\n
+\param SpecialFolder    - where to put the shortcut (See #defines above (MSDN))\n
+\param hwnd			  - handle of the parent window for MessageBoxes\n
+the shell may need to display\n
+\param LnkPath		  - Reference to a CString that receives the linkpath if\n
+routine is successful else the string will be empty\n
+\param LnkDescription   - Reference to a CString that receives the Description\n
+of the link else the string will be empty\n
 
-  \returns a HRESULT \n
- *********************************************/
+\returns a HRESULT \n
+*********************************************/
 HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
                                HWND hwnd, CString &LnkPath,
                                CString &LnkDescription)
@@ -287,10 +287,10 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
 
   // Get a pointer to the IShellLink interface. 
   hres = CoCreateInstance(CLSID_ShellLink,
-                          NULL,
-                          CLSCTX_INPROC_SERVER,
-                          IID_IShellLink,
-                          (LPVOID*) &psl);
+    NULL,
+    CLSCTX_INPROC_SERVER,
+    IID_IShellLink,
+    (LPVOID*) &psl);
   if(SUCCEEDED(hres)) {
     IPersistFile* ppf;  
     // Get a pointer to the IPersistFile interface. 
@@ -301,27 +301,27 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
       WCHAR wsz[MAX_PATH];  
       // Ensure that the string is Unicode. 
       MultiByteToWideChar(CP_ACP,
-                          0,
-                          sLnkFile,//lpszLinkFile,
-                          -1,
-                          wsz, 
-                          MAX_PATH);   // Load the shortcut. 
+        0,
+        sLnkFile,//lpszLinkFile,
+        -1,
+        wsz, 
+        MAX_PATH);   // Load the shortcut. 
       hres = ppf->Load(wsz, STGM_READ); 
 #else
       hres = ppf->Load(sLnkFile, STGM_READ); 
 #endif						
       if (SUCCEEDED(hres)) {   // Resolve the link. 
         hres = psl->Resolve(hwnd, SLR_ANY_MATCH); 
-								
+
         if (SUCCEEDED(hres)) {  
           // Get the path to the link target. 
           hres = psl->GetPath(szGotPath, 
-                              MAX_PATH,
-                              (WIN32_FIND_DATA *)&wfd, 
-                              SLGP_SHORTPATH ); 
-										
+            MAX_PATH,
+            (WIN32_FIND_DATA *)&wfd, 
+            SLGP_SHORTPATH ); 
+
           LnkPath.ReleaseBuffer();
-										
+
           if (!SUCCEEDED(hres)) {
             LnkDescription.ReleaseBuffer();
             return hres; // application-defined function  
@@ -343,19 +343,19 @@ HRESULT CShortcut::ResolveLink(const CString &LnkName, UINT SpecialFolder,
   // whether OS is <= NT4 or not... use this helper:
   if(ShortToLongPathName(LnkPath, sLong) > LnkPath.GetLength())
     LnkPath = sLong;
-		
+
   return hres; 
 }
 
 /*********************************************
- This routine is a helper that finds\n
- the path to the special folder:\n
+This routine is a helper that finds\n
+the path to the special folder:\n
 
-  \param SpecialFolder          - an UINT-define (See #defines above or (MSDN))\n
-  \param SpecialFolderString	- Reference to a CString that receives the\n
-                                  path to the special folder
-  \returns a BOOL - Found or not \n
- *********************************************/
+\param SpecialFolder          - an UINT-define (See #defines above or (MSDN))\n
+\param SpecialFolderString	- Reference to a CString that receives the\n
+path to the special folder
+\returns a BOOL - Found or not \n
+*********************************************/
 BOOL CShortcut::GetSpecialFolder(UINT SpecialFolder,
                                  CString &SpecialFolderString) const
 {
@@ -373,10 +373,10 @@ BOOL CShortcut::GetSpecialFolder(UINT SpecialFolder,
     if(SHGetPathFromIDList(pidl, szPath)) {
       // Allocate a pointer to an IMalloc interface
       LPMALLOC pMalloc;
-	
+
       // Get the address of our task allocator's IMalloc interface
       hr = SHGetMalloc(&pMalloc);
-	
+
       // Free the item ID list allocated by SHGetSpecialFolderLocation
       pMalloc->Free(pidl);
 
@@ -396,14 +396,14 @@ BOOL CShortcut::GetSpecialFolder(UINT SpecialFolder,
 
 
 /*********************************************
- This routine is a helper that builds a long\n
- path of a short (8+3) path:\n
+This routine is a helper that builds a long\n
+path of a short (8+3) path:\n
 
-  \param sShortPath	- short path to convert\n
-  \param sLongPath	- string that receives the long path\n
+\param sShortPath	- short path to convert\n
+\param sLongPath	- string that receives the long path\n
 
-  \returns a BOOL - Found or not \n
- *********************************************/
+\returns a BOOL - Found or not \n
+*********************************************/
 // if the extension contains '~', replace it with '*'!!!!!!!!!!!!!!!
 int CShortcut::ShortToLongPathName(const CString &sShortPath, CString &sLongPath)
 {
@@ -447,7 +447,7 @@ int CShortcut::ShortToLongPathName(const CString &sShortPath, CString &sLongPath
       if (sep == path[1]) { // is it UNC?
         // Find end of machine name
         right = path.Find(sep);
-							
+
         if (right == -1)
           return 0;
         // Find end of share name
@@ -471,7 +471,7 @@ int CShortcut::ShortToLongPathName(const CString &sShortPath, CString &sLongPath
 
   // Main parse block - step through path.
   while (right != -1) {
-	
+
     // Find next separator.
     right = path.Find(sep);
     if(right == 0) {
@@ -489,12 +489,12 @@ int CShortcut::ShortToLongPathName(const CString &sShortPath, CString &sLongPath
       sCutPath = path.Left(right);
 
     path.Delete(0, right);
-			
+
     sTmpShort += sCutPath;
 
     // See what FindFirstFile makes of the path so far.
     HANDLE hf = FindFirstFile(sTmpShort, &fd);
-			
+
     if (INVALID_HANDLE_VALUE == hf)
       return 0;
     FindClose(hf);

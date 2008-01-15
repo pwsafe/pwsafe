@@ -28,23 +28,23 @@ CStringTable::CStringTable(const CString& strKey):m_strKey(strKey)
 
 CStringTable::CStringTable(WORD wLang, WORD wCodePage)
 {
-	CString strKey;
-	strKey.Format(_T("%04x%04x"), wLang, wCodePage);
+  CString strKey;
+  strKey.Format(_T("%04x%04x"), wLang, wCodePage);
 
-	SetKey(strKey);
+  SetKey(strKey);
 }
 
 CStringTable::CStringTable(StringTable* pStringTable)
 {
-	FromStringTable(pStringTable);	
+  FromStringTable(pStringTable);	
 }
 
 CStringTable::~CStringTable()
 {
-	while (!m_lstStrings.IsEmpty())
-		delete m_lstStrings.RemoveTail();
+  while (!m_lstStrings.IsEmpty())
+    delete m_lstStrings.RemoveTail();
 
-	m_mapStrings.RemoveAll();
+  m_mapStrings.RemoveAll();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -52,42 +52,42 @@ CStringTable::~CStringTable()
 
 void CStringTable::FromStringTable(StringTable* pStringTable)
 {
-	m_strKey = pStringTable->szKey;
-	
-	String* pString = (String*) DWORDALIGN(&pStringTable->szKey[wcslen(pStringTable->szKey)+1]);
-	while ((DWORD)pString < ((DWORD) pStringTable + pStringTable->wLength)) {
-		CVersionInfoString* pVIString = new CVersionInfoString(pString);
-		m_lstStrings.AddTail(pVIString);
-		m_mapStrings.SetAt(pVIString->GetKey(), pVIString);
-		
-		pString = (String*) DWORDALIGN((DWORD) pString + pString->wLength);
-	}
+  m_strKey = pStringTable->szKey;
+
+  String* pString = (String*) DWORDALIGN(&pStringTable->szKey[wcslen(pStringTable->szKey)+1]);
+  while ((DWORD)pString < ((DWORD) pStringTable + pStringTable->wLength)) {
+    CVersionInfoString* pVIString = new CVersionInfoString(pString);
+    m_lstStrings.AddTail(pVIString);
+    m_mapStrings.SetAt(pVIString->GetKey(), pVIString);
+
+    pString = (String*) DWORDALIGN((DWORD) pString + pString->wLength);
+  }
 }
 
 void CStringTable::Write(CVersionInfoBuffer & viBuf)
 {
-	//Pad to DWORD and save position for wLength
-	DWORD pos = viBuf.PadToDWORD();
-	
-	//Skip size for now;
-	viBuf.Pad(sizeof WORD);
+  //Pad to DWORD and save position for wLength
+  DWORD pos = viBuf.PadToDWORD();
 
-	//Write wValueLength
-	viBuf.WriteWord(0);
+  //Skip size for now;
+  viBuf.Pad(sizeof WORD);
 
-	//Write wType
-	viBuf.WriteWord(1);
+  //Write wValueLength
+  viBuf.WriteWord(0);
 
-	//Write key
-	viBuf.WriteString(m_strKey);
+  //Write wType
+  viBuf.WriteWord(1);
 
-	POSITION posString = m_lstStrings.GetHeadPosition();
-	while (posString) {
-		CVersionInfoString * pString = (CVersionInfoString*) m_lstStrings.GetNext(posString);
-		pString->Write(viBuf);
-	}
-	//Set the size of the structure based on current offset from the position
-	viBuf.WriteStructSize(pos);
+  //Write key
+  viBuf.WriteString(m_strKey);
+
+  POSITION posString = m_lstStrings.GetHeadPosition();
+  while (posString) {
+    CVersionInfoString * pString = (CVersionInfoString*) m_lstStrings.GetNext(posString);
+    pString->Write(viBuf);
+  }
+  //Set the size of the structure based on current offset from the position
+  viBuf.WriteStructSize(pos);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,60 +95,60 @@ void CStringTable::Write(CVersionInfoBuffer & viBuf)
 
 const CString& CStringTable::GetKey() const
 {
-	return m_strKey;
+  return m_strKey;
 }
 
 void CStringTable::SetKey(const CString& strKey)
 {
-	m_strKey = strKey;
+  m_strKey = strKey;
 }
 
 CString & CStringTable::operator [] (const CString &strName)
 {
-	CVersionInfoString* pVIString = NULL;
-	if (!m_mapStrings.Lookup(strName, (CObject*&)pVIString)) {
-		pVIString = new CVersionInfoString(strName);
-		m_lstStrings.AddTail(pVIString);
-		m_mapStrings.SetAt(strName, pVIString);
-	}
+  CVersionInfoString* pVIString = NULL;
+  if (!m_mapStrings.Lookup(strName, (CObject*&)pVIString)) {
+    pVIString = new CVersionInfoString(strName);
+    m_lstStrings.AddTail(pVIString);
+    m_mapStrings.SetAt(strName, pVIString);
+  }
 
-	return pVIString->GetValue();
+  return pVIString->GetValue();
 }
 
 const CString CStringTable::operator [] (const CString &strName) const
 {
-	CVersionInfoString* pVIString = NULL;
-	if (!m_mapStrings.Lookup(strName, (CObject*&)pVIString)) {
-		return "";
-	}
+  CVersionInfoString* pVIString = NULL;
+  if (!m_mapStrings.Lookup(strName, (CObject*&)pVIString)) {
+    return "";
+  }
 
-	return pVIString->GetValue();
+  return pVIString->GetValue();
 }
 
 POSITION CStringTable::GetFirstStringPosition() const
 {
-	return m_lstStrings.GetHeadPosition();
+  return m_lstStrings.GetHeadPosition();
 }
 
 const CVersionInfoString* CStringTable::GetNextString(POSITION &pos) const
 {
-	return (CVersionInfoString*)m_lstStrings.GetNext(pos);
+  return (CVersionInfoString*)m_lstStrings.GetNext(pos);
 }
 
 CVersionInfoString* CStringTable::GetNextString(POSITION &pos)
 {
-	return (CVersionInfoString*)m_lstStrings.GetNext(pos);
+  return (CVersionInfoString*)m_lstStrings.GetNext(pos);
 }
 
 
 void CStringTable::GetStringNames(CStringList &slNames, BOOL bMerge) const
 {
-	if (!bMerge)
-		slNames.RemoveAll();
+  if (!bMerge)
+    slNames.RemoveAll();
 
-	POSITION pos = m_lstStrings.GetHeadPosition();
-	while (pos) {
-		CVersionInfoString* pviString = (CVersionInfoString*)m_lstStrings.GetNext(pos);
-		slNames.AddTail(pviString->GetKey());
-	}
+  POSITION pos = m_lstStrings.GetHeadPosition();
+  while (pos) {
+    CVersionInfoString* pviString = (CVersionInfoString*)m_lstStrings.GetNext(pos);
+    slNames.AddTail(pviString->GetKey());
+  }
 }

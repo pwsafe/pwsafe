@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #pragma once
 
 /** \file
- * Silly subclass of CTreeCtrl just to implement Drag&Drop.
- */
+* Silly subclass of CTreeCtrl just to implement Drag&Drop.
+*/
 
 #include <Afxcmn.h>
 #include "corelib/MyString.h"
@@ -24,7 +24,7 @@ class CPWTDropSource;
 
 class CPWTreeCtrl : public CTreeCtrl
 {
- public:
+public:
   CPWTreeCtrl();
   ~CPWTreeCtrl();
 
@@ -33,11 +33,11 @@ class CPWTreeCtrl : public CTreeCtrl
   //    Not-Expired, Warn-Expired, Expired
   // used by DboxMain::GetEntryImage & ExpPWListDlg
   enum {NODE = 0,
-        NORMAL, WARNEXPIRED_NORMAL, EXPIRED_NORMAL,
-        ALIASBASE, WARNEXPIRED_ALIASBASE, EXPIRED_ALIASBASE,
-        ALIAS,
-        SHORTCUTBASE, WARNEXPIRED_SHORTCUTBASE, EXPIRED_SHORTCUTBASE,
-        SHORTCUT};
+    NORMAL, WARNEXPIRED_NORMAL, EXPIRED_NORMAL,
+    ALIASBASE, WARNEXPIRED_ALIASBASE, EXPIRED_ALIASBASE,
+    ALIAS,
+    SHORTCUTBASE, WARNEXPIRED_SHORTCUTBASE, EXPIRED_SHORTCUTBASE,
+    SHORTCUT};
 
   void Initialize();
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
@@ -55,14 +55,14 @@ class CPWTreeCtrl : public CTreeCtrl
   SCODE GiveFeedback(DROPEFFECT dropEffect );
   // target methods
   BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject,
-              DROPEFFECT dropEffect, CPoint point);
+    DROPEFFECT dropEffect, CPoint point);
   DROPEFFECT OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject,
-                         DWORD dwKeyState, CPoint point);
+    DWORD dwKeyState, CPoint point);
   DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject,
-                        DWORD dwKeyState, CPoint point);
+    DWORD dwKeyState, CPoint point);
   void OnDragLeave();
 
- protected:
+protected:
   //{{AFX_MSG(CPWTreeCtrl)
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);

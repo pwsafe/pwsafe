@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // UUIDGen.h
 // Silly class for generating UUIDs
 // Each instance has its own unique value, 
@@ -25,7 +25,7 @@ typedef char uuid_str_WH_t[37]; //"204012e6-600f-4e01-a5eb-515267cb0d50" with hy
 #include <memory> // for memcmp
 
 class CUUIDGen {
- public:
+public:
   CUUIDGen(); // UUID generated at creation time
   CUUIDGen(const uuid_array_t &uuid_array); // for storing an existing UUID
   ~CUUIDGen();
@@ -37,10 +37,10 @@ class CUUIDGen {
     bool operator()(const CUUIDGen &u1, const CUUIDGen &u2) const
     {
       return std::memcmp(&u1.uuid,
-                         &u2.uuid, sizeof(u1.uuid)) < 0;
+        &u2.uuid, sizeof(u1.uuid)) < 0;
     }
   };
- private:
+private:
   UUID uuid;
 };
 

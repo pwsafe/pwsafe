@@ -12,7 +12,7 @@
 IMPLEMENT_DYNAMIC(CSampleTextDlg, CDialog)
 
 CSampleTextDlg::CSampleTextDlg(CWnd* pParent, CString sampletext)
-	: CDialog(CSampleTextDlg::IDD, pParent), m_sampletext(sampletext)
+: CDialog(CSampleTextDlg::IDD, pParent), m_sampletext(sampletext)
 {
 }
 
@@ -30,7 +30,7 @@ BOOL CSampleTextDlg::OnInitDialog()
 
 void CSampleTextDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_SAMPLETEXT, m_sampletext);
   DDX_Control(pDX, IDC_SAMPLETEXT, m_ex_sampletext);
 }

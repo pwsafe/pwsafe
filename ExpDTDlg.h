@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #pragma once
 
 #include "afxwin.h"
@@ -18,31 +18,31 @@ void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
 class CExpDTDlg : public CPWDialog
 {
 
- public:
-	CExpDTDlg(CWnd* pParent = NULL);  // standard constructor
+public:
+  CExpDTDlg(CWnd* pParent = NULL);  // standard constructor
 
-	CDateTimeCtrl m_pTimeCtl;         // time picker control
-	CDateTimeCtrl m_pDateCtl;         // date picker control
-	CMyString m_locLTime;             // format as per user's Short Date/Time
-	time_t m_tttLTime;
+  CDateTimeCtrl m_pTimeCtl;         // time picker control
+  CDateTimeCtrl m_pDateCtl;         // date picker control
+  CMyString m_locLTime;             // format as per user's Short Date/Time
+  time_t m_tttLTime;
 
   // Dialog Data
-	//{{AFX_DATA(CImportDlg)
-	enum { IDD = IDD_PICKEXPDATETIME };
+  //{{AFX_DATA(CImportDlg)
+  enum { IDD = IDD_PICKEXPDATETIME };
   int m_how;
   int m_numDays;
   int m_maxDays;
-	//}}AFX_DATA
+  //}}AFX_DATA
 
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL OnInitDialog();
+  virtual BOOL OnInitDialog();
   afx_msg void OnDateTime();
-	afx_msg void OnDays();
-	afx_msg void OnOK();
+  afx_msg void OnDays();
+  afx_msg void OnOK();
 
 };

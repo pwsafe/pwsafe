@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // PwsBackend.h
 // Password Safe - backend
 //-----------------------------------------------------------------------------
@@ -14,13 +14,13 @@
 class PwsBackend
 {
 public:
-   PwsBackend();
-   ~PwsBackend();
-   
-   CMyString m_passkey; // the main one, in memory?!? yikes {jpr}
+  PwsBackend();
+  ~PwsBackend();
 
-   unsigned char m_randstuff[StuffSize];
-   unsigned char m_randhash[SaltSize];
+  CMyString m_passkey; // the main one, in memory?!? yikes {jpr}
+
+  unsigned char m_randstuff[StuffSize];
+  unsigned char m_randhash[SaltSize];
 
 };
 

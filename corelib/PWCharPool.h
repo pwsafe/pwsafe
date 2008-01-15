@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file PWCharPool.h
 //-----------------------------------------------------------------------------
 
@@ -21,40 +21,40 @@
 
 //-----------------------------------------------------------------------------
 /*
- * This class is used to create a random password based on the policy
- * defined in the constructor.
- * The policy consists of the following attributes:
- * - The length of the password to be generated
- * - Which type of characters to use from the following: lowercase, uppercase,
- *   digits, symbols
- * - Whether or not to use only characters that are easily distinguishable
- *   (i.e., no '1', 'l', 'I', etc.)
- * The class ensures that if a character type is selected, then at least one
- * character from that type will be in the generated password. (i.e., at least
- * one digit if usedigits is set in the constructor).
- *
- * The usage scenario is something like:
- * CPasswordCharPool pwgen(-policy-);
- * CMyString pwd = pwgen.MakePassword();
- *
- * CheckPassword() is used to verify the strength of existing passwords, i.e., the password
- * used to protect the database.
- */
+* This class is used to create a random password based on the policy
+* defined in the constructor.
+* The policy consists of the following attributes:
+* - The length of the password to be generated
+* - Which type of characters to use from the following: lowercase, uppercase,
+*   digits, symbols
+* - Whether or not to use only characters that are easily distinguishable
+*   (i.e., no '1', 'l', 'I', etc.)
+* The class ensures that if a character type is selected, then at least one
+* character from that type will be in the generated password. (i.e., at least
+* one digit if usedigits is set in the constructor).
+*
+* The usage scenario is something like:
+* CPasswordCharPool pwgen(-policy-);
+* CMyString pwd = pwgen.MakePassword();
+*
+* CheckPassword() is used to verify the strength of existing passwords, i.e., the password
+* used to protect the database.
+*/
 
 class CPasswordCharPool
 {
- public:
+public:
   CPasswordCharPool(UINT pwlen,
-                    UINT numlowercase, UINT numuppercase,
-                    UINT numdigits, UINT numsymbols, BOOL usehexdigits,
-                    BOOL easyvision, BOOL pronounceable);
+    UINT numlowercase, UINT numuppercase,
+    UINT numdigits, UINT numsymbols, BOOL usehexdigits,
+    BOOL easyvision, BOOL pronounceable);
   CMyString MakePassword() const;
 
   static bool CheckPassword(const CMyString &pwd, CMyString &error);
 
- private:
+private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,
-                 DIGIT = 2, SYMBOL = 3, HEXDIGIT = 4, NUMTYPES = 5};
+    DIGIT = 2, SYMBOL = 3, HEXDIGIT = 4, NUMTYPES = 5};
   CharType GetRandomCharType(unsigned int rand) const; // select a chartype with weighted probability
   TCHAR GetRandomChar(CharType t, unsigned int rand) const;
   CMyString MakePronounceable() const;

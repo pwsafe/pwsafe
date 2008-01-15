@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file EditShortcutDlg.cpp
 //-----------------------------------------------------------------------------
 
@@ -45,8 +45,8 @@ typedef std::ofstream ofstreamT;
 #endif
 
 CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent)
-  : CPWDialog(CEditShortcutDlg::IDD, pParent),
-    m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
+: CPWDialog(CEditShortcutDlg::IDD, pParent),
+m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
 {
   ASSERT(ci != NULL);
 
@@ -102,8 +102,8 @@ CEditShortcutDlg::OnOK()
   }
 
   m_bIsModified |= (m_group != m_ci->GetGroup() ||
-                    m_title != m_ci->GetTitle() ||
-                    m_username != m_ci->GetUser());
+    m_title != m_ci->GetTitle() ||
+    m_username != m_ci->GetUser());
 
   bool IsPswdModified = m_target != m_oldtarget;
 
@@ -131,10 +131,10 @@ CEditShortcutDlg::OnOK()
 
   listindex = dbx->Find(m_group, m_title, m_username);
   /*
-   *  If there is a matching entry in our list, and that
-   *  entry is not the same one we started editing, tell the
-   *  user to try again.
-   */
+  *  If there is a matching entry in our list, and that
+  *  entry is not the same one we started editing, tell the
+  *  user to try again.
+  */
   if (listindex != dbx->End()) {
     const CItemData &listItem = dbx->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
@@ -153,13 +153,13 @@ CEditShortcutDlg::OnOK()
 
   bool b_msg_issued;
   if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_target,
-                             true, CItemData::Shortcut,
-                             m_base_uuid, m_ibasedata, b_msg_issued)) {
-    if (!b_msg_issued)
-      AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
-    UpdateData(FALSE);
-    ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
-    goto dont_close;
+    true, CItemData::Shortcut,
+    m_base_uuid, m_ibasedata, b_msg_issued)) {
+      if (!b_msg_issued)
+        AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
+      UpdateData(FALSE);
+      ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
+      goto dont_close;
   }
   //End check
 
@@ -179,7 +179,7 @@ CEditShortcutDlg::OnOK()
   return;
   // If we don't close, then update controls, as some of the fields
   // may have been modified (e.g., spaces removed).
- dont_close:
+dont_close:
   UpdateData(FALSE);
 }
 

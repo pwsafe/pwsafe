@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #ifndef __UTIL_H
 #define __UTIL_H
 // Util.h
@@ -56,17 +56,17 @@ extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
                         unsigned char* cbcbuffer);
 
 /*
- * Get an integer that is stored in little-endian format
- */
+* Get an integer that is stored in little-endian format
+*/
 inline int getInt32(const unsigned char buf[4])
 {
   ASSERT(sizeof(int) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
 #if defined(_DEBUG)
   if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
-	{
-      TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
-	}
+  {
+    TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
+  }
 #endif
   return *(int *) buf;
 #elif defined(PWS_BIG_ENDIAN)
@@ -74,9 +74,9 @@ inline int getInt32(const unsigned char buf[4])
   // Folowing code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
   if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
-	{
-      TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
-	}
+  {
+    TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
+  }
 #endif
   return (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24) );
 #else
@@ -85,8 +85,8 @@ inline int getInt32(const unsigned char buf[4])
 }
 
 /*
- * Store an integer that is stored in little-endian format
- */
+* Store an integer that is stored in little-endian format
+*/
 inline void putInt32(unsigned char buf[4], const int val )
 {
   ASSERT(sizeof(int) == 4);
@@ -94,9 +94,9 @@ inline void putInt32(unsigned char buf[4], const int val )
   *(int32 *) buf = val;
 #if defined(_DEBUG)
   if ( *(int*) buf != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
-	{
-      TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
-	}
+  {
+    TRACE0( "Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n" );
+  }
 #endif
 #elif defined(PWS_BIG_ENDIAN)
   buf[0] = val & 0xFF;
@@ -107,9 +107,9 @@ inline void putInt32(unsigned char buf[4], const int val )
   // Above code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
   if ( *(int*) buf == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
-	{
-      TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
-	}
+  {
+    TRACE0( "Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n" );
+  }
 #endif
 #else
 #error Is the target CPU big or little endian?
@@ -118,12 +118,12 @@ inline void putInt32(unsigned char buf[4], const int val )
 
 // Time conversion result formats - powers of 2 as they can be combined!
 enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8,
-      TMC_LOCALE = 16};
+TMC_LOCALE = 16};
 
 // Verify PWHistory String return codes
 enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,
-	PWH_INVALID_NUM, PWH_INVALID_DATETIME,
-	PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
+PWH_INVALID_NUM, PWH_INVALID_DATETIME,
+PWH_INVALID_PSWD_LENGTH, PWH_TOO_SHORT, PWH_TOO_LONG, PWH_INVALID_CHARACTER};
 
 namespace PWSUtil {
   // namespace of common utility functions
@@ -141,7 +141,7 @@ namespace PWSUtil {
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   CString GetTimeStamp();
   void HexDump(unsigned char *pmemory, const int length,
-               const CString cs_prefix = _T(""), const int maxnum = 16);
+    const CString cs_prefix = _T(""), const int maxnum = 16);
   CString Base64Encode(const BYTE *inData, size_t len);
   void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
   void IssueError(const CString &csFunction);

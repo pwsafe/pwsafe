@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #pragma once
 
 /////////////////////////////////////////////////////////////////////////////
@@ -43,96 +43,96 @@
 
 class CSystemTray : public CWnd
 {
-// Construction/destruction
+  // Construction/destruction
 public:
   //    CSystemTray();
-    CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
-                CRUEList &RUEList,
-                UINT uID, UINT menuID);
-    virtual ~CSystemTray();
+  CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
+    CRUEList &RUEList,
+    UINT uID, UINT menuID);
+  virtual ~CSystemTray();
 
-    DECLARE_DYNAMIC(CSystemTray)
+  DECLARE_DYNAMIC(CSystemTray)
 
-// Operations
+  // Operations
 public:
-    void SetTarget(CWnd *tgt) { m_pTarget = tgt;} // ronys
-    BOOL Enabled() const { return m_bEnabled; }
-    BOOL Visible() const { return !m_bHidden; }
+  void SetTarget(CWnd *tgt) { m_pTarget = tgt;} // ronys
+  BOOL Enabled() const { return m_bEnabled; }
+  BOOL Visible() const { return !m_bHidden; }
 
-    // Create the tray icon
-    BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
-                UINT uID, UINT menuID);
+  // Create the tray icon
+  BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
+    UINT uID, UINT menuID);
 
-    // Change or retrieve the Tooltip text
-    BOOL    SetTooltipText(LPCTSTR pszTooltipText);
-    BOOL    SetTooltipText(UINT nID);
-    CString GetTooltipText() const;
+  // Change or retrieve the Tooltip text
+  BOOL    SetTooltipText(LPCTSTR pszTooltipText);
+  BOOL    SetTooltipText(UINT nID);
+  CString GetTooltipText() const;
 
-    // Change or retrieve the icon displayed
-    BOOL  SetIcon(HICON hIcon);
-    BOOL  SetIcon(LPCTSTR lpszIconName);
-    BOOL  SetIcon(UINT nIDResource);
-    BOOL  SetStandardIcon(LPCTSTR lpIconName);
-    BOOL  SetStandardIcon(UINT nIDResource);
-    HICON GetIcon() const;
-    void  HideIcon();
-    void  ShowIcon();
-    void  RemoveIcon();
-    void  MoveToRight();
+  // Change or retrieve the icon displayed
+  BOOL  SetIcon(HICON hIcon);
+  BOOL  SetIcon(LPCTSTR lpszIconName);
+  BOOL  SetIcon(UINT nIDResource);
+  BOOL  SetStandardIcon(LPCTSTR lpIconName);
+  BOOL  SetStandardIcon(UINT nIDResource);
+  HICON GetIcon() const;
+  void  HideIcon();
+  void  ShowIcon();
+  void  RemoveIcon();
+  void  MoveToRight();
 
-    // For icon animation
-    BOOL  SetIconList(UINT uFirstIconID, UINT uLastIconID); 
-    BOOL  SetIconList(HICON* pHIconList, UINT nNumIcons); 
-    BOOL  Animate(UINT nDelayMilliSeconds, int nNumSeconds = -1);
-    BOOL  StepAnimation();
-    BOOL  StopAnimation();
+  // For icon animation
+  BOOL  SetIconList(UINT uFirstIconID, UINT uLastIconID); 
+  BOOL  SetIconList(HICON* pHIconList, UINT nNumIcons); 
+  BOOL  Animate(UINT nDelayMilliSeconds, int nNumSeconds = -1);
+  BOOL  StepAnimation();
+  BOOL  StopAnimation();
 
-    // Change menu default item
-    void GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) const;
-    BOOL SetMenuDefaultItem(UINT uItem, BOOL bByPos);
+  // Change menu default item
+  void GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) const;
+  BOOL SetMenuDefaultItem(UINT uItem, BOOL bByPos);
 
-    // Change or retrieve the window to send notification messages to
-    BOOL  SetNotificationWnd(CWnd* pNotifyWnd);
-    CWnd* GetNotificationWnd() const;
+  // Change or retrieve the window to send notification messages to
+  BOOL  SetNotificationWnd(CWnd* pNotifyWnd);
+  CWnd* GetNotificationWnd() const;
 
-    // Default handler for tray notification message
-    virtual LRESULT OnTrayNotification(WPARAM uID, LPARAM lEvent);
+  // Default handler for tray notification message
+  virtual LRESULT OnTrayNotification(WPARAM uID, LPARAM lEvent);
 
-// Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CSystemTray)
+  // Overrides
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CSystemTray)
 protected:
-    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-    //}}AFX_VIRTUAL
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  //}}AFX_VIRTUAL
 
-// Implementation
+  // Implementation
 protected:
-    void Initialise();
+  void Initialise();
 
-    BOOL            m_bEnabled;   // does O/S support tray icon?
-    BOOL            m_bHidden;    // Has the icon been hidden?
-    NOTIFYICONDATA  m_tnd;
+  BOOL            m_bEnabled;   // does O/S support tray icon?
+  BOOL            m_bHidden;    // Has the icon been hidden?
+  NOTIFYICONDATA  m_tnd;
 
-    CArray<HICON, HICON> m_IconList;
-    static UINT  m_nIDEvent;
-    UINT_PTR     m_uIDTimer;
-    int          m_nCurrentIcon;
-    UINT         m_menuID;
-    COleDateTime m_StartTime;
-    int          m_nAnimationPeriod;
-    HICON        m_hSavedIcon;
-    UINT         m_DefaultMenuItemID;
-    BOOL         m_DefaultMenuItemByPos;
-    CWnd *       m_pTarget; // ronys
-    static const UINT m_nTaskbarCreatedMsg; //thedavecollins
-    const CRUEList &m_RUEList; // reference set to dboxmain's
-    std::vector<RUEntryStringImage> m_menulist;
-// Generated message map functions
+  CArray<HICON, HICON> m_IconList;
+  static UINT  m_nIDEvent;
+  UINT_PTR     m_uIDTimer;
+  int          m_nCurrentIcon;
+  UINT         m_menuID;
+  COleDateTime m_StartTime;
+  int          m_nAnimationPeriod;
+  HICON        m_hSavedIcon;
+  UINT         m_DefaultMenuItemID;
+  BOOL         m_DefaultMenuItemByPos;
+  CWnd *       m_pTarget; // ronys
+  static const UINT m_nTaskbarCreatedMsg; //thedavecollins
+  const CRUEList &m_RUEList; // reference set to dboxmain's
+  std::vector<RUEntryStringImage> m_menulist;
+  // Generated message map functions
 protected:
-    //{{AFX_MSG(CSystemTray)
-    afx_msg void OnTimer(UINT_PTR nIDEvent);
+  //{{AFX_MSG(CSystemTray)
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
 
-    //}}AFX_MSG
-    LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
-    DECLARE_MESSAGE_MAP()
+  //}}AFX_MSG
+  LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
+  DECLARE_MESSAGE_MAP()
 };

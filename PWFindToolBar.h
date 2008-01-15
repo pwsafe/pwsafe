@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 #pragma once
 
@@ -29,13 +29,13 @@ public:
   void ShowFindToolBar(bool bShow);
   bool IsVisible() {return m_bVisible;}
   void GetSearchText(CString &csFindString)
-    {m_findedit.GetWindowText(csFindString);}
+  {m_findedit.GetWindowText(csFindString);}
   void Find();
   void ClearFind();
   void ShowFindAdvanced();
   void ToggleToolBarFindCase();
   BOOL IsFindCaseSet()
-    {return m_bCaseSensitive ? TRUE : FALSE;}
+  {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
 
   CEditExtn m_findedit;

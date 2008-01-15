@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 #ifndef WINVIEW_H
 #define WINVIEW_H
@@ -16,22 +16,22 @@
 class WinView : public View
 {
 public:
-	static View * Instance()
-	{
-		if ( _instance == 0 )
-			_instance = new WinView();
-		return _instance;
-	}
-	virtual ~WinView() {};
+  static View * Instance()
+  {
+    if ( _instance == 0 )
+      _instance = new WinView();
+    return _instance;
+  }
+  virtual ~WinView() {};
 
-	virtual int     PromptUserForCombination();
-	virtual int     ShowList() { return 0; };
+  virtual int     PromptUserForCombination();
+  virtual int     ShowList() { return 0; };
 
 protected:
-	WinView() {};
+  WinView() {};
 
 private:
-	static View * _instance;
+  static View * _instance;
 
 };
 

@@ -1,18 +1,18 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 /*
- * PasswordSafe-specific base class for child dialog boxes
- *
- * All dialog box classes whose instances are children of the
- * main dialog box (DboxMain) should be derived from ths class
- * instead of directly from CDialog
- */
+* PasswordSafe-specific base class for child dialog boxes
+*
+* All dialog box classes whose instances are children of the
+* main dialog box (DboxMain) should be derived from ths class
+* instead of directly from CDialog
+*/
 
 #ifndef __PWDIALOG_H
 #define __PWDIALOG_H
@@ -32,12 +32,12 @@ typedef	CPwsPopupDialog CPWDialog;
 #else
 class CPWDialog : public CDialog
 {
- protected:
+protected:
   CPWDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL)
     : CDialog(nIDTemplate, pParentWnd) {}
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
- public:
+public:
   DECLARE_DYNAMIC(CPWDialog)
 };
 #endif /* POCKET_PC */

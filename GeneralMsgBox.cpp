@@ -1,21 +1,21 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 // GeneralMsgBox.cpp
 /*
- * GeneralMsgBox.h
- *
- * Implements the extended Message Box class.
- *
- * This is a cut down version of TcxMsgBox by Thales P. Carvalho but then
- * significantly enhanced to support text with HTML formatting and links
- * instead of a RTF string by using a CRichEditCtrlExtn control.
- * See www.codeproject.com for the orgininal code
+* GeneralMsgBox.h
+*
+* Implements the extended Message Box class.
+*
+* This is a cut down version of TcxMsgBox by Thales P. Carvalho but then
+* significantly enhanced to support text with HTML formatting and links
+* instead of a RTF string by using a CRichEditCtrlExtn control.
+* See www.codeproject.com for the orgininal code
 */
 
 
@@ -34,28 +34,28 @@ static char THIS_FILE[] = __FILE__;
 // Local constants
 
 /*
-  The following _dlgData corresponds to:
+The following _dlgData corresponds to:
 
-  DLGTEMPLATEEX dtex;
+DLGTEMPLATEEX dtex;
 
-  dtex.wDlgVer = 1;
-  dtex.wSignature = 0xFFFF;
-  dtex.dwHelpID = 0;
-  dtex.dwStyle = WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME;
-  dtex.dwExStyle = WS_EX_APPWINDOW;
-  dtex.cDlgItems = 0;
-  dtex.x = 0;
-  dtex.y = 0;
-  dtex.cx = 185;
-  dtex.cy = 92;
-  no menu ( (WORD)0 )
-  no windowClass ( (WORD)0 )
-  caption L"."
-  point size (only if DS_SETFONT specified)
-  weight                    "
-  italic                    "
-  charset                   "
-  typeface                  "
+dtex.wDlgVer = 1;
+dtex.wSignature = 0xFFFF;
+dtex.dwHelpID = 0;
+dtex.dwStyle = WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME;
+dtex.dwExStyle = WS_EX_APPWINDOW;
+dtex.cDlgItems = 0;
+dtex.x = 0;
+dtex.y = 0;
+dtex.cx = 185;
+dtex.cy = 92;
+no menu ( (WORD)0 )
+no windowClass ( (WORD)0 )
+caption L"."
+point size (only if DS_SETFONT specified)
+weight                    "
+italic                    "
+charset                   "
+typeface                  "
 */
 
 static const BYTE _dlgData[] =
@@ -77,7 +77,7 @@ static const BYTE _dlgData[] =
   0x00, 0x00,                                      // weight
   0x00,                                            // italic
   0x01,                                            // charset
-                                                   // typeface (must be on WORD boundary)
+  // typeface (must be on WORD boundary)
   0x4d, 0x00, 0x53, 0x00, 0x20, 0x00, 0x53, 0x00,  // 'MS S'
   0x61, 0x00, 0x6e, 0x00, 0x73, 0x00, 0x20, 0x00,  // 'ans '
   0x53, 0x00, 0x65, 0x00, 0x72, 0x00, 0x69, 0x00,  // 'Seri'
@@ -89,26 +89,26 @@ static const BYTE _dlgData[] =
 
 // Constructor
 CGeneralMsgBox::CGeneralMsgBox(CWnd* pParentWnd)
-  : m_uDefCmdId((UINT)IDC_STATIC), m_uEscCmdId((UINT)IDC_STATIC),
-  m_hIcon(NULL), m_strTitle(AfxGetApp()->m_pszAppName)
+: m_uDefCmdId((UINT)IDC_STATIC), m_uEscCmdId((UINT)IDC_STATIC),
+m_hIcon(NULL), m_strTitle(AfxGetApp()->m_pszAppName)
 {
   m_pParentWnd = pParentWnd;
   // default metric values
   const int _aDefMetrics[NUM_OF_METRICS] =
   {
-     10,   // CX_LEFT_BORDER,
-     10,   // CX_RIGHT_BORDER,
-     10,   // CY_TOP_BORDER,
-     7,    // CY_BOTTOM_BORDER,
+    10,   // CX_LEFT_BORDER,
+    10,   // CX_RIGHT_BORDER,
+    10,   // CY_TOP_BORDER,
+    7,    // CY_BOTTOM_BORDER,
 
-     10,   // CX_ICON_MSG_SPACE,
-     7,    // CY_BTNS_MSG_SPACE,
+    10,   // CX_ICON_MSG_SPACE,
+    7,    // CY_BTNS_MSG_SPACE,
 
-     7,    // CX_BTN_BORDER,
-     4,    // CY_BTN_BORDER,
+    7,    // CX_BTN_BORDER,
+    4,    // CY_BTN_BORDER,
 
-     7,    // CX_BTNS_SPACE,
-     40,   // CX_MIN_BTN,
+    7,    // CX_BTNS_SPACE,
+    40,   // CX_MIN_BTN,
   };
 
   for (int i = 0; i < NUM_OF_METRICS; ++i) {
@@ -133,11 +133,11 @@ int CGeneralMsgBox::DoModal()
 
 // Add a button
 void CGeneralMsgBox::AddButton(
-  UINT uIDC,           // button command ID
-  LPCTSTR pszText,     // button text
-  BOOL bIsDefault,     // set the button as default
-  BOOL bIsEscape       // return this command if user press escape
- )
+                               UINT uIDC,           // button command ID
+                               LPCTSTR pszText,     // button text
+                               BOOL bIsDefault,     // set the button as default
+                               BOOL bIsEscape       // return this command if user press escape
+                               )
 {
   ASSERT(uIDC != (UINT)IDC_STATIC);
 
@@ -156,11 +156,11 @@ void CGeneralMsgBox::AddButton(
 
 // Add a button
 void CGeneralMsgBox::AddButton(
-  UINT uIDC,           // button command ID
-  UINT uIdText,        // string ID of button's text
-  BOOL bIsDefault,     // set the button as default
-  BOOL bIsEscape       // return this command if user press escape
- )
+                               UINT uIDC,           // button command ID
+                               UINT uIdText,        // string ID of button's text
+                               BOOL bIsDefault,     // set the button as default
+                               BOOL bIsEscape       // return this command if user press escape
+                               )
 {
   CString str;
 
@@ -364,7 +364,7 @@ void CGeneralMsgBox::CreateRtfCtrl()
   CRect rcDummy; // dimension doesn't matter here
 
   m_edCtrl.Create(WS_CHILD | WS_VISIBLE | ES_LEFT | ES_MULTILINE | ES_READONLY,
-                  rcDummy, this, (UINT)IDC_STATIC);
+    rcDummy, this, (UINT)IDC_STATIC);
   m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
   m_edCtrl.SetFont(GetFont());
 
@@ -449,8 +449,8 @@ void CGeneralMsgBox::CreateBtns()
     CButton btnCtrl;
 
     btnCtrl.Create(btndata.strBtn,
-       WS_CHILD|WS_VISIBLE|WS_TABSTOP,
-         rcDummy, this, btndata.uIDC);
+      WS_CHILD|WS_VISIBLE|WS_TABSTOP,
+      rcDummy, this, btndata.uIDC);
 
     btnCtrl.SetFont(pWndFont);
 
@@ -476,11 +476,11 @@ void CGeneralMsgBox::CreateIcon()
 
 // Converts d.u. in pixel (x axe)
 int CGeneralMsgBox::FromDlgX(int x)
-  { return x * m_dimDlgUnit.cx / CX_DLGUNIT_BASE; }
+{ return x * m_dimDlgUnit.cx / CX_DLGUNIT_BASE; }
 
 // Converts d.u. in pixel (y axe)
 int CGeneralMsgBox::FromDlgY(int y)
-  { return y * m_dimDlgUnit.cy / CY_DLGUNIT_BASE; }
+{ return y * m_dimDlgUnit.cy / CY_DLGUNIT_BASE; }
 
 
 // Updates the layout

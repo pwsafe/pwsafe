@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // ADVANCEDDlg.cpp : implementation file
 //
 
@@ -24,11 +24,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
-             IDD_ADVANCED,      // ADV_COMPARE
-             IDD_ADVANCEDMERGE, // ADV_MERGE (significantly reduced dialog)
-             IDD_ADVANCED,      // ADV_EXPORT_TEXT
-             IDD_ADVANCED,      // ADV_EXPORT_XML
-             IDD_ADVANCED       // ADV_FIND
+  IDD_ADVANCED,      // ADV_COMPARE
+  IDD_ADVANCEDMERGE, // ADV_MERGE (significantly reduced dialog)
+  IDD_ADVANCED,      // ADV_EXPORT_TEXT
+  IDD_ADVANCED,      // ADV_EXPORT_XML
+  IDD_ADVANCED       // ADV_FIND
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -37,11 +37,11 @@ int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
                            CItemData::FieldBits bsFields, CString subgroup_name,
                            int subgroup_set, int subgroup_object, int subgroup_function)
-  : CPWDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
-    m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
-    m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
-    m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
-    m_ToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
+                           : CPWDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
+                           m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
+                           m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
+                           m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
+                           m_ToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
 {
   //{{AFX_DATA_INIT(CAdvancedDlg)
   //}}AFX_DATA_INIT
@@ -307,33 +307,33 @@ BOOL CAdvancedDlg::OnInitDialog()
     ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->SetCheck(BST_CHECKED);
   }
 
-	// Tooltips
-	EnableToolTips();
+  // Tooltips
+  EnableToolTips();
 
-	m_ToolTipCtrl = new CToolTipCtrl;
-	if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-		TRACE("Unable To create Advanced Dialog ToolTip\n");
-		return TRUE;
-	}
+  m_ToolTipCtrl = new CToolTipCtrl;
+  if (!m_ToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
+    TRACE("Unable To create Advanced Dialog ToolTip\n");
+    return TRUE;
+  }
 
-	// Activate the tooltip control.
-	m_ToolTipCtrl->Activate(TRUE);
-	m_ToolTipCtrl->SetMaxTipWidth(300);
-	// Quadruple the time to allow reading by user
-	int iTime = m_ToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
-	m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
+  // Activate the tooltip control.
+  m_ToolTipCtrl->Activate(TRUE);
+  m_ToolTipCtrl->SetMaxTipWidth(300);
+  // Quadruple the time to allow reading by user
+  int iTime = m_ToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
+  m_ToolTipCtrl->SetDelayTime(TTDT_AUTOPOP, 4 * iTime);
 
-	// Set the tooltip
-	// Note naming convention: string IDS_xxx corresponds to control IDC_xxx
-	CString cs_ToolTip;
-	cs_ToolTip.LoadString(IDS_ADVANCED_SELECTSOME);
-	m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTSOME), cs_ToolTip);
-	cs_ToolTip.LoadString(IDS_ADVANCED_SELECTALL);
-	m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTALL), cs_ToolTip);
-	cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTSOME);
-	m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTSOME), cs_ToolTip);
-	cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
-	m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
+  // Set the tooltip
+  // Note naming convention: string IDS_xxx corresponds to control IDC_xxx
+  CString cs_ToolTip;
+  cs_ToolTip.LoadString(IDS_ADVANCED_SELECTSOME);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTSOME), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_ADVANCED_SELECTALL);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_SELECTALL), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTSOME);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTSOME), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
+  m_ToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
 
   return TRUE;
 }
@@ -556,14 +556,14 @@ void CAdvancedDlg::OnDeselectAll()
     cs_text = m_pLC_Selected->GetItemText(i, 0);
     dw_data = m_pLC_Selected->GetItemData(i);
     if (m_iIndex == ADV_EXPORT_XML &&
-       (dw_data == CItemData::TITLE ||
-        dw_data == CItemData::PASSWORD))
-       continue;
+      (dw_data == CItemData::TITLE ||
+      dw_data == CItemData::PASSWORD))
+      continue;
     if (m_iIndex == ADV_COMPARE &&
-       (dw_data == CItemData::GROUP ||
-        dw_data == CItemData::TITLE ||
-        dw_data == CItemData::USER ))
-       continue;
+      (dw_data == CItemData::GROUP ||
+      dw_data == CItemData::TITLE ||
+      dw_data == CItemData::USER ))
+      continue;
     iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
     m_pLC_Selected->DeleteItem(i);
@@ -584,19 +584,19 @@ CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
   switch (m_iIndex) {
     case ADV_COMPARE:
       if ((pNMListView->lParam == CItemData::GROUP ||
-           pNMListView->lParam == CItemData::TITLE ||
-           pNMListView->lParam == CItemData::USER) &&
-          (pNMListView->uNewState & LVIS_SELECTED)) {
-        pNMListView->uNewState &= ~LVIS_SELECTED;
-        *pResult = TRUE;
+        pNMListView->lParam == CItemData::TITLE ||
+        pNMListView->lParam == CItemData::USER) &&
+        (pNMListView->uNewState & LVIS_SELECTED)) {
+          pNMListView->uNewState &= ~LVIS_SELECTED;
+          *pResult = TRUE;
       }
       break;
     case ADV_EXPORT_XML:
       if ((pNMListView->lParam == CItemData::TITLE ||
-           pNMListView->lParam == CItemData::PASSWORD) &&
-          (pNMListView->uNewState & LVIS_SELECTED)) {
-        pNMListView->uNewState &= ~LVIS_SELECTED;
-        *pResult = TRUE;
+        pNMListView->lParam == CItemData::PASSWORD) &&
+        (pNMListView->uNewState & LVIS_SELECTED)) {
+          pNMListView->uNewState &= ~LVIS_SELECTED;
+          *pResult = TRUE;
       }
       break;
     case ADV_FIND:
@@ -614,14 +614,14 @@ CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
 // tooltip control for processing.
 BOOL CAdvancedDlg::PreTranslateMessage(MSG* pMsg)
 {
-	if (m_ToolTipCtrl != NULL)
-		m_ToolTipCtrl->RelayEvent(pMsg);
+  if (m_ToolTipCtrl != NULL)
+    m_ToolTipCtrl->RelayEvent(pMsg);
 
-	return CPWDialog::PreTranslateMessage(pMsg);
+  return CPWDialog::PreTranslateMessage(pMsg);
 }
 
 int CALLBACK CAdvancedDlg::AdvCompareFunc(LPARAM lParam1, LPARAM lParam2,
-										LPARAM /* closure */)
+                                          LPARAM /* closure */)
 {
   return (int)(lParam1 - lParam2);
 }

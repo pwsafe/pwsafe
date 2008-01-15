@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #include "keysend.h"
 
 #include  <Winable.h>
@@ -21,14 +21,14 @@ CKeySend::CKeySend(void) : m_delay(10)
     ASSERT(0);
   }
   m_isOldOS = ((os.dwMajorVersion == 4) ||
-               (os.dwMajorVersion == 5 && os.dwMinorVersion == 0));
+    (os.dwMajorVersion == 5 && os.dwMinorVersion == 0));
 #else
   m_isOldOS = true;
 #endif /* UNICODE */
-	// get the locale of the current thread.
-	// we are assuming that all window and threading in the 
-	// current users desktop have the same locale.
-	m_hlocale = GetKeyboardLayout(0);
+  // get the locale of the current thread.
+  // we are assuming that all window and threading in the 
+  // current users desktop have the same locale.
+  m_hlocale = GetKeyboardLayout(0);
 }
 
 CKeySend::~CKeySend(void)
@@ -118,7 +118,7 @@ void CKeySend::OldSendChar(TCHAR c)
   }
 
   if(ctrlDown){
-                    
+
     //send a ctrl up
     keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
     ctrlDown=false;
@@ -134,35 +134,35 @@ void CKeySend::OldSendChar(TCHAR c)
 
 void CKeySend::ResetKeyboardState()
 {
-	// We need to make sure that the Control Key is still not down. 
-	// It will be down while the user presses ctrl-T the shortcut for autotype.
+  // We need to make sure that the Control Key is still not down. 
+  // It will be down while the user presses ctrl-T the shortcut for autotype.
 
-	BYTE keys[256];
+  BYTE keys[256];
 
 
-	GetKeyboardState((LPBYTE)&keys);
+  GetKeyboardState((LPBYTE)&keys);
 
-	while((keys[VK_CONTROL] & 0x80)!=0){
-		// VK_CONTROL is down so send a key down and an key up...
+  while((keys[VK_CONTROL] & 0x80)!=0){
+    // VK_CONTROL is down so send a key down and an key up...
 
-		keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);
+    keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);
 
-		keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);
+    keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);
 
-		//now we let the messages be processed by the applications to set the keyboard state
-		MSG msg;
-		//BOOL m_bCancel=false;
-		while (::PeekMessage(&msg,NULL,0,0,PM_NOREMOVE) )
-		{
-			// so there is a message process it.
-			if (!AfxGetThread()->PumpMessage())
-				break;
-		}
+    //now we let the messages be processed by the applications to set the keyboard state
+    MSG msg;
+    //BOOL m_bCancel=false;
+    while (::PeekMessage(&msg,NULL,0,0,PM_NOREMOVE) )
+    {
+      // so there is a message process it.
+      if (!AfxGetThread()->PumpMessage())
+        break;
+    }
 
-		Sleep(10);
-		memset((void*)&keys,0,256);
-		GetKeyboardState((LPBYTE)&keys);
-	}
+    Sleep(10);
+    memset((void*)&keys,0,256);
+    GetKeyboardState((LPBYTE)&keys);
+  }
 
 }
 
@@ -172,12 +172,12 @@ void CKeySend::ResetKeyboardState()
 // thedavecollins 2004-08-05
 
 void CKeySend::SetAndDelay(int d){
-	SetDelay(d);
-	::Sleep(m_delay);
+  SetDelay(d);
+  ::Sleep(m_delay);
 }
 
 void CKeySend::SetDelay(int d){
-	m_delay=d;
+  m_delay=d;
 }
 
 void CKeySend::SetCapsLock(const bool bState)
@@ -186,7 +186,7 @@ void CKeySend::SetCapsLock(const bool bState)
 
   GetKeyboardState((LPBYTE)&keyState);
   if((bState && !(keyState[VK_CAPITAL] & 1)) ||
-     (!bState && (keyState[VK_CAPITAL] & 1))) {
+    (!bState && (keyState[VK_CAPITAL] & 1))) {
       // Simulate a key press
       keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | 0, 0);
       // Simulate a key release

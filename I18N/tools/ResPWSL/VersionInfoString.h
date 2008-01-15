@@ -18,17 +18,17 @@ class CVersionInfoBuffer;
 class CVersionInfoString: public CObject
 {
 public:
-	CVersionInfoString(String* pString);
-	CVersionInfoString(const CString& strKey, const CString& strValue = "");
+  CVersionInfoString(String* pString);
+  CVersionInfoString(const CString& strKey, const CString& strValue = "");
 
-	const CString& GetKey() const;
-	const CString& GetValue() const;
+  const CString& GetKey() const;
+  const CString& GetValue() const;
 
-	CString& GetValue();
+  CString& GetValue();
 
-	void FromString(String* pString);
-	void Write(CVersionInfoBuffer & viBuf);
+  void FromString(String* pString);
+  void Write(CVersionInfoBuffer & viBuf);
 private:
-	CString m_strKey;
-	CString m_strValue;
+  CString m_strKey;
+  CString m_strValue;
 };

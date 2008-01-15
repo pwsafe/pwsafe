@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 #include <limits.h>
 #include <stdlib.h>
 #include <process.h>
@@ -37,7 +37,7 @@ void PWSrand::DeleteInstance()
 }
 
 PWSrand::PWSrand()
-  : ibRandomData(SHA256::HASHLEN)
+: ibRandomData(SHA256::HASHLEN)
 {
   m_IsInternalPRNG = !LoadRandomDataFunction();
 
@@ -76,7 +76,7 @@ void PWSrand::NextRandBlock()
   unsigned int *Kp = (unsigned int *)K;
   unsigned int *Rp = (unsigned int *)R;
   const int N = SHA256::HASHLEN/sizeof(unsigned int);
-  
+
   Kp[0]++;
 
   for (int i = 0; i < N; i++)
@@ -128,11 +128,11 @@ unsigned int PWSrand::RandUInt()
 }
 
 /* 
- *  RangeRand(len)
- *
- *  Returns a random number in the range 0 to (len-1).
- *  For example, RangeRand(256) returns a value from 0 to 255.
- */
+*  RangeRand(len)
+*
+*  Returns a random number in the range 0 to (len-1).
+*  For example, RangeRand(256) returns a value from 0 to 255.
+*/
 unsigned int PWSrand::RangeRand(unsigned int len)
 {
   unsigned int      r;
@@ -156,4 +156,4 @@ static bool __stdcall LoadRandomDataFunction()
   }
   return (hLib != NULL && pfnGetRandomDataT != NULL);
 }
- 
+

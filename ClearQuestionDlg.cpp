@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file ClearQuestionDlg.cpp
 //-----------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
-   : CPWDialog(CClearQuestionDlg::IDD, pParent)
+: CPWDialog(CClearQuestionDlg::IDD, pParent)
 {
   m_dontaskquestion =PWSprefs::GetInstance()->
     GetPref(PWSprefs::DontAskQuestion);
@@ -53,11 +53,11 @@ CClearQuestionDlg::OnCancel()
 void
 CClearQuestionDlg::OnOK() 
 {
-   UpdateData(TRUE);
+  UpdateData(TRUE);
 
-   PWSprefs::GetInstance()->
-     SetPref(PWSprefs::DontAskQuestion, m_dontaskquestion);
-   CPWDialog::OnOK();
+  PWSprefs::GetInstance()->
+    SetPref(PWSprefs::DontAskQuestion, m_dontaskquestion);
+  CPWDialog::OnOK();
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

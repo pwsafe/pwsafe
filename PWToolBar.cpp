@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 
 // PWToolBar.cpp : implementation file
 //
@@ -21,30 +21,30 @@
 // CPWToolBar
 
 /*
-  To add a new Toolbar button to this class:
-  1. Design new bitmaps (1 x 'Classic', 1 x 'New' designs & 1 x 'New Disabled' 
-     design).  All have a background colour of RGB(192, 192, 192).  Note: Create
-     the 'New Disabled' from the 'New' by using a program to convert the bitmap
-     to 8-bit greyscale.
-  2. Add them to PaswordSafe.rc as BITMAPs
-  3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC",
-     "IDB_<new name>_NEW" and "IDB_<new name>_NEW_D"
-  4. Assign a new resource ID for the corresponding button e.g. 
-     "ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>" if also on a Menu.
-  5. Add the resource ID in the appropriate place in the m_MainToolBarIDs array
-  6. Add the new bitmap IDs in the appropriate place in m_MainToolBarClassicBMs, 
-     m_MainToolBarNewBMs & m_MainToolBarNewDisBMs arrays (these should correspond
-     to the position of the "resource ID" in step 4 (ignoring separators)) - OR -
-     m_OtherClassicBMs, m_OtherNewBMs or m_OtherNewDisBMs arrays if not on the 
-     Toolbar but is on a menu.
-  7. Add the new name in the appropriate place in the m_csMainButtons array (used 
-     for customization/preferences and '~' represents a separator).
-  8. Add the new resource ID ("ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>")
-     in PasswordSafe.rc2 "Toolbar Tooltips" section as these are used during ToolBar
-     customization to describe the button in the standard Customization dialog.
+To add a new Toolbar button to this class:
+1. Design new bitmaps (1 x 'Classic', 1 x 'New' designs & 1 x 'New Disabled' 
+design).  All have a background colour of RGB(192, 192, 192).  Note: Create
+the 'New Disabled' from the 'New' by using a program to convert the bitmap
+to 8-bit greyscale.
+2. Add them to PaswordSafe.rc as BITMAPs
+3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC",
+"IDB_<new name>_NEW" and "IDB_<new name>_NEW_D"
+4. Assign a new resource ID for the corresponding button e.g. 
+"ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>" if also on a Menu.
+5. Add the resource ID in the appropriate place in the m_MainToolBarIDs array
+6. Add the new bitmap IDs in the appropriate place in m_MainToolBarClassicBMs, 
+m_MainToolBarNewBMs & m_MainToolBarNewDisBMs arrays (these should correspond
+to the position of the "resource ID" in step 4 (ignoring separators)) - OR -
+m_OtherClassicBMs, m_OtherNewBMs or m_OtherNewDisBMs arrays if not on the 
+Toolbar but is on a menu.
+7. Add the new name in the appropriate place in the m_csMainButtons array (used 
+for customization/preferences and '~' represents a separator).
+8. Add the new resource ID ("ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>")
+in PasswordSafe.rc2 "Toolbar Tooltips" section as these are used during ToolBar
+customization to describe the button in the standard Customization dialog.
 
- NOTE: In message handlers, the toolbar control ALWAYS asks for information based 
- on the ORIGINAL configuration!!! This is not documented by MS.
+NOTE: In message handlers, the toolbar control ALWAYS asks for information based 
+on the ORIGINAL configuration!!! This is not documented by MS.
 
 */
 
@@ -323,28 +323,28 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)
 
 CPWToolBar::CPWToolBar()
-  :  m_bitmode(1), m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
+:  m_bitmode(1), m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
 {
   // Make sure the developer has kept everything in step!
   ASSERT(sizeof(m_MainToolBarIDs) / sizeof(UINT) ==
-         sizeof(m_csMainButtons) / sizeof(m_csMainButtons[0]));
+    sizeof(m_csMainButtons) / sizeof(m_csMainButtons[0]));
 
   ASSERT(sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) ==
-         sizeof(m_MainToolBarNewBMs) / sizeof(UINT));
+    sizeof(m_MainToolBarNewBMs) / sizeof(UINT));
   ASSERT(sizeof(m_MainToolBarNewBMs) / sizeof(UINT) ==
-         sizeof(m_MainToolBarNewDisBMs) / sizeof(UINT));
+    sizeof(m_MainToolBarNewDisBMs) / sizeof(UINT));
 
   ASSERT(sizeof(m_OtherIDs) / sizeof(UINT) ==
-         sizeof(m_OtherClassicBMs) / sizeof(UINT));
+    sizeof(m_OtherClassicBMs) / sizeof(UINT));
   ASSERT(sizeof(m_OtherClassicBMs) / sizeof(UINT) ==
-         sizeof(m_OtherNewBMs) / sizeof(UINT));
+    sizeof(m_OtherNewBMs) / sizeof(UINT));
   ASSERT(sizeof(m_OtherNewBMs) / sizeof(UINT) ==
-         sizeof(m_OtherNewDisBMs) / sizeof(UINT));
+    sizeof(m_OtherNewDisBMs) / sizeof(UINT));
 
   m_iMaxNumButtons = sizeof(m_MainToolBarIDs) / sizeof(UINT);
   m_pOriginalTBinfo = new TBBUTTON[m_iMaxNumButtons];
   m_iNum_Bitmaps = sizeof(m_MainToolBarClassicBMs) / sizeof(UINT) +
-                   sizeof(m_OtherClassicBMs) / sizeof(UINT);
+    sizeof(m_OtherClassicBMs) / sizeof(UINT);
 }
 
 CPWToolBar::~CPWToolBar()
@@ -396,7 +396,7 @@ CPWToolBar::OnToolBarQueryDelete(NMHDR* pNotifyStruct, LRESULT *pResult)
     GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
     *pResult = FALSE;
   else
-   *pResult = TRUE;
+    *pResult = TRUE;
 }
 
 void
@@ -407,9 +407,9 @@ CPWToolBar::OnToolBarQueryInfo(NMHDR* pNotifyStruct, LRESULT *pResult)
   ASSERT(pNMToolbar->iItem < m_iMaxNumButtons);
 
   if ((pNMToolbar->iItem >= 0) &&
-      (pNMToolbar->iItem < m_iMaxNumButtons)) {
-    pNMToolbar->tbButton =m_pOriginalTBinfo[pNMToolbar->iItem];
-    *pResult = TRUE;
+    (pNMToolbar->iItem < m_iMaxNumButtons)) {
+      pNMToolbar->tbButton =m_pOriginalTBinfo[pNMToolbar->iItem];
+      *pResult = TRUE;
   } else {
     *pResult = FALSE;
   }
@@ -447,7 +447,7 @@ CPWToolBar::Init(const int NumBits, bool bRefresh)
   const UINT iClassicFlags = ILC_MASK | ILC_COLOR8;
   const UINT iNewFlags1 = ILC_MASK | ILC_COLOR8;
   const UINT iNewFlags2 = ILC_MASK | ILC_COLOR24;
-  
+
   m_NumBits = NumBits;
 
   if (NumBits >= 32) {
@@ -584,8 +584,8 @@ CPWToolBar::GetButtonString()
     tbCtrl.GetButtonInfo(i, &tbinfo);
 
     if (tbinfo.fsStyle & TBSTYLE_SEP) {
-       cs_buttonnames += _T("~ ");
-       continue;
+      cs_buttonnames += _T("~ ");
+      continue;
     }
 
     uint_iter = std::find(vcsButtonIDArray.begin(), vcsButtonIDArray.end(), tbinfo.idCommand);
@@ -734,8 +734,8 @@ CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
 
   for (int i = 0; i < numBMs; i++) {
     BOOL brc = bmNormal.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pBM_IDs[i]), RT_BITMAP),
-                                MAKEINTRESOURCE(pBM_IDs[i]), IMAGE_BITMAP, 0, 0,
-                                (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+      MAKEINTRESOURCE(pBM_IDs[i]), IMAGE_BITMAP, 0, 0,
+      (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
     ASSERT(brc);
     SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
     m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
@@ -743,15 +743,15 @@ CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
 
     if (nImageList != 0) {
       bmDisabled.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pDisBM_IDs[i]), RT_BITMAP),
-                                    MAKEINTRESOURCE(pDisBM_IDs[i]), IMAGE_BITMAP, 0, 0,
-                                    (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
+        MAKEINTRESOURCE(pDisBM_IDs[i]), IMAGE_BITMAP, 0, 0,
+        (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
       SetBitmapBackground(bmDisabled, crCOLOR_3DFACE);
       m_DisabledImageLists[nImageList - 1].Add(&bmDisabled, crCOLOR_3DFACE);
       bmDisabled.Detach();
     }
   }
 }
-  
+
 void
 CPWToolBar::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
 {
@@ -769,14 +769,14 @@ CPWToolBar::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
   ASSERT(pixels != NULL);
 
   const RGBTRIPLE newbkgrndColourRGB = {GetBValue(newbkgrndColour),
-                                        GetGValue(newbkgrndColour),
-                                        GetRValue(newbkgrndColour)};
+    GetGValue(newbkgrndColour),
+    GetRValue(newbkgrndColour)};
 
   for (UINT i = 0; i < numPixels; ++i) {
     if (pixels[i].rgbtBlue == 192 &&
-        pixels[i].rgbtGreen == 192 &&
-        pixels[i].rgbtRed == 192) {
-      pixels[i] = newbkgrndColourRGB;
+      pixels[i].rgbtGreen == 192 &&
+      pixels[i].rgbtRed == 192) {
+        pixels[i] = newbkgrndColourRGB;
     }
   }
 }

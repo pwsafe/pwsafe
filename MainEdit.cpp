@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// file MainEdit.cpp
 //
 // Edit-related methods of DboxMain
@@ -74,19 +74,19 @@ DboxMain::OnAdd()
     PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
     if (!m_core.GetUseDefUser()
-        && (prefs->GetPref(PWSprefs::QuerySetDef))
-        && (!dlg_add.m_username.IsEmpty())) {
-      CQuerySetDef defDlg(this);
-      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_add.m_username);
-      INT_PTR rc2 = defDlg.DoModal();
-      if (rc2 == IDOK) {
-        prefs->SetPref(PWSprefs::UseDefaultUser, true);
-        prefs->SetPref(PWSprefs::DefaultUsername,
-                       dlg_add.m_username);
-        m_core.SetUseDefUser(true);
-        m_core.SetDefUsername(dlg_add.m_username);
-        RefreshViews();
-      }
+      && (prefs->GetPref(PWSprefs::QuerySetDef))
+      && (!dlg_add.m_username.IsEmpty())) {
+        CQuerySetDef defDlg(this);
+        defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_add.m_username);
+        INT_PTR rc2 = defDlg.DoModal();
+        if (rc2 == IDOK) {
+          prefs->SetPref(PWSprefs::UseDefaultUser, true);
+          prefs->SetPref(PWSprefs::DefaultUsername,
+            dlg_add.m_username);
+          m_core.SetUseDefUser(true);
+          m_core.SetDefUsername(dlg_add.m_username);
+          RefreshViews();
+        }
     }
 
     //Finish Check (Does that make any geographical sense?)
@@ -128,8 +128,8 @@ DboxMain::OnAdd()
     temp.SetNotes(dlg_add.m_notes);
     temp.SetURL(dlg_add.m_URL);
     temp.SetAutoType(dlg_add.m_autotype);
-   	time(&t);
-   	temp.SetCTime(t);
+    time(&t);
+    temp.SetCTime(t);
 
     if (temp.IsAlias()) {
       temp.SetLTime((time_t)0);
@@ -205,19 +205,19 @@ DboxMain::OnAddShortcut()
     PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
     if (!m_core.GetUseDefUser()
-        && (prefs->GetPref(PWSprefs::QuerySetDef))
-        && (!dlg_addshortcut.m_username.IsEmpty())) {
-      CQuerySetDef defDlg(this);
-      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_addshortcut.m_username);
-      INT_PTR rc2 = defDlg.DoModal();
-      if (rc2 == IDOK) {
-        prefs->SetPref(PWSprefs::UseDefaultUser, true);
-        prefs->SetPref(PWSprefs::DefaultUsername,
-                       dlg_addshortcut.m_username);
-        m_core.SetUseDefUser(true);
-        m_core.SetDefUsername(dlg_addshortcut.m_username);
-        RefreshViews();
-      }
+      && (prefs->GetPref(PWSprefs::QuerySetDef))
+      && (!dlg_addshortcut.m_username.IsEmpty())) {
+        CQuerySetDef defDlg(this);
+        defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_addshortcut.m_username);
+        INT_PTR rc2 = defDlg.DoModal();
+        if (rc2 == IDOK) {
+          prefs->SetPref(PWSprefs::UseDefaultUser, true);
+          prefs->SetPref(PWSprefs::DefaultUsername,
+            dlg_addshortcut.m_username);
+          m_core.SetUseDefUser(true);
+          m_core.SetDefUsername(dlg_addshortcut.m_username);
+          RefreshViews();
+        }
     }
 
     //Finish Check (Does that make any geographical sense?)
@@ -249,8 +249,8 @@ DboxMain::OnAddShortcut()
       SetEntryImage(di->tree_item, nImage, true);
     }
 
-   	time(&t);
-   	temp.SetCTime(t);
+    time(&t);
+    temp.SetCTime(t);
     temp.SetLTime((time_t)0);
 
     AddEntry(temp);
@@ -346,7 +346,7 @@ DboxMain::OnDelete()
   }
 
   if (dodelete) {
-	Delete();
+    Delete();
   }
 }
 
@@ -366,8 +366,8 @@ DboxMain::Delete(bool inRecursion)
     if (entrytype == CItemData::Alias)
       m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Alias);
     else 
-    if (entrytype == CItemData::Shortcut)
-      m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Shortcut);
+      if (entrytype == CItemData::Shortcut)
+        m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Shortcut);
 
     num_dependents = dependentslist.size();
     if (num_dependents > 0) {
@@ -377,7 +377,7 @@ DboxMain::Delete(bool inRecursion)
       CString cs_msg, cs_type;
       const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
       if (entrytype == CItemData::Alias)
-      	cs_type.LoadString(num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
+        cs_type.LoadString(num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
       else
         cs_type.LoadString(num_dependents == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
 
@@ -394,7 +394,7 @@ DboxMain::Delete(bool inRecursion)
     // Find next in treeview, not always curSel after deletion
     HTREEITEM curTree_item = di->tree_item;
     HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
-                                                        TVGN_NEXT);
+      TVGN_NEXT);
     // Must Find before delete from m_ctlItemList:
     ItemListIter listindex = m_core.Find(entry_uuid);
     ASSERT(listindex !=  m_core.GetEntryEndIter());
@@ -457,7 +457,7 @@ DboxMain::Delete(bool inRecursion)
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
         SelectEntry(curSel < (int)m_core.GetNumEntries() ?
-                    curSel : (int)(m_core.GetNumEntries() - 1));
+curSel : (int)(m_core.GetNumEntries() - 1));
       }
       m_ctlItemList.SetFocus();
     } else {// tree view visible
@@ -544,86 +544,86 @@ DboxMain::OnEdit()
 bool
 DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 {
-    if (pcore == NULL)
-      pcore = &m_core;
+  if (pcore == NULL)
+    pcore = &m_core;
 
-    // List might be cleared if db locked.
-    // Need to take care that we handle a rebuilt list.
-    CItemData editedItem(*ci);
+  // List might be cleared if db locked.
+  // Need to take care that we handle a rebuilt list.
+  CItemData editedItem(*ci);
 
-    CEditDlg dlg_edit(&editedItem, this);
+  CEditDlg dlg_edit(&editedItem, this);
 
-    if (pcore->GetUseDefUser())
-      dlg_edit.m_defusername = pcore->GetDefUsername();
+  if (pcore->GetUseDefUser())
+    dlg_edit.m_defusername = pcore->GetDefUsername();
 
-    dlg_edit.m_Edit_IsReadOnly = pcore->IsReadOnly();
+  dlg_edit.m_Edit_IsReadOnly = pcore->IsReadOnly();
 
-    uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
-    CItemData::EntryType entrytype = ci->GetEntryType();
+  uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
+  CItemData::EntryType entrytype = ci->GetEntryType();
 
-    ci->GetUUID(original_uuid);  // Edit doesn't change this!
-    if (entrytype == CItemData::AliasBase || entrytype == CItemData::ShortcutBase) {
-      // Base entry
-      UUIDList dependentslist;
-      CMyString csDependents(_T(""));
+  ci->GetUUID(original_uuid);  // Edit doesn't change this!
+  if (entrytype == CItemData::AliasBase || entrytype == CItemData::ShortcutBase) {
+    // Base entry
+    UUIDList dependentslist;
+    CMyString csDependents(_T(""));
 
-      m_core.GetAllDependentEntries(original_uuid, dependentslist, 
-        entrytype == CItemData::AliasBase ? CItemData::Alias : CItemData::Shortcut);
-      int num_dependents = dependentslist.size();
-      if (num_dependents > 0) {
-        SortDependents(dependentslist, csDependents);
-      }
-
-      dlg_edit.m_num_dependents = num_dependents;
-      dlg_edit.m_dependents = csDependents;
-      dlg_edit.m_original_entrytype = entrytype;
-      dependentslist.clear();
+    m_core.GetAllDependentEntries(original_uuid, dependentslist, 
+      entrytype == CItemData::AliasBase ? CItemData::Alias : CItemData::Shortcut);
+    int num_dependents = dependentslist.size();
+    if (num_dependents > 0) {
+      SortDependents(dependentslist, csDependents);
     }
 
-    if (entrytype == CItemData::Alias) {
-      // Alias entry
-      // Get corresponding base uuid
-      m_core.GetAliasBaseUUID(original_uuid, original_base_uuid);
+    dlg_edit.m_num_dependents = num_dependents;
+    dlg_edit.m_dependents = csDependents;
+    dlg_edit.m_original_entrytype = entrytype;
+    dependentslist.clear();
+  }
 
-      ItemListIter iter = m_core.Find(original_base_uuid);
-      if (iter != End()) {
-        const CItemData &cibase = iter->second;
-        dlg_edit.m_base = _T("[") +
-                 cibase.GetGroup() + _T(":") +
-                 cibase.GetTitle() + _T(":") +
-                 cibase.GetUser()  + _T("]");
-        dlg_edit.m_original_entrytype = CItemData::Alias;
-      }
-    } else {
-      PWPolicy pwp;
-      editedItem.GetPWPolicy(pwp);
-      dlg_edit.m_pwp = pwp;
+  if (entrytype == CItemData::Alias) {
+    // Alias entry
+    // Get corresponding base uuid
+    m_core.GetAliasBaseUUID(original_uuid, original_base_uuid);
+
+    ItemListIter iter = m_core.Find(original_base_uuid);
+    if (iter != End()) {
+      const CItemData &cibase = iter->second;
+      dlg_edit.m_base = _T("[") +
+        cibase.GetGroup() + _T(":") +
+        cibase.GetTitle() + _T(":") +
+        cibase.GetUser()  + _T("]");
+      dlg_edit.m_original_entrytype = CItemData::Alias;
     }
+  } else {
+    PWPolicy pwp;
+    editedItem.GetPWPolicy(pwp);
+    dlg_edit.m_pwp = pwp;
+  }
 
 
-    app.DisableAccelerator();
-    INT_PTR rc = dlg_edit.DoModal();
-    app.EnableAccelerator();
+  app.DisableAccelerator();
+  INT_PTR rc = dlg_edit.DoModal();
+  app.EnableAccelerator();
 
-    if (rc == IDOK) {
-      // Out with the old, in with the new
-      ItemListIter listpos = Find(original_uuid);
-      ASSERT(listpos != m_core.GetEntryEndIter());
-      CItemData oldElem = GetEntryAt(listpos);
-      DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
-      ASSERT(di != NULL);
-      // editedItem's displayinfo will have been deleted if
-      // application "locked" (Cleared list)
-      DisplayInfo *ndi = new DisplayInfo;
-      ndi->list_index = -1; // so that insertItem will set new values
-      ndi->tree_item = 0;
-      editedItem.SetDisplayInfo(ndi);
-      CMyString newPassword = editedItem.GetPassword();
-      memcpy(new_base_uuid, dlg_edit.m_base_uuid, sizeof(uuid_array_t));
+  if (rc == IDOK) {
+    // Out with the old, in with the new
+    ItemListIter listpos = Find(original_uuid);
+    ASSERT(listpos != m_core.GetEntryEndIter());
+    CItemData oldElem = GetEntryAt(listpos);
+    DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
+    ASSERT(di != NULL);
+    // editedItem's displayinfo will have been deleted if
+    // application "locked" (Cleared list)
+    DisplayInfo *ndi = new DisplayInfo;
+    ndi->list_index = -1; // so that insertItem will set new values
+    ndi->tree_item = 0;
+    editedItem.SetDisplayInfo(ndi);
+    CMyString newPassword = editedItem.GetPassword();
+    memcpy(new_base_uuid, dlg_edit.m_base_uuid, sizeof(uuid_array_t));
 
-      ItemListIter iter;
-      if (dlg_edit.m_original_entrytype == CItemData::Normal &&
-          ci->GetPassword() != newPassword) {
+    ItemListIter iter;
+    if (dlg_edit.m_original_entrytype == CItemData::Normal &&
+      ci->GetPassword() != newPassword) {
         // Original was a 'normal' entry and the password has changed
         if (dlg_edit.m_ibasedata > 0) {
           // Now an alias
@@ -635,33 +635,33 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
           editedItem.SetPassword(newPassword);
           editedItem.SetNormal();
         }
-      }
+    }
 
-      if (dlg_edit.m_original_entrytype == CItemData::Alias) {
-        // Original was an alias - delete it from multimap
-        // RemoveDependentEntry also resets base to normal if the last alias is delete
-        pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::Alias);
-        if (newPassword == dlg_edit.m_base) {
-          // Password (i.e. base) unchanged - put it back
-          pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::Alias);
+    if (dlg_edit.m_original_entrytype == CItemData::Alias) {
+      // Original was an alias - delete it from multimap
+      // RemoveDependentEntry also resets base to normal if the last alias is delete
+      pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::Alias);
+      if (newPassword == dlg_edit.m_base) {
+        // Password (i.e. base) unchanged - put it back
+        pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::Alias);
+      } else {
+        // Password changed so might be an alias of another entry!
+        // Could also be the same entry i.e. [:t:] == [t] !
+        if (dlg_edit.m_ibasedata > 0) {
+          // Still an alias
+          pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
+          editedItem.SetPassword(CMyString(_T("[Alias]")));
+          editedItem.SetAlias();
         } else {
-          // Password changed so might be an alias of another entry!
-          // Could also be the same entry i.e. [:t:] == [t] !
-          if (dlg_edit.m_ibasedata > 0) {
-            // Still an alias
-            pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
-            editedItem.SetPassword(CMyString(_T("[Alias]")));
-            editedItem.SetAlias();
-          } else {
-            // No longer an alias
-            editedItem.SetPassword(newPassword);
-            editedItem.SetNormal();
-          }
+          // No longer an alias
+          editedItem.SetPassword(newPassword);
+          editedItem.SetNormal();
         }
       }
+    }
 
-      if (dlg_edit.m_original_entrytype == CItemData::AliasBase &&
-          ci->GetPassword() != newPassword) {
+    if (dlg_edit.m_original_entrytype == CItemData::AliasBase &&
+      ci->GetPassword() != newPassword) {
         // Original was a base but might now be an alias of another entry!
         if (dlg_edit.m_ibasedata > 0) {
           // Now an alias
@@ -676,13 +676,24 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
           editedItem.SetPassword(newPassword);
           editedItem.SetAliasBase();
         }
-      }
+    }
 
-      // Reset all images!
-      // This entry's image will be set by DboxMain::insertItem
+    // Reset all images!
+    // This entry's image will be set by DboxMain::insertItem
 
-      // Next the original base entry
-      iter = m_core.Find(original_base_uuid);
+    // Next the original base entry
+    iter = m_core.Find(original_base_uuid);
+    if (iter != End()) {
+      const CItemData &cibase = iter->second;
+      DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+      int nImage = GetEntryImage(cibase);
+      SetEntryImage(di->list_index, nImage, true);
+      SetEntryImage(di->tree_item, nImage, true);
+    }
+
+    // Last the new base entry (only if different to the one we have done!
+    if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
+      iter = m_core.Find(new_base_uuid);
       if (iter != End()) {
         const CItemData &cibase = iter->second;
         DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
@@ -690,131 +701,130 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         SetEntryImage(di->list_index, nImage, true);
         SetEntryImage(di->tree_item, nImage, true);
       }
+    }
 
-      // Last the new base entry (only if different to the one we have done!
-      if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
-        iter = m_core.Find(new_base_uuid);
-        if (iter != End()) {
-          const CItemData &cibase = iter->second;
-          DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-          int nImage = GetEntryImage(cibase);
-          SetEntryImage(di->list_index, nImage, true);
-          SetEntryImage(di->tree_item, nImage, true);
-        }
-      }
+    if (editedItem.IsAlias() || editedItem.IsShortcut()) {
+      editedItem.SetLTime((time_t)0);
+      editedItem.SetPWPolicy(_T(""));
+    } else {
+      editedItem.SetPWPolicy(dlg_edit.m_pwp);
+    }
 
-      if (editedItem.IsAlias() || editedItem.IsShortcut()) {
-        editedItem.SetLTime((time_t)0);
-        editedItem.SetPWPolicy(_T(""));
-      } else {
-        editedItem.SetPWPolicy(dlg_edit.m_pwp);
-      }
+    pcore->RemoveEntryAt(listpos);
+    pcore->AddEntry(editedItem);
+    m_ctlItemList.DeleteItem(di->list_index);
+    m_ctlItemTree.DeleteWithParents(di->tree_item);
 
-      pcore->RemoveEntryAt(listpos);
-      pcore->AddEntry(editedItem);
-      m_ctlItemList.DeleteItem(di->list_index);
-      m_ctlItemTree.DeleteWithParents(di->tree_item);
-
-      // AddEntry copies the entry, and we want to work with the inserted copy
-      // Which we'll find by uuid
-      insertItem(pcore->GetEntry(m_core.Find(original_uuid)));
-      FixListIndexes();
-      // Now delete old entry's DisplayInfo
-      delete di;
-      if (PWSprefs::GetInstance()->
-          GetPref(PWSprefs::SaveImmediately)) {
+    // AddEntry copies the entry, and we want to work with the inserted copy
+    // Which we'll find by uuid
+    insertItem(pcore->GetEntry(m_core.Find(original_uuid)));
+    FixListIndexes();
+    // Now delete old entry's DisplayInfo
+    delete di;
+    if (PWSprefs::GetInstance()->
+      GetPref(PWSprefs::SaveImmediately)) {
         Save();
-      }
-      rc = SelectEntry(ndi->list_index);
-      if (rc == LB_ERR) {
-        SelectEntry(m_ctlItemList.GetItemCount() - 1);
-      }
-      ChangeOkUpdate();
-      // Order may have changed as a result of edit
-      m_ctlItemTree.SortTree(TVI_ROOT);
-      SortListView();
+    }
+    rc = SelectEntry(ndi->list_index);
+    if (rc == LB_ERR) {
+      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+    }
+    ChangeOkUpdate();
+    // Order may have changed as a result of edit
+    m_ctlItemTree.SortTree(TVI_ROOT);
+    SortListView();
 
-      return true;
-    } // rc == IDOK
-    return false;
+    return true;
+  } // rc == IDOK
+  return false;
 }
 
 
 bool
 DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
 {
-    if (pcore == NULL)
-      pcore = &m_core;
+  if (pcore == NULL)
+    pcore = &m_core;
 
-    // List might be cleared if db locked.
-    // Need to take care that we handle a rebuilt list.
-    CItemData editedItem(*ci);
+  // List might be cleared if db locked.
+  // Need to take care that we handle a rebuilt list.
+  CItemData editedItem(*ci);
 
-    CEditShortcutDlg dlg_editshortcut(&editedItem, this);
+  CEditShortcutDlg dlg_editshortcut(&editedItem, this);
 
-    if (pcore->GetUseDefUser())
-      dlg_editshortcut.m_defusername = pcore->GetDefUsername();
-    dlg_editshortcut.m_Edit_IsReadOnly = pcore->IsReadOnly();
+  if (pcore->GetUseDefUser())
+    dlg_editshortcut.m_defusername = pcore->GetDefUsername();
+  dlg_editshortcut.m_Edit_IsReadOnly = pcore->IsReadOnly();
 
-    uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
+  uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
 
-    ci->GetUUID(original_uuid);  // Edit doesn't change this!
+  ci->GetUUID(original_uuid);  // Edit doesn't change this!
 
-    // Shortcut entry
-    // Get corresponding base uuid
-    m_core.GetShortcutBaseUUID(original_uuid, original_base_uuid);
+  // Shortcut entry
+  // Get corresponding base uuid
+  m_core.GetShortcutBaseUUID(original_uuid, original_base_uuid);
 
-    ItemListIter iter = m_core.Find(original_base_uuid);
-    if (iter != End()) {
-      const CItemData &cibase = iter->second;
-      dlg_editshortcut.m_base = _T("[") +
-               cibase.GetGroup() + _T(":") +
-               cibase.GetTitle() + _T(":") +
-               cibase.GetUser()  + _T("]");
+  ItemListIter iter = m_core.Find(original_base_uuid);
+  if (iter != End()) {
+    const CItemData &cibase = iter->second;
+    dlg_editshortcut.m_base = _T("[") +
+      cibase.GetGroup() + _T(":") +
+      cibase.GetTitle() + _T(":") +
+      cibase.GetUser()  + _T("]");
+  }
+
+  app.DisableAccelerator();
+  INT_PTR rc = dlg_editshortcut.DoModal();
+  app.EnableAccelerator();
+
+  if (rc == IDOK) {
+    // Out with the old, in with the new
+    // User cannot change a shortcut entry to anything else!
+    ItemListIter listpos = Find(original_uuid);
+    ASSERT(listpos != m_core.GetEntryEndIter());
+    CItemData oldElem = GetEntryAt(listpos);
+    DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
+    ASSERT(di != NULL);
+    // editedItem's displayinfo will have been deleted if
+    // application "locked" (Cleared list)
+    DisplayInfo *ndi = new DisplayInfo;
+    ndi->list_index = -1; // so that insertItem will set new values
+    ndi->tree_item = 0;
+    editedItem.SetDisplayInfo(ndi);
+    CMyString newPassword = editedItem.GetPassword();
+    memcpy(new_base_uuid, dlg_editshortcut.m_base_uuid, sizeof(uuid_array_t));
+
+    ItemListIter iter;
+    // Original was an shortcut - delete it from multimap
+    // RemoveShortcutEntry also resets base to normal if the last alias is delete
+    pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::Shortcut);
+    if (newPassword == dlg_editshortcut.m_base) {
+      // Password (i.e. base) unchanged - put it back
+      pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::Shortcut);
+    } else {
+      // Password changed so must be a shortcut of another entry!
+      // Could also be the same entry i.e. [:t:] == [t] !
+      if (dlg_editshortcut.m_ibasedata > 0) {
+        // Still an alias
+        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Shortcut);
+        editedItem.SetPassword(CMyString(_T("[Shortcut]")));
+        editedItem.SetShortcut();
+      }
     }
 
-    app.DisableAccelerator();
-    INT_PTR rc = dlg_editshortcut.DoModal();
-    app.EnableAccelerator();
-
-    if (rc == IDOK) {
-      // Out with the old, in with the new
-      // User cannot change a shortcut entry to anything else!
-      ItemListIter listpos = Find(original_uuid);
-      ASSERT(listpos != m_core.GetEntryEndIter());
-      CItemData oldElem = GetEntryAt(listpos);
-      DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
-      ASSERT(di != NULL);
-      // editedItem's displayinfo will have been deleted if
-      // application "locked" (Cleared list)
-      DisplayInfo *ndi = new DisplayInfo;
-      ndi->list_index = -1; // so that insertItem will set new values
-      ndi->tree_item = 0;
-      editedItem.SetDisplayInfo(ndi);
-      CMyString newPassword = editedItem.GetPassword();
-      memcpy(new_base_uuid, dlg_editshortcut.m_base_uuid, sizeof(uuid_array_t));
-
-      ItemListIter iter;
-      // Original was an shortcut - delete it from multimap
-      // RemoveShortcutEntry also resets base to normal if the last alias is delete
-      pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::Shortcut);
-      if (newPassword == dlg_editshortcut.m_base) {
-        // Password (i.e. base) unchanged - put it back
-        pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::Shortcut);
-      } else {
-        // Password changed so must be a shortcut of another entry!
-        // Could also be the same entry i.e. [:t:] == [t] !
-        if (dlg_editshortcut.m_ibasedata > 0) {
-          // Still an alias
-          pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Shortcut);
-          editedItem.SetPassword(CMyString(_T("[Shortcut]")));
-          editedItem.SetShortcut();
-        }
-      }
-
-      // Reset all images - except this as it must still be a shortcut
-      // Next the original base entry
-      iter = m_core.Find(original_base_uuid);
+    // Reset all images - except this as it must still be a shortcut
+    // Next the original base entry
+    iter = m_core.Find(original_base_uuid);
+    if (iter != End()) {
+      const CItemData &cibase = iter->second;
+      DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+      int nImage = GetEntryImage(cibase);
+      SetEntryImage(di->list_index, nImage, true);
+      SetEntryImage(di->tree_item, nImage, true);
+    }
+    // Last the new base entry (only if different to the one we have done!
+    if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
+      iter = m_core.Find(new_base_uuid);
       if (iter != End()) {
         const CItemData &cibase = iter->second;
         DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
@@ -822,42 +832,32 @@ DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
         SetEntryImage(di->list_index, nImage, true);
         SetEntryImage(di->tree_item, nImage, true);
       }
-      // Last the new base entry (only if different to the one we have done!
-      if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
-        iter = m_core.Find(new_base_uuid);
-        if (iter != End()) {
-          const CItemData &cibase = iter->second;
-          DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-          int nImage = GetEntryImage(cibase);
-          SetEntryImage(di->list_index, nImage, true);
-          SetEntryImage(di->tree_item, nImage, true);
-        }
-      }
+    }
 
-      editedItem.SetLTime((time_t)0);
+    editedItem.SetLTime((time_t)0);
 
-      pcore->RemoveEntryAt(listpos);
-      pcore->AddEntry(editedItem);
-      m_ctlItemList.DeleteItem(di->list_index);
-      m_ctlItemTree.DeleteWithParents(di->tree_item);
-      // AddEntry copies the entry, and we want to work with the inserted copy
-      // Which we'll find by uuid
-      insertItem(pcore->GetEntry(m_core.Find(original_uuid)));
-      FixListIndexes();
-      // Now delete old entry's DisplayInfo
-      delete di;
-      if (PWSprefs::GetInstance()->
-          GetPref(PWSprefs::SaveImmediately)) {
+    pcore->RemoveEntryAt(listpos);
+    pcore->AddEntry(editedItem);
+    m_ctlItemList.DeleteItem(di->list_index);
+    m_ctlItemTree.DeleteWithParents(di->tree_item);
+    // AddEntry copies the entry, and we want to work with the inserted copy
+    // Which we'll find by uuid
+    insertItem(pcore->GetEntry(m_core.Find(original_uuid)));
+    FixListIndexes();
+    // Now delete old entry's DisplayInfo
+    delete di;
+    if (PWSprefs::GetInstance()->
+      GetPref(PWSprefs::SaveImmediately)) {
         Save();
-      }
-      rc = SelectEntry(ndi->list_index);
-      if (rc == LB_ERR) {
-        SelectEntry(m_ctlItemList.GetItemCount() - 1);
-      }
-      ChangeOkUpdate();
-      return true;
-    } // rc == IDOK
-    return false;
+    }
+    rc = SelectEntry(ndi->list_index);
+    if (rc == LB_ERR) {
+      SelectEntry(m_ctlItemList.GetItemCount() - 1);
+    }
+    ChangeOkUpdate();
+    return true;
+  } // rc == IDOK
+  return false;
 }
 
 // Duplicate selected entry but make title unique
@@ -903,22 +903,22 @@ DboxMain::OnDuplicateEntry()
     time_t t;
     ci->GetCTime(t);
     if ((long) t != 0)
-    	ci2.SetCTime(t);
+      ci2.SetCTime(t);
     ci->GetATime(t);
     if ((long) t != 0)
-    	ci2.SetATime(t);
+      ci2.SetATime(t);
     ci->GetLTime(t);
     if ((long) t != 0)
-    	ci2.SetLTime(t);
+      ci2.SetLTime(t);
     ci->GetPMTime(t);
     if ((long) t != 0)
-    	ci2.SetPMTime(t);
+      ci2.SetPMTime(t);
     ci->GetRMTime(t);
     if ((long) t != 0)
-    	ci2.SetRMTime(t);
+      ci2.SetRMTime(t);
     CMyString tmp = ci->GetPWHistory();
     if (tmp.GetLength() >= 5)
-    	    ci2.SetPWHistory(tmp);
+      ci2.SetPWHistory(tmp);
 
     uuid_array_t base_uuid, original_entry_uuid, new_entry_uuid;
     CItemData::EntryType entrytype = ci->GetEntryType();
@@ -955,8 +955,8 @@ DboxMain::OnDuplicateEntry()
     insertItem(m_core.GetEntry(m_core.Find(uuid)));
     FixListIndexes();
     if (PWSprefs::GetInstance()->
-        GetPref(PWSprefs::SaveImmediately)) {
-      Save();
+      GetPref(PWSprefs::SaveImmediately)) {
+        Save();
     }
     int rc = SelectEntry(di->list_index);
     if (rc == LB_ERR) {
@@ -976,7 +976,7 @@ DboxMain::OnCopyPassword()
   //Remind the user about clipboard security
   CClearQuestionDlg clearDlg(this);
   if (clearDlg.m_dontaskquestion == FALSE &&
-      clearDlg.DoModal() == IDCANCEL)
+    clearDlg.DoModal() == IDCANCEL)
     return;
 
   CItemData *ci = getSelectedItem();
@@ -1128,7 +1128,7 @@ DboxMain::OnFind()
 void
 DboxMain::OnClearClipboard()
 {
-   ClearClipboardData();
+  ClearClipboardData();
 }
 
 void
@@ -1241,20 +1241,20 @@ DboxMain::AutoType(const CItemData &ci)
       switch(curChar){
       case TCHAR('\\'):
         tmp += TCHAR('\\');
-      break;
+        break;
       case TCHAR('n'):
       case TCHAR('r'):
         tmp += TCHAR('\r');
-      break;
+        break;
       case TCHAR('t'):
         tmp += TCHAR('\t');
-      break;
+        break;
       case TCHAR('u'):
         tmp += user;
-      break;
+        break;
       case TCHAR('p'):
         tmp += pwd;
-      break;
+        break;
       case TCHAR('d'): {
         // Delay is going to change - send what we have with old delay
         ks.SendString(tmp);
@@ -1269,11 +1269,11 @@ DboxMain::AutoType(const CItemData &ci)
             newdelay += (AutoCmd[n] - TCHAR('0'));
           } else
             break; // for loop
-        n--;
-        ks.SetAndDelay(newdelay);
+          n--;
+          ks.SetAndDelay(newdelay);
 
-        break; // case
-      }
+          break; // case
+                       }
       default:
         tmp += _T("\\") + curChar;
         break;
@@ -1296,10 +1296,10 @@ DboxMain::AutoType(const CItemData &ci)
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
     SetWindowPos(&wndTopMost, 0, 0, 0, 0,
-                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+      SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
   } else {
     SetWindowPos(&wndBottom, 0, 0, 0, 0,
-                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+      SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
   }
 }
 
@@ -1374,65 +1374,65 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
           cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
           AfxMessageBox(cs_msg, MB_OK);
         } else
-        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
-          // Only normal or alias base allowed as target
-          CString cs_msg;
-          cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
-          AfxMessageBox(cs_msg, MB_OK);
-          continue;
-        }
-        tempitem.GetUUID(temp_uuid);
-        m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Alias);
-        tempitem.SetPassword(CMyString(_T("[Alias]")));
-        tempitem.SetAlias();
+          if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
+            // Only normal or alias base allowed as target
+            CString cs_msg;
+            cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
+            AfxMessageBox(cs_msg, MB_OK);
+            continue;
+          }
+          tempitem.GetUUID(temp_uuid);
+          m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Alias);
+          tempitem.SetPassword(CMyString(_T("[Alias]")));
+          tempitem.SetAlias();
       } else
-      if (pl.InputType == CItemData::Shortcut) {
-        ItemListIter iter = m_core.Find(pl.base_uuid);
-        ASSERT(iter != End());
-        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::ShortcutBase) {
-          // Only normal or shortcut base allowed as target
-          CString cs_msg;
-          cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
-          AfxMessageBox(cs_msg, MB_OK);
-          continue;
+        if (pl.InputType == CItemData::Shortcut) {
+          ItemListIter iter = m_core.Find(pl.base_uuid);
+          ASSERT(iter != End());
+          if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::ShortcutBase) {
+            // Only normal or shortcut base allowed as target
+            CString cs_msg;
+            cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
+            AfxMessageBox(cs_msg, MB_OK);
+            continue;
+          }
+          tempitem.GetUUID(temp_uuid);
+          m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Shortcut);
+          tempitem.SetPassword(CMyString(_T("[Shortcut]")));
+          tempitem.SetShortcut();
         }
-        tempitem.GetUUID(temp_uuid);
-        m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Shortcut);
-        tempitem.SetPassword(CMyString(_T("[Shortcut]")));
-        tempitem.SetShortcut();
-      }
     } else
-    if (pl.ibasedata == 0) {
-      // Password NOT in alias/shortcut format
-      tempitem.SetNormal();
-    } else
-    if (pl.ibasedata < 0) {
-      // Password in alias/shortcut format AND base entry does not exist or multiple possible
-      // base entries exit.
-      // Note: As more entries are added, what was "not exist" may become "OK",
-      // "no unique exists" or "multiple exist".
-      // Let the code that processes the possible aliases after all have been added sort this out.
-      tempitem.GetUUID(temp_uuid);
-      if (pl.InputType == CItemData::Alias)
-        possible_aliases.push_back(temp_uuid);
-      else
-        possible_shortcuts.push_back(temp_uuid);
-    }
+      if (pl.ibasedata == 0) {
+        // Password NOT in alias/shortcut format
+        tempitem.SetNormal();
+      } else
+        if (pl.ibasedata < 0) {
+          // Password in alias/shortcut format AND base entry does not exist or multiple possible
+          // base entries exit.
+          // Note: As more entries are added, what was "not exist" may become "OK",
+          // "no unique exists" or "multiple exist".
+          // Let the code that processes the possible aliases after all have been added sort this out.
+          tempitem.GetUUID(temp_uuid);
+          if (pl.InputType == CItemData::Alias)
+            possible_aliases.push_back(temp_uuid);
+          else
+            possible_shortcuts.push_back(temp_uuid);
+        }
 
-    AddEntry(tempitem);
+        AddEntry(tempitem);
 
   } // iteration over in_oblist
 
   // Now try to add aliases we couldn't add in previous processing
   m_core.AddDependentEntries(possible_aliases, NULL, CItemData::Alias, 
-                             CItemData::PASSWORD);
+    CItemData::PASSWORD);
   m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, 
-                             CItemData::PASSWORD);
+    CItemData::PASSWORD);
 
   if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::SaveImmediately)) {
-    Save();
-    ChangeOkUpdate();
+    GetPref(PWSprefs::SaveImmediately)) {
+      Save();
+      ChangeOkUpdate();
   }
 
   FixListIndexes();
@@ -1479,8 +1479,8 @@ void DboxMain::SortDependents(UUIDList &dlist, CMyString &csDependents)
     iter = m_core.Find(dependent_uuid);
     if (iter != m_core.GetEntryEndIter()) {
       cs_dependent = iter->second.GetGroup() + _T(":") +
-                     iter->second.GetTitle() + _T(":") +
-                     iter->second.GetUser();
+        iter->second.GetTitle() + _T(":") +
+        iter->second.GetUser();
       sorted_dependents.push_back(cs_dependent);
     }
   }
@@ -1537,15 +1537,15 @@ DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
   b_msg_issued = true;
 
   if (bIsEdit && 
-      (pl.csPwdGroup == group && pl.csPwdTitle == title && pl.csPwdUser == user)) {
-    // In Edit, check user isn't changing entry to point to itself (circular/self reference)
-    // Can't happen during Add as already checked entry does not exist so if accepted the
-    // password would be treated as an unusal "normal" password
-    if (InputType == CItemData::Alias)
-      AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
-    else
-      AfxMessageBox(IDS_SHTCTCANTREFERTOITSELF, MB_OK);
-    return false;
+    (pl.csPwdGroup == group && pl.csPwdTitle == title && pl.csPwdUser == user)) {
+      // In Edit, check user isn't changing entry to point to itself (circular/self reference)
+      // Can't happen during Add as already checked entry does not exist so if accepted the
+      // password would be treated as an unusal "normal" password
+      if (InputType == CItemData::Alias)
+        AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
+      else
+        AfxMessageBox(IDS_SHTCTCANTREFERTOITSELF, MB_OK);
+      return false;
   }
 
   // ibasedata:
@@ -1587,24 +1587,24 @@ DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
         break;
       case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
         {
-        const bool bGE = pl.csPwdGroup.IsEmpty() == TRUE;
-        const bool bTE = pl.csPwdTitle.IsEmpty() == TRUE;
-        const bool bUE = pl.csPwdUser.IsEmpty() == TRUE;
-        if (bTE) {
-          // Title is mandatory for all entries!
-          AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
-          rc = IDNO;
-          break;
-        } else if (!bGE && !bUE)  // [x:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2A, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
-        else if (!bGE && bUE)     // [x:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND2B, pl.csPwdGroup, pl.csPwdTitle);
-        else if (bGE && !bUE)     // [:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2C, pl.csPwdTitle, pl.csPwdUser);
-        else if (bGE && bUE)      // [:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND0B, pl.csPwdTitle);
+          const bool bGE = pl.csPwdGroup.IsEmpty() == TRUE;
+          const bool bTE = pl.csPwdTitle.IsEmpty() == TRUE;
+          const bool bUE = pl.csPwdUser.IsEmpty() == TRUE;
+          if (bTE) {
+            // Title is mandatory for all entries!
+            AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
+            rc = IDNO;
+            break;
+          } else if (!bGE && !bUE)  // [x:y:z]
+            cs_msg.Format(IDS_ALIASNOTFOUND2A, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+          else if (!bGE && bUE)     // [x:y:]
+            cs_msg.Format(IDS_ALIASNOTFOUND2B, pl.csPwdGroup, pl.csPwdTitle);
+          else if (bGE && !bUE)     // [:y:z]
+            cs_msg.Format(IDS_ALIASNOTFOUND2C, pl.csPwdTitle, pl.csPwdUser);
+          else if (bGE && bUE)      // [:y:]
+            cs_msg.Format(IDS_ALIASNOTFOUND0B, pl.csPwdTitle);
 
-        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
+          rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
         }
         break;
       default:
@@ -1625,24 +1625,24 @@ DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
           return false;
         }
       } else
-      if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
-        // An alias can only point to a normal entry or an alias base entry
-        CString cs_msg;
-        cs_msg.Format(IDS_ABASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
-        AfxMessageBox(cs_msg, MB_OK);
-        return false;
-      } else {
-        return true;
-      }
+        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
+          // An alias can only point to a normal entry or an alias base entry
+          CString cs_msg;
+          cs_msg.Format(IDS_ABASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+          AfxMessageBox(cs_msg, MB_OK);
+          return false;
+        } else {
+          return true;
+        }
     } else
-    if (InputType == CItemData::Shortcut && 
+      if (InputType == CItemData::Shortcut && 
         (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::ShortcutBase)) {
-      // A shortcut can only point to a normal entry or a shortcut base entry. No buts!
-      CString cs_msg;
-      cs_msg.Format(IDS_SBASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
-      AfxMessageBox(cs_msg, MB_OK);
-      return false;
-    }
+          // A shortcut can only point to a normal entry or a shortcut base entry. No buts!
+          CString cs_msg;
+          cs_msg.Format(IDS_SBASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+          AfxMessageBox(cs_msg, MB_OK);
+          return false;
+      }
   }
 
   // All OK

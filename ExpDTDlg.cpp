@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 // expDT.cpp : implementation file
 //
 
@@ -15,20 +15,20 @@
 // CExpDTDlg dialog
 
 CExpDTDlg::CExpDTDlg(CWnd* pParent /*=NULL*/)
-	: CPWDialog(CExpDTDlg::IDD, pParent), m_tttLTime(0)
+: CPWDialog(CExpDTDlg::IDD, pParent), m_tttLTime(0)
 {
-	//{{AFX_DATA_INIT(CImportDlg)
-	m_how = 0;
+  //{{AFX_DATA_INIT(CImportDlg)
+  m_how = 0;
   m_numDays = 1;
-	//}}AFX_DATA_INIT
+  //}}AFX_DATA_INIT
 }
 
 void CExpDTDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CPWDialog::DoDataExchange(pDX);
+  CPWDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CExpDTDlg)
-	DDX_Control(pDX, IDC_EXPIRYDATE, m_pDateCtl);
-	DDX_Control(pDX, IDC_EXPIRYTIME, m_pTimeCtl);
+  DDX_Control(pDX, IDC_EXPIRYDATE, m_pDateCtl);
+  DDX_Control(pDX, IDC_EXPIRYTIME, m_pTimeCtl);
   DDX_Radio(pDX, IDC_SELECTBYDATETIME, m_how);
   DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
   //{{AFX_DATA_MAP
@@ -36,9 +36,9 @@ void CExpDTDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CExpDTDlg, CPWDialog)
-	ON_BN_CLICKED(IDOK, &CExpDTDlg::OnOK)
-    ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
-    ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
+  ON_BN_CLICKED(IDOK, &CExpDTDlg::OnOK)
+  ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
+  ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,13 +60,13 @@ void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
 
 BOOL CExpDTDlg::OnInitDialog()
 {
-	TCHAR          szBuf[81];               // workspace
-	CString        sTimeFormat;             // the time format being worked on
+  TCHAR          szBuf[81];               // workspace
+  CString        sTimeFormat;             // the time format being worked on
   CString        sDateFormat;
-	CString        sSearch;                 // the string to search for
-	int            nIndex;                  // index of the string, if found
+  CString        sSearch;                 // the string to search for
+  int            nIndex;                  // index of the string, if found
 
-	CPWDialog::OnInitDialog();
+  CPWDialog::OnInitDialog();
 
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
 
@@ -98,7 +98,7 @@ BOOL CExpDTDlg::OnInitDialog()
   if (nIndex != -1) {
     // Found it!  Remove it from the format picture.
     sTimeFormat.Delete(nIndex, sSearch.GetLength());
-	} else {
+  } else {
     // No ":ss", so try ":s".
     sSearch = szBuf;
     sSearch += _T("s");
@@ -107,40 +107,40 @@ BOOL CExpDTDlg::OnInitDialog()
     if (nIndex != -1 ) {
       // Found it!  Remove it from the format picture.
       sTimeFormat.Delete(nIndex, sSearch.GetLength());
-		}
-	}
+    }
+  }
   VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
   sDateFormat = szBuf;
 
-	CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
-	CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
+  CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
+  CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
   pTimeCtl->SetFormat(sTimeFormat);
-	pDateCtl->SetFormat(sDateFormat);
+  pDateCtl->SetFormat(sDateFormat);
 
-	CTime ct, xt;
-	CTime now(CTime::GetCurrentTime());
-	ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
+  CTime ct, xt;
+  CTime now(CTime::GetCurrentTime());
+  ct = CTime(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 0, 0, -1);
 
-	const CTime sMinDate(ct);
-	const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
-	// Set approx. limit of 32-bit times!
-	pDateCtl->SetRange(&sMinDate, &sMaxDate);
+  const CTime sMinDate(ct);
+  const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
+  // Set approx. limit of 32-bit times!
+  pDateCtl->SetRange(&sMinDate, &sMaxDate);
 
-	if (m_tttLTime == 0) {
-		m_locLTime.LoadString(IDS_NEVER);
-	} else {
-		xt = CTime(m_tttLTime);
-		ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
-               xt.GetHour(), xt.GetMinute(), 0, -1);
-		m_locLTime = CMyString(ct.Format(_T("%#c")));
-	}
+  if (m_tttLTime == 0) {
+    m_locLTime.LoadString(IDS_NEVER);
+  } else {
+    xt = CTime(m_tttLTime);
+    ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
+      xt.GetHour(), xt.GetMinute(), 0, -1);
+    m_locLTime = CMyString(ct.Format(_T("%#c")));
+  }
 
-	pDateCtl->SetTime(&ct);
-	pTimeCtl->SetTime(&ct);
+  pDateCtl->SetTime(&ct);
+  pTimeCtl->SetTime(&ct);
 
-	GetDlgItem(IDC_STATIC_CURRENT_LTIME)->SetWindowText(m_locLTime);
+  GetDlgItem(IDC_STATIC_CURRENT_LTIME)->SetWindowText(m_locLTime);
 
-	return TRUE;
+  return TRUE;
 }
 
 void CExpDTDlg::OnDays() 
@@ -161,30 +161,30 @@ void CExpDTDlg::OnDateTime()
 
 void CExpDTDlg::OnOK()
 {
-    if (UpdateData(TRUE) != TRUE) {
-      // Only reason is numDays!  Set to max.
-      m_numDays = m_maxDays;
-      UpdateData(FALSE);
-	  return;
-    }
+  if (UpdateData(TRUE) != TRUE) {
+    // Only reason is numDays!  Set to max.
+    m_numDays = m_maxDays;
+    UpdateData(FALSE);
+    return;
+  }
 
-	CTime LTime, LDate, LDateTime;
-	DWORD dwResult;
+  CTime LTime, LDate, LDateTime;
+  DWORD dwResult;
 
-    if (m_how == 0) {
-	  dwResult = m_pTimeCtl.GetTime(LTime);
-	  ASSERT(dwResult == GDT_VALID);
+  if (m_how == 0) {
+    dwResult = m_pTimeCtl.GetTime(LTime);
+    ASSERT(dwResult == GDT_VALID);
 
-	  dwResult = m_pDateCtl.GetTime(LDate);
-	  ASSERT(dwResult == GDT_VALID);
+    dwResult = m_pDateCtl.GetTime(LDate);
+    ASSERT(dwResult == GDT_VALID);
 
-	  LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
-          LTime.GetHour(), LTime.GetMinute(), 0, -1);
-    } else {
-      LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
-    }
+    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
+      LTime.GetHour(), LTime.GetMinute(), 0, -1);
+  } else {
+    LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
+  }
 
-	m_tttLTime = (time_t)LDateTime.GetTime();
+  m_tttLTime = (time_t)LDateTime.GetTime();
 
   SYSTEMTIME systime;
   TCHAR time_str[80], datetime_str[80];
@@ -205,5 +205,5 @@ void CExpDTDlg::OnOK()
   _tcscat_s(datetime_str, 80, time_str);
   m_locLTime = CMyString(datetime_str);
 
-	CPWDialog::OnOK();
+  CPWDialog::OnOK();
 }

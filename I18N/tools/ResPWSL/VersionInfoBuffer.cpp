@@ -25,94 +25,94 @@ static char THIS_FILE[]=__FILE__;
 
 CVersionInfoBuffer::CVersionInfoBuffer():m_dwBufSize(1024), m_dwPosition(0)
 {
-	m_lpData = (LPBYTE) new BYTE[m_dwBufSize];
+  m_lpData = (LPBYTE) new BYTE[m_dwBufSize];
 }
 
 CVersionInfoBuffer::~CVersionInfoBuffer()
 {
-	delete [] m_lpData;
+  delete [] m_lpData;
 }
 
 void CVersionInfoBuffer::Write(LPVOID lpData, DWORD dwSize)
 {
-	if (dwSize+m_dwPosition > m_dwBufSize)
-		ReallocBuffer(dwSize+m_dwPosition);
+  if (dwSize+m_dwPosition > m_dwBufSize)
+    ReallocBuffer(dwSize+m_dwPosition);
 
-	memcpy(m_lpData + m_dwPosition, lpData, dwSize);
-	m_dwPosition += dwSize;
+  memcpy(m_lpData + m_dwPosition, lpData, dwSize);
+  m_dwPosition += dwSize;
 }
 
 void CVersionInfoBuffer::ReallocBuffer(DWORD dwMinimumSize)
 {
-	//Allocate extra 1k or so
-	DWORD dwNewSize = (dwMinimumSize + 0x7ff) & ~0x3ff;
+  //Allocate extra 1k or so
+  DWORD dwNewSize = (dwMinimumSize + 0x7ff) & ~0x3ff;
 
-	LPBYTE lpNewData = new BYTE[dwNewSize];
+  LPBYTE lpNewData = new BYTE[dwNewSize];
 
-	//Copy everything that is already in the buffer
-	memcpy(lpNewData, m_lpData, m_dwPosition);
+  //Copy everything that is already in the buffer
+  memcpy(lpNewData, m_lpData, m_dwPosition);
 
-	delete [] m_lpData;
-	m_dwBufSize = dwNewSize;
-	m_lpData = lpNewData;
+  delete [] m_lpData;
+  m_dwBufSize = dwNewSize;
+  m_lpData = lpNewData;
 }
 
 DWORD CVersionInfoBuffer::PadToDWORD()
 {
 
-	if (m_dwPosition % 4) {
-		DWORD dwNull = 0L;
-		Write(&dwNull, 4 - m_dwPosition % 4);
-	}
-	
-	return m_dwPosition;
+  if (m_dwPosition % 4) {
+    DWORD dwNull = 0L;
+    Write(&dwNull, 4 - m_dwPosition % 4);
+  }
+
+  return m_dwPosition;
 }
 
 DWORD CVersionInfoBuffer::Pad(WORD wLength)
 {
-	DWORD dwNull = 0L;
-	while (wLength--)
-		Write(&dwNull, 1);
+  DWORD dwNull = 0L;
+  while (wLength--)
+    Write(&dwNull, 1);
 
-	return m_dwPosition;
+  return m_dwPosition;
 }
 
 DWORD CVersionInfoBuffer::GetPosition()
 {
-	return m_dwPosition;
+  return m_dwPosition;
 }
 
 void CVersionInfoBuffer::WriteStructSize(DWORD dwOffsetOfSizeMemember)
 {
-	WORD wSize = LOWORD(m_dwPosition - dwOffsetOfSizeMemember);
+  WORD wSize = LOWORD(m_dwPosition - dwOffsetOfSizeMemember);
 
-	WORD *pSizeMember = (WORD*) (&m_lpData[dwOffsetOfSizeMemember]);
-	*pSizeMember = wSize;
+  WORD *pSizeMember = (WORD*) (&m_lpData[dwOffsetOfSizeMemember]);
+  *pSizeMember = wSize;
 }
 
 void CVersionInfoBuffer::WriteWord(WORD wData)
 {
-	Write(&wData, sizeof WORD);
+  Write(&wData, sizeof WORD);
 }
 
 WORD CVersionInfoBuffer::WriteString(const CString &strValue)
 {
 #ifndef _UNICODE
-	DWORD dwLength = MultiByteToWideChar(CP_ACP, 0, strValue, -1, NULL, 0);
-	WCHAR *pszwValue = (WCHAR*)_alloca(dwLength * sizeof (WCHAR));
-	MultiByteToWideChar(CP_ACP, 0, strValue, -1, pszwValue, dwLength);
-	
-	Write(pszwValue, dwLength * sizeof (WCHAR));
+  DWORD dwLength = MultiByteToWideChar(CP_ACP, 0, strValue, -1, NULL, 0);
+  WCHAR *pszwValue = (WCHAR*)_alloca(dwLength * sizeof (WCHAR));
+  MultiByteToWideChar(CP_ACP, 0, strValue, -1, pszwValue, dwLength);
 
-	return LOWORD(dwLength);
+  Write(pszwValue, dwLength * sizeof (WCHAR));
+
+  return LOWORD(dwLength);
 #else
-	DWORD dwLength = (strValue.GetLength()+ 1) * sizeof WCHAR;
-	Write ((LPVOID)(LPCWSTR) strValue, dwLength);
-	return LOWORD(dwLength);
+  DWORD dwLength = (strValue.GetLength()+ 1) * sizeof WCHAR;
+  Write ((LPVOID)(LPCWSTR) strValue, dwLength);
+  return LOWORD(dwLength);
 #endif
 }
 
 const LPBYTE CVersionInfoBuffer::GetData()
 {
-	return m_lpData;
+  return m_lpData;
 }

@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
- * All rights reserved. Use of the code is allowed under the
- * Artistic License 2.0 terms, as specified in the LICENSE file
- * distributed with this code, or available from
- * http://www.opensource.org/licenses/artistic-license-2.0.php
- */
+* Copyright (c) 2003-2008 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
 /// \file EditDlg.cpp
 //-----------------------------------------------------------------------------
 
@@ -61,11 +61,11 @@ CString CEditDlg::CS_SHOW;
 CString CEditDlg::CS_HIDE;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
-  : CPWDialog(CEditDlg::IDD, pParent),
-    m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
-    m_tttLTime (time_t(0)),
-    m_locLTime(_T("")), m_oldlocLTime(_T("")),
-    m_original_entrytype(CItemData::Normal)
+: CPWDialog(CEditDlg::IDD, pParent),
+m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
+m_tttLTime (time_t(0)),
+m_locLTime(_T("")), m_oldlocLTime(_T("")),
+m_original_entrytype(CItemData::Normal)
 {
   ASSERT(ci != NULL);
 
@@ -86,8 +86,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
-                          m_NumPWHistory, 
-                          &m_PWHistList, TMC_EXPORT_IMPORT);
+    m_NumPWHistory, 
+    &m_PWHistList, TMC_EXPORT_IMPORT);
   m_SavePWHistory = HasHistory;
 
   m_group = ci->GetGroup();
@@ -115,7 +115,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_oldlocLTime = m_locLTime;
 
   m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
-                              _T("! &Edit externally"));
+    _T("! &Edit externally"));
   m_num_dependents = 0;
   m_dependents = _T("");
   m_base = _T("");
@@ -217,13 +217,13 @@ CEditDlg::OnOK()
     m_realnotes = m_notes;
 
   m_bIsModified |= (m_group != m_ci->GetGroup() ||
-                    m_title != m_ci->GetTitle() ||
-                    m_username != m_ci->GetUser() ||
-                    m_realnotes != m_ci->GetNotes() ||
-                    m_URL != m_ci->GetURL() ||
-                    m_autotype != m_ci->GetAutoType() ||
-                    m_PWHistory != m_ci->GetPWHistory() ||
-                    m_locLTime != m_oldlocLTime);
+    m_title != m_ci->GetTitle() ||
+    m_username != m_ci->GetUser() ||
+    m_realnotes != m_ci->GetNotes() ||
+    m_URL != m_ci->GetURL() ||
+    m_autotype != m_ci->GetAutoType() ||
+    m_PWHistory != m_ci->GetPWHistory() ||
+    m_locLTime != m_oldlocLTime);
 
   bool IsPswdModified = m_realpassword != m_oldRealPassword;
 
@@ -257,10 +257,10 @@ CEditDlg::OnOK()
 
   listindex = dbx->Find(m_group, m_title, m_username);
   /*
-   *  If there is a matching entry in our list, and that
-   *  entry is not the same one we started editing, tell the
-   *  user to try again.
-   */
+  *  If there is a matching entry in our list, and that
+  *  entry is not the same one we started editing, tell the
+  *  user to try again.
+  */
   if (listindex != dbx->End()) {
     const CItemData &listItem = dbx->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
@@ -279,8 +279,8 @@ CEditDlg::OnOK()
 
   bool brc, b_msg_issued;
   brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-                              true, CItemData::Alias,
-                              m_base_uuid, m_ibasedata, b_msg_issued);
+    true, CItemData::Alias,
+    m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
     if (!b_msg_issued)
@@ -318,59 +318,59 @@ CEditDlg::OnOK()
   return;
   // If we don't close, then update controls, as some of the fields
   // may have been modified (e.g., spaces removed).
- dont_close:
+dont_close:
   UpdateData(FALSE);
 }
 
 void CEditDlg::UpdateHistory()
 {
-    size_t num = m_PWHistList.size();
-    PWHistEntry pwh_ent;
-    pwh_ent.password = m_oldRealPassword;
-    time_t t;
-    m_ci->GetPMTime(t);
-    if ((long)t == 0L) // if never set - try creation date
-        m_ci->GetCTime(t);
-    pwh_ent.changetttdate = t;
-    pwh_ent.changedate =
-        PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
-    if (pwh_ent.changedate.IsEmpty()) {
-        pwh_ent.changedate.LoadString(IDS_UNKNOWN);
-    }
+  size_t num = m_PWHistList.size();
+  PWHistEntry pwh_ent;
+  pwh_ent.password = m_oldRealPassword;
+  time_t t;
+  m_ci->GetPMTime(t);
+  if ((long)t == 0L) // if never set - try creation date
+    m_ci->GetCTime(t);
+  pwh_ent.changetttdate = t;
+  pwh_ent.changedate =
+    PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
+  if (pwh_ent.changedate.IsEmpty()) {
+    pwh_ent.changedate.LoadString(IDS_UNKNOWN);
+  }
 
-    // Now add the latest
-    m_PWHistList.push_back(pwh_ent);
+  // Now add the latest
+  m_PWHistList.push_back(pwh_ent);
 
-    // Increment count
-    num++;
+  // Increment count
+  num++;
 
-    // Too many? remove the excess
-    if (num > m_MaxPWHistory) {
-        PWHistList hl(m_PWHistList.begin() + (num - m_MaxPWHistory),
-                      m_PWHistList.end());
-        ASSERT(hl.size() == m_MaxPWHistory);
-        m_PWHistList = hl;
-        num = m_MaxPWHistory;
-    }
+  // Too many? remove the excess
+  if (num > m_MaxPWHistory) {
+    PWHistList hl(m_PWHistList.begin() + (num - m_MaxPWHistory),
+      m_PWHistList.end());
+    ASSERT(hl.size() == m_MaxPWHistory);
+    m_PWHistList = hl;
+    num = m_MaxPWHistory;
+  }
 
-    // Now create string version!
-    CMyString new_PWHistory;
-    CString buffer;
+  // Now create string version!
+  CMyString new_PWHistory;
+  CString buffer;
 
-    buffer.Format(_T("1%02x%02x"), m_MaxPWHistory, num);
-    new_PWHistory = CMyString(buffer);
+  buffer.Format(_T("1%02x%02x"), m_MaxPWHistory, num);
+  new_PWHistory = CMyString(buffer);
 
-    PWHistList::iterator iter;
-    for (iter = m_PWHistList.begin(); iter != m_PWHistList.end(); iter++) {
-        const PWHistEntry pwshe = *iter;
+  PWHistList::iterator iter;
+  for (iter = m_PWHistList.begin(); iter != m_PWHistList.end(); iter++) {
+    const PWHistEntry pwshe = *iter;
 
-        buffer.Format(_T("%08x%04x%s"),
-                      (long) pwshe.changetttdate, pwshe.password.GetLength(),
-                      pwshe.password);
-        new_PWHistory += CMyString(buffer);
-        buffer.Empty();
-    }
-    m_ci->SetPWHistory(new_PWHistory);
+    buffer.Format(_T("%08x%04x%s"),
+      (long) pwshe.changetttdate, pwshe.password.GetLength(),
+      pwshe.password);
+    new_PWHistory += CMyString(buffer);
+    buffer.Empty();
+  }
+  m_ci->SetPWHistory(new_PWHistory);
 }
 
 BOOL CEditDlg::OnInitDialog() 
@@ -404,73 +404,73 @@ BOOL CEditDlg::OnInitDialog()
 
   // Note shortcuts have their own dialog for edit.
   if (m_original_entrytype == CItemData::AliasBase ||
-      m_original_entrytype == CItemData::ShortcutBase) {
-    // Show button to allow users to view dependents
-    CString csButtonText;
-    csButtonText.LoadString(m_original_entrytype == CItemData::AliasBase ? IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
-    GetDlgItem(IDC_VIEWDEPENDENTS)->SetWindowText(csButtonText);
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
+    m_original_entrytype == CItemData::ShortcutBase) {
+      // Show button to allow users to view dependents
+      CString csButtonText;
+      csButtonText.LoadString(m_original_entrytype == CItemData::AliasBase ? IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
+      GetDlgItem(IDC_VIEWDEPENDENTS)->SetWindowText(csButtonText);
+      GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
   } else
-  if (m_original_entrytype == CItemData::Alias) {
-    // Update password to alias form
-    // Show text stating that it is an alias
-    m_realpassword = m_oldRealPassword = m_base;
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_SHOW);
-  } else
-  if (m_original_entrytype == CItemData::Normal) {
-    // Normal - do none of the above
-    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
-  }
-
-  ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
-    ShowPassword();
-  } else {
-    HidePassword();
-  }
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
-    ShowNotes();
-  } else {
-    HideNotes();
-  }
-
-  if (!m_Edit_IsReadOnly) {
-    // Populate the groups combo box
-    if (m_ex_group.GetCount() == 0) {
-      CStringArray aryGroups;
-      app.m_core.GetUniqueGroups(aryGroups);
-      for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
-        m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
+    if (m_original_entrytype == CItemData::Alias) {
+      // Update password to alias form
+      // Show text stating that it is an alias
+      m_realpassword = m_oldRealPassword = m_base;
+      GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_SHOW);
+    } else
+      if (m_original_entrytype == CItemData::Normal) {
+        // Normal - do none of the above
+        GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
       }
-    }
-  }
 
-  GetDlgItem(IDC_PWHSTATUS)->
-    SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
-  CString buffer;
-  if (m_SavePWHistory == TRUE)
-    buffer.Format(_T("%d"), m_MaxPWHistory);
-  else
-    buffer = _T("n/a");
+      ((CEdit*)GetDlgItem(IDC_PASSWORD2))->SetPasswordChar(PSSWDCHAR);
 
-  GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
+        ShowPassword();
+      } else {
+        HidePassword();
+      }
 
-  UpdateData(FALSE);
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
+        ShowNotes();
+      } else {
+        HideNotes();
+      }
 
-  m_isExpanded = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DisplayExpandedAddEditDlg);
-  ResizeDialog();
+      if (!m_Edit_IsReadOnly) {
+        // Populate the groups combo box
+        if (m_ex_group.GetCount() == 0) {
+          CStringArray aryGroups;
+          app.m_core.GetUniqueGroups(aryGroups);
+          for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
+            m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
+          }
+        }
+      }
 
-  m_ex_group.ChangeColour();
-  return TRUE;
+      GetDlgItem(IDC_PWHSTATUS)->
+        SetWindowText(m_SavePWHistory == TRUE ? CS_ON : CS_OFF);
+      CString buffer;
+      if (m_SavePWHistory == TRUE)
+        buffer.Format(_T("%d"), m_MaxPWHistory);
+      else
+        buffer = _T("n/a");
+
+      GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
+
+      UpdateData(FALSE);
+
+      m_isExpanded = PWSprefs::GetInstance()->
+        GetPref(PWSprefs::DisplayExpandedAddEditDlg);
+      ResizeDialog();
+
+      m_ex_group.ChangeColour();
+      return TRUE;
 }
 
 void CEditDlg::ShowPassword()
@@ -528,9 +528,9 @@ void CEditDlg::OnRandom()
   UpdateData(TRUE);
 
   if (pParent->MakeRandomPassword(this, m_realpassword, m_pwp) &&
-      !m_isPwHidden) {
-    m_password = m_realpassword;
-    UpdateData(FALSE);
+    !m_isPwHidden) {
+      m_password = m_realpassword;
+      UpdateData(FALSE);
   }
 }
 
@@ -562,10 +562,10 @@ void CEditDlg::OnHelp()
 void CEditDlg::OnPasskeyKillfocus()
 {
 #if defined(POCKET_PC)
-/************************************************************************/
-/* Restore the state of word completion when the password field loses   */
-/* focus.                                                               */
-/************************************************************************/
+  /************************************************************************/
+  /* Restore the state of word completion when the password field loses   */
+  /* focus.                                                               */
+  /************************************************************************/
   EnableWordCompletion( m_hWnd );
 #endif
 }
@@ -574,10 +574,10 @@ void CEditDlg::OnPasskeySetfocus()
 {
   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetSel(0, -1);
 #if defined(POCKET_PC)
-/************************************************************************/
-/* When the password field is activated, pull up the SIP and disable    */
-/* word completion.                                                     */
-/************************************************************************/
+  /************************************************************************/
+  /* When the password field is activated, pull up the SIP and disable    */
+  /* word completion.                                                     */
+  /************************************************************************/
   DisableWordCompletion( m_hWnd );
 #endif
 }
@@ -643,7 +643,7 @@ void CEditDlg::ResizeDialog()
     pLowestCtl = (CWnd *)GetDlgItem(BottomHideableControl);
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
     newHeight = curLowestCtlRect.bottom + 15 - newDialogRect.top;
-    
+
     cs_text.LoadString(IDS_LESS);
     m_MoreLessBtn.SetWindowText(cs_text);
   } else {
@@ -655,9 +655,9 @@ void CEditDlg::ResizeDialog()
     cs_text.LoadString(IDS_MORE);
     m_MoreLessBtn.SetWindowText(cs_text);
   }
-  
+
   this->SetWindowPos(NULL, 0, 0, newDialogRect.right - newDialogRect.left,
-                     newHeight, SWP_NOMOVE);
+    newHeight, SWP_NOMOVE);
 }
 
 void CEditDlg::OnBnClickedClearLTime()
@@ -687,9 +687,9 @@ void CEditDlg::OnBnClickedSetLTime()
 void CEditDlg::OnBnClickedPwhist()
 {
   CPWHistDlg dlg(this, m_Edit_IsReadOnly,
-                 m_PWHistory, m_PWHistList,
-                 m_NumPWHistory, m_MaxPWHistory,
-                 m_SavePWHistory);
+    m_PWHistory, m_PWHistList,
+    m_NumPWHistory, m_MaxPWHistory,
+    m_SavePWHistory);
 
   dlg.DoModal();
 
@@ -717,8 +717,8 @@ void CEditDlg::OnEnKillfocusNotes()
 {
   UpdateData(TRUE);
   if (!m_isNotesHidden &&
-      !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
-    HideNotes();
+    !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
+      HideNotes();
   }
   UpdateData(FALSE);
 }
@@ -727,7 +727,7 @@ LRESULT CEditDlg::OnCallExternalEditor(WPARAM, LPARAM)
 {
   // Warn the user about sensitive data lying around
   int rc = AfxMessageBox(IDS_EXTERNAL_EDITOR_WARNING, 
-                         MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+    MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
   if (rc != IDYES)
     return 0L;
 
@@ -753,13 +753,13 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
 
   // Get the temp path
   GetTempPath(dwBufSize,   // length of the buffer
-       lpPathBuffer);      // buffer for path
+    lpPathBuffer);      // buffer for path
 
   // Create a temporary file.
   GetTempFileName(lpPathBuffer, // directory for temp files
-      _T("NTE"),                // temp file name prefix
-      0,                        // create unique name
-      self->m_szTempName);            // buffer for name
+    _T("NTE"),                // temp file name prefix
+    0,                        // create unique name
+    self->m_szTempName);            // buffer for name
 
   // Open it and put the Notes field in it
   ofstreamT ofs(self->m_szTempName);
@@ -773,7 +773,7 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
   // Find out the users default editor for "txt" files
   DWORD dwSize(MAX_PATH);
   HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, _T(".txt"), _T("Open"),
-                                    szExecName, &dwSize);
+    szExecName, &dwSize);
   if (int(stat) != S_OK) {  
 #ifdef _DEBUG
     AfxMessageBox(_T("oops"));
@@ -802,8 +802,8 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
   LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
-       NULL, lpPathBuffer, &si, &pi)) {
-    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+    NULL, lpPathBuffer, &si, &pi)) {
+      TRACE( "CreateProcess failed (%d).\n", GetLastError() );
   }
 
   // Wait until child process exits.
