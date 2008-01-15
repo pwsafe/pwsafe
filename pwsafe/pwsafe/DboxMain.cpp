@@ -627,7 +627,7 @@ LRESULT
 DboxMain::OnHeaderDragComplete(WPARAM /* wParam */, LPARAM /* lParam */)
 {
   MSG msg;
-  while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE))	{
+  while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
     // so there is a message process it.
     if (!AfxGetThread()->PumpMessage())
       break;
@@ -942,9 +942,9 @@ DboxMain::ChangeOkUpdate()
     return;
 
 #if defined(POCKET_PC)
-  CMenu *menu	= m_wndMenu;
+  CMenu *menu = m_wndMenu;
 #else
-  CMenu *menu	= GetMenu();
+  CMenu *menu = GetMenu();
 #endif
 
   // Don't need to worry about R-O, as IsChanged can't be true in this case
@@ -1016,11 +1016,11 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
                               int adv_type)
 {
   // index:
-  //	GCP_FIRST      (0) first
-  //	GCP_NORMAL     (1) OK, CANCEL & HELP buttons
-  //	GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
-  //	GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
-  //	GCP_ADVANCED   (4) OK, CANCEL, HELP & ADVANCED buttons
+  //  GCP_FIRST      (0) first
+  //  GCP_NORMAL     (1) OK, CANCEL & HELP buttons
+  //  GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
+  //  GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
+  //  GCP_ADVANCED   (4) OK, CANCEL, HELP & ADVANCED buttons
 
   // for adv_type values, see enum in AdvancedDlg.h
 
@@ -1208,7 +1208,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
               break;
             default:
               DBGMSG("Default to WRONG_PASSWORD\n");
-              retval = PWScore::WRONG_PASSWORD;	//Just a normal cancel
+              retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
               break;
     }
   }
@@ -1373,7 +1373,7 @@ void
 DboxMain::UpdateAlwaysOnTop()
 {
 #if !defined(POCKET_PC)
-  CMenu*	sysMenu = GetSystemMenu( FALSE );
+  CMenu* sysMenu = GetSystemMenu( FALSE );
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
     SetWindowPos( &wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
@@ -1399,7 +1399,7 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 
   if ((nID & 0xFFF0) == SC_RESTORE) {
     UnMinimize(true);
-    if (!m_passphraseOK)	// password bad or cancel pressed
+    if (!m_passphraseOK)  // password bad or cancel pressed
       return;
   }
 
@@ -1413,11 +1413,11 @@ DboxMain::ConfigureSystemMenu()
 {
 #if defined(POCKET_PC)
   m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
-  m_wndMenu		= m_wndCommandBar->InsertMenuBar( IDR_MAINMENU );
+  m_wndMenu = m_wndCommandBar->InsertMenuBar( IDR_MAINMENU );
 
   ASSERT( m_wndMenu != NULL );
 #else
-  CMenu*	sysMenu = GetSystemMenu( FALSE );
+  CMenu* sysMenu = GetSystemMenu( FALSE );
   const CString str(MAKEINTRESOURCE(IDS_ALWAYSONTOP));
 
   sysMenu->InsertMenu( 5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCTSTR)str );
@@ -1642,14 +1642,14 @@ void
 DboxMain::OnShowPassword()
 {
   if (SelItemOk() == TRUE) {
-    CItemData			item;
-    CMyString			password;
-    CMyString			name;
-    CMyString			title;
-    CMyString			username;
-    CShowPasswordDlg	pwDlg( this );
+    CItemData item;
+    CMyString password;
+    CMyString name;
+    CMyString title;
+    CMyString username;
+    CShowPasswordDlg pwDlg( this );
 
-    item	= m_pwlist.GetAt( Find(getSelectedItem()) );
+    item = m_pwlist.GetAt( Find(getSelectedItem()) );
 
     item.GetPassword(password);
     item.GetName( name );

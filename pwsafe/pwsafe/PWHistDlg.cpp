@@ -229,7 +229,7 @@ CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
     // They should be ignored by earlier levels of this dll or .....
     //     we can check the dll version (code available on request)!
 
-#if (WINVER < 0x0501)	// These are already defined for WinXP and later
+#if (WINVER < 0x0501)  // These are already defined for WinXP and later
 #define HDF_SORTUP 0x0400
 #define HDF_SORTDOWN 0x0200
 #endif

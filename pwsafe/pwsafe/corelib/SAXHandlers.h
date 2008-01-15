@@ -49,7 +49,7 @@ struct pw_entry {
   int entrytype;
 };
 
-//	-----------------------------------------------------------------------
+//  -----------------------------------------------------------------------
 class PWSSAXErrorHandler: public ISAXErrorHandler
 {
 public:
@@ -66,8 +66,8 @@ public:
     unsigned short * pwchErrorMessage,
     HRESULT hrErrorCode );
 
-  //	This must be correctly implemented, if your handler must be a COM Object
-  //	the current implementation is NOT thread-safe
+  //  This must be correctly implemented, if your handler must be a COM Object
+  //  the current implementation is NOT thread-safe
   long __stdcall QueryInterface(const struct _GUID &,void ** );
   unsigned long __stdcall AddRef(void);
   unsigned long __stdcall Release(void);
@@ -87,7 +87,7 @@ private:
   ULONG m_refCnt;
 };
 
-//	-----------------------------------------------------------------------
+//  -----------------------------------------------------------------------
 class PWSSAXContentHandler: public MSXML2::ISAXContentHandler
 {
 public:
@@ -138,8 +138,8 @@ public:
   PWSSAXContentHandler();
   virtual ~PWSSAXContentHandler();
 
-  //	This must be correctly implemented, if your handler must be a COM Object
-  //	the current implementation is NOT thread-safe
+  //  This must be correctly implemented, if your handler must be a COM Object
+  //  the current implementation is NOT thread-safe
   long __stdcall QueryInterface(const struct _GUID &,void ** );
   unsigned long __stdcall AddRef(void);
   unsigned long __stdcall Release(void);

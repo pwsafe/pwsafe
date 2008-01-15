@@ -22,9 +22,9 @@ public:
   // Dialog Data
   //{{AFX_DATA(CQuerySetDef)
   enum { IDD = IDD_QUERYSETDEF };
-  BOOL	m_querycheck;
+  BOOL m_querycheck;
   //}}AFX_DATA
-  CString	m_message;
+  CString m_message;
 
   // Overrides
   // ClassWizard generated virtual function overrides

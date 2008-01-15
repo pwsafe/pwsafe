@@ -9,8 +9,8 @@
 //  DATE:       04.05.2004
 //              
 //  COMMENTS:   Update 11.05.2004:
-//					- added ResolveLink
-//					- added GetSpecialFolder (split off)
+//                  - added ResolveLink
+//                  - added GetSpecialFolder (split off)
 //              Update 09.11.2006: (ronys)
 //                  - Get to compile cleanly under MSVS2005
 //              
@@ -47,7 +47,7 @@ public:
   CShortcut();
   ~CShortcut();
 
-  /*  This routine resolves the lnk destination: */	
+  /*  This routine resolves the lnk destination: */
   HRESULT ResolveLink(const CString &LnkName, UINT SpecialFolder,
     HWND hwnd, CString &LnkPath, CString &LnkDescription);
   /* Looks if the link with name LnkName already exists in the special folder */

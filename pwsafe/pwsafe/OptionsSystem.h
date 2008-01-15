@@ -28,12 +28,12 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsSystem)
   enum { IDD = IDD_PS_SYSTEM };
-  int		m_maxreitems;
-  BOOL    m_usesystemtray;
-  BOOL    m_startup;
-  int		m_maxmruitems;
-  BOOL	m_mruonfilemenu;
-  BOOL	m_deleteregistry;
+  int m_maxreitems;
+  BOOL m_usesystemtray;
+  BOOL m_startup;
+  int m_maxmruitems;
+  BOOL m_mruonfilemenu;
+  BOOL m_deleteregistry;
   //}}AFX_DATA
 
   // Overrides

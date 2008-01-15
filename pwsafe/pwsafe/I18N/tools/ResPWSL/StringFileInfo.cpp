@@ -123,7 +123,7 @@ const CStringTable& CStringFileInfo::GetStringTable(const CString& strKey) const
   CStringTable *pStringTable = NULL;
   m_mapStringTables.Lookup(strKey, (CObject*&)pStringTable);
   // This may return *NULL, be carefull
-  return *pStringTable;	
+  return *pStringTable;
 }
 
 CStringTable& CStringFileInfo::operator [] (const CString &strKey)

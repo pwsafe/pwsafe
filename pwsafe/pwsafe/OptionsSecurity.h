@@ -28,14 +28,13 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsSecurity)
   enum { IDD = IDD_PS_SECURITY };
-  BOOL	m_clearclipboard;
-  BOOL	m_lockdatabase;
-  BOOL	m_confirmcopy;
-  BOOL	m_LockOnWindowLock;
-  BOOL	m_LockOnIdleTimeout;
-  UINT    m_IdleTimeOut;
+  BOOL m_clearclipboard;
+  BOOL m_lockdatabase;
+  BOOL m_confirmcopy;
+  BOOL m_LockOnWindowLock;
+  BOOL m_LockOnIdleTimeout;
+  UINT m_IdleTimeOut;
   //}}AFX_DATA
-
 
   // Overrides
   // ClassWizard generate virtual function overrides

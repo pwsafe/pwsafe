@@ -23,7 +23,7 @@ public:
 
   // Dialog Data
   enum { IDD = IDD_SAMPLETEXT };
-  CString	m_sampletext;
+  CString m_sampletext;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

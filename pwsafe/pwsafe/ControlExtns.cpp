@@ -30,9 +30,9 @@ static char THIS_FILE[] = __FILE__;
 // Custom menu goes here!
 
 #if defined(UNICODE)
-#define EDIT_CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
+#define EDIT_CLIPBOARD_TEXT_FORMAT  CF_UNICODETEXT
 #else
-#define EDIT_CLIPBOARD_TEXT_FORMAT	CF_TEXT
+#define EDIT_CLIPBOARD_TEXT_FORMAT  CF_TEXT
 #endif
 
 const COLORREF crefInFocus = (RGB(222, 255, 222));  // Light green

@@ -25,8 +25,8 @@ public:
   // Dialog Data
   //{{AFX_DATA(CImportDlg)
   enum { IDD = IDD_IMPORT_TEXT };
-  CString	m_groupName;
-  CString	m_Separator;
+  CString m_groupName;
+  CString m_Separator;
   CString m_defimpdelim;
   int m_tab;
   int m_group;

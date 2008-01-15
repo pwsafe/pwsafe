@@ -6,13 +6,11 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-
 #ifndef MODEL_H
 #define MODEL_H
 
 #include "ThisMfcApp.h"
 #include "view.h"
-
 
 //  Contains methods called by view (GUI)
 
@@ -38,9 +36,7 @@ protected:
   Model() {};
 private:
   static Model * _instance;
-  View	     * _view;
-
+  View * _view;
 };
-
 
 #endif //  MODEL_H

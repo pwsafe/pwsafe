@@ -19,8 +19,8 @@ struct ExpPWEntry {
   CMyString group;
   CMyString title;
   CMyString user;
-  CMyString expirylocdate;	// user's long dat/time   - format displayed in ListCtrl
-  CMyString expiryexpdate;	// "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
+  CMyString expirylocdate;  // user's long dat/time   - format displayed in ListCtrl
+  CMyString expiryexpdate;  // "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
   time_t expirytttdate;
   int type;
 };

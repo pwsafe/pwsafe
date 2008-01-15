@@ -120,6 +120,6 @@ void CExportXMLDlg::OnAdvanced()
       m_subgroup_name = Adv.m_subgroup_name;
       m_subgroup_object = Adv.m_subgroup_object;
       m_subgroup_function = Adv.m_subgroup_function;
-    }	
+    }
   }
 }

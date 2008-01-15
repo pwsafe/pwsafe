@@ -85,9 +85,9 @@
 // * Pocket PC 2000                             *
 // **********************************************
 #if (WIN32_PLATFORM_PSPC == 1)
-#define PWS_PLATFORM	"Pocket PC"
-#define PWS_PLATFORM_EX	"Pocket PC 2000"
-#define POCKET_PC_VER	2000
+#define PWS_PLATFORM "Pocket PC"
+#define PWS_PLATFORM_EX "Pocket PC 2000"
+#define POCKET_PC_VER 2000
 #define POCKET_PC
 #if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
 #if defined(ARM) || defined(_ARM)
@@ -104,9 +104,9 @@
 // * Pocket PC 2002 and later                   *
 // **********************************************
 #elif (WIN32_PLATFORM_PSPC >= 310)
-#define PWS_PLATFORM	"Pocket PC"
-#define PWS_PLATFORM_EX	"Pocket PC 2002"
-#define POCKET_PC_VER	2002
+#define PWS_PLATFORM "Pocket PC"
+#define PWS_PLATFORM_EX "Pocket PC 2002"
+#define POCKET_PC_VER 2002
 #define POCKET_PC
 #if !defined(PWS_LITTLE_ENDIAN) && !defined(PWS_BIG_ENDIAN)
 #if defined(ARM) || defined(_ARM)
@@ -123,7 +123,7 @@
 // **********************************************
 #elif defined(_WIN32)
 #if defined(x86) || defined(_x86) || defined(_X86) || defined(_X86_) || defined(_M_IX86) || defined(_M_X64)
-#define PWS_PLATFORM	"Windows"
+#define PWS_PLATFORM "Windows"
 #define PWS_LITTLE_ENDIAN
 #endif
 // **********************************************

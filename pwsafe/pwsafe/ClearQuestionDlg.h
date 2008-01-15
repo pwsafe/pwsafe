@@ -19,7 +19,7 @@ public:
   CClearQuestionDlg(CWnd* pParent = NULL);   // standard constructor
 
   enum { IDD = IDD_SECURECLEAR };
-  bool	m_dontaskquestion;
+  bool m_dontaskquestion;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

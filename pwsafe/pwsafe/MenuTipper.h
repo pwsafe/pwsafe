@@ -24,12 +24,12 @@
 //
 class CMenuTipManager : public CSubclassWnd {
 protected:
-  CPopupText m_wndTip;		// home-grown "tooltip"
-  BOOL m_bMouseSelect;		// whether menu invoked by mouse
-  BOOL m_bSticky;				// after first tip appears, show rest immediately
+  CPopupText m_wndTip;  // home-grown "tooltip"
+  BOOL m_bMouseSelect;  // whether menu invoked by mouse
+  BOOL m_bSticky;       // after first tip appears, show rest immediately
 
 public:
-  int m_iDelay;				// tooltip delay: you can change
+  int m_iDelay;         // tooltip delay: you can change
 
   CMenuTipManager()
     : m_iDelay(2000), m_bSticky(FALSE), m_bMouseSelect(FALSE) { }

@@ -86,7 +86,7 @@ protected:
   // Information about loaded version info (Module, resource id, lang id, and order in which VarFileInfo and StringFileInfo appeared in the module)
   CString m_strModulePath;
   CString m_strStringResourceId;
-  LPTSTR	m_lpszResourceId;
-  WORD	m_wLangId;
-  BOOL	m_bRegularInfoOrder;
+  LPTSTR m_lpszResourceId;
+  WORD m_wLangId;
+  BOOL m_bRegularInfoOrder;
 };

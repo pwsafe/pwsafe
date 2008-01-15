@@ -28,23 +28,23 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsMisc)
   enum { IDD = IDD_PS_MISC };
-  BOOL	m_confirmdelete;
-  BOOL	m_maintaindatetimestamps;
-  BOOL	m_escexits;
-  BOOL    m_hotkey_enabled;
+  BOOL m_confirmdelete;
+  BOOL m_maintaindatetimestamps;
+  BOOL m_escexits;
+  BOOL m_hotkey_enabled;
   // JHF : class CHotKeyCtrl not supported by WinCE
 #if !defined(POCKET_PC)
-  CHotKeyCtrl	m_hotkey;
+  CHotKeyCtrl m_hotkey;
 #endif
   CComboBox m_dblclk_cbox;
-  BOOL	m_usedefuser;
-  BOOL	m_querysetdef;
-  CString	m_defusername;
+  BOOL m_usedefuser;
+  BOOL m_querysetdef;
+  CString m_defusername;
   CString m_otherbrowserlocation;
   //}}AFX_DATA
   DWORD m_hotkey_value;
-  DWORD_PTR     m_doubleclickaction;
-  int		m_DCA_to_Index[PWSprefs::maxDCA + 1];
+  DWORD_PTR m_doubleclickaction;
+  int m_DCA_to_Index[PWSprefs::maxDCA + 1];
   CString m_csBrowser;
   CString m_csBrowserCmdLineParms;
   CString m_csAutotype;

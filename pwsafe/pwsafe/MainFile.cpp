@@ -400,7 +400,7 @@ void
 #endif
 DboxMain::OnOpenMRU(UINT nID)
 {
-  UINT	uMRUItem = nID - ID_FILE_MRU_ENTRY1;
+  UINT uMRUItem = nID - ID_FILE_MRU_ENTRY1;
 
   CString mruItem = (*app.GetMRU())[uMRUItem];
 

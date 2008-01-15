@@ -27,7 +27,7 @@ public:
   // Dialog Data
   //{{AFX_DATA(CExportTextDlg)
   enum { IDD = IDD_EXPORT_TEXT };
-  CString	m_exportTextPassword;
+  CString m_exportTextPassword;
   CString m_defexpdelim;
   //}}AFX_DATA
 

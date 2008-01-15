@@ -1110,7 +1110,7 @@ PWScore::ReadFile(const CMyString &a_filename,
   // in the old times we could open even 1.x files
   // for compatibility reasons, we open them again, to see if this is really a "1.x" file
   if ((m_ReadFileVersion == PWSfile::V20) && (status == PWSfile::WRONG_VERSION)) {
-    PWSfile::VERSION tmp_version;	// only for getting compatible to "1.x" files
+    PWSfile::VERSION tmp_version;  // only for getting compatible to "1.x" files
     tmp_version = m_ReadFileVersion;
     m_ReadFileVersion = PWSfile::V17;
     in->SetCurVersion(PWSfile::V17);
@@ -1303,13 +1303,13 @@ case 1: // YYYYMMDD_HHMMSS suffix
     CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now,
       TMC_EXPORT_IMPORT);
     cs_temp += _T("_");
-    cs_newfile = cs_temp + cs_datetime.Left(4) +	// YYYY
-      cs_datetime.Mid(5,2) +	// MM
-      cs_datetime.Mid(8,2) +	// DD
+    cs_newfile = cs_temp + cs_datetime.Left(4) +  // YYYY
+      cs_datetime.Mid(5,2) +  // MM
+      cs_datetime.Mid(8,2) +  // DD
       _T("_") +
-      cs_datetime.Mid(11,2) +	// HH
-      cs_datetime.Mid(14,2) +	// MM
-      cs_datetime.Mid(17,2);	// SS
+      cs_datetime.Mid(11,2) +  // HH
+      cs_datetime.Mid(14,2) +  // MM
+      cs_datetime.Mid(17,2);   // SS
   }
   break;
 case 2: // _nnn suffix

@@ -22,10 +22,10 @@ public:
   // Dialog Data
   //{{AFX_DATA(CAddShortcutDlg)
   enum { IDD = IDD_ADD_SHORTCUT };
-  CMyString	m_target;
-  CMyString	m_username;
-  CMyString	m_title;
-  CMyString	m_group;
+  CMyString m_target;
+  CMyString m_username;
+  CMyString m_title;
+  CMyString m_group;
   int m_ibasedata;
   uuid_array_t m_base_uuid;
 

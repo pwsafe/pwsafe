@@ -277,13 +277,13 @@ void COptionsBackup::SetExample()
         time(&now);
         CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now, TMC_EXPORT_IMPORT);
         cs_example += _T("_");
-        cs_example = cs_example + cs_datetime.Left(4) +		// YYYY
-          cs_datetime.Mid(5,2) +	// MM
-          cs_datetime.Mid(8,2) +	// DD
+        cs_example = cs_example + cs_datetime.Left(4) +  // YYYY
+          cs_datetime.Mid(5,2) +  // MM
+          cs_datetime.Mid(8,2) +  // DD
           _T("_") +
-          cs_datetime.Mid(11,2) +	// HH
-          cs_datetime.Mid(14,2) +	// MM
-          cs_datetime.Mid(17,2);	// SS
+          cs_datetime.Mid(11,2) +  // HH
+          cs_datetime.Mid(14,2) +  // MM
+          cs_datetime.Mid(17,2);   // SS
       }
       break;
     case 2:

@@ -75,11 +75,11 @@ DECLARE_HANDLE(HDROP);
 #define PWS_HOTKEY_ID 5767
 
 // Index values for which dialog to show during GetAndCheckPassword
-enum {GCP_FIRST = 0,		// At startup of PWS
-GCP_NORMAL = 1,		// Only OK, CANCEL & HELP buttons
-GCP_UNMINIMIZE = 2,	// Only OK, CANCEL & HELP buttons
-GCP_WITHEXIT = 3,	// OK, CANCEL, EXIT & HELP buttons
-GCP_ADVANCED = 4};	// OK, CANCEL, HELP buttons & ADVANCED checkbox
+enum {GCP_FIRST = 0,  // At startup of PWS
+GCP_NORMAL = 1,       // Only OK, CANCEL & HELP buttons
+GCP_UNMINIMIZE = 2,   // Only OK, CANCEL & HELP buttons
+GCP_WITHEXIT = 3,     // OK, CANCEL, EXIT & HELP buttons
+GCP_ADVANCED = 4};    // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 //-----------------------------------------------------------------------------
 class DboxMain
@@ -233,7 +233,7 @@ public:
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
   //}}AFX_VIRTUAL
 
 protected:
@@ -241,9 +241,9 @@ protected:
   HICON m_hIconSm;
 
   // used to speed up the resizable dialog so OnSize/SIZE_RESTORED isn't called
-  bool	m_bSizing;
+  bool m_bSizing;
   bool m_bIsRestoring;
-  bool  m_bOpen;
+  bool m_bOpen;
   bool m_bValidate; // do validation after reading db
 
 #if !defined(POCKET_PC)
@@ -251,8 +251,8 @@ protected:
 #endif
 
 #if defined(POCKET_PC)
-  CCeCommandBar	*m_wndCommandBar;
-  CMenu			*m_wndMenu;
+  CCeCommandBar *m_wndCommandBar;
+  CMenu *m_wndMenu;
 #else
   CPWToolBar m_MainToolBar;   // main toolbar
   CPWFindToolBar m_FindToolBar;  // Find toolbar

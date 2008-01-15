@@ -17,9 +17,9 @@
 #include "sha256.h"
 
 #if defined(UNICODE)
-#define CLIPBOARD_TEXT_FORMAT	CF_UNICODETEXT
+#define CLIPBOARD_TEXT_FORMAT CF_UNICODETEXT
 #else
-#define CLIPBOARD_TEXT_FORMAT	CF_TEXT
+#define CLIPBOARD_TEXT_FORMAT CF_TEXT
 #endif
 
 #include "MyString.h"

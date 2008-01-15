@@ -1002,7 +1002,7 @@ CItemData::SetTime(int whichtime, const CString &time_str)
   } else if ((PWSUtil::VerifyImportDateTimeString(time_str, t) ||
     PWSUtil::VerifyXMLDateTimeString(time_str, t) ||
     PWSUtil::VerifyASCDateTimeString(time_str, t)) &&
-    (t != (time_t)-1)	// checkerror despite all our verification!
+    (t != (time_t)-1)  // checkerror despite all our verification!
     ) {
       SetTime(whichtime, t);
       return true;

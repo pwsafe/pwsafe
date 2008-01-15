@@ -23,11 +23,11 @@ public:
   // Dialog Data
   //{{AFX_DATA(CAddDlg)
   enum { IDD = IDD_ADD };
-  CMyString	m_password, m_password2;
-  CMyString	m_notes;
-  CMyString	m_username;
-  CMyString	m_title;
-  CMyString	m_group;
+  CMyString m_password, m_password2;
+  CMyString m_notes;
+  CMyString m_username;
+  CMyString m_title;
+  CMyString m_group;
   CMyString m_URL;
   CMyString m_autotype;
   CMyString m_locLTime;

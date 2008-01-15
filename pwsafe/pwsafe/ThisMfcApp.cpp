@@ -67,15 +67,15 @@ m_HotKeyPressed(false)
 #if defined(POCKET_PC)
   // Double check that *_ENDIAN has been correctly set!
 #if defined(PWS_LITTLE_ENDIAN)
-  unsigned char	buf[4]	= { 1, 0, 0, 0 };
-  unsigned int	ii		= 1;
-#define ENDIANNESS1	0 // Little
-#define ENDIANNESS2	1 // Big
+  unsigned char buf[4] = { 1, 0, 0, 0 };
+  unsigned int ii = 1;
+#define ENDIANNESS1 0 // Little
+#define ENDIANNESS2 1 // Big
 #elif defined(PWS_BIG_ENDIAN)
-  unsigned char	buf[4]	= { 0, 0, 0, 1 };
-  unsigned int	ii		= 1;
-#define ENDIANNESS1	1 // Big
-#define ENDIANNESS2	0 // Little
+  unsigned char buf[4] = { 0, 0, 0, 1 };
+  unsigned int ii = 1;
+#define ENDIANNESS1 1 // Big
+#define ENDIANNESS2 0 // Little
 #endif
   if (*(unsigned int*)buf != ii) {
     CString cs_msg, cs_e1, cs_e2;
@@ -564,7 +564,7 @@ default:
     pos = 0; // best guess...
 
   CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
-  if (file_submenu != NULL)	// Look for "Close Database"
+  if (file_submenu != NULL) // Look for "Close Database"
     pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
   else
     pos = -1;
@@ -579,7 +579,7 @@ default:
       CString cs_recent(MAKEINTRESOURCE(IDS_RECENT)), 
         cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
 
-      if (!m_mruonfilemenu) {	// MRU entries in popup menu
+      if (!m_mruonfilemenu) { // MRU entries in popup menu
         // Insert Item onto new popup
         irc = new_popupmenu.InsertMenu(0, MF_BYPOSITION,
           ID_FILE_MRU_ENTRY1, cs_recent);
@@ -591,7 +591,7 @@ default:
           UINT_PTR(new_popupmenu.m_hMenu),
           cs_recentsafes);
         ASSERT(irc != 0);
-      } else {	// MRU entries inline
+      } else {  // MRU entries inline
         ASSERT(file_submenu != NULL);
         irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION,
           ID_FILE_MRU_ENTRY1, cs_recent);

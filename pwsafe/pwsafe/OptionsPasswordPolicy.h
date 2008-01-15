@@ -30,13 +30,13 @@ public:
   //{{AFX_DATA(COptionsPasswordPolicy)
   enum { IDD = IDD_PS_PASSWORDPOLICY };
   UINT m_pwdefaultlength;
-  BOOL	m_pwuselowercase;
-  BOOL	m_pwuseuppercase;
-  BOOL	m_pwusedigits;
-  BOOL	m_pwusesymbols;
-  BOOL	m_pweasyvision;
-  BOOL	m_pwusehexdigits;
-  BOOL  m_pwmakepronounceable;
+  BOOL m_pwuselowercase;
+  BOOL m_pwuseuppercase;
+  BOOL m_pwusedigits;
+  BOOL m_pwusesymbols;
+  BOOL m_pweasyvision;
+  BOOL m_pwusehexdigits;
+  BOOL m_pwmakepronounceable;
   UINT  m_pwdigitminlength;
   UINT  m_pwlowerminlength;
   UINT  m_pwsymbolminlength;

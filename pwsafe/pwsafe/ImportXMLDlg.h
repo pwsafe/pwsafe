@@ -24,7 +24,7 @@ public:
   // Dialog Data
   //{{AFX_DATA(CImportXMLDlg)
   enum { IDD = IDD_IMPORT_XML };
-  CString	m_groupName;
+  CString m_groupName;
   int m_group;
   //}}AFX_DATA
 
