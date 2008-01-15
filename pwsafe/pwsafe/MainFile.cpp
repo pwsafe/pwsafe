@@ -375,6 +375,7 @@ DboxMain::Close()
 	UpdateMenuAndToolBar(false);
 	UpdateStatusBar();
 	m_titlebar = _T("Password Safe");
+	SetWindowText(LPCTSTR(m_titlebar));
 	return PWScore::SUCCESS;
 }
 
@@ -1762,24 +1763,33 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 
     Algorithm:
     Foreach entry in current database {
-    Find in comparison database
-    if found {
-    Compare
-    if match
-    OK
-    else
-    There are conflicts; note them & increment numConflicts
-    } else {
-    save & increment numOnlyInCurrent
-    }
+      Find in comparison database
+      if found {
+        Compare
+        if match
+          OK
+        else
+          There are conflicts; note them & increment numConflicts
+      } else {
+        save & increment numOnlyInCurrent
+      }
     }
 
     Foreach entry in comparison database {
-    Find in current database
-    if not found
-    save & increment numOnlyInComp
+      Find in current database
+      if not found
+        save & increment numOnlyInComp
     }
 	*/
+
+  if (!m_bAdvanced) {
+    // turn off time fields if not explicitly turned on by user via Advanced dialog
+    m_bsFields.reset(CItemData::CTIME);
+    m_bsFields.reset(CItemData::PMTIME);
+    m_bsFields.reset(CItemData::ATIME);
+    m_bsFields.reset(CItemData::LTIME);
+    m_bsFields.reset(CItemData::RMTIME);
+  }
 
 	int numOnlyInCurrent = 0;
 	int numOnlyInComp = 0;
@@ -1817,14 +1827,14 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
                 .... 1...  USER     [0x04] - not checked - must be identical
                 .... .1..  NOTES    [0x05]
                 .... ..1.  PASSWORD [0x06]
-                .... ...1  CTIME    [0x07] - not checked - immaterial
+                .... ...1  CTIME    [0x07] - not checked by default
 
                 Second byte
-                1... ....  PMTIME   [0x08] - not checked - immaterial
-                .1.. ....  ATIME    [0x09] - not checked - immaterial
-                ..1. ....  LTIME    [0x0a]
+                1... ....  PMTIME   [0x08] - not checked by default
+                .1.. ....  ATIME    [0x09] - not checked by default
+                ..1. ....  LTIME    [0x0a] - not checked by default
                 ...1 ....  RESERVED [0x0b] - not used
-                .... 1...  RMTIME   [0x0c] - not checked - immaterial
+                .... 1...  RMTIME   [0x0c] - not checked by default
                 .... .1..  URL      [0x0d]
                 .... ..1.  AUTOTYPE [0x0e]
                 .... ...1  PWHIST   [0x0f]
@@ -1842,21 +1852,24 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
         if (m_bsFields.test(CItemData::PASSWORD) &&
             currentItem.GetPassword() != compItem.GetPassword())
           bsConflicts.flip(CItemData::PASSWORD);
-        if (m_bAdvanced && m_bsFields.test(CItemData::CTIME) &&
-            currentItem.GetCTime() != compItem.GetCTime())
-          bsConflicts.flip(CItemData::CTIME);
-        if (m_bAdvanced && m_bsFields.test(CItemData::PMTIME) &&
-            currentItem.GetPMTime() != compItem.GetPMTime())
-          bsConflicts.flip(CItemData::PMTIME);
-        if (m_bAdvanced && m_bsFields.test(CItemData::ATIME) &&
-            currentItem.GetATime() != compItem.GetATime())
-          bsConflicts.flip(CItemData::ATIME);
-        if (m_bsFields.test(CItemData::LTIME) &&
-            currentItem.GetLTime() != compItem.GetLTime())
-          bsConflicts.flip(CItemData::LTIME);
-        if (m_bAdvanced && m_bsFields.test(CItemData::RMTIME) &&
-            currentItem.GetRMTime() != compItem.GetRMTime())
-          bsConflicts.flip(CItemData::RMTIME);
+        if (m_bAdvanced) {
+          // Only checked if specified by the user in via the Advanced dialog
+          if (m_bsFields.test(CItemData::CTIME) &&
+              currentItem.GetCTime() != compItem.GetCTime())
+            bsConflicts.flip(CItemData::CTIME);
+          if (m_bsFields.test(CItemData::PMTIME) &&
+              currentItem.GetPMTime() != compItem.GetPMTime())
+            bsConflicts.flip(CItemData::PMTIME);
+          if (m_bsFields.test(CItemData::ATIME) &&
+              currentItem.GetATime() != compItem.GetATime())
+            bsConflicts.flip(CItemData::ATIME);
+          if (m_bsFields.test(CItemData::LTIME) &&
+              currentItem.GetLTime() != compItem.GetLTime())
+            bsConflicts.flip(CItemData::LTIME);
+          if (m_bsFields.test(CItemData::RMTIME) &&
+              currentItem.GetRMTime() != compItem.GetRMTime())
+            bsConflicts.flip(CItemData::RMTIME);
+        }
         if (m_bsFields.test(CItemData::URL) &&
           FieldsNotEqual(currentItem.GetURL(), compItem.GetURL()))
           bsConflicts.flip(CItemData::URL);

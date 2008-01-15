@@ -1021,6 +1021,8 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     //	GCP_UNMINIMIZE (2) OK, CANCEL & HELP buttons
     //	GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
     //	GCP_ADVANCED   (4) OK, CANCEL, HELP & ADVANCED buttons
+    
+    // for adv_type values, see enum in AdvancedDlg.h
 
     // Called for an existing database. Prompt user
     // for password, verify against file. Lock file to
@@ -1048,6 +1050,11 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         // As file is read-only, we must honour it and not permit user to change it
         pcore->SetReadOnly(true);
     }
+
+    // set all field bits
+    // (not possible if the user selects some or all available options)
+    m_bsFields.set();
+
     static CPasskeyEntry *dbox_pkentry = NULL;
     INT_PTR rc = 0;
     if (dbox_pkentry == NULL) {
