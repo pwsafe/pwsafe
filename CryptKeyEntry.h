@@ -23,8 +23,8 @@ public:
   // Dialog Data
   //{{AFX_DATA(CCryptKeyEntry)
   enum { IDD = IDD_CRYPTKEYENTRY };
-  CMyString	m_cryptkey1;
-  CMyString	m_cryptkey2;
+  CMyString m_cryptkey1;
+  CMyString m_cryptkey2;
   //}}AFX_DATA
 
 

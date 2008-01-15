@@ -55,16 +55,16 @@ private:
   //{{AFX_DATA(CPasskeyEntry)
   enum { IDD = IDD_PASSKEYENTRY_FIRST };
 #if !defined(POCKET_PC)
-  CSysColStatic	m_ctlLogo;
-  CSysColStatic	m_ctlLogoText;
-  CButton	m_ctlOK;
+  CSysColStatic m_ctlLogo;
+  CSysColStatic m_ctlLogoText;
+  CButton m_ctlOK;
 #endif
   CEdit m_ctlPasskey;
   CMyString m_passkey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
   //}}AFX_DATA
-  CString	m_message;
+  CString m_message;
   CComboBoxExtn m_MRU_combo;
   CString m_filespec, m_orig_filespec;
 

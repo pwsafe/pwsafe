@@ -138,8 +138,8 @@ operator+(LPCTSTR lpsz, const CMyString& string)
 int
 CMyString::FindByte(char ch) const
 {
-  int		nRetVal = -1;	// default to not found
-  int		nIndex	= 0;;
+  int nRetVal = -1;  // default to not found
+  int nIndex = 0;
 
   LPCTSTR pszString = LPCTSTR(m_mystring);
 

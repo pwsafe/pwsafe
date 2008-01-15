@@ -28,7 +28,7 @@
 
 #if defined(POCKET_PC)
 #include "pocketpc/PwsPopupDialog.h"
-typedef	CPwsPopupDialog CPWDialog;
+typedef CPwsPopupDialog CPWDialog;
 #else
 class CPWDialog : public CDialog
 {

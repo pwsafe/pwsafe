@@ -30,8 +30,8 @@ public:
 //
 class CPopupText : public CWnd {
 public:
-  CSize m_szMargins;	// extra space around text: change if you like
-  CFont m_font;		// font: change if you like
+  CSize m_szMargins;  // extra space around text: change if you like
+  CFont m_font;       // font: change if you like
 
   CPopupText();
   virtual ~CPopupText();

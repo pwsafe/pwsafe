@@ -334,12 +334,12 @@ size_t PWSUtil::strLength(const LPCTSTR str)
 */
 long PWSUtil::fileLength(FILE *fp)
 {
-  long	pos;
-  long	len;
+  long pos;
+  long len;
 
   pos = ftell( fp );
   fseek( fp, 0, SEEK_END );
-  len	= ftell( fp );
+  len = ftell( fp );
   fseek( fp, pos, SEEK_SET );
 
   return len;
@@ -764,7 +764,7 @@ PWSUtil::VerifyImportPWHistoryString(const TCHAR *PWHistory, CMyString &newPWHis
   newPWHistory = CMyString(buffer);
 
   for (int i = 0; i < n; i++) {
-    if (pwleft < 26) {		//  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
+    if (pwleft < 26) {  //  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
       rc = PWH_TOO_SHORT;
       goto relbuf;
     }

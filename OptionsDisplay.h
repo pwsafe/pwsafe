@@ -36,7 +36,7 @@ public:
   BOOL m_notesshowinedit;
   BOOL m_preexpirywarn;
 #if defined(POCKET_PC)
-  BOOL	m_dcshowspassword;
+  BOOL m_dcshowspassword;
 #endif
   int m_treedisplaystatusatopen;
   int m_preexpirywarndays;

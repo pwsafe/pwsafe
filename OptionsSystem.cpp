@@ -156,7 +156,7 @@ BOOL COptionsSystem::OnInitDialog()
     m_ToolTipCtrl->AddTool(GetDlgItem(IDC_REGDEL_CB), cs_ToolTip);
   }
 
-  return TRUE;	// return TRUE unless you set the focus to a control
+  return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
 

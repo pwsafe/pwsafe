@@ -37,7 +37,7 @@ PWSXML::~PWSXML()
 {
 }
 
-//	---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
                         const CString &strXMLFileName, const CString &strXSDFileName,
                         int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl)
@@ -51,9 +51,9 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
   m_strResultText = _T("");
   m_bValidation = bvalidation;  // Validate or Import
 
-  //	Create SAXReader object
+  //  Create SAXReader object
   ISAXXMLReaderPtr pSAXReader = NULL;
-  //	Get ready for XSD schema validation
+  //  Get ready for XSD schema validation
   IXMLDOMSchemaCollection2Ptr pSchemaCache = NULL;
 
   if (m_bValidation) { //XMLValidate
@@ -95,7 +95,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
     }
   }
 
-  //	Create ContentHandlerImpl object
+  //  Create ContentHandlerImpl object
   PWSSAXContentHandler* pCH = new PWSSAXContentHandler();
   if (m_bValidation)
     pCH->SetVariables(NULL, m_bValidation, ImportedPrefix, m_delimiter,
@@ -104,13 +104,13 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
     pCH->SetVariables(m_xmlcore, m_bValidation, ImportedPrefix, m_delimiter, 
     m_possible_aliases, m_possible_shortcuts);
 
-  //	Create ErrorHandlerImpl object
+  //  Create ErrorHandlerImpl object
   PWSSAXErrorHandler* pEH = new PWSSAXErrorHandler();
 
-  //	Set Content Handler
+  //  Set Content Handler
   hr = pSAXReader->putContentHandler(pCH);
 
-  //	Set Error Handler
+  //  Set Error Handler
   hr = pSAXReader->putErrorHandler(pEH);
 
   switch (m_MSXML_Version) {
@@ -129,23 +129,23 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
   }
 
   if (!FAILED(hr)) {  // Create SchemaCache
-    //	Initialize the SchemaCache object with the XSD filename
+    //  Initialize the SchemaCache object with the XSD filename
     CComVariant cvXSDFileName;
     cvXSDFileName.vt = VT_BSTR;
     cvXSDFileName.bstrVal = strXSDFileName.AllocSysString();
     hr = pSchemaCache->add(L"", cvXSDFileName);
 
-    //	Set the SAXReader/Schema Cache features and properties
+    //  Set the SAXReader/Schema Cache features and properties
     {
       /* Documentation is unclear as to what is in which release.
       Try them all - if they don't get set, the world will not end!
       Common Error codes:
-      S_OK			Operation successful		0x00000000
-      E_NOTIMPL		Not implemented				0x80004001
-      E_NOINTERFACE	No such interface supported	0x80004002
-      E_ABORT			Operation aborted			0x80004004
-      E_FAIL			Unspecified failure			0x80004005
-      E_INVALIDARG	Invalid argument			0x80070057
+      S_OK          Operation successful         0x00000000
+      E_NOTIMPL     Not implemented              0x80004001
+      E_NOINTERFACE No such interface supported  0x80004002
+      E_ABORT       Operation aborted            0x80004004
+      E_FAIL        Unspecified failure          0x80004005
+      E_INVALIDARG Invalid argument              0x80070057
       Normally not supported on a back level MSXMLn.DLL
       */
 
@@ -166,7 +166,7 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
       hr = pSAXReader->putProperty(L"schemas", _variant_t(pSchemaCache.GetInterfacePtr()));
     }
 
-    //	Let's begin the parsing now
+    //  Let's begin the parsing now
     wchar_t wcURL[MAX_PATH]={0};
 #ifdef _UNICODE
 #if _MSC_VER >= 1400

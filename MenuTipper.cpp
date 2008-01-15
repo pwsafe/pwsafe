@@ -46,7 +46,7 @@ void CMenuTipManager::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu)
 {
   //  Only for MRU entries to display full path
   if (nItemID < ID_FILE_MRU_ENTRY1 || nItemID > ID_FILE_MRU_ENTRYMAX) {
-    m_wndTip.Cancel();	// cancel/hide tip
+    m_wndTip.Cancel();  // cancel/hide tip
     m_bMouseSelect = FALSE;
     m_bSticky = FALSE;
     return;
@@ -58,12 +58,12 @@ void CMenuTipManager::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu)
   }
 
   if ((nFlags & 0xFFFF) == 0xFFFF) {
-    m_wndTip.Cancel();	// cancel/hide tip
+    m_wndTip.Cancel();  // cancel/hide tip
     m_bMouseSelect = FALSE;
     m_bSticky = FALSE;
 
   } else if (nFlags & MF_POPUP) {
-    m_wndTip.Cancel();	// new popup: cancel
+    m_wndTip.Cancel();  // new popup: cancel
     m_bSticky = FALSE;
 
   } else if (nFlags & MF_SEPARATOR) {
@@ -130,7 +130,7 @@ static BOOL CALLBACK MyEnumProc(HWND hwnd, LPARAM lParam)
   TCHAR buf[16];
   GetClassName(hwnd, buf, sizeof(buf)/sizeof(buf[0]));
   if (_tcscmp(buf, _T("#32768")) == 0) { // special classname for menus
-    *((HWND*)lParam) = hwnd;	 // found it
+    *((HWND*)lParam) = hwnd;  // found it
     return FALSE;
   }
   return TRUE;

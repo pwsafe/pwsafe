@@ -23,9 +23,9 @@
 // Stop warnings about unused formal parameters!
 #pragma warning(disable : 4100)
 
-//	-----------------------------------------------------------------------
-//	PWSSAXErrorHandler Methods
-//	-----------------------------------------------------------------------
+//  -----------------------------------------------------------------------
+//  PWSSAXErrorHandler Methods
+//  -----------------------------------------------------------------------
 PWSSAXErrorHandler::PWSSAXErrorHandler():
 bErrorsFound(FALSE),
 m_strValidationResult("")
@@ -127,9 +127,9 @@ struct ISAXLocator * pLocator,
   return S_OK;
 }
 
-//	-----------------------------------------------------------------------
-//	PWSSAXContentHandler Methods
-//	-----------------------------------------------------------------------
+//  -----------------------------------------------------------------------
+//  PWSSAXContentHandler Methods
+//  -----------------------------------------------------------------------
 PWSSAXContentHandler::PWSSAXContentHandler()
 {
   m_refCnt = 0;
@@ -173,7 +173,7 @@ PWSSAXContentHandler::PWSSAXContentHandler()
   m_sDefaultUsername = _T("");
 }
 
-//	-----------------------------------------------------------------------
+//  -----------------------------------------------------------------------
 PWSSAXContentHandler::~PWSSAXContentHandler()
 {
   m_ukhxl.clear();
@@ -220,7 +220,7 @@ unsigned long __stdcall PWSSAXContentHandler::Release()
   else return m_refCnt;
 }
 
-//	-----------------------------------------------------------------------
+//  -----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::startDocument ( )
 {
   m_strImportErrors = _T("");
@@ -233,7 +233,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::putDocumentLocator (struct ISAX
   return S_OK;
 }
 
-//	---------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
   /* [in] */ wchar_t __RPC_FAR *pwchNamespaceUri,
   /* [in] */ int cchNamespaceUri,
@@ -384,7 +384,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
   return S_OK;
 }
 
-//	---------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
   /* [in] */ wchar_t __RPC_FAR *pwchChars,
   /* [in] */ int cchChars)
@@ -418,7 +418,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
   return S_OK;
 }
 
-//	-----------------------------------------------------------------------
+//  -----------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
   unsigned short * pwchNamespaceUri,
   int cchNamespaceUri,
@@ -948,7 +948,7 @@ default:
   return S_OK;
 }
 
-//	---------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------
 HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endDocument ( )
 {
   return S_OK;

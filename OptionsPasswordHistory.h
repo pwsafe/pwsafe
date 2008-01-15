@@ -31,9 +31,9 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordHistory)
   enum { IDD = IDD_PS_PASSWORDHISTORY };
-  BOOL	m_savepwhistory;
-  UINT	m_pwhistorynumdefault;
-  int     m_pwhaction;
+  BOOL m_savepwhistory;
+  UINT m_pwhistorynumdefault;
+  int  m_pwhaction;
   //}}AFX_DATA
 
   // Overrides

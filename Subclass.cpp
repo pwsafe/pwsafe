@@ -42,7 +42,7 @@ public:
 // This trick is used so the hook map isn't
 // instantiated until someone actually requests it.
 //
-#define	theHookMap	(CSubclassWndMap::GetHookMap())
+#define  theHookMap  (CSubclassWndMap::GetHookMap())
 
 IMPLEMENT_DYNAMIC(CSubclassWnd, CWnd);
 
@@ -56,7 +56,7 @@ CSubclassWnd::CSubclassWnd()
 CSubclassWnd::~CSubclassWnd()
 {
   if (m_hWnd)
-    HookWindow((HWND)NULL);		// unhook window
+    HookWindow((HWND)NULL);  // unhook window
 }
 
 //////////////////
@@ -71,11 +71,11 @@ BOOL CSubclassWnd::HookWindow(HWND hwnd)
     // Hook the window
     ASSERT(m_hWnd == NULL);
     ASSERT(::IsWindow(hwnd));
-    theHookMap.Add(hwnd, this);			// Add to map of hooks
+    theHookMap.Add(hwnd, this);  // Add to map of hooks
 
   } else if (m_hWnd) {
     // Unhook the window
-    theHookMap.Remove(this);			// Remove from map
+    theHookMap.Remove(this);  // Remove from map
     m_pOldWndProc = NULL;
   }
   m_hWnd = hwnd;
@@ -92,7 +92,7 @@ BOOL CSubclassWnd::HookWindow(HWND hwnd)
 //
 LRESULT CSubclassWnd::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 {
-  //	ASSERT_VALID(this);  // removed for speed
+  // ASSERT_VALID(this);  // removed for speed
   ASSERT(m_pOldWndProc);
   return m_pNext ? m_pNext->WindowProc(msg, wp, lp) :
     ::CallWindowProc(WNDPROC(m_pOldWndProc), m_hWnd, msg, wp, lp);
@@ -151,7 +151,7 @@ HookWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
   //
   MSG& curMsg = AfxGetThreadState()->m_lastSentMsg;
   MSG  oldMsg = curMsg;   // save for nesting
-  curMsg.hwnd	= hwnd;
+  curMsg.hwnd = hwnd;
   curMsg.message = msg;
   curMsg.wParam = wp;
   curMsg.lParam = lp;
@@ -172,7 +172,7 @@ HookWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     // pass to msg hook
     lr = pSubclassWnd->WindowProc(msg, wp, lp);
   }
-  curMsg = oldMsg;			// pop state
+  curMsg = oldMsg;  // pop state
   return lr;
 }
 
@@ -186,7 +186,7 @@ CSubclassWndMap::CSubclassWndMap()
 CSubclassWndMap::~CSubclassWndMap()
 {
   // This assert bombs when posting WM_QUIT, so I've deleted it.
-  //	ASSERT(IsEmpty());	// all hooks should be removed!
+  // ASSERT(IsEmpty());  // all hooks should be removed!
 }
 
 //////////////////
@@ -259,7 +259,7 @@ void CSubclassWndMap::RemoveAll(HWND hwnd)
 {
   CSubclassWnd* pSubclassWnd;
   while ((pSubclassWnd = Lookup(hwnd))!=NULL)
-    pSubclassWnd->HookWindow((HWND)NULL);	// (unhook)
+    pSubclassWnd->HookWindow((HWND)NULL);  // (unhook)
 }
 
 /////////////////

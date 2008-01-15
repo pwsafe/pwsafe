@@ -37,95 +37,94 @@ CString PWSprefs::m_configfilename; // may be set before singleton created
 // 2nd parameter = default value
 // 3rd parameter if 'true' means value stored in db, if 'false' means application related
 const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
-  {_T("AlwaysOnTop"), false, false},								// application
-  {_T("ShowPWDefault"), false, true},								// database
-  {_T("ShowPasswordInTree"), false, true},					// database
-  {_T("SortAscending"), true, true},								// database
-  {_T("UseDefaultUser"), false, true},								// database
-  {_T("SaveImmediately"), true, true},							// database
-  {_T("PWUseLowercase"), true, true},								// database
-  {_T("PWUseUppercase"), true, true},								// database
-  {_T("PWUseDigits"), true, true},								// database
-  {_T("PWUseSymbols"), false, true},								// database
-  {_T("PWUseHexDigits"), false, true},							// database
-  {_T("PWUseEasyVision"), false, true},								// database
-  {_T("dontaskquestion"), false, false},							// application
-  {_T("deletequestion"), false, false},							// application
-  {_T("DCShowsPassword"), false, false},							// application
-  {_T("DontAskMinimizeClearYesNo"), true, false},					// application
-  {_T("DatabaseClear"), false, false},							// application
-  {_T("DontAskSaveMinimize"), false, false},						// application - obsoleted in 3.02
-  {_T("QuerySetDef"), true, false},								// application
-  {_T("UseNewToolbar"), true, false},								// application
-  {_T("UseSystemTray"), true, false},								// application
-  {_T("LockOnWindowLock"), true, false},							// application
-  {_T("LockOnIdleTimeout"), true, false},							// application
-  {_T("EscExits"), true, false},									// application
-  {_T("IsUTF8"), false, true},									// database
-  {_T("HotKeyEnabled"), false, false},							// application
-  {_T("MRUOnFileMenu"), true, false},								// application
-  {_T("DisplayExpandedAddEditDlg"), true, true},					// database
-  {_T("MaintainDateTimeStamps"), false, true},					// database
-  {_T("SavePasswordHistory"), false, true},						// database
-  {_T("FindWraps"), false, false},								// application - obsoleted in 3.11
-  {_T("ShowNotesDefault"), false, true},							// database
-  {_T("BackupBeforeEverySave"), true, false},					    // application
-  {_T("PreExpiryWarn"), false, false},                            // application
-  {_T("ExplorerTypeTree"), false, false},                         // application
-  {_T("ListViewGridLines"), false, false},                        // application
-  {_T("MinimizeOnAutotype"), true, false},                        // application
-  {_T("ShowUsernameInTree"), true, true},								// database
-  {_T("PWMakePronounceable"), false, true}, // database - 3.12 password policy
+  {_T("AlwaysOnTop"), false, false},                // application
+  {_T("ShowPWDefault"), false, true},               // database
+  {_T("ShowPasswordInTree"), false, true},          // database
+  {_T("SortAscending"), true, true},                // database
+  {_T("UseDefaultUser"), false, true},              // database
+  {_T("SaveImmediately"), true, true},              // database
+  {_T("PWUseLowercase"), true, true},               // database
+  {_T("PWUseUppercase"), true, true},               // database
+  {_T("PWUseDigits"), true, true},                  // database
+  {_T("PWUseSymbols"), false, true},                // database
+  {_T("PWUseHexDigits"), false, true},              // database
+  {_T("PWUseEasyVision"), false, true},             // database
+  {_T("dontaskquestion"), false, false},            // application
+  {_T("deletequestion"), false, false},             // application
+  {_T("DCShowsPassword"), false, false},            // application
+  {_T("DontAskMinimizeClearYesNo"), true, false},   // application
+  {_T("DatabaseClear"), false, false},              // application
+  {_T("DontAskSaveMinimize"), false, false},        // application - obsoleted in 3.02
+  {_T("QuerySetDef"), true, false},                 // application
+  {_T("UseNewToolbar"), true, false},               // application
+  {_T("UseSystemTray"), true, false},               // application
+  {_T("LockOnWindowLock"), true, false},            // application
+  {_T("LockOnIdleTimeout"), true, false},           // application
+  {_T("EscExits"), true, false},                    // application
+  {_T("IsUTF8"), false, true},                      // database
+  {_T("HotKeyEnabled"), false, false},              // application
+  {_T("MRUOnFileMenu"), true, false},               // application
+  {_T("DisplayExpandedAddEditDlg"), true, true},    // database
+  {_T("MaintainDateTimeStamps"), false, true},      // database
+  {_T("SavePasswordHistory"), false, true},         // database
+  {_T("FindWraps"), false, false},                  // application - obsoleted in 3.11
+  {_T("ShowNotesDefault"), false, true},            // database
+  {_T("BackupBeforeEverySave"), true, false},       // application
+  {_T("PreExpiryWarn"), false, false},              // application
+  {_T("ExplorerTypeTree"), false, false},           // application
+  {_T("ListViewGridLines"), false, false},          // application
+  {_T("MinimizeOnAutotype"), true, false},          // application
+  {_T("ShowUsernameInTree"), true, true},           // database
+  {_T("PWMakePronounceable"), false, true},         // database - 3.12 password policy
 };
 
 // Default value = -1 means set at runtime
 // Extra two values for Integer - min and max acceptable values (ignored if = -1)
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), (unsigned int)-1, false, -1, -1}, 					// application
-  {_T("column2width"), (unsigned int)-1, false, -1, -1}, 					// application
-  {_T("column3width"), (unsigned int)-1, false, -1, -1}, 					// application
-  {_T("column4width"), (unsigned int)-1, false, -1, -1}, 					// application
-  {_T("sortedcolumn"), 0, false, 0, 15},									// application
-  {_T("PWDefaultLength"), 8, true, 4, 1024},									// database
+  {_T("column1width"), (unsigned int)-1, false, -1, -1}, // application
+  {_T("column2width"), (unsigned int)-1, false, -1, -1}, // application
+  {_T("column3width"), (unsigned int)-1, false, -1, -1}, // application
+  {_T("column4width"), (unsigned int)-1, false, -1, -1}, // application
+  {_T("sortedcolumn"), 0, false, 0, 15},                 // application
+  {_T("PWDefaultLength"), 8, true, 4, 1024},             // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
-  {_T("maxmruitems"), 4, false, 0, 20},									// application
-  {_T("IdleTimeout"), 5, true, 1, 120},									// database
-  {_T("DoubleClickAction"), DoubleClickCopyPassword, false, minDCA, maxDCA},	// application
-  {_T("HotKey"), 0, false, -1, -1}, // 0=disabled, >0=keycode.			// application
+  {_T("maxmruitems"), 4, false, 0, 20},                  // application
+  {_T("IdleTimeout"), 5, true, 1, 120},                  // database
+  {_T("DoubleClickAction"), DoubleClickCopyPassword, false, minDCA, maxDCA}, // application
+  {_T("HotKey"), 0, false, -1, -1}, // 0=disabled, >0=keycode. // application
   // MaxREItems maximum = (ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1)
-  {_T("MaxREItems"), 25, false, 0, 25},									// application
-  {_T("TreeDisplayStatusAtOpen"), AllCollapsed, true, minTDS, maxTDS},	// database
-  {_T("NumPWHistoryDefault"), 3, true, 0, 255},							// database
+  {_T("MaxREItems"), 25, false, 0, 25},                  // application
+  {_T("TreeDisplayStatusAtOpen"), AllCollapsed, true, minTDS, maxTDS}, // database
+  {_T("NumPWHistoryDefault"), 3, true, 0, 255},          // database
   // Specified by supported masks
-  {_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},				// application
-  {_T("BackupMaxIncremented"), 1, false, 1, 999},						// application
-  {_T("PreExpiryWarnDays"), 1, false, 1, 30},               // application
-
+  {_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},    // application
+  {_T("BackupMaxIncremented"), 1, false, 1, 999},        // application
+  {_T("PreExpiryWarnDays"), 1, false, 1, 30},            // application
   {_T("ClosedTrayIconColour"), stiBlack, false,
-  stiBlack, stiYellow},                                    // application
-  {_T("PWDigitMinLength"), 0, true, 0, 1024},               // database
-  {_T("PWLowercaseMinLength"), 0, true, 0, 1024},           // database
-  {_T("PWSymbolMinLength"), 0, true, 0, 1024},              // database
-  {_T("PWUppercaseMinLength"), 0, true, 0, 1024},           // database
+  stiBlack, stiYellow},                                  // application
+  {_T("PWDigitMinLength"), 0, true, 0, 1024},            // database
+  {_T("PWLowercaseMinLength"), 0, true, 0, 1024},        // database
+  {_T("PWSymbolMinLength"), 0, true, 0, 1024},           // database
+  {_T("PWUppercaseMinLength"), 0, true, 0, 1024},        // database
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
-  {_T("currentbackup"), _T(""), false},							// application
-  {_T("currentfile"), _T(""), false},								// application
-  {_T("lastview"), _T("tree"), false},							// application
-  {_T("DefaultUsername"), _T(""), true},						// database
-  {_T("treefont"), _T(""), false},								// application
-  {_T("BackupPrefixValue"), _T(""), false},						// application
-  {_T("BackupDir"), _T(""), false},                   // application
-  {_T("AltBrowser"), _T(""), false},								// application
-  {_T("ListColumns"), _T(""), false},								// application
-  {_T("ColumnWidths"), _T(""), false},							// application
-  {_T("DefaultAutotypeString"), _T(""), true},					// database
-  {_T("AltBrowserCmdLineParms"), _T(""), false},				// application
-  {_T("MainToolBarButtons"), _T(""), false},                // application
-  {_T("PasswordFont"), _T(""), false},		                  // application
+  {_T("currentbackup"), _T(""), false},                  // application
+  {_T("currentfile"), _T(""), false},                    // application
+  {_T("lastview"), _T("tree"), false},                   // application
+  {_T("DefaultUsername"), _T(""), true},                 // database
+  {_T("treefont"), _T(""), false},                       // application
+  {_T("BackupPrefixValue"), _T(""), false},              // application
+  {_T("BackupDir"), _T(""), false},                      // application
+  {_T("AltBrowser"), _T(""), false},                     // application
+  {_T("ListColumns"), _T(""), false},                    // application
+  {_T("ColumnWidths"), _T(""), false},                   // application
+  {_T("DefaultAutotypeString"), _T(""), true},           // database
+  {_T("AltBrowserCmdLineParms"), _T(""), false},         // application
+  {_T("MainToolBarButtons"), _T(""), false},             // application
+  {_T("PasswordFont"), _T(""), false},                   // application
   {_T("TreeListSampleText"), _T("AaBbYyZz 0O1IlL"), false}, // application
-  {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), false},     // application
+  {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), false},  // application
 };
 
 

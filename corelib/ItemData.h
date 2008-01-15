@@ -301,11 +301,11 @@ private:
   CItemField m_Group;
   CItemField m_URL;
   CItemField m_AutoType;
-  CItemField m_tttATime;	// last 'A'ccess time
-  CItemField m_tttCTime;	// 'C'reation time
-  CItemField m_tttLTime;	// password 'L'ifetime
-  CItemField m_tttPMTime;	// last 'P'assword 'M'odification time
-  CItemField m_tttRMTime;	// last 'R'ecord 'M'odification time
+  CItemField m_tttATime;  // last 'A'ccess time
+  CItemField m_tttCTime;  // 'C'reation time
+  CItemField m_tttLTime;  // password 'L'ifetime
+  CItemField m_tttPMTime; // last 'P'assword 'M'odification time
+  CItemField m_tttRMTime; // last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
   CItemField m_PWPolicy;
 

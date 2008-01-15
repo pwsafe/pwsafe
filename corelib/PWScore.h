@@ -59,17 +59,17 @@ public:
     SUCCESS = 0,
     FAILURE = 1,
     CANT_OPEN_FILE = -10,
-    USER_CANCEL,								// -9
-    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD,	//  6 - ensure the same value
-    BAD_DIGEST = PWSfile::BAD_DIGEST,			//  7 - ensure the same value
-    UNKNOWN_VERSION,							//  8
-    NOT_SUCCESS,								//  9
-    ALREADY_OPEN,								// 10
-    INVALID_FORMAT,								// 11
-    USER_EXIT,									// 12
-    XML_FAILED_VALIDATION,						// 13
-    XML_FAILED_IMPORT,							// 14
-    LIMIT_REACHED                               // 15
+    USER_CANCEL,                              // -9
+    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  6 - ensure the same value
+    BAD_DIGEST = PWSfile::BAD_DIGEST,         //  7 - ensure the same value
+    UNKNOWN_VERSION,                          //  8
+    NOT_SUCCESS,                              //  9
+    ALREADY_OPEN,                             // 10
+    INVALID_FORMAT,                           // 11
+    USER_EXIT,                                // 12
+    XML_FAILED_VALIDATION,                    // 13
+    XML_FAILED_IMPORT,                        // 14
+    LIMIT_REACHED                             // 15
   };
 
 

@@ -78,7 +78,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   const int nTypeSortColumn = self->m_iTypeSortColumn;
   CItemData* pLHS = (CItemData *)lParam1;
   CItemData* pRHS = (CItemData *)lParam2;
-  CMyString	group1, group2;
+  CMyString group1, group2;
   time_t t1, t2;
 
   int iResult;
@@ -701,7 +701,7 @@ DboxMain::RefreshViews(const int iView)
     return;
 
 #if defined(POCKET_PC)
-  HCURSOR		waitCursor = app.LoadStandardCursor( IDC_WAIT );
+  HCURSOR waitCursor = app.LoadStandardCursor( IDC_WAIT );
 #endif
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked

@@ -36,7 +36,7 @@ CStringTable::CStringTable(WORD wLang, WORD wCodePage)
 
 CStringTable::CStringTable(StringTable* pStringTable)
 {
-  FromStringTable(pStringTable);	
+  FromStringTable(pStringTable);
 }
 
 CStringTable::~CStringTable()

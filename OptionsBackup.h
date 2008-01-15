@@ -35,14 +35,14 @@ public:
   CComboBox m_backupsuffix_cbox;
   CString m_userbackupprefix;
   CString m_userbackupotherlocation;
-  BOOL	m_saveimmediately;
-  BOOL	m_backupbeforesave;
-  int		m_backupprefix;
-  int		m_backuplocation;
-  int		m_maxnumincbackups;
+  BOOL m_saveimmediately;
+  BOOL m_backupbeforesave;
+  int m_backupprefix;
+  int m_backuplocation;
+  int m_maxnumincbackups;
   //}}AFX_DATA
-  DWORD_PTR	m_backupsuffix;
-  int		m_BKSFX_to_Index[PWSprefs::maxBKSFX + 1];
+  DWORD_PTR m_backupsuffix;
+  int m_BKSFX_to_Index[PWSprefs::maxBKSFX + 1];
   CString m_currentFileDir;
   CString m_currentFileBasename;
 

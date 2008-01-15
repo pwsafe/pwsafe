@@ -802,15 +802,15 @@ DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
   HistoryUpdateSetMax set_max(num_altered, new_default_max);
 
   switch (iAction) {
-case 1:		// reset off
+case 1:   // reset off
   updater = &reset_off;
   ids = IDS_ENTRIESCHANGEDSTOP;
   break;
-case 2:	// reset on
+case 2:   // reset on
   updater = &reset_on;
   ids = IDS_ENTRIESCHANGEDSAVE;
   break;
-case 3:	// setmax
+case 3:   // setmax
   updater = &set_max;
   ids = IDS_ENTRIESRESETMAX;
   break;

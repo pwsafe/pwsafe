@@ -318,11 +318,11 @@ static const struct {
     * http://www.multicians.org/thvv/tvvtools.html
     * Thanks to Tom Van Vleck, Morrie Gasser, and Dan Edwards.
     */
-    TCHAR c1, c2, c3;		/* array indices */
-    long sumfreq;		/* total frequencies[c1][c2][*] */
-    long ranno;			/* random number in [0,sumfreq] */
-    long sum;			/* running total of frequencies */
-    UINT nchar;			/* number of chars in password so far */
+    TCHAR c1, c2, c3;  /* array indices */
+    long sumfreq;      /* total frequencies[c1][c2][*] */
+    long ranno;        /* random number in [0,sumfreq] */
+    long sum;          /* running total of frequencies */
+    UINT nchar;        /* number of chars in password so far */
     PWSrand *pwsrnd = PWSrand::GetInstance();
     stringT password(m_pwlen, 0);
 
@@ -332,7 +332,7 @@ static const struct {
     for the general population.  For example, this code happily
     generates "mmitify" even though no word in my dictionary
     begins with mmi. So what.) */
-    sumfreq = sigma;	// sigma calculated by loadtris
+    sumfreq = sigma;  // sigma calculated by loadtris
     ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
     sum = 0;
     for (c1=0; c1 < 26; c1++) {
@@ -350,7 +350,7 @@ static const struct {
     } // for c1
 
     /* Do a random walk. */
-    nchar = 3;		// We have three chars so far.
+    nchar = 3;  // We have three chars so far.
     while (nchar < m_pwlen) {
       c1 = password[nchar-2] - TCHAR('a'); // Take the last 2 chars
       c2 = password[nchar-1] - TCHAR('a'); // .. and find the next one.
@@ -361,7 +361,7 @@ static const struct {
       duos counts all digraphs, not just those
       in a trigraph. We want sum. */
       if (sumfreq == 0) { // If there is no possible extension..
-        break;	// Break while nchar loop & print what we have.
+        break;  // Break while nchar loop & print what we have.
       }
       /* Choose a continuation. */
       ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
@@ -370,7 +370,7 @@ static const struct {
         sum += tris[c1][c2][c3];
         if (sum > ranno) {
           password[nchar++] = TCHAR('a') + c3;
-          c3 = 26;	// Break the for c3 loop.
+          c3 = 26;  // Break the for c3 loop.
         }
       } // for c3
     } // while nchar

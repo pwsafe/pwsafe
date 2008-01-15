@@ -39,15 +39,15 @@ void
 DboxMain::OnTrayLockUnLock()
 {
   switch(app.GetSystemTrayState()) {
-  case ThisMfcApp::LOCKED:					// User clicked UnLock
+  case ThisMfcApp::LOCKED:            // User clicked UnLock
     UnMinimize(true);
     break;
-  case ThisMfcApp::UNLOCKED:					// User clicked Lock
+  case ThisMfcApp::UNLOCKED:          // User clicked Lock
     UpdateSystemTray(LOCKED);
     ClearClipboardData();
     ShowWindow(SW_HIDE);
-    m_IdleLockCountDown = 1; // lock the same way as a timer lock
-    OnTimer(TIMER_USERLOCK); // save db if needed, etc.
+    m_IdleLockCountDown = 1;          // lock the same way as a timer lock
+    OnTimer(TIMER_USERLOCK);          // save db if needed, etc.
     break;
   case ThisMfcApp::CLOSED:
   default:
