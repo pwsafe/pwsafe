@@ -1875,8 +1875,8 @@ DboxMain::LaunchBrowser(const CString &csURL)
   SHELLEXECUTEINFO si;
   si.cbSize = sizeof(SHELLEXECUTEINFO);
   si.fMask = 0;
-  si.hwnd = 0;
-  si.lpVerb = si.lpFile = si.lpParameters = si.lpDirectory = 0;
+  si.hwnd = NULL;
+  si.lpVerb = si.lpFile = si.lpParameters = si.lpDirectory = NULL;
   si.nShow = SW_SHOWNORMAL;
 
   if (!useAltBrowser) {

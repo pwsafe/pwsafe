@@ -390,6 +390,8 @@ protected:
   afx_msg void OnUpdateTrayDeleteEntry(CCmdUI *pCmdUI);
   afx_msg void OnTrayAutoType(UINT nID);
   afx_msg void OnUpdateTrayAutoType(CCmdUI *pCmdUI);
+  afx_msg void OnTrayCopyURL(UINT nID);
+  afx_msg void OnUpdateTrayCopyURL(CCmdUI *pCmdUI);
 #endif
 
   // Generated message map functions
