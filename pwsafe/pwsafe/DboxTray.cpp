@@ -72,6 +72,18 @@ DboxMain::OnTrayCopyUsername(UINT nID)
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYUSERNAME1, ci))
     return;
 
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
   const CMyString username = ci.GetUser();
   if (!username.IsEmpty()) {
     SetClipboardData(username);
@@ -93,6 +105,22 @@ DboxMain::OnTrayCopyPassword(UINT nID)
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYPASSWORD1, ci))
     return;
 
+  const CItemData::EntryType entrytype = ci.GetEntryType();
+  if (entrytype == CItemData::Alias || entrytype == CItemData::Shortcut) {
+    // This is an alias/shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    if (entrytype == CItemData::Alias)
+      m_core.GetAliasBaseUUID(entry_uuid, base_uuid);
+    else
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
   const CMyString curPassString = ci.GetPassword();
   SetClipboardData(curPassString);
   UpdateAccessTime(&ci);
@@ -109,10 +137,22 @@ DboxMain::OnTrayCopyNotes(UINT nID)
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTES1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESMAX));
 
   CItemData ci;
-  CString cs_text;
   if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYNOTES1, ci))
     return;
 
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
+  CString cs_text;
   const CMyString notes = ci.GetNotes();
   const CMyString url = ci.GetURL();
   const CMyString autotype = ci.GetAutoType();
@@ -236,6 +276,41 @@ DboxMain::OnTrayAutoType(UINT nID)
 
 void
 DboxMain::OnUpdateTrayAutoType(CCmdUI *)
+{
+}
+
+void
+DboxMain::OnTrayCopyURL(UINT nID)
+{
+  ASSERT((nID >= ID_MENUITEM_TRAYCOPYURL1) && (nID <= ID_MENUITEM_TRAYCOPYURLMAX));
+
+  CItemData ci;
+  if (!m_RUEList.GetPWEntry(nID - ID_MENUITEM_TRAYCOPYURL1, ci))
+    return;
+
+  if (ci.IsShortcut()) {
+    // This is an shortcut
+    uuid_array_t entry_uuid, base_uuid;
+    ci.GetUUID(entry_uuid);
+    m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_core.Find(base_uuid);
+    if (iter != End()) {
+      ci = iter->second;
+    }
+  }
+
+  const CMyString cs_URL = ci.GetURL();
+
+  if (!cs_URL.IsEmpty())
+    SetClipboardData(cs_URL);
+  else
+    ClearClipboardData();
+  UpdateAccessTime(&ci);
+}
+
+void
+DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
 {
 }
 

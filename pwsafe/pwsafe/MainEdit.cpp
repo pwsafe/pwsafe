@@ -985,7 +985,7 @@ DboxMain::OnCopyPassword()
   CItemData *ci_original(ci);
 
   uuid_array_t base_uuid, entry_uuid;
-  CItemData::EntryType entrytype = ci->GetEntryType();
+  const CItemData::EntryType entrytype = ci->GetEntryType();
   if (entrytype == CItemData::Alias || entrytype == CItemData::Shortcut) {
     // This is an alias/shortcut
     ci->GetUUID(entry_uuid);

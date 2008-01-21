@@ -534,16 +534,20 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         pNewRecentEntryMenu[i]->InsertMenu(2, MF_BYPOSITION | MF_STRING,
           ID_MENUITEM_TRAYCOPYNOTES1 + i,
           cs_text);
-        cs_text.LoadString(IDS_TRAYAUTOTYPE);
+        cs_text.LoadString(IDS_TRAYCOPYURL);
         pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYAUTOTYPE1 + i,
+          ID_MENUITEM_TRAYCOPYURL1 + i,
           cs_text);
         cs_text.LoadString(IDS_TRAYBROWSE);
         pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
           ID_MENUITEM_TRAYBROWSE1 + i,
           cs_text);
-        cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
+        cs_text.LoadString(IDS_TRAYAUTOTYPE);
         pNewRecentEntryMenu[i]->InsertMenu(5, MF_BYPOSITION | MF_STRING,
+          ID_MENUITEM_TRAYAUTOTYPE1 + i,
+          cs_text);
+        cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
+        pNewRecentEntryMenu[i]->InsertMenu(6, MF_BYPOSITION | MF_STRING,
           ID_MENUITEM_TRAYDELETE1 + i,
           cs_text);
 

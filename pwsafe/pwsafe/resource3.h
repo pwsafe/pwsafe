@@ -146,6 +146,7 @@
 #define IDS_TRAYVIEWEDIT                5320
 #define IDS_TRAYDELETETRAYENTRY         5321
 #define IDS_CANTPROCESSENTRY            5322
+#define IDS_TRAYCOPYURL                 5323
 #define IDS_SETUSERNAME                 5326
 #define IDS_NEWGROUP                    5327
 #define IDS_COPYNUMBER                  5328
