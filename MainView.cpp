@@ -218,7 +218,7 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
       UpdateBrowseURLSendEmailButton(false);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
-      const bool bIsEmail = entry->GetURL().Find(_T("mailto:")) != -1;
+      const bool bIsEmail = entry->IsURLEmail();
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
   }
@@ -974,7 +974,7 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     } else {
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_ENABLED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_ENABLED);
-      const bool bIsEmail = itemData->GetURL().Find(_T("mailto:")) != -1;
+      const bool bIsEmail = itemData->IsURLEmail();
       if (bIsEmail) {
         pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
           ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);

@@ -290,6 +290,8 @@ public:
     void SetShortcut()
     {m_entrytype = Shortcut;}
 
+    bool IsURLEmail()
+    {return GetURL().Find(_T("mailto:")) != -1;}
 
 private:
   CItemField m_Name;
