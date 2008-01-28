@@ -160,7 +160,7 @@ DboxMain::OnTrayCopyNotes(UINT nID)
 
   clipboard_data = notes;
   if (!url.IsEmpty()) {
-    if (ci.GetURL().Find(_T("mailto:")) == -1)
+    if (ci.IsURLEmail())
       cs_text.LoadString(IDS_COPYURL);
     else
       cs_text.LoadString(IDS_COPYEMAIL);
@@ -239,7 +239,7 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   if (ci.IsURLEmpty()) {
     pCmdUI->Enable(FALSE);
   } else {
-    const bool bIsEmail = ci.GetURL().Find(_T("mailto:")) != -1;
+    const bool bIsEmail = ci.IsURLEmail();
     CString cs_text = bIsEmail ? CS_SENDEMAIL : CS_BROWSEURL;
     int nPos = cs_text.Find(_T("\t"));
     if (nPos > 0)

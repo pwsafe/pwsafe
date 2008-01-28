@@ -1504,7 +1504,7 @@ DboxMain::OnInitMenu(CMenu* pMenu)
     }
 
     if (!ci->IsURLEmpty()) {
-      const bool bIsEmail = ci->GetURL().Find(_T("mailto:")) != -1;
+      const bool bIsEmail = ci->IsURLEmail();
       if (bIsEmail) {
         pMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
           ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
