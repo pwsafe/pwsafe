@@ -52,9 +52,9 @@ struct GetBaseEntryPL {
   bool bMultipleEntriesFound;
 };
 
-class PWScore {
+class PWScore
+{
 public:
-
   enum {
     SUCCESS = 0,
     FAILURE = 1,
@@ -71,7 +71,6 @@ public:
     XML_FAILED_IMPORT,                        // 14
     LIMIT_REACHED                             // 15
   };
-
 
   PWScore();
   ~PWScore();

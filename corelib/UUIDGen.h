@@ -24,7 +24,8 @@ typedef char uuid_str_WH_t[37]; //"204012e6-600f-4e01-a5eb-515267cb0d50" with hy
 #include "PwsPlatform.h"
 #include <memory> // for memcmp
 
-class CUUIDGen {
+class CUUIDGen
+{
 public:
   CUUIDGen(); // UUID generated at creation time
   CUUIDGen(const uuid_array_t &uuid_array); // for storing an existing UUID
@@ -40,6 +41,7 @@ public:
         &u2.uuid, sizeof(u1.uuid)) < 0;
     }
   };
+
 private:
   UUID uuid;
 };

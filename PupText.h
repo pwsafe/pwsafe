@@ -16,7 +16,8 @@
 //////////////////
 // Get NONCLIENTMETRICS info: ctor calls SystemParametersInfo.
 //
-class CNonClientMetrics : public NONCLIENTMETRICS {
+class CNonClientMetrics : public NONCLIENTMETRICS
+{
 public:
   CNonClientMetrics() {
     cbSize = sizeof(NONCLIENTMETRICS);
@@ -28,7 +29,8 @@ public:
 // Popup text window, like tooltip.
 // Can be right or left justified relative to creation point.
 //
-class CPopupText : public CWnd {
+class CPopupText : public CWnd
+{
 public:
   CSize m_szMargins;  // extra space around text: change if you like
   CFont m_font;       // font: change if you like

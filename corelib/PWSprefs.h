@@ -37,7 +37,8 @@ extern int s_cfgLockCount;
 
 class CXMLprefs;
 
-class PWSprefs {
+class PWSprefs
+{
 public:
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
@@ -97,7 +98,7 @@ public:
   // for System Tray icon color
   enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
 
-  // For Password Polict
+  // For Password Policy
   enum {PWPolicyUseLowercase =  0x8000, // Can have a minimum length field
     PWPolicyUseUppercase =      0x4000, // Can have a minimum length field
     PWPolicyUseDigits =         0x2000, // Can have a minimum length field
@@ -190,20 +191,20 @@ private:
   // below, isStoredinDB means stored in db, !isStoredinDB means application related
   static const struct boolPref {
     TCHAR *name; bool defVal; bool isStoredinDB;} m_bool_prefs[NumBoolPrefs];
-    static const struct intPref {
-      TCHAR *name; unsigned int defVal; bool isStoredinDB; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
-      static const struct stringPref {
-        TCHAR *name; TCHAR *defVal; bool isStoredinDB;} m_string_prefs[NumStringPrefs];
+  static const struct intPref {
+    TCHAR *name; unsigned int defVal; bool isStoredinDB; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
+  static const struct stringPref {
+    TCHAR *name; TCHAR *defVal; bool isStoredinDB;} m_string_prefs[NumStringPrefs];
 
-        // current values
-        bool m_boolValues[NumBoolPrefs];
-        unsigned int m_intValues[NumIntPrefs];
-        CMyString m_stringValues[NumStringPrefs];
-        struct {long top, bottom, left, right; bool changed;} m_rect;
-        bool m_boolChanged[NumBoolPrefs];
-        bool m_intChanged[NumIntPrefs];
-        bool m_stringChanged[NumStringPrefs];
+  // current values
+  bool m_boolValues[NumBoolPrefs];
+  unsigned int m_intValues[NumIntPrefs];
+  CMyString m_stringValues[NumStringPrefs];
+  struct {long top, bottom, left, right; bool changed;} m_rect;
+  bool m_boolChanged[NumBoolPrefs];
+  bool m_intChanged[NumIntPrefs];
+  bool m_stringChanged[NumStringPrefs];
 
-        CString *m_MRUitems;
+  CString *m_MRUitems;
 };
 #endif /*  __PWSPREFS_H */

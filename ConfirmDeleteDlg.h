@@ -16,6 +16,7 @@ class CConfirmDeleteDlg : public CPWDialog
 {
 public:
   CConfirmDeleteDlg(CWnd* pParent = NULL, int numchildren = 0);
+
 private:
   // Dialog Data
   //{{AFX_DATA(CConfirmDeleteDlg)
@@ -27,6 +28,7 @@ private:
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CConfirmDeleteDlg)
+
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL

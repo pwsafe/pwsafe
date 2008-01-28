@@ -37,12 +37,11 @@ public:
   BOOL m_pweasyvision;
   BOOL m_pwusehexdigits;
   BOOL m_pwmakepronounceable;
-  UINT  m_pwdigitminlength;
-  UINT  m_pwlowerminlength;
-  UINT  m_pwsymbolminlength;
-  UINT  m_pwupperminlength;
+  UINT m_pwdigitminlength;
+  UINT m_pwlowerminlength;
+  UINT m_pwsymbolminlength;
+  UINT m_pwupperminlength;
   //}}AFX_DATA
-
 
   // Overrides
   // ClassWizard generate virtual function overrides

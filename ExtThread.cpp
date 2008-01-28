@@ -10,7 +10,7 @@
 #include "ExtThread.h"
 
 CExtThread::CExtThread(AFX_THREADPROC proc, LPVOID p)
-: CWinThread(proc, p)
+  : CWinThread(proc, p)
 {
   m_bAutoDelete = TRUE;
 }

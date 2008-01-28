@@ -16,12 +16,9 @@ class SecString
 {
 public:
   /// default constructor
-  SecString()
-  {}
+  SecString() {}
   /// copy constructor
-  SecString(const SecString& src)
-    : string(src)
-  {}
+  SecString(const SecString& src) : string(src) {}
 
   // I'll add others as needed...
 
@@ -64,8 +61,8 @@ public:
   CString Right( int nCount ) const;
 
   CString m_mystring;
-private:
 
+private:
   void trashstring();
 };
 //-----------------------------------------------------------------------------

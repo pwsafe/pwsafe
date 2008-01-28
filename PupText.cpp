@@ -21,6 +21,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 IMPLEMENT_DYNAMIC(CPopupText,CWnd)
+
 BEGIN_MESSAGE_MAP(CPopupText,CWnd)
   ON_WM_NCHITTEST()
   ON_WM_PAINT()
@@ -32,7 +33,7 @@ CPopupText::CPopupText()
 {
   CNonClientMetrics ncm;
   m_font.CreateFontIndirect(&ncm.lfMenuFont);
-  m_szMargins = CSize(4,4);
+  m_szMargins = CSize(4, 4);
 }
 
 CPopupText::~CPopupText()
@@ -45,12 +46,12 @@ CPopupText::~CPopupText()
 int CPopupText::Create(CPoint pt, CWnd* pParentWnd, UINT nID)
 {
   return CreateEx(0,
-    NULL,
-    NULL,
-    WS_POPUP|WS_VISIBLE,
-    CRect(pt,CSize(0,0)),
-    pParentWnd,
-    nID);
+                  NULL,
+                  NULL,
+                  WS_POPUP|WS_VISIBLE,
+                  CRect(pt,CSize(0, 0)),
+                  pParentWnd,
+                  nID);
 }
 
 //////////////////

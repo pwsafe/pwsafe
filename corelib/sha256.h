@@ -20,6 +20,7 @@ public:
   ~SHA256();
   void Update(const unsigned char *in, size_t inlen);
   void Final(unsigned char digest[HASHLEN]);
+
 private:
   ulong64 length;
   size_t curlen;

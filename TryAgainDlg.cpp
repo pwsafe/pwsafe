@@ -24,17 +24,15 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CTryAgainDlg::CTryAgainDlg(CWnd* pParent)
-: CPWDialog(CTryAgainDlg::IDD, pParent), cancelreturnval(TAR_INVALID)
+  : CPWDialog(CTryAgainDlg::IDD, pParent), cancelreturnval(TAR_INVALID)
 {
 }
-
 
 void
 CTryAgainDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
 }
-
 
 BEGIN_MESSAGE_MAP(CTryAgainDlg, CPWDialog)
   ON_BN_CLICKED(IDC_QUIT, OnQuit)
@@ -44,20 +42,17 @@ BEGIN_MESSAGE_MAP(CTryAgainDlg, CPWDialog)
   ON_BN_CLICKED(IDC_NEW, OnNew)
 END_MESSAGE_MAP()
 
-
 void
 CTryAgainDlg::OnQuit() 
 {
   CPWDialog::OnCancel();
 }
 
-
 void
 CTryAgainDlg::OnTryagain() 
 {
   CPWDialog::OnOK();
 }
-
 
 void
 CTryAgainDlg::OnHelp() 
@@ -67,7 +62,6 @@ CTryAgainDlg::OnHelp()
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-
 void
 CTryAgainDlg::OnOpen() 
 {
@@ -75,14 +69,12 @@ CTryAgainDlg::OnOpen()
   CPWDialog::OnCancel();
 }
 
-
 void
 CTryAgainDlg::OnNew() 
 {
   cancelreturnval = TAR_NEW;
   CPWDialog::OnCancel();
 }
-
 
 int
 CTryAgainDlg::GetCancelReturnValue()

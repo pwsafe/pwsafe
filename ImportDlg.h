@@ -32,7 +32,6 @@ public:
   int m_group;
   //}}AFX_DATA
 
-
   // Overrides
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CImportDlg)

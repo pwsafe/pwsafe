@@ -20,7 +20,6 @@
 
 /*
 * CRUEList is a class that contains the recently used entries
-*
 */
 
 // Following is Most Recent Entry field separator for dynamic menu:

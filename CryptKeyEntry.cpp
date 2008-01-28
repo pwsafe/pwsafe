@@ -31,11 +31,10 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
-: CPWDialog(CCryptKeyEntry::IDD, pParent),
-m_cryptkey1(_T("")), m_cryptkey2(_T(""))
+  : CPWDialog(CCryptKeyEntry::IDD, pParent),
+  m_cryptkey1(_T("")), m_cryptkey2(_T(""))
 {
 }
-
 
 void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
 {
@@ -43,7 +42,6 @@ void CCryptKeyEntry::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_CRYPTKEY1, (CString &)m_cryptkey1);
   DDX_Text(pDX, IDC_CRYPTKEY2, (CString &)m_cryptkey2);
 }
-
 
 BEGIN_MESSAGE_MAP(CCryptKeyEntry, CPWDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -55,27 +53,23 @@ BEGIN_MESSAGE_MAP(CCryptKeyEntry, CPWDialog)
 #endif
 END_MESSAGE_MAP()
 
-
 void
 CCryptKeyEntry::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-
 void
 CCryptKeyEntry::OnOK()
 {
   UpdateData(TRUE);
 
-  if (m_cryptkey1 != m_cryptkey2)
-  {
+  if (m_cryptkey1 != m_cryptkey2) {
     AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_CRYPTKEY2))->SetFocus();
     return;
   }
-  if (m_cryptkey1.IsEmpty())
-  {
+  if (m_cryptkey1.IsEmpty()) {
     AfxMessageBox(IDS_ENTERKEYANDVERIFY);
     ((CEdit*)GetDlgItem(IDC_CRYPTKEY1))->SetFocus();
     return;
@@ -83,7 +77,6 @@ CCryptKeyEntry::OnOK()
 
   CPWDialog::OnOK();
 }
-
 
 void
 CCryptKeyEntry::OnHelp() 
@@ -97,7 +90,6 @@ CCryptKeyEntry::OnHelp()
 #endif
 }
 
-
 #if defined(POCKET_PC)
 /************************************************************************/
 /* Restore the state of word completion when the password field loses   */
@@ -105,9 +97,8 @@ CCryptKeyEntry::OnHelp()
 /************************************************************************/
 void CCryptKeyEntry::OnPasskeyKillfocus()
 {
-  EnableWordCompletion( m_hWnd );
+  EnableWordCompletion(m_hWnd);
 }
-
 
 /************************************************************************/
 /* When the password field is activated, pull up the SIP and disable    */
@@ -115,7 +106,7 @@ void CCryptKeyEntry::OnPasskeyKillfocus()
 /************************************************************************/
 void CCryptKeyEntry::OnPasskeySetfocus()
 {
-  DisableWordCompletion( m_hWnd );
+  DisableWordCompletion(m_hWnd);
 }
 #endif
 

@@ -34,6 +34,7 @@ public:
   virtual void Encrypt(const unsigned char *in, unsigned char *out);
   virtual void Decrypt(const unsigned char *in, unsigned char *out);
   virtual unsigned int GetBlockSize() const {return BLOCKSIZE;}
+
 private:
   twofish_key key_schedule;
 };

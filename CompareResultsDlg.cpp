@@ -38,17 +38,17 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
                                        CompareData &Conflicts, CompareData &Identical,
                                        CItemData::FieldBits &bsFields, PWScore *pcore0, PWScore *pcore1,
                                        CReport *prpt)
-                                       : CPWDialog(CCompareResultsDlg::IDD, pParent),
-                                       m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
-                                       m_Conflicts(Conflicts), m_Identical(Identical),
-                                       m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
-                                       m_prpt(prpt), m_bSortAscending(true), m_iSortedColumn(0),
-                                       m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
-                                       m_ShowIdenticalEntries(BST_UNCHECKED),
-                                       m_DialogMinWidth(455), m_DialogMinHeight(415),
-                                       m_DialogMaxWidth(999), m_DialogMaxHeight(1024)
-                                       // Need to set default values for MinWidth & MinHeight as OnGetMinMaxInfo is 
-                                       // called during Create before set in InitDialog
+  : CPWDialog(CCompareResultsDlg::IDD, pParent),
+  m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
+  m_Conflicts(Conflicts), m_Identical(Identical),
+  m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
+  m_prpt(prpt), m_bSortAscending(true), m_iSortedColumn(0),
+  m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
+  m_ShowIdenticalEntries(BST_UNCHECKED),
+  m_DialogMinWidth(455), m_DialogMinHeight(415),
+  m_DialogMaxWidth(999), m_DialogMaxHeight(1024)
+  // Need to set default values for MinWidth & MinHeight as OnGetMinMaxInfo is 
+  // called during Create before set in InitDialog
 {
 }
 
@@ -125,10 +125,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_numOnlyInComp = m_OnlyInComp.size();
   m_numConflicts = m_Conflicts.size();
   m_numIdentical = m_Identical.size();
-  m_LCResults.SetItemCount(m_numOnlyInCurrent +
-    m_numOnlyInComp +
-    m_numConflicts +
-    m_numIdentical);
+  m_LCResults.SetItemCount(m_numOnlyInCurrent + m_numOnlyInComp +
+                           m_numConflicts + m_numIdentical);
 
   AddEntries(false);
 
@@ -192,9 +190,9 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_cySBar = sbRect.Size().cy;
 
   pwndListCtrl->SetWindowPos(NULL, NULL, NULL,
-    dlgRect.Size().cx - (2 * ctrlRect.TopLeft().x),
-    dlgRect.Size().cy - m_cyBSpace,
-    SWP_NOMOVE | SWP_NOZORDER);
+                             dlgRect.Size().cx - (2 * ctrlRect.TopLeft().x),
+                             dlgRect.Size().cy - m_cyBSpace,
+                             SWP_NOMOVE | SWP_NOZORDER);
 
   GetWindowRect(&dlgRect);
 
@@ -208,7 +206,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
 
   this->SetWindowPos(NULL, NULL, NULL, m_DialogMinWidth, m_DialogMinHeight, 
-    SWP_NOMOVE | SWP_NOZORDER);
+                     SWP_NOMOVE | SWP_NOZORDER);
 
   CString resultStr;
   GetReportData(resultStr);
@@ -744,7 +742,7 @@ CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
     if (bSourceRO || m_column == COMPARE) {
       const CString cs_View_Entry(MAKEINTRESOURCE(IDS_VIEWENTRY));
       pPopup->ModifyMenu(ID_MENUITEM_COMPVIEWEDIT, MF_BYCOMMAND,
-        ID_MENUITEM_COMPVIEWEDIT, cs_View_Entry);
+                         ID_MENUITEM_COMPVIEWEDIT, cs_View_Entry);
     }
 
     pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, msg_pt.x, msg_pt.y, this);
@@ -925,9 +923,8 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   pt_top.y = ctrlRect.top;
   ScreenToClient(&pt_top);
   pwndODBText->MoveWindow(pt_top.x, pt_top.y,
-    cx - pt_top.x - 5,
-    ctrlRect.Height(),
-    TRUE);
+                          cx - pt_top.x - 5,
+                          ctrlRect.Height(), TRUE);
 
   GetDlgItem(IDC_COMPAREORIGINALDB)->SetWindowText(m_cs_Filename1);
 
@@ -936,9 +933,8 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   pt_top.y = ctrlRect.top;
   ScreenToClient(&pt_top);
   pwndCDBText->MoveWindow(pt_top.x, pt_top.y,
-    cx - pt_top.x - 5,
-    ctrlRect.Height(),
-    TRUE);
+                          cx - pt_top.x - 5,
+                          ctrlRect.Height(), TRUE);
 
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_cs_Filename2);
 
@@ -949,9 +945,8 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   ScreenToClient(&pt_top);
 
   pwndListCtrl->MoveWindow(pt_top.x, pt_top.y,
-    cx - (2 * pt_top.x),
-    cy - m_cyBSpace,
-    TRUE);
+                           cx - (2 * pt_top.x),
+                           cy - m_cyBSpace, TRUE);
 
   // Keep buttons in the bottom area
   int xleft, ytop;
@@ -972,9 +967,8 @@ CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
   ScreenToClient(&pt_top);
 
   m_statusBar.MoveWindow(pt_top.x, cy - ctrlRect.Height(),
-    cx - (2 * pt_top.x),
-    ctrlRect.Height(),
-    TRUE);
+                         cx - (2 * pt_top.x),
+                         ctrlRect.Height(), TRUE);
 }
 
 void CCompareResultsDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)

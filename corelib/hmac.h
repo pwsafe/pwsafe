@@ -28,6 +28,7 @@ public:
   void Init(const unsigned char *key, unsigned long keylen);
   void Update(const unsigned char *in, unsigned long inlen);
   void Final(unsigned char digest[HASHLEN]);
+
 private:
   SHA256 H;
   /* for SHA256 hashsize(L) = 32, blocksize(B) = 64 */

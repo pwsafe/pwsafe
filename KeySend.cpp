@@ -21,7 +21,7 @@ CKeySend::CKeySend(void) : m_delay(10)
     ASSERT(0);
   }
   m_isOldOS = ((os.dwMajorVersion == 4) ||
-    (os.dwMajorVersion == 5 && os.dwMinorVersion == 0));
+               (os.dwMajorVersion == 5 && os.dwMinorVersion == 0));
 #else
   m_isOldOS = true;
 #endif /* UNICODE */
@@ -39,7 +39,7 @@ void CKeySend::SendString(const CMyString &data)
 {
   const int N = data.GetLength();
 
-  for(int n=0;n<N;n++){
+  for (int n = 0; n < N; n++){
     SendChar(data[n]);
   }
 }
@@ -58,18 +58,18 @@ void CKeySend::NewSendChar(TCHAR c)
   INPUT input[2];
   input[0].type = INPUT_KEYBOARD;
   switch (c) {
-  case TCHAR('\t'):
-  case TCHAR('\r'):
-    input[0].ki.wVk = c == TCHAR('\t') ? VK_TAB : VK_RETURN;
-    input[0].ki.wScan = 0;
-    input[0].ki.dwFlags = 0;
-    break;
-  default:
-    input[0].ki.wVk = 0;
-    input[0].ki.wScan = c;
-    input[0].ki.dwFlags = KEYEVENTF_UNICODE;
-    break;
-  }  
+    case TCHAR('\t'):
+    case TCHAR('\r'):
+      input[0].ki.wVk = c == TCHAR('\t') ? VK_TAB : VK_RETURN;
+      input[0].ki.wScan = 0;
+      input[0].ki.dwFlags = 0;
+      break;
+    default:
+      input[0].ki.wVk = 0;
+      input[0].ki.wScan = c;
+      input[0].ki.dwFlags = KEYEVENTF_UNICODE;
+      break;
+  }
   // add the key-up event
   input[1].ki = input[0].ki;
   input[1].ki.dwFlags |= KEYEVENTF_KEYUP;
@@ -82,51 +82,51 @@ void CKeySend::NewSendChar(TCHAR c)
 
 void CKeySend::OldSendChar(TCHAR c)
 {
-  BOOL shiftDown=false; //assume shift key is up at start.
-  BOOL ctrlDown=false;
-  BOOL altDown=false;
-  SHORT keyScanCode=VkKeyScanEx(c, m_hlocale );
+  BOOL shiftDown = false; //assume shift key is up at start.
+  BOOL ctrlDown = false;
+  BOOL altDown = false;
+  SHORT keyScanCode = VkKeyScanEx(c, m_hlocale);
   // high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
-  if(keyScanCode & 0x100){
+  if (keyScanCode & 0x100) {
     shiftDown=true;      
     //send a shift down
-    keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), 0,3); //Fixes bug #1208955
+    keybd_event(VK_SHIFT, (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale), 0, 3); //Fixes bug #1208955
   } 
 
-  if(keyScanCode & 0x200){
+  if (keyScanCode & 0x200) {
     ctrlDown=true;       
     //send a ctrl down
-    keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale ), KEYEVENTF_EXTENDEDKEY, 0); 
+    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0); 
   } 
 
-  if(keyScanCode & 0x400){
+  if (keyScanCode & 0x400) {
     altDown=true; 
     //send a alt down
-    keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_EXTENDEDKEY, 0);    
+    keybd_event(VK_MENU, (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);    
   } 
 
   // the lower order byte has the key scan code we need.
-  keyScanCode =(SHORT)( keyScanCode & 0xFF);
+  keyScanCode =(SHORT)(keyScanCode & 0xFF);
 
-  keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale ), 0, 0);      
-  keybd_event((BYTE)keyScanCode,  (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale ), KEYEVENTF_KEYUP, 0);    
+  keybd_event((BYTE)keyScanCode, (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale), 0, 0);      
+  keybd_event((BYTE)keyScanCode, (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale), KEYEVENTF_KEYUP, 0);    
 
-  if(shiftDown){
+  if (shiftDown) {
     //send a shift up
-    keybd_event(VK_SHIFT,  (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale ), KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
+    keybd_event(VK_SHIFT, (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale), KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
     shiftDown=false;
   }
 
-  if(ctrlDown){
+  if (ctrlDown) {
 
     //send a ctrl up
-    keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
+    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
     ctrlDown=false;
   } 
 
-  if(altDown){
+  if (altDown) {
     //send a alt up
-    keybd_event(VK_MENU,  (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale ), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
+    keybd_event(VK_MENU, (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
     altDown=false;       
   } 
   ::Sleep(m_delay);
@@ -147,13 +147,12 @@ void CKeySend::ResetKeyboardState()
 
     keybd_event(VK_CONTROL, (BYTE)MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);
 
-    keybd_event(VK_CONTROL,  (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);
+    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_KEYUP|KEYEVENTF_EXTENDEDKEY, 0);
 
     //now we let the messages be processed by the applications to set the keyboard state
     MSG msg;
     //BOOL m_bCancel=false;
-    while (::PeekMessage(&msg,NULL,0,0,PM_NOREMOVE) )
-    {
+    while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
       // so there is a message process it.
       if (!AfxGetThread()->PumpMessage())
         break;
@@ -163,7 +162,6 @@ void CKeySend::ResetKeyboardState()
     memset((void*)&keys,0,256);
     GetKeyboardState((LPBYTE)&keys);
   }
-
 }
 
 // SetAndDelay allows users to put \d500\d10 in autotype and
@@ -171,13 +169,13 @@ void CKeySend::ResetKeyboardState()
 // key stokes will be delayed by 10 ms 
 // thedavecollins 2004-08-05
 
-void CKeySend::SetAndDelay(int d){
+void CKeySend::SetAndDelay(int d) {
   SetDelay(d);
   ::Sleep(m_delay);
 }
 
-void CKeySend::SetDelay(int d){
-  m_delay=d;
+void CKeySend::SetDelay(int d) {
+  m_delay = d;
 }
 
 void CKeySend::SetCapsLock(const bool bState)
@@ -185,8 +183,8 @@ void CKeySend::SetCapsLock(const bool bState)
   BYTE keyState[256];
 
   GetKeyboardState((LPBYTE)&keyState);
-  if((bState && !(keyState[VK_CAPITAL] & 1)) ||
-    (!bState && (keyState[VK_CAPITAL] & 1))) {
+  if ((bState && !(keyState[VK_CAPITAL] & 1)) ||
+     (!bState && (keyState[VK_CAPITAL] & 1))) {
       // Simulate a key press
       keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | 0, 0);
       // Simulate a key release
@@ -194,7 +192,7 @@ void CKeySend::SetCapsLock(const bool bState)
   }
 
   MSG msg;
-  while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE) ) {
+  while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
     // so there is a message process it.
     if (!AfxGetThread()->PumpMessage())
       break;

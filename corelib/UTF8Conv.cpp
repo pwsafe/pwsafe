@@ -28,7 +28,6 @@ CUTF8Conv::~CUTF8Conv()
   }
 }
 
-
 bool CUTF8Conv::ToUTF8(const CMyString &data,
                        const unsigned char *&utf8, int &utf8Len)
 {

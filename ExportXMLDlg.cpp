@@ -28,16 +28,15 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 
 CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/)
-: CPWDialog(CExportXMLDlg::IDD, pParent),
-m_subgroup_set(BST_UNCHECKED),
-m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
+  : CPWDialog(CExportXMLDlg::IDD, pParent),
+  m_subgroup_set(BST_UNCHECKED),
+  m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
 {
   //{{AFX_DATA_INIT(CExportXMLDlg)
   m_ExportXMLPassword = _T("");
   m_defexpdelim = _T("\xbb");
   //}}AFX_DATA_INIT
 }
-
 
 BOOL CExportXMLDlg::OnInitDialog() 
 {
@@ -50,7 +49,6 @@ BOOL CExportXMLDlg::OnInitDialog()
   ((CEdit*)GetDlgItem(IDC_EXPORT_XML_PASSWORD))->SetPasswordChar(PSSWDCHAR);
   return TRUE;
 }
-
 
 void CExportXMLDlg::DoDataExchange(CDataExchange* pDX)
 {

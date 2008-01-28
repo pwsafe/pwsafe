@@ -150,7 +150,6 @@ static unsigned long sbox(int i, unsigned long x)
 
 #endif /* TWOFISH_TABLES */
 
-
 #ifndef TWOFISH_TABLES
 /* computes ab mod p */
 static unsigned long gf_mult(unsigned long a, unsigned long b, unsigned long p)
@@ -184,26 +183,26 @@ static unsigned long mds_column_mult(unsigned char in, int col)
   xEF = gf_mult(in, 0xEF, MDS_POLY);
 
   switch (col) {
-       case 0:
-         return (x01 << 0 ) |
-           (x5B << 8 ) |
-           (xEF << 16) |
-           (xEF << 24);
-       case 1:
-         return (xEF << 0 ) |
-           (xEF << 8 ) |
-           (x5B << 16) |
-           (x01 << 24);
-       case 2:
-         return (x5B << 0 ) |
-           (xEF << 8 ) |
-           (x01 << 16) |
-           (xEF << 24);
-       case 3:
-         return (x5B << 0 ) |
-           (x01 << 8 ) |
-           (xEF << 16) |
-           (x5B << 24);
+    case 0:
+      return (x01 << 0 ) |
+             (x5B << 8 ) |
+             (xEF << 16) |
+             (xEF << 24);
+    case 1:
+      return (xEF << 0 ) |
+             (xEF << 8 ) |
+             (x5B << 16) |
+             (x01 << 24);
+    case 2:
+      return (x5B << 0 ) |
+             (xEF << 8 ) |
+             (x01 << 16) |
+             (xEF << 24);
+    case 3:
+      return (x5B << 0 ) |
+             (x01 << 8 ) |
+             (xEF << 16) |
+             (x5B << 24);
   }
   /* avoid warnings, we'd never get here normally but just to calm compiler warnings... */
   return 0;
@@ -261,21 +260,21 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
     y[x] = in[x];
   }
   switch (k) {
-     case 4:
-       y[0] = (unsigned char)(sbox(1, (unsigned long)y[0]) ^ M[4 * (6 + offset) + 0]);
-       y[1] = (unsigned char)(sbox(0, (unsigned long)y[1]) ^ M[4 * (6 + offset) + 1]);
-       y[2] = (unsigned char)(sbox(0, (unsigned long)y[2]) ^ M[4 * (6 + offset) + 2]);
-       y[3] = (unsigned char)(sbox(1, (unsigned long)y[3]) ^ M[4 * (6 + offset) + 3]);
-     case 3:
-       y[0] = (unsigned char)(sbox(1, (unsigned long)y[0]) ^ M[4 * (4 + offset) + 0]);
-       y[1] = (unsigned char)(sbox(1, (unsigned long)y[1]) ^ M[4 * (4 + offset) + 1]);
-       y[2] = (unsigned char)(sbox(0, (unsigned long)y[2]) ^ M[4 * (4 + offset) + 2]);
-       y[3] = (unsigned char)(sbox(0, (unsigned long)y[3]) ^ M[4 * (4 + offset) + 3]);
-     case 2:
-       y[0] = (unsigned char)(sbox(1, sbox(0, sbox(0, (unsigned long)y[0]) ^ M[4 * (2 + offset) + 0]) ^ M[4 * (0 + offset) + 0]));
-       y[1] = (unsigned char)(sbox(0, sbox(0, sbox(1, (unsigned long)y[1]) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
-       y[2] = (unsigned char)(sbox(1, sbox(1, sbox(0, (unsigned long)y[2]) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
-       y[3] = (unsigned char)(sbox(0, sbox(1, sbox(1, (unsigned long)y[3]) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
+    case 4:
+      y[0] = (unsigned char)(sbox(1, (unsigned long)y[0]) ^ M[4 * (6 + offset) + 0]);
+      y[1] = (unsigned char)(sbox(0, (unsigned long)y[1]) ^ M[4 * (6 + offset) + 1]);
+      y[2] = (unsigned char)(sbox(0, (unsigned long)y[2]) ^ M[4 * (6 + offset) + 2]);
+      y[3] = (unsigned char)(sbox(1, (unsigned long)y[3]) ^ M[4 * (6 + offset) + 3]);
+    case 3:
+      y[0] = (unsigned char)(sbox(1, (unsigned long)y[0]) ^ M[4 * (4 + offset) + 0]);
+      y[1] = (unsigned char)(sbox(1, (unsigned long)y[1]) ^ M[4 * (4 + offset) + 1]);
+      y[2] = (unsigned char)(sbox(0, (unsigned long)y[2]) ^ M[4 * (4 + offset) + 2]);
+      y[3] = (unsigned char)(sbox(0, (unsigned long)y[3]) ^ M[4 * (4 + offset) + 3]);
+    case 2:
+      y[0] = (unsigned char)(sbox(1, sbox(0, sbox(0, (unsigned long)y[0]) ^ M[4 * (2 + offset) + 0]) ^ M[4 * (0 + offset) + 0]));
+      y[1] = (unsigned char)(sbox(0, sbox(0, sbox(1, (unsigned long)y[1]) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
+      y[2] = (unsigned char)(sbox(1, sbox(1, sbox(0, (unsigned long)y[2]) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
+      y[3] = (unsigned char)(sbox(0, sbox(1, sbox(1, (unsigned long)y[3]) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
   }
   mds_mult(y, out);
 }
@@ -451,9 +450,9 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
   /* where to start in the sbox layers */
   /* small ram variant */
   switch (k) {
-         case 4 : skey->start = 0; break;
-         case 3 : skey->start = 1; break; 
-         default: skey->start = 2; break;
+    case 4 : skey->start = 0; break;
+    case 3 : skey->start = 1; break; 
+    default: skey->start = 2; break;
   }
 #endif
   return CRYPT_OK;
@@ -609,8 +608,6 @@ static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twof
   burnStack(sizeof(unsigned long) * 10 + sizeof(int));
 }
 #endif
-
-
 
 TwoFish::TwoFish(const unsigned char* key, int keylen)
 {

@@ -93,8 +93,6 @@ private:
   CString m_csCopyrightString;
   CString m_csHelpFile;
 };
-
-
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

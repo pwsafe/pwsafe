@@ -22,7 +22,6 @@ UnknownFieldEntry::UnknownFieldEntry(unsigned char t, size_t s,
     uc_pUField = NULL;
 }
 
-
 UnknownFieldEntry::~UnknownFieldEntry()
 {
   if (st_length > 0 && uc_pUField != NULL) {
@@ -34,7 +33,7 @@ UnknownFieldEntry::~UnknownFieldEntry()
 }
 
 UnknownFieldEntry::UnknownFieldEntry(const UnknownFieldEntry &that)
-: uc_Type(that.uc_Type), st_length(that.st_length)
+  : uc_Type(that.uc_Type), st_length(that.st_length)
 {
   if (that.uc_pUField != NULL) {
     ASSERT(that.st_length != 0);

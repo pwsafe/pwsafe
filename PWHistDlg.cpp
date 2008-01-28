@@ -26,13 +26,13 @@ CPWHistDlg::CPWHistDlg(CWnd* pParent, bool IsReadOnly,
                        CMyString &HistStr, PWHistList &PWHistList,
                        size_t NumPWHistory, size_t &MaxPWHistory,
                        BOOL &SavePWHistory)
-                       : CPWDialog(CPWHistDlg::IDD, pParent),
-                       m_PWH_IsReadOnly(IsReadOnly),
-                       m_HistStr(HistStr), m_PWHistList(PWHistList),
-                       m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
-                       m_SavePWHistory(SavePWHistory),
-                       m_ClearPWHistory(false),
-                       m_iSortedColumn(-1), m_bSortAscending(TRUE)
+  : CPWDialog(CPWHistDlg::IDD, pParent),
+  m_PWH_IsReadOnly(IsReadOnly),
+  m_HistStr(HistStr), m_PWHistList(PWHistList),
+  m_NumPWHistory(NumPWHistory), m_MaxPWHistory(MaxPWHistory),
+  m_SavePWHistory(SavePWHistory),
+  m_ClearPWHistory(false),
+  m_iSortedColumn(-1), m_bSortAscending(TRUE)
 {
   m_oldMaxPWHistory = m_MaxPWHistory;
 }
@@ -49,7 +49,6 @@ void CPWHistDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_MAXPWHISTORY, m_MaxPWHistory);
   DDV_MinMaxInt(pDX, int(m_MaxPWHistory), 1, 255);
 }
-
 
 BEGIN_MESSAGE_MAP(CPWHistDlg, CPWDialog)
   ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnBnClickedClearPWHist)
@@ -87,18 +86,18 @@ BOOL CPWHistDlg::OnInitDialog()
   PWHistList::iterator iter;
   DWORD nIdx;
   for (iter = m_PWHistList.begin(), nIdx = 0;
-    iter != m_PWHistList.end(); iter++, nIdx++) {
-      int nPos = 0;
-      const PWHistEntry pwhentry = *iter;
-      if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
-        nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
-      else {
-        cs_text.LoadString(IDS_UNKNOWN);
-        cs_text.Trim();
-        nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
-      }
-      m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
-      m_PWHistListCtrl.SetItemData(nPos, nIdx);
+       iter != m_PWHistList.end(); iter++, nIdx++) {
+    int nPos = 0;
+    const PWHistEntry pwhentry = *iter;
+    if (pwhentry.changedate != _T("1970-01-01 00:00:00"))
+      nPos = m_PWHistListCtrl.InsertItem(nPos, pwhentry.changedate);
+    else {
+      cs_text.LoadString(IDS_UNKNOWN);
+      cs_text.Trim();
+      nPos = m_PWHistListCtrl.InsertItem(nPos, cs_text);
+    }
+    m_PWHistListCtrl.SetItemText(nPos, 1, pwhentry.password);
+    m_PWHistListCtrl.SetItemData(nPos, nIdx);
   }
 
   m_PWHistListCtrl.SetRedraw(FALSE);
@@ -131,7 +130,6 @@ BOOL CPWHistDlg::OnInitDialog()
 
   return TRUE;
 }
-
 
 // CPWHistDlg message handlers
 void CPWHistDlg::OnBnClickedClearPWHist()
@@ -261,19 +259,19 @@ int CALLBACK CPWHistDlg::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
 
   int iResult;
   switch(nSortColumn) {
-  case 0:
-    t1 = pLHS.changetttdate;
-    t2 = pRHS.changetttdate;
-    iResult = ((long) t1 < (long) t2) ? -1 : 1;
-    break;
-  case 1:
-    password1 = pLHS.password;
-    password2 = pRHS.password;
-    iResult = ((CString)password1).Compare(password2);
-    break;
-  default:
-    iResult = 0; // should never happen - just keep compiler happy
-    ASSERT(FALSE);
+    case 0:
+      t1 = pLHS.changetttdate;
+      t2 = pRHS.changetttdate;
+      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    case 1:
+      password1 = pLHS.password;
+      password2 = pRHS.password;
+      iResult = ((CString)password1).Compare(password2);
+      break;
+    default:
+      iResult = 0; // should never happen - just keep compiler happy
+      ASSERT(FALSE);
   }
 
   if (!self->m_bSortAscending)

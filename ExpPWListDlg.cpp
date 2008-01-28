@@ -34,11 +34,10 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t LTime)
 }
 
 // CExpPWListDlg dialog
-
 CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
                              const ExpiredList &expPWList,
                              const CString& a_filespec)
-                             : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
+  : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
 {
   const int FILE_DISP_LEN = 75;
 
@@ -66,14 +65,12 @@ void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_MESSAGE, m_message);
 }
 
-
 BEGIN_MESSAGE_MAP(CExpPWListDlg, CPWDialog)
   ON_BN_CLICKED(IDC_COPY_EXP_TO_CLIPBOARD, OnBnClickedCopyExpToClipboard)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
   ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
 END_MESSAGE_MAP()
-
 
 // CExpPWListDlg message handlers
 
@@ -169,10 +166,10 @@ CExpPWListDlg::OnBnClickedCopyExpToClipboard()
   ExpiredList::const_iterator itempos;
 
   for (itempos = m_expPWList.begin();
-    itempos != m_expPWList.end();
-    itempos++) {
-      const ExpPWEntry exppwentry = *itempos;
-      data = data +
+       itempos != m_expPWList.end();
+       itempos++) {
+    const ExpPWEntry exppwentry = *itempos;
+    data = data +
         (CString)exppwentry.group + TAB + 
         (CString)exppwentry.title + TAB + 
         (CString)exppwentry.user + TAB + 

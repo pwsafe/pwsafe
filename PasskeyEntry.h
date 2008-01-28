@@ -101,6 +101,7 @@ protected:
   afx_msg void OnCreateDb();
 
   DECLARE_MESSAGE_MAP()
+
 public:
   afx_msg void OnComboEditChange();
   afx_msg void OnComboSelChange();

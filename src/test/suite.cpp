@@ -60,7 +60,6 @@ void Suite::run()
   }
 }
 
-
 long Suite::report() const
 {
   if (m_osptr)

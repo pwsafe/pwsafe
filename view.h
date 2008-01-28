@@ -23,6 +23,4 @@ public:
 protected:
   static View * _instance;
 };
-
-
 #endif //  VIEW_H

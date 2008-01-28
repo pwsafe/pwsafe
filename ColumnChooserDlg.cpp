@@ -17,7 +17,7 @@
 IMPLEMENT_DYNAMIC(CColumnChooserDlg, CPWDialog)
 
 CColumnChooserDlg::CColumnChooserDlg(CWnd* pParent /*=NULL*/)
-: CPWDialog(CColumnChooserDlg::IDD, pParent)
+  : CPWDialog(CColumnChooserDlg::IDD, pParent)
 {
 }
 

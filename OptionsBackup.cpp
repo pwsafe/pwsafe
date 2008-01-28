@@ -41,12 +41,11 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 IMPLEMENT_DYNCREATE(COptionsBackup, CPropertyPage)
 
 COptionsBackup::COptionsBackup(): CPWPropertyPage(COptionsBackup::IDD),
-m_ToolTipCtrl(NULL)
+  m_ToolTipCtrl(NULL)
 {
   //{{AFX_DATA_INIT(COptionsBackup)
   //}}AFX_DATA_INIT
 }
-
 
 COptionsBackup::~COptionsBackup()
 {
@@ -71,7 +70,6 @@ void COptionsBackup::SetCurFile(const CString &currentFile)
   m_currentFileDir = path_buffer;
   m_currentFileBasename = base;
 }
-
 
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)
 {
@@ -125,7 +123,7 @@ BOOL COptionsBackup::OnInitDialog()
   }
 
   if (m_backupsuffix < PWSprefs::minBKSFX ||
-    m_backupsuffix > PWSprefs::maxBKSFX)
+      m_backupsuffix > PWSprefs::maxBKSFX)
     m_backupsuffix = PWSprefs::BKSFX_None;
 
   m_backupsuffix_cbox.SetCurSel(m_BKSFX_to_Index[m_backupsuffix]);
@@ -171,7 +169,6 @@ BOOL COptionsBackup::OnInitDialog()
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup message handlers
-
 
 void COptionsBackup::OnComboChanged()
 {
@@ -272,20 +269,20 @@ void COptionsBackup::SetExample()
 
   switch (m_backupsuffix) {
     case 1:
-      {
+    {
         time_t now;
         time(&now);
         CString cs_datetime = (CString)PWSUtil::ConvertToDateTimeString(now, TMC_EXPORT_IMPORT);
         cs_example += _T("_");
         cs_example = cs_example + cs_datetime.Left(4) +  // YYYY
-          cs_datetime.Mid(5,2) +  // MM
-          cs_datetime.Mid(8,2) +  // DD
-          _T("_") +
-          cs_datetime.Mid(11,2) +  // HH
-          cs_datetime.Mid(14,2) +  // MM
-          cs_datetime.Mid(17,2);   // SS
-      }
+                                  cs_datetime.Mid(5,2) +  // MM
+                                  cs_datetime.Mid(8,2) +  // DD
+                                  _T("_") +
+                                  cs_datetime.Mid(11,2) +  // HH
+                                  cs_datetime.Mid(14,2) +  // MM
+                                  cs_datetime.Mid(17,2);   // SS
       break;
+    }
     case 2:
       cs_example += _T("_001");
       break;
@@ -318,7 +315,6 @@ BOOL COptionsBackup::OnKillActive()
     ((CEdit*)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
     return FALSE;
   }
-
 
   if (m_backuplocation == 1) {
     if (m_userbackupotherlocation.IsEmpty()) {
@@ -386,7 +382,6 @@ void COptionsBackup::OnBrowseForLocation()
   bi.lpszTitle = cs_text;
   bi.lpfn = SetSelProc;
   bi.lParam = (LPARAM)(LPCTSTR) cs_initiallocation;
-
 
   // Show the dialog and get the itemIDList for the
   // selected folder.

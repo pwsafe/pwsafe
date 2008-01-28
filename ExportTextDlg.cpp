@@ -28,16 +28,15 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 
 CExportTextDlg::CExportTextDlg(CWnd* pParent /*=NULL*/)
-: CPWDialog(CExportTextDlg::IDD, pParent),
-m_subgroup_set(BST_UNCHECKED),
-m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
+  : CPWDialog(CExportTextDlg::IDD, pParent),
+  m_subgroup_set(BST_UNCHECKED),
+  m_subgroup_name(_T("")), m_subgroup_object(0), m_subgroup_function(0)
 {
   //{{AFX_DATA_INIT(CExportTextDlg)
   m_exportTextPassword = _T("");
   m_defexpdelim = _T("\xbb");
   //}}AFX_DATA_INIT
 }
-
 
 BOOL CExportTextDlg::OnInitDialog() 
 {
@@ -64,7 +63,6 @@ BOOL CExportTextDlg::OnInitDialog()
   return TRUE;
 }
 
-
 void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
@@ -75,7 +73,6 @@ void CExportTextDlg::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
   DDV_CheckExpDelimiter(pDX, m_defexpdelim);
 }
-
 
 BEGIN_MESSAGE_MAP(CExportTextDlg, CPWDialog)
   //{{AFX_MSG_MAP(CExportTextDlg)
@@ -121,7 +118,7 @@ void CExportTextDlg::OnOK()
 void CExportTextDlg::OnAdvanced()
 {
   CAdvancedDlg Adv(this, ADV_EXPORT_TEXT, m_bsExport, m_subgroup_name, 
-    m_subgroup_set, m_subgroup_object, m_subgroup_function);
+                   m_subgroup_set, m_subgroup_object, m_subgroup_function);
 
   app.DisableAccelerator();
   INT_PTR rc = Adv.DoModal();

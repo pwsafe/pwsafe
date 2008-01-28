@@ -127,7 +127,6 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), false},  // application
 };
 
-
 PWSprefs *PWSprefs::GetInstance()
 {
   if (self == NULL) {
@@ -180,10 +179,10 @@ PWSprefs::CheckRegistryExists() const
   HKEY hSubkey;
   const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-    csSubkey,
-    0L,
-    KEY_READ,
-    &hSubkey) == ERROR_SUCCESS);
+                            csSubkey,
+                            0L,
+                            KEY_READ,
+                            &hSubkey) == ERROR_SUCCESS);
   if (bExists)
     ::RegCloseKey(hSubkey);
 
@@ -656,19 +655,19 @@ void PWSprefs::InitializePreferences()
 
   CString cs_msg;
   switch (m_ConfigOptions) {
-        case CF_REGISTRY:
-          cs_msg.LoadString(IDSC_CANTCREATEXMLCFG);
-          break;
-        case CF_FILE_RW:
-        case CF_FILE_RW_NEW:
-          break;
-        case CF_FILE_RO:
-          cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
-          break;
-        case CF_NONE:
-        default:
-          cs_msg.LoadString(IDSC_CANTDETERMINECFG);
-          break;
+    case CF_REGISTRY:
+      cs_msg.LoadString(IDSC_CANTCREATEXMLCFG);
+      break;
+    case CF_FILE_RW:
+    case CF_FILE_RW_NEW:
+      break;
+    case CF_FILE_RO:
+      cs_msg.LoadString(IDSC_CANTUPDATEXMLCFG);
+      break;
+    case CF_NONE:
+    default:
+      cs_msg.LoadString(IDSC_CANTDETERMINECFG);
+      break;
   }
   if (!cs_msg.IsEmpty())
     TRACE(cs_msg);
@@ -916,50 +915,51 @@ void PWSprefs::SaveApplicationPreferences()
 
   if (m_rect.changed) {
     switch (m_ConfigOptions) {
-    case CF_REGISTRY:
-      m_app->WriteProfileInt(PWS_REG_POSITION,
-        _T("top"), m_rect.top);
-      m_app->WriteProfileInt(PWS_REG_POSITION,
-        _T("bottom"), m_rect.bottom);
-      m_app->WriteProfileInt(PWS_REG_POSITION,
-        _T("left"), m_rect.left);
-      m_app->WriteProfileInt(PWS_REG_POSITION,
-        _T("right"), m_rect.right);
-      break;
-    case CF_FILE_RW:
-    case CF_FILE_RW_NEW: {
-      CString obuff;
-      obuff.Format(_T("%d"), m_rect.top);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
-      obuff.Format(_T("%d"), m_rect.bottom);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
-      obuff.Format(_T("%d"), m_rect.left);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
-      obuff.Format(_T("%d"), m_rect.right);
-      VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
-                         }
-                         break;
-    case CF_FILE_RO:
-    case CF_NONE:
-    default:
-      break;
+      case CF_REGISTRY:
+        m_app->WriteProfileInt(PWS_REG_POSITION,
+                               _T("top"), m_rect.top);
+        m_app->WriteProfileInt(PWS_REG_POSITION,
+                               _T("bottom"), m_rect.bottom);
+        m_app->WriteProfileInt(PWS_REG_POSITION,
+                               _T("left"), m_rect.left);
+        m_app->WriteProfileInt(PWS_REG_POSITION,
+                               _T("right"), m_rect.right);
+        break;
+      case CF_FILE_RW:
+      case CF_FILE_RW_NEW:
+      {
+        CString obuff;
+        obuff.Format(_T("%d"), m_rect.top);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+        obuff.Format(_T("%d"), m_rect.bottom);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
+        obuff.Format(_T("%d"), m_rect.left);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
+        obuff.Format(_T("%d"), m_rect.right);
+        VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+        break;
+      }
+      case CF_FILE_RO:
+      case CF_NONE:
+      default:
+        break;
     }
     m_rect.changed = false;
   } // m_rect.changed
 
   if (m_ConfigOptions == CF_FILE_RW ||
-    m_ConfigOptions == CF_FILE_RW_NEW) {
-      int i;
-      const int n = GetPref(PWSprefs::MaxMRUItems);
-      // Delete ALL entries
-      m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
-      // Now put back the ones we want
-      CString csSubkey;
-      for (i = 0; i < n; i++)
-        if (!m_MRUitems[i].IsEmpty()) {
-          csSubkey.Format(_T("Safe%02d"), i+1);
-          m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
-        }
+      m_ConfigOptions == CF_FILE_RW_NEW) {
+    int i;
+    const int n = GetPref(PWSprefs::MaxMRUItems);
+    // Delete ALL entries
+    m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
+    // Now put back the ones we want
+    CString csSubkey;
+    for (i = 0; i < n; i++)
+      if (!m_MRUitems[i].IsEmpty()) {
+        csSubkey.Format(_T("Safe%02d"), i+1);
+        m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
+      }
   }
 
   if (m_ConfigOptions == CF_FILE_RW ||
@@ -987,10 +987,10 @@ void PWSprefs::DeleteRegistryEntries()
   const CString csSubkey = _T("Software\\") + CString(m_app->m_pszRegistryKey);
 
   LONG dw = RegOpenKeyEx(HKEY_CURRENT_USER,
-    csSubkey,
-    NULL,
-    KEY_ALL_ACCESS,
-    &hSubkey);
+                         csSubkey,
+                         NULL,
+                         KEY_ALL_ACCESS,
+                         &hSubkey);
   if (dw != ERROR_SUCCESS) {
     return; // may have been called due to OldPrefs
   }
@@ -1006,12 +1006,12 @@ void PWSprefs::DeleteRegistryEntries()
 int PWSprefs::GetConfigIndicator() const
 {
   switch (m_ConfigOptions) {
-  case CF_NONE: return IDSC_CONFIG_NONE;
-  case CF_REGISTRY: return IDSC_CONFIG_REGISTRY;
-  case CF_FILE_RW:
-  case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW;
-  case CF_FILE_RO: return IDSC_CONFIG_FILE_RO;
-  default: ASSERT(0); return 0;
+    case CF_NONE: return IDSC_CONFIG_NONE;
+    case CF_REGISTRY: return IDSC_CONFIG_REGISTRY;
+    case CF_FILE_RW:
+    case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW;
+    case CF_FILE_RO: return IDSC_CONFIG_FILE_RO;
+    default: ASSERT(0); return 0;
   }
 }
 
@@ -1024,10 +1024,10 @@ bool PWSprefs::OldPrefsExist() const
   bool bExists;
   HKEY hSubkey;
   bExists = (::RegOpenKeyEx(HKEY_CURRENT_USER,
-    Software + _T("\\") + OldSubKey,
-    0L,
-    KEY_READ,
-    &hSubkey) == ERROR_SUCCESS);
+                            Software + _T("\\") + OldSubKey,
+                            0L,
+                            KEY_READ,
+                            &hSubkey) == ERROR_SUCCESS);
   if (bExists)
     ::RegCloseKey(hSubkey);
 
@@ -1039,10 +1039,10 @@ void PWSprefs::ImportOldPrefs()
   HKEY hSubkey;
   CString OldAppKey = Software + _T("\\") + OldSubKey + _T("\\Password Safe");
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-    OldAppKey,
-    NULL,
-    KEY_ALL_ACCESS,
-    &hSubkey);
+                           OldAppKey,
+                           NULL,
+                           KEY_ALL_ACCESS,
+                           &hSubkey);
   if (dw != ERROR_SUCCESS) {
     return;
   }
@@ -1055,12 +1055,11 @@ void PWSprefs::ImportOldPrefs()
     if (!m_bool_prefs[i].isStoredinDB) {
       DWORD vData, DataLen(sizeof(vData));
       rv = ::RegQueryValueEx(hSubkey,
-        m_bool_prefs[i].name,
-        NULL,
-        &dwType,
-        LPBYTE(&vData),
-        &DataLen
-        );
+                             m_bool_prefs[i].name,
+                             NULL,
+                             &dwType,
+                             LPBYTE(&vData),
+                             &DataLen);
       if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
         SetPref(BoolPrefs(i), (vData != 0));
     }
@@ -1068,12 +1067,11 @@ void PWSprefs::ImportOldPrefs()
       if (!m_int_prefs[i].isStoredinDB) {
         DWORD vData, DataLen(sizeof(vData));
         rv = ::RegQueryValueEx(hSubkey,
-          m_int_prefs[i].name,
-          NULL,
-          &dwType,
-          LPBYTE(&vData),
-          &DataLen
-          );
+                               m_int_prefs[i].name,
+                               NULL,
+                               &dwType,
+                               LPBYTE(&vData),
+                               &DataLen);
         if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
           SetPref(IntPrefs(i), vData);
       }
@@ -1081,23 +1079,21 @@ void PWSprefs::ImportOldPrefs()
         if (!m_string_prefs[i].isStoredinDB) {
           DWORD DataLen = 0;
           rv = ::RegQueryValueEx(hSubkey,
-            m_string_prefs[i].name,
-            NULL,
-            &dwType,
-            NULL,
-            &DataLen
-            );
+                                 m_string_prefs[i].name,
+                                 NULL,
+                                 &dwType,
+                                 NULL,
+                                 &DataLen);
           if (rv == ERROR_SUCCESS && dwType == REG_SZ) {
             DataLen++;
             TCHAR *pData = new TCHAR[DataLen];
             ::memset(pData, 0, DataLen);
             rv = ::RegQueryValueEx(hSubkey,
-              m_string_prefs[i].name,
-              NULL,
-              &dwType,
-              LPBYTE(pData),
-              &DataLen
-              );
+                                   m_string_prefs[i].name,
+                                   NULL,
+                                   &dwType,
+                                   LPBYTE(pData),
+                                   &DataLen);
             if (rv == ERROR_SUCCESS)
               SetPref(StringPrefs(i), CMyString(pData));
             delete[] pData;
@@ -1110,12 +1106,11 @@ void PWSprefs::ImportOldPrefs()
         for (i = 0; i < 4; i++) {
           DWORD vData, DataLen(sizeof(vData));
           rv = ::RegQueryValueEx(hSubkey,
-            rectNames[i],
-            NULL,
-            &dwType,
-            LPBYTE(&vData),
-            &DataLen
-            );
+                                 rectNames[i],
+                                 NULL,
+                                 &dwType,
+                                 LPBYTE(&vData),
+                                 &DataLen);
           if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
             rectVals[i] = vData;
         }
@@ -1125,15 +1120,14 @@ void PWSprefs::ImportOldPrefs()
         ASSERT(dw == ERROR_SUCCESS);
 }
 
-
 void PWSprefs::DeleteOldPrefs()
 {
   HKEY hSubkey;
   LONG dw = ::RegOpenKeyEx(HKEY_CURRENT_USER,
-    Software,
-    NULL,
-    KEY_ALL_ACCESS,
-    &hSubkey);
+                           Software,
+                           NULL,
+                           KEY_ALL_ACCESS,
+                           &hSubkey);
   if (dw != ERROR_SUCCESS) {
     return;
   }
@@ -1169,16 +1163,16 @@ CString PWSprefs::GetXMLPreferences()
         os << "\t\t<" << m_int_prefs[i].name << ">" ;
         if (i == TreeDisplayStatusAtOpen) {
           switch (m_intValues[i]) {
-          case AllExpanded:
-            os << "AllExpanded";
-            break;
-          case AsPerLastSave:
-            os << "AsPerLastSave";
-            break;
-          case AllCollapsed:
-          default:
-            os << "AllCollapsed";
-            break;
+            case AllExpanded:
+              os << "AllExpanded";
+              break;
+            case AsPerLastSave:
+              os << "AsPerLastSave";
+              break;
+            case AllCollapsed:
+            default:
+              os << "AllCollapsed";
+              break;
           }
         } else
           os << m_intValues[i];

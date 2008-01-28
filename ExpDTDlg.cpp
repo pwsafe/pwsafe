@@ -15,7 +15,7 @@
 // CExpDTDlg dialog
 
 CExpDTDlg::CExpDTDlg(CWnd* pParent /*=NULL*/)
-: CPWDialog(CExpDTDlg::IDD, pParent), m_tttLTime(0)
+  : CPWDialog(CExpDTDlg::IDD, pParent), m_tttLTime(0)
 {
   //{{AFX_DATA_INIT(CImportDlg)
   m_how = 0;
@@ -60,11 +60,11 @@ void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
 
 BOOL CExpDTDlg::OnInitDialog()
 {
-  TCHAR          szBuf[81];               // workspace
-  CString        sTimeFormat;             // the time format being worked on
-  CString        sDateFormat;
-  CString        sSearch;                 // the string to search for
-  int            nIndex;                  // index of the string, if found
+  TCHAR szBuf[81];       // workspace
+  CString sTimeFormat;   // the time format being worked on
+  CString sDateFormat;
+  CString sSearch;       // the string to search for
+  int nIndex;            // index of the string, if found
 
   CPWDialog::OnInitDialog();
 

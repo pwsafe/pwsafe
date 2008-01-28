@@ -57,6 +57,7 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
+
 private:
   bool m_isPwHidden;
   // Are we showing more or less details?
@@ -80,6 +81,7 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
 public:
   afx_msg void OnBnClickedOk();
   afx_msg void OnBnClickedMore();

@@ -134,7 +134,6 @@ operator+(LPCTSTR lpsz, const CMyString& string)
   return s;
 }
 
-
 int
 CMyString::FindByte(char ch) const
 {
@@ -194,4 +193,3 @@ CMyString::Mid(int nFirst, int nCount) const
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-

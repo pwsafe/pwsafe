@@ -26,8 +26,7 @@ class CXMLprefs
 public:
   CXMLprefs(const CString &configFile)
     : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false)
-  {
-  }
+  {}
 
   ~CXMLprefs() { UnloadXML(); }
 

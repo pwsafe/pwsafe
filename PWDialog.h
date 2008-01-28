@@ -37,6 +37,7 @@ protected:
     : CDialog(nIDTemplate, pParentWnd) {}
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+
 public:
   DECLARE_DYNAMIC(CPWDialog)
 };

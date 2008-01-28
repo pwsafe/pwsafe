@@ -22,7 +22,6 @@ enum
   TAR_EXIT
 };
 
-
 //-----------------------------------------------------------------------------
 class CTryAgainDlg : public CPWDialog
 {

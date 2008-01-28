@@ -20,7 +20,7 @@
 // LVHdrCtrl
 
 CLVHdrCtrl::CLVHdrCtrl()
-: m_dwHDRType(-1), m_pDragImage(NULL), m_bCCActive(FALSE)
+  : m_dwHDRType(-1), m_pDragImage(NULL), m_bCCActive(FALSE)
 {
   // Register a clipboard format for column drag & drop. 
   // Note that it's OK to register same format more than once:

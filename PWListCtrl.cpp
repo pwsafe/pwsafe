@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWListCtrl::CPWListCtrl()
-: m_FindTimerID(0), m_csFind(_T(""))
+  : m_FindTimerID(0), m_csFind(_T(""))
 {
 }
 

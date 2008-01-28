@@ -29,7 +29,6 @@ public:
   int m_ibasedata;
   uuid_array_t m_base_uuid;
 
-
   CComboBoxExtn m_ex_group;
   CEditExtn m_ex_target;
   CEditExtn m_ex_username;

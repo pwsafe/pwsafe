@@ -20,12 +20,11 @@
 
 #include "Util.h"
 
-
 // used by CBC routines...
 static void
 xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 {
-  for (int x=0;x<length;x++)
+  for (int x = 0; x < length; x++)
     mem1[x] ^= mem2[x];
 }
 
@@ -94,7 +93,6 @@ void ConvertString(const CMyString &text,
   txt[len] = '\0';
 #endif /* UNICODE */
 }
-
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
 void
@@ -1102,4 +1100,3 @@ PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len
 
   out_len = st_length;
 }
-

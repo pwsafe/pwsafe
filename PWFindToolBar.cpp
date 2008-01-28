@@ -80,15 +80,15 @@ const UINT CPWFindToolBar::m_FindToolBarNewBMs[] = {
 IMPLEMENT_DYNAMIC(CPWFindToolBar, CToolBar)
 
 CPWFindToolBar::CPWFindToolBar()
-: m_bitmode(1), m_bVisible(true), 
-m_bCaseSensitive(false), m_bAdvanced(false),
-m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
-m_last_search_text(_T("")), m_last_cs_search(false),
-m_subgroup_name(_T("")), m_subgroup_set(BST_UNCHECKED),
-m_subgroup_object(0), m_subgroup_function(0),
-m_last_subgroup_name(_T("")), m_last_subgroup_set(BST_UNCHECKED),
-m_last_subgroup_object(0), m_last_subgroup_function(0),
-m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1)
+  : m_bitmode(1), m_bVisible(true), 
+  m_bCaseSensitive(false), m_bAdvanced(false),
+  m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
+  m_last_search_text(_T("")), m_last_cs_search(false),
+  m_subgroup_name(_T("")), m_subgroup_set(BST_UNCHECKED),
+  m_subgroup_object(0), m_subgroup_function(0),
+  m_last_subgroup_name(_T("")), m_last_subgroup_set(BST_UNCHECKED),
+  m_last_subgroup_object(0), m_last_subgroup_function(0),
+  m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1)
 {
   m_bsFields.reset();
   m_last_bsFields.reset();
@@ -293,14 +293,14 @@ CPWFindToolBar::AddExtraControls()
   // pressed
   rect = CRect(0, 0, EDITCTRL_WIDTH, iBtnHeight);
   VERIFY(m_findedit.Create(WS_CHILD | WS_VISIBLE |
-    ES_AUTOHSCROLL | ES_LEFT | ES_WANTRETURN | ES_MULTILINE,
-    CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
-    this, ID_TOOLBUTTON_FINDEDITCTRL));
+                           ES_AUTOHSCROLL | ES_LEFT | ES_WANTRETURN | ES_MULTILINE,
+                           CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
+                           this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
   rect.top += max((rect.top - rt.top) / 2, 0);
   m_findedit.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
-    SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS );
+                          SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS );
 
   m_findedit.SetFont(&m_FindTextFont);
 
@@ -319,9 +319,9 @@ CPWFindToolBar::AddExtraControls()
 
   rect = CRect(0, 0, FINDRESULTS_WIDTH, iBtnHeight);
   VERIFY(m_findresults.Create(_T(""), WS_CHILD | WS_VISIBLE |
-    SS_LEFTNOWORDWRAP | SS_CENTERIMAGE,
-    CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
-    this, ID_TOOLBUTTON_FINDEDITCTRL));
+                              SS_LEFTNOWORDWRAP | SS_CENTERIMAGE,
+                              CRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2),
+                              this, ID_TOOLBUTTON_FINDEDITCTRL));
 
   GetItemRect(index, &rect);
   rect.top += max((rect.top - rt.top) / 2, 0);
@@ -433,20 +433,20 @@ CPWFindToolBar::Find()
 
   // If the user changes the search text or cs, then this is a new search:
   if (m_search_text != m_last_search_text ||
-    m_cs_search != m_last_cs_search ||
-    m_bsFields != m_last_bsFields ||
-    m_subgroup_name != m_last_subgroup_name ||
-    m_subgroup_set != m_last_subgroup_set ||
-    m_subgroup_object != m_last_subgroup_object ||
-    m_subgroup_function != m_last_subgroup_function) {
-      m_last_search_text = m_search_text;
-      m_last_cs_search = m_cs_search;
-      m_last_bsFields = m_bsFields;
-      m_last_subgroup_name = m_subgroup_name;
-      m_last_subgroup_set = m_subgroup_set;
-      m_last_subgroup_object = m_subgroup_object;
-      m_last_subgroup_function = m_subgroup_function;
-      m_lastshown = size_t(-1);
+      m_cs_search != m_last_cs_search ||
+      m_bsFields != m_last_bsFields ||
+      m_subgroup_name != m_last_subgroup_name ||
+      m_subgroup_set != m_last_subgroup_set ||
+      m_subgroup_object != m_last_subgroup_object ||
+      m_subgroup_function != m_last_subgroup_function) {
+    m_last_search_text = m_search_text;
+    m_last_cs_search = m_cs_search;
+    m_last_bsFields = m_bsFields;
+    m_last_subgroup_name = m_subgroup_name;
+    m_last_subgroup_set = m_subgroup_set;
+    m_last_subgroup_object = m_subgroup_object;
+    m_last_subgroup_function = m_subgroup_function;
+    m_lastshown = size_t(-1);
   }
 
   if (m_lastshown == -1) {

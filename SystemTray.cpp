@@ -90,7 +90,7 @@ CSystemTray::CSystemTray()
 CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-                         : m_RUEList(RUEList)
+  : m_RUEList(RUEList)
 {
   Initialise();
   Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
@@ -110,6 +110,7 @@ void CSystemTray::Initialise()
 }
 
 static const int MAX_TTT_LEN = 64; // Max tooltip text length
+
 static void NormalizeTTT(LPCTSTR in, LPTSTR out)
 {
   CString t(in), ttt;
@@ -126,7 +127,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
                          HICON icon, UINT uID, UINT menuID)
 {
   // this is only for Windows 95 (or higher)
-  m_bEnabled = ( GetVersion() & 0xff ) >= 4;
+  m_bEnabled = (GetVersion() & 0xff) >= 4;
   if (!m_bEnabled) return FALSE;
 
   // Make sure Notification window is valid (not needed - CJM)
@@ -423,7 +424,6 @@ BEGIN_MESSAGE_MAP(CSystemTray, CWnd)
   ON_WM_TIMER()
   ON_REGISTERED_MESSAGE(CSystemTray::m_nTaskbarCreatedMsg, OnTaskbarCreated)
   //}}AFX_MSG_MAP
-
 END_MESSAGE_MAP()
 
 #ifdef _DEBUG
@@ -464,22 +464,22 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     const int i_state = app.GetSystemTrayState();
     switch (i_state) {
-        case ThisMfcApp::UNLOCKED:
-          {
-            const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
-            pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
-              ID_MENUITEM_TRAYLOCK, csLock);
-          }
-          break;
-        case ThisMfcApp::LOCKED:
-          {
-            const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
-            pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
-              ID_MENUITEM_TRAYUNLOCK, csUnLock);
-          }
-          break;
-        default:
-          break;
+      case ThisMfcApp::UNLOCKED:
+      {
+        const CString csLock(MAKEINTRESOURCE(IDS_LOCKSAFE));
+        pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
+                                 ID_MENUITEM_TRAYLOCK, csLock);
+        break;
+      }
+      case ThisMfcApp::LOCKED:
+      {
+        const CString csUnLock(MAKEINTRESOURCE(IDS_UNLOCKSAFE));
+        pContextMenu->ModifyMenu(0, MF_BYPOSITION | MF_STRING,
+                                 ID_MENUITEM_TRAYUNLOCK, csUnLock);
+        break;
+      }
+      default:
+      break;
     }
 
     CMenu *pMainRecentEntriesMenu;
@@ -524,32 +524,32 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
         cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
         pNewRecentEntryMenu[i]->InsertMenu(0, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
-          cs_text);
+                                           ID_MENUITEM_TRAYCOPYPASSWORD1 + i,
+                                           cs_text);
         cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
         pNewRecentEntryMenu[i]->InsertMenu(1, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
-          cs_text);
+                                           ID_MENUITEM_TRAYCOPYUSERNAME1 + i,
+                                           cs_text);
         cs_text.LoadString(IDS_TRAYCOPYNOTES);
         pNewRecentEntryMenu[i]->InsertMenu(2, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYCOPYNOTES1 + i,
-          cs_text);
+                                           ID_MENUITEM_TRAYCOPYNOTES1 + i,
+                                           cs_text);
         cs_text.LoadString(IDS_TRAYCOPYURL);
         pNewRecentEntryMenu[i]->InsertMenu(3, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYCOPYURL1 + i,
-          cs_text);
+                                           ID_MENUITEM_TRAYCOPYURL1 + i,
+                                           cs_text);
         cs_text.LoadString(IDS_TRAYBROWSE);
         pNewRecentEntryMenu[i]->InsertMenu(4, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYBROWSE1 + i,
-          cs_text);
+                                           ID_MENUITEM_TRAYBROWSE1 + i,
+                                           cs_text);
         cs_text.LoadString(IDS_TRAYAUTOTYPE);
         pNewRecentEntryMenu[i]->InsertMenu(5, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYAUTOTYPE1 + i,
-          cs_text);
+                                           ID_MENUITEM_TRAYAUTOTYPE1 + i,
+                                           cs_text);
         cs_text.LoadString(IDS_TRAYDELETETRAYENTRY);
         pNewRecentEntryMenu[i]->InsertMenu(6, MF_BYPOSITION | MF_STRING,
-          ID_MENUITEM_TRAYDELETE1 + i,
-          cs_text);
+                                           ID_MENUITEM_TRAYDELETE1 + i,
+                                           cs_text);
 
         // Insert new popup menu at the bottom of the list
         // pos 0  = Clear Entries
@@ -558,8 +558,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         // pos 3  = Separator
         // pos 4+ = entries.....
         irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
-          UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
-          cEntry);
+                                                 UINT_PTR(pNewRecentEntryMenu[i]->m_hMenu),
+                                                 cEntry);
         ASSERT(irc != 0);
         pmd = new CRUEItemData;
         pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup

@@ -26,9 +26,8 @@
 //  -----------------------------------------------------------------------
 //  PWSSAXErrorHandler Methods
 //  -----------------------------------------------------------------------
-PWSSAXErrorHandler::PWSSAXErrorHandler():
-bErrorsFound(FALSE),
-m_strValidationResult("")
+PWSSAXErrorHandler::PWSSAXErrorHandler()
+  : bErrorsFound(FALSE), m_strValidationResult("")
 {
   m_refCnt = 0;
 }
@@ -68,10 +67,9 @@ unsigned long __stdcall PWSSAXErrorHandler::Release()
   else return m_refCnt;
 }
 
-HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
-struct ISAXLocator * pLocator,
-  unsigned short * pwchErrorMessage,
-  HRESULT hrErrorCode )
+HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error(struct ISAXLocator * pLocator,
+                                                     unsigned short * pwchErrorMessage,
+                                                     HRESULT hrErrorCode )
 {
   TCHAR szErrorMessage[MAX_PATH*2] = {0};
   TCHAR szFormatString[MAX_PATH*2] = {0};
@@ -111,18 +109,16 @@ struct ISAXLocator * pLocator,
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::fatalError (
-struct ISAXLocator * pLocator,
-  unsigned short * pwchErrorMessage,
-  HRESULT hrErrorCode )
+HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::fatalError(struct ISAXLocator * pLocator,
+                                                          unsigned short * pwchErrorMessage,
+                                                          HRESULT hrErrorCode )
 {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::ignorableWarning (
-struct ISAXLocator * pLocator,
-  unsigned short * pwchErrorMessage,
-  HRESULT hrErrorCode )
+HRESULT STDMETHODCALLTYPE  PWSSAXErrorHandler::ignorableWarning(struct ISAXLocator * pLocator,
+                                                                unsigned short * pwchErrorMessage,
+                                                                HRESULT hrErrorCode )
 {
   return S_OK;
 }
@@ -534,25 +530,25 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
     buffer.Format(IDSC_SAXERRORPWH,
       cur_entry->group, cur_entry->title, cur_entry->username);
     switch (PWSUtil::VerifyImportPWHistoryString(cur_entry->pwhistory, newPWHistory, strPWHErrors)) {
-case PWH_OK:
-  tempitem.SetPWHistory(newPWHistory);
-  buffer.Empty();
-  break;
-case PWH_IGNORE:
-  buffer.Empty();
-  break;
-case PWH_INVALID_HDR:
-case PWH_INVALID_STATUS:
-case PWH_INVALID_NUM:
-case PWH_INVALID_DATETIME:
-case PWH_INVALID_PSWD_LENGTH:
-case PWH_TOO_SHORT:
-case PWH_TOO_LONG:
-case PWH_INVALID_CHARACTER:
-  buffer += strPWHErrors;
-  break;
-default:
-  ASSERT(0);
+      case PWH_OK:
+        tempitem.SetPWHistory(newPWHistory);
+        buffer.Empty();
+        break;
+      case PWH_IGNORE:
+        buffer.Empty();
+        break;
+      case PWH_INVALID_HDR:
+      case PWH_INVALID_STATUS:
+      case PWH_INVALID_NUM:
+      case PWH_INVALID_DATETIME:
+      case PWH_INVALID_PSWD_LENGTH:
+      case PWH_TOO_SHORT:
+      case PWH_TOO_LONG:
+      case PWH_INVALID_CHARACTER:
+        buffer += strPWHErrors;
+        break;
+      default:
+        ASSERT(0);
     }
     m_strImportErrors += buffer;
     cur_entry->notes.EmptyIfOnlyWhiteSpace();
@@ -703,51 +699,51 @@ default:
 
   if (_tcscmp(szCurElement, _T("date")) == 0 && !m_strElemContent.IsEmpty()) {
     switch (m_whichtime) {
-case PW_CTIME:
-  cur_entry->ctime = m_strElemContent;
-  break;
-case PW_PMTIME:
-  cur_entry->pmtime = m_strElemContent;
-  break;
-case PW_ATIME:
-  cur_entry->atime = m_strElemContent;
-  break;
-case PW_LTIME:
-  cur_entry->ltime = m_strElemContent;
-  break;
-case PW_RMTIME:
-  cur_entry->rmtime = m_strElemContent;
-  break;
-case PW_CHANGED:
-  cur_entry->changed = m_strElemContent;
-  break;
-default:
-  ASSERT(0);
+      case PW_CTIME:
+        cur_entry->ctime = m_strElemContent;
+        break;
+      case PW_PMTIME:
+        cur_entry->pmtime = m_strElemContent;
+        break;
+      case PW_ATIME:
+        cur_entry->atime = m_strElemContent;
+        break;
+      case PW_LTIME:
+        cur_entry->ltime = m_strElemContent;
+        break;
+      case PW_RMTIME:
+        cur_entry->rmtime = m_strElemContent;
+        break;
+      case PW_CHANGED:
+        cur_entry->changed = m_strElemContent;
+        break;
+      default:
+        ASSERT(0);
     }
   }
 
   if (_tcscmp(szCurElement, _T("time")) == 0 && !m_strElemContent.IsEmpty()) {
     switch (m_whichtime) {
-case PW_CTIME:
-  cur_entry->ctime += _T(" ") + m_strElemContent;
-  break;
-case PW_PMTIME:
-  cur_entry->pmtime += _T(" ") + m_strElemContent;
-  break;
-case PW_ATIME:
-  cur_entry->atime += _T(" ") + m_strElemContent;
-  break;
-case PW_LTIME:
-  cur_entry->ltime += _T(" ") + m_strElemContent;
-  break;
-case PW_RMTIME:
-  cur_entry->rmtime += _T(" ") + m_strElemContent;
-  break;
-case PW_CHANGED:
-  cur_entry->changed += _T(" ") + m_strElemContent;
-  break;
-default:
-  ASSERT(0);
+      case PW_CTIME:
+        cur_entry->ctime += _T(" ") + m_strElemContent;
+        break;
+      case PW_PMTIME:
+        cur_entry->pmtime += _T(" ") + m_strElemContent;
+        break;
+      case PW_ATIME:
+        cur_entry->atime += _T(" ") + m_strElemContent;
+        break;
+      case PW_LTIME:
+        cur_entry->ltime += _T(" ") + m_strElemContent;
+        break;
+      case PW_RMTIME:
+        cur_entry->rmtime += _T(" ") + m_strElemContent;
+        break;
+      case PW_CHANGED:
+        cur_entry->changed += _T(" ") + m_strElemContent;
+        break;
+      default:
+        ASSERT(0);
     }
   }
 

@@ -73,12 +73,12 @@ DboxMain::BackupSafe()
   //SaveAs-type dialog box
   while (1) {
     CFileDialog fd(FALSE,
-      _T("bak"),
-      currbackup,
-      OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
-      | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
-      _T("Password Safe Backups (*.bak)|*.bak||"),
-      this);
+                   _T("bak"),
+                   currbackup,
+                   OFN_PATHMUSTEXIST|OFN_HIDEREADONLY
+                   | OFN_LONGNAMES|OFN_OVERWRITEPROMPT,
+                   _T("Password Safe Backups (*.bak)|*.bak||"),
+                   this);
     fd.m_ofn.lpstrTitle = cs_text;
     CString dir = PWSdirs::GetSafeDir();
     if (!dir.IsEmpty())
@@ -134,13 +134,13 @@ DboxMain::Restore()
   //Open-type dialog box
   while (1) {
     CFileDialog fd(TRUE,
-      _T("bak"),
-      currbackup,
-      OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
-      _T("Password Safe Backups (*.bak)|*.bak|")
-      _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-      _T("|"),
-      this);
+                   _T("bak"),
+                   currbackup,
+                   OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_LONGNAMES,
+                   _T("Password Safe Backups (*.bak)|*.bak|")
+                   _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
+                   _T("|"),
+                   this);
     fd.m_ofn.lpstrTitle = cs_text;
     CString dir = PWSdirs::GetSafeDir();
     if (!dir.IsEmpty())
@@ -162,25 +162,25 @@ DboxMain::Restore()
 
   rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   switch (rc) {
-  case PWScore::SUCCESS:
-    break; // Keep going...
-  case PWScore::CANT_OPEN_FILE:
-    cs_temp.Format(IDS_CANTOPEN, backup);
-    cs_title.LoadString(IDS_FILEOPENERROR);
-    MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-  case TAR_OPEN:
-    ASSERT(0);
-    return PWScore::FAILURE; // shouldn't be an option here
-  case TAR_NEW:
-    ASSERT(0);
-    return PWScore::FAILURE; // shouldn't be an option here
-  case PWScore::WRONG_PASSWORD:
-  case PWScore::USER_CANCEL:
-    /*
-    If the user just cancelled out of the password dialog,
-    assume they want to return to where they were before...
-    */
-    return PWScore::USER_CANCEL;
+    case PWScore::SUCCESS:
+      break; // Keep going...
+    case PWScore::CANT_OPEN_FILE:
+      cs_temp.Format(IDS_CANTOPEN, backup);
+      cs_title.LoadString(IDS_FILEOPENERROR);
+      MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    case TAR_OPEN:
+      ASSERT(0);
+      return PWScore::FAILURE; // shouldn't be an option here
+    case TAR_NEW:
+      ASSERT(0);
+      return PWScore::FAILURE; // shouldn't be an option here
+    case PWScore::WRONG_PASSWORD:
+    case PWScore::USER_CANCEL:
+      /*
+      If the user just cancelled out of the password dialog,
+      assume they want to return to where they were before...
+      */
+      return PWScore::USER_CANCEL;
   }
 
   // unlock the file we're leaving
@@ -389,13 +389,13 @@ DboxMain::OnOptions()
   backup.m_backuplocation = backupDir.IsEmpty() ? 0 : 1;
   backup.m_userbackupotherlocation = backupDir;
 
-  optionsDlg.AddPage( &backup );
-  optionsDlg.AddPage( &display );
-  optionsDlg.AddPage( &misc );
-  optionsDlg.AddPage( &passwordpolicy );
-  optionsDlg.AddPage( &passwordhistory );
-  optionsDlg.AddPage( &security );
-  optionsDlg.AddPage( &system );
+  optionsDlg.AddPage(&backup);
+  optionsDlg.AddPage(&display);
+  optionsDlg.AddPage(&misc);
+  optionsDlg.AddPage(&passwordpolicy);
+  optionsDlg.AddPage(&passwordhistory);
+  optionsDlg.AddPage(&security);
+  optionsDlg.AddPage(&system);
 
   /*
   **  Remove the "Apply Now" button.
@@ -556,20 +556,20 @@ DboxMain::OnOptions()
 #if !defined(POCKET_PC)
     /* Update status bar */
     switch (misc.m_doubleclickaction) {
-            case PWSprefs::DoubleClickAutoType:
-              statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
-            case PWSprefs::DoubleClickBrowse:
-              statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
-            case PWSprefs::DoubleClickCopyNotes:
-              statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
-            case PWSprefs::DoubleClickCopyPassword:
-              statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
-            case PWSprefs::DoubleClickCopyUsername:
-              statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
-            case PWSprefs::DoubleClickViewEdit:
-              statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
-            default:
-              statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
+      case PWSprefs::DoubleClickAutoType:
+        statustext[SB_DBLCLICK] = IDS_STATAUTOTYPE; break;
+      case PWSprefs::DoubleClickBrowse:
+        statustext[SB_DBLCLICK] = IDS_STATBROWSE; break;
+      case PWSprefs::DoubleClickCopyNotes:
+        statustext[SB_DBLCLICK] = IDS_STATCOPYNOTES; break;
+      case PWSprefs::DoubleClickCopyPassword:
+        statustext[SB_DBLCLICK] = IDS_STATCOPYPASSWORD; break;
+      case PWSprefs::DoubleClickCopyUsername:
+        statustext[SB_DBLCLICK] = IDS_STATCOPYUSERNAME; break;
+      case PWSprefs::DoubleClickViewEdit:
+        statustext[SB_DBLCLICK] = IDS_STATVIEWEDIT; break;
+      default:
+        statustext[SB_DBLCLICK] = IDS_STATCOMPANY;
     }
     m_statusBar.SetIndicators(statustext, SB_TOTAL);
     UpdateStatusBar();
@@ -802,21 +802,21 @@ DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
   HistoryUpdateSetMax set_max(num_altered, new_default_max);
 
   switch (iAction) {
-case 1:   // reset off
-  updater = &reset_off;
-  ids = IDS_ENTRIESCHANGEDSTOP;
-  break;
-case 2:   // reset on
-  updater = &reset_on;
-  ids = IDS_ENTRIESCHANGEDSAVE;
-  break;
-case 3:   // setmax
-  updater = &set_max;
-  ids = IDS_ENTRIESRESETMAX;
-  break;
-default:
-  ASSERT(0);
-  break;
+    case 1:   // reset off
+      updater = &reset_off;
+      ids = IDS_ENTRIESCHANGEDSTOP;
+      break;
+    case 2:   // reset on
+      updater = &reset_on;
+      ids = IDS_ENTRIESCHANGEDSAVE;
+      break;
+    case 3:   // setmax
+      updater = &set_max;
+      ids = IDS_ENTRIESRESETMAX;
+      break;
+    default:
+      ASSERT(0);
+      break;
   } // switch (iAction)
 
   /**

@@ -33,30 +33,29 @@ PWSfile *PWSfile::MakePWSfile(const CMyString &a_filename, VERSION &version,
   }
 
   switch (version) {
-  case V17:
-  case V20:
-    status = SUCCESS;
-    return new PWSfileV1V2(a_filename, mode, version);
-  case V30:
-    status = SUCCESS;
-    return new PWSfileV3(a_filename, mode, version);
-  case UNKNOWN_VERSION:
-    ASSERT(mode == Read);
-    if (PWSfile::ReadVersion(a_filename) == V30) {
-      version = V30;
-      status = SUCCESS;
-      return new PWSfileV3(a_filename, mode, version);
-    } else {
-      version = V20; // may be inaccurate (V17)
+    case V17:
+    case V20:
       status = SUCCESS;
       return new PWSfileV1V2(a_filename, mode, version);
-    }
-  default:
-    ASSERT(0);
-    status = FAILURE; return NULL;
+    case V30:
+      status = SUCCESS;
+      return new PWSfileV3(a_filename, mode, version);
+    case UNKNOWN_VERSION:
+      ASSERT(mode == Read);
+      if (PWSfile::ReadVersion(a_filename) == V30) {
+        version = V30;
+        status = SUCCESS;
+        return new PWSfileV3(a_filename, mode, version);
+      } else {
+        version = V20; // may be inaccurate (V17)
+        status = SUCCESS;
+        return new PWSfileV1V2(a_filename, mode, version);
+      }
+    default:
+      ASSERT(0);
+      status = FAILURE; return NULL;
   }
 }
-
 
 bool PWSfile::FileExists(const CMyString &filename)
 {
@@ -95,7 +94,6 @@ void PWSfile::FileError(int formatRes, int cause)
   AfxMessageBox(cs_msg, MB_OK);
 }
 
-
 PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
 {
   if (FileExists(filename)) {
@@ -108,7 +106,6 @@ PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
     return UNKNOWN_VERSION;
 }
 
-
 int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 {
   _tremove(newname); // otherwise rename will fail if newname exists
@@ -117,12 +114,11 @@ int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
   return (status == 0) ? SUCCESS : FAILURE;
 }
 
-
 PWSfile::PWSfile(const CMyString &filename, RWmode mode)
-: m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
-m_curversion(UNKNOWN_VERSION), m_rw(mode),
-m_fd(NULL), m_fish(NULL), m_terminal(NULL),
-m_nRecordsWithUnknownFields(0)
+  : m_filename(filename), m_passkey(_T("")),  m_defusername(_T("")),
+  m_curversion(UNKNOWN_VERSION), m_rw(mode),
+  m_fd(NULL), m_fish(NULL), m_terminal(NULL),
+  m_nRecordsWithUnknownFields(0)
 {
 }
 
@@ -131,24 +127,24 @@ PWSfile::~PWSfile()
   Close(); // idempotent
 }
 
-PWSfile::HeaderRecord::HeaderRecord() :
-m_nCurrentMajorVersion(0), m_nCurrentMinorVersion(0),
-m_nITER(0), m_prefString(_T("")), m_whenlastsaved(0),
-m_lastsavedby(_T("")), m_lastsavedon(_T("")),
-m_whatlastsaved(_T("")),
-m_dbname(_T("")), m_dbdesc(_T(""))
+PWSfile::HeaderRecord::HeaderRecord()
+  : m_nCurrentMajorVersion(0), m_nCurrentMinorVersion(0),
+  m_nITER(0), m_prefString(_T("")), m_whenlastsaved(0),
+  m_lastsavedby(_T("")), m_lastsavedon(_T("")),
+  m_whatlastsaved(_T("")),
+  m_dbname(_T("")), m_dbdesc(_T(""))
 {
   memset(m_file_uuid_array, 0x00, sizeof(m_file_uuid_array));
 }
 
-PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) :
-m_nCurrentMajorVersion(h.m_nCurrentMajorVersion),
-m_nCurrentMinorVersion(h.m_nCurrentMinorVersion),
-m_nITER(h.m_nITER), m_displaystatus(h.m_displaystatus),
-m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
-m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
-m_whatlastsaved(h.m_whatlastsaved),
-m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc)
+PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) 
+  : m_nCurrentMajorVersion(h.m_nCurrentMajorVersion),
+  m_nCurrentMinorVersion(h.m_nCurrentMinorVersion),
+  m_nITER(h.m_nITER), m_displaystatus(h.m_displaystatus),
+  m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
+  m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
+  m_whatlastsaved(h.m_whatlastsaved),
+  m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc)
 {
   memcpy(m_file_uuid_array, h.m_file_uuid_array,
     sizeof(m_file_uuid_array));
@@ -204,7 +200,6 @@ size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
   return _writecbc(m_fd, data, length, type, m_fish, m_IV);
 }
 
-
 size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
                         unsigned int &length)
 {
@@ -252,7 +247,6 @@ int PWSfile::CheckPassword(const CMyString &filename,
   return status;
 }
 
-
 /*
 * The file lock/unlock functions were first implemented (in 2.08)
 * with Posix semantics (using open(_O_CREATE|_O_EXCL) to detect
@@ -264,7 +258,6 @@ int PWSfile::CheckPassword(const CMyString &filename,
 * supposedly protect against this scenario.
 * Thanks to Frank (xformer) for discussion on the subject.
 */
-
 
 /*
 * Originally, the lock/unlock functions were designed for working with the
@@ -297,12 +290,12 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
 
   if (fh == -1) { // failed to open exclusively. Already locked, or ???
     switch (errno) {
-    case EACCES:
-      // Tried to open read-only file for writing, or file’s
-      // sharing mode does not allow specified operations, or given path is directory
-      locker.LoadString(IDSC_NOLOCKACCESS);
-      break;
-    case EEXIST: // filename already exists
+      case EACCES:
+        // Tried to open read-only file for writing, or file’s
+        // sharing mode does not allow specified operations, or given path is directory
+        locker.LoadString(IDSC_NOLOCKACCESS);
+        break;
+      case EEXIST: // filename already exists
       {
         // read locker data ("user@machine:nnnnnnnn") from file
         TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR) * 11];
@@ -319,20 +312,20 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
             locker = _T("Unable to read locker?");
           } // read info from lock file
         } // open lock file for read
+        break;
       } // EEXIST block
-      break;
-    case EINVAL: // Invalid oflag or pmode argument
-      locker.LoadString(IDSC_INTERNALLOCKERROR);
-      break;
-    case EMFILE: // No more file handles available (too many open files)
-      locker.LoadString(IDSC_SYSTEMLOCKERROR);
-      break;
-    case ENOENT: //File or path not found
-      locker.LoadString(IDSC_LOCKFILEPATHNF);
-      break;
-    default:
-      locker.LoadString(IDSC_LOCKUNKNOWNERROR);
-      break;
+      case EINVAL: // Invalid oflag or pmode argument
+        locker.LoadString(IDSC_INTERNALLOCKERROR);
+        break;
+      case EMFILE: // No more file handles available (too many open files)
+        locker.LoadString(IDSC_SYSTEMLOCKERROR);
+        break;
+      case ENOENT: //File or path not found
+        locker.LoadString(IDSC_LOCKFILEPATHNF);
+        break;
+      default:
+        locker.LoadString(IDSC_LOCKUNKNOWNERROR);
+        break;
     } // switch (errno)
     return false;
   } else { // valid filehandle, write our info
@@ -385,44 +378,44 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     }
   }
   lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),
-    GENERIC_WRITE,
-    FILE_SHARE_READ,
-    NULL,
-    CREATE_ALWAYS, // rely on share to fail if exists!
-    FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
-    NULL);
+                                GENERIC_WRITE,
+                                FILE_SHARE_READ,
+                                NULL,
+                                CREATE_ALWAYS, // rely on share to fail if exists!
+                                FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+                                NULL);
   if (lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     switch (error) {
-    case ERROR_SHARING_VIOLATION: // already open by a live process
-      GetLocker(lock_filename, locker);
-      break;
-    default:
-      locker = _T("Cannot create lock file - no permission in directory?");
-      break;
+      case ERROR_SHARING_VIOLATION: // already open by a live process
+        GetLocker(lock_filename, locker);
+        break;
+      default:
+        locker = _T("Cannot create lock file - no permission in directory?");
+        break;
     } // switch (error)
     return false;
   } else { // valid filehandle, write our info
     DWORD numWrit, sumWrit;
     BOOL write_status;
     write_status = ::WriteFile(lockFileHandle,
-      user, user.GetLength() * sizeof(TCHAR),
-      &sumWrit, NULL);
+                               user, user.GetLength() * sizeof(TCHAR),
+                               &sumWrit, NULL);
     write_status &= ::WriteFile(lockFileHandle,
-      _T("@"), sizeof(TCHAR),
-      &numWrit, NULL);
+                                _T("@"), sizeof(TCHAR),
+                                &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-      host, host.GetLength() * sizeof(TCHAR),
-      &numWrit, NULL);
+                                host, host.GetLength() * sizeof(TCHAR),
+                                &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-      _T(":"), sizeof(TCHAR),
-      &numWrit, NULL);
+                                _T(":"), sizeof(TCHAR),
+                                &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-      pid, pid.GetLength() * sizeof(TCHAR),
-      &numWrit, NULL);
+                                pid, pid.GetLength() * sizeof(TCHAR),
+                                &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
     LockCount++;
@@ -488,12 +481,12 @@ bool PWSfile::IsLockedFile(const CMyString &filename)
   // under this scheme, we need to actually try to open the file to determine
   // if it's locked.
   HANDLE h = CreateFile(LPCTSTR(lock_filename),
-    GENERIC_WRITE,
-    FILE_SHARE_READ,
-    NULL,
-    OPEN_EXISTING, // don't create one!
-    FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH,
-    NULL);
+                        GENERIC_WRITE,
+                        FILE_SHARE_READ,
+                        NULL,
+                        OPEN_EXISTING, // don't create one!
+                        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH,
+                        NULL);
   if (h == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     if (error == ERROR_SHARING_VIOLATION)
@@ -515,9 +508,12 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
   // flags here counter (my) intuition, but see
   // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
   HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
-    GENERIC_READ, FILE_SHARE_WRITE,
-    NULL, OPEN_EXISTING,
-    FILE_ATTRIBUTE_NORMAL, NULL);
+                           GENERIC_READ,
+                           FILE_SHARE_WRITE,
+                           NULL,
+                           OPEN_EXISTING,
+                           FILE_ATTRIBUTE_NORMAL,
+                           NULL);
   if (h2 == INVALID_HANDLE_VALUE) {
     locker.LoadString(IDSC_CANTGETLOCKER);
   } else {
@@ -563,23 +559,23 @@ ErrorMessages(const CString &fn, FILE *fp)
     CString cs_text;
 
     switch (errno) {
-    case EACCES:
-      cs_text.LoadString(IDSC_FILEREADONLY);
-      break;
-    case EEXIST:
-      cs_text.LoadString(IDSC_FILEEXISTS);
-      break;
-    case EINVAL:
-      cs_text.LoadString(IDSC_INVALIDFLAG);
-      break;
-    case EMFILE:
-      cs_text.LoadString(IDSC_NOMOREHANDLES);
-      break;
-    case ENOENT:
-      cs_text.LoadString(IDSC_FILEPATHNOTFOUND);
-      break;
-    default:
-      break;
+      case EACCES:
+        cs_text.LoadString(IDSC_FILEREADONLY);
+        break;
+      case EEXIST:
+        cs_text.LoadString(IDSC_FILEEXISTS);
+        break;
+      case EINVAL:
+        cs_text.LoadString(IDSC_INVALIDFLAG);
+        break;
+      case EMFILE:
+        cs_text.LoadString(IDSC_NOMOREHANDLES);
+        break;
+      case ENOENT:
+        cs_text.LoadString(IDSC_FILEPATHNOTFOUND);
+        break;
+      default:
+        break;
     }
 
     CString cs_title = _T("Password Safe - ") + fn;
@@ -627,9 +623,7 @@ bool PWSfile::Encrypt(const CString &fn, const CMyString &passwd)
     PWSrand::GetInstance()->GetRandomData( randstuff, 8 );
     // miserable bug - have to fix this way to avoid breaking existing files
     randstuff[8] = randstuff[9] = TCHAR('\0');
-    GenRandhash(passwd,
-      randstuff,
-      randhash);
+    GenRandhash(passwd, randstuff, randhash);
     fwrite(randstuff, 1,  8, out);
     fwrite(randhash,  1, sizeof(randhash), out);
 #endif // KEEP_FILE_MODE_BWD_COMPAT
@@ -688,14 +682,11 @@ bool PWSfile::Decrypt(const CString &fn, const CMyString &passwd)
     fread(randhash, 1, sizeof(randhash), in);
 
     unsigned char temphash[SHA1::HASHLEN];
-    GenRandhash(passwd,
-      randstuff,
-      temphash);
-    if (0 != memcmp((char*)randhash,
-      (char*)temphash, SHA1::HASHLEN)) {
-        fclose(in);
-        AfxMessageBox(IDSC_BADPASSWORD);
-        return false;
+    GenRandhash(passwd, randstuff, temphash);
+    if (memcmp((char*)randhash, (char*)temphash, SHA1::HASHLEN != 0)) {
+      fclose(in);
+      AfxMessageBox(IDSC_BADPASSWORD);
+      return false;
     }
 #endif // KEEP_FILE_MODE_BWD_COMPAT
     buf = NULL; // allocated by _readcbc - see there for apologia

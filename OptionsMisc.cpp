@@ -32,7 +32,8 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNCREATE(COptionsMisc, CPropertyPage)
 
-COptionsMisc::COptionsMisc() : CPWPropertyPage(COptionsMisc::IDD), m_ToolTipCtrl(NULL)
+COptionsMisc::COptionsMisc()
+  : CPWPropertyPage(COptionsMisc::IDD), m_ToolTipCtrl(NULL)
 {
   //{{AFX_DATA_INIT(COptionsMisc)
   //}}AFX_DATA_INIT
@@ -179,14 +180,11 @@ void COptionsMisc::OnComboChanged()
 
 void COptionsMisc::OnUsedefuser()
 {
-  if (((CButton*)GetDlgItem(IDC_USEDEFUSER))->GetCheck() == 1)
-  {
+  if (((CButton*)GetDlgItem(IDC_USEDEFUSER))->GetCheck() == 1) {
     GetDlgItem(IDC_DEFUSERNAME)->EnableWindow(TRUE);
     GetDlgItem(IDC_STATIC_USERNAME)->EnableWindow(TRUE);
     GetDlgItem(IDC_QUERYSETDEF)->EnableWindow(FALSE);
-  }
-  else
-  {
+  } else {
     GetDlgItem(IDC_DEFUSERNAME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_USERNAME)->EnableWindow(FALSE);
     GetDlgItem(IDC_QUERYSETDEF)->EnableWindow(TRUE);
@@ -229,15 +227,13 @@ void COptionsMisc::OnBrowseForLocation()
     cs_initiallocation = CString(path_buffer);
   }
 
-  CFileDialog fd(TRUE,
-    NULL,
-    NULL,
-    OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
-    OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
-    _T("Programs (*.exe)|*.exe|")
-    _T("All files (*.*)|*.*|")
-    _T("|"),
-    this);
+  CFileDialog fd(TRUE, NULL, NULL,
+                 OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
+                 OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
+                 _T("Programs (*.exe)|*.exe|")
+                 _T("All files (*.*)|*.*|")
+                 _T("|"),
+                 this);
 
   cs_title.LoadString(IDS_SELECTBROWSER);
   fd.m_ofn.lpstrTitle = cs_title;

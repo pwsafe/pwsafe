@@ -15,7 +15,8 @@
 * A utility class to convert between UTF-8 and CMyString
 */
 
-class CUTF8Conv {
+class CUTF8Conv
+{
 public:
   CUTF8Conv() : m_utf8(NULL), m_utf8Len(0), m_utf8MaxLen(0),
     m_wc(NULL), m_wcMaxLen(0), m_tmp(NULL), m_tmpMaxLen(0) {}
@@ -25,6 +26,7 @@ public:
   bool ToUTF8(const CMyString &data, const unsigned char *&utf8, int &utf8Len);
   // In following, char * is managed by caller.
   bool FromUTF8(const unsigned char *utf8, int utf8Len, CMyString &data);
+
 private:
   CUTF8Conv(const CUTF8Conv &); // not supported
   CUTF8Conv &operator=(const CUTF8Conv &); // ditto
@@ -38,7 +40,6 @@ private:
   int m_wcMaxLen;
   unsigned char *m_tmp;
   int m_tmpMaxLen;
-
 };
 
 #endif /* __UTF8CONV_H */

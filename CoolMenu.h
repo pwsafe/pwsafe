@@ -52,7 +52,8 @@ typedef MenuVector::iterator MenuVectorIter;
 typedef std::vector<CMenuItemData *> PMDVector;
 typedef PMDVector::iterator PMDVectorIter;
 
-class CCoolMenuManager : private CSubclassWnd {
+class CCoolMenuManager : private CSubclassWnd
+{
 public:
   DECLARE_DYNAMIC(CCoolMenuManager)
   CCoolMenuManager();

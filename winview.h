@@ -34,6 +34,4 @@ private:
   static View * _instance;
 
 };
-
-
 #endif //  WINVIEW_H

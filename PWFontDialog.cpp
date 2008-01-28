@@ -26,8 +26,8 @@ IMPLEMENT_DYNAMIC(CPWFontDialog, CFontDialog)
 static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM lParam);
 static CPWFontDialog *pwfd_self(NULL);
 
-CPWFontDialog::CPWFontDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrinter, CWnd* pParentWnd) : 
-CFontDialog(lplfInitial, dwFlags, pdcPrinter, pParentWnd)
+CPWFontDialog::CPWFontDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrinter, CWnd* pParentWnd)
+  : CFontDialog(lplfInitial, dwFlags, pdcPrinter, pParentWnd)
 {
   m_cf.Flags |= CF_ENABLETEMPLATE | CF_ENABLEHOOK | CF_SHOWHELP;
   m_cf.Flags &= (~CF_EFFECTS);

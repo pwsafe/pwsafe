@@ -37,7 +37,7 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd* pParent)
-: CPWDialog(CPasskeySetup::IDD, pParent)
+  : CPWDialog(CPasskeySetup::IDD, pParent)
 {
   m_passkey = _T("");
   m_verify = _T("");
@@ -61,7 +61,6 @@ void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_VERIFY, (CString &)m_verify);
 }
 
-
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 #if defined(POCKET_PC)
@@ -72,25 +71,21 @@ BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
 #endif
 END_MESSAGE_MAP()
 
-
 void CPasskeySetup::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-
 void CPasskeySetup::OnOK()
 {
   UpdateData(TRUE);
-  if (m_passkey != m_verify)
-  {
+  if (m_passkey != m_verify) {
     AfxMessageBox(IDS_ENTRIESDONOTMATCH);
     ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
     return;
   }
 
-  if (m_passkey.IsEmpty())
-  {
+  if (m_passkey.IsEmpty()) {
     AfxMessageBox(IDS_ENTERKEYANDVERIFY);
     ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetFocus();
     return;
@@ -136,7 +131,6 @@ void CPasskeySetup::OnHelp()
 #endif
 }
 
-
 #if defined(POCKET_PC)
 /************************************************************************/
 /* Restore the state of word completion when the password field loses   */
@@ -144,9 +138,8 @@ void CPasskeySetup::OnHelp()
 /************************************************************************/
 void CPasskeySetup::OnPasskeyKillfocus()
 {
-  EnableWordCompletion( m_hWnd );
+  EnableWordCompletion(m_hWnd);
 }
-
 
 /************************************************************************/
 /* When the password field is activated, pull up the SIP and disable    */
@@ -154,7 +147,7 @@ void CPasskeySetup::OnPasskeyKillfocus()
 /************************************************************************/
 void CPasskeySetup::OnPasskeySetfocus()
 {
-  DisableWordCompletion( m_hWnd );
+  DisableWordCompletion(m_hWnd);
 }
 #endif
 

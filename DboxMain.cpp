@@ -75,19 +75,19 @@ CString DboxMain::CS_EXPCOLGROUP;
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
-: CDialog(DboxMain::IDD, pParent),
-m_bSizing(false), m_needsreading(true), m_windowok(false),
-m_toolbarsSetup(FALSE),
-m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
-m_core(app.m_core), m_pFontTree(NULL),
-m_selectedAtMinimize(NULL), m_bTSUpdated(false),
-m_iSessionEndingStatus(IDIGNORE),
-m_pchTip(NULL), m_pwchTip(NULL),
-m_bValidate(false), m_bOpen(false), 
-m_IsStartClosed(false), m_IsStartSilent(false),
-m_bStartHiddenAndMinimized(false),
-m_bAlreadyToldUserNoSave(false), m_inExit(false),
-m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false)
+  : CDialog(DboxMain::IDD, pParent),
+  m_bSizing(false), m_needsreading(true), m_windowok(false),
+  m_toolbarsSetup(FALSE),
+  m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
+  m_core(app.m_core), m_pFontTree(NULL),
+  m_selectedAtMinimize(NULL), m_bTSUpdated(false),
+  m_iSessionEndingStatus(IDIGNORE),
+  m_pchTip(NULL), m_pwchTip(NULL),
+  m_bValidate(false), m_bOpen(false), 
+  m_IsStartClosed(false), m_IsStartSilent(false),
+  m_bStartHiddenAndMinimized(false),
+  m_bAlreadyToldUserNoSave(false), m_inExit(false),
+  m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -1061,9 +1061,9 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   INT_PTR rc = 0;
   if (dbox_pkentry == NULL) {
     dbox_pkentry = new CPasskeyEntry(this, filename,
-      index, bReadOnly || bFileIsReadOnly,
-      bFileIsReadOnly || bForceReadOnly,
-      adv_type);
+                                     index, bReadOnly || bFileIsReadOnly,
+                                     bFileIsReadOnly || bForceReadOnly,
+                                     adv_type);
 
     int nMajor(0), nMinor(0), nBuild(0);
     DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
@@ -1114,21 +1114,21 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
     // Set read-only mode if user explicitly requested it OR
     // we could not create a lock file.
     switch (index) {
-            case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-              pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile, locker));
-              break;
-            case GCP_NORMAL:
-            case GCP_ADVANCED:
-              if (!bIsReadOnly) // !first, lock if !bIsReadOnly
-                pcore->SetReadOnly(!pcore->LockFile(curFile, locker));
-              else
-                pcore->SetReadOnly(bIsReadOnly);
-              break;
-            case GCP_UNMINIMIZE:
-            case GCP_WITHEXIT:
-            default:
-              // user can't change R-O status
-              break;
+      case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
+        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile, locker));
+        break;
+      case GCP_NORMAL:
+      case GCP_ADVANCED:
+        if (!bIsReadOnly) // !first, lock if !bIsReadOnly
+          pcore->SetReadOnly(!pcore->LockFile(curFile, locker));
+        else
+          pcore->SetReadOnly(bIsReadOnly);
+        break;
+      case GCP_UNMINIMIZE:
+      case GCP_WITHEXIT:
+      default:
+        // user can't change R-O status
+        break;
     }
     UpdateToolBar(bIsReadOnly);
     // locker won't be null IFF tried to lock and failed, in which case
@@ -1144,6 +1144,7 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
         cs_user_and_host = cs_user_and_host.Left(i_pid);
       } else
         cs_PID = _T("");
+
       const CString cs_title(MAKEINTRESOURCE(IDS_FILEINUSE));
       CString cs_msg;
       CGeneralMsgBox gmb;
@@ -1163,22 +1164,22 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
 #endif
       int user_choice = gmb.DoModal();
       switch(user_choice) {
-                case 1:
-                  pcore->SetReadOnly(true);
-                  UpdateToolBar(true);
-                  retval = PWScore::SUCCESS;
-                  break;
-                case 2:
-                  pcore->SetReadOnly(false); // Caveat Emptor!
-                  UpdateToolBar(false);
-                  retval = PWScore::SUCCESS;
-                  break;
-                case 3:
-                  retval = PWScore::USER_CANCEL;
-                  break;
-                default:
-                  ASSERT(false);
-                  retval = PWScore::USER_CANCEL;
+        case 1:
+          pcore->SetReadOnly(true);
+          UpdateToolBar(true);
+          retval = PWScore::SUCCESS;
+          break;
+        case 2:
+          pcore->SetReadOnly(false); // Caveat Emptor!
+          UpdateToolBar(false);
+          retval = PWScore::SUCCESS;
+          break;
+        case 3:
+          retval = PWScore::USER_CANCEL;
+          break;
+        default:
+          ASSERT(false);
+          retval = PWScore::USER_CANCEL;
       }
     } else { // locker.IsEmpty() means no lock needed or lock was successful
       if (dbox_pkentry->GetStatus() == TAR_NEW) {
@@ -1199,19 +1200,19 @@ DboxMain::GetAndCheckPassword(const CMyString &filename,
   } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
     int cancelreturn = dbox_pkentry->GetStatus();
     switch (cancelreturn) {
-            case TAR_OPEN:
-              ASSERT(0); // now handled entirely in CPasskeyEntry
-            case TAR_CANCEL:
-            case TAR_NEW:
-              retval = PWScore::USER_CANCEL;
-              break;
-            case TAR_EXIT:
-              retval = PWScore::USER_EXIT;
-              break;
-            default:
-              DBGMSG("Default to WRONG_PASSWORD\n");
-              retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
-              break;
+      case TAR_OPEN:
+        ASSERT(0); // now handled entirely in CPasskeyEntry
+      case TAR_CANCEL:
+      case TAR_NEW:
+        retval = PWScore::USER_CANCEL;
+        break;
+      case TAR_EXIT:
+        retval = PWScore::USER_EXIT;
+        break;
+      default:
+        DBGMSG("Default to WRONG_PASSWORD\n");
+        retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
+        break;
     }
   }
   delete dbox_pkentry;
@@ -1305,22 +1306,22 @@ DboxMain::OnToolTipText(UINT,
   if (pNMHDR->code == TTN_NEEDTEXTA)
 #if _MSC_VER >= 1400
     _tcsncpy_s(pTTTA->szText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])),
-    cs_TipText, _TRUNCATE);
+               cs_TipText, _TRUNCATE);
 #else
     _tcsncpy(pTTTA->szText, cs_TipText, (sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0])));
 #endif
   else {
     int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText,
-      sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
+                                sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
     if (n > 0)
       pTTTW->szText[n-1] = 0;
   }
 #else
   if (pNMHDR->code == TTN_NEEDTEXTA) {
     int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
-      pTTTA->szText,
-      sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
-      NULL, NULL);
+                                pTTTA->szText,
+                                sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
+                                NULL, NULL);
     if (n > 0)
       pTTTA->szText[n-1] = 0;
   } else
@@ -1337,7 +1338,7 @@ DboxMain::OnToolTipText(UINT,
 
   // bring the tooltip window above other popup windows
   ::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, 0, 0, 0, 0,
-    SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
+                 SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
 #endif  // POCKET_PC
   return TRUE;    // message was handled
 }
@@ -1391,7 +1392,7 @@ void
 DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
-  if ( ID_SYSMENU_ALWAYSONTOP == nID ) {
+  if (ID_SYSMENU_ALWAYSONTOP == nID) {
     PWSprefs *prefs = PWSprefs::GetInstance();
     bool oldAlwaysOnTop = prefs->GetPref(PWSprefs::AlwaysOnTop);
     prefs->SetPref(PWSprefs::AlwaysOnTop, !oldAlwaysOnTop);
@@ -1756,35 +1757,35 @@ DboxMain::UnMinimize(bool update_windows)
       m_core.IsReadOnly());
     CString cs_temp, cs_title;
     switch (rc) {
-    case PWScore::SUCCESS:
-      rc2 = m_core.ReadCurFile(passkey);
+      case PWScore::SUCCESS:
+        rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-      m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+        m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
 #endif
-      break;
-    case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
-      cs_title.LoadString(IDS_FILEOPEN);
-      MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
-    case TAR_NEW:
-      rc2 = New();
-      break;
-    case TAR_OPEN:
-      rc2 = Open();
-      break;
-    case PWScore::WRONG_PASSWORD:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    case PWScore::USER_CANCEL:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
-    case PWScore::USER_EXIT:
-      m_core.UnlockFile(m_core.GetCurFile());
-      PostQuitMessage(0);
-      return;
-    default:
-      rc2 = PWScore::NOT_SUCCESS;
-      break;
+        break;
+      case PWScore::CANT_OPEN_FILE:
+        cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile());
+        cs_title.LoadString(IDS_FILEOPEN);
+        MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
+      case TAR_NEW:
+        rc2 = New();
+        break;
+      case TAR_OPEN:
+        rc2 = Open();
+        break;
+      case PWScore::WRONG_PASSWORD:
+        rc2 = PWScore::NOT_SUCCESS;
+        break;
+      case PWScore::USER_CANCEL:
+        rc2 = PWScore::NOT_SUCCESS;
+        break;
+      case PWScore::USER_EXIT:
+        m_core.UnlockFile(m_core.GetCurFile());
+        PostQuitMessage(0);
+        return;
+      default:
+        rc2 = PWScore::NOT_SUCCESS;
+        break;
     }
 
     if (rc2 == PWScore::SUCCESS) {
@@ -1836,7 +1837,6 @@ DboxMain::ResetIdleLockCounter()
 {
   m_IdleLockCountDown = PWSprefs::GetInstance()->
     GetPref(PWSprefs::IdleTimeout);
-
 }
 
 bool
@@ -1860,22 +1860,23 @@ DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   // list of all the events that signify actual user activity, as opposed
   // to Windows internal events...
   if (message == WM_KEYDOWN ||
-    message == WM_COMMAND ||
-    message == WM_SYSCOMMAND ||
-    message == WM_MOUSEMOVE ||
-    message == WM_MOVE ||
-    message == WM_LBUTTONDOWN ||
-    message == WM_LBUTTONDBLCLK ||
-    message == WM_CONTEXTMENU ||
+      message == WM_COMMAND ||
+      message == WM_SYSCOMMAND ||
+      message == WM_MOUSEMOVE ||
+      message == WM_MOVE ||
+      message == WM_LBUTTONDOWN ||
+      message == WM_LBUTTONDBLCLK ||
+      message == WM_CONTEXTMENU ||
     // JHF undeclared identifier -> removed to get code to compile
 #if !defined(POCKET_PC)
-    message == WM_MENUSELECT ||
+      message == WM_MENUSELECT ||
 #endif
-    message == WM_VSCROLL)
+      message == WM_VSCROLL ||
+      message == WM_HSCROLL)
     ResetIdleLockCounter();
 
   if (message == WM_SYSCOLORCHANGE ||
-    message == WM_SETTINGCHANGE)
+      message == WM_SETTINGCHANGE)
     RefreshImages();
 
   return CDialog::WindowProc(message, wParam, lParam);
@@ -1916,8 +1917,8 @@ DboxMain::CheckExpiredPasswords()
 
   ItemListConstIter listPos;
   for (listPos = m_core.GetEntryIter();
-    listPos != m_core.GetEntryEndIter();
-    listPos++) {
+       listPos != m_core.GetEntryEndIter();
+       listPos++) {
       const CItemData &curitem = m_core.GetEntry(listPos);
       if (curitem.IsAlias())
         continue;
@@ -1990,20 +1991,20 @@ DboxMain::OnQueryEndSession()
       (MB_ICONWARNING |
       MB_YESNOCANCEL | MB_DEFBUTTON3));
     switch (m_iSessionEndingStatus) {
-    case IDCANCEL:
-      // Cancel shutdown\restart\logoff
-      return FALSE;
-    case IDYES:
-      // Save the changes and say OK to shutdown\restart\logoff
-      Save();
-      autoSave = false;
-      retval = TRUE;
-      break;
-    case IDNO:
-      // Don't save the changes but say OK to shutdown\restart\logoff
-      autoSave = false;
-      retval = TRUE;
-      break;
+      case IDCANCEL:
+        // Cancel shutdown\restart\logoff
+        return FALSE;
+      case IDYES:
+        // Save the changes and say OK to shutdown\restart\logoff
+        Save();
+        autoSave = false;
+        retval = TRUE;
+        break;
+      case IDNO:
+        // Don't save the changes but say OK to shutdown\restart\logoff
+        autoSave = false;
+        retval = TRUE;
+        break;
     }
   } // database was changed
 
@@ -2167,8 +2168,8 @@ DboxMain::UpdateMenuAndToolBar(const bool bOpen)
       tbCtrl.GetButtonInfo(i, &tbinfo);
 
       if (tbinfo.fsStyle & TBSTYLE_SEP || 
-        tbinfo.idCommand < ID_MENUTOOLBAR_START ||
-        tbinfo.idCommand > ID_MENUTOOLBAR_END)
+          tbinfo.idCommand < ID_MENUTOOLBAR_START ||
+          tbinfo.idCommand > ID_MENUTOOLBAR_END)
         continue;
 
       iEnable = OnUpdateMenuToolbar(tbinfo.idCommand);
@@ -2201,30 +2202,30 @@ DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
     // Set menu text to "UnLock" or "Lock" according to state
     case ID_MENUITEM_TRAYUNLOCK:
     case ID_MENUITEM_TRAYLOCK:
-      {
-        const int i_state = app.GetSystemTrayState();
-        switch (i_state) {
-    case ThisMfcApp::UNLOCKED:
-    case ThisMfcApp::LOCKED:
-      break;
-    case ThisMfcApp::CLOSED:
-      {
-        const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
-        pCmdUI->SetText(csClosed);
-        iEnable = FALSE;
+    {
+      const int i_state = app.GetSystemTrayState();
+      switch (i_state) {
+        case ThisMfcApp::UNLOCKED:
+        case ThisMfcApp::LOCKED:
+          break;
+        case ThisMfcApp::CLOSED:
+        {
+          const CString csClosed(MAKEINTRESOURCE(IDS_NOSAFE));
+          pCmdUI->SetText(csClosed);
+          iEnable = FALSE;
+          break;
+        }
+        default:
+          ASSERT(0);
+          break;
+      }
+      if (i_state != ThisMfcApp::CLOSED) {
+        // If dialog visible - obviously unlocked and no need to have option to lock
+        iEnable = this->IsWindowVisible() == FALSE ? TRUE : FALSE;
       }
       break;
-    default:
-      ASSERT(0);
-      break;
-        }
-        if (i_state != ThisMfcApp::CLOSED) {
-          // If dialog visible - obviously unlocked and no need to have option to lock
-          iEnable = this->IsWindowVisible() == FALSE ? TRUE : FALSE;
-        }
-      }
-      break;
-      // Enable/Disable menu item depending on data supplied
+    }
+    // Enable/Disable menu item depending on data supplied
     case ID_MENUITEM_CLEARRECENTENTRIES:
       if (pCmdUI->m_pSubMenu != NULL) {
         // disable or enable entire popup for "Recent Entries"
@@ -2290,32 +2291,32 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
   // Special processing!
   switch (nID) {
     // Items not allowed if a Group is selected
-  case ID_MENUITEM_DUPLICATEENTRY:
-  case ID_MENUITEM_COPYPASSWORD:
-  case ID_MENUITEM_COPYUSERNAME:
-  case ID_MENUITEM_COPYNOTESFLD:
-  case ID_MENUITEM_AUTOTYPE:
-  case ID_MENUITEM_EDIT:
+    case ID_MENUITEM_DUPLICATEENTRY:
+    case ID_MENUITEM_COPYPASSWORD:
+    case ID_MENUITEM_COPYUSERNAME:
+    case ID_MENUITEM_COPYNOTESFLD:
+    case ID_MENUITEM_AUTOTYPE:
+    case ID_MENUITEM_EDIT:
 #if defined(POCKET_PC)
-  case ID_MENUITEM_SHOWPASSWORD:
+    case ID_MENUITEM_SHOWPASSWORD:
 #endif
-    if (bGroupSelected)
-      iEnable = FALSE;
-    break;
+      if (bGroupSelected)
+        iEnable = FALSE;
+      break;
     // Not allowed if Group selected or the item selected has an empty URL
-  case ID_MENUITEM_BROWSEURL:
-  case ID_MENUITEM_SENDEMAIL:
-  case ID_MENUITEM_COPYURL:
-  case ID_MENUITEM_COPYEMAIL:
-    if (bGroupSelected) {
-      // Not allowed if a Group is selected
-      iEnable = FALSE;
-    } else {
-      CItemData *ci = getSelectedItem();
-      if (ci == NULL) {
+    case ID_MENUITEM_BROWSEURL:
+    case ID_MENUITEM_SENDEMAIL:
+    case ID_MENUITEM_COPYURL:
+    case ID_MENUITEM_COPYEMAIL:
+      if (bGroupSelected) {
+        // Not allowed if a Group is selected
         iEnable = FALSE;
       } else {
-        if (ci->IsShortcut()) {
+        CItemData *ci = getSelectedItem();
+        if (ci == NULL) {
+          iEnable = FALSE;
+        } else {
+          if (ci->IsShortcut()) {
           // This is an shortcut
           uuid_array_t entry_uuid, base_uuid;
           ci->GetUUID(entry_uuid);
@@ -2334,29 +2335,29 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
     }
     break;
     // Items not allowed in List View
-  case ID_MENUITEM_ADDGROUP:
-  case ID_MENUITEM_RENAME:
-  case ID_MENUITEM_EXPANDALL:
-  case ID_MENUITEM_COLLAPSEALL:
-    if (m_IsListView)
-      iEnable = FALSE;
-    break;
+    case ID_MENUITEM_ADDGROUP:
+    case ID_MENUITEM_RENAME:
+    case ID_MENUITEM_EXPANDALL:
+    case ID_MENUITEM_COLLAPSEALL:
+      if (m_IsListView)
+        iEnable = FALSE;
+      break;
     // If not changed, no need to allow Save!
-  case ID_MENUITEM_SAVE:
-    if (!m_core.IsChanged())
-      iEnable = FALSE;
-    break;
+    case ID_MENUITEM_SAVE:
+      if (!m_core.IsChanged())
+        iEnable = FALSE;
+      break;
     // Special processing for viewing reports, if they exist
-  case ID_MENUITEM_REPORT_COMPARE:
-  case ID_MENUITEM_REPORT_IMPORTTEXT:
-  case ID_MENUITEM_REPORT_IMPORTXML:
-  case ID_MENUITEM_REPORT_MERGE:
-  case ID_MENUITEM_REPORT_VALIDATE:
-    iEnable = OnUpdateViewReports(nID);
-    break;
+    case ID_MENUITEM_REPORT_COMPARE:
+    case ID_MENUITEM_REPORT_IMPORTTEXT:
+    case ID_MENUITEM_REPORT_IMPORTXML:
+    case ID_MENUITEM_REPORT_MERGE:
+    case ID_MENUITEM_REPORT_VALIDATE:
+      iEnable = OnUpdateViewReports(nID);
+      break;
     // Disable choice of toolbar if at low resolution
-  case ID_MENUITEM_OLD_TOOLBAR:
-  case ID_MENUITEM_NEW_TOOLBAR:
+    case ID_MENUITEM_OLD_TOOLBAR:
+    case ID_MENUITEM_NEW_TOOLBAR:
     {
 #if !defined(POCKET_PC)
       // JHF m_toolbarMode is not for WinCE (as in .h)
@@ -2367,36 +2368,36 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       }
 #endif
+      break;
     }
-    break;
     // Disable Minimize if already minimized
-  case ID_MENUITEM_MINIMIZE:
+    case ID_MENUITEM_MINIMIZE:
     {
       WINDOWPLACEMENT wndpl;
       GetWindowPlacement(&wndpl);
       if (wndpl.showCmd == SW_SHOWMINIMIZED)
         iEnable = FALSE;
+      break;
     }
-    break;
     // Disable Restore if already visible
-  case ID_MENUITEM_UNMINIMIZE:
+    case ID_MENUITEM_UNMINIMIZE:
     {
       WINDOWPLACEMENT wndpl;
       GetWindowPlacement(&wndpl);
       if (wndpl.showCmd != SW_SHOWMINIMIZED)
         iEnable = FALSE;
+      break;
     }
-    break;
     // Set the state of the "Case Sensitivity" button
-  case ID_TOOLBUTTON_FINDCASE:
-  case ID_TOOLBUTTON_FINDCASE_I:
-  case ID_TOOLBUTTON_FINDCASE_S:
-    m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
-ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
+    case ID_TOOLBUTTON_FINDCASE:
+    case ID_TOOLBUTTON_FINDCASE_I:
+    case ID_TOOLBUTTON_FINDCASE_S:
+      m_FindToolBar.GetToolBarCtrl().CheckButton(m_FindToolBar.IsFindCaseSet() ?
+                           ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
                            m_FindToolBar.IsFindCaseSet());
-    return -1;
-  default:
-    break;
+      return -1;
+    default:
+      break;
   }
   // Last but not least, DEMO build support:
 #ifdef DEMO
@@ -2404,18 +2405,18 @@ ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I,
     bool isLimited = (m_core.GetNumEntries() >= MAXDEMO);
     if (isLimited) {
       switch (nID) {
-      case ID_MENUITEM_ADD:
-      case ID_MENUITEM_ADDSHORTCUT:
-      case ID_MENUITEM_ADDGROUP:
-      case ID_MENUITEM_DUPLICATEENTRY:
-      case ID_MENUITEM_IMPORT_KEEPASS:
-      case ID_MENUITEM_IMPORT_PLAINTEXT:
-      case ID_MENUITEM_IMPORT_XML:
-      case ID_MENUITEM_MERGE:
-        iEnable = FALSE;
-        break;
-      default:
-        break;
+        case ID_MENUITEM_ADD:
+        case ID_MENUITEM_ADDSHORTCUT:
+        case ID_MENUITEM_ADDGROUP:
+        case ID_MENUITEM_DUPLICATEENTRY:
+        case ID_MENUITEM_IMPORT_KEEPASS:
+        case ID_MENUITEM_IMPORT_PLAINTEXT:
+        case ID_MENUITEM_IMPORT_XML:
+        case ID_MENUITEM_MERGE:
+          iEnable = FALSE;
+          break;
+        default:
+          break;
       }
     }
   }

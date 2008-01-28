@@ -14,9 +14,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-
 PWSfileV1V2::PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version)
-: PWSfile(filename,mode)
+  : PWSfile(filename, mode)
 {
   m_curversion = version;
   m_IV = m_ipthing;
@@ -180,7 +179,6 @@ int PWSfileV1V2::Close()
   return PWSfile::Close();
 }
 
-
 int PWSfileV1V2::CheckPassword(const CMyString &filename,
                                const CMyString &passkey, FILE *a_fd)
 {
@@ -234,7 +232,6 @@ static CMyString ReMergeNotes(const CItemData &item)
   return notes;
 }
 
-
 size_t PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
 {
 #ifndef UNICODE
@@ -271,9 +268,9 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   ASSERT(m_curversion != UNKNOWN_VERSION);
   int status = SUCCESS;
 
-
   switch (m_curversion) {
-    case V17: {
+    case V17:
+    {
       // 1.x programs totally ignore the type byte, hence safe to write it
       // (no need for two WriteCBC functions)
       // Note that 2.0 format still requires that the header be in this format,
@@ -309,29 +306,29 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
       WriteCBC(dummy_type, name);
       WriteCBC(CItemData::PASSWORD, item.GetPassword());
       WriteCBC(CItemData::NOTES, ReMergeNotes(item));
-              }
-              break;
-    case V20: {
-                {
-                  uuid_array_t uuid_array;
-                  item.GetUUID(uuid_array);
-                  PWSfile::WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
-                }
-                WriteCBC(CItemData::GROUP, item.GetGroup());
-                WriteCBC(CItemData::TITLE, item.GetTitle());
-                WriteCBC(CItemData::USER, item.GetUser());
-                WriteCBC(CItemData::PASSWORD, item.GetPassword());
-                WriteCBC(CItemData::NOTES, ReMergeNotes(item));
-                WriteCBC(CItemData::END, _T(""));
-              }
-              break;
+      break;
+    }
+    case V20:
+    {
+      {
+        uuid_array_t uuid_array;
+        item.GetUUID(uuid_array);
+        PWSfile::WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+      }
+      WriteCBC(CItemData::GROUP, item.GetGroup());
+      WriteCBC(CItemData::TITLE, item.GetTitle());
+      WriteCBC(CItemData::USER, item.GetUser());
+      WriteCBC(CItemData::PASSWORD, item.GetPassword());
+      WriteCBC(CItemData::NOTES, ReMergeNotes(item));
+      WriteCBC(CItemData::END, _T(""));
+      break;
+    }
     default:
       ASSERT(0);
       status = UNSUPPORTED_VERSION;
   }
   return status;
 }
-
 
 static void ExtractAutoTypeCmd(CMyString &notesStr, CMyString &autotypeStr)
 {
@@ -401,16 +398,16 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
     if (wcLen == 0) {
       DWORD errCode = GetLastError();
       switch (errCode) {
-            case ERROR_INSUFFICIENT_BUFFER:
-              TRACE("INSUFFICIENT BUFFER"); break;
-            case ERROR_INVALID_FLAGS:
-              TRACE("INVALID FLAGS"); break;
-            case ERROR_INVALID_PARAMETER:
-              TRACE("INVALID PARAMETER"); break;
-            case ERROR_NO_UNICODE_TRANSLATION:
-              TRACE("NO UNICODE TRANSLATION"); break;
-            default:
-              ASSERT(0);
+        case ERROR_INSUFFICIENT_BUFFER:
+          TRACE("INSUFFICIENT BUFFER"); break;
+        case ERROR_INVALID_FLAGS:
+          TRACE("INVALID FLAGS"); break;
+        case ERROR_INVALID_PARAMETER:
+          TRACE("INVALID PARAMETER"); break;
+        case ERROR_NO_UNICODE_TRANSLATION:
+          TRACE("NO UNICODE TRANSLATION"); break;
+        default:
+          ASSERT(0);
       }
     }
     ASSERT(wcLen != 0);
@@ -448,7 +445,8 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   // but we in fact need it as an unsigned char. Grrrr.
 
   switch (m_curversion) {
-    case V17: {
+    case V17:
+    {
       // type is meaningless, but why write two versions of ReadCBC?
       numread += static_cast<signed long>(ReadCBC(type, tempdata));
       item.SetName(tempdata, m_defusername);
@@ -460,8 +458,9 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
       item.CreateUUID();
       // No Group - currently leave empty
       return (numread > 0) ? SUCCESS : END_OF_FILE;
-              }
-    case V20: {
+    }
+    case V20:
+    {
       int emergencyExit = 255; // to avoid endless loop.
       signed long fieldLen; // zero means end of file reached
       bool endFound = false; // set to true when record end detected - happy end
@@ -470,49 +469,52 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
         if (signed(fieldLen) > 0) {
           numread += fieldLen;
           switch (type) {
-    case CItemData::TITLE:
-      item.SetTitle(tempdata); break;
-    case CItemData::USER:
-      item.SetUser(tempdata); break;
-    case CItemData::PASSWORD:
-      item.SetPassword(tempdata); break;
-    case CItemData::NOTES: {
-      CMyString autotypeStr, URLStr;
-      ExtractAutoTypeCmd(tempdata, autotypeStr);
-      ExtractURL(tempdata, URLStr);
-      item.SetNotes(tempdata);
-      if (!autotypeStr.IsEmpty())
-        item.SetAutoType(autotypeStr);
-      if (!URLStr.IsEmpty())
-        item.SetURL(URLStr);
-      break;
-                           }
-    case CItemData::END:
-      endFound = true; break;
-    case CItemData::UUID: {
-      LPCTSTR ptr = LPCTSTR(tempdata);
-      uuid_array_t uuid_array;
-      for (unsigned i = 0; i < sizeof(uuid_array); i++)
-        uuid_array[i] = (unsigned char)ptr[i];
-      item.SetUUID(uuid_array); break;
-                          }
-    case CItemData::GROUP:
-      item.SetGroup(tempdata); break;
-      // just silently ignore fields we don't support.
-      // this is forward compatability...
-    case CItemData::CTIME:
-    case CItemData::PMTIME:
-    case CItemData::ATIME:
-    case CItemData::LTIME:
-    case CItemData::RMTIME:
-    case CItemData::POLICY:
-    default:
-      break;
+            case CItemData::TITLE:
+              item.SetTitle(tempdata); break;
+            case CItemData::USER:
+              item.SetUser(tempdata); break;
+            case CItemData::PASSWORD:
+              item.SetPassword(tempdata); break;
+            case CItemData::NOTES:
+            {
+              CMyString autotypeStr, URLStr;
+              ExtractAutoTypeCmd(tempdata, autotypeStr);
+              ExtractURL(tempdata, URLStr);
+              item.SetNotes(tempdata);
+              if (!autotypeStr.IsEmpty())
+                item.SetAutoType(autotypeStr);
+              if (!URLStr.IsEmpty())
+                item.SetURL(URLStr);
+              break;
+            }
+            case CItemData::END:
+              endFound = true; break;
+            case CItemData::UUID:
+            {
+              LPCTSTR ptr = LPCTSTR(tempdata);
+              uuid_array_t uuid_array;
+              for (unsigned i = 0; i < sizeof(uuid_array); i++)
+                uuid_array[i] = (unsigned char)ptr[i];
+              item.SetUUID(uuid_array);
+              break;
+            }
+            case CItemData::GROUP:
+              item.SetGroup(tempdata); break;
+              // just silently ignore fields we don't support.
+              // this is forward compatability...
+            case CItemData::CTIME:
+            case CItemData::PMTIME:
+            case CItemData::ATIME:
+            case CItemData::LTIME:
+            case CItemData::RMTIME:
+            case CItemData::POLICY:
+            default:
+              break;
           } // switch
         } // if (fieldLen > 0)
       } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
       return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
-              }
+    }
     default:
       ASSERT(0);
       return UNSUPPORTED_VERSION;
