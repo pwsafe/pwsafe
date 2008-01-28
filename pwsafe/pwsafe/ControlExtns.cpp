@@ -43,7 +43,7 @@ const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 // CStaticExtn
 
 CStaticExtn::CStaticExtn()
-: m_bUserColour(FALSE)
+  : m_bUserColour(FALSE)
 {
 }
 
@@ -172,7 +172,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   menu.InsertMenu(4, MF_BYPOSITION | flags, WM_CLEAR, MENUSTRING_DELETE);
 
   flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
-    !bReadOnly ? 0 : MF_GRAYED;
+                                     !bReadOnly ? 0 : MF_GRAYED;
   menu.InsertMenu(4, MF_BYPOSITION | flags, WM_PASTE, MENUSTRING_PASTE);
 
   menu.InsertMenu(6, MF_BYPOSITION | MF_SEPARATOR);
@@ -195,7 +195,8 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   }
 
   int nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
-    TPM_RETURNCMD | TPM_RIGHTBUTTON, point.x, point.y, this);
+                                 TPM_RETURNCMD | TPM_RIGHTBUTTON, 
+                                 point.x, point.y, this);
 
   if (nCmd < 0)
     return;

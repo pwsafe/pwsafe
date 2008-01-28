@@ -29,7 +29,6 @@
 */
 //-----------------------------------------------------------------------------
 
-
 CString PWSdirs::GetMFNDir()
 {
   // returns the directory part of ::GetModuleFileName()
@@ -42,7 +41,6 @@ CString PWSdirs::GetMFNDir()
     acPath[0] = TCHAR('\\'); acPath[1] = TCHAR('\0');
   }
   return CString(acPath);
-
 }
 
 CString PWSdirs::GetSafeDir()

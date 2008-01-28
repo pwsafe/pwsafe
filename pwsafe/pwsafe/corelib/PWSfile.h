@@ -23,7 +23,8 @@
 
 class Fish;
 
-class PWSfile {
+class PWSfile
+{
 public:
   enum VERSION {V17, V20, V30, VCURRENT = V30,
     NEWFILE = 98,

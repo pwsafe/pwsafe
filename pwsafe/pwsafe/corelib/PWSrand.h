@@ -13,7 +13,8 @@
 
 #include "sha256.h"
 
-class PWSrand {
+class PWSrand
+{
 public:
   static PWSrand *GetInstance();
   static void DeleteInstance();
@@ -25,6 +26,7 @@ public:
   unsigned int RandUInt(); // generate a random uint
   //  generate a random integer in [0, len)
   unsigned int RangeRand(unsigned int len);
+
 private:
   PWSrand(); // start with some minimal entropy
   ~PWSrand();

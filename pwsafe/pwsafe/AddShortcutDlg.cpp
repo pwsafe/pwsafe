@@ -24,8 +24,8 @@ static char THIS_FILE[] = __FILE__;
 
 //-----------------------------------------------------------------------------
 CAddShortcutDlg::CAddShortcutDlg(CWnd* pParent)
-: CPWDialog(CAddShortcutDlg::IDD, pParent), m_target(_T("")), 
-m_username(_T("")), m_title(_T("")), m_group(_T(""))
+  : CPWDialog(CAddShortcutDlg::IDD, pParent), m_target(_T("")), 
+  m_username(_T("")), m_title(_T("")), m_group(_T(""))
 {
 }
 
@@ -127,13 +127,13 @@ CAddShortcutDlg::OnOK()
 
   bool b_msg_issued;
   if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_target,
-    false, CItemData::Shortcut,
-    m_base_uuid, m_ibasedata, b_msg_issued)) {
-      if (!b_msg_issued)
-        AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
-      UpdateData(FALSE);
-      ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
-      return;
+                             false, CItemData::Shortcut,
+                             m_base_uuid, m_ibasedata, b_msg_issued)) {
+    if (!b_msg_issued)
+      AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
+    UpdateData(FALSE);
+    ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
+    return;
   }
   //End check
 

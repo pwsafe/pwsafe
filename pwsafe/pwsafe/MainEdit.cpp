@@ -204,20 +204,19 @@ DboxMain::OnAddShortcut()
   if (rc == IDOK) {
     PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
-    if (!m_core.GetUseDefUser()
-      && (prefs->GetPref(PWSprefs::QuerySetDef))
-      && (!dlg_addshortcut.m_username.IsEmpty())) {
-        CQuerySetDef defDlg(this);
-        defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_addshortcut.m_username);
-        INT_PTR rc2 = defDlg.DoModal();
-        if (rc2 == IDOK) {
-          prefs->SetPref(PWSprefs::UseDefaultUser, true);
-          prefs->SetPref(PWSprefs::DefaultUsername,
-            dlg_addshortcut.m_username);
-          m_core.SetUseDefUser(true);
-          m_core.SetDefUsername(dlg_addshortcut.m_username);
-          RefreshViews();
-        }
+    if (!m_core.GetUseDefUser() &&
+        (prefs->GetPref(PWSprefs::QuerySetDef)) &&
+        (!dlg_addshortcut.m_username.IsEmpty())) {
+      CQuerySetDef defDlg(this);
+      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_addshortcut.m_username);
+      INT_PTR rc2 = defDlg.DoModal();
+      if (rc2 == IDOK) {
+        prefs->SetPref(PWSprefs::UseDefaultUser, true);
+        prefs->SetPref(PWSprefs::DefaultUsername, dlg_addshortcut.m_username);
+        m_core.SetUseDefUser(true);
+        m_core.SetDefUsername(dlg_addshortcut.m_username);
+        RefreshViews();
+      }
     }
 
     //Finish Check (Does that make any geographical sense?)
@@ -456,8 +455,7 @@ DboxMain::Delete(bool inRecursion)
     FixListIndexes();
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
-        SelectEntry(curSel < (int)m_core.GetNumEntries() ?
-curSel : (int)(m_core.GetNumEntries() - 1));
+        SelectEntry(curSel < (int)m_core.GetNumEntries() ? curSel : (int)(m_core.GetNumEntries() - 1));
       }
       m_ctlItemList.SetFocus();
     } else {// tree view visible
@@ -589,9 +587,9 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     if (iter != End()) {
       const CItemData &cibase = iter->second;
       dlg_edit.m_base = _T("[") +
-        cibase.GetGroup() + _T(":") +
-        cibase.GetTitle() + _T(":") +
-        cibase.GetUser()  + _T("]");
+                        cibase.GetGroup() + _T(":") +
+                        cibase.GetTitle() + _T(":") +
+                        cibase.GetUser()  + _T("]");
       dlg_edit.m_original_entrytype = CItemData::Alias;
     }
   } else {
@@ -599,7 +597,6 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     editedItem.GetPWPolicy(pwp);
     dlg_edit.m_pwp = pwp;
   }
-
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_edit.DoModal();
@@ -623,18 +620,18 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
     ItemListIter iter;
     if (dlg_edit.m_original_entrytype == CItemData::Normal &&
-      ci->GetPassword() != newPassword) {
-        // Original was a 'normal' entry and the password has changed
-        if (dlg_edit.m_ibasedata > 0) {
-          // Now an alias
-          pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
-          editedItem.SetPassword(CMyString(_T("[Alias]")));
-          editedItem.SetAlias();
-        } else {
-          // Still 'normal'
-          editedItem.SetPassword(newPassword);
-          editedItem.SetNormal();
-        }
+        ci->GetPassword() != newPassword) {
+      // Original was a 'normal' entry and the password has changed
+      if (dlg_edit.m_ibasedata > 0) {
+        // Now an alias
+        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
+        editedItem.SetPassword(CMyString(_T("[Alias]")));
+        editedItem.SetAlias();
+      } else {
+        // Still 'normal'
+        editedItem.SetPassword(newPassword);
+        editedItem.SetNormal();
+      }
     }
 
     if (dlg_edit.m_original_entrytype == CItemData::Alias) {
@@ -661,21 +658,21 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     }
 
     if (dlg_edit.m_original_entrytype == CItemData::AliasBase &&
-      ci->GetPassword() != newPassword) {
-        // Original was a base but might now be an alias of another entry!
-        if (dlg_edit.m_ibasedata > 0) {
-          // Now an alias
-          // Make this one an alias
-          pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
-          editedItem.SetPassword(CMyString(_T("[Alias]")));
-          editedItem.SetAlias();
-          // Move old aliases across
-          pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::Alias);
-        } else {
-          // Still a base entry but with a new password
-          editedItem.SetPassword(newPassword);
-          editedItem.SetAliasBase();
-        }
+        ci->GetPassword() != newPassword) {
+      // Original was a base but might now be an alias of another entry!
+      if (dlg_edit.m_ibasedata > 0) {
+        // Now an alias
+        // Make this one an alias
+        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Alias);
+        editedItem.SetPassword(CMyString(_T("[Alias]")));
+        editedItem.SetAlias();
+        // Move old aliases across
+        pcore->MoveDependentEntries(original_uuid, new_base_uuid, CItemData::Alias);
+      } else {
+        // Still a base entry but with a new password
+        editedItem.SetPassword(newPassword);
+        editedItem.SetAliasBase();
+      }
     }
 
     // Reset all images!
@@ -768,9 +765,9 @@ DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
   if (iter != End()) {
     const CItemData &cibase = iter->second;
     dlg_editshortcut.m_base = _T("[") +
-      cibase.GetGroup() + _T(":") +
-      cibase.GetTitle() + _T(":") +
-      cibase.GetUser()  + _T("]");
+                              cibase.GetGroup() + _T(":") +
+                              cibase.GetTitle() + _T(":") +
+                              cibase.GetUser()  + _T("]");
   }
 
   app.DisableAccelerator();
@@ -940,9 +937,9 @@ DboxMain::OnDuplicateEntry()
       if (iter != m_core.GetEntryEndIter()) {
         CMyString cs_tmp;
         cs_tmp = _T("[") +
-          iter->second.GetGroup() + _T(":") +
-          iter->second.GetTitle() + _T(":") +
-          iter->second.GetUser()  + _T("]");
+                 iter->second.GetGroup() + _T(":") +
+                 iter->second.GetTitle() + _T(":") +
+                 iter->second.GetUser()  + _T("]");
         ci2.SetPassword(cs_tmp);
       }
     }
@@ -1239,44 +1236,44 @@ DboxMain::AutoType(const CItemData &ci)
       if(n < N)
         curChar=AutoCmd[n];
       switch(curChar){
-      case TCHAR('\\'):
-        tmp += TCHAR('\\');
-        break;
-      case TCHAR('n'):
-      case TCHAR('r'):
-        tmp += TCHAR('\r');
-        break;
-      case TCHAR('t'):
-        tmp += TCHAR('\t');
-        break;
-      case TCHAR('u'):
-        tmp += user;
-        break;
-      case TCHAR('p'):
-        tmp += pwd;
-        break;
-      case TCHAR('d'): {
-        // Delay is going to change - send what we have with old delay
-        ks.SendString(tmp);
-        // start collecting new delay
-        tmp = _T("");
-        int newdelay = 0;
-        int gNumIts = 0;
+        case TCHAR('\\'):
+          tmp += TCHAR('\\');
+          break;
+        case TCHAR('n'):
+        case TCHAR('r'):
+          tmp += TCHAR('\r');
+          break;
+        case TCHAR('t'):
+          tmp += TCHAR('\t');
+          break;
+        case TCHAR('u'):
+          tmp += user;
+          break;
+        case TCHAR('p'):
+          tmp += pwd;
+          break;
+        case TCHAR('d'): {
+          // Delay is going to change - send what we have with old delay
+          ks.SendString(tmp);
+          // start collecting new delay
+          tmp = _T("");
+          int newdelay = 0;
+          int gNumIts = 0;
 
-        for(n++; n < N && (gNumIts < 3); ++gNumIts, n++)
-          if(isdigit(AutoCmd[n])){
-            newdelay *= 10;
-            newdelay += (AutoCmd[n] - TCHAR('0'));
-          } else
-            break; // for loop
-          n--;
-          ks.SetAndDelay(newdelay);
-
-          break; // case
-                       }
-      default:
-        tmp += _T("\\") + curChar;
-        break;
+          for  (n++; n < N && (gNumIts < 3); ++gNumIts, n++)
+            if(isdigit(AutoCmd[n])){
+              newdelay *= 10;
+              newdelay += (AutoCmd[n] - TCHAR('0'));
+            } else
+              break; // for loop
+    
+            n--;
+            ks.SetAndDelay(newdelay);
+            break; // case
+            }
+        default:
+          tmp += _T("\\") + curChar;
+          break;
       }
     } else
       tmp += curChar;
@@ -1425,9 +1422,9 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 
   // Now try to add aliases we couldn't add in previous processing
   m_core.AddDependentEntries(possible_aliases, NULL, CItemData::Alias, 
-    CItemData::PASSWORD);
+                             CItemData::PASSWORD);
   m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, 
-    CItemData::PASSWORD);
+                             CItemData::PASSWORD);
 
   if (PWSprefs::GetInstance()->
     GetPref(PWSprefs::SaveImmediately)) {
@@ -1538,14 +1535,14 @@ DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
 
   if (bIsEdit && 
     (pl.csPwdGroup == group && pl.csPwdTitle == title && pl.csPwdUser == user)) {
-      // In Edit, check user isn't changing entry to point to itself (circular/self reference)
-      // Can't happen during Add as already checked entry does not exist so if accepted the
-      // password would be treated as an unusal "normal" password
-      if (InputType == CItemData::Alias)
-        AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
-      else
-        AfxMessageBox(IDS_SHTCTCANTREFERTOITSELF, MB_OK);
-      return false;
+    // In Edit, check user isn't changing entry to point to itself (circular/self reference)
+    // Can't happen during Add as already checked entry does not exist so if accepted the
+    // password would be treated as an unusal "normal" password
+    if (InputType == CItemData::Alias)
+      AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
+    else
+      AfxMessageBox(IDS_SHTCTCANTREFERTOITSELF, MB_OK);
+    return false;
   }
 
   // ibasedata:
@@ -1586,27 +1583,27 @@ DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
         rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
         break;
       case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
-        {
-          const bool bGE = pl.csPwdGroup.IsEmpty() == TRUE;
-          const bool bTE = pl.csPwdTitle.IsEmpty() == TRUE;
-          const bool bUE = pl.csPwdUser.IsEmpty() == TRUE;
-          if (bTE) {
-            // Title is mandatory for all entries!
-            AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
-            rc = IDNO;
-            break;
-          } else if (!bGE && !bUE)  // [x:y:z]
-            cs_msg.Format(IDS_ALIASNOTFOUND2A, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
-          else if (!bGE && bUE)     // [x:y:]
-            cs_msg.Format(IDS_ALIASNOTFOUND2B, pl.csPwdGroup, pl.csPwdTitle);
-          else if (bGE && !bUE)     // [:y:z]
-            cs_msg.Format(IDS_ALIASNOTFOUND2C, pl.csPwdTitle, pl.csPwdUser);
-          else if (bGE && bUE)      // [:y:]
-            cs_msg.Format(IDS_ALIASNOTFOUND0B, pl.csPwdTitle);
+      {
+        const bool bGE = pl.csPwdGroup.IsEmpty() == TRUE;
+        const bool bTE = pl.csPwdTitle.IsEmpty() == TRUE;
+        const bool bUE = pl.csPwdUser.IsEmpty() == TRUE;
+        if (bTE) {
+          // Title is mandatory for all entries!
+          AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
+          rc = IDNO;
+          break;
+        } else if (!bGE && !bUE)  // [x:y:z]
+          cs_msg.Format(IDS_ALIASNOTFOUND2A, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+        else if (!bGE && bUE)     // [x:y:]
+          cs_msg.Format(IDS_ALIASNOTFOUND2B, pl.csPwdGroup, pl.csPwdTitle);
+        else if (bGE && !bUE)     // [:y:z]
+          cs_msg.Format(IDS_ALIASNOTFOUND2C, pl.csPwdTitle, pl.csPwdUser);
+        else if (bGE && bUE)      // [:y:]
+          cs_msg.Format(IDS_ALIASNOTFOUND0B, pl.csPwdTitle);
 
-          rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
-        }
+        rc = AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, MB_YESNO | MB_DEFBUTTON2);
         break;
+      }
       default:
         // Never happens
         ASSERT(0);

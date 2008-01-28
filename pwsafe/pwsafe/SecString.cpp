@@ -19,7 +19,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 SecString::~SecString()
 {
   trashstring();
@@ -168,7 +167,6 @@ BOOL SecString::LoadString(UINT nID)
 {
   return m_mystring.LoadString(nID);
 }
-
 
 int SecString::Find( TCHAR ch ) const
 {

@@ -128,7 +128,6 @@ inline bool operator!=(const CMyString& s1, LPCTSTR s2)
 inline bool operator!=(LPCTSTR s1, const CMyString& s2)
 {return s1 != (const CString)s2;}
 
-
 //-----------------------------------------------------------------------------
 #endif
 //-----------------------------------------------------------------------------

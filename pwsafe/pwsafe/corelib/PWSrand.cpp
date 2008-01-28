@@ -37,7 +37,7 @@ void PWSrand::DeleteInstance()
 }
 
 PWSrand::PWSrand()
-: ibRandomData(SHA256::HASHLEN)
+  : ibRandomData(SHA256::HASHLEN)
 {
   m_IsInternalPRNG = !LoadRandomDataFunction();
 
@@ -142,8 +142,6 @@ unsigned int PWSrand::RangeRand(unsigned int len)
   return(r%len);
 }
 
-
-
 static bool __stdcall LoadRandomDataFunction()
 {
   HMODULE hLib = LoadLibrary(_T("ADVAPI32.DLL"));
@@ -156,4 +154,3 @@ static bool __stdcall LoadRandomDataFunction()
   }
   return (hLib != NULL && pfnGetRandomDataT != NULL);
 }
-

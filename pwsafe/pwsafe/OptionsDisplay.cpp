@@ -73,7 +73,6 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay message handlers
 
-
 void COptionsDisplay::OnPreWarn() 
 {
   BOOL enable = (((CButton*)GetDlgItem(IDC_PREWARNEXPIRY))->GetCheck() == 1) ? TRUE : FALSE;

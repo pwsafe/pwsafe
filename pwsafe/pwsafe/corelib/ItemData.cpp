@@ -41,25 +41,25 @@ void CItemData::SetSessionKey()
 // Constructors
 
 CItemData::CItemData()
-: m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
-m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
-m_URL(URL), m_AutoType(AUTOTYPE),
-m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
-m_tttLTime(LTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-m_PWPolicy(POLICY),
-m_display_info(NULL), m_entrytype(Normal)
+  : m_Name(NAME), m_Title(TITLE), m_User(USER), m_Password(PASSWORD),
+  m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
+  m_URL(URL), m_AutoType(AUTOTYPE),
+  m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
+  m_tttLTime(LTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
+  m_PWPolicy(POLICY),
+  m_display_info(NULL), m_entrytype(Normal)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
 
 CItemData::CItemData(const CItemData &that) :
-m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
-m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
-m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
-m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
-m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
-m_PWPolicy(that.m_PWPolicy),
-m_display_info(that.m_display_info), m_entrytype(that.m_entrytype)
+  m_Name(that.m_Name), m_Title(that.m_Title), m_User(that.m_User),
+  m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
+  m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
+  m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
+  m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
+  m_PWPolicy(that.m_PWPolicy),
+  m_display_info(that.m_display_info), m_entrytype(that.m_entrytype)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
@@ -92,7 +92,6 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, unsigned
   delete bf;
 }
 
-
 CMyString
 CItemData::GetName() const
 {
@@ -116,7 +115,6 @@ CItemData::GetUser() const
   GetField(m_User, ret);
   return ret;
 }
-
 
 CMyString
 CItemData::GetPassword() const
@@ -179,23 +177,23 @@ CItemData::GetTime(int whichtime, time_t &t) const
   unsigned int tlen = sizeof(in); // ditto
 
   switch (whichtime) {
-  case ATIME:
-    GetField(m_tttATime, (unsigned char *)in, tlen);
-    break;
-  case CTIME:
-    GetField(m_tttCTime, (unsigned char *)in, tlen);
-    break;
-  case LTIME:
-    GetField(m_tttLTime, (unsigned char *)in, tlen);
-    break;
-  case PMTIME:
-    GetField(m_tttPMTime, (unsigned char *)in, tlen);
-    break;
-  case RMTIME:
-    GetField(m_tttRMTime, (unsigned char *)in, tlen);
-    break;
-  default:
-    ASSERT(0);
+    case ATIME:
+      GetField(m_tttATime, (unsigned char *)in, tlen);
+      break;
+    case CTIME:
+      GetField(m_tttCTime, (unsigned char *)in, tlen);
+      break;
+    case LTIME:
+      GetField(m_tttLTime, (unsigned char *)in, tlen);
+      break;
+    case PMTIME:
+      GetField(m_tttPMTime, (unsigned char *)in, tlen);
+      break;
+    case RMTIME:
+      GetField(m_tttRMTime, (unsigned char *)in, tlen);
+      break;
+    default:
+      ASSERT(0);
   }
 
   if (tlen != 0) {
@@ -270,7 +268,6 @@ void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
   pdata = new unsigned char[flength];
   GetField(item, pdata, flength);
 }
-
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
                                 unsigned char * &pdata,
@@ -367,7 +364,7 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
     PWHistList PWHistList;
 
     CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-      &PWHistList, TMC_EXPORT_IMPORT);
+                        &PWHistList, TMC_EXPORT_IMPORT);
 
     //  Build export string
     TCHAR buffer[8];
@@ -396,15 +393,15 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
   if (m_entrytype == Alias) {
     ASSERT(cibase != NULL);
     csPassword = _T("[[") + 
-      cibase->GetGroup() + _T(":") + 
-      cibase->GetTitle() + _T(":") + 
-      cibase->GetUser() + _T("]]") ;
+                 cibase->GetGroup() + _T(":") + 
+                 cibase->GetTitle() + _T(":") + 
+                 cibase->GetUser() + _T("]]") ;
   } else if (m_entrytype == Shortcut) {
     ASSERT(cibase != NULL);
     csPassword = _T("[~") + 
-      cibase->GetGroup() + _T(":") + 
-      cibase->GetTitle() + _T(":") + 
-      cibase->GetUser() + _T("~]") ;
+                 cibase->GetGroup() + _T(":") + 
+                 cibase->GetTitle() + _T(":") + 
+                 cibase->GetUser() + _T("~]") ;
   } else
     csPassword = GetPassword();
 
@@ -412,18 +409,18 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
   if (bsFields.count() == bsFields.size()) {
     // Everything - note can't actually set all bits via dialog!
     ret = grouptitle + separator + 
-      user + separator +
-      csPassword + separator + 
-      url + separator + 
-      GetAutoType() + separator +
-      GetCTimeExp() + separator +
-      GetPMTimeExp() + separator +
-      GetATimeExp() + separator +
-      GetLTimeExp() + separator +
-      GetRMTimeExp() + separator +
-      GetPWPolicy() + separator +
-      history + separator +
-      _T("\"") + notes + _T("\"");
+          user + separator +
+          csPassword + separator + 
+          url + separator + 
+          GetAutoType() + separator +
+          GetCTimeExp() + separator +
+          GetPMTimeExp() + separator +
+          GetATimeExp() + separator +
+          GetLTimeExp() + separator +
+          GetRMTimeExp() + separator +
+          GetPWPolicy() + separator +
+          history + separator +
+          _T("\"") + notes + _T("\"");
   } else {
     // Not everything
     if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE))
@@ -567,15 +564,15 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   if (m_entrytype == Alias) {
     ASSERT(cibase != NULL);
     tmp = _T("[[") + 
-      cibase->GetGroup() + _T(":") + 
-      cibase->GetTitle() + _T(":") + 
-      cibase->GetUser() + _T("]]") ;
+          cibase->GetGroup() + _T(":") + 
+          cibase->GetTitle() + _T(":") + 
+          cibase->GetUser() + _T("]]") ;
   } else if (m_entrytype == Shortcut) {
     ASSERT(cibase != NULL);
     tmp = _T("[~") + 
-      cibase->GetGroup() + _T(":") + 
-      cibase->GetTitle() + _T(":") + 
-      cibase->GetUser() + _T("~]") ;
+          cibase->GetGroup() + _T(":") + 
+          cibase->GetTitle() + _T(":") + 
+          cibase->GetUser() + _T("~]") ;
   } else
     tmp = GetPassword();
   WriteXMLField(oss, "password", tmp, utf8conv);
@@ -720,27 +717,27 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
         int num = 1;
         PWHistList::iterator hiter;
         for (hiter = PWHistList.begin(); hiter != PWHistList.end();
-          hiter++) {
-            const unsigned char * utf8 = NULL;
-            int utf8Len = 0;
+             hiter++) {
+          const unsigned char * utf8 = NULL;
+          int utf8Len = 0;
 
-            oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
-            const PWHistEntry pwshe = *hiter;
-            oss << "\t\t\t\t\t<changed>" << endl;
-            oss << "\t\t\t\t\t\t<date>";
-            if (utf8conv.ToUTF8(pwshe.changedate.Left(10), utf8, utf8Len))
-              oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-            oss << "</date>" << endl;
-            oss << "\t\t\t\t\t\t<time>";
-            if (utf8conv.ToUTF8(pwshe.changedate.Right(8), utf8, utf8Len))
-              oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-            oss << "</time>" << endl;
-            oss << "\t\t\t\t\t</changed>" << endl;
-            WriteXMLField(oss, "oldpassword", pwshe.password,
-              utf8conv, "\t\t\t\t\t");
-            oss << "\t\t\t\t</history_entry>" << endl;
+          oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
+          const PWHistEntry pwshe = *hiter;
+          oss << "\t\t\t\t\t<changed>" << endl;
+          oss << "\t\t\t\t\t\t<date>";
+          if (utf8conv.ToUTF8(pwshe.changedate.Left(10), utf8, utf8Len))
+            oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+          oss << "</date>" << endl;
+          oss << "\t\t\t\t\t\t<time>";
+          if (utf8conv.ToUTF8(pwshe.changedate.Right(8), utf8, utf8Len))
+            oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
+          oss << "</time>" << endl;
+          oss << "\t\t\t\t\t</changed>" << endl;
+          WriteXMLField(oss, "oldpassword", pwshe.password,
+                        utf8conv, "\t\t\t\t\t");
+          oss << "\t\t\t\t</history_entry>" << endl;
 
-            num++;
+          num++;
         } // for
         oss << "\t\t\t</history_entries>" << endl;
       } // if !empty
@@ -1106,14 +1103,14 @@ void CItemData::SetPWPolicy(PWPolicy pwp)
     TCHAR buffer[20];
 #if _MSC_VER >= 1400
     _stprintf_s(buffer, 20, _T("%04x%03x%03x%03x%03x%03x"), 
-      pwp.flags, pwp.length,
-      pwp.digitminlength, pwp.lowerminlength,
-      pwp.symbolminlength, pwp.upperminlength);
+                pwp.flags, pwp.length,
+                pwp.digitminlength, pwp.lowerminlength,
+                pwp.symbolminlength, pwp.upperminlength);
 #else
     _stprintf(buffer, _T("%04x%03x%03x%03x%03x%03x"), 
-      pwp.flags, pwp.length,
-      pwp.digitminlength, pwp.lowerminlength,
-      pwp.symbolminlength, pwp.upperminlength);
+              pwp.flags, pwp.length,
+              pwp.digitminlength, pwp.lowerminlength,
+              pwp.symbolminlength, pwp.upperminlength);
 #endif
     buffer[19] = _T('\0');
     cs_pwp = CMyString(buffer);
@@ -1135,14 +1132,14 @@ bool CItemData::SetPWPolicy(const CString &cs_pwp)
   PWPolicy pwp;
 #if _MSC_VER >= 1400
   int iread = _stscanf_s(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-    &pwp.flags, &pwp.length,
-    &pwp.digitminlength, &pwp.lowerminlength,
-    &pwp.symbolminlength, &pwp.upperminlength);
+                         &pwp.flags, &pwp.length,
+                         &pwp.digitminlength, &pwp.lowerminlength,
+                         &pwp.symbolminlength, &pwp.upperminlength);
 #else
   int iread = _stscanf(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-    &pwp.flags, &pwp.length,
-    &pwp.digitminlength, &pwp.lowerminlength,
-    &pwp.symbolminlength, &pwp.upperminlength);
+                       &pwp.flags, &pwp.length,
+                       &pwp.digitminlength, &pwp.lowerminlength,
+                       &pwp.symbolminlength, &pwp.upperminlength);
 #endif
   CString cs_pwpolicy(cs_pwp);
   if (iread != 6)
@@ -1155,10 +1152,10 @@ bool CItemData::SetPWPolicy(const CString &cs_pwp)
     pwp.symbolminlength + pwp.upperminlength;
 
   if (pwp.flags == 0 || (bhex_flag && bother_flags) ||
-    pwp.length > 1024 || total_sublength > pwp.length ||
-    pwp.digitminlength > 1024 || pwp.lowerminlength > 1024 ||
-    pwp.symbolminlength > 1024 || pwp.upperminlength > 1024) {
-      cs_pwpolicy.Empty();
+      pwp.length > 1024 || total_sublength > pwp.length ||
+      pwp.digitminlength > 1024 || pwp.lowerminlength > 1024 ||
+      pwp.symbolminlength > 1024 || pwp.upperminlength > 1024) {
+    cs_pwpolicy.Empty();
   }
 
   SetField(m_PWPolicy, cs_pwpolicy);
@@ -1331,26 +1328,26 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
 
   CMyString csObject;
   switch(iObject) {
-  case SGO_GROUP:
-    csObject = GetGroup();
-    break;
-  case SGO_TITLE:
-    csObject = GetTitle();
-    break;
-  case SGO_USER:
-    csObject = GetUser();
-    break;
-  case SGO_GROUPTITLE:
-    csObject = GetGroup() + TCHAR('.') + GetTitle();
-    break;
-  case SGO_URL:
-    csObject = GetURL();
-    break;
-  case SGO_NOTES:
-    csObject = GetNotes();
-    break;
-  default:
-    ASSERT(0);
+    case SGO_GROUP:
+      csObject = GetGroup();
+      break;
+    case SGO_TITLE:
+      csObject = GetTitle();
+      break;
+    case SGO_USER:
+      csObject = GetUser();
+      break;
+    case SGO_GROUPTITLE:
+      csObject = GetGroup() + TCHAR('.') + GetTitle();
+      break;
+    case SGO_URL:
+      csObject = GetURL();
+      break;
+    case SGO_NOTES:
+      csObject = GetNotes();
+      break;
+    default:
+      ASSERT(0);
   }
 
   const int sb_len = subgroup_name.GetLength();
@@ -1359,82 +1356,70 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
   // Negative = Case   Sensitive
   // Positive = Case INsensitive
   switch (iFunction) {
-  case -SGF_EQUALS:
-  case SGF_EQUALS:
-    return ((ob_len == sb_len) &&
-      (((iFunction < 0) &&
-      csObject.Compare((LPCTSTR)subgroup_name) == 0) ||
-      ((iFunction > 0) &&
-      (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0))));
-  case -SGF_NOTEQUAL:
-  case SGF_NOTEQUAL:
-    return (((iFunction < 0) &&
-      csObject.Compare((LPCTSTR)subgroup_name) != 0) ||
-      ((iFunction > 0) &&
-      (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0)));
-  case -SGF_BEGINS:
-  case SGF_BEGINS:
-    if (ob_len >= sb_len) {
-      csObject = csObject.Left(sb_len);
-      return (((iFunction < 0) &&
-        subgroup_name.Compare((LPCTSTR)csObject) == 0) ||
-        ((iFunction > 0) &&
-        (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
-    } else {
-      return false;
-    }
-  case -SGF_NOTBEGIN:
-  case SGF_NOTBEGIN:
-    if (ob_len >= sb_len) {
-      csObject = csObject.Left(sb_len);
-      return (((iFunction < 0) &&
-        subgroup_name.Compare((LPCTSTR)csObject) != 0) ||
-        ((iFunction > 0) &&
-        (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
-    } else {
-      return false;
-    }
-  case -SGF_ENDS:
-  case SGF_ENDS:
-    if (ob_len > sb_len) {
-      csObject = csObject.Right(sb_len);
-      return (((iFunction < 0) &&
-        subgroup_name.Compare((LPCTSTR)csObject) == 0) ||
-        ((iFunction > 0) &&
-        (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
-    } else {
-      return false;
-    }
-  case -SGF_NOTEND:
-  case SGF_NOTEND:
-    if (ob_len > sb_len) {
-      csObject = csObject.Right(sb_len);
-      return (((iFunction < 0) &&
-        subgroup_name.Compare((LPCTSTR)csObject) != 0) ||
-        ((iFunction > 0) &&
-        (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
-    } else
-      return true;
-  case -SGF_CONTAINS:
-    return (csObject.Find((LPCTSTR)subgroup_name) != -1);
-  case SGF_CONTAINS:
+    case -SGF_EQUALS:
+    case SGF_EQUALS:
+      return ((ob_len == sb_len) &&
+             (((iFunction < 0) && (csObject.Compare((LPCTSTR)subgroup_name) == 0)) ||
+              ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0))));
+    case -SGF_NOTEQUAL:
+    case SGF_NOTEQUAL:
+      return (((iFunction < 0) && (csObject.Compare((LPCTSTR)subgroup_name) != 0)) ||
+              ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0)));
+    case -SGF_BEGINS:
+    case SGF_BEGINS:
+      if (ob_len >= sb_len) {
+        csObject = csObject.Left(sb_len);
+        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) == 0)) ||
+                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
+      } else {
+        return false;
+      }
+    case -SGF_NOTBEGIN:
+    case SGF_NOTBEGIN:
+      if (ob_len >= sb_len) {
+        csObject = csObject.Left(sb_len);
+        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) != 0)) ||
+                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
+      } else {
+        return false;
+      }
+    case -SGF_ENDS:
+    case SGF_ENDS:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) == 0)) ||
+                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) == 0)));
+      } else {
+        return false;
+      }
+    case -SGF_NOTEND:
+    case SGF_NOTEND:
+      if (ob_len > sb_len) {
+        csObject = csObject.Right(sb_len);
+        return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) != 0)) ||
+                ((iFunction > 0) && (subgroup_name.CompareNoCase((LPCTSTR)csObject) != 0)));
+      } else
+        return true;
+    case -SGF_CONTAINS:
+      return (csObject.Find((LPCTSTR)subgroup_name) != -1);
+    case SGF_CONTAINS:
     {
       csObject.MakeLower();
       CString subgroupLC(subgroup_name);
       subgroupLC.MakeLower();
       return (csObject.Find((LPCTSTR)subgroupLC) != -1);
     }
-  case -SGF_NOTCONTAIN:
-    return (csObject.Find((LPCTSTR)subgroup_name)== -1);
-  case SGF_NOTCONTAIN:
+    case -SGF_NOTCONTAIN:
+      return (csObject.Find((LPCTSTR)subgroup_name)== -1);
+    case SGF_NOTCONTAIN:
     {
       csObject.MakeLower();
       CString subgroupLC(subgroup_name);
       subgroupLC.MakeLower();
       return (csObject.Find((LPCTSTR)subgroupLC) == -1);
     }
-  default:
-    ASSERT(0);
+    default:
+      ASSERT(0);
   }
 
   return true; // should never get here!
@@ -1512,80 +1497,80 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
   CMyString str;
   time_t t;
   switch (type) {
-  case NAME:
-    ASSERT(0); // not serialized, or in v3 format
-    return false;
-  case UUID:
+    case NAME:
+      ASSERT(0); // not serialized, or in v3 format
+      return false;
+    case UUID:
     {
       uuid_array_t uuid_array;
       ASSERT(len == sizeof(uuid_array));
       for (unsigned i = 0; i < sizeof(uuid_array); i++)
         uuid_array[i] = data[i];
       SetUUID(uuid_array);
+      break;
     }
-    break;
-  case GROUP:
-    if (!pull_string(str, data, len)) return false;
-    SetGroup(str);
-    break;
-  case TITLE:
-    if (!pull_string(str, data, len)) return false;
-    SetTitle(str);
-    break;
-  case USER:
-    if (!pull_string(str, data, len)) return false;
-    SetUser(str);
-    break;
-  case NOTES:
-    if (!pull_string(str, data, len)) return false;
-    SetNotes(str);
-    break;
-  case PASSWORD:
-    if (!pull_string(str, data, len)) return false;
-    SetPassword(str);
-    break;
-  case CTIME:
-    if (!pull_time(t, data, len)) return false;
-    SetCTime(t);
-    break;
-  case  PMTIME:
-    if (!pull_time(t, data, len)) return false;
-    SetPMTime(t);
-    break;
-  case ATIME:
-    if (!pull_time(t, data, len)) return false;
-    SetATime(t);
-    break;
-  case LTIME:
-    if (!pull_time(t, data, len)) return false;
-    SetLTime(t);
-    break;
-  case POLICY:
-    if (!pull_string(str, data, len)) return false;
-    SetPWPolicy(str);
-    break;
-  case RMTIME:
-    if (!pull_time(t, data, len)) return false;
-    SetRMTime(t);
-    break;
-  case URL:
-    if (!pull_string(str, data, len)) return false;
-    SetURL(str);
-    break;
-  case AUTOTYPE:
-    if (!pull_string(str, data, len)) return false;
-    SetAutoType(str);
-    break;
-  case PWHIST:
-    if (!pull_string(str, data, len)) return false;
-    SetPWHistory(str);
-    break;
-  case END:
-    break;
-  default:
-    // unknowns!
-    SetUnknownField(char(type), len, data);
-    break;
+    case GROUP:
+      if (!pull_string(str, data, len)) return false;
+      SetGroup(str);
+      break;
+    case TITLE:
+      if (!pull_string(str, data, len)) return false;
+      SetTitle(str);
+      break;
+    case USER:
+      if (!pull_string(str, data, len)) return false;
+      SetUser(str);
+      break;
+    case NOTES:
+      if (!pull_string(str, data, len)) return false;
+      SetNotes(str);
+      break;
+    case PASSWORD:
+      if (!pull_string(str, data, len)) return false;
+      SetPassword(str);
+      break;
+    case CTIME:
+      if (!pull_time(t, data, len)) return false;
+      SetCTime(t);
+      break;
+    case  PMTIME:
+      if (!pull_time(t, data, len)) return false;
+      SetPMTime(t);
+      break;
+    case ATIME:
+      if (!pull_time(t, data, len)) return false;
+      SetATime(t);
+      break;
+    case LTIME:
+      if (!pull_time(t, data, len)) return false;
+      SetLTime(t);
+      break;
+    case POLICY:
+      if (!pull_string(str, data, len)) return false;
+      SetPWPolicy(str);
+      break;
+    case RMTIME:
+      if (!pull_time(t, data, len)) return false;
+      SetRMTime(t);
+      break;
+    case URL:
+      if (!pull_string(str, data, len)) return false;
+      SetURL(str);
+      break;
+    case AUTOTYPE:
+      if (!pull_string(str, data, len)) return false;
+      SetAutoType(str);
+      break;
+    case PWHIST:
+      if (!pull_string(str, data, len)) return false;
+      SetPWHistory(str);
+      break;
+    case END:
+      break;
+    default:
+      // unknowns!
+      SetUnknownField(char(type), len, data);
+      break;
   }
   return true;
 }
@@ -1671,19 +1656,19 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   push_string(v, PWHIST, GetPWHistory());
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
-    vi_IterURFE != GetURFIterEnd();
-    vi_IterURFE++) {
-      unsigned char type;
-      unsigned int length = 0;
-      unsigned char *pdata = NULL;
-      GetUnknownField(type, length, pdata, vi_IterURFE);
-      if (length != 0) {
-        v.push_back((char)type);
-        push_length(v, length);
-        v.insert(v.end(), (char *)pdata, (char *)pdata + length);
-        trashMemory(pdata, length);
-      }
-      delete[] pdata;
+       vi_IterURFE != GetURFIterEnd();
+       vi_IterURFE++) {
+    unsigned char type;
+    unsigned int length = 0;
+    unsigned char *pdata = NULL;
+    GetUnknownField(type, length, pdata, vi_IterURFE);
+    if (length != 0) {
+      v.push_back((char)type);
+      push_length(v, length);
+      v.insert(v.end(), (char *)pdata, (char *)pdata + length);
+      trashMemory(pdata, length);
+    }
+    delete[] pdata;
   }
 
 #pragma warning( push )
@@ -1692,5 +1677,3 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
 #pragma warning( pop )
   push_length(v, 0);
 }
-
-

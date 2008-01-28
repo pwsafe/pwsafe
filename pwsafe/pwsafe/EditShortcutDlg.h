@@ -30,7 +30,6 @@ public:
   int m_ibasedata;
   uuid_array_t m_base_uuid;
 
-
 private:
   CItemData *m_ci; // The shortcut being edited
   CMyString m_group;

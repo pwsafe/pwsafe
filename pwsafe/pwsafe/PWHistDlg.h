@@ -33,6 +33,8 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual void OnOK();
   virtual BOOL OnInitDialog();
+  afx_msg void OnBnClickedClearPWHist();
+
 private:
   const bool m_PWH_IsReadOnly;
   // Following reference members from EditDlg
@@ -54,8 +56,7 @@ private:
   afx_msg void OnBnClickedPwhCopyAll();
 
   DECLARE_MESSAGE_MAP()
-public:
-  afx_msg void OnBnClickedClearPWHist();
+
 private:
   static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
     LPARAM lParamSort);

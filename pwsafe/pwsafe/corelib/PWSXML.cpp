@@ -28,8 +28,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 PWSXML::PWSXML(PWScore *core, UUIDList *possible_aliases, UUIDList *possible_shortcuts)
-: m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
-m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
+  : m_xmlcore(core), m_MSXML_Version(60), m_delimiter(TCHAR('^')),
+  m_possible_aliases(possible_aliases), m_possible_shortcuts(possible_shortcuts)
 {
 }
 

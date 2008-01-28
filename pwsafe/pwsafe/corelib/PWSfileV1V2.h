@@ -15,7 +15,8 @@
 #include "PWSfile.h"
 #include "BlowFish.h"
 
-class PWSfileV1V2 : public PWSfile {
+class PWSfileV1V2 : public PWSfile
+{
 public:
   static int CheckPassword(const CMyString &filename,
     const CMyString &passkey, FILE *a_fd = NULL);
@@ -28,6 +29,7 @@ public:
 
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
+
 protected:
   virtual size_t WriteCBC(unsigned char type, const CString &data);
 

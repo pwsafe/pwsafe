@@ -76,7 +76,7 @@ END_MESSAGE_MAP()
 void COptionsSystem::OnUseSystemTray() 
 {
   BOOL enable = (((CButton*)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() ==
-    BST_CHECKED) ? TRUE : FALSE;
+                BST_CHECKED) ? TRUE : FALSE;
 
   GetDlgItem(IDC_STATIC_MAXREITEMS)->EnableWindow(enable);
   GetDlgItem(IDC_MAXREITEMS)->EnableWindow(enable);

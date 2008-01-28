@@ -12,7 +12,7 @@
 IMPLEMENT_DYNAMIC(CSampleTextDlg, CDialog)
 
 CSampleTextDlg::CSampleTextDlg(CWnd* pParent, CString sampletext)
-: CDialog(CSampleTextDlg::IDD, pParent), m_sampletext(sampletext)
+  : CDialog(CSampleTextDlg::IDD, pParent), m_sampletext(sampletext)
 {
 }
 

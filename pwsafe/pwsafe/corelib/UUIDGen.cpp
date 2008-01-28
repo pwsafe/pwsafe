@@ -41,7 +41,6 @@ CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array)
     uuid.Data4[i] = uuid_array[i + 8];
 }
 
-
 CUUIDGen::~CUUIDGen()
 {
   trashMemory((unsigned char *)&uuid, sizeof(uuid));

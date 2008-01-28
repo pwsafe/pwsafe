@@ -27,8 +27,7 @@ DBGDUMP(const char* mem, size_t len)
 
   DBGMSG("* DEBUGDUMP BEGIN *\n");
 
-  for (ix=0; ix<len; ix++)
-  {
+  for (ix = 0; ix < len; ix++) {
     _stprintf(hexbuf, "%02.2X", mem[ix]);
     DBGMSG(hexbuf);
     if (ix % 2) DBGMSG(" ");
@@ -37,8 +36,7 @@ DBGDUMP(const char* mem, size_t len)
     else
       ascbuf[wrap] = '.';
     wrap++;
-    if (wrap == wrapsize)
-    {
+    if (wrap == wrapsize) {
       ascbuf[wrap] = 0;
       DBGMSG(" *");
       DBGMSG(ascbuf);
@@ -46,13 +44,11 @@ DBGDUMP(const char* mem, size_t len)
       wrap = 0;
     }
   }
-  if (wrap == 0)
-  {
+  if (wrap == 0) {
     DBGMSG("* DEBUGDUMP END *\n");
     return;
   }
-  for (ix=wrap; ix<wrapsize; ix++)
-  {
+  for (ix = wrap; ix < wrapsize; ix++) {
     DBGMSG("  ");
     if (ix % 2) DBGMSG(" ");
 

@@ -45,8 +45,8 @@ typedef std::ofstream ofstreamT;
 #endif
 
 CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent)
-: CPWDialog(CEditShortcutDlg::IDD, pParent),
-m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
+  : CPWDialog(CEditShortcutDlg::IDD, pParent),
+  m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
 {
   ASSERT(ci != NULL);
 
@@ -218,7 +218,7 @@ void CEditShortcutDlg::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), 
-    NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+                NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");

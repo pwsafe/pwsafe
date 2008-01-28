@@ -38,24 +38,24 @@ The following _dlgData corresponds to:
 
 DLGTEMPLATEEX dtex;
 
-dtex.wDlgVer = 1;
-dtex.wSignature = 0xFFFF;
-dtex.dwHelpID = 0;
-dtex.dwStyle = WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME;
-dtex.dwExStyle = WS_EX_APPWINDOW;
-dtex.cDlgItems = 0;
-dtex.x = 0;
-dtex.y = 0;
-dtex.cx = 185;
-dtex.cy = 92;
-no menu ( (WORD)0 )
-no windowClass ( (WORD)0 )
-caption L"."
-point size (only if DS_SETFONT specified)
-weight                    "
-italic                    "
-charset                   "
-typeface                  "
+  dtex.wDlgVer = 1;
+  dtex.wSignature = 0xFFFF;
+  dtex.dwHelpID = 0;
+  dtex.dwStyle = WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME;
+  dtex.dwExStyle = WS_EX_APPWINDOW;
+  dtex.cDlgItems = 0;
+  dtex.x = 0;
+  dtex.y = 0;
+  dtex.cx = 185;
+  dtex.cy = 92;
+  no menu ( (WORD)0 )
+  no windowClass ( (WORD)0 )
+  caption L"."
+  point size (only if DS_SETFONT specified)
+  weight                    "
+  italic                    "
+  charset                   "
+  typeface                  "
 */
 
 static const BYTE _dlgData[] =
@@ -89,8 +89,8 @@ static const BYTE _dlgData[] =
 
 // Constructor
 CGeneralMsgBox::CGeneralMsgBox(CWnd* pParentWnd)
-: m_uDefCmdId((UINT)IDC_STATIC), m_uEscCmdId((UINT)IDC_STATIC),
-m_hIcon(NULL), m_strTitle(AfxGetApp()->m_pszAppName)
+  : m_uDefCmdId((UINT)IDC_STATIC), m_uEscCmdId((UINT)IDC_STATIC),
+  m_hIcon(NULL), m_strTitle(AfxGetApp()->m_pszAppName)
 {
   m_pParentWnd = pParentWnd;
   // default metric values
@@ -132,12 +132,10 @@ int CGeneralMsgBox::DoModal()
 // CGeneralMsgBox - Button operations
 
 // Add a button
-void CGeneralMsgBox::AddButton(
-                               UINT uIDC,           // button command ID
+void CGeneralMsgBox::AddButton(UINT uIDC,           // button command ID
                                LPCTSTR pszText,     // button text
                                BOOL bIsDefault,     // set the button as default
-                               BOOL bIsEscape       // return this command if user press escape
-                               )
+                               BOOL bIsEscape)      // return this command if user press escape
 {
   ASSERT(uIDC != (UINT)IDC_STATIC);
 
@@ -155,12 +153,10 @@ void CGeneralMsgBox::AddButton(
 }
 
 // Add a button
-void CGeneralMsgBox::AddButton(
-                               UINT uIDC,           // button command ID
+void CGeneralMsgBox::AddButton(UINT uIDC,           // button command ID
                                UINT uIdText,        // string ID of button's text
                                BOOL bIsDefault,     // set the button as default
-                               BOOL bIsEscape       // return this command if user press escape
-                               )
+                               BOOL bIsEscape)      // return this command if user press escape
 {
   CString str;
 
@@ -364,7 +360,7 @@ void CGeneralMsgBox::CreateRtfCtrl()
   CRect rcDummy; // dimension doesn't matter here
 
   m_edCtrl.Create(WS_CHILD | WS_VISIBLE | ES_LEFT | ES_MULTILINE | ES_READONLY,
-    rcDummy, this, (UINT)IDC_STATIC);
+                  rcDummy, this, (UINT)IDC_STATIC);
   m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
   m_edCtrl.SetFont(GetFont());
 

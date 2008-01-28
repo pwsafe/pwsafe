@@ -35,7 +35,7 @@ static TCHAR PSSWDCHAR = TCHAR('*');
 
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
-: CPWDialog(CPasskeyChangeDlg::IDD, pParent)
+  : CPWDialog(CPasskeyChangeDlg::IDD, pParent)
 {
   m_confirmnew = _T("");
   m_newpasskey = _T("");

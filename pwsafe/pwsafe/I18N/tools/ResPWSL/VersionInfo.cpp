@@ -351,10 +351,10 @@ BOOL CVersionInfo::EnumResourceNamesFuncFindFirst(
 } 
 
 BOOL CVersionInfo::EnumResourceLangFuncFindFirst(
-  HANDLE hModule,    // module handle
-  LPCTSTR lpszType,  // resource type
-  LPCTSTR lpszName,  // resource name
-  WORD wIDLanguage,  // language identifier
+  HANDLE hModule,     // module handle
+  LPCTSTR lpszType,   // resource type
+  LPCTSTR lpszName,   // resource name
+  WORD wIDLanguage,   // language identifier
   LONG_PTR lParam)    // application-defined parameter
 {
   CVersionInfo * pVI= (CVersionInfo *)lParam;

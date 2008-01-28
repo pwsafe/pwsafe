@@ -20,7 +20,8 @@ typedef std::vector<CUUIDGen> UUIDList;
 
 class PWScore;
 
-class PWSXML {
+class PWSXML
+{
 public:
   PWSXML(PWScore *core, UUIDList *possible_aliases, UUIDList *possible_shortcuts);
   ~PWSXML();

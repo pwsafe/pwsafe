@@ -29,7 +29,7 @@ CItemField::GetBlockSize(int size) const
 }
 
 CItemField::CItemField(const CItemField &that)
-: m_Type(that.m_Type), m_Length(that.m_Length)
+  : m_Type(that.m_Type), m_Length(that.m_Length)
 {
   if (m_Length > 0) {
     int bs = GetBlockSize(m_Length);

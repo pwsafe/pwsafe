@@ -12,7 +12,6 @@
 #include "passwordsafe.h"
 #include "corelib/PwsPlatform.h"
 
-
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
 #else

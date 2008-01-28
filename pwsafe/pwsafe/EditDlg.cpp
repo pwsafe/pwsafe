@@ -61,11 +61,11 @@ CString CEditDlg::CS_SHOW;
 CString CEditDlg::CS_HIDE;
 
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
-: CPWDialog(CEditDlg::IDD, pParent),
-m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
-m_tttLTime (time_t(0)),
-m_locLTime(_T("")), m_oldlocLTime(_T("")),
-m_original_entrytype(CItemData::Normal)
+  : CPWDialog(CEditDlg::IDD, pParent),
+  m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
+  m_tttLTime (time_t(0)),
+  m_locLTime(_T("")), m_oldlocLTime(_T("")),
+  m_original_entrytype(CItemData::Normal)
 {
   ASSERT(ci != NULL);
 
@@ -115,7 +115,7 @@ m_original_entrytype(CItemData::Normal)
   m_oldlocLTime = m_locLTime;
 
   m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
-    _T("! &Edit externally"));
+                              _T("! &Edit externally"));
   m_num_dependents = 0;
   m_dependents = _T("");
   m_base = _T("");
@@ -217,13 +217,13 @@ CEditDlg::OnOK()
     m_realnotes = m_notes;
 
   m_bIsModified |= (m_group != m_ci->GetGroup() ||
-    m_title != m_ci->GetTitle() ||
-    m_username != m_ci->GetUser() ||
-    m_realnotes != m_ci->GetNotes() ||
-    m_URL != m_ci->GetURL() ||
-    m_autotype != m_ci->GetAutoType() ||
-    m_PWHistory != m_ci->GetPWHistory() ||
-    m_locLTime != m_oldlocLTime);
+                    m_title != m_ci->GetTitle() ||
+                    m_username != m_ci->GetUser() ||
+                    m_realnotes != m_ci->GetNotes() ||
+                    m_URL != m_ci->GetURL() ||
+                    m_autotype != m_ci->GetAutoType() ||
+                    m_PWHistory != m_ci->GetPWHistory() ||
+                    m_locLTime != m_oldlocLTime);
 
   bool IsPswdModified = m_realpassword != m_oldRealPassword;
 
@@ -279,8 +279,8 @@ CEditDlg::OnOK()
 
   bool brc, b_msg_issued;
   brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-    true, CItemData::Alias,
-    m_base_uuid, m_ibasedata, b_msg_issued);
+                              true, CItemData::Alias,
+                              m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
     if (!b_msg_issued)
@@ -347,7 +347,7 @@ void CEditDlg::UpdateHistory()
   // Too many? remove the excess
   if (num > m_MaxPWHistory) {
     PWHistList hl(m_PWHistList.begin() + (num - m_MaxPWHistory),
-      m_PWHistList.end());
+                  m_PWHistList.end());
     ASSERT(hl.size() == m_MaxPWHistory);
     m_PWHistList = hl;
     num = m_MaxPWHistory;
@@ -365,8 +365,8 @@ void CEditDlg::UpdateHistory()
     const PWHistEntry pwshe = *iter;
 
     buffer.Format(_T("%08x%04x%s"),
-      (long) pwshe.changetttdate, pwshe.password.GetLength(),
-      pwshe.password);
+                  (long) pwshe.changetttdate, pwshe.password.GetLength(),
+                  pwshe.password);
     new_PWHistory += CMyString(buffer);
     buffer.Empty();
   }
@@ -404,14 +404,14 @@ BOOL CEditDlg::OnInitDialog()
 
   // Note shortcuts have their own dialog for edit.
   if (m_original_entrytype == CItemData::AliasBase ||
-    m_original_entrytype == CItemData::ShortcutBase) {
-      // Show button to allow users to view dependents
-      CString csButtonText;
-      csButtonText.LoadString(m_original_entrytype == CItemData::AliasBase ? IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
-      GetDlgItem(IDC_VIEWDEPENDENTS)->SetWindowText(csButtonText);
-      GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
-      GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
+      m_original_entrytype == CItemData::ShortcutBase) {
+    // Show button to allow users to view dependents
+    CString csButtonText;
+    csButtonText.LoadString(m_original_entrytype == CItemData::AliasBase ? IDS_VIEWALIASESBTN : IDS_VIEWSHORTCUTSBTN);
+    GetDlgItem(IDC_VIEWDEPENDENTS)->SetWindowText(csButtonText);
+    GetDlgItem(IDC_VIEWDEPENDENTS)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_STATIC_ISANALIAS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_ALIASGRP)->ShowWindow(SW_HIDE);
   } else
     if (m_original_entrytype == CItemData::Alias) {
       // Update password to alias form
@@ -551,7 +551,7 @@ void CEditDlg::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#editview"), 
-    NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
+                NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
 #else
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + _T("::/html/entering_pwd.html");
@@ -657,7 +657,7 @@ void CEditDlg::ResizeDialog()
   }
 
   this->SetWindowPos(NULL, 0, 0, newDialogRect.right - newDialogRect.left,
-    newHeight, SWP_NOMOVE);
+                     newHeight, SWP_NOMOVE);
 }
 
 void CEditDlg::OnBnClickedClearLTime()
@@ -727,7 +727,7 @@ LRESULT CEditDlg::OnCallExternalEditor(WPARAM, LPARAM)
 {
   // Warn the user about sensitive data lying around
   int rc = AfxMessageBox(IDS_EXTERNAL_EDITOR_WARNING, 
-    MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
+                         MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
   if (rc != IDYES)
     return 0L;
 
@@ -756,10 +756,10 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
     lpPathBuffer);      // buffer for path
 
   // Create a temporary file.
-  GetTempFileName(lpPathBuffer, // directory for temp files
-    _T("NTE"),                // temp file name prefix
-    0,                        // create unique name
-    self->m_szTempName);            // buffer for name
+  GetTempFileName(lpPathBuffer,          // directory for temp files
+                  _T("NTE"),             // temp file name prefix
+                  0,                     // create unique name
+                  self->m_szTempName);   // buffer for name
 
   // Open it and put the Notes field in it
   ofstreamT ofs(self->m_szTempName);
@@ -802,8 +802,8 @@ UINT CEditDlg::ExternalEditorThread(LPVOID me) // static method!
   LPTSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
-    NULL, lpPathBuffer, &si, &pi)) {
-      TRACE( "CreateProcess failed (%d).\n", GetLastError() );
+                     NULL, lpPathBuffer, &si, &pi)) {
+    TRACE( "CreateProcess failed (%d).\n", GetLastError() );
   }
 
   // Wait until child process exits.

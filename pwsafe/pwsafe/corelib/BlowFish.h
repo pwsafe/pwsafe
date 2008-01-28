@@ -38,6 +38,7 @@ public:
   virtual void Encrypt(const unsigned char *in, unsigned char *out);
   virtual void Decrypt(const unsigned char *in, unsigned char *out);
   virtual unsigned int GetBlockSize() const {return BLOCKSIZE;}
+
 private:
   enum {bf_N = 16};
   unsigned long bf_S[4][256];

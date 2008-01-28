@@ -34,7 +34,8 @@
 // widgets implemented in PixieLib. To see how it works, look at the HOOK
 // sample program.
 //
-class CSubclassWnd : public CObject {
+class CSubclassWnd : public CObject
+{
 public:
   CSubclassWnd();
   ~CSubclassWnd();
@@ -57,9 +58,9 @@ public:
 #endif
 
 protected:
-  HWND m_hWnd;  // the window hooked
-  LONG_PTR        m_pOldWndProc;  // ..and original window proc
-  CSubclassWnd* m_pNext;  // next in chain of hooks for this window
+  HWND m_hWnd;             // the window hooked
+  LONG_PTR m_pOldWndProc;  // ... and original window proc
+  CSubclassWnd* m_pNext;   // next in chain of hooks for this window
 
   DECLARE_DYNAMIC(CSubclassWnd);
 };

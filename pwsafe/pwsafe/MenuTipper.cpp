@@ -53,8 +53,8 @@ void CMenuTipManager::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu)
   }
 
   if (!m_wndTip.m_hWnd) {
-    m_wndTip.Create(CPoint(0,0), CWnd::FromHandle(m_hWnd));
-    m_wndTip.m_szMargins = CSize(4,0);
+    m_wndTip.Create(CPoint(0, 0), CWnd::FromHandle(m_hWnd));
+    m_wndTip.m_szMargins = CSize(4, 0);
   }
 
   if ((nFlags & 0xFFFF) == 0xFFFF) {
@@ -76,7 +76,7 @@ void CMenuTipManager::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu)
     m_bSticky = m_wndTip.IsWindowVisible() || m_bSticky;
 
     // remember if mouse used to invoke menu
-    m_bMouseSelect = (nFlags & MF_MOUSESELECT)!=0;
+    m_bMouseSelect = (nFlags & MF_MOUSESELECT)!= 0;
 
     // get prompt and display tip (with or without timeout)
     CString prompt = (*app.GetMRU())[nItemID - ID_FILE_MRU_ENTRY1];
@@ -87,7 +87,7 @@ void CMenuTipManager::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hMenu)
       prompt = _T(" ") + prompt + _T(" ");
       CRect rc = GetMenuTipRect(hMenu, nItemID);
       m_wndTip.SetWindowPos(&CWnd::wndTopMost, rc.left, rc.top,
-        rc.Width(), rc.Height(), SWP_NOACTIVATE);
+                            rc.Width(), rc.Height(), SWP_NOACTIVATE);
       m_wndTip.SetWindowText(prompt);
       m_wndTip.ShowDelayed(m_bSticky ? 0 : m_iDelay);
     }
@@ -107,8 +107,8 @@ CRect CMenuTipManager::GetMenuTipRect(HMENU hmenu, UINT nID)
 
   // add heights of menu items until i reach nID
   int count = ::GetMenuItemCount(hmenu);
-  int cy = rcMenu.top + GetSystemMetrics(SM_CYEDGE)+1;
-  for (int i=0; i<count; i++) {
+  int cy = rcMenu.top + GetSystemMetrics(SM_CYEDGE) + 1;
+  for (int i = 0; i < count; i++) {
     CRect rc;
     ::GetMenuItemRect(m_hWnd, hmenu, i, &rc);
     if (::GetMenuItemID(hmenu,i)==nID) {
@@ -118,7 +118,7 @@ CRect CMenuTipManager::GetMenuTipRect(HMENU hmenu, UINT nID)
     }
     cy += rc.Height(); // add height
   }
-  return CRect(0,0,0,0);
+  return CRect(0, 0, 0, 0);
 }
 
 //////////////////

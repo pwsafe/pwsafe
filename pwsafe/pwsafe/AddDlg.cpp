@@ -33,11 +33,10 @@ CString CAddDlg::CS_HIDE;
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
-: CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
-m_username(_T("")), m_title(_T("")), m_group(_T("")),
-m_URL(_T("")), m_autotype(_T("")),
-m_tttLTime((time_t)0),
-m_isPwHidden(false)
+  : CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
+  m_username(_T("")), m_title(_T("")), m_group(_T("")),
+  m_URL(_T("")), m_autotype(_T("")),
+  m_tttLTime((time_t)0), m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -253,8 +252,8 @@ CAddDlg::OnOK()
 
   bool brc, b_msg_issued;
   brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
-    false, CItemData::Alias,
-    m_base_uuid, m_ibasedata, b_msg_issued);
+                              false, CItemData::Alias,
+                              m_base_uuid, m_ibasedata, b_msg_issued);
 
   if (!brc && m_ibasedata != 0) {
     if (!b_msg_issued)
@@ -365,7 +364,7 @@ void CAddDlg::ResizeDialog()
 
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
-    newHeight =  curLowestCtlRect.bottom + 15  - newDialogRect.top;
+    newHeight =  curLowestCtlRect.bottom + 15 - newDialogRect.top;
     cs_text.LoadString(IDS_LESS);
     m_moreLessBtn.SetWindowText(cs_text);
   } else {
@@ -373,17 +372,15 @@ void CAddDlg::ResizeDialog()
     pLowestCtl = (CWnd *)GetDlgItem(TopHideableControl);
     pLowestCtl->GetWindowRect(&curLowestCtlRect);
 
-    newHeight =  curLowestCtlRect.top + 5  - newDialogRect.top;
+    newHeight =  curLowestCtlRect.top + 5 - newDialogRect.top;
 
     cs_text.LoadString(IDS_MORE);
     m_moreLessBtn.SetWindowText(cs_text);
   }
 
-
-  this->SetWindowPos(NULL,0,0,
-    newDialogRect.right - newDialogRect.left ,
-    newHeight , 
-    SWP_NOMOVE );
+  this->SetWindowPos(NULL, 0, 0,
+                     newDialogRect.right - newDialogRect.left,
+                     newHeight, SWP_NOMOVE );
 
 }
 

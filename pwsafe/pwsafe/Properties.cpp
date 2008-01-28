@@ -16,7 +16,7 @@
 IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
 
 CProperties::CProperties(CWnd* pParent /*=NULL*/)
-: CPWDialog(CProperties::IDD, pParent)
+  : CPWDialog(CProperties::IDD, pParent)
 {
 }
 
@@ -29,11 +29,9 @@ void CProperties::DoDataExchange(CDataExchange* pDX)
   CPWDialog::DoDataExchange(pDX);
 }
 
-
 BEGIN_MESSAGE_MAP(CProperties, CPWDialog)
   ON_BN_CLICKED(IDOK, &CProperties::OnOK)
 END_MESSAGE_MAP()
-
 
 // CProperties message handlers
 

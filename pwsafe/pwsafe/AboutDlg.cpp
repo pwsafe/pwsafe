@@ -33,8 +33,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CAboutDlg::CAboutDlg(CWnd* pParent)
-: CPWDialog(CAboutDlg::IDD, pParent),
-m_nMajor(0), m_nMinor(0), m_nBuild(0)
+  : CPWDialog(CAboutDlg::IDD, pParent), 
+  m_nMajor(0), m_nMinor(0), m_nBuild(0)
 {
   CString verstat;
   // Following since text in quotes is not to be translated
@@ -79,10 +79,10 @@ CAboutDlg::OnInitDialog()
   }
   if (m_nBuild == 0) { // hide build # if zero (formal release)
     m_appversion.Format(_T("%s V%d.%02d (%s)"), AfxGetAppName(), 
-      m_nMajor, m_nMinor, csRevision);
+                        m_nMajor, m_nMinor, csRevision);
   } else {
     m_appversion.Format(_T("%s V%d.%02d.%02d (%s)"), AfxGetAppName(), 
-      m_nMajor, m_nMinor, m_nBuild, csRevision);
+                        m_nMajor, m_nMinor, m_nBuild, csRevision);
   }
 #ifdef _DEBUG
   m_appversion += _T(" [Debug]");
@@ -143,29 +143,26 @@ void CAboutDlg::CheckNewVer()
   UpdateData(FALSE);
   CString latest;
   switch (CheckLatestVersion(latest)) {
-  case CANT_CONNECT:
-    m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
-    break;
-  case UP2DATE:
-    m_newVerStatus.LoadString(IDS_UP2DATE);
-    break;
-  case NEWER_AVAILABLE:
+    case CANT_CONNECT:
+      m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
+      break;
+    case UP2DATE:
+      m_newVerStatus.LoadString(IDS_UP2DATE);
+      break;
+    case NEWER_AVAILABLE:
     {
       CString newer;
-      newer.Format(SysInfo::IsUnderU3() ?
-IDS_NEWER_AVAILABLE_U3 :IDS_NEWER_AVAILABLE,
-                        m_appversion, latest);
+      newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
+                   m_appversion, latest);
       m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
-      MessageBox(newer,
-        CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)),
-        MB_ICONEXCLAMATION);
+      MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
+      break;
     }
-    break;
-  case CANT_READ:
-    m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
-    break;
-  default:
-    break;
+    case CANT_READ:
+      m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
+      break;
+    default:
+      break;
   }
 
   m_RECExNewVerStatus.SetFont(GetFont());
@@ -178,8 +175,7 @@ IDS_NEWER_AVAILABLE_U3 :IDS_NEWER_AVAILABLE,
 static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
 {
   ASSERT(v2 != NULL);
-  return (v1 != NULL &&
-    CString(v1) == v2);
+  return (v1 != NULL && CString(v1) == v2);
 }
 
 /*
@@ -201,8 +197,7 @@ static bool SafeCompare(const TCHAR *v1, const TCHAR *v2)
 *       as I think it's too volatile.
 */
 
-CAboutDlg::CheckStatus 
-CAboutDlg::CheckLatestVersion(CString &latest)
+CAboutDlg::CheckStatus CAboutDlg::CheckLatestVersion(CString &latest)
 {
   CInternetSession session(_T("PasswordSafe Version Check"));
   CStdioFile *fh;
@@ -211,9 +206,7 @@ CAboutDlg::CheckLatestVersion(CString &latest)
   try {
     // Loading the file as binary since we're treating it as UTF-8
     fh = session.OpenURL(_T("http://passwordsafe.sourceforge.net/latest.xml"),
-      1,
-      (INTERNET_FLAG_TRANSFER_BINARY |
-      INTERNET_FLAG_RELOAD));
+                         1, (INTERNET_FLAG_TRANSFER_BINARY | INTERNET_FLAG_RELOAD));
   } catch (CInternetException *) {
     // throw;
     return CANT_CONNECT;

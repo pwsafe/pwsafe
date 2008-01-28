@@ -29,7 +29,6 @@ void ShowUsage()
 
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
-
   // initialize MFC and print and error on failure
   if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0)) {
     // TODO: change error code to suit your needs

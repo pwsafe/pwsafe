@@ -23,7 +23,8 @@
 
 class BlowFish;
 
-class CItemField {
+class CItemField
+{
 public:
   CItemField(unsigned char type): m_Type(type), m_Length(0), m_Data(NULL)
   {}
@@ -50,7 +51,6 @@ private:
   unsigned int m_Length;
   unsigned char *m_Data;
 };
-
 
 #endif
 //-----------------------------------------------------------------------------

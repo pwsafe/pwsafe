@@ -116,13 +116,10 @@ DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
     numsymbols = (passwordpolicy.m_pwsymbolminlength == 0) ? 1 : passwordpolicy.m_pwsymbolminlength;  
 
   CPasswordCharPool pwchars(passwordpolicy.m_pwdefaultlength,
-    numlowercase,
-    numuppercase,
-    numdigits,
-    numsymbols,
-    passwordpolicy.m_pwusehexdigits,
-    passwordpolicy.m_pweasyvision,
-    passwordpolicy.m_pwmakepronounceable);
+                            numlowercase, numuppercase, numdigits, numsymbols,
+                            passwordpolicy.m_pwusehexdigits,
+                            passwordpolicy.m_pweasyvision,
+                            passwordpolicy.m_pwmakepronounceable);
 
   password = pwchars.MakePassword();
 

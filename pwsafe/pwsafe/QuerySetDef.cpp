@@ -28,15 +28,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
 CQuerySetDef::CQuerySetDef(CWnd* pParent)
-: CPWDialog(CQuerySetDef::IDD, pParent)
+  : CPWDialog(CQuerySetDef::IDD, pParent)
 {
   m_querycheck = FALSE;
   m_message = _T("");
 }
-
 
 void CQuerySetDef::DoDataExchange(CDataExchange* pDX)
 {
@@ -45,10 +43,8 @@ void CQuerySetDef::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_MESSAGE, m_message);
 }
 
-
 BEGIN_MESSAGE_MAP(CQuerySetDef, CPWDialog)
 END_MESSAGE_MAP()
-
 
 void CQuerySetDef::OnOK() 
 {
@@ -57,7 +53,6 @@ void CQuerySetDef::OnOK()
     m_querycheck == FALSE);
   CPWDialog::OnOK();
 }
-
 
 void CQuerySetDef::OnCancel()
 {

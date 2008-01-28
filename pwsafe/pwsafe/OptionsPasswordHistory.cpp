@@ -32,8 +32,8 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNCREATE(COptionsPasswordHistory, CPropertyPage)
 
-COptionsPasswordHistory::COptionsPasswordHistory() :
-CPWPropertyPage(COptionsPasswordHistory::IDD)
+COptionsPasswordHistory::COptionsPasswordHistory()
+  : CPWPropertyPage(COptionsPasswordHistory::IDD)
 {
   //{{AFX_DATA_INIT(COptionsPasswordHistory)
   //}}AFX_DATA_INIT

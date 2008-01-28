@@ -14,6 +14,7 @@
 
 // Expired password Entry structure for CList
 class CItemData;
+
 struct ExpPWEntry {
   ExpPWEntry(const CItemData &ci, time_t now, time_t LTime);
   CMyString group;
@@ -31,7 +32,6 @@ typedef std::vector<ExpPWEntry> ExpiredList;
 
 class CExpPWListDlg : public CPWDialog
 {
-
 public:
   CExpPWListDlg(CWnd* pParent,
     const ExpiredList &expPWList,

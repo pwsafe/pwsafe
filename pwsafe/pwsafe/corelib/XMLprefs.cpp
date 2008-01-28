@@ -152,7 +152,6 @@ exit:
   return retval;
 }
 
-
 // get a int value
 int CXMLprefs::Get(const CString &csBaseKeyName, const CString &csValueName, 
                    const int &iDefaultValue)
@@ -367,8 +366,6 @@ void CXMLprefs::UnloadXML()
     m_pXMLDoc = NULL;
   }
 }
-
-
 
 // find a node given a chain of key names
 TiXmlElement *CXMLprefs::FindNode(TiXmlElement *parentNode,

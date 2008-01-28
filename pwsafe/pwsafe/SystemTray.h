@@ -47,8 +47,7 @@ class CSystemTray : public CWnd
 public:
   //    CSystemTray();
   CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
-    CRUEList &RUEList,
-    UINT uID, UINT menuID);
+              CRUEList &RUEList, UINT uID, UINT menuID);
   virtual ~CSystemTray();
 
   DECLARE_DYNAMIC(CSystemTray)
@@ -61,38 +60,38 @@ public:
 
   // Create the tray icon
   BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon,
-    UINT uID, UINT menuID);
+              UINT uID, UINT menuID);
 
   // Change or retrieve the Tooltip text
-  BOOL    SetTooltipText(LPCTSTR pszTooltipText);
-  BOOL    SetTooltipText(UINT nID);
+  BOOL SetTooltipText(LPCTSTR pszTooltipText);
+  BOOL SetTooltipText(UINT nID);
   CString GetTooltipText() const;
 
   // Change or retrieve the icon displayed
-  BOOL  SetIcon(HICON hIcon);
-  BOOL  SetIcon(LPCTSTR lpszIconName);
-  BOOL  SetIcon(UINT nIDResource);
-  BOOL  SetStandardIcon(LPCTSTR lpIconName);
-  BOOL  SetStandardIcon(UINT nIDResource);
+  BOOL SetIcon(HICON hIcon);
+  BOOL SetIcon(LPCTSTR lpszIconName);
+  BOOL SetIcon(UINT nIDResource);
+  BOOL SetStandardIcon(LPCTSTR lpIconName);
+  BOOL SetStandardIcon(UINT nIDResource);
   HICON GetIcon() const;
-  void  HideIcon();
-  void  ShowIcon();
-  void  RemoveIcon();
-  void  MoveToRight();
+  void HideIcon();
+  void ShowIcon();
+  void RemoveIcon();
+  void MoveToRight();
 
   // For icon animation
-  BOOL  SetIconList(UINT uFirstIconID, UINT uLastIconID); 
-  BOOL  SetIconList(HICON* pHIconList, UINT nNumIcons); 
-  BOOL  Animate(UINT nDelayMilliSeconds, int nNumSeconds = -1);
-  BOOL  StepAnimation();
-  BOOL  StopAnimation();
+  BOOL SetIconList(UINT uFirstIconID, UINT uLastIconID); 
+  BOOL SetIconList(HICON* pHIconList, UINT nNumIcons); 
+  BOOL Animate(UINT nDelayMilliSeconds, int nNumSeconds = -1);
+  BOOL StepAnimation();
+  BOOL StopAnimation();
 
   // Change menu default item
   void GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) const;
   BOOL SetMenuDefaultItem(UINT uItem, BOOL bByPos);
 
   // Change or retrieve the window to send notification messages to
-  BOOL  SetNotificationWnd(CWnd* pNotifyWnd);
+  BOOL SetNotificationWnd(CWnd* pNotifyWnd);
   CWnd* GetNotificationWnd() const;
 
   // Default handler for tray notification message
@@ -109,24 +108,25 @@ protected:
 protected:
   void Initialise();
 
-  BOOL            m_bEnabled;   // does O/S support tray icon?
-  BOOL            m_bHidden;    // Has the icon been hidden?
+  BOOL m_bEnabled;   // does O/S support tray icon?
+  BOOL m_bHidden;    // Has the icon been hidden?
   NOTIFYICONDATA  m_tnd;
 
   CArray<HICON, HICON> m_IconList;
-  static UINT  m_nIDEvent;
-  UINT_PTR     m_uIDTimer;
-  int          m_nCurrentIcon;
-  UINT         m_menuID;
+  static UINT m_nIDEvent;
+  UINT_PTR m_uIDTimer;
+  int m_nCurrentIcon;
+  UINT m_menuID;
   COleDateTime m_StartTime;
-  int          m_nAnimationPeriod;
-  HICON        m_hSavedIcon;
-  UINT         m_DefaultMenuItemID;
-  BOOL         m_DefaultMenuItemByPos;
-  CWnd *       m_pTarget; // ronys
+  int m_nAnimationPeriod;
+  HICON m_hSavedIcon;
+  UINT m_DefaultMenuItemID;
+  BOOL m_DefaultMenuItemByPos;
+  CWnd *m_pTarget; // ronys
   static const UINT m_nTaskbarCreatedMsg; //thedavecollins
   const CRUEList &m_RUEList; // reference set to dboxmain's
   std::vector<RUEntryStringImage> m_menulist;
+
   // Generated message map functions
 protected:
   //{{AFX_MSG(CSystemTray)

@@ -38,7 +38,6 @@
 #define R3(v,w,x,y,z,i) z+=(((w|x)&y)|(w&x))+blk(i)+0x8F1BBCDC+rol(v,5);w=rol(w,30);
 #define R4(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);
 
-
 /* Hash a single 512-bit block. This is the core of the algorithm. */
 
 static void SHA1Transform(unsigned long state[5],

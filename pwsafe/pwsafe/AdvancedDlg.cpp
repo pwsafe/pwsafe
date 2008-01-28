@@ -37,11 +37,11 @@ int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, int iIndex,
                            CItemData::FieldBits bsFields, CString subgroup_name,
                            int subgroup_set, int subgroup_object, int subgroup_function)
-                           : CPWDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
-                           m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
-                           m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
-                           m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
-                           m_ToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
+  : CPWDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
+  m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
+  m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
+  m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
+  m_ToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
 {
   //{{AFX_DATA_INIT(CAdvancedDlg)
   //}}AFX_DATA_INIT
@@ -556,13 +556,11 @@ void CAdvancedDlg::OnDeselectAll()
     cs_text = m_pLC_Selected->GetItemText(i, 0);
     dw_data = m_pLC_Selected->GetItemData(i);
     if (m_iIndex == ADV_EXPORT_XML &&
-      (dw_data == CItemData::TITLE ||
-      dw_data == CItemData::PASSWORD))
+        (dw_data == CItemData::TITLE || dw_data == CItemData::PASSWORD))
       continue;
     if (m_iIndex == ADV_COMPARE &&
-      (dw_data == CItemData::GROUP ||
-      dw_data == CItemData::TITLE ||
-      dw_data == CItemData::USER ))
+        (dw_data == CItemData::GROUP || dw_data == CItemData::TITLE ||
+         dw_data == CItemData::USER ))
       continue;
     iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
@@ -584,19 +582,19 @@ CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
   switch (m_iIndex) {
     case ADV_COMPARE:
       if ((pNMListView->lParam == CItemData::GROUP ||
-        pNMListView->lParam == CItemData::TITLE ||
-        pNMListView->lParam == CItemData::USER) &&
-        (pNMListView->uNewState & LVIS_SELECTED)) {
-          pNMListView->uNewState &= ~LVIS_SELECTED;
-          *pResult = TRUE;
+           pNMListView->lParam == CItemData::TITLE ||
+           pNMListView->lParam == CItemData::USER) &&
+          (pNMListView->uNewState & LVIS_SELECTED)) {
+        pNMListView->uNewState &= ~LVIS_SELECTED;
+        *pResult = TRUE;
       }
       break;
     case ADV_EXPORT_XML:
       if ((pNMListView->lParam == CItemData::TITLE ||
-        pNMListView->lParam == CItemData::PASSWORD) &&
-        (pNMListView->uNewState & LVIS_SELECTED)) {
-          pNMListView->uNewState &= ~LVIS_SELECTED;
-          *pResult = TRUE;
+           pNMListView->lParam == CItemData::PASSWORD) &&
+          (pNMListView->uNewState & LVIS_SELECTED)) {
+        pNMListView->uNewState &= ~LVIS_SELECTED;
+        *pResult = TRUE;
       }
       break;
     case ADV_FIND:

@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CImportXMLDlg::CImportXMLDlg(CWnd* pParent /*=NULL*/)
-: CPWDialog(CImportXMLDlg::IDD, pParent)
+  : CPWDialog(CImportXMLDlg::IDD, pParent)
 {
   //{{AFX_DATA_INIT(CImportXMLDlg)
   m_groupName.LoadString(IDS_IMPORTED);

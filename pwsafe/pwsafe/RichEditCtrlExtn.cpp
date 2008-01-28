@@ -62,7 +62,7 @@ still be "<q>test</q>" in the final text string.
 // CRichEditCtrlExtn
 
 CRichEditCtrlExtn::CRichEditCtrlExtn()
-: m_pfcnNotifyLinkClicked(NULL)
+  : m_pfcnNotifyLinkClicked(NULL)
 {
 }
 
@@ -200,35 +200,35 @@ CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
       cf2.cbSize = sizeof(cf2);
 
       for (format_iter = m_vFormat.begin();
-        format_iter != m_vFormat.end(); format_iter++) {
-          SetSel(format_iter->iStart, format_iter->iEnd);
-          GetSelectionCharFormat(cf2);
-          if (format_iter->entrytype == Bold) {
-            cf2.dwMask |= CFM_BOLD;
-            cf2.dwEffects |= CFE_BOLD;
-          } else if (format_iter->entrytype == Italic) {
-            cf2.dwMask |= CFM_ITALIC;
-            cf2.dwEffects |= CFE_ITALIC;
-          } else if (format_iter->entrytype == Underline) {
-            cf2.dwMask |= CFM_UNDERLINE;
-            cf2.dwEffects |= CFE_UNDERLINE;
-          } else if (format_iter->entrytype == Colour) {
-            cf2.dwMask = CFM_COLOR;
-            cf2.crTextColor = format_iter->cr;
-            cf2.dwEffects &= ~CFE_AUTOCOLOR;
-          } else if (format_iter->entrytype == Size) {
-            cf2.dwMask = CFM_SIZE;
-            cf2.yHeight = (format_iter->iSize) * 20;
-          } else if (format_iter->entrytype == Name) {
-            cf2.dwMask = CFM_FACE;
+           format_iter != m_vFormat.end(); format_iter++) {
+        SetSel(format_iter->iStart, format_iter->iEnd);
+        GetSelectionCharFormat(cf2);
+        if (format_iter->entrytype == Bold) {
+          cf2.dwMask |= CFM_BOLD;
+          cf2.dwEffects |= CFE_BOLD;
+        } else if (format_iter->entrytype == Italic) {
+          cf2.dwMask |= CFM_ITALIC;
+          cf2.dwEffects |= CFE_ITALIC;
+        } else if (format_iter->entrytype == Underline) {
+          cf2.dwMask |= CFM_UNDERLINE;
+          cf2.dwEffects |= CFE_UNDERLINE;
+        } else if (format_iter->entrytype == Colour) {
+          cf2.dwMask = CFM_COLOR;
+          cf2.crTextColor = format_iter->cr;
+          cf2.dwEffects &= ~CFE_AUTOCOLOR;
+        } else if (format_iter->entrytype == Size) {
+          cf2.dwMask = CFM_SIZE;
+          cf2.yHeight = (format_iter->iSize) * 20;
+        } else if (format_iter->entrytype == Name) {
+          cf2.dwMask = CFM_FACE;
 #if (_MSC_VER >= 1400)
-            memcpy_s(cf2.szFaceName, LF_FACESIZE * sizeof(TCHAR),
-              format_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
+          memcpy_s(cf2.szFaceName, LF_FACESIZE * sizeof(TCHAR),
+                   format_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
 #else
-            memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
+          memcpy(cf2.szFaceName, Name_iter->tcszFACENAME, LF_FACESIZE * sizeof(TCHAR));
 #endif
-          }
-          SetSelectionCharFormat(cf2);
+        }
+        SetSelectionCharFormat(cf2);
       }
     }
 

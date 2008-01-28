@@ -21,10 +21,8 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CImportDlg dialog
-
-
 CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
-: CPWDialog(CImportDlg::IDD, pParent)
+  : CPWDialog(CImportDlg::IDD, pParent)
 {
   //{{AFX_DATA_INIT(CImportDlg)
   m_groupName.LoadString(IDS_IMPORTED);
@@ -34,7 +32,6 @@ CImportDlg::CImportDlg(CWnd* pParent /*=NULL*/)
   m_group = 0;
   //}}AFX_DATA_INIT
 }
-
 
 void CImportDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -83,39 +80,37 @@ void AFXAPI DDV_CheckImpDelimiter(CDataExchange* pDX, const CString &delimiter)
   }
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CImportDlg message handlers
-
 
 void CImportDlg::OnOther() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(TRUE);
-  m_tab=2;
+  m_tab = 2;
 }
 
 void CImportDlg::OnComma() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(FALSE);
-  m_tab=1;
+  m_tab = 1;
 }
 
 void CImportDlg::OnTab() 
 {
   GetDlgItem(IDC_OTHER_SEPARATOR)->EnableWindow(FALSE);
-  m_tab=0;
+  m_tab = 0;
 }
 
 void CImportDlg::OnNoGroup() 
 {
   GetDlgItem(IDC_GROUP_NAME)->EnableWindow(FALSE);
-  m_group=0;
+  m_group = 0;
 }
 
 void CImportDlg::OnYesGroup() 
 {
   GetDlgItem(IDC_GROUP_NAME)->EnableWindow(TRUE);
-  m_group=1;
+  m_group = 1;
 }
 
 void CImportDlg::OnHelp() 

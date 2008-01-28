@@ -22,7 +22,8 @@
 // - call Install
 // - implement prompt strings the normal way: as resource strings w/ID=command ID.
 //
-class CMenuTipManager : public CSubclassWnd {
+class CMenuTipManager : public CSubclassWnd
+{
 protected:
   CPopupText m_wndTip;  // home-grown "tooltip"
   BOOL m_bMouseSelect;  // whether menu invoked by mouse
@@ -31,9 +32,8 @@ protected:
 public:
   int m_iDelay;         // tooltip delay: you can change
 
-  CMenuTipManager()
-    : m_iDelay(2000), m_bSticky(FALSE), m_bMouseSelect(FALSE) { }
-  ~CMenuTipManager() { }
+  CMenuTipManager() : m_iDelay(2000), m_bSticky(FALSE), m_bMouseSelect(FALSE) {}
+  ~CMenuTipManager() {}
 
   // call this to install tips
   void Install(CWnd* pWnd) { HookWindow(pWnd); }

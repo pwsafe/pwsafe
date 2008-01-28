@@ -71,7 +71,6 @@ private:
   // Attributes
 private:
 
-
   // Operations
 public:
 

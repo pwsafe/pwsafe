@@ -15,7 +15,7 @@
 #include "util.h"
 
 PWSclipboard::PWSclipboard()
-: m_set(false)
+  : m_set(false)
 {
   memset(m_digest, 0, sizeof(m_digest));
 }

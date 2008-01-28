@@ -14,8 +14,6 @@
 
 #include "Util.h" // for trashMemory
 
-
-
 #define S(x, i) (bf_S[i][x.w.byte##i])
 #define bf_F(x) (((S(x, 0) + S(x, 1)) ^ S(x, 2)) + S(x, 3))
 #define ROUND(a, b, n) (a.word ^= bf_F(b) ^ bf_P[n])
@@ -289,7 +287,6 @@ const unsigned long BlowFish::tempbf_S[4][256] =
   0xb74e6132, 0xce77e25b, 0x578fdfe3, 0x3ac372e6,
 };
 
-
 void
 BlowFish::Blowfish_encipher(unsigned long *xl,
                             unsigned long *xr)
@@ -315,7 +312,6 @@ BlowFish::Blowfish_encipher(unsigned long *xl,
   *xl = Xr.word;
 }
 
-
 void
 BlowFish::Blowfish_decipher(unsigned long *xl,
                             unsigned long *xr)
@@ -340,7 +336,6 @@ BlowFish::Blowfish_decipher(unsigned long *xl,
   *xl = Xr.word;
   *xr = Xl.word;
 }
-
 
 void
 BlowFish::InitializeBlowfish(unsigned char key[],
@@ -389,7 +384,6 @@ BlowFish::InitializeBlowfish(unsigned char key[],
   }
 }
 
-
 BlowFish::BlowFish(unsigned char *key,
                    int keylen)
 {
@@ -434,7 +428,6 @@ BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
     (unsigned long*)(out+sizeof(unsigned long)));
 }
 
-
 void
 BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
 {
@@ -476,7 +469,6 @@ BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, int passlen,
 #endif
   return retval;
 }
-
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

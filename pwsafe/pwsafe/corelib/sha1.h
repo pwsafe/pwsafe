@@ -16,6 +16,7 @@ public:
   ~SHA1();
   void Update(const unsigned char* data, unsigned int len);
   void Final(unsigned char digest[HASHLEN]);
+
 private:
   unsigned long state[5];
   unsigned long count[2];
