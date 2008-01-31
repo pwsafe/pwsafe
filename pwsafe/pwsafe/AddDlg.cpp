@@ -33,9 +33,9 @@ CString CAddDlg::CS_HIDE;
 
 //-----------------------------------------------------------------------------
 CAddDlg::CAddDlg(CWnd* pParent)
-  : CPWDialog(CAddDlg::IDD, pParent), m_password(_T("")), m_notes(_T("")),
-  m_username(_T("")), m_title(_T("")), m_group(_T("")),
-  m_URL(_T("")), m_autotype(_T("")),
+  : CPWDialog(CAddDlg::IDD, pParent),
+  m_password(_T("")), m_notes(_T("")), m_username(_T("")), m_title(_T("")),
+  m_group(_T("")), m_URL(_T("")), m_autotype(_T("")),
   m_tttLTime((time_t)0), m_isPwHidden(false)
 {
   m_isExpanded = PWSprefs::GetInstance()->
@@ -85,10 +85,10 @@ BOOL CAddDlg::OnInitDialog()
   pspin->SetPos(m_MaxPWHistory);  // Default suggestion of max. to keep!
 
   // Populate the combo box
-  if(m_ex_group.GetCount() == 0) {
+  if (m_ex_group.GetCount() == 0) {
     CStringArray aryGroups;
     app.m_core.GetUniqueGroups(aryGroups);
-    for(int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
+    for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
       m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
     }
   }
@@ -141,14 +141,12 @@ BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
 END_MESSAGE_MAP()
 
 
-void
-CAddDlg::OnCancel() 
+void CAddDlg::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-void
-CAddDlg::OnShowpassword() 
+void CAddDlg::OnShowpassword() 
 {
   UpdateData(TRUE);
 
@@ -160,22 +158,22 @@ CAddDlg::OnShowpassword()
   UpdateData(FALSE);
 }
 
-void
-CAddDlg::ShowPassword()
+void CAddDlg::ShowPassword()
 {
   m_isPwHidden = false;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
+
   // Remove password character so that the password is displayed
   ((CEdit*)GetDlgItem(IDC_PASSWORD))->SetPasswordChar(0);
   ((CEdit*)GetDlgItem(IDC_PASSWORD))->Invalidate();
+
   // Don't need verification as the user can see the password entered
   GetDlgItem(IDC_PASSWORD2)->EnableWindow(FALSE);
   ((CEdit*)GetDlgItem(IDC_PASSWORD2))->Invalidate();
   m_password2.Empty();
 }
 
-void
-CAddDlg::HidePassword()
+void CAddDlg::HidePassword()
 {
   m_isPwHidden = true;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
@@ -188,8 +186,7 @@ CAddDlg::HidePassword()
   m_password2 = m_password;
 }
 
-void
-CAddDlg::OnOK() 
+void CAddDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
     return;
@@ -234,11 +231,11 @@ CAddDlg::OnOK()
     return;
   }
 
-  DboxMain* dbx = static_cast<DboxMain *>(GetParent());
-  ASSERT(dbx != NULL);
+  DboxMain* pDbx = static_cast<DboxMain *>(GetParent());
+  ASSERT(pDbx != NULL);
 
   // If there is a matching entry in our list, tell the user to try again.
-  if (dbx->Find(m_group, m_title, m_username) != dbx->End()) {
+  if (pDbx->Find(m_group, m_title, m_username) != pDbx->End()) {
     CMyString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
@@ -251,7 +248,7 @@ CAddDlg::OnOK()
   }
 
   bool brc, b_msg_issued;
-  brc = dbx->CheckNewPassword(m_group, m_title, m_username, m_password,
+  brc = pDbx->CheckNewPassword(m_group, m_title, m_username, m_password,
                               false, CItemData::Alias,
                               m_base_uuid, m_ibasedata, b_msg_issued);
 
@@ -266,7 +263,6 @@ CAddDlg::OnOK()
 
   CPWDialog::OnOK();
 }
-
 
 void CAddDlg::OnHelp() 
 {
@@ -327,7 +323,7 @@ void CAddDlg::ResizeDialog()
 {
   int TopHideableControl = IDC_TOP_HIDEABLE;
   int BottomHideableControl = IDC_BOTTOM_HIDEABLE;
-  int controls[]={
+  int controls[] = {
     IDC_STATIC_URL,
     IDC_URL,
     IDC_STATIC_AUTO,
@@ -381,7 +377,6 @@ void CAddDlg::ResizeDialog()
   this->SetWindowPos(NULL, 0, 0,
                      newDialogRect.right - newDialogRect.left,
                      newHeight, SWP_NOMOVE );
-
 }
 
 void CAddDlg::OnBnClickedClearLTime()
@@ -408,8 +403,7 @@ void CAddDlg::OnBnClickedSetLTime()
   }
 }
 
-void
-CAddDlg::OnCheckedSavePasswordHistory()
+void CAddDlg::OnCheckedSavePasswordHistory()
 {
   m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
 

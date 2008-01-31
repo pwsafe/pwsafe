@@ -22,7 +22,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CImportXMLDlg dialog
 
-
 CImportXMLDlg::CImportXMLDlg(CWnd* pParent /*=NULL*/)
   : CPWDialog(CImportXMLDlg::IDD, pParent)
 {
@@ -31,7 +30,6 @@ CImportXMLDlg::CImportXMLDlg(CWnd* pParent /*=NULL*/)
   m_group = 0;
   //}}AFX_DATA_INIT
 }
-
 
 void CImportXMLDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -50,10 +48,8 @@ BEGIN_MESSAGE_MAP(CImportXMLDlg, CPWDialog)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CImportXMLDlg message handlers
-
 
 void CImportXMLDlg::OnNoGroup() 
 {

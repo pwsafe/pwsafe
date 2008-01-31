@@ -25,13 +25,12 @@ static char THIS_FILE[] = __FILE__;
 const TCHAR *CRLF = _T("\r\n");
 
 /*
-StartReport creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
-in the same directory as the current database.
+  StartReport creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
+  in the same directory as the current database.
 
-It writes a header record and a "Start Report" record.
+  It writes a header record and a "Start Report" record.
 */
-bool
-CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
+bool CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
 {
   if (m_fd != NULL) {
     fclose(m_fd);
@@ -217,8 +216,7 @@ CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
 }
 
 // Write a record with(default) or without a CRLF
-void
-CReport::WriteLine(CString &cs_line, bool bCRLF)
+void CReport::WriteLine(CString &cs_line, bool bCRLF)
 {
   if (m_fd == NULL)
     return;
@@ -237,8 +235,7 @@ CReport::WriteLine(CString &cs_line, bool bCRLF)
 }
 
 // Write a record with(default) or without a CRLF
-void
-CReport::WriteLine(LPTSTR &tc_line, bool bCRLF)
+void CReport::WriteLine(LPTSTR &tc_line, bool bCRLF)
 {
   if (m_fd == NULL)
     return;
@@ -255,8 +252,7 @@ CReport::WriteLine(LPTSTR &tc_line, bool bCRLF)
 }
 
 // Write a new line
-void
-CReport::WriteLine()
+void CReport::WriteLine()
 {
   if (m_fd == NULL)
     return;
@@ -269,10 +265,9 @@ CReport::WriteLine()
 }
 
 /*
-EndReport writes a "End Report" record and closes the report file.
+  EndReport writes a "End Report" record and closes the report file.
 */
-void
-CReport::EndReport()
+void CReport::EndReport()
 {
   WriteLine();
   CString cs_title;

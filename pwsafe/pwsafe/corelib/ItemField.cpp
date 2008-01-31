@@ -22,8 +22,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
-int
-CItemField::GetBlockSize(int size) const
+int CItemField::GetBlockSize(int size) const
 {
   return (int)ceil((double)size/8.0) * 8;
 }
@@ -107,15 +106,15 @@ void CItemField::Set(const CMyString &value, BlowFish *bf)
   const LPCTSTR plainstr = (const LPCTSTR)value; // use of CString::operator LPCSTR
 
   Set((const unsigned char *)plainstr,
-    value.GetLength() * sizeof(*plainstr),
-    bf);
+      value.GetLength() * sizeof(*plainstr),
+      bf);
 }
 
 void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) const
 {
   // Sanity check: length is 0 iff data ptr is NULL
   ASSERT((m_Length == 0 && m_Data == NULL) ||
-    (m_Length > 0 && m_Data != NULL));
+         (m_Length > 0 && m_Data != NULL));
   /*
   * length is an in/out parameter:
   * In: size of value array - must be at least BlockLength
@@ -131,11 +130,11 @@ void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) c
     unsigned char *tempmem = new unsigned char[BlockLength];
 
     int x;
-    for (x=0;x<BlockLength;x+=8)
-      bf->Decrypt(m_Data+x, tempmem+x);
+    for (x = 0; x < BlockLength; x += 8)
+      bf->Decrypt(m_Data + x, tempmem + x);
 
-    for (x=0;x<BlockLength;x++)
-      value[x] = (x<int(m_Length)) ? tempmem[x] : 0;
+    for (x = 0; x < BlockLength; x++)
+      value[x] = (x < int(m_Length)) ? tempmem[x] : 0;
 
     length = m_Length;
     delete [] tempmem;
@@ -146,7 +145,8 @@ void CItemField::Get(CMyString &value, BlowFish *bf) const
 {
   // Sanity check: length is 0 iff data ptr is NULL
   ASSERT((m_Length == 0 && m_Data == NULL) ||
-    (m_Length > 0 && m_Data != NULL));
+         (m_Length > 0 && m_Data != NULL));
+
   if (m_Length == 0) {
     value = _T("");
   } else { // we have data to decrypt
@@ -155,11 +155,11 @@ void CItemField::Get(CMyString &value, BlowFish *bf) const
     unsigned char *plaintxt = (unsigned char*)value.GetBuffer(BlockLength+2);
 
     int x;
-    for (x=0;x<BlockLength;x+=8)
-      bf->Decrypt(m_Data+x, tempmem+x);
+    for (x = 0; x < BlockLength; x += 8)
+      bf->Decrypt(m_Data + x, tempmem + x);
 
-    for (x=0;x<BlockLength;x++)
-      plaintxt[x] = (x<int(m_Length)) ? tempmem[x] : 0;
+    for (x = 0; x < BlockLength; x++)
+      plaintxt[x] = (x < int(m_Length)) ? tempmem[x] : 0;
 
     plaintxt[BlockLength] = plaintxt[BlockLength+1] = 0;
 

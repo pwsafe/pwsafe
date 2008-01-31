@@ -18,7 +18,7 @@
 #define TWOFISH_ALL_TABLES
 
 enum {
-  CRYPT_OK=0,             /* Result OK */
+  CRYPT_OK = 0,           /* Result OK */
   CRYPT_ERROR,            /* Generic Error */
   CRYPT_NOP,              /* Not a failure but no operation was performed */
 
@@ -105,7 +105,7 @@ static unsigned long _sbox(int i, unsigned long x)
 static unsigned long sbox(int i, unsigned long x)
 #endif
 {
-  unsigned char a0,b0,a1,b1,a2,b2,a3,b3,a4,b4,y;
+  unsigned char a0, b0, a1, b1, a2, b2, a3, b3, a4, b4, y;
 
   /* a0,b0 = [x/16], x mod 16 */
   a0 = (unsigned char)((x>>4)&15);
@@ -340,13 +340,13 @@ static unsigned long g_func(unsigned long x, twofish_key *key)
 
 #endif /* TWOFISH_SMALL */
 
-/**
-Initialize the Twofish block cipher
-@param key The symmetric key you wish to pass
-@param keylen The key length in bytes
-@param num_rounds The number of rounds desired (0 for default)
-@param skey The key in as scheduled by this function.
-@return CRYPT_OK if successful
+/*
+  Initialize the Twofish block cipher
+  @param key The symmetric key you wish to pass
+  @param keylen The key length in bytes
+  @param num_rounds The number of rounds desired (0 for default)
+  @param skey The key in as scheduled by this function.
+  @return CRYPT_OK if successful
 */
 #ifdef LTC_CLEAN_STACK
 static int _twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_key *skey)
@@ -468,11 +468,11 @@ int twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_
 }
 #endif
 
-/**
-Encrypts a block of text with Twofish
-@param pt The input plaintext (16 bytes)
-@param ct The output ciphertext (16 bytes)
-@param skey The key as scheduled
+/*
+  Encrypts a block of text with Twofish
+  @param pt The input plaintext (16 bytes)
+  @param ct The output ciphertext (16 bytes)
+  @param skey The key as scheduled
 */
 #ifdef LTC_CLEAN_STACK
 static void _twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
@@ -537,11 +537,11 @@ static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twof
 }
 #endif
 
-/**
-Decrypts a block of text with Twofish
-@param ct The input ciphertext (16 bytes)
-@param pt The output plaintext (16 bytes)
-@param skey The key as scheduled 
+/*
+  Decrypts a block of text with Twofish
+  @param ct The input ciphertext (16 bytes)
+  @param pt The output plaintext (16 bytes)
+  @param skey The key as scheduled 
 */
 #ifdef LTC_CLEAN_STACK
 static void _twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)

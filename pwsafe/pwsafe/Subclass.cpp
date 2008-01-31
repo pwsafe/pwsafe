@@ -28,7 +28,8 @@ static char THIS_FILE[] = __FILE__;
 // attached to a window is stored in the map; all other CSubclassWnd's for that
 // window are then chained via CSubclassWnd::m_pNext.
 //
-class CSubclassWndMap : private CMapPtrToPtr {
+class CSubclassWndMap : private CMapPtrToPtr
+{
 public:
   CSubclassWndMap();
   ~CSubclassWndMap();
@@ -137,8 +138,7 @@ void CSubclassWnd::Dump(CDumpContext& dc) const
 // Subclassed window proc for message hooks. Replaces AfxWndProc (or whatever
 // else was there before.)
 //
-LRESULT CALLBACK
-HookWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
+LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 #ifdef _USRDLL
   // If this is a DLL, need to set up MFC state

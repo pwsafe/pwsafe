@@ -92,40 +92,35 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, unsigned
   delete bf;
 }
 
-CMyString
-CItemData::GetName() const
+CMyString CItemData::GetName() const
 {
   CMyString ret;
   GetField(m_Name, ret);
   return ret;
 }
 
-CMyString
-CItemData::GetTitle() const
+CMyString CItemData::GetTitle() const
 {
   CMyString ret;
   GetField(m_Title, ret);
   return ret;
 }
 
-CMyString
-CItemData::GetUser() const
+CMyString CItemData::GetUser() const
 {
   CMyString ret;
   GetField(m_User, ret);
   return ret;
 }
 
-CMyString
-CItemData::GetPassword() const
+CMyString CItemData::GetPassword() const
 {
   CMyString ret;
   GetField(m_Password, ret);
   return ret;
 }
 
-CMyString
-CItemData::GetNotes(TCHAR delimiter) const
+CMyString CItemData::GetNotes(TCHAR delimiter) const
 {
   CMyString ret;
   GetField(m_Notes, ret);
@@ -136,32 +131,28 @@ CItemData::GetNotes(TCHAR delimiter) const
   return ret;
 }
 
-CMyString
-CItemData::GetGroup() const
+CMyString CItemData::GetGroup() const
 {
   CMyString ret;
   GetField(m_Group, ret);
   return ret;
 }
 
-CMyString
-CItemData::GetURL() const
+CMyString CItemData::GetURL() const
 {
   CMyString ret;
   GetField(m_URL, ret);
   return ret;
 }
 
-CMyString
-CItemData::GetAutoType() const
+CMyString CItemData::GetAutoType() const
 {
   CMyString ret;
   GetField(m_AutoType, ret);
   return ret;
 }
 
-CMyString
-CItemData::GetTime(int whichtime, int result_format) const
+CMyString CItemData::GetTime(int whichtime, int result_format) const
 {
   time_t t;
 
@@ -170,8 +161,7 @@ CItemData::GetTime(int whichtime, int result_format) const
   return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
-void
-CItemData::GetTime(int whichtime, time_t &t) const
+void CItemData::GetTime(int whichtime, time_t &t) const
 {
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   unsigned int tlen = sizeof(in); // ditto
@@ -212,8 +202,7 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
-void
-CItemData::GetPWPolicy(PWPolicy &pwp) const
+void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
   CMyString cs_pwp;
   GetField(m_PWPolicy, cs_pwp);
@@ -231,21 +220,20 @@ CItemData::GetPWPolicy(PWPolicy &pwp) const
 
 #if _MSC_VER >= 1400
   int iread = _stscanf_s(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-    &pwp.flags, &pwp.length,
-    &pwp.digitminlength, &pwp.lowerminlength,
-    &pwp.symbolminlength, &pwp.upperminlength);
+                         &pwp.flags, &pwp.length,
+                         &pwp.digitminlength, &pwp.lowerminlength,
+                         &pwp.symbolminlength, &pwp.upperminlength);
 #else
   int iread = _stscanf(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-    &pwp.flags, &pwp.length,
-    &pwp.digitminlength, &pwp.lowerminlength,
-    &pwp.symbolminlength, &pwp.upperminlength);
+                       &pwp.flags, &pwp.length,
+                       &pwp.digitminlength, &pwp.lowerminlength,
+                       &pwp.symbolminlength, &pwp.upperminlength);
 #endif
   if (iread != 6)
     pwp.flags = 0;
 }
 
-CMyString 
-CItemData::GetPWPolicy() const
+CMyString CItemData::GetPWPolicy() const
 {
   CMyString retval;
   GetField(m_PWPolicy, retval);
@@ -285,10 +273,9 @@ void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
   GetUnknownField(type, length, pdata, unkrfe);
 }
 
-void
-CItemData::SetUnknownField(const unsigned char type,
-                           const unsigned int length,
-                           const unsigned char * ufield)
+void CItemData::SetUnknownField(const unsigned char type,
+                                const unsigned int length,
+                                const unsigned char * ufield)
 {
   CItemField unkrfe(type);
   SetField(unkrfe, ufield, length);
@@ -319,8 +306,7 @@ CItemData::SetUnknownField(const unsigned char type,
 *
 */
 
-CMyString
-CItemData::GetPWHistory() const
+CMyString CItemData::GetPWHistory() const
 {
   CMyString ret;
   GetField(m_PWHistory, ret);
@@ -831,8 +817,7 @@ void CItemData::CreateUUID()
   SetUUID(uuid_array);
 }
 
-void
-CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
+void CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
 {
   // the m_name is from pre-2.0 versions, and may contain the title and user
   // separated by SPLTCHR. Also, DEFUSERCHR signified that the default username is to be used.
@@ -855,8 +840,7 @@ CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
   delete bf;
 }
 
-void
-CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
+void CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
 {
   if (delimiter == 0)
     SetField(m_Title, title);
@@ -883,20 +867,17 @@ CItemData::SetTitle(const CMyString &title, TCHAR delimiter)
   }
 }
 
-void
-CItemData::SetUser(const CMyString &user)
+void CItemData::SetUser(const CMyString &user)
 {
   SetField(m_User, user);
 }
 
-void
-CItemData::SetPassword(const CMyString &password)
+void CItemData::SetPassword(const CMyString &password)
 {
   SetField(m_Password, password);
 }
 
-void
-CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
+void CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
 {
   if (delimiter == 0)
     SetField(m_Notes, notes);
@@ -927,40 +908,34 @@ CItemData::SetNotes(const CMyString &notes, TCHAR delimiter)
   }
 }
 
-void
-CItemData::SetGroup(const CMyString &title)
+void CItemData::SetGroup(const CMyString &title)
 {
   SetField(m_Group, title);
 }
 
-void
-CItemData::SetUUID(const uuid_array_t &UUID)
+void CItemData::SetUUID(const uuid_array_t &UUID)
 {
   SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
 }
 
-void
-CItemData::SetURL(const CMyString &URL)
+void CItemData::SetURL(const CMyString &URL)
 {
   SetField(m_URL, URL);
 }
 
-void
-CItemData::SetAutoType(const CMyString &autotype)
+void CItemData::SetAutoType(const CMyString &autotype)
 {
   SetField(m_AutoType, autotype);
 }
 
-void
-CItemData::SetTime(int whichtime)
+void CItemData::SetTime(int whichtime)
 {
   time_t t;
   time(&t);
   SetTime(whichtime, t);
 }
 
-void
-CItemData::SetTime(int whichtime, time_t t)
+void CItemData::SetTime(int whichtime, time_t t)
 {
   int t32 = (int)t;
   switch (whichtime) {
@@ -984,8 +959,7 @@ CItemData::SetTime(int whichtime, time_t t)
   }
 }
 
-bool
-CItemData::SetTime(int whichtime, const CString &time_str)
+bool CItemData::SetTime(int whichtime, const CString &time_str)
 {
   time_t t = 0;
 
@@ -1007,8 +981,7 @@ CItemData::SetTime(int whichtime, const CString &time_str)
   return false;
 }
 
-void
-CItemData::SetPWHistory(const CMyString &PWHistory)
+void CItemData::SetPWHistory(const CMyString &PWHistory)
 {
   CMyString pwh = PWHistory;
   if (pwh == _T("0") || pwh == _T("00000"))
@@ -1016,11 +989,10 @@ CItemData::SetPWHistory(const CMyString &PWHistory)
   SetField(m_PWHistory, pwh);
 }
 
-int
-CItemData::CreatePWHistoryList(BOOL &status,
-                               size_t &pwh_max, size_t &pwh_num,
-                               PWHistList* pPWHistList,
-                               const int time_format) const
+int CItemData::CreatePWHistoryList(BOOL &status,
+                                   size_t &pwh_max, size_t &pwh_num,
+                                   PWHistList* pPWHistList,
+                                   const int time_format) const
 {
   PWHistEntry pwh_ent;
   CMyString tmp, pwh;
@@ -1162,16 +1134,14 @@ bool CItemData::SetPWPolicy(const CString &cs_pwp)
   return true;
 }
 
-BlowFish *
-CItemData::MakeBlowFish() const
+BlowFish * CItemData::MakeBlowFish() const
 {
   ASSERT(IsSessionKeySet);
   return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
     m_salt, SaltLength);
 }
 
-CItemData&
-CItemData::operator=(const CItemData &that)
+CItemData& CItemData::operator=(const CItemData &that)
 {
   //Check for self-assignment
   if (this != &that) {
@@ -1203,8 +1173,7 @@ CItemData::operator=(const CItemData &that)
   return *this;
 }
 
-void
-CItemData::Clear()
+void CItemData::Clear()
 {
   m_Group.Empty();
   m_Title.Empty();
@@ -1224,9 +1193,8 @@ CItemData::Clear()
   m_entrytype = Normal;
 }
 
-int
-CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
-                        uuid_array_t &uuid_array)
+int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
+                            uuid_array_t &uuid_array)
 {
   // currently only ensure that item has a uuid, creating one if missing.
 
@@ -1258,8 +1226,7 @@ CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMin
   return iResult;
 }
 
-int
-CItemData::ValidatePWHistory()
+int CItemData::ValidatePWHistory()
 {
   if (m_PWHistory.IsEmpty())
     return 0;
@@ -1320,9 +1287,8 @@ CItemData::ValidatePWHistory()
   return 1;
 }
 
-bool
-CItemData::Matches(const CString &subgroup_name, int iObject,
-                   int iFunction) const
+bool CItemData::Matches(const CString &subgroup_name, int iObject,
+                        int iFunction) const
 {
   ASSERT(iFunction != 0); // must be positive or negative!
 
@@ -1357,16 +1323,16 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
   // Positive = Case INsensitive
   switch (iFunction) {
     case -SGF_EQUALS:
-    case SGF_EQUALS:
+    case  SGF_EQUALS:
       return ((ob_len == sb_len) &&
              (((iFunction < 0) && (csObject.Compare((LPCTSTR)subgroup_name) == 0)) ||
               ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)subgroup_name) == 0))));
     case -SGF_NOTEQUAL:
-    case SGF_NOTEQUAL:
+    case  SGF_NOTEQUAL:
       return (((iFunction < 0) && (csObject.Compare((LPCTSTR)subgroup_name) != 0)) ||
               ((iFunction > 0) && (csObject.CompareNoCase((LPCTSTR)subgroup_name) != 0)));
     case -SGF_BEGINS:
-    case SGF_BEGINS:
+    case  SGF_BEGINS:
       if (ob_len >= sb_len) {
         csObject = csObject.Left(sb_len);
         return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) == 0)) ||
@@ -1375,7 +1341,7 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
         return false;
       }
     case -SGF_NOTBEGIN:
-    case SGF_NOTBEGIN:
+    case  SGF_NOTBEGIN:
       if (ob_len >= sb_len) {
         csObject = csObject.Left(sb_len);
         return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) != 0)) ||
@@ -1384,7 +1350,7 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
         return false;
       }
     case -SGF_ENDS:
-    case SGF_ENDS:
+    case  SGF_ENDS:
       if (ob_len > sb_len) {
         csObject = csObject.Right(sb_len);
         return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) == 0)) ||
@@ -1393,7 +1359,7 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
         return false;
       }
     case -SGF_NOTEND:
-    case SGF_NOTEND:
+    case  SGF_NOTEND:
       if (ob_len > sb_len) {
         csObject = csObject.Right(sb_len);
         return (((iFunction < 0) && (subgroup_name.Compare((LPCTSTR)csObject) != 0)) ||
@@ -1425,8 +1391,7 @@ CItemData::Matches(const CString &subgroup_name, int iObject,
   return true; // should never get here!
 }
 
-static bool
-pull_string(CMyString &str, unsigned char *data, int len)
+static bool pull_string(CMyString &str, unsigned char *data, int len)
 {
   CUTF8Conv utf8conv;
   vector<unsigned char> v(data, (data + len));
@@ -1440,8 +1405,7 @@ pull_string(CMyString &str, unsigned char *data, int len)
   return utf8status;
 }
 
-static bool
-pull_time(time_t &t, unsigned char *data, size_t len)
+static bool pull_time(time_t &t, unsigned char *data, size_t len)
 {
   if (len == sizeof(__time32_t)) {
     t = *reinterpret_cast<__time32_t *>(data);
@@ -1575,17 +1539,14 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
   return true;
 }
 
-
-static void
-push_length(vector<char> &v, unsigned int s)
+static void push_length(vector<char> &v, unsigned int s)
 {
   v.insert(v.end(),
     (char *)&s, (char *)&s + sizeof(s));
 }
 
-static void
-push_string(vector<char> &v, char type,
-            const CMyString &str)
+static void push_string(vector<char> &v, char type,
+                        const CMyString &str)
 {
   if (!str.IsEmpty()) {
     CUTF8Conv utf8conv;
@@ -1602,8 +1563,7 @@ push_string(vector<char> &v, char type,
   }
 }
 
-static void
-push_time(vector<char> &v, char type, time_t t)
+static void push_time(vector<char> &v, char type, time_t t)
 {
   if (t != 0) {
     __time32_t t32 = (__time32_t)t;

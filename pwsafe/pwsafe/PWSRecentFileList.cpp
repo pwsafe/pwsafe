@@ -11,16 +11,17 @@
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
 #include "resource2.h" // for ID_FILE_MRU_*
-/*
-PasswordSafe uses a config file instead of registry when possible.
-This means that ReadList/WriteList need to use our config mechanism,
-rather than m'soft's code, which uses the registry.
 
-Also, it turns out that m'soft is a bit uptight when using Add() for
-files that don't exist, such as might happen when restoring the list
-from config, and one of the list members was on removable media. Therefore,
-we take care in ReadList not to call Add. (Previous versions of this class
-overrode Add(), which was a bit of an overkill...)
+/*
+  PasswordSafe uses a config file instead of registry when possible.
+  This means that ReadList/WriteList need to use our config mechanism,
+  rather than m'soft's code, which uses the registry.
+
+  Also, it turns out that m'soft is a bit uptight when using Add() for
+  files that don't exist, such as might happen when restoring the list
+  from config, and one of the list members was on removable media. Therefore,
+  we take care in ReadList not to call Add. (Previous versions of this class
+  overrode Add(), which was a bit of an overkill...)
 */
 
 void CPWSRecentFileList::ReadList()

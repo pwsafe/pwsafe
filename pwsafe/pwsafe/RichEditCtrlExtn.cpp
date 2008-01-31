@@ -23,39 +23,39 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /*
-Note that there is a callback function available to allow the parent to process
-clicks on any link in the text.
+  Note that there is a callback function available to allow the parent to process
+  clicks on any link in the text.
 
-bool pfcnNotifyLinkClicked (LPTSTR lpszURL, LPTSTR lpszFriendlyName, LPARAM self);
+  bool pfcnNotifyLinkClicked (LPTSTR lpszURL, LPTSTR lpszFriendlyName, LPARAM self);
 
-If the parent has not registered for the callback, the link is processed by this
-control and it should open the appropriate URL in the user's default browser.
+  If the parent has not registered for the callback, the link is processed by this
+  control and it should open the appropriate URL in the user's default browser.
 */
 
 /*
-Supports the following HTML formatting in a RichEditCtrl:
-Bold:          <b>.....</b>
-Italic:        <i>.....</i>
-Underline:     <u>.....</u>
-Font:          <font face="FN" size="S" color="C">.....</font>
-Web reference: <a href="...url...">Friendly Name</a>
+  Supports the following HTML formatting in a RichEditCtrl:
+  Bold:          <b>.....</b>
+  Italic:        <i>.....</i>
+  Underline:     <u>.....</u>
+  Font:          <font face="FN" size="S" color="C">.....</font>
+  Web reference: <a href="...url...">Friendly Name</a>
 
-Notes:
-1. If you wish to use the "less than" or "greater than" symbols in the
-message, use "&lt;" and "&gt;" instead.  These will be converted to the
-'<' and '>' symbols in the final text string.
+  Notes:
+  1. If you wish to use the "less than" or "greater than" symbols in the
+     message, use "&lt;" and "&gt;" instead.  These will be converted to the
+     '<' and '>' symbols in the final text string.
 
-2. Bold, Italic, Underline and Font can be nested but MUST NOT overlap - i.e.
-"<b>bold</b> and <i>italic</i>" is OK
-"<b>bold and <i>bold & italic</i> and more bold</b>" is OK
-"<b>bold and <i>bold italic</b> & italic</i>" is NOT OK, since the bold end
-tag is in the middle of the italic tags.
+  2. Bold, Italic, Underline and Font can be nested but MUST NOT overlap - i.e.
+     "<b>bold</b> and <i>italic</i>" is OK
+     "<b>bold and <i>bold & italic</i> and more bold</b>" is OK
+     "<b>bold and <i>bold italic</b> & italic</i>" is NOT OK, since the bold end
+     tag is in the middle of the italic tags.
 
-3. Fonts can also be nested. i.e.
-<font face="FN1">test1<font face="FN2">test2<font color="Red">red2</font></font></font>
+  3. Fonts can also be nested. i.e.
+     <font face="FN1">test1<font face="FN2">test2<font color="Red">red2</font></font></font>
 
-4. Any unsupported HTML tags will be retained e.g. "<q>test</q>" will be
-still be "<q>test</q>" in the final text string.
+  4. Any unsupported HTML tags will be retained e.g. "<q>test</q>" will be
+     still be "<q>test</q>" in the final text string.
 */
 
 /////////////////////////////////////////////////////////////////////////////
@@ -176,8 +176,7 @@ bool CRichEditCtrlExtn::iStartCompare(st_format elem1, st_format elem2)
   return (elem1.iEnd < elem2.iEnd);
 }
 
-void
-CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
+void CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
 {
   int iError;
   CRichEditCtrl::SetWindowText(_T(""));
@@ -251,8 +250,7 @@ CRichEditCtrlExtn::SetWindowText(LPCTSTR lpszString)
   ShowWindow(SW_SHOW);
 }
 
-CString
-CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
+CString CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
 {
   CString csText, csToken, csHTMLTag;
   int iCurrentFontSize, iCurrentFontPointSize;
@@ -285,7 +283,7 @@ CRichEditCtrlExtn::GetTextFormatting(CString csHTML, int &iError)
   oldPos = 0;
   int iBold(0), iItalic(0), iUnderline(0), iFont(0), iAnchor(0);
   bool bNestedBold(false), bNestedItalic(false), bNestedUnderline(false),
-    bNestedAnchor(false), bOverlapped(false);
+       bNestedAnchor(false), bOverlapped(false);
 
   csToken = csHTML.Tokenize(_T("<>"), curPos);
   while (csToken != "" && curPos != -1) {
@@ -439,35 +437,41 @@ vnext:
         this_format.iStart = iTextPosition;
         format_stack.push(this_format);
         goto next;
-      } else if (csHTMLTag == _T("/b")) {
+      } else
+      if (csHTMLTag == _T("/b")) {
         st_format& cur_format = format_stack.top();
         cur_format.iEnd = iTextPosition;
         m_vFormat.push_back(cur_format);
         format_stack.pop();
         goto next;
-      } else if (csHTMLTag == _T("i")) {
+      } else
+      if (csHTMLTag == _T("i")) {
         this_format.entrytype = Italic;
         this_format.iStart = iTextPosition;
         format_stack.push(this_format);
         goto next;
-      } else if (csHTMLTag == _T("/i")) {
+      } else
+      if (csHTMLTag == _T("/i")) {
         st_format& cur_format = format_stack.top();
         cur_format.iEnd = iTextPosition;
         m_vFormat.push_back(cur_format);
         format_stack.pop();
         goto next;
-      } else if (csHTMLTag == _T("u")) {
+      } else
+      if (csHTMLTag == _T("u")) {
         this_format.entrytype = Underline;
         this_format.iStart = iTextPosition;
         format_stack.push(this_format);
         goto next;
-      } else if (csHTMLTag == _T("/u")) {
+      } else
+      if (csHTMLTag == _T("/u")) {
         st_format& cur_format = format_stack.top();
         cur_format.iEnd = iTextPosition;
         m_vFormat.push_back(cur_format);
         format_stack.pop();
         goto next;
-      } else if (csHTMLTag == _T("/font")) {
+      } else
+      if (csHTMLTag == _T("/font")) {
         std::bitset<3> &bsLastFont = vFontChange.back();
         int &iFontChangeStart = vFontChangeStart.back();
         st_format& cur_format = format_stack.top();
@@ -608,8 +612,7 @@ next:
   return csText;
 }
 
-COLORREF
-CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
+COLORREF CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
 {
   // Vlaue is either a colour name or "#RRGGBB"
   // Note COLORREF = 0x00bbggrr but HTML = 0x00rrggbb
@@ -666,8 +669,7 @@ CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
   return (COLORREF)retval;
 }
 
-int
-CRichEditCtrlExtn::ConvertSizeToPoints(CString &csValue, int &iCurrentSize)
+int CRichEditCtrlExtn::ConvertSizeToPoints(CString &csValue, int &iCurrentSize)
 {
   int retval(0), iSize, absSize;
 
@@ -685,29 +687,29 @@ CRichEditCtrlExtn::ConvertSizeToPoints(CString &csValue, int &iCurrentSize)
         iSize = 7;
   }
   switch (iSize) {
-case 1:
-  retval = 15;  // "7.5"
-  break;
-case 2:
-  retval = 20;  // "10"
-  break;
-case 3:
-  retval = 24;  // "12"
-  break;
-case 4:
-  retval = 27;  // "13.5"
-  break;
-case 5:
-  retval = 36;  // "18"
-  break;
-case 6:
-  retval = 48;  // "24"
-  break;
-case 7:
-  retval = 72;  // "36"
-  break;
-default:
-  ASSERT(0);
+    case 1:
+      retval = 15;  // "7.5"
+      break;
+    case 2:
+      retval = 20;  // "10"
+      break;
+    case 3:
+      retval = 24;  // "12"
+      break;
+    case 4:
+      retval = 27;  // "13.5"
+      break;
+    case 5:
+      retval = 36;  // "18"
+      break;
+    case 6:
+      retval = 48;  // "24"
+      break;
+    case 7:
+      retval = 72;  // "36"
+      break;
+    default:
+      ASSERT(0);
   }
 
   // Return value in "size"
@@ -716,8 +718,7 @@ default:
   return retval;
 }
 
-int
-CRichEditCtrlExtn::ConvertPointsToSize(const int iCurrentPoints)
+int CRichEditCtrlExtn::ConvertPointsToSize(const int iCurrentPoints)
 {
   if (iCurrentPoints <= 15)
     return 1;

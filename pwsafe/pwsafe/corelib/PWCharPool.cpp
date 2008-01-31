@@ -139,7 +139,6 @@ CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int ra
   return CharType(i);
 }
 
-
 TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned int rand) const
 {
   ASSERT(t < NUMTYPES);
@@ -150,8 +149,7 @@ TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned i
   return retval;
 }
 
-CMyString
-CPasswordCharPool::MakePassword() const
+CMyString CPasswordCharPool::MakePassword() const
 {
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || m_usedigits ||
@@ -403,7 +401,6 @@ CMyString CPasswordCharPool::MakePronounceable() const
     CMyString retval = password.c_str();
     return retval;
 }
-
 
 bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
 {

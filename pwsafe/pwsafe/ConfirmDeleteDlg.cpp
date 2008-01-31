@@ -34,7 +34,6 @@ CConfirmDeleteDlg::CConfirmDeleteDlg(CWnd* pParent, int numchildren)
     GetPref(PWSprefs::DeleteQuestion);
 }
 
-
 void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
 {
   BOOL B_dontaskquestion = m_dontaskquestion ? TRUE : FALSE;
@@ -44,12 +43,10 @@ void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
   m_dontaskquestion = B_dontaskquestion == TRUE;
 }
 
-
 BEGIN_MESSAGE_MAP(CConfirmDeleteDlg, CPWDialog)
 END_MESSAGE_MAP()
 
-BOOL
-CConfirmDeleteDlg::OnInitDialog(void)
+BOOL CConfirmDeleteDlg::OnInitDialog(void)
 {
   CString cs_text;
   if (m_numchildren > 0) {
@@ -71,15 +68,12 @@ CConfirmDeleteDlg::OnInitDialog(void)
   return TRUE;
 }
 
-void
-CConfirmDeleteDlg::OnCancel() 
+void CConfirmDeleteDlg::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-
-void
-CConfirmDeleteDlg::OnOK() 
+void CConfirmDeleteDlg::OnOK() 
 {
   if (m_numchildren == 0) {
     UpdateData(TRUE);

@@ -90,8 +90,8 @@ int PWSfileV3::Close()
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
 int PWSfileV3::CheckPassword(const CMyString &filename,
-  const CMyString &passkey, FILE *a_fd,
-  unsigned char *aPtag, int *nITER)
+                             const CMyString &passkey, FILE *a_fd,
+                             unsigned char *aPtag, int *nITER)
 {
   FILE *fd = a_fd;
   int retval = SUCCESS;
@@ -163,7 +163,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const CString &data)
 }
 
 size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
-  unsigned int length)
+                           unsigned int length)
 {
   m_hmac.Update(data, length);
   return PWSfile::WriteCBC(type, data, length);
@@ -247,7 +247,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 }
 
 size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
-  unsigned int &length)
+                          unsigned int &length)
 {
   size_t numRead = PWSfile::ReadCBC(type, data, length);
 
@@ -297,8 +297,8 @@ int PWSfileV3::ReadRecord(CItemData &item)
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
-  const CMyString &passkey,
-  unsigned int N, unsigned char *Ptag)
+                           const CMyString &passkey,
+                           unsigned int N, unsigned char *Ptag)
 {
   /*
   * P' is the "stretched key" of the user's passphrase and the SALT, as defined

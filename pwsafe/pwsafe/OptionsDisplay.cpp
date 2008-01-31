@@ -85,7 +85,7 @@ BOOL COptionsDisplay::OnInitDialog()
   CPropertyPage::OnInitDialog();
 
   OnPreWarn();
-  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PREWARNEXPIRYSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_PREEXPIRYWARNDAYS));
   pspin->SetRange(1, 30);

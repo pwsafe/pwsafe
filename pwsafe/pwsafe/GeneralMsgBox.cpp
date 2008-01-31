@@ -469,7 +469,6 @@ void CGeneralMsgBox::CreateIcon()
   }
 }
 
-
 // Converts d.u. in pixel (x axe)
 int CGeneralMsgBox::FromDlgX(int x)
 { return x * m_dimDlgUnit.cx / CX_DLGUNIT_BASE; }
@@ -477,7 +476,6 @@ int CGeneralMsgBox::FromDlgX(int x)
 // Converts d.u. in pixel (y axe)
 int CGeneralMsgBox::FromDlgY(int y)
 { return y * m_dimDlgUnit.cy / CY_DLGUNIT_BASE; }
-
 
 // Updates the layout
 void CGeneralMsgBox::UpdateLayout()

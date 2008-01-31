@@ -26,8 +26,7 @@ PWSclipboard::~PWSclipboard()
   // data after application exit. 
 }
 
-bool
-PWSclipboard::SetData(const CMyString &data, bool isSensitive, CLIPFORMAT cfFormat)
+bool PWSclipboard::SetData(const CMyString &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
   unsigned int uGlobalMemSize = (data.GetLength() + 1) * sizeof(TCHAR);
   HGLOBAL hGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uGlobalMemSize);
@@ -52,8 +51,7 @@ PWSclipboard::SetData(const CMyString &data, bool isSensitive, CLIPFORMAT cfForm
   return m_set;
 }
 
-bool
-PWSclipboard::ClearData()
+bool PWSclipboard::ClearData()
 {
   if (m_set) {
     COleDataObject odo;

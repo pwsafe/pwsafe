@@ -52,8 +52,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CPWDialog)
 END_MESSAGE_MAP()
 
-BOOL
-CAboutDlg::OnInitDialog()
+BOOL CAboutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
@@ -104,8 +103,7 @@ CAboutDlg::OnInitDialog()
   return TRUE;
 }
 
-bool
-CAboutDlg::OnCheckVersion(const CString &URL, const CString & /* lpszFName */, LPARAM instance)
+bool CAboutDlg::OnCheckVersion(const CString &URL, const CString & /* lpszFName */, LPARAM instance)
 {
   if (URL == _T("[check_version]")) {
     CAboutDlg *self = (CAboutDlg *)instance;
@@ -121,9 +119,9 @@ void CAboutDlg::CheckNewVer()
   // and notify the user
   // First, make sure database is closed: Sensitive data with an
   // open socket makes me uneasy...
-  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
+  DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
 
-  if (dbx->GetNumEntries() != 0) {
+  if (pDbx->GetNumEntries() != 0) {
     const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
     const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
     int rc = MessageBox(cs_txt, cs_title,
@@ -131,13 +129,13 @@ void CAboutDlg::CheckNewVer()
     if (rc == IDCANCEL)
       return; // no hard feelings
     // Close database, prompt for save if changed
-    dbx->SendMessage(WM_COMMAND, ID_MENUITEM_CLOSE);
+    pDbx->SendMessage(WM_COMMAND, ID_MENUITEM_CLOSE);
     // User could have cancelled save, need to check if really closed:
-    if (dbx->GetNumEntries() != 0)
+    if (pDbx->GetNumEntries() != 0)
       return;
   }
-  dbx->UpdateWindow(); // show user that we closed database
-  ASSERT(dbx->GetNumEntries() == 0);
+  pDbx->UpdateWindow(); // show user that we closed database
+  ASSERT(pDbx->GetNumEntries() == 0);
   // safe to open external connection
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
   UpdateData(FALSE);

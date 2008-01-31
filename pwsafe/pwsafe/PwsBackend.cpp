@@ -17,7 +17,6 @@ PwsBackend::PwsBackend()
   srand((unsigned)time(NULL));
 }
 
-
 PwsBackend::~PwsBackend()
 {
 }

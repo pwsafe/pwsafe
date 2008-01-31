@@ -119,7 +119,6 @@ void CPasskeySetup::OnOK()
   CPWDialog::OnOK();
 }
 
-
 void CPasskeySetup::OnHelp() 
 {
 #if defined(POCKET_PC)

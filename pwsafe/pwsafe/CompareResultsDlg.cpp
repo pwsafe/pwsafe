@@ -359,8 +359,7 @@ void CCompareResultsDlg::AddEntries(const bool bAddIdentical)
   }
 }
 
-void
-CCompareResultsDlg::OnShowIdenticalEntries()
+void CCompareResultsDlg::OnShowIdenticalEntries()
 {
   m_ShowIdenticalEntries = ((CButton*)GetDlgItem(IDC_SHOW_IDENTICAL_ENTRIES))->GetCheck();
 
@@ -394,33 +393,28 @@ CCompareResultsDlg::OnShowIdenticalEntries()
   m_LCResults.Invalidate();
 }
 
-void
-CCompareResultsDlg::OnCancel()
+void CCompareResultsDlg::OnCancel()
 {
   CPWDialog::OnCancel();
 }
 
-void
-CCompareResultsDlg::OnOK()
+void CCompareResultsDlg::OnOK()
 {
   CPWDialog::OnOK();
 }
 
-void
-CCompareResultsDlg::OnHelp()
+void CCompareResultsDlg::OnHelp()
 {
   CString cs_HelpTopic = app.GetHelpFileName() + _T("::/html/compare_results.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-void
-CCompareResultsDlg::OnViewCompareReport()
+void CCompareResultsDlg::OnViewCompareReport()
 {
   EndDialog(2);
 }
 
-void
-CCompareResultsDlg::UpdateStatusBar()
+void CCompareResultsDlg::UpdateStatusBar()
 {
   CString s;
   s.Format(IDS_COMPARERESULTS, m_numOnlyInCurrent, m_numOnlyInComp,
@@ -430,8 +424,7 @@ CCompareResultsDlg::UpdateStatusBar()
   m_statusBar.UpdateWindow();
 }
 
-bool
-CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st_data)
+bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st_data)
 {
   st_CompareInfo *st_info;
   st_info = new st_CompareInfo;
@@ -493,14 +486,12 @@ CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st_data
   return rc;
 }
 
-st_CompareData *
-CCompareResultsDlg::GetCompareData(const DWORD dwItemData)
+st_CompareData * CCompareResultsDlg::GetCompareData(const DWORD dwItemData)
 {
   return GetCompareData(dwItemData, this);
 }
 
-st_CompareData *
-CCompareResultsDlg::GetCompareData(const DWORD dwItemData, CCompareResultsDlg *self)
+st_CompareData * CCompareResultsDlg::GetCompareData(const DWORD dwItemData, CCompareResultsDlg *self)
 {
   const int iList = (short int)LOWORD(dwItemData);
   const int id = HIWORD(dwItemData);
@@ -538,8 +529,7 @@ CCompareResultsDlg::GetCompareData(const DWORD dwItemData, CCompareResultsDlg *s
   return retval;
 }
 
-void
-CCompareResultsDlg::OnCompareViewEdit()
+void CCompareResultsDlg::OnCompareViewEdit()
 {
   bool bDatabaseRO = (m_column == CURRENT) ? m_bOriginalDBReadOnly : m_bComparisonDBReadOnly;
 
@@ -553,8 +543,7 @@ CCompareResultsDlg::OnCompareViewEdit()
     ProcessFunction(EDIT, st_data);
 }
 
-void
-CCompareResultsDlg::OnCompareCopyToOriginalDB()
+void CCompareResultsDlg::OnCompareCopyToOriginalDB()
 {
   if (m_bOriginalDBReadOnly)
     return;
@@ -563,8 +552,7 @@ CCompareResultsDlg::OnCompareCopyToOriginalDB()
     m_OriginalDBChanged = true;
 }
 
-void
-CCompareResultsDlg::OnCompareCopyToComparisonDB()
+void CCompareResultsDlg::OnCompareCopyToComparisonDB()
 {
   if (m_bComparisonDBReadOnly)
     return;
@@ -573,8 +561,7 @@ CCompareResultsDlg::OnCompareCopyToComparisonDB()
     m_ComparisonDBChanged = true;
 }
 
-bool
-CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
+bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
 {
   // Check not already copied one way or another
   CString cs_text = m_LCResults.GetItemText(m_row, m_column);
@@ -664,8 +651,7 @@ CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   return true;
 }
 
-void
-CCompareResultsDlg::OnItemDoubleClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
+void CCompareResultsDlg::OnItemDoubleClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
 {
   *pResult = 0;
 
@@ -689,8 +675,7 @@ CCompareResultsDlg::OnItemDoubleClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
   OnCompareViewEdit();
 }
 
-void
-CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
+void CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
 {
   *pResult = 0;
 
@@ -749,8 +734,7 @@ CCompareResultsDlg::OnItemRightClick( NMHDR* /* pNMHDR */, LRESULT *pResult)
   }
 }
 
-void
-CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
+void CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
   NMHEADER *pNMHeaderCtrl  = (NMHEADER *)pNMHDR;
 
@@ -825,8 +809,7 @@ int CALLBACK CCompareResultsDlg::CRCompareFunc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
-void
-CCompareResultsDlg::GetReportData(CString &data)
+void CCompareResultsDlg::GetReportData(CString &data)
 {
   CompareData::iterator cd_iter;
   CString resultStr(_T(""));
@@ -875,31 +858,30 @@ CCompareResultsDlg::GetReportData(CString &data)
     const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
-      cd_iter++) {
-        const st_CompareData &st_data = *cd_iter;
+         cd_iter++) {
+      const st_CompareData &st_data = *cd_iter;
 
-        buffer.Format(IDS_COMPARESTATS2, st_data.group, st_data.title, st_data.user);
-        resultStr += buffer;
+      buffer.Format(IDS_COMPARESTATS2, st_data.group, st_data.title, st_data.user);
+      resultStr += buffer;
 
-        if (st_data.bsDiffs.test(CItemData::PASSWORD)) resultStr += csx_password;
-        if (st_data.bsDiffs.test(CItemData::NOTES)) resultStr += csx_notes;
-        if (st_data.bsDiffs.test(CItemData::URL)) resultStr += csx_url;
-        if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += csx_autotype;
-        if (st_data.bsDiffs.test(CItemData::CTIME)) resultStr += csx_ctime;
-        if (st_data.bsDiffs.test(CItemData::PMTIME)) resultStr += csx_pmtime;
-        if (st_data.bsDiffs.test(CItemData::ATIME)) resultStr += csx_atime;
-        if (st_data.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
-        if (st_data.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
-        if (st_data.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
-        if (st_data.bsDiffs.test(CItemData::POLICY)) resultStr += csx_policy;
-        resultStr += _T("\r\n");
+      if (st_data.bsDiffs.test(CItemData::PASSWORD)) resultStr += csx_password;
+      if (st_data.bsDiffs.test(CItemData::NOTES)) resultStr += csx_notes;
+      if (st_data.bsDiffs.test(CItemData::URL)) resultStr += csx_url;
+      if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += csx_autotype;
+      if (st_data.bsDiffs.test(CItemData::CTIME)) resultStr += csx_ctime;
+      if (st_data.bsDiffs.test(CItemData::PMTIME)) resultStr += csx_pmtime;
+      if (st_data.bsDiffs.test(CItemData::ATIME)) resultStr += csx_atime;
+      if (st_data.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
+      if (st_data.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
+      if (st_data.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
+      if (st_data.bsDiffs.test(CItemData::POLICY)) resultStr += csx_policy;
+      resultStr += _T("\r\n");
     }
   }
   data = resultStr;
 }
 
-void
-CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
+void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
 {
   CPWDialog::OnSize(nType, cx, cy);
 

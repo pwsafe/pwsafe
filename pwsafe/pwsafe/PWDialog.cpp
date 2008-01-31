@@ -32,9 +32,9 @@ LRESULT CPWDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       message == WM_HSCROLL) {
     CWnd *p = GetParent();
     while (p != NULL) {
-      DboxMain *dbx = dynamic_cast<DboxMain *>(p);
-      if (dbx != NULL) {
-        dbx->ResetIdleLockCounter();
+      DboxMain *pDbx = dynamic_cast<DboxMain *>(p);
+      if (pDbx != NULL) {
+        pDbx->ResetIdleLockCounter();
         break;
       } else
         p = p->GetParent();

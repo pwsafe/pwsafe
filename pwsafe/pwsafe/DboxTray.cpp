@@ -35,35 +35,32 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////// New System Tray Commands /////////////////////
 #ifndef POCKET_PC
-void
-DboxMain::OnTrayLockUnLock()
+void DboxMain::OnTrayLockUnLock()
 {
   switch(app.GetSystemTrayState()) {
-  case ThisMfcApp::LOCKED:            // User clicked UnLock
-    UnMinimize(true);
-    break;
-  case ThisMfcApp::UNLOCKED:          // User clicked Lock
-    UpdateSystemTray(LOCKED);
-    ClearClipboardData();
-    ShowWindow(SW_HIDE);
-    m_IdleLockCountDown = 1;          // lock the same way as a timer lock
-    OnTimer(TIMER_USERLOCK);          // save db if needed, etc.
-    break;
-  case ThisMfcApp::CLOSED:
-  default:
-    ASSERT(0);
-    break;
+    case ThisMfcApp::LOCKED:            // User clicked UnLock
+      UnMinimize(true);
+      break;
+    case ThisMfcApp::UNLOCKED:          // User clicked Lock
+      UpdateSystemTray(LOCKED);
+      ClearClipboardData();
+      ShowWindow(SW_HIDE);
+      m_IdleLockCountDown = 1;          // lock the same way as a timer lock
+      OnTimer(TIMER_USERLOCK);          // save db if needed, etc.
+      break;
+    case ThisMfcApp::CLOSED:
+    default:
+      ASSERT(0);
+      break;
   }
 }
 
-void
-DboxMain::OnTrayClearRecentEntries()
+void DboxMain::OnTrayClearRecentEntries()
 {
   m_RUEList.ClearEntries();
 }
 
-void
-DboxMain::OnTrayCopyUsername(UINT nID)
+void DboxMain::OnTrayCopyUsername(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYUSERNAME1) &&
     (nID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX));
@@ -91,13 +88,11 @@ DboxMain::OnTrayCopyUsername(UINT nID)
   }
 }
 
-void
-DboxMain::OnUpdateTrayCopyUsername(CCmdUI *)
+void DboxMain::OnUpdateTrayCopyUsername(CCmdUI *)
 {
 }
 
-void
-DboxMain::OnTrayCopyPassword(UINT nID)
+void DboxMain::OnTrayCopyPassword(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYPASSWORD1) && (nID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX));
 
@@ -126,13 +121,11 @@ DboxMain::OnTrayCopyPassword(UINT nID)
   UpdateAccessTime(&ci);
 }
 
-void
-DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
+void DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
 {
 }
 
-void
-DboxMain::OnTrayCopyNotes(UINT nID)
+void DboxMain::OnTrayCopyNotes(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYNOTES1) && (nID <= ID_MENUITEM_TRAYCOPYNOTESMAX));
 
@@ -179,13 +172,11 @@ DboxMain::OnTrayCopyNotes(UINT nID)
   }
 }
 
-void
-DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
+void DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
 {
 }
 
-void
-DboxMain::OnTrayBrowse(UINT nID)
+void DboxMain::OnTrayBrowse(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX));
 
@@ -211,9 +202,7 @@ DboxMain::OnTrayBrowse(UINT nID)
   UpdateAccessTime(&ci);
 }
 
-
-void
-DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
+void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
 {
   int nID = pCmdUI->m_nID;
 
@@ -248,21 +237,18 @@ DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   }
 }
 
-void
-DboxMain::OnTrayDeleteEntry(UINT nID)
+void DboxMain::OnTrayDeleteEntry(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYDELETE1) && (nID <= ID_MENUITEM_TRAYDELETEMAX));
 
   m_RUEList.DeleteRUEntry(nID - ID_MENUITEM_TRAYDELETE1);
 }
 
-void
-DboxMain::OnUpdateTrayDeleteEntry(CCmdUI *)
+void DboxMain::OnUpdateTrayDeleteEntry(CCmdUI *)
 {
 }
 
-void
-DboxMain::OnTrayAutoType(UINT nID)
+void DboxMain::OnTrayAutoType(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYAUTOTYPE1) && (nID <= ID_MENUITEM_TRAYAUTOTYPEMAX));
 
@@ -274,13 +260,11 @@ DboxMain::OnTrayAutoType(UINT nID)
   UpdateAccessTime(&ci);
 }
 
-void
-DboxMain::OnUpdateTrayAutoType(CCmdUI *)
+void DboxMain::OnUpdateTrayAutoType(CCmdUI *)
 {
 }
 
-void
-DboxMain::OnTrayCopyURL(UINT nID)
+void DboxMain::OnTrayCopyURL(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_TRAYCOPYURL1) && (nID <= ID_MENUITEM_TRAYCOPYURLMAX));
 
@@ -309,8 +293,7 @@ DboxMain::OnTrayCopyURL(UINT nID)
   UpdateAccessTime(&ci);
 }
 
-void
-DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
+void DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
 {
 }
 

@@ -386,8 +386,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
 };
 
-void
-DboxMain::InitPasswordSafe()
+void DboxMain::InitPasswordSafe()
 {  
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
@@ -608,8 +607,7 @@ DboxMain::InitPasswordSafe()
     SetColumnWidths(cs_ListColumnsWidths);
 }
 
-LRESULT
-DboxMain::OnHotKey(WPARAM , LPARAM)
+LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
 {
   // since we only have a single HotKey, the value assigned
   // to it is meaningless & unused, hence params ignored
@@ -625,8 +623,7 @@ DboxMain::OnHotKey(WPARAM , LPARAM)
   return 0;
 }
 
-LRESULT
-DboxMain::OnHeaderDragComplete(WPARAM /* wParam */, LPARAM /* lParam */)
+LRESULT DboxMain::OnHeaderDragComplete(WPARAM /* wParam */, LPARAM /* lParam */)
 {
   MSG msg;
   while (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
@@ -641,8 +638,7 @@ DboxMain::OnHeaderDragComplete(WPARAM /* wParam */, LPARAM /* lParam */)
   return 0L;
 }
 
-LRESULT
-DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
+LRESULT DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
 {
   if (wType == CItemData::UUID) {
     m_bImageInLV = true;
@@ -655,8 +651,7 @@ DboxMain::OnCCToHdrDragComplete(WPARAM wType, LPARAM afterIndex)
   return 0L;
 }
 
-LRESULT
-DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
+LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 {
   if (wType == CItemData::UUID) {
     m_bImageInLV = false;
@@ -671,8 +666,7 @@ DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
   return 0L;
 }
 
-BOOL
-DboxMain::OnInitDialog()
+BOOL DboxMain::OnInitDialog()
 {
   CDialog::OnInitDialog();
 
@@ -729,22 +723,21 @@ void DboxMain::SetInitialDatabaseDisplay()
 {
   if (m_ctlItemTree.GetCount() > 0)
     switch (PWSprefs::GetInstance()->GetPref(PWSprefs::TreeDisplayStatusAtOpen)) {
-    case PWSprefs::AllCollapsed:
-      m_ctlItemTree.OnCollapseAll();
-      break;
-    case PWSprefs::AllExpanded:
-      m_ctlItemTree.OnExpandAll();
-      break;
-    case PWSprefs::AsPerLastSave:
-      RestoreDisplayStatus();
-      break;
-    default:
-      ASSERT(0);
-  }
+      case PWSprefs::AllCollapsed:
+        m_ctlItemTree.OnCollapseAll();
+        break;
+      case PWSprefs::AllExpanded:
+        m_ctlItemTree.OnExpandAll();
+        break;
+      case PWSprefs::AsPerLastSave:
+        RestoreDisplayStatus();
+        break;
+      default:
+        ASSERT(0);
+    }
 }
 
-void
-DboxMain::OnDestroy()
+void DboxMain::OnDestroy()
 {
   const CMyString filename(m_core.GetCurFile());
   // The only way we're the locker is if it's locked & we're !readonly
@@ -765,7 +758,6 @@ DboxMain::OnDestroy()
   CDialog::OnDestroy();
 }
 
-
 void DboxMain::OnWindowPosChanging( WINDOWPOS* lpwndpos )
 {
   if (m_bStartHiddenAndMinimized) {
@@ -783,11 +775,11 @@ void DboxMain::OnMove(int x, int y)
   // turns out that minimizing calls this
   // with x = y = -32000. Oh joy.
   if (m_windowok && IsWindowVisible() == TRUE &&
-    x >= 0 && y >= 0) {
-      CRect rect;
-      GetWindowRect(&rect);
-      PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
-        rect.left, rect.right);
+      x >= 0 && y >= 0) {
+    CRect rect;
+    GetWindowRect(&rect);
+    PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
+                                         rect.left, rect.right);
   }
 }
 
@@ -804,8 +796,7 @@ void DboxMain::FixListIndexes()
   }
 }
 
-void
-DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
+void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
 {
   *pLResult = 0L;
   UnFindItem();
@@ -832,28 +823,27 @@ DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
     OnShowPassword();
   }
 #else
-  switch (PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DoubleClickAction)) {
-  case PWSprefs::DoubleClickAutoType:
-    PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
-    break;
-  case PWSprefs::DoubleClickBrowse:
-    PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
-    break;
-  case PWSprefs::DoubleClickCopyNotes:
-    OnCopyNotes();
-    break;
-  case PWSprefs::DoubleClickCopyPassword:
-    OnCopyPassword();
-    break;
-  case PWSprefs::DoubleClickCopyUsername:
-    OnCopyUsername();
-    break;
-  case PWSprefs::DoubleClickViewEdit:
-    PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
-    break;
-  default:
-    ASSERT(0);
+  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
+    case PWSprefs::DoubleClickAutoType:
+      PostMessage(WM_COMMAND, ID_MENUITEM_AUTOTYPE);
+      break;
+    case PWSprefs::DoubleClickBrowse:
+      PostMessage(WM_COMMAND, ID_MENUITEM_BROWSEURL);
+      break;
+    case PWSprefs::DoubleClickCopyNotes:
+      OnCopyNotes();
+      break;
+    case PWSprefs::DoubleClickCopyPassword:
+      OnCopyPassword();
+      break;
+    case PWSprefs::DoubleClickCopyUsername:
+      OnCopyUsername();
+      break;
+    case PWSprefs::DoubleClickViewEdit:
+      PostMessage(WM_COMMAND, ID_MENUITEM_EDIT);
+      break;
+    default:
+      ASSERT(0);
   }
 #endif
 }
@@ -895,16 +885,14 @@ void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 #endif
 }
 
-void
-DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
+void DboxMain::OnUpdateNSCommand(CCmdUI *pCmdUI)
 {
   // Use this callback  for commands that need to
   // be disabled if not supported (yet)
   pCmdUI->Enable(FALSE);
 }
 
-void 
-DboxMain::SetStartSilent(bool state)
+void  DboxMain::SetStartSilent(bool state)
 {
   m_IsStartSilent = state;
   if (state) {
@@ -913,32 +901,30 @@ DboxMain::SetStartSilent(bool state)
   }
 }
 
-void
-DboxMain::SetChanged(ChangeType changed)
+void DboxMain::SetChanged(ChangeType changed)
 {
   switch (changed) {
-  case Data:
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
-      Save();
-    } else {
-      m_core.SetChanged(true);
-    }
-    break;
-  case Clear:
-    m_core.SetChanged(false);
-    m_bTSUpdated = false;
-    break;
-  case TimeStamp:
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
-      m_bTSUpdated = true;
-    break;
-  default:
-    ASSERT(0);
+    case Data:
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+        Save();
+      } else {
+        m_core.SetChanged(true);
+      }
+      break;
+    case Clear:
+      m_core.SetChanged(false);
+      m_bTSUpdated = false;
+      break;
+    case TimeStamp:
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
+        m_bTSUpdated = true;
+      break;
+    default:
+      ASSERT(0);
   }
 }
 
-void
-DboxMain::ChangeOkUpdate()
+void DboxMain::ChangeOkUpdate()
 {
   if (!m_windowok)
     return;
@@ -972,15 +958,13 @@ DboxMain::ChangeOkUpdate()
   UpdateStatusBar();
 }
 
-void
-DboxMain::OnAbout()
+void DboxMain::OnAbout()
 {
   CAboutDlg about;
   about.DoModal();
 }
 
-void
-DboxMain::OnPasswordSafeWebsite()
+void DboxMain::OnPasswordSafeWebsite()
 {
   HINSTANCE stat = ::ShellExecute(NULL, NULL, _T("http://passwordsafe.sourceforge.net/"),
     NULL, _T("."), SW_SHOWNORMAL);
@@ -991,8 +975,7 @@ DboxMain::OnPasswordSafeWebsite()
   }
 }
 
-void
-DboxMain::OnU3ShopWebsite()
+void DboxMain::OnU3ShopWebsite()
 {
 #ifdef DEMO
   ::ShellExecute(NULL, NULL,
@@ -1008,14 +991,13 @@ DboxMain::OnU3ShopWebsite()
 #endif
 }
 
-int
-DboxMain::GetAndCheckPassword(const CMyString &filename,
-                              CMyString& passkey,
-                              int index,
-                              bool bReadOnly,
-                              bool bForceReadOnly,
-                              PWScore *pcore,
-                              int adv_type)
+int DboxMain::GetAndCheckPassword(const CMyString &filename,
+                                  CMyString& passkey,
+                                  int index,
+                                  bool bReadOnly,
+                                  bool bForceReadOnly,
+                                  PWScore *pcore,
+                                  int adv_type)
 {
   // index:
   //  GCP_FIRST      (0) first
@@ -1241,9 +1223,9 @@ DboxMain::OnToolTipText(UINT,
   CString cs_TipText;
   UINT nID = pNMHDR->idFrom;
   if (pNMHDR->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
-    pNMHDR->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
-      // idFrom is actually the HWND of the tool
-      nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
+      pNMHDR->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
+    // idFrom is actually the HWND of the tool
+    nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
   }
 
   if (nID != 0) { // will be zero on a separator
@@ -1344,8 +1326,7 @@ DboxMain::OnToolTipText(UINT,
 }
 
 #if !defined(POCKET_PC)
-void
-DboxMain::OnDropFiles(HDROP hDrop)
+void DboxMain::OnDropFiles(HDROP hDrop)
 {
   //SetActiveWindow();
   SetForegroundWindow();
@@ -1372,8 +1353,7 @@ DboxMain::OnDropFiles(HDROP hDrop)
 }
 #endif
 
-void
-DboxMain::UpdateAlwaysOnTop()
+void DboxMain::UpdateAlwaysOnTop()
 {
 #if !defined(POCKET_PC)
   CMenu* sysMenu = GetSystemMenu( FALSE );
@@ -1388,8 +1368,7 @@ DboxMain::UpdateAlwaysOnTop()
 #endif
 }
 
-void
-DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
+void DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 {
 #if !defined(POCKET_PC)
   if (ID_SYSMENU_ALWAYSONTOP == nID) {
@@ -1411,8 +1390,7 @@ DboxMain::OnSysCommand( UINT nID, LPARAM lParam )
 #endif
 }
 
-void
-DboxMain::ConfigureSystemMenu()
+void DboxMain::ConfigureSystemMenu()
 {
 #if defined(POCKET_PC)
   m_wndCommandBar = (CCeCommandBar*) m_pWndEmptyCB;
@@ -1427,8 +1405,7 @@ DboxMain::ConfigureSystemMenu()
 #endif
 }
 
-void
-DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
+void DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 {
   if (app.GetMRU() == NULL)
     return;
@@ -1446,8 +1423,7 @@ DboxMain::OnUpdateMRU(CCmdUI* pCmdUI)
 
 // Called just before any pulldown or popup menu is displayed, so that menu items
 // can be enabled/disabled or checked/unchecked dynamically.
-void
-DboxMain::OnInitMenu(CMenu* pMenu)
+void DboxMain::OnInitMenu(CMenu* pMenu)
 {
   // This routine just changes the text in the menu via "ModifyMenu" and
   // adds the "check" mark via CheckMenuRadioItem for view type and toolbar
@@ -1463,28 +1439,28 @@ DboxMain::OnInitMenu(CMenu* pMenu)
 
   if (bGroupSelected) {
     pMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
-      ID_MENUITEM_DELETE, CS_DELETEGROUP);
+                      ID_MENUITEM_DELETE, CS_DELETEGROUP);
     pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
-      ID_MENUITEM_RENAME, CS_RENAMEGROUP);
+                      ID_MENUITEM_RENAME, CS_RENAMEGROUP);
     pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
-      ID_MENUITEM_GROUPENTER, CS_EXPCOLGROUP);
+                      ID_MENUITEM_GROUPENTER, CS_EXPCOLGROUP);
   } else {
     pMenu->ModifyMenu(ID_MENUITEM_DELETE, MF_BYCOMMAND,
-      ID_MENUITEM_DELETE, CS_DELETEENTRY);
+                      ID_MENUITEM_DELETE, CS_DELETEENTRY);
     pMenu->ModifyMenu(ID_MENUITEM_RENAME, MF_BYCOMMAND,
-      ID_MENUITEM_RENAME, CS_RENAMEENTRY);
+                      ID_MENUITEM_RENAME, CS_RENAMEENTRY);
     if (m_core.IsReadOnly()) {
       // Do both - not sure what was last selected!
       pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
-        ID_MENUITEM_EDIT, CS_VIEWENTRY);
+                        ID_MENUITEM_EDIT, CS_VIEWENTRY);
       pMenu->ModifyMenu(ID_MENUITEM_GROUPENTER, MF_BYCOMMAND,
-        ID_MENUITEM_EDIT, CS_VIEWENTRY);
+                        ID_MENUITEM_EDIT, CS_VIEWENTRY);
     } else {
       // Do both - not sure what was last selected!
       pMenu->ModifyMenu(ID_MENUITEM_EDIT, MF_BYCOMMAND,
-        ID_MENUITEM_EDIT, CS_EDITENTRY);
+                        ID_MENUITEM_EDIT, CS_EDITENTRY);
       pMenu->ModifyMenu(ID_MENUITEM_GROUPENTER, MF_BYCOMMAND,
-        ID_MENUITEM_EDIT, CS_EDITENTRY);
+                        ID_MENUITEM_EDIT, CS_EDITENTRY);
     }
   }
 
@@ -1508,14 +1484,14 @@ DboxMain::OnInitMenu(CMenu* pMenu)
       const bool bIsEmail = ci->IsURLEmail();
       if (bIsEmail) {
         pMenu->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
-          ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
+                          ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
         pMenu->ModifyMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND,
-          ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
+                          ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
       } else {
         pMenu->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
-          ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+                          ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
         pMenu->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
-          ID_MENUITEM_COPYURL, CS_COPYURL);
+                          ID_MENUITEM_COPYURL, CS_COPYURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     } else {
@@ -1525,18 +1501,18 @@ DboxMain::OnInitMenu(CMenu* pMenu)
   }
 
   pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
-    (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW), MF_BYCOMMAND);
+                            (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW),
+                            MF_BYCOMMAND);
 
   // JHF m_toolbarMode is not for WinCE (as in .h)
 #if !defined(POCKET_PC)
   pMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR, ID_MENUITEM_OLD_TOOLBAR,
-    m_toolbarMode, MF_BYCOMMAND);
+                            m_toolbarMode, MF_BYCOMMAND);
 #endif
 }
 
 // helps with MRU by allowing ON_UPDATE_COMMAND_UI
-void
-DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
+void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 {
   // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
   // This code comes from the MFC Documentation, and is adapted from CFrameWnd::OnInitMenuPopup() in WinFrm.cpp.
@@ -1630,19 +1606,18 @@ DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     pmd = (CRUEItemData *)miinfo.dwItemData;
 
     if (pmd && pmd->IsRUEID() && !(miinfo.fType & MFT_OWNERDRAW) &&
-      pmd->nImage >= 0) {
-        miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
-        miinfo.hbmpItem = HBMMENU_CALLBACK;
-        miinfo.fType = MFT_STRING;
+        pmd->nImage >= 0) {
+      miinfo.fMask = MIIM_FTYPE | MIIM_BITMAP;
+      miinfo.hbmpItem = HBMMENU_CALLBACK;
+      miinfo.fType = MFT_STRING;
 
-        pPopupMenu->SetMenuItemInfo(pos, &miinfo, TRUE);
+      pPopupMenu->SetMenuItemInfo(pos, &miinfo, TRUE);
     }
   }
 }
 
 #if defined(POCKET_PC)
-void
-DboxMain::OnShowPassword()
+void DboxMain::OnShowPassword()
 {
   if (SelItemOk() == TRUE) {
     CItemData item;
@@ -1675,8 +1650,7 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
 #endif
 }
 
-void
-DboxMain::OnMinimize()
+void DboxMain::OnMinimize()
 {
   // Called when the System Tray Minimize menu option is used
   if (m_bStartHiddenAndMinimized)
@@ -1685,15 +1659,13 @@ DboxMain::OnMinimize()
   ShowWindow(SW_MINIMIZE);
 }
 
-void
-DboxMain::OnUnMinimize()
+void DboxMain::OnUnMinimize()
 {
   // Called when the System Tray Restore menu option is used
   UnMinimize(true);
 }
 
-void
-DboxMain::UnMinimize(bool update_windows)
+void DboxMain::UnMinimize(bool update_windows)
 {
   m_passphraseOK = false;
   if (!m_bOpen) {
@@ -1723,23 +1695,23 @@ DboxMain::UnMinimize(bool update_windows)
   }
 
   // Case 1 - data available but is currently locked
-  if (!m_needsreading
-    && (app.GetSystemTrayState() == ThisMfcApp::LOCKED)
-    && (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
+  if (!m_needsreading &&
+      (app.GetSystemTrayState() == ThisMfcApp::LOCKED) &&
+      (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))) {
 
-      CMyString passkey;
-      int rc;
-      rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
-      if (rc != PWScore::SUCCESS)
-        return;  // don't even think of restoring window!
+    CMyString passkey;
+    int rc;
+    rc = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_UNMINIMIZE);  // OK, CANCEL, HELP
+    if (rc != PWScore::SUCCESS)
+      return;  // don't even think of restoring window!
 
-      app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
-      m_passphraseOK = true;
-      if (update_windows) {
-        RefreshViews();
-        ShowWindow(SW_RESTORE);
-      }
-      return;
+    app.SetSystemTrayState(ThisMfcApp::UNLOCKED);
+    m_passphraseOK = true;
+    if (update_windows) {
+      RefreshViews();
+      ShowWindow(SW_RESTORE);
+    }
+    return;
   }
 
   // Case 2 - data unavailable
@@ -1747,14 +1719,13 @@ DboxMain::UnMinimize(bool update_windows)
     CMyString passkey, temp;
     int rc, rc2;
     const bool useSysTray = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::UseSystemTray);
+                            GetPref(PWSprefs::UseSystemTray);
 
     rc = PWScore::USER_CANCEL;
     if (m_bOpen)
-      rc = GetAndCheckPassword(m_core.GetCurFile(),
-      passkey,
-      useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT,
-      m_core.IsReadOnly());
+      rc = GetAndCheckPassword(m_core.GetCurFile(), passkey,
+                               useSysTray ? GCP_UNMINIMIZE : GCP_WITHEXIT,
+                               m_core.IsReadOnly());
     CString cs_temp, cs_title;
     switch (rc) {
       case PWScore::SUCCESS:
@@ -1820,27 +1791,23 @@ DboxMain::startLockCheckTimer(){
   }
 }
 
-BOOL
-DboxMain::PreTranslateMessage(MSG* pMsg)
+BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
   // Do NOT pass the ESC along if preference EscExits is false.
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE &&
-    !PWSprefs::GetInstance()->
-    GetPref(PWSprefs::EscExits)) {
-      return TRUE;
+      !PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
+    return TRUE;
   }
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-void
-DboxMain::ResetIdleLockCounter()
+void DboxMain::ResetIdleLockCounter()
 {
   m_IdleLockCountDown = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::IdleTimeout);
+                          GetPref(PWSprefs::IdleTimeout);
 }
 
-bool
-DboxMain::DecrementAndTestIdleLockCounter()
+bool DboxMain::DecrementAndTestIdleLockCounter()
 {
   if (m_IdleLockCountDown > 0)
     return (--m_IdleLockCountDown == 0);
@@ -1848,8 +1815,7 @@ DboxMain::DecrementAndTestIdleLockCounter()
     return false; // so we return true only once if idle
 }
 
-LRESULT
-DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   static DWORD last_t = 0;
   DWORD t = GetTickCount();
@@ -1882,16 +1848,14 @@ DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   return CDialog::WindowProc(message, wParam, lParam);
 }
 
-void
-DboxMain::RefreshImages()
+void DboxMain::RefreshImages()
 {
   m_MainToolBar.RefreshImages();
   m_FindToolBar.RefreshImages();
   m_menuManager.SetImageList(&m_MainToolBar);
 }
 
-void
-DboxMain::CheckExpiredPasswords()
+void DboxMain::CheckExpiredPasswords()
 {
   time_t now, exptime, LTime;
   time(&now);
@@ -1919,16 +1883,16 @@ DboxMain::CheckExpiredPasswords()
   for (listPos = m_core.GetEntryIter();
        listPos != m_core.GetEntryEndIter();
        listPos++) {
-      const CItemData &curitem = m_core.GetEntry(listPos);
-      if (curitem.IsAlias())
-        continue;
+    const CItemData &curitem = m_core.GetEntry(listPos);
+    if (curitem.IsAlias())
+      continue;
 
-      curitem.GetLTime(LTime);
+    curitem.GetLTime(LTime);
 
-      if (((long)LTime != 0) && (LTime < exptime)) {
-        ExpPWEntry exppwentry(curitem, now, LTime);
-        expPWList.push_back(exppwentry);
-      }
+    if (((long)LTime != 0) && (LTime < exptime)) {
+      ExpPWEntry exppwentry(curitem, now, LTime);
+      expPWList.push_back(exppwentry);
+    }
   }
 
   if (!expPWList.empty()) {
@@ -1937,8 +1901,7 @@ DboxMain::CheckExpiredPasswords()
   }
 }
 
-void
-DboxMain::UpdateAccessTime(CItemData *ci)
+void DboxMain::UpdateAccessTime(CItemData *ci)
 {
   // Mark access time if so configured
   ASSERT(ci != NULL);
@@ -1949,7 +1912,7 @@ DboxMain::UpdateAccessTime(CItemData *ci)
   m_RUEList.AddRUEntry(RUEuuid);
 
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::MaintainDateTimeStamps);
+              GetPref(PWSprefs::MaintainDateTimeStamps);
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
     ci->SetATime();
@@ -1967,8 +1930,7 @@ DboxMain::UpdateAccessTime(CItemData *ci)
   }
 }
 
-BOOL
-DboxMain::OnQueryEndSession()
+BOOL DboxMain::OnQueryEndSession()
 {
   m_iSessionEndingStatus = IDOK;
 
@@ -1988,8 +1950,7 @@ DboxMain::OnQueryEndSession()
     CString cs_msg;
     cs_msg.Format(IDS_SAVECHANGES, m_core.GetCurFile());
     m_iSessionEndingStatus = AfxMessageBox(cs_msg,
-      (MB_ICONWARNING |
-      MB_YESNOCANCEL | MB_DEFBUTTON3));
+                             (MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3));
     switch (m_iSessionEndingStatus) {
       case IDCANCEL:
         // Cancel shutdown\restart\logoff
@@ -2020,8 +1981,7 @@ DboxMain::OnQueryEndSession()
   return retval;
 }
 
-void
-DboxMain::OnEndSession(BOOL bEnding)
+void DboxMain::OnEndSession(BOOL bEnding)
 {
   if (bEnding == TRUE) {
     switch (m_iSessionEndingStatus) {
@@ -2045,8 +2005,7 @@ DboxMain::OnEndSession(BOOL bEnding)
   }
 }
 
-void
-DboxMain::UpdateStatusBar()
+void DboxMain::UpdateStatusBar()
 {
   if (m_toolbarsSetup == TRUE) {
     CString s;
@@ -2074,11 +2033,10 @@ DboxMain::UpdateStatusBar()
 #endif
 }
 
-void
-DboxMain::SetDCAText()
+void DboxMain::SetDCAText()
 {
   const int dca = int(PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DoubleClickAction));
+                       GetPref(PWSprefs::DoubleClickAction));
   int i_dca_text;
   switch (dca) {
     case PWSprefs::DoubleClickAutoType: i_dca_text = IDS_STATAUTOTYPE; break;
@@ -2130,8 +2088,7 @@ int DboxMain::CountChildren(HTREEITEM hStartItem)
   return num;
 }
 
-void
-DboxMain::UpdateMenuAndToolBar(const bool bOpen)
+void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
 {
   // Initial setup of menu items and toolbar buttons
   // First set new open/close status
@@ -2193,8 +2150,7 @@ void DboxMain::U3ExitNow()
   }
 }
 
-void
-DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
+void DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
 {
   int iEnable(-1);
 
@@ -2248,8 +2204,7 @@ DboxMain::OnUpdateMenuToolbar(CCmdUI *pCmdUI)
   pCmdUI->Enable(iEnable);
 }
 
-int
-DboxMain::OnUpdateMenuToolbar(const UINT nID)
+int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 {
   // Return codes:
   // = -1       : don't set pCmdUI->Enable
@@ -2317,23 +2272,23 @@ DboxMain::OnUpdateMenuToolbar(const UINT nID)
           iEnable = FALSE;
         } else {
           if (ci->IsShortcut()) {
-          // This is an shortcut
-          uuid_array_t entry_uuid, base_uuid;
-          ci->GetUUID(entry_uuid);
-          m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+            // This is an shortcut
+            uuid_array_t entry_uuid, base_uuid;
+            ci->GetUUID(entry_uuid);
+            m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
 
-          ItemListIter iter = m_core.Find(base_uuid);
-          if (iter != End()) {
-            ci = &iter->second;
+            ItemListIter iter = m_core.Find(base_uuid);
+            if (iter != End()) {
+              ci = &iter->second;
+            }
+          }
+
+          if (ci->IsURLEmpty()) {
+            iEnable = FALSE;
           }
         }
-
-        if (ci->IsURLEmpty()) {
-          iEnable = FALSE;
-        }
       }
-    }
-    break;
+      break;
     // Items not allowed in List View
     case ID_MENUITEM_ADDGROUP:
     case ID_MENUITEM_RENAME:

@@ -42,42 +42,36 @@ BEGIN_MESSAGE_MAP(CTryAgainDlg, CPWDialog)
   ON_BN_CLICKED(IDC_NEW, OnNew)
 END_MESSAGE_MAP()
 
-void
-CTryAgainDlg::OnQuit() 
+void CTryAgainDlg::OnQuit() 
 {
   CPWDialog::OnCancel();
 }
 
-void
-CTryAgainDlg::OnTryagain() 
+void CTryAgainDlg::OnTryagain() 
 {
   CPWDialog::OnOK();
 }
 
-void
-CTryAgainDlg::OnHelp() 
+void CTryAgainDlg::OnHelp() 
 {
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + _T("::/html/create_new_db.html");
   HtmlHelp(DWORD_PTR((LPCTSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-void
-CTryAgainDlg::OnOpen() 
+void CTryAgainDlg::OnOpen() 
 {
   cancelreturnval = TAR_OPEN;
   CPWDialog::OnCancel();
 }
 
-void
-CTryAgainDlg::OnNew() 
+void CTryAgainDlg::OnNew() 
 {
   cancelreturnval = TAR_NEW;
   CPWDialog::OnCancel();
 }
 
-int
-CTryAgainDlg::GetCancelReturnValue()
+int CTryAgainDlg::GetCancelReturnValue()
 {
   return cancelreturnval;
 }

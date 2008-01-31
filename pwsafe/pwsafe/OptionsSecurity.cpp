@@ -54,7 +54,6 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(COptionsSecurity, CPropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
   ON_BN_CLICKED(IDC_LOCKBASE, OnLockbase)
@@ -77,7 +76,7 @@ BOOL COptionsSecurity::OnInitDialog()
   CPropertyPage::OnInitDialog();
 
   OnLockbase();
-  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_IDLE_TIMEOUT));
   pspin->SetRange(1, 120);

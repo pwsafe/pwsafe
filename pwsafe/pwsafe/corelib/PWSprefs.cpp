@@ -81,50 +81,52 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 // Default value = -1 means set at runtime
 // Extra two values for Integer - min and max acceptable values (ignored if = -1)
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), (unsigned int)-1, false, -1, -1}, // application
-  {_T("column2width"), (unsigned int)-1, false, -1, -1}, // application
-  {_T("column3width"), (unsigned int)-1, false, -1, -1}, // application
-  {_T("column4width"), (unsigned int)-1, false, -1, -1}, // application
-  {_T("sortedcolumn"), 0, false, 0, 15},                 // application
-  {_T("PWDefaultLength"), 8, true, 4, 1024},             // database
+  {_T("column1width"), (unsigned int)-1, false, -1, -1},    // application
+  {_T("column2width"), (unsigned int)-1, false, -1, -1},    // application
+  {_T("column3width"), (unsigned int)-1, false, -1, -1},    // application
+  {_T("column4width"), (unsigned int)-1, false, -1, -1},    // application
+  {_T("sortedcolumn"), 0, false, 0, 15},                    // application
+  {_T("PWDefaultLength"), 8, true, 4, 1024},                // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
-  {_T("maxmruitems"), 4, false, 0, 20},                  // application
-  {_T("IdleTimeout"), 5, true, 1, 120},                  // database
-  {_T("DoubleClickAction"), DoubleClickCopyPassword, false, minDCA, maxDCA}, // application
+  {_T("maxmruitems"), 4, false, 0, 20},                     // application
+  {_T("IdleTimeout"), 5, true, 1, 120},                     // database
+  {_T("DoubleClickAction"), DoubleClickCopyPassword, false,
+                            minDCA, maxDCA},                // application
   {_T("HotKey"), 0, false, -1, -1}, // 0=disabled, >0=keycode. // application
   // MaxREItems maximum = (ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1)
-  {_T("MaxREItems"), 25, false, 0, 25},                  // application
-  {_T("TreeDisplayStatusAtOpen"), AllCollapsed, true, minTDS, maxTDS}, // database
-  {_T("NumPWHistoryDefault"), 3, true, 0, 255},          // database
+  {_T("MaxREItems"), 25, false, 0, 25},                     // application
+  {_T("TreeDisplayStatusAtOpen"), AllCollapsed, true,
+                                  minTDS, maxTDS},          // database
+  {_T("NumPWHistoryDefault"), 3, true, 0, 255},             // database
   // Specified by supported masks
-  {_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},    // application
-  {_T("BackupMaxIncremented"), 1, false, 1, 999},        // application
-  {_T("PreExpiryWarnDays"), 1, false, 1, 30},            // application
+  {_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},       // application
+  {_T("BackupMaxIncremented"), 1, false, 1, 999},           // application
+  {_T("PreExpiryWarnDays"), 1, false, 1, 30},               // application
   {_T("ClosedTrayIconColour"), stiBlack, false,
-  stiBlack, stiYellow},                                  // application
-  {_T("PWDigitMinLength"), 0, true, 0, 1024},            // database
-  {_T("PWLowercaseMinLength"), 0, true, 0, 1024},        // database
-  {_T("PWSymbolMinLength"), 0, true, 0, 1024},           // database
-  {_T("PWUppercaseMinLength"), 0, true, 0, 1024},        // database
+                               stiBlack, stiYellow},        // application
+  {_T("PWDigitMinLength"), 0, true, 0, 1024},               // database
+  {_T("PWLowercaseMinLength"), 0, true, 0, 1024},           // database
+  {_T("PWSymbolMinLength"), 0, true, 0, 1024},              // database
+  {_T("PWUppercaseMinLength"), 0, true, 0, 1024},           // database
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
-  {_T("currentbackup"), _T(""), false},                  // application
-  {_T("currentfile"), _T(""), false},                    // application
-  {_T("lastview"), _T("tree"), false},                   // application
-  {_T("DefaultUsername"), _T(""), true},                 // database
-  {_T("treefont"), _T(""), false},                       // application
-  {_T("BackupPrefixValue"), _T(""), false},              // application
-  {_T("BackupDir"), _T(""), false},                      // application
-  {_T("AltBrowser"), _T(""), false},                     // application
-  {_T("ListColumns"), _T(""), false},                    // application
-  {_T("ColumnWidths"), _T(""), false},                   // application
-  {_T("DefaultAutotypeString"), _T(""), true},           // database
-  {_T("AltBrowserCmdLineParms"), _T(""), false},         // application
-  {_T("MainToolBarButtons"), _T(""), false},             // application
-  {_T("PasswordFont"), _T(""), false},                   // application
+  {_T("currentbackup"), _T(""), false},                     // application
+  {_T("currentfile"), _T(""), false},                       // application
+  {_T("lastview"), _T("tree"), false},                      // application
+  {_T("DefaultUsername"), _T(""), true},                    // database
+  {_T("treefont"), _T(""), false},                          // application
+  {_T("BackupPrefixValue"), _T(""), false},                 // application
+  {_T("BackupDir"), _T(""), false},                         // application
+  {_T("AltBrowser"), _T(""), false},                        // application
+  {_T("ListColumns"), _T(""), false},                       // application
+  {_T("ColumnWidths"), _T(""), false},                      // application
+  {_T("DefaultAutotypeString"), _T(""), true},              // database
+  {_T("AltBrowserCmdLineParms"), _T(""), false},            // application
+  {_T("MainToolBarButtons"), _T(""), false},                // application
+  {_T("PasswordFont"), _T(""), false},                      // application
   {_T("TreeListSampleText"), _T("AaBbYyZz 0O1IlL"), false}, // application
-  {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), false},  // application
+  {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), false},     // application
 };
 
 PWSprefs *PWSprefs::GetInstance()
@@ -172,8 +174,7 @@ PWSprefs::~PWSprefs()
   delete[] m_MRUitems;
 }
 
-bool
-PWSprefs::CheckRegistryExists() const
+bool PWSprefs::CheckRegistryExists() const
 {
   bool bExists;
   HKEY hSubkey;
@@ -384,6 +385,7 @@ bool PWSprefs::DeletePref(const CMyString &name)
   }
   return bRetVal;
 }
+
 void PWSprefs::SetPrefRect(long top, long bottom,
                            long left, long right)
 {
@@ -556,10 +558,10 @@ static void xmlify( TCHAR t, CString &name)
   int N = name.GetLength();
   for (int i = 0; i < N; i++)
     if (!_istalnum(name[i]) &&
-      name[i] != TCHAR('_') &&
-      name[i] != TCHAR('-') &&
-      name[i] != TCHAR(':') &&
-      name[i] != TCHAR('.'))
+        name[i] != TCHAR('_') &&
+        name[i] != TCHAR('-') &&
+        name[i] != TCHAR(':') &&
+        name[i] != TCHAR('.'))
       name.SetAt(i, TCHAR('_'));
 }
 
@@ -720,14 +722,14 @@ void PWSprefs::LoadProfileFromRegistry()
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
   for (i = 0; i < NumBoolPrefs; i++)
     m_boolValues[i] = m_app->GetProfileInt(PWS_REG_OPTIONS,
-    m_bool_prefs[i].name,
-    m_boolValues[i]) != 0;
+                                           m_bool_prefs[i].name,
+                                           m_boolValues[i]) != 0;
 
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
     const int iVal = m_app->GetProfileInt(PWS_REG_OPTIONS,
-      m_int_prefs[i].name,
-      m_intValues[i]);
+                                          m_int_prefs[i].name,
+                                          m_intValues[i]);
 
     if (m_int_prefs[i].minVal != -1 && iVal < m_int_prefs[i].minVal)
       m_intValues[i] = m_int_prefs[i].defVal;
@@ -739,8 +741,8 @@ void PWSprefs::LoadProfileFromRegistry()
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++)
     m_stringValues[i] = CMyString(m_app->GetProfileString(PWS_REG_OPTIONS,
-    m_string_prefs[i].name,
-    m_stringValues[i]));
+                                  m_string_prefs[i].name,
+                                  m_stringValues[i]));
 
   /*
   The following is "defensive" code because there was "a code ordering
@@ -767,13 +769,13 @@ void PWSprefs::LoadProfileFromRegistry()
 
   // Load last main window size & pos:
   m_rect.top = m_app->GetProfileInt(PWS_REG_POSITION,
-    _T("top"), -1);
+                                    _T("top"), -1);
   m_rect.bottom = m_app->GetProfileInt(PWS_REG_POSITION,
-    _T("bottom"), -1);
+                                       _T("bottom"), -1);
   m_rect.left = m_app->GetProfileInt(PWS_REG_POSITION,
-    _T("left"), -1);
+                                     _T("left"), -1);
   m_rect.right = m_app->GetProfileInt(PWS_REG_POSITION,
-    _T("right"), -1);
+                                      _T("right"), -1);
 }
 
 bool PWSprefs::LoadProfileFromFile()
@@ -808,14 +810,14 @@ bool PWSprefs::LoadProfileFromFile()
   // Defensive programming, if not "0", then "TRUE", all other values = FALSE
   for (i = 0; i < NumBoolPrefs; i++)
     m_boolValues[i] = m_XML_Config->Get(m_csHKCU_PREF,
-    m_bool_prefs[i].name,
-    m_bool_prefs[i].defVal) != 0;
+                                        m_bool_prefs[i].name,
+                                        m_bool_prefs[i].defVal) != 0;
 
   // Defensive programming, if outside the permitted range, then set to default
   for (i = 0; i < NumIntPrefs; i++) {
     const int iVal = m_XML_Config->Get(m_csHKCU_PREF,
-      m_int_prefs[i].name,
-      m_int_prefs[i].defVal);
+                                       m_int_prefs[i].name,
+                                       m_int_prefs[i].defVal);
 
     if (m_int_prefs[i].minVal != -1 && iVal < m_int_prefs[i].minVal)
       m_intValues[i] = m_int_prefs[i].defVal;
@@ -827,8 +829,8 @@ bool PWSprefs::LoadProfileFromFile()
   // Defensive programming not applicable.
   for (i = 0; i < NumStringPrefs; i++)
     m_stringValues[i] = CMyString(m_XML_Config->Get(m_csHKCU_PREF,
-    m_string_prefs[i].name,
-    m_string_prefs[i].defVal));
+                                                    m_string_prefs[i].name,
+                                                    m_string_prefs[i].defVal));
 
   // Load last main window size & pos:
   m_rect.top = m_XML_Config->Get(m_csHKCU_POS, _T("top"), -1);
@@ -1006,12 +1008,18 @@ void PWSprefs::DeleteRegistryEntries()
 int PWSprefs::GetConfigIndicator() const
 {
   switch (m_ConfigOptions) {
-    case CF_NONE: return IDSC_CONFIG_NONE;
-    case CF_REGISTRY: return IDSC_CONFIG_REGISTRY;
+    case CF_NONE:
+      return IDSC_CONFIG_NONE;
+    case CF_REGISTRY:
+      return IDSC_CONFIG_REGISTRY;
     case CF_FILE_RW:
-    case CF_FILE_RW_NEW: return IDSC_CONFIG_FILE_RW;
-    case CF_FILE_RO: return IDSC_CONFIG_FILE_RO;
-    default: ASSERT(0); return 0;
+    case CF_FILE_RW_NEW:
+      return IDSC_CONFIG_FILE_RW;
+    case CF_FILE_RO: 
+      return IDSC_CONFIG_FILE_RO;
+    default:
+      ASSERT(0);
+      return 0;
   }
 }
 

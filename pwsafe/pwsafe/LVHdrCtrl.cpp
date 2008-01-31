@@ -105,7 +105,7 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   // Now add it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-    WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
+                WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
 
   GlobalUnlock(hGlobal);
 
@@ -178,5 +178,5 @@ void CLVHdrCtrl::CompleteMove()
   // After we have dragged successfully from Header to Column Chooser
   // Now delete it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-    WM_HDRTOCC_DD_COMPLETE, (WPARAM)m_dwHDRType, (LPARAM)0);
+                WM_HDRTOCC_DD_COMPLETE, (WPARAM)m_dwHDRType, (LPARAM)0);
 }

@@ -119,8 +119,9 @@ BOOL COptionsMisc::OnInitDialog()
   }
 
   if (m_doubleclickaction < PWSprefs::minDCA ||
-    m_doubleclickaction > PWSprefs::maxDCA)
+      m_doubleclickaction > PWSprefs::maxDCA)
     m_doubleclickaction = PWSprefs::DoubleClickCopyPassword;
+
   m_dblclk_cbox.SetCurSel(m_DCA_to_Index[m_doubleclickaction]);
 
   // JHF ditto here
@@ -204,7 +205,6 @@ void COptionsMisc::OnOK()
   m_csBrowser = m_otherbrowserlocation;
   CPropertyPage::OnOK();
 }
-
 
 void COptionsMisc::OnBrowseForLocation()
 {

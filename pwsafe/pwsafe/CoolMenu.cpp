@@ -103,7 +103,7 @@ LRESULT CCoolMenuManager::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
       break;
     case WM_MENUCHAR:
       LRESULT lr = OnMenuChar((TCHAR)LOWORD(wp), (UINT)HIWORD(wp), 
-        CMenu::FromHandle((HMENU)lp));
+                              CMenu::FromHandle((HMENU)lp));
       if (lr != 0)
         return lr;
       break;
@@ -150,13 +150,13 @@ BOOL CCoolMenuManager::OnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
     dc.SelectObject(pOldFont);
 
     // height of item is just height of a standard menu item
-    lpmis->itemHeight= max(GetSystemMetrics(SM_CYMENU), rcText.Height());
+    lpmis->itemHeight = max(GetSystemMetrics(SM_CYMENU), rcText.Height());
 
     // width is width of text plus a bunch of stuff
     int cx = rcText.Width();  // text width
-    cx += CXTEXTMARGIN<<1;    // L/R margin for readability
-    cx += CXGAP;          // space between button and menu text
-    cx += m_szButton.cx<<1;    // button width (L=button; R=empty margin)
+    cx += CXTEXTMARGIN << 1;    // L/R margin for readability
+    cx += CXGAP;                // space between button and menu text
+    cx += m_szButton.cx << 1;   // button width (L=button; R=empty margin)
 
     // whatever value I return in lpmis->itemWidth, Windows will add the
     // width of a menu checkmark, so I must subtract to defeat Windows. Argh.
@@ -199,11 +199,10 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
     // Paint button, or blank if none
     CRect rcButn(rcItem.TopLeft(), m_szButton);  // button rect
     rcButn += CPoint(0,                  // center vertically
-      (rcItem.Height() - rcButn.Height())>>1 );
+                     (rcItem.Height() - rcButn.Height()) >> 1);
 
     int iButton = pmd->iButton;
     if (iButton >= 0) {
-
       // this item has a button!
       bHaveButn = TRUE;
 
@@ -223,7 +222,7 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
         if (bSelected || bChecked) {
           CRect rc2 = rcButn;
           dc.DrawEdge(rc2, bChecked ? BDR_SUNKENOUTER : BDR_RAISEDINNER,
-            BF_RECT);
+                      BF_RECT);
         }
         // draw the button!
         m_ImageList.Draw(&dc, iButton, p, ILD_TRANSPARENT);
@@ -235,16 +234,15 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
         else
           m_DisabledImageList.Draw(&dc, iButton, p, ILD_TRANSPARENT);
       }
-
     } else {
       // no button: look for custom checked/unchecked bitmaps
       CMenuItemInfo miinfo;
       miinfo.fMask = MIIM_CHECKMARKS;
       GetMenuItemInfo((HMENU)lpdis->hwndItem,
-        lpdis->itemID, MF_BYCOMMAND, &miinfo);
+                      lpdis->itemID, MF_BYCOMMAND, &miinfo);
       if (bChecked || miinfo.hbmpUnchecked) {
         bHaveButn = Draw3DCheckmark(dc, rcButn, bSelected,
-          bChecked ? miinfo.hbmpChecked : miinfo.hbmpUnchecked);
+                                    bChecked ? miinfo.hbmpChecked : miinfo.hbmpUnchecked);
       }
     }
 
@@ -254,16 +252,16 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
     if (bSelected || lpdis->itemAction==ODA_SELECT) {
       // selected or selection state changed: paint text background
       CRect rcBG = rcItem;              // whole rectangle
-      if (bHaveButn)                  // if there's a button:
-        rcBG.left += cxButn + CXGAP;      //  don't paint over it!
-      FillRect(dc, rcBG, colorBG);  // paint it!
+      if (bHaveButn)                    // if there's a button:
+        rcBG.left += cxButn + CXGAP;    //  don't paint over it!
+      FillRect(dc, rcBG, colorBG);      // paint it!
     }
 
     // compute text rectangle and colors
     CRect rcText = rcItem;         // start w/whole item
     rcText.left += cxButn + CXGAP + CXTEXTMARGIN; // left margin
-    rcText.right -= cxButn;         // right margin
-    dc.SetBkMode(TRANSPARENT);       // paint transparent text
+    rcText.right -= cxButn;        // right margin
+    dc.SetBkMode(TRANSPARENT);     // paint transparent text
     COLORREF colorText = GetSysColor(bDisabled ?  COLOR_GRAYTEXT :
       bSelected ? COLOR_HIGHLIGHTTEXT : COLOR_MENUTEXT);
 
@@ -312,10 +310,10 @@ void CCoolMenuManager::DrawMenuText(CDC& dc, CRect rc, CString text,
 //////////////////
 // Draw 3D checkmark
 //
-//    dc        device context to draw in
-//    rc        rectangle to center bitmap in
+//    dc         device context to draw in
+//    rc         rectangle to center bitmap in
 //    bSelected  TRUE if button is also selected
-//    hbmCheck    Checkmark bitmap to use, or NULL for default
+//    hbmCheck   Checkmark bitmap to use, or NULL for default
 //
 BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected, 
                                        HBITMAP hbmCheck)
@@ -357,7 +355,7 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
 
   // draw pushed-in hilight.
   if (rc.Width() > cx)        // if room:
-    rcDest.InflateRect(1,1);  // inflate checkmark by one pixel all around
+    rcDest.InflateRect(1, 1); // inflate checkmark by one pixel all around
   dc.DrawEdge(&rcDest, BDR_SUNKENOUTER, BF_RECT);
 
   return TRUE;
@@ -425,37 +423,37 @@ void CCoolMenuManager::ConvertMenu(CMenu* pMenu, UINT /* nIndex */,
             iCtrlID <= ID_MENUITEM_TRAYAUTOTYPEMAX)
             iCtrlID = ID_MENUITEM_AUTOTYPE;
           else
-            if (iCtrlID >= ID_MENUITEM_TRAYBROWSE1 &&
+          if (iCtrlID >= ID_MENUITEM_TRAYBROWSE1 &&
               iCtrlID <= ID_MENUITEM_TRAYBROWSEMAX) {
-                cs_text.LoadString(IDS_TRAYBROWSE);
-                if (cs_text.Compare(miinfo.dwTypeData) == 0)
-                  iCtrlID = ID_MENUITEM_BROWSEURL;
-                else
-                  iCtrlID = ID_MENUITEM_SENDEMAIL;
-            } else
-              if (iCtrlID >= ID_MENUITEM_TRAYDELETE1 &&
-                iCtrlID <= ID_MENUITEM_TRAYDELETEMAX)
-                iCtrlID = ID_MENUITEM_DELETE;
-              else
-                if (iCtrlID >= ID_MENUITEM_TRAYCOPYNOTES1 &&
-                  iCtrlID <= ID_MENUITEM_TRAYCOPYNOTESMAX)
-                  iCtrlID = ID_MENUITEM_COPYNOTESFLD;
-                else
-                  if (iCtrlID >= ID_MENUITEM_TRAYCOPYPASSWORD1 &&
-                    iCtrlID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX)
-                    iCtrlID = ID_MENUITEM_COPYPASSWORD;
-                  else
-                    if (iCtrlID >= ID_MENUITEM_TRAYCOPYUSERNAME1 &&
-                      iCtrlID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX)
-                      iCtrlID = ID_MENUITEM_COPYUSERNAME;
-                    else
-                      if (iCtrlID >= ID_MENUITEM_TRAYVIEWEDIT1 &&
-                        iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
-                        iCtrlID = ID_MENUITEM_EDIT;
-                      else
-                        if (iCtrlID >= ID_FILE_MRU_ENTRY1 &&
-                          iCtrlID <= ID_FILE_MRU_ENTRYMAX)
-                          iCtrlID = ID_MENUITEM_MRUENTRY;
+            cs_text.LoadString(IDS_TRAYBROWSE);
+            if (cs_text.Compare(miinfo.dwTypeData) == 0)
+              iCtrlID = ID_MENUITEM_BROWSEURL;
+            else
+              iCtrlID = ID_MENUITEM_SENDEMAIL;
+          } else
+          if (iCtrlID >= ID_MENUITEM_TRAYDELETE1 &&
+              iCtrlID <= ID_MENUITEM_TRAYDELETEMAX)
+            iCtrlID = ID_MENUITEM_DELETE;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYCOPYNOTES1 &&
+              iCtrlID <= ID_MENUITEM_TRAYCOPYNOTESMAX)
+            iCtrlID = ID_MENUITEM_COPYNOTESFLD;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYCOPYPASSWORD1 &&
+              iCtrlID <= ID_MENUITEM_TRAYCOPYPASSWORDMAX)
+            iCtrlID = ID_MENUITEM_COPYPASSWORD;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYCOPYUSERNAME1 &&
+              iCtrlID <= ID_MENUITEM_TRAYCOPYUSERNAMEMAX)
+            iCtrlID = ID_MENUITEM_COPYUSERNAME;
+          else
+          if (iCtrlID >= ID_MENUITEM_TRAYVIEWEDIT1 &&
+              iCtrlID <= ID_MENUITEM_TRAYVIEWEDITMAX)
+            iCtrlID = ID_MENUITEM_EDIT;
+          else
+          if (iCtrlID >= ID_FILE_MRU_ENTRY1 &&
+              iCtrlID <= ID_FILE_MRU_ENTRYMAX)
+            iCtrlID = ID_MENUITEM_MRUENTRY;
 
             pmd->iButton = GetButtonIndex(iCtrlID);
             miinfo.dwItemData = (ULONG_PTR)pmd; //   set in menu item data
@@ -716,7 +714,7 @@ void CCoolMenuManager::DrawEmbossed(CDC& dc, CImageList &il, int iBtn, CPoint p)
   // draw image into memory DC--fill BG white first
   CBitmap* pOldBitmap = memdc.SelectObject(&bm);
   memdc.PatBlt(0, 0, cx, cy, WHITENESS);
-  il.Draw(&memdc, iBtn, CPoint(0,0), ILD_TRANSPARENT);
+  il.Draw(&memdc, iBtn, CPoint(0, 0), ILD_TRANSPARENT);
 
   // This seems to be required. Why, I don't know. ???
   COLORREF colorOldBG = dc.SetBkColor(CWHITE);

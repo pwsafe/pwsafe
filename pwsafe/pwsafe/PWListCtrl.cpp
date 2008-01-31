@@ -73,8 +73,7 @@ void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
   }
 }
 
-bool
-CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
+bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)
 {
   int iItem;
   bool bFound(false);

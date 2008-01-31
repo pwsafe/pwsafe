@@ -53,8 +53,7 @@ int CPasskeyEntry::dialog_lookup[5] = {
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
                              bool bReadOnly, bool bForceReadOnly, int adv_type)
-  : CPWDialog(dialog_lookup[index],
-  pParent),
+  : CPWDialog(dialog_lookup[index], pParent),
   m_index(index),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
@@ -256,7 +255,8 @@ CPasskeyEntry::OnInitDialog(void)
 
 #if defined(POCKET_PC)
 /************************************************************************/
-/* Restore the state of word completion when the password field loses   *//* focus.                                                               */
+/* Restore the state of word completion when the password field loses   */
+/* focus.                                                               */
 /************************************************************************/
 void CPasskeyEntry::OnPasskeyKillfocus()
 {
@@ -273,8 +273,7 @@ void CPasskeyEntry::OnPasskeySetfocus()
 }
 #endif
 
-void
-  CPasskeyEntry::OnCreateDb()
+void CPasskeyEntry::OnCreateDb()
 {
   // 1. Get a filename from a file dialog box
   // 2. Get a password
@@ -331,15 +330,13 @@ void
   CPWDialog::OnOK();
 }
 
-void
-  CPasskeyEntry::OnCancel()
+void CPasskeyEntry::OnCancel()
 {
   m_status = TAR_CANCEL;
   CPWDialog::OnCancel();
 }
 
-void
-  CPasskeyEntry::OnExitAdvanced()
+void CPasskeyEntry::OnExitAdvanced()
 {
   if (m_index == GCP_WITHEXIT) {
     m_status = TAR_EXIT;
@@ -369,8 +366,7 @@ void
   }
 }
 
-void
-  CPasskeyEntry::OnOK()
+void CPasskeyEntry::OnOK()
 {
   UpdateData(TRUE);
 
@@ -411,8 +407,7 @@ void
   }
 }
 
-void
-  CPasskeyEntry::OnHelp()
+void CPasskeyEntry::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
@@ -455,15 +450,15 @@ void CPasskeyEntry::OnOpenFileBrowser()
 
   //Open-type dialog box
   CFileDialog fd(TRUE,
-    DEFAULT_SUFFIX,
-    NULL,
-    OFN_FILEMUSTEXIST | OFN_LONGNAMES,
-    SUFFIX_FILTERS
-    _T("Password Safe Backups (*.bak)|*.bak|")
-    _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
-    _T("All files (*.*)|*.*|")
-    _T("|"),
-    this);
+                 DEFAULT_SUFFIX,
+                 NULL,
+                 OFN_FILEMUSTEXIST | OFN_LONGNAMES,
+                 SUFFIX_FILTERS
+                 _T("Password Safe Backups (*.bak)|*.bak|")
+                 _T("Password Safe Intermediate Backups (*.ibak)|*.ibak|")
+                 _T("All files (*.*)|*.*|")
+                 _T("|"),
+                 this);
   fd.m_ofn.lpstrTitle = cs_text;
   fd.m_ofn.Flags &= ~OFN_READONLY;
   CString dir = PWSdirs::GetSafeDir();
@@ -479,9 +474,8 @@ void CPasskeyEntry::OnOpenFileBrowser()
   }
   if (rc == IDOK) {
     m_PKE_ReadOnly = fd.GetReadOnlyPref();
-    ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_PKE_ReadOnly == TRUE
-      ? BST_CHECKED
-      : BST_UNCHECKED);
+    ((CButton *)GetDlgItem(IDC_READONLY))->SetCheck(m_PKE_ReadOnly == TRUE ? 
+                                           BST_CHECKED : BST_UNCHECKED);
     m_filespec = fd.GetPathName();
     m_MRU_combo.m_edit.SetWindowText(m_filespec);
     m_ctlPasskey.EnableWindow(TRUE);
