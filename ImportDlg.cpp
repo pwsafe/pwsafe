@@ -48,7 +48,6 @@ void CImportDlg::DoDataExchange(CDataExchange* pDX)
   DDV_CheckImpDelimiter(pDX, m_defimpdelim);
 }
 
-
 BEGIN_MESSAGE_MAP(CImportDlg, CDialog)
   //{{AFX_MSG_MAP(CImportDlg)
   ON_BN_CLICKED(IDC_OTHER, OnOther)

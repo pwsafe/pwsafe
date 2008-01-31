@@ -19,28 +19,24 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void
-CMyString::trashstring()
+void CMyString::trashstring()
 {
   trashMemory((unsigned char*)m_mystring.GetBuffer(m_mystring.GetLength()),
     m_mystring.GetLength());
 }
 
-void
-CMyString::Empty()
+void CMyString::Empty()
 {
   trashstring();
   m_mystring.Empty();
 }
 
-BOOL
-CMyString::LoadString(const UINT &nID)
+BOOL CMyString::LoadString(const UINT &nID)
 {
   return m_mystring.LoadString(nID);
 }
 
-void
-CMyString::Format(LPCTSTR lpszFormat, ... )
+void CMyString::Format(LPCTSTR lpszFormat, ... )
 {
   va_list args;
   va_start(args, lpszFormat);
@@ -48,8 +44,7 @@ CMyString::Format(LPCTSTR lpszFormat, ... )
   va_end(args);
 }
 
-void
-CMyString::Format(UINT nID, ... )
+void CMyString::Format(UINT nID, ... )
 {
   va_list args;
   va_start(args, nID);
@@ -58,8 +53,7 @@ CMyString::Format(UINT nID, ... )
   va_end(args);
 }
 
-const CMyString&
-CMyString::operator=(const CMyString& stringSrc)
+const CMyString& CMyString::operator=(const CMyString& stringSrc)
 {
   if (this != &stringSrc) {
     trashstring();
@@ -68,16 +62,14 @@ CMyString::operator=(const CMyString& stringSrc)
   return *this;
 }
 
-const CMyString&
-CMyString::operator=(TCHAR ch)
+const CMyString& CMyString::operator=(TCHAR ch)
 {
   trashstring();
   m_mystring = ch;
   return *this;
 }
 
-const CMyString&
-CMyString::operator=(LPCTSTR lpsz)
+const CMyString& CMyString::operator=(LPCTSTR lpsz)
 {
   trashstring();
   m_mystring = lpsz;
@@ -85,8 +77,7 @@ CMyString::operator=(LPCTSTR lpsz)
 }
 
 #ifndef UNICODE // do we need this at all?
-const CMyString&
-CMyString::operator=(const unsigned char* psz)
+const CMyString&CMyString::operator=(const unsigned char* psz)
 {
   trashstring();
   m_mystring = psz;
@@ -94,48 +85,42 @@ CMyString::operator=(const unsigned char* psz)
 }
 #endif
 
-CMyString AFXAPI
-operator+(const CMyString& string1,const CMyString& string2)
+CMyString AFXAPI operator+(const CMyString& string1,const CMyString& string2)
 {
   CMyString s;
   s = (CMyString)(string1.m_mystring+string2.m_mystring);
   return s;
 }
 
-CMyString AFXAPI
-operator+(const CMyString& string, TCHAR ch)
+CMyString AFXAPI operator+(const CMyString& string, TCHAR ch)
 {
   CMyString s;
   s = (CMyString)(string.m_mystring + ch);
   return s;
 }
 
-CMyString AFXAPI
-operator+(TCHAR ch, const CMyString& string)
+CMyString AFXAPI operator+(TCHAR ch, const CMyString& string)
 {
   CMyString s;
   s = (CMyString)(ch + string.m_mystring);
   return s;
 }
 
-CMyString AFXAPI
-operator+(const CMyString& string, LPCTSTR lpsz)
+CMyString AFXAPI operator+(const CMyString& string, LPCTSTR lpsz)
 {
   CMyString s;
   s = (CMyString)(string.m_mystring + lpsz);
   return s;
 }
 
-CMyString AFXAPI
-operator+(LPCTSTR lpsz, const CMyString& string)
+CMyString AFXAPI operator+(LPCTSTR lpsz, const CMyString& string)
 {
   CMyString s;
   s = (CMyString)(lpsz + string.m_mystring);
   return s;
 }
 
-int
-CMyString::FindByte(char ch) const
+int CMyString::FindByte(char ch) const
 {
   int nRetVal = -1;  // default to not found
   int nIndex = 0;
@@ -159,32 +144,28 @@ CMyString::FindByte(char ch) const
 }
 
 //Can't properly trash the memory here, so it is better to just return a CString
-CMyString
-CMyString::Left(int nCount) const
+CMyString CMyString::Left(int nCount) const
 {
   CMyString s;
   s.m_mystring = m_mystring.Left(nCount);
   return s;
 }
 
-CMyString
-CMyString::Right(int nCount) const
+CMyString CMyString::Right(int nCount) const
 {
   CMyString s;
   s.m_mystring = m_mystring.Right(nCount);
   return s;
 }
 
-CMyString
-CMyString::Mid(int nFirst) const
+CMyString CMyString::Mid(int nFirst) const
 {
   CMyString s;
   s.m_mystring = m_mystring.Mid(nFirst);
   return s;
 }
 
-CMyString
-CMyString::Mid(int nFirst, int nCount) const
+CMyString CMyString::Mid(int nFirst, int nCount) const
 {
   CMyString s;
   s.m_mystring = m_mystring.Mid(nFirst, nCount);

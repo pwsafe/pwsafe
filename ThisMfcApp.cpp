@@ -135,8 +135,7 @@ static bool CheckFile(const CString &fn)
 }
 
 #endif // !POCKET_PC
-int
-ThisMfcApp::ExitInstance()
+int ThisMfcApp::ExitInstance()
 {
   if(m_hInstResDLL != NULL)
     FreeLibrary(m_hInstResDLL);
@@ -165,10 +164,8 @@ private:
   DboxMain &m_dbox;
 };
 
-
-static void
-GetVersionInfoFromFile(const CString &csFileName,
-                       DWORD &MajorMinor, DWORD &BuildRevision)
+static void GetVersionInfoFromFile(const CString &csFileName,
+                                   DWORD &MajorMinor, DWORD &BuildRevision)
 {
   MajorMinor = BuildRevision = DWORD(-1);
   DWORD dwVerHnd, dwVerInfoSize;
@@ -196,25 +193,23 @@ GetVersionInfoFromFile(const CString &csFileName,
   }
 }
 
-
 void ThisMfcApp::LoadLocalizedStuff()
 {
   /*
   Looks for localized version of resources and help files, loads them if found
 
   Format of resource-only DLL names (in dir returned by GetExeDir)
-  pwsafeLL_CC.dll
-  or
-  pwsafeLL.dll
+    pwsafeLL_CC.dll
+      or
+    pwsafeLL.dll
 
   where LL = ISO 639-1 two-character Language code e.g. EN, FR, DE, HE...
-  see http://www.loc.gov/standards/iso639-2/
+              see http://www.loc.gov/standards/iso639-2/
   and   CC = ISO 3166-1 two-character Country code e.g. US, GB, FR, CA...
-  see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
+              see http://www.iso.org/iso/en/prods-services/iso3166ma/index.html
 
   Although ISO 639 has been superceded, MS only supports the new RFC 3066bis in
-  .NET V2 and later applications (CultureInfo Class)
-  or under Vista (via LOCALE_SNAME).
+  .NET V2 and later applications (CultureInfo Class) or under Vista (via LOCALE_SNAME).
   Older native and .NET V1 applications only support the ISO 639-1 two character
   language codes.
 
@@ -259,14 +254,14 @@ void ThisMfcApp::LoadLocalizedStuff()
   }
   if(m_hInstResDLL == NULL) {
     TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
-      PWSUtil::GetTimeStamp());
+          PWSUtil::GetTimeStamp());
   } else { // successfully loaded a resource dll, check version
     DWORD MajorMinor, BuildRevision;
     GetVersionInfoFromFile(cs_ResPath, MajorMinor, BuildRevision);
 
     if (MajorMinor != GetFileVersionMajorMinor()) { // ignore build for now
       TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %d/%d.\n"), 
-        PWSUtil::GetTimeStamp(), cs_ResPath, GetFileVersionMajorMinor(), MajorMinor);
+            PWSUtil::GetTimeStamp(), cs_ResPath, GetFileVersionMajorMinor(), MajorMinor);
       FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
@@ -295,7 +290,7 @@ void ThisMfcApp::LoadLocalizedStuff()
       if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
       m_pszHelpFilePath = _tcsdup(cs_HelpPath);
       TRACE(_T("%s Help file overriden by user. Using %s.\n"),
-        PWSUtil::GetTimeStamp(), cs_HelpPath);
+            PWSUtil::GetTimeStamp(), cs_HelpPath);
     }
   }
 
@@ -342,8 +337,7 @@ void ThisMfcApp::LoadLocalizedStuff()
   m_csHelpFile = cs_HelpPath;
 }
 
-BOOL
-ThisMfcApp::InitInstance()
+BOOL ThisMfcApp::InitInstance()
 {
   /*
   * It's always best to start at the beginning.  [Glinda, Witch of the North]
@@ -672,8 +666,7 @@ ThisMfcApp::InitInstance()
   return FALSE;
 }
 
-void
-ThisMfcApp::AddToMRU(const CString &pszFilename)
+void ThisMfcApp::AddToMRU(const CString &pszFilename)
 {
   if (m_pMRU == NULL)
     return;
@@ -686,8 +679,7 @@ ThisMfcApp::AddToMRU(const CString &pszFilename)
   }
 }
 
-void
-ThisMfcApp::ClearMRU()
+void ThisMfcApp::ClearMRU()
 {
   if (m_pMRU == NULL)
     return;
@@ -739,8 +731,7 @@ ThisMfcApp::ClearMRU()
   }
 }
 
-int
-ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
+int ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
 {
   int icon;
   switch (iData) {
@@ -767,8 +758,7 @@ ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
   return icon;
 }
 
-void
-ThisMfcApp::SetSystemTrayState(STATE s)
+void ThisMfcApp::SetSystemTrayState(STATE s)
 {
   // need to protect against null m_TrayIcon due to
   // tricky initialization order
@@ -795,8 +785,7 @@ ThisMfcApp::SetSystemTrayState(STATE s)
 #if !defined(POCKET_PC)
 //Copied from Knowledge Base article Q100770
 //But not for WinCE {kjp}
-BOOL
-ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
+BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 {
   if (code < 0)
     CWinApp::ProcessMessageFilter(code, lpMsg);
@@ -810,9 +799,7 @@ ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 }
 #endif
 
-
-void
-ThisMfcApp::OnHelp()
+void ThisMfcApp::OnHelp()
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#mainhelp"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
@@ -895,8 +882,7 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, UINT MenuID)
   return -1;
 }
 
-void
-ThisMfcApp::GetApplicationVersionData()
+void ThisMfcApp::GetApplicationVersionData()
 {
   TCHAR szFullPath[MAX_PATH];
   DWORD dwVerHnd, dwVerInfoSize;
@@ -906,11 +892,11 @@ ThisMfcApp::GetApplicationVersionData()
   dwVerInfoSize = ::GetFileVersionInfoSize(szFullPath, &dwVerHnd);
   if (dwVerInfoSize > 0) {
     char* pVersionInfo = new char[dwVerInfoSize];
-    if(pVersionInfo != NULL) {
+    if (pVersionInfo != NULL) {
       BOOL bRet = ::GetFileVersionInfo((LPTSTR)szFullPath,
-        (DWORD)dwVerHnd,
-        (DWORD)dwVerInfoSize,
-        (LPVOID)pVersionInfo);
+                                       (DWORD)dwVerHnd,
+                                       (DWORD)dwVerInfoSize,
+                                       (LPVOID)pVersionInfo);
       VS_FIXEDFILEINFO *szVer = NULL;
       UINT uVerLength; 
       if (bRet) {

@@ -28,7 +28,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
 CCryptKeyEntry::CCryptKeyEntry(CWnd* pParent)
   : CPWDialog(CCryptKeyEntry::IDD, pParent),
@@ -53,14 +52,12 @@ BEGIN_MESSAGE_MAP(CCryptKeyEntry, CPWDialog)
 #endif
 END_MESSAGE_MAP()
 
-void
-CCryptKeyEntry::OnCancel() 
+void CCryptKeyEntry::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-void
-CCryptKeyEntry::OnOK()
+void CCryptKeyEntry::OnOK()
 {
   UpdateData(TRUE);
 
@@ -78,8 +75,7 @@ CCryptKeyEntry::OnOK()
   CPWDialog::OnOK();
 }
 
-void
-CCryptKeyEntry::OnHelp() 
+void CCryptKeyEntry::OnHelp() 
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#comboentry"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );

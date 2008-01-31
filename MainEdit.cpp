@@ -38,8 +38,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //Add an item
-void
-DboxMain::OnAdd()
+void DboxMain::OnAdd()
 {
   CAddDlg dlg_add(this);
 
@@ -73,20 +72,19 @@ DboxMain::OnAdd()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     PWSprefs *prefs = PWSprefs::GetInstance();
     //Check if they wish to set a default username
-    if (!m_core.GetUseDefUser()
-      && (prefs->GetPref(PWSprefs::QuerySetDef))
-      && (!dlg_add.m_username.IsEmpty())) {
-        CQuerySetDef defDlg(this);
-        defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_add.m_username);
-        INT_PTR rc2 = defDlg.DoModal();
-        if (rc2 == IDOK) {
-          prefs->SetPref(PWSprefs::UseDefaultUser, true);
-          prefs->SetPref(PWSprefs::DefaultUsername,
-            dlg_add.m_username);
-          m_core.SetUseDefUser(true);
-          m_core.SetDefUsername(dlg_add.m_username);
-          RefreshViews();
-        }
+    if (!m_core.GetUseDefUser() &&
+        (prefs->GetPref(PWSprefs::QuerySetDef)) &&
+        (!dlg_add.m_username.IsEmpty())) {
+      CQuerySetDef defDlg(this);
+      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_add.m_username);
+      INT_PTR rc2 = defDlg.DoModal();
+      if (rc2 == IDOK) {
+        prefs->SetPref(PWSprefs::UseDefaultUser, true);
+        prefs->SetPref(PWSprefs::DefaultUsername, dlg_add.m_username);
+        m_core.SetUseDefUser(true);
+        m_core.SetDefUsername(dlg_add.m_username);
+        RefreshViews();
+      }
     }
 
     //Finish Check (Does that make any geographical sense?)
@@ -170,8 +168,7 @@ DboxMain::OnAdd()
 }
 
 //Add a shortcut
-void
-DboxMain::OnAddShortcut()
+void DboxMain::OnAddShortcut()
 {
   CAddShortcutDlg dlg_addshortcut(this);
 
@@ -267,8 +264,7 @@ DboxMain::OnAddShortcut()
   }
 }
 
-int
-DboxMain::AddEntry(const CItemData &cinew)
+int DboxMain::AddEntry(const CItemData &cinew)
 {
   // This routine is used by Add and also Drag & Drop
 
@@ -285,8 +281,7 @@ DboxMain::AddEntry(const CItemData &cinew)
 }
 
 //Add a group (tree view only)
-void
-DboxMain::OnAddGroup()
+void DboxMain::OnAddGroup()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -309,14 +304,13 @@ DboxMain::OnAddGroup()
 }
 
 // Delete key was pressed (in list view or tree view) to delete an entry.
-void
-DboxMain::OnDelete()
+void DboxMain::OnDelete()
 {
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
     return;
 
   bool dontaskquestion = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DeleteQuestion);
+                         GetPref(PWSprefs::DeleteQuestion);
 
   bool dodelete = true;
   int num_children = 0;
@@ -349,8 +343,7 @@ DboxMain::OnDelete()
   }
 }
 
-void
-DboxMain::Delete(bool inRecursion)
+void DboxMain::Delete(bool inRecursion)
 {
   CItemData *ci = getSelectedItem();
 
@@ -392,8 +385,7 @@ DboxMain::Delete(bool inRecursion)
     int curSel = di->list_index;
     // Find next in treeview, not always curSel after deletion
     HTREEITEM curTree_item = di->tree_item;
-    HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item,
-      TVGN_NEXT);
+    HTREEITEM nextTree_item = m_ctlItemTree.GetNextItem(curTree_item, TVGN_NEXT);
     // Must Find before delete from m_ctlItemList:
     ItemListIter listindex = m_core.Find(entry_uuid);
     ASSERT(listindex !=  m_core.GetEntryEndIter());
@@ -495,8 +487,7 @@ DboxMain::Delete(bool inRecursion)
   m_TreeViewGroup = _T("");
 }
 
-void
-DboxMain::OnRename()
+void DboxMain::OnRename()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -509,8 +500,7 @@ DboxMain::OnRename()
   }
 }
 
-void
-DboxMain::OnEdit()
+void DboxMain::OnEdit()
 {
   // Note that Edit is also used for just viewing - don't want to disable
   // viewing in read-only mode
@@ -539,8 +529,7 @@ DboxMain::OnEdit()
   }
 }
 
-bool
-DboxMain::EditItem(CItemData *ci, PWScore *pcore)
+bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 {
   if (pcore == NULL)
     pcore = &m_core;
@@ -736,9 +725,7 @@ DboxMain::EditItem(CItemData *ci, PWScore *pcore)
   return false;
 }
 
-
-bool
-DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
+bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
 {
   if (pcore == NULL)
     pcore = &m_core;
@@ -858,8 +845,7 @@ DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
 }
 
 // Duplicate selected entry but make title unique
-void
-DboxMain::OnDuplicateEntry()
+void DboxMain::OnDuplicateEntry()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -964,8 +950,7 @@ DboxMain::OnDuplicateEntry()
   }
 }
 
-void
-DboxMain::OnCopyPassword()
+void DboxMain::OnCopyPassword()
 {
   if (!SelItemOk())
     return;
@@ -1001,8 +986,7 @@ DboxMain::OnCopyPassword()
   UpdateAccessTime(ci_original);
 }
 
-void
-DboxMain::OnCopyUsername()
+void DboxMain::OnCopyUsername()
 {
   if (SelItemOk() != TRUE)
     return;
@@ -1032,8 +1016,7 @@ DboxMain::OnCopyUsername()
   UpdateAccessTime(ci_original);
 }
 
-void
-DboxMain::OnCopyNotes()
+void DboxMain::OnCopyNotes()
 {
   if (SelItemOk() != TRUE)
     return;
@@ -1082,8 +1065,7 @@ DboxMain::OnCopyNotes()
   UpdateAccessTime(ci_original);
 }
 
-void
-DboxMain::OnCopyURL()
+void DboxMain::OnCopyURL()
 {
   if (SelItemOk() != TRUE)
     return;
@@ -1114,22 +1096,19 @@ DboxMain::OnCopyURL()
   UpdateAccessTime(ci_original);
 }
 
-void
-DboxMain::OnFind()
+void DboxMain::OnFind()
 {
   // Note that this "toggles" the Find Tool Bar so that the user can use Ctrl+F
   // to show it and then hide it.
   SetFindToolBar(!m_FindToolBar.IsVisible());
 }
 
-void
-DboxMain::OnClearClipboard()
+void DboxMain::OnClearClipboard()
 {
   ClearClipboardData();
 }
 
-void
-DboxMain::OnAutoType()
+void DboxMain::OnAutoType()
 {
   if (SelItemOk() == TRUE) {
     CItemData *ci = getSelectedItem();
@@ -1145,8 +1124,7 @@ DboxMain::OnAutoType()
 
 const CString DboxMain::DEFAULT_AUTOTYPE = _T("\\u\\t\\p\\n");
 
-void
-DboxMain::AutoType(const CItemData &ci)
+void DboxMain::AutoType(const CItemData &ci)
 {
   CMyString AutoCmd = ci.GetAutoType();
   CMyString user(ci.GetUser());
@@ -1177,7 +1155,7 @@ DboxMain::AutoType(const CItemData &ci)
   // If empty, try the database default
   if (AutoCmd.IsEmpty()) {
     AutoCmd = PWSprefs::GetInstance()->
-      GetPref(PWSprefs::DefaultAutotypeString);
+              GetPref(PWSprefs::DefaultAutotypeString);
 
     // If still empty, take this default
     if (AutoCmd.IsEmpty()) {
@@ -1220,7 +1198,7 @@ DboxMain::AutoType(const CItemData &ci)
   // 3. If not "Always on Top" - hide PWS during Autotype and show
   //    it again once finished - but behind other windows.
   bool bMinOnAuto = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
+                    GetPref(PWSprefs::MinimizeOnAutotype) == TRUE;
 
   if (bMinOnAuto)
     ShowWindow(SW_MINIMIZE);
@@ -1252,7 +1230,8 @@ DboxMain::AutoType(const CItemData &ci)
         case TCHAR('p'):
           tmp += pwd;
           break;
-        case TCHAR('d'): {
+        case TCHAR('d'):
+        {
           // Delay is going to change - send what we have with old delay
           ks.SendString(tmp);
           // start collecting new delay
@@ -1260,17 +1239,18 @@ DboxMain::AutoType(const CItemData &ci)
           int newdelay = 0;
           int gNumIts = 0;
 
-          for  (n++; n < N && (gNumIts < 3); ++gNumIts, n++)
+          for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
             if(isdigit(AutoCmd[n])){
               newdelay *= 10;
               newdelay += (AutoCmd[n] - TCHAR('0'));
             } else
               break; // for loop
+          }
     
-            n--;
-            ks.SetAndDelay(newdelay);
-            break; // case
-            }
+          n--;
+          ks.SetAndDelay(newdelay);
+          break; // case
+        }
         default:
           tmp += _T("\\") + curChar;
           break;
@@ -1293,15 +1273,14 @@ DboxMain::AutoType(const CItemData &ci)
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
     SetWindowPos(&wndTopMost, 0, 0, 0, 0,
-      SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
   } else {
     SetWindowPos(&wndBottom, 0, 0, 0, 0,
-      SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+                 SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
   }
 }
 
-void
-DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
+void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
 {
   // Add Drop entries
   CItemData tempitem;
@@ -1426,10 +1405,9 @@ DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
   m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, 
                              CItemData::PASSWORD);
 
-  if (PWSprefs::GetInstance()->
-    GetPref(PWSprefs::SaveImmediately)) {
-      Save();
-      ChangeOkUpdate();
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+    Save();
+    ChangeOkUpdate();
   }
 
   FixListIndexes();
@@ -1476,8 +1454,8 @@ void DboxMain::SortDependents(UUIDList &dlist, CMyString &csDependents)
     iter = m_core.Find(dependent_uuid);
     if (iter != m_core.GetEntryEndIter()) {
       cs_dependent = iter->second.GetGroup() + _T(":") +
-        iter->second.GetTitle() + _T(":") +
-        iter->second.GetUser();
+                     iter->second.GetTitle() + _T(":") +
+                     iter->second.GetUser();
       sorted_dependents.push_back(cs_dependent);
     }
   }
@@ -1490,8 +1468,7 @@ void DboxMain::SortDependents(UUIDList &dlist, CMyString &csDependents)
   }
 }
 
-LRESULT
-DboxMain::OnToolBarFindMessage(WPARAM /* wParam */, LPARAM /* lParam */)
+LRESULT DboxMain::OnToolBarFindMessage(WPARAM /* wParam */, LPARAM /* lParam */)
 {
   // Called when user types into the Find search edit control on the Find Toolbar
   // and presses enter.
@@ -1508,11 +1485,10 @@ void DboxMain::OnToolBarFind()
     m_FindToolBar.Find();
 }
 
-bool
-DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
-                           const CMyString &user, const CMyString &password,
-                           const bool bIsEdit, const CItemData::EntryType &InputType, 
-                           uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued)
+bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
+                                const CMyString &user, const CMyString &password,
+                                const bool bIsEdit, const CItemData::EntryType &InputType, 
+                                uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued)
 {
   // bmsgissued - whether this routine issued a message
   b_msg_issued = false;

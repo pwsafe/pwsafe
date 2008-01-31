@@ -569,8 +569,7 @@ void CAdvancedDlg::OnDeselectAll()
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
 }
 
-void
-CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
+void CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
 {
   // Prevent TITLE and PASSWORD being deselected in EXPORT_XML function
   // as they are mandatory fields
@@ -603,7 +602,6 @@ CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
       break;
     default:
       ASSERT(0);
-
   }
 }
 

@@ -304,10 +304,10 @@ BOOL COptionsPasswordPolicy::OnKillActive()
 
   // Check that options, as set, are valid.
   if (m_pwusehexdigits &&
-    (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits ||
-    m_pwusesymbols || m_pwmakepronounceable)) {
-      AfxMessageBox(IDS_HEXMUTUALLYEXCL);
-      return FALSE;
+     (m_pwuselowercase || m_pwuseuppercase || m_pwusedigits ||
+      m_pwusesymbols || m_pwmakepronounceable)) {
+    AfxMessageBox(IDS_HEXMUTUALLYEXCL);
+    return FALSE;
   }
 
   if (m_pwusehexdigits) {
@@ -328,10 +328,10 @@ BOOL COptionsPasswordPolicy::OnKillActive()
   }
 
   if ((m_pwdigitminlength + m_pwlowerminlength + 
-    m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
-      AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
-      ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
-      return FALSE;
+       m_pwsymbolminlength + m_pwupperminlength) > m_pwdefaultlength) {
+    AfxMessageBox(IDS_DEFAULTPWLENGTHTOOSMALL);
+    ((CEdit*)GetDlgItem(IDC_DEFPWLENGTH))->SetFocus();
+    return FALSE;
   }
   //End check
 

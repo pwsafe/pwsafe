@@ -71,16 +71,16 @@ HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 // CEditExtn
 
 CEditExtn::CEditExtn()
-: m_bIsFocused(FALSE), m_lastposition(-1),
-m_message_number(-1), m_menustring("")
+  : m_bIsFocused(FALSE), m_lastposition(-1),
+  m_message_number(-1), m_menustring("")
 {
   m_brInFocus.CreateSolidBrush(crefInFocus);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
 }
 
 CEditExtn::CEditExtn(int message_number, LPCTSTR menustring)
-: m_bIsFocused(FALSE), m_lastposition(-1),
-m_message_number(message_number), m_menustring(menustring)
+  : m_bIsFocused(FALSE), m_lastposition(-1),
+  m_message_number(message_number), m_menustring(menustring)
 {
   m_brInFocus.CreateSolidBrush(crefInFocus);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
@@ -185,7 +185,6 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   menu.InsertMenu(8, MF_BYPOSITION | MF_SEPARATOR);
 
   menu.InsertMenu(9, MF_BYPOSITION , m_message_number, m_menustring);
-
 
   if (point.x == -1 || point.y == -1) {
     CRect rc;

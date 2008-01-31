@@ -121,7 +121,7 @@ BOOL CPWHistDlg::OnInitDialog()
 
   if (m_MaxPWHistory == 0)
     m_MaxPWHistory = PWSprefs::GetInstance()->
-    GetPref(PWSprefs::NumPWHistoryDefault);
+                     GetPref(PWSprefs::NumPWHistoryDefault);
 
   pspin->SetBuddy(GetDlgItem(IDC_MAXPWHISTORY));
   pspin->SetRange(1, 255);
@@ -138,8 +138,7 @@ void CPWHistDlg::OnBnClickedClearPWHist()
   m_PWHistListCtrl.DeleteAllItems();
 }
 
-void
-CPWHistDlg::OnOK() 
+void CPWHistDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
     return;
@@ -152,7 +151,6 @@ CPWHistDlg::OnOK()
   *
   * Special case: history empty and password history off - do nothing
   */
-
 
   if (m_ClearPWHistory == TRUE) {
     m_PWHistList.erase(m_PWHistList.begin(), m_PWHistList.end());
@@ -184,29 +182,27 @@ CPWHistDlg::OnOK()
   CPWDialog::OnOK();
 }
 
-void
-CPWHistDlg::OnCheckedSavePasswordHistory()
+void CPWHistDlg::OnCheckedSavePasswordHistory()
 {
   m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
 }
 
-void
-CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
+void CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
 {
   LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNMHDR;
   ASSERT(lpnmitem != NULL);
   int item = lpnmitem->iItem;
   if (item == -1)
     return;
+
   size_t itempos = size_t(m_PWHistListCtrl.GetItemData(item));
   const PWHistEntry pwhentry = m_PWHistList[itempos];
-  DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());
-  dbx->SetClipboardData(pwhentry.password);
+  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()->GetParent());
+  pDbx->SetClipboardData(pwhentry.password);
 }
 
-void
-CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
+void CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 {
   HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
 
@@ -293,6 +289,6 @@ void CPWHistDlg::OnBnClickedPwhCopyAll()
     HistStr += _T("\r\n");
   }
 
-  DboxMain *dbx = static_cast<DboxMain *>(GetParent()->GetParent());
-  dbx->SetClipboardData(HistStr);
+  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()->GetParent());
+  pDbx->SetClipboardData(HistStr);
 }

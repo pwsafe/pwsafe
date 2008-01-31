@@ -34,9 +34,8 @@ static char THIS_FILE[] = __FILE__;
 // be avoided by putting the password into the clipboard when the entry is saved
 // but that would be annoying when generating a new entry.
 
-bool
-DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
-                             PWPolicy &pwp)
+bool DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
+                                  PWPolicy &pwp)
 {
   bool is_override = (pDialog->IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
 
@@ -127,8 +126,7 @@ DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
   return true;
 }
 
-bool
-DboxMain::SetPasswordPolicy(PWPolicy &pwp)
+bool DboxMain::SetPasswordPolicy(PWPolicy &pwp)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 

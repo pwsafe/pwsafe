@@ -67,16 +67,12 @@ BEGIN_MESSAGE_MAP(CAddShortcutDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
-
-void
-CAddShortcutDlg::OnCancel() 
+void CAddShortcutDlg::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-
-void
-CAddShortcutDlg::OnOK() 
+void CAddShortcutDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
     return;
@@ -109,11 +105,11 @@ CAddShortcutDlg::OnOK()
     return;
   }
 
-  DboxMain* dbx = static_cast<DboxMain *>(GetParent());
-  ASSERT(dbx != NULL);
+  DboxMain* pDbx = static_cast<DboxMain *>(GetParent());
+  ASSERT(pDbx != NULL);
 
   // If there is a matching entry in our list, tell the user to try again.
-  if (dbx->Find(m_group, m_title, m_username) != dbx->End()) {
+  if (pDbx->Find(m_group, m_title, m_username) != pDbx->End()) {
     CMyString temp;
     if (m_group.IsEmpty())
       temp.Format(IDS_ENTRYEXISTS2, m_title, m_username);
@@ -126,7 +122,7 @@ CAddShortcutDlg::OnOK()
   }
 
   bool b_msg_issued;
-  if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_target,
+  if (!pDbx->CheckNewPassword(m_group, m_title, m_username, m_target,
                              false, CItemData::Shortcut,
                              m_base_uuid, m_ibasedata, b_msg_issued)) {
     if (!b_msg_issued)
@@ -139,7 +135,6 @@ CAddShortcutDlg::OnOK()
 
   CPWDialog::OnOK();
 }
-
 
 void CAddShortcutDlg::OnHelp() 
 {

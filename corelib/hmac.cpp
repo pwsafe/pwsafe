@@ -61,6 +61,7 @@ void HMAC_SHA256::Final(unsigned char digest[SHA256::HASHLEN])
   unsigned char k_opad[B];
   for (int i = 0; i < B; i++)
     k_opad[i] = K[i] ^ 0x5c;
+
   memset(K, 0, B);
 
   SHA256 H1;

@@ -42,8 +42,7 @@ CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   m_oldpasskey = _T("");
 }
 
-void
-CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
+void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
   DDX_Text(pDX, IDC_CONFIRMNEW, (CString &)m_confirmnew);
@@ -63,8 +62,7 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPWDialog)
 #endif
 END_MESSAGE_MAP()
 
-BOOL
-CPasskeyChangeDlg::OnInitDialog()
+BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
@@ -78,8 +76,7 @@ CPasskeyChangeDlg::OnInitDialog()
   return TRUE;
 }
 
-void
-CPasskeyChangeDlg::OnOK() 
+void CPasskeyChangeDlg::OnOK() 
 {
   CMyString errmess;
   CString cs_msg, cs_text;
@@ -118,14 +115,12 @@ CPasskeyChangeDlg::OnOK()
   }
 }
 
-void
-CPasskeyChangeDlg::OnCancel() 
+void CPasskeyChangeDlg::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-void
-CPasskeyChangeDlg::OnHelp() 
+void CPasskeyChangeDlg::OnHelp() 
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#changecombo"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
@@ -145,7 +140,6 @@ void CPasskeyChangeDlg::OnPasskeyKillfocus()
 {
   EnableWordCompletion( m_hWnd );
 }
-
 
 /************************************************************************/
 /* When the password field is activated, pull up the SIP and disable    */

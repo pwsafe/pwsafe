@@ -147,11 +147,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     m_wcMaxLen = wcLen;
   }
   // next translate to buffer
-  wcLen = MultiByteToWideChar(CP_UTF8,           // code page
-    0,  // character-type options
-    LPSTR(utf8),     // string to map
-    -1,           // -1 means null-terminated
-    m_wc, wcLen);      // output buffer
+  wcLen = MultiByteToWideChar(CP_UTF8,       // code page
+                              0,             // character-type options
+                              LPSTR(utf8),   // string to map
+                              -1,            // -1 means null-terminated
+                              m_wc, wcLen);  // output buffer
   if (wcLen == 0) {
     DWORD errCode = GetLastError();
     switch (errCode) {
@@ -164,11 +164,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     case ERROR_NO_UNICODE_TRANSLATION:
       // try to recover
       TRACE("NO UNICODE TRANSLATION");
-      wcLen = MultiByteToWideChar(CP_ACP, // code page
-        0,  // character-type options
-        LPSTR(utf8),      // string to map
-        -1, // -1 means null-terminated
-        m_wc, wcLen);       // output buffer
+      wcLen = MultiByteToWideChar(CP_ACP,        // code page
+                                  0,             // character-type options
+                                  LPSTR(utf8),   // string to map
+                                  -1,            // -1 means null-terminated
+                                  m_wc, wcLen);  // output buffer
       if (wcLen > 0) {
         TRACE(_T("FromUTF8: recovery succeeded!"));
       }
@@ -188,11 +188,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
 #else /* Go from Unicode to Locale encoding */
   // first get needed utf8 buffer size
   int mbLen = WideCharToMultiByte(CP_ACP,       // code page
-    0, // performance and mapping flags
-    m_wc,         // wide-character string
-    -1,           // -1 means null-terminated
-    NULL, 0,      // get needed buffer size
-    NULL,NULL);   // use system default for unmappables
+                                  0,            // performance and mapping flags
+                                  m_wc,         // wide-character string
+                                  -1,           // -1 means null-terminated
+                                  NULL, 0,      // get needed buffer size
+                                  NULL, NULL);  // use system default for unmappables
 
   if (mbLen == 0) { // uh-oh
     ASSERT(0);
@@ -208,11 +208,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     m_tmpMaxLen = mbLen;
   }
   // Finally get result
-  int tmpLen = WideCharToMultiByte(CP_ACP,      // code page
-    0, // performance and mapping flags
-    m_wc, -1, // wide-character string
-    LPSTR(m_tmp), mbLen,// buffer and length
-    NULL,NULL);   // use system default for unmappables
+  int tmpLen = WideCharToMultiByte(CP_ACP,              // code page
+                                   0,                   // performance and mapping flags
+                                   m_wc, -1,            // wide-character string
+                                   LPSTR(m_tmp), mbLen, // buffer and length
+                                   NULL, NULL);         // use system default for unmappables
   ASSERT(tmpLen == mbLen);
   m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
   data = m_tmp;

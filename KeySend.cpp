@@ -139,7 +139,6 @@ void CKeySend::ResetKeyboardState()
 
   BYTE keys[256];
 
-
   GetKeyboardState((LPBYTE)&keys);
 
   while((keys[VK_CONTROL] & 0x80)!=0){

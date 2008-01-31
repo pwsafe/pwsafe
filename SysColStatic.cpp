@@ -45,10 +45,10 @@ void CSysColStatic::ReloadBitmap(int nImageID)
     return;
 
   HBITMAP hBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), 
-    MAKEINTRESOURCE(m_nImageID),
-    IMAGE_BITMAP,
-    0, 0,
-    WCE_INS 0);  // WinCE only {kjp}
+                                      MAKEINTRESOURCE(m_nImageID),
+                                      IMAGE_BITMAP,
+                                      0, 0,
+                                      WCE_INS 0);  // WinCE only {kjp}
   WCE_DEL LR_LOADMAP3DCOLORS);  // not WinCE {kjp}
 
   if (hBmp == NULL)

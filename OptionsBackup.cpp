@@ -130,7 +130,7 @@ BOOL COptionsBackup::OnInitDialog()
 
   GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(_T(""));
 
-  CSpinButtonCtrl*  pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_BKPMAXINCSPIN);
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_BKPMAXINCSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_BACKUPMAXINC));
   pspin->SetRange(1, 999);

@@ -74,8 +74,7 @@ END_MESSAGE_MAP()
 
 // CExpPWListDlg message handlers
 
-BOOL
-CExpPWListDlg::OnInitDialog()
+BOOL CExpPWListDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
@@ -124,16 +123,16 @@ CExpPWListDlg::OnInitDialog()
   ExpiredList::const_iterator itempos;
 
   for (itempos = m_expPWList.begin();
-    itempos != m_expPWList.end();
-    itempos++) {
-      const ExpPWEntry exppwentry = *itempos;
-      nPos = m_expPWListCtrl.InsertItem(nPos, NULL, exppwentry.type);
-      m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group);
-      m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title);
-      m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user);
-      m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate);
-      // original nPos == index in vector: save for Sort
-      m_expPWListCtrl.SetItemData(nPos, static_cast<DWORD>(nPos));
+       itempos != m_expPWList.end();
+       itempos++) {
+    const ExpPWEntry exppwentry = *itempos;
+    nPos = m_expPWListCtrl.InsertItem(nPos, NULL, exppwentry.type);
+    m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group);
+    m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title);
+    m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user);
+    m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate);
+    // original nPos == index in vector: save for Sort
+    m_expPWListCtrl.SetItemData(nPos, static_cast<DWORD>(nPos));
   }
 
   m_expPWListCtrl.SetRedraw(FALSE);
@@ -149,15 +148,13 @@ CExpPWListDlg::OnInitDialog()
   return TRUE;
 }
 
-void
-CExpPWListDlg::OnOK() 
+void CExpPWListDlg::OnOK() 
 {
   delete m_pImageList;
   CPWDialog::OnOK();
 }
 
-void
-CExpPWListDlg::OnBnClickedCopyExpToClipboard()
+void CExpPWListDlg::OnBnClickedCopyExpToClipboard()
 {
   CString data(MAKEINTRESOURCE(IDS_COPYTITLE));
   const CString CRLF = _T("\r\n");
@@ -176,12 +173,11 @@ CExpPWListDlg::OnBnClickedCopyExpToClipboard()
         (CString)exppwentry.expiryexpdate + CRLF;
   }
 
-  DboxMain *dbx = static_cast<DboxMain *>(GetParent());
-  dbx->SetClipboardData(data);
+  DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
+  pDbx->SetClipboardData(data);
 }
 
-void
-CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult) 
+void CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult) 
 {
   HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
 

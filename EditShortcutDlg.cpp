@@ -88,8 +88,7 @@ BEGIN_MESSAGE_MAP(CEditShortcutDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
-void
-CEditShortcutDlg::OnOK() 
+void CEditShortcutDlg::OnOK() 
 {
   ItemListIter listindex;
 
@@ -102,8 +101,8 @@ CEditShortcutDlg::OnOK()
   }
 
   m_bIsModified |= (m_group != m_ci->GetGroup() ||
-    m_title != m_ci->GetTitle() ||
-    m_username != m_ci->GetUser());
+                    m_title != m_ci->GetTitle() ||
+                    m_username != m_ci->GetUser());
 
   bool IsPswdModified = m_target != m_oldtarget;
 
@@ -126,17 +125,17 @@ CEditShortcutDlg::OnOK()
     goto dont_close;
   }
 
-  DboxMain* dbx = static_cast<DboxMain *>(GetParent());
-  ASSERT(dbx != NULL);
+  DboxMain* pDbx = static_cast<DboxMain *>(GetParent());
+  ASSERT(pDbx != NULL);
 
-  listindex = dbx->Find(m_group, m_title, m_username);
+  listindex = pDbx->Find(m_group, m_title, m_username);
   /*
   *  If there is a matching entry in our list, and that
   *  entry is not the same one we started editing, tell the
   *  user to try again.
   */
-  if (listindex != dbx->End()) {
-    const CItemData &listItem = dbx->GetEntryAt(listindex);
+  if (listindex != pDbx->End()) {
+    const CItemData &listItem = pDbx->GetEntryAt(listindex);
     uuid_array_t list_uuid, elem_uuid;
     listItem.GetUUID(list_uuid);
     m_ci->GetUUID(elem_uuid);
@@ -152,7 +151,7 @@ CEditShortcutDlg::OnOK()
   }
 
   bool b_msg_issued;
-  if (!dbx->CheckNewPassword(m_group, m_title, m_username, m_target,
+  if (!pDbx->CheckNewPassword(m_group, m_title, m_username, m_target,
     true, CItemData::Shortcut,
     m_base_uuid, m_ibasedata, b_msg_issued)) {
       if (!b_msg_issued)

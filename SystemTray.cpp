@@ -578,7 +578,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
     pTarget->SetForegroundWindow();
     ::TrackPopupMenu(pContextMenu->m_hMenu, TPM_LEFTBUTTON, pos.x, pos.y, 0,
-      pTarget->GetSafeHwnd(), NULL);
+                     pTarget->GetSafeHwnd(), NULL);
 
     // BUGFIX: See "PRB: Menus for Notification Icons Don't Work Correctly"
     pTarget->PostMessage(WM_NULL, 0, 0);

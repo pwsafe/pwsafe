@@ -145,7 +145,7 @@ int PWSfileV1V2::Open(const CMyString &passkey)
     fwrite(m_ipthing, 1, 8, m_fd);
 
     m_fish = BlowFish::MakeBlowFish(pstr, passLen,
-      m_salt, SaltLength);
+                                    m_salt, SaltLength);
     if (m_curversion == V20) {
       status = WriteV2Header();
     }
@@ -241,7 +241,7 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
   LPCTSTR datastr = LPCTSTR(data);
 
   return PWSfile::WriteCBC(type, (const unsigned char *)datastr,
-    data.GetLength());
+                           data.GetLength());
 #else
   // xlate wchar_t to ACP
   wchar_t *wcPtr = const_cast<CString &>(data).GetBuffer();
@@ -249,10 +249,10 @@ size_t PWSfileV1V2::WriteCBC(unsigned char type, const CString &data)
   int mbLen = 2*wcLen;
   unsigned char *acp = new unsigned char[mbLen];
   int acpLen = WideCharToMultiByte(CP_ACP,      // code page
-    0, // performance and mapping flags
-    wcPtr, wcLen, // wide-character string
-    LPSTR(acp), mbLen, // buffer and length
-    NULL,NULL); // use sys defs for unmappables
+                                   0, // performance and mapping flags
+                                   wcPtr, wcLen, // wide-character string
+                                   LPSTR(acp), mbLen, // buffer and length
+                                   NULL, NULL); // use sys defs for unmappables
   ASSERT(acpLen != 0);
   acpLen--; // remove unneeded null termination
   size_t retval = PWSfile::WriteCBC(type, acp, acpLen);
@@ -384,7 +384,7 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
 
   ASSERT(m_fish != NULL && m_IV != NULL);
   retval = _readcbc(m_fd, buffer, buffer_len, type,
-    m_fish, m_IV, m_terminal);
+                    m_fish, m_IV, m_terminal);
 
   if (buffer_len > 0) {
 #ifdef UNICODE

@@ -44,8 +44,7 @@ CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0), m_pDbx(app.m_maindlg
 
 // Accessors
 
-void
-CRUEList::SetMax(size_t newmax)
+void CRUEList::SetMax(size_t newmax)
 {
   m_maxentries = newmax;
 
@@ -55,8 +54,7 @@ CRUEList::SetMax(size_t newmax)
     m_RUEList.resize(newmax);
 }
 
-bool
-CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuStrings) const
+bool CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuStrings) const
 {
   RUEntryStringImage itemstringimage;
   bool retval = false;
@@ -92,8 +90,7 @@ CRUEList::GetAllMenuItemStrings(vector<RUEntryStringImage> &ListofAllMenuStrings
   return retval;
 }
 
-bool
-CRUEList::GetMenuItemString(size_t index, CMyString &itemstring) const
+bool CRUEList::GetMenuItemString(size_t index, CMyString &itemstring) const
 {
   if (m_RUEList.empty()  || index > m_RUEList.size()) {
     itemstring = _T("");
@@ -126,8 +123,7 @@ CRUEList::GetMenuItemString(size_t index, CMyString &itemstring) const
   return true;
 }
 
-bool
-CRUEList::GetMenuItemString(const uuid_array_t &RUEuuid,
+bool CRUEList::GetMenuItemString(const uuid_array_t &RUEuuid,
                             CMyString &itemstring) const
 {
   if (m_RUEList.empty()) {
@@ -159,8 +155,7 @@ CRUEList::GetMenuItemString(const uuid_array_t &RUEuuid,
   return true;
 }
 
-bool
-CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
+bool CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
 {
   /*
   * If the entry's already there, do nothing, return true.
@@ -185,8 +180,7 @@ CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
   return true;
 }
 
-bool
-CRUEList::DeleteRUEntry(size_t index)
+bool CRUEList::DeleteRUEntry(size_t index)
 {
   if ((m_maxentries == 0) ||
     m_RUEList.empty() ||
@@ -197,8 +191,7 @@ CRUEList::DeleteRUEntry(size_t index)
   return true;
 }
 
-bool
-CRUEList::DeleteRUEntry(const uuid_array_t &RUEuuid)
+bool CRUEList::DeleteRUEntry(const uuid_array_t &RUEuuid)
 {
   if ((m_maxentries == 0) || m_RUEList.empty())
     return false;
@@ -213,8 +206,7 @@ CRUEList::DeleteRUEntry(const uuid_array_t &RUEuuid)
   return true;
 }
 
-bool
-CRUEList::GetPWEntry(size_t index, CItemData &ci){
+bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
   if ((m_maxentries == 0) ||
     m_RUEList.empty() ||
     (index > (m_maxentries - 1)) ||
@@ -235,8 +227,7 @@ CRUEList::GetPWEntry(size_t index, CItemData &ci){
   return true;
 }
 
-CRUEList&
-CRUEList::operator=(const CRUEList &that)
+CRUEList& CRUEList::operator=(const CRUEList &that)
 {
   if (this != &that) {
     m_maxentries = that.m_maxentries;

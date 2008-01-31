@@ -287,9 +287,8 @@ const unsigned long BlowFish::tempbf_S[4][256] =
   0xb74e6132, 0xce77e25b, 0x578fdfe3, 0x3ac372e6,
 };
 
-void
-BlowFish::Blowfish_encipher(unsigned long *xl,
-                            unsigned long *xr)
+void BlowFish::Blowfish_encipher(unsigned long *xl,
+                                 unsigned long *xr)
 {
   union aword Xl;
   union aword Xr;
@@ -312,9 +311,8 @@ BlowFish::Blowfish_encipher(unsigned long *xl,
   *xl = Xr.word;
 }
 
-void
-BlowFish::Blowfish_decipher(unsigned long *xl,
-                            unsigned long *xr)
+void BlowFish::Blowfish_decipher(unsigned long *xl,
+                                 unsigned long *xr)
 {
   union aword Xl;
   union aword Xr;
@@ -337,9 +335,8 @@ BlowFish::Blowfish_decipher(unsigned long *xl,
   *xr = Xl.word;
 }
 
-void
-BlowFish::InitializeBlowfish(unsigned char key[],
-                             short keybytes)
+void BlowFish::InitializeBlowfish(unsigned char key[],
+                                  short keybytes)
 {
   short          i;
   short          j;
@@ -349,8 +346,7 @@ BlowFish::InitializeBlowfish(unsigned char key[],
   union aword temp;
 
   j = 0;
-  for (i = 0; i < bf_N + 2; ++i)
-  {
+  for (i = 0; i < bf_N + 2; ++i) {
     temp.word = 0;
     temp.w.byte0 = key[j];
     temp.w.byte1 = key[(j+1)%keybytes];
@@ -364,16 +360,14 @@ BlowFish::InitializeBlowfish(unsigned char key[],
   datal = 0x00000000;
   datar = 0x00000000;
 
-  for (i = 0; i < bf_N + 2; i += 2)
-  {
+  for (i = 0; i < bf_N + 2; i += 2) {
     Blowfish_encipher(&datal, &datar);
 
     bf_P[i] = datal;
     bf_P[i + 1] = datar;
   }
 
-  for (i = 0; i < 4; ++i)
-  {
+  for (i = 0; i < 4; ++i) {
     for (j = 0; j < 256; j += 2)
     {
       Blowfish_encipher(&datal, &datar);
@@ -399,10 +393,9 @@ BlowFish::BlowFish(unsigned char *key,
   int x, y;
   for (x=0; x<18; x++)
     bf_P[x] = tempbf_P[x];
-  for (x=0; x<4; x++)
-  {
-    for (y=0; y<256; y++)
-    {
+
+  for (x=0; x<4; x++) {
+    for (y=0; y<256; y++) {
       bf_S[x][y] = tempbf_S[x][y];
     }
   }
@@ -418,8 +411,7 @@ BlowFish::~BlowFish()
   trashMemory((unsigned char*)bf_S, 256*4);
 }
 
-void
-BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
+void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
 {
   for (int x=0; x<8; x++)
     out[x] = in[x];
@@ -428,11 +420,11 @@ BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
     (unsigned long*)(out+sizeof(unsigned long)));
 }
 
-void
-BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
+void BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
 {
   for (int x=0; x<8; x++)
     out[x] = in[x];
+
   Blowfish_decipher((unsigned long*)out,
     (unsigned long*)(out+sizeof(unsigned long)));
 }

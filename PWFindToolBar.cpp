@@ -128,8 +128,7 @@ END_MESSAGE_MAP()
 
 // CPWFindToolBar message handlers
 
-void
-CPWFindToolBar::RefreshImages()
+void CPWFindToolBar::RefreshImages()
 {
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
@@ -177,8 +176,7 @@ BOOL CPWFindToolBar::PreTranslateMessage(MSG *pMsg)
 
 //  Other routines
 
-void
-CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
+void CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
 {
   int i, j;
   COLORREF crClassicBackground = RGB(192, 192, 192);
@@ -241,8 +239,7 @@ CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
   m_iWMSGID = iWMSGID;
 }
 
-void
-CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
+void CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
 {
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
   m_toolbarMode = toolbarMode;
@@ -266,8 +263,7 @@ CPWFindToolBar::LoadDefaultToolBar(const int toolbarMode)
   tbCtrl.SetMaxTextRows(0);
 }
 
-void
-CPWFindToolBar::AddExtraControls()
+void CPWFindToolBar::AddExtraControls()
 {
   CRect rect, rt;
   int index, iBtnHeight;
@@ -326,15 +322,14 @@ CPWFindToolBar::AddExtraControls()
   GetItemRect(index, &rect);
   rect.top += max((rect.top - rt.top) / 2, 0);
   m_findresults.SetWindowPos(NULL, rect.left + 2, rect.top + 2, 0, 0,
-    SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS );
+                             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOCOPYBITS );
 
   m_findresults.SetFont(&m_FindTextFont);
 
   ModifyStyle(0, WS_CLIPCHILDREN);
 }
 
-void
-CPWFindToolBar::ShowFindToolBar(bool bShow)
+void CPWFindToolBar::ShowFindToolBar(bool bShow)
 {
   if (this->GetSafeHwnd() == NULL)
     return;
@@ -382,8 +377,7 @@ void CPWFindToolBar::ToggleToolBarFindCase()
   tbCtrl.SetCmdID(index, m_bCaseSensitive ? ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I);
 }
 
-void
-CPWFindToolBar::ChangeImages(const int toolbarMode)
+void CPWFindToolBar::ChangeImages(const int toolbarMode)
 {
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
   m_toolbarMode = toolbarMode;
@@ -391,8 +385,7 @@ CPWFindToolBar::ChangeImages(const int toolbarMode)
   tbCtrl.SetImageList(&m_ImageLists[nImageListNum]);
 }
 
-void
-CPWFindToolBar::ClearFind()
+void CPWFindToolBar::ClearFind()
 {
   if (this->GetSafeHwnd() == NULL)
     return;
@@ -411,8 +404,7 @@ CPWFindToolBar::ClearFind()
   m_lastshown = size_t(-1);
 }
 
-void
-CPWFindToolBar::Find()
+void CPWFindToolBar::Find()
 {
   if (this->GetSafeHwnd() == NULL)
     return;
@@ -495,8 +487,7 @@ CPWFindToolBar::Find()
   Invalidate();
 }
 
-void
-CPWFindToolBar::ShowFindAdvanced()
+void CPWFindToolBar::ShowFindAdvanced()
 {
   CAdvancedDlg Adv(this, ADV_FIND, m_bsFields, m_subgroup_name, m_subgroup_set,
     m_subgroup_object, m_subgroup_function);

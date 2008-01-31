@@ -38,8 +38,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // Change the master password for the database.
-void
-DboxMain::OnPasswordChange()
+void DboxMain::OnPasswordChange()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -52,14 +51,12 @@ DboxMain::OnPasswordChange()
   }
 }
 
-void
-DboxMain::OnBackupSafe()
+void DboxMain::OnBackupSafe()
 {
   BackupSafe();
 }
 
-int
-DboxMain::BackupSafe()
+int DboxMain::BackupSafe()
 {
   INT_PTR rc;
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -110,15 +107,13 @@ DboxMain::BackupSafe()
   return PWScore::SUCCESS;
 }
 
-void
-DboxMain::OnRestore()
+void DboxMain::OnRestore()
 {
   if (!m_core.IsReadOnly()) // disable in read-only mode
     Restore();
 }
 
-int
-DboxMain::Restore()
+int DboxMain::Restore()
 {
   int rc;
   CMyString backup, passkey, temp;
@@ -211,8 +206,7 @@ DboxMain::Restore()
   return PWScore::SUCCESS;
 }
 
-void
-DboxMain::OnValidate() 
+void DboxMain::OnValidate() 
 {
   CString cs_msg;
   if (!m_core.Validate(cs_msg))
@@ -221,8 +215,7 @@ DboxMain::OnValidate()
   AfxMessageBox(cs_msg, MB_OK);
 }
 
-void
-DboxMain::OnOptions() 
+void DboxMain::OnOptions() 
 {
   const CString PWSLnkName(_T("Password Safe")); // for startup shortcut
   CPropertySheet optionsDlg(IDS_OPTIONS, this);
@@ -243,12 +236,12 @@ DboxMain::OnOptions()
   BOOL StartupShortcutExists = shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
 
   // Need to compare pre-post values for some:
-  const bool bOldShowUsernameInTree = prefs->
-    GetPref(PWSprefs::ShowUsernameInTree);
-  const bool bOldShowPasswordInTree = prefs->
-    GetPref(PWSprefs::ShowPasswordInTree);
-  const bool bOldExplorerTypeTree = prefs->
-    GetPref(PWSprefs::ExplorerTypeTree);
+  const bool bOldShowUsernameInTree = 
+               prefs->GetPref(PWSprefs::ShowUsernameInTree);
+  const bool bOldShowPasswordInTree = 
+               prefs->GetPref(PWSprefs::ShowPasswordInTree);
+  const bool bOldExplorerTypeTree = 
+               prefs->GetPref(PWSprefs::ExplorerTypeTree);
   /*
   **  Initialize the property pages values.
   */
@@ -352,7 +345,7 @@ DboxMain::OnOptions()
     save_hotkey_enabled = misc.m_hotkey_enabled = FALSE;
   else
     save_hotkey_enabled = misc.m_hotkey_enabled = prefs->
-    GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+      GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
   misc.m_usedefuser = prefs->
     GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
@@ -575,34 +568,34 @@ DboxMain::OnOptions()
     UpdateStatusBar();
     // Make a sunken or recessed border around the first pane
     m_statusBar.SetPaneInfo(SB_DBLCLICK,
-      m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
+                            m_statusBar.GetItemID(SB_DBLCLICK), SBPS_STRETCH, NULL);
 #endif
 
     /*
     ** Update string in database, if necessary & possible (i.e. ignore if R-O)
     */
     if (prefs->IsDBprefsChanged() && !app.m_core.GetCurFile().IsEmpty() &&
-      m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-        if (!m_core.IsReadOnly()) {
-          // save changed preferences to file
-          // Note that we currently can only write the entire file, so any changes
-          // the user made to the database are also saved here
-          int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
-          int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
-          CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
-          CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
-          m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
-            userBackupPrefix, userBackupDir); // try to save previous version
-          if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
-            AfxMessageBox(IDS_FAILEDSAVEPREF);
-          else
-            prefs->ClearDBprefsChanged();
-        } else {
-          if (!m_bAlreadyToldUserNoSave) {
-            AfxMessageBox(IDS_FAILEDSAVEPREFRO);  // Read-only!
-            m_bAlreadyToldUserNoSave = true;
-          }
+        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+      if (!m_core.IsReadOnly()) {
+        // save changed preferences to file
+        // Note that we currently can only write the entire file, so any changes
+        // the user made to the database are also saved here
+        int maxNumIncBackups = prefs->GetPref(PWSprefs::BackupMaxIncremented);
+        int backupSuffix = prefs->GetPref(PWSprefs::BackupSuffix);
+        CString userBackupPrefix = CString(prefs->GetPref(PWSprefs::BackupPrefixValue));
+        CString userBackupDir = CString(prefs->GetPref(PWSprefs::BackupDir));
+        m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
+                             userBackupPrefix, userBackupDir); // try to save previous version
+        if (app.m_core.WriteCurFile() != PWScore::SUCCESS)
+          AfxMessageBox(IDS_FAILEDSAVEPREF);
+        else
+          prefs->ClearDBprefsChanged();
+      } else {
+        if (!m_bAlreadyToldUserNoSave) {
+          AfxMessageBox(IDS_FAILEDSAVEPREFRO);  // Read-only!
+          m_bAlreadyToldUserNoSave = true;
         }
+      }
     }
     /*
     **  Now update the application according to the options.
@@ -622,19 +615,19 @@ DboxMain::OnOptions()
     }
 
     if ((bOldShowUsernameInTree !=
-      prefs->GetPref(PWSprefs::ShowUsernameInTree) ||
-      bOldShowPasswordInTree !=
-      prefs->GetPref(PWSprefs::ShowPasswordInTree)) ||
-      (bOldExplorerTypeTree !=
-      prefs->GetPref(PWSprefs::ExplorerTypeTree)) ||
-      (save_preexpirywarn != display.m_preexpirywarn) ||
-      (save_preexpirywarndays != display.m_preexpirywarndays))
+           prefs->GetPref(PWSprefs::ShowUsernameInTree) ||
+         bOldShowPasswordInTree !=
+           prefs->GetPref(PWSprefs::ShowPasswordInTree)) ||
+        (bOldExplorerTypeTree !=
+           prefs->GetPref(PWSprefs::ExplorerTypeTree)) ||
+        (save_preexpirywarn != display.m_preexpirywarn) ||
+        (save_preexpirywarndays != display.m_preexpirywarndays))
       RefreshViews();
 
     // Changing ExplorerTypeTree changes order of items,
     // which DisplayStatus implcitly depends upon
     if (bOldExplorerTypeTree !=
-      prefs->GetPref(PWSprefs::ExplorerTypeTree))
+        prefs->GetPref(PWSprefs::ExplorerTypeTree))
       SaveDisplayStatus();
 
     if (system.m_usesystemtray == TRUE) {
@@ -772,10 +765,10 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
       TCHAR *lpszPWHistory = cs_tmp.GetBuffer(len + sizeof(TCHAR));
 #if _MSC_VER >= 1400
       int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
-        &status, &old_max, &num_saved);
+                             &status, &old_max, &num_saved);
 #else
       int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"),
-        &status, &old_max, &num_saved);
+                           &status, &old_max, &num_saved);
 #endif
       cs_tmp.ReleaseBuffer();
       if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
@@ -790,8 +783,7 @@ private:
   CString m_text;
 };
 
-void
-DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
+void DboxMain::UpdatePasswordHistory(int iAction, int new_default_max)
 {
   int ids = 0;
   int num_altered = 0;

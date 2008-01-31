@@ -163,8 +163,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
-void
-DboxMain::DoDataExchange(CDataExchange* pDX)
+void DboxMain::DoDataExchange(CDataExchange* pDX)
 {
   CDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(DboxMain)
@@ -173,8 +172,7 @@ DboxMain::DoDataExchange(CDataExchange* pDX)
   //}}AFX_DATA_MAP
 }
 
-void
-DboxMain::UpdateToolBar(bool state)
+void DboxMain::UpdateToolBar(bool state)
 {
   if (m_toolbarsSetup == TRUE) {
     BOOL State = (state) ? FALSE : TRUE;
@@ -185,8 +183,7 @@ DboxMain::UpdateToolBar(bool state)
   }
 }
 
-void
-DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
+void DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
 {
   // Following test required since this can be called on exit, with a ci
   // from ItemData that's already been deleted. Ugh.
@@ -224,8 +221,7 @@ DboxMain::UpdateToolBarForSelectedItem(CItemData *ci)
   }
 }
 
-void
-DboxMain::setupBars()
+void DboxMain::setupBars()
 {
 #if !defined(POCKET_PC)
   // This code is copied from the DLGCBR32 example that comes with MFC
@@ -277,8 +273,8 @@ DboxMain::setupBars()
   }
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
-    CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
-    CBRS_TOOLTIPS | CBRS_FLYBY;
+                      CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
+                      CBRS_TOOLTIPS | CBRS_FLYBY;
   m_MainToolBar.SetBarStyle(dwStyle);
   m_MainToolBar.SetWindowText(_T("Standard"));
 
@@ -348,9 +344,8 @@ ItemListIter DboxMain::Find(int i)
 * FindAll returns the number of entries that matched.
 */
 
-size_t
-DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
-                  vector<int> &indices)
+size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
+                         vector<int> &indices)
 {
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
@@ -455,12 +450,11 @@ DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   return retval;
 }
 
-size_t
-DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
-                  vector<int> &indices,
-                  const CItemData::FieldBits &bsFields, const int subgroup_set, 
-                  const CString &subgroup_name, const int subgroup_object,
-                  const int subgroup_function)
+size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
+                         vector<int> &indices,
+                         const CItemData::FieldBits &bsFields, const int subgroup_set, 
+                         const CString &subgroup_name, const int subgroup_object,
+                         const int subgroup_function)
 {
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
@@ -609,8 +603,7 @@ nextentry:
 }
 
 //Checks and sees if everything works and something is selected
-BOOL
-DboxMain::SelItemOk()
+BOOL DboxMain::SelItemOk()
 {
   CItemData *ci = getSelectedItem();
   return (ci == NULL) ? FALSE : TRUE;
@@ -650,8 +643,8 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
     if (MakeVisible) {
       // Following needed to show selection when Find dbox has focus. Ugh.
       m_ctlItemTree.SetItemState(di->tree_item,
-        TVIS_DROPHILITED | TVIS_SELECTED,
-        TVIS_DROPHILITED | TVIS_SELECTED);
+                                 TVIS_DROPHILITED | TVIS_SELECTED,
+                                 TVIS_DROPHILITED | TVIS_SELECTED);
     }
     m_ctlItemTree.Invalidate();
   }
@@ -666,8 +659,8 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
 
   if (m_ctlItemList.IsWindowVisible()) {
     retval = m_ctlItemList.SetItemState(i,
-      LVIS_FOCUSED | LVIS_SELECTED,
-      LVIS_FOCUSED | LVIS_SELECTED);
+                                        LVIS_FOCUSED | LVIS_SELECTED,
+                                        LVIS_FOCUSED | LVIS_SELECTED);
     if (MakeVisible) {
       m_ctlItemList.EnsureVisible(i, FALSE);
     }
@@ -694,8 +687,7 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
 
 // Updates m_ctlItemList and m_ctlItemTree from m_pwlist
 // updates of windows suspended until all data is in.
-void
-DboxMain::RefreshViews(const int iView)
+void DboxMain::RefreshViews(const int iView)
 {
   if (!m_windowok)
     return;
@@ -721,7 +713,7 @@ DboxMain::RefreshViews(const int iView)
     SetCursor( waitCursor );
 #endif
     for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
-        listPos++) {
+         listPos++) {
       CItemData &ci = m_core.GetEntry(listPos);
       DisplayInfo *di = (DisplayInfo *)ci.GetDisplayInfo();
       if (di != NULL)
@@ -754,14 +746,11 @@ DboxMain::RefreshViews(const int iView)
   FixListIndexes();
 }
 
-void
-DboxMain::OnSize(UINT nType,
-                 int cx,
-                 int cy) 
-                 //Note that onsize runs before InitDialog (Gee, I love MFC)
-                 //  Also, OnSize is called AFTER the function has been peformed.
-                 //  To verify IF the fucntion should be done at all, it must be checked in OnSysCommand.
+void DboxMain::OnSize(UINT nType, int cx, int cy) 
 {
+  // Note that onsize runs before InitDialog (Gee, I love MFC)
+  //  Also, OnSize is called AFTER the function has been peformed.
+  //  To verify IF the fucntion should be done at all, it must be checked in OnSysCommand.
   CDialog::OnSize(nType, cx, cy);
 
   if (m_windowok) {
@@ -802,10 +791,9 @@ DboxMain::OnSize(UINT nType,
         }
         ClearData(false);
     }
-    if (PWSprefs::GetInstance()->
-      GetPref(PWSprefs::UseSystemTray)) {      
-        app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
-        ShowWindow(SW_HIDE);
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {      
+      app.SetMenuDefaultItem(ID_MENUITEM_UNMINIMIZE);
+      ShowWindow(SW_HIDE);
     }
   } else if (nType == SIZE_MAXIMIZED) {
     RefreshViews();
@@ -833,7 +821,7 @@ DboxMain::OnSize(UINT nType,
       CRect rect;
       GetWindowRect(&rect);
       PWSprefs::GetInstance()->SetPrefRect(rect.top, rect.bottom,
-        rect.left, rect.right);
+                                           rect.left, rect.right);
 
       // Make sure Find toolbar is above Status bar
       if (m_FindToolBar.IsVisible()) {
@@ -846,8 +834,7 @@ DboxMain::OnSize(UINT nType,
 }
 
 // Called when right-click is invoked in the client area of the window.
-void
-DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point) 
+void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point) 
 {
 #if defined(POCKET_PC)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
@@ -869,13 +856,13 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 
   // RClick over Main Toolbar - allow Customize Main toolbar
   if (mp.x > appl_rect.left && mp.x < appl_rect.right &&
-    mp.y > rect.top && mp.y < rect.bottom) {
-      if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
-        CMenu* pPopup = menu.GetSubMenu(0);
-        ASSERT(pPopup != NULL);
-        pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
-      }
-      return;
+      mp.y > rect.top && mp.y < rect.bottom) {
+    if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
+      CMenu* pPopup = menu.GetSubMenu(0);
+      ASSERT(pPopup != NULL);
+      pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+    }
+    return;
   }
 
   // RClick over ListView
@@ -883,9 +870,9 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     // currently in flattened list view.
     m_ctlItemList.GetWindowRect(&rect);
     if (mp.x < rect.left || mp.x > appl_rect.right ||
-      mp.y < rect.top || mp.y > rect.bottom) {
-        // But not in the window
-        return;
+        mp.y < rect.top || mp.y > rect.bottom) {
+      // But not in the window
+      return;
     }
 
     m_ctlItemList.ScreenToClient(&local);
@@ -906,9 +893,9 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     // currently in tree view
     m_ctlItemTree.GetWindowRect(&rect);
     if (mp.x < rect.left || mp.x > appl_rect.right ||
-      mp.y < rect.top || mp.y > rect.bottom) {
-        // But not in the window
-        return;
+        mp.y < rect.top || mp.y > rect.bottom) {
+      // But not in the window
+      return;
     }
     ASSERT(m_ctlItemTree.IsWindowVisible());
     m_ctlItemTree.ScreenToClient(&local);
@@ -965,9 +952,9 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 
     if (itemData->IsURLEmpty()) {
       pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
-        ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+                         ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
       pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
-        ID_MENUITEM_COPYURL, CS_COPYURL);
+                         ID_MENUITEM_COPYURL, CS_COPYURL);
       pPopup->EnableMenuItem(ID_MENUITEM_BROWSEURL, MF_GRAYED);
       pPopup->EnableMenuItem(ID_MENUITEM_COPYURL, MF_GRAYED);
       UpdateBrowseURLSendEmailButton(false);
@@ -977,14 +964,14 @@ DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       const bool bIsEmail = itemData->IsURLEmail();
       if (bIsEmail) {
         pPopup->ModifyMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND,
-          ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
+                           ID_MENUITEM_SENDEMAIL, CS_SENDEMAIL);
         pPopup->ModifyMenu(ID_MENUITEM_COPYURL, MF_BYCOMMAND,
-          ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
+                           ID_MENUITEM_COPYEMAIL, CS_COPYEMAIL);
       } else {
         pPopup->ModifyMenu(ID_MENUITEM_SENDEMAIL, MF_BYCOMMAND,
-          ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
+                           ID_MENUITEM_BROWSEURL, CS_BROWSEURL);
         pPopup->ModifyMenu(ID_MENUITEM_COPYEMAIL, MF_BYCOMMAND,
-          ID_MENUITEM_COPYURL, CS_COPYURL);
+                           ID_MENUITEM_COPYURL, CS_COPYURL);
       }
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
@@ -1025,10 +1012,10 @@ void DboxMain::OnTreeItemSelected(NMHDR * /*pNotifyStruct */, LRESULT *pLResult)
   m_ctlItemTree.HitTest(&htinfo);
 
   if (htinfo.hItem != NULL && 
-    (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) &&
-    !m_ctlItemTree.IsLeaf(htinfo.hItem)) {
-      m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-      *pLResult = 1L;  // We did it!
+      (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) &&
+      !m_ctlItemTree.IsLeaf(htinfo.hItem)) {
+    m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+    *pLResult = 1L;  // We did it!
   }
 }
 
@@ -1061,8 +1048,7 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 #if !defined(POCKET_PC)
-void
-DboxMain::OnChangeItemFocus(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
+void DboxMain::OnChangeItemFocus(NMHDR* /* pNMHDR */, LRESULT* /* pResult */) 
 {
   // Called on NM_{SET,KILL}FOCUS for IDC_ITEM{LIST,TREE}
   // Seems excessive to do this all the time
@@ -1360,8 +1346,7 @@ struct deleteDisplayInfo {
   {delete p.second.GetDisplayInfo();} // no need to set to NULL
 };
 
-void
-DboxMain::ClearData(bool clearMRE)
+void DboxMain::ClearData(bool clearMRE)
 {
   // Iterate over item list, delete DisplayInfo
   deleteDisplayInfo ddi;
@@ -1448,8 +1433,7 @@ void DboxMain::SortListView()
     OnHideFindToolBar();
 }
 
-void
-DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+void DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 {
 #if defined(POCKET_PC)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
@@ -1474,8 +1458,7 @@ DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
   *pResult = TRUE;
 }
 
-void
-DboxMain::OnHeaderBeginDrag(NMHDR* pNMHDR, LRESULT *pResult)
+void DboxMain::OnHeaderBeginDrag(NMHDR* pNMHDR, LRESULT *pResult)
 {
   // Called for HDN_BEGINDRAG which changes the column order when CC not visible
   // Stop drag of first column (image)
@@ -1488,8 +1471,7 @@ DboxMain::OnHeaderBeginDrag(NMHDR* pNMHDR, LRESULT *pResult)
     *pResult = FALSE;
 }
 
-void
-DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
+void DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
 {
   // Called for HDN_ENDDRAG which changes the column order when CC not visible
   // Unfortunately the changes are only really done when this call returns,
@@ -1515,8 +1497,7 @@ DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
   *pResult = FALSE;
 }
 
-void
-DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
+void DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
 {
   NMHEADER *phdn = (NMHEADER *) pNMHDR;
   *pResult = FALSE;
@@ -1530,17 +1511,16 @@ DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
 
   // column width changed
   switch (phdn->hdr.code) {
-case HDN_ENDTRACK:
-case HDN_ITEMCHANGED:
-  m_nColumnWidthByIndex[phdn->iItem] = phdn->pitem->cxy;
-  break;
-default:
-  break;
+    case HDN_ENDTRACK:
+    case HDN_ITEMCHANGED:
+      m_nColumnWidthByIndex[phdn->iItem] = phdn->pitem->cxy;
+      break;
+    default:
+      break;
   }
 }
 
-void
-DboxMain::OnToggleView() 
+void DboxMain::OnToggleView() 
 {
   if (m_IsListView)
     OnTreeView();
@@ -1548,24 +1528,21 @@ DboxMain::OnToggleView()
     OnListView();
 }
 
-void
-DboxMain::OnListView() 
+void DboxMain::OnListView() 
 {
   SetListView();
   if (m_FindToolBar.IsVisible())
     OnHideFindToolBar();
 }
 
-void
-DboxMain::OnTreeView() 
+void DboxMain::OnTreeView() 
 {
   SetTreeView();
   if (m_FindToolBar.IsVisible())
     OnHideFindToolBar();
 }
 
-void
-DboxMain::SetListView()
+void DboxMain::SetListView()
 {
   UnFindItem();
   m_ctlItemTree.ShowWindow(SW_HIDE);
@@ -1578,8 +1555,7 @@ DboxMain::SetListView()
   UpdateMenuAndToolBar(m_bOpen);
 }
 
-void
-DboxMain::SetTreeView()
+void DboxMain::SetTreeView()
 {
   UnFindItem();
   m_ctlItemList.ShowWindow(SW_HIDE);
@@ -1592,24 +1568,21 @@ DboxMain::SetTreeView()
   UpdateMenuAndToolBar(m_bOpen);
 }
 
-void
-DboxMain::OnOldToolbar() 
+void DboxMain::OnOldToolbar() 
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, false);
   SetToolbar(ID_MENUITEM_OLD_TOOLBAR);
   UpdateToolBar(m_core.IsReadOnly());
 }
 
-void
-DboxMain::OnNewToolbar() 
+void DboxMain::OnNewToolbar() 
 {
   PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, true);
   SetToolbar(ID_MENUITEM_NEW_TOOLBAR);
   UpdateToolBar(m_core.IsReadOnly());
 }
 
-void
-DboxMain::SetToolbar(const int menuItem, bool bInit)
+void DboxMain::SetToolbar(const int menuItem, bool bInit)
 {
   // Toolbar
   m_toolbarMode = menuItem;
@@ -1632,40 +1605,37 @@ DboxMain::SetToolbar(const int menuItem, bool bInit)
   SetToolBarPositions();
 }
 
-void
-DboxMain::OnExpandAll()
+void DboxMain::OnExpandAll()
 {
   m_ctlItemTree.OnExpandAll();
 }
 
-void
-DboxMain::OnCollapseAll()
+void DboxMain::OnCollapseAll()
 {
   m_ctlItemTree.OnCollapseAll();
 }
 
-void
-DboxMain::OnTimer(UINT_PTR nIDEvent )
+void DboxMain::OnTimer(UINT_PTR nIDEvent )
 {
   if ((nIDEvent == TIMER_CHECKLOCK && IsWorkstationLocked()) ||
-    (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
-      /*
-      * Since we clear the data, any unchanged changes will be lost,
-      * so we force a save if database is modified, and fail
-      * to lock if the save fails (unless db is r-o).
-      */
-      if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
+      (nIDEvent == TIMER_USERLOCK && DecrementAndTestIdleLockCounter())) {
+    /*
+    * Since we clear the data, any unchanged changes will be lost,
+    * so we force a save if database is modified, and fail
+    * to lock if the save fails (unless db is r-o).
+    */
+    if (m_core.IsReadOnly() || m_core.GetNumEntries() == 0 ||
         !(m_core.IsChanged() || m_bTSUpdated ||
         m_core.WasDisplayStatusChanged()) ||
         Save() == PWScore::SUCCESS) {
-          TRACE("locking database\n");
-          if(IsWindowVisible()){
-            ShowWindow(SW_MINIMIZE);
-          }
-          ClearData(false);
-          if (nIDEvent == TIMER_CHECKLOCK)
-            KillTimer(TIMER_CHECKLOCK);
+      TRACE("locking database\n");
+      if (IsWindowVisible()){
+        ShowWindow(SW_MINIMIZE);
       }
+      ClearData(false);
+      if (nIDEvent == TIMER_CHECKLOCK)
+        KillTimer(TIMER_CHECKLOCK);
+    }
   }
 }
 
@@ -1683,9 +1653,7 @@ BOOL DboxMain::IsWorkstationLocked() const
   return Result;
 }
 
-
-void
-DboxMain::OnChangeTreeFont() 
+void DboxMain::OnChangeTreeFont() 
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   CFont *pOldFontTree;
@@ -1731,8 +1699,7 @@ DboxMain::OnChangeTreeFont()
   }
 }
 
-void
-DboxMain::OnChangePswdFont() 
+void DboxMain::OnChangePswdFont() 
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   LOGFONT lf;
@@ -1774,8 +1741,7 @@ static CString GetToken(CString& str, LPCTSTR c)
   return token;
 }
 
-void
-DboxMain::ExtractFont(CString& str, LOGFONT *plogfont)
+void DboxMain::ExtractFont(CString& str, LOGFONT *plogfont)
 {
   plogfont->lfHeight = _ttol((LPCTSTR)GetToken(str, _T(",")));
   plogfont->lfWidth = _ttol((LPCTSTR)GetToken(str, _T(",")));
@@ -1802,8 +1768,7 @@ DboxMain::ExtractFont(CString& str, LOGFONT *plogfont)
 #endif  
 }
 
-void
-DboxMain::UpdateSystemTray(const STATE s)
+void DboxMain::UpdateSystemTray(const STATE s)
 {
   switch (s) {
     case LOCKED:
@@ -1824,8 +1789,7 @@ DboxMain::UpdateSystemTray(const STATE s)
   }
 }
 
-BOOL
-DboxMain::LaunchBrowser(const CString &csURL)
+BOOL DboxMain::LaunchBrowser(const CString &csURL)
 {
   CString theURL(csURL);
 
@@ -1867,9 +1831,9 @@ DboxMain::LaunchBrowser(const CString &csURL)
     theURL = _T("http://") + theURL;
 
   CString csAltBrowser(PWSprefs::GetInstance()->
-    GetPref(PWSprefs::AltBrowser));
+                       GetPref(PWSprefs::AltBrowser));
   bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) &&
-    !csAltBrowser.IsEmpty());
+                        !csAltBrowser.IsEmpty());
 
   SHELLEXECUTEINFO si;
   si.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -1882,7 +1846,7 @@ DboxMain::LaunchBrowser(const CString &csURL)
     si.lpFile = theURL;
   } else { // alternate browser specified, invoke w/optional args
     CString csCmdLineParms(PWSprefs::GetInstance()->
-      GetPref(PWSprefs::AltBrowserCmdLineParms));
+                           GetPref(PWSprefs::AltBrowserCmdLineParms));
 
     if (!csCmdLineParms.IsEmpty())
       theURL = csCmdLineParms + _T(" ") + theURL;
@@ -1898,8 +1862,7 @@ DboxMain::LaunchBrowser(const CString &csURL)
   return TRUE;
 }
 
-void
-DboxMain::SetColumns()
+void DboxMain::SetColumns()
 {
   // User hasn't yet saved the columns he/she wants and so gets our order!
   // Or - user has reset the columns (popup menu from right click on Header)
@@ -1913,11 +1876,11 @@ DboxMain::SetColumns()
   CRect rect;
   m_ctlItemList.GetClientRect(&rect);
   int i1stWidth = prefs->GetPref(PWSprefs::Column1Width,
-    (rect.Width() / 3 + rect.Width() % 3));
+                                 (rect.Width() / 3 + rect.Width() % 3));
   int i2ndWidth = prefs->GetPref(PWSprefs::Column2Width,
-    rect.Width() / 3);
+                                 rect.Width() / 3);
   int i3rdWidth = prefs->GetPref(PWSprefs::Column3Width,
-    rect.Width() / 3);
+                                 rect.Width() / 3);
 
   cs_header = GetHeaderText(CItemData::TITLE);
   m_ctlItemList.InsertColumn(0, cs_header);
@@ -1943,9 +1906,8 @@ DboxMain::SetColumns()
     hdi.lParam = CItemData::PASSWORD;
     m_LVHdrCtrl.SetItem(3, &hdi);
     m_ctlItemList.SetColumnWidth(3,
-      PWSprefs::GetInstance()->
-      GetPref(PWSprefs::Column4Width,
-      rect.Width() / 4));
+                                 PWSprefs::GetInstance()->GetPref(PWSprefs::Column4Width,
+                                 rect.Width() / 4));
   }
 
   int ioff = 3;
@@ -2002,8 +1964,7 @@ DboxMain::SetColumns()
   return;
 }
 
-void
-DboxMain::SetColumns(const CString cs_ListColumns)
+void DboxMain::SetColumns(const CString cs_ListColumns)
 {
   //  User has saved the columns he/she wants and now we are putting them back
 
@@ -2047,20 +2008,20 @@ DboxMain::SetColumns(const CString cs_ListColumns)
 
   int icol(0);
   for (vi_IterColumns = vi_columns.begin();
-    vi_IterColumns != vi_columns.end();
-    vi_IterColumns++) {
-      iType = *vi_IterColumns;
-      cs_header = GetHeaderText(iType);
-      // Images (if present) must be the first column!
-      if (iType == CItemData::UUID && icol != 0)
-        continue;
+       vi_IterColumns != vi_columns.end();
+       vi_IterColumns++) {
+    iType = *vi_IterColumns;
+    cs_header = GetHeaderText(iType);
+    // Images (if present) must be the first column!
+    if (iType == CItemData::UUID && icol != 0)
+      continue;
 
-      if (!cs_header.IsEmpty()) {
-        m_ctlItemList.InsertColumn(icol, cs_header);
-        hdi.lParam = iType;
-        m_LVHdrCtrl.SetItem(icol, &hdi);
-        icol++;
-      }
+    if (!cs_header.IsEmpty()) {
+      m_ctlItemList.InsertColumn(icol, cs_header);
+      hdi.lParam = iType;
+      m_LVHdrCtrl.SetItem(icol, &hdi);
+      icol++;
+    }
   }
 
   SetHeaderInfo();
@@ -2068,8 +2029,7 @@ DboxMain::SetColumns(const CString cs_ListColumns)
   return;
 }
 
-void
-DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
+void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
 {
   //  User has saved the columns he/she wants and now we are putting them back
   std::vector<int> vi_widths;
@@ -2157,8 +2117,7 @@ void DboxMain::DeleteColumn(const int iType)
   SetHeaderInfo();
 }
 
-void
-DboxMain::SetHeaderInfo()
+void DboxMain::SetHeaderInfo()
 {
   HDITEM hdi_get;
   // CHeaderCtrl get values
@@ -2194,8 +2153,7 @@ DboxMain::SetHeaderInfo()
   AutoResizeColumns();
 }
 
-void
-DboxMain::OnResetColumns()
+void DboxMain::OnResetColumns()
 {
   // Delete all existing columns
   for (int i = 0; i < m_nColumns; i++) {
@@ -2226,8 +2184,7 @@ DboxMain::OnResetColumns()
     SetupColumnChooser(false);
 }
 
-void
-DboxMain::AutoResizeColumns()
+void DboxMain::AutoResizeColumns()
 {
   int iIndex, iType;
   // CHeaderCtrl get values
@@ -2257,14 +2214,12 @@ DboxMain::AutoResizeColumns()
   m_nColumnWidthByIndex[iIndex] = m_ctlItemList.GetColumnWidth(iIndex);
 }
 
-void
-DboxMain::OnColumnPicker()
+void DboxMain::OnColumnPicker()
 {
   SetupColumnChooser(true);
 }
 
-void
-DboxMain::SetupColumnChooser(const bool bShowHide)
+void DboxMain::SetupColumnChooser(const bool bShowHide)
 {
   if (m_pCC == NULL) {
     m_pCC = new CColumnChooserDlg;
@@ -2299,9 +2254,9 @@ DboxMain::SetupColumnChooser(const bool bShowHide)
     m_pCC->GetWindowRect(&rect1);
     m_pCC->m_ccListCtrl.GetWindowRect(&rect2);
     m_pCC->SetWindowPos(NULL, 0, 0, m_iheadermaxwidth + 18,
-      rect1.Height(), SWP_NOMOVE | SWP_NOZORDER);
+                        rect1.Height(), SWP_NOMOVE | SWP_NOZORDER);
     m_pCC->m_ccListCtrl.SetWindowPos(NULL, 0, 0, m_iheadermaxwidth + 6,
-      rect2.Height(), SWP_NOMOVE | SWP_NOZORDER);
+                                     rect2.Height(), SWP_NOMOVE | SWP_NOZORDER);
   }
 
   int i;
@@ -2494,8 +2449,7 @@ void DboxMain::CalcHeaderWidths()
   }
 }
 
-void
-DboxMain::UnFindItem()
+void DboxMain::UnFindItem()
 {
   // Entries found are made bold - remove it here.
   if (m_bBoldItem) {
@@ -2503,7 +2457,6 @@ DboxMain::UnFindItem()
     m_bBoldItem = false;
   }
 }
-
 
 bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive,
                                     CString &cs_directory)
@@ -2549,8 +2502,7 @@ bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive
   return true;
 }
 
-void
-DboxMain::OnViewReports()
+void DboxMain::OnViewReports()
 {
   CString cs_filename, cs_path, csAction;
   CString cs_directory, cs_drive;
@@ -2624,8 +2576,7 @@ DboxMain::OnViewReports()
   return;
 }
 
-void
-DboxMain::OnViewReports(UINT nID)
+void DboxMain::OnViewReports(UINT nID)
 {
   ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) &&
     (nID <= ID_MENUITEM_REPORT_VALIDATE));
@@ -2662,8 +2613,7 @@ DboxMain::OnViewReports(UINT nID)
   return;
 }
 
-void
-DboxMain::ViewReport(const CString cs_ReportFileName)
+void DboxMain::ViewReport(const CString cs_ReportFileName)
 {
   CString cs_path, csAction;
   CString cs_drive, cs_directory;
@@ -2719,8 +2669,7 @@ DboxMain::ViewReport(const CString cs_ReportFileName)
   return;
 }
 
-int
-DboxMain::OnUpdateViewReports(const int nID)
+int DboxMain::OnUpdateViewReports(const int nID)
 {
   CMyString cs_Database(m_core.GetCurFile());
 
@@ -2764,8 +2713,7 @@ DboxMain::OnUpdateViewReports(const int nID)
   return (status != 0) ? FALSE : TRUE;
 }
 
-void
-DboxMain::OnCustomizeToolbar()
+void DboxMain::OnCustomizeToolbar()
 {
   CToolBarCtrl& mainTBCtrl = m_MainToolBar.GetToolBarCtrl();
   mainTBCtrl.Customize();
@@ -2774,15 +2722,12 @@ DboxMain::OnCustomizeToolbar()
   PWSprefs::GetInstance()->SetPref(PWSprefs::MainToolBarButtons, cs_temp);
 }
 
-void
-DboxMain::OnHideFindToolBar()
+void DboxMain::OnHideFindToolBar()
 {
   SetFindToolBar(false);
 }
 
-
-void
-DboxMain::SetFindToolBar(bool bShow)
+void DboxMain::SetFindToolBar(bool bShow)
 {
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
@@ -2797,8 +2742,7 @@ DboxMain::SetFindToolBar(bool bShow)
   SetToolBarPositions();
 }
 
-void
-DboxMain::SetToolBarPositions()
+void DboxMain::SetToolBarPositions()
 {
   if (m_FindToolBar.GetSafeHwnd() == NULL)
     return;
@@ -2833,26 +2777,22 @@ DboxMain::SetToolBarPositions()
   }
 }
 
-void
-DboxMain::OnToolBarClearFind()
+void DboxMain::OnToolBarClearFind()
 {
   m_FindToolBar.ClearFind();
 }
 
-void
-DboxMain::OnToolBarFindCase()
+void DboxMain::OnToolBarFindCase()
 {
   m_FindToolBar.ToggleToolBarFindCase();
 }
 
-void 
-DboxMain::OnToolBarFindAdvanced()
+void DboxMain::OnToolBarFindAdvanced()
 {
   m_FindToolBar.ShowFindAdvanced();
 }
 
-void 
-DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
+void DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
 {
   CToolBarCtrl &mainTBCtrl =  m_MainToolBar.GetToolBarCtrl();
   if (mainTBCtrl.IsButtonHidden(ID_MENUITEM_BROWSEURL) == TRUE)
@@ -2872,8 +2812,7 @@ DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)
   mainTBCtrl.HideButton(ID_MENUITEM_BROWSEURL, FALSE);
 }
 
-int
-DboxMain::GetEntryImage(const CItemData &ci)
+int DboxMain::GetEntryImage(const CItemData &ci)
 {
   int entrytype = ci.GetEntryType();
   if (entrytype == CItemData::Alias) {
@@ -2929,8 +2868,7 @@ DboxMain::GetEntryImage(const CItemData &ci)
   return nImage;
 }
 
-void
-DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOneEntry)
+void DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOneEntry)
 {
   if (!m_bImageInLV)
     return;
@@ -2944,8 +2882,7 @@ DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOneEntry
   }
 }
 
-void
-DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
+void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
 {
   m_ctlItemTree.SetItemImage(ti, nImage, nImage);
 
@@ -2956,8 +2893,7 @@ DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
   }
 }
 
-void
-DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
+void DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
 {
   if (lpdis == NULL || lpdis->CtlType != ODT_MENU) {
     // not for an ownerdrawn menu
@@ -2996,8 +2932,7 @@ DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
   }
 }
 
-void
-DboxMain::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpmis)
+void DboxMain::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpmis)
 {
   if (lpmis == NULL || lpmis->CtlType != ODT_MENU) {
     // not for an ownerdrawn menu
@@ -3029,8 +2964,7 @@ DboxMain::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpmis)
   }
 }
 
-HICON
-DboxMain::GetEntryIcon(const int nImage) const
+HICON DboxMain::GetEntryIcon(const int nImage) const
 {
   int nID;
   switch (nImage) {

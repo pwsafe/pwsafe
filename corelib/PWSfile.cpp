@@ -150,8 +150,7 @@ PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h)
     sizeof(m_file_uuid_array));
 }
 
-PWSfile::HeaderRecord &
-PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
+PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
 {
   if (this != &h) {
     m_nCurrentMajorVersion = h.m_nCurrentMajorVersion;
@@ -519,7 +518,7 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
   } else {
     DWORD bytesRead;
     (void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
-      &bytesRead, NULL);
+                     &bytesRead, NULL);
     CloseHandle(h2);
     if (bytesRead > 0) {
       lockerStr[bytesRead/sizeof(TCHAR)] = TCHAR('\0');

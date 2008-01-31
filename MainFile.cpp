@@ -60,8 +60,7 @@ CMyString DboxMain::NormalizeTTT(const CMyString in)
   return ttt;
 }
 
-BOOL
-DboxMain::OpenOnInit(void)
+BOOL DboxMain::OpenOnInit(void)
 {
   /*
   Routine to account for the differences between opening PSafe for
@@ -140,7 +139,7 @@ DboxMain::OpenOnInit(void)
   if (rc2 == PWScore::BAD_DIGEST) {
     CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile());
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
-    const int yn = MessageBox(cs_msg, cs_title, MB_YESNO|MB_ICONERROR);
+    const int yn = MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR);
     if (yn == IDNO) {
       CDialog::OnCancel();
       return FALSE;
@@ -152,10 +151,9 @@ DboxMain::OpenOnInit(void)
     CString cs_msg;
     cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
     CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
-    if (MessageBox(cs_msg, cs_title,
-      MB_YESNO | MB_ICONWARNING) == IDNO) {
-        CDialog::OnCancel();
-        return FALSE;
+    if (MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONWARNING) == IDNO) {
+      CDialog::OnCancel();
+      return FALSE;
     }
     go_ahead = true;
   } // LIMIT_REACHED
@@ -191,14 +189,12 @@ DboxMain::OpenOnInit(void)
   return TRUE;
 }
 
-void
-DboxMain::OnNew()
+void DboxMain::OnNew()
 {
   New();
 }
 
-int
-DboxMain::New()
+int DboxMain::New()
 {
   int rc, rc2;
 
@@ -208,21 +204,21 @@ DboxMain::New()
     rc = MessageBox(cs_temp, AfxGetAppName(),
       MB_ICONQUESTION|MB_YESNOCANCEL);
     switch (rc) {
-    case IDCANCEL:
-      return PWScore::USER_CANCEL;
-    case IDYES:
-      rc2 = Save();
-      /*
-      Make sure that writing the file was successful
-      */
-      if (rc2 == PWScore::SUCCESS)
+      case IDCANCEL:
+        return PWScore::USER_CANCEL;
+      case IDYES:
+        rc2 = Save();
+        /*
+        Make sure that writing the file was successful
+        */
+        if (rc2 == PWScore::SUCCESS)
+          break;
+        else
+          return PWScore::CANT_OPEN_FILE;
+      case IDNO:
+        // Reset changed flag
+        SetChanged(Clear);
         break;
-      else
-        return PWScore::CANT_OPEN_FILE;
-    case IDNO:
-      // Reset changed flag
-      SetChanged(Clear);
-      break;
     }
   }
 
@@ -264,8 +260,7 @@ DboxMain::New()
   return PWScore::SUCCESS;
 }
 
-int
-DboxMain::NewFile(CMyString &newfilename)
+int DboxMain::NewFile(CMyString &newfilename)
 {
   CString cs_msg, cs_title, cs_temp;
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
@@ -336,14 +331,12 @@ DboxMain::NewFile(CMyString &newfilename)
   return PWScore::SUCCESS;
 }
 
-void
-DboxMain::OnClose()
+void DboxMain::OnClose()
 {
   Close();
 }
 
-int
-DboxMain::Close()
+int DboxMain::Close()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -379,8 +372,7 @@ DboxMain::Close()
   return PWScore::SUCCESS;
 }
 
-void
-DboxMain::OnOpen()
+void DboxMain::OnOpen()
 {
   int rc = Open();
 
@@ -394,11 +386,10 @@ DboxMain::OnOpen()
 }
 
 #if _MFC_VER > 1200
-BOOL
+BOOL DboxMain::OnOpenMRU(UINT nID)
 #else
-void
+void DboxMain::OnOpenMRU(UINT nID)
 #endif
-DboxMain::OnOpenMRU(UINT nID)
 {
   UINT uMRUItem = nID - ID_FILE_MRU_ENTRY1;
 
@@ -427,8 +418,7 @@ DboxMain::OnOpenMRU(UINT nID)
 #endif
 }
 
-int
-DboxMain::Open()
+int DboxMain::Open()
 {
   int rc = PWScore::SUCCESS;
   CMyString newfile;
@@ -478,8 +468,7 @@ DboxMain::Open()
   return rc;
 }
 
-int
-DboxMain::Open( const CMyString &pszFilename )
+int DboxMain::Open( const CMyString &pszFilename )
 {
   int rc;
   CMyString passkey, temp;
@@ -586,27 +575,24 @@ DboxMain::Open( const CMyString &pszFilename )
   RefreshViews();
   SetInitialDatabaseDisplay();
   m_core.SetDefUsername(PWSprefs::GetInstance()->
-    GetPref(PWSprefs::DefaultUsername));
+                        GetPref(PWSprefs::DefaultUsername));
   m_core.SetUseDefUser(PWSprefs::GetInstance()->
-    GetPref(PWSprefs::UseDefaultUser) ? true : false);
+                       GetPref(PWSprefs::UseDefaultUser) ? true : false);
   m_needsreading = false;
   return rc;
 }
 
-void
-DboxMain::OnClearMRU()
+void DboxMain::OnClearMRU()
 {
   app.ClearMRU();
 }
 
-void
-DboxMain::OnSave()
+void DboxMain::OnSave()
 {
   Save();
 }
 
-int
-DboxMain::Save()
+int DboxMain::Save()
 {
   int rc;
   CString cs_title, cs_msg, cs_temp;
@@ -698,33 +684,32 @@ int DboxMain::SaveIfChanged()
   return PWScore::SUCCESS;
 }
 
-void
-DboxMain::OnSaveAs()
+void DboxMain::OnSaveAs()
 {
   SaveAs();
 }
 
-int
-DboxMain::SaveAs()
+int DboxMain::SaveAs()
 {
   INT_PTR rc;
   CMyString newfile;
   CString cs_msg, cs_title, cs_text, cs_temp;
 
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
-    m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
-      cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile());
-      cs_title.LoadString(IDS_VERSIONWARNING);
-      CGeneralMsgBox gmb;
-      gmb.SetTitle(cs_title);
-      gmb.SetMsg(cs_msg);
-      gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-      gmb.AddButton(1, _T("Continue"));
-      gmb.AddButton(2, _T("Cancel"), TRUE, TRUE);
-      INT_PTR rc = gmb.DoModal();
-      if (rc == 2)
-        return PWScore::USER_CANCEL;
+      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
+    cs_msg.Format(IDS_NEWFORMAT2, m_core.GetCurFile());
+    cs_title.LoadString(IDS_VERSIONWARNING);
+    CGeneralMsgBox gmb;
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_msg);
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(1, _T("Continue"));
+    gmb.AddButton(2, _T("Cancel"), TRUE, TRUE);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == 2)
+      return PWScore::USER_CANCEL;
   }
+
   //SaveAs-type dialog box
   CMyString cf(m_core.GetCurFile());
   if (cf.IsEmpty())
@@ -806,8 +791,7 @@ DboxMain::SaveAs()
   return PWScore::SUCCESS;
 }
 
-void
-DboxMain::OnExportVx(UINT nID)
+void DboxMain::OnExportVx(UINT nID)
 {
   INT_PTR rc;
   CMyString newfile;
@@ -861,8 +845,7 @@ DboxMain::OnExportVx(UINT nID)
   }
 }
 
-void
-DboxMain::OnExportText()
+void DboxMain::OnExportText()
 {
   CExportTextDlg et;
   CString cs_text, cs_temp, cs_title;
@@ -929,8 +912,7 @@ DboxMain::OnExportText()
   }
 }
 
-void
-DboxMain::OnExportXML()
+void DboxMain::OnExportXML()
 {
   CExportXMLDlg eXML;
   CString cs_text, cs_title, cs_temp;
@@ -997,8 +979,7 @@ DboxMain::OnExportXML()
   }
 }
 
-void
-DboxMain::OnImportText()
+void DboxMain::OnImportText()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -1077,9 +1058,9 @@ DboxMain::OnImportText()
         cs_title.LoadString(IDS_STATUS);
         MessageBox(temp1 + CString("\n") + temp2, cs_title, MB_ICONINFORMATION|MB_OK);
         ChangeOkUpdate();
-      }
         RefreshViews();
         break;
+      }
     } // switch
     // Finish Report
     rpt.EndReport();
@@ -1101,8 +1082,7 @@ DboxMain::OnImportText()
   }
 }
 
-void
-DboxMain::OnImportKeePass()
+void DboxMain::OnImportKeePass()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -1158,8 +1138,7 @@ DboxMain::OnImportKeePass()
   }
 }
 
-void
-DboxMain::OnImportXML()
+void DboxMain::OnImportXML()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -1289,8 +1268,7 @@ DboxMain::OnImportXML()
   }
 }
 
-int
-DboxMain::Merge()
+int DboxMain::Merge()
 {
   int rc = PWScore::SUCCESS;
   CMyString newfile;
@@ -1335,8 +1313,15 @@ DboxMain::Merge()
   return rc;
 }
 
-int
-DboxMain::Merge(const CMyString &pszFilename) {
+void DboxMain::OnMerge()
+{
+  if (m_core.IsReadOnly()) // disable in read-only mode
+    return;
+
+  Merge();
+}
+
+int DboxMain::Merge(const CMyString &pszFilename) {
   /* open file they want to merge */
   CMyString passkey, temp;
 
@@ -1429,8 +1414,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
     CItemData otherItem = othercore.GetEntry(otherPos);
 
     if (m_subgroup_set == BST_CHECKED &&
-      !otherItem.Matches(m_subgroup_name, m_subgroup_object,
-      m_subgroup_function))
+        !otherItem.Matches(m_subgroup_name, m_subgroup_object, m_subgroup_function))
       continue;
 
     const CMyString otherGroup = otherItem.GetGroup();
@@ -1494,7 +1478,7 @@ DboxMain::Merge(const CMyString &pszFilename) {
   waitCursor.Restore(); /* restore normal cursor */
 
   /* tell the user we're done & provide short merge report */
-  int totalAdded = numAdded+numConflicts;
+  int totalAdded = numAdded + numConflicts;
   CString resultStr;
   const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDS_ENTRY : IDS_ENTRIES));
   const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ? IDS_CONFLICT : IDS_CONFLICTS));
@@ -1513,16 +1497,15 @@ DboxMain::Merge(const CMyString &pszFilename) {
   return rc;
 }
 
-void
-DboxMain::OnProperties()
+void DboxMain::OnProperties()
 {
   CProperties dlg;
 
   dlg.m_database = CString(m_core.GetCurFile());
 
   dlg.m_databaseformat.Format(_T("%d.%02d"),
-    m_core.GetHeader().m_nCurrentMajorVersion,
-    m_core.GetHeader().m_nCurrentMinorVersion);
+                              m_core.GetHeader().m_nCurrentMajorVersion,
+                              m_core.GetHeader().m_nCurrentMinorVersion);
 
   CStringArray aryGroups;
   app.m_core.GetUniqueGroups(aryGroups);
@@ -1540,14 +1523,14 @@ DboxMain::OnProperties()
   }
 
   if (m_core.GetHeader().m_lastsavedby.IsEmpty() &&
-    m_core.GetHeader().m_lastsavedon.IsEmpty()) {
-      dlg.m_wholastsaved.LoadString(IDS_UNKNOWN);
-      dlg.m_whenlastsaved.Trim();
+      m_core.GetHeader().m_lastsavedon.IsEmpty()) {
+    dlg.m_wholastsaved.LoadString(IDS_UNKNOWN);
+    dlg.m_whenlastsaved.Trim();
   } else {
     CString user = m_core.GetHeader().m_lastsavedby.IsEmpty() ?
-      _T("?") : m_core.GetHeader().m_lastsavedby;
+                   _T("?") : m_core.GetHeader().m_lastsavedby;
     CString host = m_core.GetHeader().m_lastsavedon.IsEmpty() ?
-      _T("?") : m_core.GetHeader().m_lastsavedon;
+                   _T("?") : m_core.GetHeader().m_lastsavedon;
     dlg.m_wholastsaved.Format(_T("%s on %s"), user, host);
   }
 
@@ -1592,17 +1575,7 @@ DboxMain::OnProperties()
   dlg.DoModal();
 }
 
-void
-DboxMain::OnMerge()
-{
-  if (m_core.IsReadOnly()) // disable in read-only mode
-    return;
-
-  Merge();
-}
-
-void
-DboxMain::OnCompare()
+void DboxMain::OnCompare()
 {
   INT_PTR rc = PWScore::SUCCESS;
   if (m_core.GetCurFile().IsEmpty()) {
@@ -1657,8 +1630,7 @@ DboxMain::OnCompare()
   return;
 }
 
-int
-DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
+int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
 {
   // open file they want to Compare
   int rc = PWScore::SUCCESS;
@@ -1676,7 +1648,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
                            true,         // readonly
                            false,        // user can change readonly status
                            &othercore,   // Use other core
-                           ADV_COMPARE);   // Advanced type
+                           ADV_COMPARE); // Advanced type
   switch (rc) {
     case PWScore::SUCCESS:
       break; // Keep going...
@@ -1996,8 +1968,7 @@ DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filename2)
   return rc;
 }
 
-int
-DboxMain::SaveCore(PWScore *pcore)
+int DboxMain::SaveCore(PWScore *pcore)
 {
   // Stolen from Save!
   int rc;
@@ -2041,8 +2012,7 @@ DboxMain::SaveCore(PWScore *pcore)
   return PWScore::SUCCESS;
 }
 
-LRESULT
-DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
+LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
 {
   PWScore *pcore;
   st_CompareInfo *st_info;
@@ -2068,11 +2038,11 @@ DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
       break;
     case CCompareResultsDlg::COPY_TO_ORIGINALDB:
       lres = CopyCompareResult(st_info->pcore1, st_info->pcore0,
-        st_info->uuid1, st_info->uuid0);
+                               st_info->uuid1, st_info->uuid0);
       break;
     case CCompareResultsDlg::COPY_TO_COMPARISONDB:
       lres = CopyCompareResult(st_info->pcore0, st_info->pcore1,
-        st_info->uuid0, st_info->uuid1);
+                               st_info->uuid0, st_info->uuid1);
       break;
     default:
       ASSERT(0);
@@ -2080,8 +2050,7 @@ DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
   return lres;
 }
 
-LRESULT
-DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
+LRESULT DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 {  
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
@@ -2098,8 +2067,7 @@ DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
   return FALSE;
 }
 
-LRESULT
-DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
+LRESULT DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 {
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
@@ -2109,9 +2077,8 @@ DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
   return EditItem(ci, pcore) ? TRUE : FALSE;
 }
 
-LRESULT
-DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                            uuid_array_t &fromUUID, uuid_array_t &toUUID)
+LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
+                                    uuid_array_t &fromUUID, uuid_array_t &toUUID)
 {
   // Copy *pfromcore -> *ptocore entry at fromPos
 
@@ -2237,8 +2204,7 @@ DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   return TRUE;
 }
 
-void
-DboxMain::OnOK() 
+void DboxMain::OnOK() 
 {
   int rc, rc2;
 
@@ -2338,8 +2304,8 @@ DboxMain::OnOK()
   // & possibly ClearData).
 
   if (autoSave && !m_core.IsReadOnly() &&
-    (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
-    m_core.GetNumEntries() > 0)
+      (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+      m_core.GetNumEntries() > 0)
     Save();
 
   // Clear clipboard on Exit?  Yes if:
@@ -2347,9 +2313,9 @@ DboxMain::OnOK()
   // b. the user has set the "DontAskMinimizeClearYesNo" pref
   // c. the system is shutting down, restarting or the user is logging off
   if ((!IsWindowVisible() && prefs->GetPref(PWSprefs::UseSystemTray)) ||
-    prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo) ||
-    (m_iSessionEndingStatus == IDYES)) {
-      ClearClipboardData();
+      prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo) ||
+      (m_iSessionEndingStatus == IDYES)) {
+    ClearClipboardData();
   }
 
   // wipe data, save prefs, go home.
@@ -2359,8 +2325,7 @@ DboxMain::OnOK()
   CDialog::OnOK();
 }
 
-void
-DboxMain::OnCancel()
+void DboxMain::OnCancel()
 {
   // If system tray is enabled, cancel (X on title bar) closes
   // window, else exit application
@@ -2370,15 +2335,13 @@ DboxMain::OnCancel()
     OnOK();
 }
 
-void
-DboxMain::SaveDisplayStatus()
+void DboxMain::SaveDisplayStatus()
 {
   vector <bool> v = GetGroupDisplayStatus(); // update it
   m_core.SetDisplayStatus(v); // store it
 }
 
-void
-DboxMain::RestoreDisplayStatus()
+void DboxMain::RestoreDisplayStatus()
 {
   const vector<bool> &displaystatus = m_core.GetDisplayStatus();    
 
@@ -2386,8 +2349,7 @@ DboxMain::RestoreDisplayStatus()
     SetGroupDisplayStatus(displaystatus);
 }
 
-vector<bool>
-DboxMain::GetGroupDisplayStatus()
+vector<bool> DboxMain::GetGroupDisplayStatus()
 {
   HTREEITEM hItem = NULL;
   vector<bool> v;
@@ -2402,8 +2364,7 @@ DboxMain::GetGroupDisplayStatus()
   return v;
 }
 
-void
-DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
+void DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
 {
   HTREEITEM hItem = NULL;
   unsigned i = 0;

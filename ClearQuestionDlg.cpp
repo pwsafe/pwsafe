@@ -29,7 +29,6 @@ CClearQuestionDlg::CClearQuestionDlg(CWnd* pParent)
     GetPref(PWSprefs::DontAskQuestion);
 }
 
-
 void CClearQuestionDlg::DoDataExchange(CDataExchange* pDX)
 {
   BOOL B_dontaskquestion = m_dontaskquestion ? TRUE : FALSE;
@@ -39,19 +38,15 @@ void CClearQuestionDlg::DoDataExchange(CDataExchange* pDX)
   m_dontaskquestion = B_dontaskquestion == TRUE;
 }
 
-
 BEGIN_MESSAGE_MAP(CClearQuestionDlg, CPWDialog)
 END_MESSAGE_MAP()
 
-
-void
-CClearQuestionDlg::OnCancel() 
+void CClearQuestionDlg::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-void
-CClearQuestionDlg::OnOK() 
+void CClearQuestionDlg::OnOK() 
 {
   UpdateData(TRUE);
 

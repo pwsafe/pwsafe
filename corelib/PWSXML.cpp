@@ -204,12 +204,12 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
 
             UnknownFieldList::const_iterator vi_IterUXFE;
             for (vi_IterUXFE = pCH->m_ukhxl.begin();
-              vi_IterUXFE != pCH->m_ukhxl.end();
-              vi_IterUXFE++) {
-                UnknownFieldEntry ukxfe = *vi_IterUXFE;
-                if (ukxfe.st_length > 0) {
-                  uhfl.push_back(ukxfe);
-                }
+                 vi_IterUXFE != pCH->m_ukhxl.end();
+                 vi_IterUXFE++) {
+              UnknownFieldEntry ukxfe = *vi_IterUXFE;
+              if (ukxfe.st_length > 0) {
+                uhfl.push_back(ukxfe);
+              }
             }
             PWSprefs *prefs = PWSprefs::GetInstance();
             if (pCH->m_bDisplayExpandedAddEditDlg != -1)

@@ -176,8 +176,9 @@ static void sha256_compress(ulong32 state[8], unsigned char *buf)
   burnStack(sizeof(unsigned long) * 74);
 }
 #endif
-/**
-Initialize the hash state
+
+/*
+  Initialize the hash state
 */
 SHA256::SHA256()
 {
@@ -198,12 +199,11 @@ SHA256::~SHA256()
   // sanitizing done in Final()
 }
 
-/**
-Process a block of memory though the hash
-@param in     The data to hash
-@param inlen  The length of the data (octets)
+/*
+  Process a block of memory though the hash
+  @param in     The data to hash
+  @param inlen  The length of the data (octets)
 */
-
 void SHA256::Update(const unsigned char *in, size_t inlen)
 {
   const size_t block_size = 64;
@@ -230,9 +230,10 @@ void SHA256::Update(const unsigned char *in, size_t inlen)
     }
   }
 }
-/**
-Terminate the hash to get the digest
-@param digest The destination of the hash (32 bytes)
+
+/*
+  Terminate the hash to get the digest
+  @param digest The destination of the hash (32 bytes)
 */
 void SHA256::Final(unsigned char digest[HASHLEN])
 {
@@ -278,4 +279,3 @@ void SHA256::Final(unsigned char digest[HASHLEN])
   trashMemory(buf, sizeof(buf));
 #endif
 }
-
