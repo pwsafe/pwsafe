@@ -481,14 +481,21 @@
 #define IDC_CLEARPWPOLICY               1282
 #define IDC_SAMPLETEXT                  1283
 #define IDC_TREATWHITESPACEASEMPTY      1284
-
+#define IDC_STATIC_LC1                  1285
+#define IDC_STATIC_LC2                  1286
+#define IDC_STATIC_UC1                  1287
+#define IDC_STATIC_UC2                  1288
+#define IDC_STATIC_DG1                  1289
+#define IDC_STATIC_DG2                  1290
+#define IDC_STATIC_SY1                  1291
+#define IDC_STATIC_SY2                  1292
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        415
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1285
+#define _APS_NEXT_CONTROL_VALUE         1293
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

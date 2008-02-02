@@ -72,8 +72,9 @@ private:
   // number of checkboxes & lengths disabled when hex chosen
   enum {N_NOHEX = 6, N_HEX_LENGTHS = 4};
   static const UINT nonHex[N_NOHEX]; // IDs of said checkboxes
+  static const UINT LenTxts[N_HEX_LENGTHS*2]; // IDs of text associated with length
   static const UINT nonHexLengths[N_HEX_LENGTHS]; // IDs of said lengths
-  static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths spin
+  static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths' spinboxes
   int m_save[N_NOHEX]; // save cb's state when disabling hex
   UINT m_savelen[N_HEX_LENGTHS];
 };
