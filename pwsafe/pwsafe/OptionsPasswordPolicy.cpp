@@ -35,6 +35,10 @@ const UINT COptionsPasswordPolicy::nonHex[COptionsPasswordPolicy::N_NOHEX] = {
   IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
   IDC_USESYMBOLS, IDC_EASYVISION, IDC_PRONOUNCEABLE};
 
+const UINT COptionsPasswordPolicy::LenTxts[COptionsPasswordPolicy::N_HEX_LENGTHS * 2] = {
+  IDC_STATIC_LC1, IDC_STATIC_LC2, IDC_STATIC_UC1, IDC_STATIC_UC2,
+  IDC_STATIC_DG1, IDC_STATIC_DG2, IDC_STATIC_SY1, IDC_STATIC_SY2};
+
 const UINT COptionsPasswordPolicy::nonHexLengths[COptionsPasswordPolicy::N_HEX_LENGTHS] = {
  IDC_MINLOWERLENGTH, IDC_MINUPPERLENGTH, IDC_MINDIGITLENGTH, IDC_MINSYMBOLLENGTH};
 
@@ -160,6 +164,8 @@ void COptionsPasswordPolicy::do_nohex(const bool bNonHex)
       GetDlgItem(id)->SetWindowText(cs_value);
       GetDlgItem(id)->EnableWindow(m_save[i]);
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(m_save[i]);
+      GetDlgItem(LenTxts[i*2])->EnableWindow(m_save[i]);
+      GetDlgItem(LenTxts[i*2 + 1])->EnableWindow(m_save[i]);
     }
     m_pwlowerminlength = m_savelen[0]; m_pwupperminlength = m_savelen[1];
     m_pwdigitminlength = m_savelen[2]; m_pwsymbolminlength = m_savelen[3];
@@ -176,6 +182,8 @@ void COptionsPasswordPolicy::do_nohex(const bool bNonHex)
       GetDlgItem(id)->EnableWindow(FALSE);
       GetDlgItem(id)->SetWindowText(_T("0"));
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
+      GetDlgItem(LenTxts[i*2])->EnableWindow(FALSE);
+      GetDlgItem(LenTxts[i*2 + 1])->EnableWindow(FALSE);
     }
     m_savelen[0] = m_pwlowerminlength; m_savelen[1] = m_pwupperminlength;
     m_savelen[2] = m_pwdigitminlength; m_savelen[3] = m_pwsymbolminlength;
@@ -194,20 +202,19 @@ void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
   int i;
   if (bSet) {
     for (i = 0; i < N_HEX_LENGTHS; i++) {
-      UINT id = nonHexLengths[i];
-      GetDlgItem(id)->EnableWindow(FALSE);
-      GetDlgItem(id)->SetWindowText(_T("0"));
-      GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
+      GetDlgItem(nonHexLengths[i])->ShowWindow(SW_HIDE);
+      GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_HIDE);
+      GetDlgItem(LenTxts[2*i])->ShowWindow(SW_HIDE);
+      GetDlgItem(LenTxts[2*i + 1])->ShowWindow(SW_HIDE);
     }
     m_savelen[0] = m_pwlowerminlength; m_savelen[1] = m_pwupperminlength;
     m_savelen[2] = m_pwdigitminlength; m_savelen[3] = m_pwsymbolminlength;
   } else {
     for (i = 0; i < N_HEX_LENGTHS; i++) {
-      UINT id = nonHexLengths[i];
-      cs_value.Format(_T("%d"), m_savelen[i]);
-      GetDlgItem(id)->SetWindowText(cs_value);
-      GetDlgItem(id)->EnableWindow(m_save[i]);
-      GetDlgItem(nonHexLengthSpins[i])->EnableWindow(TRUE);
+      GetDlgItem(nonHexLengths[i])->ShowWindow(SW_SHOW);
+      GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_SHOW);
+      GetDlgItem(LenTxts[2*i])->ShowWindow(SW_SHOW);
+      GetDlgItem(LenTxts[2*i + 1])->ShowWindow(SW_SHOW);
     }
     m_pwlowerminlength = m_savelen[0]; m_pwupperminlength = m_savelen[1];
     m_pwdigitminlength = m_savelen[2]; m_pwsymbolminlength = m_savelen[3];
@@ -221,6 +228,8 @@ void COptionsPasswordPolicy::OnUselowercase()
 
   GetDlgItem(IDC_MINLOWERLENGTH)->EnableWindow(bChecked);
   GetDlgItem(IDC_SPINLOWERCASE)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_LC1)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_LC2)->EnableWindow(bChecked);
   m_pwlowerminlength = bChecked;  // Based on FALSE=0 & TRUE=1
   UpdateData(FALSE);
 }
@@ -232,6 +241,8 @@ void COptionsPasswordPolicy::OnUseuppercase()
 
   GetDlgItem(IDC_MINUPPERLENGTH)->EnableWindow(bChecked);
   GetDlgItem(IDC_SPINUPPERCASE)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_UC1)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_UC2)->EnableWindow(bChecked);
   m_pwupperminlength = bChecked;  // Based on FALSE=0 & TRUE=1
   UpdateData(FALSE);
 }
@@ -243,6 +254,8 @@ void COptionsPasswordPolicy::OnUsedigits()
 
   GetDlgItem(IDC_MINDIGITLENGTH)->EnableWindow(bChecked);
   GetDlgItem(IDC_SPINDIGITS)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_DG1)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_DG2)->EnableWindow(bChecked);
   m_pwdigitminlength = bChecked;  // Based on FALSE=0 & TRUE=1
   UpdateData(FALSE);
 }
@@ -254,6 +267,8 @@ void COptionsPasswordPolicy::OnUsesymbols()
 
   GetDlgItem(IDC_MINSYMBOLLENGTH)->EnableWindow(bChecked);
   GetDlgItem(IDC_SPINSYMBOLS)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_SY1)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_SY2)->EnableWindow(bChecked);
   m_pwsymbolminlength = bChecked;  // Based on FALSE=0 & TRUE=1
   UpdateData(FALSE);
 }

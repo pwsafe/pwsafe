@@ -374,8 +374,8 @@ CMyString CPasswordCharPool::MakePronounceable() const
     FillSC fill_sc(sc, (m_usedigits == TRUE), (m_usesymbols == TRUE));
     for_each(password.begin(), password.end(), fill_sc);
     if (!sc.empty()) {
-      // choose how many to replace (at least one)
-      unsigned int rn = pwsrnd->RangeRand(sc.size() - 1) + 1;
+      // choose how many to replace (not too many, but at least one)
+      unsigned int rn = pwsrnd->RangeRand(sc.size() - 1)/2 + 1;
       // replace some of them
       RandomWrapper rnw;
       random_shuffle(sc.begin(), sc.end(), rnw);
