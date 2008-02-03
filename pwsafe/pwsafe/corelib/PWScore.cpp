@@ -52,19 +52,19 @@ unsigned char PWScore::m_session_initialized = false;
 CString PWScore::m_impexphdr;
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
-  m_usedefuser(false), m_defusername(_T("")),
-  m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-  m_passkey(NULL), m_passkey_len(0),
-  m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
-  m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
-  m_bNotify(false)
+                     m_usedefuser(false), m_defusername(_T("")),
+                     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
+                     m_passkey(NULL), m_passkey_len(0),
+                     m_IsReadOnly(false), m_nRecordsWithUnknownFields(0),
+                     m_pfcnNotifyListModified(NULL), m_NotifyInstance(NULL),
+                     m_bNotify(false)
 {
+  // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
+    PWScore::m_session_initialized = true;
     CItemData::SetSessionKey(); // per-session initialization
     PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key) );
     PWSrand::GetInstance()->GetRandomData(m_session_salt, sizeof(m_session_salt) );
-
-    PWScore::m_session_initialized = true;
   }
   m_lockFileHandle = INVALID_HANDLE_VALUE;
   m_LockCount = 0;
@@ -72,9 +72,8 @@ PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
 
 PWScore::~PWScore()
 {
-  trashMemory(m_session_key, sizeof(m_session_key));
-  trashMemory(m_session_salt, sizeof(m_session_salt));
-
+  // do NOT trash m_session_*, as there may be other cores around
+  // relying on it. Trashing the ciphertext encrypted with it is enough
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + 7)/8)*8);
     delete[] m_passkey;
