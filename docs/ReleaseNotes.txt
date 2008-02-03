@@ -23,6 +23,7 @@ browse to URL".
 existing Password History.
 [1833609, 1502036] Fully support multiple monitors.
 [1670193] Allow use of Windows Common Controls V6 with Vista.
+[1850271] Save after Compare no longer corrupts database.
 [] Pressing a character in the List view will now jump to the next entry
 with text beginning with that character in the second column. This
 is a change from previous behaviour which only looked in the first column,
