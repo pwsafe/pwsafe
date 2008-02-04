@@ -15,6 +15,7 @@ import org.pwsafe.passwordsafeswt.util.UserPreferences;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -296,17 +297,39 @@ public class EditDialog extends Dialog {
 		txtPasswordExpire.setText(format(entryToEdit.getExpires()));
 		txtPasswordExpire.addKeyListener(dirtyKeypress);
 
-        dtPasswordExpire = new DateTime(compositeFields, SWT.CALENDAR | SWT.SHORT);
-        final FormData fd_dtPasswordExpire = new FormData();
-        fd_dtPasswordExpire.left = new FormAttachment(txtPasswordExpire, 10, SWT.RIGHT);
-        fd_dtPasswordExpire.top = new FormAttachment(txtAutotype, 0, SWT.BOTTOM);
-        dtPasswordExpire.setLayoutData(fd_dtPasswordExpire);
-        dtPasswordExpire.addKeyListener(dirtyKeypress);
+//        dtPasswordExpire = new DateTime(compositeFields, SWT.DATE | SWT.MEDIUM);
+//        final FormData fd_dtPasswordExpire = new FormData();
+//        fd_dtPasswordExpire.left = new FormAttachment(txtPasswordExpire, 10, SWT.RIGHT);
+//        fd_dtPasswordExpire.top = new FormAttachment(txtAutotype, 0, SWT.BOTTOM);
+//        dtPasswordExpire.setLayoutData(fd_dtPasswordExpire);
+//        dtPasswordExpire.addKeyListener(dirtyKeypress);
 
+        addDateChooser (compositeFields);
+        
         shell.setDefaultButton(createButtons(compositeFields, btnShowPassword));
 
 		createTimesComposite(shell);
 	}
+	
+	private void addDateChooser(Composite compositeFields) {
+		Button open = new Button (compositeFields, SWT.PUSH);
+		final FormData fd_dtPasswordExpire = new FormData();
+		fd_dtPasswordExpire.left = new FormAttachment(txtPasswordExpire, 10, SWT.RIGHT);
+		fd_dtPasswordExpire.top = new FormAttachment(txtPasswordExpire, 0, SWT.TOP);
+		open.setLayoutData(fd_dtPasswordExpire);
+		open.setText ("Calendar");
+		open.addSelectionListener (new SelectionAdapter () {
+			public void widgetSelected (SelectionEvent e) {
+				DateDialog dialog = new DateDialog(shell);
+				dialog.setDate(entryToEdit.getExpires());
+				Date result = dialog.open();
+				if (result != null) {
+					txtPasswordExpire.setText(format(result));
+				}
+			}
+		});
+	}
+	
 	/**
 	 * Creates the controlling buttons on the dialog
 	 * @param compositeFields
@@ -330,6 +353,18 @@ public class EditDialog extends Dialog {
                     String fieldText = txtPasswordExpire.getText();
 					try {
 						Date expireDate = DateFormat.getDateInstance().parse(fieldText);
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(expireDate);
+						int year = cal.get(Calendar.YEAR);
+						if (year < 2000) { 
+							if (year < 100) 
+								year += 2000; // avoid years like 07 passing as 0007 (Linux / DE)
+							else
+								year += 100; // avoid years like 07 passing as 1907 (Win / US)
+							cal.set(Calendar.YEAR, year);
+							expireDate = cal.getTime();
+						}
+		
 						entryToEdit.setExpires(expireDate);
 					} catch (ParseException e1) {
 						//if it's no date - ignore
@@ -394,6 +429,7 @@ public class EditDialog extends Dialog {
 
 		final Button chkOverride = new Button(group, SWT.CHECK);
 		chkOverride.setText("Override Policy");
+		chkOverride.setEnabled(false); //TODO: Open policy dialog and generate a password with it on exit
 		
 		return btnOk;
 	}
