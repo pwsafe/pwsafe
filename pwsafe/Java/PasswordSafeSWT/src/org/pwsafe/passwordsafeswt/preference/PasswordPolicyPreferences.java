@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Spinner;
 
 /**
  * Preferences related to password generation.
@@ -27,7 +27,7 @@ public class PasswordPolicyPreferences extends PreferencePage {
 	  public static final String USE_HEX_ONLY = "use.hex.only";
 
 	  // Text fields for user to enter preferences
-	  private Text txtLength;
+	  private Spinner spiLength;
 	  private Button btnUseLowercase;
 	  private Button btnUserUppercase;
 	  private Button btnUseDigits;
@@ -60,8 +60,8 @@ public class PasswordPolicyPreferences extends PreferencePage {
 	    final Label lblDefaultLength = new Label(composite_1, SWT.NONE);
 	    lblDefaultLength.setText("Default password length:");
 
-	    txtLength = new Text(composite_1, SWT.BORDER);
-	    txtLength.setText(preferenceStore.getString(DEFAULT_PASSWORD_LENGTH));
+	    spiLength = new Spinner(composite_1, SWT.BORDER);
+	    spiLength.setSelection(preferenceStore.getInt(DEFAULT_PASSWORD_LENGTH));
 
 	    btnUseLowercase = new Button(composite, SWT.CHECK);
 	    btnUseLowercase.setText("Use lowercase letters");
@@ -98,7 +98,7 @@ public class PasswordPolicyPreferences extends PreferencePage {
 	    // Get the preference store
 	    IPreferenceStore preferenceStore = getPreferenceStore();
 
-	    txtLength.setText(preferenceStore.getDefaultString(DEFAULT_PASSWORD_LENGTH));
+	    spiLength.setData(preferenceStore.getDefaultInt(DEFAULT_PASSWORD_LENGTH));
 	    btnUseLowercase.setSelection(preferenceStore.getDefaultBoolean(USE_LOWERCASE_LETTERS));
 	    btnUserUppercase.setSelection(preferenceStore.getDefaultBoolean(USE_UPPERCASE_LETTERS));  
 	    btnUseDigits.setSelection(preferenceStore.getDefaultBoolean(USE_DIGITS));
@@ -118,7 +118,7 @@ public class PasswordPolicyPreferences extends PreferencePage {
 	    IPreferenceStore preferenceStore = getPreferenceStore();
 
 	    // Set the values from the fields
-	    preferenceStore.setValue(DEFAULT_PASSWORD_LENGTH, txtLength.getText());
+	    preferenceStore.setValue(DEFAULT_PASSWORD_LENGTH, spiLength.getSelection());
 	    preferenceStore.setValue(USE_LOWERCASE_LETTERS, btnUseLowercase.getSelection());
 	    preferenceStore.setValue(USE_UPPERCASE_LETTERS, btnUserUppercase.getSelection());
 	    preferenceStore.setValue(USE_DIGITS, btnUseDigits.getSelection());
