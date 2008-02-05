@@ -340,6 +340,7 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
   if (bShow) {
     m_findedit.ChangeColour();
     m_findedit.SetFocus();
+    m_findedit.SetSel(0, -1);  // Select all text
     m_findedit.Invalidate();
   } else {
     m_lastshown = size_t(-1);
