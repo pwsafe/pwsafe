@@ -295,7 +295,7 @@
 #define IDS_RECORDUNKNOWNFIELDS         5476
 #define IDS_IMPORTFILE                  5477
 #define IDS_VIEWALIASES                 5478
-#define IDS_DELETEBASE                  5479
+#define IDS_DELETEABASE                 5479
 #define IDS_DELETEBASET                 5480
 #define IDS_ALIASNOTFOUNDA              5481
 #define IDS_ALIASNOTFOUND0A             5482
@@ -361,3 +361,4 @@
 #define IDS_MENUCOPYURL                 5542
 #define IDS_MENUCOPYEMAIL               5543
 #define IDS_COPYEMAIL                   5544
+#define IDS_DELETESBASE                 5545
