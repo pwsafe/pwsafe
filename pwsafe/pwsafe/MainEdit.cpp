@@ -355,10 +355,10 @@ void DboxMain::Delete(bool inRecursion)
     int num_dependents(0);
     CItemData::EntryType entrytype = ci->GetEntryType();
 
-    if (entrytype == CItemData::Alias)
+    if (entrytype == CItemData::AliasBase)
       m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Alias);
     else 
-      if (entrytype == CItemData::Shortcut)
+      if (entrytype == CItemData::ShortcutBase)
         m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Shortcut);
 
     num_dependents = dependentslist.size();
@@ -368,12 +368,14 @@ void DboxMain::Delete(bool inRecursion)
 
       CString cs_msg, cs_type;
       const CString cs_title(MAKEINTRESOURCE(IDS_DELETEBASET));
-      if (entrytype == CItemData::Alias)
+      if (entrytype == CItemData::AliasBase) {
         cs_type.LoadString(num_dependents == 1 ? IDS_ALIAS : IDS_ALIASES);
-      else
+        cs_msg.Format(IDS_DELETEABASE, dependentslist.size(), cs_type, csDependents);
+      } else {
         cs_type.LoadString(num_dependents == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
+        cs_msg.Format(IDS_DELETESBASE, dependentslist.size(), cs_type, csDependents);
+      }
 
-      cs_msg.Format(IDS_DELETEBASE, dependentslist.size(), cs_type, csDependents);
       if (MessageBox(cs_msg, cs_title, MB_ICONQUESTION | MB_YESNO) == IDNO) {
         dependentslist.clear();
         return;
@@ -394,6 +396,7 @@ void DboxMain::Delete(bool inRecursion)
     m_ctlItemList.DeleteItem(curSel);
     m_ctlItemTree.DeleteWithParents(curTree_item);
     delete di;
+    FixListIndexes();
 
     if (ci->NumberUnknownFields() > 0)
       m_core.DecrementNumRecordsWithUnknownFields();
@@ -417,34 +420,66 @@ void DboxMain::Delete(bool inRecursion)
         SetEntryImage(di->tree_item, nImage, true);
       }
     }
+    if (entrytype == CItemData::Shortcut) {
+      // I'm a shortcut entry
+      // Get corresponding base uuid
+      m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+      // Delete from both map and multimap
+      m_core.RemoveDependentEntry(base_uuid, entry_uuid, CItemData::Shortcut);
+
+      // Does my base now become a normal entry?
+      if (m_core.NumShortcuts(base_uuid) == 0) {
+        ItemListIter iter = m_core.Find(base_uuid);
+        CItemData &cibase = iter->second;
+        cibase.SetNormal();
+        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+        int nImage = GetEntryImage(cibase);
+        SetEntryImage(di->list_index, nImage, true);
+        SetEntryImage(di->tree_item, nImage, true);
+      }
+    }
 
     if (num_dependents > 0) {
       // I'm a base entry
-      if (entrytype == CItemData::Alias) {
+      if (entrytype == CItemData::AliasBase) {
         m_core.ResetAllAliasPasswords(entry_uuid);
         m_core.RemoveAllDependentEntries(entry_uuid, CItemData::Alias);
+
+        // Now make all my aliases Normal
+        ItemListIter iter;
+        UUIDListIter UUIDiter;
+        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); UUIDiter++) {
+          uuid_array_t auuid;
+          UUIDiter->GetUUID(auuid);
+          iter = m_core.Find(auuid);
+          CItemData &cialias = iter->second;
+          DisplayInfo *di = (DisplayInfo *)cialias.GetDisplayInfo();
+          int nImage = GetEntryImage(cialias);
+          SetEntryImage(di->list_index, nImage, true);
+          SetEntryImage(di->tree_item, nImage, true);
+        }
       } else {
         m_core.RemoveAllDependentEntries(entry_uuid, CItemData::Shortcut);
-      }
-
-      // Now make all my aliases Normal
-      ItemListIter iter;
-      UUIDListIter UUIDiter;
-      for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); UUIDiter++) {
-        uuid_array_t auuid;
-        UUIDiter->GetUUID(auuid);
-        iter = m_core.Find(auuid);
-        CItemData &cialias = iter->second;
-        DisplayInfo *di = (DisplayInfo *)cialias.GetDisplayInfo();
-        int nImage = GetEntryImage(cialias);
-        SetEntryImage(di->list_index, nImage, true);
-        SetEntryImage(di->tree_item, nImage, true);
+        // Now delete all my shortcuts
+        ItemListIter iter;
+        UUIDListIter UUIDiter;
+        for (UUIDiter = dependentslist.begin(); UUIDiter != dependentslist.end(); UUIDiter++) {
+          uuid_array_t suuid;
+          UUIDiter->GetUUID(suuid);
+          iter = m_core.Find(suuid);
+          CItemData &cshortcut = iter->second;
+          DisplayInfo *di = (DisplayInfo *)cshortcut.GetDisplayInfo();
+          m_ctlItemList.DeleteItem(di->list_index);
+          m_ctlItemTree.DeleteItem(di->tree_item);
+          delete di;
+          FixListIndexes();
+          m_core.RemoveEntryAt(iter);
+        }
       }
       dependentslist.clear();
     }
 
     m_core.RemoveEntryAt(listindex);
-    FixListIndexes();
     if (m_ctlItemList.IsWindowVisible()) {
       if (m_core.GetNumEntries() > 0) {
         SelectEntry(curSel < (int)m_core.GetNumEntries() ? curSel : (int)(m_core.GetNumEntries() - 1));
