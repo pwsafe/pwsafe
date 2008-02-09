@@ -44,9 +44,9 @@ typedef std::ifstream ifstreamT;
 typedef std::ofstream ofstreamT;
 #endif
 
-CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent)
+CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent, const CMyString &cs_target)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
-  m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
+  m_target(cs_target), m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
 {
   ASSERT(ci != NULL);
 
@@ -70,7 +70,6 @@ void CEditShortcutDlg::DoDataExchange(CDataExchange* pDX)
   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
-  DDX_Text(pDX, IDC_TARGET, (CString&)m_target);
 
   DDX_Text(pDX, IDC_CTIME, (CString&)m_locCTime);
   DDX_Text(pDX, IDC_PMTIME, (CString&)m_locPMTime);
@@ -80,7 +79,6 @@ void CEditShortcutDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
-  DDX_Control(pDX, IDC_TARGET, m_ex_target);
 }
 
 BEGIN_MESSAGE_MAP(CEditShortcutDlg, CPWDialog)
@@ -96,26 +94,15 @@ void CEditShortcutDlg::OnOK()
   m_group.EmptyIfOnlyWhiteSpace();
   m_title.EmptyIfOnlyWhiteSpace();
   m_username.EmptyIfOnlyWhiteSpace();
-  if (m_target.IsOnlyWhiteSpace()) {
-    m_target.Empty();
-  }
 
   m_bIsModified |= (m_group != m_ci->GetGroup() ||
                     m_title != m_ci->GetTitle() ||
                     m_username != m_ci->GetUser());
 
-  bool IsPswdModified = m_target != m_oldtarget;
-
   //Check that data is valid
   if (m_title.IsEmpty()) {
     AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
-    goto dont_close;
-  }
-
-  if (m_target.IsEmpty()) {
-    AfxMessageBox(IDS_MUSTHAVETARGET);
-    ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
     goto dont_close;
   }
 
@@ -149,29 +136,17 @@ void CEditShortcutDlg::OnOK()
       goto dont_close;
     }
   }
-
-  bool b_msg_issued;
-  if (!pDbx->CheckNewPassword(m_group, m_title, m_username, m_target,
-    true, CItemData::Shortcut,
-    m_base_uuid, m_ibasedata, b_msg_issued)) {
-      if (!b_msg_issued)
-        AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
-      UpdateData(FALSE);
-      ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
-      goto dont_close;
-  }
   //End check
 
   // Everything OK, update fields
   m_ci->SetGroup(m_group);
   m_ci->SetTitle(m_title);
   m_ci->SetUser(m_username.IsEmpty() ? m_defusername : m_username);
-  m_ci->SetPassword(m_target);
 
   time_t t;
   time(&t);
 
-  if (m_bIsModified || IsPswdModified)
+  if (m_bIsModified)
     m_ci->SetRMTime(t);
 
   CPWDialog::OnOK();
@@ -206,9 +181,13 @@ BOOL CEditShortcutDlg::OnInitDialog()
     }
   }
 
-  m_target = m_oldtarget = m_base;
-
   UpdateData(FALSE);
+
+  CMyString cs_title;
+  GetWindowText(cs_title);
+  cs_title += _T(" ") + m_target;
+  SetWindowText(cs_title);
+
   m_ex_group.ChangeColour();
   return TRUE;
 }
