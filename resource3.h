@@ -343,7 +343,6 @@
 #define IDS_SHORTCUTS                   5524
 #define IDS_ABASEINVALID                5525
 #define IDS_SBASEINVALID                5526
-#define IDS_SHTCTCANTREFERTOITSELF      5527
 #define IDS_MUSTHAVETARGET              5528
 #define IDS_VIEWSHORTCUTS               5529
 #define IDS_VIEWALIASESBTN              5530
@@ -362,3 +361,4 @@
 #define IDS_MENUCOPYEMAIL               5543
 #define IDS_COPYEMAIL                   5544
 #define IDS_DELETESBASE                 5545
+

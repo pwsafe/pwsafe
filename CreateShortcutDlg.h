@@ -7,30 +7,28 @@
 */
 #pragma once
 
-/// \file AddShortcutDlg.h
+/// \file CreateShortcutDlg.h
 //-----------------------------------------------------------------------------
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
 
-class CAddShortcutDlg : public CPWDialog
+class CCreateShortcutDlg : public CPWDialog
 {
   // Construction
 public:
-  CAddShortcutDlg(CWnd* pParent = NULL);   // standard constructor
+  CCreateShortcutDlg(CWnd* pParent = NULL, const CMyString &cs_target = _T(""));
 
   // Dialog Data
-  //{{AFX_DATA(CAddShortcutDlg)
-  enum { IDD = IDD_ADD_SHORTCUT };
-  CMyString m_target;
+  //{{AFX_DATA(CCreateShortcutDlg)
+  enum { IDD = IDD_CREATE_SHORTCUT };
   CMyString m_username;
   CMyString m_title;
   CMyString m_group;
+  CMyString m_target;
   int m_ibasedata;
-  uuid_array_t m_base_uuid;
 
   CComboBoxExtn m_ex_group;
-  CEditExtn m_ex_target;
   CEditExtn m_ex_username;
   CEditExtn m_ex_title;
 
@@ -38,7 +36,7 @@ public:
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CAddShortcutDlg)
+  //{{AFX_VIRTUAL(CreateShortcutDlg)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL

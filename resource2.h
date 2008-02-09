@@ -48,7 +48,7 @@
 #define ID_MENUITEM_SENDEMAIL           32065
 #define ID_MENUITEM_COPYEMAIL           32066
 #define ID_MENUITEM_GROUPENTER          32067
-#define ID_MENUITEM_ADDSHORTCUT         32068
+#define ID_MENUITEM_CREATESHORTCUT      32068
 
 // View menu
 #define ID_VIEWMENU                     32101

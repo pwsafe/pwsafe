@@ -540,10 +540,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AddShortcutDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AdvancedDlg.cpp"
 				>
 			</File>
@@ -573,6 +569,10 @@
 			</File>
 			<File
 				RelativePath=".\CoolMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CreateShortcutDlg.cpp"
 				>
 			</File>
 			<File
@@ -821,10 +821,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AddShortcutDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\AdvancedDlg.h"
 				>
 			</File>
@@ -858,6 +854,10 @@
 			</File>
 			<File
 				RelativePath=".\corelib\corelib.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CreateShortcutDlg.h"
 				>
 			</File>
 			<File
@@ -1154,18 +1154,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar\addshortcut_classic.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\addshortcut_new.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\res\toolbar\addshortcut_new_disabled.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\res\alias.bmp"
 				>
 			</File>
@@ -1347,6 +1335,18 @@
 			</File>
 			<File
 				RelativePath=".\res\cpanetxt.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\createshortcut_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\createshortcut_new.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\createshortcut_new_disabled.bmp"
 				>
 			</File>
 			<File

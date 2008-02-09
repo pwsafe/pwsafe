@@ -148,7 +148,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // Edit Menu
   ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
   ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
-  ON_COMMAND(ID_MENUITEM_ADDSHORTCUT, OnAddShortcut)
+  ON_COMMAND(ID_MENUITEM_CREATESHORTCUT, OnCreateShortcut)
   ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
   ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
   ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
@@ -314,7 +314,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
   {ID_MENUITEM_ADD, true, false, true, false},
-  {ID_MENUITEM_ADDSHORTCUT, true, false, true, false},
+  {ID_MENUITEM_CREATESHORTCUT, true, false, false, false},
   {ID_MENUITEM_EDIT, true, true, false, false},
   {ID_MENUITEM_GROUPENTER, true, true, false, false},
   {ID_MENUITEM_DELETE, true, false, false, false},
@@ -949,7 +949,6 @@ void DboxMain::ChangeOkUpdate()
   if (m_MainToolBar.GetSafeHwnd() != NULL && update != -1) {
     BOOL state = update ? TRUE : FALSE;
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, state);
-    m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADDSHORTCUT, state);
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_PLAINTEXT, state);
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_IMPORT_XML, state);
     m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MERGE, state);
@@ -2289,6 +2288,23 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         }
       }
       break;
+    case ID_MENUITEM_CREATESHORTCUT:
+      if (bGroupSelected) {
+        // Not allowed if a Group is selected
+        iEnable = FALSE;
+      } else {
+        CItemData *ci = getSelectedItem();
+        if (ci == NULL) {
+          iEnable = FALSE;
+        } else {
+          // Can only define a shortcut on a normal entry or
+          // one that is already a shortcut base
+          if (!ci->IsNormal() && !ci->IsShortcutBase()) {
+            iEnable = FALSE;
+          }
+        }
+      }
+      break;
     // Items not allowed in List View
     case ID_MENUITEM_ADDGROUP:
     case ID_MENUITEM_RENAME:
@@ -2361,7 +2377,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     if (isLimited) {
       switch (nID) {
         case ID_MENUITEM_ADD:
-        case ID_MENUITEM_ADDSHORTCUT:
         case ID_MENUITEM_ADDGROUP:
         case ID_MENUITEM_DUPLICATEENTRY:
         case ID_MENUITEM_IMPORT_KEEPASS:

@@ -24,7 +24,7 @@
 #include "EditShortcutDlg.h"
 #include "KeySend.h"
 #include "ClearQuestionDlg.h"
-#include "AddShortcutDlg.h"
+#include "CreateShortcutDlg.h"
 
 #include <vector>
 #include <algorithm>
@@ -168,34 +168,29 @@ void DboxMain::OnAdd()
 }
 
 //Add a shortcut
-void DboxMain::OnAddShortcut()
+void DboxMain::OnCreateShortcut()
 {
-  CAddShortcutDlg dlg_addshortcut(this);
+   // disable in read-only mode or nothing selected
+  if (m_core.IsReadOnly() || SelItemOk() != TRUE)
+    return;
+
+  uuid_array_t base_uuid;
+  CItemData *ci = getSelectedItem();
+  ASSERT(ci != NULL);
+  ci->GetUUID(base_uuid);
+  CMyString cs_target;
+  cs_target = _T("[") + ci->GetGroup() + _T(":") + 
+                        ci->GetTitle() + _T(":") + 
+                        ci->GetUser() + _T("]");
+
+  CCreateShortcutDlg dlg_createshortcut(this, cs_target);
 
   if (m_core.GetUseDefUser()) {
-    dlg_addshortcut.m_username = m_core.GetDefUsername();
+    dlg_createshortcut.m_username = m_core.GetDefUsername();
   }
-  // m_TreeViewGroup may be set by OnContextMenu, if not, try to grok it
-  if (m_TreeViewGroup.IsEmpty()) {
-    CItemData *itemData = NULL;
-    if (m_ctlItemTree.IsWindowVisible()) { // tree view
-      HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-      if (ti != NULL) { // if anything selected
-        itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
-        if (itemData != NULL) { // leaf selected
-          m_TreeViewGroup = itemData->GetGroup();
-        } else { // node selected
-          m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
-        }
-      }
-    } else { // list view
-      // XXX TBD - get group name of currently selected list entry
-    }
-  }
-  dlg_addshortcut.m_group = m_TreeViewGroup;
-  m_TreeViewGroup = _T(""); // for next time
+
   app.DisableAccelerator();
-  INT_PTR rc = dlg_addshortcut.DoModal();
+  INT_PTR rc = dlg_createshortcut.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
@@ -203,15 +198,15 @@ void DboxMain::OnAddShortcut()
     //Check if they wish to set a default username
     if (!m_core.GetUseDefUser() &&
         (prefs->GetPref(PWSprefs::QuerySetDef)) &&
-        (!dlg_addshortcut.m_username.IsEmpty())) {
+        (!dlg_createshortcut.m_username.IsEmpty())) {
       CQuerySetDef defDlg(this);
-      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_addshortcut.m_username);
+      defDlg.m_message.Format(IDS_SETUSERNAME, (const CString&)dlg_createshortcut.m_username);
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
         prefs->SetPref(PWSprefs::UseDefaultUser, true);
-        prefs->SetPref(PWSprefs::DefaultUsername, dlg_addshortcut.m_username);
+        prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username);
         m_core.SetUseDefUser(true);
-        m_core.SetDefUsername(dlg_addshortcut.m_username);
+        m_core.SetDefUsername(dlg_createshortcut.m_username);
         RefreshViews();
       }
     }
@@ -222,21 +217,21 @@ void DboxMain::OnAddShortcut()
     time_t t;
     uuid_array_t shortcut_uuid;
 
-    if (dlg_addshortcut.m_username.IsEmpty() && m_core.GetUseDefUser())
+    if (dlg_createshortcut.m_username.IsEmpty() && m_core.GetUseDefUser())
       user = m_core.GetDefUsername();
     else
-      user = dlg_addshortcut.m_username;
+      user = dlg_createshortcut.m_username;
     temp.CreateUUID();
     temp.GetUUID(shortcut_uuid);
-    temp.SetGroup(dlg_addshortcut.m_group);
-    temp.SetTitle(dlg_addshortcut.m_title);
+    temp.SetGroup(dlg_createshortcut.m_group);
+    temp.SetTitle(dlg_createshortcut.m_title);
     temp.SetUser(user);
 
     // Password in must be in shortcut format AND base entry exists
-    m_core.AddDependentEntry(dlg_addshortcut.m_base_uuid, shortcut_uuid, CItemData::Shortcut);
+    m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::Shortcut);
     temp.SetPassword(CMyString(_T("[Shortcut]")));
     temp.SetShortcut();
-    ItemListIter iter = m_core.Find(dlg_addshortcut.m_base_uuid);
+    ItemListIter iter = m_core.Find(base_uuid);
     if (iter != End()) {
       const CItemData &cibase = iter->second;
       DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
@@ -768,8 +763,12 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
   CItemData editedItem(*ci);
+  CMyString cs_target;
+  cs_target = _T("[") + ci->GetGroup() + _T(":") + 
+                        ci->GetTitle() + _T(":") + 
+                        ci->GetUser() + _T("]");
 
-  CEditShortcutDlg dlg_editshortcut(&editedItem, this);
+  CEditShortcutDlg dlg_editshortcut(&editedItem, this, cs_target);
 
   if (pcore->GetUseDefUser())
     dlg_editshortcut.m_defusername = pcore->GetDefUsername();
@@ -1528,7 +1527,7 @@ bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
   // bmsgissued - whether this routine issued a message
   b_msg_issued = false;
 
-  // Called from Add and Edit entry + Add and Edit shortcut dialogs
+  // Called from Add and Edit entry
   // Returns false if not a special alias or shortcut password
   GetBaseEntryPL pl;
   pl.InputType = InputType;
@@ -1549,10 +1548,7 @@ bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
     // In Edit, check user isn't changing entry to point to itself (circular/self reference)
     // Can't happen during Add as already checked entry does not exist so if accepted the
     // password would be treated as an unusal "normal" password
-    if (InputType == CItemData::Alias)
-      AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
-    else
-      AfxMessageBox(IDS_SHTCTCANTREFERTOITSELF, MB_OK);
+    AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
     return false;
   }
 
@@ -1624,33 +1620,24 @@ bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,
   }
 
   if (pl.ibasedata > 0) {
-    if (InputType == CItemData::Alias) {
-      if (pl.TargetType == CItemData::Alias) {
-        // If user tried to point to an alias -> change to point to the 'real' base
-        CString cs_msg;
-        cs_msg.Format(IDS_BASEISALIAS, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
-        if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
-          return false;
-        }
-      } else
-        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
-          // An alias can only point to a normal entry or an alias base entry
-          CString cs_msg;
-          cs_msg.Format(IDS_ABASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
-          AfxMessageBox(cs_msg, MB_OK);
-          return false;
-        } else {
-          return true;
-        }
-    } else
-      if (InputType == CItemData::Shortcut && 
-        (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::ShortcutBase)) {
-          // A shortcut can only point to a normal entry or a shortcut base entry. No buts!
-          CString cs_msg;
-          cs_msg.Format(IDS_SBASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
-          AfxMessageBox(cs_msg, MB_OK);
-          return false;
+    if (pl.TargetType == CItemData::Alias) {
+      // If user tried to point to an alias -> change to point to the 'real' base
+      CString cs_msg;
+      cs_msg.Format(IDS_BASEISALIAS, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+      if (AfxMessageBox(cs_msg, MB_YESNO | MB_DEFBUTTON2) == IDNO) {
+        return false;
       }
+    } else {
+      if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
+        // An alias can only point to a normal entry or an alias base entry
+        CString cs_msg;
+        cs_msg.Format(IDS_ABASEINVALID, pl.csPwdGroup, pl.csPwdTitle, pl.csPwdUser);
+        AfxMessageBox(cs_msg, MB_OK);
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 
   // All OK

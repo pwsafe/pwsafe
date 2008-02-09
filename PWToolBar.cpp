@@ -65,8 +65,7 @@ const CString CPWToolBar::m_csMainButtons[] = {
   _T("help"),
   // Optional (non-default) buttons next
   _T("exporttext"), _T("exportxml"), _T("importtext"), _T("importxml"), 
-  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("find"), _T("viewreports"),
-  _T("addshortcut")
+  _T("saveas"), _T("compare"), _T("merge"), _T("listtree"), _T("find"), _T("viewreports")
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -105,8 +104,7 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_MERGE,
   ID_TOOLBUTTON_LISTTREE,
   ID_MENUITEM_FIND,
-  ID_TOOLBUTTON_VIEWREPORTS,
-  ID_MENUITEM_ADDSHORTCUT
+  ID_TOOLBUTTON_VIEWREPORTS
 };
 
 // Additional Control IDs not on ToolBar
@@ -134,7 +132,8 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_REPORTSMENU,
   ID_MENUITEM_MRUENTRY,
   ID_EXPORTMENU,
-  ID_IMPORTMENU
+  ID_IMPORTMENU,
+  ID_MENUITEM_CREATESHORTCUT
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -166,8 +165,7 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_MERGE_CLASSIC,
   IDB_LISTTREE_CLASSIC,
   IDB_FIND_CLASSIC,
-  IDB_VIEWREPORTS_CLASSIC,
-  IDB_ADDSHORTCUT_CLASSIC
+  IDB_VIEWREPORTS_CLASSIC
 };
 
 // Additional bitmaps not on ToolBar
@@ -195,7 +193,8 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_VIEWREPORTS_CLASSIC,
   IDB_PWSDB,
   IDB_EXPORT_CLASSIC,
-  IDB_IMPORT_CLASSIC
+  IDB_IMPORT_CLASSIC,
+  IDB_CREATESHORTCUT_CLASSIC
 };
 
 const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
@@ -227,8 +226,7 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_MERGE_NEW,
   IDB_LISTTREE_NEW,
   IDB_FIND_NEW,
-  IDB_VIEWREPORTS_NEW,
-  IDB_ADDSHORTCUT_NEW
+  IDB_VIEWREPORTS_NEW
 };
 
 const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
@@ -260,8 +258,7 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_MERGE_NEW_D,
   IDB_LISTTREE_NEW_D,
   IDB_FIND_NEW_D,
-  IDB_VIEWREPORTS_NEW_D,
-  IDB_ADDSHORTCUT_NEW_D
+  IDB_VIEWREPORTS_NEW_D
 };
 
 // Additional bitmaps not on ToolBar
@@ -289,7 +286,8 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_VIEWREPORTS_NEW,
   IDB_PWSDB,
   IDB_EXPORT_NEW,
-  IDB_IMPORT_NEW
+  IDB_IMPORT_NEW,
+  IDB_CREATESHORTCUT_NEW
 };
 
 // Additional bitmaps not on ToolBar
@@ -317,7 +315,8 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_VIEWREPORTS_NEW_D,
   IDB_PWSDB,
   IDB_EXPORT_NEW_D,
-  IDB_IMPORT_NEW_D
+  IDB_IMPORT_NEW_D,
+  IDB_CREATESHORTCUT_NEW_D
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)

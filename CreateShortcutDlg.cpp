@@ -5,14 +5,14 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-/// \file AddShortcutDlg.cpp
+/// \file CCreateShortcutDlg.cpp
 //-----------------------------------------------------------------------------
 
 #include "stdafx.h"
 
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
-#include "AddShortcutDlg.h"
+#include "CreateShortcutDlg.h"
 #include "ControlExtns.h"
 
 #ifdef _DEBUG
@@ -21,15 +21,14 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 //-----------------------------------------------------------------------------
-CAddShortcutDlg::CAddShortcutDlg(CWnd* pParent)
-  : CPWDialog(CAddShortcutDlg::IDD, pParent), m_target(_T("")), 
-  m_username(_T("")), m_title(_T("")), m_group(_T(""))
+CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, const CMyString &cs_target)
+  : CPWDialog(CCreateShortcutDlg::IDD, pParent),
+  m_target(cs_target), m_username(_T("")), m_title(_T("")), m_group(_T(""))
 {
 }
 
-BOOL CAddShortcutDlg::OnInitDialog() 
+BOOL CCreateShortcutDlg::OnInitDialog() 
 {
   CPWDialog::OnInitDialog();
 
@@ -44,35 +43,37 @@ BOOL CAddShortcutDlg::OnInitDialog()
     }
   }
 
+  CMyString cs_title;
+  GetWindowText(cs_title);
+  cs_title += _T(" ") + m_target;
+  SetWindowText(cs_title);
   m_ex_group.ChangeColour();
   return TRUE;
 }
 
-void CAddShortcutDlg::DoDataExchange(CDataExchange* pDX)
+void CCreateShortcutDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
-  DDX_Text(pDX, IDC_TARGET, (CString&)m_target);
 
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
-  DDX_Control(pDX, IDC_TARGET, m_ex_target);
 }
 
-BEGIN_MESSAGE_MAP(CAddShortcutDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CCreateShortcutDlg, CPWDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
-void CAddShortcutDlg::OnCancel() 
+void CCreateShortcutDlg::OnCancel() 
 {
   CPWDialog::OnCancel();
 }
 
-void CAddShortcutDlg::OnOK() 
+void CCreateShortcutDlg::OnOK() 
 {
   if (UpdateData(TRUE) != TRUE)
     return;
@@ -80,9 +81,6 @@ void CAddShortcutDlg::OnOK()
   m_group.EmptyIfOnlyWhiteSpace();
   m_title.EmptyIfOnlyWhiteSpace();
   m_username.EmptyIfOnlyWhiteSpace();
-  if (m_target.IsOnlyWhiteSpace()) {
-    m_target.Empty();
-  }
 
   UpdateData(FALSE);
 
@@ -90,12 +88,6 @@ void CAddShortcutDlg::OnOK()
   if (m_title.IsEmpty()) {
     AfxMessageBox(IDS_MUSTHAVETITLE);
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
-    return;
-  }
-
-  if (m_target.IsEmpty()) {
-    AfxMessageBox(IDS_MUSTHAVETARGET);
-    ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
     return;
   }
 
@@ -120,23 +112,12 @@ void CAddShortcutDlg::OnOK()
     ((CEdit*)GetDlgItem(IDC_TITLE))->SetFocus();
     return;
   }
-
-  bool b_msg_issued;
-  if (!pDbx->CheckNewPassword(m_group, m_title, m_username, m_target,
-                             false, CItemData::Shortcut,
-                             m_base_uuid, m_ibasedata, b_msg_issued)) {
-    if (!b_msg_issued)
-      AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
-    UpdateData(FALSE);
-    ((CEdit*)GetDlgItem(IDC_TARGET))->SetFocus();
-    return;
-  }
   //End check
 
   CPWDialog::OnOK();
 }
 
-void CAddShortcutDlg::OnHelp() 
+void CCreateShortcutDlg::OnHelp() 
 {
 #if defined(POCKET_PC)
   CreateProcess( _T("PegHelp.exe"), _T("pws_ce_help.html#adddata"), NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL );
@@ -147,7 +128,7 @@ void CAddShortcutDlg::OnHelp()
 #endif
 }
 
-void CAddShortcutDlg::OnBnClickedOk()
+void CCreateShortcutDlg::OnBnClickedOk()
 {
   OnOK();
 }
