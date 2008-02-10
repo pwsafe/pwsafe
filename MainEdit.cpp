@@ -612,9 +612,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
       dlg_edit.m_original_entrytype = CItemData::Alias;
     }
   } else {
-    PWPolicy pwp;
-    editedItem.GetPWPolicy(pwp);
-    dlg_edit.m_pwp = pwp;
+    editedItem.GetPWPolicy(dlg_edit.m_pwp);
   }
 
   app.DisableAccelerator();
@@ -639,7 +637,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
 
     ItemListIter iter;
     if (dlg_edit.m_original_entrytype == CItemData::Normal &&
-        ci->GetPassword() != newPassword) {
+        editedItem.GetPassword() != newPassword) {
       // Original was a 'normal' entry and the password has changed
       if (dlg_edit.m_ibasedata > 0) {
         // Now an alias
@@ -677,7 +675,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     }
 
     if (dlg_edit.m_original_entrytype == CItemData::AliasBase &&
-        ci->GetPassword() != newPassword) {
+        editedItem.GetPassword() != newPassword) {
       // Original was a base but might now be an alias of another entry!
       if (dlg_edit.m_ibasedata > 0) {
         // Now an alias
