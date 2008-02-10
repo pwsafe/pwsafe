@@ -311,6 +311,8 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::PWUseHexDigits);
   passwordpolicy.m_pweasyvision = prefs->
     GetPref(PWSprefs::PWUseEasyVision);
+  passwordpolicy.m_pwmakepronounceable = prefs->
+    GetPref(PWSprefs::PWMakePronounceable);
   passwordpolicy.m_pwdefaultlength = prefs->
     GetPref(PWSprefs::PWDefaultLength);
   passwordpolicy.m_pwdigitminlength = prefs->
@@ -473,8 +475,10 @@ void DboxMain::OnOptions()
       passwordpolicy.m_pwusesymbols == TRUE);
     prefs->SetPref(PWSprefs::PWUseHexDigits,
       passwordpolicy.m_pwusehexdigits == TRUE);
-    prefs-> SetPref(PWSprefs::PWUseEasyVision,
+    prefs->SetPref(PWSprefs::PWUseEasyVision,
       passwordpolicy.m_pweasyvision == TRUE);
+    prefs->SetPref(PWSprefs::PWMakePronounceable,
+      passwordpolicy.m_pwmakepronounceable == TRUE);
     prefs->SetPref(PWSprefs::PWDefaultLength,
       passwordpolicy.m_pwdefaultlength);
     prefs->SetPref(PWSprefs::PWDigitMinLength,
