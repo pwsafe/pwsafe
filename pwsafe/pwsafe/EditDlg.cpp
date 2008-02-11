@@ -82,7 +82,8 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 #endif
   }
 
-  m_pwp.Empty();
+  m_OverridePolicy = ci->GetPWPolicy().IsEmpty() ? FALSE : TRUE;
+  ci->GetPWPolicy(m_pwp);
 
   BOOL HasHistory = FALSE;
   ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
@@ -128,40 +129,39 @@ CEditDlg::~CEditDlg()
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
-  DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
-  DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
-  DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
-  DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
-  DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
-  DDX_Text(pDX, IDC_URL, (CString&)m_URL);
-  DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
-  DDX_Text(pDX, IDC_CTIME, (CString&)m_locCTime);
-  DDX_Text(pDX, IDC_PMTIME, (CString&)m_locPMTime);
-  DDX_Text(pDX, IDC_ATIME, (CString&)m_locATime);
-  DDX_Text(pDX, IDC_LTIME, (CString&)m_locLTime);
-  DDX_Text(pDX, IDC_RMTIME, (CString&)m_locRMTime);
+   CPWDialog::DoDataExchange(pDX);
+   DDX_Text(pDX, IDC_PASSWORD, (CString&)m_password);
+   DDX_Text(pDX, IDC_PASSWORD2, (CString&)m_password2);
+   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
+   DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
+   DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
+   DDX_Text(pDX, IDC_URL, (CString&)m_URL);
+   DDX_Text(pDX, IDC_AUTOTYPE, (CString&)m_autotype);
+   DDX_Text(pDX, IDC_CTIME, (CString&)m_locCTime);
+   DDX_Text(pDX, IDC_PMTIME, (CString&)m_locPMTime);
+   DDX_Text(pDX, IDC_ATIME, (CString&)m_locATime);
+   DDX_Text(pDX, IDC_LTIME, (CString&)m_locLTime);
+   DDX_Text(pDX, IDC_RMTIME, (CString&)m_locRMTime);
 
-  DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
-  DDX_Control(pDX, IDC_MORE, m_MoreLessBtn);
-  DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
+   DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
+   DDX_Control(pDX, IDC_MORE, m_MoreLessBtn);
+   DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
 
-  DDX_Control(pDX, IDC_GROUP, m_ex_group);
-  DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
-  DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
-  DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
-  DDX_Control(pDX, IDC_USERNAME, m_ex_username);
-  DDX_Control(pDX, IDC_TITLE, m_ex_title);
-  DDX_Control(pDX, IDC_URL, m_ex_URL);
-  DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
+   DDX_Control(pDX, IDC_GROUP, m_ex_group);
+   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
+   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
+   DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
+   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
+   DDX_Control(pDX, IDC_TITLE, m_ex_title);
+   DDX_Control(pDX, IDC_URL, m_ex_URL);
+   DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
+   DDX_Check(pDX, IDC_OVERRIDE_POLICY, m_OverridePolicy);
 }
 
 BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
-  ON_BN_CLICKED(IDC_SETPWPOLICY, OnSetPolicy)
-  ON_BN_CLICKED(IDC_CLEARPWPOLICY, OnClearPolicy)
 #if defined(POCKET_PC)
   ON_WM_SHOWWINDOW()
 #endif
@@ -528,24 +528,16 @@ void CEditDlg::OnRandom()
 
   UpdateData(TRUE);
 
-  if (pParent->MakeRandomPassword(this, m_realpassword, m_pwp) &&
-    !m_isPwHidden) {
+  if (m_OverridePolicy == TRUE)
+    pParent->SetPasswordPolicy(m_pwp);
+  else
+    m_pwp.Empty();
+
+  pParent->MakeRandomPassword(m_realpassword, m_pwp);
+  if (!m_isPwHidden) {
       m_password = m_realpassword;
       UpdateData(FALSE);
   }
-}
-
-void CEditDlg::OnSetPolicy() 
-{
-  DboxMain* pParent = (DboxMain*)GetParent();
-  ASSERT(pParent != NULL);
-
-  pParent->SetPasswordPolicy(m_pwp);
-}
-
-void CEditDlg::OnClearPolicy() 
-{
-  m_pwp.Empty();
 }
 
 void CEditDlg::OnHelp() 

@@ -94,8 +94,6 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskeyKillfocus();
-  afx_msg void OnSetPolicy();
-  afx_msg void OnClearPolicy();
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
 
@@ -114,6 +112,7 @@ public:
 
   afx_msg void OnEnSetfocusNotes();
   afx_msg void OnEnKillfocusNotes();
+  BOOL m_OverridePolicy;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

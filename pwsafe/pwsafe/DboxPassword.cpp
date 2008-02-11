@@ -34,8 +34,7 @@ static char THIS_FILE[] = __FILE__;
 // be avoided by putting the password into the clipboard when the entry is saved
 // but that would be annoying when generating a new entry.
 
-bool DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
-                                  PWPolicy &pwp)
+void DboxMain::MakeRandomPassword(CMyString& password, PWPolicy &pwp)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -88,22 +87,6 @@ bool DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
       GetPref(PWSprefs::PWUppercaseMinLength);
   }
 
-  bool is_override = pDialog != NULL &&
-    (pDialog->IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
-
-  if (is_override) {
-    // Start with existing password policy
-    CPropertySheet optionsDlg(IDS_PASSWORDOVERRIDE, pDialog);
-
-    // Display COptionsPasswordPolicy page
-    optionsDlg.AddPage(&passwordpolicy);
-    optionsDlg.m_psh.dwFlags |= PSH_NOAPPLYNOW; // remove "Apply Now" button
-
-    // If the user cancels the dialog, the values will be left
-    // at the default values, so the password will be generated
-    // properly. That means we can actually ignore the return value here.
-    (void)optionsDlg.DoModal();
-  }
 
   UINT numlowercase(0), numuppercase(0), numdigits(0), numsymbols(0);
   if (passwordpolicy.m_pwuselowercase)
@@ -124,7 +107,6 @@ bool DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
   password = pwchars.MakePassword();
 
   SetClipboardData(password);
-  return true;
 }
 
 bool DboxMain::SetPasswordPolicy(PWPolicy &pwp)

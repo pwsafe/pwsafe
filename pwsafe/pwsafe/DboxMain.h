@@ -178,8 +178,7 @@ public:
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) { m_bValidate = state;}
-  bool MakeRandomPassword(CDialog * const pDialog, CMyString& password,
-    PWPolicy &pwp);
+  void MakeRandomPassword(CMyString& password, PWPolicy &pwp);
   bool SetPasswordPolicy(PWPolicy &pwp);
   BOOL LaunchBrowser(const CString &csURL);
   void UpdatePasswordHistory(int iAction, int num_default);
