@@ -245,7 +245,7 @@ public:
     int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
       PWHistList* pPWHistList,
       const int time_format) const;  // V30
-    void SetPWPolicy(PWPolicy pwp);
+    void SetPWPolicy(const PWPolicy &pwp);
     bool SetPWPolicy(const CString &cs_pwp);
     CItemData& operator=(const CItemData& second);
     // Following used by display methods - we just keep it handy

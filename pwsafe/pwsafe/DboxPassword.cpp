@@ -27,8 +27,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 //-----------------------------------------------------------------------------
 
-// generate a random password, using the default settings or user overrides
-// the generated password will be copied to the clipboard. Doing
+// Generate a random password.
+// The generated password will be copied to the clipboard. Doing
 // this leaves a problem where the user can generate a random password, have
 // the password copied to the clipboard and then change the password. This could
 // be avoided by putting the password into the clipboard when the entry is saved
@@ -37,8 +37,6 @@ static char THIS_FILE[] = __FILE__;
 bool DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
                                   PWPolicy &pwp)
 {
-  bool is_override = (pDialog->IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
-
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   COptionsPasswordPolicy passwordpolicy;
@@ -89,6 +87,9 @@ bool DboxMain::MakeRandomPassword(CDialog * const pDialog, CMyString& password,
     passwordpolicy.m_pwupperminlength = prefs->
       GetPref(PWSprefs::PWUppercaseMinLength);
   }
+
+  bool is_override = pDialog != NULL &&
+    (pDialog->IsDlgButtonChecked(IDC_OVERRIDE_POLICY) == BST_CHECKED);
 
   if (is_override) {
     // Start with existing password policy
