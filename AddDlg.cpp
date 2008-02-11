@@ -286,12 +286,11 @@ void CAddDlg::OnRandom()
   else
     m_pwp.Empty();
 
-  if (pParent->MakeRandomPassword(NULL, m_password, m_pwp)) {
-    if (m_isPwHidden) {
-      m_password2 = m_password;
-    }
-    UpdateData(FALSE);
+  pParent->MakeRandomPassword(m_password, m_pwp);
+  if (m_isPwHidden) {
+    m_password2 = m_password;
   }
+  UpdateData(FALSE);
 }
 
 
