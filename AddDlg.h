@@ -75,8 +75,6 @@ protected:
   virtual void OnOK();
   afx_msg void OnHelp();
   afx_msg void OnRandom();
-  afx_msg void OnSetPolicy();
-  afx_msg void OnClearPolicy();
   afx_msg void OnShowpassword();
   //}}AFX_MSG
 
@@ -89,6 +87,7 @@ public:
   afx_msg void OnBnClickedSetLTime();
   afx_msg void OnCheckedSavePasswordHistory();
   CButton m_moreLessBtn;
+  BOOL m_OverridePolicy;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

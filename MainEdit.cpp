@@ -129,6 +129,11 @@ void DboxMain::OnAdd()
     time(&t);
     temp.SetCTime(t);
 
+    // Set per-item password policy if user selected
+    // "Override Policy"
+    if (dlg_add.m_OverridePolicy == TRUE)
+      temp.SetPWPolicy(dlg_add.m_pwp);
+
     if (temp.IsAlias()) {
       temp.SetLTime((time_t)0);
       temp.SetPWPolicy(_T(""));

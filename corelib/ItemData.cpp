@@ -1062,7 +1062,7 @@ int CItemData::CreatePWHistoryList(BOOL &status,
   return i_error;
 }
 
-void CItemData::SetPWPolicy(PWPolicy pwp)
+void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   // Must be some flags; however hex incompatible with other flags
   bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
