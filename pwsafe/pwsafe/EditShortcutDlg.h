@@ -21,7 +21,9 @@ class CEditShortcutDlg : public CPWDialog
 
 public:
   // default constructor
-  CEditShortcutDlg(CItemData *ci, CWnd* pParent = NULL, const CMyString &cs_target = _T(""));
+  CEditShortcutDlg(CItemData *ci, CWnd* pParent = NULL,
+    const CMyString &cs_tg = _T(""), const CMyString &cs_tt = _T(""), 
+    const CMyString &cs_tu = _T(""));
   virtual ~CEditShortcutDlg();
 
   enum { IDD = IDD_EDIT_SHORTCUT };
@@ -34,7 +36,8 @@ private:
   CItemData *m_ci; // The shortcut being edited
   CMyString m_group;
   CMyString m_title;
-  CMyString m_target;
+  // target's group, title, user
+  CMyString m_tg, m_tt, m_tu;
   CMyString m_locCTime, m_locPMTime, m_locATime, m_locRMTime;
   bool m_bIsModified;
 

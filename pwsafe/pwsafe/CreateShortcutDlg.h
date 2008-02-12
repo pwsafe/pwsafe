@@ -17,7 +17,9 @@ class CCreateShortcutDlg : public CPWDialog
 {
   // Construction
 public:
-  CCreateShortcutDlg(CWnd* pParent = NULL, const CMyString &cs_target = _T(""));
+  CCreateShortcutDlg(CWnd* pParent = NULL,
+    const CMyString &cs_tg = _T(""), const CMyString &cs_tt = _T(""), 
+    const CMyString &cs_tu = _T(""));
 
   // Dialog Data
   //{{AFX_DATA(CCreateShortcutDlg)
@@ -25,7 +27,8 @@ public:
   CMyString m_username;
   CMyString m_title;
   CMyString m_group;
-  CMyString m_target;
+  // target's group, title, user
+  CMyString m_tg, m_tt, m_tu;
   int m_ibasedata;
 
   CComboBoxExtn m_ex_group;

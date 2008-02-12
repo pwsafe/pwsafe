@@ -60,6 +60,8 @@ public:
     DWORD dwKeyState, CPoint point);
   void OnDragLeave();
 
+  enum MouseButton {Left, Right};
+
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
   afx_msg void OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
@@ -67,7 +69,10 @@ protected:
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
+  afx_msg void OnBeginRDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnDestroy();
+  afx_msg void OnCreateShortcut();
+  afx_msg void OnCancelDrop();
   //
   //afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
@@ -83,6 +88,8 @@ private:
   bool m_isRestoring; // don't update state vector when restoring state
   int m_nDragPathLen;
   bool m_bWithinThisInstance;
+  // For dealing with right-mouse drag to create shortcut
+  MouseButton m_mousedrag;
 
   // in an ideal world, following would be is-a, rather than has-a
   // (multiple inheritance) Microsoft doesn't really support this, however...

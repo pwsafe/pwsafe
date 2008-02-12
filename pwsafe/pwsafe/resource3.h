@@ -361,4 +361,5 @@
 #define IDS_MENUCOPYEMAIL               5543
 #define IDS_COPYEMAIL                   5544
 #define IDS_DELETESBASE                 5545
-
+#define IDS_SHORTCUTEXPLANATION         5546
+#define IDS_SCTARGET                    5547

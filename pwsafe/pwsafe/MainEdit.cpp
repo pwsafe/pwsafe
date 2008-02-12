@@ -179,16 +179,20 @@ void DboxMain::OnCreateShortcut()
   if (m_core.IsReadOnly() || SelItemOk() != TRUE)
     return;
 
-  uuid_array_t base_uuid;
   CItemData *ci = getSelectedItem();
+  CreateShortcut(ci);
+
+}
+void DboxMain::CreateShortcut(CItemData *ci)
+{
+  uuid_array_t base_uuid;
+
   ASSERT(ci != NULL);
   ci->GetUUID(base_uuid);
-  CMyString cs_target;
-  cs_target = _T("[") + ci->GetGroup() + _T(":") + 
-                        ci->GetTitle() + _T(":") + 
-                        ci->GetUser() + _T("]");
 
-  CCreateShortcutDlg dlg_createshortcut(this, cs_target);
+  CCreateShortcutDlg dlg_createshortcut(this, ci->GetGroup(),
+                                        ci->GetTitle(),
+                                        ci->GetUser());
 
   if (m_core.GetUseDefUser()) {
     dlg_createshortcut.m_username = m_core.GetDefUsername();
@@ -766,12 +770,9 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
   CItemData editedItem(*ci);
-  CMyString cs_target;
-  cs_target = _T("[") + ci->GetGroup() + _T(":") + 
-                        ci->GetTitle() + _T(":") + 
-                        ci->GetUser() + _T("]");
 
-  CEditShortcutDlg dlg_editshortcut(&editedItem, this, cs_target);
+  CEditShortcutDlg dlg_editshortcut(&editedItem, this, ci->GetGroup(),
+                                    ci->GetTitle(), ci->GetUser());
 
   if (pcore->GetUseDefUser())
     dlg_editshortcut.m_defusername = pcore->GetDefUsername();
