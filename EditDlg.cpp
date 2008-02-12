@@ -177,6 +177,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
+  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, &CEditDlg::OnBnClickedOverridePolicy)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -523,15 +524,9 @@ void CEditDlg::HideNotes()
 
 void CEditDlg::OnRandom() 
 {
-  DboxMain* pParent = (DboxMain*)GetParent();
-  ASSERT(pParent != NULL);
+  DboxMain* pParent = static_cast<DboxMain*>(GetParent());
 
   UpdateData(TRUE);
-
-  if (m_OverridePolicy == TRUE)
-    pParent->SetPasswordPolicy(m_pwp);
-  else
-    m_pwp.Empty();
 
   pParent->MakeRandomPassword(m_realpassword, m_pwp);
   if (!m_isPwHidden) {
@@ -863,4 +858,14 @@ void CEditDlg::OnBnClickViewDependents()
   const UINT iMsg_Num = (m_original_entrytype == CItemData::AliasBase) ? IDS_VIEWALIASES : IDS_VIEWSHORTCUTS;
   cs_msg.Format(iMsg_Num, m_num_dependents, cs_type, m_dependents);
   MessageBox(cs_msg, AfxGetAppName(), MB_OK);
+}
+
+void CEditDlg::OnBnClickedOverridePolicy()
+{
+  UpdateData(TRUE);
+  if (m_OverridePolicy == TRUE) {
+    DboxMain* pParent = static_cast<DboxMain*>(GetParent());
+    pParent->SetPasswordPolicy(m_pwp);
+  } else
+    m_pwp.Empty();
 }

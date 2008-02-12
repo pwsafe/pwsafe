@@ -137,6 +137,7 @@ BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
   ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
   ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
+  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, &CAddDlg::OnBnClickedOverridePolicy)
 END_MESSAGE_MAP()
 
 
@@ -276,16 +277,9 @@ void CAddDlg::OnHelp()
 
 void CAddDlg::OnRandom() 
 {
-  DboxMain* pParent = (DboxMain*)GetParent();
-  ASSERT(pParent != NULL);
+  DboxMain* pParent = static_cast<DboxMain*>(GetParent());
 
   UpdateData(TRUE);
-
-  if (m_OverridePolicy == TRUE)
-    pParent->SetPasswordPolicy(m_pwp);
-  else
-    m_pwp.Empty();
-
   pParent->MakeRandomPassword(m_password, m_pwp);
   if (m_isPwHidden) {
     m_password2 = m_password;
@@ -399,4 +393,14 @@ void CAddDlg::OnCheckedSavePasswordHistory()
   m_SavePWHistory = ((CButton*)GetDlgItem(IDC_SAVE_PWHIST))->GetCheck();
 
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory);
+}
+
+void CAddDlg::OnBnClickedOverridePolicy()
+{
+  UpdateData(TRUE);
+  if (m_OverridePolicy == TRUE) {
+    DboxMain* pParent = static_cast<DboxMain*>(GetParent());
+    pParent->SetPasswordPolicy(m_pwp);
+  } else
+    m_pwp.Empty();
 }

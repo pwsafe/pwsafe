@@ -113,6 +113,7 @@ public:
   afx_msg void OnEnSetfocusNotes();
   afx_msg void OnEnKillfocusNotes();
   BOOL m_OverridePolicy;
+  afx_msg void OnBnClickedOverridePolicy();
 };
 //-----------------------------------------------------------------------------
 // Local variables:
