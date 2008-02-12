@@ -88,6 +88,7 @@ public:
   afx_msg void OnCheckedSavePasswordHistory();
   CButton m_moreLessBtn;
   BOOL m_OverridePolicy;
+  afx_msg void OnBnClickedOverridePolicy();
 };
 //-----------------------------------------------------------------------------
 // Local variables:
