@@ -212,9 +212,12 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
   ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
   ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
+  ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginRDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
   ON_WM_DESTROY()
+  ON_COMMAND(ID_MENUITEM_RCREATESHORTCUT, OnCreateShortcut)
+  ON_COMMAND(ID_MENUITEM_CANCEL, OnCancelDrop)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -952,6 +955,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   // pil will be NULL if we're the target of inter-process D&D
 
+  // Right drag must be within this instance
+  bool bRDrag = (pil != NULL) && (m_mousedrag == Right);
   if (pil != NULL) {
     pil->DragLeave(this);
     pil->EndDrag();
@@ -962,7 +967,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   if (pDbx->IsMcoreReadOnly())
     return FALSE; // don't drop in read-only mode
 
-  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
+  if (!bRDrag && !pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
     return FALSE;
 
   UINT uFlags;
@@ -988,6 +993,17 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
       break;
     default:
       return FALSE;
+  }
+
+  if (bRDrag) {
+    CMenu menu;
+    if (menu.LoadMenu(IDR_POPRIGHTDRAG)) {
+      CMenu* pPopup = menu.GetSubMenu(0);
+      ASSERT(pPopup != NULL);
+      ClientToScreen(&point);
+      pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+    }
+    return TRUE;
   }
 
   BOOL retval(FALSE);
@@ -1104,6 +1120,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
   RECT rClient;
   GetClientRect(&rClient);
+  m_mousedrag = Left;
 
   // Start dragging
   DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
@@ -1115,6 +1132,64 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
         !m_bWithinThisInstance && !pDbx->IsMcoreReadOnly()) {
       pDbx->Delete();
     }
+    // wrong place to clean up imagelist?
+    pil->DragLeave(GetDesktopWindow());
+    pil->EndDrag();
+    pil->DeleteImageList();
+    delete pil;
+    while (ShowCursor(TRUE) < 0)
+      ;
+  } else {
+    TRACE(_T("m_DataSource->StartDragging() failed"));
+  }
+}
+
+void CPWTreeCtrl::OnBeginRDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+  // This method is called when a drag action is detected.
+  // It sets the whole D&D mechanism in motion...
+  CPoint ptAction;
+
+  NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+  *pResult = 0;
+
+  GetCursorPos(&ptAction);
+  ScreenToClient(&ptAction);
+  m_hitemDrag = pNMTreeView->itemNew.hItem;
+  m_hitemDrop = NULL;
+
+  // Only allow RDrag of leaf item and only one of them!
+  if (!IsLeaf(m_hitemDrag))
+    return;
+
+  // Also, must be a normal entry or already a shortcut base!
+  // Future updates may allow right-drag to mean move/copy and so would be
+  // applicable to non-normal entries.
+  DWORD_PTR itemData = GetItemData(m_hitemDrag);
+  ASSERT(itemData != NULL);
+  CItemData *ci = (CItemData *)itemData;
+  if (!ci->IsNormal() && !ci->IsShortcutBase())
+    return;
+
+  SelectItem(m_hitemDrag);
+  CImageList *pil = CreateDragImage(m_hitemDrag);
+  pil->SetDragCursorImage(0, CPoint(0, 0));
+  pil->BeginDrag(0, CPoint(0,0));
+  pil->DragMove(ptAction);
+  pil->DragEnter(this, ptAction);
+  while (ShowCursor(FALSE) >= 0)
+    ;
+  SetCapture();
+
+  RECT rClient;
+  GetClientRect(&rClient);
+
+  m_mousedrag = Right;
+
+  // Start dragging
+  DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
+
+  if (SUCCEEDED(de)) {
     // wrong place to clean up imagelist?
     pil->DragLeave(GetDesktopWindow());
     pil->EndDrag();
@@ -1438,4 +1513,20 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
   tvs.lParam = (LPARAM)this;
 
   SortChildrenCB(&tvs);
+}
+
+void CPWTreeCtrl::OnCreateShortcut()
+{
+  DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
+  DWORD_PTR itemData = GetItemData(m_hitemDrag);
+  ASSERT(itemData != NULL);
+  CItemData *ci = (CItemData *)itemData;
+  pDbx->CreateShortcut(ci);
+  SelectItem(NULL);  // Deselect
+}
+
+void CPWTreeCtrl::OnCancelDrop()
+{
+  // Do nothing!
+  SelectItem(NULL);  // Deselect
 }

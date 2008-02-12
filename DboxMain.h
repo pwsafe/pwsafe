@@ -211,6 +211,7 @@ public:
   HICON GetEntryIcon(const int nImage) const;
   void RefreshImages();
   bool FieldsNotEqual(CMyString a, CMyString b);
+  void CreateShortcut(CItemData *ci);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };

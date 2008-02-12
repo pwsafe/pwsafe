@@ -52,6 +52,7 @@
 #define IDR_POPMENU                     165
 #define IDR_POPTRAY                     166
 #define IDR_POPTREE                     167
+#define IDR_POPRIGHTDRAG                168
 #define IDI_CORNERICON                  180
 #define IDI_LOCKEDICON                  181
 #define IDI_MBASKICON                   182
@@ -488,13 +489,15 @@
 #define IDC_STATIC_DG2                  1290
 #define IDC_STATIC_SY1                  1291
 #define IDC_STATIC_SY2                  1292
+#define IDC_ADDSCEXPLANATION            1293
+#define IDC_EDITSCEXPLANATION           1294
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        415
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1293
+#define _APS_NEXT_CONTROL_VALUE         1295
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

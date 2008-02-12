@@ -22,9 +22,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //-----------------------------------------------------------------------------
-CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, const CMyString &cs_target)
+CCreateShortcutDlg::CCreateShortcutDlg(CWnd* pParent, 
+  const CMyString &cs_tg, const CMyString &cs_tt, const CMyString &cs_tu)
   : CPWDialog(CCreateShortcutDlg::IDD, pParent),
-  m_target(cs_target), m_username(_T("")), m_title(_T("")), m_group(_T(""))
+  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg), m_username(cs_tu)
 {
 }
 
@@ -32,22 +33,28 @@ BOOL CCreateShortcutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  UpdateData(FALSE);
-
   // Populate the combo box
   if(m_ex_group.GetCount() == 0) {
     CStringArray aryGroups;
     app.m_core.GetUniqueGroups(aryGroups);
-    for(int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
+    for (int igrp = 0; igrp < aryGroups.GetSize(); igrp++) {
       m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
     }
   }
 
-  CMyString cs_title;
-  GetWindowText(cs_title);
-  cs_title += _T(" ") + m_target;
-  SetWindowText(cs_title);
+  m_title.Format(IDS_SCTARGET, m_tt);
+
+  CMyString cs_explanation, cs_target;
+  cs_target = m_tg + _T(".") + m_tt;
+  if (!m_tu.IsEmpty())
+    cs_target += _T(".") + m_tu;
+  cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
+  GetDlgItem(IDC_ADDSCEXPLANATION)->SetWindowText(cs_explanation);
+
   m_ex_group.ChangeColour();
+
+  UpdateData(FALSE);
+
   return TRUE;
 }
 

@@ -44,9 +44,11 @@ typedef std::ifstream ifstreamT;
 typedef std::ofstream ofstreamT;
 #endif
 
-CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent, const CMyString &cs_target)
+CEditShortcutDlg::CEditShortcutDlg(CItemData *ci, CWnd* pParent,
+  const CMyString &cs_tg, const CMyString &cs_tt, const CMyString &cs_tu)
   : CPWDialog(CEditShortcutDlg::IDD, pParent),
-  m_target(cs_target), m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
+  m_tg(cs_tg), m_tt(cs_tt), m_tu(cs_tu), m_group(cs_tg),
+  m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false)
 {
   ASSERT(ci != NULL);
 
@@ -181,12 +183,14 @@ BOOL CEditShortcutDlg::OnInitDialog()
     }
   }
 
-  UpdateData(FALSE);
+  CMyString cs_explanation, cs_target;
+  cs_target = m_tg + _T(".") + m_tt;
+  if (!m_tu.IsEmpty())
+    cs_target += _T(".") + m_tu;
+  cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
+  GetDlgItem(IDC_EDITSCEXPLANATION)->SetWindowText(cs_explanation);
 
-  CMyString cs_title;
-  GetWindowText(cs_title);
-  cs_title += _T(" ") + m_target;
-  SetWindowText(cs_title);
+  UpdateData(FALSE);
 
   m_ex_group.ChangeColour();
   return TRUE;
