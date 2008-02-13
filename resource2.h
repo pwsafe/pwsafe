@@ -103,8 +103,10 @@
 #define ID_TOOLBUTTON_VIEWREPORTS       32261
 
 // Right Mouse Drag
-#define ID_MENUITEM_RCREATESHORTCUT     32270
-#define ID_MENUITEM_CANCEL              32271
+#define ID_MENUITEM_COPYHERE            32270
+#define ID_MENUITEM_MOVEHERE            32271
+#define ID_MENUITEM_RCREATESHORTCUT     32272
+#define ID_MENUITEM_CANCEL              32273
 
 // Find Toolbar
 #define ID_TOOLBUTTON_CLOSEFIND         32300

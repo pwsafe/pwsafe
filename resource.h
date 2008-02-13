@@ -238,6 +238,8 @@
 #define IDB_IMPORT_CLASSIC              412
 #define IDB_IMPORT_NEW                  413
 #define IDB_IMPORT_NEW_D                414
+#define IDB_CUSTOMIZETBAR_CLASSIC       415
+#define IDB_CUSTOMIZETBAR_NEW           416
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -495,7 +497,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        415
+#define _APS_NEXT_RESOURCE_VALUE        417
 #define _APS_NEXT_COMMAND_VALUE         30000
 #define _APS_NEXT_CONTROL_VALUE         1295
 #define _APS_NEXT_SYMED_VALUE           149

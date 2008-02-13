@@ -362,8 +362,8 @@ void DboxMain::Delete(bool inRecursion)
     if (entrytype == CItemData::AliasBase)
       m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Alias);
     else 
-      if (entrytype == CItemData::ShortcutBase)
-        m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Shortcut);
+    if (entrytype == CItemData::ShortcutBase)
+      m_core.GetAllDependentEntries(entry_uuid, dependentslist, CItemData::Shortcut);
 
     num_dependents = dependentslist.size();
     if (num_dependents > 0) {
@@ -771,29 +771,23 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
   // Need to take care that we handle a rebuilt list.
   CItemData editedItem(*ci);
 
-  CEditShortcutDlg dlg_editshortcut(&editedItem, this, ci->GetGroup(),
-                                    ci->GetTitle(), ci->GetUser());
+  uuid_array_t entry_uuid, base_uuid;
+  ci->GetUUID(entry_uuid);  // Edit doesn't change this!
+
+  // Shortcut entry
+  // Get corresponding base uuid
+  m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+  ItemListIter iter = m_core.Find(base_uuid);
+  if (iter == End())
+    return false;
+
+  CEditShortcutDlg dlg_editshortcut(&editedItem, this, iter->second.GetGroup(),
+                                    iter->second.GetTitle(), iter->second.GetUser());
 
   if (pcore->GetUseDefUser())
     dlg_editshortcut.m_defusername = pcore->GetDefUsername();
   dlg_editshortcut.m_Edit_IsReadOnly = pcore->IsReadOnly();
-
-  uuid_array_t original_uuid, original_base_uuid, new_base_uuid;
-
-  ci->GetUUID(original_uuid);  // Edit doesn't change this!
-
-  // Shortcut entry
-  // Get corresponding base uuid
-  m_core.GetShortcutBaseUUID(original_uuid, original_base_uuid);
-
-  ItemListIter iter = m_core.Find(original_base_uuid);
-  if (iter != End()) {
-    const CItemData &cibase = iter->second;
-    dlg_editshortcut.m_base = _T("[") +
-                              cibase.GetGroup() + _T(":") +
-                              cibase.GetTitle() + _T(":") +
-                              cibase.GetUser()  + _T("]");
-  }
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_editshortcut.DoModal();
@@ -802,7 +796,7 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
   if (rc == IDOK) {
     // Out with the old, in with the new
     // User cannot change a shortcut entry to anything else!
-    ItemListIter listpos = Find(original_uuid);
+    ItemListIter listpos = Find(entry_uuid);
     ASSERT(listpos != m_core.GetEntryEndIter());
     CItemData oldElem = GetEntryAt(listpos);
     DisplayInfo *di = (DisplayInfo *)oldElem.GetDisplayInfo();
@@ -813,48 +807,6 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
     ndi->list_index = -1; // so that insertItem will set new values
     ndi->tree_item = 0;
     editedItem.SetDisplayInfo(ndi);
-    CMyString newPassword = editedItem.GetPassword();
-    memcpy(new_base_uuid, dlg_editshortcut.m_base_uuid, sizeof(uuid_array_t));
-
-    ItemListIter iter;
-    // Original was an shortcut - delete it from multimap
-    // RemoveShortcutEntry also resets base to normal if the last alias is delete
-    pcore->RemoveDependentEntry(original_base_uuid, original_uuid, CItemData::Shortcut);
-    if (newPassword == dlg_editshortcut.m_base) {
-      // Password (i.e. base) unchanged - put it back
-      pcore->AddDependentEntry(original_base_uuid, original_uuid, CItemData::Shortcut);
-    } else {
-      // Password changed so must be a shortcut of another entry!
-      // Could also be the same entry i.e. [:t:] == [t] !
-      if (dlg_editshortcut.m_ibasedata > 0) {
-        // Still an alias
-        pcore->AddDependentEntry(new_base_uuid, original_uuid, CItemData::Shortcut);
-        editedItem.SetPassword(CMyString(_T("[Shortcut]")));
-        editedItem.SetShortcut();
-      }
-    }
-
-    // Reset all images - except this as it must still be a shortcut
-    // Next the original base entry
-    iter = m_core.Find(original_base_uuid);
-    if (iter != End()) {
-      const CItemData &cibase = iter->second;
-      DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-      int nImage = GetEntryImage(cibase);
-      SetEntryImage(di->list_index, nImage, true);
-      SetEntryImage(di->tree_item, nImage, true);
-    }
-    // Last the new base entry (only if different to the one we have done!
-    if (::memcmp(new_base_uuid, original_base_uuid, sizeof(uuid_array_t)) != 0) {
-      iter = m_core.Find(new_base_uuid);
-      if (iter != End()) {
-        const CItemData &cibase = iter->second;
-        DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-        int nImage = GetEntryImage(cibase);
-        SetEntryImage(di->list_index, nImage, true);
-        SetEntryImage(di->tree_item, nImage, true);
-      }
-    }
 
     editedItem.SetLTime((time_t)0);
 
@@ -864,7 +816,7 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
     m_ctlItemTree.DeleteWithParents(di->tree_item);
     // AddEntry copies the entry, and we want to work with the inserted copy
     // Which we'll find by uuid
-    insertItem(pcore->GetEntry(m_core.Find(original_uuid)));
+    insertItem(pcore->GetEntry(m_core.Find(entry_uuid)));
     FixListIndexes();
     // Now delete old entry's DisplayInfo
     delete di;
@@ -1367,6 +1319,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       tempitem.SetPassword(cs_tmp);
       pl.InputType = CItemData::Alias;
     }
+
     // Potentially remove tilde as GetBaseEntry expects only
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.Left(2) == _T("[~") && cs_tmp.Right(2) == _T("~]")) {
@@ -1388,56 +1341,55 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
           cs_msg.Format(IDS_DDBASEISALIAS, Group, Title, User);
           AfxMessageBox(cs_msg, MB_OK);
         } else
-          if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
-            // Only normal or alias base allowed as target
-            CString cs_msg;
-            cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
-            AfxMessageBox(cs_msg, MB_OK);
-            continue;
-          }
-          tempitem.GetUUID(temp_uuid);
-          m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Alias);
-          tempitem.SetPassword(CMyString(_T("[Alias]")));
-          tempitem.SetAlias();
-      } else
-        if (pl.InputType == CItemData::Shortcut) {
-          ItemListIter iter = m_core.Find(pl.base_uuid);
-          ASSERT(iter != End());
-          if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::ShortcutBase) {
-            // Only normal or shortcut base allowed as target
-            CString cs_msg;
-            cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
-            AfxMessageBox(cs_msg, MB_OK);
-            continue;
-          }
-          tempitem.GetUUID(temp_uuid);
-          m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Shortcut);
-          tempitem.SetPassword(CMyString(_T("[Shortcut]")));
-          tempitem.SetShortcut();
+        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::AliasBase) {
+          // Only normal or alias base allowed as target
+          CString cs_msg;
+          cs_msg.Format(IDS_ABASEINVALID, Group, Title, User);
+          AfxMessageBox(cs_msg, MB_OK);
+          continue;
         }
+        tempitem.GetUUID(temp_uuid);
+        m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Alias);
+        tempitem.SetPassword(CMyString(_T("[Alias]")));
+        tempitem.SetAlias();
+      } else
+      if (pl.InputType == CItemData::Shortcut) {
+        ItemListIter iter = m_core.Find(pl.base_uuid);
+        ASSERT(iter != End());
+        if (pl.TargetType != CItemData::Normal && pl.TargetType != CItemData::ShortcutBase) {
+          // Only normal or shortcut base allowed as target
+          CString cs_msg;
+          cs_msg.Format(IDS_SBASEINVALID, Group, Title, User);
+          AfxMessageBox(cs_msg, MB_OK);
+          continue;
+        }
+        tempitem.GetUUID(temp_uuid);
+        m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Shortcut);
+        tempitem.SetPassword(CMyString(_T("[Shortcut]")));
+        tempitem.SetShortcut();
+      }
     } else
-      if (pl.ibasedata == 0) {
-        // Password NOT in alias/shortcut format
-        tempitem.SetNormal();
-      } else
-        if (pl.ibasedata < 0) {
-          // Password in alias/shortcut format AND base entry does not exist or multiple possible
-          // base entries exit.
-          // Note: As more entries are added, what was "not exist" may become "OK",
-          // "no unique exists" or "multiple exist".
-          // Let the code that processes the possible aliases after all have been added sort this out.
-          tempitem.GetUUID(temp_uuid);
-          if (pl.InputType == CItemData::Alias)
-            possible_aliases.push_back(temp_uuid);
-          else
-            possible_shortcuts.push_back(temp_uuid);
-        }
+    if (pl.ibasedata == 0) {
+      // Password NOT in alias/shortcut format
+      tempitem.SetNormal();
+    } else
+    if (pl.ibasedata < 0) {
+      // Password in alias/shortcut format AND base entry does not exist or multiple possible
+      // base entries exit.
+      // Note: As more entries are added, what was "not exist" may become "OK",
+      // "no unique exists" or "multiple exist".
+      // Let the code that processes the possible aliases after all have been added sort this out.
+      tempitem.GetUUID(temp_uuid);
+      if (pl.InputType == CItemData::Alias)
+        possible_aliases.push_back(temp_uuid);
+      else
+        possible_shortcuts.push_back(temp_uuid);
+    }
 
-        AddEntry(tempitem);
-
+    AddEntry(tempitem);
   } // iteration over in_oblist
 
-  // Now try to add aliases we couldn't add in previous processing
+  // Now try to add aliases/shortcuts we couldn't add in previous processing
   m_core.AddDependentEntries(possible_aliases, NULL, CItemData::Alias, 
                              CItemData::PASSWORD);
   m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, 

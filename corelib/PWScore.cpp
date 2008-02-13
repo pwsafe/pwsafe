@@ -2061,7 +2061,9 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
                                  const CItemData::EntryType type, const int &iVia)
 {
   // When called during validation of a database  - *rpt is valid
-  // When called during the opening of a database - *rpt is NULL and no report generated
+  // When called during the opening of a database or during drag & drop
+  //   - *rpt is NULL and no report generated
+
   // If iVia == CItemData::UUID, the password was "[[uuidstr]]" or "[~uuidstr~]" of the
   //   associated base entry
   // If iVia == CItemData::PASSWORD, the password is expected to be in the full format 
@@ -2115,6 +2117,7 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         csPwdUser = tmp.Mid(csPwdTitle.GetLength() + 1);
         iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
       }
+
       if (iter != m_pwlist.end()) {
         if (type == CItemData::Shortcut) {
           const CItemData::EntryType type2 = iter->second.GetEntryType();
@@ -2155,7 +2158,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           iter->second.GetUUID(base_uuid);
           if (type == CItemData::Alias) {
             iter->second.SetAliasBase();
-          } else if (type == CItemData::Shortcut) {
+          } else
+          if (type == CItemData::Shortcut) {
             iter->second.SetShortcutBase();
           }
         }
@@ -2164,7 +2168,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         if (type == CItemData::Alias) {
           curitem->SetPassword(CMyString(_T("[Alias]")));
           curitem->SetAlias();
-        } else if (type == CItemData::Shortcut) {
+        } else
+        if (type == CItemData::Shortcut) {
           curitem->SetPassword(CMyString(_T("[Shortcut]")));
           curitem->SetShortcut();
         }
@@ -2181,7 +2186,11 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
           strError.LoadString(IDSC_IMPORTWARNING2A);
           rpt->WriteLine(strError);
         }
-        curitem->SetNormal();
+        if (type == CItemData::Shortcut)
+          RemoveEntryAt(m_pwlist.find(entry_uuid)); // Can't keep invalid shortcut
+        else
+          curitem->SetNormal(); // but can make invalid alias a normal entry
+
         num_warnings++;
       }
     }

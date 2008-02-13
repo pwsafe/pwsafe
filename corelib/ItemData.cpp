@@ -1597,8 +1597,8 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
     // I am a shortcut entry
     ASSERT(cibase != NULL);
     tmp = _T("[~") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("~]");
-  } 
-  tmp = GetPassword();
+  } else
+    tmp = GetPassword();
 
   push_string(v, PASSWORD, tmp);
   push_string(v, NOTES, GetNotes());
@@ -1612,8 +1612,8 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   GetRMTime(t);  push_time(v, RMTIME, t);
 
   push_string(v, POLICY, GetPWPolicy());
-
   push_string(v, PWHIST, GetPWHistory());
+
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
        vi_IterURFE != GetURFIterEnd();
