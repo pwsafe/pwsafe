@@ -216,8 +216,6 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
   ON_WM_DESTROY()
-  ON_COMMAND(ID_MENUITEM_RCREATESHORTCUT, OnCreateShortcut)
-  ON_COMMAND(ID_MENUITEM_CANCEL, OnCancelDrop)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -955,8 +953,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   // pil will be NULL if we're the target of inter-process D&D
 
-  // Right drag must be within this instance
-  bool bRDrag = (pil != NULL) && (m_mousedrag == Right);
   if (pil != NULL) {
     pil->DragLeave(this);
     pil->EndDrag();
@@ -966,9 +962,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
   if (pDbx->IsMcoreReadOnly())
     return FALSE; // don't drop in read-only mode
-
-  if (!bRDrag && !pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
-    return FALSE;
 
   UINT uFlags;
   HTREEITEM hitemDrop = HitTest(point, &uFlags);
@@ -993,17 +986,6 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
       break;
     default:
       return FALSE;
-  }
-
-  if (bRDrag) {
-    CMenu menu;
-    if (menu.LoadMenu(IDR_POPRIGHTDRAG)) {
-      CMenu* pPopup = menu.GetSubMenu(0);
-      ASSERT(pPopup != NULL);
-      ClientToScreen(&point);
-      pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
-    }
-    return TRUE;
   }
 
   BOOL retval(FALSE);
@@ -1043,6 +1025,45 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   if (iDDType != FROMTREE)
     goto exit;
 
+  if (m_mousedrag == Right) {
+    CMenu menu;
+    if (menu.LoadMenu(IDR_POPRIGHTDRAG)) {
+      DWORD dwcode;
+      CMenu* pPopup = menu.GetSubMenu(0);
+      ASSERT(pPopup != NULL);
+      ClientToScreen(&point);
+      pPopup->SetDefaultItem(GetKeyState(VK_CONTROL) < 0 ? 
+                             ID_MENUITEM_COPYHERE : ID_MENUITEM_MOVEHERE);
+      dwcode = pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON | 
+                                      TPM_NONOTIFY | TPM_RETURNCMD,
+                                      point.x, point.y, this);
+      pPopup->DestroyMenu();
+      switch (dwcode) {
+        case ID_MENUITEM_COPYHERE:
+          dropEffect = DROPEFFECT_COPY;
+          break;
+        case ID_MENUITEM_MOVEHERE:
+          dropEffect = DROPEFFECT_MOVE;
+          break;
+        case ID_MENUITEM_RCREATESHORTCUT:
+        {
+          DWORD_PTR itemData = GetItemData(m_hitemDrag);
+          ASSERT(itemData != NULL);
+          CItemData *ci = (CItemData *)itemData;
+          pDbx->CreateShortcut(ci);
+          retval = TRUE;
+          SelectItem(NULL);  // Deselect
+          goto exit;
+        }
+        case ID_MENUITEM_CANCEL:
+          SelectItem(NULL);  // Deselect
+          goto exit;
+        default:
+          ASSERT(0);
+      }
+    }
+  }
+
   if (hitemDrop == NULL && GetCount() == 0) {
     // Dropping on to an empty database
     CMyString DropGroup (_T(""));
@@ -1059,17 +1080,18 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
     // from me! - easy
     HTREEITEM parent = GetParentItem(m_hitemDrag);
     if (m_hitemDrag != hitemDrop &&
-      !IsChildNodeOf(hitemDrop, m_hitemDrag) &&
-      parent != hitemDrop) {
-        // drag operation allowed
-        if (dropEffect == DROPEFFECT_MOVE) {
-          MoveItem(m_hitemDrag, hitemDrop);
-        } else if (dropEffect == DROPEFFECT_COPY) {
-          CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
-          SortTree(hitemDrop);
-        }
-        SelectItem(hitemDrop);
-        retval = TRUE;
+        !IsChildNodeOf(hitemDrop, m_hitemDrag) &&
+        parent != hitemDrop) {
+      // drag operation allowed
+      if (dropEffect == DROPEFFECT_MOVE) {
+        MoveItem(m_hitemDrag, hitemDrop);
+      } else
+      if (dropEffect == DROPEFFECT_COPY) {
+        CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
+        SortTree(hitemDrop);
+      }
+      SelectItem(hitemDrop);
+      retval = TRUE;
     } else {
       // drag failed or cancelled, revert to last selected
       SelectItem(m_hitemDrag);
@@ -1096,8 +1118,21 @@ exit:
 
 void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-  // This method is called when a drag action is detected.
-  // It set the whole D&D mechanism in motion...
+  // This method is called when a left mouse drag action is detected.
+  m_mousedrag = Left;
+  DoBeginDrag(pNMHDR, pResult); 
+}
+
+void CPWTreeCtrl::OnBeginRDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+  // This method is called when a right mouse drag action is detected.
+  m_mousedrag = Right;
+  DoBeginDrag(pNMHDR, pResult); 
+}
+
+void CPWTreeCtrl::DoBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+  // This sets the whole D&D mechanism in motion...
   CPoint ptAction;
 
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
@@ -1120,7 +1155,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
   RECT rClient;
   GetClientRect(&rClient);
-  m_mousedrag = Left;
 
   // Start dragging
   DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
@@ -1132,64 +1166,6 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
         !m_bWithinThisInstance && !pDbx->IsMcoreReadOnly()) {
       pDbx->Delete();
     }
-    // wrong place to clean up imagelist?
-    pil->DragLeave(GetDesktopWindow());
-    pil->EndDrag();
-    pil->DeleteImageList();
-    delete pil;
-    while (ShowCursor(TRUE) < 0)
-      ;
-  } else {
-    TRACE(_T("m_DataSource->StartDragging() failed"));
-  }
-}
-
-void CPWTreeCtrl::OnBeginRDrag(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-  // This method is called when a drag action is detected.
-  // It sets the whole D&D mechanism in motion...
-  CPoint ptAction;
-
-  NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-  *pResult = 0;
-
-  GetCursorPos(&ptAction);
-  ScreenToClient(&ptAction);
-  m_hitemDrag = pNMTreeView->itemNew.hItem;
-  m_hitemDrop = NULL;
-
-  // Only allow RDrag of leaf item and only one of them!
-  if (!IsLeaf(m_hitemDrag))
-    return;
-
-  // Also, must be a normal entry or already a shortcut base!
-  // Future updates may allow right-drag to mean move/copy and so would be
-  // applicable to non-normal entries.
-  DWORD_PTR itemData = GetItemData(m_hitemDrag);
-  ASSERT(itemData != NULL);
-  CItemData *ci = (CItemData *)itemData;
-  if (!ci->IsNormal() && !ci->IsShortcutBase())
-    return;
-
-  SelectItem(m_hitemDrag);
-  CImageList *pil = CreateDragImage(m_hitemDrag);
-  pil->SetDragCursorImage(0, CPoint(0, 0));
-  pil->BeginDrag(0, CPoint(0,0));
-  pil->DragMove(ptAction);
-  pil->DragEnter(this, ptAction);
-  while (ShowCursor(FALSE) >= 0)
-    ;
-  SetCapture();
-
-  RECT rClient;
-  GetClientRect(&rClient);
-
-  m_mousedrag = Right;
-
-  // Start dragging
-  DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
-
-  if (SUCCEEDED(de)) {
     // wrong place to clean up imagelist?
     pil->DragLeave(GetDesktopWindow());
     pil->EndDrag();
@@ -1388,30 +1364,22 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
     pDDObject->FromItem(*ci);
   }
 
-  if (ci->IsAlias()) {
-    // I'm an alias; pass on ptr to my base item to retrieve its group/title/user
+  if (ci->IsAlias() || ci->IsShortcut()) {
+    // I'm an alias or shortcut; pass on ptr to my base item
+    // to retrieve its group/title/user
     CItemData *cibase(NULL);
     uuid_array_t base_uuid, entry_uuid;
     ci->GetUUID(entry_uuid);
     DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-    pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
+    if (ci->IsAlias())
+      pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
+    else
+      pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
     ItemListIter iter = pDbx->Find(base_uuid);
     ASSERT(iter != pDbx->End());
     cibase = &(iter->second);
     pDDObject->SetBaseItem(cibase);
-  } else
-    if (ci->IsShortcut()) {
-      // I'm a shortcut; pass on ptr to my base item to retrieve its group/title/user
-      CItemData *cibase(NULL);
-      uuid_array_t base_uuid, entry_uuid;
-      ci->GetUUID(entry_uuid);
-      DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-      pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
-      ItemListIter iter = pDbx->Find(base_uuid);
-      ASSERT(iter != pDbx->End());
-      cibase = &(iter->second);
-      pDDObject->SetBaseItem(cibase);
-    }
+  }
 
     out_oblist.AddTail(pDDObject);
 }
@@ -1513,20 +1481,4 @@ void CPWTreeCtrl::SortTree(const HTREEITEM htreeitem)
   tvs.lParam = (LPARAM)this;
 
   SortChildrenCB(&tvs);
-}
-
-void CPWTreeCtrl::OnCreateShortcut()
-{
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-  DWORD_PTR itemData = GetItemData(m_hitemDrag);
-  ASSERT(itemData != NULL);
-  CItemData *ci = (CItemData *)itemData;
-  pDbx->CreateShortcut(ci);
-  SelectItem(NULL);  // Deselect
-}
-
-void CPWTreeCtrl::OnCancelDrop()
-{
-  // Do nothing!
-  SelectItem(NULL);  // Deselect
 }

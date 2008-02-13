@@ -2289,6 +2289,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       }
       break;
     case ID_MENUITEM_CREATESHORTCUT:
+    case ID_MENUITEM_RCREATESHORTCUT:
       if (bGroupSelected) {
         // Not allowed if a Group is selected
         iEnable = FALSE;
@@ -2304,6 +2305,9 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
           }
         }
       }
+      // Create shortcut is only within the same instance
+      if (ID_MENUITEM_RCREATESHORTCUT && !m_ctlItemTree.IsDropOnMe())
+        iEnable = FALSE;      
       break;
     // Items not allowed in List View
     case ID_MENUITEM_ADDGROUP:

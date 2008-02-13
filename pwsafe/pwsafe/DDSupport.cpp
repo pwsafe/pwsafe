@@ -19,7 +19,7 @@ void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
 {
   vector<char> v;
   CItemData *cibase(NULL);
-  if (m_item.IsAlias()) {
+  if (m_item.IsAlias() || m_item.IsShortcut()) {
     cibase = GetBaseItem();
   }
   m_item.SerializePlainText(v, cibase);

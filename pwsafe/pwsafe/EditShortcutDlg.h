@@ -27,10 +27,8 @@ public:
   virtual ~CEditShortcutDlg();
 
   enum { IDD = IDD_EDIT_SHORTCUT };
-  CMyString m_defusername, m_username, m_base;
+  CMyString m_defusername, m_username;
   bool m_Edit_IsReadOnly;
-  int m_ibasedata;
-  uuid_array_t m_base_uuid;
 
 private:
   CItemData *m_ci; // The shortcut being edited
