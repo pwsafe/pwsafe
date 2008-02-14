@@ -553,7 +553,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
           cibase->GetGroup() + _T(":") + 
           cibase->GetTitle() + _T(":") + 
           cibase->GetUser() + _T("]]") ;
-  } else if (m_entrytype == Shortcut) {
+  } else
+  if (m_entrytype == Shortcut) {
     ASSERT(cibase != NULL);
     tmp = _T("[~") + 
           cibase->GetGroup() + _T(":") + 
@@ -1593,7 +1594,8 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
     // I am an alias entry
     ASSERT(cibase != NULL);
     tmp = _T("[[") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("]]");
-  } else if (m_entrytype == Shortcut) {
+  } else
+  if (m_entrytype == Shortcut) {
     // I am a shortcut entry
     ASSERT(cibase != NULL);
     tmp = _T("[~") + cibase->GetGroup() + _T(":") + cibase->GetTitle() + _T(":") + cibase->GetUser() + _T("~]");

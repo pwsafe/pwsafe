@@ -119,11 +119,12 @@ public:
       return FALSE;
 
     char header[OLE_HDR_LEN+1];
+    // Note: m_tree.GetDDType will return either FROMTREE or FROMTREE_R
 #if _MSC_VER >= 1400
     sprintf_s(header, sizeof(header),
-              OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
+              OLE_HDR_FMT, GetCurrentProcessId(), m_tree.GetDDType(), lBufLen);
 #else
-    sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), FROMTREE, lBufLen);
+    sprintf(header, OLE_HDR_FMT, GetCurrentProcessId(), m_tree.GetDDType(), lBufLen);
 #endif
     CMemFile mf;
     mf.Write(header, OLE_HDR_LEN);
@@ -869,7 +870,8 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
 
   // We are moving it - so now delete original from TreeCtrl
   // Why can't MoveItem & CopyItem be the same except for the following line?!?
-  // For one, if we don't delete, we'l get into an infinite recursion.
+  // For one, if we don't delete, we'll get into an infinite recursion.
+  // For two, entry type may change on Copy or bases will get extra dependents
   DeleteItem(hitemDrag);
   return true;
 }
@@ -926,7 +928,13 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     CMyString ci_title = pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Needs new UUID as they must be unique and this is a copy operation
+    // but before we do, save the original
+    uuid_array_t original_uuid, temp_uuid, base_uuid;
+    temp.GetUUID(original_uuid);
     temp.CreateUUID();
+    // May need it later...
+    temp.GetUUID(temp_uuid);
+
     temp.SetGroup(newPath);
     temp.SetTitle(ci_title);
     DisplayInfo *di = (DisplayInfo *)ci->GetDisplayInfo();
@@ -935,6 +943,32 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     ndi->list_index = -1; // so that insertItem will set new values
     ndi->tree_item = 0;
     temp.SetDisplayInfo(ndi);
+
+    CItemData::EntryType temp_et = temp.GetEntryType();
+
+    switch (temp_et) {
+      case CItemData::Normal:
+        break;
+      case CItemData::AliasBase:
+      case CItemData::ShortcutBase:
+        // An alias or shortcut can only have one base
+        temp.SetNormal();
+        break;
+      case CItemData::Alias:
+        // Get base of original alias and make this copy point to it
+        pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
+        pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Alias);
+        temp.SetPassword(CMyString(_T("[Alias]")));
+        break;
+      case CItemData::Shortcut:
+        // Get base of original shortcut and make this copy point to it
+        pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
+        pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Shortcut);
+        temp.SetPassword(CMyString(_T("[Shortcut]")));
+        break;
+      default:
+        ASSERT(0);
+    }
 
     pDbx->AddEntry(temp);
 
@@ -1003,7 +1037,8 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   if (memsize < OLE_HDR_LEN) // OLE_HDR_FMT 
     goto exit;
 
-  // iDDType = D&D type FROMTREE or for column D&D only FROMCC, FROMHDR
+  // iDDType = D&D type FROMTREE/FROMTREE_R or 
+  //    for column D&D only FROMCC, FROMHDR
   // lBufLen = Length of D&D data appended to this data
   unsigned long lPid;
   int iDDType;
@@ -1023,23 +1058,22 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   // and probably the most robust...
   m_bWithinThisInstance = (lPid == GetCurrentProcessId());
 
-  // Check if it is from another TreeCtrl?
+  // Check if it is from another TreeCtrl (left or right mouse drag)?
   // - we don't accept drop from anything else
-  if (iDDType != FROMTREE)
+  if (iDDType != FROMTREE && iDDType != FROMTREE_R)
     goto exit;
 
-  if (m_mousedrag == Right) {
+  if (iDDType == FROMTREE_R) {
     CMenu menu;
     if (menu.LoadMenu(IDR_POPRIGHTDRAG)) {
-      DWORD dwcode;
       CMenu* pPopup = menu.GetSubMenu(0);
       ASSERT(pPopup != NULL);
       ClientToScreen(&point);
       pPopup->SetDefaultItem(GetKeyState(VK_CONTROL) < 0 ? 
                              ID_MENUITEM_COPYHERE : ID_MENUITEM_MOVEHERE);
-      dwcode = pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON | 
-                                      TPM_NONOTIFY | TPM_RETURNCMD,
-                                      point.x, point.y, this);
+      DWORD dwcode = pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON | 
+                                            TPM_NONOTIFY | TPM_RETURNCMD,
+                                            point.x, point.y, this);
       pPopup->DestroyMenu();
       switch (dwcode) {
         case ID_MENUITEM_COPYHERE:
@@ -1122,14 +1156,14 @@ exit:
 void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
   // This method is called when a left mouse drag action is detected.
-  m_mousedrag = Left;
+  m_DDType = FROMTREE;
   DoBeginDrag(pNMHDR, pResult); 
 }
 
 void CPWTreeCtrl::OnBeginRDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
   // This method is called when a right mouse drag action is detected.
-  m_mousedrag = Right;
+  m_DDType = FROMTREE_R;
   DoBeginDrag(pNMHDR, pResult); 
 }
 
@@ -1393,7 +1427,7 @@ CMyString CPWTreeCtrl::GetPrefix(HTREEITEM hItem) const
   // e.g., if hItem is X in a.b.c.X.y.z, then return a.b.c
   CMyString retval;
   HTREEITEM p = GetParentItem(hItem);
-  while ( p != NULL) {
+  while (p != NULL) {
     retval = CMyString(GetItemText(p)) + retval;
     p = GetParentItem(p);
     if (p != NULL)
