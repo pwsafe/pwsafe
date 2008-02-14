@@ -1060,10 +1060,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
 
   // Check if it is from another TreeCtrl (left or right mouse drag)?
   // - we don't accept drop from anything else
-  if (iDDType != FROMTREE && iDDType != FROMTREE_R)
+  if (iDDType != FROMTREE_L && iDDType != FROMTREE_R && iDDType != FROMTREE_RSC)
     goto exit;
 
-  if (iDDType == FROMTREE_R) {
+  if (iDDType == FROMTREE_R || iDDType == FROMTREE_RSC) {
     CMenu menu;
     if (menu.LoadMenu(IDR_POPRIGHTDRAG)) {
       CMenu* pPopup = menu.GetSubMenu(0);
@@ -1071,6 +1071,9 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
       ClientToScreen(&point);
       pPopup->SetDefaultItem(GetKeyState(VK_CONTROL) < 0 ? 
                              ID_MENUITEM_COPYHERE : ID_MENUITEM_MOVEHERE);
+      if (!m_bWithinThisInstance || iDDType != FROMTREE_RSC)
+        pPopup->EnableMenuItem(ID_MENUITEM_RCREATESHORTCUT, MF_BYCOMMAND | MF_GRAYED);
+
       DWORD dwcode = pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON | 
                                             TPM_NONOTIFY | TPM_RETURNCMD,
                                             point.x, point.y, this);
@@ -1156,7 +1159,7 @@ exit:
 void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
   // This method is called when a left mouse drag action is detected.
-  m_DDType = FROMTREE;
+  m_DDType = FROMTREE_L;
   DoBeginDrag(pNMHDR, pResult); 
 }
 
@@ -1192,6 +1195,13 @@ void CPWTreeCtrl::DoBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 
   RECT rClient;
   GetClientRect(&rClient);
+
+  if (m_DDType == FROMTREE_R && IsLeaf(m_hitemDrag)) {
+    DWORD_PTR itemData = GetItemData(m_hitemDrag);
+    CItemData *ci = (CItemData *)itemData;
+    if (ci->IsNormal() || ci->IsShortcutBase())
+      m_DDType = FROMTREE_RSC;  // Shortcut creation allowed (if within this instance)
+  }
 
   // Start dragging
   DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
