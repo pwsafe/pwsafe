@@ -60,8 +60,7 @@ public:
     DWORD dwKeyState, CPoint point);
   void OnDragLeave();
   bool IsDropOnMe() {return m_bWithinThisInstance;}
-
-  enum MouseButton {Left, Right};
+  int GetDDType() {return m_DDType;}
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
@@ -87,8 +86,8 @@ private:
   bool m_isRestoring; // don't update state vector when restoring state
   int m_nDragPathLen;
   bool m_bWithinThisInstance;
-  // For dealing with right-mouse drag to create shortcut
-  MouseButton m_mousedrag;
+  // For dealing with distinguishing between left & right-mouse drag
+  int m_DDType;
 
   // in an ideal world, following would be is-a, rather than has-a
   // (multiple inheritance) Microsoft doesn't really support this, however...

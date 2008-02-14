@@ -1383,6 +1383,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       if (pl.InputType == CItemData::Alias)
         possible_aliases.push_back(temp_uuid);
       else
+      if (pl.InputType == CItemData::Shortcut)
         possible_shortcuts.push_back(temp_uuid);
     }
 

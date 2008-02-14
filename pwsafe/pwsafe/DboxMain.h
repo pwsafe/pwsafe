@@ -207,6 +207,9 @@ public:
   {m_core.GetAliasBaseUUID(entry_uuid, base_uuid);}
   void GetShortcutBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid)
   {m_core.GetShortcutBaseUUID(entry_uuid, base_uuid);}
+  void AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid,
+    const CItemData::EntryType type)
+  {m_core.AddDependentEntry(base_uuid, entry_uuid, type);}
   int GetEntryImage(const CItemData &ci);
   HICON GetEntryIcon(const int nImage) const;
   void RefreshImages();

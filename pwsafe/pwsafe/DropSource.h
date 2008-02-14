@@ -15,6 +15,7 @@ enum {
   FROMCC = 0,
   FROMHDR = 1, 
   FROMTREE = 2,
+  FROMTREE_R = 4
 };
 
 class CDataSource : protected COleDataSource
