@@ -1525,12 +1525,13 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   // to this menu. Note that m_pParentMenu == NULL indicates that the menu is a
   // secondary popup.
   CMenu *hParentMenu;
-  if(AfxGetThreadState()->m_hTrackingMenu == pPopupMenu->m_hMenu) {
+  if (AfxGetThreadState()->m_hTrackingMenu == pPopupMenu->m_hMenu) {
     state.m_pParentMenu = pPopupMenu; // Parent == child for tracking popup.
-  } else if((hParentMenu = this->GetMenu()) != NULL) {
+  } else
+  if((hParentMenu = this->GetMenu()) != NULL) {
     CWnd* pParent = this;
     // Child windows don't have menus--need to go to the top!
-    if(pParent != NULL && (hParentMenu = pParent->GetMenu()) != NULL) {
+    if (pParent != NULL && (hParentMenu = pParent->GetMenu()) != NULL) {
       int nIndexMax = hParentMenu->GetMenuItemCount();
       for (int nIndex = 0; nIndex < nIndexMax; nIndex++) {
         CMenu *submenu = hParentMenu->GetSubMenu(nIndex);
@@ -1544,13 +1545,13 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   }
 
   state.m_nIndexMax = pPopupMenu->GetMenuItemCount();
-  for(state.m_nIndex = 0; state.m_nIndex < state.m_nIndexMax; state.m_nIndex++) {
+  for (state.m_nIndex = 0; state.m_nIndex < state.m_nIndexMax; state.m_nIndex++) {
     state.m_nID = pPopupMenu->GetMenuItemID(state.m_nIndex);
     if(state.m_nID == 0)
       continue; // Menu separator or invalid cmd - ignore it.
     ASSERT(state.m_pOther == NULL);
     ASSERT(state.m_pMenu != NULL);
-    if(state.m_nID == (UINT)-1) {
+    if (state.m_nID == (UINT)-1) {
       // Possibly a popup menu, route to first item of that popup.
       state.m_pSubMenu = pPopupMenu->GetSubMenu(state.m_nIndex);
       if(state.m_pSubMenu == NULL ||
@@ -1569,7 +1570,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 
     // Adjust for menu deletions and additions.
     UINT nCount = pPopupMenu->GetMenuItemCount();
-    if(nCount < state.m_nIndexMax) {
+    if (nCount < state.m_nIndexMax) {
       state.m_nIndex -= (state.m_nIndexMax - nCount);
       while(state.m_nIndex < nCount &&
         pPopupMenu->GetMenuItemID(state.m_nIndex) == state.m_nID) {

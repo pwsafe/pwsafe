@@ -12,10 +12,11 @@
 // Drag and Drop source
 // Note values to stop D&D between instances where data is of different lengths
 enum {
-  FROMCC = 0,
-  FROMHDR = 1, 
-  FROMTREE = 2,
-  FROMTREE_R = 4
+  FROMCC = 0,       // From Column Chooser Dialog
+  FROMHDR = 1,      // From ListCtrl Header
+  FROMTREE_L = 2,   // From TreeCtrl - left  mouse D&D
+  FROMTREE_R = 4,   // From TreeCtrl - right mouse D&D
+  FROMTREE_RSC = 8  // From TreeCtrl - right mouse D&D - create Shortcut allowed
 };
 
 class CDataSource : protected COleDataSource
