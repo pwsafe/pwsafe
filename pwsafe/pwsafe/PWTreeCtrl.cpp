@@ -963,6 +963,9 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   if (pDbx->IsMcoreReadOnly())
     return FALSE; // don't drop in read-only mode
 
+  if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
+    return FALSE;
+
   UINT uFlags;
   HTREEITEM hitemDrop = HitTest(point, &uFlags);
 
