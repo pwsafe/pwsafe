@@ -108,9 +108,16 @@ void PWScore::ClearData(void)
   }
   //Composed of ciphertext, so doesn't need to be overwritten
   m_pwlist.clear();
+
+  // Clear out out dependents mappings
   m_base2aliases_mmap.clear();
   m_alias2base_map.clear();
+  m_base2shortcuts_mmap.clear();
+  m_shortcut2base_map.clear();
+
+  // Clear out unknown fields
   m_UHFL.clear();
+
   NotifyListModified();
 }
 
@@ -2064,6 +2071,8 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
   // When called during the opening of a database or during drag & drop
   //   - *rpt is NULL and no report generated
 
+  // type is either CItemData::Alias or CItemData::Shortcut
+
   // If iVia == CItemData::UUID, the password was "[[uuidstr]]" or "[~uuidstr~]" of the
   //   associated base entry
   // If iVia == CItemData::PASSWORD, the password is expected to be in the full format 
@@ -2119,50 +2128,79 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
       }
 
       if (iter != m_pwlist.end()) {
+        const CItemData::EntryType type2 = iter->second.GetEntryType();
         if (type == CItemData::Shortcut) {
-          const CItemData::EntryType type2 = iter->second.GetEntryType();
+          // Adding shortcuts -> Base must be normal or already a shortcut base
           if (type2 != CItemData::Normal && type2 != CItemData::ShortcutBase) {
             // Bad news!
-            if (!bwarnings) {
-              bwarnings = true;
-              strError.LoadString(IDSC_IMPORTWARNINGHDR);
+            if (rpt != NULL) {
+              if (!bwarnings) {
+                bwarnings = true;
+                strError.LoadString(IDSC_IMPORTWARNINGHDR);
+                rpt->WriteLine(strError);
+              }
+              CString cs_type;
+              cs_type.LoadString(IDSC_SHORTCUT);
+              strError.Format(IDSC_IMPORTWARNING3, cs_type,
+                              curitem->GetGroup(), curitem->GetTitle(), 
+                              curitem->GetUser(), cs_type);
               rpt->WriteLine(strError);
             }
-            strError.Format(IDSC_IMPORTWARNING3, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
-            rpt->WriteLine(strError);
             // Invalid - delete!
             RemoveEntryAt(m_pwlist.find(entry_uuid));
             continue;
           } 
         }
-        if (iter->second.IsAlias()) {
-          // This is an alias too!  Not allowed!  Make new one point to original base
-          // Note: this may be random as who knows the order of reading records?
-          uuid_array_t temp_uuid;
-          iter->second.GetUUID(temp_uuid);
-          GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
-          if (rpt != NULL) {
-            if (!bwarnings) {
-              bwarnings = true;
-              strError.LoadString(IDSC_IMPORTWARNINGHDR);
+        if (type == CItemData::Alias) {
+          // Adding Aliases -> Base must be normal or already a alias base
+          if (type2 != CItemData::Normal && type2 != CItemData::AliasBase) {
+            // Bad news!
+            if (rpt != NULL) {
+              if (!bwarnings) {
+                bwarnings = true;
+                strError.LoadString(IDSC_IMPORTWARNINGHDR);
+                rpt->WriteLine(strError);
+              }
+              CString cs_type;
+              cs_type.LoadString(IDSC_ALIAS);
+              strError.Format(IDSC_IMPORTWARNING3, cs_type,
+                              curitem->GetGroup(), curitem->GetTitle(), 
+                              curitem->GetUser(), cs_type);
               rpt->WriteLine(strError);
             }
-            strError.Format(IDSC_IMPORTWARNING1, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
-            rpt->WriteLine(strError);
-            strError.LoadString(IDSC_IMPORTWARNING1A);
-            rpt->WriteLine(strError);
+            // Invalid - delete!
+            RemoveEntryAt(m_pwlist.find(entry_uuid));
+            continue;
           }
-          curitem->SetAlias();
-          num_warnings++;
-        } else {
-          iter->second.GetUUID(base_uuid);
-          if (type == CItemData::Alias) {
-            iter->second.SetAliasBase();
-          } else
-          if (type == CItemData::Shortcut) {
-            iter->second.SetShortcutBase();
+          if (type2 == CItemData::Alias) {
+            // This is an alias too!  Not allowed!  Make new one point to original base
+            // Note: this may be random as who knows the order of reading records?
+            uuid_array_t temp_uuid;
+            iter->second.GetUUID(temp_uuid);
+            GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
+            if (rpt != NULL) {
+              if (!bwarnings) {
+                bwarnings = true;
+                strError.LoadString(IDSC_IMPORTWARNINGHDR);
+                rpt->WriteLine(strError);
+              }
+              strError.Format(IDSC_IMPORTWARNING1, curitem->GetGroup(), curitem->GetTitle(), curitem->GetUser());
+              rpt->WriteLine(strError);
+              strError.LoadString(IDSC_IMPORTWARNING1A);
+              rpt->WriteLine(strError);
+            }
+            curitem->SetAlias();
+            num_warnings++;
           }
         }
+        iter->second.GetUUID(base_uuid);
+        if (type == CItemData::Alias) {
+          iter->second.SetAliasBase();
+        } else
+        if (type == CItemData::Shortcut) {
+          iter->second.SetShortcutBase();
+        }
+
         pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
         pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
         if (type == CItemData::Alias) {
@@ -2338,7 +2376,8 @@ bool PWScore::GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl)
   return false;
 }
 
-bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid, 
+bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, 
+                                        uuid_array_t &base_uuid, 
                                         const CItemData::EntryType type)
 {
   memset(base_uuid, 0x00, sizeof(uuid_array_t));

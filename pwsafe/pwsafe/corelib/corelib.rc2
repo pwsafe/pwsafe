@@ -181,7 +181,7 @@ BEGIN
     IDSC_IMPORTWARNING1A     "\tThis entry has been made an alias of associated base entry."
     IDSC_IMPORTWARNING2      "Entry ""%s, %s, %s"" has a password in the correct form for an alias but the base entry does not exist."
     IDSC_IMPORTWARNING2A     "\tThis entry remains a normal entry and the password has not be changed."
-    IDSC_IMPORTWARNING3      "The shortcut entry ""%s, %s, %s"" is not attempting to point to a normal or existing shortcut base entry. It cannot be imported."
+    IDSC_IMPORTWARNING3      "The %s entry ""%s, %s, %s"" is not attempting to point to a normal or existing %s base entry. It cannot be imported."
 END
 
 STRINGTABLE

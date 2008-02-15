@@ -294,7 +294,7 @@
 #define IDS_CPF_TVDD                    5475
 #define IDS_RECORDUNKNOWNFIELDS         5476
 #define IDS_IMPORTFILE                  5477
-#define IDS_VIEWALIASES                 5478
+#define IDS_VIEWDEPENDENTS              5478
 #define IDS_DELETEABASE                 5479
 #define IDS_DELETEBASET                 5480
 #define IDS_ALIASNOTFOUNDA              5481

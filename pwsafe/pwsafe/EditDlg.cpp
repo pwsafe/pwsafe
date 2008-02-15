@@ -855,8 +855,7 @@ void CEditDlg::OnBnClickViewDependents()
   else
     cs_type.LoadString(m_num_dependents == 1 ? IDS_SHORTCUT : IDS_SHORTCUTS);
 
-  const UINT iMsg_Num = (m_original_entrytype == CItemData::AliasBase) ? IDS_VIEWALIASES : IDS_VIEWSHORTCUTS;
-  cs_msg.Format(iMsg_Num, m_num_dependents, cs_type, m_dependents);
+  cs_msg.Format(IDS_VIEWDEPENDENTS, m_num_dependents, cs_type, m_dependents);
   MessageBox(cs_msg, AfxGetAppName(), MB_OK);
 }
 
