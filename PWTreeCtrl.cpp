@@ -1087,22 +1087,31 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
           break;
         case ID_MENUITEM_RCREATESHORTCUT:
         {
-          DWORD_PTR itemData = GetItemData(m_hitemDrag);
+          // Shortcut group from drop point, title & user from drag entry
+          CMyString cs_group, cs_title, cs_user;
+          CItemData *ci;
+          DWORD_PTR itemData;
+
+          itemData = GetItemData(m_hitemDrop);
           ASSERT(itemData != NULL);
-          CItemData *ci = (CItemData *)itemData;
-          ASSERT(ci != NULL);
-          CMyString cs_title;
+          ci = (CItemData *)itemData;
+          cs_group = ci->GetGroup();
+
+          itemData = GetItemData(m_hitemDrag);
+          ASSERT(itemData != NULL);
+          ci = (CItemData *)itemData;
           cs_title.Format(IDS_SCTARGET, ci->GetTitle());
-          pDbx->CreateShortcutEntry(ci, ci->GetGroup(), cs_title, ci->GetUser());
+          cs_user = ci->GetUser();
+
+          pDbx->CreateShortcutEntry(ci, cs_group, cs_title, cs_user);
           retval = TRUE;
           SelectItem(NULL);  // Deselect
           goto exit;
         }
         case ID_MENUITEM_CANCEL:
+        default:
           SelectItem(NULL);  // Deselect
           goto exit;
-        default:
-          ASSERT(0);
       }
     }
   }
