@@ -180,19 +180,10 @@ void DboxMain::OnCreateShortcut()
     return;
 
   CItemData *ci = getSelectedItem();
-  CreateShortcut(ci);
-
-}
-void DboxMain::CreateShortcut(CItemData *ci)
-{
-  uuid_array_t base_uuid;
-
   ASSERT(ci != NULL);
-  ci->GetUUID(base_uuid);
 
-  CCreateShortcutDlg dlg_createshortcut(this, ci->GetGroup(),
-                                        ci->GetTitle(),
-                                        ci->GetUser());
+  CCreateShortcutDlg dlg_createshortcut(this, ci->GetGroup(), 
+    ci->GetTitle(), ci->GetUser());
 
   if (m_core.GetUseDefUser()) {
     dlg_createshortcut.m_username = m_core.GetDefUsername();
@@ -219,53 +210,61 @@ void DboxMain::CreateShortcut(CItemData *ci)
         RefreshViews();
       }
     }
-
-    //Finish Check (Does that make any geographical sense?)
-    CItemData temp;
-    CMyString user;
-    time_t t;
-    uuid_array_t shortcut_uuid;
-
     if (dlg_createshortcut.m_username.IsEmpty() && m_core.GetUseDefUser())
-      user = m_core.GetDefUsername();
-    else
-      user = dlg_createshortcut.m_username;
-    temp.CreateUUID();
-    temp.GetUUID(shortcut_uuid);
-    temp.SetGroup(dlg_createshortcut.m_group);
-    temp.SetTitle(dlg_createshortcut.m_title);
-    temp.SetUser(user);
+      dlg_createshortcut.m_username = m_core.GetDefUsername();
 
-    // Password in must be in shortcut format AND base entry exists
-    m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::Shortcut);
-    temp.SetPassword(CMyString(_T("[Shortcut]")));
-    temp.SetShortcut();
-    ItemListIter iter = m_core.Find(base_uuid);
-    if (iter != End()) {
-      const CItemData &cibase = iter->second;
-      DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-      int nImage = GetEntryImage(cibase);
-      SetEntryImage(di->list_index, nImage, true);
-      SetEntryImage(di->tree_item, nImage, true);
-    }
-
-    time(&t);
-    temp.SetCTime(t);
-    temp.SetLTime((time_t)0);
-
-    AddEntry(temp);
-
-    if (m_core.GetNumEntries() == 1) {
-      // For some reason, when adding the first entry, it is not visible!
-      m_ctlItemTree.SetRedraw(TRUE);
-    }
-    m_ctlItemList.SetFocus();
-    if (prefs->GetPref(PWSprefs::SaveImmediately))
-      Save();
-
-    ChangeOkUpdate();
-    m_RUEList.AddRUEntry(shortcut_uuid);
+    CreateShortcutEntry(ci, dlg_createshortcut.m_group, 
+                        dlg_createshortcut.m_title, 
+                        dlg_createshortcut.m_username);
   }
+}
+void DboxMain::CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
+                                   const CMyString cs_title, const CMyString cs_user)
+{
+  uuid_array_t base_uuid, shortcut_uuid;
+
+  ASSERT(ci != NULL);
+  ci->GetUUID(base_uuid);
+
+  //Finish Check (Does that make any geographical sense?)
+  CItemData temp;
+  time_t t;
+
+  temp.CreateUUID();
+  temp.GetUUID(shortcut_uuid);
+  temp.SetGroup(cs_group);
+  temp.SetTitle(cs_title);
+  temp.SetUser(cs_user);
+
+  m_core.AddDependentEntry(base_uuid, shortcut_uuid, CItemData::Shortcut);
+  temp.SetPassword(CMyString(_T("[Shortcut]")));
+  temp.SetShortcut();
+  ItemListIter iter = m_core.Find(base_uuid);
+  if (iter != End()) {
+    const CItemData &cibase = iter->second;
+    DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
+    int nImage = GetEntryImage(cibase);
+    SetEntryImage(di->list_index, nImage, true);
+    SetEntryImage(di->tree_item, nImage, true);
+  }
+
+  time(&t);
+  temp.SetCTime(t);
+  temp.SetLTime((time_t)0);
+
+  AddEntry(temp);
+
+  if (m_core.GetNumEntries() == 1) {
+    // For some reason, when adding the first entry, it is not visible!
+    m_ctlItemTree.SetRedraw(TRUE);
+  }
+  m_ctlItemList.SetFocus();
+
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately))
+    Save();
+
+  ChangeOkUpdate();
+  m_RUEList.AddRUEntry(shortcut_uuid);
 }
 
 int DboxMain::AddEntry(const CItemData &cinew)
@@ -1278,6 +1277,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
   CMyString Group, Title, User;
   POSITION pos;
   TCHAR *dot;
+  uuid_array_t entry_uuid;
+  bool bAddToViews;
 
   for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
     CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
@@ -1286,6 +1287,8 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       break;
 #endif /* DEMO */
     tempitem.Clear();
+    // Only set to false if adding a shortcut where the base isn't there (yet)
+    bAddToViews = true;
     pDDObject->ToItem(tempitem);
 
     if (in_oblist.m_bDragNode) {
@@ -1298,15 +1301,16 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     User = tempitem.GetUser();
     Title = GetUniqueTitle(Group, tempitem.GetTitle(), User, IDS_DRAGNUMBER);
 
-    uuid_array_t entry_uuid;
     tempitem.GetUUID(entry_uuid);
-    if (m_core.Find(entry_uuid) != End())
+    if (m_core.Find(entry_uuid) != End()) {
+      // Already in use - get a new one!
       tempitem.CreateUUID();
+      tempitem.GetUUID(entry_uuid);
+    }
 
     tempitem.SetGroup(Group);
     tempitem.SetTitle(Title);
 
-    uuid_array_t temp_uuid;
     CMyString cs_tmp = tempitem.GetPassword();
 
     GetBaseEntryPL pl;
@@ -1316,7 +1320,6 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.Left(2) == _T("[[") && cs_tmp.Right(2) == _T("]]")) {
       cs_tmp = cs_tmp.Mid(1, cs_tmp.GetLength() - 2);
-      tempitem.SetPassword(cs_tmp);
       pl.InputType = CItemData::Alias;
     }
 
@@ -1324,7 +1327,6 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.Left(2) == _T("[~") && cs_tmp.Right(2) == _T("~]")) {
       cs_tmp = _T("[") + cs_tmp.Mid(2, cs_tmp.GetLength() - 4) + _T("]");
-      tempitem.SetPassword(cs_tmp);
       pl.InputType = CItemData::Shortcut;
     }
 
@@ -1348,8 +1350,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
           AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        tempitem.GetUUID(temp_uuid);
-        m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Alias);
+        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::Alias);
         tempitem.SetPassword(CMyString(_T("[Alias]")));
         tempitem.SetAlias();
       } else
@@ -1363,8 +1364,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
           AfxMessageBox(cs_msg, MB_OK);
           continue;
         }
-        tempitem.GetUUID(temp_uuid);
-        m_core.AddDependentEntry(pl.base_uuid, temp_uuid, CItemData::Shortcut);
+        m_core.AddDependentEntry(pl.base_uuid, entry_uuid, CItemData::Shortcut);
         tempitem.SetPassword(CMyString(_T("[Shortcut]")));
         tempitem.SetShortcut();
       }
@@ -1379,15 +1379,23 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
       // Note: As more entries are added, what was "not exist" may become "OK",
       // "no unique exists" or "multiple exist".
       // Let the code that processes the possible aliases after all have been added sort this out.
-      tempitem.GetUUID(temp_uuid);
-      if (pl.InputType == CItemData::Alias)
-        possible_aliases.push_back(temp_uuid);
-      else
-      if (pl.InputType == CItemData::Shortcut)
-        possible_shortcuts.push_back(temp_uuid);
+      if (pl.InputType == CItemData::Alias) {
+        possible_aliases.push_back(entry_uuid);
+      } else
+      if (pl.InputType == CItemData::Shortcut) {
+        possible_shortcuts.push_back(entry_uuid);
+        bAddToViews = false;
+      }
     }
-
-    AddEntry(tempitem);
+    if (bAddToViews) {
+      // Add to pwlist + Tree + List views
+      AddEntry(tempitem);
+    } else {
+      // ONLY Add to pwlist and NOT to Tree or List views
+      // After the call to AddDependentEntries for shortcuts, check if still
+      // in password list and, if so, then add to Tree + List views
+      m_core.AddEntry(tempitem);
+    }
   } // iteration over in_oblist
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
@@ -1395,6 +1403,22 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const CMyString &DropGroup)
                              CItemData::PASSWORD);
   m_core.AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, 
                              CItemData::PASSWORD);
+  possible_aliases.clear();
+
+  // Some shortcuts may have been deleted from the database as base does not exist
+  // Tidy up Tree/List
+  UUIDListIter paiter;
+  ItemListIter iter;
+  for (paiter = possible_shortcuts.begin();
+       paiter != possible_shortcuts.end(); paiter++) {
+    paiter->GetUUID(entry_uuid);
+    iter = m_core.Find(entry_uuid);
+    if (iter != End()) {
+      // Still in pwlist - NOW add to Tree and List views
+      insertItem(m_core.GetEntry(iter));
+    }
+  }
+  possible_shortcuts.clear();
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
     Save();

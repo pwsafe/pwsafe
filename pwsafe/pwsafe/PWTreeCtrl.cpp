@@ -213,7 +213,7 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, OnBeginLabelEdit)
   ON_NOTIFY_REFLECT(TVN_ENDLABELEDIT, OnEndLabelEdit)
   ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBeginDrag)
-  ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginRDrag)
+  ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
   ON_WM_DESTROY()
@@ -1090,7 +1090,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
           DWORD_PTR itemData = GetItemData(m_hitemDrag);
           ASSERT(itemData != NULL);
           CItemData *ci = (CItemData *)itemData;
-          pDbx->CreateShortcut(ci);
+          ASSERT(ci != NULL);
+          CMyString cs_title;
+          cs_title.Format(IDS_SCTARGET, ci->GetTitle());
+          pDbx->CreateShortcutEntry(ci, ci->GetGroup(), cs_title, ci->GetUser());
           retval = TRUE;
           SelectItem(NULL);  // Deselect
           goto exit;
@@ -1158,21 +1161,12 @@ exit:
 
 void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-  // This method is called when a left mouse drag action is detected.
-  m_DDType = FROMTREE_L;
-  DoBeginDrag(pNMHDR, pResult); 
-}
-
-void CPWTreeCtrl::OnBeginRDrag(NMHDR* pNMHDR, LRESULT* pResult) 
-{
-  // This method is called when a right mouse drag action is detected.
-  m_DDType = FROMTREE_R;
-  DoBeginDrag(pNMHDR, pResult); 
-}
-
-void CPWTreeCtrl::DoBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
-{
   // This sets the whole D&D mechanism in motion...
+  if (pNMHDR->code == TVN_BEGINDRAG)
+    m_DDType = FROMTREE_L; // Left  mouse D&D
+  else
+    m_DDType = FROMTREE_R; // Right mouse D&D
+
   CPoint ptAction;
 
   NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;

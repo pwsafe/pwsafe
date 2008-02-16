@@ -69,7 +69,6 @@ protected:
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
-  afx_msg void OnBeginRDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnDestroy();
   //
   //afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
@@ -98,7 +97,6 @@ private:
   // Clipboard format for our Drag & Drop
   CLIPFORMAT m_tcddCPFID;
 
-  void DoBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
   void SetNewStyle(long lStyleMask, BOOL bSetBits);
   bool MoveItem(HTREEITEM hitem, HTREEITEM hNewParent);
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CMyString &prefix);

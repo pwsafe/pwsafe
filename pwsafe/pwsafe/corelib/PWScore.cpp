@@ -636,6 +636,8 @@ int PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLF
 
   AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
   AddDependentEntries(possible_shortcuts, &rpt, CItemData::Shortcut, CItemData::PASSWORD);
+  possible_aliases.clear();
+  possible_shortcuts.clear();
 
   m_changed = true;
   return SUCCESS;
@@ -1053,6 +1055,8 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
   AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::PASSWORD);
   AddDependentEntries(possible_shortcuts, &rpt, CItemData::Shortcut, CItemData::PASSWORD);
+  possible_aliases.clear();
+  possible_shortcuts.clear();
   m_changed = true;
   return SUCCESS;
 }
@@ -1253,6 +1257,8 @@ int PWScore::ReadFile(const CMyString &a_filename,
 
   AddDependentEntries(possible_aliases, NULL, CItemData::Alias, CItemData::UUID);
   AddDependentEntries(possible_shortcuts, NULL, CItemData::Shortcut, CItemData::UUID);
+  possible_aliases.clear();
+  possible_shortcuts.clear();
   NotifyListModified();
 
   return closeStatus;
@@ -1737,6 +1743,7 @@ PWScore::Validate(CString &status)
   // Check uuid is valid
   // Check PWH is valid
   // Check alias password has corresponding base entry
+  // Check shortcut password has corresponding base entry
   // Note that with m_pwlist implemented as a map keyed
   // on uuids, each entry is guaranteed to have
   // a unique uuid. The uniqueness invariant
@@ -1746,7 +1753,7 @@ PWScore::Validate(CString &status)
   int n = -1;
   unsigned num_PWH_fixed = 0;
   unsigned num_uuid_fixed = 0;
-  unsigned num_alias_warnings;
+  unsigned num_alias_warnings, num_shortcuts_warnings;
 
   CReport rpt;
   CString cs_Error;
@@ -1779,8 +1786,8 @@ PWScore::Validate(CString &status)
     CMyString csMyPassword = ci.GetPassword();
     CMyString cs_possibleUUID = csMyPassword.Mid(2, 32);  // Extract possible uuid
     cs_possibleUUID.MakeLower();
-    if (csMyPassword.Left(2) == _T("[[") && 
-        csMyPassword.Right(2) == _T("]]") &&
+    if (((csMyPassword.Left(2) == _T("[[") && csMyPassword.Right(2) == _T("]]")) ||
+         (csMyPassword.Left(2) == _T("[~") && csMyPassword.Right(2) == _T("~]"))) &&
         csMyPassword.GetLength() == 36 &&
         cs_possibleUUID.SpanIncluding(_T("0123456789abcdef")) == cs_possibleUUID) {
       // _stscanf_s always outputs to an "int" using %x even though
@@ -1800,7 +1807,7 @@ PWScore::Validate(CString &status)
       csMyPassword.ReleaseBuffer(sizeof(uuid_array_t) * 2 + 4);
       memcpy(base_uuid, temp_uuid_array, sizeof(uuid_array_t));
       ci.GetUUID(temp_uuid);
-      if (csMyPassword.Mid(2, 1) == _T("[")) {
+      if (csMyPassword.Left(2) == _T("[[")) {
         m_alias2base_map[temp_uuid] = base_uuid;
         possible_aliases.push_back(temp_uuid);
       } else {
@@ -1811,13 +1818,17 @@ PWScore::Validate(CString &status)
   } // iteration over m_pwlist
 
   num_alias_warnings = AddDependentEntries(possible_aliases, &rpt, CItemData::Alias, CItemData::UUID);
+  num_shortcuts_warnings = AddDependentEntries(possible_shortcuts, &rpt, CItemData::Alias, CItemData::UUID);
+  possible_aliases.clear();
+  possible_shortcuts.clear();
 
-  TRACE(_T("%s : End validation. %d entries processed\n"), PWSUtil::GetTimeStamp(), n + 1);
+  TRACE(_T("%s : End validation. %d entries processed\n"), 
+    PWSUtil::GetTimeStamp(), n + 1);
   rpt.EndReport();
 
-  if ((num_uuid_fixed + num_PWH_fixed + num_alias_warnings) > 0) {
+  if ((num_uuid_fixed + num_PWH_fixed + num_alias_warnings + num_shortcuts_warnings) > 0) {
     status.Format(IDSC_NUMPROCESSED,
-                  n + 1, num_uuid_fixed, num_PWH_fixed, num_alias_warnings);
+                  n + 1, num_uuid_fixed, num_PWH_fixed, num_alias_warnings, num_shortcuts_warnings);
     SetChanged(true);
     return true;
   } else {
@@ -2232,7 +2243,6 @@ int PWScore::AddDependentEntries(UUIDList &dependentlist, CReport *rpt,
         num_warnings++;
       }
     }
-    dependentlist.clear();
   }
   return num_warnings;
 }
