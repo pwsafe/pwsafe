@@ -44,8 +44,10 @@ BOOL CCreateShortcutDlg::OnInitDialog()
 
   m_title.Format(IDS_SCTARGET, m_tt);
 
-  CMyString cs_explanation, cs_target;
-  cs_target = m_tg + _T(".") + m_tt;
+  CMyString cs_explanation, cs_target(_T(""));
+  if (!m_tg.IsEmpty())
+    cs_target = m_tg + _T(".");
+  cs_target += m_tt;
   if (!m_tu.IsEmpty())
     cs_target += _T(".") + m_tu;
   cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
