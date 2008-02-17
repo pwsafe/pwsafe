@@ -1103,6 +1103,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
           cs_title.Format(IDS_SCTARGET, ci->GetTitle());
           cs_user = ci->GetUser();
 
+          // If there is a matching entry in our list, generate unique one
+          if (pDbx->Find(cs_group, cs_title, cs_user) != pDbx->End()) {
+            cs_title = pDbx->GetUniqueTitle(cs_group, cs_title, cs_user, IDS_DRAGNUMBER);
+          }
           pDbx->CreateShortcutEntry(ci, cs_group, cs_title, cs_user);
           retval = TRUE;
           SelectItem(NULL);  // Deselect
