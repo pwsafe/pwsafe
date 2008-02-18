@@ -748,7 +748,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
         Save();
     }
     rc = SelectEntry(ndi->list_index);
-    if (rc == LB_ERR) {
+    if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
     ChangeOkUpdate();
@@ -824,7 +824,7 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
         Save();
     }
     rc = SelectEntry(ndi->list_index);
-    if (rc == LB_ERR) {
+    if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
     ChangeOkUpdate();
@@ -931,7 +931,7 @@ void DboxMain::OnDuplicateEntry()
         Save();
     }
     int rc = SelectEntry(di->list_index);
-    if (rc == LB_ERR) {
+    if (rc == 0) {
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
     ChangeOkUpdate();

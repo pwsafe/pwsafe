@@ -15,6 +15,12 @@ Bugs fixed in 3.12
 as empty during compare.
 [1855658, 1436850] Implement font for password display correctly.
 [1850271] Save after Compare no longer corrupts database.
+[1849881, 700973] Pressing a character in the List view will now jump to the 
+next entry with text beginning with that character in the second column. This
+is a change from previous behaviour which only looked in the first column,
+now occupied by the icon.  This now follows MS's approach that if characters
+are typed fast enough (within 1 second), it will treat them as a string
+i.e. 'a' followed by 'b' will look for entry starting 'ab' etc.
 [1849830] Help now works properly for Manage->Option, displaying the
 relevant topic.
 [1849818] Browse-to would occasionally falsely report "failed to
@@ -22,14 +28,11 @@ browse to URL".
 [1843631] "Browse to Icon" now correctly shown using new Toolbar.
 [1841525] Increasing the number of passwords saved no longer deletes the
 existing Password History.
-[1833609, 1502036] Fully support multiple monitors.
+[1833609, 1535341, 1502036] Fully support multiple monitors.
+[1676241, 1511829, 1436850, 1426250, 1078998, 996240, 771845] Display of
+password improved by using a user selectable font.
 [1670193] Allow use of Windows Common Controls V6 with Vista.
-[] Pressing a character in the List view will now jump to the next entry
-with text beginning with that character in the second column. This
-is a change from previous behaviour which only looked in the first column,
-now occupied by the icon.  This now follows MS's approach that if characters
-are typed fast enough (within 1 second), it will treat them as a string
-i.e. 'a' followed by 'b' will look for entry starting 'ab' etc.
+[1440693] Fix standard keyboard access to context menu (Shift+F10)
 [] Allow Expand/Collapse for R/O databases via toolbar.
 [] Set focus to new view on switching between Tree <-> List views.
 [] Update toolbar when view changes (List <-> Tree)
@@ -40,9 +43,9 @@ Arrows etc.
 
 Changes to Existing Features in 3.12
 ====================================
-[1885710] When re-showing the Find toolbar, any existing search argument
-is selected to allow easier deletion and modification.
-[1846688] When generating a new password, it is no longer displayed in
+[1885710, 1852862] When re-showing the Find toolbar, any existing search 
+argument is selected to allow easier deletion and modification.
+[1846688, 1224373] When generating a new password, it is no longer displayed in
 a separate window for approval. If you want to generate another
 password, just click on Generate again. If you want to revert to the
 existing password when editing an entry, just click on Cancel.
@@ -52,7 +55,7 @@ Tom Van Vleck, Morrie Gasser, and Dan Edwards.
 
 New Features for 3.12
 =====================
-[1842449] Implement standard F3 for repeat Find shortcut.
+[1842449, 1000639] Implement standard F3 for repeat Find shortcut.
 [1838738] Implement minimum lengths of types of characters in the
 password policy i.e. 3 uppercase + 2 lowercase + 1 digit etc.  Feature
 is incompatible with 'pronounceable' or 'easy-to-read' passwords.
