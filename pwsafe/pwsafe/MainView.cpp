@@ -834,7 +834,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 }
 
 // Called when right-click is invoked in the client area of the window.
-void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point) 
+void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen) 
 {
 #if defined(POCKET_PC)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
@@ -842,15 +842,41 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN | TPM_RIGHTBUTTON;
 #endif
 
-  CPoint local = point;
+  CPoint client;
   int item = -1;
   CItemData *itemData = NULL;
   CMenu menu;
 
-  // Get client window position
-  CPoint mp;
+  // Note if point = (-1, -1) then invoked via keyboard.
+  // Need coordinates of current selected itme instead on mouse position when message sent
+  bool bKeyboard = (screen.x == -1 && screen.y == -1);
+
+  CPoint mp; // Screen co-ords (from "message point" or via Shift+F10 selected item
   CRect rect, appl_rect;
-  mp = ::GetMessagePos();
+
+  // Get client window position
+  if (bKeyboard) {
+    CRect r;
+    if (m_ctlItemList.IsWindowVisible()) {
+      POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+      if (pos == NULL)
+        return;  // Nothing selected!
+      m_ctlItemList.GetItemRect((int)pos - 1, &r, LVIR_LABEL);
+      m_ctlItemList.ClientToScreen(&r);
+    } else
+    if (m_ctlItemTree.IsWindowVisible()) {
+      HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
+      if (hItem == NULL)
+        return;  // Nothing selected!
+      m_ctlItemTree.GetItemRect(hItem, &r, TRUE);
+      m_ctlItemTree.ClientToScreen(&r);
+    }
+    mp.x = (r.left + r.right) / 2;
+    mp.y = (r.top + r.bottom) / 2;
+    screen = mp;  // In screen co-ords
+  } else {
+    mp = ::GetMessagePos();
+  }
   GetWindowRect(&appl_rect);
   m_MainToolBar.GetWindowRect(&rect);
 
@@ -860,11 +886,12 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
     if (menu.LoadMenu(IDR_POPCUSTOMIZETOOLBAR)) {
       CMenu* pPopup = menu.GetSubMenu(0);
       ASSERT(pPopup != NULL);
-      pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+      pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this); // use this window for commands
     }
     return;
   }
 
+  client = screen;
   // RClick over ListView
   if (m_ctlItemList.IsWindowVisible()) {
     // currently in flattened list view.
@@ -875,15 +902,14 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       return;
     }
 
-    m_ctlItemList.ScreenToClient(&local);
-    item = m_ctlItemList.HitTest(local);
+    m_ctlItemList.ScreenToClient(&client);
+    item = m_ctlItemList.HitTest(client);
     if (item < 0)
       return; // right click on empty list
 
     itemData = (CItemData *)m_ctlItemList.GetItemData(item);
-    int rc = SelectEntry(item);
-    if (rc == LB_ERR) {
-      return; // ? is this possible ?
+    if (SelectEntry(item) == 0) {
+      return;
     }
     m_ctlItemList.SetFocus();
   }
@@ -898,8 +924,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       return;
     }
     ASSERT(m_ctlItemTree.IsWindowVisible());
-    m_ctlItemTree.ScreenToClient(&local);
-    HTREEITEM ti = m_ctlItemTree.HitTest(local);
+    m_ctlItemTree.ScreenToClient(&client);
+    HTREEITEM ti = m_ctlItemTree.HitTest(client);
     if (ti != NULL) {
       itemData = (CItemData *)m_ctlItemTree.GetItemData(ti);
       if (itemData != NULL) {
@@ -916,7 +942,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
           CMenu* pPopup = menu.GetSubMenu(0);
           ASSERT(pPopup != NULL);
           m_TreeViewGroup = CMyString(m_ctlItemTree.GetGroup(ti));
-          pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+          // use this DboxMain for commands
+          pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
         }
       }
     } else {
@@ -924,7 +951,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       if (menu.LoadMenu(IDR_POPTREE)) {  // "Add Group"
         CMenu* pPopup = menu.GetSubMenu(0);
         ASSERT(pPopup != NULL);
-        pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+        // use this DboxMain for commands
+        pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
       }
     }
     m_ctlItemTree.SetFocus();
@@ -976,7 +1004,8 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint point)
       UpdateBrowseURLSendEmailButton(bIsEmail);
     }
 
-    pPopup->TrackPopupMenu(dwTrackPopupFlags, point.x, point.y, this); // use this window for commands
+    // use this DboxMain for commands
+    pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
 
   } // if (item >= 0)
 }
