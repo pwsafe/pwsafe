@@ -11,13 +11,13 @@ releases may be found in the file ChangeLog.txt.
 Bugs fixed in 3.12
 ==================
 [1866515] Again able to add entries to database in V3.12 early beta.
-[1865009] Give user advanced option to treat purely whitespace fields 
+[1865009] Give user advanced option to treat purely whitespace fields
 as empty during compare.
 [1855658, 1436850] Implement font for password display correctly.
 [1850271] Save after Compare no longer corrupts database.
-[1849881, 700973] Pressing a character in the List view will now jump to the 
+[1849881, 700973] Pressing a character in the List view will now jump to the
 next entry with text beginning with that character in the second column. This
-is a change from previous behaviour which only looked in the first column,
+is a change from previous behaviour, which only looked in the first column,
 now occupied by the icon.  This now follows MS's approach that if characters
 are typed fast enough (within 1 second), it will treat them as a string
 i.e. 'a' followed by 'b' will look for entry starting 'ab' etc.
@@ -29,21 +29,23 @@ browse to URL".
 [1841525] Increasing the number of passwords saved no longer deletes the
 existing Password History.
 [1833609, 1535341, 1502036] Fully support multiple monitors.
+[1749268] Mouse clicks on tree view plus/minus boxes now works correctly.
 [1676241, 1511829, 1436850, 1426250, 1078998, 996240, 771845] Display of
 password improved by using a user selectable font.
 [1670193] Allow use of Windows Common Controls V6 with Vista.
-[1440693] Fix standard keyboard access to context menu (Shift+F10)
+[1478022] User must save a restored database before it can be exported.
+[1440693] Fix standard keyboard access to context menu (Shift+F10).
 [] Allow Expand/Collapse for R/O databases via toolbar.
 [] Set focus to new view on switching between Tree <-> List views.
-[] Update toolbar when view changes (List <-> Tree)
-[] Set PWS title when opening a database at startup
+[] Update toolbar when view changes (List <-> Tree).
+[] Set PWS title when opening a database at startup.
 [] Allow List view to process all characters e.g. Page Up/Down, Home, End,
 Arrows etc.
 [] Fix program crash on clicking CompareResults dialog header.
 
 Changes to Existing Features in 3.12
 ====================================
-[1885710, 1852862] When re-showing the Find toolbar, any existing search 
+[1885710, 1852862] When re-showing the Find toolbar, any existing search
 argument is selected to allow easier deletion and modification.
 [1846688, 1224373] When generating a new password, it is no longer displayed in
 a separate window for approval. If you want to generate another
@@ -64,7 +66,10 @@ the current database policy.  User can still override the individual
 policy or the database policy.
 [] An entry may have multiple references, or "shortcuts" to it. These
 may be thought of as "synonyms" of the entry. See online help for
-details.
+details. If the user displays the Icon column in the List view, it will
+display the corresponding icon to distinguish between each type: normal,
+alias, shortcut, the normal entry with aliases and the normal entry with
+shortcuts.
 [] Graphics added to menus.
 [] Allow user to select a font for Passwords as well as for the Tree/List
 view so that similar characters can be distinguished e.g. 0 & O, 1, I & l.
@@ -79,8 +84,8 @@ entry selected.
 
 Changes to Existing Features in 3.11.1
 ======================================
-[] You can now check for newer version via Help->About
-[] List view displays an icon in each row showing the type of entry
+[] You can now check for newer version via Help->About.
+[] List view displays an icon in each row showing the type of entry.
 
 New Features for 3.11
 =====================
@@ -106,19 +111,19 @@ bottom of application.
 Button shortcuts: Ctrl+Alt+A = Advanced find,
 Ctrl+Alt+S = toggle case Sensitivity, Ctrl+Alt+C = Clear find text
 [1790342] Replaced additional key shortcuts for ExpandAll and CollapseAll
-[introduced in rev. 1678] by toolbar buttons.  Now there is only one set 
+[introduced in rev. 1678] by toolbar buttons.  Now there is only one set
 (the original) of key shortcuts + toolbar buttons.
 [1756385] The color of the application's system tray icon (when the
 application is started and when there's no open database) is now user
 configurable, fixing a visibility problem under Vista.
-[] Saved string preferences within the database header will not be delimited by 
-a doublequote if this character is part of the string variable.  An arbitrary
+[] Saved string preferences within the database header will not be delimited by
+a double quote if this character is part of the string variable.  An arbitrary
 symbol type character will be used in this case.  If one cannot be found, the
 string preference will not be saved in the database.
 
 Bugs fixed in 3.11
 ==================
-[1806201] Non-unique uuids in database now handled correctly.
+[1806201] Non-unique UUIDs in database now handled correctly.
 [1799523] Fix PWS taking a long time saving after XML Import into new DB by
 using an extremely large number of hash iterations.  Users who have imported
 XML into a new database should export again and re-import after deleting the
@@ -127,7 +132,7 @@ XML into a new database should export again and re-import after deleting the
 [1793224] Copy for expired passwords no longer causes PWS crashes.
 [1791482] All preferences stored within the database are now exported/imported
 via XML.
-[1790286] All String preferences stored within the database are now 
+[1790286] All String preferences stored within the database are now
 correctly read during database open.
 [1789983] List View now correct after Group removed.
 [1726181] Save of a new database is no longer required to export entries.
@@ -143,7 +148,7 @@ have BOM as some text editors insist!
 
 New Features for 3.10
 =====================
-[1752896] Add ability to edit an entry's notes field using user's default 
+[1752896] Add ability to edit an entry's notes field using user's default
 text editor via right click on Notes field.
 [1751484] Errors detected while merging or importing a text file are
 now described in detail in a log file.
@@ -174,19 +179,19 @@ save.
 [1751465] Fields containing only whitespace or whitespace between double quotes
 are now treated as empty during plain text import.
 [1734220] XML Export line of Notes fields containing CRLF now works correctly.
-The default delimeter has been made the same as for Export to a Text file.
+The default delimiter has been made the same as for Export to a Text file.
 [1632634] Compare no longer changes database settings when the databases are
 identical.
 [] Window's position and size now updated correctly.
 [] Lock timeout after manual lock no longer saves empty database.
 [] Ensure group/title/user combination is unique during text import.
 [] During Add/Edit, fields containing only whitespace characters (space,
-horzontal tab, vertical tab, carriage return, new line and form feed) are
+horizontal tab, vertical tab, carriage return, new line and form feed) are
 considered empty fields.
 
 New Features for 3.09
 =====================
-[1751451] Add extra warning when deleting entire group, including the 
+[1751451] Add extra warning when deleting entire group, including the
 number of entries that will be deleted.
 [1739979] Add URL column to flattened list.
 [1732198] It's now possible to override the username and hostname used
@@ -202,9 +207,9 @@ Bugs fixed in 3.09
 ==================
 [1754189, 1620423] Focus on search text in Find Dialog - thank to zcecil for
 the fix for this one.
-[1752318] Fixed duplicate/mislabeled columns problem in list view.
+[1752318] Fixed duplicate/mislabelled columns problem in list view.
 [1748665] Number of passwords to remember (password history) can now
-be set to more than 99 by typing rather than only by spinbox.
+be set to more than 99 by typing rather than only by spin box.
 [1743706] Fix random showing of user and passwords if started in
 silent mode.
 [1741787, 1728945] Version 2.x databases now read correctly.
@@ -219,12 +224,12 @@ in tree view.
 [1728945] Importing a subset of text data now fixed.
 [1728612] Column sort arrows, in Flattened List mode, correctly removed.
 [1727871] Found items remain highlighted if another entry selected -
-note that found items now ddisplayed in bold font rather than
+note that found items now displayed in bold font rather than
 highlighted.
 [] A note on possible problems with the autotype functionality and
 some 3rd party popup-blockers. Thanks to mrttoo for the heads-up.
-[] Protect user from losing entries in case of non-unique uuids in
-read database. 
+[] Protect user from losing entries in case of non-unique UUIDs in
+read database.
 [] Compare fixed so that 'X' indicating differences are in the correct
 columns and data copied to clipboard ends in CRLF not just LF.
 [] The installer will detect and notify the user if attempts to
@@ -241,7 +246,7 @@ control of whether or not to open a new browser or not.
 [] Implement "Advanced" option for Exporting in XML format (as per
 Export in Text format) and for when comparing databases.
 [] Maintain unknown fields in the database header and records when
-saving database, for compatability with future versions as well as clones.
+saving database, for compatibility with future versions as well as clones.
 
 Changes to Existing Features in 3.08
 ====================================
@@ -273,7 +278,7 @@ it is not enclosed in double quotes.
 
 New Features for 3.07
 =====================
-[1686819] - PWS may configured not to minimize during Autotype
+[1686819] - PWS may be configured not to minimize during Autotype
 (Manage->Options->Misc). 'Always on Top' takes precedence.
 [1623802] Default Autotype string can be specified per database.
 [] - Password expiration notice can now be given a few days prior to
@@ -298,7 +303,7 @@ Bugs fixed in 3.07
 [1682516] Menu display no longer trashed if accelerator pressed with
 an open menu.
 [1681366] Now stays on top during autotype.
-[1678707] CapsLock temporarily turned off in Autotype.
+[1678707] Caps Lock temporarily turned off in Autotype.
 [1672770] Right-click->unlock on system tray icon now same as
 double-clicking on locked system tray icon.
 [1679461, 1612567] Text in Password field no longer truncated with large
@@ -323,7 +328,7 @@ e.g., "45 days from now".
 Bugs fixed in 3.06
 ==================
 [1633516] No longer crashes upon Find with an empty group.
-[1625557] No longer crashes when invoking help after using Hot-Key.
+[1625557] No longer crashes when invoking help after using HotKey.
 [] Configuration handled correctly with non-English user or host
 names.
 [] No longer crashes when password history policy changes records.
@@ -407,7 +412,7 @@ groups expanded and others collapsed).
 order rather than List order.
 [] Change Find to stop on the last found item and ask whether to continue
 from the beginning of the database or the user may select this previous
-behavour via a Misc. option.
+behaviour via a Misc. option.
 [] New File->Properties shows some information about the database.
 
 Changes to Existing Features in 3.03
@@ -432,7 +437,7 @@ from system tray.
 [1527029] Password count now displays correctly in status bar.
 [1561335, 1373138, 1182406] HotKey now works with SystemTray icon.
 [] View Menu item "Collapse All" now works correctly.
-[] DoubleClick works on entries with expired passwords.
+[] Double-Click works on entries with expired passwords.
 
 New Features for 3.02
 =====================
@@ -489,7 +494,7 @@ Bugs fixed in 3.01
 ==================
 [1495670] Find now searches new URL and Autotype fields.
 [1495556] Restore after minimize now works when system-tray not used.
-[1490985, 1423020, 1398936] Microsoft redistributable dlls now
+[1490985, 1423020, 1398936] Microsoft redistributable DLLs now
 included in installation and zip file. Should fix all "MS*.dll not
 installed" problems.
 [1482002] Generated password no longer trashed if > 127 bytes.
