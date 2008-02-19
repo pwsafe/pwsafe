@@ -848,16 +848,24 @@ void DboxMain::OnExportVx(UINT nID)
 void DboxMain::OnExportText()
 {
   CExportTextDlg et;
-  CString cs_text, cs_temp, cs_title;
+  CString cs_text, cs_title;
+  CMyString cs_temp;
+
+  cs_temp = m_core.GetCurFile();
+  if (cs_temp.IsEmpty()) {
+    //  Database has not been saved - prompt user to do so first!
+    AfxMessageBox(IDS_SAVEBEFOREEXPORT);
+    return;
+  }
 
   INT_PTR rc = et.DoModal();
   if (rc == IDOK) {
     CMyString newfile;
     CMyString pw(et.m_exportTextPassword);
-    if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
+    if (m_core.CheckPassword(cs_temp, pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
-      CMyString TxtFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("txt") );
+      CMyString TxtFileName = PWSUtil::GetNewFileName(cs_temp, _T("txt") );
       cs_text.LoadString(IDS_NAMETEXTFILE);
       while (1) {
         CFileDialog fd(FALSE,
