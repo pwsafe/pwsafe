@@ -79,8 +79,12 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  HTREEITEM   m_hitemDrag;
-  HTREEITEM   m_hitemDrop;
+  HTREEITEM m_hitemDrag;
+  HTREEITEM m_hitemDrop;
+
+  // Hovering related items
+  HTREEITEM m_hitemHover;
+  DWORD m_TickCount;
 
   bool m_isRestoring; // don't update state vector when restoring state
   int m_nDragPathLen;
