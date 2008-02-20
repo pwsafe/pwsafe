@@ -24,6 +24,9 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// Hover time of 1.5 seconds before expanding a group during D&D
+#define HOVERTIME 1500
+
 static const TCHAR GROUP_SEP = TCHAR('.');
 
 // following header for D&D data passed over OLE:
@@ -269,12 +272,14 @@ SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
 DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
                                     DWORD dwKeyState, CPoint )
 {
+  m_TickCount = GetTickCount();
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
   if (pil != NULL) {
     while (ShowCursor(FALSE) >= 0)
       ;
   }
+
   m_bWithinThisInstance = true;
   return ((dwKeyState & MK_CONTROL) == MK_CONTROL) ? 
          DROPEFFECT_COPY : DROPEFFECT_MOVE;
@@ -283,19 +288,40 @@ DROPEFFECT CPWTreeCtrl::OnDragEnter(CWnd* , COleDataObject* ,
 DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject */,
                                    DWORD dwKeyState, CPoint point)
 {
+  CPWTreeCtrl *pDestTreeCtrl = (CPWTreeCtrl *)pWnd;
+  HTREEITEM hHitItem(NULL);
+
   POINT p, hs;
   CImageList* pil = CImageList::GetDragImage(&p, &hs);
 
   if (pil != NULL) pil->DragMove(point);
 
-  // Expand and highlight the item under the mouse and 
-  CPWTreeCtrl *pDestTreeCtrl = (CPWTreeCtrl *)pWnd;
-  HTREEITEM hTItem = pDestTreeCtrl->HitTest(point);
-  if (hTItem != NULL) {
+  // Can't use a timer, as the WM_TIMER msg is very low priority and
+  // would not get processed during the drag processing.
+  // Implement expand if hovering over a group
+  if (m_TickCount != 0 && (GetTickCount() - m_TickCount >= HOVERTIME)) {
+    m_TickCount = GetTickCount();
+
+    if (m_hitemHover != NULL && !pDestTreeCtrl->IsLeaf(m_hitemHover)) {
+      pDestTreeCtrl->SelectItem(m_hitemHover);
+      pDestTreeCtrl->Expand(m_hitemHover, TVE_EXPAND);
+    }
+  }
+
+  hHitItem = pDestTreeCtrl->HitTest(point);
+ 
+  // Are we hovering over the same entry?
+  if (hHitItem == NULL || hHitItem != m_hitemHover) {
+    // No - reset hover item and ticking
+    m_hitemHover = hHitItem;
+    m_TickCount = GetTickCount();
+  }
+
+  if (hHitItem != NULL) {
+    // Highlight the item under the mouse anyway
     if (pil != NULL) pil->DragLeave(this);
-    pDestTreeCtrl->Expand(hTItem, TVE_EXPAND);
-    pDestTreeCtrl->SelectDropTarget(hTItem);
-    m_hitemDrop = hTItem;
+    pDestTreeCtrl->SelectDropTarget(hHitItem);
+    m_hitemDrop = hHitItem;
     if (pil != NULL) pil->DragEnter(this, point);
   }
 
@@ -353,6 +379,7 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
 
 void CPWTreeCtrl::OnDragLeave()
 {
+  m_TickCount = 0;
   m_bWithinThisInstance = false;
   // ShowCursor's semantics are VERY odd - RTFM
   while (ShowCursor(TRUE) < 0)
@@ -981,6 +1008,7 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
 BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
                          DROPEFFECT dropEffect, CPoint point)
 {
+  m_TickCount = 0;
   while (ShowCursor(TRUE) < 0)
     ;
   POINT p, hs;

@@ -42,15 +42,19 @@ password improved by using a user selectable font.
 [] Allow List view to process all characters e.g. Page Up/Down, Home, End,
 Arrows etc.
 [] Fix program crash on clicking CompareResults dialog header.
+[] Toolbar Save button correctly enabled after D&D changes database.
 
 Changes to Existing Features in 3.12
 ====================================
 [1885710, 1852862] When re-showing the Find toolbar, any existing search
 argument is selected to allow easier deletion and modification.
-[1846688, 1224373] When generating a new password, it is no longer displayed in
-a separate window for approval. If you want to generate another
+[1846688, 1224373] When generating a new password, it is no longer displayed
+in a separate window for approval. If you want to generate another
 password, just click on Generate again. If you want to revert to the
 existing password when editing an entry, just click on Cancel.
+[1841221] During Drag and Drop, now need to hover over a group for at least
+a 1.5 seconds before it expands (previously, it and any sub-groups expanded
+immediately).
 [] New password generation option: Pronounceable passwords. Thanks to
 Tom Van Vleck, Morrie Gasser, and Dan Edwards.
 [] New disabled buttons for New Toolbar.
