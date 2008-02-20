@@ -1167,8 +1167,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
 
 exit:
   GlobalUnlock(hGlobal);
-  if (retval == TRUE)
+  if (retval == TRUE) {
     pDbx->SetChanged(DboxMain::Data);
+    pDbx->ChangeOkUpdate();
+  }
   return retval;
 }
 
