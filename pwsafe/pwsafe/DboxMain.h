@@ -154,6 +154,7 @@ public:
   {return m_core.CheckPassword(filename, passkey);}
   enum ChangeType {Clear, Data, TimeStamp};
   void SetChanged(ChangeType changed);
+  void ChangeOkUpdate();
 
   // when Group, Title or User edited in tree
   void UpdateListItem(const int lindex, const int type, const CString &newText);
@@ -299,7 +300,6 @@ protected:
     const bool bSort = true, const int iView = iBothViews);
   CItemData *getSelectedItem();
 
-  void ChangeOkUpdate();
   BOOL SelItemOk();
   void setupBars();
   BOOL OpenOnInit();
