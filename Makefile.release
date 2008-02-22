@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENAME = 3.12.0
+RELEASENAME = 3.12
 
 RELEASEDIR = "/cygdrive/c/local/src/PasswordSafe/Releases"
 
@@ -75,9 +75,9 @@ sha1sums:
 
 signatures:
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).exe
-	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 	$(GPG_SIGN) $(RELEASEDIR)/$(BINRELNAME).zip
 	$(GPG_SIGN) $(RELEASEDIR)/$(SRCRELNAME).zip
+	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 
 installables: nsis msi
 
