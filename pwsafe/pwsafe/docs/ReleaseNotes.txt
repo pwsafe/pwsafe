@@ -10,53 +10,47 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12
 ==================
-[1866515] Again able to add entries to database in V3.12 early beta.
-[1865009] Give user advanced option to treat purely whitespace fields
-as empty during compare.
 [1855658, 1436850] Implement font for password display correctly.
 [1850271] Save after Compare no longer corrupts database.
 [1849881, 700973] Pressing a character in the List view will now jump to the
 next entry with text beginning with that character in the second column. This
 is a change from previous behaviour, which only looked in the first column,
-now occupied by the icon.  This now follows MS's approach that if characters
-are typed fast enough (within 1 second), it will treat them as a string
-i.e. 'a' followed by 'b' will look for entry starting 'ab' etc.
+now occupied by the icon.
 [1849830] Help now works properly for Manage->Option, displaying the
 relevant topic.
-[1849818] Browse-to would occasionally falsely report "failed to
-browse to URL".
+[1849818] Browse-to no longer falsely reports "failed to browse to
+URL".
 [1843631] "Browse to Icon" now correctly shown using new Toolbar.
 [1841525] Increasing the number of passwords saved no longer deletes the
 existing Password History.
 [1833609, 1535341, 1502036] Fully support multiple monitors.
 [1749268] Mouse clicks on tree view plus/minus boxes now works correctly.
-[1676241, 1511829, 1436850, 1426250, 1078998, 996240, 771845] Display of
-password improved by using a user selectable font.
-[1670193] Allow use of Windows Common Controls V6 with Vista.
-[1478022] User must save a restored database before it can be exported.
+[1670193] Better Vista support (Allow use of Windows Common Controls
+V6 with Vista).
+[1478022] User no longer needs to save a restored database before it
+can be exported.
 [1440693] Fix standard keyboard access to context menu (Shift+F10).
-[] Allow Expand/Collapse for R/O databases via toolbar.
+[] Allow Expand/Collapse for read-only databases via toolbar.
 [] Set focus to new view on switching between Tree <-> List views.
 [] Update toolbar when view changes (List <-> Tree).
-[] Set PWS title when opening a database at startup.
+[] Set title bar text when opening a database at startup.
 [] Allow List view to process all characters e.g. Page Up/Down, Home, End,
 Arrows etc.
 [] Fix program crash on clicking CompareResults dialog header.
-[] Toolbar Save button correctly enabled after D&D changes database.
+[] Toolbar Save button correctly enabled after drag & drop operations.
 
 Changes to Existing Features in 3.12
 ====================================
 [1885710, 1852862] When re-showing the Find toolbar, any existing search
 argument is selected to allow easier deletion and modification.
+[1865009] Give user advanced option to ignore whitespace-only
+differences during compare.
 [1846688, 1224373] When generating a new password, it is no longer displayed
 in a separate window for approval. If you want to generate another
 password, just click on Generate again. If you want to revert to the
 existing password when editing an entry, just click on Cancel.
-[1841221] During Drag and Drop, now need to hover over a group for at least
-a 1.5 seconds before it expands (previously, it and any sub-groups expanded
-immediately).
-[] New password generation option: Pronounceable passwords. Thanks to
-Tom Van Vleck, Morrie Gasser, and Dan Edwards.
+[1841221] During drag & drop, a 1.5 scond delay was introduced before
+expanding a group that the cursor "hovers" upon.
 [] New disabled buttons for New Toolbar.
 
 New Features for 3.12
@@ -68,15 +62,16 @@ is incompatible with 'pronounceable' or 'easy-to-read' passwords.
 [] Implement individual password policy for entries that will override
 the current database policy.  User can still override the individual
 policy or the database policy.
-[] An entry may have multiple references, or "shortcuts" to it. These
-may be thought of as "synonyms" of the entry. See online help for
-details. If the user displays the Icon column in the List view, it will
-display the corresponding icon to distinguish between each type: normal,
-alias, shortcut, the normal entry with aliases and the normal entry with
-shortcuts.
+[] An entry may have multiple references, or "shortcuts" to it,
+similar to Windows' shortcuts. These may be thought of as "synonyms"
+of the entry. To create a shortcut, drag an entry with the right mouse
+button pressed.
 [] Graphics added to menus.
-[] Allow user to select a font for Passwords as well as for the Tree/List
-view so that similar characters can be distinguished e.g. 0 & O, 1, I & l.
+[] New password generation option: Pronounceable passwords. Thanks to
+Tom Van Vleck, Morrie Gasser, and Dan Edwards.
+[1676241, 1511829, 1436850, 1426250, 1078998, 996240, 771845] Allow
+user to select a font for Passwords, so that similar characters can be
+distinguished e.g. 0 & O, 1, I & l.
 
 Bugs fixed in 3.11.1
 ====================
