@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12.01
 =====================
+[1900655] Compare advanced subset now applies to current and comparison
+databases.
 [1478022] Correct description of this fix in the Release Notes to avoid
 user confusion thinking it does something different.
 
