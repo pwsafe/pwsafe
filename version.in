@@ -17,9 +17,9 @@
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define FILEVER        3, 12, 0, $WCREV$
-#define PRODUCTVER     3, 12, 0, $WCREV$
-#define STRFILEVER     "3, 12, 0, $WCREV$$WCMODS?+:$\0"
-#define STRPRODUCTVER  "3, 12, 0, $WCREV$$WCMODS?+:$\0"
+#define FILEVER        3, 12, 1, $WCREV$
+#define PRODUCTVER     3, 12, 1, $WCREV$
+#define STRFILEVER     "3, 12, 1, $WCREV$$WCMODS?+:$\0"
+#define STRPRODUCTVER  "3, 12, 1, $WCREV$$WCMODS?+:$\0"
 
 #endif // _VERSION_H_

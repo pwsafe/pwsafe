@@ -1,12 +1,24 @@
-Password Safe 3.12 Release Notes - February 2008
-================================================
+Password Safe 3.12.01 Release Notes - February 2008
+===================================================
 
 This note describe the new features, fixed bugs and known problems
-with Password Safe version 3.12. For a short description of Password
+with Password Safe version 3.12.01. For a short description of Password
 Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to previous
 releases may be found in the file ChangeLog.txt.
+
+Bugs fixed in 3.12.01
+=====================
+
+
+Changes to Existing Features in 3.12.01
+=======================================
+
+
+New Features for 3.12.01
+========================
+
 
 Bugs fixed in 3.12
 ==================
