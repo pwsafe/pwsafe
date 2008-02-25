@@ -1742,7 +1742,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
 
   Algorithm:
   Foreach entry in current database {
-    Find in comparison database
+    Find in comparison database - subject to subgroup checking
     if found {
       Compare
       if match
@@ -1755,7 +1755,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
   }
 
   Foreach entry in comparison database {
-    Find in current database
+    Find in current database - subject to subgroup checking
     if not found
       save & increment numOnlyInComp
   }
@@ -1787,13 +1787,13 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
 
     if (m_subgroup_set == BST_UNCHECKED ||
         currentItem.Matches(m_subgroup_name, m_subgroup_object,
-        m_subgroup_function)) {
+                            m_subgroup_function)) {
       st_data.group = currentItem.GetGroup();
       st_data.title = currentItem.GetTitle();
       st_data.user = currentItem.GetUser();
 
       ItemListIter foundPos = othercore.Find(st_data.group,
-                                            st_data.title, st_data.user);
+                                             st_data.title, st_data.user);
       if (foundPos != othercore.GetEntryEndIter()) {
         // found a match, see if all other fields also match
         // Difference flags:
@@ -1902,8 +1902,8 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     CItemData compItem = othercore.GetEntry(compPos);
 
     if (m_subgroup_set == BST_UNCHECKED ||
-        !compItem.Matches(m_subgroup_name, m_subgroup_object,
-                          m_subgroup_function)) {
+        compItem.Matches(m_subgroup_name, m_subgroup_object,
+                         m_subgroup_function)) {
       st_data.group = compItem.GetGroup();
       st_data.title = compItem.GetTitle();
       st_data.user = compItem.GetUser();
