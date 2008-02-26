@@ -17,6 +17,7 @@ user confusion thinking it does something different.
 
 Changes to Existing Features in 3.12.01
 =======================================
+[] Improved compare database reporting.
 
 
 New Features for 3.12.01

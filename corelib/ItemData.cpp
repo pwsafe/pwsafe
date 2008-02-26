@@ -1369,7 +1369,7 @@ bool CItemData::Matches(const CString &subgroup_name, int iObject,
         return true;
     case -SGF_CONTAINS:
       return (csObject.Find((LPCTSTR)subgroup_name) != -1);
-    case SGF_CONTAINS:
+    case  SGF_CONTAINS:
     {
       csObject.MakeLower();
       CString subgroupLC(subgroup_name);
@@ -1378,7 +1378,7 @@ bool CItemData::Matches(const CString &subgroup_name, int iObject,
     }
     case -SGF_NOTCONTAIN:
       return (csObject.Find((LPCTSTR)subgroup_name)== -1);
-    case SGF_NOTCONTAIN:
+    case  SGF_NOTCONTAIN:
     {
       csObject.MakeLower();
       CString subgroupLC(subgroup_name);

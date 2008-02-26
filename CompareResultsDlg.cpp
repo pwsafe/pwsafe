@@ -52,6 +52,19 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
 {
 }
 
+// Return whether first [g:t:u] is greater than the second [g:t:u]
+// used in std::sort in OnInitDialog below.
+bool GTUCompare2(st_CompareData elem1, st_CompareData elem2)
+{
+  if (elem1.group != elem2.group)
+    return elem1.group.CompareNoCase(elem2.group) < 0;
+
+  if (elem1.title != elem2.title)
+    return elem1.title.CompareNoCase(elem2.title) < 0;
+
+  return elem1.user.CompareNoCase(elem2.user) < 0;
+}
+
 BOOL CCompareResultsDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
@@ -128,7 +141,17 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_LCResults.SetItemCount(m_numOnlyInCurrent + m_numOnlyInComp +
                            m_numConflicts + m_numIdentical);
 
-  AddEntries(false);
+  // Sort the entries first by group, title, user (not case sensitive)
+  if (m_numOnlyInCurrent > 0)
+    std::sort(m_OnlyInCurrent.begin(), m_OnlyInCurrent.end(), GTUCompare2);
+  if (m_numOnlyInComp > 0)
+    std::sort(m_OnlyInComp.begin(), m_OnlyInComp.end(), GTUCompare2);
+  if (m_numConflicts > 0)
+    std::sort(m_Conflicts.begin(), m_Conflicts.end(), GTUCompare2);
+  if (m_numIdentical > 0)
+    std::sort(m_Identical.begin(), m_Identical.end(), GTUCompare2);
+
+  AddCompareEntries(false);
 
   m_LCResults.SetRedraw(FALSE);
   int i;
@@ -208,9 +231,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
   this->SetWindowPos(NULL, NULL, NULL, m_DialogMinWidth, m_DialogMinHeight, 
                      SWP_NOMOVE | SWP_NOZORDER);
 
-  CString resultStr;
-  GetReportData(resultStr);
-  m_prpt->WriteLine(resultStr);
+  WriteReportData();
   return TRUE;
 }
 
@@ -235,7 +256,7 @@ BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWDialog)
   ON_COMMAND(ID_MENUITEM_COPY_TO_COMPARISON, OnCompareCopyToComparisonDB)
 END_MESSAGE_MAP()
 
-void CCompareResultsDlg::AddEntries(const bool bAddIdentical)
+void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
 {
   int i, iItem = 0;
   CompareData::iterator cd_iter;
@@ -318,6 +339,7 @@ void CCompareResultsDlg::AddEntries(const bool bAddIdentical)
         m_LCResults.InsertItem(iItem, _T("Y*"));
       else
         m_LCResults.InsertItem(iItem, _T("Y"));
+
       if (st_data.unknflds1)
         m_LCResults.SetItemText(iItem, COMPARE, _T("Y*"));
       else
@@ -366,7 +388,7 @@ void CCompareResultsDlg::OnShowIdenticalEntries()
   m_LCResults.SetRedraw(FALSE);
   m_LCResults.DeleteAllItems();
 
-  AddEntries(m_ShowIdenticalEntries == BST_CHECKED);
+  AddCompareEntries(m_ShowIdenticalEntries == BST_CHECKED);
 
   int i;
 
@@ -809,41 +831,40 @@ int CALLBACK CCompareResultsDlg::CRCompareFunc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
-void CCompareResultsDlg::GetReportData(CString &data)
+void CCompareResultsDlg::WriteReportData()
 {
   CompareData::iterator cd_iter;
-  CString resultStr(_T(""));
   CString buffer;
 
   if (m_OnlyInCurrent.size() > 0) {
     buffer.Format(IDS_COMPAREENTRIES1, m_cs_Filename1);
-    resultStr += buffer;
+    m_prpt->WriteLine(buffer);
     for (cd_iter = m_OnlyInCurrent.begin(); cd_iter != m_OnlyInCurrent.end();
-      cd_iter++) {
-        const st_CompareData &st_data = *cd_iter;
+         cd_iter++) {
+      const st_CompareData &st_data = *cd_iter;
 
-        buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-        resultStr += buffer;
+      buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
+      m_prpt->WriteLine(buffer);
     }
-    resultStr += _T("\r\n");
+    m_prpt->WriteLine();
   }
 
   if (m_OnlyInComp.size() > 0) {
     buffer.Format(IDS_COMPAREENTRIES2, m_cs_Filename2);
-    resultStr += buffer;
+    m_prpt->WriteLine(buffer);
     for (cd_iter = m_OnlyInComp.begin(); cd_iter != m_OnlyInComp.end();
-      cd_iter++) {
-        const st_CompareData &st_data = *cd_iter;
+         cd_iter++) {
+      const st_CompareData &st_data = *cd_iter;
 
-        buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-        resultStr += buffer;
+      buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
+      m_prpt->WriteLine(buffer);
     }
-    resultStr += _T("\r\n");
+    m_prpt->WriteLine();
   }
 
   if (m_Conflicts.size() > 0) {
     buffer.Format(IDS_COMPAREBOTHDIFF);
-    resultStr += buffer;
+    m_prpt->WriteLine(buffer);
 
     const CString csx_password(MAKEINTRESOURCE(IDS_COMPPASSWORD));
     const CString csx_notes(MAKEINTRESOURCE(IDS_COMPNOTES));
@@ -862,23 +883,23 @@ void CCompareResultsDlg::GetReportData(CString &data)
       const st_CompareData &st_data = *cd_iter;
 
       buffer.Format(IDS_COMPARESTATS2, st_data.group, st_data.title, st_data.user);
-      resultStr += buffer;
+      m_prpt->WriteLine(buffer);
+      buffer.Empty();
 
-      if (st_data.bsDiffs.test(CItemData::PASSWORD)) resultStr += csx_password;
-      if (st_data.bsDiffs.test(CItemData::NOTES)) resultStr += csx_notes;
-      if (st_data.bsDiffs.test(CItemData::URL)) resultStr += csx_url;
-      if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) resultStr += csx_autotype;
-      if (st_data.bsDiffs.test(CItemData::CTIME)) resultStr += csx_ctime;
-      if (st_data.bsDiffs.test(CItemData::PMTIME)) resultStr += csx_pmtime;
-      if (st_data.bsDiffs.test(CItemData::ATIME)) resultStr += csx_atime;
-      if (st_data.bsDiffs.test(CItemData::LTIME)) resultStr += csx_ltime;
-      if (st_data.bsDiffs.test(CItemData::RMTIME)) resultStr += csx_rmtime;
-      if (st_data.bsDiffs.test(CItemData::PWHIST)) resultStr += csx_pwhistory;
-      if (st_data.bsDiffs.test(CItemData::POLICY)) resultStr += csx_policy;
-      resultStr += _T("\r\n");
+      if (st_data.bsDiffs.test(CItemData::PASSWORD)) buffer += csx_password;
+      if (st_data.bsDiffs.test(CItemData::NOTES)) buffer += csx_notes;
+      if (st_data.bsDiffs.test(CItemData::URL)) buffer += csx_url;
+      if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) buffer += csx_autotype;
+      if (st_data.bsDiffs.test(CItemData::CTIME)) buffer += csx_ctime;
+      if (st_data.bsDiffs.test(CItemData::PMTIME)) buffer += csx_pmtime;
+      if (st_data.bsDiffs.test(CItemData::ATIME)) buffer += csx_atime;
+      if (st_data.bsDiffs.test(CItemData::LTIME)) buffer += csx_ltime;
+      if (st_data.bsDiffs.test(CItemData::RMTIME)) buffer += csx_rmtime;
+      if (st_data.bsDiffs.test(CItemData::PWHIST)) buffer += csx_pwhistory;
+      if (st_data.bsDiffs.test(CItemData::POLICY)) buffer += csx_policy;
+      m_prpt->WriteLine(buffer);
     }
   }
-  data = resultStr;
 }
 
 void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
