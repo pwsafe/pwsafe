@@ -364,3 +364,8 @@
 #define IDS_SHORTCUTEXPLANATION         5546
 #define IDS_SCTARGET                    5547
 #define IDS_SAVEBEFOREEXPORT            5548
+#define IDS_ADVANCEDOPTIONS             5549
+#define IDS_ADVANCEDSUBSET              5550
+#define IDS_ADVCASE_INSENSITIVE         5551
+#define IDS_ADVCASE_SENSITIVE           5552
+#define IDS_ADVCOMPAREFIELDS            5553

@@ -34,6 +34,7 @@
 #include "corelib/util.h"
 #include "corelib/PWSdirs.h"
 #include "corelib/Report.h"
+#include "corelib/ItemData.h"
 
 #include <sys/types.h>
 #include <bitset>
@@ -1643,7 +1644,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
   // open file they want to Compare
   int rc = PWScore::SUCCESS;
 
-  CMyString passkey, temp;
+  CMyString passkey, cs_temp;
   CString cs_title, cs_text;
   PWScore othercore;
 
@@ -1661,9 +1662,9 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     case PWScore::SUCCESS:
       break; // Keep going...
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_CANTOPEN, cs_Filename2);
+      cs_temp.Format(IDS_CANTOPEN, cs_Filename2);
       cs_title.LoadString(IDS_FILEOPENERROR);
-      MessageBox(temp, cs_title, MB_OK|MB_ICONWARNING);
+      MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
     case TAR_OPEN:
       return Open();
     case TAR_NEW:
@@ -1686,13 +1687,13 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
-      temp.Format(IDS_CANTOPENREADING, cs_Filename2);
-      MessageBox(temp, cs_title, MB_OK | MB_ICONWARNING);
+      cs_temp.Format(IDS_CANTOPENREADING, cs_Filename2);
+      MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       break;
     case PWScore::BAD_DIGEST:
     {
-      temp.Format(IDS_FILECORRUPT, cs_Filename2);
-      const int yn = MessageBox(temp, cs_title, MB_YESNO|MB_ICONERROR);
+      cs_temp.Format(IDS_FILECORRUPT, cs_Filename2);
+      const int yn = MessageBox(cs_temp, cs_title, MB_YESNO|MB_ICONERROR);
       if (yn == IDYES)
         rc = PWScore::SUCCESS;
       break;
@@ -1707,8 +1708,8 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     }
 #endif
     default:
-      temp.Format(IDS_UNKNOWNERROR, cs_Filename2);
-      MessageBox(temp, cs_title, MB_OK|MB_ICONERROR);
+      cs_temp.Format(IDS_UNKNOWNERROR, cs_Filename2);
+      MessageBox(cs_temp, cs_title, MB_OK|MB_ICONERROR);
       break;
   }
 
@@ -1729,8 +1730,8 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
   CReport rpt;
   rpt.StartReport(_T("Compare"), m_core.GetCurFile());
   CString cs_ReportFileName = rpt.GetReportFileName();
-  temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
-  rpt.WriteLine(temp);
+  cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
+  rpt.WriteLine(cs_temp);
   rpt.WriteLine();
 
   // Put up hourglass...this might take a while
@@ -1927,16 +1928,127 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
 
   waitCursor.Restore(); // restore normal cursor
 
+  CString buffer;
   // tell the user we're done & provide short Compare report
-  CString resultStr(_T("")), buffer;
+  if (!m_bAdvanced) {
+    cs_temp.LoadString(IDS_NONE);
+    buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    rpt.WriteLine(buffer);
+  } else {
+    if (m_subgroup_set == BST_UNCHECKED) {
+      cs_temp.LoadString(IDS_NONE);
+    } else {
+      CString cs_Object, cs_case;
+      UINT uistring;
+
+      switch(m_subgroup_object) {
+        case CItemData::SGO_GROUP:
+          uistring = IDS_GROUP;
+          break;
+        case CItemData::SGO_TITLE:
+          uistring = IDS_TITLE;
+          break;
+        case CItemData::SGO_USER:
+          uistring = IDS_USERNAME;
+          break;
+        case CItemData::SGO_GROUPTITLE:
+          uistring = IDS_GROUPTITLE;
+          break;
+        case CItemData::SGO_URL:
+          uistring = IDS_URL;
+          break;
+        case CItemData::SGO_NOTES:
+          uistring = IDS_NOTES;
+          break;
+        default:
+          ASSERT(0);
+      }
+      cs_Object.LoadString(uistring);
+
+      cs_case.LoadString(m_subgroup_function > 0 ? IDS_ADVCASE_INSENSITIVE : IDS_ADVCASE_SENSITIVE);
+
+      switch (m_subgroup_function) {
+        case -CItemData::SGF_EQUALS:
+        case  CItemData::SGF_EQUALS:
+          uistring = IDS_EQUALS;
+          break;
+        case -CItemData::SGF_NOTEQUAL:
+        case  CItemData::SGF_NOTEQUAL:
+          uistring = IDS_DOESNOTEQUAL;
+          break;
+        case -CItemData::SGF_BEGINS:
+        case  CItemData::SGF_BEGINS:
+          uistring = IDS_BEGINSWITH;
+          break;
+        case -CItemData::SGF_NOTBEGIN:
+        case  CItemData::SGF_NOTBEGIN:
+          uistring = IDS_DOESNOTBEGINSWITH;
+          break;
+        case -CItemData::SGF_ENDS:
+        case  CItemData::SGF_ENDS:
+          uistring = IDS_ENDSWITH;
+          break;
+        case -CItemData::SGF_NOTEND:
+        case  CItemData::SGF_NOTEND:
+          uistring = IDS_DOESNOTENDWITH;
+          break;
+        case -CItemData::SGF_CONTAINS:
+        case  CItemData::SGF_CONTAINS:
+          uistring = IDS_CONTAINS;
+          break;
+        case -CItemData::SGF_NOTCONTAIN:
+        case  CItemData::SGF_NOTCONTAIN:
+          uistring = IDS_DOESNOTCONTAIN;
+          break;
+        default:
+          ASSERT(0);
+      }
+      cs_text.LoadString(uistring);
+      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, m_subgroup_name,
+                     cs_case);
+    }
+    buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    rpt.WriteLine(buffer);
+    rpt.WriteLine();
+
+    buffer.LoadString(IDS_ADVCOMPAREFIELDS);
+    rpt.WriteLine(buffer);
+
+    buffer = _T("\t");
+    if (m_bsFields.test(CItemData::PASSWORD))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPASSWORD));
+    if (m_bsFields.test(CItemData::NOTES))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPNOTES));
+    if (m_bsFields.test(CItemData::URL))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPURL));
+    if (m_bsFields.test(CItemData::AUTOTYPE))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
+    if (m_bsFields.test(CItemData::CTIME))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPCTIME));
+    if (m_bsFields.test(CItemData::PMTIME))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPMTIME));
+    if (m_bsFields.test(CItemData::ATIME))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPATIME));
+    if (m_bsFields.test(CItemData::LTIME))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPLTIME));
+    if (m_bsFields.test(CItemData::RMTIME))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPRMTIME));
+    if (m_bsFields.test(CItemData::PWHIST))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
+    if (m_bsFields.test(CItemData::POLICY))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
+    rpt.WriteLine(buffer);
+    rpt.WriteLine();
+  }
+
   cs_title.LoadString(IDS_COMPARECOMPLETE);
   buffer.Format(IDS_COMPARESTATISTICS, cs_Filename1, cs_Filename2);
 
   if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
     cs_text.LoadString(IDS_IDENTICALDATABASES);
-    resultStr += buffer + cs_text;
-    MessageBox(resultStr, cs_title, MB_OK);
-    rpt.WriteLine(resultStr);
+    buffer += cs_text;
+    MessageBox(buffer, cs_title, MB_OK);
+    rpt.WriteLine(buffer);
     rpt.EndReport();
   } else {
     CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 

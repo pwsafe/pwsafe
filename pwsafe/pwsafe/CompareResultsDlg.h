@@ -95,8 +95,8 @@ typedef std::vector<st_CompareData> CompareData;
 // The following structure is needed for compare to send back data
 // to allow copying, viewing and editing of entries
 struct st_CompareInfo {
-  PWScore *pcore0;  // original DB
-  PWScore *pcore1;  // comparison DB
+  PWScore *pcore0;     // original DB
+  PWScore *pcore1;     // comparison DB
   uuid_array_t uuid0;  // original DB
   uuid_array_t uuid1;  // comparison DB
   int  clicked_column;
@@ -158,10 +158,10 @@ protected:
   bool CopyLeftOrRight(const bool bCopyLeft);
   void UpdateStatusBar();
   bool ProcessFunction(const int ifunction, st_CompareData *st_data);
-  void GetReportData(CString &data);
+  void WriteReportData();
   st_CompareData * GetCompareData(const DWORD dwItemData);
   static st_CompareData * GetCompareData(const DWORD dwItemData, CCompareResultsDlg *self);
-  void AddEntries(const bool bAddIdentical);
+  void AddCompareEntries(const bool bAddIdentical);
 
   virtual BOOL OnInitDialog();
   // Generated message map functions
