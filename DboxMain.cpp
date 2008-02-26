@@ -1794,9 +1794,12 @@ DboxMain::startLockCheckTimer(){
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
 {
   // Do NOT pass the ESC along if preference EscExits is false.
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE &&
-      !PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-    return TRUE;
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
+    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
+      if (m_FindToolBar.IsVisible())
+        OnHideFindToolBar();
+      return TRUE;
+    }
   }
   return CDialog::PreTranslateMessage(pMsg);
 }

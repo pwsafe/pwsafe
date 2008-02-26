@@ -661,6 +661,7 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
     retval = m_ctlItemList.SetItemState(i,
                                         LVIS_FOCUSED | LVIS_SELECTED,
                                         LVIS_FOCUSED | LVIS_SELECTED);
+    m_LastFoundListItem = i;
     if (MakeVisible) {
       m_ctlItemList.EnsureVisible(i, FALSE);
     }
@@ -677,7 +678,7 @@ BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
     retval = m_ctlItemTree.SelectItem(di->tree_item);
     if (MakeVisible) {
       m_ctlItemTree.SetItemState(di->tree_item, TVIS_BOLD, TVIS_BOLD);
-      m_LastFoundItem = di->tree_item;
+      m_LastFoundTreeItem = di->tree_item;
       m_bBoldItem = true;
     }
     m_ctlItemTree.Invalidate();
@@ -1019,6 +1020,8 @@ void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
     CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(item);
     UpdateToolBarForSelectedItem(ci);
   }
+  m_LastFoundTreeItem = NULL;
+  m_LastFoundListItem = -1;
 }
 
 void DboxMain::OnTreeItemSelected(NMHDR * /*pNotifyStruct */, LRESULT *pLResult)
@@ -1030,6 +1033,10 @@ void DboxMain::OnTreeItemSelected(NMHDR * /*pNotifyStruct */, LRESULT *pLResult)
   // the expand/collapse as appropriate.
   // This codes attemts to fix this.  There may be better solutions but I 
   // don't know them and have very limited testing facilities on Vista.
+
+  UnFindItem();
+  m_LastFoundTreeItem = NULL;
+  m_LastFoundListItem = -1;
 
   *pLResult = 0L;
   TVHITTESTINFO htinfo = {0};
@@ -2482,7 +2489,7 @@ void DboxMain::UnFindItem()
 {
   // Entries found are made bold - remove it here.
   if (m_bBoldItem) {
-    m_ctlItemTree.SetItemState(m_LastFoundItem, 0, TVIS_BOLD);
+    m_ctlItemTree.SetItemState(m_LastFoundTreeItem, 0, TVIS_BOLD);
     m_bBoldItem = false;
   }
 }
@@ -2754,6 +2761,19 @@ void DboxMain::OnCustomizeToolbar()
 void DboxMain::OnHideFindToolBar()
 {
   SetFindToolBar(false);
+
+  // Select the last found item on closing the FindToolbar (either by pressing
+  // close or via Esc key if not used to minimize application).
+  if (m_ctlItemList.IsWindowVisible() && m_LastFoundListItem != -1) {
+    m_ctlItemList.SetFocus();
+    m_ctlItemList.SetItemState(m_LastFoundListItem,
+                               LVIS_FOCUSED | LVIS_SELECTED,
+                               LVIS_FOCUSED | LVIS_SELECTED);
+  } else
+  if (m_ctlItemTree.IsWindowVisible() && m_LastFoundTreeItem != NULL) {
+    m_ctlItemTree.SetFocus();
+    m_ctlItemTree.Select(m_LastFoundTreeItem, TVGN_CARET);
+  }
 }
 
 void DboxMain::SetFindToolBar(bool bShow)

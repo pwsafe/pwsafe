@@ -286,7 +286,8 @@ protected:
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
   int m_treatwhitespaceasempty;
 
-  HTREEITEM m_LastFoundItem;
+  HTREEITEM m_LastFoundTreeItem;
+  int m_LastFoundListItem;
   bool m_bBoldItem;
 
   WCHAR *m_pwchTip;
