@@ -1089,7 +1089,12 @@ void DboxMain::OnFind()
 {
   // Note that this "toggles" the Find Tool Bar so that the user can use Ctrl+F
   // to show it and then hide it.
-  SetFindToolBar(!m_FindToolBar.IsVisible());
+  // Note hiding is via OnHideFindToolBar so that we only have place selecting
+  // last found item.
+  if (m_FindToolBar.IsVisible())
+    OnHideFindToolBar();
+  else
+    SetFindToolBar(true);
 }
 
 void DboxMain::OnClearClipboard()
@@ -1495,9 +1500,8 @@ void DboxMain::OnToolBarFind()
 {
   // Called when the user presses the Find button on the Find Toolbar or
   // when they press enter when the search string has focus or
-  // when they press F3 with the Find Toolbar visible
-  if (m_FindToolBar.IsVisible())
-    m_FindToolBar.Find();
+  // when they press F3
+  m_FindToolBar.Find();
 }
 
 bool DboxMain::CheckNewPassword(const CMyString &group, const CMyString &title,

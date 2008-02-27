@@ -342,9 +342,6 @@ void CPWFindToolBar::ShowFindToolBar(bool bShow)
     m_findedit.SetFocus();
     m_findedit.SetSel(0, -1);  // Select all text
     m_findedit.Invalidate();
-  } else {
-    m_lastshown = size_t(-1);
-    m_findresults.SetWindowText(_T(""));
   }
   m_bVisible = bShow;
 }
