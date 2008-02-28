@@ -657,6 +657,23 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
   return retval;
 }
 
+void DboxMain::SelectFirstEntry()
+{
+  if (m_core.GetNumEntries() > 0) {
+    // Ensure an entry is selected after open
+    if (m_ctlItemList.IsWindowVisible()) {
+      m_ctlItemList.SetItemState(0,
+                                 LVIS_FOCUSED | LVIS_SELECTED,
+                                 LVIS_FOCUSED | LVIS_SELECTED);
+      m_ctlItemList.EnsureVisible(0, FALSE);
+    } else {
+      HTREEITEM hitem = m_ctlItemTree.GetFirstVisibleItem();
+      if (hitem != NULL)
+        m_ctlItemTree.SelectItem(hitem);
+    }
+  }
+}
+
 BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
 {
   BOOL retval;

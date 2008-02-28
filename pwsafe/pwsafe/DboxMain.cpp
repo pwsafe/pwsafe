@@ -713,6 +713,7 @@ BOOL DboxMain::OnInitDialog()
     m_ctlItemTree.SetRestoreMode(true);
     RefreshViews();
     m_ctlItemTree.SetRestoreMode(false);
+    SelectFirstEntry();
   }
 
   SetInitialDatabaseDisplay();

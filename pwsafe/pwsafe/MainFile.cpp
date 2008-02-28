@@ -187,6 +187,7 @@ BOOL DboxMain::OpenOnInit(void)
   SetWindowText(LPCTSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile());
 #endif
+
   return TRUE;
 }
 
@@ -409,6 +410,7 @@ void DboxMain::OnOpenMRU(UINT nID)
       SetDCAText();
     }
     UpdateMenuAndToolBar(true);
+    SelectFirstEntry();
   } else {
     // Reset Read-only status
     m_core.SetReadOnly(last_ro);
@@ -580,6 +582,8 @@ int DboxMain::Open(const CMyString &pszFilename)
   m_core.SetUseDefUser(PWSprefs::GetInstance()->
                        GetPref(PWSprefs::UseDefaultUser) ? true : false);
   m_needsreading = false;
+  SelectFirstEntry();
+
   return rc;
 }
 
