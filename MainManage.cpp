@@ -64,7 +64,6 @@ int DboxMain::BackupSafe()
   CMyString currbackup =
     prefs->GetPref(PWSprefs::CurrentBackup);
 
-
   CString cs_text(MAKEINTRESOURCE(IDS_PICKBACKUP));
   CString cs_temp, cs_title;
   //SaveAs-type dialog box

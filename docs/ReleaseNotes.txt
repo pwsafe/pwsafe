@@ -14,6 +14,7 @@ Bugs fixed in 3.12.01
 databases.
 [1478022] Correct description of this fix in the Release Notes to avoid
 user confusion thinking it does something different.
+[] Ensure first entry is selected when opening an existing database.
 
 Changes to Existing Features in 3.12.01
 =======================================

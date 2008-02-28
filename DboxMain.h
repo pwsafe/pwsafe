@@ -75,11 +75,11 @@ DECLARE_HANDLE(HDROP);
 #define PWS_HOTKEY_ID 5767
 
 // Index values for which dialog to show during GetAndCheckPassword
-enum {GCP_FIRST = 0,  // At startup of PWS
-GCP_NORMAL = 1,       // Only OK, CANCEL & HELP buttons
-GCP_UNMINIMIZE = 2,   // Only OK, CANCEL & HELP buttons
-GCP_WITHEXIT = 3,     // OK, CANCEL, EXIT & HELP buttons
-GCP_ADVANCED = 4};    // OK, CANCEL, HELP buttons & ADVANCED checkbox
+enum {GCP_FIRST = 0,        // At startup of PWS
+      GCP_NORMAL = 1,       // Only OK, CANCEL & HELP buttons
+      GCP_UNMINIMIZE = 2,   // Only OK, CANCEL & HELP buttons
+      GCP_WITHEXIT = 3,     // OK, CANCEL, EXIT & HELP buttons
+      GCP_ADVANCED = 4};    // OK, CANCEL, HELP buttons & ADVANCED checkbox
 
 //-----------------------------------------------------------------------------
 class DboxMain
@@ -144,6 +144,7 @@ public:
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
   BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
   BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
+  void SelectFirstEntry();
 
   // For insertItem and RefreshViews (mainly when refreshing views)
   // Note: iBothViews = iListOnly + iTreeOnly
