@@ -345,7 +345,7 @@ ItemListIter DboxMain::Find(int i)
 }
 
 /*
-* Finds all entries in m_pwlist that contain str in title, user, group or notes
+* Finds all entries in m_pwlist that contain str in any text
 * field, returns their sorted indices in m_listctrl via indices, which is
 * assumed to be allocated by caller to DboxMain::GetNumEntries() ints.
 * FindAll returns the number of entries that matched.
@@ -357,7 +357,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
 
-  CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT;
+  CMyString curtitle, curuser, curnotes, curgroup, curURL, curAT, curpwd, curPWHist;
   CMyString listTitle, savetitle;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -381,25 +381,31 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
       savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
       curuser =  curitem.GetUser();
+      curpwd = curitem.GetPassword();
       curnotes = curitem.GetNotes();
       curgroup = curitem.GetGroup();
       curURL = curitem.GetURL();
       curAT = curitem.GetAutoType();
+      curPWHist = curitem.GetPWHistory();
 
       if (!CaseSensitive) {
         curtitle.MakeLower();
         curuser.MakeLower();
+        curpwd.MakeLower();
         curnotes.MakeLower();
         curgroup.MakeLower();
         curURL.MakeLower();
         curAT.MakeLower();
+        curPWHist.MakeLower();
       }
       if (::_tcsstr(curtitle, searchstr) ||
           ::_tcsstr(curuser, searchstr) ||
+          ::_tcsstr(curpwd, searchstr) ||
           ::_tcsstr(curnotes, searchstr) ||
           ::_tcsstr(curgroup, searchstr) ||
           ::_tcsstr(curURL, searchstr) ||
-          ::_tcsstr(curAT, searchstr)) {
+          ::_tcsstr(curAT, searchstr) ||
+          ::_tcsstr(curPWHist, searchstr)) {
         // Find index in displayed list
         DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
         ASSERT(di != NULL);
@@ -413,7 +419,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     // Sort indices if in List View
     if (retval > 1)
       sort(indices.begin(), indices.end());
-  } else { // !m_IsListView
+  } else { // !m_IsListView == Tree View
     OrderedItemList orderedItemList;
     MakeOrderedItemList(orderedItemList);
     OrderedItemList::const_iterator oiter;
@@ -423,25 +429,31 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
       savetitle = curtitle = curitem.GetTitle(); // savetitle keeps orig case
       curuser =  curitem.GetUser();
+      curpwd = curitem.GetPassword();
       curnotes = curitem.GetNotes();
       curgroup = curitem.GetGroup();
       curURL = curitem.GetURL();
       curAT = curitem.GetAutoType();
+      curPWHist = curitem.GetPWHistory();
 
       if (!CaseSensitive) {
         curtitle.MakeLower();
         curuser.MakeLower();
+        curpwd.MakeLower();
         curnotes.MakeLower();
         curgroup.MakeLower();
         curURL.MakeLower();
         curAT.MakeLower();
+        curPWHist.MakeLower();
       }
       if (::_tcsstr(curtitle, searchstr) ||
           ::_tcsstr(curuser, searchstr) ||
+          ::_tcsstr(curpwd, searchstr) ||
           ::_tcsstr(curnotes, searchstr) ||
           ::_tcsstr(curgroup, searchstr) ||
           ::_tcsstr(curURL, searchstr) ||
-          ::_tcsstr(curAT, searchstr)) {
+          ::_tcsstr(curAT, searchstr) ||
+          ::_tcsstr(curPWHist, searchstr)) {
         // Find index in displayed list
         DisplayInfo *di = (DisplayInfo *)curitem.GetDisplayInfo();
         ASSERT(di != NULL);

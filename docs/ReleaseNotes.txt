@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12.01
 =====================
+[1904254] Advanced Search now does not show non-text fields e.g. times,
+as they were never searched.
 [1900655] Compare advanced subset now applies to current and comparison
 databases.
 [1478022] Correct description of this fix in the Release Notes to avoid
@@ -20,9 +22,9 @@ Changes to Existing Features in 3.12.01
 =======================================
 [] Improved compare database reporting.
 
-
 New Features for 3.12.01
 ========================
+[1904254] Search now selects all text fields by default.
 [1901380] Find result highlighted and selected.
 [1901380] If the Esc key is not being used to minimize PasswordSafe,
 then it will close the Find Toolbar if active.
