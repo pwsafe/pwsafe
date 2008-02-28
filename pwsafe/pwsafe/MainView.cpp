@@ -250,6 +250,7 @@ void DboxMain::setupBars()
     statustext[SB_CONFIG] = IDS_CONFIG_BLANK;
 #endif /* DEBUG */
     // Set up the rest
+    statustext[SB_CLIPBOARDACTION] = IDS_CONFIG_BLANK;
     statustext[SB_MODIFIED] = IDS_MODIFIED;
     statustext[SB_READONLY] = IDS_READ_ONLY;
     statustext[SB_NUM_ENT] = IDS_STAT_NUM_IN_DB;
@@ -623,8 +624,8 @@ BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
 
   if (m_ctlItemList.IsWindowVisible()) {
     retval = m_ctlItemList.SetItemState(i,
-      LVIS_FOCUSED | LVIS_SELECTED,
-      LVIS_FOCUSED | LVIS_SELECTED);
+                                        LVIS_FOCUSED | LVIS_SELECTED,
+                                        LVIS_FOCUSED | LVIS_SELECTED);
     if (MakeVisible) {
       m_ctlItemList.EnsureVisible(i, FALSE);
     }
@@ -802,7 +803,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     m_bBoldItem = false;
 
     if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
-      ClearClipboardData();
+      OnClearClipboard();
     if (prefs->GetPref(PWSprefs::DatabaseClear)) {
       if (m_core.IsChanged() ||  m_bTSUpdated)
         if (Save() != PWScore::SUCCESS) {

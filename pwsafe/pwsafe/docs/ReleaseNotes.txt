@@ -27,6 +27,7 @@ New Features for 3.12.01
 [1901380] If the Esc key is not being used to minimize PasswordSafe,
 then it will close the Find Toolbar if active.
 [1901380] F3 (Repeat Find) works even if the Find Toolbar has been closed.
+[] Last clipboard action now shown in Status Bar.
 
 Bugs fixed in 3.12
 ==================
