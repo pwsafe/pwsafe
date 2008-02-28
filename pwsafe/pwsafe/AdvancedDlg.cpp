@@ -173,7 +173,7 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_pLC_List->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   m_pLC_Selected->SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
 
-  if (m_index == ADV_COMPARE) {
+  if (m_iIndex == ADV_COMPARE) {
     cs_text.LoadString(IDS_CREATED);
     iItem = m_pLC_List->InsertItem(++iItem, cs_text);
     m_pLC_List->SetItemData(iItem, CItemData::CTIME);
@@ -187,7 +187,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     iItem = m_pLC_List->InsertItem(++iItem, cs_text);
     m_pLC_List->SetItemData(iItem, CItemData::RMTIME);
   } else {
-    if (m_index != ADV_FIND) {
+    if (m_iIndex != ADV_FIND) {
       cs_text.LoadString(IDS_CREATED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::CTIME);
@@ -216,7 +216,7 @@ BOOL CAdvancedDlg::OnInitDialog()
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::AUTOTYPE);
   cs_text.LoadString(IDS_EXPIRYDATETIME);
-  if (m_index != ADV_FIND) {
+  if (m_iIndex != ADV_FIND) {
     iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
     m_pLC_Selected->SetItemData(iItem, CItemData::LTIME);
   }

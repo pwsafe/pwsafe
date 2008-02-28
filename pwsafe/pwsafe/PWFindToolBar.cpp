@@ -444,8 +444,9 @@ void CPWFindToolBar::Find()
 
     if (m_bAdvanced)
       m_numFound = pDbx->FindAll(m_search_text, m_cs_search, m_indices,
-      m_bsFields, m_subgroup_set,
-      m_subgroup_name, m_subgroup_object, m_subgroup_function);
+                                 m_bsFields, m_subgroup_set,
+                                 m_subgroup_name, m_subgroup_object, 
+                                 m_subgroup_function);
     else
       m_numFound = pDbx->FindAll(m_search_text, m_cs_search, m_indices);
 
