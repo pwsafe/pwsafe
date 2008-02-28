@@ -37,6 +37,7 @@ public:
   BOOL IsFindCaseSet()
   {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
+  void InvalidateSearch() {m_lastshown = size_t(-1);}
 
   CEditExtn m_findedit;
   CStaticExtn m_findresults;

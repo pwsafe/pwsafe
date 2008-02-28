@@ -151,6 +151,7 @@ void PWScore::NewFile(const CMyString &passkey)
   // for new database:
   m_usedefuser = false;
   m_defusername = _T("");
+  NotifyListModified();
 }
 
 // functor object type for for_each:

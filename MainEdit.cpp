@@ -1090,7 +1090,7 @@ void DboxMain::OnFind()
   // Note that this "toggles" the Find Tool Bar so that the user can use Ctrl+F
   // to show it and then hide it.
   // Note hiding is via OnHideFindToolBar so that we only have place selecting
-  // last found item.
+  // last found item in one place.
   if (m_FindToolBar.IsVisible())
     OnHideFindToolBar();
   else

@@ -52,6 +52,9 @@ void DboxMain::StopFind(LPARAM instance)
   // Callback from PWScore if the password list has been changed invalidating the 
   // indices vector
   DboxMain *self = (DboxMain*)instance;
+
+  self->m_core.SuspendOnListNotification();
+  self->InvalidateSearch();
   self->OnHideFindToolBar();
 }
 
@@ -307,6 +310,9 @@ void DboxMain::setupBars()
   UpdateToolBar(m_core.IsReadOnly());
   m_menuManager.SetImageList(&m_MainToolBar);
   m_menuManager.SetMapping(&m_MainToolBar);
+
+  // Register for update notification
+  m_core.RegisterOnListModified(StopFind, (LPARAM)this);
 #endif
 }
 
@@ -2782,9 +2788,7 @@ void DboxMain::SetFindToolBar(bool bShow)
     return;
 
   if (bShow)
-    m_core.RegisterOnListModified(StopFind, (LPARAM)this);
-  else
-    m_core.UnRegisterOnListModified();
+    m_core.ResumeOnListNotification();
 
   m_FindToolBar.ShowFindToolBar(bShow);
 
