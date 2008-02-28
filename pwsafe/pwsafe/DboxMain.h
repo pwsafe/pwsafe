@@ -175,10 +175,13 @@ public:
   void UpdateToolBar(bool state);
   void UpdateToolBarForSelectedItem(CItemData *ci);
   void SetToolBarPositions();
+  void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
+  void ResumeOnListNotification() {m_core.ResumeOnListNotification();}
+  void SuspendOnListNotification() {m_core.SuspendOnListNotification();}
   bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
-  void SetValidate(bool state) { m_bValidate = state;}
+  void SetValidate(bool state) {m_bValidate = state;}
   void MakeRandomPassword(CMyString& password, PWPolicy &pwp);
   bool SetPasswordPolicy(PWPolicy &pwp);
   BOOL LaunchBrowser(const CString &csURL);

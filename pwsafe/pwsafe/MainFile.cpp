@@ -400,7 +400,7 @@ void DboxMain::OnOpenMRU(UINT nID)
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
   // Read-only status will be set by GetAndCheckPassword
-  int rc = Open( mruItem );
+  int rc = Open(mruItem);
   if (rc == PWScore::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
     m_RUEList.ClearEntries();
@@ -455,8 +455,8 @@ int DboxMain::Open()
     if (rc2 == IDOK) {
       newfile = (CMyString)fd.GetPathName();
 
-      rc = Open( newfile );
-      if ( rc == PWScore::SUCCESS ) {
+      rc = Open(newfile);
+      if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
         break;
@@ -469,7 +469,7 @@ int DboxMain::Open()
   return rc;
 }
 
-int DboxMain::Open( const CMyString &pszFilename )
+int DboxMain::Open(const CMyString &pszFilename)
 {
   int rc;
   CMyString passkey, temp;

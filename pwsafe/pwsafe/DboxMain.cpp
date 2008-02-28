@@ -117,6 +117,8 @@ DboxMain::DboxMain(CWnd* pParent)
 
 DboxMain::~DboxMain()
 {
+  m_core.UnRegisterOnListModified();
+
   delete m_pchTip;
   delete m_pwchTip;
   delete m_pFontTree;

@@ -460,6 +460,7 @@ void CPWFindToolBar::Find()
         cs_status.Format(IDS_FOUNDMATCHES, 1, m_numFound);
         break;
     }
+    pDbx->ResumeOnListNotification();
   } // m_lastshown == -1
 
   // OK, so now we have a (possibly empty) list of items to select.
