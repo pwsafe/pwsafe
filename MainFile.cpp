@@ -177,6 +177,7 @@ BOOL DboxMain::OpenOnInit(void)
   }
   app.AddToMRU(m_core.GetCurFile());
   UpdateMenuAndToolBar(true); // sets m_bOpen too...
+  UpdateStatusBar();
 
   m_core.SetDefUsername(PWSprefs::GetInstance()->
     GetPref(PWSprefs::DefaultUsername));
@@ -187,6 +188,7 @@ BOOL DboxMain::OpenOnInit(void)
   SetWindowText(LPCTSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile());
 #endif
+  SelectFirstEntry();
 
   return TRUE;
 }
@@ -368,9 +370,10 @@ int DboxMain::Close()
   UpdateSystemTray(CLOSED);
   // Call UpdateMenuAndToolBar before UpdateStatusBar, as it sets m_bOpen
   UpdateMenuAndToolBar(false);
-  UpdateStatusBar();
   m_titlebar = _T("Password Safe");
   SetWindowText(LPCTSTR(m_titlebar));
+  m_lastclipboardaction = _T("");
+  UpdateStatusBar();
   return PWScore::SUCCESS;
 }
 
@@ -384,6 +387,7 @@ void DboxMain::OnOpen()
       SetDCAText();
     }
     UpdateMenuAndToolBar(true);
+    UpdateStatusBar();
   }
 }
 
@@ -410,6 +414,7 @@ void DboxMain::OnOpenMRU(UINT nID)
       SetDCAText();
     }
     UpdateMenuAndToolBar(true);
+    UpdateStatusBar();
     SelectFirstEntry();
   } else {
     // Reset Read-only status

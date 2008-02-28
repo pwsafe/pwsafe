@@ -268,9 +268,11 @@ protected:
   CStatusBar m_statusBar;
   BOOL m_toolbarsSetup;
   UINT m_toolbarMode;
-  enum {SB_DBLCLICK = 0, SB_CONFIG, SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
-    SB_TOTAL /* this must be the last entry */};
+  enum {SB_DBLCLICK = 0, SB_CLIPBOARDACTION, SB_CONFIG, 
+        SB_MODIFIED, SB_READONLY, SB_NUM_ENT,
+        SB_TOTAL /* this must be the last entry */};
   UINT statustext[SB_TOTAL];
+  CString m_lastclipboardaction;
 #endif
 
   bool m_windowok;
@@ -347,6 +349,7 @@ protected:
   void SetToolbar(const int menuItem, bool bInit = false);
   void UpdateStatusBar();
   void UpdateMenuAndToolBar(const bool bOpen);
+  void UpdateLastClipboardAction(const int iaction);
   void SetDCAText();
   void SortListView();
   void UpdateBrowseURLSendEmailButton(const bool bIsEmail);

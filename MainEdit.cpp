@@ -26,6 +26,9 @@
 #include "ClearQuestionDlg.h"
 #include "CreateShortcutDlg.h"
 
+#include <stdio.h>
+#include <sys/timeb.h>
+#include <time.h>
 #include <vector>
 #include <algorithm>
 
@@ -972,6 +975,8 @@ void DboxMain::OnCopyPassword()
   }
 
   SetClipboardData(ci->GetPassword());
+
+  UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(ci_original);
 }
 
@@ -1002,6 +1007,8 @@ void DboxMain::OnCopyUsername()
     SetClipboardData(username);
   else
     ClearClipboardData();
+
+  UpdateLastClipboardAction(CItemData::USER);
   UpdateAccessTime(ci_original);
 }
 
@@ -1042,15 +1049,19 @@ void DboxMain::OnCopyNotes()
     clipboard_data += CMyString(cs_text);
     clipboard_data += url;
   }
+
   if (!autotype.IsEmpty()) {
     cs_text.LoadString(IDS_COPYAUTOTYPE);
     clipboard_data += CMyString(cs_text);
     clipboard_data += autotype;
   }
+
   if (!clipboard_data.IsEmpty())
     SetClipboardData(clipboard_data);
   else
     ClearClipboardData();
+
+  UpdateLastClipboardAction(CItemData::NOTES);
   UpdateAccessTime(ci_original);
 }
 
@@ -1082,7 +1093,60 @@ void DboxMain::OnCopyURL()
     SetClipboardData(cs_URL);
   else
     ClearClipboardData();
+
+  UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(ci_original);
+}
+
+void DboxMain::UpdateLastClipboardAction(const int iaction)
+{
+  int imsg(0);
+  m_lastclipboardaction = _T("");
+  switch (iaction) {
+    case -1:
+      // Clipboard cleared
+      break;
+    case CItemData::USER:
+      imsg = IDS_USERNAME;
+      break;
+    case CItemData::PASSWORD:
+      imsg = IDS_PASSWORD;
+      break;
+    case CItemData::NOTES:
+      imsg = IDS_NOTES;
+      break;
+    case CItemData::URL:
+      imsg = IDS_URL;
+      break;
+    default:
+      ASSERT(0);
+      return;
+  }
+
+  struct _timeb timebuffer;
+  int hr, min;
+
+#if (_MSC_VER >= 1400)
+  struct tm st;
+  _ftime_s(&timebuffer);
+  errno_t err;
+  err = localtime_s(&st, &timebuffer.time);  // secure version
+  hr = st.tm_hour;
+  min = st.tm_min;
+#else
+  struct tm *pst;
+  _ftime(&timebuffer);
+  pst = localtime(&timebuffer.time);
+  hr = pst->tm_hour;
+  min = pst->tm_min;
+#endif
+  if (iaction < 0) {
+    m_lastclipboardaction.Format(IDS_CLIPBOARDCLEARED, hr, min);
+  } else {
+    m_lastclipboardaction.Format(IDS_CLIPBOARDACTION, CString(MAKEINTRESOURCE(imsg)), 
+                                 hr, min);
+  }
+  UpdateStatusBar();
 }
 
 void DboxMain::OnFind()
@@ -1099,6 +1163,7 @@ void DboxMain::OnFind()
 
 void DboxMain::OnClearClipboard()
 {
+  UpdateLastClipboardAction(-1);
   ClearClipboardData();
 }
 

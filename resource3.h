@@ -369,3 +369,5 @@
 #define IDS_ADVCASE_INSENSITIVE         5551
 #define IDS_ADVCASE_SENSITIVE           5552
 #define IDS_ADVCOMPAREFIELDS            5553
+#define IDS_CLIPBOARDACTION             5554
+#define IDS_CLIPBOARDCLEARED            5555
