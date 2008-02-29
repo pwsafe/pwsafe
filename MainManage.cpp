@@ -285,8 +285,10 @@ void DboxMain::OnOptions()
   display.m_trayiconcolour = prefs->
     GetPref(PWSprefs::ClosedTrayIconColour);
 
-  security.m_clearclipboard = prefs->
-    GetPref(PWSprefs::DontAskMinimizeClearYesNo) ? TRUE : FALSE;
+  security.m_clearclipboardonminimize = prefs->
+    GetPref(PWSprefs::ClearClipoardOnMinimize) ? TRUE : FALSE;
+  security.m_clearclipboardonexit = prefs->
+    GetPref(PWSprefs::ClearClipoardOnExit) ? TRUE : FALSE;
   security.m_lockdatabase = prefs->
     GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
   security.m_confirmcopy = prefs->
@@ -451,8 +453,10 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::MRUOnFileMenu,
       system.m_mruonfilemenu == TRUE);
 
-    prefs->SetPref(PWSprefs::DontAskMinimizeClearYesNo,
-      security.m_clearclipboard == TRUE);
+    prefs->SetPref(PWSprefs::ClearClipoardOnMinimize,
+      security.m_clearclipboardonminimize == TRUE);
+    prefs->SetPref(PWSprefs::ClearClipoardOnExit,
+      security.m_clearclipboardonexit == TRUE);
     prefs->SetPref(PWSprefs::DatabaseClear,
       security.m_lockdatabase == TRUE);
     prefs->SetPref(PWSprefs::DontAskQuestion,

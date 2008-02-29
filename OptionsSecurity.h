@@ -28,7 +28,8 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsSecurity)
   enum { IDD = IDD_PS_SECURITY };
-  BOOL m_clearclipboard;
+  BOOL m_clearclipboardonminimize;
+  BOOL m_clearclipboardonexit;
   BOOL m_lockdatabase;
   BOOL m_confirmcopy;
   BOOL m_LockOnWindowLock;

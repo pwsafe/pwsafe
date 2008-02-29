@@ -35,98 +35,100 @@ CString PWSprefs::m_configfilename; // may be set before singleton created
 
 // 1st parameter = name of preference
 // 2nd parameter = default value
-// 3rd parameter if 'true' means value stored in db, if 'false' means application related
+// 3rd parameter if stored in database, application or obsolete
 const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
-  {_T("AlwaysOnTop"), false, false},                // application
-  {_T("ShowPWDefault"), false, true},               // database
-  {_T("ShowPasswordInTree"), false, true},          // database
-  {_T("SortAscending"), true, true},                // database
-  {_T("UseDefaultUser"), false, true},              // database
-  {_T("SaveImmediately"), true, true},              // database
-  {_T("PWUseLowercase"), true, true},               // database
-  {_T("PWUseUppercase"), true, true},               // database
-  {_T("PWUseDigits"), true, true},                  // database
-  {_T("PWUseSymbols"), false, true},                // database
-  {_T("PWUseHexDigits"), false, true},              // database
-  {_T("PWUseEasyVision"), false, true},             // database
-  {_T("dontaskquestion"), false, false},            // application
-  {_T("deletequestion"), false, false},             // application
-  {_T("DCShowsPassword"), false, false},            // application
-  {_T("DontAskMinimizeClearYesNo"), true, false},   // application
-  {_T("DatabaseClear"), false, false},              // application
-  {_T("DontAskSaveMinimize"), false, false},        // application - obsoleted in 3.02
-  {_T("QuerySetDef"), true, false},                 // application
-  {_T("UseNewToolbar"), true, false},               // application
-  {_T("UseSystemTray"), true, false},               // application
-  {_T("LockOnWindowLock"), true, false},            // application
-  {_T("LockOnIdleTimeout"), true, false},           // application
-  {_T("EscExits"), true, false},                    // application
-  {_T("IsUTF8"), false, true},                      // database
-  {_T("HotKeyEnabled"), false, false},              // application
-  {_T("MRUOnFileMenu"), true, false},               // application
-  {_T("DisplayExpandedAddEditDlg"), true, true},    // database
-  {_T("MaintainDateTimeStamps"), false, true},      // database
-  {_T("SavePasswordHistory"), false, true},         // database
-  {_T("FindWraps"), false, false},                  // application - obsoleted in 3.11
-  {_T("ShowNotesDefault"), false, true},            // database
-  {_T("BackupBeforeEverySave"), true, false},       // application
-  {_T("PreExpiryWarn"), false, false},              // application
-  {_T("ExplorerTypeTree"), false, false},           // application
-  {_T("ListViewGridLines"), false, false},          // application
-  {_T("MinimizeOnAutotype"), true, false},          // application
-  {_T("ShowUsernameInTree"), true, true},           // database
-  {_T("PWMakePronounceable"), false, true},         // database - 3.12 password policy
+  {_T("AlwaysOnTop"), false, ptApplication},                // application
+  {_T("ShowPWDefault"), false, ptDatabase},                 // database
+  {_T("ShowPasswordInTree"), false, ptDatabase},            // database
+  {_T("SortAscending"), true, ptDatabase},                  // database
+  {_T("UseDefaultUser"), false, ptDatabase},                // database
+  {_T("SaveImmediately"), true, ptDatabase},                // database
+  {_T("PWUseLowercase"), true, ptDatabase},                 // database
+  {_T("PWUseUppercase"), true, ptDatabase},                 // database
+  {_T("PWUseDigits"), true, ptDatabase},                    // database
+  {_T("PWUseSymbols"), false, ptDatabase},                  // database
+  {_T("PWUseHexDigits"), false, ptDatabase},                // database
+  {_T("PWUseEasyVision"), false, ptDatabase},               // database
+  {_T("dontaskquestion"), false, ptApplication},            // application
+  {_T("deletequestion"), false, ptApplication},             // application
+  {_T("DCShowsPassword"), false, ptApplication},            // application
+  {_T("DontAskMinimizeClearYesNo"), true, ptObsolete},      // obsolete in 3.13 - replaced by 2 separate entries
+  {_T("DatabaseClear"), false, ptApplication},              // application
+  {_T("DontAskSaveMinimize"), false, ptObsolete},           // obsolete in 3.02
+  {_T("QuerySetDef"), true, ptApplication},                 // application
+  {_T("UseNewToolbar"), true, ptApplication},               // application
+  {_T("UseSystemTray"), true, ptApplication},               // application
+  {_T("LockOnWindowLock"), true, ptApplication},            // application
+  {_T("LockOnIdleTimeout"), true, ptApplication},           // application
+  {_T("EscExits"), true, ptApplication},                    // application
+  {_T("IsUTF8"), false, ptDatabase},                        // database
+  {_T("HotKeyEnabled"), false, ptApplication},              // application
+  {_T("MRUOnFileMenu"), true, ptApplication},               // application
+  {_T("DisplayExpandedAddEditDlg"), true, ptDatabase},      // database
+  {_T("MaintainDateTimeStamps"), false, ptDatabase},        // database
+  {_T("SavePasswordHistory"), false, ptDatabase},           // database
+  {_T("FindWraps"), false, ptObsolete},                     // obsolete in 3.11
+  {_T("ShowNotesDefault"), false, ptDatabase},              // database
+  {_T("BackupBeforeEverySave"), true, ptApplication},       // application
+  {_T("PreExpiryWarn"), false, ptApplication},              // application
+  {_T("ExplorerTypeTree"), false, ptApplication},           // application
+  {_T("ListViewGridLines"), false, ptApplication},          // application
+  {_T("MinimizeOnAutotype"), true, ptApplication},          // application
+  {_T("ShowUsernameInTree"), true, ptDatabase},             // database
+  {_T("PWMakePronounceable"), false, ptDatabase},           // database - 3.12 password policy
+  {_T("ClearClipoardOnMinimize"), true, ptApplication},     // application
+  {_T("ClearClipoardOneExit"), true, ptApplication},        // application
 };
 
 // Default value = -1 means set at runtime
 // Extra two values for Integer - min and max acceptable values (ignored if = -1)
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), (unsigned int)-1, false, -1, -1},    // application
-  {_T("column2width"), (unsigned int)-1, false, -1, -1},    // application
-  {_T("column3width"), (unsigned int)-1, false, -1, -1},    // application
-  {_T("column4width"), (unsigned int)-1, false, -1, -1},    // application
-  {_T("sortedcolumn"), 0, false, 0, 15},                    // application
-  {_T("PWDefaultLength"), 8, true, 4, 1024},                // database
+  {_T("column1width"), (unsigned int)-1, ptApplication, -1, -1},    // application
+  {_T("column2width"), (unsigned int)-1, ptApplication, -1, -1},    // application
+  {_T("column3width"), (unsigned int)-1, ptApplication, -1, -1},    // application
+  {_T("column4width"), (unsigned int)-1, ptApplication, -1, -1},    // application
+  {_T("sortedcolumn"), 0, ptApplication, 0, 15},                    // application
+  {_T("PWDefaultLength"), 8, ptDatabase, 4, 1024},                  // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
-  {_T("maxmruitems"), 4, false, 0, 20},                     // application
-  {_T("IdleTimeout"), 5, true, 1, 120},                     // database
-  {_T("DoubleClickAction"), DoubleClickCopyPassword, false,
-                            minDCA, maxDCA},                // application
-  {_T("HotKey"), 0, false, -1, -1}, // 0=disabled, >0=keycode. // application
+  {_T("maxmruitems"), 4, ptApplication, 0, 20},                     // application
+  {_T("IdleTimeout"), 5, ptDatabase, 1, 120},                       // database
+  {_T("DoubleClickAction"), DoubleClickCopyPassword, ptApplication,
+                            minDCA, maxDCA},                        // application
+  {_T("HotKey"), 0, ptApplication, -1, -1}, // 0=disabled, >0=keycode. // application
   // MaxREItems maximum = (ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1)
-  {_T("MaxREItems"), 25, false, 0, 25},                     // application
-  {_T("TreeDisplayStatusAtOpen"), AllCollapsed, true,
-                                  minTDS, maxTDS},          // database
-  {_T("NumPWHistoryDefault"), 3, true, 0, 255},             // database
+  {_T("MaxREItems"), 25, ptApplication, 0, 25},                     // application
+  {_T("TreeDisplayStatusAtOpen"), AllCollapsed, ptDatabase,
+                                  minTDS, maxTDS},                  // database
+  {_T("NumPWHistoryDefault"), 3, ptDatabase, 0, 255},               // database
   // Specified by supported masks
-  {_T("BackupSuffix"), 0, false, minBKSFX, maxBKSFX},       // application
-  {_T("BackupMaxIncremented"), 1, false, 1, 999},           // application
-  {_T("PreExpiryWarnDays"), 1, false, 1, 30},               // application
-  {_T("ClosedTrayIconColour"), stiBlack, false,
-                               stiBlack, stiYellow},        // application
-  {_T("PWDigitMinLength"), 0, true, 0, 1024},               // database
-  {_T("PWLowercaseMinLength"), 0, true, 0, 1024},           // database
-  {_T("PWSymbolMinLength"), 0, true, 0, 1024},              // database
-  {_T("PWUppercaseMinLength"), 0, true, 0, 1024},           // database
+  {_T("BackupSuffix"), 0, ptApplication, minBKSFX, maxBKSFX},       // application
+  {_T("BackupMaxIncremented"), 1, ptApplication, 1, 999},           // application
+  {_T("PreExpiryWarnDays"), 1, ptApplication, 1, 30},               // application
+  {_T("ClosedTrayIconColour"), stiBlack, ptApplication,
+                               stiBlack, stiYellow},                // application
+  {_T("PWDigitMinLength"), 0, ptDatabase, 0, 1024},                 // database
+  {_T("PWLowercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
+  {_T("PWSymbolMinLength"), 0, ptDatabase, 0, 1024},                // database
+  {_T("PWUppercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
-  {_T("currentbackup"), _T(""), false},                     // application
-  {_T("currentfile"), _T(""), false},                       // application
-  {_T("lastview"), _T("tree"), false},                      // application
-  {_T("DefaultUsername"), _T(""), true},                    // database
-  {_T("treefont"), _T(""), false},                          // application
-  {_T("BackupPrefixValue"), _T(""), false},                 // application
-  {_T("BackupDir"), _T(""), false},                         // application
-  {_T("AltBrowser"), _T(""), false},                        // application
-  {_T("ListColumns"), _T(""), false},                       // application
-  {_T("ColumnWidths"), _T(""), false},                      // application
-  {_T("DefaultAutotypeString"), _T(""), true},              // database
-  {_T("AltBrowserCmdLineParms"), _T(""), false},            // application
-  {_T("MainToolBarButtons"), _T(""), false},                // application
-  {_T("PasswordFont"), _T(""), false},                      // application
-  {_T("TreeListSampleText"), _T("AaBbYyZz 0O1IlL"), false}, // application
-  {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), false},     // application
+  {_T("currentbackup"), _T(""), ptApplication},                     // application
+  {_T("currentfile"), _T(""), ptApplication},                       // application
+  {_T("lastview"), _T("tree"), ptApplication},                      // application
+  {_T("DefaultUsername"), _T(""), ptDatabase},                      // database
+  {_T("treefont"), _T(""), ptApplication},                          // application
+  {_T("BackupPrefixValue"), _T(""), ptApplication},                 // application
+  {_T("BackupDir"), _T(""), ptApplication},                         // application
+  {_T("AltBrowser"), _T(""), ptApplication},                        // application
+  {_T("ListColumns"), _T(""), ptApplication},                       // application
+  {_T("ColumnWidths"), _T(""), ptApplication},                      // application
+  {_T("DefaultAutotypeString"), _T(""), ptDatabase},                // database
+  {_T("AltBrowserCmdLineParms"), _T(""), ptApplication},            // application
+  {_T("MainToolBarButtons"), _T(""), ptApplication},                // application
+  {_T("PasswordFont"), _T(""), ptApplication},                      // application
+  {_T("TreeListSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication}, // application
+  {_T("PswdSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},     // application
 };
 
 PWSprefs *PWSprefs::GetInstance()
@@ -274,7 +276,7 @@ int PWSprefs::SetMRUList(const CString *MRUFiles, int n, int max_MRU)
 void PWSprefs::SetPref(BoolPrefs pref_enum, bool value)
 {
   // ONLY save in memory - written out at database save (to database and config destination)
-  m_prefs_changed[m_bool_prefs[pref_enum].isStoredinDB ? DB_PREF : APP_PREF] |=
+  m_prefs_changed[m_bool_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] |=
     (m_boolValues[pref_enum] != value);
 
   if (m_boolValues[pref_enum] != value) { // Only if changed
@@ -286,7 +288,7 @@ void PWSprefs::SetPref(BoolPrefs pref_enum, bool value)
 void PWSprefs::SetPref(IntPrefs pref_enum, unsigned int value)
 {
   // ONLY save in memory - written out at database save (to database and config destination)
-  m_prefs_changed[m_int_prefs[pref_enum].isStoredinDB ? DB_PREF : APP_PREF] |=
+  m_prefs_changed[m_int_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] |=
     (m_intValues[pref_enum] != value);
 
   if (m_intValues[pref_enum] != value) { // Only if changed
@@ -298,7 +300,7 @@ void PWSprefs::SetPref(IntPrefs pref_enum, unsigned int value)
 void PWSprefs::SetPref(StringPrefs pref_enum, const CMyString &value)
 {
   // ONLY save in memory - written out at database save (to database and config destination)
-  m_prefs_changed[m_string_prefs[pref_enum].isStoredinDB ? DB_PREF : APP_PREF] |=
+  m_prefs_changed[m_string_prefs[pref_enum].pt == ptDatabase ? DB_PREF : APP_PREF] |=
     (m_stringValues[pref_enum] != value);
 
   if (m_stringValues[pref_enum] != value) { // Only if changed
@@ -409,7 +411,7 @@ CMyString PWSprefs::Store()
 {
   /*
   * Create a string of values that are (1) different from the defaults, &&
-  * (2) are isStoredinDB
+  * (2) are storage in the database (pt == ptDatabase)
   * String is of the form "X nn vv X nn vv..." Where X=[BIS] for binary,
   * integer and string, resp.,
   * nn is the numeric value of the enum, and vv is the value,
@@ -428,30 +430,31 @@ CMyString PWSprefs::Store()
   const int NumDelimiters = _countof(Delimiters);
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&
-      m_bool_prefs[i].isStoredinDB)
+        m_bool_prefs[i].pt == ptDatabase)
       os << _T("B ") << i << TCHAR(' ') << (m_boolValues[i] ? 1 : 0) << TCHAR(' ');
   }
 
   for (i = 0; i < NumIntPrefs; i++) {
     if (m_intValues[i] != m_int_prefs[i].defVal &&
-      m_int_prefs[i].isStoredinDB)
+        m_int_prefs[i].pt == ptDatabase)
       os << _T("I ") << i << TCHAR(' ') << m_intValues[i] << TCHAR(' ');
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
-      m_string_prefs[i].isStoredinDB) {
-        const CMyString svalue = m_stringValues[i];
-        delim = _T(' ');
-        for (int j = 0; j < NumDelimiters; j++) {
-          if (svalue.Find(Delimiters[j]) < 0) {
-            delim = Delimiters[j];
-            break;
-          }
+        m_string_prefs[i].pt == ptDatabase) {
+      const CMyString svalue = m_stringValues[i];
+      delim = _T(' ');
+      for (int j = 0; j < NumDelimiters; j++) {
+        if (svalue.Find(Delimiters[j]) < 0) {
+          delim = Delimiters[j];
+          break;
         }
-        if (delim == _T(' '))
-          continue;  // We tried, but just can't save it!
-        os << _T("S ") << i << _T(' ') << delim << LPCTSTR(m_stringValues[i]) << delim << _T(' ');
+      }
+      if (delim == _T(' '))
+        continue;  // We tried, but just can't save it!
+
+      os << _T("S ") << i << _T(' ') << delim << LPCTSTR(m_stringValues[i]) << delim << _T(' ');
     }
   }
 
@@ -465,18 +468,18 @@ void PWSprefs::Load(const CMyString &prefString)
   // Set default values for preferences stored in Database
   int i;
   for (i = 0; i < NumBoolPrefs; i++) {
-    if (m_bool_prefs[i].isStoredinDB)
-      m_boolValues[i] = m_bool_prefs[i].defVal != 0;
+    if (m_bool_prefs[i].pt == ptDatabase)
+        m_boolValues[i] = m_bool_prefs[i].defVal != 0;
   }
 
   for (i = 0; i < NumIntPrefs; i++) {
-    if (m_int_prefs[i].isStoredinDB)
-      m_intValues[i] = m_int_prefs[i].defVal;
+    if (m_int_prefs[i].pt == ptDatabase)
+        m_intValues[i] = m_int_prefs[i].defVal;
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
-    if (m_string_prefs[i].isStoredinDB)
-      m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+    if (m_string_prefs[i].pt == ptDatabase)
+        m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
   }
 
   if (prefString.GetLength() == 0)
@@ -507,7 +510,7 @@ void PWSprefs::Load(const CMyString &prefString)
         // Need to get value - even of not understood or wanted
         is >> ival;
         // forward compatibility and check whether still in DB
-        if (index < NumBoolPrefs && m_bool_prefs[index].isStoredinDB) {
+        if (index < NumBoolPrefs && m_bool_prefs[index].pt == ptDatabase) {
           ASSERT(ival == 0 || ival == 1);
           m_boolValues[index] = (ival != 0);
         }
@@ -516,7 +519,7 @@ void PWSprefs::Load(const CMyString &prefString)
         // Need to get value - even of not understood or wanted
         is >> iuval;
         // forward compatibility and check whether still in DB
-        if (index < NumIntPrefs && m_int_prefs[index].isStoredinDB)
+        if (index < NumIntPrefs && m_int_prefs[index].pt == ptDatabase)
           m_intValues[index] = iuval;
         break;
       case TCHAR('S'):
@@ -526,7 +529,7 @@ void PWSprefs::Load(const CMyString &prefString)
         is.get(buf, N, delim[0]); // get string value
         is.ignore(1, TCHAR(' ')); // skip over trailing delimiter
         // forward compatibility and check whether still in DB
-        if (index < NumStringPrefs && m_string_prefs[index].isStoredinDB) {
+        if (index < NumStringPrefs && m_string_prefs[index].pt == ptDatabase) {
           msval= buf;
           m_stringValues[index] = msval;
         }
@@ -681,16 +684,16 @@ void PWSprefs::SetDatabasePrefsToDefaults()
   int i;
   // Default values only
   for (i = 0; i < NumBoolPrefs; i++)
-    if (m_bool_prefs[i].isStoredinDB)
-      m_boolValues[i] = m_bool_prefs[i].defVal != 0;
+    if (m_bool_prefs[i].pt == ptDatabase)
+        m_boolValues[i] = m_bool_prefs[i].defVal != 0;
 
   for (i = 0; i < NumIntPrefs; i++)
-    if (m_int_prefs[i].isStoredinDB)
-      m_intValues[i] = m_int_prefs[i].defVal;
+    if (m_int_prefs[i].pt == ptDatabase)
+        m_intValues[i] = m_int_prefs[i].defVal;
 
   for (i = 0; i < NumStringPrefs; i++)
-    if (m_string_prefs[i].isStoredinDB)
-      m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
+    if (m_string_prefs[i].pt == ptDatabase)
+        m_stringValues[i] = CMyString(m_string_prefs[i].defVal);
 }
 
 void PWSprefs::LoadProfileFromDefaults()
@@ -883,7 +886,7 @@ void PWSprefs::SaveApplicationPreferences()
 
   // Write values to XML file or registry
   for (i = 0; i < NumBoolPrefs; i++) {
-    if (!m_bool_prefs[i].isStoredinDB && m_boolChanged[i]) {
+    if (m_bool_prefs[i].pt == ptApplication && m_boolChanged[i]) {
       if (m_boolValues[i] != m_bool_prefs[i].defVal) {
         WritePref(m_bool_prefs[i].name, m_boolValues[i]);
       } else {
@@ -894,7 +897,7 @@ void PWSprefs::SaveApplicationPreferences()
   }
 
   for (i = 0; i < NumIntPrefs; i++) {
-    if (!m_int_prefs[i].isStoredinDB && m_intChanged[i]) {
+    if (m_int_prefs[i].pt == ptApplication && m_intChanged[i]) {
       if (m_intValues[i] != m_int_prefs[i].defVal) {
         WritePref(m_int_prefs[i].name, m_intValues[i]);
       } else {
@@ -905,7 +908,7 @@ void PWSprefs::SaveApplicationPreferences()
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
-    if (!m_string_prefs[i].isStoredinDB && m_stringChanged[i]) {
+    if (m_string_prefs[i].pt == ptApplication && m_stringChanged[i]) {
       if (m_stringValues[i] != m_string_prefs[i].defVal) {
         WritePref(m_string_prefs[i].name, m_stringValues[i]);
       } else {
@@ -1059,8 +1062,8 @@ void PWSprefs::ImportOldPrefs()
   int i;
   LONG rv;
   DWORD dwType;
-  for (i = 0; i < NumBoolPrefs; i++)
-    if (!m_bool_prefs[i].isStoredinDB) {
+  for (i = 0; i < NumBoolPrefs; i++) {
+    if (m_bool_prefs[i].pt != ptDatabase) {
       DWORD vData, DataLen(sizeof(vData));
       rv = ::RegQueryValueEx(hSubkey,
                              m_bool_prefs[i].name,
@@ -1068,64 +1071,79 @@ void PWSprefs::ImportOldPrefs()
                              &dwType,
                              LPBYTE(&vData),
                              &DataLen);
-      if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
-        SetPref(BoolPrefs(i), (vData != 0));
+      if (rv == ERROR_SUCCESS && dwType == REG_DWORD) {
+        if (m_bool_prefs[i].pt == ptApplication)
+          SetPref(BoolPrefs(i), (vData != 0));
+        else { // Obsolete entries - but currently only need to deal with one!
+          if (i == DontAskMinimizeClearYesNo) {
+            SetPref(BoolPrefs(ClearClipoardOnMinimize), (vData != 0));
+            SetPref(BoolPrefs(ClearClipoardOnExit), (vData != 0));
+          }
+        }
+      }
     }
-    for (i = 0; i < NumIntPrefs; i++)
-      if (!m_int_prefs[i].isStoredinDB) {
-        DWORD vData, DataLen(sizeof(vData));
+  }
+
+  for (i = 0; i < NumIntPrefs; i++) {
+    if (m_int_prefs[i].pt == ptApplication) {
+      DWORD vData, DataLen(sizeof(vData));
+      rv = ::RegQueryValueEx(hSubkey,
+                             m_int_prefs[i].name,
+                             NULL,
+                             &dwType,
+                             LPBYTE(&vData),
+                             &DataLen);
+      if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
+        SetPref(IntPrefs(i), vData);
+    }
+  }
+
+  for (i = 0; i < NumStringPrefs; i++) {
+    if (m_string_prefs[i].pt == ptApplication) {
+      DWORD DataLen = 0;
+      rv = ::RegQueryValueEx(hSubkey,
+                             m_string_prefs[i].name,
+                             NULL,
+                             &dwType,
+                             NULL,
+                             &DataLen);
+      if (rv == ERROR_SUCCESS && dwType == REG_SZ) {
+        DataLen++;
+        TCHAR *pData = new TCHAR[DataLen];
+        ::memset(pData, 0, DataLen);
         rv = ::RegQueryValueEx(hSubkey,
-                               m_int_prefs[i].name,
+                               m_string_prefs[i].name,
                                NULL,
                                &dwType,
-                               LPBYTE(&vData),
+                               LPBYTE(pData),
                                &DataLen);
-        if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
-          SetPref(IntPrefs(i), vData);
-      }
-      for (i = 0; i < NumStringPrefs; i++)
-        if (!m_string_prefs[i].isStoredinDB) {
-          DWORD DataLen = 0;
-          rv = ::RegQueryValueEx(hSubkey,
-                                 m_string_prefs[i].name,
-                                 NULL,
-                                 &dwType,
-                                 NULL,
-                                 &DataLen);
-          if (rv == ERROR_SUCCESS && dwType == REG_SZ) {
-            DataLen++;
-            TCHAR *pData = new TCHAR[DataLen];
-            ::memset(pData, 0, DataLen);
-            rv = ::RegQueryValueEx(hSubkey,
-                                   m_string_prefs[i].name,
-                                   NULL,
-                                   &dwType,
-                                   LPBYTE(pData),
-                                   &DataLen);
-            if (rv == ERROR_SUCCESS)
-              SetPref(StringPrefs(i), CMyString(pData));
-            delete[] pData;
-          } // Get the value
-        } // pref in registry
 
-        // Last but not least, rectangle
-        long rectVals[4] = {-1, -1, -1, -1};
-        TCHAR *rectNames[4] = {_T("top"), _T("bottom"), _T("left"), _T("right")};
-        for (i = 0; i < 4; i++) {
-          DWORD vData, DataLen(sizeof(vData));
-          rv = ::RegQueryValueEx(hSubkey,
-                                 rectNames[i],
-                                 NULL,
-                                 &dwType,
-                                 LPBYTE(&vData),
-                                 &DataLen);
-          if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
-            rectVals[i] = vData;
-        }
-        SetPrefRect(rectVals[0], rectVals[1], rectVals[2], rectVals[3]);
+        if (rv == ERROR_SUCCESS)
+          SetPref(StringPrefs(i), CMyString(pData));
 
-        dw = ::RegCloseKey(hSubkey);
-        ASSERT(dw == ERROR_SUCCESS);
+        delete[] pData;
+      } // Get the value
+    } // pref in registry
+  }
+
+  // Last but not least, rectangle
+  long rectVals[4] = {-1, -1, -1, -1};
+  TCHAR *rectNames[4] = {_T("top"), _T("bottom"), _T("left"), _T("right")};
+  for (i = 0; i < 4; i++) {
+    DWORD vData, DataLen(sizeof(vData));
+    rv = ::RegQueryValueEx(hSubkey,
+                           rectNames[i],
+                           NULL,
+                           &dwType,
+                           LPBYTE(&vData),
+                           &DataLen);
+    if (rv == ERROR_SUCCESS && dwType == REG_DWORD)
+      rectVals[i] = vData;
+  }
+  SetPrefRect(rectVals[0], rectVals[1], rectVals[2], rectVals[3]);
+
+  dw = ::RegCloseKey(hSubkey);
+  ASSERT(dw == ERROR_SUCCESS);
 }
 
 void PWSprefs::DeleteOldPrefs()
@@ -1160,68 +1178,69 @@ CString PWSprefs::GetXMLPreferences()
   int i;
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&
-      m_bool_prefs[i].isStoredinDB)
+        m_bool_prefs[i].pt == ptDatabase)
       os << "\t\t<" << m_bool_prefs[i].name << ">" << (m_boolValues[i] ? "1</" : "0</") << 
       m_bool_prefs[i].name << ">" << endl;
   }
 
   for (i = 0; i < NumIntPrefs; i++) {
     if (m_intValues[i] != m_int_prefs[i].defVal &&
-      m_int_prefs[i].isStoredinDB) {
-        os << "\t\t<" << m_int_prefs[i].name << ">" ;
-        if (i == TreeDisplayStatusAtOpen) {
-          switch (m_intValues[i]) {
-            case AllExpanded:
-              os << "AllExpanded";
-              break;
-            case AsPerLastSave:
-              os << "AsPerLastSave";
-              break;
-            case AllCollapsed:
-            default:
-              os << "AllCollapsed";
-              break;
-          }
-        } else
-          os << m_intValues[i];
-        os << "</" << m_int_prefs[i].name << ">" << endl;
+        m_int_prefs[i].pt == ptDatabase) {
+      os << "\t\t<" << m_int_prefs[i].name << ">" ;
+      if (i == TreeDisplayStatusAtOpen) {
+        switch (m_intValues[i]) {
+          case AllExpanded:
+            os << "AllExpanded";
+            break;
+          case AsPerLastSave:
+            os << "AsPerLastSave";
+            break;
+          case AllCollapsed:
+          default:
+            os << "AllCollapsed";
+            break;
+        }
+      } else
+        os << m_intValues[i];
+
+      os << "</" << m_int_prefs[i].name << ">" << endl;
     }
   }
 
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
-      m_string_prefs[i].isStoredinDB) {
-        int p = m_stringValues[i].Find(_T("]]>")); // special handling required
-        if (p == -1) {
-          // common case
-          os << "\t\t<" << m_string_prefs[i].name << "><![CDATA[" <<
-            LPCTSTR(m_stringValues[i]) << "]]></" << 
-            m_string_prefs[i].name << ">" << endl;
-        } else {
-          // value has "]]>" sequence(s) that need(s) to be escaped
-          // Each "]]>" splits the field into two CDATA sections, one ending with
-          // ']]', the other starting with '>'
-          const CMyString value = m_stringValues[i];
-          os << "\t\t<" << m_string_prefs[i].name << ">";
-          int from = 0, to = p + 2;
-          do {
-            CMyString slice = value.Mid(from, (to - from));
-            os << "<![CDATA[" << LPCTSTR(slice) << "]]><![CDATA[";
+        m_string_prefs[i].pt == ptDatabase) {
+      int p = m_stringValues[i].Find(_T("]]>")); // special handling required
+      if (p == -1) {
+        // common case
+        os << "\t\t<" << m_string_prefs[i].name << "><![CDATA[" <<
+          LPCTSTR(m_stringValues[i]) << "]]></" << 
+          m_string_prefs[i].name << ">" << endl;
+      } else {
+        // value has "]]>" sequence(s) that need(s) to be escaped
+        // Each "]]>" splits the field into two CDATA sections, one ending with
+        // ']]', the other starting with '>'
+        const CMyString value = m_stringValues[i];
+        os << "\t\t<" << m_string_prefs[i].name << ">";
+        int from = 0, to = p + 2;
+        do {
+          CMyString slice = value.Mid(from, (to - from));
+          os << "<![CDATA[" << LPCTSTR(slice) << "]]><![CDATA[";
+          from = to;
+          p = value.Find(_T("]]>"), from); // are there more?
+          if (p == -1) {
+            to = value.GetLength();
+            slice = value.Mid(from, (to - from));
+          } else {
+            to = p + 2;
+            slice = value.Mid(from, (to - from));
             from = to;
-            p = value.Find(_T("]]>"), from); // are there more?
-            if (p == -1) {
-              to = value.GetLength();
-              slice = value.Mid(from, (to - from));
-            } else {
-              to = p + 2;
-              slice = value.Mid(from, (to - from));
-              from = to;
-              to = value.GetLength();
-            }
-            os <<  LPCTSTR(slice) << "]]>";
-          } while (p != -1);
-          os << "</" << m_string_prefs[i].name << ">" << endl;      
-        }
+            to = value.GetLength();
+          }
+          os <<  LPCTSTR(slice) << "]]>";
+        } while (p != -1);
+        os << "</" << m_string_prefs[i].name << ">" << endl;      
+      }
     }
   }
   os << "\t</Preferences>" << endl << endl;

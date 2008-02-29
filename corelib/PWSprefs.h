@@ -55,7 +55,8 @@ public:
     UseDefaultUser, SaveImmediately, PWUseLowercase, PWUseUppercase,
     PWUseDigits, PWUseSymbols, PWUseHexDigits, PWUseEasyVision,
     DontAskQuestion, DeleteQuestion, DCShowsPassword,
-    DontAskMinimizeClearYesNo, DatabaseClear,
+    DontAskMinimizeClearYesNo, // Obsoleted in 3.13 - replaced by 2 separate
+    DatabaseClear,
     DontAskSaveMinimize, // Obsoleted in 3.02
     QuerySetDef, UseNewToolbar, UseSystemTray, 
     LockOnWindowLock, LockOnIdleTimeout,
@@ -67,6 +68,7 @@ public:
     BackupBeforeEverySave, PreExpiryWarn,
     ExplorerTypeTree, ListViewGridLines, MinimizeOnAutotype,
     ShowUsernameInTree, PWMakePronounceable,
+    ClearClipoardOnMinimize, ClearClipoardOnExit, NeverSaveDatabaseNames,
     NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
@@ -188,13 +190,13 @@ private:
 
   bool m_prefs_changed[2];  // 0 - DB stored pref; 1 - App related pref
 
-  // below, isStoredinDB means stored in db, !isStoredinDB means application related
+  enum PrefType {ptObsolete = 0, ptDatabase, ptApplication};
   static const struct boolPref {
-    TCHAR *name; bool defVal; bool isStoredinDB;} m_bool_prefs[NumBoolPrefs];
+    TCHAR *name; bool defVal; PrefType pt;} m_bool_prefs[NumBoolPrefs];
   static const struct intPref {
-    TCHAR *name; unsigned int defVal; bool isStoredinDB; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
+    TCHAR *name; unsigned int defVal; PrefType pt; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
   static const struct stringPref {
-    TCHAR *name; TCHAR *defVal; bool isStoredinDB;} m_string_prefs[NumStringPrefs];
+    TCHAR *name; TCHAR *defVal; PrefType pt;} m_string_prefs[NumStringPrefs];
 
   // current values
   bool m_boolValues[NumBoolPrefs];
