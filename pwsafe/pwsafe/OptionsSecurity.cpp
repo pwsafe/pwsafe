@@ -45,7 +45,8 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 {
   CPropertyPage::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(COptionsSecurity)
-  DDX_Check(pDX, IDC_CLEARBOARD, m_clearclipboard);
+  DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_clearclipboardonminimize);
+  DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_clearclipboardonexit);
   DDX_Check(pDX, IDC_LOCKBASE, m_lockdatabase);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_confirmcopy);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);

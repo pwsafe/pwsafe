@@ -34,6 +34,7 @@ New Features for 3.12.01
 [1901380] If the Esc key is not being used to minimize PasswordSafe, then
 it will close the Find Toolbar if active.
 [1901380] F3 (Repeat Find) works even if the Find Toolbar has been closed.
+[1399569, 912188] Separate the clear clipboard options on minimize and exit.
 [988806] Feedback on double click now shown in the Status Bar.
 
 Bugs fixed in 3.12

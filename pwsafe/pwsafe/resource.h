@@ -260,7 +260,6 @@
 #define IDC_DELITEM                     1017
 #define IDC_VERIFY                      1018
 #define IDC_CONFIRMDELETE               1019
-#define IDC_CLEARBOARD                  1020
 #define IDC_CONFIRMCOPY                 1021
 #define IDC_TRYAGAIN                    1022
 #define IDC_QUIT                        1023
@@ -301,6 +300,8 @@
 #define IDC_SPINUPPERCASE               1058
 #define IDC_SPINDIGITS                  1059
 #define IDC_SPINSYMBOLS                 1060
+#define IDC_CLEARBOARDONMINIMIZE        1061
+#define IDC_CLEARBOARDONEXIT            1062
 #define IDC_GROUP                       1067
 #define IDC_EXPORT_XML_PASSWORD         1068
 #define IDC_EXPORT_TEXT_PASSWORD        1069

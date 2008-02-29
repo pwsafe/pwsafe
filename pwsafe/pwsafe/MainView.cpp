@@ -728,8 +728,9 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     m_ctlItemTree.DeleteAllItems();
     m_bBoldItem = false;
 
-    if (prefs->GetPref(PWSprefs::DontAskMinimizeClearYesNo))
+    if (prefs->GetPref(PWSprefs::ClearClipoardOnMinimize))
       OnClearClipboard();
+
     if (prefs->GetPref(PWSprefs::DatabaseClear)) {
       if (m_core.IsChanged() ||  m_bTSUpdated)
         if (Save() != PWScore::SUCCESS) {
