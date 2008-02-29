@@ -581,14 +581,14 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
   // Only items visible will be changed - e.g. if password is not shown and the user
-  // puts in the new dispay text, it will be ignored.
+  // puts a new password in the new dispay text, it will be ignored.
 
   /* Allowed formats:
   1.   title
   If preference ShowUsernameInTree is set:
-  2.   title [username]
-  If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-  3.   title [username] {password}
+    2.   title [username]
+    If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+      3.   title [username] {password}
 
   There can only be one of each:
       open square brace
@@ -711,7 +711,10 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
 bad_exit:
   // Refresh display to show old text - if we don't no one else will
-  pDbx->RefreshViews();
+  RECT rect;
+  if (GetItemRect(ti, &rect, FALSE) != FALSE) {
+    InvalidateRect(&rect);
+  }
   // restore text
   // (not that this is documented anywhere in MS's docs...)
   *pLResult = FALSE;

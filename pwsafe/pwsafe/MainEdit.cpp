@@ -86,7 +86,6 @@ void DboxMain::OnAdd()
         prefs->SetPref(PWSprefs::DefaultUsername, dlg_add.m_username);
         m_core.SetUseDefUser(true);
         m_core.SetDefUsername(dlg_add.m_username);
-        RefreshViews();
       }
     }
 
@@ -210,7 +209,6 @@ void DboxMain::OnCreateShortcut()
         prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username);
         m_core.SetUseDefUser(true);
         m_core.SetDefUsername(dlg_createshortcut.m_username);
-        RefreshViews();
       }
     }
     if (dlg_createshortcut.m_username.IsEmpty() && m_core.GetUseDefUser())
