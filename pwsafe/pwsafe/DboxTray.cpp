@@ -81,11 +81,10 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
     }
   }
 
-  const CMyString username = ci.GetUser();
-  if (!username.IsEmpty()) {
-    SetClipboardData(username);
-    UpdateAccessTime(&ci);
-  }
+  const CMyString cs_username = ci.GetUser();
+  SetClipboardData(cs_username);
+  UpdateLastClipboardAction(CItemData::USER);
+  UpdateAccessTime(&ci);
 }
 
 void DboxMain::OnUpdateTrayCopyUsername(CCmdUI *)
@@ -116,8 +115,9 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
     }
   }
 
-  const CMyString curPassString = ci.GetPassword();
-  SetClipboardData(curPassString);
+  const CMyString cs_password = ci.GetPassword();
+  SetClipboardData(cs_password);
+  UpdateLastClipboardAction(CItemData::PASSWORD);
   UpdateAccessTime(&ci);
 }
 
@@ -166,10 +166,9 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
     clipboard_data += autotype;
   }
 
-  if (!clipboard_data.IsEmpty()) {
-    SetClipboardData(clipboard_data);
-    UpdateAccessTime(&ci);
-  }
+  SetClipboardData(clipboard_data);
+  UpdateLastClipboardAction(CItemData::NOTES);
+  UpdateAccessTime(&ci);
 }
 
 void DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
@@ -285,11 +284,9 @@ void DboxMain::OnTrayCopyURL(UINT nID)
   }
 
   const CMyString cs_URL = ci.GetURL();
+  SetClipboardData(cs_URL);
 
-  if (!cs_URL.IsEmpty())
-    SetClipboardData(cs_URL);
-  else
-    ClearClipboardData();
+  UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(&ci);
 }
 
