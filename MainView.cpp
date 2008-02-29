@@ -622,16 +622,24 @@ void DboxMain::RefreshViews(const int iView)
     return;
 
 #if defined(POCKET_PC)
-  HCURSOR waitCursor = app.LoadStandardCursor( IDC_WAIT );
+  HCURSOR waitCursor = app.LoadStandardCursor(IDC_WAIT);
 #endif
+
+  POSITION pSelected = m_ctlItemList.GetFirstSelectedItemPosition();
+  HTREEITEM hSelected = m_ctlItemTree.GetSelectedItem();
+  CItemData *ciList(NULL), *ciTree(NULL);
+  if (pSelected != NULL)
+    ciList = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
+  if (hSelected != NULL)
+    ciTree = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked
   if (iView & iListOnly) {
-    m_ctlItemList.SetRedraw( FALSE );
+    m_ctlItemList.SetRedraw(FALSE);
     m_ctlItemList.DeleteAllItems();
   }
   if (iView & iTreeOnly) {
-    m_ctlItemTree.SetRedraw( FALSE );
+    m_ctlItemTree.SetRedraw(FALSE);
     m_ctlItemTree.DeleteAllItems();
   }
   m_bBoldItem = false;
@@ -639,7 +647,7 @@ void DboxMain::RefreshViews(const int iView)
   if (m_core.GetNumEntries() != 0) {
     ItemListIter listPos;
 #if defined(POCKET_PC)
-    SetCursor( waitCursor );
+    SetCursor(waitCursor);
 #endif
     for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
          listPos++) {
@@ -673,13 +681,27 @@ void DboxMain::RefreshViews(const int iView)
   }
 
   FixListIndexes();
+
+  // Select previously selected items and ensure they are visible
+  if (ciList != NULL) {
+    DisplayInfo *di = (DisplayInfo *)ciList->GetDisplayInfo();
+    m_ctlItemList.SetItemState(di->list_index,
+                               LVIS_FOCUSED | LVIS_SELECTED,
+                               LVIS_FOCUSED | LVIS_SELECTED);
+    m_ctlItemList.EnsureVisible(di->list_index, FALSE);
+  }
+  if (ciTree != NULL) {
+    DisplayInfo *di = (DisplayInfo *)ciTree->GetDisplayInfo();
+    m_ctlItemTree.SelectItem(di->tree_item);
+    m_ctlItemTree.EnsureVisible(di->tree_item);
+  }
 }
 
 void DboxMain::OnSize(UINT nType, int cx, int cy) 
 {
   // Note that onsize runs before InitDialog (Gee, I love MFC)
   //  Also, OnSize is called AFTER the function has been peformed.
-  //  To verify IF the fucntion should be done at all, it must be checked in OnSysCommand.
+  //  To verify IF the function should be done at all, it must be checked in OnSysCommand.
   CDialog::OnSize(nType, cx, cy);
 
   if (m_windowok) {
