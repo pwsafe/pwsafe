@@ -48,7 +48,8 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP(COptionsDisplay)
   DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
   DDX_Check(pDX, IDC_DEFUNSHOWINTREE, m_showusernameintree);
-  DDX_Check(pDX, IDC_DEFPWSHOWINLIST, m_showpasswordintree);
+  DDX_Check(pDX, IDC_DEFPWSHOWINTREE, m_showpasswordintree);
+  DDX_Check(pDX, IDC_DEFNTSHOWASTIPSINTREE, m_shownotesastipsintree);
   DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_explorertree);
   DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
   DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
@@ -93,7 +94,7 @@ BOOL COptionsDisplay::OnInitDialog()
   pspin->SetPos(m_preexpirywarndays);
   if (m_showusernameintree == FALSE) {
     m_showpasswordintree = FALSE;
-    GetDlgItem(IDC_DEFPWSHOWINLIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(FALSE);
   }
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -116,9 +117,9 @@ BOOL COptionsDisplay::OnKillActive()
 void COptionsDisplay::OnDisplayUserInTree()
 {
   if (((CButton*)GetDlgItem(IDC_DEFUNSHOWINTREE))->GetCheck() != 1) {
-    GetDlgItem(IDC_DEFPWSHOWINLIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(FALSE);
     m_showpasswordintree = FALSE;
-    ((CButton*)GetDlgItem(IDC_DEFPWSHOWINLIST))->SetCheck(BST_UNCHECKED);
+    ((CButton*)GetDlgItem(IDC_DEFPWSHOWINTREE))->SetCheck(BST_UNCHECKED);
   } else
-    GetDlgItem(IDC_DEFPWSHOWINLIST)->EnableWindow(TRUE);
+    GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(TRUE);
 }

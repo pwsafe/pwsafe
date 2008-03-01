@@ -30,6 +30,7 @@ public:
   BOOL m_alwaysontop;
   BOOL m_showusernameintree;
   BOOL m_showpasswordintree;
+  BOOL m_shownotesastipsintree;
   BOOL m_explorertree;
   BOOL m_enablegrid;
   BOOL m_pwshowinedit;
