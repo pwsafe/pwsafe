@@ -383,10 +383,10 @@ void CPasskeyEntry::OnOK()
     return;
   }
 
-  DboxMain* pParent = (DboxMain*) GetParent();
-  ASSERT(pParent != NULL);
+  DboxMain* pDbx = (DboxMain*) GetParent();
+  ASSERT(pDbx != NULL);
 
-  if (pParent->CheckPassword(m_filespec, m_passkey) != PWScore::SUCCESS) {
+  if (pDbx->CheckPassword(m_filespec, m_passkey) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 

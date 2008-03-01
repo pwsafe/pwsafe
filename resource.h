@@ -302,6 +302,7 @@
 #define IDC_SPINSYMBOLS                 1060
 #define IDC_CLEARBOARDONMINIMIZE        1061
 #define IDC_CLEARBOARDONEXIT            1062
+#define IDC_NEVERSAVEDBNAMES            1063
 #define IDC_GROUP                       1067
 #define IDC_EXPORT_XML_PASSWORD         1068
 #define IDC_EXPORT_TEXT_PASSWORD        1069
@@ -494,13 +495,15 @@
 #define IDC_STATIC_SY2                  1292
 #define IDC_ADDSCEXPLANATION            1293
 #define IDC_EDITSCEXPLANATION           1294
+#define IDC_STATIC_REMLAST              1295
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        417
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1295
+#define _APS_NEXT_CONTROL_VALUE         1296
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

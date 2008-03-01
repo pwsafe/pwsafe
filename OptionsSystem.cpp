@@ -58,6 +58,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
   DDV_MinMaxInt(pDX, m_maxmruitems, 0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
   DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
   DDX_Check(pDX, IDC_REGDEL_CB, m_deleteregistry);
+  DDX_Check(pDX, IDC_NEVERSAVEDBNAMES, m_neversaveDBnames);
   //}}AFX_DATA_MAP
 }
 
@@ -67,6 +68,7 @@ BEGIN_MESSAGE_MAP(COptionsSystem, CPropertyPage)
   ON_BN_CLICKED(IDC_STARTUP, OnStartup)
   ON_BN_CLICKED(IDC_REGDEL_CB, OnSetDeleteRegistry)
   ON_BN_CLICKED(IDC_REGDEL_BTN, OnApplyRegistryDeleteNow)
+  ON_BN_CLICKED(IDC_NEVERSAVEDBNAMES, OnNeverSaveDBNames)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -94,7 +96,6 @@ void COptionsSystem::OnStartup()
     GetDlgItem(IDC_MAXREITEMS)->EnableWindow(TRUE);
     GetDlgItem(IDC_RESPIN)->EnableWindow(TRUE);
   }
-
 }
 
 void COptionsSystem::OnSetDeleteRegistry() 
@@ -132,6 +133,14 @@ BOOL COptionsSystem::OnInitDialog()
   pspin->SetRange(0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
   pspin->SetBase(10);
   pspin->SetPos(m_maxmruitems);
+
+  BOOL enable = ((CButton*)GetDlgItem(IDC_NEVERSAVEDBNAMES))->GetCheck()== BST_CHECKED ? FALSE : TRUE;
+
+  GetDlgItem(IDC_MRUSPIN)->EnableWindow(enable);
+  GetDlgItem(IDC_MAXMRUITEMS)->EnableWindow(enable);
+  GetDlgItem(IDC_MRU_ONFILEMENU)->EnableWindow(enable);
+  GetDlgItem(IDC_STATIC_REMLAST)->EnableWindow(enable);
+  GetDlgItem(IDC_STATIC_MAXMRUITEMS)->EnableWindow(enable);
 
   OnUseSystemTray();
 
@@ -173,6 +182,17 @@ void COptionsSystem::OnApplyRegistryDeleteNow()
   UpdateData(FALSE);
 }
 
+void COptionsSystem::OnNeverSaveDBNames()
+{
+  BOOL enable = ((CButton*)GetDlgItem(IDC_NEVERSAVEDBNAMES))->GetCheck()== BST_CHECKED ? FALSE : TRUE;
+
+  GetDlgItem(IDC_MRUSPIN)->EnableWindow(enable);
+  GetDlgItem(IDC_MAXMRUITEMS)->EnableWindow(enable);
+  GetDlgItem(IDC_MRU_ONFILEMENU)->EnableWindow(enable);
+  GetDlgItem(IDC_STATIC_REMLAST)->EnableWindow(enable);
+  GetDlgItem(IDC_STATIC_MAXMRUITEMS)->EnableWindow(enable);
+}
+
 BOOL COptionsSystem::OnKillActive()
 {
   // Needed as we have DDV routines.
@@ -190,3 +210,4 @@ BOOL COptionsSystem::PreTranslateMessage(MSG* pMsg)
 
   return CPropertyPage::PreTranslateMessage(pMsg);
 }
+

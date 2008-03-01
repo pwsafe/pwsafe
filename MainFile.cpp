@@ -2379,6 +2379,10 @@ void DboxMain::OnOK()
   prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
 
   //Store current filename for next time...
+  if (prefs->GetPref(PWSprefs::NeverSaveDatabaseNames)) {
+    prefs->SetPref(PWSprefs::CurrentFile, _T(""));
+    prefs->SetPref(PWSprefs::CurrentBackup, _T(""));
+  } else
   if (!m_core.GetCurFile().IsEmpty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
 
