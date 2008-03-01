@@ -495,6 +495,11 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_STATE);
 
+  if (prefs->GetPref(PWSprefs::ShowNotesAsToolTipsInTree))
+    m_ctlItemTree.ModifyStyle(TVS_NOTOOLTIPS, TVS_INFOTIP);
+  else
+    m_ctlItemTree.ModifyStyle(TVS_INFOTIP, TVS_NOTOOLTIPS);
+
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
   if (prefs->GetPref(PWSprefs::ListViewGridLines))
     dw_ExtendedStyle |= LVS_EX_GRIDLINES;

@@ -37,6 +37,7 @@ it will close the Find Toolbar if active.
 [1664535] Option to "not remember any opened database" in the configuration file
 or registry added.
 [1399569, 912188] Separate the clear clipboard options on minimize and exit.
+[1207606] Option added to allow display of notes as tooltips in nested tree mode.
 [988806] Feedback on double click now shown in the Status Bar.
 
 Bugs fixed in 3.12

@@ -270,7 +270,7 @@
 #define IDC_DEFPWSHOWINEDIT             1028
 #define IDC_USEDEFUSER                  1029
 #define IDC_QUERYSETDEF                 1030
-#define IDC_DEFPWSHOWINLIST             1031
+#define IDC_DEFPWSHOWINTREE             1031
 #define IDC_CRYPTKEY1                   1032
 #define IDC_CRYPTKEY2                   1033
 #define IDC_DEFUSERNAME                 1034
@@ -496,6 +496,7 @@
 #define IDC_ADDSCEXPLANATION            1293
 #define IDC_EDITSCEXPLANATION           1294
 #define IDC_STATIC_REMLAST              1295
+#define IDC_DEFNTSHOWASTIPSINTREE       1296
 
 // Next default values for new objects
 // 
@@ -503,7 +504,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        417
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1296
+#define _APS_NEXT_CONTROL_VALUE         1297
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

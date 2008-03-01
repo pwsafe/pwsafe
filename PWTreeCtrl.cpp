@@ -219,6 +219,7 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
+  ON_NOTIFY_REFLECT(TVN_GETINFOTIP, OnTreeGetToolTip)
   ON_WM_DESTROY()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -1277,6 +1278,27 @@ void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *)
     CItemData *ci = (CItemData *)GetItemData(hti);
     static_cast<DboxMain *>(GetParent())->UpdateToolBarForSelectedItem(ci);
   }
+}
+
+void CPWTreeCtrl::OnTreeGetToolTip(NMHDR *pNotifyStruct, LRESULT *pResult)
+{
+  NMTVGETINFOTIP *pGetInfoTip = (NMTVGETINFOTIP *)pNotifyStruct;
+
+  CMyString cs_text(_T(""));
+  HTREEITEM hti = pGetInfoTip->hItem;
+  if (hti != NULL) {
+    CItemData *ci = (CItemData *)GetItemData(hti);
+    if (ci != NULL)
+      cs_text = ci->GetNotes();
+  }
+  cs_text = cs_text.Left(pGetInfoTip->cchTextMax - 1);
+#if _MSC_VER >= 1400
+  _tcscpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, cs_text);
+#else
+  _tcscpy(pGetInfoTip->pszText, cs_text);
+#endif
+
+  *pResult = 0;
 }
 
 void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
