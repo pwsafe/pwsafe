@@ -78,6 +78,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("PWMakePronounceable"), false, ptDatabase},           // database - 3.12 password policy
   {_T("ClearClipoardOnMinimize"), true, ptApplication},     // application
   {_T("ClearClipoardOneExit"), true, ptApplication},        // application
+  {_T("NeverSaveDatabaseNames"), false, ptApplication},     // application
 };
 
 // Default value = -1 means set at runtime

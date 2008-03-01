@@ -34,6 +34,7 @@ public:
   int m_maxmruitems;
   BOOL m_mruonfilemenu;
   BOOL m_deleteregistry;
+  BOOL m_neversaveDBnames;
   //}}AFX_DATA
 
   // Overrides
@@ -51,6 +52,7 @@ protected:
   afx_msg void OnStartup();
   afx_msg void OnSetDeleteRegistry();
   afx_msg void OnApplyRegistryDeleteNow();
+  afx_msg void OnNeverSaveDBNames();
   virtual BOOL OnInitDialog();
   afx_msg BOOL OnKillActive();
   //}}AFX_MSG

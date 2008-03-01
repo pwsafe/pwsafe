@@ -1350,6 +1350,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\cutsomizetoolbar_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\cutsomizetoolbar_new.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\delete_classic.bmp"
 				>
 			</File>
