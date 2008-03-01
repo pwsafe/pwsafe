@@ -302,7 +302,6 @@
 #define IDC_SPINSYMBOLS                 1060
 #define IDC_CLEARBOARDONMINIMIZE        1061
 #define IDC_CLEARBOARDONEXIT            1062
-#define IDC_NEVERSAVEDBNAMES            1063
 #define IDC_GROUP                       1067
 #define IDC_EXPORT_XML_PASSWORD         1068
 #define IDC_EXPORT_TEXT_PASSWORD        1069

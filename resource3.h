@@ -19,10 +19,8 @@
 #define IDS_STATCOPYPASSWORD            5024
 #define IDS_STATCOPYUSERNAME            5025
 #define IDS_STATVIEWEDIT                5026
-#define IDS_MODIFIED                    5027
-#define IDS_READ_ONLY                   5028
-#define IDS_STAT_NUM_IN_DB              5029
-#define IDS_CONFIG_BLANK                5030
+#define IDS_READ_ONLY                   5027
+#define IDS_CONFIG_BLANK                5028
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100

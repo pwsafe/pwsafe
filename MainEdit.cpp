@@ -1122,7 +1122,7 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
   }
 
   struct _timeb timebuffer;
-  int hr, min;
+  int hr, min, sec;
 
 #if (_MSC_VER >= 1400)
   struct tm st;
@@ -1131,18 +1131,20 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
   err = localtime_s(&st, &timebuffer.time);  // secure version
   hr = st.tm_hour;
   min = st.tm_min;
+  sec = st.tm_sec;
 #else
   struct tm *pst;
   _ftime(&timebuffer);
   pst = localtime(&timebuffer.time);
   hr = pst->tm_hour;
   min = pst->tm_min;
+  sec = pst->tm_sec;
 #endif
   if (iaction < 0) {
-    m_lastclipboardaction.Format(IDS_CLIPBOARDCLEARED, hr, min);
+    m_lastclipboardaction.Format(IDS_CLIPBOARDCLEARED, hr, min, sec);
   } else {
     m_lastclipboardaction.Format(IDS_CLIPBOARDACTION, CString(MAKEINTRESOURCE(imsg)), 
-                                 hr, min);
+                                 hr, min, sec);
   }
   UpdateStatusBar();
 }

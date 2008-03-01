@@ -34,7 +34,6 @@ public:
   int m_maxmruitems;
   BOOL m_mruonfilemenu;
   BOOL m_deleteregistry;
-  BOOL m_neversaveDBnames;
   //}}AFX_DATA
 
   // Overrides

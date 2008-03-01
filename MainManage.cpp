@@ -253,8 +253,6 @@ void DboxMain::OnOptions()
   system.m_mruonfilemenu = prefs->
     GetPref(PWSprefs::MRUOnFileMenu);
   system.m_startup = StartupShortcutExists;
-  system.m_neversaveDBnames = prefs->
-    GetPref(PWSprefs::NeverSaveDatabaseNames) ? TRUE : FALSE;
 
   display.m_alwaysontop = prefs->
     GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
@@ -454,11 +452,7 @@ void DboxMain::OnOptions()
       system.m_usesystemtray == TRUE);
     prefs->SetPref(PWSprefs::MaxREItems,
       system.m_maxreitems);
-    prefs->SetPref(PWSprefs::NeverSaveDatabaseNames,
-      system.m_neversaveDBnames == TRUE);
-    if (system.m_neversaveDBnames == TRUE) {
-      // Set max saved to 0
-      prefs->SetPref(PWSprefs::MaxMRUItems, 0);
+    if (system.m_maxreitems == 0) {
       // Put them on File menu where they don't take up any room
       prefs->SetPref(PWSprefs::MRUOnFileMenu, true);
       // Clear any currently saved
