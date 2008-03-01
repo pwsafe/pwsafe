@@ -249,11 +249,11 @@ void DboxMain::setupBars()
 #else
     statustext[SB_CONFIG] = IDS_CONFIG_BLANK;
 #endif /* DEBUG */
-    // Set up the rest
+    // Set up the rest - all blank as pane now re-sized according to contents
     statustext[SB_CLIPBOARDACTION] = IDS_CONFIG_BLANK;
-    statustext[SB_MODIFIED] = IDS_MODIFIED;
+    statustext[SB_MODIFIED] = IDS_CONFIG_BLANK;
     statustext[SB_READONLY] = IDS_READ_ONLY;
-    statustext[SB_NUM_ENT] = IDS_STAT_NUM_IN_DB;
+    statustext[SB_NUM_ENT] = IDS_CONFIG_BLANK;
 
     // And show
     m_statusBar.SetIndicators(statustext, SB_TOTAL);

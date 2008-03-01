@@ -34,11 +34,11 @@ New Features for 3.12.01
 [1901380] If the Esc key is not being used to minimize PasswordSafe, then
 it will close the Find Toolbar if active.
 [1901380] F3 (Repeat Find) works even if the Find Toolbar has been closed.
-[1664535] Option to "not remember any opened database" in the configuration file
-or registry added.
+[1664535] Interpret "Remember 0 last databases" on the System Options as 
+"do not remember any opened database" in the configuration file or registry.
 [1399569, 912188] Separate the clear clipboard options on minimize and exit.
 [1207606] Option added to allow display of notes as tooltips in nested tree mode.
-[988806] Feedback on double click now shown in the Status Bar.
+[988806] Feedback on double click now shown in the Status Bar - action and time.
 
 Bugs fixed in 3.12
 ==================

@@ -2379,7 +2379,7 @@ void DboxMain::OnOK()
   prefs->SetPref(PWSprefs::ColumnWidths, cs_columnswidths);
 
   //Store current filename for next time...
-  if (prefs->GetPref(PWSprefs::NeverSaveDatabaseNames)) {
+  if (prefs->GetPref(PWSprefs::MaxMRUItems) == 0) {
     prefs->SetPref(PWSprefs::CurrentFile, _T(""));
     prefs->SetPref(PWSprefs::CurrentBackup, _T(""));
   } else
