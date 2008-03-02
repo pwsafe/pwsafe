@@ -1121,30 +1121,18 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       return;
   }
 
-  struct _timeb timebuffer;
-  int hr, min, sec;
+  TCHAR szTimeFormat[80], szTimeString[80];
 
-#if (_MSC_VER >= 1400)
-  struct tm st;
-  _ftime_s(&timebuffer);
-  errno_t err;
-  err = localtime_s(&st, &timebuffer.time);  // secure version
-  hr = st.tm_hour;
-  min = st.tm_min;
-  sec = st.tm_sec;
-#else
-  struct tm *pst;
-  _ftime(&timebuffer);
-  pst = localtime(&timebuffer.time);
-  hr = pst->tm_hour;
-  min = pst->tm_min;
-  sec = pst->tm_sec;
-#endif
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, 
+                         szTimeFormat, 80 /* sizeof(szTimeFormat) / sizeof(TCHAR) */));
+  GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, szTimeFormat,
+                szTimeString, 80 /* sizeof(szTimeString) / sizeof(TCHAR) */);
+
   if (iaction < 0) {
-    m_lastclipboardaction.Format(IDS_CLIPBOARDCLEARED, hr, min, sec);
+    m_lastclipboardaction.Format(IDS_CLIPBOARDCLEARED, szTimeString);
   } else {
     m_lastclipboardaction.Format(IDS_CLIPBOARDACTION, CString(MAKEINTRESOURCE(imsg)), 
-                                 hr, min, sec);
+                                 szTimeString);
   }
   UpdateStatusBar();
 }
