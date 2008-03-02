@@ -625,6 +625,8 @@ void DboxMain::RefreshViews(const int iView)
   HCURSOR waitCursor = app.LoadStandardCursor(IDC_WAIT);
 #endif
 
+  // Get current selected items and save ptr to the entries (unchanged over 
+  // refresh of Tree/List
   POSITION pSelected = m_ctlItemList.GetFirstSelectedItemPosition();
   HTREEITEM hSelected = m_ctlItemTree.GetSelectedItem();
   CItemData *ciList(NULL), *ciTree(NULL);
@@ -632,6 +634,9 @@ void DboxMain::RefreshViews(const int iView)
     ciList = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
   if (hSelected != NULL)
     ciTree = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
+
+  // Save expand/collapse status of groups
+  vector <bool> displaystatus = GetGroupDisplayStatus();
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked
   if (iView & iListOnly) {
@@ -682,7 +687,12 @@ void DboxMain::RefreshViews(const int iView)
 
   FixListIndexes();
 
-  // Select previously selected items and ensure they are visible
+  // Restore expand/collapse status of groups
+  SetGroupDisplayStatus(displaystatus);
+
+  // Select previously selected items and ensure they are visible.
+  // Note: di->list_index and di->tree_item will have been changed by
+  // "insertItem" and "FixListIndexes" above.
   if (ciList != NULL) {
     DisplayInfo *di = (DisplayInfo *)ciList->GetDisplayInfo();
     m_ctlItemList.SetItemState(di->list_index,
