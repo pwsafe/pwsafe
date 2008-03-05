@@ -20,7 +20,7 @@
 #define IDS_STATCOPYUSERNAME            5025
 #define IDS_STATVIEWEDIT                5026
 #define IDS_READ_ONLY                   5027
-#define IDS_CONFIG_BLANK                5028
+#define IDS_BLANK                       5028
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
@@ -368,4 +368,5 @@
 #define IDS_ADVCASE_SENSITIVE           5552
 #define IDS_ADVCOMPAREFIELDS            5553
 #define IDS_CLIPBOARDACTION             5554
-#define IDS_CLIPBOARDCLEARED            5555
+#define IDS_USER                        5555
+#define IDS_PSWD                        5556

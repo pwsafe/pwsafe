@@ -247,13 +247,13 @@ void DboxMain::setupBars()
 #ifdef DEBUG
     statustext[SB_CONFIG] = PWSprefs::GetInstance()->GetConfigIndicator();
 #else
-    statustext[SB_CONFIG] = IDS_CONFIG_BLANK;
+    statustext[SB_CONFIG] = IDS_BLANK;
 #endif /* DEBUG */
-    // Set up the rest - all blank as pane now re-sized according to contents
-    statustext[SB_CLIPBOARDACTION] = IDS_CONFIG_BLANK;
-    statustext[SB_MODIFIED] = IDS_CONFIG_BLANK;
+    // Set up the rest - all but one empty as pane now re-sized according to contents
+    statustext[SB_CLIPBOARDACTION] = IDS_BLANK;
+    statustext[SB_MODIFIED] = IDS_BLANK;
+    statustext[SB_NUM_ENT] = IDS_BLANK;
     statustext[SB_READONLY] = IDS_READ_ONLY;
-    statustext[SB_NUM_ENT] = IDS_CONFIG_BLANK;
 
     // And show
     m_statusBar.SetIndicators(statustext, SB_TOTAL);
@@ -1544,8 +1544,7 @@ void DboxMain::SetListView()
   UnFindItem();
   m_ctlItemTree.ShowWindow(SW_HIDE);
   m_ctlItemList.ShowWindow(SW_SHOW);
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
-    _T("list"));
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("list"));
   m_ctlItemList.SetFocus();
   m_IsListView = true;
   // Some items may change on change of view
@@ -1557,8 +1556,7 @@ void DboxMain::SetTreeView()
   UnFindItem();
   m_ctlItemList.ShowWindow(SW_HIDE);
   m_ctlItemTree.ShowWindow(SW_SHOW);
-  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView,
-    _T("tree"));
+  PWSprefs::GetInstance()->SetPref(PWSprefs::LastView, _T("tree"));
   m_ctlItemTree.SetFocus();
   m_IsListView = false;
   // Some items may change on change of view

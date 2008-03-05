@@ -1103,12 +1103,13 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
   switch (iaction) {
     case -1:
       // Clipboard cleared
+      m_lastclipboardaction = _T("");
       break;
     case CItemData::USER:
-      imsg = IDS_USERNAME;
+      imsg = IDS_USER;
       break;
     case CItemData::PASSWORD:
-      imsg = IDS_PASSWORD;
+      imsg = IDS_PSWD;
       break;
     case CItemData::NOTES:
       imsg = IDS_NOTES;
@@ -1121,16 +1122,12 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       return;
   }
 
-  TCHAR szTimeFormat[80], szTimeString[80];
-
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, 
-                         szTimeFormat, 80 /* sizeof(szTimeFormat) / sizeof(TCHAR) */));
-  GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, szTimeFormat,
-                szTimeString, 80 /* sizeof(szTimeString) / sizeof(TCHAR) */);
-
-  if (iaction < 0) {
-    m_lastclipboardaction.Format(IDS_CLIPBOARDCLEARED, szTimeString);
-  } else {
+  if (iaction > 0) {
+    TCHAR szTimeFormat[80], szTimeString[80];
+    VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, 
+                           szTimeFormat, 80 /* sizeof(szTimeFormat) / sizeof(TCHAR) */));
+    GetTimeFormat(LOCALE_USER_DEFAULT, 0, NULL, szTimeFormat,
+                  szTimeString, 80 /* sizeof(szTimeString) / sizeof(TCHAR) */);
     m_lastclipboardaction.Format(IDS_CLIPBOARDACTION, CString(MAKEINTRESOURCE(imsg)), 
                                  szTimeString);
   }
