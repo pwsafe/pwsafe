@@ -96,6 +96,7 @@ private:
   static CString CS_EDITENTRY, CS_VIEWENTRY, CS_EXPCOLGROUP;
   static CString CS_DELETEENTRY, CS_DELETEGROUP, CS_RENAMEENTRY, CS_RENAMEGROUP;
   static CString CS_BROWSEURL, CS_SENDEMAIL, CS_COPYURL, CS_COPYEMAIL;
+  static CString CS_HIDETOOBAR, CS_SHOWTOOLBAR;
   static const CString DEFAULT_AUTOTYPE;
 
 public:
@@ -461,6 +462,7 @@ protected:
   afx_msg void OnAddGroup();
   afx_msg void OnCreateShortcut();
   afx_msg void OnOK();
+  afx_msg void OnShowHideToolbar();
   afx_msg void OnOldToolbar();
   afx_msg void OnNewToolbar();
   afx_msg void OnExpandAll();
