@@ -72,6 +72,8 @@ CString DboxMain::CS_SENDEMAIL;
 CString DboxMain::CS_COPYURL;
 CString DboxMain::CS_COPYEMAIL;
 CString DboxMain::CS_EXPCOLGROUP;
+CString DboxMain::CS_HIDETOOBAR;
+CString DboxMain::CS_SHOWTOOLBAR;
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(CWnd* pParent)
@@ -101,6 +103,8 @@ DboxMain::DboxMain(CWnd* pParent)
   CS_SENDEMAIL.LoadString(IDS_MENUSENDEMAIL);
   CS_COPYURL.LoadString(IDS_MENUCOPYURL);
   CS_COPYEMAIL.LoadString(IDS_MENUCOPYEMAIL);
+  CS_HIDETOOBAR.LoadString(IDS_HIDETOOLBAR);
+  CS_SHOWTOOLBAR.LoadString(IDS_SHOWTOOLBAR);
   //{{AFX_DATA_INIT(DboxMain)
   // NOTE: the ClassWizard will add member initialization here
   //}}AFX_DATA_INIT
@@ -171,6 +175,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
   ON_COMMAND(ID_MENUITEM_TREE_VIEW, OnTreeView)
+  ON_COMMAND(ID_MENUITEM_SHOWHIDE_TOOLBAR, OnShowHideToolbar)
   ON_COMMAND(ID_MENUITEM_OLD_TOOLBAR, OnOldToolbar)
   ON_COMMAND(ID_MENUITEM_NEW_TOOLBAR, OnNewToolbar)
   ON_COMMAND(ID_MENUITEM_EXPANDALL, OnExpandAll)
@@ -337,6 +342,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
+  {ID_MENUITEM_SHOWHIDE_TOOLBAR, true, true, true, true},
   {ID_MENUITEM_NEW_TOOLBAR, true, true, true, true},
   {ID_MENUITEM_OLD_TOOLBAR, true, true, true, true},
   {ID_MENUITEM_EXPANDALL, true, true, true, false},
@@ -1511,6 +1517,10 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
   pMenu->CheckMenuRadioItem(ID_MENUITEM_LIST_VIEW, ID_MENUITEM_TREE_VIEW,
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW),
                             MF_BYCOMMAND);
+
+  pMenu->ModifyMenu(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND,
+                    ID_MENUITEM_SHOWHIDE_TOOLBAR,
+                    m_MainToolBar.IsWindowVisible() ? CS_HIDETOOBAR : CS_SHOWTOOLBAR);
 
   // JHF m_toolbarMode is not for WinCE (as in .h)
 #if !defined(POCKET_PC)

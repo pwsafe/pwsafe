@@ -308,6 +308,8 @@ void DboxMain::setupBars()
 
   // Set flag - we're done
   m_toolbarsSetup = TRUE;
+  m_MainToolBar.ShowWindow(PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar) ?
+                           SW_SHOW : SW_HIDE);
   UpdateToolBar(m_core.IsReadOnly());
   m_menuManager.SetImageList(&m_MainToolBar);
   m_menuManager.SetMapping(&m_MainToolBar);
@@ -1561,6 +1563,16 @@ void DboxMain::SetTreeView()
   m_IsListView = false;
   // Some items may change on change of view
   UpdateMenuAndToolBar(m_bOpen);
+}
+
+void DboxMain::OnShowHideToolbar() 
+{
+  bool bState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
+  
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, !bState);
+  m_MainToolBar.ShowWindow(bState ? SW_HIDE : SW_SHOW);
+  SetToolBarPositions();
+  UpdateToolBar(m_core.IsReadOnly());
 }
 
 void DboxMain::OnOldToolbar() 

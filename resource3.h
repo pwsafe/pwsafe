@@ -370,3 +370,5 @@
 #define IDS_CLIPBOARDACTION             5554
 #define IDS_USER                        5555
 #define IDS_PSWD                        5556
+#define IDS_SHOWTOOLBAR                 5557
+#define IDS_HIDETOOLBAR                 5558

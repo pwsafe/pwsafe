@@ -40,6 +40,7 @@ it will close the Find Toolbar if active.
 [1207606] Option added to allow display of notes as tooltips in nested tree mode.
 [988806] Feedback on double click now shown in the Status Bar - action and time.
 [] Alt+F4, in addition to Ctrl+Q, now closes the application.
+[] Allow user to Hide/Show main toolbar.
 
 Bugs fixed in 3.12
 ==================
