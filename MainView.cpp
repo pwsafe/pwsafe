@@ -825,13 +825,16 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
       if (pos == NULL)
         return;  // Nothing selected!
-      m_ctlItemList.GetItemRect((int)pos - 1, &r, LVIR_LABEL);
+
+      int nIndex = m_ctlItemList.GetNextSelectedItem(pos);
+      m_ctlItemList.GetItemRect(nIndex, &r, LVIR_LABEL);
       m_ctlItemList.ClientToScreen(&r);
     } else
     if (m_ctlItemTree.IsWindowVisible()) {
       HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
       if (hItem == NULL)
         return;  // Nothing selected!
+
       m_ctlItemTree.GetItemRect(hItem, &r, TRUE);
       m_ctlItemTree.ClientToScreen(&r);
     }
@@ -2895,7 +2898,7 @@ void DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOne
 
   if (bOneEntry) {
     CRect rect;
-    m_ctlItemList.GetItemRect(index, &rect, FALSE);
+    m_ctlItemList.GetItemRect(index, &rect, LVIR_ICON);
     m_ctlItemList.InvalidateRect(&rect);
   }
 }
