@@ -544,20 +544,21 @@ BOOL ThisMfcApp::InitInstance()
   CMenu new_popupmenu;
 
   // Look for "File" menu.
-  int pos = FindMenuItem(m_mainmenu, ID_FILEMENU);
-  if (pos == -1) // E.g., in non-English versions
-    pos = 0; // best guess...
+  int fpos, cpos;
+  fpos = FindMenuItem(m_mainmenu, ID_FILEMENU);
+  if (fpos == -1) // E.g., in non-English versions
+    fpos = 0; // best guess...
 
-  CMenu* file_submenu = m_mainmenu->GetSubMenu(pos);
+  CMenu* file_submenu = m_mainmenu->GetSubMenu(fpos);
   if (file_submenu != NULL) // Look for "Close Database"
-    pos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
+    cpos = FindMenuItem(file_submenu, ID_MENUITEM_CLOSE);
   else
-    pos = -1;
+    cpos = -1;
 
-  m_pMRU = new CPWSRecentFileList( 0, _T("MRU"), _T("Safe%d"),
-    ((nMRUItems != 0) ? nMRUItems : 1));
+  m_pMRU = new CPWSRecentFileList(0, _T("MRU"), _T("Safe%d"),
+                                 ((nMRUItems != 0) ? nMRUItems : 1));
   if (nMRUItems > 0) {
-    if (pos > -1) {
+    if (cpos > -1) {
       int irc;
       // Create New Popup Menu
       new_popupmenu.CreatePopupMenu();
@@ -571,14 +572,14 @@ BOOL ThisMfcApp::InitInstance()
         ASSERT(irc != 0);
         // Insert Popup onto main menu
         ASSERT(file_submenu != NULL);
-        irc = file_submenu->InsertMenu(pos + 2,
-          MF_BYPOSITION | MF_POPUP,
-          UINT_PTR(new_popupmenu.m_hMenu),
-          cs_recentsafes);
+        irc = file_submenu->InsertMenu(cpos + 2,
+                                       MF_BYPOSITION | MF_POPUP,
+                                       UINT_PTR(new_popupmenu.m_hMenu),
+                                       cs_recentsafes);
         ASSERT(irc != 0);
       } else {  // MRU entries inline
         ASSERT(file_submenu != NULL);
-        irc = file_submenu->InsertMenu(pos + 2, MF_BYPOSITION, 
+        irc = file_submenu->InsertMenu(cpos + 2, MF_BYPOSITION, 
                                        ID_FILE_MRU_ENTRY1, cs_recent);
         ASSERT(irc != 0);
       } // m_mruonfilemenu
@@ -586,11 +587,11 @@ BOOL ThisMfcApp::InitInstance()
       m_pMRU->ReadList();
     } // pos > -1
   } else { // nMRUItems <= 0
-    if (pos > -1) {
+    if (cpos > -1) {
       int irc;
       // Remove extra separator
       ASSERT(file_submenu != NULL);
-      irc = file_submenu->RemoveMenu(pos + 1, MF_BYPOSITION);
+      irc = file_submenu->RemoveMenu(cpos + 1, MF_BYPOSITION);
       ASSERT( irc != 0);
       // Remove Clear MRU menu item.
       irc = file_submenu->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
@@ -868,14 +869,14 @@ int ThisMfcApp::FindMenuItem(CMenu* Menu, UINT MenuID)
 
   // Can't use GetMenuItemID as it does not understand that with the MENUEX
   // format, Popup menus can have IDs
-  MENUITEMINFO info;
-  memset(&info, 0x00, sizeof(MENUITEMINFO));
-  info.cbSize = sizeof(MENUITEMINFO);
-  info.fMask = MIIM_ID;                // only want the wID of the menu item
+  MENUITEMINFO miinfo;
+  memset(&miinfo, 0x00, sizeof(MENUITEMINFO));
+  miinfo.cbSize = sizeof(MENUITEMINFO);
+  miinfo.fMask = MIIM_ID;                // only want the wID of the menu item
 
   for (int i = 0; i < count; i++) {
-    Menu->GetMenuItemInfo(MenuID, &info);
-    if (info.wID >= 1 && info.wID == MenuID)
+    Menu->GetMenuItemInfo(i, &miinfo, TRUE);
+    if (miinfo.wID >= 1 && miinfo.wID == MenuID)
       return i;
   }
 
