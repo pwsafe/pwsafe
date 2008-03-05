@@ -1646,21 +1646,21 @@ void DboxMain::OnShowPassword()
     CMyString username;
     CShowPasswordDlg pwDlg( this );
 
-    item = m_pwlist.GetAt( Find(getSelectedItem()) );
+    item = m_pwlist.GetAt(Find(getSelectedItem()));
 
     item.GetPassword(password);
-    item.GetName( name );
+    item.GetName(name);
 
-    SplitName( name, title, username );
+    SplitName(name, title, username);
 
-    pwDlg.SetTitle( title );
-    pwDlg.SetPassword( password );
+    pwDlg.SetTitle(title);
+    pwDlg.SetPassword(password);
     pwDlg.DoModal();
   }
 }
 #endif
 
-LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM )
+LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
 {
 #if 0
   return m_TrayIcon.OnTrayNotification(wParam, lParam);

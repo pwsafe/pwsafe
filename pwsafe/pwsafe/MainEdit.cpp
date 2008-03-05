@@ -1000,12 +1000,7 @@ void DboxMain::OnCopyUsername()
     }
   }
 
-  const CMyString username = ci->GetUser();
-  if (!username.IsEmpty())
-    SetClipboardData(username);
-  else
-    ClearClipboardData();
-
+  SetClipboardData(ci->GetUser());
   UpdateLastClipboardAction(CItemData::USER);
   UpdateAccessTime(ci_original);
 }
@@ -1054,11 +1049,7 @@ void DboxMain::OnCopyNotes()
     clipboard_data += autotype;
   }
 
-  if (!clipboard_data.IsEmpty())
-    SetClipboardData(clipboard_data);
-  else
-    ClearClipboardData();
-
+  SetClipboardData(clipboard_data);
   UpdateLastClipboardAction(CItemData::NOTES);
   UpdateAccessTime(ci_original);
 }
@@ -1085,13 +1076,7 @@ void DboxMain::OnCopyURL()
     }
   }
 
-  const CMyString cs_URL = ci->GetURL();
-
-  if (!cs_URL.IsEmpty())
-    SetClipboardData(cs_URL);
-  else
-    ClearClipboardData();
-
+  SetClipboardData(ci->GetURL());
   UpdateLastClipboardAction(CItemData::URL);
   UpdateAccessTime(ci_original);
 }
@@ -1221,7 +1206,7 @@ void DboxMain::AutoType(const CItemData &ci)
     ks.SetCapsLock(false);
   }
 
-  CMyString tmp;
+  CMyString tmp(_T(""));
   TCHAR curChar;
   const int N = AutoCmd.GetLength();
   ks.ResetKeyboardState();
@@ -1251,13 +1236,14 @@ void DboxMain::AutoType(const CItemData &ci)
 
   Sleep(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
-  for(int n = 0; n < N; n++){
+  for (int n = 0; n < N; n++){
     curChar = AutoCmd[n];
-    if(curChar == TCHAR('\\')) {
+    if (curChar == TCHAR('\\')) {
       n++;
-      if(n < N)
+      if (n < N)
         curChar=AutoCmd[n];
-      switch(curChar){
+
+      switch (curChar){
         case TCHAR('\\'):
           tmp += TCHAR('\\');
           break;
@@ -1284,7 +1270,7 @@ void DboxMain::AutoType(const CItemData &ci)
           int gNumIts = 0;
 
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
-            if(isdigit(AutoCmd[n])){
+            if (isdigit(AutoCmd[n])) {
               newdelay *= 10;
               newdelay += (AutoCmd[n] - TCHAR('0'));
             } else
@@ -1293,7 +1279,7 @@ void DboxMain::AutoType(const CItemData &ci)
     
           n--;
           ks.SetAndDelay(newdelay);
-          break; // case
+          break; // case 'd'
         }
         default:
           tmp += _T("\\") + curChar;
