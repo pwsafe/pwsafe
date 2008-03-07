@@ -1526,7 +1526,8 @@ void DboxMain::OnInitMenu(CMenu* pMenu)
                             (bTreeView ? ID_MENUITEM_TREE_VIEW : ID_MENUITEM_LIST_VIEW),
                             MF_BYCOMMAND);
 
-  pMenu->ModifyMenu(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND,
+  pMenu->ModifyMenu(ID_MENUITEM_SHOWHIDE_TOOLBAR, MF_BYCOMMAND |
+                    (m_MainToolBar.IsWindowVisible() ? MF_CHECKED : MF_UNCHECKED),
                     ID_MENUITEM_SHOWHIDE_TOOLBAR,
                     m_MainToolBar.IsWindowVisible() ? CS_HIDETOOBAR : CS_SHOWTOOLBAR);
 
