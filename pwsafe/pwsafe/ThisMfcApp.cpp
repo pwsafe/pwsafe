@@ -543,11 +543,12 @@ BOOL ThisMfcApp::InitInstance()
 
   CMenu new_popupmenu;
 
-  // Look for "File" menu.
+  // Menu position indices (File & Close).
   int fpos, cpos;
+
+  // Look for "File" menu.
   fpos = FindMenuItem(m_mainmenu, ID_FILEMENU);
-  if (fpos == -1) // E.g., in non-English versions
-    fpos = 0; // best guess...
+  ASSERT(fpos != -1);
 
   CMenu* file_submenu = m_mainmenu->GetSubMenu(fpos);
   if (file_submenu != NULL) // Look for "Close Database"
@@ -598,18 +599,17 @@ BOOL ThisMfcApp::InitInstance()
       ASSERT( irc != 0);
     }
   }
+
 #ifdef DEMO
   // add specific menu item for demo version
   int hpos = FindMenuItem(m_mainmenu, ID_HELPMENU);
-  if (hpos == -1)
-    hpos = 4; // best guess...
+  ASSERT(hpos != -1);
 
   CMenu* help_submenu = m_mainmenu->GetSubMenu(hpos);
   if (help_submenu != NULL) {
     help_submenu->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
                              CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
   }
-
 #endif /* DEMO */
 
   /*
@@ -709,10 +709,12 @@ void ThisMfcApp::ClearMRU()
     return;
 
   if (pos > -1) {
-    // Recent databases are on the main File menu
+    // Recent databases are on the main File menu - remove them
     for (int nID = numMRU; nID > 1; nID--)
       xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
+    // Remove separator
+    xfile_submenu->RemoveMenu(pos - 1, MF_BYPOSITION);
     return;
   }
 
@@ -724,7 +726,7 @@ void ThisMfcApp::ClearMRU()
     return;
 
   if (pos > -1) {
-    // Recent databases are on the main File menu
+    // Recent databases are on a popup menu - remove them
     for (int nID = numMRU; nID > 1; nID--)
       xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
