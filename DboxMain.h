@@ -298,7 +298,7 @@ protected:
   bool m_bBoldItem;
 
   WCHAR *m_pwchTip;
-  TCHAR *m_pchTip;
+  char *m_pchTip;
 
   CMyString m_TreeViewGroup; // used by OnAdd & OnAddGroup
   CCoolMenuManager m_menuManager;

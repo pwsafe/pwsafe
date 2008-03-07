@@ -1252,6 +1252,9 @@ DboxMain::OnToolTipText(UINT,
   } else
     return FALSE;
 
+  if (cs_TipText.GetLength() == 0)
+    return TRUE;  // message handled
+
   // Assume ToolTip is greater than 80 characters in ALL cases and so use
   // the pointer approach.
   // Otherwise comment out the definition of LONG_TOOLTIPS below
@@ -1260,39 +1263,44 @@ DboxMain::OnToolTipText(UINT,
 
 #ifdef LONG_TOOLTIPS
 #ifndef _UNICODE
-  if(pNMHDR->code == TTN_NEEDTEXTA) {
+  if (pNMHDR->code == TTN_NEEDTEXTA) {
     delete m_pchTip;
 
-    m_pchTip = new TCHAR[cs_TipText.GetLength() + 1];
+    m_pchTip = new char[cs_TipText.GetLength() + 1];
     lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength()+1);
-    pTTTW->lpszText = (WCHAR*)m_pchTip;
+    pTTTA->lpszText = (LPSTR)m_pchTip;
   } else {
-    if (cs_TipText.GetLength() > 0) {
-      delete m_pwchTip;
+    delete m_pwchTip;
 
-      m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
+    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
 #if _MSC_VER >= 1400
-      size_t numconverted;
-      mbstowcs_s(&numconverted, m_pwchTip, cs_TipText.GetLength() + 1, cs_TipText, cs_TipText.GetLength() + 1);
+    size_t numconverted;
+    mbstowcs_s(&numconverted, m_pwchTip, cs_TipText.GetLength() + 1, cs_TipText, 
+               cs_TipText.GetLength() + 1);
 #else
-      mbstowcs(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
+    mbstowcs(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
 #endif
-      pTTTW->lpszText = m_pwchTip;
-    }
+    pTTTW->lpszText = m_pwchTip;
   }
 #else
-  if(pNMHDR->code == TTN_NEEDTEXTA) {
+  if (pNMHDR->code == TTN_NEEDTEXTA) {
     delete m_pchTip;
 
-    m_pchTip = new _TCHAR[cs_TipText.GetLength() + 1];
-    lstrcpyn(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
+    m_pchTip = new char[cs_TipText.GetLength() + 1];
+#if (_MSC_VER >= 1400)
+    size_t num_converted;
+    wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
+               cs_TipText.GetLength() + 1);
+#else
+    wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
+#endif
     pTTTA->lpszText = (LPSTR)m_pchTip;
   } else {
     delete m_pwchTip;
 
     m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
     lstrcpyn(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-    pTTTA->lpszText = (LPSTR)m_pwchTip;
+    pTTTW->lpszText = (LPWSTR)m_pwchTip;
   }
 #endif
 
@@ -1310,7 +1318,7 @@ DboxMain::OnToolTipText(UINT,
     int n = MultiByteToWideChar(CP_ACP, 0, cs_TipText, -1, pTTTW->szText,
                                 sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0]));
     if (n > 0)
-      pTTTW->szText[n-1] = 0;
+      pTTTW->szText[n - 1] = 0;
   }
 #else
   if (pNMHDR->code == TTN_NEEDTEXTA) {
@@ -1319,7 +1327,7 @@ DboxMain::OnToolTipText(UINT,
                                 sizeof(pTTTA->szText)/sizeof(pTTTA->szText[0]),
                                 NULL, NULL);
     if (n > 0)
-      pTTTA->szText[n-1] = 0;
+      pTTTA->szText[n - 1] = 0;
   } else
 #if _MSC_VER >= 1400
     _tcsncpy_s(pTTTW->szText, (sizeof(pTTTW->szText)/sizeof(pTTTW->szText[0])),
