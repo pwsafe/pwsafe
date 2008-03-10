@@ -60,7 +60,7 @@ ThisMfcApp::ThisMfcApp() :
 #else
   m_bUseAccelerator( true ),
 #endif
-  m_pMRU( NULL ), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
+  m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
   m_HotKeyPressed(false)
 {
   // {kjp} Temporary until I'm sure that PwsPlatform.h configures the endianness properly
@@ -699,8 +699,6 @@ void ThisMfcApp::ClearMRU()
 
   // Look for "File" menu.
   int pos = FindMenuItem(xmainmenu, ID_FILEMENU);
-  if (pos == -1) // E.g., in non-English versions
-    pos = 0; // best guess...
 
   CMenu* xfile_submenu = xmainmenu->GetSubMenu(pos);
   if (xfile_submenu != NULL)  // Look for MRU first entry
@@ -713,8 +711,6 @@ void ThisMfcApp::ClearMRU()
     for (int nID = numMRU; nID > 1; nID--)
       xfile_submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
 
-    // Remove separator
-    xfile_submenu->RemoveMenu(pos - 1, MF_BYPOSITION);
     return;
   }
 

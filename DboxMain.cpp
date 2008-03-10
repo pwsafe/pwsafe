@@ -2446,6 +2446,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
                            ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
                            m_FindToolBar.IsFindCaseSet());
       return -1;
+    case ID_MENUITEM_CLEAR_MRU:
+      if (app.GetMRU()->IsMRUEmpty())
+        iEnable = FALSE;
+      break;
     default:
       break;
   }
