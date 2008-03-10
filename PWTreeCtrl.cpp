@@ -226,6 +226,8 @@ END_MESSAGE_MAP()
 
 void CPWTreeCtrl::Initialize()
 {
+  m_pDbx = static_cast<DboxMain *>(GetParent());
+
   // This should really be in OnCreate(), but for some reason,
   // was never called.
   m_DropTarget->Register(this);
@@ -254,7 +256,7 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
   // F2 key -> begin in-place editing of an item
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2) {
     HTREEITEM hItem = GetSelectedItem();
-    if (hItem != NULL && !((DboxMain *)GetParent())->IsMcoreReadOnly())
+    if (hItem != NULL && !m_pDbx->IsMcoreReadOnly())
       EditLabel(hItem);
     return TRUE;
   }
@@ -265,8 +267,7 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
 
 SCODE CPWTreeCtrl::GiveFeedback(DROPEFFECT )
 {
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-  pDbx->ResetIdleLockCounter();
+  m_pDbx->ResetIdleLockCounter();
   return DRAGDROP_S_USEDEFAULTCURSORS;
 }
 
@@ -576,8 +577,7 @@ final_check:
 
 void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 {
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-  if (pDbx->IsMcoreReadOnly())
+  if (m_pDbx->IsMcoreReadOnly())
     return; // don't edit in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
@@ -623,7 +623,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       }
 
       group = CString(ci->GetGroup());
-      if (pDbx->Find(group, newTitle, newUser) != pDbx->End()) {
+      if (m_pDbx->Find(group, newTitle, newUser) != m_pDbx->End()) {
         CMyString temp;
         if (group.IsEmpty())
           temp.Format(IDS_ENTRYEXISTS2, newTitle, newUser);
@@ -672,14 +672,13 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
 
       // update the password database record - but only those items visible!!!
       ci->SetTitle(newTitle);
-      DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-      pDbx->UpdateListItemTitle(lindex, newTitle);
+      m_pDbx->UpdateListItemTitle(lindex, newTitle);
       if (bShowUsernameInTree) {
         ci->SetUser(newUser);
-        pDbx->UpdateListItemUser(lindex, newUser);
+        m_pDbx->UpdateListItemUser(lindex, newUser);
         if (bShowPasswordInTree) {
           ci->SetPassword(newPassword);
-          pDbx->UpdateListItemPassword(lindex, newPassword);
+          m_pDbx->UpdateListItemPassword(lindex, newPassword);
         }
       }
     } else {
@@ -700,7 +699,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
       UpdateLeafsGroup(ti, prefix);
     }
     // Mark database as modified
-    pDbx->SetChanged(DboxMain::Data);
+    m_pDbx->SetChanged(DboxMain::Data);
 
     // put edited text in right order by sorting
     SortTree(GetParentItem(ti));
@@ -830,8 +829,6 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   TV_INSERTSTRUCT  tvstruct;
   TCHAR sztBuffer[260];  // max visible
 
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
-
   tvstruct.item.hItem = hitemDrag;
   tvstruct.item.cchTextMax = sizeof(sztBuffer)/sizeof(TCHAR) - 1;
   tvstruct.item.pszText = sztBuffer;
@@ -874,11 +871,11 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     // Get information from current selected entry
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title = pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CMyString ci_title = m_pDbx->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Update list field with new group
     ci->SetGroup(path);
-    pDbx->UpdateListItemGroup(di->list_index, (CString)path);
+    m_pDbx->UpdateListItemGroup(di->list_index, (CString)path);
 
     if (ci_title.Compare(ci_title0) != 0) {
       ci->SetTitle(ci_title);
@@ -886,10 +883,10 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
     // Update tree label
     SetItemText(hNewItem, MakeTreeDisplayString(*ci));
     // Update list field with new title
-    pDbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
+    m_pDbx->UpdateListItemTitle(di->list_index, (CString)ci_title);
 
     // Mark database as modified!
-    pDbx->SetChanged(DboxMain::Data);
+    m_pDbx->SetChanged(DboxMain::Data);
     // Update DisplayInfo record associated with ItemData
     di->tree_item = hNewItem;
   } // leaf processing
@@ -953,10 +950,9 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         newPath += GROUP_SEP + oldPath;
     }
     // Get information from current selected entry
-    DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
     CMyString ci_user = ci->GetUser();
     CMyString ci_title0 = ci->GetTitle();
-    CMyString ci_title = pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CMyString ci_title = m_pDbx->GetUniqueTitle(newPath, ci_title0, ci_user, IDS_DRAGNUMBER);
 
     // Needs new UUID as they must be unique and this is a copy operation
     // but before we do, save the original
@@ -987,24 +983,24 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
         break;
       case CItemData::Alias:
         // Get base of original alias and make this copy point to it
-        pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
-        pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Alias);
+        m_pDbx->GetAliasBaseUUID(original_uuid, base_uuid);
+        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Alias);
         temp.SetPassword(CMyString(_T("[Alias]")));
         break;
       case CItemData::Shortcut:
         // Get base of original shortcut and make this copy point to it
-        pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
-        pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Shortcut);
+        m_pDbx->GetShortcutBaseUUID(original_uuid, base_uuid);
+        m_pDbx->AddDependentEntry(base_uuid, temp_uuid, CItemData::Shortcut);
         temp.SetPassword(CMyString(_T("[Shortcut]")));
         break;
       default:
         ASSERT(0);
     }
 
-    pDbx->AddEntry(temp);
+    m_pDbx->AddEntry(temp);
 
     // Mark database as modified!
-    pDbx->SetChanged(DboxMain::Data);
+    m_pDbx->SetChanged(DboxMain::Data);
   } // leaf handling
   return true;
 }
@@ -1025,8 +1021,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
     pil->DeleteImageList();
   }
 
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
-  if (pDbx->IsMcoreReadOnly())
+  if (m_pDbx->IsMcoreReadOnly())
     return FALSE; // don't drop in read-only mode
 
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
@@ -1136,10 +1131,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
           cs_user = ci->GetUser();
 
           // If there is a matching entry in our list, generate unique one
-          if (pDbx->Find(cs_group, cs_title, cs_user) != pDbx->End()) {
-            cs_title = pDbx->GetUniqueTitle(cs_group, cs_title, cs_user, IDS_DRAGNUMBER);
+          if (m_pDbx->Find(cs_group, cs_title, cs_user) != m_pDbx->End()) {
+            cs_title = m_pDbx->GetUniqueTitle(cs_group, cs_title, cs_user, IDS_DRAGNUMBER);
           }
-          pDbx->CreateShortcutEntry(ci, cs_group, cs_title, cs_user);
+          m_pDbx->CreateShortcutEntry(ci, cs_group, cs_title, cs_user);
           retval = TRUE;
           SelectItem(NULL);  // Deselect
           goto exit;
@@ -1194,14 +1189,14 @@ BOOL CPWTreeCtrl::OnDrop(CWnd* , COleDataObject* pDataObject,
   }
 
   SortTree(TVI_ROOT);
-  pDbx->FixListIndexes();
+  m_pDbx->FixListIndexes();
   GetParent()->SetFocus();
 
 exit:
   GlobalUnlock(hGlobal);
   if (retval == TRUE) {
-    pDbx->SetChanged(DboxMain::Data);
-    pDbx->ChangeOkUpdate();
+    m_pDbx->SetChanged(DboxMain::Data);
+    m_pDbx->ChangeOkUpdate();
   }
   return retval;
 }
@@ -1248,11 +1243,10 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
   DROPEFFECT de = m_DataSource->StartDragging(m_tcddCPFID, &rClient);
 
   if (SUCCEEDED(de)) {
-    DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
     // If inter-process Move, we need to delete original
     if ((de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
-        !m_bWithinThisInstance && !pDbx->IsMcoreReadOnly()) {
-      pDbx->Delete();
+        !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
+      m_pDbx->Delete();
     }
     // wrong place to clean up imagelist?
     pil->DragLeave(GetDesktopWindow());
@@ -1276,7 +1270,7 @@ void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *)
   hti = ptv->itemNew.hItem;
   if (hti != NULL) {
     CItemData *ci = (CItemData *)GetItemData(hti);
-    static_cast<DboxMain *>(GetParent())->UpdateToolBarForSelectedItem(ci);
+    m_pDbx->UpdateToolBarForSelectedItem(ci);
   }
 }
 
@@ -1308,8 +1302,7 @@ void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
-    DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
-    pDbx->SaveDisplayStatus();
+    m_pDbx->SaveDisplayStatus();
   }
 }
 
@@ -1411,8 +1404,6 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 
 bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup)
 {
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent()); 
-
 #ifdef DUMP_DATA
   CString cs_timestamp;
   cs_timestamp = PWSUtil::GetTimeStamp();
@@ -1433,7 +1424,7 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CMyStrin
   inDDmemfile.Detach();
 
   if (!in_oblist.IsEmpty()) {
-    pDbx->AddEntries(in_oblist, DropGroup);
+    m_pDbx->AddEntries(in_oblist, DropGroup);
 
     while (!in_oblist.IsEmpty()) {
       delete (CDDObject *)in_oblist.RemoveHead();
@@ -1479,13 +1470,13 @@ void CPWTreeCtrl::GetEntryData(CDDObList &out_oblist, CItemData *ci)
     CItemData *cibase(NULL);
     uuid_array_t base_uuid, entry_uuid;
     ci->GetUUID(entry_uuid);
-    DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
     if (ci->IsAlias())
-      pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
+      m_pDbx->GetAliasBaseUUID(entry_uuid, base_uuid);
     else
-      pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
-    ItemListIter iter = pDbx->Find(base_uuid);
-    ASSERT(iter != pDbx->End());
+      m_pDbx->GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+    ItemListIter iter = m_pDbx->Find(base_uuid);
+    ASSERT(iter != m_pDbx->End());
     cibase = &(iter->second);
     pDDObject->SetBaseItem(cibase);
   }
