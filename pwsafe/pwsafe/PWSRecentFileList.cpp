@@ -57,3 +57,10 @@ void CPWSRecentFileList::WriteList()
     delete[] csMRUFiles;
   }
 }
+
+bool CPWSRecentFileList::IsMRUEmpty()
+{
+  CString csMRUFileName;
+
+  return GetDisplayName(csMRUFileName, 0, _T(""), 0, TRUE) == FALSE;
+}

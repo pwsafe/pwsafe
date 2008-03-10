@@ -28,4 +28,5 @@ public:
 
   virtual void ReadList();    // reads from registry or config file
   virtual void WriteList();   // writes to registry or config file
+  bool IsMRUEmpty();
 };
