@@ -14,6 +14,7 @@
 #include <Afxcmn.h>
 #include "corelib/MyString.h"
 
+class DboxMain;
 class CItemData;
 
 // classes for implementing D&D
@@ -80,6 +81,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
+  DboxMain *m_pDbx;
   HTREEITEM m_hitemDrag;
   HTREEITEM m_hitemDrop;
 
