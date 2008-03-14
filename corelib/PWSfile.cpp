@@ -381,8 +381,20 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
                                 FILE_SHARE_READ,
                                 NULL,
                                 CREATE_ALWAYS, // rely on share to fail if exists!
-                                FILE_ATTRIBUTE_NORMAL| FILE_FLAG_WRITE_THROUGH,
+                                FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH | 
+                                // (Lockheed Martin) Secure Coding  11-14-2007
+                                SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION,
                                 NULL);
+
+	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+	if (lockFileHandle != INVALID_HANDLE_VALUE) {
+		if (::GetFileType( lockFileHandle ) != FILE_TYPE_DISK) {
+			::CloseHandle( lockFileHandle );
+			lockFileHandle = INVALID_HANDLE_VALUE;
+		}
+	}
+	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+
   if (lockFileHandle == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     switch (error) {
@@ -484,8 +496,20 @@ bool PWSfile::IsLockedFile(const CMyString &filename)
                         FILE_SHARE_READ,
                         NULL,
                         OPEN_EXISTING, // don't create one!
-                        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH,
+                        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH |
+                        // (Lockheed Martin) Secure Coding  11-14-2007
+                        SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION,
                         NULL);
+ 
+ 	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+ 	if (h != INVALID_HANDLE_VALUE) {
+ 		if (::GetFileType( h ) != FILE_TYPE_DISK) {
+ 			::CloseHandle( h );
+ 			h = INVALID_HANDLE_VALUE;
+ 		}
+ 	}
+ 	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+ 
   if (h == INVALID_HANDLE_VALUE) {
     DWORD error = GetLastError();
     if (error == ERROR_SHARING_VIOLATION)
@@ -511,8 +535,19 @@ bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
                            FILE_SHARE_WRITE,
                            NULL,
                            OPEN_EXISTING,
-                           FILE_ATTRIBUTE_NORMAL,
+                           (FILE_ATTRIBUTE_NORMAL |
+                            // (Lockheed Martin) Secure Coding  11-14-2007
+                            SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION),
                            NULL);
+ 	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+ 	if (h2 != INVALID_HANDLE_VALUE) {
+ 		if (::GetFileType( h2 ) != FILE_TYPE_DISK) {
+ 			::CloseHandle( h2 );
+ 			h2 = INVALID_HANDLE_VALUE;
+ 		}
+ 	}
+ 	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+ 
   if (h2 == INVALID_HANDLE_VALUE) {
     locker.LoadString(IDSC_CANTGETLOCKER);
   } else {
