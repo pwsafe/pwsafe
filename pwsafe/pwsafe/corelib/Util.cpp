@@ -223,12 +223,18 @@ size_t _readcbc(FILE *fp,
   size_t numRead = 0;
 
   // some trickery to avoid new/delete
-  unsigned char block1[16];
-  unsigned char block2[16];
-  unsigned char block3[16];
+	// Initialize memory.  (Lockheed Martin) Secure Coding  11-14-2007
+  unsigned char block1[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  unsigned char block2[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  unsigned char block3[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned char *lengthblock = NULL;
 
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
+  
+	// Safety check.  (Lockheed Martin) Secure Coding  11-14-2007
+  if ((BS > sizeof( block1 )) || (BS == 0))
+	  return 0;
+
   lengthblock = block1;
 
   buffer_len = 0;
@@ -264,6 +270,9 @@ size_t _readcbc(FILE *fp,
   buffer_len = length;
   buffer = new unsigned char[(length/BS)*BS +2*BS]; // round upwards
   unsigned char *b = buffer;
+
+  // Initialize memory.  (Lockheed Martin) Secure Coding  11-14-2007
+  memset(b, 0, (length/BS)*BS +2*BS);
 
   if (BS == 16) {
     // length block contains up to 11 (= 16 - 4 - 1) bytes
