@@ -262,8 +262,8 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::ShowUsernameInTree) ? TRUE : FALSE;
   display.m_showpasswordintree = prefs->
     GetPref(PWSprefs::ShowPasswordInTree) ? TRUE : FALSE;
-  display.m_shownotesastipsintree = prefs->
-    GetPref(PWSprefs::ShowNotesAsToolTipsInTree) ? TRUE : FALSE;
+  display.m_shownotesastipsinviews = prefs->
+    GetPref(PWSprefs::ShowNotesAsTooltipsInViews) ? TRUE : FALSE;
   display.m_explorertree = prefs->
     GetPref(PWSprefs::ExplorerTypeTree) ? TRUE : FALSE;
   display.m_enablegrid = prefs->
@@ -424,8 +424,8 @@ void DboxMain::OnOptions()
       display.m_showusernameintree == TRUE);
     prefs->SetPref(PWSprefs::ShowPasswordInTree,
       display.m_showpasswordintree == TRUE);
-    prefs->SetPref(PWSprefs::ShowNotesAsToolTipsInTree,
-      display.m_shownotesastipsintree == TRUE);
+    prefs->SetPref(PWSprefs::ShowNotesAsTooltipsInViews,
+      display.m_shownotesastipsinviews == TRUE);
     prefs->SetPref(PWSprefs::ExplorerTypeTree,
       display.m_explorertree == TRUE);
     prefs->SetPref(PWSprefs::ListViewGridLines,
@@ -644,10 +644,13 @@ void DboxMain::OnOptions()
         (save_preexpirywarndays != display.m_preexpirywarndays))
       RefreshViews();
 
-    if (display.m_shownotesastipsintree == TRUE)
-      m_ctlItemTree.ModifyStyle(TVS_NOTOOLTIPS, TVS_INFOTIP);
-    else
-      m_ctlItemTree.ModifyStyle(TVS_INFOTIP, TVS_NOTOOLTIPS);
+    if (display.m_shownotesastipsinviews == TRUE) {
+      m_ctlItemTree.ActivateND(true);
+      m_ctlItemList.ActivateND(true);
+    } else {
+      m_ctlItemTree.ActivateND(false);
+      m_ctlItemList.ActivateND(false);
+    }
 
     // Changing ExplorerTypeTree changes order of items,
     // which DisplayStatus implcitly depends upon

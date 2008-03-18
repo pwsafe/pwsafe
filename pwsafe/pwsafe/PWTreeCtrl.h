@@ -16,6 +16,7 @@
 
 class DboxMain;
 class CItemData;
+class CInfoDisplay;
 
 // classes for implementing D&D
 class CDDObList;
@@ -39,6 +40,8 @@ public:
     SHORTCUTBASE, WARNEXPIRED_SHORTCUTBASE, EXPIRED_SHORTCUTBASE, SHORTCUT};
 
   void Initialize();
+  void ActivateND(const bool bActivate);
+
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
   CString GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path);
@@ -69,9 +72,11 @@ protected:
   afx_msg void OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *result);
-  afx_msg void OnTreeGetToolTip(NMHDR *pNotifyStruct, LRESULT *result);
   afx_msg void OnBeginDrag(LPNMHDR pnmhdr, LRESULT *pLResult);
   afx_msg void OnDestroy();
+  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+  afx_msg void OnTimer(UINT nIDEvent);
   //
   //afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
   //}}AFX_MSG
@@ -115,4 +120,9 @@ private:
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CMyString &DropGroup);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
   void GetEntryData(CDDObList &out_oblist, CItemData *ci);
+
+  // Notes Display
+  UINT m_nHoverNDTimerID, m_nShowNDTimerID;
+  CPoint m_HoverNDPoint;
+  bool m_bShowNotes, m_bMouseInWindow;
 };

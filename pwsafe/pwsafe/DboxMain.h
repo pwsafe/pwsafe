@@ -64,12 +64,29 @@ DECLARE_HANDLE(HDROP);
 // Simulate Ctrl+F from Find Toolbar "enter"
 #define WM_TOOLBAR_FIND (WM_APP + 50)
 
+/* timer event number used to by PupText.  Here for doc. only
+#define TIMER_PUPTEXT    0x03  */
 // timer event number used to check if the workstation is locked
-#define TIMER_CHECKLOCK 0x04
+#define TIMER_CHECKLOCK  0x04
 // timer event number used to support lock on user-defined timeout
-#define TIMER_USERLOCK 0x05
+#define TIMER_USERLOCK   0x05
 // timer event number used to support Find in PWListCtrl when icons visible
-#define TIMER_FIND 0x06
+#define TIMER_FIND       0x06
+// timer event number used to support display of notes in List & Tree controls
+#define TIMER_ND_HOVER   0x07
+#define TIMER_ND_SHOWING 0x08
+
+/*
+HOVER_TIME_ND       The length of time the pointer must remain stationary
+                    within a tool's bounding rectangle before the tool tip
+                    window appears.
+
+TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
+                   if the pointer is stationary within a tool's bounding
+                   rectangle.
+*/
+#define HOVER_TIME_ND      2000
+#define TIMEINT_ND_SHOWING 5000
 
 // Hotkey value ID
 #define PWS_HOTKEY_ID 5767
@@ -222,6 +239,7 @@ public:
   bool FieldsNotEqual(CMyString a, CMyString b);
   void CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
     const CMyString cs_title, const CMyString cs_user);
+  bool SetNotesWindow(const CPoint point, const bool bVisible = true);
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -580,6 +598,7 @@ private:
 
   // Images in List View
   bool m_bImageInLV;
+  CInfoDisplay *m_pNotesDisplay;
 };
 
 inline bool DboxMain::FieldsNotEqual(CMyString a, CMyString b)
