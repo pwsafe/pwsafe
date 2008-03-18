@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "PWListCtrl.h"
 #include "DboxMain.h"
+#include "InfoDisplay.h"
 
 using namespace std;
 
@@ -19,7 +20,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPWListCtrl::CPWListCtrl()
-  : m_FindTimerID(0), m_csFind(_T(""))
+  : m_FindTimerID(0), m_csFind(_T("")), m_bMouseInWindow(false), 
+  m_nHoverNDTimerID(0), m_nShowNDTimerID(0)
 {
 }
 
@@ -30,10 +32,25 @@ CPWListCtrl::~CPWListCtrl()
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CPWListCtrl)
   ON_MESSAGE(WM_CHAR, OnCharItemlist)
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_WM_MOUSEMOVE()
   ON_WM_DESTROY()
   ON_WM_TIMER()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CPWListCtrl::Initialize()
+{
+  m_pDbx = static_cast<DboxMain *>(GetParent());
+}
+
+void CPWListCtrl::ActivateND(const bool bActivate)
+{
+  m_bShowNotes = bActivate;
+  if (!m_bShowNotes) {
+    m_bMouseInWindow = false;
+  }
+}
 
 LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
 {
@@ -47,12 +64,14 @@ LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
     m_csFind = (TCHAR)wParam;
     bFirst = true;
   }
+
   if (!FindNext(m_csFind, iSubItem) && !bFirst) {
     // Didn't find a match when more than one character
     // Emulate CListCtrl and try again (once) with this matching the first character
     m_csFind = (TCHAR)wParam;
     FindNext(m_csFind, iSubItem);
   }
+
   // Set timer going again
   m_FindTimerID = SetTimer(TIMER_FIND, 1000, NULL);
   return 0L;
@@ -67,10 +86,75 @@ void CPWListCtrl::OnDestroy()
 
 void CPWListCtrl::OnTimer(UINT_PTR nIDEvent)
 {
-  if (nIDEvent == TIMER_FIND) {
-    KillTimer(TIMER_FIND);
-    m_FindTimerID = 0;
+  switch (nIDEvent) {
+    case TIMER_FIND:
+      KillTimer(TIMER_FIND);
+      m_FindTimerID = 0;
+      break;
+    case TIMER_ND_HOVER:
+      KillTimer(m_nHoverNDTimerID);
+      m_nHoverNDTimerID = 0;
+      if (m_pDbx->SetNotesWindow(m_HoverNDPoint)) {
+        if (m_nShowNDTimerID) {
+          KillTimer(m_nShowNDTimerID);
+          m_nShowNDTimerID = 0;
+        }
+        m_nShowNDTimerID = SetTimer(TIMER_ND_SHOWING, TIMEINT_ND_SHOWING, NULL);
+      }
+      break;
+    case TIMER_ND_SHOWING:
+      KillTimer(m_nShowNDTimerID);
+      m_nShowNDTimerID = 0;
+      m_HoverNDPoint = CPoint(0, 0);
+      m_pDbx->SetNotesWindow(m_HoverNDPoint, false);
+      break;
+    default:
+      CListCtrl::OnTimer(nIDEvent);
+      break;
   }
+}
+
+void CPWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
+{
+  if (!m_bShowNotes)
+    return;
+
+  if (m_nHoverNDTimerID) {
+    if (HitTest(m_HoverNDPoint) == HitTest(point))
+      return;
+		KillTimer(m_nHoverNDTimerID);
+		m_nHoverNDTimerID = 0;
+	}
+
+  if (m_nShowNDTimerID) {
+    if (HitTest(m_HoverNDPoint) == HitTest(point))
+      return;
+		KillTimer(m_nShowNDTimerID);
+		m_nShowNDTimerID = 0;
+    m_pDbx->SetNotesWindow(CPoint(0, 0), false);
+	}
+
+  if (!m_bMouseInWindow) {
+    m_bMouseInWindow = true;
+    TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, m_hWnd, 0};
+    VERIFY(TrackMouseEvent(&tme));
+  }
+
+  m_nHoverNDTimerID = SetTimer(TIMER_ND_HOVER, HOVER_TIME_ND, NULL);
+  m_HoverNDPoint = point;
+
+  CListCtrl::OnMouseMove(nFlags, point);
+}
+
+LRESULT CPWListCtrl::OnMouseLeave(WPARAM, LPARAM)
+{
+  KillTimer(m_nHoverNDTimerID);
+  KillTimer(m_nShowNDTimerID);
+  m_nHoverNDTimerID = m_nShowNDTimerID = 0;
+  m_HoverNDPoint = CPoint(0, 0);
+  m_pDbx->SetNotesWindow(m_HoverNDPoint, false);
+  m_bMouseInWindow = false;
+  return 0L;
 }
 
 bool CPWListCtrl::FindNext(const CString &cs_find, const int iSubItem)

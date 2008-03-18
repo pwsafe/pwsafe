@@ -28,6 +28,7 @@
 #include "GeneralMsgBox.h"
 #include "PWFontDialog.h"
 #include "PWFont.h"
+#include "InfoDisplay.h"
 
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
@@ -3029,4 +3030,74 @@ HICON DboxMain::GetEntryIcon(const int nImage) const
     IMAGE_ICON, 0, 0, 
     LR_LOADMAP3DCOLORS | LR_SHARED);
   return hIcon;
+}
+
+bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
+{
+  CItemData *ci(NULL);
+  CPoint target(point);
+  CMyString cs_notes(_T(""));
+  UINT nFlags;
+  HTREEITEM hItem(NULL);
+  int nItem(-1);
+
+  if (m_pNotesDisplay == NULL)
+    return false;
+
+  if (!bVisible) {
+    m_pNotesDisplay->SetWindowText(cs_notes);
+    m_pNotesDisplay->ShowWindow(SW_HIDE);
+    return false;
+  }
+
+  if (m_ctlItemTree.IsWindowVisible()) {
+    m_ctlItemTree.ClientToScreen(&target);
+    hItem = m_ctlItemTree.HitTest(point, &nFlags);
+    if (hItem != NULL &&
+        (nFlags & (TVHT_ONITEM | TVHT_ONITEMBUTTON | TVHT_ONITEMINDENT))) {
+      ci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+    }
+  } else {
+    m_ctlItemList.ClientToScreen(&target);
+    nItem = m_ctlItemList.HitTest(point, &nFlags);
+    if (nItem >= 0) {
+      ci = (CItemData *)m_ctlItemList.GetItemData(nItem);
+    }
+  }
+  target.y += ::GetSystemMetrics(SM_CYCURSOR); // height of cursor
+
+  if (ci != NULL) {
+    if (ci->IsShortcut()) {
+      // This is an shortcut
+      uuid_array_t entry_uuid, base_uuid;
+      ci->GetUUID(entry_uuid);
+      GetShortcutBaseUUID(entry_uuid, base_uuid);
+
+      ItemListIter iter = Find(base_uuid);
+      if (iter != End()) {
+        ci = &iter->second;
+      }
+    }
+    cs_notes = ci->GetNotes();
+  }
+
+  if (cs_notes.GetLength() != 0) {
+    cs_notes.Replace(_T("\r\n"), _T("\n"));
+    cs_notes.Remove(_T('\r'));
+
+    if (cs_notes.GetLength() > 180)
+      cs_notes = cs_notes.Left(180) + _T("[...]");
+  }
+
+  // move window
+  CMyString cs_oldnotes;
+  m_pNotesDisplay->GetWindowText(cs_oldnotes);
+  if (cs_oldnotes != cs_notes)
+    m_pNotesDisplay->SetWindowText(cs_notes);
+
+  m_pNotesDisplay->SetWindowPos(NULL, target.x, target.y, 0, 0,
+                                SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+  m_pNotesDisplay->ShowWindow(cs_notes.GetLength() > 0 ? SW_SHOWNA : SW_HIDE);
+
+  return (cs_notes.GetLength() > 0);
 }

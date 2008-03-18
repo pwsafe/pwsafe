@@ -37,6 +37,7 @@
 #include "PasskeyEntry.h"
 #include "ExpPWListDlg.h"
 #include "GeneralMsgBox.h"
+#include "InfoDisplay.h"
 
 // widget override?
 #include "SysColStatic.h"
@@ -90,7 +91,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bStartHiddenAndMinimized(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
-  m_lastclipboardaction(_T(""))
+  m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
@@ -501,17 +502,20 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_NORMAL);
   m_ctlItemTree.SetImageList(m_pImageList, TVSIL_STATE);
 
-  if (prefs->GetPref(PWSprefs::ShowNotesAsToolTipsInTree))
-    m_ctlItemTree.ModifyStyle(TVS_NOTOOLTIPS, TVS_INFOTIP);
-  else
-    m_ctlItemTree.ModifyStyle(TVS_INFOTIP, TVS_NOTOOLTIPS);
+  if (prefs->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
+    m_ctlItemTree.ActivateND(true);
+    m_ctlItemList.ActivateND(true);
+  } else {
+    m_ctlItemTree.ActivateND(false);
+    m_ctlItemList.ActivateND(false);
+  }
 
   DWORD dw_ExtendedStyle = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP;
   if (prefs->GetPref(PWSprefs::ListViewGridLines))
     dw_ExtendedStyle |= LVS_EX_GRIDLINES;
 
   m_ctlItemList.SetExtendedStyle(dw_ExtendedStyle);
-  m_ctlItemList.Initialize(this);
+  m_ctlItemList.Initialize();
 
   // Override default HeaderCtrl ID of 0
   m_LVHdrCtrl.SetDlgCtrlID(IDC_LIST_HEADER);
@@ -619,6 +623,14 @@ void DboxMain::InitPasswordSafe()
   // Now do widths!
   if (!cs_ListColumns.IsEmpty())
     SetColumnWidths(cs_ListColumnsWidths);
+
+  // create notes info display window
+  m_pNotesDisplay = new CInfoDisplay;
+  if (!m_pNotesDisplay->Create(0, 0, _T(""), this)) {
+    // failed
+    delete m_pNotesDisplay;
+    m_pNotesDisplay = NULL;
+  }
 }
 
 LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)

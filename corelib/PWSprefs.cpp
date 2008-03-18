@@ -79,7 +79,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ClearClipoardOnMinimize"), true, ptApplication},     // application
   {_T("ClearClipoardOneExit"), true, ptApplication},        // application
   {_T("ShowToolbar"), true, ptApplication},                 // application
-  {_T("ShowNotesAsToolTipsInTree"), false, ptApplication},  // application
+  {_T("ShowNotesAsToolTipsInViews"), false, ptApplication}, // application
 };
 
 // Default value = -1 means set at runtime

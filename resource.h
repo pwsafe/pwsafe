@@ -495,7 +495,7 @@
 #define IDC_ADDSCEXPLANATION            1293
 #define IDC_EDITSCEXPLANATION           1294
 #define IDC_STATIC_REMLAST              1295
-#define IDC_DEFNTSHOWASTIPSINTREE       1296
+#define IDC_DEFNTSHOWASTIPSINVIEWS      1296
 
 // Next default values for new objects
 // 

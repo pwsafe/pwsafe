@@ -644,6 +644,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\InfoDisplay.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\KeySend.cpp"
 				>
 			</File>
@@ -918,6 +922,10 @@
 			</File>
 			<File
 				RelativePath=".\ImportXMLDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\InfoDisplay.h"
 				>
 			</File>
 			<File

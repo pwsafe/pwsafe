@@ -100,7 +100,7 @@ void CPopupText::OnPaint()
   CString s;
   GetWindowText(s);
   CPaintDC dc(this);
-  DrawText(dc, s, rc, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+  DrawText(dc, s, rc, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 }
 
 //////////////////
@@ -112,7 +112,7 @@ BOOL CPopupText::PreCreateWindow(CREATESTRUCT& cs)
   if (sClassName.IsEmpty())
     sClassName = AfxRegisterWndClass(0);
   cs.lpszClass = sClassName;
-  cs.style = WS_POPUP|WS_BORDER;
+  cs.style = WS_POPUP | WS_BORDER;
   cs.dwExStyle |= WS_EX_TOOLWINDOW;
   return CWnd::PreCreateWindow(cs);
 }
@@ -133,10 +133,10 @@ void CPopupText::ShowDelayed(UINT msec)
 {
   if (msec == 0) {
     // no delay: show it now
-    OnTimer(1);
+    OnTimer(TIMER_PUPTEXT);
   } else {
     // delay: set time
-    SetTimer(1, msec, NULL);
+    SetTimer(TIMER_PUPTEXT, msec, NULL);
   }
 }
 
@@ -146,7 +146,7 @@ void CPopupText::ShowDelayed(UINT msec)
 void CPopupText::Cancel()
 {
   if (m_hWnd) {
-    KillTimer(1);
+    KillTimer(TIMER_PUPTEXT);
     ShowWindow(SW_HIDE);
   }
 }
@@ -159,5 +159,5 @@ void CPopupText::OnTimer(UINT_PTR )
   ShowWindow(SW_SHOWNA);
   Invalidate();
   UpdateWindow();
-  KillTimer(1);
+  KillTimer(TIMER_PUPTEXT);
 }

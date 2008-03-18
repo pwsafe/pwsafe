@@ -6,10 +6,19 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+/*
+*  Use of CInfoDisplay to replace MS's broken ToolTips support.
+*  Based on CInfoDisplay class taken from Asynch Explorer by
+*  Joseph M. Newcomer [MVP]; http://www.flounder.com
+*  Additional enhancements to the use of this code have been made to 
+*  allow for delayed showing of the display and for a limited period.
+*/
+
 #include "stdafx.h"
 #include "PWTreeCtrl.h"
 #include "DboxMain.h"
 #include "DDSupport.h"
+#include "InfoDisplay.h"
 #include "corelib/ItemData.h"
 #include "corelib/MyString.h"
 #include "corelib/Util.h"
@@ -36,7 +45,7 @@ static const TCHAR GROUP_SEP = TCHAR('.');
 static const char *OLE_HDR_FMT = "%08x%02x%08x";
 static const int OLE_HDR_LEN = 18;
 
-/**
+/*
 * Following classes are used to "Fake" multiple inheritance:
 * Ideally, CPWTreeCtrl should derive from CTreeCtrl, COleDropTarget
 * and COleDropSource. However, since m'soft, in their infinite
@@ -182,9 +191,10 @@ private:
 */
 
 CPWTreeCtrl::CPWTreeCtrl()
-  : m_isRestoring(false), m_bWithinThisInstance(true)
+  : m_isRestoring(false), m_bWithinThisInstance(true),
+  m_bMouseInWindow(false), m_nHoverNDTimerID(0), m_nShowNDTimerID(0)
 {
-  // Register a clipboard format for column drag & drop. 
+  // Register a clipboard format for column drag & drop.
   // Note that it's OK to register same format more than once:
   // "If a registered format with the specified name already exists,
   // a new format is not registered and the return value identifies the existing format."
@@ -219,8 +229,10 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_NOTIFY_REFLECT(TVN_BEGINRDRAG, OnBeginDrag)
   ON_NOTIFY_REFLECT(TVN_ITEMEXPANDED, OnExpandCollapse)
   ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelected)
-  ON_NOTIFY_REFLECT(TVN_GETINFOTIP, OnTreeGetToolTip)
   ON_WM_DESTROY()
+  ON_WM_TIMER()
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_WM_MOUSEMOVE()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -229,8 +241,16 @@ void CPWTreeCtrl::Initialize()
   m_pDbx = static_cast<DboxMain *>(GetParent());
 
   // This should really be in OnCreate(), but for some reason,
-  // was never called.
+  // it was never called.
   m_DropTarget->Register(this);
+}
+
+void CPWTreeCtrl::ActivateND(const bool bActivate)
+{
+  m_bShowNotes = bActivate;
+  if (!m_bShowNotes) {
+    m_bMouseInWindow = false;
+  }
 }
 
 void CPWTreeCtrl::OnDestroy()
@@ -243,7 +263,7 @@ void CPWTreeCtrl::OnDestroy()
   m_DropTarget->Revoke();
 }
 
-BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg) 
+BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
 {
   // When an item is being edited make sure the edit control
   // receives certain important key strokes
@@ -311,7 +331,7 @@ DROPEFFECT CPWTreeCtrl::OnDragOver(CWnd* pWnd , COleDataObject* /* pDataObject *
   }
 
   hHitItem = pDestTreeCtrl->HitTest(point);
- 
+
   // Are we hovering over the same entry?
   if (hHitItem == NULL || hHitItem != m_hitemHover) {
     // No - reset hover item and ticking
@@ -434,7 +454,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
   If preferences ShowUsernameInTree and ShowPasswordInTree are set:
   3.   title [username] {password}
 
-  Neither Title, Username or Password may contain square or curly brackes to be 
+  Neither Title, Username or Password may contain square or curly brackes to be
   edited in place and visible.
   */
   HTREEITEM ti = ptvinfo->item.hItem;
@@ -460,7 +480,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     if (prefs->GetPref(PWSprefs::ShowPasswordInTree) &&
       currentPassword.FindOneOf(_T("[]{}")) != -1)
       return;
-  }  
+  }
   // Allow in-place editing
   *pLResult = FALSE;
 }
@@ -839,7 +859,7 @@ bool CPWTreeCtrl::MoveItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop)
   LPARAM itemData = tvstruct.item.lParam;
   tvstruct.hParent = hitemDrop;
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree)) 
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree))
     tvstruct.hInsertAfter = TVI_LAST;
   else
     tvstruct.hInsertAfter = TVI_SORT;
@@ -1201,7 +1221,7 @@ exit:
   return retval;
 }
 
-void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPWTreeCtrl::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 {
   // This sets the whole D&D mechanism in motion...
   if (pNMHDR->code == TVN_BEGINDRAG)
@@ -1274,25 +1294,73 @@ void CPWTreeCtrl::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *)
   }
 }
 
-void CPWTreeCtrl::OnTreeGetToolTip(NMHDR *pNotifyStruct, LRESULT *pResult)
+void CPWTreeCtrl::OnTimer(UINT_PTR nIDEvent)
 {
-  NMTVGETINFOTIP *pGetInfoTip = (NMTVGETINFOTIP *)pNotifyStruct;
-
-  CMyString cs_text(_T(""));
-  HTREEITEM hti = pGetInfoTip->hItem;
-  if (hti != NULL) {
-    CItemData *ci = (CItemData *)GetItemData(hti);
-    if (ci != NULL)
-      cs_text = ci->GetNotes();
+  switch (nIDEvent) {
+    case TIMER_ND_HOVER:
+      KillTimer(m_nHoverNDTimerID);
+      m_nHoverNDTimerID = 0;
+      if (m_pDbx->SetNotesWindow(m_HoverNDPoint)) {
+        if (m_nShowNDTimerID) {
+          KillTimer(m_nShowNDTimerID);
+          m_nShowNDTimerID = 0;
+        }
+        m_nShowNDTimerID = SetTimer(TIMER_ND_SHOWING, TIMEINT_ND_SHOWING, NULL);
+      }
+      break;
+    case TIMER_ND_SHOWING:
+      KillTimer(m_nShowNDTimerID);
+      m_nShowNDTimerID = 0;
+      m_HoverNDPoint = CPoint(0, 0);
+      m_pDbx->SetNotesWindow(m_HoverNDPoint, false);
+      break;
+    default:
+      CTreeCtrl::OnTimer(nIDEvent);
+      break;
   }
-  cs_text = cs_text.Left(pGetInfoTip->cchTextMax - 1);
-#if _MSC_VER >= 1400
-  _tcscpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, cs_text);
-#else
-  _tcscpy(pGetInfoTip->pszText, cs_text);
-#endif
+}
 
-  *pResult = 0;
+void CPWTreeCtrl::OnMouseMove(UINT nFlags, CPoint point)
+{
+  if (!m_bShowNotes)
+    return;
+
+  if (m_nHoverNDTimerID) {
+    if (HitTest(m_HoverNDPoint) == HitTest(point))
+      return;
+		KillTimer(m_nHoverNDTimerID);
+		m_nHoverNDTimerID = 0;
+	}
+
+  if (m_nShowNDTimerID) {
+    if (HitTest(m_HoverNDPoint) == HitTest(point))
+      return;
+		KillTimer(m_nShowNDTimerID);
+		m_nShowNDTimerID = 0;
+    m_pDbx->SetNotesWindow(CPoint(0, 0), false);
+	}
+
+  if (!m_bMouseInWindow) {
+    m_bMouseInWindow = true;
+    TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, m_hWnd, 0};
+    VERIFY(TrackMouseEvent(&tme));
+  }
+
+  m_nHoverNDTimerID = SetTimer(TIMER_ND_HOVER, HOVER_TIME_ND, NULL);
+  m_HoverNDPoint = point;
+
+  CTreeCtrl::OnMouseMove(nFlags, point);
+}
+
+LRESULT CPWTreeCtrl::OnMouseLeave(WPARAM, LPARAM)
+{
+  KillTimer(m_nHoverNDTimerID);
+  KillTimer(m_nShowNDTimerID);
+  m_nHoverNDTimerID = m_nShowNDTimerID = 0;
+  m_HoverNDPoint = CPoint(0, 0);
+  m_pDbx->SetNotesWindow(m_HoverNDPoint, false);
+  m_bMouseInWindow = false;
+  return 0L;
 }
 
 void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)

@@ -49,7 +49,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_ALWAYSONTOP, m_alwaysontop);
   DDX_Check(pDX, IDC_DEFUNSHOWINTREE, m_showusernameintree);
   DDX_Check(pDX, IDC_DEFPWSHOWINTREE, m_showpasswordintree);
-  DDX_Check(pDX, IDC_DEFNTSHOWASTIPSINTREE, m_shownotesastipsintree);
+  DDX_Check(pDX, IDC_DEFNTSHOWASTIPSINVIEWS, m_shownotesastipsinviews);
   DDX_Check(pDX, IDC_DEFEXPLORERTREE, m_explorertree);
   DDX_Check(pDX, IDC_DEFPWSHOWINEDIT, m_pwshowinedit);
   DDX_Check(pDX, IDC_DEFNOTESSHOWINEDIT, m_notesshowinedit);
