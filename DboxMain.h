@@ -582,6 +582,7 @@ private:
   void SetupColumnChooser(const bool bShowHide);
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);
+  void RegistryAnonymity();
 
   static const struct UICommandTableEntry {
     UINT ID;

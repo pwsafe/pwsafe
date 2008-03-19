@@ -2380,8 +2380,13 @@ void DboxMain::OnOK()
 
   //Store current filename for next time...
   if (prefs->GetPref(PWSprefs::MaxMRUItems) == 0) {
+    // Ensure Application preferences have been changed for a rewrite
     prefs->SetPref(PWSprefs::CurrentFile, _T(""));
     prefs->SetPref(PWSprefs::CurrentBackup, _T(""));
+    prefs->ForceWriteApplicationPreferences();
+
+    // Naughty Windows saves information in the registry for every Open and Save!
+    RegistryAnonymity();
   } else
   if (!m_core.GetCurFile().IsEmpty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
@@ -2509,4 +2514,83 @@ void DboxMain::SetGroupDisplayStatus(const vector<bool> &displaystatus)
       i++;
     }
   }
+}
+
+void DboxMain::RegistryAnonymity()
+{
+  // For the paranoid - definitely remove information from Registry of previous
+  // directory containing PWS databases!
+  // Certainly for WinXP but should do no harm on other versions.
+  const CString csSubkey = _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32");
+
+  HKEY hSubkey;
+  LONG dw;
+
+  // First deal with information saved by Windows Common Dialog for Open/Save of
+  // the file types used by PWS in its CFileDialog
+  dw = RegOpenKeyEx(HKEY_CURRENT_USER, csSubkey + _T("\\OpenSaveMRU"), NULL,
+                    KEY_ALL_ACCESS, &hSubkey);
+
+  if (dw == ERROR_SUCCESS) {
+    // Delete entries relating to PWS
+    app.DelRegTree(hSubkey, _T("psafe3"));
+    app.DelRegTree(hSubkey, _T("ibak"));
+    app.DelRegTree(hSubkey, _T("bak"));
+    app.DelRegTree(hSubkey, _T("*"));
+
+    dw = RegCloseKey(hSubkey);
+    ASSERT(dw == ERROR_SUCCESS);
+  }
+
+  // Now deal with Windows remembering the last directory visited by PWS
+  dw = RegOpenKeyEx(HKEY_CURRENT_USER, csSubkey + _T("\\LastVisitedMRU"), NULL,
+                      KEY_ALL_ACCESS, &hSubkey);
+
+  if (dw == ERROR_SUCCESS) {
+    CString cs_AppName;
+    TCHAR szMRUList[_MAX_PATH], szAppNameAndDir[_MAX_PATH * 2];
+    TCHAR szMRUListMember[2];
+    DWORD dwMRUListLength, dwAppNameAndDirLength, dwType(0);
+    int iNumberOfMRU, iIndex;
+    dwMRUListLength = sizeof(szMRUList);
+
+    // Get the MRU List
+    dw = RegQueryValueEx(hSubkey, _T("MRUList"), NULL,
+                         &dwType, (LPBYTE)szMRUList, &dwMRUListLength);
+    if (dw == ERROR_SUCCESS) {
+      iNumberOfMRU = dwMRUListLength / sizeof(TCHAR);
+
+      // Search the MRU List
+      szMRUListMember[1] = _T('\0');
+      for (iIndex = 0; iIndex < iNumberOfMRU; iIndex++) {
+        szMRUListMember[0] = szMRUList[iIndex];
+
+        dwAppNameAndDirLength = sizeof(szAppNameAndDir);
+        // Note: these Registry entries are stored in RG_BINARY format as 2 concatenated
+        // Unicode null terminated strings: L"application" L"Last fully qualified Directory"
+        dw = RegQueryValueEx(hSubkey, szMRUListMember, 0, &dwType,
+                             (LPBYTE)szAppNameAndDir, &dwAppNameAndDirLength);
+        if (dw == ERROR_SUCCESS) {
+          cs_AppName = szAppNameAndDir;
+          if (cs_AppName.MakeLower() == _T("pwsafe.exe")) {
+            dw = RegDeleteValue(hSubkey, szMRUListMember);
+            if (dw == ERROR_SUCCESS) {
+              // Remove deleted entry from MRU List and rewrite it
+              CString cs_NewMRUList(szMRUList);
+              iNumberOfMRU = cs_NewMRUList.Delete(iIndex, 1);
+              LPTSTR pszNewMRUList = cs_NewMRUList.GetBuffer(iNumberOfMRU);
+              dw = RegSetValueEx(hSubkey, _T("MRUList"), 0, REG_SZ, (LPBYTE)pszNewMRUList,
+                            (iNumberOfMRU + 1) * sizeof(TCHAR));
+              ASSERT(dw == ERROR_SUCCESS);
+              cs_NewMRUList.ReleaseBuffer();
+            }
+            break;
+          }
+        }
+      }
+    }
+    dw = RegCloseKey(hSubkey);
+    ASSERT(dw == ERROR_SUCCESS);
+  }
+  return;
 }
