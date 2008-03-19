@@ -116,6 +116,7 @@ public:
   void ClearDBprefsChanged() {m_prefs_changed[DB_PREF] = false;}
   void ClearAPPprefsChanged() {m_prefs_changed[APP_PREF] = false;}
   void SetDatabasePrefsToDefaults();
+  void ForceWriteApplicationPreferences() {m_prefs_changed[APP_PREF] = true;}
 
   bool GetPref(BoolPrefs pref_enum) const;
   unsigned int GetPref(IntPrefs pref_enum) const;
