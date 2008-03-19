@@ -2302,7 +2302,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   if (it == m_MapUICommandTable.end()) {
     // Don't have it - allow by default
-    ASSERT(0); // means m_UICommandTable is out of date!
+    TRACE(_T("m_UICommandTable is out of date - i18n issue?"));
     return TRUE;
   }
 

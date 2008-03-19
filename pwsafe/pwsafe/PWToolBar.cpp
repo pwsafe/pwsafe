@@ -665,7 +665,8 @@ void CPWToolBar::LoadDefaultToolBar(const int toolbarMode)
       CString cs_buttondesc;
       cs_buttondesc.LoadString(m_MainToolBarIDs[i]);
       int iPos = cs_buttondesc.ReverseFind(_T('\n'));
-      ASSERT(iPos >= 0);
+      if (iPos < 0) // could happen with incomplete translation
+        continue;
       cs_buttondesc = cs_buttondesc.Right(cs_buttondesc.GetLength() - iPos - 1);
       int idesclen = cs_buttondesc.GetLength();
       TCHAR *szDescription = cs_buttondesc.GetBuffer(idesclen);

@@ -244,14 +244,11 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   const CString cs_ExePath(PWSdirs::GetExeDir());
   CString cs_ResPath;
-
-  cs_ResPath.Format(_T("%spwsafe%s_%s.dll"), cs_ExePath, cs_LANG, cs_CTRY);
+  const CString format_string = (cs_CTRY.IsEmpty()) ?
+    _T("%spwsafe%s%s.dll") : _T("%spwsafe%s_%s.dll");
+  cs_ResPath.Format(format_string, cs_ExePath, cs_LANG, cs_CTRY);
   m_hInstResDLL = LoadLibrary(cs_ResPath);
 
-  if(m_hInstResDLL == NULL) {
-    cs_ResPath.Format(_T("%spwsafe%s.dll"), cs_ExePath, cs_LANG);
-    m_hInstResDLL = LoadLibrary(cs_ResPath);
-  }
   if(m_hInstResDLL == NULL) {
     TRACE(_T("%s Could not load language DLLs - using embedded resources.\n"),
           PWSUtil::GetTimeStamp());
@@ -260,8 +257,10 @@ void ThisMfcApp::LoadLocalizedStuff()
     GetVersionInfoFromFile(cs_ResPath, MajorMinor, BuildRevision);
 
     if (MajorMinor != GetFileVersionMajorMinor()) { // ignore build for now
-      TRACE(_T("%s Executable/Resource-Only DLL (%s) version mismatch %d/%d.\n"), 
-            PWSUtil::GetTimeStamp(), cs_ResPath, GetFileVersionMajorMinor(), MajorMinor);
+      CString oops;
+      oops.Format(_T("Executable/language DLL (%s) version mismatch %d/%d.\n"), 
+                  cs_ResPath, GetFileVersionMajorMinor(), MajorMinor);
+      AfxMessageBox(oops);
       FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
