@@ -6,8 +6,23 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #ifndef _TYPEDEFS_H
+/**
+* Silly wrapper to abstract away the difference between a Unicode
+* (wchar_t) and non-Unicode (char) std::string
+*
+*/
+
+#include <string>
+
+#ifdef UNICODE
+typedef std::wstring stringT;
+typedef wchar_t charT;
+#else
+typedef std::string stringT;
+typedef char charT;
+#endif
+
 #ifdef _WIN32
-//Some extra typedefs -- I'm addicted to typedefs
 typedef char    int8;
 typedef short   int16;
 typedef int     int32;
@@ -20,7 +35,9 @@ typedef unsigned __int64 uint64;
 
 typedef unsigned __int64   ulong64;
 typedef unsigned long      ulong32;
-#else
+
+typedef unsigned int uint;
+#else /* !defined(_WIN32) */
 #include <sys/types.h>
 typedef int8_t  int8;
 typedef int16_t int16;
@@ -31,5 +48,12 @@ typedef u_int8_t  uint8;
 typedef u_int16_t uint16;
 typedef u_int32_t uint32;
 typedef u_int64_t uint64;
+
+#ifdef UNICODE
+#define _T(x) L ## x
+#else
+#define _T(x) x
 #endif
-#endif // _TYPEDEFS_H
+#endif /* _WIN32 */
+          
+#endif /* _TYPEDEFS_H */
