@@ -466,20 +466,14 @@ int PWSfileV3::WriteHeader()
   // Write out who saved it!
   {
     const SysInfo *si = SysInfo::GetInstance();
-    CString user = si->GetRealUser();
-    CString sysname = si->GetRealHost();
-    // Following DEPRECATED in format 0x0302
-#if 0
-    CString cs_who;
-    cs_who.Format(_T("%04x%s%s"), m_user.GetLength(), m_user, m_sysname);
-    numWritten = WriteCBC(HDR_LASTUPDATEUSERHOST, cs_who);
-#endif
-    numWritten = WriteCBC(HDR_LASTUPDATEUSER, user);
+    stringT user = si->GetRealUser();
+    stringT sysname = si->GetRealHost();
+    numWritten = WriteCBC(HDR_LASTUPDATEUSER, user.c_str());
     if (numWritten > 0)
-      numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname);
+      numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname.c_str());
     if (numWritten <= 0) { status = FAILURE; goto end; }
-    m_hdr.m_lastsavedby = user;
-    m_hdr.m_lastsavedon = sysname;
+    m_hdr.m_lastsavedby = user.c_str();
+    m_hdr.m_lastsavedon = sysname.c_str();
   }
 
   // Write out what saved it!

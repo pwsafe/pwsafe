@@ -19,7 +19,7 @@
 // The "effecitve" is initially set to be == the real value, but
 // may be overridden by the relevant SetEffective*() member function.
 //-----------------------------------------------------------------
-#include "MyString.h"
+#include "os/typedefs.h"
 
 class SysInfo
 {
@@ -27,17 +27,16 @@ public:
   static SysInfo *GetInstance(); // singleton
   static void DeleteInstance();
 
-  static CString GetEnv(const char *env); // wrapper for ::getenv()
   static bool IsUnderU3();
 
-  void SetEffectiveUser(const CString &u) {m_euser = u;}
-  void SetEffectiveHost(const CString &h) {m_esysname = h;}
+  void SetEffectiveUser(const stringT &u) {m_euser = u;}
+  void SetEffectiveHost(const stringT &h) {m_esysname = h;}
 
-  const CString &GetRealUser() const {return m_ruser;}
-  const CString &GetRealHost() const {return m_rsysname;}
-  const CString &GetEffectiveUser() const {return m_euser;}
-  const CString &GetEffectiveHost() const {return m_esysname;}
-  const CString &GetCurrentPID() const {return m_ProcessID;}
+  const stringT &GetRealUser() const {return m_ruser;}
+  const stringT &GetRealHost() const {return m_rsysname;}
+  const stringT &GetEffectiveUser() const {return m_euser;}
+  const stringT &GetEffectiveHost() const {return m_esysname;}
+  const stringT &GetCurrentPID() const {return m_ProcessID;}
 
 private:
   SysInfo();
@@ -45,9 +44,9 @@ private:
 
   static SysInfo *self;
 
-  CString m_ruser, m_rsysname;
-  CString m_euser, m_esysname;
-  CString m_ProcessID;
+  stringT m_ruser, m_rsysname;
+  stringT m_euser, m_esysname;
+  stringT m_ProcessID;
 };
 #endif /* __SYSINFO_H */
 //-----------------------------------------------------------------------------

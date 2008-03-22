@@ -15,7 +15,6 @@
 //
 //-----------------------------------------------------------------------------
 #include "MyString.h"
-#include "SysInfo.h"
 #include <stack>
 
 class PWSdirs
@@ -35,8 +34,7 @@ public:
   void Pop(); // cd to last dir, nop if stack empty
 
 private:
-  static CString GetEnv(const char *env) {return SysInfo::GetEnv(env);}
-  static CString GetMFNDir(); // wrapper for ::GetModuleFileName()
+static CString GetMFNDir(); // wrapper for ::GetModuleFileName()
   std::stack<CString> dirs;
 };
 #endif /* __PWSDIRS_H */

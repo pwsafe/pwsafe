@@ -6,7 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include <direct.h> // for _getcwd & _chdir
-#include <stdlib.h> // for getenv()
+#include "os/env.h"
 #include "PWSdirs.h"
 /**
 * Provide directories used by application
@@ -46,7 +46,7 @@ CString PWSdirs::GetMFNDir()
 CString PWSdirs::GetSafeDir()
 {
   // returns empty string unless U3 environment detected
-  CString retval(GetEnv("U3_DEVICE_DOCUMENT_PATH"));
+  CString retval(pws_os::getenv("U3_DEVICE_DOCUMENT_PATH", true).c_str());
   if (!retval.IsEmpty())
     retval += "My Safes\\";
   return retval;
@@ -55,10 +55,10 @@ CString PWSdirs::GetSafeDir()
 CString PWSdirs::GetConfigDir()
 {
   // PWS_PREFSDIR overrides all:
-  CString retval(GetEnv("PWS_PREFSDIR"));
+  CString retval(pws_os::getenv("PWS_PREFSDIR", true).c_str());
   if (retval.IsEmpty()) {
     // returns directory of executable unless U3 environment detected
-    retval= GetEnv("U3_APP_DATA_PATH");
+    retval = pws_os::getenv("U3_APP_DATA_PATH", true).c_str();
     if (retval.IsEmpty())
       retval = GetMFNDir();
   }
@@ -67,9 +67,9 @@ CString PWSdirs::GetConfigDir()
 
 CString PWSdirs::GetXMLDir()
 {
-  CString retval(GetEnv("U3_APP_DATA_PATH"));
+  CString retval(pws_os::getenv("U3_APP_DATA_PATH", true).c_str());
   if (!retval.IsEmpty())
-    retval += "\\xml\\";
+    retval += _T("\\xml\\");
   else {
     retval = GetMFNDir();
   }
@@ -78,7 +78,7 @@ CString PWSdirs::GetXMLDir()
 
 CString PWSdirs::GetHelpDir()
 {
-  CString retval(GetEnv("U3_DEVICE_EXEC_PATH"));
+  CString retval(pws_os::getenv("U3_DEVICE_EXEC_PATH", true).c_str());
   if (retval.IsEmpty()) {
     retval = GetMFNDir();
   }
@@ -87,7 +87,7 @@ CString PWSdirs::GetHelpDir()
 
 CString PWSdirs::GetExeDir()
 {
-  CString retval(GetEnv("U3_HOST_EXEC_PATH"));
+  CString retval(pws_os::getenv("U3_HOST_EXEC_PATH", true).c_str());
   if (retval.IsEmpty()) {
     retval = GetMFNDir();
   }

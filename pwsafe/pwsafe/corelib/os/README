@@ -1,0 +1,4 @@
+As the name implies, this subdirectory contains all OS-specific functionality.
+The header files provide a common interface, and each subdirectory contains
+the corresponding implementation.
+

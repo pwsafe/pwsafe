@@ -14,7 +14,7 @@
 #include "MyString.h"
 #include "Fish.h"
 #include "PwsPlatform.h"
-#include "typedefs.h"
+#include "os/typedefs.h"
 
 #define SaltLength 20
 #define StuffSize 10

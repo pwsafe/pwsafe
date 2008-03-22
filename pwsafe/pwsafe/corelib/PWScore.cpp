@@ -8,6 +8,7 @@
 // file PWScore.cpp
 //-----------------------------------------------------------------------------
 
+#include "os/typedefs.h"
 #include "PWScore.h"
 #include "corelib.h"
 #include "BlowFish.h"
@@ -33,18 +34,14 @@ using namespace std;
 
 // hide w_char/char differences where possible:
 #ifdef UNICODE
-typedef std::vector<std::wstring>::const_iterator vciter;
-typedef std::vector<std::wstring>::iterator viter;
-typedef std::wstring stringT;
 typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
 #else
-typedef std::vector<std::string>::const_iterator vciter;
-typedef std::vector<std::string>::iterator viter;
-typedef std::string stringT;
 typedef std::ifstream ifstreamT;
 typedef std::ofstream ofstreamT;
 #endif
+typedef std::vector<stringT>::const_iterator vciter;
+typedef std::vector<stringT>::iterator viter;
 
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];

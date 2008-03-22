@@ -406,6 +406,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\os\windows\env.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hmac.cpp"
 				>
 			</File>

@@ -100,9 +100,9 @@ void DboxMain::MakeRandomPassword(CMyString& password, PWPolicy &pwp)
 
   CPasswordCharPool pwchars(passwordpolicy.m_pwdefaultlength,
                             numlowercase, numuppercase, numdigits, numsymbols,
-                            passwordpolicy.m_pwusehexdigits,
-                            passwordpolicy.m_pweasyvision,
-                            passwordpolicy.m_pwmakepronounceable);
+                            passwordpolicy.m_pwusehexdigits == TRUE,
+                            passwordpolicy.m_pweasyvision == TRUE,
+                            passwordpolicy.m_pwmakepronounceable == TRUE);
 
   password = pwchars.MakePassword();
 

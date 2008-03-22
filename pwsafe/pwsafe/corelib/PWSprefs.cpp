@@ -6,6 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include "PWSprefs.h"
+#include "os/typedefs.h"
 #include "corelib.h"
 #include <AfxWin.h> // for AfxGetApp()
 #include <sstream>
@@ -556,18 +557,18 @@ void PWSprefs::UpdateTimeStamp()
   }
 }
 
-static void xmlify( TCHAR t, CString &name)
+static void xmlify(charT t, stringT &name)
 {
   if (!_istalpha(name[0]))
     name = t + name;
-  int N = name.GetLength();
+  int N = name.length();
   for (int i = 0; i < N; i++)
     if (!_istalnum(name[i]) &&
-        name[i] != TCHAR('_') &&
-        name[i] != TCHAR('-') &&
-        name[i] != TCHAR(':') &&
-        name[i] != TCHAR('.'))
-      name.SetAt(i, TCHAR('_'));
+        name[i] != charT('_') &&
+        name[i] != charT('-') &&
+        name[i] != charT(':') &&
+        name[i] != charT('.'))
+      name[i] = charT('_');
 }
 
 void PWSprefs::InitializePreferences()
@@ -615,11 +616,12 @@ void PWSprefs::InitializePreferences()
   // ensure that they start with letter,
   // and otherwise conforms with
   // http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
-  CString hn = si->GetEffectiveHost();
-  xmlify('H', hn);
-  CString un = si->GetEffectiveUser();
-  xmlify('u', un);
-  m_csHKCU =  hn + _T("\\") + un;
+  stringT hn = si->GetEffectiveHost();
+  xmlify(charT('H'), hn);
+  stringT un = si->GetEffectiveUser();
+  xmlify(charT('u'), un);
+  m_csHKCU =  hn.c_str(); m_csHKCU += _T("\\");
+  m_csHKCU += un.c_str();
   // set up other keys
   m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
   m_csHKCU_POS  = m_csHKCU + _T("\\Position");
