@@ -340,9 +340,9 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
   }
 #else
   const SysInfo *si = SysInfo::GetInstance();
-  const CString user = si->GetRealUser();
-  const CString host = si->GetRealHost();
-  const CString pid = si->GetCurrentPID();
+  const stringT user = si->GetRealUser();
+  const stringT host = si->GetRealHost();
+  const stringT pid = si->GetCurrentPID();
 
   TCHAR fname[_MAX_FNAME];
   TCHAR ext[_MAX_EXT];
@@ -361,11 +361,11 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     // potential for a TOCTTOU issue here. Worse case, lock
     // will fail.
 
-    const CString cs_me = user + _T("@") + host + _T(":") + pid;
+    const stringT cs_me = user + _T("@") + host + _T(":") + pid;
     GetLockFileName(filename, lock_filename);
     GetLocker(lock_filename, locker);
 
-    if (cs_me == CString(locker)) {
+    if (cs_me == stringT(locker)) {
       LockCount++;
       TRACE(_T("%s Lock1  ; Count now %d; File: %s%s\n"), 
         PWSUtil::GetTimeStamp(), LockCount, fname, ext);
@@ -410,14 +410,14 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     DWORD numWrit, sumWrit;
     BOOL write_status;
     write_status = ::WriteFile(lockFileHandle,
-                               user, user.GetLength() * sizeof(TCHAR),
+                               CString(user.c_str()), user.length() * sizeof(TCHAR),
                                &sumWrit, NULL);
     write_status &= ::WriteFile(lockFileHandle,
                                 _T("@"), sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-                                host, host.GetLength() * sizeof(TCHAR),
+                                CString(host.c_str()), host.length() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
@@ -425,7 +425,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
                                 &numWrit, NULL);
     sumWrit += numWrit;
     write_status &= ::WriteFile(lockFileHandle,
-                                pid, pid.GetLength() * sizeof(TCHAR),
+                                CString(pid.c_str()), pid.length() * sizeof(TCHAR),
                                 &numWrit, NULL);
     sumWrit += numWrit;
     ASSERT(sumWrit > 0);
@@ -446,15 +446,15 @@ void PWSfile::UnlockFile(const CMyString &filename,
   _unlink(lock_filename);
 #else
   const SysInfo *si = SysInfo::GetInstance();
-  const CString user = si->GetRealUser();
-  const CString host = si->GetRealHost();
-  const CString pid = si->GetCurrentPID();
+  const stringT user = si->GetRealUser();
+  const stringT host = si->GetRealHost();
+  const stringT pid = si->GetCurrentPID();
 
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
   if (lockFileHandle != INVALID_HANDLE_VALUE) {
     CMyString lock_filename, locker;
-    const CString cs_me = user + _T("@") + host + _T(":") + pid;
+    const stringT cs_me = user + _T("@") + host + _T(":") + pid;
     GetLockFileName(filename, lock_filename);
     GetLocker(lock_filename, locker);
 
@@ -466,7 +466,7 @@ void PWSfile::UnlockFile(const CMyString &filename,
     _tsplitpath(lock_filename, NULL, NULL, fname, ext);
 #endif
 
-    if (cs_me == CString(locker) && LockCount > 1) {
+    if (cs_me == stringT(locker) && LockCount > 1) {
       LockCount--;
       TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
         PWSUtil::GetTimeStamp(), LockCount, fname, ext);

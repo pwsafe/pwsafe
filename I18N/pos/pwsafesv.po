@@ -1,37 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# This file is distributed under the same license as the Password Safe package.
+# Björn Nordwall <pro.bn@telia.com>, 2007.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 3.11\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-03-16 17:25+0100\n"
+"Last-Translator: Björn Nordwall <nordwall.b@telia.com>\n"
+"Language-Team: Swedish <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-Country: SWEDEN\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -46,7 +29,8 @@ msgstr ""
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-#: ID:315,#: ID:315,
+#: ID:315,#:
+#: ID:315,
 msgid " "
 msgstr " "
 
@@ -116,10 +100,6 @@ msgstr " 'Lösenordshistorik'"
 #: ID:338,
 msgid " 'Password Modification Time'"
 msgstr " 'Lösenordets ändringstidpunkt'"
-
-#: ID:347,
-msgid " 'Password Policy'"
-msgstr ""
 
 #: ID:337,
 msgid " 'Password'"
@@ -232,13 +212,23 @@ msgstr "%1 kunde inte hittas."
 
 #: ID:3860,
 #, c-format
-msgid "%1: %2\nContinue running script?"
-msgstr "%1: %2\nFortsätta köra skriptet?"
+msgid ""
+"%1: %2\n"
+"Continue running script?"
+msgstr ""
+"%1: %2\n"
+"Fortsätta köra skriptet?"
 
 #: ID:3859,
 #, c-format
-msgid "%1\nCannot find this file.\nPlease verify that the correct path and file name are given."
-msgstr "%1\nKan inte hitta denna fil.\nVerifiera att rätt sökväg och filnamn har angetts."
+msgid ""
+"%1\n"
+"Cannot find this file.\n"
+"Please verify that the correct path and file name are given."
+msgstr ""
+"%1\n"
+"Kan inte hitta denna fil.\n"
+"Verifiera att rätt sökväg och filnamn har angetts."
 
 #: ID:328,
 #, c-format
@@ -257,8 +247,14 @@ msgstr "%d av %d matchar."
 
 #: ID:334,
 #, c-format
-msgid "%s \n\nCan't open file. Please choose another."
-msgstr "%s \n\nKan inte öppna filen. Välj en annan."
+msgid ""
+"%s \n"
+"\n"
+"Can't open file. Please choose another."
+msgstr ""
+"%s \n"
+"\n"
+"Kan inte öppna filen. Välj en annan."
 
 #: ID:343,
 #, c-format
@@ -277,99 +273,216 @@ msgstr "%s%s%s_Rapport.txt"
 
 #: ID:191,
 #, c-format
-msgid "%s\n%s\nline %d column %d"
-msgstr "%s\n%s\nrad %d kolumn %d"
+msgid ""
+"%s\n"
+"%s\n"
+"line %d column %d"
+msgstr ""
+"%s\n"
+"%s\n"
+"rad %d kolumn %d"
 
 #: ID:334,
 #, c-format
-msgid "%s\n\nCould not open file for reading!"
-msgstr "%s\n\nKunde inte öppna filen för läsning!"
+msgid ""
+"%s\n"
+"\n"
+"Could not open file for reading!"
+msgstr ""
+"%s\n"
+"\n"
+"Kunde inte öppna filen för läsning!"
 
 #: ID:335,
 #, c-format
-msgid "%s\n\nCould not open file for writing!"
-msgstr "%s\n\nKunde inte öppna filen för skrivning!"
+msgid ""
+"%s\n"
+"\n"
+"Could not open file for writing!"
+msgstr ""
+"%s\n"
+"\n"
+"Kunde inte öppna filen för skrivning!"
 
 #: ID:334,
 #, c-format
-msgid "%s\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"
-msgstr "%s\n\nFilen är felaktig eller trasig!\nData kan ha förlorats eller ändrats.\nFortsätta ändå?"
+msgid ""
+"%s\n"
+"\n"
+"File corrupt or truncated!\n"
+"Data may have been lost or modified.\n"
+"Continue anyway?"
+msgstr ""
+"%s\n"
+"\n"
+"Filen är felaktig eller trasig!\n"
+"Data kan ha förlorats eller ändrats.\n"
+"Fortsätta ändå?"
 
 #: ID:335,
 #, c-format
-msgid "%s\n\nFile is currently locked by %s"
-msgstr "%s\n\nFilen är för närvarande låst av %s"
+msgid ""
+"%s\n"
+"\n"
+"File is currently locked by %s"
+msgstr ""
+"%s\n"
+"\n"
+"Filen är för närvarande låst av %s"
 
 #: ID:335,
 #, c-format
-msgid "%s\n\nInvalid format"
-msgstr "%s\n\nFelaktigt format"
+msgid ""
+"%s\n"
+"\n"
+"Invalid format"
+msgstr ""
+"%s\n"
+"\n"
+"Felaktigt format"
 
 #: ID:190,
 #, c-format
-msgid "%s\n\nThe configuration file will not be used."
-msgstr "%s\n\nKonfigurationsfilen kommer inte att användas."
+msgid ""
+"%s\n"
+"\n"
+"The configuration file will not be used."
+msgstr ""
+"%s\n"
+"\n"
+"Konfigurationsfilen kommer inte att användas."
 
 #: ID:334,
 #, c-format
-msgid "%s\n\nUnknown error"
-msgstr "%s\n\nOkänt fel"
-
-#: Control-ID:1026,
-msgid "&Apply"
+msgid ""
+"%s\n"
+"\n"
+"Unknown error"
 msgstr ""
+"%s\n"
+"\n"
+"Okänt fel"
 
-#: Control-ID:1107,#: Control-ID:1107,
+#: MenuEntry
+msgid "&About Password Safe..."
+msgstr "&Om Password Safe..."
+
+#: MenuEntry
+msgid "&Add Entry..\tCtrl+A"
+msgstr "&Lägg till post..\tCtrl+L"
+
+#: Control-ID:1107,#:
+#: Control-ID:1107,
 msgid "&Autotype:"
 msgstr "Auto&skrift:"
 
-#: ID:333,
+#: MenuEntry
 msgid "&Browse to URL"
 msgstr "&Gå till URL"
 
-#: ID:345,
+#: MenuEntry
 msgid "&Browse to URL\tCtrl+L"
 msgstr "&Gå till URL\tCtrl+G"
 
-# Button size to small. Add 2 positions
-#: Control-ID:1118,#: Control-ID:1118,
+#: MenuEntry
+msgid "&Change Safe Combination..."
+msgstr "&Ändra Safe-nyckel..."
+
+# Button size to small. I need 2 more positions
+#: Control-ID:1118,#:
+#: Control-ID:1118,
 #, fuzzy
 msgid "&Clear"
 msgstr "&Rensa"
+
+#: MenuEntry
+msgid "&Clear Recent History"
+msgstr "&Rensa post-historiken"
+
+#: MenuEntry
+msgid "&Clear Recent Safe List"
+msgstr "&Rensa senaste spara-listan"
+
+#: MenuEntry
+msgid "&Close\tCtrl+F4"
+msgstr "St&äng\tCtrl+F4"
+
+#: MenuEntry
+msgid "&Compare"
+msgstr "&Jämför"
+
+#: MenuEntry
+msgid "&Copy Password to Clipboard"
+msgstr "&Kopiera lösenordet till klippbordet"
+
+#: MenuEntry
+msgid "&Copy Password to Clipboard\tCtrl+C"
+msgstr "&Kopiera lösenordet till klippbordet\tCtrl+K"
 
 #: ID:333,
 msgid "&Copy Password to clipboard"
 msgstr "&Kopiera lösenordet till klippbordet"
 
-#: Control-ID:1041,
+#: Control-ID:1043,
 msgid "&Create a New Database"
 msgstr "&Skapa en ny databas"
+
+#: MenuEntry
+msgid "&Delete Entry\tDel"
+msgstr "&Radera posten\tDel"
+
+#: MenuEntry
+msgid "&Delete Group"
+msgstr "&Radera grupp"
 
 #: ID:333,
 msgid "&Delete from Recent Entry List"
 msgstr "&Ta bort från senaste postlista"
 
-#: Control-ID:1015,#: Control-ID:1015,#: Control-ID:1038,
+#: Control-ID:1014,#:
+#: Control-ID:1038,
 msgid "&Don't ask me again"
 msgstr "&Fråga mig inte igen."
 
-#: Control-ID:1015,
+#: Control-ID:1014,
 msgid "&Don't remind me again"
 msgstr "&Påminn mig inte igen"
 
-#: Control-ID:1088,
-msgid "&Font:"
-msgstr ""
+#: MenuEntry
+msgid "&Duplicate Entry"
+msgstr "&Duplicera post"
 
-#: Control-ID:1025,#: Control-ID:1025,
+#: MenuEntry
+msgid "&Duplicate Entry\tCtrl+D"
+msgstr "&Duplicera post\tCtrl+D"
+
+#: ID:327,#:
+#: MenuEntry
+msgid "&Edit"
+msgstr "&Redigera"
+
+#: ID:327,#:
+#: MenuEntry
+msgid "&File"
+msgstr "&Arkiv"
+
+#: MenuEntry
+msgid "&Find Entry...\tCtrl+F"
+msgstr "&Finn en  post...\tCtrl+F"
+
+#: Control-ID:1024,#:
+#: Control-ID:1024,
 msgid "&Generate"
 msgstr "&Generera"
 
-#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,
+#: ID:340,#:
+#: Control-ID:57670,#:
+#: MenuEntry
 msgid "&Help"
 msgstr "Hj&älp"
 
-#: ID:329,#: ID:3842,
+#: ID:329,#:
+#: ID:3842,
 msgid "&Hide"
 msgstr "&Dölj"
 
@@ -377,7 +490,22 @@ msgstr "&Dölj"
 msgid "&Keep"
 msgstr "&Behåll"
 
-#: ID:329,#: Control-ID:1100,#: Control-ID:1100,
+#: ID:327,#:
+#: MenuEntry
+msgid "&Manage"
+msgstr "&Hantera"
+
+#: MenuEntry
+msgid "&Merge"
+msgstr "&Slå samman"
+
+#: MenuEntry
+msgid "&Minimize"
+msgstr "&Minimera"
+
+#: ID:329,#:
+#: Control-ID:1100,#:
+#: Control-ID:1100,
 msgid "&More >>"
 msgstr "&Mer >>"
 
@@ -385,61 +513,123 @@ msgstr "&Mer >>"
 msgid "&New "
 msgstr "&Ny"
 
-#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,
+#: MenuEntry
+msgid "&New...\tCtrl+N"
+msgstr "&Ny....\tCtrl+N"
+
+#: Control-ID:2,#:
+#: Control-ID:2,
 msgid "&No"
 msgstr "&Nej"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "&Notes:"
 msgstr "&Notat:"
 
-#: Control-ID:1024,
+#: Control-ID:1023,
 msgid "&Open Another Database..."
 msgstr "&Öppna en annan databas..."
 
-#: Control-ID:1071,#: Control-ID:1071,
+#: MenuEntry
+msgid "&Open...\tCtrl+O"
+msgstr "&Öppna...\tCtrl+Ö"
+
+#: MenuEntry
+msgid "&Options..."
+msgstr "&Alternativ...."
+
+#: Control-ID:1071,#:
+#: Control-ID:1071,
 msgid "&Override Policy"
 msgstr "&Åsidosätt policy"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "&Password:"
 msgstr "&Lösenord:"
 
-#: Control-ID:1023,
+#: MenuEntry
+msgid "&Plain Text (tab separated)..."
+msgstr "&Textfil (tabseparerad)..."
+
+#: MenuEntry
+msgid "&Plain Text..."
+msgstr "&Textfil..."
+
+#: MenuEntry
+msgid "&Properties"
+msgstr "&Egenskaper"
+
+#: Control-ID:1022,
 msgid "&Quit"
 msgstr "&Avsluta"
+
+#: MenuEntry
+msgid "&Recent Entries History"
+msgstr "&Senast använda poster"
 
 #: ID:327,
 msgid "&Recent Safes"
 msgstr "&Senaste Safer"
 
-#: ID:329,#: Control-ID:1014,#: Control-ID:1014,
+#: MenuEntry
+msgid "&Reports"
+msgstr "&Rapporter"
+
+#: MenuEntry
+msgid "&Restore"
+msgstr "&Återställ"
+
+#: MenuEntry
+msgid "&Restore from Backup...\tCtrl+R"
+msgstr "&Återställ från backup...\tCtrl+Å"
+
+#: MenuEntry
+msgid "&Save\tCtrl+S"
+msgstr "&Spara\tCtrl+S"
+
+#: ID:329,#:
+#: Control-ID:1013,#:
+#: Control-ID:1013,
 msgid "&Show"
 msgstr "&Visa"
 
-#: Control-ID:1090,
-msgid "&Size:"
-msgstr ""
-
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "&Title:"
 msgstr "&Titel:"
 
-#: Control-ID:1022,
+#: Control-ID:1021,
 msgid "&Try Again"
 msgstr "&Försök igen"
 
-# The translation needs 1 more space position
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+# The translation needs 1 more position
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 #, fuzzy
 msgid "&Username:"
 msgstr "&Användare:"
+
+#: MenuEntry
+msgid "&Validate"
+msgstr "&Validera"
+
+#: ID:327,#:
+#: MenuEntry
+msgid "&View"
+msgstr "&Visa"
 
 #: Control-ID:1268,
 msgid "&View Aliases"
 msgstr "&Visa alias"
 
-#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,
+#: MenuEntry
+msgid "&XML format..."
+msgstr "&XML format..."
+
+#: Control-ID:1,#:
+#: Control-ID:1,
 msgid "&Yes"
 msgstr "&Ja"
 
@@ -451,14 +641,6 @@ msgstr "(Också som ersättning för punkter i titelfältet.)"
 msgid "(Requires a restart of PasswordSafe to take effect.)"
 msgstr "(Kräver återstart av PasswordSafe för att fungera.)"
 
-#: Control-ID:1285,#: Control-ID:1287,#: Control-ID:1289,#: Control-ID:1291,
-msgid "(at least"
-msgstr ""
-
-#: Control-ID:1286,#: Control-ID:1288,#: Control-ID:1290,#: Control-ID:1292,
-msgid ")"
-msgstr ""
-
 #: ID:204,
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
@@ -467,15 +649,12 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
-#: Control-ID:1017,
+#: Control-ID:1016,
 msgid "...."
 msgstr "...."
 
-#: Control-ID:1293,#: Control-ID:1294,
-msgid "....."
-msgstr ""
-
-#: Control-ID:1260,#: Control-ID:1261,
+#: Control-ID:1260,#:
+#: Control-ID:1261,
 msgid "......."
 msgstr "......."
 
@@ -491,6 +670,10 @@ msgstr "255"
 msgid "<"
 msgstr "<"
 
+#: MenuEntry
+msgid "<- Copy to Orignal"
+msgstr "<- Kopiera till originalet"
+
 #: Control-ID:1157,
 msgid "<<"
 msgstr "<<"
@@ -500,8 +683,12 @@ msgid "<< &Less"
 msgstr "<< &Mindre"
 
 #: ID:191,
-msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
+msgid ""
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
+"<Pwsafe_Settings></Pwsafe_Settings>"
+msgstr ""
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
+"<Pwsafe_Settings></Pwsafe_Settings>"
 
 #: ID:344,
 msgid "<b><font color=\"green\">This is the latest release!</font></b>"
@@ -558,11 +745,7 @@ msgstr "En begärd resurs var inte tillgänglig."
 msgid "A sharing violation occurred while accessing %1."
 msgstr "Ett delningsfel inträffade under anslutning till %1."
 
-#: ID:347,#: Control-ID:1092,
-msgid "AaBbYyZz 0O1lIL"
-msgstr ""
-
-#: Dlg-ID:110,
+#: Dlg-ID:200,
 msgid "About Password Safe"
 msgstr "Om Password Safe"
 
@@ -575,11 +758,24 @@ msgstr "Tillgång till %1 nekades."
 msgid "Access to the file was denied: probably not sufficient security rights."
 msgstr "Åtkomst till filen nekades: antagligen inte tillräckliga säkerhetsrättigheter."
 
-#: Dlg-ID:111,
+#: MenuEntry
+msgid "Add &Entry"
+msgstr "Lägg till &post"
+
+#: MenuEntry
+msgid "Add &Group"
+msgstr "Lägg till &grupp"
+
+#: Dlg-ID:211,
 msgid "Add Entry"
 msgstr "Lägg till post"
 
-#: ID:342,#: Control-ID:1123,
+#: MenuEntry
+msgid "Add Group"
+msgstr "Lägg till grupp"
+
+#: ID:342,#:
+#: Control-ID:1123,
 msgid "Advanced"
 msgstr "Avancerat"
 
@@ -591,7 +787,7 @@ msgstr "Avancerade jämförelseval"
 msgid "Advanced Find Options"
 msgstr "Avancerade sökval"
 
-#: Dlg-ID:113,
+#: Dlg-ID:237,
 msgid "Advanced Merge Extra"
 msgstr "Avancerade sammanslagningstillägg"
 
@@ -607,13 +803,14 @@ msgstr "Avancerade val för export till text-fil"
 msgid "Advanced XML Export Options"
 msgstr "Avancerade val för XML-export"
 
-#: Control-ID:1252,#: Control-ID:1253,
+#: Control-ID:1252,#:
+#: Control-ID:1253,
 msgid "Advanced..."
 msgstr "Avancerat..."
 
 #: ID:205,
-msgid "Alias"
-msgstr ""
+msgid "Alias import warnings"
+msgstr "Varningar om aliasimport"
 
 #: ID:3841,
 msgid "All Files (*.*)"
@@ -635,7 +832,7 @@ msgstr "Också som ersättning för punkter i titelfältet."
 msgid "Alternate Browser "
 msgstr "Växla Browser"
 
-#: Control-ID:1043,
+#: Control-ID:1053,
 msgid "Always keep Password Safe on top"
 msgstr "Visa alltid Password Safe överst"
 
@@ -647,7 +844,8 @@ msgstr "Alltid överst"
 msgid "An alias cannot refer to itself!"
 msgstr "En alias kan inte referera till sig själv!"
 
-#: ID:3867,#: ID:3868,
+#: ID:3867,#:
+#: ID:3868,
 #, c-format
 msgid "An attempt was made to access %1 past its end."
 msgstr "Ett försök gjordes att få tillgång till %1 efter dess slut."
@@ -662,16 +860,6 @@ msgstr "Ett försök gjordes att läsa från %1 som skrivs."
 msgid "An attempt was made to write to the reading %1."
 msgstr "Ett försök gjordes att skriva till %1 som läses."
 
-#: ID:329,
-#, c-format
-msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
-msgstr ""
-
-#: ID:341,
-#, c-format
-msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
-msgstr ""
-
 #: ID:3843,
 msgid "An invalid argument was encountered."
 msgstr "Ett ogiltigt argument påträffades."
@@ -680,6 +868,16 @@ msgstr "Ett ogiltigt argument påträffades."
 #, c-format
 msgid "An invalid file handle was associated with %1."
 msgstr "En ogiltig filhanterare har associerats med %1."
+
+#: ID:329,
+#, c-format
+msgid "An item with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
+msgstr "En post med Grupp \"%s\", Titel \"%s\" och Användare \"%s\" finns redan."
+
+#: ID:341,
+#, c-format
+msgid "An item with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
+msgstr "En post med en tom Grupp, Titel \"%s\" och Användare \"%s\" finns redan."
 
 #: ID:3859,
 #, c-format
@@ -695,7 +893,8 @@ msgstr "Ett oväntat fel inträffade vid skrivning till filen %1."
 msgid "An unknown error has occurred."
 msgstr "Ett oväntat fel har uppstått."
 
-#: ID:3867,#: ID:3868,
+#: ID:3867,#:
+#: ID:3868,
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "Ett oväntat fel uppstod vid åtkomst till %1."
@@ -708,11 +907,12 @@ msgstr "Ett ospecificerat fel har uppstått."
 msgid "An unsupported operation was attempted."
 msgstr "En åtgärd som inte stöds prövades."
 
-#: Control-ID:1116,#: Control-ID:1116,
+#: Control-ID:1116,
 msgid "Any field last changed on:"
 msgstr "Någon post ändrades:"
 
-#: Control-ID:1187,#: Control-ID:1216,
+#: Control-ID:1187,#:
+#: Control-ID:1216,
 msgid "Apply"
 msgstr "Verkställ"
 
@@ -726,8 +926,12 @@ msgid "As the double quotation character is used to delimit the whole notes fiel
 msgstr "Då citattecknet används för att avgränsa hela notatfältet, får det inte användas inom notatfältet för att avgränsa ett antal rader. Använd ett annat tecken."
 
 #: ID:332,
-msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
-msgstr "Minst en typ av tecken (gemener, versaler, tal,\nsymboler, hexadecimaler) måste tillåtas."
+msgid ""
+"At least one type of character (lowercase, uppercase, digits,\n"
+"symbols, hexadecimal) must be permitted."
+msgstr ""
+"Minst en typ av tecken (gemener, versaler, tal,\n"
+"symboler, hexadecimaler) måste tillåtas."
 
 #: ID:342,
 #, c-format
@@ -738,7 +942,9 @@ msgstr "Minst ett okänt %s fält används just nu. De som hittats har ignorerat
 msgid "AutoType\t"
 msgstr "Autoskrift\t"
 
-#: ID:326,#: ID:341,#: Control-ID:65535,
+#: ID:326,#:
+#: ID:341,#:
+#: Control-ID:65535,
 msgid "Autotype"
 msgstr "Autoskrivning"
 
@@ -754,16 +960,18 @@ msgstr "Säkerhetskopians namn"
 msgid "Backup directory:"
 msgstr "Säkerhetskopians mapp:"
 
-#: Dlg-ID:137,
+#: Dlg-ID:225,
 msgid "Backups"
 msgstr "Säkerhetskopior"
 
+# Not shore where Base appears and therefore what the translation would be.
 #: Control-ID:65535,
 #, fuzzy
 msgid "Base:"
 msgstr "Huvud:"
 
-#: Control-ID:1213,#: Control-ID:1213,
+#: Control-ID:1213,#:
+#: Control-ID:1213,
 msgid "Browse"
 msgstr "Bläddra"
 
@@ -774,6 +982,14 @@ msgstr "Gå till URL"
 #: Control-ID:65535,
 msgid "Browser Command Line parameters"
 msgstr "Browserns kommandoparametrar"
+
+#: MenuEntry
+msgid "C&lear Clipboard"
+msgstr "R&ensa klippbordet"
+
+#: MenuEntry
+msgid "C&lear Clipboard\tCtrl+Del"
+msgstr "R&ensa klippbordet\tCtrl+Del"
 
 #: ID:203,
 msgid "C:F[R-O]"
@@ -796,7 +1012,8 @@ msgstr "C:Reg   "
 msgid "Can only warn between 1 and 30 days before passwords expire"
 msgstr "Kan bara larma mellan 1 och 30 dagar innan ett lösenord utgår"
 
-#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,#: Control-ID:2,
+#: Control-ID:2,#:
+#: Control-ID:2,
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -812,7 +1029,8 @@ msgstr "Kan inte utföras då posten har raderats från den öppna databasen."
 msgid "Cannot verify old safe combination - file gone?"
 msgstr "Kan inte verifiera gammal Safe-nyckel - saknas filen?"
 
-#: Control-ID:1162,#: Control-ID:1162,
+#: Control-ID:1162,#:
+#: Control-ID:1162,
 msgid "Case Sensitive"
 msgstr "Lägeskänslig"
 
@@ -824,37 +1042,57 @@ msgstr "Icke lägeskänslig sökning"
 msgid "Case sensitive search"
 msgstr "Lägeskänslig sökning"
 
-#: Dlg-ID:127,
+#: MenuEntry
+msgid "Change Font"
+msgstr "Byt tecken"
+
+#: Dlg-ID:203,
 msgid "Change Safe Combination"
 msgstr "Ändra Safe-nyckel"
 
 #: ID:319,
-msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
-msgstr "Ändra det maximala antalet sparade lösenord till poster, som nu sparar lösenordshistorik upp till det nya antalet, om det nu sparas färre.\n\nPoster med fler redan sparade lösenord än det nya maximala antalet kvarstår oförändrade."
+msgid ""
+"Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n"
+"\n"
+"Entries with more than this new maximum already saved will remain unchanged."
+msgstr ""
+"Ändra det maximala antalet sparade lösenord till poster, som nu sparar lösenordshistorik upp till det nya antalet, om det nu sparas färre.\n"
+"\n"
+"Poster med fler redan sparade lösenord än det nya maximala antalet kvarstår oförändrade."
 
 #: ID:3887,
 msgid "Check"
 msgstr "Kontrollera"
 
-#: Dlg-ID:128,#: Dlg-ID:145,
+#: MenuEntry
+msgid "Classic Toolbar"
+msgstr "Klassisk verktygsrad"
+
+#: Dlg-ID:205,#:
+#: Dlg-ID:210,
 msgid "Clear Clipboard"
 msgstr "Rensa klippbordet"
 
-# Button needs to be a little bigger!
+# I need a little bigger button to room the text!
 #: Control-ID:1141,
 #, fuzzy
 msgid "Clear History"
 msgstr "Rensa historiken"
 
-#: Control-ID:1020,
+#: Control-ID:1019,
 msgid "Clear clipboard upon minimize or exit"
 msgstr "Töm klippbordet vid minimering eller avslut"
 
-#: Control-ID:1,#: Control-ID:1,
+#: Control-ID:1,#:
+#: Control-ID:1,
 msgid "Close"
 msgstr "Stäng"
 
-#: Dlg-ID:114,
+#: MenuEntry
+msgid "Collapse All\tCtrl+Alt+Minus"
+msgstr "Minimera allt\tCtrl+Alt+Minus"
+
+#: MenuEntry
 msgid "Column Picker"
 msgstr "Kolumnväljare"
 
@@ -874,14 +1112,26 @@ msgstr "Kommandot  misslyckades."
 msgid "Compare Complete"
 msgstr "Jämförelsen klar"
 
-#: Dlg-ID:115,
+#: Dlg-ID:238,
 msgid "Compare Database Results"
 msgstr "Resultat från databasjämförelsen"
 
 #: ID:337,
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Jämförelsen klar med aktuell databas:\n\t %s\n och:\n\t %s"
+msgid ""
+"Compare complete of current database:\n"
+"\t %s\n"
+" and:\n"
+"\t %s"
+msgstr ""
+"Jämförelsen klar med aktuell databas:\n"
+"\t %s\n"
+" och:\n"
+"\t %s"
+
+#: MenuEntry
+msgid "Compare..."
+msgstr "Jämför..."
 
 #: ID:345,
 #, c-format
@@ -892,7 +1142,8 @@ msgstr "Jämför aktuell databas med: %s"
 msgid "Comparison Database:"
 msgstr "Jämförd databas:"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "Con&firm Password:"
 msgstr "&Bekräfta lösenord:"
 
@@ -904,18 +1155,24 @@ msgstr "Information om konfigureringen"
 msgid "Confirm Close Dialog"
 msgstr "Bekräfta stängningsdialog"
 
-#: Control-ID:1019,
+#: Control-ID:1018,
 msgid "Confirm deletion of items"
 msgstr "Bekräfta radering av poster"
 
-#: Control-ID:1021,
+#: Control-ID:1020,
 msgid "Confirm item copy to clipboard"
 msgstr "Bekräfta kopiering av post till klippbordet"
 
 #: ID:341,
 #, c-format
-msgid "Confirm that you wish to copy this entry from the %s to the %s?\n\nIf already present in the target database, it will be replaced!"
-msgstr "Bekräfta att du vill kopiera denna post från %s till %s?\n\nOm posten redan finns i måldatabasen, så ersättas den!"
+msgid ""
+"Confirm that you wish to copy this entry from the %s to the %s?\n"
+"\n"
+"If already present in the target database, it will be replaced!"
+msgstr ""
+"Bekräfta att du vill kopiera denna post från %s till %s?\n"
+"\n"
+"Om posten redan finns i måldatabasen, så ersättas den!"
 
 #: Control-ID:65535,
 msgid "Confirmation:"
@@ -946,9 +1203,29 @@ msgstr "Kopierar användare till klippbordet"
 msgid "Copy"
 msgstr "Kopia"
 
+#: MenuEntry
+msgid "Copy &Notes to Clipboard"
+msgstr "Kopiera n&otat till klippbordet"
+
+#: MenuEntry
+msgid "Copy &Notes to Clipboard\tCtrl+G"
+msgstr "Kopiera n&otat till klippbordet\tCtrl+O"
+
 #: ID:333,
 msgid "Copy &Notes to clipboard"
 msgstr "Kopiera n&otat till klippbordet"
+
+#: MenuEntry
+msgid "Copy &URL to Clipboard"
+msgstr "Kopiera &URL till klippbordet"
+
+#: MenuEntry
+msgid "Copy &Username to Clipboard"
+msgstr "Kopiera anv&ändare till klippbordet"
+
+#: MenuEntry
+msgid "Copy &Username to Clipboard\tCtrl+U"
+msgstr "Kopiera anv&ändare till klippbordet\tCtrl+Ä"
 
 #: ID:333,
 msgid "Copy &Username to clipboard"
@@ -958,17 +1235,13 @@ msgstr "Kopiera anv&ändare till klippbordet"
 msgid "Copy All"
 msgstr "Kopiera allt"
 
-#: ID:347,
-msgid "Copy Email to Clipboard"
-msgstr ""
+#: MenuEntry
+msgid "Copy URL to Clipboard\tCtrl+Alt+L"
+msgstr "Kopiera URL till klippbordet\tCtrl+Alt+L"
 
-#: ID:347,
-msgid "Copy URL to Clipboard"
-msgstr ""
-
-#: ID:333,
-msgid "Copy URL to clipboard"
-msgstr ""
+#: MenuEntry
+msgid "Copy to Comparison DB ->"
+msgstr "Kopiera till jämförd DB ->"
 
 #: Control-ID:1218,
 msgid "Copyright Notice"
@@ -992,10 +1265,6 @@ msgstr "Kunde inte spara databasen - Spara manuellt"
 msgid "Create SchemaCache%2d Error 0x%08X during %s."
 msgstr "Skapa SchemaCache%2d Fel 0x%08X vid %s."
 
-#: Dlg-ID:117,
-msgid "Create Shortcut"
-msgstr ""
-
 #: Control-ID:1199,
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Skapa mellanlagrande backuper (.ibak) före spara"
@@ -1008,7 +1277,7 @@ msgstr "Skapat"
 msgid "Created Time\t"
 msgstr "Skapadtidpunkt\t"
 
-#: Control-ID:1108,#: Control-ID:1108,
+#: Control-ID:1108,
 msgid "Created on:"
 msgstr "Skapat den:"
 
@@ -1018,13 +1287,35 @@ msgstr "Aktuellt värde:"
 
 #: ID:344,
 #, c-format
-msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nPlease visit the PasswordSafe website to download the latest version."
-msgstr "Nuvarande version:\t%s\r\nSenaste version:\t%s\r\n\r\nBesök PasswordSafe's hemsida för att ladda ner den senaste versionen."
+msgid ""
+"Current version:\t%s\r\n"
+"Latest version:\t%s\r\n"
+"\r\n"
+"Please visit the PasswordSafe website to download the latest version."
+msgstr ""
+"Nuvarande version:\t%s\r\n"
+"Senaste version:\t%s\r\n"
+"\r\n"
+"Besök PasswordSafe's hemsida för att ladda ner den senaste versionen."
 
 #: ID:345,
 #, c-format
-msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nYour purchase includes free upgrades for one year.\r\nPlease contact the PasswordSafe Administrator for your upgrade."
-msgstr "Nuvarande version:\t%s\r\nSenaste version:\t%s\r\n\r\nDitt köp inkluderar fria uppgraderingar i ett år.\r\nKontakta PasswordSafe's administratör för att uppgradera dig."
+msgid ""
+"Current version:\t%s\r\n"
+"Latest version:\t%s\r\n"
+"\r\n"
+"Your purchase includes free upgrades for one year.\r\n"
+"Please contact the PasswordSafe Administrator for your upgrade."
+msgstr ""
+"Nuvarande version:\t%s\r\n"
+"Senaste version:\t%s\r\n"
+"\r\n"
+"Ditt köp inkluderar fria uppgraderingar i ett år.\r\n"
+"Kontakta PasswordSafe's administratör för att uppgradera dig."
+
+#: MenuEntry
+msgid "Customize Main Toolbar"
+msgstr "Anpassa huvudverktygsraden"
 
 #: Control-ID:65535,
 msgid "Database Unique ID:"
@@ -1046,7 +1337,7 @@ msgstr "Databasnamn"
 msgid "Database validated - no problems found."
 msgstr "Databasen validerad - inga problem funna."
 
-#: Control-ID:1122,#: Control-ID:1122,
+#: Control-ID:1122,
 msgid "Date/Time Information"
 msgstr "Datum/tidsinformation"
 
@@ -1062,9 +1353,21 @@ msgstr "Förvald användare"
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "Valt antal sparade posters historiska lösenord måste vara mellan 1 och 255."
 
-#: Dlg-ID:116,
+#: ID:333,
+msgid "Default password length must be between 1 and 1024."
+msgstr "Vald lösenordslängd måste vara mellan 1 och 1024."
+
+#: Control-ID:1037,
+msgid "Default password length:"
+msgstr "Förvald längd:"
+
+#: Dlg-ID:207,
 msgid "Delete Confirmation"
 msgstr "Radera bekräftelse"
+
+#: MenuEntry
+msgid "Delete Entry"
+msgstr "Radera posten"
 
 #: ID:340,
 msgid "Delete Entry\tDel"
@@ -1104,7 +1407,7 @@ msgstr "Disken full under åtkomst till %1."
 msgid "Dispatch exception: %1"
 msgstr "Undantag vid uförande: %1"
 
-#: Dlg-ID:138,
+#: Dlg-ID:219,
 msgid "Display"
 msgstr "Visa"
 
@@ -1119,8 +1422,18 @@ msgstr "Vill du spara ändringar till lösenordslistan?"
 
 #: ID:328,
 #, c-format
-msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Cancel the shutdown\\restart\\logoff?"
-msgstr "Vill du spara gjorda ändringar till databasen:\r\n\r\n%s\r\n\r\neller avbryta avslutandet\\återstarta\\logga ut?"
+msgid ""
+"Do you wish to save the changes made to database:\r\n"
+"\r\n"
+"%s\r\n"
+"\r\n"
+"or Cancel the shutdown\\restart\\logoff?"
+msgstr ""
+"Vill du spara gjorda ändringar till databasen:\r\n"
+"\r\n"
+"%s\r\n"
+"\r\n"
+"eller avbryta avslutandet\\återstarta\\logga ut?"
 
 #: ID:314,
 msgid "Double-Click on entry to Autotype"
@@ -1152,10 +1465,24 @@ msgstr "Dubbelklicksval"
 
 #: ID:344,
 #, c-format
-msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n\r\nThe dropped entry now references that entry's base entry."
-msgstr "Borttappad post '%s:%s:%s' lösenordet pekar på en post som också är en alias.\r\n\r\nDen borttappade posten refererar nu till den postens baspost."
+msgid ""
+"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n"
+"\r\n"
+"The dropped entry now references that entry's base entry."
+msgstr ""
+"Borttappad post '%s:%s:%s' lösenordet pekar på en post som också är en alias.\r\n"
+"\r\n"
+"Den borttappade posten refererar nu till den postens baspost."
 
-#: Dlg-ID:121,
+#: MenuEntry
+msgid "E&xit"
+msgstr "&Avsluta"
+
+#: MenuEntry
+msgid "E&xit\tCtrl+Q"
+msgstr "&Avsluta\tCtrl+Q"
+
+#: MenuEntry
 msgid "Edit Entry"
 msgstr "Postmeny"
 
@@ -1163,9 +1490,13 @@ msgstr "Postmeny"
 msgid "Edit Entry\tCtrl+Enter"
 msgstr "Ändra posten\tCtrl+Enter"
 
-#: Dlg-ID:122,
-msgid "Edit Shortcut"
-msgstr ""
+#: MenuEntry
+msgid "Edit/&View Entry..."
+msgstr "Ändra/&visa post..."
+
+#: MenuEntry
+msgid "Edit/&View Entry...\tCtrl+Enter"
+msgstr "Ändra/&Visa post...\tCtrl+Enter"
 
 #: ID:203,
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
@@ -1176,7 +1507,7 @@ msgstr "Endera eller både grupp/titel- och lösenords-kolumner saknas. Inga pos
 msgid "Empty line %d skipped"
 msgstr "Tom rad %d överhoppad"
 
-#: Dlg-ID:118,
+#: Dlg-ID:213,
 msgid "Encrypt/Decrypt"
 msgstr "Kryptera/dekryptera"
 
@@ -1192,13 +1523,10 @@ msgstr "Rapportslut"
 msgid "Enter Key:"
 msgstr "För in nyckel:"
 
-#: Dlg-ID:130,#: Dlg-ID:132,
+#: Dlg-ID:216,#:
+#: Dlg-ID:217,
 msgid "Enter Safe Combination"
 msgstr "Safe-nyckel"
-
-#: Dlg-ID:405,
-msgid "Enter your Sample Text below"
-msgstr ""
 
 #: ID:337,
 msgid "Entries in both databases but with differences:\r\n"
@@ -1235,10 +1563,6 @@ msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias but 
 msgstr "Posten \"%s, %s, %s\" har ett lösenord i rätt format för ett alias men basposten är redan ett alias."
 
 #: ID:205,
-msgid "Entry import warnings"
-msgstr ""
-
-#: ID:205,
 #, c-format
 msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
 msgstr "Posten på rad %d innehåller ett ogiltigt \"%s\" fält. Den har ignorerats."
@@ -1259,8 +1583,18 @@ msgid "Error (%08X): line %d character %d %s"
 msgstr "Fel (%08X): rad %d tecken %d %s"
 
 #: ID:190,
-msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "Fel - kan inte fastställa konfigurationsinställningar!\n\nInga programinställningar kommer att sparas.\n\nDatabasrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
+msgid ""
+"Error - unable to determine settings configuration!\n"
+"\n"
+"No application settings will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Fel - kan inte fastställa konfigurationsinställningar!\n"
+"\n"
+"Inga programinställningar kommer att sparas.\n"
+"\n"
+"Databasrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
 
 #: ID:190,
 #, c-format
@@ -1287,6 +1621,10 @@ msgstr "Exempel:"
 msgid "Exit"
 msgstr "Avsluta"
 
+#: MenuEntry
+msgid "Expand All\tCtrl+Alt+Plus"
+msgstr "Expandera alla\tCtrl+Alt+Plus"
+
 #: ID:340,
 msgid "Expand/Collapse Group\tCtrl+Enter"
 msgstr "Expandera/minimera grupp\tCtrl+Enter"
@@ -1295,15 +1633,19 @@ msgstr "Expandera/minimera grupp\tCtrl+Enter"
 msgid "Expiry Date/Time"
 msgstr "Utgångsdatum/tid"
 
-#: Dlg-ID:123,
+#: MenuEntry
+msgid "Export &To"
+msgstr "Exportera &till"
+
+#: Dlg-ID:223,
 msgid "Export Text"
 msgstr "Exportera textfil"
 
-#: Dlg-ID:112,
+#: Dlg-ID:231,
 msgid "Export Text Extra"
 msgstr "Text-exporttillägg"
 
-#: Dlg-ID:124,
+#: Dlg-ID:224,
 msgid "Export XML"
 msgstr "Exportera XML"
 
@@ -1387,17 +1729,21 @@ msgstr "Fil: %s är validerad men hade följande fel vid importen:"
 msgid "File: %s was imported (entries validated %d / imported %d) but had the following errors:"
 msgstr "Fil: %s importerades (validerade poster %d / importerade %d) men har följande fel:"
 
-#: Dlg-ID:148,
-msgid "Font"
-msgstr ""
+#: ID:331,
+msgid "Find Next"
+msgstr "Sök nästa"
 
-#: Control-ID:1089,
-msgid "Font st&yle:"
-msgstr ""
+#: MenuEntry
+msgid "Flattened &List"
+msgstr "T&abellvy"
 
 #: ID:344,
-msgid "For security, the database must be closed before connecting to the Internet.\r\nPress OK to close database and continue (Changes will be saved)"
-msgstr "För säkerhets skull, databasen måste stängas före anslutning till Internet.\r\nTryck OK för att stänga databasen och gå vidare (ändringar kommer att sparas)"
+msgid ""
+"For security, the database must be closed before connecting to the Internet.\r\n"
+"Press OK to close database and continue (Changes will be saved)"
+msgstr ""
+"För säkerhets skull, databasen måste stängas före anslutning till Internet.\r\n"
+"Tryck OK för att stänga databasen och gå vidare (ändringar kommer att sparas)"
 
 #: ID:203,
 #, c-format
@@ -1416,9 +1762,9 @@ msgstr "Helt minimerad"
 msgid "Fully expanded"
 msgstr "Helt maximerad"
 
-#: Control-ID:1052,
-msgid "Generate pronounceable passwords"
-msgstr ""
+#: MenuEntry
+msgid "Get &Help\tF1"
+msgstr "Få &hjälp\tF1"
 
 #: ID:326,
 msgid "Given path is a directory or file is read-only"
@@ -1441,10 +1787,11 @@ msgid "Group/Title\t"
 msgstr "Grupp/Titel\t"
 
 #: ID:188,
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tPassword Policy\tHistory\tNotes"
-msgstr ""
+msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tRecord Modified Time\tHistory\tNotes"
+msgstr "Grupp/Titel\tAnvändare\tLösenord\tURL\tAutoskrift\tSkapadtidpunkt\tLösenordets ändringstidpunkt\tSenast accesstidpunkt\tLösenordets utgångdatum\tPostens ändringstidpunkt\tHistorik\tNotat"
 
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "Group:"
 msgstr "Grupp:"
 
@@ -1460,7 +1807,8 @@ msgstr "Grupp\tTitel\tAnvändare\tLösenordets utgångsdatum\r\n"
 msgid "H"
 msgstr "H"
 
-#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,#: Control-ID:57670,
+#: Control-ID:57670,#:
+#: Control-ID:57670,
 msgid "Help (F1)"
 msgstr "Hjälp (F1)"
 
@@ -1480,99 +1828,116 @@ msgstr "Hot Key"
 msgid "HotKey1"
 msgstr "HotKey1"
 
-#. Accelerator Entry for Menu ID:32002; ''
-#: Corresponding Menu ID:32002; ''
-msgid "ID:32002:V C +O"
-msgstr ""
+#. Accelerator Entry for Menu ID:32001; '&Open...\tCtrl+O'
+#: Corresponding Menu ID:32001;
+#: '&Open...\tCtrl+O'
+msgid "ID:32001:V C +O"
+msgstr "ID:32001:V C +Ö"
 
-#. Accelerator Entry for Menu ID:32003; ''
-#: Corresponding Menu ID:32003; ''
-msgid "ID:32003:V C +N"
-msgstr ""
+#. Accelerator Entry for Menu ID:32002; '&New...\tCtrl+N'
+#: Corresponding Menu ID:32002;
+#: '&New...\tCtrl+N'
+msgid "ID:32002:V C +N"
+msgstr "ID:32002:V C +N"
 
-#. Accelerator Entry for Menu ID:32005; ''
-#: Corresponding Menu ID:32005; ''
-msgid "ID:32005:V C +S"
-msgstr ""
+#. Accelerator Entry for Menu ID:32004; '&Save\tCtrl+S'
+#: Corresponding Menu ID:32004;
+#: '&Save\tCtrl+S'
+msgid "ID:32004:V C +S"
+msgstr "ID:32004:V C +S"
 
-#. Accelerator Entry for Menu ID:32021; ''
-#: Corresponding Menu ID:32021; ''
-msgid "ID:32021:V C +Q"
-msgstr ""
+#. Accelerator Entry for Menu ID:32017; 'E&xit'
+#: Corresponding Menu ID:32017;
+#: 'E&xit'
+msgid "ID:32017:V C +Q"
+msgstr "ID:32017:V C +Q"
 
-#. Accelerator Entry for Menu ID:32051; ''
-#: Corresponding Menu ID:32051; ''
-msgid "ID:32051:V C +A"
-msgstr ""
+#. Accelerator Entry for Menu ID:32050; 'Add &Entry'
+#: Corresponding Menu ID:32050;
+#: 'Add &Entry'
+msgid "ID:32050:V C +A"
+msgstr "ID:32050:V C +L"
 
-#. Accelerator Entry for Menu ID:32055; ''
-#: Corresponding Menu ID:32055; ''
-msgid "ID:32055:V C +F"
-msgstr ""
+#. Accelerator Entry for Menu ID:32054; '&Find Entry...\tCtrl+F'
+#: Corresponding Menu ID:32054;
+#: '&Find Entry...\tCtrl+F'
+msgid "ID:32054:V C +F"
+msgstr "ID:32054:V C +F"
 
-#. Accelerator Entry for Menu ID:32056; ''
-#: Corresponding Menu ID:32056; ''
-msgid "ID:32056:V C +D"
-msgstr ""
+#. Accelerator Entry for Menu ID:32055; '&Duplicate Entry'
+#: Corresponding Menu ID:32055;
+#: '&Duplicate Entry'
+msgid "ID:32055:V C +D"
+msgstr "ID:32055:V C +D"
 
-#. Accelerator Entry for Menu ID:32058; ''
-#: Corresponding Menu ID:32058; ''
-msgid "ID:32058:V C +C"
-msgstr ""
+#. Accelerator Entry for Menu ID:32057; '&Copy Password to Clipboard'
+#: Corresponding Menu ID:32057;
+#: '&Copy Password to Clipboard'
+msgid "ID:32057:V C +C"
+msgstr "ID:32057:V C +K"
 
-#. Accelerator Entry for Menu ID:32059; ''
-#: Corresponding Menu ID:32059; ''
-msgid "ID:32059:V C +U"
-msgstr ""
+#. Accelerator Entry for Menu ID:32058; 'Copy &Username to Clipboard'
+#: Corresponding Menu ID:32058;
+#: 'Copy &Username to Clipboard'
+msgid "ID:32058:V C +U"
+msgstr "ID:32058:V C +Ä"
 
-#. Accelerator Entry for Menu ID:32060; ''
-#: Corresponding Menu ID:32060; ''
-msgid "ID:32060:V C +G"
-msgstr ""
+#. Accelerator Entry for Menu ID:32059; 'Copy &Notes to Clipboard'
+#: Corresponding Menu ID:32059;
+#: 'Copy &Notes to Clipboard'
+msgid "ID:32059:V C +G"
+msgstr "ID:32059:V C +O"
 
-#. Accelerator Entry for Menu ID:32062; ''
-#: Corresponding Menu ID:32062; ''
-msgid "ID:32062:V C +L"
-msgstr ""
+#. Accelerator Entry for Menu ID:32061; '&Browse to URL'
+#: Corresponding Menu ID:32061;
+#: '&Browse to URL'
+msgid "ID:32061:V C +L"
+msgstr "ID:32061:V C +G"
 
-#. Accelerator Entry for Menu ID:32063; ''
-#: Corresponding Menu ID:32063; ''
-msgid "ID:32063:V C +T"
-msgstr ""
+#. Accelerator Entry for Menu ID:32062; 'Perform Auto type'
+#: Corresponding Menu ID:32062;
+#: 'Perform Auto type'
+msgid "ID:32062:V C +T"
+msgstr "ID:32062:V C +V"
 
-#. Accelerator Entry for Menu ID:32064; ''
-#: Corresponding Menu ID:32064; ''
-msgid "ID:32064:VAC +L"
-msgstr ""
+#. Accelerator Entry for Menu ID:32063; 'Copy &URL to Clipboard'
+#: Corresponding Menu ID:32063;
+#: 'Copy &URL to Clipboard'
+msgid "ID:32063:VAC +L"
+msgstr "ID:32063:VAC +U"
 
-#. Accelerator Entry for Menu ID:32152; ''
-#: Corresponding Menu ID:32152; ''
-msgid "ID:32152:V C +B"
-msgstr ""
+#. Accelerator Entry for Menu ID:32151; 'Make &Backup\tCtrl+B'
+#: Corresponding Menu ID:32151;
+#: 'Make &Backup\tCtrl+B'
+msgid "ID:32151:V C +B"
+msgstr "ID:32151:V C +B"
 
-#. Accelerator Entry for Menu ID:32153; ''
-#: Corresponding Menu ID:32153; ''
-msgid "ID:32153:V C +R"
-msgstr ""
+#. Accelerator Entry for Menu ID:32152; '&Restore from Backup...\tCtrl+R'
+#: Corresponding Menu ID:32152;
+#: '&Restore from Backup...\tCtrl+R'
+msgid "ID:32152:V C +R"
+msgstr "ID:32152:V C +Å"
 
-#. Accelerator Entry for Menu ID:32303; ''
-#: Corresponding Menu ID:32303; ''
-msgid "ID:32303:VAC +S"
-msgstr ""
+# What is this key for?
+#. Accelerator Entry for Menu ID:32643; ''
+#: Corresponding Menu ID:32643;
+#: ''
+msgid "ID:32643:VAC +S"
+msgstr "ID:32643:VAC +S"
 
-#. Accelerator Entry for Menu ID:32306; ''
-#: Corresponding Menu ID:32306; ''
-msgid "ID:32306:VAC +A"
-msgstr ""
+# What is this key for?
+#. Accelerator Entry for Menu ID:32646; ''
+#: Corresponding Menu ID:32646;
+#: ''
+msgid "ID:32646:VAC +A"
+msgstr "ID:32646:VAC +A"
 
-#. Accelerator Entry for Menu ID:32307; ''
-#: Corresponding Menu ID:32307; ''
-msgid "ID:32307:VAC +C"
-msgstr ""
-
-#: ID:346,
-msgid "Icon"
-msgstr ""
+# What is this key for?
+#. Accelerator Entry for Menu ID:32647; ''
+#: Corresponding Menu ID:32647;
+#: ''
+msgid "ID:32647:VAC +C"
+msgstr "ID:32647:VAC +C"
 
 #: ID:320,
 msgid "If enabled, a 'snapshot' will be taken before every save, and named according to the options listed below."
@@ -1582,7 +1947,19 @@ msgstr "Om vald, kommer en 'snapshot' att tas innan varje fil sparas. Filen namn
 msgid "If requested, then a delimiter character must be entered!"
 msgstr "Om så begärs, måste ett avgränsande tecken anges!"
 
-#: Dlg-ID:125,
+#: MenuEntry
+msgid "Import &From"
+msgstr "Import &från"
+
+#: MenuEntry
+msgid "Import &Text"
+msgstr "Importera &text"
+
+#: MenuEntry
+msgid "Import &XML"
+msgstr "Importera &XML"
+
+#: Dlg-ID:226,
 msgid "Import Text Settings"
 msgstr "Val för import från textfi"
 
@@ -1590,7 +1967,7 @@ msgstr "Val för import från textfi"
 msgid "Import Text failed"
 msgstr "Textimport misslyckades"
 
-#: Dlg-ID:126,
+#: Dlg-ID:229,
 msgid "Import XML Settings"
 msgstr "Val för XML-import"
 
@@ -1612,15 +1989,15 @@ msgstr "Importerad"
 
 #: ID:336,
 #, c-format
-msgid "Imported %d %s"
-msgstr ""
+msgid "Imported %d record%s"
+msgstr "Importerad %d post%s"
 
 #: ID:342,
 #, c-format
-msgid "In Headers(%s)/In Entries("
-msgstr ""
+msgid "In Headers(%s)/In Records("
+msgstr "I rubrik(%s)/I poster("
 
-#: Dlg-ID:146,
+#: Dlg-ID:212,
 msgid "Incorrect Passkey"
 msgstr "Fel Safe-nyckel"
 
@@ -1685,7 +2062,11 @@ msgstr "Ogiltigt filnamn."
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr "Ogiltig inmatning på rad %d. Antalet fält separerade med '%c' förväntades inte."
 
-# Can you move the time window a little to the right?
+#: MenuEntry
+msgid "KeePass..."
+msgstr "KeePass..."
+
+# Swedish text longer than the English - can you move the time window a little to the right?
 #: Control-ID:1143,
 #, fuzzy
 msgid "Keep"
@@ -1695,7 +2076,7 @@ msgstr "Behåll"
 msgid "Last Access Time\t"
 msgstr "Senast använd tidpunkt\t"
 
-# : is missing in English text
+# ":" is missing in English text
 #: ID:328,
 #, fuzzy
 msgid "Last Accessed"
@@ -1705,7 +2086,7 @@ msgstr "Senast använd:"
 msgid "Last Modified"
 msgstr "Senast ändrad"
 
-#: Control-ID:1112,#: Control-ID:1112,
+#: Control-ID:1112,
 msgid "Last accessed on:"
 msgstr "Senast använd den:"
 
@@ -1721,10 +2102,6 @@ msgstr "Senast sparad den:"
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
 msgstr "Senaste version? Klicka <a href=\"%s\">här</a> för att kontrollera."
-
-#: ID:332,
-msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
-msgstr ""
 
 #: ID:204,
 #, c-format
@@ -1746,7 +2123,8 @@ msgstr "Rad %d överhoppad. Den innehåller ett tomt obligatoriskt titelfält."
 msgid "Line %d: "
 msgstr "Rad %d: "
 
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "Line delimiter in Notes field:"
 msgstr "Avslutar rad i notatfält:"
 
@@ -1754,11 +2132,12 @@ msgstr "Avslutar rad i notatfält:"
 msgid "List"
 msgstr "Lista"
 
-#: Dlg-ID:119,
+#: Dlg-ID:228,
 msgid "List of Expired Passwords"
 msgstr "Lista på utgågna lösenord"
 
-#: Control-ID:1257,#: Control-ID:1012,
+#: Control-ID:1012,#:
+#: Control-ID:1257,
 msgid "List1"
 msgstr "Lista1"
 
@@ -1770,7 +2149,7 @@ msgstr "Lås Safen"
 msgid "Lock password database after "
 msgstr "Lås lösenordsdatabasen efter"
 
-#: Control-ID:1026,
+#: Control-ID:1025,
 msgid "Lock password database on minimize"
 msgstr "Lås lösenordsdatabasen vid minimering"
 
@@ -1781,6 +2160,10 @@ msgstr "Lås lösenordsdatabasen då datorn stängs"
 #: ID:3866,
 msgid "Mail system DLL is invalid."
 msgstr "e-postsystemets DLL är ogiltig."
+
+#: MenuEntry
+msgid "Make &Backup\tCtrl+B"
+msgstr "Gör &backup\tCtrl+B"
 
 #: Control-ID:65535,
 msgid "Manage password history of current entries"
@@ -1795,8 +2178,12 @@ msgid "Max:"
 msgstr "Max:"
 
 #: ID:339,
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Maximala antalet sparade backuper med inkrementella suffixtal\nmåste vara mellan 1 och 999."
+msgid ""
+"Maximum number of backups kept using incremented number suffix\n"
+"must be between 1 and 999."
+msgstr ""
+"Maximala antalet sparade backuper med inkrementella suffixtal\n"
+"måste vara mellan 1 och 999."
 
 #: ID:340,
 #, c-format
@@ -1809,8 +2196,12 @@ msgstr "Sammanslagning genomförd"
 
 #: ID:336,
 #, c-format
-msgid "Merge completed: %d %s added (%d %s)"
-msgstr ""
+msgid "Merge completed: %d entr%s added (%d conflict%s)"
+msgstr "Sammanslagning genomförd: %d post%s tillagd (%d konflikt%s)"
+
+#: MenuEntry
+msgid "Merge..."
+msgstr "Slå samman..."
 
 #: ID:336,
 #, c-format
@@ -1821,7 +2212,7 @@ msgstr "Sammanslagen databas: %s"
 msgid "Minimize after Autotype"
 msgstr "Minimera efter autoskrivning"
 
-#: Dlg-ID:139,
+#: Dlg-ID:222,
 msgid "Misc."
 msgstr "Övrigt"
 
@@ -1833,9 +2224,14 @@ msgstr "Saknas XSD-fil (pwsafe.xsd) - Kan inte validera XML-filer"
 msgid "Mixed"
 msgstr "Blandad"
 
-#: Control-ID:1037,#: Control-ID:1037,#: Control-ID:1037,#: Control-ID:1037,
+#: Control-ID:1036,#:
+#: Control-ID:1036,
 msgid "Name. Name. Name."
 msgstr "Namn. Namn. Namn."
+
+#: MenuEntry
+msgid "Nested &Tree"
+msgstr "&Trädvy"
 
 #: ID:329,
 msgid "Never"
@@ -1857,6 +2253,10 @@ msgstr "Ny grupp"
 msgid "New Safe Combination:"
 msgstr "Ny Safe-nyckel:"
 
+#: MenuEntry
+msgid "New Toolbar"
+msgstr "Ny verktygsrad"
+
 #: ID:344,
 msgid "New Version Found!"
 msgstr "Ny version finns!"
@@ -1865,7 +2265,9 @@ msgstr "Ny version finns!"
 msgid "New safe combination and confirmation do not match"
 msgstr "Nya Safe-nyckeln och konfirmeringen matchar inte"
 
-#: ID:342,#: Control-ID:1083,#: Control-ID:1083,
+#: ID:342,#:
+#: Control-ID:1083,#:
+#: Control-ID:1083,
 msgid "No"
 msgstr "Nej"
 
@@ -1881,15 +2283,13 @@ msgstr "Ingen ändring"
 msgid "No database open with which to compare against another database!"
 msgstr "Ingen databas är öppen som kan jämföras med en annan databas!"
 
-#: ID:346,
-msgid "No entry exists within this database matching your specifications."
-msgstr ""
-
 #: ID:3843,
 msgid "No error message is available."
 msgstr "Inget femeddelande finns tillgängligt."
 
-#: ID:194,#: ID:3867,#: ID:3868,
+#: ID:194,#:
+#: ID:3867,#:
+#: ID:3868,
 msgid "No error occurred."
 msgstr "Inget fel uppkom."
 
@@ -1933,7 +2333,16 @@ msgstr "Inga"
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Inte alla systemets registerposter (eller INI-fil) togs bort."
 
-#: ID:189,#: ID:328,
+#: MenuEntry
+msgid "Note: Empty fields are shown as »*»"
+msgstr "Notera: Tomma fält visas som »*»"
+
+#: MenuEntry
+msgid "Note: Entry format is »Group»Title»Username»"
+msgstr "Notera: Postformatet är »Grupp»Titel»Användare»"
+
+#: ID:189,#:
+#: ID:328,
 msgid "Notes"
 msgstr "Notat"
 
@@ -1947,8 +2356,22 @@ msgstr "Antal grupper:"
 
 #: ID:190,
 #, c-format
-msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued %d\n\nNumber of Shortcut warnings issued %d"
+msgid ""
+"Number of entries processed: %d\n"
+"\n"
+"Number of UUIDs fixed: %d\n"
+"\n"
+"Number of Password Histories fixed: %d\n"
+"\n"
+"Number of Alias warnings issued %d"
 msgstr ""
+"Antalet behandlade poster: %d\n"
+"\n"
+"Antal justerade UUID:s: %d\n"
+"\n"
+"Antal justerade lösenordshistoriker: %d\n"
+"\n"
+"Antalet utfärdade aliasvarningar: %d"
 
 #: ID:339,
 #, c-format
@@ -1969,7 +2392,8 @@ msgstr "Antalet poster som fick sina inställningar ändrade till att spara hist
 msgid "Number of unknown fields:"
 msgstr "Antal okända fält:"
 
-#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,#: Control-ID:1,
+#: Control-ID:1,#:
+#: Control-ID:1,
 msgid "OK"
 msgstr "OK"
 
@@ -1981,7 +2405,8 @@ msgstr "Av"
 msgid "Old Safe Combination:"
 msgstr "Gamla Safe-nyckeln:"
 
-#: ID:330,#: Control-ID:1179,
+#: ID:330,#:
+#: Control-ID:1179,
 msgid "On"
 msgstr "På"
 
@@ -2002,11 +2427,10 @@ msgstr "Öppna"
 msgid "Open Password Database:"
 msgstr "Öppna lösenordsdatabas:"
 
-# Need 5 more positions extra space for the translated text.
-#: Control-ID:1086,#: Control-ID:1086,#: Control-ID:1086,
-#, fuzzy
+#: Control-ID:1086,#:
+#: Control-ID:1086,
 msgid "Open as read-only"
-msgstr "Öppna bara som läsbar"
+msgstr "Öppna som läsbar"
 
 #: ID:334,
 msgid "Open database"
@@ -2024,7 +2448,9 @@ msgstr "Eller"
 msgid "Original Database:"
 msgstr "Ursprunglig databas:"
 
-#: Control-ID:1081,#: Control-ID:1201,#: Control-ID:1207,
+#: Control-ID:1201,#:
+#: Control-ID:1207,#:
+#: Control-ID:1081,
 msgid "Other:"
 msgstr "Övrigt:"
 
@@ -2064,7 +2490,9 @@ msgstr "Lösenordets utgångsdatum\t"
 msgid "Password Histor&y"
 msgstr "Lösenords&historik"
 
-#: ID:341,#: Dlg-ID:120,#: Dlg-ID:140,
+#: ID:341,#:
+#: Dlg-ID:220,#:
+#: Dlg-ID:232,
 msgid "Password History"
 msgstr "Lösenordshistorik"
 
@@ -2076,7 +2504,7 @@ msgstr "Lösenordet ändrat"
 msgid "Password Modified Time\t"
 msgstr "Lösenordets ändringstidpunkt\t"
 
-#: ID:346,#: Dlg-ID:141,
+#: Dlg-ID:221,
 msgid "Password Policy"
 msgstr "Lösenordspolicy"
 
@@ -2084,11 +2512,8 @@ msgstr "Lösenordspolicy"
 msgid "Password Policy Override"
 msgstr "Lösenordspolicyn åsidosätts"
 
-#: ID:192,
-msgid "Password Policy\t"
-msgstr ""
-
-#: ID:3585,#: Dlg-ID:134,
+#: ID:3585,#:
+#: Dlg-ID:202,
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -2098,8 +2523,12 @@ msgstr "Password Safe - <Icke namngiven återställd backup>"
 
 #: ID:326,
 #, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
-msgstr "Password Safe har kompilerats som %s men CPU är faktiskt %s.\nDu kanske inte kan öppna filer eller sparade filer kan vara inkompatibla med andra system."
+msgid ""
+"Password Safe has been compiled as %s but CPU is really %s.\n"
+"You may not be able to open files or saved files may be incompatible with other platforms."
+msgstr ""
+"Password Safe har kompilerats som %s men CPU är faktiskt %s.\n"
+"Du kanske inte kan öppna filer eller sparade filer kan vara inkompatibla med andra system."
 
 #: Control-ID:65535,
 msgid "Password Safe has been minimized. Would you like to clear the clipboard as a security precaution?"
@@ -2122,12 +2551,16 @@ msgid "Password expires on:"
 msgstr "Lösenord ogiltigt den:"
 
 #: ID:343,
-msgid "Password implies this is an alias entry, but "
-msgstr ""
+msgid "Password implies this is an alias record, but "
+msgstr "Lösenordet antyder att detta är en aliasregistrering, men"
 
 #: ID:344,
-msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nA title is mandatory for every entry."
+msgid ""
+"Password implies this is an alias record, but specifies a base entry with no title.\r\n"
+"A title is mandatory for every entry."
 msgstr ""
+"Lösenordet tyder på en registrerad alias, men anger en baspost utan titel.\r\n"
+"En titel är obligatorisk för varje post."
 
 #: ID:188,
 msgid "Password is too short"
@@ -2137,18 +2570,6 @@ msgstr "Lösenordet är för kort"
 msgid "Password last changed on:"
 msgstr "Lösenordet ändrat den:"
 
-#: ID:347,
-msgid "Password length is less than sum of 'at least' constraints"
-msgstr ""
-
-#: ID:333,
-msgid "Password length must be between 4 and 1024."
-msgstr ""
-
-#: Control-ID:65535,
-msgid "Password length:"
-msgstr ""
-
 #: ID:188,
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Lösenordet borde bestå av blandade tecken med åtminståne en siffra eller interpunkteringstecken"
@@ -2156,6 +2577,22 @@ msgstr "Lösenordet borde bestå av blandade tecken med åtminståne en siffra e
 #: ID:188,
 msgid "Password\t"
 msgstr "Lösenord\t"
+
+#: ID:332,
+msgid ""
+"Passwords generated in hexadecimal format must have even lengths\n"
+"as two hexadecimal characters make up a single ASCII character."
+msgstr ""
+"Lösenord som genererats i hexadecimalt format måste ha jämnt antal positioner\n"
+"då två hexadecimala tecken bildar ett enda ASCII-tecken."
+
+#: MenuEntry
+msgid "Perform Auto &type\tCtrl+T"
+msgstr "Autoskri&v\tCtrl+V"
+
+#: MenuEntry
+msgid "Perform Auto type"
+msgstr "Autoskriv"
 
 #: ID:333,
 msgid "Perform Auto&Type"
@@ -2206,8 +2643,12 @@ msgid "Please choose a new name for the current database:"
 msgstr "Välj ett nytt namn på den aktuella databasen:"
 
 #: ID:332,
-msgid "Please confirm that you wish to delete ALL information related to Password Safe for your logged on userid from the Windows registry on this computer!\n\n"
-msgstr "Bekräfta att du vill radera ALL information som rör Password Safe och ditt inloggade användar-ID från Windowsregistret på denna dator!\n\n"
+msgid ""
+"Please confirm that you wish to delete ALL information related to Password Safe for your logged on userid from the Windows registry on this computer!\n"
+"\n"
+msgstr ""
+"Bekräfta att du vill radera ALL information som rör Password Safe och ditt inloggade användar-ID från Windowsregistret på denna dator!\n"
+"\n"
 
 #: Control-ID:65535,
 msgid "Please do not use this option unless you understand and accept the risks."
@@ -2284,7 +2725,8 @@ msgstr "För in aktuell Safe-nyckel och därefter en ny nyckel. Skriv den nya ny
 msgid "Please enter the key and verify it."
 msgstr "För in nyckeln och verifiera den."
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "Please enter the safe combination for this password database."
 msgstr "För in Safe-nyckeln till lösenordsdatabasen."
 
@@ -2316,11 +2758,6 @@ msgstr "Välj rapport att titta på."
 msgid "Please specify the destination location to contain all backups."
 msgstr "Ange den enhet som skall lagra alla backuper."
 
-#: ID:347,
-#, c-format
-msgid "Please specify the name & group for the shortcut to '%s':"
-msgstr ""
-
 #: ID:339,
 msgid "Please specify the sub-directory to contain all backups."
 msgstr "Ange den undermapp som skall innehålla alla backuper."
@@ -2329,7 +2766,7 @@ msgstr "Ange den undermapp som skall innehålla alla backuper."
 msgid "Please visit the <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe website.</a>"
 msgstr "Besök <a href=\"http://passwordsafe.sourceforge.net/\">PasswordSafe's hemsida.</a>"
 
-#: Dlg-ID:136,
+#: Dlg-ID:234,
 msgid "Properties"
 msgstr "Egenskaper"
 
@@ -2345,7 +2782,7 @@ msgstr "Samla grupper först i trädvyn"
 msgid "Put icon in System Tray"
 msgstr "Visa ikon i aktivitetsfältet"
 
-#: Control-ID:1030,
+#: Control-ID:1029,
 msgid "Query user to set default username"
 msgstr "Be användaren ange förvald användare"
 
@@ -2353,7 +2790,8 @@ msgstr "Be användaren ange förvald användare"
 msgid "R/O"
 msgstr "R/O"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "Random Password"
 msgstr "Slumpat lösenord"
 
@@ -2385,7 +2823,8 @@ msgstr "Registrera ändrad tid\t"
 msgid "Record last access times"
 msgstr "Registrera senaste åtkomsttider"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "Remember last"
 msgstr "Kom ihåg sista"
 
@@ -2397,6 +2836,18 @@ msgstr "Ta bort information om PasswordSafe i registret"
 msgid "Rename &Entry\tF2"
 msgstr "Ändra &postnamnet\tF2"
 
+#: MenuEntry
+msgid "Rename Entry"
+msgstr "Ändra postnamnet"
+
+#: MenuEntry
+msgid "Rename Entry\tF2"
+msgstr "Ändra postnamnet\tF2"
+
+#: MenuEntry
+msgid "Rename Group"
+msgstr "Ändra gruppnamn"
+
 #: ID:340,
 msgid "Rename Group\tF2"
 msgstr "Ändra gruppnamn\tF2"
@@ -2406,7 +2857,12 @@ msgstr "Ändra gruppnamn\tF2"
 msgid "Report of %s function started at %s"
 msgstr "Rapport på %s åtgärd som startade %s "
 
-#: Control-ID:1158,#: Control-ID:1158,
+#: MenuEntry
+msgid "Reset Columns"
+msgstr "Återställ kolumner"
+
+#: Control-ID:1158,#:
+#: Control-ID:1158,
 msgid "Restrict to a subset of entries:"
 msgstr "Begränsa till en undergrupp poster:"
 
@@ -2414,7 +2870,8 @@ msgstr "Begränsa till en undergrupp poster:"
 msgid "S"
 msgstr "S"
 
-#: Control-ID:1119,#: Control-ID:1119,
+#: Control-ID:1119,#:
+#: Control-ID:1119,
 msgid "S&et"
 msgstr "V&älj"
 
@@ -2423,15 +2880,16 @@ msgstr "V&älj"
 msgid "SAX Parse%2d Error 0x%08X during %s."
 msgstr "SAX analys%2d fel 0x%08X under %s."
 
-#: Dlg-ID:131,
+#: Dlg-ID:206,
 msgid "Safe Combination Entry"
 msgstr "Databasval och Safe-nyckel"
 
-#: Dlg-ID:133,
+#: Dlg-ID:204,
 msgid "Safe Combination Setup"
 msgstr "Konstruktion av Safe-nyckel"
 
-#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "Safe Combination:"
 msgstr "Safe-nyckel:"
 
@@ -2443,17 +2901,13 @@ msgstr "Samma som databasens"
 msgid "Same as when last saved"
 msgstr "Samma som senast sparad"
 
-#: Control-ID:1073,
-msgid "Sample"
-msgstr ""
-
-#: ID:347,
-msgid "Sample text cannot be empty"
-msgstr ""
-
 #: Control-ID:1137,
 msgid "Save"
 msgstr "Spara"
+
+#: MenuEntry
+msgid "Save &As...\tF12"
+msgstr "Spara so&m...\tF12"
 
 #: ID:3841,
 msgid "Save As"
@@ -2468,19 +2922,15 @@ msgstr "Spara-fel"
 msgid "Save changes to %1?"
 msgstr "Spara ändringar till %1?"
 
-#: Control-ID:1045,
+#: Control-ID:1055,
 msgid "Save database immediately after Edit or Add"
 msgstr "Spara databasen direkt efter ändring eller tillägg"
-
-#: Control-ID:1094,
-msgid "Sc&ript:"
-msgstr ""
 
 #: ID:331,
 msgid "Search has wrapped, continuing from the top."
 msgstr "Sökningen omstartad och fortsätter från början."
 
-#: Dlg-ID:142,
+#: Dlg-ID:218,
 msgid "Security"
 msgstr "Säkerhet"
 
@@ -2529,21 +2979,13 @@ msgstr "Att skicka e-post misslyckades."
 msgid "Set Date/Time"
 msgstr "Ange datum/tid"
 
-#: Dlg-ID:144,
+#: Dlg-ID:214,
 msgid "Set Default Username?"
 msgstr "Ange förvald användare?"
 
-#: ID:347,
-msgid "Set Entry's Password Policy"
-msgstr ""
-
-#: Dlg-ID:135,
+#: Dlg-ID:227,
 msgid "Set Password Expiry Date/Time"
 msgstr "Ange lösenordets utgångsdatum/tid"
-
-#: Control-ID:1038,
-msgid "Set Sample &Text"
-msgstr ""
 
 #: Control-ID:1186,
 msgid "Set maximum number of passwords saved to above value"
@@ -2552,10 +2994,6 @@ msgstr "Välj ovanstående tal för max antal sparade lösenord"
 #: ID:195,
 msgid "Sharing violation: file probably open in another application."
 msgstr "Delningsfel: filen är sannolikt öppen i ett annat program."
-
-#: ID:205,
-msgid "Shortcut"
-msgstr ""
 
 #: Control-ID:1262,
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
@@ -2570,11 +3008,11 @@ msgid "Show notes in edit"
 msgstr "Visa notat i postmenyn"
 
 # [ronys] Since '&' has special meaning before a letter, one has to write '&&' when one wants '&' to appear in the text.
-#: Control-ID:1028,
+#: Control-ID:1027,
 msgid "Show password in add && edit"
 msgstr "Visa lösenordet i lägg till && ändra"
 
-#: Control-ID:1031,
+#: Control-ID:1030,
 msgid "Show password in display tree"
 msgstr "Visa lösenordet i trädvyn"
 
@@ -2584,20 +3022,22 @@ msgstr "Visa användare i trädvyn"
 
 #: ID:336,
 #, c-format
-msgid "Skipped %d %s"
-msgstr ""
+msgid "Skipped %d record%s"
+msgstr "Skippade %d post%s"
 
 #: ID:332,
-msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
-msgstr "Beklagar - din önskadevHotKey används redan.\n\nDenna funktion har tillfälligt stängts av.\n\nFör att slå på igen i denna session väljer du en annan nyckel."
-
-#: ID:346,
-msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
+msgid ""
+"Sorry - your requested HotKey is already being used.\n"
+"\n"
+"This feature has been temporarily disabled.\n"
+"\n"
+"To re-enable in this session, please select a different key combination."
 msgstr ""
-
-#: ID:347,
-msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options"
-msgstr ""
+"Beklagar - din önskadevHotKey används redan.\n"
+"\n"
+"Denna funktion har tillfälligt stängts av.\n"
+"\n"
+"För att slå på igen i denna session väljer du en annan nyckel."
 
 #: Control-ID:1220,
 msgid "Start PasswordSafe at Login"
@@ -2619,7 +3059,7 @@ msgstr "Börja spara tidigare lösenord"
 msgid "Static"
 msgstr "Statisk"
 
-#: Control-ID:1037,
+#: Control-ID:1036,
 msgid "Static_Static"
 msgstr "Statisk_Statisk"
 
@@ -2632,8 +3072,14 @@ msgid "Status:"
 msgstr "Status:"
 
 #: ID:319,
-msgid "Stop saving password history for all entries.\n\nSaved histories will not be touched, but password changes will no longer be stored by default."
-msgstr "Sluta spara lösenordshistorik för alla poster.\n\nSparad historik påverkas inte, men lösenordsändringar kommer inte längre att sparas som standard."
+msgid ""
+"Stop saving password history for all entries.\n"
+"\n"
+"Saved histories will not be touched, but password changes will no longer be stored by default."
+msgstr ""
+"Sluta spara lösenordshistorik för alla poster.\n"
+"\n"
+"Sparad historik påverkas inte, men lösenordsändringar kommer inte längre att sparas som standard."
 
 #: Control-ID:1184,
 msgid "Stop saving previous passwords"
@@ -2643,7 +3089,7 @@ msgstr "Sluta spara tidigare lösenord"
 msgid "Suffix:"
 msgstr "Suffix:"
 
-#: Dlg-ID:143,
+#: Dlg-ID:233,
 msgid "System"
 msgstr "System"
 
@@ -2667,18 +3113,9 @@ msgstr "FÖRSÖK"
 msgid "Tab"
 msgstr "Tab"
 
-#: Control-ID:1110,
-msgid "Target last changed on:"
-msgstr ""
-
 #: ID:334,
 msgid "That file is already open."
 msgstr "Den filen är redan öppen."
-
-#: ID:205,
-#, c-format
-msgid "The %s entry \"%s, %s, %s\" is not attempting to point to a normal or existing %s base entry. It cannot be imported."
-msgstr ""
 
 #: ID:332,
 msgid "The combination cannot be blank."
@@ -2690,18 +3127,52 @@ msgstr "Aktuell arbetsmapp kan inte tas bort."
 
 #: ID:334,
 #, c-format
-msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
-msgstr "Databasen %s kunde inte öppnas.\nVill du leta efter den någon annanstans (Search), skapa en ny databas (Ny), eller avbryt?"
+msgid ""
+"The database %s couldn't be opened.\n"
+"Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr ""
+"Databasen %s kunde inte öppnas.\n"
+"Vill du leta efter den någon annanstans (Search), skapa en ny databas (Ny), eller avbryt?"
 
 #: ID:340,
 #, c-format
-msgid "The database %s is apparently being used by:\n\n%s%s.\n\nOpen the database for Read-Only or Exit?\r\n\r\nNote: Only one user at a time can open the database for writing."
-msgstr "Databasen %s används uppenbarligen av:\n\n%s%s.\n\nÖppna databasen skrivskyddad eller avbryt?\r\n\r\nNotera: Endast en användare åt gången kan öppna databasen för registrering."
+msgid ""
+"The database %s is apparently being used by:\n"
+"\n"
+"%s%s.\n"
+"\n"
+"Open the database for Read-Only or Exit?\r\n"
+"\r\n"
+"Note: Only one user at a time can open the database for writing."
+msgstr ""
+"Databasen %s används uppenbarligen av:\n"
+"\n"
+"%s%s.\n"
+"\n"
+"Öppna databasen skrivskyddad eller avbryt?\r\n"
+"\r\n"
+"Notera: Endast en användare åt gången kan öppna databasen för registrering."
 
 #: ID:328,
 #, c-format
-msgid "The database %s is apparently being used by:\n\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
-msgstr "Databasen %s används uppenbarligen av:\n\n%s%s.\n\nÖppna databasen skrivskyddad, skrivbar, eller avbryt?\r\n\r\nNotera: Välj \"Skrivbar\" endast om du är säker på att filen verkligen inte används av någon annan,\nliksom en kopia av Password Safe som körs på din maskin."
+msgid ""
+"The database %s is apparently being used by:\n"
+"\n"
+"%s%s.\n"
+"\n"
+"Open the database for Read-Only, Read-Write, or Exit?\r\n"
+"\r\n"
+"Note: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\n"
+"including another copy of Password Safe running on your machine."
+msgstr ""
+"Databasen %s används uppenbarligen av:\n"
+"\n"
+"%s%s.\n"
+"\n"
+"Öppna databasen skrivskyddad, skrivbar, eller avbryt?\r\n"
+"\r\n"
+"Notera: Välj \"Skrivbar\" endast om du är säker på att filen verkligen inte används av någon annan,\n"
+"liksom en kopia av Password Safe som körs på din maskin."
 
 #: ID:195,
 msgid "The disk is full."
@@ -2738,8 +3209,12 @@ msgstr "Den gamla Safe-nyckeln är felaktig"
 
 #: ID:335,
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "Den ursprungliga databasen, \"%s\", har ett före 3.0-format. Den kommer inte att ändras.\nDina ändringar kommer att sparas som \"%s\" i det nya formatet, som inte kan användas av gamla versioner av PasswordSafe. För att spara dina ändringar i det gamla formatet, använd kommandot \"Arkiv->Exportera till->1.x or 2 formatet\"."
+msgid ""
+"The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\n"
+"Your changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
+msgstr ""
+"Den ursprungliga databasen, \"%s\", har ett före 3.0-format. Den kommer inte att ändras.\n"
+"Dina ändringar kommer att sparas som \"%s\" i det nya formatet, som inte kan användas av gamla versioner av PasswordSafe. För att spara dina ändringar i det gamla formatet, använd kommandot \"Arkiv->Exportera till->1.x or 2 formatet\"."
 
 #: ID:335,
 #, c-format
@@ -2748,12 +3223,27 @@ msgstr "Den ursprungliga databasen, \"%s\", har ett före 3.0-format. Data komme
 
 #: ID:344,
 #, c-format
-msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n\r\nDo you wish this entry to point to the 'real' base entry?"
-msgstr "Lösenordet är i 'alias'-form men posten som avses '%s:%s:%s' är själv en aliasis.\r\n\r\nVill du att denna post skal peka på den 'verkliga' basposten?"
+msgid ""
+"The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n"
+"\r\n"
+"Do you wish this entry to point to the 'real' base entry?"
+msgstr ""
+"Lösenordet är i 'alias'-form men posten som avses '%s:%s:%s' är själv en aliasis.\r\n"
+"\r\n"
+"Vill du att denna post skal peka på den 'verkliga' basposten?"
 
 #: Control-ID:65535,
 msgid "The password of the selected item has been copied to the clipboard. The clipboard will be securely cleared when Password Safe is closed."
 msgstr "Lösenordet till det valda objektet har kopierats till klippbordet. Klippbordet kommer att rensas på ett säkert sätt när Password Safe har stängts."
+
+#: ID:330,
+#, c-format
+msgid ""
+"The randomly generated password is: \"%s\" \n"
+"(without the quotes). Use it (Yes), or generate another (No)?"
+msgstr ""
+"Det slumpmässigt genererade lösenordet är: \"%s\" \n"
+"(utan citattecken). Använda det (Ja), eller generera ett nytt (Nej)?"
 
 #: Control-ID:65535,
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -2762,10 +3252,6 @@ msgstr "Safe-nyckeln har använts tre gånger utan framgång. Om du inte känner
 #: ID:329,
 msgid "The two entries do not match."
 msgstr "De två posterna matchar inte."
-
-#: ID:346,
-msgid "There are more than one entry that fits your selection. Please be more specific."
-msgstr ""
 
 #: ID:195,
 msgid "There are no more directory entries."
@@ -2787,11 +3273,6 @@ msgstr "Försök har gjorts att använda en ogiltig fil-hanterare."
 msgid "There was an error trying to set the file pointer."
 msgstr "Det uppstod ett fel i försöket att sätta filpekaren."
 
-#: ID:346,
-#, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
-msgstr ""
-
 #: ID:320,
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
 msgstr "Detta låter dig ha backuper på en annan plats. Försäkra dig om att du har skrivarrättigheter till den mapp du anger."
@@ -2806,18 +3287,23 @@ msgstr "Denna databas är samma som den aktuella databasen."
 
 #: ID:343,
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s"
+msgid ""
+"This entry has the following %d alias%s:\r\n"
+"%s"
 msgstr ""
-
-#: ID:347,
-#, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
+"Denna post har följande %d alias%s:\r\n"
+"%s"
 
 #: ID:343,
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgid ""
+"This entry has the following %d alias%s:\r\n"
+"%s\r\n"
+"Please confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
+"Denna post har föjande %d alias%s:\r\n"
+"%s\r\n"
+"Bekräfta att du vill fortsätta (alias posters lösenord kommer att ersättas av denna posts lösenord)?"
 
 #: ID:329,
 msgid "This entry must have a password."
@@ -2826,10 +3312,6 @@ msgstr "Denna post måste ha ett lösenord."
 #: ID:329,
 msgid "This entry must have a title."
 msgstr "Denna post måste ha en titel."
-
-#: ID:346,
-msgid "This entry must have a valid target entry."
-msgstr ""
 
 #: Control-ID:1269,
 msgid "This is an alias."
@@ -2845,20 +3327,29 @@ msgstr "Detta program är länkat till den saknade exporten %s i filen %s. Denna
 msgid "This program requires the file %s, which was not found on this system."
 msgstr "Detta program kräver filen %s, som inte hittades i detta system."
 
-#: ID:346,
+#: ID:340,
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
+msgid ""
+"This version of PasswordSafe does not support more than %d entries in a database.\n"
+"To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
+"Do you want to open this database anyway?\n"
+"(Saving this database will result in the removal of unread records!)"
 msgstr ""
+"Denna version av PasswordSafe stödjer inte mer än %d poster i en databas.\n"
+"För att få en obegränsad version till U3-plattformen, besök http://software.u3.com\n"
+"Vil du öppna denna databas i alla fall?\n"
+"(Att spara denna databas kommer att resultera i att olästa poster tas bort!)"
 
 #: ID:340,
 #, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nDo you want to open this database anyway?\n(Saving this database will result in the removal of unread entries!)"
+msgid ""
+"This version of PasswordSafe does not support more than %d entries in a database.\n"
+"To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
+"Note: Saving this database will result in the removal of unread records!"
 msgstr ""
-
-#: ID:340,
-#, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"
-msgstr ""
+"Denna version av PasswordSafe stödjer inte mer än %d poster i en databas.\n"
+"För att få en obegränsad version till U3-plattformen, besök http://software.u3.com\n"
+"Notera: Att spara denna databas kommer att resultera i att olästa poster tas bort!"
 
 #: ID:319,
 msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause previous versions of Password Safe to revert to default values for some settings."
@@ -2901,11 +3392,7 @@ msgstr "För att ändra posten i den aktuella lösenordsfilen så gör de önska
 msgid "Too many open files."
 msgstr "För många öppna filer."
 
-#: Control-ID:1284,
-msgid "Treat fields that only contain 'whitespace' as empty"
-msgstr ""
-
-#: Control-ID:1013,
+#: Control-ID:1066,
 msgid "Tree1"
 msgstr "Träd 1"
 
@@ -2915,14 +3402,15 @@ msgstr "Testvertionens begränsningar"
 
 #: ID:203,
 #, c-format
-msgid "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
-msgstr ""
+msgid "Trouble with non-ASCII data in record '%s' - please check data carefully."
+msgstr "Problem med icke-ASCII-data i en post '%s' - kontrollera data noggrannt."
 
 #: ID:344,
 msgid "Trying to contact server..."
 msgstr "Försöker kontakta servern..."
 
-#: Control-ID:1106,#: Control-ID:1106,
+#: Control-ID:1106,#:
+#: Control-ID:1106,
 msgid "U&RL:"
 msgstr "U&RL:"
 
@@ -2935,8 +3423,18 @@ msgid "URL\t"
 msgstr "URL\t"
 
 #: ID:190,
-msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "Kan inte skapa en ny XML konfigureringsfil eller lägga till dina val till en befintlig XML konfigureringsfil.\n\nApplikationens alla konfigureringsinställningar kommer att sparas i ditt register på denna dator.\n\nDatabsrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
+msgid ""
+"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be saved in your registry entry on this computer.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Kan inte skapa en ny XML konfigureringsfil eller lägga till dina val till en befintlig XML konfigureringsfil.\n"
+"\n"
+"Applikationens alla konfigureringsinställningar kommer att sparas i ditt register på denna dator.\n"
+"\n"
+"Databsrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
 
 #: ID:339,
 msgid "Unable to create intermediate backup."
@@ -2958,8 +3456,14 @@ msgid "Unable to find required XML Schema Definition file (pwsafe.xsd) in your P
 msgstr "Kan inte hitta XML Schema Defenition-fil  (pwsafe.xsd) som krävs i din PasswordSafe's programmapp. Kopiera den från din installationsfil."
 
 #: ID:190,
-msgid "Unable to get configuration file lock.\n\nWill use registry."
-msgstr "Kan inte stänga konfigurationsfilen.\n\nAnvänder registret."
+msgid ""
+"Unable to get configuration file lock.\n"
+"\n"
+"Will use registry."
+msgstr ""
+"Kan inte stänga konfigurationsfilen.\n"
+"\n"
+"Använder registret."
 
 #: ID:191,
 msgid "Unable to load configuration file"
@@ -2992,8 +3496,18 @@ msgid "Unable to send email"
 msgstr "Kan inte skicka e-post"
 
 #: ID:190,
-msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "Kan inte uppdatera dina poster i den befintliga XML-konfigurationsfilen.\n\nProgrammets alla konfigurationsinställningar laddas fån denna fil, men inga ändringar  sparas.\n\nDatabasrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
+msgid ""
+"Unable to update your entries in the existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be loaded from this file but no changes will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Kan inte uppdatera dina poster i den befintliga XML-konfigurationsfilen.\n"
+"\n"
+"Programmets alla konfigurationsinställningar laddas fån denna fil, men inga ändringar  sparas.\n"
+"\n"
+"Databasrelaterade inställningar sparas i den öppna databasen när den stängs, om den inte bara är läsbar eller låst av annan användare."
 
 #: ID:191,
 msgid "Unable to use a XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
@@ -3028,6 +3542,10 @@ msgstr "Okänd"
 msgid "Unknown fields:"
 msgstr "Okända fält:"
 
+#: MenuEntry
+msgid "Unlock"
+msgstr "Lås upp"
+
 #: ID:330,
 msgid "Unlock Safe"
 msgstr "Lås upp Safen"
@@ -3037,18 +3555,54 @@ msgid "Untitled"
 msgstr "Ej namngiven"
 
 #: ID:313,
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)"
-msgstr "Användning: pwsafe [-r|-v] [password databas]\neller pwsafe [-e|-d] filnamn\neller pwsafe [-c]\neller pwsafe [-s] [password databas]\neller pwsafe -m\n\ndär:\n  -r = öppna skrivbar\n  -v = validera & reparera\n  -e/d = kryptera/dekryptera fil\n  -c = starta stängd, alltså öppnas inte databasen\n  -s = starta tyst (minimerad)\n  -m = starta minimerad & stängd\n\nI tillägg kan följander flaggor användas:\n -u user (använd användarens preferenser i stället för inloggningsnamn)\n -h host (använd datorn för att finna något annat än maskinens namn)\n -g config_file (använd config_file istället för pwsafe.cfg)"
+msgid ""
+"Usage: pwsafe [-r|-v] [password database]\n"
+"or pwsafe [-e|-d] filename\n"
+"or pwsafe [-c]\n"
+"or pwsafe [-s] [password database]\n"
+"or pwsafe -m\n"
+"\n"
+" where:\n"
+"  -r = open read-only\n"
+"  -v = validate & repair\n"
+"  -e/d = encrypt/decrypt file\n"
+"  -c = start closed i.e., no open database\n"
+"  -s = start silently (minimized)\n"
+"  -m = start minimized & closed\n"
+"\n"
+"In addition, the following flags may be used:\n"
+" -u user (use user's preferences instead of login name)\n"
+" -h host (use host to look up preferences instead of the machine's name)\n"
+" -g config_file (use config_file instead of pwsafe.cfg)"
+msgstr ""
+"Användning: pwsafe [-r|-v] [password databas]\n"
+"eller pwsafe [-e|-d] filnamn\n"
+"eller pwsafe [-c]\n"
+"eller pwsafe [-s] [password databas]\n"
+"eller pwsafe -m\n"
+"\n"
+"där:\n"
+"  -r = öppna skrivbar\n"
+"  -v = validera & reparera\n"
+"  -e/d = kryptera/dekryptera fil\n"
+"  -c = starta stängd, alltså öppnas inte databasen\n"
+"  -s = starta tyst (minimerad)\n"
+"  -m = starta minimerad & stängd\n"
+"\n"
+"I tillägg kan följander flaggor användas:\n"
+" -u user (använd användarens preferenser i stället för inloggningsnamn)\n"
+" -h host (använd datorn för att finna något annat än maskinens namn)\n"
+" -g config_file (använd config_file istället för pwsafe.cfg)"
 
-#: Control-ID:1029,
+#: Control-ID:1028,
 msgid "Use"
 msgstr "Välj"
 
-#: Control-ID:1048,
+#: Control-ID:1058,
 msgid "Use UPPERCASE letters"
 msgstr "Använd VERSALER"
 
-#: Control-ID:1049,
+#: Control-ID:1059,
 msgid "Use digits"
 msgstr "Använd siffror"
 
@@ -3056,15 +3610,15 @@ msgstr "Använd siffror"
 msgid "Use hexadecimal digits only (0-9,a-f)"
 msgstr "Använd bara hexadecimala tal (0-9, a-f)"
 
-#: Control-ID:1047,
+#: Control-ID:1057,
 msgid "Use lowercase letters"
 msgstr "Använd gemener"
 
-#: Control-ID:1051,
+#: Control-ID:1065,
 msgid "Use only easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "Använd bara lättolkade tecken (m.a.o. inte 'l', '1' etc.)"
 
-#: Control-ID:1050,
+#: Control-ID:1060,
 msgid "Use symbols (i.e., &, %, $, etc.)"
 msgstr "Använd symboler (t. ex., &, %, $, etc.)"
 
@@ -3090,8 +3644,14 @@ msgstr "Använt program:"
 
 #: ID:336,
 #, c-format
-msgid "Validated %d %s\r\n\r\nImported %d %s"
+msgid ""
+"Validated %d record%s\r\n"
+"\r\n"
+"Imported %d record%s"
 msgstr ""
+"Validerad %d post%s\r\n"
+"\r\n"
+"Importerad %d post%s"
 
 #: Control-ID:65535,
 msgid "Verify Key:"
@@ -3101,10 +3661,6 @@ msgstr "Verifiera nyckel:"
 msgid "Verify:"
 msgstr "Verifiera:"
 
-#: ID:346,
-msgid "View Aliases"
-msgstr ""
-
 #: ID:330,
 msgid "View Entry"
 msgstr "Visa posten"
@@ -3113,25 +3669,28 @@ msgstr "Visa posten"
 msgid "View Entry\tCtrl+Enter"
 msgstr "Visa posten\tCtrl+Enter"
 
-#: ID:346,
-msgid "View Shortcut"
-msgstr ""
-
-#: ID:346,
-msgid "View Shortcuts"
-msgstr ""
-
 #: Control-ID:1259,
 msgid "View report"
 msgstr "Visa rapport"
 
-#: ID:326,#: ID:333,
+#: ID:326,#:
+#: ID:333,
 msgid "View/Edit selected entry"
 msgstr "Visa/ändra vald post"
 
+#: MenuEntry
+msgid "Visit Password Safe &website..."
+msgstr "Besök Password Safe &website"
+
 #: ID:343,
-msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
-msgstr "VARNING: Användning av en extern editor kan lämna kvar känsliga data på din hårddisk.\n\nVill du fortsätta?"
+msgid ""
+"WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
+"\n"
+"Do you wish to continue?"
+msgstr ""
+"VARNING: Användning av en extern editor kan lämna kvar känsliga data på din hårddisk.\n"
+"\n"
+"Vill du fortsätta?"
 
 #: Control-ID:1232,
 msgid "Warn"
@@ -3149,27 +3708,45 @@ msgstr "Varning! Denna åtgärd kommer att skapa en oskyddad kopia av ALLA löse
 # We show this message if the user sets the passphrase to something too short, such as "1234", etc.
 #: ID:332,
 #, c-format
-msgid "Weak passphrase:\n\n %s"
-msgstr "Svag nyckelkombination:\n\n %s"
+msgid ""
+"Weak passphrase:\n"
+"\n"
+" %s"
+msgstr ""
+"Svag nyckelkombination:\n"
+"\n"
+" %s"
 
-#: Control-ID:1115,#: Control-ID:1109,#: Control-ID:1111,#: Control-ID:1113,#: Control-ID:1117,#: Control-ID:1115,#: Control-ID:1109,#: Control-ID:1111,#: Control-ID:1113,#: Control-ID:1117,#: Control-ID:1105,
+#: Control-ID:1109,#:
+#: Control-ID:1111,#:
+#: Control-ID:1113,#:
+#: Control-ID:1117,#:
+#: Control-ID:1115,#:
+#: Control-ID:1105,
 msgid "Whenever"
 msgstr "När som helst"
 
 #: ID:333,
 #, c-format
-msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
-msgstr "Vill du använda \"%s\" som förvald användare?\n\nDen kommer isåfall att automatiskt läggas i dialogen när du lägger till en ny post."
+msgid ""
+"Would you like to set \"%s\" as your default username?\n"
+"\n"
+"It would then automatically be put in the dialog each time you add a new item."
+msgstr ""
+"Vill du använda \"%s\" som förvald användare?\n"
+"\n"
+"Den kommer isåfall att automatiskt läggas i dialogen när du lägger till en ny post."
 
 #: ID:320,
-msgid "Write when an entry was accessed in the database. Ignored in read-only mode."
-msgstr ""
+msgid "Write when a record was accessed in the database. Ignored in read-only mode."
+msgstr "Registrera när en post anropades i databasen. Ignoreras i bara läsbart mode."
 
 #: ID:342,
 msgid "Yes"
 msgstr "Ja"
 
-#: Control-ID:1084,#: Control-ID:1084,
+#: Control-ID:1084,#:
+#: Control-ID:1084,
 msgid "Yes:"
 msgstr "Ja:"
 
@@ -3185,192 +3762,377 @@ msgstr "[Ingen aktuell databas]"
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notat är dolda - klicka här för att visa]"
 
-#: ID:2004,
-msgid "\nAdd New Entry"
-msgstr "\nLägg till ny post"
+#: ID:2039,
+msgid ""
+"\n"
+"Add New Entry"
+msgstr ""
+"\n"
+"Lägg till ny post"
 
-#: ID:2020,
-msgid "\nAdvanced Find Options"
-msgstr "\nAvancerade sökval"
+#: ID:2041,
+msgid ""
+"\n"
+"Advanced Find Options"
+msgstr ""
+"\n"
+"Avancerade sökval"
 
-#: ID:2004,
-msgid "\nBrowse to URL/Send Email"
-msgstr "\nGå till URL/Skicka e-post"
+#: ID:2039,
+msgid ""
+"\n"
+"Browse to URL/Send Email"
+msgstr ""
+"\n"
+"Gå till URL/Skicka e-post"
 
-#: ID:2020,
-msgid "\nCase insensitive search"
-msgstr "\nIcke lägeskänslig sökning"
+#: ID:2041,
+msgid ""
+"\n"
+"Case insensitive search"
+msgstr ""
+"\n"
+"Icke lägeskänslig sökning"
 
-#: ID:2020,
-msgid "\nCase sensitive search"
-msgstr "\nLägeskänslig sökning"
+#: ID:2041,
+msgid ""
+"\n"
+"Case sensitive search"
+msgstr ""
+"\n"
+"Lägeskänslig sökning"
 
-#: ID:2020,
-msgid "\nClear Find"
-msgstr "\nRensa sökningen"
+#: ID:2041,
+msgid ""
+"\n"
+"Clear Find"
+msgstr ""
+"\n"
+"Rensa sökningen"
 
-#: ID:2004,
-msgid "\nClear the clipboard contents"
-msgstr "\nRensa allt från klippbordet"
+#: ID:2038,
+msgid ""
+"\n"
+"Clear the clipboard contents"
+msgstr ""
+"\n"
+"Rensa allt från klippbordet"
 
-#: ID:2001,
-msgid "\nClose Database"
-msgstr "\nStäng databasen"
+#: ID:2038,
+msgid ""
+"\n"
+"Close Database"
+msgstr ""
+"\n"
+"Stäng databasen"
 
-#: ID:2019,
-msgid "\nClose Find Bar"
-msgstr "\nStäng sökmenyn"
+#: ID:2041,
+msgid ""
+"\n"
+"Close Find Bar"
+msgstr ""
+"\n"
+"Stäng sökmenyn"
 
-#: ID:2007,
-msgid "\nCollapse All"
-msgstr "\nMinimera allt"
+#: ID:2039,
+msgid ""
+"\n"
+"Collapse All"
+msgstr ""
+"\n"
+"Minimera allt"
 
-#: ID:2002,
-msgid "\nCompare two Databases"
-msgstr "\nJämför två databaser"
+#: ID:2039,
+msgid ""
+"\n"
+"Compare two Databases"
+msgstr ""
+"\n"
+"Jämför två databaser"
 
-#: ID:2004,
-msgid "\nCopy Notes to Clipboard"
-msgstr "\nKopiera notat till klippbordet"
+#: ID:2038,
+msgid ""
+"\n"
+"Copy Notes to Clipboard"
+msgstr ""
+"\n"
+"Kopiera notat till klippbordet"
 
-#: ID:2004,
-msgid "\nCopy Password to Clipboard"
-msgstr "\nKopiera lösenordet till klippbordet"
+#: ID:2038,
+msgid ""
+"\n"
+"Copy Password to Clipboard"
+msgstr ""
+"\n"
+"Kopiera lösenordet till klippbordet"
 
-#: ID:2004,
-msgid "\nCopy Username to Clipboard"
-msgstr "\nKopiera användare till klippbordet"
+#: ID:2038,
+msgid ""
+"\n"
+"Copy Username to Clipboard"
+msgstr ""
+"\n"
+"Kopiera användare till klippbordet"
 
-#: ID:2004,
-msgid "\nDelete an Entry"
-msgstr "\nRadera en post"
+#: ID:2039,
+msgid ""
+"\n"
+"Delete an Entry"
+msgstr ""
+"\n"
+"Radera en post"
 
-#: ID:2004,
-msgid "\nEdit an Entry"
-msgstr "\nÄndra en post"
+#: ID:2039,
+msgid ""
+"\n"
+"Edit an Entry"
+msgstr ""
+"\n"
+"Ändra en post"
 
 #: ID:191,
 #, c-format
-msgid "\nError in Password History for entry: »%s»%s»%s»: "
-msgstr "\nFel i lösenordshistoriken för post: »%s»%s»%s»: "
+msgid ""
+"\n"
+"Error in Password History for entry: »%s»%s»%s»: "
+msgstr ""
+"\n"
+"Fel i lösenordshistoriken för post: »%s»%s»%s»: "
 
-#: ID:2007,
-msgid "\nExpand All"
-msgstr "\nExpandera allt"
+#: ID:2039,
+msgid ""
+"\n"
+"Expand All"
+msgstr ""
+"\n"
+"Expandera allt"
 
-#: ID:2001,
-msgid "\nExport to Text"
-msgstr "\nExportera som text"
+#: ID:2039,
+msgid ""
+"\n"
+"Export to Text"
+msgstr ""
+"\n"
+"Exportera som text"
 
-#: ID:2001,
-msgid "\nExport to XML"
-msgstr "\nExportera till XML"
+#: ID:2039,
+msgid ""
+"\n"
+"Export to XML"
+msgstr ""
+"\n"
+"Exportera till XML"
 
-#: ID:2004,#: ID:2019,
-msgid "\nFind"
-msgstr "\nSök"
+#: ID:2041,
+msgid ""
+"\n"
+"Find"
+msgstr ""
+"\n"
+"Sök"
 
+#: ID:2039,#:
 #: ID:3605,
-msgid "\nHelp"
-msgstr "\nHjälp"
+msgid ""
+"\n"
+"Help"
+msgstr ""
+"\n"
+"Hjälp"
 
-#: ID:2002,
-msgid "\nImport Text"
-msgstr "\nImportera text"
+#: ID:2039,
+msgid ""
+"\n"
+"Import Text"
+msgstr ""
+"\n"
+"Importera text"
 
-#: ID:2001,
-msgid "\nImport XML"
-msgstr "\nImportera XML"
+#: ID:2039,
+msgid ""
+"\n"
+"Import XML"
+msgstr ""
+"\n"
+"Importera XML"
 
-#: ID:2017,
-msgid "\nList View/Tree View"
-msgstr "\nTabellvy/trädvy"
+#: ID:2040,
+msgid ""
+"\n"
+"List View/Tree View"
+msgstr ""
+"\n"
+"Tabellvy/trädvy"
 
-#: ID:2001,
-msgid "\nMake New Database"
-msgstr "\nSkapa en ny databas"
+#: ID:2038,
+msgid ""
+"\n"
+"Make New Database"
+msgstr ""
+"\n"
+"Skapa en ny databas"
 
-#: ID:2002,
-msgid "\nMerge into Database"
-msgstr "\nSammanslå med databas"
+#: ID:2039,
+msgid ""
+"\n"
+"Merge into Database"
+msgstr ""
+"\n"
+"Sammanslå med databas"
 
-#: ID:2001,
-msgid "\nOpen Another Database"
-msgstr "\nÖppna en annan databas"
+#: ID:2038,
+msgid ""
+"\n"
+"Open Another Database"
+msgstr ""
+"\n"
+"Öppna en annan databas"
 
-#: ID:2010,
-msgid "\nOptions"
-msgstr "\nAlternativ"
+#: ID:2039,
+msgid ""
+"\n"
+"Options"
+msgstr ""
+"\n"
+"Alternativ"
 
-#: ID:2004,
-msgid "\nPerform Autotype"
-msgstr "\nUtför autoskrift"
+#: ID:2039,
+msgid ""
+"\n"
+"Perform Autotype"
+msgstr ""
+"\n"
+"Utför autoskrift"
 
 #: ID:332,
-msgid "\nPlease try another"
-msgstr "\nFörsök med en annan"
+msgid ""
+"\n"
+"Please try another"
+msgstr ""
+"\n"
+"Försök med en annan"
 
 #: ID:327,
-msgid "\nProgram will terminate."
-msgstr "\nProgrammet avslutas."
+msgid ""
+"\n"
+"Program will terminate."
+msgstr ""
+"\n"
+"Programmet avslutas."
 
-#: ID:2001,
-msgid "\nSave Database"
-msgstr "\nSpara databasen"
+#: ID:2038,
+msgid ""
+"\n"
+"Save Database"
+msgstr ""
+"\n"
+"Spara databasen"
 
-#: ID:2001,
-msgid "\nSave Database As..."
-msgstr "\nSpara databasen som..."
+#: ID:2039,
+msgid ""
+"\n"
+"Save Database As..."
+msgstr ""
+"\n"
+"Spara databasen som..."
 
 #: ID:332,
-msgid "\nUse it anyway?"
-msgstr "\nAnvänd ändå?"
+msgid ""
+"\n"
+"Use it anyway?"
+msgstr ""
+"\n"
+"Använd ändå?"
 
-#: ID:2017,
-msgid "\nView Reports"
-msgstr "\nTitta på rapporter"
+#: ID:2040,
+msgid ""
+"\n"
+"View Reports"
+msgstr ""
+"\n"
+"Titta på rapporter"
 
 #: ID:328,
-msgid "\n\nCannot open database. It probably does not exist.\nA new database will be created."
-msgstr "\n\nKan inte öppna databasen. Den finns antagligen inte.\nEn ny databas kommer att skapas."
+msgid ""
+"\n"
+"\n"
+"Cannot open database. It probably does not exist.\n"
+"A new database will be created."
+msgstr ""
+"\n"
+"\n"
+"Kan inte öppna databasen. Den finns antagligen inte.\n"
+"En ny databas kommer att skapas."
 
 #: ID:337,
-msgid "\n\nDatabases identical!"
-msgstr "\n\nDatabaserna är identiska!"
+msgid ""
+"\n"
+"\n"
+"Databases identical!"
+msgstr ""
+"\n"
+"\n"
+"Databaserna är identiska!"
 
 #: ID:342,
-msgid "\n\nUnknown fields will also be copied with the entry."
-msgstr "\n\nOkända fält kommer också att kopieras med posten."
+msgid ""
+"\n"
+"\n"
+"Unknown fields will also be copied with the entry."
+msgstr ""
+"\n"
+"\n"
+"Okända fält kommer också att kopieras med posten."
 
 #: ID:330,
-msgid "\r\nAutotype: "
-msgstr "\r\nAutoskrift:"
-
-#: ID:347,
-msgid "\r\nEmail: "
+msgid ""
+"\r\n"
+"Autotype: "
 msgstr ""
+"\r\n"
+"Autoskrift:"
 
 #: ID:343,
-msgid "\r\nThis field is being edited in your\r\ndefault text editor."
-msgstr "\r\nDetta fält ändras i din\r\nförvalda texteditor."
+msgid ""
+"\r\n"
+"This field is being edited in your\r\n"
+"default text editor."
+msgstr ""
+"\r\n"
+"Detta fält ändras i din\r\n"
+"förvalda texteditor."
 
 #: ID:330,
-msgid "\r\nURL: "
-msgstr "\r\nURL: "
+msgid ""
+"\r\n"
+"URL: "
+msgstr ""
+"\r\n"
+"URL: "
 
 #: ID:344,
-msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\r\n\r\nFortsätta med detta lösenord (Ja) eller avbryta (Nej)?"
-
-#: ID:337,
-#, c-format
-msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas the following fields have differences:"
+msgid ""
+"\r\n"
+"\r\n"
+"Select Yes to continue with this password or No to cancel?"
 msgstr ""
+"\r\n"
+"\r\n"
+"Fortsätta med detta lösenord (Ja) eller avbryta (Nej)?"
 
 #: ID:337,
 #, c-format
 msgid "\tGroup:\"%s\"; Title:\"%s\"; User:\"%s\""
 msgstr "\tGrupp:\"%s\"; Titel:\"%s\"; Användare:\"%s\""
+
+#: ID:337,
+#, c-format
+msgid ""
+"\tIn entry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n"
+"\t\tthe following fields have differences:"
+msgstr ""
+"\tI posten - Grupp:\"%s\"; Titel:\"%s\"; Användare:\"%s\"\r\n"
+"\t\thar följande fältskillnader:"
 
 #: ID:205,
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -3380,19 +4142,11 @@ msgstr "\tDenna post har gjorts till ett alias till associerade baspost."
 msgid "\tThis entry remains a normal entry and the password has not be changed."
 msgstr "\tDenna post förblir en normal post och lösenordet har inte ändrats."
 
-#: ID:345,
-msgid "alias"
-msgstr ""
-
-#: ID:345,
-msgid "aliases"
-msgstr ""
-
 #: ID:3841,
 msgid "an unnamed file"
 msgstr "ej namngiven fil"
 
-#: Control-ID:1035,
+#: Control-ID:1034,
 msgid "as default username"
 msgstr "till förvald användare"
 
@@ -3409,14 +4163,6 @@ msgstr "börjar med"
 #: ID:326,
 msgid "big endian"
 msgstr "big endian"
-
-#: ID:346,
-msgid "conflict"
-msgstr ""
-
-#: ID:346,
-msgid "conflicts"
-msgstr ""
 
 #: ID:331,
 msgid "contains"
@@ -3454,14 +4200,6 @@ msgstr "är inte lika med"
 msgid "ends with"
 msgstr "slutar med"
 
-#: ID:345,
-msgid "entries"
-msgstr ""
-
-#: ID:345,
-msgid "entry"
-msgstr ""
-
 #: ID:330,
 msgid "equals"
 msgstr "är lika med"
@@ -3482,7 +4220,8 @@ msgstr "http://passwordsafe.sourceforge.net/"
 msgid "import"
 msgstr "import"
 
-#: Control-ID:1144,#: Control-ID:1144,
+#: Control-ID:1144,#:
+#: Control-ID:1144,
 msgid "last passwords"
 msgstr "senaste lösenord"
 
@@ -3547,30 +4286,26 @@ msgstr "tidigare lösenord per post"
 msgid "pwsafe"
 msgstr "pwsafe"
 
-#: ID:346,
-msgid "shortcut"
-msgstr ""
-
-#: ID:347,
-#, c-format
-msgid "shortcut to %s"
-msgstr ""
-
-#: ID:346,
-msgid "shortcuts"
-msgstr ""
-
 #: Control-ID:1265,
 msgid "static"
 msgstr "statisk"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "the following text:"
 msgstr "följande text:"
 
 #: Control-ID:1098,
 msgid "used entries in System Tray menu"
 msgstr "använda posterna i aktivitetsfältet"
+
+#: MenuEntry
+msgid "v&1.x format..."
+msgstr "v&1.x format..."
+
+#: MenuEntry
+msgid "v&2 format..."
+msgstr "v&2 format..."
 
 #: ID:191,
 msgid "validation"
@@ -3580,7 +4315,8 @@ msgstr "validering"
 msgid "whatever"
 msgstr "vad som än"
 
-#: Control-ID:65535,#: Control-ID:65535,
+#: Control-ID:65535,#:
+#: Control-ID:65535,
 msgid "where"
 msgstr "där"
 

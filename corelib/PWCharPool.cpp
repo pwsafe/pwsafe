@@ -19,53 +19,47 @@
 
 using namespace std;
 
-#ifdef UNICODE
-typedef std::wstring stringT;
-#else
-typedef std::string stringT;
-#endif
-
 // Following macro get length of std_*_chars less the trailing \0
 // compile time equivalent of strlen()
 #define LENGTH(s) (sizeof(s)/sizeof(s[0]) - sizeof(s[0]))
 
-const TCHAR CPasswordCharPool::std_lowercase_chars[] = _T("abcdefghijklmnopqrstuvwxyz");
+const charT CPasswordCharPool::std_lowercase_chars[] = _T("abcdefghijklmnopqrstuvwxyz");
 const size_t CPasswordCharPool::std_lowercase_len = LENGTH(std_lowercase_chars);
 
-const TCHAR CPasswordCharPool::std_uppercase_chars[] = _T("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+const charT CPasswordCharPool::std_uppercase_chars[] = _T("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 const size_t CPasswordCharPool::std_uppercase_len = LENGTH(std_uppercase_chars);
 
-const TCHAR CPasswordCharPool::std_digit_chars[] = _T("0123456789");
+const charT CPasswordCharPool::std_digit_chars[] = _T("0123456789");
 const size_t CPasswordCharPool::std_digit_len = LENGTH(std_digit_chars);
 
-const TCHAR CPasswordCharPool::std_hexdigit_chars[] = _T("0123456789abcdef");
+const charT CPasswordCharPool::std_hexdigit_chars[] = _T("0123456789abcdef");
 const size_t CPasswordCharPool::std_hexdigit_len = LENGTH(std_hexdigit_chars);
 
-const TCHAR CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~\\[](){}?!|");
+const charT CPasswordCharPool::std_symbol_chars[] = _T("+-=_@#$%^&;:,.<>/~\\[](){}?!|");
 const size_t CPasswordCharPool::std_symbol_len = LENGTH(std_symbol_chars);
 
-const TCHAR CPasswordCharPool::easyvision_lowercase_chars[] = _T("abcdefghijkmnopqrstuvwxyz");
+const charT CPasswordCharPool::easyvision_lowercase_chars[] = _T("abcdefghijkmnopqrstuvwxyz");
 const size_t CPasswordCharPool::easyvision_lowercase_len = LENGTH(easyvision_lowercase_chars);
 
-const TCHAR CPasswordCharPool::easyvision_uppercase_chars[] = _T("ABCDEFGHJKLMNPQRTUVWXY");
+const charT CPasswordCharPool::easyvision_uppercase_chars[] = _T("ABCDEFGHJKLMNPQRTUVWXY");
 const size_t CPasswordCharPool::easyvision_uppercase_len = LENGTH(easyvision_uppercase_chars);
 
-const TCHAR CPasswordCharPool::easyvision_digit_chars[] = _T("346789");
+const charT CPasswordCharPool::easyvision_digit_chars[] = _T("346789");
 const size_t CPasswordCharPool::easyvision_digit_len = LENGTH(easyvision_digit_chars);
 
-const TCHAR CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&<>/~\\?");
+const charT CPasswordCharPool::easyvision_symbol_chars[] = _T("+-=_@#$%^&<>/~\\?");
 const size_t CPasswordCharPool::easyvision_symbol_len = LENGTH(easyvision_symbol_chars);
 
-const TCHAR CPasswordCharPool::easyvision_hexdigit_chars[] = _T("0123456789abcdef");
+const charT CPasswordCharPool::easyvision_hexdigit_chars[] = _T("0123456789abcdef");
 const size_t CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexdigit_chars);
 
 //-----------------------------------------------------------------------------
 
-CPasswordCharPool::CPasswordCharPool(UINT pwlen,
-                                     UINT numlowercase, UINT numuppercase,
-                                     UINT numdigits, UINT numsymbols,
-                                     BOOL usehexdigits, BOOL easyvision,
-                                     BOOL pronounceable)
+CPasswordCharPool::CPasswordCharPool(uint pwlen,
+                                     uint numlowercase, uint numuppercase,
+                                     uint numdigits, uint numsymbols,
+                                     bool usehexdigits, bool easyvision,
+                                     bool pronounceable)
   : m_pwlen(pwlen),
   m_numlowercase(numlowercase), m_numuppercase(numuppercase),
   m_numdigits(numdigits), m_numsymbols(numsymbols),
@@ -81,22 +75,22 @@ CPasswordCharPool::CPasswordCharPool(UINT pwlen,
     m_usehexdigits || m_pronounceable);
 
   if (easyvision) {
-    m_char_arrays[LOWERCASE] = (TCHAR *)easyvision_lowercase_chars;
-    m_char_arrays[UPPERCASE] = (TCHAR *)easyvision_uppercase_chars;
-    m_char_arrays[DIGIT] = (TCHAR *)easyvision_digit_chars;
-    m_char_arrays[SYMBOL] = (TCHAR *)easyvision_symbol_chars;
-    m_char_arrays[HEXDIGIT] = (TCHAR *)easyvision_hexdigit_chars;
+    m_char_arrays[LOWERCASE] = (charT *)easyvision_lowercase_chars;
+    m_char_arrays[UPPERCASE] = (charT *)easyvision_uppercase_chars;
+    m_char_arrays[DIGIT] = (charT *)easyvision_digit_chars;
+    m_char_arrays[SYMBOL] = (charT *)easyvision_symbol_chars;
+    m_char_arrays[HEXDIGIT] = (charT *)easyvision_hexdigit_chars;
     m_lengths[LOWERCASE] = m_uselowercase ? easyvision_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? easyvision_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? easyvision_digit_len : 0;
     m_lengths[SYMBOL] = m_usesymbols ? easyvision_symbol_len : 0;
     m_lengths[HEXDIGIT] = m_usehexdigits ? easyvision_hexdigit_len : 0;
   } else { // !easyvision
-    m_char_arrays[LOWERCASE] = (TCHAR *)std_lowercase_chars;
-    m_char_arrays[UPPERCASE] = (TCHAR *)std_uppercase_chars;
-    m_char_arrays[DIGIT] = (TCHAR *)std_digit_chars;
-    m_char_arrays[SYMBOL] = (TCHAR *)std_symbol_chars;
-    m_char_arrays[HEXDIGIT] = (TCHAR *)std_hexdigit_chars;
+    m_char_arrays[LOWERCASE] = (charT *)std_lowercase_chars;
+    m_char_arrays[UPPERCASE] = (charT *)std_uppercase_chars;
+    m_char_arrays[DIGIT] = (charT *)std_digit_chars;
+    m_char_arrays[SYMBOL] = (charT *)std_symbol_chars;
+    m_char_arrays[HEXDIGIT] = (charT *)std_hexdigit_chars;
     m_lengths[LOWERCASE] = m_uselowercase ? std_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? std_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? std_digit_len : 0;
@@ -139,13 +133,13 @@ CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int ra
   return CharType(i);
 }
 
-TCHAR CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned int rand) const
+charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t, unsigned int rand) const
 {
   ASSERT(t < NUMTYPES);
   ASSERT(m_lengths[t] > 0);
   rand %= m_lengths[t];
 
-  TCHAR retval = m_char_arrays[t][rand];
+  charT retval = m_char_arrays[t][rand];
   return retval;
 }
 
@@ -168,7 +162,7 @@ CMyString CPasswordCharPool::MakePassword() const
   CMyString temp;
 
   do {
-    TCHAR ch;
+    charT ch;
     CharType type;
 
     lowercaseneeded = m_numlowercase;
@@ -183,7 +177,7 @@ CMyString CPasswordCharPool::MakePassword() const
 
     temp = _T("");    // empty the password string
 
-    for (UINT x = 0; x < m_pwlen; x++) {
+    for (uint x = 0; x < m_pwlen; x++) {
       unsigned int rand = PWSrand::GetInstance()->RangeRand((unsigned int)m_sumlengths);
       // The only reason for passing rand as a parameter is to
       // avoid having to generate two random numbers for each
@@ -241,21 +235,21 @@ CMyString CPasswordCharPool::MakePassword() const
 }
 
 static const struct {
-  TCHAR num; TCHAR sym;
+  charT num; charT sym;
 } leets[26] = {
-  {TCHAR('4'), TCHAR('@')}, {TCHAR('8'), TCHAR('&')}, // a, b
-  {0, TCHAR('(')}, {0, 0},                            // c, d
-  {TCHAR('3'), 0}, {0, 0},                            // e, f
-  {TCHAR('6'), 0}, {0, TCHAR('#')},                   // g, h
-  {TCHAR('1'), TCHAR('!')}, {0, 0},                   // i, j
-  {0, 0}, {TCHAR('1'), TCHAR('|')},                   // k, l
+  {charT('4'), charT('@')}, {charT('8'), charT('&')}, // a, b
+  {0, charT('(')}, {0, 0},                            // c, d
+  {charT('3'), 0}, {0, 0},                            // e, f
+  {charT('6'), 0}, {0, charT('#')},                   // g, h
+  {charT('1'), charT('!')}, {0, 0},                   // i, j
+  {0, 0}, {charT('1'), charT('|')},                   // k, l
   {0, 0}, {0, 0},                                     // m, n
-  {TCHAR('0'), 0}, {0, 0},                            // o, p
+  {charT('0'), 0}, {0, 0},                            // o, p
   {0, 0}, {0, 0},                                     // q, r
-  {TCHAR('5'), TCHAR('$')}, {TCHAR('7'), TCHAR('+')}, // s, t
+  {charT('5'), charT('$')}, {charT('7'), charT('+')}, // s, t
   {0, 0}, {0, 0},                                     // u, v
   {0, 0}, {0, 0},                                     // w, x
-  {0, 0}, {TCHAR('2'), 0}};                           // y, z
+  {0, 0}, {charT('2'), 0}};                           // y, z
 
 class FillSC {
   // used in for_each to find Substitution Candidates
@@ -264,9 +258,9 @@ class FillSC {
 public:
   FillSC(vector<int> &sc, bool digits, bool symbols)
     : m_sc(sc), m_digits(digits), m_symbols(symbols), m_i(0) {}
-  void operator()(TCHAR t) {
-    if ((m_digits && leets[t - TCHAR('a')].num != 0) ||
-      (m_symbols &&leets[t - TCHAR('a')].sym != 0))
+  void operator()(charT t) {
+    if ((m_digits && leets[t - charT('a')].num != 0) ||
+      (m_symbols &&leets[t - charT('a')].sym != 0))
       m_sc.push_back(m_i);
     m_i++;
   }
@@ -282,13 +276,13 @@ struct RandomWrapper {
 };
 
 static void leet_replace(stringT &password, unsigned int i,
-  BOOL usedigits, BOOL usesymbols)
+                         bool usedigits, bool usesymbols)
 {
   ASSERT(i < password.size());
   ASSERT(usedigits || usesymbols);
 
-  TCHAR digsub = usedigits ? leets[password[i] - TCHAR('a')].num : 0;
-  TCHAR symsub = usesymbols ? leets[password[i] - TCHAR('a')].sym : 0;
+  charT digsub = usedigits ? leets[password[i] - charT('a')].num : 0;
+  charT symsub = usesymbols ? leets[password[i] - charT('a')].sym : 0;
 
   // if both substitutions possible, select one randomly
   if (digsub != 0 && symsub != 0 && PWSrand::GetInstance()->RandUInt() % 2)
@@ -304,11 +298,11 @@ CMyString CPasswordCharPool::MakePronounceable() const
   * http://www.multicians.org/thvv/tvvtools.html
   * Thanks to Tom Van Vleck, Morrie Gasser, and Dan Edwards.
   */
-  TCHAR c1, c2, c3;  /* array indices */
+  charT c1, c2, c3;  /* array indices */
   long sumfreq;      /* total frequencies[c1][c2][*] */
   long ranno;        /* random number in [0,sumfreq] */
   long sum;          /* running total of frequencies */
-  UINT nchar;        /* number of chars in password so far */
+  uint nchar;        /* number of chars in password so far */
   PWSrand *pwsrnd = PWSrand::GetInstance();
   stringT password(m_pwlen, 0);
 
@@ -326,9 +320,9 @@ CMyString CPasswordCharPool::MakePronounceable() const
       for (c3 = 0; c3 < 26; c3++) {
         sum += tris[c1][c2][c3];
         if (sum > ranno) { // Pick first value
-          password[0] = TCHAR('a') + c1;
-          password[1] = TCHAR('a') + c2;
-          password[2] = TCHAR('a') + c3;
+          password[0] = charT('a') + c1;
+          password[1] = charT('a') + c2;
+          password[2] = charT('a') + c3;
           c1 = c2 = c3 = 26; // Break all loops.
         } // if sum
       } // for c3
@@ -338,8 +332,8 @@ CMyString CPasswordCharPool::MakePronounceable() const
   /* Do a random walk. */
   nchar = 3;  // We have three chars so far.
   while (nchar < m_pwlen) {
-    c1 = password[nchar-2] - TCHAR('a'); // Take the last 2 chars
-    c2 = password[nchar-1] - TCHAR('a'); // .. and find the next one.
+    c1 = password[nchar-2] - charT('a'); // Take the last 2 chars
+    c2 = password[nchar-1] - charT('a'); // .. and find the next one.
     sumfreq = 0;
     for (c3 = 0; c3 < 26; c3++)
       sumfreq += tris[c1][c2][c3];
@@ -355,7 +349,7 @@ CMyString CPasswordCharPool::MakePronounceable() const
     for (c3 = 0; c3 < 26; c3++) {
       sum += tris[c1][c2][c3];
       if (sum > ranno) {
-        password[nchar++] = TCHAR('a') + c3;
+        password[nchar++] = charT('a') + c3;
         c3 = 26;  // Break the for c3 loop.
       }
     } // for c3
@@ -384,18 +378,18 @@ CMyString CPasswordCharPool::MakePronounceable() const
     }
   }
   // case
-  UINT i;
+  uint i;
   if (m_uselowercase && !m_useuppercase)
     ; // nothing to do here
   else if (!m_uselowercase && m_useuppercase)
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]))
-        password[i] = (TCHAR)_totupper(password[i]);
+        password[i] = (charT)_totupper(password[i]);
     }
   else if (m_uselowercase && m_useuppercase) // mixed case
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]) && pwsrnd->RandUInt() % 2)
-        password[i] = (TCHAR)_totupper(password[i]);
+        password[i] = (charT)_totupper(password[i]);
     }
 
     CMyString retval = password.c_str();
@@ -416,7 +410,7 @@ bool CPasswordCharPool::CheckPassword(const CMyString &pwd, CMyString &error)
   bool has_uc = false, has_lc = false, has_digit = false, has_other = false;
 
   for (int i = 0; i < length; i++) {
-    TCHAR c = pwd[i];
+    charT c = pwd[i];
     if (_istlower(c)) has_lc = true;
     else if (_istupper(c)) has_uc = true;
     else if (_istdigit(c)) has_digit = true;

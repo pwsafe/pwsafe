@@ -483,7 +483,7 @@ BOOL ThisMfcApp::InitInstance()
               return FALSE;
             } else {
               arg++;
-              SysInfo::GetInstance()->SetEffectiveUser(*arg);
+              SysInfo::GetInstance()->SetEffectiveUser(LPCTSTR(*arg));
             }
             break;
           case TCHAR('H'): case TCHAR('h'): // set effective host
@@ -493,7 +493,7 @@ BOOL ThisMfcApp::InitInstance()
               return FALSE;
             } else {
               arg++;
-              SysInfo::GetInstance()->SetEffectiveHost(*arg);
+              SysInfo::GetInstance()->SetEffectiveHost(LPCTSTR(*arg));
             }
             break;
           case TCHAR('G'): case TCHAR('g'): // override default config file
