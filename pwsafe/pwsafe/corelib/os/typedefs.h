@@ -14,12 +14,19 @@
 
 #include <string>
 
+/*
+ * _S is defined same as m'soft's _T, just to avoid collisions or
+ * lousy include order dependencies.
+ */
+
 #ifdef UNICODE
 typedef std::wstring stringT;
 typedef wchar_t charT;
+#define _S(x) L ## x
 #else
 typedef std::string stringT;
 typedef char charT;
+#define _S(x) x
 #endif
 
 #ifdef _WIN32

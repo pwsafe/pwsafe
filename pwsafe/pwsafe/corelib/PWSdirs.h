@@ -14,27 +14,28 @@
 // PWS_PREFSDIR if defined.
 //
 //-----------------------------------------------------------------------------
-#include "MyString.h"
+#include "os/typedefs.h"
 #include <stack>
 
 class PWSdirs
 {
 public:
   PWSdirs() {} // only need to create an object for push/pop
-  PWSdirs(const CString &dir) {Push(dir);} // convenience: create & push
+  PWSdirs(const stringT &dir) {Push(dir);} // convenience: create & push
   ~PWSdirs(); // does a repeated Pop, so we're back where we started
 
-  static CString GetSafeDir(); // default database location
-  static CString GetConfigDir(); // pwsafe.cfg location
-  static CString GetXMLDir(); // XML .xsd .xsl files
-  static CString GetHelpDir(); // help file(s)
-  static CString GetExeDir(); // location of executable
+  static stringT GetSafeDir(); // default database location
+  static stringT GetConfigDir(); // pwsafe.cfg location
+  static stringT GetXMLDir(); // XML .xsd .xsl files
+  static stringT GetHelpDir(); // help file(s)
+  static stringT GetExeDir(); // location of executable
 
-  void Push(const CString &dir); // cd to dir after saving current dir
+  void Push(const stringT &dir); // cd to dir after saving current dir
   void Pop(); // cd to last dir, nop if stack empty
 
 private:
-static CString GetMFNDir(); // wrapper for ::GetModuleFileName()
-  std::stack<CString> dirs;
+  static stringT GetOurExecDir();
+  static stringT execdir;
+  std::stack<stringT> dirs;
 };
 #endif /* __PWSDIRS_H */
