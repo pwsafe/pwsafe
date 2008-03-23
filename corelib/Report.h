@@ -21,7 +21,7 @@ public:
     : m_fd(NULL) {}
   ~CReport() {}
 
-  bool StartReport(LPTSTR tcAction, const CString &csDataBase);
+  bool StartReport(LPCTSTR tcAction, const CString &csDataBase);
   void EndReport();
   void WriteLine(CString &cs_line, bool bCRLF = true);
   void WriteLine(LPTSTR &tc_line, bool bCRLF = true);

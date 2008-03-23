@@ -1754,8 +1754,9 @@ PWScore::Validate(CString &status)
   unsigned num_alias_warnings, num_shortcuts_warnings;
 
   CReport rpt;
-  CString cs_Error;
-  rpt.StartReport(_T("Validate"), GetCurFile());
+  CString cs_Error, cs_temp;
+  cs_temp.LoadString(IDSC_RPTVALIDATE);
+  rpt.StartReport(cs_temp, GetCurFile());
 
   TRACE(_T("%s : Start validation\n"), PWSUtil::GetTimeStamp());
 

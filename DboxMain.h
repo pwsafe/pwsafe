@@ -520,6 +520,7 @@ protected:
   afx_msg void OnCustomizeToolbar();
   afx_msg void OnToolBarFindCase();
   afx_msg void OnToolBarFindAdvanced();
+  afx_msg void OnToolBarFindReport();
   afx_msg void OnToolBarClearFind();
   afx_msg void OnHideFindToolBar();
 

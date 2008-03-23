@@ -41,6 +41,7 @@ it will close the Find Toolbar if active.
 [988806] Feedback on double click now shown in the Status Bar - action and time.
 [] Alt+F4, in addition to Ctrl+Q, now closes the application.
 [] Allow user to Hide/Show main toolbar.
+[] Ability to create/view a report of the previous Find request.
 
 Bugs fixed in 3.12
 ==================

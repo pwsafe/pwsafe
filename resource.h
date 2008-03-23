@@ -102,7 +102,9 @@
 #define IDB_FINDCLEAR_NEW               257
 #define IDB_FINDCLOSE_CLASSIC           258
 #define IDB_FINDCLOSE_NEW               259
-#define IDB_FINDCTRLPLACEHOLDER         260
+#define IDB_FINDREPORT_CLASSIC          260
+#define IDB_FINDREPORT_NEW              261
+#define IDB_FINDCTRLPLACEHOLDER         262
 #define IDB_ABOUT_CLASSIC               280
 #define IDB_ABOUT_NEW                   281
 #define IDB_ABOUT_NEW_D                 282

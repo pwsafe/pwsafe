@@ -97,9 +97,9 @@ BOOL DboxMain::OpenOnInit(void)
         CGeneralMsgBox gmb;
         gmb.SetMsg(cs_msg);
         gmb.SetStandardIcon(MB_ICONQUESTION);
-        gmb.AddButton(1, _T("Search"));
-        gmb.AddButton(2, _T("New"));
-        gmb.AddButton(3, _T("Exit"), TRUE, TRUE);
+        gmb.AddButton(1, IDS_SEARCH);
+        gmb.AddButton(2, IDS_NEW);
+        gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
         INT_PTR rc3 = gmb.DoModal();
         switch (rc3) {
           case 1:
@@ -637,8 +637,8 @@ int DboxMain::Save()
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONWARNING);
-    gmb.AddButton(1, _T("Continue"));
-    gmb.AddButton(2, _T("Cancel"), TRUE, TRUE);
+    gmb.AddButton(1, IDS_CONTINUE);
+    gmb.AddButton(2, IDS_CANCEL, TRUE, TRUE);
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
       return PWScore::USER_CANCEL;
@@ -713,8 +713,8 @@ int DboxMain::SaveAs()
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-    gmb.AddButton(1, _T("Continue"));
-    gmb.AddButton(2, _T("Cancel"), TRUE, TRUE);
+    gmb.AddButton(1, IDS_CONTINUE);
+    gmb.AddButton(2, IDS_CANCEL, TRUE, TRUE);
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
       return PWScore::USER_CANCEL;
@@ -1039,9 +1039,12 @@ void DboxMain::OnImportText()
 
     /* Create report as we go */
     CReport rpt;
-    rpt.StartReport(_T("Import_Text"), m_core.GetCurFile());
+    CString cs_text;
+    cs_text.LoadString(IDS_RPTIMPORTTEXT);
+    rpt.StartReport(cs_text, m_core.GetCurFile());
     CString cs_ReportFileName = rpt.GetReportFileName();
-    cs_temp.Format(IDS_IMPORTFILE, _T("Text"), TxtFileName);
+    cs_text.LoadString(IDS_TEXT);
+    cs_temp.Format(IDS_IMPORTFILE, cs_text, TxtFileName);
     rpt.WriteLine(cs_temp);
     rpt.WriteLine();
 
@@ -1089,7 +1092,7 @@ void DboxMain::OnImportText()
       gmb.SetMsg(cs_temp);
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
       gmb.AddButton(1, _T("OK"), TRUE, TRUE);
-      gmb.AddButton(2, _T("View Report"));
+      gmb.AddButton(2, IDS_VIEWREPORT);
       INT_PTR rc = gmb.DoModal();
       if (rc == 2)
         ViewReport(cs_ReportFileName);
@@ -1205,9 +1208,12 @@ void DboxMain::OnImportXML()
     CWaitCursor waitCursor;  // This may take a while!
     /* Create report as we go */
     CReport rpt;
-    rpt.StartReport(_T("Import_XML"), m_core.GetCurFile());
+    CString cs_text;
+    cs_text.LoadString(IDS_RPTIMPORTXML);
+    rpt.StartReport(cs_text, m_core.GetCurFile());
     CString cs_ReportFileName = rpt.GetReportFileName();
-    cs_temp.Format(IDS_IMPORTFILE, _T("XML"), XMLFilename);
+    cs_text.LoadString(IDS_XML);
+    cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
     rpt.WriteLine(cs_temp);
     rpt.WriteLine();
     rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename, XSDFilename, strErrors,
@@ -1274,7 +1280,7 @@ void DboxMain::OnImportXML()
       gmb.SetMsg(cs_temp);
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
       gmb.AddButton(1, _T("OK"), TRUE, TRUE);
-      gmb.AddButton(2, _T("View Report"));
+      gmb.AddButton(2, IDS_VIEWREPORT);
       INT_PTR rc = gmb.DoModal();
       if (rc == 2)
         ViewReport(cs_ReportFileName);
@@ -1402,7 +1408,9 @@ int DboxMain::Merge(const CMyString &pszFilename) {
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(_T("Merge"), m_core.GetCurFile());
+  CString cs_text;
+  cs_text.LoadString(IDS_RPTMERGE);
+  rpt.StartReport(cs_text, m_core.GetCurFile());
   cs_temp.Format(IDS_MERGINGDATABASE, pszFilename);
   rpt.WriteLine(cs_temp);
 
@@ -1737,7 +1745,8 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(_T("Compare"), m_core.GetCurFile());
+  cs_text.LoadString(IDS_RPTCOMPARE);
+  rpt.StartReport(cs_text, m_core.GetCurFile());
   CString cs_ReportFileName = rpt.GetReportFileName();
   cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
   rpt.WriteLine(cs_temp);
@@ -2020,7 +2029,8 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     rpt.WriteLine(buffer);
     rpt.WriteLine();
 
-    buffer.LoadString(IDS_ADVCOMPAREFIELDS);
+    cs_temp.LoadString(IDS_RPTCOMPARE);
+    buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
     rpt.WriteLine(buffer);
 
     buffer = _T("\t");
@@ -2122,8 +2132,8 @@ int DboxMain::SaveCore(PWScore *pcore)
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
     gmb.SetStandardIcon(MB_ICONWARNING);
-    gmb.AddButton(1, _T("Continue"));
-    gmb.AddButton(2, _T("Cancel"), FALSE, TRUE);
+    gmb.AddButton(1, IDS_CONTINUE);
+    gmb.AddButton(2, IDS_CANCEL, FALSE, TRUE);
     INT_PTR rc = gmb.DoModal();
     if (rc == 2)
       return PWScore::USER_CANCEL;

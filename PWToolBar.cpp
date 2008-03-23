@@ -117,6 +117,7 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_CHANGETREEFONT,
   ID_MENUITEM_CHANGEPSWDFONT,
   ID_MENUITEM_REPORT_COMPARE,
+  ID_MENUITEM_REPORT_FIND,
   ID_MENUITEM_REPORT_IMPORTTEXT,
   ID_MENUITEM_REPORT_IMPORTXML,
   ID_MENUITEM_REPORT_MERGE,
@@ -179,6 +180,7 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_CHANGEFONTMENU_CLASSIC,
   IDB_CHANGEPSWDFONTMENU_CLASSIC,
   IDB_COMPARE_CLASSIC,     // For report of the same name
+  IDB_FIND_CLASSIC,        // For report of the same name
   IDB_IMPORTTEXT_CLASSIC,  // For report of the same name
   IDB_IMPORTXML_CLASSIC,   // For report of the same name
   IDB_MERGE_CLASSIC,       // For report of the same name
@@ -273,6 +275,7 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_CHANGEFONTMENU_NEW,
   IDB_CHANGEPSWDFONTMENU_NEW,
   IDB_COMPARE_NEW,         // For report of the same name
+  IDB_FIND_NEW,            // For report of the same name
   IDB_IMPORTTEXT_NEW,      // For report of the same name
   IDB_IMPORTXML_NEW,       // For report of the same name
   IDB_MERGE_NEW,           // For report of the same name
@@ -303,6 +306,7 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_CHANGEFONTMENU_NEW_D,
   IDB_CHANGEPSWDFONTMENU_NEW_D,
   IDB_COMPARE_NEW_D,       // For report of the same name
+  IDB_FIND_NEW_D,          // For report of the same name
   IDB_IMPORTTEXT_NEW_D,    // For report of the same name
   IDB_IMPORTXML_NEW_D,     // For report of the same name
   IDB_MERGE_NEW_D,         // For report of the same name

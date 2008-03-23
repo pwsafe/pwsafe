@@ -30,7 +30,7 @@ const TCHAR *CRLF = _T("\r\n");
 
   It writes a header record and a "Start Report" record.
 */
-bool CReport::StartReport(LPTSTR tcAction, const CString &csDataBase)
+bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
 {
   if (m_fd != NULL) {
     fclose(m_fd);
