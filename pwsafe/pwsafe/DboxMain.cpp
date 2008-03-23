@@ -261,6 +261,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE_I, OnToolBarFindCase)
   ON_COMMAND(ID_TOOLBUTTON_FINDCASE_S, OnToolBarFindCase)
   ON_COMMAND(ID_TOOLBUTTON_FINDADVANCED, OnToolBarFindAdvanced)
+  ON_COMMAND(ID_TOOLBUTTON_FINDREPORT, OnToolBarFindReport)
   ON_COMMAND(ID_TOOLBUTTON_CLEARFIND, OnToolBarClearFind)
 #endif
 
@@ -351,6 +352,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_CHANGETREEFONT, true, true, true, false},
   {ID_MENUITEM_CHANGEPSWDFONT, true, true, true, false},
   {ID_MENUITEM_REPORT_COMPARE, true, true, true, true},
+  {ID_MENUITEM_REPORT_FIND, true, true, true, true},
   {ID_MENUITEM_REPORT_IMPORTTEXT, true, true, true, true},
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
   {ID_MENUITEM_REPORT_MERGE, true, true, true, true},
@@ -391,6 +393,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_TOOLBUTTON_FINDCASE_I, true, true, false, false},
   {ID_TOOLBUTTON_FINDCASE_S, true, true, false, false},
   {ID_TOOLBUTTON_FINDADVANCED, true, true, false, false},
+  {ID_TOOLBUTTON_FINDREPORT, true, true, false, false},
   {ID_TOOLBUTTON_CLEARFIND, true, true, false, false},
   // Customize Main Toolbar
   {ID_MENUITEM_CUSTOMIZETOOLBAR, true, true, true, true},
@@ -1161,14 +1164,14 @@ int DboxMain::GetAndCheckPassword(const CMyString &filename,
 #ifdef PWS_STRICT_LOCKING // define if you don't want to allow user override
       cs_msg.Format(IDS_STRICT_LOCKED, curFile, cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
-      gmb.AddButton(1, _T("Read-Only"));
-      gmb.AddButton(3, _T("Exit"), TRUE, TRUE);
+      gmb.AddButton(1, IDS_READONLY);
+      gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
 #else
       cs_msg.Format(IDS_LOCKED, curFile, cs_user_and_host, cs_PID);
       gmb.SetMsg(cs_msg);
-      gmb.AddButton(1, _T("Read-Only"));
-      gmb.AddButton(2, _T("Read-Write"));
-      gmb.AddButton(3, _T("Exit"), TRUE, TRUE);
+      gmb.AddButton(1, IDS_READONLY);
+      gmb.AddButton(2, IDS_READWRITE);
+      gmb.AddButton(3, IDS_EXIT, TRUE, TRUE);
 #endif
       int user_choice = gmb.DoModal();
       switch(user_choice) {
@@ -2411,6 +2414,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Special processing for viewing reports, if they exist
     case ID_MENUITEM_REPORT_COMPARE:
+    case ID_MENUITEM_REPORT_FIND:
     case ID_MENUITEM_REPORT_IMPORTTEXT:
     case ID_MENUITEM_REPORT_IMPORTXML:
     case ID_MENUITEM_REPORT_MERGE:

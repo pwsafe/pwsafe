@@ -197,6 +197,9 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_LASTACCESSED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::ATIME);
+      cs_text.LoadString(IDS_EXPIRYDATETIME);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::LTIME);
       cs_text.LoadString(IDS_LASTMODIFIED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME);
@@ -215,11 +218,6 @@ BOOL CAdvancedDlg::OnInitDialog()
   cs_text.LoadString(IDS_AUTOTYPE);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::AUTOTYPE);
-  cs_text.LoadString(IDS_EXPIRYDATETIME);
-  if (m_iIndex != ADV_FIND) {
-    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-    m_pLC_Selected->SetItemData(iItem, CItemData::LTIME);
-  }
   cs_text.LoadString(IDS_PWHIST);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST);

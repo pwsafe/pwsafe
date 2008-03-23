@@ -124,3 +124,4 @@
 #define IDSC_IMPORTWARNING3             3277
 #define IDSC_ALIAS                      3278
 #define IDSC_SHORTCUT                   3279
+#define IDSC_RPTVALIDATE                3280

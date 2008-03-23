@@ -2527,29 +2527,41 @@ void DboxMain::OnViewReports()
 
   struct _stat statbuf;
   bool bReportExists(false);
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Compare"));
+
+  csAction.LoadString(IDS_RPTCOMPARE);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(1, _T("Compare"));
+    gmb.AddButton(1, csAction);
     bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Import_Text"));
+  csAction.LoadString(IDS_RPTFIND);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(2, _T("Import Text"));
+    gmb.AddButton(2, csAction);
     bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Import_XML"));
+  csAction.LoadString(IDS_RPTIMPORTTEXT);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(3, _T("Import XML"));
+    gmb.AddButton(3, csAction);
     bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Merge"));
+  csAction.LoadString(IDS_RPTIMPORTXML);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(4, _T("Merge"));
+    gmb.AddButton(4, csAction);
     bReportExists = true;
   }
-  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, _T("Validate"));
+  csAction.LoadString(IDS_RPTMERGE);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
   if (::_tstat(cs_filename, &statbuf) == 0) {
-    gmb.AddButton(5, _T("Validate"));
+    gmb.AddButton(5, csAction);
+    bReportExists = true;
+  }
+  csAction.LoadString(IDS_RPTVALIDATE);
+  cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
+  if (::_tstat(cs_filename, &statbuf) == 0) {
+    gmb.AddButton(6, csAction);
     bReportExists = true;
   }
 
@@ -2558,29 +2570,34 @@ void DboxMain::OnViewReports()
     return;
   }
 
-  gmb.AddButton(6, _T("Cancel"), TRUE, TRUE);
+  gmb.AddButton(6, IDS_CANCEL, TRUE, TRUE);
   gmb.SetStandardIcon(MB_ICONQUESTION);
 
   INT_PTR rc = gmb.DoModal();
+  UINT uistring(0);
   switch (rc) {
     case 1:
-      csAction = _T("Compare");
+      uistring = IDS_RPTCOMPARE;
       break;
     case 2:
-      csAction = _T("Import_Text");
+      uistring = IDS_RPTFIND;
       break;
     case 3:
-      csAction = _T("Import_XML");
+      uistring = IDS_RPTIMPORTTEXT;
       break;
     case 4:
-      csAction = _T("Merge");
+      uistring = IDS_RPTIMPORTXML;
       break;
     case 5:
-      csAction = _T("Validate");
+      uistring = IDS_RPTMERGE;
+      break;
+    case 6:
+      uistring = IDS_RPTVALIDATE;
       break;
     default:
       return;
   }
+  csAction.LoadString(uistring);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   ViewReport(cs_filename);
@@ -2598,25 +2615,30 @@ void DboxMain::OnViewReports(UINT nID)
   if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
     return;
 
+  UINT uistring(0);
   switch (nID) {
     case ID_MENUITEM_REPORT_COMPARE:
-      csAction = _T("Compare");
+      uistring = IDS_RPTCOMPARE;
+      break;
+    case ID_MENUITEM_REPORT_FIND:
+      uistring = IDS_RPTFIND;
       break;
     case ID_MENUITEM_REPORT_IMPORTTEXT:
-      csAction = _T("Import_Text");
+      uistring = IDS_RPTIMPORTTEXT;
       break;
     case ID_MENUITEM_REPORT_IMPORTXML:
-      csAction = _T("Import_XML");
+      uistring = IDS_RPTIMPORTXML;
       break;
     case ID_MENUITEM_REPORT_MERGE:
-      csAction = _T("Merge");
+      uistring = IDS_RPTMERGE;
       break;
     case ID_MENUITEM_REPORT_VALIDATE:
-      csAction = _T("Validate");
+      uistring = IDS_RPTVALIDATE;
       break;
     default:
       ASSERT(0);
   }
+  csAction.LoadString(uistring);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   ViewReport(cs_filename);
@@ -2694,27 +2716,32 @@ int DboxMain::OnUpdateViewReports(const int nID)
   if (!GetDriveAndDirectory(cs_Database, cs_drive, cs_directory))
     return FALSE;
 
+  UINT uistring(0);
   switch (nID) {
     case ID_MENUITEM_REPORT_COMPARE:
-      csAction = _T("Compare");
+      uistring = IDS_RPTCOMPARE;
+      break;
+    case ID_MENUITEM_REPORT_FIND:
+      uistring = IDS_RPTFIND;
       break;
     case ID_MENUITEM_REPORT_IMPORTTEXT:
-      csAction = _T("Import_Text");
+      uistring = IDS_RPTIMPORTTEXT;
       break;
     case ID_MENUITEM_REPORT_IMPORTXML:
-      csAction = _T("Import_XML");
+      uistring = IDS_RPTIMPORTXML;
       break;
     case ID_MENUITEM_REPORT_MERGE:
-      csAction = _T("Merge");
+      uistring = IDS_RPTMERGE;
       break;
     case ID_MENUITEM_REPORT_VALIDATE:
-      csAction = _T("Validate");
+      uistring = IDS_RPTVALIDATE;
       break;
     default:
       TRACE(_T("ID=%d\n"), nID);
       ASSERT(0);
   }
 
+  csAction.LoadString(uistring);
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   struct _stat statbuf;
@@ -2812,6 +2839,158 @@ void DboxMain::OnToolBarFindCase()
 void DboxMain::OnToolBarFindAdvanced()
 {
   m_FindToolBar.ShowFindAdvanced();
+}
+
+void DboxMain::OnToolBarFindReport()
+{
+  std::vector<int> *pindices;
+  CString csFindString;
+
+  pindices = m_FindToolBar.GetSearchResults();
+  m_FindToolBar.GetSearchText(csFindString);
+  if (pindices == NULL || csFindString.IsEmpty())
+    return;
+
+  CString buffer, cs_temp;
+  CReport rpt;
+  cs_temp.LoadString(IDS_RPTFIND);
+  rpt.StartReport(cs_temp, m_core.GetCurFile());
+
+  CItemData::FieldBits bsFFields;
+  bool bFAdvanced;
+  CString Fsubgroup_name;
+  int Fsubgroup_set, Fsubgroup_object, Fsubgroup_function;
+
+  m_FindToolBar.GetSearchInfo(bFAdvanced, bsFFields, Fsubgroup_name, 
+                              Fsubgroup_set, Fsubgroup_object, Fsubgroup_function);
+
+  // tell the user we're done & provide short Compare report
+  if (!bFAdvanced) {
+    cs_temp.LoadString(IDS_NONE);
+    buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    rpt.WriteLine(buffer);
+    rpt.WriteLine();
+  } else {
+    if (Fsubgroup_set == BST_UNCHECKED) {
+      cs_temp.LoadString(IDS_NONE);
+    } else {
+      CString cs_Object, cs_case, cs_text;
+      UINT uistring(0);
+
+      switch(Fsubgroup_object) {
+        case CItemData::SGO_GROUP:
+          uistring = IDS_GROUP;
+          break;
+        case CItemData::SGO_TITLE:
+          uistring = IDS_TITLE;
+          break;
+        case CItemData::SGO_USER:
+          uistring = IDS_USERNAME;
+          break;
+        case CItemData::SGO_GROUPTITLE:
+          uistring = IDS_GROUPTITLE;
+          break;
+        case CItemData::SGO_URL:
+          uistring = IDS_URL;
+          break;
+        case CItemData::SGO_NOTES:
+          uistring = IDS_NOTES;
+          break;
+        default:
+          ASSERT(0);
+      }
+      cs_Object.LoadString(uistring);
+
+      cs_case.LoadString(Fsubgroup_function > 0 ? 
+                         IDS_ADVCASE_INSENSITIVE : IDS_ADVCASE_SENSITIVE);
+
+      switch (Fsubgroup_function) {
+        case -CItemData::SGF_EQUALS:
+        case  CItemData::SGF_EQUALS:
+          uistring = IDS_EQUALS;
+          break;
+        case -CItemData::SGF_NOTEQUAL:
+        case  CItemData::SGF_NOTEQUAL:
+          uistring = IDS_DOESNOTEQUAL;
+          break;
+        case -CItemData::SGF_BEGINS:
+        case  CItemData::SGF_BEGINS:
+          uistring = IDS_BEGINSWITH;
+          break;
+        case -CItemData::SGF_NOTBEGIN:
+        case  CItemData::SGF_NOTBEGIN:
+          uistring = IDS_DOESNOTBEGINSWITH;
+          break;
+        case -CItemData::SGF_ENDS:
+        case  CItemData::SGF_ENDS:
+          uistring = IDS_ENDSWITH;
+          break;
+        case -CItemData::SGF_NOTEND:
+        case  CItemData::SGF_NOTEND:
+          uistring = IDS_DOESNOTENDWITH;
+          break;
+        case -CItemData::SGF_CONTAINS:
+        case  CItemData::SGF_CONTAINS:
+          uistring = IDS_CONTAINS;
+          break;
+        case -CItemData::SGF_NOTCONTAIN:
+        case  CItemData::SGF_NOTCONTAIN:
+          uistring = IDS_DOESNOTCONTAIN;
+          break;
+        default:
+          ASSERT(0);
+      }
+      cs_text.LoadString(uistring);
+      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, Fsubgroup_name,
+                     cs_case);
+    }
+    buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
+    rpt.WriteLine(buffer);
+    rpt.WriteLine();
+
+    cs_temp.LoadString(IDS_RPTFIND);
+    buffer.Format(IDS_ADVANCEDFIELDS, cs_temp);
+    rpt.WriteLine(buffer);
+
+    buffer = _T("\t");
+    if (bsFFields.test(CItemData::GROUP))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_FINDGROUP));
+    if (bsFFields.test(CItemData::TITLE))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_FINDTITLE));
+    if (bsFFields.test(CItemData::USER))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_FINDUSER));
+    if (bsFFields.test(CItemData::PASSWORD))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPASSWORD));
+    if (bsFFields.test(CItemData::NOTES))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPNOTES));
+    if (bsFFields.test(CItemData::URL))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPURL));
+    if (bsFFields.test(CItemData::AUTOTYPE))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
+    if (bsFFields.test(CItemData::PWHIST))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
+    rpt.WriteLine(buffer);
+    rpt.WriteLine();
+  }
+
+  if (pindices->size() == 0) {
+    buffer.Format(IDS_SEARCHRESULTS1, csFindString);
+    rpt.WriteLine(buffer);
+  } else {
+    buffer.Format(IDS_SEARCHRESULTS2, csFindString);
+    rpt.WriteLine(buffer);
+    int i, index;
+    for (i = 0; i < (int)pindices->size(); i++) {
+      index = pindices->at(i);
+      CItemData *ci = (CItemData *)m_ctlItemList.GetItemData(index);
+      buffer.Format(IDS_COMPARESTATS, ci->GetGroup(), ci->GetTitle(), ci->GetUser());
+      rpt.WriteLine(buffer, false);
+    }
+  }
+  rpt.WriteLine();
+  rpt.EndReport();
+  cs_temp.LoadString(IDS_REPORTCREATED);
+  m_FindToolBar.SetStatus(cs_temp);
 }
 
 void DboxMain::UpdateBrowseURLSendEmailButton(const bool bIsEmail)

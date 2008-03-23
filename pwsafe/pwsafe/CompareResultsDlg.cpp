@@ -844,7 +844,7 @@ void CCompareResultsDlg::WriteReportData()
       const st_CompareData &st_data = *cd_iter;
 
       buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-      m_prpt->WriteLine(buffer);
+      m_prpt->WriteLine(buffer, false);
     }
     m_prpt->WriteLine();
   }
@@ -857,7 +857,7 @@ void CCompareResultsDlg::WriteReportData()
       const st_CompareData &st_data = *cd_iter;
 
       buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
-      m_prpt->WriteLine(buffer);
+      m_prpt->WriteLine(buffer, false);
     }
     m_prpt->WriteLine();
   }

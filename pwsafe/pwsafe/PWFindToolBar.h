@@ -38,6 +38,15 @@ public:
   {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
   void InvalidateSearch() {m_lastshown = size_t(-1);}
+  void GetSearchInfo(bool &bAdvanced, CItemData::FieldBits &bsFields, 
+                     CString &subgroup_name, 
+                     int &subgroup_set, int &subgroup_object, int &subgroup_function)
+  {bAdvanced = m_bAdvanced; bsFields = m_bsFields;
+   subgroup_name = m_subgroup_name; subgroup_set = m_subgroup_set;
+   subgroup_object = m_subgroup_object; subgroup_function = m_subgroup_function;}
+
+  std::vector<int> * GetSearchResults() {return &m_indices;}
+  void SetStatus(CString cs_status) {m_findresults.SetWindowText(cs_status);}
 
   CEditExtn m_findedit;
   CStaticExtn m_findresults;
