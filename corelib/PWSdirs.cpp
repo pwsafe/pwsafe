@@ -5,8 +5,8 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#include <direct.h> // for _getcwd & _chdir
 #include "os/env.h"
+#include "os/dir.h"
 #include "PWSdirs.h"
 /**
 * Provide directories used by application
@@ -27,88 +27,81 @@
 * GetExeDir()    Location of executable:
 *                U3_HOST_EXEC_PATH
 */
+
+stringT PWSdirs::execdir;
 //-----------------------------------------------------------------------------
 
-CString PWSdirs::GetMFNDir()
+stringT PWSdirs::GetOurExecDir()
 {
-  // returns the directory part of ::GetModuleFileName()
-  TCHAR acPath[MAX_PATH + 1];
-
-  if ( GetModuleFileName( NULL, acPath, MAX_PATH + 1 ) != 0) {
-    // guaranteed file name of at least one character after path '\'
-    *(_tcsrchr(acPath, _T('\\')) + 1) = _T('\0');
-  } else {
-    acPath[0] = TCHAR('\\'); acPath[1] = TCHAR('\0');
-  }
-  return CString(acPath);
+  if (execdir.empty())
+    execdir = pws_os::getexecdir();
+  return execdir;
 }
 
-CString PWSdirs::GetSafeDir()
+stringT PWSdirs::GetSafeDir()
 {
   // returns empty string unless U3 environment detected
-  CString retval(pws_os::getenv("U3_DEVICE_DOCUMENT_PATH", true).c_str());
-  if (!retval.IsEmpty())
-    retval += "My Safes\\";
+  stringT retval(pws_os::getenv("U3_DEVICE_DOCUMENT_PATH", true));
+  if (!retval.empty())
+    retval += _S("My Safes\\");
   return retval;
 }
 
-CString PWSdirs::GetConfigDir()
+stringT PWSdirs::GetConfigDir()
 {
   // PWS_PREFSDIR overrides all:
-  CString retval(pws_os::getenv("PWS_PREFSDIR", true).c_str());
-  if (retval.IsEmpty()) {
+  stringT retval(pws_os::getenv("PWS_PREFSDIR", true));
+  if (retval.empty()) {
     // returns directory of executable unless U3 environment detected
-    retval = pws_os::getenv("U3_APP_DATA_PATH", true).c_str();
-    if (retval.IsEmpty())
-      retval = GetMFNDir();
+    retval = pws_os::getenv("U3_APP_DATA_PATH", true);
+    if (retval.empty())
+      retval = GetOurExecDir();
   }
   return retval;
 }
 
-CString PWSdirs::GetXMLDir()
+stringT PWSdirs::GetXMLDir()
 {
-  CString retval(pws_os::getenv("U3_APP_DATA_PATH", true).c_str());
-  if (!retval.IsEmpty())
-    retval += _T("\\xml\\");
+  stringT retval(pws_os::getenv("U3_APP_DATA_PATH", true));
+  if (!retval.empty())
+    retval += _S("\\xml\\");
   else {
-    retval = GetMFNDir();
+    retval = GetOurExecDir();
   }
   return retval;
 }
 
-CString PWSdirs::GetHelpDir()
+stringT PWSdirs::GetHelpDir()
 {
-  CString retval(pws_os::getenv("U3_DEVICE_EXEC_PATH", true).c_str());
-  if (retval.IsEmpty()) {
-    retval = GetMFNDir();
+  stringT retval(pws_os::getenv("U3_DEVICE_EXEC_PATH", true));
+  if (retval.empty()) {
+    retval = GetOurExecDir();
   }
   return retval;
 }
 
-CString PWSdirs::GetExeDir()
+stringT PWSdirs::GetExeDir()
 {
-  CString retval(pws_os::getenv("U3_HOST_EXEC_PATH", true).c_str());
-  if (retval.IsEmpty()) {
-    retval = GetMFNDir();
+  stringT retval(pws_os::getenv("U3_HOST_EXEC_PATH", true));
+  if (retval.empty()) {
+    retval = GetOurExecDir();
   }
   return retval;
 }
 
-void PWSdirs::Push(const CString &dir)
+void PWSdirs::Push(const stringT &dir)
 {
-  TCHAR *curdir = _tgetcwd(NULL, 512); // NULL means 512 doesn't matter
-  CString CurDir(curdir);
-  free(curdir);
+  const stringT CurDir(pws_os::getcwd());
   if (CurDir != dir) { // minor optimization
     dirs.push(CurDir);
-    _tchdir(dir);
+    pws_os::chdir(dir);
   }
 }
 
 void PWSdirs::Pop()
 {
   if (!dirs.empty()) {
-    _tchdir(dirs.top());
+    pws_os::chdir(dirs.top());
     dirs.pop();
   }
 }
@@ -116,7 +109,7 @@ void PWSdirs::Pop()
 PWSdirs::~PWSdirs()
 {
   while (!dirs.empty()) {
-    _tchdir(dirs.top());
+    pws_os::chdir(dirs.top());
     dirs.pop();
   }
 }

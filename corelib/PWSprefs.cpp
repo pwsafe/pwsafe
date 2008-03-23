@@ -592,9 +592,10 @@ void PWSprefs::InitializePreferences()
   PWSdirs dirs(PWSdirs::GetConfigDir());
 
   // Set path & name of config file
-  if (m_configfilename.IsEmpty())
-    m_configfilename = PWSdirs::GetConfigDir() + _T("pwsafe.cfg");
-
+  if (m_configfilename.IsEmpty()) {
+    m_configfilename = PWSdirs::GetConfigDir().c_str();
+    m_configfilename += _T("pwsafe.cfg");
+  }
   // Start with fallback position: hardcoded defaults
   LoadProfileFromDefaults();
   m_ConfigOptions = CF_NONE;
