@@ -12,7 +12,7 @@
 #include <afx.h>
 #include <Windows.h>
 #include "../dir.h"
-
+#include <direct.h>
 stringT pws_os::getexecdir()
 {
   // returns the directory part of ::GetModuleFileName()
