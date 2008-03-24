@@ -242,7 +242,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
-  const CString cs_ExePath(PWSdirs::GetExeDir());
+  const CString cs_ExePath(PWSdirs::GetExeDir().c_str());
   CString cs_ResPath;
   const CString format_string = (cs_CTRY.IsEmpty()) ?
     _T("%spwsafe%s%s.dll") : _T("%spwsafe%s_%s.dll");
@@ -277,7 +277,7 @@ void ThisMfcApp::LoadLocalizedStuff()
   */
 
   CString cs_HelpPath;
-  const CString cs_HelpDir(PWSdirs::GetHelpDir());
+  const CString cs_HelpDir(PWSdirs::GetHelpDir().c_str());
   bool helpFileFound = false;
 
   CString cs_PWS_HELP;
