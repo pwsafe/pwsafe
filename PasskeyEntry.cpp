@@ -297,9 +297,9 @@ void CPasskeyEntry::OnCreateDb()
                    _T("|"),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
-    CString dir = PWSdirs::GetSafeDir();
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    stringT dir = PWSdirs::GetSafeDir();
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
     if (((DboxMain*) GetParent())->ExitRequested()) {
       // If U3ExitNow called while in CFileDialog,
@@ -461,9 +461,9 @@ void CPasskeyEntry::OnOpenFileBrowser()
                  this);
   fd.m_ofn.lpstrTitle = cs_text;
   fd.m_ofn.Flags &= ~OFN_READONLY;
-  CString dir = PWSdirs::GetSafeDir();
-  if (!dir.IsEmpty())
-    fd.m_ofn.lpstrInitialDir = dir;
+  stringT dir = PWSdirs::GetSafeDir();
+  if (!dir.empty())
+    fd.m_ofn.lpstrInitialDir = dir.c_str();
   INT_PTR rc = fd.DoModal();
   if (((DboxMain*) GetParent())->ExitRequested()) {
     // If U3ExitNow called while in CFileDialog,

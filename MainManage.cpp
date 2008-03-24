@@ -76,9 +76,9 @@ int DboxMain::BackupSafe()
                    _T("Password Safe Backups (*.bak)|*.bak||"),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
-    CString dir = PWSdirs::GetSafeDir();
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    stringT dir = PWSdirs::GetSafeDir();
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
@@ -136,9 +136,9 @@ int DboxMain::Restore()
                    _T("|"),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
-    CString dir = PWSdirs::GetSafeDir();
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    stringT dir = PWSdirs::GetSafeDir();
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
     INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,

@@ -271,7 +271,7 @@ int DboxMain::NewFile(CMyString &newfilename)
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
   CString v3FileName = PWSUtil::GetNewFileName(cf, DEFAULT_SUFFIX);
-  CString dir = PWSdirs::GetSafeDir();
+  stringT dir = PWSdirs::GetSafeDir();
   INT_PTR rc;
 
   while (1) {
@@ -286,8 +286,8 @@ int DboxMain::NewFile(CMyString &newfilename)
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     fd.m_ofn.Flags &= ~OFN_READONLY;
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
 
     rc = fd.DoModal();
 
@@ -431,7 +431,7 @@ int DboxMain::Open()
   int rc = PWScore::SUCCESS;
   CMyString newfile;
   CString cs_text(MAKEINTRESOURCE(IDS_CHOOSEDATABASE));
-  CString dir = PWSdirs::GetSafeDir();
+  stringT dir = PWSdirs::GetSafeDir();
 
   //Open-type dialog box
   while (1) {
@@ -447,8 +447,8 @@ int DboxMain::Open()
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
     fd.m_ofn.Flags &= ~OFN_READONLY;
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
     INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
@@ -740,9 +740,9 @@ int DboxMain::SaveAs()
     else
       cs_text.LoadString(IDS_NEWNAME2);
     fd.m_ofn.lpstrTitle = cs_text;
-    CString dir = PWSdirs::GetSafeDir();
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    stringT dir = PWSdirs::GetSafeDir();
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
@@ -1165,9 +1165,9 @@ void DboxMain::OnImportXML()
     return;
 
   CString cs_title, cs_temp, cs_text;
-  CString XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe.xsd");
+  stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe.xsd");
 
-  if (XSDFilename.IsEmpty() || !PWSfile::FileExists(XSDFilename)) {
+  if (!PWSfile::FileExists(XSDFilename.c_str())) {
     cs_temp.LoadString(IDS_MISSINGXSD);
     cs_title.LoadString(IDS_CANTVALIDATEXML);
     MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
@@ -1216,9 +1216,11 @@ void DboxMain::OnImportXML()
     cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
     rpt.WriteLine(cs_temp);
     rpt.WriteLine();
-    rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename, XSDFilename, strErrors,
-      numValidated, numImported,
-      bBadUnknownFileFields, bBadUnknownRecordFields, rpt);
+    rc = m_core.ImportXMLFile(ImportedPrefix, XMLFilename,
+                              XSDFilename.c_str(), strErrors,
+                              numValidated, numImported,
+                              bBadUnknownFileFields, bBadUnknownRecordFields,
+                              rpt);
     waitCursor.Restore();  // Restore normal cursor
 
     cs_title.LoadString(IDS_XMLIMPORTFAILED);
@@ -1312,9 +1314,9 @@ int DboxMain::Merge()
                    this);
     cs_temp.LoadString(IDS_PICKMERGEFILE);
     fd.m_ofn.lpstrTitle = cs_temp;
-    CString dir = PWSdirs::GetSafeDir();
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    stringT dir = PWSdirs::GetSafeDir();
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
     INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
@@ -1625,9 +1627,9 @@ void DboxMain::OnCompare()
                    _T("|"),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
-    CString dir = PWSdirs::GetSafeDir();
-    if (!dir.IsEmpty())
-      fd.m_ofn.lpstrInitialDir = dir;
+    stringT dir = PWSdirs::GetSafeDir();
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
     rc = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
