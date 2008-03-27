@@ -32,6 +32,7 @@ public:
   CMyString m_autotype;
   CMyString m_locLTime;
   time_t m_tttLTime;
+  time_t m_tttXTime;  // Password creation or last changed datetime
   BOOL m_SavePWHistory;
   int m_MaxPWHistory;
   int m_ibasedata;

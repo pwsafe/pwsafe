@@ -966,12 +966,28 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
-    if (i_Offset[LTIME] >= 0)
-      if (!temp.SetLTime(tokens[i_Offset[LTIME]].c_str())) {
+    if (i_Offset[LTIME] >= 0) {
+      CString cs_LTime = tokens[i_Offset[LTIME]].c_str();
+      cs_LTime.Trim();
+      if (cs_LTime == cs_LTime.SpanIncluding(_T("0123456789"))) {
+        // Only digits - interval specified
+        long numdays = _ttol((LPCTSTR)cs_LTime);
+        if (numdays > 0L && numdays <= 3650L) {
+          temp.SetLTime((time_t)numdays);
+        } else {
+          // Invalid interval
+          const stringT &time_value = vs_Header.at(LTIME);
+          csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
+          rpt.WriteLine(csError);
+        }
+      }
+      else
+      if (!temp.SetLTime(cs_LTime)) {
         const stringT &time_value = vs_Header.at(LTIME);
         csError.Format(IDSC_IMPORTINVALIDFIELD, numlines, time_value.c_str());
         rpt.WriteLine(csError);
       }
+    }
     if (i_Offset[RMTIME] >= 0)
       if (!temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str())) {
         const stringT &time_value = vs_Header.at(RMTIME);

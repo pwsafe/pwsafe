@@ -19,6 +19,7 @@ databases.
 [1478022] Correct description of this fix in the Release Notes to avoid
 user confusion thinking it does something different.
 [] Ensure first entry is selected when opening an existing database.
+[] XML export of password history fixed for when number to be saved > 99.
 
 Changes to Existing Features in 3.12.01
 =======================================
@@ -29,6 +30,10 @@ copied whether it contains data or not.
 
 New Features for 3.12.01
 ========================
+[1914644] Password expiry can now be set as an interval (1 to 3650 days)
+that will be applied from creation time and thereafter whenever the password
+is changed. This is indicated in the List view by an asterisk after the 
+expiry date.
 [1904254] Search now selects all text fields by default.
 [1901380] Find result highlighted and selected.
 [1901380] If the Esc key is not being used to minimize PasswordSafe, then

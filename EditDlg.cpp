@@ -63,7 +63,7 @@ CString CEditDlg::CS_HIDE;
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
   m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
-  m_tttLTime (time_t(0)),
+  m_tttLTime(time_t(0)), m_tttXTime(time_t(0)),
   m_locLTime(_T("")), m_oldlocLTime(_T("")),
   m_original_entrytype(CItemData::Normal)
 {
@@ -102,16 +102,24 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_realnotes = ci->GetNotes();
   m_PWHistory = ci->GetPWHistory();
   m_locCTime = ci->GetCTimeL();
-  m_locPMTime = ci->GetPMTimeL();
   m_locATime = ci->GetATimeL();
   m_locRMTime = ci->GetRMTimeL();
+  m_locPMTime = ci->GetPMTimeL();
+
+  if (!m_locPMTime.IsEmpty())
+    ci->GetPMTime(m_tttXTime);
+  if ((long)m_tttXTime == 0L) // if never changed - try creation date
+    m_ci->GetCTime(m_tttXTime);
 
   m_locLTime = ci->GetLTimeL();
-  if (m_locLTime.IsEmpty()) {
+  ci->GetLTime(m_tttLTime);
+  if ((long)m_tttLTime == 0L) {
     m_locLTime.LoadString(IDS_NEVER);
-    m_tttLTime = 0;
   } else
-    ci->GetLTime(m_tttLTime);
+  if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
+    CTime t = CTime(m_tttXTime) + CTimeSpan((long)m_tttLTime, 0, 0, 0);
+    m_locLTime = PWSUtil::ConvertToDateTimeString((time_t)t.GetTime(), TMC_LOCALE);
+  }
 
   m_oldlocLTime = m_locLTime;
 
@@ -177,7 +185,7 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
   ON_MESSAGE(WM_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(WM_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
-  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, &CEditDlg::OnBnClickedOverridePolicy)
+  ON_BN_CLICKED(IDC_OVERRIDE_POLICY, OnBnClickedOverridePolicy)
 END_MESSAGE_MAP()
 
 void CEditDlg::OnShowPassword() 
@@ -533,6 +541,13 @@ void CEditDlg::OnRandom()
       m_password = m_realpassword;
       UpdateData(FALSE);
   }
+  // This will be reset to the time the user eventually presses OK
+  time(&m_tttXTime);
+  if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
+    CTime ct = CTime(m_tttXTime) + CTimeSpan((long)m_tttLTime, 0, 0, 0);
+    m_locLTime = CMyString(ct.Format(_T("%#c")));
+    GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
+  }
 }
 
 void CEditDlg::OnHelp() 
@@ -660,6 +675,7 @@ void CEditDlg::OnBnClickedSetLTime()
   CExpDTDlg dlg_expDT(this);
 
   dlg_expDT.m_tttLTime = m_tttLTime;
+  dlg_expDT.m_tttXTime = m_tttXTime;
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_expDT.DoModal();

@@ -36,7 +36,8 @@ CAddDlg::CAddDlg(CWnd* pParent)
   : CPWDialog(CAddDlg::IDD, pParent),
   m_password(_T("")), m_notes(_T("")), m_username(_T("")), m_title(_T("")),
   m_group(_T("")), m_URL(_T("")), m_autotype(_T("")),
-  m_tttLTime((time_t)0), m_isPwHidden(false), m_OverridePolicy(FALSE)
+  m_tttLTime(time_t(0)), m_tttXTime(time_t(0)),
+  m_isPwHidden(false), m_OverridePolicy(FALSE)
 {
   m_isExpanded = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -376,15 +377,26 @@ void CAddDlg::OnBnClickedSetLTime()
   CExpDTDlg dlg_expDT(this);
 
   dlg_expDT.m_locLTime = m_locLTime;
+  dlg_expDT.m_tttXTime = m_tttXTime;
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_expDT.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
+    CString cs_text;
     m_tttLTime = dlg_expDT.m_tttLTime;
-    m_locLTime = dlg_expDT.m_locLTime;
-    GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
+    if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
+      cs_text.Format(IDS_IN_N_DAYS, (long)m_tttLTime);
+      GetDlgItem(IDC_LTIME)->SetWindowText(cs_text);
+      cs_text.LoadString(IDS_EXPIRES_IN);
+      GetDlgItem(IDC_STATIC_LTIME)->SetWindowText(cs_text);
+    } else {
+      m_locLTime = dlg_expDT.m_locLTime;
+      GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
+      cs_text.LoadString(IDS_EXPIRES_ON);
+      GetDlgItem(IDC_STATIC_LTIME)->SetWindowText(cs_text);
+    }
   }
 }
 

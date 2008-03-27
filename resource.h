@@ -498,6 +498,9 @@
 #define IDC_EDITSCEXPLANATION           1294
 #define IDC_STATIC_REMLAST              1295
 #define IDC_DEFNTSHOWASTIPSINVIEWS      1296
+#define IDC_REUSE_ON_CHANGE             1297
+#define IDC_STATIC_LTINTERVAL_NOW       1298
+#define IDC_STATIC_LTINTERVAL_ALWAYS    1299
 
 // Next default values for new objects
 // 
@@ -505,7 +508,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        417
 #define _APS_NEXT_COMMAND_VALUE         30000
-#define _APS_NEXT_CONTROL_VALUE         1297
+#define _APS_NEXT_CONTROL_VALUE         1300
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

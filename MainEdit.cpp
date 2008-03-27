@@ -876,19 +876,19 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetNotes(ci->GetNotes());
     time_t t;
     ci->GetCTime(t);
-    if ((long) t != 0)
+    if ((long) t != 0L)
       ci2.SetCTime(t);
     ci->GetATime(t);
-    if ((long) t != 0)
+    if ((long) t != 0L)
       ci2.SetATime(t);
     ci->GetLTime(t);
-    if ((long) t != 0)
+    if ((long) t != 0L)
       ci2.SetLTime(t);
     ci->GetPMTime(t);
-    if ((long) t != 0)
+    if ((long) t != 0L)
       ci2.SetPMTime(t);
     ci->GetRMTime(t);
-    if ((long) t != 0)
+    if ((long) t != 0L)
       ci2.SetRMTime(t);
     CMyString tmp = ci->GetPWHistory();
     if (tmp.GetLength() >= 5)

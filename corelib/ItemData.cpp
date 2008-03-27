@@ -157,6 +157,11 @@ CMyString CItemData::GetTime(int whichtime, int result_format) const
   time_t t;
 
   GetTime(whichtime, t);
+  if (whichtime == LTIME && (long)t > 0L && (long)t <= 3650L) {
+    CMyString cs_temp;
+    cs_temp.Format(_T("%d"), (long)t);
+    return cs_temp;
+  }
 
   return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
@@ -587,23 +592,34 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   time_t t;
   GetCTime(t);
-  if (bsExport.test(CItemData::CTIME) && (long)t != 0)
+  if (bsExport.test(CItemData::CTIME) && (long)t != 0L)
     oss << GetXMLTime(2, "ctime", t, utf8conv);
 
   GetATime(t);
-  if (bsExport.test(CItemData::ATIME) && (long)t != 0)
+  if (bsExport.test(CItemData::ATIME) && (long)t != 0L)
     oss << GetXMLTime(2, "atime", t, utf8conv);
 
   GetLTime(t);
-  if (bsExport.test(CItemData::LTIME) && (long)t != 0)
-    oss << GetXMLTime(2, "ltime", t, utf8conv);
+  if (bsExport.test(CItemData::LTIME) && (long)t != 0L) {
+    if ((long)t > 0L && (long)t <= 3650L) {
+      char buffer[8];
+#if _MSC_VER >= 1400
+      sprintf_s(buffer, 7, "%1d", (long)t);
+#else
+      sprintf(buffer, "%1d", (long)t);
+#endif
+      oss << "\t\t<ltime_interval>" << buffer << "</ltime_interval>" << endl;
+    } else {
+      oss << GetXMLTime(2, "ltime", t, utf8conv);
+    }
+  }
 
   GetPMTime(t);
-  if (bsExport.test(CItemData::PMTIME) && (long)t != 0)
+  if (bsExport.test(CItemData::PMTIME) && (long)t != 0L)
     oss << GetXMLTime(2, "pmtime", t, utf8conv);
 
   GetRMTime(t);
-  if (bsExport.test(CItemData::RMTIME) && (long)t != 0)
+  if (bsExport.test(CItemData::RMTIME) && (long)t != 0L)
     oss << GetXMLTime(2, "rmtime", t, utf8conv);
 
   PWPolicy pwp;
@@ -613,11 +629,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     oss << "\t\t<PasswordPolicy>" << endl;
 #if _MSC_VER >= 1400
     sprintf_s(buffer, 7, "%1d", pwp.length);
-    oss << "\t\t\t<PWLength>" << buffer << "</PWLength>" << endl;
 #else
     sprintf(buffer, "%1d", pwp.length);
-    oss << "\t\t\t<PWLength>" << buffer << "</PWLength>" << endl;
 #endif
+    oss << "\t\t\t<PWLength>" << buffer << "</PWLength>" << endl;
     if (pwp.flags & PWSprefs::PWPolicyUseLowercase)
       oss << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
     if (pwp.flags & PWSprefs::PWPolicyUseUppercase)
@@ -962,7 +977,7 @@ void CItemData::SetTime(int whichtime, time_t t)
 
 bool CItemData::SetTime(int whichtime, const CString &time_str)
 {
-  time_t t = 0;
+  time_t t(0);
 
   if (time_str.IsEmpty()) {
     SetTime(whichtime, t);
