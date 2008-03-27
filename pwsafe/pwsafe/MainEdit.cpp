@@ -160,6 +160,7 @@ void DboxMain::OnAdd()
       // For some reason, when adding the first entry, it is not visible!
       m_ctlItemTree.SetRedraw(TRUE);
     }
+    SortListView();
     m_ctlItemList.SetFocus();
     if (prefs->GetPref(PWSprefs::SaveImmediately))
       Save();
