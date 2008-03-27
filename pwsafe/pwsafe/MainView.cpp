@@ -83,7 +83,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   CItemData* pLHS = (CItemData *)lParam1;
   CItemData* pRHS = (CItemData *)lParam2;
   CMyString group1, group2;
-  time_t t1, t2;
+  time_t t1, t2, xt;
 
   int iResult;
   switch(nTypeSortColumn) {
@@ -147,6 +147,18 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::LTIME:
       pLHS->GetLTime(t1);
       pRHS->GetLTime(t2);
+      if ((long)t1 > 0L && (long)t1 <= 3650L) {
+        pLHS->GetPMTime(xt);
+        if ((long)xt == 0L)
+          pLHS->GetCTime(xt);
+        t1 = (time_t)((long)xt + (long)t1);        
+      }
+      if ((long)t2 > 0L && (long)t2 <= 3650L) {
+        pRHS->GetPMTime(xt);
+        if ((long)xt == 0L)
+          pRHS->GetCTime(xt);
+        t2 = (time_t)((long)xt + (long)t2);        
+      }
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
     case CItemData::RMTIME:
@@ -1135,7 +1147,19 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
         cs_fielddata = itemData.GetATimeL();
         break;
       case CItemData::LTIME:
-        cs_fielddata = itemData.GetLTimeL();
+      {
+        time_t tLTime, txTime;
+        itemData.GetLTime(tLTime);
+        if ((long)tLTime > 0L && (long)tLTime <= 3650L) {
+          itemData.GetPMTime(txTime);
+          if ((long)txTime == 0L)
+            itemData.GetCTime(txTime);
+          CTime ct = CTime(txTime) + CTimeSpan((long)tLTime, 0, 0, 0);
+          cs_fielddata = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
+          cs_fielddata += _T(" *");
+        } else
+          cs_fielddata = itemData.GetLTimeL();
+      }
         break;
       case CItemData::RMTIME:
         cs_fielddata = itemData.GetRMTimeL();
@@ -1255,7 +1279,19 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
           cs_fielddata = itemData.GetATimeL();
           break;
         case CItemData::LTIME:
-          cs_fielddata = itemData.GetLTimeL();
+        {
+          time_t tLTime, txTime;
+          itemData.GetLTime(tLTime);
+          if ((long)tLTime > 0L && (long)tLTime <= 3650L) {
+            itemData.GetPMTime(txTime);
+            if ((long)txTime == 0L)
+              itemData.GetCTime(txTime);
+            CTime ct = CTime(txTime) + CTimeSpan((long)tLTime, 0, 0, 0);
+            cs_fielddata = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
+            cs_fielddata += _T(" *");
+          } else
+            cs_fielddata = itemData.GetLTimeL();
+        }
           break;
         case CItemData::RMTIME:
           cs_fielddata = itemData.GetRMTimeL();
@@ -3059,6 +3095,14 @@ int DboxMain::GetEntryImage(const CItemData &ci)
   }
 
   ci.GetLTime(tLTime);
+  if ((long)tLTime > 0L && (long)tLTime <= 3650L) {
+    time_t txTime;
+    ci.GetPMTime(txTime);
+    if ((long)txTime == 0L)
+      ci.GetCTime(txTime);
+    tLTime = (time_t)((long)txTime + (long)tLTime);
+  }
+
   if (tLTime != 0) {
     if (tLTime <= now) {
       nImage += 2;  // Expired

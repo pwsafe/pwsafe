@@ -394,4 +394,7 @@
 #define IDS_READWRITE                   5578
 #define IDS_SEARCH                      5579
 #define IDS_NEW                         5580
+#define IDS_IN_N_DAYS                   5581
+#define IDS_EXPIRES_ON                  5582
+#define IDS_EXPIRES_IN                  5583
 

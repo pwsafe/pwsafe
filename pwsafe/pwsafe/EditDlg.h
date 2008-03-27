@@ -51,6 +51,7 @@ private:
   CMyString m_locCTime;
   CMyString m_locPMTime, m_locATime, m_locLTime, m_locRMTime;
   time_t m_tttLTime;
+  time_t m_tttXTime;  // Password creation or last changed datetime
   bool m_bIsModified;
   // Password History related stuff
   size_t m_NumPWHistory;

@@ -15,11 +15,11 @@
 // CExpDTDlg dialog
 
 CExpDTDlg::CExpDTDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CExpDTDlg::IDD, pParent), m_tttLTime(0)
+  : CPWDialog(CExpDTDlg::IDD, pParent), m_how(DATETIME),
+  m_numDays(1), m_ReuseOnPswdChange(FALSE), m_tttLTime(time_t(0)),
+  m_tttXTime(time_t(0))
 {
   //{{AFX_DATA_INIT(CImportDlg)
-  m_how = 0;
-  m_numDays = 1;
   //}}AFX_DATA_INIT
 }
 
@@ -31,6 +31,7 @@ void CExpDTDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_EXPIRYTIME, m_pTimeCtl);
   DDX_Radio(pDX, IDC_SELECTBYDATETIME, m_how);
   DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
+  DDX_Check(pDX, IDC_REUSE_ON_CHANGE, m_ReuseOnPswdChange);
   //{{AFX_DATA_MAP
   DDV_CheckMaxDays(pDX, m_how, m_numDays, m_maxDays);
 }
@@ -39,6 +40,7 @@ BEGIN_MESSAGE_MAP(CExpDTDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, &CExpDTDlg::OnOK)
   ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
   ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
+  ON_BN_CLICKED(IDC_REUSE_ON_CHANGE, OnReuseOnPswdChange)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -48,7 +50,7 @@ void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
                              int &numDays, const int &maxDays)
 {
   if (pDX->m_bSaveAndValidate) {
-    if (how == 1 && numDays > maxDays) {
+    if (how == CExpDTDlg::DAYS && numDays > maxDays) {
       CString csError;
       csError.Format(IDS_MAXNUMDAYSEXCEEDED, maxDays);
       AfxMessageBox(csError);
@@ -80,12 +82,31 @@ BOOL CExpDTDlg::OnInitDialog()
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
-  pspin->SetRange32(1, m_maxDays);
   pspin->SetBase(10);
-  pspin->SetPos(1);
+
+  if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L && (long)m_tttXTime != 0L) {
+    m_ReuseOnPswdChange = TRUE;
+    pspin->SetRange32(1, 3650);  // 10 years!
+    pspin->SetPos((long)m_tttLTime);
+    m_numDays = (int)m_tttLTime;
+    m_how = DAYS;
+  } else {
+    pspin->SetRange32(1, m_maxDays);
+    pspin->SetPos(1);
+  }
+
+  GetDlgItem(IDC_EXPDAYS)->EnableWindow(m_how == DAYS ? TRUE : FALSE);
+  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(m_how == DAYS ? TRUE : FALSE);
+  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(m_how == DAYS ? FALSE : TRUE);
+  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(m_how == DAYS ? FALSE : TRUE);
+
+  GetDlgItem(IDC_STATIC_LTINTERVAL_ALWAYS)->ShowWindow(m_ReuseOnPswdChange == TRUE ? 
+                                            SW_SHOW : SW_HIDE);
+  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->ShowWindow(m_ReuseOnPswdChange == TRUE ? 
+                                            SW_HIDE : SW_SHOW);
 
   // First get the time format picture.
-  VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
   sTimeFormat = szBuf;
 
   // Next get the separator character.
@@ -129,9 +150,13 @@ BOOL CExpDTDlg::OnInitDialog()
   if (m_tttLTime == 0) {
     m_locLTime.LoadString(IDS_NEVER);
   } else {
-    xt = CTime(m_tttLTime);
-    ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
-      xt.GetHour(), xt.GetMinute(), 0, -1);
+    if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
+      ct =CTime(m_tttXTime) + CTimeSpan((long)m_tttLTime, 0, 0, 0);
+    } else {
+      xt = CTime(m_tttLTime);
+      ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
+                 xt.GetHour(), xt.GetMinute(), 0, -1);
+    }
     m_locLTime = CMyString(ct.Format(_T("%#c")));
   }
 
@@ -139,6 +164,7 @@ BOOL CExpDTDlg::OnInitDialog()
   pTimeCtl->SetTime(&ct);
 
   GetDlgItem(IDC_STATIC_CURRENT_LTIME)->SetWindowText(m_locLTime);
+  UpdateData(FALSE);
 
   return TRUE;
 }
@@ -146,17 +172,36 @@ BOOL CExpDTDlg::OnInitDialog()
 void CExpDTDlg::OnDays() 
 {
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
+  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
-  m_how = 1;
+  m_how = DAYS;
 }
 
 void CExpDTDlg::OnDateTime() 
 {
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(TRUE);
-  m_how = 0;
+  m_how = DATETIME;
+}
+
+void CExpDTDlg::OnReuseOnPswdChange()
+{
+  UpdateData(TRUE);
+
+  const bool bReuse(m_ReuseOnPswdChange == TRUE);
+  const int new_max =bReuse ? 3650 : m_maxDays;
+  CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
+  pspin->SetRange32(1, new_max);
+  if (m_numDays > new_max)
+    m_numDays = 1;
+
+  GetDlgItem(IDC_STATIC_LTINTERVAL_ALWAYS)->ShowWindow(bReuse ? SW_SHOW : SW_HIDE);
+  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->ShowWindow(bReuse ? SW_HIDE : SW_SHOW);
+
+  UpdateData(FALSE);
 }
 
 void CExpDTDlg::OnOK()
@@ -171,7 +216,7 @@ void CExpDTDlg::OnOK()
   CTime LTime, LDate, LDateTime;
   DWORD dwResult;
 
-  if (m_how == 0) {
+  if (m_how == DATETIME) {
     dwResult = m_pTimeCtl.GetTime(LTime);
     ASSERT(dwResult == GDT_VALID);
 
@@ -180,30 +225,17 @@ void CExpDTDlg::OnOK()
 
     LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
       LTime.GetHour(), LTime.GetMinute(), 0, -1);
+    m_tttLTime = (time_t)LDateTime.GetTime();
   } else {
-    LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
+    if (m_ReuseOnPswdChange == FALSE) {
+      LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
+      m_tttLTime = (time_t)LDateTime.GetTime();
+    } else {
+      LDateTime = CTime(m_tttXTime) + CTimeSpan(m_numDays, 0, 0, 0);
+      m_tttLTime = m_numDays;
+    }
   }
-
-  m_tttLTime = (time_t)LDateTime.GetTime();
-
-  SYSTEMTIME systime;
-  TCHAR time_str[80], datetime_str[80];
-  systime.wYear = (WORD)LDateTime.GetYear();
-  systime.wMonth = (WORD)LDateTime.GetMonth();
-  systime.wDay = (WORD)LDateTime.GetDay();
-  systime.wDayOfWeek = (WORD) LDateTime.GetDayOfWeek();
-  systime.wHour = (WORD)LDateTime.GetHour();
-  systime.wMinute = (WORD)LDateTime.GetMinute();
-  systime.wSecond = (WORD)0;
-  systime.wMilliseconds = (WORD)0;
-  TCHAR szBuf[80];
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
-  GetDateFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, datetime_str, 80);
-  szBuf[0] = _T(' ');  // Put a blank between date and time
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, &szBuf[1], 79));
-  GetTimeFormat(LOCALE_USER_DEFAULT, 0, &systime, szBuf, time_str, 80);
-  _tcscat_s(datetime_str, 80, time_str);
-  m_locLTime = CMyString(datetime_str);
+  m_locLTime = PWSUtil::ConvertToDateTimeString((time_t)LDateTime.GetTime(), TMC_LOCALE);
 
   CPWDialog::OnOK();
 }

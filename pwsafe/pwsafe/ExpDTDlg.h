@@ -25,6 +25,7 @@ public:
   CDateTimeCtrl m_pDateCtl;         // date picker control
   CMyString m_locLTime;             // format as per user's Short Date/Time
   time_t m_tttLTime;
+  time_t m_tttXTime;  // Password creation or last changed datetime
 
   // Dialog Data
   //{{AFX_DATA(CImportDlg)
@@ -32,8 +33,10 @@ public:
   int m_how;
   int m_numDays;
   int m_maxDays;
+  BOOL m_ReuseOnPswdChange;
   //}}AFX_DATA
 
+  enum {DATETIME = 0, DAYS = 1};
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -44,5 +47,6 @@ public:
   afx_msg void OnDateTime();
   afx_msg void OnDays();
   afx_msg void OnOK();
+  afx_msg void OnReuseOnPswdChange();
 
 };

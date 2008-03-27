@@ -1903,7 +1903,7 @@ void DboxMain::RefreshImages()
 
 void DboxMain::CheckExpiredPasswords()
 {
-  time_t now, exptime, LTime;
+  time_t now, exptime, LTime, XTime;
   time(&now);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
@@ -1934,6 +1934,12 @@ void DboxMain::CheckExpiredPasswords()
       continue;
 
     curitem.GetLTime(LTime);
+    if ((long)LTime > 0L && (long)LTime <= 3650L) {
+      curitem.GetPMTime(XTime);
+      if ((long)XTime == 0L)
+        curitem.GetCTime(XTime);
+      LTime = (time_t)((long)XTime + (long)LTime);
+    }
 
     if (((long)LTime != 0) && (LTime < exptime)) {
       ExpPWEntry exppwentry(curitem, now, LTime);

@@ -346,6 +346,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
     cur_entry->ctime = _T("");
     cur_entry->atime = _T("");
     cur_entry->ltime = _T("");
+    cur_entry->ltime_interval = _T("");
     cur_entry->pmtime = _T("");
     cur_entry->rmtime = _T("");
     cur_entry->changed = _T("");
@@ -516,8 +517,14 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       tempitem.SetPMTime(cur_entry->pmtime);
     if (cur_entry->atime.GetLength() != 0)
       tempitem.SetATime(cur_entry->atime);
+    // Note Schema ensures either 'ltime' or 'ltime_interval' - not both.
     if (cur_entry->ltime.GetLength() != 0)
       tempitem.SetLTime(cur_entry->ltime);
+    if (cur_entry->ltime_interval.GetLength() != 0) {
+        long numdays = _ttol((LPCTSTR)cur_entry->ltime_interval);
+        if (numdays > 0L && numdays <= 3650L)
+          tempitem.SetLTime((time_t)numdays);
+    }
     if (cur_entry->rmtime.GetLength() != 0)
       tempitem.SetRMTime(cur_entry->rmtime);
 
@@ -745,6 +752,10 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
       default:
         ASSERT(0);
     }
+  }
+
+  if (_tcscmp(szCurElement, _T("ltime_interval")) == 0 && !m_strElemContent.IsEmpty()) {
+    cur_entry->ltime_interval = m_strElemContent.Trim();
   }
 
   if (_tcscmp(szCurElement, _T("unknownheaderfields")) == 0)

@@ -1506,6 +1506,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\toolbar\findreport_classic.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar\findreport_new.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\toolbar\groupenter_classic.bmp"
 				>
 			</File>

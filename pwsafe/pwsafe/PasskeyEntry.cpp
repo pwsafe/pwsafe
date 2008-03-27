@@ -464,6 +464,7 @@ void CPasskeyEntry::OnOpenFileBrowser()
   stringT dir = PWSdirs::GetSafeDir();
   if (!dir.empty())
     fd.m_ofn.lpstrInitialDir = dir.c_str();
+
   INT_PTR rc = fd.DoModal();
   if (((DboxMain*) GetParent())->ExitRequested()) {
     // If U3ExitNow called while in CFileDialog,

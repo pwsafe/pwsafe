@@ -27,6 +27,13 @@
   </xs:sequence>
 </xs:complexType>
 
+<xs:simpleType name="expirydaysType">
+  <xs:restriction base="xs:integer">
+    <xs:minInclusive value="1" />
+    <xs:maxInclusive value="3650" />
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="fieldType">
   <xs:restriction base="xs:integer">
     <xs:minInclusive value="16" />
@@ -161,7 +168,10 @@
               <xs:element name="uuid" type="uuidType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ctime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="atime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="ltime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+              <xs:choice>
+                <xs:element name="ltime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+                <xs:element name="ltime_interval" type="expirydaysType" minOccurs="0" maxOccurs="1" />
+              </xs:choice>
               <xs:element name="pmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="rmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="pwhistory" minOccurs="0" maxOccurs="1">

@@ -79,6 +79,7 @@ int DboxMain::BackupSafe()
     stringT dir = PWSdirs::GetSafeDir();
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
+
     rc = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
@@ -139,6 +140,7 @@ int DboxMain::Restore()
     stringT dir = PWSdirs::GetSafeDir();
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
+
     INT_PTR rc2 = fd.DoModal();
     if (m_inExit) {
       // If U3ExitNow called while in CFileDialog,
