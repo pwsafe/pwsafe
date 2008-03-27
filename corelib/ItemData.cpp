@@ -678,25 +678,25 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
       &PWHistList, TMC_XML);
     if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
-      char buffer[8];
+      char buffer[4];
       oss << "\t\t<pwhistory>" << endl;
 #if _MSC_VER >= 1400
-      sprintf_s(buffer, 3, "%1d", pwh_status);
+      sprintf_s(buffer, 2, "%01d", pwh_status);  // '0' or '1' = 1 character + NULL
       oss << "\t\t\t<status>" << buffer << "</status>" << endl;
 
-      sprintf_s(buffer, 3, "%2d", pwh_max);
+      sprintf_s(buffer, 4, "%03d", pwh_max);  // max is '255' = 3 characters + NULL
       oss << "\t\t\t<max>" << buffer << "</max>" << endl;
 
-      sprintf_s(buffer, 3, "%2d", pwh_num);
+      sprintf_s(buffer, 4, "%03d", pwh_num); // max is '255' = 3 characters + NULL
       oss << "\t\t\t<num>" << buffer << "</num>" << endl;
 #else
-      sprintf(buffer, "%1d", pwh_status);
+      sprintf(buffer, "%01d", pwh_status);
       oss << "\t\t\t<status>" << buffer << "</status>" << endl;
 
-      sprintf(buffer, "%2d", pwh_max);
+      sprintf(buffer, "%03d", pwh_max);
       oss << "\t\t\t<max>" << buffer << "</max>" << endl;
 
-      sprintf(buffer, "%2d", pwh_num);
+      sprintf(buffer, "%03d", pwh_num);
       oss << "\t\t\t<num>" << buffer << "</num>" << endl;
 #endif
       if (!PWHistList.empty()) {

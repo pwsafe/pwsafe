@@ -167,9 +167,9 @@
               <xs:element name="pwhistory" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="status" type="xs:integer" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="max" type="xs:integer" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="num" type="xs:integer" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="status" type="boolType" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="max" type="pwhistoryType" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="num" type="pwhistoryType" minOccurs="1" maxOccurs="1" />
                     <xs:element name="history_entries" minOccurs="0" maxOccurs="1">
                       <xs:complexType>
                         <xs:sequence>
