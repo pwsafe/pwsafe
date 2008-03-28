@@ -78,11 +78,13 @@ CItemData::~CItemData()
 //-----------------------------------------------------------------------------
 // Accessors
 
-void CItemData::GetField(const CItemField &field, CMyString &value) const
+CMyString CItemData::GetField(const CItemField &field) const
 {
+  CMyString retval;
   BlowFish *bf = MakeBlowFish();
-  field.Get(value, bf);
+  field.Get(retval, bf);
   delete bf;
+  return retval;
 }
 
 void CItemData::GetField(const CItemField &field, unsigned char *value, unsigned int &length) const
@@ -94,36 +96,27 @@ void CItemData::GetField(const CItemField &field, unsigned char *value, unsigned
 
 CMyString CItemData::GetName() const
 {
-  CMyString ret;
-  GetField(m_Name, ret);
-  return ret;
+  return GetField(m_Name);
 }
 
 CMyString CItemData::GetTitle() const
 {
-  CMyString ret;
-  GetField(m_Title, ret);
-  return ret;
+  return GetField(m_Title);
 }
 
 CMyString CItemData::GetUser() const
 {
-  CMyString ret;
-  GetField(m_User, ret);
-  return ret;
+  return GetField(m_User);
 }
 
 CMyString CItemData::GetPassword() const
 {
-  CMyString ret;
-  GetField(m_Password, ret);
-  return ret;
+  return GetField(m_Password);
 }
 
 CMyString CItemData::GetNotes(TCHAR delimiter) const
 {
-  CMyString ret;
-  GetField(m_Notes, ret);
+  CMyString ret = GetField(m_Notes);
   if (delimiter != 0) {
     ret.Remove(TCHAR('\r'));
     ret.Replace(TCHAR('\n'), delimiter);
@@ -133,23 +126,17 @@ CMyString CItemData::GetNotes(TCHAR delimiter) const
 
 CMyString CItemData::GetGroup() const
 {
-  CMyString ret;
-  GetField(m_Group, ret);
-  return ret;
+  return GetField(m_Group);
 }
 
 CMyString CItemData::GetURL() const
 {
-  CMyString ret;
-  GetField(m_URL, ret);
-  return ret;
+  return GetField(m_URL);
 }
 
 CMyString CItemData::GetAutoType() const
 {
-  CMyString ret;
-  GetField(m_AutoType, ret);
-  return ret;
+  return GetField(m_AutoType);
 }
 
 CMyString CItemData::GetTime(int whichtime, int result_format) const
@@ -158,6 +145,8 @@ CMyString CItemData::GetTime(int whichtime, int result_format) const
 
   GetTime(whichtime, t);
   if (whichtime == LTIME && (long)t > 0L && (long)t <= 3650L) {
+    // Special case where 'time' is really the password's
+    // lifetime, in days (added post 3.12)
     CMyString cs_temp;
     cs_temp.Format(_T("%d"), (long)t);
     return cs_temp;
@@ -209,8 +198,7 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
 
 void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
-  CMyString cs_pwp;
-  GetField(m_PWPolicy, cs_pwp);
+  CMyString cs_pwp = GetField(m_PWPolicy);
 
   // We need flags(4), length(3), lower_len(3), upper_len(3)
   //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19 
@@ -240,10 +228,7 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
 
 CMyString CItemData::GetPWPolicy() const
 {
-  CMyString retval;
-  GetField(m_PWPolicy, retval);
-
-  return retval;
+  return GetField(m_PWPolicy);
 }
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
@@ -313,8 +298,7 @@ void CItemData::SetUnknownField(const unsigned char type,
 
 CMyString CItemData::GetPWHistory() const
 {
-  CMyString ret;
-  GetField(m_PWHistory, ret);
+  CMyString ret = GetField(m_PWHistory);
   if (ret == _T("0") || ret == _T("00000"))
     ret = _T("");
   return ret;
