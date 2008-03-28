@@ -337,7 +337,7 @@ private:
   // Create local Encryption/Decryption object
   BlowFish *MakeBlowFish() const;
   // Laziness is a Virtue:
-  void GetField(const CItemField &field, CMyString &value) const;
+  CMyString GetField(const CItemField &field) const;
   void GetField(const CItemField &field, unsigned char *value,
     unsigned int &length) const;
   void GetUnknownField(unsigned char &type, unsigned int &length,
