@@ -1939,7 +1939,7 @@ void DboxMain::CheckExpiredPasswords()
       curitem.GetPMTime(XTime);
       if ((long)XTime == 0L)
         curitem.GetCTime(XTime);
-      LTime = (time_t)((long)XTime + (long)LTime);
+      LTime = (time_t)((long)XTime + (long)LTime * 86400);
     }
 
     if (((long)LTime != 0) && (LTime < exptime)) {
