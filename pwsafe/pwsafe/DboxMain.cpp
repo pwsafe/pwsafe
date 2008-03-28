@@ -91,7 +91,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bStartHiddenAndMinimized(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
   m_pCC(NULL), m_bBoldItem(false), m_bIsRestoring(false), m_bImageInLV(false),
-  m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL)
+  m_lastclipboardaction(_T("")), m_pNotesDisplay(NULL),
+  m_LastFoundTreeItem(NULL)
 {
   CS_EXPCOLGROUP.LoadString(IDS_MENUEXPCOLGROUP);
   CS_EDITENTRY.LoadString(IDS_MENUEDITENTRY);
