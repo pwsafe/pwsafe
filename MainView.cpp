@@ -151,13 +151,13 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
         pLHS->GetPMTime(xt);
         if ((long)xt == 0L)
           pLHS->GetCTime(xt);
-        t1 = (time_t)((long)xt + (long)t1);        
+        t1 = (time_t)((long)xt + (long)t1 * 86400);        
       }
       if ((long)t2 > 0L && (long)t2 <= 3650L) {
         pRHS->GetPMTime(xt);
         if ((long)xt == 0L)
           pRHS->GetCTime(xt);
-        t2 = (time_t)((long)xt + (long)t2);        
+        t2 = (time_t)((long)xt + (long)t2 * 86400);        
       }
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
@@ -3100,7 +3100,7 @@ int DboxMain::GetEntryImage(const CItemData &ci)
     ci.GetPMTime(txTime);
     if ((long)txTime == 0L)
       ci.GetCTime(txTime);
-    tLTime = (time_t)((long)txTime + (long)tLTime);
+    tLTime = (time_t)((long)txTime + (long)tLTime * 86400);
   }
 
   if (tLTime != 0) {
