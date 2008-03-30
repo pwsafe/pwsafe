@@ -157,6 +157,7 @@ PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
 PasswordSafe V3.12 introduced Format 0x0303
+PasswordSafe V3.13 introduced Format 0x0304
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -240,14 +241,14 @@ Password                    0x06        Text          Y              [3,4]
 Creation Time               0x07        time_t        Y              [5]
 Password Modification Time  0x08        time_t        Y              [5]
 Last Access Time            0x09        time_t        Y              [5,6]
-Password Lifetime           0x0a        time_t        Y              [5,7]
-*RESERVED*                  0x0b        4 bytes       -              [8]
-Last Modification Time      0x0c        time_t        Y              [5,9]
-URL                         0x0d        Text          Y              [10]
-Autotype                    0x0e        Text          Y              [11]
-Password History            0x0f        Text          Y              [12]
-Password Policy             0x10        Text          Y              [13]
-End of Entry                0xff        [empty]       Y              [14]
+Password Lifetime           0x0a        time_t        Y              [5,7,8]
+*RESERVED*                  0x0b        4 bytes       -              [9]
+Last Modification Time      0x0c        time_t        Y              [5,10]
+URL                         0x0d        Text          Y              [11]
+Autotype                    0x0e        Text          Y              [12]
+Password History            0x0f        Text          Y              [13]
+Password Policy             0x10        Text          Y              [14]
+End of Entry                0xff        [empty]       Y              [15]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -287,22 +288,27 @@ application can then prompt the user about passwords that need to be
 changed. Password lifetime is the expiry a date/time field in the same
 manner as the other time fields and a value of zero means "forever".
 
-[8] Although earmarked for Password Policy, the coding in versions prior
+[8] Versions post V3.12 will treat a lifetime entry between 1 and 3650
+(normally seconds after 1 January 1970) as the number of days before this
+password expires. This value is used when the password is first generated and
+thereafter whenever it is changed.
+
+[9] Although earmarked for Password Policy, the coding in versions prior
 to V3.12 does not correctly handle the presence of this field.  For this
 reason, this value cannot be used for any future V3 field without causing
 a potential issue when a user opens a V3.12 or later database with program
-version V3.11 or earlier.  See note [13].
+version V3.11 or earlier.  See note [14].
 
-[9] This is the time that any field of the record was modified, useful for
+[10] This is the time that any field of the record was modified, useful for
 merging databases.
 
-[10] The URL will be passed to the shell when the user chooses the "Browse
+[11] The URL will be passed to the shell when the user chooses the "Browse
 to" action for this entry. In version 2 of the format, this was extracted
 from the Notes field. By placing it in a separate field, we are no longer
 restricted to a URL - any action that may be executed by the shell may be
 specified here.
 
-[11] The text to be 'typed' by PasswordSafe upon the "Perform Autotype"
+[12] The text to be 'typed' by PasswordSafe upon the "Perform Autotype"
 action maybe specified here. If unspecified, the default value of
 'username, tab, password, tab, enter' is used. In version 2 of the format,
 this was extracted from the Notes field. Several codes are recognized here,
@@ -310,7 +316,7 @@ e.g, '%p' is replaced by the record's password. See the user documentation
 for the complete list of codes. The replacement is done by the application
 at runtime, and is not stored in the database.
 
-[12] Password History is an optional record. If it exists, it stores the
+[13] Password History is an optional record. If it exists, it stores the
 creation times and values of the last few passwords used in the current
 entry, in the following format:
     "fmmnnTLPTLP...TLP"
@@ -327,7 +333,7 @@ the PWH field (preferred), or by a header of _T("00000"):
 Note that 0aabb, where bb <= aa, is possible if password history was enabled
 in the past and has then been disabled but the history hasn't been cleared.
 
-[13] This field allows a specific Password Policy per entry.  The format is:
+[14] This field allows a specific Password Policy per entry.  The format is:
     "ffffnnnllluuudddsss"
 where:
      ffff = 4 hexadecimal digits representing the following flags
@@ -345,7 +351,7 @@ where:
     ddd  = 3 hexadecimal digits password minimum number of digit characters
     sss  = 3 hexadecimal digits password minimum number of symbol characters
 
-[14] An explicit end of entry field is useful for supporting new fields
+[15] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility
