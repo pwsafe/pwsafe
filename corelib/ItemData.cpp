@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 
 #include "ItemData.h"
+#include "os/typedefs.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
 #include "PWSrand.h"
@@ -17,7 +18,16 @@
 
 #include <time.h>
 #include <sstream>
+#include <iomanip>
 
+// hide w_char/char differences where possible:
+#ifdef UNICODE
+typedef std::wistringstream istringstreamT;
+typedef std::wostringstream ostringstreamT;
+#else
+typedef std::istringstream istringstreamT;
+typedef std::ostringstream ostringstreamT;
+#endif
 using namespace std;
 
 #ifdef _DEBUG
@@ -196,34 +206,40 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, (unsigned char *)uuid_array, length);
 }
 
-void CItemData::GetPWPolicy(PWPolicy &pwp) const
+static void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
 {
-  CMyString cs_pwp = GetField(m_PWPolicy);
+  // should really be a c'tor of PWPolicy - later...
 
   // We need flags(4), length(3), lower_len(3), upper_len(3)
   //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19 
   // Note: order of fields set by PWSprefs enum that can have minimum lengths.
   // Later releases must support these as a minimum.  Any fields added
   // by these releases will be lost if the user changes these field.
+  ASSERT(cs_pwp.length() == 19);
+  istringstreamT is_flags(stringT(cs_pwp, 0, 4));
+  istringstreamT is_length(stringT(cs_pwp, 4, 3));
+  istringstreamT is_digitminlength(stringT(cs_pwp, 7, 3));
+  istringstreamT is_lowreminlength(stringT(cs_pwp, 10, 3));
+  istringstreamT is_symbolminlength(stringT(cs_pwp, 13, 3));
+  istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
+  unsigned int f; // dain bramaged istringstream requires this runaround
+  is_flags >> hex >> f;
+  pwp.flags = static_cast<WORD>(f);
+  is_length >> hex >> pwp.length;
+  is_digitminlength >> hex >> pwp.digitminlength;
+  is_lowreminlength >> hex >> pwp.lowerminlength;
+  is_symbolminlength >> hex >> pwp.symbolminlength;
+  is_upperminlength >> hex >> pwp.upperminlength;
+}
 
-  int len = cs_pwp.GetLength();
+void CItemData::GetPWPolicy(PWPolicy &pwp) const
+{
+  stringT cs_pwp(GetField(m_PWPolicy));
+
+  int len = cs_pwp.length();
   pwp.flags = 0;
-  if (len < 19)
-    return;
-
-#if _MSC_VER >= 1400
-  int iread = _stscanf_s(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-                         &pwp.flags, &pwp.length,
-                         &pwp.digitminlength, &pwp.lowerminlength,
-                         &pwp.symbolminlength, &pwp.upperminlength);
-#else
-  int iread = _stscanf(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-                       &pwp.flags, &pwp.length,
-                       &pwp.digitminlength, &pwp.lowerminlength,
-                       &pwp.symbolminlength, &pwp.upperminlength);
-#endif
-  if (iread != 6)
-    pwp.flags = 0;
+  if (len == 19)
+    String2PWPolicy(cs_pwp, pwp);
 }
 
 CMyString CItemData::GetPWPolicy() const
@@ -342,24 +358,20 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
                         &PWHistList, TMC_EXPORT_IMPORT);
 
     //  Build export string
-    TCHAR buffer[8];
-#if _MSC_VER >= 1400
-    _stprintf_s(buffer, 8, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
-#else
-    _stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
-#endif
-    history = CMyString(buffer);
+    ostringstreamT os;
+    os.fill(charT('0'));
+    os << hex << setw(1) << pwh_status
+       << setw(2) << pwh_max << setw(2) << pwh_num << ends;
+    history = CMyString(os.str().c_str());
     PWHistList::iterator iter;
     for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
       const PWHistEntry pwshe = *iter;
       history += _T(' ');
       history += pwshe.changedate;
-#if _MSC_VER >= 1400
-      _stprintf_s(buffer, 8, _T(" %04x "), pwshe.password.GetLength());
-#else
-      _stprintf(buffer, _T("%04x "), pwshe.password.GetLength());
-#endif
-      history += CMyString(buffer);
+      ostringstreamT os1;
+      os1 << hex << charT(' ') << setfill(charT('0')) << setw(4)
+          << pwshe.password.GetLength() << charT(' ') << ends;
+      history += CMyString(os1.str().c_str());
       history += pwshe.password;
     }
   }
@@ -586,13 +598,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   GetLTime(t);
   if (bsExport.test(CItemData::LTIME) && (long)t != 0L) {
     if ((long)t > 0L && (long)t <= 3650L) {
-      char buffer[8];
-#if _MSC_VER >= 1400
-      sprintf_s(buffer, 7, "%1d", (long)t);
-#else
-      sprintf(buffer, "%1d", (long)t);
-#endif
-      oss << "\t\t<ltime_interval>" << buffer << "</ltime_interval>" << endl;
+      oss << "\t\t<ltime_interval>" << t << "</ltime_interval>" << endl;
     } else {
       oss << GetXMLTime(2, "ltime", t, utf8conv);
     }
@@ -609,14 +615,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   PWPolicy pwp;
   GetPWPolicy(pwp);
   if (bsExport.test(CItemData::POLICY) && pwp.flags != 0) {
-    char buffer[8];
     oss << "\t\t<PasswordPolicy>" << endl;
-#if _MSC_VER >= 1400
-    sprintf_s(buffer, 7, "%1d", pwp.length);
-#else
-    sprintf(buffer, "%1d", pwp.length);
-#endif
-    oss << "\t\t\t<PWLength>" << buffer << "</PWLength>" << endl;
+    oss << "\t\t\t<PWLength>" << pwp.length << "</PWLength>" << endl;
     if (pwp.flags & PWSprefs::PWPolicyUseLowercase)
       oss << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
     if (pwp.flags & PWSprefs::PWPolicyUseUppercase)
@@ -632,41 +632,18 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
       oss << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
 
-#if _MSC_VER >= 1400
     if (pwp.lowerminlength > 0) {
-      sprintf_s(buffer, 7, "%1d", pwp.lowerminlength);
-      oss << "\t\t\t<PWLowercaseMinLength>" << buffer << "</PWLowercaseMinLength>" << endl;
+      oss << "\t\t\t<PWLowercaseMinLength>" << pwp.lowerminlength << "</PWLowercaseMinLength>" << endl;
     }
     if (pwp.upperminlength > 0) {
-      sprintf_s(buffer, 7, "%1d", pwp.upperminlength);
-      oss << "\t\t\t<PWUppercaseMinLength>" << buffer << "</PWUppercaseMinLength>" << endl;
+      oss << "\t\t\t<PWUppercaseMinLength>" << pwp.upperminlength << "</PWUppercaseMinLength>" << endl;
     }
     if (pwp.digitminlength > 0) {
-      sprintf_s(buffer, 7, "%1d", pwp.digitminlength);
-      oss << "\t\t\t<PWDigitMinLength>" << buffer << "</PWDigitMinLength>" << endl;
+      oss << "\t\t\t<PWDigitMinLength>" << pwp.digitminlength << "</PWDigitMinLength>" << endl;
     }
     if (pwp.symbolminlength > 0) {
-      sprintf_s(buffer, 7, "%1d", pwp.symbolminlength);
-      oss << "\t\t\t<PWSymbolMinLength>" << buffer << "</PWSymbolMinLength>" << endl;
+      oss << "\t\t\t<PWSymbolMinLength>" << pwp.symbolminlength << "</PWSymbolMinLength>" << endl;
     }
-#else
-    if (pwp.lowerminlength > 0) {
-      sprintf(buffer, "%1d", pwp.lowerminlength);
-      oss << "\t\t\t<PWLowercaseMinLength>" << buffer << "</PWLowercaseMinLength>" << endl;
-    }
-    if (pwp.upperminlength > 0) {
-      sprintf(buffer, "%1d", pwp.upperminlength);
-      oss << "\t\t\t<PWUppercaseMinLength>" << buffer << "</PWUppercaseMinLength>" << endl;
-    }
-    if (pwp.digitminlength > 0) {
-      sprintf(buffer, "%1d", pwp.digitminlength);
-      oss << "\t\t\t<PWDigitMinLength>" << buffer << "</PWDigitMinLength>" << endl;
-    }
-    if (pwp.symbolminlength > 0) {
-      sprintf(buffer, "%1d", pwp.symbolminlength);
-      oss << "\t\t\t<PWSymbolMinLength>" << buffer << "</PWSymbolMinLength>" << endl;
-    }
-#endif
     oss << "\t\t</PasswordPolicy>" << endl;
   }
 
@@ -677,27 +654,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
       &PWHistList, TMC_XML);
     if (pwh_status == TRUE || pwh_max > 0 || pwh_num > 0) {
-      char buffer[4];
       oss << "\t\t<pwhistory>" << endl;
-#if _MSC_VER >= 1400
-      sprintf_s(buffer, 2, "%1d", pwh_status);  // '0' or '1' = 1 character + NULL
-      oss << "\t\t\t<status>" << buffer << "</status>" << endl;
-
-      sprintf_s(buffer, 4, "%1d", pwh_max);  // max is '255' = 3 characters + NULL
-      oss << "\t\t\t<max>" << buffer << "</max>" << endl;
-
-      sprintf_s(buffer, 4, "%1d", pwh_num); // max is '255' = 3 characters + NULL
-      oss << "\t\t\t<num>" << buffer << "</num>" << endl;
-#else
-      sprintf(buffer, "%1d", pwh_status);
-      oss << "\t\t\t<status>" << buffer << "</status>" << endl;
-
-      sprintf(buffer, "%1d", pwh_max);
-      oss << "\t\t\t<max>" << buffer << "</max>" << endl;
-
-      sprintf(buffer, "%1d", pwh_num);
-      oss << "\t\t\t<num>" << buffer << "</num>" << endl;
-#endif
+      oss << "\t\t\t<status>" << pwh_status << "</status>" << endl;
+      oss << "\t\t\t<max>" << pwh_max << "</max>" << endl;
+      oss << "\t\t\t<num>" << pwh_num << "</num>" << endl;
       if (!PWHistList.empty()) {
         oss << "\t\t\t<history_entries>" << endl;
         int num = 1;
@@ -994,44 +954,36 @@ int CItemData::CreatePWHistoryList(BOOL &status,
                                    PWHistList* pPWHistList,
                                    const int time_format) const
 {
-  PWHistEntry pwh_ent;
-  CMyString tmp, pwh;
-  int ipwlen, m, n, i_error;
-  BOOL s;
-  long t;
-
   status = FALSE;
-  pwh_max = 0;
-  pwh_num = 0;
-  i_error = 0;
+  pwh_max = pwh_num = 0;
 
-  pwh = this->GetPWHistory();
-  int len = pwh.GetLength();
+  stringT pwh_s = GetPWHistory();
+  int len = pwh_s.length();
 
   if (len < 5)
     return (len != 0 ? 1 : 0);
 
-  TCHAR *lpszPWHistory = pwh.GetBuffer(len + sizeof(TCHAR));
+  BOOL s = pwh_s[0] == charT('0') ? FALSE : TRUE;
 
-#if _MSC_VER >= 1400
-  int iread = _stscanf_s(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
-#else
-  int iread = _stscanf(lpszPWHistory, _T("%01d%02x%02x"), &s, &m, &n);
-#endif
-  if (iread != 3)
-    return 1;
+  int m, n;
+  istringstreamT ism(stringT(pwh_s, 1, 2)); // max history 1 byte hex
+  istringstreamT isn(stringT(pwh_s, 3, 2)); // cur # entries 1 byte hex
+  ism >> hex >> m;
+  if (!ism) return 1;
+  isn >> hex >> n;
+  if (!isn) return 1;
 
-  lpszPWHistory += 5;
+  int offset = 1 + 2 + 2; // where to extract the next token from pwh_s
+  int i_error = 0;
+
   for (int i = 0; i < n; i++) {
-#if _MSC_VER >= 1400
-    iread = _stscanf_s(lpszPWHistory, _T("%8x"), &t);
-#else
-    iread = _stscanf(lpszPWHistory, _T("%8x"), &t);
-#endif
-    if (iread != 1) {
-      i_error = 1;
-      break;
-    }
+    PWHistEntry pwh_ent;
+    long t;
+    istringstreamT ist(stringT(pwh_s, offset, 8)); // time in 4 byte hex
+    ist >> hex >> t;
+    if (!ist) {i_error++; continue;} // continue or break?
+    offset += 8;
+
     pwh_ent.changetttdate = (time_t) t;
     pwh_ent.changedate =
       PWSUtil::ConvertToDateTimeString((time_t) t, time_format);
@@ -1039,26 +991,20 @@ int CItemData::CreatePWHistoryList(BOOL &status,
       //                       1234567890123456789
       pwh_ent.changedate = _T("1970-01-01 00:00:00");
     }
-    lpszPWHistory += 8;
-#if _MSC_VER >= 1400
-    iread = _stscanf_s(lpszPWHistory, _T("%4x"), &ipwlen);
-#else
-    iread = _stscanf(lpszPWHistory, _T("%4x"), &ipwlen);
-#endif
-    if (iread != 1) {
-      i_error = 1;
-      break;
-    }
-    lpszPWHistory += 4;
-    pwh_ent.password = CMyString(lpszPWHistory, ipwlen);
-    lpszPWHistory += ipwlen;
+    istringstreamT ispwlen(stringT(pwh_s, offset, 4)); // pw length 2 byte hex
+    int ipwlen;
+    ispwlen >> hex >> ipwlen;
+    if (!ispwlen) {i_error++; continue;} // continue or break?
+    offset += 4;
+    const stringT pw(pwh_s, offset, ipwlen);
+    pwh_ent.password = pw.c_str();
+    offset += ipwlen;
     pPWHistList->push_back(pwh_ent);
   }
 
   status = s;
   pwh_max = m;
   pwh_num = n;
-  pwh.ReleaseBuffer();
   return i_error;
 }
 
@@ -1072,50 +1018,36 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
   if (pwp.flags == 0 || (bhex_flag && bother_flags)) {
     cs_pwp = _T("");
   } else {
-    TCHAR buffer[20];
-#if _MSC_VER >= 1400
-    _stprintf_s(buffer, 20, _T("%04x%03x%03x%03x%03x%03x"), 
-                pwp.flags, pwp.length,
-                pwp.digitminlength, pwp.lowerminlength,
-                pwp.symbolminlength, pwp.upperminlength);
-#else
-    _stprintf(buffer, _T("%04x%03x%03x%03x%03x%03x"), 
-              pwp.flags, pwp.length,
-              pwp.digitminlength, pwp.lowerminlength,
-              pwp.symbolminlength, pwp.upperminlength);
-#endif
-    buffer[19] = _T('\0');
-    cs_pwp = CMyString(buffer);
+    ostringstreamT os;
+    unsigned int f; // dain bramaged istringstream requires this runaround
+    f = static_cast<unsigned int>(pwp.flags);
+    os.fill(charT('0'));
+    os << hex << setw(4) << f
+       << setw(3) << pwp.length
+       << setw(3) << pwp.digitminlength
+       << setw(3) << pwp.lowerminlength
+       << setw(3) << pwp.symbolminlength
+       << setw(3) << pwp.upperminlength << ends;
+    cs_pwp = os.str().c_str();
   }
-
   SetField(m_PWPolicy, cs_pwp);
 }
 
 bool CItemData::SetPWPolicy(const CString &cs_pwp)
 {
-  if (cs_pwp.GetLength() != 0 && cs_pwp.GetLength() < 19)
-    return false;
-
-  if (cs_pwp.GetLength() == 0) {
+  // Basic sanity checks
+  if (cs_pwp.IsEmpty() == 0) {
     SetField(m_PWPolicy, cs_pwp);
     return true;
   }
+  if (cs_pwp.GetLength() < 19)
+    return false;
 
+  // Parse policy string, more sanity checks
+  // See String2PWPolicy for valid format
   PWPolicy pwp;
-#if _MSC_VER >= 1400
-  int iread = _stscanf_s(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-                         &pwp.flags, &pwp.length,
-                         &pwp.digitminlength, &pwp.lowerminlength,
-                         &pwp.symbolminlength, &pwp.upperminlength);
-#else
-  int iread = _stscanf(cs_pwp, _T("%04x%03x%03x%03x%03x%03x"), 
-                       &pwp.flags, &pwp.length,
-                       &pwp.digitminlength, &pwp.lowerminlength,
-                       &pwp.symbolminlength, &pwp.upperminlength);
-#endif
+  String2PWPolicy(stringT(cs_pwp), pwp);
   CString cs_pwpolicy(cs_pwp);
-  if (iread != 6)
-    cs_pwpolicy.Empty();
 
   // Must be some flags; however hex incompatible with other flags
   bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
@@ -1134,7 +1066,7 @@ bool CItemData::SetPWPolicy(const CString &cs_pwp)
   return true;
 }
 
-BlowFish * CItemData::MakeBlowFish() const
+BlowFish *CItemData::MakeBlowFish() const
 {
   ASSERT(IsSessionKeySet);
   return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
@@ -1241,7 +1173,7 @@ int CItemData::ValidatePWHistory()
   size_t pwh_max, pwh_num;
   PWHistList PWHistList;
   int iResult = CreatePWHistoryList(pwh_status, pwh_max,
-    pwh_num, &PWHistList, TMC_EXPORT_IMPORT);
+                                    pwh_num, &PWHistList, TMC_EXPORT_IMPORT);
   if (iResult == 0) {
     return 0;
   }
@@ -1265,22 +1197,22 @@ int CItemData::ValidatePWHistory()
 
   // Rebuild PWHistory from the data we have
   CMyString history;
-  CString cs_buffer(_T(""));
-  TCHAR buffer[8];
-#if _MSC_VER >= 1400
-  _stprintf_s(buffer, 8, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
-#else
-  _stprintf(buffer, _T("%1x%02x%02x"), pwh_status, pwh_max, pwh_num);
-#endif
-  history = CMyString(buffer);
+  ostringstreamT os;
+  os.fill(charT('0'));
+  os << hex << setw(1) << pwh_status
+     << setw(2) << pwh_max << setw(2) << pwh_num << ends;
+  history = CMyString(os.str().c_str());
 
   PWHistList::iterator iter;
   for (iter = PWHistList.begin(); iter != PWHistList.end(); iter++) {
-    PWHistEntry pwh_ent = *iter;
-    cs_buffer.Format(_T("%08x%04x%s"), pwh_ent.changetttdate, 
-      pwh_ent.password.GetLength(), pwh_ent.password);
-    history += (LPCTSTR)cs_buffer;
-    cs_buffer.Empty();
+    PWHistEntry pwshe = *iter;
+    history += _T(' ');
+    history += pwshe.changedate;
+    ostringstreamT os1;
+    os1 << hex << charT(' ') << setfill(charT('0')) << setw(4)
+        << pwshe.password.GetLength() << charT(' ') << ends;
+    history += CMyString(os1.str().c_str());
+    history += pwshe.password;
   }
   SetPWHistory(history);
 
@@ -1632,9 +1564,7 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
     delete[] pdata;
   }
 
-#pragma warning( push )
-#pragma warning( disable : 4310 ) // can't shut up compiler otherwise!
-  v.push_back((const char)END);
-#pragma warning( pop )
+  int end = END; // just to keep the compiler happy...
+  v.push_back(static_cast<const char>(end));
   push_length(v, 0);
 }
