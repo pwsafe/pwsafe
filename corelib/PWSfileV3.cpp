@@ -333,7 +333,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0303;
+const short VersionNum = 0x0304;
 
 int PWSfileV3::WriteHeader()
 {
