@@ -84,6 +84,7 @@ private:
   CExtThread *m_thread; // worker thread
   static UINT ExternalEditorThread(LPVOID me);
   TCHAR m_szTempName[MAX_PATH + 1];
+  CToolTipCtrl* m_ToolTipCtrl;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -99,6 +100,7 @@ protected:
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
 
   DECLARE_MESSAGE_MAP()
+  BOOL PreTranslateMessage(MSG* pMsg);
 
 public:
   afx_msg void OnBnClickedOk();
