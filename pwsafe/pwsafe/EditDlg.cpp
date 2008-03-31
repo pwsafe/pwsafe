@@ -65,7 +65,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
   m_tttLTime(time_t(0)), m_tttXTime(time_t(0)),
   m_locLTime(_T("")), m_oldlocLTime(_T("")),
-  m_original_entrytype(CItemData::Normal)
+    m_original_entrytype(CItemData::Normal), m_ToolTipCtrl(NULL)
 {
   ASSERT(ci != NULL);
 
@@ -133,6 +133,7 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 CEditDlg::~CEditDlg()
 {
   delete m_pex_notes;
+  delete m_ToolTipCtrl;
 }
 
 void CEditDlg::DoDataExchange(CDataExchange* pDX)
@@ -472,6 +473,19 @@ BOOL CEditDlg::OnInitDialog()
   GetDlgItem(IDC_PWHMAX)->SetWindowText(buffer);
 
   UpdateData(FALSE);
+  // create tooltip unconditionally, JIC
+  m_ToolTipCtrl = new CToolTipCtrl;
+  if (!m_ToolTipCtrl->Create(this, 0)) {
+    TRACE("Unable To create Edit Dialog ToolTip\n");
+  }
+  CString cs_ToolTip;
+  cs_ToolTip.LoadString(IDS_OVERRIDE_POLICY);
+  if (!m_ToolTipCtrl->AddTool(GetDlgItem(IDC_OVERRIDE_POLICY), cs_ToolTip)) {
+    TRACE("Unable To add tool to Edit Dialog ToolTip\n");
+  }
+  // show tooltip iff m_OverridePolicy set
+  EnableToolTips(m_OverridePolicy);
+  m_ToolTipCtrl->Activate(m_OverridePolicy);
 
   m_isExpanded = PWSprefs::GetInstance()->
                    GetPref(PWSprefs::DisplayExpandedAddEditDlg);
@@ -877,10 +891,31 @@ void CEditDlg::OnBnClickViewDependents()
 
 void CEditDlg::OnBnClickedOverridePolicy()
 {
+  DboxMain* pParent = static_cast<DboxMain*>(GetParent());
+  // If state was true AND shift key pressed,
+  // show existing policy rather than transit to clear
+  if (m_OverridePolicy && GetAsyncKeyState(VK_SHIFT) < 0) {
+    pParent->SetPasswordPolicy(m_pwp);
+    UpdateData(FALSE); // don't change state
+    return;
+  }
   UpdateData(TRUE);
   if (m_OverridePolicy == TRUE) {
-    DboxMain* pParent = static_cast<DboxMain*>(GetParent());
     pParent->SetPasswordPolicy(m_pwp);
   } else
     m_pwp.Empty();
+  EnableToolTips(m_OverridePolicy); // show tooltip iff m_OverridePolicy set
+  m_ToolTipCtrl->Activate(m_OverridePolicy);
+}
+
+/*
+ * Part of the chicken waving needed to get
+ * tooltips to do their thing.
+ */
+BOOL CEditDlg::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_ToolTipCtrl != NULL)
+    m_ToolTipCtrl->RelayEvent(pMsg);
+
+  return CPWDialog::PreTranslateMessage(pMsg);
 }

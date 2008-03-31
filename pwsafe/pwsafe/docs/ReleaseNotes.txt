@@ -1,5 +1,5 @@
-Password Safe 3.12.01 Release Notes - February 2008
-===================================================
+Password Safe 3.12.01 Release Notes - April 2008
+================================================
 
 This note describe the new features, fixed bugs and known problems
 with Password Safe version 3.12.01. For a short description of Password
@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12.01
 =====================
+[1914433] It is now possible to view the password policy set for an
+individual entry, by shift-clicking on the checked Override Policy
+checkbox. A tooltip explaining this is shown when relevant.
 [1904391] Many functions, e.g. cancelling a rename of an entry, inter-instance
 Drag & Drop, nolonger collapse the entire tree.
 [1904254] Advanced Search now does not show non-text fields e.g. times,
