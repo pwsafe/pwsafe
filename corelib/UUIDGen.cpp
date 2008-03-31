@@ -14,7 +14,6 @@
 
 #include "UUIDGen.h"
 #include "util.h" /* for trashMemory() */
-#include <stdio.h> /* for _stprintf() */
 #include <assert.h>
 
 #ifdef _WIN32
@@ -58,46 +57,33 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
     uuid_array[i + 8] = uuid.Data4[i];
 }
 
+static void hexify(unsigned char byte, char *&out)
+{
+  static const char v[] = {'0', '1', '2', '3', '4', '5', '6', '7',
+                           '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+  *out++ = v[(byte >> 4) & 0xf];
+  *out++ = v[byte & 0xf];
+}
+
 void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_NH_t &uuid_buffer)
 {
   // No hyphens
-  memset(uuid_buffer, 0x00, sizeof(uuid_str_NH_t));
-#if _MSC_VER >= 1400
-  sprintf_s(uuid_buffer, sizeof(uuid_str_NH_t),
-            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#else
-  sprintf(uuid_buffer,
-          "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x", 
-          uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-          uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-          uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-          uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#endif
+  char *p = uuid_buffer;
+  for (int i = 0; i < sizeof(uuid_array); i++)
+    hexify(uuid_array[i], p);
+  *p = '\0';
 }
 
 void CUUIDGen::GetUUIDStr(uuid_array_t &uuid_array, uuid_str_WH_t &uuid_buffer)
 {
   // With hyphens!
-  memset(uuid_buffer, 0x00, sizeof(uuid_str_WH_t));
-#if _MSC_VER >= 1400
-  sprintf_s(uuid_buffer, sizeof(uuid_str_WH_t),
-            "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
-            uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-            uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-            uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-            uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#else
-  sprintf(uuid_buffer,
-          "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", 
-          uuid_array[0],  uuid_array[1],  uuid_array[2],  uuid_array[3],
-          uuid_array[4],  uuid_array[5],  uuid_array[6],  uuid_array[7],
-          uuid_array[8],  uuid_array[9],  uuid_array[10], uuid_array[11],
-          uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
-#endif
+  char *p = uuid_buffer;
+  for (int i = 0; i < sizeof(uuid_array); i++) {
+    hexify(uuid_array[i], p);
+    if (i == 3 || i == 5 || i == 7 || i == 9)
+      *p++ = '-';
+  }
+  *p = '\0';
 }
 
 #ifdef TEST
