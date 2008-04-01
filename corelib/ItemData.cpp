@@ -1036,7 +1036,7 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
 bool CItemData::SetPWPolicy(const CString &cs_pwp)
 {
   // Basic sanity checks
-  if (cs_pwp.IsEmpty() == 0) {
+  if (cs_pwp.IsEmpty()) {
     SetField(m_PWPolicy, cs_pwp);
     return true;
   }

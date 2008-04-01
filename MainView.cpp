@@ -496,7 +496,6 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
           }
         }
         PWHistList.clear();
-        break;
       }
     } while(FALSE);  // only do it once!
 
