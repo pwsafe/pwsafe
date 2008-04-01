@@ -481,11 +481,11 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       if (bsFields.test(CItemData::PWHIST)) {
         BOOL pwh_status;
         size_t pwh_max, pwh_num;
-        PWHistList PWHistList;
+        PWHistList pwhistlist;
         curitem.CreatePWHistoryList(pwh_status, pwh_max, pwh_num,
-                                    &PWHistList, TMC_XML);
+                                    &pwhistlist, TMC_XML);
         PWHistList::iterator iter;
-        for (iter = PWHistList.begin(); iter != PWHistList.end();
+        for (iter = pwhistlist.begin(); iter != pwhistlist.end();
              iter++) {
           PWHistEntry pwshe = *iter;
           if (!CaseSensitive)
@@ -495,7 +495,9 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
             break;  // break out of for loop
           }
         }
-        PWHistList.clear();
+        pwhistlist.clear();
+        if (bFoundit)
+          break;  // break out of do loop
       }
     } while(FALSE);  // only do it once!
 
