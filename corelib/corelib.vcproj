@@ -486,6 +486,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\os\windows\rand.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Report.cpp"
 				>
 			</File>
