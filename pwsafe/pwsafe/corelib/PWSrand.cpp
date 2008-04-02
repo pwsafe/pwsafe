@@ -8,17 +8,12 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <process.h>
+#include "os/rand.h"
 
 #include "PwsPlatform.h"
 #include "PWSrand.h"
 
-// See the MSDN documentation for RtlGenRandom. We will try to load it
-// and if that fails, use our own random number generator. The function
-// call is indirected through a function pointer
 
-static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
-
-static bool __stdcall LoadRandomDataFunction();
 
 PWSrand *PWSrand::self = NULL;
 
@@ -39,7 +34,7 @@ void PWSrand::DeleteInstance()
 PWSrand::PWSrand()
   : ibRandomData(SHA256::HASHLEN)
 {
-  m_IsInternalPRNG = !LoadRandomDataFunction();
+  m_IsInternalPRNG = !pws_os::InitRandomDataFunction();
 
   SHA256 s;
   time_t t = time(NULL);
@@ -86,25 +81,32 @@ void PWSrand::NextRandBlock()
 void PWSrand::GetRandomData( void * const buffer, unsigned long length )
 {
   if (!m_IsInternalPRNG) {
-    ASSERT(pfnGetRandomData != NULL);
-    (void)(*pfnGetRandomData)(buffer, length);
-  } else {
-    unsigned char *pb = (unsigned char *)buffer;
-    while (length > SHA256::HASHLEN) {
-      NextRandBlock();
-      for (int j = 0; j < SHA256::HASHLEN; j++)
-        pb[j] = R[j];
-      length -= SHA256::HASHLEN;
-      pb += SHA256::HASHLEN;
-    }
-    ASSERT(length <= SHA256::HASHLEN);
-    if (length > 0) {
-      unsigned long i = 0;
-      NextRandBlock();
-      while (i < length) {
-        pb[i] = R[i];
-        i++;
-      }
+    bool status;
+    status = pws_os::GetRandomData(buffer, length);
+    ASSERT(status);
+  }
+
+  // If we have an external random source, we'll
+  // xor it in with ours. This helps protect against
+  // poor or subverted external PRNGs.
+  // Otherwise, we'll rely on our lonesome.
+
+  unsigned char *pb = (unsigned char *)buffer;
+  while (length > SHA256::HASHLEN) {
+    NextRandBlock();
+    for (int j = 0; j < SHA256::HASHLEN; j++)
+      pb[j] = (m_IsInternalPRNG) ? R[j] : pb[j] ^ R[j];
+    length -= SHA256::HASHLEN;
+    pb += SHA256::HASHLEN;
+  }
+
+  ASSERT(length <= SHA256::HASHLEN);
+  if (length > 0) {
+    unsigned long i = 0;
+    NextRandBlock();
+    while (i < length) {
+      pb[i] = (m_IsInternalPRNG) ? R[i] : pb[i] ^ R[i];
+      i++;
     }
   }
 }
@@ -140,30 +142,4 @@ unsigned int PWSrand::RangeRand(unsigned int len)
   while ((r = RandUInt()) > ceil)
     ;
   return(r%len);
-}
-
-static bool __stdcall LoadRandomDataFunction()
-{
-	// Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
-	TCHAR szFileName[ MAX_PATH ];
-	memset( szFileName, 0, MAX_PATH );
-	GetSystemDirectory( szFileName, MAX_PATH );
-	int nLen = _tcslen( szFileName );
-	if (nLen > 0) {
-    if (szFileName[ nLen - 1 ] != '\\')
-      _tcscat_s( szFileName, MAX_PATH, _T("\\") );
-  }
-	_tcscat_s( szFileName, MAX_PATH, _T("ADVAPI32.DLL") );
-
-	HMODULE hLib = LoadLibrary( szFileName );
-	// End of change.  (Lockheed Martin) Secure Coding  11-14-2007
-
-  BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;
-  if (hLib != NULL) {
-    pfnGetRandomDataT = (BOOLEAN (APIENTRY *)(void*,ULONG))GetProcAddress(hLib,"SystemFunction036");
-    if (pfnGetRandomDataT) {
-      pfnGetRandomData = pfnGetRandomDataT;
-    }
-  }
-  return (hLib != NULL && pfnGetRandomDataT != NULL);
 }
