@@ -23,9 +23,10 @@ public:
 
   CDateTimeCtrl m_pTimeCtl;         // time picker control
   CDateTimeCtrl m_pDateCtl;         // date picker control
-  CMyString m_locLTime;             // format as per user's Short Date/Time
-  time_t m_tttLTime;
-  time_t m_tttXTime;  // Password creation or last changed datetime
+  CMyString m_locXTime;             // format as per user's Short Date/Time
+  time_t m_tttXTime;
+  time_t m_tttCPMTime;  // Password creation or last changed datetime
+  int m_XTimeInt;
 
   // Dialog Data
   //{{AFX_DATA(CImportDlg)

@@ -83,7 +83,8 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   CItemData* pLHS = (CItemData *)lParam1;
   CItemData* pRHS = (CItemData *)lParam2;
   CMyString group1, group2;
-  time_t t1, t2, xt;
+  time_t t1, t2;
+  int xint1, xint2;
 
   int iResult;
   switch(nTypeSortColumn) {
@@ -144,22 +145,15 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       pRHS->GetATime(t2);
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
-    case CItemData::LTIME:
-      pLHS->GetLTime(t1);
-      pRHS->GetLTime(t2);
-      if ((long)t1 > 0L && (long)t1 <= 3650L) {
-        pLHS->GetPMTime(xt);
-        if ((long)xt == 0L)
-          pLHS->GetCTime(xt);
-        t1 = (time_t)((long)xt + (long)t1 * 86400);        
-      }
-      if ((long)t2 > 0L && (long)t2 <= 3650L) {
-        pRHS->GetPMTime(xt);
-        if ((long)xt == 0L)
-          pRHS->GetCTime(xt);
-        t2 = (time_t)((long)xt + (long)t2 * 86400);        
-      }
+    case CItemData::XTIME:
+      pLHS->GetXTime(t1);
+      pRHS->GetXTime(t2);
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      break;
+    case CItemData::XTIME_INT:
+      pLHS->GetXTimeInt(xint1);
+      pRHS->GetXTimeInt(xint2);
+      iResult = (xint1 < xint2) ? -1 : 1;
       break;
     case CItemData::RMTIME:
       pLHS->GetRMTime(t1);
@@ -385,7 +379,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ASSERT(!str.IsEmpty());
   ASSERT(indices.empty());
 
-  CMyString curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT;
+  CMyString curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   CMyString listTitle, saveTitle;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
@@ -429,6 +423,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curNotes = curitem.GetNotes();
     curURL = curitem.GetURL();
     curAT = curitem.GetAutoType();
+    curXInt = curitem.GetXTimeInt();
 
     if (!CaseSensitive) {
       curGroup.MakeLower();
@@ -443,40 +438,33 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     // do loop to easily break out as soon as a match is found
     // saves more checking if entry already selected
     do {
-      if (bsFields.test(CItemData::GROUP) &&
-        ::_tcsstr(curGroup, searchstr)) {
-          bFoundit = true;
-          break;
+      if (bsFields.test(CItemData::GROUP) && ::_tcsstr(curGroup, searchstr)) {
+        bFoundit = true;
+        break;
       }
-      if (bsFields.test(CItemData::TITLE) &&
-        ::_tcsstr(curTitle, searchstr)) {
-          bFoundit = true;
-          break;
+      if (bsFields.test(CItemData::TITLE) && ::_tcsstr(curTitle, searchstr)) {
+        bFoundit = true;
+        break;
       }
-      if (bsFields.test(CItemData::USER) &&
-        ::_tcsstr(curUser, searchstr)) {
-          bFoundit = true;
-          break;
+      if (bsFields.test(CItemData::USER) && ::_tcsstr(curUser, searchstr)) {
+        bFoundit = true;
+        break;
       }
-      if (bsFields.test(CItemData::PASSWORD) &&
-        ::_tcsstr(curPassword, searchstr)) {
-          bFoundit = true;
-          break;
+      if (bsFields.test(CItemData::PASSWORD) && ::_tcsstr(curPassword, searchstr)) {
+        bFoundit = true;
+        break;
       }
-      if (bsFields.test(CItemData::NOTES) &&
-        ::_tcsstr(curNotes, searchstr)) {
-          bFoundit = true;
-          break;
+      if (bsFields.test(CItemData::NOTES) && ::_tcsstr(curNotes, searchstr)) {
+        bFoundit = true;
+        break;
       }
-      if (bsFields.test(CItemData::URL) &&
-        ::_tcsstr(curURL, searchstr)) {
-          bFoundit = true;
-          break;
+      if (bsFields.test(CItemData::URL) && ::_tcsstr(curURL, searchstr)) {
+        bFoundit = true;
+        break;
       }
-      if (bsFields.test(CItemData::AUTOTYPE) &&
-        ::_tcsstr(curAT, searchstr)) {
-          bFoundit = true;
-          break;
+      if (bsFields.test(CItemData::AUTOTYPE) && ::_tcsstr(curAT, searchstr)) {
+        bFoundit = true;
+        break;
       }
       if (bsFields.test(CItemData::PWHIST)) {
         BOOL pwh_status;
@@ -498,6 +486,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         pwhistlist.clear();
         if (bFoundit)
           break;  // break out of do loop
+      }
+      if (bsFields.test(CItemData::XTIME_INT) && ::_tcsstr(curXInt, searchstr)) {
+        bFoundit = true;
+        break;
       }
     } while(FALSE);  // only do it once!
 
@@ -1110,6 +1102,9 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
   }
   CMyString cs_fielddata;
 
+  int xint;
+  itemData.GetXTimeInt(xint);
+
   DisplayInfo *di = (DisplayInfo *)itemData.GetDisplayInfo();
   if (di == NULL)
     di = new DisplayInfo;
@@ -1147,20 +1142,13 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
       case CItemData::ATIME:
         cs_fielddata = itemData.GetATimeL();
         break;
-      case CItemData::LTIME:
-      {
-        time_t tLTime, txTime;
-        itemData.GetLTime(tLTime);
-        if ((long)tLTime > 0L && (long)tLTime <= 3650L) {
-          itemData.GetPMTime(txTime);
-          if ((long)txTime == 0L)
-            itemData.GetCTime(txTime);
-          CTime ct = CTime(txTime) + CTimeSpan((long)tLTime, 0, 0, 0);
-          cs_fielddata = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
+      case CItemData::XTIME:
+        cs_fielddata = itemData.GetXTimeL();
+        if (xint != 0)
           cs_fielddata += _T(" *");
-        } else
-          cs_fielddata = itemData.GetLTimeL();
-      }
+        break;
+      case CItemData::XTIME_INT:
+        cs_fielddata = itemData.GetXTimeInt();
         break;
       case CItemData::RMTIME:
         cs_fielddata = itemData.GetRMTimeL();
@@ -1279,20 +1267,13 @@ int DboxMain::insertItem(CItemData &itemData, int iIndex,
         case CItemData::ATIME:
           cs_fielddata = itemData.GetATimeL();
           break;
-        case CItemData::LTIME:
-        {
-          time_t tLTime, txTime;
-          itemData.GetLTime(tLTime);
-          if ((long)tLTime > 0L && (long)tLTime <= 3650L) {
-            itemData.GetPMTime(txTime);
-            if ((long)txTime == 0L)
-              itemData.GetCTime(txTime);
-            CTime ct = CTime(txTime) + CTimeSpan((long)tLTime, 0, 0, 0);
-            cs_fielddata = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
+        case CItemData::XTIME:
+          cs_fielddata = itemData.GetXTimeL();
+          if (xint != 0)
             cs_fielddata += _T(" *");
-          } else
-            cs_fielddata = itemData.GetLTimeL();
-        }
+          break;
+        case CItemData::XTIME_INT:
+          cs_fielddata = itemData.GetXTimeInt();
           break;
         case CItemData::RMTIME:
           cs_fielddata = itemData.GetRMTimeL();
@@ -1983,9 +1964,9 @@ void DboxMain::SetColumns()
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
 
-  cs_header = GetHeaderText(CItemData::LTIME);
+  cs_header = GetHeaderText(CItemData::XTIME);
   m_ctlItemList.InsertColumn(ipwd + ioff, cs_header);
-  hdi.lParam = CItemData::LTIME;
+  hdi.lParam = CItemData::XTIME;
   m_LVHdrCtrl.SetItem(ipwd + ioff, &hdi);
   ioff++;
 
@@ -2368,8 +2349,11 @@ CString DboxMain::GetHeaderText(const int iType)
     case CItemData::ATIME:
       cs_header.LoadString(IDS_LASTACCESSED);
       break;
-    case CItemData::LTIME:
+    case CItemData::XTIME:
       cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+      break;
+    case CItemData::XTIME_INT:
+      cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
       break;
     case CItemData::RMTIME:
       cs_header.LoadString(IDS_LASTMODIFIED);
@@ -2396,12 +2380,13 @@ int DboxMain::GetHeaderWidth(const int iType)
     case CItemData::NOTES:
     case CItemData::URL:
     case CItemData::POLICY:
+    case CItemData::XTIME_INT:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
     case CItemData::CTIME:        
     case CItemData::PMTIME:
     case CItemData::ATIME:
-    case CItemData::LTIME:
+    case CItemData::XTIME:
     case CItemData::RMTIME:
       nWidth = m_iDateTimeFieldWidth;
       break;
@@ -2475,8 +2460,11 @@ void DboxMain::CalcHeaderWidths()
       case CItemData::ATIME:
         cs_header.LoadString(IDS_LASTACCESSED);
         break;
-      case CItemData::LTIME:
+      case CItemData::XTIME:
         cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
+        break;
+      case CItemData::XTIME_INT:
+        cs_header.LoadString(IDS_PASSWORDEXPIRYDATEINT);
         break;
       case CItemData::RMTIME:
         cs_header.LoadString(IDS_LASTMODIFIED);
@@ -3060,7 +3048,7 @@ int DboxMain::GetEntryImage(const CItemData &ci)
     return CPWTreeCtrl::SHORTCUT;
   }
 
-  time_t tLTime, now, warnexptime((time_t)0);
+  time_t tXTime, now, warnexptime((time_t)0);
   time(&now);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
     int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
@@ -3095,19 +3083,19 @@ int DboxMain::GetEntryImage(const CItemData &ci)
       nImage = CPWTreeCtrl::NORMAL;
   }
 
-  ci.GetLTime(tLTime);
-  if ((long)tLTime > 0L && (long)tLTime <= 3650L) {
-    time_t txTime;
-    ci.GetPMTime(txTime);
-    if ((long)txTime == 0L)
-      ci.GetCTime(txTime);
-    tLTime = (time_t)((long)txTime + (long)tLTime * 86400);
+  ci.GetXTime(tXTime);
+  if ((long)tXTime > 0L && (long)tXTime <= 3650L) {
+    time_t tCPMTime;
+    ci.GetPMTime(tCPMTime);
+    if ((long)tCPMTime == 0L)
+      ci.GetCTime(tCPMTime);
+    tXTime = (time_t)((long)tCPMTime + (long)tXTime * 86400);
   }
 
-  if (tLTime != 0) {
-    if (tLTime <= now) {
+  if (tXTime != 0) {
+    if (tXTime <= now) {
       nImage += 2;  // Expired
-    } else if (tLTime < warnexptime) {
+    } else if (tXTime < warnexptime) {
       nImage += 1;  // Warn nearly expired
     }
   }

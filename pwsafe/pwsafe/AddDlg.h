@@ -30,9 +30,10 @@ public:
   CMyString m_group;
   CMyString m_URL;
   CMyString m_autotype;
-  CMyString m_locLTime;
-  time_t m_tttLTime;
-  time_t m_tttXTime;  // Password creation or last changed datetime
+  CMyString m_locXTime;
+  time_t m_tttXTime;
+  time_t m_tttCPMTime;  // Password creation or last changed datetime
+  int m_XTimeInt;
   BOOL m_SavePWHistory;
   int m_MaxPWHistory;
   int m_ibasedata;
@@ -84,8 +85,8 @@ protected:
 public:
   afx_msg void OnBnClickedOk();
   afx_msg void OnBnClickedMore();
-  afx_msg void OnBnClickedClearLTime();
-  afx_msg void OnBnClickedSetLTime();
+  afx_msg void OnBnClickedClearXTime();
+  afx_msg void OnBnClickedSetXTime();
   afx_msg void OnCheckedSavePasswordHistory();
   CButton m_moreLessBtn;
   BOOL m_OverridePolicy;

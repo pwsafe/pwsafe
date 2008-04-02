@@ -582,7 +582,8 @@ void DboxMain::InitPasswordSafe()
     case CItemData::CTIME:
     case CItemData::PMTIME:
     case CItemData::ATIME:
-    case CItemData::LTIME:
+    case CItemData::XTIME:
+    case CItemData::XTIME_INT:
     case CItemData::RMTIME:
     case CItemData::URL:
     case CItemData::AUTOTYPE:
@@ -1830,8 +1831,8 @@ DboxMain::startLockCheckTimer(){
   const UINT INTERVAL = 5000; // every 5 seconds should suffice
 
   if (PWSprefs::GetInstance()->
-    GetPref(PWSprefs::LockOnWindowLock )==TRUE){
-      SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
+        GetPref(PWSprefs::LockOnWindowLock) == TRUE) {
+    SetTimer(TIMER_CHECKLOCK, INTERVAL, NULL);
   }
 }
 
@@ -1904,7 +1905,7 @@ void DboxMain::RefreshImages()
 
 void DboxMain::CheckExpiredPasswords()
 {
-  time_t now, exptime, LTime, XTime;
+  time_t now, exptime, XTime;
   time(&now);
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
@@ -1934,16 +1935,9 @@ void DboxMain::CheckExpiredPasswords()
     if (curitem.IsAlias())
       continue;
 
-    curitem.GetLTime(LTime);
-    if ((long)LTime > 0L && (long)LTime <= 3650L) {
-      curitem.GetPMTime(XTime);
-      if ((long)XTime == 0L)
-        curitem.GetCTime(XTime);
-      LTime = (time_t)((long)XTime + (long)LTime * 86400);
-    }
-
-    if (((long)LTime != 0) && (LTime < exptime)) {
-      ExpPWEntry exppwentry(curitem, now, LTime);
+    curitem.GetXTime(XTime);
+    if (((long)XTime != 0) && (XTime < exptime)) {
+      ExpPWEntry exppwentry(curitem, now, XTime);
       expPWList.push_back(exppwentry);
     }
   }

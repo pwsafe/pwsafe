@@ -211,10 +211,14 @@ int PWSfileV3::WriteRecord(const CItemData &item)
     t32 = (int)t;
     WriteCBC(CItemData::ATIME, (unsigned char *)&t32, sizeof(t32));
   }
-  item.GetLTime(t);
+  item.GetXTime(t);
   if (t != 0) {
     t32 = (int)t;
-    WriteCBC(CItemData::LTIME, (unsigned char *)&t32, sizeof(t32));
+    WriteCBC(CItemData::XTIME, (unsigned char *)&t32, sizeof(t32));
+  }
+  item.GetXTimeInt(t32);
+  if (t32 > 0 && t32 <= 3650) {
+    WriteCBC(CItemData::XTIME_INT, (unsigned char *)&t32, sizeof(t32));
   }
   item.GetRMTime(t);
   if (t != 0) {

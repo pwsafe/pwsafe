@@ -36,7 +36,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
   : CPWDialog(CAddDlg::IDD, pParent),
   m_password(_T("")), m_notes(_T("")), m_username(_T("")), m_title(_T("")),
   m_group(_T("")), m_URL(_T("")), m_autotype(_T("")),
-  m_tttLTime(time_t(0)), m_tttXTime(time_t(0)),
+  m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)), m_XTimeInt(0),
   m_isPwHidden(false), m_OverridePolicy(FALSE)
 {
   m_isExpanded = PWSprefs::GetInstance()->
@@ -45,7 +45,7 @@ CAddDlg::CAddDlg(CWnd* pParent)
     GetPref(PWSprefs::SavePasswordHistory);
   m_MaxPWHistory = PWSprefs::GetInstance()->
     GetPref(PWSprefs::NumPWHistoryDefault);
-  m_locLTime.LoadString(IDS_NEVER);
+  m_locXTime.LoadString(IDS_NEVER);
 
   if (CS_SHOW.IsEmpty()) {
 #if defined(POCKET_PC)
@@ -93,6 +93,7 @@ BOOL CAddDlg::OnInitDialog()
       m_ex_group.AddString((LPCTSTR)aryGroups[igrp]);
     }
   }
+  time(&m_tttCPMTime);
 
   m_ex_group.ChangeColour();
   return TRUE;
@@ -106,7 +107,7 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
    DDX_Text(pDX, IDC_USERNAME, (CString&)m_username);
    DDX_Text(pDX, IDC_TITLE, (CString&)m_title);
-   DDX_Text(pDX, IDC_LTIME, (CString&)m_locLTime);
+   DDX_Text(pDX, IDC_XTIME, (CString&)m_locXTime);
    DDX_Check(pDX, IDC_SAVE_PWHIST, m_SavePWHistory);
 
    DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
@@ -135,8 +136,8 @@ BEGIN_MESSAGE_MAP(CAddDlg, CPWDialog)
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
   ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
-  ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
-  ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+  ON_BN_CLICKED(IDC_XTIME_CLEAR, OnBnClickedClearXTime)
+  ON_BN_CLICKED(IDC_XTIME_SET, OnBnClickedSetXTime)
   ON_BN_CLICKED(IDC_SAVE_PWHIST, OnCheckedSavePasswordHistory)
   ON_BN_CLICKED(IDC_OVERRIDE_POLICY, &CAddDlg::OnBnClickedOverridePolicy)
 END_MESSAGE_MAP()
@@ -315,10 +316,10 @@ void CAddDlg::ResizeDialog()
     IDC_STATIC_AUTO,
     IDC_AUTOTYPE,
     IDC_SAVE_PWHIST,
-    IDC_LTIME,
-    IDC_STATIC_LTIME,
-    IDC_LTIME_CLEAR,
-    IDC_LTIME_SET,
+    IDC_XTIME,
+    IDC_STATIC_XTIME,
+    IDC_XTIME_CLEAR,
+    IDC_XTIME_SET,
     IDC_STATIC_DTEXPGROUP,
     IDC_MAXPWHISTORY,
     IDC_STATIC_OLDPW1,
@@ -365,19 +366,22 @@ void CAddDlg::ResizeDialog()
                      newHeight, SWP_NOMOVE );
 }
 
-void CAddDlg::OnBnClickedClearLTime()
+void CAddDlg::OnBnClickedClearXTime()
 {
-  m_locLTime.LoadString(IDS_NEVER);
-  GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_locLTime);
-  m_tttLTime = (time_t)0;
+  m_locXTime.LoadString(IDS_NEVER);
+  GetDlgItem(IDC_XTIME)->SetWindowText((CString)m_locXTime);
+  m_tttXTime = (time_t)0;
+  m_XTimeInt = 0;
 }
 
-void CAddDlg::OnBnClickedSetLTime()
+void CAddDlg::OnBnClickedSetXTime()
 {
   CExpDTDlg dlg_expDT(this);
 
-  dlg_expDT.m_locLTime = m_locLTime;
+  dlg_expDT.m_locXTime = m_locXTime;
   dlg_expDT.m_tttXTime = m_tttXTime;
+  dlg_expDT.m_tttCPMTime = m_tttCPMTime;
+  dlg_expDT.m_XTimeInt = m_XTimeInt;
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_expDT.DoModal();
@@ -385,17 +389,19 @@ void CAddDlg::OnBnClickedSetLTime()
 
   if (rc == IDOK) {
     CString cs_text;
-    m_tttLTime = dlg_expDT.m_tttLTime;
-    if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
-      cs_text.Format(IDS_IN_N_DAYS, (long)m_tttLTime);
-      GetDlgItem(IDC_LTIME)->SetWindowText(cs_text);
+    m_locXTime = dlg_expDT.m_locXTime;
+    m_tttXTime = dlg_expDT.m_tttXTime;
+    m_XTimeInt = dlg_expDT.m_XTimeInt;
+    if (m_XTimeInt > 0 && m_XTimeInt <= 3650) {
+      cs_text.Format(IDS_IN_N_DAYS, m_XTimeInt);
+      GetDlgItem(IDC_XTIME)->SetWindowText(cs_text);
       cs_text.LoadString(IDS_EXPIRES_IN);
-      GetDlgItem(IDC_STATIC_LTIME)->SetWindowText(cs_text);
+      GetDlgItem(IDC_STATIC_XTIME)->SetWindowText(cs_text);
     } else {
-      m_locLTime = dlg_expDT.m_locLTime;
-      GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
+      m_locXTime = dlg_expDT.m_locXTime;
+      GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
       cs_text.LoadString(IDS_EXPIRES_ON);
-      GetDlgItem(IDC_STATIC_LTIME)->SetWindowText(cs_text);
+      GetDlgItem(IDC_STATIC_XTIME)->SetWindowText(cs_text);
     }
   }
 }

@@ -116,9 +116,9 @@ BOOL CCompareResultsDlg::OnInitDialog()
     cs_header.LoadString(IDS_LASTACCESSED);
     m_LCResults.InsertColumn(ATIME, cs_header, LVCFMT_CENTER);
   }
-  if (m_bsFields.test(CItemData::LTIME)) {
+  if (m_bsFields.test(CItemData::XTIME)) {
     cs_header.LoadString(IDS_PASSWORDEXPIRYDATE);
-    m_LCResults.InsertColumn(LTIME, cs_header, LVCFMT_CENTER);
+    m_LCResults.InsertColumn(XTIME, cs_header, LVCFMT_CENTER);
   }
   if (m_bsFields.test(CItemData::PMTIME)) {
     cs_header.LoadString(IDS_PASSWORDMODIFIED);
@@ -365,8 +365,8 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::CTIME) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::ATIME))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::ATIME) ? _T("X") : _T("-"));
-      if (m_bsFields.test(CItemData::LTIME))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::LTIME) ? _T("X") : _T("-"));
+      if (m_bsFields.test(CItemData::XTIME))
+        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::XTIME) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::PMTIME))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PMTIME) ? _T("X") : _T("-"));
       if (m_bsFields.test(CItemData::RMTIME))
@@ -873,7 +873,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_ctime(MAKEINTRESOURCE(IDS_COMPCTIME));
     const CString csx_pmtime(MAKEINTRESOURCE(IDS_COMPPMTIME));
     const CString csx_atime(MAKEINTRESOURCE(IDS_COMPATIME));
-    const CString csx_ltime(MAKEINTRESOURCE(IDS_COMPLTIME));
+    const CString csx_xtime(MAKEINTRESOURCE(IDS_COMPXTIME));
     const CString csx_rmtime(MAKEINTRESOURCE(IDS_COMPRMTIME));
     const CString csx_pwhistory(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
     const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
@@ -893,7 +893,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::CTIME)) buffer += csx_ctime;
       if (st_data.bsDiffs.test(CItemData::PMTIME)) buffer += csx_pmtime;
       if (st_data.bsDiffs.test(CItemData::ATIME)) buffer += csx_atime;
-      if (st_data.bsDiffs.test(CItemData::LTIME)) buffer += csx_ltime;
+      if (st_data.bsDiffs.test(CItemData::XTIME)) buffer += csx_xtime;
       if (st_data.bsDiffs.test(CItemData::RMTIME)) buffer += csx_rmtime;
       if (st_data.bsDiffs.test(CItemData::PWHIST)) buffer += csx_pwhistory;
       if (st_data.bsDiffs.test(CItemData::POLICY)) buffer += csx_policy;

@@ -16,8 +16,8 @@
 
 CExpDTDlg::CExpDTDlg(CWnd* pParent /*=NULL*/)
   : CPWDialog(CExpDTDlg::IDD, pParent), m_how(DATETIME),
-  m_numDays(1), m_ReuseOnPswdChange(FALSE), m_tttLTime(time_t(0)),
-  m_tttXTime(time_t(0))
+  m_numDays(1), m_ReuseOnPswdChange(FALSE), m_tttXTime(time_t(0)),
+  m_tttCPMTime(time_t(0)), m_XTimeInt(0)
 {
   //{{AFX_DATA_INIT(CImportDlg)
   //}}AFX_DATA_INIT
@@ -84,11 +84,11 @@ BOOL CExpDTDlg::OnInitDialog()
   pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
   pspin->SetBase(10);
 
-  if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L && (long)m_tttXTime != 0L) {
+  if (m_XTimeInt > 0 && m_XTimeInt <= 3650 && (long)m_tttCPMTime != 0L) {
     m_ReuseOnPswdChange = TRUE;
     pspin->SetRange32(1, 3650);  // 10 years!
-    pspin->SetPos((long)m_tttLTime);
-    m_numDays = (int)m_tttLTime;
+    pspin->SetPos(m_XTimeInt);
+    m_numDays = m_XTimeInt;
     m_how = DAYS;
   } else {
     pspin->SetRange32(1, m_maxDays);
@@ -130,7 +130,7 @@ BOOL CExpDTDlg::OnInitDialog()
       sTimeFormat.Delete(nIndex, sSearch.GetLength());
     }
   }
-  VERIFY(::GetLocaleInfo ( LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
   sDateFormat = szBuf;
 
   CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
@@ -147,23 +147,23 @@ BOOL CExpDTDlg::OnInitDialog()
   // Set approx. limit of 32-bit times!
   pDateCtl->SetRange(&sMinDate, &sMaxDate);
 
-  if (m_tttLTime == 0) {
-    m_locLTime.LoadString(IDS_NEVER);
+  if (m_tttXTime == 0) {
+    m_locXTime.LoadString(IDS_NEVER);
   } else {
-    if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
-      ct =CTime(m_tttXTime) + CTimeSpan((long)m_tttLTime, 0, 0, 0);
+    if (m_XTimeInt > 0 && m_XTimeInt <= 3650) {
+      ct = CTime(m_tttCPMTime) + CTimeSpan(m_XTimeInt, 0, 0, 0);
     } else {
-      xt = CTime(m_tttLTime);
+      xt = CTime(m_tttXTime);
       ct = CTime(xt.GetYear(), xt.GetMonth(), xt.GetDay(),
                  xt.GetHour(), xt.GetMinute(), 0, -1);
     }
-    m_locLTime = CMyString(ct.Format(_T("%#c")));
+    m_locXTime = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
   }
 
   pDateCtl->SetTime(&ct);
   pTimeCtl->SetTime(&ct);
 
-  GetDlgItem(IDC_STATIC_CURRENT_LTIME)->SetWindowText(m_locLTime);
+  GetDlgItem(IDC_STATIC_CURRENT_XTIME)->SetWindowText(m_locXTime);
   UpdateData(FALSE);
 
   return TRUE;
@@ -192,7 +192,7 @@ void CExpDTDlg::OnReuseOnPswdChange()
   UpdateData(TRUE);
 
   const bool bReuse(m_ReuseOnPswdChange == TRUE);
-  const int new_max =bReuse ? 3650 : m_maxDays;
+  const int new_max = bReuse ? 3650 : m_maxDays;
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
   pspin->SetRange32(1, new_max);
   if (m_numDays > new_max)
@@ -213,29 +213,29 @@ void CExpDTDlg::OnOK()
     return;
   }
 
-  CTime LTime, LDate, LDateTime;
+  CTime XTime, LDate, LDateTime;
   DWORD dwResult;
 
   if (m_how == DATETIME) {
-    dwResult = m_pTimeCtl.GetTime(LTime);
+    dwResult = m_pTimeCtl.GetTime(XTime);
     ASSERT(dwResult == GDT_VALID);
 
     dwResult = m_pDateCtl.GetTime(LDate);
     ASSERT(dwResult == GDT_VALID);
 
     LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
-      LTime.GetHour(), LTime.GetMinute(), 0, -1);
-    m_tttLTime = (time_t)LDateTime.GetTime();
+      XTime.GetHour(), XTime.GetMinute(), 0, -1);
   } else {
     if (m_ReuseOnPswdChange == FALSE) {
       LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
-      m_tttLTime = (time_t)LDateTime.GetTime();
+      m_XTimeInt = 0;
     } else {
-      LDateTime = CTime(m_tttXTime) + CTimeSpan(m_numDays, 0, 0, 0);
-      m_tttLTime = m_numDays;
+      LDateTime = CTime(m_tttCPMTime) + CTimeSpan(m_numDays, 0, 0, 0);
+      m_XTimeInt = m_numDays;
     }
   }
-  m_locLTime = PWSUtil::ConvertToDateTimeString((time_t)LDateTime.GetTime(), TMC_LOCALE);
+  m_tttXTime = (time_t)LDateTime.GetTime();
+  m_locXTime = PWSUtil::ConvertToDateTimeString((time_t)LDateTime.GetTime(), TMC_LOCALE);
 
   CPWDialog::OnOK();
 }
