@@ -211,7 +211,7 @@
 #define IDS_COMPCTIME                   5394
 #define IDS_COMPPMTIME                  5395
 #define IDS_COMPATIME                   5396
-#define IDS_COMPLTIME                   5397
+#define IDS_COMPXTIME                   5397
 #define IDS_COMPRMTIME                  5398
 #define IDS_COMPPWHISTORY               5399
 #define IDS_SAVEFIRST                   5400
@@ -398,4 +398,4 @@
 #define IDS_EXPIRES_ON                  5582
 #define IDS_EXPIRES_IN                  5583
 #define IDS_OVERRIDE_POLICY             5584
-
+#define IDS_PASSWORDEXPIRYDATEINT       5585

@@ -341,7 +341,7 @@
 #define IDC_AUTOTYPE                    1102
 #define IDC_EXPIRYDATE                  1103
 #define IDC_EXPIRYTIME                  1104
-#define IDC_STATIC_CURRENT_LTIME        1105
+#define IDC_STATIC_CURRENT_XTIME        1105
 #define IDC_STATIC_URL                  1106
 #define IDC_STATIC_AUTO                 1107
 #define IDC_STATIC_CTIME                1108
@@ -350,13 +350,13 @@
 #define IDC_PMTIME                      1111
 #define IDC_STATIC_ATIME                1112
 #define IDC_ATIME                       1113
-#define IDC_STATIC_LTIME                1114
-#define IDC_LTIME                       1115
+#define IDC_STATIC_XTIME                1114
+#define IDC_XTIME                       1115
 #define IDC_STATIC_RMTIME               1116
 #define IDC_RMTIME                      1117
-#define IDC_LTIME_CLEAR                 1118
-#define IDC_LTIME_SET                   1119
-#define IDC_LTIME_PICKER                1120
+#define IDC_XTIME_CLEAR                 1118
+#define IDC_XTIME_SET                   1119
+#define IDC_XTIME_PICKER                1120
 #define IDC_MAINTAINDATETIMESTAMPS      1121
 #define IDC_STATIC_DTGROUP              1122
 #define IDC_STATIC_DTEXPGROUP           1123

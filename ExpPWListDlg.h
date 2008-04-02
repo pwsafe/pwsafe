@@ -16,7 +16,7 @@
 class CItemData;
 
 struct ExpPWEntry {
-  ExpPWEntry(const CItemData &ci, time_t now, time_t LTime);
+  ExpPWEntry(const CItemData &ci, time_t now, time_t XTime);
   CMyString group;
   CMyString title;
   CMyString user;

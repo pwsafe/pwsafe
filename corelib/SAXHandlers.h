@@ -22,7 +22,7 @@ using namespace MSXML2;
 
 // Local variables
 enum {PASSWORDSAFE = 0, PW_ENTRY, PW_GROUP, PW_TITLE, PW_USERNAME, PW_PASSWORD, PW_URL,
-      PW_AUTOTYPE, PW_NOTES, PW_CTIME, PW_ATIME, PW_LTIME, PW_PMTIME, PW_RMTIME,
+      PW_AUTOTYPE, PW_NOTES, PW_CTIME, PW_ATIME, PW_XTIME, PW_PMTIME, PW_RMTIME,
       PW_HISTORY, PW_STATUS, PW_MAX, PW_NUM, PW_HISTORY_ENTRY,
       PW_CHANGED, PW_OLDPASSWORD, PW_DATE, PW_TIME, PW_UUID};
 
@@ -37,8 +37,8 @@ struct pw_entry {
   CMyString autotype;
   CMyString ctime;
   CMyString atime;
-  CMyString ltime;
-  CMyString ltime_interval;
+  CMyString xtime;
+  CMyString xtime_interval;
   CMyString pmtime;
   CMyString rmtime;
   CMyString changed;

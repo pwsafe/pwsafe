@@ -55,8 +55,8 @@ CItemData::CItemData()
   m_Notes(NOTES), m_UUID(UUID), m_Group(GROUP),
   m_URL(URL), m_AutoType(AUTOTYPE),
   m_tttCTime(CTIME), m_tttPMTime(PMTIME), m_tttATime(ATIME),
-  m_tttLTime(LTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-  m_PWPolicy(POLICY),
+  m_tttXTime(XTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
+  m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT),
   m_display_info(NULL), m_entrytype(Normal)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
@@ -67,8 +67,8 @@ CItemData::CItemData(const CItemData &that) :
   m_Password(that.m_Password), m_Notes(that.m_Notes), m_UUID(that.m_UUID),
   m_Group(that.m_Group), m_URL(that.m_URL), m_AutoType(that.m_AutoType),
   m_tttCTime(that.m_tttCTime), m_tttPMTime(that.m_tttPMTime), m_tttATime(that.m_tttATime),
-  m_tttLTime(that.m_tttLTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
-  m_PWPolicy(that.m_PWPolicy),
+  m_tttXTime(that.m_tttXTime), m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
+  m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
   m_display_info(that.m_display_info), m_entrytype(that.m_entrytype)
 {
   memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
@@ -154,14 +154,6 @@ CMyString CItemData::GetTime(int whichtime, int result_format) const
   time_t t;
 
   GetTime(whichtime, t);
-  if (whichtime == LTIME && (long)t > 0L && (long)t <= 3650L) {
-    // Special case where 'time' is really the password's
-    // lifetime, in days (added post 3.12)
-    CMyString cs_temp;
-    cs_temp.Format(_T("%d"), (long)t);
-    return cs_temp;
-  }
-
   return PWSUtil::ConvertToDateTimeString(t, result_format);
 }
 
@@ -177,8 +169,8 @@ void CItemData::GetTime(int whichtime, time_t &t) const
     case CTIME:
       GetField(m_tttCTime, (unsigned char *)in, tlen);
       break;
-    case LTIME:
-      GetField(m_tttLTime, (unsigned char *)in, tlen);
+    case XTIME:
+      GetField(m_tttXTime, (unsigned char *)in, tlen);
       break;
     case PMTIME:
       GetField(m_tttPMTime, (unsigned char *)in, tlen);
@@ -245,6 +237,33 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
 CMyString CItemData::GetPWPolicy() const
 {
   return GetField(m_PWPolicy);
+}
+
+void CItemData::GetXTimeInt(int &xint) const
+{
+  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+  unsigned int tlen = sizeof(in); // ditto
+
+  GetField(m_XTimeInterval, (unsigned char *)in, tlen);
+
+  if (tlen != 0) {
+    ASSERT(tlen == sizeof(int));
+    memcpy(&xint, in, sizeof(int));
+  } else {
+    xint = 0;
+  }
+}
+
+CMyString CItemData::GetXTimeInt() const
+{
+  int xint;
+  GetXTimeInt(xint);
+  if (xint == 0)
+    return CMyString(_T(""));
+
+  ostringstreamT os;
+  os << xint << ends;
+  return CMyString(os.str().c_str());
 }
 
 void CItemData::GetUnknownField(unsigned char &type, unsigned int &length,
@@ -403,7 +422,8 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
           GetCTimeExp() + separator +
           GetPMTimeExp() + separator +
           GetATimeExp() + separator +
-          GetLTimeExp() + separator +
+          GetXTimeExp() + separator +
+          GetXTimeInt() + separator +
           GetRMTimeExp() + separator +
           GetPWPolicy() + separator +
           history + separator +
@@ -430,8 +450,10 @@ CMyString CItemData::GetPlaintext(const TCHAR &separator,
       ret += GetPMTimeExp() + separator;
     if (bsFields.test(CItemData::ATIME))
       ret += GetATimeExp() + separator;
-    if (bsFields.test(CItemData::LTIME))
-      ret += GetLTimeExp() + separator;
+    if (bsFields.test(CItemData::XTIME))
+      ret += GetXTimeExp() + separator;
+    if (bsFields.test(CItemData::XTIME_INT))
+      ret += GetXTimeInt() + separator;
     if (bsFields.test(CItemData::RMTIME))
       ret += GetRMTimeExp() + separator;
     if (bsFields.test(CItemData::POLICY))
@@ -587,6 +609,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   oss << "\t\t<uuid><![CDATA[" << uuid_buffer << "]]></uuid>" << endl;
 
   time_t t;
+  int xint;
+
   GetCTime(t);
   if (bsExport.test(CItemData::CTIME) && (long)t != 0L)
     oss << GetXMLTime(2, "ctime", t, utf8conv);
@@ -595,14 +619,13 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   if (bsExport.test(CItemData::ATIME) && (long)t != 0L)
     oss << GetXMLTime(2, "atime", t, utf8conv);
 
-  GetLTime(t);
-  if (bsExport.test(CItemData::LTIME) && (long)t != 0L) {
-    if ((long)t > 0L && (long)t <= 3650L) {
-      oss << "\t\t<ltime_interval>" << t << "</ltime_interval>" << endl;
-    } else {
-      oss << GetXMLTime(2, "ltime", t, utf8conv);
-    }
-  }
+  GetXTime(t);
+  if (bsExport.test(CItemData::XTIME) && (long)t != 0L)
+    oss << GetXMLTime(2, "xtime", t, utf8conv);
+
+  GetXTimeInt(xint);
+  if (bsExport.test(CItemData::XTIME_INT) && xint > 0 && xint <= 3650)
+    oss << "\t\t<xtime_interval>" << xint << "</xtime_interval>" << endl;
 
   GetPMTime(t);
   if (bsExport.test(CItemData::PMTIME) && (long)t != 0L)
@@ -905,8 +928,8 @@ void CItemData::SetTime(int whichtime, time_t t)
     case CTIME:
       SetField(m_tttCTime, (const unsigned char *)&t32, sizeof(t32));
       break;
-    case LTIME:
-      SetField(m_tttLTime, (const unsigned char *)&t32, sizeof(t32));
+    case XTIME:
+      SetField(m_tttXTime, (const unsigned char *)&t32, sizeof(t32));
       break;
     case PMTIME:
       SetField(m_tttPMTime, (const unsigned char *)&t32, sizeof(t32));
@@ -926,17 +949,43 @@ bool CItemData::SetTime(int whichtime, const CString &time_str)
   if (time_str.IsEmpty()) {
     SetTime(whichtime, t);
     return true;
-  } else if (time_str == _T("now")) {
+  } else
+  if (time_str == _T("now")) {
     time(&t);
     SetTime(whichtime, t);
     return true;
-  } else if ((PWSUtil::VerifyImportDateTimeString(time_str, t) ||
+  } else
+  if ((PWSUtil::VerifyImportDateTimeString(time_str, t) ||
     PWSUtil::VerifyXMLDateTimeString(time_str, t) ||
     PWSUtil::VerifyASCDateTimeString(time_str, t)) &&
     (t != (time_t)-1)  // checkerror despite all our verification!
     ) {
-      SetTime(whichtime, t);
+    SetTime(whichtime, t);
+    return true;
+  }
+  return false;
+}
+
+void CItemData::SetXTimeInt(int &xint)
+{
+   SetField(m_XTimeInterval, (const unsigned char *)&xint, sizeof(int));
+}
+
+bool CItemData::SetXTimeInt(const CString &xint_str)
+{
+  int xint(0);
+
+  if (xint_str.IsEmpty()) {
+    SetXTimeInt(xint);
+    return true;
+  }
+
+  if (xint_str.SpanIncluding(CString(_T("0123456789"))) == xint_str) {
+    xint = _ttoi(xint_str);
+    if (xint >= 0 && xint <= 3650) {
+      SetXTimeInt(xint);
       return true;
+    }
   }
   return false;
 }
@@ -1089,10 +1138,11 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_tttCTime = that.m_tttCTime;
     m_tttPMTime = that.m_tttPMTime;
     m_tttATime = that.m_tttATime;
-    m_tttLTime = that.m_tttLTime;
+    m_tttXTime = that.m_tttXTime;
     m_tttRMTime = that.m_tttRMTime;
     m_PWHistory = that.m_PWHistory;
     m_PWPolicy = that.m_PWPolicy;
+    m_XTimeInterval = that.m_XTimeInterval;
     m_display_info = that.m_display_info;
     if (!that.m_URFL.empty())
       m_URFL = that.m_URFL;
@@ -1117,10 +1167,11 @@ void CItemData::Clear()
   m_tttCTime.Empty();
   m_tttPMTime.Empty();
   m_tttATime.Empty();
-  m_tttLTime.Empty();
+  m_tttXTime.Empty();
   m_tttRMTime.Empty();
   m_PWHistory.Empty();
   m_PWPolicy.Empty();
+  m_XTimeInterval.Empty();
   m_URFL.clear();
   m_entrytype = Normal;
 }
@@ -1358,6 +1409,17 @@ static bool pull_time(time_t &t, unsigned char *data, size_t len)
   return true;
 }
 
+static bool pull_int(int &i, unsigned char *data, size_t len)
+{
+  if (len == sizeof(int)) {
+    i = *reinterpret_cast<int *>(data);
+  } else {
+    ASSERT(0);
+    return false;
+  }
+  return true;
+}
+
 bool CItemData::DeserializePlainText(const std::vector<char> &v)
 {
   vector<char>::const_iterator iter = v.begin();
@@ -1392,6 +1454,7 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
 {
   CMyString str;
   time_t t;
+  int xint;
   switch (type) {
     case NAME:
       ASSERT(0); // not serialized, or in v3 format
@@ -1437,9 +1500,13 @@ bool CItemData::SetField(int type, unsigned char *data, int len)
       if (!pull_time(t, data, len)) return false;
       SetATime(t);
       break;
-    case LTIME:
+    case XTIME:
       if (!pull_time(t, data, len)) return false;
-      SetLTime(t);
+      SetXTime(t);
+      break;
+    case XTIME_INT:
+      if (!pull_int(xint, data, len)) return false;
+      SetXTimeInt(xint);
       break;
     case POLICY:
       if (!pull_string(str, data, len)) return false;
@@ -1541,7 +1608,7 @@ void CItemData::SerializePlainText(vector<char> &v, CItemData *cibase)  const
   GetCTime(t);   push_time(v, CTIME, t);
   GetPMTime(t);  push_time(v, PMTIME, t);
   GetATime(t);   push_time(v, ATIME, t);
-  GetLTime(t);   push_time(v, LTIME, t);
+  GetXTime(t);   push_time(v, XTIME, t);
   GetRMTime(t);  push_time(v, RMTIME, t);
 
   push_string(v, POLICY, GetPWPolicy());

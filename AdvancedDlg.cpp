@@ -199,7 +199,7 @@ BOOL CAdvancedDlg::OnInitDialog()
       m_pLC_Selected->SetItemData(iItem, CItemData::ATIME);
       cs_text.LoadString(IDS_EXPIRYDATETIME);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::LTIME);
+      m_pLC_Selected->SetItemData(iItem, CItemData::XTIME);
       cs_text.LoadString(IDS_LASTMODIFIED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME);
@@ -221,6 +221,9 @@ BOOL CAdvancedDlg::OnInitDialog()
   cs_text.LoadString(IDS_PWHIST);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
   m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST);
+  cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+  m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT);
 
   switch (m_iIndex) {
     case ADV_EXPORT_XML:

@@ -1787,7 +1787,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     m_bsFields.reset(CItemData::CTIME);
     m_bsFields.reset(CItemData::PMTIME);
     m_bsFields.reset(CItemData::ATIME);
-    m_bsFields.reset(CItemData::LTIME);
+    m_bsFields.reset(CItemData::XTIME);
     m_bsFields.reset(CItemData::RMTIME);
   }
 
@@ -1832,7 +1832,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
          Second byte
          1... ....  PMTIME   [0x08] - not checked by default
          .1.. ....  ATIME    [0x09] - not checked by default
-         ..1. ....  LTIME    [0x0a] - not checked by default
+         ..1. ....  XTIME    [0x0a] - not checked by default
          ...1 ....  RESERVED [0x0b] - not used
          .... 1...  RMTIME   [0x0c] - not checked by default
          .... .1..  URL      [0x0d]
@@ -1862,9 +1862,9 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
           if (m_bsFields.test(CItemData::ATIME) &&
               currentItem.GetATime() != compItem.GetATime())
             bsConflicts.flip(CItemData::ATIME);
-          if (m_bsFields.test(CItemData::LTIME) &&
-              currentItem.GetLTime() != compItem.GetLTime())
-            bsConflicts.flip(CItemData::LTIME);
+          if (m_bsFields.test(CItemData::XTIME) &&
+              currentItem.GetXTime() != compItem.GetXTime())
+            bsConflicts.flip(CItemData::XTIME);
           if (m_bsFields.test(CItemData::RMTIME) &&
               currentItem.GetRMTime() != compItem.GetRMTime())
             bsConflicts.flip(CItemData::RMTIME);
@@ -2050,8 +2050,8 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPPMTIME));
     if (m_bsFields.test(CItemData::ATIME))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPATIME));
-    if (m_bsFields.test(CItemData::LTIME))
-      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPLTIME));
+    if (m_bsFields.test(CItemData::XTIME))
+      buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPXTIME));
     if (m_bsFields.test(CItemData::RMTIME))
       buffer += _T("\t") + CString(MAKEINTRESOURCE(IDS_COMPRMTIME));
     if (m_bsFields.test(CItemData::PWHIST))
@@ -2225,7 +2225,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
   ItemListIter toPos;
   CMyString group, title, user, notes, password, url, autotype, pwhistory;
-  time_t ct, at, lt, pmt, rmt;
+  time_t ct, at, xt, pmt, rmt;
   PWPolicy pwp;
   int nfromUnknownRecordFields;
   bool bFromUUIDIsNotInTo;
@@ -2244,7 +2244,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   pwhistory = fromEntry->GetPWHistory();
   fromEntry->GetCTime(ct);
   fromEntry->GetATime(at);
-  fromEntry->GetLTime(lt);
+  fromEntry->GetXTime(xt);
   fromEntry->GetPMTime(pmt);
   fromEntry->GetRMTime(rmt);
   fromEntry->GetPWPolicy(pwp);
@@ -2265,7 +2265,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     toEntry->SetPWHistory(pwhistory);
     toEntry->SetCTime(ct);
     toEntry->SetATime(at);
-    toEntry->SetLTime(lt);
+    toEntry->SetXTime(xt);
     toEntry->SetPMTime(pmt);
     toEntry->SetRMTime(rmt);
     toEntry->SetPWPolicy(pwp);
@@ -2319,7 +2319,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     temp.SetPWHistory(pwhistory);
     temp.SetCTime(ct);
     temp.SetATime(at);
-    temp.SetLTime(lt);
+    temp.SetXTime(xt);
     temp.SetPMTime(pmt);
     temp.SetRMTime(rmt);
     temp.SetPWPolicy(pwp);

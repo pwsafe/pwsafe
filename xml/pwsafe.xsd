@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+<xs:annotation>
+  <xs:documentation xml:lang="en">
+    This XML Schema corresponds to V3.13 of Password Safe.
+    As each new version is a 'superset' of previous versions, the current version of Password Safe
+    will be able to import XML files created by all prior versions.
+    However, in V3.13 element 'ltime' has been replaced by 'xtime' for the Password Expiry Time.
+    Either is currently allowed, although future updates may remove the 'ltime' choice and therefore
+    errors will be issued during XML Import if the 'ltime' element is present in the XML file.
+  </xs:documentation>
+</xs:annotation>
+
 <!-- Special types to allow easier processing of Password Safe data -->
 <xs:simpleType name="characterType">
   <xs:restriction base="xs:string">
@@ -168,10 +179,11 @@
               <xs:element name="uuid" type="uuidType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ctime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="atime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-              <xs:choice>
-                <xs:element name="ltime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-                <xs:element name="ltime_interval" type="expirydaysType" minOccurs="0" maxOccurs="1" />
+              <xs:choice minOccurs="0" maxOccurs="1">
+                <xs:element name="ltime" type="datetimestampType" />
+                <xs:element name="xtime" type="datetimestampType" />
               </xs:choice>
+              <xs:element name="xtime_interval" type="expirydaysType" minOccurs="0" maxOccurs="1" />
               <xs:element name="pmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="rmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="pwhistory" minOccurs="0" maxOccurs="1">

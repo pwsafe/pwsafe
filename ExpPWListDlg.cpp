@@ -19,7 +19,7 @@
 
 using namespace std;
 
-ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t LTime)
+ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t XTime)
 {
   group = ci.GetGroup();
   title = ci.GetTitle();
@@ -27,10 +27,10 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t LTime)
   // Expired or Warning / Normal or Alias Base or Shortcut Base 
   // See image list below
   // Note only neither or one of IsAliasBase or IsShortcutBase can be true!
-  type = (LTime > now ? 0 : 1) + (ci.IsAliasBase() ? 2 : 0) + (ci.IsShortcutBase() ? 4 : 0);
-  expirylocdate = ci.GetLTimeL();
-  expiryexpdate = ci.GetLTimeExp();
-  expirytttdate = LTime;
+  type = (XTime > now ? 0 : 1) + (ci.IsAliasBase() ? 2 : 0) + (ci.IsShortcutBase() ? 4 : 0);
+  expirylocdate = ci.GetXTimeL();
+  expiryexpdate = ci.GetXTimeExp();
+  expirytttdate = XTime;
 }
 
 // CExpPWListDlg dialog

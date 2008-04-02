@@ -505,9 +505,10 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
             case CItemData::CTIME:
             case CItemData::PMTIME:
             case CItemData::ATIME:
-            case CItemData::LTIME:
+            case CItemData::XTIME:
             case CItemData::RMTIME:
             case CItemData::POLICY:
+            case CItemData::XTIME_INT:
             default:
               break;
           } // switch

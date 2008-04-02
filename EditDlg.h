@@ -49,9 +49,10 @@ private:
   CMyString m_URL;
   CMyString m_autotype;
   CMyString m_locCTime;
-  CMyString m_locPMTime, m_locATime, m_locLTime, m_locRMTime;
-  time_t m_tttLTime;
-  time_t m_tttXTime;  // Password creation or last changed datetime
+  CMyString m_locPMTime, m_locATime, m_locXTime, m_locRMTime;
+  time_t m_tttXTime;
+  time_t m_tttCPMTime;  // Password creation or last changed datetime
+  int m_XTimeInt, m_oldXTimeInt;
   bool m_bIsModified;
   // Password History related stuff
   size_t m_NumPWHistory;
@@ -64,7 +65,7 @@ private:
   // Are we showing more or less details?
   bool m_isExpanded;
   // following two are not directly derived from CItemData
-  CMyString m_oldlocLTime;
+  CMyString m_oldlocXTime;
   int m_oldMaxPWHistory;
   void ResizeDialog();
   void UpdateHistory();
@@ -106,8 +107,8 @@ public:
   afx_msg void OnBnClickedOk();
   afx_msg void OnBnClickedMore();
   afx_msg void OnBnClickViewDependents();
-  afx_msg void OnBnClickedClearLTime();
-  afx_msg void OnBnClickedSetLTime();
+  afx_msg void OnBnClickedClearXTime();
+  afx_msg void OnBnClickedSetXTime();
   afx_msg void OnBnClickedPwhist();
 
   CButton m_MoreLessBtn;

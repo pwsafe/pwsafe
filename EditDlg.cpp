@@ -63,9 +63,9 @@ CString CEditDlg::CS_HIDE;
 CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
   : CPWDialog(CEditDlg::IDD, pParent),
   m_ci(ci), m_bIsModified(false), m_Edit_IsReadOnly(false),
-  m_tttLTime(time_t(0)), m_tttXTime(time_t(0)),
-  m_locLTime(_T("")), m_oldlocLTime(_T("")),
-    m_original_entrytype(CItemData::Normal), m_ToolTipCtrl(NULL)
+  m_tttXTime(time_t(0)), m_tttCPMTime(time_t(0)),
+  m_locXTime(_T("")), m_oldlocXTime(_T("")), m_XTimeInt(0),
+  m_original_entrytype(CItemData::Normal), m_ToolTipCtrl(NULL)
 {
   ASSERT(ci != NULL);
 
@@ -82,46 +82,45 @@ CEditDlg::CEditDlg(CItemData *ci, CWnd* pParent)
 #endif
   }
 
-  m_OverridePolicy = ci->GetPWPolicy().IsEmpty() ? FALSE : TRUE;
-  ci->GetPWPolicy(m_pwp);
+  m_OverridePolicy = m_ci->GetPWPolicy().IsEmpty() ? FALSE : TRUE;
+  m_ci->GetPWPolicy(m_pwp);
 
   BOOL HasHistory = FALSE;
-  ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
-                          m_NumPWHistory, 
-                          &m_PWHistList, TMC_EXPORT_IMPORT);
+  m_ci->CreatePWHistoryList(HasHistory, m_MaxPWHistory,
+                            m_NumPWHistory, 
+                            &m_PWHistList, TMC_EXPORT_IMPORT);
   m_SavePWHistory = HasHistory;
 
-  m_group = ci->GetGroup();
-  m_title = ci->GetTitle();
-  m_username = ci->GetUser();
+  m_group = m_ci->GetGroup();
+  m_title = m_ci->GetTitle();
+  m_username = m_ci->GetUser();
   m_password = m_password2 = HIDDEN_PASSWORD;
-  m_realpassword = m_oldRealPassword = ci->GetPassword();
-  m_URL = ci->GetURL();
-  m_autotype = ci->GetAutoType();
+  m_realpassword = m_oldRealPassword = m_ci->GetPassword();
+  m_URL = m_ci->GetURL();
+  m_autotype = m_ci->GetAutoType();
   m_notes = HIDDEN_NOTES;
-  m_realnotes = ci->GetNotes();
-  m_PWHistory = ci->GetPWHistory();
-  m_locCTime = ci->GetCTimeL();
-  m_locATime = ci->GetATimeL();
-  m_locRMTime = ci->GetRMTimeL();
-  m_locPMTime = ci->GetPMTimeL();
+  m_realnotes = m_ci->GetNotes();
+  m_PWHistory = m_ci->GetPWHistory();
+  m_locCTime = m_ci->GetCTimeL();
+  m_locATime = m_ci->GetATimeL();
+  m_locRMTime = m_ci->GetRMTimeL();
+  m_locPMTime = m_ci->GetPMTimeL();
 
   if (!m_locPMTime.IsEmpty())
-    ci->GetPMTime(m_tttXTime);
-  if ((long)m_tttXTime == 0L) // if never changed - try creation date
-    m_ci->GetCTime(m_tttXTime);
+    m_ci->GetPMTime(m_tttCPMTime);
+  if ((long)m_tttCPMTime == 0L) // if never changed - try creation date
+    m_ci->GetCTime(m_tttCPMTime);
 
-  m_locLTime = ci->GetLTimeL();
-  ci->GetLTime(m_tttLTime);
-  if ((long)m_tttLTime == 0L) {
-    m_locLTime.LoadString(IDS_NEVER);
+  m_locXTime = m_ci->GetXTimeL();
+  if (m_locXTime.IsEmpty()) {
+    m_locXTime.LoadString(IDS_NEVER);
+    m_tttXTime = 0;
   } else
-  if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
-    CTime t = CTime(m_tttXTime) + CTimeSpan((long)m_tttLTime, 0, 0, 0);
-    m_locLTime = PWSUtil::ConvertToDateTimeString((time_t)t.GetTime(), TMC_LOCALE);
-  }
+    m_ci->GetXTime(m_tttXTime);
 
-  m_oldlocLTime = m_locLTime;
+  m_oldlocXTime = m_locXTime;
+  m_ci->GetXTimeInt(m_XTimeInt);
+  m_oldXTimeInt = m_XTimeInt;
 
   m_pex_notes = new CEditExtn(WM_CALL_EXTERNAL_EDITOR, 
                               _T("! &Edit externally"));
@@ -149,7 +148,7 @@ void CEditDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_CTIME, (CString&)m_locCTime);
    DDX_Text(pDX, IDC_PMTIME, (CString&)m_locPMTime);
    DDX_Text(pDX, IDC_ATIME, (CString&)m_locATime);
-   DDX_Text(pDX, IDC_LTIME, (CString&)m_locLTime);
+   DDX_Text(pDX, IDC_XTIME, (CString&)m_locXTime);
    DDX_Text(pDX, IDC_RMTIME, (CString&)m_locRMTime);
 
    DDX_CBString(pDX, IDC_GROUP, (CString&)m_group);
@@ -179,8 +178,8 @@ BEGIN_MESSAGE_MAP(CEditDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnBnClickedOk)
   ON_BN_CLICKED(IDC_MORE, OnBnClickedMore)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnBnClickViewDependents)
-  ON_BN_CLICKED(IDC_LTIME_CLEAR, OnBnClickedClearLTime)
-  ON_BN_CLICKED(IDC_LTIME_SET, OnBnClickedSetLTime)
+  ON_BN_CLICKED(IDC_XTIME_CLEAR, OnBnClickedClearXTime)
+  ON_BN_CLICKED(IDC_XTIME_SET, OnBnClickedSetXTime)
   ON_BN_CLICKED(IDC_PWHIST, OnBnClickedPwhist)
   ON_EN_SETFOCUS(IDC_NOTES, OnEnSetfocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnEnKillfocusNotes)
@@ -232,7 +231,8 @@ void CEditDlg::OnOK()
                     m_URL != m_ci->GetURL() ||
                     m_autotype != m_ci->GetAutoType() ||
                     m_PWHistory != m_ci->GetPWHistory() ||
-                    m_locLTime != m_oldlocLTime);
+                    m_locXTime != m_oldlocXTime ||
+                    m_XTimeInt != m_oldXTimeInt);
 
   bool IsPswdModified = m_realpassword != m_oldRealPassword;
 
@@ -320,8 +320,10 @@ void CEditDlg::OnOK()
   }
   if (m_bIsModified || IsPswdModified)
     m_ci->SetRMTime(t);
-  if (m_oldlocLTime != m_locLTime)
-    m_ci->SetLTime(m_tttLTime);
+  if (m_oldlocXTime != m_locXTime)
+    m_ci->SetXTime(m_tttXTime);
+  if (m_oldXTimeInt != m_XTimeInt)
+    m_ci->SetXTimeInt(m_XTimeInt);
 
   CPWDialog::OnOK();
   return;
@@ -556,12 +558,15 @@ void CEditDlg::OnRandom()
       UpdateData(FALSE);
   }
   // This will be reset to the time the user eventually presses OK
-  time(&m_tttXTime);
-  if ((long)m_tttLTime > 0L && (long)m_tttLTime <= 3650L) {
-    CTime ct = CTime(m_tttXTime) + CTimeSpan((long)m_tttLTime, 0, 0, 0);
-    m_locLTime = CMyString(ct.Format(_T("%#c")));
-    GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
+  time(&m_tttCPMTime);
+  if (m_XTimeInt > 0 && m_XTimeInt <= 3650) {
+    CTime ct = CTime(m_tttCPMTime) + CTimeSpan(m_XTimeInt, 0, 0, 0);
+    m_locXTime = PWSUtil::ConvertToDateTimeString((time_t)ct.GetTime(), TMC_LOCALE);
+    GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
   }
+  CMyString cs_locPMTime = PWSUtil::ConvertToDateTimeString(m_tttCPMTime, TMC_LOCALE);
+  GetDlgItem(IDC_PMTIME)->SetWindowText(cs_locPMTime);
+  UpdateData(TRUE);
 }
 
 void CEditDlg::OnHelp() 
@@ -627,12 +632,12 @@ void CEditDlg::ResizeDialog()
     IDC_STATIC_PMTIME,
     IDC_ATIME,
     IDC_STATIC_ATIME,
-    IDC_LTIME,
-    IDC_STATIC_LTIME,
+    IDC_XTIME,
+    IDC_STATIC_XTIME,
     IDC_RMTIME,
     IDC_STATIC_RMTIME,
-    IDC_LTIME_CLEAR,
-    IDC_LTIME_SET,
+    IDC_XTIME_CLEAR,
+    IDC_XTIME_SET,
     IDC_STATIC_DTGROUP,
     IDC_STATIC_DTEXPGROUP,    
   };
@@ -677,28 +682,31 @@ void CEditDlg::ResizeDialog()
                      newHeight, SWP_NOMOVE);
 }
 
-void CEditDlg::OnBnClickedClearLTime()
+void CEditDlg::OnBnClickedClearXTime()
 {
-  m_locLTime.LoadString(IDS_NEVER);
-  GetDlgItem(IDC_LTIME)->SetWindowText((CString)m_locLTime);
-  m_tttLTime = (time_t)0;
+  m_locXTime.LoadString(IDS_NEVER);
+  GetDlgItem(IDC_XTIME)->SetWindowText((CString)m_locXTime);
+  m_tttXTime = (time_t)0;
+  m_XTimeInt = 0;
 }
 
-void CEditDlg::OnBnClickedSetLTime()
+void CEditDlg::OnBnClickedSetXTime()
 {
   CExpDTDlg dlg_expDT(this);
 
-  dlg_expDT.m_tttLTime = m_tttLTime;
   dlg_expDT.m_tttXTime = m_tttXTime;
+  dlg_expDT.m_tttCPMTime = m_tttCPMTime;
+  dlg_expDT.m_XTimeInt = m_XTimeInt;
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_expDT.DoModal();
   app.EnableAccelerator();
 
   if (rc == IDOK) {
-    m_tttLTime = dlg_expDT.m_tttLTime;
-    m_locLTime = dlg_expDT.m_locLTime;
-    GetDlgItem(IDC_LTIME)->SetWindowText(m_locLTime);
+    m_tttXTime = dlg_expDT.m_tttXTime;
+    m_locXTime = dlg_expDT.m_locXTime;
+    m_XTimeInt = dlg_expDT.m_XTimeInt;
+    GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
   }
 }
 

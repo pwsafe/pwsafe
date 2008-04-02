@@ -241,13 +241,14 @@ Password                    0x06        Text          Y              [3,4]
 Creation Time               0x07        time_t        Y              [5]
 Password Modification Time  0x08        time_t        Y              [5]
 Last Access Time            0x09        time_t        Y              [5,6]
-Password Lifetime           0x0a        time_t        Y              [5,7,8]
-*RESERVED*                  0x0b        4 bytes       -              [9]
-Last Modification Time      0x0c        time_t        Y              [5,10]
-URL                         0x0d        Text          Y              [11]
-Autotype                    0x0e        Text          Y              [12]
-Password History            0x0f        Text          Y              [13]
-Password Policy             0x10        Text          Y              [14]
+Password Expiry Time        0x0a        time_t        Y              [5,7]
+*RESERVED*                  0x0b        4 bytes       -              [8]
+Last Modification Time      0x0c        time_t        Y              [5,9]
+URL                         0x0d        Text          Y              [10]
+Autotype                    0x0e        Text          Y              [11]
+Password History            0x0f        Text          Y              [12]
+Password Policy             0x10        Text          Y              [13]
+Password Expiry Interval    0x11        2 bytes       Y              [14]
 End of Entry                0xff        [empty]       Y              [15]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
@@ -283,32 +284,26 @@ its own.
 i.e., to copy its username, password or notes to the clipboard; to
 perform autotype or to browse to url.
 
-[7] This will allow the user to enter a lifetime for an entry. The
+[7] This will allow the user to enter an expiry date for an entry. The
 application can then prompt the user about passwords that need to be
-changed. Password lifetime is the expiry a date/time field in the same
-manner as the other time fields and a value of zero means "forever".
+changed. A value of zero means "forever".
 
-[8] Versions post V3.12 will treat a lifetime entry between 1 and 3650
-(normally seconds after 1 January 1970) as the number of days before this
-password expires. This value is used when the password is first generated and
-thereafter whenever it is changed.
-
-[9] Although earmarked for Password Policy, the coding in versions prior
+[8] Although earmarked for Password Policy, the coding in versions prior
 to V3.12 does not correctly handle the presence of this field.  For this
 reason, this value cannot be used for any future V3 field without causing
 a potential issue when a user opens a V3.12 or later database with program
 version V3.11 or earlier.  See note [14].
 
-[10] This is the time that any field of the record was modified, useful for
+[9] This is the time that any field of the record was modified, useful for
 merging databases.
 
-[11] The URL will be passed to the shell when the user chooses the "Browse
+[10] The URL will be passed to the shell when the user chooses the "Browse
 to" action for this entry. In version 2 of the format, this was extracted
 from the Notes field. By placing it in a separate field, we are no longer
 restricted to a URL - any action that may be executed by the shell may be
 specified here.
 
-[12] The text to be 'typed' by PasswordSafe upon the "Perform Autotype"
+[11] The text to be 'typed' by PasswordSafe upon the "Perform Autotype"
 action maybe specified here. If unspecified, the default value of
 'username, tab, password, tab, enter' is used. In version 2 of the format,
 this was extracted from the Notes field. Several codes are recognized here,
@@ -316,7 +311,7 @@ e.g, '%p' is replaced by the record's password. See the user documentation
 for the complete list of codes. The replacement is done by the application
 at runtime, and is not stored in the database.
 
-[13] Password History is an optional record. If it exists, it stores the
+[12] Password History is an optional record. If it exists, it stores the
 creation times and values of the last few passwords used in the current
 entry, in the following format:
     "fmmnnTLPTLP...TLP"
@@ -333,7 +328,7 @@ the PWH field (preferred), or by a header of _T("00000"):
 Note that 0aabb, where bb <= aa, is possible if password history was enabled
 in the past and has then been disabled but the history hasn't been cleared.
 
-[14] This field allows a specific Password Policy per entry.  The format is:
+[13] This field allows a specific Password Policy per entry.  The format is:
     "ffffnnnllluuudddsss"
 where:
      ffff = 4 hexadecimal digits representing the following flags
@@ -350,6 +345,12 @@ where:
     uuu  = 3 hexadecimal digits password minimum number of uppercase characters
     ddd  = 3 hexadecimal digits password minimum number of digit characters
     sss  = 3 hexadecimal digits password minimum number of symbol characters
+
+[14] Password Expiry Interval, in days, before this password expires. Once set,
+this value is used when the password is first generated and thereafter whenever
+the password is changed, until this value is unset.  Valid values are 1-3650
+corresponding to up to approximately 10 years.  A value of zero is equivalent to
+this field not being set.
 
 [15] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.

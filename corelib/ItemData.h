@@ -111,9 +111,9 @@ public:
   enum {
     START = 0x00,
     NAME = 0x00, UUID = 0x01, GROUP = 0x02, TITLE = 0x03, USER = 0x04, NOTES = 0x05,
-    PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, LTIME = 0x0a,
+    PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
-    PWHIST = 0x0f, POLICY = 0x10,
+    PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11,
     LAST,        // Start of unknown fields!
     END = 0xff}; // field types, per formatV{2,3}.txt
 
@@ -161,35 +161,37 @@ public:
     CMyString GetAutoType() const; // V30
     CMyString GetATime() const {return GetTime(ATIME, TMC_ASC_UNKNOWN);}  // V30
     CMyString GetCTime() const {return GetTime(CTIME, TMC_ASC_UNKNOWN);}  // V30
-    CMyString GetLTime() const {return GetTime(LTIME, TMC_ASC_UNKNOWN);}  // V30
+    CMyString GetXTime() const {return GetTime(XTIME, TMC_ASC_UNKNOWN);}  // V30
     CMyString GetPMTime() const {return GetTime(PMTIME, TMC_ASC_UNKNOWN);}  // V30
     CMyString GetRMTime() const {return GetTime(RMTIME, TMC_ASC_UNKNOWN);}  // V30
     CMyString GetATimeL() const {return GetTime(ATIME, TMC_LOCALE);}  // V30
     CMyString GetCTimeL() const {return GetTime(CTIME, TMC_LOCALE);}  // V30
-    CMyString GetLTimeL() const {return GetTime(LTIME, TMC_LOCALE);}  // V30
+    CMyString GetXTimeL() const {return GetTime(XTIME, TMC_LOCALE);}  // V30
     CMyString GetPMTimeL() const {return GetTime(PMTIME, TMC_LOCALE);}  // V30
     CMyString GetRMTimeL() const {return GetTime(RMTIME, TMC_LOCALE);}  // V30
     CMyString GetATimeN() const {return GetTime(ATIME, TMC_ASC_NULL);}  // V30
     CMyString GetCTimeN() const {return GetTime(CTIME, TMC_ASC_NULL);}  // V30
-    CMyString GetLTimeN() const {return GetTime(LTIME, TMC_ASC_NULL);}  // V30
+    CMyString GetXTimeN() const {return GetTime(XTIME, TMC_ASC_NULL);}  // V30
     CMyString GetPMTimeN() const {return GetTime(PMTIME, TMC_ASC_NULL);}  // V30
     CMyString GetRMTimeN() const {return GetTime(RMTIME, TMC_ASC_NULL);}  // V30
     CMyString GetATimeExp() const {return GetTime(ATIME, TMC_EXPORT_IMPORT);}  // V30
     CMyString GetCTimeExp() const {return GetTime(CTIME, TMC_EXPORT_IMPORT);}  // V30
-    CMyString GetLTimeExp() const {return GetTime(LTIME, TMC_EXPORT_IMPORT);}  // V30
+    CMyString GetXTimeExp() const {return GetTime(XTIME, TMC_EXPORT_IMPORT);}  // V30
     CMyString GetPMTimeExp() const {return GetTime(PMTIME, TMC_EXPORT_IMPORT);}  // V30
     CMyString GetRMTimeExp() const {return GetTime(RMTIME, TMC_EXPORT_IMPORT);}  // V30
     CMyString GetATimeXML() const {return GetTime(ATIME, TMC_XML);}  // V30
     CMyString GetCTimeXML() const {return GetTime(CTIME, TMC_XML);}  // V30
-    CMyString GetLTimeXML() const {return GetTime(LTIME, TMC_XML);}  // V30
+    CMyString GetXTimeXML() const {return GetTime(XTIME, TMC_XML);}  // V30
     CMyString GetPMTimeXML() const {return GetTime(PMTIME, TMC_XML);}  // V30
     CMyString GetRMTimeXML() const {return GetTime(RMTIME, TMC_XML);}  // V30
     //  These populate the time structure instead of giving a character string
     void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
     void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
-    void GetLTime(time_t &t) const {GetTime(LTIME, t);}  // V30
+    void GetXTime(time_t &t) const {GetTime(XTIME, t);}  // V30
     void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
     void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
+    void GetXTimeInt(int &xint) const; // V30
+    CMyString GetXTimeInt() const; // V30
     CMyString GetPWHistory() const;  // V30
     void GetPWPolicy(PWPolicy &pwp) const;
     CMyString GetPWPolicy() const;
@@ -232,15 +234,17 @@ public:
     void SetCTime() {SetTime(CTIME);}  // V30
     void SetCTime(time_t t) {SetTime(CTIME, t);}  // V30
     bool SetCTime(const CString &time_str) {return SetTime(CTIME, time_str);}  // V30
-    void SetLTime() {SetTime(LTIME);}  // V30
-    void SetLTime(time_t t) {SetTime(LTIME, t);}  // V30
-    bool SetLTime(const CString &time_str) {return SetTime(LTIME, time_str);}  // V30
+    void SetXTime() {SetTime(XTIME);}  // V30
+    void SetXTime(time_t t) {SetTime(XTIME, t);}  // V30
+    bool SetXTime(const CString &time_str) {return SetTime(XTIME, time_str);}  // V30
     void SetPMTime() {SetTime(PMTIME);}  // V30
     void SetPMTime(time_t t) {SetTime(PMTIME, t);}  // V30
     bool SetPMTime(const CString &time_str) {return SetTime(PMTIME, time_str);}  // V30
     void SetRMTime() {SetTime(RMTIME);}  // V30
     void SetRMTime(time_t t) {SetTime(RMTIME, t);}  // V30
     bool SetRMTime(const CString &time_str) {return SetTime(RMTIME, time_str);}  // V30
+    void SetXTimeInt(int &xint); // V30
+    bool SetXTimeInt(const CString &xint_str); // V30
     void SetPWHistory(const CMyString &PWHistory);  // V30
     int CreatePWHistoryList(BOOL &status, size_t &pwh_max, size_t &pwh_num,
       PWHistList* pPWHistList,
@@ -305,11 +309,12 @@ private:
   CItemField m_AutoType;
   CItemField m_tttATime;  // last 'A'ccess time
   CItemField m_tttCTime;  // 'C'reation time
-  CItemField m_tttLTime;  // password 'L'ifetime
+  CItemField m_tttXTime;  // password 'L'ifetime
   CItemField m_tttPMTime; // last 'P'assword 'M'odification time
   CItemField m_tttRMTime; // last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
   CItemField m_PWPolicy;
+  CItemField m_XTimeInterval;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
@@ -350,7 +355,7 @@ private:
 inline bool CItemData::IsTextField(unsigned char t)
 {
   return !(t == UUID || t == CTIME || t == PMTIME ||
-    t == ATIME || t == LTIME || t == RMTIME ||
+    t == ATIME || t == XTIME || t == RMTIME || t == XTIME_INT ||
     t >= LAST);
 }
 

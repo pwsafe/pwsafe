@@ -137,12 +137,15 @@ void DboxMain::OnAdd()
       temp.SetPWPolicy(dlg_add.m_pwp);
 
     if (temp.IsAlias()) {
-      temp.SetLTime((time_t)0);
+      temp.SetXTime((time_t)0);
       temp.SetPWPolicy(_T(""));
     } else {
-      temp.SetLTime(dlg_add.m_tttLTime);
+      temp.SetXTime(dlg_add.m_tttXTime);
       temp.SetPWPolicy(dlg_add.m_pwp);
     }
+
+    if (dlg_add.m_XTimeInt > 0 && dlg_add.m_XTimeInt <= 3650)
+      temp.SetXTimeInt(dlg_add.m_XTimeInt);
 
     if (dlg_add.m_SavePWHistory == TRUE) {
       TCHAR buffer[6];
@@ -252,7 +255,7 @@ void DboxMain::CreateShortcutEntry(CItemData *ci, const CMyString cs_group,
 
   time(&t);
   temp.SetCTime(t);
-  temp.SetLTime((time_t)0);
+  temp.SetXTime((time_t)0);
 
   AddEntry(temp);
 
@@ -728,7 +731,7 @@ bool DboxMain::EditItem(CItemData *ci, PWScore *pcore)
     }
 
     if (editedItem.IsAlias() || editedItem.IsShortcut()) {
-      editedItem.SetLTime((time_t)0);
+      editedItem.SetXTime((time_t)0);
       editedItem.SetPWPolicy(_T(""));
     } else {
       editedItem.SetPWPolicy(dlg_edit.m_pwp);
@@ -809,7 +812,7 @@ bool DboxMain::EditShortcut(CItemData *ci, PWScore *pcore)
     ndi->tree_item = 0;
     editedItem.SetDisplayInfo(ndi);
 
-    editedItem.SetLTime((time_t)0);
+    editedItem.SetXTime((time_t)0);
 
     pcore->RemoveEntryAt(listpos);
     pcore->AddEntry(editedItem);
@@ -875,15 +878,19 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetAutoType(ci->GetAutoType());
     ci2.SetNotes(ci->GetNotes());
     time_t t;
+    int xint;
     ci->GetCTime(t);
     if ((long) t != 0L)
       ci2.SetCTime(t);
     ci->GetATime(t);
     if ((long) t != 0L)
       ci2.SetATime(t);
-    ci->GetLTime(t);
+    ci->GetXTime(t);
     if ((long) t != 0L)
-      ci2.SetLTime(t);
+      ci2.SetXTime(t);
+    ci->GetXTimeInt(xint);
+    if (xint != 0)
+      ci2.SetXTimeInt(xint);
     ci->GetPMTime(t);
     if ((long) t != 0L)
       ci2.SetPMTime(t);

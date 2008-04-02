@@ -13,7 +13,7 @@
 #define IDSC_EXPHDRCTIME                3008
 #define IDSC_EXPHDRPMTIME               3009
 #define IDSC_EXPHDRATIME                3010
-#define IDSC_EXPHDRLTIME                3011
+#define IDSC_EXPHDRXTIME                3011
 #define IDSC_EXPHDRRMTIME               3012
 #define IDSC_EXPHDRPWHISTORY            3013
 #define IDCS_EXPHDRNOTES                3014
@@ -58,6 +58,7 @@
 #define IDSC_EXPHDRGROUP                3054
 #define IDSC_EXPHDRTITLE                3055
 #define IDSC_EXPHDRPWPOLICY             3056
+#define IDSC_EXPHDRXTIMEINT             3057
 
 #define IDSC_FILEEXCEPTION00            3100
 #define IDSC_FILEEXCEPTION01            3101
