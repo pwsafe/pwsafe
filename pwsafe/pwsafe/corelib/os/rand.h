@@ -10,8 +10,18 @@
 #include "typedefs.h"
 
 namespace pws_os {
+  // Calling the following sets up a hook to the OS's best
+  // rng, which, if succeessful, may then be called via
+  // GetRandomData
   extern bool InitRandomDataFunction();
+  
   extern bool GetRandomData(void *p, unsigned long len);
+  
+  // Calling following with p == NULL wil return the size of
+  // the generated seed in byte in slen. A pointer to slen
+  // bytes should then be passed, which will be filled with
+  // (hopefully) enough entropy to get the ball rolling...
+  extern void GetRandomSeed(void *p, unsigned &slen);
 };
 #endif /* __RAND_H */
 //-----------------------------------------------------------------------------
