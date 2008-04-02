@@ -6,8 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include <limits.h>
-#include <stdlib.h>
-#include <process.h>
 #include "os/rand.h"
 
 #include "PwsPlatform.h"
@@ -37,14 +35,14 @@ PWSrand::PWSrand()
   m_IsInternalPRNG = !pws_os::InitRandomDataFunction();
 
   SHA256 s;
-  time_t t = time(NULL);
-  int pid = _getpid();
-  DWORD ticks = GetTickCount();
+  unsigned slen = 0;
+  unsigned char *p;
 
-  s.Update((const unsigned char *)&t, sizeof(t));
-  s.Update((const unsigned char *)&pid, sizeof(pid));
-  s.Update((const unsigned char *)&ticks, sizeof(ticks));
-
+  pws_os::GetRandomSeed(NULL, slen);
+  p = new unsigned char[slen];
+  pws_os::GetRandomSeed(p, slen);
+  s.Update(p, slen);
+  delete[] p;
   s.Final(K);
 }
 

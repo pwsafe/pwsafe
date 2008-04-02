@@ -11,6 +11,8 @@
  */
 #include <afx.h>
 #include <Windows.h>
+#include <stdlib.h>
+#include <process.h>
 #include "../rand.h"
 
 // See the MSDN documentation for RtlGenRandom. We will try to load it
@@ -52,3 +54,23 @@ bool pws_os::GetRandomData(void *p, unsigned long len)
   else
     return false;
 }
+
+void pws_os::GetRandomSeed(void *p, unsigned &slen)
+{
+  time_t t;
+  int pid;
+  DWORD ticks;
+
+  if (p == NULL) {
+    slen = sizeof(t) + sizeof(pid) + sizeof(ticks);
+  } else {
+    ASSERT(slen == sizeof(t) + sizeof(pid) + sizeof(ticks));
+    t = time(NULL);
+    pid = _getpid();
+    ticks = GetTickCount();
+    unsigned char *pc = static_cast<unsigned char *>(p);
+    memcpy(pc, &t, sizeof(t));
+    memcpy(pc + sizeof(t), &pid, sizeof(pid));
+    memcpy(pc + sizeof(t) + sizeof(pid), &ticks, sizeof(ticks));
+  }
+}    
