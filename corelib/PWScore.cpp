@@ -46,7 +46,6 @@ typedef std::vector<stringT>::iterator viter;
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
 unsigned char PWScore::m_session_initialized = false;
-CString PWScore::m_impexphdr;
 
 PWScore::PWScore() : m_currfile(_T("")), m_changed(false),
                      m_usedefuser(false), m_defusername(_T("")),
@@ -229,7 +228,7 @@ struct PutText {
   PutText(const CString &subgroup_name,
           const int subgroup_object, const int subgroup_function,
           const CItemData::FieldBits &bsFields,
-          TCHAR delimiter, ofstreamT &ofs, PWScore *core) :
+          TCHAR delimiter, ofstream &ofs, PWScore *core) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_core(core)
@@ -264,9 +263,18 @@ struct PutText {
       }
       const CMyString line = item.GetPlaintext(TCHAR('\t'),
                                                m_bsFields, m_delimiter, cibase);
-      if (!line.IsEmpty())
-        m_ofs << LPCTSTR(line) << endl;
-    }
+      if (!line.IsEmpty()) {
+        CUTF8Conv conv; // can't make a member, as no copy c'tor!
+        const unsigned char *utf8;
+        int utf8Len;
+        if (conv.ToUTF8(line, utf8, utf8Len)) {
+          m_ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+          m_ofs << endl;
+        } else {
+          ASSERT(0);
+        }
+      } // !line.IsEmpty()
+    } // we've a match
   }
 
 private:
@@ -274,8 +282,7 @@ private:
   const int m_subgroup_object;
   const int m_subgroup_function;
   const CItemData::FieldBits &m_bsFields;
-  TCHAR m_delimiter;
-  ofstreamT &m_ofs;
+  TCHAR m_delimiter;  ofstream &m_ofs;
   PWScore *m_core;
 };
 
@@ -290,17 +297,24 @@ int PWScore::WritePlaintextFile(const CMyString &filename,
   if (bsFields.count() == 0)
     return SUCCESS;
 
-  ofstreamT ofs(filename);
-
+  ofstream ofs(filename);
   if (!ofs)
     return CANT_OPEN_FILE;
 
+  CMyString hdr(_T(""));
+  // Following for writing header to an ofstream. Ugh.
+  CUTF8Conv conv; const unsigned char *utf8; int utf8Len;
+
+
   if ( bsFields.count() == bsFields.size()) {
-    if (m_impexphdr.IsEmpty())
-      m_impexphdr.LoadString(IDSC_EXPORTHEADER);
-    ofs << LPCTSTR(m_impexphdr) << endl;
+    // all fields to be exported, use pre-built header
+    hdr.LoadString(IDSC_EXPORTHEADER);
+    conv.ToUTF8(hdr, utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << endl;
   } else {
-    CString hdr = _T(""), cs_temp;
+    // user chose fields, build custom header
+    CMyString cs_temp;
     if (bsFields.test(CItemData::GROUP) && bsFields.test(CItemData::TITLE)) {
       cs_temp.LoadString(IDSC_EXPHDRGROUPTITLE);
       hdr += cs_temp;
@@ -369,8 +383,10 @@ int PWScore::WritePlaintextFile(const CMyString &filename,
     int hdr_len = hdr.GetLength();
     if (hdr.Right(1) == _T("\t"))
       hdr_len--;
-
-    ofs << LPCTSTR(hdr.Left(hdr_len)) << endl;
+    hdr = hdr.Left(hdr_len);
+    conv.ToUTF8(hdr, utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << endl;
   }
 
   PutText put_text(subgroup_name, subgroup_object, subgroup_function,
@@ -426,8 +442,8 @@ struct XMLRecordWriter {
           cibase = &iter->second;
       }
       string xml = item.GetXML(m_id, m_bsFields, m_delimiter, cibase);
-                               m_of.write(xml.c_str(),
-                               static_cast<streamsize>(xml.length()));
+      m_of.write(xml.c_str(),
+                 static_cast<streamsize>(xml.length()));
     }
   }
 
@@ -659,14 +675,13 @@ int PWScore::ImportPlaintextFile(const CMyString &ImportedPrefix,
 
   numImported = numSkipped = 0;
 
-  if (m_impexphdr.IsEmpty())
-    m_impexphdr.LoadString(IDSC_EXPORTHEADER);
-
   int numlines = 0;
 
   CItemData temp;
   vector<stringT> vs_Header;
-  const stringT s_hdr(m_impexphdr);
+  CString cs_hdr;
+  cs_hdr.LoadString(IDSC_EXPORTHEADER);
+  const stringT s_hdr(cs_hdr);
   const TCHAR pTab[] = _T("\t");
   TCHAR pSeps[] = _T(" ");
   TCHAR *pTemp;
