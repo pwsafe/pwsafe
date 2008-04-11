@@ -155,6 +155,7 @@
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				EnableFloatingPointEmulation="false"
+				EnableFloatingPointEmulation="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -435,6 +436,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\corelib\hmac.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\ItemData.cpp"
 				>
 				<FileConfiguration
@@ -551,6 +556,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\PWSfile.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\PWSfileV1V2.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\PWSfileV3.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\PWSrand.cpp"
 				>
 			</File>
@@ -595,7 +612,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\SysInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\TwoFish.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\UnknownField.cpp"
 				>
 			</File>
 			<File
@@ -656,6 +681,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\hmac.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\ItemData.h"
 				>
 			</File>
@@ -676,6 +705,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\PWSfile.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\PWSfileV1V2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\PWSfileV3.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\PwsPlatform.h"
 				>
 			</File>
@@ -692,11 +733,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\SysInfo.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\TwoFish.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\corelib\typedefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\UnknownField.h"
 				>
 			</File>
 			<File

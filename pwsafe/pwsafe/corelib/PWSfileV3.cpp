@@ -10,10 +10,18 @@
 #include "PWSrand.h"
 #include "util.h"
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
+#ifdef POCKET_PC
+  #include <stdio.h>
+  #include <wce_stdio.h>
+  #include <wce_stat.h>
+  #include <wce_time.h>
+  #define time(timer)	  wceex_time(timer)
+#else
+  #include <io.h>
+  #include <fcntl.h>
+  #include <sys/stat.h>
+  #include <errno.h>
+#endif
 
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
@@ -133,7 +141,7 @@ int PWSfileV3::CheckPassword(const CMyString &filename,
   SHA256 H;
 
   if (fd == NULL) {
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
     _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
 #else
     fd = _tfopen((LPCTSTR) filename, _T("rb"));
@@ -881,14 +889,14 @@ bool PWSfileV3::FromUTF8(CMyString &data)
         DWORD errCode = GetLastError();
         switch (errCode) {
             case ERROR_INSUFFICIENT_BUFFER:
-                TRACE("INSUFFICIENT BUFFER"); break;
+                TRACE(_T("INSUFFICIENT BUFFER")); break;
             case ERROR_INVALID_FLAGS:
-                TRACE("INVALID FLAGS"); break;
+                TRACE(_T("INVALID FLAGS")); break;
             case ERROR_INVALID_PARAMETER:
-                TRACE("INVALID PARAMETER"); break;
+                TRACE(_T("INVALID PARAMETER")); break;
             case ERROR_NO_UNICODE_TRANSLATION:
               // try to recover
-                TRACE("NO UNICODE TRANSLATION");
+                TRACE(_T("NO UNICODE TRANSLATION"));
                 wcLen = MultiByteToWideChar(CP_ACP,      // code page
                                 MB_ERR_INVALID_CHARS,  // character-type options
                                 LPSTR(m_utf8),       // string to map
@@ -952,7 +960,7 @@ bool PWSfileV3::IsV3x(const CMyString &filename, VERSION &v)
 
   ASSERT(FileExists(filename));
   FILE *fd;
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
   _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
 #else
   fd = _tfopen((LPCTSTR) filename, _T("rb") );

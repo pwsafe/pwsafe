@@ -14,6 +14,8 @@
 // Singleton class to provide system-specific information,
 // such as hostname, username, pid
 //-----------------------------------------------------------------
+#include "PwsPlatform.h"
+
 #include "MyString.h"
 
 class SysInfo

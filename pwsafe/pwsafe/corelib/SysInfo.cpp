@@ -35,19 +35,27 @@ SysInfo::SysInfo()
   TCHAR sysname[MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR)];
   //  ulen INCLUDES the trailing blank
   DWORD ulen = UNLEN + sizeof(TCHAR);
+#if defined(_WIN32_WCE)
+  { // alway jump to the error handling block, as PocketPC has no GetUserName()
+#else
   if (::GetUserName(user, &ulen)== FALSE) {
+#endif
     user[0] = TCHAR('?');
-	user[1] = TCHAR('\0');
-	ulen = 2;
+	  user[1] = TCHAR('\0');
+	  ulen = 2;
   }
   ulen--;
 
   //  slen EXCLUDES the trailing blank
   DWORD slen = MAX_COMPUTERNAME_LENGTH + sizeof(TCHAR);
+#if defined(_WIN32_WCE)
+  { // alway jump to the error handling block, as PocketPC has no GetUserName()
+#else
   if (::GetComputerName(sysname, &slen) == FALSE) {
+#endif
     sysname[0] = TCHAR('?');
-	sysname[1] = TCHAR('\0');
-	slen = 1;
+	  sysname[1] = TCHAR('\0');
+	  slen = 1;
   }
   m_user = CString(user, ulen);
   m_sysname = CString(sysname, slen);
@@ -58,7 +66,10 @@ CString SysInfo::GetEnv(const char *env)
 {
     ASSERT(env != NULL);
     CString retval;
-#if _MSC_VER < 1400
+#if defined(_WIN32_WCE)
+    // do nothing here and return empty string
+    // this is because PocketPC doesn't support the concept of environment variables
+#elif _MSC_VER < 1400
     retval = getenv(env);
 #else
     char* value;

@@ -16,6 +16,8 @@
 #ifndef __UNKNOWNFIELD_H
 #define __UNKNOWNFIELD_H
 
+#include "PwsPlatform.h"
+
 #include <vector>
 
 // Unknown Field structure

@@ -9,10 +9,16 @@
 #include "PWSrand.h"
 #include "corelib.h"
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
+#ifdef POCKET_PC
+  #include <stdio.h>
+  #include <wce_stdio.h>
+  #include <wce_stat.h>
+#else
+  #include <io.h>
+  #include <fcntl.h>
+  #include <sys/stat.h>
+  #include <errno.h>
+#endif
 
 
 PWSfileV1V2::PWSfileV1V2(const CMyString &filename, RWmode mode, VERSION version)
@@ -187,7 +193,7 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
 {
   FILE *fd = a_fd;
   if (fd == NULL) {
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
     _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
 #else
     fd = _tfopen((LPCTSTR) filename, _T("rb"));
@@ -403,13 +409,13 @@ size_t PWSfileV1V2::ReadCBC(unsigned char &type, CMyString &data)
         DWORD errCode = GetLastError();
         switch (errCode) {
             case ERROR_INSUFFICIENT_BUFFER:
-                TRACE("INSUFFICIENT BUFFER"); break;
+                TRACE(_T("INSUFFICIENT BUFFER")); break;
             case ERROR_INVALID_FLAGS:
-                TRACE("INVALID FLAGS"); break;
+                TRACE(_T("INVALID FLAGS")); break;
             case ERROR_INVALID_PARAMETER:
-                TRACE("INVALID PARAMETER"); break;
+                TRACE(_T("INVALID PARAMETER")); break;
             case ERROR_NO_UNICODE_TRANSLATION:
-                TRACE("NO UNICODE TRANSLATION"); break;
+                TRACE(_T("NO UNICODE TRANSLATION")); break;
             default:
                 ASSERT(0);
         }

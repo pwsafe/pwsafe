@@ -16,6 +16,8 @@
 // HMAC algorithm as per RFC2104
 // Generalizing this to other hashes is left as an exercise to the reader...
 
+#include "PwsPlatform.h"
+
 #include "sha256.h" 
 
 class HMAC_SHA256

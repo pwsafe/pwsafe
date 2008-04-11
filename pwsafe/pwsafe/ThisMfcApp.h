@@ -48,6 +48,7 @@ public:
 
 public:
   DboxMain* m_maindlg;
+/// probably not needed, only for testing
   PWScore m_core;
 
   virtual BOOL InitInstance();

@@ -12,10 +12,21 @@
 #include "corelib.h"
 
 #include <LMCONS.H> // for UNLEN definition
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <errno.h>
+#ifdef POCKET_PC
+  #include <stdio.h>
+  #include <wce_stdio.h>
+  #include <wce_stat.h>
+  #define _trename(oldname, newname)	  wceex__wrename(oldname, newname)
+  #define _tremove(file)				  wceex_wunlink(file)
+  #define _stat	stat	// struct stat
+  #define _tstat(filename, buf)			  wceex__wstat(filename, buf)
+#else
+  #include <io.h>
+  #include <fcntl.h>
+  #include <sys/stat.h>
+  #include <errno.h>
+#endif
+
 
 int PWSfile::m_nITER;
 
@@ -103,12 +114,23 @@ PWSfile::VERSION PWSfile::ReadVersion(const CMyString &filename)
 }
 
 
+/** renames a file
+ * \warning if newname exists, it will be silently overwritten!
+ */
 int PWSfile::RenameFile(const CMyString &oldname, const CMyString &newname)
 {
+/*#if defined(POCKET_PC)
+  DeleteFile(newname); // MoveFile requires that newname does not exist; ignore result
+  BOOL status = MoveFile(oldname, newname);
+
+  // to make it really crazy, MS changed the return value semantics from rename to MoveFile...
+  return (status != 0) ? SUCCESS : FAILURE;
+#else  */
   _tremove(newname); // otherwise rename will fail if newname exists
   int status = _trename(oldname, newname);
 
   return (status == 0) ? SUCCESS : FAILURE;
+//#endif
 }
 
 
@@ -131,7 +153,7 @@ void PWSfile::FOpen()
 {
   TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
   // calls right variant of m_fd = fopen(m_filename);
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
   _tfopen_s(&m_fd, (LPCTSTR) m_filename, m);
 #else
   m_fd = _tfopen((LPCTSTR) m_filename, m);

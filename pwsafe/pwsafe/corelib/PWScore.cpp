@@ -21,6 +21,12 @@
 #include <shellapi.h>
 #include <shlwapi.h>
 
+#ifdef POCKET_PC
+  // use wcelibcex's impl of time functions
+  #include <wce_time.h>
+  #define time	  wceex_time
+#endif
+
 #include <fstream> // for WritePlaintextFile
 #include <iostream>
 #include <string>
