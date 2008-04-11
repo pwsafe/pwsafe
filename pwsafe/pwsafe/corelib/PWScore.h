@@ -256,7 +256,6 @@ private:
   static unsigned char m_session_key[20];
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
-  static CString m_impexphdr;
   HANDLE m_lockFileHandle;
   int m_LockCount;
 
