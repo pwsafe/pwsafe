@@ -155,7 +155,6 @@
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				EnableFloatingPointEmulation="false"
-				EnableFloatingPointEmulation="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
