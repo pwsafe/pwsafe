@@ -10,6 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.12.01
 =====================
+[1940311] Password Policy now ignores length requirements if not applicable.
 [1938057] Non-Latin text now correctly exported to plain text file.
 [1914433] It is now possible to view the password policy set for an
 individual entry, by shift-clicking on the checked Override Policy
