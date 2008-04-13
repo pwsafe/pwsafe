@@ -14,6 +14,7 @@
 #include "corelib/PWSprefs.h" // for DoubleClickAction enums
 #include "corelib/util.h" // for datetime string
 #include "corelib/mystring.h"
+#include "corelib/os/dir.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -55,20 +56,13 @@ COptionsBackup::~COptionsBackup()
 void COptionsBackup::SetCurFile(const CString &currentFile)
 {
   // derive current db's directory and basename:
-  TCHAR path_buffer[_MAX_PATH];
-  TCHAR drive[_MAX_DRIVE];
-  TCHAR dir[_MAX_DIR];
-  TCHAR base[_MAX_FNAME];
+  stringT path(currentFile);
+  stringT drive, dir, base, ext;
 
-#if _MSC_VER >= 1400
-  _tsplitpath_s(currentFile, drive, _MAX_DRIVE, dir, _MAX_DIR, base, _MAX_FNAME, NULL, 0);
-  _tmakepath_s(path_buffer, _MAX_PATH, drive, dir, NULL, NULL);
-#else
-  _tsplitpath(currentFile, drive, dir, base, NULL);
-  _tmakepath(path_buffer, drive, dir,  NULL, NULL);
-#endif
-  m_currentFileDir = path_buffer;
-  m_currentFileBasename = base;
+  pws_os::splitpath(path, drive, dir, base, ext);
+  path = pws_os::makepath(drive, dir, _T(""), _T(""));
+  m_currentFileDir = path.c_str();
+  m_currentFileBasename = base.c_str();
 }
 
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)

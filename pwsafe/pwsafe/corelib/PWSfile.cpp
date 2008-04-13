@@ -10,6 +10,7 @@
 #include "PWSfileV3.h"
 #include "SysInfo.h"
 #include "corelib.h"
+#include "os/dir.h"
 
 #include "sha1.h" // for simple encrypt/decrypt
 #include "PWSrand.h" // ditto
@@ -344,13 +345,10 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
   const stringT host = si->GetRealHost();
   const stringT pid = si->GetCurrentPID();
 
-  TCHAR fname[_MAX_FNAME];
-  TCHAR ext[_MAX_EXT];
-#if _MSC_VER >= 1400
-  _tsplitpath_s(lock_filename, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
-#else
-  _tsplitpath(lock_filename, NULL, NULL, fname, ext);
-#endif
+  const stringT path(lock_filename);
+  stringT drv, dir, fname, ext;
+
+  pws_os::splitpath(path, drv, dir, fname, ext);
 
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
@@ -431,7 +429,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     ASSERT(sumWrit > 0);
     LockCount++;
     TRACE(_T("%s Lock1  ; Count now %d; File Created; File: %s%s\n"), 
-      PWSUtil::GetTimeStamp(), LockCount, fname, ext);
+          PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
     return (write_status == TRUE);
   }
 #endif // POSIX_FILE_LOCK
@@ -458,22 +456,19 @@ void PWSfile::UnlockFile(const CMyString &filename,
     GetLockFileName(filename, lock_filename);
     GetLocker(lock_filename, locker);
 
-    TCHAR fname[_MAX_FNAME];
-    TCHAR ext[_MAX_EXT];
-#if _MSC_VER >= 1400
-    _tsplitpath_s(lock_filename, NULL, 0, NULL, 0, fname, _MAX_FNAME, ext, _MAX_EXT);
-#else
-    _tsplitpath(lock_filename, NULL, NULL, fname, ext);
-#endif
+    const stringT path(lock_filename);
+    stringT drv, dir, fname, ext;
+    
+    pws_os::splitpath(path, drv, dir, fname, ext);
 
     if (cs_me == stringT(locker) && LockCount > 1) {
       LockCount--;
       TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
-        PWSUtil::GetTimeStamp(), LockCount, fname, ext);
+            PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
     } else {
       LockCount = 0;
       TRACE(_T("%s Unlock1; Count now %d; File Deleted; File: %s%s\n"), 
-        PWSUtil::GetTimeStamp(), LockCount, fname, ext);
+            PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
       CloseHandle(lockFileHandle);
       lockFileHandle = INVALID_HANDLE_VALUE;
       DeleteFile(LPCTSTR(lock_filename));
