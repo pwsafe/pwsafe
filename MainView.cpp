@@ -33,6 +33,7 @@
 #include "corelib/pwsprefs.h"
 #include "corelib/UUIDGen.h"
 #include "corelib/corelib.h"
+#include "corelib/os/dir.h"
 
 #include "commctrl.h"
 #include <shlwapi.h>
@@ -2497,44 +2498,23 @@ void DboxMain::UnFindItem()
 bool DboxMain::GetDriveAndDirectory(const CMyString cs_infile, CString &cs_drive,
                                     CString &cs_directory)
 {
-  TCHAR tc_applicationpath[_MAX_PATH];
-  TCHAR tc_appdrive[_MAX_DRIVE];
-  TCHAR tc_appdir[_MAX_DIR];
-  TCHAR tc_drive[_MAX_DRIVE];
-  TCHAR tc_dir[_MAX_DIR];
+  stringT applicationpath = pws_os::getexecdir();
+  stringT inpath = cs_infile;
+  stringT appdrive, appdir;
+  stringT drive, dir, file, ext;
 
-  memset(tc_appdrive, 0x00, _MAX_DRIVE * sizeof(TCHAR));
-  memset(tc_appdir, 0x00, _MAX_DIR * sizeof(TCHAR));
-  memset(tc_drive, 0x00, _MAX_DRIVE * sizeof(TCHAR));
-  memset(tc_dir, 0x00, _MAX_DIR * sizeof(TCHAR));
-
-  ::GetModuleFileName(NULL, tc_applicationpath, _MAX_PATH);
-
-#if _MSC_VER >= 1400
-  errno_t err;
-  _tsplitpath_s(tc_applicationpath, tc_appdrive, _MAX_DRIVE, tc_appdir, 
-                _MAX_DIR, NULL, 0, NULL, 0);
-  err = _tsplitpath_s(cs_infile, tc_drive, _MAX_DRIVE, tc_dir, 
-                      _MAX_DIR, NULL, 0, NULL, 0);
-  if (err != 0) {
+  pws_os::splitpath(applicationpath, appdrive, appdir, file, ext);
+  if (!pws_os::splitpath(inpath, drive, dir, file, ext)) {
     PWSUtil::IssueError(_T("View Report: Error finding path to database"));
     return false;
   }
-#else
-  _tsplitpath(tc_applicationpath, tc_appdrive, tc_appdir, NULL, NULL);
-  _tsplitpath(cs_Database, sz_drive, sz_dir, NULL, NULL);
-#endif
 
-  if (_tcslen(tc_drive) == 0) {
-    memset(tc_drive, 0x00, _MAX_DRIVE * sizeof(TCHAR));
-    memcpy(tc_drive, tc_appdrive, _MAX_DRIVE * sizeof(TCHAR));
-  }
-  if (_tcslen(tc_dir) == 0) {
-    memset(tc_dir, 0x00, _MAX_DIR * sizeof(TCHAR));
-    memcpy(tc_dir, tc_appdir, _MAX_DIR * sizeof(TCHAR));
-  }
-  cs_directory = CString(tc_dir);
-  cs_drive = CString(tc_drive);
+  if (drive.empty())
+    drive = appdrive;
+  if (dir.empty())
+    dir = appdir;
+  cs_drive = drive.c_str();
+  cs_directory = dir.c_str();
   return true;
 }
 

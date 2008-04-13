@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 
 #include "os/typedefs.h"
+#include "os/dir.h"
 #include "PWScore.h"
 #include "corelib.h"
 #include "BlowFish.h"
@@ -1310,14 +1311,11 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
   // generate prefix of intermediate backup file name
   if (userBackupPrefix.IsEmpty()) {
-    TCHAR fname[_MAX_FNAME];
+    const stringT path(m_currfile);
+    stringT drv, dir, name, ext;
 
-#if _MSC_VER >= 1400
-    _tsplitpath_s( m_currfile, NULL, 0, NULL, 0, fname, _MAX_FNAME, NULL, 0 );
-#else
-    _tsplitpath( m_currfile, NULL, NULL, fname, NULL );
-#endif
-    cs_temp += CString(fname);
+    pws_os::splitpath(path, drv, dir, name, ext);
+    cs_temp += name.c_str();
   } else {
     cs_temp += userBackupPrefix;
   }

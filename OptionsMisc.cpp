@@ -12,6 +12,7 @@
 #include "passwordsafe.h"
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h" // for DoubleClickAction enums
+#include "corelib/os/dir.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -209,22 +210,16 @@ void COptionsMisc::OnOK()
 void COptionsMisc::OnBrowseForLocation()
 {
   CString cs_initiallocation, cs_title;
-  TCHAR path_buffer[_MAX_PATH];
-  TCHAR drive[_MAX_DRIVE];
-  TCHAR dir[_MAX_DIR];
   INT_PTR rc;
 
   if (m_csBrowser.IsEmpty())
     cs_initiallocation = _T("C:\\");
   else {
-#if _MSC_VER >= 1400
-    _tsplitpath_s(m_csBrowser, drive, _MAX_DRIVE, dir, _MAX_DIR, NULL, 0, NULL, 0);
-    _tmakepath_s(path_buffer, _MAX_PATH, drive, dir, NULL, NULL);
-#else
-    _tsplitpath(m_csBrowser, drive, dir, NULL, NULL);
-    _tmakepath(path_buffer, drive, dir, NULL, NULL);
-#endif
-    cs_initiallocation = CString(path_buffer);
+    stringT path = m_csBrowser;
+    stringT drive, dir, name, ext;
+    pws_os::splitpath(path, drive, dir, name, ext);
+    path = pws_os::makepath(drive, dir, _T(""), _T(""));
+    cs_initiallocation = path.c_str();
   }
 
   CFileDialog fd(TRUE, NULL, NULL,

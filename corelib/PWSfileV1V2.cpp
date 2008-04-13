@@ -183,14 +183,12 @@ int PWSfileV1V2::CheckPassword(const CMyString &filename,
                                const CMyString &passkey, FILE *a_fd)
 {
   FILE *fd = a_fd;
+  errno_t err = 0;
   if (fd == NULL) {
-#if _MSC_VER >= 1400
-    _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
-#else
-    fd = _tfopen((LPCTSTR) filename, _T("rb"));
-#endif
+    // XXX argument changes mean we can't use _s version transparently
+    err = _tfopen_s(&fd, (LPCTSTR) filename, _T("rb"));
   }
-  if (fd == NULL)
+  if (fd == NULL || err != 0)
     return CANT_OPEN_FILE;
 
   unsigned char randstuff[StuffSize];

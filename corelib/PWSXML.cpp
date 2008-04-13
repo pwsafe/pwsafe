@@ -7,7 +7,6 @@
 */
 // PWSXML.cpp : implementation file
 //
-
 #include "PWSXML.h"
 #include "SAXHandlers.h"
 #include "ItemData.h"
@@ -169,18 +168,9 @@ bool PWSXML::XMLProcess(const bool &bvalidation, const CString &ImportedPrefix,
     //  Let's begin the parsing now
     wchar_t wcURL[MAX_PATH]={0};
 #ifdef _UNICODE
-#if _MSC_VER >= 1400
-    _tcscpy_s(wcURL, MAX_PATH, strXMLFileName);
-#else
     _tcscpy(wcURL, strXMLFileName);
-#endif
-#else
-#if _MSC_VER >= 1400
-    size_t numconverted;
-    mbstowcs_s(&numconverted, wcURL, MAX_PATH, strXMLFileName, _tcslen(strXMLFileName));
 #else
     mbstowcs(wcURL, strXMLFileName, _tcslen(strXMLFileName));
-#endif
 #endif
     hr = pSAXReader->parseURL(wcURL);
 

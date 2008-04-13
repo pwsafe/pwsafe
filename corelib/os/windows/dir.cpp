@@ -41,3 +41,39 @@ bool pws_os::chdir(const stringT &dir)
   return (_tchdir(dir.c_str()) == 0);
 }
 
+  // In following, drive will be empty on non-Windows platforms
+bool pws_os::splitpath(const stringT &path,
+                       stringT &drive, stringT &dir,
+                       stringT &file, stringT &ext)
+{
+  TCHAR tdrv[_MAX_DRIVE];
+  TCHAR tdir[_MAX_DIR];
+  TCHAR tname[_MAX_FNAME];
+  TCHAR text[_MAX_EXT];
+
+  memset(tdrv, 0x00, sizeof(tdrv));
+  memset(tdir, 0x00, sizeof(tdir));
+  memset(tname, 0x00, sizeof(tname));
+  memset(text, 0x00, sizeof(text));
+
+  if (_tsplitpath_s(path.c_str(), tdrv, tdir, tname, text) == 0) {
+    drive = tdrv;
+    dir = tdir;
+    file = tname;
+    ext = text;
+    return true;
+  } else
+    return false;
+}
+
+stringT pws_os::makepath(const stringT &drive, const stringT &dir,
+                         const stringT &file, const stringT &ext)
+{
+  stringT retval;
+  TCHAR path[_MAX_PATH];
+
+  if (_tmakepath_s(path, drive.c_str(), dir.c_str(),
+                   file.c_str(), ext.c_str()) == 0)
+    retval = path;
+  return retval;
+}

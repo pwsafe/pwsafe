@@ -13,6 +13,7 @@
 #include "PWSrand.h"
 #include "PwsPlatform.h"
 #include "corelib.h"
+#include "os/dir.h"
 
 #include <stdio.h>
 #include <sys/timeb.h>
@@ -878,21 +879,16 @@ exit: buffer.Format(IDSC_PWHERROR, len - pwleft + 1);
 
 CMyString PWSUtil::GetNewFileName(const CMyString &oldfilename, const CString &newExtn)
 {
-  TCHAR path_buffer[_MAX_PATH];
-  TCHAR drive[_MAX_DRIVE];
-  TCHAR dir[_MAX_DIR];
-  TCHAR fname[_MAX_FNAME];
-  TCHAR ext[_MAX_EXT];
+  stringT inpath(oldfilename);
+  stringT drive, dir, fname, ext;
+  stringT outpath;
 
-#if _MSC_VER >= 1400
-  _tsplitpath_s(oldfilename, drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
-                _MAX_FNAME, ext, _MAX_EXT);
-  _tmakepath_s(path_buffer, _MAX_PATH, drive, dir, fname, newExtn);
-#else
-  _tsplitpath(oldfilename, drive, dir, fname, ext);
-  _tmakepath(path_buffer, drive, dir, fname, newExtn);
-#endif
-  return CMyString(path_buffer);
+  if (pws_os::splitpath(inpath, drive, dir, fname, ext)) {
+    ext = newExtn;
+    outpath = pws_os::makepath(drive, dir, fname, ext);
+  } else
+    ASSERT(0);
+  return CMyString(outpath.c_str());
 }
 
 void PWSUtil::IssueError(const CString &csFunction)

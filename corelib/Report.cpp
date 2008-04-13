@@ -9,6 +9,7 @@
 #include "Report.h"
 #include "Util.h"
 #include "corelib.h"
+#include "os/dir.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,21 +38,14 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
     m_fd = NULL;
   }
 
-  TCHAR tc_drive[_MAX_DRIVE];
-  TCHAR tc_dir[_MAX_DIR];
-  errno_t err;
-
-#if _MSC_VER >= 1400
-  err = _tsplitpath_s(csDataBase, tc_drive, _MAX_DRIVE, tc_dir, _MAX_DIR, NULL, 0, NULL, 0);
-  if (err != 0) {
+  stringT path(csDataBase);
+  stringT drive, dir, file, ext;
+  if (!pws_os::splitpath(path, drive, dir, file, ext)) {
     PWSUtil::IssueError(_T("StartReport: Finding path to database"));
     return false;
   }
-#else
-  _tsplitpath(csDataBase, sz_drive, sz_dir, NULL, NULL);
-#endif
 
-  m_cs_filename.Format(IDSC_REPORTFILENAME, tc_drive, tc_dir, tcAction);
+  m_cs_filename.Format(IDSC_REPORTFILENAME, drive.c_str(), dir.c_str(), tcAction);
 
   if ((m_fd = _tfsopen((LPCTSTR) m_cs_filename, _T("a+b"), _SH_DENYWR)) == NULL) {
     PWSUtil::IssueError(_T("StartReport: Opening log file"));
@@ -276,6 +270,8 @@ void CReport::EndReport()
   cs_title.LoadString(IDSC_END_REPORT2);
   WriteLine(cs_title);
 
-  if (m_fd != NULL)
+  if (m_fd != NULL) {
     fclose(m_fd);
+    m_fd = NULL;
+  }
 }
