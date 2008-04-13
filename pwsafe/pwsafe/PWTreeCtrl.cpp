@@ -720,6 +720,7 @@ void CPWTreeCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
     }
     // Mark database as modified
     m_pDbx->SetChanged(DboxMain::Data);
+    m_pDbx->ChangeOkUpdate();
 
     // put edited text in right order by sorting
     SortTree(GetParentItem(ti));

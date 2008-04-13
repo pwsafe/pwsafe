@@ -411,7 +411,7 @@ void CPWToolBar::OnToolBarQueryInfo(NMHDR* pNotifyStruct, LRESULT *pResult)
 
   if ((pNMToolbar->iItem >= 0) &&
     (pNMToolbar->iItem < m_iMaxNumButtons)) {
-      pNMToolbar->tbButton =m_pOriginalTBinfo[pNMToolbar->iItem];
+      pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
       *pResult = TRUE;
   } else {
     *pResult = FALSE;
