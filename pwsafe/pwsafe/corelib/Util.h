@@ -145,6 +145,7 @@ namespace PWSUtil {
   CString Base64Encode(const BYTE *inData, size_t len);
   void Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &out_len);
   void IssueError(const CString &csFunction);
+  CMyString NormalizeTTT(const CMyString &in);
 };
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------

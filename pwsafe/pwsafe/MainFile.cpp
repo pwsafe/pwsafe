@@ -48,19 +48,6 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static const int MAX_TTT_LEN = 64; // Max tooltip text length
-CMyString DboxMain::NormalizeTTT(const CMyString in)
-{
-  CMyString ttt;
-  if (in.GetLength() >= MAX_TTT_LEN) {
-    ttt = in.Left(MAX_TTT_LEN/2-6) + 
-      _T(" ... ") + in.Right(MAX_TTT_LEN/2);
-  } else {
-    ttt = in;
-  }
-  return ttt;
-}
-
 BOOL DboxMain::OpenOnInit(void)
 {
   /*
@@ -79,7 +66,8 @@ BOOL DboxMain::OpenOnInit(void)
     case PWScore::SUCCESS:
       rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-      m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+      m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
+                                         m_core.GetCurFile());
       UpdateSystemTray(UNLOCKED);
 #endif
       CheckExpiredPasswords();
@@ -184,7 +172,8 @@ BOOL DboxMain::OpenOnInit(void)
   m_core.SetUseDefUser(PWSprefs::GetInstance()->
     GetPref(PWSprefs::UseDefaultUser) ? true : false);
 #if !defined(POCKET_PC)
-  m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
+                                     m_core.GetCurFile());
   SetWindowText(LPCTSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile());
 #endif
@@ -248,7 +237,7 @@ int DboxMain::New()
   }
 
 #if !defined(POCKET_PC)
-  m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + cs_newfile);
+  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) + cs_newfile);
   SetWindowText(LPCTSTR(m_titlebar));
 #endif
 
@@ -575,7 +564,8 @@ int DboxMain::Open(const CMyString &pszFilename)
   }
   m_core.SetCurFile(pszFilename);
 #if !defined(POCKET_PC)
-  m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
+                                     m_core.GetCurFile());
   SetWindowText(LPCTSTR(m_titlebar));
 #endif
   CheckExpiredPasswords();
@@ -644,7 +634,8 @@ int DboxMain::Save()
       return PWScore::USER_CANCEL;
     m_core.SetCurFile(NewName);
 #if !defined(POCKET_PC)
-    m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+    m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
+                                       m_core.GetCurFile());
     SetWindowText(LPCTSTR(m_titlebar));
     app.SetTooltipText(m_core.GetCurFile());
 #endif
@@ -783,7 +774,8 @@ int DboxMain::SaveAs()
     m_core.UnlockFile(m_core.GetCurFile());
   m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
-  m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+  m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
+                                     m_core.GetCurFile());
   SetWindowText(LPCTSTR(m_titlebar));
   app.SetTooltipText(m_core.GetCurFile());
 #endif
