@@ -1042,7 +1042,6 @@ void DboxMain::OnImportText()
     CString cs_text;
     cs_text.LoadString(IDS_RPTIMPORTTEXT);
     rpt.StartReport(cs_text, m_core.GetCurFile());
-    CString cs_ReportFileName = rpt.GetReportFileName();
     cs_text.LoadString(IDS_TEXT);
     cs_temp.Format(IDS_IMPORTFILE, cs_text, TxtFileName);
     rpt.WriteLine(cs_temp);
@@ -1095,7 +1094,7 @@ void DboxMain::OnImportText()
       gmb.AddButton(2, IDS_VIEWREPORT);
       INT_PTR rc = gmb.DoModal();
       if (rc == 2)
-        ViewReport(cs_ReportFileName);
+        ViewReport(rpt.GetReportFileName());
     }
     // May need to update menu/toolbar if original database was empty
     if (bWasEmpty)
@@ -1211,7 +1210,6 @@ void DboxMain::OnImportXML()
     CString cs_text;
     cs_text.LoadString(IDS_RPTIMPORTXML);
     rpt.StartReport(cs_text, m_core.GetCurFile());
-    CString cs_ReportFileName = rpt.GetReportFileName();
     cs_text.LoadString(IDS_XML);
     cs_temp.Format(IDS_IMPORTFILE, cs_text, XMLFilename);
     rpt.WriteLine(cs_temp);
@@ -1285,7 +1283,7 @@ void DboxMain::OnImportXML()
       gmb.AddButton(2, IDS_VIEWREPORT);
       INT_PTR rc = gmb.DoModal();
       if (rc == 2)
-        ViewReport(cs_ReportFileName);
+        ViewReport(rpt.GetReportFileName());
     } else
       MessageBox(cs_temp, cs_title, MB_ICONINFORMATION | MB_OK);
     // May need to update menu/toolbar if original database was empty
@@ -1749,7 +1747,6 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
   CReport rpt;
   cs_text.LoadString(IDS_RPTCOMPARE);
   rpt.StartReport(cs_text, m_core.GetCurFile());
-  CString cs_ReportFileName = rpt.GetReportFileName();
   cs_temp.Format(IDS_COMPARINGDATABASE, cs_Filename2);
   rpt.WriteLine(cs_temp);
   rpt.WriteLine();
@@ -2094,7 +2091,7 @@ int DboxMain::Compare(const CMyString &cs_Filename1, const CMyString &cs_Filenam
     rpt.EndReport();
 
     if (rc == 2)
-      ViewReport(cs_ReportFileName);
+      ViewReport(rpt.GetReportFileName());
   }
 
   if (othercore.IsLockedFile(othercore.GetCurFile()))
