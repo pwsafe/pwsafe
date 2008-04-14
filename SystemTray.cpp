@@ -109,20 +109,6 @@ void CSystemTray::Initialise()
   m_menuID = 0;
 }
 
-static const int MAX_TTT_LEN = 64; // Max tooltip text length
-
-static void NormalizeTTT(LPCTSTR in, LPTSTR out)
-{
-  CString t(in), ttt;
-  if (t.GetLength() >= MAX_TTT_LEN) {
-    ttt = t.Left(MAX_TTT_LEN/2-6) + 
-      _T(" ... ") + t.Right(MAX_TTT_LEN/2);
-  } else {
-    ttt = t;
-  }
-  PWSUtil::strCopy(out, MAX_TTT_LEN, ttt, MAX_TTT_LEN);
-}
-
 BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip,
                          HICON icon, UINT uID, UINT menuID)
 {
@@ -137,10 +123,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
   // Make sure we avoid conflict with other messages
   ASSERT(uCallbackMessage >= WM_USER);
 
-  // Tray only supports tooltip text up to MAX_TTT_LEN characters
-  // Truncate gracefully to MAX_TTT_LEN (... in middle)
-  TCHAR ttt[MAX_TTT_LEN];
-  NormalizeTTT(szToolTip, ttt);
+  CMyString ttt = PWSUtil::NormalizeTTT(szToolTip);
 
   // Create an invisible window
   CWnd::CreateEx(0, AfxRegisterWndClass(0), _T(""), WS_POPUP, 0,0,10,10, NULL, 0);
@@ -152,7 +135,7 @@ BOOL CSystemTray::Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szToolTip
   m_tnd.hIcon  = icon;
   m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
   m_tnd.uCallbackMessage = uCallbackMessage;
-  _tcsncpy(m_tnd.szTip, ttt, MAX_TTT_LEN);
+  _tcsncpy(m_tnd.szTip, (LPCTSTR)ttt, ttt.GetLength());
 
   // Set the tray icon
   m_bEnabled = Shell_NotifyIcon(NIM_ADD, &m_tnd);
@@ -339,12 +322,9 @@ BOOL CSystemTray::StopAnimation()
 BOOL CSystemTray::SetTooltipText(LPCTSTR pszTip)
 {
   if (!m_bEnabled) return FALSE;
-  // Tray only supports tooltip text up to MAX_TTT_LEN characters (remember trailing null)
-  // Truncate gracefully to MAX_TTT_LEN (... in middle)
-  TCHAR ttt[MAX_TTT_LEN];
-  NormalizeTTT(pszTip, ttt);
+  CMyString ttt = PWSUtil::NormalizeTTT(pszTip);
   m_tnd.uFlags = NIF_TIP;
-  _tcsncpy(m_tnd.szTip, ttt, MAX_TTT_LEN);
+  _tcsncpy(m_tnd.szTip, (LPCTSTR)ttt, ttt.GetLength());
 
   return Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }

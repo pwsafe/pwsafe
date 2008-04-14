@@ -1776,7 +1776,8 @@ void DboxMain::UnMinimize(bool update_windows)
       case PWScore::SUCCESS:
         rc2 = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
-        m_titlebar = NormalizeTTT(CMyString(_T("Password Safe - ")) + m_core.GetCurFile());
+        m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +
+                                           m_core.GetCurFile());
 #endif
         break;
       case PWScore::CANT_OPEN_FILE:

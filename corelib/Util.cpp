@@ -1085,3 +1085,18 @@ void PWSUtil::Base64Decode(const LPCTSTR sz_inString, BYTE* &outData, size_t &ou
 
   out_len = st_length;
 }
+
+
+static const int MAX_TTT_LEN = 64; // Max tooltip text length
+CMyString PWSUtil::NormalizeTTT(const CMyString &in)
+{
+  CMyString ttt;
+  if (in.GetLength() >= MAX_TTT_LEN) {
+    ttt = in.Left(MAX_TTT_LEN/2-6) + 
+      _T(" ... ") + in.Right(MAX_TTT_LEN/2);
+  } else {
+    ttt = in;
+  }
+  return ttt;
+}
+

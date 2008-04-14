@@ -330,7 +330,6 @@ protected:
   void setupBars();
   BOOL OpenOnInit();
   void InitPasswordSafe();
-  static CMyString NormalizeTTT(const CMyString in);
 
   // For UPDATE_UI
   int OnUpdateMenuToolbar(const UINT nID);
