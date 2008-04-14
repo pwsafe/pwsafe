@@ -21,13 +21,12 @@ public:
     : m_fd(NULL) {}
   ~CReport() {}
 
-  bool StartReport(LPCTSTR tcAction, const CString &csDataBase);
+  bool StartReport(const LPCTSTR tcAction, const CString &csDataBase);
   void EndReport();
-  void WriteLine(CString &cs_line, bool bCRLF = true);
-  void WriteLine(LPTSTR &tc_line, bool bCRLF = true);
+  void WriteLine(const CString &cs_line, bool bCRLF = true);
+  void WriteLine(const LPTSTR &tc_line, bool bCRLF = true);
   void WriteLine();
-  CString GetReportFileName()
-  {return m_cs_filename;}
+  CString GetReportFileName() const {return m_cs_filename;}
 
 private:
   FILE *m_fd;

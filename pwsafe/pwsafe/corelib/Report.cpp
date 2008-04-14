@@ -210,26 +210,24 @@ bool CReport::StartReport(LPCTSTR tcAction, const CString &csDataBase)
 }
 
 // Write a record with(default) or without a CRLF
-void CReport::WriteLine(CString &cs_line, bool bCRLF)
+void CReport::WriteLine(const CString &cs_line, bool bCRLF)
 {
   if (m_fd == NULL)
     return;
 
-  LPTSTR tc_line = cs_line.GetBuffer(cs_line.GetLength() + sizeof(TCHAR));
 #if _MSC_VER >= 1400
-  _ftprintf_s(m_fd, _T("%s"), tc_line);
+  _ftprintf_s(m_fd, _T("%s"), (LPCTSTR)cs_line);
   if (bCRLF)
     _ftprintf_s(m_fd, _T("%s"), CRLF);
 #else
-  _ftprintf(m_fd, _T("%s"), tc_line);
+  _ftprintf(m_fd, _T("%s"), (LPCTSTR)cs_line);
   if (bCRLF)
     _ftprintf(m_fd, _T("%s"), CRLF);
 #endif
-  cs_line.ReleaseBuffer();
 }
 
 // Write a record with(default) or without a CRLF
-void CReport::WriteLine(LPTSTR &tc_line, bool bCRLF)
+void CReport::WriteLine(const LPTSTR &tc_line, bool bCRLF)
 {
   if (m_fd == NULL)
     return;
