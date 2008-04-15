@@ -514,6 +514,10 @@
 				RelativePath=".\TwoFishTest.h"
 				>
 			</File>
+			<File
+				RelativePath=".\XStringTest.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

@@ -9,6 +9,7 @@
 #define TEST_TWOFISH
 #define TEST_SHA256
 #define TEST_HMAC_SHA256
+#define TEST_XSTRING
 
 #ifdef TEST_MYSTRING
 #include "MyStringTest.h"
@@ -21,6 +22,9 @@
 #endif
 #ifdef TEST_HMAC_SHA256
 #include "HMAC_SHA256Test.h"
+#endif
+#ifdef TEST_XSTRING
+#include "XStringTest.h"
 #endif
 #include <iostream>
 using namespace std;
@@ -50,6 +54,12 @@ int main()
   t4.setStream(&cout);
   t4.run();
   t4.report();
+#endif
+#ifdef TEST_XSTRING
+  XStringTest t5;
+  t5.setStream(&cout);
+  t5.run();
+  t5.report();
 #endif
   return 0;
 }
