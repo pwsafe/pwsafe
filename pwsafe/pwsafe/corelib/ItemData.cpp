@@ -752,9 +752,9 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 void CItemData::SplitName(const CMyString &name,
                           CMyString &title, CMyString &username)
 {
-  int pos = name.FindByte(SPLTCHR);
+  int pos = name.Find(SPLTCHR);
   if (pos==-1) {//Not a split name
-    int pos2 = name.FindByte(DEFUSERCHR);
+    int pos2 = name.Find(DEFUSERCHR);
     if (pos2 == -1)  {//Make certain that you remove the DEFUSERCHR
       title = name;
     } else {
@@ -808,7 +808,7 @@ void CItemData::SetName(const CMyString &name, const CMyString &defaultUsername)
   // the application can ignore this difference after an ItemData record
   // has been created
   CMyString title, user;
-  int pos = name.FindByte(DEFUSERCHR);
+  int pos = name.Find(DEFUSERCHR);
   if (pos != -1) {
     title = CMyString(name.Left(pos));
     user = defaultUsername;

@@ -120,29 +120,6 @@ CMyString AFXAPI operator+(LPCTSTR lpsz, const CMyString& string)
   return s;
 }
 
-int CMyString::FindByte(char ch) const
-{
-  int nRetVal = -1;  // default to not found
-  int nIndex = 0;
-
-  LPCTSTR pszString = LPCTSTR(m_mystring);
-
-  while ( pszString[nIndex] ) {
-#ifndef UNICODE
-    if ( pszString[nIndex] == ch ) {
-#else
-    if ( LOBYTE(pszString[nIndex]) == ch ) {
-#endif
-      nRetVal = nIndex;
-      break;
-    }
-
-    ++nIndex;
-  }
-
-  return nRetVal;
-}
-
 //Can't properly trash the memory here, so it is better to just return a CString
 CMyString CMyString::Left(int nCount) const
 {

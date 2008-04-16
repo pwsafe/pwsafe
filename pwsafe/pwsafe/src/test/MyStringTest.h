@@ -187,10 +187,7 @@ public:
 
   void testFind()
   {
-    // int FindByte( char ch ) const;
     const CMyString s1(_T("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-    int x1 = s1.FindByte('C'); // how will this work in unicode version?
-    _test(x1 == 2);
     // int Find(TCHAR ch) const;
     int x2 = s1.Find(TCHAR('E'));
     _test(x2 == 4);

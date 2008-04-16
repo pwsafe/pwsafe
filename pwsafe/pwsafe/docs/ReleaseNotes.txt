@@ -22,6 +22,7 @@ Drag & Drop, nolonger collapse the entire tree.
 as they were never searched.
 [1900655] Compare advanced subset now applies to current and comparison
 databases.
+[1899876] Fixed title/user import problem from v1.7 databases.
 [1478022] Correct description of this fix in the Release Notes to avoid
 user confusion thinking it does something different.
 [] Ensure first entry is selected when opening an existing database.

@@ -70,7 +70,6 @@ public:
 
   int GetLength() const {return m_mystring.GetLength();}
 
-  int FindByte( char ch ) const;
   int Find(TCHAR ch) const {return m_mystring.Find(ch);}
   int Find(LPCTSTR lpszSub) const {return m_mystring.Find(lpszSub);}
   int Find(TCHAR ch, int nstart) const {return m_mystring.Find(ch, nstart);}
