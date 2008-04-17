@@ -53,20 +53,20 @@ CCoolMenuManager::CCoolMenuManager()
 
 CCoolMenuManager::~CCoolMenuManager()
 {
+}
+
+void CCoolMenuManager::Cleanup()
+{
+  // For some reason - the destructor doesn't get called!
   m_ImageList.DeleteImageList();
   if (!m_bNoDIL)
     m_DisabledImageList.DeleteImageList();
   m_IDtoImages.clear(); 
   m_fontMenu.DeleteObject();
-}
 
-void CCoolMenuManager::CleanUp()
-{
   // Somehow, for Dialog applications, if the user exits using the accelerator, 
   // it doesn't tidy up by calling OnMenuSelect(0, 0xFFFF, NULL), so do it now
   // the hard way!
-  CMenuItemInfo miinfo;
-  miinfo.fMask = MIIM_DATA;
   while (!m_pmdList.empty()) {
     CMenuItemData * &pmd = m_pmdList.back();
     if (pmd && pmd->IsCMID())
@@ -153,7 +153,7 @@ BOOL CCoolMenuManager::OnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
     lpmis->itemHeight = max(GetSystemMetrics(SM_CYMENU), rcText.Height());
 
     // width is width of text plus a bunch of stuff
-    int cx = rcText.Width();  // text width
+    int cx = rcText.Width();    // text width
     cx += CXTEXTMARGIN << 1;    // L/R margin for readability
     cx += CXGAP;                // space between button and menu text
     cx += m_szButton.cx << 1;   // button width (L=button; R=empty margin)
@@ -194,7 +194,7 @@ BOOL CCoolMenuManager::OnDrawItem(LPDRAWITEMSTRUCT lpdis)
     BOOL bDisabled = lpdis->itemState & ODS_GRAYED;
     BOOL bSelected = lpdis->itemState & ODS_SELECTED;
     BOOL bChecked  = lpdis->itemState & ODS_CHECKED;
-    BOOL bHaveButn=FALSE;
+    BOOL bHaveButn = FALSE;
 
     // Paint button, or blank if none
     CRect rcButn(rcItem.TopLeft(), m_szButton);  // button rect
@@ -316,9 +316,10 @@ void CCoolMenuManager::DrawMenuText(CDC& dc, CRect rc, CString text,
 //    hbmCheck   Checkmark bitmap to use, or NULL for default
 //
 BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected, 
-                                       HBITMAP hbmCheck)
+                                       HBITMAP hbm_Check)
 {
   // get checkmark bitmap if none, use Windows standard
+  HBITMAP hbmCheck(hbm_Check);
   if (!hbmCheck) {
     CBitmap bm;
     VERIFY(bm.LoadOEMBitmap(OBM_CHECK));
@@ -348,7 +349,7 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
   COLORREF colorOld =
     dc.SetBkColor(GetSysColor(bSelected ? COLOR_MENU : COLOR_3DLIGHT));
   dc.BitBlt(rcDest.left, rcDest.top, rcDest.Width(), rcDest.Height(),
-    &memdc, p.x, p.y, SRCCOPY);
+            &memdc, p.x, p.y, SRCCOPY);
   dc.SetBkColor(colorOld);
 
   ::SelectObject(memdc, hOldBM); // restore
@@ -358,6 +359,9 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
     rcDest.InflateRect(1, 1); // inflate checkmark by one pixel all around
   dc.DrawEdge(&rcDest, BDR_SUNKENOUTER, BF_RECT);
 
+  memdc.DeleteDC();
+  ::DeleteObject(hbmCheck);
+  ::DeleteObject(hOldBM);
   return TRUE;
 }
 
@@ -598,6 +602,7 @@ void CCoolMenuManager::FixMFCDotBitmap()
     memdc.PatBlt(0, 0, bm.bmWidth, bm.bmHeight, WHITENESS);
     memdc.Ellipse(&rcDot);
     memdc.RestoreDC(nSave);
+    ::DeleteObject(hbmDot);
   }
 }
 
@@ -729,4 +734,5 @@ void CCoolMenuManager::DrawEmbossed(CDC& dc, CImageList &il, int iBtn, CPoint p)
   dc.SelectObject(pOldBrush);         // restore
   dc.SetBkColor(colorOldBG);          // ...
   memdc.SelectObject(pOldBitmap);     // ...
+  bm.DeleteObject();
 }

@@ -26,6 +26,7 @@ public:
   void AddExtraControls();
   void ChangeImages(const int toolbarMode);
   void Reset();
+
   void ShowFindToolBar(bool bShow);
   bool IsVisible() {return m_bVisible;}
   void GetSearchText(CString &csFindString)
@@ -53,6 +54,7 @@ public:
 
 protected:
   //{{AFX_MSG(CPWFindToolBar)
+  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   BOOL PreTranslateMessage(MSG* pMsg);

@@ -88,7 +88,6 @@ ThisMfcApp::ThisMfcApp() :
   EnableHtmlHelp();
   CoInitialize(NULL); // Initializes the COM library (for XML processing)
   AfxOleInit();
-
 }
 
 ThisMfcApp::~ThisMfcApp()

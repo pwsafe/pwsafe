@@ -356,6 +356,10 @@ CPWToolBar::CPWToolBar()
 
 CPWToolBar::~CPWToolBar()
 {
+}
+
+void CPWToolBar::OnDestroy()
+{
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
   m_ImageLists[2].DeleteImageList();
@@ -370,6 +374,7 @@ BEGIN_MESSAGE_MAP(CPWToolBar, CToolBar)
   ON_NOTIFY_REFLECT(TBN_QUERYDELETE, OnToolBarQueryDelete)
   ON_NOTIFY_REFLECT(TBN_GETBUTTONINFO, OnToolBarQueryInfo)
   ON_NOTIFY_REFLECT(TBN_RESET, OnToolBarReset)
+  ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CPWToolBar message handlers
@@ -454,7 +459,6 @@ void CPWToolBar::Init(const int NumBits, bool bRefresh)
     m_bitmode = 2;
   }
 
-  CBitmap bmTemp;
   m_ImageLists[0].Create(16, 16, iClassicFlags, m_iNum_Bitmaps, 2);
   m_ImageLists[1].Create(16, 16, iNewFlags1, m_iNum_Bitmaps, 2);
   m_ImageLists[2].Create(16, 16, iNewFlags2, m_iNum_Bitmaps, 2);
@@ -733,7 +737,7 @@ void CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
     ASSERT(brc);
     SetBitmapBackground(bmNormal, crCOLOR_3DFACE);
     m_ImageLists[nImageList].Add(&bmNormal, crCOLOR_3DFACE);
-    bmNormal.Detach();
+    bmNormal.DeleteObject();
 
     if (nImageList != 0) {
       bmDisabled.Attach(::LoadImage(::AfxFindResourceHandle(MAKEINTRESOURCE(pDisBM_IDs[i]), RT_BITMAP),
@@ -741,7 +745,7 @@ void CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
                                     (LR_DEFAULTSIZE | LR_CREATEDIBSECTION)));
       SetBitmapBackground(bmDisabled, crCOLOR_3DFACE);
       m_DisabledImageLists[nImageList - 1].Add(&bmDisabled, crCOLOR_3DFACE);
-      bmDisabled.Detach();
+      bmDisabled.DeleteObject();
     }
   }
 }

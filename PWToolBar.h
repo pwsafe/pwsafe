@@ -45,6 +45,7 @@ protected:
   afx_msg void OnToolBarQueryDelete(NMHDR* pNotifyStruct, LRESULT* pResult);
   afx_msg void OnToolBarQueryInfo(NMHDR* pNotifyStruct, LRESULT* pResult);
   afx_msg void OnToolBarReset(NMHDR* pNotifyStruct, LRESULT* pResult);
+  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
