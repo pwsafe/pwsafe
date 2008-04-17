@@ -2460,7 +2460,8 @@ void DboxMain::OnOK()
   // wipe data, save prefs, go home.
   ClearData();
   prefs->SaveApplicationPreferences();
-  m_menuManager.CleanUp();
+  // Cleanup here - doesn't work in ~DboxMain or ~CCoolMenuManager
+  m_menuManager.Cleanup();
   CDialog::OnOK();
 }
 

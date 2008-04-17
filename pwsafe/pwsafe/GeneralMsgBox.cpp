@@ -199,8 +199,8 @@ void CGeneralMsgBox::SetIcon(HICON hIcon)
 
     m_dimIcon.cx = bm.bmWidth;
     m_dimIcon.cy = bm.bmHeight;
-    DeleteObject(ii.hbmColor);
-    DeleteObject(ii.hbmMask);
+    ::DeleteObject(ii.hbmColor);
+    ::DeleteObject(ii.hbmMask);
   } else {
     m_dimIcon.cx = 0;
     m_dimIcon.cy = 0;

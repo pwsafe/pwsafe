@@ -58,6 +58,12 @@ CExpPWListDlg::~CExpPWListDlg()
 {
 }
 
+void CExpPWListDlg::OnDestroy()
+{
+  m_pImageList->DeleteImageList();
+  delete m_pImageList;
+}
+
 void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
@@ -70,6 +76,7 @@ BEGIN_MESSAGE_MAP(CExpPWListDlg, CPWDialog)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
   ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+  ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CExpPWListDlg message handlers
@@ -150,7 +157,6 @@ BOOL CExpPWListDlg::OnInitDialog()
 
 void CExpPWListDlg::OnOK() 
 {
-  delete m_pImageList;
   CPWDialog::OnOK();
 }
 

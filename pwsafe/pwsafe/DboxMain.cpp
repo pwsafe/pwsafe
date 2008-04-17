@@ -2435,6 +2435,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         // Less that 16 color bits available, no choice, disable menu items
         iEnable = FALSE;
       }
+      ReleaseDC(pDC);
 #endif
       break;
     }
@@ -2513,7 +2514,7 @@ void DboxMain::PlaceWindow(CRect *prect, UINT showCmd)
   }
 
   SetWindowPlacement(&wp);
-  DeleteObject(hrgnWork);
+  ::DeleteObject(hrgnWork);
 }
 
 HRGN DboxMain::GetWorkAreaRegion()
@@ -2580,7 +2581,7 @@ BOOL CALLBACK DboxMain::EnumScreens(HMONITOR hMonitor, HDC /* hdc */,
 
   hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
   CombineRgn(*phrgn, *phrgn, hrgn2, RGN_OR);
-  DeleteObject(hrgn2);
+  ::DeleteObject(hrgn2);
 
   return TRUE;
 }

@@ -274,6 +274,7 @@ void DboxMain::setupBars()
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
   m_FindToolBar.Init(NumBits, this, WM_TOOLBAR_FIND);
+  ReleaseDC(pDC);
 
   // Add the Main ToolBar.
   if (!m_MainToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
@@ -3141,8 +3142,10 @@ void DboxMain::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpdis)
     ::DeleteObject(iconinfo.hbmMask);
 
     ::DrawIconEx(lpdis->hDC, lpdis->rcItem.left, lpdis->rcItem.top, hIcon,
-      bitmap.bmWidth, bitmap.bmHeight, 
-      0, NULL, DI_IMAGE /*NORMAL*/);
+                 bitmap.bmWidth, bitmap.bmHeight, 
+                 0, NULL, DI_IMAGE /*NORMAL*/);
+
+    ::DeleteObject(hIcon);
   }
 }
 

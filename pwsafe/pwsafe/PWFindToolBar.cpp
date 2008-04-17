@@ -118,15 +118,20 @@ CPWFindToolBar::CPWFindToolBar()
 
 CPWFindToolBar::~CPWFindToolBar()
 {
+  m_findedit.DestroyWindow();
+}
+
+void CPWFindToolBar::OnDestroy()
+{
   m_ImageLists[0].DeleteImageList();
   m_ImageLists[1].DeleteImageList();
   m_ImageLists[2].DeleteImageList();
   delete [] m_pOriginalTBinfo;
   m_FindTextFont.DeleteObject();
-  m_findedit.DestroyWindow();
 }
 
 BEGIN_MESSAGE_MAP(CPWFindToolBar, CToolBar)
+  ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CPWFindToolBar message handlers
@@ -201,7 +206,7 @@ void CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarClassicBMs[i]);
     m_ImageLists[0].Add(&bmTemp, crClassicBackground);
-    bmTemp.Detach();
+    bmTemp.DeleteObject();
     if (m_FindToolBarClassicBMs[i] == IDB_FINDCASE_I_CLASSIC)
       m_iCase_Insensitive_BM_offset = i;
     if (m_FindToolBarClassicBMs[i] == IDB_FINDCASE_S_CLASSIC)
@@ -211,13 +216,13 @@ void CPWFindToolBar::Init(const int NumBits, CWnd *pDbx, int iWMSGID)
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarNewBMs[i]);
     m_ImageLists[1].Add(&bmTemp, crNewBackground);
-    bmTemp.Detach();
+    bmTemp.DeleteObject();
   }
 
   for (i = 0; i < m_iNum_Bitmaps; i++) {
     bmTemp.LoadBitmap(m_FindToolBarNewBMs[i]);
     m_ImageLists[2].Add(&bmTemp, crNewBackground);
-    bmTemp.Detach();
+    bmTemp.DeleteObject();
   }
 
   j = 0;
