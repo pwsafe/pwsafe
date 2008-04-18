@@ -13,6 +13,8 @@ Bugs fixed in 3.12.01
 [1941360] Rename with F2 now enables Save button.
 [1940311] Password Policy now ignores length requirements if not applicable.
 [1938057] Non-Latin text now correctly exported to plain text file.
+[1926678, 1937293,1939294] Reduce GDI object leaks that cause display problems
+during hibernation, screen locking and remote access.
 [1914433] It is now possible to view the password policy set for an
 individual entry, by shift-clicking on the checked Override Policy
 checkbox. A tooltip explaining this is shown when relevant.
