@@ -329,8 +329,7 @@ DboxMain::OnInitDialog()
 
    ConfigureSystemMenu();
    UpdateAlwaysOnTop();
-//   CItemData temp1;
-
+   
    if (OpenOnInit()==FALSE) // If this function fails, abort launch
       return TRUE;
 	

@@ -12,6 +12,7 @@
 #ifndef _TWOFISH_H_
 #define _TWOFISH_H_
 
+#include "PwsPlatform.h"
 #include "Fish.h"
 
 #ifndef TWOFISH_SMALL

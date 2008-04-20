@@ -63,7 +63,6 @@
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				EnableFloatingPointEmulation="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -154,6 +153,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
+				EnableFloatingPointEmulation="false"
 				EnableFloatingPointEmulation="false"
 			/>
 			<Tool
@@ -555,6 +555,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\PWSdirs.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\PWSfile.cpp"
 				>
 			</File>
@@ -567,8 +571,36 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\PWSprefs.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\PWSrand.cpp"
 				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\PWSXML.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\corelib\SAXHandlers.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\corelib\sha1.cpp"
@@ -613,6 +645,54 @@
 			<File
 				RelativePath="..\..\corelib\SysInfo.cpp"
 				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\tinyxml\tinystr.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\corelib\tinyxml\tinyxml.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\corelib\tinyxml\tinyxmlerror.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\corelib\tinyxml\tinyxmlparser.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\corelib\TwoFish.cpp"
@@ -662,6 +742,18 @@
 				RelativePath="..\..\corelib\UUIDGen.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\corelib\XMLprefs.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Pocket PC 2003 (ARMV4)"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -704,6 +796,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\PWSdirs.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\PWSfile.h"
 				>
 			</File>
@@ -720,7 +816,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\corelib\PWSprefs.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\corelib\PWSrand.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\PWSXML.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\SAXHandlers.h"
 				>
 			</File>
 			<File
@@ -733,6 +841,14 @@
 			</File>
 			<File
 				RelativePath="..\..\corelib\SysInfo.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\tinyxml\tinystr.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\tinyxml\tinyxml.h"
 				>
 			</File>
 			<File
@@ -753,6 +869,14 @@
 			</File>
 			<File
 				RelativePath="..\..\corelib\UUIDGen.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\xml_import.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\corelib\XMLprefs.h"
 				>
 			</File>
 		</Filter>

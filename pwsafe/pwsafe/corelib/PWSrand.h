@@ -11,6 +11,7 @@
 #ifndef PWSrand_h
 #define PWSrand_h
 
+#include "PwsPlatform.h"
 #include "sha256.h"
 
 class PWSrand {

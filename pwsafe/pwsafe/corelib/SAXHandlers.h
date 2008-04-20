@@ -10,12 +10,11 @@
 // SAXHandlers.h : header file
 //
 
-
+#include "PwsPlatform.h"
 #include "MyString.h"
 #include "ItemData.h"
 #include "UUIDGen.h"
 #include "xml_import.h"
-
 #include "UnknownField.h"
 
 using namespace MSXML2;

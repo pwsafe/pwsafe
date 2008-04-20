@@ -11,11 +11,11 @@
 //-----------------------------------------------------------------------------
 
 //#include "../PasswordSafe.h"
+#include "PwsPlatform.h"
 #include "sha256.h"
 #include "MyString.h"
 #include "Fish.h"
 #include "typedefs.h"
-#include "PwsPlatform.h"
 
 #define SaltLength 20
 #define StuffSize 10

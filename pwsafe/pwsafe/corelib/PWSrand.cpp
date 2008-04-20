@@ -80,8 +80,10 @@ void PWSrand::NextRandBlock()
   SHA256 s;
   s.Update(K, sizeof(K));
   s.Final(R);
-  unsigned int *Kp = (unsigned int *)K;
-  unsigned int *Rp = (unsigned int *)R;
+  /// problem: Kp is a 32 bit pointer to K, which is declared as unsigned char.
+  /// this in turn is 1 byte long and does not start aligned. Hence, Kp[0] is an access to unaliged data
+  unsigned __unaligned int *Kp = (unsigned int *)K;
+  unsigned __unaligned int *Rp = (unsigned int *)R;
   const int N = SHA256::HASHLEN/sizeof(unsigned int);
   
   Kp[0]++;

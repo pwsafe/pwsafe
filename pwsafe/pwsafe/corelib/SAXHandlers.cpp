@@ -77,13 +77,13 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
 	int iLineNumber, iCharacter;
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	_tcscpy_s(szErrorMessage, MAX_PATH * 2, pwchErrorMessage);
 #else
 	_tcscpy(szErrorMessage, pwchErrorMessage);
 #endif
 #else
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	size_t num_converted;
 	wcstombs_s(&num_converted, szErrorMessage, MAX_PATH*2, pwchErrorMessage, MAX_PATH);
 #else
@@ -95,7 +95,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXErrorHandler::error (
 
 	const CString cs_format(MAKEINTRESOURCE(IDSC_SAXGENERROR));
 
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	_stprintf_s(szFormatString, MAX_PATH*2, cs_format,
 		hrErrorCode, iLineNumber, iCharacter, szErrorMessage);
 #else
@@ -212,13 +212,13 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 	TCHAR szCurElement[MAX_PATH+1] = {0};
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
   _tcsncpy_s(szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
 #else
 	_tcsncpy(szCurElement, pwchRawName, cchRawName);
 #endif
 #else
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	size_t num_converted;
 	wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchRawName, cchRawName);
 #else
@@ -239,7 +239,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 				pAttributes->getQName(i, &QName, &QName_length);
 				pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 				_tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
 				_tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
 #else
@@ -247,7 +247,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 				_tcsncpy(szValue, Value, Value_length);
 #endif
 #else
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 				wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
 				wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
 #else
@@ -284,7 +284,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 			pAttributes->getQName(i, &QName, &QName_length);
 			pAttributes->getValue(i, &Value, &Value_length);
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 			_tcsncpy_s(szQName, MAX_PATH + 1, QName, QName_length);
 			_tcsncpy_s(szValue, MAX_PATH + 1, Value, Value_length);
 #else
@@ -292,7 +292,7 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::startElement(
 			_tcsncpy(szValue, Value, Value_length);
 #endif
 #else
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 			wcstombs_s(&num_converted, szQName, MAX_PATH+1, QName, QName_length);
 			wcstombs_s(&num_converted, szValue, MAX_PATH+1, Value, Value_length);
 #else
@@ -358,13 +358,13 @@ HRESULT STDMETHODCALLTYPE PWSSAXContentHandler::characters(
 	TCHAR* szData = new TCHAR[cchChars+2];
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	_tcsncpy_s(szData, cchChars+2, pwchChars, cchChars);
 #else
 	_tcsncpy(szData, pwchChars, cchChars);
 #endif
 #else
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	size_t num_converted;
 	wcstombs_s(&num_converted, szData, cchChars+2, pwchChars, cchChars);
 #else
@@ -393,13 +393,13 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 	TCHAR szCurElement[MAX_PATH+1] = {0};
 
 #ifdef _UNICODE
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	_tcsncpy_s(szCurElement, MAX_PATH+1, pwchQName, cchQName);
 #else
 	_tcsncpy(szCurElement, pwchQName, cchQName);
 #endif
 #else
-#if (_MSC_VER >= 1400)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 	size_t num_converted;
 	wcstombs_s(&num_converted, szCurElement, MAX_PATH+1, pwchQName, cchQName);
 #else
@@ -428,7 +428,7 @@ HRESULT STDMETHODCALLTYPE  PWSSAXContentHandler::endElement (
 			int nscanned = 0;
 			TCHAR *lpszuuid = cur_entry->uuid.GetBuffer(sizeof(uuid_array_t) * 2);
  			for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
-#if _MSC_VER >= 1400
+#if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && !defined(_WIN32_WCE)
 			    nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
 #else
 			    nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);

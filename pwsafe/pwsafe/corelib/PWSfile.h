@@ -13,6 +13,7 @@
 
 #include <stdio.h> // for FILE *
 
+#include "PwsPlatform.h"
 #include "ItemData.h"
 #include "MyString.h"
 #include "UUIDGen.h"

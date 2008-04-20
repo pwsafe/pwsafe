@@ -7,12 +7,14 @@
  */
 // Fish.h
 #ifndef __FISH_H
+
+#include "PwsPlatform.h"
+
 /**
  * Fish is an abstract base class for BlowFish and TwoFish
  * (and for any block cipher, but it's cooler to call it "Fish"
  * rather than "Cipher"...)
  */
-
 class Fish
 {
  public:

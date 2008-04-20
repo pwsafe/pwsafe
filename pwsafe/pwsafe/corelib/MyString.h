@@ -15,6 +15,9 @@
 
 #ifndef _MYSTRING_H_
 #define _MYSTRING_H_
+
+#include "PwsPlatform.h"
+
 #include <afx.h>
 //-----------------------------------------------------------------------------
 class CMyString

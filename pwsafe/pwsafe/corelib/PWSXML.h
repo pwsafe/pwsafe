@@ -11,6 +11,8 @@
 #ifndef __PWSXML_H
 #define __PWSXML_H
 
+#include "PwsPlatform.h"
+
 #include <vector>
 #include "MyString.h"
 #include "UnknownField.h"

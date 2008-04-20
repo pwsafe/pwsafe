@@ -29,6 +29,7 @@
  * identified in storage by their type and index.
  */
 
+#include "PwsPlatform.h"
 #include "MyString.h"
 #include "PWSfile.h"
 

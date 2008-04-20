@@ -8,6 +8,8 @@
 #ifndef _SHA1_H_
 #define _SHA1_H_
 
+#include "PwsPlatform.h"
+
 class SHA1
 {
  public:

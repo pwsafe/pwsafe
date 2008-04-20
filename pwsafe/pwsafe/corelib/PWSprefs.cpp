@@ -17,6 +17,12 @@
 #include "util.h"
 #include "PWSdirs.h"
 
+#ifdef POCKET_PC
+  // use wcelibcex's impl of time functions
+  #include <wce_time.h>
+  #define time	  wceex_time
+#endif
+
 using namespace std;
 
 #if defined(POCKET_PC)
@@ -157,7 +163,7 @@ PWSprefs::PWSprefs() : m_app(::AfxGetApp()), m_XML_Config(NULL)
 
 PWSprefs::~PWSprefs()
 {
-    delete m_XML_Config;
+    // delete m_XML_Config;
     delete[] m_MRUitems;
 }
 
@@ -305,7 +311,8 @@ bool PWSprefs::WritePref(const CMyString &name, bool val)
 			break;
 		case CF_FILE_RW:
 		case CF_FILE_RW_NEW:
-			bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val ? 1 : 0) == 0);
+      /// avoid XML!
+			bRetVal = true; //(m_XML_Config->Set(m_csHKCU_PREF, name, val ? 1 : 0) == 0);
 			break;
 		case CF_FILE_RO:
 		case CF_NONE:
@@ -325,7 +332,8 @@ bool PWSprefs::WritePref(const CMyString &name, unsigned int val)
 			break;
 		case CF_FILE_RW:
 		case CF_FILE_RW_NEW:
-			bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
+			/// avoid XML!
+      bRetVal = true; //(m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
 			break;
 		case CF_FILE_RO:
 		case CF_NONE:
@@ -345,7 +353,8 @@ bool PWSprefs::WritePref(const CMyString &name, const CMyString &val)
 			break;
 		case CF_FILE_RW:
 		case CF_FILE_RW_NEW:
-			bRetVal = (m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
+			/// avoid XML!
+      bRetVal = true; //(m_XML_Config->Set(m_csHKCU_PREF, name, val) == 0);
 			break;
 		case CF_FILE_RO:
 		case CF_NONE:
@@ -364,7 +373,8 @@ bool PWSprefs::DeletePref(const CMyString &name)
 			break;
 		case CF_FILE_RW:
 		case CF_FILE_RW_NEW:
-			bRetVal = (m_XML_Config->DeleteSetting(m_csHKCU_PREF, name) == TRUE);
+			/// avoid XML!
+      bRetVal = true; //(m_XML_Config->DeleteSetting(m_csHKCU_PREF, name) == TRUE);
 			break;
 		case CF_FILE_RO:
 		case CF_NONE:
@@ -508,7 +518,8 @@ void PWSprefs::UpdateTimeStamp()
 		time(&time_now);
 		const CMyString now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
 
-		m_XML_Config->Set(m_csHKCU, _T("LastUpdated"), now);
+    /// avoid XML!
+		//m_XML_Config->Set(m_csHKCU, _T("LastUpdated"), now);
 	}
 }
 
@@ -743,7 +754,9 @@ bool PWSprefs::LoadProfileFromFile()
      * or if no host/user section
      * found.
      */
-    bool retval;
+  return false;
+/// avoid XML!
+/*    bool retval;
     CString ts, csSubkey;
 
     m_XML_Config = new CXMLprefs(m_configfilename);
@@ -804,6 +817,7 @@ bool PWSprefs::LoadProfileFromFile()
     delete m_XML_Config;
     m_XML_Config = NULL;
     return retval;
+*/
 }
 
 void PWSprefs::SaveApplicationPreferences()
@@ -817,17 +831,18 @@ void PWSprefs::SaveApplicationPreferences()
         // Load prefs file in case it was changed elsewhere
         // Here we need to explicitly lock from before
         // load to after store
-        m_XML_Config = new CXMLprefs(m_configfilename);
-		if (!m_XML_Config->Lock()) {
+/// avoid XML!
+//        m_XML_Config = new CXMLprefs(m_configfilename);
+//		if (!m_XML_Config->Lock()) {
             // punt to registry!
             m_ConfigOptions = CF_REGISTRY;
-            delete m_XML_Config;
-            m_XML_Config = NULL;
-        } else { // acquired lock
-            // if file exists, load to get other values
-            if (PWSfile::FileExists(m_configfilename))
-                m_XML_Config->Load();
-        }
+//            delete m_XML_Config;
+//            m_XML_Config = NULL;
+//        } else { // acquired lock
+//            // if file exists, load to get other values
+//            if (PWSfile::FileExists(m_configfilename))
+//                m_XML_Config->Load();
+//        }
     }
     UpdateTimeStamp();
 	
@@ -881,13 +896,14 @@ void PWSprefs::SaveApplicationPreferences()
             case CF_FILE_RW_NEW: {
                 CString obuff;
                 obuff.Format(_T("%d"), m_rect.top);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
+                /// avoid XML!
+                //VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("top"), obuff) == 0);
                 obuff.Format(_T("%d"), m_rect.bottom);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
+                //VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("bottom"), obuff) == 0);
                 obuff.Format(_T("%d"), m_rect.left);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
+                //VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("left"), obuff) == 0);
                 obuff.Format(_T("%d"), m_rect.right);
-                VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
+                //VERIFY(m_XML_Config->Set(m_csHKCU_POS, _T("right"), obuff) == 0);
             }
                 break;
             case CF_FILE_RO:
@@ -903,22 +919,25 @@ void PWSprefs::SaveApplicationPreferences()
         int i;
         const int n = GetPref(PWSprefs::MaxMRUItems);
 		// Delete ALL entries
-		m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
+		/// avoid XML!
+    //m_XML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
 		// Now put back the ones we want
         CString csSubkey;
         for (i = 0; i < n; i++)
             if (!m_MRUitems[i].IsEmpty()) {
                 csSubkey.Format(_T("Safe%02d"), i+1);
-                m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
+                /// avoid XML!    
+                //m_XML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
             }
     }
 
 	if (m_ConfigOptions == CF_FILE_RW ||
 	    m_ConfigOptions == CF_FILE_RW_NEW) {
-        m_XML_Config->Store();
-        m_XML_Config->Unlock();
-        delete m_XML_Config;
-        m_XML_Config = NULL;
+        /// avoid XML!
+        //m_XML_Config->Store();
+        //m_XML_Config->Unlock();
+        //delete m_XML_Config;
+        //m_XML_Config = NULL;
     }
 
 	m_prefs_changed[APP_PREF] = false;

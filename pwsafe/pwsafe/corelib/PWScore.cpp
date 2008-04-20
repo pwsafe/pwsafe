@@ -652,7 +652,8 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
                        int &numValidated, int &numImported,
                        bool &bBadUnknownFileFields, bool &bBadUnknownRecordFields)
 {
-    PWSXML *iXML;
+/// uncomment to avoid compiling all the XML stuff
+  /*    PWSXML *iXML;
     bool status, validation;
     int nITER;
     int nRecordsWithUnknownFields;
@@ -701,7 +702,7 @@ PWScore::ImportXMLFile(const CString &ImportedPrefix, const CString &strXMLFileN
 
     delete iXML;
     m_changed = true;
-    return SUCCESS;
+*/    return SUCCESS;
 }
 
 int

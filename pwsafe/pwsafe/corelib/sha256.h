@@ -11,7 +11,10 @@
 //-----------------------------------------------------------------------------
 #ifndef _SHA256_H_
 #define _SHA256_H_
+
+#include "PwsPlatform.h"
 #include "typedefs.h"
+
 class SHA256
 {
 public:

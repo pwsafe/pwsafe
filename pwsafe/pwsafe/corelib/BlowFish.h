@@ -10,6 +10,7 @@
 #ifndef __BLOWFISH_H
 #define __BLOWFISH_H
 
+#include "PwsPlatform.h"
 #include "Fish.h"
 
 #define MAXKEYBYTES 56 // unused

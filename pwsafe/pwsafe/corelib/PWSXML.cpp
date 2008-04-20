@@ -14,11 +14,18 @@
 #include "MyString.h"
 #include "corelib.h"
 #include "PWScore.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <atlcomcli.h>
 #include "xml_import.h"
 #include "UnknownField.h"
+
+#include <atlcomcli.h>
+
+#ifdef POCKET_PC
+  #include <wce_types.h>
+  #include <wce_stat.h>
+#else
+  #include <sys/types.h>
+  #include <sys/stat.h>
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

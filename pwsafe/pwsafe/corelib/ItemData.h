@@ -11,6 +11,7 @@
 #if !defined ItemData_h
 #define ItemData_h
 
+#include "PwsPlatform.h"
 #include "Util.h"
 #include "ItemField.h"
 #include "UUIDGen.h"

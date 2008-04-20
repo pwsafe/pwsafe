@@ -11,6 +11,7 @@
 #ifndef PWCharPool_h
 #define PWCharPool_h
 
+#include "PwsPlatform.h"
 #include "MyString.h"
 
 //-----------------------------------------------------------------------------

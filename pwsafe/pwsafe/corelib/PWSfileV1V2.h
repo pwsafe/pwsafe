@@ -12,6 +12,7 @@
 #ifndef PWSfileV1V2_h
 #define PWSfileV1V2_h
 
+#include "PwsPlatform.h"
 #include "PWSfile.h"
 #include "BlowFish.h"
 

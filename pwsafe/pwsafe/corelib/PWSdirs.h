@@ -14,6 +14,7 @@
 // PWS_PREFSDIR if defined.
 //
 //-----------------------------------------------------------------------------
+#include "PwsPlatform.h"
 #include "MyString.h"
 #include "SysInfo.h"
 

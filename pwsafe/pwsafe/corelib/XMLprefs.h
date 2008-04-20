@@ -7,6 +7,7 @@
  */
 #ifndef __XMLPREFS_H
 #define __XMLPREFS_H
+#include "PwsPlatform.h"
 #include <afx.h> // for CString
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs class
