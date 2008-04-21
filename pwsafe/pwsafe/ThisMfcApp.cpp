@@ -660,6 +660,10 @@ BOOL ThisMfcApp::InitInstance()
   // Run dialog - note that we don't particularly care what the response was
   (void) dbox.DoModal();
 
+  ::DestroyIcon(m_LockedIcon);
+  ::DestroyIcon(m_UnLockedIcon);
+  ::DestroyIcon(m_ClosedIcon);
+
   // Since the dialog has been closed, return FALSE so that we exit the
   // application, rather than start the application's message pump.
   return FALSE;
@@ -749,8 +753,10 @@ int ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
       icon = IDI_TRAY;
       break;
   }
-  if (bSet)
+  if (bSet) {
+    ::DestroyIcon(m_ClosedIcon);
     m_ClosedIcon = app.LoadIcon(icon);
+  }
 
   return icon;
 }

@@ -119,6 +119,7 @@ CGeneralMsgBox::CGeneralMsgBox(CWnd* pParentWnd)
 // Destructor
 CGeneralMsgBox::~CGeneralMsgBox()
 {
+  ::DestroyIcon(m_hIcon);
 }
 
 // Replaces CDialog::DoModal
@@ -423,7 +424,7 @@ void CGeneralMsgBox::CreateBtns()
   CClientDC dc(this);
 
   CFont* pWndFont = GetFont();
-  dc.SelectObject(pWndFont);
+  CFont *poldFont = dc.SelectObject(pWndFont);
 
   CRect rcDummy; // dimesion doesn't matter here
 
@@ -445,13 +446,15 @@ void CGeneralMsgBox::CreateBtns()
     CButton btnCtrl;
 
     btnCtrl.Create(btndata.strBtn,
-      WS_CHILD|WS_VISIBLE|WS_TABSTOP,
-      rcDummy, this, btndata.uIDC);
+                   WS_CHILD|WS_VISIBLE|WS_TABSTOP,
+                   rcDummy, this, btndata.uIDC);
 
     btnCtrl.SetFont(pWndFont);
 
     btnCtrl.UnsubclassWindow();
   }
+
+  dc.SelectObject(poldFont);
 
   // Add the button margins
   m_dimBtn.cx += 2 * FromDlgX(m_aMetrics[CX_BTN_BORDER]);

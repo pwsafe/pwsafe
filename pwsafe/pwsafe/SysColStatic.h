@@ -22,6 +22,7 @@ class CSysColStatic : public CStatic
   // Construction
 public:
   CSysColStatic();
+  ~CSysColStatic();
   void ReloadBitmap(int nImageID = -1);
   // Attributes
 public:
@@ -36,11 +37,11 @@ public:
 
   // Implementation
 public:
-  virtual ~CSysColStatic();
-
   // Generated message map functions
+
 protected:
   int m_nImageID;
+  HBITMAP m_hBmp;
   //{{AFX_MSG(CSysColStatic)
   afx_msg void OnSysColorChange();
   //}}AFX_MSG

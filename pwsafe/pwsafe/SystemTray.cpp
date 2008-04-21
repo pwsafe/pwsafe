@@ -149,6 +149,7 @@ CSystemTray::~CSystemTray()
 {
   RemoveIcon();
   m_IconList.RemoveAll();
+  ::DestroyIcon(m_hSavedIcon);
   DestroyWindow();
 }
 
@@ -239,6 +240,11 @@ BOOL CSystemTray::SetIconList(UINT uFirstIconID, UINT uLastIconID)
   const CWinApp * pApp = AfxGetApp();
   ASSERT(pApp != 0);
 
+  for (int i = 0; i < m_IconList.GetCount(); i++) {
+   HICON& hicon = m_IconList.ElementAt(i);
+   ::DestroyIcon(hicon);
+  }
+
   m_IconList.RemoveAll();
   try {
     for (UINT i = uFirstIconID; i <= uLastIconID; i++)
@@ -257,6 +263,11 @@ BOOL CSystemTray::SetIconList(UINT uFirstIconID, UINT uLastIconID)
 
 BOOL CSystemTray::SetIconList(HICON* pHIconList, UINT nNumIcons)
 {
+  for (int i = 0; i < m_IconList.GetCount(); i++) {
+   HICON& hicon = m_IconList.ElementAt(i);
+   ::DestroyIcon(hicon);
+  }
+
   m_IconList.RemoveAll();
 
   try {

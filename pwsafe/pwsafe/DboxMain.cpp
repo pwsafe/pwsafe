@@ -125,6 +125,8 @@ DboxMain::DboxMain(CWnd* pParent)
 DboxMain::~DboxMain()
 {
   m_core.UnRegisterOnListModified();
+  ::DestroyIcon(m_hIcon);
+  ::DestroyIcon(m_hIconSm);
 
   delete m_pchTip;
   delete m_pwchTip;
