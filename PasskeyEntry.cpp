@@ -79,6 +79,11 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_bsFields.set();
 }
 
+CPasskeyEntry::~CPasskeyEntry()
+{
+  ::DestroyIcon(m_hIcon);
+}
+
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);

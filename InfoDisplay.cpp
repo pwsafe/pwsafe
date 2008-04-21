@@ -29,6 +29,7 @@ CInfoDisplay::CInfoDisplay()
 
 CInfoDisplay::~CInfoDisplay()
 {
+  ::DeleteObject(m_font);
 }
 
 BEGIN_MESSAGE_MAP(CInfoDisplay, CWnd)

@@ -602,6 +602,7 @@ void CCoolMenuManager::FixMFCDotBitmap()
     memdc.PatBlt(0, 0, bm.bmWidth, bm.bmHeight, WHITENESS);
     memdc.Ellipse(&rcDot);
     memdc.RestoreDC(nSave);
+    memdc.DeleteDC();
     ::DeleteObject(hbmDot);
   }
 }
@@ -734,5 +735,6 @@ void CCoolMenuManager::DrawEmbossed(CDC& dc, CImageList &il, int iBtn, CPoint p)
   dc.SelectObject(pOldBrush);         // restore
   dc.SetBkColor(colorOldBG);          // ...
   memdc.SelectObject(pOldBitmap);     // ...
+  memdc.DeleteDC();
   bm.DeleteObject();
 }

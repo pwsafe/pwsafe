@@ -38,6 +38,7 @@ CPopupText::CPopupText()
 
 CPopupText::~CPopupText()
 {
+  m_font.DeleteObject();
 }
 
 //////////////////

@@ -27,13 +27,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-CSysColStatic::CSysColStatic()
+CSysColStatic::CSysColStatic() :
+  m_nImageID(-1), m_hBmp(NULL)
 {
-  m_nImageID = -1;
 }
 
 CSysColStatic::~CSysColStatic()
 {
+  ::DeleteObject(m_hBmp);
 }
 
 void CSysColStatic::ReloadBitmap(int nImageID)
@@ -44,6 +45,7 @@ void CSysColStatic::ReloadBitmap(int nImageID)
   if(m_nImageID == -1)
     return;
 
+  HBITMAP hBmpOld;
   HBITMAP hBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), 
                                       MAKEINTRESOURCE(m_nImageID),
                                       IMAGE_BITMAP,
@@ -54,9 +56,10 @@ void CSysColStatic::ReloadBitmap(int nImageID)
   if (hBmp == NULL)
     return;
 
-  hBmp = SetBitmap(hBmp);
-  if (hBmp != NULL)
-    ::DeleteObject(hBmp);
+  hBmpOld = SetBitmap(hBmp);
+  ::DeleteObject(hBmpOld);
+  ::DeleteObject(m_hBmp);
+  m_hBmp = hBmp;
 }
 
 BEGIN_MESSAGE_MAP(CSysColStatic, CStatic)

@@ -36,6 +36,8 @@ public:
     bool bForceReadOnly = false,
     int adv_type = -1); 
 
+  ~CPasskeyEntry();
+
   int GetStatus() const {return m_status;}
   bool IsReadOnly() const {return m_PKE_ReadOnly == TRUE;}
   const CMyString &GetPasskey() const {return m_passkey;}
