@@ -461,7 +461,7 @@ void PWSfile::UnlockFile(const CMyString &filename,
     
     pws_os::splitpath(path, drv, dir, fname, ext);
 
-    if (cs_me == stringT(locker) && LockCount > 1) {
+    if (cs_me.c_str() == CString(locker) && LockCount > 1) {
       LockCount--;
       TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
             PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
