@@ -749,7 +749,8 @@ int DboxMain::SaveAs()
       return PWScore::USER_CANCEL;
   }
   CMyString locker(_T("")); // null init is important here
-  if (!m_core.LockFile(newfile, locker)) {
+  // Note: We have to lock the new file before releasing the old (on success)
+  if (!m_core.LockFile2(newfile, locker)) {
     cs_temp.Format(IDS_FILEISLOCKED, newfile, locker);
     cs_title.LoadString(IDS_FILELOCKERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
@@ -764,7 +765,7 @@ int DboxMain::SaveAs()
 
   if (rc == PWScore::CANT_OPEN_FILE) {
     m_core.SetFileUUID(file_uuid_array);
-    m_core.UnlockFile(newfile);
+    m_core.UnlockFile2(newfile);
     cs_temp.Format(IDS_CANTOPENWRITING, newfile);
     cs_title.LoadString(IDS_FILEWRITEERROR);
     MessageBox(cs_temp, cs_title, MB_OK|MB_ICONWARNING);
@@ -772,6 +773,10 @@ int DboxMain::SaveAs()
   }
   if (!m_core.GetCurFile().IsEmpty())
     m_core.UnlockFile(m_core.GetCurFile());
+
+  // Move the newfile lock to the right place
+  m_core.MoveLock();
+
   m_core.SetCurFile(newfile);
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(CMyString(_T("Password Safe - ")) +

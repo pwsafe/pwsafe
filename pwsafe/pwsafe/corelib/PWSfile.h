@@ -65,7 +65,7 @@ public:
   };
 
   static PWSfile *MakePWSfile(const CMyString &a_filename, VERSION &version,
-    RWmode mode, int &status);
+                              RWmode mode, int &status);
 
   static bool FileExists(const CMyString &filename);
   static bool FileExists(const CMyString &filename, bool &bReadOnly);
@@ -73,13 +73,13 @@ public:
   static VERSION ReadVersion(const CMyString &filename);
   static int RenameFile(const CMyString &oldname, const CMyString &newname);
   static int CheckPassword(const CMyString &filename,
-    const CMyString &passkey, VERSION &version);
+                           const CMyString &passkey, VERSION &version);
 
   static bool LockFile(const CMyString &filename, CMyString &locker,
-    HANDLE &lockFileHandle, int &LockCount);
+                       HANDLE &lockFileHandle, int &LockCount);
   static bool IsLockedFile(const CMyString &filename);
   static void UnlockFile(const CMyString &filename,
-    HANDLE &lockFileHandle, int &LockCount);
+                         HANDLE &lockFileHandle, int &LockCount);
   static bool GetLocker(const CMyString &filename, CMyString &locker);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
@@ -109,9 +109,9 @@ protected:
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual size_t WriteCBC(unsigned char type, const CString &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
-    unsigned int length);
+                          unsigned int length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
-    unsigned int &length);
+                         unsigned int &length);
   const CMyString m_filename;
   CMyString m_passkey;
   FILE *m_fd;
