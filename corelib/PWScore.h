@@ -107,27 +107,27 @@ public:
   int WriteV2File(const CMyString &filename)
   {return WriteFile(filename, PWSfile::V20);}
   int WritePlaintextFile(const CMyString &filename,
-    const CItemData::FieldBits &bsExport,
-    const CString &subgroup, const int &iObject,
-    const int &iFunction, TCHAR &delimiter,
-    const OrderedItemList *il = NULL);
+                         const CItemData::FieldBits &bsExport,
+                         const CString &subgroup, const int &iObject,
+                         const int &iFunction, TCHAR &delimiter,
+                         const OrderedItemList *il = NULL);
   int WriteXMLFile(const CMyString &filename,
-    const CItemData::FieldBits &bsExport,
-    const CString &subgroup, const int &iObject,
-    const int &iFunction, const TCHAR delimiter,
-    const OrderedItemList *il = NULL);
+                   const CItemData::FieldBits &bsExport,
+                   const CString &subgroup, const int &iObject,
+                   const int &iFunction, const TCHAR delimiter,
+                   const OrderedItemList *il = NULL);
   int ImportPlaintextFile(const CMyString &ImportedPrefix,
-    const CMyString &filename, CString &strErrors,
-    TCHAR fieldSeparator, TCHAR delimiter,
-    int &numImported, int &numSkipped,
-    CReport &rpt);
+                          const CMyString &filename, CString &strErrors,
+                          TCHAR fieldSeparator, TCHAR delimiter,
+                          int &numImported, int &numSkipped,
+                          CReport &rpt);
   int ImportKeePassTextFile(const CMyString &filename);
   int ImportXMLFile(const CString &ImportedPrefix,
-    const CString &strXMLFileName,
-    const CString &strXSDFileName,
-    CString &strErrors, int &numValidated, int &numImported,
-    bool &bBadUnknownFileFields,
-    bool &bBadUnknownRecordFields, CReport &rpt);
+                    const CString &strXMLFileName,
+                    const CString &strXSDFileName,
+                    CString &strErrors, int &numValidated, int &numImported,
+                    bool &bBadUnknownFileFields,
+                    bool &bBadUnknownRecordFields, CReport &rpt);
   bool FileExists(const CMyString &filename) const {return PWSfile::FileExists(filename);}
   bool FileExists(const CMyString &filename, bool &bReadOnly) const 
   {return PWSfile::FileExists(filename, bReadOnly);}
@@ -137,17 +137,27 @@ public:
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   int RenameFile(const CMyString &oldname, const CMyString &newname);
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
-    const CString &userBackupPrefix, const CString &userBackupDir);
+                     const CString &userBackupPrefix, const CString &userBackupDir);
   int CheckPassword(const CMyString &filename, CMyString &passkey);
   void ChangePassword(const CMyString & newPassword);
   bool LockFile(const CMyString &filename, CMyString &locker)
   {return PWSfile::LockFile(filename, locker,
-  m_lockFileHandle, m_LockCount);}
+                            m_lockFileHandle, m_LockCount);}
   bool IsLockedFile(const CMyString &filename) const
   {return PWSfile::IsLockedFile(filename);}
   void UnlockFile(const CMyString &filename)
   {return PWSfile::UnlockFile(filename, 
-  m_lockFileHandle, m_LockCount);}
+                              m_lockFileHandle, m_LockCount);}
+  // Following 3 routines only for SaveAs to use a temporary lock handle
+  // LockFile2, UnLockFile2 & MoveLock
+  bool LockFile2(const CMyString &filename, CMyString &locker)
+  {return PWSfile::LockFile(filename, locker,
+                            m_lockFileHandle2, m_LockCount);}
+  void UnlockFile2(const CMyString &filename)
+  {return PWSfile::UnlockFile(filename, 
+                              m_lockFileHandle2, m_LockCount);}
+  void MoveLock()
+  {m_lockFileHandle = m_lockFileHandle2; m_lockFileHandle2 = INVALID_HANDLE_VALUE;}
   void SetApplicationNameAndVersion(const CString &appName, DWORD dwMajorMinor);
   void SetReadOnly(bool state) { m_IsReadOnly = state;}
   bool IsReadOnly() const {return m_IsReadOnly;};
@@ -155,7 +165,7 @@ public:
   // Return list of unique groups
   void GetUniqueGroups(CStringArray &ary);
   CMyString GetUniqueTitle(const CMyString &path, const CMyString &title,
-    const CMyString &user, const int IDS_MESSAGE);
+                           const CMyString &user, const int IDS_MESSAGE);
 
   ItemListIter GetEntryIter()
   {return m_pwlist.begin();}
@@ -177,7 +187,7 @@ public:
   {m_changed = true; NotifyListModified(); m_pwlist.erase(pos);}
   // Find in m_pwlist by title and user name, exact match
   ItemListIter Find(const CMyString &a_group,
-    const CMyString &a_title, const CMyString &a_user);
+                    const CMyString &a_title, const CMyString &a_user);
   ItemListIter Find(const uuid_array_t &entry_uuid)
   {return m_pwlist.find(entry_uuid);}
   ItemListConstIter Find(const uuid_array_t &entry_uuid) const
@@ -185,21 +195,21 @@ public:
 
   // General routines for aliases and shortcuts
   void AddDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid,
-    const CItemData::EntryType type);
+                         const CItemData::EntryType type);
   void RemoveDependentEntry(const uuid_array_t &base_uuid, const uuid_array_t &entry_uuid, 
-    const CItemData::EntryType type);
+                            const CItemData::EntryType type);
   void RemoveAllDependentEntries(const uuid_array_t &base_uuid, 
-    const CItemData::EntryType type);
+                                 const CItemData::EntryType type);
   void GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDList &dependentslist, 
-    const CItemData::EntryType type);
+                              const CItemData::EntryType type);
   void MoveDependentEntries(const uuid_array_t &from_baseuuid, 
-    const uuid_array_t &to_baseuuid, 
-    const CItemData::EntryType type);
+                            const uuid_array_t &to_baseuuid, 
+                            const CItemData::EntryType type);
   int  AddDependentEntries(UUIDList &dependentslist, CReport *rpt, 
-    const CItemData::EntryType type, 
-    const int &iVia);
+                           const CItemData::EntryType type, 
+                           const int &iVia);
   bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, uuid_array_t &base_uuid, 
-    const CItemData::EntryType type);
+                                 const CItemData::EntryType type);
   bool GetBaseEntry(const CMyString &Password, GetBaseEntryPL &pl);
 
   // Actions for Aliases only
@@ -225,7 +235,7 @@ public:
 
   ItemListIter GetUniqueBase(const CMyString &title, bool &bMultiple);
   ItemListIter GetUniqueBase(const CMyString &grouptitle, 
-    const CMyString &titleuser, bool &bMultiple);
+                             const CMyString &titleuser, bool &bMultiple);
 
   bool IsChanged() const {return m_changed;}
   void SetChanged(bool changed) {m_changed = changed;} // use sparingly...
@@ -257,14 +267,15 @@ private:
   static unsigned char m_session_salt[20];
   static unsigned char m_session_initialized;
   HANDLE m_lockFileHandle;
+  HANDLE m_lockFileHandle2;
   int m_LockCount;
 
   CMyString GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, int len,
-    unsigned char *ciphertext) const;
+                       unsigned char *ciphertext) const;
   BOOL GetIncBackupFileName(const CString &cs_filenamebase,
-    int i_maxnumincbackups, CString &cs_newname);
+                            int i_maxnumincbackups, CString &cs_newname);
 
   bool m_usedefuser;
   CMyString m_defusername;

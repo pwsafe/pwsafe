@@ -29,6 +29,7 @@ databases.
 user confusion thinking it does something different.
 [] Ensure first entry is selected when opening an existing database.
 [] XML export of password history fixed for when number to be saved > 99.
+[] Fix incorrect lock file handling during SaveAs.
 
 Changes to Existing Features in 3.12.01
 =======================================
