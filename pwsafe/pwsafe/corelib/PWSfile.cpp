@@ -271,19 +271,65 @@ int PWSfile::CheckPassword(const CMyString &filename,
 * but *much* easier than setting up a map...
 */
 
-static void GetLockFileName(const CMyString &filename,
-                            CMyString &lock_filename)
+static stringT GetLockFileName(const stringT &filename)
 {
-  ASSERT(!filename.IsEmpty());
+  ASSERT(!filename.empty());
   // derive lock filename from filename
-  lock_filename = CMyString(filename.Left(MAX_PATH - 4) + _T(".plk"));
+  stringT retval(filename, 0, MAX_PATH - 4);
+  retval += _T(".plk");
+  return retval;
+}
+
+static bool GetLocker(const stringT &lock_filename, stringT &locker)
+{
+  bool bResult = false;
+  // read locker data ("user@machine:nnnnnnnn") from file
+  TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + 11];
+  // flags here counter (my) intuition, but see
+  // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
+  HANDLE h2 = ::CreateFile(lock_filename.c_str(),
+                           GENERIC_READ,
+                           FILE_SHARE_WRITE,
+                           NULL,
+                           OPEN_EXISTING,
+                           (FILE_ATTRIBUTE_NORMAL |
+                            // (Lockheed Martin) Secure Coding  11-14-2007
+                            SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION),
+                           NULL);
+ 	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
+ 	if (h2 != INVALID_HANDLE_VALUE) {
+ 		if (::GetFileType( h2 ) != FILE_TYPE_DISK) {
+ 			::CloseHandle( h2 );
+ 			h2 = INVALID_HANDLE_VALUE;
+ 		}
+ 	}
+ 	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
+ 
+  if (h2 == INVALID_HANDLE_VALUE) {
+    const CString error(MAKEINTRESOURCE(IDSC_CANTGETLOCKER));
+    locker = error;
+  } else {
+    DWORD bytesRead;
+    (void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
+                     &bytesRead, NULL);
+    CloseHandle(h2);
+    if (bytesRead > 0) {
+      lockerStr[bytesRead/sizeof(TCHAR)] = TCHAR('\0');
+      locker = lockerStr;
+      bResult = true;
+    } else { // read failed for some reason
+      const CString error(MAKEINTRESOURCE(IDSC_CANTGETLOCKER));
+      locker = error;
+    } // read info from lock file
+  }
+  return bResult;
 }
 
 bool PWSfile::LockFile(const CMyString &filename, CMyString &locker, 
                        HANDLE &lockFileHandle, int &LockCount)
 {
-  CMyString lock_filename;
-  GetLockFileName(filename, lock_filename);
+  const stringT lock_filename = GetLockFileName(LPCTSTR(filename));
+  stringT s_locker;
 #ifdef POSIX_FILE_LOCK
   int fh = _open(lock_filename, (_O_CREAT | _O_EXCL | _O_WRONLY),
     (_S_IREAD | _S_IWRITE));
@@ -360,10 +406,9 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     // will fail.
 
     const stringT cs_me = user + _T("@") + host + _T(":") + pid;
-    GetLockFileName(filename, lock_filename);
-    GetLocker(lock_filename, locker);
+    GetLocker(lock_filename, s_locker);
 
-    if (cs_me == stringT(locker)) {
+    if (cs_me == s_locker) {
       LockCount++;
       TRACE(_T("%s Lock1  ; Count now %d; File: %s%s\n"), 
         PWSUtil::GetTimeStamp(), LockCount, fname, ext);
@@ -374,7 +419,7 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
       UnlockFile(filename, lockFileHandle, LockCount);
     }
   }
-  lockFileHandle = ::CreateFile(LPCTSTR(lock_filename),
+  lockFileHandle = ::CreateFile(lock_filename.c_str(),
                                 GENERIC_WRITE,
                                 FILE_SHARE_READ,
                                 NULL,
@@ -397,7 +442,8 @@ bool PWSfile::LockFile(const CMyString &filename, CMyString &locker,
     DWORD error = GetLastError();
     switch (error) {
       case ERROR_SHARING_VIOLATION: // already open by a live process
-        GetLocker(lock_filename, locker);
+        GetLocker(lock_filename, s_locker);
+        locker = s_locker.c_str();
         break;
       default:
         locker = _T("Cannot create lock file - no permission in directory?");
@@ -439,8 +485,7 @@ void PWSfile::UnlockFile(const CMyString &filename,
                          HANDLE &lockFileHandle, int &LockCount)
 {
 #ifdef POSIX_FILE_LOCK
-  CMyString lock_filename;
-  GetLockFileName(filename, lock_filename);
+  stringT lock_filename = GetLockFileName(filename);
   _unlink(lock_filename);
 #else
   const SysInfo *si = SysInfo::GetInstance();
@@ -451,9 +496,9 @@ void PWSfile::UnlockFile(const CMyString &filename,
   // Use Win32 API for locking - supposedly better at
   // detecting dead locking processes
   if (lockFileHandle != INVALID_HANDLE_VALUE) {
-    CMyString lock_filename, locker;
+    stringT locker;
+    const stringT lock_filename = GetLockFileName(LPCTSTR(filename));
     const stringT cs_me = user + _T("@") + host + _T(":") + pid;
-    GetLockFileName(filename, lock_filename);
     GetLocker(lock_filename, locker);
 
     const stringT path(lock_filename);
@@ -461,7 +506,7 @@ void PWSfile::UnlockFile(const CMyString &filename,
     
     pws_os::splitpath(path, drv, dir, fname, ext);
 
-    if (cs_me.c_str() == CString(locker) && LockCount > 1) {
+    if (cs_me == locker && LockCount > 1) {
       LockCount--;
       TRACE(_T("%s Unlock2; Count now %d; File: %s%s\n"), 
             PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
@@ -471,7 +516,7 @@ void PWSfile::UnlockFile(const CMyString &filename,
             PWSUtil::GetTimeStamp(), LockCount, fname.c_str(), ext.c_str());
       CloseHandle(lockFileHandle);
       lockFileHandle = INVALID_HANDLE_VALUE;
-      DeleteFile(LPCTSTR(lock_filename));
+      DeleteFile(lock_filename.c_str());
     }
   }
 #endif // POSIX_FILE_LOCK
@@ -479,14 +524,13 @@ void PWSfile::UnlockFile(const CMyString &filename,
 
 bool PWSfile::IsLockedFile(const CMyString &filename)
 {
-  CMyString lock_filename;
-  GetLockFileName(filename, lock_filename);
+  const stringT lock_filename = GetLockFileName(LPCTSTR(filename));
 #ifdef POSIX_FILE_LOCK
   return PWSfile::FileExists(lock_filename);
 #else
   // under this scheme, we need to actually try to open the file to determine
   // if it's locked.
-  HANDLE h = CreateFile(LPCTSTR(lock_filename),
+  HANDLE h = CreateFile(lock_filename.c_str(),
                         GENERIC_WRITE,
                         FILE_SHARE_READ,
                         NULL,
@@ -516,49 +560,6 @@ bool PWSfile::IsLockedFile(const CMyString &filename)
     return false;
   }
 #endif // POSIX_FILE_LOCK
-}
-
-bool PWSfile::GetLocker(const CMyString &lock_filename, CMyString &locker)
-{
-  bool bResult = false;
-  // read locker data ("user@machine:nnnnnnnn") from file
-  TCHAR lockerStr[UNLEN + MAX_COMPUTERNAME_LENGTH + 11];
-  // flags here counter (my) intuition, but see
-  // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/fileio/base/creating_and_opening_files.asp
-  HANDLE h2 = ::CreateFile(LPCTSTR(lock_filename),
-                           GENERIC_READ,
-                           FILE_SHARE_WRITE,
-                           NULL,
-                           OPEN_EXISTING,
-                           (FILE_ATTRIBUTE_NORMAL |
-                            // (Lockheed Martin) Secure Coding  11-14-2007
-                            SECURITY_SQOS_PRESENT | SECURITY_IDENTIFICATION),
-                           NULL);
- 	// Make sure it's a file and not a pipe.  (Lockheed Martin) Secure Coding  11-14-2007
- 	if (h2 != INVALID_HANDLE_VALUE) {
- 		if (::GetFileType( h2 ) != FILE_TYPE_DISK) {
- 			::CloseHandle( h2 );
- 			h2 = INVALID_HANDLE_VALUE;
- 		}
- 	}
- 	// End of Change.  (Lockheed Martin) Secure Coding  11-14-2007
- 
-  if (h2 == INVALID_HANDLE_VALUE) {
-    locker.LoadString(IDSC_CANTGETLOCKER);
-  } else {
-    DWORD bytesRead;
-    (void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
-                     &bytesRead, NULL);
-    CloseHandle(h2);
-    if (bytesRead > 0) {
-      lockerStr[bytesRead/sizeof(TCHAR)] = TCHAR('\0');
-      locker = lockerStr;
-      bResult = true;
-    } else { // read failed for some reason
-      locker.LoadString(IDSC_CANTREADLOCKER);
-    } // read info from lock file
-  }
-  return bResult;
 }
 
 void PWSfile::GetUnknownHeaderFields(UnknownFieldList &UHFL)
