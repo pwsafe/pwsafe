@@ -80,7 +80,6 @@ public:
   static bool IsLockedFile(const CMyString &filename);
   static void UnlockFile(const CMyString &filename,
                          HANDLE &lockFileHandle, int &LockCount);
-  static bool GetLocker(const CMyString &filename, CMyString &locker);
 
   // Following for 'legacy' use of pwsafe as file encryptor/decryptor
   static bool Encrypt(const CString &fn, const CMyString &passwd);
