@@ -92,7 +92,7 @@ stringT pws_os::getprocessid()
 #endif
   os.width(8);
   os.fill(charT('0'));
-  os << GetCurrentProcessId() << std::ends;
+  os << GetCurrentProcessId();
 
   return os.str();
 }
