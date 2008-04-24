@@ -12,12 +12,18 @@
 #include "ExpDTDlg.h"
 #include "corelib/util.h"
 
+static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how, 
+                                    int &numDays, const int &maxDays);
+
 // CExpDTDlg dialog
 
-CExpDTDlg::CExpDTDlg(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CExpDTDlg::IDD, pParent), m_how(DATETIME),
-  m_numDays(1), m_ReuseOnPswdChange(FALSE), m_tttXTime(time_t(0)),
-  m_tttCPMTime(time_t(0)), m_XTimeInt(0)
+CExpDTDlg::CExpDTDlg(time_t baseTime,  // entry creation or last modification time
+                     time_t expTime,   // entry's current exp. time (or 0)
+                     int expInterval,  // entry's current exp. interval (or 0)
+                     CWnd* pParent /*=NULL*/)
+  : CPWDialog(CExpDTDlg::IDD, pParent), m_how(ABSOLUTE_EXP),
+    m_numDays(1), m_ReuseOnPswdChange(FALSE), m_tttXTime(expTime),
+    m_tttCPMTime(baseTime), m_XTimeInt(expInterval)
 {
   //{{AFX_DATA_INIT(CImportDlg)
   //}}AFX_DATA_INIT
@@ -43,14 +49,11 @@ BEGIN_MESSAGE_MAP(CExpDTDlg, CPWDialog)
   ON_BN_CLICKED(IDC_REUSE_ON_CHANGE, OnReuseOnPswdChange)
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// Public functions
-
-void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how, 
-                             int &numDays, const int &maxDays)
+static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how, 
+                                    int &numDays, const int &maxDays)
 {
   if (pDX->m_bSaveAndValidate) {
-    if (how == CExpDTDlg::DAYS && numDays > maxDays) {
+    if (how == CExpDTDlg::RELATIVE_EXP && numDays > maxDays) {
       CString csError;
       csError.Format(IDS_MAXNUMDAYSEXCEEDED, maxDays);
       AfxMessageBox(csError);
@@ -59,6 +62,9 @@ void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
     }
   }
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// Public functions
 
 BOOL CExpDTDlg::OnInitDialog()
 {
@@ -89,21 +95,18 @@ BOOL CExpDTDlg::OnInitDialog()
     pspin->SetRange32(1, 3650);  // 10 years!
     pspin->SetPos(m_XTimeInt);
     m_numDays = m_XTimeInt;
-    m_how = DAYS;
+    m_how = RELATIVE_EXP;
   } else {
     pspin->SetRange32(1, m_maxDays);
     pspin->SetPos(1);
   }
 
-  GetDlgItem(IDC_EXPDAYS)->EnableWindow(m_how == DAYS ? TRUE : FALSE);
-  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(m_how == DAYS ? TRUE : FALSE);
-  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(m_how == DAYS ? FALSE : TRUE);
-  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(m_how == DAYS ? FALSE : TRUE);
-
-  GetDlgItem(IDC_STATIC_LTINTERVAL_ALWAYS)->ShowWindow(m_ReuseOnPswdChange == TRUE ? 
-                                            SW_SHOW : SW_HIDE);
-  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->ShowWindow(m_ReuseOnPswdChange == TRUE ? 
-                                            SW_HIDE : SW_SHOW);
+  // enable/disable relevant controls, depending on 'how' state
+  // RELATIVE_EXP (interval) or ABSOLUTE_EXP
+  GetDlgItem(IDC_EXPDAYS)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
+  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
+  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(m_how == RELATIVE_EXP ? FALSE : TRUE);
+  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(m_how == RELATIVE_EXP ? FALSE : TRUE);
 
   // First get the time format picture.
   VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
@@ -175,7 +178,7 @@ void CExpDTDlg::OnDays()
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
-  m_how = DAYS;
+  m_how = RELATIVE_EXP;
 }
 
 void CExpDTDlg::OnDateTime() 
@@ -184,22 +187,22 @@ void CExpDTDlg::OnDateTime()
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(TRUE);
-  m_how = DATETIME;
+  m_how = ABSOLUTE_EXP;
 }
 
 void CExpDTDlg::OnReuseOnPswdChange()
 {
+  ASSERT(m_how == RELATIVE_EXP); // meaningless when absolute date given
   UpdateData(TRUE);
 
-  const bool bReuse(m_ReuseOnPswdChange == TRUE);
-  const int new_max = bReuse ? 3650 : m_maxDays;
+  // If user chose "recurring", then set the max interval to ~10 years
+  // (should suffice for most purposes). For non-recurring, limit is
+  // the max that won't overflow time_t
+  const int new_max = (m_ReuseOnPswdChange == TRUE) ? 3650 : m_maxDays;
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
   pspin->SetRange32(1, new_max);
   if (m_numDays > new_max)
     m_numDays = 1;
-
-  GetDlgItem(IDC_STATIC_LTINTERVAL_ALWAYS)->ShowWindow(bReuse ? SW_SHOW : SW_HIDE);
-  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->ShowWindow(bReuse ? SW_HIDE : SW_SHOW);
 
   UpdateData(FALSE);
 }
@@ -214,28 +217,26 @@ void CExpDTDlg::OnOK()
   }
 
   CTime XTime, LDate, LDateTime;
-  DWORD dwResult;
 
-  if (m_how == DATETIME) {
-    dwResult = m_pTimeCtl.GetTime(XTime);
-    ASSERT(dwResult == GDT_VALID);
-
-    dwResult = m_pDateCtl.GetTime(LDate);
-    ASSERT(dwResult == GDT_VALID);
+  if (m_how == ABSOLUTE_EXP) {
+    VERIFY(m_pTimeCtl.GetTime(XTime) == GDT_VALID);
+    VERIFY(m_pDateCtl.GetTime(LDate) == GDT_VALID);
 
     LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 
-      XTime.GetHour(), XTime.GetMinute(), 0, -1);
-  } else {
-    if (m_ReuseOnPswdChange == FALSE) {
+                      XTime.GetHour(), XTime.GetMinute(), 0, -1);
+    m_XTimeInt = 0;
+  } else { // m_how == RELATIVE_EXP
+    if (m_ReuseOnPswdChange == FALSE) { // non-recurring
       LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
       m_XTimeInt = 0;
-    } else {
+    } else { // recurring interval
       LDateTime = CTime(m_tttCPMTime) + CTimeSpan(m_numDays, 0, 0, 0);
       m_XTimeInt = m_numDays;
     }
   }
+  // m_XTimeInt is non-zero iff user specified a relative & recurring exp. date
   m_tttXTime = (time_t)LDateTime.GetTime();
-  m_locXTime = PWSUtil::ConvertToDateTimeString((time_t)LDateTime.GetTime(), TMC_LOCALE);
+  m_locXTime = PWSUtil::ConvertToDateTimeString(m_tttXTime, TMC_LOCALE);
 
   CPWDialog::OnOK();
 }

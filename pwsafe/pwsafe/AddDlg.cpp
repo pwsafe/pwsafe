@@ -317,6 +317,7 @@ void CAddDlg::ResizeDialog()
     IDC_AUTOTYPE,
     IDC_SAVE_PWHIST,
     IDC_XTIME,
+    IDC_XTIME_RECUR,
     IDC_STATIC_XTIME,
     IDC_XTIME_CLEAR,
     IDC_XTIME_SET,
@@ -370,18 +371,17 @@ void CAddDlg::OnBnClickedClearXTime()
 {
   m_locXTime.LoadString(IDS_NEVER);
   GetDlgItem(IDC_XTIME)->SetWindowText((CString)m_locXTime);
+  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(_T(""));
   m_tttXTime = (time_t)0;
   m_XTimeInt = 0;
 }
 
 void CAddDlg::OnBnClickedSetXTime()
 {
-  CExpDTDlg dlg_expDT(this);
-
-  dlg_expDT.m_locXTime = m_locXTime;
-  dlg_expDT.m_tttXTime = m_tttXTime;
-  dlg_expDT.m_tttCPMTime = m_tttCPMTime;
-  dlg_expDT.m_XTimeInt = m_XTimeInt;
+  CExpDTDlg dlg_expDT(m_tttCPMTime,
+                      m_tttXTime,
+                      m_XTimeInt,
+                      this);
 
   app.DisableAccelerator();
   INT_PTR rc = dlg_expDT.DoModal();
@@ -392,18 +392,11 @@ void CAddDlg::OnBnClickedSetXTime()
     m_locXTime = dlg_expDT.m_locXTime;
     m_tttXTime = dlg_expDT.m_tttXTime;
     m_XTimeInt = dlg_expDT.m_XTimeInt;
-    if (m_XTimeInt > 0 && m_XTimeInt <= 3650) {
+    if (m_XTimeInt != 0) // recurring expiration
       cs_text.Format(IDS_IN_N_DAYS, m_XTimeInt);
-      GetDlgItem(IDC_XTIME)->SetWindowText(cs_text);
-      cs_text.LoadString(IDS_EXPIRES_IN);
-      GetDlgItem(IDC_STATIC_XTIME)->SetWindowText(cs_text);
-    } else {
-      m_locXTime = dlg_expDT.m_locXTime;
-      GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
-      cs_text.LoadString(IDS_EXPIRES_ON);
-      GetDlgItem(IDC_STATIC_XTIME)->SetWindowText(cs_text);
-    }
-  }
+    GetDlgItem(IDC_XTIME)->SetWindowText(m_locXTime);
+    GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
+  } // rc == IDOK
 }
 
 void CAddDlg::OnCheckedSavePasswordHistory()

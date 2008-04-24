@@ -353,10 +353,13 @@
 #define IDC_STATIC_XTIME                1114
 #define IDC_XTIME                       1115
 #define IDC_STATIC_RMTIME               1116
+#define IDC_XTIME_RECUR                 1116
 #define IDC_RMTIME                      1117
 #define IDC_XTIME_CLEAR                 1118
 #define IDC_XTIME_SET                   1119
 #define IDC_XTIME_PICKER                1120
+#define IDC_XTIME2                      1120
+#define IDC_XTIME_RECUR2                1120
 #define IDC_MAINTAINDATETIMESTAMPS      1121
 #define IDC_STATIC_DTGROUP              1122
 #define IDC_STATIC_DTEXPGROUP           1123
