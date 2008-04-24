@@ -69,7 +69,7 @@ public:
     ExplorerTypeTree, ListViewGridLines, MinimizeOnAutotype,
     ShowUsernameInTree, PWMakePronounceable,
     ClearClipoardOnMinimize, ClearClipoardOnExit,
-    ShowToolbar, ShowNotesAsTooltipsInViews,
+    ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
     NumBoolPrefs};
   enum  IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
