@@ -379,7 +379,7 @@ protected:
   int SaveAs(void);
   int SaveCore(PWScore *pcore);
   int Open(void);
-  int Open( const CMyString &pszFilename );
+  int Open(const CMyString &pszFilename, const bool bReadOnly);
   int Close(void);
   int Merge(void);
   int Merge( const CMyString &pszFilename );

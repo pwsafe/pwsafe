@@ -17,6 +17,7 @@ down the streetsky.  [Groucho Marx]
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
 #include "corelib/PWSfile.h"
+#include "corelib/pwsprefs.h"
 #include "ThisMfcApp.h"
 #include "AdvancedDlg.h"
 
@@ -465,7 +466,10 @@ void CPasskeyEntry::OnOpenFileBrowser()
                  _T("|"),
                  this);
   fd.m_ofn.lpstrTitle = cs_text;
-  fd.m_ofn.Flags &= ~OFN_READONLY;
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
+      fd.m_ofn.Flags |= OFN_READONLY;
+    else
+      fd.m_ofn.Flags &= ~OFN_READONLY;
   stringT dir = PWSdirs::GetSafeDir();
   if (!dir.empty())
     fd.m_ofn.lpstrInitialDir = dir.c_str();

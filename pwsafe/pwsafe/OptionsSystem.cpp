@@ -58,6 +58,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
   DDV_MinMaxInt(pDX, m_maxmruitems, 0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
   DDX_Check(pDX, IDC_MRU_ONFILEMENU, m_mruonfilemenu);
   DDX_Check(pDX, IDC_REGDEL_CB, m_deleteregistry);
+  DDX_Check(pDX, IDC_DEFAULTOPENRO, m_defaultopenro);
   //}}AFX_DATA_MAP
 }
 

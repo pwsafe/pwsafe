@@ -58,7 +58,8 @@ BOOL DboxMain::OpenOnInit(void)
   CMyString passkey;
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey, GCP_FIRST,
-                               m_core.IsReadOnly(),
+                               PWSprefs::GetInstance()->
+                                   GetPref(PWSprefs::DefaultOpenRO) == TRUE,
                                m_core.IsReadOnly());  // First
   int rc2 = PWScore::NOT_SUCCESS;
 
@@ -393,8 +394,9 @@ void DboxMain::OnOpenMRU(UINT nID)
   // Save just in case need to restore if user cancels
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
-  // Read-only status will be set by GetAndCheckPassword
-  int rc = Open(mruItem);
+  // Read-only status can be overriden by GetAndCheckPassword
+  int rc = Open(mruItem, 
+                PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) == TRUE);
   if (rc == PWScore::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
     m_RUEList.ClearEntries();
@@ -435,7 +437,10 @@ int DboxMain::Open()
                    _T("|"),
                    this);
     fd.m_ofn.lpstrTitle = cs_text;
-    fd.m_ofn.Flags &= ~OFN_READONLY;
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO))
+      fd.m_ofn.Flags |= OFN_READONLY;
+    else
+      fd.m_ofn.Flags &= ~OFN_READONLY;
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
     INT_PTR rc2 = fd.DoModal();
@@ -451,7 +456,7 @@ int DboxMain::Open()
     if (rc2 == IDOK) {
       newfile = (CMyString)fd.GetPathName();
 
-      rc = Open(newfile);
+      rc = Open(newfile, fd.GetReadOnlyPref() == TRUE);
       if (rc == PWScore::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
@@ -465,7 +470,7 @@ int DboxMain::Open()
   return rc;
 }
 
-int DboxMain::Open(const CMyString &pszFilename)
+int DboxMain::Open(const CMyString &pszFilename, const bool bReadOnly)
 {
   int rc;
   CMyString passkey, temp;
@@ -491,7 +496,7 @@ int DboxMain::Open(const CMyString &pszFilename)
     m_core.UnlockFile(m_core.GetCurFile());
   }
 
-  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+  rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
   switch (rc) {
     case PWScore::SUCCESS:
       app.AddToMRU(pszFilename);
@@ -939,7 +944,7 @@ void DboxMain::OnExportXML()
     if (m_core.CheckPassword(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
       // do the export
       //SaveAs-type dialog box
-      CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml") );
+      CMyString XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile(), _T("xml"));
       cs_text.LoadString(IDS_NAMEXMLFILE);
       while (1) {
         CFileDialog fd(FALSE,

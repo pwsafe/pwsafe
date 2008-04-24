@@ -255,6 +255,8 @@ void DboxMain::OnOptions()
   system.m_mruonfilemenu = prefs->
     GetPref(PWSprefs::MRUOnFileMenu);
   system.m_startup = StartupShortcutExists;
+  system.m_defaultopenro = prefs->
+    GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
 
   display.m_alwaysontop = prefs->
     GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
@@ -466,7 +468,8 @@ void DboxMain::OnOptions()
       prefs->SetPref(PWSprefs::MRUOnFileMenu,
         system.m_mruonfilemenu == TRUE);
     }
-
+    prefs->SetPref(PWSprefs::DefaultOpenRO,
+      system.m_defaultopenro == TRUE);
 
     prefs->SetPref(PWSprefs::ClearClipoardOnMinimize,
       security.m_clearclipboardonminimize == TRUE);
